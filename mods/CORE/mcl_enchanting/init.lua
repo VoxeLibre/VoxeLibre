@@ -1,4 +1,5 @@
 local modpath = minetest.get_modpath("mcl_enchanting")
+local S = minetest.get_translator("mcl_enchanting")
 
 mcl_enchanting = {
 	book_offset = vector.new(0, 0.75, 0),
@@ -58,8 +59,8 @@ dofile(modpath .. "/engine.lua")
 dofile(modpath .. "/enchantments.lua")
 
 minetest.register_chatcommand("enchant", {
-	description = "Enchant an item.",
-	params = "<player> <enchantment> [<level>]",
+	description = S("Enchant an item"),
+	params = S("<player> <enchantment> [<level>]"),
 	privs = {give = true},
 	func = function(_, param)
 		local sparam = param:split(" ")
@@ -68,40 +69,40 @@ minetest.register_chatcommand("enchant", {
 		local level_str = sparam[3]
 		local level = tonumber(level_str or "1")
 		if not target_name or not enchantment then
-			return false, "Usage: /enchant <player> <enchantment> [<level>]"
+			return false, S("Usage: /enchant <player> <enchantment> [<level>]")
 		end
 		local target = minetest.get_player_by_name(target_name)
 		if not target then
-			return false, "Player '" .. target_name .. "' cannot be found"
+			return false, S("Player '@1' cannot be found.", target_name)
 		end
 		local itemstack = target:get_wielded_item()
 		local can_enchant, errorstring, extra_info = mcl_enchanting.can_enchant(itemstack, enchantment, level)
 		if not can_enchant then
 			if errorstring == "enchantment invalid" then
-				return false, "There is no such enchantment '" .. enchantment .. "'"
+				return false, S("There is no such enchantment '@1'.", enchantment)
 			elseif errorstring == "item missing" then
-				return false, "The target doesn't hold an item"
+				return false, S("The target doesn't hold an item.")
 			elseif errorstring == "item not supported" then
-				return false, "The selected enchantment can't be added to the target item"
+				return false, S("The selected enchantment can't be added to the target item.")
 			elseif errorstring == "level invalid" then
-				return false, "'" .. level_str .. "' is not a valid number"
+				return false, S("'@1' is not a valid number", level_str)
 			elseif errorstring == "level too high" then
-				return false, "The number you have entered (" .. level_str .. ") is too big, it must be at most " .. extra_info
+				return false, S("The number you have entered (@1) is too big, it must be at most @2.", level_str, extra_info)
 			elseif errorstring == "level too small" then
-				return false, "The number you have entered (" .. level_str .. ") is too small, it must be at least " .. extra_info
+				return false, S("The number you have entered (@1) is too small, it must be at least @2.", level_str, extra_info)
 			elseif errorstring == "incompatible" then
-				return false, mcl_enchanting.get_enchantment_description(enchantment, level) .. " can't be combined with " .. extra_info
+				return false, S("@1 can't be combined with @2.", mcl_enchanting.get_enchantment_description(enchantment, level), extra_info)
 			end
 		else
 			target:set_wielded_item(mcl_enchanting.enchant(itemstack, enchantment, level))
-			return true, "Enchanting succeded"
+			return true, S("Enchanting succeded.")
 		end
 	end
 })
 
 minetest.register_chatcommand("forceenchant", {
-	description = "Forcefully enchant an item.",
-	params = "<player> <enchantment> [<level>]",
+	description = S("Forcefully enchant an item"),
+	params = S("<player> <enchantment> [<level>]"),
 	func = function(_, param)
 		local sparam = param:split(" ")
 		local target_name = sparam[1]
@@ -109,31 +110,31 @@ minetest.register_chatcommand("forceenchant", {
 		local level_str = sparam[3]
 		local level = tonumber(level_str or "1")
 		if not target_name or not enchantment then
-			return false, "Usage: /forceenchant <player> <enchantment> [<level>]"
+			return false, S("Usage: /forceenchant <player> <enchantment> [<level>]")
 		end
 		local target = minetest.get_player_by_name(target_name)
 		if not target then
-			return false, "Player '" .. target_name .. "' cannot be found"
+			return false, S("Player '@1' cannot be found.", target_name)
 		end
 		local itemstack = target:get_wielded_item()
 		local can_enchant, errorstring, extra_info = mcl_enchanting.can_enchant(itemstack, enchantment, level)
 		if errorstring == "enchantment invalid" then
-			return false, "There is no such enchantment '" .. enchantment .. "'"
+			return false, S("There is no such enchantment '@1'.", enchantment)
 		elseif errorstring == "item missing" then
-			return false, "The target doesn't hold an item"
+			return false, S("The target doesn't hold an item.")
 		elseif errorstring == "item not supported" and not mcl_enchanting.is_enchantable(itemstack:get_name()) then
-			return false, "The target item is not enchantable"
+			return false, S("The target item is not enchantable.")
 		elseif errorstring == "level invalid" then
-			return false, "'" .. level_str .. "' is not a valid number"
+			return false, S("'@1' is not a valid number.", level_str)
 		else
 			target:set_wielded_item(mcl_enchanting.enchant(itemstack, enchantment, level))
-			return true, "Enchanting succeded"
+			return true, S("Enchanting succeded.")
 		end
 	end
 })
 
 minetest.register_craftitem("mcl_enchanting:book_enchanted", {
-	description = "Enchanted Book",
+	description = S("Enchanted Book"),
 	inventory_image = "mcl_enchanting_book_enchanted.png" .. mcl_enchanting.overlay,
 	groups = {enchanted = 1, not_in_creative_inventory = 1, enchantability = 1},
 	_mcl_enchanting_enchanted_tool = "mcl_enchanting:book_enchanted",
@@ -181,7 +182,7 @@ minetest.register_entity("mcl_enchanting:book", {
 })
 
 minetest.register_node("mcl_enchanting:table", {
-	description = "Enchanting Table",
+	description = S("Enchanting Table"),
 	drawtype = "nodebox",
 	tiles = {"mcl_enchanting_table_top.png",  "mcl_enchanting_table_bottom.png", "mcl_enchanting_table_side.png", "mcl_enchanting_table_side.png", "mcl_enchanting_table_side.png", "mcl_enchanting_table_side.png"},
 	node_box = {
@@ -197,7 +198,7 @@ minetest.register_node("mcl_enchanting:table", {
 		local num_bookshelves = table_meta:get_int("mcl_enchanting:num_bookshelves")
 		local table_name = table_meta:get_string("name")
 		if table_name == "" then
-			table_name = "Enchant"
+			table_name = S("Enchant")
 		end
 		player_meta:set_int("mcl_enchanting:num_bookshelves", num_bookshelves)
 		player_meta:set_string("mcl_enchanting:table_name", table_name)

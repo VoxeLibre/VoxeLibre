@@ -1,3 +1,6 @@
+local S = minetest.get_translator("mcl_enchanting")
+local F = minetest.formspec_escape
+
 function mcl_enchanting.is_book(itemname)
 	return itemname == "mcl_books:book" or itemname == "mcl_enchanting:book_enchanted"
 end
@@ -388,13 +391,13 @@ function mcl_enchanting.show_enchanting_formspec(player)
 	local formspec = ""
 		.. "size[9.07,8.6;]"
 		.. "formspec_version[3]"
-		.. "label[0,0;" .. C("#313131") .. table_name .. "]"
+		.. "label[0,0;" .. C("#313131") .. F(table_name) .. "]"
 		.. mcl_formspec.get_itemslot_bg(0.2, 2.4, 1, 1)
 		.. "list[detached:" .. name .. "_enchanting;enchanting;0.2,2.4;1,1;1]"
 		.. mcl_formspec.get_itemslot_bg(1.1, 2.4, 1, 1)
 		.. "image[1.1,2.4;1,1;mcl_enchanting_lapis_background.png]"
 		.. "list[detached:" .. name .. "_enchanting;enchanting;1.1,2.4;1,1;2]"
-		.. "label[0,4;" .. C("#313131") .. "Inventory]"
+		.. "label[0,4;" .. C("#313131") .. F(S("Inventory")).."]"
 		.. mcl_formspec.get_itemslot_bg(0, 4.5, 9, 3)
 		.. mcl_formspec.get_itemslot_bg(0, 7.74, 9, 1)
 		.. "list[current_player;main;0,4.5;9,3;9]"
@@ -417,7 +420,7 @@ function mcl_enchanting.show_enchanting_formspec(player)
 		local hover_ending = (can_enchant and "_hovered" or "_off")
 		formspec = formspec
 			.. "container[3.2," .. y .. "]"
-			.. (slot and "tooltip[button_" .. i .. ";" .. C("#818181") .. slot.description .. " " .. C("#FFFFFF") .. " . . . ?\n\n" .. (enough_levels and C(enough_lapis and "#818181" or "#FC5454") .. i .. " Lapis Lazuli\n" .. C("#818181") .. i .. " Enchantment Levels" or C("#FC5454") .. "Level Requirement: " .. slot.level_requirement) .. "]" or "")
+			.. (slot and "tooltip[button_" .. i .. ";" .. C("#818181") .. F(slot.description) .. " " .. C("#FFFFFF") .. " . . . ?\n\n" .. (enough_levels and C(enough_lapis and "#818181" or "#FC5454") .. F(S("@1 × Lapis Lazuli", i)) .. "\n" .. C("#818181") .. F(S("Enchantment levels: @1", i)) or C("#FC5454") .. F(S("Level requirement: @1", slot.level_requirement))) .. "]" or "")
 			.. "style[button_" .. i .. ";bgimg=mcl_enchanting_button" .. ending .. ".png;bgimg_hovered=mcl_enchanting_button" .. hover_ending .. ".png;bgimg_pressed=mcl_enchanting_button" .. hover_ending .. ".png]"
 			.. "button[0,0;7.5,1.3;button_" .. i .. ";]"
 			.. (slot and "image[0,0;1.3,1.3;mcl_enchanting_number_" .. i .. ending .. ".png]" or "")

@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_enchanting")
+
 -- Taken from https://minecraft.gamepedia.com/Enchanting
 
 local function increase_damage(damage_group, factor)
@@ -10,14 +12,14 @@ end
 
 -- requires engine change
 --[[mcl_enchanting.enchantments.aqua_affinity = {
-	name = "Aqua Affinity",
+	name = S("Aqua Affinity"),
 	max_level = 1,
 	primary = {armor_head = true},
 	secondary = {},
 	disallow = {non_combat_armor = true},
 	incompatible = {},
 	weight = 2,
-	description = "Increases underwater mining speed.",
+	description = S("Increases underwater mining speed."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -27,14 +29,14 @@ end
 
 -- implemented via on_enchant and additions in mobs_mc; Slowness IV part unimplemented
 mcl_enchanting.enchantments.bane_of_arthropods = {
-	name = "Bane of Arthropods",
+	name = S("Bane of Arthropods"),
 	max_level = 5,
 	primary = {sword = true},
 	secondary = {axe = true},
 	disallow = {},
 	incompatible = {smite = true, shaprness = true},
 	weight = 5,
-	description = "Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).",
+	description = S("Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites)."),
 	curse = false,
 	on_enchant = increase_damage("anthropod", 2.5),
 	requires_tool = false,
@@ -44,14 +46,14 @@ mcl_enchanting.enchantments.bane_of_arthropods = {
 
 -- implemented in mcl_armor
 mcl_enchanting.enchantments.blast_protection = {
-	name = "Blast Protection",
+	name = S("Blast Protection"),
 	max_level = 4,
 	primary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true},
 	secondary = {},
 	disallow = {non_combat_armor = true},
 	incompatible = {fire_protection = true, protection = true, projectile_protection = true},
 	weight = 2,
-	description = "Reduces explosion damage and knockback.",
+	description = S("Reduces explosion damage and knockback."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -61,14 +63,14 @@ mcl_enchanting.enchantments.blast_protection = {
 
 -- requires missing MineClone2 feature
 --[[mcl_enchanting.enchantments.channeling = {
-	name = "Channeling",
+	name = S("Channeling"),
 	max_level = 1,
 	primary = {trident = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {riptide = true},
 	weight = 1,
-	description = "Trident \"channels\" a bolt of lightning toward a hit entity. Functions only during thunderstorms and if target is unobstructed with opaque blocks.",
+	description = S("Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -78,14 +80,14 @@ mcl_enchanting.enchantments.blast_protection = {
 
 -- implemented in mcl_armor
 mcl_enchanting.enchantments.curse_of_binding = {
-	name = "Curse of Binding",
+	name = S("Curse of Binding"),
 	max_level = 1,
 	primary = {},
 	secondary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true},
 	disallow = {},
 	incompatible = {},
 	weight = 1,
-	description = "Except when in creative mode, items cannot be removed from armor slots except due to death or breaking.",
+	description = S("Item cannot be removed from armor slots except due to death, breaking or in Creative Mode."),
 	curse = true,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -95,14 +97,14 @@ mcl_enchanting.enchantments.curse_of_binding = {
 
 -- implemented in mcl_death_drop
 mcl_enchanting.enchantments.curse_of_vanishing = {
-	name = "Curse of Vanishing",
+	name = S("Curse of Vanishing"),
 	max_level = 1,
 	primary = {},
 	secondary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true, tool = true, weapon = true},
 	disallow = {},
 	incompatible = {},
 	weight = 1,
-	description = "Item destroyed on death.",
+	description = S("Item destroyed on death."),
 	curse = true,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -112,14 +114,14 @@ mcl_enchanting.enchantments.curse_of_vanishing = {
 
 -- unimplemented
 --[[mcl_enchanting.enchantments.depth_strider = {
-	name = "Depth Strider",
+	name = S("Depth Strider"),
 	max_level = 3,
 	primary = {},
 	secondary = {armor_feet = true},
 	disallow = {non_combat_armor = true},
 	incompatible = {frost_walker = true},
 	weight = 2,
-	description = "Increases underwater movement speed.",
+	description = S("Increases underwater movement speed."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -129,14 +131,14 @@ mcl_enchanting.enchantments.curse_of_vanishing = {
 
 -- implemented via on_enchant
 mcl_enchanting.enchantments.efficiency = {
-	name = "Efficiency",
+	name = S("Efficiency"),
 	max_level = 5,
 	primary = {pickaxe = true, shovel = true, axe = true, hoe = true},
 	secondary = {shears = true},
 	disallow = {},
 	incompatible = {},
 	weight = 10,
-	description = "Increases mining speed.",
+	description = S("Increases mining speed."),
 	curse = false,
 	on_enchant = function(itemstack, level)
 		local tool_capabilities = itemstack:get_tool_capabilities()
@@ -156,14 +158,14 @@ mcl_enchanting.enchantments.efficiency = {
 
 -- implemented in mcl_armor
 mcl_enchanting.enchantments.feather_falling = {
-	name = "Feather Falling",
+	name = S("Feather Falling"),
 	max_level = 4,
 	primary = {armor_feet = true},
 	secondary = {},
 	disallow = {non_combat_armor = true},
 	incompatible = {},
 	weight = 5,
-	description = "Reduces fall damage.",curse = false,
+	description = S("Reduces fall damage."),curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
 	treasure = false,
@@ -172,14 +174,14 @@ mcl_enchanting.enchantments.feather_falling = {
 
 -- requires missing MineClone2 feature
 --[[mcl_enchanting.enchantments.fire_aspect = {
-	name = "Fire Aspect",
+	name = S("Fire Aspect"),
 	max_level = 2,
 	primary = {sword = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {},
 	weight = 2,
-	description = "Sets target on fire.",
+	description = S("Sets target on fire."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -189,14 +191,14 @@ mcl_enchanting.enchantments.feather_falling = {
 
 -- implemented in mcl_armor
 mcl_enchanting.enchantments.fire_protection = {
-	name = "Fire Protection",
+	name = S("Fire Protection"),
 	max_level = 4,
 	primary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true},
 	secondary = {},
 	disallow = {non_combat_armor = true},
 	incompatible = {blast_protection = true, protection = true, projectile_protection = true},
 	weight = 5,
-	description = "Reduces fire damage.",
+	description = S("Reduces fire damage."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -206,14 +208,14 @@ mcl_enchanting.enchantments.fire_protection = {
 
 -- requires missing MineClone2 feature
 --[[mcl_enchanting.enchantments.flame = {
-	name = "Flame",
+	name = S("Flame"),
 	max_level = 1,
 	primary = {bow = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {},
 	weight = 2,
-	description = "Arrows set target on fire.",
+	description = S("Arrows set target on fire."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -223,14 +225,14 @@ mcl_enchanting.enchantments.fire_protection = {
 
 -- implemented in mcl_item_entity
 mcl_enchanting.enchantments.fortune = {
-	name = "Fortune",
+	name = S("Fortune"),
 	max_level = 3,
 	primary = {pickaxe = true, shovel = true, axe = true, hoe = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {silk_touch = true},
 	weight = 2,
-	description = "Increases certain block drops.",
+	description = S("Increases certain block drops."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -240,14 +242,14 @@ mcl_enchanting.enchantments.fortune = {
 
 -- implemented via walkover.register_global
 mcl_enchanting.enchantments.frost_walker = {
-	name = "Frost Walker",
+	name = S("Frost Walker"),
 	max_level = 2,
 	primary = {},
 	secondary = {armor_feet = true},
 	disallow = {non_combat_armor = true},
 	incompatible = {depth_strider = true},
 	weight = 2,
-	description = "Turns water beneath the player into frosted ice and prevents the damage the player would take from standing on magma blocks.",
+	description = S("Turns water beneath the player into frosted ice and prevents the damage from magma blocks."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -274,14 +276,14 @@ end)
 
 -- requires missing MineClone2 feature
 --[[mcl_enchanting.enchantments.impaling = {
-	name = "Impaling",
+	name = S("Impaling"),
 	max_level = 5,
 	primary = {trident = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {},
 	weight = 2,
-	description = "Trident deals additional damage to mobs that spawn naturally in the ocean.",
+	description = S("Trident deals additional damage to ocean mobs."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -291,14 +293,14 @@ end)
 
 -- implemented in mcl_bows
 mcl_enchanting.enchantments.infinity = {
-	name = "Infinity",
+	name = S("Infinity"),
 	max_level = 1,
 	primary = {bow = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {mending = true},
 	weight = 1,
-	description = "Shooting consumes no regular arrows.",
+	description = S("Shooting consumes no regular arrows."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -308,14 +310,14 @@ mcl_enchanting.enchantments.infinity = {
 
 -- implemented via minetest.calculate_knockback
 mcl_enchanting.enchantments.knockback = {
-	name = "Knockback",
+	name = S("Knockback"),
 	max_level = 2,
 	primary = {sword = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {},
 	weight = 5,
-	description = "Increases knockback.",
+	description = S("Increases knockback."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -341,14 +343,14 @@ end
 
 -- unimplemented
 --[[mcl_enchanting.enchantments.looting = {
-	name = "Looting",
+	name = S("Looting"),
 	max_level = 3,
 	primary = {sword = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {},
 	weight = 2,
-	description = "Increases mob loot.",
+	description = S("Increases mob loot."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -358,14 +360,14 @@ end
 
 -- requires missing MineClone2 feature
 --[[mcl_enchanting.enchantments.loyalty = {
-	name = "Loyalty",
+	name = S("Loyalty"),
 	max_level = 3,
 	primary = {trident = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {riptide = true},
 	weight = 5,
-	description = "Trident returns after being thrown. Higher levels reduce return time.",
+	description = S("Trident returns after being thrown. Higher levels reduce return time."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -375,14 +377,14 @@ end
 
 -- unimplemented
 --[[mcl_enchanting.enchantments.luck_of_the_sea = {
-	name = "Luck of the Sea",
+	name = S("Luck of the Sea"),
 	max_level = 3,
 	primary = {fishing_rod = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {},
 	weight = 2,
-	description = "Increases rate of good loot (enchanting books, etc.)",
+	description = S("Increases rate of good loot (enchanting books, etc.)"),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -392,14 +394,14 @@ end
 
 -- implemented in mcl_fishing
 mcl_enchanting.enchantments.lure = {
-	name = "Lure",
+	name = S("Lure"),
 	max_level = 3,
 	primary = {fishing_rod = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {},
 	weight = 2,
-	description = "Decreases wait time until fish/junk/loot \"bites\".",
+	description = S("Decreases time until rod catches something."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -409,14 +411,14 @@ mcl_enchanting.enchantments.lure = {
 
 -- unimplemented
 --[[mcl_enchanting.enchantments.mending = {
-	name = "Mending",
+	name = S("Mending"),
 	max_level = 1,
 	primary = {},
 	secondary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true, tool = true, weapon = true},
 	disallow = {},
 	incompatible = {infinity = true},
 	weight = 2,
-	description = "Repair the item while gaining XP orbs.",
+	description = S("Repair the item while gaining XP orbs."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = true,
@@ -426,14 +428,14 @@ mcl_enchanting.enchantments.lure = {
 
 -- requires missing MineClone2 feature
 --[[mcl_enchanting.enchantments.multishot = {
-	name = "Multishot",
+	name = S("Multishot"),
 	max_level = 1,
 	primary = {crossbow = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {piercing = true},
 	weight = 2,
-	description = "Shoot 3 arrows at the cost of one.",
+	description = S("Shoot 3 arrows at the cost of one."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -443,14 +445,14 @@ mcl_enchanting.enchantments.lure = {
 
 -- requires missing MineClone2 feature
 --[[mcl_enchanting.enchantments.piercing = {
-	name = "Piercing",
+	name = S("Piercing"),
 	max_level = 4,
 	primary = {crossbow = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {multishot = true},
 	weight = 10,
-	description = "Arrows pass through multiple entities.",
+	description = S("Arrows passes through multiple objects."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -460,14 +462,14 @@ mcl_enchanting.enchantments.lure = {
 
 -- implemented in mcl_bows
 mcl_enchanting.enchantments.power = {
-	name = "Power",
+	name = S("Power"),
 	max_level = 5,
 	primary = {bow = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {},
 	weight = 10,
-	description = "Increases arrow damage.",
+	description = S("Increases arrow damage."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -477,14 +479,14 @@ mcl_enchanting.enchantments.power = {
 
 -- implemented in mcl_armor
 mcl_enchanting.enchantments.projectile_protection = {
-	name = "Projectile Protection",
+	name = S("Projectile Protection"),
 	max_level = 4,
 	primary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true},
 	secondary = {},
 	disallow = {non_combat_armor = true},
 	incompatible = {blast_protection = true, fire_protection = true, protection = true},
 	weight = 5,
-	description = "Reduces projectile damage.",
+	description = S("Reduces projectile damage."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -494,14 +496,14 @@ mcl_enchanting.enchantments.projectile_protection = {
 
 -- implemented in mcl_armor
 mcl_enchanting.enchantments.protection = {
-	name = "Protection",
+	name = S("Protection"),
 	max_level = 4,
 	primary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true},
 	secondary = {},
 	disallow = {non_combat_armor = true},
 	incompatible = {blast_protection = true, fire_protection = true, projectile_protection = true},
 	weight = 10,
-	description = "Reduces most types of damage by 4% for each level.",
+	description = S("Reduces most types of damage by 4% for each level."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -511,14 +513,14 @@ mcl_enchanting.enchantments.protection = {
 
 -- implemented via minetest.calculate_knockback (together with the Knockback enchantment) and mcl_bows
 mcl_enchanting.enchantments.punch = {
-	name = "Punch",
+	name = S("Punch"),
 	max_level = 2,
 	primary = {},
 	secondary = {bow = true},
 	disallow = {},
 	incompatible = {},
 	weight = 2,
-	description = "Increases arrow knockback.",
+	description = S("Increases arrow knockback."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -528,14 +530,14 @@ mcl_enchanting.enchantments.punch = {
 
 -- requires missing MineClone2 feature
 --[[mcl_enchanting.enchantments.quick_charge = {
-	name = "Quick Charge",
+	name = S("Quick Charge"),
 	max_level = 3,
 	primary = {crossbow = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {},
 	weight = 5,
-	description = "Decreases crossbow charging time.",
+	description = S("Decreases crossbow charging time."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -545,14 +547,14 @@ mcl_enchanting.enchantments.punch = {
 
 -- unimplemented
 --[[mcl_enchanting.enchantments.respiration = {
-	name = "Respiration",
+	name = S("Respiration"),
 	max_level = 3,
 	primary = {armor_head = true},
 	secondary = {},
 	disallow = {non_combat_armor = true},
 	incompatible = {},
 	weight = 2,
-	description = "Extends underwater breathing time.",
+	description = S("Extends underwater breathing time."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -562,14 +564,14 @@ mcl_enchanting.enchantments.punch = {
 
 -- requires missing MineClone2 feature
 --[[mcl_enchanting.enchantments.riptide = {
-	name = "Riptide",
+	name = S("Riptide"),
 	max_level = 3,
 	primary = {trident = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {channeling = true, loyalty = true},
 	weight = 2,
-	description = "Trident launches player with itself when thrown. Functions only in water or rain.",
+	description = S("Trident launches player with itself when thrown. Works only in water or rain."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -579,14 +581,14 @@ mcl_enchanting.enchantments.punch = {
 
 -- implemented via on_enchant
 mcl_enchanting.enchantments.sharpness = {
-	name = "Sharpness",
+	name = S("Sharpness"),
 	max_level = 5,
 	primary = {sword = true},
 	secondary = {axe = true},
 	disallow = {},
 	incompatible = {bane_of_arthropods = true, smite = true},
 	weight = 5,
-	description = "Increases damage.",
+	description = S("Increases damage."),
 	curse = false,
 	on_enchant = increase_damage("fleshy", 0.5),
 	requires_tool = false,
@@ -596,14 +598,14 @@ mcl_enchanting.enchantments.sharpness = {
 
 -- implemented in mcl_item_entity
 mcl_enchanting.enchantments.silk_touch = {
-	name = "Silk Touch",
+	name = S("Silk Touch"),
 	max_level = 1,
 	primary = {pickaxe = true, shovel = true, axe = true, hoe = true},
 	secondary = {shears = true},
 	disallow = {},
 	incompatible = {fortune = true},
 	weight = 1,
-	description = "Mined blocks drop themselves.",
+	description = S("Mined blocks drop themselves."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -613,14 +615,14 @@ mcl_enchanting.enchantments.silk_touch = {
 
 -- implemented via on_enchant and additions in mobs_mc
 mcl_enchanting.enchantments.smite = {
-	name = "Smite",
+	name = S("Smite"),
 	max_level = 5,
 	primary = {sword = true},
 	secondary = {axe = true},
 	disallow = {},
 	incompatible = {bane_of_arthropods = true, sharpness = true},
 	weight = 5,
-	description = "Increases damage to undead mobs.",
+	description = S("Increases damage to undead mobs."),
 	curse = false,
 	on_enchant = increase_damage("undead", 2.5),
 	requires_tool = false,
@@ -630,14 +632,14 @@ mcl_enchanting.enchantments.smite = {
 
 -- implemented in mcl_playerplus
 mcl_enchanting.enchantments.soul_speed = {
-	name = "Soul Speed",
+	name = S("Soul Speed"),
 	max_level = 3,
 	primary = {},
 	secondary = {armor_feet = true},
 	disallow = {non_combat_armor = true},
 	incompatible = {frost_walker = true},
 	weight = 2,
-	description = "Increases walking speed on soul sand.",
+	description = S("Increases walking speed on soul sand."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -647,14 +649,14 @@ mcl_enchanting.enchantments.soul_speed = {
 
 -- requires missing MineClone2 feature
 --[[mcl_enchanting.enchantments.sweeping_edge = {
-	name = "Sweeping Edge",
+	name = S("Sweeping Edge"),
 	max_level = 3,
 	primary = {sword = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {},
 	weight = 2,
-	description = "Increases sweeping attack damage.",
+	description = S("Increases sweeping attack damage."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -664,14 +666,14 @@ mcl_enchanting.enchantments.soul_speed = {
 
 -- implemented in mcl_armor
 mcl_enchanting.enchantments.thorns = {
-	name = "Thorns",
+	name = S("Thorns"),
 	max_level = 3,
 	primary = {armor_head = true},
 	secondary = {armor_torso = true, armor_legs = true, armor_feet = true},
 	disallow = {non_combat_armor = true},
 	incompatible = {blast_protection = true, fire_protection = true, projectile_protection = true},
 	weight = 1,
-	description = "Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.",
+	description = S("Reflects some of the damage taken when hit, at the cost of reducing durability with each proc."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -681,14 +683,14 @@ mcl_enchanting.enchantments.thorns = {
 
 -- for tools & weapons implemented via on_enchant; for bows implemented in mcl_bows; for armor implemented in mcl_armor and mcl_tt; for fishing rods implemented in mcl_fishing
 mcl_enchanting.enchantments.unbreaking = {
-	name = "Unbreaking",
+	name = S("Unbreaking"),
 	max_level = 3,
 	primary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true, pickaxe = true, shovel = true, axe = true, hoe = true, sword = true, fishing_rod = true, bow = true},
 	secondary = {tool = true},
 	disallow = {non_combat_armor = true},
 	incompatible = {},
 	weight = 5,
-	description = "Increases item durability.",
+	description = S("Increases item durability."),
 	curse = false,
 	on_enchant = function(itemstack, level)		
 		local tool_capabilities = itemstack:get_tool_capabilities()
