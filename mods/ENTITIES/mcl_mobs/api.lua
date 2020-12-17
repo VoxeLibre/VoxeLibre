@@ -67,7 +67,7 @@ local disable_blood = minetest.settings:get_bool("mobs_disable_blood")
 local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
-local remove_far = false
+local remove_far = true
 local difficulty = tonumber(minetest.settings:get("mob_difficulty")) or 1.0
 local show_health = false
 local max_per_block = tonumber(minetest.settings:get("max_objects_per_block") or 64)
@@ -2964,8 +2964,8 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 	local die = false
 
-	-- only play hit sound and show blood effects if damage is 1 or over
-	if damage >= 1 then
+	-- only play hit sound and show blood effects if damage is 1 or over; lower to 0.1 to ensure armor works appropriately.
+	if damage >= 0.1 then
 
 		-- weapon sounds
 		if weapon:get_definition().sounds ~= nil then
@@ -2986,7 +2986,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		damage_effect(self, damage)
 
 		-- do damage
-		self.health = self.health - floor(damage)
+		self.health = self.health - damage
 
 		-- skip future functions if dead, except alerting others
 		if check_for_death(self, "hit", {type = "punch", puncher = hitter}) then
@@ -3113,6 +3113,7 @@ end
 -- get entity staticdata
 local mob_staticdata = function(self)
 
+--[[
 	-- remove mob when out of range unless tamed
 	if remove_far
 	and self.can_despawn
@@ -3125,7 +3126,7 @@ local mob_staticdata = function(self)
 
 		return ""-- nil
 	end
-
+--]]
 	self.remove_ok = true
 	self.attack = nil
 	self.following = nil
@@ -3334,37 +3335,6 @@ local mob_step = function(self, dtime)
 		update_tag(self)
 	end
 
-	-- Despawning: when lifetimer expires, remove mob
-	if remove_far
-	and self.can_despawn == true
-	and ((not self.nametag) or (self.nametag == "")) then
-
-		-- TODO: Finish up implementation of despawning rules
-
-		self.lifetimer = self.lifetimer - dtime
-
-		if self.lifetimer <= 0 then
-
-			-- only despawn away from player
-			local objs = minetest.get_objects_inside_radius(pos, 32)
-
-			for n = 1, #objs do
-
-				if objs[n]:is_player() then
-
-					self.lifetimer = 20
-
-					return
-				end
-			end
-
-			minetest.log("action", "Mob "..name.." despawns in mob_step at "..minetest.pos_to_string(pos))
-			self.object:remove()
-
-			return
-		end
-	end
-
 	if self.state == "die" then
 		return
 	end
@@ -3548,6 +3518,40 @@ local mob_step = function(self, dtime)
 			set_animation(self, "stand")
 	end
 
+	-- Despawning: when lifetimer expires, remove mob
+	if remove_far
+	and self.can_despawn == true
+	and ((not self.nametag) or (self.nametag == "")) then
+
+		self.lifetimer = self.lifetimer - dtime
+		if self.lifetimer <= 10 then
+
+			-- only despawn away from player
+			local far_objs = minetest.get_objects_inside_radius(pos, 48)
+			for n = 1, #far_objs do
+
+				if far_objs[n]:is_player() then
+
+					local close_objs = minetest.get_objects_inside_radius(pos, 16)
+					for n = 1, #close_objs do
+						if close_objs[n]:is_player() then
+							self.lifetimer = 20
+						else
+							if math.random(1,10) <= 3 then
+								minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos))
+								self.object:remove()
+								return
+							end
+						end
+					end
+				else
+					minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos))
+					self.object:remove()
+					return
+				end
+			end
+		end
+	end
 end
 
 
