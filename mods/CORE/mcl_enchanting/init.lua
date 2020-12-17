@@ -252,7 +252,9 @@ minetest.register_abm({
 					acceleration = {x = 0, y = -9.81, z = 0},
 					expirationtime = 2,
 					size = 2,
-					texture = "mcl_enchanting_glyph_" .. math.random(18) .. ".png"
+					texture = "mcl_enchanting_glyph_" .. math.random(18) .. ".png",
+					collision_detection = true,
+					collision_removal = true,
 				})
 			end
 		end
