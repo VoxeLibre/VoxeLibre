@@ -481,7 +481,7 @@ function mcl_enchanting.initialize_player(player)
 	local inv = player:get_inventory()
 	inv:set_size("enchanting", 1)
 	inv:set_size("enchanting_item", 1)
-	inv:set_size("enchanting_item", 1)
+	inv:set_size("enchanting_lapis", 1)
 end
 
 function mcl_enchanting.is_enchanting_inventory_action(action, inventory, inventory_info)
