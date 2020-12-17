@@ -2964,8 +2964,8 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 	local die = false
 
-	-- only play hit sound and show blood effects if damage is 1 or over
-	if damage >= 1 then
+	-- only play hit sound and show blood effects if damage is 1 or over; lower to 0.1 to ensure armor works appropriately.
+	if damage >= 0.1 then
 
 		-- weapon sounds
 		if weapon:get_definition().sounds ~= nil then
@@ -2986,7 +2986,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		damage_effect(self, damage)
 
 		-- do damage
-		self.health = self.health - floor(damage)
+		self.health = self.health - damage
 
 		-- skip future functions if dead, except alerting others
 		if check_for_death(self, "hit", {type = "punch", puncher = hitter}) then
