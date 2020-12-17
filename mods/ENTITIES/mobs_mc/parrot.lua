@@ -17,15 +17,22 @@ mobs:register_mob("mobs_mc:parrot", {
 	pathfinding = 1,
 	hp_min = 6,
 	hp_max = 6,
+	xp_min = 1,
+	xp_max = 3,
 	collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.89, 0.25},
 	visual = "mesh",
 	mesh = "mobs_mc_parrot.b3d",
 	textures = {{"mobs_mc_parrot_blue.png"},{"mobs_mc_parrot_green.png"},{"mobs_mc_parrot_grey.png"},{"mobs_mc_parrot_red_blue.png"},{"mobs_mc_parrot_yellow_blue.png"}},
 	visual_size = {x=3, y=3},
-	makes_footstep_sound = true,
 	walk_velocity = 3,
 	run_velocity = 5,
-	-- TODO: sounds
+	sounds = {
+		random = "mobs_mc_parrot_random",
+		damage = {name="mobs_mc_parrot_hurt", gain=0.3},
+		death = {name="mobs_mc_parrot_death", gain=0.6},
+		eat = "mobs_mc_animal_eat_generic",
+		distance = 16,
+	},
 	drops = {
 		{name = mobs_mc.items.feather,
 		chance = 1,
@@ -35,25 +42,27 @@ mobs:register_mob("mobs_mc:parrot", {
     	animation = {
 		stand_speed = 50,
 		walk_speed = 50,
-		stand_start = 0,
-		stand_end = 0,
-		walk_start = 0,
-		walk_end = 130,
-		--run_start = 0,
-		--run_end = 20,
-		--fly_start = 30,
-		--fly_end = 45,
+		fly_speed = 50,
+		stand_start = 30,
+		stand_end = 45,
+		fly_start = 30,
+		fly_end = 45,
+		walk_start = 30,
+		walk_end = 45,
+		-- TODO: actual walk animation
+		--walk_start = 0,
+		--walk_end = 20,
+
+		-- TODO: more unused animations between 45 and 130
 	},
-	walk_chance = 100,
 	fall_damage = 0,
 	fall_speed = -2.25,
 	attack_type = "dogfight",
-	jump = true,
-	jump_height = 4,
 	floats = 1,
 	physical = true,
 	fly = true,
-	fear_height = 4,
+	makes_footstep_sound = false,
+	fear_height = 0,
 	view_range = 16,
 	follow = mobs_mc.follow.parrot,
 	on_rightclick = function(self, clicker)
@@ -61,6 +70,7 @@ mobs:register_mob("mobs_mc:parrot", {
 		local item = clicker:get_wielded_item()
 		-- Kill parrot if fed with cookie
 		if item:get_name() == mobs_mc.items.cookie then
+			minetest.sound_play("mobs_mc_animal_eat_generic", {object = self.object, max_hear_distance=16}, true)
 			self.health = 0
 			-- Doomed to die
 			self._doomed = true
@@ -79,10 +89,8 @@ mobs:register_mob("mobs_mc:parrot", {
 
 })
 
-
--- Spawn disabled because parrots are not very smart.
--- TODO: Re-enable when parrots are finished
---mobs:spawn_specific("mobs_mc:parrot", mobs_mc.spawn.jungle, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 30000, 1, mobs_mc.spawn_height.water+1, mobs_mc.spawn_height.overworld_max)
+-- Parrots spawn rarely in jungles. TODO: Also check for jungle *biome*
+mobs:spawn_specific("mobs_mc:parrot", {"mcl_core:jungletree", "mcl_core:jungleleaves"}, {"air"}, 0, minetest.LIGHT_MAX+1, 7, 30000, 1, mobs_mc.spawn_height.water+7, mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:parrot", S("Parrot"), "mobs_mc_spawn_icon_parrot.png", 0, true)
+mobs:register_egg("mobs_mc:parrot", S("Parrot"), "mobs_mc_spawn_icon_parrot.png", 0)

@@ -87,24 +87,26 @@ minetest.register_node("mcl_core:reeds", {
 		-- Placement rules:
 		-- * On top of group:soil_sugarcane AND next to water or frosted ice. OR
 		-- * On top of sugar canes
+		-- * Not inside liquid
 		if snn == "mcl_core:reeds" then
 			return true
 		elseif minetest.get_item_group(snn, "soil_sugarcane") == 0 then
 			return false
 		end
+		local place_node = minetest.get_node(place_pos)
+		local pdef = minetest.registered_nodes[place_node.name]
+		if pdef and pdef.liquidtype ~= "none" then
+			return false
+		end
 
-		local posses = {
-			{ x=0, y=0, z=1},
-			{ x=0, y=0, z=-1},
-			{ x=1, y=0, z=0},
-			{ x=-1, y=0, z=0},
-		}
-		for p=1, #posses do
-			local checknode = minetest.get_node(vector.add(soil_pos, posses[p]))
-			if minetest.get_item_group(checknode.name, "water") ~= 0 or minetest.get_item_group(checknode.name, "frosted_ice") ~= 0 then
-				-- Water found! Sugar canes are happy! :-)
-				return true
-			end
+		-- Legal water position rules are the same as for decoration spawn_by rules.
+		-- This differs from MC, which does not allow diagonal neighbors
+		-- and neighbors 1 layer above.
+		local np1 = {x=soil_pos.x-1, y=soil_pos.y, z=soil_pos.z-1}
+		local np2 = {x=soil_pos.x+1, y=soil_pos.y+1, z=soil_pos.z+1}
+		if #minetest.find_nodes_in_area(np1, np2, {"group:water", "group:frosted_ice"}) > 0 then
+			-- Water found! Sugar canes are happy! :-)
+			return true
 		end
 
 		-- No water found! Sugar canes are not amuzed and refuses to be placed. :-(

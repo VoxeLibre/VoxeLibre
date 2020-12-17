@@ -18,6 +18,8 @@ mobs:register_mob("mobs_mc:bat", {
 	visual_size = {x=1, y=1},
 	sounds = {
 		random = "mobs_mc_bat_idle",
+		damage = "mobs_mc_bat_hurt",
+		death = "mobs_mc_bat_death",
 		distance = 16,
 	},
 	walk_velocity = 4.5,
@@ -33,18 +35,19 @@ mobs:register_mob("mobs_mc:bat", {
 		run_speed = 80,
 		run_start = 0,
 		run_end = 40,
-		-- TODO: Less ugly death animation
---[[		die_speed = 60,
+		die_speed = 60,
 		die_start = 40,
 		die_end = 80,
 		die_loop = false,
-]]
 	},
-
+	walk_chance = 100,
 	fall_damage = 0,
 	view_range = 16,
+	fear_height = 0,
 
+	jump = false,
 	fly = true,
+	makes_footstep_sound = false,
 })
 
 

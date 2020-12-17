@@ -23,4 +23,10 @@ It's a MineClone 2 mod containing throwable items like snowballs.
     - Author: dav0r (freesound.org)
     - Source: <https://freesound.org/people/dav0r/sounds/176760/>
     - Original title: `d0_step_on_egg_04` (file was edited)
+- `mcl_throwing_throw.ogg`:
+    - License: CC0
+    - Author: kretopi (freesound.org)
+    - Source: <https://freesound.org/people/kretopi/sounds/406405/>
+    - Original title: `Arrow002.wav` (file was edited)
+
 - Everything else: See MineClone 2 license infos

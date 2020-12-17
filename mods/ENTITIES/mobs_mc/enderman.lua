@@ -8,7 +8,6 @@
 -- However, they have a reduced viewing range to make them less dangerous.
 -- This differs from MC, in which endermen only become hostile when provoked,
 -- and they are provoked by looking directly at them.
--- TODO: Implement MC behaviour.
 
 -- Rootyjr
 -----------------------------
@@ -26,6 +25,16 @@
 -- fixed the grass_with_dirt issue.
 
 local S = minetest.get_translator("mobs_mc")
+
+local telesound = function(pos, is_source)
+	local snd
+	if is_source then
+		snd = "mobs_mc_enderman_teleport_src"
+	else
+		snd = "mobs_mc_enderman_teleport_dst"
+	end
+	minetest.sound_play(snd, {pos=pos, max_hear_distance=16}, true)
+end
 
 --###################
 --################### ENDERMAN
@@ -181,13 +190,14 @@ end
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 
 mobs:register_mob("mobs_mc:enderman", {
-	-- TODO: Endermen should be classified as passive
 	type = "monster",
 	spawn_class = "passive",
 	passive = true,
 	pathfinding = 1,
 	hp_min = 40,
 	hp_max = 40,
+	xp_min = 5,
+	xp_max = 5,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 2.89, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_enderman.b3d",
@@ -195,9 +205,11 @@ mobs:register_mob("mobs_mc:enderman", {
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	sounds = {
+		-- TODO: Custom war cry sound
 		war_cry = "mobs_sandmonster",
-		death = "green_slime_death",
-		-- TODO: damage, random
+		death = {name="mobs_mc_enderman_death", gain=0.7},
+		damage = {name="mobs_mc_enderman_hurt", gain=0.5},
+		random = {name="mobs_mc_enderman_random", gain=0.5},
 		distance = 16,
 	},
 	walk_velocity = 0.2,
@@ -212,7 +224,6 @@ mobs:register_mob("mobs_mc:enderman", {
 	},
 	animation = select_enderman_animation("normal"),
 	_taken_node = "",
-	-- TODO: Teleport enderman on damage, etc.
 	do_custom = function(self, dtime)
 		-- PARTICLE BEHAVIOUR HERE.
 		local enderpos = self.object:get_pos()
@@ -362,7 +373,7 @@ mobs:register_mob("mobs_mc:enderman", {
 			self._take_place_timer = 0
 			self._next_take_place_time = math.random(place_frequency_min, place_frequency_max)
 			local pos = self.object:get_pos()
-			local takable_nodes = minetest.find_nodes_in_area({x=pos.x-2, y=pos.y-1, z=pos.z-2}, {x=pos.x+2, y=pos.y+1, z=pos.z+2}, mobs_mc.enderman_takable)
+			local takable_nodes = minetest.find_nodes_in_area_under_air({x=pos.x-2, y=pos.y-1, z=pos.z-2}, {x=pos.x+2, y=pos.y+1, z=pos.z+2}, mobs_mc.enderman_takable)
 			if #takable_nodes >= 1 then
 				local r = pr:next(1, #takable_nodes)
 				local take_pos = takable_nodes[r]
@@ -462,7 +473,9 @@ mobs:register_mob("mobs_mc:enderman", {
 						end
 					end
 					if telepos then
+						telesound(self.object:get_pos(), false)
 						self.object:set_pos(telepos)
+						telesound(telepos, true)
 					end
 				end
 			end
@@ -490,7 +503,10 @@ mobs:register_mob("mobs_mc:enderman", {
 								end
 							end
 							if node_ok then
-								self.object:set_pos({x=nodepos.x, y=nodepos.y+1, z=nodepos.z})
+								telesound(self.object:get_pos(), false)
+								local telepos = {x=nodepos.x, y=nodepos.y+1, z=nodepos.z}
+								self.object:set_pos(telepos)
+								telesound(telepos, true)
 								break
 							end
 						end
@@ -507,7 +523,6 @@ mobs:register_mob("mobs_mc:enderman", {
 		if self._taken_node ~= nil and self._taken_node ~= "" then
 			minetest.add_item(pos, self._taken_node)
 		end
-		mobs.death_effect(pos, self.collisionbox)
 	end,
 	do_punch = function(self, hitter, tflp, tool_caps, dir)
 		-- damage from rain caused by itself so we don't want it to attack itself.

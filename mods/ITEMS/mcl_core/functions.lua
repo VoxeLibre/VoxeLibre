@@ -1416,7 +1416,7 @@ function mcl_core.check_vines_supported(pos, node)
 	return supported
 end
 
--- Melt ice at pos. mcl_core:ice MUST be a post if you call this!
+-- Melt ice at pos. mcl_core:ice MUST be at pos if you call this!
 function mcl_core.melt_ice(pos)
 	-- Create a water source if ice is destroyed and there was something below it
 	local below = {x=pos.x, y=pos.y-1, z=pos.z}
@@ -1426,6 +1426,17 @@ function mcl_core.melt_ice(pos)
 		minetest.set_node(pos, {name="mcl_core:water_source"})
 	else
 		minetest.remove_node(pos)
+	end
+	local neighbors = {
+		{x=-1, y=0, z=0},
+		{x=1, y=0, z=0},
+		{x=0, y=-1, z=0},
+		{x=0, y=1, z=0},
+		{x=0, y=0, z=-1},
+		{x=0, y=0, z=1},
+	}
+	for n=1, #neighbors do
+		minetest.check_single_for_falling(vector.add(pos, neighbors[n]))
 	end
 end
 

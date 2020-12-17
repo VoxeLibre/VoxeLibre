@@ -31,6 +31,7 @@ mcl_throwing.throw = function(throw_item, pos, dir, velocity, thrower)
 	if velocity == nil then
 		velocity = 22
 	end
+	minetest.sound_play("mcl_throwing_throw", {pos=pos, gain=0.4, max_hear_distance=16}, true)
 
 	local itemstring = ItemStack(throw_item):get_name()
 	local obj = minetest.add_entity(pos, entity_mapping[itemstring])

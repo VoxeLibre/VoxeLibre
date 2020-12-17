@@ -145,12 +145,14 @@ functions needed for the mob to work properly which contains the following:
       'base_pitch'        base pitch to use adult mobs, default is 1.0 (MCL2 extension)
       'random'            played randomly from time to time.
                           also played for overfeeding animal.
+      'eat'               played when mob eats something
       'war_cry'           what you hear when mob starts to attack player. (currently disabled)
       'attack'            what you hear when being attacked.
       'shoot_attack'      sound played when mob shoots.
       'damage'            sound heard when mob is hurt.
       'death'             played when mob is killed.
       'jump'              played when mob jumps. There's a built-in cooloff timer to avoid sound spam
+      'flop'              played when mob flops (like a stranded fish)
       'fuse'              sound played when mob explode timer starts.
       'explode'           sound played when mob explodes.
 
@@ -222,6 +224,8 @@ functions needed for the mob to work properly which contains the following:
 
       'speed_normal' is used for animation speed for compatibility with some
                      older mobs.
+	  'pushable'	Allows players, & other mobs to push the mob.
+
 
 
     MineClone 2 extensions:
@@ -242,6 +246,10 @@ functions needed for the mob to work properly which contains the following:
       'sounds_child' same as sounds, but for childs. If not defined, childs will use same
                      sound as adults but with higher pitch
       'follow_velocity' The speed at which a mob moves toward the player when they're holding the appropriate follow item.
+      'instant_death' If true, mob dies instantly (no death animation or delay) (default: false)
+      'xp_min'        the minimum XP it drops on death (default: 0)
+      'xp_max'        the maximum XP it drops on death (default: 0)
+
 
 
 Node Replacement
@@ -282,10 +290,9 @@ Custom Definition Functions
 Along with the above mob registry settings we can also use custom functions to
 enhance mob functionality and have them do many interesting things:
 
-   'on_die'         a function that is called when the mob is killed the
-                    parameters are (self, pos). When this function is used,
-                    the death particles will be skipped on death. You can get
-                    them back by calling mobs:death_effect manually
+   'on_die'         a function that is called when the mob is killed; the
+                    parameters are (self, pos). Return true to skip the builtin
+                    death animation and death effects
    'on_rightclick'  its same as in minetest.register_entity()
    'on_blast'       is called when an explosion happens near mob when using TNT
                     functions, parameters are (object, damage) and returns
@@ -342,6 +349,14 @@ for each mob.
                         dogs
    'self.order'         set to "follow" or "stand" so that npc will follow owner
                         or stand it's ground
+   'self.state'         Current mob state.
+                        "stand": no movement (except turning around)
+                        "walk": walk or move around aimlessly
+                        "attack": chase and attack enemy
+                        "runaway": flee from target
+                        "flop": bounce around aimlessly
+                                (for swimming mobs that have stranded)
+                        "die": during death
    'self.nametag'       contains the name of the mob which it can show above
 
 

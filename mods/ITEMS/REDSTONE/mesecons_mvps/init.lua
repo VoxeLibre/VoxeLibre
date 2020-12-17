@@ -6,6 +6,8 @@ mesecon.mvps_droppers = {}
 mesecon.on_mvps_move = {}
 mesecon.mvps_unmov = {}
 
+local is_protected = minetest.is_protected
+
 --- Objects (entities) that cannot be moved
 function mesecon.register_mvps_unmov(objectname)
 	mesecon.mvps_unmov[objectname] = true;
@@ -34,25 +36,13 @@ function mesecon.register_mvps_dropper(nodename, get_dropper)
 end
 
 -- Nodes that cannot be pushed / pulled by movestones, pistons
-function mesecon.is_mvps_stopper(node, pushdir, stack, stackid)
+function mesecon.is_mvps_stopper(node)
 	-- unknown nodes are always stoppers
-	if not minetest.registered_nodes[node.name] then
-		return true
-	end
-
-	local get_stopper = mesecon.mvps_stoppers[node.name]
-	if type (get_stopper) == "function" then
-		get_stopper = get_stopper(node, pushdir, stack, stackid)
-	end
-
-	return get_stopper
+	return mesecon.mvps_stoppers[node.name] or not minetest.registered_nodes[node.name]
 end
 
-function mesecon.register_mvps_stopper(nodename, get_stopper)
-	if get_stopper == nil then
-			get_stopper = true
-	end
-	mesecon.mvps_stoppers[nodename] = get_stopper
+function mesecon.register_mvps_stopper(nodename)
+	mesecon.mvps_stoppers[nodename] = true
 end
 
 -- For nodes which ignore sticky sides.
@@ -112,7 +102,31 @@ local function node_replaceable(name)
 	return false
 end
 
-function mesecon.mvps_get_stack(pos, dir, maximum, all_pull_sticky)
+local function is_available(pos)
+	local n = minetest.get_node(pos)
+	if not n then
+		return false, n
+	end
+	local name = n.name
+	if name == "ignore" then
+		minetest.get_voxel_manip():read_from_map(pos, pos)
+		n = minetest.get_node(pos)
+		if not n then
+			return false, n
+		end
+		name = n.name
+	end
+	if name == "ignore" then
+		return false, n
+	end
+	if minetest.registered_nodes[name] then
+		return minetest.registered_nodes[name].buildable_to, n or false, n
+	end
+	return false, n
+end
+
+
+function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos)
 	-- determine the number of nodes to be pushed
 	local nodes = {}
 	local frontiers = {pos}
@@ -124,8 +138,13 @@ function mesecon.mvps_get_stack(pos, dir, maximum, all_pull_sticky)
 			minetest.get_voxel_manip():read_from_map(np, np)
 			nn = minetest.get_node(np)
 		end
+
+		if mesecon.is_mvps_stopper(nn) then
+			return
+		end
+
 		if not node_replaceable(nn.name) then
-			if #nodes >= maximum then return nil end
+			if #nodes >= maximum then return nil, false end
 			table.insert(nodes, {node = nn, pos = np})
 
 			-- add connected nodes to frontiers, connected is a vector list
@@ -133,33 +152,13 @@ function mesecon.mvps_get_stack(pos, dir, maximum, all_pull_sticky)
 			local connected = {}
 			if minetest.registered_nodes[nn.name]
 			and minetest.registered_nodes[nn.name].mvps_sticky then
-				connected = minetest.registered_nodes[nn.name].mvps_sticky(np, nn)
-			end
-
-			table.insert(connected, vector.add(np, dir))
-
-			-- If adjacent node is sticky block and connects add that
-			-- position to the connected table
-			for _, r in ipairs(mesecon.rules.alldirs) do
-				local adjpos = vector.add(np, r)
-				local adjnode = minetest.get_node(adjpos)
-				if minetest.registered_nodes[adjnode.name]
-				and minetest.registered_nodes[adjnode.name].mvps_sticky then
-					local sticksto = minetest.registered_nodes[adjnode.name]
-						.mvps_sticky(adjpos, adjnode)
-
-					-- connects to this position?
-					for _, link in ipairs(sticksto) do
-						if vector.equals(link, np) then
-							table.insert(connected, adjpos)
-						end
-					end
+				connected, has_loop = minetest.registered_nodes[nn.name].mvps_sticky(np, nn, piston_pos)
+				if has_loop then
+					return {}, true
 				end
 			end
 
-			if all_pull_sticky then
-				table.insert(connected, vector.subtract(np, dir))
-			end
+			table.insert(connected, vector.add(np, dir))
 
 			-- Make sure there are no duplicates in frontiers / nodes before
 			-- adding nodes in "connected" to frontiers
@@ -175,7 +174,7 @@ function mesecon.mvps_get_stack(pos, dir, maximum, all_pull_sticky)
 						duplicate = true
 					end
 				end
-				if not duplicate then
+				if not duplicate and not mesecon.is_mvps_stopper(minetest.get_node(cp)) then
 					table.insert(frontiers, cp)
 				end
 			end
@@ -183,34 +182,74 @@ function mesecon.mvps_get_stack(pos, dir, maximum, all_pull_sticky)
 		table.remove(frontiers, 1)
 	end
 
-	return nodes
+	return nodes, false
 end
 
-function mesecon.mvps_push(pos, dir, maximum)
-	return mesecon.mvps_push_or_pull(pos, dir, dir, maximum, nil, false)
+function mesecon.mvps_set_owner(pos, placer)
+	local meta = minetest.get_meta(pos)
+	local owner = placer and placer.get_player_name and placer:get_player_name()
+	if owner and owner ~= "" then
+		meta:set_string("owner", owner)
+	else
+		meta:set_string("owner", "$unknown") -- to distinguish from older pistons
+	end
 end
 
-function mesecon.mvps_pull_all(pos, dir, maximum)
-	return mesecon.mvps_push_or_pull(pos, vector.multiply(dir, -1), dir, maximum, true, true)
+local function are_protected(positions, player_name)
+	local name = player_name
+	for _, pos in pairs(positions) do
+		if is_protected(pos, name) then
+			return true
+		end
+	end
+	return false
 end
 
-function mesecon.mvps_pull_single(pos, dir, maximum)
-	return mesecon.mvps_push_or_pull(pos, vector.multiply(dir, -1), dir, maximum, nil, true)
+function mesecon.mvps_push(pos, dir, maximum, player_name, piston_pos)
+	return mesecon.mvps_push_or_pull(pos, dir, dir, maximum, player_name, piston_pos)
+end
+
+function mesecon.mvps_pull_single(pos, dir, maximum, player_name, piston_pos)
+	return mesecon.mvps_push_or_pull(pos, vector.multiply(dir, -1), dir, maximum, player_name, piston_pos)
 end
 
 -- pos: pos of mvps; stackdir: direction of building the stack
 -- movedir: direction of actual movement
 -- maximum: maximum nodes to be pushed
--- all_pull_sticky: All nodes are sticky in the direction that they are pulled from
-function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, all_pull_sticky)
-	local nodes = mesecon.mvps_get_stack(pos, movedir, maximum, all_pull_sticky)
+function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name, piston_pos)
+	local nodes, has_loop = mesecon.mvps_get_stack(pos, movedir, maximum, piston_pos)
+
+	if has_loop then
+		return false
+	end
 
 	if not nodes then return end
-	-- determine if one of the nodes blocks the push / pull
-	for id, n in ipairs(nodes) do
-		if mesecon.is_mvps_stopper(n.node, movedir, nodes, id) then
+
+	local newpos={}
+	-- check node availability to push/pull into, and fill newpos[i]
+	for i in ipairs(nodes) do
+		newpos[i] = vector.add(nodes[i].pos, movedir)
+		if (newpos[i].x == piston_pos.x) and (newpos[i].y == piston_pos.y) and (newpos[i].z == piston_pos.z) then
 			return
 		end
+		if not is_available(newpos[i]) then
+			local available = false
+			for j in ipairs(nodes) do
+				if i ~= j then
+					if (newpos[i].x == nodes[j].pos.x) and (newpos[i].y == nodes[j].pos.y) and (newpos[i].z == nodes[j].pos.z) then
+						available = true
+						break
+					end
+				end
+			end
+			if not available then
+				return
+			end
+		end
+	end
+
+	if are_protected(nodes, player_name) then
+		return
 	end
 
 	local first_dropper = nil
@@ -223,6 +262,10 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, all_pull_sti
 			minetest.dig_node(n.pos)
 		else
 			minetest.remove_node(n.pos)
+			local node_timer = minetest.get_node_timer(n.pos)
+			if node_timer:is_started() then
+				n.node_timer = {node_timer:get_timeout(), node_timer:get_elapsed()}
+			end
 		end
 		if is_dropper then
 			first_dropper = id
@@ -243,9 +286,16 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, all_pull_sti
 		if first_dropper and id >= first_dropper then
 			break
 		end
-		local np = vector.add(n.pos, movedir)
+		local np = newpos[id]
 		minetest.add_node(np, n.node)
 		minetest.get_meta(np):from_table(n.meta)
+		if n.node_timer then
+			minetest.get_node_timer(np):set(unpack(n.node_timer))
+		end
+		if string.find(n.node.name, "mcl_observers:observer") then
+			-- It also counts as a block update when the observer itself is moved by a piston (Wiki):
+			mcl_observers.observer_activate(np)
+		end
 	end
 
 	local moved_nodes = {}
@@ -256,10 +306,11 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, all_pull_sti
 		end
 		moved_nodes[i] = {}
 		moved_nodes[i].oldpos = nodes[i].pos
-		nodes[i].pos = vector.add(nodes[i].pos, movedir)
+		nodes[i].pos = newpos[i]
 		moved_nodes[i].pos = nodes[i].pos
 		moved_nodes[i].node = nodes[i].node
 		moved_nodes[i].meta = nodes[i].meta
+		moved_nodes[i].node_timer = nodes[i].node_timer
 	end
 
 	on_mvps_move(moved_nodes)

@@ -60,7 +60,7 @@ mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damag
 	le._is_critical = is_critical
 	le._startpos = pos
 	le._knockback = knockback
-	minetest.sound_play("mcl_bows_bow_shoot", {pos=pos}, true)
+	minetest.sound_play("mcl_bows_bow_shoot", {pos=pos, max_hear_distance=16}, true)
 	if shooter ~= nil and shooter:is_player() then
 		if obj:get_luaentity().player == "" then
 			obj:get_luaentity().player = shooter
@@ -128,11 +128,9 @@ S("The speed and damage of the arrow increases the longer you charge. The regula
 	inventory_image = "mcl_bows_bow.png",
 	wield_scale = { x = 1.8, y = 1.8, z = 1 },
 	stack_max = 1,
-	-- Trick to disable melee damage to entities.
-	-- Range not set to 0 (unlike the others) so it can be placed into item frames
-	range = 1,
+	range = 4,
 	-- Trick to disable digging as well
-	on_use = function() end,
+	on_use = function() return end,
 	groups = {weapon=1,weapon_ranged=1,bow=1,enchantability=1},
 })
 
@@ -174,6 +172,8 @@ for level=0, 2 do
 		stack_max = 1,
 		range = 0, -- Pointing range to 0 to prevent punching with bow :D
 		groups = {not_in_creative_inventory=1, not_in_craft_guide=1, bow=1, enchantability=1},
+		-- Trick to disable digging as well
+		on_use = function() return end,
 		on_drop = function(itemstack, dropper, pos)
 			reset_bow_state(dropper)
 			if mcl_enchanting.is_enchanted(itemstack:get_name()) then

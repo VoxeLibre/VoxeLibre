@@ -106,6 +106,9 @@ minetest.register_node("mcl_nether:magma", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	-- From walkover mod
 	on_walk_over = function(loc, nodeiamon, player)
+		if minetest.global_exists("mcl_potions") and mcl_potions.player_has_effect(player, "fire_proof") then
+			return
+		end
 		-- Hurt players standing on top of this block
 		if player:get_hp() > 0 then
 			if mod_death_messages then

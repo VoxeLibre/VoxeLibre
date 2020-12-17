@@ -14,6 +14,8 @@ mobs:register_mob("mobs_mc:chicken", {
 
 	hp_min = 4,
 	hp_max = 4,
+	xp_min = 1,
+	xp_max = 3,
 	collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.69, 0.2},
 	runaway = true,
 	floats = 1,
@@ -39,14 +41,17 @@ mobs:register_mob("mobs_mc:chicken", {
 	fall_damage = 0,
 	fall_speed = -2.25,
 	sounds = {
-		random = "mobs_chicken",
-		-- TODO: death, damage
+		random = "mobs_mc_chicken_buck",
+		damage = "mobs_mc_chicken_hurt",
+		death = "mobs_mc_chicken_hurt",
+		eat = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	sounds_child = {
 		random = "mobs_mc_chicken_child",
 		damage = "mobs_mc_chicken_child",
 		death = "mobs_mc_chicken_child",
+		eat = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	animation = {

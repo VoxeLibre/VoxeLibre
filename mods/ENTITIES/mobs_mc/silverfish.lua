@@ -12,6 +12,8 @@ mobs:register_mob("mobs_mc:silverfish", {
 	reach = 1,
 	hp_min = 8,
 	hp_max = 8,
+	xp_min = 5,
+	xp_max = 5,
 	armor = {fleshy = 100, arthropod = 100},
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 0.44, 0.4},
 	visual = "mesh",

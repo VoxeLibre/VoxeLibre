@@ -14,6 +14,8 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 	spawn_class = "hostile",
 	hp_min = 20,
 	hp_max = 20,
+	xp_min = 6,
+	xp_max = 6,
 	breath_max = -1,
 	armor = {undead = 100, fleshy = 100},
 	pathfinding = 1,

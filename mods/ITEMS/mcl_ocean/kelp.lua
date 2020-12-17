@@ -41,6 +41,30 @@ local function grow_param2_step(param2, snap_into_grid)
 	return param2, param2 ~= old_param2
 end
 
+local function kelp_check_place(pos_above, node_above, def_above)
+	if minetest.get_item_group(node_above.name, "water") == 0 then
+		return false
+	end
+	local can_place = false
+	if (def_above.liquidtype == "source") then
+		can_place = true
+	elseif (def_above.liquidtype == "flowing") then
+		-- Check if bit 3 (downwards flowing) is set
+		can_place = (math.floor(node_above.param2 / 8) % 2) == 1
+		if not can_place then
+			-- If not, also check node above (this is needed due a weird quirk in the definition of
+			-- "downwards flowing" liquids in Minetest)
+			local node_above_above = minetest.get_node({x=pos_above.x,y=pos_above.y+1,z=pos_above.z})
+			local naa_def = minetest.registered_nodes[node_above_above.name]
+			can_place = naa_def.liquidtype == "source"
+			if not can_place then
+				can_place = (naa_def.liquidtype == "flowing") and ((math.floor(node_above_above.param2 / 8) % 2) == 1)
+			end
+		end
+	end
+	return can_place
+end
+
 local function kelp_on_place(itemstack, placer, pointed_thing)
 	if pointed_thing.type ~= "node" or not placer then
 		return itemstack
@@ -96,11 +120,12 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 			-- Placed on side or below node, abort
 			return itemstack
 		end
-		-- New kelp top must also be submerged in water source
-		local _, top_node = get_kelp_top(pos_under, node_under)
-		submerged = get_submerged(top_node)
-		if submerged ~= "source" then
-			-- Not submerged in water source, abort
+		-- New kelp top must also be submerged in water
+		local top_pos, top_node = get_kelp_top(pos_under, node_under)
+		local top_def = minetest.registered_nodes[top_node.name]
+		submerged = kelp_check_place(top_pos, top_node, top_def)
+		if not submerged then
+			-- Not submerged in water, abort
 			return itemstack
 		end
 	else
@@ -109,11 +134,10 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 			-- Placed on side or below node, abort
 			return itemstack
 		end
-		-- Kelp can be placed inside a water source on top of a surface node
-		local g_above_water = minetest.get_item_group(node_above.name, "water")
-		if not (g_above_water ~= 0 and def_above.liquidtype == "source") then
+		-- Kelp can be placed inside a water source or water flowing downwards on top of a surface node
+		local can_place = kelp_check_place(pos_above, node_above, def_above)
+		if not can_place then
 			return itemstack
-			-- TODO: Also allow placement into downwards flowing liquid
 		end
 		node_under.param2 = minetest.registered_items[node_under.name].place_param2 or 16
 	end
@@ -128,6 +152,10 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 	end
 
 	return itemstack
+end
+
+local get_kelp_height = function(param2)
+	return math.floor(param2 / 16)
 end
 
 minetest.register_craftitem("mcl_ocean:kelp", {
@@ -194,7 +222,19 @@ for s=1, #surfaces do
 		after_dig_node = function(pos)
 			minetest.set_node(pos, {name=surfaces[s][2]})
 		end,
-		drop = "mcl_ocean:kelp",
+		on_dig = function(pos, node, digger)
+			-- Drop kelp as item; item count depends on height
+			local dname = ""
+			if digger then
+				dname = digger:get_player_name()
+			end
+			local creative = minetest.is_creative_enabled(dname)
+			if not creative then
+				minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, "mcl_ocean:kelp "..get_kelp_height(node.param2))
+			end
+			minetest.node_dig(pos, node, digger)
+		end,
+		drop = "", -- drops are handled in on_dig
 		_mcl_falling_node_alternative = alt,
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,

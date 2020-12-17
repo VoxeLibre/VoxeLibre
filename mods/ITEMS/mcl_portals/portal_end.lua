@@ -362,6 +362,8 @@ minetest.register_node("mcl_portals:end_portal_frame_eye", {
 	on_construct = function(pos)
 		local ok, ppos = check_end_portal_frame(pos)
 		if ok then
+			-- Epic 'portal open' sound effect that can be heard everywhere
+			minetest.sound_play("mcl_portals_open_end_portal", {gain=0.8}, true)
 			end_portal_area(ppos)
 		end
 	end,

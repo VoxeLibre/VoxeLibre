@@ -13,6 +13,8 @@ mobs:register_mob("mobs_mc:squid", {
     passive = true,
     hp_min = 10,
     hp_max = 10,
+    xp_min = 1,
+    xp_max = 3,
     armor = 100,
     -- FIXME: If the squid is near the floor, it turns black
     collisionbox = {-0.4, 0.0, -0.4, 0.4, 0.9, 0.4},
@@ -22,9 +24,10 @@ mobs:register_mob("mobs_mc:squid", {
         {"mobs_mc_squid.png"}
     },
     sounds = {
-		damage = "mobs_mc_squid_hurt",
-		death = "mobs_mc_squid_hurt",
-		-- TODO: sounds: random, damage, death
+		damage = {name="mobs_mc_squid_hurt", gain=0.3},
+		death = {name="mobs_mc_squid_death", gain=0.4},
+		flop = "mobs_mc_squid_flop",
+		-- TODO: sounds: random
 		distance = 16,
     },
     animation = {
@@ -47,7 +50,6 @@ mobs:register_mob("mobs_mc:squid", {
     fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
     breathes_in_water = true,
     jump = false,
-    fall_speed = 0.5,
     view_range = 16,
     runaway = true,
     fear_height = 4,

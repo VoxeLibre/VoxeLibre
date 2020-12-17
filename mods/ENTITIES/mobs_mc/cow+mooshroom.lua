@@ -7,6 +7,8 @@ local cow_def = {
 	spawn_class = "passive",
 	hp_min = 10,
 	hp_max = 10,
+	xp_min = 1,
+	xp_max = 3,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.39, 0.45},
 	visual = "mesh",
 	mesh = "mobs_mc_cow.b3d",
@@ -32,6 +34,7 @@ local cow_def = {
 		random = "mobs_mc_cow",
 		damage = "mobs_mc_cow_hurt",
 		death = "mobs_mc_cow_hurt",
+		eat = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	animation = {
@@ -54,6 +57,7 @@ local cow_def = {
 		if item:get_name() == mobs_mc.items.bucket and clicker:get_inventory() then
 			local inv = clicker:get_inventory()
 			inv:remove_item("main", mobs_mc.items.bucket)
+			minetest.sound_play("mobs_mc_cow_milk", {pos=self.object:get_pos(), gain=0.6})
 			-- if room add bucket of milk to inventory, otherwise drop as item
 			if inv:room_for_item("main", {name=mobs_mc.items.milk}) then
 				clicker:get_inventory():add_item("main", mobs_mc.items.milk)
@@ -89,7 +93,7 @@ mooshroom_def.on_rightclick = function(self, clicker)
 	-- Use shears to get mushrooms and turn mooshroom into cow
 	if item:get_name() == mobs_mc.items.shears then
 		local pos = self.object:get_pos()
-		minetest.sound_play("shears", {pos = pos}, true)
+		minetest.sound_play("mcl_tools_shears_cut", {pos = pos}, true)
 
 		if self.base_texture[1] == "mobs_mc_mooshroom_brown.png" then
 			minetest.add_item({x=pos.x, y=pos.y+1.4, z=pos.z}, mobs_mc.items.mushroom_brown .. " 5")
@@ -110,6 +114,7 @@ mooshroom_def.on_rightclick = function(self, clicker)
 	elseif item:get_name() == mobs_mc.items.bucket and clicker:get_inventory() then
 		local inv = clicker:get_inventory()
 		inv:remove_item("main", mobs_mc.items.bucket)
+		minetest.sound_play("mobs_mc_cow_milk", {pos=self.object:get_pos(), gain=0.6})
 		-- If room, add milk to inventory, otherwise drop as item
 		if inv:room_for_item("main", {name=mobs_mc.items.milk}) then
 			clicker:get_inventory():add_item("main", mobs_mc.items.milk)
@@ -122,6 +127,7 @@ mooshroom_def.on_rightclick = function(self, clicker)
 	elseif item:get_name() == mobs_mc.items.bowl and clicker:get_inventory() then
 		local inv = clicker:get_inventory()
 		inv:remove_item("main", mobs_mc.items.bowl)
+		minetest.sound_play("mobs_mc_cow_mushroom_stew", {pos=self.object:get_pos(), gain=0.6})
 		-- If room, add mushroom stew to inventory, otherwise drop as item
 		if inv:room_for_item("main", {name=mobs_mc.items.mushroom_stew}) then
 			clicker:get_inventory():add_item("main", mobs_mc.items.mushroom_stew)

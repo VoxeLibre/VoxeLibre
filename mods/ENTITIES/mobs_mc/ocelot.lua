@@ -32,6 +32,8 @@ local ocelot = {
 	can_despawn = true,
 	hp_min = 10,
 	hp_max = 10,
+	xp_min = 1,
+	xp_max = 3,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 0.69, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_cat.b3d",
@@ -49,6 +51,7 @@ local ocelot = {
 	sounds = {
 		damage = "mobs_mc_ocelot_hurt",
 		death = "mobs_mc_ocelot_hurt",
+		eat = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	animation = {
@@ -113,6 +116,7 @@ cat.sounds = {
 	random = "mobs_mc_cat_idle",
 	damage = "mobs_mc_cat_hiss",
 	death = "mobs_mc_ocelot_hurt",
+	eat = "mobs_mc_animal_eat_generic",
 	distance = 16,
 }
 cat.on_rightclick = function(self, clicker)

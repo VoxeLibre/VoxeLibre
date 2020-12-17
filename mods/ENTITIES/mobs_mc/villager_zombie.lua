@@ -17,6 +17,8 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 	spawn_class = "hostile",
 	hp_min = 20,
 	hp_max = 20,
+	xp_min = 5,
+	xp_max = 5,
 	breath_max = -1,
 	armor = {undead = 90, fleshy = 90},
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},

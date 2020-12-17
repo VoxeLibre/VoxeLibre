@@ -23,6 +23,8 @@ local spider = {
 	reach = 2,
 	hp_min = 16,
 	hp_max = 16,
+	xp_min = 5,
+	xp_max = 5,
 	armor = {fleshy = 100, arthropod = 100},
 	collisionbox = {-0.7, -0.01, -0.7, 0.7, 0.89, 0.7},
 	visual = "mesh",
@@ -33,9 +35,11 @@ local spider = {
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = false,
 	sounds = {
-		random = "mobs_spider",
-		attack = "mobs_spider",
-		-- TODO: sounds: walk, death
+		random = "mobs_mc_spider_random",
+		attack = "mobs_mc_spider_attack",
+		damage = "mobs_mc_spider_hurt",
+		death = "mobs_mc_spider_death",
+		-- TODO: sounds: walk
 		distance = 16,
 	},
 	walk_velocity = 1.3,
@@ -76,6 +80,8 @@ cave_spider.collisionbox = {-0.35, -0.01, -0.35, 0.35, 0.49, 0.35}
 cave_spider.visual_size = {x=1.66666, y=1.5}
 cave_spider.walk_velocity = 1.3
 cave_spider.run_velocity = 3.2
+cave_spider.sounds = table.copy(spider.sounds)
+cave_spider.sounds.base_pitch = 1.25
 mobs:register_mob("mobs_mc:cave_spider", cave_spider)
 
 

@@ -29,6 +29,8 @@ mobs:register_mob("mobs_mc:llama", {
 	spawn_class = "passive",
 	hp_min = 15,
 	hp_max = 30,
+	xp_min = 1,
+	xp_max = 3,
 	passive = false,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.86, 0.45},
 	visual = "mesh",
@@ -57,6 +59,7 @@ mobs:register_mob("mobs_mc:llama", {
 	fear_height = 4,
 	sounds = {
 		random = "mobs_mc_llama",
+		eat = "mobs_mc_animal_eat_generic",
 		-- TODO: Death and damage sounds
 		distance = 16,
 	},
@@ -111,7 +114,6 @@ mobs:register_mob("mobs_mc:llama", {
 		if self.driver then
 			mobs.detach(self.driver, {x = 1, y = 0, z = 1})
 		end
-		mobs.death_effect(pos, self.collisionbox)
 
 	end,
 

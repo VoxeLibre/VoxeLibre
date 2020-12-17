@@ -43,6 +43,8 @@ local zombie = {
 	spawn_class = "hostile",
 	hp_min = 20,
 	hp_max = 20,
+	xp_min = 5,
+	xp_max = 5,
 	breath_max = -1,
 	armor = {undead = 90, fleshy = 90},
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
@@ -89,6 +91,8 @@ mobs:register_mob("mobs_mc:zombie", zombie)
 
 local baby_zombie = table.copy(zombie)
 baby_zombie.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
+baby_zombie.xp_min = 12
+baby_zombie.xp_max = 12
 baby_zombie.visual_size = {x=zombie.visual_size.x/2, y=zombie.visual_size.y/2}
 baby_zombie.walk_velocity = 1.2
 baby_zombie.run_velocity = 2.4
@@ -110,6 +114,8 @@ mobs:register_mob("mobs_mc:husk", husk)
 -- A smaller and more dangerous variant of the husk
 local baby_husk = table.copy(husk)
 baby_husk.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
+baby_husk.xp_min = 12
+baby_husk.xp_max = 12
 baby_husk.visual_size = {x=zombie.visual_size.x/2, y=zombie.visual_size.y/2}
 baby_husk.walk_velocity = 1.2
 baby_husk.run_velocity = 2.4

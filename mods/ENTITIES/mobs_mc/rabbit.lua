@@ -10,6 +10,8 @@ local rabbit = {
 
 	hp_min = 3,
 	hp_max = 3,
+	xp_min = 1,
+	xp_max = 3,
 	collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.49, 0.2},
 
 	visual = "mesh",
@@ -23,7 +25,14 @@ local rabbit = {
         {"mobs_mc_rabbit_black.png"},
 	},
 	visual_size = {x=1.5, y=1.5},
-	-- TODO: sounds: random, damage, death
+	sounds = {
+		random = "mobs_mc_rabbit_random",
+		damage = "mobs_mc_rabbit_hurt",
+		death = "mobs_mc_rabbit_death",
+		attack = "mobs_mc_rabbit_attack",
+		eat = "mobs_mc_animal_eat_generic",
+		distance = 16,
+	},
 	makes_footstep_sound = false,
 	walk_velocity = 1,
 	run_velocity = 3.7,

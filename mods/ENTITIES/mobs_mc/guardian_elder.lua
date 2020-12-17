@@ -11,6 +11,8 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 	spawn_class = "hostile",
 	hp_min = 80,
 	hp_max = 80,
+	xp_min = 10,
+	xp_max = 10,
 	breath_max = -1,
     	passive = false,
 	attack_type = "dogfight",
@@ -28,8 +30,12 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 	},
 	visual_size = {x=7, y=7},
 	sounds = {
-		damage = "mobs_mc_squid_hurt",
-		-- TODO: more and better sounds
+		random = "mobs_mc_guardian_random",
+		war_cry = "mobs_mc_guardian_random",
+		damage = {name="mobs_mc_guardian_hurt", gain=0.3},
+		death = "mobs_mc_guardian_death",
+		flop = "mobs_mc_squid_flop",
+		base_pitch = 0.6,
 		distance = 16,
 	},
 	animation = {
@@ -83,6 +89,7 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 		max = 1,},
 	},
 	fly = true,
+	makes_footstep_sound = false,
 	fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
 	jump = false,
 	view_range = 16,

@@ -8,6 +8,8 @@ mobs:register_mob("mobs_mc:pig", {
 	runaway = true,
 	hp_min = 10,
 	hp_max = 10,
+	xp_min = 1,
+	xp_max = 3,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 0.865, 0.45},
 	visual = "mesh",
 	mesh = "mobs_mc_pig.b3d",
@@ -32,6 +34,7 @@ mobs:register_mob("mobs_mc:pig", {
 		random = "mobs_pig",
 		death = "mobs_pig_angry",
 		damage = "mobs_pig",
+		eat = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	animation = {
@@ -79,7 +82,6 @@ mobs:register_mob("mobs_mc:pig", {
 		if self.driver then
 			mobs.detach(self.driver, {x = 1, y = 0, z = 1})
 		end
-		mobs.death_effect(pos, self.collisionbox)
 	end,
 
 	on_rightclick = function(self, clicker)

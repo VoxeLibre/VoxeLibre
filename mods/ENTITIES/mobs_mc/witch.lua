@@ -17,6 +17,8 @@ mobs:register_mob("mobs_mc:witch", {
 	spawn_class = "hostile",
 	hp_min = 26,
 	hp_max = 26,
+	xp_min = 5,
+	xp_max = 5,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_witch.b3d",

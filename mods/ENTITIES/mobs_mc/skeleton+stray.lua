@@ -17,6 +17,8 @@ local skeleton = {
 	spawn_class = "hostile",
 	hp_min = 20,
 	hp_max = 20,
+	xp_min = 6,
+	xp_max = 6,
 	breath_max = -1,
 	armor = {undead = 100, fleshy = 100},
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.98, 0.3},

@@ -94,10 +94,11 @@ local piston_on = function (pos, node)
 
 	local dir = piston_get_direction(pistonspec.dir, node)
 	local np = vector.add(pos, dir)
-	local success, stack, oldstack = mesecon.mvps_push(np, dir, PISTON_MAXIMUM_PUSH)
+	local meta = minetest.get_meta(pos)
+	local success, stack, oldstack = mesecon.mvps_push(np, dir, PISTON_MAXIMUM_PUSH, meta:get_string("owner"), pos)
 	if success then
-		minetest.add_node(pos, {param2 = node.param2, name = pistonspec.onname})
-		minetest.add_node(np, {param2 = node.param2, name = pistonspec.pusher})
+		minetest.set_node(pos, {param2 = node.param2, name = pistonspec.onname})
+		minetest.set_node(np, {param2 = node.param2, name = pistonspec.pusher})
 		local below = minetest.get_node({x=np.x,y=np.y-1,z=np.z})
 		if below.name == "mcl_farming:soil" or below.name == "mcl_farming:soil_wet" then
 			minetest.set_node({x=np.x,y=np.y-1,z=np.z}, {name = "mcl_core:dirt"})
@@ -116,16 +117,22 @@ local piston_off = function (pos, node)
 	local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
 	minetest.add_node(pos, {param2 = node.param2, name = pistonspec.offname})
 	piston_remove_pusher (pos, node)
+	if not pistonspec.sticky then
+		return
+	end
 
-	if pistonspec.sticky then
-		local dir = piston_get_direction(pistonspec.dir, node)
-		local pullpos = vector.add(pos, vector.multiply(dir, 2))
-		local stack = mesecon.mvps_pull_single(pullpos, vector.multiply(dir, -1), PISTON_MAXIMUM_PUSH)
+	local dir = piston_get_direction(pistonspec.dir, node)
+	local pullpos = vector.add(pos, vector.multiply(dir, 2))
+	local meta = minetest.get_meta(pos)
+	local success, stack, oldstack = mesecon.mvps_pull_single(pullpos, vector.multiply(dir, -1), PISTON_MAXIMUM_PUSH, meta:get_string("owner"), pos)
+	if success then
 		mesecon.mvps_process_stack(pos, dir, stack)
 	end
 end
 
 local piston_orientate = function (pos, placer)
+	mesecon.mvps_set_owner(pos, placer)
+
 	-- not placed by player
 	if not placer then return end
 
@@ -812,75 +819,18 @@ minetest.register_node("mesecons_pistons:piston_down_pusher_sticky", {
 })
 
 
--- Register pushers as stoppers if they would be seperated from the piston
-local piston_pusher_get_stopper = function (node, dir, stack, stackid)
-	if (stack[stackid + 1]
-	and stack[stackid + 1].node.name   == minetest.registered_nodes[node.name].corresponding_piston
-	and stack[stackid + 1].node.param2 == node.param2)
-	or (stack[stackid - 1]
-	and stack[stackid - 1].node.name   == minetest.registered_nodes[node.name].corresponding_piston
-	and stack[stackid - 1].node.param2 == node.param2) then
-		return false
-	end
-	return true
-end
-
-local piston_pusher_up_down_get_stopper = function (node, dir, stack, stackid)
-	if (stack[stackid + 1]
-	and stack[stackid + 1].node.name   == minetest.registered_nodes[node.name].corresponding_piston)
-	or (stack[stackid - 1]
-	and stack[stackid - 1].node.name   == minetest.registered_nodes[node.name].corresponding_piston) then
-		return false
-	end
-	return true
-end
-
-mesecon.register_mvps_stopper("mesecons_pistons:piston_pusher_normal", piston_pusher_get_stopper)
-mesecon.register_mvps_stopper("mesecons_pistons:piston_pusher_sticky", piston_pusher_get_stopper)
-
-mesecon.register_mvps_stopper("mesecons_pistons:piston_up_pusher_normal", piston_pusher_up_down_get_stopper)
-mesecon.register_mvps_stopper("mesecons_pistons:piston_up_pusher_sticky", piston_pusher_up_down_get_stopper)
-
-mesecon.register_mvps_stopper("mesecons_pistons:piston_down_pusher_normal", piston_pusher_up_down_get_stopper)
-mesecon.register_mvps_stopper("mesecons_pistons:piston_down_pusher_sticky", piston_pusher_up_down_get_stopper)
-
-
--- Register pistons as stoppers if they would be seperated from the stopper
-local piston_up_down_get_stopper = function (node, dir, stack, stackid)
-	if (stack[stackid + 1]
-	and stack[stackid + 1].node.name   == minetest.registered_nodes[node.name].mesecons_piston.pusher)
-	or (stack[stackid - 1]
-	and stack[stackid - 1].node.name   == minetest.registered_nodes[node.name].mesecons_piston.pusher) then
-		return false
-	end
-	return true
-end
-
-local piston_get_stopper = function (node, dir, stack, stackid)
-	local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
-	dir = piston_get_direction(pistonspec.dir, node)
-	local pusherpos  = vector.add(stack[stackid].pos, dir)
-	local pushernode = minetest.get_node(pusherpos)
-
-	if minetest.registered_nodes[node.name].mesecons_piston.pusher == pushernode.name then
-		for _, s in ipairs(stack) do
-			if vector.equals(s.pos, pusherpos) -- pusher is also to be pushed
-			and s.node.param2 == node.param2 then
-				return false
-			end
-		end
-	end
-	return true
-end
-
-mesecon.register_mvps_stopper("mesecons_pistons:piston_normal_on", piston_get_stopper)
-mesecon.register_mvps_stopper("mesecons_pistons:piston_sticky_on", piston_get_stopper)
-
-mesecon.register_mvps_stopper("mesecons_pistons:piston_up_normal_on", piston_up_down_get_stopper)
-mesecon.register_mvps_stopper("mesecons_pistons:piston_up_sticky_on", piston_up_down_get_stopper)
-
-mesecon.register_mvps_stopper("mesecons_pistons:piston_down_normal_on", piston_up_down_get_stopper)
-mesecon.register_mvps_stopper("mesecons_pistons:piston_down_sticky_on", piston_up_down_get_stopper)
+mesecon.register_mvps_stopper("mesecons_pistons:piston_pusher_normal")
+mesecon.register_mvps_stopper("mesecons_pistons:piston_pusher_sticky")
+mesecon.register_mvps_stopper("mesecons_pistons:piston_up_pusher_normal")
+mesecon.register_mvps_stopper("mesecons_pistons:piston_up_pusher_sticky")
+mesecon.register_mvps_stopper("mesecons_pistons:piston_down_pusher_normal")
+mesecon.register_mvps_stopper("mesecons_pistons:piston_down_pusher_sticky")
+mesecon.register_mvps_stopper("mesecons_pistons:piston_normal_on")
+mesecon.register_mvps_stopper("mesecons_pistons:piston_sticky_on")
+mesecon.register_mvps_stopper("mesecons_pistons:piston_up_normal_on")
+mesecon.register_mvps_stopper("mesecons_pistons:piston_up_sticky_on")
+mesecon.register_mvps_stopper("mesecons_pistons:piston_down_normal_on")
+mesecon.register_mvps_stopper("mesecons_pistons:piston_down_sticky_on")
 
 --craft recipes
 minetest.register_craft({

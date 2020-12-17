@@ -363,7 +363,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	groups = {handy=1,shovely=1,dirt=2,grass_block=1, grass_block_no_snow=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, spreading_dirt_type=1, enderman_takable=1, building_block=1},
 	drop = 'mcl_core:dirt',
 	sounds = mcl_sounds.node_sound_dirt_defaults({
-		footstep = {name="default_grass_footstep", gain=0.4},
+		footstep = {name="default_grass_footstep", gain=0.1},
 	}),
 	on_construct = function(pos)
 		local node = minetest.get_node(pos)
@@ -399,7 +399,7 @@ minetest.register_node("mcl_core:grass_path", {
 	},
 	groups = {handy=1,shovely=1, cultivatable=2, dirtifies_below_solid=1, dirtifier=1, deco_block=1 },
 	sounds = mcl_sounds.node_sound_dirt_defaults({
-		footstep = {name="default_grass_footstep", gain=0.4},
+		footstep = {name="default_grass_footstep", gain=0.1},
 	}),
 	_mcl_blast_resistance = 0.65,
 	_mcl_hardness = 0.6,
@@ -415,7 +415,7 @@ minetest.register_node("mcl_core:mycelium", {
 	groups = {handy=1,shovely=1, dirt=2,spreading_dirt_type=1, enderman_takable=1, building_block=1},
 	drop = 'mcl_core:dirt',
 	sounds = mcl_sounds.node_sound_dirt_defaults({
-		footstep = {name="default_grass_footstep", gain=0.4},
+		footstep = {name="default_grass_footstep", gain=0.1},
 	}),
 
 	on_construct = mcl_core.on_snowable_construct,

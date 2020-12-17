@@ -36,7 +36,11 @@ mobs:register_mob("mobs_mc:snowman", {
 	collisionbox = {-0.35, -0.01, -0.35, 0.35, 1.89, 0.35},
 	visual = "mesh",
 	mesh = "mobs_mc_snowman.b3d",
-	-- TODO: sounds: damage, death
+	sounds = {
+		damage = { name = "mobs_mc_snowman_hurt", gain = 0.2 },
+		death = { name = "mobs_mc_snowman_death", gain = 0.25 },
+		distance = 16,
+	},
 	textures = {
                 "mobs_mc_snowman.png", --snowman texture
                 "farming_pumpkin_side.png", --top
@@ -74,7 +78,7 @@ mobs:register_mob("mobs_mc:snowman", {
 		run_end = 20,
 		die_start = 40,
 		die_end = 50,
-		die_speed = 25,
+		die_speed = 15,
 	        die_loop = false,
 	},
 	do_custom = function(self, dtime)
@@ -117,7 +121,7 @@ mobs:register_mob("mobs_mc:snowman", {
 			})
 
 			local pos = self.object:get_pos()
-			minetest.sound_play("shears", {pos = pos}, true)
+			minetest.sound_play("mcl_tools_shears_cut", {pos = pos}, true)
 
 			-- Wear out
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then

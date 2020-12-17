@@ -47,7 +47,8 @@ mobs:register_mob("mobs_mc:sheep", {
 	spawn_class = "passive",
 	hp_min = 8,
 	hp_max = 8,
-
+	xp_min = 1,
+	xp_max = 3,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.29, 0.45},
 
 	visual = "mesh",
@@ -73,6 +74,7 @@ mobs:register_mob("mobs_mc:sheep", {
 		random = "mobs_sheep",
 		death = "mobs_sheep",
 		damage = "mobs_sheep",
+		sounds = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	animation = {
@@ -156,7 +158,7 @@ mobs:register_mob("mobs_mc:sheep", {
 		if item:get_name() == mobs_mc.items.shears and not self.gotten and not self.child then
 			self.gotten = true
 			local pos = self.object:get_pos()
-			minetest.sound_play("shears", {pos = pos}, true)
+			minetest.sound_play("mcl_tools_shears_cut", {pos = pos}, true)
 			pos.y = pos.y + 0.5
 			if not self.color then
 				self.color = "unicolor_white"

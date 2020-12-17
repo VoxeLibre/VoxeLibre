@@ -30,6 +30,7 @@ function mcl_potions.register_splash(name, descr, color, def)
 			local velocity = 10
 			local dir = placer:get_look_dir();
 			local pos = placer:get_pos();
+			minetest.sound_play("mcl_throwing_throw", {pos = pos, gain = 0.4, max_hear_distance = 16}, true)
 			local obj = minetest.add_entity({x=pos.x+dir.x,y=pos.y+2+dir.y,z=pos.z+dir.z}, id.."_flying")
 			obj:set_velocity({x=dir.x*velocity,y=dir.y*velocity,z=dir.z*velocity})
 			obj:set_acceleration({x=dir.x*-3, y=-9.8, z=dir.z*-3})
@@ -42,7 +43,9 @@ function mcl_potions.register_splash(name, descr, color, def)
 		stack_max = 1,
 		_on_dispense = function(stack, dispenserpos, droppos, dropnode, dropdir)
 			local s_pos = vector.add(dispenserpos, vector.multiply(dropdir, 0.51))
-			local obj = minetest.add_entity({x=s_pos.x+dropdir.x,y=s_pos.y+dropdir.y,z=s_pos.z+dropdir.z}, id.."_flying")
+			local pos = {x=s_pos.x+dropdir.x,y=s_pos.y+dropdir.y,z=s_pos.z+dropdir.z}
+			minetest.sound_play("mcl_throwing_throw", {pos = pos, gain = 0.4, max_hear_distance = 16}, true)
+			local obj = minetest.add_entity(pos, id.."_flying")
 			local velocity = 22
 			obj:set_velocity({x=dropdir.x*velocity,y=dropdir.y*velocity,z=dropdir.z*velocity})
 			obj:set_acceleration({x=dropdir.x*-3, y=-9.8, z=dropdir.z*-3})

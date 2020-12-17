@@ -36,9 +36,9 @@ Raw rabbit is a food item from a dead rabbit. It can be eaten safely. Cooking it
 Cooked Rabbit=Lapin Cuit
 This is a food item which can be eaten.=Il s'agit d'un aliment qui peut être mangé.
 Milk=Lait
-Removes all status effects=
+Removes all status effects=Supprime tous les effets de statut!
 
-Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will remove all status effects, but restores no hunger points.=
+Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will remove all status effects, but restores no hunger points.=Le lait est très rafraîchissant et peut être obtenu en utilisant un seau sur une vache. Le boire supprimera tous les effets de statut, mais ne restaure aucun point de faim.
 
 Use the placement key to drink the milk.=
 Spider Eye=Oeil d'Araignée
@@ -92,11 +92,3 @@ Lets you ride a saddled pig=Vous permet de monter un cochon sellé
 A carrot on a stick can be used on saddled pigs to ride them.=Une carotte sur un bâton peut être utilisée sur les porcs sellés pour les monter.
 
 Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick.=Placez-le sur un cochon sellé pour le monter. Vous pouvez maintenant monter le cochon comme un cheval. Les porcs marcheront également vers vous lorsque vous brandirez la carotte sur un bâton.
-
-
-
-##### not used anymore #####
-
-
-Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will cure all forms of poisoning, but restores no hunger points.=Le lait est très rafraîchissant et peut être obtenu en utilisant un seau sur une vache. Le boire guérira toutes les formes d'empoisonnement, mais ne restaure pas de points de faim.
-

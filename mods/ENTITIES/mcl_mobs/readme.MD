@@ -10,13 +10,14 @@ This mod contains the API only for adding your own mobs into the world, so pleas
 
 https://forum.minetest.net/viewtopic.php?f=11&t=9917
 
+------------
+Credits:
 
-Items:
+mcl_mobs_mob_poof.ogg:
+- by Planman (license: Creative Commons Zero)
+- Source: <https://freesound.org/people/Planman/sounds/208111/>
 
-- Nametag (paper, black dye, string) can be used right-click on a tamed mob to give them a name.
-
-Lucky Block items: 1
-
+------------
 
 Changelog from original Mobs Redo mod:
 - 1.41- Mob pathfinding has been updated thanks to Elkien3

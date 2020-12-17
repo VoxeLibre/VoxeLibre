@@ -254,7 +254,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 					if is_player then
 						if self._shooter and self._shooter:is_player() then
 							-- “Ding” sound for hitting another player
-							minetest.sound_play({name="mcl_bows_hit_player", gain=0.1}, {to_player=self._shooter}, true)
+							minetest.sound_play({name="mcl_bows_hit_player", gain=0.1}, {to_player=self._shooter:get_player_name()}, true)
 						end
 					end
 
@@ -269,6 +269,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 							end
 						end
 					end
+					minetest.sound_play({name="mcl_bows_hit_other", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=16}, true)
 				end
 				self.object:remove()
 				return
@@ -319,6 +320,8 @@ ARROW_ENTITY.on_step = function(self, dtime)
 
 				self.object:set_velocity({x=0, y=0, z=0})
 				self.object:set_acceleration({x=0, y=0, z=0})
+
+				minetest.sound_play({name="mcl_bows_hit_other", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=16}, true)
 
 				-- Push the button! Push, push, push the button!
 				if mod_button and minetest.get_item_group(node.name, "button") > 0 and minetest.get_item_group(node.name, "button_push_by_arrow") == 1 then

@@ -3,6 +3,8 @@
 
 local S = minetest.get_translator("mesecons_button")
 
+local button_sounds = {} -- remember button push sounds
+
 local button_get_output_rules = mesecon.rules.wallmounted_get
 
 local boxes_off = {
@@ -27,7 +29,10 @@ mesecon.push_button = function(pos, node)
 	local def = minetest.registered_nodes[node.name]
 	minetest.set_node(pos, {name="mesecons_button:button_"..def._mcl_button_basename.."_on", param2=node.param2})
 	mesecon.receptor_on(pos, button_get_output_rules(node))
-	minetest.sound_play("mesecons_button_push", {pos=pos}, true)
+	local sfx = button_sounds[node.name]
+	if sfx then
+		minetest.sound_play(sfx, {pos=pos}, true)
+	end
 	local timer = minetest.get_node_timer(pos)
 	timer:start(def._mcl_button_timer)
 end
@@ -81,7 +86,7 @@ end
 
 local buttonuse = S("Use the button to push it.")
 
-mesecon.register_button = function(basename, description, texture, recipeitem, sounds, plusgroups, button_timer, push_by_arrow, longdesc)
+mesecon.register_button = function(basename, description, texture, recipeitem, sounds, plusgroups, button_timer, push_by_arrow, longdesc, button_sound)
 	local groups_off = table.copy(plusgroups)
 	groups_off.attached_node=1
 	groups_off.dig_by_water=1
@@ -92,6 +97,11 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 	local groups_on = table.copy(groups_off)
 	groups_on.not_in_creative_inventory=1
 	groups_on.button=2 -- button (on)
+
+	if not button_sound then
+		button_sound = "mesecons_button_push"
+	end
+	button_sounds["mesecons_button:button_"..basename.."_off"] = button_sound
 
 	if push_by_arrow then
 		groups_off.button_push_by_arrow = 1
@@ -179,7 +189,7 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 
 				-- Normal operation: Un-press the button
 				minetest.set_node(pos, {name="mesecons_button:button_"..basename.."_off",param2=node.param2})
-				minetest.sound_play("mesecons_button_pop", {pos=pos}, true)
+				minetest.sound_play(button_sound, {pos=pos, pitch=0.9}, true)
 				mesecon.receptor_off(pos, button_get_output_rules(node))
 			end
 		end,
@@ -203,7 +213,8 @@ mesecon.register_button(
 	{material_stone=1,handy=1,pickaxey=1},
 	1,
 	false,
-	S("A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second."))
+	S("A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second."),
+	"mesecons_button_push")
 
 local woods = {
 	{ "wood", "mcl_core:wood", "default_wood.png", S("Oak Button") },
@@ -224,7 +235,8 @@ for w=1, #woods do
 		{material_wood=1,handy=1,axey=1},
 		1.5,
 		true,
-		S("A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. Wooden buttons may also be pushed by arrows."))
+		S("A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. Wooden buttons may also be pushed by arrows."),
+		"mesecons_button_push_wood")
 
 	minetest.register_craft({
 		type = "fuel",

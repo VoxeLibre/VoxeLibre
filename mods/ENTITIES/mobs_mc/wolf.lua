@@ -24,6 +24,8 @@ local wolf = {
 	can_despawn = true,
 	hp_min = 8,
 	hp_max = 8,
+	xp_min = 1,
+	xp_max = 3,
 	passive = false,
 	group_attack = true,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 0.84, 0.3},
@@ -34,7 +36,14 @@ local wolf = {
 	},
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
-	-- TODO: sounds
+	sounds = {
+		attack = "mobs_mc_wolf_bark",
+		war_cry = "mobs_mc_wolf_growl",
+		damage = {name = "mobs_mc_wolf_hurt", gain=0.6},
+		death = {name = "mobs_mc_wolf_death", gain=0.6},
+		eat = "mobs_mc_animal_eat_generic",
+		distance = 16,
+	},
 	pathfinding = 1,
 	floats = 1,
 	view_range = 16,
@@ -53,6 +62,7 @@ local wolf = {
 		local dog, ent
 		if tool:get_name() == mobs_mc.items.bone then
 
+			minetest.sound_play("mobs_mc_wolf_take_bone", {object=self.object, max_hear_distance=16}, true)
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				tool:take_item()
 				clicker:set_wielded_item(tool)
@@ -64,6 +74,9 @@ local wolf = {
 				dog:set_yaw(yaw)
 				ent = dog:get_luaentity()
 				ent.owner = clicker:get_player_name()
+				-- cornfirm taming
+				minetest.sound_play("mobs_mc_wolf_bark", {object=dog, max_hear_distance=16}, true)
+				-- Replace wolf
 				self.object:remove()
 			end
 		end
@@ -189,16 +202,30 @@ dog.on_rightclick = function(self, clicker)
 			self.owner = clicker:get_player_name()
 		end
 
+		local pos = self.object:get_pos()
+		local particle
 		if not self.order or self.order == "" or self.order == "sit" then
+			particle = "mobs_mc_wolf_icon_roam.png"
 			self.order = "roam"
 			self.walk_chance = default_walk_chance
 			self.jump = true
-		else
 			-- TODO: Add sitting model
+		else
+			particle = "mobs_mc_wolf_icon_sit.png"
 			self.order = "sit"
 			self.walk_chance = 0
 			self.jump = false
 		end
+		-- Display icon to show current order (sit or roam)
+		minetest.add_particle({
+			pos = vector.add(pos, {x=0,y=1,z=0}),
+			velocity = {x=0,y=0.2,z=0},
+			expirationtime = 1,
+			size = 4,
+			texture = particle,
+			playername = self.owner,
+			glow = minetest.LIGHT_MAX,
+		})
 	end
 end
 

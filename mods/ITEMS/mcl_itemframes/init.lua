@@ -1,13 +1,16 @@
 local S = minetest.get_translator("mcl_itemframes")
 
+local VISUAL_SIZE = 0.3
+
 minetest.register_entity("mcl_itemframes:item",{
 	hp_max = 1,
 	visual = "wielditem",
-	visual_size = {x=0.3,y=0.3},
+	visual_size = {x=VISUAL_SIZE, y=VISUAL_SIZE},
 	physical = false,
 	pointable = false,
-	textures = { "empty.png" },
-	_texture = "empty.png",
+	textures = { "blank.png" },
+	_texture = "blank.png",
+	_scale = 1,
 
 	on_activate = function(self, staticdata)
 		if staticdata ~= nil and staticdata ~= "" then
@@ -15,22 +18,37 @@ minetest.register_entity("mcl_itemframes:item",{
 			if data and data[1] and data[2] then
 				self._nodename = data[1]
 				self._texture = data[2]
+				if data[3] then
+					self._scale = data[3]
+				else
+					self._scale = 1
+				end
 			end
 		end
 		if self._texture ~= nil then
-			self.object:set_properties({textures={self._texture}})
+			self.object:set_properties({
+				textures={self._texture},
+				visual_size={x=VISUAL_SIZE/self._scale, y=VISUAL_SIZE/self._scale},
+			})
 		end
 	end,
 	get_staticdata = function(self)
 		if self._nodename ~= nil and self._texture ~= nil then
-			return self._nodename .. ';' .. self._texture
+			local ret = self._nodename .. ';' .. self._texture
+			if self._scale ~= nil then
+				ret = ret .. ';' .. self._scale
+			end
+			return ret
 		end
 		return ""
 	end,
 
 	_update_texture = function(self)
 		if self._texture ~= nil then
-			self.object:set_properties({textures={self._texture}})
+			self.object:set_properties({
+				textures={self._texture},
+				visual_size={x=VISUAL_SIZE/self._scale, y=VISUAL_SIZE/self._scale},
+			})
 		end
 	end,
 })
@@ -74,10 +92,18 @@ local update_item_entity = function(pos, node, param2)
 		local e = minetest.add_entity(pos, "mcl_itemframes:item")
 		local lua = e:get_luaentity()
 		lua._nodename = node.name
-		if item:get_name() == "" then
+		local itemname = item:get_name()
+		if itemname == "" or itemname == nil then
 			lua._texture = "blank.png"
+			lua._scale = 1
 		else
-			lua._texture = item:get_name()
+			lua._texture = itemname
+			local def = minetest.registered_items[itemname]
+			if def and def.wield_scale then
+				lua._scale = def.wield_scale.x
+			else
+				lua._scale = 1
+			end
 		end
 		lua:_update_texture()
 		if node.name == "mcl_itemframes:item_frame" then
