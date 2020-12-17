@@ -9,6 +9,7 @@ mcl_enchanting = {
 	roman_numerals = dofile(modpath .. "/roman_numerals.lua"), 			-- https://exercism.io/tracks/lua/exercises/roman-numerals/solutions/73c2fb7521e347209312d115f872fa49
 	enchantments = {},
 	overlay = "^[colorize:white:50^[colorize:purple:50",
+	enchanting_lists = {"enchanting", "enchanting_item", "enchanting_lapis"},
 	bookshelf_positions = {
 		{x = -2, y = 0, z = -2}, {x = -2, y = 1, z = -2},
 		{x = -1, y = 0, z = -2}, {x = -1, y = 1, z = -2},
@@ -324,4 +325,6 @@ minetest.register_lbm({
 minetest.register_on_mods_loaded(mcl_enchanting.initialize)
 minetest.register_on_joinplayer(mcl_enchanting.initialize_player)
 minetest.register_on_player_receive_fields(mcl_enchanting.handle_formspec_fields)
+minetest.register_allow_player_inventory_action(mcl_enchanting.allow_inventory_action)
+minetest.register_on_player_inventory_action(mcl_enchanting.on_inventory_action)
 table.insert(tt.registered_snippets, 1, mcl_enchanting.enchantments_snippet) 

@@ -5,4 +5,3 @@ _mcl_autogroup?
 mcl_armor?
 mcl_brewing?
 mcl_potions?
-mcl_enchanting
