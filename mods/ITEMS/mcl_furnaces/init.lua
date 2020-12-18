@@ -69,6 +69,18 @@ local receive_fields = function(pos, formname, fields, sender)
 	end
 end
 
+local function drop_xp(pos)
+	if mcl_experience.throw_experience then
+		local meta = minetest.get_meta(pos)
+		local dir = vector.divide(minetest.facedir_to_dir(minetest.get_node(pos).param2),-1.95)
+		local xp = meta:get_int("xp")
+		if xp > 0 then
+			mcl_experience.throw_experience(vector.add(pos, dir), )
+			meta:set_int("xp", 0)
+		end
+	end
+end	
+
 --
 -- Node callback functions that are the same for active and inactive furnace
 --
@@ -143,6 +155,7 @@ local function on_metadata_inventory_take(pos, listname, index, stack, player)
 		elseif stack:get_name() == "mcl_fishing:fish_cooked" then
 			awards.unlock(player:get_player_name(), "mcl:cookFish")
 		end
+		drop_xp(pos)
 	end
 end
 
@@ -344,11 +357,8 @@ local function furnace_node_timer(pos, elapsed)
 
 				srclist = inv:get_list("src")
 				src_time = 0
-
-				if mcl_experience.throw_experience then
-					local dir = vector.divide(minetest.facedir_to_dir(minetest.get_node(pos).param2),-1.95)
-					mcl_experience.throw_experience(vector.add(pos, dir), 1)
-				end
+				
+				meta:set_int("xp", meta:get_int("xp") + 1)		-- ToDo give each recipe an idividial XP count
 			end
 		end
 
@@ -462,6 +472,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 	end,
 	on_destruct = function(pos)
 		mcl_particles.delete_node_particlespawners(pos)
+		drop_xp(pos)
 	end,
 
 	on_metadata_inventory_move = function(pos)
@@ -529,6 +540,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	end,
 	on_destruct = function(pos)
 		mcl_particles.delete_node_particlespawners(pos)
+		drop_xp(pos)
 	end,
 
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
