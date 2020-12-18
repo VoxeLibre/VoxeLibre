@@ -193,6 +193,12 @@ local check_can_drop = function(node_name, tool_capabilities)
 				if toolgroupcaps[plus] then
 					return true
 				end
+				for e=1,5 do
+					local effplus = plus .. "_efficiency_" .. e
+					if toolgroupcaps[effplus] then
+						return true
+					end
+				end
 			end
 		end
 		for b=1, #basegroups do
@@ -203,6 +209,12 @@ local check_can_drop = function(node_name, tool_capabilities)
 					local plus = basegroup .. "_dig_"..materials[m]
 					if toolgroupcaps[plus] then
 						return true
+					end
+					for e=1,5 do
+						local effplus = plus .. "_efficiency_" .. e
+						if toolgroupcaps[effplus] then
+							return true
+						end
 					end
 				end
 			end
