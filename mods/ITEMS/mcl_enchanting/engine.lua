@@ -2,7 +2,7 @@ local S = minetest.get_translator("mcl_enchanting")
 local F = minetest.formspec_escape
 
 function mcl_enchanting.is_book(itemname)
-	return itemname == "mcl_books:book" or itemname == "mcl_enchanting:book_enchanted"
+	return itemname == "mcl_books:book" or itemname == "mcl_enchanting:book_enchanted" or itemname == "mcl_books:book_enchanted"
 end
 
 function mcl_enchanting.get_enchantments(itemstack)
@@ -147,7 +147,8 @@ function mcl_enchanting.combine(itemstack, combine_with)
 	local itemname = itemstack:get_name()
 	local combine_name = combine_with:get_name()
 	local enchanted_itemname = mcl_enchanting.get_enchanted_itemstring(itemname)
-	if enchanted_itemname ~= mcl_enchanting.get_enchanted_itemstring(combine_name) and not mcl_enchanting.is_book(itemname) then
+	if enchanted_itemname ~= mcl_enchanting.get_enchanted_itemstring(combine_name) and not mcl_enchanting.is_book(combine_name) then
+		print(combine_name, mcl_enchanting.is_book(combine_name))
 		return false
 	end
 	local enchantments = mcl_enchanting.get_enchantments(itemstack)
@@ -211,7 +212,7 @@ function mcl_enchanting.initialize()
 	local register_tool_list = {}
 	local register_item_list = {}
 	for itemname, itemdef in pairs(minetest.registered_items) do
-		if mcl_enchanting.can_enchant_freshly(itemname) then
+		if mcl_enchanting.can_enchant_freshly(itemname) and not mcl_enchanting.is_book(itemname) then
 			local new_name = itemname .. "_enchanted"
 			minetest.override_item(itemname, {_mcl_enchanting_enchanted_tool = new_name})
 			local new_def = table.copy(itemdef)

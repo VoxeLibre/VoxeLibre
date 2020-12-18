@@ -143,6 +143,8 @@ minetest.register_craftitem("mcl_enchanting:book_enchanted", {
 	stack_max = 1,
 })
 
+minetest.register_alias("mcl_books:book_enchanted", "mcl_enchanting:book_enchanted")
+
 local spawn_book_entity = function(pos, respawn)
 	if respawn then
 		-- Check if we already have a book
