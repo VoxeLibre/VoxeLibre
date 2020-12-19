@@ -576,7 +576,7 @@ minetest.register_tool("mcl_tools:shears", {
 	inventory_image = "default_tool_shears.png",
 	wield_image = "default_tool_shears.png",
 	stack_max = 1,
-	groups = { tool=1, shears=1, dig_speed_class=4, enchantability=1 },
+	groups = { tool=1, shears=1, dig_speed_class=4, },
 	tool_capabilities = {
 	        full_punch_interval = 0.5,
 	        max_drop_level=1,
