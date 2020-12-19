@@ -75,7 +75,7 @@ local function drop_xp(pos)
 		local dir = vector.divide(minetest.facedir_to_dir(minetest.get_node(pos).param2),-1.95)
 		local xp = meta:get_int("xp")
 		if xp > 0 then
-			mcl_experience.throw_experience(vector.add(pos, dir), )
+			mcl_experience.throw_experience(vector.add(pos, dir), xp)
 			meta:set_int("xp", 0)
 		end
 	end
