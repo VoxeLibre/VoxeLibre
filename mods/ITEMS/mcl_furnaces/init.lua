@@ -486,11 +486,15 @@ minetest.register_node("mcl_furnaces:furnace", {
 		-- start timer function, it will sort out whether furnace can burn or not.
 		minetest.get_node_timer(pos):start(1.0)
 	end,
-	on_metadata_inventory_take = function(pos)
+	on_metadata_inventory_take = function(pos, listname)
 		-- Reset accumulated game time when player works with furnace:
 		furnace_reset_delta_time(pos)
 		-- start timer function, it will helpful if player clears dst slot
 		minetest.get_node_timer(pos):start(1.0)
+		
+		if listname == "dst" then
+			drop_xp(pos)
+		end
 	end,
 
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
