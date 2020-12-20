@@ -26,6 +26,13 @@ minetest.register_globalstep(function(dtime)
 
 		-- controls head bone
 		pitch = degrees(player:get_look_vertical()) * -1
+		
+		if controls.LMB or controls.RMB then
+			player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch,0,0))
+		else
+			player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(0,0,0))
+		end
+		
 		if controls.sneak then
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+36,0,0))
 			if player:get_properties().collisionbox ~= {-0.35,0,-0.35,0.35,1.40,0.35} then
