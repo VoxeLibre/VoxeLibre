@@ -30,7 +30,7 @@ mcl_player.player_register_model("character.b3d", {
 		sneak_stand = {x=222, y=302},
 		sneak_mine = {x=346, y=366},
 		sneak_walk = {x=304, y=323},
-		sneak_walk_mine = {x=325, y=345},
+		sneak_walk_mine = {x=325, y=344},
 	},
 })
 
