@@ -248,7 +248,8 @@ local bobber_on_step = function(self, dtime)
 		else if not self._waittime or self._waittime <= 0 then
 			-- wait for random number of ticks.
 			local lure_enchantment = wield and mcl_enchanting.get_enchantment(wield, "lure") or 0
-			self._waittime = math.random(5, 30) - lure_enchantment * 5
+			local reduced = lure_enchantment * 5
+			self._waittime = math.random(math.max(0, 5 - reduced), 30 - reduced) 
 		else
 			if self._time < self._waittime then
 				self._time = self._time + dtime
