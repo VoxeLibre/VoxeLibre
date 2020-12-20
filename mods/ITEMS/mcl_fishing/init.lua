@@ -88,8 +88,7 @@ local fish = function(itemstack, player)
 									items = {
 										-- TODO: Enchanted Bow
 										{ itemstring = "mcl_bows:bow", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
-										-- TODO: Enchanted Book
-										{ itemstring = "mcl_books:book" },
+										{ itemstack = mcl_enchanting.get_randomly_enchanted_book(30, true, true)},
 										-- TODO: Enchanted Fishing Rod
 										{ itemstring = "mcl_fishing:fishing_rod", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
 										{ itemstring = "mcl_mobs:nametag", },

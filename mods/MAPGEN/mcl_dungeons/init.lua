@@ -21,8 +21,7 @@ local get_loot = function()
 			{ itemstring = "mcl_jukebox:record_4", weight = 15 },
 			{ itemstring = "mobs_mc:iron_horse_armor", weight = 15 },
 			{ itemstring = "mcl_core:apple_gold", weight = 15 },
-			-- TODO: Enchanted Book
-			{ itemstring = "mcl_books:book", weight = 10 },
+			{ itemstack = mcl_enchanting.get_uniform_randomly_enchanted_book({"soul_speed"}), weight = 10 },
 			{ itemstring = "mobs_mc:gold_horse_armor", weight = 10 },
 			{ itemstring = "mobs_mc:diamond_horse_armor", weight = 5 },
 			-- TODO: Enchanted Golden Apple

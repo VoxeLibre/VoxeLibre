@@ -11,12 +11,15 @@ Parameters:
 	stacks_max = 3, -- Maximum number of item stacks to get. Default: 1
 	items = { -- Table of possible loot items. This function selects between stacks_min and stacks_max of these.
 		{
+		weight = 5,		-- Likelihood of this item being selected (see below). Optional (default: 1)
+
+		itemstack = ItemStack("example:item1"), -- Itemstack to select
+		-- OR
 		itemstring = "example:item1", -- Which item to select
 		amount_min = 1,		-- Minimum size of itemstack. Must not be larger than 6553. Optional (default: 1)
 		amount_max = 10,	-- Maximum size of item stack. Must not be larger than item definition's stack_max or 6553. Optional (default: 1)
 		wear_min = 1,		-- Minimum wear value. Must be at least 1. Optional (default: no wear)
 		wear_max = 1,		-- Maxiumum wear value. Must be at least 1. Optional (default: no wear)
-		weight = 5,		-- Likelihood of this item being selected (see below). Optional (default: 1)
 		},
 		{ -- more tables like above, one table per item stack }
 	}
@@ -56,24 +59,29 @@ function mcl_loot.get_loot(loot_definitions, pr)
 		end
 		if item then
 			local itemstring = item.itemstring
-			if item.amount_min and item.amount_max then
-				itemstring = itemstring .. " " .. pr:next(item.amount_min, item.amount_max)
-			end
-			if item.wear_min and item.wear_max then
-				-- Sadly, PseudoRandom only allows very narrow ranges, so we set wear in steps of 10
-				local wear_min = math.floor(item.wear_min / 10)
-				local wear_max = math.floor(item.wear_max / 10)
-				local wear = pr:next(wear_min, wear_max) * 10
-
-				if not item.amount_min and not item.amount_max then
-					itemstring = itemstring .. " 1"
+			local itemstack = item.itemstack
+			if itemstring then
+				if item.amount_min and item.amount_max then
+					itemstring = itemstring .. " " .. pr:next(item.amount_min, item.amount_max)
 				end
+				if item.wear_min and item.wear_max then
+					-- Sadly, PseudoRandom only allows very narrow ranges, so we set wear in steps of 10
+					local wear_min = math.floor(item.wear_min / 10)
+					local wear_max = math.floor(item.wear_max / 10)
+					local wear = pr:next(wear_min, wear_max) * 10
+	
+					if not item.amount_min and not item.amount_max then
+						itemstring = itemstring .. " 1"
+					end
 
-				itemstring = itemstring .. " " .. tostring(wear)
+					itemstring = itemstring .. " " .. tostring(wear)
+				end
+				table.insert(items, itemstring)
+			elseif itemstack then
+				table.insert(items, itemstack)
+			else
+				minetest.log("error", "[mcl_loot] INTERNAL ERROR! Failed to select random loot item!")
 			end
-			table.insert(items, itemstring)
-		else
-			minetest.log("error", "[mcl_loot] INTERNAL ERROR! Failed to select random loot item!")
 		end
 	end
 

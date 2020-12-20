@@ -320,6 +320,23 @@ function mcl_enchanting.get_randomly_enchanted_book(enchantment_level, treasure,
 	return mcl_enchanting.enchant_randomly(enchantment_level, treasure, no_reduced_bonus_chance)
 end
 
+function mcl_enchanting.get_uniform_randomly_enchanted_book(except)
+	except = except or except
+	local stack = ItemStack("mcl_enchanting:book_enchanted")
+	local list = {}
+	for enchantment in pairs(mcl_enchanting.enchantments) do
+		if table.indexof(except, enchantment) == -1 then
+			table.insert(list, enchantment)
+		end
+	end
+	local index = math.random(#list)
+	local enchantment = list[index]
+	local enchantment_def = mcl_enchanting.enchantments[enchantment]
+	local level = math.random(enchantment_def.max_level)
+	mcl_enchanting.enchant(stack, enchantment, level)
+	return stack
+end
+
 function mcl_enchanting.get_random_glyph_row()
 	local glyphs = ""
 	local x = 1.3
