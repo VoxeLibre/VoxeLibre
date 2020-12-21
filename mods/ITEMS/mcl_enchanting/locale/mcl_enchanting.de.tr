@@ -76,8 +76,8 @@ Reflects some of the damage taken when hit, at the cost of reducing durability w
 Unbreaking=Haltbarkeit
 Increases item durability.=Erhöht Haldbarkeit des Gegenstands.
 Inventory=Inventar
-@1 × Lapis Lazuli=@1 × Lapislazuli
-Enchantment levels: @1=Verzauberungsstufen: @1
+@1 Lapis Lazuli=@1 Lapislazuli
+@1 Enchantment Levels=@1 Verzauberungsstufen
 Level requirement: @1=Level benötigt: @1
 Enchant an item=Gegenstand verzaubern
 <player> <enchantment> [<level>]=<Spieler> <Verzauberung> [<Stufe>]
