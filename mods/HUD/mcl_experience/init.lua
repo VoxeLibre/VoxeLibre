@@ -77,6 +77,8 @@ hud_manager.add_hud = function(player,hud_name,def)
 		size          = def.size,
 		offset        = def.offset,
 		z_index	      = def.z_index,
+		alignment 	  = def.alignment,
+		scale		  = def.scale,
     })
     -- create new 3d array here
     -- depends.txt is not needed
@@ -164,14 +166,14 @@ minetest.register_on_joinplayer(function(player)
 		
 	hud_manager.add_hud(player,"experience_bar",
 	{
-	        hud_elem_type = "statbar", position = {x=0.5, y=1},
-	        name = "experience bar",
-		text = "experience_bar.png",
-		text2 = "experience_bar_background.png",
-	        number = temp_pool.bar, item = 36,
-		direction = 0,
-	        offset = {x = (-8 * 28) - 29, y = -(48 + 24 + 16)},
-	        size = { x=28, y=28 }, z_index = 11,
+			hud_elem_type = "image",
+			name = "experience bar",
+			text = "experience_bar_background.png^[lowpart:" .. math.floor(temp_pool.bar / 36 * 100) .. ":experience_bar.png^[transformR270",
+			position = {x=0.5, y=1},
+			offset = {x = (-9 * 28), y = -(48 + 24 + 16 - 7)},
+			scale = {x = 2.75, y = 2.75},
+			alignment = { x = 1, y = 1 },
+			z_index = 11,
 	})
 	
 	hud_manager.add_hud(player,"xp_level",
@@ -181,7 +183,7 @@ minetest.register_on_joinplayer(function(player)
 	        number = 0xFFFFFF,
 		offset = {x = 0, y = -(48 + 24 + 24)},
 	        z_index = 12,
-	})                            
+	})                      
 end)
 
 function mcl_experience.xp_to_level(xp)
@@ -247,7 +249,7 @@ function mcl_experience.add_experience(player, experience)
 	end
 
 	if old_bar ~= temp_pool.bar then
-		hud_manager.change_hud({player = player, hud_name = "experience_bar", element = "number", data = math.floor(temp_pool.bar)})
+		hud_manager.change_hud({player = player, hud_name = "experience_bar", element = "text", data = "experience_bar_background.png^[lowpart:" .. math.floor(temp_pool.bar / 36 * 100) .. ":experience_bar.png^[transformR270",})
 	end
 
 	if experience > 0 and minetest.get_us_time()/1000000 - temp_pool.last_time > 0.01 then
@@ -283,7 +285,7 @@ minetest.register_on_dieplayer(function(player)
 	temp_pool.bar, temp_pool.bar_step, temp_pool.xp_next_level = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)
 
 	hud_manager.change_hud({player = player, hud_name = "xp_level", element = "text", data = tostring(temp_pool.level)})
-	hud_manager.change_hud({player = player, hud_name = "experience_bar", element = "number", data = math.floor(temp_pool.bar)})
+	hud_manager.change_hud({player = player, hud_name = "experience_bar", element = "text", data = "experience_bar_background.png^[lowpart:" .. math.floor(temp_pool.bar / 36 * 100) .. ":experience_bar.png^[transformR270",})
 
 	mcl_experience.throw_experience(player:get_pos(), xp_amount)
 end)
