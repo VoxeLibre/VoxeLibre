@@ -170,8 +170,8 @@ minetest.register_on_joinplayer(function(player)
 			name = "experience bar",
 			text = "experience_bar_background.png^[lowpart:" .. math.floor(temp_pool.bar / 36 * 100) .. ":experience_bar.png^[transformR270",
 			position = {x=0.5, y=1},
-			offset = {x = (-9 * 28), y = -(48 + 24 + 16 - 7)},
-			scale = {x = 2.75, y = 2.75},
+			offset = {x = (-9 * 28) - 3, y = -(48 + 24 + 16 - 5)},
+			scale = {x = 2.8, y = 3.0},
 			alignment = { x = 1, y = 1 },
 			z_index = 11,
 	})
