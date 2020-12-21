@@ -330,6 +330,7 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 	on_place = fish,
 	on_secondary_use = fish,
 	sound = { breaks = "default_tool_breaks" },
+	_mcl_uses = 65,
 })
 
 minetest.register_craft({

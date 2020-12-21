@@ -409,8 +409,8 @@ mcl_enchanting.enchantments.lure = {
 	power_range_table = {{15, 61}, {24, 71}, {33, 81}},
 }
 
--- unimplemented
---[[mcl_enchanting.enchantments.mending = {
+-- implemented in mcl_experience
+mcl_enchanting.enchantments.mending = {
 	name = S("Mending"),
 	max_level = 1,
 	primary = {},
@@ -424,7 +424,7 @@ mcl_enchanting.enchantments.lure = {
 	requires_tool = true,
 	treasure = true,
 	power_range_table = {{25, 75}},
-}]]--
+}
 
 -- requires missing MineClone2 feature
 --[[mcl_enchanting.enchantments.multishot = {
