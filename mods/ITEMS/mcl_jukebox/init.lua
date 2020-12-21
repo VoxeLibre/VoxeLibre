@@ -81,7 +81,7 @@ local function now_playing(player, track_id)
 		if not player or not player:is_player() or not active_huds[playername] or not hud_sequence_numbers[playername] or seq ~= hud_sequence_numbers[playername] then
 			return
 		end
-		if id == active_huds[playername] then
+		if id ~= nil and id == active_huds[playername] then
 			player:hud_remove(active_huds[playername])
 			active_huds[playername] = nil
 		end
@@ -162,8 +162,10 @@ minetest.register_node("mcl_jukebox:jukebox", {
 			inv:set_stack("main", 1, "")
 			if active_tracks[cname] ~= nil then
 				minetest.sound_stop(active_tracks[cname])
-				clicker:hud_remove(active_huds[cname])
 				active_tracks[cname] = nil
+			end
+			if active_huds[cname] ~= nil then
+				clicker:hud_remove(active_huds[cname])
 				active_huds[cname] = nil
 			end
 		else
@@ -219,8 +221,10 @@ minetest.register_node("mcl_jukebox:jukebox", {
 			dropped_item:set_yaw(math.pi/2)
 			if active_tracks[name] ~= nil then
 				minetest.sound_stop(active_tracks[name])
-				digger:hud_remove(active_huds[name])
 				active_tracks[name] = nil
+			end
+			if active_huds[name] ~= nil then
+				digger:hud_remove(active_huds[name])
 				active_huds[name] = nil
 			end
 		end
