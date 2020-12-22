@@ -99,8 +99,7 @@ local professions = {
 			{
 			{ { "mcl_fishing:fish_raw", 6, 6, "mcl_core:emerald", 1, 1 }, { "mcl_fishing:fish_cooked", 6, 6 } },
 			{ { "mcl_mobitems:string", 15, 20 }, E1 },
-			-- TODO: replace with enchanted fishing rod
-			{ { "mcl_core:emerald", 3, 11 }, { "mcl_fishing:fishing_rod", 1, 1} },
+			{ { "mcl_core:emerald", 3, 11 }, { "mcl_fishing:fishing_rod_enchanted", 1, 1} },
 			},
 		},
 	},
@@ -154,23 +153,27 @@ local professions = {
 		trades = {
 			{
 			{ { "mcl_core:paper", 24, 36 }, E1 },
-			-- TODO: enchanted book
 			{ { "mcl_books:book", 8, 10 }, E1 },
 			{ { "mcl_core:emerald", 10, 12 }, { "mcl_compass:compass", 1 ,1 }},
 			{ { "mcl_core:emerald", 3, 4 }, { "mcl_books:bookshelf", 1 ,1 }},
+			{ { "mcl_core:emerald", 5, 64 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
 			},
 
 			{
 			{ { "mcl_books:written_book", 2, 2 }, E1 },
 			{ { "mcl_core:emerald", 10, 12 }, { "mcl_clock:clock", 1, 1 } },
 			{ E1, { "mcl_core:glass", 3, 5 } },
+			{ { "mcl_core:emerald", 5, 64 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
 			},
 
 			{
 			{ E1, { "mcl_core:glass", 3, 5 } },
+			{ { "mcl_core:emerald", 5, 64 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
 			},
-
-			-- TODO: 2 enchanted book tiers
+			
+			{
+			{ { "mcl_core:emerald", 5, 64 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
+			},
 
 			{
 			{ { "mcl_core:emerald", 20, 22 }, { "mcl_mobs:nametag", 1, 1 } },
@@ -214,8 +217,7 @@ local professions = {
 
 			{
 			{ { "mcl_core:diamond", 3, 4 }, E1 },
-			-- TODO: enchant
-			{ { "mcl_core:emerald", 16, 19 }, { "mcl_armor:chestplate_diamond", 1, 1 } },
+			{ { "mcl_core:emerald", 16, 19 }, { "mcl_armor:chestplate_diamond_enchanted", 1, 1 } },
 			},
 
 			{
@@ -236,8 +238,7 @@ local professions = {
 			},
 
 			{
-			-- TODO: enchant
-			{ { "mcl_core:emerald", 7, 12 }, { "mcl_armor:chestplate_leather", 1, 1 } },
+			{ { "mcl_core:emerald", 7, 12 }, { "mcl_armor:chestplate_leather_enchanted", 1, 1 } },
 			},
 
 			{
@@ -272,16 +273,13 @@ local professions = {
 
 			{
 			{ { "mcl_core:iron_ingot", 7, 9 }, E1 },
-			-- TODO: enchant
-			{ { "mcl_core:emerald", 9, 10 }, { "mcl_tools:sword_iron", 1, 1 } },
+			{ { "mcl_core:emerald", 9, 10 }, { "mcl_tools:sword_iron_enchanted", 1, 1 } },
 			},
 
 			{
 			{ { "mcl_core:diamond", 3, 4 }, E1 },
-			-- TODO: enchant
-			{ { "mcl_core:emerald", 12, 15 }, { "mcl_tools:sword_diamond", 1, 1 } },
-			-- TODO: enchant
-			{ { "mcl_core:emerald", 9, 12 }, { "mcl_tools:axe_diamond", 1, 1 } },
+			{ { "mcl_core:emerald", 12, 15 }, { "mcl_tools:sword_diamond_enchanted", 1, 1 } },
+			{ { "mcl_core:emerald", 9, 12 }, { "mcl_tools:axe_diamond_enchanted", 1, 1 } },
 			},
 		},
 	},
@@ -291,20 +289,17 @@ local professions = {
 		trades = {
 			{
 			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
-			-- TODO: enchant
-			{ { "mcl_core:emerald", 5, 7 }, { "mcl_tools:shovel_iron", 1, 1 } },
+			{ { "mcl_core:emerald", 5, 7 }, { "mcl_tools:shovel_iron_enchanted", 1, 1 } },
 			},
 
 			{
 			{ { "mcl_core:iron_ingot", 7, 9 }, E1 },
-			-- TODO: enchant
-			{ { "mcl_core:emerald", 9, 11 }, { "mcl_tools:pick_iron", 1, 1 } },
+			{ { "mcl_core:emerald", 9, 11 }, { "mcl_tools:pick_iron_enchanted", 1, 1 } },
 			},
 
 			{
 			{ { "mcl_core:diamond", 3, 4 }, E1 },
-			-- TODO: enchant
-			{ { "mcl_core:emerald", 12, 15 }, { "mcl_tools:pick_diamond", 1, 1 } },
+			{ { "mcl_core:emerald", 12, 15 }, { "mcl_tools:pick_diamond_enchanted", 1, 1 } },
 			},
 		},
 	},
@@ -407,7 +402,16 @@ local init_trades = function(self, inv)
 			local wanted1_count = math.random(trade[1][2], trade[1][3])
 			local offered_item = trade[2][1]
 			local offered_count = math.random(trade[2][2], trade[2][3])
-
+			
+			local offered_stack = ItemStack({name = offered_item, count = offered_count})
+			if mcl_enchanting.is_enchanted(offered_item) then
+				if mcl_enchanting.is_book(offered_item) then
+					offered_stack = mcl_enchanting.get_uniform_randomly_enchanted_book({"soul_speed"})
+				else
+					mcl_enchanting.enchant_randomly(offered_stack, math.random(5, 19), false, false, true)
+				end
+			end
+			
 			local wanted = { wanted1_item .. " " ..wanted1_count }
 			if trade[1][4] then
 				local wanted2_item = trade[1][4]
@@ -417,7 +421,7 @@ local init_trades = function(self, inv)
 
 			table.insert(trades, {
 				wanted = wanted,
-				offered = offered_item .. " " .. offered_count,
+				offered = offered_stack:to_table(),
 				tier = tiernum, -- tier of this trade
 				traded_once = false, -- true if trade was traded at least once
 				trade_counter = 0, -- how often the this trade was mate after the last time it got unlocked
@@ -426,6 +430,7 @@ local init_trades = function(self, inv)
 		end
 	end
 	self._trades = minetest.serialize(trades)
+	minetest.deserialize(self._trades)
 end
 
 local set_trade = function(trader, player, inv, concrete_tradenum)
@@ -494,7 +499,7 @@ local function show_trade_formspec(playername, trader, tradenum)
 	local wanted1 = inv:get_stack("wanted", 1)
 	local wanted2 = inv:get_stack("wanted", 2)
 	local offered = inv:get_stack("offered", 1)
-
+	
 	local w2_formspec = ""
 	if not wanted2:is_empty() then
 		w2_formspec = "item_image[3,1;1,1;"..wanted2:to_string().."]"
@@ -513,7 +518,7 @@ local function show_trade_formspec(playername, trader, tradenum)
 	.."item_image[2,1;1,1;"..wanted1:to_string().."]"
 	.."tooltip[2,1;0.8,0.8;"..F(wanted1:get_description()).."]"
 	..w2_formspec
-	.."item_image[5.76,1;1,1;"..offered:to_string().."]"
+	.."item_image[5.76,1;1,1;"..offered:get_name().." "..offered:get_count().."]"
 	.."tooltip[5.76,1;0.8,0.8;"..F(offered:get_description()).."]"
 	.."list["..tradeinv..";input;2,2.5;2,1;]"
 	.."list["..tradeinv..";output;5.76,2.55;1,1;]"

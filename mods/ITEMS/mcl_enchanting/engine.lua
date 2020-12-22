@@ -252,9 +252,9 @@ function mcl_enchanting.get_possible_enchantments(itemstack, enchantment_level, 
 	return possible_enchantments, weights, accum_weight
 end
 
-function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance)
+function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
 	local itemname = itemstack:get_name()
-	if not mcl_enchanting.can_enchant_freshly(itemname) then
+	if not mcl_enchanting.can_enchant_freshly(itemname) and not ignore_already_enchanted then
 		return
 	end
 	itemstack = ItemStack(itemstack)
@@ -307,8 +307,8 @@ function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_leve
 	return enchantments, description
 end
 
-function mcl_enchanting.enchant_randomly(itemstack, enchantment_level, treasure, no_reduced_bonus_chance)
-	local enchantments = mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance)
+function mcl_enchanting.enchant_randomly(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
+	local enchantments = mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
 	if enchantments then
 		mcl_enchanting.set_enchanted_itemstring(itemstack)
 		mcl_enchanting.set_enchantments(itemstack, enchantments)
@@ -317,7 +317,7 @@ function mcl_enchanting.enchant_randomly(itemstack, enchantment_level, treasure,
 end
 
 function mcl_enchanting.get_randomly_enchanted_book(enchantment_level, treasure, no_reduced_bonus_chance)
-	return mcl_enchanting.enchant_randomly(enchantment_level, treasure, no_reduced_bonus_chance)
+	return mcl_enchanting.enchant_randomly(ItemStack("mcl_enchanting:book_enchanted"), enchantment_level, treasure, no_reduced_bonus_chance, true)
 end
 
 function mcl_enchanting.get_uniform_randomly_enchanted_book(except)
