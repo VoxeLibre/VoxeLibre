@@ -632,12 +632,15 @@ minetest.register_entity(":__builtin:item", {
 		local fg = minetest.get_item_group(nn, "fire")
 		local dg = minetest.get_item_group(nn, "destroys_items")
 		if (def and (lg ~= 0 or fg ~= 0 or dg == 1)) then
-			if dg ~= 2 then
-				minetest.sound_play("builtin_item_lava", {pos = self.object:get_pos(), gain = 0.5}, true)
+			--Wait 2 seconds to allow mob drops to be cooked, & picked up instead of instantly destroyed.
+			if self.age > 2 then
+				if dg ~= 2 then
+					minetest.sound_play("builtin_item_lava", {pos = self.object:get_pos(), gain = 0.5})
+				end
+				self._removed = true
+				self.object:remove()
+				return
 			end
-			self._removed = true
-			self.object:remove()
-			return
 		end
 
 		-- Push item out when stuck inside solid opaque node
