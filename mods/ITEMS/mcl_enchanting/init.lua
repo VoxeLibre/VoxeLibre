@@ -8,7 +8,8 @@ mcl_enchanting = {
 	book_animation_speed = 40,
 	roman_numerals = dofile(modpath .. "/roman_numerals.lua"), 			-- https://exercism.io/tracks/lua/exercises/roman-numerals/solutions/73c2fb7521e347209312d115f872fa49
 	enchantments = {},
-	overlay = "^[colorize:white:50^[colorize:purple:50",
+	overlay = "^[colorize:purple:50",
+	--overlay = "^[invert:rgb^[multiply:#4df44d:50^[invert:rgb",
 	enchanting_lists = {"enchanting", "enchanting_item", "enchanting_lapis"},
 	bookshelf_positions = {
 		{x = -2, y = 0, z = -2}, {x = -2, y = 1, z = -2},

@@ -180,7 +180,7 @@ minetest.register_on_joinplayer(function(player)
 	{
 	        hud_elem_type = "text", position = {x=0.5, y=1},
 	        name = "xp_level", text = tostring(temp_pool.level),
-	        number = 0xFFFFFF,
+	        number = 0x80FF20,
 		offset = {x = 0, y = -(48 + 24 + 24)},
 	        z_index = 12,
 	})                      
@@ -401,6 +401,8 @@ local function xp_step(self, dtime)
 				end
 				if xp > 0 then
 					mcl_experience.add_experience(collector, xp)
+				else
+					minetest.sound_play("experience",{gain=0.1,to_player = name,pitch=math.random(75,99)/100})
 				end
 				self.object:remove()
 			end
