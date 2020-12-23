@@ -776,9 +776,16 @@ local check_for_death = function(self, cause, cmi_cause)
 	local function death_handle(self)
 		-- dropped cooked item if mob died in fire or lava
 		if cause == "lava" or cause == "fire" then
-			item_drop(self, true)
+			item_drop(self, true, 0)
 		else
-			item_drop(self, nil)
+			local looting = 0
+			if cause == "hit" then
+				local puncher = cmi_cause.puncher
+				if puncher then
+					looting = mcl_enchanting.get_enchantment(puncher:get_wielded_item(), "looting")
+				end
+			end
+			item_drop(self, nil, looting)
 		end
 
 		local pos = self.object:get_pos()
