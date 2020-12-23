@@ -643,11 +643,13 @@ end
 
 
 -- drop items
-local item_drop = function(self, cooked)
+local item_drop = function(self, cooked, looting_level)
 
 	-- no drops if disabled by setting
 	if not mobs_drop_items then return end
-
+	
+	looting_level = looting_level or 0
+	
 	-- no drops for child mobs (except monster)
 	if (self.child and self.type ~= "monster") then
 		return
@@ -659,11 +661,33 @@ local item_drop = function(self, cooked)
 	self.drops = self.drops or {} -- nil check
 
 	for n = 1, #self.drops do
-
-		if random(1, self.drops[n].chance) == 1 then
-
-			num = random(self.drops[n].min or 1, self.drops[n].max or 1)
-			item = self.drops[n].name
+		local dropdef = self.drops[n]
+		local chance = 1 / dropdef.chance
+		local looting_type = dropdef.looting
+		
+		if looting_level > 0 then
+			local chance_function = dropdef.looting_chance_function
+			if chance_function then
+				chance = chance_function(looting_level)
+			elseif looting_type == "rare" then
+				chance = chance + (dropdef.looting_factor or 0.01) * looting_level
+			end
+		end
+		
+		local num = 0
+		local do_common_looting = (looting_level > 0 and looting_type == "common")
+		if random() < chance then
+			num = random(dropdef.min or 1, dropdef.max or 1)
+		elseif not dropdef.looting_ignore_chance then
+			do_common_looting = false
+		end
+		
+		if do_common_looting then
+			num = num + math.floor(math.random(0, looting_level) + 0.5)
+		end
+		
+		if num > 0 then
+			item = dropdef.name
 
 			-- cook items when true
 			if cooked then

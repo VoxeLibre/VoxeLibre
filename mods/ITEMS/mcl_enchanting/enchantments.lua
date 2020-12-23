@@ -341,8 +341,8 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 	return knockback
 end
 
--- unimplemented
---[[mcl_enchanting.enchantments.looting = {
+-- implemented in mcl_mobs and mobs_mc 
+mcl_enchanting.enchantments.looting = {
 	name = S("Looting"),
 	max_level = 3,
 	primary = {sword = true},
@@ -356,7 +356,7 @@ end
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{15, 61}, {24, 71}, {33, 81}},
-}]]--
+}
 
 -- requires missing MineClone2 feature
 --[[mcl_enchanting.enchantments.loyalty = {
@@ -375,6 +375,7 @@ end
 	power_range_table = {{12, 50}, {19, 50}, {26, 50}},
 }]]--
 
+-- implemented in mcl_fishing
 mcl_enchanting.enchantments.luck_of_the_sea = {
 	name = S("Luck of the Sea"),
 	max_level = 3,

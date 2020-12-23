@@ -27,7 +27,8 @@ mobs:register_mob("mobs_mc:pig", {
 		{name = mobs_mc.items.porkchop_raw,
 		chance = 1,
 		min = 1,
-		max = 3,},
+		max = 3,
+		looting = "common",},
 	},
 	fear_height = 4,
 	sounds = {

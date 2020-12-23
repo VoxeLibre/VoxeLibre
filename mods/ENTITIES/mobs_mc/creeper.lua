@@ -78,7 +78,7 @@ mobs:register_mob("mobs_mc:creeper", {
 	end,
 	on_die = function(self, pos)
 		-- Drop a random music disc
-		-- TODO: Only do this if killed by skeleton
+		-- TODO: Only do this if killed by skeleton or stray
 		if math.random(1, 200) == 1 then
 			local r = math.random(1, #mobs_mc.items.music_discs)
 			minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, mobs_mc.items.music_discs[r])
@@ -89,7 +89,8 @@ mobs:register_mob("mobs_mc:creeper", {
 		{name = mobs_mc.items.gunpowder,
 		chance = 1,
 		min = 0,
-		max = 2,},
+		max = 2,
+		looting = "common",},
 
 		-- Head
 		-- TODO: Only drop if killed by charged creeper

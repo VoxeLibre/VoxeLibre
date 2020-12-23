@@ -127,7 +127,8 @@ local horse = {
 		{name = mobs_mc.items.leather,
 		chance = 1,
 		min = 0,
-		max = 2,},
+		max = 2,
+		looting = "common",},
 	},
 
 	do_custom = function(self, dtime)

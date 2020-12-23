@@ -41,13 +41,13 @@ mobs:register_mob("mobs_mc:witch", {
 	dogshoot_count_max =1.8,
 	max_drops = 3,
 	drops = {
-		{name = mobs_mc.items.glass_bottle, chance = 8, min = 0, max = 2,},
-		{name = mobs_mc.items.glowstone_dust, chance = 8, min = 0, max = 2,},
-		{name = mobs_mc.items.gunpowder, chance = 8, min = 0, max = 2,},
-		{name = mobs_mc.items.redstone, chance = 8, min = 0, max = 2,},
-		{name = mobs_mc.items.spider_eye, chance = 8, min = 0, max = 2,},
-		{name = mobs_mc.items.sugar, chance = 8, min = 0, max = 2,},
-		{name = mobs_mc.items.stick, chance = 4, min = 0, max = 2,},
+		{name = mobs_mc.items.glass_bottle, chance = 8, min = 0, max = 2, looting = "common",},
+		{name = mobs_mc.items.glowstone_dust, chance = 8, min = 0, max = 2, looting = "common",},
+		{name = mobs_mc.items.gunpowder, chance = 8, min = 0, max = 2, looting = "common",},
+		{name = mobs_mc.items.redstone, chance = 8, min = 0, max = 2, looting = "common",},
+		{name = mobs_mc.items.spider_eye, chance = 8, min = 0, max = 2, looting = "common",},
+		{name = mobs_mc.items.sugar, chance = 8, min = 0, max = 2, looting = "common",},
+		{name = mobs_mc.items.stick, chance = 4, min = 0, max = 2, looting = "common",},
 	},
 	-- TODO: sounds
 	animation = {

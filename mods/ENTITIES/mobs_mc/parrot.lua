@@ -37,7 +37,8 @@ mobs:register_mob("mobs_mc:parrot", {
 		{name = mobs_mc.items.feather,
 		chance = 1,
 		min = 1,
-		max = 2,},
+		max = 2,
+		looting = "common",},
 	},
     	animation = {
 		stand_speed = 50,

@@ -41,7 +41,8 @@ mobs:register_mob("mobs_mc:blaze", {
 		{name = mobs_mc.items.blaze_rod,
 		chance = 1,
 		min = 0,
-		max = 1,},
+		max = 1,
+		looting = "common",},
 	},
 	animation = {
 		stand_speed = 25,

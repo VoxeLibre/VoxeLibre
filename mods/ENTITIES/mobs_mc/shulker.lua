@@ -35,9 +35,11 @@ mobs:register_mob("mobs_mc:shulker", {
 	jump = false,
 	drops = {
 		{name = mobs_mc.items.shulker_shell,
-		chance = 1,
-		min = 0,
-		max = 1,},
+		chance = 2,
+		min = 1,
+		max = 1,
+		looting = "rare",
+		looting_factor = 0.0625},
 	},
 	animation = {
 		stand_speed = 25, walk_speed = 25, run_speed = 50, punch_speed = 25,

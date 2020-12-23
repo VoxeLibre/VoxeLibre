@@ -41,11 +41,13 @@ mobs:register_mob("mobs_mc:vindicator", {
 		{name = mobs_mc.items.emerald,
 		chance = 1,
 		min = 0,
-		max = 1,},
+		max = 1,
+		looting = "common",},
 		{name = mobs_mc.items.iron_axe,
-		chance = 11,
+		chance = 100 / 8.5,
 		min = 1,
-		max = 1,},
+		max = 1,
+		looting = "rare",},
 	},
 	-- TODO: sounds
 	animation = {
