@@ -52,10 +52,15 @@ local fish = function(itemstack, player)
 							local items
 							local itemcount = 1
 							local itemwear = 0
-							-- FIXME: Maybe use a better seeding
 							local pr = PseudoRandom(os.time() * math.random(1, 100))
 							local r = pr:next(1, 100)
-							if r <= 85 then
+							local fish_values = {85, 84.8, 84.7, 84.5}
+							local junk_values = {10, 8.1, 6.1, 4.2}
+							local luck_of_the_sea = math.min(mcl_enchanting.get_enchantment(itemstack, "luck_of_the_sea"), 3)
+							local index = luck_of_the_sea + 1
+							local fish_value = fish_values[index]
+							local junk_value = junk_values[index] + fish_value
+							if r <= fish_value then
 								-- Fish
 								items = mcl_loot.get_loot({
 									items = {
@@ -65,7 +70,7 @@ local fish = function(itemstack, player)
 										{ itemstring = "mcl_fishing:pufferfish_raw", weight = 13 },
 									}
 								}, pr)
-							elseif r <= 95 then
+							elseif r <= junk_value then
 								-- Junk
 								items = mcl_loot.get_loot({
 									items = {
