@@ -402,8 +402,7 @@ mcl_structures.generate_desert_temple = function(pos)
 				{ itemstring = "mcl_mobitems:bone", weight = 25, amount_min = 4, amount_max=6 },
 				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 25, amount_min = 3, amount_max=7 },
 				{ itemstring = "mcl_mobitems:spider_eye", weight = 25, amount_min = 1, amount_max=3 },
-				-- TODO: Enchanted Book
-				{ itemstring = "mcl_books:book", weight = 20, },
+				{ itemstack = mcl_enchanting.get_uniform_randomly_enchanted_book({"soul_speed"}), weight = 20, },
 				{ itemstring = "mcl_mobitems:saddle", weight = 20, },
 				{ itemstring = "mcl_core:apple_gold", weight = 20, },
 				{ itemstring = "mcl_core:gold_ingot", weight = 15, amount_min = 2, amount_max = 7 },
