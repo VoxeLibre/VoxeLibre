@@ -122,7 +122,7 @@ function mcl_burning.damage(obj, meta, is_player)
 	meta, is_player = mcl_burning.analyse(obj, meta, is_player)
 	local do_damage = true
 	if is_player then
-		if mcl_potions.player_has_effect(obj, "fire_resistance") then
+		if mcl_potions.player_has_effect(obj, "fire_proof") then
 			do_damage = false
 		else
 			local name = obj:get_player_name()
