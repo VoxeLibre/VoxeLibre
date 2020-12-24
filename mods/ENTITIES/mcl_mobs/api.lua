@@ -778,6 +778,7 @@ local check_for_death = function(self, cause, cmi_cause)
 		if cause == "lava" or cause == "fire" then
 			item_drop(self, true, 0)
 		else
+			local cooked = nil
 			local looting = 0
 			if cause == "hit" then
 				local puncher = cmi_cause.puncher
@@ -785,7 +786,10 @@ local check_for_death = function(self, cause, cmi_cause)
 					looting = mcl_enchanting.get_enchantment(puncher:get_wielded_item(), "looting")
 				end
 			end
-			item_drop(self, nil, looting)
+			if self._burn_time and self._burn_time > 0 then
+				cooked = true
+			end
+			item_drop(self, cooked, looting)
 		end
 
 		local pos = self.object:get_pos()
@@ -3354,7 +3358,11 @@ end
 
 -- main mob function
 local mob_step = function(self, dtime)
-
+	
+	if not self.fire_resistant then
+		mcl_burning.step(self.object, dtime)
+	end
+	
 	if use_cmi then
 		cmi.notify_step(self.object, dtime)
 	end
@@ -3781,6 +3789,7 @@ minetest.register_entity(name, {
 	suffocation_timer = 0,
 	follow_velocity = def.follow_velocity or 2.4,
 	instant_death = def.instant_death or false,
+	fire_resistant = def.fire_resistant or false,
 	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,

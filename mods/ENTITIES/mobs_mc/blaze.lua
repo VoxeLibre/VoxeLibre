@@ -74,6 +74,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	makes_footstep_sound = false,
 	fear_height = 0,
 	glow = 14,
+	fire_resistant = true,
 })
 
 mobs:spawn_specific("mobs_mc:blaze", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 5000, 3, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)

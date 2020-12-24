@@ -67,7 +67,8 @@ mobs:register_mob("mobs_mc:enderdragon", {
 			--end
 		end
 		minetest.add_item(own_pos, mobs_mc.items.dragon_egg)
-	end
+	end,
+	fire_resistant = true,
 })
 
 

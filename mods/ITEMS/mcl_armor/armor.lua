@@ -540,7 +540,7 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
 					epf = epf + blast_protection_level * 2
 				end
 				local fire_protection_level = enchantments.fire_protection or 0
-				if fire_protection_level > 0 and (damage_type == "fireball" or reason.type == "node_damage" and
+				if fire_protection_level > 0 and (damage_type == "burning" or damage_type == "fireball" or reason.type == "node_damage" and
 					(reason.node == "mcl_fire:fire" or reason.node == "mcl_core:lava_source" or reason.node == "mcl_core:lava_flowing")) then
 					epf = epf + fire_protection_level * 2
 				end

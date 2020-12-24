@@ -62,6 +62,7 @@ mobs:register_mob("mobs_mc:ghast", {
 	fly = true,
 	makes_footstep_sound = false,
 	instant_death = true,
+	fire_resistant = true,
 })
 
 
