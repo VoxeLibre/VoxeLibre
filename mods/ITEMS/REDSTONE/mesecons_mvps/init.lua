@@ -145,7 +145,7 @@ function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos)
 
 		if not node_replaceable(nn.name) then
 			if #nodes >= maximum then return nil, false end
-			table.insert(nodes, {node = nn, pos = np})
+			table.insert(nodes, {node = nn, pos = {x=np.x, y=np.y, z=np.z}})
 
 			-- add connected nodes to frontiers, connected is a vector list
 			-- the vectors must be absolute positions
@@ -195,10 +195,9 @@ function mesecon.mvps_set_owner(pos, placer)
 	end
 end
 
-local function are_protected(positions, player_name)
-	local name = player_name
-	for _, pos in pairs(positions) do
-		if is_protected(pos, name) then
+local function are_protected(nodes, player_name)
+	for _, node in pairs(nodes) do
+		if minetest.is_protected(node.pos, player_name) then
 			return true
 		end
 	end
