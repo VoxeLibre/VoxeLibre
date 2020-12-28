@@ -148,7 +148,7 @@ function mcl_experience.set_player_xp_level(player,level)
 		return
 	end
 	pool[name].level = level
-	pool[name].xp, pool[name].bar_step, pool[name].next_level = mcl_experience.bar_to_xp(pool[name].bar, level)
+	pool[name].xp, pool[name].bar_step, pool[name].xp_next_level = mcl_experience.bar_to_xp(pool[name].bar, level)
 	hud_manager.change_hud({player = player, hud_name = "xp_level", element = "text", data = tostring(level)})
 	-- we may don't update the bar
 end
