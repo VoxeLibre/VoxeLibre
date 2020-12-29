@@ -3360,7 +3360,7 @@ end
 local mob_step = function(self, dtime)
 	
 	if not self.fire_resistant then
-		mcl_burning.step(self.object, dtime)
+		mcl_burning.tick(self.object, dtime)
 	end
 	
 	if use_cmi then
@@ -3790,6 +3790,7 @@ minetest.register_entity(name, {
 	follow_velocity = def.follow_velocity or 2.4,
 	instant_death = def.instant_death or false,
 	fire_resistant = def.fire_resistant or false,
+	fire_damage_resistant = def.fire_damage_resistant or false,
 	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,
