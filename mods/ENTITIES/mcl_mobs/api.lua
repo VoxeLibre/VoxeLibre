@@ -2947,6 +2947,13 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 				* tmp * ((armor[group] or 0) / 100.0)
 		end
 	end
+	
+	if weapon then
+		local fire_aspect_level = mcl_enchanting.get_enchantment(weapon, "fire_aspect")
+		if fire_aspect_level > 0 then
+			mcl_burning.set_on_fire(self.object, 4, fire_aspect_level * 2)
+		end
+	end
 
 	-- check for tool immunity or special damage
 	for n = 1, #self.immune_to do
