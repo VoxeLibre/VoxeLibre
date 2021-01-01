@@ -3789,7 +3789,6 @@ minetest.register_entity(name, {
 	instant_death = def.instant_death or false,
 	fire_resistant = def.fire_resistant or false,
 	fire_damage_resistant = def.fire_damage_resistant or false,
-	fire_entity_properties = def.fire_entity_properties or nil,
 	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,

@@ -172,8 +172,8 @@ mcl_enchanting.enchantments.feather_falling = {
 	power_range_table = {{5, 11}, {11, 17}, {17, 23}, {23, 29}},
 }
 
--- requires missing MineClone2 feature
---[[mcl_enchanting.enchantments.fire_aspect = {
+-- implemented via register_on_punchplayer callback
+mcl_enchanting.enchantments.fire_aspect = {
 	name = S("Fire Aspect"),
 	max_level = 2,
 	primary = {sword = true},
@@ -187,7 +187,19 @@ mcl_enchanting.enchantments.feather_falling = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{10, 61}, {30, 71}},
-}]]--
+}
+
+minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
+	if hitter and hitter:is_player() then
+		local wielditem = hitter:get_wielded_item()
+		if wielditem then
+			local fire_aspect_level = mcl_enchanting.get_enchantment(wielditem, "fire_aspect")
+			if fire_aspect_level > 0 then
+				mcl_burning.set_on_fire(player, 4, fire_aspect_level * 2, hitter:get_player_name())
+			end
+		end
+	end
+end)
 
 -- implemented in mcl_armor
 mcl_enchanting.enchantments.fire_protection = {
