@@ -778,17 +778,15 @@ local check_for_death = function(self, cause, cmi_cause)
 		if cause == "lava" or cause == "fire" then
 			item_drop(self, true, 0)
 		else
-			local cooked = nil
-			local looting = 0
+			local wielditem = ItemStack()
 			if cause == "hit" then
 				local puncher = cmi_cause.puncher
 				if puncher then
-					looting = mcl_enchanting.get_enchantment(puncher:get_wielded_item(), "looting")
+					wielditem = puncher:get_wielded_item()
 				end
 			end
-			if self._burn_time and self._burn_time > 0 then
-				cooked = true
-			end
+			local cooked = mcl_burning.is_burning(self.object) or mcl_enchanting.get_enchantment(wielditem, "fire_aspect")
+			local looting = mcl_enchanting.get_enchantment(wielditem, "looting")
 			item_drop(self, cooked, looting)
 		end
 
@@ -3791,6 +3789,7 @@ minetest.register_entity(name, {
 	instant_death = def.instant_death or false,
 	fire_resistant = def.fire_resistant or false,
 	fire_damage_resistant = def.fire_damage_resistant or false,
+	fire_entity_properties = def.fire_entity_properties or nil,
 	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,

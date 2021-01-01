@@ -86,7 +86,6 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 	view_range = 16,
 	fear_height = 4,
 	harmed_by_heal = true,
-
 })
 
 mobs:spawn_specific("mobs_mc:villager_zombie", mobs_mc.spawn.village, {"air"}, 0, 7, 30, 4090, 4, mobs_mc.spawn_height.water+1, mobs_mc.spawn_height.overworld_max)

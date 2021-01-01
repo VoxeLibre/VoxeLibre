@@ -68,7 +68,6 @@ mobs:register_mob("mobs_mc:witch", {
 	},
 	view_range = 16,
 	fear_height = 4,
-
 })
 
 -- potion projectile (EXPERIMENTAL)
