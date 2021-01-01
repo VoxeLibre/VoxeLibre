@@ -785,7 +785,7 @@ local check_for_death = function(self, cause, cmi_cause)
 					wielditem = puncher:get_wielded_item()
 				end
 			end
-			local cooked = mcl_burning.is_burning(self.object) or mcl_enchanting.get_enchantment(wielditem, "fire_aspect")
+			local cooked = mcl_burning.is_burning(self.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect")
 			local looting = mcl_enchanting.get_enchantment(wielditem, "looting")
 			item_drop(self, cooked, looting)
 		end
