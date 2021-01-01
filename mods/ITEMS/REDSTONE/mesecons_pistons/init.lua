@@ -97,7 +97,7 @@ local piston_on = function (pos, node)
 	local meta = minetest.get_meta(pos)
 	local success, stack, oldstack = mesecon.mvps_push(np, dir, PISTON_MAXIMUM_PUSH, meta:get_string("owner"), pos)
 	if success then
-		minetest.set_node(pos, {param2 = node.param2, name = pistonspec.onname})
+		minetest.swap_node(pos, {param2 = node.param2, name = pistonspec.onname})
 		minetest.set_node(np, {param2 = node.param2, name = pistonspec.pusher})
 		local below = minetest.get_node({x=np.x,y=np.y-1,z=np.z})
 		if below.name == "mcl_farming:soil" or below.name == "mcl_farming:soil_wet" then
@@ -115,7 +115,7 @@ end
 
 local piston_off = function (pos, node)
 	local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
-	minetest.add_node(pos, {param2 = node.param2, name = pistonspec.offname})
+	minetest.swap_node(pos, {param2 = node.param2, name = pistonspec.offname})
 	piston_remove_pusher (pos, node)
 	if not pistonspec.sticky then
 		return
