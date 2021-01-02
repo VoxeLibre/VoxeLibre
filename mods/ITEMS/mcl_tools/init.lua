@@ -173,16 +173,16 @@ minetest.register_tool("mcl_tools:pick_diamond", {
 })
 
 local get_shovel_dig_group = function(itemstring)
-	local def = minetest.registered_items[itemstring]
-	if itemstring == "mcl_tools:shovel_wood" then
+	local string_start = itemstring:sub(1, 21)
+	if string_start == "mcl_tools:shovel_wood" then
 		return "shovely_dig_wood"
-	elseif itemstring == "mcl_tools:shovel_stone" then
+	elseif string_start == "mcl_tools:shovel_ston" then
 		return "shovely_dig_stone"
-	elseif itemstring == "mcl_tools:shovel_iron" then
+	elseif string_start == "mcl_tools:shovel_iron" then
 		return "shovely_dig_iron"
-	elseif itemstring == "mcl_tools:shovel_gold" then
+	elseif string_start == "mcl_tools:shovel_gold" then
 		return "shovely_dig_gold"
-	elseif itemstring == "mcl_tools:shovel_diamond" then
+	elseif string_start == "mcl_tools:shovel_diam" then
 		return "shovely_dig_diamond"
 	else
 		-- Fallback
@@ -218,8 +218,9 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 				local toolname = itemstack:get_name()
 				local def = minetest.registered_items[toolname]
 				local group = get_shovel_dig_group(toolname)
-				local base_uses = def.tool_capabilities.groupcaps[group].uses
-				local maxlevel = def.tool_capabilities.groupcaps[group].maxlevel
+				local toolcaps = itemstack:get_tool_capabilities()
+				local base_uses = toolcaps.groupcaps[group].uses
+				local maxlevel = toolcaps.groupcaps[group].maxlevel
 				local uses = base_uses * math.pow(3, maxlevel)
 				local wear = math.ceil(65535 / uses)
 				itemstack:add_wear(wear)
