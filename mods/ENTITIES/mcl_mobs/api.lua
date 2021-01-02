@@ -226,7 +226,7 @@ local collision = function(self)
 	local z = 0
 	local width = -self.collisionbox[1] + self.collisionbox[4] + 0.5
 
-	for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, width)) do
+	for _,object in ipairs(minetest.get_objects_inside_radius(pos, width)) do
 
 		if object:is_player()
 		or (object:get_luaentity()._cmi_is_mob == true and object ~= self.object) then
