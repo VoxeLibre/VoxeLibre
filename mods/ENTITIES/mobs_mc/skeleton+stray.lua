@@ -81,7 +81,7 @@ local skeleton = {
 		die_speed = 15,
 		die_loop = false,
 	},
-	sunlight_damage = 1,
+	ignited_by_sunlight = true,
 	view_range = 16,
 	fear_height = 4,
 	attack_type = "dogshoot",

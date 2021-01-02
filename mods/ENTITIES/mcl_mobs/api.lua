@@ -1053,8 +1053,11 @@ local do_env_damage = function(self)
 	if mod_worlds then
 		_, dim = mcl_worlds.y_to_layer(pos.y)
 	end
-	if self.sunlight_damage ~= 0 and (minetest.get_node_light(pos) or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
-		if deal_light_damage(self, pos, self.sunlight_damage) then
+	if (self.sunlight_damage ~= 0 or self.ignited_by_sunlight) and (minetest.get_node_light(pos) or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
+		if self.ignited_by_sunlight then
+			mcl_burning.set_on_fire(self.object, 10, self.sunlight_damage or 1)
+		else
+			deal_light_damage(self, pos, self.sunlight_damage)
 			return true
 		end
 	end
@@ -3813,6 +3816,7 @@ minetest.register_entity(name, {
 	instant_death = def.instant_death or false,
 	fire_resistant = def.fire_resistant or false,
 	fire_damage_resistant = def.fire_damage_resistant or false,
+	ignited_by_sunlight = def.ignited_by_sunlight or false,
 	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,

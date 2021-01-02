@@ -251,6 +251,7 @@ functions needed for the mob to work properly which contains the following:
       'xp_max'        the maximum XP it drops on death (default: 0)
       'fire_resistant' If true, the mob can't burn
       'fire_damage_resistant' If true the mob will not take damage when burning
+      'ignited_by_sunlight' If true the mod will burn at daytime. (Takes sunlight_damage per second)
 
 
 
