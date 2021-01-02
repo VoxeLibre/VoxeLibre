@@ -341,7 +341,7 @@ minetest.register_tool("mcl_tools:shovel_gold", {
 	inventory_image = "default_tool_goldshovel.png",
 	wield_image = "default_tool_goldshovel.png^[transformR90",
 	wield_scale = wield_scale,
-	groups = { tool=1, shovel=1, dig_speed_class=6, },
+	groups = { tool=1, shovel=1, dig_speed_class=6, enchantability=22 },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=2,
