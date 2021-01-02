@@ -172,7 +172,7 @@ mcl_enchanting.enchantments.feather_falling = {
 	power_range_table = {{5, 11}, {11, 17}, {17, 23}, {23, 29}},
 }
 
--- implemented via register_on_punchplayer callback
+-- implemented in mcl_mobs and via register_on_punchplayer callback
 mcl_enchanting.enchantments.fire_aspect = {
 	name = S("Fire Aspect"),
 	max_level = 2,

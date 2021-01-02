@@ -812,6 +812,7 @@ local check_for_death = function(self, cause, cmi_cause)
 
 		if on_die_exit == true then
 			self.state = "die"
+			mcl_burning.extinguish(self.object)
 			self.object:remove()
 			return true
 		end
@@ -874,6 +875,7 @@ local check_for_death = function(self, cause, cmi_cause)
 		local dpos = self.object:get_pos()
 		local cbox = self.collisionbox
 		local yaw = self.object:get_rotation().y
+		mcl_burning.extinguish(self.object)
 		self.object:remove()
 		mobs.death_effect(dpos, yaw, cbox, not self.instant_death)
 	end
@@ -1022,6 +1024,7 @@ local do_env_damage = function(self)
 
 	-- remove mob if beyond map limits
 	if not within_limits(pos, 0) then
+		mcl_burning.extinguish(self.object)
 		self.object:remove()
 		return true
 	end
@@ -2544,6 +2547,7 @@ local do_states = function(self, dtime)
 						effect(pos, 32, "mcl_particles_smoke.png", nil, nil, node_break_radius, 1, 0)
 					end
 					end
+					mcl_burning.extinguish(self.object)
 					self.object:remove()
 
 					return true
@@ -3162,6 +3166,7 @@ local mob_staticdata = function(self)
 	and self.lifetimer <= 20 then
 
 		minetest.log("action", "Mob "..name.." despawns in mob_staticdata at "..minetest.pos_to_string(self.object.get_pos()))
+		mcl_burning.extinguish(self.object)
 		self.object:remove()
 
 		return ""-- nil
@@ -3200,7 +3205,7 @@ local mob_activate = function(self, staticdata, def, dtime)
 	-- remove monsters in peaceful mode
 	if self.type == "monster"
 	and minetest.settings:get_bool("only_peaceful_mobs", false) then
-
+		mcl_burning.extinguish(self.object)
 		self.object:remove()
 
 		return
@@ -3583,6 +3588,7 @@ local mob_step = function(self, dtime)
 						else
 							if math.random(1,10) <= 3 then
 								minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos))
+								mcl_burning.extinguish(self.object)
 								self.object:remove()
 								return
 							end
@@ -3590,6 +3596,7 @@ local mob_step = function(self, dtime)
 					end
 				else
 					minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos))
+					mcl_burning.extinguish(self.object)
 					self.object:remove()
 					return
 				end
@@ -4152,7 +4159,7 @@ function mobs:register_arrow(name, def)
 			if self.switch == 0
 			or self.timer > 150
 			or not within_limits(pos, 0) then
-
+				mcl_burning.extinguish(self.object)
 				self.object:remove();
 
 				return
