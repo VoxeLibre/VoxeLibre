@@ -183,7 +183,7 @@ minetest.register_on_joinplayer(function(player)
 	        number = 0x80FF20,
 		offset = {x = 0, y = -(48 + 24 + 24)},
 	        z_index = 12,
-	})                      
+	})
 end)
 
 function mcl_experience.xp_to_level(xp)

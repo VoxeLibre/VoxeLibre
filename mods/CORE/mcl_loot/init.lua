@@ -69,7 +69,7 @@ function mcl_loot.get_loot(loot_definitions, pr)
 					local wear_min = math.floor(item.wear_min / 10)
 					local wear_max = math.floor(item.wear_max / 10)
 					local wear = pr:next(wear_min, wear_max) * 10
-	
+
 					if not item.amount_min and not item.amount_max then
 						itemstring = itemstring .. " 1"
 					end

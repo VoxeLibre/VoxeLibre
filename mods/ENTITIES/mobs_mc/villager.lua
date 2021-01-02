@@ -170,7 +170,7 @@ local professions = {
 			{ E1, { "mcl_core:glass", 3, 5 } },
 			{ { "mcl_core:emerald", 5, 64 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
 			},
-			
+
 			{
 			{ { "mcl_core:emerald", 5, 64 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
 			},
@@ -402,7 +402,7 @@ local init_trades = function(self, inv)
 			local wanted1_count = math.random(trade[1][2], trade[1][3])
 			local offered_item = trade[2][1]
 			local offered_count = math.random(trade[2][2], trade[2][3])
-			
+
 			local offered_stack = ItemStack({name = offered_item, count = offered_count})
 			if mcl_enchanting.is_enchanted(offered_item) then
 				if mcl_enchanting.is_book(offered_item) then
@@ -411,7 +411,7 @@ local init_trades = function(self, inv)
 					mcl_enchanting.enchant_randomly(offered_stack, math.random(5, 19), false, false, true)
 				end
 			end
-			
+
 			local wanted = { wanted1_item .. " " ..wanted1_count }
 			if trade[1][4] then
 				local wanted2_item = trade[1][4]
@@ -499,7 +499,7 @@ local function show_trade_formspec(playername, trader, tradenum)
 	local wanted1 = inv:get_stack("wanted", 1)
 	local wanted2 = inv:get_stack("wanted", 2)
 	local offered = inv:get_stack("offered", 1)
-	
+
 	local w2_formspec = ""
 	if not wanted2:is_empty() then
 		w2_formspec = "item_image[3,1;1,1;"..wanted2:to_string().."]"

@@ -79,7 +79,7 @@ local function drop_xp(pos)
 			meta:set_int("xp", 0)
 		end
 	end
-end	
+end
 
 --
 -- Node callback functions that are the same for active and inactive furnace
@@ -357,7 +357,7 @@ local function furnace_node_timer(pos, elapsed)
 
 				srclist = inv:get_list("src")
 				src_time = 0
-				
+
 				meta:set_int("xp", meta:get_int("xp") + 1)		-- ToDo give each recipe an idividial XP count
 			end
 		end
@@ -491,7 +491,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 		furnace_reset_delta_time(pos)
 		-- start timer function, it will helpful if player clears dst slot
 		minetest.get_node_timer(pos):start(1.0)
-		
+
 		if listname == "dst" then
 			drop_xp(pos)
 		end

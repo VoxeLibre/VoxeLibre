@@ -543,7 +543,7 @@ function mcl_enchanting.on_inventory_action(player, action, inventory, inventory
 			if stack:get_name() == "mcl_dye:blue" then
 				result_list = "enchanting_lapis"
 				stack:add_item(inventory:get_stack("enchanting_lapis", 1))
-			else 
+			else
 				result_list = "enchanting_item"
 			end
 			inventory:set_stack(result_list, 1, stack)

@@ -353,7 +353,7 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 	return knockback
 end
 
--- implemented in mcl_mobs and mobs_mc 
+-- implemented in mcl_mobs and mobs_mc
 mcl_enchanting.enchantments.looting = {
 	name = S("Looting"),
 	max_level = 3,
