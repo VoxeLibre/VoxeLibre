@@ -2095,6 +2095,7 @@ local follow_flop = function(self)
 	or self.order == "follow")
 	and not self.following
 	and self.state ~= "attack"
+	and self.order ~= "sit"
 	and self.state ~= "runaway" then
 
 		local s = self.object:get_pos()
@@ -2115,6 +2116,7 @@ local follow_flop = function(self)
 	if self.type == "npc"
 	and self.order == "follow"
 	and self.state ~= "attack"
+	and self.order ~= "sit"
 	and self.owner ~= "" then
 
 		-- npc stop following player if not owner
@@ -2400,6 +2402,8 @@ local do_states = function(self, dtime)
 			set_velocity(self, 0)
 			self.state = "stand"
 			set_animation(self, "stand")
+			local yaw = self.object:get_yaw() or 0
+			yaw = set_yaw(self, yaw + 0.78, 8)
 		else
 
 			set_velocity(self, self.walk_velocity)
@@ -2426,6 +2430,8 @@ local do_states = function(self, dtime)
 			set_velocity(self, 0)
 			self.state = "stand"
 			set_animation(self, "stand")
+			local yaw = self.object:get_yaw() or 0
+			yaw = set_yaw(self, yaw + 0.78, 8)
 		else
 			set_velocity(self, self.run_velocity)
 			set_animation(self, "run")
@@ -2659,6 +2665,8 @@ local do_states = function(self, dtime)
 
 					set_velocity(self, 0)
 					set_animation(self, "stand")
+					local yaw = self.object:get_yaw() or 0
+					yaw = set_yaw(self, yaw + 0.78, 8)
 				else
 
 					if self.path.stuck then
@@ -3565,6 +3573,8 @@ local mob_step = function(self, dtime)
 			set_velocity(self, 0)
 			self.state = "stand"
 			set_animation(self, "stand")
+			local yaw = self.object:get_yaw() or 0
+			yaw = set_yaw(self, yaw + 0.78, 8)
 	end
 
 	-- Despawning: when lifetimer expires, remove mob

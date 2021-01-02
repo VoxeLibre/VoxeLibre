@@ -97,7 +97,7 @@ for _, row in ipairs(block.dyes) do
 		_doc_items_create_entry = create_entry,
 		_doc_items_entry_name = ename_cp,
 		tiles = {"mcl_colorblocks_concrete_powder_"..name..".png"},
-		groups = {handy=1,shovely=1, concrete_powder=1,building_block=1,falling_node=1, material_sand=1},
+		groups = {handy=1,shovely=1, concrete_powder=1,building_block=1,falling_node=1, material_sand=1, float=1},
 		stack_max = 64,
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_sand_defaults(),
@@ -208,11 +208,20 @@ minetest.register_abm({
 	neighbors = {"group:water"},
 	action = function(pos, node)
 		local harden_to = minetest.registered_nodes[node.name]._mcl_colorblocks_harden_to
-		-- It should be impossible for harden_to to be nil, but a Minetest bug might call
-		-- the ABM on the new concrete node, which isn't part of this ABM!
-		if harden_to then
-			node.name = harden_to
-			minetest.set_node(pos, node)
-		end
+               -- It should be impossible for harden_to to be nil, but a Minetest bug might call
+               -- the ABM on the new concrete node, which isn't part of this ABM!
+        if harden_to then
+            node.name = harden_to
+			--Fix "float" group not lowering concrete into the water by 1.
+			local water_pos = { x = pos.x, y = pos.y-1, z = pos.z }
+			local water_node = minetest.get_node(water_pos)
+			if minetest.get_item_group(water_node.name, "water") == 0 then
+				minetest.set_node(pos, node)
+			else
+				minetest.set_node(water_pos,node)
+				minetest.set_node(pos, {name = "air"})
+				minetest.check_for_falling(pos) -- Update C. Powder that stacked above so they fall down after setting air.
+			end
+        end
 	end,
 })
