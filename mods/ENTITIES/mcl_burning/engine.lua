@@ -196,12 +196,6 @@ function mcl_burning.extinguish(obj)
 			obj:hud_remove(hud_id)
 		end
 
-		minetest.sound_play("fire_extinguish_flame", {
-			object = obj,
-			gain = 0.18,
-			max_hear_distance = 32,
-		})
-
 		mcl_burning.set(obj, "float", "damage")
 		mcl_burning.set(obj, "string", "reason")
 		mcl_burning.set(obj, "float", "burn_time")
