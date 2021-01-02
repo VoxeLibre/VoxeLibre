@@ -235,7 +235,8 @@ minetest.register_node("mcl_enchanting:table", {
 		if table_name == "" then
 			table_name = S("Enchant")
 		end
-		player_meta:set_int("mcl_enchanting:num_bookshelves", num_bookshelves)
+		local bookshelves = mcl_enchanting.get_bookshelves(pos)
+		player_meta:set_int("mcl_enchanting:num_bookshelves", math.min(15, #bookshelves))
 		player_meta:set_string("mcl_enchanting:table_name", table_name)
 		mcl_enchanting.show_enchanting_formspec(clicker)
 		-- Respawn book entity just in case it got lost
@@ -310,7 +311,6 @@ minetest.register_abm({
 				})
 			end
 		end
-		minetest.get_meta(pos):set_int("mcl_enchanting:num_bookshelves", math.min(15, #absolute))
 	end
 }) 
 
