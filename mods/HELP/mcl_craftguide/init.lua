@@ -1100,7 +1100,7 @@ if progressive_mode then
 		local meta = player:get_meta()
 		local name = player:get_player_name()
 		local data = player_data[name]
-		
+
 		data.inv_items = deserialize(meta:get_string("inv_items")) or {}
 	end)
 
@@ -1108,11 +1108,11 @@ if progressive_mode then
 		local meta = player:get_meta()
 		local name = player:get_player_name()
 		local data = player_data[name]
-		
+
 		if not data or not data.inv_items then
 			return
 		end
-		
+
 		meta:set_string("inv_items", serialize(data.inv_items))
 	end
 
