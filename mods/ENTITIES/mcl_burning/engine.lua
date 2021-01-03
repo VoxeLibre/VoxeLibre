@@ -53,7 +53,7 @@ end
 function mcl_burning.get_highest_group_value(obj, groupname)
 	local nodes = mcl_burning.get_touching_nodes(obj, "group:" .. groupname, true)
 	local highest_group_value = 0
-	
+
 	for _, pos in pairs(nodes) do
 		local node = minetest.get_node(pos)
 		local group_value = minetest.get_item_group(node.name, groupname)
@@ -61,7 +61,7 @@ function mcl_burning.get_highest_group_value(obj, groupname)
 			highest_group_value = group_value
 		end
 	end
-	
+
 	return highest_group_value
 end
 
@@ -72,15 +72,15 @@ function mcl_burning.damage(obj)
 	if luaentity then
 		health = luaentity.health
 	end
-	
+
 	local hp = health or obj:get_hp()
-	
+
 	if hp <= 0 then
 		return
 	end
 
 	local do_damage = true
-	
+
 	if obj:is_player() then
 		if mcl_potions.player_has_effect(obj, "fire_proof") then
 			do_damage = false
@@ -121,33 +121,33 @@ function mcl_burning.set_on_fire(obj, burn_time, damage, reason)
 
 	local old_burn_time = mcl_burning.get(obj, "float", "burn_time")
 	local max_fire_prot_lvl = 0
-	
+
 	if obj:is_player() then
 		local inv = obj:get_inventory()
-		
+
 		for i = 2, 5 do
 			local stack = inv:get_stack("armor", i)
-			
+
 			local fire_prot_lvl = mcl_enchanting.get_enchantment(stack, "fire_protection")
 			max_fire_prot_lvl = math.max(max_fire_prot_lvl, fire_prot_lvl)
 		end
 	end
-	
+
 	if max_fire_prot_lvl > 0 then
 		burn_time = burn_time - math.floor(burn_time * max_fire_prot_lvl * 0.15)
 	end
-	
+
 	if old_burn_time <= burn_time then
 		local sound_id = mcl_burning.get(obj, "int", "sound_id")
 		if sound_id == 0 then
 			sound_id = minetest.sound_play("fire_fire", {
 				object = obj,
 				gain = 0.18,
-				max_hear_distance = 32,
+				max_hear_distance = 16,
 				loop = true,
 			}) + 1
 		end
-	
+
 		local hud_id
 		if obj:is_player() then
 			hud_id = mcl_burning.get(obj, "int", "hud_id")
@@ -166,14 +166,14 @@ function mcl_burning.set_on_fire(obj, burn_time, damage, reason)
 		mcl_burning.set(obj, "string", "reason", reason)
 		mcl_burning.set(obj, "int", "hud_id", hud_id)
 		mcl_burning.set(obj, "int", "sound_id", sound_id)
-		
+
 		local fire_entity = minetest.add_entity(obj:get_pos(), "mcl_burning:fire")
 		local minp, maxp = mcl_burning.get_collisionbox(obj)
 		local obj_size = obj:get_properties().visual_size
 
-		local vertical_grow_factor = 1.1
-		local horizontal_grow_factor = 0.9
-		local grow_vector = vector.new(horizontal_grow_factor, vertical_grow_factor, horizontal_grow_factor)	
+		local vertical_grow_factor = 1.2
+		local horizontal_grow_factor = 1.1
+		local grow_vector = vector.new(horizontal_grow_factor, vertical_grow_factor, horizontal_grow_factor)
 
 		local size = vector.subtract(maxp, minp)
 		size = vector.multiply(size, grow_vector)
@@ -190,7 +190,7 @@ function mcl_burning.extinguish(obj)
 	if mcl_burning.is_burning(obj) then
 		local sound_id = mcl_burning.get(obj, "int", "sound_id") - 1
 		minetest.sound_stop(sound_id)
-		
+
 		if obj:is_player() then
 			local hud_id = mcl_burning.get(obj, "int", "hud_id") - 1
 			obj:hud_remove(hud_id)
@@ -210,7 +210,7 @@ function mcl_burning.catch_fire_tick(obj, dtime)
 		mcl_burning.extinguish(obj)
 	else
 		local set_on_fire_value = mcl_burning.get_highest_group_value(obj, "set_on_fire")
-		
+
 		if set_on_fire_value > 0 then
 			mcl_burning.set_on_fire(obj, set_on_fire_value)
 		end
@@ -219,19 +219,19 @@ end
 
 function mcl_burning.tick(obj, dtime)
 	local burn_time = mcl_burning.get(obj, "float", "burn_time") - dtime
-	
+
 	if burn_time <= 0 then
 		mcl_burning.extinguish(obj)
 	else
 		mcl_burning.set(obj, "float", "burn_time", burn_time)
-		
+
 		local damage_timer = mcl_burning.get(obj, "float", "damage_timer") + dtime
-		
+
 		if damage_timer >= 1 then
 			damage_timer = 0
 			mcl_burning.damage(obj)
 		end
-		
+
 		mcl_burning.set(obj, "float", "damage_timer", damage_timer)
 	end
 
@@ -255,9 +255,9 @@ function mcl_burning.fire_entity_step(self, dtime)
 	local obj = self.object
 	local parent = obj:get_attach()
 	local do_remove
-	
+
 	self.doing_step = true
-	
+
 	if not parent or not mcl_burning.is_burning(parent) then
 		do_remove = true
 	else
@@ -269,15 +269,15 @@ function mcl_burning.fire_entity_step(self, dtime)
 			end
 		end
 	end
-	
+
 	self.doing_step = false
-	
+
 	if do_remove then
 		self.removed = true
 		obj:remove()
 		return
 	end
-	
+
 	local animation_timer = self.animation_timer + dtime
 	if animation_timer >= 0.015 then
 		animation_timer = 0
