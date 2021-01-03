@@ -69,8 +69,10 @@ minetest.register_entity("mcl_chests:chest", {
 		self.node_pos = node_pos
 		self.node_name = node_name
 		local obj = self.object
-		obj:set_properties({textures = textures})
-		obj:set_properties({mesh = double and "mcl_chests_double_chest.b3d" or "mcl_chests_chest.b3d"})
+		obj:set_properties({
+			textures = textures,
+			mesh = double and "mcl_chests_double_chest.b3d" or "mcl_chests_chest.b3d",
+		})
 		self:set_yaw(dir)
 	end,
 
@@ -204,11 +206,13 @@ local trapped_chest_mesecons_rules = mesecon.rules.pplate
 local chest_update_after_close = function(pos)
 	local node = minetest.get_node(pos)
 
-	if node.name == "mcl_chests:trapped_chest_on" then
-		minetest.swap_node(pos, {name="mcl_chests:trapped_chest", param2 = node.param2})
+	if node.name == "mcl_chests:trapped_chest_on_small" then
+		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_small", param2 = node.param2})
+		find_or_create_entity(pos, "mcl_chests:trapped_chest_small", {"mcl_chests_trapped.png"}, node.param2, false):reinitialize("mcl_chests:trapped_chest_small")
 		mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
 	elseif node.name == "mcl_chests:trapped_chest_on_left" then
 		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
+		find_or_create_entity(pos, "mcl_chests:trapped_chest_left", {"mcl_chests_trapped_double.png"}, node.param2, true):reinitialize("mcl_chests:trapped_chest_left")
 		mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
 
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
@@ -220,6 +224,7 @@ local chest_update_after_close = function(pos)
 
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
 		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
+		find_or_create_entity(pos_other, "mcl_chests:trapped_chest_left", {"mcl_chests_trapped_double.png"}, node.param2, true):reinitialize("mcl_chests:trapped_chest_left")
 		mesecon.receptor_off(pos_other, trapped_chest_mesecons_rules)
 	end
 end
@@ -831,7 +836,8 @@ register_chest("trapped_chest",
 		rules = trapped_chest_mesecons_rules,
 	}},
 	function(pos, node, clicker)
-		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_on", param2 = node.param2})
+		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_on_small", param2 = node.param2})
+		find_or_create_entity(pos, "mcl_chests:trapped_chest_on_small", {"mcl_chests_trapped.png"}, node.param2, false):reinitialize("mcl_chests:trapped_chest_on_small")
 		mesecon.receptor_on(pos, trapped_chest_mesecons_rules)
 	end,
 	function(pos, node, clicker)
@@ -839,6 +845,7 @@ register_chest("trapped_chest",
 		meta:set_int("players", 1)
 
 		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_on_left", param2 = node.param2})
+		find_or_create_entity(pos, "mcl_chests:trapped_chest_on_left", {"mcl_chests_trapped_double.png"}, node.param2, true):reinitialize("mcl_chests:trapped_chest_on_left")
 		mesecon.receptor_on(pos, trapped_chest_mesecons_rules)
 
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
@@ -852,6 +859,7 @@ register_chest("trapped_chest",
 		mesecon.receptor_on(pos, trapped_chest_mesecons_rules)
 
 		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_on_left", param2 = node.param2})
+		find_or_create_entity(pos_other, "mcl_chests:trapped_chest_on_left", {"mcl_chests_trapped_double.png"}, node.param2, true):reinitialize("mcl_chests:trapped_chest_on_left")
 		mesecon.receptor_on(pos_other, trapped_chest_mesecons_rules)
 	end
 )
@@ -870,13 +878,15 @@ register_chest("trapped_chest_on",
 local function close_if_trapped_chest(pos, player)
 	local node = minetest.get_node(pos)
 
-	if node.name == "mcl_chests:trapped_chest_on" then
-		minetest.swap_node(pos, {name="mcl_chests:trapped_chest", param2 = node.param2})
+	if node.name == "mcl_chests:trapped_chest_on_small" then
+		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_small", param2 = node.param2})
+		find_or_create_entity(pos, "mcl_chests:trapped_chest_small", {"mcl_chests_trapped.png"}, node.param2, false):reinitialize("mcl_chests:trapped_chest_small")
 		mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
 
 		player_chest_close(player)
 	elseif node.name == "mcl_chests:trapped_chest_on_left" then
 		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
+		find_or_create_entity(pos, "mcl_chests:trapped_chest_left", {"mcl_chests_trapped_double.png"}, node.param2, true):reinitialize("mcl_chests:trapped_chest_left")
 		mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
 
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
@@ -890,6 +900,7 @@ local function close_if_trapped_chest(pos, player)
 
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
 		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
+		find_or_create_entity(pos_other, "mcl_chests:trapped_chest_left", {"mcl_chests_trapped_double.png"}, node.param2, true):reinitialize("mcl_chests:trapped_chest_left")
 		mesecon.receptor_off(pos_other, trapped_chest_mesecons_rules)
 
 		player_chest_close(player)
@@ -1242,9 +1253,14 @@ minetest.register_lbm({
 	nodenames = {"mcl_chests:chest", "mcl_chests:trapped_chest", "mcl_chests:trapped_chest_on"},
 	run_at_every_load = false,
 	action = function(pos, node)
-		node.name = node.name .. "_small"
+		local node_name = node.name
+		node.name = node_name .. "_small"
 		minetest.set_node(pos, node)
 		select_and_spawn_entity(pos, node)
+		if node_name == "mcl_chests:trapped_chest_on" then
+			minetest.log("action", "[mcl_chests] Disabled active trapped chest on load: " ..minetest.pos_to_string(pos))
+			chest_update_after_close(pos)
+		end
 	end
 })
 
