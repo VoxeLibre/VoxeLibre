@@ -1248,7 +1248,7 @@ minetest.register_lbm({
 	action = function(pos, node)
 		local node_name = node.name
 		node.name = node_name .. "_small"
-		minetest.set_node(pos, node)
+		minetest.swap_node(pos, node)
 		select_and_spawn_entity(pos, node)
 		if node_name == "mcl_chests:trapped_chest_on" then
 			minetest.log("action", "[mcl_chests] Disabled active trapped chest on load: " ..minetest.pos_to_string(pos))
