@@ -7,6 +7,148 @@ if minetest.get_modpath("screwdriver") then
 	simple_rotate = screwdriver.rotate_simple
 end
 
+-- Chest Entity
+local entity_animations = {}
+local entity_animation_speed = 25
+
+do
+	local names = {"open", "opened", "close", "closed"}
+	local following = {["open"] = "opened", ["close"] = "closed"}
+	local durations = {10, 0, 10, 5}
+	local anim_start = 0
+	for index, name in ipairs(names) do
+		local duration = durations[index]
+		local anim_end = anim_start + duration
+		entity_animations[name] = {
+			bounds = {x = anim_start, y = anim_end},
+			sched_anim = following[name],
+			sched_time = duration / entity_animation_speed
+		}
+		anim_start = anim_end
+	end
+end
+
+minetest.register_entity("mcl_chests:chest", {
+	initial_properties = {
+		visual = "mesh",
+		visual_size = {x = 3, y = 3},
+		pointable = false,
+		physical = false,
+	},
+	
+	set_animation = function(self, animname)
+		local anim = entity_animations[animname]
+		self.object:set_animation(anim.bounds, entity_animation_speed, 0, false)
+		if anim.sched_anim then
+			self.sched_anim = anim.sched_anim
+			self.sched_time = anim.sched_time
+		end
+	end,
+	
+	open = function(self, playername)
+		self.players[playername] = true
+		if not self.is_open then
+			self.is_open = true
+			self:set_animation("open")
+			minetest.sound_play("default_chest_open", {
+				pos = self.node_pos,
+			})
+		end
+	end,
+	
+	close = function(self, playername)
+		local playerlist = self.players
+		playerlist[playername] = nil
+		if self.is_open then
+			for _ in pairs(playerlist) do
+				return
+			end
+			self.is_open = false
+			self:set_animation("close")
+			minetest.sound_play("default_chest_close", {
+				pos = self.node_pos,
+			})
+		end
+	end,
+
+	initialize = function(self, node_pos, node_name, textures, dir, double)
+		self.node_pos = node_pos
+		self.node_name = node_name
+		local obj = self.object
+		obj:set_properties({textures = textures})
+		obj:set_yaw(minetest.dir_to_yaw(dir))
+		obj:set_properties({mesh = double and "mcl_chests_double_chest.b3d" or "mcl_chests_chest.b3d"})
+	end,
+	
+	check = function(self)
+		local node_pos, node_name = self.node_pos, self.node_name
+		if not node_pos or not node_name then
+			return false
+		end
+		local node = minetest.get_node(node_pos)
+		if node.name ~= node_name then
+			return false
+		end
+		return true
+	end,
+
+	on_activate = function(self)
+		self.object:set_armor_groups({immortal = 1})
+		self:set_animation("closed")
+		self.players = {}
+	end,
+	
+	on_step = function(self, dtime)
+		local sched_anim, sched_time = self.sched_anim, self.sched_time
+		if not self:check() then
+			self.object:remove()
+		elseif sched_anim and sched_time then
+			sched_time = sched_time - dtime
+			if sched_time < 0 then
+				self:set_animation(sched_anim)
+				self.sched_time = nil
+				self.sched_anim = nil
+			else
+				self.sched_time = sched_time
+			end
+		end
+	end
+})
+
+local function get_entity_pos(pos, dir, double)
+	pos = vector.new(pos)
+	pos.y = pos.y - 0.4375
+	if double then
+		local add, mul, vec, cross = vector.add, vector.multiply, vector.new, vector.cross
+		pos = add(pos, mul(cross(dir, vec(0, 1, 0)), -0.5))
+	end
+	return pos
+end
+
+local function find_entity(pos)
+	for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 0)) do
+		local luaentity = obj:get_luaentity()
+		if luaentity and luaentity.name == "mcl_chests:chest" then
+			return luaentity
+		end
+	end
+end
+
+local function create_entity(pos, node_name, textures, param2, double, dir, entity_pos)
+	dir = dir or minetest.facedir_to_dir(param2)
+	entity_pos = entity_pos or get_entity_pos(pos, dir, double)
+	local obj = minetest.add_entity(entity_pos, "mcl_chests:chest")
+	local luaentity = obj:get_luaentity()
+	luaentity:initialize(pos, node_name, textures, dir, double)
+	return luaentity
+end
+
+local function find_or_create_entity(pos, node_name, textures, param2, double)
+	local dir = minetest.facedir_to_dir(param2)
+	local entity_pos = get_entity_pos(pos, dir, double)
+	return find_entity(entity_pos) or create_entity(pos, node_name, textures, param2, double, dir, entity_pos)
+end
+
 --[[ List of open chests.
 Key: Player name
 Value:
@@ -14,8 +156,10 @@ Value:
     Otherwise: nil ]]
 local open_chests = {}
 -- To be called if a player opened a chest
-local player_chest_open = function(player, pos)
-	open_chests[player:get_player_name()] = { pos = pos }
+local player_chest_open = function(player, pos, node_name, textures, param2, double)
+	local name = player:get_player_name()
+	open_chests[name] = {pos = pos, node_name = node_name, textures = textures, param2 = param2, double = double}
+	find_or_create_entity(pos, node_name, textures, param2, double):open(name)
 end
 
 -- Simple protection checking functions
@@ -67,11 +211,12 @@ end
 -- To be called if a player closed a chest
 local player_chest_close = function(player)
 	local name = player:get_player_name()
-	if open_chests[name] == nil then
+	local open_chest = open_chests[name]
+	if open_chest == nil then
 		return
 	end
-	local pos = open_chests[name].pos
-	chest_update_after_close(pos)
+	find_or_create_entity(open_chest.pos, open_chest.node_name, open_chest.textures, open_chest.param2, open_chest.double):close(name)
+	chest_update_after_close(open_chest.pos)
 
 	open_chests[name] = nil
 end
@@ -146,18 +291,34 @@ local on_chest_blast = function(pos)
 	minetest.remove_node(pos)
 end
 
-minetest.register_node("mcl_chests:"..basename, {
+local small_name = "mcl_chests:"..basename
+local small_textures = tiles_table.small
+local left_name = "mcl_chests:"..basename.."_left"
+local left_textures = tiles_table.double
+
+minetest.register_node(small_name, {
 	description = desc,
 	_tt_help = tt_help,
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usagehelp,
 	_doc_items_hidden = hidden,
-	tiles = tiles_table.small,
+	drawtype = "airlike",
+	selection_box = {
+		type = "fixed",
+        fixed = {-0.4375, -0.5, -0.4375, 0.4375, 0.375, 0.4375},
+	},
+	collision_box = {
+		type = "fixed",
+        fixed = {-0.4375, -0.5, -0.4375, 0.4375, 0.375, 0.4375},
+	},
+	inventory_image = "mcl_chests_normal.png",
+	tiles = {"blank.png"},
+	_chest_entity_textures = small_textures,
 	paramtype = "light",
 	paramtype2 = "facedir",
 	stack_max = 64,
 	drop = drop,
-	groups = {handy=1,axey=1, container=2, deco_block=1, material_wood=1,flammable=-1},
+	groups = {handy=1,axey=1, container=2, deco_block=1, material_wood=1,flammable=-1,chest_entity=1},
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_construct = function(pos)
@@ -189,12 +350,15 @@ minetest.register_node("mcl_chests:"..basename, {
 			minetest.swap_node(pos, {name="mcl_chests:"..canonical_basename.."_right",param2=param2})
 			local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "right")
 			minetest.swap_node(p, { name = "mcl_chests:"..canonical_basename.."_left", param2 = param2 })
+			create_entity(p, "mcl_chests:"..canonical_basename.."_left", left_textures, param2, true)
 		elseif minetest.get_node(mcl_util.get_double_container_neighbor_pos(pos, param2, "left")).name == "mcl_chests:"..canonical_basename then
 			minetest.swap_node(pos, {name="mcl_chests:"..canonical_basename.."_left",param2=param2})
+			create_entity(pos, "mcl_chests:"..canonical_basename.."_left", left_textures, param2, true)
 			local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "left")
 			minetest.swap_node(p, { name = "mcl_chests:"..canonical_basename.."_right", param2 = param2 })
 		else
 			minetest.swap_node(pos, { name = "mcl_chests:"..canonical_basename, param2 = param2 })
+			create_entity(pos, small_name, small_textures, param2, false)
 		end
 	end,
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
@@ -235,7 +399,7 @@ minetest.register_node("mcl_chests:"..basename, {
 		if name == "" then
 			name = S("Chest")
 		end
-
+		
 		minetest.show_formspec(clicker:get_player_name(),
 		"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[9,8.75]"..
@@ -253,6 +417,8 @@ minetest.register_node("mcl_chests:"..basename, {
 		if on_rightclick_addendum then
 			on_rightclick_addendum(pos, node, clicker)
 		end
+		
+		player_chest_open(clicker, pos, small_name, small_textures, node.param2, false)
 	end,
 
 	on_destruct = function(pos)
@@ -265,11 +431,21 @@ minetest.register_node("mcl_chests:"..basename, {
 	on_rotate = simple_rotate,
 })
 
-minetest.register_node("mcl_chests:"..basename.."_left", {
-	tiles = tiles_table.left,
+minetest.register_node(left_name, {
+	drawtype = "nodebox",
+	selection_box = {
+		type = "fixed",
+        fixed = {-0.4375, -0.5, -0.4375, 1.4375, 0.375, 0.4375},
+	},
+	collision_box = {
+		type = "fixed",
+        fixed = {-0.4375, -0.5, -0.4375, 1.4375, 0.375, 0.4375},
+	},
+	tiles = {"blank.png"},
+	_chest_entity_textures = left_textures,
 	paramtype = "light",
 	paramtype2 = "facedir",
-	groups = {handy=1,axey=1, container=5,not_in_creative_inventory=1, material_wood=1,flammable=-1},
+	groups = {handy=1,axey=1, container=5,not_in_creative_inventory=1, material_wood=1,flammable=-1,chest_entity=1,double_chest=1},
 	drop = drop,
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -281,6 +457,7 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 			n.name = "mcl_chests:"..canonical_basename
 			minetest.swap_node(pos, n)
 		end
+		create_entity(pos, left_name, left_textures, param2, true)
 	end,
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
 		minetest.get_meta(pos):set_string("name", itemstack:get_meta():get_string("name"))
@@ -305,6 +482,7 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 			minetest.close_formspec(players[pl]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..p.x.."_"..p.y.."_"..p.z)
 		end
 		minetest.swap_node(p, { name = "mcl_chests:"..basename, param2 = param2 })
+		create_entity(p, "mcl_chests:"..basename, small_textures, param2, false)
 	end,
 	after_dig_node = drop_items_chest,
 	on_blast = on_chest_blast,
@@ -399,16 +577,26 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		if on_rightclick_addendum_left then
 			on_rightclick_addendum_left(pos, node, clicker)
 		end
+		
+		player_chest_open(clicker, pos, left_name, left_textures, node.param2, true)
 	end,
 	mesecons = mesecons,
 	on_rotate = no_rotate,
 })
 
 minetest.register_node("mcl_chests:"..basename.."_right", {
-	tiles = tiles_table.right,
+	drawtype = "airlike",
 	paramtype = "light",
 	paramtype2 = "facedir",
-	groups = {handy=1,axey=1, container=6,not_in_creative_inventory=1, material_wood=1,flammable=-1},
+	selection_box = {
+		type = "fixed",
+        fixed = {0, 0, 0, 0, 0, 0},
+	},
+	collision_box = {
+		type = "fixed",
+        fixed = {0, 0, 0, 0, 0, 0},
+	},
+	groups = {handy=1,axey=1, container=6,not_in_creative_inventory=1, material_wood=1,flammable=-1,double_chest=2},
 	drop = drop,
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -540,6 +728,8 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		if on_rightclick_addendum_right then
 			on_rightclick_addendum_right(pos, node, clicker)
 		end
+		
+		player_chest_open(clicker, pos_other, left_name, left_textures, node.param2, true)
 	end,
 	mesecons = mesecons,
 	on_rotate = no_rotate,
@@ -561,29 +751,33 @@ register_chest("chest",
 	chestusage,
 	S("27 inventory slots") .. "\n" .. S("Can be combined to a large chest"),
 	{
-		small = {"default_chest_top.png", "mcl_chests_chest_bottom.png",
+		small = {"mcl_chests_normal.png"},
+		double = {"mcl_chests_normal_double.png"},
+		inv = {"default_chest_top.png", "mcl_chests_chest_bottom.png",
 		"mcl_chests_chest_right.png", "mcl_chests_chest_left.png",
 		"mcl_chests_chest_back.png", "default_chest_front.png"},
-		left = {"default_chest_top_big.png", "default_chest_top_big.png",
+		--[[left = {"default_chest_top_big.png", "default_chest_top_big.png",
 		"mcl_chests_chest_right.png", "mcl_chests_chest_left.png",
 		"default_chest_side_big.png^[transformFX", "default_chest_front_big.png"},
 		right = {"default_chest_top_big.png^[transformFX", "default_chest_top_big.png^[transformFX",
 		"mcl_chests_chest_right.png", "mcl_chests_chest_left.png",
-		"default_chest_side_big.png", "default_chest_front_big.png^[transformFX"},
+		"default_chest_side_big.png", "default_chest_front_big.png^[transformFX"},]]--
 	},
 	false
 )
 
 local traptiles = {
-	small = {"mcl_chests_chest_trapped_top.png", "mcl_chests_chest_trapped_bottom.png",
+	small = {"mcl_chests_trapped.png"},
+	double = {"mcl_chests_trapped_double.png"},
+	inv = {"mcl_chests_chest_trapped_top.png", "mcl_chests_chest_trapped_bottom.png",
 	"mcl_chests_chest_trapped_right.png", "mcl_chests_chest_trapped_left.png",
 	"mcl_chests_chest_trapped_back.png", "mcl_chests_chest_trapped_front.png"},
-	left = {"mcl_chests_chest_trapped_top_big.png", "mcl_chests_chest_trapped_top_big.png",
+	--[[left = {"mcl_chests_chest_trapped_top_big.png", "mcl_chests_chest_trapped_top_big.png",
 	"mcl_chests_chest_trapped_right.png", "mcl_chests_chest_trapped_left.png",
 	"mcl_chests_chest_trapped_side_big.png^[transformFX", "mcl_chests_chest_trapped_front_big.png"},
 	right = {"mcl_chests_chest_trapped_top_big.png^[transformFX", "mcl_chests_chest_trapped_top_big.png^[transformFX",
 	"mcl_chests_chest_trapped_right.png", "mcl_chests_chest_trapped_left.png",
-	"mcl_chests_chest_trapped_side_big.png", "mcl_chests_chest_trapped_front_big.png^[transformFX"},
+	"mcl_chests_chest_trapped_side_big.png", "mcl_chests_chest_trapped_front_big.png^[transformFX"},]]--
 }
 
 register_chest("trapped_chest",
@@ -600,7 +794,6 @@ register_chest("trapped_chest",
 	function(pos, node, clicker)
 		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_on", param2 = node.param2})
 		mesecon.receptor_on(pos, trapped_chest_mesecons_rules)
-		player_chest_open(clicker, pos)
 	end,
 	function(pos, node, clicker)
 		local meta = minetest.get_meta(pos)
@@ -612,8 +805,6 @@ register_chest("trapped_chest",
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
 		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_on_right", param2 = node.param2})
 		mesecon.receptor_on(pos_other, trapped_chest_mesecons_rules)
-
-		player_chest_open(clicker, pos)
 	end,
 	function(pos, node, clicker)
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
@@ -623,8 +814,6 @@ register_chest("trapped_chest",
 
 		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_on_left", param2 = node.param2})
 		mesecon.receptor_on(pos_other, trapped_chest_mesecons_rules)
-
-		player_chest_open(clicker, pos)
 	end
 )
 
@@ -634,15 +823,7 @@ register_chest("trapped_chest_on",
 		state = mesecon.state.on,
 		rules = trapped_chest_mesecons_rules,
 	}},
-	function(pos, node, clicker)
-		player_chest_open(clicker, pos)
-	end,
-	function(pos, node, clicker)
-		player_chest_open(clicker, pos)
-	end,
-	function(pos, node, clicker)
-		player_chest_open(clicker, pos)
-	end,
+	nil, nil, nil,
 	"trapped_chest",
 	"trapped_chest"
 )
@@ -676,9 +857,9 @@ local function close_if_trapped_chest(pos, player)
 	end
 end
 
--- Disable trapped chest when it has been closed
+-- Disable chest when it has been closed
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if formname:find("mcl_chests:trapped_chest_") == 1 then
+	if formname:find("mcl_chests:") == 1 then
 		if fields.quit then
 			player_chest_close(player)
 		end
@@ -1001,6 +1182,18 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 	end
 end)
 
+minetest.register_lbm({
+	label = "Spawn Chest entities",
+	name = "mcl_chests:spawn_chest_entities",
+	nodenames = {"group:chest_entity"},
+	run_at_every_load = true,
+	action = function(pos, node)
+		local node_name = node.name
+		local node_def = minetest.registered_nodes[node_name]
+		local double_chest = minetest.get_item_group(node_name, "double_chest") > 0
+		create_entity(pos, node_name, node_def._chest_entity_textures, node.param2, double_chest)
+	end
+})
 
 minetest.register_lbm({
 	-- Disable active/open trapped chests when loaded because nobody could
