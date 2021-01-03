@@ -121,7 +121,7 @@ minetest.register_entity("mcl_chests:chest", {
 
 local function get_entity_pos(pos, dir, double)
 	pos = vector.new(pos)
-	pos.y = pos.y - 0.4375
+	pos.y = pos.y - 0.5
 	if double then
 		local add, mul, vec, cross = vector.add, vector.multiply, vector.new, vector.cross
 		pos = add(pos, mul(cross(dir, vec(0, 1, 0)), -0.5))
@@ -476,11 +476,7 @@ minetest.register_node(small_name, {
 
 minetest.register_node(left_name, {
 	drawtype = "nodebox",
-	selection_box = {
-		type = "fixed",
-        fixed = {-0.4375, -0.5, -0.4375, 0.5, 0.375, 0.4375},
-	},
-	collision_box = {
+	node_box = {
 		type = "fixed",
         fixed = {-0.4375, -0.5, -0.4375, 0.5, 0.375, 0.4375},
 	},
@@ -628,17 +624,14 @@ minetest.register_node(left_name, {
 })
 
 minetest.register_node("mcl_chests:"..basename.."_right", {
-	drawtype = "airlike",
+	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",
-	selection_box = {
+	node_box = {
 		type = "fixed",
         fixed = {-0.5, -0.5, -0.4375, 0.4375, 0.375, 0.4375},
 	},
-	collision_box = {
-		type = "fixed",
-        fixed = {-0.5, -0.5, -0.4375, 0.4375, 0.375, 0.4375},
-	},
+	tiles = {"blank.png"},
 	groups = {handy=1,axey=1, container=6,not_in_creative_inventory=1, material_wood=1,flammable=-1,double_chest=2},
 	drop = drop,
 	is_ground_content = false,
