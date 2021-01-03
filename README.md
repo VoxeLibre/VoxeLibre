@@ -14,9 +14,10 @@ Or you can play in “creative mode” in which you can build almost anything in
 
 #### Gameplay summary
 
-* Sandbox-style gameplay, no goals (for now)
+* Sandbox-style gameplay, no goals
 * Survive: Fight against hostile monsters and hunger
 * Mine for ores and other treasures
+* Magic: Gain experience and enchant your tools
 * Use the collected blocks to create great buildings, your imagination is the limit
 * Collect flowers (and other dye sources) and colorize your world
 * Find some seeds and start farming
@@ -102,7 +103,7 @@ big bugs (such as “missing node” errors or even crashes).
 The following main features are available:
 
 * Tools, weapons
-* Armor (unbalanced)
+* Armor
 * Crafting system: 2×2 grid, crafting table (3×3 grid), furnace, including a crafting guide
 * Chests, large chests, ender chests, shulker boxes
 * Furnaces, hoppers
@@ -117,6 +118,8 @@ The following main features are available:
 * Redstone circuits (partially)
 * Minecarts (partial)
 * Status effects (partial)
+* Experience
+* Enchanting
 * Brewing, potions, tipped arrow (partial)
 * Boats
 * Fire
@@ -142,12 +145,9 @@ The following main features are available:
 The following features are incomplete:
 
 * Generated structures (especially villages)
-* NPCs
 * Some monsters and animals
 * Redstone-related things
 * The End
-* Enchanting
-* Experience
 * Special minecarts
 * A couple of non-trivial blocks and items
 
@@ -261,7 +261,6 @@ Various sources. See the respective mod directories for details.
 
 ## Info for programmers
 You find interesting and useful infos in `API.md`.
-This project is currently mostly a one-person project.
 
 ## Legal information
 This is a fan game, not developed or endorsed by Mojang AB.

@@ -1108,12 +1108,20 @@ if progressive_mode then
 		local meta = player:get_meta()
 		local name = player:get_player_name()
 		local data = player_data[name]
+		local inv_items = data.inv_items
+		if not inv_items then
+			inv_items = {}
+		end
 
+<<<<<<< HEAD
 		if not data or not data.inv_items then
 			return
 		end
 
 		meta:set_string("inv_items", serialize(data.inv_items))
+=======
+		meta:set_string("inv_items", serialize(inv_items))
+>>>>>>> 4c2f3f2b7cea5b132d7485b4d54def1fe72b8e46
 	end
 
 	M.register_on_leaveplayer(function(player)
