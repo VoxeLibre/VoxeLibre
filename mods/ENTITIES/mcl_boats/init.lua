@@ -59,6 +59,15 @@ local boat = {
 	_animation = 0, -- 0: not animated; 1: paddling forwards; -1: paddling forwards
 }
 
+local function detach_player(player)
+	player:set_detach()
+	player:set_properties({visual_size = {x=1, y=1}})
+	mcl_player.player_attached[player:get_player_name()] = false
+	mcl_player.player_set_animation(player, "stand" , 30)
+end
+
+minetest.register_on_respawnplayer(detach_player)
+
 function boat.on_rightclick(self, clicker)
 	if not clicker or not clicker:is_player() then
 		return
@@ -66,10 +75,7 @@ function boat.on_rightclick(self, clicker)
 	local name = clicker:get_player_name()
 	if self._driver and clicker == self._driver then
 		self._driver = nil
-		clicker:set_detach()
-		clicker:set_properties({visual_size = {x=1, y=1}})
-		mcl_player.player_attached[name] = false
-		mcl_player.player_set_animation(clicker, "stand" , 30)
+		detach_player(clicker)
 		local pos = clicker:get_pos()
 		pos = {x = pos.x, y = pos.y + 0.2, z = pos.z}
 		clicker:set_pos(pos)
