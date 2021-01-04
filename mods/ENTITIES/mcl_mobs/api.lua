@@ -3586,35 +3586,20 @@ local mob_step = function(self, dtime)
 	and ((not self.nametag) or (self.nametag == "")) then
 
 		self.lifetimer = self.lifetimer - dtime
-		if self.lifetimer <= 10 then
-
-			-- only despawn away from player
-			local far_objs = minetest.get_objects_inside_radius(pos, 48)
-			for n = 1, #far_objs do
-
-				if far_objs[n]:is_player() then
-
-					local close_objs = minetest.get_objects_inside_radius(pos, 16)
-					for n = 1, #close_objs do
-						if close_objs[n]:is_player() then
-							self.lifetimer = 20
-							return
-						end
-					end
-					if math.random(1, 10) <= 3 then
-						minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos))
-						mcl_burning.extinguish(self.object)
-						self.object:remove()
-						return
-					end
-				else
-					minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos))
-					mcl_burning.extinguish(self.object)
-					self.object:remove()
-					return
-				end
+		local despawn = self.despawn_immediately
+		if not despawn and self.lifetimer <= 10 then
+			if math.random(10) < 4 then
+				despawn = true
+			else
+				self.lifetimer = 20
 			end
 		end
+		if despawn then
+			minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos))
+			mcl_burning.extinguish(self.object)
+			self.object:remove()
+		end
+		self.despawn_immediately = true
 	end
 end
 
@@ -4556,3 +4541,21 @@ function mobs:alias_mob(old_name, new_name)
 	})
 
 end
+
+minetest.register_globalstep(function()
+	for _, player in ipairs(minetest.get_connected_players()) do
+		local pos = player:get_pos()
+		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 24)) do
+			local lua = obj:get_luaentity()
+			if lua and lua._cmi_is_mob then
+				lua.lifetimer = 20
+			end
+		end
+		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 32)) do
+			local lua = obj:get_luaentity()
+			if lua and lua._cmi_is_mob then
+				lua.despawn_immediately = false
+			end
+		end
+	end
+end)
