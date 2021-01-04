@@ -1015,9 +1015,9 @@ minetest.register_node("mcl_chests:ender_chest_small", {
 })
 
 minetest.register_lbm({
-	label = "Update ender chest + shulker box formspecs (0.51.0)",
+	label = "Update shulker box formspecs (0.51.0)",
 	name = "mcl_chests:update_formspecs_0_51_0",
-	nodenames = { "mcl_chests:ender_chest", "group:shulker_box" },
+	nodenames = { "group:shulker_box" },
 	action = function(pos, node)
 		minetest.registered_nodes[node.name].on_construct(pos)
 		minetest.log("action", "[mcl_chests] Node formspec updated at "..minetest.pos_to_string(pos))
