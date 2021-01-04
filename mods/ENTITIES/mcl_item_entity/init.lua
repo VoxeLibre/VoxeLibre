@@ -297,9 +297,9 @@ function minetest.handle_node_drops(pos, drops, digger)
 	* true: Drop itself when dug by shears / silk touch tool
 	* table: Drop every itemstring in this table when dug by shears _mcl_silk_touch_drop
 	]]
-	
+
 	local enchantments = tool and mcl_enchanting.get_enchantments(tool, "silk_touch")
-	
+
 	local silk_touch_drop = false
 	local nodedef = minetest.registered_nodes[dug_node.name]
 	if toolcaps ~= nil and toolcaps.groupcaps and toolcaps.groupcaps.shearsy_dig and nodedef._mcl_shears_drop then
@@ -316,7 +316,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 			drops = nodedef._mcl_silk_touch_drop
 		end
 	end
-	
+
 	if tool and nodedef._mcl_fortune_drop and enchantments.fortune then
 		local fortune_level = enchantments.fortune
 		local fortune_drop = nodedef._mcl_fortune_drop
@@ -331,7 +331,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 			end
 		else
 			-- Fixed Behavior
-			local drop = get_fortune_drops(fortune_drops, fortune_level)
+			local drop = get_fortune_drops(fortune_drop, fortune_level)
 			drops = get_drops(drop, tool:get_name(), dug_node.param2, nodedef.paramtype2)
 		end
 	end
@@ -342,7 +342,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 			mcl_experience.throw_experience(pos, experience_amount)
 		end
 	end
-	
+
 	for _,item in ipairs(drops) do
 		local count
 		if type(item) == "string" then
