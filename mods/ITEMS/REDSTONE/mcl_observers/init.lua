@@ -24,7 +24,7 @@ local rules_up = {{ x = 0, y = -1, z = 0, spread = true }}
 
 function mcl_observers.observer_activate(pos)
 	minetest.after(mcl_vars.redstone_tick, function(pos)
-		node = minetest.get_node(pos)
+		local node = minetest.get_node(pos)
 		if not node then
 			return
 		end
