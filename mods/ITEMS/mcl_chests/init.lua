@@ -1269,7 +1269,7 @@ local function select_and_spawn_entity(pos, node)
 	local node_name = node.name
 	local node_def = minetest.registered_nodes[node_name]
 	local double_chest = minetest.get_item_group(node_name, "double_chest") > 0
-	create_entity(pos, node_name, node_def._chest_entity_textures, node.param2, double_chest, node_def._chest_entity_sound, node_def._chest_entity_mesh)
+	find_or_create_entity(pos, node_name, node_def._chest_entity_textures, node.param2, double_chest, node_def._chest_entity_sound, node_def._chest_entity_mesh)
 end
 
 minetest.register_lbm({
@@ -1284,7 +1284,7 @@ minetest.register_lbm({
 	label = "Replace old chest nodes",
 	name = "mcl_chests:replace_old",
 	nodenames = {"mcl_chests:chest", "mcl_chests:trapped_chest", "mcl_chests:trapped_chest_on", "mcl_chests:ender_chest"},
-	run_at_every_load = false,
+	run_at_every_load = true,
 	action = function(pos, node)
 		local node_name = node.name
 		node.name = node_name .. "_small"
