@@ -215,7 +215,7 @@ minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, 
 		if wielditem then
 			local fire_aspect_level = mcl_enchanting.get_enchantment(wielditem, "fire_aspect")
 			if fire_aspect_level > 0 then
-				mcl_burning.set_on_fire(player, 4, fire_aspect_level * 2, hitter:get_player_name())
+				mcl_burning.set_on_fire(player, 4, fire_aspect_level * 4 - 1, hitter:get_player_name())
 			end
 		end
 	end
