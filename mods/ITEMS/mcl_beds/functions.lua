@@ -92,7 +92,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		-- FIXME: Velocity threshold should be 0.01 but Minetest 5.3.0
 		-- sometimes reports incorrect Y speed. A velocity threshold
 		-- of 0.125 still seems good enough.
-		if vector.length(player:get_velocity()) > 0.125 then
+		if vector.length(player:get_velocity() or player:get_player_velocity()) > 0.125 then
 			minetest.chat_send_player(name, S("You have to stop moving before going to bed!"))
 			return false
 		end
