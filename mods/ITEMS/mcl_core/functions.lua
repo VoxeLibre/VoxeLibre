@@ -1450,10 +1450,11 @@ end
 -- * tiles: Optional custom tiles
 -- * sounds: Optional custom sounds
 -- * clear_colorization: Optional. If true, will clear all paramtype2="color" related node def. fields
+-- * desc: Item description
 --
 -- The snowable nodes also MUST have _mcl_snowed defined to contain the name
 -- of the snowed node.
-mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, tiles, sounds, clear_colorization)
+mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, tiles, sounds, clear_colorization, desc)
 	local def = table.copy(minetest.registered_nodes[itemstring_clear])
 	local create_doc_alias
 	if def.description then
@@ -1462,7 +1463,7 @@ mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, ti
 		create_doc_alias = false
 	end
 	-- Just some group clearing
-	def.description = nil
+	def.description = desc
 	def._doc_items_longdesc = nil
 	def._doc_items_usagehelp = nil
 	def._doc_items_create_entry = false
@@ -1502,6 +1503,8 @@ mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, ti
 	else
 		def.sounds = sounds
 	end
+
+	def._mcl_silk_touch_drop = {itemstring_clear}
 
 	-- Register stuff
 	minetest.register_node(itemstring_snowed, def)
