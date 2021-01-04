@@ -503,7 +503,7 @@ minetest.register_node("mcl_core:gravel", {
 				{items = {'mcl_core:gravel'}}
 			}
 		},
-		[3] = "mcl_core:flint"
+		[3] = "mcl_core:flint",
 	},
 })
 
