@@ -195,7 +195,7 @@ minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, 
 		if wielditem then
 			local fire_aspect_level = mcl_enchanting.get_enchantment(wielditem, "fire_aspect")
 			if fire_aspect_level > 0 then
-				mcl_burning.set_on_fire(player, 4, fire_aspect_level * 2, hitter:get_player_name())
+				mcl_burning.set_on_fire(player, 4, fire_aspect_level * 4 - 1, hitter:get_player_name())
 			end
 		end
 	end
@@ -704,7 +704,7 @@ mcl_enchanting.enchantments.unbreaking = {
 	weight = 5,
 	description = S("Increases item durability."),
 	curse = false,
-	on_enchant = function(itemstack, level)		
+	on_enchant = function(itemstack, level)
 		local tool_capabilities = itemstack:get_tool_capabilities()
 		for group, capability in pairs(tool_capabilities.groupcaps) do
 			capability.uses = capability.uses * (1 + level)
