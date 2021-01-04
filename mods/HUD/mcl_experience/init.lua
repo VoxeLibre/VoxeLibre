@@ -163,7 +163,7 @@ minetest.register_on_joinplayer(function(player)
 
 	name = player:get_player_name()
 	temp_pool = pool[name]
-		
+
 	hud_manager.add_hud(player,"experience_bar",
 	{
 			hud_elem_type = "image",
@@ -175,7 +175,7 @@ minetest.register_on_joinplayer(function(player)
 			alignment = { x = 1, y = 1 },
 			z_index = 11,
 	})
-	
+
 	hud_manager.add_hud(player,"xp_level",
 	{
 	        hud_elem_type = "text", position = {x=0.5, y=1},
@@ -279,7 +279,7 @@ minetest.register_on_dieplayer(function(player)
 	name = player:get_player_name()
 	temp_pool = pool[name]
 	xp_amount = temp_pool.xp
-	
+
 	temp_pool.xp = 0
 	temp_pool.level = 0
 	temp_pool.bar, temp_pool.bar_step, temp_pool.xp_next_level = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)
@@ -312,11 +312,11 @@ local function xp_step(self, dtime)
 			--get the variables
 			pos = self.object:get_pos()
 			pos2 = collector:get_pos()
-			
-			player_velocity = collector:get_player_velocity()
-										
+
+			player_velocity = collector:get_velocity()
+
 			pos2.y = pos2.y + 0.8
-							
+
 			direction = vector.direction(pos,pos2)
 			distance = vector.distance(pos2,pos)
 			multiplier = distance
@@ -413,7 +413,7 @@ local function xp_step(self, dtime)
 		end
 	end
 
-					
+
 	self.age = self.age + dtime
 	if self.age > max_orb_age then
 		self.object:remove()
@@ -598,8 +598,8 @@ function mcl_experience.throw_experience(pos, amount)
 			return false
 		end
 		obj:set_velocity({
-			x=math.random(-2,2)*math.random(), 
-			y=math.random(2,5), 
+			x=math.random(-2,2)*math.random(),
+			y=math.random(2,5),
 			z=math.random(-2,2)*math.random()
 		})
 		i = i + xp
