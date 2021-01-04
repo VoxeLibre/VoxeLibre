@@ -106,9 +106,10 @@ function mcl_burning.damage(obj)
 			damage = 1
 		end
 		local new_hp = hp - damage
-		obj:set_hp(new_hp)
 		if health then
 			luaentity.health = new_hp
+		else
+			obj:set_hp(new_hp)
 		end
 	end
 end
