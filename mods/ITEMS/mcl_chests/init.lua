@@ -28,6 +28,7 @@ minetest.register_entity("mcl_chests:chest", {
 		visual_size = {x = 3, y = 3},
 		pointable = false,
 		physical = false,
+		static_save = false,
 	},
 
 	set_animation = function(self, animname)
