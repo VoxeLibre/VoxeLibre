@@ -16,6 +16,18 @@ for _, f in pairs(builtin_filter_ids) do
 	inventory_lists[f] = {}
 end
 
+local function replace_enchanted_books(tbl)
+	for k, item in ipairs(tbl) do
+		if item:find("mcl_enchanting:book_enchanted") == 1 then
+			local _, enchantment, level = item:match("(%a+) ([_%w]+) (%d+)")
+			level = level and tonumber(level)
+			if enchantment and level then
+				tbl[k] = mcl_enchanting.enchant(ItemStack("mcl_enchanting:book_enchanted"), enchantment, level)
+			end
+		end
+	end
+end
+
 --[[ Populate all the item tables. We only do this once. Note this mod must be
 loaded after _mcl_autogroup for this to work, because it required certain
 groups to be set. ]]
@@ -82,9 +94,31 @@ do
 		end
 	end
 
+	for ench, def in pairs(mcl_enchanting.enchantments) do
+		local str = "mcl_enchanting:book_enchanted " .. ench .. " " .. def.max_level
+		if def.inv_tool_tab then
+			table.insert(inventory_lists["tools"], str)
+		end
+		if def.inv_combat_tab then
+			table.insert(inventory_lists["combat"], str)
+		end
+		table.insert(inventory_lists["all"], str)
+	end
+
 	for _, to_sort in pairs(inventory_lists) do
 		table.sort(to_sort)
+		replace_enchanted_books(to_sort)
 	end
+end
+
+local function filter_item(name, description, lang, filter)
+	local desc
+	if not lang then
+		desc = string.lower(description)
+	else
+		desc = string.lower(minetest.get_translated_string(lang, description))
+	end
+	return string.find(name, filter) or string.find(desc, filter)
 end
 
 local function set_inv_search(filter, player)
@@ -94,19 +128,21 @@ local function set_inv_search(filter, player)
 	local lang = minetest.get_player_information(playername).lang_code
 	for name,def in pairs(minetest.registered_items) do
 		if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and def.description ~= "" then
-			local name = string.lower(def.name)
-			local desc
-			if not lang then
-				desc = string.lower(def.description)
-			else
-				desc = string.lower(minetest.get_translated_string(lang, def.description))
-			end
-			if string.find(name, filter) or string.find(desc, filter) then
+			if filter_item(string.lower(def.name), def.description, lang, filter) then
 				table.insert(creative_list, name)
 			end
 		end
 	end
+	for ench, def in pairs(mcl_enchanting.enchantments) do
+		for i = 1, def.max_level do
+			local stack = mcl_enchanting.enchant(ItemStack("mcl_enchanting:book_enchanted"), ench, i)
+			if filter_item("mcl_enchanting:book_enchanted", minetest.strip_colors(stack:get_description()), lang, filter) then
+				table.insert(creative_list, "mcl_enchanting:book_enchanted " .. ench .. " " .. i)
+			end
+		end
+	end
 	table.sort(creative_list)
+	replace_enchanted_books(creative_list)
 
 	inv:set_size("main", #creative_list)
 	inv:set_list("main", creative_list)
