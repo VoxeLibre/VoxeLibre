@@ -331,7 +331,7 @@ local function xp_step(self, dtime)
 				velocity = vector.multiply(direction,multiplier)
 				goal = velocity
 				acceleration = vector.new(goal.x-currentvel.x,goal.y-currentvel.y,goal.z-currentvel.z)
-				self.object:add_velocity(vector.add(acceleration,player_velocity))
+				self.object:add_velocity(vector.add(acceleration,player_velocity or vector.new(0, 0, 0)))
 			elseif distance < 0.4 then
 				local xp = self._xp
 				local inv = collector:get_inventory()
