@@ -295,20 +295,38 @@ minetest.register_abm({
 	chance = 1,
 	nodenames = "mcl_enchanting:table",
 	action = function(pos)
+		local playernames = {}
+		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 15)) do
+			if obj:is_player() then
+				table.insert(playernames, obj:get_player_name())
+			end
+		end
+		if #playernames < 1 then
+			return
+		end
 		local absolute, relative = mcl_enchanting.get_bookshelves(pos)
 		for i, ap in ipairs(absolute) do
-			if math.random(10) == 1 then
+			if math.random(5) == 1 then
 				local rp = relative[i]
-				minetest.add_particle({
-					pos = ap,
-					velocity = vector.subtract(vector.new(0, 5, 0), rp),
-					acceleration = {x = 0, y = -9.81, z = 0},
-					expirationtime = 2,
-					size = 2,
-					texture = "mcl_enchanting_glyph_" .. math.random(18) .. ".png",
-					collision_detection = true,
-					collision_removal = true,
-				})
+				local t = math.random()+1 --time
+				local d = {x = rp.x, y=rp.y-0.7, z=rp.z} --distance
+				local v = {x = -math.random()*d.x, y = math.random(), z = -math.random()*d.z} --velocity
+				local a = {x = 2*(-v.x*t - d.x)/t/t, y = 2*(-v.y*t - d.y)/t/t, z = 2*(-v.z*t - d.z)/t/t} --acceleration
+				local s = math.random()+0.9 --size
+				t = t - 0.1 --slightly decrease time to avoid texture overlappings
+				local tx = "mcl_enchanting_glyph_" .. math.random(18) .. ".png"
+				for _, name in pairs(playernames) do
+					minetest.add_particle({
+						pos = ap,
+						velocity = v,
+						acceleration = a,
+						expirationtime = t,
+						size = s,
+						texture = tx,
+						collisiondetection = false,
+						playername = name
+					})
+				end
 			end
 		end
 	end
