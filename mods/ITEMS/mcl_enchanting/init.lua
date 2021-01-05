@@ -5,6 +5,7 @@ mcl_enchanting = {
 	book_offset = vector.new(0, 0.75, 0),
 	book_animations = {["close"] = 1, ["opening"] = 2, ["open"] = 3, ["closing"] = 4},
 	book_animation_steps = {0, 640, 680, 700, 740},
+	book_animation_loop = {["open"] = true, ["close"] = true},
 	book_animation_speed = 40,
 	roman_numerals = dofile(modpath .. "/roman_numerals.lua"), 			-- https://exercism.io/tracks/lua/exercises/roman-numerals/solutions/73c2fb7521e347209312d115f872fa49
 	enchantments = {},
@@ -278,7 +279,7 @@ minetest.register_node("mcl_enchanting:table", {
 	drop = "",
 	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 5,
-}) 
+})
 
 minetest.register_craft({
 	output = "mcl_enchanting:table",
@@ -295,24 +296,42 @@ minetest.register_abm({
 	chance = 1,
 	nodenames = "mcl_enchanting:table",
 	action = function(pos)
+		local playernames = {}
+		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 15)) do
+			if obj:is_player() then
+				table.insert(playernames, obj:get_player_name())
+			end
+		end
+		if #playernames < 1 then
+			return
+		end
 		local absolute, relative = mcl_enchanting.get_bookshelves(pos)
 		for i, ap in ipairs(absolute) do
-			if math.random(10) == 1 then
+			if math.random(5) == 1 then
 				local rp = relative[i]
-				minetest.add_particle({
-					pos = ap,
-					velocity = vector.subtract(vector.new(0, 5, 0), rp),
-					acceleration = {x = 0, y = -9.81, z = 0},
-					expirationtime = 2,
-					size = 2,
-					texture = "mcl_enchanting_glyph_" .. math.random(18) .. ".png",
-					collision_detection = true,
-					collision_removal = true,
-				})
+				local t = math.random()+1 --time
+				local d = {x = rp.x, y=rp.y-0.7, z=rp.z} --distance
+				local v = {x = -math.random()*d.x, y = math.random(), z = -math.random()*d.z} --velocity
+				local a = {x = 2*(-v.x*t - d.x)/t/t, y = 2*(-v.y*t - d.y)/t/t, z = 2*(-v.z*t - d.z)/t/t} --acceleration
+				local s = math.random()+0.9 --size
+				t = t - 0.1 --slightly decrease time to avoid texture overlappings
+				local tx = "mcl_enchanting_glyph_" .. math.random(18) .. ".png"
+				for _, name in pairs(playernames) do
+					minetest.add_particle({
+						pos = ap,
+						velocity = v,
+						acceleration = a,
+						expirationtime = t,
+						size = s,
+						texture = tx,
+						collisiondetection = false,
+						playername = name
+					})
+				end
 			end
 		end
 	end
-}) 
+})
 
 minetest.register_lbm({
 	label = "(Re-)spawn book entity above enchanting table",
@@ -330,4 +349,4 @@ minetest.register_on_joinplayer(mcl_enchanting.initialize_player)
 minetest.register_on_player_receive_fields(mcl_enchanting.handle_formspec_fields)
 minetest.register_allow_player_inventory_action(mcl_enchanting.allow_inventory_action)
 minetest.register_on_player_inventory_action(mcl_enchanting.on_inventory_action)
-table.insert(tt.registered_snippets, 1, mcl_enchanting.enchantments_snippet) 
+table.insert(tt.registered_snippets, 1, mcl_enchanting.enchantments_snippet)

@@ -25,21 +25,31 @@ local bobber_ENTITY={
 	objtype="fishing",
 }
 
-local fish = function(itemstack, player)
+local fish = function(itemstack, player, pointed_thing)
+	if pointed_thing and pointed_thing.type == "node" then
+		-- Call on_rightclick if the pointed node defines it
+		local node = minetest.get_node(pointed_thing.under)
+		if player and not player:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, player, itemstack) or itemstack
+			end
+		end
+	end
+
 		local pos = player:get_pos()
 
 		local objs = minetest.get_objects_inside_radius(pos, 125)
 		local num = 0
 		local ent = nil
 		local noent = true
-	
-	
+
+
 		local durability = 65
 		local unbreaking = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
 		if unbreaking > 0 then
 			durability = durability * (unbreaking + 1)
 		end
-		
+
 		--Check for bobber if so handle.
 		for n = 1, #objs do
 			ent = objs[n]:get_luaentity()
@@ -253,7 +263,7 @@ local bobber_on_step = function(self, dtime)
 			-- wait for random number of ticks.
 			local lure_enchantment = wield and mcl_enchanting.get_enchantment(wield, "lure") or 0
 			local reduced = lure_enchantment * 5
-			self._waittime = math.random(math.max(0, 5 - reduced), 30 - reduced) 
+			self._waittime = math.random(math.max(0, 5 - reduced), 30 - reduced)
 		else
 			if self._time < self._waittime then
 				self._time = self._time + dtime
