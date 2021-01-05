@@ -801,7 +801,7 @@ local check_for_death = function(self, cause, cmi_cause)
 	if self.on_die then
 
 		local pos = self.object:get_pos()
-		local on_die_exit = self.on_die(self, pos)
+		local on_die_exit = self.on_die(self, pos, cmi_cause)
 		if on_die_exit ~= true then
 			death_handle(self)
 		end

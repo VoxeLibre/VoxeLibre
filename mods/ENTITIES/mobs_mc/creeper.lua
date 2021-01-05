@@ -37,7 +37,7 @@ mobs:register_mob("mobs_mc:creeper", {
 	run_velocity = 2.1,
 	runaway_from = { "mobs_mc:ocelot", "mobs_mc:cat" },
 	attack_type = "explode",
-	
+
 	explosion_strength = 3,
 	reach = 4,
 	explosion_timer = 1.5,
@@ -76,12 +76,16 @@ mobs:register_mob("mobs_mc:creeper", {
 			end
 		end
 	end,
-	on_die = function(self, pos)
-		-- Drop a random music disc
-		-- TODO: Only do this if killed by skeleton or stray
-		if math.random(1, 200) == 1 then
-			local r = math.random(1, #mobs_mc.items.music_discs)
-			minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, mobs_mc.items.music_discs[r])
+	on_die = function(self, pos, cmi_cause)
+		-- Drop a random music disc when killed by skeleton or stray
+		if cmi_cause and cmi_cause.type == "punch" then
+			local luaentity = cmi_cause.puncher and cmi_cause.puncher:get_luaentity()
+			if luaentity and luaentity.name:find("arrow") then
+				local shooter_luaentity = luaentity._shooter and luaentity._shooter:get_luaentity()
+				if shooter_luaentity and (shooter_luaentity.name == "mobs_mc:skeleton" or shooter_luaentity.name == "mobs_mc:stray") then
+					minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, mobs_mc.items.music_discs[math.random(1, #mobs_mc.items.music_discs)])
+				end
+			end
 		end
 	end,
 	maxdrops = 2,
