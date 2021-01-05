@@ -904,7 +904,7 @@ local sapling_grow_action = function(tree_id, soil_needed, one_by_one, two_by_tw
 			local light = minetest.get_node_light(pos)
 			local soilnode = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
 			local soiltype = minetest.get_item_group(soilnode.name, "soil_sapling")
-			return soiltype >= soil_needed and light and light >= treelight
+			return soiltype >= soil_needed and light and light >= treelight and not minetest.get_meta(pos):get("grown")
 		end
 		if sapling_is_growable(pos) then
 			-- Increase and check growth stage
@@ -913,6 +913,7 @@ local sapling_grow_action = function(tree_id, soil_needed, one_by_one, two_by_tw
 			if stage == nil then stage = 0 end
 			stage = stage + 1
 			if stage >= 3 then
+				meta:set_string("grown", "true")
 				-- This sapling grows in a special way when there are 4 saplings in a 2×2 pattern
 				if two_by_two then
 					-- Check 8 surrounding saplings and try to find a 2×2 pattern
