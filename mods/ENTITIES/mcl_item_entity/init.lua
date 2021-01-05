@@ -274,7 +274,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 	-- by hand. Creative Mode is intentionally ignored in this case.
 
 	local doTileDrops = minetest.settings:get_bool("mcl_doTileDrops", true)
-	if (digger ~= nil or (digger:is_player() and minetest.is_creative_enabled(digger:get_player_name()))) or doTileDrops == false then
+	if (digger and digger:is_player() and minetest.is_creative_enabled(digger:get_player_name())) or doTileDrops == false then
 		return
 	end
 
