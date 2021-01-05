@@ -231,6 +231,7 @@ minetest.register_node("mcl_armor_stand:armor_stand", {
 		minetest.after(1, function(pos)
 			update_entity(pos)
 		end, pos)
+		minetest.set_node(pos, {name = "air"})
 	end,
 	on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_FACE then
