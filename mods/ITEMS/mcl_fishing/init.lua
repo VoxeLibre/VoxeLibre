@@ -121,6 +121,8 @@ local fish = function(itemstack, player, pointed_thing)
 							local inv = player:get_inventory()
 							if inv:room_for_item("main", item) then
 								inv:add_item("main", item)
+							else
+								minetest.add_item(pos, item)
 							end
 							if mcl_experience.throw_experience then
 								mcl_experience.throw_experience(pos, math.random(1,6))
