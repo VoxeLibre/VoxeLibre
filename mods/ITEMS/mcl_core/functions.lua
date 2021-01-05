@@ -22,6 +22,8 @@ minetest.register_abm({
 
 		local lavatype = minetest.registered_nodes[node.name].liquidtype
 
+		print(minetest.pos_to_string(pos))
+
 		for w=1, #water do
 			local waternode = minetest.get_node(water[w])
 			local watertype = minetest.registered_nodes[waternode.name].liquidtype
@@ -39,8 +41,8 @@ minetest.register_abm({
 					(water[w].y == pos.y and (water[w].x == pos.x or water[w].z == pos.z))) then
 				minetest.set_node(pos, {name="mcl_core:obsidian"})
 				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
-			-- Flowing water above flowing lava: Lava turns into cobblestone
-			elseif watertype == "flowing" and lavatype == "flowing" and water[w].y > pos.y and water[w].x == pos.x and water[w].z == pos.z then
+			-- water above flowing lava: Lava turns into cobblestone
+			elseif lavatype == "flowing" and water[w].y > pos.y and water[w].x == pos.x and water[w].z == pos.z then
 				minetest.set_node(pos, {name="mcl_core:cobble"})
 				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 			end
