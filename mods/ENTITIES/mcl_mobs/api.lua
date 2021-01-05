@@ -2776,7 +2776,7 @@ local do_states = function(self, dtime)
 				p.y = p.y + (self.collisionbox[2] + self.collisionbox[5]) / 2
 
 				-- Shoot arrow
-				if minetest.registered_entities[self.arrow] then
+				if not minetest.raycast(self.object:get_pos(), self.attack:get_pos(), false, false):next() and minetest.registered_entities[self.arrow] then
 
 					local arrow, ent
 					local v = 1
