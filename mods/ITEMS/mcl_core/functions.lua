@@ -22,8 +22,6 @@ minetest.register_abm({
 
 		local lavatype = minetest.registered_nodes[node.name].liquidtype
 
-		print(minetest.pos_to_string(pos))
-
 		for w=1, #water do
 			local waternode = minetest.get_node(water[w])
 			local watertype = minetest.registered_nodes[waternode.name].liquidtype
