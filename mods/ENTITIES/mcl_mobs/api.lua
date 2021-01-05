@@ -276,8 +276,11 @@ end
 local get_velocity = function(self)
 
 	local v = self.object:get_velocity()
+	if v then
+		return (v.x * v.x + v.z * v.z) ^ 0.5
+	end
 
-	return (v.x * v.x + v.z * v.z) ^ 0.5
+	return 0
 end
 
 
