@@ -5,6 +5,7 @@ mcl_enchanting = {
 	book_offset = vector.new(0, 0.75, 0),
 	book_animations = {["close"] = 1, ["opening"] = 2, ["open"] = 3, ["closing"] = 4},
 	book_animation_steps = {0, 640, 680, 700, 740},
+	book_animation_loop = {["open"] = true, ["close"] = true},
 	book_animation_speed = 40,
 	roman_numerals = dofile(modpath .. "/roman_numerals.lua"), 			-- https://exercism.io/tracks/lua/exercises/roman-numerals/solutions/73c2fb7521e347209312d115f872fa49
 	enchantments = {},
@@ -278,7 +279,7 @@ minetest.register_node("mcl_enchanting:table", {
 	drop = "",
 	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 5,
-}) 
+})
 
 minetest.register_craft({
 	output = "mcl_enchanting:table",
@@ -330,7 +331,7 @@ minetest.register_abm({
 			end
 		end
 	end
-}) 
+})
 
 minetest.register_lbm({
 	label = "(Re-)spawn book entity above enchanting table",
@@ -348,4 +349,4 @@ minetest.register_on_joinplayer(mcl_enchanting.initialize_player)
 minetest.register_on_player_receive_fields(mcl_enchanting.handle_formspec_fields)
 minetest.register_allow_player_inventory_action(mcl_enchanting.allow_inventory_action)
 minetest.register_on_player_inventory_action(mcl_enchanting.on_inventory_action)
-table.insert(tt.registered_snippets, 1, mcl_enchanting.enchantments_snippet) 
+table.insert(tt.registered_snippets, 1, mcl_enchanting.enchantments_snippet)
