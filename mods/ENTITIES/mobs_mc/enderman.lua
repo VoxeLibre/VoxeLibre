@@ -274,10 +274,10 @@ mobs:register_mob("mobs_mc:enderman", {
 		end
 		-- AGRESSIVELY WARP/CHASE PLAYER BEHAVIOUR HERE.
 		if self.state == "attack" then
-			if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
-				self:teleport(nil)
-				self.state = ""
-			else
+			--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
+				--self:teleport(nil)
+				--self.state = ""
+			--else
 				if self.attack then
 					local target = self.attack
 					local pos = target:get_pos()
@@ -287,7 +287,7 @@ mobs:register_mob("mobs_mc:enderman", {
 						end
 					end
 				end
-			end
+			--end
 		end
 		-- ARROW / DAYTIME PEOPLE AVOIDANCE BEHAVIOUR HERE.
 		-- Check for arrows and people nearby.
@@ -298,9 +298,9 @@ mobs:register_mob("mobs_mc:enderman", {
 			if obj then
 				if minetest.is_player(obj) then
 					-- Warp from players during day.
-					if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
-						self:teleport(nil)
-					end
+					--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
+					--	self:teleport(nil)
+					--end
 				else
 					local lua = obj:get_luaentity()
 					if lua then
@@ -315,14 +315,14 @@ mobs:register_mob("mobs_mc:enderman", {
 		local enderpos = self.object:get_pos()
 		if self.provoked == "broke_contact" then
 			self.provoked = "false"
-			if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
-				self:teleport(nil)
-				self.state = ""
-			else
+			--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
+			--	self:teleport(nil)
+			--	self.state = ""
+			--else
 				if self.attack ~= nil then
 					self.state = 'attack'
 				end
-			end
+			--end
 		end
 		-- Check to see if people are near by enough to look at us.
 		local objs = minetest.get_objects_inside_radius(enderpos, 64)
@@ -528,13 +528,13 @@ mobs:register_mob("mobs_mc:enderman", {
 	do_punch = function(self, hitter, tflp, tool_caps, dir)
 		-- damage from rain caused by itself so we don't want it to attack itself.
 		if hitter ~= self.object and hitter ~= nil then
-			if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
-				self:teleport(nil)
-			else
+			--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
+			--	self:teleport(nil)
+			--else
 				self:teleport(hitter)
 				self.attack=hitter
 				self.state="attack"
-			end
+			--end
 		end
 	end,
 	armor = { fleshy = 100, water_vulnerable = 100 },
