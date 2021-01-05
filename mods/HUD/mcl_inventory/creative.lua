@@ -589,7 +589,9 @@ if minetest.is_creative_enabled("") then
 
 	function minetest.handle_node_drops(pos, drops, digger)
 		if not digger or not digger:is_player() then
-			return
+			for _,item in ipairs(drops) do
+				minetest.add_item(pos, item)
+			end
 		end
 		local inv = digger:get_inventory()
 		if inv then
