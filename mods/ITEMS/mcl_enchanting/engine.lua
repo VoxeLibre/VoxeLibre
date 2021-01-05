@@ -279,7 +279,7 @@ function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_leve
 				if weights[enchantment] >= r then
 					selected_enchantment = enchantment
 					break
-				end	
+				end
 			end
 			local enchantment_def = mcl_enchanting.enchantments[selected_enchantment]
 			local power_range_table = enchantment_def.power_range_table
@@ -340,7 +340,7 @@ end
 function mcl_enchanting.get_random_glyph_row()
 	local glyphs = ""
 	local x = 1.3
-	for i = 1, 9 do			
+	for i = 1, 9 do
 		glyphs = glyphs .. "image[".. x .. ",0.1;0.5,0.5;mcl_enchanting_glyph_" .. math.random(18) .. ".png^[colorize:#675D49:255]"
 		x = x + 0.6
 	end
@@ -560,7 +560,7 @@ end
 function mcl_enchanting.set_book_animation(self, anim)
 	local anim_index = mcl_enchanting.book_animations[anim]
 	local start, stop = mcl_enchanting.book_animation_steps[anim_index], mcl_enchanting.book_animation_steps[anim_index + 1]
-	self.object:set_animation({x = start, y = stop}, mcl_enchanting.book_animation_speed)
+	self.object:set_animation({x = start, y = stop}, mcl_enchanting.book_animation_speed, 0, mcl_enchanting.book_animation_loop[anim] or false)
 	self.scheduled_anim = nil
 	self.anim_length = (stop - start) / 40
 end
