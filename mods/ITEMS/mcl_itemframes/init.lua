@@ -145,8 +145,9 @@ minetest.register_node("mcl_itemframes:item_frame",{
 	paramtype = "light",
 	paramtype2 = "facedir",
 	sunlight_propagates = true,
-	groups = { dig_immediate=3,deco_block=1,dig_by_piston=1,container=7 },
+	groups = { dig_immediate=3,deco_block=1,dig_by_piston=1,container=7,attached_node_facedir=1 },
 	sounds = mcl_sounds.node_sound_defaults(),
+	node_placement_prediction = "",
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type ~= "node" then
 			return itemstack
@@ -160,20 +161,7 @@ minetest.register_node("mcl_itemframes:item_frame",{
 			end
 		end
 
-		if pointed_thing.above.y ~= pointed_thing.under.y then
-			return itemstack
-		end
-
-		if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].buildable_to then
-			return itemstack
-		end
-
-		local new_itemstack, success = minetest.item_place(itemstack, placer, pointed_thing)
-		local node = minetest.get_node(pointed_thing.above)
-		node.param2 = minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under))
-		minetest.swap_node(pointed_thing.above, node)
-
-		return new_itemstack
+		return minetest.item_place(itemstack, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
 	end,
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
