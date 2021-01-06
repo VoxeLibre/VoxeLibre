@@ -320,7 +320,7 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 		if do_drop or on_blast ~= nil then
 			local npos = minetest.get_position_from_hash(hash)
 			if on_blast ~= nil then
-				on_blast(npos, 1.0)
+				on_blast(npos, 1.0, do_drop)
 				remove = false
 			else
 				local name = minetest.get_name_from_content_id(data[idx])

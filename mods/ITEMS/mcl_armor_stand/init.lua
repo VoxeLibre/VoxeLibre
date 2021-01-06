@@ -223,7 +223,7 @@ minetest.register_node("mcl_armor_stand:armor_stand", {
 	after_destruct = function(pos)
 		update_entity(pos)
 	end,
-	on_blast = function(pos)
+	on_blast = function(pos, _, do_drop)
 		local object = get_stand_object(pos)
 		if object then
 			object:remove()
@@ -231,7 +231,10 @@ minetest.register_node("mcl_armor_stand:armor_stand", {
 		minetest.after(1, function(pos)
 			update_entity(pos)
 		end, pos)
-		minetest.set_node(pos, {name = "air"})
+		minetest.remove_node(pos)
+		if do_drop then
+			minetest.add_item(pos, "mcl_armor_stand:armor_stand")
+		end
 	end,
 	on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_FACE then
