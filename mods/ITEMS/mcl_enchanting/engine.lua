@@ -148,7 +148,6 @@ function mcl_enchanting.combine(itemstack, combine_with)
 	local combine_name = combine_with:get_name()
 	local enchanted_itemname = mcl_enchanting.get_enchanted_itemstring(itemname)
 	if enchanted_itemname ~= mcl_enchanting.get_enchanted_itemstring(combine_name) and not mcl_enchanting.is_book(combine_name) then
-		print(combine_name, mcl_enchanting.is_book(combine_name))
 		return false
 	end
 	local enchantments = mcl_enchanting.get_enchantments(itemstack)
@@ -221,6 +220,7 @@ function mcl_enchanting.initialize()
 				new_def.wield_image = new_def.wield_image .. mcl_enchanting.overlay
 			end
 			new_def.groups.not_in_creative_inventory = 1
+			new_def.groups.not_in_craft_guide = 1
 			new_def.groups.enchanted = 1
 			new_def.texture = itemdef.texture or itemname:gsub("%:", "_")
 			new_def._mcl_enchanting_enchanted_tool = new_name
