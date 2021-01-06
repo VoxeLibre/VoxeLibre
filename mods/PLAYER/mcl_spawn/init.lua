@@ -122,8 +122,7 @@ local function good_for_respawn(pos)
 		(def1.damage_per_second == nil or def2.damage_per_second <= 0)
 end
 
--- Respawn player at specified respawn position
-minetest.register_on_respawnplayer(function(player)
+mcl_spawn.spawn = function(player)
 	local pos, custom_spawn = mcl_spawn.get_spawn_pos(player)
 	if pos and custom_spawn then
 		-- Check if bed is still there
@@ -155,12 +154,14 @@ minetest.register_on_respawnplayer(function(player)
 			local spawn_pos = vector.add(pos, offset)
 			if good_for_respawn(spawn_pos) then
 				player:set_pos(spawn_pos)
-				return true
+				return true, spawn_pos
 			end
 		end
 
 		-- We here if we didn't find suitable place for respawn:
 		return false
 	end
-end)
+end
 
+-- Respawn player at specified respawn position
+minetest.register_on_respawnplayer(mcl_spawn.spawn)
