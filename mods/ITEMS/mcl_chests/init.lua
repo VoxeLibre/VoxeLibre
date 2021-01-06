@@ -146,6 +146,23 @@ local on_chest_blast = function(pos)
 	minetest.remove_node(pos)
 end
 
+local function limit_put_list(stack, list)
+	for _, other in ipairs(list) do
+		stack = other:add_item(stack)
+		if stack:is_empty() then
+			break
+		end
+	end
+	return stack
+end
+
+local function limit_put(stack, inv1, inv2)
+	local leftover = ItemStack(stack)
+	leftover = limit_put_list(leftover, inv1:get_list("main"))
+	leftover = limit_put_list(leftover, inv2:get_list("main"))
+	return stack:get_count() - leftover:get_count()
+end
+
 minetest.register_node("mcl_chests:"..basename, {
 	description = desc,
 	_tt_help = tt_help,
@@ -318,17 +335,19 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		-- BEGIN OF LISTRING WORKAROUND
 		elseif listname == "input" then
 			local inv = minetest.get_inventory({type="node", pos=pos})
-			if inv:room_for_item("main", stack) then
+			local other_pos = mcl_util.get_double_container_neighbor_pos(pos, minetest.get_node(pos).param2, "left")
+			local other_inv = minetest.get_inventory({type="node", pos=other_pos})
+			return limit_put(stack, inv, other_inv)
+			--[[if inv:room_for_item("main", stack) then
 				return -1
 			else
-				local other_pos = mcl_util.get_double_container_neighbor_pos(pos, minetest.get_node(pos).param2, "left")
-				local other_inv = minetest.get_inventory({type="node", pos=other_pos})
+
 				if other_inv:room_for_item("main", stack) then
 					return -1
 				else
 					return 0
 				end
-			end
+			end]]--
 		-- END OF LISTRING WORKAROUND
 		else
 			return stack:get_count()
@@ -346,6 +365,8 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 			local inv = minetest.get_inventory({type="node", pos=pos})
 			local other_pos = mcl_util.get_double_container_neighbor_pos(pos, minetest.get_node(pos).param2, "left")
 			local other_inv = minetest.get_inventory({type="node", pos=other_pos})
+
+			inv:set_stack("input", 1, nil)
 
 			double_chest_add_item(inv, other_inv, "main", stack)
 		end
@@ -459,16 +480,17 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		elseif listname == "input" then
 			local other_pos = mcl_util.get_double_container_neighbor_pos(pos, minetest.get_node(pos).param2, "right")
 			local other_inv = minetest.get_inventory({type="node", pos=other_pos})
-			if other_inv:room_for_item("main", stack) then
+			local inv = minetest.get_inventory({type="node", pos=pos})
+			--[[if other_inv:room_for_item("main", stack) then
 				return -1
 			else
-				local inv = minetest.get_inventory({type="node", pos=pos})
 				if inv:room_for_item("main", stack) then
 					return -1
 				else
 					return 0
 				end
-			end
+			end--]]
+			return limit_put(stack, other_inv, inv)
 		-- END OF LISTRING WORKAROUND
 		else
 			return stack:get_count()
@@ -486,6 +508,8 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 			local other_pos = mcl_util.get_double_container_neighbor_pos(pos, minetest.get_node(pos).param2, "right")
 			local other_inv = minetest.get_inventory({type="node", pos=other_pos})
 			local inv = minetest.get_inventory({type="node", pos=pos})
+
+			inv:set_stack("input", 1, nil)
 
 			double_chest_add_item(other_inv, inv, "main", stack)
 		end
