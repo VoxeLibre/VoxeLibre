@@ -3,7 +3,7 @@
 
 mobs = {}
 mobs.mod = "mrm"
-mobs.version = "20180531" -- don't rely too much on this, rarely updated, if ever
+mobs.version = "20210106" -- don't rely too much on this, rarely updated, if ever
 
 local MAX_MOB_NAME_LENGTH = 30
 local HORNY_TIME = 30
@@ -3589,20 +3589,17 @@ local mob_step = function(self, dtime)
 	and ((not self.nametag) or (self.nametag == "")) then
 
 		self.lifetimer = self.lifetimer - dtime
-		local despawn = self.despawn_immediately
-		if not despawn and self.lifetimer <= 10 then
+		if self.despawn_immediately or self.lifetimer <= 0 then
+			minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos, 1))
+			mcl_burning.extinguish(self.object)
+			self.object:remove()
+		elseif self.lifetimer <= 10 then
 			if math.random(10) < 4 then
-				despawn = true
+				self.despawn_immediately = true
 			else
 				self.lifetimer = 20
 			end
 		end
-		if despawn then
-			minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos, 1))
-			mcl_burning.extinguish(self.object)
-			self.object:remove()
-		end
-		self.despawn_immediately = true
 	end
 end
 
@@ -4545,20 +4542,19 @@ function mobs:alias_mob(old_name, new_name)
 
 end
 
-minetest.register_globalstep(function()
+local timer = 0
+minetest.register_globalstep(function(dtime)
+	timer = timer + dtime
+	if timer < 1 then return end
 	for _, player in ipairs(minetest.get_connected_players()) do
 		local pos = player:get_pos()
-		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 24)) do
+		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 47)) do
 			local lua = obj:get_luaentity()
 			if lua and lua._cmi_is_mob then
-				lua.lifetimer = 20
-			end
-		end
-		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 32)) do
-			local lua = obj:get_luaentity()
-			if lua and lua._cmi_is_mob then
+				lua.lifetimer = math.max(20, lua.lifetimer)
 				lua.despawn_immediately = false
 			end
 		end
 	end
+	timer = 0
 end)
