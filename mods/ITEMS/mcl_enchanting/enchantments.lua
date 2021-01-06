@@ -34,7 +34,7 @@ mcl_enchanting.enchantments.bane_of_arthropods = {
 	primary = {sword = true},
 	secondary = {axe = true},
 	disallow = {},
-	incompatible = {smite = true, shaprness = true},
+	incompatible = {smite = true, sharpness = true},
 	weight = 5,
 	description = S("Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites)."),
 	curse = false,
