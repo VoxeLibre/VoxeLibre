@@ -225,7 +225,7 @@ end
 minetest.register_abm({
 	label = "End portal teleportation",
 	nodenames = {"mcl_portals:portal_end"},
-	interval = 1,
+	interval = 0.1,
 	chance = 1,
 	action = function(pos, node)
 		for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
