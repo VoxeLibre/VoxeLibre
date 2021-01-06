@@ -683,7 +683,7 @@ mcl_enchanting.enchantments.thorns = {
 	primary = {armor_head = true},
 	secondary = {armor_torso = true, armor_legs = true, armor_feet = true},
 	disallow = {non_combat_armor = true},
-	incompatible = {blast_protection = true, fire_protection = true, projectile_protection = true},
+	incompatible = {},
 	weight = 1,
 	description = S("Reflects some of the damage taken when hit, at the cost of reducing durability with each proc."),
 	curse = false,
