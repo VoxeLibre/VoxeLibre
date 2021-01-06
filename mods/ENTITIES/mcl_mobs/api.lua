@@ -1148,7 +1148,7 @@ local do_env_damage = function(self)
 		end
 
 	-- damage_per_second node check
-	elseif nodef.damage_per_second ~= 0 then
+	elseif nodef.damage_per_second ~= 0 and not nodef.groups.lava and not nodef.groups.fire then
 
 		self.health = self.health - nodef.damage_per_second
 
