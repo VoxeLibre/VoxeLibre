@@ -2764,8 +2764,12 @@ local do_states = function(self, dtime)
 
 			set_velocity(self, 0)
 
+			local p = self.object:get_pos()
+			p.y = p.y + (self.collisionbox[2] + self.collisionbox[5]) / 2
+
 			if self.shoot_interval
 			and self.timer > self.shoot_interval
+			and not minetest.raycast(p, self.attack:get_pos(), false, false):next()
 			and random(1, 100) <= 60 then
 
 				self.timer = 0
@@ -2774,12 +2778,8 @@ local do_states = function(self, dtime)
 				-- play shoot attack sound
 				mob_sound(self, "shoot_attack")
 
-				local p = self.object:get_pos()
-
-				p.y = p.y + (self.collisionbox[2] + self.collisionbox[5]) / 2
-
 				-- Shoot arrow
-				if not minetest.raycast(self.object:get_pos(), self.attack:get_pos(), false, false):next() and minetest.registered_entities[self.arrow] then
+				if minetest.registered_entities[self.arrow] then
 
 					local arrow, ent
 					local v = 1
