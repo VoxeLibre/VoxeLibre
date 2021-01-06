@@ -1292,12 +1292,11 @@ local do_jump = function(self)
 	if self.walk_chance == 0
 	or minetest.registered_items[nod.name].walkable then
 
-		local v = self.object:get_velocity()
-
-		if v.y == 0
-		and minetest.get_item_group(nod.name, "fence") == 0
+		if minetest.get_item_group(nod.name, "fence") == 0
 		and minetest.get_item_group(nod.name, "fence_gate") == 0
 		and minetest.get_item_group(nod.name, "wall") == 0 then
+
+			local v = self.object:get_velocity()
 
 			v.y = self.jump_height
 
@@ -1312,7 +1311,7 @@ local do_jump = function(self)
 				end
 				self.object:set_acceleration({
 					x = v.x * 2,
-					y = 0,
+					y = -10,
 					z = v.z * 2,
 				})
 			end, self, v)
