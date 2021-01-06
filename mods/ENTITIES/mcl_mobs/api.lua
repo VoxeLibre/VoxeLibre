@@ -3179,7 +3179,7 @@ local mob_staticdata = function(self)
 	and ((not self.nametag) or (self.nametag == ""))
 	and self.lifetimer <= 20 then
 
-		minetest.log("action", "Mob "..name.." despawns in mob_staticdata at "..minetest.pos_to_string(self.object.get_pos()))
+		minetest.log("action", "Mob "..name.." despawns in mob_staticdata at "..minetest.pos_to_string(self.object.get_pos(), 1))
 		mcl_burning.extinguish(self.object)
 		self.object:remove()
 
@@ -3598,7 +3598,7 @@ local mob_step = function(self, dtime)
 			end
 		end
 		if despawn then
-			minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos))
+			minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos, 1))
 			mcl_burning.extinguish(self.object)
 			self.object:remove()
 		end
