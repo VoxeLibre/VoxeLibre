@@ -4,7 +4,7 @@ local VISUAL_SIZE = 0.3
 
 minetest.register_entity("mcl_itemframes:item",{
 	hp_max = 1,
-	visual = "wielditem",
+	visual = "item",
 	visual_size = {x=VISUAL_SIZE, y=VISUAL_SIZE},
 	physical = false,
 	pointable = false,
