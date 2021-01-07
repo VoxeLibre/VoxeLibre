@@ -306,7 +306,7 @@ local function xp_step(self, dtime)
 			return
 		end
 		collector = minetest.get_player_by_name(self.collector)
-		if collector and collector:get_hp() > 0 and vector.distance(self.object:get_pos(),collector:get_pos()) < 5 then
+		if collector and collector:get_hp() > 0 and vector.distance(self.object:get_pos(),collector:get_pos()) < 7.25 then
 			self.object:set_acceleration(vector.new(0,0,0))
 			self.disable_physics(self)
 			--get the variables
