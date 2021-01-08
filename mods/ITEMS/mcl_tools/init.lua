@@ -276,7 +276,6 @@ minetest.register_tool("mcl_tools:shovel_wood", {
 	_doc_items_usagehelp = shovel_use,
 	_doc_items_hidden = false,
 	inventory_image = "default_tool_woodshovel.png",
-	wield_image = "default_tool_woodshovel.png^[transformR90",
 	wield_scale = wield_scale,
 	groups = { tool=1, shovel=1, dig_speed_class=2, enchantability=15 },
 	tool_capabilities = {
@@ -297,7 +296,6 @@ minetest.register_tool("mcl_tools:shovel_stone", {
 	_doc_items_longdesc = shovel_longdesc,
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_stoneshovel.png",
-	wield_image = "default_tool_stoneshovel.png^[transformR90",
 	wield_scale = wield_scale,
 	groups = { tool=1, shovel=1, dig_speed_class=3, enchantability=5 },
 	tool_capabilities = {
@@ -318,7 +316,6 @@ minetest.register_tool("mcl_tools:shovel_iron", {
 	_doc_items_longdesc = shovel_longdesc,
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_steelshovel.png",
-	wield_image = "default_tool_steelshovel.png^[transformR90",
 	wield_scale = wield_scale,
 	groups = { tool=1, shovel=1, dig_speed_class=4, enchantability=14 },
 	tool_capabilities = {
@@ -339,7 +336,6 @@ minetest.register_tool("mcl_tools:shovel_gold", {
 	_doc_items_longdesc = shovel_longdesc,
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_goldshovel.png",
-	wield_image = "default_tool_goldshovel.png^[transformR90",
 	wield_scale = wield_scale,
 	groups = { tool=1, shovel=1, dig_speed_class=6, enchantability=22 },
 	tool_capabilities = {
@@ -360,7 +356,6 @@ minetest.register_tool("mcl_tools:shovel_diamond", {
 	_doc_items_longdesc = shovel_longdesc,
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_diamondshovel.png",
-	wield_image = "default_tool_diamondshovel.png^[transformR90",
 	wield_scale = wield_scale,
 	groups = { tool=1, shovel=1, dig_speed_class=5, enchantability=10 },
 	tool_capabilities = {
