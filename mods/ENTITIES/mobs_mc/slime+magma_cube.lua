@@ -221,7 +221,8 @@ local magma_cube_big = {
 	walk_chance = 0,
 	fear_height = 0,
 	spawn_small_alternative = "mobs_mc:magma_cube_small",
-	on_die = spawn_children_on_die("mobs_mc:magma_cube_small", 3, 0.8, 1.5)
+	on_die = spawn_children_on_die("mobs_mc:magma_cube_small", 3, 0.8, 1.5),
+	fire_resistant = true,
 }
 mobs:register_mob("mobs_mc:magma_cube_big", magma_cube_big)
 
