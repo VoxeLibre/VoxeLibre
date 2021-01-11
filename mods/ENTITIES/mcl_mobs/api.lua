@@ -3077,6 +3077,18 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 				kb = kb * 1.5
 			end
 
+
+			local luaentity
+			if hitter then
+				luaentity = hitter:get_luaentity()
+			end
+			if hitter and hitter:is_player() then
+				local wielditem = hitter:get_wielded_item()
+				kb = kb + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
+			elseif luaentity and luaentity._knockback then
+				kb = kb + luaentity._knockback
+			end
+
 			self.object:set_velocity({
 				x = dir.x * kb,
 				y = dir.y * kb + up,
