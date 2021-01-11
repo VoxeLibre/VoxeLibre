@@ -331,6 +331,7 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/blocks,endframe_side.png,/mods/ITEMS/mcl_end/textures,mcl_end_endframe_side.png,,,,,,,
 /assets/minecraft/textures/blocks,endframe_top.png,/mods/ITEMS/mcl_end/textures,mcl_end_endframe_top.png,,,,,,,
 /assets/minecraft/textures/blocks,end_stone.png,/mods/ITEMS/mcl_end/textures,mcl_end_end_stone.png,,,,,,,
+/assets/minecraft/textures/items/,end_crystal.png,/mods/ITEMS/mcl_end/textures,mcl_end_crystal_item.png,,,,,,,
 /assets/minecraft/textures/entity/endercrystal,endercrystal.png,/mods/ITEMS/mcl_end/textures,mcl_end_crystal.png,,,,,,,
 /assets/minecraft/textures/blocks,purpur_block.png,/mods/ITEMS/mcl_end/textures,mcl_end_purpur_block.png,,,,,,,
 /assets/minecraft/textures/blocks,purpur_pillar.png,/mods/ITEMS/mcl_end/textures,mcl_end_purpur_pillar.png,,,,,,,
