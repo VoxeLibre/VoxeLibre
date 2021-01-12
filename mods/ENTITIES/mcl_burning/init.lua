@@ -34,15 +34,3 @@ end)
 minetest.register_on_leaveplayer(function(player)
 	mcl_burning.set(player, "int", "hud_id")
 end)
-
-minetest.register_chatcommand("burn", {
-	func = function(name, param)
-		local player = minetest.get_player_by_name(name)
-		local sparam = param:split(" ")
-		local burn_time = tonumber(sparam[1]) or 5
-		local damage = tonumber(sparam[2]) or 0
-		if player then
-			mcl_burning.set_on_fire(player, burn_time, damage)
-		end
-	end
-})
