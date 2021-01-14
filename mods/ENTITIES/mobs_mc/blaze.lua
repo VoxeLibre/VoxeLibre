@@ -91,6 +91,7 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 		if rawget(_G, "armor") and armor.last_damage_types then
 			armor.last_damage_types[player:get_player_name()] = "fireball"
 		end
+		mcl_burning.set_on_fire(player, 5, 1, "blaze")
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 5},
@@ -98,6 +99,7 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 	end,
 
 	hit_mob = function(self, mob)
+		mcl_burning.set_on_fire(mob, 5)
 		mob:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 5},
