@@ -1,8 +1,8 @@
 # MineClone 2
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by davedevils.
-Developed by Wuzzy and contributors. Not developed or endorsed by Mojang AB.
+Developed by many people. Not developed or endorsed by Mojang AB.
 
-Version: 0.69.1
+Version: 0.70.0
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -195,7 +195,7 @@ Please report all bugs and missing Minecraft features here:
 There are so many people to list (sorry). Check out the respective mod directories for details. This section is only a rough overview of the core authors of this game.
 
 ### Coding
-* [Wuzzy](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3082): Main programmer of most mods
+* [Wuzzy](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3082): Main programmer of most mods (retired)
 * davedevils: Creator of MineClone on which MineClone 2 is based on
 * [ex-bart](https://github.com/ex-bart): Redstone comparators
 * [Rootyjr](https://github.com/Rootyjr): Fishing rod and bugfixes
