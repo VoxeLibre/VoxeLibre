@@ -1,23 +1,23 @@
 local S = minetest.get_translator("mcl_beds")
 
-local reverse = true
-
-local function destruct_bed(pos, is_top)
-	local node = minetest.get_node(pos)
-	local other
+local function destruct_bed(pos, oldnode)
+	local node = oldnode or minetest.get_node(pos)
+	if not node then return end
 	local dir = minetest.facedir_to_dir(node.param2)
-	if is_top then
-		other = vector.subtract(pos, dir)
-	else
-		other = vector.add(pos, dir)
-	end
-
-	if reverse then
-		reverse = not reverse
-		minetest.remove_node(other)
-		minetest.check_for_falling(other)
-	else
-		reverse = not reverse
+	local pos2, node2
+	if string.sub(node.name, -4) == "_top" then
+		pos2 = vector.subtract(pos, dir)
+		node2 = minetest.get_node(pos2)
+		if node2 and string.sub(node2.name, -7) == "_bottom" then
+			minetest.remove_node(pos2)
+		end
+		minetest.check_for_falling(pos)
+	elseif string.sub(node.name, -7) == "_bottom" then
+		pos2 = vector.add(pos, dir)
+		node2 = minetest.get_node(pos2)
+		if node2 and string.sub(node2.name, -4) == "_top" then
+			minetest.remove_node(pos2)
+		end
 	end
 end
 
@@ -139,10 +139,7 @@ function mcl_beds.register_bed(name, def)
 			return itemstack
 		end,
 
-		on_destruct = function(pos)
-			destruct_bed(pos, false)
-			kick_player_after_destruct(pos)
-		end,
+		after_destruct = destruct_bed,
 
 		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 			mcl_beds.on_rightclick(pos, clicker, false)
@@ -205,7 +202,7 @@ function mcl_beds.register_bed(name, def)
 		_mcl_hardness = 0.2,
 		_mcl_blast_resistance = 1,
 		sounds = def.sounds or default_sounds,
-		drop = name .. "_bottom",
+		drop = "",
 		node_box = node_box_top,
 		selection_box = selection_box_top,
 		collision_box = collision_box_top,
@@ -214,10 +211,7 @@ function mcl_beds.register_bed(name, def)
 			return itemstack
 		end,
 		on_rotate = false,
-		on_destruct = function(pos)
-			destruct_bed(pos, true)
-			kick_player_after_destruct(pos)
-		end,
+		after_destruct = destruct_bed,
 	})
 
 	minetest.register_alias(name, name .. "_bottom")
