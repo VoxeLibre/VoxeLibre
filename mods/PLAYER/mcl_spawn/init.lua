@@ -372,11 +372,15 @@ function mcl_spawn.shadow_worker()
 
 	minetest.after(respawn_search_interval, mcl_spawn.shadow_worker)
 end
-minetest.after(respawn_search_initial_delay, mcl_spawn.shadow_worker)
 
-minetest.register_on_shutdown(function()
+minetest.after(respawn_search_initial_delay, function()
+	mcl_spawn.shadow_worker()
+
+	minetest.register_on_shutdown(function()
 		storage:set_int("mcl_spawn_success", success and 1 or 0)
-		storage:set_string("mcl_spawn_world_spawn_point", minetest.pos_to_string(wsp))
+		if wsp and wsp.x then
+			storage:set_string("mcl_spawn_world_spawn_point", minetest.pos_to_string(wsp))
+		end
 		storage:set_int("mcl_spawn_searched", searched and 1 or 0)
 		storage:set_int("mcl_spawn_check", check)
 		storage:set_string("mcl_spawn_cp", minetest.pos_to_string(cp))
@@ -384,5 +388,5 @@ minetest.register_on_shutdown(function()
 		storage:set_int("mcl_spawn_edge_dist", edge_dist)
 		storage:set_int("mcl_spawn_dir_step", dir_step)
 		storage:set_int("mcl_spawn_dir_ind", dir_ind)
-	end
-)
+	end)
+end)
