@@ -82,7 +82,7 @@ local register_filled_cauldron = function(water_level, description, river_water)
 		drawtype = "nodebox",
 		paramtype = "light",
 		is_ground_content = false,
-		groups = {pickaxey=1, not_in_creative_inventory=1, cauldron=(1+water_level), comparator_signal=water_level},
+		groups = {pickaxey=1, not_in_creative_inventory=1, cauldron=(1+water_level), cauldron_filled=water_level, comparator_signal=water_level},
 		node_box = cauldron_nodeboxes[water_level],
 		collision_box = cauldron_nodeboxes[0],
 		selection_box = { type = "regular" },
@@ -121,4 +121,21 @@ minetest.register_craft({
 		{ "mcl_core:iron_ingot", "", "mcl_core:iron_ingot" },
 		{ "mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot" },
 	}
+})
+
+minetest.register_abm({
+	label = "cauldrons",
+	nodenames = {"group:cauldron_filled"},
+	interval = 0.5,
+	chance = 1,
+	action = function(pos, node)
+		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 0.4)) do
+			if mcl_burning.is_burning(obj) then
+				mcl_burning.extinguish(obj)
+				local new_group = minetest.get_item_group(node.name, "cauldron_filled") - 1
+				minetest.swap_node(pos, {name = "mcl_cauldrons:cauldron" .. (new_group == 0 and "" or "_" .. new_group)})
+				break
+			end
+		end
+	end
 })
