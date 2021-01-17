@@ -164,3 +164,37 @@ minetest.register_globalstep(function(dtime)
 		end
 	end
 end)
+
+-- Don't change HP if the player falls in the water or through End Portal:
+minetest.register_on_player_hpchange(function(player, hp_change, reason)
+	if reason and reason.type == "fall" and player then
+		local pos = player:get_pos()
+		local node = minetest.get_node(pos)
+		local velocity = player:get_velocity() or player:get_player_velocity() or {x=0,y=-10,z=0}
+		local v_axis_max = math.max(math.abs(velocity.x), math.abs(velocity.y), math.abs(velocity.z))
+		local step = {x = velocity.x / v_axis_max, y = velocity.y / v_axis_max, z = velocity.z / v_axis_max}
+		for i = 1, math.ceil(v_axis_max/5)+1 do -- trace at least 1/5 of the way per second
+			if not node or node.name == "ignore" then
+				minetest.get_voxel_manip():read_from_map(pos, pos)
+				node = minetest.get_node(pos)
+			end
+			if node then
+				if minetest.registered_nodes[node.name].walkable then
+					return hp_change
+				end
+				if minetest.get_item_group(node.name, "water") ~= 0 then
+					return 0
+				end
+				if node.name == "mcl_portals:portal_end" then
+					if mcl_portals and mcl_portals.end_teleport then
+						mcl_portals.end_teleport(player)
+					end
+					return 0
+				end
+			end
+			pos = vector.add(pos, step)
+			node = minetest.get_node(pos)
+		end
+	end
+	return hp_change
+end, true)

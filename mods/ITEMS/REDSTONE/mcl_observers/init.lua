@@ -284,6 +284,7 @@ if realtime then
 	mcl_observers.set_node =	minetest.set_node
 	mcl_observers.swap_node =	minetest.swap_node
 	mcl_observers.remove_node =	minetest.remove_node
+	mcl_observers.bulk_set_node =	minetest.bulk_set_node
 
 	minetest.add_node=function(pos,node)
 		mcl_observers.add_node(pos,node)
@@ -391,6 +392,35 @@ if realtime then
 		n=minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})
 		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_d" then
 			mcl_observers.observer_activate({x=pos.x,y=pos.y+1,z=pos.z})
+		end
+	end
+	minetest.bulk_set_node=function(lst, node)
+		mcl_observers.bulk_set_node(lst, node)
+		for _, pos in pairs(lst) do
+			local n=minetest.get_node({x=pos.x+1,y=pos.y,z=pos.z})
+			if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==-1 then
+				mcl_observers.observer_activate({x=pos.x+1,y=pos.y,z=pos.z})
+			end
+			n=minetest.get_node({x=pos.x-1,y=pos.y,z=pos.z})
+			if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==1 then
+				mcl_observers.observer_activate({x=pos.x-1,y=pos.y,z=pos.z})
+			end
+			n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z+1})
+			if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==-1 then
+				mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z+1})
+			end
+			n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z-1})
+			if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==1 then
+				mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z-1})
+			end
+			n=minetest.get_node({x=pos.x,y=pos.y-1,z=pos.z})
+			if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_u" then
+				mcl_observers.observer_activate({x=pos.x,y=pos.y-1,z=pos.z})
+			end
+			n=minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})
+			if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_d" then
+				mcl_observers.observer_activate({x=pos.x,y=pos.y+1,z=pos.z})
+			end
 		end
 	end
 
