@@ -307,17 +307,22 @@ function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_leve
 	return enchantments, description
 end
 
+function mcl_enchanting.generate_random_enchantments_reliable(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
+	local enchantments
+	repeat
+		enchantments = mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
+	until enchantments
+	return enchantments
+end
+
 function mcl_enchanting.enchant_randomly(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
-	local enchantments = mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
-	if enchantments then
-		mcl_enchanting.set_enchanted_itemstring(itemstack)
-		mcl_enchanting.set_enchantments(itemstack, enchantments)
-	end
+	mcl_enchanting.set_enchanted_itemstring(itemstack)
+	mcl_enchanting.set_enchantments(itemstack, mcl_enchanting.generate_random_enchantments_reliable(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted))
 	return itemstack
 end
 
 function mcl_enchanting.get_randomly_enchanted_book(enchantment_level, treasure, no_reduced_bonus_chance)
-	return mcl_enchanting.enchant_randomly(ItemStack("mcl_enchanting:book_enchanted"), enchantment_level, treasure, no_reduced_bonus_chance, true)
+	return mcl_enchanting.enchant_randomly(ItemStack("mcl_books:book"), enchantment_level, treasure, no_reduced_bonus_chance, true)
 end
 
 function mcl_enchanting.get_uniform_randomly_enchanted_book(except)
