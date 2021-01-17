@@ -172,18 +172,20 @@ minetest.register_tool("mcl_tools:pick_diamond", {
 	_repair_material = "mcl_core:diamond",
 })
 
-local get_shovel_dig_group = function(itemstring)
-	local string_start = itemstring:sub(1, 21)
-	if string_start == "mcl_tools:shovel_wood" then
-		return "shovely_dig_wood"
-	elseif string_start == "mcl_tools:shovel_ston" then
-		return "shovely_dig_stone"
-	elseif string_start == "mcl_tools:shovel_iron" then
-		return "shovely_dig_iron"
-	elseif string_start == "mcl_tools:shovel_gold" then
-		return "shovely_dig_gold"
-	elseif string_start == "mcl_tools:shovel_diam" then
-		return "shovely_dig_diamond"
+local get_shovel_dig_group = function(itemstack)
+	local itemstring = itemstack:get_name()
+	local efficiency_level = mcl_enchanting.get_enchantment(itemstack, "efficiency")
+	local postfix = efficiency_level > 0 and "_efficiency_" .. efficiency_level or ""
+	if itemstring:find("mcl_tools:shovel_wood") == 1 then
+		return "shovely_dig_wood" .. postfix
+	elseif itemstring:find("mcl_tools:shovel_stone") == 1 then
+		return "shovely_dig_stone" .. postfix
+	elseif itemstring:find("mcl_tools:shovel_iron") == 1 then
+		return "shovely_dig_iron" .. postfix
+	elseif itemstring:find("mcl_tools:shovel_gold") == 1 then
+		return "shovely_dig_gold" .. postfix
+	elseif itemstring:find("mcl_tools:shovel_diamond") == 1 then
+		return "shovely_dig_diamond" .. postfix
 	else
 		-- Fallback
 		return "shovely_dig_wood"
@@ -217,7 +219,7 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 				-- Add wear, as if digging a level 0 shovely node
 				local toolname = itemstack:get_name()
 				local def = minetest.registered_items[toolname]
-				local group = get_shovel_dig_group(toolname)
+				local group = get_shovel_dig_group(itemstack)
 				local toolcaps = itemstack:get_tool_capabilities()
 				local base_uses = toolcaps.groupcaps[group].uses
 				local maxlevel = toolcaps.groupcaps[group].maxlevel
