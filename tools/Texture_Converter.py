@@ -196,6 +196,30 @@ def convert_textures():
 				if verbose:
 					print(src_file + " → " + dst_file)
 
+	# Convert armor textures (requires ImageMagick)
+	armor_files = [
+		[ tex_dir + "/models/armor/leather_layer_1.png", tex_dir + "/models/armor/leather_layer_2.png", target_dir("/mods/ITEMS/mcl_armor/textures"), "mcl_armor_helmet_leather.png", "mcl_armor_chestplate_leather.png", "mcl_armor_leggings_leather.png", "mcl_armor_boots_leather.png" ],
+		[ tex_dir + "/models/armor/chainmail_layer_1.png", tex_dir + "/models/armor/chainmail_layer_2.png", target_dir("/mods/ITEMS/mcl_armor/textures"), "mcl_armor_helmet_chain.png", "mcl_armor_chestplate_chain.png", "mcl_armor_leggings_chain.png", "mcl_armor_boots_chain.png" ],
+		[ tex_dir + "/models/armor/gold_layer_1.png", tex_dir + "/models/armor/gold_layer_2.png", target_dir("/mods/ITEMS/mcl_armor/textures"), "mcl_armor_helmet_gold.png", "mcl_armor_chestplate_gold.png", "mcl_armor_leggings_gold.png", "mcl_armor_boots_gold.png" ],
+		[ tex_dir + "/models/armor/iron_layer_1.png", tex_dir + "/models/armor/iron_layer_2.png", target_dir("/mods/ITEMS/mcl_armor/textures"), "mcl_armor_helmet_iron.png", "mcl_armor_chestplate_iron.png", "mcl_armor_leggings_iron.png", "mcl_armor_boots_iron.png" ],
+		[ tex_dir + "/models/armor/diamond_layer_1.png", tex_dir + "/models/armor/diamond_layer_2.png", target_dir("/mods/ITEMS/mcl_armor/textures"), "mcl_armor_helmet_diamond.png", "mcl_armor_chestplate_diamond.png", "mcl_armor_leggings_diamond.png", "mcl_armor_boots_diamond.png" ]
+	]
+	for a in armor_files:
+		APXSIZE = 16	# for some reason MineClone2 requires this
+		layer_1 = a[0]
+		layer_2 = a[1]
+		adir = a[2]
+		if os.path.isfile(layer_1):
+			helmet = adir + "/" + a[3]
+			chestplate = adir + "/" + a[4]
+			boots = adir + "/" + a[6]
+			os.system("convert -size "+str(APXSIZE * 4)+"x"+str(APXSIZE * 2)+" xc:none \\( "+layer_1+" -scale "+str(APXSIZE * 4)+"x"+str(APXSIZE * 2)+" -geometry +"+str(APXSIZE * 2)+"+0 -crop "+str(APXSIZE * 2)+"x"+str(APXSIZE)+"+0+0 \) -composite -channel A -fx \"(a > 0.0) ? 1.0 : 0.0\" "+helmet)
+			os.system("convert -size "+str(APXSIZE * 4)+"x"+str(APXSIZE * 2)+" xc:none \\( "+layer_1+" -scale "+str(APXSIZE * 4)+"x"+str(APXSIZE * 2)+" -geometry +"+str(APXSIZE)+"+"+str(APXSIZE)+" -crop "+str(APXSIZE * 2.5)+"x"+str(APXSIZE)+"+"+str(APXSIZE)+"+"+str(APXSIZE)+" \) -composite -channel A -fx \"(a > 0.0) ? 1.0 : 0.0\" "+chestplate)
+			os.system("convert -size "+str(APXSIZE * 4)+"x"+str(APXSIZE * 2)+" xc:none \\( "+layer_1+" -scale "+str(APXSIZE * 4)+"x"+str(APXSIZE * 2)+" -geometry +0+"+str(APXSIZE)+" -crop "+str(APXSIZE)+"x"+str(APXSIZE)+"+0+"+str(APXSIZE)+" \) -composite -channel A -fx \"(a > 0.0) ? 1.0 : 0.0\" "+boots)
+		if os.path.isfile(layer_2):
+			leggings = adir + "/" + a[5]
+			os.system("convert -size "+str(APXSIZE * 4)+"x"+str(APXSIZE * 2)+" xc:none \\( "+layer_2+" -scale "+str(APXSIZE * 4)+"x"+str(APXSIZE * 2)+" -geometry +0+"+str(APXSIZE)+" -crop "+str(APXSIZE * 2.5)+"x"+str(APXSIZE)+"+0+"+str(APXSIZE)+" \) -composite -channel A -fx \"(a > 0.0) ? 1.0 : 0.0\" "+leggings)
+
 	# Convert chest textures (requires ImageMagick)
 	chest_files = [
 		[ tex_dir + "/entity/chest/normal.png", target_dir("/mods/ITEMS/mcl_chests/textures"), "default_chest_top.png", "mcl_chests_chest_bottom.png", "default_chest_front.png", "mcl_chests_chest_left.png", "mcl_chests_chest_right.png", "mcl_chests_chest_back.png" ],
@@ -352,7 +376,7 @@ def convert_textures():
 		FOLIAG = tex_dir+"/colormap/foliage.png"
 		GRASS = tex_dir+"/colormap/grass.png"
 
-	
+
 		# Leaves
 		colorize_alpha(FOLIAG, tex_dir+"/blocks/leaves_oak.png", "116+143", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_leaves.png")
 		colorize_alpha(FOLIAG, tex_dir+"/blocks/leaves_big_oak.png", "158+177", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/mcl_core_leaves_big_oak.png")
