@@ -25,6 +25,8 @@ end
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{1, 41}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }]]--
 
 -- implemented via on_enchant and additions in mobs_mc; Slowness IV part unimplemented
@@ -42,6 +44,8 @@ mcl_enchanting.enchantments.bane_of_arthropods = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{5, 25}, {13, 33}, {21, 41}, {29, 49}, {37, 57}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 -- implemented in mcl_armor
@@ -59,6 +63,8 @@ mcl_enchanting.enchantments.blast_protection = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{5, 13}, {13, 21}, {21, 29}, {29, 37}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 -- requires missing MineClone2 feature
@@ -76,6 +82,8 @@ mcl_enchanting.enchantments.blast_protection = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{25, 50}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }]]--
 
 -- implemented in mcl_armor
@@ -93,6 +101,8 @@ mcl_enchanting.enchantments.curse_of_binding = {
 	requires_tool = false,
 	treasure = true,
 	power_range_table = {{25, 50}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 -- implemented in mcl_death_drop
@@ -110,6 +120,8 @@ mcl_enchanting.enchantments.curse_of_vanishing = {
 	requires_tool = false,
 	treasure = true,
 	power_range_table = {{25, 50}},
+	inv_combat_tab = true,
+	inv_tool_tab = true,
 }
 
 -- unimplemented
@@ -127,6 +139,8 @@ mcl_enchanting.enchantments.curse_of_vanishing = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{10, 25}, {20, 35}, {30, 45}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }]]--
 
 -- implemented via on_enchant
@@ -154,6 +168,8 @@ mcl_enchanting.enchantments.efficiency = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{1, 61}, {11, 71}, {21, 81}, {31, 91}, {41, 101}},
+	inv_combat_tab = false,
+	inv_tool_tab = true,
 }
 
 -- implemented in mcl_armor
@@ -170,6 +186,8 @@ mcl_enchanting.enchantments.feather_falling = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{5, 11}, {11, 17}, {17, 23}, {23, 29}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 -- implemented in mcl_mobs and via register_on_punchplayer callback
@@ -187,6 +205,8 @@ mcl_enchanting.enchantments.fire_aspect = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{10, 61}, {30, 71}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
@@ -216,6 +236,8 @@ mcl_enchanting.enchantments.fire_protection = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{10, 18}, {18, 26}, {26, 34}, {34, 42}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 -- requires missing MineClone2 feature
@@ -233,6 +255,8 @@ mcl_enchanting.enchantments.fire_protection = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{20, 50}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }]]--
 
 -- implemented in mcl_item_entity
@@ -250,6 +274,8 @@ mcl_enchanting.enchantments.fortune = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{15, 61}, {24, 71}, {33, 81}},
+	inv_combat_tab = false,
+	inv_tool_tab = true,
 }
 
 -- implemented via walkover.register_global
@@ -267,6 +293,8 @@ mcl_enchanting.enchantments.frost_walker = {
 	requires_tool = false,
 	treasure = true,
 	power_range_table = {{10, 25}, {20, 35}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 walkover.register_global(function(pos, _, player)
@@ -301,6 +329,8 @@ end)
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{1, 21}, {9, 29}, {17, 37}, {25, 45}, {33, 53}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }]]--
 
 -- implemented in mcl_bows
@@ -318,6 +348,8 @@ mcl_enchanting.enchantments.infinity = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{20, 50}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 -- implemented via minetest.calculate_knockback
@@ -335,6 +367,8 @@ mcl_enchanting.enchantments.knockback = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{5, 61}, {25, 71}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 local old_calculate_knockback = minetest.calculate_knockback
@@ -368,6 +402,8 @@ mcl_enchanting.enchantments.looting = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{15, 61}, {24, 71}, {33, 81}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 -- requires missing MineClone2 feature
@@ -385,6 +421,8 @@ mcl_enchanting.enchantments.looting = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{12, 50}, {19, 50}, {26, 50}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }]]--
 
 -- implemented in mcl_fishing
@@ -402,6 +440,8 @@ mcl_enchanting.enchantments.luck_of_the_sea = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{15, 61}, {24, 71}, {33, 81}},
+	inv_combat_tab = false,
+	inv_tool_tab = true,
 }
 
 -- implemented in mcl_fishing
@@ -419,6 +459,8 @@ mcl_enchanting.enchantments.lure = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{15, 61}, {24, 71}, {33, 81}},
+	inv_combat_tab = false,
+	inv_tool_tab = true,
 }
 
 -- implemented in mcl_experience
@@ -436,6 +478,8 @@ mcl_enchanting.enchantments.mending = {
 	requires_tool = true,
 	treasure = true,
 	power_range_table = {{25, 75}},
+	inv_combat_tab = true,
+	inv_tool_tab = true,
 }
 
 -- requires missing MineClone2 feature
@@ -453,6 +497,8 @@ mcl_enchanting.enchantments.mending = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{20, 50}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }]]--
 
 -- requires missing MineClone2 feature
@@ -470,6 +516,8 @@ mcl_enchanting.enchantments.mending = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{1, 50}, {11, 50}, {21, 50}, {31, 50}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }]]--
 
 -- implemented in mcl_bows
@@ -487,6 +535,8 @@ mcl_enchanting.enchantments.power = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{1, 16}, {11, 26}, {21, 36}, {31, 46}, {41, 56}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 -- implemented in mcl_armor
@@ -504,6 +554,8 @@ mcl_enchanting.enchantments.projectile_protection = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{1, 16}, {11, 26}, {21, 36}, {31, 46}, {41, 56}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 -- implemented in mcl_armor
@@ -521,6 +573,8 @@ mcl_enchanting.enchantments.protection = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{1, 12}, {12, 23}, {23, 34}, {34, 45}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 -- implemented via minetest.calculate_knockback (together with the Knockback enchantment) and mcl_bows
@@ -538,6 +592,8 @@ mcl_enchanting.enchantments.punch = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{12, 37}, {32, 57}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 -- requires missing MineClone2 feature
@@ -555,6 +611,8 @@ mcl_enchanting.enchantments.punch = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{12, 50}, {32, 50}, {52, 50}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }]]--
 
 -- unimplemented
@@ -572,6 +630,8 @@ mcl_enchanting.enchantments.punch = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{10, 40}, {20, 50}, {30, 60}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }]]--
 
 -- requires missing MineClone2 feature
@@ -589,6 +649,8 @@ mcl_enchanting.enchantments.punch = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{17, 50}, {24, 50}, {31, 50}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }]]--
 
 -- implemented via on_enchant
@@ -606,6 +668,8 @@ mcl_enchanting.enchantments.sharpness = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{1, 21}, {12, 32}, {23, 43}, {34, 54}, {45, 65}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 -- implemented in mcl_item_entity
@@ -623,6 +687,8 @@ mcl_enchanting.enchantments.silk_touch = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{15, 61}},
+	inv_combat_tab = false,
+	inv_tool_tab = true,
 }
 
 -- implemented via on_enchant and additions in mobs_mc
@@ -640,6 +706,8 @@ mcl_enchanting.enchantments.smite = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{5, 25}, {13, 33}, {21, 41}, {29, 49}, {37, 57}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 -- implemented in mcl_playerplus
@@ -657,6 +725,8 @@ mcl_enchanting.enchantments.soul_speed = {
 	requires_tool = false,
 	treasure = true,
 	power_range_table = {{10, 25}, {20, 35}, {30, 45}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 -- requires missing MineClone2 feature
@@ -674,6 +744,8 @@ mcl_enchanting.enchantments.soul_speed = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{5, 20}, {14, 29}, {23, 38}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }]]--
 
 -- implemented in mcl_armor
@@ -691,6 +763,8 @@ mcl_enchanting.enchantments.thorns = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{10, 61}, {30, 71}, {50, 81}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
 }
 
 -- for tools & weapons implemented via on_enchant; for bows implemented in mcl_bows; for armor implemented in mcl_armor and mcl_tt; for fishing rods implemented in mcl_fishing
@@ -715,4 +789,6 @@ mcl_enchanting.enchantments.unbreaking = {
 	requires_tool = true,
 	treasure = false,
 	power_range_table = {{5, 61}, {13, 71}, {21, 81}},
+	inv_combat_tab = true,
+	inv_tool_tab = true,
 }
