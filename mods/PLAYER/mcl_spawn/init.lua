@@ -9,6 +9,9 @@ local storage = minetest.get_mod_storage()
 
 local respawn_search_interval = 30 -- seconds
 local respawn_search_initial_delay = 30 -- seconds
+local trees_distance_max = 30 -- nodes
+local attempts_to_find_pos = 50
+local attempts_to_find_trees = 50
 local node_groups_white_list = {"group:soil"}
 local biomes_white_list = {
 	"ColdTaiga",
@@ -74,6 +77,7 @@ local edge_len = storage:get_int("mcl_spawn_edge_len") or 1
 local edge_dist = storage:get_int("mcl_spawn_edge_dist") or 0
 local dir_step = storage:get_int("mcl_spawn_dir_step") or 0
 local dir_ind = storage:get_int("mcl_spawn_dir_ind") or 1
+local emerge_pos1, emerge_pos2
 
 -- Get world 'mapgen_limit' and 'chunksize' to calculate 'spawn_limit'.
 -- This accounts for how mapchunks are not generated if they or their shell exceed
@@ -96,6 +100,21 @@ local function get_far_node(pos)
 	return minetest.get_node(pos)
 end
 
+local function get_trees(pos, pos2)
+	if emerge_pos1 and emerge_pos2 and pos then
+		if not pos2 then
+			local b1 = {x = math.max(pos.x-trees_distance_max, emerge_pos1.x), y = math.max(pos.y-trees_distance_max, emerge_pos1.y), z = math.max(pos.z-trees_distance_max, emerge_pos1.z)}
+			local b2 = {x = math.min(pos.x+trees_distance_max, emerge_pos2.x), y = math.min(pos.y+trees_distance_max, emerge_pos2.y), z = math.min(pos.z+trees_distance_max, emerge_pos2.z)}
+			return minetest.find_nodes_in_area(b1, b2, {"group:tree"}, false)
+		else
+			local b1 = {x = math.max(pos.x , emerge_pos1.x), y = math.max(pos.y , emerge_pos1.y), z = math.max(pos.z,  emerge_pos1.z)}
+			local b2 = {x = math.min(pos2.x, emerge_pos2.x), y = math.min(pos2.y, emerge_pos2.y), z = math.min(pos2.z, emerge_pos2.z)}
+			return minetest.find_nodes_in_area(b1, b2, {"group:tree"}, false)
+		end
+	end
+	return nil
+end
+
 local function good_for_respawn(pos, player)
 	local pos0 = {x = pos.x, y = pos.y - 1, z = pos.z}
 	local pos1 = {x = pos.x, y = pos.y, z = pos.z}
@@ -116,6 +135,9 @@ local function good_for_respawn(pos, player)
 		or minetest.is_protected(pos2, player or "")
 		or (not player and minetest.get_node_light(pos1, 0.5) < 8)
 		or (not player and minetest.get_node_light(pos2, 0.5) < 8)
+		or nn0 == "ignore"
+		or nn1 == "ignore"
+		or nn2 == "ignore"
 		   then
 			return false
 	end
@@ -128,9 +150,37 @@ local function good_for_respawn(pos, player)
 		(def1.damage_per_second == nil or def2.damage_per_second <= 0)
 end
 
-local function can_find_tree(pos1)
-	local trees = minetest.find_nodes_in_area(vector.subtract(pos1,half_res), vector.add(pos1,half_res), {"group:tree"}, false)
-	for _, pos2 in ipairs(trees) do
+local function can_find_tree(pos1, trees)
+	if not emerge_pos1 or not emerge_pos2 then return false end
+	local trees = trees or get_trees(pos1)
+	if not trees then return false end
+
+	if (attempts_to_find_trees * 3 < #trees) then
+		-- random search
+		for i = 1, attempts_to_find_trees do
+			local pos2 = trees[math.random(1,#trees)]
+			if not minetest.is_protected(pos2, "") then
+				if pos2.x < pos1.x then
+					pos2.x = pos2.x + 1
+				elseif pos2.x > pos1.x then
+					pos2.x = pos2.x - 1
+				end
+				if pos2.z < pos1.z then
+					pos2.z = pos2.z + 1
+				elseif pos2.z > pos1.z then
+					pos2.z = pos2.z - 1
+				end
+				local way = minetest.find_path(pos1, pos2, res, 1, 3, "A*_noprefetch")
+				if way then
+					return true
+				end
+			end
+		end
+		return false
+	end
+
+	for i, pos2 in ipairs(trees) do
+		-- full search
 		if not minetest.is_protected(pos2, "") then
 			if pos2.x < pos1.x then
 				pos2.x = pos2.x + 1
@@ -147,6 +197,7 @@ local function can_find_tree(pos1)
 				return true
 			end
 		end
+		if i > attempts_to_find_trees then return false end
 	end
 	return false
 end
@@ -208,20 +259,40 @@ end
 
 local function ecb_search_continue(blockpos, action, calls_remaining, param)
 	if calls_remaining <= 0 then
-		local pos1 = {x = wsp.x-half_res, y = alt_min, z = wsp.z-half_res}
-		local pos2 = {x = wsp.x+half_res, y = alt_max, z = wsp.z+half_res}
-		local nodes = minetest.find_nodes_in_area_under_air(pos1, pos2, node_groups_white_list)
+		emerge_pos1 = {x = wsp.x-half_res, y = alt_min, z = wsp.z-half_res}
+		emerge_pos2 = {x = wsp.x+half_res, y = alt_max, z = wsp.z+half_res}
+		local nodes = minetest.find_nodes_in_area_under_air(emerge_pos1, emerge_pos2, node_groups_white_list)
 		minetest.log("verbose", "[mcl_spawn] Data emerge callback: "..minetest.pos_to_string(wsp).." - "..tostring(nodes and #nodes) .. " node(s) found under air")
 		if nodes then
-			for i=1, #nodes do
-				wsp = nodes[i]
-				if wsp then
-					wsp.y = wsp.y + 1
-					if good_for_respawn(wsp) and can_find_tree(wsp) then
-						minetest.log("action", "[mcl_spawn] Dynamic world spawn determined to be "..minetest.pos_to_string(wsp))
-						searched = true
-						success = true
-						return
+			local trees = get_trees(emerge_pos1, emerge_pos2)
+			if trees then
+				if attempts_to_find_pos * 3 < #nodes then
+					-- random
+					for i=1, attempts_to_find_pos do
+						wsp = nodes[math.random(1,#nodes)]
+						if wsp then
+							wsp.y = wsp.y + 1
+							if good_for_respawn(wsp) and can_find_tree(wsp, trees) then
+								minetest.log("action", "[mcl_spawn] Dynamic world spawn determined to be "..minetest.pos_to_string(wsp))
+								searched = true
+								success = true
+								return
+							end
+						end
+					end
+				else
+					-- in a sequence
+					for i=1, math.min(#nodes, attempts_to_find_pos) do
+						wsp = nodes[i]
+						if wsp then
+							wsp.y = wsp.y + 1
+							if good_for_respawn(wsp) and can_find_tree(wsp, trees) then
+								minetest.log("action", "[mcl_spawn] Dynamic world spawn determined to be "..minetest.pos_to_string(wsp))
+								searched = true
+								success = true
+								return
+							end
+						end
 					end
 				end
 			end
