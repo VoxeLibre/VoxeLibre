@@ -951,9 +951,11 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/blocks,portal.png,/mods/ITEMS/mcl_portals/textures,mcl_portals_portal.png,,,,,,,
 /assets/minecraft/textures/entity,end_portal.png,/mods/ITEMS/mcl_portals/textures,mcl_portals_end_portal.png,,,,,,,
 /assets/minecraft/textures/environment,end_sky.png,/mods/PLAYER/mcl_playerplus/textures,mcl_playerplus_end_sky.png,,,,,,,
-/assets/minecraft/textures/entity/chest,normal.png,/mods/ITEMS/mcl_chests/textures,mcl_chests_normal.png,,,,,,,y
-/assets/minecraft/textures/entity/chest,normal_double.png,/mods/ITEMS/mcl_chests/textures,mcl_chests_normal_double.png,,,,,,,y
-/assets/minecraft/textures/entity/chest,ender.png,/mods/ITEMS/mcl_chests/textures,mcl_chests_ender.png,,,,,,,y
+/assets/minecraft/textures/entity/chest,normal.png,/mods/ITEMS/mcl_chests/textures,mcl_chests_normal.png,,,,,,,
+/assets/minecraft/textures/entity/chest,normal_double.png,/mods/ITEMS/mcl_chests/textures,mcl_chests_normal_double.png,,,,,,,
+/assets/minecraft/textures/entity/chest,trapped.png,/mods/ITEMS/mcl_chests/textures,mcl_chests_trapped.png,,,,,,,
+/assets/minecraft/textures/entity/chest,trapped_double.png,/mods/ITEMS/mcl_chests/textures,mcl_chests_trapped_double.png,,,,,,,
+/assets/minecraft/textures/entity/chest,ender.png,/mods/ITEMS/mcl_chests/textures,mcl_chests_ender.png,,,,,,,
 /assets/minecraft/textures/blocks,endframe_top.png,/mods/ITEMS/mcl_portals/textures,mcl_portals_endframe_top.png,,,,,,,
 /assets/minecraft/textures/blocks,endframe_side.png,/mods/ITEMS/mcl_portals/textures,mcl_portals_endframe_side.png,,,,,,,
 /assets/minecraft/textures/blocks,endframe_eye.png,/mods/ITEMS/mcl_portals/textures,mcl_portals_endframe_eye.png,,,,,,,
