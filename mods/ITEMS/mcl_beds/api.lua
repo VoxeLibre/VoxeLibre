@@ -141,6 +141,8 @@ function mcl_beds.register_bed(name, def)
 
 		after_destruct = destruct_bed,
 
+		on_destruct = kick_player_after_destruct,
+
 		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 			mcl_beds.on_rightclick(pos, clicker, false)
 			return itemstack
