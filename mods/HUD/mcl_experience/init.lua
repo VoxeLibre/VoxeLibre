@@ -384,10 +384,11 @@ local function xp_step(self, dtime)
 						end
 					end
 					uses = uses or 0
-					local repair = (65536 / uses) * xp * 2
+					local multiplier = 2 * 65535 / uses
+					local repair = xp * multiplier
 					local new_wear = wear - repair
 					if new_wear < 0 then
-						xp = math.floor(-new_wear / 2)
+						xp = math.floor(-new_wear / multiplier + 0.5)
 						new_wear = 0
 					else
 						xp = 0
