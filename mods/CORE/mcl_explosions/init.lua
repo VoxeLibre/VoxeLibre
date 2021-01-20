@@ -284,8 +284,18 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 					impact = 0
 				end
 				local damage = math.floor((impact * impact + impact) * 7 * strength + 1)
+				local source = puncher or obj
+
+				local sleep_formspec_doesnt_close_mt53 = false
 				if obj:is_player() then
 					local name = obj:get_player_name()
+					if mcl_beds then
+						local meta = obj:get_meta()
+						if meta:get_string("mcl_beds:sleeping") == "true" then
+							minetest.close_formspec(name, "") -- ABSOLUTELY NECESSARY FOR MT5.3 -- TODO: REMOVE THIS IN THE FUTURE
+							sleep_formspec_doesnt_close_mt53 = true
+						end
+					end
 					if mod_death_messages then
 						mcl_death_messages.player_damage(obj, S("@1 was caught in an explosion.", name))
 					end
@@ -293,17 +303,21 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 						armor.last_damage_types[name] = "explosion"
 					end
 				end
-				local source = puncher
-				if not source then
-					source = obj
-				end
-				obj:punch(source, 10, { damage_groups = { full_punch_interval = 1,
-						fleshy = damage, knockback = impact * 20.0 } }, punch_dir)
 
-				if obj:is_player() then
-					obj:add_player_velocity(vector.multiply(punch_dir, impact * 20))
-				elseif ent.tnt_knockback then
-					obj:add_velocity(vector.multiply(punch_dir, impact * 20))
+				if sleep_formspec_doesnt_close_mt53 then
+					minetest.after(0.3, function(obj, damage, impact, punch_dir) -- 0.2 is minimum delay for closing old formspec and open died formspec -- TODO: REMOVE THIS IN THE FUTURE
+						if not obj then return end
+						obj:punch(obj, 10, { damage_groups = { full_punch_interval = 1, fleshy = damage, knockback = impact * 20.0 } }, punch_dir)
+						obj:add_player_velocity(vector.multiply(punch_dir, impact * 20))
+					end, obj, damage, impact, vector.new(punch_dir))
+				else
+					obj:punch(source, 10, { damage_groups = { full_punch_interval = 1, fleshy = damage, knockback = impact * 20.0 } }, punch_dir)
+
+					if obj:is_player() then
+						obj:add_player_velocity(vector.multiply(punch_dir, impact * 20))
+					elseif ent.tnt_knockback then
+						obj:add_velocity(vector.multiply(punch_dir, impact * 20))
+					end
 				end
 			end
 		end
