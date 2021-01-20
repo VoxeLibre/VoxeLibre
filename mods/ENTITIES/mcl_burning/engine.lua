@@ -12,7 +12,7 @@ function mcl_burning.get(obj, datatype, name)
 		return meta["get_" .. datatype](meta, "mcl_burning:" .. name)
 	else
 		local luaentity = obj:get_luaentity()
-		return luaentity["mcl_burning_" .. name] or mcl_burning.get_default(datatype)
+		return luaentity and luaentity["mcl_burning_" .. name] or mcl_burning.get_default(datatype)
 	end
 end
 
