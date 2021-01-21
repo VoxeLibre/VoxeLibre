@@ -22,18 +22,18 @@ local destroy_portal = function(pos)
 end
 
 local ep_scheme = {
-	{ o={x=0, y=0, z=1}, p=3 },
-	{ o={x=0, y=0, z=2}, p=3 },
-	{ o={x=0, y=0, z=3}, p=3 },
-	{ o={x=1, y=0, z=4}, p=0 },
-	{ o={x=2, y=0, z=4}, p=0 },
-	{ o={x=3, y=0, z=4}, p=0 },
-	{ o={x=4, y=0, z=3}, p=1 },
-	{ o={x=4, y=0, z=2}, p=1 },
-	{ o={x=4, y=0, z=1}, p=1 },
-	{ o={x=3, y=0, z=0}, p=2 },
-	{ o={x=2, y=0, z=0}, p=2 },
-	{ o={x=1, y=0, z=0}, p=2 },
+	{ o={x=0, y=0, z=1}, p=1 },
+	{ o={x=0, y=0, z=2}, p=1 },
+	{ o={x=0, y=0, z=3}, p=1 },
+	{ o={x=1, y=0, z=4}, p=2 },
+	{ o={x=2, y=0, z=4}, p=2 },
+	{ o={x=3, y=0, z=4}, p=2 },
+	{ o={x=4, y=0, z=3}, p=3 },
+	{ o={x=4, y=0, z=2}, p=3 },
+	{ o={x=4, y=0, z=1}, p=3 },
+	{ o={x=3, y=0, z=0}, p=0 },
+	{ o={x=2, y=0, z=0}, p=0 },
+	{ o={x=1, y=0, z=0}, p=0 },
 }
 
 -- End portal
@@ -255,6 +255,21 @@ if minetest.get_modpath("screwdriver") then
 	rotate_frame_eye = false
 end
 
+local function after_place_node(pos, placer, itemstack, pointed_thing)
+	local node = minetest.get_node(pos)
+	if node then
+		node.param2 = (node.param2+2) % 4
+		minetest.swap_node(pos, node)
+
+		local ok, ppos = check_end_portal_frame(pos)
+		if ok then
+			-- Epic 'portal open' sound effect that can be heard everywhere
+			minetest.sound_play("mcl_portals_open_end_portal", {gain=0.8}, true)
+			end_portal_area(ppos)
+		end
+	end
+end
+
 minetest.register_node("mcl_portals:end_portal_frame", {
 	description = S("End Portal Frame"),
 	_tt_help = S("Used to construct end portals"),
@@ -275,6 +290,8 @@ minetest.register_node("mcl_portals:end_portal_frame", {
 	light_source = 1,
 
 	on_rotate = rotate_frame,
+
+	after_place_node = after_place_node,
 
 	_mcl_blast_resistance = 36000000,
 	_mcl_hardness = -1,
@@ -306,16 +323,10 @@ minetest.register_node("mcl_portals:end_portal_frame_eye", {
 			end_portal_area(ppos, true)
 		end
 	end,
-	on_construct = function(pos)
-		local ok, ppos = check_end_portal_frame(pos)
-		if ok then
-			-- Epic 'portal open' sound effect that can be heard everywhere
-			minetest.sound_play("mcl_portals_open_end_portal", {gain=0.8}, true)
-			end_portal_area(ppos)
-		end
-	end,
 
 	on_rotate = rotate_frame_eye,
+
+	after_place_node = after_place_node,
 
 	_mcl_blast_resistance = 36000000,
 	_mcl_hardness = -1,
@@ -358,8 +369,11 @@ minetest.override_item("mcl_end:ender_eye", {
 				itemstack:take_item() -- 1 use
 			end
 
-			local ok = check_end_portal_frame(pointed_thing.under)
+			local ok, ppos = check_end_portal_frame(pointed_thing.under)
 			if ok then
+				-- Epic 'portal open' sound effect that can be heard everywhere
+				minetest.sound_play("mcl_portals_open_end_portal", {gain=0.8}, true)
+				end_portal_area(ppos)
 				if minetest.get_modpath("doc") then
 					doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal_end")
 				end
