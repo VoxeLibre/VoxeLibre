@@ -240,11 +240,12 @@ function mcl_burning.tick(obj, dtime)
 end
 
 function mcl_burning.update_animation_frame(obj, fire_entity, animation_frame)
-	local fire_texture = "fire_basic_flame_animated.png^[opacity:180^[verticalframe:" .. mcl_burning.animation_frames .. ":" .. animation_frame
+	local fire_texture = "mcl_burning_entity_flame_animated.png^[opacity:180^[verticalframe:" .. mcl_burning.animation_frames .. ":" .. animation_frame
+	local fire_HUD_texture = "mcl_burning_hud_flame_animated.png^[opacity:180^[verticalframe:" .. mcl_burning.animation_frames .. ":" .. animation_frame
 	fire_entity:set_properties({textures = {"blank.png", "blank.png", fire_texture, fire_texture, fire_texture, fire_texture}})
 	if obj:is_player() then
 		local hud_id = mcl_burning.get(obj, "int", "hud_id") - 1
-		obj:hud_change(hud_id, "text", fire_texture)
+		obj:hud_change(hud_id, "text", fire_HUD_texture)
 	end
 end
 
