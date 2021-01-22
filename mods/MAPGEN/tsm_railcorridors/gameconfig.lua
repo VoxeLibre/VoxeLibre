@@ -35,7 +35,7 @@ else
 		end
 	end
 end
-	
+
 
 -- TODO: Use minecart with chest instead of normal minecart
 tsm_railcorridors.carts = { "mcl_minecarts:minecart" }
@@ -66,10 +66,10 @@ function tsm_railcorridors.get_treasures(pr)
 		items = {
 			{ itemstring = "mcl_mobs:nametag", weight = 30 },
 			{ itemstring = "mcl_core:apple_gold", weight = 20 },
-			{ itemstack = mcl_enchanting.get_uniform_randomly_enchanted_book({"soul_speed"}), weight = 10 }, -- TODO: Enchanted Book
+			{ itemstack = mcl_enchanting.get_uniform_randomly_enchanted_book({"soul_speed"}), weight = 10 },
 			{ itemstring = "", weight = 5},
 			{ itemstring = "mcl_core:pick_iron", weight = 5 },
-			{ itemstring = "mcl_core:apple_gold", weight = 1 }, -- TODO: Enchanted Golden Apple
+			{ itemstring = "mcl_core:apple_gold_enchanted", weight = 1 },
 		}
 	},
 	{

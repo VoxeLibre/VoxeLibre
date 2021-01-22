@@ -413,8 +413,7 @@ mcl_structures.generate_desert_temple = function(pos)
 				{ itemstring = "mobs_mc:gold_horse_armor", weight = 10, },
 				{ itemstring = "mobs_mc:diamond_horse_armor", weight = 5, },
 				{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 3 },
-				-- TODO: Enchanted Golden Apple
-				{ itemstring = "mcl_core:apple_gold", weight = 2, },
+				{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2, },
 			}
 		},
 		{

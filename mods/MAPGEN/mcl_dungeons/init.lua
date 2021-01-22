@@ -24,8 +24,7 @@ local get_loot = function()
 			{ itemstack = mcl_enchanting.get_uniform_randomly_enchanted_book({"soul_speed"}), weight = 10 },
 			{ itemstring = "mobs_mc:gold_horse_armor", weight = 10 },
 			{ itemstring = "mobs_mc:diamond_horse_armor", weight = 5 },
-			-- TODO: Enchanted Golden Apple
-			{ itemstring = "mcl_core:apple_gold", weight = 2 },
+			{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2 },
 		}
 	},
 	{
