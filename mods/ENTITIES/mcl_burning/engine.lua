@@ -124,6 +124,10 @@ function mcl_burning.set_on_fire(obj, burn_time, damage, reason)
 	local max_fire_prot_lvl = 0
 
 	if obj:is_player() then
+		if minetest.is_creative_enabled(obj:get_player_name()) then
+			burn_time = burn_time / 100
+		end
+
 		local inv = obj:get_inventory()
 
 		for i = 2, 5 do
