@@ -388,6 +388,8 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/blocks,wheat_stage_6.png,/mods/ITEMS/mcl_farming/textures,mcl_farming_wheat_stage_6.png,,,,,,,
 /assets/minecraft/textures/blocks,wheat_stage_7.png,/mods/ITEMS/mcl_farming/textures,mcl_farming_wheat_stage_7.png,,,,,,,
 /assets/minecraft/textures/blocks,fire_layer_0.png,/mods/ITEMS/mcl_fire/textures,fire_basic_flame_animated.png,,,,,,,
+/assets/minecraft/textures/blocks,fire_layer_0.png,/mods/ITEMS/mcl_fire/textures,mcl_burning_entity_flame_animated.png,,,,,,,
+/assets/minecraft/textures/blocks,fire_layer_0.png,/mods/ITEMS/mcl_fire/textures,mcl_burning_hud_flame_animated.png,,,,,,,
 /assets/minecraft/textures/blocks,fire_layer_0.png,/mods/ITEMS/mcl_fire/textures,fire_basic_flame.png,0,0,16,16,0,0,y
 /assets/minecraft/textures/items,fireball.png,/mods/ITEMS/mcl_fire/textures,mcl_fire_fire_charge.png,,,,,,,
 /assets/minecraft/textures/items,flint_and_steel.png,/mods/ITEMS/mcl_fire/textures,mcl_fire_flint_and_steel.png,,,,,,,

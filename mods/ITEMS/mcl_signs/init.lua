@@ -197,7 +197,9 @@ local destruct_sign = function(pos)
 	end
 	local players = minetest.get_connected_players()
 	for p=1, #players do
-		minetest.close_formspec(players[p]:get_player_name(), "mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z)
+		if vector.distance(players[p]:get_pos(), pos) <= 30 then
+			minetest.close_formspec(players[p]:get_player_name(), "mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z)
+		end
 	end
 end
 

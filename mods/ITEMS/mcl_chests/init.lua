@@ -360,6 +360,15 @@ minetest.register_node("mcl_chests:"..basename, {
 	end,
 })
 
+local function close_forms(canonical_basename, pos)
+	local players = minetest.get_connected_players()
+	for p=1, #players do
+		if vector.distance(players[p]:get_pos(), pos) <= 30 then
+			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
+		end
+	end
+end
+
 minetest.register_node(small_name, {
 	description = desc,
 	_tt_help = tt_help,
@@ -483,10 +492,7 @@ minetest.register_node(small_name, {
 	end,
 
 	on_destruct = function(pos)
-		local players = minetest.get_connected_players()
-		for p=1, #players do
-			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
-		end
+		close_forms(canonical_basename, pos)
 	end,
 	mesecons = mesecons,
 	on_rotate = simple_rotate,
@@ -527,19 +533,15 @@ minetest.register_node(left_name, {
 			return
 		end
 
-		local players = minetest.get_connected_players()
-		for p=1, #players do
-			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
-		end
+		close_forms(canonical_basename, pos)
 
 		local param2 = n.param2
 		local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "left")
 		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_right" then
 			return
 		end
-		for pl=1, #players do
-			minetest.close_formspec(players[pl]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..p.x.."_"..p.y.."_"..p.z)
-		end
+		close_forms(canonical_basename, p)
+
 		minetest.swap_node(p, { name = small_name, param2 = param2 })
 		create_entity(p, small_name, small_textures, param2, false, "default_chest", "mcl_chests_chest")
 	end,
@@ -678,19 +680,15 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 			return
 		end
 
-		local players = minetest.get_connected_players()
-		for p=1, #players do
-			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
-		end
+		close_forms(canonical_basename, pos)
 
 		local param2 = n.param2
 		local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "right")
 		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_left" then
 			return
 		end
-		for pl=1, #players do
-			minetest.close_formspec(players[pl]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..p.x.."_"..p.y.."_"..p.z)
-		end
+		close_forms(canonical_basename, p)
+
 		minetest.swap_node(p, { name = small_name, param2 = param2 })
 		create_entity(p, small_name, small_textures, param2, false, "default_chest", "mcl_chests_chest")
 		local meta = minetest.get_meta(pos)
