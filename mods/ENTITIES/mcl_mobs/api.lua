@@ -285,7 +285,7 @@ end
 
 
 -- set and return valid yaw
-local set_yaw = function(self, yaw, delay)
+local set_yaw = function(self, yaw, delay, dtime)
 
 	if not yaw or yaw ~= yaw then
 		yaw = 0
@@ -294,6 +294,9 @@ local set_yaw = function(self, yaw, delay)
 	delay = delay or 0
 
 	if delay == 0 then
+		if self.shaking and dtime then
+			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
+		end
 		self.object:set_yaw(yaw)
 		return yaw
 	end
@@ -305,8 +308,8 @@ local set_yaw = function(self, yaw, delay)
 end
 
 -- global function to set mob yaw
-function mobs:yaw(self, yaw, delay)
-	set_yaw(self, yaw, delay)
+function mobs:yaw(self, yaw, delay, dtime)
+	set_yaw(self, yaw, delay, dtime)
 end
 
 local add_texture_mod = function(self, mod)
@@ -2482,7 +2485,7 @@ local do_states = function(self, dtime)
 
 			if p.x > s.x then yaw = yaw + pi end
 
-			yaw = set_yaw(self, yaw)
+			yaw = set_yaw(self, yaw, 0, dtime)
 
 			local node_break_radius = self.explosion_radius or 1
 			local entity_damage_radius = self.explosion_damage_radius
@@ -2655,7 +2658,7 @@ local do_states = function(self, dtime)
 
 			if p.x > s.x then yaw = yaw + pi end
 
-			yaw = set_yaw(self, yaw)
+			yaw = set_yaw(self, yaw, 0, dtime)
 
 			-- move towards enemy if beyond mob reach
 			if dist > self.reach then
@@ -2760,7 +2763,7 @@ local do_states = function(self, dtime)
 
 			if p.x > s.x then yaw = yaw + pi end
 
-			yaw = set_yaw(self, yaw)
+			yaw = set_yaw(self, yaw, 0, dtime)
 
 			set_velocity(self, 0)
 
@@ -3460,6 +3463,9 @@ local mob_step = function(self, dtime)
 		end
 
 		self.delay = self.delay - 1
+		if self.shaking then
+			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
+		end
 		self.object:set_yaw(yaw)
 	end
 

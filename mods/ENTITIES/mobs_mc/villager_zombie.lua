@@ -5,12 +5,25 @@
 
 local S = minetest.get_translator("mobs_mc")
 
--- TODO: Turn villagers to zombie villager
-
 --###################
 --################### ZOMBIE VILLAGER
 --###################
 
+local professions = {
+	farmer = "mobs_mc_villager_farmer.png",
+	fisherman = "mobs_mc_villager_farmer.png",
+	fletcher = "mobs_mc_villager_farmer.png",
+	shepherd = "mobs_mc_villager_farmer.png",
+	librarian = "mobs_mc_villager_librarian.png",
+	cartographer = "mobs_mc_villager_librarian.png",
+	armorer = "mobs_mc_villager_smith.png",
+	leatherworker = "mobs_mc_villager_butcher.png",
+	butcher = "mobs_mc_villager_butcher.png",
+	weapon_smith = "mobs_mc_villager_smith.png",
+	tool_smith = "mobs_mc_villager_smith.png",
+	cleric = "mobs_mc_villager_priest.png",
+	nitwit = "mobs_mc_villager.png",
+}
 
 mobs:register_mob("mobs_mc:villager_zombie", {
 	type = "monster",
@@ -82,6 +95,50 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 		run_start = 0,
         run_end = 20,
 	},
+	on_rightclick = function(self, clicker)
+		if not self._curing and clicker and clicker:is_player() then
+			local wielditem = clicker:get_wielded_item()
+			-- ToDo: Only cure if zombie villager has the weakness effect
+			if wielditem:get_name() == "mcl_core:apple_gold" then
+				wielditem:take_item()
+				clicker:set_wielded_item(wielditem)
+				self._curing = math.random(3 * 60, 5 * 60)
+				self.shaking = true
+			end
+		end
+	end,
+	do_custom = function(self, dtime)
+		if self._curing then
+			self._curing = self._curing - dtime
+			local obj = self.object
+			if self._curing <= 0 then
+				local villager_obj = minetest.add_entity(obj:get_pos(), "mobs_mc:villager")
+				local villager = villager_obj:get_luaentity()
+				local yaw = obj:get_yaw()
+				villager_obj:set_yaw(yaw)
+				villager.target_yaw = yaw
+				villager.nametag = self.nametag
+				local texture = self.base_texture[1]:gsub("zombie", "villager")
+				if texture == "mobs_mc_villager_villager.png" then
+					texture = "mobs_mc_villager.png"
+				end
+				local textures = {texture}
+				villager.base_texture = textures
+				villager_obj:set_properties({textures = textures})
+				local matches = {}
+				for prof, tex in pairs(professions) do
+					if texture == tex then
+						table.insert(matches, prof)
+					end
+				end
+				villager._profession = matches[math.random(#matches)]
+				self._curing = nil
+				mcl_burning.extinguish(obj)
+				obj:remove()
+				return false
+			end
+		end
+	end,
 	sunlight_damage = 2,
 	ignited_by_sunlight = true,
 	view_range = 16,
@@ -89,7 +146,8 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 	harmed_by_heal = true,
 })
 
-mobs:spawn_specific("mobs_mc:villager_zombie", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 4090, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific("mobs_mc:villager_zombie", mobs_mc.spawn.village, {"air"}, 0, 7, 30, 4090, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific("mobs_mc:villager_zombie", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 60000, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:villager_zombie", S("Zombie Villager"), "mobs_mc_spawn_icon_zombie_villager.png", 0)
