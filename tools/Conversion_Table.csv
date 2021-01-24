@@ -973,3 +973,4 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/blocks,grass_top.png,/mods/ITEMS/mcl_core/textures,mcl_core_grass_block_top.png,,,,,,,
 /assets/minecraft/textures/blocks,grass_side_overlay.png,/mods/ITEMS/mcl_core/textures,mcl_core_grass_block_side_overlay.png,,,,,,,
 /assets/minecraft/textures/items,book_enchanted.png,/mods/ITEMS/mcl_enchanting/textures,mcl_enchanting_book_enchanted.png,,,,,,,
+/assets/minecraft/textures/items,experience_bottle.png,/mods/HUD/mcl_experience/textures,mcl_experience_bottle.png,,,,,,,
