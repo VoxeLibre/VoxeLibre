@@ -607,3 +607,47 @@ function mcl_experience.throw_experience(pos, amount)
 		j = j + 1
 	end
 end
+
+minetest.register_entity("mcl_experience:bottle",{
+	textures = {"mcl_experience_bottle.png"},
+	hp_max = 1,
+	visual_size = {x = 0.35, y = 0.35},
+	collisionbox = {-0.1, -0.1, -0.1, 0.1, 0.1, 0.1},
+	pointable = false,
+	on_step = function(self, dtime)
+		local pos = self.object:get_pos()
+		local node = minetest.get_node(pos)
+		local n = node.name
+		if n ~= "air" and n ~= "mcl_portals:portal" and n ~= "mcl_portals:portal_end" and minetest.get_node_group(n, "liquid") == 0 then
+			minetest.sound_play("mcl_potions_breaking_glass", {pos = pos, max_hear_distance = 16, gain = 1})
+			mcl_experience.throw_experience(pos, math.random(3, 11))
+			self.object:remove()
+		end
+	end,
+})
+
+local function throw_xp_bottle(pos, dir, velocity)
+	minetest.sound_play("mcl_throwing_throw", {pos = pos, gain = 0.4, max_hear_distance = 16}, true)
+	local obj = minetest.add_entity(pos, "mcl_experience:bottle")
+	obj:set_velocity(vector.multiply(dir, velocity))
+	local acceleration = vector.multiply(dir, -3)
+	acceleration.y = -9.81
+	obj:set_acceleration(acceleration)
+end
+
+minetest.register_craftitem("mcl_experience:bottle", {
+	description = "Bottle o' Enchanting",
+	inventory_image = "mcl_experience_bottle.png",
+	wield_image = "mcl_experience_bottle.png",
+	stack_max = 64,
+	on_use = function(itemstack, placer, pointed_thing)
+		throw_xp_bottle(vector.add(placer:get_pos(), vector.new(0, 1.5, 0)), placer:get_look_dir(), 10)
+		if not minetest.is_creative_enabled(placer:get_player_name()) then
+			itemstack:take_item()
+		end
+		return itemstack
+	end,
+	_on_dispense = function(_, pos, _, _, dir)
+		throw_xp_bottle(vector.add(pos, vector.multiply(dir, 0.51)), dir, 10)
+	end
+})
