@@ -13,6 +13,7 @@ local function destruct_bed(pos, oldnode)
 		end
 		minetest.check_for_falling(pos)
 	elseif string.sub(node.name, -7) == "_bottom" then
+		minetest.add_item(pos, node.name)
 		pos2 = vector.add(pos, dir)
 		node2 = minetest.get_node(pos2)
 		if node2 and string.sub(node2.name, -4) == "_top" then
@@ -86,6 +87,7 @@ function mcl_beds.register_bed(name, def)
 		node_box = node_box_bottom,
 		selection_box = selection_box_bottom,
 		collision_box = collision_box_bottom,
+		drop = "",
 		on_place = function(itemstack, placer, pointed_thing)
 			local under = pointed_thing.under
 
