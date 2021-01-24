@@ -3604,7 +3604,9 @@ local mob_step = function(self, dtime)
 	-- Despawning: when lifetimer expires, remove mob
 	if remove_far
 	and self.can_despawn == true
-	and ((not self.nametag) or (self.nametag == "")) then
+	and ((not self.nametag) or (self.nametag == ""))
+	and self.state ~= "attack"
+	and self.following == nil then
 
 		self.lifetimer = self.lifetimer - dtime
 		if self.despawn_immediately or self.lifetimer <= 0 then
