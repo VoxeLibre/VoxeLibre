@@ -4000,7 +4000,7 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 			pos.y = pos.y + 1
 
 			-- only spawn away from player
-			local objs = minetest.get_objects_inside_radius(pos, 16)
+			local objs = minetest.get_objects_inside_radius(pos, 24)
 
 			for n = 1, #objs do
 
