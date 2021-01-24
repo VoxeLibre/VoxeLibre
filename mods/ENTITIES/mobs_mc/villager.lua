@@ -323,7 +323,10 @@ local professions = {
 			TRADE_V6_RED_SANDSTONE,
 			},
 
-			-- TODO: Bottle 'o enchanting
+			{
+			 { { "mcl_nether:nether_wart_item", 22, 22 }, E1 },
+			 { { "mcl_core:emerald", 3, 3 }, { "mcl_experience:bottle", 1, 1 } },
+			},
 		},
 	},
 	nitwit = {
