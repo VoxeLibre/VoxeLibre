@@ -50,6 +50,7 @@ local boat = {
 	mesh = "mcl_boats_boat.b3d",
 	textures = {"mcl_boats_texture_oak_boat.png"},
 	visual_size = boat_visual_size,
+	hp_max = 4,
 
 	_driver = nil, -- Attached driver (player) or nil if none
 	_v = 0, -- Speed
@@ -106,13 +107,13 @@ end
 
 
 function boat.on_activate(self, staticdata, dtime_s)
-	self.object:set_armor_groups({immortal = 1})
+	--self.object:set_armor_groups({immortal = 1})
 	local data = minetest.deserialize(staticdata)
 	if type(data) == "table" then
 		self._v = data.v
 		self._last_v = self._v
 		self._itemstring = data.itemstring
-		self.object:set_properties({textures=data.textures})
+		self.object:set_properties({textures = data.textures, damage_texture_modifier = ""})
 	end
 end
 
@@ -126,29 +127,19 @@ function boat.get_staticdata(self)
 end
 
 
-function boat.on_punch(self, puncher)
-	if not puncher or not puncher:is_player() or self._removed then
-		return
-	end
-	if self._driver and puncher == self._driver then
-		self._driver = nil
-		puncher:set_detach()
-		puncher:set_properties({visual_size = {x=1, y=1}})
-		mcl_player.player_attached[puncher:get_player_name()] = false
-	end
-	if not self._driver then
-		self._removed = true
-		-- Drop boat as item on the ground after punching
-		if not minetest.is_creative_enabled(puncher:get_player_name()) then
-			minetest.add_item(self.object:get_pos(), self._itemstring)
-		else
-			local inv = puncher:get_inventory()
-			if not inv:contains_item("main", self._itemstring) then
-				inv:add_item("main", self._itemstring)
-			end
+function boat.on_death(self, killer)
+	if killer and killer:is_player() and minetest.is_creative_enabled(killer:get_player_name()) then
+		local inv = killer:get_inventory()
+		if not inv:contains_item("main", self._itemstring) then
+			inv:add_item("main", self._itemstring)
 		end
-		self.object:remove()
+	else
+		minetest.add_item(self.object:get_pos(), self._itemstring)
 	end
+	if self._driver then
+		detach_player(self._driver)
+	end
+	self._driver = nil
 end
 
 function boat.on_step(self, dtime)
