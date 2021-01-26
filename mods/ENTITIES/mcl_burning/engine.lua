@@ -39,7 +39,7 @@ end
 
 function mcl_burning.get_collisionbox(obj)
 	local box = obj:get_properties().collisionbox
-	return vector.new(box[1], box[2], box[3]), vector.new(box[4], box[5], box[6])
+	return vector.new(box[1] + 0.1, box[2] + 0.1, box[3] + 0.1), vector.new(box[4] - 0.1, box[5] - 0.1, box[6] - 0.1)
 end
 
 function mcl_burning.get_touching_nodes(obj, nodenames)
