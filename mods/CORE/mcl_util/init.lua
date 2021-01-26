@@ -395,4 +395,13 @@ function mcl_util.generate_on_place_plant_function(condition)
 	end
 end
 
-
+-- adjust the y level of an object to the center of its collisionbox
+-- used to get the origin position of entity explosions
+function mcl_util.get_object_center(obj)
+	local collisionbox = obj:get_properties().collisionbox
+	local pos = obj:get_pos()
+	local ymin = collisionbox[2]
+	local ymax = collisionbox[5]
+	pos.y = pos.y + (ymax - ymin) / 2.0
+	return pos
+end
