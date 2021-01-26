@@ -135,14 +135,17 @@ end
 -- strength - The strength of each ray
 -- raydirs - The directions for each ray
 -- radius - The maximum distance each ray will go
--- drop_chance - The chance that destroyed nodes will drop their items
--- fire - If true, 1/3 of destroyed nodes become fire
+-- info - Table containing information about explosion
 -- puncher - object that punches other objects (optional)
+--
+-- Values in info:
+-- drop_chance - The chance that destroyed nodes will drop their items
+-- fire - If true, 1/3 nodes become fire
 --
 -- Note that this function has been optimized, it contains code which has been
 -- inlined to avoid function calls and unnecessary table creation. This was
 -- measured to give a significant performance increase.
-local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, puncher, creative_enabled)
+local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 	local vm = minetest.get_voxel_manip()
 
 	local emin, emax = vm:read_from_map(vector.subtract(pos, radius),
@@ -163,6 +166,9 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 	}
 	local data = vm:get_data()
 	local destroy = {}
+
+	local drop_chance = info.drop_chance
+	local fire = info.fire
 
 	-- Trace rays for environment destruction
 	for i = 1, #raydirs do
@@ -327,7 +333,7 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 
 	-- Remove destroyed blocks and drop items
 	for hash, idx in pairs(destroy) do
-		local do_drop = not creative_enabled and math.random() <= drop_chance
+		local do_drop = math.random() <= drop_chance
 		local on_blast = node_on_blast[data[idx]]
 		local remove = true
 
@@ -406,26 +412,26 @@ function mcl_explosions.explode(pos, strength, info, puncher)
 	end
 	local shape = sphere_shapes[radius]
 
-	local drop_chance = info.drop_change ~= nil and info.drop_change or 1 / strength
-	local particles = info.particles ~= nil and info.particles or true
-	local sound = info.sound ~= nil and info.sound or true
-	local fire = info.fire ~= nil and info.fire or false
+	-- Default values
+	if info.drop_chance == nil then info.drop_chance = 1 / strength end
+	if info.particles == nil then info.particles = true end
+	if info.sound == nil then info.sound = true end
+	if info.fire == nil then info.fire = false end
 
 	-- For backwards compatability
-	if info.no_particle then
-		particles = false
-	end
-	if info.no_sound then
-		sound = false
-	end
+	if info.no_particle then info.particles = false end
+	if info.no_sound then info.sound = false end
 
-	local creative_enabled = minetest.is_creative_enabled("")
-	trace_explode(pos, strength, shape, radius, drop_chance, fire, puncher, creative_enabled)
+	-- Dont do drops in creative mode
+	if minetest.is_creative_enabled("") then
+		info.drop_chance = 0
+	end
+	trace_explode(pos, strength, shape, radius, info, puncher)
 
-	if particles then
+	if info.particles then
 		add_particles(pos, radius)
 	end
-	if sound then
+	if info.sound then
 		minetest.sound_play("tnt_explode", {
 			pos = pos, gain = 1.0,
 			max_hear_distance = strength * 16
