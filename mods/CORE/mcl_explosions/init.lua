@@ -377,7 +377,6 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 	-- Log explosion
 	minetest.log('action', 'Explosion at ' .. minetest.pos_to_string(pos) ..
 		' with strength ' .. strength .. ' and radius ' .. radius)
-
 end
 
 -- Create an explosion with strength at pos.
@@ -404,7 +403,7 @@ function mcl_explosions.explode(pos, strength, info, puncher)
 	local shape = sphere_shapes[radius]
 
 	local creative_enabled = minetest.is_creative_enabled("")
-	trace_explode(pos, strength, shape, radius, (info and info.drop_chance) or 1 / strength, info.fire == true, puncher, creative_enabled)
+	trace_explode(pos, strength, shape, radius, (info and info.drop_chance) or 1 / strength, info.fire, puncher, creative_enabled)
 
 	if not (info and info.no_particle) then
 		add_particles(pos, radius)
