@@ -384,16 +384,20 @@ end
 -- Parameters:
 -- pos - The position where the explosion originates from
 -- strength - The blast strength of the explosion (a TNT explosion uses 4)
--- info - Table containing information about explosion.
+-- info - Table containing information about explosion
 -- puncher - object that is reported as source of punches/damage (optional)
 --
 -- Values in info:
 -- drop_chance - If specified becomes the drop chance of all nodes in the
---               explosion (defaults to 1.0 / strength)
--- no_sound - If true then the explosion will not play a sound
--- no_particle - If true then the explosion will not create particles
+--               explosion (default: 1.0 / strength)
+-- sound - If true, the explosion will play a sound (default: true)
+-- particles - If true, the explosion will create particles (default: true)
 -- fire - If true, 1/3 nodes become fire (default: false)
 function mcl_explosions.explode(pos, strength, info, puncher)
+	if info == nil then
+		info = {}
+	end
+
 	-- The maximum blast radius (in the air)
 	local radius = math.ceil(1.3 * strength / (0.3 * 0.75) * 0.3)
 
@@ -402,13 +406,26 @@ function mcl_explosions.explode(pos, strength, info, puncher)
 	end
 	local shape = sphere_shapes[radius]
 
-	local creative_enabled = minetest.is_creative_enabled("")
-	trace_explode(pos, strength, shape, radius, (info and info.drop_chance) or 1 / strength, info.fire, puncher, creative_enabled)
+	local drop_chance = info.drop_change ~= nil and info.drop_change or 1 / strength
+	local particles = info.particles ~= nil and info.particles or true
+	local sound = info.sound ~= nil and info.sound or true
+	local fire = info.fire ~= nil and info.fire or false
 
-	if not (info and info.no_particle) then
+	-- For backwards compatability
+	if info.no_particle then
+		particles = false
+	end
+	if info.no_sound then
+		sound = false
+	end
+
+	local creative_enabled = minetest.is_creative_enabled("")
+	trace_explode(pos, strength, shape, radius, drop_chance, fire, puncher, creative_enabled)
+
+	if particles then
 		add_particles(pos, radius)
 	end
-	if not (info and info.no_sound) then
+	if sound then
 		minetest.sound_play("tnt_explode", {
 			pos = pos, gain = 1.0,
 			max_hear_distance = strength * 16
