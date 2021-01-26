@@ -32,6 +32,10 @@ local STEP_LENGTH = 0.3
 -- How many rays to compute entity exposure to explosion
 local N_EXPOSURE_RAYS = 16
 
+-- Nodes having a blast resistance of this value or higher are treated as
+-- indestructible
+local INDESTRUCT_BLASTRES = 1000000
+
 minetest.register_on_mods_loaded(function()
 	-- Store blast resistance values by content ids to improve performance.
 	for name, def in pairs(minetest.registered_nodes) do
@@ -142,6 +146,9 @@ end
 -- drop_chance - The chance that destroyed nodes will drop their items
 -- fire - If true, 1/3 nodes become fire
 -- griefing - If true, the explosion will destroy nodes (default: true)
+-- max_blast_resistance - The explosion will treat all non-indestructible nodes
+--                        as having a blast resistance of no more than this
+--                        value
 --
 -- Note that this function has been optimized, it contains code which has been
 -- inlined to avoid function calls and unnecessary table creation. This was
@@ -170,6 +177,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 
 	local drop_chance = info.drop_chance
 	local fire = info.fire
+	local max_blast_resistance = info.max_blast_resistance
 
 	-- Trace rays for environment destruction
 	if info.griefing then
@@ -191,6 +199,10 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 
 				local cid = data[idx]
 				local br = node_blastres[cid]
+				if br < INDESTRUCT_BLASTRES and br > max_blast_resistance then
+					br = max_blast_resistance
+				end
+
 				local hash = minetest.hash_node_position({x=npos_x, y=npos_y, z=npos_z})
 
 				rpos_x = rpos_x + STEP_LENGTH * rdir_x
@@ -399,6 +411,9 @@ end
 -- Values in info:
 -- drop_chance - If specified becomes the drop chance of all nodes in the
 --               explosion (default: 1.0 / strength)
+-- max_blast_resistance - If specified the explosion will treat all
+--                        non-indestructible nodes as having a blast resistance
+--                        of no more than this value
 -- sound - If true, the explosion will play a sound (default: true)
 -- particles - If true, the explosion will create particles (default: true)
 -- fire - If true, 1/3 nodes become fire (default: false)
@@ -422,8 +437,11 @@ function mcl_explosions.explode(pos, strength, info, puncher)
 	if info.sound == nil then info.sound = true end
 	if info.fire == nil then info.fire = false end
 	if info.griefing == nil then info.griefing = true end
+	if info.max_blast_resistance == nil then
+		info.max_blast_resistance = INDESTRUCT_BLASTRES
+	end
 
-	-- For backwards compatability
+	-- For backwards compatibility
 	if info.no_particle then info.particles = false end
 	if info.no_sound then info.sound = false end
 
@@ -431,6 +449,7 @@ function mcl_explosions.explode(pos, strength, info, puncher)
 	if minetest.is_creative_enabled("") then
 		info.drop_chance = 0
 	end
+
 	trace_explode(pos, strength, shape, radius, info, puncher)
 
 	if info.particles then
