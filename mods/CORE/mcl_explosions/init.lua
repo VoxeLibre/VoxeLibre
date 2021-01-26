@@ -141,6 +141,7 @@ end
 -- Values in info:
 -- drop_chance - The chance that destroyed nodes will drop their items
 -- fire - If true, 1/3 nodes become fire
+-- griefing - If true, the explosion will destroy nodes (default: true)
 --
 -- Note that this function has been optimized, it contains code which has been
 -- inlined to avoid function calls and unnecessary table creation. This was
@@ -171,38 +172,40 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 	local fire = info.fire
 
 	-- Trace rays for environment destruction
-	for i = 1, #raydirs do
-		local rpos_x = pos.x
-		local rpos_y = pos.y
-		local rpos_z = pos.z
-		local rdir_x = raydirs[i].x
-		local rdir_y = raydirs[i].y
-		local rdir_z = raydirs[i].z
-		local rstr = (0.7 + math.random() * 0.6) * strength
+	if info.griefing then
+		for i = 1, #raydirs do
+			local rpos_x = pos.x
+			local rpos_y = pos.y
+			local rpos_z = pos.z
+			local rdir_x = raydirs[i].x
+			local rdir_y = raydirs[i].y
+			local rdir_z = raydirs[i].z
+			local rstr = (0.7 + math.random() * 0.6) * strength
 
-		for r = 0, math.ceil(radius * (1.0 / STEP_LENGTH)) do
-			local npos_x = math.floor(rpos_x + 0.5)
-			local npos_y = math.floor(rpos_y + 0.5)
-			local npos_z = math.floor(rpos_z + 0.5)
-			local idx = (npos_z - emin_z) * zstride + (npos_y - emin_y) * ystride +
-					npos_x - emin_x + 1
+			for r = 0, math.ceil(radius * (1.0 / STEP_LENGTH)) do
+				local npos_x = math.floor(rpos_x + 0.5)
+				local npos_y = math.floor(rpos_y + 0.5)
+				local npos_z = math.floor(rpos_z + 0.5)
+				local idx = (npos_z - emin_z) * zstride + (npos_y - emin_y) * ystride +
+						npos_x - emin_x + 1
 
-			local cid = data[idx]
-			local br = node_blastres[cid]
-			local hash = minetest.hash_node_position({x=npos_x, y=npos_y, z=npos_z})
+				local cid = data[idx]
+				local br = node_blastres[cid]
+				local hash = minetest.hash_node_position({x=npos_x, y=npos_y, z=npos_z})
 
-			rpos_x = rpos_x + STEP_LENGTH * rdir_x
-			rpos_y = rpos_y + STEP_LENGTH * rdir_y
-			rpos_z = rpos_z + STEP_LENGTH * rdir_z
+				rpos_x = rpos_x + STEP_LENGTH * rdir_x
+				rpos_y = rpos_y + STEP_LENGTH * rdir_y
+				rpos_z = rpos_z + STEP_LENGTH * rdir_z
 
-			rstr = rstr - 0.75 * STEP_LENGTH - (br + 0.3) * STEP_LENGTH
+				rstr = rstr - 0.75 * STEP_LENGTH - (br + 0.3) * STEP_LENGTH
 
-			if rstr <= 0 then
-				break
-			end
+				if rstr <= 0 then
+					break
+				end
 
-			if cid ~= minetest.CONTENT_AIR and not minetest.is_protected({x = npos_x, y = npos_y, z = npos_z}, "") then
-				destroy[hash] = idx
+				if cid ~= minetest.CONTENT_AIR and not minetest.is_protected({x = npos_x, y = npos_y, z = npos_z}, "") then
+					destroy[hash] = idx
+				end
 			end
 		end
 	end
@@ -399,6 +402,7 @@ end
 -- sound - If true, the explosion will play a sound (default: true)
 -- particles - If true, the explosion will create particles (default: true)
 -- fire - If true, 1/3 nodes become fire (default: false)
+-- griefing - If true, the explosion will destroy nodes (default: true)
 function mcl_explosions.explode(pos, strength, info, puncher)
 	if info == nil then
 		info = {}
@@ -417,6 +421,7 @@ function mcl_explosions.explode(pos, strength, info, puncher)
 	if info.particles == nil then info.particles = true end
 	if info.sound == nil then info.sound = true end
 	if info.fire == nil then info.fire = false end
+	if info.griefing == nil then info.griefing = true end
 
 	-- For backwards compatability
 	if info.no_particle then info.particles = false end
