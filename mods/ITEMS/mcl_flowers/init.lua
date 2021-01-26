@@ -448,3 +448,34 @@ minetest.register_node("mcl_flowers:waterlily", {
 
 -- Legacy support
 minetest.register_alias("mcl_core:tallgrass", "mcl_flowers:tallgrass")
+
+-- mcimport support: re-adds missing double_plant tops in mcimported worlds.
+local mg_name = minetest.get_mapgen_setting("mg_name")
+local mod_mcimport = minetest.get_modpath("mcimport") ~= nil
+local fix_doubleplants = minetest.settings:get_bool("fix_doubleplants", true)
+
+
+	if mod_mcimport and mg_name == "singlenode" and fix_doubleplants == true then
+		local flowernames = { "peony", "rose_bush", "lilac", "sunflower", "double_fern", "double_grass" }
+		for c=1, 6 do
+			local flowername = flowernames[c]
+		end
+
+		minetest.register_lbm({
+			label = "Add double plant tops.",
+			name = "mcl_flowers:double_plant_topper",
+			run_at_every_load = true,
+			nodenames = { "mcl_flowers:peony", "mcl_flowers:rose_bush", "mcl_flowers:lilac", "mcl_flowers:sunflower", "mcl_flowers:double_fern", "mcl_flowers:double_grass" },
+			action = function(pos, node)
+				for c=1, 6 do
+					local flowername = flowernames[c]
+					local bottom = pos
+					local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
+					if node.name == "mcl_flowers:"..flowername then
+						minetest.set_node(top, {name = "mcl_flowers:"..flowername.."_top"})
+					end
+				end
+			end,
+		})
+	end
+
