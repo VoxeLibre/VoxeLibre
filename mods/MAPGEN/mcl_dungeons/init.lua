@@ -8,6 +8,7 @@ if mcl_vars.mg_dungeons == false then
 	return
 end
 
+if mg_name ~= "singlenode" then
 -- Get loot for dungeon chests
 local get_loot = function()
 	local loottable = {
@@ -396,3 +397,4 @@ minetest.register_on_generated(function(minp, maxp)
 	end
 
 end)
+end
