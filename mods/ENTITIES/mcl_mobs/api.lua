@@ -2258,7 +2258,6 @@ local dogswitch = function(self, dtime)
 	return self.dogshoot_switch
 end
 
-
 -- execute current state (stand, walk, run, attacks)
 -- returns true if mob has died
 local do_states = function(self, dtime)
@@ -2550,7 +2549,7 @@ local do_states = function(self, dtime)
 
 					if mod_explosions then
 					if mobs_griefing and not minetest.is_protected(pos, "") then
-						mcl_explosions.explode(self.object:get_pos(), self.explosion_strength, { drop_chance = 1.0 }, self.object)
+						mcl_explosions.explode(mcl_util.get_object_center(self.object), self.explosion_strength, { drop_chance = 1.0 }, self.object)
 					else
 						minetest.sound_play(self.sounds.explode, {
 							pos = pos,
