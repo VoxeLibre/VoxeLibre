@@ -85,3 +85,12 @@ Report all bugs and missing Minecraft features here:
 We have an IRC channel! Join us on #mineclone2 in freenode.net.
 
 <ircs://irc.freenode.net:6697/#mineclone2>
+
+## Creating releases
+* Launch MineClone2 to make sure it still runs
+* Update the version number in README.md
+* Use `git tag <version number>` to tag the latest commit with the version number
+* Push to repo (don't forget `--tags`!)
+* Update ContentDB (https://content.minetest.net/packages/Wuzzy/mineclone2/)
+* Update first post in forum thread (https://forum.minetest.net/viewtopic.php?f=50&t=16407)
+* Post release announcement and changelog in forums
