@@ -147,6 +147,17 @@ minetest.register_craftitem("mcl_core:apple", {
 local gapple_hunger_restore = minetest.item_eat(4)
 
 local function eat_gapple(itemstack, placer, pointed_thing)
+	if pointed_thing.type == "node" then
+		local node = minetest.get_node(pointed_thing.under)
+		if placer and not placer:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+			end
+		end
+	elseif pointed_thing.type == "object" then
+		return itemstack
+	end
+
 	local regen_duration, absorbtion_factor = 5, 1
 	if itemstack:get_name() == "mcl_core:apple_gold_enchanted" then
 		regen_duration, absorbtion_factor = 20, 4
