@@ -26,7 +26,7 @@ S("An arrow fired from a bow has a regular damage of 1-9. At full charge, there'
 S("Arrows might get stuck on solid blocks and can be retrieved again. They are also capable of pushing wooden buttons."),
 	_doc_items_usagehelp = S("To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory. To retrieve an arrow that sticks in a block, simply walk close to it."),
 	inventory_image = "mcl_bows_arrow_inv.png",
-	groups = { ammo=1, ammo_bow=1 },
+	groups = { ammo=1, ammo_bow=1, ammo_bow_regular=1 },
 	_on_dispense = function(itemstack, dispenserpos, droppos, dropnode, dropdir)
 		-- Shoot arrow
 		local shootpos = vector.add(dispenserpos, vector.multiply(dropdir, 0.51))
@@ -166,7 +166,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 		local objects = minetest.get_objects_inside_radius(pos, 1)
 		for _,obj in ipairs(objects) do
 			if obj:is_player() then
-				if not minetest.is_creative_enabled(obj:get_player_name()) then
+				if self._collectable and not minetest.is_creative_enabled(obj:get_player_name()) then
 					if obj:get_inventory():room_for_item("main", "mcl_bows:arrow") then
 						obj:get_inventory():add_item("main", "mcl_bows:arrow")
 						minetest.sound_play("item_drop_pickup", {

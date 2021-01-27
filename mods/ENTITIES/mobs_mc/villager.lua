@@ -962,6 +962,7 @@ mobs:register_mob("mobs_mc:villager", {
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
 	drops = {},
+	can_despawn = false,
 	-- TODO: sounds
 	animation = {
 		stand_speed = 25,

@@ -2,25 +2,14 @@ local S = minetest.get_translator("mcl_chests")
 local mod_doc = minetest.get_modpath("doc")
 
 -- Chest Entity
-local entity_animations = {}
+local animate_chests = (minetest.settings:get_bool("animated_chests") ~= false)
 local entity_animation_speed = 25
-
-do
-	local names = {"open", "opened", "close", "closed"}
-	local following = {["open"] = "opened", ["close"] = "closed"}
-	local durations = {10, 0, 10, 5}
-	local anim_start = 0
-	for index, name in ipairs(names) do
-		local duration = durations[index]
-		local anim_end = anim_start + duration
-		entity_animations[name] = {
-			bounds = {x = anim_start, y = anim_end},
-			sched_anim = following[name],
-			sched_time = duration / entity_animation_speed
-		}
-		anim_start = anim_end
-	end
-end
+local entity_animations = {
+	["open"] = {x = 0, y = 10},
+	["open_partly"] = {x = 0, y = 7},
+	["close"] = {x = 10, y = 20},
+	["close_partly"] = {x = 13, y = 20},
+}
 
 minetest.register_entity("mcl_chests:chest", {
 	initial_properties = {
@@ -33,21 +22,19 @@ minetest.register_entity("mcl_chests:chest", {
 
 	set_animation = function(self, animname)
 		local anim = entity_animations[animname]
-		self.object:set_animation(anim.bounds, entity_animation_speed, 0, false)
-		if anim.sched_anim then
-			self.sched_anim = anim.sched_anim
-			self.sched_time = anim.sched_time
-		end
+		if not anim then return end
+		self.object:set_animation(anim, entity_animation_speed, 0, false)
 	end,
 
-	open = function(self, playername)
+	open = function(self, playername, partly)
 		self.players[playername] = true
 		if not self.is_open then
-			self.is_open = true
-			self:set_animation("open")
+			self:set_animation(partly and "open_partly" or "open")
 			minetest.sound_play(self.sound_prefix .. "_open", {
 				pos = self.node_pos,
 			})
+			self.is_open = true
+			self.opened_partly = partly
 		end
 	end,
 
@@ -58,11 +45,12 @@ minetest.register_entity("mcl_chests:chest", {
 			for _ in pairs(playerlist) do
 				return
 			end
-			self.is_open = false
-			self:set_animation("close")
+			self:set_animation(self.opened_partly and "close_partly" or "close")
 			minetest.sound_play(self.sound_prefix .. "_close", {
 				pos = self.node_pos,
 			})
+			self.is_open = false
+			self.opened_partly = false
 		end
 	end,
 
@@ -100,23 +88,12 @@ minetest.register_entity("mcl_chests:chest", {
 
 	on_activate = function(self)
 		self.object:set_armor_groups({immortal = 1})
-		self:set_animation("closed")
 		self.players = {}
 	end,
 
 	on_step = function(self, dtime)
-		local sched_anim, sched_time = self.sched_anim, self.sched_time
 		if not self:check() then
 			self.object:remove()
-		elseif sched_anim and sched_time then
-			sched_time = sched_time - dtime
-			if sched_time < 0 then
-				self:set_animation(sched_anim)
-				self.sched_time = nil
-				self.sched_anim = nil
-			else
-				self.sched_time = sched_time
-			end
 		end
 	end
 })
@@ -149,8 +126,8 @@ local function create_entity(pos, node_name, textures, param2, double, sound_pre
 	return luaentity
 end
 
-local function find_or_create_entity(pos, node_name, textures, param2, double, sound_prefix, mesh_prefix)
-	local dir = minetest.facedir_to_dir(param2)
+local function find_or_create_entity(pos, node_name, textures, param2, double, sound_prefix, mesh_prefix, dir)
+	local dir = dir or minetest.facedir_to_dir(param2)
 	local entity_pos = get_entity_pos(pos, dir, double)
 	return find_entity(entity_pos) or create_entity(pos, node_name, textures, param2, double, sound_prefix, mesh_prefix, dir, entity_pos)
 end
@@ -175,11 +152,22 @@ Value:
     If player is using a chest: { pos = <chest node position> }
     Otherwise: nil ]]
 local open_chests = {}
+
+local function back_is_blocked(pos, dir)
+	pos = vector.add(pos, dir)
+	local def = minetest.registered_nodes[minetest.get_node(pos).name]
+	pos.y = pos.y + 1
+	local def2 = minetest.registered_nodes[minetest.get_node(pos).name]
+	return not def or def.groups.opaque == 1 or not def2 or def2.groups.opaque == 1
+end
 -- To be called if a player opened a chest
 local player_chest_open = function(player, pos, node_name, textures, param2, double, sound, mesh)
 	local name = player:get_player_name()
 	open_chests[name] = {pos = pos, node_name = node_name, textures = textures, param2 = param2, double = double, sound = sound, mesh = mesh}
-	find_or_create_entity(pos, node_name, textures, param2, double, sound, mesh):open(name)
+	if animate_chests then
+		local dir = minetest.facedir_to_dir(param2)
+		find_or_create_entity(pos, node_name, textures, param2, double, sound, mesh, dir):open(name, back_is_blocked(pos, dir) or double and back_is_blocked(mcl_util.get_double_container_neighbor_pos(pos, param2, node_name:sub(-4)), dir))
+	end
 end
 
 -- Simple protection checking functions
@@ -238,7 +226,9 @@ local player_chest_close = function(player)
 	if open_chest == nil then
 		return
 	end
-	find_or_create_entity(open_chest.pos, open_chest.node_name, open_chest.textures, open_chest.param2, open_chest.double, open_chest.sound, open_chest.mesh):close(name)
+	if animate_chests then
+		find_or_create_entity(open_chest.pos, open_chest.node_name, open_chest.textures, open_chest.param2, open_chest.double, open_chest.sound, open_chest.mesh):close(name)
+	end
 	chest_update_after_close(open_chest.pos)
 
 	open_chests[name] = nil

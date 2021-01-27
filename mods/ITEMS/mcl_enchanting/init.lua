@@ -219,6 +219,16 @@ end
 
 minetest.register_node("mcl_enchanting:table", {
 	description = S("Enchanting Table"),
+	_tt_help = S("Spend experience, and lapis to enchant various items."),
+	_doc_items_longdesc = S("Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli."),
+	_doc_items_usagehelp =
+			S("Rightclick the Enchanting Table to open the enchanting menu.").."\n"..
+			S("Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.").."\n".."\n"..
+			S("After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.").."\n"..
+			S("These options are randomized, and dependent on experience level; but the enchantment strength can be increased.").."\n".."\n"..
+			S("To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.").."\n".."\n"..
+			S("After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place."),
+	_doc_items_hidden = false,
 	drawtype = "nodebox",
 	tiles = {"mcl_enchanting_table_top.png",  "mcl_enchanting_table_bottom.png", "mcl_enchanting_table_side.png", "mcl_enchanting_table_side.png", "mcl_enchanting_table_side.png", "mcl_enchanting_table_side.png"},
 	node_box = {

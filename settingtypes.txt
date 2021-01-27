@@ -91,6 +91,9 @@ flame_sound (Flame sound) bool true
 # Form: Image height / Image width
 fire_animation_frames (Fire Animation Frames) int 8
 
+# Whether to animate chests when open / close
+animated_chests (Animated chests) bool true
+
 [Experimental]
 # Whether ice is translucent. If disabled, ice is fully opaque.
 #
@@ -126,3 +129,7 @@ mcl_superflat_classic (Classic superflat map generation) bool false
 # WARNING: This setting has quite poor performance and can slow down your
 # game by a lot.
 mcl_node_particles (Block particles detail level) enum none high,medium,low,none
+
+
+# If enabled, will run an LBM to fix the top 1/2 of double plants in mcimported worlds; defaults to true.
+fix_doubleplants (Mcimport double plant fixes) bool true
