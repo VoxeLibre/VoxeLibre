@@ -789,17 +789,15 @@ local check_for_death = function(self, cause, cmi_cause)
 				local puncher = cmi_cause.puncher
 				if puncher then
 					wielditem = puncher:get_wielded_item()
+
+					if mod_experience and ((not self.child) or self.type ~= "animal") then
+						mcl_experience.throw_experience(self.object:get_pos(), math.random(self.xp_min, self.xp_max))
+					end
 				end
 			end
 			local cooked = mcl_burning.is_burning(self.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect")
 			local looting = mcl_enchanting.get_enchantment(wielditem, "looting")
 			item_drop(self, cooked, looting)
-		end
-
-		local pos = self.object:get_pos()
-
-		if mod_experience and ((not self.child) or self.type ~= "animal") then
-			mcl_experience.throw_experience(pos, math.random(self.xp_min, self.xp_max))
 		end
 	end
 
