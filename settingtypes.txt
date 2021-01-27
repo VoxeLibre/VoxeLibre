@@ -91,6 +91,9 @@ flame_sound (Flame sound) bool true
 # Form: Image height / Image width
 fire_animation_frames (Fire Animation Frames) int 8
 
+# Whether to animate chests when open / close
+animated_chests (Animated chests) bool true
+
 [Experimental]
 # Whether ice is translucent. If disabled, ice is fully opaque.
 #

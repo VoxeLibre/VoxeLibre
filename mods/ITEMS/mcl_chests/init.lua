@@ -2,6 +2,7 @@ local S = minetest.get_translator("mcl_chests")
 local mod_doc = minetest.get_modpath("doc")
 
 -- Chest Entity
+local animate_chests = (minetest.settings:get_bool("animated_chests") ~= false)
 local entity_animation_speed = 25
 local entity_animations = {
 	["open"] = {x = 0, y = 10},
@@ -163,8 +164,10 @@ end
 local player_chest_open = function(player, pos, node_name, textures, param2, double, sound, mesh)
 	local name = player:get_player_name()
 	open_chests[name] = {pos = pos, node_name = node_name, textures = textures, param2 = param2, double = double, sound = sound, mesh = mesh}
-	local dir = minetest.facedir_to_dir(param2)
-	find_or_create_entity(pos, node_name, textures, param2, double, sound, mesh, dir):open(name, back_is_blocked(pos, dir) or double and back_is_blocked(mcl_util.get_double_container_neighbor_pos(pos, param2, node_name:sub(-4)), dir))
+	if animate_chests then
+		local dir = minetest.facedir_to_dir(param2)
+		find_or_create_entity(pos, node_name, textures, param2, double, sound, mesh, dir):open(name, back_is_blocked(pos, dir) or double and back_is_blocked(mcl_util.get_double_container_neighbor_pos(pos, param2, node_name:sub(-4)), dir))
+	end
 end
 
 -- Simple protection checking functions
@@ -223,7 +226,9 @@ local player_chest_close = function(player)
 	if open_chest == nil then
 		return
 	end
-	find_or_create_entity(open_chest.pos, open_chest.node_name, open_chest.textures, open_chest.param2, open_chest.double, open_chest.sound, open_chest.mesh):close(name)
+	if animate_chests then
+		find_or_create_entity(open_chest.pos, open_chest.node_name, open_chest.textures, open_chest.param2, open_chest.double, open_chest.sound, open_chest.mesh):close(name)
+	end
 	chest_update_after_close(open_chest.pos)
 
 	open_chests[name] = nil
