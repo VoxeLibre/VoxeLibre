@@ -2,25 +2,13 @@ local S = minetest.get_translator("mcl_chests")
 local mod_doc = minetest.get_modpath("doc")
 
 -- Chest Entity
-local entity_animations = {}
 local entity_animation_speed = 25
-
-do
-	local names = {"open", "opened", "close", "closed"}
-	local following = {["open"] = "opened", ["close"] = "closed"}
-	local durations = {10, 0, 10, 5}
-	local anim_start = 0
-	for index, name in ipairs(names) do
-		local duration = durations[index]
-		local anim_end = anim_start + duration
-		entity_animations[name] = {
-			bounds = {x = anim_start, y = anim_end},
-			sched_anim = following[name],
-			sched_time = duration / entity_animation_speed
-		}
-		anim_start = anim_end
-	end
-end
+local entity_animations = {
+	["open"] = {x = 0, y = 10},
+	["open_partly"] = {x = 0, y = 7},
+	["close"] = {x = 10, y = 20},
+	["close_partly"] = {x = 13, y = 20},
+}
 
 minetest.register_entity("mcl_chests:chest", {
 	initial_properties = {
@@ -33,18 +21,16 @@ minetest.register_entity("mcl_chests:chest", {
 
 	set_animation = function(self, animname)
 		local anim = entity_animations[animname]
-		self.object:set_animation(anim.bounds, entity_animation_speed, 0, false)
-		if anim.sched_anim then
-			self.sched_anim = anim.sched_anim
-			self.sched_time = anim.sched_time
-		end
+		if not anim then return end
+		self.object:set_animation(anim, entity_animation_speed, 0, false)
 	end,
 
 	open = function(self, playername)
 		self.players[playername] = true
 		if not self.is_open then
 			self.is_open = true
-			self:set_animation("open")
+			self.opened_partly = false
+			self:set_animation(self.opened_partly and "open_partly" or "open")
 			minetest.sound_play(self.sound_prefix .. "_open", {
 				pos = self.node_pos,
 			})
@@ -58,11 +44,12 @@ minetest.register_entity("mcl_chests:chest", {
 			for _ in pairs(playerlist) do
 				return
 			end
-			self.is_open = false
-			self:set_animation("close")
+			self:set_animation(self.opened_partly and "close_partly" or "close")
 			minetest.sound_play(self.sound_prefix .. "_close", {
 				pos = self.node_pos,
 			})
+			self.is_open = false
+			self.opened_partly = false
 		end
 	end,
 
@@ -100,23 +87,12 @@ minetest.register_entity("mcl_chests:chest", {
 
 	on_activate = function(self)
 		self.object:set_armor_groups({immortal = 1})
-		self:set_animation("closed")
 		self.players = {}
 	end,
 
 	on_step = function(self, dtime)
-		local sched_anim, sched_time = self.sched_anim, self.sched_time
 		if not self:check() then
 			self.object:remove()
-		elseif sched_anim and sched_time then
-			sched_time = sched_time - dtime
-			if sched_time < 0 then
-				self:set_animation(sched_anim)
-				self.sched_time = nil
-				self.sched_anim = nil
-			else
-				self.sched_time = sched_time
-			end
 		end
 	end
 })
