@@ -25,15 +25,15 @@ minetest.register_entity("mcl_chests:chest", {
 		self.object:set_animation(anim, entity_animation_speed, 0, false)
 	end,
 
-	open = function(self, playername)
+	open = function(self, playername, partly)
 		self.players[playername] = true
 		if not self.is_open then
-			self.is_open = true
-			self.opened_partly = false
-			self:set_animation(self.opened_partly and "open_partly" or "open")
+			self:set_animation(partly and "open_partly" or "open")
 			minetest.sound_play(self.sound_prefix .. "_open", {
 				pos = self.node_pos,
 			})
+			self.is_open = true
+			self.opened_partly = partly
 		end
 	end,
 
@@ -125,8 +125,8 @@ local function create_entity(pos, node_name, textures, param2, double, sound_pre
 	return luaentity
 end
 
-local function find_or_create_entity(pos, node_name, textures, param2, double, sound_prefix, mesh_prefix)
-	local dir = minetest.facedir_to_dir(param2)
+local function find_or_create_entity(pos, node_name, textures, param2, double, sound_prefix, mesh_prefix, dir)
+	local dir = dir or minetest.facedir_to_dir(param2)
 	local entity_pos = get_entity_pos(pos, dir, double)
 	return find_entity(entity_pos) or create_entity(pos, node_name, textures, param2, double, sound_prefix, mesh_prefix, dir, entity_pos)
 end
@@ -151,11 +151,20 @@ Value:
     If player is using a chest: { pos = <chest node position> }
     Otherwise: nil ]]
 local open_chests = {}
+
+local function back_is_blocked(pos, dir)
+	pos = vector.add(pos, dir)
+	local def = minetest.registered_nodes[minetest.get_node(pos).name]
+	pos.y = pos.y + 1
+	local def2 = minetest.registered_nodes[minetest.get_node(pos).name]
+	return not def or def.groups.opaque == 1 or not def2 or def2.groups.opaque == 1
+end
 -- To be called if a player opened a chest
 local player_chest_open = function(player, pos, node_name, textures, param2, double, sound, mesh)
 	local name = player:get_player_name()
 	open_chests[name] = {pos = pos, node_name = node_name, textures = textures, param2 = param2, double = double, sound = sound, mesh = mesh}
-	find_or_create_entity(pos, node_name, textures, param2, double, sound, mesh):open(name)
+	local dir = minetest.facedir_to_dir(param2)
+	find_or_create_entity(pos, node_name, textures, param2, double, sound, mesh, dir):open(name, back_is_blocked(pos, dir) or double and back_is_blocked(mcl_util.get_double_container_neighbor_pos(pos, param2, node_name:sub(-4)), dir))
 end
 
 -- Simple protection checking functions
