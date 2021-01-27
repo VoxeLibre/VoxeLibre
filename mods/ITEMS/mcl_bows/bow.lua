@@ -100,7 +100,7 @@ local player_shoot_arrow = function(itemstack, player, power, damage, is_critica
 			return false
 		end
 		arrow_itemstring = arrow_stack:get_name()
-		if not has_infinity_enchantment then
+		if not has_infinity_enchantment or minetest.get_item_group(arrow_itemstring, "ammo_bow_regular") == 0 then
 			arrow_stack:take_item()
 		end
 		local inv = player:get_inventory()
