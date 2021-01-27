@@ -240,8 +240,7 @@ mcl_enchanting.enchantments.fire_protection = {
 	inv_tool_tab = false,
 }
 
--- requires missing MineClone2 feature
---[[mcl_enchanting.enchantments.flame = {
+mcl_enchanting.enchantments.flame = {
 	name = S("Flame"),
 	max_level = 1,
 	primary = {bow = true},
@@ -257,7 +256,7 @@ mcl_enchanting.enchantments.fire_protection = {
 	power_range_table = {{20, 50}},
 	inv_combat_tab = true,
 	inv_tool_tab = false,
-}]]--
+}
 
 -- implemented in mcl_item_entity
 mcl_enchanting.enchantments.fortune = {

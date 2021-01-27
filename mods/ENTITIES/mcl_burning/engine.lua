@@ -37,15 +37,21 @@ function mcl_burning.is_affected_by_rain(obj)
 	return mcl_weather.get_weather() == "rain" and mcl_weather.is_outdoor(obj:get_pos())
 end
 
-function mcl_burning.get_collisionbox(obj)
+function mcl_burning.get_collisionbox(obj, smaller)
 	local box = obj:get_properties().collisionbox
-	return vector.new(box[1], box[2], box[3]), vector.new(box[4], box[5], box[6])
+	local minp, maxp = vector.new(box[1], box[2], box[3]), vector.new(box[4], box[5], box[6])
+	if smaller then
+		local s_vec = vector.new(0.1, 0.1, 0.1)
+		minp = vector.add(minp, s_vec)
+		maxp = vector.subtract(maxp, s_vec)
+	end
+	return minp, maxp
 end
 
 function mcl_burning.get_touching_nodes(obj, nodenames)
 	local pos = obj:get_pos()
 	local box = obj:get_properties().collisionbox
-	local minp, maxp = mcl_burning.get_collisionbox(obj)
+	local minp, maxp = mcl_burning.get_collisionbox(obj, true)
 	local nodes = minetest.find_nodes_in_area(vector.add(pos, minp), vector.add(pos, maxp), nodenames)
 	return nodes
 end

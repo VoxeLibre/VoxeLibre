@@ -50,6 +50,9 @@ mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damag
 		if enchantments.punch then
 			knockback = enchantments.punch * 3
 		end
+		if enchantments.flame then
+			mcl_burning.set_on_fire(obj, math.huge)
+		end
 	end
 	obj:set_velocity({x=dir.x*power, y=dir.y*power, z=dir.z*power})
 	obj:set_acceleration({x=0, y=-GRAVITY, z=0})
