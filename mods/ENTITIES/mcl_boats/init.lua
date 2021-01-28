@@ -134,7 +134,7 @@ function boat.on_death(self, killer)
 	self._driver = nil
 end
 
-function boat.on_step(self, dtime)
+function boat.on_step(self, dtime, moveresult)
 	self._v = get_v(self.object:get_velocity()) * get_sign(self._v)
 	local on_water = true
 	local in_water = false
@@ -150,6 +150,15 @@ function boat.on_step(self, dtime)
 		in_water = true
 		v_factor = 0.75
 		v_slowdown = 0.05
+	end
+
+	if moveresult and moveresult.collides then
+		for _, collision in ipairs(moveresult.collisions) do
+			local pos = collision.node_pos
+			if collision.type == "node" and minetest.get_node_group(minetest.get_node(pos).name, "dig_by_boat") > 0 then
+				minetest.dig_node(pos)
+			end
+		end
 	end
 
 	if self._driver then
