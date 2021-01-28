@@ -40,7 +40,7 @@ local storage = minetest.get_mod_storage()
 local save_weather = function()
 	storage:set_string("mcl_weather_state", mcl_weather.state)
 	storage:set_int("mcl_weather_end_time", mcl_weather.end_time)
-	minetest.log("action", "[mcl_weather] Weather data saved: state="..mcl_weather.state.." end_time="..mcl_weather.end_time)
+	minetest.log("verbose", "[mcl_weather] Weather data saved: state="..mcl_weather.state.." end_time="..mcl_weather.end_time)
 end
 minetest.register_on_shutdown(save_weather)
 
@@ -164,11 +164,15 @@ end
 -- Change weather to new_weather.
 -- * explicit_end_time is OPTIONAL. If specified, explicitly set the
 --   gametime (minetest.get_gametime) in which the weather ends.
-mcl_weather.change_weather = function(new_weather, explicit_end_time)
+-- * changer is OPTIONAL, for logging purposes.
+mcl_weather.change_weather = function(new_weather, explicit_end_time, changer_name)
+	local changer_name = changer_name or debug.getinfo(2).name
+
 	if (mcl_weather.reg_weathers ~= nil and mcl_weather.reg_weathers[new_weather] ~= nil) then
 		if (mcl_weather.state ~= nil and mcl_weather.reg_weathers[mcl_weather.state] ~= nil) then
 			mcl_weather.reg_weathers[mcl_weather.state].clear()
 		end
+		minetest.log("action", "[mcl_weather] " .. changer_name .. " changed the weather from " .. mcl_weather.state .. " to " .. new_weather)
 		mcl_weather.state = new_weather
 		local weather_meta = mcl_weather.reg_weathers[mcl_weather.state]
 		if explicit_end_time then
@@ -222,7 +226,7 @@ minetest.register_chatcommand("weather", {
 			end
 		end
 
-		local success = mcl_weather.change_weather(new_weather, end_time)
+		local success = mcl_weather.change_weather(new_weather, end_time, name)
 		if success then
 			return true
 		else
@@ -238,13 +242,13 @@ minetest.register_chatcommand("toggledownfall", {
 	func = function(name, param)
 		-- Currently rain/thunder/snow: Set weather to clear
 		if mcl_weather.state ~= "none" then
-			return mcl_weather.change_weather("none")
+			return mcl_weather.change_weather("none", nil, name)
 
 		-- Currently clear: Set weather randomly to rain/thunder/snow
 		else
 			local new = { "rain", "thunder", "snow" }
 			local r = math.random(1, #new)
-			return mcl_weather.change_weather(new[r])
+			return mcl_weather.change_weather(new[r], nil, name)
 		end
 	end
 })
