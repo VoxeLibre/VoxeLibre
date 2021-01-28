@@ -24,11 +24,8 @@ end
 local timer = 0
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
-	if timer >= 0.7 then
-		timer = 0
-	else
-		return
-	end
+	if timer < 0.7 then return end
+	timer = 0
 
 	for _, player in ipairs(minetest.get_connected_players()) do
 		if not mcl_worlds.has_dust(player:get_pos()) then

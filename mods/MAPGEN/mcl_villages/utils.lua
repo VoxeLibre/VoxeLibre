@@ -1,3 +1,5 @@
+mcl_villages = {}
+
 local c_dirt_with_grass             = minetest.get_content_id("mcl_core:dirt_with_grass")
 local c_dirt_with_snow              = minetest.get_content_id("mcl_core:dirt_with_grass_snow")
 --local c_dirt_with_dry_grass         = minetest.get_content_id("mcl_core:dirt_with_dry_grass")
@@ -235,33 +237,38 @@ function settlements.fill_chest(pos, pr)
   end
   -- fill chest
   local inv = minetest.get_inventory( {type="node", pos=chestpos} )
-  -- always
-  inv:add_item("main", "mcl_core:apple "..pr:next(1,3))
-  -- low value items
-  if pr:next(0,1) < 1 then
-    inv:add_item("main", "mcl_farming:bread "..pr:next(0,3))
-    inv:add_item("main", "mcl_core:iron_ingot "..pr:next(0,3))
-    inv:add_item("main", "mcl_farming:melon_item "..pr:next(0,3))
-    inv:add_item("main", "mcl_farming:carrot_item "..pr:next(0,3))
-	--[[
-    -- additional fillings when farmin mod enabled
-    if minetest.get_modpath("farming") ~= nil and farming.mod == "redo" then
-      if pr:next(0,1) < 1 then
-        inv:add_item("main", "mcl_farming:melon_item "..pr:next(0,3))
-        inv:add_item("main", "mcl_farming:carrot_item "..pr:next(0,3))
-        inv:add_item("main", "farming:corn "..pr:next(0,3))
-      end
-    end
-	--]]
-  end
-  -- medium value items
-  if pr:next(0,3) < 1 then
-    inv:add_item("main", "mcl_tools:pick_iron "..pr:next(0,1))
-    inv:add_item("main", "mcl_tools:pick_stone "..pr:next(0,1))
-    inv:add_item("main", "mcl_fire:flint_and_steel "..pr:next(0,1))
-    inv:add_item("main", "mcl_buckets:bucket_empty "..pr:next(0,1))
-    inv:add_item("main", "mcl_tools:sword_iron "..pr:next(0,1))
-  end
+	function mcl_villages.get_treasures(pr)
+		local loottable = {
+		{
+			stacks_min = 3,
+			stacks_max = 8,
+			items = {
+				{ itemstring = "mcl_core:diamond", weight = 3, amount_min = 1, amount_max = 3 },
+				{ itemstring = "mcl_core:iron_ingot", weight = 10, amount_min = 1, amount_max = 5 },
+				{ itemstring = "mcl_core:gold_ingot", weight = 5, amount_min = 1, amount_max = 3 },
+				{ itemstring = "mcl_farming:bread", weight = 15, amount_min = 1, amount_max = 3 },
+				{ itemstring = "mcl_core:apple", weight = 15, amount_min = 1, amount_max = 3 },
+				{ itemstring = "mcl_tools:pick_iron", weight = 5 },
+				{ itemstring = "mcl_tools:sword_iron", weight = 5 },
+				{ itemstring = "mcl_armor:chestplate_iron", weight = 5 },
+				{ itemstring = "mcl_armor:helmet_iron", weight = 5 },
+				{ itemstring = "mcl_armor:leggings_iron", weight = 5 },
+				{ itemstring = "mcl_armor:boots_iron", weight = 5 },
+				{ itemstring = "mcl_core:obsidian", weight = 5, amount_min = 3, amount_max = 7 },
+				{ itemstring = "mcl_core:sapling", weight = 5, amount_min = 3, amount_max = 7 },
+				{ itemstring = "mcl_mobitems:saddle", weight = 3 },
+				{ itemstring = "mobs_mc:iron_horse_armor", weight = 1 },
+				{ itemstring = "mobs_mc:gold_horse_armor", weight = 1 },
+				{ itemstring = "mobs_mc:diamond_horse_armor", weight = 1 },
+			}
+		},
+	}
+		local items = mcl_loot.get_multi_loot(loottable, pr)
+		return items
+	end
+
+local items = mcl_villages.get_treasures(pr)
+mcl_loot.fill_inventory(inv, "main", items)
 end
 
 -------------------------------------------------------------------------------
