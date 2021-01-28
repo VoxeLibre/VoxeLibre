@@ -6,8 +6,6 @@ local player_in_bed = 0
 local is_sp = minetest.is_singleplayer()
 local weather_mod = minetest.get_modpath("mcl_weather") ~= nil
 local explosions_mod = minetest.get_modpath("mcl_explosions") ~= nil
-local huds = {}
-local hud_hide_timeouts = {}
 
 -- Helper functions
 
@@ -326,8 +324,7 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 			success, message = lay_down(player, ppos, other)
 		end
 		if message then
-			player:hud_change(huds[name], "text", message)
-			hud_hide_timeouts[name] = 3
+			mcl_tmp_message.message(player, message)
 		end
 	else
 		lay_down(player, nil, nil, false)
@@ -355,25 +352,12 @@ minetest.register_on_joinplayer(function(player)
 		meta:set_string("mcl_beds:sleeping", "false")
 	end
 
-	huds[player:get_player_name()] = player:hud_add({
-		hud_elem_type = "text",
-		position = {x=0.5, y=1},
-		offset = {x = 0, y = -210},
-		alignment = {x=0, y=0},
-		number = 0xFFFFFF ,
-		text = "",
-		z_index = 100,
-	})
-
 	playerphysics.remove_physics_factor(player, "speed", "mcl_beds:sleeping")
 	playerphysics.remove_physics_factor(player, "jump", "mcl_beds:sleeping")
 	update_formspecs(false)
 end)
 
 minetest.register_on_leaveplayer(function(player)
-	local name = player:get_player_name()
-	huds[name] = nil
-
 	local players = minetest.get_connected_players()
 	for n, player in ipairs(players) do
 		if player:get_player_name() == name then
@@ -411,20 +395,4 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 	if hp_change < 0 then
 		mcl_beds.kick_player(player)
 	end
-end)
-
-minetest.register_globalstep(function(dtime)
-	local new_timeouts = {}
-	for name, timeout in pairs(hud_hide_timeouts) do
-		timeout = timeout - dtime
-		if timeout <= 0 then
-			local player = minetest.get_player_by_name(name)
-			if player then
-				player:hud_change(huds[name], "text", "")
-			end
-		else
-			new_timeouts[name] = timeout
-		end
-	end
-	hud_hide_timeouts = new_timeouts
 end)
