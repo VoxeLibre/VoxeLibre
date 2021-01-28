@@ -208,17 +208,19 @@ end
 -------------------------------------------------------------------------------
 -- check distance to other settlements
 -------------------------------------------------------------------------------
+--[[
 function settlements.check_distance_other_settlements(center_new_chunk)
---  local min_dist_settlements = 300
-  for i, pos in ipairs(settlements_in_world) do 
-    local distance = vector.distance(center_new_chunk, pos)
---    minetest.chat_send_all("dist ".. distance)
-    if distance < settlements.min_dist_settlements then
-      return false
-    end
-  end  
-  return true
+	-- local min_dist_settlements = 300
+	for i, pos in ipairs(settlements_in_world) do
+		local distance = vector.distance(center_new_chunk, pos)
+		-- minetest.chat_send_all("dist ".. distance)
+		if distance < settlements.min_dist_settlements then
+			return false
+		end
+	end
+	return true
 end
+]]
 -------------------------------------------------------------------------------
 -- fill chests
 -------------------------------------------------------------------------------
