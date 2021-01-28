@@ -166,14 +166,25 @@ end
 --   gametime (minetest.get_gametime) in which the weather ends.
 -- * changer is OPTIONAL, for logging purposes.
 mcl_weather.change_weather = function(new_weather, explicit_end_time, changer_name)
-	local changer_name = changer_name or debug.getinfo(2).name
+	local changer_name = changer_name or debug.getinfo(2).name.."()"
 
 	if (mcl_weather.reg_weathers ~= nil and mcl_weather.reg_weathers[new_weather] ~= nil) then
 		if (mcl_weather.state ~= nil and mcl_weather.reg_weathers[mcl_weather.state] ~= nil) then
 			mcl_weather.reg_weathers[mcl_weather.state].clear()
 		end
-		minetest.log("action", "[mcl_weather] " .. changer_name .. " changed the weather from " .. mcl_weather.state .. " to " .. new_weather)
+
+		local old_weather = mcl_weather.state
+
 		mcl_weather.state = new_weather
+
+		if old_weather == "none" then
+			old_weather = "clear"
+		end
+		if new_weather == "none" then
+			new_weather = "clear"
+		end
+		minetest.log("action", "[mcl_weather] " .. changer_name .. " changed the weather from " .. old_weather .. " to " .. new_weather)
+
 		local weather_meta = mcl_weather.reg_weathers[mcl_weather.state]
 		if explicit_end_time then
 			mcl_weather.end_time = explicit_end_time
