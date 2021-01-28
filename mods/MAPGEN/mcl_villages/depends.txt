@@ -1,3 +1,4 @@
 mcl_core
+mcl_loot
 mcl_farming?
 mobs_mc?

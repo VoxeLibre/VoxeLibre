@@ -113,6 +113,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	if maxp.y < 0 then return end
 
 	-- don't build settlements too close to each other
+	--[[
 	local center_of_chunk = { 
 		x=maxp.x-half_map_chunk_size, 
 		y=maxp.y-half_map_chunk_size, 
@@ -120,6 +121,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	} 
 	local dist_ok = settlements.check_distance_other_settlements(center_of_chunk)
 	if dist_ok == false then return end
+	]]
 
 	-- don't build settlements on (too) uneven terrain
 	local height_difference = settlements.evaluate_heightmap(minp, maxp)
@@ -162,7 +164,7 @@ minetest.register_craftitem("mcl_villages:tool", {
     -- build ssettlement
     --
     on_place = function(itemstack, placer, pointed_thing)
-		local pr = PseudoRandom(math.rand(0,32767))
+		local pr = PseudoRandom(math.random(0,32767))
       -- enable debug routines
       local center_surface = pointed_thing.under
       if center_surface then
@@ -213,10 +215,10 @@ minetest.register_craftitem("mcl_villages:tool", {
         --
         if settlements.lvm == true then
 		vm:set_data(data)
-		settlements.place_schematics_lvm(pr)
+		settlements.place_schematics_lvm(settlement_info, pr)
 		vm:write_to_map(true)
         else
-		settlements.place_schematics()
+		settlements.place_schematics(settlement_info, pr)
         end
 
         --

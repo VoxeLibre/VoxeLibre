@@ -70,39 +70,31 @@ end
 minetest.register_on_respawnplayer(detach_player)
 
 function boat.on_rightclick(self, clicker)
-	if not clicker or not clicker:is_player() then
+	if self._driver or not clicker or not clicker:is_player() or clicker:get_attach() then
 		return
 	end
 	local name = clicker:get_player_name()
-	if self._driver and clicker == self._driver then
-		self._driver = nil
-		detach_player(clicker)
-		local pos = clicker:get_pos()
-		pos = {x = pos.x, y = pos.y + 0.2, z = pos.z}
-		clicker:set_pos(pos)
-	elseif not self._driver then
-		local attach = clicker:get_attach()
-		if attach and attach:get_luaentity() then
-			local luaentity = attach:get_luaentity()
-			if luaentity._driver then
-				luaentity._driver = nil
-			end
-			clicker:set_detach()
-			clicker:set_properties({visual_size = {x=1, y=1}})
+	--[[if attach and attach:get_luaentity() then
+		local luaentity = attach:get_luaentity()
+		if luaentity._driver then
+			luaentity._driver = nil
 		end
-		self._driver = clicker
-		clicker:set_attach(self.object, "",
-			{x = 0, y = 0.42, z = -1}, {x = 0, y = 0, z = 0})
-		clicker:set_properties({ visual_size = driver_visual_size })
-		mcl_player.player_attached[name] = true
-		minetest.after(0.2, function(name)
-			local player = minetest.get_player_by_name(name)
-			if player then
-				mcl_player.player_set_animation(player, "sit" , 30)
-			end
-		end, name)
-		clicker:set_look_horizontal(self.object:get_yaw())
-	end
+		clicker:set_detach()
+		clicker:set_properties({visual_size = {x=1, y=1}})
+	end--]]
+	self._driver = clicker
+	clicker:set_attach(self.object, "",
+		{x = 0, y = 0.42, z = -1}, {x = 0, y = 0, z = 0})
+	clicker:set_properties({ visual_size = driver_visual_size })
+	mcl_player.player_attached[name] = true
+	minetest.after(0.2, function(name)
+		local player = minetest.get_player_by_name(name)
+		if player then
+			mcl_player.player_set_animation(player, "sit" , 30)
+		end
+	end, name)
+	clicker:set_look_horizontal(self.object:get_yaw())
+	mcl_tmp_message.message(clicker, S("Sneak to dismount"))
 end
 
 
@@ -142,7 +134,7 @@ function boat.on_death(self, killer)
 	self._driver = nil
 end
 
-function boat.on_step(self, dtime)
+function boat.on_step(self, dtime, moveresult)
 	self._v = get_v(self.object:get_velocity()) * get_sign(self._v)
 	local on_water = true
 	local in_water = false
@@ -160,8 +152,25 @@ function boat.on_step(self, dtime)
 		v_slowdown = 0.05
 	end
 
+	if moveresult and moveresult.collides then
+		for _, collision in ipairs(moveresult.collisions) do
+			local pos = collision.node_pos
+			if collision.type == "node" and minetest.get_node_group(minetest.get_node(pos).name, "dig_by_boat") > 0 then
+				minetest.dig_node(pos)
+			end
+		end
+	end
+
 	if self._driver then
 		local ctrl = self._driver:get_player_control()
+		if ctrl.sneak then
+			detach_player(self._driver)
+			local pos = self._driver:get_pos()
+			pos = {x = pos.x, y = pos.y + 0.2, z = pos.z}
+			self._driver:set_pos(pos)
+			self._driver = nil
+			return
+		end
 		local yaw = self.object:get_yaw()
 		if ctrl.up then
 			-- Forwards
