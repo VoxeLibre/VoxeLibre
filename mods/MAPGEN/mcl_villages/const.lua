@@ -5,11 +5,6 @@ settlements.debug = function(message)
 	minetest.log("verbose", "[mcl_villages] "..message)
 end
 
--- switch for lvm
-settlements.lvm = false
-
-settlements.last_settlement = os.time()
-
 --[[ Manually set in 'buildings.lua'
 -- material to replace cobblestone with
 wallmaterial = {
@@ -56,43 +51,25 @@ schem_path = settlements.modpath.."/schematics/"
 --
 local basic_pseudobiome_villages = minetest.settings:get_bool("basic_pseudobiome_villages", false)
 
-if basic_pseudobiome_villages == true then
-	schematic_table = {
-		{name = "large_house",	mts = schem_path.."large_house.mts",	hwidth = 11, hdepth = 12, hheight = 9, hsize = 14, max_num = 0.08, rplc = "y"},
-		{name = "blacksmith",	mts = schem_path.."blacksmith.mts",	hwidth = 7, hdepth = 7, hheight = 13, hsize = 13, max_num = 0.055, rplc = "y"},
-		{name = "butcher",		mts = schem_path.."butcher.mts",		hwidth = 11, hdepth = 8, hheight = 10, hsize = 14, max_num = 0.03, rplc = "y"},
-		{name = "church",	mts = schem_path.."church.mts",		hwidth = 13, hdepth = 13, hheight = 14, hsize = 15, max_num = 0.04, rplc = "y"},
-		{name = "farm",		mts = schem_path.."farm.mts",		hwidth = 7, hdepth = 7, hheight = 13, hsize = 13, max_num = 0.1, rplc = "y"},
-		{name = "lamp",		mts = schem_path.."lamp.mts",		hwidth = 3, hdepth = 3, hheight = 13, hsize = 10, max_num = 0.1, rplc = "n"},
-		{name = "library",	mts = schem_path.."library.mts",	hwidth = 12, hdepth = 12, hheight = 8, hsize = 13, max_num = 0.04, rplc = "y"},
-		{name = "medium_house",	mts = schem_path.."medium_house.mts",	hwidth = 8, hdepth = 12, hheight = 8, hsize = 14, max_num = 0.08, rplc = "y"},
-		{name = "small_house",	mts = schem_path.."small_house.mts",	hwidth = 9, hdepth = 7, hheight = 8, hsize = 13, max_num = 0.7, rplc = "y"},
-		{name = "tavern",	mts = schem_path.."tavern.mts",		hwidth = 11, hdepth = 10, hheight = 10, hsize = 13, max_num = 0.050, rplc = "y"},
-		{name = "well",		mts = schem_path.."well.mts",		hwidth = 6, hdepth = 8, hheight = 6, hsize = 10, max_num = 0.045, rplc = "y"},
-	}
-else
-	schematic_table = {
-		{name = "large_house",	mts = schem_path.."large_house.mts",	hwidth = 11, hdepth = 12, hheight = 9, hsize = 14, max_num = 0.08, rplc = "n"},
-		{name = "blacksmith",	mts = schem_path.."blacksmith.mts",	hwidth = 7, hdepth = 7, hheight = 13, hsize = 13, max_num = 0.055, rplc = "n"},
-		{name = "butcher",		mts = schem_path.."butcher.mts",		hwidth = 11, hdepth = 8, hheight = 10, hsize = 14, max_num = 0.03, rplc = "n"},
-		{name = "church",	mts = schem_path.."church.mts",		hwidth = 13, hdepth = 13, hheight = 14, hsize = 15, max_num = 0.04, rplc = "n"},
-		{name = "farm",		mts = schem_path.."farm.mts",		hwidth = 7, hdepth = 7, hheight = 13, hsize = 13, max_num = 0.1, rplc = "n"},
-		{name = "lamp",		mts = schem_path.."lamp.mts",		hwidth = 3, hdepth = 3, hheight = 13, hsize = 10, max_num = 0.1, rplc = "n"},
-		{name = "library",	mts = schem_path.."library.mts",	hwidth = 12, hdepth = 12, hheight = 8, hsize = 13, max_num = 0.04, rplc = "n"},
-		{name = "medium_house",	mts = schem_path.."medium_house.mts",	hwidth = 8, hdepth = 12, hheight = 8, hsize = 14, max_num = 0.08, rplc = "n"},
-		{name = "small_house",	mts = schem_path.."small_house.mts",	hwidth = 9, hdepth = 7, hheight = 8, hsize = 13, max_num = 0.7, rplc = "n"},
-		{name = "tavern",	mts = schem_path.."tavern.mts",		hwidth = 11, hdepth = 10, hheight = 10, hsize = 13, max_num = 0.050, rplc = "n"},
-		{name = "well",		mts = schem_path.."well.mts",		hwidth = 6, hdepth = 8, hheight = 6, hsize = 10, max_num = 0.045, rplc = "n"},
-	}
-end
+settlements.schematic_table = {
+	{name = "large_house",	mts = schem_path.."large_house.mts",	hwidth = 11, hdepth = 12, hheight =  9, hsize = 14, max_num = 0.08 , rplc = basic_pseudobiome_villages },
+	{name = "blacksmith",	mts = schem_path.."blacksmith.mts",	hwidth =  7, hdepth =  7, hheight = 13, hsize = 13, max_num = 0.055, rplc = basic_pseudobiome_villages },
+	{name = "butcher",	mts = schem_path.."butcher.mts",	hwidth = 11, hdepth =  8, hheight = 10, hsize = 14, max_num = 0.03 , rplc = basic_pseudobiome_villages },
+	{name = "church",	mts = schem_path.."church.mts",		hwidth = 13, hdepth = 13, hheight = 14, hsize = 15, max_num = 0.04 , rplc = basic_pseudobiome_villages },
+	{name = "farm",		mts = schem_path.."farm.mts",		hwidth =  7, hdepth =  7, hheight = 13, hsize = 13, max_num = 0.1  , rplc = basic_pseudobiome_villages },
+	{name = "lamp",		mts = schem_path.."lamp.mts",		hwidth =  3, hdepth =  3, hheight = 13, hsize = 10, max_num = 0.1  , rplc = false                      },
+	{name = "library",	mts = schem_path.."library.mts",	hwidth = 12, hdepth = 12, hheight =  8, hsize = 13, max_num = 0.04 , rplc = basic_pseudobiome_villages },
+	{name = "medium_house",	mts = schem_path.."medium_house.mts",	hwidth =  8, hdepth = 12, hheight =  8, hsize = 14, max_num = 0.08 , rplc = basic_pseudobiome_villages },
+	{name = "small_house",	mts = schem_path.."small_house.mts",	hwidth =  9, hdepth =  7, hheight =  8, hsize = 13, max_num = 0.7  , rplc = basic_pseudobiome_villages },
+	{name = "tavern",	mts = schem_path.."tavern.mts",		hwidth = 11, hdepth = 10, hheight = 10, hsize = 13, max_num = 0.050, rplc = basic_pseudobiome_villages },
+	{name = "well",		mts = schem_path.."well.mts",		hwidth =  6, hdepth =  8, hheight =  6, hsize = 10, max_num = 0.045, rplc = basic_pseudobiome_villages },
+}
+
 --
 -- list of settlements, load on server start up
 --
 settlements_in_world = {}
 --
--- min_distance between settlements
---
-settlements.min_dist_settlements = 64
 --
 -- maximum allowed difference in height for building a sttlement
 --

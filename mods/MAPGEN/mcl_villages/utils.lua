@@ -1,5 +1,3 @@
-mcl_villages = {}
-
 local c_dirt_with_grass             = minetest.get_content_id("mcl_core:dirt_with_grass")
 local c_dirt_with_snow              = minetest.get_content_id("mcl_core:dirt_with_grass_snow")
 --local c_dirt_with_dry_grass         = minetest.get_content_id("mcl_core:dirt_with_dry_grass")
@@ -43,57 +41,6 @@ function settlements.round(num, numDecimalPlaces)
   return math.floor(num * mult + 0.5) / mult
 end
 
--------------------------------------------------------------------------------
--- function to find surface block y coordinate
--------------------------------------------------------------------------------
-function settlements.find_surface_lvm(pos, minp)
-  --ab hier altes verfahren
-  local p6 = vector.new(pos)
-  local surface_mat = {
-    c_dirt_with_grass,            
-    c_dirt_with_snow,            
-    --c_dirt_with_dry_grass,        
-    c_podzol,
-    c_sand,                       
-    c_desert_sand,
-    c_snow
-  }
-  local cnt = 0
-  local itter -- count up or down
-  local cnt_max = 200
-  -- starting point for looking for surface
-  local vi = va:index(p6.x, p6.y, p6.z)
-  if data[vi] == nil then return nil end
-  local tmp = minetest.get_name_from_content_id(data[vi])
-  if data[vi] == c_air then
-    itter = -1
-  else
-    itter = 1
-  end
-  while cnt < cnt_max do
-    cnt = cnt+1
-    local vi = va:index(p6.x, p6.y, p6.z)
---    local tmp = minetest.get_name_from_content_id(data[vi])
---    if vi == nil 
---    then 
---      return nil 
---    end
-    for i, mats in ipairs(surface_mat) do
-      local node_check = va:index(p6.x, p6.y+1, p6.z)
-      if node_check and vi and data[vi] == mats and 
-      (data[node_check] ~= c_water_source and
-        data[node_check] ~= c_water_flowing
-      ) 
-      then 
-        local tmp = minetest.get_name_from_content_id(data[node_check])
-        return p6, mats
-      end
-    end
-    p6.y = p6.y + itter
-    if p6.y < 0 then return nil end
-  end
-  return nil  --]]
-end
 -------------------------------------------------------------------------------
 -- function to find surface block y coordinate
 -- returns surface postion
@@ -170,79 +117,58 @@ end
 -- check distance for new building
 -------------------------------------------------------------------------------
 function settlements.check_distance(settlement_info, building_pos, building_size)
-  local distance
-  for i, built_house in ipairs(settlement_info) do
-    distance = math.sqrt(
-      ((building_pos.x - built_house["pos"].x)*(building_pos.x - built_house["pos"].x))+
-      ((building_pos.z - built_house["pos"].z)*(building_pos.z - built_house["pos"].z)))
-    if distance < building_size or 
-    distance < built_house["hsize"] 
-    then
-      return false
-    end
-  end
-  return true
-end
--------------------------------------------------------------------------------
--- save list of generated settlements
--------------------------------------------------------------------------------
-function settlements.save()
-  local file = io.open(minetest.get_worldpath().."/settlements.txt", "w")
-  if file then
-    file:write(minetest.serialize(settlements_in_world))
-    file:close()
-  end
-end
--------------------------------------------------------------------------------
--- load list of generated settlements
--------------------------------------------------------------------------------
-function settlements.load()
-  local file = io.open(minetest.get_worldpath().."/settlements.txt", "r")
-  if file then
-    local table = minetest.deserialize(file:read("*all"))
-    if type(table) == "table" then
-      return table
-    end
-  end
-  return {}
-end
--------------------------------------------------------------------------------
--- check distance to other settlements
--------------------------------------------------------------------------------
---[[
-function settlements.check_distance_other_settlements(center_new_chunk)
-	-- local min_dist_settlements = 300
-	for i, pos in ipairs(settlements_in_world) do
-		local distance = vector.distance(center_new_chunk, pos)
-		-- minetest.chat_send_all("dist ".. distance)
-		if distance < settlements.min_dist_settlements then
+	local distance
+	for i, built_house in ipairs(settlement_info) do
+		distance = math.sqrt(
+			((building_pos.x - built_house["pos"].x)*(building_pos.x - built_house["pos"].x))+
+			((building_pos.z - built_house["pos"].z)*(building_pos.z - built_house["pos"].z)))
+		if distance < building_size or distance < built_house["hsize"] then
 			return false
 		end
 	end
 	return true
 end
-]]
+-------------------------------------------------------------------------------
+-- save list of generated settlements
+-------------------------------------------------------------------------------
+function settlements.save()
+	local file = io.open(minetest.get_worldpath().."/settlements.txt", "w")
+	if file then
+		file:write(minetest.serialize(settlements_in_world))
+		file:close()
+	end
+end
+-------------------------------------------------------------------------------
+-- load list of generated settlements
+-------------------------------------------------------------------------------
+function settlements.load()
+	local file = io.open(minetest.get_worldpath().."/settlements.txt", "r")
+	if file then
+		local table = minetest.deserialize(file:read("*all"))
+		if type(table) == "table" then
+			return table
+		end
+	end
+	return {}
+end
 -------------------------------------------------------------------------------
 -- fill chests
 -------------------------------------------------------------------------------
 function settlements.fill_chest(pos, pr)
-  -- find chests within radius
-  --local chestpos = minetest.find_node_near(pos, 6, {"mcl_core:chest"})
-  local chestpos = pos
-  -- initialize chest (mts chests don't have meta)
-  local meta = minetest.get_meta(chestpos)
-  if meta:get_string("infotext") ~= "Chest" then
-	-- For MineClone2 0.70 or before
-	-- minetest.registered_nodes["mcl_chests:chest"].on_construct(chestpos)
-	--
-	-- For MineClone2 after commit 09ab1482b5 (the new entity chests)
-    minetest.registered_nodes["mcl_chests:chest_small"].on_construct(chestpos)
-  end
-  -- fill chest
-  local inv = minetest.get_inventory( {type="node", pos=chestpos} )
-	function mcl_villages.get_treasures(pr)
-		local loottable = {
-		{
+	-- initialize chest (mts chests don't have meta)
+	local meta = minetest.get_meta(pos)
+	if meta:get_string("infotext") ~= "Chest" then
+		-- For MineClone2 0.70 or before
+		-- minetest.registered_nodes["mcl_chests:chest"].on_construct(pos)
+		--
+		-- For MineClone2 after commit 09ab1482b5 (the new entity chests)
+		minetest.registered_nodes["mcl_chests:chest_small"].on_construct(pos)
+	end
+	-- fill chest
+	local inv = minetest.get_inventory( {type="node", pos=pos} )
+
+	local function get_treasures(pr)
+		local loottable = {{
 			stacks_min = 3,
 			stacks_max = 8,
 			items = {
@@ -264,14 +190,13 @@ function settlements.fill_chest(pos, pr)
 				{ itemstring = "mobs_mc:gold_horse_armor", weight = 1 },
 				{ itemstring = "mobs_mc:diamond_horse_armor", weight = 1 },
 			}
-		},
-	}
+		}}
 		local items = mcl_loot.get_multi_loot(loottable, pr)
 		return items
 	end
 
-local items = mcl_villages.get_treasures(pr)
-mcl_loot.fill_inventory(inv, "main", items)
+	local items = get_treasures(pr)
+	mcl_loot.fill_inventory(inv, "main", items)
 end
 
 -------------------------------------------------------------------------------
@@ -316,23 +241,23 @@ end
 local building_all_info
 function settlements.initialize_nodes(settlement_info, pr)
 	for i, built_house in ipairs(settlement_info) do
-		for j, schem in ipairs(schematic_table) do
+		for j, schem in ipairs(settlements.schematic_table) do
 			if settlement_info[i]["name"] == schem["name"] then
 				building_all_info = schem
 				break
 			end
 		end
 
-		local width = building_all_info["hwidth"] 
-		local depth = building_all_info["hdepth"] 
-		local height = building_all_info["hheight"] 
+		local width = building_all_info["hwidth"]
+		local depth = building_all_info["hdepth"]
+		local height = building_all_info["hheight"]
 
 		local p = settlement_info[i]["pos"]
 		for yi = 1,height do
 			for xi = 0,width do
 				for zi = 0,depth do
 					local ptemp = {x=p.x+xi, y=p.y+yi, z=p.z+zi}
-					local node = minetest.get_node(ptemp) 
+					local node = minetest.get_node(ptemp)
 					if node.name == "mcl_furnaces:furnace" or
 						node.name == "mcl_chests:chest" or
 						node.name == "mcl_anvils:anvil" then
@@ -403,32 +328,11 @@ function settlements.evaluate_heightmap()
   return height_diff
 end
 -------------------------------------------------------------------------------
--- get LVM of current chunk
--------------------------------------------------------------------------------
-function settlements.getlvm(minp, maxp)
-  local vm = minetest.get_voxel_manip()
-  local emin, emax = vm:read_from_map(minp, maxp)
-  local va = VoxelArea:new{
-    MinEdge = emin,
-    MaxEdge = emax
-  }    
-  local data = vm:get_data()
-  return vm, data, va, emin, emax
-end
--------------------------------------------------------------------------------
--- get LVM of current chunk
--------------------------------------------------------------------------------
-function settlements.setlvm(vm, data)
-  -- Write data
-  vm:set_data(data)
-  vm:write_to_map(true)
-end
--------------------------------------------------------------------------------
 -- Set array to list
 -- https://stackoverflow.com/questions/656199/search-for-an-item-in-a-lua-list
 -------------------------------------------------------------------------------
 function settlements.Set (list)
-  local set = {}
-  for _, l in ipairs(list) do set[l] = true end
-  return set
+	local set = {}
+	for _, l in ipairs(list) do set[l] = true end
+	return set
 end
