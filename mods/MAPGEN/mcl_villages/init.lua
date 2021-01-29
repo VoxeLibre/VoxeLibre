@@ -113,6 +113,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	if maxp.y < 0 then return end
 
 	-- don't build settlements too close to each other
+	--[[
 	local center_of_chunk = { 
 		x=maxp.x-half_map_chunk_size, 
 		y=maxp.y-half_map_chunk_size, 
@@ -120,6 +121,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	} 
 	local dist_ok = settlements.check_distance_other_settlements(center_of_chunk)
 	if dist_ok == false then return end
+	]]
 
 	-- don't build settlements on (too) uneven terrain
 	local height_difference = settlements.evaluate_heightmap(minp, maxp)
