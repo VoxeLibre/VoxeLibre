@@ -164,7 +164,11 @@ function settlements.paths(settlement_info)
         -- replace surface node with mcl_core:grass_path 
         if surface_point
         then
-          minetest.swap_node(surface_point,{name="mcl_core:grass_path"}) 
+          if surface_mat == "mcl_core:sand" or surface_mat == "mcl_core:redsand" then
+			minetest.swap_node(surface_point,{name="mcl_core:sandstonesmooth2"})
+		  else
+			minetest.swap_node(surface_point,{name="mcl_core:grass_path"})
+		  end
           -- don't set y coordinate, surface might be too low or high
           starting_point.x = surface_point.x
           starting_point.z = surface_point.z

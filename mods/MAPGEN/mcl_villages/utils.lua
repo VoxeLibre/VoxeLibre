@@ -9,7 +9,7 @@ local c_desert_sand                 = minetest.get_content_id("mcl_core:redsand"
 --local c_silver_sand                 = minetest.get_content_id("mcl_core:silver_sand")
 --
 local c_air                         = minetest.get_content_id("air")
-local c_snow                        = minetest.get_content_id("mcl_core:snowblock")
+local c_snow                        = minetest.get_content_id("mcl_core:snow")
 local c_fern_1                      = minetest.get_content_id("mcl_flowers:fern")
 local c_fern_2                      = minetest.get_content_id("mcl_flowers:fern")
 local c_fern_3                      = minetest.get_content_id("mcl_flowers:fern")
@@ -55,7 +55,8 @@ function settlements.find_surface_lvm(pos, minp)
     --c_dirt_with_dry_grass,        
     c_podzol,
     c_sand,                       
-    c_desert_sand
+    c_desert_sand,
+    c_snow
   }
   local cnt = 0
   local itter -- count up or down

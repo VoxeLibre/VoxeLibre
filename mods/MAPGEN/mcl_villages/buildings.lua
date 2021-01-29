@@ -270,7 +270,7 @@ function settlements.place_schematics_lvm(settlement_info, pr)
 		local platform_material = settlement_info[i]["surface_mat"]
 		platform_material_name = minetest.get_name_from_content_id(platform_material)
 		-- pick random material
-		local material = wallmaterial[pr:next(1,#wallmaterial)]
+		--local material = wallmaterial[pr:next(1,#wallmaterial)]
 		--
 		local building = building_all_info["mts"]
 		local replace_wall = building_all_info["rplc"]
@@ -280,7 +280,27 @@ function settlements.place_schematics_lvm(settlement_info, pr)
 			{lua_use_comments = false, lua_num_indent_spaces = 0}).." return(schematic)"
 		-- replace material
 		if replace_wall == "y" then
-			schem_lua = schem_lua:gsub("mcl_core:cobble", material)
+			--Note, block substitution isn't matching node names exactly; so nodes that are to be substituted that have the same prefixes cause bugs.
+			-- Example: Attempting to swap out 'mcl_core:stonebrick'; which has multiple, additional sub-variants: (carved, cracked, mossy). Will currently cause issues, so leaving disabled.
+			if platform_material == "mcl_core:snow" or platform_material == "mcl_core:dirt_with_grass_snow" or platform_material == "mcl_core:podzol" then
+				schem_lua = schem_lua:gsub("mcl_core:tree", "mcl_core:sprucetree")
+				schem_lua = schem_lua:gsub("mcl_core:wood", "mcl_core:sprucewood")
+				--schem_lua = schem_lua:gsub("mcl_fences:fence", "mcl_fences:spruce_fence")
+				--schem_lua = schem_lua:gsub("mcl_stairs:slab_wood_top", "mcl_stairs:slab_sprucewood_top")
+				--schem_lua = schem_lua:gsub("mcl_stairs:stair_wood", "mcl_stairs:stair_sprucewood")
+				--schem_lua = schem_lua:gsub("mesecons_pressureplates:pressure_plate_wood_off", "mesecons_pressureplates:pressure_plate_sprucewood_off")
+			elseif platform_material == "mcl_core:sand" or platform_material == "mcl_core:redsand" then
+				schem_lua = schem_lua:gsub("mcl_core:tree", "mcl_core:sandstonecarved")
+				schem_lua = schem_lua:gsub("mcl_core:cobble", "mcl_core:sandstone")
+				schem_lua = schem_lua:gsub("mcl_core:wood", "mcl_core:sandstonesmooth")
+				--schem_lua = schem_lua:gsub("mcl_fences:fence", "mcl_fences:birch_fence")
+				--schem_lua = schem_lua:gsub("mcl_stairs:slab_wood_top", "mcl_stairs:slab_birchwood_top")
+				--schem_lua = schem_lua:gsub("mcl_stairs:stair_wood", "mcl_stairs:stair_birchwood")
+				--schem_lua = schem_lua:gsub("mesecons_pressureplates:pressure_plate_wood_off", "mesecons_pressureplates:pressure_plate_birchwood_off")
+				--schem_lua = schem_lua:gsub("mcl_stairs:stair_stonebrick", "mcl_stairs:stair_redsandstone")
+				--schem_lua = schem_lua:gsub("mcl_core:stonebrick", "mcl_core:redsandstonesmooth")
+				schem_lua = schem_lua:gsub("mcl_core:brick_block", "mcl_core:redsandstone")
+			end
 		end
 		schem_lua = schem_lua:gsub("mcl_core:dirt_with_grass", platform_material_name)
 
@@ -321,7 +341,7 @@ function settlements.place_schematics(settlement_info, pr)
 		local platform_material =  settlement_info[i]["surface_mat"] 
 		--platform_material_name = minetest.get_name_from_content_id(platform_material)
 		-- pick random material
-		local material = wallmaterial[pr:next(1,#wallmaterial)]
+		--local material = wallmaterial[pr:next(1,#wallmaterial)]
 		--
 		local building = building_all_info["mts"]
 		local replace_wall = building_all_info["rplc"]
@@ -331,7 +351,27 @@ function settlements.place_schematics(settlement_info, pr)
 			{lua_use_comments = false, lua_num_indent_spaces = 0}).." return(schematic)"
 		-- replace material
 		if replace_wall == "y" then
-			schem_lua = schem_lua:gsub("mcl_core:cobble", material)
+			--Note, block substitution isn't matching node names exactly; so nodes that are to be substituted that have the same prefixes cause bugs.
+			-- Example: Attempting to swap out 'mcl_core:stonebrick'; which has multiple, additional sub-variants: (carved, cracked, mossy). Will currently cause issues, so leaving disabled.
+			if platform_material == "mcl_core:snow" or platform_material == "mcl_core:dirt_with_grass_snow" or platform_material == "mcl_core:podzol" then
+				schem_lua = schem_lua:gsub("mcl_core:tree", "mcl_core:sprucetree")
+				schem_lua = schem_lua:gsub("mcl_core:wood", "mcl_core:sprucewood")
+				--schem_lua = schem_lua:gsub("mcl_fences:fence", "mcl_fences:spruce_fence")
+				--schem_lua = schem_lua:gsub("mcl_stairs:slab_wood_top", "mcl_stairs:slab_sprucewood_top")
+				--schem_lua = schem_lua:gsub("mcl_stairs:stair_wood", "mcl_stairs:stair_sprucewood")
+				--schem_lua = schem_lua:gsub("mesecons_pressureplates:pressure_plate_wood_off", "mesecons_pressureplates:pressure_plate_sprucewood_off")
+			elseif platform_material == "mcl_core:sand" or platform_material == "mcl_core:redsand" then
+				schem_lua = schem_lua:gsub("mcl_core:tree", "mcl_core:sandstonecarved")
+				schem_lua = schem_lua:gsub("mcl_core:cobble", "mcl_core:sandstone")
+				schem_lua = schem_lua:gsub("mcl_core:wood", "mcl_core:sandstonesmooth")
+				--schem_lua = schem_lua:gsub("mcl_fences:fence", "mcl_fences:birch_fence")
+				--schem_lua = schem_lua:gsub("mcl_stairs:slab_wood_top", "mcl_stairs:slab_birchwood_top")
+				--schem_lua = schem_lua:gsub("mcl_stairs:stair_wood", "mcl_stairs:stair_birchwood")
+				--schem_lua = schem_lua:gsub("mesecons_pressureplates:pressure_plate_wood_off", "mesecons_pressureplates:pressure_plate_birchwood_off")
+				--schem_lua = schem_lua:gsub("mcl_stairs:stair_stonebrick", "mcl_stairs:stair_redsandstone")
+				--schem_lua = schem_lua:gsub("mcl_core:stonebrick", "mcl_core:redsandstonesmooth")
+				schem_lua = schem_lua:gsub("mcl_core:brick_block", "mcl_core:redsandstone")
+			end
 		end
 		schem_lua = schem_lua:gsub("mcl_core:dirt_with_grass", platform_material)
 
