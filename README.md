@@ -182,7 +182,7 @@ Technical differences from Minecraft:
 ## Reporting bugs
 Please report all bugs and missing Minecraft features here:
 
-<https://git.minetest.land/MineClone2Org/MineClone2/issues>
+<https://git.minetest.land/MineClone2/MineClone2/issues>
 
 ## Other readme files
 

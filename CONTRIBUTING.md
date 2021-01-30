@@ -79,7 +79,7 @@ Depending on what you add, the chances for inclusion vary:
 ## Reporting bugs
 Report all bugs and missing Minecraft features here:
 
-<https://git.minetest.land/MineClone2Org/MineClone2/issues>
+<https://git.minetest.land/MineClone2/MineClone2/issues>
 
 ## Direct discussion
 We have an IRC channel! Join us on #mineclone2 in freenode.net.
