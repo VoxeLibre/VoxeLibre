@@ -130,6 +130,8 @@ mcl_superflat_classic (Classic superflat map generation) bool false
 # game by a lot.
 mcl_node_particles (Block particles detail level) enum none high,medium,low,none
 
+# If enabled, this will substitute a few blocks in village schematics so they blend into normal, snowy, and sandy areas. Defaults to false.
+basic_pseudobiome_villages (Enables very basic, and experimental "pseudobiome-based" villages) bool false
 
 # If enabled, will run an LBM to fix the top 1/2 of double plants in mcimported worlds; defaults to true.
 fix_doubleplants (Mcimport double plant fixes) bool true
