@@ -251,7 +251,9 @@ ARROW_ENTITY.on_step = function(self, dtime)
 							armor.last_damage_types[obj:get_player_name()] = "projectile"
 						end
 						damage_particles(self.object:get_pos(), self._is_critical)
-						mcl_burning.set_on_fire(obj, 4)
+						if mcl_burning.is_burning(self.object) then
+							mcl_burning.set_on_fire(obj, 4)
+						end
 						obj:punch(self.object, 1.0, {
 							full_punch_interval=1.0,
 							damage_groups={fleshy=self._damage},
