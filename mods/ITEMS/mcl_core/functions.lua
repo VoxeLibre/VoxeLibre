@@ -1134,7 +1134,7 @@ minetest.register_lbm({
 	name = "mcl_core:lbm_birch",
 	nodenames = {"mcl_core:birchsapling"},
 	run_at_every_load = true,
-	action = grow_spruce
+	action = grow_birch
 })
 
 -- Acacia tree
@@ -1151,7 +1151,7 @@ minetest.register_lbm({
 	name = "mcl_core:lbm_acacia",
 	nodenames = {"mcl_core:acaciasapling"},
 	run_at_every_load = true,
-	action = grow_spruce
+	action = grow_acacia
 })
 
 local function leafdecay_particles(pos, node)
