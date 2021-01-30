@@ -182,7 +182,7 @@ Technical differences from Minecraft:
 ## Reporting bugs
 Please report all bugs and missing Minecraft features here:
 
-<https://git.minetest.land/Wuzzy/MineClone2/issues>
+<https://git.minetest.land/MineClone2Org/MineClone2/issues>
 
 ## Other readme files
 
@@ -203,7 +203,8 @@ There are so many people to list (sorry). Check out the respective mod directori
 * [ryvnf](https://github.com/ryvnf): Explosion mechanics
 * MysticTempest: Bugfixes
 * [bzoss](https://github.com/bzoss): Status effects, potions, brewing stand
-* kay27 <kay27@bk.ru>: Experience system, bugfixes, optimizations
+* kay27 <kay27@bk.ru>: Experience system, bugfixes, optimizations (Current maintainer)
+* [EliasFleckenstein03](https://github.com/EliasFleckenstein03): End crystals, enchanting, burning mobs / players, animated chests, bugfixes (Current maintainer)
 * 2mac: Fix bug with powered rail
 * Lots of other people: TO BE WRITTEN (see mod directories for details)
 
@@ -250,6 +251,7 @@ Various sources. See the respective mod directories for details.
 ### Special thanks
 
 * davedevils for starting MineClone, the original version of this game
+* Wuzzy for starting and maintaining MineClone2 for several years
 * celeron55 for creating Minetest
 * Minetest's modding community for providing a huge selection of mods, some of which ended up in MineClone 2
 * Jordach for the jukebox music compilation from Big Freaking Dig
@@ -269,7 +271,7 @@ Copying is an act of love. Please copy and share! <3
 Here's the detailed legalese for those who need it:
 
 ### License of source code
-MineClone 2 (by Wuzzy, davedevils and countless others)
+MineClone 2 (by kay27, EliasFleckenstein, Wuzzy, davedevils and countless others)
 is an imitation of Minecraft.
 
 MineClone 2 is free software: you can redistribute it and/or modify
