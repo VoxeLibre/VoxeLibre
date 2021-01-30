@@ -899,99 +899,118 @@ local treelight = 9
 
 local sapling_grow_action = function(tree_id, soil_needed, one_by_one, two_by_two, sapling)
 	return function(pos)
+		local meta = minetest.get_meta(pos)
+		if meta:get("grown") then return end
 		-- Checks if the sapling at pos has enough light and the correct soil
-		local sapling_is_growable = function(pos)
-			local light = minetest.get_node_light(pos)
-			local soilnode = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
-			local soiltype = minetest.get_item_group(soilnode.name, "soil_sapling")
-			return soiltype >= soil_needed and light and light >= treelight and not minetest.get_meta(pos):get("grown")
+		local light = minetest.get_node_light(pos)
+		if not light then return end
+		local low_light = (light < treelight)
+
+		local delta = 1
+		local current_game_time = minetest.get_day_count() + minetest.get_timeofday()
+
+		local last_game_time = tonumber(meta:get_string("last_gametime"))
+		meta:set_string("last_gametime", tostring(current_game_time))
+
+		if last_game_time then
+			delta = current_game_time - last_game_time
+		elseif low_light then
+			return
 		end
-		if sapling_is_growable(pos) then
-			-- Increase and check growth stage
-			local meta = minetest.get_meta(pos)
-			local stage = meta:get_int("stage")
-			if stage == nil then stage = 0 end
-			stage = stage + 1
-			if stage >= 3 then
-				meta:set_string("grown", "true")
-				-- This sapling grows in a special way when there are 4 saplings in a 2×2 pattern
-				if two_by_two then
-					-- Check 8 surrounding saplings and try to find a 2×2 pattern
-					local is_sapling = function(pos, sapling)
-						return minetest.get_node(pos).name == sapling
-					end
-					local p2 = {x=pos.x+1, y=pos.y, z=pos.z}
-					local p3 = {x=pos.x, y=pos.y, z=pos.z-1}
-					local p4 = {x=pos.x+1, y=pos.y, z=pos.z-1}
-					local p5 = {x=pos.x-1, y=pos.y, z=pos.z-1}
-					local p6 = {x=pos.x-1, y=pos.y, z=pos.z}
-					local p7 = {x=pos.x-1, y=pos.y, z=pos.z+1}
-					local p8 = {x=pos.x, y=pos.y, z=pos.z+1}
-					local p9 = {x=pos.x+1, y=pos.y, z=pos.z+1}
-					local s2 = is_sapling(p2, sapling)
-					local s3 = is_sapling(p3, sapling)
-					local s4 = is_sapling(p4, sapling)
-					local s5 = is_sapling(p5, sapling)
-					local s6 = is_sapling(p6, sapling)
-					local s7 = is_sapling(p7, sapling)
-					local s8 = is_sapling(p8, sapling)
-					local s9 = is_sapling(p9, sapling)
-					-- In a 9×9 field there are 4 possible 2×2 squares. We check them all.
-					if s2 and s3 and s4 and check_tree_growth(pos, tree_id, { two_by_two = true }) then
-						-- Success: Remove saplings and place tree
-						minetest.remove_node(pos)
-						minetest.remove_node(p2)
-						minetest.remove_node(p3)
-						minetest.remove_node(p4)
-						mcl_core.generate_tree(pos, tree_id, { two_by_two = true })
-						return
-					elseif s3 and s5 and s6 and check_tree_growth(p6, tree_id, { two_by_two = true }) then
-						minetest.remove_node(pos)
-						minetest.remove_node(p3)
-						minetest.remove_node(p5)
-						minetest.remove_node(p6)
-						mcl_core.generate_tree(p6, tree_id, { two_by_two = true })
-						return
-					elseif s6 and s7 and s8 and check_tree_growth(p7, tree_id, { two_by_two = true }) then
-						minetest.remove_node(pos)
-						minetest.remove_node(p6)
-						minetest.remove_node(p7)
-						minetest.remove_node(p8)
-						mcl_core.generate_tree(p7, tree_id, { two_by_two = true })
-						return
-					elseif s2 and s8 and s9 and check_tree_growth(p8, tree_id, { two_by_two = true }) then
-						minetest.remove_node(pos)
-						minetest.remove_node(p2)
-						minetest.remove_node(p8)
-						minetest.remove_node(p9)
-						mcl_core.generate_tree(p8, tree_id, { two_by_two = true })
-						return
-					end
-				end
 
-				if one_by_one and tree_id == OAK_TREE_ID then
-					-- There is a chance that this tree wants to grow as a balloon oak
-					if math.random(1, 12) == 1 then
-						-- Check if there is room for that
-						if check_tree_growth(pos, tree_id, { balloon = true }) then
-							minetest.set_node(pos, {name="air"})
-							mcl_core.generate_tree(pos, tree_id, { balloon = true })
-							return
-						end
-					end
-				end
+		if low_light then
+			if delta < 1.2 then return end
+			if minetest.get_node_light(pos, 0.5) < treelight then return end
+		end
 
-				-- If this sapling can grow alone
-				if one_by_one and check_tree_growth(pos, tree_id) then
-					-- Single sapling
-					minetest.set_node(pos, {name="air"})
-					local r = math.random(1, 12)
-					mcl_core.generate_tree(pos, tree_id)
+		-- TODO: delta is [days] missed in inactive area. Currently we just add it to stage, which is far from a perfect calculation...
+
+		local soilnode = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
+		local soiltype = minetest.get_item_group(soilnode.name, "soil_sapling")
+		if soiltype < soil_needed then return end
+
+		-- Increase and check growth stage
+		local meta = minetest.get_meta(pos)
+		local stage = meta:get_int("stage")
+		if stage == nil then stage = 0 end
+		stage = stage + math.max(1, math.floor(delta))
+		if stage >= 3 then
+			meta:set_string("grown", "true")
+			-- This sapling grows in a special way when there are 4 saplings in a 2×2 pattern
+			if two_by_two then
+				-- Check 8 surrounding saplings and try to find a 2×2 pattern
+				local is_sapling = function(pos, sapling)
+					return minetest.get_node(pos).name == sapling
+				end
+				local p2 = {x=pos.x+1, y=pos.y, z=pos.z}
+				local p3 = {x=pos.x, y=pos.y, z=pos.z-1}
+				local p4 = {x=pos.x+1, y=pos.y, z=pos.z-1}
+				local p5 = {x=pos.x-1, y=pos.y, z=pos.z-1}
+				local p6 = {x=pos.x-1, y=pos.y, z=pos.z}
+				local p7 = {x=pos.x-1, y=pos.y, z=pos.z+1}
+				local p8 = {x=pos.x, y=pos.y, z=pos.z+1}
+				local p9 = {x=pos.x+1, y=pos.y, z=pos.z+1}
+				local s2 = is_sapling(p2, sapling)
+				local s3 = is_sapling(p3, sapling)
+				local s4 = is_sapling(p4, sapling)
+				local s5 = is_sapling(p5, sapling)
+				local s6 = is_sapling(p6, sapling)
+				local s7 = is_sapling(p7, sapling)
+				local s8 = is_sapling(p8, sapling)
+				local s9 = is_sapling(p9, sapling)
+				-- In a 9×9 field there are 4 possible 2×2 squares. We check them all.
+				if s2 and s3 and s4 and check_tree_growth(pos, tree_id, { two_by_two = true }) then
+					-- Success: Remove saplings and place tree
+					minetest.remove_node(pos)
+					minetest.remove_node(p2)
+					minetest.remove_node(p3)
+					minetest.remove_node(p4)
+					mcl_core.generate_tree(pos, tree_id, { two_by_two = true })
+					return
+				elseif s3 and s5 and s6 and check_tree_growth(p6, tree_id, { two_by_two = true }) then
+					minetest.remove_node(pos)
+					minetest.remove_node(p3)
+					minetest.remove_node(p5)
+					minetest.remove_node(p6)
+					mcl_core.generate_tree(p6, tree_id, { two_by_two = true })
+					return
+				elseif s6 and s7 and s8 and check_tree_growth(p7, tree_id, { two_by_two = true }) then
+					minetest.remove_node(pos)
+					minetest.remove_node(p6)
+					minetest.remove_node(p7)
+					minetest.remove_node(p8)
+					mcl_core.generate_tree(p7, tree_id, { two_by_two = true })
+					return
+				elseif s2 and s8 and s9 and check_tree_growth(p8, tree_id, { two_by_two = true }) then
+					minetest.remove_node(pos)
+					minetest.remove_node(p2)
+					minetest.remove_node(p8)
+					minetest.remove_node(p9)
+					mcl_core.generate_tree(p8, tree_id, { two_by_two = true })
 					return
 				end
-			else
-				meta:set_int("stage", stage)
 			end
+				if one_by_one and tree_id == OAK_TREE_ID then
+				-- There is a chance that this tree wants to grow as a balloon oak
+				if math.random(1, 12) == 1 then
+					-- Check if there is room for that
+					if check_tree_growth(pos, tree_id, { balloon = true }) then
+						minetest.set_node(pos, {name="air"})
+						mcl_core.generate_tree(pos, tree_id, { balloon = true })
+						return
+					end
+				end
+			end
+				-- If this sapling can grow alone
+			if one_by_one and check_tree_growth(pos, tree_id) then
+				-- Single sapling
+				minetest.set_node(pos, {name="air"})
+				local r = math.random(1, 12)
+				mcl_core.generate_tree(pos, tree_id)
+				return
+			end
+		else
+			meta:set_int("stage", stage)
 		end
 	end
 end
@@ -1040,7 +1059,14 @@ minetest.register_abm({
 	neighbors = {"group:soil_sapling"},
 	interval = 25,
 	chance = 2,
-	action = grow_oak,
+	action = grow_oak
+})
+minetest.register_lbm({
+	label = "Add growth for unloaded oak tree",
+	name = "mcl_core:lbm_oak",
+	nodenames = {"mcl_core:sapling"},
+	run_at_every_load = true,
+	action = grow_oak
 })
 
 -- Dark oak tree
@@ -1050,7 +1076,14 @@ minetest.register_abm({
 	neighbors = {"group:soil_sapling"},
 	interval = 25,
 	chance = 2,
-	action = grow_dark_oak,
+	action = grow_dark_oak
+})
+minetest.register_lbm({
+	label = "Add growth for unloaded dark oak tree",
+	name = "mcl_core:lbm_dark_oak",
+	nodenames = {"mcl_core:darksapling"},
+	run_at_every_load = true,
+	action = grow_dark_oak
 })
 
 -- Jungle Tree
@@ -1060,7 +1093,14 @@ minetest.register_abm({
 	neighbors = {"group:soil_sapling"},
 	interval = 25,
 	chance = 2,
-	action = grow_jungle_tree,
+	action = grow_jungle_tree
+})
+minetest.register_lbm({
+	label = "Add growth for unloaded jungle tree",
+	name = "mcl_core:lbm_jungle_tree",
+	nodenames = {"mcl_core:junglesapling"},
+	run_at_every_load = true,
+	action = grow_jungle_tree
 })
 
 -- Spruce tree
@@ -1072,6 +1112,13 @@ minetest.register_abm({
 	chance = 2,
 	action = grow_spruce
 })
+minetest.register_lbm({
+	label = "Add growth for unloaded spruce tree",
+	name = "mcl_core:lbm_spruce",
+	nodenames = {"mcl_core:sprucesapling"},
+	run_at_every_load = true,
+	action = grow_spruce
+})
 
 -- Birch tree
 minetest.register_abm({
@@ -1080,7 +1127,14 @@ minetest.register_abm({
 	neighbors = {"group:soil_sapling"},
 	interval = 25,
 	chance = 2,
-	action = grow_birch,
+	action = grow_birch
+})
+minetest.register_lbm({
+	label = "Add growth for unloaded birch tree",
+	name = "mcl_core:lbm_birch",
+	nodenames = {"mcl_core:birchsapling"},
+	run_at_every_load = true,
+	action = grow_spruce
 })
 
 -- Acacia tree
@@ -1090,7 +1144,14 @@ minetest.register_abm({
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
 	chance = 2,
-	action = grow_acacia,
+	action = grow_acacia
+})
+minetest.register_lbm({
+	label = "Add growth for unloaded acacia tree",
+	name = "mcl_core:lbm_acacia",
+	nodenames = {"mcl_core:acaciasapling"},
+	run_at_every_load = true,
+	action = grow_spruce
 })
 
 local function leafdecay_particles(pos, node)
