@@ -49,7 +49,7 @@ schem_path = settlements.modpath.."/schematics/"
 --
 -- list of schematics
 --
-local basic_pseudobiome_villages = minetest.settings:get_bool("basic_pseudobiome_villages", false)
+local basic_pseudobiome_villages = minetest.settings:get_bool("basic_pseudobiome_villages", true)
 
 settlements.schematic_table = {
 	{name = "large_house",	mts = schem_path.."large_house.mts",	hwidth = 11, hdepth = 12, hheight =  9, hsize = 14, max_num = 0.08 , rplc = basic_pseudobiome_villages },

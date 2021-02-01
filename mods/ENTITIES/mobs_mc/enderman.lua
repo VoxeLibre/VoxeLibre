@@ -43,10 +43,10 @@ end
 local pr = PseudoRandom(os.time()*(-334))
 
 -- How freqeuntly to take and place blocks, in seconds
-local take_frequency_min = 25
-local take_frequency_max = 90
-local place_frequency_min = 10
-local place_frequency_max = 30
+local take_frequency_min = 235
+local take_frequency_max = 245
+local place_frequency_min = 235
+local place_frequency_max = 245
 
 -- Create the textures table for the enderman, depending on which kind of block
 -- the enderman holds (if any).

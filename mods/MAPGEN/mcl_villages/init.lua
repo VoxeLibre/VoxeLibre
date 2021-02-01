@@ -72,26 +72,29 @@ local function ecb_build_a_settlement(blockpos, action, calls_remaining, param)
 	end
 end
 
-minetest.register_on_generated(function(minp, maxp, blockseed)
-	-- needed for manual and automated settlement building
-	local heightmap = minetest.get_mapgen_object("heightmap")
+-- Disable natural generation in singlenode.
+local mg_name = minetest.get_mapgen_setting("mg_name")
+if mg_name ~= "singlenode" then
+	minetest.register_on_generated(function(minp, maxp, blockseed)
+		-- needed for manual and automated settlement building
+		local heightmap = minetest.get_mapgen_object("heightmap")
 
-	-- randomly try to build settlements
-	if blockseed % 77 ~= 17 then return end
+		-- randomly try to build settlements
+		if blockseed % 77 ~= 17 then return end
 
-	-- don't build settlement underground
-	if maxp.y < 0 then return end
+		-- don't build settlement underground
+		if maxp.y < 0 then return end
 
-	-- don't build settlements on (too) uneven terrain
-	local height_difference = settlements.evaluate_heightmap(minp, maxp)
-	if height_difference > max_height_difference then return end
+		-- don't build settlements on (too) uneven terrain
+		local height_difference = settlements.evaluate_heightmap(minp, maxp)
+		if height_difference > max_height_difference then return end
 
-	-- new way - slow :((((( 
-	minetest.emerge_area(vector.subtract(minp,24), vector.add(maxp,24), ecb_build_a_settlement, {minp = vector.new(minp), maxp=vector.new(maxp), blockseed=blockseed})
-	-- old way - wait 3 seconds:
-	-- minetest.after(3, ecb_build_a_settlement, nil, 1, 0, {minp = vector.new(minp), maxp=vector.new(maxp), blockseed=blockseed})
-end)
-
+		-- new way - slow :(((((
+		minetest.emerge_area(vector.subtract(minp,24), vector.add(maxp,24), ecb_build_a_settlement, {minp = vector.new(minp), maxp=vector.new(maxp), blockseed=blockseed})
+		-- old way - wait 3 seconds:
+		-- minetest.after(3, ecb_build_a_settlement, nil, 1, 0, {minp = vector.new(minp), maxp=vector.new(maxp), blockseed=blockseed})
+	end)
+end
 -- manually place villages
 if minetest.is_creative_enabled("") then
 	minetest.register_craftitem("mcl_villages:tool", {
