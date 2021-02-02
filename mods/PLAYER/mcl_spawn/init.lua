@@ -425,13 +425,13 @@ end
 minetest.register_on_respawnplayer(mcl_spawn.spawn)
 
 function mcl_spawn.shadow_worker()
-	if #biome_ids > 1 then
-		for _, biome_name in pairs(biomes_white_list) do
-			table.insert(biome_ids, minetest.get_biome_id(biome_name))
-		end
-	end
 	if not searched then
 		searched = true
+		if #biome_ids < 1 then
+			for _, biome_name in pairs(biomes_white_list) do
+				table.insert(biome_ids, minetest.get_biome_id(biome_name))
+			end
+		end
 		mcl_spawn.search()
 		minetest.log("action", "[mcl_spawn] Started world spawn point search")
 	end
