@@ -41,7 +41,8 @@ mobs:register_mob("mobs_mc:blaze", {
 		{name = mobs_mc.items.blaze_rod,
 		chance = 1,
 		min = 0,
-		max = 1,},
+		max = 1,
+		looting = "common",},
 	},
 	animation = {
 		stand_speed = 25,
@@ -73,6 +74,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	makes_footstep_sound = false,
 	fear_height = 0,
 	glow = 14,
+	fire_resistant = true,
 })
 
 mobs:spawn_specific("mobs_mc:blaze", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 5000, 3, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
@@ -89,6 +91,7 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 		if rawget(_G, "armor") and armor.last_damage_types then
 			armor.last_damage_types[player:get_player_name()] = "fireball"
 		end
+		mcl_burning.set_on_fire(player, 5, 1, "blaze")
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 5},
@@ -96,6 +99,7 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 	end,
 
 	hit_mob = function(self, mob)
+		mcl_burning.set_on_fire(mob, 5)
 		mob:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 5},

@@ -70,6 +70,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `coral_fan=X`: Coral fan (1 = alive, 2 = dead)
 * `coral_block=X`: Coral block (1 = alive, 2 = dead)
 * `coral_species=X`: Specifies the species of a coral; equal X means equal species
+* `set_on_fire=X`: Sets any (not fire-resistant) mob or player on fire for X seconds when touching
 
 #### Footnotes
 
@@ -96,6 +97,8 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `carpet=1:` (Wool) carpet
 * `stick=1`: Stick
 * `water_bucket=1`: Bucket containing a liquid of group “water”
+* `enchantability=X`: How good the enchantments are the item gets (1 equals book)
+* `enchanted=1`: The item is already enchanted, meaning that it can't be enchanted using an enchanting table
 
 ### Material groups
 
@@ -196,6 +199,7 @@ These groups are used mostly for informational purposes
 * `transport=1`: Item is used for transportation
 * `building_block=1`: Block is a building block
 * `deco_block=1`: Block is a decorational block
+
 
 ## Fake item groups
 These groups put similar items together which should all be treated by the gameplay or the GUI as a single item.

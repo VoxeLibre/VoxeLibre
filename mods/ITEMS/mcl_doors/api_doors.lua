@@ -152,7 +152,7 @@ function mcl_doors:register_door(name, def)
 			elseif p2 == 3 then
 				pt_left.z = pt_left.z-1
 			end
-			
+
 			local left_node = minetest.get_node(pt_left)
 
 			-- Set door nodes
@@ -182,14 +182,14 @@ function mcl_doors:register_door(name, def)
 			meta1:set_int("is_open", 0)
 			meta2:set_int("is_open", 0)
 
-			
+
 			if not minetest.is_creative_enabled(pn) then
 				itemstack:take_item()
 			end
 
 			on_place_node(pt, minetest.get_node(pt), placer, nu, itemstack, pointed_thing)
 			on_place_node(pt2, minetest.get_node(pt2), placer, minetest.get_node({x=ptu.x,y=ptu.y+1,z=ptu.z}), itemstack, pointed_thing)
-	
+
 			return itemstack
 		end,
 	})
@@ -275,7 +275,7 @@ function mcl_doors:register_door(name, def)
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
 		is_ground_content = false,
-		drop = name,
+		drop = "",
 		drawtype = "nodebox",
 		node_box = {
 			type = "fixed",
@@ -291,6 +291,7 @@ function mcl_doors:register_door(name, def)
 		sounds = def.sounds,
 
 		after_destruct = function(bottom, oldnode)
+			minetest.add_item(bottom, name)
 			local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
 			if minetest.get_node(bottom).name ~= name.."_b_2" and minetest.get_node(top).name == name.."_t_1" then
 				minetest.remove_node(top)
@@ -394,7 +395,7 @@ function mcl_doors:register_door(name, def)
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
 		is_ground_content = false,
-		drop = name,
+		drop = "",
 		drawtype = "nodebox",
 		node_box = {
 			type = "fixed",
@@ -410,6 +411,7 @@ function mcl_doors:register_door(name, def)
 		sounds = def.sounds,
 
 		after_destruct = function(bottom, oldnode)
+			minetest.add_item(bottom, name)
 			local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
 			if minetest.get_node(bottom).name ~= name.."_b_1" and minetest.get_node(top).name == name.."_t_2" then
 				minetest.remove_node(top)

@@ -21,6 +21,21 @@ local destroy_portal = function(pos)
 	end
 end
 
+local ep_scheme = {
+	{ o={x=0, y=0, z=1}, p=1 },
+	{ o={x=0, y=0, z=2}, p=1 },
+	{ o={x=0, y=0, z=3}, p=1 },
+	{ o={x=1, y=0, z=4}, p=2 },
+	{ o={x=2, y=0, z=4}, p=2 },
+	{ o={x=3, y=0, z=4}, p=2 },
+	{ o={x=4, y=0, z=3}, p=3 },
+	{ o={x=4, y=0, z=2}, p=3 },
+	{ o={x=4, y=0, z=1}, p=3 },
+	{ o={x=3, y=0, z=0}, p=0 },
+	{ o={x=2, y=0, z=0}, p=0 },
+	{ o={x=1, y=0, z=0}, p=0 },
+}
+
 -- End portal
 minetest.register_node("mcl_portals:portal_end", {
 	description = S("End Portal"),
@@ -52,7 +67,7 @@ minetest.register_node("mcl_portals:portal_end", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	use_texture_alpha = true,
-	walkable = true,
+	walkable = false,
 	diggable = false,
 	pointable = false,
 	buildable_to = false,
@@ -107,97 +122,19 @@ end
 
 -- Check if pos is part of a valid end portal frame, filled with eyes of ender.
 local function check_end_portal_frame(pos)
-	-- Check if pos has an end portal frame with eye of ender
-	local eframe = function(pos, param2)
-		local node = minetest.get_node(pos)
-		if node.name == "mcl_portals:end_portal_frame_eye" then
-			if param2 == nil or node.param2 == param2 then
-				return true, node
+	for i = 1, 12 do
+		local pos0 = vector.subtract(pos, ep_scheme[i].o)
+		local portal = true
+		for j = 1, 12 do
+			local p = vector.add(pos0, ep_scheme[j].o)
+			local node = minetest.get_node(p)
+			if not node or node.name ~= "mcl_portals:end_portal_frame_eye" or node.param2 ~= ep_scheme[j].p then
+				portal = false
+				break
 			end
 		end
-		return false
-	end
-
-	-- Step 1: Find a row of 3 end portal frames with eyes, all facing the same direction
-	local streak = 0
-	local streak_start, streak_end, streak_start_node, streak_end_node
-	local last_param2
-	local axes = { "x", "z" }
-	for a=1, #axes do
-		local axis = axes[a]
-		for b=pos[axis]-2, pos[axis]+2 do
-			local cpos = table.copy(pos)
-			cpos[axis] = b
-			local e, node = eframe(cpos, last_param2)
-			if e then
-				last_param2 = node.param2
-				streak = streak + 1
-				if streak == 1 then
-					streak_start = table.copy(pos)
-					streak_start[axis] = b
-					streak_start_node = node
-				elseif streak == 3 then
-					streak_end = table.copy(pos)
-					streak_end[axis] = b
-					streak_end_node = node
-					break
-				end
-			else
-				streak = 0
-				last_param2 = nil
-			end
-		end
-		if streak_end then
-			break
-		end
-		streak = 0
-		last_param2 = nil
-	end
-	-- Has a row been found?
-	if streak_end then
-		-- Step 2: Using the known facedir, check the remaining spots in which we expect
-		-- “eyed” end portal frames.
-		local dir = minetest.facedir_to_dir(streak_start_node.param2)
-		if dir.x ~= 0 then
-			for i=1, 3 do
-				if not eframe({x=streak_start.x + i*dir.x, y=streak_start.y, z=streak_start.z - 1}) then
-					return false
-				end
-				if not eframe({x=streak_start.x + i*dir.x, y=streak_start.y, z=streak_end.z + 1}) then
-					return false
-				end
-				if not eframe({x=streak_start.x + 4*dir.x, y=streak_start.y, z=streak_start.z + i-1}) then
-					return false
-				end
-			end
-			-- All checks survived! We have a valid portal!
-			local k
-			if dir.x > 0 then
-				k = 1
-			else
-				k = -3
-			end
-			return true, { x = streak_start.x + k, y = streak_start.y, z = streak_start.z }
-		elseif dir.z ~= 0 then
-			for i=1, 3 do
-				if not eframe({x=streak_start.x - 1, y=streak_start.y, z=streak_start.z + i*dir.z}) then
-					return false
-				end
-				if not eframe({x=streak_end.x + 1, y=streak_start.y, z=streak_start.z + i*dir.z}) then
-					return false
-				end
-				if not eframe({x=streak_start.x + i-1, y=streak_start.y, z=streak_start.z + 4*dir.z}) then
-					return false
-				end
-			end
-			local k
-			if dir.z > 0 then
-				k = 1
-			else
-				k = -3
-			end
-			-- All checks survived! We have a valid portal!
-			return true, { x = streak_start.x, y = streak_start.y, z = streak_start.z + k }
+		if portal then
+			return true, {x=pos0.x+1, y=pos0.y, z=pos0.z+1}
 		end
 	end
 	return false
@@ -222,82 +159,92 @@ local function end_portal_area(pos, destroy)
 	minetest.bulk_set_node(posses, {name=name})
 end
 
+function mcl_portals.end_teleport(obj, pos)
+	if not obj then return end
+	local pos = pos or obj:get_pos()
+	if not pos then return end
+	local dim = mcl_worlds.pos_to_dimension(pos)
+
+	local target
+	if dim == "end" then
+		-- End portal in the End:
+		-- Teleport back to the player's spawn or world spawn in the Overworld.
+		if obj:is_player() then
+			target = mcl_spawn.get_player_spawn_pos(obj)
+		end
+
+		target = target or mcl_spawn.get_world_spawn_pos(obj)
+	else
+		-- End portal in any other dimension:
+		-- Teleport to the End at a fixed position and generate a
+		-- 5×5 obsidian platform below.
+
+		local platform_pos = mcl_vars.mg_end_platform_pos
+		-- force emerge of target1 area
+		minetest.get_voxel_manip():read_from_map(platform_pos, platform_pos)
+		if not minetest.get_node_or_nil(platform_pos) then
+			minetest.emerge_area(vector.subtract(platform_pos, 3), vector.add(platform_pos, 3))
+		end
+
+		-- Build destination
+		local function check_and_build_end_portal_destination(pos)
+			local n = minetest.get_node_or_nil(pos)
+			if n and n.name ~= "mcl_core:obsidian" then
+				build_end_portal_destination(pos)
+				minetest.after(2, check_and_build_end_portal_destination, pos)
+			elseif not n then
+				minetest.after(1, check_and_build_end_portal_destination, pos)
+			end
+		end
+
+		local platform
+		build_end_portal_destination(platform_pos)
+		check_and_build_end_portal_destination(platform_pos)
+
+		target = table.copy(platform_pos)
+		target.y = target.y + 1
+	end
+
+	-- Teleport
+	obj:set_pos(target)
+
+	if obj:is_player() then
+		-- Look towards the main End island
+		if dim ~= "end" then
+			obj:set_look_horizontal(math.pi/2)
+		end
+		mcl_worlds.dimension_change(obj, mcl_worlds.pos_to_dimension(target))
+		minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16}, true)
+	end
+end
+
+function mcl_portals.end_portal_teleport(pos, node)
+	for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
+		local lua_entity = obj:get_luaentity() --maikerumine added for objects to travel
+		if obj:is_player() or lua_entity then
+			local objpos = obj:get_pos()
+			if objpos == nil then
+				return
+			end
+
+			-- Check if object is actually in portal.
+			objpos.y = math.ceil(objpos.y)
+			if minetest.get_node(objpos).name ~= "mcl_portals:portal_end" then
+				return
+			end
+
+			mcl_portals.end_teleport(obj, objpos)
+
+		end
+	end
+end
+
 minetest.register_abm({
 	label = "End portal teleportation",
 	nodenames = {"mcl_portals:portal_end"},
-	interval = 1,
+	interval = 0.1,
 	chance = 1,
-	action = function(pos, node)
-		for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
-			local lua_entity = obj:get_luaentity() --maikerumine added for objects to travel
-			if obj:is_player() or lua_entity then
-				local dim = mcl_worlds.pos_to_dimension(pos)
-
-				local objpos = obj:get_pos()
-				if objpos == nil then
-					return
-				end
-
-				-- Check if object is actually in portal.
-				objpos.y = math.ceil(objpos.y)
-				if minetest.get_node(objpos).name ~= "mcl_portals:portal_end" then
-					return
-				end
-
-				local target
-				if dim == "end" then
-					-- End portal in the End:
-					-- Teleport back to the player's spawn or world spawn in the Overworld.
-
-					if obj:is_player() then
-						target = mcl_spawn.get_spawn_pos(obj)
-					else
-						target = mcl_spawn.get_world_spawn_pos(obj)
-					end
-				else
-					-- End portal in any other dimension:
-					-- Teleport to the End at a fixed position and generate a
-					-- 5×5 obsidian platform below.
-
-					local platform_pos = mcl_vars.mg_end_platform_pos
-					-- force emerge of target1 area
-					minetest.get_voxel_manip():read_from_map(platform_pos, platform_pos)
-					if not minetest.get_node_or_nil(platform_pos) then
-						minetest.emerge_area(vector.subtract(platform_pos, 3), vector.add(platform_pos, 3))
-					end
-
-					-- Build destination
-					local function check_and_build_end_portal_destination(pos)
-						local n = minetest.get_node_or_nil(pos)
-						if n and n.name ~= "mcl_core:obsidian" then
-							build_end_portal_destination(pos)
-							minetest.after(2, check_and_build_end_portal_destination, pos)
-						elseif not n then
-							minetest.after(1, check_and_build_end_portal_destination, pos)
-						end
-					end
-
-					local platform
-					build_end_portal_destination(platform_pos)
-					check_and_build_end_portal_destination(platform_pos)
-
-					target = table.copy(platform_pos)
-					target.y = target.y + 1
-				end
-
-				-- Teleport
-				obj:set_pos(target)
-				if obj:is_player() then
-					-- Look towards the main End island
-					if dim ~= "end" then
-						obj:set_look_horizontal(math.pi/2)
-					end
-					mcl_worlds.dimension_change(obj, mcl_worlds.pos_to_dimension(target))
-					minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16}, true)
-				end
-			end
-		end
-	end,
+	action = mcl_portals.end_portal_teleport,
 })
 
 local rotate_frame, rotate_frame_eye
@@ -306,6 +253,21 @@ if minetest.get_modpath("screwdriver") then
 	-- Intentionally not rotatable
 	rotate_frame = false
 	rotate_frame_eye = false
+end
+
+local function after_place_node(pos, placer, itemstack, pointed_thing)
+	local node = minetest.get_node(pos)
+	if node then
+		node.param2 = (node.param2+2) % 4
+		minetest.swap_node(pos, node)
+
+		local ok, ppos = check_end_portal_frame(pos)
+		if ok then
+			-- Epic 'portal open' sound effect that can be heard everywhere
+			minetest.sound_play("mcl_portals_open_end_portal", {gain=0.8}, true)
+			end_portal_area(ppos)
+		end
+	end
 end
 
 minetest.register_node("mcl_portals:end_portal_frame", {
@@ -328,6 +290,8 @@ minetest.register_node("mcl_portals:end_portal_frame", {
 	light_source = 1,
 
 	on_rotate = rotate_frame,
+
+	after_place_node = after_place_node,
 
 	_mcl_blast_resistance = 36000000,
 	_mcl_hardness = -1,
@@ -359,16 +323,10 @@ minetest.register_node("mcl_portals:end_portal_frame_eye", {
 			end_portal_area(ppos, true)
 		end
 	end,
-	on_construct = function(pos)
-		local ok, ppos = check_end_portal_frame(pos)
-		if ok then
-			-- Epic 'portal open' sound effect that can be heard everywhere
-			minetest.sound_play("mcl_portals_open_end_portal", {gain=0.8}, true)
-			end_portal_area(ppos)
-		end
-	end,
 
 	on_rotate = rotate_frame_eye,
+
+	after_place_node = after_place_node,
 
 	_mcl_blast_resistance = 36000000,
 	_mcl_hardness = -1,
@@ -411,8 +369,11 @@ minetest.override_item("mcl_end:ender_eye", {
 				itemstack:take_item() -- 1 use
 			end
 
-			local ok = check_end_portal_frame(pointed_thing.under)
+			local ok, ppos = check_end_portal_frame(pointed_thing.under)
 			if ok then
+				-- Epic 'portal open' sound effect that can be heard everywhere
+				minetest.sound_play("mcl_portals_open_end_portal", {gain=0.8}, true)
+				end_portal_area(ppos)
 				if minetest.get_modpath("doc") then
 					doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal_end")
 				end

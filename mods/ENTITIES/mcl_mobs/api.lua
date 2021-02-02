@@ -3,7 +3,7 @@
 
 mobs = {}
 mobs.mod = "mrm"
-mobs.version = "20180531" -- don't rely too much on this, rarely updated, if ever
+mobs.version = "20210106" -- don't rely too much on this, rarely updated, if ever
 
 local MAX_MOB_NAME_LENGTH = 30
 local HORNY_TIME = 30
@@ -226,7 +226,7 @@ local collision = function(self)
 	local z = 0
 	local width = -self.collisionbox[1] + self.collisionbox[4] + 0.5
 
-	for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, width)) do
+	for _,object in ipairs(minetest.get_objects_inside_radius(pos, width)) do
 
 		if object:is_player()
 		or (object:get_luaentity()._cmi_is_mob == true and object ~= self.object) then
@@ -276,13 +276,16 @@ end
 local get_velocity = function(self)
 
 	local v = self.object:get_velocity()
+	if v then
+		return (v.x * v.x + v.z * v.z) ^ 0.5
+	end
 
-	return (v.x * v.x + v.z * v.z) ^ 0.5
+	return 0
 end
 
 
 -- set and return valid yaw
-local set_yaw = function(self, yaw, delay)
+local set_yaw = function(self, yaw, delay, dtime)
 
 	if not yaw or yaw ~= yaw then
 		yaw = 0
@@ -291,6 +294,9 @@ local set_yaw = function(self, yaw, delay)
 	delay = delay or 0
 
 	if delay == 0 then
+		if self.shaking and dtime then
+			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
+		end
 		self.object:set_yaw(yaw)
 		return yaw
 	end
@@ -302,8 +308,8 @@ local set_yaw = function(self, yaw, delay)
 end
 
 -- global function to set mob yaw
-function mobs:yaw(self, yaw, delay)
-	set_yaw(self, yaw, delay)
+function mobs:yaw(self, yaw, delay, dtime)
+	set_yaw(self, yaw, delay, dtime)
 end
 
 local add_texture_mod = function(self, mod)
@@ -390,7 +396,7 @@ local is_node_dangerous = function(self, nodename)
 			return true
 		end
 	end
-	if minetest.registered_nodes[nn].damage_per_second > 0 then
+	if minetest.registered_nodes[nn].damage_per_second and minetest.registered_nodes[nn].damage_per_second > 0 then
 		return true
 	end
 	return false
@@ -643,10 +649,12 @@ end
 
 
 -- drop items
-local item_drop = function(self, cooked)
+local item_drop = function(self, cooked, looting_level)
 
 	-- no drops if disabled by setting
 	if not mobs_drop_items then return end
+
+	looting_level = looting_level or 0
 
 	-- no drops for child mobs (except monster)
 	if (self.child and self.type ~= "monster") then
@@ -659,11 +667,33 @@ local item_drop = function(self, cooked)
 	self.drops = self.drops or {} -- nil check
 
 	for n = 1, #self.drops do
+		local dropdef = self.drops[n]
+		local chance = 1 / dropdef.chance
+		local looting_type = dropdef.looting
 
-		if random(1, self.drops[n].chance) == 1 then
+		if looting_level > 0 then
+			local chance_function = dropdef.looting_chance_function
+			if chance_function then
+				chance = chance_function(looting_level)
+			elseif looting_type == "rare" then
+				chance = chance + (dropdef.looting_factor or 0.01) * looting_level
+			end
+		end
 
-			num = random(self.drops[n].min or 1, self.drops[n].max or 1)
-			item = self.drops[n].name
+		local num = 0
+		local do_common_looting = (looting_level > 0 and looting_type == "common")
+		if random() < chance then
+			num = random(dropdef.min or 1, dropdef.max or 1)
+		elseif not dropdef.looting_ignore_chance then
+			do_common_looting = false
+		end
+
+		if do_common_looting then
+			num = num + math.floor(math.random(0, looting_level) + 0.5)
+		end
+
+		if num > 0 then
+			item = dropdef.name
 
 			-- cook items when true
 			if cooked then
@@ -752,15 +782,22 @@ local check_for_death = function(self, cause, cmi_cause)
 	local function death_handle(self)
 		-- dropped cooked item if mob died in fire or lava
 		if cause == "lava" or cause == "fire" then
-			item_drop(self, true)
+			item_drop(self, true, 0)
 		else
-			item_drop(self, nil)
-		end
+			local wielditem = ItemStack()
+			if cause == "hit" then
+				local puncher = cmi_cause.puncher
+				if puncher then
+					wielditem = puncher:get_wielded_item()
 
-		local pos = self.object:get_pos()
-
-		if mod_experience and ((not self.child) or self.type ~= "animal") then
-			mcl_experience.throw_experience(pos, math.random(self.xp_min, self.xp_max))
+					if mod_experience and ((not self.child) or self.type ~= "animal") then
+						mcl_experience.throw_experience(self.object:get_pos(), math.random(self.xp_min, self.xp_max))
+					end
+				end
+			end
+			local cooked = mcl_burning.is_burning(self.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect")
+			local looting = mcl_enchanting.get_enchantment(wielditem, "looting")
+			item_drop(self, cooked, looting)
 		end
 	end
 
@@ -768,7 +805,7 @@ local check_for_death = function(self, cause, cmi_cause)
 	if self.on_die then
 
 		local pos = self.object:get_pos()
-		local on_die_exit = self.on_die(self, pos)
+		local on_die_exit = self.on_die(self, pos, cmi_cause)
 		if on_die_exit ~= true then
 			death_handle(self)
 		end
@@ -779,6 +816,7 @@ local check_for_death = function(self, cause, cmi_cause)
 
 		if on_die_exit == true then
 			self.state = "die"
+			mcl_burning.extinguish(self.object)
 			self.object:remove()
 			return true
 		end
@@ -841,6 +879,7 @@ local check_for_death = function(self, cause, cmi_cause)
 		local dpos = self.object:get_pos()
 		local cbox = self.collisionbox
 		local yaw = self.object:get_rotation().y
+		mcl_burning.extinguish(self.object)
 		self.object:remove()
 		mobs.death_effect(dpos, yaw, cbox, not self.instant_death)
 	end
@@ -903,7 +942,7 @@ local is_at_cliff_or_danger = function(self)
 			return true
 		else
 			local def = minetest.registered_nodes[bnode.name]
-			if def and def.walkable then 
+			if def and def.walkable then
 				return false
 			end
 		end
@@ -916,7 +955,7 @@ end
 -- copy the 'mob facing cliff_or_danger check' from above, and rework to avoid water
 local is_at_water_danger = function(self)
 
-	
+
 	if not self.object:get_luaentity() then
 		return false
 	end
@@ -941,7 +980,7 @@ local is_at_water_danger = function(self)
 			return true
 		else
 			local def = minetest.registered_nodes[bnode.name]
-			if def and def.walkable then 
+			if def and def.walkable then
 				return false
 			end
 		end
@@ -989,6 +1028,7 @@ local do_env_damage = function(self)
 
 	-- remove mob if beyond map limits
 	if not within_limits(pos, 0) then
+		mcl_burning.extinguish(self.object)
 		self.object:remove()
 		return true
 	end
@@ -1017,8 +1057,11 @@ local do_env_damage = function(self)
 	if mod_worlds then
 		_, dim = mcl_worlds.y_to_layer(pos.y)
 	end
-	if self.sunlight_damage ~= 0 and (minetest.get_node_light(pos) or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
-		if deal_light_damage(self, pos, self.sunlight_damage) then
+	if (self.sunlight_damage ~= 0 or self.ignited_by_sunlight) and (minetest.get_node_light(pos) or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
+		if self.ignited_by_sunlight then
+			mcl_burning.set_on_fire(self.object, 10, self.sunlight_damage or 1)
+		else
+			deal_light_damage(self, pos, self.sunlight_damage)
 			return true
 		end
 	end
@@ -1106,7 +1149,7 @@ local do_env_damage = function(self)
 		end
 
 	-- damage_per_second node check
-	elseif nodef.damage_per_second ~= 0 then
+	elseif nodef.damage_per_second ~= 0 and not nodef.groups.lava and not nodef.groups.fire then
 
 		self.health = self.health - nodef.damage_per_second
 
@@ -1238,7 +1281,7 @@ local do_jump = function(self)
 	}, "air")
 
 	-- we don't attempt to jump if there's a stack of blocks blocking
-	if minetest.registered_nodes[nodTop.name] == true then
+	if minetest.registered_nodes[nodTop.name].walkable == true then
 		return false
 	end
 
@@ -1269,7 +1312,7 @@ local do_jump = function(self)
 				end
 				self.object:set_acceleration({
 					x = v.x * 2,
-					y = 0,
+					y = -10,
 					z = v.z * 2,
 				})
 			end, self, v)
@@ -2059,6 +2102,7 @@ local follow_flop = function(self)
 	or self.order == "follow")
 	and not self.following
 	and self.state ~= "attack"
+	and self.order ~= "sit"
 	and self.state ~= "runaway" then
 
 		local s = self.object:get_pos()
@@ -2079,6 +2123,7 @@ local follow_flop = function(self)
 	if self.type == "npc"
 	and self.order == "follow"
 	and self.state ~= "attack"
+	and self.order ~= "sit"
 	and self.owner ~= "" then
 
 		-- npc stop following player if not owner
@@ -2211,7 +2256,6 @@ local dogswitch = function(self, dtime)
 	return self.dogshoot_switch
 end
 
-
 -- execute current state (stand, walk, run, attacks)
 -- returns true if mob has died
 local do_states = function(self, dtime)
@@ -2309,10 +2353,10 @@ local do_states = function(self, dtime)
 						lp = minetest.find_nodes_in_area_under_air(
 							{x = s.x - 5, y = s.y - 0.5, z = s.z - 5},
 							{x = s.x + 5, y = s.y + 1, z = s.z + 5},
-							{"group:solid"}) 
+							{"group:solid"})
 
 						lp = #lp > 0 and lp[random(#lp)]
-	
+
 						-- did we find land?
 						if lp then
 
@@ -2364,6 +2408,8 @@ local do_states = function(self, dtime)
 			set_velocity(self, 0)
 			self.state = "stand"
 			set_animation(self, "stand")
+			local yaw = self.object:get_yaw() or 0
+			yaw = set_yaw(self, yaw + 0.78, 8)
 		else
 
 			set_velocity(self, self.walk_velocity)
@@ -2390,6 +2436,8 @@ local do_states = function(self, dtime)
 			set_velocity(self, 0)
 			self.state = "stand"
 			set_animation(self, "stand")
+			local yaw = self.object:get_yaw() or 0
+			yaw = set_yaw(self, yaw + 0.78, 8)
 		else
 			set_velocity(self, self.run_velocity)
 			set_animation(self, "run")
@@ -2434,7 +2482,7 @@ local do_states = function(self, dtime)
 
 			if p.x > s.x then yaw = yaw + pi end
 
-			yaw = set_yaw(self, yaw)
+			yaw = set_yaw(self, yaw, 0, dtime)
 
 			local node_break_radius = self.explosion_radius or 1
 			local entity_damage_radius = self.explosion_damage_radius
@@ -2499,7 +2547,7 @@ local do_states = function(self, dtime)
 
 					if mod_explosions then
 					if mobs_griefing and not minetest.is_protected(pos, "") then
-						mcl_explosions.explode(self.object:get_pos(), self.explosion_strength, { drop_chance = 1.0 }, self.object)
+						mcl_explosions.explode(mcl_util.get_object_center(self.object), self.explosion_strength, { drop_chance = 1.0 }, self.object)
 					else
 						minetest.sound_play(self.sounds.explode, {
 							pos = pos,
@@ -2511,6 +2559,7 @@ local do_states = function(self, dtime)
 						effect(pos, 32, "mcl_particles_smoke.png", nil, nil, node_break_radius, 1, 0)
 					end
 					end
+					mcl_burning.extinguish(self.object)
 					self.object:remove()
 
 					return true
@@ -2606,7 +2655,7 @@ local do_states = function(self, dtime)
 
 			if p.x > s.x then yaw = yaw + pi end
 
-			yaw = set_yaw(self, yaw)
+			yaw = set_yaw(self, yaw, 0, dtime)
 
 			-- move towards enemy if beyond mob reach
 			if dist > self.reach then
@@ -2622,6 +2671,8 @@ local do_states = function(self, dtime)
 
 					set_velocity(self, 0)
 					set_animation(self, "stand")
+					local yaw = self.object:get_yaw() or 0
+					yaw = set_yaw(self, yaw + 0.78, 8)
 				else
 
 					if self.path.stuck then
@@ -2709,12 +2760,16 @@ local do_states = function(self, dtime)
 
 			if p.x > s.x then yaw = yaw + pi end
 
-			yaw = set_yaw(self, yaw)
+			yaw = set_yaw(self, yaw, 0, dtime)
 
 			set_velocity(self, 0)
 
+			local p = self.object:get_pos()
+			p.y = p.y + (self.collisionbox[2] + self.collisionbox[5]) / 2
+
 			if self.shoot_interval
 			and self.timer > self.shoot_interval
+			and not minetest.raycast(p, self.attack:get_pos(), false, false):next()
 			and random(1, 100) <= 60 then
 
 				self.timer = 0
@@ -2722,10 +2777,6 @@ local do_states = function(self, dtime)
 
 				-- play shoot attack sound
 				mob_sound(self, "shoot_attack")
-
-				local p = self.object:get_pos()
-
-				p.y = p.y + (self.collisionbox[2] + self.collisionbox[5]) / 2
 
 				-- Shoot arrow
 				if minetest.registered_entities[self.arrow] then
@@ -2915,6 +2966,13 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		end
 	end
 
+	if weapon then
+		local fire_aspect_level = mcl_enchanting.get_enchantment(weapon, "fire_aspect")
+		if fire_aspect_level > 0 then
+			mcl_burning.set_on_fire(self.object, 4, fire_aspect_level * 2)
+		end
+	end
+
 	-- check for tool immunity or special damage
 	for n = 1, #self.immune_to do
 
@@ -3019,6 +3077,18 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 				kb = kb * 1.5
 			end
 
+
+			local luaentity
+			if hitter then
+				luaentity = hitter:get_luaentity()
+			end
+			if hitter and hitter:is_player() then
+				local wielditem = hitter:get_wielded_item()
+				kb = kb + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
+			elseif luaentity and luaentity._knockback then
+				kb = kb + luaentity._knockback
+			end
+
 			self.object:set_velocity({
 				x = dir.x * kb,
 				y = dir.y * kb + up,
@@ -3121,7 +3191,8 @@ local mob_staticdata = function(self)
 	and ((not self.nametag) or (self.nametag == ""))
 	and self.lifetimer <= 20 then
 
-		minetest.log("action", "Mob "..name.." despawns in mob_staticdata at "..minetest.pos_to_string(self.object.get_pos()))
+		minetest.log("action", "Mob "..name.." despawns in mob_staticdata at "..minetest.pos_to_string(self.object.get_pos(), 1))
+		mcl_burning.extinguish(self.object)
 		self.object:remove()
 
 		return ""-- nil
@@ -3160,7 +3231,7 @@ local mob_activate = function(self, staticdata, def, dtime)
 	-- remove monsters in peaceful mode
 	if self.type == "monster"
 	and minetest.settings:get_bool("only_peaceful_mobs", false) then
-
+		mcl_burning.extinguish(self.object)
 		self.object:remove()
 
 		return
@@ -3324,6 +3395,10 @@ end
 -- main mob function
 local mob_step = function(self, dtime)
 
+	if not self.fire_resistant then
+		mcl_burning.tick(self.object, dtime)
+	end
+
 	if use_cmi then
 		cmi.notify_step(self.object, dtime)
 	end
@@ -3385,6 +3460,9 @@ local mob_step = function(self, dtime)
 		end
 
 		self.delay = self.delay - 1
+		if self.shaking then
+			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
+		end
 		self.object:set_yaw(yaw)
 	end
 
@@ -3516,39 +3594,27 @@ local mob_step = function(self, dtime)
 			set_velocity(self, 0)
 			self.state = "stand"
 			set_animation(self, "stand")
+			local yaw = self.object:get_yaw() or 0
+			yaw = set_yaw(self, yaw + 0.78, 8)
 	end
 
 	-- Despawning: when lifetimer expires, remove mob
 	if remove_far
 	and self.can_despawn == true
-	and ((not self.nametag) or (self.nametag == "")) then
+	and ((not self.nametag) or (self.nametag == ""))
+	and self.state ~= "attack"
+	and self.following == nil then
 
 		self.lifetimer = self.lifetimer - dtime
-		if self.lifetimer <= 10 then
-
-			-- only despawn away from player
-			local far_objs = minetest.get_objects_inside_radius(pos, 48)
-			for n = 1, #far_objs do
-
-				if far_objs[n]:is_player() then
-
-					local close_objs = minetest.get_objects_inside_radius(pos, 16)
-					for n = 1, #close_objs do
-						if close_objs[n]:is_player() then
-							self.lifetimer = 20
-						else
-							if math.random(1,10) <= 3 then
-								minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos))
-								self.object:remove()
-								return
-							end
-						end
-					end
-				else
-					minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos))
-					self.object:remove()
-					return
-				end
+		if self.despawn_immediately or self.lifetimer <= 0 then
+			minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos, 1))
+			mcl_burning.extinguish(self.object)
+			self.object:remove()
+		elseif self.lifetimer <= 10 then
+			if math.random(10) < 4 then
+				self.despawn_immediately = true
+			else
+				self.lifetimer = 20
 			end
 		end
 	end
@@ -3750,6 +3816,9 @@ minetest.register_entity(name, {
 	suffocation_timer = 0,
 	follow_velocity = def.follow_velocity or 2.4,
 	instant_death = def.instant_death or false,
+	fire_resistant = def.fire_resistant or false,
+	fire_damage_resistant = def.fire_damage_resistant or false,
+	ignited_by_sunlight = def.ignited_by_sunlight or false,
 	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,
@@ -3775,7 +3844,7 @@ minetest.register_entity(name, {
 	get_staticdata = function(self)
 		return mob_staticdata(self)
 	end,
-	
+
 	harmed_by_heal = def.harmed_by_heal,
 
 })
@@ -3930,7 +3999,7 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 			pos.y = pos.y + 1
 
 			-- only spawn away from player
-			local objs = minetest.get_objects_inside_radius(pos, 10)
+			local objs = minetest.get_objects_inside_radius(pos, 24)
 
 			for n = 1, #objs do
 
@@ -4106,7 +4175,7 @@ function mobs:register_arrow(name, def)
 			if self.switch == 0
 			or self.timer > 150
 			or not within_limits(pos, 0) then
-
+				mcl_burning.extinguish(self.object)
 				self.object:remove();
 
 				return
@@ -4489,3 +4558,20 @@ function mobs:alias_mob(old_name, new_name)
 	})
 
 end
+
+local timer = 0
+minetest.register_globalstep(function(dtime)
+	timer = timer + dtime
+	if timer < 1 then return end
+	for _, player in ipairs(minetest.get_connected_players()) do
+		local pos = player:get_pos()
+		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 47)) do
+			local lua = obj:get_luaentity()
+			if lua and lua._cmi_is_mob then
+				lua.lifetimer = math.max(20, lua.lifetimer)
+				lua.despawn_immediately = false
+			end
+		end
+	end
+	timer = 0
+end)

@@ -69,6 +69,20 @@ local receive_fields = function(pos, formname, fields, sender)
 	end
 end
 
+local function give_xp(pos, player)
+	local meta = minetest.get_meta(pos)
+	local dir = vector.divide(minetest.facedir_to_dir(minetest.get_node(pos).param2),-1.95)
+	local xp = meta:get_int("xp")
+	if xp > 0 then
+		if player then
+			mcl_experience.add_experience(player, xp)
+		else
+			mcl_experience.throw_experience(vector.add(pos, dir), xp)
+		end
+		meta:set_int("xp", 0)
+	end
+end
+
 --
 -- Node callback functions that are the same for active and inactive furnace
 --
@@ -143,6 +157,7 @@ local function on_metadata_inventory_take(pos, listname, index, stack, player)
 		elseif stack:get_name() == "mcl_fishing:fish_cooked" then
 			awards.unlock(player:get_player_name(), "mcl:cookFish")
 		end
+		give_xp(pos, player)
 	end
 end
 
@@ -345,10 +360,7 @@ local function furnace_node_timer(pos, elapsed)
 				srclist = inv:get_list("src")
 				src_time = 0
 
-				if mcl_experience.throw_experience then
-					local dir = vector.divide(minetest.facedir_to_dir(minetest.get_node(pos).param2),-1.95)
-					mcl_experience.throw_experience(vector.add(pos, dir), 1)
-				end
+				meta:set_int("xp", meta:get_int("xp") + 1)		-- ToDo give each recipe an idividial XP count
 			end
 		end
 
@@ -462,6 +474,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 	end,
 	on_destruct = function(pos)
 		mcl_particles.delete_node_particlespawners(pos)
+		give_xp(pos)
 	end,
 
 	on_metadata_inventory_move = function(pos)
@@ -475,11 +488,15 @@ minetest.register_node("mcl_furnaces:furnace", {
 		-- start timer function, it will sort out whether furnace can burn or not.
 		minetest.get_node_timer(pos):start(1.0)
 	end,
-	on_metadata_inventory_take = function(pos)
+	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		-- Reset accumulated game time when player works with furnace:
 		furnace_reset_delta_time(pos)
 		-- start timer function, it will helpful if player clears dst slot
 		minetest.get_node_timer(pos):start(1.0)
+
+		if listname == "dst" then
+			give_xp(pos, player)
+		end
 	end,
 
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
@@ -529,6 +546,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	end,
 	on_destruct = function(pos)
 		mcl_particles.delete_node_particlespawners(pos)
+		give_xp(pos)
 	end,
 
 	allow_metadata_inventory_put = allow_metadata_inventory_put,

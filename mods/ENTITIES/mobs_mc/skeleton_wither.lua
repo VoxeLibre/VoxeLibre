@@ -45,17 +45,20 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 		{name = mobs_mc.items.coal,
 		chance = 1,
 		min = 0,
-		max = 1,},
+		max = 1,
+		looting = "common",},
 		{name = mobs_mc.items.bone,
 		chance = 1,
 		min = 0,
-		max = 2,},
+		max = 2,
+		looting = "common",},
 
 		-- Head
 		{name = mobs_mc.items.head_wither_skeleton,
 		chance = 40, -- 2.5% chance
 		min = 1,
-		max = 1,},
+		max = 1,
+		looting = "rare",},
 	},
 	animation = {
 		stand_start = 0,
@@ -87,6 +90,7 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 	dogshoot_count_max =0.5,
 	fear_height = 4,
 	harmed_by_heal = true,
+	fire_resistant = true,
 })
 
 --spawn

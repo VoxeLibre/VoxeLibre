@@ -49,8 +49,10 @@ local spider = {
 	view_range = 16,
 	floats = 1,
 	drops = {
-		{name = mobs_mc.items.string, chance = 1, min = 0, max = 2,},
-		{name = mobs_mc.items.spider_eye, chance = 3, min = 1, max = 1,},
+		{name = mobs_mc.items.string, chance = 1, min = 0, max = 2, looting = "common"},
+		{name = mobs_mc.items.spider_eye, chance = 3, min = 1, max = 1, looting = "common", looting_chance_function = function(lvl)
+			return 1 - 2 / (lvl + 3)
+		end},
 	},
 	specific_attack = { "player", "mobs_mc:iron_golem" },
 	fear_height = 4,

@@ -172,18 +172,20 @@ minetest.register_tool("mcl_tools:pick_diamond", {
 	_repair_material = "mcl_core:diamond",
 })
 
-local get_shovel_dig_group = function(itemstring)
-	local def = minetest.registered_items[itemstring]
-	if itemstring == "mcl_tools:shovel_wood" then
-		return "shovely_dig_wood"
-	elseif itemstring == "mcl_tools:shovel_stone" then
-		return "shovely_dig_stone"
-	elseif itemstring == "mcl_tools:shovel_iron" then
-		return "shovely_dig_iron"
-	elseif itemstring == "mcl_tools:shovel_gold" then
-		return "shovely_dig_gold"
-	elseif itemstring == "mcl_tools:shovel_diamond" then
-		return "shovely_dig_diamond"
+local get_shovel_dig_group = function(itemstack)
+	local itemstring = itemstack:get_name()
+	local efficiency_level = mcl_enchanting.get_enchantment(itemstack, "efficiency")
+	local postfix = efficiency_level > 0 and "_efficiency_" .. efficiency_level or ""
+	if itemstring:find("mcl_tools:shovel_wood") == 1 then
+		return "shovely_dig_wood" .. postfix
+	elseif itemstring:find("mcl_tools:shovel_stone") == 1 then
+		return "shovely_dig_stone" .. postfix
+	elseif itemstring:find("mcl_tools:shovel_iron") == 1 then
+		return "shovely_dig_iron" .. postfix
+	elseif itemstring:find("mcl_tools:shovel_gold") == 1 then
+		return "shovely_dig_gold" .. postfix
+	elseif itemstring:find("mcl_tools:shovel_diamond") == 1 then
+		return "shovely_dig_diamond" .. postfix
 	else
 		-- Fallback
 		return "shovely_dig_wood"
@@ -217,9 +219,10 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 				-- Add wear, as if digging a level 0 shovely node
 				local toolname = itemstack:get_name()
 				local def = minetest.registered_items[toolname]
-				local group = get_shovel_dig_group(toolname)
-				local base_uses = def.tool_capabilities.groupcaps[group].uses
-				local maxlevel = def.tool_capabilities.groupcaps[group].maxlevel
+				local group = get_shovel_dig_group(itemstack)
+				local toolcaps = itemstack:get_tool_capabilities()
+				local base_uses = toolcaps.groupcaps[group].uses
+				local maxlevel = toolcaps.groupcaps[group].maxlevel
 				local uses = base_uses * math.pow(3, maxlevel)
 				local wear = math.ceil(65535 / uses)
 				itemstack:add_wear(wear)
@@ -275,7 +278,6 @@ minetest.register_tool("mcl_tools:shovel_wood", {
 	_doc_items_usagehelp = shovel_use,
 	_doc_items_hidden = false,
 	inventory_image = "default_tool_woodshovel.png",
-	wield_image = "default_tool_woodshovel.png^[transformR90",
 	wield_scale = wield_scale,
 	groups = { tool=1, shovel=1, dig_speed_class=2, enchantability=15 },
 	tool_capabilities = {
@@ -296,7 +298,6 @@ minetest.register_tool("mcl_tools:shovel_stone", {
 	_doc_items_longdesc = shovel_longdesc,
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_stoneshovel.png",
-	wield_image = "default_tool_stoneshovel.png^[transformR90",
 	wield_scale = wield_scale,
 	groups = { tool=1, shovel=1, dig_speed_class=3, enchantability=5 },
 	tool_capabilities = {
@@ -317,7 +318,6 @@ minetest.register_tool("mcl_tools:shovel_iron", {
 	_doc_items_longdesc = shovel_longdesc,
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_steelshovel.png",
-	wield_image = "default_tool_steelshovel.png^[transformR90",
 	wield_scale = wield_scale,
 	groups = { tool=1, shovel=1, dig_speed_class=4, enchantability=14 },
 	tool_capabilities = {
@@ -338,9 +338,8 @@ minetest.register_tool("mcl_tools:shovel_gold", {
 	_doc_items_longdesc = shovel_longdesc,
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_goldshovel.png",
-	wield_image = "default_tool_goldshovel.png^[transformR90",
 	wield_scale = wield_scale,
-	groups = { tool=1, shovel=1, dig_speed_class=6, },
+	groups = { tool=1, shovel=1, dig_speed_class=6, enchantability=22 },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=2,
@@ -359,7 +358,6 @@ minetest.register_tool("mcl_tools:shovel_diamond", {
 	_doc_items_longdesc = shovel_longdesc,
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_diamondshovel.png",
-	wield_image = "default_tool_diamondshovel.png^[transformR90",
 	wield_scale = wield_scale,
 	groups = { tool=1, shovel=1, dig_speed_class=5, enchantability=10 },
 	tool_capabilities = {
@@ -576,7 +574,7 @@ minetest.register_tool("mcl_tools:shears", {
 	inventory_image = "default_tool_shears.png",
 	wield_image = "default_tool_shears.png",
 	stack_max = 1,
-	groups = { tool=1, shears=1, dig_speed_class=4, enchantability=1 },
+	groups = { tool=1, shears=1, dig_speed_class=4, },
 	tool_capabilities = {
 	        full_punch_interval = 0.5,
 	        max_drop_level=1,

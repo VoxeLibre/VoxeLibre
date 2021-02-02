@@ -447,7 +447,7 @@ local dragon_breath_def = {
 	no_throwable = true,
 	no_effect = true,
 	_longdesc = S("This item is used in brewing and can be combined with splash potions to create lingering potions."),
-	color = "#BF4567",
+	image = "mcl_potions_dragon_breath.png",
 	groups = { brewitem = 1 },
 	on_use = nil,
 	stack_max = 64,

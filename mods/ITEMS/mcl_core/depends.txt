@@ -5,3 +5,4 @@ mcl_util
 mcl_worlds
 doc_items
 doc?
+mcl_enchanting

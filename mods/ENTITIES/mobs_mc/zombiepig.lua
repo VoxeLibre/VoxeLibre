@@ -19,7 +19,6 @@ local pigman = {
 	hp_max = 20,
 	xp_min = 6,
 	xp_max = 6,
-	breath_max = -1,
 	armor = {undead = 90, fleshy = 90},
 	attack_type = "dogfight",
 	group_attack = { "mobs_mc:pigman", "mobs_mc:baby_pigman" },
@@ -50,19 +49,23 @@ local pigman = {
 		{name = mobs_mc.items.rotten_flesh,
 		chance = 1,
 		min = 1,
-		max = 1,},
+		max = 1,
+		looting = "common"},
 		{name = mobs_mc.items.gold_nugget,
 		chance = 1,
 		min = 0,
-		max = 1,},
+		max = 1,
+		looting = "common"},
 		{name = mobs_mc.items.gold_ingot,
 		chance = 40, -- 2.5%
 		min = 1,
-		max = 1,},
+		max = 1,
+		looting = "rare"},
 		{name = mobs_mc.items.gold_sword,
-		chance = 12, -- 8.333%, approximation to 8.5%
+		chance = 100 / 8.5,
 		min = 1,
-		max = 1,},
+		max = 1,
+		looting = "rare"},
 	},
 	animation = {
 		stand_speed = 25,
@@ -82,6 +85,7 @@ local pigman = {
 	fear_height = 4,
 	view_range = 16,
 	harmed_by_heal = true,
+	fire_damage_resistant = true,
 }
 
 mobs:register_mob("mobs_mc:pigman", pigman)

@@ -32,6 +32,10 @@ local STEP_LENGTH = 0.3
 -- How many rays to compute entity exposure to explosion
 local N_EXPOSURE_RAYS = 16
 
+-- Nodes having a blast resistance of this value or higher are treated as
+-- indestructible
+local INDESTRUCT_BLASTRES = 1000000
+
 minetest.register_on_mods_loaded(function()
 	-- Store blast resistance values by content ids to improve performance.
 	for name, def in pairs(minetest.registered_nodes) do
@@ -135,14 +139,21 @@ end
 -- strength - The strength of each ray
 -- raydirs - The directions for each ray
 -- radius - The maximum distance each ray will go
--- drop_chance - The chance that destroyed nodes will drop their items
--- fire - If true, 1/3 of destroyed nodes become fire
+-- info - Table containing information about explosion
 -- puncher - object that punches other objects (optional)
+--
+-- Values in info:
+-- drop_chance - The chance that destroyed nodes will drop their items
+-- fire - If true, 1/3 nodes become fire
+-- griefing - If true, the explosion will destroy nodes (default: true)
+-- max_blast_resistance - The explosion will treat all non-indestructible nodes
+--                        as having a blast resistance of no more than this
+--                        value
 --
 -- Note that this function has been optimized, it contains code which has been
 -- inlined to avoid function calls and unnecessary table creation. This was
 -- measured to give a significant performance increase.
-local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, puncher, creative_enabled)
+local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 	local vm = minetest.get_voxel_manip()
 
 	local emin, emax = vm:read_from_map(vector.subtract(pos, radius),
@@ -164,39 +175,49 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 	local data = vm:get_data()
 	local destroy = {}
 
+	local drop_chance = info.drop_chance
+	local fire = info.fire
+	local max_blast_resistance = info.max_blast_resistance
+
 	-- Trace rays for environment destruction
-	for i = 1, #raydirs do
-		local rpos_x = pos.x
-		local rpos_y = pos.y
-		local rpos_z = pos.z
-		local rdir_x = raydirs[i].x
-		local rdir_y = raydirs[i].y
-		local rdir_z = raydirs[i].z
-		local rstr = (0.7 + math.random() * 0.6) * strength
+	if info.griefing then
+		for i = 1, #raydirs do
+			local rpos_x = pos.x
+			local rpos_y = pos.y
+			local rpos_z = pos.z
+			local rdir_x = raydirs[i].x
+			local rdir_y = raydirs[i].y
+			local rdir_z = raydirs[i].z
+			local rstr = (0.7 + math.random() * 0.6) * strength
 
-		for r = 0, math.ceil(radius * (1.0 / STEP_LENGTH)) do
-			local npos_x = math.floor(rpos_x + 0.5)
-			local npos_y = math.floor(rpos_y + 0.5)
-			local npos_z = math.floor(rpos_z + 0.5)
-			local idx = (npos_z - emin_z) * zstride + (npos_y - emin_y) * ystride +
-					npos_x - emin_x + 1
+			for r = 0, math.ceil(radius * (1.0 / STEP_LENGTH)) do
+				local npos_x = math.floor(rpos_x + 0.5)
+				local npos_y = math.floor(rpos_y + 0.5)
+				local npos_z = math.floor(rpos_z + 0.5)
+				local idx = (npos_z - emin_z) * zstride + (npos_y - emin_y) * ystride +
+						npos_x - emin_x + 1
 
-			local cid = data[idx]
-			local br = node_blastres[cid]
-			local hash = minetest.hash_node_position({x=npos_x, y=npos_y, z=npos_z})
+				local cid = data[idx]
+				local br = node_blastres[cid]
+				if br < INDESTRUCT_BLASTRES and br > max_blast_resistance then
+					br = max_blast_resistance
+				end
 
-			rpos_x = rpos_x + STEP_LENGTH * rdir_x
-			rpos_y = rpos_y + STEP_LENGTH * rdir_y
-			rpos_z = rpos_z + STEP_LENGTH * rdir_z
+				local hash = minetest.hash_node_position({x=npos_x, y=npos_y, z=npos_z})
 
-			rstr = rstr - 0.75 * STEP_LENGTH - (br + 0.3) * STEP_LENGTH
+				rpos_x = rpos_x + STEP_LENGTH * rdir_x
+				rpos_y = rpos_y + STEP_LENGTH * rdir_y
+				rpos_z = rpos_z + STEP_LENGTH * rdir_z
 
-			if rstr <= 0 then
-				break
-			end
+				rstr = rstr - 0.75 * STEP_LENGTH - (br + 0.3) * STEP_LENGTH
 
-			if cid ~= minetest.CONTENT_AIR and not minetest.is_protected({x = npos_x, y = npos_y, z = npos_z}, "") then
-				destroy[hash] = idx
+				if rstr <= 0 then
+					break
+				end
+
+				if cid ~= minetest.CONTENT_AIR and not minetest.is_protected({x = npos_x, y = npos_y, z = npos_z}, "") then
+					destroy[hash] = idx
+				end
 			end
 		end
 	end
@@ -284,8 +305,18 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 					impact = 0
 				end
 				local damage = math.floor((impact * impact + impact) * 7 * strength + 1)
+				local source = puncher or obj
+
+				local sleep_formspec_doesnt_close_mt53 = false
 				if obj:is_player() then
 					local name = obj:get_player_name()
+					if mcl_beds then
+						local meta = obj:get_meta()
+						if meta:get_string("mcl_beds:sleeping") == "true" then
+							minetest.close_formspec(name, "") -- ABSOLUTELY NECESSARY FOR MT5.3 -- TODO: REMOVE THIS IN THE FUTURE
+							sleep_formspec_doesnt_close_mt53 = true
+						end
+					end
 					if mod_death_messages then
 						mcl_death_messages.player_damage(obj, S("@1 was caught in an explosion.", name))
 					end
@@ -293,17 +324,21 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 						armor.last_damage_types[name] = "explosion"
 					end
 				end
-				local source = puncher
-				if not source then
-					source = obj
-				end
-				obj:punch(source, 10, { damage_groups = { full_punch_interval = 1,
-						fleshy = damage, knockback = impact * 20.0 } }, punch_dir)
 
-				if obj:is_player() then
-					obj:add_player_velocity(vector.multiply(punch_dir, impact * 20))
-				elseif ent.tnt_knockback then
-					obj:add_velocity(vector.multiply(punch_dir, impact * 20))
+				if sleep_formspec_doesnt_close_mt53 then
+					minetest.after(0.3, function(obj, damage, impact, punch_dir) -- 0.2 is minimum delay for closing old formspec and open died formspec -- TODO: REMOVE THIS IN THE FUTURE
+						if not obj then return end
+						obj:punch(obj, 10, { damage_groups = { full_punch_interval = 1, fleshy = damage, knockback = impact * 20.0 } }, punch_dir)
+						obj:add_player_velocity(vector.multiply(punch_dir, impact * 20))
+					end, obj, damage, impact, vector.new(punch_dir))
+				else
+					obj:punch(source, 10, { damage_groups = { full_punch_interval = 1, fleshy = damage, knockback = impact * 20.0 } }, punch_dir)
+
+					if obj:is_player() then
+						obj:add_player_velocity(vector.multiply(punch_dir, impact * 20))
+					elseif ent.tnt_knockback then
+						obj:add_velocity(vector.multiply(punch_dir, impact * 20))
+					end
 				end
 			end
 		end
@@ -313,14 +348,14 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 
 	-- Remove destroyed blocks and drop items
 	for hash, idx in pairs(destroy) do
-		local do_drop = not creative_enabled and math.random() <= drop_chance
+		local do_drop = math.random() <= drop_chance
 		local on_blast = node_on_blast[data[idx]]
 		local remove = true
 
 		if do_drop or on_blast ~= nil then
 			local npos = minetest.get_position_from_hash(hash)
 			if on_blast ~= nil then
-				on_blast(npos, 1.0)
+				on_blast(npos, 1.0, do_drop)
 				remove = false
 			else
 				local name = minetest.get_name_from_content_id(data[idx])
@@ -363,7 +398,6 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 	-- Log explosion
 	minetest.log('action', 'Explosion at ' .. minetest.pos_to_string(pos) ..
 		' with strength ' .. strength .. ' and radius ' .. radius)
-
 end
 
 -- Create an explosion with strength at pos.
@@ -371,16 +405,24 @@ end
 -- Parameters:
 -- pos - The position where the explosion originates from
 -- strength - The blast strength of the explosion (a TNT explosion uses 4)
--- info - Table containing information about explosion.
+-- info - Table containing information about explosion
 -- puncher - object that is reported as source of punches/damage (optional)
 --
 -- Values in info:
 -- drop_chance - If specified becomes the drop chance of all nodes in the
---               explosion (defaults to 1.0 / strength)
--- no_sound - If true then the explosion will not play a sound
--- no_particle - If true then the explosion will not create particles
+--               explosion (default: 1.0 / strength)
+-- max_blast_resistance - If specified the explosion will treat all
+--                        non-indestructible nodes as having a blast resistance
+--                        of no more than this value
+-- sound - If true, the explosion will play a sound (default: true)
+-- particles - If true, the explosion will create particles (default: true)
 -- fire - If true, 1/3 nodes become fire (default: false)
+-- griefing - If true, the explosion will destroy nodes (default: true)
 function mcl_explosions.explode(pos, strength, info, puncher)
+	if info == nil then
+		info = {}
+	end
+
 	-- The maximum blast radius (in the air)
 	local radius = math.ceil(1.3 * strength / (0.3 * 0.75) * 0.3)
 
@@ -389,13 +431,31 @@ function mcl_explosions.explode(pos, strength, info, puncher)
 	end
 	local shape = sphere_shapes[radius]
 
-	local creative_enabled = minetest.is_creative_enabled("")
-	trace_explode(pos, strength, shape, radius, (info and info.drop_chance) or 1 / strength, info.fire == true, puncher, creative_enabled)
+	-- Default values
+	if info.drop_chance == nil then info.drop_chance = 1 / strength end
+	if info.particles == nil then info.particles = true end
+	if info.sound == nil then info.sound = true end
+	if info.fire == nil then info.fire = false end
+	if info.griefing == nil then info.griefing = true end
+	if info.max_blast_resistance == nil then
+		info.max_blast_resistance = INDESTRUCT_BLASTRES
+	end
 
-	if not (info and info.no_particle) then
+	-- For backwards compatibility
+	if info.no_particle then info.particles = false end
+	if info.no_sound then info.sound = false end
+
+	-- Dont do drops in creative mode
+	if minetest.is_creative_enabled("") then
+		info.drop_chance = 0
+	end
+
+	trace_explode(pos, strength, shape, radius, info, puncher)
+
+	if info.particles then
 		add_particles(pos, radius)
 	end
-	if not (info and info.no_sound) then
+	if info.sound then
 		minetest.sound_play("tnt_explode", {
 			pos = pos, gain = 1.0,
 			max_hear_distance = strength * 16

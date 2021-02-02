@@ -141,7 +141,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		return_fields(player,"craft")
 		return_fields(player,"enchanting_lapis")
 		return_fields(player,"enchanting_item")
-		mcl_enchanting.reload_inventory(player)
 		if not minetest.is_creative_enabled(player:get_player_name()) and (formname == "" or formname == "main") then
 			set_inventory(player)
 		end

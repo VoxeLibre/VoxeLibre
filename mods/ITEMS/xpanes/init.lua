@@ -127,7 +127,7 @@ function xpanes.register_pane(name, def)
 		connect_sides = { "left", "right" },
 		_mcl_blast_resistance = def._mcl_blast_resistance,
 		_mcl_hardness = def._mcl_hardness,
-		_mcl_silk_touch_drop = def._mcl_silk_touch_drop,
+		_mcl_silk_touch_drop = def._mcl_silk_touch_drop and {"xpanes:" .. name .. "_flat"},
 	})
 
 	local groups = table.copy(def.groups)
@@ -156,7 +156,7 @@ function xpanes.register_pane(name, def)
 		drop = drop,
 		_mcl_blast_resistance = def._mcl_blast_resistance,
 		_mcl_hardness = def._mcl_hardness,
-		_mcl_silk_touch_drop = def._mcl_silk_touch_drop,
+		_mcl_silk_touch_drop = def._mcl_silk_touch_drop and {"xpanes:" .. name .. "_flat"},
 	})
 
 	minetest.register_craft({

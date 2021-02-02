@@ -49,6 +49,8 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	arrow = "mobs_mc:dragon_fireball",
 	shoot_interval = 0.5,
 	shoot_offset = -1.0,
+	xp_min = 12000,
+	xp_max = 12000,
 	animation = {
 		fly_speed = 8, stand_speed = 8,
 		stand_start = 0,		stand_end = 20,
@@ -65,7 +67,8 @@ mobs:register_mob("mobs_mc:enderdragon", {
 			--end
 		end
 		minetest.add_item(own_pos, mobs_mc.items.dragon_egg)
-	end
+	end,
+	fire_resistant = true,
 })
 
 

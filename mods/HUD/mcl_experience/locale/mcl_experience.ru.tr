@@ -1,3 +1,4 @@
+# textdomain: mcl_experience
 [[<player>] <xp>]=[[<игрок>] <xp>]
 Gives a player some XP=Даёт игроку XP
 Error: Too many parameters!=Ошибка: слишком много параметров!

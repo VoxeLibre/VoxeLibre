@@ -75,16 +75,19 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		bed_pos2 = {x = bed_pos.x - dir.x, y = bed_pos.y, z = bed_pos.z - dir.z}
 		bed_center = {x = bed_pos.x - dir.x/2, y = bed_pos.y + 0.1, z = bed_pos.z - dir.z/2}
 
+		-- save respawn position when entering bed
+		if minetest.get_modpath("mcl_spawn") and mcl_spawn.set_spawn_pos(player, bed_pos, false) then
+			minetest.chat_send_player(name, S("New respawn position set!"))
+		end
+
 		-- No sleeping if too far away
 		if vector.distance(bed_pos, pos) > 2 and vector.distance(bed_pos2, pos) > 2 then
-			minetest.chat_send_player(name, S("You can't sleep, the bed's too far away!"))
-			return false
+			return false, S("You can't sleep, the bed's too far away!")
 		end
 
 		for _, other_pos in pairs(mcl_beds.bed_pos) do
 			if vector.distance(bed_pos, other_pos) < 0.1 then
-				minetest.chat_send_player(name, S("This bed is already occupied!"))
-				return false
+				return false,  S("This bed is already occupied!")
 			end
 		end
 
@@ -92,9 +95,8 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		-- FIXME: Velocity threshold should be 0.01 but Minetest 5.3.0
 		-- sometimes reports incorrect Y speed. A velocity threshold
 		-- of 0.125 still seems good enough.
-		if vector.length(player:get_player_velocity()) > 0.125 then
-			minetest.chat_send_player(name, S("You have to stop moving before going to bed!"))
-			return false
+		if vector.length(player:get_velocity() or player:get_player_velocity()) > 0.125 then
+			return false, S("You have to stop moving before going to bed!")
 		end
 
 		-- No sleeping if monsters nearby.
@@ -109,9 +111,8 @@ local function lay_down(player, pos, bed_pos, state, skip)
 				-- Approximation of monster detection range
 				if def._cmi_is_mob and ((mobname ~= "mobs_mc:pigman" and def.type == "monster" and not monster_exceptions[mobname]) or (mobname == "mobs_mc:pigman" and ent.state == "attack")) then
 					if math.abs(bed_pos.y - obj:get_pos().y) <= 5 then
-						minetest.chat_send_player(name, S("You can't sleep now, monsters are nearby!"))
+						return false, S("You can't sleep now, monsters are nearby!")
 					end
-					return false
 				end
 			end
 		end
@@ -154,32 +155,16 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		local def1 = minetest.registered_nodes[n1.name]
 		local def2 = minetest.registered_nodes[n2.name]
 		if def1.walkable or def2.walkable then
-			minetest.chat_send_player(name, S("You can't sleep, the bed is obstructed!"))
-			return false
+			return false, S("You can't sleep, the bed is obstructed!")
 		elseif (def1.damage_per_second ~= nil and def1.damage_per_second > 0) or (def2.damage_per_second ~= nil and def2.damage_per_second > 0) then
-			minetest.chat_send_player(name, S("It's too dangerous to sleep here!"))
-			return false
-		end
-
-		local spawn_changed = false
-		if minetest.get_modpath("mcl_spawn") then
-			-- save respawn position when entering bed
-			spawn_changed = mcl_spawn.set_spawn_pos(player, bed_pos, false)
+			return false, S("It's too dangerous to sleep here!")
 		end
 
 		-- Check day of time and weather
 		local tod = minetest.get_timeofday() * 24000
 		-- Values taken from Minecraft Wiki with offset of +6000
 		if tod < 18541 and tod > 5458 and (not weather_mod or (mcl_weather.get_weather() ~= "thunder")) then
-			if spawn_changed then
-				minetest.chat_send_player(name, S("New respawn position set! But you can only sleep at night or during a thunderstorm."))
-			else
-				minetest.chat_send_player(name, S("You can only sleep at night or during a thunderstorm."))
-			end
-			return false
-		end
-		if spawn_changed then
-			minetest.chat_send_player(name, S("New respawn position set!"))
+			return false, S("You can only sleep at night or during a thunderstorm.")
 		end
 
 		mcl_beds.player[name] = 1
@@ -329,13 +314,17 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 
 	-- move to bed
 	if not mcl_beds.player[name] then
+		local success, message
 		if is_top then
-			lay_down(player, ppos, pos)
+			success, message = lay_down(player, ppos, pos)
 		else
 			local node = minetest.get_node(pos)
 			local dir = minetest.facedir_to_dir(node.param2)
 			local other = vector.add(pos, dir)
-			lay_down(player, ppos, other)
+			success, message = lay_down(player, ppos, other)
+		end
+		if message then
+			mcl_tmp_message.message(player, message)
 		end
 	else
 		lay_down(player, nil, nil, false)
@@ -362,15 +351,15 @@ minetest.register_on_joinplayer(function(player)
 		-- Make player awake on joining server
 		meta:set_string("mcl_beds:sleeping", "false")
 	end
+
 	playerphysics.remove_physics_factor(player, "speed", "mcl_beds:sleeping")
 	playerphysics.remove_physics_factor(player, "jump", "mcl_beds:sleeping")
 	update_formspecs(false)
 end)
 
 minetest.register_on_leaveplayer(function(player)
-	local name = player:get_player_name()
-	lay_down(player, nil, nil, false, true)
 	local players = minetest.get_connected_players()
+	local name = player:get_player_name()
 	for n, player in ipairs(players) do
 		if player:get_player_name() == name then
 			players[n] = nil

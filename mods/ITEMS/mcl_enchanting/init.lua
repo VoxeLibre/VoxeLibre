@@ -5,10 +5,13 @@ mcl_enchanting = {
 	book_offset = vector.new(0, 0.75, 0),
 	book_animations = {["close"] = 1, ["opening"] = 2, ["open"] = 3, ["closing"] = 4},
 	book_animation_steps = {0, 640, 680, 700, 740},
+	book_animation_loop = {["open"] = true, ["close"] = true},
 	book_animation_speed = 40,
 	roman_numerals = dofile(modpath .. "/roman_numerals.lua"), 			-- https://exercism.io/tracks/lua/exercises/roman-numerals/solutions/73c2fb7521e347209312d115f872fa49
 	enchantments = {},
-	overlay = "^[colorize:white:50^[colorize:purple:50",
+	overlay = "^[colorize:purple:50",
+	--overlay = "^[invert:rgb^[multiply:#4df44d:50^[invert:rgb",
+	enchanting_lists = {"enchanting", "enchanting_item", "enchanting_lapis"},
 	bookshelf_positions = {
 		{x = -2, y = 0, z = -2}, {x = -2, y = 1, z = -2},
 		{x = -1, y = 0, z = -2}, {x = -1, y = 1, z = -2},
@@ -24,8 +27,8 @@ mcl_enchanting = {
 		{x = -2, y = 0, z = -1}, {x = -2, y = 1, z = -1},
 		{x = -2, y = 0, z =  0}, {x = -2, y = 1, z =  0},
 		{x = -2, y = 0, z =  1}, {x = -2, y = 1, z =  1},
-		{x = -2, y = 0, z =  2}, {x = -2, y = 1, z =  2},
-		{x =  2, y = 0, z = -2}, {x =  2, y = 1, z = -2},
+		-- {x = -2, y = 0, z =  2}, {x = -2, y = 1, z =  2},
+		-- {x =  2, y = 0, z = -2}, {x =  2, y = 1, z = -2},
 		{x =  2, y = 0, z = -1}, {x =  2, y = 1, z = -1},
 		{x =  2, y = 0, z =  0}, {x =  2, y = 1, z =  0},
 		{x =  2, y = 0, z =  1}, {x =  2, y = 1, z =  1},
@@ -46,8 +49,8 @@ mcl_enchanting = {
 		{x = -1, y = 0, z = -1}, {x = -1, y = 1, z = -1},
 		{x = -1, y = 0, z =  0}, {x = -1, y = 1, z =  0},
 		{x = -1, y = 0, z =  1}, {x = -1, y = 1, z =  1},
-		{x = -1, y = 0, z =  1}, {x = -1, y = 1, z =  1},
-		{x =  1, y = 0, z = -1}, {x =  1, y = 1, z = -1},
+		-- {x = -1, y = 0, z =  1}, {x = -1, y = 1, z =  1},
+		-- {x =  1, y = 0, z = -1}, {x =  1, y = 1, z = -1},
 		{x =  1, y = 0, z = -1}, {x =  1, y = 1, z = -1},
 		{x =  1, y = 0, z =  0}, {x =  1, y = 1, z =  0},
 		{x =  1, y = 0, z =  1}, {x =  1, y = 1, z =  1},
@@ -142,6 +145,8 @@ minetest.register_craftitem("mcl_enchanting:book_enchanted", {
 	stack_max = 1,
 })
 
+minetest.register_alias("mcl_books:book_enchanted", "mcl_enchanting:book_enchanted")
+
 local spawn_book_entity = function(pos, respawn)
 	if respawn then
 		-- Check if we already have a book
@@ -214,6 +219,16 @@ end
 
 minetest.register_node("mcl_enchanting:table", {
 	description = S("Enchanting Table"),
+	_tt_help = S("Spend experience, and lapis to enchant various items."),
+	_doc_items_longdesc = S("Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli."),
+	_doc_items_usagehelp =
+			S("Rightclick the Enchanting Table to open the enchanting menu.").."\n"..
+			S("Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.").."\n".."\n"..
+			S("After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.").."\n"..
+			S("These options are randomized, and dependent on experience level; but the enchantment strength can be increased.").."\n".."\n"..
+			S("To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.").."\n".."\n"..
+			S("After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place."),
+	_doc_items_hidden = false,
 	drawtype = "nodebox",
 	tiles = {"mcl_enchanting_table_top.png",  "mcl_enchanting_table_bottom.png", "mcl_enchanting_table_side.png", "mcl_enchanting_table_side.png", "mcl_enchanting_table_side.png", "mcl_enchanting_table_side.png"},
 	node_box = {
@@ -231,7 +246,8 @@ minetest.register_node("mcl_enchanting:table", {
 		if table_name == "" then
 			table_name = S("Enchant")
 		end
-		player_meta:set_int("mcl_enchanting:num_bookshelves", num_bookshelves)
+		local bookshelves = mcl_enchanting.get_bookshelves(pos)
+		player_meta:set_int("mcl_enchanting:num_bookshelves", math.min(15, #bookshelves))
 		player_meta:set_string("mcl_enchanting:table_name", table_name)
 		mcl_enchanting.show_enchanting_formspec(clicker)
 		-- Respawn book entity just in case it got lost
@@ -273,7 +289,7 @@ minetest.register_node("mcl_enchanting:table", {
 	drop = "",
 	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 5,
-}) 
+})
 
 minetest.register_craft({
 	output = "mcl_enchanting:table",
@@ -290,23 +306,42 @@ minetest.register_abm({
 	chance = 1,
 	nodenames = "mcl_enchanting:table",
 	action = function(pos)
-		local absolute, relative = mcl_enchanting.get_bookshelves(pos)
-		for i, ap in ipairs(absolute) do
-			if math.random(10) == 1 then
-				local rp = relative[i]
-				minetest.add_particle({
-					pos = ap,
-					velocity = vector.subtract(vector.new(0, 5, 0), rp),
-					acceleration = {x = 0, y = -9.81, z = 0},
-					expirationtime = 2,
-					size = 2,
-					texture = "mcl_enchanting_glyph_" .. math.random(18) .. ".png"
-				})
+		local playernames = {}
+		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 15)) do
+			if obj:is_player() then
+				table.insert(playernames, obj:get_player_name())
 			end
 		end
-		minetest.get_meta(pos):set_int("mcl_enchanting:num_bookshelves", math.min(15, #absolute))
+		if #playernames < 1 then
+			return
+		end
+		local absolute, relative = mcl_enchanting.get_bookshelves(pos)
+		for i, ap in ipairs(absolute) do
+			if math.random(5) == 1 then
+				local rp = relative[i]
+				local t = math.random()+1 --time
+				local d = {x = rp.x, y=rp.y-0.7, z=rp.z} --distance
+				local v = {x = -math.random()*d.x, y = math.random(), z = -math.random()*d.z} --velocity
+				local a = {x = 2*(-v.x*t - d.x)/t/t, y = 2*(-v.y*t - d.y)/t/t, z = 2*(-v.z*t - d.z)/t/t} --acceleration
+				local s = math.random()+0.9 --size
+				t = t - 0.1 --slightly decrease time to avoid texture overlappings
+				local tx = "mcl_enchanting_glyph_" .. math.random(18) .. ".png"
+				for _, name in pairs(playernames) do
+					minetest.add_particle({
+						pos = ap,
+						velocity = v,
+						acceleration = a,
+						expirationtime = t,
+						size = s,
+						texture = tx,
+						collisiondetection = false,
+						playername = name
+					})
+				end
+			end
+		end
 	end
-}) 
+})
 
 minetest.register_lbm({
 	label = "(Re-)spawn book entity above enchanting table",
@@ -322,4 +357,6 @@ minetest.register_lbm({
 minetest.register_on_mods_loaded(mcl_enchanting.initialize)
 minetest.register_on_joinplayer(mcl_enchanting.initialize_player)
 minetest.register_on_player_receive_fields(mcl_enchanting.handle_formspec_fields)
-table.insert(tt.registered_snippets, 1, mcl_enchanting.enchantments_snippet) 
+minetest.register_allow_player_inventory_action(mcl_enchanting.allow_inventory_action)
+minetest.register_on_player_inventory_action(mcl_enchanting.on_inventory_action)
+table.insert(tt.registered_snippets, 1, mcl_enchanting.enchantments_snippet)

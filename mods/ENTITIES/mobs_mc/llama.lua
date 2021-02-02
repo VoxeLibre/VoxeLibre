@@ -54,7 +54,8 @@ mobs:register_mob("mobs_mc:llama", {
 		{name = mobs_mc.items.leather,
 		chance = 1,
 		min = 0,
-		max = 2,},
+		max = 2,
+		looting = "common",},
 	},
 	fear_height = 4,
 	sounds = {

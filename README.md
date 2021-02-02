@@ -1,8 +1,8 @@
 # MineClone 2
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by davedevils.
-Developed by Wuzzy and contributors. Not developed or endorsed by Mojang AB.
+Developed by many people. Not developed or endorsed by Mojang AB.
 
-Version: 0.68.0
+Version: 0.70.0
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -14,9 +14,10 @@ Or you can play in “creative mode” in which you can build almost anything in
 
 #### Gameplay summary
 
-* Sandbox-style gameplay, no goals (for now)
+* Sandbox-style gameplay, no goals
 * Survive: Fight against hostile monsters and hunger
 * Mine for ores and other treasures
+* Magic: Gain experience and enchant your tools
 * Use the collected blocks to create great buildings, your imagination is the limit
 * Collect flowers (and other dye sources) and colorize your world
 * Find some seeds and start farming
@@ -102,7 +103,7 @@ big bugs (such as “missing node” errors or even crashes).
 The following main features are available:
 
 * Tools, weapons
-* Armor (unbalanced)
+* Armor
 * Crafting system: 2×2 grid, crafting table (3×3 grid), furnace, including a crafting guide
 * Chests, large chests, ender chests, shulker boxes
 * Furnaces, hoppers
@@ -117,6 +118,8 @@ The following main features are available:
 * Redstone circuits (partially)
 * Minecarts (partial)
 * Status effects (partial)
+* Experience
+* Enchanting
 * Brewing, potions, tipped arrow (partial)
 * Boats
 * Fire
@@ -142,12 +145,9 @@ The following main features are available:
 The following features are incomplete:
 
 * Generated structures (especially villages)
-* NPCs
 * Some monsters and animals
 * Redstone-related things
 * The End
-* Enchanting
-* Experience
 * Special minecarts
 * A couple of non-trivial blocks and items
 
@@ -182,7 +182,7 @@ Technical differences from Minecraft:
 ## Reporting bugs
 Please report all bugs and missing Minecraft features here:
 
-<https://git.minetest.land/Wuzzy/MineClone2/issues>
+<https://git.minetest.land/MineClone2/MineClone2/issues>
 
 ## Other readme files
 
@@ -195,7 +195,7 @@ Please report all bugs and missing Minecraft features here:
 There are so many people to list (sorry). Check out the respective mod directories for details. This section is only a rough overview of the core authors of this game.
 
 ### Coding
-* [Wuzzy](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3082): Main programmer of most mods
+* [Wuzzy](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3082): Main programmer of most mods (retired)
 * davedevils: Creator of MineClone on which MineClone 2 is based on
 * [ex-bart](https://github.com/ex-bart): Redstone comparators
 * [Rootyjr](https://github.com/Rootyjr): Fishing rod and bugfixes
@@ -203,7 +203,8 @@ There are so many people to list (sorry). Check out the respective mod directori
 * [ryvnf](https://github.com/ryvnf): Explosion mechanics
 * MysticTempest: Bugfixes
 * [bzoss](https://github.com/bzoss): Status effects, potions, brewing stand
-* kay27 <kay27@bk.ru>: Experience system, bugfixes, optimizations
+* kay27 <kay27@bk.ru>: Experience system, bugfixes, optimizations (Current maintainer)
+* [EliasFleckenstein03](https://github.com/EliasFleckenstein03): End crystals, enchanting, burning mobs / players, animated chests, bugfixes (Current maintainer)
 * 2mac: Fix bug with powered rail
 * Lots of other people: TO BE WRITTEN (see mod directories for details)
 
@@ -250,6 +251,7 @@ Various sources. See the respective mod directories for details.
 ### Special thanks
 
 * davedevils for starting MineClone, the original version of this game
+* Wuzzy for starting and maintaining MineClone2 for several years
 * celeron55 for creating Minetest
 * Minetest's modding community for providing a huge selection of mods, some of which ended up in MineClone 2
 * Jordach for the jukebox music compilation from Big Freaking Dig
@@ -261,7 +263,6 @@ Various sources. See the respective mod directories for details.
 
 ## Info for programmers
 You find interesting and useful infos in `API.md`.
-This project is currently mostly a one-person project.
 
 ## Legal information
 This is a fan game, not developed or endorsed by Mojang AB.
@@ -270,7 +271,7 @@ Copying is an act of love. Please copy and share! <3
 Here's the detailed legalese for those who need it:
 
 ### License of source code
-MineClone 2 (by Wuzzy, davedevils and countless others)
+MineClone 2 (by kay27, EliasFleckenstein, Wuzzy, davedevils and countless others)
 is an imitation of Minecraft.
 
 MineClone 2 is free software: you can redistribute it and/or modify

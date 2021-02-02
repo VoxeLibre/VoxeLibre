@@ -25,6 +25,7 @@ mcl_vars.inventory_header = ""
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local minecraft_height_limit = 256
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
+local singlenode = mg_name == "singlenode"
 
 -- Calculate mapgen_edge_min/mapgen_edge_max
 mcl_vars.chunksize = math.max(1, tonumber(minetest.get_mapgen_setting("chunksize")) or 5)
@@ -45,7 +46,7 @@ local numcmax = math.max(math.floor((mapgen_limit_max - ccfmax) / chunk_size_in_
 mcl_vars.mapgen_edge_min = central_chunk_min_pos - numcmin * chunk_size_in_nodes
 mcl_vars.mapgen_edge_max = central_chunk_max_pos + numcmax * chunk_size_in_nodes
 
-if not superflat then
+if not superflat and not singlenode then
 	-- Normal mode
 	--[[ Realm stacking (h is for height)
 	- Overworld (h>=256)
@@ -66,6 +67,14 @@ if not superflat then
 	mcl_vars.mg_lava = true
 	mcl_vars.mg_bedrock_is_rough = true
 
+elseif singlenode then
+	mcl_vars.mg_overworld_min = -66
+	mcl_vars.mg_overworld_max_official = mcl_vars.mg_overworld_min + minecraft_height_limit
+	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
+	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min
+	mcl_vars.mg_lava = false
+	mcl_vars.mg_lava_overworld_max = mcl_vars.mg_overworld_min
+	mcl_vars.mg_bedrock_is_rough = false
 else
 	-- Classic superflat
 	local ground = minetest.get_mapgen_setting("mgflat_ground_level")
@@ -128,3 +137,4 @@ minetest.craftitemdef_default.stack_max = 64
 
 -- Set random seed for all other mods (Remember to make sure no other mod calls this function)
 math.randomseed(os.time())
+

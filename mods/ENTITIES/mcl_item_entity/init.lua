@@ -2,6 +2,7 @@
 local item_drop_settings                 = {} --settings table
 item_drop_settings.age                   = 1.0 --how old a dropped item (_insta_collect==false) has to be before collecting
 item_drop_settings.radius_magnet         = 2.0 --radius of item magnet. MUST BE LARGER THAN radius_collect!
+item_drop_settings.xp_radius_magnet      = 7.25 --radius of xp magnet. MUST BE LARGER THAN radius_collect!
 item_drop_settings.radius_collect        = 0.2 --radius of collection
 item_drop_settings.player_collect_height = 1.0 --added to their pos y value
 item_drop_settings.collection_safety     = false --do this to prevent items from flying away on laggy servers
@@ -60,8 +61,8 @@ minetest.register_globalstep(function(dtime)
 			local checkpos = {x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}
 
 			--magnet and collection
-			for _,object in ipairs(minetest.get_objects_inside_radius(checkpos, item_drop_settings.radius_magnet)) do
-				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and object:get_luaentity()._magnet_timer and (object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
+			for _,object in ipairs(minetest.get_objects_inside_radius(checkpos, item_drop_settings.xp_radius_magnet)) do
+				if not object:is_player() and vector.distance(checkpos, object:get_pos()) < item_drop_settings.radius_magnet and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and object:get_luaentity()._magnet_timer and (object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
 					object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
 					local collected = false
 					if object:get_luaentity()._magnet_timer >= 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time and inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
@@ -193,6 +194,12 @@ local check_can_drop = function(node_name, tool_capabilities)
 				if toolgroupcaps[plus] then
 					return true
 				end
+				for e=1,5 do
+					local effplus = plus .. "_efficiency_" .. e
+					if toolgroupcaps[effplus] then
+						return true
+					end
+				end
 			end
 		end
 		for b=1, #basegroups do
@@ -203,6 +210,12 @@ local check_can_drop = function(node_name, tool_capabilities)
 					local plus = basegroup .. "_dig_"..materials[m]
 					if toolgroupcaps[plus] then
 						return true
+					end
+					for e=1,5 do
+						local effplus = plus .. "_efficiency_" .. e
+						if toolgroupcaps[effplus] then
+							return true
+						end
 					end
 				end
 			end
@@ -262,7 +275,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 	-- by hand. Creative Mode is intentionally ignored in this case.
 
 	local doTileDrops = minetest.settings:get_bool("mcl_doTileDrops", true)
-	if (digger ~= nil and minetest.is_creative_enabled(digger:get_player_name())) or doTileDrops == false then
+	if (digger and digger:is_player() and minetest.is_creative_enabled(digger:get_player_name())) or doTileDrops == false then
 		return
 	end
 
@@ -285,9 +298,9 @@ function minetest.handle_node_drops(pos, drops, digger)
 	* true: Drop itself when dug by shears / silk touch tool
 	* table: Drop every itemstring in this table when dug by shears _mcl_silk_touch_drop
 	]]
-	
+
 	local enchantments = tool and mcl_enchanting.get_enchantments(tool, "silk_touch")
-	
+
 	local silk_touch_drop = false
 	local nodedef = minetest.registered_nodes[dug_node.name]
 	if toolcaps ~= nil and toolcaps.groupcaps and toolcaps.groupcaps.shearsy_dig and nodedef._mcl_shears_drop then
@@ -304,7 +317,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 			drops = nodedef._mcl_silk_touch_drop
 		end
 	end
-	
+
 	if tool and nodedef._mcl_fortune_drop and enchantments.fortune then
 		local fortune_level = enchantments.fortune
 		local fortune_drop = nodedef._mcl_fortune_drop
@@ -319,7 +332,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 			end
 		else
 			-- Fixed Behavior
-			local drop = get_fortune_drops(fortune_drops, fortune_level)
+			local drop = get_fortune_drops(fortune_drop, fortune_level)
 			drops = get_drops(drop, tool:get_name(), dug_node.param2, nodedef.paramtype2)
 		end
 	end
@@ -330,7 +343,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 			mcl_experience.throw_experience(pos, experience_amount)
 		end
 	end
-	
+
 	for _,item in ipairs(drops) do
 		local count
 		if type(item) == "string" then
@@ -632,12 +645,15 @@ minetest.register_entity(":__builtin:item", {
 		local fg = minetest.get_item_group(nn, "fire")
 		local dg = minetest.get_item_group(nn, "destroys_items")
 		if (def and (lg ~= 0 or fg ~= 0 or dg == 1)) then
-			if dg ~= 2 then
-				minetest.sound_play("builtin_item_lava", {pos = self.object:get_pos(), gain = 0.5}, true)
+			--Wait 2 seconds to allow mob drops to be cooked, & picked up instead of instantly destroyed.
+			if self.age > 2 then
+				if dg ~= 2 then
+					minetest.sound_play("builtin_item_lava", {pos = self.object:get_pos(), gain = 0.5})
+				end
+				self._removed = true
+				self.object:remove()
+				return
 			end
-			self._removed = true
-			self.object:remove()
-			return
 		end
 
 		-- Push item out when stuck inside solid opaque node

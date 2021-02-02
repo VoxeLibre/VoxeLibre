@@ -25,21 +25,31 @@ local bobber_ENTITY={
 	objtype="fishing",
 }
 
-local fish = function(itemstack, player)
+local fish = function(itemstack, player, pointed_thing)
+	if pointed_thing and pointed_thing.type == "node" then
+		-- Call on_rightclick if the pointed node defines it
+		local node = minetest.get_node(pointed_thing.under)
+		if player and not player:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, player, itemstack) or itemstack
+			end
+		end
+	end
+
 		local pos = player:get_pos()
 
 		local objs = minetest.get_objects_inside_radius(pos, 125)
 		local num = 0
 		local ent = nil
 		local noent = true
-	
-	
+
+
 		local durability = 65
 		local unbreaking = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
 		if unbreaking > 0 then
 			durability = durability * (unbreaking + 1)
 		end
-		
+
 		--Check for bobber if so handle.
 		for n = 1, #objs do
 			ent = objs[n]:get_luaentity()
@@ -52,10 +62,15 @@ local fish = function(itemstack, player)
 							local items
 							local itemcount = 1
 							local itemwear = 0
-							-- FIXME: Maybe use a better seeding
 							local pr = PseudoRandom(os.time() * math.random(1, 100))
 							local r = pr:next(1, 100)
-							if r <= 85 then
+							local fish_values = {85, 84.8, 84.7, 84.5}
+							local junk_values = {10, 8.1, 6.1, 4.2}
+							local luck_of_the_sea = math.min(mcl_enchanting.get_enchantment(itemstack, "luck_of_the_sea"), 3)
+							local index = luck_of_the_sea + 1
+							local fish_value = fish_values[index]
+							local junk_value = junk_values[index] + fish_value
+							if r <= fish_value then
 								-- Fish
 								items = mcl_loot.get_loot({
 									items = {
@@ -65,7 +80,7 @@ local fish = function(itemstack, player)
 										{ itemstring = "mcl_fishing:pufferfish_raw", weight = 13 },
 									}
 								}, pr)
-							elseif r <= 95 then
+							elseif r <= junk_value then
 								-- Junk
 								items = mcl_loot.get_loot({
 									items = {
@@ -88,8 +103,7 @@ local fish = function(itemstack, player)
 									items = {
 										-- TODO: Enchanted Bow
 										{ itemstring = "mcl_bows:bow", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
-										-- TODO: Enchanted Book
-										{ itemstring = "mcl_books:book" },
+										{ itemstack = mcl_enchanting.get_randomly_enchanted_book(30, true, true)},
 										-- TODO: Enchanted Fishing Rod
 										{ itemstring = "mcl_fishing:fishing_rod", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
 										{ itemstring = "mcl_mobs:nametag", },
@@ -107,6 +121,8 @@ local fish = function(itemstack, player)
 							local inv = player:get_inventory()
 							if inv:room_for_item("main", item) then
 								inv:add_item("main", item)
+							else
+								minetest.add_item(pos, item)
 							end
 							if mcl_experience.throw_experience then
 								mcl_experience.throw_experience(pos, math.random(1,6))
@@ -248,7 +264,8 @@ local bobber_on_step = function(self, dtime)
 		else if not self._waittime or self._waittime <= 0 then
 			-- wait for random number of ticks.
 			local lure_enchantment = wield and mcl_enchanting.get_enchantment(wield, "lure") or 0
-			self._waittime = math.random(5, 30) - lure_enchantment * 5
+			local reduced = lure_enchantment * 5
+			self._waittime = math.random(math.max(0, 5 - reduced), 30 - reduced)
 		else
 			if self._time < self._waittime then
 				self._time = self._time + dtime
@@ -330,6 +347,7 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 	on_place = fish,
 	on_secondary_use = fish,
 	sound = { breaks = "default_tool_breaks" },
+	_mcl_uses = 65,
 })
 
 minetest.register_craft({

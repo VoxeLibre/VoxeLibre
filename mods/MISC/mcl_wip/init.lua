@@ -53,7 +53,7 @@ for i=1,#wip_items do
 		new_description = wip_items[i]
 	end
 	new_description = new_description .. "\n"..core.colorize("#FF0000", S("(WIP)"))
-	new_groups.not_in_craft_guide = 1
+	--new_groups.not_in_craft_guide = 1
 	minetest.override_item(wip_items[i], { description = new_description, groups = new_groups })
 end
 

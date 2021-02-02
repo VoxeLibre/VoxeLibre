@@ -77,6 +77,8 @@ hud_manager.add_hud = function(player,hud_name,def)
 		size          = def.size,
 		offset        = def.offset,
 		z_index	      = def.z_index,
+		alignment 	  = def.alignment,
+		scale		  = def.scale,
     })
     -- create new 3d array here
     -- depends.txt is not needed
@@ -148,7 +150,7 @@ function mcl_experience.set_player_xp_level(player,level)
 		return
 	end
 	pool[name].level = level
-	pool[name].xp, pool[name].bar_step, pool[name].next_level = mcl_experience.bar_to_xp(pool[name].bar, level)
+	pool[name].xp, pool[name].bar_step, pool[name].xp_next_level = mcl_experience.bar_to_xp(pool[name].bar, level)
 	hud_manager.change_hud({player = player, hud_name = "xp_level", element = "text", data = tostring(level)})
 	-- we may don't update the bar
 end
@@ -161,27 +163,27 @@ minetest.register_on_joinplayer(function(player)
 
 	name = player:get_player_name()
 	temp_pool = pool[name]
-		
+
 	hud_manager.add_hud(player,"experience_bar",
 	{
-	        hud_elem_type = "statbar", position = {x=0.5, y=1},
-	        name = "experience bar",
-		text = "experience_bar.png",
-		text2 = "experience_bar_background.png",
-	        number = temp_pool.bar, item = 36,
-		direction = 0,
-	        offset = {x = (-8 * 28) - 29, y = -(48 + 24 + 16)},
-	        size = { x=28, y=28 }, z_index = 11,
+			hud_elem_type = "image",
+			name = "experience bar",
+			text = "experience_bar_background.png^[lowpart:" .. math.floor(temp_pool.bar / 36 * 100) .. ":experience_bar.png^[transformR270",
+			position = {x=0.5, y=1},
+			offset = {x = (-9 * 28) - 3, y = -(48 + 24 + 16 - 5)},
+			scale = {x = 2.8, y = 3.0},
+			alignment = { x = 1, y = 1 },
+			z_index = 11,
 	})
-	
+
 	hud_manager.add_hud(player,"xp_level",
 	{
 	        hud_elem_type = "text", position = {x=0.5, y=1},
 	        name = "xp_level", text = tostring(temp_pool.level),
-	        number = 0xFFFFFF,
+	        number = 0x80FF20,
 		offset = {x = 0, y = -(48 + 24 + 24)},
 	        z_index = 12,
-	})                            
+	})
 end)
 
 function mcl_experience.xp_to_level(xp)
@@ -247,7 +249,7 @@ function mcl_experience.add_experience(player, experience)
 	end
 
 	if old_bar ~= temp_pool.bar then
-		hud_manager.change_hud({player = player, hud_name = "experience_bar", element = "number", data = math.floor(temp_pool.bar)})
+		hud_manager.change_hud({player = player, hud_name = "experience_bar", element = "text", data = "experience_bar_background.png^[lowpart:" .. math.floor(temp_pool.bar / 36 * 100) .. ":experience_bar.png^[transformR270",})
 	end
 
 	if experience > 0 and minetest.get_us_time()/1000000 - temp_pool.last_time > 0.01 then
@@ -277,13 +279,13 @@ minetest.register_on_dieplayer(function(player)
 	name = player:get_player_name()
 	temp_pool = pool[name]
 	xp_amount = temp_pool.xp
-	
+
 	temp_pool.xp = 0
 	temp_pool.level = 0
 	temp_pool.bar, temp_pool.bar_step, temp_pool.xp_next_level = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)
 
 	hud_manager.change_hud({player = player, hud_name = "xp_level", element = "text", data = tostring(temp_pool.level)})
-	hud_manager.change_hud({player = player, hud_name = "experience_bar", element = "number", data = math.floor(temp_pool.bar)})
+	hud_manager.change_hud({player = player, hud_name = "experience_bar", element = "text", data = "experience_bar_background.png^[lowpart:" .. math.floor(temp_pool.bar / 36 * 100) .. ":experience_bar.png^[transformR270",})
 
 	mcl_experience.throw_experience(player:get_pos(), xp_amount)
 end)
@@ -304,17 +306,17 @@ local function xp_step(self, dtime)
 			return
 		end
 		collector = minetest.get_player_by_name(self.collector)
-		if collector and collector:get_hp() > 0 and vector.distance(self.object:get_pos(),collector:get_pos()) < 5 then
+		if collector and collector:get_hp() > 0 and vector.distance(self.object:get_pos(),collector:get_pos()) < 7.25 then
 			self.object:set_acceleration(vector.new(0,0,0))
 			self.disable_physics(self)
 			--get the variables
 			pos = self.object:get_pos()
 			pos2 = collector:get_pos()
-			
-			player_velocity = collector:get_player_velocity()
-										
+
+			player_velocity = collector:get_velocity() or collector:get_player_velocity()
+
 			pos2.y = pos2.y + 0.8
-							
+
 			direction = vector.direction(pos,pos2)
 			distance = vector.distance(pos2,pos)
 			multiplier = distance
@@ -330,8 +332,79 @@ local function xp_step(self, dtime)
 				goal = velocity
 				acceleration = vector.new(goal.x-currentvel.x,goal.y-currentvel.y,goal.z-currentvel.z)
 				self.object:add_velocity(vector.add(acceleration,player_velocity))
-			elseif distance < 0.4 then
-				mcl_experience.add_experience(collector, self._xp)
+			elseif distance < 0.8 then
+				local xp = self._xp
+				local inv = collector:get_inventory()
+				local candidates = {
+					{list = "main", index = collector:get_wield_index()},
+					{list = "armor", index = 2},
+					{list = "armor", index = 3},
+					{list = "armor", index = 4},
+					{list = "armor", index = 5},
+				}
+				local final_candidates = {}
+				for _, can in ipairs(candidates) do
+					local stack = inv:get_stack(can.list, can.index)
+					local wear = stack:get_wear()
+					if mcl_enchanting.has_enchantment(stack, "mending") and wear > 0 then
+						can.stack = stack
+						can.wear = wear
+						table.insert(final_candidates, can)
+					end
+				end
+				if #final_candidates > 0 then
+					local can = final_candidates[math.random(#final_candidates)]
+					local stack, list, index, wear = can.stack, can.list, can.index, can.wear
+					local unbreaking_level = mcl_enchanting.get_enchantment(stack, "unbreaking")
+					local uses
+					local armor_uses = minetest.get_item_group(stack:get_name(), "mcl_armor_uses")
+					if armor_uses > 0 then
+						uses = armor_uses
+						if unbreaking_level > 0 then
+							uses = uses / (0.6 + 0.4 / (unbreaking_level + 1))
+						end
+					else
+						local def = stack:get_definition()
+						if def then
+							local fixed_uses = def._mcl_uses
+							if fixed_uses then
+								uses = fixed_uses
+								if unbreaking_level > 0 then
+									uses = uses * (unbreaking_level + 1)
+								end
+							end
+						end
+						if not uses then
+							local toolcaps = stack:get_tool_capabilities()
+							local groupcaps = toolcaps.groupcaps
+							for _, v in pairs(groupcaps) do
+								uses = v.uses
+								break
+							end
+						end
+					end
+					uses = uses or 0
+					local multiplier = 2 * 65535 / uses
+					local repair = xp * multiplier
+					local new_wear = wear - repair
+					if new_wear < 0 then
+						xp = math.floor(-new_wear / multiplier + 0.5)
+						new_wear = 0
+					else
+						xp = 0
+					end
+					stack:set_wear(math.floor(new_wear))
+					inv:set_stack(list, index, stack)
+					if can.list == "armor" then
+						local armor_inv = minetest.get_inventory({type = "detached", name = collector:get_player_name() .. "_armor"})
+						armor_inv:set_stack(list, index, stack)
+					end
+				end
+				if xp > 0 then
+					mcl_experience.add_experience(collector, xp)
+				else
+					minetest.sound_play("experience",{gain=0.1,to_player = name,pitch=math.random(75,99)/100})
+				end
 				self.object:remove()
 			end
 			return
@@ -341,7 +414,7 @@ local function xp_step(self, dtime)
 		end
 	end
 
-					
+
 	self.age = self.age + dtime
 	if self.age > max_orb_age then
 		self.object:remove()
@@ -526,11 +599,55 @@ function mcl_experience.throw_experience(pos, amount)
 			return false
 		end
 		obj:set_velocity({
-			x=math.random(-2,2)*math.random(), 
-			y=math.random(2,5), 
+			x=math.random(-2,2)*math.random(),
+			y=math.random(2,5),
 			z=math.random(-2,2)*math.random()
 		})
 		i = i + xp
 		j = j + 1
 	end
 end
+
+minetest.register_entity("mcl_experience:bottle",{
+	textures = {"mcl_experience_bottle.png"},
+	hp_max = 1,
+	visual_size = {x = 0.35, y = 0.35},
+	collisionbox = {-0.1, -0.1, -0.1, 0.1, 0.1, 0.1},
+	pointable = false,
+	on_step = function(self, dtime)
+		local pos = self.object:get_pos()
+		local node = minetest.get_node(pos)
+		local n = node.name
+		if n ~= "air" and n ~= "mcl_portals:portal" and n ~= "mcl_portals:portal_end" and minetest.get_node_group(n, "liquid") == 0 then
+			minetest.sound_play("mcl_potions_breaking_glass", {pos = pos, max_hear_distance = 16, gain = 1})
+			mcl_experience.throw_experience(pos, math.random(3, 11))
+			self.object:remove()
+		end
+	end,
+})
+
+local function throw_xp_bottle(pos, dir, velocity)
+	minetest.sound_play("mcl_throwing_throw", {pos = pos, gain = 0.4, max_hear_distance = 16}, true)
+	local obj = minetest.add_entity(pos, "mcl_experience:bottle")
+	obj:set_velocity(vector.multiply(dir, velocity))
+	local acceleration = vector.multiply(dir, -3)
+	acceleration.y = -9.81
+	obj:set_acceleration(acceleration)
+end
+
+minetest.register_craftitem("mcl_experience:bottle", {
+	description = "Bottle o' Enchanting",
+	inventory_image = "mcl_experience_bottle.png",
+	wield_image = "mcl_experience_bottle.png",
+	stack_max = 64,
+	on_use = function(itemstack, placer, pointed_thing)
+		throw_xp_bottle(vector.add(placer:get_pos(), vector.new(0, 1.5, 0)), placer:get_look_dir(), 10)
+		if not minetest.is_creative_enabled(placer:get_player_name()) then
+			itemstack:take_item()
+		end
+		return itemstack
+	end,
+	_on_dispense = function(_, pos, _, _, dir)
+		throw_xp_bottle(vector.add(pos, vector.multiply(dir, 0.51)), dir, 10)
+	end
+})

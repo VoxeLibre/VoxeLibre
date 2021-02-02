@@ -36,12 +36,14 @@ mobs:register_mob("mobs_mc:polar_bear", {
 		{name = mobs_mc.items.fish_raw,
 		chance = 2,
 		min = 0,
-		max = 2,},		
+		max = 2,
+		looting = "common",},		
 		-- 1/4 to drop raw salmon
 		{name = mobs_mc.items.salmon_raw,
 		chance = 4,
 		min = 0,
-		max = 2,},
+		max = 2,
+		looting = "common",},
 
 	},
 	floats = 1,

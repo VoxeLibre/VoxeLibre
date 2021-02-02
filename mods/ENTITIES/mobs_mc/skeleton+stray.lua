@@ -46,15 +46,18 @@ local skeleton = {
 		{name = mobs_mc.items.arrow,
 		chance = 1,
 		min = 0,
-		max = 2,},
+		max = 2,
+		looting = "common",},
 		{name = mobs_mc.items.bow,
-		chance = 11,
+		chance = 100 / 8.5,
 		min = 1,
-		max = 1,},
+		max = 1,
+		looting = "rare",},
 		{name = mobs_mc.items.bone,
 		chance = 1,
 		min = 0,
-		max = 2,},
+		max = 2,
+		looting = "common",},
 
 		-- Head
 		-- TODO: Only drop if killed by charged creeper
@@ -78,7 +81,7 @@ local skeleton = {
 		die_speed = 15,
 		die_loop = false,
 	},
-	sunlight_damage = 1,
+	ignited_by_sunlight = true,
 	view_range = 16,
 	fear_height = 4,
 	attack_type = "dogshoot",
@@ -116,12 +119,21 @@ stray.textures = {
 -- TODO: different sound (w/ echo)
 -- TODO: stray's arrow inflicts slowness status
 table.insert(stray.drops, {
-	-- Chance to drop additional arrow.
-	-- TODO: Should be tipped arrow of slowness
-	name = mobs_mc.items.arrow,
+	name = "mcl_potions:slowness_arrow",
 	chance = 2,
 	min = 1,
 	max = 1,
+	looting = "rare",
+	looting_chance_function = function(lvl)
+		local chance = 0.5
+		for i = 1, lvl do
+			if chance > 1 then
+				return 1
+			end
+			chance = chance + (1 - chance) / 2
+		end
+		return chance
+	end,
 })
 
 mobs:register_mob("mobs_mc:stray", stray)

@@ -145,8 +145,24 @@ minetest.register_node("mcl_itemframes:item_frame",{
 	paramtype = "light",
 	paramtype2 = "facedir",
 	sunlight_propagates = true,
-	groups = { dig_immediate=3,deco_block=1,dig_by_piston=1,container=7 },
+	groups = { dig_immediate=3,deco_block=1,dig_by_piston=1,container=7,attached_node_facedir=1 },
 	sounds = mcl_sounds.node_sound_defaults(),
+	node_placement_prediction = "",
+	on_place = function(itemstack, placer, pointed_thing)
+		if pointed_thing.type ~= "node" then
+			return itemstack
+		end
+
+		-- Use pointed node's on_rightclick function first, if present
+		local node = minetest.get_node(pointed_thing.under)
+		if placer and not placer:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+			end
+		end
+
+		return minetest.item_place(itemstack, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
+	end,
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()

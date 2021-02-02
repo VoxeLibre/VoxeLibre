@@ -13,19 +13,26 @@ local drops_common = {
 	{name = mobs_mc.items.rotten_flesh,
 	chance = 1,
 	min = 0,
-	max = 2,},
+	max = 2,
+	looting = "common",},
 	{name = mobs_mc.items.iron_ingot,
 	chance = 120, -- 2.5% / 3
 	min = 1,
-	max = 1,},
+	max = 1,
+	looting = "rare",
+	looting_factor = 0.01 / 3,},
 	{name = mobs_mc.items.carrot,
 	chance = 120, -- 2.5% / 3
 	min = 1,
-	max = 1,},
+	max = 1,
+	looting = "rare",
+	looting_factor = 0.01 / 3,},
 	{name = mobs_mc.items.potato,
 	chance = 120, -- 2.5% / 3
 	min = 1,
-	max = 1,},
+	max = 1,
+	looting = "rare",
+	looting_factor = 0.01 / 3,},
 }
 
 local drops_zombie = table.copy(drops_common)
@@ -78,6 +85,7 @@ local zombie = {
 		walk_start = 0,		walk_end = 40,
 		run_start = 0,		run_end = 40,
 	},
+	ignited_by_sunlight = true,
 	sunlight_damage = 2,
 	view_range = 16,
 	attack_type = "dogfight",
@@ -104,6 +112,7 @@ mobs:register_mob("mobs_mc:baby_zombie", baby_zombie)
 -- Desert variant of the zombie
 local husk = table.copy(zombie)
 husk.textures = {{"mobs_mc_husk.png"}}
+husk.ignited_by_sunlight = false
 husk.sunlight_damage = 0
 husk.drops = drops_common
 -- TODO: Husks avoid water

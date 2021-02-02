@@ -81,17 +81,16 @@ end)
 
 -- register snow weather
 if mcl_weather.reg_weathers.snow == nil then
-  mcl_weather.reg_weathers.snow = {
-    clear = mcl_weather.snow.clear,
-    light_factor = 0.6,
-    -- 10min - 20min
-    min_duration = 600,
-    max_duration = 1200,
-    transitions = {
-      [65] = "none",
-      [80] = "rain",
-      [100] = "thunder",
-    }
-}
+	mcl_weather.reg_weathers.snow = {
+		clear = mcl_weather.snow.clear,
+		light_factor = 0.6,
+		-- 10min - 20min
+		min_duration = 600,
+		max_duration = 1200,
+		transitions = {
+			[65] = "none",
+			[80] = "rain",
+			[100] = "thunder",
+		}
+	}
 end
-
