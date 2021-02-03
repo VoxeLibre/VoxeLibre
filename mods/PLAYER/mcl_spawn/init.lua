@@ -225,6 +225,11 @@ end
 -- Spawn position search
 
 local function next_biome()
+	if #biome_ids < 1 then
+		for _, biome_name in pairs(biomes_white_list) do
+			table.insert(biome_ids, minetest.get_biome_id(biome_name))
+		end
+	end
 	while check <= checks do
 		local biome_data = minetest.get_biome_data(cp)
 		-- Sometimes biome_data is nil
@@ -427,11 +432,6 @@ minetest.register_on_respawnplayer(mcl_spawn.spawn)
 function mcl_spawn.shadow_worker()
 	if not searched then
 		searched = true
-		if #biome_ids < 1 then
-			for _, biome_name in pairs(biomes_white_list) do
-				table.insert(biome_ids, minetest.get_biome_id(biome_name))
-			end
-		end
 		mcl_spawn.search()
 		minetest.log("action", "[mcl_spawn] Started world spawn point search")
 	end
