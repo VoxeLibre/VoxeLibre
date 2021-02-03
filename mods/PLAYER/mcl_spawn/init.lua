@@ -227,8 +227,16 @@ end
 local function next_biome()
 	if #biome_ids < 1 then
 		for _, biome_name in pairs(biomes_white_list) do
-			table.insert(biome_ids, minetest.get_biome_id(biome_name))
+			local biome_id = minetest.get_biome_id(biome_name)
+			if biome_id then
+				table.insert(biome_ids, biome_id)
+			end
 		end
+		if #biome_ids < 1 then
+			minetest.log("warning", "[mcl_spawn] No suitable biomes found")
+			return false
+		end
+		minetest.log("action", "[mcl_spawn] Suitable biomes found: "..tostring(#biome_ids))
 	end
 	while check <= checks do
 		local biome_data = minetest.get_biome_data(cp)
