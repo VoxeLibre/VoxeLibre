@@ -3,7 +3,6 @@ local S = minetest.get_translator("mcl_playerplus")
 -- Internal player state
 local mcl_playerplus_internal = {}
 
-
 local def = {}
 local time = 0
 
