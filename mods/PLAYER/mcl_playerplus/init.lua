@@ -25,6 +25,7 @@ minetest.register_globalstep(function(dtime)
 		name = player:get_player_name()
 
 		-- controls head bone
+		
 		pitch = degrees(player:get_look_vertical()) * -1
 
 		if controls.LMB then
