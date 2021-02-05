@@ -789,15 +789,15 @@ local check_for_death = function(self, cause, cmi_cause)
 				local puncher = cmi_cause.puncher
 				if puncher then
 					wielditem = puncher:get_wielded_item()
-
-					if mod_experience and ((not self.child) or self.type ~= "animal") then
-						mcl_experience.throw_experience(self.object:get_pos(), math.random(self.xp_min, self.xp_max))
-					end
 				end
 			end
 			local cooked = mcl_burning.is_burning(self.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect")
 			local looting = mcl_enchanting.get_enchantment(wielditem, "looting")
 			item_drop(self, cooked, looting)
+
+			if mod_experience and ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= 5000000) then
+				mcl_experience.throw_experience(self.object:get_pos(), math.random(self.xp_min, self.xp_max))
+			end
 		end
 	end
 
@@ -2921,10 +2921,16 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		return
 	end
 
-	-- is mob protected?
-	if self.protected and hitter:is_player()
-	and minetest.is_protected(self.object:get_pos(), hitter:get_player_name()) then
-		return
+	local is_player = hitter:is_player()
+
+	if is_player then
+		-- is mob protected?
+		if self.protected and minetest.is_protected(self.object:get_pos(), hitter:get_player_name()) then
+			return
+		end
+
+		-- set/update 'drop xp' timestamp if hitted by player
+		self.xp_timestamp = minetest.get_us_time()
 	end
 
 
@@ -2933,7 +2939,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	local punch_interval = 1.4
 
 	-- exhaust attacker
-	if mod_hunger and hitter:is_player() then
+	if mod_hunger and is_player then
 		mcl_hunger.exhaust(hitter:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
 	end
 
@@ -3082,7 +3088,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			if hitter then
 				luaentity = hitter:get_luaentity()
 			end
-			if hitter and hitter:is_player() then
+			if hitter and is_player then
 				local wielditem = hitter:get_wielded_item()
 				kb = kb + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
 			elseif luaentity and luaentity._knockback then
@@ -3719,6 +3725,7 @@ minetest.register_entity(name, {
 	hp_max = scale_difficulty(def.hp_max, 10, 1),
 	xp_min = def.xp_min or 0,
 	xp_max = def.xp_max or 0,
+	xp_timestamp = 0,
 	breath_max = def.breath_max or 15,
         breathes_in_water = def.breathes_in_water or false,
 	physical = true,
