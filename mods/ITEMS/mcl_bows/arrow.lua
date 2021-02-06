@@ -334,6 +334,10 @@ ARROW_ENTITY.on_step = function(self, dtime)
 
 				minetest.sound_play({name="mcl_bows_hit_other", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=16}, true)
 
+				if mcl_burning.is_burning(self.object) and snode.name == "mcl_tnt:tnt" then
+					tnt.ignite(self._stuckin)
+				end
+
 				-- Push the button! Push, push, push the button!
 				if mod_button and minetest.get_item_group(node.name, "button") > 0 and minetest.get_item_group(node.name, "button_push_by_arrow") == 1 then
 					local bdir = minetest.wallmounted_to_dir(node.param2)
