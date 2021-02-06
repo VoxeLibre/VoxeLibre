@@ -35,12 +35,12 @@ minetest.register_globalstep(function(dtime)
 		if controls.sneak and player:get_attach() == nil then
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+36,0,0))
 			if player:get_properties().collisionbox ~= {-0.35,0,-0.35,0.35,1.40,0.35} then
-				player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.35,0.35}, eye_height = 1.35})
+				player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.35,0.35}, eye_height = 1.35, nametag_color = { r = 255, b = 225, a = 0, g = 225 }})
 			end
 		else
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,0,0))
 			if player:get_properties().collisionbox ~= {-0.35,0,-0.35,0.35,1.8,0.35} then
-				player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.65})
+				player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.65, nametag_color = { r = 255, b = 225, a = 225, g = 225 }})
 			end
 		end
 
