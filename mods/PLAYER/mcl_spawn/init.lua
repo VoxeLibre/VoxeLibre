@@ -45,6 +45,8 @@ local start_pos = minetest.setting_get_pos("static_spawnpoint") or {x = 0, y = 8
 -- Table of suitable biomes
 local biome_ids = {}
 
+local no_trees_area_counter = 0
+
 -- Bed spawning offsets
 local node_search_list =
 	{
@@ -225,6 +227,33 @@ end
 -- Spawn position search
 
 local function next_biome()
+	if #biome_ids < 1 then
+		for _, biome_name in pairs(biomes_white_list) do
+			local biome_id = minetest.get_biome_id(biome_name)
+			if biome_id then
+				table.insert(biome_ids, biome_id)
+			end
+		end
+		if #biome_ids < 1 then
+			next_pos()
+			if math.abs(cp.x) > spawn_limit or math.abs(cp.z) > spawn_limit then
+				check = checks + 1
+				minetest.log("warning", "[mcl_spawn] No white-listed biomes found - search stopped by overlimit")
+				return false
+			end
+			check = check + 1
+			cp.y = minetest.get_spawn_level(cp.x, cp.z) or start_pos.y
+			if cp.y then
+				wsp = {x = cp.x, y = cp.y, z = cp.z}
+				minetest.log("warning", "[mcl_spawn] No white-listed biomes found - using current")
+				return true
+			else
+				minetest.log("warning", "[mcl_spawn] No white-listed biomes found and spawn level is nil - please define start_pos to continue")
+				return false
+			end
+		end
+		minetest.log("action", "[mcl_spawn] Suitable biomes found: "..tostring(#biome_ids))
+	end
 	while check <= checks do
 		local biome_data = minetest.get_biome_data(cp)
 		-- Sometimes biome_data is nil
@@ -264,16 +293,56 @@ local function ecb_search_continue(blockpos, action, calls_remaining, param)
 		local nodes = minetest.find_nodes_in_area_under_air(emerge_pos1, emerge_pos2, node_groups_white_list)
 		minetest.log("verbose", "[mcl_spawn] Data emerge callback: "..minetest.pos_to_string(wsp).." - "..tostring(nodes and #nodes) .. " node(s) found under air")
 		if nodes then
-			local trees = get_trees(emerge_pos1, emerge_pos2)
-			if trees then
+			if no_trees_area_counter >= 0 then
+				local trees = get_trees(emerge_pos1, emerge_pos2)
+				if trees and #trees > 0 then
+					no_trees_area_counter = 0
+					if attempts_to_find_pos * 3 < #nodes then
+						-- random
+						for i=1, attempts_to_find_pos do
+							wsp = nodes[math.random(1,#nodes)]
+							if wsp then
+								wsp.y = wsp.y + 1
+								if good_for_respawn(wsp) and can_find_tree(wsp, trees) then
+									minetest.log("action", "[mcl_spawn] Dynamic world spawn randomly determined to be "..minetest.pos_to_string(wsp))
+									searched = true
+									success = true
+									return
+								end
+							end
+						end
+					else
+						-- in a sequence
+						for i=1, math.min(#nodes, attempts_to_find_pos) do
+							wsp = nodes[i]
+							if wsp then
+								wsp.y = wsp.y + 1
+								if good_for_respawn(wsp) and can_find_tree(wsp, trees) then
+									minetest.log("action", "[mcl_spawn] Dynamic world spawn determined to be "..minetest.pos_to_string(wsp))
+									searched = true
+									success = true
+									return
+								end
+							end
+						end
+					end
+				else
+					no_trees_area_counter = no_trees_area_counter + 1
+					if no_trees_area_counter > 10 then
+						minetest.log("verbose", "[mcl_spawn] More than 10 times no trees at all! Won't search trees next 200 calls")
+						no_trees_area_counter = -200
+					end
+				end
+			else -- seems there are no trees but we'll check it later, after next 200 calls
+				no_trees_area_counter = no_trees_area_counter + 1
 				if attempts_to_find_pos * 3 < #nodes then
 					-- random
 					for i=1, attempts_to_find_pos do
 						wsp = nodes[math.random(1,#nodes)]
 						if wsp then
 							wsp.y = wsp.y + 1
-							if good_for_respawn(wsp) and can_find_tree(wsp, trees) then
-								minetest.log("action", "[mcl_spawn] Dynamic world spawn determined to be "..minetest.pos_to_string(wsp))
+							if good_for_respawn(wsp) then
+								minetest.log("action", "[mcl_spawn] Dynamic world spawn randomly determined to be "..minetest.pos_to_string(wsp) .. " (no trees)")
 								searched = true
 								success = true
 								return
@@ -286,8 +355,8 @@ local function ecb_search_continue(blockpos, action, calls_remaining, param)
 						wsp = nodes[i]
 						if wsp then
 							wsp.y = wsp.y + 1
-							if good_for_respawn(wsp) and can_find_tree(wsp, trees) then
-								minetest.log("action", "[mcl_spawn] Dynamic world spawn determined to be "..minetest.pos_to_string(wsp))
+							if good_for_respawn(wsp) then
+								minetest.log("action", "[mcl_spawn] Dynamic world spawn determined to be "..minetest.pos_to_string(wsp) .. " (no trees)")
 								searched = true
 								success = true
 								return
@@ -425,11 +494,6 @@ end
 minetest.register_on_respawnplayer(mcl_spawn.spawn)
 
 function mcl_spawn.shadow_worker()
-	if #biome_ids > 1 then
-		for _, biome_name in pairs(biomes_white_list) do
-			table.insert(biome_ids, minetest.get_biome_id(biome_name))
-		end
-	end
 	if not searched then
 		searched = true
 		mcl_spawn.search()
