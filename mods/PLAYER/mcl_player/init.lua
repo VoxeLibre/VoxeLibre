@@ -21,12 +21,16 @@ mcl_player.player_register_model("character.b3d", {
 	textures = {"character.png", },
 	animations = {
 		-- Standard animations.
-		stand     = { x=  0, y= 79, },
-		lay       = { x=162, y=166, },
-		walk      = { x=168, y=187, },
-		mine      = { x=189, y=198, },
-		walk_mine = { x=200, y=219, },
-		sit       = { x= 81, y=160, },
+		stand = {x=0, y=79},
+		lay = {x=162, y=166},
+		walk = {x=168, y=187},
+		mine = {x=189, y=198},
+		walk_mine = {x=200, y=219},
+		sit = {x=81, y=160},
+		sneak_stand = {x=222, y=302},
+		sneak_mine = {x=346, y=366},
+		sneak_walk = {x=304, y=323},
+		sneak_walk_mine = {x=325, y=344},
 	},
 })
 
@@ -107,7 +111,7 @@ end
 minetest.register_on_joinplayer(function(player)
 	mcl_player.player_attached[player:get_player_name()] = false
 	mcl_player.player_set_model(player, "character.b3d")
-	player:set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, 30)
+	--player:set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, 30)
 	player:set_fov(86.1) -- see <https://minecraft.gamepedia.com/Options#Video_settings>>>>
 end)
 
@@ -151,15 +155,23 @@ minetest.register_globalstep(function(dtime)
 					player_anim[name] = nil
 					player_sneak[name] = controls.sneak
 				end
-				if controls.LMB then
+				if controls.LMB and not controls.sneak then
 					player_set_animation(player, "walk_mine", animation_speed_mod)
-				else
+				elseif controls.LMB and controls.sneak then
+					player_set_animation(player, "sneak_walk_mine", animation_speed_mod)
+				elseif not controls.sneak then
 					player_set_animation(player, "walk", animation_speed_mod)
+				else
+					player_set_animation(player, "sneak_walk", animation_speed_mod)
 				end
-			elseif controls.LMB then
+			elseif controls.LMB and not controls.sneak then
 				player_set_animation(player, "mine")
-			else
+			elseif controls.LMB and controls.sneak then
+				player_set_animation(player, "sneak_mine")
+			elseif not controls.sneak then
 				player_set_animation(player, "stand", animation_speed_mod)
+			else
+				player_set_animation(player, "sneak_stand", animation_speed_mod)
 			end
 		end
 	end
