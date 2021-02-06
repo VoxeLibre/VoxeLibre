@@ -94,19 +94,19 @@ armor.def = {
 }
 
 armor.update_player_visuals = function(self, player)
-	
-	local player_holding = player:get_wielded_item():get_name()
-	if string.find(player_holding,"mcl_tools:") or player_holding == "mcl_mobitems:bone" or player_holding == "mcl_fishing:fishing_rod" then
-	  player:set_bone_position("Wield_Item", vector.new(0,3.9,1.3), vector.new(90,0,0))
-	elseif string.find(player_holding, "mcl_bows:bow") then
-	  player:set_bone_position("Wield_Item", vector.new(.5,4.5,-1.6), vector.new(90,0,20))
-	else
-	  player:set_bone_position("Wield_Item", vector.new(-1.5,4.9,1.8), vector.new(135,0,90))
-	end
-
 	if not player then
 		return
 	end
+
+	local player_holding = player:get_wielded_item():get_name()
+	if string.find(player_holding,"mcl_tools:") or player_holding == "mcl_mobitems:bone" or player_holding == "mcl_fishing:fishing_rod" then
+		player:set_bone_position("Wield_Item", vector.new(0,3.9,1.3), vector.new(90,0,0))
+	elseif string.find(player_holding, "mcl_bows:bow") then
+		 player:set_bone_position("Wield_Item", vector.new(.5,4.5,-1.6), vector.new(90,0,20))
+	else
+		player:set_bone_position("Wield_Item", vector.new(-1.5,4.9,1.8), vector.new(135,0,90))
+	end
+
 	local name = player:get_player_name()
 	if self.textures[name] then
 		mcl_player.player_set_textures(player, {
