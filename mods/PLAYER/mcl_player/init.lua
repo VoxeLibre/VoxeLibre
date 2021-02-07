@@ -147,6 +147,9 @@ minetest.register_globalstep(function(dtime)
 				animation_speed_mod = animation_speed_mod / 2
 			end
 
+			-- ask if player is swiming
+			local standing_on_water = minetest.get_item_group(mcl_playerinfo[name].node_stand, "water") ~= 0
+
 			-- Apply animations based on what the player is doing
 			if player:get_hp() == 0 then
 				player_set_animation(player, "lay")
@@ -155,20 +158,28 @@ minetest.register_globalstep(function(dtime)
 					player_anim[name] = nil
 					player_sneak[name] = controls.sneak
 				end
-				if controls.LMB and not controls.sneak then
+				if controls.LMB and not controls.sneak and standing_on_water then
+					player_set_animation(player, "swim_walk_mine", animation_speed_mod)
+				elseif not controls.sneak and standing_on_water then
+					player_set_animation(player, "swim_walk", animation_speed_mod)
+				elseif controls.LMB and not controls.sneak and not standing_on_water then
 					player_set_animation(player, "walk_mine", animation_speed_mod)
-				elseif controls.LMB and controls.sneak then
+				elseif controls.LMB and controls.sneak and not standing_on_water then
 					player_set_animation(player, "sneak_walk_mine", animation_speed_mod)
-				elseif not controls.sneak then
+				elseif not controls.sneak and not standing_on_water then
 					player_set_animation(player, "walk", animation_speed_mod)
 				else
 					player_set_animation(player, "sneak_walk", animation_speed_mod)
 				end
-			elseif controls.LMB and not controls.sneak then
+			elseif controls.LMB and not controls.sneak and standing_on_water then
+				player_set_animation(player, "swim_mine")
+			elseif controls.LMB and not controls.sneak and not standing_on_water then
 				player_set_animation(player, "mine")
 			elseif controls.LMB and controls.sneak then
 				player_set_animation(player, "sneak_mine")
-			elseif not controls.sneak then
+			elseif not controls.sneak and standing_on_water then
+				player_set_animation(player, "swim_stand", animation_speed_mod)
+			elseif not controls.sneak and not standing_on_water then
 				player_set_animation(player, "stand", animation_speed_mod)
 			else
 				player_set_animation(player, "sneak_stand", animation_speed_mod)
