@@ -21,16 +21,16 @@ mcl_player.player_register_model("character.b3d", {
 	textures = {"character.png", },
 	animations = {
 		-- Standard animations.
-		stand = {x=0, y=79},
-		lay = {x=162, y=166},
-		walk = {x=168, y=187},
-		mine = {x=189, y=198},
-		walk_mine = {x=200, y=219},
-		sit = {x=81, y=160},
-		sneak_stand = {x=222, y=302},
-		sneak_mine = {x=346, y=366},
-		sneak_walk = {x=304, y=323},
-		sneak_walk_mine = {x=325, y=344},
+		stand		= {x=  0, y= 79},
+		lay		= {x=162, y=166},
+		walk		= {x=168, y=187},
+		mine		= {x=189, y=198},
+		walk_mine	= {x=200, y=219},
+		sit		= {x= 81, y=160},
+		sneak_stand	= {x=222, y=302},
+		sneak_mine	= {x=346, y=366},
+		sneak_walk	= {x=304, y=323},
+		sneak_walk_mine	= {x=325, y=344},
 	},
 })
 
