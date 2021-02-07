@@ -35,24 +35,20 @@ minetest.register_globalstep(function(dtime)
 		if controls.sneak and player:get_attach() == nil then
 			-- controls head pitch when sneaking
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+36,0,0))
-			-- sets collisionbox, eye height, and nametag color accordingly
-			if player:get_properties().collisionbox ~= {-0.35,0,-0.35,0.35,1.35,0.35} then
-				player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.35,0.35}, eye_height = 1.35, nametag_color = { r = 255, b = 225, a = 0, g = 225 }})
-			end
+			-- sets eye height, and nametag color accordingly
+			player:set_properties({eye_height = 1.35, nametag_color = { r = 225, b = 225, a = 0, g = 225 }})
+
 		elseif minetest.get_item_group(mcl_playerinfo[name].node_stand, "water") ~= 0 then
 			-- controls head pitch when swiming
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+90,0,0))
-			-- sets collisionbox, eye height, and nametag color accordingly
-			if player:get_properties().collisionbox ~= {-0.35,0.2,-0.35,0.35,1.8,0.35} then
-				player:set_properties({collisionbox = {-0.35,0.2,-0.35,0.35,1.8,0.35}, eye_height = 1.65, nametag_color = { r = 255, b = 225, a = 225, g = 225 }})
-			end
+			-- sets eye height, and nametag color accordingly
+			player:set_properties({eye_height = 1.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
+
 		else
 			-- controls head pitch when not sneaking
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,0,0))
-			-- sets collisionbox, eye height, and nametag color accordingly
-			if player:get_properties().collisionbox ~= {-0.35,0,-0.35,0.35,1.8,0.35} then
-				player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.65, nametag_color = { r = 255, b = 225, a = 225, g = 225 }})
-			end
+			-- sets eye height, and nametag color accordingly
+			player:set_properties({eye_height = 1.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 		end
 
 		if mcl_playerplus_internal[name].jump_cooldown > 0 then
