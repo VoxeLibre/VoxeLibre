@@ -39,13 +39,6 @@ minetest.register_globalstep(function(dtime)
 			if player:get_properties().collisionbox ~= {-0.35,0,-0.35,0.35,1.35,0.35} then
 				player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.35,0.35}, eye_height = 1.35, nametag_color = { r = 255, b = 225, a = 0, g = 225 }})
 			end
-		elseif minetest.get_item_group(mcl_playerinfo[name].node_stand, "water") ~= 0 then
-			-- controls head pitch when swiming
-			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+90,0,0))
-			-- sets collisionbox, eye height, and nametag color accordingly
-			if player:get_properties().collisionbox ~= {-0.35,0.2,-0.35,0.35,1.8,0.35} then
-				player:set_properties({collisionbox = {-0.35,0.2,-0.35,0.35,1.8,0.35}, eye_height = 1.65, nametag_color = { r = 255, b = 225, a = 225, g = 225 }})
-			end
 		else
 			-- controls head pitch when not sneaking
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,0,0))
