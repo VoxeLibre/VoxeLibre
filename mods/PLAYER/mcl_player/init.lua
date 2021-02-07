@@ -151,6 +151,7 @@ minetest.register_globalstep(function(dtime)
 				animation_speed_mod = animation_speed_mod / 2
 			end
 
+			-- ask if player is swiming
 			local standing_on_water = minetest.get_item_group(mcl_playerinfo[name].node_stand, "water") ~= 0
 
 			-- Apply animations based on what the player is doing
