@@ -93,6 +93,13 @@ function mcl_player.player_get_preview(player)
 	end
 end
 
+function mcl_player.get_player_formspec_model(player, x, y, w, h, fsname)
+	local name = player:get_player_name()
+	local model = player_model[name]
+	local anim = models[model].animations[player_anim[name]]
+	return "model[" .. x .. "," .. y .. ";" .. w .. "," .. h .. ";" .. fsname .. ";" .. model .. ";" .. table.concat(player_textures[name], ",") .. ";0," .. 180 .. ";false;false;" .. anim.x .. "," .. anim.y .. "]"
+end
+
 function mcl_player.player_set_animation(player, anim_name, speed)
 	local name = player:get_player_name()
 	if player_anim[name] == anim_name then
