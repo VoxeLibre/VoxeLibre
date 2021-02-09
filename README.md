@@ -86,7 +86,8 @@ Minetest to learn more.
 ## Project description
 The main goal of **MineClone 2** is to be a clone of Minecraft and to be released as free software.
 
-* **Target of development: Minecraft, PC Edition, version 1.11** (later known as “Java Edition”)
+* **Target of development: Minecraft, PC Edition, version 1.12** (later known as “Java Edition”)
+* MineClone2 also includes Optifine features supported by the Minetest
 * Features of later Minecraft versions might sneak in, but they have a low priority
 * In general, Minecraft is aimed to be cloned as good as Minetest currently permits (no hacks)
 * Cloning the gameplay has highest priority
