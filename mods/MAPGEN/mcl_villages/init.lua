@@ -13,18 +13,24 @@ dofile(settlements.modpath.."/paths.lua")
 settlements_in_world = settlements.load()
 settlements.grundstellungen()
 
---[[ Disable custom node spawning.
+
 --
 -- register block for npc spawn
 --
-minetest.register_node("settlements:junglewood", {
-    description = "special junglewood floor",
-    tiles = {"default_junglewood.png"},
-    groups = {choppy=3, wood=2},
-    sounds = default.node_sound_wood_defaults(),
-  })
+minetest.register_node("mcl_villages:stonebrickcarved", {
+	description = ("Chiseled Stone Village Bricks"),
+	_doc_items_longdesc = doc.sub.items.temp.build,
+	tiles = {"mcl_core_stonebrick_carved.png"},
+	stack_max = 64,
+	drop = "mcl_core:stonebrickcarved",
+	groups = {pickaxey=1, stone=1, stonebrick=1, building_block=1, material_stone=1},
+	sounds = mcl_sounds.node_sound_stone_defaults(),
+	is_ground_content = false,
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 1.5,
+})
 
---]]
+
 
 
 --[[ Enable for testing, but use MineClone2's own spawn code if/when merging.
