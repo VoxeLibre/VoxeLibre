@@ -143,6 +143,7 @@ minetest.register_entity("mcl_paintings:painting", {
 	_xsize = 1,
 	_ysize = 1,
 	on_activate = function(self, staticdata)
+		self.object:set_armor_groups({immortal = 1})
 		if staticdata and staticdata ~= "" then
 			local data = minetest.deserialize(staticdata)
 			if data then
@@ -165,18 +166,20 @@ minetest.register_entity("mcl_paintings:painting", {
 		}
 		return minetest.serialize(data)
 	end,
-	on_death = function(self, killer)
-		-- Drop as item on death
-		local kname = ""
-		if killer and killer:is_player() then
-			kname = killer:get_player_name()
-		end
-		if not minetest.is_creative_enabled(kname) then
+	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir, damage)
+		-- Drop as item on punch
+		if puncher and puncher:is_player() then
+			kname = puncher:get_player_name()
 			local pos = self._pos
 			if not pos then
 				pos = self.object:get_pos()
 			end
-			minetest.add_item(pos, "mcl_paintings:painting")
+			if not minetest.is_protected(pos, kname) then
+				self.object:remove()
+				if not minetest.is_creative_enabled(kname) then
+					minetest.add_item(pos, "mcl_paintings:painting")
+				end
+			end
 		end
 	end,
 })
