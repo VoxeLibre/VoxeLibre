@@ -188,6 +188,7 @@ function settlements.place_schematics(settlement_info, pr)
 		local schem_lua = minetest.serialize_schematic(building, 
 			"lua", 
 			{lua_use_comments = false, lua_num_indent_spaces = 0}).." return(schematic)"
+		schem_lua = schem_lua:gsub("mcl_core:stonebrickcarved", "mcl_villages:stonebrickcarved")
 		-- replace material
 		if replace_wall then
 			--Note, block substitution isn't matching node names exactly; so nodes that are to be substituted that have the same prefixes cause bugs.

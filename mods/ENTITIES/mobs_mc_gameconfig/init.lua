@@ -225,6 +225,7 @@ mobs_mc.override.spawn = {
 	nether_fortress = { "mcl_nether:nether_brick", "mcl_nether:netherrack" },
 	nether_portal = { mobs_mc.override.items.nether_portal },
 	wolf = { mobs_mc.override.items.grass_block, "mcl_core:dirt", "mcl_core:dirt_with_grass_snow", "mcl_core:snow", "mcl_core:snowblock", "mcl_core:podzol" },
+	village = { "mcl_villages:stonebrickcarved", "mcl_core:grass_path", "mcl_core:sandstonesmooth2" },
 }
 
 -- This table contains important spawn height references for the mob spawn height.
