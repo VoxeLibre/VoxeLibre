@@ -82,7 +82,6 @@ end
 local mg_name = minetest.get_mapgen_setting("mg_name")
 if mg_name ~= "singlenode" then
 	minetest.register_on_generated(function(minp, maxp, blockseed)
-		minetest.log("warning","[mcl_villages] on_generated("..minetest.pos_to_string(minp)..", "..minetest.pos_to_string(maxp)..", "..tostring(blockseed)..")")
 		-- needed for manual and automated settlement building
 		local heightmap = minetest.get_mapgen_object("heightmap")
 
