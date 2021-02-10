@@ -331,7 +331,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 
 			-- Show armor and player image
 			local player_preview
-			if minetest.settings:get_bool("3d_player_preview", true) then
+			if minetest.settings:get_bool("3d_player_preview") then
 				player_preview = mcl_player.get_player_formspec_model(player, 3.9, 1.4, 1.2333, 2.4666, "")
 			else
 				local img, img_player
