@@ -51,7 +51,7 @@ function settlements.find_surface(pos)
 	local itter -- count up or down
 	local cnt_max = 200
 	-- check, in which direction to look for surface
-	local surface_node = minetest.get_node_or_nil(p6)
+	local surface_node = mcl_util.get_far_node(p6, true)
 	if surface_node and string.find(surface_node.name,"air") then
 		itter = -1
 	else
@@ -61,31 +61,16 @@ function settlements.find_surface(pos)
 	while cnt < cnt_max do
 		cnt = cnt+1
 		minetest.forceload_block(p6)
-		surface_node = minetest.get_node_or_nil(p6)
-
-		if not surface_node then
-			-- Load the map at pos and try again
-			minetest.get_voxel_manip():read_from_map(p6, p6)
-			surface_node = minetest.get_node(p6)
-			if surface_node.name == "ignore" then
-				settlements.debug("find_surface1: nil or ignore")
-				return nil
-			end
+		surface_node = mcl_util.get_far_node(p6, true)
+		if surface_node.name == "ignore" then
+			settlements.debug("find_surface1: nil or ignore")
+			return nil
 		end
 
-		-- if surface_node == nil or surface_node.name == "ignore" then
-		-- 	--return nil
-		-- 	local fl = minetest.forceload_block(p6)
-		-- 	if not fl then
-		--
-		-- 		return nil
-		-- 	end
-		-- end
-		--
 		-- Check Surface_node and Node above
 		--
 		if settlements.surface_mat[surface_node.name] then
-			local surface_node_plus_1 = minetest.get_node_or_nil({ x=p6.x, y=p6.y+1, z=p6.z})
+			local surface_node_plus_1 = mcl_util.get_far_node({ x=p6.x, y=p6.y+1, z=p6.z}, true)
 			if surface_node_plus_1 and surface_node and
 				(string.find(surface_node_plus_1.name,"air") or
 				string.find(surface_node_plus_1.name,"snow") or
@@ -257,7 +242,7 @@ function settlements.initialize_nodes(settlement_info, pr)
 			for xi = 0,width do
 				for zi = 0,depth do
 					local ptemp = {x=p.x+xi, y=p.y+yi, z=p.z+zi}
-					local node = minetest.get_node(ptemp)
+					local node = mcl_util.get_far_node(ptemp, true)
 					if node.name == "mcl_furnaces:furnace" or
 						node.name == "mcl_chests:chest" or
 						node.name == "mcl_anvils:anvil" then

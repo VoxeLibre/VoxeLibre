@@ -52,8 +52,7 @@ function settlements.terraform(settlement_info, pr)
 					else
 						-- write ground
 						local p = {x=pos.x+xi, y=pos.y+yi, z=pos.z+zi}
-						minetest.forceload_block(p)
-						local node = minetest.get_node_or_nil(p)
+						local node = mcl_util.get_far_node(p, true)
 						if node and node.name ~= "air" then
 							minetest.swap_node(p,{name="air"}) 
 						end
