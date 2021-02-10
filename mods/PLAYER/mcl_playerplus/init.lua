@@ -38,7 +38,7 @@ minetest.register_globalstep(function(dtime)
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({eye_height = 1.35, nametag_color = { r = 225, b = 225, a = 0, g = 225 }})
 
-		elseif minetest.get_item_group(mcl_playerinfo[name].node_stand, "water") ~= 0 then
+		elseif minetest.get_item_group(mcl_playerinfo[name].node_stand, "water") ~= 0 and player:get_attach() == nil then
 			-- controls head pitch when swiming
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+90,0,0))
 			-- sets eye height, and nametag color accordingly

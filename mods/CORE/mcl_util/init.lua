@@ -405,3 +405,53 @@ function mcl_util.get_object_center(obj)
 	pos.y = pos.y + (ymax - ymin) / 2.0
 	return pos
 end
+
+local get_node_emerge_queue = {}
+local function ecb_get_far_node(blockpos, action, calls_remaining, param)
+	if calls_remaining <= 0 and param then
+		minetest.log("verbose","[mcl_util] ecb done for param = "..param.." node.name="..minetest.get_node(minetest.string_to_pos(param)).name)
+		get_node_emerge_queue[param] = nil
+	end
+end
+
+function mcl_util.get_far_node(pos, force)
+	local node = minetest.get_node(pos)
+	if node.name ~= "ignore" then
+		return node
+	end
+
+	minetest.get_voxel_manip():read_from_map(pos, pos)
+	node = minetest.get_node(pos)
+	if node.name ~= "ignore" or not force then
+		return node
+	end
+
+	local blockpos = vector.multiply(vector.floor(vector.divide(pos, mcl_vars.MAP_BLOCKSIZE)), mcl_vars.MAP_BLOCKSIZE)
+	local key = minetest.pos_to_string(blockpos)
+
+	for i=1,2 do -- give engine 2 chances to emerge the data
+		if not get_node_emerge_queue[key] then
+			get_node_emerge_queue[key] = 1
+			minetest.log("verbose","[mcl_util] emerge during get_far_node("..minetest.pos_to_string(pos).."), key="..key..", blockpos="..minetest.pos_to_string(blockpos))
+			minetest.emerge_area(blockpos, vector.add(blockpos, mcl_vars.MAP_BLOCKSIZE-1), ecb_get_far_node, key)
+		end
+
+		while not get_node_emerge_queue[key] do end
+		minetest.log("verbose","[mcl_util] emerge finished for node "..minetest.pos_to_string(pos)..", key="..key..", blockpos="..minetest.pos_to_string(blockpos)..", node.name="..mcl_util.get_far_node(pos).name)
+
+		node = minetest.get_node(pos)
+		if node.name ~= "ignore" then
+			return node
+		end
+
+		minetest.get_voxel_manip():read_from_map(pos, pos)
+		node = minetest.get_node(pos)
+		if node.name ~= "ignore" or not force then
+			return node
+		end
+	end
+
+	node.name = "air" -- engine continuously returns "ignore" - probably it is a bug
+	minetest.swap_node(pos, node) -- engine continuously returns "ignore" - probably it is a bug
+	return node -- engine continuously returns "ignore" - probably it is a bug
+end

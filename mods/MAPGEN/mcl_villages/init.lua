@@ -94,11 +94,8 @@ if mg_name ~= "singlenode" then
 		-- don't build settlements on (too) uneven terrain
 		local height_difference = settlements.evaluate_heightmap(minp, maxp)
 		if height_difference > max_height_difference then return end
-
-		-- new way - slow :(((((
-		minetest.emerge_area(vector.subtract(minp,24), vector.add(maxp,24), ecb_build_a_settlement, {minp = vector.new(minp), maxp=vector.new(maxp), blockseed=blockseed})
-		-- old way - wait 3 seconds:
-		-- minetest.after(3, ecb_build_a_settlement, nil, 1, 0, {minp = vector.new(minp), maxp=vector.new(maxp), blockseed=blockseed})
+		-- we need 'minetest.after' here to exit from emerging thread we probably currently in:
+		minetest.after(0.1, build_a_settlement_no_delay, vector.new(minp), vector.new(maxp), blockseed)
 	end)
 end
 -- manually place villages

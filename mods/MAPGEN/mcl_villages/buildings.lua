@@ -4,7 +4,7 @@
 -------------------------------------------------------------------------------
 function settlements.build_schematic(vm, data, va, pos, building, replace_wall, name)
   -- get building node material for better integration to surrounding
-  local platform_material =  minetest.get_node_or_nil(pos)
+  local platform_material =  mcl_util.get_far_node(pos, true)
   if not platform_material then
     return
   end
