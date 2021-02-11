@@ -108,6 +108,7 @@ functions needed for the mob to work properly which contains the following:
    'explosion_timer'     number of seconds before mob explodes while its target
                          is still inside reach or explosion_damage_radius,
                          defaults to 3.
+   'explosiontimer_reset_radius'	The distance you must travel before the timer will be reset.
    'allow_fuse_reset'    Allow 'explode' attack_type to reset fuse and resume
                          chasing if target leaves the blast radius or line of
                          sight. Defaults to true.

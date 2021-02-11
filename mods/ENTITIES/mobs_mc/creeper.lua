@@ -39,7 +39,10 @@ mobs:register_mob("mobs_mc:creeper", {
 	attack_type = "explode",
 
 	explosion_strength = 3,
-	reach = 4,
+	explosion_radius = 3.5,
+	explosion_damage_radius = 3.5,
+	explosiontimer_reset_radius = 6,
+	reach = 3,
 	explosion_timer = 1.5,
 	allow_fuse_reset = true,
 	stop_to_explode = true,
