@@ -5,7 +5,7 @@ Wow, thank you! :-)
 But first, some things to note:
 
 MineClone 2's development target is to make a free software clone of Minecraft,
-***version 1.11***, ***PC edition***.
+***version 1.12***, ***PC edition***, *** + Optifine features supported by the Minetest Engine ***.
 
 MineClone 2 is maintained by two persons. Namely, kay27 and EliasFleckenstein. You can find us
 in the Minetest forums (forums.minetest.net), in IRC in the #minetest

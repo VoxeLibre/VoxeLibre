@@ -65,7 +65,7 @@ local function set_inventory(player, armor_change_only)
 
 	-- Show armor and player image
 	local player_preview
-	if minetest.settings:get_bool("3d_player_preview", true) then
+	if minetest.settings:get_bool("3d_player_preview") then
 		player_preview = mcl_player.get_player_formspec_model(player, 1.0, 0.0, 2.25, 4.5, "")
 	else
 		local img, img_player
