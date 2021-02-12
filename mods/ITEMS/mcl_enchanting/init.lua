@@ -349,7 +349,7 @@ minetest.register_lbm({
 	nodenames = {"mcl_enchanting:table"},
 	run_at_every_load = true,
 	action = function(pos)
-		spawn_book_entity(pos)
+		spawn_book_entity(pos, true)
 	end,
 })
 
