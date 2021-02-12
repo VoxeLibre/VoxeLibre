@@ -238,6 +238,73 @@ function mcl_experience.add_experience(player, experience)
 	local name = player:get_player_name()
 	local temp_pool = pool[name]
 
+	local inv = player:get_inventory()
+	local candidates = {
+		{list = "main", index = player:get_wield_index()},
+		{list = "armor", index = 2},
+		{list = "armor", index = 3},
+		{list = "armor", index = 4},
+		{list = "armor", index = 5},
+	}
+	local final_candidates = {}
+	for _, can in ipairs(candidates) do
+		local stack = inv:get_stack(can.list, can.index)
+		local wear = stack:get_wear()
+		if mcl_enchanting.has_enchantment(stack, "mending") and wear > 0 then
+			can.stack = stack
+			can.wear = wear
+			table.insert(final_candidates, can)
+		end
+	end
+	if #final_candidates > 0 then
+		local can = final_candidates[math.random(#final_candidates)]
+		local stack, list, index, wear = can.stack, can.list, can.index, can.wear
+		local unbreaking_level = mcl_enchanting.get_enchantment(stack, "unbreaking")
+		local uses
+		local armor_uses = minetest.get_item_group(stack:get_name(), "mcl_armor_uses")
+		if armor_uses > 0 then
+			uses = armor_uses
+			if unbreaking_level > 0 then
+				uses = uses / (0.6 + 0.4 / (unbreaking_level + 1))
+			end
+		else
+			local def = stack:get_definition()
+			if def then
+				local fixed_uses = def._mcl_uses
+				if fixed_uses then
+					uses = fixed_uses
+					if unbreaking_level > 0 then
+						uses = uses * (unbreaking_level + 1)
+					end
+				end
+			end
+			if not uses then
+				local toolcaps = stack:get_tool_capabilities()
+				local groupcaps = toolcaps.groupcaps
+				for _, v in pairs(groupcaps) do
+					uses = v.uses
+					break
+				end
+			end
+		end
+		uses = uses or 0
+		local multiplier = 2 * 65535 / uses
+		local repair = experience * multiplier
+		local new_wear = wear - repair
+		if new_wear < 0 then
+			experience = math.floor(-new_wear / multiplier + 0.5)
+			new_wear = 0
+		else
+			experience = 0
+		end
+		stack:set_wear(math.floor(new_wear))
+		inv:set_stack(list, index, stack)
+		if can.list == "armor" then
+			local armor_inv = minetest.get_inventory({type = "detached", name = player:get_player_name() .. "_armor"})
+			armor_inv:set_stack(list, index, stack)
+		end
+	end
+
 	local old_bar, old_xp, old_level = temp_pool.bar, temp_pool.xp, temp_pool.level
 	temp_pool.xp = math.min(math.max(temp_pool.xp + experience, 0), max_xp)
 
@@ -333,78 +400,7 @@ local function xp_step(self, dtime)
 				acceleration = vector.new(goal.x-currentvel.x,goal.y-currentvel.y,goal.z-currentvel.z)
 				self.object:add_velocity(vector.add(acceleration,player_velocity))
 			elseif distance < 0.8 then
-				local xp = self._xp
-				local inv = collector:get_inventory()
-				local candidates = {
-					{list = "main", index = collector:get_wield_index()},
-					{list = "armor", index = 2},
-					{list = "armor", index = 3},
-					{list = "armor", index = 4},
-					{list = "armor", index = 5},
-				}
-				local final_candidates = {}
-				for _, can in ipairs(candidates) do
-					local stack = inv:get_stack(can.list, can.index)
-					local wear = stack:get_wear()
-					if mcl_enchanting.has_enchantment(stack, "mending") and wear > 0 then
-						can.stack = stack
-						can.wear = wear
-						table.insert(final_candidates, can)
-					end
-				end
-				if #final_candidates > 0 then
-					local can = final_candidates[math.random(#final_candidates)]
-					local stack, list, index, wear = can.stack, can.list, can.index, can.wear
-					local unbreaking_level = mcl_enchanting.get_enchantment(stack, "unbreaking")
-					local uses
-					local armor_uses = minetest.get_item_group(stack:get_name(), "mcl_armor_uses")
-					if armor_uses > 0 then
-						uses = armor_uses
-						if unbreaking_level > 0 then
-							uses = uses / (0.6 + 0.4 / (unbreaking_level + 1))
-						end
-					else
-						local def = stack:get_definition()
-						if def then
-							local fixed_uses = def._mcl_uses
-							if fixed_uses then
-								uses = fixed_uses
-								if unbreaking_level > 0 then
-									uses = uses * (unbreaking_level + 1)
-								end
-							end
-						end
-						if not uses then
-							local toolcaps = stack:get_tool_capabilities()
-							local groupcaps = toolcaps.groupcaps
-							for _, v in pairs(groupcaps) do
-								uses = v.uses
-								break
-							end
-						end
-					end
-					uses = uses or 0
-					local multiplier = 2 * 65535 / uses
-					local repair = xp * multiplier
-					local new_wear = wear - repair
-					if new_wear < 0 then
-						xp = math.floor(-new_wear / multiplier + 0.5)
-						new_wear = 0
-					else
-						xp = 0
-					end
-					stack:set_wear(math.floor(new_wear))
-					inv:set_stack(list, index, stack)
-					if can.list == "armor" then
-						local armor_inv = minetest.get_inventory({type = "detached", name = collector:get_player_name() .. "_armor"})
-						armor_inv:set_stack(list, index, stack)
-					end
-				end
-				if xp > 0 then
-					mcl_experience.add_experience(collector, xp)
-				else
-					minetest.sound_play("experience",{gain=0.1,to_player = name,pitch=math.random(75,99)/100})
-				end
+				mcl_experience.add_experience(collector, self._xp)
 				self.object:remove()
 			end
 			return
