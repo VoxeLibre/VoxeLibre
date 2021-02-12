@@ -115,7 +115,7 @@ minetest.register_tool("mcl_farming:hoe_stone", {
 		damage_groups = { fleshy = 1, },
 		punch_attack_uses = uses.stone,
 	},
-	_repair_material = "mcl_core:cobblestone",
+	_repair_material = "mcl_core:cobble",
 })
 
 minetest.register_craft({
