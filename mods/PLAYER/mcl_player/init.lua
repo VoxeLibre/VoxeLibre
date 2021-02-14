@@ -173,10 +173,6 @@ minetest.register_globalstep(function(dtime)
 					player_set_animation(player, "swim_walk_mine", animation_speed_mod)
 				elseif not controls.sneak and standing_on_water then
 					player_set_animation(player, "swim_walk", animation_speed_mod)
-				elseif node_in_feet.walkable and controls.LMB then
-					player_set_animation(player, "swim_walk_mine", animation_speed_mod)
-				elseif node_in_feet.walkable then
-					player_set_animation(player, "swim_walk", animation_speed_mod)
 				elseif controls.LMB and not controls.sneak and not standing_on_water then
 					player_set_animation(player, "walk_mine", animation_speed_mod)
 				elseif controls.LMB and controls.sneak and not standing_on_water then
@@ -186,8 +182,6 @@ minetest.register_globalstep(function(dtime)
 				else
 					player_set_animation(player, "sneak_walk", animation_speed_mod)
 				end
-			elseif controls.LMB and node_in_feet.walkable then
-				player_set_animation(player, "swim_mine")
 			elseif controls.LMB and not controls.sneak and standing_on_water then
 				player_set_animation(player, "swim_mine")
 			elseif controls.LMB and not controls.sneak and not standing_on_water then
