@@ -154,8 +154,12 @@ minetest.register_globalstep(function(dtime)
 				animation_speed_mod = animation_speed_mod / 2
 			end
 
+			-- ask if player is in a place which he should crawl
+			node_in_feet = minetest.registered_nodes[mcl_playerinfo[name].node_feet]
 			-- ask if player is swiming
-			local standing_on_water = minetest.get_item_group(mcl_playerinfo[name].node_stand, "water") ~= 0
+			standing_on_water = minetest.get_item_group(mcl_playerinfo[name].node_stand, "water") ~= 0
+
+
 
 			-- Apply animations based on what the player is doing
 			if player:get_hp() == 0 then
@@ -169,6 +173,10 @@ minetest.register_globalstep(function(dtime)
 					player_set_animation(player, "swim_walk_mine", animation_speed_mod)
 				elseif not controls.sneak and standing_on_water then
 					player_set_animation(player, "swim_walk", animation_speed_mod)
+				elseif node_in_feet.walkable and controls.LMB then
+					player_set_animation(player, "swim_walk_mine", animation_speed_mod)
+				elseif node_in_feet.walkable then
+					player_set_animation(player, "swim_walk", animation_speed_mod)
 				elseif controls.LMB and not controls.sneak and not standing_on_water then
 					player_set_animation(player, "walk_mine", animation_speed_mod)
 				elseif controls.LMB and controls.sneak and not standing_on_water then
@@ -178,6 +186,8 @@ minetest.register_globalstep(function(dtime)
 				else
 					player_set_animation(player, "sneak_walk", animation_speed_mod)
 				end
+			elseif controls.LMB and node_in_feet.walkable then
+				player_set_animation(player, "swim_mine")
 			elseif controls.LMB and not controls.sneak and standing_on_water then
 				player_set_animation(player, "swim_mine")
 			elseif controls.LMB and not controls.sneak and not standing_on_water then

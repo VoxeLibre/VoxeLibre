@@ -24,8 +24,11 @@ minetest.register_globalstep(function(dtime)
 		name = player:get_player_name()
 
 		-- controls head bone
-		pitch = degrees(player:get_look_vertical()) * -1
+		local pitch = degrees(player:get_look_vertical()) * -1
 
+		local node_in_feet = minetest.registered_nodes[mcl_playerinfo[name].node_feet]
+
+		-- controls right and left arms pitch when shooting a bow or punching
 		if string.find(player:get_wielded_item():get_name(), "mcl_bows:bow") and controls.RMB and not controls.up and not controls.down and not controls.left and not controls.right then
 			player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch+90,-30,pitch * -1 * .35))
 			player:set_bone_position("Arm_Left_Pitch_Control", vector.new(3.5,5.785,0), vector.new(pitch+90,43,pitch * .35))
@@ -36,24 +39,34 @@ minetest.register_globalstep(function(dtime)
 			player:set_bone_position("Arm_Left_Pitch_Control", vector.new(3,5.785,0), vector.new(0,0,0))
 			player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(0,0,0))
 		end
-		
-		if controls.sneak and player:get_attach() == nil then
+
+		if node_in_feet.walkable and player:get_attach() == nil then
+			if not controls.RMB and not controls.up and not controls.down and not controls.left and not controls.right and not controls.LMB then
+				mcl_player.player_set_animation(player, "swim_stand")
+			end
+			player:set_properties({collisionbox = {-0.35,1,-0.35,0.35,1.8,0.35}, eye_height = 1.65, nametag_color = { r = 225, b = 225, a = 0, g = 225 }})
+			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+90,0,0))
+			player:set_bone_position("Body_Control", vector.new(0,12.5,0), vector.new(90,0,180))
+		elseif controls.sneak and player:get_attach() == nil then
+			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
 			-- controls head pitch when sneaking
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+36,0,0))
 			-- sets eye height, and nametag color accordingly
-			player:set_properties({eye_height = 1.35, nametag_color = { r = 225, b = 225, a = 0, g = 225 }})
+			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.35, nametag_color = { r = 225, b = 225, a = 0, g = 225 }})
 
 		elseif minetest.get_item_group(mcl_playerinfo[name].node_stand, "water") ~= 0 and player:get_attach() == nil then
+			player:set_bone_position("Body_Control", vector.new(0,12.5,0), vector.new(90,0,180))
 			-- controls head pitch when swiming
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+90,0,0))
 			-- sets eye height, and nametag color accordingly
-			player:set_properties({eye_height = 1.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
+			player:set_properties({collisionbox = {-0.35,1,-0.35,0.35,1.8,0.35}, eye_height = 1.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 
 		else
 			-- controls head pitch when not sneaking
+			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,0,0))
 			-- sets eye height, and nametag color accordingly
-			player:set_properties({eye_height = 1.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
+			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 		end
 
 		if mcl_playerplus_internal[name].jump_cooldown > 0 then
