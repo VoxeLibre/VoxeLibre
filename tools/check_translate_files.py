@@ -1,8 +1,9 @@
 # Output indicator
 # !<   Indicates a text line without '=' in template.txt
-# <<   Indicates an untranslated line in template.txt
+# <<   Indicates an untranslated line in template.txt or an extra line in translate file (.tr)
 # !>   Indicates a text line without '=' in translate file (.tr)
 # >>   Indicates an unknown translated line in translate file (.tr)
+# >=   Indicate an untrannslated entry in translate file (.tr)
 # >>   Missing file: Indicates a missing translate file (.tr)
 
 import os
@@ -15,7 +16,7 @@ args = parser.parse_args()
 path =  "../mods/"
 code_lang = args.language
 
-def LoadTranslateFile(filename, direction):
+def LoadTranslateFile(filename, direction, ref=None):
     result = set()
     file = open(filename, 'r', encoding="utf-8")
     for line in file:
@@ -23,15 +24,18 @@ def LoadTranslateFile(filename, direction):
         if line.startswith('#') or line == '':
             continue
         if '=' in line:
-            result.add(line.split('=')[0])
+            parts = line.split('=')
+            result.add(parts[0])
+            if ref is not None and parts[1] == '' and parts[1] not in ref :
+                print ('>= ' + parts[0])
         else:
             print (direction + line)
 
     return result
 
 def CompareFiles(f1, f2):
-    r1 = LoadTranslateFile(f1, "!> ")
-    r2 = LoadTranslateFile(f2, "!< ")
+    r1 = LoadTranslateFile(f1, "!< ")
+    r2 = LoadTranslateFile(f2, "!> ", r1)
 
     for key in r1.difference(r2):
         print (">> " + key )
@@ -57,5 +61,5 @@ for root, directories, files in os.walk(path):
                 print("Compare files %s with %s" % (template, language))
                 CompareFiles(template, language)
             else:
-                LoadTranslateFile(filename, "!> ")
+                LoadTranslateFile(template, "!< ")
                 print(">> Missing file = " + language)

@@ -159,10 +159,13 @@ lightning.strike = function(pos)
 				obj = minetest.add_entity(pos2, "mobs_mc:witch")
 				obj:set_yaw(rot)
 			]]
-			-- TODO: creeper → charged creeper (no damage)
+			-- charged creeper
 			elseif lua.name == "mobs_mc:creeper" then
-
-			-- Other mobs: Just damage
+				local rot = obj:get_yaw()
+				obj:remove()
+				obj = minetest.add_entity(pos2, "mobs_mc:creeper_charged")
+				obj:set_yaw(rot)
+				-- Other mobs: Just damage
 			else
 				obj:set_hp(obj:get_hp()-5, { type = "punch", from = "mod" })
 			end
@@ -256,4 +259,3 @@ minetest.register_chatcommand("lightning", {
 		return true
 	end,
 })
-
