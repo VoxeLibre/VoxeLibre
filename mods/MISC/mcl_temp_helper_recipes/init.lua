@@ -31,15 +31,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_mobitems:shulker_shell",
-	recipe = {
-		 { "mcl_end:purpur_block", "mcl_end:purpur_block", "mcl_end:purpur_block", },
-		 { "mcl_end:purpur_block", "mcl_core:goldblock", "mcl_end:purpur_block", },
-		 { "mcl_end:purpur_block", "", "mcl_end:purpur_block", },
-	}
-})
-
-minetest.register_craft({
 	output = "mcl_armor:helmet_chain",
 	recipe = {
 		{ "xpanes:bar_flat", "mcl_core:iron_ingot", "xpanes:bar_flat" },
@@ -110,11 +101,6 @@ minetest.register_craft({
 		{ "mcl_core:redsandstonesmooth", "mcl_core:redsandstonesmooth" },
 		{ "mcl_core:redsandstonesmooth", "mcl_core:redsandstonesmooth" },
 	},
-})
-
-minetest.register_craft({
-	output = "mcl_core:gold_ingot 9",
-	recipe = {{ "mcl_core:emerald" }},
 })
 
 minetest.register_craft({
