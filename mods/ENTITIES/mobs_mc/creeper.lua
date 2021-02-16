@@ -158,7 +158,7 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 	runaway_from = { "mobs_mc:ocelot", "mobs_mc:cat" },
 	attack_type = "explode",
 
-	explosion_strength = 5,
+	explosion_strength = 6,
 	explosion_radius = 8,
 	explosion_damage_radius = 8,
 	explosiontimer_reset_radius = 6,
