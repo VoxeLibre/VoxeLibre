@@ -255,9 +255,9 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 				local z_len = math.abs(z2 - z1)
 
 				-- Move object position to the center of its bounding box
-				opos.x = opos.x + x1 + x2
-				opos.y = opos.y + y1 + y2
-				opos.z = opos.z + z1 + z2
+				opos.x = opos.x + 0.5 * (x1 + x2)
+				opos.y = opos.y + 0.5 * (y1 + y2)
+				opos.z = opos.z + 0.5 * (z1 + z2)
 
 				-- Count number of rays from collision box which are unobstructed
 				local count = N_EXPOSURE_RAYS
