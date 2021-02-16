@@ -441,10 +441,6 @@ function mcl_explosions.explode(pos, strength, info, puncher)
 		info.max_blast_resistance = INDESTRUCT_BLASTRES
 	end
 
-	-- For backwards compatibility
-	if info.no_particle then info.particles = false end
-	if info.no_sound then info.sound = false end
-
 	-- Dont do drops in creative mode
 	if minetest.is_creative_enabled("") then
 		info.drop_chance = 0
