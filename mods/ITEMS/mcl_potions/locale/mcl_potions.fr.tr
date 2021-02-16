@@ -1,5 +1,5 @@
 # textdomain: mcl_potions
-<effect> <duration> [<factor>]=<effet> <durée> [<facteurr>]
+<effect> <duration> [<factor>]=<effet> <durée> [<facteur>]
 
 Add a status effect to yourself. Arguments: <effect>: name of status effect, e.g. poison. <duration>: duration in seconds. <factor>: effect strength multiplier (1 @= 100%)=Ajoutez-vous un effet de statut. Arguments: <effet>: nom de l'effet de statut, par ex. poison. <duration>: durée en secondes. <facteur>: multiplicateur de force d'effet (1 @ = 100%) 
 
@@ -46,17 +46,17 @@ Drinking a potion gives you a particular effect.=Boire une potion vous donne un 
 1 HP/@1s | @2=1 HP/@1s | @2
 @1 HP=@1 HP
 @1 Potion=Potion @1
-Splash @1 Potion=Potion @1 jettable
+Splash @1 Potion=Potion @1 jetable
 Lingering @1 Potion=Potion @1 persistante
 Arrow of @1=Flêche de @1
  II= II
  IV= IV
 @1 Potion@2=@1 Potion@2
-Splash @1@2 Potion=Potion @1@2 jettable
+Splash @1@2 Potion=Potion @1@2 jetable
 Lingering @1@2 Potion=Potion @1@2 persistante
 Arrow of @1@2=Flêche de @1@2
 @1 + Potion=@1 + Potion
-Splash @1 + Potion=Potion @1 + jettable
+Splash @1 + Potion=Potion @1 + jetable
 Lingering @1 + Potion=Potion @1 + persistante
 Arrow of @1 +=Flêche de @1 +
 Awkward Potion=Potion étrange
