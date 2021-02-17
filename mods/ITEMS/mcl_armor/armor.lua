@@ -363,6 +363,8 @@ mcl_player.player_register_model("mcl_armor_character.b3d", {
 		swim_walk_mine = {x=389, y=408},
 		swim_stand = {x=434, y=434},
 		swim_mine = {x=411, y=430},
+		run_walk	= {x=440, y=459},
+		run_walk_mine	= {x=461, y=480},
 	},
 })
 
