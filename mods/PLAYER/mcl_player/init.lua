@@ -155,9 +155,9 @@ minetest.register_globalstep(function(dtime)
 			end
 
 			-- ask if player is in a place which he should crawl
-			node_in_feet = minetest.registered_nodes[mcl_playerinfo[name].node_feet]
+			local node_in_feet = minetest.registered_nodes[mcl_playerinfo[name].node_feet]
 			-- ask if player is swiming
-			standing_on_water = minetest.get_item_group(mcl_playerinfo[name].node_feet, "water") ~= 0
+			local standing_on_water = minetest.get_item_group(mcl_playerinfo[name].node_feet, "water") ~= 0
 
 
 
