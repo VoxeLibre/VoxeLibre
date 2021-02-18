@@ -94,6 +94,7 @@ minetest.register_tool("mcl_tools:pick_wood", {
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:wood",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:pick_stone", {
 	description = S("Stone Pickaxe"),
@@ -113,6 +114,7 @@ minetest.register_tool("mcl_tools:pick_stone", {
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:cobble",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:pick_iron", {
 	description = S("Iron Pickaxe"),
@@ -132,6 +134,7 @@ minetest.register_tool("mcl_tools:pick_iron", {
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:iron_ingot",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:pick_gold", {
 	description = S("Golden Pickaxe"),
@@ -151,6 +154,7 @@ minetest.register_tool("mcl_tools:pick_gold", {
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:gold_ingot",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:pick_diamond", {
 	description = S("Diamond Pickaxe"),
@@ -170,6 +174,7 @@ minetest.register_tool("mcl_tools:pick_diamond", {
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:diamond",
+	_mcl_toollike_wield = true,
 })
 
 local get_shovel_dig_group = function(itemstack)
@@ -292,6 +297,7 @@ minetest.register_tool("mcl_tools:shovel_wood", {
 	on_place = make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:wood",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:shovel_stone", {
 	description = S("Stone Shovel"),
@@ -312,6 +318,7 @@ minetest.register_tool("mcl_tools:shovel_stone", {
 	on_place = make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:cobble",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:shovel_iron", {
 	description = S("Iron Shovel"),
@@ -332,6 +339,7 @@ minetest.register_tool("mcl_tools:shovel_iron", {
 	on_place = make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:iron_ingot",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:shovel_gold", {
 	description = S("Golden Shovel"),
@@ -352,6 +360,7 @@ minetest.register_tool("mcl_tools:shovel_gold", {
 	on_place = make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:gold_ingot",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:shovel_diamond", {
 	description = S("Diamond Shovel"),
@@ -372,6 +381,7 @@ minetest.register_tool("mcl_tools:shovel_diamond", {
 	on_place = make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:diamond",
+	_mcl_toollike_wield = true,
 })
 
 -- Axes
@@ -393,6 +403,7 @@ minetest.register_tool("mcl_tools:axe_wood", {
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:wood",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:axe_stone", {
 	description = S("Stone Axe"),
@@ -411,6 +422,7 @@ minetest.register_tool("mcl_tools:axe_stone", {
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:cobble",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:axe_iron", {
 	description = S("Iron Axe"),
@@ -430,6 +442,7 @@ minetest.register_tool("mcl_tools:axe_iron", {
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:iron_ingot",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:axe_gold", {
 	description = S("Golden Axe"),
@@ -448,6 +461,7 @@ minetest.register_tool("mcl_tools:axe_gold", {
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:gold_ingot",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:axe_diamond", {
 	description = S("Diamond Axe"),
@@ -466,6 +480,7 @@ minetest.register_tool("mcl_tools:axe_diamond", {
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:diamond",
+	_mcl_toollike_wield = true,
 })
 
 -- Swords
@@ -488,6 +503,7 @@ minetest.register_tool("mcl_tools:sword_wood", {
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:wood",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:sword_stone", {
 	description = S("Stone Sword"),
@@ -507,6 +523,7 @@ minetest.register_tool("mcl_tools:sword_stone", {
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:cobble",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:sword_iron", {
 	description = S("Iron Sword"),
@@ -526,6 +543,7 @@ minetest.register_tool("mcl_tools:sword_iron", {
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:iron_ingot",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:sword_gold", {
 	description = S("Golden Sword"),
@@ -545,6 +563,7 @@ minetest.register_tool("mcl_tools:sword_gold", {
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:gold_ingot",
+	_mcl_toollike_wield = true,
 })
 minetest.register_tool("mcl_tools:sword_diamond", {
 	description = S("Diamond Sword"),
@@ -564,6 +583,7 @@ minetest.register_tool("mcl_tools:sword_diamond", {
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:diamond",
+	_mcl_toollike_wield = true,
 })
 
 --Shears
@@ -585,6 +605,7 @@ minetest.register_tool("mcl_tools:shears", {
 	},
 	on_place = carve_pumpkin,
 	sound = { breaks = "default_tool_breaks" },
+	_mcl_toollike_wield = true,
 })
 
 

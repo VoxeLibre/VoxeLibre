@@ -178,6 +178,7 @@ minetest.register_craftitem("mcl_mobitems:bone", {
 	inventory_image = "mcl_mobitems_bone.png",
 	stack_max = 64,
 	groups = { craftitem=1 },
+	_mcl_toollike_wield = true,
 })
 
 minetest.register_craftitem("mcl_mobitems:string",{
@@ -323,8 +324,8 @@ minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
 	wield_image = "mcl_mobitems_carrot_on_a_stick.png",
 	inventory_image = "mcl_mobitems_carrot_on_a_stick.png",
 	groups = { transport = 1 },
+	_mcl_toollike_wield = true,
 })
-
 
 -----------
 -- Crafting

@@ -77,6 +77,7 @@ minetest.register_tool("mcl_farming:hoe_wood", {
 		punch_attack_uses = uses.wood,
 	},
 	_repair_material = "group:wood",
+	_mcl_toollike_wield = true,
 })
 
 minetest.register_craft({
@@ -116,6 +117,7 @@ minetest.register_tool("mcl_farming:hoe_stone", {
 		punch_attack_uses = uses.stone,
 	},
 	_repair_material = "mcl_core:cobble",
+	_mcl_toollike_wield = true,
 })
 
 minetest.register_craft({
@@ -151,6 +153,7 @@ minetest.register_tool("mcl_farming:hoe_iron", {
 		punch_attack_uses = uses.iron,
 	},
 	_repair_material = "mcl_core:iron_ingot",
+	_mcl_toollike_wield = true,
 })
 
 minetest.register_craft({
@@ -192,6 +195,7 @@ minetest.register_tool("mcl_farming:hoe_gold", {
 		punch_attack_uses = uses.gold,
 	},
 	_repair_material = "mcl_core:gold_ingot",
+	_mcl_toollike_wield = true,
 })
 
 minetest.register_craft({
@@ -235,6 +239,7 @@ minetest.register_tool("mcl_farming:hoe_diamond", {
 		punch_attack_uses = uses.diamond,
 	},
 	_repair_material = "mcl_core:diamond",
+	_mcl_toollike_wield = true,
 })
 
 minetest.register_craft({

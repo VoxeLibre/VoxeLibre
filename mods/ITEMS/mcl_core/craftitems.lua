@@ -13,6 +13,7 @@ minetest.register_craftitem("mcl_core:stick", {
 	inventory_image = "default_stick.png",
 	stack_max = 64,
 	groups = { craftitem=1, stick=1 },
+	_mcl_toollike_wield = true,
 })
 
 minetest.register_craftitem("mcl_core:paper", {
