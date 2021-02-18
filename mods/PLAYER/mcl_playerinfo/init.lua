@@ -52,7 +52,7 @@ minetest.register_globalstep(function(dtime)
 	time = 0
 
 	-- check players
-	for _,player in pairs(minetest.get_connected_players()) do
+	for _,player in ipairs(minetest.get_connected_players()) do
 		-- who am I?
 		local name = player:get_player_name()
 
