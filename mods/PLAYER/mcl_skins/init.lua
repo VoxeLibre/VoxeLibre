@@ -7,6 +7,8 @@ mcl_skins = {
 }
 
 local S = minetest.get_translator("mcl_skins")
+local has_mcl_armor = minetest.get_modpath("mcl_armor")
+local has_mcl_inventory = minetest.get_modpath("mcl_inventory")
 
 -- load skin list and metadata
 local id, f, data, skin = 0
@@ -105,11 +107,11 @@ mcl_skins.set_player_skin = function(player, skin_id)
 	mcl_skins.previews[playername] = preview
 	player:get_meta():set_string("mcl_skins:skin_id", tostring(skin_id))
 	mcl_skins.update_player_skin(player)
-	if minetest.get_modpath("mcl_armor") then
+	if has_mcl_armor then
 		armor.textures[playername].skin = skin_file
 		armor:update_player_visuals(player)
 	end
-	if minetest.get_modpath("mcl_inventory") then
+	if has_mcl_inventory then
 		mcl_inventory.update_inventory_formspec(player)
 	end
 	for i=1, #mcl_skins.registered_on_set_skins do
