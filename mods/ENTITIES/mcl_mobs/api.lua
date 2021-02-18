@@ -3540,6 +3540,10 @@ local mob_step = function(self, dtime)
 		return
 	end
 
+	if not self.object:get_luaentity() then
+		return false
+	end
+
 	do_jump(self)
 
 	runaway_from(self)
