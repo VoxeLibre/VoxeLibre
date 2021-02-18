@@ -246,7 +246,8 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 		"mesecons_delayer_sides_off.png",
 		"mesecons_delayer_ends_off.png",
 		"mesecons_delayer_ends_off.png",
-		},
+	},
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	wield_image = "mesecons_delayer_off.png",
 	walkable = true,
 	selection_box = {
@@ -315,7 +316,8 @@ minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 		"mesecons_delayer_sides_on.png",
 		"mesecons_delayer_ends_on.png",
 		"mesecons_delayer_ends_on.png",
-		},
+	},
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	walkable = true,
 	selection_box = {
 		type = "fixed",
@@ -391,7 +393,8 @@ minetest.register_node("mesecons_delayer:delayer_off_locked", {
 		"mesecons_delayer_sides_locked_off.png",
 		"mesecons_delayer_front_locked_off.png",
 		"mesecons_delayer_end_locked_off.png",
-		},
+	},
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	wield_image = "mesecons_delayer_locked_off.png",
 	walkable = true,
 	selection_box = {
@@ -443,7 +446,8 @@ minetest.register_node("mesecons_delayer:delayer_on_locked", {
 		"mesecons_delayer_sides_locked_on.png",
 		"mesecons_delayer_front_locked_on.png",
 		"mesecons_delayer_end_locked_on.png",
-		},
+	},
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	walkable = true,
 	selection_box = {
 		type = "fixed",

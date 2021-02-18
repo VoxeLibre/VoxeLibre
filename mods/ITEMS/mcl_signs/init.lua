@@ -295,6 +295,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 	mesh = "mcl_signs_signonwallmount.obj",
 	selection_box = {type = "wallmounted", wall_side = {-0.5, -7/28, -0.5, -23/56, 7/28, 0.5}},
 	tiles = {"mcl_signs_sign.png"},
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	groups = sign_groups,
 	stack_max = 16,
 	sounds = node_sounds,
@@ -425,6 +426,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 -- 0°
 local ssign = {
 	paramtype = "light",
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	sunlight_propagates = true,
 	walkable = false,
 	is_ground_content = false,

@@ -391,6 +391,7 @@ minetest.register_node("mcl_core:grass_path", {
 	_doc_items_longdesc = S("Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created with a shovel. A grass path turns into dirt when it is below a solid block."),
 	drop = "mcl_core:dirt",
 	is_ground_content = true,
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	drawtype = "nodebox",
 	paramtype = "light",
 	node_box = {

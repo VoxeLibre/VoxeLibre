@@ -130,6 +130,7 @@ function mcl_doors:register_trapdoor(name, def)
 		_doc_items_usagehelp = usagehelp,
 		drawtype = "nodebox",
 		tiles = tiles_closed,
+		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 		inventory_image = def.inventory_image,
 		wield_image = def.wield_image,
 		is_ground_content = false,
@@ -197,6 +198,7 @@ function mcl_doors:register_trapdoor(name, def)
 	minetest.register_node(name.."_open", {
 		drawtype = "nodebox",
 		tiles = tiles_open,
+		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 		is_ground_content = false,
 		paramtype = "light",
 		paramtype2 = "facedir",

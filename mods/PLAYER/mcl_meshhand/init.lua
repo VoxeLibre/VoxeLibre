@@ -16,6 +16,7 @@ for _,texture in pairs(list) do
 	minetest.register_node("mcl_meshhand:"..texture, {
 		description = "",
 		tiles = {texture..".png"},
+		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 		visual_scale = 1,
 		wield_scale = {x=1,y=1,z=1},
 		paramtype = "light",

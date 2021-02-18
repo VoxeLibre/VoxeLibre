@@ -84,6 +84,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 			}
 		},
 		tiles = arrow_image(color, 100),
+		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 		paramtype = "light",
 		paramtype2 = "facedir",
 		sunlight_propagates = true,

@@ -54,6 +54,7 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 			"[combine:16x16:-20,0="..texture, -- back
 			"[combine:16x16:-4,0="..texture, -- front
 		},
+		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 		paramtype = "light",
 		stack_max = 64,
 		paramtype2 = "facedir",
@@ -136,6 +137,7 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 			{ name = "([combine:16x16:-4,0="..texture..")^[transformR180", align_style = "node" }, -- top
 			{ name = "([combine:16x16:-4,8="..texture..")^([combine:16x16:-12,8="..texture..")", align_style = "node" }, -- bottom
 		},
+		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 		paramtype = "light",
 		stack_max = 64,
 		paramtype2 = "wallmounted",

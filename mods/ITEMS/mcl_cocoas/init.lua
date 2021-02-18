@@ -81,6 +81,7 @@ local crop_def = {
 		"mcl_cocoas_cocoa_stage_0.png", "mcl_cocoas_cocoa_stage_0.png^[transformFX",
 		"[combine:16x16:-5,0=mcl_cocoas_cocoa_stage_0.png", "[combine:16x16:-5,0=mcl_cocoas_cocoa_stage_0.png",
 	},
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 	paramtype = "light",
 	sunlight_propagates = true,
 	paramtype2 = "facedir",

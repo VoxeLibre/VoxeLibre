@@ -246,6 +246,7 @@ for _, state in pairs{mesecon.state.on, mesecon.state.off} do
 		_doc_items_usagehelp = usagehelp,
 		drawtype = "nodebox",
 		tiles = get_tiles(state_strs[state], mode),
+		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 		wield_image = "mcl_comparators_off.png",
 		walkable = true,
 		selection_box = collision_box,

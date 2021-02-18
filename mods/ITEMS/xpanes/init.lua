@@ -224,6 +224,7 @@ xpanes.register_pane("bar", {
 	wield_image = "xpanes_pane_iron.png",
 	groups = {pickaxey=1},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 	recipe = {
 		{"mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot"},
 		{"mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot"},
