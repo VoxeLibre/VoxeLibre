@@ -36,7 +36,7 @@ mcl_weather.rain.set_sky_box = function()
 			{r=85, g=86, b=98},
 			{r=0, g=0, b=0}})
 		mcl_weather.skycolor.active = true
-		for _, player in pairs(minetest.get_connected_players()) do
+		for _, player in ipairs(minetest.get_connected_players()) do
 			player:set_clouds({color="#5D5D5FE8"})
 		end
 	end
