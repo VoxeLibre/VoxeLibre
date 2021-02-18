@@ -2975,7 +2975,8 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	if weapon then
 		local fire_aspect_level = mcl_enchanting.get_enchantment(weapon, "fire_aspect")
 		if fire_aspect_level > 0 then
-			mcl_burning.set_on_fire(self.object, 4, fire_aspect_level * 2)
+			local damage = fire_aspect_level * 4 - 1
+			mcl_burning.set_on_fire(self.object, 4, 1, 4 / damage)
 		end
 	end
 

@@ -36,6 +36,7 @@ local paddling_speed = 22
 local boat_y_offset = 0.35
 local boat_y_offset_ground = boat_y_offset + 0.6
 local boat_side_offset = 1.001
+local boat_max_hp = 4
 
 --
 -- Boat entity
@@ -50,7 +51,7 @@ local boat = {
 	mesh = "mcl_boats_boat.b3d",
 	textures = {"mcl_boats_texture_oak_boat.png"},
 	visual_size = boat_visual_size,
-	hp_max = 4,
+	hp_max = boat_max_hp,
 
 	_driver = nil, -- Attached driver (player) or nil if none
 	_passenger = nil,
@@ -185,6 +186,12 @@ function boat.on_step(self, dtime, moveresult)
 		v_factor = 0.75
 		v_slowdown = 0.05
 	end
+
+	--local yaw = self.object:get_yaw()
+	--local hp = math.min(self.object:get_hp() + 2 * dtime, boat_max_hp)
+	--self.object:set_rotation(vector.new((boat_max_hp - hp) / boat_max_hp, 0, 0))
+	self.object:set_hp(self.object:get_hp() + 2 * dtime)
+	--self.object:set_yaw(yaw)
 
 	if moveresult and moveresult.collides then
 		for _, collision in ipairs(moveresult.collisions) do
