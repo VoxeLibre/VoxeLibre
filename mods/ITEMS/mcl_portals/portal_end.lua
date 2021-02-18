@@ -66,7 +66,7 @@ minetest.register_node("mcl_portals:portal_end", {
 	drawtype = "nodebox",
 	paramtype = "light",
 	sunlight_propagates = true,
-	use_texture_alpha = true,
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "blend" or true,
 	walkable = false,
 	diggable = false,
 	pointable = false,
