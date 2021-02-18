@@ -313,6 +313,7 @@ minetest.register_node("mcl_mobspawners:spawner", {
 		if obj then
 			obj:remove()
 		end
+		mcl_experience.throw_experience(math.random(15, 43))
 	end,
 
 	on_punch = function(pos)
