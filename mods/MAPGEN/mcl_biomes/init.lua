@@ -1616,6 +1616,16 @@ local function register_biomelike_ores()
 		clust_size	= 7,
 		y_min		= mcl_vars.mg_overworld_min,
 		y_max		= mcl_vars.mg_overworld_max,
+		noise_params = {
+			offset  = 0,
+			scale   = 1,
+			spread  = {x=250, y=250, z=250},
+			seed    = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		},
 		biomes = { "MesaPlateauF_grasstop" },
 	})
 	minetest.register_ore({
@@ -1639,6 +1649,16 @@ local function register_biomelike_ores()
 		clust_size	= 15,
 		y_min		= mcl_vars.mg_overworld_min,
 		y_max		= mcl_vars.mg_overworld_max,
+		noise_params = {
+			offset  = 0,
+			scale   = 1,
+			spread  = {x=250, y=250, z=250},
+			seed    = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		},
 		biomes = { "MesaPlateauFM_grasstop" },
 	})
 	-- Occasionally dig out portions of MesaPlateauFM
@@ -1650,6 +1670,16 @@ local function register_biomelike_ores()
 		clust_size	= 5,
 		y_min		= mcl_vars.mg_overworld_min,
 		y_max		= mcl_vars.mg_overworld_max,
+		noise_params = {
+			offset  = 0,
+			scale   = 1,
+			spread  = {x=250, y=250, z=250},
+			seed    = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		},
 		biomes = { "MesaPlateauFM", "MesaPlateauFM_grasstop" },
 	})
 	minetest.register_ore({
@@ -1660,6 +1690,16 @@ local function register_biomelike_ores()
 		clust_size	= 8,
 		y_min		= mcl_vars.mg_overworld_min,
 		y_max		= mcl_vars.mg_overworld_max,
+		noise_params = {
+			offset  = 0,
+			scale   = 1,
+			spread  = {x=250, y=250, z=250},
+			seed    = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		},
 		biomes = { "MesaPlateauFM_sandlevel" },
 	})
 	-- More red sand in MesaPlateauFM
@@ -1684,6 +1724,16 @@ local function register_biomelike_ores()
 		clust_size	= 4,
 		y_min		= mcl_vars.mg_overworld_min,
 		y_max		= mcl_vars.mg_overworld_max,
+		noise_params = {
+			offset  = 0,
+			scale   = 1,
+			spread  = {x=250, y=250, z=250},
+			seed    = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		},
 		biomes = { "MesaPlateauFM", "MesaPlateauFM_grasstop", "MesaPlateauFM_sandlevel" },
 	})
 
@@ -1918,6 +1968,16 @@ local function register_dimension_ores()
 		clust_size     = 6,
 		y_min          = mcl_worlds.layer_to_y(23, "nether"),
 		y_max          = mcl_worlds.layer_to_y(37, "nether"),
+		noise_params = {
+			offset  = 0,
+			scale   = 1,
+			spread  = {x=250, y=250, z=250},
+			seed    = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		},
 	})
 	minetest.register_ore({
 		ore_type       = "blob",
@@ -1928,6 +1988,16 @@ local function register_dimension_ores()
 		clust_size     = 8,
 		y_min          = mcl_worlds.layer_to_y(23, "nether"),
 		y_max          = mcl_worlds.layer_to_y(37, "nether"),
+		noise_params = {
+			offset  = 0,
+			scale   = 1,
+			spread  = {x=250, y=250, z=250},
+			seed    = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		},
 	})
 
 	-- Glowstone
