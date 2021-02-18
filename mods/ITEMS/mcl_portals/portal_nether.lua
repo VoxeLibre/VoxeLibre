@@ -24,6 +24,11 @@ local DESTINATION_EXPIRES = 60 * 1000000 -- cached destination expires after thi
 local PORTAL_SEARCH_HALF_CHUNK = 40 -- greater values may slow down the teleportation
 local PORTAL_SEARCH_ALTITUDE = 128
 
+local PORTAL_ALPHA = 192
+if minetest.features.use_texture_alpha_string_modes then
+	PORTAL_ALPHA = nil
+end
+
 -- Table of objects (including players) which recently teleported by a
 -- Nether portal. Those objects have a brief cooloff period before they
 -- can teleport again. This prevents annoying back-and-forth teleportation.
@@ -140,7 +145,7 @@ minetest.register_node("mcl_portals:portal", {
 	drop = "",
 	light_source = 11,
 	post_effect_color = {a = 180, r = 51, g = 7, b = 89},
-	alpha = 192,
+	alpha = PORTAL_ALPHA,
 	node_box = {
 		type = "fixed",
 		fixed = {
