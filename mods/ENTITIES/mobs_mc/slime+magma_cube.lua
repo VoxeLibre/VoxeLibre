@@ -78,9 +78,6 @@ local slime_big = {
 		attack = "green_slime_attack",
 		distance = 16,
 	},
-	do_custom = function(self)
-		ice_texture_alpha = minetest.features.object_use_texture_alpha and "blend" or true
-	end,
 	damage = 4,
 	reach = 3,
 	armor = 100,
