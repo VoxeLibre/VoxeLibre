@@ -357,7 +357,7 @@ mcl_player.player_register_model("mcl_armor_character.b3d", {
 		walk_mine = {x=200, y=219},
 		sit = {x=81, y=160},
 		sneak_stand = {x=222, y=302},
-		sneak_mine = {x=346, y=366},
+		sneak_mine = {x=346, y=365},
 		sneak_walk = {x=304, y=323},
 		sneak_walk_mine = {x=325, y=344},
 		swim_walk = {x=368, y=387},
