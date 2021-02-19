@@ -25,6 +25,7 @@ minetest.register_globalstep(function(dtime)
 
 		-- controls head bone
 		local pitch = degrees(player:get_look_vertical()) * -1
+		local yaw = degrees(player:get_look_horizontal()) * -1
 
 		-- controls right and left arms pitch when shooting a bow or punching
 		if string.find(player:get_wielded_item():get_name(), "mcl_bows:bow") and controls.RMB and not controls.LMB and not controls.up and not controls.down and not controls.left and not controls.right then
@@ -50,11 +51,16 @@ minetest.register_globalstep(function(dtime)
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,0.8,0.35}, eye_height = 0.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 
-		else
+		elseif player:get_attach() == nil then
 			-- controls head pitch when not sneaking
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,0,0))
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
+		else
+			local attached = player:get_attach(parent)
+			local attached_yaw = degrees(attached:get_yaw())
+			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
+			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,yaw + attached_yaw,0))
 		end
 
 		if mcl_playerplus_internal[name].jump_cooldown > 0 then
