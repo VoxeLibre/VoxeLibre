@@ -45,7 +45,7 @@ minetest.register_globalstep(function(dtime)
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.35, nametag_color = { r = 225, b = 225, a = 0, g = 225 }})
 
-		elseif minetest.get_item_group(mcl_playerinfo[name].node_feet, "water") ~= 0 and player:get_attach() == nil and mcl_sprint.is_sprinting(name) == true then
+		elseif minetest.get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and player:get_attach() == nil and mcl_sprint.is_sprinting(name) == true or minetest.registered_nodes[mcl_playerinfo[name].node_head].walkable then
 			-- controls head pitch when swiming
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+90,0,0))
 			-- sets eye height, and nametag color accordingly
