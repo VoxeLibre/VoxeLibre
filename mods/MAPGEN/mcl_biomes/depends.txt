@@ -1,4 +1,5 @@
 mcl_init
+mcl_mapgen_core
 mcl_core
 mcl_worlds
 mcl_farming

@@ -67,7 +67,8 @@ local init_strongholds = function()
 end
 
 -- Stronghold generation for register_on_generated.
-local generate_strongholds = function(minp, maxp)
+local generate_strongholds = function(minp, maxp, blockseed)
+	local pr = PseudoRandom(blockseed)
 	for s=1, #strongholds do
 		if not strongholds[s].generated then
 			local pos = strongholds[s].pos
@@ -80,6 +81,12 @@ local generate_strongholds = function(minp, maxp)
 				if pos.x + 6 > maxp.x then
 					pos.x = maxp.x - 7
 				end
+				if pos.y - 4 < minp.y then
+					pos.y = minp.y + 5
+				end
+				if pos.y + 4 > maxp.y then
+					pos.y = maxp.y - 5
+				end
 				if pos.z - 6 < minp.z then
 					pos.z = minp.z + 7
 				end
@@ -87,7 +94,7 @@ local generate_strongholds = function(minp, maxp)
 					pos.z = maxp.z - 7
 				end
 
-				mcl_structures.call_struct(pos, "end_portal_shrine")
+				mcl_structures.call_struct(pos, "end_portal_shrine", nil, pr)
 				strongholds[s].generated = true
 			end
 		end
@@ -96,9 +103,4 @@ end
 
 init_strongholds()
 
---[[ Note this mod depends on mcl_mapgen_core to make sure the core mapgen runs FIRST.
-This is important because we need this to make sure the stronghold isn't instantly
-overwritten by the core mapgen (since it uses LuaVoxelManip). ]]
-minetest.register_on_generated(function(minp, maxp, blockseed)
-	generate_strongholds(minp, maxp)
-end)
+mcl_mapgen_core.register_generator("strongholds", nil, generate_strongholds, 999999)

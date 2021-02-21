@@ -1,23 +1,57 @@
 local S = minetest.get_translator("mcl_structures")
 mcl_structures ={}
+local rotations = {
+	"0",
+	"90",
+	"180",
+	"270"
+}
+
+mcl_structures.minetest_place_schematic = minetest.place_schematic
+local function ecb_place(blockpos, action, calls_remaining, param)
+	if calls_remaining >= 1 then return end
+	mcl_structures.minetest_place_schematic(param.pos, param.schematic, param.rotation, param.replacements, param.force_placement, param.flags)
+	if param.after_placement_callback and param.p1 and param.p2 then
+		param.after_placement_callback(param.p1, param.p2, param.size, param.rotation, param.pr)
+	end
+end
+minetest.place_schematic = function(pos, schematic, rotation, replacements, force_placement, flags, after_placement_callback, pr)
+	local s = loadstring(minetest.serialize_schematic(schematic, "lua", {lua_use_comments = false, lua_num_indent_spaces = 0}) .. " return(schematic)")()
+	if s and s.size then
+		local x, z = s.size.x, s.size.z
+		if rotation then
+			if rotation == "random" and pr then
+				rotation = rotations[pr:next(1,#rotations)]
+			end
+			if rotation == "random" then
+				x = math.max(x, z)
+				z = x
+			elseif rotation == "90" or rotation == "270" then
+				x, z = z, x
+			end
+		end
+		local p1 = {x=pos.x    , y=pos.y           , z=pos.z    }
+		local p2 = {x=pos.x+x-1, y=pos.y+s.size.y-1, z=pos.z+z-1}
+		minetest.log("verbose","[mcl_structures] size=" ..minetest.pos_to_string(s.size) .. ", rotation=" .. tostring(rotation) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
+		local param = {pos=vector.new(pos), schematic=s, rotation=rotation, replacements=replacements, force_placement=force_placement, flags=flags, p1=p1, p2=p2, after_placement_callback = after_placement_callback, size=vector.new(s.size), pr=pr}
+		minetest.emerge_area(p1, p2, ecb_place, param)
+	end
+end
+mcl_structures.place_schematic = minetest.place_schematic -- for direct usage
 
 mcl_structures.get_struct = function(file)
 	local localfile = minetest.get_modpath("mcl_structures").."/schematics/"..file
 	local file, errorload = io.open(localfile, "rb")
 	if errorload ~= nil then
-	    minetest.log("error", '[mcl_structures] Could not open this struct: ' .. localfile)
-	    return nil
+		minetest.log("error", '[mcl_structures] Could not open this struct: ' .. localfile)
+		return nil
 	end
 
-   local allnode = file:read("*a")
-   file:close()
+	local allnode = file:read("*a")
+	file:close()
 
-    return allnode
+	return allnode
 end
-
-local mapseed = tonumber(minetest.get_mapgen_setting("seed"))
--- Random number generator for all generated structures
-local pr = PseudoRandom(mapseed)
 
 -- Call on_construct on pos.
 -- Useful to init chests from formspec.
@@ -32,16 +66,17 @@ local init_node_construct = function(pos)
 end
 
 -- The call of Struct
-mcl_structures.call_struct = function(pos, struct_style, rotation)
+mcl_structures.call_struct = function(pos, struct_style, rotation, pr)
+	minetest.log("action","[mcl_structures] call_struct " .. struct_style.." at "..minetest.pos_to_string(pos))
 	if not rotation then
 		rotation = "random"
 	end
 	if struct_style == "desert_temple" then
-		return mcl_structures.generate_desert_temple(pos, rotation)
+		return mcl_structures.generate_desert_temple(pos, rotation, pr)
 	elseif struct_style == "desert_well" then
 		return mcl_structures.generate_desert_well(pos, rotation)
 	elseif struct_style == "igloo" then
-		return mcl_structures.generate_igloo(pos, rotation)
+		return mcl_structures.generate_igloo(pos, rotation, pr)
 	elseif struct_style == "witch_hut" then
 		return mcl_structures.generate_witch_hut(pos, rotation)
 	elseif struct_style == "ice_spike_small" then
@@ -49,13 +84,13 @@ mcl_structures.call_struct = function(pos, struct_style, rotation)
 	elseif struct_style == "ice_spike_large" then
 		return mcl_structures.generate_ice_spike_large(pos, rotation)
 	elseif struct_style == "boulder" then
-		return mcl_structures.generate_boulder(pos, rotation)
+		return mcl_structures.generate_boulder(pos, rotation, pr)
 	elseif struct_style == "fossil" then
-		return mcl_structures.generate_fossil(pos, rotation)
+		return mcl_structures.generate_fossil(pos, rotation, pr)
 	elseif struct_style == "end_exit_portal" then
 		return mcl_structures.generate_end_exit_portal(pos, rotation)
 	elseif struct_style == "end_portal_shrine" then
-		return mcl_structures.generate_end_portal_shrine(pos, rotation)
+		return mcl_structures.generate_end_portal_shrine(pos, rotation, pr)
 	end
 end
 
@@ -65,12 +100,12 @@ mcl_structures.generate_desert_well = function(pos)
 	return minetest.place_schematic(newpos, path, "0", nil, true)
 end
 
-mcl_structures.generate_igloo = function(pos)
+mcl_structures.generate_igloo = function(pos, rotation, pr)
 	-- Place igloo
-	local success, rotation = mcl_structures.generate_igloo_top(pos)
+	local success, rotation = mcl_structures.generate_igloo_top(pos, pr)
 	-- Place igloo basement with 50% chance
-	local r = math.random(1,2)
-	if success and r == 1 then
+	local r = pr:next(1,2)
+	if r == 1 then
 		-- Select basement depth
 		local dim = mcl_worlds.pos_to_dimension(pos)
 		local buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
@@ -86,7 +121,7 @@ mcl_structures.generate_igloo = function(pos)
 		if buffer <= 19 then
 			return success
 		end
-		local depth = math.random(19, buffer)
+		local depth = pr:next(19, buffer)
 		local bpos = {x=pos.x, y=pos.y-depth, z=pos.z}
 		-- trapdoor position
 		local tpos
@@ -111,8 +146,8 @@ mcl_structures.generate_igloo = function(pos)
 			return success
 		end
 		local set_brick = function(pos)
-			local c = math.random(1, 3) -- cracked chance
-			local m = math.random(1, 10) -- chance for monster egg
+			local c = pr:next(1, 3) -- cracked chance
+			local m = pr:next(1, 10) -- chance for monster egg
 			local brick
 			if m == 1 then
 				if c == 1 then
@@ -155,75 +190,74 @@ mcl_structures.generate_igloo = function(pos)
 			minetest.set_node({x=tpos.x,y=tpos.y-y,z=tpos.z}, {name="mcl_core:ladder", param2=ladder_param2})
 		end
 		-- Place basement
-		mcl_structures.generate_igloo_basement(bpos, rotation)
+		mcl_structures.generate_igloo_basement(bpos, rotation, pr)
 	end
 	return success
 end
 
-mcl_structures.generate_igloo_top = function(pos)
+mcl_structures.generate_igloo_top = function(pos, pr)
 	-- FIXME: This spawns bookshelf instead of furnace. Fix this!
 	-- Furnace does ot work atm because apparently meta is not set. :-(
 	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_igloo_top.mts"
-	local rotation = tostring(math.random(0,3)*90)
+	local rotation = tostring(pr:next(0,3)*90)
 	return minetest.place_schematic(newpos, path, rotation, nil, true), rotation
 end
 
-mcl_structures.generate_igloo_basement = function(pos, orientation)
+local function igloo_placement_callback(p1, p2, size, orientation, pr)
+	local chest_offset
+	if orientation == "0" then
+		chest_offset = {x=5, y=1, z=5}
+	elseif orientation == "90" then
+		chest_offset = {x=5, y=1, z=3}
+	elseif orientation == "180" then
+		chest_offset = {x=3, y=1, z=1}
+	elseif orientation == "270" then
+		chest_offset = {x=1, y=1, z=5}
+	else
+		return
+	end
+	local size = {x=9,y=5,z=7}
+	local lootitems = mcl_loot.get_multi_loot({
+	{
+		stacks_min = 1,
+		stacks_max = 1,
+		items = {
+			{ itemstring = "mcl_core:apple_gold", weight = 1 },
+		}
+	},
+	{
+		stacks_min = 2,
+		stacks_max = 8,
+		items = {
+			{ itemstring = "mcl_core:coal_lump", weight = 15, amount_min = 1, amount_max = 4 },
+			{ itemstring = "mcl_core:apple", weight = 15, amount_min = 1, amount_max = 3 },
+			{ itemstring = "mcl_farming:wheat_item", weight = 10, amount_min = 2, amount_max = 3 },
+			{ itemstring = "mcl_core:gold_nugget", weight = 10, amount_min = 1, amount_max = 3 },
+			{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10 },
+			{ itemstring = "mcl_tools:axe_stone", weight = 2 },
+			{ itemstring = "mcl_core:emerald", weight = 1 },
+		}
+	}}, pr)
+
+	local chest_pos = vector.add(p1, chest_offset)
+	init_node_construct(chest_pos)
+	local meta = minetest.get_meta(chest_pos)
+	local inv = meta:get_inventory()
+	mcl_loot.fill_inventory(inv, "main", lootitems)
+end
+
+mcl_structures.generate_igloo_basement = function(pos, orientation, pr)
 	-- TODO: Add brewing stand
 	-- TODO: Add monster eggs
 	-- TODO: Spawn villager and zombie villager
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_igloo_basement.mts"
-
-	local success = minetest.place_schematic(pos, path, orientation, nil, true)
-	if success then
-		local chest_offset
-		if orientation == "0" then
-			chest_offset = {x=5, y=1, z=5}
-		elseif orientation == "90" then
-			chest_offset = {x=5, y=1, z=3}
-		elseif orientation == "180" then
-			chest_offset = {x=3, y=1, z=1}
-		elseif orientation == "270" then
-			chest_offset = {x=1, y=1, z=5}
-		else
-			return success
-		end
-		local size = {x=9,y=5,z=7}
-		local lootitems = mcl_loot.get_multi_loot({
-		{
-			stacks_min = 1,
-			stacks_max = 1,
-			items = {
-				{ itemstring = "mcl_core:apple_gold", weight = 1 },
-			}
-		},
-		{
-			stacks_min = 2,
-			stacks_max = 8,
-			items = {
-				{ itemstring = "mcl_core:coal_lump", weight = 15, amount_min = 1, amount_max = 4 },
-				{ itemstring = "mcl_core:apple", weight = 15, amount_min = 1, amount_max = 3 },
-				{ itemstring = "mcl_farming:wheat_item", weight = 10, amount_min = 2, amount_max = 3 },
-				{ itemstring = "mcl_core:gold_nugget", weight = 10, amount_min = 1, amount_max = 3 },
-				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10 },
-				{ itemstring = "mcl_tools:axe_stone", weight = 2 },
-				{ itemstring = "mcl_core:emerald", weight = 1 },
-			}
-		}}, pr)
-
-		local chest_pos = vector.add(pos, chest_offset)
-		init_node_construct(chest_pos)
-		local meta = minetest.get_meta(chest_pos)
-		local inv = meta:get_inventory()
-		mcl_loot.fill_inventory(inv, "main", lootitems)
-	end
-	return success
+	mcl_structures.place_schematic(pos, path, orientation, nil, true, nil, igloo_placement_callback, pr)
 end
 
-mcl_structures.generate_boulder = function(pos)
+mcl_structures.generate_boulder = function(pos, rotation, pr)
 	-- Choose between 2 boulder sizes (2×2×2 or 3×3×3)
-	local r = math.random(1, 10)
+	local r = pr:next(1, 10)
 	local path
 	if r <= 3 then
 		path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder_small.mts"
@@ -235,9 +269,20 @@ mcl_structures.generate_boulder = function(pos)
 	return minetest.place_schematic(newpos, path)
 end
 
+local function hut_placement_callback(p1, p2, size, orientation, pr)
+	if not p1 or not p2 then return end
+	local legs = minetest.find_nodes_in_area(p1, p2, "mcl_core:tree")
+	for i = 1, #legs do
+		while minetest.get_item_group(mcl_mapgen_core.get_node({x=legs[i].x, y=legs[i].y-1, z=legs[i].z}, true, 333333).name, "water") ~= 0 do
+			legs[i].y = legs[i].y - 1
+			minetest.swap_node(legs[i], {name = "mcl_core:tree", param2 = 2})
+		end
+	end
+end
+
 mcl_structures.generate_witch_hut = function(pos, rotation)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_witch_hut.mts"
-	return minetest.place_schematic(pos, path, rotation, nil, true)
+	mcl_structures.place_schematic(pos, path, rotation, nil, true, nil, hut_placement_callback, pr)
 end
 
 mcl_structures.generate_ice_spike_small = function(pos)
@@ -250,7 +295,7 @@ mcl_structures.generate_ice_spike_large = function(pos)
 	return minetest.place_schematic(pos, path, "random", nil, false)
 end
 
-mcl_structures.generate_fossil = function(pos)
+mcl_structures.generate_fossil = function(pos, rotation, pr)
 	-- Generates one out of 8 possible fossil pieces
 	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
 	local fossils = {
@@ -263,7 +308,7 @@ mcl_structures.generate_fossil = function(pos)
 		"mcl_structures_fossil_spine_3.mts", -- 7×4×13
 		"mcl_structures_fossil_spine_4.mts", -- 8×5×13
 	}
-	local r = math.random(1, #fossils)
+	local r = pr:next(1, #fossils)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/"..fossils[r]
 	return minetest.place_schematic(newpos, path, "random", nil, true)
 end
@@ -273,24 +318,16 @@ mcl_structures.generate_end_exit_portal = function(pos)
 	return minetest.place_schematic(pos, path, "0", nil, true)
 end
 
-local generate_end_portal_shrine_no_delay = function(newpos)
-	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_portal_room_simple.mts"
-	local size = {x=13, y=8, z=13}
-	local ret = minetest.place_schematic(newpos, path, "0", nil, true)
-	if ret == nil then
-		return ret
-	end
-
-	local area_start, area_end = newpos, vector.add(newpos, size)
+local function shrine_placement_callback(p1, p2, size, rotation, pr)
 	-- Find and setup spawner with silverfish
-	local spawners = minetest.find_nodes_in_area(area_start, area_end, "mcl_mobspawners:spawner")
+	local spawners = minetest.find_nodes_in_area(p1, p2, "mcl_mobspawners:spawner")
 	for s=1, #spawners do
 		local meta = minetest.get_meta(spawners[s])
 		mcl_mobspawners.setup_spawner(spawners[s], "mobs_mc:silverfish")
 	end
 
 	-- Shuffle stone brick types
-	local bricks = minetest.find_nodes_in_area(area_start, area_end, "mcl_core:stonebrick")
+	local bricks = minetest.find_nodes_in_area(p1, p2, "mcl_core:stonebrick")
 	for b=1, #bricks do
 		local r_bricktype = pr:next(1, 100)
 		local r_infested = pr:next(1, 100)
@@ -317,7 +354,7 @@ local generate_end_portal_shrine_no_delay = function(newpos)
 	end
 
 	-- Also replace stairs
-	local stairs = minetest.find_nodes_in_area(area_start, area_end, {"mcl_stairs:stair_stonebrick", "mcl_stairs:stair_stonebrick_outer", "mcl_stairs:stair_stonebrick_inner"})
+	local stairs = minetest.find_nodes_in_area(p1, p2, {"mcl_stairs:stair_stonebrick", "mcl_stairs:stair_stonebrick_outer", "mcl_stairs:stair_stonebrick_inner"})
 	for s=1, #stairs do
 		local stair = minetest.get_node(stairs[s])
 		local r_type = pr:next(1, 100)
@@ -344,7 +381,7 @@ local generate_end_portal_shrine_no_delay = function(newpos)
 	end
 
 	-- Randomly add ender eyes into end portal frames, but never fill the entire frame
-	local frames = minetest.find_nodes_in_area(area_start, area_end, "mcl_portals:end_portal_frame")
+	local frames = minetest.find_nodes_in_area(p1, p2, "mcl_portals:end_portal_frame")
 	local eyes = 0
 	for f=1, #frames do
 		local r_eye = pr:next(1, 10)
@@ -357,40 +394,34 @@ local generate_end_portal_shrine_no_delay = function(newpos)
 			end
 		end
 	end
-
-	return ret
 end
 
-local function ecb_generate_end_portal_shrine(blockpos, action, calls_remaining, param)
-	if calls_remaining <= 0 then
-		generate_end_portal_shrine_no_delay({x=param.x, y=param.y, z=param.z})
-	end
-end
-
-mcl_structures.generate_end_portal_shrine = function(pos)
-	local offset = {x=6, y=8, z=6}
+mcl_structures.generate_end_portal_shrine = function(pos, rotation, pr)
+	local offset = {x=6, y=4, z=6}
 	local size = {x=13, y=8, z=13}
 	local newpos = { x = pos.x - offset.x, y = pos.y, z = pos.z - offset.z }
-	minetest.emerge_area(vector.subtract(newpos,10), vector.add(vector.add(newpos, size),10), ecb_generate_end_portal_shrine, {x=newpos.x, y=newpos.y, z=newpos.z})
+
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_portal_room_simple.mts"
+	mcl_structures.place_schematic(newpos, path, "0", nil, true, nil, shrine_placement_callback, pr)
 end
 
-mcl_structures.generate_desert_temple = function(pos)
-	-- No Generating for the temple ... Why using it ? No Change
-	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_desert_temple.mts"
-	local newpos = {x=pos.x,y=pos.y-12,z=pos.z}
-	local size = {x=22, y=24, z=22}
-	if newpos == nil then
-		return
-	end
-	local ret = minetest.place_schematic(newpos, path, "random", nil, true)
-	if ret == nil then
-		return ret
+local function temple_placement_callback(p1, p2, size, rotation, pr)
+
+	-- Delete cacti leftovers:
+	local cactus_nodes = minetest.find_nodes_in_area_under_air(p1, p2, "mcl_core:cactus")
+	if cactus_nodes and #cactus_nodes > 0 then
+		for _, pos in pairs(cactus_nodes) do
+			local node_below = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
+			if node_below and node_below.name == "mcl_core:sandstone" then
+				minetest.swap_node(pos, {name="air"})
+			end
+		end
 	end
 
 	-- Find chests.
 	-- FIXME: Searching this large area just for the chets is not efficient. Need a better way to find the chests;
 	-- probably let's just infer it from newpos because the schematic always the same.
-	local chests = minetest.find_nodes_in_area({x=newpos.x-size.x, y=newpos.y, z=newpos.z-size.z}, vector.add(newpos, size), "mcl_chests:chest")
+	local chests = minetest.find_nodes_in_area(p1, p2, "mcl_chests:chest")
 
 	-- Add desert temple loot into chests
 	for c=1, #chests do
@@ -436,7 +467,7 @@ mcl_structures.generate_desert_temple = function(pos)
 	end
 
 	-- Initialize pressure plates and randomly remove up to 5 plates
-	local pplates = minetest.find_nodes_in_area({x=newpos.x-size.x, y=newpos.y, z=newpos.z-size.z}, vector.add(newpos, size), "mesecons_pressureplates:pressure_plate_stone_off")
+	local pplates = minetest.find_nodes_in_area(p1, p2, "mesecons_pressureplates:pressure_plate_stone_off")
 	local pplates_remove = 5
 	for p=1, #pplates do
 		if pplates_remove > 0 and pr:next(1, 100) >= 50 then
@@ -448,8 +479,17 @@ mcl_structures.generate_desert_temple = function(pos)
 			minetest.registered_nodes["mesecons_pressureplates:pressure_plate_stone_off"].on_construct(pplates[p])
 		end
 	end
+end
 
-	return ret
+mcl_structures.generate_desert_temple = function(pos, rotation, pr)
+	-- No Generating for the temple ... Why using it ? No Change
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_desert_temple.mts"
+	local newpos = {x=pos.x,y=pos.y-12,z=pos.z}
+	local size = {x=22, y=24, z=22}
+	if newpos == nil then
+		return
+	end
+	minetest.place_schematic(newpos, path, "random", nil, true, nil, temple_placement_callback, pr)
 end
 
 local registered_structures = {}

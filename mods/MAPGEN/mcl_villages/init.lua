@@ -52,7 +52,7 @@ end
 --
 -- on map generation, try to build a settlement
 --
-local function build_a_settlement_no_delay(minp, maxp, blockseed)
+local function build_a_settlement(minp, maxp, blockseed)
 	local pr = PseudoRandom(blockseed)
 
 	-- fill settlement_info with buildings and their data
@@ -72,30 +72,28 @@ local function build_a_settlement_no_delay(minp, maxp, blockseed)
 	settlements.initialize_nodes(settlement_info, pr)
 end
 
-local function ecb_build_a_settlement(blockpos, action, calls_remaining, param)
-	if calls_remaining <= 0 then
-		build_a_settlement_no_delay(param.minp, param.maxp, param.blockseed)
-	end
+local function ecb_village(blockpos, action, calls_remaining, param)
+	if calls_remaining >= 1 then return end
+	local minp, maxp, blockseed = param.minp, param.maxp, param.blockseed
+	build_a_settlement(minp, maxp, blockseed)
 end
 
 -- Disable natural generation in singlenode.
 local mg_name = minetest.get_mapgen_setting("mg_name")
 if mg_name ~= "singlenode" then
-	minetest.register_on_generated(function(minp, maxp, blockseed)
-		-- needed for manual and automated settlement building
-		local heightmap = minetest.get_mapgen_object("heightmap")
-
-		-- randomly try to build settlements
-		if blockseed % 77 ~= 17 then return end
-
+	mcl_mapgen_core.register_generator("villages", nil, function(minp, maxp, blockseed)
 		-- don't build settlement underground
 		if maxp.y < 0 then return end
-
+		-- randomly try to build settlements
+		if blockseed % 77 ~= 17 then return end
+		-- needed for manual and automated settlement building
 		-- don't build settlements on (too) uneven terrain
-		local height_difference = settlements.evaluate_heightmap(minp, maxp)
+		local heightmap = minetest.get_mapgen_object("heightmap")
+		local height_difference = settlements.evaluate_heightmap()
 		if height_difference > max_height_difference then return end
-		-- we need 'minetest.after' here to exit from emerging thread we probably currently in:
-		minetest.after(0.1, build_a_settlement_no_delay, vector.new(minp), vector.new(maxp), blockseed)
+
+		local param={minp=vector.new(minp), maxp=vector.new(maxp), blockseed=blockseed}
+		minetest.emerge_area(minp, maxp, ecb_village, param)
 	end)
 end
 -- manually place villages
@@ -108,7 +106,7 @@ if minetest.is_creative_enabled("") then
 			if not pointed_thing.under then return end
 			local minp = vector.subtract(	pointed_thing.under, half_map_chunk_size)
 		        local maxp = vector.add(	pointed_thing.under, half_map_chunk_size)
-			build_a_settlement_no_delay(minp, maxp, math.random(0,32767))
+			build_a_settlement(minp, maxp, math.random(0,32767))
 		end
 	})
 end

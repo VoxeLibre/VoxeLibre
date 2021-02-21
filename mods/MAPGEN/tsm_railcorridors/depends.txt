@@ -1,6 +1,7 @@
 mcl_init
 mcl_worlds
 mcl_core
+mcl_mapgen_core
 mcl_loot
 mcl_tnt
 mcl_farming

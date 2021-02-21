@@ -45,31 +45,27 @@ end
 -- function to find surface block y coordinate
 -- returns surface postion
 -------------------------------------------------------------------------------
-function settlements.find_surface(pos)
+function settlements.find_surface(pos, wait)
 	local p6 = vector.new(pos)
 	local cnt = 0
-	local itter -- count up or down
+	local itter = 1 -- count up or down
 	local cnt_max = 200
 	-- check, in which direction to look for surface
-	local surface_node = mcl_util.get_far_node(p6, true)
-	if surface_node and string.find(surface_node.name,"air") then
-		itter = -1
+	local surface_node
+	if wait then
+		surface_node = mcl_mapgen_core.get_node(p6, true, 10000000)
 	else
-		itter = 1
+		surface_node = mcl_mapgen_core.get_node(p6)
+	end
+	if surface_node.name=="air" or surface_node.name=="ignore" then
+		itter = -1
 	end
 	-- go through nodes an find surface
 	while cnt < cnt_max do
-		cnt = cnt+1
-		surface_node = mcl_util.get_far_node(p6, true)
-		if surface_node.name == "ignore" then
-			settlements.debug("find_surface1: nil or ignore")
-			return nil
-		end
-
 		-- Check Surface_node and Node above
 		--
 		if settlements.surface_mat[surface_node.name] then
-			local surface_node_plus_1 = mcl_util.get_far_node({ x=p6.x, y=p6.y+1, z=p6.z}, true)
+			local surface_node_plus_1 = mcl_mapgen_core.get_node({ x=p6.x, y=p6.y+1, z=p6.z})
 			if surface_node_plus_1 and surface_node and
 				(string.find(surface_node_plus_1.name,"air") or
 				string.find(surface_node_plus_1.name,"snow") or
@@ -93,6 +89,8 @@ function settlements.find_surface(pos)
 			settlements.debug("find_surface4: y<0")
 			return nil
 		end
+		cnt = cnt+1
+		surface_node = mcl_mapgen_core.get_node(p6)
 	end
 	settlements.debug("find_surface5: cnt_max overflow")
 	return nil
@@ -241,7 +239,7 @@ function settlements.initialize_nodes(settlement_info, pr)
 			for xi = 0,width do
 				for zi = 0,depth do
 					local ptemp = {x=p.x+xi, y=p.y+yi, z=p.z+zi}
-					local node = mcl_util.get_far_node(ptemp, true)
+					local node = mcl_mapgen_core.get_node(ptemp)
 					if node.name == "mcl_furnaces:furnace" or
 						node.name == "mcl_chests:chest" or
 						node.name == "mcl_anvils:anvil" then
@@ -272,44 +270,39 @@ end
 -- evaluate heightmap
 -------------------------------------------------------------------------------
 function settlements.evaluate_heightmap()
-  local heightmap = minetest.get_mapgen_object("heightmap")
-  -- max height and min height, initialize with impossible values for easier first time setting
-  local max_y = -50000
-  local min_y = 50000
-  -- only evaluate the center square of heightmap 40 x 40
-  local square_start = 1621
-  local square_end = 1661
-  for j = 1 , 40, 1 do
-    for i = square_start, square_end, 1 do
-      -- skip buggy heightmaps, return high value
-      if heightmap[i] == -31000 or
-      heightmap[i] == 31000
-      then
-        return max_height_difference + 1
-      end
-      if heightmap[i] < min_y
-      then
-        min_y = heightmap[i]
-      end
-      if heightmap[i] > max_y
-      then
-        max_y = heightmap[i]
-      end
-    end
-    -- set next line
-    square_start = square_start + 80
-    square_end = square_end + 80
-  end
-  -- return the difference between highest and lowest pos in chunk
-  local height_diff = max_y - min_y
-  -- filter buggy heightmaps
-  if height_diff <= 1 
-  then
-    return max_height_difference + 1
-  end
-  -- debug info
-  settlements.debug("heightdiff ".. height_diff)
-  return height_diff
+	local heightmap = minetest.get_mapgen_object("heightmap")
+	-- max height and min height, initialize with impossible values for easier first time setting
+	local max_y = -50000
+	local min_y = 50000
+	-- only evaluate the center square of heightmap 40 x 40
+	local square_start = 1621
+	local square_end = 1661
+	for j = 1 , 40, 1 do
+		for i = square_start, square_end, 1 do
+			-- skip buggy heightmaps, return high value
+			if heightmap[i] == -31000 or heightmap[i] == 31000 then
+				return max_height_difference + 1
+			end
+			if heightmap[i] < min_y then
+				min_y = heightmap[i]
+			end
+			if heightmap[i] > max_y then
+				max_y = heightmap[i]
+			end
+		end
+		-- set next line
+		square_start = square_start + 80
+		square_end = square_end + 80
+	end
+	-- return the difference between highest and lowest pos in chunk
+	local height_diff = max_y - min_y
+	-- filter buggy heightmaps
+	if height_diff <= 1 then
+		return max_height_difference + 1
+	end
+	-- debug info
+	settlements.debug("heightdiff ".. height_diff)
+	return height_diff
 end
 -------------------------------------------------------------------------------
 -- Set array to list

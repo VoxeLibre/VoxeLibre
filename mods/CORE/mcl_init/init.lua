@@ -46,6 +46,42 @@ local numcmax = math.max(math.floor((mapgen_limit_max - ccfmax) / chunk_size_in_
 mcl_vars.mapgen_edge_min = central_chunk_min_pos - numcmin * chunk_size_in_nodes
 mcl_vars.mapgen_edge_max = central_chunk_max_pos + numcmax * chunk_size_in_nodes
 
+local function coordinate_to_block(x)
+	return math.floor(x / mcl_vars.MAP_BLOCKSIZE)
+end
+
+local function coordinate_to_chunk(x)
+	return math.floor((coordinate_to_block(x) + central_chunk_offset) / mcl_vars.chunksize)
+end
+
+function mcl_vars.pos_to_block(pos)
+	return {
+		x = coordinate_to_block(pos.x),
+		y = coordinate_to_block(pos.y),
+		z = coordinate_to_block(pos.z)
+	}
+end
+
+function mcl_vars.pos_to_chunk(pos)
+	return {
+		x = coordinate_to_chunk(pos.x),
+		y = coordinate_to_chunk(pos.y),
+		z = coordinate_to_chunk(pos.z)
+	}
+end
+
+local k_positive = math.ceil(mcl_vars.MAX_MAP_GENERATION_LIMIT / chunk_size_in_nodes)
+local k_positive_z = k_positive * 2
+local k_positive_y = k_positive_z * k_positive_z
+
+function mcl_vars.get_chunk_number(pos) -- unsigned int
+	local c = mcl_vars.pos_to_chunk(pos)
+	return
+		(c.y + k_positive) * k_positive_y +
+		(c.z + k_positive) * k_positive_z +
+		 c.x + k_positive
+end
+
 if not superflat and not singlenode then
 	-- Normal mode
 	--[[ Realm stacking (h is for height)
@@ -91,7 +127,7 @@ else
 	mcl_vars.mg_bedrock_is_rough = false
 end
 
-mcl_vars.mg_overworld_max = 31000
+mcl_vars.mg_overworld_max = mcl_vars.mapgen_edge_max
 
 -- The Nether (around Y = -29000)
 mcl_vars.mg_nether_min = -29067 -- Carefully chosen to be at a mapchunk border

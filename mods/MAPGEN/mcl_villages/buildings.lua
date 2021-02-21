@@ -4,8 +4,8 @@
 -------------------------------------------------------------------------------
 function settlements.build_schematic(vm, data, va, pos, building, replace_wall, name)
   -- get building node material for better integration to surrounding
-  local platform_material =  mcl_util.get_far_node(pos, true)
-  if not platform_material then
+  local platform_material =  mcl_mapgen_core.get_node(pos)
+  if not platform_material or (platform_material.name == "air" or platform_material.name == "ignore")  then
     return
   end
   platform_material = platform_material.name
@@ -81,12 +81,15 @@ function settlements.create_site_plan(maxp, minp, pr)
 	local possible_rotations = {"0", "90", "180", "270"}
 	-- find center of chunk
 	local center = {
-		x=maxp.x-half_map_chunk_size, 
+		x=math.floor((minp.x+maxp.x)/2), 
 		y=maxp.y, 
-		z=maxp.z-half_map_chunk_size
+		z=math.floor((minp.z+maxp.z)/2)
 	} 
 	-- find center_surface of chunk
-	local center_surface , surface_material = settlements.find_surface(center)
+	local center_surface , surface_material = settlements.find_surface(center, true)
+	local chunks = {}
+	chunks[mcl_vars.get_chunk_number(center)] = true
+
 	-- go build settlement around center
 	if not center_surface then return false end
 
@@ -114,49 +117,57 @@ function settlements.create_site_plan(maxp, minp, pr)
 	local x, z, r = center_surface.x, center_surface.z, building_all_info["hsize"]
 	-- draw j circles around center and increase radius by math.random(2,5)
 	for j = 1,20 do
-		if number_built < number_of_buildings then
-			-- set position on imaginary circle
-			for j = 0, 360, 15 do
-				local angle = j * math.pi / 180
-				local ptx, ptz = x + r * math.cos( angle ), z + r * math.sin( angle )
-				ptx = settlements.round(ptx, 0)
-				ptz = settlements.round(ptz, 0)
-				local pos1 = { x=ptx, y=center_surface.y+50, z=ptz}
-				local pos_surface, surface_material = settlements.find_surface(pos1)
-				if not pos_surface then break end
+		-- set position on imaginary circle
+		for j = 0, 360, 15 do
+			local angle = j * math.pi / 180
+			local ptx, ptz = x + r * math.cos( angle ), z + r * math.sin( angle )
+			ptx = settlements.round(ptx, 0)
+			ptz = settlements.round(ptz, 0)
+			local pos1 = { x=ptx, y=center_surface.y+50, z=ptz}
+			local chunk_number = mcl_vars.get_chunk_number(pos1)
+			local pos_surface, surface_material
+			if chunks[chunk_number] then
+				pos_surface, surface_material = settlements.find_surface(pos1)
+			else
+				chunks[chunk_number] = true
+				pos_surface, surface_material = settlements.find_surface(pos1, true)
+			end
+			if not pos_surface then break end
 
-				local randomized_schematic_table = shuffle(settlements.schematic_table, pr)
-				-- pick schematic
-				local size = #randomized_schematic_table
-				for i = size, 1, -1 do
-					-- already enough buildings of that type?
-					if count_buildings[randomized_schematic_table[i]["name"]] < randomized_schematic_table[i]["max_num"]*number_of_buildings then
-						building_all_info = randomized_schematic_table[i]
-						-- check distance to other buildings
-						local distance_to_other_buildings_ok = settlements.check_distance(settlement_info, pos_surface, building_all_info["hsize"])
-						if distance_to_other_buildings_ok then
-							-- count built houses
-							count_buildings[building_all_info["name"]] = count_buildings[building_all_info["name"]] +1
-							rotation = possible_rotations[ pr:next(1, #possible_rotations ) ]
-							number_built = number_built + 1
-							settlement_info[index] = {
-								pos = pos_surface, 
-								name = building_all_info["name"], 
-								hsize = building_all_info["hsize"],
-								rotat = rotation,
-								surface_mat = surface_material
-							}
-							index = index + 1
-							break
-						end
+			local randomized_schematic_table = shuffle(settlements.schematic_table, pr)
+			-- pick schematic
+			local size = #randomized_schematic_table
+			for i = size, 1, -1 do
+				-- already enough buildings of that type?
+				if count_buildings[randomized_schematic_table[i]["name"]] < randomized_schematic_table[i]["max_num"]*number_of_buildings then
+					building_all_info = randomized_schematic_table[i]
+					-- check distance to other buildings
+					local distance_to_other_buildings_ok = settlements.check_distance(settlement_info, pos_surface, building_all_info["hsize"])
+					if distance_to_other_buildings_ok then
+						-- count built houses
+						count_buildings[building_all_info["name"]] = count_buildings[building_all_info["name"]] +1
+						rotation = possible_rotations[ pr:next(1, #possible_rotations ) ]
+						number_built = number_built + 1
+						settlement_info[index] = {
+							pos = pos_surface, 
+							name = building_all_info["name"], 
+							hsize = building_all_info["hsize"],
+							rotat = rotation,
+							surface_mat = surface_material
+						}
+						index = index + 1
+						break
 					end
 				end
-				if number_of_buildings == number_built then
-					break
-				end
 			end
-			r = r + pr:next(2,5)
+			if number_of_buildings == number_built then
+				break
+			end
 		end
+		if number_built >= number_of_buildings then
+			break
+		end
+		r = r + pr:next(2,5)
 	end
 	settlements.debug("really ".. number_built)
 	return settlement_info

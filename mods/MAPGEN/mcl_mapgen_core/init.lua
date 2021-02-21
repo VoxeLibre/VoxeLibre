@@ -1,3 +1,46 @@
+mcl_mapgen_core = {}
+mcl_mapgen_core.registered_generators = {}
+
+local lvm, nodes, param2 = 0, 0, 0
+
+local generating = {} -- generating chunks
+local chunks = {} -- intervals of chunks generated
+local function add_chunk(pos)
+	local n = mcl_vars.get_chunk_number(pos) -- unsigned int
+	local prev
+	for i, d in pairs(chunks) do
+		if n <= d[2] then -- we've found it
+			if (n == d[2]) or (n >= d[1]) then return end -- already here
+			if n == d[1]-1 then -- right before:
+				if prev and (prev[2] == n-1) then
+					prev[2] = d[2]
+					table.remove(chunks, i)
+					return
+				end
+				d[1] = n
+				return
+			end
+			if prev and (prev[2] == n-1) then --join to previous
+				prev[2] = n
+				return
+			end
+			table.insert(chunks, i, {n, n}) -- insert new interval before i
+			return
+		end
+		prev = d
+	end
+	chunks[#chunks] = {n, n}
+end
+function mcl_mapgen_core.is_generated(pos)
+	local n = mcl_vars.get_chunk_number(pos) -- unsigned int
+	for i, d in pairs(chunks) do
+		if n <= d[2] then
+			return (n >= d[1])
+		end
+	end
+	return false
+end
+
 --
 -- Aliases for map generator outputs
 --
@@ -1190,11 +1233,13 @@ local perlin_structures
 local perlin_vines, perlin_vines_fine, perlin_vines_upwards, perlin_vines_length, perlin_vines_density
 local perlin_clay
 
-local function generate_clay(minp, maxp, seed, voxelmanip_data, voxelmanip_area, lvm_used)
+local function generate_clay(minp, maxp, blockseed, voxelmanip_data, voxelmanip_area, lvm_used)
 	-- TODO: Make clay generation reproducible for same seed.
 	if maxp.y < -5 or minp.y > 0 then
 		return lvm_used
 	end
+
+	local pr = PseudoRandom(blockseed)
 
 	perlin_clay = perlin_clay or minetest.get_perlin({
 		offset = 0.5,
@@ -1212,18 +1257,18 @@ local function generate_clay(minp, maxp, seed, voxelmanip_data, voxelmanip_area,
 		for divx=0+1,divs-2 do
 		for divz=0+1,divs-2 do
 			-- Get position and shift it a bit randomly so the clay do not obviously appear in a grid
-			local cx = minp.x + math.floor((divx+0.5)*divlen) + math.random(-1,1)
-			local cz = minp.z + math.floor((divz+0.5)*divlen) + math.random(-1,1)
+			local cx = minp.x + math.floor((divx+0.5)*divlen) + pr:next(-1,1)
+			local cz = minp.z + math.floor((divz+0.5)*divlen) + pr:next(-1,1)
 
 			local water_pos = voxelmanip_area:index(cx, y+1, cz)
 			local waternode = voxelmanip_data[water_pos]
 			local surface_pos = voxelmanip_area:index(cx, y, cz)
 			local surfacenode = voxelmanip_data[surface_pos]
 
-			local genrnd = math.random(1, 20)
+			local genrnd = pr:next(1, 20)
 			if genrnd == 1 and perlin_clay:get_3d({x=cx,y=y,z=cz}) > 0 and waternode == c_water and
 					(surfacenode == c_dirt or minetest.get_item_group(minetest.get_name_from_content_id(surfacenode), "sand") == 1) then
-				local diamondsize = math.random(1, 3)
+				local diamondsize = pr:next(1, 3)
 				for x1 = -diamondsize, diamondsize do
 				for z1 = -(diamondsize - math.abs(x1)), diamondsize - math.abs(x1) do
 					local ccpos = voxelmanip_area:index(cx+x1, y, cz+z1)
@@ -1242,37 +1287,34 @@ local function generate_clay(minp, maxp, seed, voxelmanip_data, voxelmanip_area,
 end
 
 -- TODO: Try to use more efficient structure generating code
-local function generate_structures(minp, maxp, seed, biomemap)
+local function generate_structures(minp, maxp, blockseed, biomemap)
 	local chunk_has_desert_well = false
 	local chunk_has_desert_temple = false
 	local chunk_has_igloo = false
-	local struct_min, struct_max = -3, 64
+	local struct_min, struct_max = -3, 111 --64
+
 	if maxp.y >= struct_min and minp.y <= struct_max then
 		-- Generate structures
-
+		local pr = PcgRandom(blockseed)
 		perlin_structures = perlin_structures or minetest.get_perlin(329, 3, 0.6, 100)
 		-- Assume X and Z lengths are equal
 		local divlen = 5
-		local divs = (maxp.x-minp.x)/divlen+1;
-		for divx=0,divs-1 do
-		for divz=0,divs-1 do
-			local x0 = minp.x + math.floor((divx+0)*divlen)
-			local z0 = minp.z + math.floor((divz+0)*divlen)
-			local x1 = minp.x + math.floor((divx+1)*divlen)
-			local z1 = minp.z + math.floor((divz+1)*divlen)
+		for x0 = minp.x, maxp.x, divlen do for z0 = minp.z, maxp.z, divlen do
 			-- Determine amount from perlin noise
 			local amount = math.floor(perlin_structures:get_2d({x=x0, y=z0}) * 9)
 			-- Find random positions based on this random
-			local pr = PseudoRandom(seed+1)
+			local p, ground_y
 			for i=0, amount do
-				local x = pr:next(x0, x1)
-				local z = pr:next(z0, z1)
+				p = {x = pr:next(x0, x0+divlen-1), y = 0, z = pr:next(z0, z0+divlen-1)}
 				-- Find ground level
-				local ground_y = nil
+				ground_y = nil
+				local nn
 				for y = struct_max, struct_min, -1 do
-					local checknode = minetest.get_node_or_nil({x=x,y=y,z=z})
+					p.y = y
+					local checknode = minetest.get_node(p)
 					if checknode then
-						local def = minetest.registered_nodes[checknode.name]
+						nn = checknode.name
+						local def = minetest.registered_nodes[nn]
 						if def and def.walkable then
 							ground_y = y
 							break
@@ -1281,21 +1323,17 @@ local function generate_structures(minp, maxp, seed, biomemap)
 				end
 
 				if ground_y then
-					local p = {x=x,y=ground_y+1,z=z}
-					local nn = minetest.get_node(p).name
+					p.y = ground_y+1
+					local nn0 = minetest.get_node(p).name
 					-- Check if the node can be replaced
-					if minetest.registered_nodes[nn] and
-						minetest.registered_nodes[nn].buildable_to then
-						nn = minetest.get_node({x=x,y=ground_y,z=z}).name
-						local struct = false
-
+					if minetest.registered_nodes[nn0] and minetest.registered_nodes[nn0].buildable_to then
 						-- Desert temples and desert wells
 						if nn == "mcl_core:sand" or (nn == "mcl_core:sandstone") then
 							if not chunk_has_desert_temple and not chunk_has_desert_well and ground_y > 3 then
 								-- Spawn desert temple
 								-- TODO: Check surface
-								if math.random(1,12000) == 1 then
-									mcl_structures.call_struct(p, "desert_temple")
+								if pr:next(1,12000) == 1 then
+									mcl_structures.call_struct(p, "desert_temple", nil, pr)
 									chunk_has_desert_temple = true
 								end
 							end
@@ -1303,11 +1341,11 @@ local function generate_structures(minp, maxp, seed, biomemap)
 								local desert_well_prob = minecraft_chunk_probability(1000, minp, maxp)
 
 								-- Spawn desert well
-								if math.random(1, desert_well_prob) == 1 then
+								if pr:next(1, desert_well_prob) == 1 then
 									-- Check surface
 									local surface = minetest.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, {x=p.x+5, y=p.y-1, z=p.z+5}, "mcl_core:sand")
 									if #surface >= 25 then
-										mcl_structures.call_struct(p, "desert_well")
+										mcl_structures.call_struct(p, "desert_well", nil, pr)
 										chunk_has_desert_well = true
 									end
 								end
@@ -1315,13 +1353,13 @@ local function generate_structures(minp, maxp, seed, biomemap)
 
 						-- Igloos
 						elseif not chunk_has_igloo and (nn == "mcl_core:snowblock" or nn == "mcl_core:snow" or (minetest.get_item_group(nn, "grass_block_snow") == 1)) then
-							if math.random(1, 4400) == 1 then
+							if pr:next(1, 4400) == 1 then
 								-- Check surface
 								local floor = {x=p.x+9, y=p.y-1, z=p.z+9}
 								local surface = minetest.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, floor, "mcl_core:snowblock")
 								local surface2 = minetest.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, floor, "mcl_core:dirt_with_grass_snow")
 								if #surface + #surface2 >= 63 then
-									mcl_structures.call_struct(p, "igloo")
+									mcl_structures.call_struct(p, "igloo", nil, pr)
 									chunk_has_igloo = true
 								end
 							end
@@ -1331,16 +1369,16 @@ local function generate_structures(minp, maxp, seed, biomemap)
 						if nn == "mcl_core:sandstone" or nn == "mcl_core:sand" and not chunk_has_desert_temple and ground_y > 3 then
 							local fossil_prob = minecraft_chunk_probability(64, minp, maxp)
 
-							if math.random(1, fossil_prob) == 1 then
+							if pr:next(1, fossil_prob) == 1 then
 								-- Spawn fossil below desert surface between layers 40 and 49
-								local p1 = {x=p.x, y=math.random(mcl_worlds.layer_to_y(40), mcl_worlds.layer_to_y(49)), z=p.z}
+								local p1 = {x=p.x, y=pr:next(mcl_worlds.layer_to_y(40), mcl_worlds.layer_to_y(49)), z=p.z}
 								-- Very rough check of the environment (we expect to have enough stonelike nodes).
 								-- Fossils may still appear partially exposed in caves, but this is O.K.
 								local p2 = vector.add(p1, 4)
 								local nodes = minetest.find_nodes_in_area(p1, p2, {"mcl_core:sandstone", "mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite", "mcl_core:stone_with_coal", "mcl_core:dirt", "mcl_core:gravel"})
 
 								if #nodes >= 100 then -- >= 80%
-									mcl_structures.call_struct(p1, "fossil")
+									mcl_structures.call_struct(p1, "fossil", nil, pr)
 								end
 							end
 						end
@@ -1348,7 +1386,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 						-- Witch hut
 						if ground_y <= 0 and nn == "mcl_core:dirt" then
 						local prob = minecraft_chunk_probability(48, minp, maxp)
-						if math.random(1, prob) == 1 then
+						if pr:next(1, prob) == 1 then
 
 							local swampland = minetest.get_biome_id("Swampland")
 							local swampland_shore = minetest.get_biome_id("Swampland_shore")
@@ -1370,7 +1408,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 							end
 
 							if here_be_witches then
-								local r = tostring(math.random(0, 3) * 90) -- "0", "90", "180" or 270"
+								local r = tostring(pr:next(0, 3) * 90) -- "0", "90", "180" or 270"
 								local p1 = {x=p.x-1, y=WITCH_HUT_HEIGHT+2, z=p.z-1}
 								local size
 								if r == "0" or r == "180" then
@@ -1389,7 +1427,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 									-- FIXME: For some mysterious reason (black magic?) this
 									-- function does sometimes NOT spawn the witch hut. One can only see the
 									-- oak wood nodes in the water, but no hut. :-/
-									mcl_structures.call_struct(place, "witch_hut", r)
+									mcl_structures.call_struct(place, "witch_hut", r, pr)
 
 									-- TODO: Spawn witch in or around hut when the mob sucks less.
 
@@ -1451,7 +1489,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 						-- Ice spikes in v6
 						-- In other mapgens, ice spikes are generated as decorations.
 						if mg_name == "v6" and not chunk_has_igloo and nn == "mcl_core:snowblock" then
-							local spike = math.random(1, 58000)
+							local spike = pr:next(1,58000)
 							if spike < 3 then
 								-- Check surface
 								local floor = {x=p.x+4, y=p.y-1, z=p.z+4}
@@ -1460,7 +1498,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 								local spruce_collisions = minetest.find_nodes_in_area({x=p.x+1,y=p.y+2,z=p.z+1}, {x=p.x+4, y=p.y+6, z=p.z+4}, {"mcl_core:sprucetree", "mcl_core:spruceleaves"})
 
 								if #surface >= 9 and #spruce_collisions == 0 then
-									mcl_structures.call_struct(p, "ice_spike_large")
+									mcl_structures.call_struct(p, "ice_spike_large", nil, pr)
 								end
 							elseif spike < 100 then
 								-- Check surface
@@ -1471,7 +1509,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 								local spruce_collisions = minetest.find_nodes_in_area({x=p.x+1,y=p.y+1,z=p.z+1}, {x=p.x+6, y=p.y+6, z=p.z+6}, {"mcl_core:sprucetree", "mcl_core:spruceleaves"})
 
 								if #surface >= 25 and #spruce_collisions == 0 then
-									mcl_structures.call_struct(p, "ice_spike_small")
+									mcl_structures.call_struct(p, "ice_spike_small", nil, pr)
 								end
 							end
 						end
@@ -1479,36 +1517,31 @@ local function generate_structures(minp, maxp, seed, biomemap)
 				end
 
 			end
-		end
-		end
+		end end
 	-- End exit portal
-	elseif minp.y <= END_EXIT_PORTAL_POS.y and maxp.y >= END_EXIT_PORTAL_POS.y and
-			minp.x <= END_EXIT_PORTAL_POS.x and maxp.x >= END_EXIT_PORTAL_POS.x and
-			minp.z <= END_EXIT_PORTAL_POS.z and maxp.z >= END_EXIT_PORTAL_POS.z then
-		local built = false
+	elseif	minp.y <= END_EXIT_PORTAL_POS.y and maxp.y >= END_EXIT_PORTAL_POS.y and
+		minp.x <= END_EXIT_PORTAL_POS.x and maxp.x >= END_EXIT_PORTAL_POS.x and
+		minp.z <= END_EXIT_PORTAL_POS.z and maxp.z >= END_EXIT_PORTAL_POS.z then
 		for y=maxp.y, minp.y, -1 do
 			local p = {x=END_EXIT_PORTAL_POS.x, y=y, z=END_EXIT_PORTAL_POS.z}
 			if minetest.get_node(p).name == "mcl_end:end_stone" then
 				mcl_structures.call_struct(p, "end_exit_portal")
-				built = true
-				break
+				return
 			end
 		end
-		if not built then
-			mcl_structures.call_struct(END_EXIT_PORTAL_POS, "end_exit_portal")
-		end
+		mcl_structures.call_struct(END_EXIT_PORTAL_POS, "end_exit_portal")
 	end
 end
 
 -- Buffers for LuaVoxelManip
-local lvm_buffer = {}
-local lvm_buffer_param2 = {}
+-- local lvm_buffer = {}
+-- local lvm_buffer_param2 = {}
 
 -- Generate tree decorations in the bounding box. This adds:
 -- * Cocoa at jungle trees
 -- * Jungle tree vines
 -- * Oak vines in swamplands
-local function generate_tree_decorations(minp, maxp, seed, data, param2_data, area, biomemap, lvm_used)
+local function generate_tree_decorations(minp, maxp, seed, data, param2_data, area, biomemap, lvm_used, pr)
 	if maxp.y < 0 then
 		return lvm_used
 	end
@@ -1576,7 +1609,7 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 
 		if minetest.find_node_near(pos, 1, {"mcl_core:jungleleaves"}) then
 
-			dir = math.random(1, cocoachance)
+			dir = pr:next(1, cocoachance)
 
 			if dir == 1 then
 				pos.z = pos.z + 1
@@ -1594,7 +1627,7 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 			if dir < 5
 			and data[p_pos] == c_air
 			and l ~= nil and l > 12 then
-				local c = math.random(1, 3)
+				local c = pr:next(1, 3)
 				if c == 1 then
 					data[p_pos] = c_cocoa_1
 				elseif c == 2 then
@@ -1810,125 +1843,206 @@ local generate_nether_decorations = function(minp, maxp, seed)
 
 end
 
--- Below the bedrock, generate air/void
-minetest.register_on_generated(function(minp, maxp, seed)
-	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
-	local data = vm:get_data(lvm_buffer)
-	local param2_data = vm:get_param2_data(lvm_buffer_param2)
-	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
-	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
-	local lvm_used = false
-	local biomemap
+minetest.register_on_generated(function(minp, maxp, blockseed)
+	add_chunk(minp)
+	local p1, p2 = {x=minp.x, y=minp.y, z=minp.z}, {x=maxp.x, y=maxp.y, z=maxp.z}
+	if lvm > 0 then
+		local lvm_used, shadow = false, false
+		local lb = {} -- buffer
+		local lb2 = {} -- param2
+		local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
+		local e1, e2 = {x=emin.x, y=emin.y, z=emin.z}, {x=emax.x, y=emax.y, z=emax.z}
+		local data2
+		local data = vm:get_data(lb)
+		if param2 > 0 then
+			data2 = vm:get_param2_data(lb2)
+		end
+		local area = VoxelArea:new({MinEdge=e1, MaxEdge=e2})
 
-	local ymin, ymax
+		for _, rec in pairs(mcl_mapgen_core.registered_generators) do
+			if rec.vf then
+				local lvm_used0, shadow0 = rec.vf(vm, data, data2, e1, e2, area, p1, p2, blockseed)
+				if lvm_used0 then
+					lvm_used = true
+				end
+				if shadow0 then
+					shadow = true
+				end
+			end
+		end
 
-	-- Generate basic layer-based nodes: void, bedrock, realm barrier, lava seas, etc.
-	-- Also perform some basic node replacements.
+		if lvm_used then
+			-- Write stuff
+			vm:set_data(data)
+			if param2 > 0 then
+				vm:set_param2_data(data2)
+			end
+			vm:calc_lighting(p1, p2, shadow)
+			vm:write_to_map()
+			vm:update_liquids()
+		end
+	end
 
-	-- Helper function to set all nodes in the layers between min and max.
-	-- content_id: Node to set
-	-- check: optional.
-	--	If content_id, node will be set only if it is equal to check.
-	--	If function(pos_to_check, content_id_at_this_pos), will set node only if returns true.
-	-- min, max: Minimum and maximum Y levels of the layers to set
-	-- minp, maxp: minp, maxp of the on_generated
-	-- lvm_used: Set to true if any node in this on_generated has been set before.
-	--
-	-- returns true if any node was set and lvm_used otherwise
-	local function set_layers(content_id, check, min, max, minp, maxp, lvm_used)
-		if (maxp.y >= min and minp.y <= max) then
-			for y = math.max(min, minp.y), math.min(max, maxp.y) do
-				for x = minp.x, maxp.x do
-					for z = minp.z, maxp.z do
-						local p_pos = area:index(x, y, z)
-						if check then
-							if type(check) == "function" and check({x=x,y=y,z=z}, data[p_pos]) then
-								data[p_pos] = content_id
-								lvm_used = true
-							elseif check == data[p_pos] then
-								data[p_pos] = content_id
-								lvm_used = true
-							end
-						else
+	if nodes > 0 then
+		for _, rec in pairs(mcl_mapgen_core.registered_generators) do
+			if rec.nf then
+				rec.nf(p1, p2, blockseed)
+			end
+		end
+	end
+
+--	add_chunk(minp)
+end)
+
+minetest.register_on_generated=function(node_function)
+	mcl_mapgen_core.register_generator("mod_"..tostring(#mcl_mapgen_core.registered_generators+1), nil, node_function)
+end
+
+function mcl_mapgen_core.register_generator(id, lvm_function, node_function, priority, needs_param2)
+	if not id then return end
+
+	local priority = priority or 5000
+
+	if lvm_function then lvm = lvm + 1 end
+	if lvm_function then nodes = nodes + 1 end
+	if needs_param2 then param2 = param2 + 1 end
+
+	local new_record = {
+		i = priority,
+		vf = lvm_function,
+		nf = node_function,
+		needs_param2 = needs_param2,
+	}
+
+	mcl_mapgen_core.registered_generators[id] = new_record
+	table.sort(
+		mcl_mapgen_core.registered_generators,
+		function(a, b)
+			return (a.i < b.i) or ((a.i == b.i) and (a.vf ~= nil) and (b.vf == nil))
+		end)
+end
+
+function mcl_mapgen_core.unregister_generator(id)
+	if not mcl_mapgen_core.registered_generators[id] then return end
+	local rec = mcl_mapgen_core.registered_generators[id]
+	mcl_mapgen_core.registered_generators[id] = nil
+	if rec.vf then lvm = lvm - 1 end
+	if rev.nf then nodes = nodes - 1 end
+	if rec.needs_param2 then param2 = param2 - 1 end
+	if rec.needs_level0 then level0 = level0 - 1 end
+end
+
+-- Generate basic layer-based nodes: void, bedrock, realm barrier, lava seas, etc.
+-- Also perform some basic node replacements.
+
+local bedrock_check
+if mcl_vars.mg_bedrock_is_rough then
+	bedrock_check = function(pos, _, pr)
+		local y = pos.y
+		-- Bedrock layers with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
+		-- This code assumes a bedrock height of 5 layers.
+
+		local diff = mcl_vars.mg_bedrock_overworld_max - y -- Overworld bedrock
+		local ndiff1 = mcl_vars.mg_bedrock_nether_bottom_max - y -- Nether bedrock, bottom
+		local ndiff2 = mcl_vars.mg_bedrock_nether_top_max - y -- Nether bedrock, ceiling
+
+		local top
+		if diff == 0 or ndiff1 == 0 or ndiff2 == 4 then
+			-- 50% bedrock chance
+			top = 2
+		elseif diff == 1 or ndiff1 == 1 or ndiff2 == 3 then
+			-- 66.666...%
+			top = 3
+		elseif diff == 2 or ndiff1 == 2 or ndiff2 == 2 then
+			-- 75%
+			top = 4
+		elseif diff == 3 or ndiff1 == 3 or ndiff2 == 1 then
+			-- 90%
+			top = 10
+		elseif diff == 4 or ndiff1 == 4 or ndiff2 == 0 then
+			-- 100%
+			return true
+		else
+			-- Not in bedrock layer
+			return false
+		end
+
+		return pr:next(1, top) <= top-1
+	end
+end
+
+
+-- Helper function to set all nodes in the layers between min and max.
+-- content_id: Node to set
+-- check: optional.
+--	If content_id, node will be set only if it is equal to check.
+--	If function(pos_to_check, content_id_at_this_pos), will set node only if returns true.
+-- min, max: Minimum and maximum Y levels of the layers to set
+-- minp, maxp: minp, maxp of the on_generated
+-- lvm_used: Set to true if any node in this on_generated has been set before.
+--
+-- returns true if any node was set and lvm_used otherwise
+local function set_layers(data, area, content_id, check, min, max, minp, maxp, lvm_used, pr)
+	if (maxp.y >= min and minp.y <= max) then
+		for y = math.max(min, minp.y), math.min(max, maxp.y) do
+			for x = minp.x, maxp.x do
+				for z = minp.z, maxp.z do
+					local p_pos = area:index(x, y, z)
+					if check then
+						if type(check) == "function" and check({x=x,y=y,z=z}, data[p_pos], pr) then
+							data[p_pos] = content_id
+							lvm_used = true
+						elseif check == data[p_pos] then
 							data[p_pos] = content_id
 							lvm_used = true
 						end
+					else
+						data[p_pos] = content_id
+						lvm_used = true
 					end
 				end
 			end
 		end
-		return lvm_used
 	end
+	return lvm_used
+end
+
+-- Below the bedrock, generate air/void
+local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
+	local biomemap, ymin, ymax
+	local lvm_used = false
+	local pr = PseudoRandom(blockseed)
 
 	-- The Void
-	lvm_used = set_layers(c_void, nil, -31000, mcl_vars.mg_nether_min-1, minp, maxp, lvm_used)
-	lvm_used = set_layers(c_void, nil, mcl_vars.mg_nether_max+1, mcl_vars.mg_end_min-1, minp, maxp, lvm_used)
-	lvm_used = set_layers(c_void, nil, mcl_vars.mg_end_max+1, mcl_vars.mg_realm_barrier_overworld_end_min-1, minp, maxp, lvm_used)
-	lvm_used = set_layers(c_void, nil, mcl_vars.mg_realm_barrier_overworld_end_max+1, mcl_vars.mg_overworld_min-1, minp, maxp, lvm_used)
-
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mapgen_edge_min                     , mcl_vars.mg_nether_min                     -1, minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_nether_max                     +1, mcl_vars.mg_end_min                        -1, minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_end_max                        +1, mcl_vars.mg_realm_barrier_overworld_end_min-1, minp, maxp, lvm_used, pr)
 	-- Realm barrier between the Overworld void and the End
-	lvm_used = set_layers(c_realm_barrier, nil, mcl_vars.mg_realm_barrier_overworld_end_min, mcl_vars.mg_realm_barrier_overworld_end_max, minp, maxp, lvm_used)
+	lvm_used = set_layers(data, area, c_realm_barrier, nil, mcl_vars.mg_realm_barrier_overworld_end_min  , mcl_vars.mg_realm_barrier_overworld_end_max  , minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_realm_barrier_overworld_end_max+1, mcl_vars.mg_overworld_min                  -1, minp, maxp, lvm_used, pr)
 
 	if mg_name ~= "singlenode" then
 		-- Bedrock
-		local bedrock_check
-		if mcl_vars.mg_bedrock_is_rough then
-			bedrock_check = function(pos)
-				local y = pos.y
-				-- Bedrock layers with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
-				-- This code assumes a bedrock height of 5 layers.
-
-				local diff = mcl_vars.mg_bedrock_overworld_max - y -- Overworld bedrock
-				local ndiff1 = mcl_vars.mg_bedrock_nether_bottom_max - y -- Nether bedrock, bottom
-				local ndiff2 = mcl_vars.mg_bedrock_nether_top_max - y -- Nether bedrock, ceiling
-
-				local top
-				if diff == 0 or ndiff1 == 0 or ndiff2 == 4 then
-					-- 50% bedrock chance
-					top = 2
-				elseif diff == 1 or ndiff1 == 1 or ndiff2 == 3 then
-					-- 66.666...%
-					top = 3
-				elseif diff == 2 or ndiff1 == 2 or ndiff2 == 2 then
-					-- 75%
-					top = 4
-				elseif diff == 3 or ndiff1 == 3 or ndiff2 == 1 then
-					-- 90%
-					top = 10
-				elseif diff == 4 or ndiff1 == 4 or ndiff2 == 0 then
-					-- 100%
-					return true
-				else
-					-- Not in bedrock layer
-					return false
-				end
-
-				return math.random(1, top) <= top-1
-			end
-		else
-			bedrock_check = nil
-		end
-
-		lvm_used = set_layers(c_bedrock, bedrock_check, mcl_vars.mg_bedrock_overworld_min, mcl_vars.mg_bedrock_overworld_max, minp, maxp, lvm_used)
-		lvm_used = set_layers(c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_bedrock_nether_bottom_max, minp, maxp, lvm_used)
-		lvm_used = set_layers(c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_top_min, mcl_vars.mg_bedrock_nether_top_max, minp, maxp, lvm_used)
+		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_overworld_min, mcl_vars.mg_bedrock_overworld_max, minp, maxp, lvm_used, pr)
+		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_bedrock_nether_bottom_max, minp, maxp, lvm_used, pr)
+		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_top_min, mcl_vars.mg_bedrock_nether_top_max, minp, maxp, lvm_used, pr)
 
 		-- Flat Nether
 		if mg_name == "flat" then
-			lvm_used = set_layers(c_air, nil, mcl_vars.mg_flat_nether_floor, mcl_vars.mg_flat_nether_ceiling, minp, maxp, lvm_used)
+			lvm_used = set_layers(data, area, c_air, nil, mcl_vars.mg_flat_nether_floor, mcl_vars.mg_flat_nether_ceiling, minp, maxp, lvm_used, pr)
 		end
 
 		-- Big lava seas by replacing air below a certain height
 		if mcl_vars.mg_lava then
-			lvm_used = set_layers(c_lava, c_air, mcl_vars.mg_overworld_min, mcl_vars.mg_lava_overworld_max, emin, emax, lvm_used)
-			lvm_used = set_layers(c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, emin, emax, lvm_used)
+			lvm_used = set_layers(data, area, c_lava, c_air, mcl_vars.mg_overworld_min, mcl_vars.mg_lava_overworld_max, emin, emax, lvm_used, pr)
+			lvm_used = set_layers(data, area, c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, emin, emax, lvm_used, pr)
 		end
 
 		-- Clay, vines, cocoas
-		lvm_used = generate_clay(minp, maxp, seed, data, area, lvm_used)
+		lvm_used = generate_clay(minp, maxp, blockseed, data, area, lvm_used)
 
 		biomemap = minetest.get_mapgen_object("biomemap")
-		lvm_used = generate_tree_decorations(minp, maxp, seed, data, param2_data, area, biomemap, lvm_used)
+		lvm_used = generate_tree_decorations(minp, maxp, blockseed, data, data2, area, biomemap, lvm_used, pr)
 
 		----- Interactive block fixing section -----
 		----- The section to perform basic block overrides of the core mapgen generated world. -----
@@ -1974,19 +2088,21 @@ minetest.register_on_generated(function(minp, maxp, seed)
 				-- Set param2 (=color) of grass blocks.
 				-- Clear snowy grass blocks without snow above to ensure consistency.
 				local nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow"})
+
+				-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
+				local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
 				for n=1, #nodes do
-					local p_pos = area:index(nodes[n].x, nodes[n].y, nodes[n].z)
-					local p_pos_above = area:index(nodes[n].x, nodes[n].y+1, nodes[n].z)
-					local p_pos_below = area:index(nodes[n].x, nodes[n].y-1, nodes[n].z)
-					local b_pos = aream:index(nodes[n].x, 0, nodes[n].z)
+					local n = nodes[n]
+					local p_pos = area:index(n.x, n.y, n.z)
+					local p_pos_above = area:index(n.x, n.y+1, n.z)
+					local p_pos_below = area:index(n.x, n.y-1, n.z)
+					local b_pos = aream:index(n.x, 0, n.z)
 					local bn = minetest.get_biome_name(biomemap[b_pos])
 					if bn then
 						local biome = minetest.registered_biomes[bn]
-						if biome then
-							if biome._mcl_biome_type then
-								param2_data[p_pos] = biome._mcl_palette_index
-								lvm_used = true
-							end
+						if biome and biome._mcl_biome_type then
+							data2[p_pos] = biome._mcl_palette_index
+							lvm_used = true
 						end
 					end
 					if data[p_pos] == c_dirt_with_grass_snow and p_pos_above and data[p_pos_above] ~= c_top_snow and data[p_pos_above] ~= c_snow_block then
@@ -1994,6 +2110,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						lvm_used = true
 					end
 				end
+
 			end
 
 		-- Nether block fixes:
@@ -2025,27 +2142,28 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		-- * Remove stone, sand, dirt in v6 so our End map generator works in v6.
 		-- * Generate spawn platform (End portal destination)
 		elseif emin.y <= mcl_vars.mg_end_max and emax.y >= mcl_vars.mg_end_min then
-			local nodes
+			local nodes, node
 			if mg_name == "v6" then
 				nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
 			else
 				nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source"})
 			end
-			for n=1, #nodes do
-				local y = nodes[n].y
-				local p_pos = area:index(nodes[n].x, y, nodes[n].z)
-
-				if data[p_pos] == c_water or data[p_pos] == c_stone or data[p_pos] == c_dirt or data[p_pos] == c_sand then
-					data[p_pos] = c_air
-					lvm_used = true
+			if #nodes > 0 then
+				lvm_used = true
+				for n=1, #nodes do
+					node = nodes[n]
+					data[area:index(node.x, node.y, node.z)] = c_air
 				end
-
 			end
 
 			-- Obsidian spawn platform
 			if minp.y <= mcl_vars.mg_end_platform_pos.y and maxp.y >= mcl_vars.mg_end_platform_pos.y and
-					minp.x <= mcl_vars.mg_end_platform_pos.x and maxp.x >= mcl_vars.mg_end_platform_pos.z and
-					minp.z <= mcl_vars.mg_end_platform_pos.z and maxp.z >= mcl_vars.mg_end_platform_pos.z then
+				minp.x <= mcl_vars.mg_end_platform_pos.x and maxp.x >= mcl_vars.mg_end_platform_pos.z and
+				minp.z <= mcl_vars.mg_end_platform_pos.z and maxp.z >= mcl_vars.mg_end_platform_pos.z then
+
+				local pos1 = {x = math.max(minp.x, mcl_vars.mg_end_platform_pos.x-2), y = math.max(minp.y, mcl_vars.mg_end_platform_pos.y),   z = math.max(minp.z, mcl_vars.mg_end_platform_pos.z-2)}
+				local pos2 = {x = math.min(maxp.x, mcl_vars.mg_end_platform_pos.x+2), y = math.min(maxp.y, mcl_vars.mg_end_platform_pos.y+2), z = math.min(maxp.z, mcl_vars.mg_end_platform_pos.z+2)}
+
 				for x=math.max(minp.x, mcl_vars.mg_end_platform_pos.x-2), math.min(maxp.x, mcl_vars.mg_end_platform_pos.x+2) do
 				for z=math.max(minp.z, mcl_vars.mg_end_platform_pos.z-2), math.min(maxp.z, mcl_vars.mg_end_platform_pos.z+2) do
 				for y=math.max(minp.y, mcl_vars.mg_end_platform_pos.y), math.min(maxp.y, mcl_vars.mg_end_platform_pos.y+2) do
@@ -2065,7 +2183,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 
 	-- Final hackery: Set sun light level in the End.
 	-- -26912 is at a mapchunk border.
-	local shadow
+	local shadow = true
 	if minp.y >= -26912 and maxp.y <= mcl_vars.mg_end_max then
 		vm:set_lighting({day=15, night=15})
 		lvm_used = true
@@ -2075,21 +2193,60 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		lvm_used = true
 	end
 
-	-- Write stuff
-	if lvm_used then
-		vm:set_data(data)
-		vm:set_param2_data(param2_data)
-		vm:calc_lighting(nil, nil, shadow)
-		vm:write_to_map()
-		vm:update_liquids()
-	end
-
 	if mg_name ~= "singlenode" then
 		-- Generate special decorations
-		generate_underground_mushrooms(minp, maxp, seed)
-		generate_nether_decorations(minp, maxp, seed)
-		generate_structures(minp, maxp, seed, biomemap)
+		generate_underground_mushrooms(minp, maxp, blockseed)
+		generate_nether_decorations(minp, maxp, blockseed)
+		generate_structures(minp, maxp, blockseed, biomemap)
 	end
-end)
 
+	return lvm_used, shadow
+end
 
+mcl_mapgen_core.register_generator("main", basic, nil, 1, true)
+
+-- "Trivial" (actually NOT) function to just read the node and some stuff to not just return "ignore", like 5.3.0 does.
+-- p: Position, if it's wrong, {name="error"} node will return.
+-- force: optional (default: false) - Do the maximum to still read the node within us_timeout.
+-- us_timeout: optional (default: 244 = 0.000244 s = 1/80/80/80), set it at least to 3000000 to let mapgen to finish its job.
+--
+-- returns node definition, eg. {name="air"}. Unfortunately still can return {name="ignore"}.
+function mcl_mapgen_core.get_node(p, force, us_timeout)
+	-- check initial circumstances
+	if not p or not p.x or not p.y or not p.z then return {name="error"} end
+
+	-- try common way
+	local node = minetest.get_node(p)
+	if node.name ~= "ignore" then
+		return node
+	end
+
+	-- copy table to get sure it won't changed by other threads
+	local pos = {x=p.x,y=p.y,z=p.z}
+
+	-- try LVM
+	minetest.get_voxel_manip():read_from_map(pos, pos)
+	node = minetest.get_node(pos)
+	if node.name ~= "ignore" or not force then
+		return node
+	end
+
+	-- all ways failed - need to emerge (or forceload if generated)
+	local us_timeout = us_timeout or 244
+	if mcl_mapgen_core.is_generated(pos) then
+		minetest.forceload_block(pos)
+	else
+		minetest.emerge_area(pos, pos)
+	end
+
+	local t = minetest.get_us_time()
+
+	node = minetest.get_node(pos)
+
+	while (not node or node.name == "ignore") and (minetest.get_us_time() - t < us_timeout) do
+		node = minetest.get_node(pos)
+	end
+
+	return node
+	-- it still can return "ignore", LOL, even if force = true, but only after time out
+end
