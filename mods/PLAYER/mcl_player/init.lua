@@ -192,7 +192,7 @@ minetest.register_globalstep(function(dtime)
 				end
 			elseif controls.LMB and not controls.sneak and standing_on_water and is_sprinting == true or controls.LMB and block_in_head.walkable then
 				player_set_animation(player, "swim_mine")
-			elseif not controls.LMB and not controls.sneak and standing_on_water and is_sprinting == true or not controls.LMB and block_in_head.walkable then
+			elseif not controls.LMB and not controls.sneak and standing_on_water and is_sprinting == true then
 				player_set_animation(player, "swim_stand")
 			elseif controls.LMB and not controls.sneak then
 				player_set_animation(player, "mine")
