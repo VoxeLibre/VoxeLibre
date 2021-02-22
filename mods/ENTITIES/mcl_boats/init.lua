@@ -52,6 +52,7 @@ local boat = {
 	textures = {"mcl_boats_texture_oak_boat.png"},
 	visual_size = boat_visual_size,
 	hp_max = boat_max_hp,
+	damage_texture_modifier = "^[colorize:white:0",
 
 	_driver = nil, -- Attached driver (player) or nil if none
 	_passenger = nil,
@@ -60,6 +61,8 @@ local boat = {
 	_removed = false, -- If true, boat entity is considered removed (e.g. after punch) and should be ignored
 	_itemstring = "mcl_boats:boat", -- Itemstring of the boat item (implies boat type)
 	_animation = 0, -- 0: not animated; 1: paddling forwards; -1: paddling forwards
+	_regen_timer = 0,
+	_damage_anim = 0,
 }
 
 local function detach_player(player, change_pos)
@@ -130,13 +133,13 @@ end
 
 
 function boat.on_activate(self, staticdata, dtime_s)
-	--self.object:set_armor_groups({immortal = 1})
+	self.object:set_armor_groups({fleshy = 100})
 	local data = minetest.deserialize(staticdata)
 	if type(data) == "table" then
 		self._v = data.v
 		self._last_v = self._v
 		self._itemstring = data.itemstring
-		self.object:set_properties({textures = data.textures, damage_texture_modifier = ""})
+		self.object:set_properties({textures = data.textures})
 	end
 end
 
@@ -169,6 +172,12 @@ function boat.on_death(self, killer)
 	self._passenger = nil
 end
 
+function boat.on_punch(self, puncher, time_from_last_punch, tool_capabilities, dir, damage)
+	if damage > 0 then
+		self._regen_timer = 0
+	end
+end
+
 function boat.on_step(self, dtime, moveresult)
 	self._v = get_v(self.object:get_velocity()) * get_sign(self._v)
 	local on_water = true
@@ -187,11 +196,16 @@ function boat.on_step(self, dtime, moveresult)
 		v_slowdown = 0.05
 	end
 
-	--local yaw = self.object:get_yaw()
-	--local hp = math.min(self.object:get_hp() + 2 * dtime, boat_max_hp)
-	--self.object:set_rotation(vector.new((boat_max_hp - hp) / boat_max_hp, 0, 0))
-	self.object:set_hp(self.object:get_hp() + 2 * dtime)
-	--self.object:set_yaw(yaw)
+	local hp = self.object:get_hp()
+	local regen_timer = self._regen_timer + dtime
+	if hp >= boat_max_hp then
+		regen_timer = 0
+	elseif regen_timer >= 0.5 then
+		hp = hp + 1
+		self.object:set_hp(hp)
+		regen_timer = 0
+	end
+	self._regen_timer = regen_timer
 
 	if moveresult and moveresult.collides then
 		for _, collision in ipairs(moveresult.collisions) do
@@ -326,6 +340,10 @@ function boat.on_step(self, dtime, moveresult)
 		end
 	end
 
+	local yaw = self.object:get_yaw()
+	local anim = (boat_max_hp - hp - regen_timer * 2) / boat_max_hp * math.pi / 4
+
+	self.object:set_rotation(vector.new(anim, yaw, anim))
 	self.object:set_velocity(new_velo)
 	self.object:set_acceleration(new_acce)
 end
