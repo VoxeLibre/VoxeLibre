@@ -1,6 +1,15 @@
 local S = minetest.get_translator("mcl_death_messages")
 local N = function(s) return s end
 
+local function get_tool_name(item)
+	local name = item:get_meta():get_string("name")
+	if name ~= "" then
+	  return name
+	end
+	local def = item:get_definition()
+	return def._tt_original_description or def.description
+  end
+
 mcl_death_messages = {}
 
 -- Death messages
@@ -10,19 +19,19 @@ local msgs = {
 		N("@1 has been killed by an arrow."),
 	},
 	["arrow_name"] = {
-		N("@1 was shot by an arrow from @2."),
+		N("@1 was shot by @2 using [@3]"),
 	},
 	["arrow_skeleton"] = {
-		N("@1 was shot by an arrow from a skeleton."),
+		N("@1 was shot by Skeleton."),
 	},
 	["arrow_stray"] = {
-		N("@1 was shot by an arrow from a stray."),
+		N("@1 was shot by Stray."),
 	},
 	["arrow_illusioner"] = {
-		N("@1 was shot by an arrow from an illusioner."),
+		N("@1 was shot by Illusioner."),
 	},
 	["arrow_mob"] = {
-		N("@1 was shot by an arrow."),
+		N("@1 was shot."),
 	},
 	["drown"] = {
 		N("@1 forgot to breathe."),
@@ -30,75 +39,77 @@ local msgs = {
 		N("@1 ran out of oxygen."),
 	},
 	["murder"] = {
-		N("@1 was killed by @2."),
+		N("@1 was slain by @2 using [@3]"),
 	},
 	["murder_any"] = {
 		N("@1 was killed."),
 	},
 	["mob_kill"] = {
-		N("@1 was killed by a mob."),
+		N("@1 was slain by a mob."),
 	},
 	["blaze_fireball"] = {
-		N("@1 was burned to death by a blaze's fireball."),
-		N("@1 was killed by a fireball from a blaze."),
+		N("@1 was burned to death by a Blaze's fireball."),
+		N("@1 was fireballed by a Blaze"),
 	},
 	["fire_charge"] = {
 		N("@1 was burned by a fire charge."),
 	},
 	["ghast_fireball"] = {
-		N("A ghast scared @1 to death."),
-		N("@1 has been fireballed by a ghast."),
+		N("A Ghast scared @1 to death."),
+		N("@1 has been fireballed by a Ghast."),
 	},
 	["fall"] = {
 		N("@1 fell from a high cliff."),
 		N("@1 took fatal fall damage."),
 		N("@1 fell victim to gravity."),
+		N("@1 hit the ground too hard.")
 	},
+
 	["other"] = {
 		N("@1 died."),
 	}
 }
 
 local mobkills = {
-	["mobs_mc:zombie"] = N("@1 was killed by a zombie."),
-	["mobs_mc:baby_zombie"] = N("@1 was killed by a baby zombie."),
-	["mobs_mc:blaze"] = N("@1 was killed by a blaze."),
-	["mobs_mc:slime"] = N("@1 was killed by a slime."),
-	["mobs_mc:witch"] = N("@1 was killed by a witch."),
-	["mobs_mc:magma_cube_tiny"] = N("@1 was killed by a magma cube."),
-	["mobs_mc:magma_cube_small"] = N("@1 was killed by a magma cube."),
-	["mobs_mc:magma_cube_big"] = N("@1 was killed by a magma cube."),
-	["mobs_mc:wolf"] = N("@1 was killed by a wolf."),
-	["mobs_mc:cat"] = N("@1 was killed by a cat."),
-	["mobs_mc:ocelot"] = N("@1 was killed by an ocelot."),
-	["mobs_mc:enderdragon"] = N("@1 was killed by an ender dragon."),
-	["mobs_mc:wither"] = N("@1 was killed by a wither."),
-	["mobs_mc:enderman"] = N("@1 was killed by an enderman."),
-	["mobs_mc:endermite"] = N("@1 was killed by an endermite."),
-	["mobs_mc:ghast"] = N("@1 was killed by a ghast."),
-	["mobs_mc:guardian_elder"] = N("@1 was killed by an elder guardian."),
-	["mobs_mc:guardian"] = N("@1 was killed by a guardian."),
-	["mobs_mc:iron_golem"] = N("@1 was killed by an iron golem."),
-	["mobs_mc:polar_bear"] = N("@1 was killed by a polar_bear."),
-	["mobs_mc:killer_bunny"] = N("@1 was killed by a killer bunny."),
-	["mobs_mc:shulker"] = N("@1 was killed by a shulker."),
-	["mobs_mc:silverfish"] = N("@1 was killed by a silverfish."),
-	["mobs_mc:skeleton"] = N("@1 was killed by a skeleton."),
-	["mobs_mc:stray"] = N("@1 was killed by a stray."),
-	["mobs_mc:slime_tiny"] = N("@1 was killed by a slime."),
-	["mobs_mc:slime_small"] = N("@1 was killed by a slime."),
-	["mobs_mc:slime_big"] = N("@1 was killed by a slime."),
-	["mobs_mc:spider"] = N("@1 was killed by a spider."),
-	["mobs_mc:cave_spider"] = N("@1 was killed by a cave spider."),
-	["mobs_mc:vex"] = N("@1 was killed by a vex."),
-	["mobs_mc:evoker"] = N("@1 was killed by an evoker."),
-	["mobs_mc:illusioner"] = N("@1 was killed by an illusioner."),
-	["mobs_mc:vindicator"] = N("@1 was killed by a vindicator."),
-	["mobs_mc:villager_zombie"] = N("@1 was killed by a zombie villager."),
-	["mobs_mc:husk"] = N("@1 was killed by a husk."),
-	["mobs_mc:baby_husk"] = N("@1 was killed by a baby husk."),
-	["mobs_mc:pigman"] = N("@1 was killed by a zombie pigman."),
-	["mobs_mc:baby_pigman"] = N("@1 was killed by a baby zombie pigman."),
+	["mobs_mc:zombie"] = N("@1 was slain by Zombie."),
+	["mobs_mc:baby_zombie"] = N("@1 was slain by Baby Zombie."),
+	["mobs_mc:blaze"] = N("@1 was burnt to a crisp while fighting Blaze."),
+	["mobs_mc:slime"] = N("@1 was slain by Slime."),
+	["mobs_mc:witch"] = N("@1 was slain by Witch using magic."),
+	["mobs_mc:magma_cube_tiny"] = N("@1 was slain by Magma Cube."),
+	["mobs_mc:magma_cube_small"] = N("@1 was slain by Magma Cube."),
+	["mobs_mc:magma_cube_big"] = N("@1 was slain by Magma Cube."),
+	["mobs_mc:wolf"] = N("@1 was slain by Wolf."),
+	["mobs_mc:cat"] = N("@1 was slain by Cat."),
+	["mobs_mc:ocelot"] = N("@1 was slain by Ocelot."),
+	["mobs_mc:enderdragon"] = N("@1 was slain by Enderdragon."),
+	["mobs_mc:wither"] = N("@1 was slain by Wither."),
+	["mobs_mc:enderman"] = N("@1 was slain by Enderman."),
+	["mobs_mc:endermite"] = N("@1 was slain by Endermite."),
+	["mobs_mc:ghast"] = N("@1 was fireballed by a Ghast."),
+	["mobs_mc:guardian_elder"] = N("@1 was slain by Elder Guardian."),
+	["mobs_mc:guardian"] = N("@1 was slain by Guardian."),
+	["mobs_mc:iron_golem"] = N("@1 was slain by Iron Golem."),
+	["mobs_mc:polar_bear"] = N("@1 was slain by Polar Bear."),
+	["mobs_mc:killer_bunny"] = N("@1 was slain by Killer Bunny."),
+	["mobs_mc:shulker"] = N("@1 was slain by Shulker."),
+	["mobs_mc:silverfish"] = N("@1 was slain by Silverfish."),
+	["mobs_mc:skeleton"] = N("@1 was shot by Skeleton."),
+	["mobs_mc:stray"] = N("@1 was shot by Stray."),
+	["mobs_mc:slime_tiny"] = N("@1 was slain by Slime."),
+	["mobs_mc:slime_small"] = N("@1 was slain by Slime."),
+	["mobs_mc:slime_big"] = N("@1 was slain by Slime."),
+	["mobs_mc:spider"] = N("@1 was slain by Spider."),
+	["mobs_mc:cave_spider"] = N("@1 was slain by Cave Spider."),
+	["mobs_mc:vex"] = N("@1 was slain by Vex."),
+	["mobs_mc:evoker"] = N("@1 was slain by Evoker."),
+	["mobs_mc:illusioner"] = N("@1 was slain by Illusioner."),
+	["mobs_mc:vindicator"] = N("@1 was slain by Vindicator."),
+	["mobs_mc:villager_zombie"] = N("@1 was slain by Zombie Villager."),
+	["mobs_mc:husk"] = N("@1 was slain by Husk."),
+	["mobs_mc:baby_husk"] = N("@1 was slain by Baby Husk."),
+	["mobs_mc:pigman"] = N("@1 was slain by Zombie Pigman."),
+	["mobs_mc:baby_pigman"] = N("@1 was slain by Baby Zombie Pigman."),
 }
 
 -- Select death message
@@ -173,7 +184,13 @@ minetest.register_on_dieplayer(function(player, reason)
 		elseif reason.type == "punch" then
 		-- Punches
 			local hitter = reason.object
+
+			-- Player was slain by potions
+			if not hitter then return end
+			
 			local hittername, hittertype, hittersubtype, shooter
+			local hitter_toolname  = get_tool_name(hitter:get_wielded_item())
+
 			-- Custom message
 			if last_damages[name] then
 				msg = last_damages[name].message
@@ -184,7 +201,7 @@ minetest.register_on_dieplayer(function(player, reason)
 			elseif hitter:is_player() then
 				hittername = hitter:get_player_name()
 				if hittername ~= nil then
-					msg = dmsg("murder", name, hittername)
+					msg = dmsg("murder", name, hittername, minetest.colorize("#00FFFF", hitter_toolname))
 				else
 					msg = dmsg("murder_any", name)
 				end
@@ -202,7 +219,7 @@ minetest.register_on_dieplayer(function(player, reason)
 					msg = dmsg("murder_any", name)
 				end
 			-- Arrow
-			elseif hitter:get_luaentity().name == "mcl_bows:arrow_entity" or hitter:get_luaentity().name == "mobs_mc:arrow_entity" then
+			elseif hitter:get_luaentity().name == "mcl_bows:arrow_entity" or hitter:get_luaentity().name == "mobs_mc:arrow_entity" and not killed_by_potion then
 				local shooter
 				if hitter:get_luaentity()._shooter then
 					shooter = hitter:get_luaentity()._shooter
@@ -212,10 +229,10 @@ minetest.register_on_dieplayer(function(player, reason)
 				if shooter == nil then
 					msg = dmsg("arrow", name)
 				elseif shooter:is_player() then
-					msg = dmsg("arrow_name", name, shooter:get_player_name())
+					msg = dmsg("arrow_name", name, shooter:get_player_name(), minetest.colorize("#00FFFF", get_tool_name(shooter:get_wielded_item())))
 				elseif s_ent and s_ent._cmi_is_mob then
 					if s_ent.nametag ~= "" then
-						msg = dmsg("arrow_name", name, shooter:get_player_name())
+						msg = dmsg("arrow_name", name, shooter:get_player_name(), get_tool_name(shooter:get_wielded_item()))
 					elseif s_ent.name == "mobs_mc:skeleton" then
 						msg = dmsg("arrow_skeleton", name)
 					elseif s_ent.name == "mobs_mc:stray" then
@@ -278,4 +295,3 @@ function mcl_death_messages.player_damage(player, message)
 		dmg_sequence_number = 0
 	end
 end
-
