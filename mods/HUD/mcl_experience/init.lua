@@ -66,6 +66,9 @@ end)
 -- create instance of new hud
 hud_manager.add_hud = function(player,hud_name,def)
     local name = player:get_player_name()
+    if minetest.is_creative_enabled(name) then
+		return
+    end
     local local_hud = player:hud_add({
 		hud_elem_type = def.hud_elem_type,
 		position      = def.position,

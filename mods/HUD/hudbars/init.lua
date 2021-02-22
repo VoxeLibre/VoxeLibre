@@ -46,7 +46,7 @@ end
 
 -- Load default settings
 dofile(minetest.get_modpath("hudbars").."/default_settings.lua")
-if minetest.get_modpath("mcl_experience") then
+if minetest.get_modpath("mcl_experience") and not minetest.is_creative_enabled("") then
 	-- reserve some space for experience bar:
 	hb.settings.start_offset_left.y = hb.settings.start_offset_left.y - 20
 	hb.settings.start_offset_right.y = hb.settings.start_offset_right.y - 20
