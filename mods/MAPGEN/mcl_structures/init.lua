@@ -244,7 +244,7 @@ local function igloo_placement_callback(p1, p2, size, orientation, pr)
 	init_node_construct(chest_pos)
 	local meta = minetest.get_meta(chest_pos)
 	local inv = meta:get_inventory()
-	mcl_loot.fill_inventory(inv, "main", lootitems)
+	mcl_loot.fill_inventory(inv, "main", lootitems, pr)
 end
 
 mcl_structures.generate_igloo_basement = function(pos, orientation, pr)
@@ -463,7 +463,7 @@ local function temple_placement_callback(p1, p2, size, rotation, pr)
 		init_node_construct(chests[c])
 		local meta = minetest.get_meta(chests[c])
 		local inv = meta:get_inventory()
-		mcl_loot.fill_inventory(inv, "main", lootitems)
+		mcl_loot.fill_inventory(inv, "main", lootitems, pr)
 	end
 
 	-- Initialize pressure plates and randomly remove up to 5 plates

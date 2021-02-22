@@ -111,14 +111,14 @@ end
 Returns a table of length `max_slot` and all natural numbers between 1 and `max_slot`
 in a random order.
 ]]
-local function get_random_slots(max_slot)
+local function get_random_slots(max_slot, pr)
 	local slots = {}
 	for s=1, max_slot do
 		slots[s] = s
 	end
 	local slots_out = {}
 	while #slots > 0 do
-		local r = math.random(1, #slots)
+		local r = pr and pr:next(1, #slots) or math.random(1, #slots)
 		table.insert(slots_out, slots[r])
 		table.remove(slots, r)
 	end
@@ -135,9 +135,9 @@ Items will be added from start of the table to end.
 If the inventory already has occupied slots, or is
 too small, placement of some items might fail.
 ]]
-function mcl_loot.fill_inventory(inv, listname, items)
+function mcl_loot.fill_inventory(inv, listname, items, pr)
 	local size = inv:get_size(listname)
-	local slots = get_random_slots(size)
+	local slots = get_random_slots(size, pr)
 	local leftovers = {}
 	-- 1st pass: Add items into random slots
 	for i=1, math.min(#items, size) do

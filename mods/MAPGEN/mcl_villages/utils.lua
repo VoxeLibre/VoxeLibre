@@ -178,7 +178,7 @@ function settlements.fill_chest(pos, pr)
 	end
 
 	local items = get_treasures(pr)
-	mcl_loot.fill_inventory(inv, "main", items)
+	mcl_loot.fill_inventory(inv, "main", items, pr)
 end
 
 -------------------------------------------------------------------------------
