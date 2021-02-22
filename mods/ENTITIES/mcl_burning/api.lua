@@ -107,11 +107,7 @@ function mcl_burning.damage(obj)
 	end
 
 	if do_damage then
-		local damage = mcl_burning.get(obj, "float", "damage")
-		if damage == 0 then
-			damage = 1
-		end
-		local new_hp = hp - damage
+		local new_hp = hp - 1
 		if health then
 			luaentity.health = new_hp
 		else
@@ -120,7 +116,7 @@ function mcl_burning.damage(obj)
 	end
 end
 
-function mcl_burning.set_on_fire(obj, burn_time, damage, interval, reason)
+function mcl_burning.set_on_fire(obj, burn_time, reason)
 	local luaentity = obj:get_luaentity()
 	if luaentity and luaentity.fire_resistant then
 		return
@@ -173,8 +169,6 @@ function mcl_burning.set_on_fire(obj, burn_time, damage, interval, reason)
 			end
 		end
 		mcl_burning.set(obj, "float", "burn_time", burn_time)
-		mcl_burning.set(obj, "float", "damage", damage)
-		mcl_burning.set(obj, "float", "interval", interval)
 		mcl_burning.set(obj, "string", "reason", reason)
 		mcl_burning.set(obj, "int", "hud_id", hud_id)
 		mcl_burning.set(obj, "int", "sound_id", sound_id)
@@ -208,8 +202,6 @@ function mcl_burning.extinguish(obj)
 			obj:hud_remove(hud_id)
 		end
 
-		mcl_burning.set(obj, "float", "damage")
-		mcl_burning.set(obj, "float", "interval")
 		mcl_burning.set(obj, "string", "reason")
 		mcl_burning.set(obj, "float", "burn_time")
 		mcl_burning.set(obj, "float", "damage_timer")
@@ -240,12 +232,7 @@ function mcl_burning.tick(obj, dtime)
 
 		local damage_timer = mcl_burning.get(obj, "float", "damage_timer") + dtime
 
-		local interval = mcl_burning.get(obj, "float", "interval")
-		if interval == 0 then
-			interval = 1
-		end
-
-		if damage_timer >= interval then
+		if damage_timer >= 1 then
 			damage_timer = 0
 			mcl_burning.damage(obj)
 		end

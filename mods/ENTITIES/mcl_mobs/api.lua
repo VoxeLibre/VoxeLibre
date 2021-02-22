@@ -1059,7 +1059,7 @@ local do_env_damage = function(self)
 	end
 	if (self.sunlight_damage ~= 0 or self.ignited_by_sunlight) and (minetest.get_node_light(pos) or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
 		if self.ignited_by_sunlight then
-			mcl_burning.set_on_fire(self.object, 10, self.sunlight_damage or 1)
+			mcl_burning.set_on_fire(self.object, 10)
 		else
 			deal_light_damage(self, pos, self.sunlight_damage)
 			return true
@@ -2975,8 +2975,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	if weapon then
 		local fire_aspect_level = mcl_enchanting.get_enchantment(weapon, "fire_aspect")
 		if fire_aspect_level > 0 then
-			local damage = fire_aspect_level * 4 - 1
-			mcl_burning.set_on_fire(self.object, 4, 1, 4 / damage)
+			mcl_burning.set_on_fire(self.object, fire_aspect_level * 4)
 		end
 	end
 

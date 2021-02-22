@@ -5,7 +5,7 @@ mcl_burning = {
 	animation_frames = tonumber(minetest.settings:get("fire_animation_frames")) or 8
 }
 
-dofile(modpath .. "/engine.lua")
+dofile(modpath .. "/api.lua")
 
 minetest.register_entity("mcl_burning:fire", {
 	initial_properties = {

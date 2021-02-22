@@ -253,7 +253,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 						end
 						damage_particles(self.object:get_pos(), self._is_critical)
 						if mcl_burning.is_burning(self.object) then
-							mcl_burning.set_on_fire(obj, 5, 1, 5 / 4)
+							mcl_burning.set_on_fire(obj, 5)
 						end
 						obj:punch(self.object, 1.0, {
 							full_punch_interval=1.0,
