@@ -115,7 +115,7 @@ minetest.register_globalstep(function(dtime)
 
 			local playerPos = player:get_pos()
 			--If the player is sprinting, create particles behind and cause exhaustion
-			if playerInfo["sprinting"] == true and gameTime % 0.1 == 0 then
+			if playerInfo["sprinting"] == true and not player:get_attach() and gameTime % 0.1 == 0 then
 
 				-- Exhaust player for sprinting
 				local lastPos = players[playerName].lastPos
@@ -158,7 +158,7 @@ minetest.register_globalstep(function(dtime)
 			if players[playerName]["shouldSprint"] == true then --Stopped
 				local sprinting
 				-- Prevent sprinting if hungry or sleeping
-				if (mcl_hunger.active and mcl_hunger.get_hunger(player) <= 6) or (player:get_meta():get_string("mcl_beds:sleeping") == "true")then
+				if (mcl_hunger.active and mcl_hunger.get_hunger(player) <= 6) or (player:get_meta():get_string("mcl_beds:sleeping") == "true") then
 					sprinting = false
 				else
 					sprinting = true

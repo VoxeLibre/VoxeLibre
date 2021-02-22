@@ -204,8 +204,8 @@ minetest.register_globalstep(function(dtime)
 		--[[ Swimming: Cause exhaustion.
 		NOTE: As of 0.4.15, it only counts as swimming when you are with the feet inside the liquid!
 		Head alone does not count. We respect that for now. ]]
-		if minetest.get_item_group(node_feet, "liquid") ~= 0 or
-				minetest.get_item_group(node_stand, "liquid") ~= 0 then
+		if not player:get_attach() and (minetest.get_item_group(node_feet, "liquid") ~= 0 or
+				minetest.get_item_group(node_stand, "liquid") ~= 0) then
 			local lastPos = mcl_playerplus_internal[name].lastPos
 			if lastPos then
 				local dist = vector.distance(lastPos, pos)
