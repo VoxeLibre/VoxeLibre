@@ -396,7 +396,7 @@ local is_node_dangerous = function(self, nodename)
 			return true
 		end
 	end
-	if minetest.registered_nodes[nn].damage_per_second and minetest.registered_nodes[nn].damage_per_second > 0 then
+	if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].damage_per_second and minetest.registered_nodes[nn].damage_per_second > 0 then
 		return true
 	end
 	return false
