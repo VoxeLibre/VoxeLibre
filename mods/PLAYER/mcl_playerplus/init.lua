@@ -11,6 +11,12 @@ local function degrees(rad)
 	return rad * 180.0 / math.pi
 end
 
+local dir_to_pitch = function(dir)
+	local dir2 = vector.normalize(dir)
+	local xz = math.abs(dir.x) + math.abs(dir.z)
+	return -math.atan2(-dir.y, xz)
+end
+
 local pitch, name, node_stand, node_stand_below, node_head, node_feet, pos
 
 minetest.register_globalstep(function(dtime)
@@ -23,9 +29,19 @@ minetest.register_globalstep(function(dtime)
 		local controls = player:get_player_control()
 		name = player:get_player_name()
 
+		local player_velocity = player:get_player_velocity()
+
 		-- controls head bone
 		local pitch = degrees(player:get_look_vertical()) * -1
 		local yaw = degrees(player:get_look_horizontal()) * -1
+
+		if degrees(minetest.dir_to_yaw(player_velocity)) == 0 then
+			player_vel_yaw = 0
+			yaw = 0
+		else
+			player_vel_yaw = degrees(minetest.dir_to_yaw(player_velocity))
+		end
+
 
 		local node_in_head = minetest.registered_nodes[mcl_playerinfo[name].node_head]
 
@@ -46,23 +62,29 @@ minetest.register_globalstep(function(dtime)
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+36,0,0))
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.35, nametag_color = { r = 225, b = 225, a = 0, g = 225 }})
-
+			-- sneaking body conrols
+			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
 		elseif minetest.get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and player:get_attach() == nil and mcl_sprint.is_sprinting(name) == true or node_in_head and node_in_head.walkable then
-			-- controls head pitch when swiming
-			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+90,0,0))
+			-- set head pitch and yaw when swimming
+			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+90-degrees(dir_to_pitch(player_velocity)),yaw - player_vel_yaw * -1,0))
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,0.8,0.35}, eye_height = 0.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
+			-- control body bone when swimming
+			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(degrees(dir_to_pitch(player_velocity)) - 90,player_vel_yaw * -1 - yaw + 180,0))
 
 		elseif player:get_attach() == nil then
 			-- controls head pitch when not sneaking
-			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,0,0))
+			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,yaw - player_vel_yaw * -1,0))
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
+			-- sets body position and rotation while walking
+			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,player_vel_yaw * -1 - yaw,0))
 		else
 			local attached = player:get_attach(parent)
 			local attached_yaw = degrees(attached:get_yaw())
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,yaw + attached_yaw,0))
+			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
 		end
 
 		if mcl_playerplus_internal[name].jump_cooldown > 0 then
