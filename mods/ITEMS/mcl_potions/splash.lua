@@ -64,7 +64,7 @@ function mcl_potions.register_splash(name, descr, color, def)
 			local pos = self.object:get_pos()
 			local node = minetest.get_node(pos)
 			local n = node.name
-			local g = minetest.get_node_group(n, "liquid")
+			local g = minetest.get_item_group(n, "liquid")
 			local d = 0.1
 			local redux_map = {7/8,0.5,0.25}
 			if n ~= "air" and n ~= "mcl_portals:portal" and n ~= "mcl_portals:portal_end" and g == 0 or mcl_potions.is_obj_hit(self, pos) then

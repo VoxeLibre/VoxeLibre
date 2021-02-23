@@ -210,7 +210,7 @@ function boat.on_step(self, dtime, moveresult)
 	if moveresult and moveresult.collides then
 		for _, collision in ipairs(moveresult.collisions) do
 			local pos = collision.node_pos
-			if collision.type == "node" and minetest.get_node_group(minetest.get_node(pos).name, "dig_by_boat") > 0 then
+			if collision.type == "node" and minetest.get_item_group(minetest.get_node(pos).name, "dig_by_boat") > 0 then
 				minetest.dig_node(pos)
 			end
 		end

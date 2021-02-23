@@ -617,7 +617,7 @@ minetest.register_entity("mcl_experience:bottle",{
 		local pos = self.object:get_pos()
 		local node = minetest.get_node(pos)
 		local n = node.name
-		if n ~= "air" and n ~= "mcl_portals:portal" and n ~= "mcl_portals:portal_end" and minetest.get_node_group(n, "liquid") == 0 then
+		if n ~= "air" and n ~= "mcl_portals:portal" and n ~= "mcl_portals:portal_end" and minetest.get_item_group(n, "liquid") == 0 then
 			minetest.sound_play("mcl_potions_breaking_glass", {pos = pos, max_hear_distance = 16, gain = 1})
 			mcl_experience.throw_experience(pos, math.random(3, 11))
 			self.object:remove()

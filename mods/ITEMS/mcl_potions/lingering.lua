@@ -142,7 +142,7 @@ minetest.register_entity(id.."_flying",{
 		local pos = self.object:get_pos()
 		local node = minetest.get_node(pos)
 		local n = node.name
-		local g = minetest.get_node_group(n, "liquid")
+		local g = minetest.get_item_group(n, "liquid")
 		local d = 4
 		if n ~= "air" and n ~= "mcl_portals:portal" and n ~= "mcl_portals:portal_end" and g == 0 or mcl_potions.is_obj_hit(self, pos) then
 			minetest.sound_play("mcl_potions_breaking_glass", {pos = pos, max_hear_distance = 16, gain = 1})
