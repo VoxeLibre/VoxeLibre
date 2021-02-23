@@ -83,7 +83,7 @@ minetest.register_globalstep(function(dtime)
 			local attached = player:get_attach(parent)
 			local attached_yaw = degrees(attached:get_yaw())
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
-			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,yaw + attached_yaw,0))
+			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,degrees(player:get_look_horizontal()) * -1 + attached_yaw,0))
 			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
 		end
 
