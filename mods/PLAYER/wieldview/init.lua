@@ -71,6 +71,9 @@ minetest.register_on_joinplayer(function(player)
 	wieldview.wielded_item[name] = ""
 	minetest.after(0, function(player)
 		wieldview:update_wielded_item(player)
+		local itementity = minetest.add_entity(player:get_pos(), "wieldview:wieldnode")
+		itementity:set_attach(player, "Right_Hand", vector.new(0, 0, 0), vector.new(15, 45, 0))
+		itementity:get_luaentity().wielder = name
 	end, player)
 end)
 
@@ -80,3 +83,42 @@ minetest.register_globalstep(function()
 	end
 end)
 
+minetest.register_entity("wieldview:wieldnode", {
+	initial_properties = {
+		hp_max           = 1,
+		visual           = "wielditem",
+		physical         = false,
+		textures         = {""},
+		automatic_rotate = 1.5,
+		is_visible       = true,
+		pointable        = false,
+		collide_with_objects = false,
+		static_save = false,
+		collisionbox = {-0.21, -0.21, -0.21, 0.21, 0.21, 0.21},
+		selectionbox = {-0.21, -0.21, -0.21, 0.21, 0.21, 0.21},
+		visual_size  = {x = 0.21, y = 0.21},
+	},
+
+	itemstring = "",
+
+	on_step = function(self)
+		local player = minetest.get_player_by_name(self.wielder)
+		if player then
+			local wielded = player:get_wielded_item()
+			local itemstring = wielded:to_string()
+			if self.itemstring ~= itemstring then
+				local itemname = wielded:get_name()
+				local def = minetest.registered_items[itemname]
+				self.object:set_properties({glow = def and def.light_source or 0})
+				if armor.textures[self.wielder].wielditem == "blank.png" then
+					self.object:set_properties({textures = {itemname}, wield_item = itemstring})
+				else
+					self.object:set_properties({textures = {""}, wield_item = ""})
+				end
+				self.itemstring = itemstring
+			end
+		else
+			self.object:remove()
+		end
+	end,
+})
