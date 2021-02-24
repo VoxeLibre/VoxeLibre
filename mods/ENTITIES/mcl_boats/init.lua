@@ -7,9 +7,17 @@ local boat_y_offset_ground = boat_y_offset + 0.6
 local boat_side_offset = 1.001
 local boat_max_hp = 4
 
-local function is_water(pos)
+local function is_group(pos, group)
 	local nn = minetest.get_node(pos).name
-	return minetest.get_item_group(nn, "water") ~= 0
+	return minetest.get_item_group(nn, group) ~= 0
+end
+
+local function is_water(pos)
+	return is_group(pos, "water")
+end
+
+local function is_ice(pos)
+	return is_group(pos, "ice")
 end
 
 local function get_sign(i)
@@ -181,16 +189,23 @@ end
 
 function boat.on_step(self, dtime, moveresult)
 	self._v = get_v(self.object:get_velocity()) * get_sign(self._v)
-	local on_water = true
-	local in_water = false
 	local v_factor = 1
 	local v_slowdown = 0.02
 	local p = self.object:get_pos()
-	if (not is_water({x=p.x, y=p.y-boat_y_offset, z=p.z})) then
+	local on_water = true
+	local on_ice = false
+	local in_water = is_water({x=p.x, y=p.y-boat_y_offset+1, z=p.z})
+	local waterp = {x=p.x, y=p.y-boat_y_offset - 0.1, z=p.z}
+	if not is_water(waterp) then
 		on_water = false
+		if not in_water and is_ice(waterp) then
+			on_ice = true
+		else
+			v_slowdown = 0.04
+		end
+
 		v_factor = 0.5
-		v_slowdown = 0.04
-	elseif (is_water({x=p.x, y=p.y-boat_y_offset+1, z=p.z})) then
+	elseif in_water then
 		on_water = false
 		in_water = true
 		v_factor = 0.75
@@ -300,9 +315,9 @@ function boat.on_step(self, dtime, moveresult)
 		end
 	end
 	local s = get_sign(self._v)
-	if not on_water and not in_water and math.abs(self._v) > 1.0 then
-		v_slowdown = math.min(math.abs(self._v) - 1.0, v_slowdown * 5)
-	elseif in_water and math.abs(self._v) > 1.5 then
+	if not on_ice and not on_water and not in_water and math.abs(self._v) > 2.0 then
+		v_slowdown = math.min(math.abs(self._v) - 2.0, v_slowdown * 5)
+	elseif not on_ice and in_water and math.abs(self._v) > 1.5 then
 		v_slowdown = math.min(math.abs(self._v) - 1.5, v_slowdown * 5)
 	end
 	self._v = self._v - v_slowdown * s
@@ -313,7 +328,7 @@ function boat.on_step(self, dtime, moveresult)
 	p.y = p.y - boat_y_offset
 	local new_velo
 	local new_acce = {x = 0, y = 0, z = 0}
-	if not is_water(p) then
+	if not is_water(p) and not on_ice then
 		-- Not on water or inside water: Free fall
 		local nodedef = minetest.registered_nodes[minetest.get_node(p).name]
 		new_acce = {x = 0, y = -9.8, z = 0}
@@ -343,9 +358,10 @@ function boat.on_step(self, dtime, moveresult)
 	end
 
 	-- Terminal velocity: 8 m/s per axis of travel
+	local terminal_velocity = on_ice and 57.1 or 8.0
 	for _,axis in pairs({"z","y","x"}) do
-		if math.abs(new_velo[axis]) > 8 then
-			new_velo[axis] = 8 * get_sign(new_velo[axis])
+		if math.abs(new_velo[axis]) > terminal_velocity then
+			new_velo[axis] = terminal_velocity * get_sign(new_velo[axis])
 		end
 	end
 
