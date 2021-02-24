@@ -238,7 +238,7 @@ function settlements.place_schematics(settlement_info, pr)
 		local schematic = loadstring(schem_lua)()
 		-- build foundation for the building an make room above
 		-- place schematic
-		minetest.place_schematic(
+		mcl_structures.place_schematic(
 			pos, 
 			schematic, 
 			rotation, 

@@ -7,15 +7,14 @@ local rotations = {
 	"270"
 }
 
-mcl_structures.minetest_place_schematic = minetest.place_schematic
 local function ecb_place(blockpos, action, calls_remaining, param)
 	if calls_remaining >= 1 then return end
-	mcl_structures.minetest_place_schematic(param.pos, param.schematic, param.rotation, param.replacements, param.force_placement, param.flags)
+	minetest.place_schematic(param.pos, param.schematic, param.rotation, param.replacements, param.force_placement, param.flags)
 	if param.after_placement_callback and param.p1 and param.p2 then
 		param.after_placement_callback(param.p1, param.p2, param.size, param.rotation, param.pr)
 	end
 end
-minetest.place_schematic = function(pos, schematic, rotation, replacements, force_placement, flags, after_placement_callback, pr)
+mcl_structures.place_schematic = function(pos, schematic, rotation, replacements, force_placement, flags, after_placement_callback, pr)
 	local s = loadstring(minetest.serialize_schematic(schematic, "lua", {lua_use_comments = false, lua_num_indent_spaces = 0}) .. " return(schematic)")()
 	if s and s.size then
 		local x, z = s.size.x, s.size.z
@@ -37,7 +36,6 @@ minetest.place_schematic = function(pos, schematic, rotation, replacements, forc
 		minetest.emerge_area(p1, p2, ecb_place, param)
 	end
 end
-mcl_structures.place_schematic = minetest.place_schematic -- for direct usage
 
 mcl_structures.get_struct = function(file)
 	local localfile = minetest.get_modpath("mcl_structures").."/schematics/"..file
@@ -97,7 +95,7 @@ end
 mcl_structures.generate_desert_well = function(pos)
 	local newpos = {x=pos.x,y=pos.y-2,z=pos.z}
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_desert_well.mts"
-	return minetest.place_schematic(newpos, path, "0", nil, true)
+	return mcl_structures.place_schematic(newpos, path, "0", nil, true)
 end
 
 mcl_structures.generate_igloo = function(pos, rotation, pr)
@@ -201,7 +199,7 @@ mcl_structures.generate_igloo_top = function(pos, pr)
 	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_igloo_top.mts"
 	local rotation = tostring(pr:next(0,3)*90)
-	return minetest.place_schematic(newpos, path, rotation, nil, true), rotation
+	return mcl_structures.place_schematic(newpos, path, rotation, nil, true), rotation
 end
 
 local function igloo_placement_callback(p1, p2, size, orientation, pr)
@@ -266,7 +264,7 @@ mcl_structures.generate_boulder = function(pos, rotation, pr)
 	end
 
 	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
-	return minetest.place_schematic(newpos, path)
+	return mcl_structures.place_schematic(newpos, path)
 end
 
 local function hut_placement_callback(p1, p2, size, orientation, pr)
@@ -287,12 +285,12 @@ end
 
 mcl_structures.generate_ice_spike_small = function(pos)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_small.mts"
-	return minetest.place_schematic(pos, path, "random", nil, false)
+	return mcl_structures.place_schematic(pos, path, "random", nil, false)
 end
 
 mcl_structures.generate_ice_spike_large = function(pos)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_large.mts"
-	return minetest.place_schematic(pos, path, "random", nil, false)
+	return mcl_structures.place_schematic(pos, path, "random", nil, false)
 end
 
 mcl_structures.generate_fossil = function(pos, rotation, pr)
@@ -310,12 +308,12 @@ mcl_structures.generate_fossil = function(pos, rotation, pr)
 	}
 	local r = pr:next(1, #fossils)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/"..fossils[r]
-	return minetest.place_schematic(newpos, path, "random", nil, true)
+	return mcl_structures.place_schematic(newpos, path, "random", nil, true)
 end
 
 mcl_structures.generate_end_exit_portal = function(pos)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_exit_portal.mts"
-	return minetest.place_schematic(pos, path, "0", nil, true)
+	return mcl_structures.place_schematic(pos, path, "0", nil, true)
 end
 
 local function shrine_placement_callback(p1, p2, size, rotation, pr)
@@ -489,7 +487,7 @@ mcl_structures.generate_desert_temple = function(pos, rotation, pr)
 	if newpos == nil then
 		return
 	end
-	minetest.place_schematic(newpos, path, "random", nil, true, nil, temple_placement_callback, pr)
+	mcl_structures.place_schematic(newpos, path, "random", nil, true, nil, temple_placement_callback, pr)
 end
 
 local registered_structures = {}
