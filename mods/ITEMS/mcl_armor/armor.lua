@@ -527,12 +527,7 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
 			return hp_change
 		end
 
-		local regular_reduction = reason.type ~= "drown" and reason.type ~= "fall"
-
-		-- Account for potion effects (armor doesn't save the target)
-		if reason.other == "poison" or reason.other == "harming" then
-			return hp_change
-		end
+		local regular_reduction = reason.type ~= "drown" and reason.type ~= "fall" and reason.other ~= "harming" and reason.other ~= "poison"
 
 		local heal_max = 0
 		local items = 0
