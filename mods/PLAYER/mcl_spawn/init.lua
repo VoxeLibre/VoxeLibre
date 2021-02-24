@@ -386,6 +386,10 @@ end
 
 
 mcl_spawn.get_world_spawn_pos = function()
+	local ssp = minetest.setting_get_pos("static_spawnpoint")
+	if ssp then
+		return ssp
+	end
 	if success then
 		return wsp
 	end
