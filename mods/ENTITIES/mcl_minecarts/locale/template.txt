@@ -33,3 +33,4 @@ Activates minecarts when powered=
 Emits redstone power when a minecart is detected=
 Vehicle for fast travel on rails=
 Can be ignited by tools or powered activator rail=
+Sneak to dismount=

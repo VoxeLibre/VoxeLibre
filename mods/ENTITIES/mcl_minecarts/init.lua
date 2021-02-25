@@ -175,6 +175,19 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 	cart.on_activate_by_rail = on_activate_by_rail
 
 	function cart:on_step(dtime)
+		local ctrl, player = nil, nil
+		if self._driver then
+			player = minetest.get_player_by_name(self._driver)
+			if player then
+				ctrl = player:get_player_control()
+				-- player detach
+				if ctrl.sneak then
+					detach_driver(self)
+					return
+				end
+			end
+		end
+
 		local vel = self.object:get_velocity()
 		local update = {}
 		if self._last_float_check == nil then
@@ -190,18 +203,14 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			node = minetest.get_node(rou_pos)
 			local g = minetest.get_item_group(node.name, "connect_to_raillike")
 			if g ~= self._railtype and self._railtype ~= nil then
-				local player
 				-- Detach driver
-				if self._driver then
+				if player then
 					if self._old_pos then
 						self.object:set_pos(self._old_pos)
 					end
 					mcl_player.player_attached[self._driver] = nil
-					player = minetest.get_player_by_name(self._driver)
-					if player then
-						player:set_detach()
-						player:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
-					end
+					player:set_detach()
+					player:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
 				end
 
 				-- Explode if already ignited
@@ -334,14 +343,6 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			-- Activate minecart if on activator rail
 			if node_old.name == "mcl_minecarts:activator_rail_on" and self.on_activate_by_rail then
 				self:on_activate_by_rail()
-			end
-		end
-
-		local ctrl, player = nil, nil
-		if self._driver then
-			player = minetest.get_player_by_name(self._driver)
-			if player then
-				ctrl = player:get_player_control()
 			end
 		end
 
@@ -643,6 +644,7 @@ register_minecart(
 				if player then
 					mcl_player.player_set_animation(player, "sit" , 30)
 					player:set_eye_offset({x=0, y=-5.5, z=0},{x=0, y=-4, z=0})
+					mcl_tmp_message.message(clicker, S("Sneak to dismount"))
 				end
 			end, name)
 		end
