@@ -214,6 +214,7 @@ function awards.unlock(name, award)
 
 	-- Get award
 	minetest.log("action", name.." has gotten award "..name)
+	minetest.chat_send_all("<"..name.."> "..S("Achievement gotten: @1", award))
 	data.unlocked[award] = award
 	awards.save()
 
