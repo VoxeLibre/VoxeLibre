@@ -158,10 +158,8 @@ minetest.register_globalstep(function(dtime)
 
 
 
-			-- ask if player should be crawling
-			local block_in_head = minetest.registered_nodes[mcl_playerinfo[name].node_head]
 			-- ask if player is swiming
-			local standing_on_water = minetest.get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0
+			local head_in_water = minetest.get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0
 			-- ask if player is sprinting
 			local is_sprinting = mcl_sprint.is_sprinting(name)
 
@@ -173,32 +171,32 @@ minetest.register_globalstep(function(dtime)
 					player_anim[name] = nil
 					player_sneak[name] = controls.sneak
 				end
-				if controls.LMB and not controls.sneak and standing_on_water and is_sprinting == true or block_in_head.walkable and controls.LMB then
+				if controls.LMB and not controls.sneak and head_in_water and is_sprinting == true then
 					player_set_animation(player, "swim_walk_mine", animation_speed_mod)
-				elseif not controls.sneak and standing_on_water and is_sprinting == true or block_in_head.walkable then
+				elseif not controls.sneak and head_in_water and is_sprinting == true then
 					player_set_animation(player, "swim_walk", animation_speed_mod)
-				elseif is_sprinting == true and controls.LMB and not controls.sneak and not standing_on_water then
+				elseif is_sprinting == true and controls.LMB and not controls.sneak and not head_in_water then
 					player_set_animation(player, "run_walk_mine", animation_speed_mod)
 				elseif controls.LMB and not controls.sneak then
 					player_set_animation(player, "walk_mine", animation_speed_mod)
 				elseif controls.LMB and controls.sneak and is_sprinting ~= true then
 					player_set_animation(player, "sneak_walk_mine", animation_speed_mod)
-				elseif is_sprinting == true and not controls.sneak and not standing_on_water then
+				elseif is_sprinting == true and not controls.sneak and not head_in_water then
 					player_set_animation(player, "run_walk", animation_speed_mod)
 				elseif controls.sneak and not controls.LMB then
 					player_set_animation(player, "sneak_walk", animation_speed_mod)
 				else
 					player_set_animation(player, "walk", animation_speed_mod)
 				end
-			elseif controls.LMB and not controls.sneak and standing_on_water and is_sprinting == true or controls.LMB and block_in_head.walkable then
+			elseif controls.LMB and not controls.sneak and head_in_water and is_sprinting == true then
 				player_set_animation(player, "swim_mine")
-			elseif not controls.LMB and not controls.sneak and standing_on_water and is_sprinting == true then
+			elseif not controls.LMB and not controls.sneak and head_in_water and is_sprinting == true then
 				player_set_animation(player, "swim_stand")
 			elseif controls.LMB and not controls.sneak then
 				player_set_animation(player, "mine")
 			elseif controls.LMB and controls.sneak then
 				player_set_animation(player, "sneak_mine")
-			elseif not controls.sneak and standing_on_water and is_sprinting == true then
+			elseif not controls.sneak and head_in_water and is_sprinting == true then
 				player_set_animation(player, "swim_stand", animation_speed_mod)
 			elseif not controls.sneak then
 				player_set_animation(player, "stand", animation_speed_mod)
