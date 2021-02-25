@@ -75,12 +75,13 @@ minetest.register_globalstep(function(dtime)
 		elseif player:get_attach() == nil then
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
-			if not controls.down then
-				-- controls head and Body_Control bones while going backwards
+
+			if player_vel_yaw * -1 - yaw < 90 or player_vel_yaw * -1 - yaw > 270 then
+				-- controls head and Body_Control bones while moving backwards
 				player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,yaw - player_vel_yaw * -1,0))
 				player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,player_vel_yaw * -1 - yaw,0))
 			else
-				-- controls head and Body_Control bones while walking forwards
+				-- controls head and Body_Control bones while moving forwards
 				player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,yaw - player_vel_yaw * -1 + 180,0))
 				player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,player_vel_yaw * -1 - yaw + 180,0))
 			end
