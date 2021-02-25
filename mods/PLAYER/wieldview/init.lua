@@ -105,15 +105,14 @@ minetest.register_entity("wieldview:wieldnode", {
 		local player = minetest.get_player_by_name(self.wielder)
 		if player then
 			local wielded = player:get_wielded_item()
-			local itemstring = wielded:to_string()
+			local itemstring = wielded:get_name()
 			if self.itemstring ~= itemstring then
-				local itemname = wielded:get_name()
-				local def = minetest.registered_items[itemname]
+				local def = minetest.registered_items[itemstring]
 				self.object:set_properties({glow = def and def.light_source or 0})
 				if armor.textures[self.wielder].wielditem == "blank.png" then
-					self.object:set_properties({textures = {itemname}, wield_item = itemstring})
+					self.object:set_properties({textures = {itemstring}})
 				else
-					self.object:set_properties({textures = {""}, wield_item = ""})
+					self.object:set_properties({textures = {""}})
 				end
 				self.itemstring = itemstring
 			end
