@@ -98,7 +98,6 @@ mcl_skins.set_player_skin = function(player, skin_id)
 	else
 		skin = "mcl_skins_character_" .. tostring(skin_id)
 		local meta = mcl_skins.meta[skin]
-		minetest.chat_send_all(meta.gender)
 		if meta.gender == "female" then
 			mcl_player.player_set_model(player, "mcl_armor_character_female.b3d")
 		else
