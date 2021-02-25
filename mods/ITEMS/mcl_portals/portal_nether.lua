@@ -595,7 +595,7 @@ function mcl_portals.light_nether_portal(pos)
 	-- Only allow to make portals in Overworld and Nether
 	local dim = mcl_worlds.pos_to_dimension(pos)
 	if dim ~= "overworld" and dim ~= "nether" then
-		return 0
+		return false
 	end
 	local orientation = math.random(0, 1)
 	for orientation_iteration = 1, 2 do
