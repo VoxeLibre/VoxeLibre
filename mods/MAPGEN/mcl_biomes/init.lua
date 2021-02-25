@@ -2043,26 +2043,28 @@ local function register_dimension_ores()
 	})
 
 	-- Nether quartz
-	minetest.register_ore({
-		ore_type       = "scatter",
-		ore            = "mcl_nether:quartz_ore",
-		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
-		clust_scarcity = 850,
-		clust_num_ores = 4, -- MC cluster amount: 4-10
-		clust_size     = 3,
-		y_min = mcl_vars.mg_nether_min,
-		y_max = mcl_vars.mg_nether_max,
-	})
-	minetest.register_ore({
-		ore_type       = "scatter",
-		ore            = "mcl_nether:quartz_ore",
-		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
-		clust_scarcity = 1650,
-		clust_num_ores = 8, -- MC cluster amount: 4-10
-		clust_size     = 4,
-		y_min = mcl_vars.mg_nether_min,
-		y_max = mcl_vars.mg_nether_max,
-	})
+	if minetest.settings:get("mcl_generate_ores") == "true" then
+		minetest.register_ore({
+			ore_type       = "scatter",
+			ore            = "mcl_nether:quartz_ore",
+			wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
+			clust_scarcity = 850,
+			clust_num_ores = 4, -- MC cluster amount: 4-10
+			clust_size     = 3,
+			y_min = mcl_vars.mg_nether_min,
+			y_max = mcl_vars.mg_nether_max,
+		})
+		minetest.register_ore({
+			ore_type       = "scatter",
+			ore            = "mcl_nether:quartz_ore",
+			wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
+			clust_scarcity = 1650,
+			clust_num_ores = 8, -- MC cluster amount: 4-10
+			clust_size     = 4,
+			y_min = mcl_vars.mg_nether_min,
+			y_max = mcl_vars.mg_nether_max,
+		})
+	end
 
 	-- Lava springs in the Nether
 	minetest.register_ore({
