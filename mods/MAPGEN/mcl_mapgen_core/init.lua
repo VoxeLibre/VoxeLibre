@@ -2015,13 +2015,25 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	local lvm_used = false
 	local pr = PseudoRandom(blockseed)
 
-	-- The Void
+	-- The Void below the Nether:
 	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mapgen_edge_min                     , mcl_vars.mg_nether_min                     -1, minp, maxp, lvm_used, pr)
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_nether_max                     +1, mcl_vars.mg_end_min                        -1, minp, maxp, lvm_used, pr)
+
+	-- [[ THE NETHER:					mcl_vars.mg_nether_min			       mcl_vars.mg_nether_max							]]
+
+	-- The Air on the Nether roof, https://git.minetest.land/MineClone2/MineClone2/issues/1186
+	lvm_used = set_layers(data, area, c_air		 , nil, mcl_vars.mg_nether_max			   +1, mcl_vars.mg_nether_max + 128                 , minp, maxp, lvm_used, pr)
+	-- The Void above the Nether below the End:
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_nether_max + 128               +1, mcl_vars.mg_end_min                        -1, minp, maxp, lvm_used, pr)
+
+	-- [[ THE END:						mcl_vars.mg_end_min			       mcl_vars.mg_end_max							]]
+
+	-- The Void above the End below the Realm barrier:
 	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_end_max                        +1, mcl_vars.mg_realm_barrier_overworld_end_min-1, minp, maxp, lvm_used, pr)
 	-- Realm barrier between the Overworld void and the End
 	lvm_used = set_layers(data, area, c_realm_barrier, nil, mcl_vars.mg_realm_barrier_overworld_end_min  , mcl_vars.mg_realm_barrier_overworld_end_max  , minp, maxp, lvm_used, pr)
+	-- The Void above Realm barrier below the Overworld:
 	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_realm_barrier_overworld_end_max+1, mcl_vars.mg_overworld_min                  -1, minp, maxp, lvm_used, pr)
+
 
 	if mg_name ~= "singlenode" then
 		-- Bedrock
