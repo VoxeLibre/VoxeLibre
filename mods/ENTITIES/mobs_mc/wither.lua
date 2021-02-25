@@ -43,6 +43,7 @@ mobs:register_mob("mobs_mc:wither", {
 	dogshoot_switch = 1,
 	dogshoot_count_max =1,
 	attack_animals = true,
+	can_despawn = false,
 	drops = {
 		{name = mobs_mc.items.nether_star,
 		chance = 1,

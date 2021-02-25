@@ -25,6 +25,7 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	view_range = 35,
 	walk_velocity = 6,
 	run_velocity = 6,
+	can_despawn = false,
 	sounds = {
 		-- TODO: more sounds
 		shoot_attack = "mobs_mc_ender_dragon_shoot",
