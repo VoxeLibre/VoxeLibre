@@ -369,6 +369,33 @@ mcl_player.player_register_model("mcl_armor_character.b3d", {
 	},
 })
 
+mcl_player.player_register_model("mcl_armor_character_female.b3d", {
+	animation_speed = 30,
+	textures = {
+		armor.default_skin..".png",
+		"blank.png",
+		"blank.png",
+	},
+	animations = {
+		stand = {x=0, y=79},
+		lay = {x=162, y=166},
+		walk = {x=168, y=187},
+		mine = {x=189, y=198},
+		walk_mine = {x=200, y=219},
+		sit = {x=81, y=160},
+		sneak_stand = {x=222, y=302},
+		sneak_mine = {x=346, y=365},
+		sneak_walk = {x=304, y=323},
+		sneak_walk_mine = {x=325, y=344},
+		swim_walk = {x=368, y=387},
+		swim_walk_mine = {x=389, y=408},
+		swim_stand = {x=434, y=434},
+		swim_mine = {x=411, y=430},
+		run_walk	= {x=440, y=459},
+		run_walk_mine	= {x=461, y=480},
+	},
+})
+
 -- Register Callbacks
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)

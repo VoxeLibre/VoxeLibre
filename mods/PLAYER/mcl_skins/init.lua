@@ -62,6 +62,7 @@ while true do
 	mcl_skins.meta[skin] = {
 		name = data and data.name or "",
 		author = data and data.author or "",
+		gender = data and data.gender or "",
 	}
 
 	if id > 0 then
@@ -93,8 +94,16 @@ mcl_skins.set_player_skin = function(player, skin_id)
 	elseif skin_id == 0 then
 		skin = "character"
 		preview = "player"
+		mcl_player.player_set_model(player, "mcl_armor_character.b3d")
 	else
 		skin = "mcl_skins_character_" .. tostring(skin_id)
+		local meta = mcl_skins.meta[skin]
+		minetest.chat_send_all(meta.gender)
+		if meta.gender == "female" then
+			mcl_player.player_set_model(player, "mcl_armor_character_female.b3d")
+		else
+			mcl_player.player_set_model(player, "mcl_armor_character.b3d")
+		end
 		if mcl_skins.has_preview[skin_id] then
 			preview = "mcl_skins_player_" .. tostring(skin_id)
 		else
