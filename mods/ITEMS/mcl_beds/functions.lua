@@ -358,6 +358,7 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 minetest.register_on_leaveplayer(function(player)
+	lay_down(player, nil, nil, false, true)
 	local players = minetest.get_connected_players()
 	local name = player:get_player_name()
 	for n, player in ipairs(players) do
