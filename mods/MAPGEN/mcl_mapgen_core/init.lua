@@ -223,7 +223,7 @@ minetest.register_ore({
 	}
 })
 
-if minetest.settings:get("mcl_generate_ores") == "true" then
+if minetest.settings:get_bool("mcl_generate_ores", true) then
 	--
 	-- Coal
 	--
