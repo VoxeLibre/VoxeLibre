@@ -67,9 +67,6 @@ local function build_a_settlement(minp, maxp, blockseed)
 
 	-- evaluate settlement_info and place schematics
 	settlements.place_schematics(settlement_info, pr)
-
-	-- evaluate settlement_info and initialize furnaces and chests
-	settlements.initialize_nodes(settlement_info, pr)
 end
 
 local function ecb_village(blockpos, action, calls_remaining, param)
