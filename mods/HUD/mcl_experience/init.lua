@@ -620,6 +620,23 @@ minetest.register_entity("mcl_experience:bottle",{
 		if n ~= "air" and n ~= "mcl_portals:portal" and n ~= "mcl_portals:portal_end" and minetest.get_item_group(n, "liquid") == 0 then
 			minetest.sound_play("mcl_potions_breaking_glass", {pos = pos, max_hear_distance = 16, gain = 1})
 			mcl_experience.throw_experience(pos, math.random(3, 11))
+			minetest.add_particlespawner({
+				amount = 50,
+				time = 0.1,
+				minpos = vector.add(pos, vector.new(-0.1, 0.5, -0.1)),
+				maxpos = vector.add(pos, vector.new( 0.1, 0.6,  0.1)),
+				minvel = vector.new(-2, 0, -2),
+				maxvel = vector.new( 2, 2,  2),
+				minacc = vector.new(0, 0, 0),
+				maxacc = vector.new(0, 0, 0),
+				minexptime = 0.5,
+				maxexptime = 1.25,
+				minsize = 1,
+				maxsize = 2,
+				collisiondetection = true,
+				vertical = false,
+				texture = "mcl_particles_effect.png^[colorize:blue:127",
+			})
 			self.object:remove()
 		end
 	end,
