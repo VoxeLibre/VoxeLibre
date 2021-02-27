@@ -124,8 +124,8 @@ mcl_enchanting.enchantments.curse_of_vanishing = {
 	inv_tool_tab = true,
 }
 
--- unimplemented
---[[mcl_enchanting.enchantments.depth_strider = {
+-- implemented in mcl_playerplus
+mcl_enchanting.enchantments.depth_strider = {
 	name = S("Depth Strider"),
 	max_level = 3,
 	primary = {},
@@ -141,7 +141,7 @@ mcl_enchanting.enchantments.curse_of_vanishing = {
 	power_range_table = {{10, 25}, {20, 35}, {30, 45}},
 	inv_combat_tab = true,
 	inv_tool_tab = false,
-}]]--
+}
 
 -- implemented via on_enchant
 mcl_enchanting.enchantments.efficiency = {
