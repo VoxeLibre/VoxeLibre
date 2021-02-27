@@ -163,10 +163,12 @@ minetest.register_globalstep(function(dtime)
 			-- ask if player is sprinting
 			local is_sprinting = mcl_sprint.is_sprinting(name)
 
+			local velocity = player:get_velocity() or player:get_player_velocity()
+
 			-- Apply animations based on what the player is doing
 			if player:get_hp() == 0 then
 				player_set_animation(player, "lay")
-			elseif walking and player:get_velocity().x > 0.35 or walking and player:get_velocity().x < -0.35 or walking and player:get_velocity().z > 0.35 or walking and player:get_velocity().z < -0.35 then
+			elseif walking and velocity.x > 0.35 or walking and velocity.x < -0.35 or walking and velocity.z > 0.35 or walking and velocity.z < -0.35 then
 				if player_sneak[name] ~= controls.sneak then
 					player_anim[name] = nil
 					player_sneak[name] = controls.sneak

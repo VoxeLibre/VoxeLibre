@@ -29,7 +29,7 @@ minetest.register_globalstep(function(dtime)
 		local controls = player:get_player_control()
 		name = player:get_player_name()
 
-		local player_velocity = player:get_velocity()
+		local player_velocity = player:get_velocity() or player:get_player_velocity()
 
 		-- controls head bone
 		local pitch = degrees(player:get_look_vertical()) * -1
@@ -73,7 +73,7 @@ minetest.register_globalstep(function(dtime)
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 
-			if player:get_velocity().x > 0.35 or player:get_velocity().z > 0.35 or player:get_velocity().x < -0.35 or player:get_velocity().z < -0.35 then
+			if player_velocity.x > 0.35 or player_velocity.z > 0.35 or player_velocity.x < -0.35 or player_velocity.z < -0.35 then
 				if player_vel_yaw * -1 - yaw < 90 or player_vel_yaw * -1 - yaw > 270 then
 					-- controls head and Body_Control bones while moving backwards
 					player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,yaw - player_vel_yaw * -1,0))
