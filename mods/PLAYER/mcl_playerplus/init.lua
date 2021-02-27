@@ -35,8 +35,9 @@ minetest.register_globalstep(function(dtime)
 		local pitch = degrees(player:get_look_vertical()) * -1
 		local yaw = degrees(player:get_look_horizontal()) * -1
 
+		local player_vel_yaw = 0
+
 		if degrees(minetest.dir_to_yaw(player_velocity)) == 0 then
-			player_vel_yaw = 0
 			yaw = 0
 		else
 			player_vel_yaw = degrees(minetest.dir_to_yaw(player_velocity))
