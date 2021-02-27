@@ -278,7 +278,7 @@ local function hut_placement_callback(p1, p2, size, orientation, pr)
 	end
 end
 
-mcl_structures.generate_witch_hut = function(pos, rotation)
+mcl_structures.generate_witch_hut = function(pos, rotation, pr)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_witch_hut.mts"
 	mcl_structures.place_schematic(pos, path, rotation, nil, true, nil, hut_placement_callback, pr)
 end
@@ -517,21 +517,16 @@ mcl_structures.register_structures = function(structure_type, structures)
 	registered_structures[structure_type] = structures
 end
 
--- helper - finds the rotation value for a certain direction
--- https://forum.minetest.net/viewtopic.php?t=13280
--- by Exilyth
-local function dir_to_rotation(p_dir)
-	if p_dir.x == 0 and p_dir.z > 0 then
-		return "0"
-	end
-	if p_dir.x == 0 and p_dir.z < 0 then
-		return "180"
-	end
-	if p_dir.x > 0 and p_dir.z == 0 then
+local function dir_to_rotation(dir)
+	local ax, az = math.abs(dir.x), math.abs(dir.z)
+	if ax > az then
+		if dir.x < 0 then
+			return "270"
+		end
 		return "90"
 	end
-	if p_dir.x < 0 and p_dir.z == 0 then
-		return "270"
+	if dir.z < 0 then
+		return "180"
 	end
 	return "0"
 end
