@@ -198,7 +198,7 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		-- Swimming? Check if boots are enchanted with depth strider
-		if minetest.get_item_group(node_feet, "liquid")  and mcl_enchanting.get_enchantment(player:get_inventory():get_stack("armor", 5), "depth_strider") then
+		if minetest.get_item_group(node_feet, "liquid")  ~= 0 and mcl_enchanting.get_enchantment(player:get_inventory():get_stack("armor", 5), "depth_strider") then
 			local boots = player:get_inventory():get_stack("armor", 5)
 			local depth_strider = mcl_enchanting.get_enchantment(boots, "depth_strider")
 			
