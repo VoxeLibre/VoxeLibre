@@ -63,7 +63,6 @@ end
 if has_mcl_skins == true then
 	--change the player's hand to their skin
 	mcl_skins.register_on_set_skin(function(player, skin)
-		minetest.chat_send_all(skin)
 		local name = player:get_player_name()
 		local meta = mcl_skins.meta[skin]
 		if meta.gender == "female" then
