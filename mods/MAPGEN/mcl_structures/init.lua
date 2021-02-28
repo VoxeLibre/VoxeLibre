@@ -264,7 +264,8 @@ mcl_structures.generate_boulder = function(pos, rotation, pr)
 	end
 
 	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
-	return mcl_structures.place_schematic(newpos, path)
+
+	return minetest.place_schematic(newpos, path) -- don't serialize schematics for registered biome decorations, for MT 5.4.0, https://github.com/minetest/minetest/issues/10995
 end
 
 local function hut_placement_callback(p1, p2, size, orientation, pr)
@@ -285,12 +286,12 @@ end
 
 mcl_structures.generate_ice_spike_small = function(pos)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_small.mts"
-	return mcl_structures.place_schematic(pos, path, "random", nil, false)
+	return minetest.place_schematic(pos, path, "random", nil, false) -- don't serialize schematics for registered biome decorations, for MT 5.4.0
 end
 
 mcl_structures.generate_ice_spike_large = function(pos)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_large.mts"
-	return mcl_structures.place_schematic(pos, path, "random", nil, false)
+	return minetest.place_schematic(pos, path, "random", nil, false) -- don't serialize schematics for registered biome decorations, for MT 5.4.0
 end
 
 mcl_structures.generate_fossil = function(pos, rotation, pr)
