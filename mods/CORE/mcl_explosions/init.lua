@@ -149,6 +149,8 @@ end
 -- max_blast_resistance - The explosion will treat all non-indestructible nodes
 --                        as having a blast resistance of no more than this
 --                        value
+-- grief_protected - If true, the explosion will also destroy nodes which have
+--                   been protected
 --
 -- Note that this function has been optimized, it contains code which has been
 -- inlined to avoid function calls and unnecessary table creation. This was
@@ -178,6 +180,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 	local drop_chance = info.drop_chance
 	local fire = info.fire
 	local max_blast_resistance = info.max_blast_resistance
+	local grief_protected = info.grief_protected
 
 	-- Trace rays for environment destruction
 	if info.griefing then
@@ -194,6 +197,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 				local npos_x = math.floor(rpos_x + 0.5)
 				local npos_y = math.floor(rpos_y + 0.5)
 				local npos_z = math.floor(rpos_z + 0.5)
+				local npos = { x = npos_x, y = npos_y, z = npos_z }
 				local idx = (npos_z - emin_z) * zstride + (npos_y - emin_y) * ystride +
 						npos_x - emin_x + 1
 
@@ -203,7 +207,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 					br = max_blast_resistance
 				end
 
-				local hash = minetest.hash_node_position({x=npos_x, y=npos_y, z=npos_z})
+				local hash = minetest.hash_node_position(npos)
 
 				rpos_x = rpos_x + STEP_LENGTH * rdir_x
 				rpos_y = rpos_y + STEP_LENGTH * rdir_y
@@ -215,8 +219,10 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 					break
 				end
 
-				if cid ~= minetest.CONTENT_AIR and not minetest.is_protected({x = npos_x, y = npos_y, z = npos_z}, "") then
-					destroy[hash] = idx
+				if cid ~= minetest.CONTENT_AIR then
+					if not minetest.is_protected(npos, "") or grief_protected then
+						destroy[hash] = idx
+					end
 				end
 			end
 		end
@@ -418,6 +424,8 @@ end
 -- particles - If true, the explosion will create particles (default: true)
 -- fire - If true, 1/3 nodes become fire (default: false)
 -- griefing - If true, the explosion will destroy nodes (default: true)
+-- grief_protected - If true, the explosion will also destroy nodes which have
+--                   been protected (default: false)
 function mcl_explosions.explode(pos, strength, info, puncher)
 	if info == nil then
 		info = {}
@@ -437,6 +445,7 @@ function mcl_explosions.explode(pos, strength, info, puncher)
 	if info.sound == nil then info.sound = true end
 	if info.fire == nil then info.fire = false end
 	if info.griefing == nil then info.griefing = true end
+	if info.grief_protected == nil then info.grief_protected = false end
 	if info.max_blast_resistance == nil then
 		info.max_blast_resistance = INDESTRUCT_BLASTRES
 	end
