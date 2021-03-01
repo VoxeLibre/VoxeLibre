@@ -29,14 +29,15 @@ minetest.register_globalstep(function(dtime)
 		local controls = player:get_player_control()
 		name = player:get_player_name()
 
-		local player_velocity = player:get_velocity()
+		local player_velocity = player:get_velocity() or player:get_player_velocity()
 
 		-- controls head bone
 		local pitch = degrees(player:get_look_vertical()) * -1
 		local yaw = degrees(player:get_look_horizontal()) * -1
 
+		local player_vel_yaw = 0
+
 		if degrees(minetest.dir_to_yaw(player_velocity)) == 0 then
-			player_vel_yaw = 0
 			yaw = 0
 		else
 			player_vel_yaw = degrees(minetest.dir_to_yaw(player_velocity))
@@ -73,7 +74,7 @@ minetest.register_globalstep(function(dtime)
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 
-			if player:get_velocity().x > 0.35 or player:get_velocity().z > 0.35 or player:get_velocity().x < -0.35 or player:get_velocity().z < -0.35 then
+			if player_velocity.x > 0.35 or player_velocity.z > 0.35 or player_velocity.x < -0.35 or player_velocity.z < -0.35 then
 				if player_vel_yaw * -1 - yaw < 90 or player_vel_yaw * -1 - yaw > 270 then
 					-- controls head and Body_Control bones while moving backwards
 					player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,yaw - player_vel_yaw * -1,0))
@@ -193,6 +194,18 @@ minetest.register_globalstep(function(dtime)
 			end
 		else
 			-- Reset speed decrease
+			playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:surface")
+		end
+
+		-- Swimming? Check if boots are enchanted with depth strider
+		if minetest.get_item_group(node_feet, "liquid") ~= 0 and mcl_enchanting.get_enchantment(player:get_inventory():get_stack("armor", 5), "depth_strider") then
+			local boots = player:get_inventory():get_stack("armor", 5)
+			local depth_strider = mcl_enchanting.get_enchantment(boots, "depth_strider")
+			
+			if depth_strider > 0 then
+				playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:surface", (depth_strider / 3) + 0.75)
+			end
+		else
 			playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:surface")
 		end
 

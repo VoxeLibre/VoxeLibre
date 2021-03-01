@@ -202,9 +202,8 @@ function boat.on_step(self, dtime, moveresult)
 			on_ice = true
 		else
 			v_slowdown = 0.04
+			v_factor = 0.5
 		end
-
-		v_factor = 0.5
 	elseif in_water then
 		on_water = false
 		in_water = true

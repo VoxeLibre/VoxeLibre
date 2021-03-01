@@ -175,6 +175,36 @@ end
 -------------------------------------------------------------------------------
 -- evaluate settlement_info and place schematics
 -------------------------------------------------------------------------------
+-- Initialize node
+local function construct_node(p1, p2, name)
+	local r = minetest.registered_nodes[name]
+	if r then
+		if r.on_construct then
+			local nodes = minetest.find_nodes_in_area(p1, p2, name)
+			for p=1, #nodes do
+				local pos = nodes[p]
+				r.on_construct(pos)
+			end
+			return nodes
+		end
+		minetest.log("warning","[mcl_villages] No on_construct defined for node name " .. name)
+		return
+	end
+	minetest.log("warning","[mcl_villages] Attempt to 'construct' inexistant nodes: " .. name)
+end
+local function init_nodes(p1, p2, size, rotation, pr)
+	construct_node(p1, p2, "mcl_itemframes:item_frame")
+	construct_node(p1, p2, "mcl_furnaces:furnace")
+	construct_node(p1, p2, "mcl_anvils:anvil")
+
+	local nodes = construct_node(p1, p2, "mcl_chests:chest")
+	if nodes and #nodes > 0 then
+		for p=1, #nodes do
+			local pos = nodes[p]
+			settlements.fill_chest(pos, pr)
+		end
+	end
+end
 function settlements.place_schematics(settlement_info, pr)
 	local building_all_info
 	for i, built_house in ipairs(settlement_info) do
@@ -243,6 +273,10 @@ function settlements.place_schematics(settlement_info, pr)
 			schematic, 
 			rotation, 
 			nil, 
-			true)
+			true,
+			nil,
+			init_nodes,
+			pr
+		)
 	end
 end
