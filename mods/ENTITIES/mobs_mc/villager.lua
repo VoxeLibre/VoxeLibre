@@ -412,6 +412,7 @@ local init_trades = function(self, inv)
 					offered_stack = mcl_enchanting.get_uniform_randomly_enchanted_book({"soul_speed"})
 				else
 					mcl_enchanting.enchant_randomly(offered_stack, math.random(5, 19), false, false, true)
+					mcl_enchanting.unload_enchantments(offered_stack)
 				end
 			end
 
@@ -457,7 +458,9 @@ local set_trade = function(trader, player, inv, concrete_tradenum)
 	player_tradenum[name] = concrete_tradenum
 	local trade = trades[concrete_tradenum]
 	inv:set_stack("wanted", 1, ItemStack(trade.wanted[1]))
-	inv:set_stack("offered", 1, ItemStack(trade.offered))
+	local offered = ItemStack(trade.offered)
+	mcl_enchanting.load_enchantments(offered)
+	inv:set_stack("offered", 1, offered)
 	if trade.wanted[2] then
 		local wanted2 = ItemStack(trade.wanted[2])
 		inv:set_stack("wanted", 2, wanted2)

@@ -197,6 +197,18 @@ minetest.register_globalstep(function(dtime)
 			playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:surface")
 		end
 
+		-- Swimming? Check if boots are enchanted with depth strider
+		if minetest.get_item_group(node_feet, "liquid") ~= 0 and mcl_enchanting.get_enchantment(player:get_inventory():get_stack("armor", 5), "depth_strider") then
+			local boots = player:get_inventory():get_stack("armor", 5)
+			local depth_strider = mcl_enchanting.get_enchantment(boots, "depth_strider")
+			
+			if depth_strider > 0 then
+				playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:surface", (depth_strider / 3) + 0.75)
+			end
+		else
+			playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:surface")
+		end
+
 		-- Is player suffocating inside node? (Only for solid full opaque cube type nodes
 		-- without group disable_suffocation=1)
 		local ndef = minetest.registered_nodes[node_head]

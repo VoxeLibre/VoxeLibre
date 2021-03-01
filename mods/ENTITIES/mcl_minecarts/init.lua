@@ -12,15 +12,14 @@ local function detach_driver(self)
 	if not self._driver then
 		return
 	end
-	mcl_player.player_attached[self._driver] = nil
-	local player = minetest.get_player_by_name(self._driver)
+	if self._driver:is_player() then
+		mcl_player.player_attached[self._driver:get_player_name()] = nil
+		self._driver:set_detach()
+		self._driver:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
+		mcl_player.player_set_animation(self._driver, "stand" , 30)
+	end
 	self._driver = nil
 	self._start_pos = nil
-	if player then
-		player:set_detach()
-		player:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
-		mcl_player.player_set_animation(player, "stand" , 30)
-	end
 end
 
 local function activate_tnt_minecart(self, timer)
@@ -62,7 +61,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 
 		on_rightclick = on_rightclick,
 
-		_driver = nil, -- player who sits in and controls the minecart (only for minecart!)
+		_driver = nil, -- player (or mob) who sits in and controls the minecart (only for minecart!)
 		_punched = false, -- used to re-send _velocity and position
 		_velocity = {x=0, y=0, z=0}, -- only used on punch
 		_start_pos = nil, -- Used to calculate distance for “On A Rail” achievement
@@ -97,111 +96,101 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 	end
 
 	function cart:on_punch(puncher, time_from_last_punch, tool_capabilities, direction)
+		-- Punch: Pick up minecart (unless TNT was ignited)
+		if self._boomtimer then return end
+		if self._driver then
+			detach_driver(self)
+		end
 		local pos = self.object:get_pos()
-		if not self._railtype then
-			local node = minetest.get_node(vector.floor(pos)).name
-			self._railtype = minetest.get_item_group(node, "connect_to_raillike")
+
+		-- Disable detector rail
+		local rou_pos = vector.round(pos)
+		local node = minetest.get_node(rou_pos)
+		if node.name == "mcl_minecarts:detector_rail_on" then
+			local newnode = {name="mcl_minecarts:detector_rail", param2 = node.param2}
+			minetest.swap_node(rou_pos, newnode)
+			mesecon.receptor_off(rou_pos)
 		end
 
-		if not puncher or not puncher:is_player() then
-			local cart_dir = mcl_minecarts:get_rail_direction(pos, {x=1, y=0, z=0}, nil, nil, self._railtype)
-			if vector.equals(cart_dir, {x=0, y=0, z=0}) then
-				return
+		-- Drop items and remove cart entity
+		if not minetest.is_creative_enabled(puncher:get_player_name()) then
+			for d=1, #drop do
+				minetest.add_item(self.object:get_pos(), drop[d])
 			end
-			self._velocity = vector.multiply(cart_dir, 3)
-			self._old_pos = nil
-			self._punched = true
-			return
-		end
-
-		-- Punch+sneak: Pick up minecart (unless TNT was ignited)
-		if puncher:get_player_control().sneak and not self._boomtimer then
-			if self._driver then
-				if self._old_pos then
-					self.object:set_pos(self._old_pos)
-				end
-				detach_driver(self)
-			end
-
-			-- Disable detector rail
-			local rou_pos = vector.round(pos)
-			local node = minetest.get_node(rou_pos)
-			if node.name == "mcl_minecarts:detector_rail_on" then
-				local newnode = {name="mcl_minecarts:detector_rail", param2 = node.param2}
-				minetest.swap_node(rou_pos, newnode)
-				mesecon.receptor_off(rou_pos)
-			end
-
-			-- Drop items and remove cart entity
-			if not minetest.is_creative_enabled(puncher:get_player_name()) then
-				for d=1, #drop do
-					minetest.add_item(self.object:get_pos(), drop[d])
-				end
-			elseif puncher and puncher:is_player() then
-				local inv = puncher:get_inventory()
-				for d=1, #drop do
-					if not inv:contains_item("main", drop[d]) then
-						inv:add_item("main", drop[d])
-					end
+		elseif puncher and puncher:is_player() then
+			local inv = puncher:get_inventory()
+			for d=1, #drop do
+				if not inv:contains_item("main", drop[d]) then
+					inv:add_item("main", drop[d])
 				end
 			end
-
-			self.object:remove()
-			return
 		end
 
-		local vel = self.object:get_velocity()
-		if puncher:get_player_name() == self._driver then
-			if math.abs(vel.x + vel.z) > 7 then
-				return
-			end
-		end
-
-		local punch_dir = mcl_minecarts:velocity_to_dir(puncher:get_look_dir())
-		punch_dir.y = 0
-		local cart_dir = mcl_minecarts:get_rail_direction(pos, punch_dir, nil, nil, self._railtype)
-		if vector.equals(cart_dir, {x=0, y=0, z=0}) then
-			return
-		end
-
-		time_from_last_punch = math.min(time_from_last_punch, tool_capabilities.full_punch_interval)
-		local f = 3 * (time_from_last_punch / tool_capabilities.full_punch_interval)
-
-		self._velocity = vector.multiply(cart_dir, f)
-		self._old_pos = nil
-		self._punched = true
+		self.object:remove()
 	end
 
 	cart.on_activate_by_rail = on_activate_by_rail
 
 	function cart:on_step(dtime)
 		local ctrl, player = nil, nil
-		if self._driver then
-			player = minetest.get_player_by_name(self._driver)
-			if player then
-				ctrl = player:get_player_control()
-				-- player detach
-				if ctrl.sneak then
-					detach_driver(self)
-					return
+		local update = {}
+		local vel = self.object:get_velocity()
+		local pos, rou_pos, node
+		pos = self.object:get_pos()
+		rou_pos = vector.round(pos)
+		node = minetest.get_node(rou_pos)
+		local g = minetest.get_item_group(node.name, "connect_to_raillike")
+		if self._driver and self._driver:is_player() then
+			player = self._driver
+			ctrl = player:get_player_control()
+			-- player detach
+			if ctrl.sneak then
+				detach_driver(self)
+				return
+			end
+			if g == self._railtype then
+				if ctrl.right then
+					local c = vector.multiply(minetest.yaw_to_dir(self._driver:get_look_horizontal()-1.57), 0.2)
+					self.object:set_velocity(vector.add(vel, {x=c.x, y=0, z=c.z}))
+				end
+				if ctrl.left then
+					local c = vector.multiply(minetest.yaw_to_dir(self._driver:get_look_horizontal()+1.57), 0.2)
+					self.object:set_velocity(vector.add(vel, {x=c.x, y=0, z=c.z}))
+				end
+				if ctrl.up then
+					local c = vector.multiply(self._driver:get_look_dir(), 0.2)
+					self.object:set_velocity(vector.add(vel, {x=c.x, y=0, z=c.z}))
+				end
+				if ctrl.down then
+					local c = vector.multiply(self._driver:get_look_dir(), 0.2)
+					self.object:set_velocity(vector.subtract(vel, {x=c.x, y=0, z=c.z}))
 				end
 			end
 		end
 
-		local vel = self.object:get_velocity()
-		local update = {}
 		if self._last_float_check == nil then
 			self._last_float_check = 0
 		else
 			self._last_float_check = self._last_float_check + dtime
 		end
-		local pos, rou_pos, node
 		-- Drop minecart if it isn't on a rail anymore
 		if self._last_float_check >= mcl_minecarts.check_float_time then
-			pos = self.object:get_pos()
-			rou_pos = vector.round(pos)
-			node = minetest.get_node(rou_pos)
-			local g = minetest.get_item_group(node.name, "connect_to_raillike")
+
+
+			for _,object in pairs(minetest.get_objects_inside_radius(pos, 1.3)) do
+				if object ~= self.object then
+					local mob = object:get_luaentity()
+					if mob then mob = mob._cmi_is_mob == true end
+					if mob and (not self._driver) and not object:get_attach() then
+						self._driver = object
+						object:set_attach(self.object, "", {x=0, y=-1.75, z=-2}, {x=0, y=0, z=0})
+						mobs:set_animation(self.object, "stand")
+						return
+					end
+				end
+			end
+
+
 			if g ~= self._railtype and self._railtype ~= nil then
 				-- Detach driver
 				if player then
@@ -300,8 +289,12 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			end
 		end
 
-		if self._punched then
+		if update.vel then
 			vel = vector.add(vel, self._velocity)
+			if vel.x>8 then vel.x = 8 end
+			if vel.x<-8 then vel.x = -8 end
+			if vel.z>8 then vel.z = 8 end
+			if vel.z<-8 then vel.z = -8 end
 			self.object:set_velocity(vel)
 			self._old_dir.y = 0
 		elseif vector.equals(vel, {x=0, y=0, z=0}) and (not has_fuel) then
@@ -626,17 +619,14 @@ register_minecart(
 	"mcl_minecarts_minecart_normal.png",
 	{"mcl_minecarts:minecart"},
 	function(self, clicker)
-		local name = clicker:get_player_name()
-		if not clicker or not clicker:is_player() then
-			return
-		end
-		local player_name = clicker:get_player_name()
-		if self._driver and player_name == self._driver then
+		if not clicker or not clicker:is_player() then return end
+		if clicker == self._driver then
 			detach_driver(self)
-		elseif not self._driver then
-			self._driver = player_name
+		else
+			local name = clicker:get_player_name()
+			self._driver = clicker
 			self._start_pos = self.object:get_pos()
-			mcl_player.player_attached[player_name] = true
+			mcl_player.player_attached[name] = true
 			clicker:set_attach(self.object, "", {x=0, y=-1.75, z=-2}, {x=0, y=0, z=0})
 			mcl_player.player_attached[name] = true
 			minetest.after(0.2, function(name)
@@ -647,6 +637,7 @@ register_minecart(
 					mcl_tmp_message.message(clicker, S("Sneak to dismount"))
 				end
 			end, name)
+			clicker:set_look_horizontal(self.object:get_yaw())
 		end
 	end, activate_normal_minecart
 )
