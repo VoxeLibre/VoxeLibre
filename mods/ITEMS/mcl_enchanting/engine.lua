@@ -9,14 +9,21 @@ function mcl_enchanting.get_enchantments(itemstack)
 	return minetest.deserialize(itemstack:get_meta():get_string("mcl_enchanting:enchantments")) or {}
 end
 
-function mcl_enchanting.set_enchantments(itemstack, enchantments)
-	itemstack:get_meta():set_string("mcl_enchanting:enchantments", minetest.serialize(enchantments))
+function mcl_enchanting.unload_enchantments(itemstack)
 	local itemdef = itemstack:get_definition()
+	if itemdef.tool_capabilities then
+		itemstack:get_meta():set_tool_capabilities(itemdef.tool_capabilities)
+	end
+	local meta = itemstack:get_meta()
+	if meta:get_string("name") == "" then
+		meta:set_string("description", "")
+	end
+end
+
+function mcl_enchanting.load_enchantments(itemstack, enchantments)
 	if not mcl_enchanting.is_book(itemstack:get_name()) then
-		if itemdef.tool_capabilities then
-			itemstack:get_meta():set_tool_capabilities(itemdef.tool_capabilities)
-		end
-		for enchantment, level in pairs(enchantments) do
+		mcl_enchanting.unload_enchantments(itemstack)		
+		for enchantment, level in pairs(enchantments or mcl_enchanting.get_enchantments(itemstack)) do
 			local enchantment_def = mcl_enchanting.enchantments[enchantment]
 			if enchantment_def.on_enchant then
 				enchantment_def.on_enchant(itemstack, level)
@@ -24,6 +31,11 @@ function mcl_enchanting.set_enchantments(itemstack, enchantments)
 		end
 	end
 	tt.reload_itemstack_description(itemstack)
+end
+
+function mcl_enchanting.set_enchantments(itemstack, enchantments)
+	itemstack:get_meta():set_string("mcl_enchanting:enchantments", minetest.serialize(enchantments))
+	mcl_enchanting.load_enchantments(itemstack)
 end
 
 function mcl_enchanting.get_enchantment(itemstack, enchantment)
