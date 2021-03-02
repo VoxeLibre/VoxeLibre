@@ -185,7 +185,7 @@ Please report all bugs and missing Minecraft features here:
 
 <https://git.minetest.land/MineClone2/MineClone2/issues>
 
-## Chating with the com
+## Chating with the community
 Join our discord server at:
 
 <https://discord.gg/84GKcxczG3>
