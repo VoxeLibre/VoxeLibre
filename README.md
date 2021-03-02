@@ -185,6 +185,11 @@ Please report all bugs and missing Minecraft features here:
 
 <https://git.minetest.land/MineClone2/MineClone2/issues>
 
+## Chating with the com
+Join our discord server at:
+
+<https://discord.gg/84GKcxczG3>
+
 ## Other readme files
 
 * `LICENSE.txt`: The GPLv3 license text
