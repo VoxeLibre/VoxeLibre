@@ -2,7 +2,7 @@
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by davedevils.
 Developed by many people. Not developed or endorsed by Mojang AB.
 
-Version: 0.70.0
+Version: 0.71.0
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -185,6 +185,11 @@ Please report all bugs and missing Minecraft features here:
 
 <https://git.minetest.land/MineClone2/MineClone2/issues>
 
+## Chating with the community
+Join our discord server at:
+
+<https://discord.gg/84GKcxczG3>
+
 ## Other readme files
 
 * `LICENSE.txt`: The GPLv3 license text
@@ -206,6 +211,7 @@ There are so many people to list (sorry). Check out the respective mod directori
 * [bzoss](https://github.com/bzoss): Status effects, potions, brewing stand
 * kay27 <kay27@bk.ru>: Experience system, bugfixes, optimizations (Current maintainer)
 * [EliasFleckenstein03](https://github.com/EliasFleckenstein03): End crystals, enchanting, burning mobs / players, animated chests, bugfixes (Current maintainer)
+* epCode: Better player animations, new logo
 * 2mac: Fix bug with powered rail
 * Lots of other people: TO BE WRITTEN (see mod directories for details)
 
