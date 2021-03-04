@@ -1,1 +1,0 @@
-Minecarts are vehicles to move players quickly on rails.

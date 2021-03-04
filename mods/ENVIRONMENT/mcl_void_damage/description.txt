@@ -1,1 +1,0 @@
-Deal damage to entities stuck in the deep void

@@ -1,9 +1,0 @@
-playerphysics
-mcl_sounds?
-mcl_worlds?
-mcl_wool?
-mcl_dye?
-mcl_explosions?
-mcl_weather?
-mcl_spawn?
-doc?

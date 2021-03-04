@@ -1,7 +1,0 @@
-mcl_util
-mcl_mapgen_core
-mcl_structures
-mcl_core
-mcl_loot
-mcl_farming?
-mobs_mc?

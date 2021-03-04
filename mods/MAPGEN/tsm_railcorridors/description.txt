@@ -1,1 +1,0 @@
-Adds simple underground mines with railways and occasional treasure chests.

@@ -1,1 +1,0 @@
-Adds some simple player-related gameplay effects: Hurt by touching a cactus, suffocation and more.

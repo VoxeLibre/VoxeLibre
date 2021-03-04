@@ -1,1 +1,0 @@
-Provides core textures needed by Minetest.

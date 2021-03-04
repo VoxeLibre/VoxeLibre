@@ -1,1 +1,1 @@
-A survival sandbox game. Survive, gather, hunt, mine, build, explore, and do much more. Faithful clone of Minecraft 1.11. This is a work in progress! Expect bugs!
+A survival sandbox game. Survive, gather, hunt, mine, build, explore, and do much more. Faithful clone of Minecraft 1.12. This is a work in progress! Expect bugs!

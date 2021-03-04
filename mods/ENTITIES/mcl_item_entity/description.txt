@@ -1,1 +1,0 @@
-Dropped items will be attracted to the player like a magnet.

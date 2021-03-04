@@ -1,1 +1,0 @@
-MineClone 2 core mod which automatically adds groups to all items. Very important for digging times.

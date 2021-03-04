@@ -1,1 +1,0 @@
-This mod contains the core sounds of MineClone 2 as well as helper function for mods to access them.

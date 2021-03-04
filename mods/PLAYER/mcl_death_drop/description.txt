@@ -1,1 +1,0 @@
-Makes all items in inventory drop after player death.

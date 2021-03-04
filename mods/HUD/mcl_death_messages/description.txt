@@ -1,1 +1,0 @@
-Shows messages in chat when a player dies.

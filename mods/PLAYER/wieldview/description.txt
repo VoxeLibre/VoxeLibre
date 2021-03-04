@@ -1,1 +1,0 @@
-Makes hand wielded items visible to other players.
