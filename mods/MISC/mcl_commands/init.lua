@@ -10,5 +10,6 @@ dofile(modpath.."/seed.lua")
 dofile(modpath.."/summon.lua")
 dofile(modpath.."/say.lua")
 dofile(modpath.."/list.lua")
+dofile(modpath.."/sound.lua")
 
 dofile(modpath.."/alias.lua")
