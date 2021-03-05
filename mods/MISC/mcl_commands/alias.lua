@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_commands")
+
 local minecraftaliases = true
 
 local function register_chatcommand_alias(alias, cmd)
