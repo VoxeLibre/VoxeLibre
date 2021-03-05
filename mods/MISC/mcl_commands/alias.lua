@@ -1,21 +1,24 @@
 local S = minetest.get_translator("mcl_commands")
 
-local minecraftaliases = true
-
 local function register_chatcommand_alias(alias, cmd)
 	local def = minetest.chatcommands[cmd]
 	minetest.register_chatcommand(alias, def)
 end
 
-if minecraftaliases then
+local function rename_chatcommand(newname, cmd)
+	local def = minetest.chatcommands[cmd]
+	minetest.register_chatcommand(newname, def)
+	minetest.unregister_chatcommand(cmd)
+end
+
+if minetest.settings:get_bool("mcl_builtin_commands_overide", true) then
 	register_chatcommand_alias("?", "help")
-	register_chatcommand_alias("who", "list")
 	register_chatcommand_alias("pardon", "unban")
-	register_chatcommand_alias("stop", "shutdown")
+	rename_chatcommand("stop", "shutdown")
 	register_chatcommand_alias("tell", "msg")
 	register_chatcommand_alias("w", "msg")
 	register_chatcommand_alias("tp", "teleport")
-	register_chatcommand_alias("clear", "clearinv")
+	rename_chatcommand("clear", "clearinv")
 
 	minetest.register_chatcommand("banlist", {
 		description = S("List bans"),

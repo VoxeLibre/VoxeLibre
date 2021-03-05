@@ -136,6 +136,9 @@ mcl_generate_ores (Generate Ores) bool true
 # game by a lot.
 mcl_node_particles (Block particles detail level) enum none high,medium,low,none
 
+# Enable hard overiding of builtin commands.
+mcl_builtin_commands_overide (Enable hard overiding of builtin commands.) bool true
+
 # If enabled, this will substitute a few blocks in village schematics so they blend into normal, snowy, and sandy areas. Defaults to true.
 basic_pseudobiome_villages (Enables very basic, and experimental "pseudobiome-based" villages) bool true
 
