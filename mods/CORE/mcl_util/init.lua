@@ -405,3 +405,17 @@ function mcl_util.get_object_center(obj)
 	pos.y = pos.y + (ymax - ymin) / 2.0
 	return pos
 end
+
+function mcl_util.get_color(colorstr)
+	local mc_color = mcl_colors[colorstr:upper()]
+	if mc_color then
+		return mc_color
+	end
+	if #colorstr ~= 7 or colorstr:sub(1, 1) ~= "#"then
+		return
+	end
+	local hex = tonumber(colorstr:sub(2, 7), 16)
+	if hex then
+		return colorstr, hex
+	end
+end
