@@ -303,6 +303,7 @@ for _, state in pairs{mesecon.state.on, mesecon.state.off} do
 	end
 
 	minetest.register_node(nodename, nodedef)
+	mcl_wip.register_wip_item(nodename)
 end
 end
 

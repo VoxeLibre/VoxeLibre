@@ -28,6 +28,8 @@ minetest.register_craftitem("mcl_maps:empty_map", {
 	stack_max = 64,
 })
 
+mcl_wip.register_wip_item("mcl_maps:empty_map")
+
 local function has_item_in_hotbar(player, item)
 	-- Requirement: player carries the tool in the hotbar
 	local inv = player:get_inventory()

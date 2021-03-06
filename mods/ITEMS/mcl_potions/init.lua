@@ -455,3 +455,12 @@ function mcl_potions.get_alchemy(ingr, pot)
 
 	return false
 end
+
+mcl_wip.register_wip_item("mcl_potions:night_vision")
+mcl_wip.register_wip_item("mcl_potions:night_vision_plus")
+mcl_wip.register_wip_item("mcl_potions:night_vision_splash")
+mcl_wip.register_wip_item("mcl_potions:night_vision_plus_splash")
+mcl_wip.register_wip_item("mcl_potions:night_vision_lingering")
+mcl_wip.register_wip_item("mcl_potions:night_vision_plus_lingering")
+mcl_wip.register_wip_item("mcl_potions:night_vision_arrow")
+mcl_wip.register_wip_item("mcl_potions:night_vision_plus_arrow")
