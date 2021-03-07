@@ -1747,10 +1747,10 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 	return lvm_used
 end
 
-local pr_shroom = PseudoRandom(os.time()-24359)
 -- Generate mushrooms in caves manually.
 -- Minetest's API does not support decorations in caves yet. :-(
 local generate_underground_mushrooms = function(minp, maxp, seed)
+	local pr_shroom = PseudoRandom(seed-24359)
 	-- Generate rare underground mushrooms
 	-- TODO: Make them appear in groups, use Perlin noise
 	local min, max = mcl_vars.mg_lava_overworld_max + 4, 0
@@ -1775,7 +1775,6 @@ local generate_underground_mushrooms = function(minp, maxp, seed)
 	end
 end
 
-local pr_nether = PseudoRandom(os.time()+667)
 local nether_wart_chance
 if mg_name == "v6" then
 	nether_wart_chance = 85
@@ -1785,6 +1784,8 @@ end
 -- Generate Nether decorations manually: Eternal fire, mushrooms, nether wart
 -- Minetest's API does not support decorations in caves yet. :-(
 local generate_nether_decorations = function(minp, maxp, seed)
+	local pr_nether = PseudoRandom(seed+667)
+
 	if minp.y > mcl_vars.mg_nether_max or maxp.y < mcl_vars.mg_nether_min then
 		return
 	end
