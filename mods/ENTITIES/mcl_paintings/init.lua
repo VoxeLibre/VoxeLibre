@@ -293,6 +293,8 @@ minetest.register_craftitem("mcl_paintings:painting", {
 	end,
 })
 
+mcl_wip.register_wip_item("mcl_paintings:painting")
+
 minetest.register_craft({
 	output = "mcl_paintings:painting",
 	recipe = {

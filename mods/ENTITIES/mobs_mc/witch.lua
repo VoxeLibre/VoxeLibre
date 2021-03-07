@@ -104,3 +104,5 @@ mobs:register_arrow("mobs_mc:potion_arrow", {
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:witch", S("Witch"), "mobs_mc_spawn_icon_witch.png", 0, true)
+
+mcl_wip.register_wip_item("mobs_mc:witch")

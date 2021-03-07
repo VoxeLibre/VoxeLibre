@@ -106,4 +106,5 @@ if minetest.is_creative_enabled("") then
 			build_a_settlement(minp, maxp, math.random(0,32767))
 		end
 	})
+	mcl_wip.register_experimental_item("mcl_villages:tool")
 end

@@ -105,3 +105,5 @@ mobs:register_arrow("mobs_mc:dragon_fireball", {
 })
 
 mobs:register_egg("mobs_mc:enderdragon", S("Ender Dragon"), "mobs_mc_spawn_icon_dragon.png", 0, true)
+
+mcl_wip.register_wip_item("mobs_mc:enderdragon")

@@ -187,6 +187,7 @@ minetest.register_tool("screwdriver:screwdriver", {
 	end,
 })
 
+mcl_wip.register_wip_item("screwdriver:screwdriver")
 
 minetest.register_craft({
 	output = "screwdriver:screwdriver",
