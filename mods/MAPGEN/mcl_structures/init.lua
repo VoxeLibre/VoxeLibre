@@ -92,10 +92,10 @@ mcl_structures.call_struct = function(pos, struct_style, rotation, pr)
 	end
 end
 
-mcl_structures.generate_desert_well = function(pos)
+mcl_structures.generate_desert_well = function(pos, rot)
 	local newpos = {x=pos.x,y=pos.y-2,z=pos.z}
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_desert_well.mts"
-	return mcl_structures.place_schematic(newpos, path, "0", nil, true)
+	return mcl_structures.place_schematic(newpos, path, rot or "0", nil, true)
 end
 
 mcl_structures.generate_igloo = function(pos, rotation, pr)
@@ -265,7 +265,7 @@ mcl_structures.generate_boulder = function(pos, rotation, pr)
 
 	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
 
-	return minetest.place_schematic(newpos, path) -- don't serialize schematics for registered biome decorations, for MT 5.4.0, https://github.com/minetest/minetest/issues/10995
+	return minetest.place_schematic(newpos, path, rotation) -- don't serialize schematics for registered biome decorations, for MT 5.4.0, https://github.com/minetest/minetest/issues/10995
 end
 
 local function hut_placement_callback(p1, p2, size, orientation, pr)
@@ -284,14 +284,14 @@ mcl_structures.generate_witch_hut = function(pos, rotation, pr)
 	mcl_structures.place_schematic(pos, path, rotation, nil, true, nil, hut_placement_callback, pr)
 end
 
-mcl_structures.generate_ice_spike_small = function(pos)
+mcl_structures.generate_ice_spike_small = function(pos, rotation)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_small.mts"
-	return minetest.place_schematic(pos, path, "random", nil, false) -- don't serialize schematics for registered biome decorations, for MT 5.4.0
+	return minetest.place_schematic(pos, path, rotation or "random", nil, false) -- don't serialize schematics for registered biome decorations, for MT 5.4.0
 end
 
-mcl_structures.generate_ice_spike_large = function(pos)
+mcl_structures.generate_ice_spike_large = function(pos, rotation)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_large.mts"
-	return minetest.place_schematic(pos, path, "random", nil, false) -- don't serialize schematics for registered biome decorations, for MT 5.4.0
+	return minetest.place_schematic(pos, path, rotation or "random", nil, false) -- don't serialize schematics for registered biome decorations, for MT 5.4.0
 end
 
 mcl_structures.generate_fossil = function(pos, rotation, pr)
@@ -309,12 +309,12 @@ mcl_structures.generate_fossil = function(pos, rotation, pr)
 	}
 	local r = pr:next(1, #fossils)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/"..fossils[r]
-	return mcl_structures.place_schematic(newpos, path, "random", nil, true)
+	return mcl_structures.place_schematic(newpos, path, rotation or "random", nil, true)
 end
 
-mcl_structures.generate_end_exit_portal = function(pos)
+mcl_structures.generate_end_exit_portal = function(pos, rot)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_exit_portal.mts"
-	return mcl_structures.place_schematic(pos, path, "0", nil, true)
+	return mcl_structures.place_schematic(pos, path, rot or "0", nil, true)
 end
 
 local function shrine_placement_callback(p1, p2, size, rotation, pr)
@@ -401,7 +401,7 @@ mcl_structures.generate_end_portal_shrine = function(pos, rotation, pr)
 	local newpos = { x = pos.x - offset.x, y = pos.y, z = pos.z - offset.z }
 
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_portal_room_simple.mts"
-	mcl_structures.place_schematic(newpos, path, "0", nil, true, nil, shrine_placement_callback, pr)
+	mcl_structures.place_schematic(newpos, path, rotation or "0", nil, true, nil, shrine_placement_callback, pr)
 end
 
 local function temple_placement_callback(p1, p2, size, rotation, pr)
@@ -488,7 +488,7 @@ mcl_structures.generate_desert_temple = function(pos, rotation, pr)
 	if newpos == nil then
 		return
 	end
-	mcl_structures.place_schematic(newpos, path, "random", nil, true, nil, temple_placement_callback, pr)
+	mcl_structures.place_schematic(newpos, path, rotation or "random", nil, true, nil, temple_placement_callback, pr)
 end
 
 local registered_structures = {}
@@ -534,7 +534,7 @@ end
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "desert_temple | desert_well | igloo | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_portal_shrine",
+	params = "desert_temple | desert_well | igloo | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_portal_shrine | dungeon",
 	description = S("Generate a pre-defined structure near your position."),
 	privs = {debug = true},
 	func = function(name, param)
@@ -551,7 +551,7 @@ minetest.register_chatcommand("spawnstruct", {
 		if param == "desert_temple" then
 			mcl_structures.generate_desert_temple(pos, rot, pr)
 		elseif param == "desert_well" then
-			mcl_structures.generate_desert_well(pos, rot, pr)
+			mcl_structures.generate_desert_well(pos, rot)
 		elseif param == "igloo" then
 			mcl_structures.generate_igloo(pos, rot, pr)
 		elseif param == "witch_hut" then
@@ -568,6 +568,8 @@ minetest.register_chatcommand("spawnstruct", {
 			mcl_structures.generate_end_exit_portal(pos, rot, pr)
 		elseif param == "end_portal_shrine" then
 			mcl_structures.generate_end_portal_shrine(pos, rot, pr)
+		elseif param == "dungeon" and mcl_dungeons and mcl_dungeons.spawn_dungeon then
+			mcl_dungeons.spawn_dungeon(pos, rot, pr)
 		elseif param == "" then
 			message = S("Error: No structure type given. Please use “/spawnstruct <type>”.")
 			errord = true

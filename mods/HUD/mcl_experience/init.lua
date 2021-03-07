@@ -312,7 +312,7 @@ function mcl_experience.add_experience(player, experience)
 	temp_pool.xp = math.min(math.max(temp_pool.xp + experience, 0), max_xp)
 
 	if (temp_pool.xp < temp_pool.xp_next_level) and (temp_pool.xp >= old_xp) then
-		temp_pool.bar = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)
+		temp_pool.bar = temp_pool.bar + temp_pool.bar_step * experience
 	else
 		temp_pool.level = mcl_experience.xp_to_level(temp_pool.xp)
 		temp_pool.bar, temp_pool.bar_step, temp_pool.xp_next_level = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)

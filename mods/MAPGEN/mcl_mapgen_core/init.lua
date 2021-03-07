@@ -1863,7 +1863,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 
 		for _, rec in pairs(mcl_mapgen_core.registered_generators) do
 			if rec.vf then
-				local lvm_used0, shadow0 = rec.vf(vm, data, data2, e1, e2, area, p1, p2, blockseed)
+				local lvm_used0, shadow0 = rec.vf(vm, data, data2, p1, p2, area, p1, p2, blockseed)
 				if lvm_used0 then
 					lvm_used = true
 				end
@@ -2048,8 +2048,8 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 
 		-- Big lava seas by replacing air below a certain height
 		if mcl_vars.mg_lava then
-			lvm_used = set_layers(data, area, c_lava, c_air, mcl_vars.mg_overworld_min, mcl_vars.mg_lava_overworld_max, emin, emax, lvm_used, pr)
-			lvm_used = set_layers(data, area, c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, emin, emax, lvm_used, pr)
+			lvm_used = set_layers(data, area, c_lava, c_air, mcl_vars.mg_overworld_min, mcl_vars.mg_lava_overworld_max, minp, maxp, lvm_used, pr)
+			lvm_used = set_layers(data, area, c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, minp, maxp, lvm_used, pr)
 		end
 
 		-- Clay, vines, cocoas
@@ -2064,7 +2064,7 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 		-- Snow and sand fixes. This code implements snow consistency
 		-- and fixes floating sand and cut plants.
 		-- A snowy grass block must be below a top snow or snow block at all times.
-		if emin.y <= mcl_vars.mg_overworld_max and emax.y >= mcl_vars.mg_overworld_min then
+		if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
 			-- v6 mapgen:
 			if mg_name == "v6" then
 
@@ -2078,7 +2078,7 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 					altogether if ANY of their nodes could not be placed.
 				2) Cavegen: Removes the bottom part, the upper part floats
 				3) Mudflow: Same as 2) ]]
-				local plants = minetest.find_nodes_in_area(emin, emax, "group:double_plant")
+				local plants = minetest.find_nodes_in_area(minp, maxp, "group:double_plant")
 				for n = 1, #plants do
 					local node = vm:get_node_at(plants[n])
 					local is_top = minetest.get_item_group(node.name, "double_plant") == 2
@@ -2130,12 +2130,12 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 		-- Nether block fixes:
 		-- * Replace water with Nether lava.
 		-- * Replace stone, sand dirt in v6 so the Nether works in v6.
-		elseif emin.y <= mcl_vars.mg_nether_max and emax.y >= mcl_vars.mg_nether_min then
+		elseif minp.y <= mcl_vars.mg_nether_max and maxp.y >= mcl_vars.mg_nether_min then
 			local nodes
 			if mg_name == "v6" then
-				nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
+				nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
 			else
-				nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source"})
+				nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:water_source"})
 			end
 			for n=1, #nodes do
 				local p_pos = area:index(nodes[n].x, nodes[n].y, nodes[n].z)
@@ -2155,12 +2155,12 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 		-- * Replace water with end stone or air (depending on height).
 		-- * Remove stone, sand, dirt in v6 so our End map generator works in v6.
 		-- * Generate spawn platform (End portal destination)
-		elseif emin.y <= mcl_vars.mg_end_max and emax.y >= mcl_vars.mg_end_min then
+		elseif minp.y <= mcl_vars.mg_end_max and maxp.y >= mcl_vars.mg_end_min then
 			local nodes, node
 			if mg_name == "v6" then
-				nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
+				nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
 			else
-				nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source"})
+				nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:water_source"})
 			end
 			if #nodes > 0 then
 				lvm_used = true
