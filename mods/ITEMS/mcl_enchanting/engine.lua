@@ -337,7 +337,7 @@ function mcl_enchanting.get_randomly_enchanted_book(enchantment_level, treasure,
 	return mcl_enchanting.enchant_randomly(ItemStack("mcl_books:book"), enchantment_level, treasure, no_reduced_bonus_chance, true)
 end
 
-function mcl_enchanting.get_uniform_randomly_enchanted_book(except)
+function mcl_enchanting.get_uniform_randomly_enchanted_book(except, pr)
 	except = except or except
 	local stack = ItemStack("mcl_enchanting:book_enchanted")
 	local list = {}
@@ -346,10 +346,19 @@ function mcl_enchanting.get_uniform_randomly_enchanted_book(except)
 			table.insert(list, enchantment)
 		end
 	end
-	local index = math.random(#list)
+	local index, level
+	if pr then
+		index = pr:next(1,#list)
+	else
+		index = math.random(#list)
+	end
 	local enchantment = list[index]
 	local enchantment_def = mcl_enchanting.enchantments[enchantment]
-	local level = math.random(enchantment_def.max_level)
+	if pr then
+		level = pr:next(1, enchantment_def.max_level)
+	else
+		level = math.random(enchantment_def.max_level)
+	end
 	mcl_enchanting.enchant(stack, enchantment, level)
 	return stack
 end
