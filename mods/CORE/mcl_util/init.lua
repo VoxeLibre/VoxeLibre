@@ -418,3 +418,25 @@ function mcl_util.get_color(colorstr)
 		return colorstr, hex
 	end
 end
+
+function mcl_util.registration_function(tbl, func)
+	return function(name, def)
+		if func then
+			local res = func(name, def)
+			if res == false then
+				return
+			elseif res ~= nil then
+				def = res
+			end
+		end
+		tbl[name] = def
+	end
+end
+
+function mcl_util.rand(pr, ...)
+	return pr and pr:next(...) or math.random(...)
+end
+
+function mcl_util.rand_bool(probability, pr)
+	return mcl_util.rand(pr, 0, 32767) < probability * 32768
+end
