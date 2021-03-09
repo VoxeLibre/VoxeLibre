@@ -356,6 +356,7 @@ minetest.register_craftitem("mcl_dye:white", {
 		end
 		return stack
 	end,
+	_dispense_into_walkable = true
 })
 
 minetest.register_craftitem("mcl_dye:brown", {
