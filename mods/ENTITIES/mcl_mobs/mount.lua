@@ -154,7 +154,7 @@ function mobs.attach(entity, player)
 	minetest.after(0.2, function(name)
 		local player = minetest.get_player_by_name(name)
 		if player then
-			mcl_player.player_set_animation(player, "sit" , 30)
+			mcl_player.player_set_animation(player, "sit_mount" , 30)
 		end
 	end, player:get_player_name())
 
