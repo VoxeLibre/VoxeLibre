@@ -58,7 +58,7 @@ function mcl_farming:add_plant(identifier, full_grown, names, interval, chance)
 	mcl_farming.plant_lists[identifier].names = names
 	mcl_farming.plant_lists[identifier].interval = interval
 	mcl_farming.plant_lists[identifier].chance = chance
-	plant_lists = mcl_farming.plant_lists
+	plant_lists = mcl_farming.plant_lists --provide local copy of plant lists (performances)
 	minetest.register_abm({
 		label = string.format("Farming plant growth (%s)", identifier),
 		nodenames = names,
