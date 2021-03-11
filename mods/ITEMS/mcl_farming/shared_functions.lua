@@ -1,5 +1,5 @@
 mcl_farming.plant_lists = {}
-local plantlist = {}
+local plant_lists = {}
 
 local plant_nodename_to_id_list = {}
 
