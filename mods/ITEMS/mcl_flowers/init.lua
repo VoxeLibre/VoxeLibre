@@ -1,7 +1,7 @@
 local S = minetest.get_translator("mcl_flowers")
-
 local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
 
+mcl_flowers = {}
 -- Simple flower template
 local smallflowerlongdesc = S("This is a small flower. Small flowers are mainly used for dye production and can also be potted.")
 local plant_usage_help = S("It can only be placed on a block on which it would also survive.")
@@ -51,7 +51,7 @@ local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, 
 	return ok, colorize
 end)
 
-local function add_simple_flower(name, desc, image, simple_selection_box)
+function mcl_flowers.register_simple_flower(name, desc, image, simple_selection_box)
 	minetest.register_node("mcl_flowers:"..name, {
 		description = desc,
 		_doc_items_longdesc = smallflowerlongdesc,
@@ -75,7 +75,7 @@ local function add_simple_flower(name, desc, image, simple_selection_box)
 		},
 	})
 end
-
+local add_simple_flower = mcl_flowers.register_simple_flower
 add_simple_flower("poppy", S("Poppy"), "mcl_flowers_poppy", { -5/16, -0.5, -5/16, 5/16, 5/16, 5/16 })
 add_simple_flower("dandelion", S("Dandelion"), "flowers_dandelion_yellow", { -4/16, -0.5, -4/16, 4/16, 3/16, 4/16 })
 add_simple_flower("oxeye_daisy", S("Oxeye Daisy"), "mcl_flowers_oxeye_daisy", { -4/16, -0.5, -4/16, 4/16, 4/16, 4/16 })
