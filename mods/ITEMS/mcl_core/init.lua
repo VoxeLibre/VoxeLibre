@@ -3,16 +3,16 @@ mcl_core = {}
 -- Repair percentage for toolrepair
 mcl_core.repair = 0.05
 
-mcl_autogroup.register_digtime_group("handy")
-mcl_autogroup.register_digtime_group("pickaxey", { levels = 5 })
-mcl_autogroup.register_digtime_group("axey")
-mcl_autogroup.register_digtime_group("shovely")
-mcl_autogroup.register_digtime_group("shearsy")
-mcl_autogroup.register_digtime_group("shearsy_wool")
-mcl_autogroup.register_digtime_group("shearsy_cobweb")
-mcl_autogroup.register_digtime_group("swordy")
-mcl_autogroup.register_digtime_group("swordy_cobweb")
-mcl_autogroup.register_digtime_group("creative_breakable")
+mcl_autogroup.register_diggroup("handy")
+mcl_autogroup.register_diggroup("pickaxey", { levels = 5 })
+mcl_autogroup.register_diggroup("axey")
+mcl_autogroup.register_diggroup("shovely")
+mcl_autogroup.register_diggroup("shearsy")
+mcl_autogroup.register_diggroup("shearsy_wool")
+mcl_autogroup.register_diggroup("shearsy_cobweb")
+mcl_autogroup.register_diggroup("swordy")
+mcl_autogroup.register_diggroup("swordy_cobweb")
+mcl_autogroup.register_diggroup("creative_breakable")
 
 -- Load files
 local modpath = minetest.get_modpath("mcl_core")

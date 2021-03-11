@@ -20,9 +20,9 @@ In MineClone 2, all diggable node have the hardness set in the custom field
 "_mcl_hardness" (0 by default).  Digging groups are registered using the
 following code:
 
-    mcl_autogroup.register_digtime_group("pickaxey", { levels = 5 })
-    mcl_autogroup.register_digtime_group("shovely")
-    mcl_autogroup.register_digtime_group("shovely")
+    mcl_autogroup.register_diggroup("pickaxey", { levels = 5 })
+    mcl_autogroup.register_diggroup("shovely")
+    mcl_autogroup.register_diggroup("shovely")
 
 The first line registers "pickaxey" as a digging group.  The "levels" field
 indicates that the digging group have 5 levels (in this case one for each
@@ -51,24 +51,18 @@ _mcl_autogroup contains most of the code.  The leading underscore in the name
 as possible.  Minetest loads mods in reverse alphabetical order.
 --]]
 
--- The groups which affect dig times
-local basegroups = {}
-for group, _ in pairs(mcl_autogroup.registered_digtime_groups) do
-	table.insert(basegroups, group)
-end
-
 -- Returns a table containing the unique "_mcl_hardness" for nodes belonging to
--- each basegroup.
+-- each diggroup.
 local function get_hardness_values_for_groups()
 	local maps = {}
 	local values = {}
-	for _, g in pairs(basegroups) do
+	for g, _ in pairs(mcl_autogroup.registered_diggroups) do
 		maps[g] = {}
 		values[g] = {}
 	end
 
 	for _, ndef in pairs(minetest.registered_nodes) do
-		for _, g in pairs(basegroups) do
+		for g, _ in pairs(mcl_autogroup.registered_diggroups) do
 			if ndef.groups[g] ~= nil then
 				maps[g][ndef._mcl_hardness or 0] = true
 			end
@@ -81,14 +75,14 @@ local function get_hardness_values_for_groups()
 		end
 	end
 
-	for _, g in pairs(basegroups) do
+	for g, _ in pairs(mcl_autogroup.registered_diggroups) do
 		table.sort(values[g])
 	end
 	return values
 end
 
 -- Returns a table containing a table indexed by "_mcl_hardness_value" to get
--- its index in the list of unique hardnesses for each basegroup.
+-- its index in the list of unique hardnesses for each diggroup.
 local function get_hardness_lookup_for_groups(hardness_values)
 	map = {}
 	for g, values in pairs(hardness_values) do
@@ -117,7 +111,8 @@ local function compute_creativetimes(group)
 	return creativetimes
 end
 
--- Get the list of digging times for using a specific tool on a specific group.
+-- Get the list of digging times for using a specific tool on a specific
+-- diggroup.
 --
 -- Parameters:
 -- group - the group which it is digging
@@ -190,7 +185,7 @@ local function add_groupcaps(groupcaps, groupcaps_def)
 	for g, capsdef in pairs(groupcaps_def) do
 		local mult = capsdef.tool_multiplier or 1
 		local eff = capsdef.efficiency or 0
-		local def = mcl_autogroup.registered_digtime_groups[g]
+		local def = mcl_autogroup.registered_diggroups[g]
 		local level = capsdef.level or 1
 		local max_level = def.levels or 0
 
@@ -247,7 +242,7 @@ local overwrite = function()
 
 			-- Assign groups used for digging this node depending on
 			-- the registered digging groups
-			for g, gdef in pairs(mcl_autogroup.registered_digtime_groups) do
+			for g, gdef in pairs(mcl_autogroup.registered_diggroups) do
 				local index = hardness_lookup[g][ndef._mcl_hardness]
 				if ndef.groups[g] then
 					if gdef.levels then

@@ -9,8 +9,8 @@ _mcl_autogroup contains most of the code.  The leading underscore in the name
 as possible.  Minetest loads mods in reverse alphabetical order.
 --]]
 mcl_autogroup = {}
-mcl_autogroup.registered_digtime_groups = {}
+mcl_autogroup.registered_diggroups = {}
 
-function mcl_autogroup.register_digtime_group(group, def)
-	mcl_autogroup.registered_digtime_groups[group] = def or {}
+function mcl_autogroup.register_diggroup(group, def)
+	mcl_autogroup.registered_diggroups[group] = def or {}
 end
