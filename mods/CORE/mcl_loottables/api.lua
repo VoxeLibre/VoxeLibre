@@ -11,25 +11,25 @@ end)
 
 
 function mcl_loottables.get_table(def)
-	local t = type(def)
-	if t == "nil" then
-		return {}
-	elseif t == "string" then
-		return assert(mcl_loottables.tables[def])
-	elseif t == "table" then
-		return def
-	else
-		error("invalid loottable type: " .. t)
-	end
+	return mcl_util.switch_type(def, {
+		["nil"] = function()
+			return {}
+		end,
+		["string"] = function()
+			return mcl_loottables.tables[def], "table"
+		end,
+		["table"] = function()
+			return def
+		end,
+	}, "loot table")
 end
 
 function mcl_loottables.get_entry_type(entry)
-	return assert(mcl_loottables.entries[entry.type])
+	return mcl_loottables.entries[entry.type]
 end
 
 function mcl_loottables.get_candidates(entries, data, func)
 	local candidates = {}
-	local functions = {}
 	for _, entry in ipairs(entries) do
 		local success = mcl_predicates.do_predicates(entry.conditions, data)
 		
@@ -87,7 +87,7 @@ function mcl_loottables.do_pools(pools, functions, data)
 					local stacks = func(selected, data)
 
 					for _, stack in ipairs(stacks) do
-						mcl_loottables.do_item_modifiers(stack, selected, data)
+						mcl_item_modifiers.do_item_modifiers(stack, selected, data)
 					end
 					table.insert_all(stacks, stack)
 				end
@@ -103,7 +103,7 @@ function mcl_loottables.get_loot(def, data)
 end
 
 function mcl_loottables.drop_loot(def, data)
-	local loot = mcl_loottables.get_loot(def)
+	local loot = mcl_loottables.get_loot(def, data)
 	local old_loot = table.copy(loot)
 	for _, stack in ipairs(old_loot) do
 		local max_stack = stack:get_stack_max()
@@ -115,4 +115,5 @@ function mcl_loottables.drop_loot(def, data)
 end
 
 function mcl_loottables.fill_chest(def, data)
+	local loot = mcl_loottables.get_loot(def, data)
 end

@@ -438,5 +438,52 @@ function mcl_util.rand(pr, ...)
 end
 
 function mcl_util.rand_bool(probability, pr)
-	return mcl_util.rand(pr, 0, 32767) < probability * 32768
+	if probability >= 1 then
+		return true
+	elseif probability <= 0 then
+		return false
+	else
+		return mcl_util.rand(pr, 0, 32767) < probability * 32768
+	end
 end
+
+function mcl_util.switch_type(value, funcs, name)
+	local t = type(value)
+	local func = funcs[func] or funcs["default"]
+	if func then
+		return func(value, ...)
+	else
+		error("invalid " .. (name and name .. " " or "") .. "type: " .. t)
+	end
+end
+
+--[[
+function mcl_util.assert_type(value, expected_type, allow_nil)
+	local actual_type = type(value)
+	local errmsg = value .. " is not a " .. expected_type
+
+	if expected_type == "itemstack" then
+		return mcl_util.switch_type(value, {
+			["nil"] = function()
+				assert(allow_nil, errmsg)
+			end,
+			["string"] = ItemStack,
+			["table"] = ItemStack,
+			["userdata"] = function()
+				assert(value.get_name, errmsg)
+				return value
+			end,
+		}, "ItemStack")
+	end
+
+	if expected_type == "vector" then
+		assert(actual_type == "table", errmsg)
+		assert(value.x, errmsg)
+		assert(value.y, errmsg)
+		assert(value.z, errmsg)
+	else
+		assert((allow_nil and value == nil) or (actual_type == expected_type), errmsg)
+	end
+	return value
+end
+]]--
