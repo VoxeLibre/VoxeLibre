@@ -335,13 +335,13 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 					minetest.after(0.3, function(obj, damage, impact, punch_dir) -- 0.2 is minimum delay for closing old formspec and open died formspec -- TODO: REMOVE THIS IN THE FUTURE
 						if not obj then return end
 						obj:punch(obj, 10, { damage_groups = { full_punch_interval = 1, fleshy = damage, knockback = impact * 20.0 } }, punch_dir)
-						obj:add_player_velocity(vector.multiply(punch_dir, impact * 20))
+						obj:add_velocity(vector.multiply(punch_dir, impact * 20))
 					end, obj, damage, impact, vector.new(punch_dir))
 				else
 					obj:punch(source, 10, { damage_groups = { full_punch_interval = 1, fleshy = damage, knockback = impact * 20.0 } }, punch_dir)
 
 					if obj:is_player() then
-						obj:add_player_velocity(vector.multiply(punch_dir, impact * 20))
+						obj:add_velocity(vector.multiply(punch_dir, impact * 20))
 					elseif ent.tnt_knockback then
 						obj:add_velocity(vector.multiply(punch_dir, impact * 20))
 					end
