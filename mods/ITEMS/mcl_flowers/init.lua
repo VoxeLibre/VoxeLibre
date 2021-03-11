@@ -1,5 +1,6 @@
 local S = minetest.get_translator("mcl_flowers")
 local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
+local modpath = minetest.get_modpath("mcl_flowers")
 
 mcl_flowers = {}
 -- Simple flower template
@@ -480,3 +481,4 @@ local fix_doubleplants = minetest.settings:get_bool("fix_doubleplants", true)
 		})
 	end
 
+dofile(modpath.."/register.lua")
