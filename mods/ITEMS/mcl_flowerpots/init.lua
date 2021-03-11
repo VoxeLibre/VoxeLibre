@@ -135,7 +135,7 @@ function mcl_flowerpots.register_potted_cube(name, def)
 		drawtype = "mesh",
 		mesh = "flowerpot_with_long_cube.obj",
 		tiles = {
-			"[combine:32x32:0,0=mcl_flowerpots_flowerpot.png:0,0="..def.image,
+			def.image,
 		},
 		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 		visual_scale = 0.5,
