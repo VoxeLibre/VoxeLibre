@@ -1,4 +1,8 @@
 local S = minetest.get_translator("mcl_flowerpots")
+local has_doc = minetest.get_modpath("doc")
+
+mcl_flowerpots = {}
+mcl_flowerpots.registered_pots = {}
 
 local flowers = {
 	{"dandelion", "mcl_flowers:dandelion", S("Dandelion Flower Pot")},
@@ -21,10 +25,6 @@ local flowers = {
 	{"birchsapling", "mcl_core:birchsapling", S("Birch Sapling Flower Pot")},
 	{"deadbush", "mcl_core:deadbush", S("Dead Bush Flower Pot")},
 	{"fern", "mcl_flowers:fern", S("Fern Flower Pot"), {"mcl_flowers_fern_inv.png"}},
-}
-
-local cubes = {
-	{"cactus", "mcl_core:cactus", S("Cactus Flower Pot")},
 }
 
 minetest.register_node("mcl_flowerpots:flower_pot", {
@@ -62,24 +62,10 @@ minetest.register_node("mcl_flowerpots:flower_pot", {
 			return
 		end
 		local item = clicker:get_wielded_item():get_name()
-		for _, row in ipairs(flowers) do
-			local flower = row[1]
-			local flower_node = row[2]
-			if item == flower_node then
-				minetest.swap_node(pos, {name="mcl_flowerpots:flower_pot_"..flower})
-				if not minetest.is_creative_enabled(clicker:get_player_name()) then
-					itemstack:take_item()
-				end
-			end
-		end
-		for _, row in ipairs(cubes) do
-			local flower = row[1]
-			local flower_node = row[2]
-			if item == flower_node then
-				minetest.swap_node(pos, {name="mcl_flowerpots:flower_pot_"..flower})
-				if not minetest.is_creative_enabled(clicker:get_player_name()) then
-					itemstack:take_item()
-				end
+		if mcl_flowerpots.registered_pots[item] then
+			minetest.swap_node(pos, {name="mcl_flowerpots:flower_pot_"..mcl_flowerpots.registered_pots[item]})
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
+				itemstack:take_item()
 			end
 		end
 	end,
@@ -94,112 +80,106 @@ minetest.register_craft({
 	}
 })
 
-for _, row in ipairs(flowers) do
-local flower = row[1]
-local flower_node = row[2]
-local desc = row[3]
-local texture
-if row[4] then
-	texture = row[4]
-else
-	texture = minetest.registered_nodes[flower_node]["tiles"]
+function mcl_flowerpots.register_potted_flower(name, def)
+	mcl_flowerpots.registered_pots[name] = def.name
+	minetest.register_node(":mcl_flowerpots:flower_pot_"..def.name, {
+		description = def.desc.." "..S("Flower Pot"),
+		_doc_items_create_entry = false,
+		drawtype = "mesh",
+		mesh = "flowerpot.obj",
+		tiles = {
+			"[combine:32x32:0,0=mcl_flowerpots_flowerpot.png:0,0="..def.image,
+		},
+		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+		visual_scale = 0.5,
+		wield_scale = {x=1.0, y=1.0, z=1.0},
+		paramtype = "light",
+		sunlight_propagates = true,
+		selection_box = {
+			type = "fixed",
+			fixed = {-0.2, -0.5, -0.2, 0.2, -0.1, 0.2}
+		},
+		collision_box = {
+			type = "fixed",
+			fixed = {-0.2, -0.5, -0.2, 0.2, -0.1, 0.2}
+		},
+		is_ground_content = false,
+		groups = {dig_immediate=3, attached_node=1, dig_by_piston=1, not_in_creative_inventory=1, flower_pot=2},
+		sounds = mcl_sounds.node_sound_stone_defaults(),
+		on_rightclick = function(pos, item, clicker)
+			local player_name = clicker:get_player_name()
+			if minetest.is_protected(pos, player_name) then
+				minetest.record_protection_violation(pos, player_name)
+				return
+			end
+			minetest.add_item({x=pos.x, y=pos.y+0.5, z=pos.z}, name)
+			minetest.set_node(pos, {name="mcl_flowerpots:flower_pot"})
+		end,
+		drop = {
+			items = {
+				{ items = { "mcl_flowerpots:flower_pot", name } }
+			}
+		},
+	})
+	-- Add entry alias for the Help
+	if has_doc then
+		doc.add_entry_alias("nodes", "mcl_flowerpots:flower_pot", "nodes", "mcl_flowerpots:flower_pot_"..name)
+	end
 end
-minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
-	description = desc,
-	_doc_items_create_entry = false,
-	drawtype = "mesh",
-	mesh = "flowerpot.obj",
-	tiles = {
-		"[combine:32x32:0,0=mcl_flowerpots_flowerpot.png:0,0="..texture[1],
-	},
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
-	visual_scale = 0.5,
-	wield_scale = {x=1.0, y=1.0, z=1.0},
-	paramtype = "light",
-	sunlight_propagates = true,
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.2, -0.5, -0.2, 0.2, -0.1, 0.2}
-	},
-	collision_box = {
-		type = "fixed",
-		fixed = {-0.2, -0.5, -0.2, 0.2, -0.1, 0.2}
-	},
-	is_ground_content = false,
-	groups = {dig_immediate=3, attached_node=1, dig_by_piston=1, not_in_creative_inventory=1, flower_pot=2},
-	sounds = mcl_sounds.node_sound_stone_defaults(),
-	on_rightclick = function(pos, item, clicker)
-		local name = clicker:get_player_name()
-		if minetest.is_protected(pos, name) then
-			minetest.record_protection_violation(pos, name)
-			return
-		end
-		minetest.add_item({x=pos.x, y=pos.y+0.5, z=pos.z}, flower_node)
-		minetest.set_node(pos, {name="mcl_flowerpots:flower_pot"})
-	end,
-	drop = {
-		items = {
-			{ items = { "mcl_flowerpots:flower_pot", flower_node } }
-		}
-	},
+
+function mcl_flowerpots.register_potted_cube(name, def)
+	mcl_flowerpots.registered_pots[name] = def.name
+	minetest.register_node(":mcl_flowerpots:flower_pot_"..def.name, {
+		description = def.desc.." "..S("Flower Pot"),
+		_doc_items_create_entry = false,
+		drawtype = "mesh",
+		mesh = "flowerpot_with_long_cube.obj",
+		tiles = {
+			"[combine:32x32:0,0=mcl_flowerpots_flowerpot.png:0,0="..def.image,
+		},
+		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+		visual_scale = 0.5,
+		wield_scale = {x=1.0, y=1.0, z=1.0},
+		paramtype = "light",
+		sunlight_propagates = true,
+		selection_box = {
+			type = "fixed",
+			fixed = {-0.2, -0.5, -0.2, 0.2, -0.1, 0.2}
+		},
+		collision_box = {
+			type = "fixed",
+			fixed = {-0.2, -0.5, -0.2, 0.2, -0.1, 0.2}
+		},
+		is_ground_content = false,
+		groups = {dig_immediate=3, attached_node=1, dig_by_piston=1, not_in_creative_inventory=1, flower_pot=2},
+		sounds = mcl_sounds.node_sound_stone_defaults(),
+		on_rightclick = function(pos, item, clicker)
+			local name = ""
+			if clicker:is_player() then
+				player_name = clicker:get_player_name()
+			end
+			if minetest.is_protected(pos, player_name) then
+				minetest.record_protection_violation(pos, player_name)
+				return
+			end
+			minetest.add_item({x=pos.x, y=pos.y+0.5, z=pos.z}, name)
+			minetest.set_node(pos, {name="mcl_flowerpots:flower_pot"})
+		end,
+		drop = {
+			items = {
+				{ items = { "mcl_flowerpots:flower_pot", name } }
+			}
+		},
+	})
+	-- Add entry alias for the Help
+	if has_doc then
+		doc.add_entry_alias("nodes", "mcl_flowerpots:flower_pot", "nodes", "mcl_flowerpots:flower_pot_"..def.name)
+	end
+end
+
+--forced because hard dependency to mcl_core
+mcl_flowerpots.register_potted_cube("mcl_core:cactus", {
+	name = "cactus",
+	desc = S("Cactus"),
+	image = "mcl_flowerpots_cactus.png",
 })
--- Add entry alias for the Help
-if minetest.get_modpath("doc") then
-	doc.add_entry_alias("nodes", "mcl_flowerpots:flower_pot", "nodes", "mcl_flowerpots:flower_pot_"..flower)
-end
-end
-
-for _, row in ipairs(cubes) do
-local flower = row[1]
-local flower_node = row[2]
-local desc = row[3]
-minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
-	description = desc,
-	_doc_items_create_entry = false,
-	drawtype = "mesh",
-	mesh = "flowerpot_with_long_cube.obj",
-	tiles = {
-		"mcl_flowerpots_"..flower..".png",
-	},
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
-	visual_scale = 0.5,
-	wield_scale = {x=1.0, y=1.0, z=1.0},
-	paramtype = "light",
-	sunlight_propagates = true,
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.2, -0.5, -0.2, 0.2, -0.1, 0.2}
-	},
-	collision_box = {
-		type = "fixed",
-		fixed = {-0.2, -0.5, -0.2, 0.2, -0.1, 0.2}
-	},
-	is_ground_content = false,
-	groups = {dig_immediate=3, attached_node=1, dig_by_piston=1, not_in_creative_inventory=1, flower_pot=2},
-	sounds = mcl_sounds.node_sound_stone_defaults(),
-	on_rightclick = function(pos, item, clicker)
-		local name = ""
-		if clicker:is_player() then
-			name = clicker:get_player_name()
-		end
-		if minetest.is_protected(pos, name) then
-			minetest.record_protection_violation(pos, name)
-			return
-		end
-		minetest.add_item({x=pos.x, y=pos.y+0.5, z=pos.z}, flower_node)
-		minetest.set_node(pos, {name="mcl_flowerpots:flower_pot"})
-	end,
-	drop = {
-		items = {
-			{ items = { "mcl_flowerpots:flower_pot", flower_node } }
-		}
-	},
-
-
-})
-
--- Add entry alias for the Help
-if minetest.get_modpath("doc") then
-	doc.add_entry_alias("nodes", "mcl_flowerpots:flower_pot", "nodes", "mcl_flowerpots:flower_pot_"..flower)
-end
-end
