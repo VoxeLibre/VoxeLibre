@@ -244,7 +244,7 @@ local overwrite = function()
 			-- Assign groups used for digging this node depending on
 			-- the registered digging groups
 			for g, gdef in pairs(mcl_autogroup.registered_diggroups) do
-				local index = hardness_lookup[g][ndef._mcl_hardness]
+				local index = hardness_lookup[g][ndef._mcl_hardness or 0]
 				if ndef.groups[g] then
 					if gdef.levels then
 						newgroups[g .. "_0_dig"] = index
@@ -252,7 +252,6 @@ local overwrite = function()
 							newgroups[g .. "_" .. i .. "_dig"] = index
 						end
 					else
-						local index = hardness_lookup[g][ndef._mcl_hardness]
 						newgroups[g .. "_dig"] = index
 					end
 				end
