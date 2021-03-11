@@ -9,21 +9,6 @@ mcl_loottables.register_table = mcl_util.registration_function(mcl_loottables.ta
 	set_parents(def)
 end)
 
-
-function mcl_loottables.get_table(def)
-	return mcl_util.switch_type(def, {
-		["nil"] = function()
-			return {}
-		end,
-		["string"] = function()
-			return mcl_loottables.tables[def], "table"
-		end,
-		["table"] = function()
-			return def
-		end,
-	}, "loot table")
-end
-
 function mcl_loottables.get_entry_type(entry)
 	return mcl_loottables.entries[entry.type]
 end
@@ -32,7 +17,7 @@ function mcl_loottables.get_candidates(entries, data, func)
 	local candidates = {}
 	for _, entry in ipairs(entries) do
 		local success = mcl_predicates.do_predicates(entry.conditions, data)
-		
+
 		if success then
 			local children = entry.children
 
@@ -52,7 +37,7 @@ end
 
 function mcl_loottables.do_item_modifiers(itemstack, node, data)
 	if node then
-		mcl_functions.do_item_modifiers(itemstack, node.functions, data)
+		mcl_item_modifiers.do_item_modifiers(itemstack, node.functions, data)
 		mcl_loottables.do_item_modifiers(itemstack, node.parent, data)
 	end
 end
@@ -61,8 +46,8 @@ function mcl_loottables.do_pools(pools, functions, data)
 	local luck = data.luck or 0
 	local stacks = {}
 	for _, pool in ipairs(pools or {}) do
-		if mcl_conditions.do_conditions(pool.conditions, data) do
-			local rolls = mcl_loottables.get_number(pool.rolls, data) + mcl_loottables.get_number(pool.bonus_rolls, data) * luck
+		if mcl_predicates.do_predicates(pool.conditions, data) do
+			local rolls = mcl_numbers.get_number(pool.rolls, data) + mcl_numbers.get_number(pool.bonus_rolls, data) * luck
 			for i = 1, rolls do
 				local candidates = mcl_loottables.get_candidates(pool.entries, data)
 
@@ -73,7 +58,7 @@ function mcl_loottables.do_pools(pools, functions, data)
 						total_weight = total_weight + math.floor((candidate.weight or 1) + (candidate.quality or 0) * luck)
 						table.insert(weights, total_weight)
 					end
-					
+
 					local selected
 					local rnd = mcl_util.rand(data.pr, 0, weight - 1)
 					for i, w in ipairs(weights) do
@@ -82,14 +67,13 @@ function mcl_loottables.do_pools(pools, functions, data)
 							break
 						end
 					end
-					
-					local func = mcl_loottables.get_entry_type(entry).process
-					local stacks = func(selected, data)
 
-					for _, stack in ipairs(stacks) do
+					local pool_stacks = mcl_loottables.get_entry_type(entry).process(selected, data)
+
+					for _, stack in ipairs(pool_stacks) do
 						mcl_item_modifiers.do_item_modifiers(stack, selected, data)
 					end
-					table.insert_all(stacks, stack)
+					table.insert_all(stacks, pool_stacks)
 				end
 			end
 		end
@@ -98,7 +82,9 @@ function mcl_loottables.do_pools(pools, functions, data)
 end
 
 function mcl_loottables.get_loot(def, data)
-	def = mcl_loottables.get_table(def)
+	if type(def) == "string" then
+		def = mcl_loottables.tables[def]
+	end
 	return mcl_loottables.do_pools(def.pools)
 end
 
@@ -112,8 +98,4 @@ function mcl_loottables.drop_loot(def, data)
 		end
 	end
 	return loot
-end
-
-function mcl_loottables.fill_chest(def, data)
-	local loot = mcl_loottables.get_loot(def, data)
 end

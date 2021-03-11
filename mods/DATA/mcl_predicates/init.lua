@@ -10,8 +10,8 @@ mcl_predicates.register_predicate("alternative", function(predicate, data)
 	return mcl_predicates.do_predicates(predicate.terms, data, true)
 end)
 
-mcl_predicates.register_predicate("block_state_property", function(predicate, data)
-	return mcl_predicates.match_block(predicate.block, predicate.properties, data.location)
+mcl_predicates.register_predicate("match_node", function(predicate, data)
+	return mcl_types.match_node(data.node or minetest.get_node(data.pos), predicate, data.pos, data.nodemeta)
 end)
 
 mcl_predicates.register_predicate("damage_source_properties", function(predicate, data)
@@ -24,7 +24,7 @@ mcl_predicates.register_predicate("entity_properties", function(predicate, data)
 	if not entity or (entity ~= "this" and entity ~= "killer" and entity ~= "killer_player") then
 		return false
 	end
-	
+
 	local ref = data[entity]
 	if not ref then
 		return false
@@ -48,14 +48,8 @@ mcl_predicates.register_predicate("killed_by_player", function(predicate, data)
 end)
 
 mcl_predicates.register_predicate("location_check", function(predicate, data)
-	local location = vector.new(data.location)
-
-	location.x = location.x + (data.offsetX or 0)
-	location.y = location.y + (data.offsetY or 0)
-	location.z = location.z + (data.offsetZ or 0)
-
-	-- ToDo, needs abstraction?
-	return nil
+	local pos = vector.add(data.pos), vector.new(predicate.offset_x or 0, predicate.offset_y or 0, predicate.offset_z or 0))
+	return mcl_location(pos, data.nodemeta):match(predicate.predicate)
 end)
 
 mcl_predicates.register_predicate("match_tool", function(predicate, data)
@@ -94,7 +88,7 @@ end)
 
 mcl_predicates.register_predicate("weather_check", function(predicate, data)
 	local weather = mcl_weather.get_weather()
-	
+
 	if predicate.thundering then
 		return weather == "thunder"
 	elseif predicate.raining then
