@@ -28,22 +28,24 @@ dig_speed_class group:
 local groupcaps, hand_range, hand_groups
 if minetest.is_creative_enabled("") then
 	-- Instant breaking in creative mode
-	groupcaps = mcl_autogroup.get_groupcaps {
+	groupcaps = {}
+	hand_range = 10
+	hand_groups = { dig_speed_class = 7 }
+	hand_autogroup_groupcaps = {
 		creative_breakable = { tool_multiplier = 1000000, level = 0, uses = 0 },
 		handy = { tool_multiplier = 1000000, level = 0, uses = 0 },
 		pickaxey = { tool_multiplier = 1000000, level = 0, uses = 0 }
 	}
-	hand_range = 10
-	hand_groups = { dig_speed_class = 7 }
 else
-	groupcaps = mcl_autogroup.get_groupcaps {
+	groupcaps = {}
+	hand_autogroup_groupcaps = {
 		handy = { tool_multiplier = 1, level = 0, uses = 0 },
 		pickaxey = { tool_multiplier = 1, level = 0, uses = 0 }
 	}
 	hand_range = 4
 	hand_groups = { dig_speed_class = 1 }
 end
-minetest.register_item(":", {
+minetest.register_tool(":", {
 	type = "none",
 	_doc_items_longdesc = S("You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.").."\n"..
 			S("When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.").."\n"..
@@ -60,6 +62,7 @@ minetest.register_item(":", {
 		damage_groups = {fleshy=1},
 	},
 	groups = hand_groups,
+	_mcl_autogroup_groupcaps = hand_autogroup_groupcaps,
 })
 
 -- Help texts
@@ -85,15 +88,15 @@ minetest.register_tool("mcl_tools:pick_wood", {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
 		max_drop_level=1,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			pickaxey = { tool_multiplier = 2, level = 1, uses = 60 }
-		},
 		damage_groups = {fleshy=2},
 		punch_attack_uses = 30,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:wood",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		pickaxey = { tool_multiplier = 2, level = 1, uses = 60 }
+	},
 })
 minetest.register_tool("mcl_tools:pick_stone", {
 	description = S("Stone Pickaxe"),
@@ -105,15 +108,15 @@ minetest.register_tool("mcl_tools:pick_stone", {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
 		max_drop_level=3,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			pickaxey = { tool_multiplier = 4, level = 3, uses = 132 }
-		},
 		damage_groups = {fleshy=3},
 		punch_attack_uses = 66,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:cobble",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		pickaxey = { tool_multiplier = 4, level = 3, uses = 132 }
+	},
 })
 minetest.register_tool("mcl_tools:pick_iron", {
 	description = S("Iron Pickaxe"),
@@ -125,15 +128,15 @@ minetest.register_tool("mcl_tools:pick_iron", {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
 		max_drop_level=4,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			pickaxey = { tool_multiplier = 6, level = 4, uses = 251 }
-		},
 		damage_groups = {fleshy=4},
 		punch_attack_uses = 126,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:iron_ingot",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		pickaxey = { tool_multiplier = 6, level = 4, uses = 251 }
+	},
 })
 minetest.register_tool("mcl_tools:pick_gold", {
 	description = S("Golden Pickaxe"),
@@ -145,15 +148,15 @@ minetest.register_tool("mcl_tools:pick_gold", {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
 		max_drop_level=2,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			pickaxey = { tool_multiplier = 12, level = 2, uses = 33 }
-		},
 		damage_groups = {fleshy=2},
 		punch_attack_uses = 17,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:gold_ingot",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		pickaxey = { tool_multiplier = 12, level = 2, uses = 33 }
+	},
 })
 minetest.register_tool("mcl_tools:pick_diamond", {
 	description = S("Diamond Pickaxe"),
@@ -165,15 +168,15 @@ minetest.register_tool("mcl_tools:pick_diamond", {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
 		max_drop_level=5,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			pickaxey = { tool_multiplier = 8, level = 5, uses = 1562 }
-		},
 		damage_groups = {fleshy=5},
 		punch_attack_uses = 781,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:diamond",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		pickaxey = { tool_multiplier = 8, level = 5, uses = 1562 }
+	},
 })
 
 local get_shovel_dig_group = function(itemstack)
@@ -287,9 +290,6 @@ minetest.register_tool("mcl_tools:shovel_wood", {
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=1,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			shovely = { tool_multiplier = 2, level = 1, uses = 60 }
-		},
 		damage_groups = {fleshy=2},
 		punch_attack_uses = 30,
 	},
@@ -297,6 +297,9 @@ minetest.register_tool("mcl_tools:shovel_wood", {
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:wood",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		shovely = { tool_multiplier = 2, level = 1, uses = 60 }
+	},
 })
 minetest.register_tool("mcl_tools:shovel_stone", {
 	description = S("Stone Shovel"),
@@ -308,9 +311,6 @@ minetest.register_tool("mcl_tools:shovel_stone", {
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=3,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			shovely = { tool_multiplier = 4, level = 3, uses = 132 }
-		},
 		damage_groups = {fleshy=3},
 		punch_attack_uses = 66,
 	},
@@ -318,6 +318,9 @@ minetest.register_tool("mcl_tools:shovel_stone", {
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:cobble",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		shovely = { tool_multiplier = 4, level = 3, uses = 132 }
+	},
 })
 minetest.register_tool("mcl_tools:shovel_iron", {
 	description = S("Iron Shovel"),
@@ -329,9 +332,6 @@ minetest.register_tool("mcl_tools:shovel_iron", {
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=4,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			shovely = { tool_multiplier = 6, level = 4, uses = 251 }
-		},
 		damage_groups = {fleshy=4},
 		punch_attack_uses = 126,
 	},
@@ -339,6 +339,9 @@ minetest.register_tool("mcl_tools:shovel_iron", {
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:iron_ingot",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		shovely = { tool_multiplier = 6, level = 4, uses = 251 }
+	},
 })
 minetest.register_tool("mcl_tools:shovel_gold", {
 	description = S("Golden Shovel"),
@@ -350,9 +353,6 @@ minetest.register_tool("mcl_tools:shovel_gold", {
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=2,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			shovely = { tool_multiplier = 12, level = 2, uses = 33 }
-		},
 		damage_groups = {fleshy=2},
 		punch_attack_uses = 17,
 	},
@@ -360,6 +360,9 @@ minetest.register_tool("mcl_tools:shovel_gold", {
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:gold_ingot",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		shovely = { tool_multiplier = 12, level = 2, uses = 33 }
+	},
 })
 minetest.register_tool("mcl_tools:shovel_diamond", {
 	description = S("Diamond Shovel"),
@@ -371,9 +374,6 @@ minetest.register_tool("mcl_tools:shovel_diamond", {
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=5,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			shovely = { tool_multiplier = 8, level = 5, uses = 1562 }
-		},
 		damage_groups = {fleshy=5},
 		punch_attack_uses = 781,
 	},
@@ -381,6 +381,9 @@ minetest.register_tool("mcl_tools:shovel_diamond", {
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:diamond",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		shovely = { tool_multiplier = 8, level = 5, uses = 1562 }
+	},
 })
 
 -- Axes
@@ -394,15 +397,15 @@ minetest.register_tool("mcl_tools:axe_wood", {
 	tool_capabilities = {
 		full_punch_interval = 1.25,
 		max_drop_level=1,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			axey = { tool_multiplier = 2, level = 1, uses = 60 }
-		},
 		damage_groups = {fleshy=7},
 		punch_attack_uses = 30,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:wood",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		axey = { tool_multiplier = 2, level = 1, uses = 60 }
+	},
 })
 minetest.register_tool("mcl_tools:axe_stone", {
 	description = S("Stone Axe"),
@@ -413,15 +416,15 @@ minetest.register_tool("mcl_tools:axe_stone", {
 	tool_capabilities = {
 		full_punch_interval = 1.25,
 		max_drop_level=3,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			axey = { tool_multiplier = 4, level = 3, uses = 132 }
-		},
 		damage_groups = {fleshy=9},
 		punch_attack_uses = 66,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:cobble",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		axey = { tool_multiplier = 4, level = 3, uses = 132 }
+	},
 })
 minetest.register_tool("mcl_tools:axe_iron", {
 	description = S("Iron Axe"),
@@ -433,15 +436,15 @@ minetest.register_tool("mcl_tools:axe_iron", {
 		-- 1/0.9
 		full_punch_interval = 1.11111111,
 		max_drop_level=4,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			axey = { tool_multiplier = 6, level = 4, uses = 251 }
-		},
 		damage_groups = {fleshy=9},
 		punch_attack_uses = 126,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:iron_ingot",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		axey = { tool_multiplier = 6, level = 4, uses = 251 }
+	},
 })
 minetest.register_tool("mcl_tools:axe_gold", {
 	description = S("Golden Axe"),
@@ -452,15 +455,15 @@ minetest.register_tool("mcl_tools:axe_gold", {
 	tool_capabilities = {
 		full_punch_interval = 1.0,
 		max_drop_level=2,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			axey = { tool_multiplier = 12, level = 2, uses = 33 }
-		},
 		damage_groups = {fleshy=7},
 		punch_attack_uses = 17,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:gold_ingot",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		axey = { tool_multiplier = 12, level = 2, uses = 33 }
+	},
 })
 minetest.register_tool("mcl_tools:axe_diamond", {
 	description = S("Diamond Axe"),
@@ -471,15 +474,15 @@ minetest.register_tool("mcl_tools:axe_diamond", {
 	tool_capabilities = {
 		full_punch_interval = 1.0,
 		max_drop_level=5,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			axey = { tool_multiplier = 8, level = 5, uses = 1562 }
-		},
 		damage_groups = {fleshy=9},
 		punch_attack_uses = 781,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:diamond",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		axey = { tool_multiplier = 8, level = 5, uses = 1562 }
+	},
 })
 
 -- Swords
@@ -493,16 +496,16 @@ minetest.register_tool("mcl_tools:sword_wood", {
 	tool_capabilities = {
 		full_punch_interval = 0.625,
 		max_drop_level=1,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			swordy = { tool_multiplier = 2, level = 1, uses = 60 },
-			swordy_cobweb = { tool_multiplier = 2, level = 1, uses = 60 }
-		},
 		damage_groups = {fleshy=4},
 		punch_attack_uses = 60,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:wood",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		swordy = { tool_multiplier = 2, level = 1, uses = 60 },
+		swordy_cobweb = { tool_multiplier = 2, level = 1, uses = 60 }
+	},
 })
 minetest.register_tool("mcl_tools:sword_stone", {
 	description = S("Stone Sword"),
@@ -513,16 +516,16 @@ minetest.register_tool("mcl_tools:sword_stone", {
 	tool_capabilities = {
 		full_punch_interval = 0.625,
 		max_drop_level=3,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			swordy = { tool_multiplier = 4, level = 3, uses = 132 },
-			swordy_cobweb = { tool_multiplier = 4, level = 3, uses = 132 }
-		},
 		damage_groups = {fleshy=5},
 		punch_attack_uses = 132,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:cobble",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		swordy = { tool_multiplier = 4, level = 3, uses = 132 },
+		swordy_cobweb = { tool_multiplier = 4, level = 3, uses = 132 }
+	},
 })
 minetest.register_tool("mcl_tools:sword_iron", {
 	description = S("Iron Sword"),
@@ -533,16 +536,16 @@ minetest.register_tool("mcl_tools:sword_iron", {
 	tool_capabilities = {
 		full_punch_interval = 0.625,
 		max_drop_level=4,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			swordy = { tool_multiplier = 6, level = 4, uses = 251 },
-			swordy_cobweb = { tool_multiplier = 6, level = 4, uses = 251 }
-		},
 		damage_groups = {fleshy=6},
 		punch_attack_uses = 251,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:iron_ingot",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		swordy = { tool_multiplier = 6, level = 4, uses = 251 },
+		swordy_cobweb = { tool_multiplier = 6, level = 4, uses = 251 }
+	},
 })
 minetest.register_tool("mcl_tools:sword_gold", {
 	description = S("Golden Sword"),
@@ -553,16 +556,16 @@ minetest.register_tool("mcl_tools:sword_gold", {
 	tool_capabilities = {
 		full_punch_interval = 0.625,
 		max_drop_level=2,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			swordy = { tool_multiplier = 12, level = 2, uses = 33 },
-			swordy_cobweb = { tool_multiplier = 12, level = 2, uses = 33 }
-		},
 		damage_groups = {fleshy=4},
 		punch_attack_uses = 33,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:gold_ingot",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		swordy = { tool_multiplier = 12, level = 2, uses = 33 },
+		swordy_cobweb = { tool_multiplier = 12, level = 2, uses = 33 }
+	},
 })
 minetest.register_tool("mcl_tools:sword_diamond", {
 	description = S("Diamond Sword"),
@@ -573,16 +576,16 @@ minetest.register_tool("mcl_tools:sword_diamond", {
 	tool_capabilities = {
 		full_punch_interval = 0.625,
 		max_drop_level=5,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			swordy = { tool_multiplier = 8, level = 5, uses = 1562 },
-			swordy_cobweb = { tool_multiplier = 8, level = 5, uses = 1562 }
-		},
 		damage_groups = {fleshy=7},
 		punch_attack_uses = 1562,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:diamond",
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		swordy = { tool_multiplier = 8, level = 5, uses = 1562 },
+		swordy_cobweb = { tool_multiplier = 8, level = 5, uses = 1562 }
+	},
 })
 
 --Shears
@@ -597,15 +600,15 @@ minetest.register_tool("mcl_tools:shears", {
 	tool_capabilities = {
 	        full_punch_interval = 0.5,
 	        max_drop_level=1,
-		groupcaps = mcl_autogroup.get_groupcaps {
-			shearsy = { tool_multiplier = 1.5, level = 1, uses = 238 },
-			shearsy_wool = { tool_multiplier = 5, level = 1, uses = 238 },
-			shearsy_cobweb = { tool_multiplier = 15, level = 1, uses = 238 }
-		},
 	},
 	on_place = carve_pumpkin,
 	sound = { breaks = "default_tool_breaks" },
 	_mcl_toollike_wield = true,
+	_mcl_autogroup_groupcaps = {
+		shearsy = { tool_multiplier = 1.5, level = 1, uses = 238 },
+		shearsy_wool = { tool_multiplier = 5, level = 1, uses = 238 },
+		shearsy_cobweb = { tool_multiplier = 15, level = 1, uses = 238 }
+	},
 })
 
 

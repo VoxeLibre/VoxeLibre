@@ -38,8 +38,8 @@ the group indicates which digging level the node requires.
 pickaxe of level 3 to be mined.
 
 For tools to be able to dig nodes of the digging groups they need to use the
-"mcl_autogroups.get_groupcaps" function to get the groupcaps.  See
-"mcl_tools/init.lua" for examples of this.
+have the custom field "_mcl_autogroup_groupcaps" function to get the groupcaps.
+See "mcl_tools/init.lua" for examples of this.
 
 Information about the mod
 =========================
@@ -185,9 +185,7 @@ end
 -- This computes the groupcaps for a tool mining "pickaxey" blocks.  The tool
 -- has a digging speed multiplier of 4, can mine nodes of level >= 3 and has 132
 -- uses.
-function mcl_autogroup.get_groupcaps(groupcaps_def)
-	local groupcaps = {}
-
+local function add_groupcaps(groupcaps, groupcaps_def)
 	for g, capsdef in pairs(groupcaps_def) do
 		local mult = capsdef.tool_multiplier or 1
 		local eff = capsdef.efficiency or 0
@@ -203,7 +201,6 @@ function mcl_autogroup.get_groupcaps(groupcaps_def)
 			groupcaps[g .. "_dig"] = get_groupcap(g, true, mult, eff)
 		end
 	end
-
 	return groupcaps
 end
 
@@ -230,9 +227,6 @@ function mcl_autogroup.can_harvest(nodename, tool_capabilities)
 	return false
 end
 
--- This function automatically assigns the "solid" and "opaque" groups to all
--- registered nodes and assigns groups to get the correct digging times for
--- groups registered with "mcl_autogroup.register_digtime_group".
 local overwrite = function()
 	for nname, ndef in pairs(minetest.registered_nodes) do
 		local newgroups = table.copy(ndef.groups)
@@ -250,6 +244,8 @@ local overwrite = function()
 				newgroups.opaque = 1
 			end
 
+			-- Assign groups used for digging this node depending on
+			-- the registered digging groups
 			for g, gdef in pairs(mcl_autogroup.registered_digtime_groups) do
 				local index = hardness_lookup[g][ndef._mcl_hardness]
 				if ndef.groups[g] then
@@ -267,6 +263,22 @@ local overwrite = function()
 
 			minetest.override_item(nname, {
 				groups = newgroups
+			})
+		end
+	end
+
+	for tname, tdef in pairs(minetest.registered_tools) do
+		-- Assign groupcaps for digging the registered digging groups
+		-- depending on the _mcl_autogroups_groupcaps in the tool
+		-- definition
+		if tdef._mcl_autogroup_groupcaps then
+			local toolcaps = table.copy(tdef.tool_capabilities) or {}
+			local groupcaps = toolcaps.groupcaps or {}
+			groupcaps = add_groupcaps(groupcaps, tdef._mcl_autogroup_groupcaps)
+			toolcaps.groupcaps = groupcaps
+
+			minetest.override_item(tname, {
+				tool_capabilities = toolcaps
 			})
 		end
 	end
