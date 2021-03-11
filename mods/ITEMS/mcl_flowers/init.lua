@@ -3,6 +3,7 @@ local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
 local modpath = minetest.get_modpath("mcl_flowers")
 
 mcl_flowers = {}
+mcl_flowers.registered_simple_flowers = {}
 -- Simple flower template
 local smallflowerlongdesc = S("This is a small flower. Small flowers are mainly used for dye production and can also be potted.")
 local plant_usage_help = S("It can only be placed on a block on which it would also survive.")
@@ -53,7 +54,13 @@ local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, 
 end)
 
 function mcl_flowers.register_simple_flower(name, desc, image, simple_selection_box)
-	minetest.register_node("mcl_flowers:"..name, {
+	local newname = "mcl_flowers:"..name
+    mcl_flowers.registered_simple_flowers[newname] = {
+		desc=desc
+		image=image
+		simple_selection_box=simple_selection_box
+	}
+	minetest.register_node(newname, {
 		description = desc,
 		_doc_items_longdesc = smallflowerlongdesc,
 		_doc_items_usagehelp = plant_usage_help,
