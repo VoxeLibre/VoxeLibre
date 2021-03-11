@@ -56,9 +56,9 @@ end)
 function mcl_flowers.register_simple_flower(name, desc, image, simple_selection_box)
 	local newname = "mcl_flowers:"..name
     mcl_flowers.registered_simple_flowers[newname] = {
-		desc=desc
-		image=image
-		simple_selection_box=simple_selection_box
+		desc=desc,
+		image=image,
+		simple_selection_box=simple_selection_box,
 	}
 	minetest.register_node(newname, {
 		description = desc,
