@@ -185,16 +185,17 @@ local function add_groupcaps(groupcaps, groupcaps_def)
 	for g, capsdef in pairs(groupcaps_def) do
 		local mult = capsdef.tool_multiplier or 1
 		local eff = capsdef.efficiency or 0
+		local uses = capsdef.uses
 		local def = mcl_autogroup.registered_diggroups[g]
 		local level = capsdef.level or 1
 		local max_level = def.levels or 0
 
 		if max_level > 0 then
 			level = math.min(level, max_level)
-			groupcaps[g .. "_0_dig"] = get_groupcap(g, false, mult, eff)
-			groupcaps[g .. "_" .. level .. "_dig"] = get_groupcap(g, true, mult, eff)
+			groupcaps[g .. "_0_dig"] = get_groupcap(g, false, mult, eff, uses)
+			groupcaps[g .. "_" .. level .. "_dig"] = get_groupcap(g, true, mult, eff, uses)
 		else
-			groupcaps[g .. "_dig"] = get_groupcap(g, true, mult, eff)
+			groupcaps[g .. "_dig"] = get_groupcap(g, true, mult, eff, uses)
 		end
 	end
 	return groupcaps
