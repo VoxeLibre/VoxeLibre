@@ -173,7 +173,7 @@ if has_mcl_flowerpots then
 	mcl_flowerpots.register_potted_flower("mcl_flowers:fern", {
 		name = "fern",
 		desc = S("Fern"),
-		image = "mcl_flowers_fern.png",
+		image = "mcl_flowers_fern_inv.png",
 	})
 end
 
