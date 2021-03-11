@@ -157,30 +157,6 @@ local function get_groupcap(group, can_harvest, multiplier, efficiency, uses)
 	}
 end
 
--- Get the groupcaps for a tool on the specified digging groups.  groupcaps_def
--- contains a table with keys being the digging group and values being the tools
--- properties for that digging group.
---
--- The tool properties can have the following values:
---
---   tool_multiplier - the digging speed multiplier for this tool (default 1)
---   efficiency - the efficiency level for this tool (default 0)
---   level - the maximum level of the group the tool can harvest (default 1)
---   uses - the number of uses the tool has for this group
---
--- A level of 0 means that the tool will be able to dig that group but will
--- never be able to harvest the nodes of that group and will always get a
--- digging time penalty.  This is useful for implementing the hand.
---
--- Example usage:
---
---   mcl_autogroup.get_groupcaps {
---       pickaxey = { tool_multiplier = 4, level = 3, uses = 132 }
---   }
---
--- This computes the groupcaps for a tool mining "pickaxey" blocks.  The tool
--- has a digging speed multiplier of 4, can mine nodes of level >= 3 and has 132
--- uses.
 local function add_groupcaps(groupcaps, groupcaps_def)
 	for g, capsdef in pairs(groupcaps_def) do
 		local mult = capsdef.tool_multiplier or 1
@@ -222,6 +198,54 @@ function mcl_autogroup.can_harvest(nodename, tool_capabilities)
 		end
 	end
 	return false
+end
+
+-- Get one groupcap field for using a specific tool on a specific group.
+local function get_groupcap(group, can_harvest, multiplier, efficiency, uses)
+	return {
+		times = get_digtimes(group, can_harvest, multiplier, efficiency),
+		uses = uses,
+		maxlevel = 0,
+	}
+end
+
+local function add_groupcaps(groupcaps, groupcaps_def, efficiency)
+	for g, capsdef in pairs(groupcaps_def) do
+		local mult = capsdef.tool_multiplier or 1
+		local eff = efficiency or 0
+		local uses = capsdef.uses
+		local def = mcl_autogroup.registered_diggroups[g]
+		local level = capsdef.level or 1
+		local max_level = def.levels or 0
+
+		if max_level > 0 then
+			level = math.min(level, max_level)
+			groupcaps[g .. "_0_dig"] = get_groupcap(g, false, mult, eff, uses)
+			groupcaps[g .. "_" .. level .. "_dig"] = get_groupcap(g, true, mult, eff, uses)
+		else
+			groupcaps[g .. "_dig"] = get_groupcap(g, true, mult, eff, uses)
+		end
+	end
+end
+
+-- Get the groupcaps for a tool.  This function returns "groupcaps" table of
+-- digging which should be put in the "tool_capabilities" of the tool definition
+-- or in the metadata of an enchanted tool.
+--
+-- Parameters:
+-- tool_name - Name of the tool being enchanted (like "mcl_tools:diamond_pickaxe")
+-- efficiency - The efficiency level the tool is enchanted with (default 0)
+--
+-- NOTE: 
+-- Mods calling this function (like mcl_enchanting) should _not_ have
+-- _mcl_autogroups as a dependency.  It is very important that this mod is
+-- loaded last.  This also means this function can only be called by other mods
+-- after all mods have been initialized.
+function mcl_autogroup.get_groupcaps(tool_name, efficiency)
+	local tdef = minetest.registered_tools[tool_name]
+	local groupcaps = table.copy(tdef.tool_capabilities.groupcaps or {})
+	add_groupcaps(groupcaps, tdef._mcl_autogroup_groupcaps, efficiency)
+	return groupcaps
 end
 
 local overwrite = function()
@@ -269,9 +293,7 @@ local overwrite = function()
 		-- definition
 		if tdef._mcl_autogroup_groupcaps then
 			local toolcaps = table.copy(tdef.tool_capabilities) or {}
-			local groupcaps = toolcaps.groupcaps or {}
-			groupcaps = add_groupcaps(groupcaps, tdef._mcl_autogroup_groupcaps)
-			toolcaps.groupcaps = groupcaps
+			toolcaps.groupcaps = mcl_autogroup.get_groupcaps(tname)
 
 			minetest.override_item(tname, {
 				tool_capabilities = toolcaps

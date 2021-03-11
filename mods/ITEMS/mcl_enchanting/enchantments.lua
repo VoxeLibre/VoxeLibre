@@ -156,13 +156,7 @@ mcl_enchanting.enchantments.efficiency = {
 	curse = false,
 	on_enchant = function(itemstack, level)
 		local tool_capabilities = itemstack:get_tool_capabilities()
-		local groupcaps = {}
-		for group, capability in pairs(tool_capabilities.groupcaps) do
-			local groupname = group .. "_efficiency_" .. level
-			capability.times = mcl_autogroup.digtimes[groupname]
-			groupcaps[groupname] = capability
-		end
-		tool_capabilities.groupcaps = groupcaps
+		tool_capabilities.groupcaps = mcl_autogroup.get_groupcaps(itemstack:get_name(), level)
 		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
 	end,
 	requires_tool = false,

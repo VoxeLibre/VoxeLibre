@@ -11,6 +11,16 @@ as possible.  Minetest loads mods in reverse alphabetical order.
 mcl_autogroup = {}
 mcl_autogroup.registered_diggroups = {}
 
+-- Register a group as a digging group.
+--
+-- Parameters:
+-- group - Name of the group to register as a digging group
+-- def - Table with information about the diggroup (defaults to {} if unspecified)
+--
+-- Values in def:
+-- level - If this value is 0 or unspecified, then the group does not have
+--         levels, otherwise it is an integer greater than 0 which indicates how
+--         many digging levels the group supports.
 function mcl_autogroup.register_diggroup(group, def)
 	mcl_autogroup.registered_diggroups[group] = def or {}
 end
