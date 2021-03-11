@@ -4,29 +4,6 @@ local has_doc = minetest.get_modpath("doc")
 mcl_flowerpots = {}
 mcl_flowerpots.registered_pots = {}
 
-local flowers = {
-	{"dandelion", "mcl_flowers:dandelion", S("Dandelion Flower Pot")},
-	{"poppy", "mcl_flowers:poppy", S("Poppy Flower Pot")},
-	{"blue_orchid", "mcl_flowers:blue_orchid", S("Blue Orchid Flower Pot")},
-	{"allium", "mcl_flowers:allium", S("Allium Flower Pot")},
-	{"azure_bluet", "mcl_flowers:azure_bluet", S("Azure Bluet Flower Pot")},
-	{"tulip_red", "mcl_flowers:tulip_red", S("Red Tulip Flower Pot")},
-	{"tulip_pink", "mcl_flowers:tulip_pink", S("Pink Tulip Flower Pot")},
-	{"tulip_white", "mcl_flowers:tulip_white", S("White Tulip Flower Pot")},
-	{"tulip_orange", "mcl_flowers:tulip_orange", S("Orange Tulip Flower Pot")},
-	{"oxeye_daisy", "mcl_flowers:oxeye_daisy", S("Oxeye Daisy Flower Pot")},
-	{"mushroom_brown", "mcl_mushrooms:mushroom_brown", S("Brown Mushroom Flower Pot")},
-	{"mushroom_red", "mcl_mushrooms:mushroom_red", S("Red Mushroom Flower Pot")},
-	{"sapling", "mcl_core:sapling", S("Oak Sapling Flower Pot")},
-	{"acaciasapling", "mcl_core:acaciasapling", S("Acacia Sapling Flower Pot")},
-	{"junglesapling", "mcl_core:junglesapling", S("Jungle Sapling Flower Pot")},
-	{"darksapling", "mcl_core:darksapling", S("Dark Oak Sapling Flower Pot")},
-	{"sprucesapling", "mcl_core:sprucesapling", S("Spruce Sapling Flower Pot")},
-	{"birchsapling", "mcl_core:birchsapling", S("Birch Sapling Flower Pot")},
-	{"deadbush", "mcl_core:deadbush", S("Dead Bush Flower Pot")},
-	{"fern", "mcl_flowers:fern", S("Fern Flower Pot"), {"mcl_flowers_fern_inv.png"}},
-}
-
 minetest.register_node("mcl_flowerpots:flower_pot", {
 	description = S("Flower Pot"),
 	_tt_help = S("Can hold a small flower or plant"),
