@@ -169,6 +169,14 @@ def_fern.selection_box = {
 
 minetest.register_node("mcl_flowers:fern", def_fern)
 
+if has_mcl_flowerpots then
+	mcl_flowerpots.register_potted_flower("mcl_flowers:fern", {
+		name = "fern",
+		desc = S("Fern"),
+		image = "mcl_flowers_fern.png",
+	})
+end
+
 local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, selbox_radius, selbox_top_height, drop, shears_drop, is_flower, grass_color, fortune_drop)
 	if not inv_img then
 		inv_img = top_img

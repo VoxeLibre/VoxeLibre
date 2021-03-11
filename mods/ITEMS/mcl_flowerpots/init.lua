@@ -154,7 +154,7 @@ function mcl_flowerpots.register_potted_cube(name, def)
 		groups = {dig_immediate=3, attached_node=1, dig_by_piston=1, not_in_creative_inventory=1, flower_pot=2},
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 		on_rightclick = function(pos, item, clicker)
-			local name = ""
+			local player_name = ""
 			if clicker:is_player() then
 				player_name = clicker:get_player_name()
 			end
@@ -182,4 +182,58 @@ mcl_flowerpots.register_potted_cube("mcl_core:cactus", {
 	name = "cactus",
 	desc = S("Cactus"),
 	image = "mcl_flowerpots_cactus.png",
+})
+
+mcl_flowerpots.register_potted_flower("mcl_mushrooms:mushroom_brown", {
+	name = "mushroom_brown",
+	desc = S("Brown Mushroom"),
+	image = "farming_mushroom_brown.png",
+})
+
+mcl_flowerpots.register_potted_flower("mcl_mushrooms:mushroom_red", {
+	name = "mushroom_red",
+	desc = S("Red Mushroom"),
+	image = "farming_mushroom_red.png",
+})
+
+mcl_flowerpots.register_potted_flower("mcl_core:sapling", {
+	name = "sapling",
+	desc = S("Oak Sapling"),
+	image = "default_sapling.png",
+})
+
+mcl_flowerpots.register_potted_flower("mcl_core:acaciasapling", {
+	name = "acaciasapling",
+	desc = S("Acacia Sapling"),
+	image = "default_acacia_sapling.png",
+})
+
+mcl_flowerpots.register_potted_flower("mcl_core:junglesapling", {
+	name = "junglesapling",
+	desc = S("Jungle Sapling"),
+	image = "default_junglesapling.png",
+})
+
+mcl_flowerpots.register_potted_flower("mcl_core:darksapling", {
+	name = "darksapling",
+	desc = S("Dark Oak Sapling"),
+	image = "mcl_core_sapling_big_oak.png",
+})
+
+mcl_flowerpots.register_potted_flower("mcl_core:sprucesapling", {
+	name = "sprucesapling",
+	desc = S("Spruce Sapling"),
+	image = "mcl_core_sapling_spruce.png",
+})
+
+mcl_flowerpots.register_potted_flower("mcl_core:birchsapling", {
+	name = "birchsapling",
+	desc = S("Birch Sapling"),
+	image = "mcl_core_sapling_birch.png",
+})
+
+mcl_flowerpots.register_potted_flower("mcl_core:deadbush", {
+	name = "deadbush",
+	desc = S("Dead Bush"),
+	image = "default_dry_shrub.png",
 })
