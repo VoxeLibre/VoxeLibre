@@ -1,7 +1,10 @@
 local S = minetest.get_translator("mcl_flowers")
-
 local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
+local has_mcl_flowerpots = minetest.get_modpath("mcl_flowerpots")
+local modpath = minetest.get_modpath("mcl_flowers")
 
+mcl_flowers = {}
+mcl_flowers.registered_simple_flowers = {}
 -- Simple flower template
 local smallflowerlongdesc = S("This is a small flower. Small flowers are mainly used for dye production and can also be potted.")
 local plant_usage_help = S("It can only be placed on a block on which it would also survive.")
@@ -51,42 +54,48 @@ local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, 
 	return ok, colorize
 end)
 
-local function add_simple_flower(name, desc, image, simple_selection_box)
-	minetest.register_node("mcl_flowers:"..name, {
-		description = desc,
+function mcl_flowers.register_simple_flower(name, def)
+	local newname = "mcl_flowers:"..name
+	if not def._mcl_silk_touch_drop then def._mcl_silk_touch_drop = nil end
+	if not def.drop then def.drop = newname end
+    mcl_flowers.registered_simple_flowers[newname] = {
+		name=name,
+		desc=def.desc,
+		image=def.image,
+		simple_selection_box=def.simple_selection_box,
+	}
+	minetest.register_node(newname, {
+		description = def.desc,
 		_doc_items_longdesc = smallflowerlongdesc,
 		_doc_items_usagehelp = plant_usage_help,
 		drawtype = "plantlike",
 		waving = 1,
-		tiles = { image..".png" },
-		inventory_image = image..".png",
-		wield_image = image..".png",
+		tiles = { def.image },
+		inventory_image = def.image,
+		wield_image = def.image,
 		sunlight_propagates = true,
 		paramtype = "light",
 		walkable = false,
 		stack_max = 64,
+		drop = def.drop,
 		groups = {dig_immediate=3,flammable=2,fire_encouragement=60,fire_flammability=100,plant=1,flower=1,place_flowerlike=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,enderman_takable=1,deco_block=1},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		node_placement_prediction = "",
 		on_place = on_place_flower,
 		selection_box = {
 			type = "fixed",
-			fixed = simple_selection_box,
+			fixed = def.selection_box,
 		},
+		_mcl_silk_touch_drop = def._mcl_silk_touch_drop,
 	})
+	if def.potted and has_mcl_flowerpots then
+		mcl_flowerpots.register_potted_flower(newname, {
+			name = name,
+			desc = def.desc,
+			image = def.image,
+		})
+	end
 end
-
-add_simple_flower("poppy", S("Poppy"), "mcl_flowers_poppy", { -5/16, -0.5, -5/16, 5/16, 5/16, 5/16 })
-add_simple_flower("dandelion", S("Dandelion"), "flowers_dandelion_yellow", { -4/16, -0.5, -4/16, 4/16, 3/16, 4/16 })
-add_simple_flower("oxeye_daisy", S("Oxeye Daisy"), "mcl_flowers_oxeye_daisy", { -4/16, -0.5, -4/16, 4/16, 4/16, 4/16 })
-add_simple_flower("tulip_orange", S("Orange Tulip"), "flowers_tulip", { -3/16, -0.5, -3/16, 3/16, 5/16, 3/16 })
-add_simple_flower("tulip_pink", S("Pink Tulip"), "mcl_flowers_tulip_pink", { -3/16, -0.5, -3/16, 3/16, 5/16, 3/16 })
-add_simple_flower("tulip_red", S("Red Tulip"), "mcl_flowers_tulip_red", { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 })
-add_simple_flower("tulip_white", S("White Tulip"), "mcl_flowers_tulip_white", { -3/16, -0.5, -3/16, 3/16, 4/16, 3/16 })
-add_simple_flower("allium", S("Allium"), "mcl_flowers_allium", { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 })
-add_simple_flower("azure_bluet", S("Azure Bluet"), "mcl_flowers_azure_bluet", { -5/16, -0.5, -5/16, 5/16, 3/16, 5/16 })
-add_simple_flower("blue_orchid", S("Blue Orchid"), "mcl_flowers_blue_orchid", { -5/16, -0.5, -5/16, 5/16, 7/16, 5/16 })
-
 
 local wheat_seed_drop = {
 	max_items = 1,
@@ -158,6 +167,14 @@ def_fern.selection_box = {
 }
 
 minetest.register_node("mcl_flowers:fern", def_fern)
+
+if has_mcl_flowerpots then
+	mcl_flowerpots.register_potted_flower("mcl_flowers:fern", {
+		name = "fern",
+		desc = S("Fern"),
+		image = "mcl_flowers_fern_inv.png",
+	})
+end
 
 local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, selbox_radius, selbox_top_height, drop, shears_drop, is_flower, grass_color, fortune_drop)
 	if not inv_img then
@@ -480,3 +497,4 @@ local fix_doubleplants = minetest.settings:get_bool("fix_doubleplants", true)
 		})
 	end
 
+dofile(modpath.."/register.lua")

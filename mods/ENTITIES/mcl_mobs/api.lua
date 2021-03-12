@@ -751,10 +751,10 @@ local check_for_death = function(self, cause, cmi_cause)
 
 		-- play damage sound if health was reduced and make mob flash red.
 		if damaged then
-			add_texture_mod(self, "^[colorize:#FF000040")
+			add_texture_mod(self, "^[colorize:red:130")
 			minetest.after(.2, function(self)
 				if self and self.object then
-					remove_texture_mod(self, "^[colorize:#FF000040")
+					remove_texture_mod(self, "^[colorize:red:130")
 				end
 			end, self)
 			mob_sound(self, "damage")

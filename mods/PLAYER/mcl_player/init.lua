@@ -33,6 +33,7 @@ mcl_player.player_register_model("character.b3d", {
 		sneak_walk_mine	= {x=325, y=344},
 		run_walk	= {x=440, y=460},
 		run_walk_mine	= {x=461, y=481},
+		sit_mount	= {x=484, y=484},
 	},
 })
 

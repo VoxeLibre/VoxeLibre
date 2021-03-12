@@ -1,1 +1,0 @@
-Jukebox and music discs are used to play background music on a per-player basis.

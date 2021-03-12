@@ -1,4 +1,6 @@
+mcl_farming.plant_lists = {}
 local plant_lists = {}
+
 local plant_nodename_to_id_list = {}
 
 local function get_intervals_counter(pos, interval, chance)
@@ -51,11 +53,12 @@ local function get_avg_light_level(pos)
 end
 
 function mcl_farming:add_plant(identifier, full_grown, names, interval, chance)
-	plant_lists[identifier] = {}
-	plant_lists[identifier].full_grown = full_grown
-	plant_lists[identifier].names = names
-	plant_lists[identifier].interval = interval
-	plant_lists[identifier].chance = chance
+	mcl_farming.plant_lists[identifier] = {}
+	mcl_farming.plant_lists[identifier].full_grown = full_grown
+	mcl_farming.plant_lists[identifier].names = names
+	mcl_farming.plant_lists[identifier].interval = interval
+	mcl_farming.plant_lists[identifier].chance = chance
+	plant_lists = mcl_farming.plant_lists --provide local copy of plant lists (performances)
 	minetest.register_abm({
 		label = string.format("Farming plant growth (%s)", identifier),
 		nodenames = names,
