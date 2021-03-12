@@ -39,7 +39,7 @@ local ARROW_ENTITY={
 	physical = true,
 	visual = "mesh",
 	mesh = "mcl_bows_arrow.obj",
-	visual_size = {x=1, y=1},
+	visual_size = {x=-1, y=1},
 	textures = {"mcl_bows_arrow.png"},
 	collisionbox = {-0.19, -0.125, -0.19, 0.19, 0.125, 0.19},
 	collide_with_objects = false,
