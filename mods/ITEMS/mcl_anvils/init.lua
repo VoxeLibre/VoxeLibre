@@ -101,14 +101,14 @@ local function update_anvil_slots(meta)
 		end
 
 		local can_combine = mcl_enchanting.combine(input1, input2)
-		
+
 		if can_combine then
 			-- Add tool health together plus a small bonus
 			if def1.type == "tool" and def2.type == "tool" then
 				local new_wear = calculate_repair(input1:get_wear(), input2:get_wear(), SAME_TOOL_REPAIR_BOOST)
 				input1:set_wear(new_wear)
 			end
-			
+
 			name_item = input1
 			new_output = name_item
 		-- Tool + repair item
@@ -318,11 +318,11 @@ local anvildef = {
 	_mcl_after_falling = damage_anvil_by_falling,
 
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
-		local meta = minetest.get_meta(pos) 
-		local meta2 = meta 
+		local meta = minetest.get_meta(pos)
+		local meta2 = meta:to_table()
 		meta:from_table(oldmetadata)
 		drop_anvil_items(pos, meta)
-		meta:from_table(meta2:to_table())
+		meta:from_table(meta2)
 	end,
 	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
 		local name = player:get_player_name()
