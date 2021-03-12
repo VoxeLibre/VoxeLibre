@@ -45,43 +45,27 @@ local place_liquid = function(pos, itemstring)
 	minetest.add_node(pos, {name=itemstring, param2=fullness})
 end
 
--- Register a new liquid
---   source_place = a string or function.
---      * string: name of the node to place
---      * function(pos): will returns name of the node to place with pos being the placement position
---   source_take = table of liquid source node names to take
---   itemname = itemstring of the new bucket item (or nil if liquid is not takeable)
---   inventory_image = texture of the new bucket item (ignored if itemname == nil)
---   name = user-visible bucket description
---   longdesc = long explanatory description (for help)
---   usagehelp = short usage explanation (for help)
---   tt_help = very short tooltip help
---   extra_check(pos, placer) = optional function(pos) which can returns false to avoid placing the liquid.
---                              placer is object/player who is placing the liquid, can be nil
---   groups = optional list of item groups
---
--- This function can be called from any mod (which depends on this one)
-function mcl_buckets.register_liquid(source_place, source_take, itemname, inventory_image, name, longdesc, usagehelp, tt_help, extra_check, groups)
-	for i=1, #source_take do
-		mcl_buckets.liquids[source_take[i]] = {
-			source_place = source_place,
-			source_take = source_take[i],
-			itemname = itemname,
+function mcl_buckets.register_liquid(def)
+	for i=1, #def.source_take do
+		mcl_buckets.liquids[def.source_take[i]] = {
+			source_place = def.source_place,
+			source_take = def.source_take[i],
+			itemname = def.itemname,
 		}
-		if type(source_place) == "string" then
-			mcl_buckets.liquids[source_place] = mcl_buckets.liquids[source_take[i]]
+		if type(def.source_place) == "string" then
+			mcl_buckets.liquids[def.source_place] = mcl_buckets.liquids[def.source_take[i]]
 		end
 	end
 
-	if itemname ~= nil then
-		minetest.register_craftitem(itemname, {
-			description = name,
-			_doc_items_longdesc = longdesc,
-			_doc_items_usagehelp = usagehelp,
-			_tt_help = tt_help,
-			inventory_image = inventory_image,
+	if def.itemname ~= nil then
+		minetest.register_craftitem(def.itemname, {
+			description = def.name,
+			_doc_items_longdesc = def.longdesc,
+			_doc_items_usagehelp = def.usagehelp,
+			_tt_help = def.tt_help,
+			inventory_image = def.inventory_image,
 			stack_max = 16,
-			groups = groups,
+			groups = def.groups,
 			on_place = function(itemstack, user, pointed_thing)
 				-- Must be pointing to node
 				if pointed_thing.type ~= "node" then
@@ -99,10 +83,10 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 				end
 
 				local node_place
-				if type(source_place) == "function" then
-					node_place = source_place(place_pos)
+				if type(def.source_place) == "function" then
+					node_place = def.source_place(place_pos)
 				else
-					node_place = source_place
+					node_place = def.source_place
 				end
 				-- Check if pointing to a buildable node
 				local item = itemstack:get_name()
@@ -165,15 +149,15 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 				local iname = stack:get_name()
 				local buildable = minetest.registered_nodes[dropnode.name].buildable_to
 
-				if extra_check and extra_check(droppos, nil) == false then
+				if def.extra_check and def.extra_check(droppos, nil) == false then
 					-- Fail placement of liquid
 				elseif buildable then
 					-- buildable; replace the node
 					local node_place
-					if type(source_place) == "function" then
-						node_place = source_place(droppos)
+					if type(def.source_place) == "function" then
+						node_place = def.source_place(droppos)
 					else
-						node_place = source_place
+						node_place = def.source_place
 					end
 					place_liquid(droppos, node_place)
 					stack:set_name("mcl_buckets:bucket_empty")
@@ -294,8 +278,8 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 
 if mod_mcl_core then
 	-- Lava bucket
-	mcl_buckets.register_liquid(
-		function(pos)
+	mcl_buckets.register_liquid({
+		source_place = function(pos)
 			local dim = mcl_worlds.pos_to_dimension(pos)
 			if dim == "nether" then
 				return "mcl_nether:nether_lava_source"
@@ -303,26 +287,26 @@ if mod_mcl_core then
 				return "mcl_core:lava_source"
 			end
 		end,
-		{"mcl_core:lava_source", "mcl_nether:nether_lava_source"},
-		"mcl_buckets:bucket_lava",
-		"bucket_lava.png",
-		S("Lava Bucket"),
-		S("A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution."),
-		S("Get in a safe distance and place the bucket to empty it and create a lava source at this spot. Don't burn yourself!"),
-		S("Places a lava source")
-	)
+		source_take = {"mcl_core:lava_source", "mcl_nether:nether_lava_source"},
+		itemname = "mcl_buckets:bucket_lava",
+		inventory_image = "bucket_lava.png",
+		name = S("Lava Bucket"),
+		longdesc = S("A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution."),
+		usagehelp = S("Get in a safe distance and place the bucket to empty it and create a lava source at this spot. Don't burn yourself!"),
+		tt_help = S("Places a lava source")
+	})
 
 	-- Water bucket
-	mcl_buckets.register_liquid(
-		"mcl_core:water_source",
-		{"mcl_core:water_source"},
-		"mcl_buckets:bucket_water",
-		"bucket_water.png",
-		S("Water Bucket"),
-		S("A bucket can be used to collect and release liquids. This one is filled with water."),
-		S("Place it to empty the bucket and create a water source."),
-		S("Places a water source"),
-		function(pos, placer)
+	mcl_buckets.register_liquid({
+		source_place = "mcl_core:water_source",
+		source_take = {"mcl_core:water_source"},
+		itemname = "mcl_buckets:bucket_water",
+		inventory_image = "bucket_water.png",
+		name = S("Water Bucket"),
+		longdesc = S("A bucket can be used to collect and release liquids. This one is filled with water."),
+		usagehelp = S("Place it to empty the bucket and create a water source."),
+		tt_help = S("Places a water source"),
+		extra_check = function(pos, placer)
 			-- Check protection
 			local placer_name = ""
 			if placer ~= nil then
@@ -350,22 +334,22 @@ if mod_mcl_core then
 				end
 			end
 		end,
-		{ water_bucket = 1 }
-	)
+		groups = { water_bucket = 1 },
+	})
 end
 
 if mod_mclx_core then
 	-- River water bucket
-	mcl_buckets.register_liquid(
-		"mclx_core:river_water_source",
-		{"mclx_core:river_water_source"},
-		"mcl_buckets:bucket_river_water",
-		"bucket_river_water.png",
-		S("River Water Bucket"),
-		S("A bucket can be used to collect and release liquids. This one is filled with river water."),
-		S("Place it to empty the bucket and create a river water source."),
-		S("Places a river water source"),
-		function(pos, placer)
+	mcl_buckets.register_liquid({
+		source_place = "mclx_core:river_water_source",
+		source_take = {"mclx_core:river_water_source"},
+		itemname = "mcl_buckets:bucket_river_water",
+		inventory_image = "bucket_river_water.png",
+		name = S("River Water Bucket"),
+		longdesc = S("A bucket can be used to collect and release liquids. This one is filled with river water."),
+		usagehelp = S("Place it to empty the bucket and create a river water source."),
+		tt_help = S("Places a river water source"),
+		extra_check = function(pos, placer)
 			-- Check protection
 			local placer_name = ""
 			if placer ~= nil then
@@ -393,8 +377,8 @@ if mod_mclx_core then
 				end
 			end
 		end,
-		{ water_bucket = 1 }
-	)
+		groups = { water_bucket = 1 },
+	})
 end
 
 minetest.register_craft({
