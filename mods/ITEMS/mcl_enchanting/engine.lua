@@ -22,7 +22,7 @@ end
 
 function mcl_enchanting.load_enchantments(itemstack, enchantments)
 	if not mcl_enchanting.is_book(itemstack:get_name()) then
-		mcl_enchanting.unload_enchantments(itemstack)		
+		mcl_enchanting.unload_enchantments(itemstack)
 		for enchantment, level in pairs(enchantments or mcl_enchanting.get_enchantments(itemstack)) do
 			local enchantment_def = mcl_enchanting.enchantments[enchantment]
 			if enchantment_def.on_enchant then
@@ -159,7 +159,7 @@ function mcl_enchanting.combine(itemstack, combine_with)
 	local itemname = itemstack:get_name()
 	local combine_name = combine_with:get_name()
 	local enchanted_itemname = mcl_enchanting.get_enchanted_itemstring(itemname)
-	if enchanted_itemname ~= mcl_enchanting.get_enchanted_itemstring(combine_name) and not mcl_enchanting.is_book(combine_name) then
+	if not enchanted_itemname or enchanted_itemname ~= mcl_enchanting.get_enchanted_itemstring(combine_name) and not mcl_enchanting.is_book(combine_name) then
 		return false
 	end
 	local enchantments = mcl_enchanting.get_enchantments(itemstack)
