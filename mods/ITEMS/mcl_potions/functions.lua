@@ -590,23 +590,36 @@ function mcl_potions.make_invisible(player, toggle)
 
 	local is_player = player:is_player()
 	local entity = player:get_luaentity()
+	local playername = player:get_player_name()
+	local skin_file = ""
 
 	if toggle then -- hide player
 
-		if player:is_player() then
-			EF.invisible[player].old_size = player:get_properties().visual_size
-		elseif entity then
+		skin_file = "mobs_mc_empty.png"
+
+		if entity then
 			EF.invisible[player].old_size = entity.visual_size
-		else -- if not a player or entity, do nothing
+		elseif not player:is_player() then -- if not a player or entity, do nothing
 			return
 		end
 
-		player:set_properties({visual_size = {x = 0, y = 0}})
+		if minetest.get_modpath("mcl_armor") and player:is_player() then
+			armor.textures[playername].skin = skin_file
+			armor:update_player_visuals(player)
+		elseif not player:is_player() and minetest.get_modpath("mcl_armor") or not player:is_player() and not minetest.get_modpath("mcl_armor") then
+			player:set_properties({visual_size = {x = 0, y = 0}})
+		end
 		player:set_nametag_attributes({color = {a = 0}})
 
 	elseif EF.invisible[player] then -- show player
 
-		player:set_properties({visual_size = EF.invisible[player].old_size})
+		if minetest.get_modpath("mcl_armor") and player:is_player() then
+			skin_file = mcl_skins.skins[playername] .. ".png"
+			armor.textures[playername].skin = skin_file
+			armor:update_player_visuals(player)
+		elseif not player:is_player() and minetest.get_modpath("mcl_armor") or not player:is_player() and not minetest.get_modpath("mcl_armor") then
+			player:set_properties({visual_size = EF.invisible[player].old_size})
+		end
 		player:set_nametag_attributes({color = {r = 255, g = 255, b = 255, a = 255}})
 
 	end
@@ -999,4 +1012,3 @@ function mcl_potions._extinguish_nearby_fire(pos, radius)
 	end
 	return exting
 end
-
