@@ -60,10 +60,9 @@ function mcl_flowers.register_simple_flower(name, def)
 	if not def.drop then def.drop = newname end
     mcl_flowers.registered_simple_flowers[newname] = {
 		name=name,
-		desc=def.desc,
-		pot_desc=def.pot_desc,
-		image=def.image,
-		selection_box=def.selection_box,
+		desc=desc,
+		image=image,
+		simple_selection_box=simple_selection_box,
 	}
 	minetest.register_node(newname, {
 		description = def.desc,
