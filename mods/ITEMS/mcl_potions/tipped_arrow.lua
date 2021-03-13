@@ -100,9 +100,10 @@ function mcl_potions.register_arrow(name, desc, color, def)
 
 	local ARROW_ENTITY={
 		physical = true,
-		visual = "wielditem",
-		visual_size = {x=0.4, y=0.4},
-		textures = {"mcl_potions:"..name.."_arrow_box"},
+		visual = "mesh",
+		mesh = "mcl_bows_arrow.obj",
+		visual_size = {x=1, y=1},
+		textures = arrow_image(color, 100),
 		collisionbox = {-0.19, -0.125, -0.19, 0.19, 0.125, 0.19},
 		collide_with_objects = false,
 
@@ -177,6 +178,26 @@ function mcl_potions.register_arrow(name, desc, color, def)
 
 		-- Check for object "collision". Done every tick (hopefully this is not too stressing)
 		else
+
+			if self._damage == 10 or self._damage == 9 then
+				minetest.add_particlespawner({
+					amount = 1,
+					time = .001,
+					minpos = pos,
+					maxpos = pos,
+					minvel = vector.new(-0.1,-0.1,-0.1),
+					maxvel = vector.new(0.1,0.1,0.1),
+					minexptime = 0.5,
+					maxexptime = 0.5,
+					minsize = 2,
+					maxsize = 2,
+					collisiondetection = false,
+					vertical = false,
+					texture = "mobs_mc_arrow_particle.png",
+					glow = 1,
+				})
+			end
+			
 			-- We just check for any hurtable objects nearby.
 			-- The radius of 3 is fairly liberal, but anything lower than than will cause
 			-- arrow to hilariously go through mobs often.
