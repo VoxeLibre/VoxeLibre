@@ -145,7 +145,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 	-- Check for object "collision". Done every tick (hopefully this is not too stressing)
 	else
 
-		if self._damage == 10 or self._damage == 9 then
+		if self._damage >= 9 then
 			minetest.add_particlespawner({
 				amount = 1,
 				time = .001,
