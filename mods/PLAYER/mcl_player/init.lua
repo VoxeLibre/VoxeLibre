@@ -6,6 +6,16 @@ mcl_player = {}
 -- Note: This is currently broken due to a bug in Irrlicht, leave at 0
 local animation_blend = 0
 
+local function get_mouse_button(player)
+	local controls = player:get_player_control()
+	local get_wielded_item_name = player:get_wielded_item():get_name()
+	if controls.RMB and not string.find(player:get_wielded_item():get_name(), "mcl_bows:bow") or controls.LMB then
+		return true
+	else
+		return false
+	end
+end
+
 mcl_player.registered_player_models = { }
 
 -- Local for speed.
@@ -174,30 +184,30 @@ minetest.register_globalstep(function(dtime)
 					player_anim[name] = nil
 					player_sneak[name] = controls.sneak
 				end
-				if controls.LMB and not controls.sneak and head_in_water and is_sprinting == true then
+				if get_mouse_button(player) == true and not controls.sneak and head_in_water and is_sprinting == true then
 					player_set_animation(player, "swim_walk_mine", animation_speed_mod)
 				elseif not controls.sneak and head_in_water and is_sprinting == true then
 					player_set_animation(player, "swim_walk", animation_speed_mod)
-				elseif is_sprinting == true and controls.LMB and not controls.sneak and not head_in_water then
+				elseif is_sprinting == true and get_mouse_button(player) == true and not controls.sneak and not head_in_water then
 					player_set_animation(player, "run_walk_mine", animation_speed_mod)
-				elseif controls.LMB and not controls.sneak then
+				elseif get_mouse_button(player) == true and not controls.sneak then
 					player_set_animation(player, "walk_mine", animation_speed_mod)
-				elseif controls.LMB and controls.sneak and is_sprinting ~= true then
+				elseif get_mouse_button(player) == true and controls.sneak and is_sprinting ~= true then
 					player_set_animation(player, "sneak_walk_mine", animation_speed_mod)
 				elseif is_sprinting == true and not controls.sneak and not head_in_water then
 					player_set_animation(player, "run_walk", animation_speed_mod)
-				elseif controls.sneak and not controls.LMB then
+				elseif controls.sneak and not get_mouse_button(player) == true then
 					player_set_animation(player, "sneak_walk", animation_speed_mod)
 				else
 					player_set_animation(player, "walk", animation_speed_mod)
 				end
-			elseif controls.LMB and not controls.sneak and head_in_water and is_sprinting == true then
+			elseif get_mouse_button(player) == true and not controls.sneak and head_in_water and is_sprinting == true then
 				player_set_animation(player, "swim_mine")
-			elseif not controls.LMB and not controls.sneak and head_in_water and is_sprinting == true then
+			elseif not get_mouse_button(player) == true and not controls.sneak and head_in_water and is_sprinting == true then
 				player_set_animation(player, "swim_stand")
-			elseif controls.LMB and not controls.sneak then
+			elseif get_mouse_button(player) == true and not controls.sneak then
 				player_set_animation(player, "mine")
-			elseif controls.LMB and controls.sneak then
+			elseif get_mouse_button(player) == true and controls.sneak then
 				player_set_animation(player, "sneak_mine")
 			elseif not controls.sneak and head_in_water and is_sprinting == true then
 				player_set_animation(player, "swim_stand", animation_speed_mod)
