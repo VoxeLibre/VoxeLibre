@@ -21,7 +21,7 @@ The basic digging time groups determine by which tools a node can be dug.
 * `swordy=1`: Diggable by sword (any material), and this node is *not* a cobweb
 * `swordy_cobweb=1`: Diggable by sword (any material), and this node is a cobweb
 * `shearsy=1`: Diggable by shears, and this node is *not* wool
-* `shearsy=wool=1`: Diggable by shears, and this node is wool
+* `shearsy_wool=1`: Diggable by shears, and this node is wool
 * `handy=1`: Breakable by hand and this node gives it useful drop when dug by hand. All nodes which are breakable by pickaxe, axe, shovel, sword or shears are also automatically breakable by hand, but not neccess
 * `creative_breakable=1`: Block is breakable by hand in creative mode. This group is implied if the node belongs to any other digging group
 
