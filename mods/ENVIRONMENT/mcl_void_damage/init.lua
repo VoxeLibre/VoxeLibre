@@ -6,6 +6,8 @@ local dim_change = mcl_worlds.dimension_change
 local is_in_void = mcl_worlds.is_in_void
 local get_spawn_pos = mcl_spawn.get_player_spawn_pos
 local death_msg = mcl_death_messages.player_damage
+local send_chat = minetest.chat_send_player
+local get_connected = minetest.get_connected_players
 
 local voidtimer = 0
 local VOID_DAMAGE_FREQ = 0.5
@@ -57,7 +59,7 @@ minetest.register_globalstep(function(dtime)
 	if voidtimer > VOID_DAMAGE_FREQ then
 		voidtimer = 0
 		local enable_damage = minetest.settings:get_bool("enable_damage")
-		local players = minetest.get_connected_players()
+		local players = get_connected()
 		for p=1, #players do
 			local player = players[p]
 			local pos = player:get_pos()
@@ -74,7 +76,7 @@ minetest.register_globalstep(function(dtime)
 					local spawn = get_spawn_pos(player)
 					player:set_pos(spawn)
 					dim_change(player, pos_to_dim(spawn))
-					minetest.chat_send_player(player:get_player_name(), S("The void is off-limits to you!"))
+					send_chat(player:get_player_name(), S("The void is off-limits to you!"))
 				elseif enable_damage and not is_immortal then
 					-- Damage enabled, not immortal: Deal void damage (4 HP / 0.5 seconds)
 					if player:get_hp() > 0 then
