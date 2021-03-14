@@ -1,3 +1,6 @@
+local get_connected_players = minetest.get_connected_players
+local clock = os.clock
+
 controls = {}
 controls.players = {}
 
@@ -42,7 +45,7 @@ minetest.register_on_leaveplayer(function(player)
 end)
 
 minetest.register_globalstep(function(dtime)
-	for _, player in pairs(minetest.get_connected_players()) do
+	for _, player in pairs(get_connected_players()) do
 		local player_name = player:get_player_name()
 		local player_controls = player:get_player_control()
 		if controls.players[player_name] then
@@ -53,15 +56,15 @@ minetest.register_globalstep(function(dtime)
 				for _, func in pairs(controls.registered_on_press) do
 					func(player, cname)
 				end
-				controls.players[player_name][cname] = {true, os.clock()}
+				controls.players[player_name][cname] = {true, clock()}
 			elseif cbool==true and controls.players[player_name][cname][1]==true then
 				for _, func in pairs(controls.registered_on_hold) do
-					func(player, cname, os.clock()-controls.players[player_name][cname][2])
+					func(player, cname, clock()-controls.players[player_name][cname][2])
 				end
 			--Release a key
 			elseif cbool==false and controls.players[player_name][cname][1]==true then
 				for _, func in pairs(controls.registered_on_release) do
-					func(player, cname, os.clock()-controls.players[player_name][cname][2])
+					func(player, cname, clock()-controls.players[player_name][cname][2])
 				end
 				controls.players[player_name][cname] = {false}
 			end
