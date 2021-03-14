@@ -151,6 +151,7 @@ minetest.register_node("mcl_portals:portal", {
 		},
 	},
 	groups = { creative_breakable = 1, portal = 1, not_in_creative_inventory = 1 },
+	sounds = mcl_sounds.node_sound_glass_defaults(),
 	on_destruct = destroy_nether_portal,
 
 	_mcl_hardness = -1,
