@@ -1,5 +1,21 @@
 local S = minetest.get_translator("mcl_playerplus")
 
+local get_connected_players = minetest.get_connected_players
+local dir_to_yaw = minetest.dir_to_yaw
+local get_item_group = minetest.get_item_group
+local check_player_privs = minetest.check_player_privs
+local find_node_near = minetest.find_node_near
+local get_name_from_content_id = minetest.get_name_from_content_id
+local get_voxel_manip = minetest.get_voxel_manip
+local add_particle = minetest.add_particle
+local add_particlespawner = minetest.add_particlespawner
+
+local is_sprinting = mcl_sprint.is_sprinting
+local exhaust = mcl_hunger.exhaust
+local playerphysics = playerphysics
+
+local vector = vector
+local math = math
 -- Internal player state
 local mcl_playerplus_internal = {}
 
@@ -25,7 +41,7 @@ minetest.register_globalstep(function(dtime)
 
 	-- Update jump status immediately since we need this info in real time.
 	-- WARNING: This section is HACKY as hell since it is all just based on heuristics.
-	for _,player in ipairs(minetest.get_connected_players()) do
+	for _,player in ipairs(get_connected_players()) do
 		local controls = player:get_player_control()
 		name = player:get_player_name()
 
@@ -37,10 +53,10 @@ minetest.register_globalstep(function(dtime)
 
 		local player_vel_yaw = 0
 
-		if degrees(minetest.dir_to_yaw(player_velocity)) == 0 then
+		if degrees(dir_to_yaw(player_velocity)) == 0 then
 			yaw = 0
 		else
-			player_vel_yaw = degrees(minetest.dir_to_yaw(player_velocity))
+			player_vel_yaw = degrees(dir_to_yaw(player_velocity))
 		end
 
 		-- controls right and left arms pitch when shooting a bow or punching
@@ -62,7 +78,7 @@ minetest.register_globalstep(function(dtime)
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.35, nametag_color = { r = 225, b = 225, a = 0, g = 225 }})
 			-- sneaking body conrols
 			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
-		elseif minetest.get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and player:get_attach() == nil and mcl_sprint.is_sprinting(name) == true then
+		elseif get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and player:get_attach() == nil and is_sprinting(name) == true then
 			-- set head pitch and yaw when swimming
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+90-degrees(dir_to_pitch(player_velocity)),yaw - player_vel_yaw * -1,0))
 			-- sets eye height, and nametag color accordingly
@@ -127,18 +143,18 @@ minetest.register_globalstep(function(dtime)
 			as of 0.4.15.
 			]]
 
-			if minetest.get_item_group(node_feet, "liquid") == 0 and
-					minetest.get_item_group(node_stand, "liquid") == 0 and
+			if get_item_group(node_feet, "liquid") == 0 and
+					get_item_group(node_stand, "liquid") == 0 and
 					not minetest.registered_nodes[node_feet].climbable and
 					not minetest.registered_nodes[node_stand].climbable and
 					(minetest.registered_nodes[node_stand].walkable or minetest.registered_nodes[node_stand_below].walkable)
-					and minetest.get_item_group(node_stand, "disable_jump") == 0
-					and minetest.get_item_group(node_stand_below, "disable_jump") == 0 then
+					and get_item_group(node_stand, "disable_jump") == 0
+					and get_item_group(node_stand_below, "disable_jump") == 0 then
 			-- Cause exhaustion for jumping
-			if mcl_sprint.is_sprinting(name) then
-				mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_SPRINT_JUMP)
+			if is_sprinting(name) then
+				exhaust(name, mcl_hunger.EXHAUST_SPRINT_JUMP)
 			else
-				mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_JUMP)
+				exhaust(name, mcl_hunger.EXHAUST_JUMP)
 			end
 
 			-- Reset cooldown timer
@@ -157,7 +173,7 @@ minetest.register_globalstep(function(dtime)
 	time = 0
 
 	-- check players
-	for _,player in ipairs(minetest.get_connected_players()) do
+	for _,player in ipairs(get_connected_players()) do
 		-- who am I?
 		local name = player:get_player_name()
 
@@ -198,7 +214,7 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		-- Swimming? Check if boots are enchanted with depth strider
-		if minetest.get_item_group(node_feet, "liquid") ~= 0 and mcl_enchanting.get_enchantment(player:get_inventory():get_stack("armor", 5), "depth_strider") then
+		if get_item_group(node_feet, "liquid") ~= 0 and mcl_enchanting.get_enchantment(player:get_inventory():get_stack("armor", 5), "depth_strider") then
 			local boots = player:get_inventory():get_stack("armor", 5)
 			local depth_strider = mcl_enchanting.get_enchantment(boots, "depth_strider")
 
@@ -220,7 +236,7 @@ minetest.register_globalstep(function(dtime)
 		and (ndef.groups.opaque == 1)
 		and (node_head ~= "ignore")
 		-- Check privilege, too
-		and (not minetest.check_player_privs(name, {noclip = true})) then
+		and (not check_player_privs(name, {noclip = true})) then
 			if player:get_hp() > 0 then
 				mcl_death_messages.player_damage(player, S("@1 suffocated to death.", name))
 				player:set_hp(player:get_hp() - 1)
@@ -228,9 +244,9 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		-- Am I near a cactus?
-		local near = minetest.find_node_near(pos, 1, "mcl_core:cactus")
+		local near = find_node_near(pos, 1, "mcl_core:cactus")
 		if not near then
-			near = minetest.find_node_near({x=pos.x, y=pos.y-1, z=pos.z}, 1, "mcl_core:cactus")
+			near = find_node_near({x=pos.x, y=pos.y-1, z=pos.z}, 1, "mcl_core:cactus")
 		end
 		if near then
 			-- Am I touching the cactus? If so, it hurts
@@ -247,15 +263,15 @@ minetest.register_globalstep(function(dtime)
 		--[[ Swimming: Cause exhaustion.
 		NOTE: As of 0.4.15, it only counts as swimming when you are with the feet inside the liquid!
 		Head alone does not count. We respect that for now. ]]
-		if not player:get_attach() and (minetest.get_item_group(node_feet, "liquid") ~= 0 or
-				minetest.get_item_group(node_stand, "liquid") ~= 0) then
+		if not player:get_attach() and (get_item_group(node_feet, "liquid") ~= 0 or
+				get_item_group(node_stand, "liquid") ~= 0) then
 			local lastPos = mcl_playerplus_internal[name].lastPos
 			if lastPos then
 				local dist = vector.distance(lastPos, pos)
 				mcl_playerplus_internal[name].swimDistance = mcl_playerplus_internal[name].swimDistance + dist
 				if mcl_playerplus_internal[name].swimDistance >= 1 then
 					local superficial = math.floor(mcl_playerplus_internal[name].swimDistance)
-					mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_SWIM * superficial)
+					exhaust(name, mcl_hunger.EXHAUST_SWIM * superficial)
 					mcl_playerplus_internal[name].swimDistance = mcl_playerplus_internal[name].swimDistance - superficial
 				end
 			end
@@ -263,9 +279,8 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		-- Underwater: Spawn bubble particles
-		if minetest.get_item_group(node_head, "water") ~= 0 then
-
-			minetest.add_particlespawner({
+		if get_item_group(node_head, "water") ~= 0 then
+			add_particlespawner({
 				amount = 10,
 				time = 0.15,
 				minpos = { x = -0.25, y = 0.3, z = -0.25 },
@@ -288,7 +303,7 @@ minetest.register_globalstep(function(dtime)
 		if wi == "mcl_core:barrier" or wi == "mcl_core:realm_barrier" then
 			local pos = vector.round(player:get_pos())
 			local r = 8
-			local vm = minetest.get_voxel_manip()
+			local vm = get_voxel_manip()
 			local emin, emax = vm:read_from_map({x=pos.x-r, y=pos.y-r, z=pos.z-r}, {x=pos.x+r, y=pos.y+r, z=pos.z+r})
 			local area = VoxelArea:new{
 				MinEdge = emin,
@@ -299,7 +314,7 @@ minetest.register_globalstep(function(dtime)
 			for y=pos.y-r, pos.y+r do
 			for z=pos.z-r, pos.z+r do
 				local vi = area:indexp({x=x, y=y, z=z})
-				local nodename = minetest.get_name_from_content_id(data[vi])
+				local nodename = get_name_from_content_id(data[vi])
 				local tex
 				if nodename == "mcl_core:barrier" then
 					tex = "mcl_core_barrier.png"
@@ -307,7 +322,7 @@ minetest.register_globalstep(function(dtime)
 					tex = "mcl_core_barrier.png^[colorize:#FF00FF:127^[transformFX"
 				end
 				if tex then
-					minetest.add_particle({
+					add_particle({
 						pos = {x=x, y=y, z=z},
 						expirationtime = 1,
 						size = 8,
