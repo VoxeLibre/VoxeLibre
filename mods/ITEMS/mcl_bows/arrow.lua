@@ -37,6 +37,7 @@ S("Arrows might get stuck on solid blocks and can be retrieved again. They are a
 
 local ARROW_ENTITY={
 	physical = true,
+	pointable = false,
 	visual = "mesh",
 	mesh = "mcl_bows_arrow.obj",
 	visual_size = {x=-1, y=1},
