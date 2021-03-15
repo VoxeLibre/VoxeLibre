@@ -405,3 +405,11 @@ function mcl_util.get_object_center(obj)
 	pos.y = pos.y + (ymax - ymin) / 2.0
 	return pos
 end
+
+-- Compute a hash value.
+function mcl_util.hash(value)
+	-- minetest.get_password_hash is quite fast, even if it uses a
+	-- cryptographic hashing function (SHA-1).  It is written in C++ and it
+	-- is probably hard to write a faster hashing function in Lua.
+	return minetest.get_password_hash("ryvnf", minetest.serialize(value))
+end

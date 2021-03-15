@@ -1,6 +1,53 @@
 local S = minetest.get_translator("mcl_enchanting")
 local F = minetest.formspec_escape
 
+local efficiency_cache_table = {}
+
+-- Get the efficiency groupcaps and hash for a tool and efficiency level.  If
+-- this function is called repeatedly with the same values it will return data
+-- from a cache.
+--
+-- Returns a table with the following two fields:
+-- values - the groupcaps table
+-- hash - the hash of the groupcaps table
+local function get_efficiency_groupcaps(toolname, level)
+	local toolcache = efficiency_cache_table[toolname]
+	if not toolcache then
+		toolcache = {}
+		efficiency_cache_table[toolname] = toolcache
+	end
+
+	local levelcache = toolcache[level]
+	if not levelcache then
+		levelcache = {}
+		levelcache.values = mcl_autogroup.get_groupcaps(toolname, level)
+		levelcache.hash = mcl_util.hash(levelcache.values)
+		toolcache[level] = levelcache
+	end
+
+	return levelcache
+end
+
+-- Apply efficiency enchantment to a tool.  This will update the tools
+-- tool_capabilities to give it new digging times.  This function will be called
+-- repeatedly to make sure the digging times stored in groupcaps stays in sync
+-- when the digging times of nodes can change.
+--
+-- To make it more efficient it will first check a hash value to determine if
+-- the tool needs to be updated.
+function mcl_enchanting.apply_efficiency(itemstack, level)
+	local name = itemstack:get_name()
+	local groupcaps = get_efficiency_groupcaps(name, level)
+	local hash = itemstack:get_meta():get_string("groupcaps_hash")
+
+	if not hash or hash ~= groupcaps.hash then
+		local tool_capabilities = itemstack:get_tool_capabilities()
+		tool_capabilities.groupcaps = groupcaps.values
+		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
+		itemstack:get_meta():set_string("groupcaps_hash", groupcaps.hash)
+	end
+end
+
 function mcl_enchanting.is_book(itemname)
 	return itemname == "mcl_books:book" or itemname == "mcl_enchanting:book_enchanted" or itemname == "mcl_books:book_enchanted"
 end
@@ -219,13 +266,16 @@ function mcl_enchanting.enchantments_snippet(_, _, itemstack)
 	end
 end
 
--- Returns after_use callback function for enchanted items.  The after_use
--- callback is used to check the tool_capabilities of enchanted tools to update
--- old enchanted tools with outdated digtimes in their tool_capabilities.
+-- Returns the after_use callback function to use when registering an enchanted
+-- item.  The after_use callback is used to update the tool_capabilities of
+-- efficiency enchanted tools with outdated digging times.
+--
+-- It does this by calling apply_efficiency to reapply the efficiency
+-- enchantment.  That function is written to use hash values to only update the
+-- tool if neccessary.
 --
 -- This is neccessary for digging times of tools to be in sync when MineClone2
--- or mods change add new hardness values for nodes or when existing hardness
--- values are changed.
+-- or mods add new hardness values.
 local function get_after_use_callback(itemdef)
 	if itemdef.after_use then
 		-- If the tool already has an after_use, make sure to call that
