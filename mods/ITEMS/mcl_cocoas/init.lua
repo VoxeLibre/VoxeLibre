@@ -3,10 +3,7 @@ local S = minetest.get_translator("mcl_cocoas")
 mcl_cocoas = {}
 
 -- Place cocoa
-function mcl_cocoas.place(itemstack, placer, pointed_thing, plantname)
-
-	local pt = pointed_thing
-
+function mcl_cocoas.place(itemstack, placer, pt, plantname)
 	-- check if pointing at a node
 	if not pt or pt.type ~= "node" then
 		return

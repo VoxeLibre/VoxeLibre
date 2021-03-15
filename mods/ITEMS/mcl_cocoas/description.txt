@@ -1,1 +1,0 @@
-Cocoa pods which grow at jungle trees. Does not include cocoa beans.
