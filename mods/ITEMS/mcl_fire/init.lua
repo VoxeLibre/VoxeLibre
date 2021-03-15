@@ -29,23 +29,24 @@ local alldirs=
 }
 
 -- 3 exptime variants because the animation is not tied to particle expiration time.
+-- 3 colorized variants to imitate minecraft's
 local smoke_pdef_base = {
-  amount = 0.5,
+  amount = 0.001,
   time = 0,
   -- minpos = vector.add(pos, { x = -0.45, y = -0.45, z = -0.45 }),
   -- maxpos = vector.add(pos, { x = 0.45, y = 0.45, z = 0.45 }),
-  minvel = { x = 0, y = 0.1, z = 0 },
-  maxvel = { x = 0, y = 1.4, z = 0 },
-  -- minexptime = ???,
-  -- maxexptime = ???,
+  minvel = { x = -0.1, y = 0.3, z = -0.1 },
+  maxvel = { x = 0.1, y = 1.6, z = 0.1 },
+  -- minexptime = 3 exptime variants,
+  -- maxexptime = 3 exptime variants
   minsize = 4.0,
-  maxsize = 5.0,
-  -- texture = "mcl_particles_smoke_anim.png^[colorize:#000000:???",
+  maxsize = 4.5,
+  -- texture = "mcl_particles_smoke_anim.png^[colorize:#000000:(3 colourize variants)",
   animation = {
     type = "vertical_frames",
     aspect_w = 8,
     aspect_h = 8,
-    -- length = ???,
+    -- length = 3 exptime variants
   },
   collisiondetection = true,
 }
@@ -59,8 +60,8 @@ local spawn_smoke = function(pos)
   if not next(smoke_pdef_cached) then
     -- the last frame plays for 1/8 * N seconds, so we can take advantage of it
     -- to have varying exptime for each variant.
-    local exptimes = { 1.0, 3.0, 5.0 }
-    local colorizes = { "178", "204", "243" }
+    local exptimes = { 0.75, 1.5, 4.0 }
+    local colorizes = { "199", "209", "243" } -- round(78%, 82%, 90% of 256) - 1
 
     local id = 1
     for _,exptime in ipairs(exptimes) do
@@ -69,6 +70,8 @@ local spawn_smoke = function(pos)
         smoke_pdef_base.maxpos = new_maxpos
         smoke_pdef_base.maxexptime = exptime
         smoke_pdef_base.animation.length = exptime + 0.1
+        -- minexptime must be set such that the last frame is actully rendered,
+        -- even if its very short. Larger exptime -> larger range
         smoke_pdef_base.minexptime = min(exptime, (7.0/8.0 * (exptime + 0.1) + 0.1))
         smoke_pdef_base.texture = "mcl_particles_smoke_anim.png^[colorize:#000000:" ..colorize
 
@@ -79,7 +82,6 @@ local spawn_smoke = function(pos)
         id = id + 1
       end
     end
-
 
   -- cache already populated
   else
