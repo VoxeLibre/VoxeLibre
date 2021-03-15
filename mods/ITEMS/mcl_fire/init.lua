@@ -88,7 +88,7 @@ local spawn_smoke = function(pos)
     for i, smoke_pdef in ipairs(smoke_pdef_cached) do
       smoke_pdef.minpos = new_minpos
       smoke_pdef.maxpos = new_maxpos
-      mcl_particles.add_node_particlespawner(pos, smoke_pdef, "low")
+      mcl_particles.add_node_particlespawner(pos, smoke_pdef, "high")
     end
   end
 
