@@ -20,7 +20,9 @@ In MineClone 2, all diggable node have the hardness set in the custom field
 "_mcl_hardness" (0 by default).  Digging groups are registered using the
 following code:
 
-    mcl_autogroup.register_diggroup("pickaxey", { levels = 5 })
+    mcl_autogroup.register_diggroup("pickaxey", {
+        levels = { "wood", "gold", "stone", "iron", "diamond" }
+    })
     mcl_autogroup.register_diggroup("shovely")
     mcl_autogroup.register_diggroup("shovely")
 
@@ -34,8 +36,8 @@ Nodes indicate that they belong to a particular digging group by being member of
 the digging group in their node definition.  "mcl_core:dirt" for example has
 shovely=1 in its groups.  If the digging group has multiple levels the value of
 the group indicates which digging level the node requires.
-"mcl_core:stone_with_gold" for example has pickaxey=3 because it requires a
-pickaxe of level 3 to be mined.
+"mcl_core:stone_with_gold" for example has pickaxey=4 because it requires a
+pickaxe of level 4 ("stone") to be mined.
 
 For tools to be able to dig nodes of the digging groups they need to use the
 have the custom field "_mcl_autogroup_groupcaps" function to get the groupcaps.
@@ -126,7 +128,7 @@ local function get_digtimes(group, can_harvest, tool_multiplier, efficiency)
 	efficiency = efficiency or 0
 	tool_multiplier = tool_multiplier or 1
 	speed_multiplier = tool_multiplier
-	if efficiency > 0 then
+	if efficiency then
 		speed_multiplier = speed_multiplier + efficiency * efficiency + 1
 	end
 
@@ -160,46 +162,59 @@ local function get_groupcap(group, can_harvest, multiplier, efficiency, uses)
 	}
 end
 
-local function add_groupcaps(groupcaps, groupcaps_def)
+local function add_groupcaps(groupcaps, groupcaps_def, efficiency)
 	for g, capsdef in pairs(groupcaps_def) do
 		local mult = capsdef.tool_multiplier or 1
-		local eff = capsdef.efficiency or 0
 		local uses = capsdef.uses
 		local def = mcl_autogroup.registered_diggroups[g]
-		local level = capsdef.level or 1
-		local max_level = def.levels or 0
+		local max_level = def.levels and #def.levels or 1
+		local level = math.min(capsdef.level or max_level, max_level)
 
-		if max_level > 0 then
-			level = math.min(level, max_level)
-			groupcaps[g .. "_0_dig"] = get_groupcap(g, false, mult, eff, uses)
-			groupcaps[g .. "_" .. level .. "_dig"] = get_groupcap(g, true, mult, eff, uses)
+		if def.levels then
+			groupcaps[g .. "_dig_default"] = get_groupcap(g, false, mult, efficiency, uses)
+			if level > 0 then
+				groupcaps[g .. "_dig_" .. def.levels[level]] = get_groupcap(g, true, mult, efficiency, uses)
+			end
 		else
-			groupcaps[g .. "_dig"] = get_groupcap(g, true, mult, eff, uses)
+			groupcaps[g .. "_dig"] = get_groupcap(g, level > 0, mult, efficiency, uses)
 		end
 	end
 	return groupcaps
 end
 
--- Checks if the given node would drop its useful drop if dug by a tool with the
--- given tool capabilities. Returns true if it will yield its useful drop, false
--- otherwise.
-function mcl_autogroup.can_harvest(nodename, tool_capabilities)
+-- Checks if the given node would drop its useful drop if dug by a given tool.
+-- Returns true if it will yield its useful drop, false otherwise.
+function mcl_autogroup.can_harvest(nodename, toolname)
 	local ndef = minetest.registered_nodes[nodename]
-	local groupcaps = tool_capabilities.groupcaps
 
-	local handy = minetest.get_item_group(nodename, "handy")
-	local dig_immediate = minetest.get_item_group(nodename, "handy")
-	if handy > 0 or dig_immediate >= 2 then
+	if minetest.get_item_group(nodename, "dig_immediate") >= 2 then
 		return true
 	end
 
-	for g, _ in pairs(groupcaps) do
-		if ndef.groups[g] then
-			if not string.find(g, "_0_dig$") and string.find(g, "_dig$") then
-				return true
+	-- Check if it can be dug by tool
+	local tdef = minetest.registered_tools[toolname]
+	if tdef then
+		for g, gdef in pairs(tdef._mcl_autogroup_groupcaps) do
+			if ndef.groups[g] then
+				if not gdef.level or ndef.groups[g] <= gdef.level then
+					return true
+				end
 			end
 		end
 	end
+
+	-- Check if it can be dug by hand
+	local tdef = minetest.registered_tools[""]
+	if tdef then
+		for g, gdef in pairs(tdef._mcl_autogroup_groupcaps) do
+			if ndef.groups[g] then
+				if not gdef.level or ndef.groups[g] <= gdef.level then
+					return true
+				end
+			end
+		end
+	end
+
 	return false
 end
 
@@ -210,25 +225,6 @@ local function get_groupcap(group, can_harvest, multiplier, efficiency, uses)
 		uses = uses,
 		maxlevel = 0,
 	}
-end
-
-local function add_groupcaps(groupcaps, groupcaps_def, efficiency)
-	for g, capsdef in pairs(groupcaps_def) do
-		local mult = capsdef.tool_multiplier or 1
-		local eff = efficiency or 0
-		local uses = capsdef.uses
-		local def = mcl_autogroup.registered_diggroups[g]
-		local level = capsdef.level or 1
-		local max_level = def.levels or 0
-
-		if max_level > 0 then
-			level = math.min(level, max_level)
-			groupcaps[g .. "_0_dig"] = get_groupcap(g, false, mult, eff, uses)
-			groupcaps[g .. "_" .. level .. "_dig"] = get_groupcap(g, true, mult, eff, uses)
-		else
-			groupcaps[g .. "_dig"] = get_groupcap(g, true, mult, eff, uses)
-		end
-	end
 end
 
 -- Get the groupcaps for a tool.  This function returns "groupcaps" table of
@@ -289,9 +285,10 @@ local overwrite = function()
 				local index = hardness_lookup[g][ndef._mcl_hardness or 0]
 				if ndef.groups[g] then
 					if gdef.levels then
-						newgroups[g .. "_0_dig"] = index
-						for i = ndef.groups.pickaxey, gdef.levels do
-							newgroups[g .. "_" .. i .. "_dig"] = index
+						newgroups[g .. "_dig_default"] = index
+
+						for i = ndef.groups[g], #gdef.levels do
+							newgroups[g .. "_dig_" .. gdef.levels[i]] = index
 						end
 					else
 						newgroups[g .. "_dig"] = index

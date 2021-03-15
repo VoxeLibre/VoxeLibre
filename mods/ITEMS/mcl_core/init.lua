@@ -4,7 +4,9 @@ mcl_core = {}
 mcl_core.repair = 0.05
 
 mcl_autogroup.register_diggroup("handy")
-mcl_autogroup.register_diggroup("pickaxey", { levels = 5 })
+mcl_autogroup.register_diggroup("pickaxey", {
+	levels = { "wood", "gold", "stone", "iron", "diamond" }
+})
 mcl_autogroup.register_diggroup("axey")
 mcl_autogroup.register_diggroup("shovely")
 mcl_autogroup.register_diggroup("shearsy")

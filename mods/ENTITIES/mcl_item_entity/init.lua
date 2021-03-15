@@ -225,16 +225,19 @@ function minetest.handle_node_drops(pos, drops, digger)
 
 	-- Check if node will yield its useful drop by the digger's tool
 	local dug_node = minetest.get_node(pos)
-	local toolcaps
+	local tooldef
 	local tool
 	if digger ~= nil then
 		tool = digger:get_wielded_item()
-		toolcaps = tool:get_tool_capabilities()
+		tooldef = minetest.registered_tools[tool:get_name()]
 
-		if not mcl_autogroup.can_harvest(dug_node.name, toolcaps) then
+		if not mcl_autogroup.can_harvest(dug_node.name, tool:get_name()) then
 			return
 		end
 	end
+
+	local diggroups = tooldef and tooldef._mcl_autogroup_groupcaps
+	local shearsy_level = diggroups and diggroups.shearsy and diggroups.shearsy.level
 
 	--[[ Special node drops when dug by shears by reading _mcl_shears_drop or with a silk touch tool reading _mcl_silk_touch_drop
 	from the node definition.
@@ -247,7 +250,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 
 	local silk_touch_drop = false
 	local nodedef = minetest.registered_nodes[dug_node.name]
-	if toolcaps ~= nil and toolcaps.groupcaps and toolcaps.groupcaps.shearsy_dig and nodedef._mcl_shears_drop then
+	if shearsy_level and shearsy_level > 0 and nodedef._mcl_shears_drop then
 		if nodedef._mcl_shears_drop == true then
 			drops = { dug_node.name }
 		else

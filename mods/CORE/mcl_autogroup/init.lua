@@ -18,9 +18,9 @@ mcl_autogroup.registered_diggroups = {}
 -- def - Table with information about the diggroup (defaults to {} if unspecified)
 --
 -- Values in def:
--- level - If this value is 0 or unspecified, then the group does not have
---         levels, otherwise it is an integer greater than 0 which indicates how
---         many digging levels the group supports.
+-- level - If this value is unspecified then the group does not have
+--         levels, otherwise it is an array containing the names of the
+--         different digging levels the digging group supports.
 function mcl_autogroup.register_diggroup(group, def)
 	mcl_autogroup.registered_diggroups[group] = def or {}
 end
