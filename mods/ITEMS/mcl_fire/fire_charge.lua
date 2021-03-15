@@ -1,5 +1,8 @@
 local S = minetest.get_translator("mcl_fire")
 
+local get_node = minetest.get_node
+local add_entity = minetest.add_entity
+
 -- Fire Charge
 minetest.register_craftitem("mcl_fire:fire_charge", {
 	description = S("Fire Charge"),
@@ -11,7 +14,7 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 	stack_max = 64,
 	on_place = function(itemstack, user, pointed_thing)
 		-- Use pointed node's on_rightclick function first, if present
-		local node = minetest.get_node(pointed_thing.under)
+		local node = get_node(pointed_thing.under)
 		if user and not user:get_player_control().sneak then
 			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
 				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
@@ -45,7 +48,7 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
 		-- Throw fire charge
 		local shootpos = vector.add(pos, vector.multiply(dropdir, 0.51))
-		local fireball = minetest.add_entity(shootpos, "mobs_mc:blaze_fireball")
+		local fireball = add_entity(shootpos, "mobs_mc:blaze_fireball")
 		local ent = fireball:get_luaentity()
 		ent._shot_from_dispenser = true
 		local v = ent.velocity or 1

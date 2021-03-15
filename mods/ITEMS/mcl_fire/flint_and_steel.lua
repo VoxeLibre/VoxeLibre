@@ -1,4 +1,6 @@
 local S = minetest.get_translator("mcl_fire")
+local get_node = minetest.get_node
+local add_node = minetest.add_node
 
 -- Flint and Steel
 minetest.register_tool("mcl_fire:flint_and_steel", {
@@ -12,7 +14,7 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 	groups = { tool = 1, },
 	on_place = function(itemstack, user, pointed_thing)
 		-- Use pointed node's on_rightclick function first, if present
-		local node = minetest.get_node(pointed_thing.under)
+		local node = get_node(pointed_thing.under)
 		if user and not user:get_player_control().sneak then
 			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
 				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
@@ -33,7 +35,7 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 		)
 		local used = false
 		if pointed_thing.type == "node" then
-			local nodedef = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
+			local nodedef = minetest.registered_nodes[get_node(pointed_thing.under).name]
 			if nodedef and nodedef._on_ignite then
 				local overwrite = nodedef._on_ignite(user, pointed_thing)
 				if not overwrite then
@@ -56,7 +58,7 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
 		-- Ignite air
 		if dropnode.name == "air" then
-			minetest.add_node(droppos, {name="mcl_fire:fire"})
+			add_node(droppos, {name="mcl_fire:fire"})
 			if not minetest.is_creative_enabled("") then
 				stack:add_wear(65535/65) -- 65 uses
 			end
