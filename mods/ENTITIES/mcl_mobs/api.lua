@@ -1047,8 +1047,10 @@ local do_env_damage = function(self)
 		end
 	end
 
+	local sunlight = minetest.get_natural_light(pos, self.time_of_day)
+
 	-- bright light harms mob
-	if self.light_damage ~= 0 and (minetest.get_node_light(pos) or 0) > 12 then
+	if self.light_damage ~= 0 and (sunlight or 0) > 12 then
 		if deal_light_damage(self, pos, self.light_damage) then
 			return true
 		end
@@ -1057,7 +1059,7 @@ local do_env_damage = function(self)
 	if mod_worlds then
 		_, dim = mcl_worlds.y_to_layer(pos.y)
 	end
-	if (self.sunlight_damage ~= 0 or self.ignited_by_sunlight) and (minetest.get_node_light(pos) or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
+	if (self.sunlight_damage ~= 0 or self.ignited_by_sunlight) and (sunlight or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
 		if self.ignited_by_sunlight then
 			mcl_burning.set_on_fire(self.object, 10)
 		else
