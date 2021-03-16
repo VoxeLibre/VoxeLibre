@@ -177,13 +177,15 @@ end
 
 -- Add the groupcaps from a field in "_mcl_autogroup_groupcaps" to the groupcaps
 -- of a tool.
-local function add_groupcaps(groupcaps, groupcaps_def, efficiency)
+local function add_groupcaps(toolname, groupcaps, groupcaps_def, efficiency)
 	for g, capsdef in pairs(groupcaps_def) do
 		local mult = capsdef.tool_multiplier or 1
 		local uses = capsdef.uses
 		local def = mcl_autogroup.registered_diggroups[g]
 		local max_level = def.levels and #def.levels or 1
-		local level = math.min(capsdef.level or max_level, max_level)
+
+		assert(capsdef.level, toolname .. ' is missing level for ' .. g)
+		local level = math.min(capsdef.level, max_level)
 
 		if def.levels then
 			groupcaps[g .. "_dig_default"] = get_groupcap(g, false, mult, efficiency, uses)
@@ -211,7 +213,7 @@ function mcl_autogroup.can_harvest(nodename, toolname)
 	if tdef then
 		for g, gdef in pairs(tdef._mcl_autogroup_groupcaps) do
 			if ndef.groups[g] then
-				if not gdef.level or ndef.groups[g] <= gdef.level then
+				if ndef.groups[g] <= gdef.level then
 					return true
 				end
 			end
@@ -223,7 +225,7 @@ function mcl_autogroup.can_harvest(nodename, toolname)
 	if tdef then
 		for g, gdef in pairs(tdef._mcl_autogroup_groupcaps) do
 			if ndef.groups[g] then
-				if not gdef.level or ndef.groups[g] <= gdef.level then
+				if ndef.groups[g] <= gdef.level then
 					return true
 				end
 			end
@@ -257,7 +259,7 @@ end
 function mcl_autogroup.get_groupcaps(toolname, efficiency)
 	local tdef = minetest.registered_tools[toolname]
 	local groupcaps = table.copy(tdef.tool_capabilities.groupcaps or {})
-	add_groupcaps(groupcaps, tdef._mcl_autogroup_groupcaps, efficiency)
+	add_groupcaps(toolname, groupcaps, tdef._mcl_autogroup_groupcaps, efficiency)
 	return groupcaps
 end
 

@@ -273,7 +273,7 @@ minetest.register_tool("mcl_tools:shovel_wood", {
 	_repair_material = "group:wood",
 	_mcl_toollike_wield = true,
 	_mcl_autogroup_groupcaps = {
-		shovely = { tool_multiplier = 2, uses = 60 }
+		shovely = { tool_multiplier = 2, level = 1, uses = 60 }
 	},
 })
 minetest.register_tool("mcl_tools:shovel_stone", {
@@ -294,7 +294,7 @@ minetest.register_tool("mcl_tools:shovel_stone", {
 	_repair_material = "mcl_core:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_autogroup_groupcaps = {
-		shovely = { tool_multiplier = 4, uses = 132 }
+		shovely = { tool_multiplier = 4, level = 3, uses = 132 }
 	},
 })
 minetest.register_tool("mcl_tools:shovel_iron", {
@@ -315,7 +315,7 @@ minetest.register_tool("mcl_tools:shovel_iron", {
 	_repair_material = "mcl_core:iron_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_autogroup_groupcaps = {
-		shovely = { tool_multiplier = 6, uses = 251 }
+		shovely = { tool_multiplier = 6, level = 4, uses = 251 }
 	},
 })
 minetest.register_tool("mcl_tools:shovel_gold", {
@@ -336,7 +336,7 @@ minetest.register_tool("mcl_tools:shovel_gold", {
 	_repair_material = "mcl_core:gold_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_autogroup_groupcaps = {
-		shovely = { tool_multiplier = 12, uses = 33 }
+		shovely = { tool_multiplier = 12, level = 2, uses = 33 }
 	},
 })
 minetest.register_tool("mcl_tools:shovel_diamond", {
@@ -357,7 +357,7 @@ minetest.register_tool("mcl_tools:shovel_diamond", {
 	_repair_material = "mcl_core:diamond",
 	_mcl_toollike_wield = true,
 	_mcl_autogroup_groupcaps = {
-		shovely = { tool_multiplier = 8, uses = 1562 }
+		shovely = { tool_multiplier = 8, level = 5, uses = 1562 }
 	},
 })
 
@@ -379,7 +379,7 @@ minetest.register_tool("mcl_tools:axe_wood", {
 	_repair_material = "group:wood",
 	_mcl_toollike_wield = true,
 	_mcl_autogroup_groupcaps = {
-		axey = { tool_multiplier = 2, uses = 60 }
+		axey = { tool_multiplier = 2, level = 1, uses = 60 }
 	},
 })
 minetest.register_tool("mcl_tools:axe_stone", {
@@ -398,7 +398,7 @@ minetest.register_tool("mcl_tools:axe_stone", {
 	_repair_material = "mcl_core:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_autogroup_groupcaps = {
-		axey = { tool_multiplier = 4, uses = 132 }
+		axey = { tool_multiplier = 4, level = 3, uses = 132 }
 	},
 })
 minetest.register_tool("mcl_tools:axe_iron", {
@@ -418,7 +418,7 @@ minetest.register_tool("mcl_tools:axe_iron", {
 	_repair_material = "mcl_core:iron_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_autogroup_groupcaps = {
-		axey = { tool_multiplier = 6, uses = 251 }
+		axey = { tool_multiplier = 6, level = 4, uses = 251 }
 	},
 })
 minetest.register_tool("mcl_tools:axe_gold", {
@@ -437,7 +437,7 @@ minetest.register_tool("mcl_tools:axe_gold", {
 	_repair_material = "mcl_core:gold_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_autogroup_groupcaps = {
-		axey = { tool_multiplier = 12, uses = 33 }
+		axey = { tool_multiplier = 12, level = 2, uses = 33 }
 	},
 })
 minetest.register_tool("mcl_tools:axe_diamond", {
@@ -456,7 +456,7 @@ minetest.register_tool("mcl_tools:axe_diamond", {
 	_repair_material = "mcl_core:diamond",
 	_mcl_toollike_wield = true,
 	_mcl_autogroup_groupcaps = {
-		axey = { tool_multiplier = 8, uses = 1562 }
+		axey = { tool_multiplier = 8, level = 5, uses = 1562 }
 	},
 })
 
@@ -498,8 +498,8 @@ minetest.register_tool("mcl_tools:sword_stone", {
 	_repair_material = "mcl_core:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_autogroup_groupcaps = {
-		swordy = { tool_multiplier = 4, level = 1, uses = 132 },
-		swordy_cobweb = { tool_multiplier = 4, level = 1, uses = 132 }
+		swordy = { tool_multiplier = 4, level = 3, uses = 132 },
+		swordy_cobweb = { tool_multiplier = 4, level = 3, uses = 132 }
 	},
 })
 minetest.register_tool("mcl_tools:sword_iron", {
@@ -518,8 +518,8 @@ minetest.register_tool("mcl_tools:sword_iron", {
 	_repair_material = "mcl_core:iron_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_autogroup_groupcaps = {
-		swordy = { tool_multiplier = 6, level = 1, uses = 251 },
-		swordy_cobweb = { tool_multiplier = 6, level = 1, uses = 251 }
+		swordy = { tool_multiplier = 6, level = 4, uses = 251 },
+		swordy_cobweb = { tool_multiplier = 6, level = 4, uses = 251 }
 	},
 })
 minetest.register_tool("mcl_tools:sword_gold", {
@@ -538,8 +538,8 @@ minetest.register_tool("mcl_tools:sword_gold", {
 	_repair_material = "mcl_core:gold_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_autogroup_groupcaps = {
-		swordy = { tool_multiplier = 12, level = 1, uses = 33 },
-		swordy_cobweb = { tool_multiplier = 12, level = 1, uses = 33 }
+		swordy = { tool_multiplier = 12, level = 2, uses = 33 },
+		swordy_cobweb = { tool_multiplier = 12, level = 2, uses = 33 }
 	},
 })
 minetest.register_tool("mcl_tools:sword_diamond", {
@@ -558,8 +558,8 @@ minetest.register_tool("mcl_tools:sword_diamond", {
 	_repair_material = "mcl_core:diamond",
 	_mcl_toollike_wield = true,
 	_mcl_autogroup_groupcaps = {
-		swordy = { tool_multiplier = 8, level = 1, uses = 1562 },
-		swordy_cobweb = { tool_multiplier = 8, level = 1, uses = 1562 }
+		swordy = { tool_multiplier = 8, level = 5, uses = 1562 },
+		swordy_cobweb = { tool_multiplier = 8, level = 5, uses = 1562 }
 	},
 })
 
