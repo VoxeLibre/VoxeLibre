@@ -3,6 +3,7 @@
 local get_connected_players = minetest.get_connected_players
 local get_node = minetest.get_node
 local vector_add = vector.add
+local ceil = math.ceil
 
 walkover = {}
 walkover.registered_globals = {}
@@ -31,7 +32,7 @@ minetest.register_globalstep(function(dtime)
 	if timer >= 0.3 then
 		for _,player in ipairs(get_connected_players()) do
 	    local pp = player:get_pos()
-	    pp.y = math.ceil(pp.y)
+	    pp.y = ceil(pp.y)
             local loc = vector_add(pp, {x=0,y=-1,z=0})
             if loc ~= nil then
                
@@ -41,8 +42,8 @@ minetest.register_globalstep(function(dtime)
                     if on_walk[nodeiamon.name] then
                         on_walk[nodeiamon.name](loc, nodeiamon, player)
                     end
-                    for _,func in ipairs(registered_globals) do
-						func(loc, nodeiamon, player)
+                    for i = 1, #registered_globals do
+						registered_globals[i](loc, nodeiamon, player)
                     end
                 end   
             end
