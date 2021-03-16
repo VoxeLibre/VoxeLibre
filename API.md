@@ -39,7 +39,7 @@ A lot of things are possible by using one of the APIs in the mods. Note that not
 * Dispenser support: `ITEMS/REDSTONE/mcl_dispensers`
 
 ## Mobs
-* Mobs: `ENTITIES/mcl_mods`
+* Mobs: `ENTITIES/mcl_mobs`
 
 MineClone 2 uses its own mobs framework, called “Mobs Redo: MineClone 2 Edition” or “MRM” for short.
 This is a fork of Mobs Redo [`mobs`] by TenPlus1.
@@ -67,6 +67,9 @@ chances are good that it works out of the box.
 * Get flowing direction of liquids: `CORE/flowlib`
 * `on_walk_over` callback for nodes: `CORE/walkover` 
 * Get node names close to player (to reduce constant querying): `PLAYER/mcl_playerinfo`
+* Explosion API
+* Music discs API
+* Flowers and flower pots
 
 ### Unstable APIs
 The following APIs may be subject to change in future. You could already use these APIs but there will probably be breaking changes in the future, or the API is not as fleshed out as it should be. Use at your own risk!
@@ -79,12 +82,10 @@ The following APIs may be subject to change in future. You could already use the
 
 ### Planned APIs
 
-* Flowers
 * Saplings and trees
 * Custom banner patterns
 * Custom dimensions
 * Custom portals
-* Music discs
 * Dispenser and dropper support
 * Proper sky and weather APIs
-* Explosion API
+

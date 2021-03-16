@@ -511,9 +511,9 @@ local function update_health(player)
 end
 
 -- update built-in HUD bars
-local function update_hud(player)
+local function update_hud(player, has_damage)
 	if not player_exists(player) then return end
-	if minetest.settings:get_bool("enable_damage") then
+	if has_damage then
 		if hb.settings.forceload_default_hudbars then
 			hb.unhide_hudbar(player, "health")
 		end
@@ -564,10 +564,11 @@ minetest.register_globalstep(function(dtime)
 	if main_timer > hb.settings.tick or timer > 4 then
 		if main_timer > hb.settings.tick then main_timer = 0 end
 		-- only proceed if damage is enabled
-		if minetest.settings:get_bool("enable_damage") or hb.settings.forceload_default_hudbars then
+		local has_dmg = minetest.settings:get_bool("enable_damage")
+		if has_dmg or hb.settings.forceload_default_hudbars then
 			for _, player in pairs(hb.players) do
 				-- update all hud elements
-				update_hud(player)
+				update_hud(player, has_dmg)
 			end
 		end
 	end

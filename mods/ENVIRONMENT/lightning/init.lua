@@ -11,6 +11,18 @@ of the license, or (at your option) any later version.
 
 local S = minetest.get_translator("lightning")
 
+local has_mcl_death_msg = minetest.get_modpath("mcl_death_messages")
+local get_connected_players = minetest.get_connected_players
+local line_of_sight = minetest.line_of_sight
+local get_node = minetest.get_node
+local set_node = minetest.set_node
+local sound_play = minetest.sound_play
+local add_particlespawner = minetest.add_particlespawner
+local after = minetest.after
+local add_entity = minetest.add_entity
+local get_objects_inside_radius = minetest.get_objects_inside_radius
+local get_item_group = minetest.get_item_group
+
 lightning = {}
 
 lightning.interval_low = 17
@@ -45,7 +57,7 @@ minetest.register_globalstep(revertsky)
 -- select a random strike point, midpoint
 local function choose_pos(pos)
 	if not pos then
-		local playerlist = minetest.get_connected_players()
+		local playerlist = get_connected_players()
 		local playercount = table.getn(playerlist)
 
 		-- nobody on
@@ -67,14 +79,14 @@ local function choose_pos(pos)
 		pos.z = math.floor(pos.z - (lightning.range_h / 2) + rng:next(1, lightning.range_h))
 	end
 
-	local b, pos2 = minetest.line_of_sight(pos, {x = pos.x, y = pos.y - lightning.range_v, z = pos.z}, 1)
+	local b, pos2 = line_of_sight(pos, {x = pos.x, y = pos.y - lightning.range_v, z = pos.z}, 1)
 
 	-- nothing but air found
 	if b then
 		return nil, nil
 	end
 
-	local n = minetest.get_node({x = pos2.x, y = pos2.y - 1/2, z = pos2.z})
+	local n = get_node({x = pos2.x, y = pos2.y - 1/2, z = pos2.z})
 	if n.name == "air" or n.name == "ignore" then
 		return nil, nil
 	end
@@ -87,7 +99,7 @@ end
 -- * returns: bool - success if a strike happened
 lightning.strike = function(pos)
 	if lightning.auto then
-		minetest.after(rng:next(lightning.interval_low, lightning.interval_high), lightning.strike)
+		after(rng:next(lightning.interval_low, lightning.interval_high), lightning.strike)
 	end
 
 	local pos2
@@ -97,7 +109,7 @@ lightning.strike = function(pos)
 		return false
 	end
 
-	minetest.add_particlespawner({
+	add_particlespawner({
 		amount = 1,
 		time = 0.2,
 		-- make it hit the top of a block exactly with the bottom
@@ -120,16 +132,16 @@ lightning.strike = function(pos)
 		glow = minetest.LIGHT_MAX,
 	})
 
-	minetest.sound_play({ name = "lightning_thunder", gain = 10 }, { pos = pos, max_hear_distance = 500 }, true)
+	sound_play({ name = "lightning_thunder", gain = 10 }, { pos = pos, max_hear_distance = 500 }, true)
 
 	-- damage nearby objects, transform mobs
-	local objs = minetest.get_objects_inside_radius(pos2, 3.5)
+	local objs = get_objects_inside_radius(pos2, 3.5)
 	for o=1, #objs do
 		local obj = objs[o]
 		local lua = obj:get_luaentity()
 		if obj:is_player() then
 		-- Player damage
-			if minetest.get_modpath("mcl_death_messages") then
+			if has_mcl_death_msg then
 				mcl_death_messages.player_damage(obj, S("@1 was struck by lightning.", obj:get_player_name()))
 			end
 			obj:set_hp(obj:get_hp()-5, { type = "punch", from = "mod" })
@@ -139,7 +151,7 @@ lightning.strike = function(pos)
 			if lua.name == "mobs_mc:pig" then
 				local rot = obj:get_yaw()
 				obj:remove()
-				obj = minetest.add_entity(pos2, "mobs_mc:pigman")
+				obj = add_entity(pos2, "mobs_mc:pigman")
 				obj:set_yaw(rot)
 			-- mooshroom: toggle color red/brown (no damage)
 			elseif lua.name == "mobs_mc:mooshroom" then
@@ -163,7 +175,7 @@ lightning.strike = function(pos)
 			elseif lua.name == "mobs_mc:creeper" then
 				local rot = obj:get_yaw()
 				obj:remove()
-				obj = minetest.add_entity(pos2, "mobs_mc:creeper_charged")
+				obj = add_entity(pos2, "mobs_mc:creeper_charged")
 				obj:set_yaw(rot)
 				-- Other mobs: Just damage
 			else
@@ -172,7 +184,7 @@ lightning.strike = function(pos)
 		end
 	end
 
-	local playerlist = minetest.get_connected_players()
+	local playerlist = get_connected_players()
 	for i = 1, #playerlist do
 		local player = playerlist[i]
 		local sky = {}
@@ -197,25 +209,25 @@ lightning.strike = function(pos)
 	if rng:next(1,100) <= 3 then
 		skeleton_lightning = true
 	end
-	if minetest.get_item_group(minetest.get_node({x = pos2.x, y = pos2.y - 1, z = pos2.z}).name, "liquid") < 1 then
-		if minetest.get_node(pos2).name == "air" then
+	if get_item_group(get_node({x = pos2.x, y = pos2.y - 1, z = pos2.z}).name, "liquid") < 1 then
+		if get_node(pos2).name == "air" then
 			-- Low chance for a lightning to spawn skeleton horse + skeletons
 			if skeleton_lightning then
-				minetest.add_entity(pos2, "mobs_mc:skeleton_horse")
+				add_entity(pos2, "mobs_mc:skeleton_horse")
 
 				local angle, posadd
 				angle = math.random(0, math.pi*2)
 				for i=1,3 do
 					posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
 					posadd = vector.normalize(posadd)
-					local mob = minetest.add_entity(vector.add(pos2, posadd), "mobs_mc:skeleton")
+					local mob = add_entity(vector.add(pos2, posadd), "mobs_mc:skeleton")
 					mob:set_yaw(angle-math.pi/2)
 					angle = angle + (math.pi*2) / 3
 				end
 
 			-- Cause a fire
 			else
-				minetest.set_node(pos2, {name = "mcl_fire:fire"})
+				set_node(pos2, {name = "mcl_fire:fire"})
 			end
 		end
 	end
@@ -223,9 +235,9 @@ lightning.strike = function(pos)
 end
 
 -- if other mods disable auto lightning during initialization, don't trigger the first lightning.
-minetest.after(5, function(dtime)
+after(5, function(dtime)
 	if lightning.auto then
-		minetest.after(rng:next(lightning.interval_low,
+		after(rng:next(lightning.interval_low,
 			lightning.interval_high), lightning.strike)
 	end
 end)

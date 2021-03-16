@@ -50,16 +50,27 @@ end
 
 local function setSprinting(playerName, sprinting) --Sets the state of a player (0=stopped/moving, 1=sprinting)
 	local player = minetest.get_player_by_name(playerName)
+	local controls = player:get_player_control()
 	if players[playerName] then
 		players[playerName].sprinting = sprinting
-		if sprinting == true then
-			players[playerName].fov = math.min(players[playerName].fov + 0.05, 1.2)
-			player:set_fov(players[playerName].fov, true, 0.15)
-			playerphysics.add_physics_factor(player, "speed", "mcl_sprint:sprint", mcl_sprint.SPEED)
-		elseif sprinting == false then
+		if sprinting == true or controls.RMB and string.find(player:get_wielded_item():get_name(), "mcl_bows:bow") and player:get_wielded_item():get_name() ~= "mcl_bows:bow" then
+			if sprinting == true then
+				players[playerName].fov = math.min(players[playerName].fov + 0.05, 1.2)
+				players[playerName].fade_time = .15
+			else
+				players[playerName].fov = .7
+				players[playerName].fade_time = .3
+			end
+			player:set_fov(players[playerName].fov, true, players[playerName].fade_time)
+			if sprinting == true then
+				playerphysics.add_physics_factor(player, "speed", "mcl_sprint:sprint", mcl_sprint.SPEED)
+			end
+		elseif sprinting == false and player:get_wielded_item():get_name() ~= "mcl_bows:bow_0" and player:get_wielded_item():get_name() ~= "mcl_bows:bow_1" and player:get_wielded_item():get_name() ~= "mcl_bows:bow_2" then
 			players[playerName].fov = math.max(players[playerName].fov - 0.05, 1.0)
 			player:set_fov(players[playerName].fov, true, 0.15)
-			playerphysics.remove_physics_factor(player, "speed", "mcl_sprint:sprint")
+			if sprinting == false then
+				playerphysics.remove_physics_factor(player, "speed", "mcl_sprint:sprint")
+			end
 		end
 		return true
 	end

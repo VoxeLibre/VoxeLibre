@@ -234,3 +234,13 @@ mcl_jukebox.register_record("Credit Roll (Jordach's HD Mix)", "Junichi Masuda", 
 mcl_jukebox.register_record("Winter Feeling", "Tom Peter", "strad", "mcl_jukebox_record_strad.png", "mcl_jukebox_track_6")
 mcl_jukebox.register_record("Synthgroove (Jordach's Mix)", "HeroOfTheWinds", "mellohi", "mcl_jukebox_record_mellohi.png", "mcl_jukebox_track_7")
 mcl_jukebox.register_record("The Clueless Frog (Jordach's Mix)", "SoundHelix", "mall", "mcl_jukebox_record_mall.png", "mcl_jukebox_track_8")
+
+--add backward compatibility
+minetest.register_alias("mcl_jukebox:record_1", "mcl_jukebox:record_13")
+minetest.register_alias("mcl_jukebox:record_2", "mcl_jukebox:record_wait")
+minetest.register_alias("mcl_jukebox:record_3", "mcl_jukebox:record_blocks")
+minetest.register_alias("mcl_jukebox:record_4", "mcl_jukebox:record_far")
+minetest.register_alias("mcl_jukebox:record_5", "mcl_jukebox:record_chirp")
+minetest.register_alias("mcl_jukebox:record_6", "mcl_jukebox:record_strad")
+minetest.register_alias("mcl_jukebox:record_7", "mcl_jukebox:record_mellohi")
+minetest.register_alias("mcl_jukebox:record_8", "mcl_jukebox:record_mall")

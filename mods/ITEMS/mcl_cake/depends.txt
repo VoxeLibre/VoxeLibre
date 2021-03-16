@@ -1,7 +1,0 @@
-mcl_core
-mcl_sounds
-mcl_hunger
-mcl_buckets
-mcl_farming
-mcl_mobitems
-doc?

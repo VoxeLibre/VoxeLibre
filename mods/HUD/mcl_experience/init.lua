@@ -184,7 +184,7 @@ minetest.register_on_joinplayer(function(player)
 	        hud_elem_type = "text", position = {x=0.5, y=1},
 	        name = "xp_level", text = tostring(temp_pool.level),
 	        number = 0x80FF20,
-		offset = {x = 0, y = -(48 + 24 + 24)},
+			offset = {x = 0, y = -(48 + 24 + 24)},
 	        z_index = 12,
 	})
 end)
