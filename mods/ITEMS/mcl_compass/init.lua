@@ -52,7 +52,7 @@ minetest.register_globalstep(function(dtime)
 				compass_image = math.floor((angle_relative/11.25) + 0.5) % compass_frames
 			end
 
-			for j,stack in ipairs(player:get_inventory():get_list("main")) do
+			for j,stack in pairs(player:get_inventory():get_list("main")) do
 				if minetest.get_item_group(stack:get_name(), "compass") ~= 0 and
 						minetest.get_item_group(stack:get_name(), "compass")-1 ~= compass_image then
 					local itemname = "mcl_compass:"..compass_image

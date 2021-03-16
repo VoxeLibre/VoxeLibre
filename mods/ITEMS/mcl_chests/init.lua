@@ -118,7 +118,7 @@ local function get_entity_pos(pos, dir, double)
 end
 
 local function find_entity(pos)
-	for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 0)) do
+	for _, obj in pairs(minetest.get_objects_inside_radius(pos, 0)) do
 		local luaentity = obj:get_luaentity()
 		if luaentity and luaentity.name == "mcl_chests:chest" then
 			return luaentity

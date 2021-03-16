@@ -223,7 +223,7 @@ function boat.on_step(self, dtime, moveresult)
 	self._regen_timer = regen_timer
 
 	if moveresult and moveresult.collides then
-		for _, collision in ipairs(moveresult.collisions) do
+		for _, collision in pairs(moveresult.collisions) do
 			local pos = collision.node_pos
 			if collision.type == "node" and minetest.get_item_group(minetest.get_node(pos).name, "dig_by_boat") > 0 then
 				minetest.dig_node(pos)
@@ -305,7 +305,7 @@ function boat.on_step(self, dtime, moveresult)
 			self._animation = 0
 		end
 
-		for _, obj in ipairs(minetest.get_objects_inside_radius(self.object:get_pos(), 1.3)) do
+		for _, obj in pairs(minetest.get_objects_inside_radius(self.object:get_pos(), 1.3)) do
 			local entity = obj:get_luaentity()
 			if entity and entity._cmi_is_mob then
 				attach_object(self, obj)

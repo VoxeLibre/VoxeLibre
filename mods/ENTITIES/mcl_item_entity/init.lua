@@ -785,7 +785,7 @@ minetest.register_entity(":__builtin:item", {
 			if self.physical_state then
 				local own_stack = ItemStack(self.object:get_luaentity().itemstring)
 				-- Merge with close entities of the same item
-				for _, object in ipairs(minetest.get_objects_inside_radius(p, 0.8)) do
+				for _, object in pairs(minetest.get_objects_inside_radius(p, 0.8)) do
 					local obj = object:get_luaentity()
 					if obj and obj.name == "__builtin:item"
 							and obj.physical_state == false then
