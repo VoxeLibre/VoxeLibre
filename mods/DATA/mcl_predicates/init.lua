@@ -48,7 +48,7 @@ mcl_predicates.register_predicate("killed_by_player", function(predicate, data)
 end)
 
 mcl_predicates.register_predicate("location_check", function(predicate, data)
-	local pos = vector.add(data.pos), vector.new(predicate.offset_x or 0, predicate.offset_y or 0, predicate.offset_z or 0))
+	local pos = vector.add(data.pos, vector.new(predicate.offset_x or 0, predicate.offset_y or 0, predicate.offset_z or 0))
 	return mcl_location(pos, data.nodemeta):match(predicate.predicate)
 end)
 

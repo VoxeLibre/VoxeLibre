@@ -35,7 +35,7 @@ function mcl_types.match_enchantments(actual, expected)
 	return true
 end
 
-function mcl_util.match_item(actual, expected)
+function mcl_types.match_item(actual, expected)
 	actual = actual or ItemStack()
 
 	if expected.item and actual:get_name() ~= expected.item then
@@ -55,7 +55,7 @@ function mcl_util.match_item(actual, expected)
 	end
 end
 
-function mcl_util.match_node(actual, expected, pos, meta)
+function mcl_types.match_node(actual, expected, pos, meta)
 	if expected.node and actual.name ~= expected.node then
 		return false
 	elseif expected.group and minetest.get_item_group(actual.name, expected.group) == 0 then
@@ -78,7 +78,7 @@ function mcl_types.match_pos(actual, expected, meta)
 		return false
 	elseif expected.biome and minetest.get_biome_name(minetest.get_biome_data(actual).biome) ~= expected.biome then
 		return false
-	elseif expected.node and not mcl_types.match_node(minetest.get_node(actual), expected.node, actual, meta)
+	elseif expected.node and not mcl_types.match_node(minetest.get_node(actual), expected.node, actual, meta) then
 		return false
 	elseif expected.light and not mcl_types.match_bounds(minetest.get_node_light(actual), expected.light) then
 		return false

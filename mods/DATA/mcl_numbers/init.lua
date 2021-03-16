@@ -2,6 +2,8 @@ mcl_numbers = {
 	providers = {},
 }
 
+dofile(minetest.get_modpath("mcl_numbers") .. "/api.lua")
+
 mcl_numbers.register_provider("mcl_numbers:constant", function(provider)
 	return provider.value
 end)
@@ -20,4 +22,4 @@ mcl_numbers.register_provider("mcl_numbers:binomial", function(provider, data)
 	end
 	return num
 end)
- 
+
