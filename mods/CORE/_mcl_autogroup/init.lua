@@ -16,32 +16,46 @@ information.
 How the mod is used
 ===================
 
-In MineClone 2, all diggable node have the hardness set in the custom field
-"_mcl_hardness" (0 by default).  Digging groups are registered using the
-following code:
+In MineClone 2, all diggable nodes have the hardness set in the custom field
+"_mcl_hardness" (0 by default).  These values are used together with digging
+groups by this mod to create the correct digging times for nodes.  Digging
+groups are registered using the following code:
 
+    mcl_autogroup.register_diggroup("shovely")
     mcl_autogroup.register_diggroup("pickaxey", {
         levels = { "wood", "gold", "stone", "iron", "diamond" }
     })
-    mcl_autogroup.register_diggroup("shovely")
-    mcl_autogroup.register_diggroup("shovely")
 
-The first line registers "pickaxey" as a digging group.  The "levels" field
-indicates that the digging group have 5 levels (in this case one for each
-material of a pickaxe).  The second line registers "shovely" as a digging group
-which does not have separate levels (if the "levels" field is not set it
-defaults to 0).
+The first line registers a simple digging group.  The second line registers a
+digging group with 5 different levels (in this case one for each material of a
+pickaxes).
 
 Nodes indicate that they belong to a particular digging group by being member of
 the digging group in their node definition.  "mcl_core:dirt" for example has
 shovely=1 in its groups.  If the digging group has multiple levels the value of
 the group indicates which digging level the node requires.
 "mcl_core:stone_with_gold" for example has pickaxey=4 because it requires a
-pickaxe of level 4 ("stone") to be mined.
+pickaxe of level 4 be mined.
 
-For tools to be able to dig nodes of the digging groups they need to use the
-have the custom field "_mcl_autogroup_groupcaps" function to get the groupcaps.
-See "mcl_tools/init.lua" for examples of this.
+For tools to be able to dig nodes of digging groups they need to use the have
+the custom field "_mcl_autogroup_groupcaps" function to get the groupcaps.  The
+value of this field is a table which defines which groups the tool can dig and
+how efficiently.
+
+    _mcl_autogroup_groupcaps = {
+        handy = { tool_multiplier = 1, level = 1, uses = 0 },
+        pickaxey = { tool_multiplier = 1, level = 0, uses = 0 },
+    }
+
+The "uses" field indicate how many uses (0 for infinite) a tool has when used on
+the specified digging group.  The "tool_multiplier" field is a multiplier to the
+dig speed on that digging group.
+
+The "level" field indicates which levels of the group the tool can harvest.  A
+level of 0 means that the tool cannot harvest blocks of that node.  A level of 1
+or above means that the tool can harvest nodes with that level or below.  See
+"mcl_tools/init.lua" for examples on how "_mcl_autogroup_groupcaps" is used in
+practice.
 
 Information about the mod
 =========================
@@ -123,9 +137,8 @@ end
 -- group - the group which it is digging
 -- can_harvest - if the tool can harvest the block
 -- tool_multiplier - dig speed multiplier for tool (default 1)
--- efficiency - efficiency level for the tool (default 0)
+-- efficiency - efficiency level for the tool if applicable
 local function get_digtimes(group, can_harvest, tool_multiplier, efficiency)
-	efficiency = efficiency or 0
 	tool_multiplier = tool_multiplier or 1
 	speed_multiplier = tool_multiplier
 	if efficiency then
@@ -162,6 +175,8 @@ local function get_groupcap(group, can_harvest, multiplier, efficiency, uses)
 	}
 end
 
+-- Add the groupcaps from a field in "_mcl_autogroup_groupcaps" to the groupcaps
+-- of a tool.
 local function add_groupcaps(groupcaps, groupcaps_def, efficiency)
 	for g, capsdef in pairs(groupcaps_def) do
 		local mult = capsdef.tool_multiplier or 1

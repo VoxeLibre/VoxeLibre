@@ -1,6 +1,7 @@
 --[[
-This mod implements the API to register digging groups for mcl_autogroup.  The
-rest of the mod is implemented and documented in the mod _mcl_autogroup.
+This is one part of a mod to replicate the digging times from Minecraft.  This
+part only exposes a function to register digging groups.  The rest of the mod is
+implemented and documented in the _mcl_autogroup.
 
 The mod is split up into two parts, mcl_autogroup and _mcl_autogroup.
 mcl_autogroup contains the API functions used to register custom digging groups.
@@ -18,9 +19,8 @@ mcl_autogroup.registered_diggroups = {}
 -- def - Table with information about the diggroup (defaults to {} if unspecified)
 --
 -- Values in def:
--- level - If this value is unspecified then the group does not have
---         levels, otherwise it is an array containing the names of the
---         different digging levels the digging group supports.
+-- level - If specified it is an array containing the names of the different
+--         digging levels the digging group supports.
 function mcl_autogroup.register_diggroup(group, def)
 	mcl_autogroup.registered_diggroups[group] = def or {}
 end
