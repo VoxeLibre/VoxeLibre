@@ -411,5 +411,5 @@ function mcl_util.hash(value)
 	-- minetest.get_password_hash is quite fast, even if it uses a
 	-- cryptographic hashing function (SHA-1).  It is written in C++ and it
 	-- is probably hard to write a faster hashing function in Lua.
-	return minetest.get_password_hash("ryvnf", minetest.serialize(value))
+	return string.sub(minetest.get_password_hash("ryvnf", minetest.serialize(value)), 1, 8)
 end
