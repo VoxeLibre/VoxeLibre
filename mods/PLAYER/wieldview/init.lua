@@ -78,7 +78,7 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 minetest.register_globalstep(function()
-	for _,player in ipairs(minetest.get_connected_players()) do
+	for _,player in pairs(minetest.get_connected_players()) do
 		wieldview:update_wielded_item(player)
 	end
 end)

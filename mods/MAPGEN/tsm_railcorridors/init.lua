@@ -393,7 +393,7 @@ local function RecheckCartHack(params)
 	local pos = params[1]
 	local cart_id = params[2]
 	-- Find cart
-	for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
+	for _, obj in pairs(minetest.get_objects_inside_radius(pos, 1)) do
 		if obj ~= nil and obj:get_luaentity().name == cart_id then
 			-- Cart found! We can now safely call the callback func.
 			-- (calling it earlier has the danger of failing)

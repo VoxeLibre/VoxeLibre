@@ -349,7 +349,7 @@ minetest.register_abm({
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 
-		for _,object in ipairs(minetest.get_objects_inside_radius(pos, 2)) do
+		for _,object in pairs(minetest.get_objects_inside_radius(pos, 2)) do
 			if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
 				if inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
 					-- Item must get sucked in when the item just TOUCHES the block above the hopper

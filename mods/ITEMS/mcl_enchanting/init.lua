@@ -191,7 +191,7 @@ minetest.register_entity("mcl_enchanting:book", {
 		local old_player_near = self._player_near
 		local player_near = false
 		local player
-		for _, obj in ipairs(minetest.get_objects_inside_radius(vector.subtract(self.object:get_pos(), mcl_enchanting.book_offset), 2.5)) do
+		for _, obj in pairs(minetest.get_objects_inside_radius(vector.subtract(self.object:get_pos(), mcl_enchanting.book_offset), 2.5)) do
 			if obj:is_player() then
 				player_near = true
 				player = obj
@@ -308,7 +308,7 @@ minetest.register_abm({
 	nodenames = "mcl_enchanting:table",
 	action = function(pos)
 		local playernames = {}
-		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 15)) do
+		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 15)) do
 			if obj:is_player() then
 				table.insert(playernames, obj:get_player_name())
 			end
