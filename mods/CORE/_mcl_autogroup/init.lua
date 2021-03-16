@@ -66,7 +66,7 @@ _mcl_autogroup contains most of the code.  The leading underscore in the name
 "_mcl_autogroup" is used to force Minetest to load that part of the mod as late
 as possible.  Minetest loads mods in reverse alphabetical order.
 
-This also means that it is very important that no mod adds _mcl_autogroups as a
+This also means that it is very important that no mod adds _mcl_autogroup as a
 dependency.
 --]]
 
