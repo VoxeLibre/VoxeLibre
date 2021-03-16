@@ -177,7 +177,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 
 	liquids_pointable = true,
 	inventory_image = "bucket.png",
-	stack_max = 1,
+	stack_max = 16,
 	on_place = function(itemstack, user, pointed_thing)
 		-- Must be pointing to node
 		if pointed_thing.type ~= "node" then
