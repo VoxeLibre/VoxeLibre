@@ -15,6 +15,26 @@ local dir_to_pitch = function(dir)
 	return -math.atan2(-dir.y, xz)
 end
 
+local random_arrow_positions = function(positions, placement)
+	local min = 0
+	local max = 0
+	if positions == 'x' then
+		min = -4
+		max = 4
+	elseif positions == 'y' then
+		min = 0
+		max = 10
+	end
+	if placement == 'front' and positions == 'z' then
+		min = 3
+		max = 3
+	elseif placement == 'back' and positions == 'z' then
+		min = -3
+		max = -3
+	end
+	return math.random(max, min)
+end
+
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
 local mod_button = minetest.get_modpath("mesecons_button")
 
@@ -101,6 +121,14 @@ ARROW_ENTITY.on_step = function(self, dtime)
 	dpos = vector.round(dpos)
 	local node = minetest.get_node(dpos)
 
+	if self.object:get_attach() ~= nil and self.object:get_attach(parent):get_hp() < 1 then
+		self.object:remove()
+	end
+
+	if self.object:get_attach() and not self.object:get_attach(parent) then
+		self.object:remove()
+	end
+
 	if self._stuck then
 		self._stucktimer = self._stucktimer + dtime
 		self._stuckrechecktimer = self._stuckrechecktimer + dtime
@@ -146,7 +174,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 	-- Check for object "collision". Done every tick (hopefully this is not too stressing)
 	else
 
-		if self._damage >= 9 then
+		if self._damage >= 9 and self._in_player == false then
 			minetest.add_particlespawner({
 				amount = 1,
 				time = .001,
@@ -230,19 +258,60 @@ ARROW_ENTITY.on_step = function(self, dtime)
 						if obj:is_player() and rawget(_G, "armor") and armor.last_damage_types then
 							armor.last_damage_types[obj:get_player_name()] = "projectile"
 						end
-						damage_particles(self.object:get_pos(), self._is_critical)
+						if self._in_player == false then
+							damage_particles(self.object:get_pos(), self._is_critical)
+						end
 						if mcl_burning.is_burning(self.object) then
 							mcl_burning.set_on_fire(obj, 5)
 						end
-						obj:punch(self.object, 1.0, {
-							full_punch_interval=1.0,
-							damage_groups={fleshy=self._damage},
-						}, self.object:get_velocity())
+						if self._in_player == false then
+							obj:punch(self.object, 1.0, {
+								full_punch_interval=1.0,
+								damage_groups={fleshy=self._damage},
+							}, self.object:get_velocity())
+							if obj:is_player() then
+								local placement = ''
+								self._placement = math.random(1, 2)
+								if self._placement == 1 then
+									placement = 'front'
+								else
+									placement = 'back'
+								end
+								self._in_player = true
+								if self._placement == 2 then
+									self._rotation_station = 90
+								else
+									self._rotation_station = -90
+								end
+								self._y_position = random_arrow_positions('y', placement)
+								self._x_position = random_arrow_positions('x', placement)
+								if self._y_position > 6 and self._x_position < 2 and self._x_position > -2 then
+									self._attach_parent = 'Head'
+									self._y_position = self._y_position - 6
+								elseif self._x_position > 2 then
+									self._attach_parent = 'Arm_Right'
+									self._y_position = self._y_position - 3
+									self._x_position = self._x_position - 2
+								elseif self._x_position < -2 then
+									self._attach_parent = 'Arm_Left'
+									self._y_position = self._y_position - 3
+									self._x_position = self._x_position + 2
+								else
+									self._attach_parent = 'Body'
+								end
+								self._z_rotation = math.random(30, -30)
+								self._y_rotation = math.random(30, -30)
+								self.object:set_attach(obj, self._attach_parent, {x=self._x_position,y=self._y_position,z=random_arrow_positions('z', placement)}, {x=0,y=self._rotation_station + self._y_rotation,z=self._z_rotation})
+								minetest.after(60, function()
+									self.object:remove()
+								end)
+							end
+						end
 					end
 
 
 					if is_player then
-						if self._shooter and self._shooter:is_player() then
+						if self._shooter and self._shooter:is_player() and self._in_player == false then
 							-- “Ding” sound for hitting another player
 							minetest.sound_play({name="mcl_bows_hit_player", gain=0.1}, {to_player=self._shooter:get_player_name()}, true)
 						end
@@ -259,10 +328,14 @@ ARROW_ENTITY.on_step = function(self, dtime)
 							end
 						end
 					end
-					minetest.sound_play({name="mcl_bows_hit_other", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=16}, true)
+					if self._in_player == false then
+						minetest.sound_play({name="mcl_bows_hit_other", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=16}, true)
+					end
 				end
 				mcl_burning.extinguish(self.object)
-				self.object:remove()
+				if not obj:is_player() then
+					self.object:remove()
+				end
 				return
 			end
 		end
@@ -389,6 +462,7 @@ ARROW_ENTITY.get_staticdata = function(self)
 end
 
 ARROW_ENTITY.on_activate = function(self, staticdata, dtime_s)
+	self._in_player = false
 	local data = minetest.deserialize(staticdata)
 	if data then
 		self._stuck = data.stuck
