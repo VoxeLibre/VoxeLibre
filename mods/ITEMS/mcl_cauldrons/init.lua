@@ -131,7 +131,7 @@ minetest.register_abm({
 	interval = 0.5,
 	chance = 1,
 	action = function(pos, node)
-		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 0.4)) do
+		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 0.4)) do
 			if mcl_burning.is_burning(obj) then
 				mcl_burning.extinguish(obj)
 				local new_group = minetest.get_item_group(node.name, "cauldron_filled") - 1

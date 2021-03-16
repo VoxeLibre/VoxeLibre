@@ -14,15 +14,14 @@ local random_frame = math.random(0, compass_frames-1)
 
 minetest.register_globalstep(function(dtime)
 	random_timer = random_timer + dtime
-	local players  = minetest.get_connected_players()
 
 	if random_timer >= random_timer_trigger then
 		random_frame = (random_frame + math.random(-1, 1)) % compass_frames
 		random_timer = 0
 	end
-	for i,player in ipairs(players) do
+	for i,player in pairs(minetest.get_connected_players()) do
 		local function has_compass(player)
-			for _,stack in ipairs(player:get_inventory():get_list("main")) do
+			for _,stack in pairs(player:get_inventory():get_list("main")) do
 				if minetest.get_item_group(stack:get_name(), "compass") ~= 0 then
 					return true
 				end

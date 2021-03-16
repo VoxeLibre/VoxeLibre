@@ -22,7 +22,7 @@ minetest.register_entity("mcl_burning:fire", {
 })
 
 minetest.register_globalstep(function(dtime)
-	for _, player in ipairs(minetest.get_connected_players()) do
+	for _, player in pairs(minetest.get_connected_players()) do
 		mcl_burning.tick(player, dtime)
 	end
 end)

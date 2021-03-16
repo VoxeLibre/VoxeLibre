@@ -4,7 +4,7 @@ local S = minetest.get_translator("mcl_doors")
 local function on_place_node(place_to, newnode,
 	placer, oldnode, itemstack, pointed_thing)
 	-- Run script hook
-	for _, callback in ipairs(minetest.registered_on_placenodes) do
+	for _, callback in pairs(minetest.registered_on_placenodes) do
 		-- Deep-copy pos, node and pointed_thing because callback can modify them
 		local place_to_copy = {x = place_to.x, y = place_to.y, z = place_to.z}
 		local newnode_copy =

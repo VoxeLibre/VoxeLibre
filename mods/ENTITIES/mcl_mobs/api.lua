@@ -226,7 +226,7 @@ local collision = function(self)
 	local z = 0
 	local width = -self.collisionbox[1] + self.collisionbox[4] + 0.5
 
-	for _,object in ipairs(minetest.get_objects_inside_radius(pos, width)) do
+	for _,object in pairs(minetest.get_objects_inside_radius(pos, width)) do
 
 		if object:is_player()
 		or (object:get_luaentity()._cmi_is_mob == true and object ~= self.object) then
@@ -4576,9 +4576,9 @@ local timer = 0
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
 	if timer < 1 then return end
-	for _, player in ipairs(minetest.get_connected_players()) do
+	for _, player in pairs(minetest.get_connected_players()) do
 		local pos = player:get_pos()
-		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 47)) do
+		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 47)) do
 			local lua = obj:get_luaentity()
 			if lua and lua._cmi_is_mob then
 				lua.lifetimer = math.max(20, lua.lifetimer)

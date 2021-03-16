@@ -122,7 +122,7 @@ local arrows = {
 }
 
 local throwing_shoot_arrow = function(itemstack, player)
-	for _,arrow in ipairs(arrows) do
+	for _,arrow in pairs(arrows) do
 		if player:get_inventory():get_stack("main", player:get_wield_index()+1):get_name() == arrow[1] then
 			if not minetest.is_creative_enabled(player:get_player_name()) then
 				player:get_inventory():remove_item("main", arrow[1])
