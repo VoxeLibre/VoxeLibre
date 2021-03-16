@@ -236,7 +236,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 		end
 	end
 
-	local diggroups = tooldef and tooldef._mcl_autogroup_groupcaps
+	local diggroups = tooldef and tooldef._mcl_diggroups
 	local shearsy_level = diggroups and diggroups.shearsy and diggroups.shearsy.level
 
 	--[[ Special node drops when dug by shears by reading _mcl_shears_drop or with a silk touch tool reading _mcl_silk_touch_drop

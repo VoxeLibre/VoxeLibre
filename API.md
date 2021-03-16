@@ -18,8 +18,8 @@ Items can have these fields:
    See `mcl_banners` for an example.
 
 Tools can have these fields:
-* `_mcl_autogroup_groupcaps`: Specifies the digging groups that a tool can dig
-  and how efficiently.  See `_mcl_autogroup` for more information.
+* `_mcl_diggroups`: Specifies the digging groups that a tool can dig and how
+  efficiently.  See `_mcl_autogroup` for more information.
 
 All nodes can have these fields:
 
