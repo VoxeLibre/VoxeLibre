@@ -1,5 +1,13 @@
 local efficiency_cache_table = {}
 
+-- Compute a hash value.
+function compute_hash(value)
+	-- minetest.get_password_hash is quite fast, even if it uses a
+	-- cryptographic hashing function (SHA-1).  It is written in C++ and it
+	-- is probably hard to write a faster hashing function in Lua.
+	return string.sub(minetest.get_password_hash("ryvnf", minetest.serialize(value)), 1, 8)
+end
+
 -- Get the efficiency groupcaps and hash for a tool and efficiency level.  If
 -- this function is called repeatedly with the same values it will return data
 -- from a cache.
@@ -18,7 +26,7 @@ local function get_efficiency_groupcaps(toolname, level)
 	if not levelcache then
 		levelcache = {}
 		levelcache.values = mcl_autogroup.get_groupcaps(toolname, level)
-		levelcache.hash = mcl_util.hash(levelcache.values)
+		levelcache.hash = compute_hash(levelcache.values)
 		toolcache[level] = levelcache
 	end
 
