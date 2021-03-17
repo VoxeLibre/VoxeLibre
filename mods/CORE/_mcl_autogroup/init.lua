@@ -102,7 +102,7 @@ end
 -- Returns a table containing a table indexed by "_mcl_hardness_value" to get
 -- its index in the list of unique hardnesses for each diggroup.
 local function get_hardness_lookup_for_groups(hardness_values)
-	map = {}
+	local map = {}
 	for g, values in pairs(hardness_values) do
 		map[g] = {}
 		for k, v in pairs(values) do
@@ -139,7 +139,7 @@ end
 -- efficiency - efficiency level for the tool if applicable
 local function get_digtimes(group, can_harvest, tool_multiplier, efficiency)
 	tool_multiplier = tool_multiplier or 1
-	speed_multiplier = tool_multiplier
+	local speed_multiplier = tool_multiplier
 	if efficiency then
 		speed_multiplier = speed_multiplier + efficiency * efficiency + 1
 	end
