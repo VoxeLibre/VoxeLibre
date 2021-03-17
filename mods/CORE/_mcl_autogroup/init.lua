@@ -243,6 +243,15 @@ local function get_groupcap(group, can_harvest, multiplier, efficiency, uses)
 	}
 end
 
+-- Returns the tool_capabilities from a tool definition or a default set of
+-- tool_capabilities
+local function get_tool_capabilities(tdef)
+	if tdef.tool_capabilities then
+		return tdef.tool_capabilities
+	end
+	return {}
+end
+
 -- Get the groupcaps for a tool.  This function returns "groupcaps" table of
 -- digging which should be put in the "tool_capabilities" of the tool definition
 -- or in the metadata of an enchanted tool.
@@ -257,7 +266,7 @@ end
 -- loading order.
 function mcl_autogroup.get_groupcaps(toolname, efficiency)
 	local tdef = minetest.registered_tools[toolname]
-	local groupcaps = table.copy(tdef.tool_capabilities.groupcaps or {})
+	local groupcaps = table.copy(get_tool_capabilities(tdef).groupcaps or {})
 	add_groupcaps(toolname, groupcaps, tdef._mcl_diggroups, efficiency)
 	return groupcaps
 end
@@ -322,7 +331,7 @@ local overwrite = function()
 		-- Assign groupcaps for digging the registered digging groups
 		-- depending on the _mcl_diggroups in the tool definition
 		if tdef._mcl_diggroups then
-			local toolcaps = table.copy(tdef.tool_capabilities) or {}
+			local toolcaps = table.copy(get_tool_capabilities(tdef))
 			toolcaps.groupcaps = mcl_autogroup.get_groupcaps(tname)
 
 			minetest.override_item(tname, {
