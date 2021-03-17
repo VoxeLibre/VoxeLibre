@@ -8,11 +8,11 @@ function MCLMob:set_hp()
 	self:meta():set_float("hp", hp)
 end
 
-function MCLMob:on_damage(hp_change, source, info)
-	MCLEntity.on_damage(self, hp_change, source, info)
+function MCLMob:on_damage(damage, source)
+	MCLEntity.on_damage(self, damage, source)
 
 	local new_hp = self:get_hp()
-	if new_hp <= 0 and new_hp + hp_change > 0 then
+	if new_hp <= 0 and new_hp + damage > 0 then
 		self:on_death(source)
 	end
 end

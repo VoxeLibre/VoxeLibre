@@ -13,3 +13,13 @@ MCLPlayer:__override_pipe("death_drop", function(self, inventory, listname, inde
 		return self, inventory, listname, index, stack
 	end
 end)
+
+function MCLPlayer:get_knockback(source, ...)
+	if not source.is_punch then
+		return MCLObject.get_knockback(self, source, ...)
+	end
+end
+
+function MCLPlayer:on_damage(damage, source, knockback)
+	MCLObject.on_damage(self, damage, source, knockback)
+end

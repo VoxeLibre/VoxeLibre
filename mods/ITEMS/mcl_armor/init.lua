@@ -1,12 +1,67 @@
 local S = minetest.get_translator("mcl_armor")
 
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/armor.lua")
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/alias.lua")
+mcl_armor = {
+	elements = {
+		{
+			name = "helmet",
+			description = S("Helmet"),
+			durability = 0.6875,
+			recipe = function(m)
+				return {
+					{ m,  m,  m},
+					{ m, "",  m},
+					{"", "", ""},
+				}
+			end,
+		},
+		{
+			name = "chestplate",
+			description = S("Chestplate"),
+			durability = 1.0,
+			recipe = function(m)
+				return {
+					{ m, "",  m},
+					{ m,  m,  m},
+					{ m,  m,  m},
+				}
+			end,
+		},
+		{
+			name = "leggings",
+			description = S("Leggings"),
+			durability = 0.9375,
+			recipe = function(m)
+				return {
+					{ m,  m,  m},
+					{ m, "",  m},
+					{ m, "",  m},
+				}
+			end,
+		},
+		{
+			name = "boots",
+			description = S("Boots"),
+			durability = 0.8125,
+			recipe = function(m)
+				return {
+					{ m, "",  m},
+					{ m, "",  m},
+				}
+			end,
+		},
+	},
+	longdesc = S("This is a piece of equippable armor which reduces the amount of damage you receive."),
+	usagehelp = S("To equip it, put it on the corresponding armor slot in your inventory menu."),
+}
+
+local modpath = minetest.get_modpath("mcl_armor")
+
+dofile(modpath .. "/damage.lua")
+dofile(modpath .. "/alias.lua")
+dofile(modpath .. "/items.lua")
+dofile(modpath .. "/enchantments.lua")
 
 -- Regisiter Head Armor
-
-local longdesc = S("This is a piece of equippable armor which reduces the amount of damage you receive.")
-local usage = S("To equip it, put it on the corresponding armor slot in your inventory menu.")
 
 minetest.register_tool("mcl_armor:helmet_leather", {
 	description = S("Leather Cap"),
@@ -322,71 +377,4 @@ local craft_ingreds = {
 	gold = { "mcl_core:gold_ingot", "mcl_core:gold_nugget" },
 	diamond = { "mcl_core:diamond" },
 	chain = { nil, "mcl_core:iron_nugget"} ,
-}		
-
-for k, v in pairs(craft_ingreds) do
-	-- material
-	local m = v[1]
-	-- cooking result
-	local c = v[2]
-	if m ~= nil then
-		minetest.register_craft({
-			output = "mcl_armor:helmet_"..k,
-			recipe = {
-				{m, m, m},
-				{m, "", m},
-				{"", "", ""},
-			},
-		})
-		minetest.register_craft({
-			output = "mcl_armor:chestplate_"..k,
-			recipe = {
-				{m, "", m},
-				{m, m, m},
-				{m, m, m},
-			},
-		})
-		minetest.register_craft({
-			output = "mcl_armor:leggings_"..k,
-			recipe = {
-				{m, m, m},
-				{m, "", m},
-				{m, "", m},
-			},
-		})
-		minetest.register_craft({
-			output = "mcl_armor:boots_"..k,
-			recipe = {
-				{m, "", m},
-				{m, "", m},
-			},
-		})
-	end
-	if c ~= nil then
-		minetest.register_craft({
-			type = "cooking",
-			output = c,
-			recipe = "mcl_armor:helmet_"..k,
-			cooktime = 10,
-		})
-		minetest.register_craft({
-			type = "cooking",
-			output = c,
-			recipe = "mcl_armor:chestplate_"..k,
-			cooktime = 10,
-		})
-		minetest.register_craft({
-			type = "cooking",
-			output = c,
-			recipe = "mcl_armor:leggings_"..k,
-			cooktime = 10,
-		})
-		minetest.register_craft({
-			type = "cooking",
-			output = c,
-			recipe = "mcl_armor:boots_"..k,
-			cooktime = 10,
-		})
-	end
-end
-
+}

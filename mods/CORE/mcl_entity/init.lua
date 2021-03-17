@@ -42,21 +42,3 @@ function MCLEntity:get_staticdata()
 
 	return minetest.serialize(data)
 end
-
-function MCLEntity:calculate_knockback(...)
-	return minetest.calculate_knockback(self.object, ...)
-end
-
-function MCLEntity:on_punch(...)
-	hp = MCLObject.on_punch(self, ...)
-
-	self.damage_info.info.knockback = self:calculate_knockback(...)
-end
-
-function MCLEntity:on_damage(hp_change, source, info)
-	MCLObject.on_damage(self, hp_change, source, info)
-
-	if info.knockback then
-		self:add_velocity(info.knockback)
-	end
-end

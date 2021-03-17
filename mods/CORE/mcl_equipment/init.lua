@@ -69,7 +69,7 @@ function MCLEquipment:__armor(idx, name)
 	end)
 end
 
-local armor_slots = {"head", "chest", "legs", "feet"}
+local armor_slots = {"helmet", "chestplace", "leggings", "boots"}
 
 for i, name in ipairs(armor_slots) do
 	MCLEquipment:__armor(idx, name)

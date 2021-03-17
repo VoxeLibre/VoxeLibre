@@ -5,33 +5,32 @@ function MCLObject:constructor(obj)
 	self.IS_MCL_OBJECT = true
 end
 
-function MCLObject:on_punch(hitter, time_from_last_punch, tool_capabilities, dir, hp)
-	local source = MCLDamageSource():punch(nil, hitter)
+function MCLObject:on_punch(hitter, time_from_last_punch, tool_capabilities, dir, damage)
+	local source = MCLDamageSource({is_punch = true, raw_source_object = hitter})
 
-	hp = self:damage_modifier(hp, source) or hp
+	damage = self:damage_modifier(damage, source) or damage
 
 	self.damage_info = {
-		hp = hp,
+		damage = damage,
 		source = source,
-		info = {
-			tool_capabilities = tool_capabilities,
-		},
+		knockback = self:get_knockback(source, time_from_last_punch, tool_capabilities, dir, nil, damage),
 	}
 
-	return hp
+	return damage
 end
 
 -- use this function to deal regular damage to an object (do NOT use :punch() unless toolcaps need to be handled)
-function MCLObject:damage(hp, source)
-	hp = self:damage_modifier(hp, source) or hp
-	self:set_hp(self:get_hp() - hp)
+function MCLObject:damage(damage, source, knockback)
+	damage = self:damage_modifier(damage, source) or damage
+	self:set_hp(self:get_hp() - damage)
 
 	self.damage_info = {
-		hp = hp,
+		damage = damage,
 		source = source,
+		knockback = knockback,
 	}
 
-	return hp
+	return damage
 end
 
 function MCLObject:wield_index()
@@ -47,10 +46,6 @@ end
 
 function MCLObject:set_hp(hp)
 	self.object:set_hp(hp)
-end
-
-function MCLObject:add_velocity(vel)
-	self.object:add_velocity(vel)
 end
 
 function MCLObject:death_drop(inventory, listname, index, stack)
@@ -71,19 +66,39 @@ function MCLObject:on_death(source)
 	end
 end
 
-function MCLObject:damage_modifier(hp, source)
+function MCLObject:damage_modifier(damage, source)
 	if self.invulnerable and not source.bypasses_invulnerability then
 		return 0
 	end
 end
 
-function MCLObject:on_damage(hp_change, source, info)
+function MCLObject:on_damage(damage, source, knockback)
 end
+
+function MCLObject:get_knockback(source, time_from_last_punch, tool_capabilities, dir, distance, damage)
+	local direct_object = source:direct_object()
+
+	return self:calculate_knockback(
+		self.object,
+		direct_object,
+		time_from_last_punch or 1.0,
+		tool_capabilities or {fleshy = damage},
+		dir or vector.direction(direct_object:get_pos(), self.object:get_pos()),
+		distance or vector.distance(direct_object:get_pos(), self.object:get_pos()),
+		damage = damage,
+	)
+end
+
+MCLObject.calculate_knockback = minetest.calculate_knockback
 
 function MCLObject:on_step()
 	local damage_info = self.damage_info
 	if damage_info then
 		self.damage_info = nil
-		self:on_damage(damage_info.hp, damage_info.source, damage_info.info)
+		self:on_damage(damage_info.damage, damage_info.source)
+
+		if damage_info.knockback then
+			self.object:add_velocity(damage_info.knockback)
+		end
 	end
 end

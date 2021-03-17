@@ -9,7 +9,6 @@ local modpath = minetest.get_modpath(minetest.get_current_modname())
 armor = {
 	timer = 0,
 	elements = {"head", "torso", "legs", "feet"},
-	physics = {"jump","speed","gravity"},
 	formspec = "size[8,8.5]image[2,0.75;2,4;armor_preview]"
 		.."list[current_player;main;0,4.5;8,4;]"
 		.."list[current_player;craft;4,1;3,3;]"
@@ -18,7 +17,6 @@ armor = {
 		.."listring[current_player;craft]",
 	textures = {},
 	default_skin = "character",
-	last_damage_types = {},
 }
 
 if minetest.get_modpath("mcl_skins") then
@@ -33,7 +31,7 @@ elseif minetest.get_modpath("wardrobe") then
 	skin_mod = "wardrobe"
 end
 
-function armor.on_armor_use(itemstack, user, pointed_thing)
+function mcl_armor.rightclick_equip(itemstack, user, pointed_thing)
 	if not user or user:is_player() == false then
 		return itemstack
 	end
