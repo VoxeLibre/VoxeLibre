@@ -11,10 +11,8 @@ local entity_animations = {
 	},
 	chest = {
 		speed = 25,
-		open = {x = 0, y = 10},
-		open_partly = {x = 0, y = 7},
-		close = {x = 10, y = 20},
-		close_partly = {x = 13, y = 20},
+		open = {x = 0, y = 7},
+		close = {x = 13, y = 20},
 	}
 }
 
@@ -34,15 +32,14 @@ minetest.register_entity("mcl_chests:chest", {
 		self.object:set_animation(anim, anim_table.speed, 0, false)
 	end,
 
-	open = function(self, playername, partly)
+	open = function(self, playername)
 		self.players[playername] = true
 		if not self.is_open then
-			self:set_animation(partly and "open_partly" or "open")
+			self:set_animation("open")
 			minetest.sound_play(self.sound_prefix .. "_open", {
 				pos = self.node_pos,
 			})
 			self.is_open = true
-			self.opened_partly = partly
 		end
 	end,
 
@@ -53,12 +50,11 @@ minetest.register_entity("mcl_chests:chest", {
 			for _ in pairs(playerlist) do
 				return
 			end
-			self:set_animation(self.opened_partly and "close_partly" or "close")
+			self:set_animation("close")
 			minetest.sound_play(self.sound_prefix .. "_close", {
 				pos = self.node_pos,
 			})
 			self.is_open = false
-			self.opened_partly = false
 		end
 	end,
 
@@ -179,8 +175,7 @@ local player_chest_open = function(player, pos, node_name, textures, param2, dou
 	open_chests[name] = {pos = pos, node_name = node_name, textures = textures, param2 = param2, double = double, sound = sound, mesh = mesh, shulker = shulker}
 	if animate_chests then
 		local dir = minetest.facedir_to_dir(param2)
-		local blocked = not shulker and (back_is_blocked(pos, dir) or double and back_is_blocked(mcl_util.get_double_container_neighbor_pos(pos, param2, node_name:sub(-4)), dir))
-		find_or_create_entity(pos, node_name, textures, param2, double, sound, mesh, shulker and "shulker" or "chest", dir):open(name, blocked)
+		find_or_create_entity(pos, node_name, textures, param2, double, sound, mesh, shulker and "shulker" or "chest", dir):open(name)
 	end
 end
 
