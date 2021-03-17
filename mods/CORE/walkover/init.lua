@@ -22,7 +22,7 @@ minetest.register_on_mods_loaded(function()
 		end
 	end
 	for _,func in ipairs(walkover.registered_globals) do --cache registered globals
-		table.insert(registered_globals, value)
+		table.insert(registered_globals, func)
 	end
 end)
 
