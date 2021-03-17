@@ -235,12 +235,7 @@ local function get_after_use_callback(itemdef)
 		-- one too.
 		return function(itemstack, user, node, digparams)
 			itemdef.after_use(itemstack, user, node, digparams)
-
-			local enchantments = mcl_enchanting.get_enchantments(itemstack)
-			local level = enchantments.efficiency
-			if level then
-				mcl_enchanting.apply_efficiency(itemstack, level)
-			end
+			mcl_enchanting.update_groupcaps(itemstack)
 		end
 	end
 
@@ -252,10 +247,7 @@ local function get_after_use_callback(itemdef)
 		end
 
 		local enchantments = mcl_enchanting.get_enchantments(itemstack)
-		local level = enchantments.efficiency
-		if level then
-			mcl_enchanting.enchantments.efficiency.on_enchant(itemstack, level)
-		end
+		mcl_enchanting.update_groupcaps(itemstack)
 	end
 end
 

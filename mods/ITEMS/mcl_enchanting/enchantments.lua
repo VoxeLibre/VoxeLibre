@@ -155,7 +155,7 @@ mcl_enchanting.enchantments.efficiency = {
 	description = S("Increases mining speed."),
 	curse = false,
 	on_enchant = function(itemstack, level)
-		mcl_enchanting.apply_efficiency(itemstack, level)
+		mcl_enchanting.update_groupcaps(itemstack)
 	end,
 	requires_tool = false,
 	treasure = false,

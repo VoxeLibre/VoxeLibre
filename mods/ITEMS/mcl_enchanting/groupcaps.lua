@@ -1,4 +1,4 @@
-local efficiency_cache_table = {}
+local groupcaps_cache = {}
 
 -- Compute a hash value.
 function compute_hash(value)
@@ -8,18 +8,23 @@ function compute_hash(value)
 	return string.sub(minetest.get_password_hash("ryvnf", minetest.serialize(value)), 1, 8)
 end
 
--- Get the efficiency groupcaps and hash for a tool and efficiency level.  If
--- this function is called repeatedly with the same values it will return data
--- from a cache.
+-- Get the groupcaps and hash for an enchanted tool.  If this function is called
+-- repeatedly with the same values it will return data from a cache.
+--
+-- Parameters:
+-- toolname - Name of the tool
+-- level - The efficiency level of the tool
 --
 -- Returns a table with the following two fields:
--- values - the groupcaps table
--- hash - the hash of the groupcaps table
+-- values - The groupcaps table
+-- hash - The hash of the groupcaps table
 local function get_efficiency_groupcaps(toolname, level)
-	local toolcache = efficiency_cache_table[toolname]
+	local toolcache = groupcaps_cache[toolname]
+	local level = level
+
 	if not toolcache then
 		toolcache = {}
-		efficiency_cache_table[toolname] = toolcache
+		groupcaps_cache[toolname] = toolcache
 	end
 
 	local levelcache = toolcache[level]
@@ -33,15 +38,15 @@ local function get_efficiency_groupcaps(toolname, level)
 	return levelcache
 end
 
--- Apply efficiency enchantment to a tool.  This will update the tools
--- tool_capabilities to give it new digging times.  This function will be called
+-- Update groupcaps of an enchanted tool.  This function will be called
 -- repeatedly to make sure the digging times stored in groupcaps stays in sync
 -- when the digging times of nodes can change.
 --
 -- To make it more efficient it will first check a hash value to determine if
 -- the tool needs to be updated.
-function mcl_enchanting.apply_efficiency(itemstack, level)
+function mcl_enchanting.update_groupcaps(itemstack)
 	local name = itemstack:get_name()
+	local level = mcl_enchanting.get_enchantment(itemstack, "efficiency")
 	local groupcaps = get_efficiency_groupcaps(name, level)
 	local hash = itemstack:get_meta():get_string("groupcaps_hash")
 
