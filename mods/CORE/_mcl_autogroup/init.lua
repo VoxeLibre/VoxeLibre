@@ -311,9 +311,12 @@ local overwrite = function()
 				newgroups.opaque = 1
 			end
 
+			local creative_breakable = false
+
 			-- Assign groups used for digging this node depending on
 			-- the registered digging groups
 			for g, gdef in pairs(mcl_autogroup.registered_diggroups) do
+				creative_breakable = true
 				local index = hardness_lookup[g][ndef._mcl_hardness or 0]
 				if ndef.groups[g] then
 					if gdef.levels then
@@ -327,6 +330,11 @@ local overwrite = function()
 					end
 				end
 			end
+
+			-- Automatically assign the node to the
+			-- creative_breakable group if it belongs to any digging
+			-- group.
+			newgroups["creative_breakable"] = 1
 
 			minetest.override_item(nname, {
 				groups = newgroups

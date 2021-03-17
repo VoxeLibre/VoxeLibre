@@ -19,35 +19,14 @@ dig_speed_class group:
 
 -- The hand
 local groupcaps, hand_range, hand_groups
+
 if minetest.is_creative_enabled("") then
 	-- Instant breaking in creative mode
-	groupcaps = {}
+	groupcaps = { creative_breakable = { times = {0}, uses = 0 } }
 	hand_range = 10
 	hand_groups = { dig_speed_class = 7 }
-	hand_autogroup_groupcaps = {
-		handy = { tool_multiplier = 1000, level = 1, uses = 0 },
-		axey = { tool_multiplier = 1000, level = 1, uses = 0 },
-		pickaxey = { tool_multiplier = 1000, level = 5, uses = 0 },
-		shovely = { tool_multiplier = 1000, level = 1, uses = 0 },
-		swordy = { tool_multiplier = 1000, level = 1, uses = 0 },
-		swordy_cobweb = { tool_multiplier = 1000, level = 1, uses = 0 },
-		shearsy = { tool_multiplier = 1000, level = 1, uses = 0 },
-		shearsy_wool = { tool_multiplier = 1000, level = 1, uses = 0 },
-		shearsy_cobweb = { tool_multiplier = 1000, level = 1, uses = 0 },
-	}
 else
 	groupcaps = {}
-	hand_autogroup_groupcaps = {
-		handy = { tool_multiplier = 1, level = 1, uses = 0 },
-		axey = { tool_multiplier = 1, level = 1, uses = 0 },
-		shovely = { tool_multiplier = 1, level = 1, uses = 0 },
-		pickaxey = { tool_multiplier = 1, level = 0, uses = 0 },
-		swordy = { tool_multiplier = 1, level = 0, uses = 0 },
-		swordy_cobweb = { tool_multiplier = 1, level = 0, uses = 0 },
-		shearsy = { tool_multiplier = 1, level = 0, uses = 0 },
-		shearsy_wool = { tool_multiplier = 1, level = 0, uses = 0 },
-		shearsy_cobweb = { tool_multiplier = 1, level = 0, uses = 0 },
-	}
 	hand_range = 4
 	hand_groups = { dig_speed_class = 1 }
 end
@@ -68,7 +47,17 @@ minetest.register_tool(":", {
 		damage_groups = {fleshy=1},
 	},
 	groups = hand_groups,
-	_mcl_diggroups = hand_autogroup_groupcaps,
+	_mcl_diggroups = {
+		handy = { tool_multiplier = 1, level = 1, uses = 0 },
+		axey = { tool_multiplier = 1, level = 1, uses = 0 },
+		shovely = { tool_multiplier = 1, level = 1, uses = 0 },
+		pickaxey = { tool_multiplier = 1, level = 0, uses = 0 },
+		swordy = { tool_multiplier = 1, level = 0, uses = 0 },
+		swordy_cobweb = { tool_multiplier = 1, level = 0, uses = 0 },
+		shearsy = { tool_multiplier = 1, level = 0, uses = 0 },
+		shearsy_wool = { tool_multiplier = 1, level = 0, uses = 0 },
+		shearsy_cobweb = { tool_multiplier = 1, level = 0, uses = 0 },
+	}
 })
 
 -- Help texts
