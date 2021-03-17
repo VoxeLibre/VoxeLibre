@@ -1055,6 +1055,12 @@ minetest.register_on_joinplayer(function(player)
 	inv:set_size("enderchest", 9*3)
 end)
 
+function MCLPlayer:__override_pipe("death_drop", function(self, inventory, listname, index, stack)
+	if listname ~= "enderchest" then
+		return self, inventory, listname, index, stack
+	end
+end)
+
 minetest.register_craft({
 	output = 'mcl_chests:ender_chest',
 	recipe = {

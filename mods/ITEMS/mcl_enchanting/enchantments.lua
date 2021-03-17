@@ -105,7 +105,6 @@ mcl_enchanting.enchantments.curse_of_binding = {
 	inv_tool_tab = false,
 }
 
--- implemented in mcl_death_drop
 mcl_enchanting.enchantments.curse_of_vanishing = {
 	name = S("Curse of Vanishing"),
 	max_level = 1,
@@ -123,6 +122,14 @@ mcl_enchanting.enchantments.curse_of_vanishing = {
 	inv_combat_tab = true,
 	inv_tool_tab = true,
 }
+
+MCLPlayer:__override("death_drop", function(self, inventory, listname, index, stack)
+	if mcl_enchanting.has_enchantment(stack, "curse_of_vanishing") then
+		stack = nil
+	end
+
+	return self, inventory, listname, index, stack
+end)
 
 -- implemented in mcl_playerplus
 mcl_enchanting.enchantments.depth_strider = {
