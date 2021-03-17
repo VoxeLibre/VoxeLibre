@@ -249,7 +249,14 @@ local function get_tool_capabilities(tdef)
 	if tdef.tool_capabilities then
 		return tdef.tool_capabilities
 	end
-	return {}
+
+	-- If the damage group and punch interval from hand is not included,
+	-- then the user will not be able to attack with the tool.
+	local hand_toolcaps = minetest.registered_tools[""].tool_capabilities
+	return {
+		full_punch_interval = hand_toolcaps.full_punch_interval,
+		damage_groups = hand_toolcaps.damage_groups
+	}
 end
 
 -- Get the groupcaps for a tool.  This function returns "groupcaps" table of
