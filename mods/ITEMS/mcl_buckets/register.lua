@@ -2,6 +2,20 @@ local S = minetest.get_translator(minetest.get_current_modname())
 local mod_mcl_core = minetest.get_modpath("mcl_core")
 local mod_mclx_core = minetest.get_modpath("mclx_core")
 
+local sound_place = function(itemname, pos)
+	local def = minetest.registered_nodes[itemname]
+	if def and def.sounds and def.sounds.place then
+		minetest.sound_play(def.sounds.place, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005}, true)
+	end
+end
+
+local sound_take = function(itemname, pos)
+	local def = minetest.registered_nodes[itemname]
+	if def and def.sounds and def.sounds.dug then
+		minetest.sound_play(def.sounds.dug, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005}, true)
+	end
+end
+
 if mod_mcl_core then
 	-- Lava bucket
 	mcl_buckets.register_liquid({
