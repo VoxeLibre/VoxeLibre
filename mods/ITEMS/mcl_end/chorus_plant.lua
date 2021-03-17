@@ -419,7 +419,7 @@ mcl_end.grow_chorus_plant_step = function(pos, node)
 				end
 			end
 
-			for _, f in ipairs(new_flowers) do
+			for _, f in pairs(new_flowers) do
 				if age >= MAX_FLOWER_AGE then
 					local nn = minetest.get_node(f).name
 					if nn ~= "mcl_end:chorus_flower" and nn ~= "mcl_end:chorus_flower_dead" then

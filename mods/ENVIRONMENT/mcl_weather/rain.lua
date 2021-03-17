@@ -1,6 +1,8 @@
 local PARTICLES_COUNT_RAIN = 30
 local PARTICLES_COUNT_THUNDER = 45
 
+local get_connected_players = minetest.get_connected_players
+
 mcl_weather.rain = {
 	-- max rain particles created at time
 	particles_count = PARTICLES_COUNT_RAIN,
@@ -36,7 +38,7 @@ mcl_weather.rain.set_sky_box = function()
 			{r=85, g=86, b=98},
 			{r=0, g=0, b=0}})
 		mcl_weather.skycolor.active = true
-		for _, player in ipairs(minetest.get_connected_players()) do
+		for _, player in pairs(get_connected_players()) do
 			player:set_clouds({color="#5D5D5FE8"})
 		end
 	end
@@ -154,7 +156,7 @@ mcl_weather.rain.clear = function()
 	mcl_weather.rain.init_done = false
 	mcl_weather.rain.set_particles_mode("rain")
 	mcl_weather.skycolor.remove_layer("weather-pack-rain-sky")
-	for _, player in ipairs(minetest.get_connected_players()) do
+	for _, player in pairs(get_connected_players()) do
 		mcl_weather.rain.remove_sound(player)
 		mcl_weather.rain.remove_player(player)
 	end
@@ -176,7 +178,7 @@ mcl_weather.rain.make_weather = function()
 		mcl_weather.rain.init_done = true
 	end
 
-	for _, player in ipairs(minetest.get_connected_players()) do
+	for _, player in pairs(get_connected_players()) do
 		if (mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(player:get_pos())) then
 			mcl_weather.rain.remove_sound(player)
 			return false

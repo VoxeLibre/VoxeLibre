@@ -142,7 +142,7 @@ minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
 	if main_timer > mcl_hunger.HUD_TICK or timer > 0.5 then
 		if main_timer > mcl_hunger.HUD_TICK then main_timer = 0 end
-		for _,player in ipairs(minetest.get_connected_players()) do
+		for _,player in pairs(minetest.get_connected_players()) do
 		local name = player:get_player_name()
 
 		local h = tonumber(mcl_hunger.get_hunger(player))

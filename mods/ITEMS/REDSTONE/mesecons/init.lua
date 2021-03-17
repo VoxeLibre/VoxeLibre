@@ -75,10 +75,10 @@ mesecon.queue:add_function("receptor_on", function (pos, rules)
 	rules = rules or mesecon.rules.default
 
 	-- Call turnon on all linking positions
-	for _, rule in ipairs(mesecon.flattenrules(rules)) do
+	for _, rule in pairs(mesecon.flattenrules(rules)) do
 		local np = vector.add(pos, rule)
 		local rulenames = mesecon.rules_link_rule_all(pos, rule)
-		for _, rulename in ipairs(rulenames) do
+		for _, rulename in pairs(rulenames) do
 			mesecon.turnon(np, rulename)
 		end
 	end

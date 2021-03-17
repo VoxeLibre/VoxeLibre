@@ -1378,7 +1378,7 @@ minetest.register_abm({
 		if not do_preserve then
 			-- Drop stuff other than the node itself
 			local itemstacks = minetest.get_node_drops(n0.name)
-			for _, itemname in ipairs(itemstacks) do
+			for _, itemname in pairs(itemstacks) do
 				local p_drop = {
 					x = p0.x - 0.5 + math.random(),
 					y = p0.y - 0.5 + math.random(),

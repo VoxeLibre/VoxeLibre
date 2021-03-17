@@ -539,7 +539,7 @@ end)
 
 minetest.register_on_shutdown(function()
 	-- save player effects on server shutdown
-	for _,player in ipairs(minetest.get_connected_players()) do
+	for _,player in pairs(minetest.get_connected_players()) do
 		mcl_potions._save_player_effects(player)
 	end
 

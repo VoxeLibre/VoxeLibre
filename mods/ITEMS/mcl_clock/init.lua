@@ -94,9 +94,8 @@ minetest.register_globalstep(function(dtime)
 
 	watch.old_time = now
 
-	local players = minetest.get_connected_players()
-	for p, player in ipairs(players) do
-		for s, stack in ipairs(player:get_inventory():get_list("main")) do
+	for p, player in pairs(minetest.get_connected_players()) do
+		for s, stack in pairs(player:get_inventory():get_list("main")) do
 			local dim = mcl_worlds.pos_to_dimension(player:get_pos())
 			local frame
 			-- Clocks do not work in certain zones

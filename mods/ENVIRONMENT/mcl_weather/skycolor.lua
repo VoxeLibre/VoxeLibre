@@ -43,7 +43,7 @@ mcl_weather.skycolor = {
 
 	-- Remove layer from colors table
 	remove_layer = function(layer_name)
-		for k, name in ipairs(mcl_weather.skycolor.layer_names) do
+		for k, name in pairs(mcl_weather.skycolor.layer_names) do
 			if name == layer_name then
 				table.remove(mcl_weather.skycolor.layer_names, k)
 				mcl_weather.skycolor.force_update = true

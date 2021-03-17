@@ -27,7 +27,7 @@ minetest.register_globalstep(function(dtime)
 	if timer < 0.7 then return end
 	timer = 0
 
-	for _, player in ipairs(minetest.get_connected_players()) do
+	for _, player in pairs(minetest.get_connected_players()) do
 		if not mcl_worlds.has_dust(player:get_pos()) then
 			return false
 		end

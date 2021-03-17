@@ -36,7 +36,7 @@ local function check_in_beds(players)
 		players = minetest.get_connected_players()
 	end
 
-	for n, player in ipairs(players) do
+	for n, player in pairs(players) do
 		local name = player:get_player_name()
 		if not in_bed[name] then
 			return false
@@ -102,8 +102,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		-- No sleeping if monsters nearby.
 		-- The exceptions above apply.
 		-- Zombie pigmen only prevent sleep while they are hostle.
-		local objs = minetest.get_objects_inside_radius(bed_pos, 8)
-		for _, obj in ipairs(objs) do
+		for _, obj in pairs(minetest.get_objects_inside_radius(bed_pos, 8)) do
 			if obj ~= nil and not obj:is_player() then
 				local ent = obj:get_luaentity()
 				local mobname = ent.name

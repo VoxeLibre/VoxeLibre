@@ -34,7 +34,7 @@ function mcl_burning.is_burning(obj)
 end
 
 function mcl_burning.is_affected_by_rain(obj)
-	return mcl_weather.get_weather() == "rain" and mcl_weather.is_outdoor(obj:get_pos())
+	return mcl_weather and mcl_weather.get_weather() == "rain" and mcl_weather.is_outdoor(obj:get_pos())
 end
 
 function mcl_burning.get_collisionbox(obj, smaller)
@@ -267,7 +267,7 @@ function mcl_burning.fire_entity_step(self, dtime)
 	if not parent or not mcl_burning.is_burning(parent) then
 		do_remove = true
 	else
-		for _, other in ipairs(minetest.get_objects_inside_radius(obj:get_pos(), 0)) do
+		for _, other in pairs(minetest.get_objects_inside_radius(obj:get_pos(), 0)) do
 			local luaentity = obj:get_luaentity()
 			if luaentity and luaentity.name == "mcl_burning:fire" and not luaentity.doing_step and not luaentity.removed then
 				do_remove = true

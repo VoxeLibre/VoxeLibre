@@ -798,7 +798,7 @@ minetest.register_abm({
 			end
 		end
 		distance = vector.subtract(pos, distance)
-		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 15)) do
+		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 15)) do
 			if obj:is_player() then
 				minetest.add_particlespawner({
 					amount = node_particles_allowed_level + 1,
@@ -818,7 +818,7 @@ minetest.register_abm({
 				})
 			end
 		end
-		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do	--maikerumine added for objects to travel
+		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 1)) do	--maikerumine added for objects to travel
 			local lua_entity = obj:get_luaentity()				--maikerumine added for objects to travel
 			if (obj:is_player() or lua_entity) and prevent_portal_chatter(obj) then
 				teleport(obj, pos)

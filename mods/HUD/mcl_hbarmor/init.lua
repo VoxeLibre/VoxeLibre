@@ -118,7 +118,7 @@ minetest.register_globalstep(function(dtime)
 	if main_timer > mcl_hbarmor.tick or timer > 4 then
 		if minetest.settings:get_bool("enable_damage") then
 			if main_timer > mcl_hbarmor.tick then main_timer = 0 end
-			for _,player in ipairs(minetest.get_connected_players()) do
+			for _,player in pairs(minetest.get_connected_players()) do
 				local name = player:get_player_name()
 				if mcl_hbarmor.player_active[name] == true then
 					local ret = mcl_hbarmor.get_armor(player)

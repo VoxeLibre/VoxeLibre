@@ -41,7 +41,7 @@ minetest.register_globalstep(function(dtime)
 
 	-- Update jump status immediately since we need this info in real time.
 	-- WARNING: This section is HACKY as hell since it is all just based on heuristics.
-	for _,player in ipairs(get_connected_players()) do
+	for _,player in pairs(get_connected_players()) do
 		local controls = player:get_player_control()
 		name = player:get_player_name()
 
@@ -173,7 +173,7 @@ minetest.register_globalstep(function(dtime)
 	time = 0
 
 	-- check players
-	for _,player in ipairs(get_connected_players()) do
+	for _,player in pairs(get_connected_players()) do
 		-- who am I?
 		local name = player:get_player_name()
 

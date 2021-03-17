@@ -54,14 +54,14 @@ local disable_physics = function(object, luaentity, ignore_check, reset_movement
 end
 
 minetest.register_globalstep(function(dtime)
-	for _,player in ipairs(minetest.get_connected_players()) do
+	for _,player in pairs(minetest.get_connected_players()) do
 		if player:get_hp() > 0 or not minetest.settings:get_bool("enable_damage") then
 			local pos = player:get_pos()
 			local inv = player:get_inventory()
 			local checkpos = {x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}
 
 			--magnet and collection
-			for _,object in ipairs(minetest.get_objects_inside_radius(checkpos, item_drop_settings.xp_radius_magnet)) do
+			for _,object in pairs(minetest.get_objects_inside_radius(checkpos, item_drop_settings.xp_radius_magnet)) do
 				if not object:is_player() and vector.distance(checkpos, object:get_pos()) < item_drop_settings.radius_magnet and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and object:get_luaentity()._magnet_timer and (object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
 					object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
 					local collected = false
@@ -785,7 +785,7 @@ minetest.register_entity(":__builtin:item", {
 			if self.physical_state then
 				local own_stack = ItemStack(self.object:get_luaentity().itemstring)
 				-- Merge with close entities of the same item
-				for _, object in ipairs(minetest.get_objects_inside_radius(p, 0.8)) do
+				for _, object in pairs(minetest.get_objects_inside_radius(p, 0.8)) do
 					local obj = object:get_luaentity()
 					if obj and obj.name == "__builtin:item"
 							and obj.physical_state == false then

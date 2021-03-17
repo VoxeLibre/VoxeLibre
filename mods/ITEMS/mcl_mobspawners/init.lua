@@ -17,7 +17,7 @@ local function get_mob_textures(mob)
 end
 
 local function find_doll(pos)
-	for  _,obj in ipairs(minetest.get_objects_inside_radius(pos, 0.5)) do
+	for  _,obj in pairs(minetest.get_objects_inside_radius(pos, 0.5)) do
 		if not obj:is_player() then
 			if obj ~= nil and obj:get_luaentity().name == "mcl_mobspawners:doll" then
 				return obj

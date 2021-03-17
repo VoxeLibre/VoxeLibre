@@ -226,7 +226,7 @@ local collision = function(self)
 	local z = 0
 	local width = -self.collisionbox[1] + self.collisionbox[4] + 0.5
 
-	for _,object in ipairs(minetest.get_objects_inside_radius(pos, width)) do
+	for _,object in pairs(minetest.get_objects_inside_radius(pos, width)) do
 
 		if object:is_player()
 		or (object:get_luaentity()._cmi_is_mob == true and object ~= self.object) then
@@ -1047,8 +1047,13 @@ local do_env_damage = function(self)
 		end
 	end
 
+	-- Use get_node_light for Minetest version 5.3 where get_natural_light
+	-- does not exist yet.
+	local get_light = minetest.get_natural_light or minetest.get_node_light
+	local sunlight = get_light(pos, self.time_of_day)
+
 	-- bright light harms mob
-	if self.light_damage ~= 0 and (minetest.get_node_light(pos) or 0) > 12 then
+	if self.light_damage ~= 0 and (sunlight or 0) > 12 then
 		if deal_light_damage(self, pos, self.light_damage) then
 			return true
 		end
@@ -1057,7 +1062,7 @@ local do_env_damage = function(self)
 	if mod_worlds then
 		_, dim = mcl_worlds.y_to_layer(pos.y)
 	end
-	if (self.sunlight_damage ~= 0 or self.ignited_by_sunlight) and (minetest.get_node_light(pos) or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
+	if (self.sunlight_damage ~= 0 or self.ignited_by_sunlight) and (sunlight or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
 		if self.ignited_by_sunlight then
 			mcl_burning.set_on_fire(self.object, 10)
 		else
@@ -4576,9 +4581,9 @@ local timer = 0
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
 	if timer < 1 then return end
-	for _, player in ipairs(minetest.get_connected_players()) do
+	for _, player in pairs(minetest.get_connected_players()) do
 		local pos = player:get_pos()
-		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 47)) do
+		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 47)) do
 			local lua = obj:get_luaentity()
 			if lua and lua._cmi_is_mob then
 				lua.lifetimer = math.max(20, lua.lifetimer)

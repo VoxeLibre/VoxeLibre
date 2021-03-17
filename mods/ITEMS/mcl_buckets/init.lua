@@ -65,7 +65,7 @@ function mcl_buckets.register_liquid(def)
 			_doc_items_usagehelp = def.usagehelp,
 			_tt_help = def.tt_help,
 			inventory_image = def.inventory_image,
-			stack_max = 16,
+			stack_max = 1,
 			groups = def.groups,
 			on_place = function(itemstack, user, pointed_thing)
 				-- Must be pointing to node
