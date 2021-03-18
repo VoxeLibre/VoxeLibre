@@ -2043,7 +2043,7 @@ local function register_dimension_ores()
 	})
 
 	-- Nether quartz
-	if minetest.settings:get("mcl_generate_ores") == "true" then
+	if minetest.settings:get_bool("mcl_generate_ores", true) then
 		minetest.register_ore({
 			ore_type       = "scatter",
 			ore            = "mcl_nether:quartz_ore",
