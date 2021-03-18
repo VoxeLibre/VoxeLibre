@@ -179,26 +179,6 @@ minetest.register_tool("mcl_tools:pick_diamond", {
 	},
 })
 
-local get_shovel_dig_group = function(itemstack)
-	local itemstring = itemstack:get_name()
-	local efficiency_level = mcl_enchanting.get_enchantment(itemstack, "efficiency")
-	local postfix = efficiency_level > 0 and "_efficiency_" .. efficiency_level or ""
-	if itemstring:find("mcl_tools:shovel_wood") == 1 then
-		return "shovely_dig_wood" .. postfix
-	elseif itemstring:find("mcl_tools:shovel_stone") == 1 then
-		return "shovely_dig_stone" .. postfix
-	elseif itemstring:find("mcl_tools:shovel_iron") == 1 then
-		return "shovely_dig_iron" .. postfix
-	elseif itemstring:find("mcl_tools:shovel_gold") == 1 then
-		return "shovely_dig_gold" .. postfix
-	elseif itemstring:find("mcl_tools:shovel_diamond") == 1 then
-		return "shovely_dig_diamond" .. postfix
-	else
-		-- Fallback
-		return "shovely_dig_wood"
-	end
-end
-
 local make_grass_path = function(itemstack, placer, pointed_thing)
 	-- Use pointed node's on_rightclick function first, if present
 	local node = minetest.get_node(pointed_thing.under)
@@ -223,15 +203,9 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 			end
 
 			if not minetest.is_creative_enabled(placer:get_player_name()) then
-				-- Add wear, as if digging a level 0 shovely node
+				-- Add wear (as if digging a shovely node)
 				local toolname = itemstack:get_name()
-				local def = minetest.registered_items[toolname]
-				local group = get_shovel_dig_group(itemstack)
-				local toolcaps = itemstack:get_tool_capabilities()
-				local base_uses = toolcaps.groupcaps[group].uses
-				local maxlevel = toolcaps.groupcaps[group].maxlevel
-				local uses = base_uses * math.pow(3, maxlevel)
-				local wear = math.ceil(65535 / uses)
+				local wear = mcl_autogroup.get_wear(toolname, "shovely")
 				itemstack:add_wear(wear)
 			end
 			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above}, true)
@@ -260,12 +234,7 @@ if minetest.get_modpath("mcl_farming") then
 			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				-- Add wear (as if digging a shearsy node)
 				local toolname = itemstack:get_name()
-				local def = minetest.registered_items[toolname]
-				local group = get_shovel_dig_group(toolname)
-				local base_uses = def.tool_capabilities.groupcaps["shearsy_dig"].uses
-				local maxlevel = def.tool_capabilities.groupcaps["shearsy_dig"].maxlevel
-				local uses = base_uses * math.pow(3, maxlevel)
-				local wear = math.ceil(65535 / uses)
+				local wear = mcl_autogroup.get_wear(toolname, "shearsy")
 				itemstack:add_wear(wear)
 			end
 			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above}, true)

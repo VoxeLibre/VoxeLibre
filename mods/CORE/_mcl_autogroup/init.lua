@@ -49,6 +49,9 @@ mcl_autogroup contains the API functions used to register custom digging groups.
 _mcl_autogroup contains most of the code.  The leading underscore in the name
 "_mcl_autogroup" is used to force Minetest to load that part of the mod as late
 as possible.  Minetest loads mods in reverse alphabetical order.
+
+This also means that it is very important that no mod adds _mcl_autogroups as a
+dependency.
 --]]
 
 -- Returns a table containing the unique "_mcl_hardness" for nodes belonging to
@@ -233,19 +236,34 @@ end
 -- or in the metadata of an enchanted tool.
 --
 -- Parameters:
--- tool_name - Name of the tool being enchanted (like "mcl_tools:diamond_pickaxe")
+-- toolname - Name of the tool being enchanted (like "mcl_tools:diamond_pickaxe")
 -- efficiency - The efficiency level the tool is enchanted with (default 0)
 --
 -- NOTE: 
--- Mods calling this function (like mcl_enchanting) should _not_ have
--- _mcl_autogroups as a dependency.  It is very important that this mod is
--- loaded last.  This also means this function can only be called by other mods
--- after all mods have been initialized.
-function mcl_autogroup.get_groupcaps(tool_name, efficiency)
-	local tdef = minetest.registered_tools[tool_name]
+-- This function can only be called after mod initialization.  Otherwise a mod
+-- would have to add _mcl_autogroup as a dependency which would break the mod
+-- loading order.
+function mcl_autogroup.get_groupcaps(toolname, efficiency)
+	local tdef = minetest.registered_tools[toolname]
 	local groupcaps = table.copy(tdef.tool_capabilities.groupcaps or {})
 	add_groupcaps(groupcaps, tdef._mcl_autogroup_groupcaps, efficiency)
 	return groupcaps
+end
+
+-- Get the wear from using a tool on a digging group.
+--
+-- Parameters
+-- toolname - Name of the tool used
+-- diggroup - The name of the diggroup the tool is used on
+--
+-- NOTE: 
+-- This function can only be called after mod initialization.  Otherwise a mod
+-- would have to add _mcl_autogroup as a dependency which would break the mod
+-- loading order.
+function mcl_autogroup.get_wear(toolname, diggroup)
+	local tdef = minetest.registered_tools[toolname]
+	local uses = tdef._mcl_autogroup_groupcaps[diggroup].uses
+	return math.ceil(65535 / uses)
 end
 
 local overwrite = function()
