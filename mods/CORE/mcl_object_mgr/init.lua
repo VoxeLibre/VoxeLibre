@@ -70,6 +70,7 @@ function mcl_object_mgr.register_entity(name, initial_properties, base_class)
 
 	add_entity_wrapper(def, "on_deactivate")
 	add_entity_wrapper(def, "on_step")
+	add_entity_wrapper(def, "on_punch")
 	add_entity_wrapper(def, "on_death")
 	add_entity_wrapper(def, "on_rightclick")
 	add_entity_wrapper(def, "on_attach_child")
@@ -109,4 +110,12 @@ add_player_wrapper("on_rightclick")
 add_player_wrapper("on_death", "register_on_dieplayer")
 add_player_wrapper("on_respawn")
 
-minetest.register_on_player_hpchange(function(player, hp_change, reason))
+minetest.register_on_player_hpchange(function(player, hp_change, reason)
+	if not reason.auto then
+		local mclplayer = mcl_object_mgr.get(player)
+		local source = MCLDamageSource():from_mt(reason)
+
+		mclplayer:damage(hp_change, source)
+		return true
+	end
+end, true)

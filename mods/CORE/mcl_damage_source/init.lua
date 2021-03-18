@@ -1,9 +1,15 @@
 MCLDamageSource = class()
 
 function MCLDamageSource:constructor(tbl)
-	for k, v in pairs(tbl or {}) do
-		self[k] = v
+	if tbl then
+		for k, v in pairs(tbl) do
+			self[k] = v
+		end
 	end
+end
+
+function MCLDamageSource:from_mt(reason)
+
 end
 
 MCLDamageSource:__getter("direct_object", function(self)

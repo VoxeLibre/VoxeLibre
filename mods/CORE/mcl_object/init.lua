@@ -8,15 +8,15 @@ end
 function MCLObject:on_punch(hitter, time_from_last_punch, tool_capabilities, dir, damage)
 	local source = MCLDamageSource({is_punch = true, raw_source_object = hitter})
 
-	damage = self:damage_modifier(damage, source) or damage
-
-	self.damage_info = {
-		damage = damage,
-		source = source,
-		knockback = self:get_knockback(source, time_from_last_punch, tool_capabilities, dir, nil, damage),
+	local knockback = {
+		hitter = hitter,
+		time_from_last_punch = time_from_last_punch,
+		tool_capabilities = tool_capabilities,
+		dir = dir,
 	}
 
-	return damage
+	self:damage(damage, source, knockback)
+	return true
 end
 
 -- use this function to deal regular damage to an object (do NOT use :punch() unless toolcaps need to be handled)
@@ -24,11 +24,22 @@ function MCLObject:damage(damage, source, knockback)
 	damage = self:damage_modifier(damage, source) or damage
 	self:set_hp(self:get_hp() - damage)
 
-	self.damage_info = {
+	if type(knockback) == "table" then
+		knockback = self:calculate_knockback(
+			knockback.hitter,
+			knockback.time_from_last_punch,
+			knockback.tool_capabilities,
+			knockback.dir or vector.direction(knockback.hitter:get_pos(), self.object:get_pos(),
+			knockback.distance or vector.distance(knockback.hitter:get_pos(), self.object:get_pos(),
+			damage,
+			source)
+	end
+
+	table.insert(self.damage_info, {
 		damage = damage,
 		source = source,
 		knockback = knockback,
-	}
+	})
 
 	return damage
 end
@@ -75,21 +86,11 @@ end
 function MCLObject:on_damage(damage, source, knockback)
 end
 
-function MCLObject:get_knockback(source, time_from_last_punch, tool_capabilities, dir, distance, damage)
-	local direct_object = source:direct_object()
-
-	return self:calculate_knockback(
-		self.object,
-		direct_object,
-		time_from_last_punch or 1.0,
-		tool_capabilities or {fleshy = damage},
-		dir or vector.direction(direct_object:get_pos(), self.object:get_pos()),
-		distance or vector.distance(direct_object:get_pos(), self.object:get_pos()),
-		damage = damage,
-	)
-end
-
 MCLObject.calculate_knockback = minetest.calculate_knockback
+
+function minetest.calculate_knockback()
+	return 0
+end
 
 function MCLObject:on_step()
 	local damage_info = self.damage_info

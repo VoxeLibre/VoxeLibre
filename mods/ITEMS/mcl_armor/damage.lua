@@ -87,7 +87,7 @@ function MCLObject:damage_modifier(damage, source)
 
 	if thorns_damage > 0 and source_object ~= self then
 		local thorns_damage_source = MCLDamageSource({direct_object = self, source_object = source_object, is_thorns = true})
-		local thorns_knockback = source_object:get_knockback(thorns_damage_source, nil, nil, nil, nil, thorns_damage)
+		local thorns_knockback = {hitter = self}
 
 		source_object:damage(thorns_damage, thorns_damage_source, thorns_knockback)
 
