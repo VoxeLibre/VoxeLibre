@@ -155,15 +155,7 @@ mcl_enchanting.enchantments.efficiency = {
 	description = S("Increases mining speed."),
 	curse = false,
 	on_enchant = function(itemstack, level)
-		local tool_capabilities = itemstack:get_tool_capabilities()
-		local groupcaps = {}
-		for group, capability in pairs(tool_capabilities.groupcaps) do
-			local groupname = group .. "_efficiency_" .. level
-			capability.times = mcl_autogroup.digtimes[groupname]
-			groupcaps[groupname] = capability
-		end
-		tool_capabilities.groupcaps = groupcaps
-		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
+		mcl_enchanting.update_groupcaps(itemstack)
 	end,
 	requires_tool = false,
 	treasure = false,

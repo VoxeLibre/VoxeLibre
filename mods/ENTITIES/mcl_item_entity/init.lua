@@ -169,62 +169,6 @@ local minigroups = { "shearsy", "swordy", "shearsy_wool", "swordy_cobweb" }
 local basegroups = { "pickaxey", "axey", "shovely" }
 local materials = { "wood", "gold", "stone", "iron", "diamond" }
 
--- Checks if the given node would drop its useful drop if dug by a tool
--- with the given tool capabilities. Returns true if it will yield its useful
--- drop, false otherwise.
-local check_can_drop = function(node_name, tool_capabilities)
-	local handy = minetest.get_item_group(node_name, "handy")
-	local dig_immediate = minetest.get_item_group(node_name, "dig_immediate")
-	if handy == 1 or dig_immediate == 2 or dig_immediate == 3 then
-		return true
-	else
-		local toolgroupcaps
-		if tool_capabilities then
-			toolgroupcaps = tool_capabilities.groupcaps
-		else
-			return false
-		end
-
-		-- Compare node groups with tool capabilities
-		for m=1, #minigroups do
-			local minigroup = minigroups[m]
-			local g = minetest.get_item_group(node_name, minigroup)
-			if g ~= 0 then
-				local plus = minigroup .. "_dig"
-				if toolgroupcaps[plus] then
-					return true
-				end
-				for e=1,5 do
-					local effplus = plus .. "_efficiency_" .. e
-					if toolgroupcaps[effplus] then
-						return true
-					end
-				end
-			end
-		end
-		for b=1, #basegroups do
-			local basegroup = basegroups[b]
-			local g = minetest.get_item_group(node_name, basegroup)
-			if g ~= 0 then
-				for m=g, #materials do
-					local plus = basegroup .. "_dig_"..materials[m]
-					if toolgroupcaps[plus] then
-						return true
-					end
-					for e=1,5 do
-						local effplus = plus .. "_efficiency_" .. e
-						if toolgroupcaps[effplus] then
-							return true
-						end
-					end
-				end
-			end
-		end
-
-		return false
-	end
-end
-
 -- Stupid workaround to get drops from a drop table:
 -- Create a temporary table in minetest.registered_nodes that contains the proper drops,
 -- because unfortunately minetest.get_node_drops needs the drop table to be inside a registered node definition
@@ -281,16 +225,19 @@ function minetest.handle_node_drops(pos, drops, digger)
 
 	-- Check if node will yield its useful drop by the digger's tool
 	local dug_node = minetest.get_node(pos)
-	local toolcaps
+	local tooldef
 	local tool
 	if digger ~= nil then
 		tool = digger:get_wielded_item()
-		toolcaps = tool:get_tool_capabilities()
+		tooldef = minetest.registered_tools[tool:get_name()]
 
-		if not check_can_drop(dug_node.name, toolcaps) then
+		if not mcl_autogroup.can_harvest(dug_node.name, tool:get_name()) then
 			return
 		end
 	end
+
+	local diggroups = tooldef and tooldef._mcl_diggroups
+	local shearsy_level = diggroups and diggroups.shearsy and diggroups.shearsy.level
 
 	--[[ Special node drops when dug by shears by reading _mcl_shears_drop or with a silk touch tool reading _mcl_silk_touch_drop
 	from the node definition.
@@ -303,7 +250,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 
 	local silk_touch_drop = false
 	local nodedef = minetest.registered_nodes[dug_node.name]
-	if toolcaps ~= nil and toolcaps.groupcaps and toolcaps.groupcaps.shearsy_dig and nodedef._mcl_shears_drop then
+	if shearsy_level and shearsy_level > 0 and nodedef._mcl_shears_drop then
 		if nodedef._mcl_shears_drop == true then
 			drops = { dug_node.name }
 		else

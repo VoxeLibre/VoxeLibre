@@ -59,6 +59,7 @@ mcl_enchanting = {
 }
 
 dofile(modpath .. "/engine.lua")
+dofile(modpath .. "/groupcaps.lua")
 dofile(modpath .. "/enchantments.lua")
 
 minetest.register_chatcommand("enchant", {

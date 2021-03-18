@@ -17,6 +17,10 @@ Items can have these fields:
    anvil.
    See `mcl_banners` for an example.
 
+Tools can have these fields:
+* `_mcl_diggroups`: Specifies the digging groups that a tool can dig and how
+  efficiently.  See `_mcl_autogroup` for more information.
+
 All nodes can have these fields:
 
 * `_mcl_hardness`: Hardness of the block, ranges from 0 to infinity (represented by -1). Determines digging times. Default: 0
