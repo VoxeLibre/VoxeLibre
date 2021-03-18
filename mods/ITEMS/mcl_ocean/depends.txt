@@ -1,6 +1,0 @@
-mcl_core
-mcl_sounds
-mcl_dye
-doc?
-doc_items?
-screwdriver?

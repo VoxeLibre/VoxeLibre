@@ -1,9 +1,0 @@
-mcl_init
-mcl_worlds
-mcl_core
-mcl_nether
-mcl_end
-mcl_particles
-mcl_spawn
-awards?
-doc?

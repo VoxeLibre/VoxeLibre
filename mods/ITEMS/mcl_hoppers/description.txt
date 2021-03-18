@@ -1,1 +1,0 @@
-It's just a clone of Minecraft hoppers, functions nearly identical to them minus mesecons making them stop and the way they're placed.

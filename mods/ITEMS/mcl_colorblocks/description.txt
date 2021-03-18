@@ -1,1 +1,0 @@
-Adds blocks which can be colored, namely hardened clay.

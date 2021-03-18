@@ -1,1 +1,0 @@
-Adds infested blocks: Blocks which which disguise themselves as stone blocks and spawn a silverfish when broken.

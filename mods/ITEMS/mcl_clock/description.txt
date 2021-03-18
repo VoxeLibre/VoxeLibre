@@ -1,1 +1,0 @@
-A fantasy clock item roughly shows the time of day.

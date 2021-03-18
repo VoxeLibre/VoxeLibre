@@ -1,5 +1,0 @@
-mesecons
-mesecons_mvps
-mcl_mobitems
-doc?
-screwdriver?

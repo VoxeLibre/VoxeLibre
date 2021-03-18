@@ -1,1 +1,0 @@
-Core items of MineClone 2: Basic biome blocks (dirt, sand, stones, etc.), derived items, glass, sugar cane, cactus, barrier, mining tools, hand, craftitems, and misc. items which don't really fit anywhere else.
