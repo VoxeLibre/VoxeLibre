@@ -44,10 +44,11 @@ See "mcl_tools/init.lua" for examples of this.
 Information about the mod
 =========================
 
-The mod is also split up into two mods, mcl_autogroups and _mcl_autogroups.
-mcl_autogroups contains the API functions used to register custom digging
-groups.  _mcl_autogroups contains parts of the mod which need to be executed
-after loading all other mods.
+The mod is split up into two parts, mcl_autogroup and _mcl_autogroup.
+mcl_autogroup contains the API functions used to register custom digging groups.
+_mcl_autogroup contains most of the code.  The leading underscore in the name
+"_mcl_autogroup" is used to force Minetest to load that part of the mod as late
+as possible.  Minetest loads mods in reverse alphabetical order.
 --]]
 
 -- The groups which affect dig times
@@ -269,7 +270,7 @@ local overwrite = function()
 
 	for tname, tdef in pairs(minetest.registered_tools) do
 		-- Assign groupcaps for digging the registered digging groups
-		-- depending on the _mcl_autogroups_groupcaps in the tool
+		-- depending on the _mcl_autogroup_groupcaps in the tool
 		-- definition
 		if tdef._mcl_autogroup_groupcaps then
 			local toolcaps = table.copy(tdef.tool_capabilities) or {}
