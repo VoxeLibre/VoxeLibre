@@ -163,6 +163,8 @@ function boat.get_staticdata(self)
 end
 
 function boat.on_death(self, killer)
+	mcl_burning.extinguish(self.object)
+
 	if killer and killer:is_player() and minetest.is_creative_enabled(killer:get_player_name()) then
 		local inv = killer:get_inventory()
 		if not inv:contains_item("main", self._itemstring) then
@@ -188,6 +190,8 @@ function boat.on_punch(self, puncher, time_from_last_punch, tool_capabilities, d
 end
 
 function boat.on_step(self, dtime, moveresult)
+	mcl_burning.tick(self.object, dtime)
+
 	self._v = get_v(self.object:get_velocity()) * get_sign(self._v)
 	local v_factor = 1
 	local v_slowdown = 0.02

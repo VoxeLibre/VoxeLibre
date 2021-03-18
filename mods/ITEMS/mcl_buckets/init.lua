@@ -92,7 +92,7 @@ function mcl_buckets.register_liquid(def)
 				-- Check if pointing to a buildable node
 				local item = itemstack:get_name()
 
-				if extra_check and extra_check(place_pos, user) == false then
+				if def.extra_check and def.extra_check(place_pos, user) == false then
 					-- Fail placement of liquid
 				elseif minetest.registered_nodes[nn] and minetest.registered_nodes[nn].buildable_to then
 					-- buildable; replace the node
