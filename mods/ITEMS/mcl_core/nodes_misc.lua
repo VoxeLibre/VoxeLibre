@@ -108,7 +108,7 @@ minetest.register_node("mcl_core:cobweb", {
 	liquid_renewable = false,
 	liquid_range = 0,
 	walkable = false,
-	groups = {swordy_cobweb=1,shearsy=1, fake_liquid=1, disable_jump=1, deco_block=1, dig_by_piston=1, dig_by_water=1,destroy_by_lava_flow=1,},
+	groups = {swordy_cobweb=1, shearsy_cobweb=1, fake_liquid=1, disable_jump=1, deco_block=1, dig_by_piston=1, dig_by_water=1,destroy_by_lava_flow=1,},
 	drop = "mcl_mobitems:string",
 	_mcl_shears_drop = true,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),

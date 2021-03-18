@@ -1,8 +1,0 @@
-mcl_core
-mcl_sounds
-mcl_wool
-mcl_torches
-mcl_weather
-mcl_armor?
-mobs_mc
-doc?

@@ -116,6 +116,8 @@ end
 ARROW_ENTITY.on_step = function(self, dtime)
 	mcl_burning.tick(self.object, dtime)
 
+	self._time_in_air = self._time_in_air + .001
+
 	local pos = self.object:get_pos()
 	local dpos = table.copy(pos) -- digital pos
 	dpos = vector.round(dpos)
@@ -125,9 +127,11 @@ ARROW_ENTITY.on_step = function(self, dtime)
 		self.object:remove()
 	end
 
-	if self.object:get_attach() and not self.object:get_attach(parent) then
-		self.object:remove()
-	end
+	minetest.register_on_leaveplayer(function(player)
+		if self.object:get_attach(parent) == player then
+			self.object:remove()
+		end
+	end)
 
 	if self._stuck then
 		self._stucktimer = self._stucktimer + dtime
@@ -208,10 +212,10 @@ ARROW_ENTITY.on_step = function(self, dtime)
 		for k, obj in pairs(objs) do
 			local ok = false
 			-- Arrows can only damage players and mobs
-			if obj ~= self._shooter and obj:is_player() then
+			if obj:is_player() then
 				ok = true
 			elseif obj:get_luaentity() ~= nil then
-				if obj ~= self._shooter and (obj:get_luaentity()._cmi_is_mob or obj:get_luaentity()._hittable_by_projectile) then
+				if (obj:get_luaentity()._cmi_is_mob or obj:get_luaentity()._hittable_by_projectile) then
 					ok = true
 				end
 			end
@@ -229,11 +233,12 @@ ARROW_ENTITY.on_step = function(self, dtime)
 		end
 
 		-- If an attackable object was found, we will damage the closest one only
+
 		if closest_object ~= nil then
 			local obj = closest_object
 			local is_player = obj:is_player()
 			local lua = obj:get_luaentity()
-			if obj ~= self._shooter and (is_player or (lua and (lua._cmi_is_mob or lua._hittable_by_projectile))) then
+			if obj == self._shooter and self._time_in_air > 1.02 or obj ~= self._shooter and (is_player or (lua and (lua._cmi_is_mob or lua._hittable_by_projectile))) then
 				if obj:get_hp() > 0 then
 					-- Check if there is no solid node between arrow and object
 					local ray = minetest.raycast(self.object:get_pos(), obj:get_pos(), true)
@@ -462,6 +467,7 @@ ARROW_ENTITY.get_staticdata = function(self)
 end
 
 ARROW_ENTITY.on_activate = function(self, staticdata, dtime_s)
+	self._time_in_air = 1.0
 	self._in_player = false
 	local data = minetest.deserialize(staticdata)
 	if data then

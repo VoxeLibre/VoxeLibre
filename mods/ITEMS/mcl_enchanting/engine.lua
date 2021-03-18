@@ -219,6 +219,38 @@ function mcl_enchanting.enchantments_snippet(_, _, itemstack)
 	end
 end
 
+-- Returns the after_use callback function to use when registering an enchanted
+-- item.  The after_use callback is used to update the tool_capabilities of
+-- efficiency enchanted tools with outdated digging times.
+--
+-- It does this by calling apply_efficiency to reapply the efficiency
+-- enchantment.  That function is written to use hash values to only update the
+-- tool if neccessary.
+--
+-- This is neccessary for digging times of tools to be in sync when MineClone2
+-- or mods add new hardness values.
+local function get_after_use_callback(itemdef)
+	if itemdef.after_use then
+		-- If the tool already has an after_use, make sure to call that
+		-- one too.
+		return function(itemstack, user, node, digparams)
+			itemdef.after_use(itemstack, user, node, digparams)
+			mcl_enchanting.update_groupcaps(itemstack)
+		end
+	end
+
+	-- If the tool does not have after_use, add wear to the tool as if no
+	-- after_use was registered.
+	return function(itemstack, user, node, digparams)
+		if not minetest.is_creative_enabled(user) then
+			itemstack:add_wear(digparams.wear)
+		end
+
+		local enchantments = mcl_enchanting.get_enchantments(itemstack)
+		mcl_enchanting.update_groupcaps(itemstack)
+	end
+end
+
 function mcl_enchanting.initialize()
 	local register_tool_list = {}
 	local register_item_list = {}
@@ -236,6 +268,7 @@ function mcl_enchanting.initialize()
 			new_def.groups.enchanted = 1
 			new_def.texture = itemdef.texture or itemname:gsub("%:", "_")
 			new_def._mcl_enchanting_enchanted_tool = new_name
+			new_def.after_use = get_after_use_callback(itemdef)
 			local register_list = register_item_list
 			if itemdef.type == "tool" then
 				register_list = register_tool_list

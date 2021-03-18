@@ -3,6 +3,19 @@ mcl_core = {}
 -- Repair percentage for toolrepair
 mcl_core.repair = 0.05
 
+mcl_autogroup.register_diggroup("handy")
+mcl_autogroup.register_diggroup("pickaxey", {
+	levels = { "wood", "gold", "stone", "iron", "diamond" }
+})
+mcl_autogroup.register_diggroup("axey")
+mcl_autogroup.register_diggroup("shovely")
+mcl_autogroup.register_diggroup("shearsy")
+mcl_autogroup.register_diggroup("shearsy_wool")
+mcl_autogroup.register_diggroup("shearsy_cobweb")
+mcl_autogroup.register_diggroup("swordy")
+mcl_autogroup.register_diggroup("swordy_cobweb")
+mcl_autogroup.register_diggroup("creative_breakable")
+
 -- Load files
 local modpath = minetest.get_modpath("mcl_core")
 dofile(modpath.."/functions.lua")

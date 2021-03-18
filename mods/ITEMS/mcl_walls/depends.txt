@@ -1,6 +1,0 @@
-mcl_core
-mcl_end
-mcl_ocean
-mcl_nether
-mcl_sounds
-doc?
