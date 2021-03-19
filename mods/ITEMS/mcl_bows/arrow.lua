@@ -337,8 +337,8 @@ ARROW_ENTITY.on_step = function(self, dtime)
 						minetest.sound_play({name="mcl_bows_hit_other", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=16}, true)
 					end
 				end
-				mcl_burning.extinguish(self.object)
 				if not obj:is_player() then
+					mcl_burning.extinguish(self.object)
 					self.object:remove()
 				end
 				return
