@@ -108,7 +108,6 @@ minetest.register_entity("wieldview:wieldnode", {
 			local itemstring = wielded:get_name()
 
 			if self.itemstring ~= itemstring then
-        minetest.chat_send_all(dump2(itemstring, "itemstring"))
 				local def = minetest.registered_items[itemstring]
 				self.object:set_properties({glow = def and def.light_source or 0})
 
