@@ -145,7 +145,7 @@ function mcl_burning.set_on_fire(obj, burn_time, reason)
 	end
 
 	if old_burn_time <= burn_time then
-		local sound_id = mcl_burning.get(obj, "int", "sound_id")
+		--[[local sound_id = mcl_burning.get(obj, "int", "sound_id")
 		if sound_id == 0 then
 			sound_id = minetest.sound_play("fire_fire", {
 				object = obj,
@@ -153,7 +153,7 @@ function mcl_burning.set_on_fire(obj, burn_time, reason)
 				max_hear_distance = 16,
 				loop = true,
 			}) + 1
-		end
+		end]]--
 
 		local hud_id
 		if obj:is_player() then
@@ -171,7 +171,7 @@ function mcl_burning.set_on_fire(obj, burn_time, reason)
 		mcl_burning.set(obj, "float", "burn_time", burn_time)
 		mcl_burning.set(obj, "string", "reason", reason)
 		mcl_burning.set(obj, "int", "hud_id", hud_id)
-		mcl_burning.set(obj, "int", "sound_id", sound_id)
+		--mcl_burning.set(obj, "int", "sound_id", sound_id)
 
 		local fire_entity = minetest.add_entity(obj:get_pos(), "mcl_burning:fire")
 		local minp, maxp = mcl_burning.get_collisionbox(obj)
@@ -194,8 +194,8 @@ end
 
 function mcl_burning.extinguish(obj)
 	if mcl_burning.is_burning(obj) then
-		local sound_id = mcl_burning.get(obj, "int", "sound_id") - 1
-		minetest.sound_stop(sound_id)
+		--local sound_id = mcl_burning.get(obj, "int", "sound_id") - 1
+		--minetest.sound_stop(sound_id)
 
 		if obj:is_player() then
 			local hud_id = mcl_burning.get(obj, "int", "hud_id") - 1
@@ -206,7 +206,7 @@ function mcl_burning.extinguish(obj)
 		mcl_burning.set(obj, "float", "burn_time")
 		mcl_burning.set(obj, "float", "damage_timer")
 		mcl_burning.set(obj, "int", "hud_id")
-		mcl_burning.set(obj, "int", "sound_id")
+		--mcl_burning.set(obj, "int", "sound_id")
 	end
 end
 
