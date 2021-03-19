@@ -19,6 +19,22 @@ function MCLObject:on_punch(hitter, time_from_last_punch, tool_capabilities, dir
 	return true
 end
 
+function MCLObject:apply_knockback(strength, dir)
+	local oldvel = self.object:get_velocity()
+	local vel = vector.multiply(vector.normalize(vector.new(dir.x, 0, dir.z)), strength)
+
+	if self:is_on_ground() then
+		local old_y = oldvel.y / 2
+
+		y = math.min(0.4, old_y / 2 + strenth)
+		vel.y
+	end
+
+	vel = vector.subtract(vel, vector.divide(vector.new(oldvel.x, 0, oldvel.z), 2))
+
+	self.object:add_velocity(vel)
+end
+
 -- use this function to deal regular damage to an object (do NOT use :punch() unless toolcaps need to be handled)
 function MCLObject:damage(damage, source, knockback)
 	damage = self:damage_modifier(damage, source) or damage
