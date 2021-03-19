@@ -72,7 +72,7 @@ minetest.register_on_joinplayer(function(player)
 	minetest.after(0, function(player)
 		wieldview:update_wielded_item(player)
 		local itementity = minetest.add_entity(player:get_pos(), "wieldview:wieldnode")
-		itementity:set_attach(player, "Hand_Right", vector.new(0, 1, 0), vector.new(-90, 0, 45))
+		itementity:set_attach(player, "Hand_Right", vector.new(0, 1, 0), vector.new(90, 0, 45))
 		itementity:get_luaentity().wielder = name
 	end, player)
 end)
