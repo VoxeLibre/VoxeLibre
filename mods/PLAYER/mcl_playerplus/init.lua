@@ -33,6 +33,53 @@ local dir_to_pitch = function(dir)
 	return -math.atan2(-dir.y, xz)
 end
 
+local player_vel_yaws = {}
+
+function limit_vel_yaw(player_vel_yaw, yaw)
+	if player_vel_yaw < 0 then
+		player_vel_yaw = player_vel_yaw + 360
+	end
+
+	if yaw < 0 then
+		yaw = yaw + 360
+	end
+
+	if math.abs(player_vel_yaw - yaw) > 40 then
+		local player_vel_yaw_nm, yaw_nm = player_vel_yaw, yaw
+		if player_vel_yaw > yaw then
+			player_vel_yaw_nm = player_vel_yaw - 360
+		else
+			yaw_nm = yaw - 360
+		end
+		if math.abs(player_vel_yaw_nm - yaw_nm) > 40 then
+			local diff = math.abs(player_vel_yaw - yaw)
+			if diff > 180 and diff < 185 or diff < 180 and diff > 175 then
+				player_vel_yaw = yaw
+			elseif diff < 180 then
+				if player_vel_yaw < yaw then
+					player_vel_yaw = yaw - 40
+				else
+					player_vel_yaw = yaw + 40
+				end
+			else
+				if player_vel_yaw < yaw then
+					player_vel_yaw = yaw + 40
+				else
+					player_vel_yaw = yaw - 40
+				end
+			end
+		end
+	end
+
+	if player_vel_yaw < 0 then
+		player_vel_yaw = player_vel_yaw + 360
+	elseif player_vel_yaw > 360 then
+		player_vel_yaw = player_vel_yaw - 360
+	end
+
+	return player_vel_yaw
+end
+
 local pitch, name, node_stand, node_stand_below, node_head, node_feet, pos
 
 minetest.register_globalstep(function(dtime)
@@ -45,19 +92,20 @@ minetest.register_globalstep(function(dtime)
 		local controls = player:get_player_control()
 		name = player:get_player_name()
 
+		local meta = player:get_meta()
+
 		local player_velocity = player:get_velocity() or player:get_player_velocity()
 
 		-- controls head bone
-		local pitch = degrees(player:get_look_vertical()) * -1
-		local yaw = degrees(player:get_look_horizontal()) * -1
+		local pitch = - degrees(player:get_look_vertical())
+		local yaw = degrees(player:get_look_horizontal())
 
-		local player_vel_yaw = 0
-
-		if degrees(dir_to_yaw(player_velocity)) == 0 then
-			yaw = 0
-		else
-			player_vel_yaw = degrees(dir_to_yaw(player_velocity))
+		local player_vel_yaw = degrees(dir_to_yaw(player_velocity))
+		if player_vel_yaw == 0 then
+			player_vel_yaw = player_vel_yaws[name] or yaw
 		end
+		player_vel_yaw = limit_vel_yaw(player_vel_yaw, yaw)
+		player_vel_yaws[name] = player_vel_yaw
 
 		-- controls right and left arms pitch when shooting a bow or punching
 		if string.find(player:get_wielded_item():get_name(), "mcl_bows:bow") and controls.RMB and not controls.LMB and not controls.up and not controls.down and not controls.left and not controls.right then
@@ -80,42 +128,30 @@ minetest.register_globalstep(function(dtime)
 			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
 		elseif get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and player:get_attach() == nil and is_sprinting(name) == true then
 			-- set head pitch and yaw when swimming
-			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+90-degrees(dir_to_pitch(player_velocity)),yaw - player_vel_yaw * -1,0))
+			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+90-degrees(dir_to_pitch(player_velocity)),player_vel_yaw - yaw,0))
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,0.8,0.35}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 			-- control body bone when swimming
-			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(degrees(dir_to_pitch(player_velocity)) - 90,player_vel_yaw * -1 - yaw + 180,0))
+			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(degrees(dir_to_pitch(player_velocity)) - 90,-player_vel_yaw + yaw + 180,0))
 
 		elseif player:get_attach() == nil then
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 
-			if player_velocity.x > 0.35 or player_velocity.z > 0.35 or player_velocity.x < -0.35 or player_velocity.z < -0.35 then
-				if player_vel_yaw * -1 - yaw < 90 or player_vel_yaw * -1 - yaw > 270 then
-					-- controls head and Body_Control bones while moving backwards
-					player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,yaw - player_vel_yaw * -1,0))
-					player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,player_vel_yaw * -1 - yaw,0))
-				else
-					-- controls head and Body_Control bones while moving forwards
-					player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,yaw - player_vel_yaw * -1 + 180,0))
-					player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,player_vel_yaw * -1 - yaw + 180,0))
-				end
-			else
-				player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,0,0))
-				player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
-			end
+			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch, player_vel_yaw - yaw, 0))
+			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0, -player_vel_yaw + yaw, 0))
 		else
 			local attached = player:get_attach(parent)
 			local attached_yaw = degrees(attached:get_yaw())
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
-			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,degrees(player:get_look_horizontal()) * -1 + attached_yaw,0))
+			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch, -limit_vel_yaw(yaw, attached_yaw) + attached_yaw, 0))
 			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
 		end
 
 		if mcl_playerplus_internal[name].jump_cooldown > 0 then
 			mcl_playerplus_internal[name].jump_cooldown = mcl_playerplus_internal[name].jump_cooldown - dtime
 		end
-		if player:get_player_control().jump and mcl_playerplus_internal[name].jump_cooldown <= 0 then
+		if controls.jump and mcl_playerplus_internal[name].jump_cooldown <= 0 then
 
 			pos = player:get_pos()
 
