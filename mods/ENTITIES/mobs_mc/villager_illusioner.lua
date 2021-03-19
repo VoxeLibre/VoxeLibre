@@ -36,7 +36,7 @@ mobs:register_mob("mobs_mc:illusioner", {
 		-- TODO: more sounds
 		distance = 16,
 	},
-	visual_size = {x=3, y=3},
+	visual_size = {x=2.75, y=2.75},
 	walk_velocity = 0.6,
 	run_velocity = 2,
 	jump = true,

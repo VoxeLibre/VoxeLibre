@@ -960,7 +960,7 @@ mobs:register_mob("mobs_mc:villager", {
 		"mobs_mc_villager_smith.png", --hat
 	},
 	},
-	visual_size = {x=3, y=3},
+	visual_size = {x=2.75, y=2.75},
 	makes_footstep_sound = true,
 	walk_velocity = 1.2,
 	run_velocity = 2.4,

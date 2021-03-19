@@ -30,7 +30,7 @@ mobs:register_mob("mobs_mc:vindicator", {
             -- TODO: Glow when attacking (mobs_mc_vindicator.png)
         },
     },
-	visual_size = {x=3, y=3},
+	visual_size = {x=2.75, y=2.75},
 	makes_footstep_sound = true,
 	damage = 13,
 	reach = 2,
