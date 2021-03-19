@@ -85,14 +85,15 @@ minetest.register_craftitem("mcl_end:crystal", {
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type == "node" then
 			local pos = minetest.get_pointed_thing_position(pointed_thing)
-			local node = minetest.get_node(pos).name
+			local node = minetest.get_node(pos)
+			local node_name = node.name
 			if placer and not placer:get_player_control().sneak then
-				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-					return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+				if minetest.registered_nodes[node_name] and minetest.registered_nodes[node_name].on_rightclick then
+					return minetest.registered_nodes[node_name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
 				end
 			end
 			if find_crystal(pos) then return itemstack end
-			if node == "mcl_core:obsidian" or node == "mcl_core:bedrock" then
+			if node_name == "mcl_core:obsidian" or node_name == "mcl_core:bedrock" then
 				if not minetest.is_creative_enabled(placer:get_player_name()) then
 					itemstack:take_item()
 				end
