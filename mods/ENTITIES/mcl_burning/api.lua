@@ -117,6 +117,10 @@ function mcl_burning.damage(obj)
 end
 
 function mcl_burning.set_on_fire(obj, burn_time, reason)
+	if obj:get_hp() < 0 then
+		return
+	end
+
 	local luaentity = obj:get_luaentity()
 	if luaentity and luaentity.fire_resistant then
 		return
