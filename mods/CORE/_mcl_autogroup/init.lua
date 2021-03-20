@@ -209,7 +209,7 @@ function mcl_autogroup.can_harvest(nodename, toolname)
 
 	-- Check if it can be dug by tool
 	local tdef = minetest.registered_tools[toolname]
-	if tdef then
+	if tdef and tdef._mcl_diggroups then
 		for g, gdef in pairs(tdef._mcl_diggroups) do
 			if ndef.groups[g] then
 				if ndef.groups[g] <= gdef.level then
