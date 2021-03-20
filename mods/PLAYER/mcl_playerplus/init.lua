@@ -111,12 +111,10 @@ minetest.register_globalstep(function(dtime)
 
 		-- controls right and left arms pitch when shooting a bow
 		if string.find(wielded:get_name(), "mcl_bows:bow") and controls.RMB and not controls.LMB and not controls.up and not controls.down and not controls.left and not controls.right then
-			minetest.chat_send_all("entered 1")
 			player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch+90,-30,pitch * -1 * .35))
 			player:set_bone_position("Arm_Left_Pitch_Control", vector.new(3.5,5.785,0), vector.new(pitch+90,43,pitch * .35))
 		-- when punching
 		elseif controls.LMB and player:get_attach() == nil then
-			minetest.chat_send_all("entered 2")
 			player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch,0,0))
 			player:set_bone_position("Arm_Left_Pitch_Control", vector.new(3,5.785,0), vector.new(0,0,0))
 		-- when holding an item.
