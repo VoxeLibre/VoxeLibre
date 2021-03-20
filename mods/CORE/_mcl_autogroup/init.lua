@@ -69,6 +69,8 @@ This also means that it is very important that no mod adds _mcl_autogroup as a
 dependency.
 --]]
 
+assert(minetest.get_modpath("mcl_autogroup"), "This mod requires the mod mcl_autogroup to function")
+
 -- Returns a table containing the unique "_mcl_hardness" for nodes belonging to
 -- each diggroup.
 local function get_hardness_values_for_groups()
