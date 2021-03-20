@@ -114,15 +114,9 @@ minetest.register_entity("wieldview:wieldnode", {
         -- wield item as cubic
 				if armor.textures[self.wielder].wielditem == "blank.png" then
 					self.object:set_properties({textures = {itemstring}})
-				else -- displayed item as flat
+				else -- wield item as flat
 					self.object:set_properties({textures = {""}})
 				end
-
-        if itemstring == "" then -- holding item
-          player:set_bone_position("Arm_Right", vector.new(0, 0, 0), vector.new(0, 0, 0))
-        else -- empty hands
-          player:set_bone_position("Arm_Right", vector.new(0, 0, 0), vector.new(20, 0, 0))
-        end
 
 				self.itemstring = itemstring
 			end
