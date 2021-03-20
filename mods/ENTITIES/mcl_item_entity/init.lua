@@ -165,10 +165,6 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
-local minigroups = { "shearsy", "swordy", "shearsy_wool", "swordy_cobweb" }
-local basegroups = { "pickaxey", "axey", "shovely" }
-local materials = { "wood", "gold", "stone", "iron", "diamond" }
-
 -- Stupid workaround to get drops from a drop table:
 -- Create a temporary table in minetest.registered_nodes that contains the proper drops,
 -- because unfortunately minetest.get_node_drops needs the drop table to be inside a registered node definition
