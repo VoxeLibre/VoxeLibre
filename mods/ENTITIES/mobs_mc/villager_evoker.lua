@@ -28,7 +28,7 @@ mobs:register_mob("mobs_mc:evoker", {
 		"blank.png", --no hat
 		-- TODO: Attack glow
 	} },
-	visual_size = {x=3, y=3},
+	visual_size = {x=2.75, y=2.75},
 	makes_footstep_sound = true,
 	damage = 6,
 	walk_velocity = 0.2,

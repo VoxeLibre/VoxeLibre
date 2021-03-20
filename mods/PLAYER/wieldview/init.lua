@@ -72,7 +72,7 @@ minetest.register_on_joinplayer(function(player)
 	minetest.after(0, function(player)
 		wieldview:update_wielded_item(player)
 		local itementity = minetest.add_entity(player:get_pos(), "wieldview:wieldnode")
-		itementity:set_attach(player, "Hand_Right", vector.new(0, 1, 0), vector.new(-90, 0, 45))
+		itementity:set_attach(player, "Hand_Right", vector.new(0, 1, 0), vector.new(90, 0, 45))
 		itementity:get_luaentity().wielder = name
 	end, player)
 end)
@@ -106,14 +106,18 @@ minetest.register_entity("wieldview:wieldnode", {
 		if player then
 			local wielded = player:get_wielded_item()
 			local itemstring = wielded:get_name()
+
 			if self.itemstring ~= itemstring then
 				local def = minetest.registered_items[itemstring]
 				self.object:set_properties({glow = def and def.light_source or 0})
+
+        -- wield item as cubic
 				if armor.textures[self.wielder].wielditem == "blank.png" then
 					self.object:set_properties({textures = {itemstring}})
-				else
+				else -- wield item as flat
 					self.object:set_properties({textures = {""}})
 				end
+
 				self.itemstring = itemstring
 			end
 		else

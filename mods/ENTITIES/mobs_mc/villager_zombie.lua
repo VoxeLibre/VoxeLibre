@@ -45,7 +45,7 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 		{"mobs_mc_zombie_smith.png"},
 		{"mobs_mc_zombie_villager.png"}
 	},
-	visual_size = {x=3, y=3},
+	visual_size = {x=2.75, y=2.75},
 	makes_footstep_sound = true,
 	damage = 3,
 	reach = 2,
