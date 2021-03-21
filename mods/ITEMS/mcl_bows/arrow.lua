@@ -16,23 +16,17 @@ local dir_to_pitch = function(dir)
 end
 
 local random_arrow_positions = function(positions, placement)
-	local min = 0
-	local max = 1
 	if positions == 'x' then
-		min = -4
-		max = 4
+		return math.random(-4, 4)
 	elseif positions == 'y' then
-		min = 0
-		max = 10
+		return math.random(0, 10)
 	end
 	if placement == 'front' and positions == 'z' then
-		min = 3
-		max = 3
+		return 3
 	elseif placement == 'back' and positions == 'z' then
-		min = -3
-		max = -3
+		return -3
 	end
-	return math.random(max, min)
+	return 0
 end
 
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
