@@ -275,7 +275,7 @@ minetest.register_node("mcl_ocean:dried_kelp_block", {
 	description = S("Dried Kelp Block"),
 	_doc_items_longdesc = S("A decorative block that serves as a great furnace fuel."),
 	tiles = { "mcl_ocean_dried_kelp_top.png", "mcl_ocean_dried_kelp_bottom.png", "mcl_ocean_dried_kelp_side.png" },
-	groups = { handy = 1, building_block = 1, flammable = 2, fire_encouragement = 30, fire_flammability = 60 },
+	groups = { handy = 1, hoey = 1, building_block = 1, flammable = 2, fire_encouragement = 30, fire_flammability = 60 },
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
