@@ -17,7 +17,7 @@ end
 
 local random_arrow_positions = function(positions, placement)
 	local min = 0
-	local max = 0
+	local max = 1
 	if positions == 'x' then
 		min = -4
 		max = 4
