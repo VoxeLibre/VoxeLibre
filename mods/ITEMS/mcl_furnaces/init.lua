@@ -161,6 +161,12 @@ local function on_metadata_inventory_take(pos, listname, index, stack, player)
 	end
 end
 
+local function on_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
+	if from_list == "dst" then
+		give_xp(pos, player)
+	end
+end
+
 local function spawn_flames(pos, param2)
 	local minrelpos, maxrelpos
 	local dir = minetest.facedir_to_dir(param2)
@@ -477,10 +483,12 @@ minetest.register_node("mcl_furnaces:furnace", {
 		give_xp(pos)
 	end,
 
-	on_metadata_inventory_move = function(pos)
+	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		-- Reset accumulated game time when player works with furnace:
 		furnace_reset_delta_time(pos)
 		minetest.get_node_timer(pos):start(1.0)
+
+		on_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
 	end,
 	on_metadata_inventory_put = function(pos)
 		-- Reset accumulated game time when player works with furnace:
@@ -494,9 +502,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 		-- start timer function, it will helpful if player clears dst slot
 		minetest.get_node_timer(pos):start(1.0)
 
-		if listname == "dst" then
-			give_xp(pos, player)
-		end
+		on_metadata_inventory_take(pos, listname, index, stack, player)
 	end,
 
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
@@ -552,6 +558,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
+	on_metadata_inventory_move = on_metadata_inventory_move,
 	on_metadata_inventory_take = on_metadata_inventory_take,
 	on_receive_fields = receive_fields,
 	_mcl_blast_resistance = 3.5,
