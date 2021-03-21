@@ -298,8 +298,8 @@ ARROW_ENTITY.on_step = function(self, dtime)
 								else
 									self._attach_parent = 'Body'
 								end
-								self._z_rotation = math.random(30, -30)
-								self._y_rotation = math.random(30, -30)
+								self._z_rotation = math.random(-30, 30)
+								self._y_rotation = math.random( -30, 30)
 								self.object:set_attach(obj, self._attach_parent, {x=self._x_position,y=self._y_position,z=random_arrow_positions('z', placement)}, {x=0,y=self._rotation_station + self._y_rotation,z=self._z_rotation})
 								minetest.after(150, function()
 									self.object:remove()
