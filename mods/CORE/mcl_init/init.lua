@@ -33,25 +33,26 @@ mcl_vars.MAP_BLOCKSIZE = math.max(1, core.MAP_BLOCKSIZE or 16)
 mcl_vars.mapgen_limit = math.max(1, tonumber(minetest.get_mapgen_setting("mapgen_limit")) or 31000)
 mcl_vars.MAX_MAP_GENERATION_LIMIT = math.max(1, core.MAX_MAP_GENERATION_LIMIT or 31000)
 local central_chunk_offset = -math.floor(mcl_vars.chunksize / 2)
-local chunk_size_in_nodes = mcl_vars.chunksize * mcl_vars.MAP_BLOCKSIZE
+mcl_vars.central_chunk_offset_in_nodes = central_chunk_offset * mcl_vars.MAP_BLOCKSIZE
+mcl_vars.chunk_size_in_nodes = mcl_vars.chunksize * mcl_vars.MAP_BLOCKSIZE
 local central_chunk_min_pos = central_chunk_offset * mcl_vars.MAP_BLOCKSIZE
-local central_chunk_max_pos = central_chunk_min_pos + chunk_size_in_nodes - 1
+local central_chunk_max_pos = central_chunk_min_pos + mcl_vars.chunk_size_in_nodes - 1
 local ccfmin = central_chunk_min_pos - mcl_vars.MAP_BLOCKSIZE -- Fullminp/fullmaxp of central chunk, in nodes
 local ccfmax = central_chunk_max_pos + mcl_vars.MAP_BLOCKSIZE
 local mapgen_limit_b = math.floor(math.min(mcl_vars.mapgen_limit, mcl_vars.MAX_MAP_GENERATION_LIMIT) / mcl_vars.MAP_BLOCKSIZE)
 local mapgen_limit_min = -mapgen_limit_b * mcl_vars.MAP_BLOCKSIZE
 local mapgen_limit_max = (mapgen_limit_b + 1) * mcl_vars.MAP_BLOCKSIZE - 1
-local numcmin = math.max(math.floor((ccfmin - mapgen_limit_min) / chunk_size_in_nodes), 0) -- Number of complete chunks from central chunk
-local numcmax = math.max(math.floor((mapgen_limit_max - ccfmax) / chunk_size_in_nodes), 0) -- fullminp/fullmaxp to effective mapgen limits.
-mcl_vars.mapgen_edge_min = central_chunk_min_pos - numcmin * chunk_size_in_nodes
-mcl_vars.mapgen_edge_max = central_chunk_max_pos + numcmax * chunk_size_in_nodes
+local numcmin = math.max(math.floor((ccfmin - mapgen_limit_min) / mcl_vars.chunk_size_in_nodes), 0) -- Number of complete chunks from central chunk
+local numcmax = math.max(math.floor((mapgen_limit_max - ccfmax) / mcl_vars.chunk_size_in_nodes), 0) -- fullminp/fullmaxp to effective mapgen limits.
+mcl_vars.mapgen_edge_min = central_chunk_min_pos - numcmin * mcl_vars.chunk_size_in_nodes
+mcl_vars.mapgen_edge_max = central_chunk_max_pos + numcmax * mcl_vars.chunk_size_in_nodes
 
 local function coordinate_to_block(x)
 	return math.floor(x / mcl_vars.MAP_BLOCKSIZE)
 end
 
 local function coordinate_to_chunk(x)
-	return math.floor((coordinate_to_block(x) + central_chunk_offset) / mcl_vars.chunksize)
+	return math.floor((coordinate_to_block(x) - central_chunk_offset) / mcl_vars.chunksize)
 end
 
 function mcl_vars.pos_to_block(pos)
@@ -70,7 +71,7 @@ function mcl_vars.pos_to_chunk(pos)
 	}
 end
 
-local k_positive = math.ceil(mcl_vars.MAX_MAP_GENERATION_LIMIT / chunk_size_in_nodes)
+local k_positive = math.ceil(mcl_vars.MAX_MAP_GENERATION_LIMIT / mcl_vars.chunk_size_in_nodes)
 local k_positive_z = k_positive * 2
 local k_positive_y = k_positive_z * k_positive_z
 

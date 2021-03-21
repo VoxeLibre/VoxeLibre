@@ -2826,7 +2826,7 @@ local falling = function(self, pos)
 	end
 
 	if mcl_portals ~= nil then
-		if mcl_portals.nether_portal_cooloff[self.object] then
+		if mcl_portals.nether_portal_cooloff(self.object) then
 			return false -- mob has teleported through Nether portal - it's 99% not falling
 		end
 	end

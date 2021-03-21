@@ -6,7 +6,7 @@ mcl_worlds = {}
 function mcl_worlds.is_in_void(pos)
 	local void =
 		not ((pos.y < mcl_vars.mg_overworld_max and pos.y > mcl_vars.mg_overworld_min) or
-		(pos.y < mcl_vars.mg_nether_max and pos.y > mcl_vars.mg_nether_min) or
+		(pos.y < mcl_vars.mg_nether_max+128 and pos.y > mcl_vars.mg_nether_min) or
 		(pos.y < mcl_vars.mg_end_max and pos.y > mcl_vars.mg_end_min))
 
 	local void_deadly = false
@@ -15,11 +15,11 @@ function mcl_worlds.is_in_void(pos)
 		-- Overworld → Void → End → Void → Nether → Void
 		if pos.y < mcl_vars.mg_overworld_min and pos.y > mcl_vars.mg_end_max then
 			void_deadly = pos.y < mcl_vars.mg_overworld_min - deadly_tolerance
-		elseif pos.y < mcl_vars.mg_end_min and pos.y > mcl_vars.mg_nether_max then
+		elseif pos.y < mcl_vars.mg_end_min and pos.y > mcl_vars.mg_nether_max+128 then
 			-- The void between End and Nether. Like usual, but here, the void
 			-- *above* the Nether also has a small tolerance area, so player
 			-- can fly above the Nether without getting hurt instantly.
-			void_deadly = (pos.y < mcl_vars.mg_end_min - deadly_tolerance) and (pos.y > mcl_vars.mg_nether_max + deadly_tolerance)
+			void_deadly = (pos.y < mcl_vars.mg_end_min - deadly_tolerance) and (pos.y > mcl_vars.mg_nether_max+128 + deadly_tolerance)
 		elseif pos.y < mcl_vars.mg_nether_min then
 			void_deadly = pos.y < mcl_vars.mg_nether_min - deadly_tolerance
 		end
@@ -35,7 +35,7 @@ end
 function mcl_worlds.y_to_layer(y)
        if y >= mcl_vars.mg_overworld_min then
                return y - mcl_vars.mg_overworld_min, "overworld"
-       elseif y >= mcl_vars.mg_nether_min and y <= mcl_vars.mg_nether_max then
+       elseif y >= mcl_vars.mg_nether_min and y <= mcl_vars.mg_nether_max+128 then
                return y - mcl_vars.mg_nether_min, "nether"
        elseif y >= mcl_vars.mg_end_min and y <= mcl_vars.mg_end_max then
                return y - mcl_vars.mg_end_min, "end"
@@ -73,7 +73,7 @@ end
 -- Takes a position and returns true if this position can have Nether dust
 function mcl_worlds.has_dust(pos)
        -- Weather in the Overworld and the high part of the void below
-       return pos.y <= mcl_vars.mg_nether_max + 64 and pos.y >= mcl_vars.mg_nether_min - 64
+       return pos.y <= mcl_vars.mg_nether_max + 138 and pos.y >= mcl_vars.mg_nether_min - 10
 end
 
 -- Takes a position (pos) and returns true if compasses are working here

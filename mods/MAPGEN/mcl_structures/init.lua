@@ -534,7 +534,7 @@ end
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "desert_temple | desert_well | igloo | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_portal_shrine | dungeon",
+	params = "desert_temple | desert_well | igloo | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_portal_shrine | nether_portal | dungeon",
 	description = S("Generate a pre-defined structure near your position."),
 	privs = {debug = true},
 	func = function(name, param)
@@ -570,6 +570,8 @@ minetest.register_chatcommand("spawnstruct", {
 			mcl_structures.generate_end_portal_shrine(pos, rot, pr)
 		elseif param == "dungeon" and mcl_dungeons and mcl_dungeons.spawn_dungeon then
 			mcl_dungeons.spawn_dungeon(pos, rot, pr)
+		elseif param == "nether_portal" and mcl_portals and mcl_portals.spawn_nether_portal then
+			mcl_portals.spawn_nether_portal(pos, rot, pr, name)
 		elseif param == "" then
 			message = S("Error: No structure type given. Please use “/spawnstruct <type>”.")
 			errord = true
