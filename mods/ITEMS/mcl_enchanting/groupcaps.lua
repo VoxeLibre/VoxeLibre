@@ -45,6 +45,10 @@ end
 -- To make it more efficient it will first check a hash value to determine if
 -- the tool needs to be updated.
 function mcl_enchanting.update_groupcaps(itemstack)
+	if not itemstack:get_tool_capabilities() then
+		return
+	end
+
 	local name = itemstack:get_name()
 	local level = mcl_enchanting.get_enchantment(itemstack, "efficiency")
 	local groupcaps = get_efficiency_groupcaps(name, level)
