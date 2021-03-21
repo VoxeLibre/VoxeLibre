@@ -14,7 +14,6 @@ mcl_autogroup.register_diggroup("shearsy_wool")
 mcl_autogroup.register_diggroup("shearsy_cobweb")
 mcl_autogroup.register_diggroup("swordy")
 mcl_autogroup.register_diggroup("swordy_cobweb")
-mcl_autogroup.register_diggroup("creative_breakable")
 
 -- Load files
 local modpath = minetest.get_modpath("mcl_core")
