@@ -2,6 +2,8 @@ local S = minetest.get_translator("mcl_ocean")
 local mod_doc = minetest.get_modpath("doc") ~= nil
 -- NOTE: whenever it becomes possible to fully implement kelp without the
 -- plantlike_rooted limitation, please adapt the code accordingly.
+-- TODO: In MC, you can't actually destroy kelp by bucket'ing water in the middle.
+-- However, because of the plantlike_rooted hack, we'll just allow it for now.
 
 -- List of supported surfaces for seagrass and kelp.
 local surfaces = {
@@ -25,11 +27,13 @@ local function is_downward_flowing(pos, node, nodedef, is_above)
 
 	result = (math.floor(node.param2 / 8) % 2) == 1
 	if not (result or is_above) then
-		-- If not, also check node above (this is needed due a weird quirk in the definition of
-		-- "downwards flowing" liquids in Minetest)
+		-- If not, also check node above
+		-- (this is needed due a weird quirk in the definition of "downwards flowing"
+		-- liquids in Minetest)
 		local node_above = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})
 		local nodedef_above = minetest.registered_nodes[node_above.name]
-		result = is_submerged(node_above, nodedef_above) or is_downward_flowing(pos, node_above, nodedef_above, true)
+		result = is_submerged(node_above, nodedef_above)
+			or is_downward_flowing(pos, node_above, nodedef_above, true)
 	end
 	return result
 end
@@ -114,7 +118,7 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 	end
 
 	local new_kelp = false
-	local is_downward_flowing = false
+	local downward_flowing = false
 	local pos_top, node_top, def_top
 
 	-- When placed on kelp.
@@ -136,6 +140,7 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 				node_under.name = "mcl_ocean:kelp_" ..surface[1]
 				node_under.param2 = minetest.registered_items[nu_name].place_param2 or 16
 				new_kelp = true
+				break
 			end
 		end
 
@@ -143,14 +148,15 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 		if not new_kelp or pos_under.y >= pos_above.y then
 			return itemstack
 		end
+
 		pos_top = pos_above
 		node_top = minetest.get_node(pos_above)
-		def_top = minetest.registered_nodes[node_above.name]
+		def_top = minetest.registered_nodes[node_top.name]
 	end
 
 	-- New kelp must also be submerged in water.
-	is_downward_flowing = is_downward_flowing(pos_top, node_top, def_top)
-	if not (is_submerged(node_top, def_top) and is_downward_flowing) then
+	downward_flowing = is_downward_flowing(pos_top, node_top, def_top)
+	if not (is_submerged(node_top, def_top) or downward_flowing) then
 		return itemstack
 	end
 
@@ -159,7 +165,7 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 	if def_node.sounds then
 		minetest.sound_play(def_node.sounds.place, { gain = 0.5, pos = pos_under }, true)
 	end
-	kelp_place(pos_under, node_under, pos_top, def_top, is_downward_flowing)
+	kelp_place(pos_under, node_under, pos_top, def_top, downward_flowing)
 	if not minetest.is_creative_enabled(player_name) then
 		itemstack:take_item()
 	end
@@ -175,26 +181,24 @@ local function kelp_drop(pos, height)
 	end
 end
 
--- Dig kelp:
---   Each kelp from broken stem until the top drop a single item
---   Kelp's height decreases to the height below dig_pos
 local function kelp_dig(dig_pos, pos, node, is_drop)
 	local param2 = node.param2
-	local height = get_kelp_height(param2)
 	-- pos.y points to the surface, offset needed to point to the first kelp
 	local new_height = dig_pos.y - (pos.y+1)
 
 	-- Digs the entire kelp: invoke after_dig_node to set_node
-	if new_height == 0 then
+	if new_height <= 0 then
 		if is_drop then
-			kelp_drop(dig_pos, height)
+			kelp_drop(dig_pos, get_kelp_height(param2))
 		end
-		minetest.set_node(pos, {name=minetest.registered_nodes[node.name].node_dig_prediction})
+		minetest.set_node(pos, {
+			name=minetest.registered_nodes[node.name].node_dig_prediction,
+			param=node.param, param2=0 })
 
 	-- Digs the kelp beginning at a height
 	else
 		if is_drop then
-			kelp_drop(dig_pos, height - new_height)
+			kelp_drop(dig_pos, get_kelp_height(param2) - new_height)
 		end
 		minetest.set_node(pos, {name=node.name, param=node.param, param2=16*new_height})
 	end
@@ -264,7 +268,10 @@ for s=1, #surfaces do
 		after_dig_node = function(pos)
 			minetest.set_node(pos, {name=surface[s][2]})
 		end,
+		-- TODO: add ability to detect whether the kelp or the surface is dug.
+		-- Currently, digging the surface gives sand, which isn't ideal.
 		on_dig = function(pos, node, digger)
+			minetest.chat_send_all("mo2")
 			local is_drop = true
 			if digger and minetest.is_creative_enabled(digger:get_player_name()) then
 				is_drop = false
