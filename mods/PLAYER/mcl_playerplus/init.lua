@@ -252,13 +252,7 @@ minetest.register_globalstep(function(dtime)
 					playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:surface", 0.4)
 				end
 			end
-		else
-			-- Reset speed decrease
-			playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:surface")
-		end
-
-		-- Swimming? Check if boots are enchanted with depth strider
-		if get_item_group(node_feet, "liquid") ~= 0 and mcl_enchanting.get_enchantment(player:get_inventory():get_stack("armor", 5), "depth_strider") then
+		elseif get_item_group(node_feet, "liquid") ~= 0 and mcl_enchanting.get_enchantment(player:get_inventory():get_stack("armor", 5), "depth_strider") then
 			local boots = player:get_inventory():get_stack("armor", 5)
 			local depth_strider = mcl_enchanting.get_enchantment(boots, "depth_strider")
 
