@@ -9,7 +9,6 @@ local MATERIAL_TOOL_REPAIR_BOOST = {
 	math.ceil(MAX_WEAR * 0.75), -- 75%
 	MAX_WEAR, -- 100%
 }
-local NAME_COLOR = "#FFFF4C"
 
 local function get_anvil_formspec(set_name)
 	if not set_name then
@@ -172,14 +171,8 @@ local function update_anvil_slots(meta)
 			if new_name ~= old_name then
 				-- Save the raw name internally
 				meta:set_string("name", new_name)
-				-- Rename item
-				if new_name == "" then
-					tt.reload_itemstack_description(name_item)
-				else
-					-- Custom name set. Colorize it!
-					-- This makes the name visually different from unnamed items
-					meta:set_string("description", minetest.colorize(NAME_COLOR, new_name))
-				end
+				-- Rename item handled by tt
+				tt.reload_itemstack_description(name_item)
 				new_output = name_item
 			elseif just_rename then
 				new_output = ""
