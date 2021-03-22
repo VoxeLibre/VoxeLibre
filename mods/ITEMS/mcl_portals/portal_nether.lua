@@ -324,10 +324,8 @@ function build_nether_portal(pos, width, height, orientation, name)
 			local pp_1 = {x = x, y = pos.y - 2, z = z}
 			local nn = get_node(pp).name
 			local nn_1 = get_node(pp_1).name
-			log("warning", "[mcl_portals] pos=" .. pos_to_string(pp) .. " nn=" .. nn .. " name=" .. name .. " width=" .. tostring(width) .. " height=" .. tostring(height).." orientation=" ..tostring(orientation).." gc="..tostring(registered_nodes[nn].is_ground_content) .." for obsidian platform:")
 			if ((nn=="air" and nn_1 == "air") or not registered_nodes[nn].is_ground_content) and not is_protected(pp, name) then
 				set_node(pp, {name = OBSIDIAN})
-				minetest.log("warning", "set!")
 			end
 		end
 	end
@@ -432,95 +430,11 @@ local function get_lava_level(pos, pos1, pos2)
 	return max(min(mcl_vars.mg_lava_nether_max, pos2.y-1), pos1.y+1)
 end
 
-local function ecb_scan_area(blockpos, action, calls_remaining, param)
-	if calls_remaining and calls_remaining > 0 then return end
-	local pos, pos1, pos2, name, obj = param.pos, param.pos1, param.pos2, param.name or "", param.obj
-	local lava = get_lava_level(pos, pos1, pos2)
-
-	local ttt1 = minetest.get_us_time() -- !!debug
-	-- loop in a spiral around pos
-	local cs, x, z, dx, dz, p0x, p0z, p1x, p1y, p1z, p2x, p2y, p2z = mcl_vars.chunk_size_in_nodes, 0, 0, 0, -1, pos.x, pos.z, pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z
-
-	local i_max = (cs*2-1) * (cs*2-1)
-	log("action", "[mcl_portals] Area for destination Nether portal emerged! We about to iterate " .. tostring(i_max) .. " positions of spiral around "..pos_to_string(pos))
-
-	local backup_pos, bnc = nil, 0 -- 'better than nothing'
-
-	local p1 = {x=0, y=p1y, z=0}
-	local p2 = {x=0, y=p2y, z=0}
-	for i = 1, i_max do
-		local px, pz = p0x + x, p0z + z
-		if ((i%100) == 1) then
-			log("action", "[mcl_portals] i=" ..tostring(i) .." px=" .. tostring(px) .." pz=" .. tostring(pz) .. " x:"..tostring(p1x) .."-"..tostring(p2x) .. " z:"..tostring(p1z) .."-"..tostring(p2z))
-		end
-		if px >= p1x and pz >= p1z and px <= p2x and pz <= p2z then
-			p1.x, p2.x, p1.z, p2.z = px, px, pz, pz
-			local nodes = find_nodes_in_area_under_air(p1, p2, {"group:building_block"})
-			log("action", "[mcl_portals] check " .. pos_to_string(p1) .. "-" .. pos_to_string(p2) .. ": " .. tostring(nodes and #nodes))
-			if nodes and #nodes > 0 then
-				for j = 1, #nodes do
-					local node = nodes[j]
-					if not is_protected(node, name) then
-						node.y = node.y + 2
-						local node2 = {x = node.x, y = node.y + 2, z = node.z}
-						if not is_protected(node2, name) then
-							local nodes_j = find_nodes_in_area(node, node2, {"air"})
-							local nc = #nodes_j
-							if nc >= 3 then
-								node2.x = node2.x + 2
-								node2.z = node2.z + 2
-								nodes_j = find_nodes_in_area(node, node2, {"air"})
-								if #nodes_j == 36 then
-									local msg1 = "DEBUG message: space found using algorithm 1, elapsed time: " .. tostring(minetest.get_us_time()-ttt1) .." us" -- !!debug
-									log("warning", "[mcl_portals] " .. msg1) -- !!debug
-									minetest.chat_send_all(msg1) -- !!debug
-									log("action", "[mcl_portals] found space at pos "..pos_to_string(node).." - creating a portal")
-									create_portal_2({x=node.x, y=node.y+1, z=node.z}, name, obj)
-									return
-								end
-							elseif nc > bnc or ((nc > max(bnc-2,0)) and backup_pos.y<lava and node.y > lava) then
-								bnc = nc
-								backup_pos = {x = node2.x, y = node2.y, z = node2.z}
-								log("action", "[mcl_portals] set backup pos "..pos_to_string(backup_pos).." with "..tostring(nc).." air node(s)")
-							end
-						end
-					end
-				end
-			end
-		end
-		if x == z or (x < 0 and x == -z) or (x > 0 and x == 1-z) then
-			dx, dz = -dz, dx
-		end
-		x, z = x+dx, z+dz
-		px, pz = p0x + x, p0z + z
-	end
-	if backup_pos then -- several nodes of air might be better than lava lake, right?
-		local msg1 = "DEBUG message: space partially found using algorithm 1, elapsed time: " .. tostring(minetest.get_us_time()-ttt1) .." us" -- !!debug
-		log("warning", "[mcl_portals] " .. msg1) -- !!debug
-		minetest.chat_send_all(msg1) -- !!debug
-		log("action", "[mcl_portals] using backup pos "..pos_to_string(backup_pos).." to create a portal")
-		create_portal_2(backup_pos, name, obj)
-		return
-	end
-	local msg1 = "DEBUG message: space not found using algorithm 1, elapsed time: " .. tostring(minetest.get_us_time()-ttt1) .." us" -- !!debug
-	log("warning", "[mcl_portals] " .. msg1) -- !!debug
-	minetest.chat_send_all(msg1) -- !!debug
-	log("action", "[mcl_portals] found no space, reverting to target pos "..pos_to_string(pos).." - creating a portal")
-	if pos.y < lava then
-		pos.y = lava + 1
-	else
-		pos.y = pos.y + 1
-	end
-	create_portal_2(pos, name, obj)
-end
-
 local function ecb_scan_area_2(blockpos, action, calls_remaining, param)
 	if calls_remaining and calls_remaining > 0 then return end
 	local pos, pos1, pos2, name, obj = param.pos, param.pos1, param.pos2, param.name or "", param.obj
 	local pos0, distance
 	local lava = get_lava_level(pos, pos1, pos2)
-
-	local ttt2 = minetest.get_us_time() -- !!debug
 
 	local nodes = find_nodes_in_area_under_air(pos1, pos2, {"group:building_block"})
 	if nodes then
@@ -538,9 +452,6 @@ local function ecb_scan_area_2(blockpos, action, calls_remaining, param)
 					if nc2 == 27 and not is_area_protected(node, node2, name) then
 						local distance0 = dist(pos, node)
 						if distance0 < 2 then
-							local msg1 = "DEBUG message: space found using algorithm 2, elapsed time: " .. tostring(minetest.get_us_time()-ttt2) .." us" -- !!debug
-							log("warning", "[mcl_portals] " .. msg1) -- !!debug
-							minetest.chat_send_all(msg1) -- !!debug
 							log("action", "[mcl_portals] found space at pos "..pos_to_string(node).." - creating a portal")
 							create_portal_2(node1, name, obj)
 							return
@@ -556,16 +467,10 @@ local function ecb_scan_area_2(blockpos, action, calls_remaining, param)
 		end
 	end
 	if distance then -- several nodes of air might be better than lava lake, right?
-		local msg1 = "DEBUG message: space partially found using algorithm 2, elapsed time: " .. tostring(minetest.get_us_time()-ttt2) .." us" -- !!debug
-		log("warning", "[mcl_portals] " .. msg1) -- !!debug
-		minetest.chat_send_all(msg1) -- !!debug
 		log("action", "[mcl_portals] using backup pos "..pos_to_string(pos0).." to create a portal")
 		create_portal_2(pos0, name, obj)
 		return
 	end
-	local msg1 = "DEBUG message: space not found using algorithm 2, elapsed time: " .. tostring(minetest.get_us_time()-ttt2) .." us" -- !!debug
-	log("warning", "[mcl_portals] " .. msg1) -- !!debug
-	minetest.chat_send_all(msg1) -- !!debug
 	log("action", "[mcl_portals] found no space, reverting to target pos "..pos_to_string(pos).." - creating a portal")
 	if pos.y < lava then
 		pos.y = lava + 1
@@ -598,11 +503,7 @@ local function create_portal(pos, limit1, limit2, name, obj)
 		pos2 = {x = min(max(limit2.x, pos.x), pos2.x), y = min(max(limit2.y, pos.y), pos2.y), z = min(max(limit2.z, pos.z), pos2.z)}
 	end
 
-	if random(1,2) == 2 then
-		minetest.emerge_area(pos1, pos2, ecb_scan_area_2, {pos = vector.new(pos), pos1 = pos1, pos2 = pos2, name=name, obj=obj})
-	else
-		minetest.emerge_area(pos1, pos2, ecb_scan_area, {pos = vector.new(pos), pos1 = pos1, pos2 = pos2, name=name, obj=obj})
-	end
+	minetest.emerge_area(pos1, pos2, ecb_scan_area_2, {pos = vector.new(pos), pos1 = pos1, pos2 = pos2, name=name, obj=obj})
 end
 
 local function available_for_nether_portal(p)
