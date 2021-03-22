@@ -436,6 +436,21 @@ local function ecb_scan_area_2(blockpos, action, calls_remaining, param)
 	local pos0, distance
 	local lava = get_lava_level(pos, pos1, pos2)
 
+	-- THIS IS A TEMPORATY CODE SECTION FOR COMPATIBILITY REASONS --
+	local portals = find_nodes_in_area(pos1, pos2, {PORTAL})
+	if portals and #portals>0 then
+		for _, p in pairs(portals) do
+			add_exit(p)
+		end
+		local exit = find_exit(pos)
+		if exit then
+			finalize_teleport(obj, exit)
+		end
+		return
+	end
+	-- TEMPORATY CODE SECTION ENDS HERE --
+
+
 	local nodes = find_nodes_in_area_under_air(pos1, pos2, {"group:building_block"})
 	if nodes then
 		local nc = #nodes
