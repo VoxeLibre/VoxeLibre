@@ -592,6 +592,11 @@ function mcl_portals.light_nether_portal(pos)
 	local orientation = random(0, 1)
 	for orientation_iteration = 1, 2 do
 		if check_and_light_shape(pos, orientation) then
+			minetest.after(0.2, function(pos) -- generate target map chunk
+				local pos1 = add(mul(mcl_vars.pos_to_chunk(pos), mcl_vars.chunk_size_in_nodes), mcl_vars.central_chunk_offset_in_nodes)
+				local pos2 = add(pos1, mcl_vars.chunk_size_in_nodes - 1)
+				minetest.emerge_area(pos1, pos2)
+			end, vector.new(pos))
 			return true
 		end
 		orientation = 1 - orientation
