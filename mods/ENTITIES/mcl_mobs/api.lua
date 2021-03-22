@@ -2856,6 +2856,18 @@ local falling = function(self, pos)
 		self.object:set_acceleration({x = 0, y = 0, z = 0})
 	end
 
+	if minetest.registered_nodes[node_ok(pos).name].groups.lava then
+
+		if self.floats_on_lava == 1 then
+
+			self.object:set_acceleration({
+				x = 0,
+				y = -self.fall_speed / (max(1, v.y) ^ 2),
+				z = 0
+			})
+		end
+	end
+
 	-- in water then float up
 	if minetest.registered_nodes[node_ok(pos).name].groups.water then
 
@@ -3773,6 +3785,7 @@ minetest.register_entity(name, {
 	knock_back = def.knock_back ~= false,
 	shoot_offset = def.shoot_offset or 0,
 	floats = def.floats or 1, -- floats in water by default
+	floats_on_lava = def.floats_on_lava or 0,
 	replace_rate = def.replace_rate,
 	replace_what = def.replace_what,
 	replace_with = def.replace_with,
