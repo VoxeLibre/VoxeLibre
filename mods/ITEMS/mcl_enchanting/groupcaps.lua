@@ -45,7 +45,7 @@ end
 -- To make it more efficient it will first check a hash value to determine if
 -- the tool needs to be updated.
 function mcl_enchanting.update_groupcaps(itemstack)
-	if not itemstack:get_tool_capabilities() then
+	if not itemstack:get_meta():get("tool_capabilities") then
 		return
 	end
 

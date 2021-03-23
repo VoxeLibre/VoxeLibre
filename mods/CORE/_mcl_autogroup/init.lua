@@ -178,6 +178,10 @@ end
 -- Add the groupcaps from a field in "_mcl_diggroups" to the groupcaps of a
 -- tool.
 local function add_groupcaps(toolname, groupcaps, groupcaps_def, efficiency)
+	if not groupcaps_def then
+		return
+	end
+
 	for g, capsdef in pairs(groupcaps_def) do
 		local mult = capsdef.speed or 1
 		local uses = capsdef.uses
@@ -196,7 +200,6 @@ local function add_groupcaps(toolname, groupcaps, groupcaps_def, efficiency)
 			groupcaps[g .. "_dig"] = get_groupcap(g, level > 0, mult, efficiency, uses)
 		end
 	end
-	return groupcaps
 end
 
 -- Checks if the given node would drop its useful drop if dug by a given tool.
