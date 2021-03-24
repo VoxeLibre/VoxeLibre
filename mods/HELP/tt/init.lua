@@ -2,6 +2,7 @@ tt = {}
 tt.COLOR_DEFAULT = "#d0ffd0"
 tt.COLOR_DANGER = "#ffff00"
 tt.COLOR_GOOD = "#00ff00"
+tt.NAME_COLOR = "#FFFF4C"
 
 -- API
 tt.registered_snippets = {}
@@ -63,12 +64,15 @@ tt.reload_itemstack_description = function(itemstack)
 	local meta = itemstack:get_meta()
 	if def and def._mcl_generate_description then
 		def._mcl_generate_description(itemstack)
-	elseif should_change(itemstring, def) and meta:get_string("name") == "" then
+	elseif should_change(itemstring, def) then
 		local toolcaps
 		if def.tool_capabilities then
 			toolcaps = itemstack:get_tool_capabilities()
 		end
 		local orig_desc = def._tt_original_description or def.description
+		if meta:get_string("name") ~= "" then
+			orig_desc = minetest.colorize(tt.NAME_COLOR, meta:get_string("name"))
+		end
 		local desc = apply_snippets(orig_desc, itemstring, toolcaps or def.tool_capabilities, itemstack)
 		if desc ~= orig_desc then
 			meta:set_string("description", desc)
