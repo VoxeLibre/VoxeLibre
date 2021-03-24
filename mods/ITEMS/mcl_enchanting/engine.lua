@@ -582,7 +582,12 @@ function mcl_enchanting.allow_inventory_action(player, action, inventory, invent
 			local listname = inventory_info.to_list
 			local stack = inventory:get_stack(inventory_info.from_list, inventory_info.from_index)
 			if stack:get_name() == "mcl_dye:blue" and listname ~= "enchanting_item" then
-				return math.min(inventory:get_stack("enchanting_lapis", 1):get_free_space(), stack:get_count())
+				local count = stack:get_count()
+				local old_stack = inventory:get_stack("enchanting_lapis", 1)
+				if old_stack:get_name() ~= "" then
+					count = math.min(count, old_stack:get_free_space())
+				end
+				return count
 			elseif inventory:get_stack("enchanting_item", 1):get_count() == 0 and listname ~= "enchanting_lapis" then
 				return 1
 			else
