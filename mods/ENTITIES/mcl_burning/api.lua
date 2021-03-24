@@ -167,7 +167,7 @@ function mcl_burning.set_on_fire(obj, burn_time, reason)
 					hud_elem_type = "image",
 					position = {x = 0.5, y = 0.5},
 					scale = {x = -100, y = -100},
-					text = "mcl_burning_hud_flame_animated.png",
+					text = "mcl_burning_entity_flame_animated.png^[opacity:180^[verticalframe:" .. mcl_burning.animation_frames .. ":" .. 1,
 					z_index = 1000,
 				}) + 1
 			end
