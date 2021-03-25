@@ -1,6 +1,8 @@
 local S = minetest.get_translator("mesecons_commandblock")
 local F = minetest.formspec_escape
 
+local color_red = mcl_colors.RED
+
 local function construct(pos)
 	local meta = minetest.get_meta(pos)
 
@@ -78,7 +80,7 @@ local function check_commands(commands, player_name)
 			if string.sub(cmd, 1, 1) == "/" then
 				msg = S("Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.", cmd)
 			end
-			return false, minetest.colorize("#FF0000", msg)
+			return false, minetest.colorize(color_red, msg)
 		end
 		if player_name then
 			local player_privs = minetest.get_player_privs(player_name)
@@ -86,7 +88,7 @@ local function check_commands(commands, player_name)
 			for cmd_priv, _ in pairs(cmddef.privs) do
 				if player_privs[cmd_priv] ~= true then
 					local msg = S("Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.", cmd, cmd_priv)
-					return false, minetest.colorize("#FF0000", msg)
+					return false, minetest.colorize(color_red, msg)
 				end
 			end
 		end
