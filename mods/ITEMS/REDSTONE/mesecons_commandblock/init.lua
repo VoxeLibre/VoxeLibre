@@ -3,6 +3,8 @@ local F = minetest.formspec_escape
 
 local color_red = mcl_colors.RED
 
+local command_blocks_activated = minetest.settings:get_bool("mcl_enable_commandblocks", true)
+
 local function construct(pos)
 	local meta = minetest.get_meta(pos)
 
