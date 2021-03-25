@@ -4,6 +4,7 @@ local F = minetest.formspec_escape
 local color_red = mcl_colors.RED
 
 local command_blocks_activated = minetest.settings:get_bool("mcl_enable_commandblocks", true)
+local msg_not_activated = S("Command Blocks are not activated on the server") --TODO: real mc message and translation
 
 local function construct(pos)
 	local meta = minetest.get_meta(pos)
@@ -102,10 +103,15 @@ local function commandblock_action_on(pos, node)
 	if node.name ~= "mesecons_commandblock:commandblock_off" then
 		return
 	end
-
-	minetest.swap_node(pos, {name = "mesecons_commandblock:commandblock_on"})
-
+	
 	local meta = minetest.get_meta(pos)
+	local commander = meta:get_string("commander")
+	
+	if not command_blocks_activated then
+		minetest.chat_send_player(commander, msg_not_activated)
+		return
+	end
+	minetest.swap_node(pos, {name = "mesecons_commandblock:commandblock_on"})
 
 	local commands = resolve_commands(meta:get_string("commands"), pos)
 	for _, command in pairs(commands:split("\n")) do
@@ -121,7 +127,6 @@ local function commandblock_action_on(pos, node)
 			return
 		end
 		-- Execute command in the name of commander
-		local commander = meta:get_string("commander")
 		cmddef.func(commander, param)
 	end
 end
@@ -133,6 +138,10 @@ local function commandblock_action_off(pos, node)
 end
 
 local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
+	if not command_blocks_activated then
+		minetest.chat_send_player(player:get_player_name(), msg_not_activated)
+		return
+	end
 	local can_edit = true
 	-- Only allow write access in Creative Mode
 	if not minetest.is_creative_enabled(player:get_player_name()) then
