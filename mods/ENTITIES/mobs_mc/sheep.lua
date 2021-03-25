@@ -163,11 +163,11 @@ mobs:register_mob("mobs_mc:sheep", {
 			self.initial_color_set = true
 		end
 
-		local is_codesploit = self.nametag == "Code-Sploit"
+		local is_kay27 = self.nametag == "kay27"
 
 		if self.color_change_timer then
 			local old_color = self.color
-			if is_codesploit then
+			if is_kay27 then
 				self.color_change_timer = self.color_change_timer - dtime
 				if self.color_change_timer < 0 then
 					self.color_change_timer = 0.5
@@ -184,7 +184,7 @@ mobs:register_mob("mobs_mc:sheep", {
 				self.base_texture = sheep_texture(self.color)
 				self.object:set_properties({textures = self.base_texture})
 			end
-		elseif is_codesploit then
+		elseif is_kay27 then
 			self.initial_color = self.color
 			self.color_change_timer = 0
 			self.color_index = -1
