@@ -967,6 +967,10 @@ mobs:register_mob("mobs_mc:villager", {
 	drops = {},
 	can_despawn = false,
 	-- TODO: sounds
+	sounds = {
+		random = "mobs_mc_villager",
+		distance = 10,
+	},
 	animation = {
 		stand_speed = 25,
 		stand_start = 40,
