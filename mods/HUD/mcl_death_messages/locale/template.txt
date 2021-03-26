@@ -56,3 +56,4 @@ A ghast scared @1 to death.=
 @1 was killed by a baby husk.=
 @1 was killed by a zombie pigman.=
 @1 was killed by a baby zombie pigman.=
+@1 was slain by @2.=
