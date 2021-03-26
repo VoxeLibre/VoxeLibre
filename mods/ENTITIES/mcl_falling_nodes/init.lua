@@ -13,9 +13,8 @@ local deal_falling_damage = function(self, dtime)
 	if minetest.get_item_group(self.node.name, "falling_node_damage") == 0 then
 		return
 	end
-	-- Cause damage to any player it hits.
+	-- Cause damage to any entity it hits.
 	-- Algorithm based on MC anvils.
-	-- TODO: Support smashing other objects, too.
 	local pos = self.object:get_pos()
 	if not self._startpos then
 		-- Fallback
@@ -23,6 +22,72 @@ local deal_falling_damage = function(self, dtime)
 	end
 	local objs = minetest.get_objects_inside_radius(pos, 1)
 	for _,v in ipairs(objs) do
+		if v:is_player() then
+			local hp = v:get_hp()
+			local name = v:get_player_name()
+			if hp ~= 0 then
+				if not self._hit_players then
+					self._hit_players = {}
+				end
+				local hit = false
+				for _,v in ipairs(self._hit_players) do
+					if name == v then
+						hit = true
+					end
+				end
+				if not hit then
+					table.insert(self._hit_players, name)
+					local way = self._startpos.y - pos.y
+					local damage = (way - 1) * 2
+					damage = math.min(40, math.max(0, damage))
+					if damage >= 1 then
+						hp = hp - damage
+						if hp < 0 then
+							hp = 0
+						end
+						-- TODO: Reduce damage if wearing a helmet
+						local msg
+						if minetest.get_item_group(self.node.name, "anvil") ~= 0 then
+							msg = S("@1 was smashed by a falling anvil.", v:get_player_name())
+						else
+							msg = S("@1 was smashed by a falling block.", v:get_player_name())
+						end
+						if dmes then
+							mcl_death_messages.player_damage(v, msg)
+						end
+						v:set_hp(hp, { type = "punch", from = "mod" })
+					end
+				end
+			end
+		else
+			local hp = v:get_luaentity().health
+			if hp and hp ~= 0 then
+				if not self._hit_mobs then
+					self._hit_mobs = {}
+				end
+				local hit = false
+				for _,mob in ipairs(self._hit_mobs) do
+					if v == mob then
+						hit = true
+					end
+				end
+				if not hit then
+					table.insert(self._hit_mobs, v)
+					local way = self._startpos.y - pos.y
+					local damage = (way - 1) * 2
+					damage = math.min(40, math.max(0, damage))
+					if damage >= 1 then
+						hp = hp - damage
+						if hp < 0 then
+							hp = 0
+						end
+						v:get_luaentity().health = hp
+					end
+				end
+			end
+		end
+	end
+--[[ 	for _,v in ipairs(objs) do
 		local hp = v:get_hp()
 		if v:is_player() and hp ~= 0 then
 			if not self._hit_players then
@@ -61,7 +126,7 @@ local deal_falling_damage = function(self, dtime)
 				end
 			end
 		end
-	end
+	end ]]
 end
 
 minetest.register_entity(":__builtin:falling_node", {
