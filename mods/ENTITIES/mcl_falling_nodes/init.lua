@@ -1,5 +1,8 @@
 local S = minetest.get_translator("mcl_falling_nodes")
 local dmes = minetest.get_modpath("mcl_death_messages") ~= nil
+local has_mcl_armor = minetest.get_modpath("mcl_armor")
+
+local his_creative_enabled = minetest.is_creative_enabled
 
 local get_falling_depth = function(self)
 	if not self._startpos then
@@ -45,7 +48,16 @@ local deal_falling_damage = function(self, dtime)
 						if hp < 0 then
 							hp = 0
 						end
-						-- TODO: Reduce damage if wearing a helmet
+						-- Reduce damage if wearing a helmet
+						local inv = v:get_inventory()
+						local helmet = inv:get_stack("armor", 2)
+						if has_mcl_armor and not helmet:is_empty() then
+							hp = hp/4*3
+							if not his_creative_enabled(name) then
+								helmet:add_wear(65535/helmet:get_definition().groups.mcl_armor_uses) --TODO: be sure damage is exactly like mc (informations are missing in the mc wiki)
+								inv:set_stack("armor", 2, helmet)
+							end
+						end
 						local msg
 						if minetest.get_item_group(self.node.name, "anvil") ~= 0 then
 							msg = S("@1 was smashed by a falling anvil.", v:get_player_name())
@@ -71,6 +83,7 @@ local deal_falling_damage = function(self, dtime)
 						hit = true
 					end
 				end
+				--TODO: reduce damage for mobs then they will be able to wear armor
 				if not hit then
 					table.insert(self._hit_mobs, v)
 					local way = self._startpos.y - pos.y
