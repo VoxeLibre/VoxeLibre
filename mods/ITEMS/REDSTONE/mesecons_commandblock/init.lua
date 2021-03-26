@@ -1,6 +1,11 @@
 local S = minetest.get_translator("mesecons_commandblock")
 local F = minetest.formspec_escape
 
+local color_red = mcl_colors.RED
+
+local command_blocks_activated = minetest.settings:get_bool("mcl_enable_commandblocks", true)
+local msg_not_activated = S("Command blocks are not enabled on this server")
+
 local function construct(pos)
 	local meta = minetest.get_meta(pos)
 
@@ -78,7 +83,7 @@ local function check_commands(commands, player_name)
 			if string.sub(cmd, 1, 1) == "/" then
 				msg = S("Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.", cmd)
 			end
-			return false, minetest.colorize("#FF0000", msg)
+			return false, minetest.colorize(color_red, msg)
 		end
 		if player_name then
 			local player_privs = minetest.get_player_privs(player_name)
@@ -86,7 +91,7 @@ local function check_commands(commands, player_name)
 			for cmd_priv, _ in pairs(cmddef.privs) do
 				if player_privs[cmd_priv] ~= true then
 					local msg = S("Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.", cmd, cmd_priv)
-					return false, minetest.colorize("#FF0000", msg)
+					return false, minetest.colorize(color_red, msg)
 				end
 			end
 		end
@@ -98,10 +103,15 @@ local function commandblock_action_on(pos, node)
 	if node.name ~= "mesecons_commandblock:commandblock_off" then
 		return
 	end
-
-	minetest.swap_node(pos, {name = "mesecons_commandblock:commandblock_on"})
-
+	
 	local meta = minetest.get_meta(pos)
+	local commander = meta:get_string("commander")
+	
+	if not command_blocks_activated then
+		--minetest.chat_send_player(commander, msg_not_activated)
+		return
+	end
+	minetest.swap_node(pos, {name = "mesecons_commandblock:commandblock_on"})
 
 	local commands = resolve_commands(meta:get_string("commands"), pos)
 	for _, command in pairs(commands:split("\n")) do
@@ -117,7 +127,6 @@ local function commandblock_action_on(pos, node)
 			return
 		end
 		-- Execute command in the name of commander
-		local commander = meta:get_string("commander")
 		cmddef.func(commander, param)
 	end
 end
@@ -129,6 +138,10 @@ local function commandblock_action_off(pos, node)
 end
 
 local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
+	if not command_blocks_activated then
+		minetest.chat_send_player(player:get_player_name(), msg_not_activated)
+		return
+	end
 	local can_edit = true
 	-- Only allow write access in Creative Mode
 	if not minetest.is_creative_enabled(player:get_player_name()) then
