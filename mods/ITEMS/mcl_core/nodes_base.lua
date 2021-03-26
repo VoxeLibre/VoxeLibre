@@ -808,7 +808,7 @@ minetest.register_node("mcl_core:obsidian", {
 	description = S("Obsidian"),
 	_doc_items_longdesc = S("Obsidian is an extremely hard mineral with an enourmous blast-resistance. Obsidian is formed when water meets lava."),
 	tiles = {"default_obsidian.png"},
-	is_ground_content = true,
+	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	stack_max = 64,
 	groups = {pickaxey=5, building_block=1, material_stone=1},
