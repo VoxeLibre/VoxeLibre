@@ -129,6 +129,9 @@ mcl_superflat_classic (Classic superflat map generation) bool false
 # If disabled, no ores will be generated.
 mcl_generate_ores (Generate Ores) bool true
 
+# If disabled, command blocks will be unusuable (but still present).
+mcl_enable_commandblocks (Enable Command Blocks) bool true
+
 # Make some blocks emit decorative particles like flames. This setting
 # specifies the detail level of particles, with higher levels being
 # more CPU demanding.

@@ -27,3 +27,4 @@ Access denied. You need the “maphack” privilege to edit command blocks.=До
 Editing the command block has failed! You can only change the command block in Creative Mode!=Попытка редактирования командного блока потерпела неудачу. Вы можете изменять командные блоки только в творческом режиме!
 Editing the command block has failed! The command block is gone.=Попытка редактирования командного блока потерпела неудачу. Командный блок исчез.
 Executes server commands when powered by redstone power=При подаче энергии редстоуна выполняет серверные команды
+Command blocks are not enabled on this server=
