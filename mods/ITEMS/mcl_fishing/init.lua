@@ -173,7 +173,7 @@ local fish = function(itemstack, player, pointed_thing)
 		if noent == true then
 			local playerpos = player:get_pos()
 			local dir = player:get_look_dir()
-			local obj = mcl_throwing.throw("mcl_throwing:flying_bobber", {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, 15, player:get_player_name())
+			local obj = mcl_throwing.throw("mcl_fishing:flying_bobber", {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, 15, player:get_player_name())
 		end
 end
 
@@ -294,6 +294,52 @@ end
 bobber_ENTITY.on_step = bobber_on_step
 
 minetest.register_entity("mcl_fishing:bobber_entity", bobber_ENTITY)
+
+local flying_bobber_ENTITY={
+	physical = false,
+	timer=0,
+	textures = {"mcl_fishing_bobber.png"}, --FIXME: Replace with correct texture.
+	visual_size = {x=0.5, y=0.5},
+	collisionbox = {0,0,0,0,0,0},
+	pointable = false,
+
+	get_staticdata = get_staticdata,
+	on_activate = on_activate,
+
+	_lastpos={},
+	_thrower = nil,
+	objtype="fishing",
+}
+
+-- Movement function of flying bobber
+local flying_bobber_on_step = function(self, dtime)
+	self.timer=self.timer+dtime
+	local pos = self.object:get_pos()
+	local node = minetest.get_node(pos)
+	local def = minetest.registered_nodes[node.name]
+	--local player = minetest.get_player_by_name(self._thrower)
+
+	-- Destroy when hitting a solid node
+	if self._lastpos.x~=nil then
+		if (def and (def.walkable or def.liquidtype == "flowing" or def.liquidtype == "source")) or not def then
+			local make_child= function(object)
+				local ent = object:get_luaentity()
+				ent.player = self._thrower
+				ent.child = true
+			end
+			make_child(minetest.add_entity(self._lastpos, "mcl_fishing:bobber_entity"))
+			self.object:remove()
+			return
+		end
+	end
+	self._lastpos={x=pos.x, y=pos.y, z=pos.z} -- Set lastpos-->Node will be added at last pos outside the node
+end
+
+flying_bobber_ENTITY.on_step = flying_bobber_on_step
+
+minetest.register_entity("mcl_fishing:flying_bobber_entity", flying_bobber_ENTITY)
+
+mcl_throwing.register_throwable_object("mcl_fishing:flying_bobber", "mcl_fishing:flying_bobber_entity", 5)
 
 -- If player leaves area, remove bobber.
 minetest.register_on_leaveplayer(function(player)
