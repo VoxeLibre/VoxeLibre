@@ -1,5 +1,8 @@
 local S = minetest.get_translator("mcl_death_messages")
 local N = function(s) return s end
+local C = minetest.colorize
+
+local color_skyblue = mcl_colors.AQUA
 
 local function get_tool_name(item)
 	local name = item:get_meta():get_string("name")
@@ -40,6 +43,9 @@ local msgs = {
 	},
 	["murder"] = {
 		N("@1 was slain by @2 using [@3]"),
+	},
+	["murder_hand"] = {
+		N("@1 was slain by @2"),
 	},
 	["murder_any"] = {
 		N("@1 was killed."),
@@ -131,7 +137,7 @@ local last_damages = { }
 
 minetest.register_on_dieplayer(function(player, reason)
 	-- Death message
-	local message = minetest.settings:get_bool("mcl_showDeathMessages")
+	local message = minetest.settings:get_bool("mcl_showDeathMessages") --Maybe cache the setting?
 	if message == nil then
 		message = true
 	end
@@ -201,7 +207,11 @@ minetest.register_on_dieplayer(function(player, reason)
 			elseif hitter:is_player() then
 				hittername = hitter:get_player_name()
 				if hittername ~= nil then
-					msg = dmsg("murder", name, hittername, minetest.colorize("#00FFFF", hitter_toolname))
+					if hitter_toolname == "" then
+						msg = dmsg("murder_hand", name, hittername)
+					else
+						msg = dmsg("murder", name, hittername, C(color_skyblue, hitter_toolname))
+					end
 				else
 					msg = dmsg("murder_any", name)
 				end
@@ -229,7 +239,7 @@ minetest.register_on_dieplayer(function(player, reason)
 				if shooter == nil then
 					msg = dmsg("arrow", name)
 				elseif shooter:is_player() then
-					msg = dmsg("arrow_name", name, shooter:get_player_name(), minetest.colorize("#00FFFF", get_tool_name(shooter:get_wielded_item())))
+					msg = dmsg("arrow_name", name, shooter:get_player_name(), C(color_skyblue, get_tool_name(shooter:get_wielded_item())))
 				elseif s_ent and s_ent._cmi_is_mob then
 					if s_ent.nametag ~= "" then
 						msg = dmsg("arrow_name", name, shooter:get_player_name(), get_tool_name(shooter:get_wielded_item()))
