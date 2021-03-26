@@ -108,7 +108,7 @@ local function commandblock_action_on(pos, node)
 	local commander = meta:get_string("commander")
 	
 	if not command_blocks_activated then
-		minetest.chat_send_player(commander, msg_not_activated)
+		--minetest.chat_send_player(commander, msg_not_activated)
 		return
 	end
 	minetest.swap_node(pos, {name = "mesecons_commandblock:commandblock_on"})
