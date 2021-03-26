@@ -489,8 +489,8 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 				if filter == nil then
 					filter = ""
 				end
-				formspec = formspec .. "field[5.3,1.34;4,0.75;suche;;"..minetest.formspec_escape(filter).."]"
-				formspec = formspec .. "field_close_on_enter[suche;false]"
+				formspec = formspec .. "field[5.3,1.34;4,0.75;search;;"..minetest.formspec_escape(filter).."]"
+				formspec = formspec .. "field_close_on_enter[search;false]"
 			end
 			if pagenum ~= nil then formspec = formspec .. "p"..tostring(pagenum) end
 
@@ -561,11 +561,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	elseif fields.inv then
 		if players[name].page == "inv" then return end
 		page = "inv"
-	elseif fields.suche == "" and not fields.creative_next and not fields.creative_prev then
+	elseif fields.search == "" and not fields.creative_next and not fields.creative_prev then
 		set_inv_page("all", player)
 		page = "nix"
-	elseif fields.suche ~= nil and not fields.creative_next and not fields.creative_prev then
-		set_inv_search(string.lower(fields.suche),player)
+	elseif fields.search ~= nil and not fields.creative_next and not fields.creative_prev then
+		set_inv_search(string.lower(fields.search),player)
 		page = "nix"
 	end
 
@@ -612,8 +612,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	players[name].start_i = start_i
 
 	local filter = ""
-	if not fields.nix and fields.suche ~= nil and fields.suche ~= "" then
-		filter = fields.suche
+	if not fields.nix and fields.search ~= nil and fields.search ~= "" then
+		filter = fields.search
 		players[name].filter = filter
 	end
 
