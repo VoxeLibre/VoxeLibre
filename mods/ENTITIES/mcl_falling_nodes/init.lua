@@ -87,46 +87,6 @@ local deal_falling_damage = function(self, dtime)
 			end
 		end
 	end
---[[ 	for _,v in ipairs(objs) do
-		local hp = v:get_hp()
-		if v:is_player() and hp ~= 0 then
-			if not self._hit_players then
-				self._hit_players = {}
-			end
-			local name = v:get_player_name()
-			local hit = false
-			for _,v in ipairs(self._hit_players) do
-				if name == v then
-					hit = true
-				end
-			end
-			if not hit then
-				table.insert(self._hit_players, name)
-				local way = self._startpos.y - pos.y
-				local damage = (way - 1) * 2
-				damage = math.min(40, math.max(0, damage))
-				if damage >= 1 then
-					hp = hp - damage
-					if hp < 0 then
-						hp = 0
-					end
-					if v:is_player() then
-						-- TODO: Reduce damage if wearing a helmet
-						local msg
-						if minetest.get_item_group(self.node.name, "anvil") ~= 0 then
-							msg = S("@1 was smashed by a falling anvil.", v:get_player_name())
-						else
-							msg = S("@1 was smashed by a falling block.", v:get_player_name())
-						end
-						if dmes then
-							mcl_death_messages.player_damage(v, msg)
-						end
-					end
-					v:set_hp(hp, { type = "punch", from = "mod" })
-				end
-			end
-		end
-	end ]]
 end
 
 minetest.register_entity(":__builtin:falling_node", {
