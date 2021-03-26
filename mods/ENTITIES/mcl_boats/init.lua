@@ -247,7 +247,7 @@ function boat.on_step(self, dtime, moveresult)
 		else
 			local ctrl = self._passenger:get_player_control()
 			if ctrl and ctrl.sneak then
-				detach_player(self._passenger, true)
+				detach_object(self._passenger, true)
 				self._passenger = nil
 			end
 		end
