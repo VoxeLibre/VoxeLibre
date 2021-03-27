@@ -3,8 +3,8 @@ Drop registered inventories on player death.
 
 ## mcl_death_drop.register_dropped_list(inv, listname, drop)
 * inv: can be:
-    * "PLAYER": player inventory (to avoid multiple calling to get_inventory())
-    * function: must return inventory
+    * "PLAYER": will be interpreted like player inventory (to avoid multiple calling to get_inventory())
+    * function(player): must return inventory
 * listname: string
 * drop: bool
     * true: the entire list will be dropped
