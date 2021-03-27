@@ -11,7 +11,7 @@ end
 mcl_death_drop.register_dropped_list("PLAYER", "main", true)
 mcl_death_drop.register_dropped_list("PLAYER", "craft", true)
 mcl_death_drop.register_dropped_list("PLAYER", "armor", true)
-mcl_death_drop.register_dropped_list(function(player) return minetest.get_inventory({type="detached", name=player:get_player_name().."_armor"}) end , "armor", false)
+mcl_death_drop.register_dropped_list(function(player) return select(3, armor:get_valid_player(player)) end , "armor", false)
 
 minetest.register_on_dieplayer(function(player)
 	local keep = minetest.settings:get_bool("mcl_keepInventory", false)
@@ -19,7 +19,6 @@ minetest.register_on_dieplayer(function(player)
 		-- Drop inventory, crafting grid and armor
 		local playerinv = player:get_inventory()
 		local pos = player:get_pos()
-		local name, player_armor_inv, armor_armor_inv, pos = armor:get_valid_player(player, "[on_dieplayer]")
 		-- No item drop if in deep void
 		local void, void_deadly = mcl_worlds.is_in_void(pos)
 
