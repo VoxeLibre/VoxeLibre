@@ -38,3 +38,7 @@ Return direction where the water is flowing (to be use to push mobs, items...).
 * node: node
 
 ## flowlib.move_centre(pos, realpos, node, radius)
+* pos: position
+* realpos: position
+* node: node
+* radius: number
