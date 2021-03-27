@@ -488,7 +488,6 @@ S("The anvil has limited durability and 3 damage levels: undamaged, slightly dam
 local anvildef1 = table.copy(anvildef)
 anvildef1.description = S("Slightly Damaged Anvil")
 anvildef1._doc_items_create_entry = false
-anvildef1.groups.not_in_creative_inventory = 1
 anvildef1.groups.anvil = 2
 anvildef1._doc_items_create_entry = false
 anvildef1.tiles = {"mcl_anvils_anvil_top_damaged_1.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"}
@@ -496,7 +495,6 @@ anvildef1.tiles = {"mcl_anvils_anvil_top_damaged_1.png^[transformR90", "mcl_anvi
 local anvildef2 = table.copy(anvildef)
 anvildef2.description = S("Very Damaged Anvil")
 anvildef2._doc_items_create_entry = false
-anvildef2.groups.not_in_creative_inventory = 1
 anvildef2.groups.anvil = 3
 anvildef2._doc_items_create_entry = false
 anvildef2.tiles = {"mcl_anvils_anvil_top_damaged_2.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"}
