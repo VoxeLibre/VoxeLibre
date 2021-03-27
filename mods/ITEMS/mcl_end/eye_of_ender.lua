@@ -29,7 +29,7 @@ minetest.register_entity("mcl_end:ender_eye", {
 		if self._age >= 3 then
 			-- End of life
 			local r = math.random(1,5)
-			if r == 1 or minetest.is_creative_enabled("") then
+			if r == 1 then
 				-- 20% chance to get destroyed completely.
 				-- 100% if in Creative Mode
 				self.object:remove()
