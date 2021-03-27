@@ -33,6 +33,7 @@ Return true if <node> is liquid, false overwise.
 * node: node
 
 ## flowlib.quick_flow(pos, node)
+Return direction where the water is flowing (to be use to push mobs, items...).
 * pos: position
 * node: node
 
