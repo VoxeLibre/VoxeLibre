@@ -1,7 +1,8 @@
 local S = minetest.get_translator("mcl_armor")
+local modpath = minetest.get_modpath(minetest.get_current_modname())
 
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/armor.lua")
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/alias.lua")
+dofile(modpath.."/armor.lua")
+dofile(modpath.."/alias.lua")
 
 -- Regisiter Head Armor
 
@@ -390,3 +391,4 @@ for k, v in pairs(craft_ingreds) do
 	end
 end
 
+dofile(modpath.."/alias.lua")
