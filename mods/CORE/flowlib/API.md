@@ -1,7 +1,11 @@
 # flowlib
 Simple flow functions.
 
-## flowlib.is_touching()
+## flowlib.is_touching(realpos, nodepos, radius)
+Return true if a sphere of <radius> at <realpos> collide with node at <nodepos>.
+* realpos: position
+* nodepos: position
+* radius: number
 
 
 ## flowlib.is_water(pos)
