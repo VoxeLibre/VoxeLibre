@@ -103,7 +103,7 @@ local function add_exit(p)
 	local e = exits[k]
 	for i = 1, #e do
 		local t = e[i]
-		if t.x == p.x and t.y == p.y and t.z == p.z then
+		if t and t.x == p.x and t.y == p.y and t.z == p.z then
 			return
 		end
 	end
