@@ -1,7 +1,11 @@
--- NOTE: whenever it becomes possible to fully implement kelp without the
+-- TODO: whenever it becomes possible to fully implement kelp without the
 -- plantlike_rooted limitation, please adapt the code accordingly.
+--
 -- TODO: In MC, you can't actually destroy kelp by bucket'ing water in the middle.
 -- However, because of the plantlike_rooted hack, we'll just allow it for now.
+--
+-- TODO: Currently, you lose kelp if the kelp is placed on a block and then falls.
+-- This is most relevant for (red)sand and gravel.
 
 local S = minetest.get_translator("mcl_ocean")
 local mod_doc = minetest.get_modpath("doc") ~= nil
@@ -25,6 +29,7 @@ local mt_hash_node_position = minetest.hash_node_position
 local mt_get_node_timer = minetest.get_node_timer
 
 -- DEBUG: functions
+local log = minetest.log
 local chatlog = minetest.chat_send_all
 
 --------------------------------------------------------------------------------
@@ -130,7 +135,9 @@ kelp.detach_drop = detach_drop
 
 
 -- Detach the kelp at dig_pos, and drop their items.
--- Synonyous to digging the kelp
+-- Synonymous to digging the kelp.
+-- NOTE: this is intended for whenever kelp truly becomes segmented plants
+-- instead of rooted to the floor. Don't try to remove dig_pos.
 local function detach_dig(dig_pos, pos, node, is_drop)
 	local param2 = node.param2
 	-- pos.y points to the surface, offset needed to point to the first kelp.
@@ -159,6 +166,72 @@ kelp.detach_dig = detach_dig
 -- Kelp callback functions
 --------------------------------------------------------------------------------
 
+local function surface_on_dig(pos, node, digger)
+	-- NOTE: if instead, kelp shouldn't drop in creative: use this instead
+	-- detach_dig(pos, pos, node,
+	-- 	not (digger and mt_is_creative_enabled(digger:get_player_name())))
+	detach_dig(pos, pos, node, true)
+end
+kelp.surface_on_dig = surface_on_dig
+
+
+local function surface_after_dig_node(pos, node)
+	return mt_set_node(pos, {name=registred_nodes[node.name].node_dig_prediction})
+end
+kelp.surface_after_dig_node = surface_after_dig_node
+
+
+local kelp_timers = {}
+local kelp_timers_counter = 0
+local function surface_on_timer(pos, elapsed)
+	local node = mt_get_node(pos)
+	local dig_pos = find_unsubmerged(pos, node)
+	if dig_pos then
+		detach_dig(dig_pos, pos, node, true)
+	end
+	return true
+end
+
+
+-- NOTE: Uncomment this to use ABMs
+-- local function surface_unsubmerged_abm(pos, node)
+-- 	local dig_pos = find_unsubmerged(pos, node)
+-- 	if dig_pos then
+-- 		detach_dig(dig_pos, pos, node, true)
+-- 	end
+-- 	return true
+-- end
+
+
+-- NOTE: Uncomment this to use nodetimers
+local function surface_register_nodetimer(pos, node)
+	local pos_hash = mt_hash_node_position(pos)
+	if kelp_timers[pos_hash] then
+		return
+	end
+	local timer = mt_get_node_timer(pos)
+	kelp_timers[pos_hash] = timer
+	timer:start(0.5)
+	kelp_timers_counter = kelp_timers_counter + 1
+	chatlog("added a timer. Currently " ..tostring(kelp_timers_counter) .." timers")
+end
+kelp.surface_register_nodetiemr = surface_register_nodetimer
+
+
+local function grow_kelp(pos, node)
+	local grow
+	-- Grow kelp by 1 node length if it would grow inside water
+	node.param2, grow = next_param2(node.param2)
+	local pos_top, node_top = get_tip(pos, node)
+	local def_top = registered_nodes[node_top.name]
+	if grow and is_submerged(node_top, def_top) then
+		next_grow(pos, node, pos_top, def_top,
+			is_downward_flowing(pos_top, node_top, def_top))
+	end
+end
+kelp.grow_kelp = grow_kelp
+
+
 local function kelp_on_place(itemstack, placer, pointed_thing)
 	if pointed_thing.type ~= "node" or not placer then
 		return itemstack
@@ -171,6 +244,7 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 	local nu_name = node_under.name
 	local def_under = registered_nodes[nu_name]
 
+	-- Allow rightclick override.
 	if def_under and def_under.on_rightclick and not placer:get_player_control().sneak then
 		return def_under.on_rightclick(pos_under, node_under,
 				placer, itemstack, pointed_thing) or itemstack
@@ -222,6 +296,10 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 		pos_top = pos_above
 		node_top = mt_get_node(pos_above)
 		def_top = registered_nodes[node_top.name]
+
+		-- NOTE: Uncomment this to use nodetimers
+		-- Register nodetimer
+		surface_register_nodetimer(pos_under, node_under)
 	end
 
 	-- New kelp must also be submerged in water.
@@ -244,50 +322,6 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 end
 kelp.kelp_on_place = kelp_on_place
 
-
-local function surface_on_dig(pos, node, digger)
-	-- TODO: poll on whether if players like dropping kelp in creative
-	-- detach_dig(pos, pos, node,
-	-- 	not (digger and mt_is_creative_enabled(digger:get_player_name())))
-	detach_dig(pos, pos, node, true)
-end
-kelp.surface_on_dig = surface_on_dig
-
-
-local function surface_after_dig_node(pos, node)
-	return mt_set_node(pos, {name=registred_nodes[node.name].node_dig_prediction})
-end
-kelp.surface_after_dig_node = surface_after_dig_node
-
-
-local function grow_kelp(pos, node)
-	local grow
-	-- Grow kelp by 1 node length if it would grow inside water
-	node.param2, grow = next_param2(node.param2)
-	local pos_top, node_top = get_tip(pos, node)
-	local def_top = registered_nodes[node_top.name]
-	if grow and is_submerged(node_top, def_top) then
-		next_grow(pos, node, pos_top, def_top,
-			is_downward_flowing(pos_top, node_top, def_top))
-	end
-end
-kelp.grow_kelp = grow_kelp
-
-
-local kelp_timers_idx = {}
-local kelp_timers = {}
-local function surface_register_nodetimer(pos, node)
-	local pos_hash = mt_hash_node_position(pos)
-	if kelp_timers_idx[pos_hash] then
-		return
-	end
-	local timer = mt_get_node_timer(pos)
-	table.insert(kelp_timers, timer)
-	kelp_timers_idx[pos_hash] = #kelp_timers
-	chatlog("added a timer. Currently " ..tostring(#kelp_timers) .." timers")
-end
-kelp.surface_register_nodetiemr = surface_register_nodetimer
-
 --------------------------------------------------------------------------------
 -- Kelp registration API
 --------------------------------------------------------------------------------
@@ -303,8 +337,8 @@ kelp.surfaces = surfaces
 local registered_surfaces = {}
 kelp.registered_surfaces = registered_surfaces
 
--- Commented keys are the ones obtained using register_kelp_surface.
--- If you define your own keys, that keys will be used instead.
+-- Commented properties are the ones obtained using register_kelp_surface.
+-- If you define your own properties, it overrides the default ones.
 local surface_deftemplate = {
 	drawtype = "plantlike_rooted",
 	paramtype = "light",
@@ -333,6 +367,7 @@ local surface_deftemplate = {
 	--node_dig_prediction = nodename,
 	after_dig_node = surface_after_dig_node,
 	on_dig = surface_on_dig,
+	on_timer = surface_on_timer,
 	drop = "", -- drops are handled in on_dig
 	--_mcl_falling_node_alternative = is_falling and nodename or nil,
 	_mcl_hardness = 0,
@@ -340,7 +375,7 @@ local surface_deftemplate = {
 }
 kelp.surface_deftemplate = surface_deftemplate
 
--- Commented keys are the ones obtained using register_kelp_surface.
+-- Commented properties are the ones obtained using register_kelp_surface.
 local surface_docs = {
 	-- entry_id_orig = nodename,
 	_doc_items_entry_name = S("Kelp"),
@@ -353,19 +388,12 @@ kelp.surface_docs = surface_docs
 --[==[--
 register_kelp_surface(surface[, surface_deftemplate[, surface_docs]])
 
-surface: table with the specifications below. See also kelp.surface.
-	{
-		name="dirt",
-		The name of the surface. This will appended to the surface's nodedef name
-
-		nodename="mcl_core:dirt"
-		The nodename of the surface kelp can be planted on.
-	}
+surface: table with its specific properties. See also kelp.surface.
 
 surface_deftemplate: modifiable nodedef template. See also kelp.surface_deftempate.
 DO NOT RE-USE THE SAME DEFTEMPLATE. create copies.
 
-surface_docs: table with keys related to docs. See also kelp.surface_docs.
+surface_docs: table with properties related to docs. See also kelp.surface_docs.
 --]==]--
 local leaf_sounds = mcl_sounds.node_sound_leaves_defaults()
 local function register_kelp_surface(surface, surface_deftemplate, surface_docs)
@@ -403,7 +431,7 @@ local function register_kelp_surface(surface, surface_deftemplate, surface_docs)
 	surface_deftemplate.sounds = surface_deftemplate.sound or sounds
 	local falling_node = mt_get_item_group(nodename, "falling_node")
 	surface_deftemplate.node_dig_prediction = surface_deftemplate.node_dig_prediction or nodename
-	surface_deftemplate.groups.faling_node = surface_deftemplate.groups.faling_node or falling_node
+	surface_deftemplate.groups.falling_node = surface_deftemplate.groups.falling_node or falling_node
 	surface_deftemplate._mcl_falling_node_alternative = surface_deftemplate._mcl_falling_node_alternative or (falling_node and nodename or nil)
 
 	minetest.register_node(surfacename, surface_deftemplate)
@@ -496,7 +524,7 @@ minetest.register_craft({
 
 -- ABMs ------------------------------------------------------------------------
 minetest.register_abm({
-	label = "mcl_ocean:Kelp growth",
+	label = "Kelp growth",
 	nodenames = { "group:kelp" },
 	interval = 45,
 	chance = 12,
@@ -504,26 +532,22 @@ minetest.register_abm({
 	action = grow_kelp,
 })
 
+-- NOTE: Uncomment this to use nodetimers
 minetest.register_lbm({
 	label = "Kelp timer registration",
 	name = "mcl_ocean:kelp_timer_registration",
 	nodenames = { "group:kelp" },
-	run_at_every_load = true,
+	run_at_every_load = false,
 	action = surface_register_nodetimer,
 })
 
--- TODO: test if nodetimers are more efficient than ABM
--- -- Break kelp not underwater.
+-- NOTE: Uncomment this to use ABMs
+-- Break kelp not underwater.
 -- minetest.register_abm({
 -- 	label = "Kelp drops",
 -- 	nodenames = { "group:kelp" },
--- 	interval = 0.5,
+-- 	interval = 1.0,
 -- 	chance = 1,
 -- 	catch_up = false,
--- 	action = function(pos, node)
--- 		local dig_pos = find_unsubmerged(pos, node)
--- 		if dig_pos then
--- 			detach_dig(dig_pos, pos, node, true)
--- 		end
--- 	end
+-- 	action = surface_unsubmerged_abm,
 -- })
