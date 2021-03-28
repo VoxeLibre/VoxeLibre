@@ -81,13 +81,7 @@ local dir_step = storage:get_int("mcl_spawn_dir_step") or 0
 local dir_ind = storage:get_int("mcl_spawn_dir_ind") or 1
 local emerge_pos1, emerge_pos2
 
--- Get world 'mapgen_limit' and 'chunksize' to calculate 'spawn_limit'.
--- This accounts for how mapchunks are not generated if they or their shell exceed
--- 'mapgen_limit'.
-
-local mapgen_limit = tonumber(minetest.get_mapgen_setting("mapgen_limit"))
-local chunksize = tonumber(minetest.get_mapgen_setting("chunksize"))
-local spawn_limit = math.max(mapgen_limit - (chunksize + 1) * 16, 0)
+local spawn_limit = mcl_vars.mapgen_edge_max
 
 
 --Functions
