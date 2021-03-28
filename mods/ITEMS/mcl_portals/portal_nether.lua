@@ -466,7 +466,6 @@ local function ecb_scan_area_2(blockpos, action, calls_remaining, param)
 				local nodes2 = find_nodes_in_area(node1, node2, {"air"})
 				if nodes2 then
 					local nc2 = #nodes2
-					log("action", "[mcl_portals] nc2=" .. tostring(nc2))
 					if nc2 == 27 and not is_area_protected(node, node2, name) then
 						local distance0 = dist(pos, node)
 						if distance0 < 2 then
