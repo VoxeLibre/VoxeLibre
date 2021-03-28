@@ -175,3 +175,86 @@ minetest.craftitemdef_default.stack_max = 64
 -- Set random seed for all other mods (Remember to make sure no other mod calls this function)
 math.randomseed(os.time())
 
+local chunks = {} -- intervals of chunks generated
+function mcl_vars.add_chunk(pos)
+	local n = mcl_vars.get_chunk_number(pos) -- unsigned int
+	local prev
+	for i, d in pairs(chunks) do
+		if n <= d[2] then -- we've found it
+			if (n == d[2]) or (n >= d[1]) then return end -- already here
+			if n == d[1]-1 then -- right before:
+				if prev and (prev[2] == n-1) then
+					prev[2] = d[2]
+					table.remove(chunks, i)
+					return
+				end
+				d[1] = n
+				return
+			end
+			if prev and (prev[2] == n-1) then --join to previous
+				prev[2] = n
+				return
+			end
+			table.insert(chunks, i, {n, n}) -- insert new interval before i
+			return
+		end
+		prev = d
+	end
+	chunks[#chunks+1] = {n, n}
+end
+function mcl_vars.is_generated(pos)
+	local n = mcl_vars.get_chunk_number(pos) -- unsigned int
+	for i, d in pairs(chunks) do
+		if n <= d[2] then
+			return (n >= d[1])
+		end
+	end
+	return false
+end
+
+-- "Trivial" (actually NOT) function to just read the node and some stuff to not just return "ignore", like mt 5.4 does.
+-- p: Position, if it's wrong, {name="error"} node will return.
+-- force: optional (default: false) - Do the maximum to still read the node within us_timeout.
+-- us_timeout: optional (default: 244 = 0.000244 s = 1/80/80/80), set it at least to 3000000 to let mapgen to finish its job.
+--
+-- returns node definition, eg. {name="air"}. Unfortunately still can return {name="ignore"}.
+function mcl_vars.get_node(p, force, us_timeout)
+	-- check initial circumstances
+	if not p or not p.x or not p.y or not p.z then return {name="error"} end
+
+	-- try common way
+	local node = minetest.get_node(p)
+	if node.name ~= "ignore" then
+		return node
+	end
+
+	-- copy table to get sure it won't changed by other threads
+	local pos = {x=p.x,y=p.y,z=p.z}
+
+	-- try LVM
+	minetest.get_voxel_manip():read_from_map(pos, pos)
+	node = minetest.get_node(pos)
+	if node.name ~= "ignore" or not force then
+		return node
+	end
+
+	-- all ways failed - need to emerge (or forceload if generated)
+	local us_timeout = us_timeout or 244
+	if mcl_vars.is_generated(pos) then
+		minetest.chat_send_all("IMPOSSIBLE! Please report this to MCL2 issue tracker!")
+		minetest.forceload_block(pos)
+	else
+		minetest.emerge_area(pos, pos)
+	end
+
+	local t = minetest.get_us_time()
+
+	node = minetest.get_node(pos)
+
+	while (not node or node.name == "ignore") and (minetest.get_us_time() - t < us_timeout) do
+		node = minetest.get_node(pos)
+	end
+
+	return node
+	-- it still can return "ignore", LOL, even if force = true, but only after time out
+end

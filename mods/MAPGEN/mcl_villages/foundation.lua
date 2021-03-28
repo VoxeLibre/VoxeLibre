@@ -52,7 +52,7 @@ function settlements.terraform(settlement_info, pr)
 					else
 						-- write ground
 --						local p = {x=pos.x+xi, y=pos.y+yi, z=pos.z+zi}
---						local node = mcl_mapgen_core.get_node(p)
+--						local node = mcl_vars.get_node(p)
 --						if node and node.name ~= "air" then
 --							minetest.swap_node(p,{name="air"}) 
 --						end

@@ -1,45 +1,8 @@
 mcl_mapgen_core = {}
-mcl_mapgen_core.registered_generators = {}
+local registered_generators = {}
 
 local lvm, nodes, param2 = 0, 0, 0
-
-local generating = {} -- generating chunks
-local chunks = {} -- intervals of chunks generated
-local function add_chunk(pos)
-	local n = mcl_vars.get_chunk_number(pos) -- unsigned int
-	local prev
-	for i, d in pairs(chunks) do
-		if n <= d[2] then -- we've found it
-			if (n == d[2]) or (n >= d[1]) then return end -- already here
-			if n == d[1]-1 then -- right before:
-				if prev and (prev[2] == n-1) then
-					prev[2] = d[2]
-					table.remove(chunks, i)
-					return
-				end
-				d[1] = n
-				return
-			end
-			if prev and (prev[2] == n-1) then --join to previous
-				prev[2] = n
-				return
-			end
-			table.insert(chunks, i, {n, n}) -- insert new interval before i
-			return
-		end
-		prev = d
-	end
-	chunks[#chunks+1] = {n, n}
-end
-function mcl_mapgen_core.is_generated(pos)
-	local n = mcl_vars.get_chunk_number(pos) -- unsigned int
-	for i, d in pairs(chunks) do
-		if n <= d[2] then
-			return (n >= d[1])
-		end
-	end
-	return false
-end
+local lvm_buffer = {}
 
 --
 -- Aliases for map generator outputs
@@ -1850,24 +1813,22 @@ end
 
 minetest.register_on_generated(function(minp, maxp, blockseed)
 	minetest.log("action", "[mcl_mapgen_core] Generating chunk " .. minetest.pos_to_string(minp) .. " ... " .. minetest.pos_to_string(maxp))
-	add_chunk(minp)
 	local p1, p2 = {x=minp.x, y=minp.y, z=minp.z}, {x=maxp.x, y=maxp.y, z=maxp.z}
 	if lvm > 0 then
 		local lvm_used, shadow = false, false
-		local lb = {} -- buffer
 		local lb2 = {} -- param2
 		local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
 		local e1, e2 = {x=emin.x, y=emin.y, z=emin.z}, {x=emax.x, y=emax.y, z=emax.z}
 		local data2
-		local data = vm:get_data(lb)
+		local data = vm:get_data(lvm_buffer)
 		if param2 > 0 then
 			data2 = vm:get_param2_data(lb2)
 		end
 		local area = VoxelArea:new({MinEdge=e1, MaxEdge=e2})
 
-		for _, rec in pairs(mcl_mapgen_core.registered_generators) do
+		for _, rec in pairs(registered_generators) do
 			if rec.vf then
-				local lvm_used0, shadow0 = rec.vf(vm, data, data2, p1, p2, area, p1, p2, blockseed)
+				local lvm_used0, shadow0 = rec.vf(vm, data, data2, e1, e2, area, p1, p2, blockseed)
 				if lvm_used0 then
 					lvm_used = true
 				end
@@ -1890,18 +1851,18 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	end
 
 	if nodes > 0 then
-		for _, rec in pairs(mcl_mapgen_core.registered_generators) do
+		for _, rec in pairs(registered_generators) do
 			if rec.nf then
 				rec.nf(p1, p2, blockseed)
 			end
 		end
 	end
 
---	add_chunk(minp)
+	mcl_vars.add_chunk(minp)
 end)
 
 minetest.register_on_generated=function(node_function)
-	mcl_mapgen_core.register_generator("mod_"..tostring(#mcl_mapgen_core.registered_generators+1), nil, node_function)
+	mcl_mapgen_core.register_generator("mod_"..tostring(#registered_generators+1), nil, node_function)
 end
 
 function mcl_mapgen_core.register_generator(id, lvm_function, node_function, priority, needs_param2)
@@ -1920,18 +1881,18 @@ function mcl_mapgen_core.register_generator(id, lvm_function, node_function, pri
 		needs_param2 = needs_param2,
 	}
 
-	mcl_mapgen_core.registered_generators[id] = new_record
+	registered_generators[id] = new_record
 	table.sort(
-		mcl_mapgen_core.registered_generators,
+		registered_generators,
 		function(a, b)
 			return (a.i < b.i) or ((a.i == b.i) and (a.vf ~= nil) and (b.vf == nil))
 		end)
 end
 
 function mcl_mapgen_core.unregister_generator(id)
-	if not mcl_mapgen_core.registered_generators[id] then return end
-	local rec = mcl_mapgen_core.registered_generators[id]
-	mcl_mapgen_core.registered_generators[id] = nil
+	if not registered_generators[id] then return end
+	local rec = registered_generators[id]
+	registered_generators[id] = nil
 	if rec.vf then lvm = lvm - 1 end
 	if rev.nf then nodes = nodes - 1 end
 	if rec.needs_param2 then param2 = param2 - 1 end
@@ -2134,9 +2095,9 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 		-- Nether block fixes:
 		-- * Replace water with Nether lava.
 		-- * Replace stone, sand dirt in v6 so the Nether works in v6.
-		elseif minp.y <= mcl_vars.mg_nether_max and maxp.y >= mcl_vars.mg_nether_min then
+		elseif emin.y <= mcl_vars.mg_nether_max and emax.y >= mcl_vars.mg_nether_min then
 			if mg_name == "v6" then
-				local nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
+				local nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
 				for n=1, #nodes do
 					local p_pos = area:index(nodes[n].x, nodes[n].y, nodes[n].z)
 					if data[p_pos] == c_water then
@@ -2151,7 +2112,7 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 					end
 				end
 			else
-				minetest.emerge_area(minp, maxp, function(blockpos, action, calls_remaining, param)
+				minetest.emerge_area(emin, emax, function(blockpos, action, calls_remaining, param)
 					if calls_remaining > 0 then return end
 					-- local nodes = minetest.find_nodes_in_area(param.minp, param.maxp, {"mcl_core:water_source"})
 					local nodes = minetest.find_nodes_in_area(param.minp, param.maxp, {"group:water"})
@@ -2160,7 +2121,7 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 					for _, n in pairs(nodes) do
 						sn(n, l)
 					end
-				end, {minp=vector.new(minp), maxp=vector.new(maxp)})
+				end, {minp=vector.new(emin), maxp=vector.new(emax)})
 			end
 
 		-- End block fixes:
@@ -2231,48 +2192,3 @@ end
 
 mcl_mapgen_core.register_generator("main", basic, nil, 1, true)
 
--- "Trivial" (actually NOT) function to just read the node and some stuff to not just return "ignore", like 5.3.0 does.
--- p: Position, if it's wrong, {name="error"} node will return.
--- force: optional (default: false) - Do the maximum to still read the node within us_timeout.
--- us_timeout: optional (default: 244 = 0.000244 s = 1/80/80/80), set it at least to 3000000 to let mapgen to finish its job.
---
--- returns node definition, eg. {name="air"}. Unfortunately still can return {name="ignore"}.
-function mcl_mapgen_core.get_node(p, force, us_timeout)
-	-- check initial circumstances
-	if not p or not p.x or not p.y or not p.z then return {name="error"} end
-
-	-- try common way
-	local node = minetest.get_node(p)
-	if node.name ~= "ignore" then
-		return node
-	end
-
-	-- copy table to get sure it won't changed by other threads
-	local pos = {x=p.x,y=p.y,z=p.z}
-
-	-- try LVM
-	minetest.get_voxel_manip():read_from_map(pos, pos)
-	node = minetest.get_node(pos)
-	if node.name ~= "ignore" or not force then
-		return node
-	end
-
-	-- all ways failed - need to emerge (or forceload if generated)
-	local us_timeout = us_timeout or 244
-	if mcl_mapgen_core.is_generated(pos) then
-		minetest.forceload_block(pos)
-	else
-		minetest.emerge_area(pos, pos)
-	end
-
-	local t = minetest.get_us_time()
-
-	node = minetest.get_node(pos)
-
-	while (not node or node.name == "ignore") and (minetest.get_us_time() - t < us_timeout) do
-		node = minetest.get_node(pos)
-	end
-
-	return node
-	-- it still can return "ignore", LOL, even if force = true, but only after time out
-end

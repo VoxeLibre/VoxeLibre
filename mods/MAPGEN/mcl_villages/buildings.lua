@@ -4,7 +4,7 @@
 -------------------------------------------------------------------------------
 function settlements.build_schematic(vm, data, va, pos, building, replace_wall, name)
   -- get building node material for better integration to surrounding
-  local platform_material =  mcl_mapgen_core.get_node(pos)
+  local platform_material =  mcl_vars.get_node(pos)
   if not platform_material or (platform_material.name == "air" or platform_material.name == "ignore")  then
     return
   end

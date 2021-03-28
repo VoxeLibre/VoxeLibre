@@ -272,7 +272,7 @@ local function hut_placement_callback(p1, p2, size, orientation, pr)
 	if not p1 or not p2 then return end
 	local legs = minetest.find_nodes_in_area(p1, p2, "mcl_core:tree")
 	for i = 1, #legs do
-		while minetest.get_item_group(mcl_mapgen_core.get_node({x=legs[i].x, y=legs[i].y-1, z=legs[i].z}, true, 333333).name, "water") ~= 0 do
+		while minetest.get_item_group(mcl_vars.get_node({x=legs[i].x, y=legs[i].y-1, z=legs[i].z}, true, 333333).name, "water") ~= 0 do
 			legs[i].y = legs[i].y - 1
 			minetest.swap_node(legs[i], {name = "mcl_core:tree", param2 = 2})
 		end
