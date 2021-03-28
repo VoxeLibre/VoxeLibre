@@ -497,10 +497,17 @@ function mcl_spawn.shadow_worker()
 		mcl_spawn.search()
 		minetest.log("action", "[mcl_spawn] Started world spawn point search")
 	end
-	if success and ((not good_for_respawn(wsp)) or (not can_find_tree(wsp))) then
-		success = false
-		minetest.log("action", "[mcl_spawn] World spawn position isn't safe anymore: "..minetest.pos_to_string(wsp))
-		mcl_spawn.search()
+
+	if success then
+		local wsp_node = minetest.get_node(wsp)
+		if wsp_node and wsp_node.name == "ignore" then
+			-- special case - respawn area unloaded from memory - it's okay, skip for now
+
+		elseif ((not good_for_respawn(wsp)) or ((no_trees_area_counter >= 0) and not can_find_tree(wsp))) then
+			success = false
+			minetest.log("action", "[mcl_spawn] World spawn position isn't safe anymore: "..minetest.pos_to_string(wsp))
+			mcl_spawn.search()
+		end
 	end
 
 	minetest.after(respawn_search_interval, mcl_spawn.shadow_worker)
