@@ -278,12 +278,14 @@ minetest.register_node(PORTAL, {
 	_mcl_blast_resistance = 0,
 })
 
-local function light_frame(x1, y1, z1, x2, y2, z2, name)
+local function light_frame(x1, y1, z1, x2, y2, z2, name, node, node_frame)
 	local orientation = 0
 	if x1 == x2 then
 		orientation = 1
 	end
 	local pos = {}
+	local node = node or {name = PORTAL, param2 = orientation}
+	local node_frame = node_frame or {name = OBSIDIAN}
 	for x = x1 - 1 + orientation, x2 + 1 - orientation do
 		pos.x = x
 		for z = z1 - orientation, z2 + orientation do
@@ -292,9 +294,9 @@ local function light_frame(x1, y1, z1, x2, y2, z2, name)
 				pos.y = y
 				local frame = (x < x1) or (x > x2) or (y < y1) or (y > y2) or (z < z1) or (z > z2)
 				if frame then
-					set_node(pos, {name = OBSIDIAN})
+					set_node(pos, node_frame)
 				else
-					set_node(pos, {name = PORTAL, param2 = orientation})
+					set_node(pos, node)
 					add_exit({x=pos.x, y=pos.y-1, z=pos.z})
 				end
 			end
@@ -303,10 +305,13 @@ local function light_frame(x1, y1, z1, x2, y2, z2, name)
 end
 
 --Build arrival portal
-function build_nether_portal(pos, width, height, orientation, name)
+function build_nether_portal(pos, width, height, orientation, name, clear_before_build)
 	local width, height, orientation = width or W_MIN - 2, height or H_MIN - 2, orientation or random(0, 1)
 
-	light_frame(pos.x, pos.y, pos.z, pos.x + (1 - orientation) * (width - 1), pos.y + height - 1, pos.z + orientation * (width - 1))
+	if clear_before_build then
+		light_frame(pos.x, pos.y, pos.z, pos.x + (1 - orientation) * (width - 1), pos.y + height - 1, pos.z + orientation * (width - 1), name, {name="air"}, {name="air"})
+	end
+	light_frame(pos.x, pos.y, pos.z, pos.x + (1 - orientation) * (width - 1), pos.y + height - 1, pos.z + orientation * (width - 1), name)
 
 	-- Build obsidian platform:
 	for x = pos.x - orientation, pos.x + orientation + (width - 1) * (1 - orientation), 1 + orientation do
@@ -336,7 +341,7 @@ function mcl_portals.spawn_nether_portal(pos, rot, pr, name)
 			o = random(0,1)
 		end
 	end
-	build_nether_portal(pos, nil, nil, o, name)
+	build_nether_portal(pos, nil, nil, o, name, true)
 end
 
 -- Teleportation cooloff for some seconds, to prevent back-and-forth teleportation
