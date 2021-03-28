@@ -381,6 +381,12 @@ local function finalize_teleport(obj, exit)
 	objpos = {x = floor(objpos.x+0.5), y = ceil(objpos.y), z = floor(objpos.z+0.5)}
 	if mcl_portals.get_node(objpos).name ~= PORTAL then return end
 
+	-- THIS IS A TEMPORATY CODE SECTION FOR COMPATIBILITY REASONS -- 1 of 2 -- TODO: Remove --
+	-- Old worlds have no exits indexed - adding the exit to return here:
+	add_exit(objpos)
+	-- TEMPORATY CODE SECTION ENDS HERE --
+
+
 	-- Enable teleportation cooloff for some seconds, to prevent back-and-forth teleportation
 	teleport_cooloff(obj)
 
@@ -436,7 +442,8 @@ local function ecb_scan_area_2(blockpos, action, calls_remaining, param)
 	local pos0, distance
 	local lava = get_lava_level(pos, pos1, pos2)
 
-	-- THIS IS A TEMPORATY CODE SECTION FOR COMPATIBILITY REASONS --
+	-- THIS IS A TEMPORATY CODE SECTION FOR COMPATIBILITY REASONS -- 2 of 2 -- TODO: Remove --
+	-- Find portals for old worlds (new worlds keep them all in the table):
 	local portals = find_nodes_in_area(pos1, pos2, {PORTAL})
 	if portals and #portals>0 then
 		for _, p in pairs(portals) do
