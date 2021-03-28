@@ -247,7 +247,7 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 				if forChest and (currentChest < totalChests + 1) and (chestSlots[currentChest] == chestSlotCounter) then
 					currentChest = currentChest + 1
 					table.insert(chests, {x=tx, y=ty, z=tz})
-				else
+				-- else
 					--minetest.swap_node(p, {name = "air"})
 				end
 				if forChest then
@@ -265,8 +265,8 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 			-- Detect the 4 horizontal neighbors
 			local spos = vector.add(pos, surround_vectors[s])
 			local wpos = vector.subtract(pos, surround_vectors[s])
-			local nodename = minetest.get_node(spos).name
-			local nodename2 = minetest.get_node(wpos).name
+			local nodename = get_node(spos).name
+			local nodename2 = get_node(wpos).name
 			local nodedef = minetest.registered_nodes[nodename]
 			local nodedef2 = minetest.registered_nodes[nodename2]
 			-- The chest needs an open space in front of it and a walkable node (except chest) behind it
@@ -347,6 +347,7 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 			})
 		end
 
+		minetest.log("action", "[mcl_dungeons] Filling chest " .. tostring(c) .. " at " .. minetest.pos_to_string(pos))
 		mcl_loot.fill_inventory(meta:get_inventory(), "main", mcl_loot.get_multi_loot(loottable, pr), pr)
 	end
 
