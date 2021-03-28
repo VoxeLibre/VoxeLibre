@@ -207,6 +207,9 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 			-- Fill bucket, but not in Creative Mode
 			if not minetest.is_creative_enabled(user:get_player_name()) then
 				new_bucket = ItemStack({name = liquiddef.itemname})
+				if liquiddef.itemname == "mcl_buckets:bucket_lava" and awards and awards.unlock and user and user:is_player() then
+					awards.unlock(user:get_player_name(), "mcl:hotStuff")
+				end
 			end
 
 			minetest.add_node(pointed_thing.under, {name="air"})
