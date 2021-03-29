@@ -521,7 +521,7 @@ if c("totem") then
 	-- Totem of Undying
 	minetest.register_craftitem("mobs_mc:totem", {
 		description = S("Totem of Undying"),
-		_tt_help = minetest.colorize("#00FF00", S("Protects you from death while wielding it")),
+		_tt_help = minetest.colorize(mcl_colors.GREEN, S("Protects you from death while wielding it")),
 		_doc_items_longdesc = S("A totem of undying is a rare artifact which may safe you from certain death."),
 		_doc_items_usagehelp = S("The totem only works while you hold it in your hand. If you receive fatal damage, you are saved from death and you get a second chance with 1 HP. The totem is destroyed in the process, however."),
 		inventory_image = "mcl_totems_totem.png",

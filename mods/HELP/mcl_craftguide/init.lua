@@ -410,7 +410,7 @@ local function get_tooltip(item, groups, cooktime, burntime)
 	local tooltip
 
 	if groups then
-		local gcol = "#FFAAFF"
+		local gcol = mcl_colors.LIGHT_PURPLE
 		if #groups == 1 then
 			local g = group_names[groups[1]]
 			local groupstr
@@ -446,12 +446,12 @@ local function get_tooltip(item, groups, cooktime, burntime)
 
 	if not groups and cooktime then
 		tooltip = tooltip .. "\n" ..
-			S("Cooking time: @1", colorize("yellow", cooktime))
+			S("Cooking time: @1", colorize(mcl_colors.YELLOW, cooktime))
 	end
 
 	if not groups and burntime then
 		tooltip = tooltip .. "\n" ..
-			S("Burning time: @1", colorize("yellow", burntime))
+			S("Burning time: @1", colorize(mcl_colors.YELLOW, burntime))
 	end
 
 	return fmt(FMT.tooltip, item, ESC(tooltip))
@@ -668,7 +668,7 @@ local function make_formspec(name)
 	fs[#fs + 1] = fmt("label[%f,%f;%s]",
 		sfinv_only and 6.3 or data.iX - 2.2,
 		0.22,
-		ESC(colorize("#383838", fmt("%s / %u", data.pagenum, data.pagemax))))
+		ESC(colorize(mcl_colors.DARK_GRAY, fmt("%s / %u", data.pagenum, data.pagemax))))
 
 	fs[#fs + 1] = fmt([[
 		image_button[%f,0.12;0.8,0.8;craftguide_prev_icon.png;prev;]

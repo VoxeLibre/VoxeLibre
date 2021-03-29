@@ -16,7 +16,7 @@ local function get_anvil_formspec(set_name)
 	end
 	return "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;mcl_anvils_inventory.png]"..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
@@ -27,7 +27,7 @@ local function get_anvil_formspec(set_name)
 	mcl_formspec.get_itemslot_bg(4,2.5,1,1)..
 	"list[context;output;8,2.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(8,2.5,1,1)..
-	"label[3,0.1;"..minetest.formspec_escape(minetest.colorize("#313131", S("Repair and Name"))).."]"..
+	"label[3,0.1;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Repair and Name"))).."]"..
 	"field[3.25,1;4,1;name;;"..minetest.formspec_escape(set_name).."]"..
 	"field_close_on_enter[name;false]"..
 	"button[7,0.7;2,1;name_button;"..minetest.formspec_escape(S("Set Name")).."]"..
