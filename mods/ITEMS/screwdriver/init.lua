@@ -1,7 +1,5 @@
 local S = minetest.get_translator("screwdriver")
 
-local has_wieldview = minetest.get_modpath("wieldview")
-
 screwdriver = {}
 
 screwdriver.ROTATE_FACE = 1
@@ -178,7 +176,7 @@ minetest.register_tool("screwdriver:screwdriver", {
 	description = S("Screwdriver"),
 	inventory_image = "screwdriver.png",
 	wield_image = "screwdriver.png^[transformFX",
-	groups = { tool = 1 }, --not in creative inventory?
+	groups = { tool = 1, not_in_creative_inventory = 1 },
 	on_use = function(itemstack, user, pointed_thing)
 		screwdriver.handler(itemstack, user, pointed_thing, screwdriver.ROTATE_FACE, 200)
 		return itemstack
@@ -199,9 +197,7 @@ minetest.register_craft({
 	}
 })
 
-for i = 1, 4 do
-	minetest.register_alias("screwdriver:screwdriver"..tostring(i), "screwdriver:screwdriver")
-	if has_wieldview then
-		wieldview.register_transform("screwdriver:screwdriver"..tostring(i), "R90")
-	end
-end
+minetest.register_alias("screwdriver:screwdriver1", "screwdriver:screwdriver")
+minetest.register_alias("screwdriver:screwdriver2", "screwdriver:screwdriver")
+minetest.register_alias("screwdriver:screwdriver3", "screwdriver:screwdriver")
+minetest.register_alias("screwdriver:screwdriver4", "screwdriver:screwdriver")
