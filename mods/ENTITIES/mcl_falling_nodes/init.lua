@@ -2,7 +2,7 @@ local S = minetest.get_translator("mcl_falling_nodes")
 local dmes = minetest.get_modpath("mcl_death_messages") ~= nil
 local has_mcl_armor = minetest.get_modpath("mcl_armor")
 
-local his_creative_enabled = minetest.is_creative_enabled
+local is_creative_enabled = minetest.is_creative_enabled
 
 local get_falling_depth = function(self)
 	if not self._startpos then
