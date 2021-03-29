@@ -12,9 +12,7 @@ local function is_group(pos, group)
 	return minetest.get_item_group(nn, group) ~= 0
 end
 
-local function is_water(pos)
-	return is_group(pos, "water")
-end
+local is_water = flowlib.is_water
 
 local function is_ice(pos)
 	return is_group(pos, "ice")
