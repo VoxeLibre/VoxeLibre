@@ -186,66 +186,71 @@ for _,first_color in ipairs(colors) do
     })
     itemcount = itemcount + 4
     for _,second_color in ipairs(colors) do
-        minetest.register_tool("mcl_armor:helmet_leather_"..first_color[1].."_"..second_color[1], {
-            description = S("Leather Cap "..first_color[2].." "..second_color[2]),
-            _doc_items_longdesc = longdesc,
-            _doc_items_usagehelp = usage,
-            inventory_image = "mcl_armor_inv_helmet_leather.png",
-            texture = "mcl_armor_helmet_leather.png",
-            groups = {armor_head=1, mcl_armor_points=1, mcl_armor_uses=56, enchantability=15},
-            _repair_material = "mcl_mobitems:leather",
-            sounds = {
-                _mcl_armor_equip = "mcl_armor_equip_leather",
-                _mcl_armor_unequip = "mcl_armor_unequip_leather",
-            },
-            on_place = get_on_armor_leather_use(itemname, "mcl_armor:helmet_leather"),
-            on_secondary_use = get_on_armor_leather_use(itemname, "mcl_armor:helmet_leather"),
-        })
-        minetest.register_tool("mcl_armor:chestplate_leather_"..first_color[1].."_"..second_color[1], {
-            description = S("Leather Tunic "..first_color[2].." "..second_color[2]),
-            _doc_items_longdesc = longdesc,
-            _doc_items_usagehelp = usage,
-            inventory_image = "mcl_armor_inv_chestplate_leather.png",
-            texture = "mcl_armor_chestplate_leather.png",
-            groups = {armor_torso=1, mcl_armor_points=3, mcl_armor_uses=81, enchantability=15 },
-            _repair_material = "mcl_mobitems:leather",
-            sounds = {
-                _mcl_armor_equip = "mcl_armor_equip_leather",
-                _mcl_armor_unequip = "mcl_armor_unequip_leather",
-            },
-            on_place = get_on_armor_leather_use(itemname, "mcl_armor:chestplate_leather"),
-            on_secondary_use = get_on_armor_leather_use(itemname, "mcl_armor:chestplate_leather"),
-        })
-        minetest.register_tool("mcl_armor:leggings_leather_"..first_color[1].."_"..second_color[1], {
-            description = S("Leather Pants "..first_color[2].." "..second_color[2]),
-            _doc_items_longdesc = longdesc,
-            _doc_items_usagehelp = usage,
-            inventory_image = "mcl_armor_inv_leggings_leather.png",
-            texture = "mcl_armor_leggings_leather.png",
-            groups = {armor_legs=1, mcl_armor_points=2, mcl_armor_uses=76, enchantability=15 },
-            _repair_material = "mcl_mobitems:leather",
-            sounds = {
-                _mcl_armor_equip = "mcl_armor_equip_leather",
-                _mcl_armor_unequip = "mcl_armor_unequip_leather",
-            },
-            on_place = get_on_armor_leather_use(itemname, "mcl_armor:leggings_leather"),
-            on_secondary_use = get_on_armor_leather_use(itemname, "mcl_armor:leggings_leather"),
-        })
-        minetest.register_tool("mcl_armor:boots_leather_"..first_color[1].."_"..second_color[1], {
-            description = S("Leather Boots "..first_color[2].." "..second_color[2]),
-            _doc_items_longdesc = longdesc,
-            _doc_items_usagehelp = usage,
-            inventory_image = "mcl_armor_inv_boots_leather.png",
-            texture = "mcl_armor_leggins_leather.png",
-            groups = {armor_feet=1, mcl_armor_points=1, mcl_armor_uses=66, enchantability=15 },
-            _repair_material = "mcl_mobitems:leather",
-            sounds = {
-                _mcl_armor_equip = "mcl_armor_equip_leather",
-                _mcl_armor_unequip = "mcl_armor_unequip_leather",
-            },
-            on_place = get_on_armor_leather_use(itemname, "mcl_armor:boots_leather"),
-            on_secondary_use = get_on_armor_leather_use(itemname, "mcl_armor:boots_leather"),
-        })
+        if minetest.registered_tools["mcl_armor:helmet_leather_"..second_color[1].."_"..first_color[1]] then
+            minetest.register_alias("mcl_armor:helmet_leather_"..first_color[1].."_"..second_color[1], "mcl_armor:helmet_leather_"..second_color[1].."_"..first_color[1]) --Avoid unnecessary registration 
+        else
+            minetest.register_tool("mcl_armor:helmet_leather_"..first_color[1].."_"..second_color[1], {
+                description = S("Leather Cap "..first_color[2].." "..second_color[2]),
+                _doc_items_longdesc = longdesc,
+                _doc_items_usagehelp = usage,
+                inventory_image = "mcl_armor_inv_helmet_leather.png",
+                texture = "mcl_armor_helmet_leather.png",
+                groups = {armor_head=1, mcl_armor_points=1, mcl_armor_uses=56, enchantability=15},
+                _repair_material = "mcl_mobitems:leather",
+                sounds = {
+                    _mcl_armor_equip = "mcl_armor_equip_leather",
+                    _mcl_armor_unequip = "mcl_armor_unequip_leather",
+                },
+                on_place = get_on_armor_leather_use(itemname, "mcl_armor:helmet_leather"),
+                on_secondary_use = get_on_armor_leather_use(itemname, "mcl_armor:helmet_leather"),
+            })
+            minetest.register_tool("mcl_armor:chestplate_leather_"..first_color[1].."_"..second_color[1], {
+                description = S("Leather Tunic "..first_color[2].." "..second_color[2]),
+                _doc_items_longdesc = longdesc,
+                _doc_items_usagehelp = usage,
+                inventory_image = "mcl_armor_inv_chestplate_leather.png",
+                texture = "mcl_armor_chestplate_leather.png",
+                groups = {armor_torso=1, mcl_armor_points=3, mcl_armor_uses=81, enchantability=15 },
+                _repair_material = "mcl_mobitems:leather",
+                sounds = {
+                    _mcl_armor_equip = "mcl_armor_equip_leather",
+                    _mcl_armor_unequip = "mcl_armor_unequip_leather",
+                },
+                on_place = get_on_armor_leather_use(itemname, "mcl_armor:chestplate_leather"),
+                on_secondary_use = get_on_armor_leather_use(itemname, "mcl_armor:chestplate_leather"),
+            })
+            minetest.register_tool("mcl_armor:leggings_leather_"..first_color[1].."_"..second_color[1], {
+                description = S("Leather Pants "..first_color[2].." "..second_color[2]),
+                _doc_items_longdesc = longdesc,
+                _doc_items_usagehelp = usage,
+                inventory_image = "mcl_armor_inv_leggings_leather.png",
+                texture = "mcl_armor_leggings_leather.png",
+                groups = {armor_legs=1, mcl_armor_points=2, mcl_armor_uses=76, enchantability=15 },
+                _repair_material = "mcl_mobitems:leather",
+                sounds = {
+                    _mcl_armor_equip = "mcl_armor_equip_leather",
+                    _mcl_armor_unequip = "mcl_armor_unequip_leather",
+                },
+                on_place = get_on_armor_leather_use(itemname, "mcl_armor:leggings_leather"),
+                on_secondary_use = get_on_armor_leather_use(itemname, "mcl_armor:leggings_leather"),
+            })
+            minetest.register_tool("mcl_armor:boots_leather_"..first_color[1].."_"..second_color[1], {
+                description = S("Leather Boots "..first_color[2].." "..second_color[2]),
+                _doc_items_longdesc = longdesc,
+                _doc_items_usagehelp = usage,
+                inventory_image = "mcl_armor_inv_boots_leather.png",
+                texture = "mcl_armor_leggins_leather.png",
+                groups = {armor_feet=1, mcl_armor_points=1, mcl_armor_uses=66, enchantability=15 },
+                _repair_material = "mcl_mobitems:leather",
+                sounds = {
+                    _mcl_armor_equip = "mcl_armor_equip_leather",
+                    _mcl_armor_unequip = "mcl_armor_unequip_leather",
+                },
+                on_place = get_on_armor_leather_use(itemname, "mcl_armor:boots_leather"),
+                on_secondary_use = get_on_armor_leather_use(itemname, "mcl_armor:boots_leather"),
+            })
+            itemcount = itemcount + 4
+        end
         minetest.register_craft({
             type = "shapeless",
             output = "mcl_armor:helmet_leather_"..first_color[1].."_"..second_color[1],
@@ -266,12 +271,11 @@ for _,first_color in ipairs(colors) do
             output = "mcl_armor:boots_leather_"..first_color[1].."_"..second_color[1],
             recipe = {"mcl_armor:boots_leather_"..first_color[1], second_color[3]},
         })
-        itemcount = itemcount + 4
     end
 end
 
---minetest.register_on_joinplayer(function()
---    minetest.chat_send_all(itemcount)
---end)
+minetest.register_on_joinplayer(function()
+    minetest.chat_send_all(itemcount)
+end)
 
 minetest.log("info", "[mcl_armor] "..itemcount.." leather armor pieces have been registered")
