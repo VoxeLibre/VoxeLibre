@@ -89,6 +89,7 @@ function mcl_beds.register_bed(name, def)
 		selection_box = selection_box_bottom,
 		collision_box = collision_box_bottom,
 		drop = "",
+		node_placement_prediction = "",
 		on_place = function(itemstack, placer, pointed_thing)
 			local under = pointed_thing.under
 

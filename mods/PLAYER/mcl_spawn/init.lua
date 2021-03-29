@@ -81,13 +81,7 @@ local dir_step = storage:get_int("mcl_spawn_dir_step") or 0
 local dir_ind = storage:get_int("mcl_spawn_dir_ind") or 1
 local emerge_pos1, emerge_pos2
 
--- Get world 'mapgen_limit' and 'chunksize' to calculate 'spawn_limit'.
--- This accounts for how mapchunks are not generated if they or their shell exceed
--- 'mapgen_limit'.
-
-local mapgen_limit = tonumber(minetest.get_mapgen_setting("mapgen_limit"))
-local chunksize = tonumber(minetest.get_mapgen_setting("chunksize"))
-local spawn_limit = math.max(mapgen_limit - (chunksize + 1) * 16, 0)
+local spawn_limit = mcl_vars.mapgen_edge_max
 
 
 --Functions
@@ -503,10 +497,17 @@ function mcl_spawn.shadow_worker()
 		mcl_spawn.search()
 		minetest.log("action", "[mcl_spawn] Started world spawn point search")
 	end
-	if success and ((not good_for_respawn(wsp)) or (not can_find_tree(wsp))) then
-		success = false
-		minetest.log("action", "[mcl_spawn] World spawn position isn't safe anymore: "..minetest.pos_to_string(wsp))
-		mcl_spawn.search()
+
+	if success then
+		local wsp_node = minetest.get_node(wsp)
+		if wsp_node and wsp_node.name == "ignore" then
+			-- special case - respawn area unloaded from memory - it's okay, skip for now
+
+		elseif ((not good_for_respawn(wsp)) or ((no_trees_area_counter >= 0) and not can_find_tree(wsp))) then
+			success = false
+			minetest.log("action", "[mcl_spawn] World spawn position isn't safe anymore: "..minetest.pos_to_string(wsp))
+			mcl_spawn.search()
+		end
 	end
 
 	minetest.after(respawn_search_interval, mcl_spawn.shadow_worker)

@@ -33,6 +33,11 @@ minetest.register_node("mcl_core:stone", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 	_mcl_silk_touch_drop = true,
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		if awards and awards.unlock and digger and digger:is_player() then
+			awards.unlock(digger:get_player_name(), "mcl:stoneAge")
+		end
+	end,
 })
 
 minetest.register_node("mcl_core:stone_with_coal", {
@@ -814,6 +819,11 @@ minetest.register_node("mcl_core:obsidian", {
 	groups = {pickaxey=5, building_block=1, material_stone=1},
 	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 50,
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		if awards and awards.unlock and digger and digger:is_player() then
+			awards.unlock(digger:get_player_name(), "mcl:obsidian")
+		end
+	end,
 })
 
 minetest.register_node("mcl_core:ice", {
