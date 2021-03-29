@@ -391,4 +391,5 @@ for k, v in pairs(craft_ingreds) do
 	end
 end
 
+dofile(modpath.."/leather.lua")
 dofile(modpath.."/alias.lua")

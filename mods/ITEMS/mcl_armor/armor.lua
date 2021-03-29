@@ -3,6 +3,7 @@ local ARMOR_INIT_TIMES = 1
 local ARMOR_BONES_DELAY = 1
 
 local skin_mod = nil
+local has_shield = minetest.get_modpath("shields") --avoid multiple calls to minetest.get_modpath()
 
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 
@@ -147,10 +148,23 @@ armor.set_player_armor = function(self, player)
 				if v == false then
 					local level = def.groups["armor_"..k]
 					if level then
-						local texture = def.texture or item:gsub("%:", "_")
+						local texture
+						if def.texture then
+							texture = def.texture
+							--minetest.chat_send_all("if "..texture) 
+						elseif def.groups.enchanted == 1 then
+							texture = minetest.registered_items[def._mcl_enchanting_enchanted_tool].texture or def._mcl_enchanting_enchanted_tool:gsub("_enchanted", "")..".png"
+							--minetest.chat_send_all(def._mcl_enchanting_enchanted_tool..".png") --DEBUG
+							--minetest.chat_send_all("elseif "..texture) 
+						else
+							texture = item:gsub("%:", "_")..".png"
+							--minetest.chat_send_all("else "..texture) 
+						end
+						--minetest.chat_send_all(texture) --DEBUG
 						local enchanted_addition = (mcl_enchanting.is_enchanted(item) and mcl_enchanting.overlay or "")
-						table.insert(textures, "("..texture..".png"..enchanted_addition..")")
-						preview = "(player.png^[opacity:0^"..texture.."_preview.png"..enchanted_addition..")"..(preview and "^"..preview or "")
+						table.insert(textures, texture..enchanted_addition)
+						--minetest.chat_send_all(texture..enchanted_addition) --DEBUG
+						preview = "(player.png^[opacity:0^"..(def.preview or item:gsub("%:", "_").."_preview.png")..enchanted_addition..")"..(preview and "^"..preview or "")
 						armor_level = armor_level + level
 						items = items + 1
 						mcl_armor_points = mcl_armor_points + (def.groups["mcl_armor_points"] or 0)
@@ -175,7 +189,7 @@ armor.set_player_armor = function(self, player)
 		end
 	end
 	preview = (armor:get_preview(name) or "character_preview.png")..(preview and "^"..preview or "")
-	if minetest.get_modpath("shields") then
+	if has_shield then
 		armor_level = armor_level * 0.9
 	end
 	if material.type and material.count == #self.elements then

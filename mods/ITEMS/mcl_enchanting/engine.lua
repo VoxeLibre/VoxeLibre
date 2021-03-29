@@ -266,7 +266,7 @@ function mcl_enchanting.initialize()
 			new_def.groups.not_in_creative_inventory = 1
 			new_def.groups.not_in_craft_guide = 1
 			new_def.groups.enchanted = 1
-			new_def.texture = itemdef.texture or itemname:gsub("%:", "_")
+			new_def.texture = itemdef.texture or itemname:gsub("%:", "_")..".png"
 			new_def._mcl_enchanting_enchanted_tool = new_name
 			new_def.after_use = get_after_use_callback(itemdef)
 			local register_list = register_item_list
