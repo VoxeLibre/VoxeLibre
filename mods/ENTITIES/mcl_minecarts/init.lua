@@ -824,29 +824,27 @@ minetest.register_craft({
 
 -- TODO: Re-enable crafting of special minecarts when they have been implemented
 if false then
+	minetest.register_craft({
+		output = "mcl_minecarts:furnace_minecart",
+		recipe = {
+			{"mcl_furnaces:furnace"},
+			{"mcl_minecarts:minecart"},
+		},
+	})
 
-minetest.register_craft({
-	output = "mcl_minecarts:furnace_minecart",
-	recipe = {
-		{"mcl_furnaces:furnace"},
-		{"mcl_minecarts:minecart"},
-	},
-})
+	minetest.register_craft({
+		output = "mcl_minecarts:hopper_minecart",
+		recipe = {
+			{"mcl_hoppers:hopper"},
+			{"mcl_minecarts:minecart"},
+		},
+	})
 
-minetest.register_craft({
-	output = "mcl_minecarts:hopper_minecart",
-	recipe = {
-		{"mcl_hoppers:hopper"},
-		{"mcl_minecarts:minecart"},
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_minecarts:chest_minecart",
-	recipe = {
-		{"mcl_chests:chest"},
-		{"mcl_minecarts:minecart"},
-	},
-})
-
+	minetest.register_craft({
+		output = "mcl_minecarts:chest_minecart",
+		recipe = {
+			{"mcl_chests:chest"},
+			{"mcl_minecarts:minecart"},
+		},
+	})
 end
