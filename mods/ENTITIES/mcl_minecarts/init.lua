@@ -1,5 +1,7 @@
 local S = minetest.get_translator("mcl_minecarts")
 
+local has_mcl_wip = minetest.get_modpath("mcl_wip")
+
 mcl_minecarts = {}
 mcl_minecarts.modpath = minetest.get_modpath("mcl_minecarts")
 mcl_minecarts.speed_max = 10
@@ -662,8 +664,6 @@ register_minecart(
 	"mcl_minecarts_minecart_chest.png",
 	{"mcl_minecarts:minecart", "mcl_chests:chest"},
 	nil, nil, false)
-	
-mcl_wip.register_wip_item("mcl_minecarts:chest_minecart")
 
 -- Minecart with Furnace
 register_minecart(
@@ -719,8 +719,6 @@ register_minecart(
 	end, nil, false
 )
 
-mcl_wip.register_wip_item("mcl_minecarts:furnace_minecart")
-
 -- Minecart with Command Block
 register_minecart(
 	"mcl_minecarts:command_block_minecart",
@@ -742,8 +740,6 @@ register_minecart(
 	nil, nil, false
 )
 
-mcl_wip.register_wip_item("mcl_minecarts:command_block_minecart")
-
 -- Minecart with Hopper
 register_minecart(
 	"mcl_minecarts:hopper_minecart",
@@ -761,8 +757,6 @@ register_minecart(
 	{"mcl_minecarts:minecart", "mcl_hoppers:hopper"},
 	nil, nil, false
 )
-
-mcl_wip.register_wip_item("mcl_minecarts:hopper_minecart")
 
 -- Minecart with TNT
 register_minecart(
@@ -847,4 +841,11 @@ if false then
 			{"mcl_minecarts:minecart"},
 		},
 	})
+end
+
+if has_mcl_wip then
+	mcl_wip.register_wip_item("mcl_minecarts:chest_minecart")
+	mcl_wip.register_wip_item("mcl_minecarts:furnace_minecart")
+	mcl_wip.register_wip_item("mcl_minecarts:command_block_minecart")
+	mcl_wip.register_wip_item("mcl_minecarts:hopper_minecart")
 end
