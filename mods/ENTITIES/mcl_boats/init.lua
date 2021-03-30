@@ -1,6 +1,6 @@
 local S = minetest.get_translator("mcl_boats")
 
-local boat_visual_size = {x = 3, y = 3, z = 3}
+local boat_visual_size = {x = 1, y = 1, z = 1}
 local paddling_speed = 22
 local boat_y_offset = 0.35
 local boat_y_offset_ground = boat_y_offset + 0.6
@@ -12,9 +12,7 @@ local function is_group(pos, group)
 	return minetest.get_item_group(nn, group) ~= 0
 end
 
-local function is_water(pos)
-	return is_group(pos, "water")
-end
+local is_water = flowlib.is_water
 
 local function is_ice(pos)
 	return is_group(pos, "ice")
