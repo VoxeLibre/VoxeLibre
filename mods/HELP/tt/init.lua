@@ -1,8 +1,8 @@
 tt = {}
-tt.COLOR_DEFAULT = "#d0ffd0"
-tt.COLOR_DANGER = "#ffff00"
-tt.COLOR_GOOD = "#00ff00"
-tt.NAME_COLOR = "#FFFF4C"
+tt.COLOR_DEFAULT = mcl_colors.GREEN
+tt.COLOR_DANGER = mcl_colors.YELLOW
+tt.COLOR_GOOD = mcl_colors.GREEN
+tt.NAME_COLOR = mcl_colors.YELLOW
 
 -- API
 tt.registered_snippets = {}

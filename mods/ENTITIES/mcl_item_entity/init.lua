@@ -1,3 +1,7 @@
+local has_awards = minetest.get_modpath("awards")
+
+mcl_item_entity = {}
+
 --basic settings
 local item_drop_settings                 = {} --settings table
 item_drop_settings.age                   = 1.0 --how old a dropped item (_insta_collect==false) has to be before collecting
@@ -16,16 +20,33 @@ local get_gravity = function()
 	return tonumber(minetest.settings:get("movement_gravity")) or 9.81
 end
 
+local registered_pickup_achievement = {}
+
+--TODO: remove limitation of 1 award per itemname
+function mcl_item_entity.register_pickup_achievement(itemname, award)
+	if not has_awards then
+		minetest.log("warning", "[mcl_item_entity] Trying to register pickup achievement ["..award.."] for ["..itemname.."] while awards missing")
+	elseif registered_pickup_achievement[itemname] then
+		minetest.log("error", "[mcl_item_entity] Trying to register already existing pickup achievement ["..award.."] for ["..itemname.."]")
+	else
+		registered_pickup_achievement[itemname] = award
+	end
+end
+
+mcl_item_entity.register_pickup_achievement("tree", "mcl:mineWood")
+mcl_item_entity.register_pickup_achievement("mcl_mobitems:blaze_rod", "mcl:blazeRod")
+mcl_item_entity.register_pickup_achievement("mcl_mobitems:leather", "mcl:killCow")
+mcl_item_entity.register_pickup_achievement("mcl_core:diamond", "mcl:diamonds")
+
 local check_pickup_achievements = function(object, player)
-	local itemname = ItemStack(object:get_luaentity().itemstring):get_name()
-	if minetest.get_item_group(itemname, "tree") ~= 0 then
-		awards.unlock(player:get_player_name(), "mcl:mineWood")
-	elseif itemname == "mcl_mobitems:blaze_rod" then
-		awards.unlock(player:get_player_name(), "mcl:blazeRod")
-	elseif itemname == "mcl_mobitems:leather" then
-		awards.unlock(player:get_player_name(), "mcl:killCow")
-	elseif itemname == "mcl_core:diamond" then
-		awards.unlock(player:get_player_name(), "mcl:diamonds")
+	if has_awards then
+		local itemname = ItemStack(object:get_luaentity().itemstring):get_name()
+		local playername = player:get_player_name()
+		for name,award in pairs(registered_pickup_achievement) do
+			if itemname == name or minetest.get_item_group(itemname, name) ~= 0 then
+				awards.unlock(playername, award)
+			end
+		end
 	end
 end
 

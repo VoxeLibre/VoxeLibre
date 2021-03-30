@@ -66,12 +66,7 @@ minetest.register_on_shutdown(function()
 	storage:set_string("nether_exits_keys", minetest.serialize(keys))
 end)
 
-mcl_portals.get_node = function(pos)
-	if mcl_mapgen_core and mcl_mapgen_core.get_node then
-		mcl_portals.get_node = mcl_mapgen_core.get_node
-	end
-	return minetest.get_node(pos)
-end
+local get_node = mcl_vars.get_node
 local set_node = minetest.set_node
 local registered_nodes = minetest.registered_nodes
 local is_protected = minetest.is_protected
@@ -97,7 +92,6 @@ local limits = {
 -- Incoming verification performed: two nodes must be portal nodes, and an obsidian below them.
 -- If the verification passes - position adds to the table and saves to mod storage on exit.
 local function add_exit(p)
-	local get_node = mcl_portals.get_node
 	if not p or not p.y or not p.z or not p.x then return end
 	local x, y, z = floor(p.x), floor(p.y), floor(p.z)
 	local p = {x = x, y = y, z = z}
@@ -109,7 +103,7 @@ local function add_exit(p)
 	local e = exits[k]
 	for i = 1, #e do
 		local t = e[i]
-		if t.x == p.x and t.y == p.y and t.z == p.z then
+		if t and t.x == p.x and t.y == p.y and t.z == p.z then
 			return
 		end
 	end
@@ -202,7 +196,6 @@ local function destroy_nether_portal(pos, node)
 	local nn, orientation = node.name, node.param2
 	local obsidian = nn == OBSIDIAN 
 
-	local get_node = mcl_portals.get_node
 	local check_remove = function(pos, orientation)
 		local node = get_node(pos)
 		if node and (node.name == PORTAL and (orientation == nil or (node.param2 == orientation))) then
@@ -285,12 +278,14 @@ minetest.register_node(PORTAL, {
 	_mcl_blast_resistance = 0,
 })
 
-local function light_frame(x1, y1, z1, x2, y2, z2, name)
+local function light_frame(x1, y1, z1, x2, y2, z2, name, node, node_frame)
 	local orientation = 0
 	if x1 == x2 then
 		orientation = 1
 	end
 	local pos = {}
+	local node = node or {name = PORTAL, param2 = orientation}
+	local node_frame = node_frame or {name = OBSIDIAN}
 	for x = x1 - 1 + orientation, x2 + 1 - orientation do
 		pos.x = x
 		for z = z1 - orientation, z2 + orientation do
@@ -299,9 +294,9 @@ local function light_frame(x1, y1, z1, x2, y2, z2, name)
 				pos.y = y
 				local frame = (x < x1) or (x > x2) or (y < y1) or (y > y2) or (z < z1) or (z > z2)
 				if frame then
-					set_node(pos, {name = OBSIDIAN})
+					set_node(pos, node_frame)
 				else
-					set_node(pos, {name = PORTAL, param2 = orientation})
+					set_node(pos, node)
 					add_exit({x=pos.x, y=pos.y-1, z=pos.z})
 				end
 			end
@@ -310,12 +305,13 @@ local function light_frame(x1, y1, z1, x2, y2, z2, name)
 end
 
 --Build arrival portal
-function build_nether_portal(pos, width, height, orientation, name)
+function build_nether_portal(pos, width, height, orientation, name, clear_before_build)
 	local width, height, orientation = width or W_MIN - 2, height or H_MIN - 2, orientation or random(0, 1)
 
-	light_frame(pos.x, pos.y, pos.z, pos.x + (1 - orientation) * (width - 1), pos.y + height - 1, pos.z + orientation * (width - 1))
-
-	local get_node = mcl_portals.get_node
+	if clear_before_build then
+		light_frame(pos.x, pos.y, pos.z, pos.x + (1 - orientation) * (width - 1), pos.y + height - 1, pos.z + orientation * (width - 1), name, {name="air"}, {name="air"})
+	end
+	light_frame(pos.x, pos.y, pos.z, pos.x + (1 - orientation) * (width - 1), pos.y + height - 1, pos.z + orientation * (width - 1), name)
 
 	-- Build obsidian platform:
 	for x = pos.x - orientation, pos.x + orientation + (width - 1) * (1 - orientation), 1 + orientation do
@@ -345,7 +341,7 @@ function mcl_portals.spawn_nether_portal(pos, rot, pr, name)
 			o = random(0,1)
 		end
 	end
-	build_nether_portal(pos, nil, nil, o, name)
+	build_nether_portal(pos, nil, nil, o, name, true)
 end
 
 -- Teleportation cooloff for some seconds, to prevent back-and-forth teleportation
@@ -379,7 +375,13 @@ local function finalize_teleport(obj, exit)
 
 	-- If player stands, player is at ca. something+0.5 which might cause precision problems, so we used ceil for objpos.y
 	objpos = {x = floor(objpos.x+0.5), y = ceil(objpos.y), z = floor(objpos.z+0.5)}
-	if mcl_portals.get_node(objpos).name ~= PORTAL then return end
+	if get_node(objpos).name ~= PORTAL then return end
+
+	-- THIS IS A TEMPORATY CODE SECTION FOR COMPATIBILITY REASONS -- 1 of 2 -- TODO: Remove --
+	-- Old worlds have no exits indexed - adding the exit to return here:
+	add_exit(objpos)
+	-- TEMPORATY CODE SECTION ENDS HERE --
+
 
 	-- Enable teleportation cooloff for some seconds, to prevent back-and-forth teleportation
 	teleport_cooloff(obj)
@@ -436,7 +438,8 @@ local function ecb_scan_area_2(blockpos, action, calls_remaining, param)
 	local pos0, distance
 	local lava = get_lava_level(pos, pos1, pos2)
 
-	-- THIS IS A TEMPORATY CODE SECTION FOR COMPATIBILITY REASONS --
+	-- THIS IS A TEMPORATY CODE SECTION FOR COMPATIBILITY REASONS -- 2 of 2 -- TODO: Remove --
+	-- Find portals for old worlds (new worlds keep them all in the table):
 	local portals = find_nodes_in_area(pos1, pos2, {PORTAL})
 	if portals and #portals>0 then
 		for _, p in pairs(portals) do
@@ -463,7 +466,6 @@ local function ecb_scan_area_2(blockpos, action, calls_remaining, param)
 				local nodes2 = find_nodes_in_area(node1, node2, {"air"})
 				if nodes2 then
 					local nc2 = #nodes2
-					log("action", "[mcl_portals] nc2=" .. tostring(nc2))
 					if nc2 == 27 and not is_area_protected(node, node2, name) then
 						local distance0 = dist(pos, node)
 						if distance0 < 2 then
@@ -522,7 +524,7 @@ local function create_portal(pos, limit1, limit2, name, obj)
 end
 
 local function available_for_nether_portal(p)
-	local nn = mcl_portals.get_node(p).name
+	local nn = get_node(p).name
 	local obsidian = nn == OBSIDIAN
 	if nn ~= "air" and minetest.get_item_group(nn, "fire") ~= 1 then
 		return false, obsidian
@@ -629,7 +631,7 @@ local function teleport_no_delay(obj, pos)
 
 	-- If player stands, player is at ca. something+0.5 which might cause precision problems, so we used ceil for objpos.y
 	objpos = {x = floor(objpos.x+0.5), y = ceil(objpos.y), z = floor(objpos.z+0.5)}
-	if mcl_portals.get_node(objpos).name ~= PORTAL then return end
+	if get_node(objpos).name ~= PORTAL then return end
 
 	local target, dim = get_target(objpos)
 	if not target then return end

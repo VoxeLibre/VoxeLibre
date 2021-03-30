@@ -1,13 +1,7 @@
 local S = minetest.get_translator("doc")
 local F = function(f) return minetest.formspec_escape(S(f)) end
 
--- Compability for 0.4.14 or earlier
-local colorize
-if minetest.colorize then
-	colorize = minetest.colorize
-else
-	colorize = function(color, text) return text end
-end
+local colorize = minetest.colorize
 
 doc = {}
 
@@ -41,10 +35,10 @@ doc.FORMSPEC.ENTRY_HEIGHT = doc.FORMSPEC.ENTRY_END_Y - doc.FORMSPEC.ENTRY_START_
 -- Internal helper variables
 local DOC_INTRO = S("This is the help.")
 
-local COLOR_NOT_VIEWED = "#00FFFF"	-- cyan
-local COLOR_VIEWED = "#FFFFFF"		-- white
-local COLOR_HIDDEN = "#999999"		-- gray
-local COLOR_ERROR = "#FF0000"		-- red
+local COLOR_NOT_VIEWED = mcl_colors.AQUA
+local COLOR_VIEWED =     mcl_colors.WHITE
+local COLOR_HIDDEN =     mcl_colors.GRAY
+local COLOR_ERROR =      mcl_colors.RED
 
 local CATEGORYFIELDSIZE = {
 	WIDTH = math.ceil(doc.FORMSPEC.WIDTH / 4),
@@ -776,7 +770,7 @@ function doc.generate_entry_list(cid, playername)
 				if name == nil or name == "" then
 					name = S("Nameless entry (@1)", eid)
 					if doc.entry_viewed(playername, cid, eid) then
-						viewedprefix = "#FF4444"
+						viewedprefix = mcl_colors.RED
 					else
 						viewedprefix = COLOR_ERROR
 					end

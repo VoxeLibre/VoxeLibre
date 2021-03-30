@@ -4,10 +4,10 @@ local S = minetest.get_translator("mcl_hoppers")
 
 local mcl_hoppers_formspec =
 	"size[9,7]"..
-	"label[2,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Hopper"))).."]"..
+	"label[2,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Hopper"))).."]"..
 	"list[current_name;main;2,0.5;5,1;]"..
 	mcl_formspec.get_itemslot_bg(2,0.5,5,1)..
-	"label[0,2;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
+	"label[0,2;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
 	"list[current_player;main;0,2.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,2.5,9,3)..
 	"list[current_player;main;0,5.74;9,1;]"..

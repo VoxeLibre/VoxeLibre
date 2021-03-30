@@ -16,7 +16,7 @@ mobs:register_mob("mobs_mc:wither", {
 	hp_min = 300,
 	xp_min = 50,
 	xp_max = 50,
-	armor = {undead = 80, fleshy = 80},
+	armor = {undead = 80, fleshy = 100},
 	-- This deviates from MC Wiki's size, which makes no sense
 	collisionbox = {-0.9, 0.4, -0.9, 0.9, 2.45, 0.9},
 	visual = "mesh",
@@ -66,6 +66,14 @@ mobs:register_mob("mobs_mc:wither", {
 		run_start = 0,		run_end = 20,
 	},
 	harmed_by_heal = true,
+	do_custom = function(self)
+		if self.health < (self.hp_max / 2) then
+			self.base_texture = "mobs_mc_wither_half_health.png"
+			self.fly = false
+			self.object:set_properties({textures={self.base_texture}})
+			self.armor = {undead = 80, fleshy = 80}
+		end
+	end,
 	on_spawn = function(self)
 		minetest.sound_play("mobs_mc_wither_spawn", {object=self.object, gain=1.0, max_hear_distance=64})
 	end,

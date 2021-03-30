@@ -2,7 +2,7 @@ local S = minetest.get_translator("mcl_falling_nodes")
 local dmes = minetest.get_modpath("mcl_death_messages") ~= nil
 local has_mcl_armor = minetest.get_modpath("mcl_armor")
 
-local his_creative_enabled = minetest.is_creative_enabled
+local is_creative_enabled = minetest.is_creative_enabled
 
 local get_falling_depth = function(self)
 	if not self._startpos then
@@ -53,7 +53,7 @@ local deal_falling_damage = function(self, dtime)
 						local helmet = inv:get_stack("armor", 2)
 						if has_mcl_armor and not helmet:is_empty() then
 							hp = hp/4*3
-							if not his_creative_enabled(name) then
+							if not is_creative_enabled(name) then
 								helmet:add_wear(65535/helmet:get_definition().groups.mcl_armor_uses) --TODO: be sure damage is exactly like mc (informations are missing in the mc wiki)
 								inv:set_stack("armor", 2, helmet)
 							end
