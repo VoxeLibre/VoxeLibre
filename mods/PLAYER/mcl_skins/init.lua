@@ -227,6 +227,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if mcl_skins.skin_count <= 6 then
 			-- Change skin immediately if there are not many skins
 			mcl_skins.cycle_skin(player)
+			if player:get_attach() ~= nil then
+				mcl_player.player_set_animation(player, "sit")
+			end
 		else
 			-- Show skin selection formspec otherwise
 			mcl_skins.show_formspec(player:get_player_name())
@@ -294,4 +297,3 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 minetest.log("action", "[mcl_skins] Mod initialized with "..mcl_skins.skin_count.." custom skin(s)")
-
