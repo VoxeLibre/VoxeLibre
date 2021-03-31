@@ -272,7 +272,7 @@ local function hut_placement_callback(p1, p2, size, orientation, pr)
 	if not p1 or not p2 then return end
 	local legs = minetest.find_nodes_in_area(p1, p2, "mcl_core:tree")
 	for i = 1, #legs do
-		while minetest.get_item_group(mcl_mapgen_core.get_node({x=legs[i].x, y=legs[i].y-1, z=legs[i].z}, true, 333333).name, "water") ~= 0 do
+		while minetest.get_item_group(mcl_vars.get_node({x=legs[i].x, y=legs[i].y-1, z=legs[i].z}, true, 333333).name, "water") ~= 0 do
 			legs[i].y = legs[i].y - 1
 			minetest.swap_node(legs[i], {name = "mcl_core:tree", param2 = 2})
 		end
@@ -534,7 +534,7 @@ end
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "desert_temple | desert_well | igloo | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_portal_shrine | dungeon",
+	params = "desert_temple | desert_well | igloo | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_portal_shrine | nether_portal | dungeon",
 	description = S("Generate a pre-defined structure near your position."),
 	privs = {debug = true},
 	func = function(name, param)
@@ -570,6 +570,8 @@ minetest.register_chatcommand("spawnstruct", {
 			mcl_structures.generate_end_portal_shrine(pos, rot, pr)
 		elseif param == "dungeon" and mcl_dungeons and mcl_dungeons.spawn_dungeon then
 			mcl_dungeons.spawn_dungeon(pos, rot, pr)
+		elseif param == "nether_portal" and mcl_portals and mcl_portals.spawn_nether_portal then
+			mcl_portals.spawn_nether_portal(pos, rot, pr, name)
 		elseif param == "" then
 			message = S("Error: No structure type given. Please use “/spawnstruct <type>”.")
 			errord = true

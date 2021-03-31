@@ -48,7 +48,7 @@ minetest.register_node("mcl_sponges:sponge", {
 	buildable_to = false,
 	stack_max = 64,
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
-	groups = {handy=1, building_block=1},
+	groups = {handy=1, hoey=1, building_block=1},
 	on_place = function(itemstack, placer, pointed_thing)
 		local pn = placer:get_player_name()
 		if pointed_thing.type ~= "node" then
@@ -107,7 +107,7 @@ minetest.register_node("mcl_sponges:sponge_wet", {
 	buildable_to = false,
 	stack_max = 64,
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
-	groups = {handy=1, building_block=1},
+	groups = {handy=1, hoey=1, building_block=1},
 	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
 })

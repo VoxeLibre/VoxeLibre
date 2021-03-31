@@ -33,6 +33,11 @@ minetest.register_node("mcl_core:stone", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 	_mcl_silk_touch_drop = true,
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		if awards and awards.unlock and digger and digger:is_player() then
+			awards.unlock(digger:get_player_name(), "mcl:stoneAge")
+		end
+	end,
 })
 
 minetest.register_node("mcl_core:stone_with_coal", {
@@ -808,12 +813,17 @@ minetest.register_node("mcl_core:obsidian", {
 	description = S("Obsidian"),
 	_doc_items_longdesc = S("Obsidian is an extremely hard mineral with an enourmous blast-resistance. Obsidian is formed when water meets lava."),
 	tiles = {"default_obsidian.png"},
-	is_ground_content = true,
+	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	stack_max = 64,
 	groups = {pickaxey=5, building_block=1, material_stone=1},
 	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 50,
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		if awards and awards.unlock and digger and digger:is_player() then
+			awards.unlock(digger:get_player_name(), "mcl:obsidian")
+		end
+	end,
 })
 
 minetest.register_node("mcl_core:ice", {

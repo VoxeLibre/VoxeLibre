@@ -28,3 +28,4 @@ Example 2:@n    give @@n mcl_core:apple 5@nGives the nearest player 5 apples=2. 
 Access denied. You need the “maphack” privilege to edit command blocks.=Acceso denegado. Necesita el privilegio "maphack" para editar bloques de comandos.
 Editing the command block has failed! You can only change the command block in Creative Mode!=¡La edición del bloque de comando ha fallado! ¡Solo puede cambiar el bloque de comandos en modo creativo!
 Editing the command block has failed! The command block is gone.=¡La edición del bloque de comando ha fallado! El bloque de comando se ha ido.
+Command blocks are not enabled on this server=

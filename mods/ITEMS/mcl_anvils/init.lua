@@ -9,7 +9,6 @@ local MATERIAL_TOOL_REPAIR_BOOST = {
 	math.ceil(MAX_WEAR * 0.75), -- 75%
 	MAX_WEAR, -- 100%
 }
-local NAME_COLOR = "#FFFF4C"
 
 local function get_anvil_formspec(set_name)
 	if not set_name then
@@ -17,7 +16,7 @@ local function get_anvil_formspec(set_name)
 	end
 	return "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;mcl_anvils_inventory.png]"..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
@@ -28,7 +27,7 @@ local function get_anvil_formspec(set_name)
 	mcl_formspec.get_itemslot_bg(4,2.5,1,1)..
 	"list[context;output;8,2.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(8,2.5,1,1)..
-	"label[3,0.1;"..minetest.formspec_escape(minetest.colorize("#313131", S("Repair and Name"))).."]"..
+	"label[3,0.1;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Repair and Name"))).."]"..
 	"field[3.25,1;4,1;name;;"..minetest.formspec_escape(set_name).."]"..
 	"field_close_on_enter[name;false]"..
 	"button[7,0.7;2,1;name_button;"..minetest.formspec_escape(S("Set Name")).."]"..
@@ -172,14 +171,8 @@ local function update_anvil_slots(meta)
 			if new_name ~= old_name then
 				-- Save the raw name internally
 				meta:set_string("name", new_name)
-				-- Rename item
-				if new_name == "" then
-					tt.reload_itemstack_description(name_item)
-				else
-					-- Custom name set. Colorize it!
-					-- This makes the name visually different from unnamed items
-					meta:set_string("description", minetest.colorize(NAME_COLOR, new_name))
-				end
+				-- Rename item handled by tt
+				tt.reload_itemstack_description(name_item)
 				new_output = name_item
 			elseif just_rename then
 				new_output = ""
@@ -495,7 +488,6 @@ S("The anvil has limited durability and 3 damage levels: undamaged, slightly dam
 local anvildef1 = table.copy(anvildef)
 anvildef1.description = S("Slightly Damaged Anvil")
 anvildef1._doc_items_create_entry = false
-anvildef1.groups.not_in_creative_inventory = 1
 anvildef1.groups.anvil = 2
 anvildef1._doc_items_create_entry = false
 anvildef1.tiles = {"mcl_anvils_anvil_top_damaged_1.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"}
@@ -503,7 +495,6 @@ anvildef1.tiles = {"mcl_anvils_anvil_top_damaged_1.png^[transformR90", "mcl_anvi
 local anvildef2 = table.copy(anvildef)
 anvildef2.description = S("Very Damaged Anvil")
 anvildef2._doc_items_create_entry = false
-anvildef2.groups.not_in_creative_inventory = 1
 anvildef2.groups.anvil = 3
 anvildef2._doc_items_create_entry = false
 anvildef2.tiles = {"mcl_anvils_anvil_top_damaged_2.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"}

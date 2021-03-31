@@ -238,3 +238,20 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		awards.show_to(name, name, nil, false)
 	end
 end)
+
+
+awards.register_achievement("mcl:stoneAge", {
+	title		= S("Stone Age"),
+	description	= S("Mine a stone with new pickaxe."),
+	icon		= "default_cobble.png",
+})
+awards.register_achievement("mcl:hotStuff", {
+	title		= S("Hot Stuff"),
+	description	= S("Put lava in a bucket."),
+	icon		= "bucket_lava.png",
+})
+awards.register_achievement("mcl:obsidian", {
+	title		= S("Ice Bucket Challenge"),
+	description	= S("Obtain an obsidian block."),
+	icon		= "default_obsidian.png",
+})

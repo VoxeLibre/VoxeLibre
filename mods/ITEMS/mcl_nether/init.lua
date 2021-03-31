@@ -95,7 +95,7 @@ minetest.register_node("mcl_nether:netherrack", {
 
 minetest.register_node("mcl_nether:magma", {
 	description = S("Magma Block"),
-	_tt_help = minetest.colorize("#FFFF00", S("Burns your feet")),
+	_tt_help = minetest.colorize(mcl_colors.YELLOW, S("Burns your feet")),
 	_doc_items_longdesc = S("Magma blocks are hot solid blocks which hurt anyone standing on it, unless they have fire resistance. Starting a fire on this block will create an eternal fire."),
 	stack_max = 64,
 	tiles = {{name="mcl_nether_magma.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=1.5}}},
@@ -176,7 +176,7 @@ minetest.register_node("mcl_nether:nether_wart_block", {
 	stack_max = 64,
 	tiles = {"mcl_nether_nether_wart_block.png"},
 	is_ground_content = false,
-	groups = {handy=1, building_block=1},
+	groups = {handy=1, hoey=1, building_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(
 		{
 			footstep={name="default_dirt_footstep", gain=0.7},

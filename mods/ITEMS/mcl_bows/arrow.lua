@@ -16,23 +16,17 @@ local dir_to_pitch = function(dir)
 end
 
 local random_arrow_positions = function(positions, placement)
-	local min = 0
-	local max = 0
 	if positions == 'x' then
-		min = -4
-		max = 4
+		return math.random(-4, 4)
 	elseif positions == 'y' then
-		min = 0
-		max = 10
+		return math.random(0, 10)
 	end
 	if placement == 'front' and positions == 'z' then
-		min = 3
-		max = 3
+		return 3
 	elseif placement == 'back' and positions == 'z' then
-		min = -3
-		max = -3
+		return -3
 	end
-	return math.random(max, min)
+	return 0
 end
 
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
@@ -304,8 +298,8 @@ ARROW_ENTITY.on_step = function(self, dtime)
 								else
 									self._attach_parent = 'Body'
 								end
-								self._z_rotation = math.random(30, -30)
-								self._y_rotation = math.random(30, -30)
+								self._z_rotation = math.random(-30, 30)
+								self._y_rotation = math.random( -30, 30)
 								self.object:set_attach(obj, self._attach_parent, {x=self._x_position,y=self._y_position,z=random_arrow_positions('z', placement)}, {x=0,y=self._rotation_station + self._y_rotation,z=self._z_rotation})
 								minetest.after(150, function()
 									self.object:remove()

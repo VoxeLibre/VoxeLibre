@@ -2,7 +2,7 @@ local S = minetest.get_translator("mcl_crafting_table")
 local formspec_escape = minetest.formspec_escape
 local show_formspec = minetest.show_formspec
 local C = minetest.colorize
-local text_color = mcl_colors.BLACK or "#313131"
+local text_color = mcl_colors.DARK_GRAY
 local itemslot_bg = mcl_formspec.get_itemslot_bg
 
 mcl_crafting_table = {}
@@ -13,7 +13,7 @@ function mcl_crafting_table.show_crafting_form(player)
 	show_formspec(player:get_player_name(), "main",
 		"size[9,8.75]"..
 		"image[4.7,1.5;1.5,1;gui_crafting_arrow.png]"..
-		"label[0,4;"..formspec_escape(C(text_color, S("Inventory"))).."]".. --"#313131"
+		"label[0,4;"..formspec_escape(C(text_color, S("Inventory"))).."]"..
 		"list[current_player;main;0,4.5;9,3;9]"..
 		itemslot_bg(0,4.5,9,3)..
 		"list[current_player;main;0,7.74;9,1;]"..

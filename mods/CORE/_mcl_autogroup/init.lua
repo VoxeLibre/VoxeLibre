@@ -6,7 +6,7 @@ block has a hardness and the actual Minecraft digging time is determined by
 this:
 
 1) The block's hardness
-2) The tool being used (the tool_multiplier and its efficiency level)
+2) The tool being used (the tool speed and its efficiency level)
 3) Whether the tool is considered as "eligible" for the block
    (e.g. only diamond pick eligible for obsidian)
 
@@ -43,13 +43,13 @@ this field is a table which defines which groups the tool can dig and how
 efficiently.
 
     _mcl_diggroups = {
-        handy = { tool_multiplier = 1, level = 1, uses = 0 },
-        pickaxey = { tool_multiplier = 1, level = 0, uses = 0 },
+        handy = { speed = 1, level = 1, uses = 0 },
+        pickaxey = { speed = 1, level = 0, uses = 0 },
     }
 
 The "uses" field indicate how many uses (0 for infinite) a tool has when used on
-the specified digging group.  The "tool_multiplier" field is a multiplier to the
-dig speed on that digging group.
+the specified digging group.  The "speed" field is a multiplier to the dig speed
+on that digging group.
 
 The "level" field indicates which levels of the group the tool can harvest.  A
 level of 0 means that the tool cannot harvest blocks of that node.  A level of 1
@@ -68,6 +68,8 @@ as possible.  Minetest loads mods in reverse alphabetical order.
 This also means that it is very important that no mod adds _mcl_autogroup as a
 dependency.
 --]]
+
+assert(minetest.get_modpath("mcl_autogroup"), "This mod requires the mod mcl_autogroup to function")
 
 -- Returns a table containing the unique "_mcl_hardness" for nodes belonging to
 -- each diggroup.
@@ -135,19 +137,18 @@ end
 -- Parameters:
 -- group - the group which it is digging
 -- can_harvest - if the tool can harvest the block
--- tool_multiplier - dig speed multiplier for tool (default 1)
+-- speed - dig speed multiplier for tool (default 1)
 -- efficiency - efficiency level for the tool if applicable
-local function get_digtimes(group, can_harvest, tool_multiplier, efficiency)
-	tool_multiplier = tool_multiplier or 1
-	local speed_multiplier = tool_multiplier
+local function get_digtimes(group, can_harvest, speed, efficiency)
+	local speed = speed or 1
 	if efficiency then
-		speed_multiplier = speed_multiplier + efficiency * efficiency + 1
+		speed = speed + efficiency * efficiency + 1
 	end
 
 	local digtimes = {}
 
 	for index, hardness in pairs(hardness_values[group]) do
-		local digtime = (hardness or 0) / speed_multiplier
+		local digtime = (hardness or 0) / speed
 		if can_harvest then
 			digtime = digtime * 1.5
 		else
@@ -177,8 +178,12 @@ end
 -- Add the groupcaps from a field in "_mcl_diggroups" to the groupcaps of a
 -- tool.
 local function add_groupcaps(toolname, groupcaps, groupcaps_def, efficiency)
+	if not groupcaps_def then
+		return
+	end
+
 	for g, capsdef in pairs(groupcaps_def) do
-		local mult = capsdef.tool_multiplier or 1
+		local mult = capsdef.speed or 1
 		local uses = capsdef.uses
 		local def = mcl_autogroup.registered_diggroups[g]
 		local max_level = def.levels and #def.levels or 1
@@ -195,7 +200,6 @@ local function add_groupcaps(toolname, groupcaps, groupcaps_def, efficiency)
 			groupcaps[g .. "_dig"] = get_groupcap(g, level > 0, mult, efficiency, uses)
 		end
 	end
-	return groupcaps
 end
 
 -- Checks if the given node would drop its useful drop if dug by a given tool.
@@ -209,7 +213,7 @@ function mcl_autogroup.can_harvest(nodename, toolname)
 
 	-- Check if it can be dug by tool
 	local tdef = minetest.registered_tools[toolname]
-	if tdef then
+	if tdef and tdef._mcl_diggroups then
 		for g, gdef in pairs(tdef._mcl_diggroups) do
 			if ndef.groups[g] then
 				if ndef.groups[g] <= gdef.level then

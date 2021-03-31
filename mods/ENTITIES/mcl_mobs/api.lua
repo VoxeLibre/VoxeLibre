@@ -283,6 +283,33 @@ local get_velocity = function(self)
 	return 0
 end
 
+local function update_roll(self)
+	local is_Fleckenstein = self.nametag == "Fleckenstein"
+	local was_Fleckenstein = false
+
+	local rot = self.object:get_rotation()
+	rot.z = is_Fleckenstein and pi or 0
+	self.object:set_rotation(rot)
+
+	local cbox = table.copy(self.collisionbox)
+	local acbox = self.object:get_properties().collisionbox
+
+	if math.abs(cbox[2] - acbox[2]) > 0.1 then
+		was_Fleckenstein = true
+	end
+
+	if is_Fleckenstein ~= was_Fleckenstein then
+		local pos = self.object:get_pos()
+		pos.y = pos.y + (acbox[2] + acbox[5])
+		self.object:set_pos(pos)
+	end
+
+	if is_Fleckenstein then
+		cbox[2], cbox[5] = -cbox[5], -cbox[2]
+	end
+
+	self.object:set_properties({collisionbox = cbox})
+end
 
 -- set and return valid yaw
 local set_yaw = function(self, yaw, delay, dtime)
@@ -298,6 +325,7 @@ local set_yaw = function(self, yaw, delay, dtime)
 			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
 		end
 		self.object:set_yaw(yaw)
+		update_roll(self)
 		return yaw
 	end
 
@@ -645,8 +673,8 @@ local update_tag = function(self)
 		nametag = tag,
 	})
 
+	update_roll(self)
 end
-
 
 -- drop items
 local item_drop = function(self, cooked, looting_level)
@@ -2826,7 +2854,7 @@ local falling = function(self, pos)
 	end
 
 	if mcl_portals ~= nil then
-		if mcl_portals.nether_portal_cooloff[self.object] then
+		if mcl_portals.nether_portal_cooloff(self.object) then
 			return false -- mob has teleported through Nether portal - it's 99% not falling
 		end
 	end
@@ -2854,6 +2882,18 @@ local falling = function(self, pos)
 	else
 		-- stop accelerating once max fall speed hit
 		self.object:set_acceleration({x = 0, y = 0, z = 0})
+	end
+
+	if minetest.registered_nodes[node_ok(pos).name].groups.lava then
+
+		if self.floats_on_lava == 1 then
+
+			self.object:set_acceleration({
+				x = 0,
+				y = -self.fall_speed / (max(1, v.y) ^ 2),
+				z = 0
+			})
+		end
 	end
 
 	-- in water then float up
@@ -3475,6 +3515,7 @@ local mob_step = function(self, dtime)
 			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
 		end
 		self.object:set_yaw(yaw)
+		update_roll(self)
 	end
 
 	-- end rotation
@@ -3773,6 +3814,7 @@ minetest.register_entity(name, {
 	knock_back = def.knock_back ~= false,
 	shoot_offset = def.shoot_offset or 0,
 	floats = def.floats or 1, -- floats in water by default
+	floats_on_lava = def.floats_on_lava or 0,
 	replace_rate = def.replace_rate,
 	replace_what = def.replace_what,
 	replace_with = def.replace_with,

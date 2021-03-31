@@ -12,6 +12,8 @@ as possible.  Minetest loads mods in reverse alphabetical order.
 mcl_autogroup = {}
 mcl_autogroup.registered_diggroups = {}
 
+assert(minetest.get_modpath("_mcl_autogroup"), "This mod requires the mod _mcl_autogroup to function")
+
 -- Register a group as a digging group.
 --
 -- Parameters:

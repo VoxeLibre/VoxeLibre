@@ -20,8 +20,8 @@ function mcl_jukebox.register_record(title, author, identifier, image, sound)
 	local usagehelp = S("Place a music disc into an empty jukebox to play the music. Use the jukebox again to retrieve the music disc. The music can only be heard by you, not by other players.")
 	minetest.register_craftitem(":mcl_jukebox:record_"..identifier, {
 		description =
-			core.colorize("#55FFFF", S("Music Disc")) .. "\n" ..
-			core.colorize("#989898", S("@1—@2", author, title)),
+			core.colorize(mcl_colors.AQUA, S("Music Disc")) .. "\n" ..
+			core.colorize(mcl_colors.GRAY, S("@1—@2", author, title)),
 		_doc_items_create_entry = true,
 		_doc_items_entry_name = entryname,
 		_doc_items_longdesc = longdesc,

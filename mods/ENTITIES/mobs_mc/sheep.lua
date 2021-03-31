@@ -25,6 +25,19 @@ local colors = {
 	unicolor_black = { mobs_mc.items.wool_black, "#000000D0" },
 }
 
+local rainbow_colors = {
+	"unicolor_light_red",
+	"unicolor_red",
+	"unicolor_orange",
+	"unicolor_yellow",
+	"unicolor_green",
+	"unicolor_dark_green",
+	"unicolor_light_blue",
+	"unicolor_blue",
+	"unicolor_violet",
+	"unicolor_red_violet"
+}
+
 if minetest.get_modpath("mcl_wool") ~= nil then
 	colors["unicolor_light_blue"] = { mobs_mc.items.wool_light_blue, "#5050FFD0" }
 end
@@ -112,7 +125,7 @@ mobs:register_mob("mobs_mc:sheep", {
 	end,
 
 	-- Set random color on spawn
-	do_custom = function(self)
+	do_custom = function(self, dtime)
 		if not self.initial_color_set then
 			local r = math.random(0,100000)
 			local textures
@@ -149,8 +162,35 @@ mobs:register_mob("mobs_mc:sheep", {
 			}
 			self.initial_color_set = true
 		end
+
+		local is_kay27 = self.nametag == "kay27"
+
+		if self.color_change_timer then
+			local old_color = self.color
+			if is_kay27 then
+				self.color_change_timer = self.color_change_timer - dtime
+				if self.color_change_timer < 0 then
+					self.color_change_timer = 0.5
+					self.color_index = (self.color_index + 1) % #rainbow_colors
+					self.color = rainbow_colors[self.color_index + 1]
+				end
+			else
+				self.color_change_timer = nil
+				self.color_index = nil
+				self.color = self.initial_color
+			end
+
+			if old_color ~= self.color then
+				self.base_texture = sheep_texture(self.color)
+				self.object:set_properties({textures = self.base_texture})
+			end
+		elseif is_kay27 then
+			self.initial_color = self.color
+			self.color_change_timer = 0
+			self.color_index = -1
+		end
 	end,
-	
+
 	on_rightclick = function(self, clicker)
 		local item = clicker:get_wielded_item()
 

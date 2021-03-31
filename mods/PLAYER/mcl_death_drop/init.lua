@@ -1,26 +1,40 @@
+local random = math.random
+
+mcl_death_drop = {}
+
+mcl_death_drop.registered_dropped_lists = {}
+
+function mcl_death_drop.register_dropped_list(inv, listname, drop)
+	table.insert(mcl_death_drop.registered_dropped_lists, {inv=inv, listname=listname, drop=drop})
+end
+
+mcl_death_drop.register_dropped_list("PLAYER", "main", true)
+mcl_death_drop.register_dropped_list("PLAYER", "craft", true)
+mcl_death_drop.register_dropped_list("PLAYER", "armor", true)
+mcl_death_drop.register_dropped_list(function(player) return select(3, armor:get_valid_player(player)) end , "armor", false)
+
 minetest.register_on_dieplayer(function(player)
 	local keep = minetest.settings:get_bool("mcl_keepInventory", false)
 	if keep == false then
 		-- Drop inventory, crafting grid and armor
-		local inv = player:get_inventory()
+		local playerinv = player:get_inventory()
 		local pos = player:get_pos()
-		local name, player_armor_inv, armor_armor_inv, pos = armor:get_valid_player(player, "[on_dieplayer]")
 		-- No item drop if in deep void
 		local void, void_deadly = mcl_worlds.is_in_void(pos)
-		local lists = {
-			{ inv = inv, listname = "main", drop = true },
-			{ inv = inv, listname = "craft", drop = true },
-			{ inv = player_armor_inv, listname = "armor", drop = true },
-			{ inv = armor_armor_inv, listname = "armor", drop = false },
-		}
-		for l=1,#lists do
-			local inv = lists[l].inv
-			local listname = lists[l].listname
-			local drop = lists[l].drop
+
+		for l=1,#mcl_death_drop.registered_dropped_lists do
+			local inv = mcl_death_drop.registered_dropped_lists[l].inv
+			if inv == "PLAYER" then
+				inv = playerinv
+			elseif type(inv) == "function" then
+				inv = inv(player)
+			end
+			local listname = mcl_death_drop.registered_dropped_lists[l].listname
+			local drop = mcl_death_drop.registered_dropped_lists[l].drop
 			if inv ~= nil then
 				for i, stack in ipairs(inv:get_list(listname)) do
-					local x = math.random(0, 9)/3
-					local z = math.random(0, 9)/3
+					local x = random(0, 9)/3
+					local z = random(0, 9)/3
 					pos.x = pos.x + x
 					pos.z = pos.z + z
 					if not void_deadly and drop and not mcl_enchanting.has_enchantment(stack, "curse_of_vanishing") then

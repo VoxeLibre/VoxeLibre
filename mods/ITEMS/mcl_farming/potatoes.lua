@@ -118,7 +118,7 @@ minetest.register_craftitem("mcl_farming:potato_item_baked", {
 
 minetest.register_craftitem("mcl_farming:potato_item_poison", {
 	description = S("Poisonous Potato"),
-	_tt_help = minetest.colorize("#FFFF00", S("60% chance of poisoning")),
+	_tt_help = minetest.colorize(mcl_colors.YELLOW, S("60% chance of poisoning")),
 	_doc_items_longdesc = S("This potato doesn't look too healthy. You can eat it to restore hunger points, but there's a 60% chance it will poison you briefly."),
 	stack_max = 64,
 	inventory_image = "farming_potato_poison.png",

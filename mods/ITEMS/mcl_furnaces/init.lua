@@ -9,12 +9,12 @@ local LIGHT_ACTIVE_FURNACE = 13
 
 local function active_formspec(fuel_percent, item_percent)
 	return "size[9,8.75]"..
-	"label[0,4;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
+	"label[0,4;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
 	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Furnace"))).."]"..
+	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Furnace"))).."]"..
 	"list[current_name;src;2.75,0.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
 	"list[current_name;fuel;2.75,2.5;1,1;]"..
@@ -38,12 +38,12 @@ local function active_formspec(fuel_percent, item_percent)
 end
 
 local inactive_formspec = "size[9,8.75]"..
-	"label[0,4;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
+	"label[0,4;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
 	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Furnace"))).."]"..
+	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Furnace"))).."]"..
 	"list[current_name;src;2.75,0.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
 	"list[current_name;fuel;2.75,2.5;1,1;]"..
@@ -157,6 +157,12 @@ local function on_metadata_inventory_take(pos, listname, index, stack, player)
 		elseif stack:get_name() == "mcl_fishing:fish_cooked" then
 			awards.unlock(player:get_player_name(), "mcl:cookFish")
 		end
+		give_xp(pos, player)
+	end
+end
+
+local function on_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
+	if from_list == "dst" then
 		give_xp(pos, player)
 	end
 end
@@ -477,10 +483,12 @@ minetest.register_node("mcl_furnaces:furnace", {
 		give_xp(pos)
 	end,
 
-	on_metadata_inventory_move = function(pos)
+	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		-- Reset accumulated game time when player works with furnace:
 		furnace_reset_delta_time(pos)
 		minetest.get_node_timer(pos):start(1.0)
+
+		on_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
 	end,
 	on_metadata_inventory_put = function(pos)
 		-- Reset accumulated game time when player works with furnace:
@@ -494,9 +502,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 		-- start timer function, it will helpful if player clears dst slot
 		minetest.get_node_timer(pos):start(1.0)
 
-		if listname == "dst" then
-			give_xp(pos, player)
-		end
+		on_metadata_inventory_take(pos, listname, index, stack, player)
 	end,
 
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
@@ -552,6 +558,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
+	on_metadata_inventory_move = on_metadata_inventory_move,
 	on_metadata_inventory_take = on_metadata_inventory_take,
 	on_receive_fields = receive_fields,
 	_mcl_blast_resistance = 3.5,

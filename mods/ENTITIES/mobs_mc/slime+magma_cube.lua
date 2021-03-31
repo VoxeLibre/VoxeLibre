@@ -109,7 +109,6 @@ local slime_big = {
 	fear_height = 0,
 	spawn_small_alternative = "mobs_mc:slime_small",
 	on_die = spawn_children_on_die("mobs_mc:slime_small", 4, 1.0, 1.5),
-	fire_resistant = true,
 	use_texture_alpha = true,
 }
 mobs:register_mob("mobs_mc:slime_big", slime_big)

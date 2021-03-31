@@ -38,6 +38,7 @@ mcl_weather.reg_weathers["none"] = {
 local storage = minetest.get_mod_storage()
 -- Save weather into mod storage, so it can be loaded after restarting the server
 local save_weather = function()
+	if not mcl_weather.end_time then return end
 	storage:set_string("mcl_weather_state", mcl_weather.state)
 	storage:set_int("mcl_weather_end_time", mcl_weather.end_time)
 	minetest.log("verbose", "[mcl_weather] Weather data saved: state="..mcl_weather.state.." end_time="..mcl_weather.end_time)
