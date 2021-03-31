@@ -452,6 +452,7 @@ function kelp.surface_on_timer(pos)
 	local dig_pos = kelp.find_unsubmerged(pos, node)
 	if dig_pos then
 		-- chatlog("detach_dig")
+		mt_sound_play(mt_registered_nodes[node.name].sounds.dug, { gain = 0.5, pos = dig_pos }, true)
 		kelp.detach_dig(dig_pos, pos, node, true, pos_hash)
 	end
 
