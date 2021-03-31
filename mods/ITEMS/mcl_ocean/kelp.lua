@@ -277,9 +277,10 @@ function kelp.init_age(pos, age, pos_hash, meta)
 	local meta = meta or mt_get_meta(pos)
 
 	local age = age
-	if not meta:contains("mcl_ocean:kelp_age") then
-		-- NOTE: age param can only replace initial age roll.
-		age = age or kelp.roll_init_age()
+	if age then
+		kelp.store_age(age, pos, pos_hash)
+	elseif not meta:contains("mcl_ocean:kelp_age") then
+		age = kelp.roll_init_age()
 		kelp.store_age(age, pos, pos_hash)
 	else
 		age = meta:get_int("mcl_ocean:kelp_age")
