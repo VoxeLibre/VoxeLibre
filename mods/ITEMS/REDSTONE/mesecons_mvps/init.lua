@@ -74,6 +74,7 @@ function mesecon.is_mvps_unsticky(node, pulldir, stack, stackid)
 end
 
 -- Functions to be called on mvps movement
+-- See also the callback
 function mesecon.register_on_mvps_move(callback)
 	mesecon.on_mvps_move[#mesecon.on_mvps_move+1] = callback
 end
@@ -405,17 +406,20 @@ mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_brown")
 mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_light_blue")
 mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_pink")
 
+-- Includes node heat when moving them
 mesecon.register_on_mvps_move(mesecon.move_hot_nodes)
 
--- Check for falling after moving node
 mesecon.register_on_mvps_move(function(moved_nodes)
 	for i = 1, #moved_nodes do
 		local moved_node = moved_nodes[i]
+		-- Check for falling after moving node
 		mesecon.on_placenode(moved_node.pos, moved_node.node)
 		minetest.after(0, function()
 			minetest.check_for_falling(moved_node.oldpos)
 			minetest.check_for_falling(moved_node.pos)
 		end)
+
+		-- Callback for on_mvps_move stored in nodedef
 		local node_def = minetest.registered_nodes[moved_node.node.name]
 		if node_def and node_def.mesecon and node_def.mesecon.on_mvps_move then
 			node_def.mesecon.on_mvps_move(moved_node.pos, moved_node.node,
