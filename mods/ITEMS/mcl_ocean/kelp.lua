@@ -44,11 +44,11 @@ local table_copy = table.copy
 local table_insert = table.insert
 
 -- DEBUG: functions
-local log = minetest.log
-local chatlog = minetest.chat_send_all
-il_chatlog = chatlog
-il_get_meta = mt_get_meta
-il_hash_pos = mt_hash_node_position
+-- local log = minetest.log
+-- local chatlog = minetest.chat_send_all
+-- il_chatlog = chatlog
+-- il_get_meta = mt_get_meta
+-- il_hash_pos = mt_hash_node_position
 
 --------------------------------------------------------------------------------
 -- Kelp API
