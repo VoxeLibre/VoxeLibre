@@ -3,7 +3,6 @@
 --
 -- TODO: In MC, you can't actually destroy kelp by bucket'ing water in the middle.
 -- However, because of the plantlike_rooted hack, we'll just allow it for now.
--- TODO: Integrate ABMs with the new kelp code, disabled. OR remove them entirely
 
 local S = minetest.get_translator("mcl_ocean")
 local mod_doc = minetest.get_modpath("doc") ~= nil
@@ -26,10 +25,11 @@ local mt_get_node_or_nil = minetest.get_node_or_nil
 local mt_get_node_timer = minetest.get_node_timer
 local mt_get_meta = minetest.get_meta
 local mt_hash_node_position = minetest.hash_node_position
+local mt_set_node = minetest.set_node
+local mt_swap_node = minetest.swap_node
 local mt_pos_to_string = minetest.pos_to_string
 local mt_is_protected = minetest.is_protected
 local mt_record_protection_violation = minetest.record_protection_violation
-local mt_set_node = minetest.set_node
 
 local mt_is_creative_enabled = minetest.is_creative_enabled
 local mt_sound_play = minetest.sound_play
@@ -46,9 +46,6 @@ local table_insert = table.insert
 -- DEBUG: functions
 -- local log = minetest.log
 -- local chatlog = minetest.chat_send_all
--- il_chatlog = chatlog
--- il_get_meta = mt_get_meta
--- il_hash_pos = mt_hash_node_position
 
 --------------------------------------------------------------------------------
 -- Kelp API
@@ -85,10 +82,6 @@ kelp.ROLL_GROWTH_DENOMINATOR = 100 * 1200
 
 -- Sounds used to dig and place kelp.
 kelp.leaf_sounds = mcl_sounds.node_sound_leaves_defaults()
-
--- TODO: is this really necessary
--- Lock drops to avoid duplicate drops, set after dropping detached kelp.
-kelp.lock_drop = 0
 
 -- Pool storing nodetimers
 kelp.timers_pool = {}
@@ -318,10 +311,11 @@ end
 
 
 -- Apply next kelp height.
-function kelp.next_height(pos, node, pos_tip, node_tip, submerged, downward_flowing)
+function kelp.next_height(pos, node, set_node, pos_tip, node_tip, submerged, downward_flowing)
 	-- Modified params: node
-	-- Optional params: node, pos_tip, node_tip, submerged, downward_flowing
+	-- Optional params: node, set_node, pos_tip, node_tip, submerged, downward_flowing
 	local node = node or mt_get_node(pos)
+	local set_node = set_node or mt_swap_node
 	local pos_tip = pos_tip
 	local node_tip = node_tip or (pos_tip and mt_get_node(pos_tip))
 	if not pos_tip then
@@ -333,7 +327,7 @@ function kelp.next_height(pos, node, pos_tip, node_tip, submerged, downward_flow
 
 	-- Liquid source: Grow normally.
 	node.param2 = kelp.next_param2(node.param2)
-	mt_set_node(pos, node)
+	set_node(pos, node)
 
 	-- Flowing liquid: Grow 1 step, but also turn the tip node into a liquid source.
 	if downward_flowing then
@@ -366,34 +360,22 @@ function kelp.next_grow(age, pos, node, pos_hash, pos_tip, node_tip, submerged, 
 		return
 	end
 
-	kelp.next_height(pos, node, pos_tip, node_tip, submerged, downward_flowing)
+	kelp.next_height(pos, node, nil, pos_tip, node_tip, submerged, downward_flowing)
 
 	return kelp.store_age(age, pos, pos_hash), node, pos_hash, pos_tip, node_tip, submerged, downward_flowing
 end
 
 
 -- Drops the items for detached kelps.
-function kelp.detach_drop(pos, param2, pos_hash)
-	-- Optional params: param2, pos_hash
+function kelp.detach_drop(pos, param2)
+	-- Optional params: param2
 	local height = kelp.get_height(param2 or mt_get_node(pos).param2)
-	local pos_hash = pos_hash or mt_hash_node_position(pos)
-
-	if kelp.lock_drop > 0 then
-		minetest.log("error",
-			string_format("Duplicate drop prevented at (%d, %d, %d) with lock level %d! Please report this.",
-				pos.x, pos.y, pos.z, kelp.lock_drop))
-		return
-	end
-
 	local y = pos.y
 	local walk_pos = {x=pos.x, z=pos.z}
 	for i=1,height do
 		walk_pos.y = y+i
 		mt_add_item(walk_pos, "mcl_ocean:kelp")
 	end
-
-	-- Locks drop.
-	kelp.lock_drop = kelp.lock_drop + 1
 	return true
 end
 
@@ -402,30 +384,29 @@ end
 -- Synonymous to digging the kelp.
 -- NOTE: this is intended for whenever kelp truly becomes segmented plants
 -- instead of rooted to the floor. Don't try to remove dig_pos.
-function kelp.detach_dig(dig_pos, pos, node, drop, pos_hash)
-	-- Optional params: drop, pos_hash
-	local pos_hash = pos_hash or mt_hash_node_position(pos)
+function kelp.detach_dig(dig_pos, pos, node, drop)
+	-- Optional params: drop
 
 	local param2 = node.param2
 	-- pos.y points to the surface, offset needed to point to the first kelp.
 	local new_height = dig_pos.y - (pos.y+1)
 
-	-- Digs the entire kelp: invoke after_dig_node to mt_set_node.
+	-- Digs the entire kelp.
 	if new_height <= 0 then
 		if drop then
-			kelp.detach_drop(dig_pos, param2, pos_hash)
+			kelp.detach_drop(dig_pos, param2)
 		end
 		mt_set_node(pos, {
 			name=mt_registered_nodes[node.name].node_dig_prediction,
 			param=node.param,
 			param2=0 })
 
-	-- Digs the kelp beginning at a height
+	-- Digs the kelp beginning at a height.
 	else
 		if drop then
-			kelp.detach_drop(dig_pos, param2 - new_height, pos_hash)
+			kelp.detach_drop(dig_pos, param2 - new_height)
 		end
-		mt_set_node(pos, {name=node.name, param=node.param, param2=16*new_height})
+		mt_swap_node(pos, {name=node.name, param=node.param, param2=16*new_height})
 	end
 end
 
@@ -446,21 +427,23 @@ end
 
 function kelp.surface_on_timer(pos)
 	local node = mt_get_node(pos)
-	local pos_hash = mt_hash_node_position(pos)
+	local pos_hash
 
 	-- Update detahed kelps
 	local dig_pos = kelp.find_unsubmerged(pos, node)
 	if dig_pos then
-		-- chatlog("detach_dig")
+		pos_hash = mt_hash_node_position(pos)
 		mt_sound_play(mt_registered_nodes[node.name].sounds.dug, { gain = 0.5, pos = dig_pos }, true)
-		kelp.detach_dig(dig_pos, pos, node, true, pos_hash)
+		kelp.detach_dig(dig_pos, pos, node, true)
+		kelp.store_age(kelp.roll_init_age(), pos, pos_hash)
 	end
 
 	-- Grow kelp on chance
 	if kelp.roll_growth() then
+		pos_hash = pos_hash or mt_hash_node_position(pos)
 		local age = kelp.age_pool[pos_hash]
 		if kelp.is_age_growable(age) then
-			kelp.next_grow(age, pos, node, pos_hash)
+			kelp.next_grow(age+1, pos, node, pos_hash)
 		end
 	end
 
@@ -480,16 +463,11 @@ function kelp.surface_on_destruct(pos)
 
 	-- on_falling callback. Activated by pistons for falling nodes too.
 	if kelp.is_falling(pos, node) then
-		kelp.detach_drop(pos, node.param2, pos_hash)
+		kelp.detach_drop(pos, node.param2)
 	end
 
 	-- Removes position from queue
 	kelp.age_queue_pos[pos_hash] = nil
-
-	-- Unlocks drops.
-	if kelp.lock_drop > 0 then
-		kelp.lock_drop = kelp.lock_drop - 1
-	end
 end
 
 
@@ -500,7 +478,7 @@ function kelp.surface_on_mvps_move(pos, node, oldpos, nodemeta)
 end
 
 
--- NOTE: Uncomment this to use ABMs.
+-- NOTE: Old ABM implementation.
 -- local function surface_unsubmerged_abm(pos, node)
 -- 	local dig_pos = find_unsubmerged(pos, node)
 -- 	if dig_pos then
@@ -541,10 +519,6 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 
 
 	local pos_tip, node_tip, def_tip
-	local pos_hash = mt_hash_node_position(pos_under)
-	local age = kelp.roll_init_age()
-
-
 	-- Kelp must also be placed on the top/tip side of the surface/kelp
 	if pos_under.y >= pos_above.y then
 		return itemstack
@@ -583,12 +557,13 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 		return itemstack
 	end
 
-	-- Play sound, place surface/kelp and take away an item
+	-- Play sound, place surface/kelp, store its new age and take away an item
 	local def_node = mt_registered_items[nu_name]
 	if def_node.sounds then
 		mt_sound_play(def_node.sounds.place, { gain = 0.5, pos = pos_under }, true)
 	end
-	kelp.next_height(pos_under, node_under, pos_tip, node_tip, def_tip, submerged, downward_flowing)
+	kelp.next_height(pos_under, node_under, nil, pos_tip, node_tip, def_tip, submerged, downward_flowing)
+	kelp.store_age(kelp.roll_init_age(), pos, mt_hash_node_position(pos_under))
 	if not mt_is_creative_enabled(player_name) then
 		itemstack:take_item()
 	end
@@ -818,7 +793,7 @@ minetest.register_craft({
 	burntime = 200,
 })
 
--- ABMs ------------------------------------------------------------------------
+-- Global registration ------------------------------------------------------------------------
 
 minetest.register_lbm({
 	label = "Kelp initialise",
@@ -832,7 +807,7 @@ minetest.register_lbm({
 minetest.register_globalstep(kelp.globalstep)
 minetest.register_on_shutdown(kelp.on_shutdown)
 
--- NOTE: Uncomment this to use ABMs
+-- NOTE: Old ABM implementation.
 -- minetest.register_abm({
 -- 	label = "Kelp drops",
 -- 	nodenames = { "group:kelp" },
