@@ -312,11 +312,10 @@ end
 
 
 -- Apply next kelp height.
-function kelp.next_height(pos, node, set_node, pos_tip, node_tip, submerged, downward_flowing)
+function kelp.next_height(pos, node, pos_tip, node_tip, submerged, downward_flowing)
 	-- Modified params: node
 	-- Optional params: node, set_node, pos_tip, node_tip, submerged, downward_flowing
 	local node = node or mt_get_node(pos)
-	local set_node = set_node or mt_swap_node
 	local pos_tip = pos_tip
 	local node_tip = node_tip or (pos_tip and mt_get_node(pos_tip))
 	if not pos_tip then
@@ -328,7 +327,7 @@ function kelp.next_height(pos, node, set_node, pos_tip, node_tip, submerged, dow
 
 	-- Liquid source: Grow normally.
 	node.param2 = kelp.next_param2(node.param2)
-	set_node(pos, node)
+	mt_swap_node(pos, node)
 
 	-- Flowing liquid: Grow 1 step, but also turn the tip node into a liquid source.
 	if downward_flowing then
@@ -361,7 +360,7 @@ function kelp.next_grow(age, pos, node, pos_hash, pos_tip, node_tip, submerged, 
 		return
 	end
 
-	kelp.next_height(pos, node, nil, pos_tip, node_tip, submerged, downward_flowing)
+	kelp.next_height(pos, node, pos_tip, node_tip, submerged, downward_flowing)
 
 	return kelp.store_age(age, pos, pos_hash), node, pos_hash, pos_tip, node_tip, submerged, downward_flowing
 end
@@ -519,7 +518,7 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 	end
 
 
-	local pos_tip, node_tip, def_tip
+	local pos_tip, node_tip, def_tip, new_kelp
 	-- Kelp must also be placed on the top/tip side of the surface/kelp
 	if pos_under.y >= pos_above.y then
 		return itemstack
@@ -532,7 +531,7 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 
 	-- When placed on surface.
 	else
-		local new_kelp = false
+		new_kelp = false
 		for _,surface in pairs(kelp.surfaces) do
 			if nu_name == surface.nodename then
 				node_under.name = "mcl_ocean:kelp_" ..surface.name
@@ -558,15 +557,23 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 		return itemstack
 	end
 
-	-- Play sound, place surface/kelp, store its new age and take away an item
+	-- Play sound, place surface/kelp and take away an item
 	local def_node = mt_registered_items[nu_name]
 	if def_node.sounds then
 		mt_sound_play(def_node.sounds.place, { gain = 0.5, pos = pos_under }, true)
 	end
-	kelp.next_height(pos_under, node_under, nil, pos_tip, node_tip, def_tip, submerged, downward_flowing)
-	kelp.store_age(kelp.roll_init_age(), pos, mt_hash_node_position(pos_under))
+	kelp.next_height(pos_under, node_under, pos_tip, node_tip, def_tip, submerged, downward_flowing)
 	if not mt_is_creative_enabled(player_name) then
 		itemstack:take_item()
+	end
+
+	-- Initialize age and timer when it's a new kelp
+	local pos_hash = mt_hash_node_position(pos_under)
+	if new_kelp then
+		kelp.init_age(pos_under, nil, pos_hash)
+		kelp.init_timer(pos_under, pos_hash)
+	else
+		kelp.store_age(kelp.roll_init_age(), pos_under, pos_hash)
 	end
 
 	return itemstack
