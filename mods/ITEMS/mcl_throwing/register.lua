@@ -9,8 +9,8 @@ local snowball_ENTITY={
 	collisionbox = {0,0,0,0,0,0},
 	pointable = false,
 
-	get_staticdata = get_staticdata,
-	on_activate = on_activate,
+	get_staticdata = mcl_throwing.get_staticdata,
+	on_activate = mcl_throwing.on_activate,
 	_thrower = nil,
 
 	_lastpos={},
@@ -23,8 +23,8 @@ local egg_ENTITY={
 	collisionbox = {0,0,0,0,0,0},
 	pointable = false,
 
-	get_staticdata = get_staticdata,
-	on_activate = on_activate,
+	get_staticdata = mcl_throwing.get_staticdata,
+	on_activate = mcl_throwing.on_activate,
 	_thrower = nil,
 
 	_lastpos={},
@@ -38,8 +38,8 @@ local pearl_ENTITY={
 	collisionbox = {0,0,0,0,0,0},
 	pointable = false,
 
-	get_staticdata = get_staticdata,
-	on_activate = on_activate,
+	get_staticdata = mcl_throwing.get_staticdata,
+	on_activate = mcl_throwing.on_activate,
 
 	_lastpos={},
 	_thrower = nil,		-- Player ObjectRef of the player who threw the ender pearl

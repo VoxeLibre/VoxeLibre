@@ -33,3 +33,9 @@ Handle creative mode, and throw params.
 
 * entity_name: the name of the entity to throw
 * velocity: (optional) velocity overide (can be nil)
+
+## mcl_throwing.get_staticdata(self)
+Must be used in entity def if you want the entity to be saved after unloading mapblock.
+
+## mcl_throwing.on_activate(self, staticdata, dtime_s)
+Must be used in entity def if you want the entity to be saved after unloading mapblock.

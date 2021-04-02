@@ -30,7 +30,6 @@ local N_Y_MIN, N_Y_MAX			= mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_be
 local O_DY, N_DY			= O_Y_MAX - O_Y_MIN + 1, N_Y_MAX - N_Y_MIN + 1
 
 -- Alpha and particles
-local ALPHA = minetest.features.use_texture_alpha_string_modes and 192
 local node_particles_allowed = minetest.settings:get("mcl_node_particles") or "none"
 local node_particles_levels = { none=0, low=1, medium=2, high=3 }
 local PARTICLES = node_particles_levels[node_particles_allowed]
@@ -263,7 +262,6 @@ minetest.register_node(PORTAL, {
 	drop = "",
 	light_source = 11,
 	post_effect_color = {a = 180, r = 51, g = 7, b = 89},
-	alpha = ALPHA,
 	node_box = {
 		type = "fixed",
 		fixed = {

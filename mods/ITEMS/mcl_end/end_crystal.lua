@@ -70,7 +70,7 @@ minetest.register_entity("mcl_end:crystal", {
 		collisionbox = {-1, 0.5, -1, 1, 2.5, 1},
 		mesh = "mcl_end_crystal.b3d",
 		textures = {"mcl_end_crystal.png"},
-		collide_with_objects = true,
+		collide_with_objects = false,
 	},
 	on_punch = crystal_explode,
 	on_activate = set_crystal_animation,
