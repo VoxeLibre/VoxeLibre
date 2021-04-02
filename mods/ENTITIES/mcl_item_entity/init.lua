@@ -81,7 +81,6 @@ minetest.register_globalstep(function(dtime)
 	item_check_ticker = item_check_ticker + dtime
 	if item_check_ticker >= 0.2 then
 		item_check_ticker = 0
-		print(dtime)
 
 		for _,player in pairs(minetest.get_connected_players()) do
 			if player:get_hp() > 0 or not minetest.settings:get_bool("enable_damage") then
