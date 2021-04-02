@@ -4,11 +4,6 @@ local S = minetest.get_translator("mcl_portals")
 local SPAWN_MIN = mcl_vars.mg_end_min+70
 local SPAWN_MAX = mcl_vars.mg_end_min+98
 
-local PORTAL_ALPHA = 192
-if minetest.features.use_texture_alpha_string_modes then
-	PORTAL_ALPHA = nil
-end
-
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
 local destroy_portal = function(pos)
@@ -81,7 +76,6 @@ minetest.register_node("mcl_portals:portal_end", {
 	-- This is 15 in MC.
 	light_source = 14,
 	post_effect_color = {a = 192, r = 0, g = 0, b = 0},
-	alpha = PORTAL_ALPHA,
 	after_destruct = destroy_portal,
 	-- This prevents “falling through”
 	collision_box = {
