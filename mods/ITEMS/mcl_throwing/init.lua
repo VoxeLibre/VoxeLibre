@@ -58,7 +58,7 @@ function mcl_throwing.dispense_function(stack, dispenserpos, droppos, dropnode, 
 end
 
 -- Staticdata handling because objects may want to be reloaded
-local get_staticdata = function(self)
+function mcl_throwing.get_staticdata(self)
 	local thrower
 	-- Only save thrower if it's a player name
 	if type(self._thrower) == "string" then
@@ -71,7 +71,7 @@ local get_staticdata = function(self)
 	return minetest.serialize(data)
 end
 
-local on_activate = function(self, staticdata, dtime_s)
+function mcl_throwing.on_activate(self, staticdata, dtime_s)
 	local data = minetest.deserialize(staticdata)
 	if data then
 		self._lastpos = data._lastpos
