@@ -1,6 +1,6 @@
 local has_awards = minetest.get_modpath("awards")
 
-mcl_item_entity = {}
+local mcl_item_entity = {}
 
 --basic settings
 local item_drop_settings                 = {} --settings table
@@ -74,114 +74,69 @@ local disable_physics = function(object, luaentity, ignore_check, reset_movement
 	end
 end
 
+--this is a 0.2 second tick globally across all players
+local item_check_ticker = 0
+
 minetest.register_globalstep(function(dtime)
-	for _,player in pairs(minetest.get_connected_players()) do
-		if player:get_hp() > 0 or not minetest.settings:get_bool("enable_damage") then
-			local pos = player:get_pos()
-			local inv = player:get_inventory()
-			local checkpos = {x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}
+	item_check_ticker = item_check_ticker + dtime
+	if item_check_ticker >= 0.2 then
+		item_check_ticker = 0
 
-			--magnet and collection
-			for _,object in pairs(minetest.get_objects_inside_radius(checkpos, item_drop_settings.xp_radius_magnet)) do
-				if not object:is_player() and vector.distance(checkpos, object:get_pos()) < item_drop_settings.radius_magnet and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and object:get_luaentity()._magnet_timer and (object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
-					object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
-					local collected = false
-					if object:get_luaentity()._magnet_timer >= 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time and inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
+		for _,player in pairs(minetest.get_connected_players()) do
+			if player:get_hp() > 0 or not minetest.settings:get_bool("enable_damage") then
+				local pos = player:get_pos()
+				local inv = player:get_inventory()
+				local checkpos = {x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}
 
-						-- Collection
-						if vector.distance(checkpos, object:get_pos()) <= item_drop_settings.radius_collect and not object:get_luaentity()._removed then
-							-- Ignore if itemstring is not set yet
-							if object:get_luaentity().itemstring ~= "" then
-								inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
-								minetest.sound_play("item_drop_pickup", {
-									pos = pos,
-									max_hear_distance = 16,
-									gain = 1.0,
-								}, true)
-								check_pickup_achievements(object, player)
+				--magnet and collection
+				for _,object in pairs(minetest.get_objects_inside_radius(checkpos, item_drop_settings.xp_radius_magnet)) do
+					if not object:is_player() and vector.distance(checkpos, object:get_pos()) < item_drop_settings.radius_magnet and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and object:get_luaentity()._magnet_timer and (object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
+						object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
+						local collected = false
+						if object:get_luaentity()._magnet_timer >= 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time and inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
 
-
-								-- Destroy entity
-								-- This just prevents this section to be run again because object:remove() doesn't remove the item immediately.
-								object:get_luaentity()._removed = true
-								object:remove()
-								collected = true
-							end
-
-						-- Magnet
-						else
-
-							object:get_luaentity()._magnet_active = true
-							object:get_luaentity()._collector_timer = 0
-
-							-- Move object to player
-							disable_physics(object, object:get_luaentity())
-
-							local opos = object:get_pos()
-							local vec = vector.subtract(checkpos, opos)
-							vec = vector.add(opos, vector.divide(vec, 2))
-							object:move_to(vec)
+							-- Collection
+							if not object:get_luaentity()._removed then
+								-- Ignore if itemstring is not set yet
+								if object:get_luaentity().itemstring ~= "" then
+									inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
+									minetest.sound_play("item_drop_pickup", {
+										pos = pos,
+										max_hear_distance = 16,
+										gain = 1.0,
+									}, true)
+									check_pickup_achievements(object, player)
 
 
-							--fix eternally falling items
-							minetest.after(0, function(object)
-								local lua = object:get_luaentity()
-								if lua then
-									object:set_acceleration({x=0, y=0, z=0})
-								end
-							end, object)
+									object:move_to(checkpos, false)
 
+									-- Destroy entity
+									-- This just prevents this section to be run again because object:remove() doesn't remove the item immediately.
+									object:get_luaentity()._removed = true
 
-							--this is a safety to prevent items flying away on laggy servers
-							if item_drop_settings.collection_safety == true then
-								if object:get_luaentity().init ~= true then
-									object:get_luaentity().init = true
-									minetest.after(1, function(args)
-										local playername = args[1]
-										local player = minetest.get_player_by_name(playername)
-										local object = args[2]
-										local lua = object:get_luaentity()
-										if player == nil or not player:is_player() or object == nil or lua == nil or lua.itemstring == nil then
-											return
-										end
-										if inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
-											inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
-											if not object:get_luaentity()._removed then
-												minetest.sound_play("item_drop_pickup", {
-													pos = pos,
-													max_hear_distance = 16,
-													gain = 1.0,
-												}, true)
-											end
-											check_pickup_achievements(object, player)
-											object:get_luaentity()._removed = true
-											object:remove()
-										else
-											enable_physics(object, object:get_luaentity())
-										end
-									end, {player:get_player_name(), object})
+									collected = true
 								end
 							end
 						end
-					end
 
-					if not collected then
-						if object:get_luaentity()._magnet_timer > 1 then
-							object:get_luaentity()._magnet_timer = -item_drop_settings.magnet_time
-							object:get_luaentity()._magnet_active = false
-						elseif object:get_luaentity()._magnet_timer < 0 then
-							object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
+						if not collected then
+							if object:get_luaentity()._magnet_timer > 1 then
+								object:get_luaentity()._magnet_timer = -item_drop_settings.magnet_time
+								object:get_luaentity()._magnet_active = false
+							elseif object:get_luaentity()._magnet_timer < 0 then
+								object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
+							end
 						end
+
+					elseif not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "mcl_experience:orb" then
+						local entity = object:get_luaentity()
+						entity.collector = player:get_player_name()
+						entity.collected = true
+
 					end
-
-				elseif not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "mcl_experience:orb" then
-					local entity = object:get_luaentity()
-					entity.collector = player:get_player_name()
-					entity.collected = true
-
 				end
-			end
 
+			end
 		end
 	end
 end)
@@ -230,12 +185,13 @@ local function get_fortune_drops(fortune_drops, fortune_level)
 	return drop or {}
 end
 
+local doTileDrops = minetest.settings:get_bool("mcl_doTileDrops", true)
+
 function minetest.handle_node_drops(pos, drops, digger)
 	-- NOTE: This function override allows digger to be nil.
 	-- This means there is no digger. This is a special case which allows this function to be called
 	-- by hand. Creative Mode is intentionally ignored in this case.
 
-	local doTileDrops = minetest.settings:get_bool("mcl_doTileDrops", true)
 	if (digger and digger:is_player() and minetest.is_creative_enabled(digger:get_player_name())) or doTileDrops == false then
 		return
 	end
@@ -400,6 +356,9 @@ minetest.register_entity(":__builtin:item", {
 
 	-- Number of seconds this item entity has existed so far
 	age = 0,
+
+	-- How old it has become in the collection animation
+	collection_age = 0,
 
 	set_item = function(self, itemstring)
 		self.itemstring = itemstring
@@ -566,6 +525,12 @@ minetest.register_entity(":__builtin:item", {
 
 	on_step = function(self, dtime)
 		if self._removed then
+			self.object:set_acceleration({x=0,y=0,z=0})
+			self.object:set_velocity({x=0,y=0,z=0})
+			self.collection_age = self.collection_age + dtime
+			if self.collection_age > 0.15 then
+				self.object:remove()
+			end
 			return
 		end
 		self.age = self.age + dtime

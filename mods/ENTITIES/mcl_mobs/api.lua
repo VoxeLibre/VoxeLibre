@@ -735,7 +735,9 @@ local item_drop = function(self, cooked, looting_level)
 			end
 
 			-- add item if it exists
-			obj = minetest.add_item(pos, ItemStack(item .. " " .. num))
+			for x = 1, num do
+				obj = minetest.add_item(pos, ItemStack(item .. " " .. 1))
+			end
 
 			if obj and obj:get_luaentity() then
 
