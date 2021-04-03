@@ -9,7 +9,7 @@ item_drop_settings.age                   = 1.0 --how old a dropped item (_insta_
 item_drop_settings.radius_magnet         = 2.0 --radius of item magnet. MUST BE LARGER THAN radius_collect!
 item_drop_settings.xp_radius_magnet      = 7.25 --radius of xp magnet. MUST BE LARGER THAN radius_collect!
 item_drop_settings.radius_collect        = 0.2 --radius of collection
-item_drop_settings.player_collect_height = 1.1 --added to their pos y value
+item_drop_settings.player_collect_height = 0.8 --added to their pos y value
 item_drop_settings.collection_safety     = false --do this to prevent items from flying away on laggy servers
 item_drop_settings.random_item_velocity  = true --this sets random item velocity if velocity is 0
 item_drop_settings.drop_single_item      = false --if true, the drop control drops 1 item instead of the entire stack, and sneak+drop drops the stack
@@ -527,9 +527,9 @@ minetest.register_entity(":__builtin:item", {
 			else
 				local pos = self.object:get_pos()
 
-				self.object:move_to(vector.add(pos, vector.multiply(vector.subtract(self.target, pos), 0.5)))
+				self.object:move_to(vector.add(pos, vector.multiply(vector.subtract(self.target, pos), 0.75)))
 
-				if self.collection_age >= 1 or vector.distance(pos, self.target) <= 0.06 then
+				if self.collection_age >= 1 or vector.distance(pos, self.target) <= 0.07 then
 					self.object:remove()
 				end
 			end
