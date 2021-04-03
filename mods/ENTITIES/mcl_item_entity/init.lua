@@ -9,7 +9,7 @@ item_drop_settings.age                   = 1.0 --how old a dropped item (_insta_
 item_drop_settings.radius_magnet         = 2.0 --radius of item magnet. MUST BE LARGER THAN radius_collect!
 item_drop_settings.xp_radius_magnet      = 7.25 --radius of xp magnet. MUST BE LARGER THAN radius_collect!
 item_drop_settings.radius_collect        = 0.2 --radius of collection
-item_drop_settings.player_collect_height = 1.0 --added to their pos y value
+item_drop_settings.player_collect_height = 1.1 --added to their pos y value
 item_drop_settings.collection_safety     = false --do this to prevent items from flying away on laggy servers
 item_drop_settings.random_item_velocity  = true --this sets random item velocity if velocity is 0
 item_drop_settings.drop_single_item      = false --if true, the drop control drops 1 item instead of the entire stack, and sneak+drop drops the stack
@@ -101,12 +101,13 @@ minetest.register_globalstep(function(dtime)
 								}, true)
 								check_pickup_achievements(object, player)
 
-
-								object:move_to(checkpos, true)
-
 								-- Destroy entity
 								-- This just prevents this section to be run again because object:remove() doesn't remove the item immediately.
+								object:get_luaentity().target = checkpos
 								object:get_luaentity()._removed = true
+
+								object:set_velocity({x=0,y=0,z=0})
+								object:set_acceleration({x=0,y=0,z=0})
 							end
 						end
 					end
@@ -277,8 +278,6 @@ function minetest.handle_node_drops(pos, drops, digger)
 				obj:get_luaentity().age = item_drop_settings.dug_buffer
 
 				obj:get_luaentity()._insta_collect = false
-
-				print(obj:get_luaentity().age)
 			end
 		end
 	end
@@ -513,12 +512,28 @@ minetest.register_entity(":__builtin:item", {
 
 	on_step = function(self, dtime)
 		if self._removed then
-			self.object:set_acceleration({x=0,y=0,z=0})
+
+			self.object:set_properties({
+				physical = false
+			})
+
 			self.object:set_velocity({x=0,y=0,z=0})
+			self.object:set_acceleration({x=0,y=0,z=0})
+
 			self.collection_age = self.collection_age + dtime
-			if self.collection_age > 0.15 then
+
+			if not self.target then
 				self.object:remove()
+			else
+				local pos = self.object:get_pos()
+
+				self.object:move_to(vector.add(pos, vector.multiply(vector.subtract(self.target, pos), 0.5)))
+
+				if self.collection_age >= 1 or vector.distance(pos, self.target) <= 0.06 then
+					self.object:remove()
+				end
 			end
+
 			return
 		end
 		self.age = self.age + dtime
