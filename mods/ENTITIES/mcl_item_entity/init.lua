@@ -108,6 +108,15 @@ minetest.register_globalstep(function(dtime)
 
 								object:set_velocity({x=0,y=0,z=0})
 								object:set_acceleration({x=0,y=0,z=0})
+
+								object:move_to(checkpos)
+
+								minetest.after(0.25, function()
+									--safety check
+									if object and object:get_luaentity() then
+										object:remove()
+									end
+								end)
 							end
 						end
 					end
@@ -512,28 +521,11 @@ minetest.register_entity(":__builtin:item", {
 
 	on_step = function(self, dtime)
 		if self._removed then
-
 			self.object:set_properties({
 				physical = false
 			})
-
 			self.object:set_velocity({x=0,y=0,z=0})
 			self.object:set_acceleration({x=0,y=0,z=0})
-
-			self.collection_age = self.collection_age + dtime
-
-			if not self.target then
-				self.object:remove()
-			else
-				local pos = self.object:get_pos()
-
-				self.object:move_to(vector.add(pos, vector.multiply(vector.subtract(self.target, pos), 0.75)))
-
-				if self.collection_age >= 1 or vector.distance(pos, self.target) <= 0.07 then
-					self.object:remove()
-				end
-			end
-
 			return
 		end
 		self.age = self.age + dtime
