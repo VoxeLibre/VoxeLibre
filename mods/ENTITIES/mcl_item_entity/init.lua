@@ -106,8 +106,8 @@ minetest.register_globalstep(function(dtime)
 								object:get_luaentity().target = checkpos
 								object:get_luaentity()._removed = true
 
-								object:set_velocity(vector.multiply(vector.subtract(checkpos, object:get_pos()), 10))
-								object:set_acceleration(vector.multiply(vector.subtract(checkpos, object:get_pos()), 20))
+								object:set_velocity({x=0,y=0,z=0})
+								object:set_acceleration({x=0,y=0,z=0})
 							end
 						end
 					end
@@ -278,8 +278,6 @@ function minetest.handle_node_drops(pos, drops, digger)
 				obj:get_luaentity().age = item_drop_settings.dug_buffer
 
 				obj:get_luaentity()._insta_collect = false
-
-				print(obj:get_luaentity().age)
 			end
 		end
 	end
@@ -518,16 +516,20 @@ minetest.register_entity(":__builtin:item", {
 			self.object:set_properties({
 				physical = false
 			})
+
+			self.object:set_velocity({x=0,y=0,z=0})
+			self.object:set_acceleration({x=0,y=0,z=0})
+
 			self.collection_age = self.collection_age + dtime
+
 			if not self.target then
 				self.object:remove()
 			else
 				local pos = self.object:get_pos()
 
-				self.object:set_acceleration(vector.multiply(vector.subtract(self.target, pos), 20))
-				self.object:set_velocity(vector.multiply(vector.subtract(self.target, pos), 10))
+				self.object:move_to(vector.add(pos, vector.multiply(vector.subtract(self.target, pos), 0.5)))
 
-				if self.collection_age >= 0.3 or vector.distance(pos, self.target) <= 0.08 then
+				if self.collection_age >= 1 or vector.distance(pos, self.target) <= 0.06 then
 					self.object:remove()
 				end
 			end
