@@ -2819,6 +2819,10 @@ local do_states = function(self, dtime)
 					local arrow, ent
 					local v = 1
 					if not self.shoot_arrow then
+						self.firing = true
+						minetest.after(1, function()
+							self.firing = false
+						end)
 						arrow = minetest.add_entity(p, self.arrow)
 						ent = arrow:get_luaentity()
 						if ent.velocity then
