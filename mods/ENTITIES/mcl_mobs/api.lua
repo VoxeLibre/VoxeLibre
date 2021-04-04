@@ -3741,6 +3741,8 @@ function mobs:register_mob(name, def)
 local can_despawn
 if def.can_despawn ~= nil then
 	can_despawn = def.can_despawn
+elseif def.spawn_class == "passive" then
+	can_despawn = false
 else
 	can_despawn = true
 end
