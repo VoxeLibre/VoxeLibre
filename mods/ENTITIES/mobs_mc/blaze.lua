@@ -76,10 +76,8 @@ mobs:register_mob("mobs_mc:blaze", {
 	glow = 14,
 	fire_resistant = true,
 	do_custom = function(self)
-		for _,obj in pairs(minetest.get_objects_inside_radius(self.object:get_pos(), 1.2)) do
-			if obj:is_player() or not obj:is_player() and obj:get_luaentity()._cmi_is_mob then
-				mcl_burning.set_on_fire(obj, 5)
-			end
+		if self.state == "attack" and vector.distance(self.object:get_pos(), self.attack:get_pos()) < 1.2 then
+			mcl_burning.set_on_fire(self.attack, 5)
 		end
 		local pos = self.object:get_pos()
 		minetest.add_particle({
