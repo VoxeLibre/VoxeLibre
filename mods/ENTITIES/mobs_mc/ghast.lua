@@ -63,6 +63,15 @@ mobs:register_mob("mobs_mc:ghast", {
 	makes_footstep_sound = false,
 	instant_death = true,
 	fire_resistant = true,
+	do_custom = function(self)
+		if self.firing == true then
+			self.base_texture = {"mobs_mc_ghast_firing.png"}
+			self.object:set_properties({textures=self.base_texture})
+		else
+			self.base_texture = {"mobs_mc_ghast.png"}
+			self.object:set_properties({textures=self.base_texture})
+		end
+	end,
 })
 
 
@@ -74,6 +83,7 @@ mobs:register_arrow("mobs_mc:fireball", {
 	visual_size = {x = 1, y = 1},
 	textures = {"mcl_fire_fire_charge.png"},
 	velocity = 15,
+	collisionbox = {-.5, -.5, -.5, .5, .5, .5},
 
 	hit_player = function(self, player)
 		if rawget(_G, "armor") and armor.last_damage_types then

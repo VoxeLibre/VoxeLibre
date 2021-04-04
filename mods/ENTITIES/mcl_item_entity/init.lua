@@ -1,3 +1,24 @@
+--these are lua locals, used for higher performance
+local minetest,math,vector,ipairs = minetest,math,vector,ipairs
+
+--this is used for the player pool in the sound buffer
+local pool = {}
+
+local tick = false
+
+minetest.register_on_joinplayer(function(player)
+	local name
+	name = player:get_player_name()
+	pool[name] = 0
+end)
+
+minetest.register_on_leaveplayer(function(player)
+	local name
+	name = player:get_player_name()
+	pool[name] = nil
+end)
+
+
 local has_awards = minetest.get_modpath("awards")
 
 local mcl_item_entity = {}
@@ -77,9 +98,33 @@ end
 
 
 minetest.register_globalstep(function(dtime)
+	
+	tick = not tick
+
 	for _,player in pairs(minetest.get_connected_players()) do
 		if player:get_hp() > 0 or not minetest.settings:get_bool("enable_damage") then
+
+
+			local name = player:get_player_name()
+			
 			local pos = player:get_pos()
+
+			if tick == true and pool[name] > 0 then
+				minetest.sound_play("item_drop_pickup", {
+					pos = pos,
+					gain = 0.7,
+					max_hear_distance = 16,
+					pitch = math.random(70,110)/100
+				})
+				if pool[name] > 6 then
+					pool[name] = 6
+				else
+					pool[name] = pool[name] - 1
+				end
+			end
+
+
+			
 			local inv = player:get_inventory()
 			local checkpos = {x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}
 
@@ -94,11 +139,7 @@ minetest.register_globalstep(function(dtime)
 							-- Ignore if itemstring is not set yet
 							if object:get_luaentity().itemstring ~= "" then
 								inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
-								minetest.sound_play("item_drop_pickup", {
-									pos = pos,
-									max_hear_distance = 16,
-									gain = 1.0,
-								}, true)
+
 								check_pickup_achievements(object, player)
 
 								-- Destroy entity
@@ -110,6 +151,8 @@ minetest.register_globalstep(function(dtime)
 								object:set_acceleration({x=0,y=0,z=0})
 
 								object:move_to(checkpos)
+
+								pool[name] = pool[name] + 1
 
 								minetest.after(0.25, function()
 									--safety check
