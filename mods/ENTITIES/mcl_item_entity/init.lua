@@ -112,7 +112,7 @@ minetest.register_globalstep(function(dtime)
 					pos = pos,
 					gain = 1,
 					max_hear_distance = 16,
-					pitch = math.random(60,100)/100
+					pitch = math.random(70,110)/100
 				})
 				if pool[name] > 6 then
 					pool[name] = 6
