@@ -106,6 +106,8 @@ minetest.register_globalstep(function(dtime)
 
 
 			local name = player:get_player_name()
+			
+			local pos = player:get_pos()
 
 			if tick == true and pool[name] > 0 then
 				minetest.sound_play("item_drop_pickup", {
@@ -122,7 +124,7 @@ minetest.register_globalstep(function(dtime)
 			end
 
 
-			local pos = player:get_pos()
+			
 			local inv = player:get_inventory()
 			local checkpos = {x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}
 
