@@ -313,6 +313,7 @@ mcl_structures.generate_fossil = function(pos, rotation, pr)
 end
 
 mcl_structures.generate_end_exit_portal = function(pos, rot)
+	minetest.add_entity(vector.add(pos, vector.new(3, 11, 3)), "mobs_mc:enderdragon")
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_exit_portal.mts"
 	return mcl_structures.place_schematic(pos, path, rot or "0", nil, true)
 end
