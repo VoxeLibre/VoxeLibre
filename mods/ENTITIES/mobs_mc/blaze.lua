@@ -75,6 +75,59 @@ mobs:register_mob("mobs_mc:blaze", {
 	fear_height = 0,
 	glow = 14,
 	fire_resistant = true,
+	do_custom = function(self)
+		for _,obj in pairs(minetest.get_objects_inside_radius(self.object:get_pos(), 1.2)) do
+			if obj:is_player() or not obj:is_player() and obj:get_luaentity()._cmi_is_mob then
+				mcl_burning.set_on_fire(obj, 5)
+			end
+		end
+		local pos = self.object:get_pos()
+		minetest.add_particle({
+			pos = {x=pos.x+math.random(-0.7,0.7)*math.random()/2,y=pos.y+math.random(0.7,1.2),z=pos.z+math.random(-0.7,0.7)*math.random()/2},
+			velocity = {x=0, y=math.random(1,1), z=0},
+			expirationtime = math.random(),
+			size = math.random(1, 4),
+			collisiondetection = true,
+			vertical = false,
+			texture = "mcl_particles_smoke_anim.png^[colorize:#2c2c2c:255",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 8,
+				aspect_h = 8,
+				length = 2.05,
+			},
+		})
+		minetest.add_particle({
+			pos = {x=pos.x+math.random(-0.7,0.7)*math.random()/2,y=pos.y+math.random(0.7,1.2),z=pos.z+math.random(-0.7,0.7)*math.random()/2},
+			velocity = {x=0, y=math.random(1,1), z=0},
+			expirationtime = math.random(),
+			size = math.random(1, 4),
+			collisiondetection = true,
+			vertical = false,
+			texture = "mcl_particles_smoke_anim.png^[colorize:#424242:255",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 8,
+				aspect_h = 8,
+				length = 2.05,
+			},
+		})
+		minetest.add_particle({
+			pos = {x=pos.x+math.random(-0.7,0.7)*math.random()/2,y=pos.y+math.random(0.7,1.2),z=pos.z+math.random(-0.7,0.7)*math.random()/2},
+			velocity = {x=0, y=math.random(1,1), z=0},
+			expirationtime = math.random(),
+			size = math.random(1, 4),
+			collisiondetection = true,
+			vertical = false,
+			texture = "mcl_particles_smoke_anim.png^[colorize:#0f0f0f:255",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 8,
+				aspect_h = 8,
+				length = 2.05,
+			},
+		})
+	end,
 })
 
 mobs:spawn_specific("mobs_mc:blaze", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 5000, 3, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
