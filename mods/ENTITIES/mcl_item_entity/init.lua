@@ -6,14 +6,14 @@ local pool = {}
 
 local tick = false
 
-local name
 minetest.register_on_joinplayer(function(player)
+	local name
 	name = player:get_player_name()
 	pool[name] = 0
 end)
 
-local name
 minetest.register_on_leaveplayer(function(player)
+	local name
 	name = player:get_player_name()
 	pool[name] = nil
 end)
