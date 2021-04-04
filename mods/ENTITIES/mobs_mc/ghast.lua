@@ -74,6 +74,7 @@ mobs:register_arrow("mobs_mc:fireball", {
 	visual_size = {x = 1, y = 1},
 	textures = {"mcl_fire_fire_charge.png"},
 	velocity = 15,
+	collisionbox = {-.5, -.5, -.5, .5, .5, .5},
 
 	hit_player = function(self, player)
 		if rawget(_G, "armor") and armor.last_damage_types then

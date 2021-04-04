@@ -4223,6 +4223,11 @@ function mobs:register_arrow(name, def)
 		switch = 0,
 		owner_id = def.owner_id,
 		rotate = def.rotate,
+		on_punch = function(self)
+			local vel = self.object:get_velocity()
+			self.object:set_velocity({x=vel.x * -1, y=vel.y * -1, z=vel.z * -1})
+		end,
+		collisionbox = def.collisionbox or {0, 0, 0, 0, 0, 0},
 		automatic_face_movement_dir = def.rotate
 			and (def.rotate - (pi / 180)) or false,
 
@@ -4285,7 +4290,7 @@ function mobs:register_arrow(name, def)
 
 			if self.hit_player or self.hit_mob or self.hit_object then
 
-				for _,player in pairs(minetest.get_objects_inside_radius(pos, 1.0)) do
+				for _,player in pairs(minetest.get_objects_inside_radius(pos, 1.5)) do
 
 					if self.hit_player
 					and player:is_player() then
