@@ -178,7 +178,7 @@ minetest.register_globalstep(function(dtime)
 
 			-- Apply animations based on what the player is doing
 			if player:get_hp() == 0 then
-				player_set_animation(player, "lay")
+				player_set_animation(player, "die")
 			elseif walking and velocity.x > 0.35 or walking and velocity.x < -0.35 or walking and velocity.z > 0.35 or walking and velocity.z < -0.35 then
 				if player_sneak[name] ~= controls.sneak then
 					player_anim[name] = nil
@@ -253,3 +253,28 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
 	end
 	return hp_change
 end, true)
+
+minetest.register_on_respawnplayer(function(player)
+	local pos = player:get_pos()
+	minetest.add_particlespawner({
+		amount = 50,
+		time = 0.001,
+		minpos = vector.add(pos, 0),
+		maxpos = vector.add(pos, 0),
+		minvel = vector.new(-5,-5,-5),
+		maxvel = vector.new(5,5,5),
+		minexptime = 1.1,
+		maxexptime = 1.5,
+		minsize = 1,
+		maxsize = 2,
+		collisiondetection = false,
+		vertical = false,
+		texture = "mcl_particles_mob_death.png^[colorize:#000000:255",
+	})
+
+	minetest.sound_play("mcl_mobs_mob_poof", {
+		pos = pos,
+		gain = 1.0,
+		max_hear_distance = 8,
+	}, true)
+end)

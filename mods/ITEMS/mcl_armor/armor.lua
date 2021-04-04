@@ -367,6 +367,7 @@ mcl_player.player_register_model("mcl_armor_character.b3d", {
 		run_walk	= {x=440, y=459},
 		run_walk_mine	= {x=461, y=480},
 		sit_mount	= {x=484, y=484},
+		die	= {x=498, y=498},
 	},
 })
 

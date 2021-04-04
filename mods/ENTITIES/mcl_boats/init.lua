@@ -1,6 +1,6 @@
 local S = minetest.get_translator("mcl_boats")
 
-local boat_visual_size = {x = 3, y = 3, z = 3}
+local boat_visual_size = {x = 1, y = 1, z = 1}
 local paddling_speed = 22
 local boat_y_offset = 0.35
 local boat_y_offset_ground = boat_y_offset + 0.6

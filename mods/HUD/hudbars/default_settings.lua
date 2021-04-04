@@ -20,9 +20,9 @@ if hb.settings.bar_type == "progress_bar" then
 	hb.settings.start_offset_right.x = hb.load_setting("hudbars_start_offset_right_x", "number", 15)
 	hb.settings.start_offset_right.y = hb.load_setting("hudbars_start_offset_right_y", "number", -86)
 else
-	hb.settings.start_offset_left.x = hb.load_setting("hudbars_start_statbar_offset_left_x", "number", -265)
+	hb.settings.start_offset_left.x = hb.load_setting("hudbars_start_statbar_offset_left_x", "number", -258)
 	hb.settings.start_offset_left.y = hb.load_setting("hudbars_start_statbar_offset_left_y", "number", -90)
-	hb.settings.start_offset_right.x = hb.load_setting("hudbars_start_statbar_offset_right_x", "number", 25)
+	hb.settings.start_offset_right.x = hb.load_setting("hudbars_start_statbar_offset_right_x", "number", 16)
 	hb.settings.start_offset_right.y = hb.load_setting("hudbars_start_statbar_offset_right_y", "number", -90)
 end
 -- Modified in MCL2!

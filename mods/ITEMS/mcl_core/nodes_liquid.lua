@@ -7,10 +7,10 @@ local WATER_ALPHA = 179
 local WATER_VISC = 1
 local LAVA_VISC = 7
 local LIGHT_LAVA = minetest.LIGHT_MAX
-local USE_TEXTURE_ALPHA
+local USE_TEXTURE_ALPHA = true
+
 if minetest.features.use_texture_alpha_string_modes then
 	USE_TEXTURE_ALPHA = "blend"
-	WATER_ALPHA = nil
 end
 
 local lava_death_messages = {
@@ -40,7 +40,6 @@ minetest.register_node("mcl_core:water_flowing", {
 	},
 	sounds = mcl_sounds.node_sound_water_defaults(),
 	is_ground_content = false,
-	alpha = WATER_ALPHA,
 	use_texture_alpha = USE_TEXTURE_ALPHA,
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
@@ -86,7 +85,6 @@ S("• When water is directly below lava, the water turns into stone."),
 	},
 	sounds = mcl_sounds.node_sound_water_defaults(),
 	is_ground_content = false,
-	alpha = WATER_ALPHA,
 	use_texture_alpha = USE_TEXTURE_ALPHA,
 	paramtype = "light",
 	walkable = false,
