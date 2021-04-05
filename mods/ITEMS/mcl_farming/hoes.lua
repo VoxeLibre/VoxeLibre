@@ -68,7 +68,7 @@ minetest.register_tool("mcl_farming:hoe_wood", {
 	_doc_items_usagehelp = hoe_usagehelp,
 	_doc_items_hidden = false,
 	inventory_image = "farming_tool_woodhoe.png",
-	wield_scale = { x = 1.8, y = 1.8, z = 1 },
+	wield_scale = mcl_vars.tool_wield_scale,
 	on_place = hoe_on_place_function(uses.wood),
 	groups = { tool=1, hoe=1, enchantability=15 },
 	tool_capabilities = {
@@ -111,7 +111,7 @@ minetest.register_tool("mcl_farming:hoe_stone", {
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_stonehoe.png",
-	wield_scale = { x = 1.8, y = 1.8, z = 1 },
+	wield_scale = mcl_vars.tool_wield_scale,
 	on_place = hoe_on_place_function(uses.stone),
 	groups = { tool=1, hoe=1, enchantability=5 },
 	tool_capabilities = {
@@ -149,7 +149,7 @@ minetest.register_tool("mcl_farming:hoe_iron", {
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_steelhoe.png",
-	wield_scale = { x = 1.8, y = 1.8, z = 1 },
+	wield_scale = mcl_vars.tool_wield_scale,
 	on_place = hoe_on_place_function(uses.iron),
 	groups = { tool=1, hoe=1, enchantability=14 },
 	tool_capabilities = {
@@ -195,7 +195,7 @@ minetest.register_tool("mcl_farming:hoe_gold", {
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_goldhoe.png",
-	wield_scale = { x = 1.8, y = 1.8, z = 1 },
+	wield_scale = mcl_vars.tool_wield_scale,
 	on_place = hoe_on_place_function(uses.gold),
 	groups = { tool=1, hoe=1, enchantability=22 },
 	tool_capabilities = {
@@ -242,7 +242,7 @@ minetest.register_tool("mcl_farming:hoe_diamond", {
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_diamondhoe.png",
-	wield_scale = { x = 1.8, y = 1.8, z = 1 },
+	wield_scale = mcl_vars.tool_wield_scale,
 	on_place = hoe_on_place_function(uses.diamond),
 	groups = { tool=1, hoe=1, enchantability=10 },
 	tool_capabilities = {
