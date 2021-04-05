@@ -70,7 +70,7 @@ local shovel_use = S("To turn a grass block into a grass path, hold the shovel i
 local shears_longdesc = S("Shears are tools to shear sheep and to mine a few block types. Shears are a special mining tool and can be used to obtain the original item from grass, leaves and similar blocks that require cutting.")
 local shears_use = S("To shear sheep or carve faceless pumpkins, use the “place” key on them. Faces can only be carved at the side of faceless pumpkins. Mining works as usual, but the drops are different for a few blocks.")
 
-local wield_scale = { x = 1.8, y = 1.8, z = 1 }
+local wield_scale = mcl_vars.tool_wield_scale
 
 -- Picks
 minetest.register_tool("mcl_tools:pick_wood", {

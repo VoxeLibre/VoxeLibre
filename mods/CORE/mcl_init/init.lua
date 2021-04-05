@@ -21,6 +21,9 @@ mcl_vars.gui_bg_img = "background9[1,1;1,1;mcl_base_textures_background9.png;tru
 -- Legacy
 mcl_vars.inventory_header = ""
 
+-- Tool wield size
+mcl_vars.tool_wield_scale = { x = 1.8, y = 1.8, z = 1 }
+
 -- Mapgen variables
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local minecraft_height_limit = 256
