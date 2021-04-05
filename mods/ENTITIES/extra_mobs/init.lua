@@ -18,3 +18,11 @@ dofile(path .. "/piglin.lua")
 dofile(path .. "/strider.lua")
 dofile(path .. "/fox.lua")
 dofile(path .. "/cod.lua")
+dofile(path .. "/salmon.lua")
+dofile(path .. "/dolphin.lua")
+dofile(path .. "/glow_squid.lua")
+
+--Items
+dofile(path .. "/glow_squid_items.lua")
+
+

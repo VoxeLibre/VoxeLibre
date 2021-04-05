@@ -117,7 +117,7 @@ local strider = {
 
 		local controlitem = ""
 		if minetest.get_modpath("mc") then
-            controlitem = "mc:warped_fungus_stick"
+            controlitem = "mc_warped_fungus_stick:warped_fungus_stick"
         else
             controlitem = mobs_mc.items.carrot_on_a_stick
         end

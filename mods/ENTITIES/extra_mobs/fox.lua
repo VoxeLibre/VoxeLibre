@@ -18,6 +18,13 @@ local S = minetest.get_translator("extra_mobs")
 --################### fox
 --###################
 
+local followitem = ""
+if minetest.get_modpath("mc_sweet_berry") then
+    followitem = "mc_sweet_berry:sweet_berry"
+else
+    followitem = nil
+end
+
 local fox = {
 	type = "monster",
 	passive = false,
@@ -108,9 +115,10 @@ local fox = {
 	do_punch = function(self)
 		self.state = "runaway"
 	end,
+	follow = followitem,
 	fear_height = 4,
 	view_range = 16,
-	specific_attack = { "mobs_mc:cow", "mobs_mc:sheep", "mobs_mc:chicken" },
+	specific_attack = { "mobs_mc:chicken", "extra_mobs:cod", "extra_mobs:salmon" },
 }
 
 mobs:register_mob("extra_mobs:fox", fox)

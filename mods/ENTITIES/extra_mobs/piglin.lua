@@ -40,7 +40,7 @@ local piglin = {
 	mesh = "extra_mobs_piglin.b3d",
 	textures = { {
 		"extra_mobs_piglin.png",
-		"mcl_bows_crossbow_2.png",
+		"mcl_bows_bow_2.png",
 	} },
 	visual_size = {x=1, y=1},
 	sounds = {
@@ -72,10 +72,15 @@ local piglin = {
 	fear_height = 4,
 	view_range = 16,
 	on_spawn = function(self)
-		self.gold_items = 0
 		self.weapon = self.base_texture[2]
+		self.gold_items = 0
 	end,
   do_custom = function(self)
+		if self.object:get_pos().y > -100 then
+			--local zog = minetest.add_entity(self.object:get_pos(), "extra_mobs:zombified_piglin")
+			--zog:set_rotation(self.object:get_rotation())
+			--self.object:remove()
+		end
 		if self.trading == true then
 			self.state = "trading"
 			self.object:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(20,-20,18))
@@ -83,7 +88,7 @@ local piglin = {
 			self.base_texture[2] = "default_gold_ingot.png"
 			self.object:set_properties({textures = self.base_texture})
 		else
-			self.object:set_bone_position("Wield_Item", vector.new(-1.5,7,1.5), vector.new(170,90,90))
+			self.object:set_bone_position("Wield_Item", vector.new(.5,4.5,-1.6), vector.new(90,0,20))
 			self.base_texture[2] = self.weapon
 			self.object:set_properties({textures = self.base_texture})
 			self.object:set_bone_position("Head", vector.new(0,6.3,0), vector.new(0,0,0))
@@ -188,15 +193,17 @@ zombified_piglin.fire_resistant = 1
 zombified_piglin.do_custom = function()
 	return
 end
-zombified_piglin.attacks_monsters = true
+zombified_piglin.on_spawn = function()
+	return
+end
+zombified_piglin.on_rightclick = function()
+	return
+end
 zombified_piglin.lava_damage = 0
 zombified_piglin.fire_damage = 0
 zombified_piglin.attack_animals = true
 zombified_piglin.mesh = "extra_mobs_sword_piglin.b3d"
 zombified_piglin.textures = {"extra_mobs_zombified_piglin.png", "default_tool_goldsword.png", "extra_mobs_trans.png"}
-zombified_piglin.on_spawn = function()
-	return
-end
 zombified_piglin.attack_type = "dogfight"
 zombified_piglin.animation = {
 	stand_speed = 30,
@@ -215,7 +222,50 @@ zombified_piglin.animation = {
 mobs:register_mob("extra_mobs:zombified_piglin", zombified_piglin)
 
 
+local piglin_brute = table.copy(piglin)
+piglin_brute.xp_min = 20
+piglin_brute.xp_max = 20
+piglin_brute.hp_min = 50
+piglin_brute.hp_max = 50
+piglin_brute.fire_resistant = 1
+piglin_brute.do_custom = function()
+	return
+end
+piglin_brute.on_spawn = function()
+	return
+end
+piglin_brute.on_rightclick = function()
+	return
+end
+piglin_brute.attacks_monsters = true
+piglin_brute.lava_damage = 0
+piglin_brute.fire_damage = 0
+piglin_brute.attack_animals = true
+piglin_brute.mesh = "extra_mobs_sword_piglin.b3d"
+piglin_brute.textures = {"extra_mobs_piglin_brute.png", "default_tool_goldaxe.png", "extra_mobs_trans.png"}
+piglin_brute.attack_type = "dogfight"
+piglin_brute.animation = {
+	stand_speed = 30,
+	walk_speed = 30,
+	punch_speed = 45,
+	run_speed = 30,
+	stand_start = 0,
+	stand_end = 79,
+	walk_start = 168,
+	walk_end = 187,
+	run_start = 440,
+	run_end = 459,
+	punch_start = 189,
+	punch_end = 198,
+}
+piglin_brute.can_despawn = false
+piglin_brute.group_attack = { "extra_mobs:piglin", "extra_mobs:piglin_brute" }
+mobs:register_mob("extra_mobs:piglin_brute", piglin_brute)
+
+
 -- Regular spawning in the Nether
 mobs:spawn_specific("extra_mobs:piglin", {"mcl_nether:netherrack"}, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 6000, 3, mcl_vars.mg_nether_min, mcl_vars.mg_nether_max)
+mobs:spawn_specific("extra_mobs:sword_piglin", {"mcl_nether:netherrack"}, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 6000, 3, mcl_vars.mg_nether_min, mcl_vars.mg_nether_max)
 -- spawn eggs
 mobs:register_egg("extra_mobs:piglin", S("piglin"), "extra_mobs_spawn_icon_piglin.png", 0)
+mobs:register_egg("extra_mobs:piglin_brute", S("piglin Brute"), "extra_mobs_spawn_icon_piglin.png", 0)

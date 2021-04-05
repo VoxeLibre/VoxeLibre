@@ -26,45 +26,43 @@ end
 local S = minetest.get_translator("extra_mobs")
 
 --###################
---################### cod
+--################### dolphin
 --###################
 
-local cod = {
-    type = "animal",
+local dolphin = {
+    type = "monster",
     spawn_class = "water",
     can_despawn = true,
     passive = true,
-    hp_min = 3,
-    hp_max = 3,
+    hp_min = 10,
+    hp_max = 10,
     xp_min = 1,
     xp_max = 3,
     armor = 100,
+		walk_chance = 100,
+		breath_max = 120,
     collisionbox = {-0.3, 0.0, -0.3, 0.3, 0.79, 0.3},
     visual = "mesh",
-    mesh = "extra_mobs_cod.b3d",
+    mesh = "extra_mobs_dolphin.b3d",
     textures = {
-        {"extra_mobs_cod.png"}
+        {"extra_mobs_dolphin.png"}
     },
     sounds = {
     },
     animation = {
-		stand_start = 1,
+		stand_start = 20,
 		stand_end = 20,
-		walk_start = 1,
-		walk_end = 20,
-		run_start = 1,
-		run_end = 20,
-	},
-    drops = {
-		{name = "mcl_fishing:fish_raw",
-		chance = 1,
-		min = 1,
-		max = 1,},
-        {name = "mcl_dye:white",
-		chance = 20,
-		min = 1,
-		max = 1,},
-	},
+		walk_start = 0,
+		walk_end = 15,
+		run_start = 30,
+		run_end = 45,
+		},
+		drops = {
+			{name = "mcl_fishing:fish_raw",
+			chance = 1,
+			min = 0,
+			max = 1,},
+		},
     visual_size = {x=3, y=3},
     makes_footstep_sound = false,
     fly = true,
@@ -72,37 +70,28 @@ local cod = {
     breathes_in_water = true,
     jump = false,
     view_range = 16,
-    runaway = true,
     fear_height = 4,
-    do_custom = function(self)
+		walk_velocity = 3,
+		run_velocity = 6,
+		reach = 2,
+		damage = 2.5,
+		attack_type = "dogfight",
+		do_custom = function(self)
       self.object:set_bone_position("body", vector.new(0,1,0), vector.new(degrees(dir_to_pitch(self.object:get_velocity())) * -1 + 90,0,0))
       if minetest.get_item_group(self.standing_in, "water") ~= 0 then
-				if self.object:get_velocity().y < 2.5 then
-        	self.object:add_velocity({ x = 0 , y = math.random(-.002, .002) , z = 0 })
+				if self.object:get_velocity().y < 5 then
+        	self.object:add_velocity({ x = 0 , y = math.random(-.007, .007), z = 0 })
 				end
       end
-      for _,object in pairs(minetest.get_objects_inside_radius(self.object:get_pos(), 10)) do
-  			local lp = object:get_pos()
-  			local s = self.object:get_pos()
-  			local vec = {
-  				x = lp.x - s.x,
-  				y = lp.y - s.y,
-  				z = lp.z - s.z
-  			}
-  			if not object:is_player() and object:get_luaentity().name == "extra_mobs:cod" then
-  				self.state = "runaway"
-  				self.object:set_rotation({x=0,y=(atan(vec.z / vec.x) + 3 * pi / 2) - self.rotate,z=0})
-  			end
-  		end
-    end
+    end,
 }
 
-mobs:register_mob("extra_mobs:cod", cod)
+mobs:register_mob("extra_mobs:dolphin", dolphin)
 
 
 --spawning TODO: in schools
 local water = mobs_mc.spawn_height.water
-mobs:spawn_specific("extra_mobs:cod", mobs_mc.spawn.water, {mobs_mc.items.water_source}, 0, minetest.LIGHT_MAX+1, 30, 4000, 3, water-16, water)
+mobs:spawn_specific("extra_mobs:dolphin", mobs_mc.spawn.water, {mobs_mc.items.water_source}, 0, minetest.LIGHT_MAX+1, 30, 4000, 3, water-16, water)
 
 --spawn egg
-mobs:register_egg("extra_mobs:cod", S("Cod"), "extra_mobs_spawn_icon_cod.png", 0)
+mobs:register_egg("extra_mobs:dolphin", S("dolphin"), "extra_mobs_spawn_icon_dolphin.png", 0)
