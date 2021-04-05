@@ -9,9 +9,6 @@ minetest.register_entity("extra_mobs:hb_eye", {
 	visual_size = {x=1, y=1},
 	on_activate = function(self)
 		for _,hb in pairs(minetest.get_objects_inside_radius(self.object:get_pos(), 1)) do
-			if not hb:is_player() then
-				minetest.chat_send_all(hb:get_luaentity().name)
-			end
 			if not hb:is_player() and hb:get_luaentity().name == "extra_mobs:herobrine" then
 				self.object:set_attach(hb, "Head", {x=0,y=-13.5,z=0}, {x=0,y=0,z=0})
 			end

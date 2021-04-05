@@ -71,7 +71,6 @@ local fox = {
 	runaway = true,
 	on_spawn = function(self)
 		if minetest.find_node_near(self.object:get_pos(), 4, "mcl_core:snow") ~= nil or minetest.find_node_near(self.object:get_pos(), 4, "mcl_core:dirt_with_grass_snow") ~= nil then
-			minetest.chat_send_all("true")
 			self.object:set_properties({textures={"extra_mobs_artic_fox.png", "extra_mobs_trans.png"}})
 		end
 	end,
