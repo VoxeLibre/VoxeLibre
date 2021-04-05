@@ -157,8 +157,29 @@ local horse = {
 			self._regentimer = 0
 		end
 
-		-- if driver present allow control of horse
-		if self.driver then
+		-- Some weird human is riding. Buck them off?
+		if self.driver and not self.tamed and self.buck_off_time <= 0 then
+			if math.random() < 0.2 then
+				mobs.detach(self.driver, {x = 1, y = 0, z = 1})
+				-- TODO bucking animation
+			else
+				-- Nah, can't be bothered. Think about it again in one second
+				self.buck_off_time = 20
+			end
+		end
+
+		-- Tick the timer for trying to buck the player off
+		if self.buck_off_time then
+			if self.driver then
+				self.buck_off_time = self.buck_off_time - 1
+			else
+				-- Player isn't riding anymore so no need to count
+				self.buck_off_time = nil
+			end
+		end
+
+		-- if driver present and horse has a saddle allow control of horse
+		if self.driver and self._saddle then
 
 			mobs.drive(self, "walk", "stand", false, dtime)
 
@@ -191,6 +212,50 @@ local horse = {
 		local item = clicker:get_wielded_item()
 		local iname = item:get_name()
 		local heal = 0
+
+		-- Taming
+		self.temper = self.temper or (math.random(1,100))
+
+		if not self.tamed then
+			local temper_increase = 0
+
+			-- Feeding, intentionally not using mobs:feed_tame because horse taming is
+			-- different and more complicated
+			if (iname == mobs_mc.items.sugar) then
+				temper_increase = 3
+			elseif (iname == mobs_mc.items.wheat) then
+				temper_increase = 3
+			elseif (iname == mobs_mc.items.apple) then
+				temper_increase = 3
+			elseif (iname == mobs_mc.items.golden_carrot) then
+				temper_increase = 5
+			elseif (iname == mobs_mc.items.golden_apple) then
+				temper_increase = 10
+
+			-- Trying to ride
+			elseif not self.driver then
+				self.object:set_properties({stepheight = 1.1})
+				mobs.attach(self, clicker)
+				self.buck_off_time = 40 -- TODO how long does it take in minecraft?
+				if self.temper > 100 then
+					self.tamed = true -- NOTE taming can only be finished by riding the horse
+					if not self.owner or self.owner == "" then
+						self.owner = clicker:get_player_name()
+					end
+				end
+				temper_increase = 5
+
+			-- Clicking on the horse while riding ==> unmount
+			elseif self.driver and self.driver == clicker then
+				mobs.detach(clicker, {x = 1, y = 0, z = 1})
+			end
+
+			-- If nothing happened temper_increase = 0 and addition does nothing
+			self.temper = self.temper + temper_increase
+
+			return
+		end
+
 		if can_breed(self.name) then
 			-- Breed horse with golden apple or golden carrot
 			if (iname == mobs_mc.items.golden_apple) then
@@ -202,7 +267,8 @@ local horse = {
 				return
 			end
 		end
-		-- Feed/tame with anything else
+		-- Feed with anything else
+		-- TODO heal amounts don't work
 		if (iname == mobs_mc.items.sugar) then
 			heal = 1
 		elseif (iname == mobs_mc.items.wheat) then
@@ -212,7 +278,7 @@ local horse = {
 		elseif (iname == mobs_mc.items.hay_bale) then
 			heal = 20
 		end
-		if heal > 0 and mobs:feed_tame(self, clicker, heal, false, true) then
+		if heal > 0 and mobs:feed_tame(self, clicker, heal, false, false) then
 			return
 		end
 

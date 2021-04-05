@@ -2819,6 +2819,10 @@ local do_states = function(self, dtime)
 					local arrow, ent
 					local v = 1
 					if not self.shoot_arrow then
+						self.firing = true
+						minetest.after(1, function()
+							self.firing = false
+						end)
 						arrow = minetest.add_entity(p, self.arrow)
 						ent = arrow:get_luaentity()
 						if ent.velocity then
@@ -3737,6 +3741,8 @@ function mobs:register_mob(name, def)
 local can_despawn
 if def.can_despawn ~= nil then
 	can_despawn = def.can_despawn
+elseif def.spawn_class == "passive" then
+	can_despawn = false
 else
 	can_despawn = true
 end
@@ -4223,6 +4229,11 @@ function mobs:register_arrow(name, def)
 		switch = 0,
 		owner_id = def.owner_id,
 		rotate = def.rotate,
+		on_punch = function(self)
+			local vel = self.object:get_velocity()
+			self.object:set_velocity({x=vel.x * -1, y=vel.y * -1, z=vel.z * -1})
+		end,
+		collisionbox = def.collisionbox or {0, 0, 0, 0, 0, 0},
 		automatic_face_movement_dir = def.rotate
 			and (def.rotate - (pi / 180)) or false,
 
@@ -4285,7 +4296,7 @@ function mobs:register_arrow(name, def)
 
 			if self.hit_player or self.hit_mob or self.hit_object then
 
-				for _,player in pairs(minetest.get_objects_inside_radius(pos, 1.0)) do
+				for _,player in pairs(minetest.get_objects_inside_radius(pos, 1.5)) do
 
 					if self.hit_player
 					and player:is_player() then
@@ -4340,7 +4351,7 @@ end
 
 -- make explosion with protection and tnt mod check
 function mobs:boom(self, pos, strength, fire)
-
+	self.object:remove()
 	if mod_explosions then
 		if mobs_griefing and not minetest.is_protected(pos, "") then
 			mcl_explosions.explode(pos, strength, { drop_chance = 1.0, fire = fire }, self.object)
