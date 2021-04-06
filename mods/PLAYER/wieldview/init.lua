@@ -115,10 +115,11 @@ minetest.register_entity("wieldview:wieldnode", {
 				local def = minetest.registered_items[itemstring]
 				self.object:set_properties({glow = def and def.light_source or 0})
 
-        -- wield item as cubic
+				-- wield item as cubic
 				if armor.textures[self.wielder].wielditem == "blank.png" then
 					self.object:set_properties({textures = {itemstring}})
-				else -- wield item as flat
+				-- wield item as flat
+				else
 					self.object:set_properties({textures = {""}})
 				end
 
