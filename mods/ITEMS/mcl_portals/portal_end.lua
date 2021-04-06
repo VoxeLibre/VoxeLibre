@@ -211,6 +211,9 @@ function mcl_portals.end_teleport(obj, pos)
 		-- Look towards the main End island
 		if dim ~= "end" then
 			obj:set_look_horizontal(math.pi/2)
+		-- Show credits
+		else
+			mcl_credits.show(obj)
 		end
 		mcl_worlds.dimension_change(obj, mcl_worlds.pos_to_dimension(target))
 		minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16}, true)
