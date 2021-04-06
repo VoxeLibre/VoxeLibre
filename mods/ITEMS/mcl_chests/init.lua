@@ -1027,11 +1027,14 @@ minetest.register_node("mcl_chests:ender_chest_small", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	drop = "mcl_core:obsidian 8",
 	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", formspec_ender_chest)
 		create_entity(pos, "mcl_chests:ender_chest_small", {"mcl_chests_ender.png"}, minetest.get_node(pos).param2, false, "mcl_chests_enderchest", "mcl_chests_chest", "chest")
 	end,
 	on_rightclick = function(pos, node, clicker)
+		if minetest.registered_nodes[minetest.get_node({x = pos.x, y = pos.y + 1, z = pos.z}).name].groups.opaque == 1 then
+				-- won't open if there is no space from the top
+				return false
+		end
+		minetest.show_formspec(clicker:get_player_name(), "mcl_chests:ender_chest_"..clicker:get_player_name(), formspec_ender_chest)
 		player_chest_open(clicker, pos, "mcl_chests:ender_chest_small", {"mcl_chests_ender.png"}, node.param2, false, "mcl_chests_enderchest", "mcl_chests_chest")
 	end,
 	on_receive_fields = function(pos, formname, fields, sender)
