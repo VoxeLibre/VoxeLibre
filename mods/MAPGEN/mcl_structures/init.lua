@@ -89,6 +89,8 @@ mcl_structures.call_struct = function(pos, struct_style, rotation, pr)
 		return mcl_structures.generate_end_exit_portal(pos, rotation)
 	elseif struct_style == "end_exit_portal_open" then
 		return mcl_structures.generate_end_exit_portal_open(pos, rotation)
+	elseif struct_style == "end_gateway_portal" then
+		return mcl_structures.generate_end_gateway_portal(pos, rotation)
 	elseif struct_style == "end_portal_shrine" then
 		return mcl_structures.generate_end_portal_shrine(pos, rotation, pr)
 	end
@@ -321,6 +323,11 @@ end
 
 mcl_structures.generate_end_exit_portal_open = function(pos, rot)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_exit_portal_open.mts"
+	return mcl_structures.place_schematic(pos, path, rot or "0", nil, true)
+end
+
+mcl_structures.generate_end_gateway_portal = function(pos, rot)
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_gateway_portal.mts"
 	return mcl_structures.place_schematic(pos, path, rot or "0", nil, true)
 end
 
@@ -575,6 +582,8 @@ minetest.register_chatcommand("spawnstruct", {
 			mcl_structures.generate_end_exit_portal(pos, rot, pr)
 		elseif param == "end_exit_portal_open" then
 			mcl_structures.generate_end_exit_portal_open(pos, rot, pr)
+		elseif param == "end_gateway_portal" then
+			mcl_structures.generate_end_gateway_portal(pos, rot, pr)
 		elseif param == "end_portal_shrine" then
 			mcl_structures.generate_end_portal_shrine(pos, rot, pr)
 		elseif param == "dungeon" and mcl_dungeons and mcl_dungeons.spawn_dungeon then

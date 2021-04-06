@@ -55,10 +55,7 @@ local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superfl
 local WITCH_HUT_HEIGHT = 3 -- Exact Y level to spawn witch huts at. This height refers to the height of the floor
 
 -- End exit portal position
-local END_EXIT_PORTAL_POS = table.copy(mcl_vars.mg_end_platform_pos)
-END_EXIT_PORTAL_POS.x = END_EXIT_PORTAL_POS.x - 30
-END_EXIT_PORTAL_POS.z = END_EXIT_PORTAL_POS.z - 3
-END_EXIT_PORTAL_POS.y = END_EXIT_PORTAL_POS.y - 3
+local END_EXIT_PORTAL_POS = vector.new(-3, -27003, -3)
 
 -- Content IDs
 local c_bedrock = minetest.get_content_id("mcl_core:bedrock")

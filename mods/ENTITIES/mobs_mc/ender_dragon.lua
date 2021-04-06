@@ -77,6 +77,7 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	end,
 	on_die = function(self, pos)
 		if self._portal_pos then
+			mcl_portals.spawn_gateway_portal()
 			mcl_structures.call_struct(self._portal_pos, "end_exit_portal_open")
 			if self._initial then
 				mcl_experience.throw_experience(pos, 11500) -- 500 + 11500 = 12000

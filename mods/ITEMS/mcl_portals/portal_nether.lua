@@ -47,7 +47,7 @@ local chatter = {}
 local queue = {}
 local chunks = {}
 
-local storage = minetest.get_mod_storage()
+local storage = mcl_portals.storage
 local exits = {}
 local keys = minetest.deserialize(storage:get_string("nether_exits_keys") or "return {}") or {}
 for _, key in pairs(keys) do
@@ -193,7 +193,7 @@ end
 local function destroy_nether_portal(pos, node)
 	if not node then return end
 	local nn, orientation = node.name, node.param2
-	local obsidian = nn == OBSIDIAN 
+	local obsidian = nn == OBSIDIAN
 
 	local check_remove = function(pos, orientation)
 		local node = get_node(pos)
