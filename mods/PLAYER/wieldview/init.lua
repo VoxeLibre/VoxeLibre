@@ -70,6 +70,10 @@ minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	wieldview.wielded_item[name] = ""
 	minetest.after(0, function(player)
+		-- if the player left :is_player() will return nil
+		if not player:is_player() then
+			return
+		end
 		wieldview:update_wielded_item(player)
 		local itementity = minetest.add_entity(player:get_pos(), "wieldview:wieldnode")
 		itementity:set_attach(player, "Hand_Right", vector.new(0, 1, 0), vector.new(90, 0, 45))
