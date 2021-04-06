@@ -1253,7 +1253,7 @@ end
 local function generate_end_exit_portal(pos)
 	local dragon_entity = minetest.add_entity(vector.add(pos, vector.new(3, 11, 3)), "mobs_mc:enderdragon"):get_luaentity()
 	dragon_entity._initial = true
-	dragon_entity._portal_pos = minetest.pos_to_string(pos)
+	dragon_entity._portal_pos = pos
 	mcl_structures.call_struct(pos, "end_exit_portal")
 end
 

@@ -61,14 +61,26 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	ignores_nametag = true,
 	do_custom = function(self)
 		mcl_bossbars.update_boss(self, "Ender Dragon", "light_purple")
+		if self._portal_pos then
+			-- migrate old format
+			if type(self._portal_pos) == "string" then
+				self._portal_pos = minetest.string_to_pos(self._portal_pos)
+			end
+			local portal_center = vector.add(self._portal_pos, vector.new(3, 11, 3))
+			local pos = self.object:get_pos()
+			if vector.distance(pos, portal_center) > 50 then
+				self.object:set_pos(self._last_good_pos or portal_center)
+			else
+				self._last_good_pos = pos
+			end
+		end
 	end,
 	on_die = function(self, pos)
 		if self._portal_pos then
-			local portal_pos = minetest.string_to_pos(self._portal_pos)
-			mcl_structures.call_struct(portal_pos, "end_exit_portal_open")
+			mcl_structures.call_struct(self._portal_pos, "end_exit_portal_open")
 			if self._initial then
 				mcl_experience.throw_experience(pos, 11500) -- 500 + 11500 = 12000
-				minetest.set_node(vector.add(portal_pos, vector.new(3, 5, 3)), {name = mobs_mc.items.dragon_egg})
+				minetest.set_node(vector.add(self._portal_pos, vector.new(3, 5, 3)), {name = mobs_mc.items.dragon_egg})
 			end
 		end
 	end,
