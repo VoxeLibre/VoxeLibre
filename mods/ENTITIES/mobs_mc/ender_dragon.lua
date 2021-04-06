@@ -63,9 +63,9 @@ mobs:register_mob("mobs_mc:enderdragon", {
 		mcl_bossbars.update_boss(self, "Ender Dragon", "light_purple")
 	end,
 	on_die = function(self, pos)
-		if not self._respawned then
+		if self._portal_pos then
 			mcl_experience.throw_experience(pos, 11500) -- 500 + 11500 = 12000
-			minetest.set_node(self._portal_pos and minetest.string_to_pos(self._portal_pos) or vector.add(mcl_vars.mg_end_platform_pos, vector.new(-27, 2, 0)), {name = mobs_mc.items.dragon_egg})
+			minetest.set_node(minetest.string_to_pos(self._portal_pos), {name = mobs_mc.items.dragon_egg})
 		end
 	end,
 	fire_resistant = true,
