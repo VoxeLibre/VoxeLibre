@@ -170,7 +170,6 @@ function mcl_portals.end_teleport(obj, pos)
 		-- Teleport back to the player's spawn or world spawn in the Overworld.
 		if obj:is_player() then
 			target = mcl_spawn.get_player_spawn_pos(obj)
-
 		end
 
 		target = target or mcl_spawn.get_world_spawn_pos(obj)
