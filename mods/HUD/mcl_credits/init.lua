@@ -55,6 +55,13 @@ mcl_credits.people = {
 		"nickolas360",
 		"yutyo",
 	}},
+	{"MineClone5", 0xA60014, {
+		"kay27",
+		"Debiankaios",
+		"epCode",
+		"NO11",
+		"j45",
+	}},
 	{"3D Models", 0x0019FF, {
 		"22i",
 		"tobyplowy",
