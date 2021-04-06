@@ -133,7 +133,7 @@ S("The speed and damage of the arrow increases the longer you charge. The regula
 	_doc_items_usagehelp = S("To use the bow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Hold down the right mouse button to charge, release to shoot."),
 	_doc_items_durability = BOW_DURABILITY,
 	inventory_image = "mcl_bows_bow.png",
-	wield_scale = { x = 1.8, y = 1.8, z = 1 },
+	wield_scale = mcl_vars.tool_wield_scale,
 	stack_max = 1,
 	range = 4,
 	-- Trick to disable digging as well
@@ -198,7 +198,7 @@ for level=0, 2 do
 		description = S("Bow"),
 		_doc_items_create_entry = false,
 		inventory_image = "mcl_bows_bow_"..level..".png",
-		wield_scale = { x = 1.8, y = 1.8, z = 1 },
+		wield_scale = mcl_vars.tool_wield_scale,
 		stack_max = 1,
 		range = 0, -- Pointing range to 0 to prevent punching with bow :D
 		groups = {not_in_creative_inventory=1, not_in_craft_guide=1, bow=1, enchantability=1},

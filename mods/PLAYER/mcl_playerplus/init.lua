@@ -86,17 +86,23 @@ minetest.register_globalstep(function(dtime)
 
 	time = time + dtime
 
-	-- Update jump status immediately since we need this info in real time.
-	-- WARNING: This section is HACKY as hell since it is all just based on heuristics.
 	for _,player in pairs(get_connected_players()) do
+
+		--[[
+						 _                 _   _
+			  __ _ _ __ (_)_ __ ___   __ _| |_(_) ___  _ __  ___
+			 / _` | '_ \| | '_ ` _ \ / _` | __| |/ _ \| '_ \/ __|
+			| (_| | | | | | | | | | | (_| | |_| | (_) | | | \__ \
+			 \__,_|_| |_|_|_| |_| |_|\__,_|\__|_|\___/|_| |_|___/
+
+		]]--
+
 		local controls = player:get_player_control()
-		name = player:get_player_name()
-
+		local name = player:get_player_name()
 		local meta = player:get_meta()
-
-		local player_velocity = player:get_velocity() or player:get_player_velocity()
-
+		local parent = player:get_attach()
 		local wielded = player:get_wielded_item()
+		local player_velocity = player:get_velocity() or player:get_player_velocity()
 
 		-- controls head bone
 		local pitch = - degrees(player:get_look_vertical())
@@ -114,7 +120,7 @@ minetest.register_globalstep(function(dtime)
 			player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch+90,-30,pitch * -1 * .35))
 			player:set_bone_position("Arm_Left_Pitch_Control", vector.new(3.5,5.785,0), vector.new(pitch+90,43,pitch * .35))
 		-- when punching
-		elseif controls.LMB and player:get_attach() == nil then
+		elseif controls.LMB and not parent then
 			player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch,0,0))
 			player:set_bone_position("Arm_Left_Pitch_Control", vector.new(3,5.785,0), vector.new(0,0,0))
 		-- when holding an item.
@@ -127,38 +133,40 @@ minetest.register_globalstep(function(dtime)
 			player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(0,0,0))
 		end
 
-		if controls.sneak and player:get_attach() == nil then
+		if parent then
+			local parent_yaw = degrees(parent:get_yaw())
+			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
+			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch, -limit_vel_yaw(yaw, parent_yaw) + parent_yaw, 0))
+			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
+		elseif controls.sneak then
 			-- controls head pitch when sneaking
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+36,0,0))
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.35, nametag_color = { r = 225, b = 225, a = 0, g = 225 }})
 			-- sneaking body conrols
 			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
-		elseif get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and player:get_attach() == nil and is_sprinting(name) == true then
+		elseif get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and is_sprinting(name) == true then
 			-- set head pitch and yaw when swimming
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+90-degrees(dir_to_pitch(player_velocity)),player_vel_yaw - yaw,0))
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,0.8,0.35}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 			-- control body bone when swimming
 			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(degrees(dir_to_pitch(player_velocity)) - 90,-player_vel_yaw + yaw + 180,0))
-
-		elseif player:get_attach() == nil then
+		else
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch, player_vel_yaw - yaw, 0))
 			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0, -player_vel_yaw + yaw, 0))
-		else
-			local attached = player:get_attach(parent)
-			local attached_yaw = degrees(attached:get_yaw())
-			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
-			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch, -limit_vel_yaw(yaw, attached_yaw) + attached_yaw, 0))
-			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
 		end
+
+		-- Update jump status immediately since we need this info in real time.
+		-- WARNING: This section is HACKY as hell since it is all just based on heuristics.
 
 		if mcl_playerplus_internal[name].jump_cooldown > 0 then
 			mcl_playerplus_internal[name].jump_cooldown = mcl_playerplus_internal[name].jump_cooldown - dtime
 		end
+
 		if controls.jump and mcl_playerplus_internal[name].jump_cooldown <= 0 then
 
 			pos = player:get_pos()

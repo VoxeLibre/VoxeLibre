@@ -4351,7 +4351,7 @@ end
 
 -- make explosion with protection and tnt mod check
 function mobs:boom(self, pos, strength, fire)
-
+	self.object:remove()
 	if mod_explosions then
 		if mobs_griefing and not minetest.is_protected(pos, "") then
 			mcl_explosions.explode(pos, strength, { drop_chance = 1.0, fire = fire }, self.object)
