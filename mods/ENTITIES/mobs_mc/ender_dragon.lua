@@ -59,6 +59,9 @@ mobs:register_mob("mobs_mc:enderdragon", {
 		run_start = 0,		run_end = 20,
 	},
 	ignores_nametag = true,
+	do_custom = function(self)
+		mcl_bossbars.update_boss(self, "Ender Dragon", "light_purple")
+	end,
 	on_die = function(self, pos)
 		if not self._respawned then
 			mcl_experience.throw_experience(pos, 11500) -- 500 + 11500 = 12000

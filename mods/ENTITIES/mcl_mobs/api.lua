@@ -3526,14 +3526,6 @@ local mob_step = function(self, dtime)
 
 	-- end rotation
 
-	-- knockback timer
-	if self.pause_timer > 0 then
-
-		self.pause_timer = self.pause_timer - dtime
-
-		return
-	end
-
 	-- run custom function (defined in mob lua file)
 	if self.do_custom then
 
@@ -3541,6 +3533,14 @@ local mob_step = function(self, dtime)
 		if self.do_custom(self, dtime) == false then
 			return
 		end
+	end
+
+	-- knockback timer
+	if self.pause_timer > 0 then
+
+		self.pause_timer = self.pause_timer - dtime
+
+		return
 	end
 
 	-- attack timer

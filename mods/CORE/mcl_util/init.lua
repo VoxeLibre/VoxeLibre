@@ -410,7 +410,7 @@ function mcl_util.get_color(colorstr)
 	local mc_color = mcl_colors[colorstr:upper()]
 	if mc_color then
 		colorstr = mc_color
-	elseif #colorstr ~= 7 or colorstr:sub(1, 1) ~= "#"then
+	elseif #colorstr ~= 7 or colorstr:sub(1, 1) ~= "#" then
 		return
 	end
 	local hex = tonumber(colorstr:sub(2, 7), 16)
