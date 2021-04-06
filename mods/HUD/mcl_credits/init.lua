@@ -58,12 +58,22 @@ mcl_credits.people = {
 	{"3D Models", 0x0019FF, {
 		"22i",
 		"tobyplowy",
+		"epCode",
 	}},
 	{"Textures", 0xFF9705, {
 		"XSSheep",
+		"Wuzzy",
 		"kingoscargames",
 		"leorockway",
 		"xMrVizzy",
+		"yutyo"
+	}},
+	{"Translations", 0x00FF60, {
+		"Wuzzy",
+		"Rocher Laurent",
+		"wuniversales",
+		"kay27",
+		"pitchum",
 	}},
 }
 
