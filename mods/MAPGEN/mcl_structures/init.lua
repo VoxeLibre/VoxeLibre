@@ -11,10 +11,10 @@ local function ecb_place(blockpos, action, calls_remaining, param)
 	if calls_remaining >= 1 then return end
 	minetest.place_schematic(param.pos, param.schematic, param.rotation, param.replacements, param.force_placement, param.flags)
 	if param.after_placement_callback and param.p1 and param.p2 then
-		param.after_placement_callback(param.p1, param.p2, param.size, param.rotation, param.pr)
+		param.after_placement_callback(param.p1, param.p2, param.size, param.rotation, param.pr, param.callback_param)
 	end
 end
-mcl_structures.place_schematic = function(pos, schematic, rotation, replacements, force_placement, flags, after_placement_callback, pr)
+mcl_structures.place_schematic = function(pos, schematic, rotation, replacements, force_placement, flags, after_placement_callback, pr, callback_param)
 	local s = loadstring(minetest.serialize_schematic(schematic, "lua", {lua_use_comments = false, lua_num_indent_spaces = 0}) .. " return(schematic)")()
 	if s and s.size then
 		local x, z = s.size.x, s.size.z
@@ -32,7 +32,7 @@ mcl_structures.place_schematic = function(pos, schematic, rotation, replacements
 		local p1 = {x=pos.x    , y=pos.y           , z=pos.z    }
 		local p2 = {x=pos.x+x-1, y=pos.y+s.size.y-1, z=pos.z+z-1}
 		minetest.log("verbose","[mcl_structures] size=" ..minetest.pos_to_string(s.size) .. ", rotation=" .. tostring(rotation) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
-		local param = {pos=vector.new(pos), schematic=s, rotation=rotation, replacements=replacements, force_placement=force_placement, flags=flags, p1=p1, p2=p2, after_placement_callback = after_placement_callback, size=vector.new(s.size), pr=pr}
+		local param = {pos=vector.new(pos), schematic=s, rotation=rotation, replacements=replacements, force_placement=force_placement, flags=flags, p1=p1, p2=p2, after_placement_callback = after_placement_callback, size=vector.new(s.size), pr=pr, callback_param=callback_param}
 		minetest.emerge_area(p1, p2, ecb_place, param)
 	end
 end
@@ -548,7 +548,7 @@ end
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "desert_temple | desert_well | igloo | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_exit_portal_opens | end_portal_shrine | nether_portal | dungeon",
+	params = "desert_temple | desert_well | igloo | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_exit_portal_opens | end_portal_shrine | nether_portal | gateway_portal | dungeon",
 	description = S("Generate a pre-defined structure near your position."),
 	privs = {debug = true},
 	func = function(name, param)
@@ -590,6 +590,8 @@ minetest.register_chatcommand("spawnstruct", {
 			mcl_dungeons.spawn_dungeon(pos, rot, pr)
 		elseif param == "nether_portal" and mcl_portals and mcl_portals.spawn_nether_portal then
 			mcl_portals.spawn_nether_portal(pos, rot, pr, name)
+		elseif param == "gateway_portal" and mcl_portals.spawn_gateway_portal then
+			mcl_portals.spawn_gateway_portal(pos, rot, pr, name)
 		elseif param == "" then
 			message = S("Error: No structure type given. Please use “/spawnstruct <type>”.")
 			errord = true

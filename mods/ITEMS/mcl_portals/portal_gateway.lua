@@ -24,12 +24,21 @@ local gateway_positions = {
 	{x = 91, y = -26925, z = -29},
 }
 
+local function spawn_gateway_portal(pos, dest_str)
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_gateway_portal.mts"
+	return mcl_structures.place_schematic(vector.add(pos, vector.new(-1, -2, -1)), path, "0", nil, true, nil, dest_str and function(p1, p2, size, orientation, pr, param)
+		-- minetest.get_voxel_manip():read_from_map(pos, pos)
+		minetest.get_meta(vector.add(p1, {x=1,y=2,z=1})):set_string("mcl_portals:gateway_destination", param.dest_str)
+		print(param.dest_str)
+	end, nil, {dest_str=dest_str})
+end
+
 function mcl_portals.spawn_gateway_portal()
 	local id = storage:get_int("gateway_last_id") + 1
 	local pos = gateway_positions[id]
 	if not pos then return end
 	storage:set_int("gateway_last_id", id)
-	mcl_structures.call_struct(vector.add(pos, vector.new(-1, -2, -1)), "end_gateway_portal")
+	spawn_gateway_portal(pos)
 end
 
 local gateway_def = table.copy(minetest.registered_nodes["mcl_portals:portal_end"])
@@ -43,3 +52,70 @@ gateway_def.node_box = nil
 gateway_def.walkable = true
 gateway_def.tiles[3] = nil
 minetest.register_node("mcl_portals:portal_gateway", gateway_def)
+
+local function find_destination_pos(minp, maxp)
+	for y = maxp.y, minp.y, -1 do
+		for x = maxp.x, minp.x, -1 do
+			for z = maxp.z, minp.z, -1 do
+				local pos = vector.new(x, y, z)
+				local nn = minetest.get_node(pos).name
+				if nn ~= "ignore" and nn ~= "mcl_portals:portal_gateway" and nn ~= "mcl_core:bedrock" then
+					local def = minetest.registered_nodes[nn]
+					if def and def.walkable then
+						return vector.add(pos, vector.new(0, 1.5, 0))
+					end
+				end
+			end
+		end
+	end
+end
+
+local preparing = {}
+
+local function teleport(pos, obj)
+	local meta = minetest.get_meta(pos)
+	local dest_portal
+	local dest_str = meta:get_string("mcl_portals:gateway_destination")
+	local pos_str = minetest.pos_to_string(pos)
+	if dest_str == "" then
+		dest_portal = vector.multiply(vector.direction(vector.new(0, pos.y, 0), pos), math.random(768, 1024))
+		dest_portal.y = -26970
+		spawn_gateway_portal(dest_portal, pos_str)
+		meta:set_string("mcl_portals:gateway_destination", minetest.pos_to_string(dest_portal))
+	else
+		dest_portal = minetest.string_to_pos(dest_str)
+	end
+	local minp = vector.subtract(dest_portal, vector.new(5, 40, 5))
+	local maxp = vector.add(dest_portal, vector.new(5, 10, 5))
+	preparing[pos_str] = true
+	minetest.emerge_area(
+		minp,
+		maxp,
+		function(blockpos, action, calls_remaining, param)
+			if calls_remaining < 1 then
+				local minp, maxp, dest_portal, obj, pos_str = param.minp, param.maxp, param.dest_portal, param.obj, param.pos_str
+				if obj and obj:is_player() or obj:get_luaentity() then
+					obj:set_pos(find_destination_pos(minp, maxp) or vector.add(dest_portal, vector.new(0, 3.5, 0)))
+				end
+				preparing[pos_str] = false
+			end
+		end,
+		{minp=vector.new(minp), maxp=vector.new(maxp), dest_portal=vector.new(dest_portal), obj=obj, pos_str=pos_str}
+	)
+end
+
+minetest.register_abm({
+	label = "End gateway portal teleportation",
+	nodenames = {"mcl_portals:portal_gateway"},
+	interval = 0.1,
+	chance = 1,
+	action = function(pos)
+		if preparing[minetest.pos_to_string(pos)] then return end
+		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 1)) do
+			if obj:get_hp() > 0 then
+				teleport(pos, obj)
+				return
+			end
+		end
+	end,
+})
