@@ -318,11 +318,11 @@ end
 
 mcl_structures.generate_end_exit_portal = function(pos, rot)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_exit_portal.mts"
-	return mcl_structures.place_schematic(pos, path, rot or "0", nil, true)
+	return mcl_structures.place_schematic(pos, path, rot or "0", {["mcl_portals:portal_end"] = "air"}, true)
 end
 
 mcl_structures.generate_end_exit_portal_open = function(pos, rot)
-	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_exit_portal_open.mts"
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_exit_portal.mts"
 	return mcl_structures.place_schematic(pos, path, rot or "0", nil, true)
 end
 
