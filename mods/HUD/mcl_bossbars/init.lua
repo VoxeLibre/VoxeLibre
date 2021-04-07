@@ -3,7 +3,7 @@ mcl_bossbars = {
 	huds = {},
 	static = {},
 	colors = {"light_purple", "blue", "red", "green", "yellow", "dark_purple", "white"},
-	max_bars = tonumber(minetest.settings:get("max_bossbars")) or 6
+	max_bars = tonumber(minetest.settings:get("max_bossbars")) or 4
 }
 
 function mcl_bossbars.recalculate_colors()
