@@ -64,7 +64,7 @@ else
 end
 
 -- Spawn on solid blocks at or below Sea level and the selected light level
-mobs:spawn_specific("mobs_mc:bat", mobs_mc.spawn.solid, {"air"}, 0, maxlight, 20, 5000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.water-1)
+mobs:spawn_specific("mobs_mc:bat", "overworld", "air", 0, maxlight, 20, 5000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.water-1)
 
 
 -- spawn eggs

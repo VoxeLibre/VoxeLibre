@@ -3562,7 +3562,7 @@ local mob_step = function(self, dtime)
 	end
 
 	-- mob plays random sound at times
-	if random(1, 100) == 1 then
+	if random(1, 70) == 1 then
 		mob_sound(self, "random", true)
 	end
 
@@ -3925,7 +3925,35 @@ end
 end -- END mobs:register_mob function
 
 
+
+
+
+
+
+
+
+
+
+
+
+--BEGIN SPAWNING ALGORITHM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- count how many mobs of one type are inside an area
+--[[
 local count_mobs = function(pos, mobtype)
 
 	local num = 0
@@ -3969,7 +3997,7 @@ local count_mobs = function(pos, mobtype)
 
 	return num
 end
-
+]]--
 
 -- global functions
 
@@ -3979,8 +4007,45 @@ function mobs:spawn_abm_check(pos, node, name)
 end
 
 
-function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
-	interval, chance, aoc, min_height, max_height, day_toggle, on_spawn)
+--[[
+	Custom elements changed:
+name:
+the mobs name
+
+dimension: 
+"overworld"
+"nether"
+"end"
+
+types of spawning:
+"air"
+"water"
+"ground"
+"lava"
+
+what is aoc???
+
+WARNING: BIOME INTEGRATION NEEDED -> How to get biome through lua??
+	]]--
+
+function mobs:spawn_specific(
+	name,
+	dimension,
+	type_of_spawning, 
+	min_light, 
+	max_light, 
+	interval, 
+	chance, 
+	aoc, 
+	min_height, 
+	max_height, 
+	day_toggle, 
+	on_spawn)
+
+	
+	
+
+	print(name, dump(nodes))
 
 	-- Do mobs spawn at all?
 	if not mobs_spawn then
@@ -4206,6 +4271,42 @@ function mobs:spawn(def)
 	mobs:spawn_specific(name, nodes, neighbors, min_light, max_light, interval,
 		chance, active_object_count, min_height, max_height, day_toggle, on_spawn)
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--END SPAWNING ALGORITHM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 -- register arrow for shoot attack

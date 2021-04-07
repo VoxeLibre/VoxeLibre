@@ -99,7 +99,7 @@ mobs:register_arrow("mobs_mc:potion_arrow", {
 	end
 })
 
--- TODO: Spawn when witch works properly
+-- TODO: Spawn when witch works properly <- eventually -j4i
 --mobs:spawn_specific("mobs_mc:witch", mobs_mc.spawn.jungle, {"air"}, 0, minetest.LIGHT_MAX-6, 12, 20000, 2, mobs_mc.spawn_height.water-6, mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
