@@ -295,7 +295,8 @@ mobs:register_mob("mobs_mc:enderman", {
 		-- ARROW / DAYTIME PEOPLE AVOIDANCE BEHAVIOUR HERE.
 		-- Check for arrows and people nearby.
 		local enderpos = self.object:get_pos()
-		local objs = minetest.get_objects_inside_radius(enderpos, 4)
+		enderpos.y = enderpos.y + 1.5
+		local objs = minetest.get_objects_inside_radius(enderpos, 2)
 		for n = 1, #objs do
 			local obj = objs[n]
 			if obj then
@@ -307,7 +308,7 @@ mobs:register_mob("mobs_mc:enderman", {
 				else
 					local lua = obj:get_luaentity()
 					if lua then
-						if lua.name == "mcl_bows:arrow_entity" then
+						if lua.name == "mcl_bows:arrow_entity" or lua.name == "mcl_throwing:snowball_entity" then
 							self:teleport(nil)
 						end
 					end
