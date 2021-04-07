@@ -81,4 +81,4 @@ mobs:register_arrow("mobs_mc:shulkerbullet", {
 
 mobs:register_egg("mobs_mc:shulker", S("Shulker"), "mobs_mc_spawn_icon_shulker.png", 0)
 
-mobs:spawn_specific("mobs_mc:shulker", "end", "ground", 0, minetest.LIGHT_MAX+1, 30, 5000, 2, mobs_mc.spawn_height.end_min, mobs_mc.spawn_height.end_max)
+mobs:spawn_specific("mobs_mc:shulker", mobs_mc.spawn.end_city, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 5000, 2, mobs_mc.spawn_height.end_min, mobs_mc.spawn_height.end_max)

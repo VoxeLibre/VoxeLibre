@@ -146,8 +146,8 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 	harmed_by_heal = true,
 })
 
-mobs:spawn_specific("mobs_mc:villager_zombie", "overworld", "ground", 0, 7, 30, 4090, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
-mobs:spawn_specific("mobs_mc:villager_zombie", "overworld", "ground", 0, 7, 30, 60000, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific("mobs_mc:villager_zombie", mobs_mc.spawn.village, {"air"}, 0, 7, 30, 4090, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific("mobs_mc:villager_zombie", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 60000, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:villager_zombie", S("Zombie Villager"), "mobs_mc_spawn_icon_zombie_villager.png", 0)
