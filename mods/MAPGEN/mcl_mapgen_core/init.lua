@@ -54,12 +54,8 @@ local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superfl
 
 local WITCH_HUT_HEIGHT = 3 -- Exact Y level to spawn witch huts at. This height refers to the height of the floor
 
--- End exit portal position. This is temporary.
--- TODO: Remove the exit portal generation when the ender dragon has been implemented.
-local END_EXIT_PORTAL_POS = table.copy(mcl_vars.mg_end_platform_pos)
-END_EXIT_PORTAL_POS.x = END_EXIT_PORTAL_POS.x - 30
-END_EXIT_PORTAL_POS.z = END_EXIT_PORTAL_POS.z - 3
-END_EXIT_PORTAL_POS.y = END_EXIT_PORTAL_POS.y - 3
+-- End exit portal position
+local END_EXIT_PORTAL_POS = vector.new(-3, -27003, -3)
 
 -- Content IDs
 local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
@@ -1251,6 +1247,13 @@ local function generate_clay(minp, maxp, blockseed, voxelmanip_data, voxelmanip_
 	return lvm_used
 end
 
+local function generate_end_exit_portal(pos)
+	local dragon_entity = minetest.add_entity(vector.add(pos, vector.new(3, 11, 3)), "mobs_mc:enderdragon"):get_luaentity()
+	dragon_entity._initial = true
+	dragon_entity._portal_pos = pos
+	mcl_structures.call_struct(pos, "end_exit_portal")
+end
+
 -- TODO: Try to use more efficient structure generating code
 local function generate_structures(minp, maxp, blockseed, biomemap)
 	local chunk_has_desert_well = false
@@ -1490,11 +1493,11 @@ local function generate_structures(minp, maxp, blockseed, biomemap)
 		for y=maxp.y, minp.y, -1 do
 			local p = {x=END_EXIT_PORTAL_POS.x, y=y, z=END_EXIT_PORTAL_POS.z}
 			if minetest.get_node(p).name == "mcl_end:end_stone" then
-				mcl_structures.call_struct(p, "end_exit_portal")
+				generate_end_exit_portal(p)
 				return
 			end
 		end
-		mcl_structures.call_struct(END_EXIT_PORTAL_POS, "end_exit_portal")
+		generate_end_exit_portal(END_EXIT_PORTAL_POS)
 	end
 end
 

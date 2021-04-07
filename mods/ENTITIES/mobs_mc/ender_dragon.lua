@@ -50,8 +50,8 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	arrow = "mobs_mc:dragon_fireball",
 	shoot_interval = 0.5,
 	shoot_offset = -1.0,
-	xp_min = 12000,
-	xp_max = 12000,
+	xp_min = 500,
+	xp_max = 500,
 	animation = {
 		fly_speed = 8, stand_speed = 8,
 		stand_start = 0,		stand_end = 20,
@@ -59,15 +59,31 @@ mobs:register_mob("mobs_mc:enderdragon", {
 		run_start = 0,		run_end = 20,
 	},
 	ignores_nametag = true,
-	on_die = function(self, own_pos)
-		if self._egg_spawn_pos then
-			local pos = minetest.string_to_pos(self._egg_spawn_pos)
-			--if minetest.get_node(pos).buildable_to then
-				minetest.set_node(pos, {name = mobs_mc.items.dragon_egg})
-				return
-			--end
+	do_custom = function(self)
+		mcl_bossbars.update_boss(self, "Ender Dragon", "light_purple")
+		if self._portal_pos then
+			-- migrate old format
+			if type(self._portal_pos) == "string" then
+				self._portal_pos = minetest.string_to_pos(self._portal_pos)
+			end
+			local portal_center = vector.add(self._portal_pos, vector.new(3, 11, 3))
+			local pos = self.object:get_pos()
+			if vector.distance(pos, portal_center) > 50 then
+				self.object:set_pos(self._last_good_pos or portal_center)
+			else
+				self._last_good_pos = pos
+			end
 		end
-		minetest.add_item(own_pos, mobs_mc.items.dragon_egg)
+	end,
+	on_die = function(self, pos)
+		if self._portal_pos then
+			mcl_portals.spawn_gateway_portal()
+			mcl_structures.call_struct(self._portal_pos, "end_exit_portal_open")
+			if self._initial then
+				mcl_experience.throw_experience(pos, 11500) -- 500 + 11500 = 12000
+				minetest.set_node(vector.add(self._portal_pos, vector.new(3, 5, 3)), {name = mobs_mc.items.dragon_egg})
+			end
+		end
 	end,
 	fire_resistant = true,
 })

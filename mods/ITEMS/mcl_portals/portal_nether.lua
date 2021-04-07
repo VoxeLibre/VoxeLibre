@@ -1,5 +1,7 @@
 local S = minetest.get_translator("mcl_portals")
 
+local SCAN_2_MAP_CHUNKS = true -- slower but helps to find more suitable places
+
 -- Localize functions for better performance
 local abs = math.abs
 local ceil = math.ceil
@@ -26,7 +28,7 @@ local DISTANCE_MAX			= 128
 local PORTAL				= "mcl_portals:portal"
 local OBSIDIAN				= "mcl_core:obsidian"
 local O_Y_MIN, O_Y_MAX			= max(mcl_vars.mg_overworld_min, -31), min(mcl_vars.mg_overworld_max_official, 2048)
-local N_Y_MIN, N_Y_MAX			= mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_bedrock_nether_top_max
+local N_Y_MIN, N_Y_MAX			= mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_bedrock_nether_top_max - H_MIN
 local O_DY, N_DY			= O_Y_MAX - O_Y_MIN + 1, N_Y_MAX - N_Y_MIN + 1
 
 -- Alpha and particles
@@ -47,7 +49,7 @@ local chatter = {}
 local queue = {}
 local chunks = {}
 
-local storage = minetest.get_mod_storage()
+local storage = mcl_portals.storage
 local exits = {}
 local keys = minetest.deserialize(storage:get_string("nether_exits_keys") or "return {}") or {}
 for _, key in pairs(keys) do
@@ -193,7 +195,7 @@ end
 local function destroy_nether_portal(pos, node)
 	if not node then return end
 	local nn, orientation = node.name, node.param2
-	local obsidian = nn == OBSIDIAN 
+	local obsidian = nn == OBSIDIAN
 
 	local check_remove = function(pos, orientation)
 		local node = get_node(pos)
@@ -486,6 +488,14 @@ local function ecb_scan_area_2(blockpos, action, calls_remaining, param)
 		create_portal_2(pos0, name, obj)
 		return
 	end
+
+	if param.next_chunk_1 and param.next_chunk_2 and param.next_pos then
+		local pos1, pos2, pos = param.next_chunk_1, param.next_chunk_2, param.next_pos
+		log("action", "[mcl_portals] Making additional search in chunk below, because current one doesn't contain any air space for portal, target pos "..pos_to_string(pos))
+		minetest.emerge_area(pos1, pos2, ecb_scan_area_2, {pos = pos, pos1 = pos1, pos2 = pos2, name=name, obj=obj})
+		return
+	end
+
 	log("action", "[mcl_portals] found no space, reverting to target pos "..pos_to_string(pos).." - creating a portal")
 	if pos.y < lava then
 		pos.y = lava + 1
@@ -507,18 +517,35 @@ local function create_portal(pos, limit1, limit2, name, obj)
 
 	-- we need to emerge the area here, but currently (mt5.4/mcl20.71) map generation is slow
 	-- so we'll emerge single chunk only: 5x5x5 blocks, 80x80x80 nodes maximum
+	-- and maybe one more chunk from below if (SCAN_2_MAP_CHUNKS = true)
 
 	local pos1 = add(mul(mcl_vars.pos_to_chunk(pos), mcl_vars.chunk_size_in_nodes), mcl_vars.central_chunk_offset_in_nodes)
 	local pos2 = add(pos1, mcl_vars.chunk_size_in_nodes - 1)
 
+	if not SCAN_2_MAP_CHUNKS then
+		if limit1 and limit1.x and limit1.y and limit1.z then
+			pos1 = {x = max(min(limit1.x, pos.x), pos1.x), y = max(min(limit1.y, pos.y), pos1.y), z = max(min(limit1.z, pos.z), pos1.z)}
+		end
+		if limit2 and limit2.x and limit2.y and limit2.z  then
+			pos2 = {x = min(max(limit2.x, pos.x), pos2.x), y = min(max(limit2.y, pos.y), pos2.y), z = min(max(limit2.z, pos.z), pos2.z)}
+		end
+		minetest.emerge_area(pos1, pos2, ecb_scan_area_2, {pos = vector.new(pos), pos1 = pos1, pos2 = pos2, name=name, obj=obj})
+		return
+	end
+
+	-- Basically the copy of code above, with minor additions to continue the search in single additional chunk below:
+	local next_chunk_1 = {x = pos1.x, y = pos1.y - mcl_vars.chunk_size_in_nodes, z = pos1.z}
+	local next_chunk_2 = add(next_chunk_1, mcl_vars.chunk_size_in_nodes - 1)
+	local next_pos = {x = pos.x, y=next_chunk_2.y, z = pos.z}
 	if limit1 and limit1.x and limit1.y and limit1.z then
 		pos1 = {x = max(min(limit1.x, pos.x), pos1.x), y = max(min(limit1.y, pos.y), pos1.y), z = max(min(limit1.z, pos.z), pos1.z)}
+		next_chunk_1 = {x = max(min(limit1.x, next_pos.x), next_chunk_1.x), y = max(min(limit1.y, next_pos.y), next_chunk_1.y), z = max(min(limit1.z, next_pos.z), next_chunk_1.z)}
 	end
 	if limit2 and limit2.x and limit2.y and limit2.z  then
 		pos2 = {x = min(max(limit2.x, pos.x), pos2.x), y = min(max(limit2.y, pos.y), pos2.y), z = min(max(limit2.z, pos.z), pos2.z)}
+		next_chunk_2 = {x = min(max(limit2.x, next_pos.x), next_chunk_2.x), y = min(max(limit2.y, next_pos.y), next_chunk_2.y), z = min(max(limit2.z, next_pos.z), next_chunk_2.z)}
 	end
-
-	minetest.emerge_area(pos1, pos2, ecb_scan_area_2, {pos = vector.new(pos), pos1 = pos1, pos2 = pos2, name=name, obj=obj})
+	minetest.emerge_area(pos1, pos2, ecb_scan_area_2, {pos = vector.new(pos), pos1 = pos1, pos2 = pos2, name=name, obj=obj, next_chunk_1 = next_chunk_1, next_chunk_2 = next_chunk_2, next_pos = next_pos})
 end
 
 local function available_for_nether_portal(p)

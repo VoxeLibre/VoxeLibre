@@ -58,8 +58,9 @@ local function spawn_crystal(pos)
 	for _, crystal in pairs(crystals) do
 		crystal_explode(crystal)
 	end
-	local dragon = minetest.add_entity(vector.add(portal_center, {x = 0, y = 10, z = 0}), "mobs_mc:enderdragon")
-	dragon:get_luaentity()._egg_spawn_pos = minetest.pos_to_string(vector.add(portal_center, {x = 0, y = 4, z = 0}))
+	local portal_pos = vector.add(portal_center, vector.new(-3, -1, -3))
+	mcl_structures.call_struct(portal_pos, "end_exit_portal")
+	minetest.add_entity(vector.add(portal_pos, vector.new(3, 11, 3)), "mobs_mc:enderdragon"):get_luaentity()._portal_pos = portal_pos
 end
 
 minetest.register_entity("mcl_end:crystal", {

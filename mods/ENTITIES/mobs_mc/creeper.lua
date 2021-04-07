@@ -39,6 +39,8 @@ mobs:register_mob("mobs_mc:creeper", {
 	runaway_from = { "mobs_mc:ocelot", "mobs_mc:cat" },
 	attack_type = "explode",
 
+	--hssssssssssss
+
 	explosion_strength = 3,
 	explosion_radius = 3.5,
 	explosion_damage_radius = 3.5,
@@ -76,7 +78,6 @@ mobs:register_mob("mobs_mc:creeper", {
 			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
 			if self._forced_explosion_countdown_timer <= 0 then
 				mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)
-				self.object:remove()
 			end
 		end
 	end,
@@ -139,6 +140,9 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 	pathfinding = 1,
 	visual = "mesh",
 	mesh = "mobs_mc_creeper.b3d",
+
+	--BOOM
+	
 	textures = {
 		{"mobs_mc_creeper.png",
 		"mobs_mc_creeper_charge.png"},
@@ -195,7 +199,6 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
 			if self._forced_explosion_countdown_timer <= 0 then
 				mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)
-				self.object:remove()
 			end
 		end
 	end,
@@ -250,7 +253,7 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 	glow = 3,
 })
 
-mobs:spawn_specific("mobs_mc:creeper", mobs_mc.spawn.solid, {"air"}, 0, 7, 20, 16500, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific("mobs_mc:creeper", "overworld", "ground", 0, 7, 20, 16500, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:creeper", S("Creeper"), "mobs_mc_spawn_icon_creeper.png", 0)
