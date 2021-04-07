@@ -3,6 +3,7 @@ mcl_bossbars = {
 	huds = {},
 	static = {},
 	colors = {"light_purple", "blue", "red", "green", "yellow", "dark_purple", "white"},
+	max_bars = tonumber(minetest.settings:get("max_bossbars")) or 6
 }
 
 function mcl_bossbars.recalculate_colors()
@@ -127,27 +128,29 @@ minetest.register_globalstep(function()
 			end
 
 			if bar and not hud then
-				hud = {
-					color = bar.color,
-					image = bar.image,
-					text = bar.text,
-					text_id = player:hud_add({
-						hud_elem_type = "text",
+				if i < mcl_bossbars.max_bars then
+					hud = {
+						color = bar.color,
+						image = bar.image,
 						text = bar.text,
-						number = bar.color,
-						position = {x = 0.5, y = 0},
-						alignment = {x = 0, y = 1},
-						offset = {x = 0, y = i * 40},
-					}),
-					image_id = player:hud_add({
-						hud_elem_type = "image",
-						text = bar.image,
-						position = {x = 0.5, y = 0},
-						alignment = {x = 0, y = 1},
-						offset = {x = 0, y = i * 40 + 25},
-						scale = {x = 3, y = 3},
-					}),
-				}
+						text_id = player:hud_add({
+							hud_elem_type = "text",
+							text = bar.text,
+							number = bar.color,
+							position = {x = 0.5, y = 0},
+							alignment = {x = 0, y = 1},
+							offset = {x = 0, y = i * 40},
+						}),
+						image_id = player:hud_add({
+							hud_elem_type = "image",
+							text = bar.image,
+							position = {x = 0.5, y = 0},
+							alignment = {x = 0, y = 1},
+							offset = {x = 0, y = i * 40 + 25},
+							scale = {x = 3, y = 3},
+						}),
+					}
+				end
 			elseif hud and not bar then
 				player:hud_remove(hud.text_id)
 				player:hud_remove(hud.image_id)
