@@ -3418,6 +3418,7 @@ local mob_activate = function(self, staticdata, def, dtime)
 	self.timer = 0
 	self.blinktimer = 0
 	self.blinkstatus = false
+	self.collide_with_objects = false
 
 	-- check existing nametag
 	if not self.nametag then
