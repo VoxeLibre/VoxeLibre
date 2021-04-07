@@ -329,29 +329,45 @@ mobs:register_mob("mobs_mc:enderman", {
 		end
 		-- Check to see if people are near by enough to look at us.
 		for _,obj in pairs(minetest.get_connected_players()) do
-			-- Check if they are looking at us.
+			
+			--check if they are within radius
 			local player_pos = obj:get_pos()
-			local look_dir_not_normalized = obj:get_look_dir()
-			local look_dir = vector.normalize(look_dir_not_normalized)
-			local look_pos = vector.new({x = look_dir.x+player_pos.x, y = look_dir.y+player_pos.y + 1.5, z = look_dir.z+player_pos.z}) -- Arbitrary value (1.5) is head level according to player info mod.
-			-- Cast up to 64 to see if player is looking at enderman.
-			for n = 1,64,.25 do
-				local node = minetest.get_node(look_pos)
-				if node.name ~= "air" then
-					break
-				end
-				if look_pos.x-1<enderpos.x and look_pos.x+1>enderpos.x and look_pos.y-2.89<enderpos.y and look_pos.y-2>enderpos.y and look_pos.z-1<enderpos.z and look_pos.z+1>enderpos.z then
-					self.provoked = "staring"
-					self.attack = minetest.get_player_by_name(obj:get_player_name())
-					break
-				else
-					if self.provoked == "staring" then
-						self.provoked = "broke_contact"
+			if player_pos then -- prevent crashing in 1 in a million scenario
+
+				local ender_distance = vector.distance(enderpos, player_pos)
+				if ender_distance <= 64 then
+
+					-- Check if they are looking at us.
+					local look_dir_not_normalized = obj:get_look_dir()
+					local look_dir = vector.normalize(look_dir_not_normalized)
+					local player_eye_height = obj:get_properties().eye_height
+
+					--skip player if they have no data - log it
+					if not player_eye_height then
+						minetest.log("error", "Enderman at location: ".. dump(enderpos).." has indexed a null player!")
+						goto continue
 					end
+
+					--calculate very quickly the exact location the player is looking
+					--within the distance between the two "heads" (player and enderman)
+					local look_pos = vector.new(player_pos.x, player_pos.y + player_eye_height, player_pos.z)
+					local ender_eye_pos = vector.new(enderpos.x, enderpos.y + 2.75, enderpos.z)
+					local eye_distance_from_player = vector.distance(ender_eye_pos, look_pos)
+					look_pos = vector.add(look_pos, vector.multiply(look_dir, eye_distance_from_player))
+					
+					--if looking in general head position, turn hostile
+					if vector.distance(look_pos, ender_eye_pos) <= 0.4 then
+						self.provoked = "staring"
+						self.attack = minetest.get_player_by_name(obj:get_player_name())
+						break
+					else -- I'm not sure what this part does, but I don't want to break anything - jordan4ibanez
+						if self.provoked == "staring" then
+							self.provoked = "broke_contact"
+						end						
+					end
+
+					::continue:: -- this is a sweep over statement, this can be used to continue even when errors occurred
 				end
-				look_pos.x = look_pos.x + (.25 * look_dir.x)
-				look_pos.y = look_pos.y + (.25 * look_dir.y)
-				look_pos.z = look_pos.z + (.25 * look_dir.z)
 			end
 		end
 		-- TAKE AND PLACE STUFF BEHAVIOUR BELOW.
