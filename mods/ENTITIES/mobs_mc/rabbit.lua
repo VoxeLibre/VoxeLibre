@@ -107,8 +107,11 @@ end
 mobs:register_mob("mobs_mc:killer_bunny", killer_bunny)
 
 -- Mob spawning rules.
--- Different skins depending on spawn location
+-- Different skins depending on spawn location <- we'll get to this when the spawning algorithm is fleshed out
 
+mobs:spawn_specific("mobs_mc:rabbit", "overworld", "ground", 9, minetest.LIGHT_MAX+1, 30, 15000, 8, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+
+--[[
 local spawn = {
 	name = "mobs_mc:rabbit",
 	neighbors = {"air"},
@@ -165,6 +168,7 @@ spawn_grass.on_spawn = function(self, pos)
 	self.object:set_properties({textures = self.base_texture})
 end
 mobs:spawn(spawn_grass)
+]]--
 
 -- Spawn egg
 mobs:register_egg("mobs_mc:rabbit", S("Rabbit"), "mobs_mc_spawn_icon_rabbit.png", 0)

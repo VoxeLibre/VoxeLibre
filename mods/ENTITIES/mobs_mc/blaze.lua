@@ -1,6 +1,6 @@
 -- daufinsyd
 -- My work is under the LGPL terms
--- Model and mobs_blaze.png see https://github.com/22i/minecraft-voxel-blender-models
+-- Model and mobs_blaze.png see https://github.com/22i/minecraft-voxel-blender-models -hi 22i ~jordan4ibanez
 -- blaze.lua partial copy of mobs_mc/ghast.lua
 
 local S = minetest.get_translator("mobs_mc")
@@ -128,7 +128,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	end,
 })
 
-mobs:spawn_specific("mobs_mc:blaze", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 5000, 3, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
+mobs:spawn_specific("mobs_mc:blaze", "nether", "ground", 0, minetest.LIGHT_MAX+1, 30, 5000, 3, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
 
 -- Blaze fireball
 mobs:register_arrow("mobs_mc:blaze_fireball", {

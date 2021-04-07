@@ -139,13 +139,13 @@ table.insert(stray.drops, {
 mobs:register_mob("mobs_mc:stray", stray)
 
 -- Overworld spawn
-mobs:spawn_specific("mobs_mc:skeleton", mobs_mc.spawn.solid, {"air"}, 0, 7, 20, 17000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific("mobs_mc:skeleton", "overworld", "ground", 0, 7, 20, 17000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 -- Nether spawn
-mobs:spawn_specific("mobs_mc:skeleton", mobs_mc.spawn.nether_fortress, {"air"}, 0, 7, 30, 10000, 3, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
+mobs:spawn_specific("mobs_mc:skeleton", "nether", "ground", 0, 7, 30, 10000, 3, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
 
 -- Stray spawn
 -- TODO: Spawn directly under the sky
-mobs:spawn_specific("mobs_mc:stray", mobs_mc.spawn.snow, {"air"}, 0, 7, 20, 19000, 2, mobs_mc.spawn_height.water, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific("mobs_mc:stray", "overworld", "ground", 0, 7, 20, 19000, 2, mobs_mc.spawn_height.water, mobs_mc.spawn_height.overworld_max)
 
 
 -- spawn eggs
