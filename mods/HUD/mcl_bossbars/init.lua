@@ -1,6 +1,7 @@
 mcl_bossbars = {
 	bars = {},
 	huds = {},
+	static = {},
 	colors = {"light_purple", "blue", "red", "green", "yellow", "dark_purple", "white"},
 }
 
@@ -27,21 +28,52 @@ function mcl_bossbars.recalculate_colors()
 	mcl_bossbars.colors_sorted = sorted
 end
 
-function mcl_bossbars.update_bar(player, text, color, percentage)
+local function get_color_info(color, percentage)
 	local cdef = mcl_bossbars.colors_sorted[color]
-	table.insert(mcl_bossbars.bars[player:get_player_name()], {color = cdef.hex, text = text, image = string.format(cdef.image, percentage)})
+	return cdef.hex, string.format(cdef.image, percentage)
+end
+
+local last_id = 0
+
+function mcl_bossbars.add_bar(player, def)
+	local name = player:get_player_name()
+	local bar = {text = def.text}
+	bar.color, bar.image = get_color_info(def.color, def.percentage)
+	table.insert(mcl_bossbars.bars[name], bar)
+	if not def.dynamic then
+		bar.raw_color = def.color
+		bar.id = last_id + 1
+		last_id = bar.id
+		mcl_bossbars.static[bar.id] = bar
+		return id
+	end
+end
+
+function mcl_bossbars.remove_bar(id)
+	mcl_bossbars.static[id].bar.static = false
+	mcl_bossbars.static[id] = nil
+end
+
+function mcl_bossbars.update_bar(id, def)
+	local old = mcl_bossbars.static[id]
+	old.color = get_color_info(def.color or old.raw_color, def.percentage or old.percentage)
+	old.text = def.text or old.text
 end
 
 function mcl_bossbars.update_boss(luaentity, name, color)
 	local object = luaentity.object
-	local text = luaentity.nametag
-	if not text or text == "" then
-		text = name
+	local bardef = {
+		text = luaentity.nametag,
+		percentage = math.floor(luaentity.health / luaentity.hp_max * 100),
+		color = color,
+		dynamic = true,
+	}
+	if not bardef.text or bardef.text == "" then
+		bardef.text = name
 	end
-	local percentage = math.floor(luaentity.health / luaentity.hp_max * 100)
 	for _, obj in pairs(minetest.get_objects_inside_radius(object:get_pos(), 128)) do
 		if obj:is_player() then
-			mcl_bossbars.update_bar(obj, text, color, percentage)
+			mcl_bossbars.add_bar(obj, bardef)
 		end
 	end
 end
@@ -55,6 +87,11 @@ end)
 minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 	mcl_bossbars.huds[name] = nil
+	for _, bar in pairs(mcl_bossbars.bars[name]) do
+		if bar.id then
+			mcl_bossbars.static[bar.id] = nil
+		end
+	end
 	mcl_bossbars.bars[name] = nil
 end)
 
@@ -64,11 +101,16 @@ minetest.register_globalstep(function()
 		local bars = mcl_bossbars.bars[name]
 		local huds = mcl_bossbars.huds[name]
 		local huds_new = {}
+		local bars_new = {}
 		local i = 0
 
 		while #huds > 0 or #bars > 0 do
 			local bar = table.remove(bars, 1)
 			local hud = table.remove(huds, 1)
+
+			if bar and bar.id then
+				table.insert(bars_new, bar)
+			end
 
 			if bar and not hud then
 				hud = {
@@ -118,6 +160,7 @@ minetest.register_globalstep(function()
 		end
 
 		mcl_bossbars.huds[name] = huds_new
+		mcl_bossbars.bars[name] = bars_new
 	end
 end)
 
