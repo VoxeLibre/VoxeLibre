@@ -75,7 +75,7 @@ mobs:register_mob("mobs_mc:ghast", {
 })
 
 
-mobs:spawn_specific("mobs_mc:ghast", "nether", "air", 0, minetest.LIGHT_MAX+1, 30, 18000, 2, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
+mobs:spawn_specific("mobs_mc:ghast", mobs_mc.spawn.nether, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 18000, 2, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
 
 -- fireball (projectile)
 mobs:register_arrow("mobs_mc:fireball", {

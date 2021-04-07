@@ -87,7 +87,7 @@ cave_spider.sounds.base_pitch = 1.25
 mobs:register_mob("mobs_mc:cave_spider", cave_spider)
 
 
-mobs:spawn_specific("mobs_mc:spider", "overworld", "ground", 0, 7, 30, 17000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific("mobs_mc:spider", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 17000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:spider", S("Spider"), "mobs_mc_spawn_icon_spider.png", 0)

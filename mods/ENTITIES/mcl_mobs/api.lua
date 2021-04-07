@@ -3562,7 +3562,7 @@ local mob_step = function(self, dtime)
 	end
 
 	-- mob plays random sound at times
-	if random(1, 70) == 1 then
+	if random(1, 100) == 1 then
 		mob_sound(self, "random", true)
 	end
 
@@ -3925,35 +3925,7 @@ end
 end -- END mobs:register_mob function
 
 
-
-
-
-
-
-
-
-
-
-
-
---BEGIN SPAWNING ALGORITHM
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 -- count how many mobs of one type are inside an area
---[[
 local count_mobs = function(pos, mobtype)
 
 	local num = 0
@@ -3997,7 +3969,7 @@ local count_mobs = function(pos, mobtype)
 
 	return num
 end
-]]--
+
 
 -- global functions
 
@@ -4007,49 +3979,9 @@ function mobs:spawn_abm_check(pos, node, name)
 end
 
 
---[[
-	Custom elements changed:
-name:
-the mobs name
+function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
+	interval, chance, aoc, min_height, max_height, day_toggle, on_spawn)
 
-dimension: 
-"overworld"
-"nether"
-"end"
-
-types of spawning:
-"air"
-"water"
-"ground"
-"lava"
-
-what is aoc???
-
-WARNING: BIOME INTEGRATION NEEDED -> How to get biome through lua??
-]]--
-
---this is where all of the spawning information is kept
-local spawn_dictionary = {
-	["overworld"] = {},
-	["nether"] = {},
-	["end"] = {}
-}
-
-function mobs:spawn_specific(
-	name,
-	dimension,
-	type_of_spawning, 
-	min_light, 
-	max_light, 
-	interval, 
-	chance, 
-	aoc, 
-	min_height, 
-	max_height, 
-	day_toggle, 
-	on_spawn)
-
-	
 	-- Do mobs spawn at all?
 	if not mobs_spawn then
 		return
@@ -4070,6 +4002,7 @@ function mobs:spawn_specific(
 
 		minetest.log("action",
 			string.format("[mobs] Chance setting for %s changed to %s (total: %s)", name, chance, aoc))
+
 	end
 
 	local spawn_action
@@ -4234,24 +4167,6 @@ function mobs:spawn_specific(
 		spawn_action(pos, node, active_object_count, active_object_count_wider, name)
 	end
 
-
-	--load information into the spawn dictionary
-	local key = #spawn_dictionary[dimension] + 1
-
-	spawn_dictionary[dimension][key] = {}
-	spawn_dictionary[dimension][key]["name"]       = name
-	spawn_dictionary[dimension][key]["type"]       = type_of_spawning
-	spawn_dictionary[dimension][key]["min_light"]  = min_light
-	spawn_dictionary[dimension][key]["max_light"]  = max_light
-	spawn_dictionary[dimension][key]["interval"]   = interval
-	spawn_dictionary[dimension][key]["chance"]     = chance
-	spawn_dictionary[dimension][key]["aoc"]        = aoc
-	spawn_dictionary[dimension][key]["min_height"] = min_height
-	spawn_dictionary[dimension][key]["max_height"] = max_height
-	spawn_dictionary[dimension][key]["day_toggle"] = day_toggle
-	spawn_dictionary[dimension][key]["on_spawn"]   = spawn_abm_action
-	
-	--[[
 	minetest.register_abm({
 		label = name .. " spawning",
 		nodenames = nodes,
@@ -4261,24 +4176,18 @@ function mobs:spawn_specific(
 		catch_up = false,
 		action = spawn_abm_action,
 	})
-	]]--
 end
 
 
 -- compatibility with older mob registration
--- we're going to forget about this for now -j4i
---[[
 function mobs:register_spawn(name, nodes, max_light, min_light, chance, active_object_count, max_height, day_toggle)
 
 	mobs:spawn_specific(name, nodes, {"air"}, min_light, max_light, 30,
 		chance, active_object_count, -31000, max_height, day_toggle)
 end
-]]--
 
 
---I'm not sure what this does but disabling it doesn't cause a crash -j4i
 -- MarkBu's spawn function
---[[
 function mobs:spawn(def)
 
 	local name = def.name
@@ -4297,160 +4206,6 @@ function mobs:spawn(def)
 	mobs:spawn_specific(name, nodes, neighbors, min_light, max_light, interval,
 		chance, active_object_count, min_height, max_height, day_toggle, on_spawn)
 end
-]]--
-
-
-local axis
---inner and outer part of square donut radius
-local inner = 1
-local outer = 70
-local int = {-1,1}
-local position_calculation = function(pos)
-
-	pos = vector.floor(pos)
-
-	--this is used to determine the axis buffer from the player
-	axis = math.random(0,1)
-
-	--cast towards the direction
-	if axis == 0 then --x
-		pos.x = pos.x + math.random(inner,outer)*int[math.random(1,2)]
-		pos.z = pos.z + math.random(-outer,outer)
-	else --z
-		pos.z = pos.z + math.random(inner,outer)*int[math.random(1,2)]
-		pos.x = pos.x + math.random(-outer,outer)
-	end
-	return(pos)
-end
-
---[[
-local decypher_limits_dictionary = {
-	["overworld"] = {mcl_vars.mg_overworld_min,mcl_vars.mg_overworld_max},
-	["nether"]    = {mcl_vars.mg_nether_min,   mcl_vars.mg_nether_max},
-	["end"]       = {mcl_vars.mg_end_min,      mcl_vars.mg_end_max}
-}
-]]--
-
-local function decypher_limits(posy)
-	--local min_max_table = decypher_limits_dictionary[dimension]
-	--return min_max_table[1],min_max_table[2]
-	posy = math.floor(posy)
-	return posy - 32, posy + 32
-end
-
-
---todo mob limiting
---MAIN LOOP
-local timer = 0
-minetest.register_globalstep(function(dtime)
-	timer = timer + dtime
-	if timer >= 15 then
-		timer = 0
-		for _,player in ipairs(minetest.get_connected_players()) do
-			for i = 1,math.random(5) do
-				local player_pos = player:get_pos()
-				local _,dimension = mcl_worlds.y_to_layer(player_pos.y)
-				local min,max = decypher_limits(player_pos.y)
-
-				local goal_pos = position_calculation(player_pos)
-				
-
-				local mob_def = spawn_dictionary[dimension][math.random(1,#spawn_dictionary[dimension])]
-
-				if not mob_def then --to catch a crazy error if it ever happens
-					minetest.log("error", "WARNING!! mob spawning attempted to index a NIL mob!")
-					goto continue
-				end
-
-				if mob_def.type == "ground" then
-
-					local spawning_position_list = minetest.find_nodes_in_area_under_air(vector.new(goal_pos.x,min,goal_pos.z), vector.new(goal_pos.x,max,goal_pos.z), {"group:solid"})
-
-					if #spawning_position_list <= 0 then
-						goto continue
-					end
-					
-					local spawning_position = spawning_position_list[math.random(1,#spawning_position_list)]
-
-					spawning_position.y = spawning_position.y + 1
-
-					local gotten_light = minetest.get_node_light(spawning_position)
-
-					if gotten_light and gotten_light >= mob_def.min_light and gotten_light <= mob_def.max_light then
-						minetest.add_entity(spawning_position, mob_def.name)
-					end
-				elseif mob_def.type == "air" then
-					local spawning_position_list = minetest.find_nodes_in_area(vector.new(goal_pos.x,min,goal_pos.z), vector.new(goal_pos.x,max,goal_pos.z), {"air"})
-
-					if #spawning_position_list <= 0 then
-						goto continue
-					end
-					
-					local spawning_position = spawning_position_list[math.random(1,#spawning_position_list)]
-
-					local gotten_light = minetest.get_node_light(spawning_position)
-
-					if gotten_light and gotten_light >= mob_def.min_light and gotten_light <= mob_def.max_light then
-						minetest.add_entity(spawning_position, mob_def.name)
-					end
-				elseif mob_def.type == "water" then
-					local spawning_position_list = minetest.find_nodes_in_area(vector.new(goal_pos.x,min,goal_pos.z), vector.new(goal_pos.x,max,goal_pos.z), {"group:water"})
-
-					if #spawning_position_list <= 0 then
-						goto continue
-					end
-					
-					local spawning_position = spawning_position_list[math.random(1,#spawning_position_list)]
-
-					local gotten_light = minetest.get_node_light(spawning_position)
-
-					if gotten_light and gotten_light >= mob_def.min_light and gotten_light <= mob_def.max_light then
-						minetest.add_entity(spawning_position, mob_def.name)
-					end
-				--elseif mob_def.type == "lava" then
-					--implement later
-				end
-				--local spawn minetest.find_nodes_in_area_under_air(vector.new(pos.x,pos.y-find_node_height,pos.z), vector.new(pos.x,pos.y+find_node_height,pos.z), {"group:solid"})
-
-
-				::continue:: --this is a safety catch
-			end
-		end
-	end
-end)
-
-
-
-
-
-
-
-
-
-
-
-
-
---END SPAWNING ALGORITHM
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 -- register arrow for shoot attack

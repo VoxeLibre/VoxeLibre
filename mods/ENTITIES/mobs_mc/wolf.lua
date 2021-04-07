@@ -232,6 +232,6 @@ end
 mobs:register_mob("mobs_mc:dog", dog)
 
 -- Spawn
-mobs:spawn_specific("mobs_mc:wolf", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 9000, 7, mobs_mc.spawn_height.water+3, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific("mobs_mc:wolf", mobs_mc.spawn.wolf, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 9000, 7, mobs_mc.spawn_height.water+3, mobs_mc.spawn_height.overworld_max)
 
 mobs:register_egg("mobs_mc:wolf", S("Wolf"), "mobs_mc_spawn_icon_wolf.png", 0)
