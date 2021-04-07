@@ -60,7 +60,7 @@ function mcl_bossbars.add_bar(player, def)
 		bar.id = last_id + 1
 		last_id = bar.id
 		mcl_bossbars.static[bar.id] = bar
-		return id
+		return bar.id
 	end
 end
 
