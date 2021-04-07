@@ -17,7 +17,7 @@ To give you a *very* brief overview over this API, here is the basic workflow on
 In order to use this API, you should be aware of a few basic rules in order to understand it:
 
 * A HUD bar is an approximate graphical representation of the ratio of a current value and a maximum value, i.e. current health of 15 and maximum health of 20. A full HUD bar represents 100%, an empty HUD bar represents 0%.
-* The current value must always be equal to or smaller then the maximum 
+* The current value must always be equal to or smaller then the maximum
 * Both current value and maximum must not be smaller than 0
 * Both current value and maximum must be real numbers. So no NaN, infinity, etc.
 * The HUD bar will be hidden if the maximum equals 0. This is intentional.
@@ -45,7 +45,7 @@ a vertical gradient.
 ### Icon
 A 16×16 image shown left of the HUD bar. This is optional.
 
-### `hb.register_hudbar(identifier, text_color, label, textures, default_start_value, default_start_max, default_start_hidden, format_string, format_string_config)`
+### `hb.register_hudbar(identifier, text_color, label, textures, direction, default_start_value, default_start_max, default_start_hidden, format_string, format_string_config)`
 This function registers a new custom HUD bar definition to the HUD bars mod, so it can be later used to be displayed, changed, hidden
 and unhidden on a per-player basis.
 Note this does not yet display the HUD bar.
@@ -63,6 +63,7 @@ for more information.
  * `bar`: The file name of the bar image (as string). This is only used for the `progress_bar` bar type (see `README.txt`, settings section).
  * `icon`: The file name of the icon, as string. For the `progress_bar` type, it is shown as single image left of the bar, for the two statbar bar types, it is used as the statbar icon and will be repeated. This field can be `nil`, in which case no icon will be used, but this is not recommended, because the HUD bar will be invisible if the one of the statbar bar types is used.
  * `bgicon`: The file name of the background icon, it is used as the background for the modern statbar mode only. This field can be `nil`, in which case no background icon will be displayed in this mode.
+* `direction`: Either left to right(0), or right to left(1).
 * `default_start_value`: If this HUD bar is added to a player, and no initial value is specified, this value will be used as initial current value
 * `default_max_value`: If this HUD bar is added to a player, and no initial maximum value is specified, this value will be used as initial maximum value
 * `default_start_hidden`: The HUD bar will be initially start hidden by default when added to a player. Use `hb.unhide_hudbar` to unhide it.
