@@ -331,27 +331,30 @@ mobs:register_mob("mobs_mc:enderman", {
 		for _,obj in pairs(minetest.get_connected_players()) do
 			-- Check if they are looking at us.
 			local player_pos = obj:get_pos()
-			local look_dir_not_normalized = obj:get_look_dir()
-			local look_dir = vector.normalize(look_dir_not_normalized)
-			local look_pos = vector.new({x = look_dir.x+player_pos.x, y = look_dir.y+player_pos.y + 1.5, z = look_dir.z+player_pos.z}) -- Arbitrary value (1.5) is head level according to player info mod.
-			-- Cast up to 64 to see if player is looking at enderman.
-			for n = 1,64,.25 do
-				local node = minetest.get_node(look_pos)
-				if node.name ~= "air" then
-					break
-				end
-				if look_pos.x-1<enderpos.x and look_pos.x+1>enderpos.x and look_pos.y-2.89<enderpos.y and look_pos.y-2>enderpos.y and look_pos.z-1<enderpos.z and look_pos.z+1>enderpos.z then
-					self.provoked = "staring"
-					self.attack = minetest.get_player_by_name(obj:get_player_name())
-					break
-				else
-					if self.provoked == "staring" then
-						self.provoked = "broke_contact"
+			if vector.distance(enderpos, player_pos) <= 64 then
+
+				local look_dir_not_normalized = obj:get_look_dir()
+				local look_dir = vector.normalize(look_dir_not_normalized)
+				local look_pos = vector.new({x = look_dir.x+player_pos.x, y = look_dir.y+player_pos.y + 1.5, z = look_dir.z+player_pos.z}) -- Arbitrary value (1.5) is head level according to player info mod.
+				-- Cast up to 64 to see if player is looking at enderman.
+				for n = 1,64,.25 do
+					local node = minetest.get_node(look_pos)
+					if node.name ~= "air" then
+						break
 					end
+					if look_pos.x-1<enderpos.x and look_pos.x+1>enderpos.x and look_pos.y-2.89<enderpos.y and look_pos.y-2>enderpos.y and look_pos.z-1<enderpos.z and look_pos.z+1>enderpos.z then
+						self.provoked = "staring"
+						self.attack = minetest.get_player_by_name(obj:get_player_name())
+						break
+					else
+						if self.provoked == "staring" then
+							self.provoked = "broke_contact"
+						end
+					end
+					look_pos.x = look_pos.x + (.25 * look_dir.x)
+					look_pos.y = look_pos.y + (.25 * look_dir.y)
+					look_pos.z = look_pos.z + (.25 * look_dir.z)
 				end
-				look_pos.x = look_pos.x + (.25 * look_dir.x)
-				look_pos.y = look_pos.y + (.25 * look_dir.y)
-				look_pos.z = look_pos.z + (.25 * look_dir.z)
 			end
 		end
 		-- TAKE AND PLACE STUFF BEHAVIOUR BELOW.
