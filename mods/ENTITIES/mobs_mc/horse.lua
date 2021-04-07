@@ -231,7 +231,6 @@ local horse = {
 				temper_increase = 5
 			elseif (iname == mobs_mc.items.golden_apple) then
 				temper_increase = 10
-
 			-- Trying to ride
 			elseif not self.driver then
 				self.object:set_properties({stepheight = 1.1})
