@@ -172,7 +172,7 @@ function mobs.detach(player, offset)
 
 	--pos = {x = pos.x + offset.x, y = pos.y + 0.2 + offset.y, z = pos.z + offset.z}
 
-	player:add_velocity(vector.new(math.random(-5,5),math.random(3,6),math.random(-5,5))) --throw the rider off
+	player:add_velocity(vector.new(math.random(-6,6),math.random(5,8),math.random(-6,6))) --throw the rider off
 
 	--[[
 	minetest.after(0.1, function(name, pos)
