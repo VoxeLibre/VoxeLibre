@@ -94,6 +94,35 @@ minetest.register_node("mcl_sponges:sponge", {
 	_mcl_hardness = 0.6,
 })
 
+function place_wet_sponge(itemstack, placer, pointed_thing)
+	if pointed_thing.type ~= "node" then
+		return itemstack
+	end
+	-- Use pointed node's on_rightclick function first, if present
+	local node = minetest.get_node(pointed_thing.under)
+	if placer and not placer:get_player_control().sneak then
+		if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+			return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+		end
+	end
+
+	local name = placer:get_player_name()
+
+	if minetest.is_protected(pointed_thing.above, name) then
+		return itemstack
+	end
+
+	if mcl_worlds.pos_to_dimension(pointed_thing.above) == "nether" then
+		minetest.item_place_node(ItemStack("mcl_sponges:sponge"), placer, pointed_thing)
+		if not minetest.is_creative_enabled(name) then
+			itemstack:take_item()
+		end
+		return itemstack
+	end
+
+	return minetest.item_place_node(itemstack, placer, pointed_thing)
+end
+
 minetest.register_node("mcl_sponges:sponge_wet", {
 	description = S("Waterlogged Sponge"),
 	_tt_help = S("Can be dried in furnace"),
@@ -108,6 +137,7 @@ minetest.register_node("mcl_sponges:sponge_wet", {
 	stack_max = 64,
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	groups = {handy=1, hoey=1, building_block=1},
+	on_place = place_wet_sponge,
 	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
 })
@@ -127,6 +157,7 @@ if minetest.get_modpath("mclx_core") then
 		stack_max = 64,
 		sounds = mcl_sounds.node_sound_dirt_defaults(),
 		groups = {handy=1, building_block=1},
+		on_place = place_wet_sponge,
 		_mcl_blast_resistance = 0.6,
 		_mcl_hardness = 0.6,
 	})
