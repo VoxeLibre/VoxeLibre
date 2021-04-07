@@ -37,9 +37,23 @@ local last_id = 0
 
 function mcl_bossbars.add_bar(player, def)
 	local name = player:get_player_name()
+	local bars = mcl_bossbars.bars[name]
 	local bar = {text = def.text}
 	bar.color, bar.image = get_color_info(def.color, def.percentage)
-	table.insert(mcl_bossbars.bars[name], bar)
+	if def.dynamic then
+		for _, other in pairs(bars) do
+			if not other.id and other.color == bar.color and (other.original_text or other.text) == bar.text and other.image == bar.image then
+				if not other.count then
+					other.count = 1
+					other.original_text = other.text
+				end
+				other.count = other.count + 1
+				other.text = other.original_text .. " x" .. other.count
+				return
+			end
+		end
+	end
+	table.insert(bars, bar)
 	if not def.dynamic then
 		bar.raw_color = def.color
 		bar.id = last_id + 1
