@@ -217,7 +217,7 @@ baby_strider.child = 1
 mobs:register_mob("extra_mobs:baby_strider", baby_strider)
 
 -- Regular spawning in the Nether
-mobs:spawn_specific("extra_mobs:strider", {"mcl_nether:nether_lava_source"}, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 6000, 3, mcl_vars.mg_nether_min, mcl_vars.mg_nether_max)
+mobs:spawn_specific("extra_mobs:strider", "nether", "lava", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, mcl_vars.mg_nether_min, mcl_vars.mg_nether_max)
 
 -- spawn eggs
 mobs:register_egg("extra_mobs:strider", S("Strider"), "extra_mobs_spawn_icon_strider.png", 0)

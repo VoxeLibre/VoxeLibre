@@ -91,7 +91,7 @@ mobs:register_mob("extra_mobs:dolphin", dolphin)
 
 --spawning TODO: in schools
 local water = mobs_mc.spawn_height.water
-mobs:spawn_specific("extra_mobs:dolphin", mobs_mc.spawn.water, {mobs_mc.items.water_source}, 0, minetest.LIGHT_MAX+1, 30, 4000, 3, water-16, water)
+mobs:spawn_specific("extra_mobs:dolphin", "overworld", "water", 0, minetest.LIGHT_MAX+1, 30, 4000, 3, water-16, water)
 
 --spawn egg
 mobs:register_egg("extra_mobs:dolphin", S("dolphin"), "extra_mobs_spawn_icon_dolphin.png", 0)

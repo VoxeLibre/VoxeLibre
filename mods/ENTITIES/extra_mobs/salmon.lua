@@ -61,7 +61,7 @@ mobs:register_mob("extra_mobs:salmon", salmon)
 
 --spawning TODO: in schools
 local water = mobs_mc.spawn_height.water
-mobs:spawn_specific("extra_mobs:salmon", mobs_mc.spawn.water, {mobs_mc.items.water_source}, 0, minetest.LIGHT_MAX+1, 30, 4000, 3, water-16, water)
+mobs:spawn_specific("extra_mobs:salmon", "overworld", "water", 0, minetest.LIGHT_MAX+1, 30, 4000, 3, water-16, water)
 
 --spawn egg
 mobs:register_egg("extra_mobs:salmon", S("Salmon"), "extra_mobs_spawn_icon_salmon.png", 0)

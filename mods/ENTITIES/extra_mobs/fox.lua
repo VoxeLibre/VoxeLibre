@@ -123,10 +123,10 @@ local fox = {
 mobs:register_mob("extra_mobs:fox", fox)
 
 -- spawning
-mobs:spawn_specific("extra_mobs:fox", {"mcl_core:dirt_with_grass"}, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 6000, 3, 0, 500)
+mobs:spawn_specific("extra_mobs:fox", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, 0, 500)
 
-mobs:spawn_specific("extra_mobs:fox", {"mcl_core:dirt_with_grass_snow"}, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 6000, 3, 0, 500)
-mobs:spawn_specific("extra_mobs:artic_fox", {"mcl_core:snow"}, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 6000, 3, 0, 500)
+mobs:spawn_specific("extra_mobs:fox", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, 0, 500)
+mobs:spawn_specific("extra_mobs:artic_fox", "overworld", "mcl_core:snow", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, 0, 500)
 
 -- spawn eggs
 mobs:register_egg("extra_mobs:fox", S("Fox"), "extra_mobs_spawn_icon_fox.png", 0)
