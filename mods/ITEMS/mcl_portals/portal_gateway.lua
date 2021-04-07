@@ -26,10 +26,8 @@ local gateway_positions = {
 
 local function spawn_gateway_portal(pos, dest_str)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_gateway_portal.mts"
-	return mcl_structures.place_schematic(vector.add(pos, vector.new(-1, -2, -1)), path, "0", nil, true, dest_str and function()
-		minetest.get_voxel_manip():read_from_map(pos, pos)
+	return mcl_structures.place_schematic(vector.add(pos, vector.new(-1, -2, -1)), path, "0", nil, true, nil, dest_str and function()
 		minetest.get_meta(pos):set_string("mcl_portals:gateway_destination", dest_str)
-		print(dest_str)
 	end)
 end
 
@@ -88,11 +86,13 @@ local function teleport(pos, obj)
 	local minp = vector.subtract(dest_portal, vector.new(5, 40, 5))
 	local maxp = vector.add(dest_portal, vector.new(5, 10, 5))
 	preparing[pos_str] = true
-	minetest.emerge_area(minp, maxp, function()
-		if obj:is_player() or obj:get_luaentity() then
-			obj:set_pos(find_destination_pos(minp, maxp) or vector.add(dest_portal, vector.new(0, 3.5, 0)))
+	minetest.emerge_area(minp, maxp, function(blockpos, action, calls_remaining, param)
+		if calls_remaining < 1 then
+			if obj and obj:is_player() or obj:get_luaentity() then
+				obj:set_pos(find_destination_pos(minp, maxp) or vector.add(dest_portal, vector.new(0, 3.5, 0)))
+			end
+			preparing[pos_str] = false
 		end
-		preparing[pos_str] = false
 	end)
 end
 

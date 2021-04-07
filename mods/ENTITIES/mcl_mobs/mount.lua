@@ -168,16 +168,20 @@ function mobs.detach(player, offset)
 
 	mcl_player.player_set_animation(player, "stand" , 30)
 
-	local pos = player:get_pos()
+	--local pos = player:get_pos()
 
-	pos = {x = pos.x + offset.x, y = pos.y + 0.2 + offset.y, z = pos.z + offset.z}
+	--pos = {x = pos.x + offset.x, y = pos.y + 0.2 + offset.y, z = pos.z + offset.z}
 
+	player:add_velocity(vector.new(math.random(-6,6),math.random(5,8),math.random(-6,6))) --throw the rider off
+
+	--[[
 	minetest.after(0.1, function(name, pos)
 		local player = minetest.get_player_by_name(name)
 		if player then
 			player:set_pos(pos)
 		end
 	end, player:get_player_name(), pos)
+	]]--
 end
 
 

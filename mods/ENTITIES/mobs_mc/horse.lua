@@ -231,7 +231,6 @@ local horse = {
 				temper_increase = 5
 			elseif (iname == mobs_mc.items.golden_apple) then
 				temper_increase = 10
-
 			-- Trying to ride
 			elseif not self.driver then
 				self.object:set_properties({stepheight = 1.1})
@@ -511,8 +510,8 @@ mobs:register_mob("mobs_mc:mule", mule)
 
 --===========================
 --Spawn Function
-mobs:spawn_specific("mobs_mc:horse", mobs_mc.spawn.grassland_savanna, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 15000, 4, mobs_mc.spawn_height.water+3, mobs_mc.spawn_height.overworld_max)
-mobs:spawn_specific("mobs_mc:donkey", mobs_mc.spawn.grassland_savanna, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 15000, 4, mobs_mc.spawn_height.water+3, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific("mobs_mc:horse", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 15000, 4, mobs_mc.spawn_height.water+3, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific("mobs_mc:donkey", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 15000, 4, mobs_mc.spawn_height.water+3, mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:horse", S("Horse"), "mobs_mc_spawn_icon_horse.png", 0)
