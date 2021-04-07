@@ -4277,13 +4277,14 @@ end
 
 
 --I'm not sure what this does but disabling it doesn't cause a crash -j4i
+-- Just compatibility problem with outer mob mods currently, so adding a warning and temporarily enabling back -kay27 2021-04-08
 -- MarkBu's spawn function
---[[
-function mobs:spawn(def)
 
+function mobs:spawn(def)
+	minetest.log("warning", "[mcl_mobs] Deprecated function call: `mobs:spawn()`. Please use mobs:spawn_specific() instead!") 
 	local name = def.name
 	local nodes = def.nodes or {"group:soil", "group:stone"}
-	local neighbors = def.neighbors or {"air"}
+--	local neighbors = def.neighbors or {"air"}
 	local min_light = def.min_light or 0
 	local max_light = def.max_light or 15
 	local interval = def.interval or 30
@@ -4294,10 +4295,16 @@ function mobs:spawn(def)
 	local day_toggle = def.day_toggle
 	local on_spawn = def.on_spawn
 
-	mobs:spawn_specific(name, nodes, neighbors, min_light, max_light, interval,
+	--mobs:spawn_specific(name, nodes, neighbors, min_light, max_light, interval,
+	--	chance, active_object_count, min_height, max_height, day_toggle, on_spawn)
+	mobs:spawn_specific(name, "overworld", nodes, min_light, max_light, interval,
+		chance, active_object_count, min_height, max_height, day_toggle, on_spawn)
+	mobs:spawn_specific(name, "end", nodes, min_light, max_light, interval,
+		chance, active_object_count, min_height, max_height, day_toggle, on_spawn)
+	mobs:spawn_specific(name, "nether", nodes, min_light, max_light, interval,
 		chance, active_object_count, min_height, max_height, day_toggle, on_spawn)
 end
-]]--
+
 
 
 local axis
@@ -4409,6 +4416,22 @@ minetest.register_globalstep(function(dtime)
 					end
 				--elseif mob_def.type == "lava" then
 					--implement later
+				else -- mob_def.type is specific node name or group name
+					local spawning_position_list = minetest.find_nodes_in_area_under_air(vector.new(goal_pos.x,min,goal_pos.z), vector.new(goal_pos.x,max,goal_pos.z), mob_def.type)
+
+					if #spawning_position_list <= 0 then
+						goto continue
+					end
+					
+					local spawning_position = spawning_position_list[math.random(1,#spawning_position_list)]
+
+					spawning_position.y = spawning_position.y + 1
+
+					local gotten_light = minetest.get_node_light(spawning_position)
+
+					if gotten_light and gotten_light >= mob_def.min_light and gotten_light <= mob_def.max_light then
+						minetest.add_entity(spawning_position, mob_def.name)
+					end
 				end
 				--local spawn minetest.find_nodes_in_area_under_air(vector.new(pos.x,pos.y-find_node_height,pos.z), vector.new(pos.x,pos.y+find_node_height,pos.z), {"group:solid"})
 
