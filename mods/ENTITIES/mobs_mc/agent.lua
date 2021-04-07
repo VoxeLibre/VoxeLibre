@@ -1,5 +1,5 @@
 --###################
---################### AGENT
+--################### AGENT - seemingly unused
 --###################
 
 local S = minetest.get_translator("mobs_mc")
