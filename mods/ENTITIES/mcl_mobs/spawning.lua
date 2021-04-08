@@ -6,6 +6,12 @@ local find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
 local new_vector     = vector.new
 local math_random    = math.random
 local get_biome_name = minetest.get_biome_name
+local max            = math.max
+local get_objects_inside_radius = minetest.get_objects_inside_radius
+local vector_distance = vector.distance
+
+-- range for mob count
+local aoc_range = 32
 --[[ 
 
 THIS IS THE BIG LIST OF ALL BIOMES - used for programming/updating mobs
@@ -150,51 +156,29 @@ Overworld regular:
 
 local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
 -- count how many mobs of one type are inside an area
---[[
-local count_mobs = function(pos, mobtype)
 
+local count_mobs = function(pos,mobtype)
+	print(mobtype)
 	local num = 0
-	local objs = minetest.get_objects_inside_radius(pos, aoc_range)
-
+	local objs = get_objects_inside_radius(pos, aoc_range)
 	for n = 1, #objs do
-
 		local obj = objs[n]:get_luaentity()
-
 		if obj and obj.name and obj._cmi_is_mob then
-
-			-- count passive mobs only
-			if mobtype == "!passive" then
-				if obj.spawn_class == "passive" then
-					num = num + 1
-				end
 			-- count hostile mobs only
-			elseif mobtype == "!hostile" then
+			if mobtype == "hostile" then
 				if obj.spawn_class == "hostile" then
 					num = num + 1
 				end
-			-- count ambient mobs only
-			elseif mobtype == "!ambient" then
-				if obj.spawn_class == "ambient" then
-					num = num + 1
-				end
-			-- count water mobs only
-			elseif mobtype == "!water" then
-				if obj.spawn_class == "water" then
-					num = num + 1
-				end
-			-- count mob type
-			elseif mobtype and obj.name == mobtype then
-				num = num + 1
-			-- count total mobs
-			elseif not mobtype then
+			-- count passive mobs only
+			else 
 				num = num + 1
 			end
 		end
 	end
-
+			
 	return num
 end
-]]--
+
 
 -- global functions
 
@@ -229,6 +213,7 @@ what is aoc??? objects in area
 WARNING: BIOME INTEGRATION NEEDED -> How to get biome through lua??
 ]]--
 
+
 --this is where all of the spawning information is kept
 local spawn_dictionary = {}
 
@@ -258,6 +243,7 @@ function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_ligh
 			string.format("[mobs] Chance setting for %s changed to %s (total: %s)", name, chance, aoc))
 	end
 
+	--[[
 	local spawn_action
 	spawn_action = function(pos, node, active_object_count, active_object_count_wider, name)
 
@@ -419,7 +405,15 @@ function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_ligh
 	local function spawn_abm_action(pos, node, active_object_count, active_object_count_wider)
 		spawn_action(pos, node, active_object_count, active_object_count_wider, name)
 	end
+	]]--
 
+	local entdef = minetest.registered_entities[name]
+	local spawn_class
+	if entdef.type == "monster" then
+		spawn_class = "hostile"
+	else
+		spawn_class = "passive"
+	end
 
 	--load information into the spawn dictionary
 	local key = #spawn_dictionary + 1
@@ -436,7 +430,8 @@ function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_ligh
 	spawn_dictionary[key]["min_height"] = min_height
 	spawn_dictionary[key]["max_height"] = max_height
 	spawn_dictionary[key]["day_toggle"] = day_toggle
-	spawn_dictionary[key]["on_spawn"]   = spawn_abm_action
+	--spawn_dictionary[key]["on_spawn"]   = spawn_abm_action
+	spawn_dictionary[key]["spawn_class"] = spawn_class
 
 	--[[
 	minetest.register_abm({
@@ -540,15 +535,14 @@ end
 
 --todo mob limiting
 --MAIN LOOP
-
 if mobs_spawn then
-    local timer = 15 --0
+    local timer = 0
     minetest.register_globalstep(function(dtime)
         timer = timer + dtime
         if timer >= 15 then
-            timer = 0--15
+            timer = 0
             for _,player in ipairs(minetest.get_connected_players()) do
-                for i = 1,math.random(5) do
+                for i = 1,math.random(3,8) do
 
                     local player_pos = player:get_pos()
 
@@ -571,8 +565,8 @@ if mobs_spawn then
 
 					local spawning_position = spawning_position_list[math_random(1,#spawning_position_list)]
 
-					--I have no idea why this would happen, but better to be safe
-					if not spawning_position then
+					--Prevent strange behavior/too close to player
+					if not spawning_position or vector_distance(player_pos, spawning_position) < 15 then
 						goto continue
 					end
 
@@ -633,6 +627,11 @@ if mobs_spawn then
 						goto continue
 					end
 
+					--finally do the heavy check (for now) of mobs in area
+					if count_mobs(spawning_position, mob_def.spawn_class) >= mob_def.aoc then
+						goto continue
+					end
+
 					--adjust the position for water and lava mobs
 					if mob_def.type_of_spawning == "water"  or mob_def.type_of_spawning == "lava" then
 						spawning_position.y = spawning_position.y - 1
@@ -640,6 +639,7 @@ if mobs_spawn then
 
 					--everything is correct, spawn mob
 					minetest.add_entity(spawning_position, mob_def.name)
+
                     ::continue:: --this is a safety catch
                 end
             end
