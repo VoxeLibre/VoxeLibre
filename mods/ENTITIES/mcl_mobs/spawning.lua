@@ -461,7 +461,7 @@ function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_ligh
 			end
 
 			for y = min_height, max_height do
-				--print(y)
+				print(y)
 			end
 		end
 	end
