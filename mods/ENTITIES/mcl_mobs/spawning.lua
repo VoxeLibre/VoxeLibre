@@ -551,11 +551,16 @@ if mobs_spawn then
     minetest.register_globalstep(function(dtime)
         timer = timer + dtime
         if timer >= 15 then
-            timer = 0--15--0
+            timer = 15--0
             for _,player in ipairs(minetest.get_connected_players()) do
                 for i = 1,math.random(5) do
                     local player_pos = player:get_pos()
                     local _,dimension = mcl_worlds.y_to_layer(player_pos.y)
+
+					if dimension == "void" or dimension == "default" then
+						goto continue -- ignore void and unloaded area
+					end
+
                     local min,max = decypher_limits(player_pos.y)
 
                     local goal_pos = position_calculation(player_pos)
@@ -566,7 +571,7 @@ if mobs_spawn then
                         goto continue --skip if in unloaded area
                     end
 
-                    --print(minetest.get_biome_name(gotten_biome.biome))
+                    print(minetest.get_biome_name(gotten_biome.biome))
 
                     local mob_def = spawn_dictionary[dimension][math.random(1,#spawn_dictionary[dimension])]
 
