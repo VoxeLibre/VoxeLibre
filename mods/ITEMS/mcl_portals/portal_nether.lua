@@ -490,10 +490,12 @@ local function ecb_scan_area_2(blockpos, action, calls_remaining, param)
 	end
 
 	if param.next_chunk_1 and param.next_chunk_2 and param.next_pos then
-		local pos1, pos2, pos = param.next_chunk_1, param.next_chunk_2, param.next_pos
-		log("action", "[mcl_portals] Making additional search in chunk below, because current one doesn't contain any air space for portal, target pos "..pos_to_string(pos))
-		minetest.emerge_area(pos1, pos2, ecb_scan_area_2, {pos = pos, pos1 = pos1, pos2 = pos2, name=name, obj=obj})
-		return
+		local pos1, pos2, p = param.next_chunk_1, param.next_chunk_2, param.next_pos
+		if p.x >= pos1.x and p.x <= pos2.x and p.y >= pos1.y and p.y <= pos2.y and p.z >= pos1.z and p.z <= pos2.z then
+			log("action", "[mcl_portals] Making additional search in chunk below, because current one doesn't contain any air space for portal, target pos "..pos_to_string(p))
+			minetest.emerge_area(pos1, pos2, ecb_scan_area_2, {pos = p, pos1 = pos1, pos2 = pos2, name=name, obj=obj})
+			return
+		end
 	end
 
 	log("action", "[mcl_portals] found no space, reverting to target pos "..pos_to_string(pos).." - creating a portal")
@@ -536,7 +538,7 @@ local function create_portal(pos, limit1, limit2, name, obj)
 	-- Basically the copy of code above, with minor additions to continue the search in single additional chunk below:
 	local next_chunk_1 = {x = pos1.x, y = pos1.y - mcl_vars.chunk_size_in_nodes, z = pos1.z}
 	local next_chunk_2 = add(next_chunk_1, mcl_vars.chunk_size_in_nodes - 1)
-	local next_pos = {x = pos.x, y=next_chunk_2.y, z = pos.z}
+	local next_pos = {x = pos.x, y=max(next_chunk_2.y, limit1.y), z = pos.z}
 	if limit1 and limit1.x and limit1.y and limit1.z then
 		pos1 = {x = max(min(limit1.x, pos.x), pos1.x), y = max(min(limit1.y, pos.y), pos1.y), z = max(min(limit1.z, pos.z), pos1.z)}
 		next_chunk_1 = {x = max(min(limit1.x, next_pos.x), next_chunk_1.x), y = max(min(limit1.y, next_pos.y), next_chunk_1.y), z = max(min(limit1.z, next_pos.z), next_chunk_1.z)}

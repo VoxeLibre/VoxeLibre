@@ -1,6 +1,9 @@
 -- TODO: whenever it becomes possible to fully implement kelp without the
 -- plantlike_rooted limitation, please update accordingly.
 --
+-- TODO: whenever it becomes possible to make kelp grow infinitely without
+-- resorting to making intermediate kelp stem node, please update accordingly.
+--
 -- TODO: In MC, you can't actually destroy kelp by bucket'ing water in the middle.
 -- However, because of the plantlike_rooted hack, we'll just allow it for now.
 
@@ -191,17 +194,18 @@ end
 
 
 -- Converts param2 to kelp height.
+-- For the special case where the max param2 is reached, interpret that as the
+-- 16th kelp stem.
 function kelp.get_height(param2)
-	return math_floor(param2 / 16)
+	return param2 ~= 255 and math_floor(param2 / 16) or 16 -- 256/16
 end
 
 
 -- Obtain pos and node of the tip of kelp.
-function kelp.get_tip(pos, param2)
-	-- Optional params: param2
-	local height = kelp.get_height(param2 or mt_get_node(pos).param2)
-	local pos_tip = {x=pos.x, y=pos.y, z=pos.z}
-	pos_tip.y = pos_tip.y + height + 1
+function kelp.get_tip(pos, height)
+	-- Optional params: height
+	local height = height or kelp.get_height(mt_get_node(pos).param2)
+	local pos_tip = {x=pos.x, y=pos.y+height+1, z=pos.z}
 	return pos_tip, mt_get_node(pos_tip), height
 end
 
@@ -227,7 +231,8 @@ end
 
 -- Obtain next param2.
 function kelp.next_param2(param2)
-	return param2+16 - param2 % 16
+	-- param2 max value is 255, so adding to 256 causes overflow.
+	return math_min(param2+16 - param2 % 16, 255);
 end
 
 
@@ -526,7 +531,7 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 
 	-- When placed on kelp.
 	if mt_get_item_group(nu_name, "kelp") == 1 then
-		pos_tip,node_tip = kelp.get_tip(pos_under, node_under.param2)
+		pos_tip,node_tip = kelp.get_tip(pos_under, kelp.get_height(node_under.param2))
 		def_tip = mt_registered_nodes[node_tip.name]
 
 	-- When placed on surface.
