@@ -109,7 +109,35 @@ mobs:register_mob("mobs_mc:killer_bunny", killer_bunny)
 -- Mob spawning rules.
 -- Different skins depending on spawn location <- we'll get to this when the spawning algorithm is fleshed out
 
-mobs:spawn_specific("mobs_mc:rabbit", "overworld", "ground", 9, minetest.LIGHT_MAX+1, 30, 15000, 8, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific(
+"mobs_mc:rabbit", 
+"overworld", 
+"ground",
+{
+"FlowerForest",
+"Swampland",
+"Taiga",
+"ExtremeHills",
+"BirchForest",
+"MegaSpruceTaiga",
+"MegaTaiga",
+"ExtremeHills+",
+"Forest",
+"Plains",
+"ColdTaiga",
+"SunflowerPlains",
+"RoofedForest",
+"MesaPlateauFM_grasstop",
+"ExtremeHillsM",
+"BirchForestM",
+},
+9, 
+minetest.LIGHT_MAX+1, 
+30, 
+15000, 
+8, 
+mobs_mc.spawn_height.overworld_min, 
+mobs_mc.spawn_height.overworld_max)
 
 --[[
 local spawn = {

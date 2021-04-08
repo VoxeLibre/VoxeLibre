@@ -242,15 +242,11 @@ WARNING: BIOME INTEGRATION NEEDED -> How to get biome through lua??
 ]]--
 
 --this is where all of the spawning information is kept
-local spawn_dictionary = {
-	["overworld"] = {},
-	["nether"] = {},
-	["end"] = {}
-}
+local spawn_dictionary = {}
 
 function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_light, max_light, interval, chance, aoc, min_height, max_height, day_toggle, on_spawn)
 
-	print(dump(biomes))
+	--print(dump(biomes))
 
 	-- Do mobs spawn at all?
 	if not mobs_spawn then
@@ -438,6 +434,20 @@ function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_ligh
 
 
 	--load information into the spawn dictionary
+
+	--allow for new dimensions to be auto added
+	--this will take extra time, a whole few nanoseconds
+	--but will allow modularity
+	if not spawn_dictionary[dimension] then
+		spawn_dictionary[dimension] = {}
+	end
+
+	print("----")
+	print(name)
+	for _,added_biome in pairs(biomes) do
+		print(added_biome)
+	end
+	--[[
 	local key = #spawn_dictionary[dimension] + 1
 
 	spawn_dictionary[dimension][key] = {}
@@ -452,7 +462,7 @@ function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_ligh
 	spawn_dictionary[dimension][key]["max_height"] = max_height
 	spawn_dictionary[dimension][key]["day_toggle"] = day_toggle
 	spawn_dictionary[dimension][key]["on_spawn"]   = spawn_abm_action
-	
+	]]--
 	--[[
 	minetest.register_abm({
 		label = name .. " spawning",
