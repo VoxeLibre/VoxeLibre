@@ -23,7 +23,6 @@ mobs:register_mob("mobs_mc:silverfish", {
 	},
 	pathfinding = 1,
 	visual_size = {x=3, y=3},
-	sounds = {"FlowerForest",
 	sounds = {
 		random = "mobs_mc_silverfish_idle",
 		death = "mobs_mc_silverfish_death",

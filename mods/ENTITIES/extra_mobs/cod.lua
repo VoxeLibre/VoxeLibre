@@ -101,7 +101,9 @@ mobs:register_mob("extra_mobs:cod", cod)
 
 
 --spawning TODO: in schools
-local water = mobs_mc.spawn_height.water
+
+local water = mobs_mc.spawn_height.water + 1
+
 mobs:spawn_specific(
 "extra_mobs:cod",
 "overworld",

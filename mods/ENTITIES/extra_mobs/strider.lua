@@ -229,8 +229,8 @@ minetest.LIGHT_MAX+1,
 30, 
 6000, 
 3, 
-mcl_vars.mg_nether_min, 
-mcl_vars.mg_nether_max)
+mobs_mc.spawn_height.nether_min, 
+mobs_mc.spawn_height.nether_max)
 
 -- spawn eggs
 mobs:register_egg("extra_mobs:strider", S("Strider"), "extra_mobs_spawn_icon_strider.png", 0)

@@ -150,8 +150,8 @@ minetest.LIGHT_MAX+1,
 30, 
 6000, 
 3, 
-0, 
-500)
+mobs_mc.spawn_height.water, 
+mobs_mc.spawn_height.overworld_max)
 
 --mobs:spawn_specific("extra_mobs:fox", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, 0, 500)
 mobs:spawn_specific(
@@ -169,8 +169,8 @@ minetest.LIGHT_MAX+1,
 30, 
 6000, 
 3, 
-0, 
-500)
+mobs_mc.spawn_height.water, 
+mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("extra_mobs:fox", S("Fox"), "extra_mobs_spawn_icon_fox.png", 0)
