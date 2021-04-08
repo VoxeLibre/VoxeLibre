@@ -217,7 +217,25 @@ mobs:register_mob("mobs_mc:llama", {
 })
 
 --spawn
-mobs:spawn_specific("mobs_mc:llama", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 15000, 5, mobs_mc.spawn_height.water+15, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific(
+"mobs_mc:llama",
+"overworld",
+"ground",
+{
+"Mesa",
+"MesaPlateauFM_grasstop",
+"MesaPlateauF",
+"MesaPlateauFM",
+"MesaPlateauF_grasstop",
+"MesaBryce",
+},
+0, 
+minetest.LIGHT_MAX+1, 
+30, 
+15000, 
+5, 
+mobs_mc.spawn_height.water+15, 
+mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:llama", S("Llama"), "mobs_mc_spawn_icon_llama.png", 0)

@@ -128,7 +128,18 @@ mobs:register_mob("mobs_mc:blaze", {
 	end,
 })
 
-mobs:spawn_specific("mobs_mc:blaze", "nether", "ground", 0, minetest.LIGHT_MAX+1, 30, 5000, 3, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
+mobs:spawn_specific(
+"mobs_mc:blaze",
+"nether",
+"ground",
+{"Nether"},
+0,
+minetest.LIGHT_MAX+1,
+30,
+5000,
+3,
+mobs_mc.spawn_height.nether_min,
+mobs_mc.spawn_height.nether_max)
 
 -- Blaze fireball
 mobs:register_arrow("mobs_mc:blaze_fireball", {

@@ -100,7 +100,34 @@ mobs:register_mob("mobs_mc:chicken", {
 })
 
 --spawn
-mobs:spawn_specific("mobs_mc:chicken", "overworld", "ground", 9, minetest.LIGHT_MAX+1, 30, 17000, 3, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific(
+"mobs_mc:chicken", 
+"overworld", 
+"ground",
+{
+"FlowerForest",
+"Swampland",
+"Taiga",
+"ExtremeHills",
+"BirchForest",
+"MegaSpruceTaiga",
+"MegaTaiga",
+"ExtremeHills+",
+"Forest",
+"Plains",
+"ColdTaiga",
+"SunflowerPlains",
+"RoofedForest",
+"MesaPlateauFM_grasstop",
+"ExtremeHillsM",
+"BirchForestM",
+},
+9, 
+minetest.LIGHT_MAX+1, 
+30, 17000, 
+3, 
+mobs_mc.spawn_height.water,
+mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:chicken", S("Chicken"), "mobs_mc_spawn_icon_chicken.png", 0)

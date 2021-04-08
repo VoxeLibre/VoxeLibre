@@ -290,13 +290,13 @@ mobs_mc.spawn = {
 mobs_mc.spawn_height = {
 	water = tonumber(minetest.settings:get("water_level")) or 0, -- Water level in the Overworld
 
-	-- Overworld boundaries (inclusive)
-	overworld_min = -2999,
+	-- Overworld boundaries (inclusive) --I adjusted this to be more reasonable
+	overworld_min = -64,-- -2999,
 	overworld_max = 31000,
 
 	-- Nether boundaries (inclusive)
-	nether_min = -3369,
-	nether_max = -3000,
+	nether_min = -29067,-- -3369,
+	nether_max = -28939,-- -3000,
 
 	-- End boundaries (inclusive)
 	end_min = -6200,

@@ -88,7 +88,7 @@ local fox = {
 			end)
 		end
 		for _,object in pairs(minetest.get_objects_inside_radius(self.object:get_pos(), 8)) do
-			if not object:is_player() and object:get_luaentity().name == "extra_mobs:fox" and self.state ~= "attack" and math.random(1, 500) == 1 then
+			if object and not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "extra_mobs:fox" and self.state ~= "attack" and math.random(1, 500) == 1 then
 				 self.horny = true
 			end
 			local lp = object:get_pos()
@@ -98,7 +98,7 @@ local fox = {
 				y = lp.y - s.y,
 				z = lp.z - s.z
 			}
-			if object:is_player() and not object:get_player_control().sneak or not object:is_player() and object:get_luaentity().name == "mobs_mc:wolf" then
+			if object and object:is_player() and not object:get_player_control().sneak or not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "mobs_mc:wolf" then
 				self.state = "runaway"
 				self.object:set_rotation({x=0,y=(atan(vec.z / vec.x) + 3 * pi / 2) - self.rotate,z=0})
 				if self.reach > vector.distance(self.object:get_pos(), object:get_pos()) and self.timer > .9 then
@@ -123,10 +123,55 @@ local fox = {
 mobs:register_mob("extra_mobs:fox", fox)
 
 -- spawning
-mobs:spawn_specific("extra_mobs:fox", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, 0, 500)
+mobs:spawn_specific(
+"extra_mobs:fox", 
+"overworld", 
+"ground",
+{
+"FlowerForest",
+"Swampland",
+"Taiga",
+"ExtremeHills",
+"BirchForest",
+"MegaSpruceTaiga",
+"MegaTaiga",
+"ExtremeHills+",
+"Forest",
+"Plains",
+"ColdTaiga",
+"SunflowerPlains",
+"RoofedForest",
+"MesaPlateauFM_grasstop",
+"ExtremeHillsM",
+"BirchForestM",
+},
+0, 
+minetest.LIGHT_MAX+1, 
+30, 
+6000, 
+3, 
+mobs_mc.spawn_height.water, 
+mobs_mc.spawn_height.overworld_max)
 
-mobs:spawn_specific("extra_mobs:fox", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, 0, 500)
-mobs:spawn_specific("extra_mobs:artic_fox", "overworld", "mcl_core:snow", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, 0, 500)
-
+--mobs:spawn_specific("extra_mobs:fox", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, 0, 500)
+--[[
+mobs:spawn_specific(
+"extra_mobs:artic_fox", 
+"overworld", 
+"ground", 
+{
+"ColdTaiga",
+"IcePlainsSpikes",
+"IcePlains",
+"ExtremeHills+_snowtop",
+},
+0, 
+minetest.LIGHT_MAX+1, 
+30, 
+6000, 
+3, 
+mobs_mc.spawn_height.water, 
+mobs_mc.spawn_height.overworld_max)
+]]--
 -- spawn eggs
 mobs:register_egg("extra_mobs:fox", S("Fox"), "extra_mobs_spawn_icon_fox.png", 0)

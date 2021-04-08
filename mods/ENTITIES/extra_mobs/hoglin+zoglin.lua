@@ -115,7 +115,20 @@ baby_hoglin.child = 1
 mobs:register_mob("extra_mobs:baby_hoglin", baby_hoglin)]]
 
 -- Regular spawning in the Nether
-mobs:spawn_specific("extra_mobs:hoglin", "nether", "ground", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, mcl_vars.mg_nether_min, mcl_vars.mg_nether_max)
+mobs:spawn_specific(
+"extra_mobs:hoglin", 
+"nether", 
+"ground",
+{
+"Nether"
+},
+0, 
+minetest.LIGHT_MAX+1, 
+30, 
+6000, 
+3, 
+mobs_mc.spawn_height.nether_min, 
+mobs_mc.spawn_height.nether_max)
 
 -- spawn eggs
 mobs:register_egg("extra_mobs:hoglin", S("Hoglin"), "extra_mobs_spawn_icon_hoglin.png", 0)

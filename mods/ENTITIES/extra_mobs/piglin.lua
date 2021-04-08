@@ -264,8 +264,35 @@ mobs:register_mob("extra_mobs:piglin_brute", piglin_brute)
 
 
 -- Regular spawning in the Nether
-mobs:spawn_specific("extra_mobs:piglin", "nether", "ground", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, mcl_vars.mg_nether_min, mcl_vars.mg_nether_max)
-mobs:spawn_specific("extra_mobs:sword_piglin", "nether", "ground", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, mcl_vars.mg_nether_min, mcl_vars.mg_nether_max)
+mobs:spawn_specific(
+"extra_mobs:piglin", 
+"nether", 
+"ground",
+{
+"Nether"
+},
+0, 
+minetest.LIGHT_MAX+1, 
+30, 
+6000, 
+3, 
+mobs_mc.spawn_height.nether_min, 
+mobs_mc.spawn_height.nether_max)
+
+mobs:spawn_specific(
+"extra_mobs:sword_piglin", 
+"nether", 
+"ground",
+{
+"Nether"
+},
+0, 
+minetest.LIGHT_MAX+1, 
+30, 
+6000, 
+3, 
+mobs_mc.spawn_height.nether_min, 
+mobs_mc.spawn_height.nether_max)
 -- spawn eggs
 mobs:register_egg("extra_mobs:piglin", S("piglin"), "extra_mobs_spawn_icon_piglin.png", 0)
 mobs:register_egg("extra_mobs:piglin_brute", S("piglin Brute"), "extra_mobs_spawn_icon_piglin.png", 0)
