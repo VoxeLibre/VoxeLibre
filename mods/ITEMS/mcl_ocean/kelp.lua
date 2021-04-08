@@ -214,7 +214,7 @@ end
 function kelp.find_unsubmerged(pos, node, height)
 	-- Optional params: node, height
 	local node = node or mt_get_node(pos)
-	local height = height or kelp.get_height(node.param2)
+	local height = height or ((node.param2 >= 0 and node.param2 < 16) and 1) or kelp.get_height(node.param2)
 
 	local walk_pos = {x=pos.x, z=pos.z}
 	local y = pos.y
@@ -316,7 +316,7 @@ function kelp.init_timer(pos, pos_hash)
 end
 
 
--- Apply next kelp height.
+-- Apply next kelp height. The surface is swapped. so on_construct is skipped.
 function kelp.next_height(pos, node, pos_tip, node_tip, submerged, downward_flowing)
 	-- Modified params: node
 	-- Optional params: node, set_node, pos_tip, node_tip, submerged, downward_flowing
@@ -372,9 +372,9 @@ end
 
 
 -- Drops the items for detached kelps.
-function kelp.detach_drop(pos, param2)
-	-- Optional params: param2
-	local height = kelp.get_height(param2 or mt_get_node(pos).param2)
+function kelp.detach_drop(pos, height)
+	-- Optional params: height
+	local height = height or kelp.get_height(mt_get_node(pos).param2)
 	local y = pos.y
 	local walk_pos = {x=pos.x, z=pos.z}
 	for i=1,height do
@@ -389,17 +389,18 @@ end
 -- Synonymous to digging the kelp.
 -- NOTE: this is intended for whenever kelp truly becomes segmented plants
 -- instead of rooted to the floor. Don't try to remove dig_pos.
-function kelp.detach_dig(dig_pos, pos, node, drop)
-	-- Optional params: drop
+function kelp.detach_dig(dig_pos, pos, drop, node, height)
+	-- Optional params: drop, node, height
 
-	local param2 = node.param2
+	local node = node or mt_get_node(pos)
+	local height = height or kelp.get_height(node.param2)
 	-- pos.y points to the surface, offset needed to point to the first kelp.
 	local new_height = dig_pos.y - (pos.y+1)
 
 	-- Digs the entire kelp.
 	if new_height <= 0 then
 		if drop then
-			kelp.detach_drop(dig_pos, param2)
+			kelp.detach_drop(dig_pos, height)
 		end
 		mt_set_node(pos, {
 			name=mt_registered_nodes[node.name].node_dig_prediction,
@@ -409,7 +410,8 @@ function kelp.detach_dig(dig_pos, pos, node, drop)
 	-- Digs the kelp beginning at a height.
 	else
 		if drop then
-			kelp.detach_drop(dig_pos, param2 - new_height)
+			kelp.detach_drop(dig_pos, height - new_height)
+			minetest.chat_send_all(node.param2 - new_height)
 		end
 		mt_swap_node(pos, {name=node.name, param=node.param, param2=16*new_height})
 	end
@@ -421,7 +423,7 @@ end
 --------------------------------------------------------------------------------
 
 function kelp.surface_on_dig(pos, node, digger)
-	kelp.detach_dig(pos, pos, node, true)
+	kelp.detach_dig(pos, pos, true, node)
 end
 
 
@@ -435,11 +437,11 @@ function kelp.surface_on_timer(pos)
 	local pos_hash
 
 	-- Update detahed kelps
-	local dig_pos = kelp.find_unsubmerged(pos, node)
+	local dig_pos,_, height = kelp.find_unsubmerged(pos, node)
 	if dig_pos then
 		pos_hash = mt_hash_node_position(pos)
 		mt_sound_play(mt_registered_nodes[node.name].sounds.dug, { gain = 0.5, pos = dig_pos }, true)
-		kelp.detach_dig(dig_pos, pos, node, true)
+		kelp.detach_dig(dig_pos, pos, true, node, height)
 		kelp.store_age(kelp.roll_init_age(), pos, pos_hash)
 	end
 
@@ -468,7 +470,7 @@ function kelp.surface_on_destruct(pos)
 
 	-- on_falling callback. Activated by pistons for falling nodes too.
 	if kelp.is_falling(pos, node) then
-		kelp.detach_drop(pos, node.param2)
+		kelp.detach_drop(pos, kelp.get_height(node.param2))
 	end
 
 	-- Removes position from queue
@@ -479,7 +481,7 @@ end
 
 function kelp.surface_on_mvps_move(pos, node, oldpos, nodemeta)
 	-- Pistons moving falling nodes will have already activated on_falling callback.
-	kelp.detach_dig(pos, pos, node, mt_get_item_group(node.name, "falling_node") ~= 1)
+	kelp.detach_dig(pos, pos, mt_get_item_group(node.name, "falling_node") ~= 1, node)
 end
 
 
@@ -523,7 +525,7 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 	end
 
 
-	local pos_tip, node_tip, def_tip, new_kelp
+	local pos_tip, node_tip, def_tip, new_surface
 	-- Kelp must also be placed on the top/tip side of the surface/kelp
 	if pos_under.y >= pos_above.y then
 		return itemstack
@@ -536,17 +538,17 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 
 	-- When placed on surface.
 	else
-		new_kelp = false
+		new_surface = false
 		for _,surface in pairs(kelp.surfaces) do
 			if nu_name == surface.nodename then
 				node_under.name = "mcl_ocean:kelp_" ..surface.name
 				node_under.param2 = 0
-				new_kelp = true
+				new_surface = true
 				break
 			end
 		end
 		-- Surface must support kelp
-		if not new_kelp then
+		if not new_surface then
 			return itemstack
 		end
 
@@ -555,7 +557,7 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 		def_tip = mt_registered_nodes[node_tip.name]
 	end
 
-	-- New kelp must also be submerged in water.
+	-- Next kelp must also be submerged in water.
 	local downward_flowing = kelp.is_downward_flowing(pos_tip, node_tip)
 	local submerged = kelp.is_submerged(node_tip)
 	if not submerged then
@@ -572,9 +574,9 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 		itemstack:take_item()
 	end
 
-	-- Initialize age and timer when it's a new kelp
+	-- Initialize age and timer when it's planted on a new surface.
 	local pos_hash = mt_hash_node_position(pos_under)
-	if new_kelp then
+	if new_surface then
 		kelp.init_age(pos_under, nil, pos_hash)
 		kelp.init_timer(pos_under, pos_hash)
 	else
