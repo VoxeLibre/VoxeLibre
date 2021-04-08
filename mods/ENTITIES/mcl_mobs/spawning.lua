@@ -142,8 +142,6 @@ Overworld regular:
 "SunflowerPlains",
 "IcePlains",
 "RoofedForest",
-
-I have no idea:
 "ExtremeHills+_snowtop",
 "MesaPlateauFM_grasstop",
 "JungleEdgeM",
@@ -252,7 +250,7 @@ local spawn_dictionary = {
 
 function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_light, max_light, interval, chance, aoc, min_height, max_height, day_toggle, on_spawn)
 
-	print(dump(bimoes))
+	print(dump(biomes))
 
 	-- Do mobs spawn at all?
 	if not mobs_spawn then
@@ -543,7 +541,7 @@ local function decypher_limits(posy)
 	posy = math.floor(posy)
 	return posy - 32, posy + 32
 end
-
+--[[
 minetest.register_on_mods_loaded(function()
 	for _,data in pairs(minetest.registered_biomes) do
 		print(data.name)
@@ -551,6 +549,7 @@ minetest.register_on_mods_loaded(function()
 
     print(dump(spawn_dictionary))
 end)
+]]--
 
 --todo mob limiting
 --MAIN LOOP
