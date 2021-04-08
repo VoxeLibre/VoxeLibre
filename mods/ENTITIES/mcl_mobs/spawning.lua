@@ -486,7 +486,7 @@ end
 local axis
 --inner and outer part of square donut radius
 local inner = 1
-local outer = 50
+local outer = 65
 local int = {-1,1}
 local position_calculation = function(pos)
 
