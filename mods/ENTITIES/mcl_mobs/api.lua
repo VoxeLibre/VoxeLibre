@@ -82,11 +82,6 @@ if minetest.settings:get_bool("only_peaceful_mobs", false) then
 	end)
 end
 
--- calculate aoc range for mob count
-local aosrb = tonumber(minetest.settings:get("active_object_send_range_blocks"))
-local abr = tonumber(minetest.settings:get("active_block_range"))
-local aoc_range = max(aosrb, abr) * 16
-
 -- pathfinding settings
 local enable_pathfinding = true
 local stuck_timeout = 3 -- how long before mob gets stuck in place and starts searching
