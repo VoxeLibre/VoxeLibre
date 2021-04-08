@@ -89,7 +89,7 @@ local cod = {
   				y = lp.y - s.y,
   				z = lp.z - s.z
   			}
-  			if not object:is_player() and object:get_luaentity().name == "extra_mobs:cod" then
+  			if object and not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "extra_mobs:cod" then
   				self.state = "runaway"
   				self.object:set_rotation({x=0,y=(atan(vec.z / vec.x) + 3 * pi / 2) - self.rotate,z=0})
   			end

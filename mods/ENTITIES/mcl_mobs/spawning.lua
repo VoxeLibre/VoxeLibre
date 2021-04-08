@@ -1,29 +1,18 @@
+--lua locals
+local get_node       = minetest.get_node
+local get_item_group = minetest.get_item_group
+local get_node_light = minetest.get_node_light
+local find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
+local new_vector     = vector.new
+local math_random    = math.random
+local get_biome_name = minetest.get_biome_name
 --[[ 
 
 THIS IS THE BIG LIST OF ALL BIOMES - used for programming/updating mobs
 
 underground:
 "FlowerForest_underground",
-"JungleEdge_underground",
-"StoneBeach_underground",
-"MesaBryce_underground",
-"Mesa_underground",
-"RoofedForest_underground",
-"Jungle_underground",
-"Swampland_underground",
-"MushroomIsland_underground",
-"BirchForest_underground",
-"Plains_underground",
-"MesaPlateauF_underground",
-"ExtremeHills_underground",
-"MegaSpruceTaiga_underground",
-"BirchForestM_underground",
-"SavannaM_underground",
-"MesaPlateauFM_underground",
-"Desert_underground",
-"Savanna_underground",
-"Forest_underground",
-"SunflowerPlains_underground",
+"JungleEdge_underground",local spawning_position = spawning_position_list[math.random(1,#spawning_position_list)]
 "ColdTaiga_underground",
 "IcePlains_underground",
 "IcePlainsSpikes_underground",
@@ -433,59 +422,22 @@ function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_ligh
 
 
 	--load information into the spawn dictionary
+	local key = #spawn_dictionary + 1
+	spawn_dictionary[key]               = {}
+	spawn_dictionary[key]["name"]       = name
+	spawn_dictionary[key]["dimension"]  = dimension
+	spawn_dictionary[key]["type_of_spawning"] = type_of_spawning
+	spawn_dictionary[key]["biomes"]     = biomes
+	spawn_dictionary[key]["min_light"]  = min_light
+	spawn_dictionary[key]["max_light"]  = max_light
+	spawn_dictionary[key]["interval"]   = interval
+	spawn_dictionary[key]["chance"]     = chance
+	spawn_dictionary[key]["aoc"]        = aoc
+	spawn_dictionary[key]["min_height"] = min_height
+	spawn_dictionary[key]["max_height"] = max_height
+	spawn_dictionary[key]["day_toggle"] = day_toggle
+	spawn_dictionary[key]["on_spawn"]   = spawn_abm_action
 
-	--allow for new dimensions to be auto added
-	--this will take extra time, a whole few nanoseconds
-	--but will allow modularity
-
-	--build dimensions modularly
-	if not spawn_dictionary[dimension] then
-		spawn_dictionary[dimension] = {}
-	end
-
-	--build biome list modularly
-	for _,added_biome in pairs(biomes) do
-		if not spawn_dictionary[dimension][added_biome] then
-			spawn_dictionary[dimension][added_biome] = {}
-		end
-
-		--build type of spawning per biome modularly
-		if not spawn_dictionary[dimension][added_biome][type_of_spawning] then
-			spawn_dictionary[dimension][added_biome][type_of_spawning] = {}
-		end
-
-		--build light levels to spawn mob
-		for i = min_light,max_light do
-			if not spawn_dictionary[dimension][added_biome][type_of_spawning][i] then
-				spawn_dictionary[dimension][added_biome][type_of_spawning][i] = {}
-			end
-
-			for y = min_height, max_height do
-				--print(y)
-			end
-		end
-	end
-
-	print("--")
-	print(min_height, max_height)
-	
-
-	--[[
-	local key = #spawn_dictionary[dimension] + 1
-
-	spawn_dictionary[dimension][key] = {}
-	spawn_dictionary[dimension][key]["name"]       = name
-	spawn_dictionary[dimension][key]["type"]       = type_of_spawning
-	spawn_dictionary[dimension][key]["min_light"]  = min_light
-	spawn_dictionary[dimension][key]["max_light"]  = max_light
-	spawn_dictionary[dimension][key]["interval"]   = interval
-	spawn_dictionary[dimension][key]["chance"]     = chance
-	spawn_dictionary[dimension][key]["aoc"]        = aoc
-	spawn_dictionary[dimension][key]["min_height"] = min_height
-	spawn_dictionary[dimension][key]["max_height"] = max_height
-	spawn_dictionary[dimension][key]["day_toggle"] = day_toggle
-	spawn_dictionary[dimension][key]["on_spawn"]   = spawn_abm_action
-	]]--
 	--[[
 	minetest.register_abm({
 		label = name .. " spawning",
@@ -498,7 +450,6 @@ function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_ligh
 	})
 	]]--
 end
-
 
 -- compatibility with older mob registration
 -- we're going to forget about this for now -j4i
@@ -574,108 +525,119 @@ local function decypher_limits(posy)
 	posy = math.floor(posy)
 	return posy - 32, posy + 32
 end
---[[
-minetest.register_on_mods_loaded(function()
-	for _,data in pairs(minetest.registered_biomes) do
-		print(data.name)
+
+--a simple helper function for mob_spawn
+local function biome_check(biome_list, biome_goal)
+	for _,data in ipairs(biome_list) do
+		if data == biome_goal then
+			return true
+		end
 	end
 
-    print(dump(spawn_dictionary))
-end)
-]]--
+	return false
+end
+  
 
 --todo mob limiting
 --MAIN LOOP
---[[
+
 if mobs_spawn then
     local timer = 15 --0
     minetest.register_globalstep(function(dtime)
         timer = timer + dtime
         if timer >= 15 then
-            timer = 15--0
+            timer = 0--15--0
             for _,player in ipairs(minetest.get_connected_players()) do
                 for i = 1,math.random(5) do
+
                     local player_pos = player:get_pos()
+
                     local _,dimension = mcl_worlds.y_to_layer(player_pos.y)
 
 				    if dimension == "void" or dimension == "default" then
                         goto continue -- ignore void and unloaded area
 				    end
 					
-
                     local min,max = decypher_limits(player_pos.y)
 
                     local goal_pos = position_calculation(player_pos)
                     
-                    local gotten_biome = minetest.get_biome_data(goal_pos)
+					local spawning_position_list = find_nodes_in_area_under_air(new_vector(goal_pos.x,min,goal_pos.z), vector.new(goal_pos.x,max,goal_pos.z), {"group:solid", "group:water", "group:lava"})
+
+					--couldn't find node
+					if #spawning_position_list <= 0 then
+						goto continue
+					end
+
+					local spawning_position = spawning_position_list[math_random(1,#spawning_position_list)]
+
+					--I have no idea why this would happen, but better to be safe
+					if not spawning_position then
+						goto continue
+					end
+
+					local gotten_node = get_node(spawning_position).name
+
+					if not gotten_node or gotten_node == "air" then --skip air nodes
+						goto continue
+					end
+
+                    local gotten_biome = minetest.get_biome_data(spawning_position)
 
                     if not gotten_biome then
                         goto continue --skip if in unloaded area
                     end
 
-                    print(minetest.get_biome_name(gotten_biome.biome))
+					gotten_biome = get_biome_name(gotten_biome.biome) --makes it easier to work with
 
-                    local mob_def = spawn_dictionary[dimension][math.random(1,#spawn_dictionary[dimension])]
+					--grab random mob
+					local mob_def = spawn_dictionary[math.random(1,#spawn_dictionary)]
 
-                    if not mob_def then --to catch a crazy error if it ever happens
-                        minetest.log("error", "WARNING!! Attempted to spawn a mob that doesn't exist! Please notify developers!\nThe game will continue to run though.")
-                        goto continue
-                    end
+					if not mob_def then
+						goto continue --skip if something ridiculous happens (nil mob def)
+					end
 
-                    if mob_def.type == "ground" then
+					--skip if not correct dimension
+					if mob_def.dimension ~= dimension then
+						goto continue
+					end
 
-                        local spawning_position_list = minetest.find_nodes_in_area_under_air(vector.new(goal_pos.x,min,goal_pos.z), vector.new(goal_pos.x,max,goal_pos.z), {"group:solid"})
+					--add this so mobs don't spawn inside nodes
+					spawning_position.y = spawning_position.y + 1
 
-                        if #spawning_position_list <= 0 then
-                            goto continue
-                        end
-                        
-                        local spawning_position = spawning_position_list[math.random(1,#spawning_position_list)]
+					if spawning_position.y < mob_def.min_height or spawning_position.y > mob_def.max_height then
+						goto continue
+					end
 
-                        spawning_position.y = spawning_position.y + 1
+					--only need to poll for node light if everything else worked
+					local gotten_light = get_node_light(spawning_position)
 
-                        local gotten_light = minetest.get_node_light(spawning_position)
+					--don't spawn if not in light limits
+					if gotten_light < mob_def.min_light or gotten_light > mob_def.max_light then
+						goto continue
+					end
 
-                        if gotten_light and gotten_light >= mob_def.min_light and gotten_light <= mob_def.max_light then
-                            minetest.add_entity(spawning_position, mob_def.name)
-                        end
-                    elseif mob_def.type == "air" then
-                        local spawning_position_list = minetest.find_nodes_in_area(vector.new(goal_pos.x,min,goal_pos.z), vector.new(goal_pos.x,max,goal_pos.z), {"air"})
+					local is_water = get_item_group(gotten_node, "water") ~= 0
+					local is_lava  = get_item_group(gotten_node, "lava") ~= 0
 
-                        if #spawning_position_list <= 0 then
-                            goto continue
-                        end
-                        
-                        local spawning_position = spawning_position_list[math.random(1,#spawning_position_list)]
+					if mob_def.type_of_spawning == "ground" and is_water then
+						goto continue
+					end
 
-                        local gotten_light = minetest.get_node_light(spawning_position)
+					if mob_def.type_of_spawning == "ground" and is_lava then
+						goto continue
+					end
 
-                        if gotten_light and gotten_light >= mob_def.min_light and gotten_light <= mob_def.max_light then
-                            minetest.add_entity(spawning_position, mob_def.name)
-                        end
-                    elseif mob_def.type == "water" then
-                        local spawning_position_list = minetest.find_nodes_in_area(vector.new(goal_pos.x,min,goal_pos.z), vector.new(goal_pos.x,max,goal_pos.z), {"group:water"})
+					--adjust the position for water and lava mobs
+					if mob_def.type_of_spawning == "water"  or mob_def.type_of_spawning == "lava" then
+						spawning_position.y = spawning_position.y - 1
+					end
 
-                        if #spawning_position_list <= 0 then
-                            goto continue
-                        end
-                        
-                        local spawning_position = spawning_position_list[math.random(1,#spawning_position_list)]
-
-                        local gotten_light = minetest.get_node_light(spawning_position)
-
-                        if gotten_light and gotten_light >= mob_def.min_light and gotten_light <= mob_def.max_light then
-                            minetest.add_entity(spawning_position, mob_def.name)
-                        end
-                    --elseif mob_def.type == "lava" then
-                        --implement later
-                    end
-                    --local spawn minetest.find_nodes_in_area_under_air(vector.new(pos.x,pos.y-find_node_height,pos.z), vector.new(pos.x,pos.y+find_node_height,pos.z), {"group:solid"})
-
+					--everything is correct, spawn mob
+					minetest.add_entity(spawning_position, mob_def.name)
                     ::continue:: --this is a safety catch
                 end
             end
         end
     end)
 end
-]]--
