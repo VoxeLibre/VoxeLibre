@@ -438,21 +438,35 @@ function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_ligh
 	--this will take extra time, a whole few nanoseconds
 	--but will allow modularity
 
-	
-	if type_of_spawning == "air" then
-		print("---------------------------- HERE")
-		print(name)
-		print("---------------------------- sdfkhjsadfhjklsfsehjkfsdhjk")
-	end
-
+	--build dimensions modularly
 	if not spawn_dictionary[dimension] then
 		spawn_dictionary[dimension] = {}
 	end
 
+	--build biome list modularly
 	for _,added_biome in pairs(biomes) do
-		--print(added_biome)
+		if not spawn_dictionary[dimension][added_biome] then
+			spawn_dictionary[dimension][added_biome] = {}
+		end
+
+		--build type of spawning per biome modularly
+		if not spawn_dictionary[dimension][added_biome][type_of_spawning] then
+			spawn_dictionary[dimension][added_biome][type_of_spawning] = {}
+		end
+
+		--build light levels to spawn mob
+		for i = min_light,max_light do
+			if not spawn_dictionary[dimension][added_biome][type_of_spawning][i] then
+				spawn_dictionary[dimension][added_biome][type_of_spawning][i] = {}
+			end
+
+			for y = min_height, max_height do
+				--print(y)
+			end
+		end
 	end
 
+	
 
 	--[[
 	local key = #spawn_dictionary[dimension] + 1
