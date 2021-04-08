@@ -66,8 +66,8 @@ end
 -- Spawn on solid blocks at or below Sea level and the selected light level
 mobs:spawn_specific(
 "mobs_mc:bat",
+"overworld",
 "ground",
-"air",
 {
 "FlowerForest_underground",
 "JungleEdge_underground",
