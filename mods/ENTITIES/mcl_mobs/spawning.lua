@@ -546,7 +546,7 @@ if mobs_spawn then
     minetest.register_globalstep(function(dtime)
         timer = timer + dtime
         if timer >= 15 then
-            timer = 0--15--0
+            timer = 0--15
             for _,player in ipairs(minetest.get_connected_players()) do
                 for i = 1,math.random(5) do
 
@@ -599,6 +599,11 @@ if mobs_spawn then
 
 					--skip if not correct dimension
 					if mob_def.dimension ~= dimension then
+						goto continue
+					end
+
+					--skip if not in correct biome
+					if not biome_check(mob_def.biomes, gotten_biome) then
 						goto continue
 					end
 
