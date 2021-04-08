@@ -303,7 +303,35 @@ mobs:register_mob("mobs_mc:sheep", {
 		end
 	end,
 })
-mobs:spawn_specific("mobs_mc:sheep", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 15000, 3, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific(
+"mobs_mc:sheep",
+"overworld",
+"ground",
+{
+"FlowerForest",
+"Swampland",
+"Taiga",
+"ExtremeHills",
+"BirchForest",
+"MegaSpruceTaiga",
+"MegaTaiga",
+"ExtremeHills+",
+"Forest",
+"Plains",
+"ColdTaiga",
+"SunflowerPlains",
+"RoofedForest",
+"MesaPlateauFM_grasstop",
+"ExtremeHillsM",
+"BirchForestM",
+},
+0, 
+minetest.LIGHT_MAX+1, 
+30, 
+15000, 
+3, 
+mobs_mc.spawn_height.overworld_min, 
+mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:sheep", S("Sheep"), "mobs_mc_spawn_icon_sheep.png", 0)

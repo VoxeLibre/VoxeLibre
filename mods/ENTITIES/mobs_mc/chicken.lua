@@ -121,12 +121,12 @@ mobs:spawn_specific(
 "MesaPlateauFM_grasstop",
 "ExtremeHillsM",
 "BirchForestM",
-}
+},
 9, 
 minetest.LIGHT_MAX+1, 
 30, 17000, 
 3, 
-mobs_mc.spawn_height.spawn_height.water,
+mobs_mc.spawn_height.water,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs

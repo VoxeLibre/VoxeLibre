@@ -94,7 +94,20 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 })
 
 --spawn
-mobs:spawn_specific("mobs_mc:witherskeleton", "nether", "ground", 0, 7, 30, 5000, 5, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
+mobs:spawn_specific(
+"mobs_mc:witherskeleton",
+"nether",
+"ground",
+{
+"Nether"
+},
+0,
+7,
+30,
+5000,
+5,
+mobs_mc.spawn_height.nether_min,
+mobs_mc.spawn_height.nether_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:witherskeleton", S("Wither Skeleton"), "mobs_mc_spawn_icon_witherskeleton.png", 0)

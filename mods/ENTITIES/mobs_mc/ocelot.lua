@@ -153,7 +153,23 @@ local base_spawn_chance = 5000
 
 -- Spawn ocelot
 --they get the same as the llama because I'm trying to rework so much of this code right now -j4i
-mobs:spawn_specific("mobs_mc:ocelot", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 15000, 5, mobs_mc.spawn_height.water+15, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific(
+"mobs_mc:ocelot", 
+"overworld", 
+"ground",
+{
+"Jungle",
+"JungleEdgeM",
+"JungleM",
+"JungleEdge",
+},
+0, 
+minetest.LIGHT_MAX+1, 
+30, 
+15000, 
+5, 
+mobs_mc.spawn_height.water+15, 
+mobs_mc.spawn_height.overworld_max)
 --[[
 mobs:spawn({
 	name = "mobs_mc:ocelot",

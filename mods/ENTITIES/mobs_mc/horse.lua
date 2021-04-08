@@ -510,8 +510,56 @@ mobs:register_mob("mobs_mc:mule", mule)
 
 --===========================
 --Spawn Function
-mobs:spawn_specific("mobs_mc:horse", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 15000, 4, mobs_mc.spawn_height.water+3, mobs_mc.spawn_height.overworld_max)
-mobs:spawn_specific("mobs_mc:donkey", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 15000, 4, mobs_mc.spawn_height.water+3, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific(
+"mobs_mc:horse",
+"overworld",
+"ground",
+{
+"FlowerForest",
+"Swampland",
+"Taiga",
+"ExtremeHills",
+"BirchForest",
+"MegaSpruceTaiga",
+"MegaTaiga",
+"ExtremeHills+",
+"Forest",
+"Plains",
+"ColdTaiga",
+"SunflowerPlains",
+"RoofedForest",
+"MesaPlateauFM_grasstop",
+"ExtremeHillsM",
+"BirchForestM",
+},
+0, 
+minetest.LIGHT_MAX+1, 
+30, 
+15000, 
+4, 
+mobs_mc.spawn_height.water+3, 
+mobs_mc.spawn_height.overworld_max)
+
+
+mobs:spawn_specific(
+"mobs_mc:donkey", 
+"overworld", 
+"ground",
+{
+"Mesa",
+"MesaPlateauFM_grasstop",
+"MesaPlateauF",
+"MesaPlateauFM",
+"MesaPlateauF_grasstop",
+"MesaBryce",
+},
+0, 
+minetest.LIGHT_MAX+1, 
+30, 
+15000, 
+4, 
+mobs_mc.spawn_height.water+3, 
+mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:horse", S("Horse"), "mobs_mc_spawn_icon_horse.png", 0)
