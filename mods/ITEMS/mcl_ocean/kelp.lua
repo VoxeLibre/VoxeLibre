@@ -197,7 +197,7 @@ end
 -- For the special case where the max param2 is reached, interpret that as the
 -- 16th kelp stem.
 function kelp.get_height(param2)
-	return param2 ~= 255 and math_floor(param2 / 16) or 16 -- 256/16
+	return math_floor(param2 / 16) + math_floor(param2 % 16 / 8)
 end
 
 
@@ -411,7 +411,6 @@ function kelp.detach_dig(dig_pos, pos, drop, node, height)
 	else
 		if drop then
 			kelp.detach_drop(dig_pos, height - new_height)
-			minetest.chat_send_all(node.param2 - new_height)
 		end
 		mt_swap_node(pos, {name=node.name, param=node.param, param2=16*new_height})
 	end
@@ -525,7 +524,7 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 	end
 
 
-	local pos_tip, node_tip, def_tip, new_surface
+	local pos_tip, node_tip, def_tip, new_surface, height
 	-- Kelp must also be placed on the top/tip side of the surface/kelp
 	if pos_under.y >= pos_above.y then
 		return itemstack
@@ -533,7 +532,8 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 
 	-- When placed on kelp.
 	if mt_get_item_group(nu_name, "kelp") == 1 then
-		pos_tip,node_tip = kelp.get_tip(pos_under, kelp.get_height(node_under.param2))
+		height = kelp.get_height(node_under.param2)
+		pos_tip,node_tip = kelp.get_tip(pos_under, height)
 		def_tip = mt_registered_nodes[node_tip.name]
 
 	-- When placed on surface.
@@ -555,6 +555,7 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 		pos_tip = pos_above
 		node_tip = mt_get_node(pos_above)
 		def_tip = mt_registered_nodes[node_tip.name]
+		height = 0
 	end
 
 	-- Next kelp must also be submerged in water.
@@ -569,7 +570,12 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 	if def_node.sounds then
 		mt_sound_play(def_node.sounds.place, { gain = 0.5, pos = pos_under }, true)
 	end
-	kelp.next_height(pos_under, node_under, pos_tip, node_tip, def_tip, submerged, downward_flowing)
+	-- TODO: get rid of rooted plantlike hack
+	if height < 16 then
+		kelp.next_height(pos_under, node_under, pos_tip, node_tip, def_tip, submerged, downward_flowing)
+	else
+		mt_add_item(pos_tip, "mcl_ocean:kelp")
+	end
 	if not mt_is_creative_enabled(player_name) then
 		itemstack:take_item()
 	end
