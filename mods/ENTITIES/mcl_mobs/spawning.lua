@@ -486,7 +486,7 @@ end
 local axis
 --inner and outer part of square donut radius
 local inner = 1
-local outer = 70
+local outer = 50
 local int = {-1,1}
 local position_calculation = function(pos)
 
@@ -539,7 +539,7 @@ if mobs_spawn then
     local timer = 0
     minetest.register_globalstep(function(dtime)
         timer = timer + dtime
-        if timer >= 15 then
+        if timer >= 8 then
             timer = 0
             for _,player in ipairs(minetest.get_connected_players()) do
                 for i = 1,math.random(3,8) do
