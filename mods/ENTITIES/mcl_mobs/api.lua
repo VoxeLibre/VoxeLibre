@@ -4352,7 +4352,7 @@ local timer = 15 --0
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
 	if timer >= 15 then
-		timer = 15--0
+		timer = 0--15--0
 		for _,player in ipairs(minetest.get_connected_players()) do
 			for i = 1,math.random(5) do
 				local player_pos = player:get_pos()
