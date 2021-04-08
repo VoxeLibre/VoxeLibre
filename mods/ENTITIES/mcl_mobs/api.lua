@@ -866,10 +866,12 @@ local check_for_death = function(self, cause, cmi_cause)
 	remove_texture_mod(self, "^[colorize:#FF000040")
 	remove_texture_mod(self, "^[brighten")
 	self.passive = true
+
 	self.object:set_properties({
 		pointable = false,
 		collide_with_objects = false,
 	})
+
 	set_velocity(self, 0)
 	local acc = self.object:get_acceleration()
 	acc.x, acc.y, acc.z = 0, DEFAULT_FALL_SPEED, 0
@@ -3418,7 +3420,6 @@ local mob_activate = function(self, staticdata, def, dtime)
 	self.timer = 0
 	self.blinktimer = 0
 	self.blinkstatus = false
-	self.collide_with_objects = false
 
 	-- check existing nametag
 	if not self.nametag then
@@ -3907,6 +3908,12 @@ minetest.register_entity(name, {
 	on_detach_child = mob_detach_child,
 
 	on_activate = function(self, staticdata, dtime)
+		--this is a temporary hack so mobs stop
+		--glitching and acting really weird with the
+		--default built in engine collision detection
+		self.object:set_properties({
+			collide_with_objects = false,
+		})	
 		return mob_activate(self, staticdata, def, dtime)
 	end,
 
@@ -4348,11 +4355,11 @@ end
 
 --todo mob limiting
 --MAIN LOOP
-local timer = 0
+local timer = 15 --0
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
 	if timer >= 15 then
-		timer = 0
+		timer = 15--0
 		for _,player in ipairs(minetest.get_connected_players()) do
 			for i = 1,math.random(5) do
 				local player_pos = player:get_pos()
@@ -4361,6 +4368,7 @@ minetest.register_globalstep(function(dtime)
 
 				local goal_pos = position_calculation(player_pos)
 				
+				print(dump(minetest.get_biome_data(goal_pos)))
 
 				local mob_def = spawn_dictionary[dimension][math.random(1,#spawn_dictionary[dimension])]
 
