@@ -3,159 +3,159 @@
 THIS IS THE BIG LIST OF ALL BIOMES - used for programming/updating mobs
 
 underground:
-FlowerForest_underground
-JungleEdge_underground
-StoneBeach_underground
-MesaBryce_underground
-Mesa_underground
-RoofedForest_underground
-Jungle_underground
-Swampland_underground
-MushroomIsland_underground
-BirchForest_underground
-Plains_underground
-MesaPlateauF_underground
-ExtremeHills_underground
-MegaSpruceTaiga_underground
-BirchForestM_underground
-SavannaM_underground
-MesaPlateauFM_underground
-Desert_underground
-Savanna_underground
-Forest_underground
-SunflowerPlains_underground
-ColdTaiga_underground
-IcePlains_underground
-IcePlainsSpikes_underground
-MegaTaiga_underground
-Taiga_underground
-ExtremeHills+_underground
-JungleM_underground
-ExtremeHillsM_underground
-JungleEdgeM_underground
+"FlowerForest_underground",
+"JungleEdge_underground",
+"StoneBeach_underground",
+"MesaBryce_underground",
+"Mesa_underground",
+"RoofedForest_underground",
+"Jungle_underground",
+"Swampland_underground",
+"MushroomIsland_underground",
+"BirchForest_underground",
+"Plains_underground",
+"MesaPlateauF_underground",
+"ExtremeHills_underground",
+"MegaSpruceTaiga_underground",
+"BirchForestM_underground",
+"SavannaM_underground",
+"MesaPlateauFM_underground",
+"Desert_underground",
+"Savanna_underground",
+"Forest_underground",
+"SunflowerPlains_underground",
+"ColdTaiga_underground",
+"IcePlains_underground",
+"IcePlainsSpikes_underground",
+"MegaTaiga_underground",
+"Taiga_underground",
+"ExtremeHills+_underground",
+"JungleM_underground",
+"ExtremeHillsM_underground",
+"JungleEdgeM_underground",
 
 ocean:
-RoofedForest_ocean
-JungleEdgeM_ocean
-BirchForestM_ocean
-BirchForest_ocean
-IcePlains_deep_ocean
-Jungle_deep_ocean
-Savanna_ocean
-MesaPlateauF_ocean
-ExtremeHillsM_deep_ocean
-Savanna_deep_ocean
-SunflowerPlains_ocean
-Swampland_deep_ocean
-Swampland_ocean
-MegaSpruceTaiga_deep_ocean
-ExtremeHillsM_ocean
-JungleEdgeM_deep_ocean
-SunflowerPlains_deep_ocean
-BirchForest_deep_ocean
-IcePlainsSpikes_ocean
-Mesa_ocean
-StoneBeach_ocean
-Plains_deep_ocean
-JungleEdge_deep_ocean
-SavannaM_deep_ocean
-Desert_deep_ocean
-Mesa_deep_ocean
-ColdTaiga_deep_ocean
-Plains_ocean
-MesaPlateauFM_ocean
-Forest_deep_ocean
-JungleM_deep_ocean
-FlowerForest_deep_ocean
-MushroomIsland_ocean
-MegaTaiga_ocean
-StoneBeach_deep_ocean
-IcePlainsSpikes_deep_ocean
-ColdTaiga_ocean
-SavannaM_ocean
-MesaPlateauF_deep_ocean
-MesaBryce_deep_ocean
-ExtremeHills+_deep_ocean
-ExtremeHills_ocean
-MushroomIsland_deep_ocean
-Forest_ocean
-MegaTaiga_deep_ocean
-JungleEdge_ocean
-MesaBryce_ocean
-MegaSpruceTaiga_ocean
-ExtremeHills+_ocean
-Jungle_ocean
-RoofedForest_deep_ocean
-IcePlains_ocean
-FlowerForest_ocean
-ExtremeHills_deep_ocean
-MesaPlateauFM_deep_ocean
-Desert_ocean
-Taiga_ocean
-BirchForestM_deep_ocean
-Taiga_deep_ocean
-JungleM_ocean
+"RoofedForest_ocean",
+"JungleEdgeM_ocean",
+"BirchForestM_ocean",
+"BirchForest_ocean",
+"IcePlains_deep_ocean",
+"Jungle_deep_ocean",
+"Savanna_ocean",
+"MesaPlateauF_ocean",
+"ExtremeHillsM_deep_ocean",
+"Savanna_deep_ocean",
+"SunflowerPlains_ocean",
+"Swampland_deep_ocean",
+"Swampland_ocean",
+"MegaSpruceTaiga_deep_ocean",
+"ExtremeHillsM_ocean",
+"JungleEdgeM_deep_ocean",
+"SunflowerPlains_deep_ocean",
+"BirchForest_deep_ocean",
+"IcePlainsSpikes_ocean",
+"Mesa_ocean",
+"StoneBeach_ocean",
+"Plains_deep_ocean",
+"JungleEdge_deep_ocean",
+"SavannaM_deep_ocean",
+"Desert_deep_ocean",
+"Mesa_deep_ocean",
+"ColdTaiga_deep_ocean",
+"Plains_ocean",
+"MesaPlateauFM_ocean",
+"Forest_deep_ocean",
+"JungleM_deep_ocean",
+"FlowerForest_deep_ocean",
+"MushroomIsland_ocean",
+"MegaTaiga_ocean",
+"StoneBeach_deep_ocean",
+"IcePlainsSpikes_deep_ocean",
+"ColdTaiga_ocean",
+"SavannaM_ocean",
+"MesaPlateauF_deep_ocean",
+"MesaBryce_deep_ocean",
+"ExtremeHills+_deep_ocean",
+"ExtremeHills_ocean",
+"MushroomIsland_deep_ocean",
+"Forest_ocean",
+"MegaTaiga_deep_ocean",
+"JungleEdge_ocean",
+"MesaBryce_ocean",
+"MegaSpruceTaiga_ocean",
+"ExtremeHills+_ocean",
+"Jungle_ocean",
+"RoofedForest_deep_ocean",
+"IcePlains_ocean",
+"FlowerForest_ocean",
+"ExtremeHills_deep_ocean",
+"MesaPlateauFM_deep_ocean",
+"Desert_ocean",
+"Taiga_ocean",
+"BirchForestM_deep_ocean",
+"Taiga_deep_ocean",
+"JungleM_ocean",
 
 water or beach?
-MesaPlateauFM_sandlevel
-MesaPlateauF_sandlevel
-MesaBryce_sandlevel
-Mesa_sandlevel
+"MesaPlateauFM_sandlevel",
+"MesaPlateauF_sandlevel",
+"MesaBryce_sandlevel",
+"Mesa_sandlevel",
 
 beach:
-FlowerForest_beach
-Forest_beach
-StoneBeach
-ColdTaiga_beach_water
-Taiga_beach
-Savanna_beach
-Plains_beach
-ExtremeHills_beach
-ColdTaiga_beach
-Swampland_shore
-MushroomIslandShore
-JungleM_shore
-Jungle_shore
+"FlowerForest_beach",
+"Forest_beach",
+"StoneBeach",
+"ColdTaiga_beach_water",
+"Taiga_beach",
+"Savanna_beach",
+"Plains_beach",
+"ExtremeHills_beach",
+"ColdTaiga_beach",
+"Swampland_shore",
+"MushroomIslandShore",
+"JungleM_shore",
+"Jungle_shore",
 
 dimension biome:
-Nether
-End
+"Nether",
+"End",
 
 Overworld regular:
-Mesa
-FlowerForest
-Swampland
-Taiga
-ExtremeHills
-Jungle
-Savanna
-BirchForest
-MegaSpruceTaiga
-MegaTaiga
-ExtremeHills+
-Forest
-Plains
-Desert
-ColdTaiga
-MushroomIsland
-IcePlainsSpikes
-SunflowerPlains
-IcePlains
-RoofedForest
+"Mesa",
+"FlowerForest",
+"Swampland",
+"Taiga",
+"ExtremeHills",
+"Jungle",
+"Savanna",
+"BirchForest",
+"MegaSpruceTaiga",
+"MegaTaiga",
+"ExtremeHills+",
+"Forest",
+"Plains",
+"Desert",
+"ColdTaiga",
+"MushroomIsland",
+"IcePlainsSpikes",
+"SunflowerPlains",
+"IcePlains",
+"RoofedForest",
 
 I have no idea:
-ExtremeHills+_snowtop
-MesaPlateauFM_grasstop
-JungleEdgeM
-ExtremeHillsM
-JungleM
-BirchForestM
-MesaPlateauF
-MesaPlateauFM
-MesaPlateauF_grasstop
-MesaBryce
-JungleEdge
-SavannaM
+"ExtremeHills+_snowtop",
+"MesaPlateauFM_grasstop",
+"JungleEdgeM",
+"ExtremeHillsM",
+"JungleM",
+"BirchForestM",
+"MesaPlateauF",
+"MesaPlateauFM",
+"MesaPlateauF_grasstop",
+"MesaBryce",
+"JungleEdge",
+"SavannaM",
 ]]--
 
 
@@ -219,6 +219,7 @@ end
 
 --[[
 	Custom elements changed:
+
 name:
 the mobs name
 
@@ -233,7 +234,11 @@ types of spawning:
 "ground"
 "lava"
 
-what is aoc???
+biomes: tells the spawner to allow certain mobs to spawn in certain biomes
+{"this", "that", "grasslands", "whatever"}
+
+
+what is aoc??? objects in area
 
 WARNING: BIOME INTEGRATION NEEDED -> How to get biome through lua??
 ]]--
@@ -245,7 +250,10 @@ local spawn_dictionary = {
 	["end"] = {}
 }
 
-function mobs:spawn_specific(name, dimension, type_of_spawning, min_light, max_light, interval, chance, aoc, min_height, max_height, day_toggle, on_spawn)
+function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_light, max_light, interval, chance, aoc, min_height, max_height, day_toggle, on_spawn)
+
+	print(dump(bimoes))
+
 	-- Do mobs spawn at all?
 	if not mobs_spawn then
 		return
@@ -472,7 +480,7 @@ end
 ]]--
 
 
---I'm not sure what this does but disabling it doesn't cause a crash -j4i
+--Don't disable this yet-j4i
 -- MarkBu's spawn function
 
 function mobs:spawn(def)
@@ -546,6 +554,7 @@ end)
 
 --todo mob limiting
 --MAIN LOOP
+--[[
 if mobs_spawn then
     local timer = 15 --0
     minetest.register_globalstep(function(dtime)
@@ -557,9 +566,10 @@ if mobs_spawn then
                     local player_pos = player:get_pos()
                     local _,dimension = mcl_worlds.y_to_layer(player_pos.y)
 
-					if dimension == "void" or dimension == "default" then
-						goto continue -- ignore void and unloaded area
-					end
+				    if dimension == "void" or dimension == "default" then
+                        goto continue -- ignore void and unloaded area
+				    end
+					
 
                     local min,max = decypher_limits(player_pos.y)
 
@@ -636,3 +646,4 @@ if mobs_spawn then
         end
     end)
 end
+]]--
