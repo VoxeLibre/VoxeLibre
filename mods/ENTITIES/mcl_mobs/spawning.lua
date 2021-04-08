@@ -227,7 +227,6 @@ dimension:
 "end"
 
 types of spawning:
-"air"
 "water"
 "ground"
 "lava"
@@ -438,15 +437,23 @@ function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_ligh
 	--allow for new dimensions to be auto added
 	--this will take extra time, a whole few nanoseconds
 	--but will allow modularity
+
+	
+	if type_of_spawning == "air" then
+		print("---------------------------- HERE")
+		print(name)
+		print("---------------------------- sdfkhjsadfhjklsfsehjkfsdhjk")
+	end
+
 	if not spawn_dictionary[dimension] then
 		spawn_dictionary[dimension] = {}
 	end
 
-	print("----")
-	print(name)
 	for _,added_biome in pairs(biomes) do
-		print(added_biome)
+		--print(added_biome)
 	end
+
+
 	--[[
 	local key = #spawn_dictionary[dimension] + 1
 

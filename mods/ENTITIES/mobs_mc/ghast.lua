@@ -78,7 +78,7 @@ mobs:register_mob("mobs_mc:ghast", {
 mobs:spawn_specific(
 "mobs_mc:ghast", 
 "nether", 
-"air",
+"ground",
 {
 "Nether"
 },

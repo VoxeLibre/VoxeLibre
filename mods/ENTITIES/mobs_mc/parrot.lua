@@ -94,7 +94,7 @@ mobs:register_mob("mobs_mc:parrot", {
 mobs:spawn_specific(
 "mobs_mc:parrot",
 "overworld", 
-"air",
+"ground",
 {
 "Jungle",
 "JungleEdgeM",
