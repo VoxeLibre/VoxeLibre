@@ -123,10 +123,54 @@ local fox = {
 mobs:register_mob("extra_mobs:fox", fox)
 
 -- spawning
-mobs:spawn_specific("extra_mobs:fox", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, 0, 500)
+mobs:spawn_specific(
+"extra_mobs:fox", 
+"overworld", 
+"ground",
+{
+"FlowerForest",
+"Swampland",
+"Taiga",
+"ExtremeHills",
+"BirchForest",
+"MegaSpruceTaiga",
+"MegaTaiga",
+"ExtremeHills+",
+"Forest",
+"Plains",
+"ColdTaiga",
+"SunflowerPlains",
+"RoofedForest",
+"MesaPlateauFM_grasstop",
+"ExtremeHillsM",
+"BirchForestM",
+},
+0, 
+minetest.LIGHT_MAX+1, 
+30, 
+6000, 
+3, 
+0, 
+500)
 
-mobs:spawn_specific("extra_mobs:fox", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, 0, 500)
-mobs:spawn_specific("extra_mobs:artic_fox", "overworld", "mcl_core:snow", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, 0, 500)
+--mobs:spawn_specific("extra_mobs:fox", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, 0, 500)
+mobs:spawn_specific(
+"extra_mobs:artic_fox", 
+"overworld", 
+"ground", 
+{
+"ColdTaiga",
+"IcePlainsSpikes",
+"IcePlains",
+"ExtremeHills+_snowtop",
+},
+0, 
+minetest.LIGHT_MAX+1, 
+30, 
+6000, 
+3, 
+0, 
+500)
 
 -- spawn eggs
 mobs:register_egg("extra_mobs:fox", S("Fox"), "extra_mobs_spawn_icon_fox.png", 0)
