@@ -111,9 +111,35 @@ baby_pigman.child = 1
 mobs:register_mob("mobs_mc:baby_pigman", baby_pigman)
 
 -- Regular spawning in the Nether
-mobs:spawn_specific("mobs_mc:pigman", "nether", "ground", 0, minetest.LIGHT_MAX+1, 30, 6000, 3, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
+mobs:spawn_specific(
+"mobs_mc:pigman", 
+"nether", 
+"ground",
+{
+"Nether"
+},
+0, 
+minetest.LIGHT_MAX+1,
+30, 
+6000, 
+3, 
+mobs_mc.spawn_height.nether_min, 
+mobs_mc.spawn_height.nether_max)
 -- Baby zombie is 20 times less likely than regular zombies
-mobs:spawn_specific("mobs_mc:baby_pigman", "nether", "ground", 0, minetest.LIGHT_MAX+1, 30, 100000, 4, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
+mobs:spawn_specific(
+"mobs_mc:baby_pigman", 
+"nether", 
+"ground",
+{
+"Nether"
+}, 
+0, 
+minetest.LIGHT_MAX+1, 
+30, 
+100000, 
+4, 
+mobs_mc.spawn_height.nether_min, 
+mobs_mc.spawn_height.nether_max)
 
 -- Spawning in Nether portals in the Overworld
 --mobs:spawn_specific("mobs_mc:pigman", mobs_mc.spawn.nether_portal, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 500, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)

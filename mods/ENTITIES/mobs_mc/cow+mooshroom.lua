@@ -145,9 +145,52 @@ mobs:register_mob("mobs_mc:mooshroom", mooshroom_def)
 
 
 -- Spawning
-mobs:spawn_specific("mobs_mc:cow", "overworld", "ground", 9, minetest.LIGHT_MAX+1, 30, 17000, 10, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
---WARNING: THIS NEEDS A BIOME INTEGRATION
-mobs:spawn_specific("mobs_mc:mooshroom", "overworld", "ground", 9, minetest.LIGHT_MAX+1, 30, 17000, 5, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific(
+"mobs_mc:cow",
+"overworld", 
+"ground",
+{
+"FlowerForest",
+"Swampland",
+"Taiga",
+"ExtremeHills",
+"BirchForest",
+"MegaSpruceTaiga",
+"MegaTaiga",
+"ExtremeHills+",
+"Forest",
+"Plains",
+"ColdTaiga",
+"SunflowerPlains",
+"RoofedForest",
+"MesaPlateauFM_grasstop",
+"ExtremeHillsM",
+"BirchForestM",
+},
+9, 
+minetest.LIGHT_MAX+1, 
+30, 
+17000, 
+10, 
+mobs_mc.spawn_height.water, 
+mobs_mc.spawn_height.overworld_max)
+
+
+mobs:spawn_specific(
+"mobs_mc:mooshroom", 
+"overworld", 
+"ground",
+{
+"MushroomIslandShore",
+"MushroomIsland"
+},
+9, 
+minetest.LIGHT_MAX+1, 
+30, 
+17000, 
+5, 
+mobs_mc.spawn_height.overworld_min, 
+mobs_mc.spawn_height.overworld_max)
 
 -- spawn egg
 mobs:register_egg("mobs_mc:cow", S("Cow"), "mobs_mc_spawn_icon_cow.png", 0)

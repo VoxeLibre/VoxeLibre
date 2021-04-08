@@ -67,7 +67,23 @@ mobs:register_mob("mobs_mc:polar_bear", {
 })
 
 
-mobs:spawn_specific("mobs_mc:polar_bear", "overworld", "ground", 0, minetest.LIGHT_MAX+1, 30, 7000, 3, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific(
+"mobs_mc:polar_bear",
+"overworld",
+"ground",
+{
+"ColdTaiga",
+"IcePlainsSpikes",
+"IcePlains",
+"ExtremeHills+_snowtop",
+},
+0,
+minetest.LIGHT_MAX+1,
+30,
+7000,
+3,
+mobs_mc.spawn_height.overworld_min,
+mobs_mc.spawn_height.overworld_max)
 
 -- spawn egg
 mobs:register_egg("mobs_mc:polar_bear", S("Polar Bear"), "mobs_mc_spawn_icon_polarbear.png", 0)
