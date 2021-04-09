@@ -86,9 +86,10 @@ function mcl_bossbars.update_boss(luaentity, name, color)
 	if not bardef.text or bardef.text == "" then
 		bardef.text = name
 	end
-	for _, obj in pairs(minetest.get_objects_inside_radius(object:get_pos(), 128)) do
-		if obj:is_player() then
-			mcl_bossbars.add_bar(obj, bardef)
+	local pos = object:get_pos()
+	for _, player in pairs(minetest.get_connected_players()) do
+		if vector.distance(pos, player:get_pos()) <= 80 then
+			mcl_bossbars.add_bar(player, bardef)
 		end
 	end
 end
