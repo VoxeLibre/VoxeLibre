@@ -52,8 +52,10 @@ local get_node_force = mesecon.get_node_force
 local receptor_get_rules = mesecon.receptor_get_rules
 local invertRule = mesecon.invertRule
 local copy, insert = table.copy, table.insert
-local registered_nodes = minetest.registered_nodes
-
+local registered_nodes
+minetest.register_on_mods_loaded(function()
+	registered_nodes = minetest.registered_nodes
+end)
 -- General
 function mesecon.get_effector(nodename)
 	if  registered_nodes[nodename]
