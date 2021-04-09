@@ -22,9 +22,46 @@ local mcl_playerplus_internal = {}
 local def = {}
 local time = 0
 
+local player_collision = function(player)
+
+	local pos = player:get_pos()
+	local vel = player:get_velocity()
+	local x = 0
+	local z = 0
+	local width = .75
+
+	for _,object in pairs(minetest.get_objects_inside_radius(pos, width)) do
+
+		if object:is_player()
+		or (object:get_luaentity()._cmi_is_mob == true and object ~= player) then
+
+			local pos2 = object:get_pos()
+			local vec  = {x = pos.x - pos2.x, z = pos.z - pos2.z}
+			local force = (width + 0.5) - vector.distance(
+				{x = pos.x, y = 0, z = pos.z},
+				{x = pos2.x, y = 0, z = pos2.z})
+
+			x = x + (vec.x * force)
+			z = z + (vec.z * force)
+		end
+	end
+
+	return({x * 5,z * 5})
+end
+
 -- converts yaw to degrees
 local function degrees(rad)
 	return rad * 180.0 / math.pi
+end
+
+local pi = math.pi
+local atann = math.atan
+local atan = function(x)
+	if not x or x ~= x then
+		return 0
+	else
+		return atann(x)
+	end
 end
 
 local dir_to_pitch = function(dir)
@@ -87,6 +124,13 @@ minetest.register_globalstep(function(dtime)
 	time = time + dtime
 
 	for _,player in pairs(get_connected_players()) do
+
+		c_x, c_y = unpack(player_collision(player))
+
+		if player:get_velocity().x + player:get_velocity().y < .5 and c_x + c_y > 0 then
+			--minetest.chat_send_player(player:get_player_name(), "pushed at " .. c_x + c_y .. " parsecs.")
+			player:add_velocity({x=c_x, y=0, z=c_y})
+		end
 
 		--[[
 						 _                 _   _
