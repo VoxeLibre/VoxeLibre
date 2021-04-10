@@ -79,6 +79,54 @@ minetest.register_entity("mcl_end:crystal", {
 	_hittable_by_projectile = true
 })
 
+minetest.register_entity("mcl_end:crystal_beam", {
+	initial_properties = {
+		physical = false,
+		visual = "cube",
+		visual_size = {x = 1, y = 1, z = 1},
+		textures = {
+			"mcl_end_crystal_beam.png^[transformR90",
+			"mcl_end_crystal_beam.png^[transformR90",
+			"mcl_end_crystal_beam.png",
+			"mcl_end_crystal_beam.png",
+			"blank.png",
+			"blank.png",
+		},
+		static_save = false,
+	},
+	spin = 0,
+	init = function(self, dragon, crystal)
+		self.dragon, self.crystal = dragon, crystal
+		crystal:get_luaentity().beam = self.object
+		dragon:get_luaentity().beam = self.object
+	end,
+	on_deactivate = function(self)
+		if self.crystal and self.crystal:get_luaentity() then
+			self.crystal:get_luaentity().beam = nil
+		end
+		if self.dragon and self.dragon:get_luaentity() then
+			self.dragon:get_luaentity().beam = nil
+		end
+	end,
+	on_step = function(self, dtime)
+		if self.dragon and self.dragon:get_luaentity() and self.crystal and self.crystal:get_luaentity() then
+			self.spin = self.spin + dtime * math.pi * 2 / 4
+			local dragon_pos, crystal_pos = self.dragon:get_pos(), self.crystal:get_pos()
+
+			dragon_pos.y = dragon_pos.y + 4
+			crystal_pos.y = crystal_pos.y + 2
+
+			self.object:set_pos(vector.divide(vector.add(dragon_pos, crystal_pos), 2))
+			local rot = vector.dir_to_rotation(vector.direction(dragon_pos, crystal_pos))
+			rot.z = self.spin
+			self.object:set_rotation(rot)
+			self.object:set_properties({visual_size = {x = 0.5, y = 0.5, z = vector.distance(dragon_pos, crystal_pos)}})
+		else
+			self.object:remove()
+		end
+	end,
+})
+
 minetest.register_craftitem("mcl_end:crystal", {
 	inventory_image = "mcl_end_crystal_item.png",
 	description = S("End Crystal"),
