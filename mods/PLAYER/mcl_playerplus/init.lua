@@ -46,7 +46,7 @@ local player_collision = function(player)
 		end
 	end
 
-	return({x * 5,z * 5})
+	return({x,z})
 end
 
 -- converts yaw to degrees
