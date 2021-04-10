@@ -364,10 +364,10 @@ mobs:register_mob("mobs_mc:enderman", {
 						else -- I'm not sure what this part does, but I don't want to break anything - jordan4ibanez
 							if self.provoked == "staring" then
 								self.provoked = "broke_contact"
-							end
+							end						
 						end
-					end
 
+					end
 				end
 			end
 		end

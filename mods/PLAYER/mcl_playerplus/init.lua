@@ -32,8 +32,8 @@ local player_collision = function(player)
 
 	for _,object in pairs(minetest.get_objects_inside_radius(pos, width)) do
 
-		if object:is_player()
-		or (object:get_luaentity()._cmi_is_mob == true and object ~= player) then
+		if object and (object:is_player()
+		or (object:get_luaentity()._cmi_is_mob == true and object ~= player)) then
 
 			local pos2 = object:get_pos()
 			local vec  = {x = pos.x - pos2.x, z = pos.z - pos2.z}
@@ -46,7 +46,7 @@ local player_collision = function(player)
 		end
 	end
 
-	return({x * 5,z * 5})
+	return({x,z})
 end
 
 -- converts yaw to degrees
@@ -118,6 +118,37 @@ function limit_vel_yaw(player_vel_yaw, yaw)
 end
 
 local pitch, name, node_stand, node_stand_below, node_head, node_feet, pos
+
+
+minetest.register_on_punchplayer(function(player, hitter, damage)
+	if hitter:is_player() then
+		if hitter:get_player_control().aux1 then
+			player:add_velocity(hitter:get_velocity())
+		end
+		if hitter:get_velocity().y < -6 then
+			player:set_hp(player:get_hp() - (damage * math.random(0.50 , 0.75)))
+			local pos = player:get_pos()
+			minetest.add_particlespawner({
+				amount = 15,
+				time = 0.1,
+				minpos = {x=pos.x-0.5, y=pos.y-0.5, z=pos.z-0.5},
+				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
+				minvel = {x=-0.1, y=-0.1, z=-0.1},
+				maxvel = {x=0.1, y=0.1, z=0.1},
+				minacc = {x=0, y=0, z=0},
+				maxacc = {x=0, y=0, z=0},
+				minexptime = 1,
+				maxexptime = 2,
+				minsize = 1.5,
+				maxsize = 1.5,
+				collisiondetection = false,
+				vertical = false,
+				texture = "mcl_particles_crit.png^[colorize:#bc7a57:127",
+			})
+		end
+	end
+end)
+
 
 minetest.register_globalstep(function(dtime)
 

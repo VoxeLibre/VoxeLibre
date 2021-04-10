@@ -36,12 +36,12 @@ end
 
 local last_id = 0
 
-function mcl_bossbars.add_bar(player, def)
+function mcl_bossbars.add_bar(player, def, dynamic, priority)
 	local name = player:get_player_name()
 	local bars = mcl_bossbars.bars[name]
-	local bar = {text = def.text}
+	local bar = {text = def.text, priority = priority or 0}
 	bar.color, bar.image = get_color_info(def.color, def.percentage)
-	if def.dynamic then
+	if dynamic then
 		for _, other in pairs(bars) do
 			if not other.id and other.color == bar.color and (other.original_text or other.text) == bar.text and other.image == bar.image then
 				if not other.count then
@@ -55,7 +55,7 @@ function mcl_bossbars.add_bar(player, def)
 		end
 	end
 	table.insert(bars, bar)
-	if not def.dynamic then
+	if not dynamic then
 		bar.raw_color = def.color
 		bar.id = last_id + 1
 		last_id = bar.id
@@ -69,10 +69,11 @@ function mcl_bossbars.remove_bar(id)
 	mcl_bossbars.static[id] = nil
 end
 
-function mcl_bossbars.update_bar(id, def)
+function mcl_bossbars.update_bar(id, def, priority)
 	local old = mcl_bossbars.static[id]
 	old.color = get_color_info(def.color or old.raw_color, def.percentage or old.percentage)
 	old.text = def.text or old.text
+	old.priority = priority or old.priority
 end
 
 function mcl_bossbars.update_boss(luaentity, name, color)
@@ -81,14 +82,15 @@ function mcl_bossbars.update_boss(luaentity, name, color)
 		text = luaentity.nametag,
 		percentage = math.floor(luaentity.health / luaentity.hp_max * 100),
 		color = color,
-		dynamic = true,
 	}
 	if not bardef.text or bardef.text == "" then
 		bardef.text = name
 	end
-	for _, obj in pairs(minetest.get_objects_inside_radius(object:get_pos(), 128)) do
-		if obj:is_player() then
-			mcl_bossbars.add_bar(obj, bardef)
+	local pos = object:get_pos()
+	for _, player in pairs(minetest.get_connected_players()) do
+		local d = vector.distance(pos, player:get_pos())
+		if d <= 80 then
+			mcl_bossbars.add_bar(player, bardef, true, d)
 		end
 	end
 end
@@ -115,6 +117,7 @@ minetest.register_globalstep(function()
 		local name = player:get_player_name()
 		local bars = mcl_bossbars.bars[name]
 		local huds = mcl_bossbars.huds[name]
+		table.sort(bars, function(a, b) return a.priority < b.priority end)
 		local huds_new = {}
 		local bars_new = {}
 		local i = 0
