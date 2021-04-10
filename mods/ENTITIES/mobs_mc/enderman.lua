@@ -346,29 +346,28 @@ mobs:register_mob("mobs_mc:enderman", {
 					--skip player if they have no data - log it
 					if not player_eye_height then
 						minetest.log("error", "Enderman at location: ".. dump(enderpos).." has indexed a null player!")
-						goto continue
-					end
+					else
 
-					--calculate very quickly the exact location the player is looking
-					--within the distance between the two "heads" (player and enderman)
-					local look_pos = vector.new(player_pos.x, player_pos.y + player_eye_height, player_pos.z)
-					local look_pos_base = look_pos
-					local ender_eye_pos = vector.new(enderpos.x, enderpos.y + 2.75, enderpos.z)
-					local eye_distance_from_player = vector.distance(ender_eye_pos, look_pos)
-					look_pos = vector.add(look_pos, vector.multiply(look_dir, eye_distance_from_player))
+						--calculate very quickly the exact location the player is looking
+						--within the distance between the two "heads" (player and enderman)
+						local look_pos = vector.new(player_pos.x, player_pos.y + player_eye_height, player_pos.z)
+						local look_pos_base = look_pos
+						local ender_eye_pos = vector.new(enderpos.x, enderpos.y + 2.75, enderpos.z)
+						local eye_distance_from_player = vector.distance(ender_eye_pos, look_pos)
+						look_pos = vector.add(look_pos, vector.multiply(look_dir, eye_distance_from_player))
 					
-					--if looking in general head position, turn hostile
-					if minetest.line_of_sight(ender_eye_pos, look_pos_base) and vector.distance(look_pos, ender_eye_pos) <= 0.4 then
-						self.provoked = "staring"
-						self.attack = minetest.get_player_by_name(obj:get_player_name())
-						break
-					else -- I'm not sure what this part does, but I don't want to break anything - jordan4ibanez
-						if self.provoked == "staring" then
-							self.provoked = "broke_contact"
-						end						
-					end
+						--if looking in general head position, turn hostile
+						if minetest.line_of_sight(ender_eye_pos, look_pos_base) and vector.distance(look_pos, ender_eye_pos) <= 0.4 then
+							self.provoked = "staring"
+							self.attack = minetest.get_player_by_name(obj:get_player_name())
+							break
+						else -- I'm not sure what this part does, but I don't want to break anything - jordan4ibanez
+							if self.provoked == "staring" then
+								self.provoked = "broke_contact"
+							end						
+						end
 
-					::continue:: -- this is a sweep over statement, this can be used to continue even when errors occurred
+					end
 				end
 			end
 		end
