@@ -1,15 +1,14 @@
 --lua locals
-local get_node		= minetest.get_node
-local get_item_group	= minetest.get_item_group
-local get_node_light	= minetest.get_node_light
+local get_node       = minetest.get_node
+local get_item_group = minetest.get_item_group
+local get_node_light = minetest.get_node_light
 local find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
-local get_biome_data	= minetest.get_biome_data
-local new_vector	= vector.new
-local math_random	= math.random
-local get_biome_name	= minetest.get_biome_name
-local max		= math.max
+local new_vector     = vector.new
+local math_random    = math.random
+local get_biome_name = minetest.get_biome_name
+local max            = math.max
 local get_objects_inside_radius = minetest.get_objects_inside_radius
-local vector_distance	= vector.distance
+local vector_distance = vector.distance
 
 -- range for mob count
 local aoc_range = 32
@@ -537,87 +536,113 @@ end
 --todo mob limiting
 --MAIN LOOP
 if mobs_spawn then
-	local timer = 0
-	minetest.register_globalstep(function(dtime)
-		timer = timer + dtime
-		if timer >= 8 then
-			timer = 0
-			for _,player in pairs(minetest.get_connected_players()) do
-				for i = 1,math_random(3,8) do
+    local timer = 0
+    minetest.register_globalstep(function(dtime)
+        timer = timer + dtime
+        if timer >= 8 then
+            timer = 0
+            for _,player in ipairs(minetest.get_connected_players()) do
+                for i = 1,math.random(3,8) do
 
-					local player_pos = player:get_pos()
+                    local player_pos = player:get_pos()
 
-					local _,dimension = mcl_worlds.y_to_layer(player_pos.y)
+                    local _,dimension = mcl_worlds.y_to_layer(player_pos.y)
 
-					if dimension ~= "void" and dimension ~= "default" then
+				    if dimension == "void" or dimension == "default" then
+                        goto continue -- ignore void and unloaded area
+				    end
+					
+                    local min,max = decypher_limits(player_pos.y)
 
-						local min,max = decypher_limits(player_pos.y)
+                    local goal_pos = position_calculation(player_pos)
+                    
+					local spawning_position_list = find_nodes_in_area_under_air(new_vector(goal_pos.x,min,goal_pos.z), vector.new(goal_pos.x,max,goal_pos.z), {"group:solid", "group:water", "group:lava"})
 
-						local goal_pos = position_calculation(player_pos)
-
-						local spawning_position_list = find_nodes_in_area_under_air(new_vector(goal_pos.x,min,goal_pos.z), vector.new(goal_pos.x,max,goal_pos.z), {"group:solid", "group:water", "group:lava"})
-
-						if #spawning_position_list > 0 then --couldn't find node
-							local spawning_position = spawning_position_list[math_random(1,#spawning_position_list)]
-
-							--Prevent strange behavior/too close to player
-							if spawning_position and vector_distance(player_pos, spawning_position) > 15 then
-
-								local gotten_node = get_node(spawning_position).name
-
-								if gotten_node and gotten_node ~= "air" then --skip air nodes
-
-									local gotten_biome = get_biome_data(spawning_position)
-
-									if gotten_biome then --skip if in unloaded area
-
-										gotten_biome = get_biome_name(gotten_biome.biome) --makes it easier to work with
-
-										--grab random mob
-										local mob_def = spawn_dictionary[math.random(1,#spawn_dictionary)]
-
-										if mob_def --skip if something ridiculous happens (nil mob def)
-										and mob_def.dimension == dimension --skip if not correct dimension
-										and biome_check(mob_def.biomes, gotten_biome) then --skip if not in correct biome
-
-											--add this so mobs don't spawn inside nodes
-											spawning_position.y = spawning_position.y + 1
-
-											if spawning_position.y >= mob_def.min_height and spawning_position.y <= mob_def.max_height then
-
-												--only need to poll for node light if everything else worked
-												local gotten_light = get_node_light(spawning_position)
-
-												--don't spawn if not in light limits
-												if gotten_light >= mob_def.min_light and gotten_light <= mob_def.max_light then
-
-													local is_water = get_item_group(gotten_node, "water") ~= 0
-													local is_lava  = get_item_group(gotten_node, "lava") ~= 0
-
-													if mob_def.type_of_spawning ~= "ground" or not (is_water or is_lava) then
-
-														--finally do the heavy check (for now) of mobs in area
-														if count_mobs(spawning_position, mob_def.spawn_class) < mob_def.aoc then
-
-															--adjust the position for water and lava mobs
-															if mob_def.type_of_spawning == "water"  or mob_def.type_of_spawning == "lava" then
-																spawning_position.y = spawning_position.y - 1
-															end
-
-															--everything is correct, spawn mob
-															minetest.add_entity(spawning_position, mob_def.name)
-														end
-													end
-												end
-											end
-										end
-									end
-								end
-							end
-						end
+					--couldn't find node
+					if #spawning_position_list <= 0 then
+						goto continue
 					end
-				end
-			end
-	        end
-	end)
+
+					local spawning_position = spawning_position_list[math_random(1,#spawning_position_list)]
+
+					--Prevent strange behavior/too close to player
+					if not spawning_position or vector_distance(player_pos, spawning_position) < 15 then
+						goto continue
+					end
+
+					local gotten_node = get_node(spawning_position).name
+
+					if not gotten_node or gotten_node == "air" then --skip air nodes
+						goto continue
+					end
+
+                    local gotten_biome = minetest.get_biome_data(spawning_position)
+
+                    if not gotten_biome then
+                        goto continue --skip if in unloaded area
+                    end
+
+					gotten_biome = get_biome_name(gotten_biome.biome) --makes it easier to work with
+
+					--grab random mob
+					local mob_def = spawn_dictionary[math.random(1,#spawn_dictionary)]
+
+					if not mob_def then
+						goto continue --skip if something ridiculous happens (nil mob def)
+					end
+
+					--skip if not correct dimension
+					if mob_def.dimension ~= dimension then
+						goto continue
+					end
+
+					--skip if not in correct biome
+					if not biome_check(mob_def.biomes, gotten_biome) then
+						goto continue
+					end
+
+					--add this so mobs don't spawn inside nodes
+					spawning_position.y = spawning_position.y + 1
+
+					if spawning_position.y < mob_def.min_height or spawning_position.y > mob_def.max_height then
+						goto continue
+					end
+
+					--only need to poll for node light if everything else worked
+					local gotten_light = get_node_light(spawning_position)
+
+					--don't spawn if not in light limits
+					if gotten_light < mob_def.min_light or gotten_light > mob_def.max_light then
+						goto continue
+					end
+
+					local is_water = get_item_group(gotten_node, "water") ~= 0
+					local is_lava  = get_item_group(gotten_node, "lava") ~= 0
+
+					if mob_def.type_of_spawning == "ground" and is_water then
+						goto continue
+					end
+
+					if mob_def.type_of_spawning == "ground" and is_lava then
+						goto continue
+					end
+
+					--finally do the heavy check (for now) of mobs in area
+					if count_mobs(spawning_position, mob_def.spawn_class) >= mob_def.aoc then
+						goto continue
+					end
+
+					--adjust the position for water and lava mobs
+					if mob_def.type_of_spawning == "water"  or mob_def.type_of_spawning == "lava" then
+						spawning_position.y = spawning_position.y - 1
+					end
+
+					--everything is correct, spawn mob
+					minetest.add_entity(spawning_position, mob_def.name)
+
+                    ::continue:: --this is a safety catch
+                end
+            end
+        end
+    end)
 end
