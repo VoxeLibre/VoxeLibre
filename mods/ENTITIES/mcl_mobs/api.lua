@@ -3574,7 +3574,6 @@ local mob_activate = function(self, staticdata, def, dtime)
 end
 
 
--- main mob function
 local mob_step = function(self, dtime)
 
 	if not self or not self.object or not self.object:get_luaentity() then
@@ -3683,14 +3682,17 @@ local mob_step = function(self, dtime)
 	-- attack timer
 	self.timer = self.timer + dtime
 
+	--[[
 	if self.state ~= "attack" then
 
 		if self.timer < 1 then
+			print("returning>>error code 1")
 			return
 		end
 
 		self.timer = 0
 	end
+	]]--
 
 	-- never go over 100
 	if self.timer > 100 then
@@ -3728,8 +3730,6 @@ local mob_step = function(self, dtime)
 	if do_states(self, dtime) then
 		return
 	end
-
-
 
 	do_jump(self)
 
