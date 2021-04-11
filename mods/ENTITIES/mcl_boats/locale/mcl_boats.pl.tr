@@ -1,0 +1,11 @@
+# textdomain: mcl_boats
+Acacia Boat=Akacjowa łódź
+Birch Boat=Brzozowa łódź
+Boat=Łódź
+Boats are used to travel on the surface of water.=Łodzie są wykorzystywane do podróżowania po powierzchni wody.
+Dark Oak Boat=Ciemnodębowa łódź
+Jungle Boat=Tropikalna łódź
+Oak Boat=Dębowa łódź
+Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Rightclick the boat again to leave it, punch the boat to make it drop as an item.=Kliknij prawym przyciskiem myszy na źródło wody by postawić łódź. Kliknij prawym przyciskiem myszy by w nią wsiąść. Użyj przycisków [Left] and [Right] by sterować, [Forwards] by przyspieszyć i [Backwards] by zwolnić lub się cofać. Ponownie kliknij prawym przyciskiem na łódź by z niej wyjść, uderz ją by wziąc ją jako przedmiot.
+Spruce Boat=Świerkowa łódź
+Water vehicle=Pojazd wodny
