@@ -324,6 +324,8 @@ local collision = function(self)
 
 				self.object:add_velocity(vel1)
 				
+				--reenable fire spreading eventually
+
 				if object:is_player() then
 					object:add_player_velocity(vel2)
 
@@ -3575,7 +3577,16 @@ end
 -- main mob function
 local mob_step = function(self, dtime)
 
-	--[[
+	if not self or not self.object or not self.object:get_luaentity() then
+		return false
+	end
+
+	-- can mob be pushed, if so calculate direction -- do this first to prevent issues
+	-- you can push mobs when they're in the dead state
+	if self.pushable then
+		collision(self)
+	end
+
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime)
 	end
@@ -3598,9 +3609,11 @@ local mob_step = function(self, dtime)
 	if self.jump_sound_cooloff > 0 then
 		self.jump_sound_cooloff = self.jump_sound_cooloff - dtime
 	end
+
 	if self.opinion_sound_cooloff > 0 then
 		self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
 	end
+
 	if falling(self, pos) then
 		-- Return if mob died after falling
 		return
@@ -3716,9 +3729,7 @@ local mob_step = function(self, dtime)
 		return
 	end
 
-	if not self.object:get_luaentity() then
-		return false
-	end
+
 
 	do_jump(self)
 
@@ -3746,11 +3757,10 @@ local mob_step = function(self, dtime)
 
 		-- Move item around on flowing liquids
 		if def and def.liquidtype == "flowing" then
-			]]--
+			
 			--[[ Get flowing direction (function call from flowlib), if there's a liquid.
 			NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
 			Luckily, this is exactly what we need if we only care about water, which has this flowing distance. ]]
-			--[[
 			local vec = flowlib.quick_flow(p, node)
 			-- Just to make sure we don't manipulate the speed for no reason
 			if vec.x ~= 0 or vec.y ~= 0 or vec.z ~= 0 then
@@ -3805,13 +3815,6 @@ local mob_step = function(self, dtime)
 				self.lifetimer = 20
 			end
 		end
-	end
-	]]--
-
-	-- can mob be pushed, if so calculate direction
-	if self.pushable then
-		--c_x, c_y = unpack(collision(self))
-		collision(self)
 	end
 end
 
