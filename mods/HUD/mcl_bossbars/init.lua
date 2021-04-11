@@ -65,7 +65,7 @@ function mcl_bossbars.add_bar(player, def, dynamic, priority)
 end
 
 function mcl_bossbars.remove_bar(id)
-	mcl_bossbars.static[id].bar.static = false
+	mcl_bossbars.static[id].bar.id = nil
 	mcl_bossbars.static[id] = nil
 end
 
