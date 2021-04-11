@@ -210,7 +210,21 @@ local do_attack = function(self, player)
 end
 
 
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 -- collision function borrowed amended from jordan4ibanez open_ai mod
+--[[
 local collision = function(self)
 
 	local pos = self.object:get_pos()
@@ -237,6 +251,120 @@ local collision = function(self)
 
 	return({x,z})
 end
+]]--
+
+local collision = function(self)
+	pos = self.object:get_pos()
+	--do collision detection from the base of the mob
+	
+	collisionbox = self.object:get_properties().collisionbox
+
+	pos.y = pos.y + collisionbox[2]
+	
+	collision_boundary = collisionbox[4]
+
+	radius = collision_boundary
+
+	if collisionbox[5] > collision_boundary then
+		radius = collisionbox[5]
+	end
+
+	collision_count = 0
+
+	for _,object in ipairs(minetest.get_objects_inside_radius(pos, radius*1.25)) do
+		if object ~= self.object and (object:is_player() or object:get_luaentity()._cmi_is_mob == true) and
+		--don't collide with rider, rider don't collide with thing
+		(not object:get_attach() or (object:get_attach() and object:get_attach() ~= self.object)) and 
+		(not self.object:get_attach() or (self.object:get_attach() and self.object:get_attach() ~= object)) then
+			--stop infinite loop
+			collision_count = collision_count + 1
+			if collision_count > 100 then
+				break
+			end
+			pos2 = object:get_pos()
+			
+			object_collisionbox = object:get_properties().collisionbox
+
+			pos2.y = pos2.y + object_collisionbox[2]
+
+			object_collision_boundary = object_collisionbox[4]
+
+
+			--this is checking the difference of the object collided with's possision
+			--if positive top of other object is inside (y axis) of current object
+			y_base_diff = (pos2.y + object_collisionbox[5]) - pos.y
+
+			y_top_diff = (pos.y + collisionbox[5]) - pos2.y
+
+
+			distance = vector.distance(vector.new(pos.x,0,pos.z),vector.new(pos2.x,0,pos2.z))
+
+			if distance <= collision_boundary + object_collision_boundary and y_base_diff >= 0 and y_top_diff >= 0 then
+
+				dir = vector.direction(pos,pos2)
+				dir.y = 0
+				
+				--eliminate mob being stuck in corners
+				if dir.x == 0 and dir.z == 0 then
+					dir = vector.new(math.random(-1,1)*math.random(),0,math.random(-1,1)*math.random())
+				end
+
+				local velocity = vector.multiply(dir,1.1)
+
+				--local velocity = vector.normalize(dir)
+				
+				vel1 = vector.multiply(velocity, -1)
+				vel2 = velocity
+
+				self.object:add_velocity(vel1)
+				
+				if object:is_player() then
+					object:add_player_velocity(vel2)
+
+					--if self.on_fire then
+					--	start_fire(object)
+					--end
+
+					--if is_player_on_fire(object) then
+					--	start_fire(self.object)
+					--end
+
+				else
+					object:add_velocity(vel2)
+					--if self.on_fire then
+					--	start_fire(object)
+					--end
+					--if object:get_luaentity().on_fire then
+					--	start_fire(self.object)
+					--end
+				end
+			end
+		end
+	end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 -- move mob in facing direction
 local set_velocity = function(self, v)
@@ -244,9 +372,9 @@ local set_velocity = function(self, v)
 	local c_x, c_y = 0, 0
 
 	-- can mob be pushed, if so calculate direction
-	if self.pushable then
-		c_x, c_y = unpack(collision(self))
-	end
+	--if self.pushable then
+		--c_x, c_y = unpack(collision(self))
+	--end
 
 	-- halt mob if it has been ordered to stay
 	if self.order == "stand" then
@@ -256,11 +384,17 @@ local set_velocity = function(self, v)
 
 	local yaw = (self.object:get_yaw() or 0) + self.rotate
 
-	self.object:set_velocity({
+	self.object:add_velocity({
 		x = (sin(yaw) * -v) + c_x,
 		y = self.object:get_velocity().y,
 		z = (cos(yaw) * v) + c_y,
 	})
+
+	if self.pushable then
+		--c_x, c_y = unpack(collision(self))
+
+		collision(self)
+	end
 end
 
 
