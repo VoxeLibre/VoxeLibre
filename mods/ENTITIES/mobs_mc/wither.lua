@@ -73,7 +73,7 @@ mobs:register_mob("mobs_mc:wither", {
 			self.object:set_properties({textures={self.base_texture}})
 			self.armor = {undead = 80, fleshy = 80}
 		end
-		mcl_bossbars.update_boss(self, "Wither", "dark_purple")
+		mcl_bossbars.update_boss(self.object, "Wither", "dark_purple")
 	end,
 	on_spawn = function(self)
 		minetest.sound_play("mobs_mc_wither_spawn", {object=self.object, gain=1.0, max_hear_distance=64})
