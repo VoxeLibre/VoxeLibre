@@ -374,13 +374,7 @@ end
 
 -- move mob in facing direction
 local set_velocity = function(self, v)
-
 	local c_x, c_y = 0, 0
-
-	-- can mob be pushed, if so calculate direction
-	--if self.pushable then
-		--c_x, c_y = unpack(collision(self))
-	--end
 
 	-- halt mob if it has been ordered to stay
 	if self.order == "stand" then
@@ -395,12 +389,6 @@ local set_velocity = function(self, v)
 		y = self.object:get_velocity().y,
 		z = (math_cos(yaw) * v) + c_y,
 	})
-
-	if self.pushable then
-		--c_x, c_y = unpack(collision(self))
-
-		collision(self)
-	end
 end
 
 
@@ -3587,6 +3575,7 @@ end
 -- main mob function
 local mob_step = function(self, dtime)
 
+	--[[
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime)
 	end
@@ -3745,6 +3734,7 @@ local mob_step = function(self, dtime)
 		end
 	end
 
+	
 	-- Add water flowing for mobs from mcl_item_entity
 		local p, node, nn, def
 		p = self.object:get_pos()
@@ -3756,10 +3746,11 @@ local mob_step = function(self, dtime)
 
 		-- Move item around on flowing liquids
 		if def and def.liquidtype == "flowing" then
-
+			]]--
 			--[[ Get flowing direction (function call from flowlib), if there's a liquid.
 			NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
 			Luckily, this is exactly what we need if we only care about water, which has this flowing distance. ]]
+			--[[
 			local vec = flowlib.quick_flow(p, node)
 			-- Just to make sure we don't manipulate the speed for no reason
 			if vec.x ~= 0 or vec.y ~= 0 or vec.z ~= 0 then
@@ -3814,6 +3805,13 @@ local mob_step = function(self, dtime)
 				self.lifetimer = 20
 			end
 		end
+	end
+	]]--
+
+	-- can mob be pushed, if so calculate direction
+	if self.pushable then
+		--c_x, c_y = unpack(collision(self))
+		collision(self)
 	end
 end
 
