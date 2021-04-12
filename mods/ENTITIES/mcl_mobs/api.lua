@@ -15,13 +15,11 @@ local math_atan   = math.atan
 local math_random = math.random
 local math_floor  = math.floor
 
-
-
 mobs = {}
 
 local MAX_MOB_NAME_LENGTH = 30
-local HORNY_TIME = 30
-local HORNY_AGAIN_TIME = 300
+local BREED_TIME = 30
+local BREED_TIME_AGAIN = 300
 local CHILD_GROW_TIME = 60*20
 local DEATH_DELAY = 0.5
 local DEFAULT_FALL_SPEED = -10
@@ -1603,14 +1601,14 @@ local breed = function(self)
 		return
 	end
 
-	-- horny animal can mate for HORNY_TIME seconds,
-	-- afterwards horny animal cannot mate again for HORNY_AGAIN_TIME seconds
+	-- horny animal can mate for BREED_TIME seconds,
+	-- afterwards horny animal cannot mate again for BREED_TIME_AGAIN seconds
 	if self.horny == true
-	and self.hornytimer < HORNY_TIME + HORNY_AGAIN_TIME then
+	and self.hornytimer < BREED_TIME + BREED_TIME_AGAIN then
 
 		self.hornytimer = self.hornytimer + 1
 
-		if self.hornytimer >= HORNY_TIME + HORNY_AGAIN_TIME then
+		if self.hornytimer >= BREED_TIME + BREED_TIME_AGAIN then
 			self.hornytimer = 0
 			self.horny = false
 		end
@@ -1618,7 +1616,7 @@ local breed = function(self)
 
 	-- find another same animal who is also horny and mate if nearby
 	if self.horny == true
-	and self.hornytimer <= HORNY_TIME then
+	and self.hornytimer <= BREED_TIME then
 
 		local pos = self.object:get_pos()
 
@@ -1657,15 +1655,15 @@ local breed = function(self)
 			if ent
 			and canmate == true
 			and ent.horny == true
-			and ent.hornytimer <= HORNY_TIME then
+			and ent.hornytimer <= BREED_TIME then
 				num = num + 1
 			end
 
 			-- found your mate? then have a baby
 			if num > 1 then
 
-				self.hornytimer = HORNY_TIME + 1
-				ent.hornytimer = HORNY_TIME + 1
+				self.hornytimer = BREED_TIME + 1
+				ent.hornytimer = BREED_TIME + 1
 
 				-- spawn baby
 				minetest.after(5, function(parent1, parent2, pos)
