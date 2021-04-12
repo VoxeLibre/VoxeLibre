@@ -51,6 +51,7 @@ minetest.register_tool(":", {
 		handy = { speed = 1, level = 1, uses = 0 },
 		axey = { speed = 1, level = 1, uses = 0 },
 		shovely = { speed = 1, level = 1, uses = 0 },
+		hoey = { speed = 1, level = 1, uses = 0 },
 		pickaxey = { speed = 1, level = 0, uses = 0 },
 		swordy = { speed = 1, level = 0, uses = 0 },
 		swordy_cobweb = { speed = 1, level = 0, uses = 0 },
