@@ -60,12 +60,12 @@ function mcl_bossbars.add_bar(player, def, dynamic, priority)
 		bar.id = last_id + 1
 		last_id = bar.id
 		mcl_bossbars.static[bar.id] = bar
-		return id
+		return bar.id
 	end
 end
 
 function mcl_bossbars.remove_bar(id)
-	mcl_bossbars.static[id].bar.static = false
+	mcl_bossbars.static[id].bar.id = nil
 	mcl_bossbars.static[id] = nil
 end
 
@@ -76,16 +76,23 @@ function mcl_bossbars.update_bar(id, def, priority)
 	old.priority = priority or old.priority
 end
 
-function mcl_bossbars.update_boss(luaentity, name, color)
-	local object = luaentity.object
+function mcl_bossbars.update_boss(object, name, color)
+	local props = object:get_luaentity()
+	if not props or not props._cmi_is_mob then
+		props = object:get_properties()
+		props.health = object:get_hp()
+	end
+
 	local bardef = {
-		text = luaentity.nametag,
-		percentage = math.floor(luaentity.health / luaentity.hp_max * 100),
 		color = color,
+		text = props.nametag,
+		percentage = math.floor(props.health / props.hp_max * 100),
 	}
+
 	if not bardef.text or bardef.text == "" then
 		bardef.text = name
 	end
+
 	local pos = object:get_pos()
 	for _, player in pairs(minetest.get_connected_players()) do
 		local d = vector.distance(pos, player:get_pos())

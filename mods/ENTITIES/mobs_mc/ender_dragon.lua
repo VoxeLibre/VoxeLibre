@@ -60,7 +60,7 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	},
 	ignores_nametag = true,
 	do_custom = function(self)
-		mcl_bossbars.update_boss(self, "Ender Dragon", "light_purple")
+		mcl_bossbars.update_boss(self.object, "Ender Dragon", "light_purple")
 		for _, obj in ipairs(minetest.get_objects_inside_radius(self.object:get_pos(), 80)) do
 			local luaentity = obj:get_luaentity()
 			if luaentity and luaentity.name == "mcl_end:crystal" then

@@ -156,7 +156,7 @@ minetest.register_globalstep(function(dtime)
 
 	for _,player in pairs(get_connected_players()) do
 
-		c_x, c_y = unpack(player_collision(player))
+		local c_x, c_y = unpack(player_collision(player))
 
 		if player:get_velocity().x + player:get_velocity().y < .5 and c_x + c_y > 0 then
 			--minetest.chat_send_player(player:get_player_name(), "pushed at " .. c_x + c_y .. " parsecs.")
@@ -210,26 +210,26 @@ minetest.register_globalstep(function(dtime)
 
 		if parent then
 			local parent_yaw = degrees(parent:get_yaw())
-			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
+			player:set_properties({collisionbox = {-0.312,0,-0.312,0.312,1.8,0.312}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch, -limit_vel_yaw(yaw, parent_yaw) + parent_yaw, 0))
 			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
 		elseif controls.sneak then
 			-- controls head pitch when sneaking
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+36,0,0))
 			-- sets eye height, and nametag color accordingly
-			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.35, nametag_color = { r = 225, b = 225, a = 0, g = 225 }})
+			player:set_properties({collisionbox = {-0.312,0,-0.312,0.312,1.8,0.312}, eye_height = 1.35, nametag_color = { r = 225, b = 225, a = 0, g = 225 }})
 			-- sneaking body conrols
 			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
 		elseif get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and is_sprinting(name) == true then
 			-- set head pitch and yaw when swimming
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+90-degrees(dir_to_pitch(player_velocity)),player_vel_yaw - yaw,0))
 			-- sets eye height, and nametag color accordingly
-			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,0.8,0.35}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
+			player:set_properties({collisionbox = {-0.312,0,-0.312,0.312,0.8,0.312}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 			-- control body bone when swimming
 			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(degrees(dir_to_pitch(player_velocity)) - 90,-player_vel_yaw + yaw + 180,0))
 		else
 			-- sets eye height, and nametag color accordingly
-			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,1.8,0.35}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
+			player:set_properties({collisionbox = {-0.312,0,-0.312,0.312,1.8,0.312}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 
 			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch, player_vel_yaw - yaw, 0))
 			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0, -player_vel_yaw + yaw, 0))
