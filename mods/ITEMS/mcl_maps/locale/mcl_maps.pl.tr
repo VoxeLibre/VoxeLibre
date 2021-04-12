@@ -1,0 +1,10 @@
+# textdomain: mcl_maps
+Empty Map=Pusta mapa
+Empty maps are not useful as maps, but they can be stacked and turned to maps which can be used.=Puste mapy nie są tak użyteczne jak mapy ale mogą być grupowane i zamienione w mapy które już są pożyteczne.
+Rightclick to start using the map (which can't be stacked anymore).=Kliknij prawy aby zacząć używać mapy (nie będzie już jej można grupować).
+Map=Mapa
+Maps show your surroundings as you explore the world.=Mapy pokazują otoczenie, gdy eksplorujesz świat.
+Hold the map in any of the hotbar slots. This allows you to access the minimap by pressing the minimap key (see controls settings).=Umieść mapę w szybkim ekwipunku. To pozwala ci używać minimapy przez naciśnięcie klawisza minimapy (zobacz w ustawieniach sterowania).
+In Creative Mode, you don't need this item; the minimap is always available.=W trybie kreatywnym nie potrzebujesz tego przedmiotu, minimapa zawsze jest dostępna.
+Enables minimap=Włącza minimapę
+Use the minimap key to show the map.=Użyj klawisza minimap aby pokazać mapę.
