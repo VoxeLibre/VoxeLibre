@@ -52,8 +52,6 @@ function mobs.is_creative(name)
 end
 
 
-
-
 local atan = function(x)
 	if not x or x ~= x then
 		return 0
@@ -213,50 +211,6 @@ local do_attack = function(self, player)
 	--end
 end
 
-
-
-
-------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
--- collision function borrowed amended from jordan4ibanez open_ai mod
---[[
-local collision = function(self)
-
-	local pos = self.object:get_pos()
-	local vel = self.object:get_velocity()
-	local x = 0
-	local z = 0
-	local width = -self.collisionbox[1] + self.collisionbox[4] + 0.5
-
-	for _,object in pairs(minetest.get_objects_inside_radius(pos, width)) do
-
-		if object:is_player()
-		or (object:get_luaentity()._cmi_is_mob == true and object ~= self.object) then
-
-			local pos2 = object:get_pos()
-			local vec  = {x = pos.x - pos2.x, z = pos.z - pos2.z}
-			local force = (width + 0.5) - vector.distance(
-				{x = pos.x, y = 0, z = pos.z},
-				{x = pos2.x, y = 0, z = pos2.z})
-
-			x = x + (vec.x * force)
-			z = z + (vec.z * force)
-		end
-	end
-
-	return({x,z})
-end
-]]--
-
 local collision = function(self)
 	pos = self.object:get_pos()
 	--do collision detection from the base of the mob
@@ -348,27 +302,6 @@ local collision = function(self)
 		end
 	end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
 
 
 
