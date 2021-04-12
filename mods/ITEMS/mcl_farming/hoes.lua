@@ -78,9 +78,6 @@ minetest.register_tool("mcl_farming:hoe_wood", {
 	},
 	_repair_material = "group:wood",
 	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		hoey = { speed = 2, level = 1, uses = 60 }
-	},
 })
 
 minetest.register_craft({
@@ -121,9 +118,6 @@ minetest.register_tool("mcl_farming:hoe_stone", {
 	},
 	_repair_material = "mcl_core:cobble",
 	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		hoey = { speed = 4, level = 3, uses = 132 }
-	},
 })
 
 minetest.register_craft({
@@ -160,9 +154,6 @@ minetest.register_tool("mcl_farming:hoe_iron", {
 	},
 	_repair_material = "mcl_core:iron_ingot",
 	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		hoey = { speed = 6, level = 4, uses = 251 }
-	},
 })
 
 minetest.register_craft({
@@ -205,9 +196,6 @@ minetest.register_tool("mcl_farming:hoe_gold", {
 	},
 	_repair_material = "mcl_core:gold_ingot",
 	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		hoey = { speed = 12, level = 2, uses = 33 }
-	},
 })
 
 minetest.register_craft({
@@ -252,9 +240,6 @@ minetest.register_tool("mcl_farming:hoe_diamond", {
 	},
 	_repair_material = "mcl_core:diamond",
 	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		hoey = { speed = 8, level = 5, uses = 1562 }
-	},
 })
 
 minetest.register_craft({
