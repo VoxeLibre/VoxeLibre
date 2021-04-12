@@ -1,7 +1,7 @@
 # textdomain: mclx_stairs
 Oak Bark Stairs=Schody z dębowej kory
 Oak Bark Slab=Płyta z dębowej kory
-Double Oak Bark Slab=Podwójna łyta z dębowej kory
+Double Oak Bark Slab=Podwójna płyta z dębowej kory
 Acacia Bark Stairs=Schody z akacjowej kory
 Acacia Bark Slab=Płyta z akacjowej kory
 Double Acacia Bark Slab=Podwójna płyta z akacjowej kory
@@ -26,9 +26,9 @@ Stairs of Gold=Złote schody
 Slab of Iron=Płyta żelaza
 Double Slab of Iron=Podwójna płyta żelaza
 Stairs of Iron=Żelazne schody
-Cracked Stone Brick Stairs=Schody z pękniętych kamieni cegłowych
-Cracked Stone Brick Slab=Płyta z pękniętych kamieni cegłowych
-Double Cracked Stone Brick Slab=Podwójna płyta z pękniętych kamieni cegłowych
+Cracked Stone Brick Stairs=Schody z pękniętych ceglanych kamieni
+Cracked Stone Brick Slab=Płyta z pękniętych ceglanych kamieni
+Double Cracked Stone Brick Slab=Podwójna płyta z pękniętych ceglanych kamieni
 White Concrete Stairs=Schody z białego cementu
 White Concrete Slab=Płyta z białego cementu
 Double White Concrete Slab=Podwójna płyta z białego cementu
