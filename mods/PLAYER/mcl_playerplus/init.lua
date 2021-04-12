@@ -156,7 +156,7 @@ minetest.register_globalstep(function(dtime)
 
 	for _,player in pairs(get_connected_players()) do
 
-		c_x, c_y = unpack(player_collision(player))
+		local c_x, c_y = unpack(player_collision(player))
 
 		if player:get_velocity().x + player:get_velocity().y < .5 and c_x + c_y > 0 then
 			--minetest.chat_send_player(player:get_player_name(), "pushed at " .. c_x + c_y .. " parsecs.")
