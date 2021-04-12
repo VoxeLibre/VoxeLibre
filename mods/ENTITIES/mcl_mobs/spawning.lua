@@ -12,7 +12,7 @@ local vector_distance = vector.distance
 
 -- range for mob count
 local aoc_range = 32
---[[ 
+--[[
 
 THIS IS THE BIG LIST OF ALL BIOMES - used for programming/updating mobs
 
@@ -158,7 +158,6 @@ local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
 -- count how many mobs of one type are inside an area
 
 local count_mobs = function(pos,mobtype)
-	print(mobtype)
 	local num = 0
 	local objs = get_objects_inside_radius(pos, aoc_range)
 	for n = 1, #objs do
@@ -170,12 +169,12 @@ local count_mobs = function(pos,mobtype)
 					num = num + 1
 				end
 			-- count passive mobs only
-			else 
+			else
 				num = num + 1
 			end
 		end
 	end
-			
+
 	return num
 end
 
@@ -194,7 +193,7 @@ end
 name:
 the mobs name
 
-dimension: 
+dimension:
 "overworld"
 "nether"
 "end"
@@ -531,7 +530,7 @@ local function biome_check(biome_list, biome_goal)
 
 	return false
 end
-  
+
 
 --todo mob limiting
 --MAIN LOOP
@@ -552,11 +551,11 @@ if mobs_spawn then
 						if dimension == "void" or dimension == "default" then
 							break -- ignore void and unloaded area
 						end
-					
+
 						local min,max = decypher_limits(player_pos.y)
 
 						local goal_pos = position_calculation(player_pos)
-                    
+
 						local spawning_position_list = find_nodes_in_area_under_air(new_vector(goal_pos.x,min,goal_pos.z), vector.new(goal_pos.x,max,goal_pos.z), {"group:solid", "group:water", "group:lava"})
 
 						--couldn't find node
