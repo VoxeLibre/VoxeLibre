@@ -8,6 +8,20 @@ dofile(minetest.get_modpath(minetest.get_current_modname()).."/alias.lua")
 local longdesc = S("This is a piece of equippable armor which reduces the amount of damage you receive.")
 local usage = S("To equip it, put it on the corresponding armor slot in your inventory menu.")
 
+minetest.register_tool("mcl_armor:elytra", {
+	description = S("Elytra"),
+	_doc_items_longdesc = longdesc,
+	_doc_items_usagehelp = usage,
+	inventory_image = "mcl_armor_inv_elytra.png",
+	groups = {armor_torso=1, mcl_armor_points=0, mcl_armor_uses=10, enchantability=0},
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_leather",
+		_mcl_armor_unequip = "mcl_armor_unequip_leather",
+	},
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
+})
+
 minetest.register_tool("mcl_armor:helmet_leather", {
 	description = S("Leather Cap"),
 	_doc_items_longdesc = longdesc,
@@ -322,7 +336,7 @@ local craft_ingreds = {
 	gold = { "mcl_core:gold_ingot", "mcl_core:gold_nugget" },
 	diamond = { "mcl_core:diamond" },
 	chain = { nil, "mcl_core:iron_nugget"} ,
-}		
+}
 
 for k, v in pairs(craft_ingreds) do
 	-- material
@@ -389,4 +403,3 @@ for k, v in pairs(craft_ingreds) do
 		})
 	end
 end
-
