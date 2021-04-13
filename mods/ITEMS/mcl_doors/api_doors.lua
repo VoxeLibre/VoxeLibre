@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mcl_doors")
+local minetest_get_meta = minetest.get_meta
 
 -- This helper function calls on_place_node callbacks.
 local function on_place_node(place_to, newnode,
@@ -164,14 +165,14 @@ function mcl_doors:register_door(name, def)
 			end
 
 			if def.only_placer_can_open then
-				local meta = minetest.get_meta(pt)
+				local meta = minetest_get_meta(pt)
 				meta:set_string("doors_owner", "")
-				meta = minetest.get_meta(pt2)
+				meta = minetest_get_meta(pt2)
 				meta:set_string("doors_owner", "")
 			end
 
-			local meta1 = minetest.get_meta(pt)
-			local meta2 = minetest.get_meta(pt2)
+			local meta1 = minetest_get_meta(pt)
+			local meta2 = minetest_get_meta(pt2)
 			-- save mirror state for the correct door
 			if left_node.name:sub(1, #name) == name then
 				meta1:set_int("is_mirrored", 1)
@@ -198,9 +199,9 @@ function mcl_doors:register_door(name, def)
 	local tb = def.tiles_bottom
 
 	local function on_open_close(pos, dir, check_name, replace, replace_dir)
-		local meta1 = minetest.get_meta(pos)
+		local meta1 = minetest_get_meta(pos)
 		pos.y = pos.y+dir
-		local meta2 = minetest.get_meta(pos)
+		local meta2 = minetest_get_meta(pos)
 
 		-- if name of other door is not the same as check_name -> return
 		if not minetest.get_node(pos).name == check_name  then
@@ -254,7 +255,7 @@ function mcl_doors:register_door(name, def)
 		if not def.only_placer_can_open then
 			return true
 		end
-		local meta = minetest.get_meta(pos)
+		local meta = minetest_get_meta(pos)
 		local pn = player:get_player_name()
 		return meta:get_string("doors_owner") == pn
 	end
@@ -292,10 +293,15 @@ function mcl_doors:register_door(name, def)
 		sounds = def.sounds,
 
 		after_destruct = function(bottom, oldnode)
-			minetest.add_item(bottom, name)
-			local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
-			if minetest.get_node(bottom).name ~= name.."_b_2" and minetest.get_node(top).name == name.."_t_1" then
-				minetest.remove_node(top)
+			local meta_bottom = minetest_get_meta(bottom)
+			if meta_bottom:get_int("rotation") == 1 then
+				meta_bottom:set_int("rotation", 0)
+			else
+				minetest.add_item(bottom, name)
+				local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
+				if minetest.get_node(bottom).name ~= name.."_b_2" and minetest.get_node(top).name == name.."_t_1" then
+					minetest.remove_node(top)
+				end
 			end
 		end,
 
@@ -305,13 +311,19 @@ function mcl_doors:register_door(name, def)
 			action_on = on_mesecons_signal_open,
 		}},
 
-		on_rotate = function(pos, node, user, mode, param2)
+		on_rotate = function(bottom, node, user, mode, param2)
 			if mode == screwdriver.ROTATE_FACE then
-				minetest.remove_node(pos)
-				node.param2 = screwdriver.rotate.facedir(pos, node, mode)
-				minetest.set_node(pos, node)
+				local meta_bottom = minetest_get_meta(bottom)
+				meta_bottom:set_int("rotation", 1)
+				node.param2 = screwdriver.rotate.facedir(bottom, node, mode)
+				minetest.swap_node(bottom, node)
+
+				local top = {x=bottom.x,y=bottom.y+1,z=bottom.z}
+				local meta_top = minetest_get_meta(top)
+				meta_top:set_int("rotation", 1)
 				node.name = name .."_t_1"
-				minetest.set_node({x=pos.x,y=pos.y+1,z=pos.z}, node)
+				minetest.swap_node(top, node)
+
 				return true
 			end
 			return false
@@ -353,9 +365,14 @@ function mcl_doors:register_door(name, def)
 		sounds = def.sounds,
 
 		after_destruct = function(top, oldnode)
-			local bottom = { x = top.x, y = top.y - 1, z = top.z }
-			if minetest.get_node(top).name ~= name.."_t_2" and minetest.get_node(bottom).name == name.."_b_1" and oldnode.name == name.."_t_1" then
-				minetest.dig_node(bottom)
+			local meta_top = minetest_get_meta(top)
+			if meta_top:get_int("rotation") == 1 then
+				meta_top:set_int("rotation", 0)
+			else
+				local bottom = { x = top.x, y = top.y - 1, z = top.z }
+				if minetest.get_node(top).name ~= name.."_t_2" and minetest.get_node(bottom).name == name.."_b_1" and oldnode.name == name.."_t_1" then
+					minetest.dig_node(bottom)
+				end
 			end
 		end,
 
@@ -366,13 +383,19 @@ function mcl_doors:register_door(name, def)
 			rules = mesecon.rules.flat,
 		}},
 
-		on_rotate = function(pos, node, user, mode, param2)
+		on_rotate = function(top, node, user, mode, param2)
 			if mode == screwdriver.ROTATE_FACE then
-				minetest.remove_node(pos)
-				node.param2 = screwdriver.rotate.facedir(pos, node, mode)
-				minetest.set_node(pos, node)
+				local meta_top = minetest_get_meta(top)
+				meta_top:set_int("rotation", 1)
+				node.param2 = screwdriver.rotate.facedir(top, node, mode)
+				minetest.swap_node(top, node)
+
+				local bottom = {x=top.x,y=top.y-1,z=top.z}
+				local meta_bottom = minetest_get_meta(bottom)
+				meta_bottom:set_int("rotation", 1)
 				node.name = name .."_b_1"
-				minetest.set_node({x=pos.x,y=pos.y-1,z=pos.z}, node)
+				minetest.swap_node(bottom, node)
+
 				return true
 			end
 			return false
@@ -414,10 +437,15 @@ function mcl_doors:register_door(name, def)
 		sounds = def.sounds,
 
 		after_destruct = function(bottom, oldnode)
-			minetest.add_item(bottom, name)
-			local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
-			if minetest.get_node(bottom).name ~= name.."_b_1" and minetest.get_node(top).name == name.."_t_2" then
-				minetest.remove_node(top)
+			local meta_bottom = minetest_get_meta(bottom)
+			if meta_bottom:get_int("rotation") == 1 then
+				meta_bottom:set_int("rotation", 0)
+			else
+				local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
+				minetest.add_item(bottom, name)
+				if minetest.get_node(bottom).name ~= name.."_b_1" and minetest.get_node(top).name == name.."_t_2" then
+					minetest.remove_node(top)
+				end
 			end
 		end,
 
@@ -427,13 +455,19 @@ function mcl_doors:register_door(name, def)
 			action_off = on_mesecons_signal_close,
 		}},
 
-		on_rotate = function(pos, node, user, mode, param2)
+		on_rotate = function(bottom, node, user, mode, param2)
 			if mode == screwdriver.ROTATE_FACE then
-				minetest.remove_node(pos)
-				node.param2 = screwdriver.rotate.facedir(pos, node, mode)
-				minetest.set_node(pos, node)
+				local meta_bottom = minetest_get_meta(bottom)
+				meta_bottom:set_int("rotation", 1)
+				node.param2 = screwdriver.rotate.facedir(bottom, node, mode)
+				minetest.swap_node(bottom, node)
+
+				local top = {x=bottom.x,y=bottom.y+1,z=bottom.z}
+				local meta_top = minetest_get_meta(top)
+				meta_top:set_int("rotation", 1)
 				node.name = name .."_t_2"
-				minetest.set_node({x=pos.x,y=pos.y+1,z=pos.z}, node)
+				minetest.swap_node(top, node)
+
 				return true
 			end
 			return false
@@ -475,9 +509,14 @@ function mcl_doors:register_door(name, def)
 		sounds = def.sounds,
 
 		after_destruct = function(top, oldnode)
-			local bottom = { x = top.x, y = top.y - 1, z = top.z }
-			if minetest.get_node(top).name ~= name.."_t_1" and minetest.get_node(bottom).name == name.."_b_2" and oldnode.name == name.."_t_2" then
-				minetest.dig_node(bottom)
+			local meta_top = minetest_get_meta(top)
+			if meta_top:get_int("rotation") == 1 then
+				meta_top:set_int("rotation", 0)
+			else
+				local bottom = { x = top.x, y = top.y - 1, z = top.z }
+				if minetest.get_node(top).name ~= name.."_t_1" and minetest.get_node(bottom).name == name.."_b_2" and oldnode.name == name.."_t_2" then
+					minetest.dig_node(bottom)
+				end
 			end
 		end,
 
@@ -488,13 +527,19 @@ function mcl_doors:register_door(name, def)
 			rules = mesecon.rules.flat,
 		}},
 
-		on_rotate = function(pos, node, user, mode, param2)
+		on_rotate = function(top, node, user, mode, param2)
 			if mode == screwdriver.ROTATE_FACE then
-				minetest.remove_node(pos)
-				node.param2 = screwdriver.rotate.facedir(pos, node, mode)
-				minetest.set_node(pos, node)
+				local meta_top = minetest_get_meta(top)
+				meta_top:set_int("rotation", 1)
+				node.param2 = screwdriver.rotate.facedir(top, node, mode)
+				minetest.swap_node(top, node)
+
+				local bottom = {x=top.x,y=top.y-1,z=top.z}
+				local meta_bottom = minetest_get_meta(bottom)
+				meta_bottom:set_int("rotation", 1)
 				node.name = name .."_b_2"
-				minetest.set_node({x=pos.x,y=pos.y-1,z=pos.z}, node)
+				minetest.swap_node(bottom, node)
+
 				return true
 			end
 			return false
