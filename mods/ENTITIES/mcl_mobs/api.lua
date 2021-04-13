@@ -42,6 +42,9 @@ local math_atan   = math.atan
 local math_random = math.random
 local math_floor  = math.floor
 
+-- localize vector functions
+local vector_new = vector.new
+
 mobs = {}
 -- mob constants
 local MAX_MOB_NAME_LENGTH = 30
@@ -3538,43 +3541,48 @@ local mob_step = function(self, dtime)
 		return false
 	end
 
+	if self.state == "die" then
+		print("need custom die stop moving thing")
+		return
+	end
+
 	-- can mob be pushed, if so calculate direction -- do this first to prevent issues
-	-- you can push mobs when they're in the dead state
 	if self.pushable then
 		collision(self)
 	end
 
-	if not self.fire_resistant then
-		mcl_burning.tick(self.object, dtime)
-	end
 
-	if use_cmi then
-		cmi.notify_step(self.object, dtime)
-	end
+
+
+	--if not self.fire_resistant then
+	--	mcl_burning.tick(self.object, dtime)
+	--end
+
+	--if use_cmi then
+		--cmi.notify_step(self.object, dtime)
+	--end
 
 	local pos = self.object:get_pos()
 	local yaw = 0
 
-	if mobs_debug then
-		update_tag(self)
-	end
+	--if mobs_debug then
+		--update_tag(self)
+	--end
 
-	if self.state == "die" then
-		return
-	end
 
-	if self.jump_sound_cooloff > 0 then
-		self.jump_sound_cooloff = self.jump_sound_cooloff - dtime
-	end
 
-	if self.opinion_sound_cooloff > 0 then
-		self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
-	end
+	--if self.jump_sound_cooloff > 0 then
+	--	self.jump_sound_cooloff = self.jump_sound_cooloff - dtime
+	--end
 
-	if falling(self, pos) then
+	--if self.opinion_sound_cooloff > 0 then
+	--	self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
+	--end
+
+	--if falling(self, pos) then
 		-- Return if mob died after falling
-		return
-	end
+	--	return
+	--end
 
 	-- smooth rotation by ThomasMonroe314
 
@@ -3621,24 +3629,24 @@ local mob_step = function(self, dtime)
 	-- end rotation
 
 	-- run custom function (defined in mob lua file)
-	if self.do_custom then
+	--if self.do_custom then
 
 		-- when false skip going any further
-		if self.do_custom(self, dtime) == false then
-			return
-		end
-	end
+		--if self.do_custom(self, dtime) == false then
+		--	return
+		--end
+	--end
 
 	-- knockback timer
-	if self.pause_timer > 0 then
+	--if self.pause_timer > 0 then
 
-		self.pause_timer = self.pause_timer - dtime
+	--	self.pause_timer = self.pause_timer - dtime
 
-		return
-	end
+	--	return
+	--end
 
 	-- attack timer
-	self.timer = self.timer + dtime
+	--self.timer = self.timer + dtime
 
 	--[[
 	if self.state ~= "attack" then
@@ -3653,98 +3661,101 @@ local mob_step = function(self, dtime)
 	]]--
 
 	-- never go over 100
-	if self.timer > 100 then
-		self.timer = 1
-	end
+	--if self.timer > 100 then
+	--	self.timer = 1
+	--end
 
 	-- mob plays random sound at times
-	if math_random(1, 70) == 1 then
-		mob_sound(self, "random", true)
-	end
+	--if math_random(1, 70) == 1 then
+	--	mob_sound(self, "random", true)
+	--end
 
 	-- environmental damage timer (every 1 second)
-	self.env_damage_timer = self.env_damage_timer + dtime
+	--self.env_damage_timer = self.env_damage_timer + dtime
 
-	if (self.state == "attack" and self.env_damage_timer > 1)
-	or self.state ~= "attack" then
-
-		self.env_damage_timer = 0
-
-		-- check for environmental damage (water, fire, lava etc.)
-		if do_env_damage(self) then
-			return
-		end
-
+	--if (self.state == "attack" and self.env_damage_timer > 1)
+	--or self.state ~= "attack" then
+	--
+	--	self.env_damage_timer = 0
+	--
+	--	-- check for environmental damage (water, fire, lava etc.)
+	--	if do_env_damage(self) then
+	--		return
+	--	end
+	--
 		-- node replace check (cow eats grass etc.)
-		replace(self, pos)
-	end
+	--	replace(self, pos)
+	--end
 
-	monster_attack(self)
+	--monster_attack(self)
 
-	npc_attack(self)
+	--npc_attack(self)
 
-	breed(self)
+	--breed(self)
 
-	if do_states(self, dtime) then
-		return
-	end
+	--if do_states(self, dtime) then
+	--	return
+	--end
 
-	do_jump(self)
+	--do_jump(self)
 
-	runaway_from(self)
+	--runaway_from(self)
 
-	if is_at_water_danger(self) and self.state ~= "attack" then
-		if math_random(1, 10) <= 6 then
-			set_velocity(self, 0)
-			self.state = "stand"
-			set_animation(self, "stand")
-			yaw = yaw + math_random(-0.5, 0.5)
-			yaw = set_yaw(self, yaw, 8)
-		end
-	end
+
+	--if is_at_water_danger(self) and self.state ~= "attack" then
+	--	if math_random(1, 10) <= 6 then
+	--		set_velocity(self, 0)
+	--		self.state = "stand"
+	--		set_animation(self, "stand")
+	--		yaw = yaw + math_random(-0.5, 0.5)
+	--		yaw = set_yaw(self, yaw, 8)
+	--	end
+	--end
 
 	
 	-- Add water flowing for mobs from mcl_item_entity
-		local p, node, nn, def
-		p = self.object:get_pos()
-		node = minetest_get_node_or_nil(p)
-		if node then
-			nn = node.name
-			def = minetest_registered_nodes[nn]
-		end
+	--[[
+	local p, node, nn, def
+	p = self.object:get_pos()
+	node = minetest_get_node_or_nil(p)
+	if node then
+		nn = node.name
+		def = minetest_registered_nodes[nn]
+	end
 
-		-- Move item around on flowing liquids
-		if def and def.liquidtype == "flowing" then
-			
-			--[[ Get flowing direction (function call from flowlib), if there's a liquid.
-			NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
-			Luckily, this is exactly what we need if we only care about water, which has this flowing distance. ]]
-			local vec = flowlib.quick_flow(p, node)
-			-- Just to make sure we don't manipulate the speed for no reason
-			if vec.x ~= 0 or vec.y ~= 0 or vec.z ~= 0 then
-				-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
-				local f = 1.39
-				-- Set new item moving speed into the direciton of the liquid
-				local newv = vector.multiply(vec, f)
-				self.object:set_acceleration({x = 0, y = 0, z = 0})
-				self.object:set_velocity({x = newv.x, y = -0.22, z = newv.z})
+	-- Move item around on flowing liquids
+	if def and def.liquidtype == "flowing" then
+		
+		-- Get flowing direction (function call from flowlib), if there's a liquid.
+		NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
+		Luckily, this is exactly what we need if we only care about water, which has this flowing distance. 
+		local vec = flowlib.quick_flow(p, node)
+		-- Just to make sure we don't manipulate the speed for no reason
+		if vec.x ~= 0 or vec.y ~= 0 or vec.z ~= 0 then
+			-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
+			local f = 1.39
+			-- Set new item moving speed into the direciton of the liquid
+			local newv = vector.multiply(vec, f)
+			self.object:set_acceleration({x = 0, y = 0, z = 0})
+			self.object:set_velocity({x = newv.x, y = -0.22, z = newv.z})
 
-				self.physical_state = true
-				self._flowing = true
-				self.object:set_properties({
-					physical = true
-				})
-				return
-			end
-		elseif self._flowing == true then
-			-- Disable flowing physics if not on/in flowing liquid
-			self._flowing = false
-			enable_physics(self.object, self, true)
+			self.physical_state = true
+			self._flowing = true
+			self.object:set_properties({
+				physical = true
+			})
 			return
 		end
+	elseif self._flowing == true then
+		-- Disable flowing physics if not on/in flowing liquid
+		self._flowing = false
+		enable_physics(self.object, self, true)
+		return
+	end
 
 	--Mob following code.
 	follow_flop(self)
+
 
 	if is_at_cliff_or_danger(self) then
 			set_velocity(self, 0)
@@ -3774,6 +3785,7 @@ local mob_step = function(self, dtime)
 			end
 		end
 	end
+	]]--
 end
 
 
@@ -4005,7 +4017,8 @@ minetest.register_entity(name, {
 		--default built in engine collision detection
 		self.object:set_properties({
 			collide_with_objects = false,
-		})	
+		})
+		self.object:set_acceleration(vector_new(0,-9.81, 0))
 		return mob_activate(self, staticdata, def, dtime)
 	end,
 
