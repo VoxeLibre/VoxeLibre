@@ -604,14 +604,15 @@ end
 
 local mob_step = function(self, dtime)
 
+	--do not continue if non-existent
 	if not self or not self.object or not self.object:get_luaentity() then
 		return false
 	end
 
-	if self.state == "die" then
-		print("need custom die stop moving thing")
-		return
-	end
+	--if self.state == "die" then
+	--	print("need custom die stop moving thing")
+	--	return
+	--end
 
 	-- can mob be pushed, if so calculate direction -- do this first to prevent issues
 	if self.pushable then
@@ -629,8 +630,8 @@ local mob_step = function(self, dtime)
 		--cmi.notify_step(self.object, dtime)
 	--end
 
-	local pos = self.object:get_pos()
-	local yaw = 0
+	--local pos = self.object:get_pos()
+	--local yaw = 0
 
 	--if mobs_debug then
 		--update_tag(self)
@@ -653,6 +654,7 @@ local mob_step = function(self, dtime)
 
 	-- smooth rotation by ThomasMonroe314
 
+	--[[
 	if self.delay and self.delay > 0 then
 
 		local yaw = self.object:get_yaw() or 0
@@ -692,6 +694,7 @@ local mob_step = function(self, dtime)
 		self.object:set_yaw(yaw)
 		--update_roll(self)
 	end
+	]]--
 
 	-- end rotation
 
