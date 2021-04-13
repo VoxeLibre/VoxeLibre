@@ -140,10 +140,18 @@ if minetest_settings:get_bool("only_peaceful_mobs", false) then
 	end)
 end
 
+local integer_test = {-1,1}
+--slightly adjust mob position to prevent equal length
+	--corner/wall sticking
+	pos.x = pos.x + ((math_random()/2)*integer_test[math.random(1,2)])
+	pos.z = pos.z + ((math_random()/2)*integer_test[math.random(1,2)])
+
 local collision = function(self)
 	pos = self.object:get_pos()
-	--do collision detection from the base of the mob
+
 	
+
+	--do collision detection from the base of the mob
 	collisionbox = self.object:get_properties().collisionbox
 
 	pos.y = pos.y + collisionbox[2]
@@ -189,6 +197,7 @@ local collision = function(self)
 			if distance <= collision_boundary + object_collision_boundary and y_base_diff >= 0 and y_top_diff >= 0 then
 
 				dir = vector.direction(pos,pos2)
+
 				dir.y = 0
 				
 				--eliminate mob being stuck in corners
@@ -196,19 +205,32 @@ local collision = function(self)
 					dir = vector.new(math_random(-1,1)*math_random(),0,math_random(-1,1)*math_random())
 				end
 
-				local velocity = vector.multiply(dir,1.1)
+				---- JUST MAKE THIS DIR FROM NOW ON --- FIX MEEEEE
+				local velocity = dir--vector.multiply(dir,1.1)
 
 				--local velocity = vector.normalize(dir)
 				
 				vel1 = vector.multiply(velocity, -1)
 				vel2 = velocity
 
-				self.object:add_velocity(vel1)
+
+				local current_mob_velocity = self.object:get_velocity()
+
+
+				if math.abs(current_mob_velocity.x) < 2 and math.abs(current_mob_velocity.z) < 2 then
+					self.object:add_velocity(vel1)
+				end
 				
 				--reenable fire spreading eventually
 
 				if object:is_player() then
-					object:add_player_velocity(vel2)
+
+					local current_vel = object:get_velocity()
+
+					if math.abs(current_vel.x) < 2 and math.abs(current_vel.z) < 2 then
+						object:add_player_velocity(vel2)
+					end
+				
 
 					--if self.on_fire then
 					--	start_fire(object)
@@ -219,7 +241,10 @@ local collision = function(self)
 					--end
 
 				else
-					object:add_velocity(vel2)
+					local current_vel = object:get_velocity()
+					if math.abs(current_vel.x) < 2 and math.abs(current_vel.z) < 2 then
+						object:add_velocity(vel2)
+					end
 					--if self.on_fire then
 					--	start_fire(object)
 					--end
@@ -381,7 +406,6 @@ end
 -- execute current state (stand, walk, run, attacks)
 -- returns true if mob has died
 local do_states = function(self, dtime)
-
 	local yaw = self.object:get_yaw() or 0
 
 
@@ -619,6 +643,8 @@ local mob_step = function(self, dtime)
 		collision(self)
 	end
 
+	do_states(self, dtime)
+
 
 
 
@@ -762,10 +788,6 @@ local mob_step = function(self, dtime)
 	--npc_attack(self)
 
 	--breed(self)
-
-	--if do_states(self, dtime) then
-	--	return
-	--end
 
 	--do_jump(self)
 
