@@ -295,7 +295,8 @@ mobs:register_mob("mobs_mc:enderman", {
 		-- ARROW / DAYTIME PEOPLE AVOIDANCE BEHAVIOUR HERE.
 		-- Check for arrows and people nearby.
 		local enderpos = self.object:get_pos()
-		local objs = minetest.get_objects_inside_radius(enderpos, 4)
+		enderpos.y = enderpos.y + 1.5
+		local objs = minetest.get_objects_inside_radius(enderpos, 2)
 		for n = 1, #objs do
 			local obj = objs[n]
 			if obj then
@@ -307,7 +308,7 @@ mobs:register_mob("mobs_mc:enderman", {
 				else
 					local lua = obj:get_luaentity()
 					if lua then
-						if lua.name == "mcl_bows:arrow_entity" then
+						if lua.name == "mcl_bows:arrow_entity" or lua.name == "mcl_throwing:snowball_entity" then
 							self:teleport(nil)
 						end
 					end
@@ -328,35 +329,44 @@ mobs:register_mob("mobs_mc:enderman", {
 			--end
 		end
 		-- Check to see if people are near by enough to look at us.
-		local objs = minetest.get_objects_inside_radius(enderpos, 64)
-		local obj
-		for n = 1, #objs do
-			obj = objs[n]
-			if obj then
-				if minetest.is_player(obj) then
+		for _,obj in pairs(minetest.get_connected_players()) do
+			
+			--check if they are within radius
+			local player_pos = obj:get_pos()
+			if player_pos then -- prevent crashing in 1 in a million scenario
+
+				local ender_distance = vector.distance(enderpos, player_pos)
+				if ender_distance <= 64 then
+
 					-- Check if they are looking at us.
-					local player_pos = obj:get_pos()
 					local look_dir_not_normalized = obj:get_look_dir()
 					local look_dir = vector.normalize(look_dir_not_normalized)
-					local look_pos = vector.new({x = look_dir.x+player_pos.x, y = look_dir.y+player_pos.y + 1.5, z = look_dir.z+player_pos.z}) -- Arbitrary value (1.5) is head level according to player info mod.
-					-- Cast up to 64 to see if player is looking at enderman.
-					for n = 1,64,.25 do
-						local node = minetest.get_node(look_pos)
-						if node.name ~= "air" then
-							break
-						end
-						if look_pos.x-1<enderpos.x and look_pos.x+1>enderpos.x and look_pos.y-2.89<enderpos.y and look_pos.y-2>enderpos.y and look_pos.z-1<enderpos.z and look_pos.z+1>enderpos.z then
+					local player_eye_height = obj:get_properties().eye_height
+
+					--skip player if they have no data - log it
+					if not player_eye_height then
+						minetest.log("error", "Enderman at location: ".. dump(enderpos).." has indexed a null player!")
+					else
+
+						--calculate very quickly the exact location the player is looking
+						--within the distance between the two "heads" (player and enderman)
+						local look_pos = vector.new(player_pos.x, player_pos.y + player_eye_height, player_pos.z)
+						local look_pos_base = look_pos
+						local ender_eye_pos = vector.new(enderpos.x, enderpos.y + 2.75, enderpos.z)
+						local eye_distance_from_player = vector.distance(ender_eye_pos, look_pos)
+						look_pos = vector.add(look_pos, vector.multiply(look_dir, eye_distance_from_player))
+					
+						--if looking in general head position, turn hostile
+						if minetest.line_of_sight(ender_eye_pos, look_pos_base) and vector.distance(look_pos, ender_eye_pos) <= 0.4 then
 							self.provoked = "staring"
 							self.attack = minetest.get_player_by_name(obj:get_player_name())
 							break
-						else
+						else -- I'm not sure what this part does, but I don't want to break anything - jordan4ibanez
 							if self.provoked == "staring" then
 								self.provoked = "broke_contact"
-							end
+							end						
 						end
-						look_pos.x = look_pos.x + (.25 * look_dir.x)
-						look_pos.y = look_pos.y + (.25 * look_dir.y)
-						look_pos.z = look_pos.z + (.25 * look_dir.z)
+
 					end
 				end
 			end
@@ -534,9 +544,11 @@ mobs:register_mob("mobs_mc:enderman", {
 			--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
 			--	self:teleport(nil)
 			--else
+			if pr:next(1, 8) == 8 then --FIXME: real mc rate
 				self:teleport(hitter)
-				self.attack=hitter
-				self.state="attack"
+			end
+			self.attack=hitter
+			self.state="attack"
 			--end
 		end
 	end,
@@ -549,11 +561,189 @@ mobs:register_mob("mobs_mc:enderman", {
 
 
 -- End spawn
-mobs:spawn_specific("mobs_mc:enderman", mobs_mc.spawn.solid, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 3000, 12, mobs_mc.spawn_height.end_min, mobs_mc.spawn_height.end_max)
+mobs:spawn_specific(
+"mobs_mc:enderman", 
+"end", 
+"ground",
+{
+"End"
+},
+0, 
+minetest.LIGHT_MAX+1, 
+30, 
+3000, 
+12, 
+mobs_mc.spawn_height.end_min, 
+mobs_mc.spawn_height.end_max)
 -- Overworld spawn
-mobs:spawn_specific("mobs_mc:enderman", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 19000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific(
+"mobs_mc:enderman", 
+"overworld", 
+"ground",
+{
+"Mesa",
+"FlowerForest",
+"Swampland",
+"Taiga",
+"ExtremeHills",
+"Jungle",
+"Savanna",
+"BirchForest",
+"MegaSpruceTaiga",
+"MegaTaiga",
+"ExtremeHills+",
+"Forest",
+"Plains",
+"Desert",
+"ColdTaiga",
+"MushroomIsland",
+"IcePlainsSpikes",
+"SunflowerPlains",
+"IcePlains",
+"RoofedForest",
+"ExtremeHills+_snowtop",
+"MesaPlateauFM_grasstop",
+"JungleEdgeM",
+"ExtremeHillsM",
+"JungleM",
+"BirchForestM",
+"MesaPlateauF",
+"MesaPlateauFM",
+"MesaPlateauF_grasstop",
+"MesaBryce",
+"JungleEdge",
+"SavannaM",
+"FlowerForest_beach",
+"Forest_beach",
+"StoneBeach",
+"ColdTaiga_beach_water",
+"Taiga_beach",
+"Savanna_beach",
+"Plains_beach",
+"ExtremeHills_beach",
+"ColdTaiga_beach",
+"Swampland_shore",
+"MushroomIslandShore",
+"JungleM_shore",
+"Jungle_shore",
+"MesaPlateauFM_sandlevel",
+"MesaPlateauF_sandlevel",
+"MesaBryce_sandlevel",
+"Mesa_sandlevel",
+"RoofedForest_ocean",
+"JungleEdgeM_ocean",
+"BirchForestM_ocean",
+"BirchForest_ocean",
+"IcePlains_deep_ocean",
+"Jungle_deep_ocean",
+"Savanna_ocean",
+"MesaPlateauF_ocean",
+"ExtremeHillsM_deep_ocean",
+"Savanna_deep_ocean",
+"SunflowerPlains_ocean",
+"Swampland_deep_ocean",
+"Swampland_ocean",
+"MegaSpruceTaiga_deep_ocean",
+"ExtremeHillsM_ocean",
+"JungleEdgeM_deep_ocean",
+"SunflowerPlains_deep_ocean",
+"BirchForest_deep_ocean",
+"IcePlainsSpikes_ocean",
+"Mesa_ocean",
+"StoneBeach_ocean",
+"Plains_deep_ocean",
+"JungleEdge_deep_ocean",
+"SavannaM_deep_ocean",
+"Desert_deep_ocean",
+"Mesa_deep_ocean",
+"ColdTaiga_deep_ocean",
+"Plains_ocean",
+"MesaPlateauFM_ocean",
+"Forest_deep_ocean",
+"JungleM_deep_ocean",
+"FlowerForest_deep_ocean",
+"MushroomIsland_ocean",
+"MegaTaiga_ocean",
+"StoneBeach_deep_ocean",
+"IcePlainsSpikes_deep_ocean",
+"ColdTaiga_ocean",
+"SavannaM_ocean",
+"MesaPlateauF_deep_ocean",
+"MesaBryce_deep_ocean",
+"ExtremeHills+_deep_ocean",
+"ExtremeHills_ocean",
+"MushroomIsland_deep_ocean",
+"Forest_ocean",
+"MegaTaiga_deep_ocean",
+"JungleEdge_ocean",
+"MesaBryce_ocean",
+"MegaSpruceTaiga_ocean",
+"ExtremeHills+_ocean",
+"Jungle_ocean",
+"RoofedForest_deep_ocean",
+"IcePlains_ocean",
+"FlowerForest_ocean",
+"ExtremeHills_deep_ocean",
+"MesaPlateauFM_deep_ocean",
+"Desert_ocean",
+"Taiga_ocean",
+"BirchForestM_deep_ocean",
+"Taiga_deep_ocean",
+"JungleM_ocean",
+"FlowerForest_underground",
+"JungleEdge_underground",
+"StoneBeach_underground",
+"MesaBryce_underground",
+"Mesa_underground",
+"RoofedForest_underground",
+"Jungle_underground",
+"Swampland_underground",
+"MushroomIsland_underground",
+"BirchForest_underground",
+"Plains_underground",
+"MesaPlateauF_underground",
+"ExtremeHills_underground",
+"MegaSpruceTaiga_underground",
+"BirchForestM_underground",
+"SavannaM_underground",
+"MesaPlateauFM_underground",
+"Desert_underground",
+"Savanna_underground",
+"Forest_underground",
+"SunflowerPlains_underground",
+"ColdTaiga_underground",
+"IcePlains_underground",
+"IcePlainsSpikes_underground",
+"MegaTaiga_underground",
+"Taiga_underground",
+"ExtremeHills+_underground",
+"JungleM_underground",
+"ExtremeHillsM_underground",
+"JungleEdgeM_underground",
+},
+0, 
+7, 
+30, 
+19000, 
+2, 
+mobs_mc.spawn_height.overworld_min, 
+mobs_mc.spawn_height.overworld_max)
+
 -- Nether spawn (rare)
-mobs:spawn_specific("mobs_mc:enderman", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 27500, 4, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
+mobs:spawn_specific(
+"mobs_mc:enderman", 
+"nether", 
+"ground",
+{
+"Nether"
+},
+0, 
+7, 
+30, 
+27500, 
+4, 
+mobs_mc.spawn_height.nether_min, 
+mobs_mc.spawn_height.nether_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:enderman", S("Enderman"), "mobs_mc_spawn_icon_enderman.png", 0)

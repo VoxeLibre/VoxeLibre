@@ -4,11 +4,6 @@ local S = minetest.get_translator("mcl_portals")
 local SPAWN_MIN = mcl_vars.mg_end_min+70
 local SPAWN_MAX = mcl_vars.mg_end_min+98
 
-local PORTAL_ALPHA = 192
-if minetest.features.use_texture_alpha_string_modes then
-	PORTAL_ALPHA = nil
-end
-
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
 local destroy_portal = function(pos)
@@ -81,7 +76,6 @@ minetest.register_node("mcl_portals:portal_end", {
 	-- This is 15 in MC.
 	light_source = 14,
 	post_effect_color = {a = 192, r = 0, g = 0, b = 0},
-	alpha = PORTAL_ALPHA,
 	after_destruct = destroy_portal,
 	-- This prevents “falling through”
 	collision_box = {
@@ -217,6 +211,9 @@ function mcl_portals.end_teleport(obj, pos)
 		-- Look towards the main End island
 		if dim ~= "end" then
 			obj:set_look_horizontal(math.pi/2)
+		-- Show credits
+		else
+			mcl_credits.show(obj)
 		end
 		mcl_worlds.dimension_change(obj, mcl_worlds.pos_to_dimension(target))
 		minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16}, true)

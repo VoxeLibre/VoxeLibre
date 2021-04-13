@@ -1,6 +1,6 @@
 -- daufinsyd
 -- My work is under the LGPL terms
--- Model and mobs_blaze.png see https://github.com/22i/minecraft-voxel-blender-models
+-- Model and mobs_blaze.png see https://github.com/22i/minecraft-voxel-blender-models -hi 22i ~jordan4ibanez
 -- blaze.lua partial copy of mobs_mc/ghast.lua
 
 local S = minetest.get_translator("mobs_mc")
@@ -75,9 +75,71 @@ mobs:register_mob("mobs_mc:blaze", {
 	fear_height = 0,
 	glow = 14,
 	fire_resistant = true,
+	do_custom = function(self)
+		if self.state == "attack" and vector.distance(self.object:get_pos(), self.attack:get_pos()) < 1.2 then
+			mcl_burning.set_on_fire(self.attack, 5)
+		end
+		local pos = self.object:get_pos()
+		minetest.add_particle({
+			pos = {x=pos.x+math.random(-0.7,0.7)*math.random()/2,y=pos.y+math.random(0.7,1.2),z=pos.z+math.random(-0.7,0.7)*math.random()/2},
+			velocity = {x=0, y=math.random(1,1), z=0},
+			expirationtime = math.random(),
+			size = math.random(1, 4),
+			collisiondetection = true,
+			vertical = false,
+			texture = "mcl_particles_smoke_anim.png^[colorize:#2c2c2c:255",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 8,
+				aspect_h = 8,
+				length = 2.05,
+			},
+		})
+		minetest.add_particle({
+			pos = {x=pos.x+math.random(-0.7,0.7)*math.random()/2,y=pos.y+math.random(0.7,1.2),z=pos.z+math.random(-0.7,0.7)*math.random()/2},
+			velocity = {x=0, y=math.random(1,1), z=0},
+			expirationtime = math.random(),
+			size = math.random(1, 4),
+			collisiondetection = true,
+			vertical = false,
+			texture = "mcl_particles_smoke_anim.png^[colorize:#424242:255",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 8,
+				aspect_h = 8,
+				length = 2.05,
+			},
+		})
+		minetest.add_particle({
+			pos = {x=pos.x+math.random(-0.7,0.7)*math.random()/2,y=pos.y+math.random(0.7,1.2),z=pos.z+math.random(-0.7,0.7)*math.random()/2},
+			velocity = {x=0, y=math.random(1,1), z=0},
+			expirationtime = math.random(),
+			size = math.random(1, 4),
+			collisiondetection = true,
+			vertical = false,
+			texture = "mcl_particles_smoke_anim.png^[colorize:#0f0f0f:255",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 8,
+				aspect_h = 8,
+				length = 2.05,
+			},
+		})
+	end,
 })
 
-mobs:spawn_specific("mobs_mc:blaze", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 5000, 3, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
+mobs:spawn_specific(
+"mobs_mc:blaze",
+"nether",
+"ground",
+{"Nether"},
+0,
+minetest.LIGHT_MAX+1,
+30,
+5000,
+3,
+mobs_mc.spawn_height.nether_min,
+mobs_mc.spawn_height.nether_max)
 
 -- Blaze fireball
 mobs:register_arrow("mobs_mc:blaze_fireball", {

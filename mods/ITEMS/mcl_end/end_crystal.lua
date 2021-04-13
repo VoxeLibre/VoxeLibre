@@ -58,8 +58,9 @@ local function spawn_crystal(pos)
 	for _, crystal in pairs(crystals) do
 		crystal_explode(crystal)
 	end
-	local dragon = minetest.add_entity(vector.add(portal_center, {x = 0, y = 10, z = 0}), "mobs_mc:enderdragon")
-	dragon:get_luaentity()._egg_spawn_pos = minetest.pos_to_string(vector.add(portal_center, {x = 0, y = 4, z = 0}))
+	local portal_pos = vector.add(portal_center, vector.new(-3, -1, -3))
+	mcl_structures.call_struct(portal_pos, "end_exit_portal")
+	minetest.add_entity(vector.add(portal_pos, vector.new(3, 11, 3)), "mobs_mc:enderdragon"):get_luaentity()._portal_pos = portal_pos
 end
 
 minetest.register_entity("mcl_end:crystal", {
@@ -70,12 +71,60 @@ minetest.register_entity("mcl_end:crystal", {
 		collisionbox = {-1, 0.5, -1, 1, 2.5, 1},
 		mesh = "mcl_end_crystal.b3d",
 		textures = {"mcl_end_crystal.png"},
-		collide_with_objects = true,
+		collide_with_objects = false,
 	},
 	on_punch = crystal_explode,
 	on_activate = set_crystal_animation,
 	_exploded = false,
 	_hittable_by_projectile = true
+})
+
+minetest.register_entity("mcl_end:crystal_beam", {
+	initial_properties = {
+		physical = false,
+		visual = "cube",
+		visual_size = {x = 1, y = 1, z = 1},
+		textures = {
+			"mcl_end_crystal_beam.png^[transformR90",
+			"mcl_end_crystal_beam.png^[transformR90",
+			"mcl_end_crystal_beam.png",
+			"mcl_end_crystal_beam.png",
+			"blank.png",
+			"blank.png",
+		},
+		static_save = false,
+	},
+	spin = 0,
+	init = function(self, dragon, crystal)
+		self.dragon, self.crystal = dragon, crystal
+		crystal:get_luaentity().beam = self.object
+		dragon:get_luaentity().beam = self.object
+	end,
+	on_deactivate = function(self)
+		if self.crystal and self.crystal:get_luaentity() then
+			self.crystal:get_luaentity().beam = nil
+		end
+		if self.dragon and self.dragon:get_luaentity() then
+			self.dragon:get_luaentity().beam = nil
+		end
+	end,
+	on_step = function(self, dtime)
+		if self.dragon and self.dragon:get_luaentity() and self.crystal and self.crystal:get_luaentity() then
+			self.spin = self.spin + dtime * math.pi * 2 / 4
+			local dragon_pos, crystal_pos = self.dragon:get_pos(), self.crystal:get_pos()
+
+			dragon_pos.y = dragon_pos.y + 4
+			crystal_pos.y = crystal_pos.y + 2
+
+			self.object:set_pos(vector.divide(vector.add(dragon_pos, crystal_pos), 2))
+			local rot = vector.dir_to_rotation(vector.direction(dragon_pos, crystal_pos))
+			rot.z = self.spin
+			self.object:set_rotation(rot)
+			self.object:set_properties({visual_size = {x = 0.5, y = 0.5, z = vector.distance(dragon_pos, crystal_pos)}})
+		else
+			self.object:remove()
+		end
+	end,
 })
 
 minetest.register_craftitem("mcl_end:crystal", {

@@ -9,8 +9,8 @@ local snowball_ENTITY={
 	collisionbox = {0,0,0,0,0,0},
 	pointable = false,
 
-	get_staticdata = get_staticdata,
-	on_activate = on_activate,
+	get_staticdata = mcl_throwing.get_staticdata,
+	on_activate = mcl_throwing.on_activate,
 	_thrower = nil,
 
 	_lastpos={},
@@ -23,8 +23,8 @@ local egg_ENTITY={
 	collisionbox = {0,0,0,0,0,0},
 	pointable = false,
 
-	get_staticdata = get_staticdata,
-	on_activate = on_activate,
+	get_staticdata = mcl_throwing.get_staticdata,
+	on_activate = mcl_throwing.on_activate,
 	_thrower = nil,
 
 	_lastpos={},
@@ -38,8 +38,8 @@ local pearl_ENTITY={
 	collisionbox = {0,0,0,0,0,0},
 	pointable = false,
 
-	get_staticdata = get_staticdata,
-	on_activate = on_activate,
+	get_staticdata = mcl_throwing.get_staticdata,
+	on_activate = mcl_throwing.on_activate,
 
 	_lastpos={},
 	_thrower = nil,		-- Player ObjectRef of the player who threw the ender pearl
@@ -99,7 +99,7 @@ local snowball_on_step = function(self, dtime)
 	local vel = self.object:get_velocity()
 	local node = minetest.get_node(pos)
 	local def = minetest.registered_nodes[node.name]
-	
+
 
 	-- Destroy when hitting a solid node
 	if self._lastpos.x~=nil then
@@ -203,7 +203,7 @@ local pearl_on_step = function(self, dtime)
 			self.object:remove()
 		-- Activate when hitting a solid node or a plant
 		elseif walkable or nn == "mcl_core:vine" or nn == "mcl_core:deadbush" or minetest.get_item_group(nn, "flower") ~= 0 or minetest.get_item_group(nn, "sapling") ~= 0 or minetest.get_item_group(nn, "plant") ~= 0 or minetest.get_item_group(nn, "mushroom") ~= 0 or not def then
-			local player = minetest.get_player_by_name(self._thrower)
+			local player = self._thrower and minetest.get_player_by_name(self._thrower)
 			if player then
 				-- Teleport and hurt player
 

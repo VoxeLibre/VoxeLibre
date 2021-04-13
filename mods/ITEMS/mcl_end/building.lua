@@ -169,7 +169,16 @@ minetest.register_node("mcl_end:dragon_egg", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 9,
 	_mcl_hardness = 3,
-	-- TODO: Make dragon egg teleport on punching
+	on_punch = function(pos, node)
+		local max_dist = vector.new(15, 7, 15)
+		local positions = minetest.find_nodes_in_area(vector.subtract(pos, max_dist), vector.add(pos, max_dist), "air", false)
+		if #positions > 0 then
+			local tpos = positions[math.random(#positions)]
+			minetest.remove_node(pos)
+			minetest.set_node(tpos, node)
+			minetest.check_for_falling(tpos)
+		end
+	end,
 })
 
 

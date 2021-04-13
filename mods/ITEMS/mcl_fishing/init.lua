@@ -303,8 +303,8 @@ local flying_bobber_ENTITY={
 	collisionbox = {0,0,0,0,0,0},
 	pointable = false,
 
-	get_staticdata = get_staticdata,
-	on_activate = on_activate,
+	get_staticdata = mcl_throwing.get_staticdata,
+	on_activate = mcl_throwing.on_activate,
 
 	_lastpos={},
 	_thrower = nil,

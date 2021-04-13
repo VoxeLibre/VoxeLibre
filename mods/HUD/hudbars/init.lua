@@ -124,7 +124,7 @@ function hb.get_hudbar_position_index(identifier)
 	end
 end
 
-function hb.register_hudbar(identifier, text_color, label, textures, default_start_value, default_start_max, default_start_hidden, format_string, format_string_config)
+function hb.register_hudbar(identifier, text_color, label, textures, direction, default_start_value, default_start_max, default_start_hidden, format_string, format_string_config)
 	minetest.log("action", "hb.register_hudbar: "..tostring(identifier))
 	local hudtable = {}
 	local pos, offset
@@ -133,30 +133,33 @@ function hb.register_hudbar(identifier, text_color, label, textures, default_sta
 	if hb.settings.alignment_pattern == "stack_up" then
 		pos = hb.settings.pos_left
 		offset = {
-			x = hb.settings.start_offset_left.x,
+			x = direction == 0 and hb.settings.start_offset_left.x or -hb.settings.start_offset_right.x,
 			y = hb.settings.start_offset_left.y - hb.settings.vmargin * index
 		}
 	elseif hb.settings.alignment_pattern == "stack_down" then
 		pos = hb.settings.pos_left
 		offset = {
-			x = hb.settings.start_offset_left.x,
+			x = direction == 0 and hb.settings.start_offset_right.x or -hb.settings.start_offset_left.x,
 			y = hb.settings.start_offset_left.y + hb.settings.vmargin * index
 		}
-	else
+	else -- zigzag
 		if index % 2 == 0 then
 			pos = hb.settings.pos_left
 			offset = {
-				x = hb.settings.start_offset_left.x,
+				-- -(24+18) = -42. using linear eq, -42 = -258m - 24.
+				x = direction == 0 and hb.settings.start_offset_left.x or (-42+24)/(-258.0) * hb.settings.start_offset_left.x - 24,
 				y = hb.settings.start_offset_left.y - hb.settings.vmargin * (index/2)
 			}
 		else
 			pos = hb.settings.pos_right
 			offset = {
-				x = hb.settings.start_offset_right.x,
+				-- 24*10+30 - 24 = 234. using linear eq, 234 = 16m - 24.
+				x = direction == 0 and hb.settings.start_offset_right.x or (234+24)/(16) * hb.settings.start_offset_right.x - 24,
 				y = hb.settings.start_offset_right.y - hb.settings.vmargin * ((index-1)/2)
 			}
 		end
 	end
+
 	if format_string == nil then
 		format_string = N("@1: @2/@3")
 	end
@@ -181,6 +184,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, default_sta
 		local state = {}
 		local name = player:get_player_name()
 		local bgscale, iconscale, text, barnumber, bgiconnumber
+
 		if start_max == 0 or start_hidden then
 			bgscale = { x=0, y=0 }
 		else
@@ -197,6 +201,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, default_sta
 			bgiconnumber = hb.settings.statbar_length
 			text = make_label(format_string, format_string_config, label, start_value, start_max)
 		end
+
 		if hb.settings.bar_type == "progress_bar" then
 			ids.bg = player:hud_add({
 				hud_elem_type = "image",
@@ -219,6 +224,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, default_sta
 				})
 			end
 		end
+
 		local bar_image, bgicon, bar_size
 		if hb.settings.bar_type == "progress_bar" then
 			bar_image = textures.bar
@@ -234,10 +240,12 @@ function hb.register_hudbar(identifier, text_color, label, textures, default_sta
 			bgicon = textures.bgicon
 			bar_size = {x=24, y=24}
 		end
+
 		local text2
 		if hb.settings.bar_type == "statbar_modern" then
 			text2 = bgicon
 		end
+
 		ids.bar = player:hud_add({
 			hud_elem_type = "statbar",
 			position = pos,
@@ -247,7 +255,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, default_sta
 			item = bgiconnumber,
 			alignment = {x=-1,y=-1},
 			offset = offset,
-			direction = 0,
+			direction = direction,
 			size = bar_size,
 			z_index = 1,
 		})
@@ -258,7 +266,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, default_sta
 				text = text,
 				alignment = {x=1,y=1},
 				number = text_color,
-				direction = 0,
+				direction = direction,
 				offset = { x = offset.x + 2,  y = offset.y - 1},
 				z_index = 2,
 		})
@@ -298,7 +306,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, default_sta
 	hudtable.default_start_max = default_start_max
 
 	hb.hudbars_count= hb.hudbars_count + 1
-	
+
 	hb.hudtables[identifier] = hudtable
 end
 
@@ -359,6 +367,7 @@ function hb.change_hudbar(player, identifier, new_value, new_max_value, new_icon
 		if new_text_color ~= nil then
 			player:hud_change(hudtable.hudids[name].text, "number", new_text_color)
 		end
+
 	else
 		if new_icon ~= nil and hudtable.hudids[name].bar ~= nil then
 			player:hud_change(hudtable.hudids[name].bar, "text", new_icon)
@@ -474,8 +483,8 @@ end
 
 --register built-in HUD bars
 if minetest.settings:get_bool("enable_damage") or hb.settings.forceload_default_hudbars then
-	hb.register_hudbar("health", 0xFFFFFF, S("Health"), { bar = "hudbars_bar_health.png", icon = "hudbars_icon_health.png", bgicon = "hudbars_bgicon_health.png" }, 20, 20, false)
-	hb.register_hudbar("breath", 0xFFFFFF, S("Breath"), { bar = "hudbars_bar_breath.png", icon = "hudbars_icon_breath.png", bgicon = "hudbars_bgicon_breath.png" }, 10, 10, true)
+	hb.register_hudbar("health", 0xFFFFFF, S("Health"), { bar = "hudbars_bar_health.png", icon = "hudbars_icon_health.png", bgicon = "hudbars_bgicon_health.png" }, 0, 20, 20, false)
+	hb.register_hudbar("breath", 0xFFFFFF, S("Breath"), { bar = "hudbars_bar_breath.png", icon = "hudbars_icon_breath.png", bgicon = "hudbars_bgicon_breath.png" }, 1, 10, 10, true)
 end
 
 local function hide_builtin(player)
@@ -520,7 +529,7 @@ local function update_hud(player, has_damage)
 		--air
 		local breath_max = player:get_properties().breath_max
 		local breath = player:get_breath()
-		
+
 		if breath >= breath_max and hb.settings.autohide_breath == true then
 			hb.hide_hudbar(player, "breath")
 		else

@@ -106,7 +106,7 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 	view_range = 16,
 })
 
--- Spawning disabled due to size issues
+-- Spawning disabled due to size issues <- what do you mean? -j4i
 -- TODO: Re-enable spawning
 -- mobs:spawn_specific("mobs_mc:guardian_elder", mobs_mc.spawn.water, mobs_mc.spawn_water, 0, minetest.LIGHT_MAX+1, 30, 40000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.water-18)
 
