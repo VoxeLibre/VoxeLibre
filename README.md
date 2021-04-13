@@ -161,9 +161,16 @@ The following features are incomplete:
 Bonus features (not found in Minecraft 1.12):
 
 * Built-in crafting guide which shows you crafting and smelting recipes
+* In-game help system containing extensive help about gameplay basics, blocks, items and more
 * Temporary crafting recipes. They only exist to make some otherwise unaccessible items available when you're not in creative mode. These recipes will be removed as development goes on an more features become available
 * Saplings in chests in mapgen v6
 * Fully moddable (thanks to Minetest's powerful Lua API)
+* New blocks and items:
+    * Lookup tool, shows you the help for whatever it touches
+    * More slabs and stairs
+    * Nether Brick Fence Gate
+    * Red Nether Brick Fence
+    * Red Nether Brick Fence Gate
 
 Technical differences from Minecraft:
 
