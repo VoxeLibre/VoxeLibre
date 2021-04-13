@@ -226,8 +226,6 @@ minetest.register_globalstep(function(dtime)
 			elytra[player] = false
 		end]]
 
-		minetest.chat_send_all(degrees(player:get_look_vertical()) * -.01)
-
 		if elytra[player] == true then
 			mcl_player.player_set_animation(player, "fly")
 			playerphysics.add_physics_factor(player, "gravity", "mcl_playerplus:elytra", 0.1)
