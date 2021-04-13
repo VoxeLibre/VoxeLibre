@@ -701,6 +701,10 @@ function mcl_potions.healing_func(player, hp)
 
 	local obj = player:get_luaentity()
 
+	if player:get_hp() == 0 then
+		return
+	end
+
 	if obj and obj.harmed_by_heal then hp = -hp end
 
 	if hp > 0 then
