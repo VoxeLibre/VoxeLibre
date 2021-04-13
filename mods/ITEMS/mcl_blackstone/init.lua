@@ -4,6 +4,8 @@ local LIGHT_TORCH = 10
 
 stairs = {}
 
+local fire_enabled = minetest.settings:get_bool("enable_fire", true)
+
 local fire_help, eternal_fire_help
 if fire_enabled then
 	fire_help = S("Fire is a damaging and destructive but short-lived kind of block. It will destroy and spread towards near flammable blocks, but fire will disappear when there is nothing to burn left. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.")
@@ -1116,13 +1118,13 @@ minetest.register_lbm({
 })
 
 
-minetest.register_node("mcl_blackstone:soul_lantern", { 
+minetest.register_node("mcl_blackstone:soul_lantern", {
 		tiles = {
 				"lantern_top.png",
-				"lantern_bottom.png", 
-				"lantern.png", 
-				"lantern.png", 
-				"lantern.png", 
+				"lantern_bottom.png",
+				"lantern.png",
+				"lantern.png",
+				"lantern.png",
 				"lantern.png",
 		},
 		groups = {pickaxey=3},
