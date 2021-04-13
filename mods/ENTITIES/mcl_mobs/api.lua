@@ -62,6 +62,18 @@ MOB_CAP.passive = 10
 MOB_CAP.ambient = 15
 MOB_CAP.water   = 15
 
+-- Load settings
+local damage_enabled    = minetest_settings:get_bool("enable_damage")
+local disable_blood     = minetest_settings:get_bool("mobs_disable_blood")
+local mobs_drop_items   = minetest_settings:get_bool("mobs_drop_items") ~= false
+local mobs_griefing     = minetest_settings:get_bool("mobs_griefing") ~= false
+local spawn_protected   = minetest_settings:get_bool("mobs_spawn_protected") ~= false
+local remove_far        = true
+local difficulty        = tonumber(minetest_settings:get("mob_difficulty")) or 1.0
+local show_health       = false
+local max_per_block     = tonumber(minetest_settings:get("max_objects_per_block") or 64)
+local mobs_spawn_chance = tonumber(minetest_settings:get("mobs_spawn_chance") or 2.5)
+
 
 -- random locals I found
 local los_switcher = false
@@ -96,17 +108,7 @@ local atan = function(x)
 end
 
 
--- Load settings
-local damage_enabled = minetest_settings:get_bool("enable_damage")
-local disable_blood = minetest_settings:get_bool("mobs_disable_blood")
-local mobs_drop_items = minetest_settings:get_bool("mobs_drop_items") ~= false
-local mobs_griefing = minetest_settings:get_bool("mobs_griefing") ~= false
-local spawn_protected = minetest_settings:get_bool("mobs_spawn_protected") ~= false
-local remove_far = true
-local difficulty = tonumber(minetest_settings:get("mob_difficulty")) or 1.0
-local show_health = false
-local max_per_block = tonumber(minetest_settings:get("max_objects_per_block") or 64)
-local mobs_spawn_chance = tonumber(minetest_settings:get("mobs_spawn_chance") or 2.5)
+
 
 -- Shows helpful debug info above each mob
 local mobs_debug = minetest_settings:get_bool("mobs_debug", false)
