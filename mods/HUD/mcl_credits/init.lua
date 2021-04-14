@@ -55,6 +55,7 @@ mcl_credits.people = {
 		"nickolas360",
 		"yutyo",
 		"ztianyang",
+		"j45",
 	}},
 	{"MineClone5", 0xA60014, {
 		"kay27",
