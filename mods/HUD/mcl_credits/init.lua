@@ -27,9 +27,9 @@ mcl_credits.people = {
 		"Rootyjr",
 		"Nicu",
 		"aligator",
+		"Code-Sploit",
 	}},
 	{"Contributors", 0x52FF00, {
-		"Code-Sploit",
 		"Laurent Rocher",
 		"HimbeerserverDE",
 		"TechDudie",
