@@ -81,6 +81,21 @@ mcl_armor.register_set({
 	craft_material = "mcl_core:diamond",
 })
 
+mcl_armor.register_set({
+	name = "netherite",
+	description = "Netherite",
+	durability = 555,
+	enchantability = 10,
+	points = {
+		head = 3,
+		torso = 8,
+		legs = 6,
+		feet = 3,
+	},
+	toughness = 2,
+	craft_material = "mcl_nether:netherite_ingot",
+})
+
 mcl_armor.register_protection_enchantment({
 	id = "projectile_protection",
 	name = S("Projectile Protection"),
