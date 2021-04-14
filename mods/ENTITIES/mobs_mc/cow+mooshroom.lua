@@ -9,6 +9,7 @@ local cow_def = {
 	hp_max = 10,
 	xp_min = 1,
 	xp_max = 3,
+	rotate = 270,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.39, 0.45},
 	visual = "mesh",
 	mesh = "mobs_mc_cow.b3d",

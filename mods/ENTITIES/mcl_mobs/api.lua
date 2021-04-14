@@ -651,7 +651,6 @@ local mob_step = function(self, dtime)
 	--end
 
 	-- smooth rotation by ThomasMonroe314
-
 	--[[
 	if self.delay and self.delay > 0 then
 
@@ -1067,6 +1066,12 @@ minetest.register_entity(name, {
 	_cmi_is_mob = true,
 	pushable = def.pushable or true,
 
+	--j4i stuff
+	--automatic_rotate = 360,
+	automatic_face_movement_dir = def.rotate or 0,  --  0=front, 90=side, 180=back, 270=side2
+	automatic_face_movement_max_rotation_per_sec = 360,
+	backface_culling = true,
+	--end j4i stuff
 
 	-- MCL2 extensions
 	teleport = teleport,
