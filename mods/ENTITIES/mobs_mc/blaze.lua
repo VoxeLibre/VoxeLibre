@@ -147,12 +147,10 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 	visual_size = {x = 0.3, y = 0.3},
 	textures = {"mcl_fire_fire_charge.png"},
 	velocity = 15,
+	_is_fireball = true,
 
 	-- Direct hit, no fire... just plenty of pain
 	hit_player = function(self, player)
-		if rawget(_G, "armor") and armor.last_damage_types then
-			armor.last_damage_types[player:get_player_name()] = "fireball"
-		end
 		mcl_burning.set_on_fire(player, 5, "blaze")
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,

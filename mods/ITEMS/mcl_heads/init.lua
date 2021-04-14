@@ -5,7 +5,7 @@ local mod_screwdriver = minetest.get_modpath("screwdriver")
 
 local equip_armor
 if minetest.get_modpath("mcl_armor") then
-	equip_armor = armor.on_armor_use
+	equip_armor = mcl_armor.equip_on_use
 end
 
 -- Heads system

@@ -277,7 +277,7 @@ minetest.register_lbm({
 	nodenames = {"group:torch_particles"},
 	run_at_every_load = true,
 	action = function(pos, node)
-		local torch_group = minetest.get_node_group(node.name, "torch")
+		local torch_group = minetest.get_item_group(node.name, "torch")
 		if torch_group == 1 then
 			spawn_flames_floor(pos)
 		elseif torch_group == 2 then

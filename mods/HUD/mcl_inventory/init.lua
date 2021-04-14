@@ -3,7 +3,6 @@ local F = minetest.formspec_escape
 
 mcl_inventory = {}
 
-local show_armor = minetest.get_modpath("mcl_armor") ~= nil
 local mod_player = minetest.get_modpath("mcl_player") ~= nil
 local mod_craftguide = minetest.get_modpath("mcl_craftguide") ~= nil
 
@@ -68,23 +67,7 @@ local function set_inventory(player, armor_change_only)
 	if minetest.settings:get_bool("3d_player_preview", true) then
 		player_preview = mcl_player.get_player_formspec_model(player, 1.0, 0.0, 2.25, 4.5, "")
 	else
-		local img, img_player
-		if mod_player then
-			img_player = mcl_player.player_get_preview(player)
-		else
-			img_player = "player.png"
-		end
-		img = img_player
-		player_preview = "image[0.6,0.2;2,4;"..img.."]"
-		if show_armor and armor.textures[player_name] and armor.textures[player_name].preview then
-			img = armor.textures[player_name].preview
-			local s1 = img:find("character_preview")
-			if s1 ~= nil then
-				s1 = img:sub(s1+21)
-				img = img_player..s1
-			end
-			player_preview = "image[1.1,0.2;2,4;"..img.."]"
-		end
+		player_preview = "image[1.1,0.2;2,4;"..mcl_player.player_get_preview(player).."]"
 	end
 
 	local armor_slots = {"helmet", "chestplate", "leggings", "boots"}
@@ -99,10 +82,10 @@ local function set_inventory(player, armor_change_only)
 	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png]"..
 	player_preview..
 	--armor
-	"list[detached:"..player_name.."_armor;armor;0,0;1,1;1]"..
-	"list[detached:"..player_name.."_armor;armor;0,1;1,1;2]"..
-	"list[detached:"..player_name.."_armor;armor;0,2;1,1;3]"..
-	"list[detached:"..player_name.."_armor;armor;0,3;1,1;4]"..
+	"list[current_player;armor;0,0;1,1;1]"..
+	"list[current_player;armor;0,1;1,1;2]"..
+	"list[current_player;armor;0,2;1,1;3]"..
+	"list[current_player;armor;0,3;1,1;4]"..
 	mcl_formspec.get_itemslot_bg(0,0,1,1)..
 	mcl_formspec.get_itemslot_bg(0,1,1,1)..
 	mcl_formspec.get_itemslot_bg(0,2,1,1)..
@@ -133,10 +116,10 @@ local function set_inventory(player, armor_change_only)
 	"tooltip[__mcl_achievements;"..F(S("Achievements")).."]"..
 	-- for shortcuts
 	"listring[current_player;main]"..
-	"listring[current_player;craft]"..
-	"listring[current_player;main]"..
-	"listring[detached:"..player_name.."_armor;armor]"
-
+	"listring[current_player;armor]"..
+	"listring[current_player;main]" ..
+	"listring[current_player;craft]" ..
+	"listring[current_player;main]"
 	player:set_inventory_formspec(form)
 end
 
@@ -176,18 +159,10 @@ minetest.register_on_joinplayer(function(player)
 	player:hud_set_hotbar_image("mcl_inventory_hotbar.png")
 	player:hud_set_hotbar_selected_image("mcl_inventory_hotbar_selected.png")
 
-	if show_armor then
-		local set_player_armor_original = armor.set_player_armor
-		local update_inventory_original = armor.update_inventory
-		armor.set_player_armor = function(self, player)
-			set_player_armor_original(self, player)
-		end
-		armor.update_inventory = function(self, player)
-			update_inventory_original(self, player)
-			set_inventory(player, true)
-		end
-		armor:set_player_armor(player)
-		armor:update_inventory(player)
+	local old_update_player = mcl_armor.update_player
+	mcl_armor.update_player = function(player, info)
+		old_update_player(player, info)
+		set_inventory(player, true)
 	end
 
 	-- In Creative Mode, the initial inventory setup is handled in creative.lua

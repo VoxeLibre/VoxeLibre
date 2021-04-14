@@ -177,7 +177,7 @@ local function object_in_range(self, object)
 	local factor
 	-- Apply view range reduction for special player armor
 	if object:is_player() and mod_armor then
-		factor = armor:get_mob_view_range_factor(object, self.name)
+		factor = mcl_armor.get_mob_view_range_factor(object, self.name)
 	end
 	-- Distance check
 	local dist
@@ -3906,7 +3906,7 @@ minetest.register_entity(name, {
 		--default built in engine collision detection
 		self.object:set_properties({
 			collide_with_objects = false,
-		})	
+		})
 		return mob_activate(self, staticdata, def, dtime)
 	end,
 

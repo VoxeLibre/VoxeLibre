@@ -170,7 +170,7 @@ local dispenserdef = {
 							minetest.registered_nodes["mcl_armor_stand:armor_stand"].on_metadata_inventory_put(standpos)
 							stack:take_item()
 							inv:set_stack("main", stack_id, stack)
-							armor:play_equip_sound(dropitem, nil, standpos)
+							mcl_armor.play_equip_sound(dropitem, nil, standpos)
 							armor_dispensed = true
 						end
 					else
@@ -202,9 +202,8 @@ local dispenserdef = {
 							if ainv:get_stack("armor", armor_slot):is_empty() and pinv:get_stack("armor", armor_slot):is_empty() then
 								ainv:set_stack("armor", armor_slot, dropitem)
 								pinv:set_stack("armor", armor_slot, dropitem)
-								armor:set_player_armor(player)
-								armor:update_inventory(player)
-								armor:play_equip_sound(dropitem, player)
+								mcl_armor.update(player)
+								mcl_armor.play_equip_sound(dropitem, player)
 
 								stack:take_item()
 								inv:set_stack("main", stack_id, stack)

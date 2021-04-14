@@ -203,7 +203,7 @@ S("• When lava is directly above water, the water turns into stone."),
 	_mcl_node_death_message = lava_death_messages,
 	post_effect_color = {a=245, r=208, g=73, b=10},
 	stack_max = 64,
-	groups = { lava=3, lava_source=1, liquid=2, destroys_items=1, not_in_creative_inventory=1, dig_by_piston=1, set_on_fire=15},
+	groups = { lava=3, lava_source=1, liquid=2, destroys_items=1, not_in_creative_inventory=1, dig_by_piston=1, set_on_fire=15, fire_damage=1},
 	_mcl_blast_resistance = 100,
 	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
 	_mcl_hardness = -1,

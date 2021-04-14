@@ -88,22 +88,41 @@ function mcl_player.player_set_model(player, model_name)
 	player_model[name] = model_name
 end
 
-function mcl_player.player_set_textures(player, textures, preview)
-	local name = player:get_player_name()
-	player_textures[name] = textures
-	player:set_properties({textures = textures,})
-	if preview then
-		player:get_meta():set_string("mcl_player:preview", preview)
-	end
+local function set_texture(player, index, texture)
+	local textures = player_textures[player:get_player_name()]
+	textures[index] = texture
+	player:set_properties({textures = textures})
+end
+
+local function set_preview(player, field, preview)
+	player:get_meta():set_string("mcl_player:" .. field .. "_preview", preview)
+end
+
+function mcl_player.player_set_skin(player, texture, preview)
+	set_texture(player, 1, texture)
+	set_preview(player, "skin", preview)
+end
+
+function mcl_player.player_set_armor(player, texture, preview)
+	set_texture(player, 2, texture)
+	set_preview(player, "armor", preview)
+end
+
+function mcl_player.player_set_wielditem(player, texture)
+	set_texture(player, 3, texture)
 end
 
 function mcl_player.player_get_preview(player)
-	local preview = player:get_meta():get_string("mcl_player:preview")
-	if preview == nil or preview == "" then
-		return "player.png"
-	else
-		return preview
+	local preview = player:get_meta():get_string("mcl_player:skin_preview")
+	if preview == "" then
+		preview = "player.png"
 	end
+	local armor_preview = player:get_meta():set_string("mcl_player:armor_preview")
+	if armor_preview ~= "" then
+		preview = preview .. "^" .. armor_preview
+	end
+	return preview
+
 end
 
 function mcl_player.get_player_formspec_model(player, x, y, w, h, fsname)
@@ -129,8 +148,10 @@ end
 
 -- Update appearance when the player joins
 minetest.register_on_joinplayer(function(player)
-	mcl_player.player_attached[player:get_player_name()] = false
+	local name = player:get_player_name()
+	mcl_player.player_attached[name] = false
 	mcl_player.player_set_model(player, "character.b3d")
+	player_textures[name] = {"blank.png", "blank.png", "blank.png"}
 	--player:set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, 30)
 	player:set_fov(86.1) -- see <https://minecraft.gamepedia.com/Options#Video_settings>>>>
 end)

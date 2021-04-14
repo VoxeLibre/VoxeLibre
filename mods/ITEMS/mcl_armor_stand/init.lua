@@ -150,7 +150,7 @@ minetest.register_node("mcl_armor_stand:armor_stand", {
 			single_item:set_count(1)
 			if inv:is_empty(list) then
 				inv:add_item(list, single_item)
-				armor:play_equip_sound(single_item, nil, pos)
+				mcl_armor.play_equip_sound(single_item, nil, pos)
 				update_entity(pos)
 				itemstack:take_item()
 				return itemstack
@@ -175,7 +175,7 @@ minetest.register_node("mcl_armor_stand:armor_stand", {
 					taken = true
 				end
 				if taken then
-					armor:play_equip_sound(stand_armor, nil, pos, true)
+					mcl_armor.play_equip_sound(stand_armor, nil, pos, true)
 					stand_armor:take_item()
 					inv:set_stack("armor_" .. elements[e], 1, stand_armor)
 				end

@@ -182,6 +182,8 @@ minetest.register_globalstep(function(dtime)
 		local wielded = player:get_wielded_item()
 		local player_velocity = player:get_velocity() or player:get_player_velocity()
 
+		local wielded_def = wielded:get_definition()
+
 		-- controls head bone
 		local pitch = - degrees(player:get_look_vertical())
 		local yaw = degrees(player:get_look_horizontal())
@@ -196,7 +198,7 @@ minetest.register_globalstep(function(dtime)
 		if minetest.get_node_or_nil({x=player:get_pos().x, y=player:get_pos().y - 0.5, z=player:get_pos().z}) then
 			node_stand_return = minetest.get_node_or_nil({x=player:get_pos().x, y=player:get_pos().y - 0.5, z=player:get_pos().z}).name
 		else
-			minetest.log("action", "somehow player got of loaded areas")
+			-- minetest.log("action", "somehow player got of loaded areas")
 		end
 
 		if player:get_inventory():get_stack("armor", 3):get_name() == "mcl_armor:elytra" and player_velocity.y < -6 and elytra[player] ~= true and is_sprinting(name) then
@@ -222,6 +224,14 @@ minetest.register_globalstep(function(dtime)
 			end
 		else
 			playerphysics.remove_physics_factor(player, "gravity", "mcl_playerplus:elytra")
+		end
+
+		if wielded_def and wielded_def._mcl_toollike_wield then
+			player:set_bone_position("Wield_Item", vector.new(0,3.9,1.3), vector.new(90,0,0))
+		elseif string.find(wielded:get_name(), "mcl_bows:bow") then
+			player:set_bone_position("Wield_Item", vector.new(.5,4.5,-1.6), vector.new(90,0,20))
+		else
+			player:set_bone_position("Wield_Item", vector.new(-1.5,4.9,1.8), vector.new(135,0,90))
 		end
 
 		-- controls right and left arms pitch when shooting a bow

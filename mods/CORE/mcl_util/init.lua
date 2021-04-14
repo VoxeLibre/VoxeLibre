@@ -418,3 +418,99 @@ function mcl_util.get_color(colorstr)
 		return colorstr, hex
 	end
 end
+
+function mcl_util.call_on_rightclick(itemstack, player, pointed_thing)
+	-- Call on_rightclick if the pointed node defines it
+	if pointed_thing and pointed_thing.type == "node" then
+		local node = minetest.get_node(pointed_thing.under)
+		if player and not player:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+			end
+		end
+	end
+end
+
+function mcl_util.calculate_durability(itemstack)
+	local unbreaking_level = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
+	local armor_uses = minetest.get_item_group(itemstack:get_name(), "mcl_armor_uses")
+
+	local uses
+
+	if armor_uses > 0 then
+		uses = armor_uses
+		if unbreaking_level > 0 then
+			uses = uses / (0.6 + 0.4 / (unbreaking_level + 1))
+		end
+	else
+		local def = itemstack:get_definition()
+		if def then
+			local fixed_uses = def._mcl_uses
+			if fixed_uses then
+				uses = fixed_uses
+				if unbreaking_level > 0 then
+					uses = uses * (unbreaking_level + 1)
+				end
+			end
+		end
+		if not uses then
+			local toolcaps = itemstack:get_tool_capabilities()
+			local groupcaps = toolcaps.groupcaps
+			for _, v in pairs(groupcaps) do
+				uses = v.uses
+				break
+			end
+		end
+	end
+
+	return uses or 0
+end
+
+function mcl_util.use_item_durability(itemstack, n)
+	local uses = mcl_util.calculate_durability(itemstack)
+	itemstack:add_wear(65535 / uses * n)
+end
+
+function mcl_util.deal_damage(target, damage, mcl_reason)
+	mcl_reason = mcl_reason or {}
+
+	local luaentity = target:get_luaentity()
+
+	if luaentity then
+		if luaentity.deal_damage then
+			luaentity:deal_damage(damage, mcl_reason)
+			return
+		elseif luaentity._cmi_is_mob then
+			local puncher = mcl_reason.direct or target
+			target:punch(puncher, 1.0, {full_punch_interval = 1.0, damage_groups = {fleshy = damage}}, vector.direction(puncher:get_pos(), target:get_pos()), damage)
+			return
+		end
+	end
+
+	local mt_reason
+
+	if target:is_player() then
+		mt_reason = {}
+
+		for key, value in pairs(mcl_reason) do
+			mt_reason["_mcl_" .. key] = value
+		end
+	end
+
+	target:set_hp(target:get_hp() - damage, mt_reason)
+end
+
+function mcl_util.get_inventory(object, create)
+	if object:is_player() then
+		return object:get_inventory()
+	else
+		local luaentity = object:get_luaentity()
+		local inventory = luaentity.inventory
+
+		if create and not inventory and luaentity.create_inventory then
+			inventory = luaentity:create_inventory()
+		end
+
+		return inventory
+	end
+end

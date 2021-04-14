@@ -92,7 +92,6 @@ function mcl_burning.damage(obj)
 			do_damage = false
 		else
 			local name = obj:get_player_name()
-			armor.last_damage_types[name] = "fire"
 			local deathmsg = S("@1 burned to death.", name)
 			local reason = mcl_burning.get(obj, "string", "reason")
 			if reason ~= "" then
@@ -107,12 +106,7 @@ function mcl_burning.damage(obj)
 	end
 
 	if do_damage then
-		local new_hp = hp - 1
-		if health then
-			luaentity.health = new_hp
-		else
-			obj:set_hp(new_hp)
-		end
+		mcl_util.deal_damage(obj, 1, {type = "in_fire"})
 	end
 end
 

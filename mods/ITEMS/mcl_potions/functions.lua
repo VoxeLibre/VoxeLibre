@@ -603,21 +603,18 @@ function mcl_potions.make_invisible(player, toggle)
 			return
 		end
 
-		if minetest.get_modpath("mcl_armor") and player:is_player() then
-			armor.textures[playername].skin = skin_file
-			armor:update_player_visuals(player)
-		elseif not player:is_player() and minetest.get_modpath("mcl_armor") or not player:is_player() and not minetest.get_modpath("mcl_armor") then
+		if player:is_player() then
+			mcl_player.player_set_skin(player, "mobs_mc_empty.png")
+		elseif not player:is_player() then
 			player:set_properties({visual_size = {x = 0, y = 0}})
 		end
 		player:set_nametag_attributes({color = {a = 0}})
 
 	elseif EF.invisible[player] then -- show player
 
-		if minetest.get_modpath("mcl_armor") and player:is_player() then
-			skin_file = mcl_skins.skins[playername] .. ".png"
-			armor.textures[playername].skin = skin_file
-			armor:update_player_visuals(player)
-		elseif not player:is_player() and minetest.get_modpath("mcl_armor") or not player:is_player() and not minetest.get_modpath("mcl_armor") then
+		if player:is_player() then
+			mcl_skins.update_player_skin(player)
+		elseif not player:is_player() then
 			player:set_properties({visual_size = EF.invisible[player].old_size})
 		end
 		player:set_nametag_attributes({color = {r = 255, g = 255, b = 255, a = 255}})

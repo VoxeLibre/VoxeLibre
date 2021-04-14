@@ -76,18 +76,18 @@ mobs:register_mob("mobs_mc:ghast", {
 
 
 mobs:spawn_specific(
-"mobs_mc:ghast", 
-"nether", 
+"mobs_mc:ghast",
+"nether",
 "ground",
 {
 "Nether"
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-18000, 
-2, 
-mobs_mc.spawn_height.nether_min, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+18000,
+2,
+mobs_mc.spawn_height.nether_min,
 mobs_mc.spawn_height.nether_max)
 
 -- fireball (projectile)
@@ -97,11 +97,9 @@ mobs:register_arrow("mobs_mc:fireball", {
 	textures = {"mcl_fire_fire_charge.png"},
 	velocity = 15,
 	collisionbox = {-.5, -.5, -.5, .5, .5, .5},
+	_is_fireball = true,
 
 	hit_player = function(self, player)
-		if rawget(_G, "armor") and armor.last_damage_types then
-			armor.last_damage_types[player:get_player_name()] = "fireball"
-		end
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 6},
