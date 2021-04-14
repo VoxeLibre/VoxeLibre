@@ -88,7 +88,7 @@ minetest.register_tool("mcl_armor:helmet_netherite",{
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_helmet_netherite.png",
-	groups = {armor_head=1, mcl_armor_points=3, mcl_armor_uses=364, mcl_armor_toughness=2, enchantability=10 },
+	groups = {armor_head=1, mcl_armor_points=3, mcl_armor_uses=407, mcl_armor_toughness=2, enchantability=10 },
 	_repair_material = "mcl_netherite:netherite_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_diamond",
@@ -272,7 +272,7 @@ minetest.register_tool("mcl_armor:leggings_netherite",{
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_leggings_netherite.png",
-	groups = {armor_legs=1, mcl_armor_points=6, mcl_armor_uses=496, mcl_armor_toughness=2, enchantability=10 },
+	groups = {armor_legs=1, mcl_armor_points=6, mcl_armor_uses=555, mcl_armor_toughness=2, enchantability=10 },
 	_repair_material = "mcl_netherite:netherite_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_diamond",
