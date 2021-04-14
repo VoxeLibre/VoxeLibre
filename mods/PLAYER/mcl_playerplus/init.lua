@@ -1,6 +1,6 @@
 local S = minetest.get_translator("mcl_playerplus")
 
-local elytra = {}
+elytra = {}
 
 local node_stand_return = ":air"
 local get_connected_players = minetest.get_connected_players
@@ -200,6 +200,16 @@ minetest.register_globalstep(function(dtime)
 			minetest.log("action", "somehow player got of loaded areas")
 		end
 
+		local chestplate = player:get_inventory():get_stack("armor", 3)
+
+		if player_rocketing[player] and player_rocketing[player] == true and chestplate:get_name() == "mcl_armor:elytra" then
+			if math.abs(player_velocity.x) + math.abs(player_velocity.y) + math.abs(player_velocity.z) < 40 then
+				player:add_player_velocity(vector.multiply(player:get_look_dir(), 4))
+				elytra[player] = true
+			end
+		end
+
+
 		controls.register_on_press(function(player, key)
 			if key~="jump" and key~="RMB" then return end
 			if key=="jump" then
@@ -213,8 +223,6 @@ minetest.register_globalstep(function(dtime)
 				end
 			end
 		end)
-
-		local chestplate = player:get_inventory():get_stack("armor", 3)
 
 		if elytra[player] == true and node_stand_return ~= "air" or elytra[player] == true and player:get_inventory():get_stack("armor", 3):get_name() ~= "mcl_armor:elytra" or player:get_attach() ~= nil then
 			elytra[player] = false
