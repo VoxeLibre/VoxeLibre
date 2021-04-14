@@ -208,27 +208,31 @@ local collision = function(self)
 
 				--local velocity = vector.normalize(dir)
 				
+				local force = 1 - (1 * distance / (collision_boundary + object_collision_boundary))
+
 				local vel1 = vector.multiply(velocity, -1)
 				local vel2 = velocity
 
+				vel1 = vector.multiply(vel1, force)
+				vel2 = vector.multiply(vel2, force)
 
-				local current_mob_velocity = self.object:get_velocity()
 
 
-				local new_mob_velocity = vector.subtract(vel1, current_mob_velocity)
-
-				new_mob_velocity.y = 0
+				--local current_mob_velocity = self.object:get_velocity()
+			
+				--print(distance)
+				--print(collision_boundary + object_collision_boundary)
 
 
 				--if math.abs(current_mob_velocity.x) < 2 and math.abs(current_mob_velocity.z) < 2 then
-				self.object:add_velocity(new_mob_velocity)
+				self.object:add_velocity(vel1)
 				--end
 				
 				--reenable fire spreading eventually
 
 				if object:is_player() then
 
-					local current_vel = object:get_velocity()
+					--local current_vel = object:get_velocity()
 
 
 					--local new_vel = vector.subtract(vel2, current_vel)
@@ -236,9 +240,9 @@ local collision = function(self)
 					--new_vel.y = 0
 
 
-					if math.abs(current_vel.x) < 2 and math.abs(current_vel.z) < 2 then
+					--if math.abs(current_vel.x) < 2 and math.abs(current_vel.z) < 2 then
 						object:add_player_velocity(vel2)
-					end
+					--end
 				
 
 					--if self.on_fire then
@@ -250,15 +254,15 @@ local collision = function(self)
 					--end
 
 				else
-					local current_vel = object:get_velocity()
+				--	local current_vel = object:get_velocity()
 
-					local new_vel = vector.subtract(vel2, current_vel)
+				--	local new_vel = vector.subtract(vel2, current_vel)
 
-					new_vel.y = 0
+				--	new_vel.y = 0
 
-					--if math.abs(current_vel.x) < 2 and math.abs(current_vel.z) < 2 then
-					object:add_velocity(new_vel)
-					--end
+				--	if math.abs(current_vel.x) < 2 and math.abs(current_vel.z) < 2 then
+						object:add_velocity(vel2)
+				--	end
 					--if self.on_fire then
 					--	start_fire(object)
 					--end
