@@ -70,9 +70,12 @@ function mcl_damage.get_mcl_damage_reason(mt_reason)
 				mcl_reason.type = "player"
 			end
 		end
-	elseif mt_reason.type == "node_damage" then
-		if minetest.get_item_group(reason.node or "", "fire_damage") > 0 then
+	elseif mt_reason.type == "node_damage" and mt_reason.node then
+		if minetest.get_item_group(mt_reason.node, "fire") > 0 then
 			mcl_reason.type = "in_fire"
+		end
+		if minetest.get_item_group(mt_reason.node, "lava") > 0 then
+			mcl_reason.type = "lava"
 		end
 	end
 

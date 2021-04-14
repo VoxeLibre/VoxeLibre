@@ -106,7 +106,7 @@ function mcl_burning.damage(obj)
 	end
 
 	if do_damage then
-		mcl_util.deal_damage(obj, 1, {type = "in_fire"})
+		mcl_util.deal_damage(obj, 1, {type = "on_fire"})
 	end
 end
 
