@@ -669,14 +669,14 @@ minetest.register_tool("mcl_tools:sword_netherite", {
 		full_punch_interval = 0.625,
 		max_drop_level=5,
 		damage_groups = {fleshy=9},
-		punch_attack_uses = 2032,
+		punch_attack_uses = 2031,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_nether:netherite_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		swordy = { speed = 8, level = 5, uses = 1562 },
-		swordy_cobweb = { speed = 8, level = 5, uses = 1562 }
+		swordy = { speed = 8, level = 5, uses = 2031 },
+		swordy_cobweb = { speed = 8, level = 5, uses = 2031 }
 	},
 })
 
