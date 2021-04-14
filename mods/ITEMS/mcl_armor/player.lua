@@ -61,7 +61,7 @@ mcl_player.player_register_model("mcl_armor_character_female.b3d", {
 function mcl_armor.update_player(player, info)
 	mcl_player.player_set_armor(player, info.texture, info.preview)
 
-	player:get_meta():set_int("mcl_armor:armor_point", info.points)
+	player:get_meta():set_int("mcl_armor:armor_points", info.points)
 end
 
 local function is_armor_action(inventory_info)
