@@ -273,3 +273,24 @@ minetest.register_craft({
 		{"mcl_core:stick", ""}
 	}
 })
+
+minetest.register_tool("mcl_farming:hoe_netherite", {
+	description = S("Netherite Hoe"),
+	_tt_help = hoe_tt.."\n"..S("Uses: @1", uses.netherite),
+	_doc_items_longdesc = hoe_longdesc,
+	_doc_items_usagehelp = hoe_usagehelp,
+	inventory_image = "farming_tool_netheritehoe.png",
+	wield_scale = mcl_vars.tool_wield_scale,
+	on_place = hoe_on_place_function(uses.netherite),
+	groups = { tool=1, hoe=1, enchantability=10 },
+	tool_capabilities = {
+		full_punch_interval = 0.25,
+		damage_groups = { fleshy = 4, },
+		punch_attack_uses = uses.netherite,
+	},
+	_repair_material = "mcl_nether:netherite_ingot",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		hoey = { speed = 8, level = 5, uses = 2031 }
+	},
+})
