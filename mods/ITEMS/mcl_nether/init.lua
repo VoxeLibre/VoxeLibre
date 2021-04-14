@@ -266,6 +266,22 @@ minetest.register_craftitem("mcl_nether:quartz", {
 	groups = { craftitem = 1 },
 })
 
+minetest.register_craftitem("mcl_nether:netherite_scrap", {
+	description = S("Netherite Scrap"),
+	_doc_items_longdesc = S("Netherite scrap is a crafting ingredient for netherite ingots."),
+	inventory_image = "mcl_nether_netherite_scrap.png",
+	stack_max = 64,
+	groups = { craftitem = 1 },
+})
+
+minetest.register_craftitem("mcl_nether:netherite_ingot", {
+	description = S("Netherite Ingot"),
+	_doc_items_longdesc = S("Netherite ingots can be used with a smithing table to upgrade items to netherite."),
+	inventory_image = "mcl_nether_netherite_ingot.png",
+	stack_max = 64,
+	groups = { craftitem = 1 },
+})
+
 minetest.register_craftitem("mcl_nether:netherbrick", {
 	description = S("Nether Brick"),
 	_doc_items_longdesc = S("Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences."),
@@ -282,7 +298,14 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_nether:quartz_block",
+	type = "cooking",
+	output = "mcl_nether:netherite_scrap",
+	recipe = "mcl_nether:ancient_debris",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	output = 'mcl_nether:quartz_block',
 	recipe = {
 		{"mcl_nether:quartz", "mcl_nether:quartz"},
 		{"mcl_nether:quartz", "mcl_nether:quartz"},
@@ -349,6 +372,15 @@ minetest.register_craft({
 		{"mcl_nether:nether_wart_item", "mcl_nether:nether_wart_item", "mcl_nether:nether_wart_item"},
 		{"mcl_nether:nether_wart_item", "mcl_nether:nether_wart_item", "mcl_nether:nether_wart_item"},
 		{"mcl_nether:nether_wart_item", "mcl_nether:nether_wart_item", "mcl_nether:nether_wart_item"},
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_nether:netherite_ingot",
+	recipe = {
+		{'mcl_nether:netherite_scrap', 'mcl_nether:netherite_scrap', 'mcl_nether:netherite_scrap'},
+		{'mcl_nether:netherite_scrap', 'mcl_core:gold_ingot', 'mcl_core:gold_ingot'},
+		{'mcl_core:gold_ingot', 'mcl_core:gold_ingot', ''},
 	}
 })
 
