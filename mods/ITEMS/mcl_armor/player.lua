@@ -122,10 +122,19 @@ minetest.register_allow_player_inventory_action(function(player, action, invento
 	end
 end)
 
--- ToDo: Call unequip callbacks & play uneqip sound
 minetest.register_on_player_inventory_action(function(player, action, inventory, inventory_info)
 	if is_armor_action(inventory_info) then
-		mcl_armor.update(player)
+		if action == "put" then
+			mcl_armor.on_equip(inventory_info.stack, player)
+		elseif action == "take" then
+			mcl_armor.on_unequip(inventory_info.stack, player)
+		else
+			if inventory_info.to_list == "armor" then
+				mcl_armor.on_equip(inventory:get_stack(inventory_info.to_list, inventory_info.to_index), player)
+			elseif inventory_info.from_list == "armor" then
+				mcl_armor.on_unequip(inventory:get_stack(inventory_info.to_list, inventory_info.to_index), player)
+			end
+		end
 	end
 end)
 

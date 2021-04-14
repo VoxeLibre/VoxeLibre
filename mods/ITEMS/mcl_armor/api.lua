@@ -18,6 +18,24 @@ function mcl_armor.play_equip_sound(stack, obj, pos, unequip)
 	end
 end
 
+function mcl_armor.on_equip(itemstack, obj)
+	local def = itemstack:get_definition()
+	mcl_armor.play_equip_sound(itemstack, obj)
+	if def._on_equip then
+		def._on_equip(obj, itemstack)
+	end
+	mcl_armor.update(obj)
+end
+
+function mcl_armor.on_unequip(itemstack, obj)
+	local def = itemstack:get_definition()
+	mcl_armor.play_equip_sound(itemstack, obj, nil, true)
+	if def._on_unequip then
+		def._on_unequip(obj, itemstack)
+	end
+	mcl_armor.update(obj)
+end
+
 function mcl_armor.equip(itemstack, obj)
 	local def = itemstack:get_definition()
 	local element = mcl_armor.elements[def._mcl_armor_element or ""]
@@ -27,10 +45,7 @@ function mcl_armor.equip(itemstack, obj)
 		if inv:get_stack("armor", element.index):is_empty() then
 			local equipping_item = itemstack:take_item()
 			inv:set_stack("armor", element.index, equipping_item)
-			if def._on_equip then
-				def._on_equip(equipping_item)
-			end
-			mcl_armor.update(obj)
+			mcl_armor.on_equip(equipping_item, obj)
 		end
 	end
 
