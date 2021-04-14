@@ -323,7 +323,7 @@ mobs:register_mob("mobs_mc:enderman", {
 			--	self:teleport(nil)
 			--	self.state = ""
 			--else
-				if self.attack ~= nil then
+				if self.attack ~= nil and not minetest.settings:get_bool("creative_mode") then
 					self.state = 'attack'
 				end
 			--end
