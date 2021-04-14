@@ -43,7 +43,7 @@ function mcl_armor.damage_modifier(obj, hp_change, reason)
 							for _, enchantment in pairs(tbl) do
 								local level = enchantments[enchantment.id]
 
-								if level > 0 then
+								if level and level > 0 then
 									enchantment_protection_factor = enchantment_protection_factor + level * enchantment.factor
 								end
 							end
