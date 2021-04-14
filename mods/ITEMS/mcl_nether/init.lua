@@ -51,6 +51,21 @@ minetest.register_node("mcl_nether:quartz_ore", {
 	_mcl_fortune_drop = mcl_core.fortune_drop_ore
 })
 
+minetest.register_node("mcl_nether:ancient_debris", {
+	description = S("Ancient Debris"),
+	_doc_items_longdesc = S("Ancient debris can be found in the nether and is very very rare."),
+	stack_max = 64,
+	tiles = {"mcl_nether_ancient_debris_top.png", "mcl_nether_ancient_debris_side.png"},
+	is_ground_content = true,
+	groups = {pickaxey=4, building_block=1, material_stone=1, xp=0},
+	drop = 'mcl_nether:ancient_debris',
+	sounds = mcl_sounds.node_sound_stone_defaults(),
+	_mcl_blast_resistance = 1200,
+	_mcl_hardness = 30,
+	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = mcl_core.fortune_drop_ore
+})
+
 -- For eternal fire on top of netherrack and magma blocks
 -- (this code does not require a dependency on mcl_fire)
 local function eternal_after_destruct(pos, oldnode)
