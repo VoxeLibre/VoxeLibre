@@ -55,6 +55,7 @@ local uses = {
 	iron = 251,
 	gold = 33,
 	diamond = 1562,
+	netherite = 2031,
 }
 
 local hoe_tt = S("Turns block into farmland")
@@ -291,6 +292,6 @@ minetest.register_tool("mcl_farming:hoe_netherite", {
 	_repair_material = "mcl_nether:netherite_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		hoey = { speed = 8, level = 5, uses = 2031 }
+		hoey = { speed = 8, level = 5, uses = uses.netherite }
 	},
 })
