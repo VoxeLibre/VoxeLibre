@@ -3149,3 +3149,121 @@ end
 		end
 	end
 	]]--
+
+
+	mobs.death_effect = function(pos, yaw, collisionbox, rotate)
+		local min, max
+		if collisionbox then
+			min = {x=collisionbox[1], y=collisionbox[2], z=collisionbox[3]}
+			max = {x=collisionbox[4], y=collisionbox[5], z=collisionbox[6]}
+		else
+			min = { x = -0.5, y = 0, z = -0.5 }
+			max = { x = 0.5, y = 0.5, z = 0.5 }
+		end
+		if rotate then
+			min = vector.rotate(min, {x=0, y=yaw, z=math_pi/2})
+			max = vector.rotate(max, {x=0, y=yaw, z=math_pi/2})
+			min, max = vector.sort(min, max)
+			min = vector.multiply(min, 0.5)
+			max = vector.multiply(max, 0.5)
+		end
+	
+		minetest_add_particlespawner({
+			amount = 50,
+			time = 0.001,
+			minpos = vector.add(pos, min),
+			maxpos = vector.add(pos, max),
+			minvel = vector.new(-5,-5,-5),
+			maxvel = vector.new(5,5,5),
+			minexptime = 1.1,
+			maxexptime = 1.5,
+			minsize = 1,
+			maxsize = 2,
+			collisiondetection = false,
+			vertical = false,
+			texture = "mcl_particles_mob_death.png^[colorize:#000000:255",
+		})
+	
+		minetest_sound_play("mcl_mobs_mob_poof", {
+			pos = pos,
+			gain = 1.0,
+			max_hear_distance = 8,
+		}, true)
+	end
+	
+-- above function exported for mount.lua
+function mobs:set_animation(self, anim)
+	set_animation(self, anim)
+end
+
+
+-- set defined animation
+local set_animation = function(self, anim, fixed_frame)
+	if not self.animation or not anim then
+		return
+	end
+	if self.state == "die" and anim ~= "die" and anim ~= "stand" then
+		return
+	end
+
+	self.animation.current = self.animation.current or ""
+
+	if (anim == self.animation.current
+	or not self.animation[anim .. "_start"]
+	or not self.animation[anim .. "_end"]) and self.state ~= "die" then
+		return
+	end
+
+	self.animation.current = anim
+
+	local a_start = self.animation[anim .. "_start"]
+	local a_end
+	if fixed_frame then
+		a_end = a_start
+	else
+		a_end = self.animation[anim .. "_end"]
+	end
+
+	self.object:set_animation({
+		x = a_start,
+		y = a_end},
+		self.animation[anim .. "_speed"] or self.animation.speed_normal or 15,
+		0, self.animation[anim .. "_loop"] ~= false)
+end
+
+
+-- Code to execute before custom on_rightclick handling
+local on_rightclick_prefix = function(self, clicker)
+	local item = clicker:get_wielded_item()
+
+	-- Name mob with nametag
+	if not self.ignores_nametag and item:get_name() == "mcl_mobs:nametag" then
+
+		local tag = item:get_meta():get_string("name")
+		if tag ~= "" then
+			if string.len(tag) > MAX_MOB_NAME_LENGTH then
+				tag = string.sub(tag, 1, MAX_MOB_NAME_LENGTH)
+			end
+			self.nametag = tag
+
+			update_tag(self)
+
+			if not mobs.is_creative(clicker:get_player_name()) then
+				item:take_item()
+				clicker:set_wielded_item(item)
+			end
+			return true
+		end
+
+	end
+	return false
+end
+
+local create_mob_on_rightclick = function(on_rightclick)
+	return function(self, clicker)
+		local stop = on_rightclick_prefix(self, clicker)
+		if (not stop) and (on_rightclick) then
+			on_rightclick(self, clicker)
+		end
+	end
+end
