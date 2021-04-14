@@ -40,7 +40,6 @@ minetest.register_on_mods_loaded(function()
 			end
 			self._void_timer = 0
 
-			local pos = obj:get_pos()
 			local void, void_deadly = is_in_void(pos)
 			if void_deadly then
 				local ent = obj:get_luaentity()
@@ -81,7 +80,7 @@ minetest.register_globalstep(function(dtime)
 					-- Damage enabled, not immortal: Deal void damage (4 HP / 0.5 seconds)
 					if player:get_hp() > 0 then
 						death_msg(player, S("@1 fell into the endless void.", player:get_player_name()))
-						player:set_hp(player:get_hp() - VOID_DAMAGE)
+						mcl_util.deal_damage(player, VOID_DAMAGE, {type = "out_of_world"})
 					end
 				end
 			end
