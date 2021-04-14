@@ -1,6 +1,6 @@
 local S = minetest.get_translator("mcl_playerplus")
 
-local elytra = {}
+elytra = {}
 
 local node_stand_return = ":air"
 local get_connected_players = minetest.get_connected_players
@@ -24,6 +24,7 @@ local mcl_playerplus_internal = {}
 
 local def = {}
 local time = 0
+local look_pitch = 0
 
 local player_collision = function(player)
 
@@ -194,15 +195,32 @@ minetest.register_globalstep(function(dtime)
 		player_vel_yaws[name] = player_vel_yaw
 
 		if minetest.get_node_or_nil({x=player:get_pos().x, y=player:get_pos().y - 0.5, z=player:get_pos().z}) then
-			node_stand_return = minetest.get_node_or_nil({x=player:get_pos().x, y=player:get_pos().y - 0.5, z=player:get_pos().z}).name
+			node_stand_return = minetest.get_node_or_nil({x=player:get_pos().x, y=player:get_pos().y - 0.1, z=player:get_pos().z}).name
 		else
 			minetest.log("action", "somehow player got of loaded areas")
 		end
 
-		controls.register_on_press(function(player, key)
-			if key~="jump" then return end
-			if player:get_inventory():get_stack("armor", 3):get_name() == "mcl_armor:elytra" and player_velocity.y < -6 and elytra[player] ~= true then
+		local chestplate = player:get_inventory():get_stack("armor", 3)
+
+		if player_rocketing[player] and player_rocketing[player] == true and chestplate:get_name() == "mcl_armor:elytra" then
+			if math.abs(player_velocity.x) + math.abs(player_velocity.y) + math.abs(player_velocity.z) < 40 then
+				player:add_player_velocity(vector.multiply(player:get_look_dir(), 4))
 				elytra[player] = true
+			end
+		end
+
+
+		controls.register_on_press(function(player, key)
+			if key~="jump" and key~="RMB" then return end
+			if key=="jump" then
+				if player:get_inventory():get_stack("armor", 3):get_name() == "mcl_armor:elytra" and player_velocity.y < -6 and elytra[player] ~= true then
+					elytra[player] = true
+				elseif key=="RMB" then
+					if wielded:get_name() == "mcl_tools:rocket" then
+						local item = wielded:take_item()
+						player:set_wielded_item(wielded)
+					end
+				end
 			end
 		end)
 
@@ -224,13 +242,12 @@ minetest.register_globalstep(function(dtime)
 			end
 			if math.abs(player_velocity.x) + math.abs(player_velocity.z) < 20 then
 				local dir = minetest.yaw_to_dir(player:get_look_horizontal())
-				local pitch = 1 * player:get_look_vertical() * -.1
-				player:add_velocity({x=dir.x, y=pitch, z=dir.z})
-			end
-			if control.sneak then
-				if player_velocity.y > -5 then
-					player:add_velocity({x=0, y=-2, z=0})
+				if degrees(player:get_look_vertical()) * -.01 < .1 then
+					look_pitch = degrees(player:get_look_vertical()) * -.01
+				else
+					look_pitch = .1
 				end
+				player:add_velocity({x=dir.x, y=look_pitch, z=dir.z})
 			end
 		else
 			playerphysics.remove_physics_factor(player, "gravity", "mcl_playerplus:elytra")
