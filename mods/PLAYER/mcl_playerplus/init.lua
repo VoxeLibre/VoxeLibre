@@ -440,7 +440,7 @@ minetest.register_globalstep(function(dtime)
 		and (not check_player_privs(name, {noclip = true})) then
 			if player:get_hp() > 0 then
 				mcl_death_messages.player_damage(player, S("@1 suffocated to death.", name))
-				player:set_hp(player:get_hp() - 1)
+				mcl_util.deal_damage(player, 1, {type = "in_wall"})
 			end
 		end
 
