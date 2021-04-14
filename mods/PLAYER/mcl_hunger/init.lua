@@ -164,7 +164,7 @@ minetest.register_globalstep(function(dtime)
 						if mod_death_messages then
 							mcl_death_messages.player_damage(player, S("@1 starved to death.", name))
 						end
-						player:set_hp(hp-1)
+						mcl_util.deal_damage(player, 1, {type = "starve"})
 					end
 				end
 			end
