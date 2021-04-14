@@ -140,69 +140,67 @@ if minetest_settings:get_bool("only_peaceful_mobs", false) then
 	end)
 end
 
+
 local integer_test = {-1,1}
---slightly adjust mob position to prevent equal length
-	--corner/wall sticking
-	pos.x = pos.x + ((math_random()/2)*integer_test[math.random(1,2)])
-	pos.z = pos.z + ((math_random()/2)*integer_test[math.random(1,2)])
 
 local collision = function(self)
-	pos = self.object:get_pos()
-
-	
+	local pos = self.object:get_pos()
 
 	--do collision detection from the base of the mob
-	collisionbox = self.object:get_properties().collisionbox
+	local collisionbox = self.object:get_properties().collisionbox
 
 	pos.y = pos.y + collisionbox[2]
 	
-	collision_boundary = collisionbox[4]
+	local collision_boundary = collisionbox[4]
 
-	radius = collision_boundary
+	local radius = collision_boundary
 
 	if collisionbox[5] > collision_boundary then
 		radius = collisionbox[5]
 	end
 
-	collision_count = 0
+	local collision_count = 0
 
 	for _,object in ipairs(minetest_get_objects_inside_radius(pos, radius*1.25)) do
-		if object ~= self.object and (object:is_player() or object:get_luaentity()._cmi_is_mob == true) and
+		if object and object ~= self.object and (object:is_player() or object:get_luaentity()._cmi_is_mob == true) then--and
 		--don't collide with rider, rider don't collide with thing
-		(not object:get_attach() or (object:get_attach() and object:get_attach() ~= self.object)) and 
-		(not self.object:get_attach() or (self.object:get_attach() and self.object:get_attach() ~= object)) then
+		--(not object:get_attach() or (object:get_attach() and object:get_attach() ~= self.object)) and 
+		--(not self.object:get_attach() or (self.object:get_attach() and self.object:get_attach() ~= object)) then
 			--stop infinite loop
 			collision_count = collision_count + 1
 			if collision_count > 100 then
 				break
 			end
-			pos2 = object:get_pos()
+			local pos2 = object:get_pos()
 			
-			object_collisionbox = object:get_properties().collisionbox
+			local object_collisionbox = object:get_properties().collisionbox
 
 			pos2.y = pos2.y + object_collisionbox[2]
 
-			object_collision_boundary = object_collisionbox[4]
+			local object_collision_boundary = object_collisionbox[4]
 
 
 			--this is checking the difference of the object collided with's possision
 			--if positive top of other object is inside (y axis) of current object
-			y_base_diff = (pos2.y + object_collisionbox[5]) - pos.y
+			local y_base_diff = (pos2.y + object_collisionbox[5]) - pos.y
 
-			y_top_diff = (pos.y + collisionbox[5]) - pos2.y
+			local y_top_diff = (pos.y + collisionbox[5]) - pos2.y
 
 
-			distance = vector.distance(vector.new(pos.x,0,pos.z),vector.new(pos2.x,0,pos2.z))
+			local distance = vector.distance(vector.new(pos.x,0,pos.z),vector.new(pos2.x,0,pos2.z))
 
 			if distance <= collision_boundary + object_collision_boundary and y_base_diff >= 0 and y_top_diff >= 0 then
 
-				dir = vector.direction(pos,pos2)
+				local dir = vector.direction(pos,pos2)
 
 				dir.y = 0
 				
 				--eliminate mob being stuck in corners
 				if dir.x == 0 and dir.z == 0 then
-					dir = vector.new(math_random(-1,1)*math_random(),0,math_random(-1,1)*math_random())
+					--slightly adjust mob position to prevent equal length
+					--corner/wall sticking
+					dir.x = dir.x + ((math_random()/2)*integer_test[math.random(1,2)])
+					dir.z = dir.z + ((math_random()/2)*integer_test[math.random(1,2)])
 				end
 
 				---- JUST MAKE THIS DIR FROM NOW ON --- FIX MEEEEE
@@ -210,22 +208,33 @@ local collision = function(self)
 
 				--local velocity = vector.normalize(dir)
 				
-				vel1 = vector.multiply(velocity, -1)
-				vel2 = velocity
+				local vel1 = vector.multiply(velocity, -1)
+				local vel2 = velocity
 
 
 				local current_mob_velocity = self.object:get_velocity()
 
 
-				if math.abs(current_mob_velocity.x) < 2 and math.abs(current_mob_velocity.z) < 2 then
-					self.object:add_velocity(vel1)
-				end
+				local new_mob_velocity = vector.subtract(vel1, current_mob_velocity)
+
+				new_mob_velocity.y = 0
+
+
+				--if math.abs(current_mob_velocity.x) < 2 and math.abs(current_mob_velocity.z) < 2 then
+				self.object:add_velocity(new_mob_velocity)
+				--end
 				
 				--reenable fire spreading eventually
 
 				if object:is_player() then
 
 					local current_vel = object:get_velocity()
+
+
+					--local new_vel = vector.subtract(vel2, current_vel)
+
+					--new_vel.y = 0
+
 
 					if math.abs(current_vel.x) < 2 and math.abs(current_vel.z) < 2 then
 						object:add_player_velocity(vel2)
@@ -242,9 +251,14 @@ local collision = function(self)
 
 				else
 					local current_vel = object:get_velocity()
-					if math.abs(current_vel.x) < 2 and math.abs(current_vel.z) < 2 then
-						object:add_velocity(vel2)
-					end
+
+					local new_vel = vector.subtract(vel2, current_vel)
+
+					new_vel.y = 0
+
+					--if math.abs(current_vel.x) < 2 and math.abs(current_vel.z) < 2 then
+					object:add_velocity(new_vel)
+					--end
 					--if self.on_fire then
 					--	start_fire(object)
 					--end
