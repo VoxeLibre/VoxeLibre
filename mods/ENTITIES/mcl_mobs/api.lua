@@ -145,7 +145,7 @@ end
 local integer_test = {-1,1}
 
 local collision = function(self)
-				--[[
+				
 	local pos = self.object:get_pos()
 
 	--do collision detection from the base of the mob
@@ -210,78 +210,23 @@ local collision = function(self)
 					dir.z = dir.z + ((math_random()/10)*integer_test[math.random(1,2)])
 				end
 
-				---- JUST MAKE THIS DIR FROM NOW ON --- FIX MEEEEE
-				local velocity = dir--vector.multiply(dir,1.1)
-
-				--local velocity = vector.normalize(dir)
+				local velocity = dir
 				
-				local force = 1 - (1 * distance / (collision_boundary + object_collision_boundary))
+				--0.5 is the max force multiplier
+				local force = 0.5 - (0.5 * distance / (collision_boundary + object_collision_boundary))
 
-				local vel1 = vector.multiply(velocity, -1)
-				local vel2 = velocity
+				local vel1 = vector.multiply(velocity, -1.5)
+				local vel2 = vector.multiply(velocity,  1.5)
 
 				vel1 = vector.multiply(vel1, force)
 				vel2 = vector.multiply(vel2, force)
-
-
-				local current_mob_velocity = self.object:get_velocity()
 			
-
-				--if vector_length(current_mob_velocity) <= 1 then
-					--self.object:add_velocity(vel1)
-				--end
-				
-				
-				--reenable fire spreading eventually
-
-				if object:is_player() then
-
-					print("there is something seriously wrong here")
-					--local current_vel = object:get_velocity()
-
-
-					--print(vector.length(current_vel))
-
-					--local new_vel = vector.subtract(vel2, current_vel)
-
-					--new_vel.y = 0
-
-
-					--if math.abs(current_vel.x) < 2 and math.abs(current_vel.z) < 2 then
-					--object:add_velocity(new_vel)
-					--end
-				
-
-					--if self.on_fire then
-					--	start_fire(object)
-					--end
-
-					--if is_player_on_fire(object) then
-					--	start_fire(self.object)
-					--end
-
-				--else
-					--local current_vel = object:get_velocity()
-
-					--local new_vel = vector.subtract(vel2, current_vel)
-
-					--new_vel.y = 0
-
-				--	if math.abs(current_vel.x) < 2 and math.abs(current_vel.z) < 2 then
-						--object:add_velocity(new_vel)
-				--	end
-					--if self.on_fire then
-					--	start_fire(object)
-					--end
-					--if object:get_luaentity().on_fire then
-					--	start_fire(self.object)
-					--end
-				end
+				self.object:add_velocity(vel1)
+				object:add_velocity(vel2)
 			end
 			
 		end
 	end
-	]]--
 end
 
 
