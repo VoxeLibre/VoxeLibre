@@ -39,7 +39,7 @@ function minetest.register_on_player_hpchange(func, modifier)
 end
 
 function mcl_damage.register_modifier(func, priority)
-	table.insert(mcl_damage, {func = func, priority = priority or 0})
+	table.insert(mcl_damage.modifiers, {func = func, priority = priority or 0})
 end
 
 function mcl_damage.get_mcl_damage_reason(mt_reason)
@@ -86,8 +86,9 @@ function mcl_damage.get_mcl_damage_reason(mt_reason)
 	end
 
 	mcl_reason.source = mcl_reason.source or mcl_reason.direct
-
 	mcl_reason.flags = mcl_damage.types[mcl_reason.type]
+
+	return mcl_reason
 end
 
 function mcl_damage.register_type(name, def)

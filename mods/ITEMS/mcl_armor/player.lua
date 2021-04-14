@@ -140,4 +140,6 @@ minetest.register_on_joinplayer(function(player)
 	end)
 end)
 
-
+mcl_damage.register_modifier(function(player, hp_change, _, reason)
+	return mcl_armor.damage_modifier(player, hp_change, reason)
+end)

@@ -24,9 +24,9 @@ function mcl_armor.damage_modifier(obj, hp_change, reason)
 
 	if inv then
 		for name, element in pairs(mcl_armor.elements) do
-			local itemstack = inventory:get_stack("armor", element.index)
-			if not stack:is_empty() then
-				local itemname = stack:get_name()
+			local itemstack = inv:get_stack("armor", element.index)
+			if not itemstack:is_empty() then
+				local itemname = itemstack:get_name()
 				local enchantments = mcl_enchanting.get_enchantments(itemstack)
 
 				if not flags.bypasses_armor then
@@ -34,7 +34,7 @@ function mcl_armor.damage_modifier(obj, hp_change, reason)
 					toughness = toughness + minetest.get_item_group(itemname, "mcl_armor_toughness")
 
 					mcl_util.use_item_durability(itemstack, uses)
-					inventory:set_stack("armor", element.index, itemstack)
+					inv:set_stack("armor", element.index, itemstack)
 				end
 
 				if not flags.bypasses_magic then
@@ -90,14 +90,10 @@ function mcl_armor.damage_modifier(obj, hp_change, reason)
 
 		local thorns_item = thorns_pieces[math.random(#thorns_pieces)]
 		mcl_util.use_item_durability(thorns_item.itemstack, 2)
-		inventory:set_stack("armor", thorns_item.index, thorns_item.itemstack)
+		inv:set_stack("armor", thorns_item.index, thorns_item.itemstack)
 	end
 
 	mcl_armor.update(obj)
 
 	return -math.floor(damage + 0.5)
 end
-
-mcl_damage.register_modifier(function(player, hp_change, _, reason)
-	return mcl_armor.damage_modifier(player, hp_change, reason)
-end)
