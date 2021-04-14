@@ -21,9 +21,9 @@
 * Rootyjr
 * Nicu
 * aligator
+* Code-Sploit
 
 ## Contributors
-* Code-Sploit
 * Laurent Rocher
 * HimbeerserverDE
 * TechDudie
