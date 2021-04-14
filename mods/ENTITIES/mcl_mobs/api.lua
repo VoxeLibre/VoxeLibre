@@ -43,7 +43,8 @@ local math_random = math.random
 local math_floor  = math.floor
 
 -- localize vector functions
-local vector_new = vector.new
+local vector_new    = vector.new
+local vector_length = vector.length
 
 mobs = {}
 -- mob constants
@@ -144,6 +145,7 @@ end
 local integer_test = {-1,1}
 
 local collision = function(self)
+				--[[
 	local pos = self.object:get_pos()
 
 	--do collision detection from the base of the mob
@@ -159,6 +161,10 @@ local collision = function(self)
 		radius = collisionbox[5]
 	end
 
+	if self.object:get_properties().collide_with_objects == true then
+		print("THIS IS A SERIOUS ERROR!")
+	end
+
 	local collision_count = 0
 
 	for _,object in ipairs(minetest_get_objects_inside_radius(pos, radius*1.25)) do
@@ -171,6 +177,7 @@ local collision = function(self)
 			if collision_count > 100 then
 				break
 			end
+
 			local pos2 = object:get_pos()
 			
 			local object_collisionbox = object:get_properties().collisionbox
@@ -199,8 +206,8 @@ local collision = function(self)
 				if dir.x == 0 and dir.z == 0 then
 					--slightly adjust mob position to prevent equal length
 					--corner/wall sticking
-					dir.x = dir.x + ((math_random()/2)*integer_test[math.random(1,2)])
-					dir.z = dir.z + ((math_random()/2)*integer_test[math.random(1,2)])
+					dir.x = dir.x + ((math_random()/10)*integer_test[math.random(1,2)])
+					dir.z = dir.z + ((math_random()/10)*integer_test[math.random(1,2)])
 				end
 
 				---- JUST MAKE THIS DIR FROM NOW ON --- FIX MEEEEE
@@ -217,23 +224,23 @@ local collision = function(self)
 				vel2 = vector.multiply(vel2, force)
 
 
-
-				--local current_mob_velocity = self.object:get_velocity()
+				local current_mob_velocity = self.object:get_velocity()
 			
-				--print(distance)
-				--print(collision_boundary + object_collision_boundary)
 
-
-				--if math.abs(current_mob_velocity.x) < 2 and math.abs(current_mob_velocity.z) < 2 then
-				self.object:add_velocity(vel1)
+				--if vector_length(current_mob_velocity) <= 1 then
+					--self.object:add_velocity(vel1)
 				--end
+				
 				
 				--reenable fire spreading eventually
 
 				if object:is_player() then
 
+					print("there is something seriously wrong here")
 					--local current_vel = object:get_velocity()
 
+
+					--print(vector.length(current_vel))
 
 					--local new_vel = vector.subtract(vel2, current_vel)
 
@@ -241,7 +248,7 @@ local collision = function(self)
 
 
 					--if math.abs(current_vel.x) < 2 and math.abs(current_vel.z) < 2 then
-						object:add_player_velocity(vel2)
+					--object:add_velocity(new_vel)
 					--end
 				
 
@@ -253,15 +260,15 @@ local collision = function(self)
 					--	start_fire(self.object)
 					--end
 
-				else
-				--	local current_vel = object:get_velocity()
+				--else
+					--local current_vel = object:get_velocity()
 
-				--	local new_vel = vector.subtract(vel2, current_vel)
+					--local new_vel = vector.subtract(vel2, current_vel)
 
-				--	new_vel.y = 0
+					--new_vel.y = 0
 
 				--	if math.abs(current_vel.x) < 2 and math.abs(current_vel.z) < 2 then
-						object:add_velocity(vel2)
+						--object:add_velocity(new_vel)
 				--	end
 					--if self.on_fire then
 					--	start_fire(object)
@@ -271,8 +278,10 @@ local collision = function(self)
 					--end
 				end
 			end
+			
 		end
 	end
+	]]--
 end
 
 
