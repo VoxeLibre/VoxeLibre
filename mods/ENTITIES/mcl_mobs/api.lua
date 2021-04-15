@@ -389,7 +389,7 @@ local do_states = function(self, dtime)
 	if self.state_timer <= 0 then
 		self.state_timer = math.random(0,2) + math.random()
 		--let's do a random state
-		self.yaw = (math_random() * (math.pi * 2)) - math.pi
+		self.yaw = (math_random() * (math.pi * 2))
 	end
 
 	set_velocity(self,1)
@@ -610,6 +610,25 @@ local mob_activate = function(self, staticdata, def, dtime)
 end
 
 
+--this allows auto facedir rotation while making it so mobs
+--don't look like wet noodles flopping around
+local movement_rotation_lock = function(self)
+	
+	local current_engine_yaw = self.object:get_yaw()
+	local current_lua_yaw = self.yaw
+
+	if current_engine_yaw > math.pi * 2 then
+		current_engine_yaw = current_engine_yaw - (math.pi * 2)
+	end
+	
+	if math.abs(current_engine_yaw - current_lua_yaw) <= 0.05 and self.object:get_properties().automatic_face_movement_dir then
+		self.object:set_properties{automatic_face_movement_dir = false}
+	elseif math.abs(current_engine_yaw - current_lua_yaw) > 0.05 and self.object:get_properties().automatic_face_movement_dir == false then
+		self.object:set_properties{automatic_face_movement_dir = self.rotate}
+	end
+end
+
+
 local mob_step = function(self, dtime)
 
 	--do not continue if non-existent
@@ -625,8 +644,13 @@ local mob_step = function(self, dtime)
 	--end
 
 
+	
+
 
 	do_states(self, dtime)
+
+
+	movement_rotation_lock(self)
 
 	-- can mob be pushed, if so calculate direction -- do this last (overrides everything)
 	if self.pushable then
@@ -947,7 +971,7 @@ minetest.register_entity(name, {
 	spawn_small_alternative = def.spawn_small_alternative,
 	do_custom = def.do_custom,
 	jump_height = def.jump_height or 4, -- was 6
-	rotate = math.rad(def.rotate or 0), --  0=front, 90=side, 180=back, 270=side2
+	rotate = def.rotate or 0, --  0=front, 90=side, 180=back, 270=side2
 	lifetimer = def.lifetimer or 57.73,
 	hp_min = scale_difficulty(def.hp_min, 5, 1),
 	hp_max = scale_difficulty(def.hp_max, 10, 1),
@@ -1106,6 +1130,54 @@ if minetest_get_modpath("doc_identifier") ~= nil then
 end
 
 end -- END mobs:register_mob function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 -- register arrow for shoot attack
