@@ -1,5 +1,7 @@
 local minetest_get_objects_inside_radius    = minetest.get_objects_inside_radius
 
+local math_random = math.random
+
 local integer_test = {-1,1}
 
 mobs.collision = function(self)
