@@ -3267,3 +3267,33 @@ local create_mob_on_rightclick = function(on_rightclick)
 		end
 	end
 end
+
+-- set and return valid yaw
+local set_yaw = function(self, yaw, delay, dtime)
+
+	if not yaw or yaw ~= yaw then
+		yaw = 0
+	end
+
+	delay = delay or 0
+
+	if delay == 0 then
+		if self.shaking and dtime then
+			yaw = yaw + (math_random() * 2 - 1) * 5 * dtime
+		end
+		self.yaw(yaw)
+		update_roll(self)
+		return yaw
+	end
+
+	self.target_yaw = yaw
+	self.delay = delay
+
+	return self.target_yaw
+end
+
+
+-- global function to set mob yaw
+function mobs:yaw(self, yaw, delay, dtime)
+	set_yaw(self, yaw, delay, dtime)
+end

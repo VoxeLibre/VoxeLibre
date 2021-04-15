@@ -228,6 +228,9 @@ end
 
 
 -- move mob in facing direction
+--this has been modified to be internal
+--internal = lua (self.yaw)
+--engine = c++ (self.object:get_yaw())
 local set_velocity = function(self, v)
 	
 	local yaw = (self.yaw or 0)
@@ -270,37 +273,6 @@ local get_velocity = function(self)
 
 	return 0
 end
-
-
--- set and return valid yaw
-local set_yaw = function(self, yaw, delay, dtime)
-
-	if not yaw or yaw ~= yaw then
-		yaw = 0
-	end
-
-	delay = delay or 0
-
-	if delay == 0 then
-		if self.shaking and dtime then
-			yaw = yaw + (math_random() * 2 - 1) * 5 * dtime
-		end
-		self.yaw(yaw)
-		update_roll(self)
-		return yaw
-	end
-
-	self.target_yaw = yaw
-	self.delay = delay
-
-	return self.target_yaw
-end
-
--- global function to set mob yaw
-function mobs:yaw(self, yaw, delay, dtime)
-	set_yaw(self, yaw, delay, dtime)
-end
-
 
 -- set defined animation
 local set_animation = function(self, anim, fixed_frame)
