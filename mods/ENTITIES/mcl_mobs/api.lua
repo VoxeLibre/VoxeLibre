@@ -161,10 +161,6 @@ local collision = function(self)
 		radius = collisionbox[5]
 	end
 
-	if self.object:get_properties().collide_with_objects == true then
-		print("THIS IS A SERIOUS ERROR!")
-	end
-
 	local collision_count = 0
 
 	for _,object in ipairs(minetest_get_objects_inside_radius(pos, radius*1.25)) do
