@@ -233,21 +233,29 @@ end
 
 -- move mob in facing direction
 local set_velocity = function(self, v)
-	local c_x, c_y = 0, 0
+	--local c_x, c_y = 0, 0
 
 	-- halt mob if it has been ordered to stay
-	if self.order == "stand" then
-		self.object:set_velocity({x = 0, y = 0, z = 0})
-		return
-	end
+	--if self.order == "stand" then
+		--self.object:set_velocity({x = 0, y = 0, z = 0})
+	--	return
+	--end
 
-	local yaw = (self.object:get_yaw() or 0) + self.rotate
+	local yaw = (self.yaw or 0)
 
-	self.object:add_velocity({
-		x = (math_sin(yaw) * -v) + c_x,
-		y = self.object:get_velocity().y,
-		z = (math_cos(yaw) * v) + c_y,
-	})
+	local current_velocity = self.object:get_velocity()
+
+	local goal_velocity = {
+		x = (math_sin(yaw) * -v),
+		y = 0,
+		z = (math_cos(yaw) * v),
+	}
+
+	local new_velocity_addition = vector.subtract(goal_velocity,current_velocity)
+
+	new_velocity_addition.y = 0
+
+	self.object:add_velocity(new_velocity_addition)
 end
 
 
@@ -277,7 +285,7 @@ local set_yaw = function(self, yaw, delay, dtime)
 		if self.shaking and dtime then
 			yaw = yaw + (math_random() * 2 - 1) * 5 * dtime
 		end
-		self.object:set_yaw(yaw)
+		self.yaw(yaw)
 		update_roll(self)
 		return yaw
 	end
@@ -380,7 +388,15 @@ end
 local do_states = function(self, dtime)
 	local yaw = self.object:get_yaw() or 0
 
+	self.state_timer = self.state_timer - dtime
 
+	if self.state_timer <= 0 then
+		self.state_timer = math.random(0,2) + math.random()
+		--let's do a random state
+		self.yaw = (math_random() * (math.pi * 2)) - math.pi
+	end
+
+	set_velocity(self,1)
 end
 
 
@@ -605,19 +621,21 @@ local mob_step = function(self, dtime)
 		return false
 	end
 
+	--print(self.object:get_yaw())
+
 	--if self.state == "die" then
 	--	print("need custom die stop moving thing")
 	--	return
 	--end
 
-	-- can mob be pushed, if so calculate direction -- do this first to prevent issues
-	if self.pushable then
-		collision(self)
-	end
+
 
 	do_states(self, dtime)
 
-
+	-- can mob be pushed, if so calculate direction -- do this last (overrides everything)
+	if self.pushable then
+		collision(self)
+	end
 
 
 	--if not self.fire_resistant then
@@ -650,50 +668,6 @@ local mob_step = function(self, dtime)
 	--	return
 	--end
 
-	-- smooth rotation by ThomasMonroe314
-	--[[
-	if self.delay and self.delay > 0 then
-
-		local yaw = self.object:get_yaw() or 0
-
-		if self.delay == 1 then
-			yaw = self.target_yaw
-		else
-			local dif = math_abs(yaw - self.target_yaw)
-
-			if yaw > self.target_yaw then
-
-				if dif > math_pi then
-					dif = 2 * math_pi - dif -- need to add
-					yaw = yaw + dif / self.delay
-				else
-					yaw = yaw - dif / self.delay -- need to subtract
-				end
-
-			elseif yaw < self.target_yaw then
-
-				if dif > math_pi then
-					dif = 2 * math_pi - dif
-					yaw = yaw - dif / self.delay -- need to subtract
-				else
-					yaw = yaw + dif / self.delay -- need to add
-				end
-			end
-
-			if yaw > (math_pi * 2) then yaw = yaw - (math_pi * 2) end
-			if yaw < 0 then yaw = yaw + (math_pi * 2) end
-		end
-
-		self.delay = self.delay - 1
-		if self.shaking then
-			yaw = yaw + (math_random() * 2 - 1) * 5 * dtime
-		end
-		self.object:set_yaw(yaw)
-		--update_roll(self)
-	end
-	]]--
-
-	-- end rotation
 
 	-- run custom function (defined in mob lua file)
 	--if self.do_custom then
@@ -1028,6 +1002,7 @@ minetest.register_entity(name, {
 	replace_offset = def.replace_offset or 0,
 	on_replace = def.on_replace,
 	timer = 0,
+	state_timer = 0,
 	env_damage_timer = 0,
 	tamed = false,
 	pause_timer = 0,
@@ -1068,8 +1043,9 @@ minetest.register_entity(name, {
 
 	--j4i stuff
 	--automatic_rotate = 360,
+	yaw = 0,
 	automatic_face_movement_dir = def.rotate or 0,  --  0=front, 90=side, 180=back, 270=side2
-	automatic_face_movement_max_rotation_per_sec = 360,
+	automatic_face_movement_max_rotation_per_sec = 270, --degrees
 	backface_culling = true,
 	--end j4i stuff
 

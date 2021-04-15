@@ -2595,7 +2595,7 @@ local mob_detach_child = function(self, child)
 
 end
 
-	--[[
+function do_states(self) 
 
 	if self.state == "stand" then
 
@@ -3148,7 +3148,7 @@ end
 			end
 		end
 	end
-	]]--
+end
 
 
 	mobs.death_effect = function(pos, yaw, collisionbox, rotate)
