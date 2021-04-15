@@ -37,8 +37,7 @@ local fish = function(itemstack, player, pointed_thing)
 		local num = 0
 		local ent = nil
 		local noent = true
-
-
+		
 		local durability = 65
 		local unbreaking = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
 		if unbreaking > 0 then
