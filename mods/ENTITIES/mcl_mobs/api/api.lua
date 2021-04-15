@@ -299,10 +299,9 @@ function mobs:register_mob(name, def)
 		pushable = def.pushable or true,
 
 		--j4i stuff
-		--automatic_rotate = 360,
 		yaw = 0,
 		automatic_face_movement_dir = def.rotate or 0,  --  0=front, 90=side, 180=back, 270=side2
-		automatic_face_movement_max_rotation_per_sec = 270, --degrees
+		automatic_face_movement_max_rotation_per_sec = 360, --degrees
 		backface_culling = true,
 		walk_timer = 0,
 		stand_timer = 0,

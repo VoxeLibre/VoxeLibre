@@ -20,6 +20,8 @@ local do_states = function(self, dtime)
 		self.state_timer = math.random(0,2) + math.random()
 		--let's do a random state
 		self.yaw = (math_random() * (math.pi * 2))
+
+        mobs.set_animation(self, "walk")
 	end
 
 	mobs.set_velocity(self,1)
@@ -46,7 +48,6 @@ local jump_check = function(self,dtime)
     local test_dir = vector.add(pos,dir)
 
     if minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0 then
-        print("jump")
         mobs.jump(self)
     end
 end

@@ -3,7 +3,7 @@ local math_sin    = math.sin
 local math_cos    = math.cos
 
 -- set defined animation
-local set_animation = function(self, anim, fixed_frame)
+mobs.set_animation = function(self, anim, fixed_frame)
 	if not self.animation or not anim then
 		return
 	end
@@ -13,9 +13,8 @@ local set_animation = function(self, anim, fixed_frame)
 
 	self.animation.current = self.animation.current or ""
 
-	if (anim == self.animation.current
-	or not self.animation[anim .. "_start"]
-	or not self.animation[anim .. "_end"]) and self.state ~= "die" then
+	if (not self.animation[anim .. "_start"] or not self.animation[anim .. "_end"]) then
+		print("largablarga")
 		return
 	end
 
@@ -34,12 +33,6 @@ local set_animation = function(self, anim, fixed_frame)
 		y = a_end},
 		self.animation[anim .. "_speed"] or self.animation.speed_normal or 15,
 		0, self.animation[anim .. "_loop"] ~= false)
-end
-
-
--- above function exported for mount.lua
-function mobs:set_animation(self, anim)
-	set_animation(self, anim)
 end
 
 

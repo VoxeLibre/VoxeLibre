@@ -194,7 +194,7 @@ mobs.mob_activate = function(self, staticdata, def, dtime)
 	self.object:set_properties(self)
 
 	--update_tag(self)
-	--set_animation(self, "stand")
+	--mobs.set_animation(self, "stand")
 
 	-- run on_spawn function if found
 	if self.on_spawn and not self.on_spawn_run then
