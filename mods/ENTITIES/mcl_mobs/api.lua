@@ -373,6 +373,8 @@ end
 
 
 
+local state_randomization = {"stand", "walk"}
+
 -- get entity staticdata
 local mob_staticdata = function(self)
 
@@ -394,7 +396,7 @@ local mob_staticdata = function(self)
 	self.remove_ok = true
 	self.attack = nil
 	self.following = nil
-	self.state = "stand"
+	self.state = state_randomization[math.random(1,#state_randomization)]
 
 	if use_cmi then
 		self.serialized_cmi_components = cmi.serialize_components(self._cmi_components)
@@ -1043,6 +1045,8 @@ minetest.register_entity(name, {
 	automatic_face_movement_dir = def.rotate or 0,  --  0=front, 90=side, 180=back, 270=side2
 	automatic_face_movement_max_rotation_per_sec = 270, --degrees
 	backface_culling = true,
+	walk_timer = 0,
+	stand_timer = 0,
 	--end j4i stuff
 
 	-- MCL2 extensions
