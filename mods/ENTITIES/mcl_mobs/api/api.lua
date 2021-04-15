@@ -564,7 +564,6 @@ local mob_activate = function(self, staticdata, def, dtime)
 
 	-- set anything changed above
 	self.object:set_properties(self)
-	set_yaw(self, (math_random(0, 360) - 180) / 180 * math_pi, 6)
 
 	--update_tag(self)
 	--set_animation(self, "stand")
