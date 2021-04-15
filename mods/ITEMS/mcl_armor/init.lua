@@ -378,7 +378,7 @@ minetest.register_tool("mcl_armor:boots_netherite", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_boots_netherite.png",
-	groups = {armor_feet=1, mcl_armor_points=1, mcl_armor_uses=481, enchantability=1 },
+	groups = {armor_feet=1, mcl_armor_points=3, mcl_armor_uses=481, enchantability=1 },
 	_repair_material = "mcl_netherite:netherite_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_chainmail",
