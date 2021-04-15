@@ -39,11 +39,11 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 	mesh = "mobs_mc_villager_zombie.b3d",
 	textures = {
 		{"mobs_mc_empty.png", "mobs_mc_zombie_butcher.png", "default_tool_stonesword.png"},
-		--{"mobs_mc_zombie_farmer.png"},
-		--{"mobs_mc_zombie_librarian.png"},
-		--{"mobs_mc_zombie_priest.png"},
-		--{"mobs_mc_zombie_smith.png"},
-		--{"mobs_mc_zombie_villager.png"}
+		{"mobs_mc_empty.png", "mobs_mc_zombie_farmer.png", "default_tool_stonesword.png"},
+		{"mobs_mc_empty.png", "mobs_mc_zombie_librarian.png", "default_tool_stonesword.png"},
+		{"mobs_mc_empty.png", "mobs_mc_zombie_priest.png", "default_tool_stonesword.png"},
+		{"mobs_mc_empty.png", "mobs_mc_zombie_smith.png", "default_tool_stonesword.png"},
+		{"mobs_mc_empty.png", "mobs_mc_zombie_villager.png", "default_tool_stonesword.png"},
 	},
 	visual_size = {x=2.75, y=2.75},
 	makes_footstep_sound = true,
