@@ -1,4 +1,3 @@
-local time = 0
 local update_time = tonumber(minetest.settings:get("wieldview_update_time"))
 if not update_time then
 	update_time = 2
@@ -69,14 +68,14 @@ end
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	wieldview.wielded_item[name] = ""
-	minetest.after(0, function(player)
+	minetest.after(0, function(target)
 		-- if the player left :is_player() will return nil
-		if not player:is_player() then
+		if not target:is_player() then
 			return
 		end
-		wieldview:update_wielded_item(player)
-		local itementity = minetest.add_entity(player:get_pos(), "wieldview:wieldnode")
-		itementity:set_attach(player, "Hand_Right", vector.new(0, 1, 0), vector.new(90, 0, 45))
+		wieldview:update_wielded_item(target)
+		local itementity = minetest.add_entity(target:get_pos(), "wieldview:wieldnode")
+		itementity:set_attach(target, "Hand_Right", vector.new(0, 1, 0), vector.new(90, 0, 45))
 		itementity:get_luaentity().wielder = name
 	end, player)
 end)

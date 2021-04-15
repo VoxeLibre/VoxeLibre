@@ -265,7 +265,6 @@ minetest.register_abm({
 			if minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z}).name ~= "mcl_core:water_source" then
 				-- Find dead form (it's the same as the node's drop)
 				local def = minetest.registered_nodes[node.name]
-				local dead
 				if def then
 					node.name = def.drop
 				else

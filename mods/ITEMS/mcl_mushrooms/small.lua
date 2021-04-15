@@ -4,7 +4,6 @@ local on_place = mcl_util.generate_on_place_plant_function(function(place_pos, p
 	local soil_node = minetest.get_node_or_nil({x=place_pos.x, y=place_pos.y-1, z=place_pos.z})
 	if not soil_node then return false end
 	local snn = soil_node.name -- soil node name
-	local sd = minetest.registered_nodes[snn] -- soil definition
 
 	-- Placement rules:
 	-- * Always allowed on podzol or mycelimu

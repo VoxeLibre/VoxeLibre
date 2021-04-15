@@ -20,7 +20,7 @@ minetest.register_on_dieplayer(function(player)
 		local playerinv = player:get_inventory()
 		local pos = player:get_pos()
 		-- No item drop if in deep void
-		local void, void_deadly = mcl_worlds.is_in_void(pos)
+		local _, void_deadly = mcl_worlds.is_in_void(pos)
 
 		for l=1,#mcl_death_drop.registered_dropped_lists do
 			local inv = mcl_death_drop.registered_dropped_lists[l].inv
