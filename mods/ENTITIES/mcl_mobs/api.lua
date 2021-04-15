@@ -261,8 +261,11 @@ end
 local get_velocity = function(self)
 
 	local v = self.object:get_velocity()
+
+	v.y = 0
+
 	if v then
-		return (v.x * v.x + v.z * v.z) ^ 0.5
+		return vector_length(v)
 	end
 
 	return 0
