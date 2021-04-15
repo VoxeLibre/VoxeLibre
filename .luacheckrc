@@ -1,6 +1,13 @@
+unused_args = false
+allow_defined_top = true
+max_line_length = 125
+
+globals = {
+    "minetest", "core",
+}
+
 read_globals = {
 	"DIR_DELIM",
-	"minetest", "core",
 	"dump", "dump2",
 	"vector",
 	"VoxelManip", "VoxelArea",
