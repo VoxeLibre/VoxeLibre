@@ -52,3 +52,15 @@ mobs.get_velocity = function(self)
 
 	return 0
 end
+
+--make mobs jump
+mobs.jump = function(self, velocity)
+
+    if self.object:get_velocity().y ~= 0 or not self.old_velocity or (self.old_velocity and self.old_velocity.y > 0) then
+        return
+    end
+
+    velocity = velocity or 5
+
+    self.object:add_velocity(vector_new(0,velocity,0))    
+end

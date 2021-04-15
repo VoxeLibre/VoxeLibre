@@ -1,5 +1,14 @@
 local math_random = math.random
 
+local vector_multiply = vector.multiply
+
+local minetest_yaw_to_dir                   = minetest.yaw_to_dir
+local minetest_get_item_group               = minetest.get_item_group
+local minetest_get_node                     = minetest.get_node
+
+
+
+
 -- execute current state (stand, walk, run, attacks)
 -- returns true if mob has died
 local do_states = function(self, dtime)
@@ -15,6 +24,35 @@ local do_states = function(self, dtime)
 
 	mobs.set_velocity(self,1)
 end
+
+
+
+
+
+
+--check if a mob needs to jump
+local jump_check = function(self,dtime)
+
+    local pos = self.object:get_pos()
+    pos.y = pos.y + 0.1
+    local dir = minetest_yaw_to_dir(self.yaw)
+
+    local collisionbox = self.object:get_properties().collisionbox
+	local radius = collisionbox[4] + 0.5
+
+    vector_multiply(dir, radius)
+
+
+    local test_dir = vector.add(pos,dir)
+
+    if minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0 then
+        print("jump")
+        mobs.jump(self)
+    end
+end
+
+
+
 
 
 mobs.mob_step = function(self, dtime)
@@ -33,6 +71,8 @@ mobs.mob_step = function(self, dtime)
 
 
 	do_states(self, dtime)
+
+    jump_check(self)
 
 
 	mobs.movement_rotation_lock(self)
@@ -201,4 +241,6 @@ mobs.mob_step = function(self, dtime)
 		end
 	end
 	]]--
+
+    self.old_velocity = self.object:get_velocity()
 end
