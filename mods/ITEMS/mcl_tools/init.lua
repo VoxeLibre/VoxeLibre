@@ -184,7 +184,7 @@ minetest.register_tool("mcl_tools:pick_netherite", {
 	_doc_items_longdesc = pickaxe_longdesc,
 	inventory_image = "default_tool_netheritepick.png",
 	wield_scale = wield_scale,
-	groups = { tool=1, pickaxe=1, dig_speed_class=5, enchantability=10 },
+	groups = { tool=1, pickaxe=1, dig_speed_class=6, enchantability=10 },
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
@@ -196,7 +196,7 @@ minetest.register_tool("mcl_tools:pick_netherite", {
 	_repair_material = "mcl_nether:netherite_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		pickaxey = { speed = 8, level = 5, uses = 2031 }
+		pickaxey = { speed = 9.5, level = 6, uses = 2031 }
 	},
 })
 
@@ -384,7 +384,7 @@ minetest.register_tool("mcl_tools:shovel_netherite", {
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_netheriteshovel.png",
 	wield_scale = wield_scale,
-	groups = { tool=1, shovel=1, dig_speed_class=5, enchantability=10 },
+	groups = { tool=1, shovel=1, dig_speed_class=6, enchantability=10 },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=5,
@@ -396,7 +396,7 @@ minetest.register_tool("mcl_tools:shovel_netherite", {
 	_repair_material = "mcl_nether:netherite_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		shovely = { speed = 8, level = 5, uses = 2031 }
+		shovely = { speed = 9, level = 6, uses = 2031 }
 	},
 })
 
@@ -539,7 +539,7 @@ minetest.register_tool("mcl_tools:axe_netherite", {
 	_doc_items_longdesc = axe_longdesc,
 	inventory_image = "default_tool_netheriteaxe.png",
 	wield_scale = wield_scale,
-	groups = { tool=1, axe=1, dig_speed_class=5, enchantability=10 },
+	groups = { tool=1, axe=1, dig_speed_class=6, enchantability=10 },
 	tool_capabilities = {
 		full_punch_interval = 1.0,
 		max_drop_level=5,
@@ -551,7 +551,7 @@ minetest.register_tool("mcl_tools:axe_netherite", {
 	_repair_material = "mcl_nether:netherite_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		axey = { speed = 8, level = 5, uses = 2031 }
+		axey = { speed = 9, level = 6, uses = 2031 }
 	},
 })
 
