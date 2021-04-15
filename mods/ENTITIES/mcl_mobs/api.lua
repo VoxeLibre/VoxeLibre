@@ -229,14 +229,7 @@ end
 
 -- move mob in facing direction
 local set_velocity = function(self, v)
-	--local c_x, c_y = 0, 0
-
-	-- halt mob if it has been ordered to stay
-	--if self.order == "stand" then
-		--self.object:set_velocity({x = 0, y = 0, z = 0})
-	--	return
-	--end
-
+	
 	local yaw = (self.yaw or 0)
 
 	local current_velocity = self.object:get_velocity()
@@ -247,11 +240,19 @@ local set_velocity = function(self, v)
 		z = (math_cos(yaw) * v),
 	}
 
+
 	local new_velocity_addition = vector.subtract(goal_velocity,current_velocity)
+
+	if vector_length(new_velocity_addition) > vector_length(goal_velocity) then
+		vector.multiply(new_velocity_addition, (vector_length(goal_velocity) / vector_length(new_velocity_addition)))
+	end
 
 	new_velocity_addition.y = 0
 
-	self.object:add_velocity(new_velocity_addition)
+	--smooths out mobs a bit
+	if vector_length(new_velocity_addition) >= 0.0001 then
+		self.object:add_velocity(new_velocity_addition)
+	end
 end
 
 
@@ -620,7 +621,7 @@ local movement_rotation_lock = function(self)
 	if current_engine_yaw > math.pi * 2 then
 		current_engine_yaw = current_engine_yaw - (math.pi * 2)
 	end
-	
+
 	if math.abs(current_engine_yaw - current_lua_yaw) <= 0.05 and self.object:get_properties().automatic_face_movement_dir then
 		self.object:set_properties{automatic_face_movement_dir = false}
 	elseif math.abs(current_engine_yaw - current_lua_yaw) > 0.05 and self.object:get_properties().automatic_face_movement_dir == false then
@@ -1204,7 +1205,7 @@ function mobs:register_arrow(name, def)
 		rotate = def.rotate,
 		on_punch = function(self)
 			local vel = self.object:get_velocity()
-			self.object:set_velocity({x=vel.x * -1, y=vel.y * -1, z=vel.z * -1})
+			--self.object:set_velocity({x=vel.x * -1, y=vel.y * -1, z=vel.z * -1})
 			local pos = self.object:get_pos()
 
 			if self.switch == 0
