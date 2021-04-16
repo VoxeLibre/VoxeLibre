@@ -7,24 +7,44 @@ local minetest_get_item_group               = minetest.get_item_group
 local minetest_get_node                     = minetest.get_node
 
 
+local state_list_wandering = {"stand", "walk"}
 
 
--- execute current state (stand, walk, run, attacks)
--- returns true if mob has died
-local do_states = function(self, dtime)
+-- state switching logic (stand, walk, run, attacks)
+local state_switch = function(self, dtime)
+	self.state_timer = self.state_timer - dtime
+	if self.wandering and self.state_timer <= 0 then
+		self.state_timer = math.random(4,10) + math.random()
+		self.state = state_list_wandering[math.random(1,#state_list_wandering)]
+	end
+end
+
+-- states are executed here (goto would have been helpful :<)
+local state_execution = function(self,dtime)
+
 	local yaw = self.object:get_yaw() or 0
 
-	self.state_timer = self.state_timer - dtime
+	if self.state == "standing" then
 
-	if self.state_timer <= 0 then
-		self.state_timer = math.random(0,2) + math.random()
-		--let's do a random state
-		self.yaw = (math_random() * (math.pi * 2))
+		print("stand")
 
-        mobs.set_animation(self, "walk")
+	elseif self.state == "walking" then
+
+		print("walk")
+
+	elseif self.state == "run" then
+
+		print("run")
+
+	elseif self.state == "attack" then
+
+		print("attack")
+		
 	end
 
-	mobs.set_velocity(self,1)
+	--mobs.set_animation(self, state_list_wandering[math.random(1,#state_list_wandering)])
+	--mobs.set_velocity(self,1)
+	--self.yaw = (math_random() * (math.pi * 2))
 end
 
 
@@ -71,7 +91,7 @@ mobs.mob_step = function(self, dtime)
 	--end
 
 
-	do_states(self, dtime)
+	state_switch(self, dtime)
 
     jump_check(self)
 

@@ -305,6 +305,7 @@ function mobs:register_mob(name, def)
 		backface_culling = true,
 		walk_timer = 0,
 		stand_timer = 0,
+		wandering = true,
 		--end j4i stuff
 
 		-- MCL2 extensions

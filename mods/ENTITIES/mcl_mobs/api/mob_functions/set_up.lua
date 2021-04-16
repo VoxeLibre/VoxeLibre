@@ -22,6 +22,7 @@ mobs.mob_staticdata = function(self)
 		return ""-- nil
 	end
 --]]
+
 	self.remove_ok = true
 	self.attack = nil
 	self.following = nil
@@ -53,11 +54,9 @@ end
 mobs.mob_activate = function(self, staticdata, def, dtime)
 
 	-- remove monsters in peaceful mode
-	if self.type == "monster"
-	and minetest_settings:get_bool("only_peaceful_mobs", false) then
+	if self.type == "monster" and minetest_settings:get_bool("only_peaceful_mobs", false) then
 		mcl_burning.extinguish(self.object)
 		self.object:remove()
-
 		return
 	end
 
@@ -68,6 +67,11 @@ mobs.mob_activate = function(self, staticdata, def, dtime)
 		for _,stat in pairs(tmp) do
 			self[_] = stat
 		end
+	end
+
+	--set up wandering
+	if not self.wandering then
+		self.wandering = true
 	end
 
 	-- select random texture, set model and size
