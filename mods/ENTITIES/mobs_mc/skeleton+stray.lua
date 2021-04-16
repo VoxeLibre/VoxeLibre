@@ -109,7 +109,7 @@ mobs:register_mob("mobs_mc:skeleton", skeleton)
 --###################
 
 local stray = table.copy(skeleton)
-stray.mesh = "mobs_mc_stray.b3d"
+stray.mesh = "mobs_mc_skeleton.b3d"
 stray.textures = {
 	{
 		"mobs_mc_stray_overlay.png",
