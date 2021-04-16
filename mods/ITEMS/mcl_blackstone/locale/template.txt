@@ -1,0 +1,23 @@
+# textdomain: mcl_blackstone
+Blackstone=
+Polished Blackstone=
+Chieseled Polished Blackstone=
+Polished Blackstone Bricks=
+Basalt=
+Polished Basalt=
+Blackstone Slab=
+Polished Blackstone Slab=
+Chieseled Polished Blackstone Slab=
+Polished Blackstone Brick Slab=
+Blackstone Stairs=
+Polished Blackstone Stairs=
+Chieseled Polished Blackstone Stairs=
+Polished Blackstone Brick Stairs=
+Quartz Bricks=
+Soul Torch=
+Soul Lantern=
+Soul Soil=
+Eternal Soul Fire=
+Gilded Blackstone=
+Nether Gold Ore=
+Smooth Basalt=

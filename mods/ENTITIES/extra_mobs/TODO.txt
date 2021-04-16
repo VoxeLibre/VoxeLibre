@@ -1,0 +1,39 @@
+TODO.Mobs:
+
+  Mountain Goats
+
+  Fish
+
+  Dolfins
+
+  Fox
+
+  Pandas
+
+  Zombified Piglins
+
+  Pillagers
+
+  Ravagers
+
+  Phantoms
+
+  Hoglins
+
+  Zoglins
+
+  Drowneds
+
+  Glow Squids
+
+  Axolotls
+
+Done.Mobs:
+
+  Piglins
+
+  Strider
+
+  Herobrine (optional)
+
+  Hoglin/Zoglin
