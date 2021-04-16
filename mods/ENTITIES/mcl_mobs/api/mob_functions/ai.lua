@@ -60,9 +60,17 @@ local jump_check = function(self,dtime)
     vector_multiply(dir, radius)
 
 
+	--only jump if there's a node and a non-solid node above it
     local test_dir = vector.add(pos,dir)
 
-    if minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0 then
+	local green_flag_1 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0
+
+	test_dir.y = test_dir.y + 1
+
+	local green_flag_2 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") == 0
+
+
+    if green_flag_1 and green_flag_2 then
         mobs.jump(self)
     end
 end
