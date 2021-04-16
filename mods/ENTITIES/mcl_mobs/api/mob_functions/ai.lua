@@ -146,7 +146,7 @@ local state_execution = function(self,dtime)
 		--only move forward if path is clear
 		if node_in_front_of == 0 or node_in_front_of == 1 then
 			--set the velocity of the mob
-			mobs.set_velocity(self,1)
+			mobs.set_velocity(self,self.walk_velocity)
 		end
 
 		--print("walk")
