@@ -9,7 +9,7 @@ local animation_blend = 0
 local function get_mouse_button(player)
 	local controls = player:get_player_control()
 	local get_wielded_item_name = player:get_wielded_item():get_name()
-	if controls.RMB and not string.find(player:get_wielded_item():get_name(), "mcl_bows:bow") or controls.LMB then
+	if controls.RMB and not string.find(get_wielded_item_name, "mcl_bows:bow") or controls.LMB then
 		return true
 	else
 		return false
@@ -110,7 +110,7 @@ function mcl_player.get_player_formspec_model(player, x, y, w, h, fsname)
 	local name = player:get_player_name()
 	local model = player_model[name]
 	local anim = models[model].animations[player_anim[name]]
-	return "model[" .. x .. "," .. y .. ";" .. w .. "," .. h .. ";" .. fsname .. ";" .. model .. ";" .. table.concat(player_textures[name], ",") .. ";0," .. 180 .. ";false;false;" .. anim.x .. "," .. anim.y .. "]"
+	return "model["..x..","..y..";"..w..","..h..";"..fsname..";"..model..";"..table.concat(player_textures[name], ",")..";0,".. 180 ..";false;false;"..anim.x..","..anim.y.."]"
 end
 
 function mcl_player.player_set_animation(player, anim_name, speed)
@@ -179,7 +179,10 @@ minetest.register_globalstep(function(dtime)
 			-- Apply animations based on what the player is doing
 			if player:get_hp() == 0 then
 				player_set_animation(player, "die")
-			elseif walking and velocity.x > 0.35 or walking and velocity.x < -0.35 or walking and velocity.z > 0.35 or walking and velocity.z < -0.35 then
+			elseif walking and velocity.x > 0.35
+			or walking and velocity.x < -0.35
+			or walking and velocity.z > 0.35
+			or walking and velocity.z < -0.35 then
 				if player_sneak[name] ~= controls.sneak then
 					player_anim[name] = nil
 					player_sneak[name] = controls.sneak

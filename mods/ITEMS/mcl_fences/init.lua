@@ -76,7 +76,7 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 	local meta2
 	local state2 = 0
 
-	local function update_gate(pos, node) 
+	local function update_gate(pos, node)
 		minetest.set_node(pos, node)
 	end
 

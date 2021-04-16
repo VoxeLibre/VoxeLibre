@@ -180,7 +180,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 	if not inv_img then
 		inv_img = top_img
 	end
-	local usagehelp, noncreative, create_entry, paramtype2, palette
+	local noncreative, create_entry, paramtype2, palette
 	if is_flower == nil then
 		is_flower = true
 	end
@@ -475,9 +475,6 @@ local fix_doubleplants = minetest.settings:get_bool("fix_doubleplants", true)
 
 	if mod_mcimport and mg_name == "singlenode" and fix_doubleplants == true then
 		local flowernames = { "peony", "rose_bush", "lilac", "sunflower", "double_fern", "double_grass" }
-		for c=1, 6 do
-			local flowername = flowernames[c]
-		end
 
 		minetest.register_lbm({
 			label = "Add double plant tops.",

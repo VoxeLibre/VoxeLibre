@@ -157,7 +157,6 @@ screwdriver.handler = function(itemstack, user, pointed_thing, mode, uses)
 	if should_rotate and new_param2 ~= node.param2 then
 		node.param2 = new_param2
 		minetest.swap_node(pos, node)
-	
 		minetest.check_for_falling(pos)
 		if ndef.after_rotate then
 			ndef.after_rotate(vector.new(pos))

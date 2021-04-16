@@ -30,13 +30,14 @@ local skeleton = {
 		"mcl_bows_bow_0.png", -- bow
 		"mobs_mc_skeleton.png", -- skeleton
 	} },
-	visual_size = {x=3, y=3},
+	visual_size = {x=1, y=1},
 	makes_footstep_sound = true,
-	sounds = {
-		random = "mobs_mc_skeleton_random",
-		death = "mobs_mc_skeleton_death",
-		damage = "mobs_mc_skeleton_hurt",
-		distance = 16,
+	textures = {
+		{
+			"mobs_mc_empty.png", -- armor
+			"mobs_mc_skeleton.png", -- texture
+			"mcl_bows_bow_0.png", -- wielded_item
+		}
 	},
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
@@ -108,12 +109,12 @@ mobs:register_mob("mobs_mc:skeleton", skeleton)
 --###################
 
 local stray = table.copy(skeleton)
-stray.mesh = "mobs_mc_stray.b3d"
+stray.mesh = "mobs_mc_skeleton.b3d"
 stray.textures = {
 	{
-		"mcl_bows_bow_0.png",
-		"mobs_mc_stray.png",
 		"mobs_mc_stray_overlay.png",
+		"mobs_mc_stray.png",
+		"mcl_bows_bow_0.png",
 	},
 }
 -- TODO: different sound (w/ echo)
@@ -140,8 +141,8 @@ mobs:register_mob("mobs_mc:stray", stray)
 
 -- Overworld spawn
 mobs:spawn_specific(
-"mobs_mc:skeleton", 
-"overworld", 
+"mobs_mc:skeleton",
+"overworld",
 "ground",
 {
 "Mesa",
@@ -284,36 +285,36 @@ mobs:spawn_specific(
 "ExtremeHillsM_underground",
 "JungleEdgeM_underground",
 },
-0, 
-7, 
-20, 
-17000, 
-2, 
-mobs_mc.spawn_height.overworld_min, 
+0,
+7,
+20,
+17000,
+2,
+mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 
 -- Nether spawn
 mobs:spawn_specific(
-"mobs_mc:skeleton", 
-"nether", 
-"ground", 
+"mobs_mc:skeleton",
+"nether",
+"ground",
 {
 "Nether"
 },
-0, 
-7, 
-30, 
-10000, 
-3, 
-mobs_mc.spawn_height.nether_min, 
+0,
+7,
+30,
+10000,
+3,
+mobs_mc.spawn_height.nether_min,
 mobs_mc.spawn_height.nether_max)
 
 -- Stray spawn
 -- TODO: Spawn directly under the sky
 mobs:spawn_specific(
-"mobs_mc:stray", 
-"overworld", 
+"mobs_mc:stray",
+"overworld",
 "ground",
 {
 "ColdTaiga",
@@ -321,12 +322,12 @@ mobs:spawn_specific(
 "IcePlains",
 "ExtremeHills+_snowtop",
 },
-0, 
-7, 
-20, 
-19000, 
-2, 
-mobs_mc.spawn_height.water, 
+0,
+7,
+20,
+19000,
+2,
+mobs_mc.spawn_height.water,
 mobs_mc.spawn_height.overworld_max)
 
 

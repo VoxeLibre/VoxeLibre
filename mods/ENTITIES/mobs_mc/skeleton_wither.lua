@@ -25,11 +25,12 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 	mesh = "mobs_mc_witherskeleton.b3d",
 	textures = {
 		{
-			"default_tool_stonesword.png", -- sword
+			"mobs_mc_empty.png", -- armor
 			"mobs_mc_wither_skeleton.png", -- wither skeleton
+			"default_tool_stonesword.png", -- sword
 		}
 	},
-	visual_size = {x=3.6, y=3.6},
+	visual_size = {x=1.2, y=1.2},
 	makes_footstep_sound = true,
 	sounds = {
 		random = "mobs_mc_skeleton_random",

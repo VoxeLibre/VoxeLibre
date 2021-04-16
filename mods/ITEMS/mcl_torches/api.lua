@@ -1,3 +1,14 @@
+local smoke_pdef = {
+	amount = 0.5,
+	maxexptime = 2.0,
+	minvel = { x = 0.0, y = 0.5, z = 0.0 },
+	maxvel = { x = 0.0, y = 0.6, z = 0.0 },
+	minsize = 1.5,
+	maxsize = 1.5,
+	minrelpos = { x = -1/16, y = 0.04, z = -1/16 },
+	maxrelpos = { x =  1/16, y = 0.06, z =  1/16 },
+}
+
 local spawn_flames_floor = function(pos)
 	-- Flames
 	mcl_particles.add_node_particlespawner(pos, {
@@ -15,52 +26,39 @@ local spawn_flames_floor = function(pos)
 		glow = minetest.registered_nodes[minetest.get_node(pos).name].light_source,
 	}, "low")
 	-- Smoke
-	mcl_particles.add_node_particlespawner(pos, {
-		amount = 0.5,
-		time = 0,
-		minpos = vector.add(pos, { x = -1/16, y = 0.04, z = -1/16 }),
-		maxpos = vector.add(pos, { x = -1/16, y = 0.06, z = -1/16 }),
-		minvel = { x = 0, y = 0.5, z = 0 },
-		maxvel = { x = 0, y = 0.6, z = 0 },
-		minexptime = 2.0,
-		maxexptime = 2.0,
-		minsize = 1.5,
-		maxsize = 1.5,
-		texture = "mcl_particles_smoke_anim.png",
-		animation = {
-			type = "vertical_frames",
-			aspect_w = 8,
-			aspect_h = 8,
-			length = 2.05,
-		},
-	}, "medium")
+	mcl_particles.spawn_smoke(pos, "torch", smoke_pdef)
 end
 
 local spawn_flames_wall = function(pos)
 	local minrelpos, maxrelpos
 	local node = minetest.get_node(pos)
 	local dir = minetest.wallmounted_to_dir(node.param2)
+
+	local smoke_pdef = table.copy(smoke_pdef)
+
 	if dir.x < 0 then
-		minrelpos = { x = -0.38, y = 0.04, z = -0.1 }
-		maxrelpos = { x = -0.2, y = 0.14, z = 0.1 }
+		smoke_pdef.minrelpos = { x = -0.38, y = 0.04, z = -0.1 }
+		smoke_pdef.maxrelpos = { x = -0.2, y = 0.14, z = 0.1 }
 	elseif dir.x > 0 then
-		minrelpos = { x = 0.2, y = 0.04, z = -0.1 }
-		maxrelpos = { x = 0.38, y = 0.14, z = 0.1 }
+		smoke_pdef.minrelpos = { x = 0.2, y = 0.04, z = -0.1 }
+		smoke_pdef.maxrelpos = { x = 0.38, y = 0.14, z = 0.1 }
 	elseif dir.z < 0 then
-		minrelpos = { x = -0.1, y = 0.04, z = -0.38 }
-		maxrelpos = { x = 0.1, y = 0.14, z = -0.2 }
+		smoke_pdef.minrelpos = { x = -0.1, y = 0.04, z = -0.38 }
+		smoke_pdef.maxrelpos = { x = 0.1, y = 0.14, z = -0.2 }
 	elseif dir.z > 0 then
-		minrelpos = { x = -0.1, y = 0.04, z = 0.2 }
-		maxrelpos = { x = 0.1, y = 0.14, z = 0.38 }
+		smoke_pdef.minrelpos = { x = -0.1, y = 0.04, z = 0.2 }
+		smoke_pdef.maxrelpos = { x = 0.1, y = 0.14, z = 0.38 }
 	else
 		return
 	end
+
+
 	-- Flames
 	mcl_particles.add_node_particlespawner(pos, {
 		amount = 8,
 		time = 0,
-		minpos = vector.add(pos, minrelpos),
-		maxpos = vector.add(pos, maxrelpos),
+		minpos = vector.add(pos, smoke_pdef.minrelpos),
+		maxpos = vector.add(pos, smoke_pdef.maxrelpos),
 		minvel = { x = -0.01, y = 0, z = -0.01 },
 		maxvel = { x = 0.01, y = 0.1, z = 0.01 },
 		minexptime = 0.3,
@@ -71,25 +69,7 @@ local spawn_flames_wall = function(pos)
 		glow = minetest.registered_nodes[node.name].light_source,
 	}, "low")
 	-- Smoke
-	mcl_particles.add_node_particlespawner(pos, {
-		amount = 0.5,
-		time = 0,
-		minpos = vector.add(pos, minrelpos),
-		maxpos = vector.add(pos, maxrelpos),
-		minvel = { x = 0, y = 0.5, z = 0 },
-		maxvel = { x = 0, y = 0.6, z = 0 },
-		minexptime = 2.0,
-		maxexptime = 2.0,
-		minsize = 1.5,
-		maxsize = 1.5,
-		texture = "mcl_particles_smoke_anim.png",
-		animation = {
-			type = "vertical_frames",
-			aspect_w = 8,
-			aspect_h = 8,
-			length = 2.05,
-		},
-	}, "medium")
+	mcl_particles.spawn_smoke(pos, "torch", smoke_pdef)
 end
 
 local remove_flames = function(pos)
@@ -277,7 +257,7 @@ minetest.register_lbm({
 	nodenames = {"group:torch_particles"},
 	run_at_every_load = true,
 	action = function(pos, node)
-		local torch_group = minetest.get_node_group(node.name, "torch")
+		local torch_group = minetest.get_item_group(node.name, "torch")
 		if torch_group == 1 then
 			spawn_flames_floor(pos)
 		elseif torch_group == 2 then

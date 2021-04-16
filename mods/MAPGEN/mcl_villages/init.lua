@@ -46,7 +46,7 @@ if minetest.get_modpath("mobs_mc") ~= nil then
     7, --active_object_count
     31000, --max_height
     nil) --day_toggle
-end 
+end
 --]]
 
 --
@@ -85,7 +85,7 @@ if mg_name ~= "singlenode" then
 		if blockseed % 77 ~= 17 then return end
 		-- needed for manual and automated settlement building
 		-- don't build settlements on (too) uneven terrain
-		local heightmap = minetest.get_mapgen_object("heightmap")
+		--local heightmap = minetest.get_mapgen_object("heightmap")
 		local height_difference = settlements.evaluate_heightmap()
 		if height_difference > max_height_difference then return end
 

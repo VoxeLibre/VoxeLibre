@@ -99,7 +99,7 @@ minetest.register_abm({
 			-- No decay near unloaded areas since these might include water.
 			if not check_surroundings(pos, "ignore") then
 				if wet <= 0 then
-					local n_def = minetest.registered_nodes[node.name] or nil
+					--local n_def = minetest.registered_nodes[node.name] or nil
 					local nn = minetest.get_node_or_nil({x=pos.x,y=pos.y+1,z=pos.z})
 					if not nn or not nn.name then
 						return
