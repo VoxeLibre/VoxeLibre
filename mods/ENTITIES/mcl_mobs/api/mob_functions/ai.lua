@@ -12,16 +12,25 @@ local minetest_line_of_sight                = minetest.line_of_sight
 local state_list_wandering = {"stand", "walk"}
 
 local DOUBLE_PI = math.pi * 2
-local EIGHTH_PI = DOUBLE_PI * 0.125
+local THIRTY_SECONDTH_PI = DOUBLE_PI * 0.03125
 
 
 --this is basically reverse jump_check
 local cliff_check = function(self,dtime)
+	--mobs will flip out if they are falling without this
+	if self.object:get_velocity().y ~= 0 then
+		return false
+	end
+
 	local pos = self.object:get_pos()
-    pos.y = pos.y + 0.1
+
     local dir = minetest_yaw_to_dir(self.yaw)
+
 	local collisionbox = self.object:get_properties().collisionbox
+
 	local radius = collisionbox[4] + 0.5
+
+	dir = vector_multiply(dir,radius)
 
 	local free_fall, blocker = minetest_line_of_sight(
 		{x = pos.x + dir.x, y = pos.y, z = pos.z + dir.z},
@@ -32,7 +41,7 @@ end
 
 --a simple helper function which is too small to move into movement.lua
 local quick_rotate_45 = function(self,dtime)
-	self.yaw = self.yaw + EIGHTH_PI
+	self.yaw = self.yaw + THIRTY_SECONDTH_PI
 	if self.yaw > DOUBLE_PI then
 		self.yaw = self.yaw - DOUBLE_PI
 	end
