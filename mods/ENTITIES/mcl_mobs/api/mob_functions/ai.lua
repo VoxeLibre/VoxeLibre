@@ -69,10 +69,11 @@ local jump_check = function(self,dtime)
 
 	local green_flag_2 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") == 0
 
-
-    if green_flag_1 and green_flag_2 then -- can jump over node
+    if green_flag_1 and green_flag_2 then
+		--can jump over node
         return(1)
-	elseif green_flag_1 and not green_flag_2 then --wall in front of
+	elseif green_flag_1 and not green_flag_2 then 
+		--wall in front of mob
 		return(2)
     end
 
@@ -131,6 +132,7 @@ local state_execution = function(self,dtime)
 
 		if node_in_front_of == 1 then
 			mobs.jump(self)
+		
 		--turn if on the edge of cliff
 		--(this is written like this because unlike
 		--jump_check which simply tells the mob to jump
