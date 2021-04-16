@@ -26,7 +26,7 @@ minetest.register_node("mcl_smithing_table:table", {
 	description = "Smithing table",
 
 	stack_max = 64,
-	groups = {pickaxey = 2, deco_block = true},
+	groups = {pickaxey = 2, deco_block = 1},
 
 	tiles = {
 		"mcl_smithing_table_top.png", "mcl_smithing_table_front.png", "mcl_smithing_table_side.png",
