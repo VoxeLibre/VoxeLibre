@@ -4350,7 +4350,7 @@ function mobs:alias_mob(old_name, new_name)
 
 end
 
---[[
+
 local timer = 0
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
@@ -4367,4 +4367,3 @@ minetest.register_globalstep(function(dtime)
 	end
 	timer = 0
 end)
-]]--
