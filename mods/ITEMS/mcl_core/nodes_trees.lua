@@ -48,7 +48,7 @@ local register_tree_trunk = function(subname, description_trunk, description_bar
 	})
 end
 
--- Register stripped trunk 
+-- Register stripped trunk
 minetest.register_node("mcl_core:stripped_oak", {
 	description = "Stripped Oak Log",
 	_doc_items_longdesc = "Stripped Oak Log is a log that has been stripped of it's bark.",
@@ -230,7 +230,7 @@ local register_leaves = function(subname, description, longdesc, tiles, sapling,
 	end
 	local apple_chances = {200, 180, 160, 120, 40}
 	local stick_chances = {50, 45, 30, 35, 10}
-	
+
 	local function get_drops(fortune_level)
 		local drop = {
 			max_items = 1,
@@ -273,7 +273,7 @@ local register_leaves = function(subname, description, longdesc, tiles, sapling,
 			hoey=1,
 			shearsy=1,
 			swordy=1,
-			leafdecay=leafdecay_distance,
+			leafdecay=4,
 			flammable=2,
 			leaves=1,
 			deco_block=1,
