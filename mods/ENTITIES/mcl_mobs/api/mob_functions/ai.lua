@@ -23,11 +23,8 @@ local cliff_check = function(self,dtime)
 	end
 
 	local pos = self.object:get_pos()
-
     local dir = minetest_yaw_to_dir(self.yaw)
-
 	local collisionbox = self.object:get_properties().collisionbox
-
 	local radius = collisionbox[4] + 0.5
 
 	dir = vector_multiply(dir,radius)
