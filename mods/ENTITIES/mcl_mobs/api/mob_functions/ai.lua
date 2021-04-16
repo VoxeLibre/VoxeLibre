@@ -10,46 +10,6 @@ local minetest_get_node                     = minetest.get_node
 local state_list_wandering = {"stand", "walk"}
 
 
--- state switching logic (stand, walk, run, attacks)
-local state_switch = function(self, dtime)
-	self.state_timer = self.state_timer - dtime
-	if self.wandering and self.state_timer <= 0 then
-		self.state_timer = math.random(4,10) + math.random()
-		self.state = state_list_wandering[math.random(1,#state_list_wandering)]
-	end
-end
-
--- states are executed here (goto would have been helpful :<)
-local state_execution = function(self,dtime)
-
-	local yaw = self.object:get_yaw() or 0
-
-	if self.state == "standing" then
-
-		print("stand")
-
-	elseif self.state == "walking" then
-
-		print("walk")
-
-	elseif self.state == "run" then
-
-		print("run")
-
-	elseif self.state == "attack" then
-
-		print("attack")
-		
-	end
-
-	--mobs.set_animation(self, state_list_wandering[math.random(1,#state_list_wandering)])
-	--mobs.set_velocity(self,1)
-	--self.yaw = (math_random() * (math.pi * 2))
-end
-
-
-
-
 
 
 --check if a mob needs to jump
@@ -74,6 +34,67 @@ end
 
 
 
+-- state switching logic (stand, walk, run, attacks)
+local state_switch = function(self, dtime)
+	self.state_timer = self.state_timer - dtime
+	if self.wandering and self.state_timer <= 0 then
+		self.state_timer = math.random(4,10) + math.random()
+		self.state = state_list_wandering[math.random(1,#state_list_wandering)]
+	end
+end
+
+-- states are executed here (goto would have been helpful :<)
+local state_execution = function(self,dtime)
+
+	--local yaw = self.object:get_yaw() or 0
+
+	if self.state == "stand" then
+
+		print("stand")
+
+	elseif self.state == "walk" then
+
+		self.walk_timer = self.walk_timer - dtime
+
+		--reset the walk timer
+		if self.walk_timer <= 0 then
+
+			--re-randomize the walk timer
+			self.walk_timer = math.random(1,6) + math.random()
+
+			--set the mob into a random direction
+			self.yaw = (math_random() * (math.pi * 2))
+		end
+
+		--do animation
+		mobs.set_animation(self, "walk")
+
+		--enable rotation locking
+		mobs.movement_rotation_lock(self)
+
+		--set the velocity of the mob
+		mobs.set_velocity(self,1)
+
+		--check for nodes to jump over
+		jump_check(self)
+
+		--print("walk")
+
+	elseif self.state == "run" then
+
+		print("run")
+
+	elseif self.state == "attack" then
+
+		print("attack")
+
+	end	
+	
+end
+
+
+
+
 
 
 mobs.mob_step = function(self, dtime)
@@ -93,10 +114,8 @@ mobs.mob_step = function(self, dtime)
 
 	state_switch(self, dtime)
 
-    jump_check(self)
+	state_execution(self,dtime)
 
-
-	mobs.movement_rotation_lock(self)
 
 	-- can mob be pushed, if so calculate direction -- do this last (overrides everything)
 	if self.pushable then
