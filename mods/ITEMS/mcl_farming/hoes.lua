@@ -256,6 +256,8 @@ minetest.register_tool("mcl_farming:hoe_diamond", {
 	_mcl_diggroups = {
 		hoey = { speed = 8, level = 5, uses = 1562 }
 	},
+	_mcl_upgradable = true,
+	_mcl_upgrade_item = "mcl_tools:hoe_netherite"
 })
 
 minetest.register_craft({

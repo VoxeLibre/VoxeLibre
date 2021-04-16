@@ -81,6 +81,8 @@ minetest.register_tool("mcl_armor:helmet_diamond",{
 	},
 	on_place = armor.on_armor_use,
 	on_secondary_use = armor.on_armor_use,
+	_mcl_upgradeable = true,
+	_mcl_upgrade_item = "mcl_armor:helmet_netherite"
 })
 
 minetest.register_tool("mcl_armor:helmet_netherite",{
@@ -173,6 +175,8 @@ minetest.register_tool("mcl_armor:chestplate_diamond",{
 	},
 	on_place = armor.on_armor_use,
 	on_secondary_use = armor.on_armor_use,
+	_mcl_upgradable = true,
+	_mcl_upgradeitem = "mcl_armor:chestplate_netherite"
 })
 
 minetest.register_tool("mcl_armor:chestplate_netherite",{
@@ -265,6 +269,8 @@ minetest.register_tool("mcl_armor:leggings_diamond",{
 	},
 	on_place = armor.on_armor_use,
 	on_secondary_use = armor.on_armor_use,
+	_mcl_upgradable = true,
+	_mcl_upgrade_item = "mcl_armor:leggings_netherite"
 })
 
 minetest.register_tool("mcl_armor:leggings_netherite",{
@@ -356,6 +362,8 @@ minetest.register_tool("mcl_armor:boots_diamond",{
 	},
 	on_place = armor.on_armor_use,
 	on_secondary_use = armor.on_armor_use,
+	_mcl_upgradable = true,
+	_mcl_upgrade_item = "mcl_armor:boots_diamond"
 })
 
 minetest.register_tool("mcl_armor:boots_chain", {

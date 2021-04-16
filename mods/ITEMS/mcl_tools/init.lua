@@ -173,6 +173,8 @@ minetest.register_tool("mcl_tools:pick_diamond", {
 	_mcl_diggroups = {
 		pickaxey = { speed = 8, level = 5, uses = 1562 }
 	},
+	_mcl_upgradable = true,
+	_mcl_upgrade_item = "mcl_tools:pick_netherite"
 })
 
 minetest.register_tool("mcl_tools:pick_netherite", {
@@ -370,6 +372,8 @@ minetest.register_tool("mcl_tools:shovel_diamond", {
 	_mcl_diggroups = {
 		shovely = { speed = 8, level = 5, uses = 1562 }
 	},
+	_mcl_upgradable = true,
+	_mcl_upgrade_item = "mcl_tools:shovel_netherite"
 })
 
 minetest.register_tool("mcl_tools:shovel_netherite", {
@@ -546,6 +550,8 @@ minetest.register_tool("mcl_tools:axe_diamond", {
 	_mcl_diggroups = {
 		axey = { speed = 8, level = 5, uses = 1562 }
 	},
+	_mcl_upgradable = true,
+	_mcl_upgrade_item = "mcl_tools:axe_netherite"
 })
 
 minetest.register_tool("mcl_tools:axe_netherite", {
@@ -670,6 +676,8 @@ minetest.register_tool("mcl_tools:sword_diamond", {
 		swordy = { speed = 8, level = 5, uses = 1562 },
 		swordy_cobweb = { speed = 8, level = 5, uses = 1562 }
 	},
+	_mcl_upgradable = true,
+	_mcl_upgrade_item = "mcl_tools:sword_netherite"
 })
 minetest.register_tool("mcl_tools:sword_netherite", {
 	description = S("Netherite Sword"),
