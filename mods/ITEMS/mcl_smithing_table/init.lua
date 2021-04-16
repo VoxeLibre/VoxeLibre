@@ -35,7 +35,11 @@ minetest.register_node("mcl_smithing_table:table", {
 	},
 
 	on_construct = function(pos)
-        minetest.get_meta(pos):set_string("formspec", formspec)
+        local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", formspec)
+		local inv = meta:get_inventory()
+		inv:set_size("input", 2)
+		inv:set_size("output", 1)
     end,
 
 	_mcl_blast_resistance = 2.5,
