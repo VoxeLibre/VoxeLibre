@@ -1,16 +1,42 @@
 local math_random = math.random
 
 local vector_multiply = vector.multiply
+local vector_add      = vector.add
 
 local minetest_yaw_to_dir                   = minetest.yaw_to_dir
 local minetest_get_item_group               = minetest.get_item_group
 local minetest_get_node                     = minetest.get_node
+local minetest_line_of_sight                = minetest.line_of_sight
 
 
 local state_list_wandering = {"stand", "walk"}
 
+local DOUBLE_PI = math.pi * 2
+local EIGHTH_PI = DOUBLE_PI * 0.125
 
 
+--this is basically reverse jump_check
+local cliff_check = function(self,dtime)
+	local pos = self.object:get_pos()
+    pos.y = pos.y + 0.1
+    local dir = minetest_yaw_to_dir(self.yaw)
+	local collisionbox = self.object:get_properties().collisionbox
+	local radius = collisionbox[4] + 0.5
+
+	local free_fall, blocker = minetest_line_of_sight(
+		{x = pos.x + dir.x, y = pos.y, z = pos.z + dir.z},
+		{x = pos.x + dir.x, y = pos.y - self.fear_height, z = pos.z + dir.z})
+
+	return free_fall
+end
+
+--a simple helper function which is too small to move into movement.lua
+local quick_rotate_45 = function(self,dtime)
+	self.yaw = self.yaw + EIGHTH_PI
+	if self.yaw > DOUBLE_PI then
+		self.yaw = self.yaw - DOUBLE_PI
+	end
+end
 
 --check if a mob needs to jump
 local jump_check = function(self,dtime)
@@ -83,6 +109,17 @@ local state_execution = function(self,dtime)
 
 		--check for nodes to jump over
 		jump_check(self)
+
+		--turn if on the edge of cliff
+		--(this is written like this because unlike
+		--jump_check which simply tells the mob to jump
+		--this requires a mob to turn, removing the
+		--ease of a full implementation for it in a single
+		--function)
+		if cliff_check(self,dtime) then
+			--turn 45 degrees if so
+			quick_rotate_45(self,dtime)
+		end
 
 		--print("walk")
 
