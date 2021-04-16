@@ -1,5 +1,6 @@
 local math_random = math.random
 
+local minetest_settings                     = minetest.settings
 
 local state_randomization = {"stand", "walk"}
 
