@@ -1,8 +1,8 @@
 local math_pi     = math.pi
 
 -- set defined animation
-mobs.set_animation = function(self, anim, fixed_frame)
-	
+mobs.set_mob_animation = function(self, anim, fixed_frame)
+
 	if not self.animation or not anim then
 		return
 	end
@@ -11,23 +11,21 @@ mobs.set_animation = function(self, anim, fixed_frame)
 		return
 	end
 
-	self.animation.current = self.animation.current or ""
-
-	--animations break if they are constantly set
-	--so we put this return gate to check if it is
-	--already at the animation we are trying to implement
-	if self.animation.current == anim then
-		return
-	end
 
 	if (not self.animation[anim .. "_start"] or not self.animation[anim .. "_end"]) then		
 		return
 	end
 
-	self.animation.current = anim
+	--animations break if they are constantly set
+	--so we put this return gate to check if it is
+	--already at the animation we are trying to implement
+	if self.current_animation == anim then
+		return
+	end
 
 	local a_start = self.animation[anim .. "_start"]
 	local a_end
+
 	if fixed_frame then
 		a_end = a_start
 	else
@@ -39,6 +37,9 @@ mobs.set_animation = function(self, anim, fixed_frame)
 		y = a_end},
 		self.animation[anim .. "_speed"] or self.animation.speed_normal or 15,
 		0, self.animation[anim .. "_loop"] ~= false)
+
+
+	self.current_animation = anim	
 end
 
 

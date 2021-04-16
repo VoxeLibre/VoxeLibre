@@ -219,6 +219,7 @@ function mobs:register_mob(name, def)
 			breathes_in_water = def.breathes_in_water or false,
 		physical = true,
 		collisionbox = collisionbox,
+		collide_with_objects = def.collide_with_objects or false,
 		selectionbox = def.selectionbox or def.collisionbox,
 		visual = def.visual,
 		visual_size = def.visual_size or {x = 1, y = 1},
@@ -306,6 +307,8 @@ function mobs:register_mob(name, def)
 		walk_timer = 0,
 		stand_timer = 0,
 		wandering = true,
+		current_animation = "",
+		--set_animation = mobs.set_animation,
 		--end j4i stuff
 
 		-- MCL2 extensions
@@ -331,27 +334,21 @@ function mobs:register_mob(name, def)
 
 		on_spawn = def.on_spawn,
 
-		on_blast = def.on_blast or do_tnt,
+		--on_blast = def.on_blast or do_tnt,
 
-		on_step = mobs.mob_step,
+		on_step  = mobs.mob_step,
 
-		do_punch = def.do_punch,
+		--do_punch = def.do_punch,
 
-		on_punch = mob_punch,
+		--on_punch = mob_punch,
 
-		on_breed = def.on_breed,
+		--on_breed = def.on_breed,
 
-		on_grown = def.on_grown,
+		--on_grown = def.on_grown,
 
-		on_detach_child = mob_detach_child,
+		--on_detach_child = mob_detach_child,
 
 		on_activate = function(self, staticdata, dtime)
-			--this is a temporary hack so mobs stop
-			--glitching and acting really weird with the
-			--default built in engine collision detection
-			self.object:set_properties({
-				collide_with_objects = false,
-			})
 			self.object:set_acceleration(vector_new(0,-9.81, 0))
 			return mobs.mob_activate(self, staticdata, def, dtime)
 		end,
@@ -360,8 +357,7 @@ function mobs:register_mob(name, def)
 			return mobs.mob_staticdata(self)
 		end,
 
-		harmed_by_heal = def.harmed_by_heal,
-
+		--harmed_by_heal = def.harmed_by_heal,
 	})
 
 	if minetest_get_modpath("doc_identifier") ~= nil then

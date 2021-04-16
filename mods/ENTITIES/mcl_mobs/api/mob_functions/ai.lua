@@ -50,7 +50,13 @@ local state_execution = function(self,dtime)
 
 	if self.state == "stand" then
 
-		print("stand")
+		--do animation
+		mobs.set_mob_animation(self, "stand")
+
+		--set the velocity of the mob
+		mobs.set_velocity(self,0)
+
+		--print("stand")
 
 	elseif self.state == "walk" then
 
@@ -67,7 +73,7 @@ local state_execution = function(self,dtime)
 		end
 
 		--do animation
-		mobs.set_animation(self, "walk")
+		mobs.set_mob_animation(self, "walk")
 
 		--enable rotation locking
 		mobs.movement_rotation_lock(self)
