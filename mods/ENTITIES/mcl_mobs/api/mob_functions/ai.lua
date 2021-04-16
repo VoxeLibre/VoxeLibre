@@ -70,9 +70,14 @@ local jump_check = function(self,dtime)
 	local green_flag_2 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") == 0
 
 
-    if green_flag_1 and green_flag_2 then
-        mobs.jump(self)
+    if green_flag_1 and green_flag_2 then -- can jump over node
+        return(1)
+	elseif green_flag_1 and not green_flag_2 then --wall in front of
+		return(2)
     end
+
+	--nothing to jump over
+	return(0)
 end
 
 
@@ -125,7 +130,11 @@ local state_execution = function(self,dtime)
 		mobs.set_velocity(self,1)
 
 		--check for nodes to jump over
-		jump_check(self)
+		local node_in_front_of = jump_check(self)
+
+		if node_in_front_of == 1 then
+			mobs.jump(self)
+		end
 
 		--turn if on the edge of cliff
 		--(this is written like this because unlike
@@ -133,7 +142,7 @@ local state_execution = function(self,dtime)
 		--this requires a mob to turn, removing the
 		--ease of a full implementation for it in a single
 		--function)
-		if cliff_check(self,dtime) then
+		if node_in_front_of == 2 or cliff_check(self,dtime) then
 			--turn 45 degrees if so
 			quick_rotate_45(self,dtime)
 		end
