@@ -1,12 +1,12 @@
 local math_pi     = math.pi
-local math_sin    = math.sin
-local math_cos    = math.cos
 
 -- set defined animation
 mobs.set_animation = function(self, anim, fixed_frame)
+	
 	if not self.animation or not anim then
 		return
 	end
+
 	if self.state == "die" and anim ~= "die" and anim ~= "stand" then
 		return
 	end
