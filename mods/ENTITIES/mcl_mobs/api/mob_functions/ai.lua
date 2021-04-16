@@ -142,7 +142,7 @@ local state_execution = function(self,dtime)
 		--this requires a mob to turn, removing the
 		--ease of a full implementation for it in a single
 		--function)
-		if node_in_front_of == 2 or cliff_check(self,dtime) then
+		if node_in_front_of == 2 or (self.fear_height ~= 0 and cliff_check(self,dtime)) then
 			--turn 45 degrees if so
 			quick_rotate_45(self,dtime)
 		end
