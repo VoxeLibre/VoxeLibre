@@ -35,6 +35,49 @@ mcl_banners.colors = {
 	["unicolor_light_blue"] = {"light_blue", S("Light Blue Banner"), "mcl_wool:light_blue", "#4040CF", "mcl_dye:lightblue", N("Light Blue") },
 }
 
+
+local pattern_names = {
+      "",
+      "border",
+      "bricks",
+      "circle",
+      "creeper",
+      "cross",
+      "curly_border",
+      "diagonal_up_left",
+      "diagonal_up_right",
+      "diagonal_right",
+      "diagonal_left",
+      "flower",
+      "gradient",
+      "gradient_up",
+      "half_horizontal_bottom",
+      "half_horizontal",
+      "half_vertical",
+      "half_vertical_right",
+      "thing",
+      "rhombus",
+      "skull",
+      "small_stripes",
+      "square_bottom_left",
+      "square_bottom_right",
+      "square_top_left",
+      "square_top_right",
+      "straight_cross",
+      "stripe_bottom",
+      "stripe_center",
+      "stripe_downleft",
+      "stripe_downright",
+      "stripe_left",
+      "stripe_middle",
+      "stripe_right",
+      "stripe_top",
+      "triangle_bottom",
+      "triangle_top",
+      "triangles_bottom",
+      "triangles_top",
+}
+
 local colors_reverse = {}
 for k,v in pairs(mcl_banners.colors) do
 	colors_reverse["mcl_banners:banner_item_"..v[1]] = k
@@ -300,24 +343,72 @@ minetest.register_node("mcl_banners:hanging_banner", {
 	end,
 })
 
+-- for pattern_name, pattern in pairs(patterns) do
 for colorid, colortab in pairs(mcl_banners.colors) do
+    for i, pattern_name in ipairs(pattern_names) do
 	local itemid = colortab[1]
 	local desc = colortab[2]
 	local wool = colortab[3]
 	local colorize = colortab[4]
 
-	local itemstring = "mcl_banners:banner_item_"..itemid
-	local inv
-	if colorize then
-		inv = "mcl_banners_item_base.png^(mcl_banners_item_overlay.png^[colorize:"..colorize..")"
+	local itemstring
+	if pattern_name == "" then
+		itemstring = "mcl_banners:banner_item_" .. itemid
 	else
-		inv = "mcl_banners_item_base.png^mcl_banners_item_overlay.png"
+		itemstring = "mcl_banners:banner_preview" .. "_" .. pattern_name .. "_" .. itemid
 	end
 
+	local inv
+	local base
+	local finished_banner
+	if pattern_name == "" then
+	    if colorize then
+		-- Base texture with base color
+		base = "mcl_banners_item_base.png^(mcl_banners_item_overlay.png^[colorize:"..colorize..")^[resize:32x32"
+	    else
+		base = "mcl_banners_item_base.png^mcl_banners_item_overlay.png^[resize:32x32"
+	    end
+	    finished_banner = base
+	else
+		-- Banner item preview background
+		base = "mcl_banners_item_base.png^(mcl_banners_item_overlay.png^[colorize:#CCCCCC)^[resize:32x32"
+
+		desc = S("Preview Banner")
+
+		local pattern = "mcl_banners_" .. pattern_name .. ".png"
+		local color = colorize
+
+		-- Generate layer texture
+
+		-- TODO: The layer texture in the icon is squished
+		-- weirdly because the width/height aspect ratio of
+		-- the banner icon is 1:1.5, whereas the aspect ratio
+		-- of the banner entity is 1:2. A solution would be to
+		-- redraw the pattern textures as low-resolution pixel
+		-- art and use that instead.
+
+		local layer = "(([combine:20x40:-2,-2="..pattern.."^[resize:16x24^[colorize:"..color..":"..layer_ratio.."))"
+
+		function escape(text)
+			 return text:gsub("%^", "\\%^"):gsub(":", "\\:") -- :gsub("%(", "\\%("):gsub("%)", "\\%)")
+		end
+
+		finished_banner = "[combine:32x32:0,0=" .. escape(base) .. ":8,4=" .. escape(layer)
+	end
+
+	inv = finished_banner
+
 	-- Banner items.
-	-- This is the player-visible banner item. It comes in 16 base colors.
+	-- This is the player-visible banner item. It comes in 16 base colors with a lot of patterns.
 	-- The multiple items are really only needed for the different item images.
 	-- TODO: Combine the items into only 1 item.
+	local groups
+	if pattern_name == "" then
+		groups = { banner = 1, deco_block = 1, flammable = -1 }
+	else
+		groups = { not_in_creative_inventory = 1 }
+	end
+
 	minetest.register_craftitem(itemstring, {
 		description = desc,
 		_tt_help = S("Paintable decoration"),
@@ -326,7 +417,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 		wield_image = inv,
 		-- Banner group groups together the banner items, but not the nodes.
 		-- Used for crafting.
-		groups = { banner = 1, deco_block = 1, flammable = -1 },
+		groups = groups,
 		stack_max = 16,
 
 		on_place = function(itemstack, placer, pointed_thing)
@@ -492,6 +583,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 		-- Add item to node alias
 		doc.add_entry_alias("nodes", "mcl_banners:standing_banner", "craftitems", itemstring)
 	end
+    end
 end
 
 if minetest.get_modpath("doc") then
