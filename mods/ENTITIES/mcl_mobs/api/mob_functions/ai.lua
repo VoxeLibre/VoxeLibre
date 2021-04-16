@@ -126,25 +126,29 @@ local state_execution = function(self,dtime)
 		--enable rotation locking
 		mobs.movement_rotation_lock(self)
 
-		--set the velocity of the mob
-		mobs.set_velocity(self,1)
+		
 
 		--check for nodes to jump over
 		local node_in_front_of = jump_check(self)
 
 		if node_in_front_of == 1 then
 			mobs.jump(self)
-		end
-
 		--turn if on the edge of cliff
 		--(this is written like this because unlike
 		--jump_check which simply tells the mob to jump
 		--this requires a mob to turn, removing the
 		--ease of a full implementation for it in a single
 		--function)
-		if node_in_front_of == 2 or (self.fear_height ~= 0 and cliff_check(self,dtime)) then
+		elseif node_in_front_of == 2 or (self.fear_height ~= 0 and cliff_check(self,dtime)) then
 			--turn 45 degrees if so
 			quick_rotate_45(self,dtime)
+			mobs.set_velocity(self,0)
+		end
+
+		--only move forward if path is clear
+		if node_in_front_of == 0 or node_in_front_of == 1 then
+			--set the velocity of the mob
+			mobs.set_velocity(self,1)
 		end
 
 		--print("walk")
