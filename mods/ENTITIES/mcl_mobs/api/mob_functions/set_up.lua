@@ -74,6 +74,9 @@ mobs.mob_activate = function(self, staticdata, def, dtime)
 		self.wandering = true
 	end
 
+	--clear animation
+	self.current_animation = nil
+
 	-- select random texture, set model and size
 	if not self.base_texture then
 
