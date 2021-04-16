@@ -151,7 +151,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 
 		minetest.register_node(nodename.."_"..i, {
 			collision_box = {
-				type = 'fixed', 
+				type = 'fixed',
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 			},
 			drawtype = "nodebox",
@@ -180,7 +180,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 	minetest.register_node(nodename.."_16", {
 		drawtype = "nodebox",
 		collision_box = {
-				type = 'fixed', 
+				type = 'fixed',
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
 		tiles = tiles,
@@ -206,7 +206,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 	minetest.register_node(nodename.."_21", {
 		drawtype = "nodebox",
 		collision_box = {
-				type = 'fixed', 
+				type = 'fixed',
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
 		tiles = tiles,
@@ -247,7 +247,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 			fixed = pillar
 		},
 		collision_box = {
-				type = 'fixed', 
+				type = 'fixed',
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
 		collisionbox = {-0.2, 0, -0.2, 0.2, 1.4, 0.2},
