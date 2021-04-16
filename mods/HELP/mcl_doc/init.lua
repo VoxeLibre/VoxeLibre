@@ -62,7 +62,6 @@ end)
 
 -- nodes which have flower placement rules
 doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
-	local datastring = ""
 	if def.groups.place_flowerlike == 1 then
 		return S("This plant can only grow on grass blocks and dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.")
 	elseif def.groups.place_flowerlike == 2 then
@@ -130,7 +129,7 @@ end)
 
 -- Armor
 doc.sub.items.register_factoid(nil, "use", function(itemstring, def)
-	local def = minetest.registered_items[itemstring]
+	--local def = minetest.registered_items[itemstring]
 	local s = ""
 	local head = minetest.get_item_group(itemstring, "armor_head")
 	local torso = minetest.get_item_group(itemstring, "armor_torso")
@@ -173,7 +172,6 @@ end)
 doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
 	if def._repair_material then
 		local mdef = minetest.registered_items[def._repair_material]
-		local desc
 		if mdef and mdef.description and mdef.description ~= "" then
 			return S("This item can be repaired at an anvil with: @1.", mdef.description)
 		elseif def._repair_material == "group:wood" then

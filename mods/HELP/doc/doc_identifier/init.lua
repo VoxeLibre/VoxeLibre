@@ -67,7 +67,7 @@ doc_identifier.identify = function(itemstack, user, pointed_thing)
 		local pos = pointed_thing.under
 		local node = minetest.get_node(pos)
 		if minetest.registered_nodes[node.name] ~= nil then
-			local nodedef = minetest.registered_nodes[node.name]
+			--local nodedef = minetest.registered_nodes[node.name]
 			if(node.name == "ignore") then
 				show_message(username, "error_ignore")
 			elseif doc.entry_exists("nodes", node.name) then
@@ -198,7 +198,7 @@ minetest.register_craft({
 if minetest.get_modpath("mcl_core") ~= nil then
 	minetest.register_craft({
 		output = "doc_identifier:identifier_solid",
-		recipe = { { "mcl_core:glass" }, 
+		recipe = { { "mcl_core:glass" },
 			   { "group:stick" } }
 	})
 end
