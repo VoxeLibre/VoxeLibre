@@ -7,12 +7,10 @@ But first, some things to note:
 MineClone 2's development target is to make a free software clone of Minecraft,
 ***version 1.12***, ***PC edition***, *** + Optifine features supported by the Minetest Engine ***.
 
-MineClone 2 is maintained by two persons. Namely, kay27 and EliasFleckenstein. You can find us
-in the Minetest forums (forums.minetest.net), in IRC in the #minetest
+MineClone 2 is maintained by three persons. Namely, kay27, EliasFleckenstein and jordan4ibanez. You can find us
+in the Minetest forums (forums.minetest.net), in IRC in the #mineclone2
 channel on irc.freenode.net. And finally, you can send e-mails to
 <eliasfleckenstein@web.de> or <kay27@bk.ru>.
-
-There is **no** guarantee we will accept anything from anybody.
 
 By sending us patches or asking us to include your changes in this game,
 you agree that they fall under the terms of the LGPLv2.1, which basically
@@ -26,8 +24,7 @@ For small and medium changes:
 
 * Fork the repository
 * Do your change in a new branch
-* Upload the repository somewhere where it can be accessed from the Internet and
-  notify us
+* Create a pull request to get your changes merged into master
 
 For small changes, sending us a patch is also good.
 
@@ -41,40 +38,30 @@ reserve the right to revert everything that we don't like.
 For bigger changes, we strongly recommend to use feature branches and
 discuss with me first.
 
-Contributors will be credited in `README.md`.
+If your code causes bugs and crashes, it is your responsibility to fix them as soon as possible.
 
-## Quality remarks
-Again: There is ***no*** guarantee we will accept anything from anybody.
-But we will gladly take in code from others when we feel it saves us work
-in the long run.
+We mostly use plain merging rather than rebasing or squash merging.
 
-### Inclusion criteria
-Depending on what you add, the chances for inclusion vary:
+Your commit names should be relatively descriptive, e.g. when saying "Fix #issueid", the commit message should also contain the title of the issue.
 
-### High chance for inclusion
-* Gameplay features in Minecraft which are missing in MineClone 2
+Contributors will be credited in `CREDITS.md`.
 
-### Medium chance for inclusion (discuss first)
-* Features which don't a impact on gameplay
-* GUI improvement
-* Features from pocket or console edition
+## Features > 1.12
 
-### Low chance for inclusion (discuss/optimize first)
-* Overhaul of architecture / mod structure
-* Mass-itemstring changes all over the place
-* Added files have a unusual high file size
-* Indentation looks like crazy
-* Single commits which add several unrelated things
-* Gameplay features which don't exist in Minecraft
+If you want to make a feature that was added in a Minecraft version later than 1.12, you should fork MineClone5 (mineclone5 branch in the repository) and add your changes to this.
 
-### Instant rejection
-* Proprietary **anything**
-* Code contains `minetest.env` anywhere
+## What we accept
 
-## Coding style guide
-* Indentations should reflect the code flow
-* Use tabs, not spaces for indentation (tab size = 8)
-* Never use `minetest.env`
+* Every MC features up to version 1.12 JE.
+* Every already finished and working good features from versions above (only when making a MineClone5 PR / Contribution).
+* Except features which couldn't be done easily and bugfree because of Minetest engine limitations. Eg. we CAN extend world boundaries by playing with map chunks, just teleporting player onto next layer after 31000 , but it would cost too much (time, code, bugs, performance, stability, etc).
+* Some features, approved by the rest of the community, I mean maybe some voting and really missing any negative feedback.
+
+## What we reject
+
+* Any features which cause critical bugs, sending them to rework/fix or trying to fix immediately.
+* Some small portions of big entirely missing features which just definitely break gamplay balance give nothing useful
+* Controversial features, which some people support while others do not should be discussed well, with publishing forum announcements, at least during the week. In case if there are still doubts - send them into the mod.
 
 ## Reporting bugs
 Report all bugs and missing Minecraft features here:
