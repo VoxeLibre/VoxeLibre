@@ -58,6 +58,8 @@ local DEATH_DELAY         = 0.5
 local DEFAULT_FALL_SPEED  = -10
 local FLOP_HEIGHT         = 5.0
 local FLOP_HOR_SPEED      = 1.5
+local GRAVITY             = minetest_settings:get("movement_gravity") + 9.81
+
 
 local MOB_CAP   = {}
 MOB_CAP.hostile = 70
@@ -308,6 +310,7 @@ function mobs:register_mob(name, def)
 		stand_timer = 0,
 		wandering = true,
 		current_animation = "",
+		gravity = GRAVITY,
 		--set_animation = mobs.set_animation,
 		--end j4i stuff
 
@@ -322,7 +325,7 @@ function mobs:register_mob(name, def)
 		child = def.child or false,
 		texture_mods = {},
 		shoot_arrow = def.shoot_arrow,
-			sounds_child = def.sounds_child,
+		sounds_child = def.sounds_child,
 		explosion_strength = def.explosion_strength,
 		suffocation_timer = 0,
 		follow_velocity = def.follow_velocity or 2.4,
@@ -349,7 +352,7 @@ function mobs:register_mob(name, def)
 		--on_detach_child = mob_detach_child,
 
 		on_activate = function(self, staticdata, dtime)
-			self.object:set_acceleration(vector_new(0,-9.81, 0))
+			self.object:set_acceleration(vector_new(0,-GRAVITY, 0))
 			return mobs.mob_activate(self, staticdata, def, dtime)
 		end,
 
