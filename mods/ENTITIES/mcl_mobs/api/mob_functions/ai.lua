@@ -126,8 +126,6 @@ local state_execution = function(self,dtime)
 		--enable rotation locking
 		mobs.movement_rotation_lock(self)
 
-		
-
 		--check for nodes to jump over
 		local node_in_front_of = jump_check(self)
 
@@ -142,6 +140,7 @@ local state_execution = function(self,dtime)
 		elseif node_in_front_of == 2 or (self.fear_height ~= 0 and cliff_check(self,dtime)) then
 			--turn 45 degrees if so
 			quick_rotate_45(self,dtime)
+			--stop the mob so it doesn't fall off
 			mobs.set_velocity(self,0)
 		end
 
