@@ -103,6 +103,7 @@ minetest.register_node("mcl_smithing_table:table", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 
 	on_construct = function(pos)
+<<<<<<< HEAD
 			local meta = minetest.get_meta(pos)
 			meta:set_string("formspec", formspec)
 
@@ -146,6 +147,14 @@ minetest.register_node("mcl_smithing_table:table", {
 
 		reset_upgraded_item(pos)
 	end,
+=======
+        local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", formspec)
+		local inv = meta:get_inventory()
+		inv:set_size("input", 2)
+		inv:set_size("output", 1)
+    end,
+>>>>>>> 742aa2becb09167466de2988c47b5856afc75b21
 
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5
