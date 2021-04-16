@@ -60,7 +60,7 @@ mobs.jump = function(self, velocity)
         return
     end
 
-    velocity = velocity or 5
+    velocity = velocity or 8
 
     self.object:add_velocity(vector_new(0,velocity,0))    
 end
