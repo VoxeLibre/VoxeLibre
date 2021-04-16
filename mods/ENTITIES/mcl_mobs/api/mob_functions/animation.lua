@@ -13,8 +13,14 @@ mobs.set_animation = function(self, anim, fixed_frame)
 
 	self.animation.current = self.animation.current or ""
 
-	if (not self.animation[anim .. "_start"] or not self.animation[anim .. "_end"]) then
-		print("largablarga")
+	--animations break if they are constantly set
+	--so we put this return gate to check if it is
+	--already at the animation we are trying to implement
+	if self.animation.current == anim then
+		return
+	end
+
+	if (not self.animation[anim .. "_start"] or not self.animation[anim .. "_end"]) then		
 		return
 	end
 
