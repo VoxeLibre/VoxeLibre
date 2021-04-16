@@ -399,5 +399,23 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "mcl_nether:netheriteblock",
+	recipe = {
+		{'mcl_nether:netherite_ingot', 'mcl_nether:netherite_ingot', 'mcl_nether:netherite_ingot'},
+		{'mcl_nether:netherite_ingot', 'mcl_nether:netherite_ingot', 'mcl_nether:netherite_ingot'},
+		{'mcl_nether:netherite_ingot', 'mcl_nether:netherite_ingot', 'mcl_nether:netherite_ingot'}
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_nether:netherite_ingot 9",
+	recipe = {
+		{'mcl_nether:netheriteblock', '', ''},
+		{'', '', ''},
+		{'', '', ''}
+	}
+})
+
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/nether_wart.lua")
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/lava.lua")
