@@ -3920,7 +3920,7 @@ end
 -- Decorations in non-Overworld dimensions
 local function register_dimension_decorations()
 	--[[ NETHER ]]
-	-- TODO: Nether 
+	-- TODO: Nether
 
 	--[[ THE END ]]
 
