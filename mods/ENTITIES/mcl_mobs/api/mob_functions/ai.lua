@@ -323,6 +323,9 @@ mobs.mob_step = function(self, dtime)
 	if self.swim then
 		swim_state_switch(self, dtime)
 		swim_state_execution(self, dtime)
+	--flying
+	elseif self.fly then
+		print("I probably should be flying >:(")
 	--regular mobs that walk around
 	else
 		land_state_switch(self, dtime)
