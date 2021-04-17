@@ -14,6 +14,7 @@ local THIRTY_SECONDTH_PI = DOUBLE_PI * 0.03125
 
 
 --a simple helper function which is too small to move into movement.lua
+--this rotates 11.25 degrees, probably should rename it eventually
 local quick_rotate_45 = function(self,dtime)
 	self.yaw = self.yaw + THIRTY_SECONDTH_PI
 	if self.yaw > DOUBLE_PI then
