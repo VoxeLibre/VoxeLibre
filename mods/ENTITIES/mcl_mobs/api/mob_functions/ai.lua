@@ -102,6 +102,18 @@ end
 -- states are executed here
 local land_state_execution = function(self,dtime)
 
+	local pos = self.object:get_pos()
+	local collisionbox = self.object:get_properties().collisionbox
+	--get the center of the mob
+	pos.y = pos.y + (collisionbox[2] + collisionbox[5] / 2)
+	local current_node = minetest_get_node(pos).name
+	local float_now = false
+
+	--recheck if in water or lava
+	if minetest_get_item_group(current_node, "water") ~= 0 or minetest_get_item_group(current_node, "lava") ~= 0 then
+		float_now = true
+	end
+
 	if self.state == "stand" then
 
 		--do animation
@@ -166,6 +178,9 @@ local land_state_execution = function(self,dtime)
 
 	end	
 	
+	if float_now then
+		mobs.float(self)
+	end
 end
 
 
@@ -356,9 +371,7 @@ end
 local random_pitch_multiplier = {-1,1}
 -- states are executed here
 local fly_state_execution = function(self,dtime)
-
 	local pos = self.object:get_pos()
-	pos.y = pos.y + self.object:get_properties().collisionbox[5]
 	local current_node = minetest_get_node(pos).name
 	local inside_fly_node = minetest_get_item_group(current_node, "solid") == 0
 
