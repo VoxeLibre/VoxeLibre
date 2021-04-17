@@ -12,7 +12,7 @@ read_globals = {
 	"dump", "dump2",
 	"vector",
 	"VoxelManip", "VoxelArea",
-	"PseudoRandom", "PcgRandom", "PerlinNoise",
+	"PseudoRandom", "PcgRandom", "PerlinNoise", "PerlinNoiseMap",
 	"ItemStack",
 	"Settings",
 	"unpack",

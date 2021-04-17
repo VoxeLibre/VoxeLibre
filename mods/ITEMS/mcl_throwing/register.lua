@@ -224,7 +224,7 @@ local pearl_on_step = function(self, dtime)
 						lv, ld = math.abs(vc.x), "x"
 					end
 					if math.abs(vc.z) > lv then
-						lv, ld = math.abs(vc.z), "z"
+						ld = "z" --math.abs(vc.z)
 					end
 					if ld ~= "x" then vc.x = 0 end
 					if ld ~= "y" then vc.y = 0 end
