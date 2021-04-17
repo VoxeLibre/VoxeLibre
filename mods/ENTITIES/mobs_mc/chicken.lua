@@ -25,7 +25,7 @@ mobs:register_mob("mobs_mc:chicken", {
 		{"mobs_mc_chicken.png"},
 	},
 	visual_size = {x=2.2, y=2.2},
-
+	rotate = 270,
 	makes_footstep_sound = true,
 	walk_velocity = 1,
 	drops = {
