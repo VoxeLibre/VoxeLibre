@@ -771,11 +771,11 @@ mcl_enchanting.enchantments.unbreaking = {
 	curse = false,
 	on_enchant = function(itemstack, level)
 		local tool_capabilities = itemstack:get_tool_capabilities()
-		for group, capability in pairs(tool_capabilities.groupcaps) do
-			capability.uses = capability.uses * (1 + level)
-		end
 		tool_capabilities.punch_attack_uses = tool_capabilities.punch_attack_uses * (1 + level)
 		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
+
+		-- Unbreaking for groupcaps is handled in this function.
+		mcl_enchanting.update_groupcaps(itemstack)
 	end,
 	requires_tool = true,
 	treasure = false,
