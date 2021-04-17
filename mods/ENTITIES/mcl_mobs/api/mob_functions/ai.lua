@@ -205,18 +205,13 @@ end
 --this is to swap the built in engine acceleration modifier
 local fly_physics_swapper = function(self,inside_fly_node)
 
-	--push non-existing physics switch to new mobs
-	self.fly_physics_switch = self.fly_physics_switch or not inside_fly_node
-
 	--should be flying, gravity is applied, switch to floating
-	if inside_fly_node and not self.fly_physics_switch then
+	if inside_fly_node and self.object:get_acceleration().y ~= 0 then
 		self.object:set_acceleration(vector_new(0,0,0))
-		self.fly_physics_switch = true
 	--not be flying, gravity isn't applied, switch to falling
-	elseif not inside_fly_node and self.fly_physics_switch then
+	elseif not inside_fly_node and self.object:get_acceleration().y == 0 then
 		self.pitch = 0
 		self.object:set_acceleration(vector_new(0,-self.gravity,0))
-		self.fly_physics_switch = false
 	end
 end
 

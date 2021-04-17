@@ -111,6 +111,10 @@ mobs.set_fly_velocity = function(self, v)
 	local yaw = (self.yaw or 0)
 	local pitch = (self.pitch or 0)
 
+	if v == 0 then
+		pitch = 0
+	end
+
 	local current_velocity = self.object:get_velocity()
 
 	local goal_velocity = {
