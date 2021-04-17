@@ -50,13 +50,21 @@ function mcl_enchanting.update_groupcaps(itemstack)
 	end
 
 	local name = itemstack:get_name()
-	local level = mcl_enchanting.get_enchantment(itemstack, "efficiency")
-	local groupcaps = get_efficiency_groupcaps(name, level)
+	local efficiency = mcl_enchanting.get_enchantment(itemstack, "efficiency")
+	local groupcaps = get_efficiency_groupcaps(name, efficiency)
 	local hash = itemstack:get_meta():get_string("groupcaps_hash")
 
 	if not hash or hash ~= groupcaps.hash then
 		local tool_capabilities = itemstack:get_tool_capabilities()
 		tool_capabilities.groupcaps = groupcaps.values
+
+		-- Increase the number of uses depending on the unbreaking level
+		-- of the tool.
+		local unbreaking = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
+		for group, capability in pairs(tool_capabilities.groupcaps) do
+			capability.uses = capability.uses * (1 + unbreaking)
+		end
+
 		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
 		itemstack:get_meta():set_string("groupcaps_hash", groupcaps.hash)
 	end

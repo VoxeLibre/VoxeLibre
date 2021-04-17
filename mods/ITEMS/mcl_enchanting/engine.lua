@@ -17,6 +17,7 @@ function mcl_enchanting.unload_enchantments(itemstack)
 	local meta = itemstack:get_meta()
 	if meta:get_string("name") == "" then
 		meta:set_string("description", "")
+		meta:set_string("groupcaps_hash", "")
 	end
 end
 
