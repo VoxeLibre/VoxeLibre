@@ -24,6 +24,7 @@ mobs:register_mob("mobs_mc:parrot", {
 	mesh = "mobs_mc_parrot.b3d",
 	textures = {{"mobs_mc_parrot_blue.png"},{"mobs_mc_parrot_green.png"},{"mobs_mc_parrot_grey.png"},{"mobs_mc_parrot_red_blue.png"},{"mobs_mc_parrot_yellow_blue.png"}},
 	visual_size = {x=3, y=3},
+	rotate = 270,
 	walk_velocity = 3,
 	run_velocity = 5,
 	sounds = {
