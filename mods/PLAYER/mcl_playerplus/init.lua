@@ -183,10 +183,11 @@ minetest.register_globalstep(function(dtime)
 		player_vel_yaw = limit_vel_yaw(player_vel_yaw, yaw)
 		player_vel_yaws[name] = player_vel_yaw
 
-		if minetest.get_node_or_nil({x=player:get_pos().x, y=player:get_pos().y - 0.5, z=player:get_pos().z}) then
-			node_stand_return = minetest.get_node_or_nil({x=player:get_pos().x, y=player:get_pos().y - 0.1, z=player:get_pos().z}).name
-		else
-			minetest.log("action", "somehow player got of loaded areas")
+		local pos = player:get_pos()
+		local node = minetest.get_node_or_nil({x = pos.x, y = pos.y - 0.5, z = pos.z})
+
+		if node then
+			node_stand_return = node.name
 		end
 
 		local chestplate = player:get_inventory():get_stack("armor", 3)
