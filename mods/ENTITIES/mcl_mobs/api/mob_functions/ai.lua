@@ -362,9 +362,11 @@ local fly_state_execution = function(self,dtime)
 	local current_node = minetest_get_node(pos).name
 	local inside_fly_node = minetest_get_item_group(current_node, "solid") == 0
 
+	local float_now = false
 	--recheck if in water or lava
 	if minetest_get_item_group(current_node, "water") ~= 0 or minetest_get_item_group(current_node, "lava") ~= 0 then
 		inside_fly_node = false
+		float_now = true
 	end
 
 	--turn gravity on or off
@@ -409,7 +411,7 @@ local fly_state_execution = function(self,dtime)
 		end
 	else
 		--make the mob float
-		if self.floats and minetest_get_item_group(current_node, "water") ~= 0 then
+		if self.floats and float_now then
 			mobs.float(self)
 		end
 	end
