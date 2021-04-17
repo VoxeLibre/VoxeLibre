@@ -160,48 +160,8 @@ function mcl_armor.register_protection_enchantment(def)
 	}
 end
 
-function mcl_armor.get_armor_points(obj)
-	local points = 0
-	local inv = mcl_util.get_inventory(obj)
-	if inv then
-		for i = 2, 5 do
-			local itemstack = inv:get_stack("armor", i)
-			if not itemstack:is_empty() then
-				points = points + minetest.get_item_group(itemstack:get_name(), "mcl_armor_points")
-			end
-		end
-	end
-	return points
-end
-
--- Returns a change factor for a mob's view_range for the given object
--- or nil, if there's no change. Certain armors (like mob heads) can
--- affect the view range of mobs.
-function mcl_armor.get_mob_view_range_factor(obj, mob)
-	local inv = mcl_util.get_inventory(obj)
-	local factor
-	if inv then
-		for i = 2, 5 do
-			local itemstack = inv:get_stack("armor", i)
-			if not itemstack:is_empty() then
-				local def = itemstack:get_definition()
-				if def._mcl_armor_mob_range_mob == mob then
-					if not factor then
-						factor = def._mcl_armor_mob_range_factor
-					elseif factor == 0 then
-						return 0
-					else
-						factor = factor * def._mcl_armor_mob_range_factor
-					end
-				end
-			end
-		end
-	end
-	return factor
-end
-
 function mcl_armor.update(obj)
-	local info = {points = 0}
+	local info = {points = 0, view_range_factors = {}}
 
 	local inv = mcl_util.get_inventory(obj)
 
@@ -226,6 +186,20 @@ function mcl_armor.update(obj)
 				end
 
 				info.points = info.points + minetest.get_item_group(itemname, "mcl_armor_points")
+
+				local mob_range_mob = def._mcl_armor_mob_range_mob
+
+				if mob_range_mob then
+					local factor = info.view_range_factors[mob_range_mob]
+
+					if factor then
+						if factor > 0 then
+							info.view_range_factors[mob_range_mob] = factor * def._mcl_armor_mob_range_factor
+						end
+					else
+						info.view_range_factors[mob_range_mob] = def._mcl_armor_mob_range_factor
+					end
+				end
 			end
 		end
 	end

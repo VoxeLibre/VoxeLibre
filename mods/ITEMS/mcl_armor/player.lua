@@ -61,7 +61,10 @@ mcl_player.player_register_model("mcl_armor_character_female.b3d", {
 function mcl_armor.update_player(player, info)
 	mcl_player.player_set_armor(player, info.texture, info.preview)
 
-	player:get_meta():set_int("mcl_armor:armor_points", info.points)
+	local meta = player:get_meta()
+	meta:set_int("mcl_armor:armor_points", info.points)
+
+	mcl_armor.player_view_range_factors[player] = view_range_factors
 end
 
 local function is_armor_action(inventory_info)
@@ -147,6 +150,10 @@ minetest.register_on_joinplayer(function(player)
 			mcl_armor.update(player)
 		end
 	end)
+end)
+
+minetest.register_on_leaveplayer(function(player)
+	mcl_armor.player_view_range_factors[player] = nil
 end)
 
 mcl_damage.register_modifier(function(player, hp_change, _, reason)

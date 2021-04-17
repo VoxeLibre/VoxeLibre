@@ -55,7 +55,8 @@ mcl_armor = {
 				}
 			end,
 		}
-	}
+	},
+	player_view_range_factors = {},
 }
 
 local modpath = minetest.get_modpath("mcl_armor")
