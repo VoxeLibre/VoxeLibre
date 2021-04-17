@@ -167,7 +167,7 @@ end
 
 
 
-
+--the main loop
 mobs.mob_step = function(self, dtime)
 
 	--do not continue if non-existent
