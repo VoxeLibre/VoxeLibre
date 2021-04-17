@@ -1,8 +1,6 @@
 local S = minetest.get_translator("mcl_tnt")
 local tnt_griefing = minetest.settings:get_bool("mcl_tnt_griefing", true)
 
-local mod_death_messages = minetest.get_modpath("mcl_death_messages")
-
 local function spawn_tnt(pos, entname)
 	minetest.sound_play("tnt_ignite", {pos = pos,gain = 1.0,max_hear_distance = 15,}, true)
 	local tnt = minetest.add_entity(pos, entname)

@@ -233,7 +233,7 @@ if minetest.get_modpath("mcl_farming") then
 				local wear = mcl_autogroup.get_wear(toolname, "shearsy")
 				itemstack:add_wear(wear)
 			end
-			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above}, true)
+			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = pointed_thing.above}, true)
 			local dir = vector.subtract(pointed_thing.under, pointed_thing.above)
 			local param2 = minetest.dir_to_facedir(dir)
 			minetest.swap_node(pointed_thing.under, {name="mcl_farming:pumpkin_face", param2 = param2})
@@ -352,7 +352,14 @@ minetest.register_tool("mcl_tools:shovel_diamond", {
 })
 
 -- Axes
-
+local make_stripped_trunk_add_wear = function(itemstack, placer)
+	if not minetest.is_creative_enabled(placer:get_player_name()) then
+		-- Add wear (as if digging a axey node)
+		local toolname = itemstack:get_name()
+		local wear = mcl_autogroup.get_wear(toolname, "axey")
+		itemstack:add_wear(wear)
+	end
+end
 local make_stripped_trunk = function(itemstack, placer, pointed_thing)
 	if pointed_thing.type == "node" then
 		local pos = minetest.get_pointed_thing_position(pointed_thing)
@@ -367,36 +374,42 @@ local make_stripped_trunk = function(itemstack, placer, pointed_thing)
 			minetest.record_protection_violation(pointed_thing.under, placer:get_player_name())
 			return itemstack
 		end
-		if not minetest.is_creative_enabled(placer:get_player_name()) then
-			-- Add wear (as if digging a axey node)
-			local toolname = itemstack:get_name()
-			local wear = mcl_autogroup.get_wear(toolname, "axey")
-			itemstack:add_wear(wear)
-		end
 		if node_name == "mcl_core:tree" then
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_oak"})
+			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:darktree" then
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_dark_oak"})
+			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:acaciatree" then
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_acacia"})
+			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:birchtree" then
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_birch"})
+			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:sprucetree" then
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_spruce"})
+			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:jungletree" then
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_jungle"})
+			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:tree_bark" then
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_oak_bark"})
+			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:darktree_bark" then
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_dark_oak_bark"})
+			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:acaciatree_bark" then
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_acacia_bark"})
+			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:birchtree_bark" then
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_birch_bark"})
+			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:sprucetree_bark" then
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_spruce_bark"})
+			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:jungletree_bark" then
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_jungle_bark"})
+			make_stripped_trunk_add_wear(itemstack, placer)
 		end
 	end
 	return itemstack

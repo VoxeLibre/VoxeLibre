@@ -1,10 +1,8 @@
 mcl_throwing = {}
 
-local S = minetest.get_translator("mcl_throwing")
-local mod_death_messages = minetest.get_modpath("mcl_death_messages")
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 
--- 
+--
 -- Snowballs and other throwable items
 --
 
@@ -42,7 +40,7 @@ function mcl_throwing.get_player_throw_function(entity_name, velocity)
 	local func = function(item, player, pointed_thing)
 		local playerpos = player:get_pos()
 		local dir = player:get_look_dir()
-		local obj = mcl_throwing.throw(item, {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, velocity, player:get_player_name())
+		mcl_throwing.throw(item, {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, velocity, player:get_player_name())
 		if not minetest.is_creative_enabled(player:get_player_name()) then
 			item:take_item()
 		end

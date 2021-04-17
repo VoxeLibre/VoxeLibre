@@ -14,6 +14,7 @@ minetest.register_tool("mcl_armor:elytra", {
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_elytra.png",
 	groups = {armor_torso=1, mcl_armor_points=0, mcl_armor_uses=10, enchantability=0},
+	_repair_material = "mcl_mobitems:leather",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_leather",
 		_mcl_armor_unequip = "mcl_armor_unequip_leather",

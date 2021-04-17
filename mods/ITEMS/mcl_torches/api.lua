@@ -30,7 +30,7 @@ local spawn_flames_floor = function(pos)
 end
 
 local spawn_flames_wall = function(pos)
-	local minrelpos, maxrelpos
+	--local minrelpos, maxrelpos
 	local node = minetest.get_node(pos)
 	local dir = minetest.wallmounted_to_dir(node.param2)
 
@@ -257,7 +257,7 @@ minetest.register_lbm({
 	nodenames = {"group:torch_particles"},
 	run_at_every_load = true,
 	action = function(pos, node)
-		local torch_group = minetest.get_node_group(node.name, "torch")
+		local torch_group = minetest.get_item_group(node.name, "torch")
 		if torch_group == 1 then
 			spawn_flames_floor(pos)
 		elseif torch_group == 2 then

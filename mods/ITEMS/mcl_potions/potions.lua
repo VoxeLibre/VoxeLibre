@@ -1,5 +1,5 @@
 local S = minetest.get_translator("mcl_potions")
-local brewhelp = S("Try different combinations to create potions.")
+--local brewhelp = S("Try different combinations to create potions.")
 
 local potion_image = function(colorstring, opacity)
 	if not opacity then
@@ -98,7 +98,7 @@ local function register_potion(def)
 			end
 		elseif def.name == "healing" or def.name == "harming" then
 				_tt = S("@1 HP", effect)
- 		else
+		else
 			_tt = tt or time_string(dur) or S("No effect")
 		end
 		return _tt

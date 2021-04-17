@@ -5,7 +5,10 @@ minetest.register_craftitem("mcl_farming:wheat_seeds", {
 	description = S("Wheat Seeds"),
 	_tt_help = S("Grows on farmland"),
 	_doc_items_longdesc = S("Grows into a wheat plant. Chickens like wheat seeds."),
-	_doc_items_usagehelp = S("Place the wheat seeds on farmland (which can be created with a hoe) to plant a wheat plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it wheat seeds."),
+	_doc_items_usagehelp = S([[
+		Place the wheat seeds on farmland (which can be created with a hoe) to plant a wheat plant.
+		They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it wheat seeds.
+	]]),
 	groups = { craftitem=1 },
 	inventory_image = "mcl_farming_wheat_seeds.png",
 	on_place = function(itemstack, placer, pointed_thing)
@@ -28,7 +31,10 @@ for i=1,7 do
 	if i == 1 then
 		create = true
 		name = S("Premature Wheat Plant")
-		longdesc = S("Premature wheat plants grow on farmland under sunlight in 8 stages. On hydrated farmland, they grow faster. They can be harvested at any time but will only yield a profit when mature.")
+		longdesc = S([[
+			Premature wheat plants grow on farmland under sunlight in 8 stages.
+			On hydrated farmland, they grow faster. They can be harvested at any time but will only yield a profit when mature.
+		]])
 	else
 		create = false
 	end
@@ -54,7 +60,8 @@ for i=1,7 do
 				{-0.5, -0.5, -0.5, 0.5, sel_heights[i], 0.5}
 			},
 		},
-		groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1},
+		groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1,attached_node=1,
+			dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0,
 	})
@@ -62,7 +69,10 @@ end
 
 minetest.register_node("mcl_farming:wheat", {
 	description = S("Mature Wheat Plant"),
-	_doc_items_longdesc = S("Mature wheat plants are ready to be harvested for wheat and wheat seeds. They won't grow any further."),
+	_doc_items_longdesc = S([[
+		Mature wheat plants are ready to be harvested for wheat and wheat seeds.
+		They won't grow any further.
+	]]),
 	sunlight_propagates = true,
 	paramtype = "light",
 	paramtype2 = "meshoptions",
@@ -81,7 +91,8 @@ minetest.register_node("mcl_farming:wheat", {
 			{ items = {'mcl_farming:wheat_item'} }
 		}
 	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1, attached_node=1,
+		dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -144,9 +155,9 @@ minetest.register_node("mcl_farming:hay_block", {
 	is_ground_content = false,
 	stack_max = 64,
 	paramtype2 = "facedir",
-	is_ground_content = false,
 	on_place = mcl_util.rotate_axis,
-	groups = {handy=1, hoey=1, flammable=2, fire_encouragement=60, fire_flammability=20, building_block=1, fall_damage_add_percent=-80},
+	groups = {handy=1, hoey=1, flammable=2, fire_encouragement=60,
+		fire_flammability=20, building_block=1, fall_damage_add_percent=-80},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	on_rotate = on_rotate,
 	_mcl_blast_resistance = 0.5,
