@@ -11,6 +11,17 @@ local vector_multiply = vector.multiply
 
 local minetest_yaw_to_dir = minetest.yaw_to_dir
 
+
+--[[
+ _                     _ 
+| |                   | |
+| |     __ _ _ __   __| |
+| |    / _` | '_ \ / _` | 
+| |___| (_| | | | | (_| |
+\_____/\__,_|_| |_|\__,_|
+]]
+
+
 -- move mob in facing direction
 --this has been modified to be internal
 --internal = lua (self.yaw)
@@ -71,6 +82,22 @@ mobs.jump = function(self, velocity)
     self.object:add_velocity(vector_new(0,velocity,0))    
 end
 
+
+
+
+
+--[[
+ _____          _           
+/  ___|        (_)          
+\ `--.__      ___ _ __ ___  
+ `--. \ \ /\ / / | '_ ` _ \ 
+/\__/ /\ V  V /| | | | | | |
+\____/  \_/\_/ |_|_| |_| |_|
+]]--
+
+
+
+
 --make mobs flop
 mobs.flop = function(self, velocity)
 
@@ -106,7 +133,7 @@ end
 --this has been modified to be internal
 --internal = lua (self.yaw)
 --engine = c++ (self.object:get_yaw())
-mobs.set_fly_velocity = function(self, v)
+mobs.set_swim_velocity = function(self, v)
 	
 	local yaw = (self.yaw or 0)
 	local pitch = (self.pitch or 0)

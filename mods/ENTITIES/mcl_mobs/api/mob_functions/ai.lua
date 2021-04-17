@@ -173,26 +173,24 @@ end
 
 
 --[[
-______ _       _                 _______          _                     _             
-|  ___| |     (_)               / /  ___|        (_)                   (_)            
-| |_  | |_   _ _ _ __   __ _   / /\ `--.__      ___ _ __ ___  _ __ ___  _ _ __   __ _ 
-|  _| | | | | | | '_ \ / _` | / /  `--. \ \ /\ / / | '_ ` _ \| '_ ` _ \| | '_ \ / _` |
-| |   | | |_| | | | | | (_| |/ /  /\__/ /\ V  V /| | | | | | | | | | | | | | | | (_| |
-\_|   |_|\__, |_|_| |_|\__, /_/   \____/  \_/\_/ |_|_| |_| |_|_| |_| |_|_|_| |_|\__, |
-          __/ |         __/ |                                                    __/ |
-         |___/         |___/                                                    |___/ 
+ _____          _           
+/  ___|        (_)          
+\ `--.__      ___ _ __ ___  
+ `--. \ \ /\ / / | '_ ` _ \ 
+/\__/ /\ V  V /| | | | | | |
+\____/  \_/\_/ |_|_| |_| |_|
 ]]--
 
 
 
 -- state switching logic (stand, walk, run, attacks)
-local fly_state_list_wandering = {"stand", "fly"}
+local swim_state_list_wandering = {"stand", "swim"}
 
-local fly_state_switch = function(self, dtime)
+local swim_state_switch = function(self, dtime)
 	self.state_timer = self.state_timer - dtime
 	if self.wandering and self.state_timer <= 0 then
 		self.state_timer = math.random(4,10) + math.random()
-		self.state = fly_state_list_wandering[math.random(1,#fly_state_list_wandering)]
+		self.state = swim_state_list_wandering[math.random(1,#swim_state_list_wandering)]
 	end
 end
 
@@ -203,13 +201,13 @@ local flop = function(self,dtime)
 end
 
 --this is to swap the built in engine acceleration modifier
-local fly_physics_swapper = function(self,inside_fly_node)
+local swim_physics_swapper = function(self,inside_swim_node)
 
-	--should be flying, gravity is applied, switch to floating
-	if inside_fly_node and self.object:get_acceleration().y ~= 0 then
+	--should be swimming, gravity is applied, switch to floating
+	if inside_swim_node and self.object:get_acceleration().y ~= 0 then
 		self.object:set_acceleration(vector_new(0,0,0))
-	--not be flying, gravity isn't applied, switch to falling
-	elseif not inside_fly_node and self.object:get_acceleration().y == 0 then
+	--not be swim, gravity isn't applied, switch to falling
+	elseif not inside_swim_node and self.object:get_acceleration().y == 0 then
 		self.pitch = 0
 		self.object:set_acceleration(vector_new(0,-self.gravity,0))
 	end
@@ -218,27 +216,27 @@ end
 
 local random_pitch_multiplier = {-1,1}
 -- states are executed here
-local fly_state_execution = function(self,dtime)
+local swim_state_execution = function(self,dtime)
 
 	local pos = self.object:get_pos()
 
 	pos.y = pos.y + self.object:get_properties().collisionbox[5]
 	local current_node = minetest_get_node(pos).name
-	local inside_fly_node = false
+	local inside_swim_node = false
 
-	--quick scan everything to see if inside fly node
-	for _,id in pairs(self.fly_in) do
+	--quick scan everything to see if inside swim node
+	for _,id in pairs(self.swim_in) do
 		if id == current_node then
-			inside_fly_node = true
+			inside_swim_node = true
 			break
 		end
 	end
 
 	--turn gravity on or off
-	fly_physics_swapper(self,inside_fly_node)
+	swim_physics_swapper(self,inside_swim_node)
 
-	--fly properly if inside fly node
-	if inside_fly_node then
+	--swim properly if inside swim node
+	if inside_swim_node then
 
 		if self.state == "stand" then
 
@@ -250,9 +248,9 @@ local fly_state_execution = function(self,dtime)
 
 			--print("standing")
 
-			mobs.set_fly_velocity(self,0)
+			mobs.set_swim_velocity(self,0)
 
-		elseif self.state == "fly" then
+		elseif self.state == "swim" then
 
 			self.walk_timer = self.walk_timer - dtime
 
@@ -270,9 +268,9 @@ local fly_state_execution = function(self,dtime)
 			end
 			
 
-			mobs.set_fly_velocity(self,self.walk_velocity)
+			mobs.set_swim_velocity(self,self.walk_velocity)
 		end
-	--flop around if not inside fly node
+	--flop around if not inside swim node
 	else
 		--print("flopping")
 		flop(self,dtime)
@@ -304,10 +302,10 @@ mobs.mob_step = function(self, dtime)
 
 
 
-	--swimming/flying
-	if self.fly then
-		fly_state_switch(self, dtime)
-		fly_state_execution(self, dtime)
+	--swimming
+	if self.swim then
+		swim_state_switch(self, dtime)
+		swim_state_execution(self, dtime)
 	--regular mobs that walk around
 	else
 		land_state_switch(self, dtime)
