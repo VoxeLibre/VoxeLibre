@@ -13,6 +13,15 @@ local DOUBLE_PI = math.pi * 2
 local THIRTY_SECONDTH_PI = DOUBLE_PI * 0.03125
 
 
+--a simple helper function which is too small to move into movement.lua
+local quick_rotate_45 = function(self,dtime)
+	self.yaw = self.yaw + THIRTY_SECONDTH_PI
+	if self.yaw > DOUBLE_PI then
+		self.yaw = self.yaw - DOUBLE_PI
+	end
+end
+
+
 --[[
  _                     _ 
 | |                   | |
@@ -41,14 +50,6 @@ local cliff_check = function(self,dtime)
 		{x = pos.x + dir.x, y = pos.y - self.fear_height, z = pos.z + dir.z})
 
 	return free_fall
-end
-
---a simple helper function which is too small to move into movement.lua
-local quick_rotate_45 = function(self,dtime)
-	self.yaw = self.yaw + THIRTY_SECONDTH_PI
-	if self.yaw > DOUBLE_PI then
-		self.yaw = self.yaw - DOUBLE_PI
-	end
 end
 
 --check if a mob needs to jump
@@ -101,9 +102,6 @@ end
 -- states are executed here
 local land_state_execution = function(self,dtime)
 
-	--local yaw = self.object:get_yaw() or 0
-
-
 	if self.state == "stand" then
 
 		--do animation
@@ -136,6 +134,7 @@ local land_state_execution = function(self,dtime)
 		local node_in_front_of = jump_check(self)
 
 		if node_in_front_of == 1 then
+
 			mobs.jump(self)
 		
 		--turn if on the edge of cliff
@@ -195,7 +194,27 @@ local swim_state_switch = function(self, dtime)
 end
 
 
+--check if a mob needs to turn while swimming
+local swim_turn_check = function(self,dtime)
+
+    local pos = self.object:get_pos()
+    pos.y = pos.y + 0.1
+    local dir = minetest_yaw_to_dir(self.yaw)
+
+    local collisionbox = self.object:get_properties().collisionbox
+	local radius = collisionbox[4] + 0.5
+
+    vector_multiply(dir, radius)
+
+    local test_dir = vector.add(pos,dir)
+
+	local green_flag_1 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0
+
+	return(green_flag_1)
+end
+
 --this is going to need some more logic gates because birds can flop around
+--REMOVE THIS - just dump mobs.flop into where this was
 local flop = function(self,dtime)
 	mobs.flop(self)
 end
@@ -243,11 +262,6 @@ local swim_state_execution = function(self,dtime)
 			--do animation
 			--mobs.set_mob_animation(self, "stand")
 
-			--set the velocity of the mob
-			--mobs.set_velocity(self,0)
-
-			--print("standing")
-
 			mobs.set_swim_velocity(self,0)
 
 		elseif self.state == "swim" then
@@ -265,6 +279,13 @@ local swim_state_execution = function(self,dtime)
 
 				--create a truly random pitch, since there is no easy access to pitch math that I can find
 				self.pitch = math_random() * random_pitch_multiplier[math_random(1,2)]
+			end
+
+
+			--do a quick turn to make mob continuously move
+			--if in a fish tank or something
+			if swim_turn_check(self,dtime) then
+				quick_rotate_45(self,dtime)
 			end
 			
 
@@ -297,10 +318,6 @@ mobs.mob_step = function(self, dtime)
 	if not self or not self.object or not self.object:get_luaentity() then
 		return false
 	end
-
-	--print(self.object:get_yaw())
-
-
 
 	--swimming
 	if self.swim then
