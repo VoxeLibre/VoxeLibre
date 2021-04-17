@@ -29,7 +29,7 @@ end
 | |    / _` | '_ \ / _` | 
 | |___| (_| | | | | (_| |
 \_____/\__,_|_| |_|\__,_|
-]]
+]]--
 
 --this is basically reverse jump_check
 local cliff_check = function(self,dtime)
@@ -290,11 +290,135 @@ local swim_state_execution = function(self,dtime)
 	else
 		--do animation
 		mobs.set_mob_animation(self, "stand")
-		
+
 		mobs.flop(self)
 	end
 
 end
+
+
+--[[
+______ _       
+|  ___| |      
+| |_  | |_   _ 
+|  _| | | | | |
+| |   | | |_| |
+\_|   |_|\__, |
+          __/ |
+         |___/ 
+]]--
+
+-- state switching logic (stand, walk, run, attacks)
+local fly_state_list_wandering = {"stand", "fly"}
+
+local fly_state_switch = function(self, dtime)
+	self.state_timer = self.state_timer - dtime
+	if self.wandering and self.state_timer <= 0 then
+		self.state_timer = math.random(4,10) + math.random()
+		self.state = fly_state_list_wandering[math.random(1,#fly_state_list_wandering)]
+	end
+end
+
+
+--check if a mob needs to turn while flyming
+local fly_turn_check = function(self,dtime)
+
+    local pos = self.object:get_pos()
+    pos.y = pos.y + 0.1
+    local dir = minetest_yaw_to_dir(self.yaw)
+
+    local collisionbox = self.object:get_properties().collisionbox
+	local radius = collisionbox[4] + 0.5
+
+    vector_multiply(dir, radius)
+
+    local test_dir = vector.add(pos,dir)
+
+	local green_flag_1 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0
+
+	return(green_flag_1)
+end
+
+--this is to swap the built in engine acceleration modifier
+local fly_physics_swapper = function(self,inside_fly_node)
+
+	--should be flyming, gravity is applied, switch to floating
+	if inside_fly_node and self.object:get_acceleration().y ~= 0 then
+		self.object:set_acceleration(vector_new(0,0,0))
+	--not be fly, gravity isn't applied, switch to falling
+	elseif not inside_fly_node and self.object:get_acceleration().y == 0 then
+		self.pitch = 0
+		self.object:set_acceleration(vector_new(0,-self.gravity,0))
+	end
+end
+
+
+local random_pitch_multiplier = {-1,1}
+-- states are executed here
+local fly_state_execution = function(self,dtime)
+
+	local pos = self.object:get_pos()
+	pos.y = pos.y + self.object:get_properties().collisionbox[5]
+	local current_node = minetest_get_node(pos).name
+	local inside_fly_node = minetest_get_item_group(current_node, "solid") == 0
+
+	--recheck if in water or lava
+	if minetest_get_item_group(current_node, "water") ~= 0 or minetest_get_item_group(current_node, "lava") ~= 0 then
+		inside_fly_node = false
+	end
+
+	--turn gravity on or off
+	fly_physics_swapper(self,inside_fly_node)
+
+	--fly properly if inside fly node
+	if inside_fly_node then
+		if self.state == "stand" then
+
+			--do animation
+			mobs.set_mob_animation(self, "stand")
+
+			mobs.set_fly_velocity(self,0)
+
+		elseif self.state == "fly" then
+
+			self.walk_timer = self.walk_timer - dtime
+
+			--reset the walk timer
+			if self.walk_timer <= 0 then
+	
+				--re-randomize the walk timer
+				self.walk_timer = math.random(1,6) + math.random()
+	
+				--set the mob into a random direction
+				self.yaw = (math_random() * (math.pi * 2))
+
+				--create a truly random pitch, since there is no easy access to pitch math that I can find
+				self.pitch = math_random() * random_pitch_multiplier[math_random(1,2)]
+			end
+
+			--do animation
+			mobs.set_mob_animation(self, "walk")
+
+			--do a quick turn to make mob continuously move
+			--if in a bird cage or something
+			if fly_turn_check(self,dtime) then
+				quick_rotate(self,dtime)
+			end
+
+			mobs.set_fly_velocity(self,self.walk_velocity)
+		end
+	else
+		--make the mob float
+		if self.floats and minetest_get_item_group(current_node, "water") ~= 0 then
+			mobs.float(self)
+		end
+	end
+end
+
+
+
+
+
 
 
 --[[
@@ -306,7 +430,7 @@ ___  ___      _         _                 _
 \_|  |_/\__,_|_|_| |_| \_____/\___/ \__, |_|\___|
                                      __/ |       
                                     |___/        
-]]
+]]--
 
 --the main loop
 mobs.mob_step = function(self, dtime)
@@ -322,7 +446,8 @@ mobs.mob_step = function(self, dtime)
 		swim_state_execution(self, dtime)
 	--flying
 	elseif self.fly then
-		print("I probably should be flying >:(")
+		fly_state_switch(self, dtime)
+		fly_state_execution(self,dtime)
 	--regular mobs that walk around
 	else
 		land_state_switch(self, dtime)

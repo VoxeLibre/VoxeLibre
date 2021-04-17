@@ -12,6 +12,31 @@ local vector_multiply = vector.multiply
 local minetest_yaw_to_dir = minetest.yaw_to_dir
 
 
+
+--this is a generic float function
+mobs.float = function(self)
+
+	local current_velocity = self.object:get_velocity()
+
+	local goal_velocity = {
+		x = 0,
+		y = 5,
+		z = 0,
+	}
+
+	local new_velocity_addition = vector.subtract(goal_velocity,current_velocity)
+
+	new_velocity_addition.x = 0
+	new_velocity_addition.z = 0
+
+	--smooths out mobs a bit
+	if vector_length(new_velocity_addition) >= 0.0001 then
+		self.object:add_velocity(new_velocity_addition)
+	end
+end
+
+
+
 --[[
  _                     _ 
 | |                   | |
@@ -134,6 +159,51 @@ end
 --internal = lua (self.yaw)
 --engine = c++ (self.object:get_yaw())
 mobs.set_swim_velocity = function(self, v)
+	
+	local yaw = (self.yaw or 0)
+	local pitch = (self.pitch or 0)
+
+	if v == 0 then
+		pitch = 0
+	end
+
+	local current_velocity = self.object:get_velocity()
+
+	local goal_velocity = {
+		x = (math_sin(yaw) * -v),
+		y = pitch,
+		z = (math_cos(yaw) * v),
+	}
+
+
+	local new_velocity_addition = vector.subtract(goal_velocity,current_velocity)
+
+	if vector_length(new_velocity_addition) > vector_length(goal_velocity) then
+		vector.multiply(new_velocity_addition, (vector_length(goal_velocity) / vector_length(new_velocity_addition)))
+	end
+
+	--smooths out mobs a bit
+	if vector_length(new_velocity_addition) >= 0.0001 then
+		self.object:add_velocity(new_velocity_addition)
+	end
+end
+
+--[[
+______ _       
+|  ___| |      
+| |_  | |_   _ 
+|  _| | | | | |
+| |   | | |_| |
+\_|   |_|\__, |
+          __/ |
+         |___/ 
+]]--
+
+-- move mob in facing direction
+--this has been modified to be internal
+--internal = lua (self.yaw)
+--engine = c++ (self.object:get_yaw())
+mobs.set_fly_velocity = function(self, v)
 	
 	local yaw = (self.yaw or 0)
 	local pitch = (self.pitch or 0)
