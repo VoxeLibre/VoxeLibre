@@ -22,7 +22,6 @@ local math = math
 -- Internal player state
 local mcl_playerplus_internal = {}
 
-local def = {}
 local time = 0
 local look_pitch = 0
 
@@ -375,9 +374,6 @@ minetest.register_globalstep(function(dtime)
 		if not node_stand or not node_stand_below or not node_head or not node_feet then
 			return
 		end
-
-		-- set defaults
-		def.speed = 1
 
 		-- Standing on soul sand? If so, walk slower (unless player wears Soul Speed boots)
 		if node_stand == "mcl_nether:soul_sand" then
