@@ -1,4 +1,19 @@
 local math_pi     = math.pi
+local math_floor  = math.floor
+local HALF_PI     = math_pi/2
+
+
+
+local vector_distance = vector.distance
+local vector_new      = vector.new
+
+local minetest_dir_to_yaw = minetest.dir_to_yaw
+
+
+-- simple degrees calculation
+local degrees = function(yaw)
+    return(yaw*180.0/math_pi)
+end
 
 -- set defined animation
 mobs.set_mob_animation = function(self, anim, fixed_frame)
@@ -67,8 +82,8 @@ mobs.death_effect = function(pos, yaw, collisionbox, rotate)
 		time = 0.001,
 		minpos = vector.add(pos, min),
 		maxpos = vector.add(pos, max),
-		minvel = vector.new(-5,-5,-5),
-		maxvel = vector.new(5,5,5),
+		minvel = vector_new(-5,-5,-5),
+		maxvel = vector_new(5,5,5),
 		minexptime = 1.1,
 		maxexptime = 1.5,
 		minsize = 1,
@@ -102,4 +117,49 @@ mobs.movement_rotation_lock = function(self)
 	elseif math.abs(current_engine_yaw - current_lua_yaw) > 0.05 and self.object:get_properties().automatic_face_movement_dir == false then
 		self.object:set_properties{automatic_face_movement_dir = self.rotate}
 	end
+end
+
+
+local calculate_pitch = function(self)
+	local pos  = self.object:get_pos()
+	local pos2 = self.old_pos
+
+	if pos == nil or pos2 == nil then
+		return false
+	end
+
+    return(minetest_dir_to_yaw(vector_new(vector_distance(vector_new(pos.x,0,pos.z),vector_new(pos2.x,0,pos2.z)),0,pos.y - pos2.y)) + HALF_PI)
+end
+
+--this is a helper function used to make mobs pitch rotation dynamically flow when flying/swimming
+mobs.set_dynamic_pitch = function(self)
+	local pitch = calculate_pitch(self)
+
+	if not pitch then
+		return
+	end
+
+	local current_rotation = self.object:get_rotation()
+
+	current_rotation.x = pitch
+
+	self.object:set_rotation(current_rotation)
+
+	self.pitch_switch = "dynamic"
+end
+
+--this is a helper function used to make mobs pitch rotation reset when flying/swimming
+mobs.set_static_pitch = function(self)
+
+	if self.pitch_switch == "static" then
+		return
+	end
+
+	local current_rotation = self.object:get_rotation()
+
+	current_rotation.x = 0
+	current_rotation.z = 0
+
+	self.object:set_rotation(current_rotation)
+	self.pitch_switchfdas = "static"
 end

@@ -313,6 +313,7 @@ function mobs:register_mob(name, def)
 		gravity = GRAVITY,
 		swim = def.swim,
 		swim_in = def.swim_in or {mobs_mc.items.water_source, "mcl_core:water_flowing", mobs_mc.items.river_water_source},
+		pitch_switch = "static",
 		--set_animation = mobs.set_animation,
 		--end j4i stuff
 

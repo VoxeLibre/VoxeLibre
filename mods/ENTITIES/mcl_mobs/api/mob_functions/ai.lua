@@ -1,4 +1,5 @@
 local math_random = math.random
+local math_pi     = math.pi
 
 local vector_multiply = vector.multiply
 local vector_add      = vector.add
@@ -273,6 +274,8 @@ local swim_state_execution = function(self,dtime)
 
 			mobs.set_swim_velocity(self,0)
 
+			mobs.set_static_pitch(self)
+
 		elseif self.state == "swim" then
 
 			self.walk_timer = self.walk_timer - dtime
@@ -300,6 +303,8 @@ local swim_state_execution = function(self,dtime)
 			end
 
 			mobs.set_swim_velocity(self,self.walk_velocity)
+
+			mobs.set_dynamic_pitch(self)
 		end
 	--flop around if not inside swim node
 	else
@@ -307,6 +312,8 @@ local swim_state_execution = function(self,dtime)
 		mobs.set_mob_animation(self, "stand")
 
 		mobs.flop(self)
+
+		mobs.set_static_pitch(self)
 	end
 
 end
@@ -394,6 +401,8 @@ local fly_state_execution = function(self,dtime)
 
 			mobs.set_fly_velocity(self,0)
 
+			mobs.set_static_pitch(self)
+
 		elseif self.state == "fly" then
 
 			self.walk_timer = self.walk_timer - dtime
@@ -420,12 +429,18 @@ local fly_state_execution = function(self,dtime)
 				quick_rotate(self,dtime)
 			end
 
+			mobs.set_dynamic_pitch(self)
+
 			mobs.set_fly_velocity(self,self.walk_velocity)
 		end
 	else
 		--make the mob float
 		if self.floats and float_now then
+			mobs.set_velocity(self, 0)
+
 			mobs.float(self)
+
+			mobs.set_static_pitch(self)
 		end
 	end
 end
@@ -476,4 +491,5 @@ mobs.mob_step = function(self, dtime)
 	end
 
     self.old_velocity = self.object:get_velocity()
+	self.old_pos = self.object:get_pos()
 end
