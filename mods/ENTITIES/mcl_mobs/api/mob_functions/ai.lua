@@ -213,12 +213,6 @@ local swim_turn_check = function(self,dtime)
 	return(green_flag_1)
 end
 
---this is going to need some more logic gates because birds can flop around
---REMOVE THIS - just dump mobs.flop into where this was
-local flop = function(self,dtime)
-	mobs.flop(self)
-end
-
 --this is to swap the built in engine acceleration modifier
 local swim_physics_swapper = function(self,inside_swim_node)
 
@@ -260,7 +254,7 @@ local swim_state_execution = function(self,dtime)
 		if self.state == "stand" then
 
 			--do animation
-			--mobs.set_mob_animation(self, "stand")
+			mobs.set_mob_animation(self, "stand")
 
 			mobs.set_swim_velocity(self,0)
 
@@ -281,20 +275,23 @@ local swim_state_execution = function(self,dtime)
 				self.pitch = math_random() * random_pitch_multiplier[math_random(1,2)]
 			end
 
+			--do animation
+			mobs.set_mob_animation(self, "walk")
 
 			--do a quick turn to make mob continuously move
 			--if in a fish tank or something
 			if swim_turn_check(self,dtime) then
 				quick_rotate(self,dtime)
 			end
-			
 
 			mobs.set_swim_velocity(self,self.walk_velocity)
 		end
 	--flop around if not inside swim node
 	else
-		--print("flopping")
-		flop(self,dtime)
+		--do animation
+		mobs.set_mob_animation(self, "stand")
+		
+		mobs.flop(self)
 	end
 
 end
