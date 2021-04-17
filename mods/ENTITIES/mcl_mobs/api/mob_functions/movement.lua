@@ -232,3 +232,51 @@ mobs.set_fly_velocity = function(self, v)
 		self.object:add_velocity(new_velocity_addition)
 	end
 end
+
+
+--[[
+   ___                       
+  |_  |                      
+    | |_   _ _ __ ___  _ __  
+    | | | | | '_ ` _ \| '_ \ 
+/\__/ / |_| | | | | | | |_) |
+\____/ \__,_|_| |_| |_| .__/ 
+                      | |    
+                      |_|    
+]]--
+
+--special mob jump movement
+mobs.jump_move = function(self, velocity)
+
+    if self.object:get_velocity().y ~= 0 or not self.old_velocity or (self.old_velocity and self.old_velocity.y > 0) then
+        return
+    end
+
+	--make the mob stick for a split second
+	mobs.set_velocity(self,0)
+
+	--fallback velocity to allow modularity
+    jump_height = 8
+
+	local yaw = (self.yaw or 0)
+
+	local current_velocity = self.object:get_velocity()
+
+	local goal_velocity = {
+		x = (math_sin(yaw) * -velocity),
+		y = jump_height,
+		z = (math_cos(yaw) * velocity),
+	}
+
+
+	local new_velocity_addition = vector.subtract(goal_velocity,current_velocity)
+
+	if vector_length(new_velocity_addition) > vector_length(goal_velocity) then
+		vector.multiply(new_velocity_addition, (vector_length(goal_velocity) / vector_length(new_velocity_addition)))
+	end
+
+	--smooths out mobs a bit
+	if vector_length(new_velocity_addition) >= 0.0001 then
+		self.object:add_velocity(new_velocity_addition)
+	end
+end

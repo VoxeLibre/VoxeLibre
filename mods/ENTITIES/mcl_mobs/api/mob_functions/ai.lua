@@ -342,7 +342,7 @@ local fly_state_switch = function(self, dtime)
 end
 
 
---check if a mob needs to turn while flyming
+--check if a mob needs to turn while flying
 local fly_turn_check = function(self,dtime)
 
     local pos = self.object:get_pos()
@@ -446,7 +446,114 @@ local fly_state_execution = function(self,dtime)
 end
 
 
+--[[
+   ___                       
+  |_  |                      
+    | |_   _ _ __ ___  _ __  
+    | | | | | '_ ` _ \| '_ \ 
+/\__/ / |_| | | | | | | |_) |
+\____/ \__,_|_| |_| |_| .__/ 
+                      | |    
+                      |_|    
+]]--
 
+
+--check if a mob needs to turn while jumping
+local jump_turn_check = function(self,dtime)
+
+    local pos = self.object:get_pos()
+    pos.y = pos.y + 0.1
+    local dir = minetest_yaw_to_dir(self.yaw)
+
+    local collisionbox = self.object:get_properties().collisionbox
+	local radius = collisionbox[4] + 0.5
+
+    vector_multiply(dir, radius)
+
+    local test_dir = vector.add(pos,dir)
+
+	local green_flag_1 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0
+
+	return(green_flag_1)
+end
+
+-- state switching logic (stand, jump, run, attacks)
+local jump_state_list_wandering = {"stand", "jump"}
+
+local jump_state_switch = function(self, dtime)
+	self.state_timer = self.state_timer - dtime
+	if self.wandering and self.state_timer <= 0 then
+		self.state_timer = math.random(4,10) + math.random()
+		self.state = jump_state_list_wandering[math.random(1,#jump_state_list_wandering)]
+	end
+end
+
+-- states are executed here
+local jump_state_execution = function(self,dtime)
+
+	local pos = self.object:get_pos()
+	local collisionbox = self.object:get_properties().collisionbox
+	--get the center of the mob
+	pos.y = pos.y + (collisionbox[2] + collisionbox[5] / 2)
+	local current_node = minetest_get_node(pos).name
+
+	local float_now = false
+
+	--recheck if in water or lava
+	if minetest_get_item_group(current_node, "water") ~= 0 or minetest_get_item_group(current_node, "lava") ~= 0 then
+		float_now = true
+	end
+
+	if self.state == "stand" then
+
+		--do animation
+		mobs.set_mob_animation(self, "stand")
+
+		--set the velocity of the mob
+		mobs.set_velocity(self,0)
+
+	elseif self.state == "jump" then
+
+		self.walk_timer = self.walk_timer - dtime
+
+		--reset the jump timer
+		if self.walk_timer <= 0 then
+
+			--re-randomize the jump timer
+			self.walk_timer = math.random(1,6) + math.random()
+
+			--set the mob into a random direction
+			self.yaw = (math_random() * (math.pi * 2))
+		end
+
+		--do animation
+		mobs.set_mob_animation(self, "walk")
+
+		--enable rotation locking
+		mobs.movement_rotation_lock(self)
+
+		--jumping mobs are more loosey goosey
+		if node_in_front_of == 1 then
+			quick_rotate(self,dtime)
+		end
+
+		--only move forward if path is clear
+		mobs.jump_move(self,self.walk_velocity)
+
+	elseif self.state == "run" then
+
+		print("run")
+
+	elseif self.state == "attack" then
+
+		print("attack")
+
+	end	
+	
+	if float_now then
+		mobs.float(self)
+	end
+end
 
 
 
@@ -470,8 +577,12 @@ mobs.mob_step = function(self, dtime)
 		return false
 	end
 
+	--jump only (like slimes)
+	if self.jump_only then
+		jump_state_switch(self, dtime)
+		jump_state_execution(self, dtime)		
 	--swimming
-	if self.swim then
+	elseif self.swim then
 		swim_state_switch(self, dtime)
 		swim_state_execution(self, dtime)
 	--flying

@@ -314,7 +314,7 @@ function mobs:register_mob(name, def)
 		swim = def.swim,
 		swim_in = def.swim_in or {mobs_mc.items.water_source, "mcl_core:water_flowing", mobs_mc.items.river_water_source},
 		pitch_switch = "static",
-		--set_animation = mobs.set_animation,
+		jump_only = def.jump_only,
 		--end j4i stuff
 
 		-- MCL2 extensions
