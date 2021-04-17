@@ -2,8 +2,6 @@ local math_random = math.random
 
 local minetest_settings                     = minetest.settings
 
-local state_randomization = {"stand", "walk"}
-
 -- get entity staticdata
 mobs.mob_staticdata = function(self)
 
@@ -26,7 +24,6 @@ mobs.mob_staticdata = function(self)
 	self.remove_ok = true
 	self.attack = nil
 	self.following = nil
-	self.state = state_randomization[math.random(1,#state_randomization)]
 
 	if use_cmi then
 		self.serialized_cmi_components = cmi.serialize_components(self._cmi_components)
