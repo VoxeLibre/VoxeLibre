@@ -84,7 +84,7 @@ function settlements.create_site_plan(maxp, minp, pr)
 		x=math.floor((minp.x+maxp.x)/2),
 		y=maxp.y,
 		z=math.floor((minp.z+maxp.z)/2)
-	} 
+	}
 	-- find center_surface of chunk
 	local center_surface , surface_material = settlements.find_surface(center, true)
 	local chunks = {}
