@@ -2,6 +2,7 @@ local math_random = math.random
 
 local vector_multiply = vector.multiply
 local vector_add      = vector.add
+local vector_new      = vector.new
 
 local minetest_yaw_to_dir                   = minetest.yaw_to_dir
 local minetest_get_item_group               = minetest.get_item_group
@@ -201,11 +202,32 @@ local flop = function(self,dtime)
 	mobs.flop(self)
 end
 
+--this is to swap the built in engine acceleration modifier
+local fly_physics_swapper = function(self,inside_fly_node)
 
+	--push non-existing physics switch to new mobs
+	self.fly_physics_switch = self.fly_physics_switch or not inside_fly_node
+
+	--should be flying, gravity is applied, switch to floating
+	if inside_fly_node and not self.fly_physics_switch then
+		self.object:set_acceleration(vector_new(0,0,0))
+		self.fly_physics_switch = true
+	--not be flying, gravity isn't applied, switch to falling
+	elseif not inside_fly_node and self.fly_physics_switch then
+		self.pitch = 0
+		self.object:set_acceleration(vector_new(0,-self.gravity,0))
+		self.fly_physics_switch = false
+	end
+end
+
+
+local random_pitch_multiplier = {-1,1}
 -- states are executed here
 local fly_state_execution = function(self,dtime)
 
 	local pos = self.object:get_pos()
+
+	pos.y = pos.y + self.object:get_properties().collisionbox[5]
 	local current_node = minetest_get_node(pos).name
 	local inside_fly_node = false
 
@@ -217,10 +239,12 @@ local fly_state_execution = function(self,dtime)
 		end
 	end
 
-	
+	--turn gravity on or off
+	fly_physics_swapper(self,inside_fly_node)
 
 	--fly properly if inside fly node
 	if inside_fly_node then
+
 		if self.state == "stand" then
 
 			--do animation
@@ -231,11 +255,27 @@ local fly_state_execution = function(self,dtime)
 
 			--print("standing")
 
+			mobs.set_fly_velocity(self,0)
+
 		elseif self.state == "fly" then
 
+			self.walk_timer = self.walk_timer - dtime
 
-			--print("flying")
+			--reset the walk timer
+			if self.walk_timer <= 0 then
+	
+				--re-randomize the walk timer
+				self.walk_timer = math.random(1,6) + math.random()
+	
+				--set the mob into a random direction
+				self.yaw = (math_random() * (math.pi * 2))
 
+				--create a truly random pitch, since there is no easy access to pitch math that I can find
+				self.pitch = math_random() * random_pitch_multiplier[math_random(1,2)]
+			end
+			
+
+			mobs.set_fly_velocity(self,self.walk_velocity)
 		end
 	--flop around if not inside fly node
 	else

@@ -99,3 +99,35 @@ mobs.flop = function(self, velocity)
 
 	return true
 end
+
+
+
+-- move mob in facing direction
+--this has been modified to be internal
+--internal = lua (self.yaw)
+--engine = c++ (self.object:get_yaw())
+mobs.set_fly_velocity = function(self, v)
+	
+	local yaw = (self.yaw or 0)
+	local pitch = (self.pitch or 0)
+
+	local current_velocity = self.object:get_velocity()
+
+	local goal_velocity = {
+		x = (math_sin(yaw) * -v),
+		y = pitch,
+		z = (math_cos(yaw) * v),
+	}
+
+
+	local new_velocity_addition = vector.subtract(goal_velocity,current_velocity)
+
+	if vector_length(new_velocity_addition) > vector_length(goal_velocity) then
+		vector.multiply(new_velocity_addition, (vector_length(goal_velocity) / vector_length(new_velocity_addition)))
+	end
+
+	--smooths out mobs a bit
+	if vector_length(new_velocity_addition) >= 0.0001 then
+		self.object:add_velocity(new_velocity_addition)
+	end
+end
