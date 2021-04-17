@@ -98,7 +98,7 @@ animated_chests (Animated chests) bool true
 3d_player_preview (3D Player preview) bool true
 
 # The maximum number of boss bars to simultaniously display on the screen
-max_bossbars (Maximum Boss bars) int 4
+max_bossbars (Maximum Boss bars) int 5
 
 [Experimental]
 # Whether ice is translucent. If disabled, ice is fully opaque.

@@ -6,10 +6,10 @@ function settlements.paths(settlement_info)
   local end_point
   local distance
   --for k,v in pairs(settlement_info) do
-  starting_point = settlement_info[1]["pos"] 
+  starting_point = settlement_info[1]["pos"]
   for o,p in pairs(settlement_info) do
 
-    end_point = settlement_info[o]["pos"] 
+    end_point = settlement_info[o]["pos"]
     if starting_point ~= end_point
     then
       -- loop until end_point is reched (distance == 0)
@@ -40,35 +40,35 @@ function settlements.paths(settlement_info)
         -- evaluate which pos is closer to the end_point
         if dist_north_p_to_end <= dist_south_p_to_end and
         dist_north_p_to_end <= dist_west_p_to_end and
-        dist_north_p_to_end <= dist_east_p_to_end 
+        dist_north_p_to_end <= dist_east_p_to_end
         then
           starting_point = north_p
           distance = dist_north_p_to_end
 
         elseif dist_south_p_to_end <= dist_north_p_to_end and
         dist_south_p_to_end <= dist_west_p_to_end and
-        dist_south_p_to_end <= dist_east_p_to_end 
+        dist_south_p_to_end <= dist_east_p_to_end
         then
           starting_point = south_p
           distance = dist_south_p_to_end
 
         elseif dist_west_p_to_end <= dist_north_p_to_end and
         dist_west_p_to_end <= dist_south_p_to_end and
-        dist_west_p_to_end <= dist_east_p_to_end 
+        dist_west_p_to_end <= dist_east_p_to_end
         then
           starting_point = west_p
           distance = dist_west_p_to_end
 
         elseif dist_east_p_to_end <= dist_north_p_to_end and
         dist_east_p_to_end <= dist_south_p_to_end and
-        dist_east_p_to_end <= dist_west_p_to_end 
+        dist_east_p_to_end <= dist_west_p_to_end
         then
           starting_point = east_p
           distance = dist_east_p_to_end
         end
         -- find surface of new starting point
         local surface_point, surface_mat = settlements.find_surface(starting_point)
-        -- replace surface node with mcl_core:grass_path 
+        -- replace surface node with mcl_core:grass_path
         if surface_point
         then
           if surface_mat == "mcl_core:sand" or surface_mat == "mcl_core:redsand" then

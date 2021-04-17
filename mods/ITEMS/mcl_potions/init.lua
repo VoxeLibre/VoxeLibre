@@ -25,11 +25,9 @@ dofile(modpath .. "/lingering.lua")
 dofile(modpath .. "/tipped_arrow.lua")
 dofile(modpath .. "/potions.lua")
 
-local brewhelp = S("Try different combinations to create potions.")
-
 minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	description = S("Fermented Spider Eye"),
-	_doc_items_longdesc = brewhelp,
+	_doc_items_longdesc = S("Try different combinations to create potions."),
 	wield_image = "mcl_potions_spider_eye_fermented.png",
 	inventory_image = "mcl_potions_spider_eye_fermented.png",
 	groups = { brewitem = 1, },
@@ -65,14 +63,12 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 
 			-- Try to fill glass bottle with water
 			local get_water = false
-			local from_liquid_source = false
+			--local from_liquid_source = false
 			local river_water = false
-			if not def then
-				-- Unknown node: no-op
-			elseif def.groups and def.groups.water and def.liquidtype == "source" then
+			if def and def.groups and def.groups.water and def.liquidtype == "source" then
 				-- Water source
 				get_water = true
-				from_liquid_source = true
+				--from_liquid_source = true
 				river_water = node.name == "mclx_core:river_water_source"
 			-- Or reduce water level of cauldron by 1
 			elseif string.sub(node.name, 1, 14) == "mcl_cauldrons:" then
@@ -440,7 +436,6 @@ function mcl_potions.get_alchemy(ingr, pot)
 		if brew_table[ingr] ~= nil then
 			return brew_table[ingr]
 		end
-		
 	end
 
 	if mod_table[ingr] ~= nil then

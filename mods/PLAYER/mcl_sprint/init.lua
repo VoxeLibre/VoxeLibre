@@ -53,7 +53,10 @@ local function setSprinting(playerName, sprinting) --Sets the state of a player 
 	local controls = player:get_player_control()
 	if players[playerName] then
 		players[playerName].sprinting = sprinting
-		if sprinting == true or controls.RMB and string.find(player:get_wielded_item():get_name(), "mcl_bows:bow") and player:get_wielded_item():get_name() ~= "mcl_bows:bow" then
+		if sprinting == true
+		or controls.RMB
+		and string.find(player:get_wielded_item():get_name(), "mcl_bows:bow")
+		and player:get_wielded_item():get_name() ~= "mcl_bows:bow" then
 			if sprinting == true then
 				players[playerName].fov = math.min(players[playerName].fov + 0.05, 1.2)
 				players[playerName].fade_time = .15
@@ -65,7 +68,10 @@ local function setSprinting(playerName, sprinting) --Sets the state of a player 
 			if sprinting == true then
 				playerphysics.add_physics_factor(player, "speed", "mcl_sprint:sprint", mcl_sprint.SPEED)
 			end
-		elseif sprinting == false and player:get_wielded_item():get_name() ~= "mcl_bows:bow_0" and player:get_wielded_item():get_name() ~= "mcl_bows:bow_1" and player:get_wielded_item():get_name() ~= "mcl_bows:bow_2" then
+		elseif sprinting == false
+		and player:get_wielded_item():get_name() ~= "mcl_bows:bow_0"
+		and player:get_wielded_item():get_name() ~= "mcl_bows:bow_1"
+		and player:get_wielded_item():get_name() ~= "mcl_bows:bow_2" then
 			players[playerName].fov = math.max(players[playerName].fov - 0.05, 1.0)
 			player:set_fov(players[playerName].fov, true, 0.15)
 			if sprinting == false then
@@ -186,7 +192,8 @@ minetest.register_globalstep(function(dtime)
 			if players[playerName]["shouldSprint"] == true then --Stopped
 				local sprinting
 				-- Prevent sprinting if hungry or sleeping
-				if (mcl_hunger.active and mcl_hunger.get_hunger(player) <= 6) or (player:get_meta():get_string("mcl_beds:sleeping") == "true") then
+				if (mcl_hunger.active and mcl_hunger.get_hunger(player) <= 6)
+				or (player:get_meta():get_string("mcl_beds:sleeping") == "true") then
 					sprinting = false
 					cancelClientSprinting(playerName)
 				else

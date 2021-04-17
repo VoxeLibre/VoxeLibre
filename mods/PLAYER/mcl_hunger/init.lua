@@ -65,9 +65,7 @@ end
 -- Count number of poisonings a player has at once
 mcl_hunger.poison_hunger = {} -- food poisoning, increasing hunger
 
--- HUD item ids
-local hunger_hud = {}
-
+-- HUD
 local function init_hud(player)
 	hb.init_hudbar(player, "hunger", mcl_hunger.get_hunger(player))
 	if mcl_hunger.debug then

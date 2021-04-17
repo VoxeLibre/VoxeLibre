@@ -119,7 +119,7 @@ local function find_biome(pos, biomes)
 	local edge_dist = 0
 	local dir_step = 0
 	local dir_ind = 1
-	local success = false
+	local success
 	local spawn_pos
 	local biome_ids
 
@@ -166,7 +166,7 @@ local function find_biome(pos, biomes)
 							spawn_pos = {x = spos.x, y = spos.y, z = spos.z}
 						end
 						if spawn_pos then
-							local adjusted_pos, outside = adjust_pos_to_biome_limits(spawn_pos, biome_id)
+							local _,outside = adjust_pos_to_biome_limits(spawn_pos, biome_id)
 							if is_in_world(spawn_pos) and not outside then
 								return true
 							end

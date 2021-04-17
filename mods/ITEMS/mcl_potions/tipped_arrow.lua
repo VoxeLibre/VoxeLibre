@@ -4,12 +4,12 @@ local ARROW_TIMEOUT = 60
 -- Time after which stuck arrow is rechecked for being stuck
 local STUCK_RECHECK_TIME = 5
 
-local GRAVITY = 9.81
+--local GRAVITY = 9.81
 
 local YAW_OFFSET = -math.pi/2
 
 local dir_to_pitch = function(dir)
-	local dir2 = vector.normalize(dir)
+	--local dir2 = vector.normalize(dir)
 	local xz = math.abs(dir.x) + math.abs(dir.z)
 	return -math.atan2(-dir.y, xz)
 end
@@ -197,7 +197,6 @@ function mcl_potions.register_arrow(name, desc, color, def)
 					glow = 1,
 				})
 			end
-			
 			-- We just check for any hurtable objects nearby.
 			-- The radius of 3 is fairly liberal, but anything lower than than will cause
 			-- arrow to hilariously go through mobs often.
@@ -360,7 +359,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 				if not v then
 					v = 0
 				end
-				local old_v = self._viscosity
+				--local old_v = self._viscosity
 				self._viscosity = v
 				local vpenalty = math.max(0.1, 0.98 - 0.1 * v)
 				if math.abs(vel.x) > 0.001 then

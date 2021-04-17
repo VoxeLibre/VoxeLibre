@@ -22,14 +22,13 @@ local math = math
 -- Internal player state
 local mcl_playerplus_internal = {}
 
-local def = {}
 local time = 0
 local look_pitch = 0
 
 local player_collision = function(player)
 
 	local pos = player:get_pos()
-	local vel = player:get_velocity()
+	--local vel = player:get_velocity()
 	local x = 0
 	local z = 0
 	local width = .75
@@ -58,18 +57,8 @@ local function degrees(rad)
 	return rad * 180.0 / math.pi
 end
 
-local pi = math.pi
-local atann = math.atan
-local atan = function(x)
-	if not x or x ~= x then
-		return 0
-	else
-		return atann(x)
-	end
-end
-
 local dir_to_pitch = function(dir)
-	local dir2 = vector.normalize(dir)
+	--local dir2 = vector.normalize(dir)
 	local xz = math.abs(dir.x) + math.abs(dir.z)
 	return -math.atan2(-dir.y, xz)
 end
@@ -121,7 +110,7 @@ function limit_vel_yaw(player_vel_yaw, yaw)
 	return player_vel_yaw
 end
 
-local pitch, name, node_stand, node_stand_below, node_head, node_feet, pos
+local node_stand, node_stand_below, node_head, node_feet
 
 
 minetest.register_on_punchplayer(function(player, hitter, damage)
@@ -178,7 +167,7 @@ minetest.register_globalstep(function(dtime)
 
 		local control = player:get_player_control()
 		local name = player:get_player_name()
-		local meta = player:get_meta()
+		--local meta = player:get_meta()
 		local parent = player:get_attach()
 		local wielded = player:get_wielded_item()
 		local player_velocity = player:get_velocity() or player:get_player_velocity()
@@ -219,7 +208,7 @@ minetest.register_globalstep(function(dtime)
 					elytra[player] = true
 				elseif key=="RMB" then
 					if wielded:get_name() == "mcl_tools:rocket" then
-						local item = wielded:take_item()
+						wielded:take_item()
 						player:set_wielded_item(wielded)
 					end
 				end
@@ -324,7 +313,7 @@ minetest.register_globalstep(function(dtime)
 
 		if control.jump and mcl_playerplus_internal[name].jump_cooldown <= 0 then
 
-			pos = player:get_pos()
+			--pos = player:get_pos()
 
 			node_stand = mcl_playerinfo[name].node_stand
 			node_stand_below = mcl_playerinfo[name].node_stand_below
@@ -395,9 +384,6 @@ minetest.register_globalstep(function(dtime)
 		if not node_stand or not node_stand_below or not node_head or not node_feet then
 			return
 		end
-
-		-- set defaults
-		def.speed = 1
 
 		-- Standing on soul sand? If so, walk slower (unless player wears Soul Speed boots)
 		if node_stand == "mcl_nether:soul_sand" then

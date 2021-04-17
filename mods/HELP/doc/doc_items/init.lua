@@ -907,7 +907,7 @@ doc.add_category("nodes", {
 					-- Do some cleanup of the probability table
 					if max == 1 or max == nil then
 						-- Sort by rarity
-						local comp = function(p1, p2) 
+						local comp = function(p1, p2)
 							return p1.rarity < p2.rarity
 						end
 						table.sort(probtables, comp)
@@ -1269,7 +1269,6 @@ local function gather_descs()
 				if type(def._doc_items_hidden) == "boolean" then
 					hidden = def._doc_items_hidden
 				end
-				local custom_image
 				name = scrub_newlines(name)
 				local infotable = {
 					name = name,

@@ -65,21 +65,21 @@ local c_dirt = minetest.get_content_id("mcl_core:dirt")
 local c_dirt_with_grass = minetest.get_content_id("mcl_core:dirt_with_grass")
 local c_dirt_with_grass_snow = minetest.get_content_id("mcl_core:dirt_with_grass_snow")
 local c_sand = minetest.get_content_id("mcl_core:sand")
-local c_sandstone = minetest.get_content_id("mcl_core:sandstone")
+--local c_sandstone = minetest.get_content_id("mcl_core:sandstone")
 local c_void = minetest.get_content_id("mcl_core:void")
 local c_lava = minetest.get_content_id("mcl_core:lava_source")
 local c_water = minetest.get_content_id("mcl_core:water_source")
 local c_soul_sand = minetest.get_content_id("mcl_nether:soul_sand")
 local c_netherrack = minetest.get_content_id("mcl_nether:netherrack")
 local c_nether_lava = minetest.get_content_id("mcl_nether:nether_lava_source")
-local c_end_stone = minetest.get_content_id("mcl_end:end_stone")
+--local c_end_stone = minetest.get_content_id("mcl_end:end_stone")
 local c_realm_barrier = minetest.get_content_id("mcl_core:realm_barrier")
 local c_top_snow = minetest.get_content_id("mcl_core:snow")
 local c_snow_block = minetest.get_content_id("mcl_core:snowblock")
 local c_clay = minetest.get_content_id("mcl_core:clay")
 local c_leaves = minetest.get_content_id("mcl_core:leaves")
 local c_jungleleaves = minetest.get_content_id("mcl_core:jungleleaves")
-local c_jungletree = minetest.get_content_id("mcl_core:jungletree")
+--local c_jungletree = minetest.get_content_id("mcl_core:jungletree")
 local c_cocoa_1 = minetest.get_content_id("mcl_cocoas:cocoa_1")
 local c_cocoa_2 = minetest.get_content_id("mcl_cocoas:cocoa_2")
 local c_cocoa_3 = minetest.get_content_id("mcl_cocoas:cocoa_3")
@@ -1169,13 +1169,13 @@ end
 -- minp and maxp (from an on_generated callback) and returns the real world coordinates
 -- as X, Z.
 -- Inverse function of xz_to_biomemap
-local biomemap_to_xz = function(index, minp, maxp)
+--[[local biomemap_to_xz = function(index, minp, maxp)
 	local xwidth = maxp.x - minp.x + 1
 	local zwidth = maxp.z - minp.z + 1
 	local x = ((index-1) % xwidth) + minp.x
 	local z = ((index-1) / zwidth) + minp.z
 	return x, z
-end
+end]]
 
 -- Takes x and z coordinates and minp and maxp of a generated chunk
 -- (in on_generated callback) and returns a biomemap index)
@@ -1897,7 +1897,7 @@ function mcl_mapgen_core.unregister_generator(id)
 	local rec = registered_generators[id]
 	registered_generators[id] = nil
 	if rec.vf then lvm = lvm - 1 end
-	if rev.nf then nodes = nodes - 1 end
+	if rec.nf then nodes = nodes - 1 end
 	if rec.needs_param2 then param2 = param2 - 1 end
 	if rec.needs_level0 then level0 = level0 - 1 end
 end
@@ -1979,7 +1979,7 @@ end
 
 -- Below the bedrock, generate air/void
 local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	local biomemap, ymin, ymax
+	local biomemap --ymin, ymax
 	local lvm_used = false
 	local pr = PseudoRandom(blockseed)
 
@@ -2077,7 +2077,7 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 					local n = nodes[n]
 					local p_pos = area:index(n.x, n.y, n.z)
 					local p_pos_above = area:index(n.x, n.y+1, n.z)
-					local p_pos_below = area:index(n.x, n.y-1, n.z)
+					--local p_pos_below = area:index(n.x, n.y-1, n.z)
 					local b_pos = aream:index(n.x, 0, n.z)
 					local bn = minetest.get_biome_name(biomemap[b_pos])
 					if bn then
@@ -2126,7 +2126,7 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 		-- * Remove stone, sand, dirt in v6 so our End map generator works in v6.
 		-- * Generate spawn platform (End portal destination)
 		elseif minp.y <= mcl_vars.mg_end_max and maxp.y >= mcl_vars.mg_end_min then
-			local nodes, n
+			local nodes
 			if mg_name == "v6" then
 				nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
 			else
@@ -2134,7 +2134,7 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 			end
 			if #nodes > 0 then
 				lvm_used = true
-				for _, n in pairs(nodes) do
+				for _,n in pairs(nodes) do
 					data[area:index(n.x, n.y, n.z)] = c_air
 				end
 			end
@@ -2144,8 +2144,8 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 				minp.x <= mcl_vars.mg_end_platform_pos.x and maxp.x >= mcl_vars.mg_end_platform_pos.z and
 				minp.z <= mcl_vars.mg_end_platform_pos.z and maxp.z >= mcl_vars.mg_end_platform_pos.z then
 
-				local pos1 = {x = math.max(minp.x, mcl_vars.mg_end_platform_pos.x-2), y = math.max(minp.y, mcl_vars.mg_end_platform_pos.y),   z = math.max(minp.z, mcl_vars.mg_end_platform_pos.z-2)}
-				local pos2 = {x = math.min(maxp.x, mcl_vars.mg_end_platform_pos.x+2), y = math.min(maxp.y, mcl_vars.mg_end_platform_pos.y+2), z = math.min(maxp.z, mcl_vars.mg_end_platform_pos.z+2)}
+				--local pos1 = {x = math.max(minp.x, mcl_vars.mg_end_platform_pos.x-2), y = math.max(minp.y, mcl_vars.mg_end_platform_pos.y),   z = math.max(minp.z, mcl_vars.mg_end_platform_pos.z-2)}
+				--local pos2 = {x = math.min(maxp.x, mcl_vars.mg_end_platform_pos.x+2), y = math.min(maxp.y, mcl_vars.mg_end_platform_pos.y+2), z = math.min(maxp.z, mcl_vars.mg_end_platform_pos.z+2)}
 
 				for x=math.max(minp.x, mcl_vars.mg_end_platform_pos.x-2), math.min(maxp.x, mcl_vars.mg_end_platform_pos.x+2) do
 				for z=math.max(minp.z, mcl_vars.mg_end_platform_pos.z-2), math.min(maxp.z, mcl_vars.mg_end_platform_pos.z+2) do

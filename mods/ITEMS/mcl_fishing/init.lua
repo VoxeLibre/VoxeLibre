@@ -1,11 +1,6 @@
 --Fishing Rod, Bobber, and Flying Bobber mechanics and Bobber artwork by Rootyjr.
 
 local S = minetest.get_translator("mcl_fishing")
-local mod_throwing = minetest.get_modpath("mcl_throwing")
-
-local entity_mapping = {
-	["mcl_fishing:bobber"] = "mcl_fishing:bobber_entity",
-}
 
 local bobber_ENTITY={
 	physical = false,
@@ -42,8 +37,7 @@ local fish = function(itemstack, player, pointed_thing)
 		local num = 0
 		local ent = nil
 		local noent = true
-
-
+		
 		local durability = 65
 		local unbreaking = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
 		if unbreaking > 0 then
@@ -61,7 +55,6 @@ local fish = function(itemstack, player, pointed_thing)
 							local itemname
 							local items
 							local itemcount = 1
-							local itemwear = 0
 							local pr = PseudoRandom(os.time() * math.random(1, 100))
 							local r = pr:next(1, 100)
 							local fish_values = {85, 84.8, 84.7, 84.5}
@@ -173,7 +166,7 @@ local fish = function(itemstack, player, pointed_thing)
 		if noent == true then
 			local playerpos = player:get_pos()
 			local dir = player:get_look_dir()
-			local obj = mcl_throwing.throw("mcl_fishing:flying_bobber", {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, 15, player:get_player_name())
+			mcl_throwing.throw("mcl_fishing:flying_bobber", {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, 15, player:get_player_name())
 		end
 end
 
@@ -344,10 +337,8 @@ mcl_throwing.register_throwable_object("mcl_fishing:flying_bobber", "mcl_fishing
 -- If player leaves area, remove bobber.
 minetest.register_on_leaveplayer(function(player)
 	local objs = minetest.get_objects_inside_radius(player:get_pos(), 250)
-	local num = 0
 	local ent = nil
 	local noent = true
-
 	for n = 1, #objs do
 		ent = objs[n]:get_luaentity()
 		if ent then

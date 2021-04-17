@@ -110,7 +110,8 @@ mcl_structures.generate_igloo = function(pos, rotation, pr)
 	if r == 1 then
 		-- Select basement depth
 		local dim = mcl_worlds.pos_to_dimension(pos)
-		local buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
+		--local buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
+		local buffer
 		if dim == "nether" then
 			buffer = pos.y - (mcl_vars.mg_lava_nether_max + 10)
 		elseif dim == "end" then
@@ -219,7 +220,7 @@ local function igloo_placement_callback(p1, p2, size, orientation, pr)
 	else
 		return
 	end
-	local size = {x=9,y=5,z=7}
+	--local size = {x=9,y=5,z=7}
 	local lootitems = mcl_loot.get_multi_loot({
 	{
 		stacks_min = 1,
@@ -335,7 +336,7 @@ local function shrine_placement_callback(p1, p2, size, rotation, pr)
 	-- Find and setup spawner with silverfish
 	local spawners = minetest.find_nodes_in_area(p1, p2, "mcl_mobspawners:spawner")
 	for s=1, #spawners do
-		local meta = minetest.get_meta(spawners[s])
+		--local meta = minetest.get_meta(spawners[s])
 		mcl_mobspawners.setup_spawner(spawners[s], "mobs_mc:silverfish")
 	end
 
@@ -411,7 +412,7 @@ end
 
 mcl_structures.generate_end_portal_shrine = function(pos, rotation, pr)
 	local offset = {x=6, y=4, z=6}
-	local size = {x=13, y=8, z=13}
+	--local size = {x=13, y=8, z=13}
 	local newpos = { x = pos.x - offset.x, y = pos.y, z = pos.z - offset.z }
 
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_portal_room_simple.mts"
@@ -471,8 +472,6 @@ local function temple_placement_callback(p1, p2, size, rotation, pr)
 				{ itemstring = "mcl_mobitems:string", weight = 10, amount_min = 1, amount_max = 8 },
 			}
 		}}, pr)
-
-		local meta = minetest.get_meta(chests[c])
 		init_node_construct(chests[c])
 		local meta = minetest.get_meta(chests[c])
 		local inv = meta:get_inventory()
@@ -498,7 +497,7 @@ mcl_structures.generate_desert_temple = function(pos, rotation, pr)
 	-- No Generating for the temple ... Why using it ? No Change
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_desert_temple.mts"
 	local newpos = {x=pos.x,y=pos.y-12,z=pos.z}
-	local size = {x=22, y=24, z=22}
+	--local size = {x=22, y=24, z=22}
 	if newpos == nil then
 		return
 	end
