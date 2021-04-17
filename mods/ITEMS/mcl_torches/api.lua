@@ -30,7 +30,7 @@ local spawn_flames_floor = function(pos)
 end
 
 local spawn_flames_wall = function(pos)
-	local minrelpos, maxrelpos
+	--local minrelpos, maxrelpos
 	local node = minetest.get_node(pos)
 	local dir = minetest.wallmounted_to_dir(node.param2)
 

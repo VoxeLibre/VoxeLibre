@@ -93,7 +93,7 @@ local generate_line = function(s, ypos)
 	local chars = 0
 	local printed_char_width = CHAR_WIDTH + 1
 	while chars < LINE_LENGTH and i <= #s do
-		local file = nil
+		local file
 		-- Get and render character
 		if charmap[s:sub(i, i)] ~= nil then
 			file = charmap[s:sub(i, i)]
@@ -185,7 +185,7 @@ local function get_wall_signtext_info(param2, nodename)
 	end
 end
 
-local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1, attached_node=1, dig_by_piston=1, flammable=-1}
+local sign_groups = {handy=1,axey=1, deco_block=1, material_wood=1, attached_node=1, dig_by_piston=1, flammable=-1}
 
 local destruct_sign = function(pos)
 	local objects = minetest.get_objects_inside_radius(pos, 0.5)
@@ -322,7 +322,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 
 		local wdir = minetest.dir_to_wallmounted(dir)
 
-		local placer_pos = placer:get_pos()
+		--local placer_pos = placer:get_pos()
 
 		local fdir = minetest.dir_to_facedir(dir)
 

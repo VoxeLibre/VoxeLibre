@@ -123,6 +123,6 @@ function mcl_potions.register_splash(name, descr, color, def)
 	})
 end
 
-local function time_string(dur)
+--[[local function time_string(dur)
 	return math.floor(dur/60)..string.format(":%02d",math.floor(dur % 60))
-end
+end]]
