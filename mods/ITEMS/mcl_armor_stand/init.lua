@@ -21,8 +21,8 @@ local function get_stand_object(pos)
 	return object
 end
 
-local function update_entity(pos)
-	local node = minetest.get_node(pos)
+local function update_entity(pos, node)
+	local node = node or minetest.get_node(pos)
 	local object = get_stand_object(pos)
 	if object then
 		if not string.find(node.name, "mcl_armor_stand:") then
@@ -33,31 +33,7 @@ local function update_entity(pos)
 		object = minetest.add_entity(pos, "mcl_armor_stand:armor_entity")
 	end
 	if object then
-		local texture = "blank.png"
-		local textures = {}
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
 		local yaw = 0
-		if inv then
-			for _, element in pairs(elements) do
-				local stack = inv:get_stack("armor_"..element, 1)
-				if stack:get_count() == 1 then
-					local item = stack:get_name() or ""
-					if minetest.registered_aliases[item] then
-						item = minetest.registered_aliases[item]
-					end
-					local def = stack:get_definition() or {}
-					local groups = def.groups or {}
-					if groups["armor_"..element] then
-						local texture = def.texture or item:gsub("%:", "_")
-						table.insert(textures, texture..".png")
-					end
-				end
-			end
-		end
-		if #textures > 0 then
-			texture = table.concat(textures, "^")
-		end
 		if node.param2 then
 			local rot = node.param2 % 4
 			if rot == 1 then
@@ -69,7 +45,7 @@ local function update_entity(pos)
 			end
 		end
 		object:set_yaw(yaw)
-		object:set_properties({textures={texture}})
+		mcl_armor.update(object)
 	end
 end
 
@@ -257,13 +233,15 @@ minetest.register_entity("mcl_armor_stand:armor_entity", {
 	textures = {"blank.png"},
 	pos = nil,
 	timer = 0,
-	on_activate = function(self)
-		local pos = self.object:get_pos()
+	on_activate = function(self, staticdata)
 		self.object:set_armor_groups({immortal=1})
-		if pos then
-			self.pos = vector.round(pos)
-			update_entity(pos)
-		end
+		local pos = self.object:get_pos()
+		self.pos = vector.round(pos)
+		self.inventory = minetest.get_meta(pos):get_inventory()
+		update_entity(pos)
+	end,
+	update_armor = function(self, info)
+		self.object:set_properties({textures = {info.texture}})
 	end,
 	on_step = function(self, dtime)
 		if not self.pos then
