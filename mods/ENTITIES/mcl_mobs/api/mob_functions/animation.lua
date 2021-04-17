@@ -9,12 +9,6 @@ local vector_new      = vector.new
 
 local minetest_dir_to_yaw = minetest.dir_to_yaw
 
-
--- simple degrees calculation
-local degrees = function(yaw)
-    return(yaw*180.0/math_pi)
-end
-
 -- set defined animation
 mobs.set_mob_animation = function(self, anim, fixed_frame)
 

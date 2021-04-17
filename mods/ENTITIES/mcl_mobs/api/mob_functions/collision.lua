@@ -1,6 +1,7 @@
 local minetest_get_objects_inside_radius    = minetest.get_objects_inside_radius
 
 local math_random = math.random
+local vector_multiply = vector.multiply
 
 local integer_test = {-1,1}
 
@@ -74,8 +75,12 @@ mobs.collision = function(self)
 				local vel1 = vector.multiply(velocity, -1.5)
 				local vel2 = vector.multiply(velocity,  1.5)
 
-				vel1 = vector.multiply(vel1, force)
+				vel1 = vector.multiply(vel1, force * 10)
 				vel2 = vector.multiply(vel2, force)
+
+				if object:is_player() then
+					vel2 = vector_multiply(vel2, 2.5)
+				end
 			
 				self.object:add_velocity(vel1)
 				object:add_velocity(vel2)
