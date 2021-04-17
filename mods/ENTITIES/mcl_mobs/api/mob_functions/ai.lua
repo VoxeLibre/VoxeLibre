@@ -14,8 +14,7 @@ local THIRTY_SECONDTH_PI = DOUBLE_PI * 0.03125
 
 
 --a simple helper function which is too small to move into movement.lua
---this rotates 11.25 degrees, probably should rename it eventually
-local quick_rotate_45 = function(self,dtime)
+local quick_rotate = function(self,dtime)
 	self.yaw = self.yaw + THIRTY_SECONDTH_PI
 	if self.yaw > DOUBLE_PI then
 		self.yaw = self.yaw - DOUBLE_PI
@@ -146,7 +145,7 @@ local land_state_execution = function(self,dtime)
 		--function)
 		elseif node_in_front_of == 2 or (self.fear_height ~= 0 and cliff_check(self,dtime)) then
 			--turn 45 degrees if so
-			quick_rotate_45(self,dtime)
+			quick_rotate(self,dtime)
 			--stop the mob so it doesn't fall off
 			mobs.set_velocity(self,0)
 		end
@@ -286,7 +285,7 @@ local swim_state_execution = function(self,dtime)
 			--do a quick turn to make mob continuously move
 			--if in a fish tank or something
 			if swim_turn_check(self,dtime) then
-				quick_rotate_45(self,dtime)
+				quick_rotate(self,dtime)
 			end
 			
 
