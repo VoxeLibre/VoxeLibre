@@ -60,7 +60,7 @@ function mcl_armor.damage_modifier(obj, hp_change, reason)
 					end
 				end
 
-				if reason.source and enchantments.thorns > 0 then
+				if reason.source and enchantments.thorns and enchantments.thorns > 0 then
 					local do_irregular_damage = enchantments.thorns > 10
 
 					if do_irregular_damage or thorns_damage_regular < 4 and math.random() < enchantments.thorns * 0.15 then
