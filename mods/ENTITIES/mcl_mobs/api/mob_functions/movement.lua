@@ -1,10 +1,15 @@
 local math_pi     = math.pi
 local math_sin    = math.sin
 local math_cos    = math.cos
+local math_random = math.random
+local DOUBLE_PI   = math_pi * 2
 
 -- localize vector functions
-local vector_new    = vector.new
-local vector_length = vector.length
+local vector_new      = vector.new
+local vector_length   = vector.length
+local vector_multiply = vector.multiply
+
+local minetest_yaw_to_dir = minetest.yaw_to_dir
 
 -- move mob in facing direction
 --this has been modified to be internal
@@ -60,7 +65,37 @@ mobs.jump = function(self, velocity)
         return
     end
 
+	--fallback velocity to allow modularity
     velocity = velocity or 8
 
     self.object:add_velocity(vector_new(0,velocity,0))    
+end
+
+--make mobs flop
+mobs.flop = function(self, velocity)
+
+    if self.object:get_velocity().y ~= 0 or not self.old_velocity or (self.old_velocity and self.old_velocity.y > 0) then
+        return false
+    end
+
+	mobs.set_velocity(self, 0)
+
+	--fallback velocity to allow modularity
+    velocity = velocity or 8
+
+	--create a random direction (2d yaw)
+	local dir = DOUBLE_PI * math_random()
+
+	--create a random force value
+	local force = math_random(0,3) + math_random()
+
+	--convert the yaw to a direction vector then multiply it times the force
+	local final_additional_force = vector_multiply(minetest_yaw_to_dir(dir), force)
+
+	--place in the "flop" velocity to make the mob flop
+	final_additional_force.y = velocity	
+
+    self.object:add_velocity(final_additional_force)
+
+	return true
 end

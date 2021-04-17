@@ -193,41 +193,54 @@ local fly_state_switch = function(self, dtime)
 		self.state_timer = math.random(4,10) + math.random()
 		self.state = fly_state_list_wandering[math.random(1,#fly_state_list_wandering)]
 	end
-
 end
 
 
+--this is going to need some more logic gates because birds can flop around
+local flop = function(self,dtime)
+	mobs.flop(self)
+end
 
+
+-- states are executed here
 local fly_state_execution = function(self,dtime)
 
 	local pos = self.object:get_pos()
 	local current_node = minetest_get_node(pos).name
-	local inside_swim_node = false
+	local inside_fly_node = false
 
+	--quick scan everything to see if inside fly node
 	for _,id in pairs(self.fly_in) do
 		if id == current_node then
-			inside_swim_node = true
+			inside_fly_node = true
 			break
 		end
 	end
 
-	print(inside_swim_node)
+	
 
-	if self.state == "stand" then
+	--fly properly if inside fly node
+	if inside_fly_node then
+		if self.state == "stand" then
 
-		--do animation
-		--mobs.set_mob_animation(self, "stand")
+			--do animation
+			--mobs.set_mob_animation(self, "stand")
 
-		--set the velocity of the mob
-		--mobs.set_velocity(self,0)
+			--set the velocity of the mob
+			--mobs.set_velocity(self,0)
 
-		--print("standing")
+			--print("standing")
 
-	elseif self.state == "fly" then
+		elseif self.state == "fly" then
 
 
-		--print("flying")
+			--print("flying")
 
+		end
+	--flop around if not inside fly node
+	else
+		--print("flopping")
+		flop(self,dtime)
 	end
 
 end
