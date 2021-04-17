@@ -185,13 +185,13 @@ ______ _       _                 _______          _                     _
 
 
 -- state switching logic (stand, walk, run, attacks)
-local fly_state_list_wandering = {"stand", "walk"}
+local fly_state_list_wandering = {"stand", "fly"}
 
 local fly_state_switch = function(self, dtime)
 	self.state_timer = self.state_timer - dtime
 	if self.wandering and self.state_timer <= 0 then
 		self.state_timer = math.random(4,10) + math.random()
-		self.state = land_state_list_wandering[math.random(1,#land_state_list_wandering)]
+		self.state = fly_state_list_wandering[math.random(1,#fly_state_list_wandering)]
 	end
 
 end
@@ -200,13 +200,38 @@ end
 
 local fly_state_execution = function(self,dtime)
 
+	local pos = self.object:get_pos()
+	local current_node = minetest_get_node(pos).name
+	local inside_swim_node = false
+
+	for _,id in pairs(self.fly_in) do
+		if id == current_node then
+			inside_swim_node = true
+			break
+		end
+	end
+
+	print(inside_swim_node)
+
+	if self.state == "stand" then
+
+		--do animation
+		--mobs.set_mob_animation(self, "stand")
+
+		--set the velocity of the mob
+		--mobs.set_velocity(self,0)
+
+		--print("standing")
+
+	elseif self.state == "fly" then
+
+
+		--print("flying")
+
+	end
 
 end
 
-local fly_state_switch = function(self, dtime)
-
-	
-end
 
 --[[
 ___  ___      _         _                 _      
