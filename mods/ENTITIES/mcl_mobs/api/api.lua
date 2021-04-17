@@ -218,7 +218,7 @@ function mobs:register_mob(name, def)
 		xp_max = def.xp_max or 0,
 		xp_timestamp = 0,
 		breath_max = def.breath_max or 15,
-			breathes_in_water = def.breathes_in_water or false,
+		breathes_in_water = def.breathes_in_water or false,
 		physical = true,
 		collisionbox = collisionbox,
 		collide_with_objects = def.collide_with_objects or false,

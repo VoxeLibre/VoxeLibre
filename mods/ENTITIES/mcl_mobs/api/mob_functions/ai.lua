@@ -8,12 +8,18 @@ local minetest_get_item_group               = minetest.get_item_group
 local minetest_get_node                     = minetest.get_node
 local minetest_line_of_sight                = minetest.line_of_sight
 
-
-local state_list_wandering = {"stand", "walk"}
-
 local DOUBLE_PI = math.pi * 2
 local THIRTY_SECONDTH_PI = DOUBLE_PI * 0.03125
 
+
+--[[
+ _                     _ 
+| |                   | |
+| |     __ _ _ __   __| |
+| |    / _` | '_ \ / _` | 
+| |___| (_| | | | | (_| |
+\_____/\__,_|_| |_|\__,_|
+]]
 
 --this is basically reverse jump_check
 local cliff_check = function(self,dtime)
@@ -56,7 +62,6 @@ local jump_check = function(self,dtime)
 
     vector_multiply(dir, radius)
 
-
 	--only jump if there's a node and a non-solid node above it
     local test_dir = vector.add(pos,dir)
 
@@ -81,18 +86,22 @@ end
 
 
 -- state switching logic (stand, walk, run, attacks)
-local state_switch = function(self, dtime)
+local land_state_list_wandering = {"stand", "walk"}
+
+local land_state_switch = function(self, dtime)
 	self.state_timer = self.state_timer - dtime
 	if self.wandering and self.state_timer <= 0 then
 		self.state_timer = math.random(4,10) + math.random()
-		self.state = state_list_wandering[math.random(1,#state_list_wandering)]
+		self.state = land_state_list_wandering[math.random(1,#land_state_list_wandering)]
 	end
+
 end
 
--- states are executed here (goto would have been helpful :<)
-local state_execution = function(self,dtime)
+-- states are executed here
+local land_state_execution = function(self,dtime)
 
 	--local yaw = self.object:get_yaw() or 0
+
 
 	if self.state == "stand" then
 
@@ -101,8 +110,6 @@ local state_execution = function(self,dtime)
 
 		--set the velocity of the mob
 		mobs.set_velocity(self,0)
-
-		--print("stand")
 
 	elseif self.state == "walk" then
 
@@ -149,8 +156,6 @@ local state_execution = function(self,dtime)
 			mobs.set_velocity(self,self.walk_velocity)
 		end
 
-		--print("walk")
-
 	elseif self.state == "run" then
 
 		print("run")
@@ -166,6 +171,53 @@ end
 
 
 
+--[[
+______ _       _                 _______          _                     _             
+|  ___| |     (_)               / /  ___|        (_)                   (_)            
+| |_  | |_   _ _ _ __   __ _   / /\ `--.__      ___ _ __ ___  _ __ ___  _ _ __   __ _ 
+|  _| | | | | | | '_ \ / _` | / /  `--. \ \ /\ / / | '_ ` _ \| '_ ` _ \| | '_ \ / _` |
+| |   | | |_| | | | | | (_| |/ /  /\__/ /\ V  V /| | | | | | | | | | | | | | | | (_| |
+\_|   |_|\__, |_|_| |_|\__, /_/   \____/  \_/\_/ |_|_| |_| |_|_| |_| |_|_|_| |_|\__, |
+          __/ |         __/ |                                                    __/ |
+         |___/         |___/                                                    |___/ 
+]]--
+
+
+
+-- state switching logic (stand, walk, run, attacks)
+local fly_state_list_wandering = {"stand", "walk"}
+
+local fly_state_switch = function(self, dtime)
+	self.state_timer = self.state_timer - dtime
+	if self.wandering and self.state_timer <= 0 then
+		self.state_timer = math.random(4,10) + math.random()
+		self.state = land_state_list_wandering[math.random(1,#land_state_list_wandering)]
+	end
+
+end
+
+
+
+local fly_state_execution = function(self,dtime)
+
+
+end
+
+local fly_state_switch = function(self, dtime)
+
+	
+end
+
+--[[
+___  ___      _         _                 _      
+|  \/  |     (_)       | |               (_)     
+| .  . | __ _ _ _ __   | |     ___   __ _ _  ___ 
+| |\/| |/ _` | | '_ \  | |    / _ \ / _` | |/ __|
+| |  | | (_| | | | | | | |___| (_) | (_| | | (__ 
+\_|  |_/\__,_|_|_| |_| \_____/\___/ \__, |_|\___|
+                                     __/ |       
+                                    |___/        
+]]
 
 --the main loop
 mobs.mob_step = function(self, dtime)
@@ -177,9 +229,17 @@ mobs.mob_step = function(self, dtime)
 
 	--print(self.object:get_yaw())
 
-	state_switch(self, dtime)
 
-	state_execution(self,dtime)
+
+	--swimming/flying
+	if self.fly then
+		fly_state_switch(self, dtime)
+		fly_state_execution(self, dtime)
+	--regular mobs that walk around
+	else
+		land_state_switch(self, dtime)
+		land_state_execution(self,dtime)
+	end
 
 
 	-- can mob be pushed, if so calculate direction -- do this last (overrides everything)
