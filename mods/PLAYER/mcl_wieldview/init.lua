@@ -33,11 +33,10 @@ function mcl_wieldview.update_wielded_item(player)
 	if not player then
 		return
 	end
-	local name = player:get_player_name()
 	local itemstack = player:get_wielded_item()
 	local itemname = itemstack:get_name()
 
-	local def = mcl_wieldview.players[name]
+	local def = mcl_wieldview.players[player]
 
 	if def.item == itemname then
 		return
@@ -50,8 +49,7 @@ function mcl_wieldview.update_wielded_item(player)
 end
 
 minetest.register_on_joinplayer(function(player)
-	local name = player:get_player_name()
-	mcl_wieldview.players[name] = {item = "", texture = "blank.png"}
+	mcl_wieldview.players[player] = {item = "", texture = "blank.png"}
 
 	minetest.after(0, function()
 		if not player:is_player() then
@@ -62,13 +60,12 @@ minetest.register_on_joinplayer(function(player)
 
 		local itementity = minetest.add_entity(player:get_pos(), "mcl_wieldview:wieldnode")
 		itementity:set_attach(player, "Hand_Right", vector.new(0, 1, 0), vector.new(90, 0, 45))
-		itementity:get_luaentity().wielder = name
+		itementity:get_luaentity().wielder = player
 	end)
 end)
 
 minetest.register_on_leaveplayer(function(player)
-	local name = player:get_player_name()
-	mcl_wieldview.players[name] = nil
+	mcl_wieldview.players[player] = nil
 end)
 
 minetest.register_globalstep(function()
@@ -96,17 +93,16 @@ minetest.register_entity("mcl_wieldview:wieldnode", {
 	itemstring = "",
 
 	on_step = function(self)
-		local player = minetest.get_player_by_name(self.wielder)
-		if player then
-			local wielded = player:get_wielded_item()
-			local itemstring = wielded:get_name()
+		if self.wielder:is_player() then
+			local def = mcl_wieldview.players[self.wielder]
+			local itemstring = def.item
 
 			if self.itemstring ~= itemstring then
-				local def = minetest.registered_items[itemstring]
-				self.object:set_properties({glow = def and def.light_source or 0})
+				local itemdef = minetest.registered_items[itemstring]
+				self.object:set_properties({glow = itemdef and itemdef.light_source or 0})
 
 				-- wield item as cubic
-				if mcl_wieldview.players[self.wielder].texture == "blank.png" then
+				if def.texture == "blank.png" then
 					self.object:set_properties({textures = {itemstring}})
 				-- wield item as flat
 				else
