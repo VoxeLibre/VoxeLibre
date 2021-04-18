@@ -102,6 +102,9 @@ old_register_hpchange(function(player, hp_change, mt_reason)
 
 	for _, modf in ipairs(mcl_damage.modifiers) do
 		hp_change = modf.func(player, hp_change, mt_reason, mcl_reason) or hp_change
+		if hp_change == 0 then
+			return 0
+		end
 	end
 
 	return hp_change

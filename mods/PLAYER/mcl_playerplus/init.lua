@@ -113,37 +113,6 @@ end
 
 local node_stand, node_stand_below, node_head, node_feet
 
-
-minetest.register_on_punchplayer(function(player, hitter, damage)
-	if hitter:is_player() then
-		if hitter:get_player_control().aux1 then
-			player:add_velocity(hitter:get_velocity())
-		end
-		if hitter:get_velocity().y < -6 then
-			player:set_hp(player:get_hp() - (damage * math.random(0.50 , 0.75)))
-			local pos = player:get_pos()
-			minetest.add_particlespawner({
-				amount = 15,
-				time = 0.1,
-				minpos = {x=pos.x-0.5, y=pos.y-0.5, z=pos.z-0.5},
-				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
-				minvel = {x=-0.1, y=-0.1, z=-0.1},
-				maxvel = {x=0.1, y=0.1, z=0.1},
-				minacc = {x=0, y=0, z=0},
-				maxacc = {x=0, y=0, z=0},
-				minexptime = 1,
-				maxexptime = 2,
-				minsize = 1.5,
-				maxsize = 1.5,
-				collisiondetection = false,
-				vertical = false,
-				texture = "mcl_particles_crit.png^[colorize:#bc7a57:127",
-			})
-		end
-	end
-end)
-
-
 minetest.register_globalstep(function(dtime)
 
 	time = time + dtime
