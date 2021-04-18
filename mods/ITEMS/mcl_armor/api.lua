@@ -36,16 +36,30 @@ function mcl_armor.on_unequip(itemstack, obj)
 	mcl_armor.update(obj)
 end
 
-function mcl_armor.equip(itemstack, obj)
+function mcl_armor.equip(itemstack, obj, swap)
 	local def = itemstack:get_definition()
+
+	if not def then
+		return itemstack
+	end
+
 	local element = mcl_armor.elements[def._mcl_armor_element or ""]
 	local inv = mcl_util.get_inventory(obj)
 
 	if element and inv then
-		if inv:get_stack("armor", element.index):is_empty() then
-			local equipping_item = itemstack:take_item()
-			inv:set_stack("armor", element.index, equipping_item)
-			mcl_armor.on_equip(equipping_item, obj)
+		local old_stack = inv:get_stack("armor", element.index)
+		local new_stack
+
+		if swap then
+			new_stack = itemstack
+			itemstack = old_stack
+		else
+			new_stack = itemstack:take_item()
+		end
+
+		if swap or old_stack:is_empty() then
+			inv:set_stack("armor", element.index, new_stack)
+			mcl_armor.on_equip(new_stack, obj)
 		end
 	end
 
