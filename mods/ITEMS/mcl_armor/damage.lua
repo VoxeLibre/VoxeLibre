@@ -1,13 +1,8 @@
-function mcl_armor.damage_modifier(obj, hp_change, reason)
-	if hp_change > 0 then
-		return hp_change
-	end
-
-	local damage = -hp_change
+mcl_damage.register_modifier(function(obj, damage, reason)
 	local flags = reason.flags
 
 	if flags.bypasses_armor and flags.bypasses_magic then
-		return hp_change
+		return damage
 	end
 
 	local uses = math.max(1, math.floor(damage / 4))
@@ -95,5 +90,5 @@ function mcl_armor.damage_modifier(obj, hp_change, reason)
 
 	mcl_armor.update(obj)
 
-	return -math.floor(damage + 0.5)
-end
+	return math.floor(damage + 0.5)
+end, 0)

@@ -15,7 +15,7 @@ mcl_damage = {
 		out_of_world = {bypasses_armor = true, bypasses_invulnerability = true},
 		generic = {bypasses_armor = true},
 		magic = {is_magic = true, bypasses_armor = true},
-		wither = {bypasses_armor = true},		-- unused
+		wither = {bypasses_armor = true}, -- unused
 		anvil = {},
 		falling_node = {}, -- unused
 		dragon_breath = {bypasses_armor = true}, -- unused
@@ -30,24 +30,45 @@ mcl_damage = {
 	}
 }
 
-local old_register_hpchange = minetest.register_on_player_hpchange
-
-function minetest.register_on_player_hpchange(func, modifier)
-	if modifier then
-		mcl_damage.register_modifier(func, 0)
-	else
-		old_register_hpchange(func, modifier)
-	end
-end
-
 function mcl_damage.register_modifier(func, priority)
 	table.insert(mcl_damage.modifiers, {func = func, priority = priority or 0})
 end
 
-function mcl_damage.get_mcl_damage_reason(mt_reason)
-	local mcl_reason = {
-		type = "generic",
-	}
+function mcl_damage.do_modifiers(player, damage, reason)
+	for _, modf in ipairs(mcl_damage.modifiers) do
+		damage = modf.func(player, damage, reason) or damage
+		if damage == 0 then
+			return 0
+		end
+	end
+
+	return damage
+end
+
+function mcl_damage.from_punch(mcl_reason, object)
+	mcl_reason.direct = object
+	local luaentity = mcl_reason.direct:get_luaentity()
+	if luaentity then
+		if luaentity._is_arrow then
+			mcl_reason.type = "arrow"
+		elseif luaentity._is_fireball then
+			mcl_reason.type = "fireball"
+		elseif luaentity._cmi_is_mob then
+			mcl_reason.type = "mob"
+		end
+		mcl_reason.source = mcl_reason.source or luaentity._source_object
+	else
+		mcl_reason.type = "player"
+	end
+end
+
+function mcl_damage.finish_reason(mcl_reason)
+	mcl_reason.source = mcl_reason.source or mcl_reason.direct
+	mcl_reason.flags = mcl_damage.types[mcl_reason.type]
+end
+
+function mcl_damage.from_mt(mt_reason)
+	local mcl_reason = {type = "generic"}
 
 	if mt_reason._mcl_type then
 		mcl_reason.type = mt_reason._mcl_type
@@ -56,22 +77,7 @@ function mcl_damage.get_mcl_damage_reason(mt_reason)
 	elseif mt_reason.type == "drown" then
 		mcl_reason.type = "drown"
 	elseif mt_reason.type == "punch" then
-		mcl_reason.direct = mt_reason.object
-		if mcl_reason.direct then
-			local luaentity = mcl_reason.direct:get_luaentity()
-			if luaentity then
-				if luaentity._is_arrow then
-					mcl_reason.type = "arrow"
-				elseif luaentity._is_fireball then
-					mcl_reason.type = "fireball"
-				elseif luaentity._cmi_is_mob then
-					mcl_reason.type = "mob"
-				end
-				mcl_reason.source = mcl_reason.source or luaentity._source_object
-			else
-				mcl_reason.type = "player"
-			end
-		end
+		mcl_damage.from_punch(mcl_reason, mt_reason.object)
 	elseif mt_reason.type == "node_damage" and mt_reason.node then
 		if minetest.get_item_group(mt_reason.node, "fire") > 0 then
 			mcl_reason.type = "in_fire"
@@ -87,8 +93,7 @@ function mcl_damage.get_mcl_damage_reason(mt_reason)
 		end
 	end
 
-	mcl_reason.source = mcl_reason.source or mcl_reason.direct
-	mcl_reason.flags = mcl_damage.types[mcl_reason.type]
+	mcl_damage.finish_reason(mcl_reason)
 
 	return mcl_reason
 end
@@ -97,16 +102,10 @@ function mcl_damage.register_type(name, def)
 	mcl_damage.types[name] = def
 end
 
-old_register_hpchange(function(player, hp_change, mt_reason)
-	local mcl_reason = mcl_damage.get_mcl_damage_reason(mt_reason)
-
-	for _, modf in ipairs(mcl_damage.modifiers) do
-		hp_change = modf.func(player, hp_change, mt_reason, mcl_reason) or hp_change
-		if hp_change == 0 then
-			return 0
-		end
+minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
+	if hp_change < 0 then
+		hp_change = -mcl_damage.do_modifiers(player, -hp_change, mcl_damage.from_mt(mt_reason))
 	end
-
 	return hp_change
 end, true)
 

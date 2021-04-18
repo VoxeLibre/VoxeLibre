@@ -1,8 +1,5 @@
-mcl_criticals = {}
-
-function mcl_criticals.modifier(obj, hp_change, reason)
-	local damage = -hp_change
-	if damage > 0 and reason.type == "player" then
+mcl_damage.register_modifier(function(obj, damage, reason)
+	if reason.type == "player" then
 		local hitter = reason.direct
 		if mcl_sprint.is_sprinting(hitter) then
 			obj:add_velocity(hitter:get_velocity())
@@ -27,12 +24,7 @@ function mcl_criticals.modifier(obj, hp_change, reason)
 			})
 			minetest.sound_play("mcl_criticals_hit", {object = obj})
 			-- the minecraft wiki is actually wrong about a crit dealing 150% damage, see minecraft source code
-			damage = damage + math.random(0, math.floor(damage * 1.5 + 2))
+			return damage + math.random(0, math.floor(damage * 1.5 + 2))
 		end
 	end
-	return -damage
-end
-
-mcl_damage.register_modifier(function(player, hp_change, _, mcl_reason)
-	return mcl_criticals.modifier(player, hp_change, mcl_reason)
 end, -100)

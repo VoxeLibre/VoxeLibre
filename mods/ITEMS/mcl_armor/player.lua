@@ -155,7 +155,3 @@ end)
 minetest.register_on_leaveplayer(function(player)
 	mcl_armor.player_view_range_factors[player] = nil
 end)
-
-mcl_damage.register_modifier(function(player, hp_change, _, reason)
-	return mcl_armor.damage_modifier(player, hp_change, reason)
-end)
