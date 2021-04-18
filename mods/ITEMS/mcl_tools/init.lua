@@ -375,22 +375,22 @@ local make_stripped_trunk = function(itemstack, placer, pointed_thing)
 			return itemstack
 		end
 		if node_name == "mcl_core:tree" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_oak"})
+			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_oak", param2=node.param2})
 			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:darktree" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_dark_oak"})
+			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_dark_oak", param2=node.param2})
 			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:acaciatree" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_acacia"})
+			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_acacia", param2=node.param2})
 			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:birchtree" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_birch"})
+			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_birch", param2=node.param2})
 			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:sprucetree" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_spruce"})
+			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_spruce", param2=node.param2})
 			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:jungletree" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_jungle"})
+			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_jungle", param2=node.param2})
 			make_stripped_trunk_add_wear(itemstack, placer)
 		elseif node_name == "mcl_core:tree_bark" then
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_oak_bark"})
