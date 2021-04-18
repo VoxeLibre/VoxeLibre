@@ -27,6 +27,7 @@ mcl_damage = {
 		explosion = {is_explosion = true},
 		cramming = {bypasses_armor = true}, -- unused
 		fireworks = {is_explosion = true}, -- unused
+		command = {bypasses_armor = true, bypasses_invulnerability = true, bypasses_magic = true},
 	}
 }
 

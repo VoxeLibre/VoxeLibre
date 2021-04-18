@@ -31,7 +31,7 @@ local function handle_kill_command(suspect, victim)
 		mcl_death_messages.player_damage(victimref, msg)
 	end
 	-- DIE!
-	victimref:set_hp(0)
+	victimref:set_hp(0, {_mcl_type = "command"})
 	-- Log
 	if not suspect == victim then
 		minetest.log("action", string.format("%s killed %s using /kill", suspect, victim))
