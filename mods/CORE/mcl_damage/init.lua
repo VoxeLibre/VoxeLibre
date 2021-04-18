@@ -12,7 +12,7 @@ mcl_damage = {
 		cactus = {},
 		fall = {bypasses_armor = true},
 		fly_into_wall = {bypasses_armor = true}, -- unused
-		out_of_world = {bypasses_armor = true, bypasses_invulnerability = true, bypasses_magic = true},
+		out_of_world = {bypasses_armor = true, bypasses_invulnerability = true},
 		generic = {bypasses_armor = true},
 		magic = {is_magic = true, bypasses_armor = true},
 		wither = {bypasses_armor = true},		-- unused
@@ -25,8 +25,8 @@ mcl_damage = {
 		fireball = {is_projectile = true, is_fire = true},
 		thorns = {is_magic = true},
 		explosion = {is_explosion = true},
-		cramming = {bypasses_armor = true},
-		fireworks = {is_explosion = true},
+		cramming = {bypasses_armor = true}, -- unused
+		fireworks = {is_explosion = true}, -- unused
 	}
 }
 

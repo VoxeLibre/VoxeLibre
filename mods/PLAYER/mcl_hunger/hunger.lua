@@ -110,10 +110,7 @@ local function poisonp(tick, time, time_left, damage, exhaustion, name)
 	-- Deal damage and exhaust player
 	-- TODO: Introduce fatal poison at higher difficulties
 	if player:get_hp()-damage > 0 then
-		if mod_death_messages then
-			mcl_death_messages.player_damage(player, S("@1 succumbed to the poison.", name))
-		end
-		player:set_hp(player:get_hp()-damage)
+		mcl_util.deal_damage(player, damage, {type = "hunger"})
 	end
 
 	mcl_hunger.exhaust(name, exhaustion)
