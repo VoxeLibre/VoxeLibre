@@ -503,6 +503,16 @@ function mcl_util.deal_damage(target, damage, mcl_reason)
 	target:set_hp(target:get_hp() - damage, mt_reason)
 end
 
+function mcl_util.get_hp(obj)
+	local luaentity = obj:get_luaentity()
+
+	if luaentity and luaentity._cmi_is_mob then
+		return luaentity.health
+	else
+		return obj:get_hp()
+	end
+end
+
 function mcl_util.get_inventory(object, create)
 	if object:is_player() then
 		return object:get_inventory()

@@ -132,17 +132,10 @@ minetest.register_globalstep(function(dtime)
 		if player:get_pos() then mcl_potions._add_spawner(player, "#225533") end
 
 		if EF.poisoned[player].hit_timer >= EF.poisoned[player].step then
-
-			if entity and entity._cmi_is_mob then
-				entity.health = math.max(entity.health - 1, 1)
-				EF.poisoned[player].hit_timer = 0
-			elseif is_player then
-				player:set_hp( math.max(player:get_hp() - 1, 1), { type = "punch", other = "poison"})
-				EF.poisoned[player].hit_timer = 0
-			else -- if not player or mob then remove
-				EF.poisoned[player] = nil
+			if mcl_util.get_hp(player) - 1 > 0 then
+				mcl_util.deal_damage(player, 1, {type = "magic"})
 			end
-
+			EF.poisoned[player].hit_timer = 0
 		end
 
 		if EF.poisoned[player] and EF.poisoned[player].timer >= EF.poisoned[player].dur then
@@ -721,12 +714,7 @@ function mcl_potions.healing_func(player, hp)
 			hp = -1
 		end
 
-		if obj and obj._cmi_is_mob then
-			obj.health = obj.health + hp
-		elseif player:is_player() then
-			player:set_hp(player:get_hp() + hp, { type = "punch", other = "harming" })
-		end
-
+		mcl_util.deal_damage(obj, -hp, {type = "magic"})
 	end
 
 end
