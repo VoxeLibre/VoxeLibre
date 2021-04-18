@@ -12,11 +12,12 @@ end
 function mcl_enchanting.unload_enchantments(itemstack)
 	local itemdef = itemstack:get_definition()
 	if itemdef.tool_capabilities then
-		itemstack:get_meta():set_tool_capabilities(itemdef.tool_capabilities)
+		itemstack:get_meta():set_tool_capabilities(nil)
 	end
 	local meta = itemstack:get_meta()
 	if meta:get_string("name") == "" then
 		meta:set_string("description", "")
+		meta:set_string("groupcaps_hash", "")
 	end
 end
 
