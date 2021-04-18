@@ -74,7 +74,6 @@ minetest.register_node("mcl_armor_stand:armor_stand", {
 		drop_inventory(pos)
 	end,
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
-		print(pos, node, clicker, itemstack, pointed_thing)
 		local protname = clicker:get_player_name()
 
 		if minetest.is_protected(pos, protname) then
@@ -112,6 +111,7 @@ minetest.register_entity("mcl_armor_stand:armor_entity", {
 		self.node_pos = vector.round(self.object:get_pos())
 		self.inventory = minetest.get_meta(self.node_pos):get_inventory()
 		migrate_inventory(self.inventory)
+		mcl_armor.update(self.object)
 	end,
 	on_step = function(self, dtime)
 		if minetest.get_node(self.node_pos).name ~= "mcl_armor_stand:armor_stand" then
