@@ -27,9 +27,8 @@ local DELAY				= 3 -- seconds before teleporting in Nether portal in Survival mo
 local DISTANCE_MAX			= 128
 local PORTAL				= "mcl_portals:portal"
 local OBSIDIAN				= "mcl_core:obsidian"
-local O_Y_MIN, O_Y_MAX			= max(mcl_vars.mg_overworld_min, -31), min(mcl_vars.mg_overworld_max_official, 2048)
-local N_Y_MIN, N_Y_MAX			= mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_bedrock_nether_top_max - H_MIN
-local O_DY, N_DY			= O_Y_MAX - O_Y_MIN + 1, N_Y_MAX - N_Y_MIN + 1
+local O_Y_MIN, O_Y_MAX			= max(mcl_vars.mg_overworld_min, -31), min(mcl_vars.mg_overworld_max, 2048)
+local N_Y_MIN, N_Y_MAX			= mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_bedrock_nether_top_min - H_MIN
 
 -- Alpha and particles
 local node_particles_allowed = minetest.settings:get("mcl_node_particles") or "none"
@@ -77,6 +76,8 @@ local log = minetest.log
 local pos_to_string = minetest.pos_to_string
 local is_area_protected = minetest.is_area_protected
 local get_us_time = minetest.get_us_time
+
+local dimension_to_teleport = { nether = "overworld", overworld = "nether" }
 
 local limits = {
 	nether = {
@@ -181,10 +182,10 @@ local function get_target(p)
 				x, o1 = ping_pong(x, TRAVEL_X, LIM_MIN, LIM_MAX)
 				z, o2 = ping_pong(z, TRAVEL_Z, LIM_MIN, LIM_MAX)
 				y = floor(y * TRAVEL_Y + (o1+o2) / 16 * LIM_MAX)
-				y = min(max(y + mcl_vars.mg_overworld_min, mcl_vars.mg_overworld_min), mcl_vars.mg_overworld_max)
+				y = min(max(y + O_Y_MIN, O_Y_MIN), O_Y_MAX)
 			elseif d=="overworld" then
 				x, y, z = floor(x / TRAVEL_X + 0.5), floor(y / TRAVEL_Y + 0.5), floor(z / TRAVEL_Z + 0.5)
-				y = min(max(y + mcl_vars.mg_nether_min, mcl_vars.mg_nether_min), mcl_vars.mg_nether_max)
+				y = min(max(y + N_Y_MIN, N_Y_MIN), N_Y_MAX)
 			end
 			return {x=x, y=y, z=z}, d
 		end
@@ -457,8 +458,8 @@ local function ecb_scan_area_2(blockpos, action, calls_remaining, param)
 	local nodes = find_nodes_in_area_under_air(pos1, pos2, {"group:building_block"})
 	if nodes then
 		local nc = #nodes
+		log("action", "[mcl_portals] Area for destination Nether portal emerged! Found " .. tostring(nc) .. " nodes under the air around "..pos_to_string(pos))
 		if nc > 0 then
-			log("action", "[mcl_portals] Area for destination Nether portal emerged! Found " .. tostring(nc) .. " nodes under the air around "..pos_to_string(pos))
 			for i=1,nc do
 				local node = nodes[i]
 				local node1 = {x=node.x,   y=node.y+1, z=node.z  }
@@ -474,7 +475,7 @@ local function ecb_scan_area_2(blockpos, action, calls_remaining, param)
 							return
 						end
 						if not distance or (distance0 < distance) or (distance0 < distance-1 and node.y > lava and pos0.y < lava) then
-							log("action", "[mcl_portals] found distance "..tostring(distance0).." at pos "..pos_to_string(node))
+							log("verbose", "[mcl_portals] found distance "..tostring(distance0).." at pos "..pos_to_string(node))
 							distance = distance0
 							pos0 = {x=node1.x, y=node1.y, z=node1.z}
 						end
@@ -626,7 +627,7 @@ end
 -- Pos can be any of the inner part.
 -- The frame MUST be filled only with air or any fire, which will be replaced with Nether portal blocks.
 -- If no Nether portal can be lit, nothing happens.
--- Returns number of portals created (0, 1 or 2)
+-- Returns true if portal created
 function mcl_portals.light_nether_portal(pos)
 	-- Only allow to make portals in Overworld and Nether
 	local dim = mcl_worlds.pos_to_dimension(pos)
@@ -636,11 +637,6 @@ function mcl_portals.light_nether_portal(pos)
 	local orientation = random(0, 1)
 	for orientation_iteration = 1, 2 do
 		if check_and_light_shape(pos, orientation) then
-			minetest.after(0.2, function(pos) -- generate target map chunk
-				local pos1 = add(mul(mcl_vars.pos_to_chunk(pos), mcl_vars.chunk_size_in_nodes), mcl_vars.central_chunk_offset_in_nodes)
-				local pos2 = add(pos1, mcl_vars.chunk_size_in_nodes - 1)
-				minetest.emerge_area(pos1, pos2)
-			end, vector.new(pos))
 			return true
 		end
 		orientation = 1 - orientation
@@ -672,6 +668,7 @@ local function teleport_no_delay(obj, pos)
 	if exit then
 		finalize_teleport(obj, exit)
 	else
+		dim = dimension_to_teleport[dim]
 		-- need to create arrival portal
 		create_portal(target, limits[dim].pmin, limits[dim].pmax, name, obj)
 	end
