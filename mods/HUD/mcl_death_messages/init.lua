@@ -193,7 +193,7 @@ minetest.register_on_dieplayer(function(player, reason)
 
 			-- Player was slain by potions
 			if not hitter then return end
-			
+
 			local hittername, hittertype, hittersubtype, shooter
 			local hitter_toolname  = get_tool_name(hitter:get_wielded_item())
 
@@ -222,7 +222,7 @@ minetest.register_on_dieplayer(function(player, reason)
 				end
 				hittersubtype = hitter:get_luaentity().name
 				if hittername then
-					msg = dmsg("murder", name, hittername)
+					msg = dmsg("murder_hand", name, hittername)
 				elseif hittersubtype ~= nil and hittersubtype ~= "" then
 					msg = mmsg(hittersubtype, name)
 				else
