@@ -1,4 +1,4 @@
--- Tree nodes: Wood, Wooden Planks, Sapling, Leaves
+-- Tree nodes: Wood, Wooden Planks, Sapling, Leaves, Stripped Wood
 local S = minetest.get_translator("mcl_core")
 
 local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
@@ -47,6 +47,166 @@ local register_tree_trunk = function(subname, description_trunk, description_bar
 		}
 	})
 end
+
+-- Register stripped trunk 
+minetest.register_node("mcl_core:stripped_oak", {
+	description = "Stripped Oak Log",
+	_doc_items_longdesc = "Stripped Oak Log is a log that has been stripped of it's bark.",
+	tiles = {"mcl_core_stripped_oak_top.png", "mcl_core_stripped_oak_top.png", "mcl_core_stripped_oak_side.png"},
+	is_ground_content = false,
+	paramtype2 = "facedir",
+	on_place = mcl_util.rotate_axis,
+	groups = {handy=1,axey=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5, tree=1},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 10,
+	_mcl_hardness = 2,
+})
+
+minetest.register_node("mcl_core:stripped_acacia", {
+	description = "Stripped Acacia Log",
+	_doc_items_longdesc = "Stripped Acacia Log is a log that has been stripped of it's bark.",
+	tiles = {"mcl_core_stripped_acacia_top.png", "mcl_core_stripped_acacia_top.png", "mcl_core_stripped_acacia_side.png"},
+	is_ground_content = false,
+	paramtype2 = "facedir",
+	on_place = mcl_util.rotate_axis,
+	groups = {handy=1,axey=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5, tree=1},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 10,
+	_mcl_hardness = 2,
+})
+
+minetest.register_node("mcl_core:stripped_dark_oak", {
+	description = "Stripped Dark Oak Log",
+	_doc_items_longdesc = "Stripped Dark Oak Log is a log that has been stripped of it's bark.",
+	tiles = {"mcl_core_stripped_dark_oak_top.png", "mcl_core_stripped_dark_oak_top.png", "mcl_core_stripped_dark_oak_side.png"},
+	is_ground_content = false,
+	paramtype2 = "facedir",
+	on_place = mcl_util.rotate_axis,
+	groups = {handy=1,axey=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5, tree=1},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 10,
+	_mcl_hardness = 2,
+})
+
+minetest.register_node("mcl_core:stripped_birch", {
+	description = "Stripped Birch Log",
+	_doc_items_longdesc = "Stripped Birch Log is a log that has been stripped of it's bark.",
+	tiles = {"mcl_core_stripped_birch_top.png", "mcl_core_stripped_birch_top.png", "mcl_core_stripped_birch_side.png"},
+	is_ground_content = false,
+	paramtype2 = "facedir",
+	on_place = mcl_util.rotate_axis,
+	groups = {handy=1,axey=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5, tree=1},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 10,
+	_mcl_hardness = 2,
+})
+
+minetest.register_node("mcl_core:stripped_spruce", {
+	description = "Stripped Spruce Log",
+	_doc_items_longdesc = "Stripped Spruce Log is a log that has been stripped of it's bark.",
+	tiles = {"mcl_core_stripped_spruce_top.png", "mcl_core_stripped_spruce_top.png", "mcl_core_stripped_spruce_side.png"},
+	is_ground_content = false,
+	paramtype2 = "facedir",
+	on_place = mcl_util.rotate_axis,
+	groups = {handy=1,axey=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5, tree=1},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 10,
+	_mcl_hardness = 2,
+})
+
+minetest.register_node("mcl_core:stripped_jungle", {
+	description = "Stripped Jungle Log",
+	_doc_items_longdesc = "Stripped Jungle Log is a log that has been stripped of it's bark.",
+	tiles = {"mcl_core_stripped_jungle_top.png", "mcl_core_stripped_jungle_top.png", "mcl_core_stripped_jungle_side.png"},
+	is_ground_content = false,
+	paramtype2 = "facedir",
+	on_place = mcl_util.rotate_axis,
+	groups = {handy=1,axey=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5, tree=1},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 10,
+	_mcl_hardness = 2,
+})
+
+
+-- Register stripped bark
+minetest.register_node("mcl_core:stripped_oak_bark", {
+	description = "Stripped Oak Bark",
+	_doc_items_longdesc = "Stripped Oak Bark is a bark that has been stripped.",
+	tiles = {"mcl_core_stripped_oak_side.png"},
+	is_ground_content = false,
+	paramtype2 = "facedir",
+	on_place = mcl_util.rotate_axis,
+	groups = {handy=1,axey=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 10,
+	_mcl_hardness = 2,
+})
+
+minetest.register_node("mcl_core:stripped_acacia_bark", {
+	description = "Stripped Acacia Bark",
+	_doc_items_longdesc = "Stripped Acacia Bark is a bark that has been stripped.",
+	tiles = {"mcl_core_stripped_acacia_side.png"},
+	is_ground_content = false,
+	paramtype2 = "facedir",
+	on_place = mcl_util.rotate_axis,
+	groups = {handy=1,axey=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 10,
+	_mcl_hardness = 2,
+})
+
+minetest.register_node("mcl_core:stripped_dark_oak_bark", {
+	description = "Stripped Dark Oak Bark",
+	_doc_items_longdesc = "Stripped Dark Oak Bark is a bark that has been stripped.",
+	tiles = {"mcl_core_stripped_dark_oak_side.png"},
+	is_ground_content = false,
+	paramtype2 = "facedir",
+	on_place = mcl_util.rotate_axis,
+	groups = {handy=1,axey=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 10,
+	_mcl_hardness = 2,
+})
+
+minetest.register_node("mcl_core:stripped_birch_bark", {
+	description = "Stripped Birch Bark",
+	_doc_items_longdesc = "Stripped Birch Bark is a bark that has been stripped.",
+	tiles = {"mcl_core_stripped_birch_side.png"},
+	is_ground_content = false,
+	paramtype2 = "facedir",
+	on_place = mcl_util.rotate_axis,
+	groups = {handy=1,axey=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 10,
+	_mcl_hardness = 2,
+})
+
+minetest.register_node("mcl_core:stripped_spruce_bark", {
+	description = "Stripped Spruce Bark",
+	_doc_items_longdesc = "Stripped Spruce Bark is a bark that has been stripped.",
+	tiles = {"mcl_core_stripped_spruce_side.png"},
+	is_ground_content = false,
+	paramtype2 = "facedir",
+	on_place = mcl_util.rotate_axis,
+	groups = {handy=1,axey=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 10,
+	_mcl_hardness = 2,
+})
+
+minetest.register_node("mcl_core:stripped_jungle_bark", {
+	description = "Stripped Jungle Bark",
+	_doc_items_longdesc = "Stripped Jungles Bark is a bark that has been stripped.",
+	tiles = {"mcl_core_stripped_jungle_side.png"},
+	is_ground_content = false,
+	paramtype2 = "facedir",
+	on_place = mcl_util.rotate_axis,
+	groups = {handy=1,axey=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 10,
+	_mcl_hardness = 2,
+})
+
 
 local register_wooden_planks = function(subname, description, tiles)
 	minetest.register_node("mcl_core:"..subname, {

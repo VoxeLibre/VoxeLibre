@@ -46,6 +46,56 @@ minetest.register_craft({
 	}
 })
 
+-- Stripped Bark
+minetest.register_craft({
+	output = "mcl_core:stripped_oak_bark 3",
+	recipe = {
+		{ "mcl_core:stripped_oak", "mcl_core:stripped_oak" },
+		{ "mcl_core:stripped_oak", "mcl_core:stripped_oak" },
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_core:stripped_acacia_bark 3",
+	recipe = {
+		{ "mcl_core:stripped_acacia", "mcl_core:stripped_acacia" },
+		{ "mcl_core:stripped_acacia", "mcl_core:stripped_acacia" },
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_core:stripped_dark_oak_bark 3",
+	recipe = {
+		{ "mcl_core:stripped_dark_oak", "mcl_core:stripped_dark_oak" },
+		{ "mcl_core:stripped_dark_oak", "mcl_core:stripped_dark_oak" },
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_core:stripped_birch_bark 3",
+	recipe = {
+		{ "mcl_core:stripped_birch", "mcl_core:stripped_birch" },
+		{ "mcl_core:stripped_birch", "mcl_core:stripped_birch" },
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_core:stripped_spruce_bark 3",
+	recipe = {
+		{ "mcl_core:stripped_spruce", "mcl_core:stripped_spruce" },
+		{ "mcl_core:stripped_spruce", "mcl_core:stripped_spruce" },
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_core:stripped_jungle_bark 3",
+	recipe = {
+		{ "mcl_core:stripped_jungle", "mcl_core:stripped_jungle" },
+		{ "mcl_core:stripped_jungle", "mcl_core:stripped_jungle" },
+	}
+})
+
+
 minetest.register_craft({
 	type = 'shapeless',
 	output = 'mcl_core:mossycobble',
