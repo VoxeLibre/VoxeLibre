@@ -770,12 +770,17 @@ mcl_enchanting.enchantments.unbreaking = {
 	description = S("Increases item durability."),
 	curse = false,
 	on_enchant = function(itemstack, level)
-		local tool_capabilities = itemstack:get_tool_capabilities()
-		for group, capability in pairs(tool_capabilities.groupcaps) do
-			capability.uses = capability.uses * (1 + level)
+		local name = itemstack:get_name()
+		if not minetest.registered_tools[name].tool_capabilities then
+			return
 		end
+
+		local tool_capabilities = itemstack:get_tool_capabilities()
 		tool_capabilities.punch_attack_uses = tool_capabilities.punch_attack_uses * (1 + level)
 		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
+
+		-- Unbreaking for groupcaps is handled in this function.
+		mcl_enchanting.update_groupcaps(itemstack)
 	end,
 	requires_tool = true,
 	treasure = false,

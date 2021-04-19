@@ -1029,6 +1029,14 @@ local node_ok = function(pos, fallback)
 	return minetest.registered_nodes[fallback]
 end
 
+local function get_light(pos, tod)
+	if math.abs(pos.x) < 31000 and math.abs(pos.y) < 31000 and math.abs(pos.z) < 31000 then
+		local lightfunc = minetest.get_natural_light or minetest.get_node_light
+		return lightfunc(pos, tod)
+	else
+		return 0
+	end
+end
 
 -- environmental damage (water, lava, fire, light etc.)
 local do_env_damage = function(self)
@@ -1074,7 +1082,6 @@ local do_env_damage = function(self)
 
 	-- Use get_node_light for Minetest version 5.3 where get_natural_light
 	-- does not exist yet.
-	local get_light = minetest.get_natural_light or minetest.get_node_light
 	local sunlight = get_light(pos, self.time_of_day)
 
 	-- bright light harms mob
@@ -3447,7 +3454,7 @@ end
 -- main mob function
 local mob_step = function(self, dtime)
 
-	if not self.fire_resistant then
+	if not self.fire_resistant and self.mcl_burning_burn_time and self.mcl_burning_burn_time > 0 then
 		mcl_burning.tick(self.object, dtime)
 	end
 
@@ -3906,7 +3913,7 @@ minetest.register_entity(name, {
 		--default built in engine collision detection
 		self.object:set_properties({
 			collide_with_objects = false,
-		})	
+		})
 		return mob_activate(self, staticdata, def, dtime)
 	end,
 

@@ -6,7 +6,7 @@ minetest.register_chatcommand("setblock", {
 	privs = {give=true, interact=true},
 	func = function(name, param)
 		local p = {}
-		local nodestring = nil
+		local nodestring
 		p.x, p.y, p.z, nodestring = param:match("^([%d.-]+)[, ] *([%d.-]+)[, ] *([%d.-]+) +(.+)$")
 		p.x, p.y, p.z = tonumber(p.x), tonumber(p.y), tonumber(p.z)
 		if p.x and p.y and p.z and nodestring then

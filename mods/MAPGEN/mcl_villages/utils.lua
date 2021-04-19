@@ -126,7 +126,7 @@ function settlements.fill_chest(pos, pr)
 	-- fill chest
 	local inv = minetest.get_inventory( {type="node", pos=pos} )
 
-	local function get_treasures(pr)
+	local function get_treasures(prand)
 		local loottable = {{
 			stacks_min = 3,
 			stacks_max = 8,
@@ -150,7 +150,7 @@ function settlements.fill_chest(pos, pr)
 				{ itemstring = "mobs_mc:diamond_horse_armor", weight = 1 },
 			}
 		}}
-		local items = mcl_loot.get_multi_loot(loottable, pr)
+		local items = mcl_loot.get_multi_loot(loottable, prand)
 		return items
 	end
 
@@ -163,14 +163,14 @@ end
 -------------------------------------------------------------------------------
 function settlements.initialize_furnace(pos)
   -- find chests within radius
-  local furnacepos = minetest.find_node_near(pos, 
+  local furnacepos = minetest.find_node_near(pos,
     7, --radius
     {"mcl_furnaces:furnace"})
   -- initialize furnacepos (mts furnacepos don't have meta)
-  if furnacepos 
+  if furnacepos
   then
     local meta = minetest.get_meta(furnacepos)
-    if meta:get_string("infotext") ~= "furnace" 
+    if meta:get_string("infotext") ~= "furnace"
     then
       minetest.registered_nodes["mcl_furnaces:furnace"].on_construct(furnacepos)
     end
@@ -181,14 +181,14 @@ end
 -------------------------------------------------------------------------------
 function settlements.initialize_anvil(pos)
   -- find chests within radius
-  local anvilpos = minetest.find_node_near(pos, 
+  local anvilpos = minetest.find_node_near(pos,
     7, --radius
     {"mcl_anvils:anvil"})
   -- initialize anvilpos (mts anvilpos don't have meta)
-  if anvilpos 
+  if anvilpos
   then
     local meta = minetest.get_meta(anvilpos)
-    if meta:get_string("infotext") ~= "anvil" 
+    if meta:get_string("infotext") ~= "anvil"
     then
       minetest.registered_nodes["mcl_anvils:anvil"].on_construct(anvilpos)
     end

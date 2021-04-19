@@ -198,7 +198,6 @@ minetest.register_chatcommand("setskin", {
 			end
 		end
 
-		local skin
 		local ok = mcl_skins.set_player_skin(player, skin_id)
 		if not ok then
 			return false, S("Invalid skin number! Valid numbers: 0 to @1", mcl_skins.skin_count)

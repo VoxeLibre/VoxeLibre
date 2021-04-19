@@ -37,14 +37,9 @@ local mt_record_protection_violation = minetest.record_protection_violation
 local mt_is_creative_enabled = minetest.is_creative_enabled
 local mt_sound_play = minetest.sound_play
 
-local math_min = math.min
-local math_max = math.max
-local math_ceil = math.ceil
-local math_floor = math.floor
-local math_random = math.random
-local string_format = string.format
-local table_copy = table.copy
-local table_insert = table.insert
+local math = math
+local string = string
+local table = table
 
 -- DEBUG: functions
 -- local log = minetest.log
@@ -122,7 +117,7 @@ function kelp.is_downward_flowing(pos, node, pos_above, node_above, __is_above__
 	-- Function params: (pos[, node]) or (node, pos_above) or (node, node_above)
 	local node = node or mt_get_node(pos)
 
-	local result = (math_floor(node.param2 / 8) % 2) == 1
+	local result = (math.floor(node.param2 / 8) % 2) == 1
 	if not (result or __is_above__) then
 		-- If not, also check node above.
 		-- (this is needed due a weird quirk in the definition of "downwards flowing"
@@ -182,14 +177,14 @@ end
 -- Roll whether to grow kelp or not.
 function kelp.roll_growth(numerator, denominator)
 	-- Optional params: numerator, denominator
-	return math_random(denominator or kelp.ROLL_GROWTH_DENOMINATOR) <= (numerator or kelp.ROLL_GROWTH_NUMERATOR)
+	return math.random(denominator or kelp.ROLL_GROWTH_DENOMINATOR) <= (numerator or kelp.ROLL_GROWTH_NUMERATOR)
 end
 
 
 -- Roll initial age for kelp.
 function kelp.roll_init_age(min, max)
 	-- Optional params
-	return math_random(min or kelp.MIN_AGE, (max or kelp.MAX_AGE)-1)
+	return math.random(min or kelp.MIN_AGE, (max or kelp.MAX_AGE)-1)
 end
 
 
@@ -197,7 +192,7 @@ end
 -- For the special case where the max param2 is reached, interpret that as the
 -- 16th kelp stem.
 function kelp.get_height(param2)
-	return math_floor(param2 / 16) + math_floor(param2 % 16 / 8)
+	return math.floor(param2 / 16) + math.floor(param2 % 16 / 8)
 end
 
 
@@ -232,7 +227,7 @@ end
 -- Obtain next param2.
 function kelp.next_param2(param2)
 	-- param2 max value is 255, so adding to 256 causes overflow.
-	return math_min(param2+16 - param2 % 16, 255);
+	return math.min(param2+16 - param2 % 16, 255);
 end
 
 
@@ -242,8 +237,8 @@ function kelp.store_meta()
 	for _ in pairs(kelp.age_queue_pos) do
 		count = count + 1
 	end
-	-- chatlog(string_format("Storing age metadata: %d in queue", #kelp.age_queue))
-	-- chatlog(string_format("Storing age metadata: %d valid in queue", count))
+	-- chatlog(string.format("Storing age metadata: %d in queue", #kelp.age_queue))
+	-- chatlog(string.format("Storing age metadata: %d valid in queue", count))
 	for i=1,#kelp.age_queue do
 		local pos_hash = kelp.age_queue[i]
 		local pos = kelp.age_queue_pos[pos_hash]
@@ -265,7 +260,7 @@ function kelp.store_age(age, pos, pos_hash)
 
 	kelp.age_pool[pos_hash] = age
 	if not kelp.age_queue_pos[pos_hash] then
-		table_insert(kelp.age_queue, pos_hash)
+		table.insert(kelp.age_queue, pos_hash)
 		kelp.age_queue_pos[pos_hash] = pos
 		return true, pos_hash
 	end
@@ -713,7 +708,7 @@ function kelp.register_kelp_surface(surface, surface_deftemplate, surface_docs)
 		doc.add_entry_alias("nodes", surface_docs.entry_id_orig, "nodes", surfacename)
 	end
 
-	local sounds = table_copy(def.sounds)
+	local sounds = table.copy(def.sounds)
 	sounds.dig = kelp.leaf_sounds.dig
 	sounds.dug = kelp.leaf_sounds.dug
 	sounds.place = kelp.leaf_sounds.place
@@ -732,9 +727,9 @@ end
 -- Kelp surfaces nodes ---------------------------------------------------------
 
 -- Dirt must be registered first, for the docs
-kelp.register_kelp_surface(kelp.surfaces[1], table_copy(kelp.surface_deftemplate), kelp.surface_docs)
+kelp.register_kelp_surface(kelp.surfaces[1], table.copy(kelp.surface_deftemplate), kelp.surface_docs)
 for i=2, #kelp.surfaces do
-	kelp.register_kelp_surface(kelp.surfaces[i], table_copy(kelp.surface_deftemplate), kelp.surface_docs)
+	kelp.register_kelp_surface(kelp.surfaces[i], table.copy(kelp.surface_deftemplate), kelp.surface_docs)
 end
 
 -- Kelp item -------------------------------------------------------------------

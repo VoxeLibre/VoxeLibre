@@ -9,15 +9,15 @@ function settlements.ground(pos, pr) -- role model: Wendelsteinkircherl, Brannen
 	while true do
 		cnt = cnt+1
 		if cnt > 20 then break end
-		if cnt>pr:next(2,4) then 
-			mat = "mcl_core:stone" 
+		if cnt>pr:next(2,4) then
+			mat = "mcl_core:stone"
 		end
 		minetest.swap_node(p2, {name=mat})
 		p2.y = p2.y-1
 	end
 end
 -------------------------------------------------------------------------------
--- function clear space above baseplate 
+-- function clear space above baseplate
 -------------------------------------------------------------------------------
 function settlements.terraform(settlement_info, pr)
 	local fheight, fwidth, fdepth, schematic_data
@@ -30,7 +30,7 @@ function settlements.terraform(settlement_info, pr)
 			        break
 			end
 		end
-		local pos = settlement_info[i]["pos"] 
+		local pos = settlement_info[i]["pos"]
 		if settlement_info[i]["rotat"] == "0" or settlement_info[i]["rotat"] == "180" then
 			fwidth = schematic_data["hwidth"]
 			fdepth = schematic_data["hdepth"]
@@ -54,9 +54,9 @@ function settlements.terraform(settlement_info, pr)
 --						local p = {x=pos.x+xi, y=pos.y+yi, z=pos.z+zi}
 --						local node = mcl_vars.get_node(p)
 --						if node and node.name ~= "air" then
---							minetest.swap_node(p,{name="air"}) 
+--							minetest.swap_node(p,{name="air"})
 --						end
-						minetest.swap_node({x=pos.x+xi, y=pos.y+yi, z=pos.z+zi},{name="air"}) 
+						minetest.swap_node({x=pos.x+xi, y=pos.y+yi, z=pos.z+zi},{name="air"})
 					end
 				end
 			end

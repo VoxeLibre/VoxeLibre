@@ -15,7 +15,7 @@ minetest.register_entity("mcl_burning:fire", {
 		pointable = false,
 		glow = -1,
 	},
-	
+
 	animation_frame = 0,
 	animation_timer = 0,
 	on_step = mcl_burning.fire_entity_step,
@@ -23,7 +23,9 @@ minetest.register_entity("mcl_burning:fire", {
 
 minetest.register_globalstep(function(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
-		mcl_burning.tick(player, dtime)
+		if player:get_meta():get_float("mcl_burning:burn_time") > 0 then
+			mcl_burning.tick(player, dtime)
+		end
 	end
 end)
 
