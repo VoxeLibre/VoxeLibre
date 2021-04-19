@@ -110,7 +110,6 @@
 * pitchum
 
 ## Special thanks
-
 * celeron55 for creating Minetest
 * Jordach for the jukebox music compilation from Big Freaking Dig
 * The workaholics who spent way too much time writing for the Minecraft Wiki. It's an invaluable resource for creating this game
