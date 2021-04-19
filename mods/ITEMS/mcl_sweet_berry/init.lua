@@ -3,32 +3,46 @@ minetest.register_craftitem("mc_sweet_berry:sweet_berry", {
     inventory_image = "sweet_berry.png",
     on_use = minetest.item_eat(2)
 })
-
 minetest.register_node("mc_sweet_berry:sweet_berry_bush_0", {
     drawtype = "plantlike",
     tiles = {"sweet_berry_bush_0.png"},
     damage_per_second = 1,
+    selection_box = {
+        type = "fixed",
+        fixed = {-6 / 16, -0.5, -6 / 16, 6 / 16, 0.5, 6 / 16},
+    },
     drop = ""
 })
 minetest.register_node("mc_sweet_berry:sweet_berry_bush_1", {
     drawtype = "plantlike",
     tiles = {"sweet_berry_bush_1.png"},
     damage_per_second = 1,
+    selection_box = {
+        type = "fixed",
+        fixed = {-6 / 16, -0.5, -6 / 16, 6 / 16, 0.5, 6 / 16},
+    },
     drop = ""
 })
 minetest.register_node("mc_sweet_berry:sweet_berry_bush_2", {
     drawtype = "plantlike",
     tiles = {"sweet_berry_bush_2.png"},
     damage_per_second = 2,
+    selection_box = {
+        type = "fixed",
+        fixed = {-6 / 16, -0.5, -6 / 16, 6 / 16, 0.5, 6 / 16},
+    },
     drop = "mc:sweet_berry 2"
 })
 minetest.register_node("mc_sweet_berry:sweet_berry_bush_3", {
     drawtype = "plantlike",
     tiles = {"sweet_berry_bush_3.png"},
     damage_per_second = 2,
+    selection_box = {
+        type = "fixed",
+        fixed = {-6 / 16, -0.5, -6 / 16, 6 / 16, 0.5, 6 / 16},
+    },
     drop = "mc:sweet_berry 3"
 })
-
 minetest.register_decoration({
     deco_type = "simple",
     place_on = {"mcl_core:dirt_with_grass"},
