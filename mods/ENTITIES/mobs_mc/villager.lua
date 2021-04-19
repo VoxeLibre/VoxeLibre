@@ -516,7 +516,7 @@ local function show_trade_formspec(playername, trader, tradenum)
 	"size[9,8.75]"
 	.."background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"
 	..disabled_img
-	.."label[4,0;"..F(minetest.colorize(mcl_colors.DARK_GRAY, S(profession))).."]"
+	.."label[4,0;"..F(minetest.colorize("#313131", S(profession))).."]"
 	.."list[current_player;main;0,4.5;9,3;9]"
 	.."list[current_player;main;0,7.74;9,1;]"
 	..b_prev..b_next
@@ -1075,8 +1075,8 @@ mobs:register_mob("mobs_mc:villager", {
 
 
 mobs:spawn_specific(
-"mobs_mc:villager", 
-"overworld", 
+"mobs_mc:villager",
+"overworld",
 "ground",
 {
 "FlowerForest",
@@ -1096,12 +1096,12 @@ mobs:spawn_specific(
 "ExtremeHillsM",
 "BirchForestM",
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-20, 
-4, 
-mobs_mc.spawn_height.water+1, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+20,
+4,
+mobs_mc.spawn_height.water+1,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs

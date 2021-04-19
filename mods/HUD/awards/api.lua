@@ -447,7 +447,7 @@ function awards.getFormspec(name, to, sid)
 			first = false
 
 			if def.secret and not award.got then
-				formspec = formspec .. mcl_colors.DARK_GRAY..minetest.formspec_escape(S("(Secret Award)"))
+				formspec = formspec .. "#707070" .. minetest.formspec_escape(S("(Secret Award)"))
 			else
 				local title = award.name
 				if def and def.title then
@@ -456,7 +456,7 @@ function awards.getFormspec(name, to, sid)
 				if award.got then
 					formspec = formspec .. minetest.formspec_escape(title)
 				else
-					formspec = formspec .. mcl_colors.GRAY.. minetest.formspec_escape(title)
+					formspec = formspec .. "#ACACAC" .. minetest.formspec_escape(title)
 				end
 			end
 		end
