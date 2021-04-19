@@ -503,7 +503,7 @@ function mcl_enchanting.show_enchanting_formspec(player)
 		local hover_ending = (can_enchant and "_hovered" or "_off")
 		formspec = formspec
 			.. "container[3.2," .. y .. "]"
-			.. (slot and "tooltip[button_" .. i .. ";" .. C(mcl_colors.GRAY) .. F(slot.description) .. " " .. C(mcl_colors.WHITE) .. " . . . ?\n\n" .. (enough_levels and C(enough_lapis and mcl_colors.GRAY or mcl_colors.RED) .. F(S("@1 Lapis Lazuli", i)) .. "\n" .. C(mcl_colors.GRAY) .. F(S("@1 Enchantment Levels", i)) or C(mcl_colors.RED) .. F(S("Level requirement: @1", slot.level_requirement))) .. "]" or "")
+			.. (slot and "tooltip[button_" .. i .. ";" .. C(mcl_colors.GRAY) .. ((slot.description and F(slot.description)) or "") .. " " .. C(mcl_colors.WHITE) .. " . . . ?\n\n" .. (enough_levels and C(enough_lapis and mcl_colors.GRAY or mcl_colors.RED) .. F(S("@1 Lapis Lazuli", i)) .. "\n" .. C(mcl_colors.GRAY) .. F(S("@1 Enchantment Levels", i)) or C(mcl_colors.RED) .. F(S("Level requirement: @1", slot.level_requirement))) .. "]" or "")
 			.. "style[button_" .. i .. ";bgimg=mcl_enchanting_button" .. ending .. ".png;bgimg_hovered=mcl_enchanting_button" .. hover_ending .. ".png;bgimg_pressed=mcl_enchanting_button" .. hover_ending .. ".png]"
 			.. "button[0,0;7.5,1.3;button_" .. i .. ";]"
 			.. (slot and "image[0,0;1.3,1.3;mcl_enchanting_number_" .. i .. ending .. ".png]" or "")
