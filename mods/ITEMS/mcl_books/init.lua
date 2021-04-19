@@ -67,7 +67,7 @@ local make_description = function(title, author, generation)
 	else
 		desc = S("Tattered Book")
 	end
-	desc = desc .. "\n" .. minetest.colorize("#AAAAAA", S("by @1", author))
+	desc = desc .. "\n" .. minetest.colorize(mcl_colors.GRAY, S("by @1", author))
 	return desc
 end
 
