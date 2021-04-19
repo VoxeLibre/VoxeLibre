@@ -251,7 +251,6 @@ mobs:register_mob("mobs_mc:sheep", {
 			end
 			return
 		end
-		if mobs:capture_mob(self, clicker, 0, 5, 70, false, nil) then return end
 	end,
 	on_breed = function(parent1, parent2)
 		-- Breed sheep and choose a fur color for the child.

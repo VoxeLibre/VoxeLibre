@@ -163,10 +163,6 @@ mobs:register_mob("mobs_mc:pig", {
 				inv:set_stack("main",self.driver:get_wield_index(), wielditem)
 			end
 			return
-
-		-- Capture pig
-		elseif not self.driver and clicker:get_wielded_item():get_name() ~= "" then
-			mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 		end
 	end,
 

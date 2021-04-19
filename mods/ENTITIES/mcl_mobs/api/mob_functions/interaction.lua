@@ -1,5 +1,10 @@
+mobs.feed_tame = function(self)
+    return nil
+end
+
 -- Code to execute before custom on_rightclick handling
 local on_rightclick_prefix = function(self, clicker)
+
 	local item = clicker:get_wielded_item()
 
 	-- Name mob with nametag
@@ -32,8 +37,4 @@ mobs.create_mob_on_rightclick = function(on_rightclick)
 			on_rightclick(self, clicker)
 		end
 	end
-end
-
-mobs.feed_tame = function(self)
-    return nil
 end

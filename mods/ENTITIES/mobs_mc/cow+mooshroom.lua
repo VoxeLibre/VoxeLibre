@@ -71,7 +71,6 @@ local cow_def = {
 			end
 			return
 		end
-		mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 	end,
 	follow = mobs_mc.items.wheat,
 	view_range = 10,
@@ -139,8 +138,7 @@ mooshroom_def.on_rightclick = function(self, clicker)
 			pos.y = pos.y + 0.5
 			minetest.add_item(pos, {name = mobs_mc.items.mushroom_stew})
 		end
-	end
-	mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
+	end	
 end
 mobs:register_mob("mobs_mc:mooshroom", mooshroom_def)
 

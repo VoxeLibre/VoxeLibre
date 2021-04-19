@@ -11,6 +11,9 @@ local vector_multiply = vector.multiply
 
 local minetest_yaw_to_dir = minetest.yaw_to_dir
 
+local DEFAULT_JUMP_HEIGHT = 5
+local DEFAULT_FLOAT_SPEED = 4
+
 
 
 --this is a generic float function
@@ -20,7 +23,7 @@ mobs.float = function(self)
 
 	local goal_velocity = {
 		x = 0,
-		y = 5,
+		y = DEFAULT_FLOAT_SPEED,
 		z = 0,
 	}
 
@@ -102,7 +105,7 @@ mobs.jump = function(self, velocity)
     end
 
 	--fallback velocity to allow modularity
-    velocity = velocity or 8
+    velocity = velocity or DEFAULT_JUMP_HEIGHT
 
     self.object:add_velocity(vector_new(0,velocity,0))    
 end
@@ -133,7 +136,7 @@ mobs.flop = function(self, velocity)
 	mobs.set_velocity(self, 0)
 
 	--fallback velocity to allow modularity
-    velocity = velocity or 8
+    velocity = velocity or DEFAULT_JUMP_HEIGHT
 
 	--create a random direction (2d yaw)
 	local dir = DOUBLE_PI * math_random()
@@ -256,7 +259,7 @@ mobs.jump_move = function(self, velocity)
 	mobs.set_velocity(self,0)
 
 	--fallback velocity to allow modularity
-    jump_height = 8
+    jump_height = DEFAULT_JUMP_HEIGHT
 
 	local yaw = (self.yaw or 0)
 
