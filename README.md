@@ -96,6 +96,10 @@ The main goal of **MineClone 2** is to be a clone of Minecraft and to be release
 * Limitations found in Minetest will be documented in the course of development
 * Features of later Minecraft versions are collected in the mineclone5 branch
 
+## Different flavors of MineClone2
+* Faithful: Includes original additions and bonus features Wuzzy made (https://git.minetest.land/MineClone2/MineClone2/src/branch/faithful)
+* MineClone5: Includes original additions and bonus features Wuzzy made, plus features from Minecraft versions > 1.12 (https://git.minetest.land/MineClone2/MineClone2/src/branch/mineclone5)
+
 ## Completion status
 This game is currently in **beta** stage.
 It is playable, but not yet feature-complete.
