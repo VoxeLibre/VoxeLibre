@@ -7,7 +7,7 @@ local players = {}
 -- Containing all the items for each Creative Mode tab
 local inventory_lists = {}
 
-+local mod_player = minetest.get_modpath("mcl_player") ~= nil
+local mod_player = minetest.get_modpath("mcl_player") ~= nil
 
 -- Create tables
 local builtin_filter_ids = {"blocks","deco","redstone","rail","food","tools","combat","mobs","brew","matr","misc","all"}
