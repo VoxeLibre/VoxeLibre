@@ -51,7 +51,7 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 	reach = 2,
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
-	attack_type = "dogfight",
+	attack_type = "punch",
 	group_attack = true,
 	drops = {
 		{name = mobs_mc.items.rotten_flesh,

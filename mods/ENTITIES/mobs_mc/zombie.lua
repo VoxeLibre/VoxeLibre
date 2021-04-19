@@ -88,7 +88,7 @@ local zombie = {
 	ignited_by_sunlight = true,
 	sunlight_damage = 2,
 	view_range = 16,
-	attack_type = "dogfight",
+	attack_type = "punch",
 	harmed_by_heal = true,
 }
 

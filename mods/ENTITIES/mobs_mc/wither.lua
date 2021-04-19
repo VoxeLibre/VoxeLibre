@@ -52,7 +52,7 @@ mobs:register_mob("mobs_mc:wither", {
 	},
 	lava_damage = 0,
 	fire_damage = 0,
-	attack_type = "dogshoot",
+	attack_type = "projectile",
 	explosion_strength = 8,
 	dogshoot_stop = true,
 	arrow = "mobs_mc:wither_skull",

@@ -84,7 +84,7 @@ local skeleton = {
 	ignited_by_sunlight = true,
 	view_range = 16,
 	fear_height = 4,
-	attack_type = "dogshoot",
+	attack_type = "projectile",
 	arrow = "mcl_bows:arrow_entity",
 	shoot_arrow = function(self, pos, dir)
 		if mod_bows then

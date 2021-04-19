@@ -49,7 +49,7 @@ mobs:register_mob("mobs_mc:ghast", {
 	},
 	fall_damage = 0,
 	view_range = 100,
-	attack_type = "dogshoot",
+	attack_type = "projectile",
 	arrow = "mobs_mc:fireball",
 	shoot_interval = 3.5,
 	shoot_offset = -5,

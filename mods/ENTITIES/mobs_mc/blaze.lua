@@ -63,7 +63,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	fall_speed = -2.25,
 	light_damage = 0,
 	view_range = 16,
-	attack_type = "dogshoot",
+	attack_type = "projectile",
 	arrow = "mobs_mc:blaze_fireball",
 	shoot_interval = 3.5,
 	shoot_offset = 1.0,
