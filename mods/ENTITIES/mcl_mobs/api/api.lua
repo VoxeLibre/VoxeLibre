@@ -58,7 +58,7 @@ local DEATH_DELAY         = 0.5
 local DEFAULT_FALL_SPEED  = -10
 local FLOP_HEIGHT         = 5.0
 local FLOP_HOR_SPEED      = 1.5
-local GRAVITY             = minetest_settings:get("movement_gravity") + 9.81
+local GRAVITY             = minetest_settings:get("movement_gravity")-- + 9.81
 
 
 local MOB_CAP   = {}
@@ -215,7 +215,7 @@ function mobs:register_mob(name, def)
 		hp_min = scale_difficulty(def.hp_min, 5, 1),
 		hp_max = scale_difficulty(def.hp_max, 10, 1),
 		xp_min = def.xp_min or 0,
-		xp_max = def.xp_max or 0,
+		xp_max = def.xp_max or 3,
 		xp_timestamp = 0,
 		breath_max = def.breath_max or 15,
 		breathes_in_water = def.breathes_in_water or false,
@@ -298,7 +298,10 @@ function mobs:register_mob(name, def)
 		runaway_from = def.runaway_from,
 		owner_loyal = def.owner_loyal,
 		facing_fence = false,
+
+
 		_cmi_is_mob = true,
+
 		pushable = def.pushable or true,
 
 		--j4i stuff
