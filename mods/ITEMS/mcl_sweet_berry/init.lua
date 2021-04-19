@@ -1,9 +1,9 @@
-minetest.register_craftitem("mc_sweet_berry:sweet_berry", {
+minetest.register_craftitem("mcl_sweet_berry:sweet_berry", {
     description = "Sweet Berry",
     inventory_image = "sweet_berry.png",
     on_use = minetest.item_eat(2)
 })
-minetest.register_node("mc_sweet_berry:sweet_berry_bush_0", {
+minetest.register_node("mcl_sweet_berry:sweet_berry_bush_0", {
     drawtype = "plantlike",
     tiles = {"sweet_berry_bush_0.png"},
     damage_per_second = 1,
@@ -13,7 +13,7 @@ minetest.register_node("mc_sweet_berry:sweet_berry_bush_0", {
     },
     drop = ""
 })
-minetest.register_node("mc_sweet_berry:sweet_berry_bush_1", {
+minetest.register_node("mcl_sweet_berry:sweet_berry_bush_1", {
     drawtype = "plantlike",
     tiles = {"sweet_berry_bush_1.png"},
     damage_per_second = 1,
@@ -23,7 +23,7 @@ minetest.register_node("mc_sweet_berry:sweet_berry_bush_1", {
     },
     drop = ""
 })
-minetest.register_node("mc_sweet_berry:sweet_berry_bush_2", {
+minetest.register_node("mcl_sweet_berry:sweet_berry_bush_2", {
     drawtype = "plantlike",
     tiles = {"sweet_berry_bush_2.png"},
     damage_per_second = 2,
@@ -33,7 +33,7 @@ minetest.register_node("mc_sweet_berry:sweet_berry_bush_2", {
     },
     drop = "mc:sweet_berry 2"
 })
-minetest.register_node("mc_sweet_berry:sweet_berry_bush_3", {
+minetest.register_node("mcl_sweet_berry:sweet_berry_bush_3", {
     drawtype = "plantlike",
     tiles = {"sweet_berry_bush_3.png"},
     damage_per_second = 2,
@@ -51,30 +51,30 @@ minetest.register_decoration({
     biomes = {"Taiga","Forest"},
     y_max = mcl_vars.mg_overworld_max,
     y_min = mcl_vars.mg_overworld_min,
-    decoration = "mc_sweet_berry:sweet_berry_bush_2"
+    decoration = "mcl_sweet_berry:sweet_berry_bush_2"
 })
 minetest.register_abm({
-    nodenames = {"mc_sweet_berry:sweet_berry_bush_0"},
+    nodenames = {"mcl_sweet_berry:sweet_berry_bush_0"},
     interval = 10.0,
     chance = 16,
     action = function(pos, node, active_object_count, active_object_count_wider)
-        minetest.set_node(pos, {name = "mc_sweet_berry:sweet_berry_bush_1"})
+        minetest.set_node(pos, {name = "mcl_sweet_berry:sweet_berry_bush_1"})
     end
 })
 minetest.register_abm({
-    nodenames = {"mc_sweet_berry:sweet_berry_bush_1"},
+    nodenames = {"mcl_sweet_berry:sweet_berry_bush_1"},
     interval = 10.0,
     chance = 16,
     action = function(pos, node, active_object_count, active_object_count_wider)
-        minetest.set_node(pos, {name = "mc_sweet_berry:sweet_berry_bush_2"})
+        minetest.set_node(pos, {name = "mcl_sweet_berry:sweet_berry_bush_2"})
     end
 })
 minetest.register_abm({
-    nodenames = {"mc_sweet_berry:sweet_berry_bush_2"},
+    nodenames = {"mcl_sweet_berry:sweet_berry_bush_2"},
     interval = 10.0,
     chance = 16,
     action = function(pos, node, active_object_count, active_object_count_wider)
-        minetest.set_node(pos, {name = "mc_sweet_berry:sweet_berry_bush_3"})
+        minetest.set_node(pos, {name = "mcl_sweet_berry:sweet_berry_bush_3"})
     end
 })
 
