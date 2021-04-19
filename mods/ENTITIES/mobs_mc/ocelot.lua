@@ -121,7 +121,6 @@ cat.sounds = {
 }
 cat.on_rightclick = function(self, clicker)
 	if mobs:feed_tame(self, clicker, 1, true, false) then return end
-	if mobs:protect(self, clicker) then return end
 
 	if self.child then return end
 

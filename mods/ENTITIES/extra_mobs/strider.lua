@@ -124,7 +124,6 @@ local strider = {
 		if wielditem:get_name() ~= controlitem then
 			if mobs:feed_tame(self, clicker, 1, true, true) then return end
 		end
-		if mobs:protect(self, clicker) then return end
 
 		if self.child then
 			return

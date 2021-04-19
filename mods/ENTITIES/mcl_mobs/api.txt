@@ -521,19 +521,6 @@ Will return true when mob is fed with item it likes.
                 them up
 
 
-Protecting Mobs
----------------
-
-mobs:protect(self, clicker)
-
-This function can be used to right-click any tamed mob with mobs:protector item,
-this will protect the mob from harm inside of a protected area from other
-players.  Will return true when mob right-clicked with mobs:protector item.
-
-   'self'    mob information
-   'clicker' player information
-
-
 Riding Mobs
 -----------
 

@@ -147,9 +147,7 @@ dog.specific_attack = nil
 dog.on_rightclick = function(self, clicker)
 	local item = clicker:get_wielded_item()
 
-	if mobs:protect(self, clicker) then
-		return
-	elseif is_food(item:get_name()) then
+	if is_food(item:get_name()) then
 		-- Feed to increase health
 		local hp = self.health
 		local hp_add = 0

@@ -50,7 +50,6 @@ local cow_def = {
 	follow = mobs_mc.follow.cow,
 	on_rightclick = function(self, clicker)
 		if mobs:feed_tame(self, clicker, 1, true, true) then return end
-		if mobs:protect(self, clicker) then return end
 
 		if self.child then
 			return
@@ -86,7 +85,6 @@ mooshroom_def.mesh = "mobs_mc_cow.b3d"
 mooshroom_def.textures = { {"mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png"}, {"mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" } }
 mooshroom_def.on_rightclick = function(self, clicker)
 	if mobs:feed_tame(self, clicker, 1, true, true) then return end
-	if mobs:protect(self, clicker) then return end
 
 	if self.child then
 		return

@@ -112,11 +112,6 @@ function mobs:spawn_child(pos, mob_type)
 end
 
 
--- No-op in MCL2 (protecting mobs is not possible).
-function mobs:protect(self, clicker)
-	return false
-end
-
 
 -- feeding, taming and breeding (thanks blert2112)
 function mobs:feed_tame(self, clicker, feed_count, breed, tame)

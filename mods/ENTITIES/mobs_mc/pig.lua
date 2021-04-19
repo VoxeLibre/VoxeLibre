@@ -95,7 +95,6 @@ mobs:register_mob("mobs_mc:pig", {
 		if wielditem:get_name() ~= mobs_mc.items.carrot_on_a_stick then
 			if mobs:feed_tame(self, clicker, 1, true, true) then return end
 		end
-		if mobs:protect(self, clicker) then return end
 
 		if self.child then
 			return
