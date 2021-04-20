@@ -2179,15 +2179,17 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 		lvm_used = true
 	end
 
+	return lvm_used, shadow
+end
+
+local function basic_node(minp, maxp, blockseed)
 	if mg_name ~= "singlenode" then
 		-- Generate special decorations
 		generate_underground_mushrooms(minp, maxp, blockseed)
 		generate_nether_decorations(minp, maxp, blockseed)
-		generate_structures(minp, maxp, blockseed, biomemap)
+		generate_structures(minp, maxp, blockseed, minetest.get_mapgen_object("biomemap"))
 	end
-
-	return lvm_used, shadow
 end
 
-mcl_mapgen_core.register_generator("main", basic, nil, 1, true)
+mcl_mapgen_core.register_generator("main", basic, basic_node, 1, true)
 
