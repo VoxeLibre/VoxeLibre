@@ -311,7 +311,6 @@ function mobs:register_mob(name, def)
 		backface_culling = true,
 		walk_timer = 0,
 		stand_timer = 0,
-		wandering = true,
 		current_animation = "",
 		gravity = GRAVITY,
 		swim = def.swim,

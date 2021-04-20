@@ -92,8 +92,17 @@ end
 local land_state_list_wandering = {"stand", "walk"}
 
 local land_state_switch = function(self, dtime)
+	
+
+	if self.hostile and attack then
+		self.state = 
+		return
+	end
+
+	--do math after sure not attacking
 	self.state_timer = self.state_timer - dtime
-	if self.wandering and self.state_timer <= 0 then
+
+	if self.state_timer <= 0 then
 		self.state_timer = math.random(4,10) + math.random()
 		self.state = land_state_list_wandering[math.random(1,#land_state_list_wandering)]
 	end
@@ -203,7 +212,7 @@ local swim_state_list_wandering = {"stand", "swim"}
 
 local swim_state_switch = function(self, dtime)
 	self.state_timer = self.state_timer - dtime
-	if self.wandering and self.state_timer <= 0 then
+	if self.state_timer <= 0 then
 		self.state_timer = math.random(4,10) + math.random()
 		self.state = swim_state_list_wandering[math.random(1,#swim_state_list_wandering)]
 	end
@@ -335,7 +344,7 @@ local fly_state_list_wandering = {"stand", "fly"}
 
 local fly_state_switch = function(self, dtime)
 	self.state_timer = self.state_timer - dtime
-	if self.wandering and self.state_timer <= 0 then
+	if self.state_timer <= 0 then
 		self.state_timer = math.random(4,10) + math.random()
 		self.state = fly_state_list_wandering[math.random(1,#fly_state_list_wandering)]
 	end
@@ -482,7 +491,7 @@ local jump_state_list_wandering = {"stand", "jump"}
 
 local jump_state_switch = function(self, dtime)
 	self.state_timer = self.state_timer - dtime
-	if self.wandering and self.state_timer <= 0 then
+	if self.state_timer <= 0 then
 		self.state_timer = math.random(4,10) + math.random()
 		self.state = jump_state_list_wandering[math.random(1,#jump_state_list_wandering)]
 	end
@@ -603,8 +612,13 @@ mobs.mob_step = function(self, dtime)
 		--1 for eye height adjust is debug
 		local attacking = mobs.detect_closest_player_within_radius(self,true,10,1)
 
+		--go get the closest player ROAR >:O
 		if attacking then
-			print(attacking:get_player_name())
+			self.attack = attacking
+
+		--no player in area
+		else
+			self.attack = nil
 		end
 	end
 
