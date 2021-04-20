@@ -14,7 +14,7 @@ local do_tnt = function(obj, damage)
 end
 
 --a fast function to be able to detect only players without using objects_in_radius
-mobs.detect_players_in_area = function(self, line_of_sight, radius, object_height_adder)
+mobs.detect_closest_player_within_radius = function(self, line_of_sight, radius, object_height_adder)
 	
 	line_of_sight = line_of_sight or true --fallback line_of_sight
 	radius = radius or 10 -- fallback radius

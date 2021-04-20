@@ -600,7 +600,7 @@ mobs.mob_step = function(self, dtime)
 		--true for line_of_sight is debug
 		--10 for radius is debug
 		--1 for eye height adjust is debug
-		local attacking = mobs.detect_players_in_area(self,true,10,1)
+		local attacking = mobs.detect_closest_player_within_radius(self,true,10,1)
 
 		if attacking then
 			print(attacking:get_player_name())
