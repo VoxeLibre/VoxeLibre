@@ -318,6 +318,8 @@ function mobs:register_mob(name, def)
 		swim_in = def.swim_in or {mobs_mc.items.water_source, "mcl_core:water_flowing", mobs_mc.items.river_water_source},
 		pitch_switch = "static",
 		jump_only = def.jump_only,
+		hostile = def.hostile,
+		neutral = def.neutral,
 		--end j4i stuff
 
 		-- MCL2 extensions

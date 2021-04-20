@@ -596,6 +596,10 @@ mobs.mob_step = function(self, dtime)
 	end
 
 
+	if self.hostile then
+		print("I'm a bad boi")
+	end
+
 	-- can mob be pushed, if so calculate direction -- do this last (overrides everything)
 	if self.pushable then
 		mobs.collision(self)
