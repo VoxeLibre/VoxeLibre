@@ -597,7 +597,14 @@ mobs.mob_step = function(self, dtime)
 
 
 	if self.hostile then
-		print("I'm a bad boi")
+		--true for line_of_sight is debug
+		--10 for radius is debug
+		--1 for eye height adjust is debug
+		local attacking = mobs.detect_players_in_area(self,true,10,1)
+
+		if attacking then
+			print(attacking:get_player_name())
+		end
 	end
 
 	-- can mob be pushed, if so calculate direction -- do this last (overrides everything)
