@@ -574,6 +574,7 @@ mobs.mob_step = function(self, dtime)
 
 	--do not continue if non-existent
 	if not self or not self.object or not self.object:get_luaentity() then
+		self.object:remove()
 		return false
 	end
 
