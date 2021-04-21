@@ -574,9 +574,7 @@ mobs.mob_step = function(self, dtime)
 
 	if self.hostile then
 		--true for line_of_sight is debug
-		--10 for radius is debug
-		--1 for eye height adjust is debug
-		local attacking = mobs.detect_closest_player_within_radius(self,true,10,1)
+		local attacking = mobs.detect_closest_player_within_radius(self,true,self.view_range,self.eye_height)
 
 		--go get the closest player ROAR >:O
 		if attacking then

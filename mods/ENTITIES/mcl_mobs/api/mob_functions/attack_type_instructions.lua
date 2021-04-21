@@ -107,6 +107,15 @@ mobs.punch_attack_walk = function(self,dtime)
 
     mobs.set_mob_animation(self, "run")
 
+    --make punchy mobs jump
+    --check for nodes to jump over
+    --explosive mobs will just ride against walls for now
+	local node_in_front_of = mobs.jump_check(self)
+	if node_in_front_of == 1 then
+		mobs.jump(self)
+    end
+
+
     if self.punch_timer > 0 then
         self.punch_timer = self.punch_timer - dtime
     end

@@ -71,6 +71,7 @@ local zombie = {
 		damage = "mobs_mc_zombie_hurt",
 		distance = 16,
 	},
+	eye_height = 1.65,
 	walk_velocity = 1,
 	run_velocity = 3,
 	damage = 3,
