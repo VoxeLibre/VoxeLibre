@@ -14,8 +14,6 @@ mobs.explode_attack_walk = function(self,dtime)
     mobs.set_yaw_while_attacking(self)
 
     --make mob walk up to player within 2 nodes distance then start exploding
-
-    --THIS NEEDS TO BE RECODED TO TAKE COLLISION BOXES INTO ACCOUNT!!!
     if vector_distance(self.object:get_pos(), self.attacking:get_pos()) >= self.reach then
         mobs.set_velocity(self, self.run_velocity)
         mobs.set_mob_animation(self,"run")
@@ -28,12 +26,17 @@ mobs.explode_attack_walk = function(self,dtime)
         if not self.explosion_animation then
             self.explosion_animation = 0
         end
+
+        --play ignite sound
+        if self.explosion_animation == 0 then
+            mobs.play_sound(self,"attack")
+        end
+
         mobs.set_mob_animation(self,"stand")
 
         mobs.handle_explosion_animation(self)
 
         self.explosion_animation = self.explosion_animation + (dtime/2)
-
     end
 
     --make explosive mobs jump
