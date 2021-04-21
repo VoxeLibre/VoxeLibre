@@ -32,13 +32,15 @@ mobs.explode_attack_walk = function(self,dtime)
 
         mobs.handle_explosion_animation(self)
 
-        self.explosion_animation = self.explosion_animation + (dtime/3)
+        self.explosion_animation = self.explosion_animation + (dtime/2)
+
+        print(self.explosion_animation)
     end
     
 
     --do biggening explosion thing
     if self.explosion_animation and self.explosion_animation > self.explosion_timer then
-        mcl_explosions.explode(self.object:get_pos(), self.explosion_strength)
+        mcl_explosions.explode(self.object:get_pos(), self.explosion_strength,{ drop_chance = 1.0 })
         self.object:remove()
     end
 end
