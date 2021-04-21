@@ -1,6 +1,7 @@
 local vector_direction = vector.direction
 local minetest_dir_to_yaw = minetest.dir_to_yaw
 local vector_distance = vector.distance
+local vector_multiply = vector.multiply
 --[[
  _____           _           _      
 |  ___|         | |         | |     
@@ -129,4 +130,20 @@ mobs.punch_attack = function(self)
     }, nil)
 
     self.punch_timer = self.punch_timer_cooloff
+
+
+    --knockback
+    local pos1 = self.object:get_pos()
+    pos1.y = 0
+    local pos2 = self.attacking:get_pos()
+    pos2.y = 0
+    local dir = vector_direction(pos1,pos2)
+
+    dir = vector_multiply(dir,3)
+
+    if self.attacking:get_velocity().y <= 1 then
+        dir.y = 5
+    end
+
+    self.attacking:add_velocity(dir)
 end
