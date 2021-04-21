@@ -53,40 +53,6 @@ local cliff_check = function(self,dtime)
 	return free_fall
 end
 
---check if a mob needs to jump
-local jump_check = function(self,dtime)
-
-    local pos = self.object:get_pos()
-    pos.y = pos.y + 0.1
-    local dir = minetest_yaw_to_dir(self.yaw)
-
-    local collisionbox = self.object:get_properties().collisionbox
-	local radius = collisionbox[4] + 0.5
-
-    vector_multiply(dir, radius)
-
-	--only jump if there's a node and a non-solid node above it
-    local test_dir = vector.add(pos,dir)
-
-	local green_flag_1 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0
-
-	test_dir.y = test_dir.y + 1
-
-	local green_flag_2 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") == 0
-
-    if green_flag_1 and green_flag_2 then
-		--can jump over node
-        return(1)
-	elseif green_flag_1 and not green_flag_2 then 
-		--wall in front of mob
-		return(2)
-    end
-
-	--nothing to jump over
-	return(0)
-end
-
-
 
 -- state switching logic (stand, walk, run, attacks)
 local land_state_list_wandering = {"stand", "walk"}
@@ -157,7 +123,7 @@ local land_state_execution = function(self,dtime)
 		mobs.movement_rotation_lock(self)
 
 		--check for nodes to jump over
-		local node_in_front_of = jump_check(self)
+		local node_in_front_of = mobs.jump_check(self)
 
 		if node_in_front_of == 1 then
 

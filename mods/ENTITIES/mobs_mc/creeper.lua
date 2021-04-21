@@ -151,6 +151,7 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 		"mobs_mc_creeper_charge.png"},
 	},
 	visual_size = {x=3, y=3},
+	rotate = 270,
 	sounds = {
 		attack = "tnt_ignite",
 		death = "mobs_mc_creeper_death",

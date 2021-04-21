@@ -34,7 +34,14 @@ mobs.explode_attack_walk = function(self,dtime)
 
         self.explosion_animation = self.explosion_animation + (dtime/2)
 
-        print(self.explosion_animation)
+    end
+
+    --make explosive mobs jump
+    --check for nodes to jump over
+    --explosive mobs will just ride against walls for now
+	local node_in_front_of = mobs.jump_check(self)
+	if node_in_front_of == 1 then
+		mobs.jump(self)
     end
     
 

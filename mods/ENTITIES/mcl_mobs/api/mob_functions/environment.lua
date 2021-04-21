@@ -1,6 +1,11 @@
 local minetest_line_of_sight = minetest.line_of_sight
+local minetest_dir_to_yaw    = minetest.dir_to_yaw
+local minetest_yaw_to_dir    = minetest.yaw_to_dir
+local minetest_get_node      = minetest.get_node
+local minetest_get_item_group = minetest.get_item_group
 
 local vector_new = vector.new
+local vector_multiply = vector.multiply
 
 -- default function when mobs are blown up with TNT
 local do_tnt = function(obj, damage)
@@ -70,4 +75,38 @@ mobs.detect_closest_player_within_radius = function(self, line_of_sight, radius,
 	end
 
 	return(winner_player)
+end
+
+
+--check if a mob needs to jump
+mobs.jump_check = function(self,dtime)
+
+    local pos = self.object:get_pos()
+    pos.y = pos.y + 0.1
+    local dir = minetest_yaw_to_dir(self.yaw)
+
+    local collisionbox = self.object:get_properties().collisionbox
+	local radius = collisionbox[4] + 0.5
+
+    vector_multiply(dir, radius)
+
+	--only jump if there's a node and a non-solid node above it
+    local test_dir = vector.add(pos,dir)
+
+	local green_flag_1 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0
+
+	test_dir.y = test_dir.y + 1
+
+	local green_flag_2 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") == 0
+
+    if green_flag_1 and green_flag_2 then
+		--can jump over node
+        return(1)
+	elseif green_flag_1 and not green_flag_2 then 
+		--wall in front of mob
+		return(2)
+    end
+
+	--nothing to jump over
+	return(0)
 end
