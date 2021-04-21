@@ -14,13 +14,16 @@ local pigman = {
 	-- type="animal", passive=false: This combination is needed for a neutral mob which becomes hostile, if attacked
 	type = "animal",
 	passive = false,
+	neutral = true,
+	rotate = 270,
 	spawn_class = "passive",
+	hostile_cooldown = 15, --seconds
 	hp_min = 20,
 	hp_max = 20,
 	xp_min = 6,
 	xp_max = 6,
 	armor = {undead = 90, fleshy = 90},
-	attack_type = "dogfight",
+	attack_type = "punch",
 	group_attack = { "mobs_mc:pigman", "mobs_mc:baby_pigman" },
 	damage = 9,
 	reach = 2,

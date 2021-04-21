@@ -14,6 +14,7 @@ mobs:register_mob("mobs_mc:endermite", {
 	xp_max = 3,
 	armor = {fleshy = 100, arthropod = 100},
 	group_attack = true,
+	attack_type = "punch",
 	collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.29, 0.2},
 	visual = "mesh",
 	mesh = "mobs_mc_endermite.b3d",

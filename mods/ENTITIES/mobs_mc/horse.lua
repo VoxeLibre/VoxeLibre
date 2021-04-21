@@ -281,10 +281,6 @@ local horse = {
 			return
 		end
 
-		if mobs:protect(self, clicker) then
-			return
-		end
-
 		-- Make sure tamed horse is mature and being clicked by owner only
 		if self.tamed and not self.child and self.owner == clicker:get_player_name() then
 
@@ -356,9 +352,6 @@ local horse = {
 				self.object:set_properties({stepheight = 1.1})
 				mobs.attach(self, clicker)
 
-			-- Used to capture horse
-			elseif not self.driver and iname ~= "" then
-				mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 			end
 		end
 	end,

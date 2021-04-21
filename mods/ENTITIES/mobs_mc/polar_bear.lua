@@ -30,7 +30,7 @@ mobs:register_mob("mobs_mc:polar_bear", {
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
 	group_attack = true,
-	attack_type = "dogfight",
+	attack_type = "punch",
 	drops = {
 		-- 3/4 chance to drop raw fish (poor approximation)
 		{name = mobs_mc.items.fish_raw,

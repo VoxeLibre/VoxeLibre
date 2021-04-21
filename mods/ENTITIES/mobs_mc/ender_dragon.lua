@@ -46,7 +46,7 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	lava_damage = 0,
 	fire_damage = 0,
 	on_rightclick = nil,
-	attack_type = "dogshoot",
+	attack_type = "projectile",
 	arrow = "mobs_mc:dragon_fireball",
 	shoot_interval = 0.5,
 	shoot_offset = -1.0,

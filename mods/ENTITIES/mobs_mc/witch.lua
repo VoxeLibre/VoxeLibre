@@ -33,7 +33,7 @@ mobs:register_mob("mobs_mc:witch", {
 	run_velocity = 2.4,
 	pathfinding = 1,
 	group_attack = true,
-	attack_type = "dogshoot",
+	attack_type = "projectile",
 	arrow = "mobs_mc:potion_arrow",
 	shoot_interval = 2.5,
 	shoot_offset = 1,

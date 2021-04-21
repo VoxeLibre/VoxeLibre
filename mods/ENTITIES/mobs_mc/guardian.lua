@@ -13,7 +13,7 @@ mobs:register_mob("mobs_mc:guardian", {
 	xp_max = 10,
 	breath_max = -1,
     	passive = false,
-	attack_type = "dogfight",
+	attack_type = "punch",
 	pathfinding = 1,
 	view_range = 16,
 	walk_velocity = 2,

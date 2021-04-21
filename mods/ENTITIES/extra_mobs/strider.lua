@@ -124,7 +124,6 @@ local strider = {
 		if wielditem:get_name() ~= controlitem then
 			if mobs:feed_tame(self, clicker, 1, true, true) then return end
 		end
-		if mobs:protect(self, clicker) then return end
 
 		if self.child then
 			return
@@ -190,9 +189,6 @@ local strider = {
 				inv:set_stack("main",self.driver:get_wield_index(), wielditem)
 			end
 			return
-
-		elseif not self.driver and clicker:get_wielded_item():get_name() ~= "" then
-			mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 		end
 	end,
 }

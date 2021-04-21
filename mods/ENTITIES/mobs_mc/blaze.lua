@@ -17,6 +17,9 @@ mobs:register_mob("mobs_mc:blaze", {
 	hp_max = 20,
 	xp_min = 10,
 	xp_max = 10,
+	tilt_fly = false,
+	hostile = true,
+	rotate = 270,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.79, 0.3},
 	rotate = -180,
 	visual = "mesh",
@@ -35,7 +38,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	walk_velocity = .8,
 	run_velocity = 1.6,
 	damage = 6,
-	reach = 2,
+	reach = 4, -- don't want blaze getting too close
 	pathfinding = 1,
 	drops = {
 		{name = mobs_mc.items.blaze_rod,
@@ -63,7 +66,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	fall_speed = -2.25,
 	light_damage = 0,
 	view_range = 16,
-	attack_type = "dogshoot",
+	attack_type = "projectile",
 	arrow = "mobs_mc:blaze_fireball",
 	shoot_interval = 3.5,
 	shoot_offset = 1.0,
@@ -75,6 +78,13 @@ mobs:register_mob("mobs_mc:blaze", {
 	fear_height = 0,
 	glow = 14,
 	fire_resistant = true,
+	eye_height = 0.75,
+	shoot_arrow = function(self, pos, dir)
+		-- 2-4 damage per arrow
+		local dmg = math.random(2,4)
+		mcl_bows.shoot_arrow("mobs_mc:blaze_fireball", pos, dir, self.object:get_yaw(), self.object, nil, dmg)		
+	end,
+
 	do_custom = function(self)
 		if self.state == "attack" and vector.distance(self.object:get_pos(), self.attack:get_pos()) < 1.2 then
 			mcl_burning.set_on_fire(self.attack, 5)
@@ -147,6 +157,7 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 	visual_size = {x = 0.3, y = 0.3},
 	textures = {"mcl_fire_fire_charge.png"},
 	velocity = 15,
+	speed = 5,
 
 	-- Direct hit, no fire... just plenty of pain
 	hit_player = function(self, player)
@@ -179,7 +190,9 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 
 	-- Node hit, make fire
 	hit_node = function(self, pos, node)
-		if node.name == "air" then
+		if node.name ~= "air" then
+			local pos_above = table.copy(pos)
+			pos_above.y = pos_above.y + 1
 			minetest.set_node(pos_above, {name=mobs_mc.items.fire})
 		else
 			local v = self.object:get_velocity()
