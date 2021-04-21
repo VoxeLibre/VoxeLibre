@@ -44,9 +44,9 @@ mobs:register_mob("mobs_mc:creeper", {
 
 	--hssssssssssss
 
-	explosion_strength = 12,
-	explosion_radius = 6,
-	explosion_damage_radius = 8,
+	explosion_strength = 10,
+	explosion_radius = 4,
+	explosion_damage_radius = 6,
 	explosiontimer_reset_radius = 6,
 	reach = 3,
 	explosion_timer = 0.3,
