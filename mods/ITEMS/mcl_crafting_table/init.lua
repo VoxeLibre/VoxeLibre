@@ -2,7 +2,7 @@ local S = minetest.get_translator("mcl_crafting_table")
 local formspec_escape = minetest.formspec_escape
 local show_formspec = minetest.show_formspec
 local C = minetest.colorize
-local text_color = mcl_colors.DARK_GRAY
+local text_color = "#313131"
 local itemslot_bg = mcl_formspec.get_itemslot_bg
 
 mcl_crafting_table = {}

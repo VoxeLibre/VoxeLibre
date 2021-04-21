@@ -4,8 +4,8 @@ local function active_brewing_formspec(fuel_percent, brew_percent)
 
 	return "size[9,8.75]"..
 	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]"..
-	"label[4,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Brewing Stand"))).."]"..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+	"label[4,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Brewing Stand"))).."]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.75;9,1;]"..
@@ -35,8 +35,8 @@ end
 
 local brewing_formspec = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]"..
-	"label[4,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Brewing Stand"))).."]"..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+	"label[4,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Brewing Stand"))).."]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.75;9,1;]"..
