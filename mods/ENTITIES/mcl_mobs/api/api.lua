@@ -346,6 +346,7 @@ function mobs:register_mob(name, def)
 		fire_damage_resistant = def.fire_damage_resistant or false,
 		ignited_by_sunlight = def.ignited_by_sunlight or false,
 		eye_height = def.eye_height or 1.5,
+		defuse_reach = def.defuse_reach or 4,
 		-- End of MCL2 extensions
 
 		on_spawn = def.on_spawn,

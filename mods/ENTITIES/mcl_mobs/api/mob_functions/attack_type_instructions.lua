@@ -23,8 +23,13 @@ mobs.explode_attack_walk = function(self,dtime)
 
     mobs.set_yaw_while_attacking(self)
 
+    local distance_from_attacking = vector_distance(self.object:get_pos(), self.attacking:get_pos())
+
     --make mob walk up to player within 2 nodes distance then start exploding
-    if vector_distance(self.object:get_pos(), self.attacking:get_pos()) >= self.reach then
+    if distance_from_attacking >= self.reach and
+    --don't allow explosion to cancel unless out of the reach boundary
+    not (self.explosion_animation ~= nil and self.explosion_animation > 0 and distance_from_attacking <= self.defuse_reach) then
+
         mobs.set_velocity(self, self.run_velocity)
         mobs.set_mob_animation(self,"run")
 
