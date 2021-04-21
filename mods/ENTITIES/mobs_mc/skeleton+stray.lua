@@ -22,6 +22,8 @@ local skeleton = {
 	xp_min = 6,
 	xp_max = 6,
 	breath_max = -1,
+	eye_height = 1.5,
+	projectile_cooldown = 1.5,
 	armor = {undead = 100, fleshy = 100},
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.98, 0.3},
 	pathfinding = 1,
@@ -43,7 +45,7 @@ local skeleton = {
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
 	damage = 2,
-	reach = 2,
+	reach = 3,
 	drops = {
 		{name = mobs_mc.items.arrow,
 		chance = 1,

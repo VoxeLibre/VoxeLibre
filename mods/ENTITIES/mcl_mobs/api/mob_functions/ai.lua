@@ -168,6 +168,10 @@ local land_state_execution = function(self,dtime)
 
 			mobs.punch_attack_walk(self,dtime)
 
+		elseif self.attack_type == "projectile" then
+
+			mobs.projectile_attack_walk(self,dtime)
+
 		end
 
 	end	
@@ -602,7 +606,7 @@ mobs.mob_step = function(self, dtime)
 
 	--count down hostile cooldown timer when no players in range
 	if self.neutral and self.hostile and not attacking and self.hostile_cooldown_timer then
-		
+
 		self.hostile_cooldown_timer = self.hostile_cooldown_timer - dtime
 
 		if self.hostile_cooldown_timer <= 0 then

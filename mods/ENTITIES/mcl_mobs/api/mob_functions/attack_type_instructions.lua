@@ -2,6 +2,7 @@ local vector_direction = vector.direction
 local minetest_dir_to_yaw = minetest.dir_to_yaw
 local vector_distance = vector.distance
 local vector_multiply = vector.multiply
+
 --[[
  _____           _           _      
 |  ___|         | |         | |     
@@ -151,4 +152,58 @@ mobs.punch_attack = function(self)
     end
 
     self.attacking:add_velocity(dir)
+end
+
+
+
+
+--[[
+______          _           _   _ _      
+| ___ \        (_)         | | (_) |     
+| |_/ / __ ___  _  ___  ___| |_ _| | ___ 
+|  __/ '__/ _ \| |/ _ \/ __| __| | |/ _ \
+| |  | | | (_) | |  __/ (__| |_| | |  __/
+\_|  |_|  \___/| |\___|\___|\__|_|_|\___|
+              _/ |                       
+             |__/                        
+]]--
+
+
+mobs.projectile_attack_walk = function(self,dtime)
+
+    --this needs an exception
+    if self.attacking == nil or not self.attacking:is_player() then
+        self.attacking = nil
+        return
+    end
+
+    mobs.set_yaw_while_attacking(self)
+
+    local distance_from_attacking = vector_distance(self.object:get_pos(), self.attacking:get_pos())
+
+
+    if distance_from_attacking >= self.reach then
+        mobs.set_velocity(self, self.run_velocity)
+        mobs.set_mob_animation(self,"run")
+    else
+        mobs.set_velocity(self,0)
+        mobs.set_mob_animation(self,"stand")
+    end
+
+    --do this to not load data into other mobs
+    if not self.projectile_timer then
+        self.projectile_timer = self.projectile_cooldown
+    end
+
+    if self.projectile_timer > 0 then
+        self.projectile_timer = self.projectile_timer - dtime
+
+        --shoot
+        if self.projectile_timer <= 0 then
+            --reset timer
+            self.projectile_timer = self.projectile_cooldown
+            mobs.shoot_projectile(self)
+        end
+    end
+
 end

@@ -1,4 +1,5 @@
 local math_floor = math.floor
+local vector_direction = vector.direction
 
 mobs.feed_tame = function(self)
     return nil
@@ -336,4 +337,22 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		end
 	end
 	]]--
+end
+
+--do internal per mob projectile calculations
+mobs.shoot_projectile = function(self)
+
+	local pos1 = self.object:get_pos()
+	--add mob eye height
+	pos1.y = pos1.y + self.eye_height
+
+	local pos2 = self.attacking:get_pos()
+	--add player eye height
+	pos2.y = pos2.y + self.attacking:get_properties().eye_height
+
+	--get direction
+	local dir = vector_direction(pos1,pos2)
+
+	--call internal shoot_arrow function
+	self.shoot_arrow(self,pos1,dir)
 end
