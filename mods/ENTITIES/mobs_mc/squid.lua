@@ -17,6 +17,7 @@ mobs:register_mob("mobs_mc:squid", {
     xp_max = 3,
     armor = 100,
     rotate = 270,
+    tilt_swim = true,
     -- FIXME: If the squid is near the floor, it turns black
     collisionbox = {-0.4, 0.0, -0.4, 0.4, 0.9, 0.4},
     visual = "mesh",
