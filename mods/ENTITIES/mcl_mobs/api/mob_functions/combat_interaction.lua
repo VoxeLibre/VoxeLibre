@@ -1,1 +1,0 @@
---make mobs scan players and check distance then if direct line of sight then add to list and go after whichever one is closer

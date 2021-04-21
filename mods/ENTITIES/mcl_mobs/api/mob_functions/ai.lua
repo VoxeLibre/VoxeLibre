@@ -338,6 +338,12 @@ ______ _
 local fly_state_list_wandering = {"stand", "fly"}
 
 local fly_state_switch = function(self, dtime)
+
+	if self.hostile and self.attacking then
+		self.state = "attack"
+		return
+	end
+
 	self.state_timer = self.state_timer - dtime
 	if self.state_timer <= 0 then
 		self.state_timer = math.random(4,10) + math.random()
@@ -440,6 +446,22 @@ local fly_state_execution = function(self,dtime)
 			end
 
 			mobs.set_fly_velocity(self,self.walk_velocity)
+		elseif self.state == "attack" then
+		
+			--execute mob attack type
+			--if self.attack_type == "explode" then
+
+				--mobs.explode_attack_fly(self, dtime)
+
+			--elseif self.attack_type == "punch" then
+
+				--mobs.punch_attack_fly(self,dtime)
+
+			if self.attack_type == "projectile" then
+
+				mobs.projectile_attack_fly(self,dtime)
+
+			end
 		end
 	else
 		--make the mob float

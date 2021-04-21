@@ -2,14 +2,17 @@ local math_pi     = math.pi
 local math_sin    = math.sin
 local math_cos    = math.cos
 local math_random = math.random
+local HALF_PI     = math_pi / 2
 local DOUBLE_PI   = math_pi * 2
 
 -- localize vector functions
 local vector_new      = vector.new
 local vector_length   = vector.length
 local vector_multiply = vector.multiply
+local vector_distance = vector.distance
 
 local minetest_yaw_to_dir = minetest.yaw_to_dir
+local minetest_dir_to_yaw = minetest.dir_to_yaw
 
 local DEFAULT_JUMP_HEIGHT = 5
 local DEFAULT_FLOAT_SPEED = 4
@@ -235,6 +238,27 @@ mobs.set_fly_velocity = function(self, v)
 		self.object:add_velocity(new_velocity_addition)
 	end
 end
+
+--a quick and simple pitch calculation between two vector positions
+mobs.calculate_pitch = function(pos1, pos2)
+
+	if pos1 == nil or pos2 == nil then
+		return false
+	end
+
+    return(minetest_dir_to_yaw(vector_new(vector_distance(vector_new(pos1.x,0,pos1.z),vector_new(pos2.x,0,pos2.z)),0,pos1.y - pos2.y)) + HALF_PI)
+end
+
+--make mobs fly up or down based on their y difference
+mobs.set_pitch_while_attacking = function(self)
+	local pos1 = self.object:get_pos()
+	local pos2 = self.attacking:get_pos()
+
+	local pitch = mobs.calculate_pitch(pos2,pos1)
+
+	self.pitch = pitch
+end
+
 
 
 --[[

@@ -48,6 +48,9 @@ local math_floor  = math.floor
 -- localize vector functions
 local vector_new    = vector.new
 local vector_length = vector.length
+local vector_direction = vector.direction
+local vector_normalize = vector.normalize
+local vector_multiply = vector.multiply
 
 -- mob constants
 local MAX_MOB_NAME_LENGTH = 30
@@ -324,7 +327,7 @@ function mobs:register_mob(name, def)
 		attacking = nil,
 		visual_size_origin = def.visual_size or {x = 1, y = 1, z = 1},
 		punch_timer_cooloff = def.punch_timer_cooloff or 0.5,
-		projectile_cooldown = projectile_cooldown or 2,
+		projectile_cooldown = def.projectile_cooldown or 2,
 		--end j4i stuff
 
 		-- MCL2 extensions
@@ -439,9 +442,13 @@ end -- END mobs:register_mob function
 -- register arrow for shoot attack
 function mobs:register_arrow(name, def)
 
-	if not name or not def then return end -- errorcheck
+	-- errorcheck
+	if not name or not def then
+		print("failed to register arrow entity")
+		return
+	end
 
-	minetest.register_entity(name, {
+	minetest.register_entity(name.."_entity", {
 
 		physical = false,
 		visual = def.visual,
@@ -458,15 +465,17 @@ function mobs:register_arrow(name, def)
 		switch = 0,
 		owner_id = def.owner_id,
 		rotate = def.rotate,
-		on_punch = function(self)
-			local vel = self.object:get_velocity()
-			--self.object:set_velocity({x=vel.x * -1, y=vel.y * -1, z=vel.z * -1})
-			local pos = self.object:get_pos()
+		speed = def.speed or nil,
+		on_step = function(self)
 
-			if self.switch == 0
-			or self.timer > 150
-			or not within_limits(pos, 0) then
+			local vel = self.object:get_velocity()
+
+			local pos = self.object:get_pos()
+			
+			if self.timer > 150
+			or not mobs.within_limits(pos, 0) then
 				mcl_burning.extinguish(self.object)
+				print("removing 1")
 				self.object:remove();
 
 				return
@@ -491,7 +500,7 @@ function mobs:register_arrow(name, def)
 
 			if self.hit_node then
 
-				local node = node_ok(pos).name
+				local node = minetest_get_node(pos).name
 
 				if minetest_registered_nodes[node].walkable then
 
@@ -519,32 +528,42 @@ function mobs:register_arrow(name, def)
 					if self.hit_player
 					and player:is_player() then
 
-						self.hit_player(self, player)
+						mobs.arrow_hit(self, player)
+
+						print("wow everything is fucked")
 						self.object:remove();
 						return
 					end
 
+					--[[
 					local entity = player:get_luaentity()
 
 					if entity
 					and self.hit_mob
 					and entity._cmi_is_mob == true
 					and tostring(player) ~= self.owner_id
-					and entity.name ~= self.object:get_luaentity().name then
-						self.hit_mob(self, player)
+					and entity.name ~= self.object:get_luaentity().name
+					and (self._shooter and entity.name ~= self._shooter:get_luaentity().name) then
+
+						--self.hit_mob(self, player)
 						self.object:remove();
 						return
 					end
+					]]--
 
+					--[[
 					if entity
 					and self.hit_object
 					and (not entity._cmi_is_mob)
 					and tostring(player) ~= self.owner_id
-					and entity.name ~= self.object:get_luaentity().name then
-						self.hit_object(self, player)
+					and entity.name ~= self.object:get_luaentity().name
+					and (self._shooter and entity.name ~= self._shooter:get_luaentity().name) then
+
+						--self.hit_object(self, player)
 						self.object:remove();
 						return
 					end
+					]]--
 				end
 			end
 

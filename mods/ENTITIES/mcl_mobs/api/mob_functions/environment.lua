@@ -4,6 +4,8 @@ local minetest_yaw_to_dir    = minetest.yaw_to_dir
 local minetest_get_node      = minetest.get_node
 local minetest_get_item_group = minetest.get_item_group
 local minetest_get_objects_inside_radius = minetest.get_objects_inside_radius
+local minetest_get_node_or_nil = minetest.get_node_or_nil
+local minetest_registered_nodes = minetest.registered_nodes
 
 local vector_new = vector.new
 local vector_multiply = vector.multiply
@@ -24,10 +26,6 @@ end
 --a fast function to be able to detect only players without using objects_in_radius
 mobs.detect_closest_player_within_radius = function(self, line_of_sight, radius, object_height_adder)
 	
-	line_of_sight = line_of_sight or true --fallback line_of_sight
-	radius = radius or 10 -- fallback radius
-	object_height_adder = object_height_adder or 0 --fallback entity (y height) addition for line of sight
-
 	local pos1 = self.object:get_pos()
 	local players_in_area = {}
 	local winner_player = nil
@@ -165,4 +163,38 @@ mobs.group_attack_initialization = function(self)
 			--end
 		end
 	end
+end
+
+-- check if within physical map limits (-30911 to 30927)
+-- within_limits, wmin, wmax = nil, -30913, 30928
+mobs.within_limits = function(pos, radius)
+	if mcl_vars then
+		if mcl_vars.mapgen_edge_min and mcl_vars.mapgen_edge_max then
+			wmin, wmax = mcl_vars.mapgen_edge_min, mcl_vars.mapgen_edge_max
+			within_limits = function(pos, radius)
+				return pos
+					and (pos.x - radius) > wmin and (pos.x + radius) < wmax
+					and (pos.y - radius) > wmin and (pos.y + radius) < wmax
+					and (pos.z - radius) > wmin and (pos.z + radius) < wmax
+			end
+		end
+	end
+	return pos
+		and (pos.x - radius) > wmin and (pos.x + radius) < wmax
+		and (pos.y - radius) > wmin and (pos.y + radius) < wmax
+		and (pos.z - radius) > wmin and (pos.z + radius) < wmax
+end
+
+-- get node but use fallback for nil or unknown
+mobs.node_ok = function(pos, fallback)
+
+	fallback = fallback or mobs.fallback_node
+
+	local node = minetest_get_node_or_nil(pos)
+
+	if node and minetest_registered_nodes[node.name] then
+		return node
+	end
+
+	return minetest_registered_nodes[fallback]
 end

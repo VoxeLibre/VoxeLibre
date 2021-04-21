@@ -4,6 +4,17 @@ local vector_distance = vector.distance
 local vector_multiply = vector.multiply
 
 --[[
+ _   _                     _   _ 
+| | | |                   | | | |
+| | | |     __ _ _ __   __| | | |
+| | | |    / _` | '_ \ / _` | | |
+|_| | |___| (_| | | | | (_| | |_|
+(_) \_____/\__,_|_| |_|\__,_| (_)
+]]--
+
+
+
+--[[
  _____           _           _      
 |  ___|         | |         | |     
 | |____  ___ __ | | ___   __| | ___ 
@@ -215,4 +226,78 @@ mobs.projectile_attack_walk = function(self,dtime)
 		mobs.jump(self)
     end
 
+end
+
+
+
+
+
+
+
+
+
+--[[
+ _  ______ _         _ 
+| | |  ___| |       | |
+| | | |_  | |_   _  | |
+| | |  _| | | | | | | |
+|_| | |   | | |_| | |_|
+(_) \_|   |_|\__, | (_)
+              __/ |    
+             |___/     
+]]--
+
+
+
+
+--[[
+______          _           _   _ _      
+| ___ \        (_)         | | (_) |     
+| |_/ / __ ___  _  ___  ___| |_ _| | ___ 
+|  __/ '__/ _ \| |/ _ \/ __| __| | |/ _ \
+| |  | | | (_) | |  __/ (__| |_| | |  __/
+\_|  |_|  \___/| |\___|\___|\__|_|_|\___|
+              _/ |                       
+             |__/                        
+]]--
+
+mobs.projectile_attack_fly = function(self, dtime)
+
+    --this needs an exception
+    if self.attacking == nil or not self.attacking:is_player() then
+        self.attacking = nil
+        return
+    end
+    
+    local distance_from_attacking = vector_distance(self.object:get_pos(), self.attacking:get_pos())
+
+    if distance_from_attacking >= self.reach then
+        mobs.set_yaw_while_attacking(self)
+        mobs.set_pitch_while_attacking(self)
+        mobs.set_fly_velocity(self, self.run_velocity)
+        mobs.set_mob_animation(self,"run")
+    else
+        mobs.set_yaw_while_attacking(self)
+        mobs.set_pitch_while_attacking(self)
+        mobs.set_fly_velocity(self, 0)
+        mobs.set_mob_animation(self,"stand")
+    end
+
+
+    --do this to not load data into other mobs
+    if not self.projectile_timer then
+        self.projectile_timer = self.projectile_cooldown
+    end
+
+    --run projectile timer
+    if self.projectile_timer > 0 then
+        self.projectile_timer = self.projectile_timer - dtime
+
+        --shoot
+        if self.projectile_timer <= 0 then
+            --reset timer
+            self.projectile_timer = self.projectile_cooldown
+            mobs.shoot_projectile(self)
+        end
+    end
 end

@@ -3,6 +3,8 @@ local minetest_get_objects_inside_radius    = minetest.get_objects_inside_radius
 local math_random = math.random
 local vector_multiply = vector.multiply
 
+local vector_direction = vector.direction
+
 local integer_test = {-1,1}
 
 mobs.collision = function(self)
@@ -107,4 +109,30 @@ mobs.collision = function(self)
 			
 		end
 	end
+end
+
+
+--this is used for arrow collisions
+mobs.arrow_hit = function(self, player)
+	
+    player:punch(self.object, 1.0, {
+        full_punch_interval = 1.0,
+        damage_groups = {fleshy = self._damage}
+    }, nil)
+
+
+    --knockback
+    local pos1 = self.object:get_pos()
+	pos1.y = 0
+    local pos2 = player:get_pos()
+    pos2.y = 0
+    local dir = vector_direction(pos1,pos2)
+
+    dir = vector_multiply(dir,3)
+
+    if player:get_velocity().y <= 1 then
+        dir.y = 5
+    end
+
+    player:add_velocity(dir)
 end
