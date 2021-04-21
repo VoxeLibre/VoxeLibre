@@ -90,7 +90,14 @@ mobs.punch_attack_walk = function(self,dtime)
     if self.punch_timer > 0 then
         self.punch_timer = self.punch_timer - dtime
     end
+end
 
-    print(self.punch_timer)
+mobs.punch_attack = function(self)
 
+    self.attacking:punch(self.object, 1.0, {
+        full_punch_interval = 1.0,
+        damage_groups = {fleshy = self.damage}
+    }, nil)
+
+    self.punch_timer = self.punch_timer_cooloff
 end

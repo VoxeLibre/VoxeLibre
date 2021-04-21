@@ -29,6 +29,13 @@ mobs.collision = function(self)
 
 	local collision_count = 0
 
+
+	local check_for_attack = false
+
+	if self.hostile and self.attacking then
+		check_for_attack = true
+	end
+
 	for _,object in ipairs(minetest_get_objects_inside_radius(pos, radius*1.25)) do
 		if object and object ~= self.object and (object:is_player() or object:get_luaentity()._cmi_is_mob == true) then--and
 		--don't collide with rider, rider don't collide with thing
@@ -85,6 +92,13 @@ mobs.collision = function(self)
 
 				if object:is_player() then
 					vel2 = vector_multiply(vel2, 2.5)
+
+					--integrate mob punching into collision detection
+					if check_for_attack and self.punch_timer <= 0 then
+						if object == self.attacking then
+							mobs.punch_attack(self)
+						end
+					end
 				end
 			
 				self.object:add_velocity(vel1)
