@@ -36,7 +36,7 @@ mobs.explode_attack_walk = function(self,dtime)
 
         mobs.handle_explosion_animation(self)
 
-        self.explosion_animation = self.explosion_animation + (dtime/2)
+        self.explosion_animation = self.explosion_animation + (dtime/2.5)
     end
 
     --make explosive mobs jump
@@ -58,7 +58,6 @@ end
 
 --this is a small helper function to make working with explosion animations easier
 mobs.reverse_explosion_animation = function(self,dtime)
-
 
     --if explosion animation was greater than 0 then reverse it
     if self.explosion_animation ~= nil and self.explosion_animation > 0 then
