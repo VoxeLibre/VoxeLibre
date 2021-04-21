@@ -1,7 +1,16 @@
 local vector_direction = vector.direction
 local minetest_dir_to_yaw = minetest.dir_to_yaw
 local vector_distance = vector.distance
-
+--[[
+ _____           _           _      
+|  ___|         | |         | |     
+| |____  ___ __ | | ___   __| | ___ 
+|  __\ \/ / '_ \| |/ _ \ / _` |/ _ \
+| |___>  <| |_) | | (_) | (_| |  __/
+\____/_/\_\ .__/|_|\___/ \__,_|\___|
+          | |                       
+          |_|                       
+]]--
 
 mobs.explode_attack_walk = function(self,dtime)
 
@@ -70,6 +79,17 @@ mobs.reverse_explosion_animation = function(self,dtime)
     mobs.handle_explosion_animation(self)
 end
 
+
+
+
+--[[
+______                 _     
+| ___ \               | |    
+| |_/ /   _ _ __   ___| |__  
+|  __/ | | | '_ \ / __| '_ \ 
+| |  | |_| | | | | (__| | | |
+\_|   \__,_|_| |_|\___|_| |_|
+]]--
 
 
 
