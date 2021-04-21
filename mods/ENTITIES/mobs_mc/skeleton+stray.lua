@@ -95,7 +95,7 @@ local skeleton = {
 	shoot_arrow = function(self, pos, dir)
 		if mod_bows then
 			-- 2-4 damage per arrow
-			local dmg = math.max(4, math.random(2, 8))
+			local dmg = math.random(2,4)
 			mcl_bows.shoot_arrow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
 		end
 	end,
