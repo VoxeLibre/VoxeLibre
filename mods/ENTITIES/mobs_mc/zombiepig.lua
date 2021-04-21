@@ -17,6 +17,7 @@ local pigman = {
 	neutral = true,
 	rotate = 270,
 	spawn_class = "passive",
+	hostile_cooldown = 15, --seconds
 	hp_min = 20,
 	hp_max = 20,
 	xp_min = 6,

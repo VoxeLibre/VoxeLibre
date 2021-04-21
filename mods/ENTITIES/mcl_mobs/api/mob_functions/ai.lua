@@ -571,10 +571,11 @@ mobs.mob_step = function(self, dtime)
 		return false
 	end
 
+	local attacking = nil
 
 	if self.hostile then
 		--true for line_of_sight is debug
-		local attacking = mobs.detect_closest_player_within_radius(self,true,self.view_range,self.eye_height)
+		attacking = mobs.detect_closest_player_within_radius(self,true,self.view_range,self.eye_height)
 
 		--go get the closest player ROAR >:O
 		if attacking then
@@ -596,6 +597,17 @@ mobs.mob_step = function(self, dtime)
 			end
 
 			self.attacking = nil
+		end
+	end
+
+	--count down hostile cooldown timer when no players in range
+	if self.neutral and self.hostile and not attacking and self.hostile_cooldown_timer then
+		
+		self.hostile_cooldown_timer = self.hostile_cooldown_timer - dtime
+
+		if self.hostile_cooldown_timer <= 0 then
+			self.hostile = false
+			self.hostile_cooldown_timer = 0
 		end
 	end
 

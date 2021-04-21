@@ -47,7 +47,7 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	if self.neutral then
 		self.hostile = true
 		--hostile_cooldown timer is initialized here
-		self.hostile_cooldown_timer 
+		self.hostile_cooldown_timer = self.hostile_cooldown
 	end
 
 

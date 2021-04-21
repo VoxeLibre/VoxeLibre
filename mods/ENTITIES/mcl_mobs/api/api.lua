@@ -347,6 +347,7 @@ function mobs:register_mob(name, def)
 		ignited_by_sunlight = def.ignited_by_sunlight or false,
 		eye_height = def.eye_height or 1.5,
 		defuse_reach = def.defuse_reach or 4,
+		hostile_cooldown = def.hostile_cooldown or 15,
 		-- End of MCL2 extensions
 
 		on_spawn = def.on_spawn,
