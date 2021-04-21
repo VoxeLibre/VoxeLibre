@@ -44,7 +44,7 @@ function mcl_armor.equip(itemstack, obj, swap)
 	end
 
 	local element = mcl_armor.elements[def._mcl_armor_element or ""]
-	local inv = mcl_util.get_inventory(obj)
+	local inv = mcl_util.get_inventory(obj, true)
 
 	if element and inv then
 		local old_stack = inv:get_stack("armor", element.index)
