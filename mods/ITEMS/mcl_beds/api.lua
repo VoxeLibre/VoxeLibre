@@ -1,23 +1,95 @@
 local S = minetest.get_translator("mcl_beds")
 
-local function destruct_bed(pos, oldnode)
-	local node = oldnode or minetest.get_node(pos)
+local minetest_get_node = minetest.get_node
+local minetest_get_node_or_nil = minetest.get_node_or_nil
+local minetest_remove_node = minetest.remove_node
+local minetest_facedir_to_dir = minetest.facedir_to_dir
+local minetest_add_item = minetest.add_item
+local vector_add = vector.add
+local vector_subtract = vector.subtract
+
+local function get_bed_next_node(pos, node)
+	local node = node or minetest_get_node_or_nil(pos)
 	if not node then return end
-	local dir = minetest.facedir_to_dir(node.param2)
-	local pos2, node2
+
+	local dir = minetest_facedir_to_dir(node.param2)
+
+	local pos2, bottom
 	if string.sub(node.name, -4) == "_top" then
-		pos2 = vector.subtract(pos, dir)
-		node2 = minetest.get_node(pos2)
-		if node2 and string.sub(node2.name, -7) == "_bottom" then
-			minetest.remove_node(pos2)
-		end
-		minetest.check_for_falling(pos)
-	elseif string.sub(node.name, -7) == "_bottom" then
-		minetest.add_item(pos, node.name)
-		pos2 = vector.add(pos, dir)
-		node2 = minetest.get_node(pos2)
+		pos2 = vector_subtract(pos, dir)
+	else
+		pos2 = vector_add(pos, dir)
+		bottom = true
+	end
+
+	local node2 = minetest_get_node(pos2)
+	return pos2, node2, bottom, dir
+end
+
+local function rotate(pos, node, user, mode, new_param2)
+	if mode ~= screwdriver.ROTATE_FACE then
+		return false
+	end
+
+	local p, node2, bottom = get_bed_next_node(pos, node)
+	if not node2 then return end
+
+	local name = node2.name
+	if not minetest.get_item_group(name, "bed") == 2 or not node.param2 == node2.param2 then return false end
+
+	if bottom then
+		name = string.sub(name, 1, -5)
+	else
+		name = string.sub(name, 1, -8)
+	end
+
+	if minetest.is_protected(p, user:get_player_name()) then
+		minetest.record_protection_violation(p, user:get_player_name())
+		return false
+	end
+
+	local new_dir, newp = minetest_facedir_to_dir(new_param2)
+	if bottom then
+		 newp = vector_add(pos, new_dir)
+	else
+		 newp = vector_subtract(pos, new_dir)
+	end
+
+	local node3 = minetest_get_node_or_nil(newp)
+	if not node3 then return false end
+
+	local node_def = minetest.registered_nodes[node3.name]
+	if not node_def or not node_def.buildable_to then return false end
+
+	if minetest.is_protected(newp, user:get_player_name()) then
+		minetest.record_protection_violation(newp, user:get_player_name())
+		return false
+	end
+
+	node.param2 = new_param2
+	-- do not remove_node here - it will trigger destroy_bed()
+	minetest.swap_node(p, {name = "air"})
+	minetest.swap_node(pos, node)
+	minetest.swap_node(newp, {name = name .. (bottom and "_top" or "_bottom"), param2 = new_param2})
+
+	return true
+end
+
+
+local function destruct_bed(pos, oldnode)
+	local node = oldnode or minetest_get_node_or_nil(pos)
+	if not node then return end
+
+	local pos2, node2, bottom = get_bed_next_node(pos, oldnode)
+
+	if bottom then
+		minetest_add_item(pos, node.name)
 		if node2 and string.sub(node2.name, -4) == "_top" then
-			minetest.remove_node(pos2)
+			minetest_remove_node(pos2)
+		end
+	else
+		if node2 and string.sub(node2.name, -7) == "_bottom" then
+			minetest_remove_node(pos2)
 		end
 	end
 end
@@ -94,7 +166,7 @@ function mcl_beds.register_bed(name, def)
 			local under = pointed_thing.under
 
 			-- Use pointed node's on_rightclick function first, if present
-			local node = minetest.get_node(under)
+			local node = minetest_get_node(under)
 			if placer and not placer:get_player_control().sneak then
 				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
 					return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
@@ -102,7 +174,7 @@ function mcl_beds.register_bed(name, def)
 			end
 
 			local pos
-			local undername = minetest.get_node(under).name
+			local undername = minetest_get_node(under).name
 			if minetest.registered_items[undername] and minetest.registered_items[undername].buildable_to then
 				pos = under
 			else
@@ -115,13 +187,13 @@ function mcl_beds.register_bed(name, def)
 				return itemstack
 			end
 
-			local node_def = minetest.registered_nodes[minetest.get_node(pos).name]
+			local node_def = minetest.registered_nodes[minetest_get_node(pos).name]
 			if not node_def or not node_def.buildable_to then
 				return itemstack
 			end
 
 			local dir = minetest.dir_to_facedir(placer:get_look_dir())
-			local botpos = vector.add(pos, minetest.facedir_to_dir(dir))
+			local botpos = vector_add(pos, minetest_facedir_to_dir(dir))
 
 			if minetest.is_protected(botpos, placer:get_player_name()) and
 					not minetest.check_player_privs(placer, "protection_bypass") then
@@ -129,7 +201,7 @@ function mcl_beds.register_bed(name, def)
 				return itemstack
 			end
 
-			local botdef = minetest.registered_nodes[minetest.get_node(botpos).name]
+			local botdef = minetest.registered_nodes[minetest_get_node(botpos).name]
 			if not botdef or not botdef.buildable_to then
 				return itemstack
 			end
@@ -152,38 +224,7 @@ function mcl_beds.register_bed(name, def)
 			return itemstack
 		end,
 
-		on_rotate = function(pos, node, user, mode, new_param2)
-			local dir = minetest.facedir_to_dir(node.param2)
-			local p = vector.add(pos, dir)
-			local node2 = minetest.get_node_or_nil(p)
-			if not node2 or not minetest.get_item_group(node2.name, "bed") == 2 or
-					not node.param2 == node2.param2 then
-				return false
-			end
-			if minetest.is_protected(p, user:get_player_name()) then
-				minetest.record_protection_violation(p, user:get_player_name())
-				return false
-			end
-			if mode ~= screwdriver.ROTATE_FACE then
-				return false
-			end
-			local newp = vector.add(pos, minetest.facedir_to_dir(new_param2))
-			local node3 = minetest.get_node_or_nil(newp)
-			local node_def = node3 and minetest.registered_nodes[node3.name]
-			if not node_def or not node_def.buildable_to then
-				return false
-			end
-			if minetest.is_protected(newp, user:get_player_name()) then
-				minetest.record_protection_violation(newp, user:get_player_name())
-				return false
-			end
-			node.param2 = new_param2
-			-- do not remove_node here - it will trigger destroy_bed()
-			minetest.set_node(p, {name = "air"})
-			minetest.set_node(pos, node)
-			minetest.set_node(newp, {name = name .. "_top", param2 = new_param2})
-			return true
-		end,
+		on_rotate = rotate,
 	})
 
 	local node_box_top, selection_box_top, collision_box_top
@@ -217,7 +258,7 @@ function mcl_beds.register_bed(name, def)
 			mcl_beds.on_rightclick(pos, clicker, true)
 			return itemstack
 		end,
-		on_rotate = false,
+		on_rotate = rotate,
 		after_destruct = destruct_bed,
 	})
 
