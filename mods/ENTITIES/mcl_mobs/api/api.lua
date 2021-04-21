@@ -156,6 +156,7 @@ dofile(api_path .. "environment.lua")
 dofile(api_path .. "interaction.lua")
 dofile(api_path .. "movement.lua")
 dofile(api_path .. "set_up.lua")
+dofile(api_path .. "attack_type_instructions.lua")
 
 
 mobs.spawning_mobs = {}
@@ -319,6 +320,8 @@ function mobs:register_mob(name, def)
 		jump_only = def.jump_only,
 		hostile = def.hostile,
 		neutral = def.neutral,
+		attacking = nil,
+		visual_size_origin = def.visual_size or {x = 1, y = 1, z = 1},
 		--end j4i stuff
 
 		-- MCL2 extensions

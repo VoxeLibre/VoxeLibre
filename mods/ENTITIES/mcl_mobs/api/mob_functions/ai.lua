@@ -92,10 +92,9 @@ end
 local land_state_list_wandering = {"stand", "walk"}
 
 local land_state_switch = function(self, dtime)
-	
 
-	if self.hostile and attack then
-		self.state = 
+	if self.hostile and self.attacking then
+		self.state = "attack"
 		return
 	end
 
@@ -131,6 +130,11 @@ local land_state_execution = function(self,dtime)
 
 		--set the velocity of the mob
 		mobs.set_velocity(self,0)
+
+		--animation fixes for explosive mobs
+		if self.attack_type == "explode" then
+			mobs.reverse_explosion_animation(self,dtime)
+		end
 
 	elseif self.state == "walk" then
 
@@ -178,13 +182,20 @@ local land_state_execution = function(self,dtime)
 			mobs.set_velocity(self,self.walk_velocity)
 		end
 
+		--animation fixes for explosive mobs
+		if self.attack_type == "explode" then
+			mobs.reverse_explosion_animation(self,dtime)
+		end
+
 	elseif self.state == "run" then
 
 		print("run")
 
 	elseif self.state == "attack" then
 
-		print("attack")
+		if self.attack_type == "explode" then
+			mobs.explode_attack_walk(self, dtime)
+		end
 
 	end	
 	
@@ -587,6 +598,29 @@ mobs.mob_step = function(self, dtime)
 		return false
 	end
 
+
+	if self.hostile then
+		--true for line_of_sight is debug
+		--10 for radius is debug
+		--1 for eye height adjust is debug
+		local attacking = mobs.detect_closest_player_within_radius(self,true,10,1)
+
+		--go get the closest player ROAR >:O
+		if attacking then
+			self.attacking = attacking
+		--no player in area
+		else
+
+			--reset states when coming out of hostile state
+			if self.attacking ~= nil then
+				self.state_timer = -1
+			end
+
+			self.attacking = nil
+		end
+	end
+
+
 	--jump only (like slimes)
 	if self.jump_only then
 		jump_state_switch(self, dtime)
@@ -606,21 +640,7 @@ mobs.mob_step = function(self, dtime)
 	end
 
 
-	if self.hostile then
-		--true for line_of_sight is debug
-		--10 for radius is debug
-		--1 for eye height adjust is debug
-		local attacking = mobs.detect_closest_player_within_radius(self,true,10,1)
 
-		--go get the closest player ROAR >:O
-		if attacking then
-			self.attack = attacking
-
-		--no player in area
-		else
-			self.attack = nil
-		end
-	end
 
 	-- can mob be pushed, if so calculate direction -- do this last (overrides everything)
 	if self.pushable then

@@ -1,11 +1,12 @@
 local math_pi     = math.pi
 local math_floor  = math.floor
+local math_random = math.random
 local HALF_PI     = math_pi/2
 
 
-
-local vector_distance = vector.distance
-local vector_new      = vector.new
+local vector_direction = vector.direction
+local vector_distance  = vector.distance
+local vector_new       = vector.new
 
 local minetest_dir_to_yaw = minetest.dir_to_yaw
 
@@ -114,6 +115,28 @@ mobs.movement_rotation_lock = function(self)
 end
 
 
+--this is used when a mob is chasing a player
+mobs.set_yaw_while_attacking = function(self)
+
+	if self.object:get_properties().automatic_face_movement_dir then
+		self.object:set_properties{automatic_face_movement_dir = false}
+	end
+
+	--turn positions into pseudo 2d vectors
+	local pos1 = self.object:get_pos()
+	pos1.y = 0
+
+	local pos2 = self.attacking:get_pos()
+	pos2.y = 0
+
+	local new_direction = vector_direction(pos1,pos2)
+	local new_yaw = minetest_dir_to_yaw(new_direction)
+
+	self.object:set_yaw(new_yaw)
+	self.yaw = new_yaw
+end
+
+
 local calculate_pitch = function(self)
 	local pos  = self.object:get_pos()
 	local pos2 = self.old_pos
@@ -156,4 +179,25 @@ mobs.set_static_pitch = function(self)
 
 	self.object:set_rotation(current_rotation)
 	self.pitch_switchfdas = "static"
+end
+
+--this is a helper function for mobs explosion animation
+mobs.handle_explosion_animation = function(self)
+
+	--secondary catch-all
+	if not self.explosion_animation then
+		self.explosion_animation = 0
+	end
+
+	--the timer works from 0 for sense of a 0 based counting
+	--but this just bumps it up so it's usable in here
+	local explosion_timer_adjust = self.explosion_animation + 1
+
+
+	local visual_size_modified = table.copy(self.visual_size_origin)
+
+	visual_size_modified.x = visual_size_modified.x * (explosion_timer_adjust ^ 3)
+	visual_size_modified.y = visual_size_modified.y * explosion_timer_adjust
+
+	self.object:set_properties({visual_size = visual_size_modified})
 end
