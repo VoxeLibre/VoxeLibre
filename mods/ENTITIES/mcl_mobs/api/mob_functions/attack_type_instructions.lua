@@ -206,4 +206,12 @@ mobs.projectile_attack_walk = function(self,dtime)
         end
     end
 
+    --make shooty mobs jump
+    --check for nodes to jump over
+    --explosive mobs will just ride against walls for now
+	local node_in_front_of = mobs.jump_check(self)
+	if node_in_front_of == 1 then
+		mobs.jump(self)
+    end
+
 end
