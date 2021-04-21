@@ -28,6 +28,9 @@ local professions = {
 mobs:register_mob("mobs_mc:villager_zombie", {
 	type = "monster",
 	spawn_class = "hostile",
+	hostile = true,
+	rotate = 270,
+	eye_height = 1.65,
 	hp_min = 20,
 	hp_max = 20,
 	xp_min = 5,
