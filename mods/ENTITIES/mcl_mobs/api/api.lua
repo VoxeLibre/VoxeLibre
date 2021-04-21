@@ -349,6 +349,8 @@ function mobs:register_mob(name, def)
 		eye_height = def.eye_height or 1.5,
 		defuse_reach = def.defuse_reach or 4,
 		hostile_cooldown = def.hostile_cooldown or 15,
+		tilt_fly = def.tilt_fly or true,
+		tilt_swim = def.tilt_swim or true,
 		-- End of MCL2 extensions
 
 		on_spawn = def.on_spawn,

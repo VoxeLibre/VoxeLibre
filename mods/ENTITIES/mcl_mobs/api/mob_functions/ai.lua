@@ -271,7 +271,9 @@ local swim_state_execution = function(self,dtime)
 
 			mobs.set_swim_velocity(self,0)
 
-			mobs.set_static_pitch(self)
+			if self.tilt_swim then
+				mobs.set_static_pitch(self)
+			end
 
 		elseif self.state == "swim" then
 
@@ -301,7 +303,10 @@ local swim_state_execution = function(self,dtime)
 
 			mobs.set_swim_velocity(self,self.walk_velocity)
 
-			mobs.set_dynamic_pitch(self)
+			--only enable tilt swimming if enabled
+			if self.tilt_swim then
+				mobs.set_dynamic_pitch(self)
+			end
 		end
 	--flop around if not inside swim node
 	else
@@ -310,7 +315,9 @@ local swim_state_execution = function(self,dtime)
 
 		mobs.flop(self)
 
-		mobs.set_static_pitch(self)
+		if self.tilt_swim then
+			mobs.set_static_pitch(self)
+		end
 	end
 
 end
@@ -398,7 +405,9 @@ local fly_state_execution = function(self,dtime)
 
 			mobs.set_fly_velocity(self,0)
 
-			mobs.set_static_pitch(self)
+			if self.tilt_fly then
+				mobs.set_static_pitch(self)
+			end
 
 		elseif self.state == "fly" then
 
@@ -426,7 +435,9 @@ local fly_state_execution = function(self,dtime)
 				quick_rotate(self,dtime)
 			end
 
-			mobs.set_dynamic_pitch(self)
+			if self.tilt_fly then
+				mobs.set_dynamic_pitch(self)
+			end
 
 			mobs.set_fly_velocity(self,self.walk_velocity)
 		end
@@ -437,7 +448,9 @@ local fly_state_execution = function(self,dtime)
 
 			mobs.float(self)
 
-			mobs.set_static_pitch(self)
+			if self.tilt_fly then
+				mobs.set_static_pitch(self)
+			end
 		end
 	end
 end

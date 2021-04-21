@@ -195,6 +195,7 @@ mobs.projectile_attack_walk = function(self,dtime)
         self.projectile_timer = self.projectile_cooldown
     end
 
+    --run projectile timer
     if self.projectile_timer > 0 then
         self.projectile_timer = self.projectile_timer - dtime
 
