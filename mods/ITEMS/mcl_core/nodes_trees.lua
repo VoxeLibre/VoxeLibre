@@ -8,7 +8,7 @@ if mod_screwdriver then
 end
 
 -- Register tree trunk (wood) and bark
-local register_tree_trunk = function(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark)
+local register_tree_trunk = function(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark, stripped_varient)
 	minetest.register_node("mcl_core:"..subname, {
 		description = description_trunk,
 		_doc_items_longdesc = longdesc,
@@ -22,6 +22,7 @@ local register_tree_trunk = function(subname, description_trunk, description_bar
 		on_rotate = on_rotate,
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
+		_mcl_stripped_varient = stripped_varient,
 	})
 
 	minetest.register_node("mcl_core:"..subname.."_bark", {
@@ -37,6 +38,7 @@ local register_tree_trunk = function(subname, description_trunk, description_bar
 		on_rotate = on_rotate,
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
+		_mcl_stripped_varient = stripped_varient.."_bark",
 	})
 
 	minetest.register_craft({
@@ -214,12 +216,12 @@ end
 
 ---------------------
 
-register_tree_trunk("tree", S("Oak Wood"), S("Oak Bark"), S("The trunk of an oak tree."), "default_tree_top.png", "default_tree.png")
-register_tree_trunk("darktree", S("Dark Oak Wood"), S("Dark Oak Bark"), S("The trunk of a dark oak tree."), "mcl_core_log_big_oak_top.png", "mcl_core_log_big_oak.png")
-register_tree_trunk("acaciatree", S("Acacia Wood"), S("Acacia Bark"), S("The trunk of an acacia."), "default_acacia_tree_top.png", "default_acacia_tree.png")
-register_tree_trunk("sprucetree", S("Spruce Wood"), S("Spruce Bark"), S("The trunk of a spruce tree."), "mcl_core_log_spruce_top.png", "mcl_core_log_spruce.png")
-register_tree_trunk("birchtree", S("Birch Wood"), S("Birch Bark"), S("The trunk of a birch tree."), "mcl_core_log_birch_top.png", "mcl_core_log_birch.png")
-register_tree_trunk("jungletree", S("Jungle Wood"), S("Jungle Bark"), S("The trunk of a jungle tree."), "default_jungletree_top.png", "default_jungletree.png")
+register_tree_trunk("tree", S("Oak Wood"), S("Oak Bark"), S("The trunk of an oak tree."), "default_tree_top.png", "default_tree.png", "mcl_core:stripped_oak")
+register_tree_trunk("darktree", S("Dark Oak Wood"), S("Dark Oak Bark"), S("The trunk of a dark oak tree."), "mcl_core_log_big_oak_top.png", "mcl_core_log_big_oak.png", "mcl_core:stripped_dark_oak")
+register_tree_trunk("acaciatree", S("Acacia Wood"), S("Acacia Bark"), S("The trunk of an acacia."), "default_acacia_tree_top.png", "default_acacia_tree.png", "mcl_core:stripped_acacia")
+register_tree_trunk("sprucetree", S("Spruce Wood"), S("Spruce Bark"), S("The trunk of a spruce tree."), "mcl_core_log_spruce_top.png", "mcl_core_log_spruce.png", "mcl_core:stripped_spruce")
+register_tree_trunk("birchtree", S("Birch Wood"), S("Birch Bark"), S("The trunk of a birch tree."), "mcl_core_log_birch_top.png", "mcl_core_log_birch.png", "mcl_core:stripped_birch")
+register_tree_trunk("jungletree", S("Jungle Wood"), S("Jungle Bark"), S("The trunk of a jungle tree."), "default_jungletree_top.png", "default_jungletree.png", "mcl_core:stripped_jungle")
 
 register_stripped_trunk("stripped_oak", S("Stripped Oak Log"), S("Stripped Oak Wood"), S("The stripped trunk of an oak tree."), "mcl_core_stripped_oak_top.png", "mcl_core_stripped_oak_side.png")
 register_stripped_trunk("stripped_acacia", S("Stripped Acacia Log"), S("Stripped Acacia Wood"), S("The stripped trunk of an acacia tree."), "mcl_core_stripped_acacia_top.png", "mcl_core_stripped_acacia_side.png")
