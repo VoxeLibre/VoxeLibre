@@ -3,9 +3,12 @@ local minetest_dir_to_yaw    = minetest.dir_to_yaw
 local minetest_yaw_to_dir    = minetest.yaw_to_dir
 local minetest_get_node      = minetest.get_node
 local minetest_get_item_group = minetest.get_item_group
+local minetest_get_objects_inside_radius = minetest.get_objects_inside_radius
 
 local vector_new = vector.new
 local vector_multiply = vector.multiply
+
+local table_copy = table.copy
 
 -- default function when mobs are blown up with TNT
 local do_tnt = function(obj, damage)
@@ -109,4 +112,57 @@ mobs.jump_check = function(self,dtime)
 
 	--nothing to jump over
 	return(0)
+end
+
+-- a helper function to quickly turn neutral passive mobs hostile
+local turn_hostile = function(self,detected_mob)
+	--drop in variables for attacking (stops crash)
+	detected_mob.punch_timer = 0
+	--set to hostile
+	detected_mob.hostile = true
+	--hostile_cooldown timer is initialized here
+	detected_mob.hostile_cooldown_timer = detected_mob.hostile_cooldown
+	--set target to the same
+	detected_mob.attacking = self.attacking
+end
+
+--allow hostile mobs to signal to other mobs
+--to switch from neutal passive to neutral hostile
+mobs.group_attack_initialization = function(self)
+
+	--get basic data
+	local friends_list = table_copy(self.group_attack)
+	local objects_in_area = minetest_get_objects_inside_radius(self.object:get_pos(), self.view_range)
+
+	--get the player's name
+	local name = self.attacking:get_player_name()
+
+	--re-use local variable
+	local detected_mob
+
+	--run through mobs in viewing distance
+	for _,object in pairs(objects_in_area) do
+		if object and object:get_luaentity() then
+			detected_mob = object:get_luaentity()
+			-- only alert members of same mob or friends
+			if detected_mob._cmi_is_mob and detected_mob.state ~= "attack" and detected_mob.owner ~= name then
+				if detected_mob.name == self.name then
+					turn_hostile(self,detected_mob)
+				elseif type(detected_mob.group_attack) == "table" then
+					for _,id in pairs(self.group_attack) do
+						if detected_mob.name == id then
+							turn_hostile(self,detected_mob)
+							break
+						end
+					end
+				end
+			end
+
+			--THIS NEEDS TO BE RE-IMPLEMENTED AS A GLOBAL HIT IN MOB_PUNCH!!
+			-- have owned mobs attack player threat
+			--if obj.owner == name and obj.owner_loyal then
+			--	do_attack(obj, self.object)
+			--end
+		end
+	end
 end

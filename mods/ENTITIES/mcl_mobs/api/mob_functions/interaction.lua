@@ -32,6 +32,7 @@ local on_rightclick_prefix = function(self, clicker)
 	return false
 end
 
+-- I have no idea what this does
 mobs.create_mob_on_rightclick = function(on_rightclick)
 	return function(self, clicker)
 		local stop = on_rightclick_prefix(self, clicker)
@@ -41,13 +42,25 @@ mobs.create_mob_on_rightclick = function(on_rightclick)
 	end
 end
 
+
 -- deal damage and effects when mob punched
 mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
+	--neutral passive mobs switch to neutral hostile
 	if self.neutral then
+
+		--drop in variables for attacking (stops crash)
+		self.attacking   = hitter
+		self.punch_timer = 0
+
 		self.hostile = true
 		--hostile_cooldown timer is initialized here
 		self.hostile_cooldown_timer = self.hostile_cooldown
+
+		--initialize the group attack (check for other mobs in area, make them neutral hostile)
+		if self.group_attack then
+			mobs.group_attack_initialization(self)
+		end
 	end
 
 
