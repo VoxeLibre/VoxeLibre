@@ -48,6 +48,8 @@ table.insert(drops_zombie, {
 local zombie = {
 	type = "monster",
 	spawn_class = "hostile",
+	hostile = true,
+	rotate = 270,
 	hp_min = 20,
 	hp_max = 20,
 	xp_min = 5,
@@ -89,6 +91,7 @@ local zombie = {
 	sunlight_damage = 2,
 	view_range = 16,
 	attack_type = "punch",
+	punch_timer_cooloff = 0.5,
 	harmed_by_heal = true,
 }
 

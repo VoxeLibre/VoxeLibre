@@ -159,8 +159,15 @@ local land_state_execution = function(self,dtime)
 
 	elseif self.state == "attack" then
 
+		--execute mob attack type
 		if self.attack_type == "explode" then
+
 			mobs.explode_attack_walk(self, dtime)
+
+		elseif self.attack_type == "punch" then
+
+			mobs.punch_attack_walk(self,dtime)
+
 		end
 
 	end	
@@ -573,6 +580,14 @@ mobs.mob_step = function(self, dtime)
 
 		--go get the closest player ROAR >:O
 		if attacking then
+
+			--set initial punch timer
+			if self.attacking == nil then
+				if self.attack_type == "punch" then
+					self.punch_timer = -1
+				end
+			end
+
 			self.attacking = attacking
 		--no player in area
 		else

@@ -323,6 +323,7 @@ function mobs:register_mob(name, def)
 		neutral = def.neutral,
 		attacking = nil,
 		visual_size_origin = def.visual_size or {x = 1, y = 1, z = 1},
+		punch_timer_cooloff = def.punch_timer_cooloff or 0.5,
 		--end j4i stuff
 
 		-- MCL2 extensions

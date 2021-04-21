@@ -69,3 +69,28 @@ mobs.reverse_explosion_animation = function(self,dtime)
 
     mobs.handle_explosion_animation(self)
 end
+
+
+
+
+mobs.punch_attack_walk = function(self,dtime)
+    
+    --this needs an exception
+    if self.attacking == nil or not self.attacking:is_player() then
+        self.attacking = nil
+        return
+    end
+
+    mobs.set_yaw_while_attacking(self)
+
+    mobs.set_velocity(self, self.run_velocity)
+
+    mobs.set_mob_animation(self, "run")
+
+    if self.punch_timer > 0 then
+        self.punch_timer = self.punch_timer - dtime
+    end
+
+    print(self.punch_timer)
+
+end
