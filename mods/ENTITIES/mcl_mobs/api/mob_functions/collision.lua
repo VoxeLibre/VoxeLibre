@@ -32,7 +32,7 @@ mobs.collision = function(self)
 
 	local check_for_attack = false
 
-	if self.hostile and self.attacking then
+	if self.attack_type == "punch" and self.hostile and self.attacking then
 		check_for_attack = true
 	end
 
