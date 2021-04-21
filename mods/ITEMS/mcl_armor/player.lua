@@ -64,7 +64,7 @@ function mcl_armor.update_player(player, info)
 	local meta = player:get_meta()
 	meta:set_int("mcl_armor:armor_points", info.points)
 
-	mcl_armor.player_view_range_factors[player] = view_range_factors
+	mcl_armor.player_view_range_factors[player] = info.view_range_factors
 end
 
 local function is_armor_action(inventory_info)
