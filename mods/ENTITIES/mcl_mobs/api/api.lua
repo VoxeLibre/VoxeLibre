@@ -631,11 +631,13 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 				local ent = mob:get_luaentity()
 
 				-- don't set owner if monster or sneak pressed
+				--[[
 				if ent.type ~= "monster"
 				and not placer:get_player_control().sneak then
 					ent.owner = placer:get_player_name()
 					ent.tamed = true
 				end
+				]]--
 
 				-- set nametag
 				local nametag = itemstack:get_meta():get_string("name")
