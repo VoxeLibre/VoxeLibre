@@ -9,6 +9,11 @@ mobs.collision = function(self)
 				
 	local pos = self.object:get_pos()
 
+
+	if not self or not self.object or not self.object:get_luaentity() then
+		return
+	end
+
 	--do collision detection from the base of the mob
 	local collisionbox = self.object:get_properties().collisionbox
 
