@@ -1,3 +1,5 @@
+local math_floor = math.floor
+
 mobs.feed_tame = function(self)
     return nil
 end
@@ -40,8 +42,16 @@ mobs.create_mob_on_rightclick = function(on_rightclick)
 end
 
 -- deal damage and effects when mob punched
-local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
+mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
+	if self.neutral then
+		self.hostile = true
+		--hostile_cooldown timer is initialized here
+		self.hostile_cooldown_timer 
+	end
+
+
+	--[[
 	-- custom punch function
 	if self.do_punch then
 
@@ -312,4 +322,5 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			end
 		end
 	end
+	]]--
 end

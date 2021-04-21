@@ -357,7 +357,7 @@ function mobs:register_mob(name, def)
 
 		--do_punch = def.do_punch,
 
-		--on_punch = mob_punch,
+		on_punch = mobs.mob_punch,
 
 		--on_breed = def.on_breed,
 

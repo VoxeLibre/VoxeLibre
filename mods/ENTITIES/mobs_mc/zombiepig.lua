@@ -14,6 +14,8 @@ local pigman = {
 	-- type="animal", passive=false: This combination is needed for a neutral mob which becomes hostile, if attacked
 	type = "animal",
 	passive = false,
+	neutral = true,
+	rotate = 270,
 	spawn_class = "passive",
 	hp_min = 20,
 	hp_max = 20,
