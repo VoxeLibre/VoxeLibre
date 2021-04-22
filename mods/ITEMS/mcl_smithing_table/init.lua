@@ -50,7 +50,6 @@ function mcl_smithing_table.upgrade_item(itemstack)
 	itemstack:set_name(upgrade_item)
 
 	-- Reload the ToolTips of the tool
-
 	tt.reload_itemstack_description(itemstack)
 
 	-- Only return itemstack if upgrade was successfull
@@ -97,8 +96,8 @@ minetest.register_node("mcl_smithing_table:table", {
 	groups = {pickaxey = 2, deco_block = 1},
 
 	tiles = {
-		"mcl_smithing_table_top.png", "mcl_smithing_table_front.png", "mcl_smithing_table_side.png",
-		"mcl_smithing_table_side.png", "mcl_smithing_table_side.png", "mcl_smithing_table_side.png"
+		"mcl_smithing_table_top.png", "mcl_smithing_table_bottom.png", "mcl_smithing_table_side.png",
+		"mcl_smithing_table_side.png", "mcl_smithing_table_side.png", "mcl_smithing_table_front.png"
 	},
 
 	sounds = mcl_sounds.node_sound_metal_defaults(),
