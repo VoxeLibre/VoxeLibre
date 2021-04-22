@@ -615,6 +615,12 @@ if mobs_spawn then
 							local repeat_mob_search = true
 							repeat
 
+								--do not infinite loop
+								if #mob_library_worker_table <= 0 then
+									--print("breaking infinite loop")
+									break
+								end
+
 								local skip = false
 
 								--use this for removing table elements of mobs that do not match
