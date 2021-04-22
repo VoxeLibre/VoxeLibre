@@ -1,7 +1,5 @@
 -- API for Mobs Redo: MineClone 2 Delux 2.0 DRM Free Early Access Super Extreme Edition
 
--- current state of things: How to?
-
 -- mobs library
 mobs = {}
 
