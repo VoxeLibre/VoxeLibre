@@ -35,7 +35,7 @@ function mcl_smithing_table.upgrade_item(itemstack)
 
 	local def = itemstack:get_definition()
 
-	if not def or not def._mcl_upgradeable then
+	if not def or not def._mcl_upgradable then
 		return
 	end
 
@@ -58,6 +58,7 @@ function mcl_smithing_table.upgrade_item(itemstack)
 end
 
 -- Badly copied over from mcl_anvils
+-- ToDo: Make better formspec
 
 local formspec = "size[9,9]" ..
 		   "label[0,4.0;" .. minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))) .. "]" ..
