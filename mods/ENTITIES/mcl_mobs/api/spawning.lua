@@ -10,6 +10,7 @@ local max            = math.max
 local get_objects_inside_radius = minetest.get_objects_inside_radius
 local vector_distance = vector.distance
 local table_copy     = table.copy
+local table_remove   = table.remove
 local math_random    = math.random
 
 -- range for mob count
@@ -162,7 +163,7 @@ local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
 local count_mobs = function(pos)
 	local num = 0
 	for _,object in pairs(get_objects_inside_radius(pos, aoc_range)) do
-		if object and object:get_luaentity() and object.name and object._cmi_is_mob then
+		if object and object:get_luaentity() and object:get_luaentity()._cmi_is_mob then
 			num = num + 1
 		end
 	end
@@ -569,8 +570,8 @@ if mobs_spawn then
 								break
 							end
 							
-							--hard code mob limit in area to 10 for now
-							if count_mobs(spawning_position) >= 10 then
+							--hard code mob limit in area to 5 for now
+							if count_mobs(spawning_position) >= 5 then
 								break
 							end
 
@@ -657,7 +658,7 @@ if mobs_spawn then
 									break
 								else
 									--print("deleting temp index")
-									table.remove(mob_library_worker_table, temp_index)
+									table_remove(mob_library_worker_table, temp_index)
 								end
 
 							until repeat_mob_search == false --this is needed to sort through mobs randomly
