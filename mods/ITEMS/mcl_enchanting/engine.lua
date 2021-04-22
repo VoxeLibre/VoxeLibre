@@ -12,11 +12,12 @@ end
 function mcl_enchanting.unload_enchantments(itemstack)
 	local itemdef = itemstack:get_definition()
 	if itemdef.tool_capabilities then
-		itemstack:get_meta():set_tool_capabilities(itemdef.tool_capabilities)
+		itemstack:get_meta():set_tool_capabilities(nil)
 	end
 	local meta = itemstack:get_meta()
 	if meta:get_string("name") == "" then
 		meta:set_string("description", "")
+		meta:set_string("groupcaps_hash", "")
 	end
 end
 
@@ -468,13 +469,13 @@ function mcl_enchanting.show_enchanting_formspec(player)
 	local formspec = ""
 		.. "size[9.07,8.6;]"
 		.. "formspec_version[3]"
-		.. "label[0,0;" .. C(mcl_colors.DARK_GRAY) .. F(table_name) .. "]"
+		.. "label[0,0;" .. C("#313131") .. F(table_name) .. "]"
 		.. mcl_formspec.get_itemslot_bg(0.2, 2.4, 1, 1)
 		.. "list[current_player;enchanting_item;0.2,2.4;1,1]"
 		.. mcl_formspec.get_itemslot_bg(1.1, 2.4, 1, 1)
 		.. "image[1.1,2.4;1,1;mcl_enchanting_lapis_background.png]"
 		.. "list[current_player;enchanting_lapis;1.1,2.4;1,1]"
-		.. "label[0,4;" .. C(mcl_colors.DARK_GRAY) .. F(S("Inventory")).."]"
+		.. "label[0,4;" .. C("#313131") .. F(S("Inventory")).."]"
 		.. mcl_formspec.get_itemslot_bg(0, 4.5, 9, 3)
 		.. mcl_formspec.get_itemslot_bg(0, 7.74, 9, 1)
 		.. "list[current_player;main;0,4.5;9,3;9]"
@@ -501,11 +502,11 @@ function mcl_enchanting.show_enchanting_formspec(player)
 		local hover_ending = (can_enchant and "_hovered" or "_off")
 		formspec = formspec
 			.. "container[3.2," .. y .. "]"
-			.. (slot and "tooltip[button_" .. i .. ";" .. C(mcl_colors.GRAY) .. F(slot.description) .. " " .. C(mcl_colors.WHITE) .. " . . . ?\n\n" .. (enough_levels and C(enough_lapis and mcl_colors.GRAY or mcl_colors.RED) .. F(S("@1 Lapis Lazuli", i)) .. "\n" .. C(mcl_colors.GRAY) .. F(S("@1 Enchantment Levels", i)) or C(mcl_colors.RED) .. F(S("Level requirement: @1", slot.level_requirement))) .. "]" or "")
+			.. (slot and "tooltip[button_" .. i .. ";" .. C("#818181") .. ((slot.description and F(slot.description)) or "") .. " " .. C("#FFFFFF") .. " . . . ?\n\n" .. (enough_levels and C(enough_lapis and "#818181" or "#FC5454") .. F(S("@1 Lapis Lazuli", i)) .. "\n" .. C("#818181") .. F(S("@1 Enchantment Levels", i)) or C("#FC5454") .. F(S("Level requirement: @1", slot.level_requirement))) .. "]" or "")
 			.. "style[button_" .. i .. ";bgimg=mcl_enchanting_button" .. ending .. ".png;bgimg_hovered=mcl_enchanting_button" .. hover_ending .. ".png;bgimg_pressed=mcl_enchanting_button" .. hover_ending .. ".png]"
 			.. "button[0,0;7.5,1.3;button_" .. i .. ";]"
 			.. (slot and "image[0,0;1.3,1.3;mcl_enchanting_number_" .. i .. ending .. ".png]" or "")
-			.. (slot and "label[7.2,1.1;" .. C(can_enchant and mcl_colors.GREEN or mcl_colors.DARK_GREEN) .. slot.level_requirement .. "]" or "")
+			.. (slot and "label[7.2,1.1;" .. C(can_enchant and "#80FF20" or "#407F10") .. slot.level_requirement .. "]" or "")
 			.. (slot and slot.glyphs or "")
 			.. "container_end[]"
 		y = y + 1.35

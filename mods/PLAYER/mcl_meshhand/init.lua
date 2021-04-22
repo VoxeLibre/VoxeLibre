@@ -63,7 +63,6 @@ end
 if has_mcl_skins == true then
 	--change the player's hand to their skin
 	mcl_skins.register_on_set_skin(function(player, skin)
-		local name = player:get_player_name()
 		local meta = mcl_skins.meta[skin]
 		if meta.gender == "female" then
 			player:get_inventory():set_stack("hand", 1, "mcl_meshhand:"..skin.."_female")

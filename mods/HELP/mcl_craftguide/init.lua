@@ -33,7 +33,6 @@ local fmt, find, gmatch, match, sub, split, lower =
 
 local min, max, floor, ceil = math.min, math.max, math.floor, math.ceil
 local pairs, next, unpack = pairs, next, unpack
-local vec_add, vec_mul = vector.add, vector.multiply
 
 local DEFAULT_SIZE = 10
 local MIN_LIMIT, MAX_LIMIT = 10, 12
@@ -668,7 +667,7 @@ local function make_formspec(name)
 	fs[#fs + 1] = fmt("label[%f,%f;%s]",
 		sfinv_only and 6.3 or data.iX - 2.2,
 		0.22,
-		ESC(colorize(mcl_colors.DARK_GRAY, fmt("%s / %u", data.pagenum, data.pagemax))))
+		ESC(colorize("#383838", fmt("%s / %u", data.pagenum, data.pagemax))))
 
 	fs[#fs + 1] = fmt([[
 		image_button[%f,0.12;0.8,0.8;craftguide_prev_icon.png;prev;]
@@ -1001,7 +1000,7 @@ else
 		end
 	end)
 
-	local function on_use(user)
+	--[[local function on_use(user)
 		local name = user:get_player_name()
 
 		if next(recipe_filters) then
@@ -1011,7 +1010,7 @@ else
 		end
 
 		show_formspec(name, "mcl_craftguide", make_formspec(name))
-	end
+	end]]
 
 end
 
@@ -1098,7 +1097,6 @@ if progressive_mode then
 		local name = player:get_player_name()
 		init_data(name)
 		local meta = player:get_meta()
-		local name = player:get_player_name()
 		local data = player_data[name]
 
 		data.inv_items = deserialize(meta:get_string("inv_items")) or {}
@@ -1144,7 +1142,7 @@ else
 end
 
 function mcl_craftguide.show(name)
-	local player = minetest.get_player_by_name(name)
+	local player = get_player_by_name(name)
 	if next(recipe_filters) then
 		local data = player_data[name]
 		data.items_raw = get_filtered_items(player)

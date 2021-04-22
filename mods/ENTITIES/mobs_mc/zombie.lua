@@ -60,7 +60,11 @@ local zombie = {
 	visual = "mesh",
 	mesh = "mobs_mc_zombie.b3d",
 	textures = {
-		{"mobs_mc_zombie.png"},
+		{
+			"mobs_mc_empty.png", -- armor
+			"mobs_mc_zombie.png", -- texture
+			"mobs_mc_empty.png", -- wielded_item
+		}
 	},
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
@@ -115,7 +119,13 @@ mobs:register_mob("mobs_mc:baby_zombie", baby_zombie)
 -- Husk.
 -- Desert variant of the zombie
 local husk = table.copy(zombie)
-husk.textures = {{"mobs_mc_husk.png"}}
+husk.textures = {
+		{
+			"mobs_mc_empty.png", -- armor
+			"mobs_mc_husk.png", -- texture
+			"mobs_mc_empty.png", -- wielded_item
+		}
+	}
 husk.ignited_by_sunlight = false
 husk.sunlight_damage = 0
 husk.drops = drops_common
@@ -140,8 +150,8 @@ mobs:register_mob("mobs_mc:baby_husk", baby_husk)
 -- Spawning
 
 mobs:spawn_specific(
-"mobs_mc:zombie", 
-"overworld", 
+"mobs_mc:zombie",
+"overworld",
 "ground",
 {
 "FlowerForest_underground",
@@ -224,17 +234,17 @@ mobs:spawn_specific(
 "MesaBryce_sandlevel",
 "Mesa_sandlevel",
 },
-0, 
-7, 
-30, 
-6000, 
-4, 
-mobs_mc.spawn_height.overworld_min, 
+0,
+7,
+30,
+6000,
+4,
+mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 -- Baby zombie is 20 times less likely than regular zombies
 mobs:spawn_specific(
-"mobs_mc:baby_zombie", 
-"overworld", 
+"mobs_mc:baby_zombie",
+"overworld",
 "ground",
 {
 "FlowerForest_underground",
@@ -317,18 +327,18 @@ mobs:spawn_specific(
 "MesaBryce_sandlevel",
 "Mesa_sandlevel",
 },
-0, 
-7, 
-30, 
-60000, 
-4, 
-mobs_mc.spawn_height.overworld_min, 
+0,
+7,
+30,
+60000,
+4,
+mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 
 mobs:spawn_specific(
-"mobs_mc:husk", 
-"overworld", 
+"mobs_mc:husk",
+"overworld",
 "ground",
 {
 "Desert",
@@ -336,29 +346,29 @@ mobs:spawn_specific(
 "Savanna",
 "Savanna_beach",
 },
-0, 
-7, 
-30, 
-6500, 
-4, 
-mobs_mc.spawn_height.overworld_min, 
+0,
+7,
+30,
+6500,
+4,
+mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 mobs:spawn_specific(
-"mobs_mc:baby_husk", 
-"overworld", 
-"ground", 
+"mobs_mc:baby_husk",
+"overworld",
+"ground",
 {
 "Desert",
 "SavannaM",
 "Savanna",
 "Savanna_beach",
 },
-0, 
-7, 
-30, 
-65000, 
-4, 
-mobs_mc.spawn_height.overworld_min, 
+0,
+7,
+30,
+65000,
+4,
+mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 -- Spawn eggs

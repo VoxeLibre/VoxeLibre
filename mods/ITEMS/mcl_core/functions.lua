@@ -190,6 +190,22 @@ minetest.register_abm({
 	end,
 })
 
+-- Make cactus destroy items
+minetest.register_abm({
+	label = "Cactus destroy items",
+	nodenames = {"mcl_core:cactus"},
+	interval = 1,
+	chance = 1,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		for _,object in pairs(minetest.get_objects_inside_radius(pos, 0.9)) do
+			if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
+				object:remove()
+			end
+		end
+	end,
+})
+
+
 minetest.register_abm({
 	label = "Sugar canes growth",
 	nodenames = {"mcl_core:reeds"},

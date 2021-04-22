@@ -9,12 +9,12 @@ local LIGHT_ACTIVE_FURNACE = 13
 
 local function active_formspec(fuel_percent, item_percent)
 	return "size[9,8.75]"..
-	"label[0,4;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+	"label[0,4;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
 	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Furnace"))).."]"..
+	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Furnace"))).."]"..
 	"list[current_name;src;2.75,0.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
 	"list[current_name;fuel;2.75,2.5;1,1;]"..
@@ -38,12 +38,12 @@ local function active_formspec(fuel_percent, item_percent)
 end
 
 local inactive_formspec = "size[9,8.75]"..
-	"label[0,4;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+	"label[0,4;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
 	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Furnace"))).."]"..
+	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Furnace"))).."]"..
 	"list[current_name;src;2.75,0.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
 	"list[current_name;fuel;2.75,2.5;1,1;]"..
@@ -384,7 +384,6 @@ local function furnace_node_timer(pos, elapsed)
 	-- Update formspec and node
 	--
 	local formspec = inactive_formspec
-	local item_state
 	local item_percent = 0
 	if cookable then
 		item_percent = math.floor(src_time / cooked.time * 100)
@@ -414,7 +413,7 @@ local function furnace_node_timer(pos, elapsed)
 	meta:set_float("fuel_time", fuel_time)
 	meta:set_float("src_time", src_time)
 	if srclist then
-		 meta:set_string("src_item", srclist[1]:get_name())
+		 meta:set_string("src_item", src_item)
 	else
 		 meta:set_string("src_item", "")
 	end
@@ -441,7 +440,12 @@ minetest.register_node("mcl_furnaces:furnace", {
 	_tt_help = S("Uses fuel to smelt or cook items"),
 	_doc_items_longdesc = S("Furnaces cook or smelt several items, using a furnace fuel, into something else."),
 	_doc_items_usagehelp =
-			S("Use the furnace to open the furnace menu. Place a furnace fuel in the lower slot and the source material in the upper slot. The furnace will slowly use its fuel to smelt the item. The result will be placed into the output slot at the right side.").."\n"..
+			S([[
+				Use the furnace to open the furnace menu.
+				Place a furnace fuel in the lower slot and the source material in the upper slot.
+				The furnace will slowly use its fuel to smelt the item.
+				The result will be placed into the output slot at the right side.
+			]]).."\n"..
 			S("Use the recipe book to see what you can smelt, what you can use as fuel and how long it will burn."),
 	_doc_items_hidden = false,
 	tiles = {

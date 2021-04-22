@@ -4,10 +4,10 @@ local S = minetest.get_translator("mcl_hoppers")
 
 local mcl_hoppers_formspec =
 	"size[9,7]"..
-	"label[2,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Hopper"))).."]"..
+	"label[2,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Hopper"))).."]"..
 	"list[current_name;main;2,0.5;5,1;]"..
 	mcl_formspec.get_itemslot_bg(2,0.5,5,1)..
-	"label[0,2;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+	"label[0,2;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,2.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,2.5,9,3)..
 	"list[current_player;main;0,5.74;9,1;]"..
@@ -152,7 +152,7 @@ def_hopper_enabled.on_place = function(itemstack, placer, pointed_thing)
 	local z = upos.z - apos.z
 
 	local fake_itemstack = ItemStack(itemstack)
-	local newnode, param2
+	local param2
 	if x == -1 then
 		fake_itemstack:set_name("mcl_hoppers:hopper_side")
 		param2 = 0
@@ -166,7 +166,7 @@ def_hopper_enabled.on_place = function(itemstack, placer, pointed_thing)
 		fake_itemstack:set_name("mcl_hoppers:hopper_side")
 		param2 = 1
 	end
-	local itemstack, success = minetest.item_place_node(fake_itemstack, placer, pointed_thing, param2)
+	local itemstack,_ = minetest.item_place_node(fake_itemstack, placer, pointed_thing, param2)
 	itemstack:set_name("mcl_hoppers:hopper")
 	return itemstack
 end
@@ -411,7 +411,6 @@ minetest.register_abm({
 		-- Move an item from the hopper into container below
 		local downnode = minetest.get_node(downpos)
 		if not minetest.registered_nodes[downnode.name] then return end
-		g = minetest.registered_nodes[downnode.name].groups.container
 		mcl_util.move_item_container(pos, downpos)
 	end,
 })
@@ -462,7 +461,7 @@ minetest.register_abm({
 			-- Put fuel into fuel slot
 			local sinv = minetest.get_inventory({type="node", pos = pos})
 			local dinv = minetest.get_inventory({type="node", pos = front})
-			local slot_id, stack = mcl_util.get_eligible_transfer_item_slot(sinv, "main", dinv, "fuel", is_transferrable_fuel)
+			local slot_id,_ = mcl_util.get_eligible_transfer_item_slot(sinv, "main", dinv, "fuel", is_transferrable_fuel)
 			if slot_id then
 				mcl_util.move_item_container(pos, front, nil, slot_id, "fuel")
 			end

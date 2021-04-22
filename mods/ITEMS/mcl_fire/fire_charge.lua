@@ -6,7 +6,7 @@ local add_entity = minetest.add_entity
 -- Fire Charge
 minetest.register_craftitem("mcl_fire:fire_charge", {
 	description = S("Fire Charge"),
-	_tt_help = S("Dispenser projectile").."\n"..S("Starts fires and ignites blocks"), 
+	_tt_help = S("Dispenser projectile").."\n"..S("Starts fires and ignites blocks"),
 	_doc_items_longdesc = S("Fire charges are primarily projectiles which can be launched from dispensers, they will fly in a straight line and burst into a fire on impact. Alternatively, they can be used to ignite fires directly."),
 	_doc_items_usagehelp = S("Put the fire charge into a dispenser and supply it with redstone power to launch it. To ignite a fire directly, simply place the fire charge on the ground, which uses it up."),
 	inventory_image = "mcl_fire_fire_charge.png",

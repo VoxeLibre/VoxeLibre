@@ -86,7 +86,8 @@ if mcl_hunger.active then
 
 	function mcl_hunger.saturate(playername, increase, update_hudbar)
 		local player = minetest.get_player_by_name(playername)
-		local ok = mcl_hunger.set_saturation(player, math.min(mcl_hunger.get_saturation(player) + increase, mcl_hunger.get_hunger(player)))
+		local ok = mcl_hunger.set_saturation(player,
+			math.min(mcl_hunger.get_saturation(player) + increase, mcl_hunger.get_hunger(player)))
 		if update_hudbar ~= false then
 			mcl_hunger.update_saturation_hud(player, mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player))
 		end
@@ -105,7 +106,7 @@ if mcl_hunger.active then
 							-- otherwise the following poison/exhaust fields are ignored
 		food[name].poison = poison		-- poison damage per tick for poisonous food
 		food[name].exhaust = exhaust		-- exhaustion per tick for poisonous food
-		food[name].poisonchance = poisonchance	-- chance percentage that this item poisons the player (default: 100% if poisoning is enabled)
+		food[name].poisonchance = poisonchance	-- chance percentage that this item poisons the player (default: 100%)
 		food[name].sound = sound		-- special sound that is played when eating
 	end
 

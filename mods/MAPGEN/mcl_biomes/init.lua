@@ -3906,7 +3906,7 @@ end
 -- Decorations in non-Overworld dimensions
 local function register_dimension_decorations()
 	--[[ NETHER ]]
-	-- TODO: Nether 
+	-- TODO: Nether
 
 	--[[ THE END ]]
 
@@ -3973,7 +3973,7 @@ if mg_name ~= "singlenode" then
 	if deco_id_chorus_plant then
 		mcl_mapgen_core.register_generator("chorus_grow", nil, function(minp, maxp, blockseed)
 			local gennotify = minetest.get_mapgen_object("gennotify")
-			local poslist = {}
+			--local poslist = {}
 			for _, pos in ipairs(gennotify["decoration#"..deco_id_chorus_plant] or {}) do
 				local realpos = { x = pos.x, y = pos.y + 1, z = pos.z }
 				mcl_end.grow_chorus_plant(realpos)

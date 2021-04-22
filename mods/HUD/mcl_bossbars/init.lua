@@ -39,7 +39,7 @@ local last_id = 0
 function mcl_bossbars.add_bar(player, def, dynamic, priority)
 	local name = player:get_player_name()
 	local bars = mcl_bossbars.bars[name]
-	local bar = {text = def.text, priority = priority or 0}
+	local bar = {text = def.text, priority = priority or 0, timeout = def.timeout}
 	bar.color, bar.image = get_color_info(def.color, def.percentage)
 	if dynamic then
 		for _, other in pairs(bars) do
@@ -65,7 +65,7 @@ function mcl_bossbars.add_bar(player, def, dynamic, priority)
 end
 
 function mcl_bossbars.remove_bar(id)
-	mcl_bossbars.static[id].bar.id = nil
+	mcl_bossbars.static[id].id = nil
 	mcl_bossbars.static[id] = nil
 end
 
@@ -119,7 +119,7 @@ minetest.register_on_leaveplayer(function(player)
 	mcl_bossbars.bars[name] = nil
 end)
 
-minetest.register_globalstep(function()
+minetest.register_globalstep(function(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
 		local name = player:get_player_name()
 		local bars = mcl_bossbars.bars[name]
@@ -134,7 +134,12 @@ minetest.register_globalstep(function()
 			local hud = table.remove(huds, 1)
 
 			if bar and bar.id then
-				table.insert(bars_new, bar)
+				if bar.timeout then
+					bar.timeout = bar.timeout - dtime
+				end
+				if not bar.timeout or bar.timeout > 0 then
+					table.insert(bars_new, bar)
+				end
 			end
 
 			if bar and not hud then

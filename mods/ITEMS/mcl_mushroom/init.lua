@@ -53,7 +53,8 @@ minetest.register_node("mcl_mushroom:shroomlight", {
   groups = {handy=1,hoe=7,swordy=1, leafdecay=leafdecay_distance, leaves=1, deco_block=1, },
   stack_max = 64,
   _mcl_hardness = 2,
-  light_source = 15
+  -- this is 15 in Minecraft
+  light_source = 14,
 })
 
 minetest.register_node("mcl_mushroom:warped_hyphae", {

@@ -475,10 +475,10 @@ minetest.register_node(small_name, {
 		minetest.show_formspec(clicker:get_player_name(),
 		"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[9,8.75]"..
-		"label[0,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, name)).."]"..
+		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", name)).."]"..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
 		mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
-		"label[0,4.0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+		"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 		"list[current_player;main;0,4.5;9,3;9]"..
 		mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 		"list[current_player;main;0,7.74;9,1;]"..
@@ -624,12 +624,12 @@ minetest.register_node(left_name, {
 		minetest.show_formspec(clicker:get_player_name(),
 		"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[9,11.5]"..
-		"label[0,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, name)).."]"..
+		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", name)).."]"..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
 		mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
 		"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,3.5;9,3;]"..
 		mcl_formspec.get_itemslot_bg(0,3.5,9,3)..
-		"label[0,7;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+		"label[0,7;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 		"list[current_player;main;0,7.5;9,3;9]"..
 		mcl_formspec.get_itemslot_bg(0,7.5,9,3)..
 		"list[current_player;main;0,10.75;9,1;]"..
@@ -773,12 +773,12 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 
 		"size[9,11.5]"..
-		"label[0,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, name)).."]"..
+		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", name)).."]"..
 		"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,0.5;9,3;]"..
 		mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3.5;9,3;]"..
 		mcl_formspec.get_itemslot_bg(0,3.5,9,3)..
-		"label[0,7;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+		"label[0,7;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 		"list[current_player;main;0,7.5;9,3;9]"..
 		mcl_formspec.get_itemslot_bg(0,7.5,9,3)..
 		"list[current_player;main;0,10.75;9,1;]"..
@@ -986,10 +986,10 @@ minetest.register_node("mcl_chests:ender_chest", {
 })
 
 local formspec_ender_chest = "size[9,8.75]"..
-	"label[0,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Ender Chest"))).."]"..
+	"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Ender Chest"))).."]"..
 	"list[current_player;enderchest;0,0.5;9,3;]"..
 	mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
@@ -1027,11 +1027,14 @@ minetest.register_node("mcl_chests:ender_chest_small", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	drop = "mcl_core:obsidian 8",
 	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", formspec_ender_chest)
 		create_entity(pos, "mcl_chests:ender_chest_small", {"mcl_chests_ender.png"}, minetest.get_node(pos).param2, false, "mcl_chests_enderchest", "mcl_chests_chest", "chest")
 	end,
 	on_rightclick = function(pos, node, clicker)
+		if minetest.registered_nodes[minetest.get_node({x = pos.x, y = pos.y + 1, z = pos.z}).name].groups.opaque == 1 then
+				-- won't open if there is no space from the top
+				return false
+		end
+		minetest.show_formspec(clicker:get_player_name(), "mcl_chests:ender_chest_"..clicker:get_player_name(), formspec_ender_chest)
 		player_chest_open(clicker, pos, "mcl_chests:ender_chest_small", {"mcl_chests_ender.png"}, node.param2, false, "mcl_chests_enderchest", "mcl_chests_chest")
 	end,
 	on_receive_fields = function(pos, formname, fields, sender)
@@ -1104,10 +1107,10 @@ local function formspec_shulker_box(name)
 		name = S("Shulker Box")
 	end
 	return "size[9,8.75]"..
-	"label[0,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, name)).."]"..
+	"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", name)).."]"..
 	"list[current_name;main;0,0.5;9,3;]"..
 	mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
@@ -1405,4 +1408,14 @@ minetest.register_lbm({
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", formspec_shulker_box)
 	end,
+})
+
+minetest.register_lbm({
+	label = "Upgrade old ender chest formspec",
+    name = "mcl_chests:replace_old_ender_form",
+    nodenames = {"mcl_chests:ender_chest_small"},
+    run_at_every_load = false,
+    action = function(pos, node)
+		minetest.get_meta(pos):set_string("formspec", "")
+    end,
 })

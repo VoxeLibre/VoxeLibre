@@ -500,10 +500,8 @@ function mcl_spawn.shadow_worker()
 
 	if success then
 		local wsp_node = minetest.get_node(wsp)
-		if wsp_node and wsp_node.name == "ignore" then
-			-- special case - respawn area unloaded from memory - it's okay, skip for now
-
-		elseif ((not good_for_respawn(wsp)) or ((no_trees_area_counter >= 0) and not can_find_tree(wsp))) then
+		if not (wsp_node and wsp_node.name == "ignore")
+		and ((not good_for_respawn(wsp)) or ((no_trees_area_counter >= 0) and not can_find_tree(wsp))) then
 			success = false
 			minetest.log("action", "[mcl_spawn] World spawn position isn't safe anymore: "..minetest.pos_to_string(wsp))
 			mcl_spawn.search()
