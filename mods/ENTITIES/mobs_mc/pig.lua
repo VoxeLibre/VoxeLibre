@@ -6,6 +6,7 @@ mobs:register_mob("mobs_mc:pig", {
 	type = "animal",
 	spawn_class = "passive",
 	runaway = true,
+	rotate = 270,
 	hp_min = 10,
 	hp_max = 10,
 	xp_min = 1,
