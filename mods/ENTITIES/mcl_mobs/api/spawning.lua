@@ -1,17 +1,23 @@
 --lua locals
-local get_node       = minetest.get_node
-local get_item_group = minetest.get_item_group
-local get_node_light = minetest.get_node_light
+local get_node                     = minetest.get_node
+local get_item_group               = minetest.get_item_group
+local get_node_light               = minetest.get_node_light
 local find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
-local new_vector     = vector.new
+local get_biome_name               = minetest.get_biome_name
+local get_objects_inside_radius    = minetest.get_objects_inside_radius
+
+
 local math_random    = math.random
-local get_biome_name = minetest.get_biome_name
+local math_floor     = math.floor
 local max            = math.max
-local get_objects_inside_radius = minetest.get_objects_inside_radius
+
 local vector_distance = vector.distance
+local vector_new      = vector.new
+local vector_floor    = vector.floor
+
 local table_copy     = table.copy
 local table_remove   = table.remove
-local math_random    = math.random
+
 
 -- range for mob count
 local aoc_range = 32
@@ -481,18 +487,18 @@ local outer = 64
 local int = {-1,1}
 local position_calculation = function(pos)
 
-	pos = vector.floor(pos)
+	pos = vector_floor(pos)
 
 	--this is used to determine the axis buffer from the player
-	axis = math.random(0,1)
+	axis = math_random(0,1)
 
 	--cast towards the direction
 	if axis == 0 then --x
-		pos.x = pos.x + math.random(inner,outer)*int[math.random(1,2)]
-		pos.z = pos.z + math.random(-outer,outer)
+		pos.x = pos.x + math_random(inner,outer)*int[math_random(1,2)]
+		pos.z = pos.z + math_random(-outer,outer)
 	else --z
-		pos.z = pos.z + math.random(inner,outer)*int[math.random(1,2)]
-		pos.x = pos.x + math.random(-outer,outer)
+		pos.z = pos.z + math_random(inner,outer)*int[math_random(1,2)]
+		pos.x = pos.x + math_random(-outer,outer)
 	end
 	return(pos)
 end
@@ -508,7 +514,7 @@ local decypher_limits_dictionary = {
 local function decypher_limits(posy)
 	--local min_max_table = decypher_limits_dictionary[dimension]
 	--return min_max_table[1],min_max_table[2]
-	posy = math.floor(posy)
+	posy = math_floor(posy)
 	return posy - 32, posy + 32
 end
 
@@ -556,7 +562,7 @@ if mobs_spawn then
 
 							local goal_pos = position_calculation(player_pos)
 
-							local spawning_position_list = find_nodes_in_area_under_air(new_vector(goal_pos.x,min,goal_pos.z), vector.new(goal_pos.x,max,goal_pos.z), {"group:solid", "group:water", "group:lava"})
+							local spawning_position_list = find_nodes_in_area_under_air(vector_new(goal_pos.x,min,goal_pos.z), vector_new(goal_pos.x,max,goal_pos.z), {"group:solid", "group:water", "group:lava"})
 
 							--couldn't find node
 							if #spawning_position_list <= 0 then
