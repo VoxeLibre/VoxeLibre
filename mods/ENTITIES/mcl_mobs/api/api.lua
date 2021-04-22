@@ -120,7 +120,7 @@ end
 
 -- creative check
 function mobs.is_creative(name)
-	return minetest.is_creative_enabled(name)
+	return minetest_is_creative_enabled(name)
 end
 
 
