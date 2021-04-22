@@ -659,10 +659,12 @@ if mobs_spawn then
 
 								--found a mob, exit out of loop
 								if not skip then
+									minetest.log("warning", "found mob:"..temp_def.name)
 									--print("found mob:"..temp_def.name)
 									mob_def = table_copy(temp_def)
 									break
 								else
+									minetest.log("warning", "deleting temp index "..temp_index)
 									--print("deleting temp index")
 									table_remove(mob_library_worker_table, temp_index)
 								end
