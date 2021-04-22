@@ -151,3 +151,12 @@ minetest.register_node("mcl_smithing_table:table", {
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5
 })
+
+minetest.register_craft({
+	output = "mcl_smithing_table:table",
+	recipe = {
+		{"mcl_core:iron_ingot", "mcl_core:iron_ingot", ""},
+		{"group:wood", "group:wood", ""},
+		{"group:wood", "group:wood", ""}
+	}
+})
