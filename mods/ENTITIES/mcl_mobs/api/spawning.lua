@@ -615,6 +615,12 @@ if mobs_spawn then
 							local repeat_mob_search = true
 							repeat
 
+								--do not infinite loop
+								if #mob_library_worker_table <= 0 then
+									--print("breaking infinite loop")
+									break
+								end
+
 								local skip = false
 
 								--use this for removing table elements of mobs that do not match
@@ -659,12 +665,12 @@ if mobs_spawn then
 
 								--found a mob, exit out of loop
 								if not skip then
-									minetest.log("warning", "found mob:"..temp_def.name)
+									--minetest.log("warning", "found mob:"..temp_def.name)
 									--print("found mob:"..temp_def.name)
 									mob_def = table_copy(temp_def)
 									break
 								else
-									minetest.log("warning", "deleting temp index "..temp_index)
+									--minetest.log("warning", "deleting temp index "..temp_index)
 									--print("deleting temp index")
 									table_remove(mob_library_worker_table, temp_index)
 								end
