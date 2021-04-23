@@ -192,12 +192,12 @@ local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 mobs:register_mob("mobs_mc:enderman", {
 	type = "monster",
 	spawn_class = "passive",
-	passive = true,
-	pathfinding = 1,
+	neutral = true,
 	hp_min = 40,
 	hp_max = 40,
 	xp_min = 5,
 	xp_max = 5,
+	rotate = 270,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 2.89, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_enderman.b3d",
@@ -212,8 +212,8 @@ mobs:register_mob("mobs_mc:enderman", {
 		random = {name="mobs_mc_enderman_random", gain=0.5},
 		distance = 16,
 	},
-	walk_velocity = 0.2,
-	run_velocity = 3.4,
+	walk_velocity = 1,
+	run_velocity = 4,
 	damage = 7,
 	reach = 2,
 	drops = {
@@ -556,7 +556,7 @@ mobs:register_mob("mobs_mc:enderman", {
 	water_damage = 8,
 	view_range = 64,
 	fear_height = 4,
-	attack_type = "dogfight",
+	attack_type = "punch",
 })
 
 
