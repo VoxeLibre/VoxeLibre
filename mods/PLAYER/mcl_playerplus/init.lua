@@ -497,3 +497,61 @@ minetest.register_on_leaveplayer(function(player)
 	mcl_playerplus_internal[name] = nil
 	mcl_playerplus.elytra[player] = nil
 end)
+
+-- Don't change HP if the player falls in the water or through End Portal:
+mcl_damage.register_modifier(function(obj, damage, reason)
+	if reason.type == "fall" then
+		local pos = obj:get_pos()
+		local node = minetest.get_node(pos)
+		local velocity = obj:get_velocity() or obj:get_player_velocity() or {x=0,y=-10,z=0}
+		local v_axis_max = math.max(math.abs(velocity.x), math.abs(velocity.y), math.abs(velocity.z))
+		local step = {x = velocity.x / v_axis_max, y = velocity.y / v_axis_max, z = velocity.z / v_axis_max}
+		for i = 1, math.ceil(v_axis_max/5)+1 do -- trace at least 1/5 of the way per second
+			if not node or node.name == "ignore" then
+				minetest.get_voxel_manip():read_from_map(pos, pos)
+				node = minetest.get_node(pos)
+			end
+			if node then
+				if minetest.registered_nodes[node.name].walkable then
+					return
+				end
+				if minetest.get_item_group(node.name, "water") ~= 0 then
+					return 0
+				end
+				if node.name == "mcl_portals:portal_end" then
+					if mcl_portals and mcl_portals.end_teleport then
+						mcl_portals.end_teleport(obj)
+					end
+					return 0
+				end
+			end
+			pos = vector.add(pos, step)
+			node = minetest.get_node(pos)
+		end
+	end
+end, -200)
+
+minetest.register_on_respawnplayer(function(player)
+	local pos = player:get_pos()
+	minetest.add_particlespawner({
+		amount = 50,
+		time = 0.001,
+		minpos = vector.add(pos, 0),
+		maxpos = vector.add(pos, 0),
+		minvel = vector.new(-5,-5,-5),
+		maxvel = vector.new(5,5,5),
+		minexptime = 1.1,
+		maxexptime = 1.5,
+		minsize = 1,
+		maxsize = 2,
+		collisiondetection = false,
+		vertical = false,
+		texture = "mcl_particles_mob_death.png^[colorize:#000000:255",
+	})
+
+	minetest.sound_play("mcl_mobs_mob_poof", {
+		pos = pos,
+		gain = 1.0,
+		max_hear_distance = 8,
+	}, true)
+end)
