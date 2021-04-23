@@ -282,8 +282,8 @@ mobs:register_mob("mobs_mc:enderman", {
 				--self:teleport(nil)
 				--self.state = ""
 			--else
-				if self.attack then
-					local target = self.attack
+				if self.attacking then
+					local target = self.attacking
 					local pos = target:get_pos()
 					if pos ~= nil then
 						if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
