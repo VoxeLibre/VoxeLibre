@@ -1,10 +1,12 @@
 local minetest_after      = minetest.after
 local minetest_sound_play = minetest.sound_play
 
-local math_floor = math.floor
-local math_min   = math.min
+local math_floor  = math.floor
+local math_min    = math.min
+local math_random = math.random
 
 local vector_direction = vector.direction
+local vector_multiply  = vector.multiply
 
 mobs.feed_tame = function(self)
     return nil
@@ -149,8 +151,8 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 	-- add weapon wear manually
 	-- Required because we have custom health handling ("health" property)
-	--minetest_is_creative_enabled("") ~= true removed for now
-	if  tool_capabilities then
+	--minetest_is_creative_enabled("") ~= true --removed for now
+	if tool_capabilities then
 		if tool_capabilities.punch_attack_uses then
 			-- Without this delay, the wear does not work. Quite hacky ...
 			minetest_after(0, function(name)
@@ -199,33 +201,39 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		--end
 
 		-- knock back effect (only on full punch)
-		if not die
-		and self.knock_back
-		and tflp >= punch_interval then
+		if tflp >= punch_interval then
 
-			local v = self.object:get_velocity()
-			local r = 1.4 - math_min(punch_interval, 1.4)
-			local kb = r * 2.0
-			local up = 2
+			local velocity = self.object:get_velocity()
+			
+			--2d direction
+			local pos1 = self.object:get_pos()
+			pos1.y = 0
+			local pos2 = hitter:get_pos()
+			pos2.y = 0
+
+			local dir = vector.direction(pos2,pos1)
+
+			local up = 3
 
 			-- if already in air then dont go up anymore when hit
-			if v.y ~= 0
-			or self.fly then
+			if velocity.y ~= 0 then
 				up = 0
 			end
 
-			-- direction error check
-			dir = dir or {x = 0, y = 0, z = 0}
+
+			--0.75 for perfect distance to not be too easy, and not be too hard
+			local multiplier = 0.75 
 
 			-- check if tool already has specific knockback value
-			if tool_capabilities.damage_groups["knockback"] then
-				kb = tool_capabilities.damage_groups["knockback"]
-			else
-				kb = kb * 1.5
+			local knockback_enchant = mcl_enchanting.get_enchantment(hitter:get_wielded_item(), "knockback")
+			if knockback_enchant and knockback_enchant > 0 then
+				multiplier = knockback_enchant + 1 --(starts from 1, 1 would be no change)
 			end
 
-
+			
 			local luaentity
+
+			--[[ --why does this multiply it again???
 			if hitter then
 				luaentity = hitter:get_luaentity()
 			end
@@ -235,14 +243,16 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			elseif luaentity and luaentity._knockback then
 				kb = kb + luaentity._knockback
 			end
+			]]--
 
-			self.object:set_velocity({
-				x = dir.x * kb,
-				y = dir.y * kb + up * 2,
-				z = dir.z * kb
-			})
+			dir = vector_multiply(dir,multiplier)
 
-			self.pause_timer = 0.25
+			dir.y = up
+
+			--add velocity breaks momentum - use set velocity
+			self.object:set_velocity(dir)
+
+			self.pause_timer = 0.4
 		end
 	end -- END if damage
 
