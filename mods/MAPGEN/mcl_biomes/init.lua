@@ -2068,6 +2068,20 @@ local function register_dimension_ores()
 		})
 	end
 
+	-- Ancient debris
+	if minetest.settings:get_bool("mcl_generate_ores", true) then
+		minetest.register_ore({
+			ore_type       = "scatter",
+			ore	       = "mcl_nether:ancient_debris",
+			wherein        = {"mcl_nether:netherrack"},
+			clust_scarcity = 10000,
+			clust_num_ores = 4,
+			clust_size     = 1,
+			y_min = mcl_worlds.layer_to_y(8, "nether"),
+			y_max = mcl_worlds.layer_to_y(119, "nether"),
+		})
+	end
+
 	-- Lava springs in the Nether
 	minetest.register_ore({
 		ore_type       = "scatter",

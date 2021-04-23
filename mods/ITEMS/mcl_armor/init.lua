@@ -82,6 +82,23 @@ minetest.register_tool("mcl_armor:helmet_diamond",{
 	},
 	on_place = armor.on_armor_use,
 	on_secondary_use = armor.on_armor_use,
+	_mcl_upgradeable = true,
+	_mcl_upgrade_item = "mcl_armor:helmet_netherite"
+})
+
+minetest.register_tool("mcl_armor:helmet_netherite",{
+	description = S("Netherite Helmet"),
+	_doc_items_longdesc = longdesc,
+	_doc_items_usagehelp = usage,
+	inventory_image = "mcl_armor_inv_helmet_netherite.png",
+	groups = {armor_head=1, mcl_armor_points=3, mcl_armor_uses=407, mcl_armor_toughness=2, enchantability=10 },
+	_repair_material = "mcl_netherite:netherite_ingot",
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_diamond",
+		_mcl_armor_unequip = "mcl_armor_unequip_diamond",
+	},
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:helmet_chain", {
@@ -153,6 +170,23 @@ minetest.register_tool("mcl_armor:chestplate_diamond",{
 	inventory_image = "mcl_armor_inv_chestplate_diamond.png",
 	groups = {armor_torso=1, mcl_armor_points=8, mcl_armor_uses=529, mcl_armor_toughness=2, enchantability=10 },
 	_repair_material = "mcl_core:diamond",
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_diamond",
+		_mcl_armor_unequip = "mcl_armor_unequip_diamond",
+	},
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
+	_mcl_upgradable = true,
+	_mcl_upgradeitem = "mcl_armor:chestplate_netherite"
+})
+
+minetest.register_tool("mcl_armor:chestplate_netherite",{
+	description = S("Netherite Chestplate"),
+	_doc_items_longdesc = longdesc,
+	_doc_items_usagehelp = usage,
+	inventory_image = "mcl_armor_inv_chestplate_netherite.png",
+	groups = {armor_torso=1, mcl_armor_points=8, mcl_armor_uses=592, mcl_armor_toughness=2, enchantability=10 },
+	_repair_material = "mcl_netherite:netherite_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_diamond",
 		_mcl_armor_unequip = "mcl_armor_unequip_diamond",
@@ -236,6 +270,23 @@ minetest.register_tool("mcl_armor:leggings_diamond",{
 	},
 	on_place = armor.on_armor_use,
 	on_secondary_use = armor.on_armor_use,
+	_mcl_upgradable = true,
+	_mcl_upgrade_item = "mcl_armor:leggings_netherite"
+})
+
+minetest.register_tool("mcl_armor:leggings_netherite",{
+	description = S("Netherite Leggings"),
+	_doc_items_longdesc = longdesc,
+	_doc_items_usagehelp = usage,
+	inventory_image = "mcl_armor_inv_leggings_netherite.png",
+	groups = {armor_legs=1, mcl_armor_points=6, mcl_armor_uses=555, mcl_armor_toughness=2, enchantability=10 },
+	_repair_material = "mcl_netherite:netherite_ingot",
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_diamond",
+		_mcl_armor_unequip = "mcl_armor_unequip_diamond",
+	},
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:leggings_chain", {
@@ -312,6 +363,8 @@ minetest.register_tool("mcl_armor:boots_diamond",{
 	},
 	on_place = armor.on_armor_use,
 	on_secondary_use = armor.on_armor_use,
+	_mcl_upgradable = true,
+	_mcl_upgrade_item = "mcl_armor:boots_diamond"
 })
 
 minetest.register_tool("mcl_armor:boots_chain", {
@@ -321,6 +374,21 @@ minetest.register_tool("mcl_armor:boots_chain", {
 	inventory_image = "mcl_armor_inv_boots_chain.png",
 	groups = {armor_feet=1, mcl_armor_points=1, mcl_armor_uses=196, enchantability=12 },
 	_repair_material = "mcl_core:iron_ingot",
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_chainmail",
+		_mcl_armor_unequip = "mcl_armor_unequip_chainmail",
+	},
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
+})
+
+minetest.register_tool("mcl_armor:boots_netherite", {
+	description = S("Netherite Boots"),
+	_doc_items_longdesc = longdesc,
+	_doc_items_usagehelp = usage,
+	inventory_image = "mcl_armor_inv_boots_netherite.png",
+	groups = {armor_feet=1, mcl_armor_points=3, mcl_armor_uses=481, enchantability=1 },
+	_repair_material = "mcl_netherite:netherite_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_chainmail",
 		_mcl_armor_unequip = "mcl_armor_unequip_chainmail",
