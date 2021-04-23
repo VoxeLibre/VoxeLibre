@@ -160,6 +160,7 @@ dofile(api_path .. "set_up.lua")
 dofile(api_path .. "attack_type_instructions.lua")
 dofile(api_path .. "sound_handling.lua")
 dofile(api_path .. "death_logic.lua")
+dofile(api_path .. "mob_effects.lua")
 
 
 mobs.spawning_mobs = {}
@@ -528,9 +529,12 @@ function mobs:register_arrow(name, def)
 					if self.hit_player
 					and player:is_player() then
 
-						mobs.arrow_hit(self, player)
+						if self.hit_player then
+							self.hit_player(self, player)
+						else
+							mobs.arrow_hit(self, player)
+						end
 
-						print("wow everything is fucked")
 						self.object:remove();
 						return
 					end

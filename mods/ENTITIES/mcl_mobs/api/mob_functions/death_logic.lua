@@ -1,5 +1,4 @@
 local minetest_add_item = minetest.add_item
-local minetest_add_particlespawner = minetest.add_particlespawner
 local minetest_sound_play = minetest.sound_play
 
 local math_pi     = math.pi
@@ -8,37 +7,6 @@ local math_floor  = math.floor
 local HALF_PI     = math_pi / 2
 
 local vector_new = vector.new
-
-
-local death_effect = function(self)
-
-    local pos = self.object:get_pos()
-    local yaw = self.object:get_yaw()
-    local collisionbox = self.object:get_properties().collisionbox
-
-    local min, max
-
-    if collisionbox then
-        min = {x=collisionbox[1], y=collisionbox[2], z=collisionbox[3]}
-        max = {x=collisionbox[4], y=collisionbox[5], z=collisionbox[6]}
-    end
-
-    minetest_add_particlespawner({
-        amount = 50,
-        time = 0.001,
-        minpos = vector.add(pos, min),
-        maxpos = vector.add(pos, max),
-        minvel = vector.new(-0.5,0.5,-0.5),
-        maxvel = vector.new(0.5,1,0.5),
-        minexptime = 1.1,
-        maxexptime = 1.5,
-        minsize = 1,
-        maxsize = 2,
-        collisiondetection = false,
-        vertical = false,
-        texture = "mcl_particles_mob_death.png", -- this particle looks strange
-    })
-end
 
 
 -- drop items
@@ -127,7 +95,7 @@ mobs.death_logic = function(self, dtime)
 
         item_drop(self,false,1)
 
-        death_effect(self)
+        mobs.death_effect(self)
 
         self.object:remove()
 
