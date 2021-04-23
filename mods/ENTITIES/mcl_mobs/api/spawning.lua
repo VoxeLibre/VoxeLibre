@@ -20,7 +20,7 @@ local table_remove   = table.remove
 
 
 -- range for mob count
-local aoc_range = 32
+local aoc_range = 48
 --[[
 
 THIS IS THE BIG LIST OF ALL BIOMES - used for programming/updating mobs

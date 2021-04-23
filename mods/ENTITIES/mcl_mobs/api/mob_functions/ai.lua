@@ -696,6 +696,19 @@ mobs.mob_step = function(self, dtime)
 		return false
 	end
 
+	--despawn mechanism
+	--don't despawned tamed mobs
+	if not self.tamed then
+		self.lifetimer = self.lifetimer - dtime
+		if self.lifetimer <= 0 then
+			self.lifetimer = self.lifetimer_reset
+			if not mobs.check_for_player_within_area(self, 64) then
+				--print("removing in MAIN LOGIC!")
+				self.object:remove()
+				return
+			end
+		end
+	end
 
 	--color modifier which coincides with the pause_timer
 	if self.old_health and self.health < self.old_health then		
