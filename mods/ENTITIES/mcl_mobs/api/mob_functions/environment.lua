@@ -153,8 +153,8 @@ mobs.group_attack_initialization = function(self)
 			if detected_mob._cmi_is_mob and detected_mob.state ~= "attack" and detected_mob.owner ~= name then
 				if detected_mob.name == self.name then
 					turn_hostile(self,detected_mob)
-				elseif type(detected_mob.group_attack) == "table" then
-					for _,id in pairs(self.group_attack) do
+				else
+					for _,id in pairs(friends_list) do
 						if detected_mob.name == id then
 							turn_hostile(self,detected_mob)
 							break
