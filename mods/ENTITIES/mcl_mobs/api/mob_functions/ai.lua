@@ -685,8 +685,6 @@ mobs.mob_step = function(self, dtime)
 	end
 
 
-
-
 	-- can mob be pushed, if so calculate direction -- do this last (overrides everything)
 	if self.pushable then
 		mobs.collision(self)

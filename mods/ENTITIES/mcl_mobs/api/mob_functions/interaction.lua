@@ -80,6 +80,12 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		end
 	end
 
+	--don't do damage until pause timer resets
+	if self.pause_timer > 0 then
+		print(self.pause_timer)
+		return
+	end 
+
 	
 	-- error checking when mod profiling is enabled
 	if not tool_capabilities then
@@ -93,6 +99,7 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 	-- punch interval
 	local weapon = hitter:get_wielded_item()
+
 	local punch_interval = 1.4
 
 	-- exhaust attacker
@@ -105,23 +112,9 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	local armor = self.object:get_armor_groups() or {}
 	local tmp
 
-	-- quick error check in case it ends up 0 (serialize.h check test)
-	if tflp == 0 then
-		tflp = 0.2
-	end
-
+	--calculate damage groups
 	for group,_ in pairs( (tool_capabilities.damage_groups or {}) ) do
-
-		tmp = tflp / (tool_capabilities.full_punch_interval or 1.4)
-
-		if tmp < 0 then
-			tmp = 0.0
-		elseif tmp > 1 then
-			tmp = 1.0
-		end
-
-		damage = damage + (tool_capabilities.damage_groups[group] or 0)
-			* tmp * ((armor[group] or 0) / 100.0)
+		damage = damage + (tool_capabilities.damage_groups[group] or 0) * ((armor[group] or 0) / 100.0)
 	end
 
 	if weapon then
@@ -200,61 +193,60 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		--	die = true
 		--end
 
-		-- knock back effect (only on full punch)
-		if tflp >= punch_interval then
+		-- knock back effect
+		local velocity = self.object:get_velocity()
+		
+		--2d direction
+		local pos1 = self.object:get_pos()
+		pos1.y = 0
+		local pos2 = hitter:get_pos()
+		pos2.y = 0
 
-			local velocity = self.object:get_velocity()
-			
-			--2d direction
-			local pos1 = self.object:get_pos()
-			pos1.y = 0
-			local pos2 = hitter:get_pos()
-			pos2.y = 0
+		local dir = vector.direction(pos2,pos1)
 
-			local dir = vector.direction(pos2,pos1)
+		local up = 3
 
-			local up = 3
-
-			-- if already in air then dont go up anymore when hit
-			if velocity.y ~= 0 then
-				up = 0
-			end
-
-
-			--0.75 for perfect distance to not be too easy, and not be too hard
-			local multiplier = 0.75 
-
-			-- check if tool already has specific knockback value
-			local knockback_enchant = mcl_enchanting.get_enchantment(hitter:get_wielded_item(), "knockback")
-			if knockback_enchant and knockback_enchant > 0 then
-				multiplier = knockback_enchant + 1 --(starts from 1, 1 would be no change)
-			end
-
-			
-			local luaentity
-
-			--[[ --why does this multiply it again???
-			if hitter then
-				luaentity = hitter:get_luaentity()
-			end
-			if hitter and is_player then
-				local wielditem = hitter:get_wielded_item()
-				kb = kb + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
-			elseif luaentity and luaentity._knockback then
-				kb = kb + luaentity._knockback
-			end
-			]]--
-
-			dir = vector_multiply(dir,multiplier)
-
-			dir.y = up
-
-			--add velocity breaks momentum - use set velocity
-			self.object:set_velocity(dir)
-
-			self.pause_timer = 0.4
+		-- if already in air then dont go up anymore when hit
+		if velocity.y ~= 0 then
+			up = 0
 		end
-	end -- END if damage
+
+
+		--0.75 for perfect distance to not be too easy, and not be too hard
+		local multiplier = 0.75 
+
+		-- check if tool already has specific knockback value
+		local knockback_enchant = mcl_enchanting.get_enchantment(hitter:get_wielded_item(), "knockback")
+		if knockback_enchant and knockback_enchant > 0 then
+			multiplier = knockback_enchant + 1 --(starts from 1, 1 would be no change)
+		end
+
+		
+		local luaentity
+
+		--[[ --why does this multiply it again???
+		if hitter then
+			luaentity = hitter:get_luaentity()
+		end
+		if hitter and is_player then
+			local wielditem = hitter:get_wielded_item()
+			kb = kb + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
+		elseif luaentity and luaentity._knockback then
+			kb = kb + luaentity._knockback
+		end
+		]]--
+
+		dir = vector_multiply(dir,multiplier)
+
+		dir.y = up
+
+		--add velocity breaks momentum - use set velocity
+		self.object:set_velocity(dir)
+
+		--0.4 seconds until you can hurt the mob again
+		self.pause_timer = 0.4
+	end
+	 -- END if damage
 
 	-- if skittish then run away
 	--[[
