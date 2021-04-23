@@ -21,7 +21,7 @@ mobs:register_mob("mobs_mc:ghast", {
 	xp_min = 5,
 	xp_max = 5,
 	reach = 20,
-	eye_height = 3,
+	eye_height = 2.5,
 	collisionbox = {-2, 0, -2, 2, 4, 2},
 	visual = "mesh",
 	mesh = "mobs_mc_ghast.b3d",
