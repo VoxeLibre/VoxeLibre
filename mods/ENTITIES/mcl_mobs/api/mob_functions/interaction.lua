@@ -194,6 +194,17 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		-- do damage
 		self.health = self.health - damage
 
+
+		--0.4 seconds until you can hurt the mob again
+		self.pause_timer = 0.4
+
+		--don't do knockback from a rider
+		for _,obj in pairs(self.object:get_children()) do
+			if obj == hitter then
+				return
+			end
+		end
+
 		-- knock back effect
 		local velocity = self.object:get_velocity()
 		
@@ -235,8 +246,6 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		--add the velocity
 		self.object:add_velocity(dir)
 
-		--0.4 seconds until you can hurt the mob again
-		self.pause_timer = 0.4
 	end
 end
 
