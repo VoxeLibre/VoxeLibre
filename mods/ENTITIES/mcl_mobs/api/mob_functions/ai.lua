@@ -67,13 +67,26 @@ local land_state_list_wandering = {"stand", "walk"}
 
 local land_state_switch = function(self, dtime)
 
+	--do math after sure not attacking or running away
+	self.state_timer = self.state_timer - dtime
+
+	--only run away
+	if self.skittish and self.state == "run" then
+		self.run_timer = self.run_timer - dtime
+		if self.run_timer > 0 then
+			return
+		end
+
+		--continue
+	end
+
+	--only attack
 	if self.hostile and self.attacking then
 		self.state = "attack"
 		return
 	end
 
-	--do math after sure not attacking
-	self.state_timer = self.state_timer - dtime
+	
 
 	if self.state_timer <= 0 then
 		self.state_timer = math.random(4,10) + math.random()
@@ -185,7 +198,37 @@ local land_state_execution = function(self,dtime)
 
 	elseif self.state == "run" then
 
-		print("run")
+		--do animation
+		mobs.set_mob_animation(self, "run")
+
+		--enable rotation locking
+		mobs.movement_rotation_lock(self)
+
+		--check for nodes to jump over
+		local node_in_front_of = mobs.jump_check(self)
+
+		if node_in_front_of == 1 then
+
+			mobs.jump(self)
+		
+		--turn if on the edge of cliff
+		--(this is written like this because unlike
+		--jump_check which simply tells the mob to jump
+		--this requires a mob to turn, removing the
+		--ease of a full implementation for it in a single
+		--function)
+		elseif node_in_front_of == 2 or (self.fear_height ~= 0 and cliff_check(self,dtime)) then
+			--turn 45 degrees if so
+			quick_rotate(self,dtime)
+			--stop the mob so it doesn't fall off
+			mobs.set_velocity(self,0)
+		end
+
+		--only move forward if path is clear
+		if node_in_front_of == 0 or node_in_front_of == 1 then
+			--set the velocity of the mob
+			mobs.set_velocity(self,self.run_velocity)
+		end
 
 	elseif self.state == "attack" then
 
@@ -652,7 +695,7 @@ mobs.mob_step = function(self, dtime)
 		self.object:remove()
 		return false
 	end
-
+	
 	--do death logic (animation, poof, explosion, etc)
 	if self.health <= 0 then
 

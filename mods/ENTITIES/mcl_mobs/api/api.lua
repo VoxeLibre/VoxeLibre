@@ -337,6 +337,7 @@ function mobs:register_mob(name, def)
 		fall_slow = def.fall_slow,
 		projectile_cooldown_min = def.projectile_cooldown_min or 2,
 		projectile_cooldown_max = def.projectile_cooldown_max or 6,
+		skittish = def.skittish,
 		--end j4i stuff
 
 		-- MCL2 extensions
