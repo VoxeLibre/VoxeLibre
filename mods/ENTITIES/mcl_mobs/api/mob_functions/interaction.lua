@@ -190,12 +190,12 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 			minetest_sound_play(weapon:get_definition().sounds[s], {
 				object = self.object, --hitter,
-				max_hear_distance = 8
+				max_hear_distance = 16
 			}, true)
 		else
 			minetest_sound_play("default_punch", {
 				object = self.object,
-				max_hear_distance = 5
+				max_hear_distance = 16
 			}, true)
 		end
 
