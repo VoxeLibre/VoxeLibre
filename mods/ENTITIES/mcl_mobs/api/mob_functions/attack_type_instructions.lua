@@ -2,6 +2,7 @@ local vector_direction = vector.direction
 local minetest_dir_to_yaw = minetest.dir_to_yaw
 local vector_distance = vector.distance
 local vector_multiply = vector.multiply
+local math_random  = math.random
 
 --[[
  _   _                     _   _ 
@@ -208,7 +209,7 @@ mobs.projectile_attack_walk = function(self,dtime)
 
     --do this to not load data into other mobs
     if not self.projectile_timer then
-        self.projectile_timer = self.projectile_cooldown
+        self.projectile_timer = math_random(self.projectile_cooldown_min, self.projectile_cooldown_max)
     end
 
     --run projectile timer
@@ -218,7 +219,7 @@ mobs.projectile_attack_walk = function(self,dtime)
         --shoot
         if self.projectile_timer <= 0 then
             --reset timer
-            self.projectile_timer = self.projectile_cooldown
+            self.projectile_timer = math_random(self.projectile_cooldown_min, self.projectile_cooldown_max)
             mobs.shoot_projectile(self)
         end
     end
@@ -291,7 +292,7 @@ mobs.projectile_attack_fly = function(self, dtime)
 
     --do this to not load data into other mobs
     if not self.projectile_timer then
-        self.projectile_timer = self.projectile_cooldown
+        self.projectile_timer = math_random(self.projectile_cooldown_min, self.projectile_cooldown_max)
     end
 
     --run projectile timer
@@ -301,7 +302,7 @@ mobs.projectile_attack_fly = function(self, dtime)
         --shoot
         if self.projectile_timer <= 0 then
             --reset timer
-            self.projectile_timer = self.projectile_cooldown
+            self.projectile_timer = math_random(self.projectile_cooldown_min, self.projectile_cooldown_max)
             mobs.shoot_projectile(self)
         end
     end

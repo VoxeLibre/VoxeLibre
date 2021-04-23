@@ -328,8 +328,13 @@ function mobs:register_mob(name, def)
 		attacking = nil,
 		visual_size_origin = def.visual_size or {x = 1, y = 1, z = 1},
 		punch_timer_cooloff = def.punch_timer_cooloff or 0.5,
-		projectile_cooldown = def.projectile_cooldown or 2,
 		death_animation_timer = 0,
+		hostile_cooldown = def.hostile_cooldown or 15,
+		tilt_fly = def.tilt_fly,
+		tilt_swim = def.tilt_swim,
+		fall_slow = def.fall_slow,
+		projectile_cooldown_min = def.projectile_cooldown_min or 2,
+		projectile_cooldown_max = def.projectile_cooldown_max or 6,
 		--end j4i stuff
 
 		-- MCL2 extensions
@@ -353,10 +358,6 @@ function mobs:register_mob(name, def)
 		ignited_by_sunlight = def.ignited_by_sunlight or false,
 		eye_height = def.eye_height or 1.5,
 		defuse_reach = def.defuse_reach or 4,
-		hostile_cooldown = def.hostile_cooldown or 15,
-		tilt_fly = def.tilt_fly,
-		tilt_swim = def.tilt_swim,
-		fall_slow = def.fall_slow,
 		-- End of MCL2 extensions
 
 		on_spawn = def.on_spawn,
