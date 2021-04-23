@@ -23,9 +23,7 @@ minetest.register_entity("mcl_burning:fire", {
 
 minetest.register_globalstep(function(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
-		if player:get_meta():get_float("mcl_burning:burn_time") > 0 then
-			mcl_burning.tick(player, dtime)
-		end
+		mcl_burning.tick(player, dtime)
 	end
 end)
 
