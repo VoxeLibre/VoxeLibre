@@ -62,6 +62,7 @@ mobs:register_mob("mobs_mc:sheep", {
 	hp_max = 8,
 	xp_min = 1,
 	xp_max = 3,
+	skittish = true,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.29, 0.45},
 	rotate = 270,
 	visual = "mesh",

@@ -90,6 +90,7 @@ local horse = {
 	rotate = 270,
 	walk_velocity = 1,
 	run_velocity = 8,
+	skittish = true,
 	visual_size = {x=3.0, y=3.0},
 	collisionbox = {-0.69825, -0.01, -0.69825, 0.69825, 1.59, 0.69825},
 	animation = {

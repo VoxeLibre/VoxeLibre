@@ -1,5 +1,6 @@
 local minetest_after      = minetest.after
 local minetest_sound_play = minetest.sound_play
+local minetest_dir_to_yaw = minetest.dir_to_yaw
 
 local math_floor  = math.floor
 local math_min    = math.min
@@ -63,21 +64,24 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		return
 	end
 
-	--neutral passive mobs switch to neutral hostile
-	if self.neutral then
+	--turn skittish mobs away and RUN
+	if self.skittish then
 
-		--drop in variables for attacking (stops crash)
-		self.attacking   = hitter
-		self.punch_timer = 0
+		self.state = "run"
 
-		self.hostile = true
-		--hostile_cooldown timer is initialized here
-		self.hostile_cooldown_timer = self.hostile_cooldown
+		self.run_timer = 5 --arbitrary 5 seconds
 
-		--initialize the group attack (check for other mobs in area, make them neutral hostile)
-		if self.group_attack then
-			mobs.group_attack_initialization(self)
-		end
+		local pos1 = self.object:get_pos()
+		pos1.y = 0
+		local pos2 = hitter:get_pos()
+		pos2.y = 0
+
+
+		local dir = vector_direction(pos2,pos1)
+
+		local yaw = minetest_dir_to_yaw(dir)
+
+		self.yaw = yaw
 	end
 
 

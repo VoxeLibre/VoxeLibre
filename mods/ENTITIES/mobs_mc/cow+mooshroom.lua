@@ -32,7 +32,7 @@ local cow_def = {
 		max = 2,
 		looting = "common",},
 	},
-	runaway = true,
+	skittish = true,
 	sounds = {
 		random = "mobs_mc_cow",
 		damage = "mobs_mc_cow_hurt",
