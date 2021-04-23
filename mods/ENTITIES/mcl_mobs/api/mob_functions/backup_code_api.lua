@@ -2758,45 +2758,7 @@ function do_states(self)
 end
 
 
-	mobs.death_effect = function(pos, yaw, collisionbox, rotate)
-		local min, max
-		if collisionbox then
-			min = {x=collisionbox[1], y=collisionbox[2], z=collisionbox[3]}
-			max = {x=collisionbox[4], y=collisionbox[5], z=collisionbox[6]}
-		else
-			min = { x = -0.5, y = 0, z = -0.5 }
-			max = { x = 0.5, y = 0.5, z = 0.5 }
-		end
-		if rotate then
-			min = vector.rotate(min, {x=0, y=yaw, z=math_pi/2})
-			max = vector.rotate(max, {x=0, y=yaw, z=math_pi/2})
-			min, max = vector.sort(min, max)
-			min = vector.multiply(min, 0.5)
-			max = vector.multiply(max, 0.5)
-		end
 	
-		minetest_add_particlespawner({
-			amount = 50,
-			time = 0.001,
-			minpos = vector.add(pos, min),
-			maxpos = vector.add(pos, max),
-			minvel = vector.new(-5,-5,-5),
-			maxvel = vector.new(5,5,5),
-			minexptime = 1.1,
-			maxexptime = 1.5,
-			minsize = 1,
-			maxsize = 2,
-			collisiondetection = false,
-			vertical = false,
-			texture = "mcl_particles_mob_death.png^[colorize:#000000:255",
-		})
-	
-		minetest_sound_play("mcl_mobs_mob_poof", {
-			pos = pos,
-			gain = 1.0,
-			max_hear_distance = 8,
-		}, true)
-	end
 	
 -- above function exported for mount.lua
 function mobs:set_animation(self, anim)
