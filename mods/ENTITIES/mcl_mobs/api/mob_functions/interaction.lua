@@ -184,20 +184,23 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	if damage >= 0.1 then
 
 		-- weapon sounds
+		--this doesn't work right for nodes
+		--[[
 		if weapon:get_definition().sounds ~= nil then
 
-			local s = math_random(0, #weapon:get_definition().sounds)
+			local s = math_random(1, #weapon:get_definition().sounds)
 
 			minetest_sound_play(weapon:get_definition().sounds[s], {
 				object = self.object, --hitter,
-				max_hear_distance = 8
+				max_hear_distance = 16
 			}, true)
 		else
-			minetest_sound_play("default_punch", {
-				object = self.object,
-				max_hear_distance = 5
-			}, true)
-		end
+			]]--
+		minetest_sound_play("default_punch", {
+			object = self.object,
+			max_hear_distance = 16
+		}, true)
+		--end
 
 		--damage_effect(self, damage)
 
