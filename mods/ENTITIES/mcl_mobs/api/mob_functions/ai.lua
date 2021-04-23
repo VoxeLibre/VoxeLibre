@@ -85,6 +85,11 @@ end
 -- states are executed here
 local land_state_execution = function(self,dtime)
 
+	--no collisionbox exception
+	if not self.object:get_properties() then
+		return
+	end
+
 	local pos = self.object:get_pos()
 	local collisionbox = self.object:get_properties().collisionbox
 	--get the center of the mob
