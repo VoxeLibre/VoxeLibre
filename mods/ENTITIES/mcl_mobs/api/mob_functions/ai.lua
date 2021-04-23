@@ -672,6 +672,14 @@ mobs.mob_step = function(self, dtime)
 	if self.do_custom then
 		-- when false skip going any further
 		if self.do_custom(self, dtime) == false then
+			--this needs to be here or the mob becomes immortal
+			if self.pause_timer > 0 then
+				self.pause_timer = self.pause_timer - dtime
+				--perfectly reset pause_timer
+				if self.pause_timer < 0 then
+					self.pause_timer = 0
+				end
+			end
 			--this overrides internal lua collision detection
 			return
 		end

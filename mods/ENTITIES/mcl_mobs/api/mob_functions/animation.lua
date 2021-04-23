@@ -22,7 +22,7 @@ mobs.set_mob_animation = function(self, anim, fixed_frame)
 	end
 
 
-	if (not self.animation[anim .. "_start"] or not self.animation[anim .. "_end"]) then		
+	if (not self.animation[anim .. "_start"] or not self.animation[anim .. "_end"]) then
 		return
 	end
 
