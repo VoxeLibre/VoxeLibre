@@ -129,7 +129,14 @@ end
 mobs.group_attack_initialization = function(self)
 
 	--get basic data
-	local friends_list = table_copy(self.group_attack)
+	local friends_list
+
+	if self.group_attack == true then
+		friends_list = {self.name}
+	else
+		friends_list = table_copy(self.group_attack)
+	end
+
 	local objects_in_area = minetest_get_objects_inside_radius(self.object:get_pos(), self.view_range)
 
 	--get the player's name
