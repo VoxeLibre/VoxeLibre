@@ -170,6 +170,14 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		end
 	end
 
+
+	--if player is falling multiply damage by 1.5
+	--critical hit
+	if hitter:get_velocity().y < 0 then
+		damage = damage * 1.5
+		mobs.critical_effect(self)
+	end
+
 	local die = false
 
 	-- only play hit sound and show blood effects if damage is 1 or over; lower to 0.1 to ensure armor works appropriately.

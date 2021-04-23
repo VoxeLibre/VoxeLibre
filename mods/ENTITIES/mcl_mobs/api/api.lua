@@ -160,6 +160,7 @@ dofile(api_path .. "set_up.lua")
 dofile(api_path .. "attack_type_instructions.lua")
 dofile(api_path .. "sound_handling.lua")
 dofile(api_path .. "death_logic.lua")
+dofile(api_path .. "mob_effects.lua")
 
 
 mobs.spawning_mobs = {}
