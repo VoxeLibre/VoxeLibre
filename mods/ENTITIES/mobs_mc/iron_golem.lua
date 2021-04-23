@@ -18,6 +18,7 @@ mobs:register_mob("mobs_mc:iron_golem", {
 	rotate = 270,
 	hp_min = 100,
 	hp_max = 100,
+	rotate = 270,
 	protect = true,
 	neutral = true,
 	breath_max = -1,
@@ -42,7 +43,7 @@ mobs:register_mob("mobs_mc:iron_golem", {
 	reach = 3,
 	group_attack = true,
 	attacks_monsters = true,
-	attack_type = "dogfight",
+	attack_type = "punch",
 	drops = {
 		{name = mobs_mc.items.iron_ingot,
 		chance = 1,
