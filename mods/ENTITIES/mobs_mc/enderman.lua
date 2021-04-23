@@ -204,6 +204,7 @@ mobs:register_mob("mobs_mc:enderman", {
 	textures = create_enderman_textures(),
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
+	eye_height = 2.5,
 	sounds = {
 		-- TODO: Custom war cry sound
 		war_cry = "mobs_sandmonster",
@@ -359,11 +360,16 @@ mobs:register_mob("mobs_mc:enderman", {
 						--if looking in general head position, turn hostile
 						if minetest.line_of_sight(ender_eye_pos, look_pos_base) and vector.distance(look_pos, ender_eye_pos) <= 0.4 then
 							self.provoked = "staring"
-							self.attack = minetest.get_player_by_name(obj:get_player_name())
+							self.state = "stand"
+							self.hostile = false
 							break
-						else -- I'm not sure what this part does, but I don't want to break anything - jordan4ibanez
+						--begin attacking the player
+						else
 							if self.provoked == "staring" then
 								self.provoked = "broke_contact"
+								self.hostile = true
+								self.state = "attack"
+								self.attacking = obj
 							end						
 						end
 

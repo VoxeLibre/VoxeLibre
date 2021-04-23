@@ -134,6 +134,11 @@ mobs.punch_attack_walk = function(self,dtime)
     end
 
 
+    --auto reset punch_timer
+    if not self.punch_timer then
+        self.punch_timer = 0
+    end
+
     if self.punch_timer > 0 then
         self.punch_timer = self.punch_timer - dtime
     end

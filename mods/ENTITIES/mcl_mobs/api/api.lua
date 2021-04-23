@@ -332,7 +332,7 @@ function mobs:register_mob(name, def)
 		--end j4i stuff
 
 		-- MCL2 extensions
-		teleport = teleport,
+		teleport = mobs.teleport,
 		do_teleport = def.do_teleport,
 		spawn_class = def.spawn_class,
 		ignores_nametag = def.ignores_nametag or false,

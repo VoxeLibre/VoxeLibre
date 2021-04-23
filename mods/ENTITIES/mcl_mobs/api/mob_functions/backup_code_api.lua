@@ -309,13 +309,7 @@ local falling = function(self, pos)
 	end
 end
 
-local teleport = function(self, target)
-	if self.do_teleport then
-		if self.do_teleport(self, target) == false then
-			return
-		end
-	end
-end
+
 
 
 -- find someone to runaway from

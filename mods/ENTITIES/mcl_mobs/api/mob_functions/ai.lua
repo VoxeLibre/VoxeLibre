@@ -667,6 +667,17 @@ mobs.mob_step = function(self, dtime)
 		return
 	end
 
+
+	--do custom mob instructions
+	if self.do_custom then
+		print("doing custom instructions")
+		-- when false skip going any further
+		if self.do_custom(self, dtime) == false then
+			--this overrides internal lua collision detection
+			return
+		end
+	end
+
 	local attacking = nil
 
 	--scan for players within eyesight
