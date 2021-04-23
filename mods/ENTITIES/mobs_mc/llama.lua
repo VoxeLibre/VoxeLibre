@@ -27,6 +27,15 @@ local carpets = {
 mobs:register_mob("mobs_mc:llama", {
 	type = "animal",
 	spawn_class = "passive",
+	rotate = 270,
+	neutral = true,
+	group_attack = true,
+	attack_type = "projectile",
+	shoot_arrow = function(self, pos, dir)
+		-- 2-4 damage per arrow
+		local dmg = 1
+		mobs.shoot_projectile_handling("mobs_mc:spit", pos, dir, self.object:get_yaw(), self.object, nil, dmg)		
+	end,
 	hp_min = 15,
 	hp_max = 30,
 	xp_min = 1,
@@ -50,6 +59,7 @@ mobs:register_mob("mobs_mc:llama", {
 	run_velocity = 4.4,
 	follow_velocity = 4.4,
 	floats = 1,
+	reach = 6,
 	drops = {
 		{name = mobs_mc.items.leather,
 		chance = 1,
@@ -235,3 +245,37 @@ mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:llama", S("Llama"), "mobs_mc_spawn_icon_llama.png", 0)
+
+
+-- llama spit
+mobs:register_arrow("mobs_mc:spit", {
+	visual = "sprite",
+	visual_size = {x = 0.3, y = 0.3},
+	textures = {"mobs_mc_spit.png"},
+	velocity = 1,
+	speed = 1,
+	tail = 1,
+	tail_texture = "mobs_mc_spit.png",
+	tail_size = 2,
+
+	hit_player = function(self, player)
+		if rawget(_G, "armor") and armor.last_damage_types then
+			armor.last_damage_types[player:get_player_name()] = "spit"
+		end
+		player:punch(self.object, 1.0, {
+			full_punch_interval = 1.0,
+			damage_groups = {fleshy = self._damage},
+		}, nil)
+	end,
+
+	hit_mob = function(self, mob)		
+		mob:punch(self.object, 1.0, {
+			full_punch_interval = 1.0,
+			damage_groups = {fleshy = _damage},
+		}, nil)
+	end,
+
+	hit_node = function(self, pos, node)
+		--does nothing
+	end
+})
