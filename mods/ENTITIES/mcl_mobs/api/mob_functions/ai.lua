@@ -796,6 +796,20 @@ mobs.mob_step = function(self, dtime)
 			self.object:set_texture_mod("")
 		end
 
+		--stop walking mobs from falling through the water
+		if not self.jump_only and not self.swim and not self.fly then
+			local pos = self.object:get_pos()
+			local collisionbox = self.object:get_properties().collisionbox
+			--get the center of the mob
+			pos.y = pos.y + (collisionbox[2] + collisionbox[5] / 2)
+			local current_node = minetest_get_node(pos).name
+
+			--recheck if in water or lava
+			if minetest_get_item_group(current_node, "water") ~= 0 or minetest_get_item_group(current_node, "lava") ~= 0 then
+				mobs.float(self)
+			end
+		end
+
 		--stop projectile mobs from being completely disabled while stunned
 		if self.projectile_timer and self.projectile_timer > 0.01 then
 			self.projectile_timer = self.projectile_timer - dtime
