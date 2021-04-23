@@ -241,6 +241,7 @@ local horse = {
 				self.buck_off_time = 40 -- TODO how long does it take in minecraft?
 				if self.temper > 100 then
 					self.tamed = true -- NOTE taming can only be finished by riding the horse
+					mobs.tamed_effect(self)
 					if not self.owner or self.owner == "" then
 						self.owner = clicker:get_player_name()
 					end
@@ -254,6 +255,14 @@ local horse = {
 
 			-- If nothing happened temper_increase = 0 and addition does nothing
 			self.temper = self.temper + temper_increase
+
+			--give the player some kind of idea
+			--of what's happening with the horse's temper
+			if self.temper <= 100 then
+				mobs.feed_effect(self)
+			else
+				mobs.tamed_effect(self)
+			end
 
 			return
 		end
