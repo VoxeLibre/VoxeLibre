@@ -17,7 +17,7 @@ mobs:register_mob("mobs_mc:chicken", {
 	xp_min = 1,
 	xp_max = 3,
 	collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.69, 0.2},
-	runaway = true,
+	skittish = true,
 	fall_slow = true,
 	floats = 1,
 	visual = "mesh",
