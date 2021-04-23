@@ -1,6 +1,6 @@
 local GRAVITY             = minetest.settings:get("movement_gravity")-- + 9.81
 
-mobs.shoot_projectile_handling = function(arrow_item, pos, dir, yaw, shooter, power, damage, is_critical, bow_stack, collectable)
+mobs.shoot_projectile_handling = function(arrow_item, pos, dir, yaw, shooter, power, damage, is_critical, bow_stack, collectable, gravity)
 	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrow_item.."_entity")
 	if power == nil then
 		power = 19
@@ -8,6 +8,9 @@ mobs.shoot_projectile_handling = function(arrow_item, pos, dir, yaw, shooter, po
 	if damage == nil then
 		damage = 3
 	end
+
+    gravity = gravity or -GRAVITY
+
 	local knockback
 	if bow_stack then
 		local enchantments = mcl_enchanting.get_enchantments(bow_stack)
@@ -22,7 +25,7 @@ mobs.shoot_projectile_handling = function(arrow_item, pos, dir, yaw, shooter, po
 		end
 	end
 	obj:set_velocity({x=dir.x*power, y=dir.y*power, z=dir.z*power})
-	obj:set_acceleration({x=0, y=-GRAVITY, z=0})
+	obj:set_acceleration({x=0, y=gravity, z=0})
 	obj:set_yaw(yaw-math.pi/2)
 	local le = obj:get_luaentity()
 	le._shooter = shooter
