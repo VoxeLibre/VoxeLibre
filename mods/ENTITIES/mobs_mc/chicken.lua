@@ -29,6 +29,7 @@ mobs:register_mob("mobs_mc:chicken", {
 	rotate = 270,
 	makes_footstep_sound = true,
 	walk_velocity = 1,
+	run_velocity = 3,
 	drops = {
 		{name = mobs_mc.items.chicken_raw,
 		chance = 1,

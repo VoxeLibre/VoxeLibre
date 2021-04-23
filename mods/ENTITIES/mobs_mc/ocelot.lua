@@ -44,7 +44,7 @@ local ocelot = {
 	makes_footstep_sound = true,
 	walk_chance = default_walk_chance,
 	walk_velocity = 1,
-	run_velocity = 3,
+	run_velocity = 10,
 	follow_velocity = 1,
 	floats = 1,
 	runaway = true,
@@ -58,7 +58,7 @@ local ocelot = {
 	},
 	animation = {
 		speed_normal = 25,
-		run_speed = 50,
+		run_speed = 150,
 		stand_start = 0,
 		stand_end = 0,
 		walk_start = 0,
