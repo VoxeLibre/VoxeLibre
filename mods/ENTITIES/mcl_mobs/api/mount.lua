@@ -206,21 +206,30 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 		-- move forwards
 		if ctrl.up then
 
-			entity.v = entity.v + entity.accel / 10
+			mobs.set_velocity(entity, entity.run_velocity)
+
+			mobs.set_mob_animation(entity, moving_anim)
 
 		-- move backwards
 		elseif ctrl.down then
 
-			if entity.max_speed_reverse == 0 and entity.v == 0 then
-				return
-			end
+			mobs.set_velocity(entity, -entity.run_velocity)
 
-			entity.v = entity.v - entity.accel / 10
+			mobs.set_mob_animation(entity, moving_anim)
+
+		--halt
+		else
+
+			mobs.set_velocity(entity, 0)
+
+			mobs.set_mob_animation(entity, stand_anim)
 		end
 
-		-- fix mob rotation
+		-- mob rotation
 		entity.object:set_yaw(entity.driver:get_look_horizontal() - entity.rotate)
+		entity.yaw = entity.driver:get_look_horizontal() - entity.rotate
 
+		--[[
 		if can_fly then
 
 			-- fly up
@@ -244,32 +253,21 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 			end
 
 		else
+			]]--
 
-			-- jump
-			if ctrl.jump then
+		-- jump
+		if ctrl.jump then
 
-				if velo.y == 0 then
-					velo.y = velo.y + entity.jump_height
-					acce_y = acce_y + (acce_y * 3) + 1
-				end
-			end
-
-		end
-	end
-
-	-- if not moving then set animation and return
-	if entity.v == 0 and velo.x == 0 and velo.y == 0 and velo.z == 0 then
-
-		if stand_anim then
-			mobs:set_animation(entity, stand_anim)
+			mobs.jump(entity)
 		end
 
-		return
+		--end
 	end
 
+	--[[
 	-- set moving animation
 	if moving_anim then
-		mobs:set_animation(entity, moving_anim)
+		mobs:set_mob_animation(entity, moving_anim)
 	end
 
 	-- Stop!
@@ -383,6 +381,7 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 	end
 
 	entity.v2 = v
+	]]--
 end
 
 
@@ -390,6 +389,10 @@ end
 
 function mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_anim)
 
+	if true then
+		print("succ")
+		return
+	end
 	local ctrl = entity.driver:get_player_control()
 	local velo = entity.object:get_velocity()
 	local dir = entity.driver:get_look_dir()
@@ -440,9 +443,9 @@ function mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_anim)
 	-- change animation if stopped
 	if velo.x == 0 and velo.y == 0 and velo.z == 0 then
 
-		mobs:set_animation(entity, stand_anim)
+		mobs:set_mob_animation(entity, stand_anim)
 	else
 		-- moving animation
-		mobs:set_animation(entity, moving_anim)
+		mobs:set_mob_animation(entity, moving_anim)
 	end
 end

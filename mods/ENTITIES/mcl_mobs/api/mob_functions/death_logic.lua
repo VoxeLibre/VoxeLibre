@@ -89,6 +89,20 @@ end
 mobs.death_logic = function(self, dtime)
     self.death_animation_timer = self.death_animation_timer + dtime
 
+	--get all attached entities and sort through them
+	local attached_entities = self.object:get_children()
+	if #attached_entities > 0 then
+		for _,entity in pairs(attached_entities) do
+			--kick the player off
+			if entity:is_player() then
+				mobs.detach(entity)
+			--kick mobs off
+			--if there is scaling issues, this needs an additional check
+			else
+				entity:set_detach()
+			end
+		end
+	end
 
     --the final POOF of a mob despawning
     if self.death_animation_timer >= 1.25 then

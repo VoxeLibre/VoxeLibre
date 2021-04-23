@@ -87,6 +87,9 @@ local horse = {
 	spawn_class = "passive",
 	visual = "mesh",
 	mesh = "mobs_mc_horse.b3d",
+	rotate = 270,
+	walk_velocity = 1,
+	run_velocity = 8,
 	visual_size = {x=3.0, y=3.0},
 	collisionbox = {-0.69825, -0.01, -0.69825, 0.69825, 1.59, 0.69825},
 	animation = {
@@ -96,7 +99,7 @@ local horse = {
 		walk_speed = 25,
 		walk_start = 0,
 		walk_end = 40,
-		run_speed = 60,
+		run_speed = 120,
 		run_start = 0,
 		run_end = 40,
 	},
@@ -181,7 +184,7 @@ local horse = {
 		-- if driver present and horse has a saddle allow control of horse
 		if self.driver and self._saddle then
 
-			mobs.drive(self, "walk", "stand", false, dtime)
+			mobs.drive(self, "run", "stand", false, dtime)
 
 			return false -- skip rest of mob functions
 		end
@@ -238,6 +241,7 @@ local horse = {
 				self.buck_off_time = 40 -- TODO how long does it take in minecraft?
 				if self.temper > 100 then
 					self.tamed = true -- NOTE taming can only be finished by riding the horse
+					mobs.tamed_effect(self)
 					if not self.owner or self.owner == "" then
 						self.owner = clicker:get_player_name()
 					end
@@ -251,6 +255,14 @@ local horse = {
 
 			-- If nothing happened temper_increase = 0 and addition does nothing
 			self.temper = self.temper + temper_increase
+
+			--give the player some kind of idea
+			--of what's happening with the horse's temper
+			if self.temper <= 100 then
+				mobs.feed_effect(self)
+			else
+				mobs.tamed_effect(self)
+			end
 
 			return
 		end
