@@ -695,7 +695,14 @@ mobs.mob_step = function(self, dtime)
 		self.object:remove()
 		return false
 	end
-	
+
+
+	--color modifier which coincides with the pause_timer
+	if self.old_health and self.health < self.old_health then		
+		self.object:set_texture_mod("^[colorize:red:120")
+	end
+	self.old_health = self.health
+
 	--do death logic (animation, poof, explosion, etc)
 	if self.health <= 0 then
 
@@ -724,8 +731,9 @@ mobs.mob_step = function(self, dtime)
 			if self.pause_timer > 0 then
 				self.pause_timer = self.pause_timer - dtime
 				--perfectly reset pause_timer
-				if self.pause_timer < 0 then
+				if self.pause_timer <= 0 then
 					self.pause_timer = 0
+					self.object:set_texture_mod("")
 				end
 			end
 			--this overrides internal lua collision detection
@@ -783,8 +791,9 @@ mobs.mob_step = function(self, dtime)
 		end
 
 		--perfectly reset pause_timer
-		if self.pause_timer < 0 then
+		if self.pause_timer <= 0 then
 			self.pause_timer = 0
+			self.object:set_texture_mod("")
 		end
 
 		--stop projectile mobs from being completely disabled while stunned
