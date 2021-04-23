@@ -327,6 +327,7 @@ function mobs:register_mob(name, def)
 		visual_size_origin = def.visual_size or {x = 1, y = 1, z = 1},
 		punch_timer_cooloff = def.punch_timer_cooloff or 0.5,
 		projectile_cooldown = def.projectile_cooldown or 2,
+		death_animation_timer = 0,
 		--end j4i stuff
 
 		-- MCL2 extensions

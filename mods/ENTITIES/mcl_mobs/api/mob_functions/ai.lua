@@ -610,8 +610,22 @@ mobs.mob_step = function(self, dtime)
 		return false
 	end
 
+	--do death logic (animation, poof, explosion, etc)
 	if self.health <= 0 then
-		
+
+		mobs.death_logic(self, dtime)
+
+		--this is here because the mob must continue to move
+		--while stunned before coming to a complete halt even during
+		--the death tilt
+		if self.pause_timer > 0 then
+			self.pause_timer = self.pause_timer - dtime
+			--perfectly reset pause_timer
+			if self.pause_timer < 0 then
+				self.pause_timer = 0
+			end
+		end
+
 		return
 	end
 
