@@ -104,6 +104,11 @@ mobs.death_logic = function(self, dtime)
 		end
 	end
 
+	--stop mob from getting in the way of other mobs you're fighting
+	if self.object:get_properties().pointable then
+		self.object:set_properties({pointable = false})
+	end
+
     --the final POOF of a mob despawning
     if self.death_animation_timer >= 1.25 then
 
