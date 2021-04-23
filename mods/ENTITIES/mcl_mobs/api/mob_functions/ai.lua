@@ -612,11 +612,12 @@ mobs.mob_step = function(self, dtime)
 
 	local attacking = nil
 
+	--scan for players within eyesight
 	if self.hostile then
 		--true for line_of_sight is debug
 		attacking = mobs.detect_closest_player_within_radius(self,true,self.view_range,self.eye_height)
 
-		--go get the closest player ROAR >:O
+		--go get the closest player
 		if attacking then
 
 			--set initial punch timer
@@ -650,12 +651,14 @@ mobs.mob_step = function(self, dtime)
 		end
 	end
 
+	--mob is stunned after being hit
 	if self.pause_timer > 0 then
 		self.pause_timer = self.pause_timer - dtime
 		--don't break eye contact
 		if self.hostile and self.attacking then
 			mobs.set_yaw_while_attacking(self)
 		end
+	--do normal ai
 	else
 		--jump only (like slimes)
 		if self.jump_only then
