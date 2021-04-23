@@ -113,8 +113,36 @@ mobs.jump = function(self, velocity)
     self.object:add_velocity(vector_new(0,velocity,0))    
 end
 
+--make mobs fall slowly
+mobs.mob_fall_slow = function(self)
+
+	local current_velocity = self.object:get_velocity()
+
+	local goal_velocity = {
+		x = 0,
+		y = -2,
+		z = 0,
+	}
 
 
+	local new_velocity_addition = vector.subtract(goal_velocity,current_velocity)
+
+	new_velocity_addition.x = 0
+	new_velocity_addition.z = 0
+
+	if vector_length(new_velocity_addition) > vector_length(goal_velocity) then
+		vector.multiply(new_velocity_addition, (vector_length(goal_velocity) / vector_length(new_velocity_addition)))
+	end
+
+	new_velocity_addition.x = 0
+	new_velocity_addition.z = 0
+
+	--smooths out mobs a bit
+	if vector_length(new_velocity_addition) >= 0.0001 then
+		self.object:add_velocity(new_velocity_addition)
+	end
+
+end
 
 
 --[[

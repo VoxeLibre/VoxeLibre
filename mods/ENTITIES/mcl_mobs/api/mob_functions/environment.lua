@@ -129,7 +129,14 @@ end
 mobs.group_attack_initialization = function(self)
 
 	--get basic data
-	local friends_list = table_copy(self.group_attack)
+	local friends_list
+
+	if self.group_attack == true then
+		friends_list = {self.name}
+	else
+		friends_list = table_copy(self.group_attack)
+	end
+
 	local objects_in_area = minetest_get_objects_inside_radius(self.object:get_pos(), self.view_range)
 
 	--get the player's name
@@ -146,8 +153,8 @@ mobs.group_attack_initialization = function(self)
 			if detected_mob._cmi_is_mob and detected_mob.state ~= "attack" and detected_mob.owner ~= name then
 				if detected_mob.name == self.name then
 					turn_hostile(self,detected_mob)
-				elseif type(detected_mob.group_attack) == "table" then
-					for _,id in pairs(self.group_attack) do
+				else
+					for _,id in pairs(friends_list) do
 						if detected_mob.name == id then
 							turn_hostile(self,detected_mob)
 							break

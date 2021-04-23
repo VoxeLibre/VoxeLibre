@@ -114,7 +114,7 @@ mobs:register_arrow("mobs_mc:fireball", {
 		}, nil)
 		]]--
 		--mobs:boom(self, self.object:get_pos(), 1, true)
-		mcl_explosions.explode(self.object:get_pos(), 3,{ drop_chance = 1.0 })
+		mcl_explosions.explode(self.object:get_pos(), 1,{ drop_chance = 1.0 })
 	end,
 
 	hit_mob = function(self, mob)
@@ -123,12 +123,12 @@ mobs:register_arrow("mobs_mc:fireball", {
 			damage_groups = {fleshy = 6},
 		}, nil)
 		--mobs:boom(self, self.object:get_pos(), 1, true)
-		mcl_explosions.explode(self.object:get_pos(), 3,{ drop_chance = 1.0 })
+		mcl_explosions.explode(self.object:get_pos(), 1,{ drop_chance = 1.0 })
 	end,
 
 	hit_node = function(self, pos, node)
 		--mobs:boom(self, pos, 1, true)
-		mcl_explosions.explode(self.object:get_pos(), 3,{ drop_chance = 1.0 })
+		mcl_explosions.explode(self.object:get_pos(), 1,{ drop_chance = 1.0 })
 	end
 })
 

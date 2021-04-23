@@ -1,5 +1,7 @@
 local math_random = math.random
 local math_pi     = math.pi
+local math_floor  = math.floor
+local math_round  = math.round
 
 local vector_multiply = vector.multiply
 local vector_add      = vector.add
@@ -20,6 +22,12 @@ local quick_rotate = function(self,dtime)
 	if self.yaw > DOUBLE_PI then
 		self.yaw = self.yaw - DOUBLE_PI
 	end
+end
+
+--a simple helper function for rounding
+--http://lua-users.org/wiki/SimpleRound
+function round2(num, numDecimalPlaces)
+	return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
 end
 
 
@@ -89,6 +97,21 @@ local land_state_execution = function(self,dtime)
 		float_now = true
 	end
 
+	--make slow falling mobs fall slow
+	if self.fall_slow then
+		if self.object:get_velocity().y < 0 then
+			--lua is acting really weird so we have to help it
+			if round2(self.object:get_acceleration().y, 1) == -self.gravity then
+				self.object:set_acceleration(vector_new(0,0,0))
+				mobs.mob_fall_slow(self)
+			end
+		else
+			if round2(self.object:get_acceleration().y, 1) == 0 then
+				self.object:set_acceleration(vector_new(0,-self.gravity,0))
+			end
+		end
+	end
+
 	if self.state == "stand" then
 
 		--do animation
@@ -101,6 +124,8 @@ local land_state_execution = function(self,dtime)
 		if self.attack_type == "explode" then
 			mobs.reverse_explosion_animation(self,dtime)
 		end
+
+		mobs.lock_yaw(self)
 
 	elseif self.state == "walk" then
 
@@ -275,6 +300,8 @@ local swim_state_execution = function(self,dtime)
 				mobs.set_static_pitch(self)
 			end
 
+			mobs.lock_yaw(self)
+
 		elseif self.state == "swim" then
 
 			self.walk_timer = self.walk_timer - dtime
@@ -307,6 +334,9 @@ local swim_state_execution = function(self,dtime)
 			if self.tilt_swim then
 				mobs.set_dynamic_pitch(self)
 			end
+
+			--enable rotation locking
+			mobs.movement_rotation_lock(self)
 		end
 	--flop around if not inside swim node
 	else
@@ -415,6 +445,8 @@ local fly_state_execution = function(self,dtime)
 				mobs.set_static_pitch(self)
 			end
 
+			mobs.lock_yaw(self)
+
 		elseif self.state == "fly" then
 
 			self.walk_timer = self.walk_timer - dtime
@@ -446,6 +478,10 @@ local fly_state_execution = function(self,dtime)
 			end
 
 			mobs.set_fly_velocity(self,self.walk_velocity)
+
+			--enable rotation locking
+			mobs.movement_rotation_lock(self)
+
 		elseif self.state == "attack" then
 		
 			--execute mob attack type
@@ -543,6 +579,8 @@ local jump_state_execution = function(self,dtime)
 
 		--set the velocity of the mob
 		mobs.set_velocity(self,0)
+
+		mobs.lock_yaw(self)
 
 	elseif self.state == "jump" then
 

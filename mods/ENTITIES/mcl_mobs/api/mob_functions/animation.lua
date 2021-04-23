@@ -136,6 +136,20 @@ mobs.set_yaw_while_attacking = function(self)
 	self.yaw = new_yaw
 end
 
+--this is used to unlock a mob's yaw after attacking
+mobs.unlock_yaw = function(self)
+	if self.object:get_properties().automatic_face_movement_dir == false then
+		self.object:set_properties{automatic_face_movement_dir = self.rotate}
+	end
+end
+
+--this is used to lock a mob's yaw when they're standing
+mobs.lock_yaw = function(self)
+	if self.object:get_properties().automatic_face_movement_dir then
+		self.object:set_properties{automatic_face_movement_dir = false}
+	end
+end
+
 
 local calculate_pitch = function(self)
 	local pos  = self.object:get_pos()

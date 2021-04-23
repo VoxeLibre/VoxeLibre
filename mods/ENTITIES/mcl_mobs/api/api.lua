@@ -355,6 +355,7 @@ function mobs:register_mob(name, def)
 		hostile_cooldown = def.hostile_cooldown or 15,
 		tilt_fly = def.tilt_fly,
 		tilt_swim = def.tilt_swim,
+		fall_slow = def.fall_slow,
 		-- End of MCL2 extensions
 
 		on_spawn = def.on_spawn,

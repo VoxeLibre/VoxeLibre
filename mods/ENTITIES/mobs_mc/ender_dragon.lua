@@ -7,14 +7,22 @@ local S = minetest.get_translator("mobs_mc")
 mobs:register_mob("mobs_mc:enderdragon", {
 	type = "monster",
 	spawn_class = "hostile",
-	pathfinding = 1,
 	attacks_animals = true,
 	walk_chance = 100,
+	rotate = 270,
+	tilt_fly = true,
+	hostile = true,
+	shoot_arrow = function(self, pos, dir)
+		-- 2-4 damage per arrow
+		local dmg = math.random(2,4)
+		mcl_bows.shoot_arrow("mobs_mc:dragon_fireball", pos, dir, self.object:get_yaw(), self.object, nil, dmg)		
+	end,
 	hp_max = 200,
 	hp_min = 200,
 	xp_min = 500,
 	xp_max = 500,
-	collisionbox = {-2, 3, -2, 2, 5, 2},
+	collisionbox = {-2, 0, -2, 2, 2, 2},
+	eye_height = 1,
 	physical = false,
 	visual = "mesh",
 	mesh = "mobs_mc_dragon.b3d",
@@ -23,6 +31,7 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	},
 	visual_size = {x=3, y=3},
 	view_range = 35,
+	reach = 20,
 	walk_velocity = 6,
 	run_velocity = 6,
 	can_despawn = false,
@@ -132,10 +141,11 @@ mobs:register_arrow("mobs_mc:dragon_fireball", {
 
 	-- node hit, explode
 	hit_node = function(self, pos, node)
-		mobs:boom(self, pos, 2)
+		--mobs:boom(self, pos, 2)
+		mcl_explosions.explode(self.object:get_pos(), 2,{ drop_chance = 1.0 })
 	end
 })
 
 mobs:register_egg("mobs_mc:enderdragon", S("Ender Dragon"), "mobs_mc_spawn_icon_dragon.png", 0, true)
 
-mcl_wip.register_wip_item("mobs_mc:enderdragon")
+--mcl_wip.register_wip_item("mobs_mc:enderdragon")
