@@ -175,10 +175,9 @@ mobs.set_static_pitch = function(self)
 	local current_rotation = self.object:get_rotation()
 
 	current_rotation.x = 0
-	current_rotation.z = 0
 
 	self.object:set_rotation(current_rotation)
-	self.pitch_switchfdas = "static"
+	self.pitch_switch = "static"
 end
 
 --this is a helper function for mobs explosion animation

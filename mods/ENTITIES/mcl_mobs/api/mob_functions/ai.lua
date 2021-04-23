@@ -610,13 +610,33 @@ mobs.mob_step = function(self, dtime)
 		return false
 	end
 
+	--do death logic (animation, poof, explosion, etc)
+	if self.health <= 0 then
+
+		mobs.death_logic(self, dtime)
+
+		--this is here because the mob must continue to move
+		--while stunned before coming to a complete halt even during
+		--the death tilt
+		if self.pause_timer > 0 then
+			self.pause_timer = self.pause_timer - dtime
+			--perfectly reset pause_timer
+			if self.pause_timer < 0 then
+				self.pause_timer = 0
+			end
+		end
+
+		return
+	end
+
 	local attacking = nil
 
+	--scan for players within eyesight
 	if self.hostile then
 		--true for line_of_sight is debug
 		attacking = mobs.detect_closest_player_within_radius(self,true,self.view_range,self.eye_height)
 
-		--go get the closest player ROAR >:O
+		--go get the closest player
 		if attacking then
 
 			--set initial punch timer
@@ -650,26 +670,40 @@ mobs.mob_step = function(self, dtime)
 		end
 	end
 
+	--mob is stunned after being hit
+	if self.pause_timer > 0 then
+		self.pause_timer = self.pause_timer - dtime
+		--don't break eye contact
+		if self.hostile and self.attacking then
+			mobs.set_yaw_while_attacking(self)
+		end
 
-	--jump only (like slimes)
-	if self.jump_only then
-		jump_state_switch(self, dtime)
-		jump_state_execution(self, dtime)		
-	--swimming
-	elseif self.swim then
-		swim_state_switch(self, dtime)
-		swim_state_execution(self, dtime)
-	--flying
-	elseif self.fly then
-		fly_state_switch(self, dtime)
-		fly_state_execution(self,dtime)
-	--regular mobs that walk around
+		--perfectly reset pause_timer
+		if self.pause_timer < 0 then
+			self.pause_timer = 0
+		end
+
+		return -- don't allow collision detection
+	--do normal ai
 	else
-		land_state_switch(self, dtime)
-		land_state_execution(self,dtime)
+		--jump only (like slimes)
+		if self.jump_only then
+			jump_state_switch(self, dtime)
+			jump_state_execution(self, dtime)		
+		--swimming
+		elseif self.swim then
+			swim_state_switch(self, dtime)
+			swim_state_execution(self, dtime)
+		--flying
+		elseif self.fly then
+			fly_state_switch(self, dtime)
+			fly_state_execution(self,dtime)
+		--regular mobs that walk around
+		else
+			land_state_switch(self, dtime)
+			land_state_execution(self,dtime)
+		end
 	end
-
-
 
 
 	-- can mob be pushed, if so calculate direction -- do this last (overrides everything)

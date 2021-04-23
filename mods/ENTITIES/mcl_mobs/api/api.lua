@@ -120,7 +120,7 @@ end
 
 -- creative check
 function mobs.is_creative(name)
-	return minetest.is_creative_enabled(name)
+	return minetest_is_creative_enabled(name)
 end
 
 
@@ -159,6 +159,7 @@ dofile(api_path .. "movement.lua")
 dofile(api_path .. "set_up.lua")
 dofile(api_path .. "attack_type_instructions.lua")
 dofile(api_path .. "sound_handling.lua")
+dofile(api_path .. "death_logic.lua")
 
 
 mobs.spawning_mobs = {}
@@ -326,6 +327,7 @@ function mobs:register_mob(name, def)
 		visual_size_origin = def.visual_size or {x = 1, y = 1, z = 1},
 		punch_timer_cooloff = def.punch_timer_cooloff or 0.5,
 		projectile_cooldown = def.projectile_cooldown or 2,
+		death_animation_timer = 0,
 		--end j4i stuff
 
 		-- MCL2 extensions
