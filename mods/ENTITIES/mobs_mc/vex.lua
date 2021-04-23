@@ -14,7 +14,7 @@ mobs:register_mob("mobs_mc:vex", {
 	spawn_class = "hostile",
 	pathfinding = 1,
 	passive = false,
-	attack_type = "dogfight",
+	attack_type = "punch",
 	physical = false,
 	hp_min = 14,
 	hp_max = 14,

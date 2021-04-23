@@ -45,7 +45,7 @@ local alldirs = {{x=0,y=0,z=1}, {x=1,y=0,z=0}, {x=0,y=0,z=-1}, {x=-1,y=0,z=0}, {
 
 minetest.register_node("mcl_blackstone:blackstone", {
 	description = S("Blackstone"),
-	tiles = {"mcl_blackstone.png"},
+	tiles = {"mcl_blackstone_top.png", "mcl_blackstone_top.png", "mcl_blackstone_side.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	groups = {cracky = 3, pickaxey=2, material_stone=1},
@@ -55,7 +55,7 @@ minetest.register_node("mcl_blackstone:blackstone", {
 
 minetest.register_node("mcl_blackstone:blackstone_gilded", {
 	description = S("Gilded Blackstone"),
-	tiles = {"mcl_blackstone.png^mcl_blackstone_gilded_side.png"},
+	tiles = {"mcl_blackstone_side.png^mcl_blackstone_gilded_side.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	groups = {cracky = 3, pickaxey=2, material_stone=1, xp=1},

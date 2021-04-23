@@ -301,7 +301,11 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 		local dim = mcl_worlds.pos_to_dimension(pos)
 		if dim == "nether" or dim == "end" then
 			-- Bed goes BOOM in the Nether or End.
+			local node = minetest.get_node(pos)
+			local dir = minetest.facedir_to_dir(node.param2)
+
 			minetest.remove_node(pos)
+			minetest.remove_node(string.sub(node.name, -4) == "_top" and vector.subtract(pos, dir) or vector.add(pos, dir))
 			if explosions_mod then
 				mcl_explosions.explode(pos, 5, {drop_chance = 1.0, fire = true})
 			end

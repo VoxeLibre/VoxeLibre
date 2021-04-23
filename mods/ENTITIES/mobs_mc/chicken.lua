@@ -25,7 +25,7 @@ mobs:register_mob("mobs_mc:chicken", {
 		{"mobs_mc_chicken.png"},
 	},
 	visual_size = {x=2.2, y=2.2},
-
+	rotate = 270,
 	makes_footstep_sound = true,
 	walk_velocity = 1,
 	drops = {
@@ -69,8 +69,6 @@ mobs:register_mob("mobs_mc:chicken", {
 
 	on_rightclick = function(self, clicker)
 		if mobs:feed_tame(self, clicker, 1, true, true) then return end
-		if mobs:protect(self, clicker) then return end
-		if mobs:capture_mob(self, clicker, 0, 60, 5, false, nil) then return end
 	end,
 
 	do_custom = function(self, dtime)

@@ -399,30 +399,6 @@ minetest.register_tool("mcl_tools:shovel_netherite", {
 })
 
 -- Axes
-local make_stripped_trunk_add_wear = function(itemstack, placer)
-	if not minetest.is_creative_enabled(placer:get_player_name()) then
-		-- Add wear (as if digging a axey node)
-		local toolname = itemstack:get_name()
-		local wear = mcl_autogroup.get_wear(toolname, "axey")
-		itemstack:add_wear(wear)
-	end
-end
-
-local stripped_table = {
-    {"mcl_core:tree", "mcl_core:stripped_oak"},
-    {"mcl_core:darktree", "mcl_core:stripped_dark_oak"},
-	{"mcl_core:acaciatree", "mcl_core:stripped_acacia"},
-	{"mcl_core:birchtree", "mcl_core:stripped_birch"},
-	{"mcl_core:sprucetree", "mcl_core:stripped_spruce"},
-	{"mcl_core:jungletree", "mcl_core:stripped_jungle"},
-	{"mcl_core:tree_bark", "mcl_core:stripped_oak_bark"},
-	{"mcl_core:darktree_bark", "mcl_core:stripped_dark_oak_bark"},
-	{"mcl_core:acaciatree_bark", "mcl_core:stripped_acacia_bark"},
-	{"mcl_core:birchtree_bark", "mcl_core:stripped_birch_bark"},
-	{"mcl_core:sprucetree_bark", "mcl_core:stripped_spruce_bark"},
-	{"mcl_core:jungletree_bark", "mcl_core:stripped_jungle_bark"},
-}
-
 local make_stripped_trunk = function(itemstack, placer, pointed_thing)
     if pointed_thing.type ~= "node" then return end
 
@@ -437,12 +413,17 @@ local make_stripped_trunk = function(itemstack, placer, pointed_thing)
         return itemstack
     end
 
-    for _, st in pairs(stripped_table) do
-        if noddef.name == st[1] then
-            minetest.swap_node(pointed_thing.under, {name=st[2], param2=node.param2})
-            make_stripped_trunk_add_wear(itemstack, placer)
-        end
-    end
+    if noddef._mcl_stripped_varient == nil then
+		return itemstack
+	else
+		minetest.swap_node(pointed_thing.under, {name=noddef._mcl_stripped_varient, param2=node.param2})
+		if not minetest.is_creative_enabled(placer:get_player_name()) then
+			-- Add wear (as if digging a axey node)
+			local toolname = itemstack:get_name()
+			local wear = mcl_autogroup.get_wear(toolname, "axey")
+			itemstack:add_wear(wear)
+		end
+	end
     return itemstack
 end
 

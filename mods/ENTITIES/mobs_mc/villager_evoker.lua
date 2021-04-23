@@ -34,7 +34,7 @@ mobs:register_mob("mobs_mc:evoker", {
 	walk_velocity = 0.2,
 	run_velocity = 1.4,
 	group_attack = true,
-	attack_type = "dogfight",
+	attack_type = "punch",
 	-- Summon vexes
 	custom_attack = function(self, to_attack)
 		local r = pr:next(2,4)

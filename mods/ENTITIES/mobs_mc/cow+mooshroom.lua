@@ -9,6 +9,7 @@ local cow_def = {
 	hp_max = 10,
 	xp_min = 1,
 	xp_max = 3,
+	rotate = 270,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.39, 0.45},
 	visual = "mesh",
 	mesh = "mobs_mc_cow.b3d",
@@ -49,7 +50,6 @@ local cow_def = {
 	follow = mobs_mc.follow.cow,
 	on_rightclick = function(self, clicker)
 		if mobs:feed_tame(self, clicker, 1, true, true) then return end
-		if mobs:protect(self, clicker) then return end
 
 		if self.child then
 			return
@@ -70,7 +70,6 @@ local cow_def = {
 			end
 			return
 		end
-		mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 	end,
 	follow = mobs_mc.items.wheat,
 	view_range = 10,
@@ -86,7 +85,6 @@ mooshroom_def.mesh = "mobs_mc_cow.b3d"
 mooshroom_def.textures = { {"mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png"}, {"mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" } }
 mooshroom_def.on_rightclick = function(self, clicker)
 	if mobs:feed_tame(self, clicker, 1, true, true) then return end
-	if mobs:protect(self, clicker) then return end
 
 	if self.child then
 		return
@@ -138,8 +136,7 @@ mooshroom_def.on_rightclick = function(self, clicker)
 			pos.y = pos.y + 0.5
 			minetest.add_item(pos, {name = mobs_mc.items.mushroom_stew})
 		end
-	end
-	mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
+	end	
 end
 mobs:register_mob("mobs_mc:mooshroom", mooshroom_def)
 

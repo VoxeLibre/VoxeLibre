@@ -502,20 +502,6 @@ and damages any entity caught inside the blast radius.  Protection will limit
 node destruction but not entity damage.
 
 
-mobs:capture_mob
-----------------
-
-mobs:capture_mob(...)
-
-Does nothing and returns false.
-
-This function is provided for compability with Mobs Redo for an attempt to
-capture a mob.
-Mobs cannot be captured in MineClone 2.
-
-In Mobs Redo, this is generally called inside the on_rightclick section of the mob
-api code, it provides a chance of capturing the mob. See Mobs Redo documentation
-of parameters.
 
 Feeding and Taming/Breeding
 ---------------------------
@@ -533,19 +519,6 @@ Will return true when mob is fed with item it likes.
                 afterwards
    'tame'       true or false stating if mob can be tamed so player can pick
                 them up
-
-
-Protecting Mobs
----------------
-
-mobs:protect(self, clicker)
-
-This function can be used to right-click any tamed mob with mobs:protector item,
-this will protect the mob from harm inside of a protected area from other
-players.  Will return true when mob right-clicked with mobs:protector item.
-
-   'self'    mob information
-   'clicker' player information
 
 
 Riding Mobs
@@ -781,8 +754,5 @@ mobs:register_mob("mob_horse:horse", {
 				inv:remove_item("main", "mobs:saddle")
 			end
 		end
-
-		-- used to capture horse with magic lasso
-		mobs:capture_mob(self, clicker, 0, 0, 80, false, nil)
 	end
 })

@@ -14,7 +14,7 @@ local S = minetest.get_translator("mobs_mc")
 mobs:register_mob("mobs_mc:shulker", {
 	type = "monster",
 	spawn_class = "hostile",
-	attack_type = "shoot",
+	attack_type = "projectile",
 	shoot_interval = 0.5,
 	arrow = "mobs_mc:shulkerbullet",
 	shoot_offset = 0.5,
