@@ -182,7 +182,6 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		mobs.critical_effect(self)
 	end
 
-	local die = false
 
 	-- only play hit sound and show blood effects if damage is 1 or over; lower to 0.1 to ensure armor works appropriately.
 	if damage >= 0.1 then
@@ -223,12 +222,11 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			multiplier = knockback_enchant + 1 --(starts from 1, 1 would be no change)
 		end
 
+		--do this to sure you can punch a mob back when
+		--it's coming for you
 		if self.hostile then
 			multiplier = multiplier + 2
-		end
-
-		
-		local luaentity
+		end	
 
 		dir = vector_multiply(dir,multiplier)
 
@@ -240,33 +238,6 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		--0.4 seconds until you can hurt the mob again
 		self.pause_timer = 0.4
 	end
-	 -- END if damage
-
-	-- if skittish then run away
-	--[[
-	if not die and self.runaway == true and self.state ~= "flop" then
-
-		local lp = hitter:get_pos()
-		local s = self.object:get_pos()
-		local vec = {
-			x = lp.x - s.x,
-			y = lp.y - s.y,
-			z = lp.z - s.z
-		}
-
-		local yaw = (atan(vec.z / vec.x) + 3 * math_pi / 2) - self.rotate
-
-		if lp.x > s.x then
-			yaw = yaw + math_pi
-		end
-
-		yaw = set_yaw(self, yaw, 6)
-		self.state = "runaway"
-		self.runaway_timer = 0
-		self.following = nil
-	end
-
-	]]--
 end
 
 --do internal per mob projectile calculations
