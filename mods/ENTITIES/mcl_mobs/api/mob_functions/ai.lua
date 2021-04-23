@@ -611,7 +611,7 @@ mobs.mob_step = function(self, dtime)
 	end
 
 	if self.health <= 0 then
-		print("I'm DEAD :(")
+		
 		return
 	end
 
@@ -668,6 +668,8 @@ mobs.mob_step = function(self, dtime)
 		if self.pause_timer < 0 then
 			self.pause_timer = 0
 		end
+
+		return -- don't allow collision detection
 	--do normal ai
 	else
 		--jump only (like slimes)
