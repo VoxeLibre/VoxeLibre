@@ -6,9 +6,11 @@ local minetest_get_item_group = minetest.get_item_group
 local minetest_get_objects_inside_radius = minetest.get_objects_inside_radius
 local minetest_get_node_or_nil = minetest.get_node_or_nil
 local minetest_registered_nodes = minetest.registered_nodes
+local minetest_get_connected_players = minetest.get_connected_players
 
 local vector_new = vector.new
 local vector_multiply = vector.multiply
+local vector_distance = vector.distance
 
 local table_copy = table.copy
 
@@ -214,4 +216,22 @@ mobs.teleport = function(self, target)
 			return
 		end
 	end
+end
+
+--a function used for despawning mobs
+mobs.check_for_player_within_area = function(self, radius)
+	local pos1 = self.object:get_pos()
+	--get players in radius
+	for _,player in pairs(minetest_get_connected_players()) do
+		if player and player:get_hp() > 0 then
+			local pos2 = player:get_pos()
+			local distance = vector_distance(pos1,pos2)
+			if distance < radius then
+				--found a player
+				return(true)
+			end
+		end
+	end
+	--did not find a player
+	return(false)
 end

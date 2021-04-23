@@ -186,15 +186,6 @@ function mobs:register_mob(name, def)
 
 	mobs.spawning_mobs[name] = true
 
-	local can_despawn
-	if def.can_despawn ~= nil then
-		can_despawn = def.can_despawn
-	elseif def.spawn_class == "passive" then
-		can_despawn = false
-	else
-		can_despawn = true
-	end
-
 	local function scale_difficulty(value, default, min, special)
 		if (not value) or (value == default) or (value == special) then
 			return default
@@ -219,7 +210,6 @@ function mobs:register_mob(name, def)
 		do_custom = def.do_custom,
 		jump_height = def.jump_height or 4, -- was 6
 		rotate = def.rotate or 0, --  0=front, 90=side, 180=back, 270=side2
-		lifetimer = def.lifetimer or 57.73,
 		hp_min = scale_difficulty(def.hp_min, 5, 1),
 		hp_max = scale_difficulty(def.hp_max, 10, 1),
 		xp_min = def.xp_min or 0,
@@ -338,6 +328,8 @@ function mobs:register_mob(name, def)
 		projectile_cooldown_min = def.projectile_cooldown_min or 2,
 		projectile_cooldown_max = def.projectile_cooldown_max or 6,
 		skittish = def.skittish,
+		lifetimer_reset = 30, --30 seconds
+		lifetimer = 30, --30 seconds
 		--end j4i stuff
 
 		-- MCL2 extensions
@@ -347,7 +339,7 @@ function mobs:register_mob(name, def)
 		ignores_nametag = def.ignores_nametag or false,
 		rain_damage = def.rain_damage or 0,
 		glow = def.glow,
-		can_despawn = can_despawn,
+		--can_despawn = can_despawn,
 		child = def.child or false,
 		texture_mods = {},
 		shoot_arrow = def.shoot_arrow,

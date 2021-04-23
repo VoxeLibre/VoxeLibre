@@ -5,21 +5,15 @@ local minetest_settings                     = minetest.settings
 -- get entity staticdata
 mobs.mob_staticdata = function(self)
 
---[[
-	-- remove mob when out of range unless tamed
-	if remove_far
-	and self.can_despawn
-	and self.remove_ok
-	and ((not self.nametag) or (self.nametag == ""))
-	and self.lifetimer <= 20 then
-
-		minetest.log("action", "Mob "..name.." despawns in mob_staticdata at "..minetest.pos_to_string(self.object.get_pos(), 1))
-		mcl_burning.extinguish(self.object)
-		self.object:remove()
-
-		return ""-- nil
+	--despawn mechanism
+	--don't despawned tamed mobs
+	if not self.tamed then
+		if not mobs.check_for_player_within_area(self, 64) then
+			--print("removing SERIALIZED!")
+			self.object:remove()
+			return
+		end
 	end
---]]
 
 	self.remove_ok = true
 	self.attack = nil
