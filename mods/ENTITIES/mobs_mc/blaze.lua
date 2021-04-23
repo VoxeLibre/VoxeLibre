@@ -82,7 +82,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	shoot_arrow = function(self, pos, dir)
 		-- 2-4 damage per arrow
 		local dmg = math.random(2,4)
-		mcl_bows.shoot_arrow("mobs_mc:blaze_fireball", pos, dir, self.object:get_yaw(), self.object, nil, dmg)		
+		mobs.shoot_projectile_handling("mobs_mc:blaze_fireball", pos, dir, self.object:get_yaw(), self.object, nil, dmg)		
 	end,
 
 	do_custom = function(self)

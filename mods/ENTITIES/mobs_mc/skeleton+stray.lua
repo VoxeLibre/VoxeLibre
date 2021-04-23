@@ -97,7 +97,7 @@ local skeleton = {
 		if mod_bows then
 			-- 2-4 damage per arrow
 			local dmg = math.random(2,4)
-			mcl_bows.shoot_arrow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
+			mobs.shoot_projectile_handling("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
 		end
 	end,
 	shoot_interval = 2,
