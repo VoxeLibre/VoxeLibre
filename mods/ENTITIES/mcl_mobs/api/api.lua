@@ -529,9 +529,12 @@ function mobs:register_arrow(name, def)
 					if self.hit_player
 					and player:is_player() then
 
-						mobs.arrow_hit(self, player)
+						if self.hit_player then
+							self.hit_player(self, player)
+						else
+							mobs.arrow_hit(self, player)
+						end
 
-						print("wow everything is fucked")
 						self.object:remove();
 						return
 					end
