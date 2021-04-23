@@ -43,6 +43,10 @@ end
 -- I have no idea what this does
 mobs.create_mob_on_rightclick = function(on_rightclick)
 	return function(self, clicker)
+		--don't allow rightclicking dead mobs
+		if self.health <= 0 then
+			return
+		end
 		local stop = on_rightclick_prefix(self, clicker)
 		if (not stop) and (on_rightclick) then
 			on_rightclick(self, clicker)
@@ -53,6 +57,11 @@ end
 
 -- deal damage and effects when mob punched
 mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
+
+	--don't do anything if the mob is already dead
+	if self.health <= 0 then
+		return
+	end
 
 	--neutral passive mobs switch to neutral hostile
 	if self.neutral then
@@ -82,7 +91,6 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 	--don't do damage until pause timer resets
 	if self.pause_timer > 0 then
-		print(self.pause_timer)
 		return
 	end 
 

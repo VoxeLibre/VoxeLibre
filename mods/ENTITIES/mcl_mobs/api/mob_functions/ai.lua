@@ -610,6 +610,11 @@ mobs.mob_step = function(self, dtime)
 		return false
 	end
 
+	if self.health <= 0 then
+		print("I'm DEAD :(")
+		return
+	end
+
 	local attacking = nil
 
 	--scan for players within eyesight
