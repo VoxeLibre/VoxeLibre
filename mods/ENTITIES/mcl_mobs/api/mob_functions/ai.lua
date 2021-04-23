@@ -658,6 +658,11 @@ mobs.mob_step = function(self, dtime)
 		if self.hostile and self.attacking then
 			mobs.set_yaw_while_attacking(self)
 		end
+
+		--perfectly reset pause_timer
+		if self.pause_timer < 0 then
+			self.pause_timer = 0
+		end
 	--do normal ai
 	else
 		--jump only (like slimes)
