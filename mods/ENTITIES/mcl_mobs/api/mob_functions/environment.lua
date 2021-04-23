@@ -205,3 +205,13 @@ mobs.node_ok = function(pos, fallback)
 
 	return minetest_registered_nodes[fallback]
 end
+
+
+--a teleport functoin
+mobs.teleport = function(self, target)
+	if self.do_teleport then
+		if self.do_teleport(self, target) == false then
+			return
+		end
+	end
+end

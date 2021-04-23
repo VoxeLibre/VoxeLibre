@@ -192,18 +192,19 @@ local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 mobs:register_mob("mobs_mc:enderman", {
 	type = "monster",
 	spawn_class = "passive",
-	passive = true,
-	pathfinding = 1,
+	neutral = true,
 	hp_min = 40,
 	hp_max = 40,
 	xp_min = 5,
 	xp_max = 5,
+	rotate = 270,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 2.89, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_enderman.b3d",
 	textures = create_enderman_textures(),
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
+	eye_height = 2.5,
 	sounds = {
 		-- TODO: Custom war cry sound
 		war_cry = "mobs_sandmonster",
@@ -212,8 +213,8 @@ mobs:register_mob("mobs_mc:enderman", {
 		random = {name="mobs_mc_enderman_random", gain=0.5},
 		distance = 16,
 	},
-	walk_velocity = 0.2,
-	run_velocity = 3.4,
+	walk_velocity = 1,
+	run_velocity = 4,
 	damage = 7,
 	reach = 2,
 	drops = {
@@ -281,8 +282,8 @@ mobs:register_mob("mobs_mc:enderman", {
 				--self:teleport(nil)
 				--self.state = ""
 			--else
-				if self.attack then
-					local target = self.attack
+				if self.attacking then
+					local target = self.attacking
 					local pos = target:get_pos()
 					if pos ~= nil then
 						if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
@@ -359,11 +360,16 @@ mobs:register_mob("mobs_mc:enderman", {
 						--if looking in general head position, turn hostile
 						if minetest.line_of_sight(ender_eye_pos, look_pos_base) and vector.distance(look_pos, ender_eye_pos) <= 0.4 then
 							self.provoked = "staring"
-							self.attack = minetest.get_player_by_name(obj:get_player_name())
+							self.state = "stand"
+							self.hostile = false
 							break
-						else -- I'm not sure what this part does, but I don't want to break anything - jordan4ibanez
+						--begin attacking the player
+						else
 							if self.provoked == "staring" then
 								self.provoked = "broke_contact"
+								self.hostile = true
+								self.state = "attack"
+								self.attacking = obj
 							end						
 						end
 
@@ -556,7 +562,7 @@ mobs:register_mob("mobs_mc:enderman", {
 	water_damage = 8,
 	view_range = 64,
 	fear_height = 4,
-	attack_type = "dogfight",
+	attack_type = "punch",
 })
 
 
