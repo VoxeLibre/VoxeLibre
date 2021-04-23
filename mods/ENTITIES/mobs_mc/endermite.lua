@@ -8,6 +8,8 @@ mobs:register_mob("mobs_mc:endermite", {
 	type = "monster",
 	spawn_class = "hostile",
 	passive = false,
+	rotate = 270,
+	hostile = true,
 	hp_min = 8,
 	hp_max = 8,
 	xp_min = 3,
