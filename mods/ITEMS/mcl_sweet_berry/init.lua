@@ -31,7 +31,7 @@ minetest.register_node("mcl_sweet_berry:sweet_berry_bush_2", {
         type = "fixed",
         fixed = {-6 / 16, -0.5, -6 / 16, 6 / 16, 0.5, 6 / 16},
     },
-    drop = "mc:sweet_berry 2"
+    drop = "mcl_sweet_berry:sweet_berry 2"
 })
 minetest.register_node("mcl_sweet_berry:sweet_berry_bush_3", {
     drawtype = "plantlike",
@@ -41,7 +41,7 @@ minetest.register_node("mcl_sweet_berry:sweet_berry_bush_3", {
         type = "fixed",
         fixed = {-6 / 16, -0.5, -6 / 16, 6 / 16, 0.5, 6 / 16},
     },
-    drop = "mc:sweet_berry 3"
+    drop = "mcl_sweet_berry:sweet_berry 3"
 })
 minetest.register_decoration({
     deco_type = "simple",
