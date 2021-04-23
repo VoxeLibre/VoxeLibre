@@ -20,6 +20,7 @@ local cow_def = {
 	visual_size = {x=2.8, y=2.8},
 	makes_footstep_sound = true,
 	walk_velocity = 1,
+	run_velocity = 3,
 	drops = {
 		{name = mobs_mc.items.beef_raw,
 		chance = 1,
