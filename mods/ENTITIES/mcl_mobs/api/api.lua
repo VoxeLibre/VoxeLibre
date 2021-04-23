@@ -45,6 +45,7 @@ local math_floor  = math.floor
 
 -- localize vector functions
 local vector_new    = vector.new
+local vector_add    = vector.add
 local vector_length = vector.length
 local vector_direction = vector.direction
 local vector_normalize = vector.normalize
@@ -479,9 +480,7 @@ function mobs:register_arrow(name, def)
 			if self.timer > 150
 			or not mobs.within_limits(pos, 0) then
 				mcl_burning.extinguish(self.object)
-				print("removing 1")
 				self.object:remove();
-
 				return
 			end
 
@@ -490,8 +489,10 @@ function mobs:register_arrow(name, def)
 			and def.tail == 1
 			and def.tail_texture then
 
+				--do this to prevent clipping through main entity sprite
+				local new_pos = vector_add(pos, vector_multiply(vector_normalize(vel), -1))
 				minetest.add_particle({
-					pos = pos,
+					pos = new_pos,
 					velocity = {x = 0, y = 0, z = 0},
 					acceleration = {x = 0, y = 0, z = 0},
 					expirationtime = def.expire or 0.25,
