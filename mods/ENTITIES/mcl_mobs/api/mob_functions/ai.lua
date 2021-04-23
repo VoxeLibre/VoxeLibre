@@ -697,7 +697,7 @@ mobs.mob_step = function(self, dtime)
 	end
 
 
-	--color mod which coincides with the pause_timer
+	--color modifier which coincides with the pause_timer
 	if self.old_health and self.health < self.old_health then		
 		self.object:set_texture_mod("^[colorize:red:120")
 	end

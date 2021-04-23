@@ -187,34 +187,13 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	-- only play hit sound and show blood effects if damage is 1 or over; lower to 0.1 to ensure armor works appropriately.
 	if damage >= 0.1 then
 
-		-- weapon sounds
-		--this doesn't work right for nodes
-		--[[
-		if weapon:get_definition().sounds ~= nil then
-
-			local s = math_random(1, #weapon:get_definition().sounds)
-
-			minetest_sound_play(weapon:get_definition().sounds[s], {
-				object = self.object, --hitter,
-				max_hear_distance = 16
-			}, true)
-		else
-			]]--
 		minetest_sound_play("default_punch", {
 			object = self.object,
 			max_hear_distance = 16
 		}, true)
-		--end
-
-		--damage_effect(self, damage)
 
 		-- do damage
 		self.health = self.health - damage
-
-		-- skip future functions if dead, except alerting others
-		--if check_for_death(self, "hit", {type = "punch", puncher = hitter}) then
-		--	die = true
-		--end
 
 		-- knock back effect
 		local velocity = self.object:get_velocity()
@@ -244,27 +223,19 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			multiplier = knockback_enchant + 1 --(starts from 1, 1 would be no change)
 		end
 
+		if self.hostile then
+			multiplier = multiplier + 2
+		end
+
 		
 		local luaentity
-
-		--[[ --why does this multiply it again???
-		if hitter then
-			luaentity = hitter:get_luaentity()
-		end
-		if hitter and is_player then
-			local wielditem = hitter:get_wielded_item()
-			kb = kb + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
-		elseif luaentity and luaentity._knockback then
-			kb = kb + luaentity._knockback
-		end
-		]]--
 
 		dir = vector_multiply(dir,multiplier)
 
 		dir.y = up
 
-		--add velocity breaks momentum - use set velocity
-		self.object:set_velocity(dir)
+		--add the velocity
+		self.object:add_velocity(dir)
 
 		--0.4 seconds until you can hurt the mob again
 		self.pause_timer = 0.4
