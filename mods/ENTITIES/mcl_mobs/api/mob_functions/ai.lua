@@ -85,6 +85,11 @@ end
 -- states are executed here
 local land_state_execution = function(self,dtime)
 
+	--no collisionbox exception
+	if not self.object:get_properties() then
+		return
+	end
+
 	local pos = self.object:get_pos()
 	local collisionbox = self.object:get_properties().collisionbox
 	--get the center of the mob
@@ -737,6 +742,14 @@ mobs.mob_step = function(self, dtime)
 		--perfectly reset pause_timer
 		if self.pause_timer < 0 then
 			self.pause_timer = 0
+		end
+
+		--stop projectile mobs from being completely disabled while stunned
+		if self.projectile_timer and self.projectile_timer > 0.01 then
+			self.projectile_timer = self.projectile_timer - dtime
+			if self.projectile_timer < 0.01 then
+				self.projectile_timer = 0.01
+			end
 		end
 
 		return -- don't allow collision detection
