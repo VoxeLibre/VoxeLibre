@@ -56,15 +56,17 @@ mobs:register_mob("mobs_mc:ghast", {
 	fall_damage = 0,
 	view_range = 28,
 	attack_type = "projectile",
-	arrow = "mobs_mc:fireball",
+	arrow = "mobs_mc:ghast_fireball",
 	floats=1,
 	fly = true,
 	makes_footstep_sound = false,
 	fire_resistant = true,
+	projectile_cooldown_min = 5,
+	projectile_cooldown_max = 7,
 	shoot_arrow = function(self, pos, dir)
 		-- 2-4 damage per arrow
 		local dmg = math.random(2,4)
-		mobs.shoot_projectile_handling("mobs_mc:fireball", pos, dir, self.object:get_yaw(), self.object, nil, dmg)		
+		mobs.shoot_projectile_handling("mobs_mc:ghast_fireball", pos, dir, self.object:get_yaw(), self.object, 11, dmg,nil,nil,nil,-0.6)		
 	end,
 	--[[
 	do_custom = function(self)
@@ -96,12 +98,15 @@ mobs_mc.spawn_height.nether_min,
 mobs_mc.spawn_height.nether_max)
 
 -- fireball (projectile)
-mobs:register_arrow("mobs_mc:fireball", {
+mobs:register_arrow("mobs_mc:ghast_fireball", {
 	visual = "sprite",
 	visual_size = {x = 1, y = 1},
 	textures = {"mcl_fire_fire_charge.png"},
 	velocity = 15,
 	collisionbox = {-.5, -.5, -.5, .5, .5, .5},
+	tail = 1,
+	tail_texture = "mobs_mc_spit.png^[colorize:black:255", --repurpose spit texture
+	tail_size = 5,
 
 	hit_player = function(self, player)
 		if rawget(_G, "armor") and armor.last_damage_types then
@@ -114,21 +119,21 @@ mobs:register_arrow("mobs_mc:fireball", {
 		}, nil)
 		]]--
 		--mobs:boom(self, self.object:get_pos(), 1, true)
-		mcl_explosions.explode(self.object:get_pos(), 1,{ drop_chance = 1.0 })
+		mcl_explosions.explode(self.object:get_pos(), 3,{ drop_chance = 1.0 })
 	end,
 
 	hit_mob = function(self, mob)
 		mob:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
-			damage_groups = {fleshy = 6},
+			damage_groups = {fleshy = self._damage},
 		}, nil)
 		--mobs:boom(self, self.object:get_pos(), 1, true)
-		mcl_explosions.explode(self.object:get_pos(), 1,{ drop_chance = 1.0 })
+		mcl_explosions.explode(self.object:get_pos(), 3,{ drop_chance = 1.0 })
 	end,
 
 	hit_node = function(self, pos, node)
 		--mobs:boom(self, pos, 1, true)
-		mcl_explosions.explode(self.object:get_pos(), 1,{ drop_chance = 1.0 })
+		mcl_explosions.explode(self.object:get_pos(), 3,{ drop_chance = 1.0 })
 	end
 })
 

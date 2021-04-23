@@ -50,6 +50,7 @@ local vector_length = vector.length
 local vector_direction = vector.direction
 local vector_normalize = vector.normalize
 local vector_multiply = vector.multiply
+local vector_divide  = vector.divide
 
 -- mob constants
 local MAX_MOB_NAME_LENGTH = 30
@@ -490,7 +491,10 @@ function mobs:register_arrow(name, def)
 			and def.tail_texture then
 
 				--do this to prevent clipping through main entity sprite
-				local new_pos = vector_add(pos, vector_multiply(vector_normalize(vel), -1))
+				local pos_adjustment = vector_multiply(vector_normalize(vel), -1)
+				local divider = def.tail_distance_divider or 1
+				pos_adjustment = vector_divide(pos_adjustment, divider)
+				local new_pos = vector_add(pos, pos_adjustment)
 				minetest.add_particle({
 					pos = new_pos,
 					velocity = {x = 0, y = 0, z = 0},

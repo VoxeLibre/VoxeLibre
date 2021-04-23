@@ -257,6 +257,7 @@ mobs:register_arrow("mobs_mc:spit", {
 	tail = 1,
 	tail_texture = "mobs_mc_spit.png",
 	tail_size = 2,
+	tail_distance_divider = 4,
 
 	hit_player = function(self, player)
 		if rawget(_G, "armor") and armor.last_damage_types then
