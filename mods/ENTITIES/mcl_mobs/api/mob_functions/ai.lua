@@ -102,6 +102,8 @@ local land_state_execution = function(self,dtime)
 			mobs.reverse_explosion_animation(self,dtime)
 		end
 
+		mobs.lock_yaw(self)
+
 	elseif self.state == "walk" then
 
 		self.walk_timer = self.walk_timer - dtime
@@ -275,6 +277,8 @@ local swim_state_execution = function(self,dtime)
 				mobs.set_static_pitch(self)
 			end
 
+			mobs.lock_yaw(self)
+
 		elseif self.state == "swim" then
 
 			self.walk_timer = self.walk_timer - dtime
@@ -307,6 +311,9 @@ local swim_state_execution = function(self,dtime)
 			if self.tilt_swim then
 				mobs.set_dynamic_pitch(self)
 			end
+
+			--enable rotation locking
+			mobs.movement_rotation_lock(self)
 		end
 	--flop around if not inside swim node
 	else
@@ -415,6 +422,8 @@ local fly_state_execution = function(self,dtime)
 				mobs.set_static_pitch(self)
 			end
 
+			mobs.lock_yaw(self)
+
 		elseif self.state == "fly" then
 
 			self.walk_timer = self.walk_timer - dtime
@@ -446,6 +455,10 @@ local fly_state_execution = function(self,dtime)
 			end
 
 			mobs.set_fly_velocity(self,self.walk_velocity)
+
+			--enable rotation locking
+			mobs.movement_rotation_lock(self)
+
 		elseif self.state == "attack" then
 		
 			--execute mob attack type
@@ -543,6 +556,8 @@ local jump_state_execution = function(self,dtime)
 
 		--set the velocity of the mob
 		mobs.set_velocity(self,0)
+
+		mobs.lock_yaw(self)
 
 	elseif self.state == "jump" then
 
