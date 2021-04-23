@@ -165,8 +165,6 @@ Overworld regular:
 
 local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
 
-mobs_spawn = false
-
 -- count how many mobs are in an area
 local count_mobs = function(pos)
 	local num = 0
