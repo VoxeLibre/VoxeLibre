@@ -1,5 +1,7 @@
 local math_random = math.random
 local math_pi     = math.pi
+local math_floor  = math.floor
+local math_round  = math.round
 
 local vector_multiply = vector.multiply
 local vector_add      = vector.add
@@ -20,6 +22,12 @@ local quick_rotate = function(self,dtime)
 	if self.yaw > DOUBLE_PI then
 		self.yaw = self.yaw - DOUBLE_PI
 	end
+end
+
+--a simple helper function for rounding
+--http://lua-users.org/wiki/SimpleRound
+function round2(num, numDecimalPlaces)
+	return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
 end
 
 
@@ -87,6 +95,21 @@ local land_state_execution = function(self,dtime)
 	--recheck if in water or lava
 	if minetest_get_item_group(current_node, "water") ~= 0 or minetest_get_item_group(current_node, "lava") ~= 0 then
 		float_now = true
+	end
+
+	--make slow falling mobs fall slow
+	if self.fall_slow then
+		if self.object:get_velocity().y < 0 then
+			--lua is acting really weird so we have to help it
+			if round2(self.object:get_acceleration().y, 1) == -self.gravity then
+				self.object:set_acceleration(vector_new(0,0,0))
+				mobs.mob_fall_slow(self)
+			end
+		else
+			if round2(self.object:get_acceleration().y, 1) == 0 then
+				self.object:set_acceleration(vector_new(0,-self.gravity,0))
+			end
+		end
 	end
 
 	if self.state == "stand" then
