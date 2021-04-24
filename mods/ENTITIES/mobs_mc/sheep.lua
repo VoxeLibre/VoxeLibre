@@ -63,6 +63,10 @@ mobs:register_mob("mobs_mc:sheep", {
 	xp_min = 1,
 	xp_max = 3,
 	skittish = true,
+	breed_distance = 1.5,
+	baby_size = 0.5,
+	follow_distance = 2,
+	follow = mobs_mc.items.wheat,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.29, 0.45},
 	rotate = 270,
 	visual = "mesh",
@@ -100,7 +104,6 @@ mobs:register_mob("mobs_mc:sheep", {
 		walk_start = 0,		walk_end = 40,
 		run_start = 0,		run_end = 40,
 	},
-	follow = mobs_mc.follow.sheep,
 	view_range = 12,
 
 	-- Eat grass
@@ -196,7 +199,16 @@ mobs:register_mob("mobs_mc:sheep", {
 	on_rightclick = function(self, clicker)
 		local item = clicker:get_wielded_item()
 
-		if mobs:feed_tame(self, clicker, 1, true, true) then return end
+		--attempt to enter breed state
+		if mobs.enter_breed_state(self,clicker) then
+			return
+		end
+
+		--make baby grow faster
+		if self.baby then
+			mobs.make_baby_grow_faster(self,clicker)
+			return
+		end
 
 		if item:get_name() == mobs_mc.items.shears and not self.gotten and not self.child then
 			self.gotten = true
