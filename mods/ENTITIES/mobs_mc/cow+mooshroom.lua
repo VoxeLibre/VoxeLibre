@@ -78,7 +78,6 @@ local cow_def = {
 			return
 		end
 	end,
-	breedable = true,
 	breed_distance = 1.5,
 	baby_size = 0.5,
 	follow_distance = 2,

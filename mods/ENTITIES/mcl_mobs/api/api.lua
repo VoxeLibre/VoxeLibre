@@ -329,7 +329,6 @@ function mobs:register_mob(name, def)
 		lifetimer = 30, --30 seconds
 
 		--breeding stuff
-		breedable = def.breedable,
 		breed_timer = 0,
 		breed_lookout_timer = 0,
 		breed_distance = def.breed_distance or 1.5, --how far away mobs have to be to begin actual breeding
