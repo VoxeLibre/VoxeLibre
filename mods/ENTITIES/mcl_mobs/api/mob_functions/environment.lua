@@ -9,6 +9,7 @@ local minetest_registered_nodes = minetest.registered_nodes
 local minetest_get_connected_players = minetest.get_connected_players
 
 local vector_new = vector.new
+local vector_add = vector.add
 local vector_multiply = vector.multiply
 local vector_distance = vector.distance
 
@@ -39,7 +40,7 @@ mobs.detect_closest_player_within_radius = function(self, line_of_sight, radius,
 
 			local pos2 = player:get_pos()
 
-			local distance = vector.distance(pos1,pos2)
+			local distance = vector_distance(pos1,pos2)
 
 			if distance <= radius then
 				if line_of_sight then
@@ -67,12 +68,12 @@ mobs.detect_closest_player_within_radius = function(self, line_of_sight, radius,
 	end
 
 	--do a default radius max
-	local shortest_disance = radius + 1
+	local shortest_distance = radius + 1
 
 	--sort through players and find the closest player
 	for player,distance in pairs(players_in_area) do
-		if distance < shortest_disance then
-			shortest_disance = distance
+		if distance < shortest_distance then
+			shortest_distance = distance
 			winner_player = player
 		end
 	end
@@ -94,7 +95,7 @@ mobs.jump_check = function(self,dtime)
     vector_multiply(dir, radius)
 
 	--only jump if there's a node and a non-solid node above it
-    local test_dir = vector.add(pos,dir)
+    local test_dir = vector_add(pos,dir)
 
 	local green_flag_1 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0
 

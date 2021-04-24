@@ -164,6 +164,7 @@ dofile(api_path .. "sound_handling.lua")
 dofile(api_path .. "death_logic.lua")
 dofile(api_path .. "mob_effects.lua")
 dofile(api_path .. "projectile_handling.lua")
+dofile(api_path .. "breeding.lua")
 
 
 mobs.spawning_mobs = {}
@@ -244,7 +245,6 @@ function mobs:register_mob(name, def)
 		shoot_interval = def.shoot_interval,
 		sounds = def.sounds or {},
 		animation = def.animation,
-		follow = def.follow,
 		jump = def.jump ~= false,
 		walk_chance = def.walk_chance or 50,
 		attacks_monsters = def.attacks_monsters or false,
@@ -264,8 +264,6 @@ function mobs:register_mob(name, def)
 		env_damage_timer = 0,
 		tamed = false,
 		pause_timer = 0,
-		horny = false,
-		hornytimer = 0,
 		gotten = false,
 		health = 0,
 		reach = def.reach or 3,
@@ -296,7 +294,6 @@ function mobs:register_mob(name, def)
 		runaway_from = def.runaway_from,
 		owner_loyal = def.owner_loyal,
 		facing_fence = false,
-
 
 		_cmi_is_mob = true,
 
@@ -330,6 +327,25 @@ function mobs:register_mob(name, def)
 		skittish = def.skittish,
 		lifetimer_reset = 30, --30 seconds
 		lifetimer = 30, --30 seconds
+
+		--breeding stuff
+		breed_timer = 0,
+		breed_lookout_timer = 0,
+		breed_distance = def.breed_distance or 1.5, --how far away mobs have to be to begin actual breeding
+		breed_lookout_timer_goal = 30, --30 seconds (this timer is for how long the mob looks for a mate)
+		breed_timer_cooloff = 5*60, -- 5 minutes (this timer is for how long the mob has to wait before being bred again)
+		bred = false,
+		follow = def.follow, --this item is also used for the breeding mechanism
+		follow_distance = def.follow_distance or 2,
+		baby_size = def.baby_size or 0.5,
+		baby = false,
+		grow_up_timer = 0,
+		grow_up_goal  = 20*60, --in 20 minutes the mob grows up
+		special_breed_timer = 0, --this is used for the AHEM AHEM part of breeding
+
+		backup_visual_size = def.visual_size,
+		backup_collisionbox = collisionbox,
+		backup_selectionbox = def.selectionbox or def.collisionbox,
 		--end j4i stuff
 
 		-- MCL2 extensions

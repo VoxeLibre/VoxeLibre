@@ -6,8 +6,8 @@ local minetest_settings                     = minetest.settings
 mobs.mob_staticdata = function(self)
 
 	--despawn mechanism
-	--don't despawned tamed mobs
-	if not self.tamed then
+	--don't despawned tamed or bred mobs
+	if not self.tamed and not self.bred then
 		if not mobs.check_for_player_within_area(self, 64) then
 			--print("removing SERIALIZED!")
 			self.object:remove()
@@ -107,12 +107,12 @@ mobs.mob_activate = function(self, staticdata, def, dtime)
 		mesh = def.gotten_mesh
 	end
 
-	-- set child objects to half size
-	if self.child == true then
+	-- set baby mobs to half size
+	if self.baby == true then
 
 		vis_size = {
-			x = self.base_size.x * .5,
-			y = self.base_size.y * .5,
+			x = self.base_size.x * self.baby_size,
+			y = self.base_size.y * self.baby_size,
 		}
 
 		if def.child_texture then
@@ -120,20 +120,20 @@ mobs.mob_activate = function(self, staticdata, def, dtime)
 		end
 
 		colbox = {
-			self.base_colbox[1] * .5,
-			self.base_colbox[2] * .5,
-			self.base_colbox[3] * .5,
-			self.base_colbox[4] * .5,
-			self.base_colbox[5] * .5,
-			self.base_colbox[6] * .5
+			self.base_colbox[1] * self.baby_size,
+			self.base_colbox[2] * self.baby_size,
+			self.base_colbox[3] * self.baby_size,
+			self.base_colbox[4] * self.baby_size,
+			self.base_colbox[5] * self.baby_size,
+			self.base_colbox[6] * self.baby_size
 		}
 		selbox = {
-			self.base_selbox[1] * .5,
-			self.base_selbox[2] * .5,
-			self.base_selbox[3] * .5,
-			self.base_selbox[4] * .5,
-			self.base_selbox[5] * .5,
-			self.base_selbox[6] * .5
+			self.base_selbox[1] * self.baby_size,
+			self.base_selbox[2] * self.baby_size,
+			self.base_selbox[3] * self.baby_size,
+			self.base_selbox[4] * self.baby_size,
+			self.base_selbox[5] * self.baby_size,
+			self.base_selbox[6] * self.baby_size
 		}
 	end
 

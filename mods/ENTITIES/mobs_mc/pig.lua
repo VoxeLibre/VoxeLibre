@@ -24,6 +24,9 @@ mobs:register_mob("mobs_mc:pig", {
 	walk_velocity = 1,
 	run_velocity = 3,
 	follow_velocity = 3.4,
+	breed_distance = 1.5,
+	baby_size = 0.5,
+	follow_distance = 2,
 	drops = {
 		{name = mobs_mc.items.porkchop_raw,
 		chance = 1,
@@ -50,7 +53,7 @@ mobs:register_mob("mobs_mc:pig", {
 		run_start = 0,
 		run_end = 40,
 	},
-	follow = mobs_mc.follow.pig,
+	follow = "mcl_farming:carrot_item",
 	view_range = 8,
 	do_custom = function(self, dtime)
 
@@ -91,10 +94,17 @@ mobs:register_mob("mobs_mc:pig", {
 			return
 		end
 
-		local wielditem = clicker:get_wielded_item()
-		-- Feed pig
-		if wielditem:get_name() ~= mobs_mc.items.carrot_on_a_stick then
-			if mobs:feed_tame(self, clicker, 1, true, true) then return end
+		if clicker:get_player_control().sneak then
+			--attempt to enter breed state
+			if mobs.enter_breed_state(self,clicker) then
+				return
+			end
+
+			--make baby grow faster
+			if self.baby then
+				mobs.make_baby_grow_faster(self,clicker)
+				return
+			end
 		end
 
 		if self.child then

@@ -6,6 +6,7 @@ local math_round  = math.round
 local vector_multiply = vector.multiply
 local vector_add      = vector.add
 local vector_new      = vector.new
+local vector_distance = vector.distance
 
 local minetest_yaw_to_dir                   = minetest.yaw_to_dir
 local minetest_get_item_group               = minetest.get_item_group
@@ -67,7 +68,8 @@ local land_state_list_wandering = {"stand", "walk"}
 
 local land_state_switch = function(self, dtime)
 
-	--do math after sure not attacking or running away
+	--do math before sure not attacking, following, or running away so continue
+	--doing random walking for mobs if all states are not met
 	self.state_timer = self.state_timer - dtime
 
 	--only run away
@@ -76,8 +78,30 @@ local land_state_switch = function(self, dtime)
 		if self.run_timer > 0 then
 			return
 		end
-
 		--continue
+	end
+
+	--ignore everything else if breeding
+	if self.breed_lookout_timer and self.breed_lookout_timer > 0 then
+		self.state = "breed"
+		return
+	--reset the state timer to get the mob out of
+	--the breed state
+	elseif self.state == "breed" then
+		self.state_timer = 0
+	end
+
+	--ignore everything else if following
+	if mobs.check_following(self) and 
+	(not self.breed_lookout_timer or (self.breed_lookout_timer and self.breed_lookout_timer == 0)) and 
+	(not self.breed_timer or (self.breed_timer and self.breed_timer == 0)) then
+		self.state = "follow"
+		return
+	--reset the state timer to get the mob out of
+	--the follow state - not the cleanest option
+	--but the easiest
+	elseif self.state == "follow" then
+		self.state_timer = 0
 	end
 
 	--only attack
@@ -86,8 +110,7 @@ local land_state_switch = function(self, dtime)
 		return
 	end
 
-	
-
+	--if finally reached here then do random wander
 	if self.state_timer <= 0 then
 		self.state_timer = math.random(4,10) + math.random()
 		self.state = land_state_list_wandering[math.random(1,#land_state_list_wandering)]
@@ -98,10 +121,40 @@ end
 -- states are executed here
 local land_state_execution = function(self,dtime)
 
+	--[[ -- this is a debug which shows the timer and makes mobs breed 100 times faster
+	print(self.breed_timer)
+	if self.breed_timer > 0 then
+		self.breed_timer = self.breed_timer - (dtime * 100)
+		if self.breed_timer <= 0 then
+			self.breed_timer = 0
+		end
+	end
+	]]--
+
 	--no collisionbox exception
 	if not self.object:get_properties() then
 		return
 	end
+	
+
+	--timer to time out looking for mate
+	if self.breed_lookout_timer and self.breed_lookout_timer > 0 then
+		self.breed_lookout_timer = self.breed_lookout_timer - dtime
+		--looking for mate failed
+		if self.breed_lookout_timer <= 0 then
+			self.breed_lookout_timer = 0
+		end
+	end
+
+	--cool off after breeding
+	if self.breed_timer and self.breed_timer > 0 then
+		self.breed_timer = self.breed_timer - dtime
+		--do this to skip the first check, using as switch
+		if self.breed_timer <= 0 then
+			self.breed_timer = 0
+		end
+	end
+
 
 	local pos = self.object:get_pos()
 	local collisionbox = self.object:get_properties().collisionbox
@@ -144,6 +197,26 @@ local land_state_execution = function(self,dtime)
 		end
 
 		mobs.lock_yaw(self)
+	elseif self.state == "follow" then		
+
+		--always look at players
+		mobs.set_yaw_while_following(self)
+
+		--check distance
+		local distance_from_follow_person = vector_distance(self.object:get_pos(), self.following_person:get_pos())
+				
+		--don't push the player if too close
+		if self.follow_distance < distance_from_follow_person then
+			mobs.set_mob_animation(self, "run")
+			mobs.set_velocity(self,self.run_velocity)
+
+			if mobs.jump_check(self) == 1 then
+				mobs.jump(self)
+			end
+		else
+			mobs.set_mob_animation(self, "stand")
+			mobs.set_velocity(self,0)
+		end
 
 	elseif self.state == "walk" then
 
@@ -245,6 +318,48 @@ local land_state_execution = function(self,dtime)
 
 			mobs.projectile_attack_walk(self,dtime)
 
+		end
+	elseif self.state == "breed" then
+
+		mobs.breeding_effect(self)
+
+		local mate = mobs.look_for_mate(self)
+
+		--found a mate
+		if mate then
+			mobs.set_yaw_while_breeding(self,mate)
+			mobs.set_velocity(self, self.walk_velocity)
+
+			--smoosh together basically
+			if vector_distance(self.object:get_pos(), mate:get_pos()) <= self.breed_distance then
+				mobs.set_mob_animation(self, "stand")
+				if self.special_breed_timer == 0 then
+					self.special_breed_timer = 2 --breeding takes 2 seconds
+				end
+
+				self.special_breed_timer = self.special_breed_timer - dtime
+				if self.special_breed_timer <= 0 then
+
+					--pop a baby out, it's a miracle!
+					local baby_pos = vector.divide(vector.add(self.object:get_pos(), mate:get_pos()), 2)
+					local baby_mob = minetest.add_entity(pos, self.name, minetest.serialize({baby = true, grow_up_timer = self.grow_up_goal, bred = true}))
+
+					self.special_breed_timer = 0
+					self.breed_lookout_timer = 0
+					self.breed_timer = self.breed_timer_cooloff
+
+					mate:get_luaentity().special_breed_timer = 0
+					mate:get_luaentity().breed_lookout_timer = 0
+					mate:get_luaentity().breed_timer = self.breed_timer_cooloff -- can reuse because it's the same mob
+				end
+			else
+				mobs.set_mob_animation(self, "walk")
+			end
+		--couldn't find a mate, just stand there until the player pushes it towards one
+		--or the timer runs out
+		else
+			mobs.set_mob_animation(self, "stand")
+			mobs.set_velocity(self,0)
 		end
 
 	end	
@@ -697,8 +812,8 @@ mobs.mob_step = function(self, dtime)
 	end
 
 	--despawn mechanism
-	--don't despawned tamed mobs
-	if not self.tamed then
+	--don't despawned tamed or bred mobs
+	if not self.tamed and not self.bred then
 		self.lifetimer = self.lifetimer - dtime
 		if self.lifetimer <= 0 then
 			self.lifetimer = self.lifetimer_reset
@@ -734,6 +849,24 @@ mobs.mob_step = function(self, dtime)
 
 		return
 	end
+
+	--baby grows up
+	if self.baby then
+		--print(self.grow_up_timer)
+		--catch missing timer
+		if not self.grow_up_timer then
+			self.grow_up_timer = self.grow_up_goal
+		end
+
+		self.grow_up_timer = self.grow_up_timer - dtime
+
+		--baby grows up!
+		if self.grow_up_timer <= 0 then
+			self.grow_up_timer = 0
+			mobs.baby_grow_up(self)
+		end
+	end
+	
 
 
 	--do custom mob instructions

@@ -65,12 +65,25 @@ mobs:register_mob("mobs_mc:chicken", {
 		run_start = 0,		run_end = 40,
 	},
 
-	follow = mobs_mc.follow.chicken,
+	follow = "mcl_farming:wheat_seeds",
+	breed_distance = 1.5,
+	baby_size = 0.5,
+	follow_distance = 2,
 	view_range = 16,
 	fear_height = 4,
 
+	--why do chickend breed if they lay eggs??
 	on_rightclick = function(self, clicker)
-		if mobs:feed_tame(self, clicker, 1, true, true) then return end
+		--attempt to enter breed state
+		if mobs.enter_breed_state(self,clicker) then
+			return
+		end
+
+		--make baby grow faster
+		if self.baby then
+			mobs.make_baby_grow_faster(self,clicker)
+			return
+		end
 	end,
 
 	do_custom = function(self, dtime)

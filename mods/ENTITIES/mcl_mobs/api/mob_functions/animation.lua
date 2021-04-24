@@ -214,3 +214,46 @@ mobs.handle_explosion_animation = function(self)
 
 	self.object:set_properties({visual_size = visual_size_modified})
 end
+
+
+--this is used when a mob is following player
+mobs.set_yaw_while_following = function(self)
+
+	if self.object:get_properties().automatic_face_movement_dir then
+		self.object:set_properties{automatic_face_movement_dir = false}
+	end
+
+	--turn positions into pseudo 2d vectors
+	local pos1 = self.object:get_pos()
+	pos1.y = 0
+
+	local pos2 = self.following_person:get_pos()
+	pos2.y = 0
+
+	local new_direction = vector_direction(pos1,pos2)
+	local new_yaw = minetest_dir_to_yaw(new_direction)
+
+	self.object:set_yaw(new_yaw)
+	self.yaw = new_yaw
+end
+
+--this is used for when mobs breed
+mobs.set_yaw_while_breeding = function(self, mate)
+
+	if self.object:get_properties().automatic_face_movement_dir then
+		self.object:set_properties{automatic_face_movement_dir = false}
+	end
+
+	--turn positions into pseudo 2d vectors
+	local pos1 = self.object:get_pos()
+	pos1.y = 0
+
+	local pos2 = mate:get_pos()
+	pos2.y = 0
+
+	local new_direction = vector_direction(pos1,pos2)
+	local new_yaw = minetest_dir_to_yaw(new_direction)
+
+	self.object:set_yaw(new_yaw)
+	self.yaw = new_yaw
+end

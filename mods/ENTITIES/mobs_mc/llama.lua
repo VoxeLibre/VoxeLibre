@@ -58,6 +58,9 @@ mobs:register_mob("mobs_mc:llama", {
 	walk_velocity = 1,
 	run_velocity = 4.4,
 	follow_velocity = 4.4,
+	breed_distance = 1.5,
+	baby_size = 0.5,
+	follow_distance = 2,
 	floats = 1,
 	reach = 6,
 	drops = {
@@ -92,7 +95,7 @@ mobs:register_mob("mobs_mc:llama", {
 		look_start = 78,
 		look_end = 108,
 	},
-	follow = mobs_mc.follow.llama,
+	follow = mobs_mc.items.hay_bale,
 	view_range = 16,
 	do_custom = function(self, dtime)
 
@@ -135,14 +138,19 @@ mobs:register_mob("mobs_mc:llama", {
 			return
 		end
 
-		local item = clicker:get_wielded_item()
-		if item:get_name() == mobs_mc.items.hay_bale then
-			-- Breed with hay bale
-			if mobs:feed_tame(self, clicker, 1, true, false) then return end
-		else
-			-- Feed with anything else
-			if mobs:feed_tame(self, clicker, 1, false, true) then return end
+		if clicker:get_player_control().sneak then
+			--attempt to enter breed state
+			if mobs.enter_breed_state(self,clicker) then
+				return
+			end
+
+			--make baby grow faster
+			if self.baby then
+				mobs.make_baby_grow_faster(self,clicker)
+				return
+			end
 		end
+
 
 		-- Make sure tamed llama is mature and being clicked by owner only
 		if self.tamed and not self.child and self.owner == clicker:get_player_name() then
