@@ -219,18 +219,17 @@ local horse = {
 		local heal = 0
 
 		--sneak click to breed the horse/feed it
-		if self.owner and self.owner == clicker:get_player_name() and clicker:get_player_control().sneak then
+		if self.owner and self.owner == clicker:get_player_name() then
 			--attempt to enter breed state
 			if mobs.enter_breed_state(self,clicker) then
 				return
 			end
+		end
 
-			--make baby grow faster
-			if self.baby then
-				mobs.make_baby_grow_faster(self,clicker)
-				return
-			end
-
+		--don't do any other logic with the baby
+		--make baby grow faster
+		if self.baby then
+			mobs.make_baby_grow_faster(self,clicker)
 			return
 		end
 
