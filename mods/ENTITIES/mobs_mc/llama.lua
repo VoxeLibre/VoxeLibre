@@ -138,26 +138,37 @@ mobs:register_mob("mobs_mc:llama", {
 			return
 		end
 
-		if clicker:get_player_control().sneak then
-			--attempt to enter breed state
-			if mobs.enter_breed_state(self,clicker) then
-				return
-			end
+		--owner is broken for this
+		--we'll make the owner this guy
+		--attempt to enter breed state
+		if mobs.enter_breed_state(self,clicker) then
+			self.tamed = true
+			self.owner = clicker:get_player_name()
+			return
+		end		
 
-			--make baby grow faster
-			if self.baby then
-				mobs.make_baby_grow_faster(self,clicker)
-				return
-			end
+		--ignore other logic
+		--make baby grow faster
+		if self.baby then
+			mobs.make_baby_grow_faster(self,clicker)
+			return
 		end
 
 
 		-- Make sure tamed llama is mature and being clicked by owner only
 		if self.tamed and not self.child and self.owner == clicker:get_player_name() then
 
+			local item = clicker:get_wielded_item()
+			--safety catch
+			if not item then
+				return
+			end
+
+
 			-- Place carpet
-			--[[ TODO: Re-enable this code when carpet textures arrived.
-			if minetest.get_item_group(item:get_name(), "carpet") == 1 and not self.carpet then
+			--TODO: Re-enable this code when carpet textures arrived.
+			if minetest.get_item_group(item:get_name(), "carpet") == 1 then
+
 				for group, carpetdata in pairs(carpets) do
 					if minetest.get_item_group(item:get_name(), group) == 1 then
 						if not minetest.is_creative_enabled(clicker:get_player_name()) then
@@ -165,6 +176,12 @@ mobs:register_mob("mobs_mc:llama", {
 							clicker:set_wielded_item(item)
 						end
 						local substr = carpetdata[2]
+
+						--shoot off old carpet
+						if self.carpet then
+							print(substr)
+						end
+
 						local tex_carpet = "mobs_mc_llama_decor_"..substr..".png"
 						self.base_texture = table.copy(self.base_texture)
 						self.base_texture[2] = tex_carpet
@@ -186,7 +203,6 @@ mobs:register_mob("mobs_mc:llama", {
 					end
 				end
 			end
-			]]
 
 			-- detatch player already riding llama
 			if self.driver and clicker == self.driver then
