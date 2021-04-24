@@ -117,7 +117,7 @@ local horse = {
 	fly = false,
 	walk_chance = 60,
 	view_range = 16,
-	follow = mobs_mc.follow.horse,
+	follow = "mcl_farming:wheat_item",
 	passive = true,
 	hp_min = 15,
 	hp_max = 30,
@@ -216,6 +216,22 @@ local horse = {
 		local item = clicker:get_wielded_item()
 		local iname = item:get_name()
 		local heal = 0
+
+		--sneak click to breed the horse/feed it
+		if self.owner and self.owner == clicker:get_player_name() and clicker:get_player_control().sneak then
+			--attempt to enter breed state
+			if mobs.enter_breed_state(self,clicker) then
+				return
+			end
+
+			--make baby grow faster
+			if self.baby then
+				mobs.make_baby_grow_faster(self,clicker)
+				return
+			end
+
+			return
+		end
 
 		-- Taming
 		self.temper = self.temper or (math.random(1,100))
