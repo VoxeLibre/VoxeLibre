@@ -76,6 +76,7 @@ local wolf = {
 				dog:set_yaw(yaw)
 				ent = dog:get_luaentity()
 				ent.owner = clicker:get_player_name()
+				ent.tamed = true
 				-- cornfirm taming
 				minetest.sound_play("mobs_mc_wolf_bark", {object=dog, max_hear_distance=16}, true)
 				-- Replace wolf
@@ -143,11 +144,28 @@ dog.owner_loyal = true
 dog.follow_velocity = 3.2 
 -- Automatically teleport dog to owner
 dog.do_custom = mobs_mc.make_owner_teleport_function(12)
-dog.follow = mobs_mc.follow.dog
 dog.attack_animals = nil
 dog.specific_attack = nil
+dog.breed_distance = 1.5
+dog.baby_size = 0.5
+dog.follow_distance = 2
+dog.follow = "mcl_mobitems:beef"
+
 dog.on_rightclick = function(self, clicker)
 	local item = clicker:get_wielded_item()
+
+	if self.owner and self.owner == clicker:get_player_name() and clicker:get_player_control().sneak then
+		--attempt to enter breed state
+		if mobs.enter_breed_state(self,clicker) then
+			return
+		end
+
+		--make baby grow faster
+		if self.baby then
+			mobs.make_baby_grow_faster(self,clicker)
+			return
+		end
+	end
 
 	if is_food(item:get_name()) then
 		-- Feed to increase health
