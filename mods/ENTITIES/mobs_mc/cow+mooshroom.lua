@@ -50,13 +50,13 @@ local cow_def = {
 	},
 	follow = mobs_mc.follow.cow,
 	on_rightclick = function(self, clicker)
-		if mobs:feed_tame(self, clicker, 1, true, true) then
-			return
-		end
+		--if mobs:feed_tame(self, clicker, 1, true, true) then
+			--return
+		--end
 
-		if self.child then
-			return
-		end
+		--if self.child then
+		--	return
+		--end
 
 		local item = clicker:get_wielded_item()
 		if item:get_name() == mobs_mc.items.bucket and clicker:get_inventory() then
@@ -74,6 +74,8 @@ local cow_def = {
 			return
 		end
 	end,
+	breedable = true,
+	follow_distance = 2,
 	follow = mobs_mc.items.wheat,
 	view_range = 10,
 	fear_height = 4,

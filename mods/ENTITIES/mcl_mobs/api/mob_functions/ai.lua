@@ -6,6 +6,7 @@ local math_round  = math.round
 local vector_multiply = vector.multiply
 local vector_add      = vector.add
 local vector_new      = vector.new
+local vector_distance = vector.distance
 
 local minetest_yaw_to_dir                   = minetest.yaw_to_dir
 local minetest_get_item_group               = minetest.get_item_group
@@ -67,7 +68,8 @@ local land_state_list_wandering = {"stand", "walk"}
 
 local land_state_switch = function(self, dtime)
 
-	--do math after sure not attacking or running away
+	--do math before sure not attacking, following, or running away so continue
+	--doing random walking for mobs if all states are not met
 	self.state_timer = self.state_timer - dtime
 
 	--only run away
@@ -76,8 +78,18 @@ local land_state_switch = function(self, dtime)
 		if self.run_timer > 0 then
 			return
 		end
-
 		--continue
+	end
+
+	--ignore everything else if following
+	if mobs.check_following(self) then
+		self.state = "follow"
+		return
+	--reset the state timer to get the mob out of
+	--the follow state - not the cleanest option
+	--but the easiest
+	elseif self.state == "follow" then
+		self.state_timer = 0
 	end
 
 	--only attack
@@ -86,8 +98,7 @@ local land_state_switch = function(self, dtime)
 		return
 	end
 
-	
-
+	--if finally reached here then do random wander
 	if self.state_timer <= 0 then
 		self.state_timer = math.random(4,10) + math.random()
 		self.state = land_state_list_wandering[math.random(1,#land_state_list_wandering)]
@@ -102,6 +113,16 @@ local land_state_execution = function(self,dtime)
 	if not self.object:get_properties() then
 		return
 	end
+
+	--cool off after breeding
+	if self.breed_timer and self.breed_timer > 0 then
+		self.breed_timer = self.breed_timer - dtime
+		--do this to skip the first check, using as switch
+		if self.breed_timer <= 0 then
+			self.breed_timer = nil
+		end
+	end
+
 
 	local pos = self.object:get_pos()
 	local collisionbox = self.object:get_properties().collisionbox
@@ -144,6 +165,24 @@ local land_state_execution = function(self,dtime)
 		end
 
 		mobs.lock_yaw(self)
+
+	elseif self.state == "follow" then		
+
+		mobs.set_yaw_while_following(self)
+
+		local distance_from_follow_person = vector_distance(self.object:get_pos(), self.following_person:get_pos())
+				
+		if self.follow_distance < distance_from_follow_person then
+			mobs.set_mob_animation(self, "run")
+			mobs.set_velocity(self,self.run_velocity)
+
+			if mobs.jump_check(self) == 1 then
+				mobs.jump(self)
+			end
+		else
+			mobs.set_mob_animation(self, "stand")
+			mobs.set_velocity(self,0)
+		end
 
 	elseif self.state == "walk" then
 
@@ -697,7 +736,7 @@ mobs.mob_step = function(self, dtime)
 	end
 
 	--despawn mechanism
-	--don't despawned tamed mobs
+	--don't despawned tamed or bred mobs
 	if not self.tamed and not self.bred then
 		self.lifetimer = self.lifetimer - dtime
 		if self.lifetimer <= 0 then

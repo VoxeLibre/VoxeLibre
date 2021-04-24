@@ -265,8 +265,6 @@ function mobs:register_mob(name, def)
 		env_damage_timer = 0,
 		tamed = false,
 		pause_timer = 0,
-		horny = false,
-		hornytimer = 0,
 		gotten = false,
 		health = 0,
 		reach = def.reach or 3,
@@ -297,7 +295,6 @@ function mobs:register_mob(name, def)
 		runaway_from = def.runaway_from,
 		owner_loyal = def.owner_loyal,
 		facing_fence = false,
-
 
 		_cmi_is_mob = true,
 
@@ -331,6 +328,12 @@ function mobs:register_mob(name, def)
 		skittish = def.skittish,
 		lifetimer_reset = 30, --30 seconds
 		lifetimer = 30, --30 seconds
+
+		breedable = def.breedable,
+		breed_timer = 0,
+		breed_cooloff_timer = 5*60, -- 5 minutes
+		bred = false,
+		follow_distance = def.follow_distance or 2,
 		--end j4i stuff
 
 		-- MCL2 extensions

@@ -6,7 +6,7 @@ local minetest_settings                     = minetest.settings
 mobs.mob_staticdata = function(self)
 
 	--despawn mechanism
-	--don't despawned tamed mobs
+	--don't despawned tamed or bred mobs
 	if not self.tamed and not self.bred then
 		if not mobs.check_for_player_within_area(self, 64) then
 			--print("removing SERIALIZED!")
