@@ -48,15 +48,19 @@ local cow_def = {
 		walk_end = 40,      run_start = 0,		
 		run_end = 40,
 	},
-	follow = mobs_mc.follow.cow,
+	--follow = mobs_mc.follow.cow,
 	on_rightclick = function(self, clicker)
-		--if mobs:feed_tame(self, clicker, 1, true, true) then
-			--return
-		--end
 
-		--if self.child then
-		--	return
-		--end
+		--attempt to enter breed state
+		if mobs.enter_breed_state(self,clicker) then
+			return
+		end
+
+		if self.baby then
+			mobs.make_baby_grow_faster(self,clicker)
+			--do child timer thing %10
+			return
+		end
 
 		local item = clicker:get_wielded_item()
 		if item:get_name() == mobs_mc.items.bucket and clicker:get_inventory() then
@@ -75,6 +79,8 @@ local cow_def = {
 		end
 	end,
 	breedable = true,
+	breed_distance = 1.5,
+	baby_size = 0.5,
 	follow_distance = 2,
 	follow = mobs_mc.items.wheat,
 	view_range = 10,
