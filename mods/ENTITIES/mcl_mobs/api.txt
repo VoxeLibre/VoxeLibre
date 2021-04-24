@@ -578,7 +578,7 @@ Note: animation names above are from the pre-defined animation lists inside mob
 registry without extensions.
 
 
-mobs:set_animation(self, name)
+mobs.set_mob_animation(self, name)
 
 This function sets the current animation for mob, defaulting to "stand" if not
 found.
