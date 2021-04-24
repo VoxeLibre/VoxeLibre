@@ -138,15 +138,17 @@ mobs:register_mob("mobs_mc:llama", {
 			return
 		end
 
-		--attempt to enter breed state
-		if mobs.enter_breed_state(self,clicker) then
-			return
-		end
+		if clicker:get_player_control().sneak then
+			--attempt to enter breed state
+			if mobs.enter_breed_state(self,clicker) then
+				return
+			end
 
-		--make baby grow faster
-		if self.baby then
-			mobs.make_baby_grow_faster(self,clicker)
-			return
+			--make baby grow faster
+			if self.baby then
+				mobs.make_baby_grow_faster(self,clicker)
+				return
+			end
 		end
 
 
