@@ -50,7 +50,9 @@ local cow_def = {
 	},
 	follow = mobs_mc.follow.cow,
 	on_rightclick = function(self, clicker)
-		if mobs:feed_tame(self, clicker, 1, true, true) then return end
+		if mobs:feed_tame(self, clicker, 1, true, true) then
+			return
+		end
 
 		if self.child then
 			return

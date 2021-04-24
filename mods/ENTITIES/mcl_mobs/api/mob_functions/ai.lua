@@ -698,7 +698,7 @@ mobs.mob_step = function(self, dtime)
 
 	--despawn mechanism
 	--don't despawned tamed mobs
-	if not self.tamed then
+	if not self.tamed and not self.bred then
 		self.lifetimer = self.lifetimer - dtime
 		if self.lifetimer <= 0 then
 			self.lifetimer = self.lifetimer_reset
