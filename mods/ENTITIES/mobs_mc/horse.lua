@@ -118,6 +118,7 @@ local horse = {
 	walk_chance = 60,
 	view_range = 16,
 	follow = "mcl_farming:wheat_item",
+	follow_distance = 3,
 	passive = true,
 	hp_min = 15,
 	hp_max = 30,
