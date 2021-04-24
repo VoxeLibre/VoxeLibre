@@ -56,9 +56,9 @@ local cow_def = {
 			return
 		end
 
+		--make baby grow faster
 		if self.baby then
 			mobs.make_baby_grow_faster(self,clicker)
-			--do child timer thing %10
 			return
 		end
 
@@ -95,11 +95,17 @@ local mooshroom_def = table.copy(cow_def)
 mooshroom_def.mesh = "mobs_mc_cow.b3d"
 mooshroom_def.textures = { {"mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png"}, {"mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" } }
 mooshroom_def.on_rightclick = function(self, clicker)
-	if mobs:feed_tame(self, clicker, 1, true, true) then return end
-
-	if self.child then
+	--attempt to enter breed state
+	if mobs.enter_breed_state(self,clicker) then
 		return
 	end
+
+	--make baby grow faster
+	if self.baby then
+		mobs.make_baby_grow_faster(self,clicker)
+		return
+	end
+
 	local item = clicker:get_wielded_item()
 	-- Use shears to get mushrooms and turn mooshroom into cow
 	if item:get_name() == mobs_mc.items.shears then

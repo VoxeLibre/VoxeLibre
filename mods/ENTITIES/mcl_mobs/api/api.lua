@@ -342,6 +342,7 @@ function mobs:register_mob(name, def)
 		baby = false,
 		grow_up_timer = 0,
 		grow_up_goal  = 20*60, --in 20 minutes the mob grows up
+		special_breed_timer = 0, --this is used for the AHEM AHEM part of breeding
 
 		backup_visual_size = def.visual_size,
 		backup_collisionbox = collisionbox,
