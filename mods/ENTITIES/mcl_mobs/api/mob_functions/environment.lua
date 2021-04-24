@@ -67,12 +67,12 @@ mobs.detect_closest_player_within_radius = function(self, line_of_sight, radius,
 	end
 
 	--do a default radius max
-	local shortest_disance = radius + 1
+	local shortest_distance = radius + 1
 
 	--sort through players and find the closest player
 	for player,distance in pairs(players_in_area) do
-		if distance < shortest_disance then
-			shortest_disance = distance
+		if distance < shortest_distance then
+			shortest_distance = distance
 			winner_player = player
 		end
 	end
