@@ -213,9 +213,8 @@ function mobs:register_mob(name, def)
 		rotate = def.rotate or 0, --  0=front, 90=side, 180=back, 270=side2
 		hp_min = scale_difficulty(def.hp_min, 5, 1),
 		hp_max = scale_difficulty(def.hp_max, 10, 1),
-		xp_min = def.xp_min or 0,
-		xp_max = def.xp_max or 3,
-		xp_timestamp = 0,
+		xp_min = def.xp_min or 1,
+		xp_max = def.xp_max or 5,
 		breath_max = def.breath_max or 15,
 		breathes_in_water = def.breathes_in_water or false,
 		physical = true,

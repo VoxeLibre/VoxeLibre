@@ -116,6 +116,8 @@ mobs.death_logic = function(self, dtime)
 
         mobs.death_effect(self)
 
+		mcl_experience.throw_experience(self.object:get_pos(), math_random(self.xp_min, self.xp_max))
+		
         self.object:remove()
 
         return
