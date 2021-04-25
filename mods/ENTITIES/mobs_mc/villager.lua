@@ -961,9 +961,11 @@ mobs:register_mob("mobs_mc:villager", {
 	},
 	},
 	visual_size = {x=2.75, y=2.75},
+	rotate = 270,
+	skittish = true,
 	makes_footstep_sound = true,
 	walk_velocity = 1.2,
-	run_velocity = 2.4,
+	run_velocity = 3,
 	drops = {},
 	can_despawn = false,
 	-- TODO: sounds
