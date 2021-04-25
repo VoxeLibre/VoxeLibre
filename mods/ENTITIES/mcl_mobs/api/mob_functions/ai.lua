@@ -204,9 +204,11 @@ local land_state_execution = function(self,dtime)
 
 		--check distance
 		local distance_from_follow_person = vector_distance(self.object:get_pos(), self.following_person:get_pos())
+		local distance_2d = mobs.get_2d_distance(self.object:get_pos(), self.following_person:get_pos())
 				
 		--don't push the player if too close
-		if self.follow_distance < distance_from_follow_person then
+		--don't spin around randomly
+		if self.follow_distance < distance_from_follow_person and self.minimum_follow_distance < distance_2d then
 			mobs.set_mob_animation(self, "run")
 			mobs.set_velocity(self,self.run_velocity)
 

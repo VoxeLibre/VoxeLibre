@@ -236,3 +236,11 @@ mobs.check_for_player_within_area = function(self, radius)
 	--did not find a player
 	return(false)
 end
+
+
+--a simple helper function for mobs following
+mobs.get_2d_distance = function(pos1,pos2)
+	pos1.y = 0
+	pos2.y = 0
+	return(vector_distance(pos1, pos2))
+end

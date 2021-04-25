@@ -120,9 +120,15 @@ mobs.punch_attack_walk = function(self,dtime)
         return
     end
 
-    mobs.set_yaw_while_attacking(self)
+    local distance_from_attacking = mobs.get_2d_distance(self.object:get_pos(), self.attacking:get_pos())
 
-    mobs.set_velocity(self, self.run_velocity)
+    if distance_from_attacking >= self.minimum_follow_distance then
+        mobs.set_velocity(self, self.run_velocity)
+    else
+        mobs.set_velocity(self, 0)
+    end
+
+    mobs.set_yaw_while_attacking(self)
 
     mobs.set_mob_animation(self, "run")
 
@@ -130,8 +136,14 @@ mobs.punch_attack_walk = function(self,dtime)
     --check for nodes to jump over
     --explosive mobs will just ride against walls for now
 	local node_in_front_of = mobs.jump_check(self)
+
 	if node_in_front_of == 1 then
 		mobs.jump(self)
+    end
+
+    --mobs that can climb over stuff
+    if self.always_climb and node_in_front_of > 0 then
+        mobs.climb(self)
     end
 
 
