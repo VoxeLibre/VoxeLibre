@@ -53,15 +53,18 @@ function mcl_armor.equip(itemstack, obj, swap)
 
 	if element then
 		local old_stack = inv:get_stack("armor", element.index)
-		local new_stack
-
-		if swap then
-			new_stack = itemstack
-			itemstack = old_stack
-		end
 
 		if swap or old_stack:is_empty() then
-			inv:set_stack("armor", element.index, new_stack or itemstack:take_item())
+			local new_stack
+
+			if swap then
+				new_stack = itemstack
+				itemstack = old_stack
+			else
+				new_stack = itemstack:take_item()
+			end
+
+			inv:set_stack("armor", element.index, new_stack)
 			mcl_armor.on_equip(new_stack, obj)
 		end
 	end
