@@ -137,9 +137,10 @@ mobs.mob_activate = function(self, staticdata, def, dtime)
 		}
 	end
 
-	if self.health == 0 then
+	if not self.dead and self.health == 0 then
 		self.health = math_random (self.hp_min, self.hp_max)
 	end
+
 	if self.breath == nil then
 		self.breath = self.breath_max
 	end

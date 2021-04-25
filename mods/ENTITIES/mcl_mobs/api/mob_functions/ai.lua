@@ -829,9 +829,36 @@ mobs.mob_step = function(self, dtime)
 		end
 	end
 
+	--do death logic (animation, poof, explosion, etc)
+	if self.health <= 0 then
+
+		--play death sound once
+		if not self.played_death_sound then
+			self.dead = true
+			mobs.play_sound(self,"death")
+			self.played_death_sound = true
+		end
+
+		mobs.death_logic(self, dtime)
+
+		--this is here because the mob must continue to move
+		--while stunned before coming to a complete halt even during
+		--the death tilt
+		if self.pause_timer > 0 then
+			self.pause_timer = self.pause_timer - dtime
+			--perfectly reset pause_timer
+			if self.pause_timer < 0 then
+				self.pause_timer = 0
+			end
+		end
+
+		return
+	end
+
 	--color modifier which coincides with the pause_timer
 	if self.old_health and self.health < self.old_health then		
 		self.object:set_texture_mod("^[colorize:red:120")
+		mobs.play_sound(self,"damage")
 	end	
 	self.old_health = self.health
 
@@ -888,24 +915,7 @@ mobs.mob_step = function(self, dtime)
 
 	
 
-	--do death logic (animation, poof, explosion, etc)
-	if self.health <= 0 then
-
-		mobs.death_logic(self, dtime)
-
-		--this is here because the mob must continue to move
-		--while stunned before coming to a complete halt even during
-		--the death tilt
-		if self.pause_timer > 0 then
-			self.pause_timer = self.pause_timer - dtime
-			--perfectly reset pause_timer
-			if self.pause_timer < 0 then
-				self.pause_timer = 0
-			end
-		end
-
-		return
-	end
+	
 
 	--baby grows up
 	if self.baby then
