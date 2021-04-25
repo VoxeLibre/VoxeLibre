@@ -368,14 +368,38 @@ function mobs:register_mob(name, def)
 
 
 		--head code variables
+		--defaults are for the cow's default
+		--because I don't know what else to set them
+		--to :P
+
 		has_head = def.has_head or false,
 		head_bone = def.head_bone,
 
 		--you must use these to adjust the mob's head positions
+
+		--has_head is used as a logic gate (quick easy check)
+		has_head = def.has_head or false,
+		--head_bone is the actual bone in the model which the head
+		--is attached to for animation
+		head_bone = def.head_bone or "head",
+
+		--this part controls the base position of the head calculations
+		--localized to the mob's visual yaw when gotten (self.object:get_yaw())
+		--you can enable the debug in /mob_functions/head_logic.lua by uncommenting the
+		--particle spawner code
+		head_height_offset =  def.head_height_offset or 1.0525,
+		head_direction_offset = def.head_direction_offset or 0.5,
+
+		--this part controls the visual of the head
 		head_bone_pos_y = def.head_bone_pos_y or 3.6,
 		head_bone_pos_z = def.head_bone_pos_z or -0.6,
+
+		--these variables are switches in case the model
+		--moves the wrong way
 		swap_y_with_x = def.swap_y_with_x or false,
 		reverse_head_yaw = def.reverse_head_yaw or false,
+
+		--END HEAD CODE VARIABLES
 
 		--end j4i stuff
 

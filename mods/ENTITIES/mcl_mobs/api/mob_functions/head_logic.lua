@@ -24,13 +24,7 @@ mobs.do_head_logic = function(self,dtime)
     local body_dir = minetest.yaw_to_dir(body_yaw)
 
 
-    --needs to be INTERNAL(API)
-    self.head_height_offset = 1.0525
-
     pos.y = pos.y + self.head_height_offset
-
-    --needs to be INTERNAL (API)
-    self.head_direction_offset = 0.5
 
     local head_offset = vector.multiply(body_dir, self.head_direction_offset)
 
@@ -52,12 +46,9 @@ mobs.do_head_logic = function(self,dtime)
     local bone_pos = vector_new(0,0,0)
 
 
-    --needs to be INTERNAL (API)
     --(horizontal)
     bone_pos.y = self.head_bone_pos_y
 
-    
-    --needs to be INTERNAL (API)
     --(vertical)
     bone_pos.z = self.head_bone_pos_z
 

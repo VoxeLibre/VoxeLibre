@@ -832,8 +832,11 @@ mobs.mob_step = function(self, dtime)
 
 
 	--DEBUG TIME!
+	--REMEMBER TO MOVE THIS AFTER DEATH CHECK
 
-	mobs.do_head_logic(self,dtime)
+	if self.has_head then
+		mobs.do_head_logic(self,dtime)
+	end
 
 
 
@@ -854,9 +857,6 @@ mobs.mob_step = function(self, dtime)
 			end
 		end
 	end
-
-	--make it so mobs do not glitch out when walking around/jumping
-	mobs.swap_auto_step_height_adjust(self)
 
 	--color modifier which coincides with the pause_timer
 	if self.old_health and self.health < self.old_health then		
@@ -894,9 +894,6 @@ mobs.mob_step = function(self, dtime)
 	end
 
 	mobs.random_sound_handling(self,dtime)
-
-	
-
 
 	--mobs drowning mechanic
 	if not self.breathes_in_water then
@@ -1111,6 +1108,9 @@ mobs.mob_step = function(self, dtime)
 		self.object:remove()
 		return false
 	end
+
+	--make it so mobs do not glitch out when walking around/jumping
+	mobs.swap_auto_step_height_adjust(self)
 
 
 	-- can mob be pushed, if so calculate direction -- do this last (overrides everything)
