@@ -677,8 +677,6 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 					return itemstack
 				end
 
-				pos.y = pos.y - 0.5
-
 				local mob = minetest_add_entity(pos, mob)
 				minetest.log("action", "Mob spawned: "..name.." at "..minetest.pos_to_string(pos))
 				local ent = mob:get_luaentity()

@@ -584,6 +584,7 @@ local random_pitch_multiplier = {-1,1}
 -- states are executed here
 local fly_state_execution = function(self,dtime)
 	local pos = self.object:get_pos()
+	pos.y = pos.y + 0.1
 	local current_node = minetest_get_node(pos).name
 	local inside_fly_node = minetest_get_item_group(current_node, "solid") == 0
 
