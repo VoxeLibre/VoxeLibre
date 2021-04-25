@@ -359,6 +359,8 @@ function mobs:register_mob(name, def)
 
 		--fire timer
 		burn_timer = 0,
+
+		ignores_cobwebs = def.ignores_cobwebs,
 		--end j4i stuff
 
 		-- MCL2 extensions

@@ -26,6 +26,7 @@ local spider = {
 	reach = 2,
 	hp_min = 16,
 	hp_max = 16,
+	ignores_cobwebs = true,
 	xp_min = 5,
 	xp_max = 5,
 	eye_height = 0.475,

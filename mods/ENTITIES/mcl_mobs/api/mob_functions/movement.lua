@@ -10,6 +10,7 @@ local vector_new      = vector.new
 local vector_length   = vector.length
 local vector_multiply = vector.multiply
 local vector_distance = vector.distance
+local vector_normalize = vector.normalize
 
 local minetest_yaw_to_dir = minetest.yaw_to_dir
 local minetest_dir_to_yaw = minetest.dir_to_yaw
@@ -19,6 +20,20 @@ local DEFAULT_FLOAT_SPEED = 4
 local DEFAULT_CLIMB_SPEED = 3
 
 
+mobs.stick_in_cobweb = function(self)
+	local current_velocity = self.object:get_velocity()
+	
+	local goal_velocity = vector_multiply(vector_normalize(current_velocity), 0.4)
+
+	goal_velocity.y = -0.5
+
+	local new_velocity_addition = vector.subtract(goal_velocity,current_velocity)
+
+	--smooths out mobs a bit
+	if vector_length(new_velocity_addition) >= 0.0001 then
+		self.object:add_velocity(new_velocity_addition)
+	end
+end
 
 --this is a generic float function
 mobs.float = function(self)

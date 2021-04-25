@@ -1035,6 +1035,30 @@ mobs.mob_step = function(self, dtime)
 		mobs.collision(self)
 	end
 
+	--overrides absolutely everything
+	--mobs get stuck in cobwebs like players
+	if not self.ignores_cobwebs then
+
+		local pos = self.object:get_pos()
+		local node = minetest_get_node(pos).name
+		
+		if node == "mcl_core:cobweb" then
+
+			--fight the rest of the api
+			if self.object:get_acceleration().y ~= 0 then
+				self.object:set_acceleration(vector_new(0,0,0))
+			end
+
+			mobs.stick_in_cobweb(self)
+
+		else
+			--return the mob back to normal
+			if self.object:get_acceleration().y == 0 and not self.swim and not self.fly then
+				self.object:set_acceleration(vector_new(0,-self.gravity,0))
+			end
+		end
+	end
+
     self.old_velocity = self.object:get_velocity()
 	self.old_pos = self.object:get_pos()
 end
