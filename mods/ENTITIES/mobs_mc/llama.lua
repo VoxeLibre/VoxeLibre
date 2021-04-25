@@ -165,6 +165,25 @@ mobs:register_mob("mobs_mc:llama", {
 			end
 
 
+
+			--put chest on carpeted llama
+			if self.carpet and not self.chest and item:get_name() == "mcl_chests:chest" then
+				if not minetest.is_creative_enabled(clicker:get_player_name()) then
+					item:take_item()
+					clicker:set_wielded_item(item)
+				end
+
+				self.base_texture = table.copy(self.base_texture)
+				self.base_texture[1] = "mobs_mc_llama_chest.png"
+				self.object:set_properties({
+					textures = self.base_texture,
+				})
+				self.chest = true
+
+				return --don't attempt to ride
+			end
+
+
 			-- Place carpet
 			--TODO: Re-enable this code when carpet textures arrived.
 			if minetest.get_item_group(item:get_name(), "carpet") == 1 then
@@ -174,15 +193,16 @@ mobs:register_mob("mobs_mc:llama", {
 						if not minetest.is_creative_enabled(clicker:get_player_name()) then
 							item:take_item()
 							clicker:set_wielded_item(item)
+
+							--shoot off old carpet
+							if self.carpet then
+								minetest.add_item(self.object:get_pos(), self.carpet)
+							end
 						end
+
 						local substr = carpetdata[2]
-
-						--shoot off old carpet
-						if self.carpet then
-							print(substr)
-						end
-
 						local tex_carpet = "mobs_mc_llama_decor_"..substr..".png"
+
 						self.base_texture = table.copy(self.base_texture)
 						self.base_texture[2] = tex_carpet
 						self.object:set_properties({
@@ -204,16 +224,18 @@ mobs:register_mob("mobs_mc:llama", {
 				end
 			end
 
-			-- detatch player already riding llama
-			if self.driver and clicker == self.driver then
+			if self.carpet then
+				-- detatch player already riding llama
+				if self.driver and clicker == self.driver then
 
-				mobs.detach(clicker, {x = 1, y = 0, z = 1})
+					mobs.detach(clicker, {x = 1, y = 0, z = 1})
 
-			-- attach player to llama
-			elseif not self.driver then
+				-- attach player to llama
+				elseif not self.driver then
 
-				self.object:set_properties({stepheight = 1.1})
-				mobs.attach(self, clicker)
+					self.object:set_properties({stepheight = 1.1})
+					mobs.attach(self, clicker)
+				end
 			end
 
 		end
