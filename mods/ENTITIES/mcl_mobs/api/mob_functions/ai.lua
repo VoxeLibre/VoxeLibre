@@ -822,7 +822,7 @@ mobs.mob_step = function(self, dtime)
 
 	--DEBUG TIME!
 
-	mobs.do_head_logic(self)
+	--mobs.do_head_logic(self,dtime)
 
 
 
@@ -843,6 +843,9 @@ mobs.mob_step = function(self, dtime)
 			end
 		end
 	end
+
+	--make it so mobs do not glitch out when walking around/jumping
+	mobs.swap_auto_step_height_adjust(self)
 
 	--color modifier which coincides with the pause_timer
 	if self.old_health and self.health < self.old_health then		

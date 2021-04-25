@@ -200,6 +200,7 @@ function mobs:register_mob(name, def)
 
 		use_texture_alpha = def.use_texture_alpha,
 		stepheight = def.stepheight or 0.6,
+		stepheight_backup = def.stepheight or 0.6,
 		name = name,
 		type = def.type,
 		attack_type = def.attack_type,
