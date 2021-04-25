@@ -90,7 +90,7 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 			local wdir = minetest.dir_to_wallmounted(diff)
 
 			local itemstring = itemstack:get_name()
-			--local fakestack = ItemStack(itemstack)
+			local fakestack = ItemStack(itemstack)
 			local idef = fakestack:get_definition()
 			local retval
 			if wdir == 0 or wdir == 1 then

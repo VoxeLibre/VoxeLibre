@@ -171,15 +171,18 @@ local land_state_execution = function(self,dtime)
 
 	--make slow falling mobs fall slow
 	if self.fall_slow then
-		if self.object:get_velocity().y < 0 then
-			--lua is acting really weird so we have to help it
-			if round2(self.object:get_acceleration().y, 1) == -self.gravity then
-				self.object:set_acceleration(vector_new(0,0,0))
-				mobs.mob_fall_slow(self)
-			end
-		else
-			if round2(self.object:get_acceleration().y, 1) == 0 then
-				self.object:set_acceleration(vector_new(0,-self.gravity,0))
+		local velocity = self.object:get_velocity()
+		if velocity then
+			if velocity.y < 0 then
+				--lua is acting really weird so we have to help it
+				if round2(self.object:get_acceleration().y, 1) == -self.gravity then
+					self.object:set_acceleration(vector_new(0,0,0))
+					mobs.mob_fall_slow(self)
+				end
+			else
+				if round2(self.object:get_acceleration().y, 1) == 0 then
+					self.object:set_acceleration(vector_new(0,-self.gravity,0))
+				end
 			end
 		end
 	end
@@ -371,8 +374,11 @@ local land_state_execution = function(self,dtime)
 	
 	if float_now then
 		mobs.float(self)
-	elseif self.object:get_acceleration().y == 0 then
-		self.object:set_acceleration(vector_new(0,-self.gravity,0))
+	else
+		local acceleration = self.object:get_acceleration()
+		if acceleration and acceleration.y == 0 then
+			self.object:set_acceleration(vector_new(0,-self.gravity,0))
+		end
 	end
 end
 
@@ -894,7 +900,7 @@ mobs.mob_step = function(self, dtime)
 
 		pos.y = pos.y + self.eye_height
 
-		local node = minetest.get_node(pos).name
+		local node = minetest_get_node(pos).name
 
 		if minetest_get_item_group(node, "water") ~= 0 then
 			self.breath = self.breath - dtime
@@ -1106,7 +1112,7 @@ mobs.mob_step = function(self, dtime)
 	if not self.ignores_cobwebs then
 
 		local pos = self.object:get_pos()
-		local node = minetest_get_node(pos).name
+		local node = pos and minetest_get_node(pos).name
 		
 		if node == "mcl_core:cobweb" then
 
@@ -1131,6 +1137,6 @@ mobs.mob_step = function(self, dtime)
 		end
 	end
 
-    self.old_velocity = self.object:get_velocity()
+	self.old_velocity = self.object:get_velocity()
 	self.old_pos = self.object:get_pos()
 end

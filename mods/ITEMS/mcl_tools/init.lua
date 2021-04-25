@@ -173,6 +173,29 @@ minetest.register_tool("mcl_tools:pick_diamond", {
 	_mcl_diggroups = {
 		pickaxey = { speed = 8, level = 5, uses = 1562 }
 	},
+	_mcl_upgradable = true,
+	_mcl_upgrade_item = "mcl_tools:pick_netherite"
+})
+
+minetest.register_tool("mcl_tools:pick_netherite", {
+	description = S("Netherite Pickaxe"),
+	_doc_items_longdesc = pickaxe_longdesc,
+	inventory_image = "default_tool_netheritepick.png",
+	wield_scale = wield_scale,
+	groups = { tool=1, pickaxe=1, dig_speed_class=6, enchantability=10 },
+	tool_capabilities = {
+		-- 1/1.2
+		full_punch_interval = 0.83333333,
+		max_drop_level=5,
+		damage_groups = {fleshy=6},
+		punch_attack_uses = 1016,
+	},
+	sound = { breaks = "default_tool_breaks" },
+	_repair_material = "mcl_nether:netherite_ingot",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		pickaxey = { speed = 9.5, level = 6, uses = 2031 }
+	},
 })
 
 local make_grass_path = function(itemstack, placer, pointed_thing)
@@ -349,6 +372,30 @@ minetest.register_tool("mcl_tools:shovel_diamond", {
 	_mcl_diggroups = {
 		shovely = { speed = 8, level = 5, uses = 1562 }
 	},
+	_mcl_upgradable = true,
+	_mcl_upgrade_item = "mcl_tools:shovel_netherite"
+})
+
+minetest.register_tool("mcl_tools:shovel_netherite", {
+	description = S("Netherite Shovel"),
+	_doc_items_longdesc = shovel_longdesc,
+	_doc_items_usagehelp = shovel_use,
+	inventory_image = "default_tool_netheriteshovel.png",
+	wield_scale = wield_scale,
+	groups = { tool=1, shovel=1, dig_speed_class=6, enchantability=10 },
+	tool_capabilities = {
+		full_punch_interval = 1,
+		max_drop_level=5,
+		damage_groups = {fleshy=5},
+		punch_attack_uses = 1016,
+	},
+	on_place = make_grass_path,
+	sound = { breaks = "default_tool_breaks" },
+	_repair_material = "mcl_nether:netherite_ingot",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		shovely = { speed = 9, level = 6, uses = 2031 }
+	},
 })
 
 -- Axes
@@ -481,6 +528,29 @@ minetest.register_tool("mcl_tools:axe_diamond", {
 	_mcl_diggroups = {
 		axey = { speed = 8, level = 5, uses = 1562 }
 	},
+	_mcl_upgradable = true,
+	_mcl_upgrade_item = "mcl_tools:axe_netherite"
+})
+
+minetest.register_tool("mcl_tools:axe_netherite", {
+	description = S("Netherite Axe"),
+	_doc_items_longdesc = axe_longdesc,
+	inventory_image = "default_tool_netheriteaxe.png",
+	wield_scale = wield_scale,
+	groups = { tool=1, axe=1, dig_speed_class=6, enchantability=10 },
+	tool_capabilities = {
+		full_punch_interval = 1.0,
+		max_drop_level=5,
+		damage_groups = {fleshy=10},
+		punch_attack_uses = 1016,
+	},
+	on_place = make_stripped_trunk,
+	sound = { breaks = "default_tool_breaks" },
+	_repair_material = "mcl_nether:netherite_ingot",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		axey = { speed = 9, level = 6, uses = 2031 }
+	},
 })
 
 -- Swords
@@ -583,6 +653,28 @@ minetest.register_tool("mcl_tools:sword_diamond", {
 	_mcl_diggroups = {
 		swordy = { speed = 8, level = 5, uses = 1562 },
 		swordy_cobweb = { speed = 8, level = 5, uses = 1562 }
+	},
+	_mcl_upgradable = true,
+	_mcl_upgrade_item = "mcl_tools:sword_netherite"
+})
+minetest.register_tool("mcl_tools:sword_netherite", {
+	description = S("Netherite Sword"),
+	_doc_items_longdesc = sword_longdesc,
+	inventory_image = "default_tool_netheritesword.png",
+	wield_scale = wield_scale,
+	groups = { weapon=1, sword=1, dig_speed_class=5, enchantability=10 },
+	tool_capabilities = {
+		full_punch_interval = 0.625,
+		max_drop_level=5,
+		damage_groups = {fleshy=9},
+		punch_attack_uses = 2031,
+	},
+	sound = { breaks = "default_tool_breaks" },
+	_repair_material = "mcl_nether:netherite_ingot",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		swordy = { speed = 8, level = 5, uses = 2031 },
+		swordy_cobweb = { speed = 8, level = 5, uses = 2031 }
 	},
 })
 
