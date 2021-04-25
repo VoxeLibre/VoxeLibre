@@ -12,6 +12,7 @@ local minetest_yaw_to_dir                   = minetest.yaw_to_dir
 local minetest_get_item_group               = minetest.get_item_group
 local minetest_get_node                     = minetest.get_node
 local minetest_line_of_sight                = minetest.line_of_sight
+local minetest_get_node_light               = minetest.get_node_light
 
 local DOUBLE_PI = math.pi * 2
 local THIRTY_SECONDTH_PI = DOUBLE_PI * 0.03125
@@ -828,10 +829,31 @@ mobs.mob_step = function(self, dtime)
 		end
 	end
 
+	--set mobs on fire when burned by sunlight
+	if self.ignited_by_sunlight then
+		local pos = self.object:get_pos()
+		pos.y = pos.y + 0.1
+
+		if self.burn_timer > 0 then
+			self.burn_timer = self.burn_timer - dtime
+
+			if self.burn_timer <= 0 then
+				self.health = self.health - 4
+				self.burn_timer = 0
+			end
+		end
+
+		if self.burn_timer == 0 and minetest_get_node_light(pos) > 12 and minetest_get_node_light(pos, 0.5) == 15 then
+			mcl_burning.set_on_fire(self.object, 1)
+			self.burn_timer = 1 --1.7 seconds
+			self.pause_timer = 0.4
+		end
+	end
+
 	--color modifier which coincides with the pause_timer
 	if self.old_health and self.health < self.old_health then		
 		self.object:set_texture_mod("^[colorize:red:120")
-	end
+	end	
 	self.old_health = self.health
 
 	--do death logic (animation, poof, explosion, etc)
