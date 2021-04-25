@@ -377,3 +377,15 @@ mobs.jump_move = function(self, velocity)
 		self.object:add_velocity(new_velocity_addition)
 	end
 end
+
+--make it so mobs do not glitch out and freak out
+--when moving around over nodes
+mobs.swap_auto_step_height_adjust = function(self)
+	local y_vel = self.object:get_velocity().y
+
+	if y_vel == 0 and self.stepheight ~= self.stepheight_backup then
+		self.stepheight = self.stepheight_backup
+	elseif y_vel ~= 0 and self.stepheight ~= 0 then
+		self.stepheight = 0
+	end
+end
