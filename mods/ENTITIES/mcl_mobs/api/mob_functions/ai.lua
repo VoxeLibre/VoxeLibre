@@ -1101,6 +1101,12 @@ mobs.mob_step = function(self, dtime)
 		end
 	end
 
+	--do not continue if non-existent
+	if not self or not self.object or not self.object:get_luaentity() then
+		self.object:remove()
+		return false
+	end
+
 
 	-- can mob be pushed, if so calculate direction -- do this last (overrides everything)
 	if self.pushable then
