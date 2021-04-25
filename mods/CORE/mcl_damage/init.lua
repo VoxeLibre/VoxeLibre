@@ -5,7 +5,7 @@ mcl_damage = {
 	types = {
 		in_fire = {is_fire = true},
 		lightning_bolt = {is_lightning = true},
-		on_fire = {is_fire = true},
+		on_fire = {is_fire = true, bypasses_armor = true},
 		lava = {is_fire = true},
 		hot_floor = {is_fire = true},
 		in_wall = {bypasses_armor = true},
@@ -93,37 +93,43 @@ function mcl_damage.finish_reason(mcl_reason)
 end
 
 function mcl_damage.from_mt(mt_reason)
+	if mt_reason._mcl_chached_reason then
+		return mt_reason._mcl_chached_reason
+	end
+
+	local mcl_reason
+
 	if mt_reason._mcl_reason then
-		return mt_reason._mcl_reason
-	end
+		mcl_reason = mt_reason._mcl_reason
+	else
+		mcl_reason = {type = "generic"}
 
-	local mcl_reason = {type = "generic"}
-
-	if mt_reason._mcl_type then
-		mcl_reason.type = mt_reason._mcl_type
-	elseif mt_reason.type == "fall" then
-		mcl_reason.type = "fall"
-	elseif mt_reason.type == "drown" then
-		mcl_reason.type = "drown"
-	elseif mt_reason.type == "punch" then
-		mcl_damage.from_punch(mcl_reason, mt_reason.object)
-	elseif mt_reason.type == "node_damage" and mt_reason.node then
-		if minetest.get_item_group(mt_reason.node, "fire") > 0 then
-			mcl_reason.type = "in_fire"
+		if mt_reason._mcl_type then
+			mcl_reason.type = mt_reason._mcl_type
+		elseif mt_reason.type == "fall" then
+			mcl_reason.type = "fall"
+		elseif mt_reason.type == "drown" then
+			mcl_reason.type = "drown"
+		elseif mt_reason.type == "punch" then
+			mcl_damage.from_punch(mcl_reason, mt_reason.object)
+		elseif mt_reason.type == "node_damage" and mt_reason.node then
+			if minetest.get_item_group(mt_reason.node, "fire") > 0 then
+				mcl_reason.type = "in_fire"
+			end
+			if minetest.get_item_group(mt_reason.node, "lava") > 0 then
+				mcl_reason.type = "lava"
+			end
 		end
-		if minetest.get_item_group(mt_reason.node, "lava") > 0 then
-			mcl_reason.type = "lava"
-		end
-	end
 
-	for key, value in pairs(mt_reason) do
-		if key:find("_mcl_") == 1 then
-			mcl_reason[key:sub(6, #key)] = value
+		for key, value in pairs(mt_reason) do
+			if key:find("_mcl_") == 1 then
+				mcl_reason[key:sub(6, #key)] = value
+			end
 		end
 	end
 
 	mcl_damage.finish_reason(mcl_reason)
-	mt_reason._mcl_reason = mcl_reason
+	mt_reason._mcl_cached_reason = mcl_reason
 
 	return mcl_reason
 end

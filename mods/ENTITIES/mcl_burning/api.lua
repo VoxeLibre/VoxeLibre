@@ -137,22 +137,10 @@ function mcl_burning.tick(obj, dtime, storage)
 			if storage.fire_damage_timer >= 1 then
 				storage.fire_damage_timer = 0
 
-				local hp = mcl_util.get_hp(obj)
+				local luaentity = obj:get_luaentity()
 
-				if hp > 0 then
-					local do_damage = true
-
-					if obj:is_player() then
-						if mcl_potions.player_has_effect(obj, "fire_proof") then
-							do_damage = false
-						end
-					elseif obj:get_luaentity().fire_damage_resistant then
-						do_damage = false
-					end
-
-					if do_damage then
-						mcl_util.deal_damage(obj, 1, {reason = "on_fire"})
-					end
+				if not luaentity or not luaentity.fire_damage_resistant then
+					mcl_util.deal_damage(obj, 1, {type = "on_fire"})
 				end
 			end
 		end

@@ -344,37 +344,12 @@ minetest.register_globalstep(function(dtime)
 
 end)
 
-
-local is_fire_node = { ["mcl_core:lava_flowing"]=true,
-	["mcl_core:lava_source"]=true,
-	["mcl_fire:eternal_fire"]=true,
-	["mcl_fire:fire"]=true,
-	["mcl_nether:magma"]=true,
-	["mcl_nether:nether_lava_source"]=true,
-	["mcl_nether:nether_lava_flowing"]=true,
-	["mcl_nether:nether_lava_source"]=true
-}
-
 -- Prevent damage to player with Fire Resistance enabled
-minetest.register_on_player_hpchange(function(player, hp_change, reason)
-
-	if EF.fire_proof[player] and hp_change < 0 then
-		-- This is a bit forced, but it assumes damage is taken by fire and avoids it
-		-- also assumes any change in hp happens between calls to this function
-		-- it's worth noting that you don't take damage from players in this case...
-		local player_info = mcl_playerinfo[player:get_player_name()]
-
-		if is_fire_node[player_info.node_head] or is_fire_node[player_info.node_feet] or is_fire_node[player_info.node_stand] then
-			return 0
-		else
-			return hp_change
-		end
-
-	else
-		return hp_change
+mcl_damage.register_modifier(function(obj, damage, reason)
+	if EF.fire_proof[obj] and not reason.flags.bypasses_magic and reason.flags.is_fire then
+		return 0
 	end
-
-end, true)
+end, -50)
 
 
 
