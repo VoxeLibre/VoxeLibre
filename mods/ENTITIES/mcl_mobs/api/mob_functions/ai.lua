@@ -829,6 +829,42 @@ mobs.mob_step = function(self, dtime)
 		end
 	end
 
+	--color modifier which coincides with the pause_timer
+	if self.old_health and self.health < self.old_health then		
+		self.object:set_texture_mod("^[colorize:red:120")
+	end	
+	self.old_health = self.health
+
+
+	--mobs drowning mechanic
+	if not self.breathes_in_water then
+
+		local pos = self.object:get_pos()
+
+		pos.y = pos.y + self.eye_height
+
+		local node = minetest.get_node(pos).name
+
+		if minetest_get_item_group(node, "water") ~= 0 then
+			self.breath = self.breath - dtime
+
+			--reset breath when drowning
+			if self.breath <= 0 then
+				self.health = self.health - 4
+				self.breath = 1
+				self.pause_timer = 0.5
+			end
+
+		elseif self.breath < self.breath_max then
+			self.breath = self.breath + dtime
+			
+			--clean timer reset
+			if self.breath > self.breath_max then
+				self.breath = self.breath_max
+			end
+		end
+	end
+
 	--set mobs on fire when burned by sunlight
 	if self.ignited_by_sunlight then
 		local pos = self.object:get_pos()
@@ -850,11 +886,7 @@ mobs.mob_step = function(self, dtime)
 		end
 	end
 
-	--color modifier which coincides with the pause_timer
-	if self.old_health and self.health < self.old_health then		
-		self.object:set_texture_mod("^[colorize:red:120")
-	end	
-	self.old_health = self.health
+	
 
 	--do death logic (animation, poof, explosion, etc)
 	if self.health <= 0 then

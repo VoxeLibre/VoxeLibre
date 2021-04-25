@@ -215,7 +215,7 @@ function mobs:register_mob(name, def)
 		hp_max = scale_difficulty(def.hp_max, 10, 1),
 		xp_min = def.xp_min or 1,
 		xp_max = def.xp_max or 5,
-		breath_max = def.breath_max or 15,
+		breath_max = def.breath_max or 6,
 		breathes_in_water = def.breathes_in_water or false,
 		physical = true,
 		collisionbox = collisionbox,
@@ -361,6 +361,7 @@ function mobs:register_mob(name, def)
 		burn_timer = 0,
 
 		ignores_cobwebs = def.ignores_cobwebs,
+		breath = def.breath_max or 6,
 		--end j4i stuff
 
 		-- MCL2 extensions
