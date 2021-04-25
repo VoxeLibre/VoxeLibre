@@ -3,6 +3,7 @@
 local S = minetest.get_translator("mobs_mc")
 
 local rabbit = {
+	description = S("Rabbit"),
 	type = "animal",
 	spawn_class = "passive",
 	passive = true,
@@ -83,6 +84,7 @@ mobs:register_mob("mobs_mc:rabbit", rabbit)
 
 -- The killer bunny (Only with spawn egg)
 local killer_bunny = table.copy(rabbit)
+killer_bunny.description = S("Killer Bunny")
 killer_bunny.type = "monster"
 killer_bunny.spawn_class = "hostile"
 killer_bunny.attack_type = "dogfight"
@@ -110,8 +112,8 @@ mobs:register_mob("mobs_mc:killer_bunny", killer_bunny)
 -- Different skins depending on spawn location <- we'll get to this when the spawning algorithm is fleshed out
 
 mobs:spawn_specific(
-"mobs_mc:rabbit", 
-"overworld", 
+"mobs_mc:rabbit",
+"overworld",
 "ground",
 {
 "FlowerForest",
@@ -131,12 +133,12 @@ mobs:spawn_specific(
 "ExtremeHillsM",
 "BirchForestM",
 },
-9, 
-minetest.LIGHT_MAX+1, 
-30, 
-15000, 
-8, 
-mobs_mc.spawn_height.overworld_min, 
+9,
+minetest.LIGHT_MAX+1,
+30,
+15000,
+8,
+mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 --[[

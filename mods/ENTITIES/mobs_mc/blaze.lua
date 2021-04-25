@@ -11,6 +11,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 mobs:register_mob("mobs_mc:blaze", {
+	description = S("Blaze"),
 	type = "monster",
 	spawn_class = "hostile",
 	hp_min = 20,

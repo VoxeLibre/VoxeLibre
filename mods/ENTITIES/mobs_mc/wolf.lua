@@ -19,6 +19,7 @@ end
 
 -- Wolf
 local wolf = {
+	description = S("Wolf"),
 	type = "animal",
 	spawn_class = "passive",
 	can_despawn = true,
@@ -138,7 +139,7 @@ dog.owner = ""
 -- TODO: Start sitting by default
 dog.order = "roam"
 dog.owner_loyal = true
-dog.follow_velocity = 3.2 
+dog.follow_velocity = 3.2
 -- Automatically teleport dog to owner
 dog.do_custom = mobs_mc.make_owner_teleport_function(12)
 dog.follow = mobs_mc.follow.dog
@@ -254,12 +255,12 @@ mobs:spawn_specific(
 "ExtremeHillsM",
 "BirchForestM",
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-9000, 
-7, 
-mobs_mc.spawn_height.water+3, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+9000,
+7,
+mobs_mc.spawn_height.water+3,
 mobs_mc.spawn_height.overworld_max)
 
 mobs:register_egg("mobs_mc:wolf", S("Wolf"), "mobs_mc_spawn_icon_wolf.png", 0)

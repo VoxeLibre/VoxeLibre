@@ -11,6 +11,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 mobs:register_mob("mobs_mc:vindicator", {
+	description = S("Vindicator"),
 	type = "monster",
 	spawn_class = "hostile",
 	physical = false,

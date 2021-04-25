@@ -3771,6 +3771,7 @@ minetest.register_entity(name, {
 	use_texture_alpha = def.use_texture_alpha,
 	stepheight = def.stepheight or 0.6,
 	name = name,
+	description = def.description,
 	type = def.type,
 	attack_type = def.attack_type,
 	fly = def.fly,
