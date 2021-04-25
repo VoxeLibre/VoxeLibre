@@ -7,8 +7,8 @@ Drop registered inventories on player death.
     * function(player): must return inventory
 * listname: string
 * drop: bool
-    * true: the entire list will be dropped
-    * false: items with curse_of_vanishing enchantement will be broken.
+    * true: the list will be dropped
+    * false: the list will only be cleared
 
 ## mcl_death_drop.registered_dropped_lists
 Table containing dropped list inventory, name and drop state.
