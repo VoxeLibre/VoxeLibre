@@ -833,13 +833,13 @@ mobs.mob_step = function(self, dtime)
 
 	--DEBUG TIME!
 
-	--mobs.do_head_logic(self,dtime)
+	mobs.do_head_logic(self,dtime)
 
 
 
-	--if true then--DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG
-	--	return
-	--end
+	if true then--DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG
+		return
+	end
 
 	--despawn mechanism
 	--don't despawned tamed or bred mobs
