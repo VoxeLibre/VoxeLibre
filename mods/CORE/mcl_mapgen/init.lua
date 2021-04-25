@@ -1,7 +1,7 @@
 mcl_mapgen = {}
 
 local lvm_block_queue, lvm_chunk_queue, node_block_queue, node_chunk_queue = {}, {}, {}, {} -- Generators' queues
-local lvm, block, lvm_block, lvm_chunk, param2, nodes_block, nodes_chunk = 0, 0, 0, 0, 0, 0 -- Requirements: 0 means none; greater than 0 means 'required'
+local lvm, block, lvm_block, lvm_chunk, param2, nodes_block, nodes_chunk = 0, 0, 0, 0, 0, 0, 0 -- Requirements: 0 means none; greater than 0 means 'required'
 local lvm_buffer, lvm_param2_buffer = {}, {} -- Static buffer pointers
 local BS, CS = mcl_vars.MAP_BLOCKSIZE, mcl_vars.chunksize -- Mapblock size (in nodes), Mapchunk size (in blocks)
 local LAST_BLOCK, LAST_NODE = CS - 1, BS - 1 -- First mapblock in chunk (node in mapblock) has number 0, last has THIS number. It's for runtime optimization
@@ -35,7 +35,7 @@ function mcl_mapgen.register_block_generator_lvm(callback_function, priority)
 	table.sort(lvm_block_queue, function(a, b) return (a.i <= b.i) end)
 end
 
-
+local storage = minetest.get_mod_storage()
 local blocks = minetest.deserialize(		storage:get_string("mapgen_blocks") or "return {}") or {}
 minetest.register_on_shutdown(function()	storage:set_string("mapgen_blocks", minetest.serialize(blocks)) end)
 

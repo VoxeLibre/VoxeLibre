@@ -1,8 +1,4 @@
 mcl_mapgen_core = {}
-local registered_generators = {}
-
-local lvm, nodes, param2 = 0, 0, 0
-local lvm_buffer = {}
 
 --
 -- Aliases for map generator outputs
@@ -1194,11 +1190,14 @@ local perlin_structures
 local perlin_vines, perlin_vines_fine, perlin_vines_upwards, perlin_vines_length, perlin_vines_density
 local perlin_clay
 
-local function generate_clay(minp, maxp, blockseed, voxelmanip_data, voxelmanip_area, lvm_used)
+-- Generate Clay
+mcl_mapgen.register_chunk_generator_lvm(function(c)
+	local minp, maxp, blockseed, voxelmanip_data, voxelmanip_area, lvm_used = c.minp, c.maxp, c.blockseed, c.data, c.area, c.write or false
 	-- TODO: Make clay generation reproducible for same seed.
 	if maxp.y < -5 or minp.y > 0 then
-		return lvm_used
+		return c
 	end
+	minetest.log("warning", "CLAY!")
 
 	local pr = PseudoRandom(blockseed)
 
@@ -1244,8 +1243,9 @@ local function generate_clay(minp, maxp, blockseed, voxelmanip_data, voxelmanip_
 		end
 		end
 	end
-	return lvm_used
-end
+	c.write = lvm_used
+	return c
+end)
 
 local function generate_end_exit_portal(pos)
 	local dragon_entity = minetest.add_entity(vector.add(pos, vector.new(3, 11, 3)), "mobs_mc:enderdragon"):get_luaentity()
@@ -1812,94 +1812,6 @@ local generate_nether_decorations = function(minp, maxp, seed)
 		end
 	end)
 
-end
-
-minetest.register_on_generated(function(minp, maxp, blockseed)
-	minetest.log("action", "[mcl_mapgen_core] Generating chunk " .. minetest.pos_to_string(minp) .. " ... " .. minetest.pos_to_string(maxp))
-	local p1, p2 = {x=minp.x, y=minp.y, z=minp.z}, {x=maxp.x, y=maxp.y, z=maxp.z}
-	if lvm > 0 then
-		local lvm_used, shadow = false, false
-		local lb2 = {} -- param2
-		local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
-		local e1, e2 = {x=emin.x, y=emin.y, z=emin.z}, {x=emax.x, y=emax.y, z=emax.z}
-		local data2
-		local data = vm:get_data(lvm_buffer)
-		if param2 > 0 then
-			data2 = vm:get_param2_data(lb2)
-		end
-		local area = VoxelArea:new({MinEdge=e1, MaxEdge=e2})
-
-		for _, rec in pairs(registered_generators) do
-			if rec.vf then
-				local lvm_used0, shadow0 = rec.vf(vm, data, data2, e1, e2, area, p1, p2, blockseed)
-				if lvm_used0 then
-					lvm_used = true
-				end
-				if shadow0 then
-					shadow = true
-				end
-			end
-		end
-
-		if lvm_used then
-			-- Write stuff
-			vm:set_data(data)
-			if param2 > 0 then
-				vm:set_param2_data(data2)
-			end
-			vm:calc_lighting(p1, p2, shadow)
-			vm:write_to_map()
-			vm:update_liquids()
-		end
-	end
-
-	if nodes > 0 then
-		for _, rec in pairs(registered_generators) do
-			if rec.nf then
-				rec.nf(p1, p2, blockseed)
-			end
-		end
-	end
-
-	mcl_vars.add_chunk(minp)
-end)
-
-minetest.register_on_generated=function(node_function)
-	mcl_mapgen_core.register_generator("mod_"..tostring(#registered_generators+1), nil, node_function)
-end
-
-function mcl_mapgen_core.register_generator(id, lvm_function, node_function, priority, needs_param2)
-	if not id then return end
-
-	local priority = priority or 5000
-
-	if lvm_function then lvm = lvm + 1 end
-	if lvm_function then nodes = nodes + 1 end
-	if needs_param2 then param2 = param2 + 1 end
-
-	local new_record = {
-		i = priority,
-		vf = lvm_function,
-		nf = node_function,
-		needs_param2 = needs_param2,
-	}
-
-	registered_generators[id] = new_record
-	table.sort(
-		registered_generators,
-		function(a, b)
-			return (a.i < b.i) or ((a.i == b.i) and (a.vf ~= nil) and (b.vf == nil))
-		end)
-end
-
-function mcl_mapgen_core.unregister_generator(id)
-	if not registered_generators[id] then return end
-	local rec = registered_generators[id]
-	registered_generators[id] = nil
-	if rec.vf then lvm = lvm - 1 end
-	if rec.nf then nodes = nodes - 1 end
-	if rec.needs_param2 then param2 = param2 - 1 end
-	if rec.needs_level0 then level0 = level0 - 1 end
 end
 
 -- Generate basic layer-based nodes: void, bedrock, realm barrier, lava seas, etc.
