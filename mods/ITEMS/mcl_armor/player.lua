@@ -84,13 +84,15 @@ local function limit_put(player, inventory, index, stack, count)
 		return 0
 	end
 
-	if mcl_armor.elements[element].index ~= index then
+	local element_index = mcl_armor.elements[element].index
+
+	if index ~= 1 and index ~= element_index then
 		return 0
 	end
 
-	local old_stack = inventory:get_stack("armor", index)
+	local old_stack = inventory:get_stack("armor", element_index)
 
-	if old_stack:is_empty() or old_stack:get_name() ~= stack:get_name() and count <= 1 then
+	if old_stack:is_empty() or index ~= 1 and old_stack:get_name() ~= stack:get_name() and count <= 1 then
 		return count
 	else
 		return 0
@@ -125,17 +127,27 @@ minetest.register_allow_player_inventory_action(function(player, action, invento
 	end
 end)
 
+local function on_put(player, inventory, index, stack)
+	if index == 1 then
+		mcl_armor.equip(stack, player)
+		inventory:set_stack("armor", 1, nil)
+	else
+		mcl_armor.on_equip(stack, player)
+	end
+end
+
 minetest.register_on_player_inventory_action(function(player, action, inventory, inventory_info)
 	if is_armor_action(inventory_info) then
 		if action == "put" then
-			mcl_armor.on_equip(inventory_info.stack, player)
+			on_put(player, inventory, inventory_info.index, inventory_info.stack)
 		elseif action == "take" then
 			mcl_armor.on_unequip(inventory_info.stack, player)
 		else
+			local stack = inventory:get_stack(inventory_info.to_list, inventory_info.to_index)
 			if inventory_info.to_list == "armor" then
-				mcl_armor.on_equip(inventory:get_stack(inventory_info.to_list, inventory_info.to_index), player)
+				on_put(player, inventory, inventory_info.to_index, stack)
 			elseif inventory_info.from_list == "armor" then
-				mcl_armor.on_unequip(inventory:get_stack(inventory_info.to_list, inventory_info.to_index), player)
+				mcl_armor.on_unequip(stack, player)
 			end
 		end
 	end
