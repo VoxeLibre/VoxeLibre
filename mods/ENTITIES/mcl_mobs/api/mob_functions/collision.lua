@@ -39,13 +39,15 @@ mobs.collision = function(self)
 	end
 
 	for _,object in ipairs(minetest_get_objects_inside_radius(pos, radius*1.25)) do
-		if object and object ~= self.object and (object:is_player() or (object:get_luaentity() and object:get_luaentity()._cmi_is_mob == true)) and
+		if object and object ~= self.object and (object:is_player() or (object:get_luaentity() and object:get_luaentity()._cmi_is_mob == true and object:get_luaentity().health > 0)) and
 		--don't collide with rider, rider don't collide with thing
 		(not object:get_attach() or (object:get_attach() and object:get_attach() ~= self.object)) and 
 		(not self.object:get_attach() or (self.object:get_attach() and self.object:get_attach() ~= object)) then
 			--stop infinite loop
 			collision_count = collision_count + 1
-			if collision_count > 100 then
+			--mob cramming
+			if collision_count > 30 then
+				self.health = -20
 				break
 			end
 
