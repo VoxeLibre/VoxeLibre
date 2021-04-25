@@ -264,7 +264,6 @@ function mobs:register_mob(name, def)
 		tamed = false,
 		pause_timer = 0,
 		gotten = false,
-		health = 0,
 		reach = def.reach or 3,
 		htimer = 0,
 		texture_list = def.textures,
@@ -362,6 +361,10 @@ function mobs:register_mob(name, def)
 
 		ignores_cobwebs = def.ignores_cobwebs,
 		breath = def.breath_max or 6,
+
+		--random_sound_timer = 0,
+		random_sound_timer_min = 3,
+		random_sound_timer_max = 10,
 		--end j4i stuff
 
 		-- MCL2 extensions

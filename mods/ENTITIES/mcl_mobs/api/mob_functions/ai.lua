@@ -829,9 +829,18 @@ mobs.mob_step = function(self, dtime)
 		end
 	end
 
-	--do death logic (animation, poof, explosion, etc)
-	if self.health <= 0 then
+	--color modifier which coincides with the pause_timer
+	if self.old_health and self.health < self.old_health then		
+		self.object:set_texture_mod("^[colorize:red:120")
+		--fix double death sound
+		if self.health > 0 then
+			mobs.play_sound(self,"damage")
+		end
+	end	
+	self.old_health = self.health
 
+	--do death logic (animation, poof, explosion, etc)
+	if self.health <= 0 or self.dead then
 		--play death sound once
 		if not self.played_death_sound then
 			self.dead = true
@@ -855,12 +864,9 @@ mobs.mob_step = function(self, dtime)
 		return
 	end
 
-	--color modifier which coincides with the pause_timer
-	if self.old_health and self.health < self.old_health then		
-		self.object:set_texture_mod("^[colorize:red:120")
-		mobs.play_sound(self,"damage")
-	end	
-	self.old_health = self.health
+	mobs.random_sound_handling(self,dtime)
+
+	
 
 
 	--mobs drowning mechanic
