@@ -15,6 +15,8 @@ local vector_distance = vector.distance
 
 local table_copy = table.copy
 
+local math_abs = math.abs
+
 -- default function when mobs are blown up with TNT
 local do_tnt = function(obj, damage)
 
@@ -243,4 +245,16 @@ mobs.get_2d_distance = function(pos1,pos2)
 	pos1.y = 0
 	pos2.y = 0
 	return(vector_distance(pos1, pos2))
+end
+
+-- fall damage onto solid ground
+mobs.calculate_fall_damage = function(self)
+	if self.old_velocity and self.old_velocity.y < -7 and self.object:get_velocity().y == 0 then
+		local vel = self.object:get_velocity()
+		if vel then
+			local damage = math_abs(self.old_velocity.y + 7) * 2
+			self.pause_timer = 0.4
+			self.health = self.health - damage
+		end
+	end
 end
