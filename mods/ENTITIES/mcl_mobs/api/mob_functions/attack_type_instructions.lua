@@ -279,6 +279,8 @@ ______          _           _   _ _
              |__/                        
 ]]--
 
+local random_pitch_multiplier = {-1,1}
+
 mobs.projectile_attack_fly = function(self, dtime)
 
     --this needs an exception
@@ -287,18 +289,41 @@ mobs.projectile_attack_fly = function(self, dtime)
         return
     end
     
-    local distance_from_attacking = vector_distance(self.object:get_pos(), self.attacking:get_pos())
+    --this is specifically for random ghast movement
+    if self.fly_random_while_attack then
 
-    if distance_from_attacking >= self.reach then
-        mobs.set_yaw_while_attacking(self)
-        mobs.set_pitch_while_attacking(self)
+        --enable rotation locking
+		mobs.movement_rotation_lock(self)
+
+        self.walk_timer = self.walk_timer - dtime
+
+        --reset the walk timer
+        if self.walk_timer <= 0 then
+            --re-randomize the walk timer
+            self.walk_timer = math.random(1,6) + math.random()
+            --set the mob into a random direction
+            self.yaw = (math_random() * (math.pi * 2))
+            --create a truly random pitch, since there is no easy access to pitch math that I can find
+            self.pitch = math_random() * math.random(1,3) * random_pitch_multiplier[math_random(1,2)]
+        end
+
         mobs.set_fly_velocity(self, self.run_velocity)
-        mobs.set_mob_animation(self,"run")
+
     else
+
         mobs.set_yaw_while_attacking(self)
-        mobs.set_pitch_while_attacking(self)
-        mobs.set_fly_velocity(self, 0)
-        mobs.set_mob_animation(self,"stand")
+
+        local distance_from_attacking = vector_distance(self.object:get_pos(), self.attacking:get_pos())
+
+        if distance_from_attacking >= self.reach then    
+            mobs.set_pitch_while_attacking(self)
+            mobs.set_fly_velocity(self, self.run_velocity)
+            mobs.set_mob_animation(self,"run")
+        else
+            mobs.set_pitch_while_attacking(self)
+            mobs.set_fly_velocity(self, 0)
+            mobs.set_mob_animation(self,"stand")
+        end
     end
 
 
@@ -313,6 +338,11 @@ mobs.projectile_attack_fly = function(self, dtime)
 
         --shoot
         if self.projectile_timer <= 0 then
+
+            if self.fly_random_while_attack then
+                mobs.set_yaw_while_attacking(self)
+                self.walk_timer = 0
+            end
             --reset timer
             self.projectile_timer = math_random(self.projectile_cooldown_min, self.projectile_cooldown_max)
             mobs.shoot_projectile(self)

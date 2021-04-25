@@ -15,6 +15,7 @@ mobs:register_mob("mobs_mc:ghast", {
 	spawn_class = "hostile",
 	group_attack = true,
 	hostile = true,
+	fly_random_while_attack = true,
 	hp_min = 10,
 	hp_max = 10,
 	rotate = 270,
