@@ -355,6 +355,10 @@ function mobs:register_mob(name, def)
 		backup_visual_size = def.visual_size,
 		backup_collisionbox = collisionbox,
 		backup_selectionbox = def.selectionbox or def.collisionbox,
+
+
+		--fire timer
+		burn_timer = 0,
 		--end j4i stuff
 
 		-- MCL2 extensions

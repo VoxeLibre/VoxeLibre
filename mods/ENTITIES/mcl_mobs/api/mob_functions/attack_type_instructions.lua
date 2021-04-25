@@ -124,13 +124,13 @@ mobs.punch_attack_walk = function(self,dtime)
 
     if distance_from_attacking >= self.minimum_follow_distance then
         mobs.set_velocity(self, self.run_velocity)
+        mobs.set_mob_animation(self, "run")
     else
         mobs.set_velocity(self, 0)
+        mobs.set_mob_animation(self, "stand")
     end
 
     mobs.set_yaw_while_attacking(self)
-
-    mobs.set_mob_animation(self, "run")
 
     --make punchy mobs jump
     --check for nodes to jump over
