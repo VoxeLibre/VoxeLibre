@@ -53,7 +53,6 @@ local vector_multiply = vector.multiply
 local vector_divide  = vector.divide
 
 -- mob constants
-local MAX_MOB_NAME_LENGTH = 30
 local BREED_TIME          = 30
 local BREED_TIME_AGAIN    = 300
 local CHILD_GROW_TIME     = 60*20

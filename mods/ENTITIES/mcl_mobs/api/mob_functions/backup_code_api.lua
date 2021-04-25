@@ -940,30 +940,7 @@ local smart_mobs = function(self, s, p, dist, dtime)
 	end
 end
 
-local update_tag = function(self)
-	local tag
-	if mobs_debug then
-		tag = "nametag = '"..tostring(self.nametag).."'\n"..
-		"state = '"..tostring(self.state).."'\n"..
-		"order = '"..tostring(self.order).."'\n"..
-		"attack = "..tostring(self.attack).."\n"..
-		"health = "..tostring(self.health).."\n"..
-		"breath = "..tostring(self.breath).."\n"..
-		"gotten = "..tostring(self.gotten).."\n"..
-		"tamed = "..tostring(self.tamed).."\n"..
-		"horny = "..tostring(self.horny).."\n"..
-		"hornytimer = "..tostring(self.hornytimer).."\n"..
-		"runaway_timer = "..tostring(self.runaway_timer).."\n"..
-		"following = "..tostring(self.following)
-	else
-		tag = self.nametag
-	end
-	self.object:set_properties({
-		nametag = tag,
-	})
 
-	update_roll(self)
-end
 
 
 

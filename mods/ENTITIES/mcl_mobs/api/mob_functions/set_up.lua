@@ -199,11 +199,7 @@ mobs.mob_activate = function(self, staticdata, def, dtime)
 	else
 		self.object:set_texture_mod("")
 	end
-	
-	-- check existing nametag
-	if not self.nametag then
-		self.nametag = def.nametag
-	end
+			
 
 	-- set anything changed above
 	self.object:set_properties(self)

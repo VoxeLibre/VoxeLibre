@@ -9,6 +9,8 @@ local math_random = math.random
 local vector_direction = vector.direction
 local vector_multiply  = vector.multiply
 
+local MAX_MOB_NAME_LENGTH = 30
+
 mobs.feed_tame = function(self)
     return nil
 end
@@ -28,7 +30,7 @@ local on_rightclick_prefix = function(self, clicker)
 			end
 			self.nametag = tag
 
-			update_tag(self)
+			mobs.update_tag(self)
 
 			if not mobs.is_creative(clicker:get_player_name()) then
 				item:take_item()
@@ -280,4 +282,10 @@ mobs.shoot_projectile = function(self)
 
 	--call internal shoot_arrow function
 	self.shoot_arrow(self,pos1,dir)
+end
+
+mobs.update_tag = function(self)
+	self.object:set_properties({
+		nametag = self.nametag,
+	})
 end
