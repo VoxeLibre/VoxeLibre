@@ -397,9 +397,9 @@ end
 -- false otherwise.
 mcl_spawn.get_bed_spawn_pos = function(player)
 	local spawn, custom_spawn = nil, false
-	if player ~= nil and player:is_player() then
+	if player and player:is_player() then
 		local attr = player:get_meta():get_string("mcl_beds:spawn")
-		if attr ~= nil and attr ~= "" then
+		if attr and attr ~= "" then
 			spawn = minetest.string_to_pos(attr)
 			custom_spawn = true
 		end
