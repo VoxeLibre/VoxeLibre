@@ -481,7 +481,7 @@ local swim_state_execution = function(self,dtime)
 				self.yaw = (math_random() * (math.pi * 2))
 
 				--create a truly random pitch, since there is no easy access to pitch math that I can find
-				self.pitch = math_random() * random_pitch_multiplier[math_random(1,2)]
+				self.pitch = math_random() * math.random(1,3) * random_pitch_multiplier[math_random(1,2)]
 			end
 
 			--do animation
@@ -626,7 +626,7 @@ local fly_state_execution = function(self,dtime)
 				self.yaw = (math_random() * (math.pi * 2))
 
 				--create a truly random pitch, since there is no easy access to pitch math that I can find
-				self.pitch = math_random() * random_pitch_multiplier[math_random(1,2)]
+				self.pitch = math_random() * math.random(1,3) * random_pitch_multiplier[math_random(1,2)]
 			end
 
 			--do animation
