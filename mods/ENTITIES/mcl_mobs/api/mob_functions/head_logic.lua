@@ -84,18 +84,28 @@ mobs.do_head_logic = function(self,dtime)
     end
 
 
-    --upper check
+    local check_failed = false
+    --upper check + 90 degrees or upper math.radians (3.14/2)
     if head_yaw > math.pi - (math.pi/2) then
         head_yaw = 0
-    --lower check
+        check_failed = true
+    --lower check - 90 degrees or lower negative math.radians (-3.14/2)
     elseif head_yaw < -math.pi + (math.pi/2) then
         head_yaw = 0
+        check_failed = true
     end
 
-    
+    local head_pitch = 0
 
+    --DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG 
+    --head_yaw = 0
+    --DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG 
 
-    self.object:set_bone_position("head", bone_pos, vector_new(0,0,degrees(head_yaw)))
+    if not check_failed then
+        head_pitch = minetest.dir_to_yaw(vector.new(vector.distance(vector.new(pos.x,0,pos.z),vector.new(look_at.x,0,look_at.z)),0,pos.y-look_at.y))+(math.pi/2)
+    end
+
+    self.object:set_bone_position("head", bone_pos, vector_new(degrees(head_pitch),0,degrees(head_yaw)))
 
 
 
