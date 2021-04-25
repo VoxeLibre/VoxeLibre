@@ -3455,8 +3455,8 @@ end
 -- main mob function
 local mob_step = function(self, dtime)
 
-	if not self.fire_resistant and self.mcl_burning_burn_time and self.mcl_burning_burn_time > 0 then
-		mcl_burning.tick(self.object, dtime)
+	if not self.fire_resistant then
+		mcl_burning.tick(self.object, dtime, self)
 	end
 
 	if use_cmi then
