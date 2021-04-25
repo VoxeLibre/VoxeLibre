@@ -371,6 +371,12 @@ function mobs:register_mob(name, def)
 		has_head = def.has_head or false,
 		head_bone = def.head_bone,
 
+		--you must use these to adjust the mob's head positions
+		head_bone_pos_y = def.head_bone_pos_y or 3.6,
+		head_bone_pos_z = def.head_bone_pos_z or -0.6,
+		swap_y_with_x = def.swap_y_with_x or false,
+		reverse_head_yaw = def.reverse_head_yaw or false,
+
 		--end j4i stuff
 
 		-- MCL2 extensions

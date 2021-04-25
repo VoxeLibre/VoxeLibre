@@ -54,13 +54,11 @@ mobs.do_head_logic = function(self,dtime)
 
     --needs to be INTERNAL (API)
     --(horizontal)
-    self.head_bone_pos_y = 3.6
     bone_pos.y = self.head_bone_pos_y
 
     
     --needs to be INTERNAL (API)
     --(vertical)
-    self.head_bone_pos_z = -0.6
     bone_pos.z = self.head_bone_pos_z
 
     --print(yaw)
@@ -70,10 +68,13 @@ mobs.do_head_logic = function(self,dtime)
     --bone_rot.x = bone_rot.x + (dtime * 10)
     --bone_rot.z = bone_rot.z + (dtime * 10)
 
-    local head_yaw
 
+    local head_yaw 
     head_yaw = minetest.dir_to_yaw(vector.direction(pos,look_at)) - body_yaw
 
+    if self.reverse_head_yaw then
+        head_yaw = head_yaw * -1
+    end
 
     --over rotation protection
     --stops radians from going out of spec
@@ -105,8 +106,11 @@ mobs.do_head_logic = function(self,dtime)
         head_pitch = minetest.dir_to_yaw(vector.new(vector.distance(vector.new(pos.x,0,pos.z),vector.new(look_at.x,0,look_at.z)),0,pos.y-look_at.y))+(math.pi/2)
     end
 
-    self.object:set_bone_position("head", bone_pos, vector_new(degrees(head_pitch),0,degrees(head_yaw)))
-
+    if self.swap_y_with_x then
+        self.object:set_bone_position("head", bone_pos, vector_new(degrees(head_pitch),degrees(head_yaw),0))
+    else
+        self.object:set_bone_position("head", bone_pos, vector_new(degrees(head_pitch),0,degrees(head_yaw)))
+    end
 
 
     --set_bone_position([bone, position, rotation])

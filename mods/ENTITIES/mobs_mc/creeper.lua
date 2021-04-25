@@ -53,6 +53,10 @@ mobs:register_mob("mobs_mc:creeper", {
 	allow_fuse_reset = true,
 	stop_to_explode = true,
 
+	--head code
+	swap_y_with_x = true,
+	reverse_head_yaw = true,
+
 	-- Force-ignite creeper with flint and steel and explode after 1.5 seconds.
 	-- TODO: Make creeper flash after doing this as well.
 	-- TODO: Test and debug this code.
