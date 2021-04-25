@@ -325,6 +325,13 @@ function mobs:register_mob(name, def)
 		projectile_cooldown_min = def.projectile_cooldown_min or 2,
 		projectile_cooldown_max = def.projectile_cooldown_max or 6,
 		skittish = def.skittish,
+
+		minimum_follow_distance = def.minimum_follow_distance or 0.5, --make mobs not freak out when underneath
+
+		--for spiders
+		always_climb = def.always_climb,
+
+		--despawn mechanic variables
 		lifetimer_reset = 30, --30 seconds
 		lifetimer = 30, --30 seconds
 

@@ -16,6 +16,7 @@ local minetest_dir_to_yaw = minetest.dir_to_yaw
 
 local DEFAULT_JUMP_HEIGHT = 5
 local DEFAULT_FLOAT_SPEED = 4
+local DEFAULT_CLIMB_SPEED = 3
 
 
 
@@ -27,6 +28,28 @@ mobs.float = function(self)
 	local goal_velocity = {
 		x = 0,
 		y = DEFAULT_FLOAT_SPEED,
+		z = 0,
+	}
+
+	local new_velocity_addition = vector.subtract(goal_velocity,current_velocity)
+
+	new_velocity_addition.x = 0
+	new_velocity_addition.z = 0
+
+	--smooths out mobs a bit
+	if vector_length(new_velocity_addition) >= 0.0001 then
+		self.object:add_velocity(new_velocity_addition)
+	end
+end
+
+--this is a generic climb function
+mobs.climb = function(self)
+
+	local current_velocity = self.object:get_velocity()
+
+	local goal_velocity = {
+		x = 0,
+		y = DEFAULT_CLIMB_SPEED,
 		z = 0,
 	}
 
