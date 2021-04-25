@@ -38,6 +38,10 @@ end
 --this is a generic float function
 mobs.float = function(self)
 
+	if self.object:get_acceleration().y ~= 0 then
+		self.object:set_acceleration(vector_new(0,0,0))
+	end
+
 	local current_velocity = self.object:get_velocity()
 
 	local goal_velocity = {

@@ -165,6 +165,7 @@ dofile(api_path .. "death_logic.lua")
 dofile(api_path .. "mob_effects.lua")
 dofile(api_path .. "projectile_handling.lua")
 dofile(api_path .. "breeding.lua")
+dofile(api_path .. "head_logic.lua")
 
 
 mobs.spawning_mobs = {}
@@ -362,9 +363,14 @@ function mobs:register_mob(name, def)
 		ignores_cobwebs = def.ignores_cobwebs,
 		breath = def.breath_max or 6,
 
-		--random_sound_timer = 0,
 		random_sound_timer_min = 3,
 		random_sound_timer_max = 10,
+
+
+		--head code variables
+		has_head = def.has_head or false,
+		head_bone = def.head_bone,
+
 		--end j4i stuff
 
 		-- MCL2 extensions
