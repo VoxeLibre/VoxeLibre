@@ -279,33 +279,6 @@ local falling = function(self, pos)
 		end
 	else
 
-		-- fall damage onto solid ground
-		if self.fall_damage == 1
-		and self.object:get_velocity().y == 0 then
-
-			local d = (self.old_y or 0) - self.object:get_pos().y
-
-			if d > 5 then
-
-				local add = minetest_get_item_group(self.standing_on, "fall_damage_add_percent")
-				local damage = d - 5
-				if add ~= 0 then
-					damage = damage + damage * (add/100)
-				end
-				damage = math_floor(damage)
-				if damage > 0 then
-					self.health = self.health - damage
-
-					effect(pos, 5, "mcl_particles_smoke.png", 1, 2, 2, nil)
-
-					if check_for_death(self, "fall", {type = "fall"}) then
-						return true
-					end
-				end
-			end
-
-			self.old_y = self.object:get_pos().y
-		end
 	end
 end
 

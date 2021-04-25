@@ -187,6 +187,11 @@ local land_state_execution = function(self,dtime)
 		end
 	end
 
+	--calculate fall damage
+	if self.fall_damage then
+		mobs.calculate_fall_damage(self)
+	end
+
 	if self.state == "stand" then
 
 		--do animation
