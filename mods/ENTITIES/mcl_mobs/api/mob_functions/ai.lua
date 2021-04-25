@@ -371,6 +371,8 @@ local land_state_execution = function(self,dtime)
 	
 	if float_now then
 		mobs.float(self)
+	elseif self.object:get_acceleration().y == 0 then
+		self.object:set_acceleration(vector_new(0,-self.gravity,0))
 	end
 end
 
@@ -817,6 +819,17 @@ mobs.mob_step = function(self, dtime)
 		return false
 	end
 
+
+	--DEBUG TIME!
+
+	mobs.do_head_logic(self)
+
+
+
+	--if true then--DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG
+	--	return
+	--end
+
 	--despawn mechanism
 	--don't despawned tamed or bred mobs
 	if not self.tamed and not self.bred then
@@ -1101,10 +1114,16 @@ mobs.mob_step = function(self, dtime)
 
 			mobs.stick_in_cobweb(self)
 
+			self.was_stuck_in_cobweb = true
+
 		else
-			--return the mob back to normal
-			if self.object:get_acceleration().y == 0 and not self.swim and not self.fly then
-				self.object:set_acceleration(vector_new(0,-self.gravity,0))
+			--do not override other functions
+			if self.was_stuck_in_cobweb == true then
+				--return the mob back to normal
+				self.was_stuck_in_cobweb = nil
+				if self.object:get_acceleration().y == 0 and not self.swim and not self.fly then
+					self.object:set_acceleration(vector_new(0,-self.gravity,0))
+				end
 			end
 		end
 	end
