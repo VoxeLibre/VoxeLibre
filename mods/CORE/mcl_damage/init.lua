@@ -1,5 +1,7 @@
 mcl_damage = {
 	modifiers = {},
+	damage_callbacks = {},
+	death_callbacks = {},
 	types = {
 		in_fire = {is_fire = true},
 		lightning_bolt = {is_lightning = true},
@@ -35,15 +37,37 @@ function mcl_damage.register_modifier(func, priority)
 	table.insert(mcl_damage.modifiers, {func = func, priority = priority or 0})
 end
 
-function mcl_damage.do_modifiers(player, damage, reason)
+function mcl_damage.register_on_damage(func)
+	table.insert(mcl_damage.damage_callbacks, func)
+end
+
+function mcl_damage.register_on_death(func)
+	table.insert(mcl_damage.death_callbacks, func)
+end
+
+function mcl_damage.run_modifiers(obj, damage, reason)
 	for _, modf in ipairs(mcl_damage.modifiers) do
-		damage = modf.func(player, damage, reason) or damage
+		damage = modf.func(obj, damage, reason) or damage
 		if damage == 0 then
 			return 0
 		end
 	end
 
 	return damage
+end
+
+local function run_callbacks(funcs, ...)
+	for _, func in pairs(funcs) do
+		func(...)
+	end
+end
+
+function mcl_damage.run_damage_callbacks(obj, damage, reason)
+	run_callbacks(mcl_damage.damage_callbacks, obj, damage, reason)
+end
+
+function mcl_damage.run_death_callbacks(obj, reason)
+	run_callbacks(mcl_damage.death_callbacks, obj, reason)
 end
 
 function mcl_damage.from_punch(mcl_reason, object)
@@ -69,6 +93,10 @@ function mcl_damage.finish_reason(mcl_reason)
 end
 
 function mcl_damage.from_mt(mt_reason)
+	if mt_reason._mcl_reason then
+		return mt_reason._mcl_reason
+	end
+
 	local mcl_reason = {type = "generic"}
 
 	if mt_reason._mcl_type then
@@ -95,6 +123,7 @@ function mcl_damage.from_mt(mt_reason)
 	end
 
 	mcl_damage.finish_reason(mcl_reason)
+	mt_reason._mcl_reason = mcl_reason
 
 	return mcl_reason
 end
@@ -105,10 +134,23 @@ end
 
 minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
 	if hp_change < 0 then
-		hp_change = -mcl_damage.do_modifiers(player, -hp_change, mcl_damage.from_mt(mt_reason))
+		if player:get_hp() <= 0 then
+			return 0
+		end
+		hp_change = -mcl_damage.run_modifiers(player, -hp_change, mcl_damage.from_mt(mt_reason))
 	end
 	return hp_change
 end, true)
+
+minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
+	if hp_change < 0 then
+		mcl_damage.run_damage_callbacks(player, -hp_change, mcl_damage.from_mt(mt_reason))
+	end
+end, false)
+
+minetest.register_on_dieplayer(function(player, mt_reason)
+	mcl_damage.run_death_callbacks(player, mcl_damage.from_mt(mt_reason))
+end)
 
 minetest.register_on_mods_loaded(function()
 	table.sort(mcl_damage.modifiers, function(a, b) return a.priority < b.priority end)

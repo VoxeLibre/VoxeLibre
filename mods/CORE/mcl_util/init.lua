@@ -475,32 +475,21 @@ function mcl_util.use_item_durability(itemstack, n)
 end
 
 function mcl_util.deal_damage(target, damage, mcl_reason)
-	mcl_reason = mcl_reason or {}
-
 	local luaentity = target:get_luaentity()
 
 	if luaentity then
 		if luaentity.deal_damage then
-			luaentity:deal_damage(damage, mcl_reason)
+			luaentity:deal_damage(damage, mcl_reason or {type = "generic"})
 			return
 		elseif luaentity._cmi_is_mob then
-			local puncher = mcl_reason.direct or target
-			target:punch(puncher, 1.0, {full_punch_interval = 1.0, damage_groups = {fleshy = damage}}, vector.direction(puncher:get_pos(), target:get_pos()), damage)
+			-- local puncher = mcl_reason and mcl_reason.direct or target
+			-- target:punch(puncher, 1.0, {full_punch_interval = 1.0, damage_groups = {fleshy = damage}}, vector.direction(puncher:get_pos(), target:get_pos()), damage)
+			luaentity.health = luaentity.health - damage
 			return
 		end
 	end
 
-	local mt_reason
-
-	if target:is_player() then
-		mt_reason = {}
-
-		for key, value in pairs(mcl_reason) do
-			mt_reason["_mcl_" .. key] = value
-		end
-	end
-
-	target:set_hp(target:get_hp() - damage, mt_reason)
+	target:set_hp(target:get_hp() - damage, {_mcl_reason = mcl_reason})
 end
 
 function mcl_util.get_hp(obj)
