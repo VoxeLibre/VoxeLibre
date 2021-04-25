@@ -72,6 +72,7 @@ mobs.enter_breed_state = function(self,clicker)
         end
         self.breed_lookout_timer = self.breed_lookout_timer_goal
         self.bred = true
+        mobs.play_sound_specific(self,"mobs_mc_animal_eat_generic")
         return(true)
     end
 
@@ -172,6 +173,8 @@ mobs.make_baby_grow_faster = function(self,clicker)
                 stack:take_item()
                 clicker:set_wielded_item(stack)
             end
+
+            mobs.play_sound_specific(self,"mobs_mc_animal_eat_generic")
 
             return(true)
         end

@@ -347,6 +347,8 @@ local land_state_execution = function(self,dtime)
 					local baby_pos = vector.divide(vector.add(self.object:get_pos(), mate:get_pos()), 2)
 					local baby_mob = minetest.add_entity(pos, self.name, minetest.serialize({baby = true, grow_up_timer = self.grow_up_goal, bred = true}))
 
+					mobs.play_sound_specific(self,"item_drop_pickup")
+
 					self.special_breed_timer = 0
 					self.breed_lookout_timer = 0
 					self.breed_timer = self.breed_timer_cooloff
