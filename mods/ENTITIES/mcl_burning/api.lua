@@ -35,7 +35,7 @@ function mcl_burning.get_touching_nodes(obj, nodenames, storage)
 	return nodes
 end
 
-function mcl_burning.set_on_fire(obj, burn_time, reason)
+function mcl_burning.set_on_fire(obj, burn_time)
 	if obj:get_hp() < 0 then
 		return
 	end
@@ -52,7 +52,7 @@ function mcl_burning.set_on_fire(obj, burn_time, reason)
 	else
 		local max_fire_prot_lvl = 0
 		local inv = mcl_util.get_inventory(obj)
-		local armor_list = inv and inv:get_list("armor") 
+		local armor_list = inv and inv:get_list("armor")
 
 		if armor_list then
 			for _, stack in pairs(armor_list) do
@@ -79,7 +79,6 @@ function mcl_burning.set_on_fire(obj, burn_time, reason)
 			})
 		end
 		storage.burn_time = burn_time
-		storage.burn_reason = reason
 		storage.fire_damage_timer = 0
 
 		local fire_entity = minetest.add_entity(obj:get_pos(), "mcl_burning:fire")
@@ -120,7 +119,6 @@ function mcl_burning.extinguish(obj)
 			mcl_burning.storage[obj] = {}
 		else
 			storage.burn_time = nil
-			storage.burn_reason = nil
 			storage.fire_damage_timer = nil
 		end
 	end
@@ -140,20 +138,13 @@ function mcl_burning.tick(obj, dtime, storage)
 				storage.fire_damage_timer = 0
 
 				local hp = mcl_util.get_hp(obj)
-				
+
 				if hp > 0 then
 					local do_damage = true
 
 					if obj:is_player() then
 						if mcl_potions.player_has_effect(obj, "fire_proof") then
 							do_damage = false
-						else
-							local name = obj:get_player_name()
-							local deathmsg = S("@1 burned to death.", name)
-							if storage.reason then
-								deathmsg = S("@1 was burned by @2.", name, storage.reason)
-							end
-							mcl_death_messages.player_damage(obj, deathmsg)
 						end
 					elseif obj:get_luaentity().fire_damage_resistant then
 						do_damage = false

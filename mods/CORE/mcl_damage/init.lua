@@ -14,13 +14,14 @@ mcl_damage = {
 		cactus = {},
 		fall = {bypasses_armor = true},
 		fly_into_wall = {bypasses_armor = true}, -- unused
-		out_of_world = {bypasses_armor = true, bypasses_invulnerability = true},
+		out_of_world = {bypasses_armor = true, bypasses_magic = true, bypasses_invulnerability = true},
 		generic = {bypasses_armor = true},
 		magic = {is_magic = true, bypasses_armor = true},
+		dragon_breath = {is_magic = true, bypasses_armor = true},	-- this is only used for dragon fireball; dragon fireball does not actually deal impact damage tho, so this is unreachable
 		wither = {bypasses_armor = true}, -- unused
+		wither_skull = {is_magic = true, is_explosion = true}, -- this is non-MC but a workaround to get the proper death message
 		anvil = {},
-		falling_node = {}, -- unused
-		dragon_breath = {bypasses_armor = true}, -- unused
+		falling_node = {},	-- this is falling_block in MC
 		mob = {},
 		player = {},
 		arrow = {is_projectile = true},
@@ -29,7 +30,6 @@ mcl_damage = {
 		explosion = {is_explosion = true},
 		cramming = {bypasses_armor = true}, -- unused
 		fireworks = {is_explosion = true}, -- unused
-		command = {bypasses_armor = true, bypasses_invulnerability = true, bypasses_magic = true},
 	}
 }
 

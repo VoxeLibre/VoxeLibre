@@ -11,7 +11,6 @@ of the license, or (at your option) any later version.
 
 local S = minetest.get_translator("lightning")
 
-local has_mcl_death_msg = minetest.get_modpath("mcl_death_messages")
 local get_connected_players = minetest.get_connected_players
 local line_of_sight = minetest.line_of_sight
 local get_node = minetest.get_node
@@ -171,9 +170,6 @@ lightning.strike = function(pos)
 			obj:set_yaw(rot)
 			-- Other objects: Just damage
 		else
-			if obj:is_player() and has_mcl_death_msg then
-				mcl_death_messages.player_damage(obj, S("@1 was struck by lightning.", obj:get_player_name()))
-			end
 			mcl_util.deal_damage(obj, 5, {type = "lightning_bolt"})
 		end
 	end

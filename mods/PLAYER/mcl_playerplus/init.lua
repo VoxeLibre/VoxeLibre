@@ -391,7 +391,6 @@ minetest.register_globalstep(function(dtime)
 		-- Check privilege, too
 		and (not check_player_privs(name, {noclip = true})) then
 			if player:get_hp() > 0 then
-				mcl_death_messages.player_damage(player, S("@1 suffocated to death.", name))
 				mcl_util.deal_damage(player, 1, {type = "in_wall"})
 			end
 		end
@@ -407,7 +406,6 @@ minetest.register_globalstep(function(dtime)
 			local dist_feet = vector.distance({x=pos.x, y=pos.y-1, z=pos.z}, near)
 			if dist < 1.1 or dist_feet < 1.1 then
 				if player:get_hp() > 0 then
-					mcl_death_messages.player_damage(player, S("@1 was prickled to death by a cactus.", name))
 					mcl_util.deal_damage(player, 1, {type = "cactus"})
 				end
 			end

@@ -1,5 +1,4 @@
 local S = minetest.get_translator("mcl_falling_nodes")
-local dmes = minetest.get_modpath("mcl_death_messages") ~= nil
 local has_mcl_armor = minetest.get_modpath("mcl_armor")
 
 local get_falling_depth = function(self)
@@ -41,12 +40,9 @@ local deal_falling_damage = function(self, dtime)
 				end
 				local deathmsg, dmg_type
 				if minetest.get_item_group(self.node.name, "anvil") ~= 0 then
-					deathmsg, dmg_type = "@1 was smashed by a falling anvil.", "anvil"
+					dmg_type = "anvil"
 				else
-					deathmsg, dmg_type = "@1 was smashed by a falling block.", "falling_node"
-				end
-				if obj:is_player() then
-					mcl_death_messages.player_damage(obj, S(deathmsg, obj:get_player_name()))
+					dmg_type = "falling_node"
 				end
 				mcl_util.deal_damage(obj, damage, {type = dmg_type})
 			end

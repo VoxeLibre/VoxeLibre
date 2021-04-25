@@ -151,7 +151,7 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 
 	-- Direct hit, no fire... just plenty of pain
 	hit_player = function(self, player)
-		mcl_burning.set_on_fire(player, 5, "blaze")
+		mcl_burning.set_on_fire(player, 5)
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 5},

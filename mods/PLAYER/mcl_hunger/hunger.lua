@@ -1,5 +1,4 @@
 local S = minetest.get_translator("mcl_hunger")
-local mod_death_messages = minetest.get_modpath("mcl_death_messages")
 
 -- wrapper for minetest.item_eat (this way we make sure other mods can't break this one)
 minetest.do_item_eat = function(hp_change, replace_with_item, itemstack, user, pointed_thing)

@@ -12,7 +12,6 @@ under the LGPLv2.1 license.
 
 mcl_explosions = {}
 
-local mod_death_messages = minetest.get_modpath("mcl_death_messages") ~= nil
 local mod_fire = minetest.get_modpath("mcl_fire") ~= nil
 local CONTENT_FIRE = minetest.get_content_id("mcl_fire:fire")
 
@@ -332,9 +331,6 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 							minetest.close_formspec(name, "") -- ABSOLUTELY NECESSARY FOR MT5.3 -- TODO: REMOVE THIS IN THE FUTURE
 							sleep_formspec_doesnt_close_mt53 = true
 						end
-					end
-					if mod_death_messages then
-						mcl_death_messages.player_damage(obj, S("@1 was caught in an explosion.", name))
 					end
 				end
 

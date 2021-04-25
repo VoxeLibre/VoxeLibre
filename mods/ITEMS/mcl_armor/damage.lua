@@ -80,8 +80,8 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 
 	local thorns_damage = thorns_damage_regular + thorns_damage_irregular
 
-	if thorns_damage > 0 and reason.source ~= obj then
-		mcl_util.deal_damage(reason.source, {type = "thorns", direct = obj, source = reason.source})
+	if thorns_damage > 0 and reason.type ~= "thorns" and reason.source ~= obj then
+		mcl_util.deal_damage(reason.source, {type = "thorns", direct = obj})
 
 		local thorns_item = thorns_pieces[math.random(#thorns_pieces)]
 		mcl_util.use_item_durability(thorns_item.itemstack, 2)

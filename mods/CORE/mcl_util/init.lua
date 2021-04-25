@@ -516,3 +516,22 @@ function mcl_util.get_inventory(object, create)
 		return inventory
 	end
 end
+
+function mcl_util.get_wielded_item(object)
+	if object:is_player() then
+		return object:get_wielded_item()
+	else
+		-- ToDo: implement getting wielditems from mobs as soon as mobs have wielditems
+		return ItemStack()
+	end
+end
+
+function mcl_util.get_object_name(object)
+	if object:is_player() then
+		return object:get_player_name()
+	else
+		local luaentity = object:get_luaentity()
+
+		return luaentity.nametag and luaentity.nametag ~= "" and luaentity.nametag or luaentity.description or luaentity.name
+	end
+end
