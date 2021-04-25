@@ -137,8 +137,15 @@ mobs.mob_activate = function(self, staticdata, def, dtime)
 		}
 	end
 
-	if not self.dead and self.health == 0 then
+	--stop mobs from reviving
+	if not self.dead and not self.health then
 		self.health = math_random (self.hp_min, self.hp_max)
+	end
+
+	
+
+	if not self.random_sound_timer then
+		self.random_sound_timer = math_random(self.random_sound_timer_min,self.random_sound_timer_max)
 	end
 
 	if self.breath == nil then
@@ -178,13 +185,21 @@ mobs.mob_activate = function(self, staticdata, def, dtime)
 	self.opinion_sound_cooloff = 0 -- used to prevent sound spam of particular sound types
 
 	self.texture_mods = {}
-	self.object:set_texture_mod("")
+	
 
 	self.v_start = false
 	self.timer = 0
 	self.blinktimer = 0
 	self.blinkstatus = false
 
+
+	--continue mob effect on server restart
+	if self.dead or self.health <= 0 then
+		self.object:set_texture_mod("^[colorize:red:120")
+	else
+		self.object:set_texture_mod("")
+	end
+	
 	-- check existing nametag
 	if not self.nametag then
 		self.nametag = def.nametag
