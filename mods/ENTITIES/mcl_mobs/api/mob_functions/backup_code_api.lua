@@ -2847,7 +2847,7 @@ mob_step = function()
 	--end
 
 	--if not self.fire_resistant then
-	--	mcl_burning.tick(self.object, dtime)
+	--	mcl_burning.tick(self.object, dtime, self)
 	--end
 
 	--if use_cmi then
