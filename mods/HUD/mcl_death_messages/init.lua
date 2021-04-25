@@ -1,56 +1,57 @@
 local S = minetest.get_translator("mcl_death_messages")
 
 mcl_death_messages = {
+	assist = {},
 	messages = {
 		in_fire = {
 			_translator = S,
 			plain = "@1 went up in flames",
-			escape = "@1 walked into fire whilst fighting @2",
+			assist = "@1 walked into fire whilst fighting @2",
 		},
 		lightning_bolt = {
 			_translator = S,
 			plain = "@1 was struck by lightning",
-			escape = "@1 was struck by lightning whilst fighting @2",
+			assist = "@1 was struck by lightning whilst fighting @2",
 		},
 		on_fire = {
 			_translator = S,
 			plain = "@1 burned to death",
-			escape = "@1 was burnt to a crisp whilst fighting @2",
+			assist = "@1 was burnt to a crisp whilst fighting @2",
 		},
 		lava = {
 			_translator = S,
 			plain = "@1 tried to swim in lava",
-			escape = "@1 tried to swim in lava to escape @2"
+			assist = "@1 tried to swim in lava to escape @2"
 		},
 		hot_floor = {
 			_translator = S,
 			plain = "@1 discovered the floor was lava",
-			escape = "@1 walked into danger zone due to @2",
+			assist = "@1 walked into danger zone due to @2",
 		},
 		in_wall = {
 			_translator = S,
 			plain = "@1 suffocated in a wall",
-			escape = "@1 suffocated in a wall whilst fighting @2",
+			assist = "@1 suffocated in a wall whilst fighting @2",
 		},
 		drown = {
 			_translator = S,
 			plain = "@1 drowned",
-			escape = "@1 drowned whilst trying to escape @2",
+			assist = "@1 drowned whilst trying to escape @2",
 		},
 		starve = {
 			_translator = S,
 			plain = "@1 starved to death",
-			escape = "@1 starved to death whilst fighting @2",
+			assist = "@1 starved to death whilst fighting @2",
 		},
 		cactus = {
 			_translator = S,
 			plain = "@1 was pricked to death",
-			escape = "@1 walked into a cactus whilst trying to escape @2",
+			assist = "@1 walked into a cactus whilst trying to escape @2",
 		},
 		fall = {
 			_translator = S,
 			plain = "@1 hit the ground too hard",
-			escape = "@1 hit the ground too hard whilst trying to escape @2",
+			assist = "@1 hit the ground too hard whilst trying to escape @2",
 			-- "@1 fell from a high place" -- for fall distance > 5 blocks
 			-- "@1 fell while climbing"
 			-- "@1 fell off some twisting vines"
@@ -62,22 +63,22 @@ mcl_death_messages = {
 		fly_into_wall = {
 			_translator = S,
 			plain = "@1 experienced kinetic energy",
-			escape = "@1 experienced kinetic energy whilst trying to escape @2",
+			assist = "@1 experienced kinetic energy whilst trying to escape @2",
 		},
 		out_of_world = {
 			_translator = S,
 			plain = "@1 fell out of the world",
-			escape = "@1 didn't want to live in the same world as @2",
+			assist = "@1 didn't want to live in the same world as @2",
 		},
 		generic = {
 			_translator = S,
 			plain = "@1 died",
-			escape = "@1 died because of @2",
+			assist = "@1 died because of @2",
 		},
 		magic = {
 			_translator = S,
 			plain = "@1 was killed by magic",
-			escape = "@1 was killed by magic whilst trying to escape @2",
+			assist = "@1 was killed by magic whilst trying to escape @2",
 			killer = "@1 was killed by @2 using magic",
 			item = "@1 was killed by @2 using @3",
 		},
@@ -104,7 +105,7 @@ mcl_death_messages = {
 		falling_node = {
 			_translator = S,
 			plain = "@1 was squashed by a falling block",
-			escape = "@1 was squashed by a falling block whilst fighting @2",
+			assist = "@1 was squashed by a falling block whilst fighting @2",
 		},
 		mob = {
 			_translator = S,
@@ -141,7 +142,7 @@ mcl_death_messages = {
 		cramming = {
 			_translator = S,
 			plain = "@1 was squished too much",
-			escape = "@1 was squashed by @2",	-- surprisingly "escape" is actually the correct subtype
+			assist = "@1 was squashed by @2",	-- surprisingly "escape" is actually the correct subtype
 		},
 		fireworks = {
 			_translator = S,
@@ -151,49 +152,6 @@ mcl_death_messages = {
 		-- Missing snowballs: The Minecraft wiki mentions them but the MC source code does not.
 	},
 }
---[[
-local mobkills = {
-	["mobs_mc:zombie"] = N("@1 was slain by Zombie."),
-	["mobs_mc:baby_zombie"] = N("@1 was slain by Baby Zombie."),
-	["mobs_mc:blaze"] = N("@1 was burnt to a crisp while fighting Blaze."),
-	["mobs_mc:slime"] = N("@1 was slain by Slime."),
-	["mobs_mc:witch"] = N("@1 was slain by Witch using magic."),
-	["mobs_mc:magma_cube_tiny"] = N("@1 was slain by Magma Cube."),
-	["mobs_mc:magma_cube_small"] = N("@1 was slain by Magma Cube."),
-	["mobs_mc:magma_cube_big"] = N("@1 was slain by Magma Cube."),
-	["mobs_mc:wolf"] = N("@1 was slain by Wolf."),
-	["mobs_mc:cat"] = N("@1 was slain by Cat."),
-	["mobs_mc:ocelot"] = N("@1 was slain by Ocelot."),
-	["mobs_mc:enderdragon"] = N("@1 was slain by Enderdragon."),
-	["mobs_mc:wither"] = N("@1 was slain by Wither."),
-	["mobs_mc:enderman"] = N("@1 was slain by Enderman."),
-	["mobs_mc:endermite"] = N("@1 was slain by Endermite."),
-	["mobs_mc:ghast"] = N("@1 was fireballed by a Ghast."),
-	["mobs_mc:guardian_elder"] = N("@1 was slain by Elder Guardian."),
-	["mobs_mc:guardian"] = N("@1 was slain by Guardian."),
-	["mobs_mc:iron_golem"] = N("@1 was slain by Iron Golem."),
-	["mobs_mc:polar_bear"] = N("@1 was slain by Polar Bear."),
-	["mobs_mc:killer_bunny"] = N("@1 was slain by Killer Bunny."),
-	["mobs_mc:shulker"] = N("@1 was slain by Shulker."),
-	["mobs_mc:silverfish"] = N("@1 was slain by Silverfish."),
-	["mobs_mc:skeleton"] = N("@1 was shot by Skeleton."),
-	["mobs_mc:stray"] = N("@1 was shot by Stray."),
-	["mobs_mc:slime_tiny"] = N("@1 was slain by Slime."),
-	["mobs_mc:slime_small"] = N("@1 was slain by Slime."),
-	["mobs_mc:slime_big"] = N("@1 was slain by Slime."),
-	["mobs_mc:spider"] = N("@1 was slain by Spider."),
-	["mobs_mc:cave_spider"] = N("@1 was slain by Cave Spider."),
-	["mobs_mc:vex"] = N("@1 was slain by Vex."),
-	["mobs_mc:evoker"] = N("@1 was slain by Evoker."),
-	["mobs_mc:illusioner"] = N("@1 was slain by Illusioner."),
-	["mobs_mc:vindicator"] = N("@1 was slain by Vindicator."),
-	["mobs_mc:villager_zombie"] = N("@1 was slain by Zombie Villager."),
-	["mobs_mc:husk"] = N("@1 was slain by Husk."),
-	["mobs_mc:baby_husk"] = N("@1 was slain by Baby Husk."),
-	["mobs_mc:pigman"] = N("@1 was slain by Zombie Pigman."),
-	["mobs_mc:baby_pigman"] = N("@1 was slain by Baby Zombie Pigman."),
-}
-]]--
 
 local function get_item_killer_message(obj, messages, reason)
 	if messages.item then
@@ -217,8 +175,10 @@ local function get_killer_message(obj, messages, reason)
 	return reason.source and (get_item_killer_message(obj, messages, reason) or get_plain_killer_message(obj, messages, reason))
 end
 
-local function get_escaped_message(obj, messages, reason)
-	return nil -- ToDo
+local function get_assist_message(obj, messages, reason)
+	if messages.assist and mcl_death_messages.assist[obj] then
+		return messages._translator(messages.assist, mcl_util.get_object_name(obj), mcl_death_messages.assist[obj].name)
+	end
 end
 
 local function get_plain_message(obj, messages, reason)
@@ -253,7 +213,7 @@ mcl_damage.register_on_death(function(obj, reason)
 
 		local message =
 			get_killer_message(obj, messages, reason) or
-			get_escaped_message(obj, messages, reason) or
+			get_assist_message(obj, messages, reason) or
 			get_plain_message(obj, messages, reason) or
 			get_fallback_message(obj, messages, reason)
 
@@ -261,6 +221,27 @@ mcl_damage.register_on_death(function(obj, reason)
 			minetest.chat_send_all(message)
 		else
 			minetest.chat_send_player(send_to, message)
+		end
+	end
+end)
+
+mcl_damage.register_on_damage(function(obj, damage, reason)
+	if obj:get_hp() - damage > 0 then
+		if reason.source then
+			mcl_death_messages.assist[obj] = {name = mcl_util.get_object_name(reason.source), timeout = 5}
+		else
+			mcl_death_messages.assist[obj] = nil
+		end
+	end
+end)
+
+minetest.register_globalstep(function(dtime)
+	local new_assist = {}
+
+	for obj, tbl in pairs(mcl_death_messages.assist) do
+		tbl.timeout = tbl.timeout - dtime
+		if (obj:is_player() or obj:get_luaentity()) and tbl.timeout > 0 then
+			new_assist[obj] = tbl
 		end
 	end
 end)
