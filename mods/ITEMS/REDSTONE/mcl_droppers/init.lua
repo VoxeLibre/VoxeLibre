@@ -14,12 +14,12 @@ local S = minetest.get_translator("mcl_droppers")
 local setup_dropper = function(pos)
 	-- Set formspec and inventory
 	local form = "size[9,8.75]"..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
 	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-	"label[3,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Dropper"))).."]"..
+	"label[3,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Dropper"))).."]"..
 	"list[current_name;main;3,0.5;3,3;]"..
 	mcl_formspec.get_itemslot_bg(3,0.5,3,3)..
 	"listring[current_name;main]"..

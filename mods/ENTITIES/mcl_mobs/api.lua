@@ -1029,10 +1029,10 @@ local node_ok = function(pos, fallback)
 	return minetest.registered_nodes[fallback]
 end
 
-local function get_light(pos)
+local function get_light(pos, tod)
 	if math.abs(pos.x) < 31000 and math.abs(pos.y) < 31000 and math.abs(pos.z) < 31000 then
 		local lightfunc = minetest.get_natural_light or minetest.get_node_light
-		return lightfunc(pos)
+		return lightfunc(pos, tod)
 	else
 		return 0
 	end
@@ -3454,8 +3454,8 @@ end
 -- main mob function
 local mob_step = function(self, dtime)
 
-	if not self.fire_resistant and self.mcl_burning_burn_time and self.mcl_burning_burn_time > 0 then
-		mcl_burning.tick(self.object, dtime)
+	if not self.fire_resistant then
+		mcl_burning.tick(self.object, dtime, self)
 	end
 
 	if use_cmi then

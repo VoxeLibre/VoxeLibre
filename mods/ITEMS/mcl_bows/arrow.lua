@@ -108,7 +108,7 @@ local damage_particles = function(pos, is_critical)
 end
 
 ARROW_ENTITY.on_step = function(self, dtime)
-	mcl_burning.tick(self.object, dtime)
+	mcl_burning.tick(self.object, dtime, self)
 
 	self._time_in_air = self._time_in_air + .001
 

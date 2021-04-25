@@ -15,7 +15,9 @@ local function register_rocket(n, duration, force)
 			local elytra = mcl_playerplus.elytra[user]
 			if elytra.active and elytra.rocketing <= 0 then
 				elytra.rocketing = duration
-				itemstack:take_item()
+				if not minetest.is_creative_enabled(user:get_player_name()) then
+					itemstack:take_item()
+				end
 				minetest.sound_play("mcl_fireworks_rocket", {pos = user:get_pos()})
 			end
 			return itemstack

@@ -212,7 +212,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 						npos_x - emin_x + 1
 
 				local cid = data[idx]
-				local br = node_blastres[cid]
+				local br = node_blastres[cid] or INDESTRUCT_BLASTRES
 				if br < INDESTRUCT_BLASTRES and br > max_blast_resistance then
 					br = max_blast_resistance
 				end

@@ -150,13 +150,6 @@ minetest.register_globalstep(function(dtime)
 
 	for _,player in pairs(get_connected_players()) do
 
-		local c_x, c_y = unpack(player_collision(player))
-
-		if player:get_velocity().x + player:get_velocity().y < .5 and c_x + c_y > 0 then
-			--minetest.chat_send_player(player:get_player_name(), "pushed at " .. c_x + c_y .. " parsecs.")
-			player:add_velocity({x=c_x, y=0, z=c_y})
-		end
-
 		--[[
 						 _                 _   _
 			  __ _ _ __ (_)_ __ ___   __ _| |_(_) ___  _ __  ___
@@ -172,6 +165,14 @@ minetest.register_globalstep(function(dtime)
 		local parent = player:get_attach()
 		local wielded = player:get_wielded_item()
 		local player_velocity = player:get_velocity() or player:get_player_velocity()
+
+		local c_x, c_y = unpack(player_collision(player))
+
+		if player_velocity.x + player_velocity.y < .5 and c_x + c_y > 0 then
+			local add_velocity = player.add_player_velocity or player.add_velocity
+			add_velocity(player, {x = c_x, y = 0, z = c_y})
+			player_velocity = player:get_velocity() or player:get_player_velocity()
+		end
 
 		-- control head bone
 		local pitch = - degrees(player:get_look_vertical())
@@ -214,6 +215,24 @@ minetest.register_globalstep(function(dtime)
 				if vector.length(player_velocity) < 40 then
 					local add_velocity = player.add_velocity or player.add_player_velocity
 					add_velocity(player, vector.multiply(player:get_look_dir(), 4))
+					minetest.add_particlespawner({
+						amount = 1,
+						time = 0.1,
+						minpos = fly_pos,
+						maxpos = fly_pos,
+						minvel = {x = 0, y = 0, z = 0},
+						maxvel = {x = 0, y = 0, z = 0},
+						minacc = {x = 0, y = 0, z = 0},
+						maxacc = {x = 0, y = 0, z = 0},
+						minexptime = 0.3,
+						maxexptime = 0.5,
+						minsize = 1,
+						maxsize = 2.5,
+						collisiondetection = false,
+						vertical = false,
+						texture = "mcl_particles_crit.png^[colorize:#bc7a57:127",
+						glow = 5,
+					})
 				end
 			end
 		else
@@ -241,7 +260,7 @@ minetest.register_globalstep(function(dtime)
 
 		if elytra.active then
 			-- set head pitch and yaw when flying
-			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+90-degrees(dir_to_pitch(player_velocity)),player_vel_yaw - yaw,0))
+			player:set_bone_position("Head_Control", vector.new(0,6.3,0), vector.new(pitch-degrees(dir_to_pitch(player_velocity)),player_vel_yaw - yaw,0))
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.35,0,-0.35,0.35,0.8,0.35}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 			-- control body bone when flying
@@ -249,18 +268,18 @@ minetest.register_globalstep(function(dtime)
 		elseif parent then
 			local parent_yaw = degrees(parent:get_yaw())
 			player:set_properties({collisionbox = {-0.312,0,-0.312,0.312,1.8,0.312}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
-			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch, -limit_vel_yaw(yaw, parent_yaw) + parent_yaw, 0))
+			player:set_bone_position("Head_Control", vector.new(0,6.3,0), vector.new(pitch, -limit_vel_yaw(yaw, parent_yaw) + parent_yaw, 0))
 			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
 		elseif control.sneak then
 			-- controls head pitch when sneaking
-			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+36,0,0))
+			player:set_bone_position("Head_Control", vector.new(0,6.3,0), vector.new(pitch, player_vel_yaw - yaw, player_vel_yaw - yaw))
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.312,0,-0.312,0.312,1.8,0.312}, eye_height = 1.35, nametag_color = { r = 225, b = 225, a = 0, g = 225 }})
 			-- sneaking body conrols
-			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
+			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0, -player_vel_yaw + yaw, 0))
 		elseif get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and is_sprinting(name) == true then
 			-- set head pitch and yaw when swimming
-			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch+90-degrees(dir_to_pitch(player_velocity)),player_vel_yaw - yaw,0))
+			player:set_bone_position("Head_Control", vector.new(0,6.3,0), vector.new(pitch-degrees(dir_to_pitch(player_velocity)),player_vel_yaw - yaw,0))
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.312,0,-0.312,0.312,0.8,0.312}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 			-- control body bone when swimming
@@ -269,7 +288,7 @@ minetest.register_globalstep(function(dtime)
 			-- sets eye height, and nametag color accordingly
 			player:set_properties({collisionbox = {-0.312,0,-0.312,0.312,1.8,0.312}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 
-			player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch, player_vel_yaw - yaw, 0))
+			player:set_bone_position("Head_Control", vector.new(0,6.3,0), vector.new(pitch, player_vel_yaw - yaw, 0))
 			player:set_bone_position("Body_Control", vector.new(0,6.3,0), vector.new(0, -player_vel_yaw + yaw, 0))
 		end
 
