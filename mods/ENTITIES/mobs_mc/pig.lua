@@ -94,17 +94,16 @@ mobs:register_mob("mobs_mc:pig", {
 			return
 		end
 
-		if clicker:get_player_control().sneak then
-			--attempt to enter breed state
-			if mobs.enter_breed_state(self,clicker) then
-				return
-			end
+		--attempt to enter breed state
+		if mobs.enter_breed_state(self,clicker) then
+			return
+		end
 
-			--make baby grow faster
-			if self.baby then
-				mobs.make_baby_grow_faster(self,clicker)
-				return
-			end
+		--ignore other logic
+		--make baby grow faster
+		if self.baby then
+			mobs.make_baby_grow_faster(self,clicker)
+			return
 		end
 
 		if self.child then
@@ -113,6 +112,8 @@ mobs:register_mob("mobs_mc:pig", {
 
 		-- Put saddle on pig
 		local item = clicker:get_wielded_item()
+		local wielditem = item
+		
 		if item:get_name() == mobs_mc.items.saddle and self.saddle ~= "yes" then
 			self.base_texture = {
 				"blank.png", -- baby

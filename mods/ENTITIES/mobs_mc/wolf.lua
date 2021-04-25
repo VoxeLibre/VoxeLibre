@@ -154,17 +154,16 @@ dog.follow = "mcl_mobitems:beef"
 dog.on_rightclick = function(self, clicker)
 	local item = clicker:get_wielded_item()
 
-	if self.owner and self.owner == clicker:get_player_name() and clicker:get_player_control().sneak then
-		--attempt to enter breed state
-		if mobs.enter_breed_state(self,clicker) then
-			return
-		end
+	--owner is broken for this
+	--attempt to enter breed state
+	if mobs.enter_breed_state(self,clicker) then
+		return
+	end
 
-		--make baby grow faster
-		if self.baby then
-			mobs.make_baby_grow_faster(self,clicker)
-			return
-		end
+	--make baby grow faster
+	if self.baby then
+		mobs.make_baby_grow_faster(self,clicker)
+		return
 	end
 
 	if is_food(item:get_name()) then

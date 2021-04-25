@@ -138,34 +138,71 @@ mobs:register_mob("mobs_mc:llama", {
 			return
 		end
 
-		if clicker:get_player_control().sneak then
-			--attempt to enter breed state
-			if mobs.enter_breed_state(self,clicker) then
-				return
-			end
+		--owner is broken for this
+		--we'll make the owner this guy
+		--attempt to enter breed state
+		if mobs.enter_breed_state(self,clicker) then
+			self.tamed = true
+			self.owner = clicker:get_player_name()
+			return
+		end		
 
-			--make baby grow faster
-			if self.baby then
-				mobs.make_baby_grow_faster(self,clicker)
-				return
-			end
+		--ignore other logic
+		--make baby grow faster
+		if self.baby then
+			mobs.make_baby_grow_faster(self,clicker)
+			return
 		end
 
 
 		-- Make sure tamed llama is mature and being clicked by owner only
 		if self.tamed and not self.child and self.owner == clicker:get_player_name() then
 
+			local item = clicker:get_wielded_item()
+			--safety catch
+			if not item then
+				return
+			end
+
+
+
+			--put chest on carpeted llama
+			if self.carpet and not self.chest and item:get_name() == "mcl_chests:chest" then
+				if not minetest.is_creative_enabled(clicker:get_player_name()) then
+					item:take_item()
+					clicker:set_wielded_item(item)
+				end
+
+				self.base_texture = table.copy(self.base_texture)
+				self.base_texture[1] = "mobs_mc_llama_chest.png"
+				self.object:set_properties({
+					textures = self.base_texture,
+				})
+				self.chest = true
+
+				return --don't attempt to ride
+			end
+
+
 			-- Place carpet
-			--[[ TODO: Re-enable this code when carpet textures arrived.
-			if minetest.get_item_group(item:get_name(), "carpet") == 1 and not self.carpet then
+			--TODO: Re-enable this code when carpet textures arrived.
+			if minetest.get_item_group(item:get_name(), "carpet") == 1 then
+
 				for group, carpetdata in pairs(carpets) do
 					if minetest.get_item_group(item:get_name(), group) == 1 then
 						if not minetest.is_creative_enabled(clicker:get_player_name()) then
 							item:take_item()
 							clicker:set_wielded_item(item)
+
+							--shoot off old carpet
+							if self.carpet then
+								minetest.add_item(self.object:get_pos(), self.carpet)
+							end
 						end
+
 						local substr = carpetdata[2]
 						local tex_carpet = "mobs_mc_llama_decor_"..substr..".png"
+
 						self.base_texture = table.copy(self.base_texture)
 						self.base_texture[2] = tex_carpet
 						self.object:set_properties({
@@ -186,18 +223,19 @@ mobs:register_mob("mobs_mc:llama", {
 					end
 				end
 			end
-			]]
 
-			-- detatch player already riding llama
-			if self.driver and clicker == self.driver then
+			if self.carpet then
+				-- detatch player already riding llama
+				if self.driver and clicker == self.driver then
 
-				mobs.detach(clicker, {x = 1, y = 0, z = 1})
+					mobs.detach(clicker, {x = 1, y = 0, z = 1})
 
-			-- attach player to llama
-			elseif not self.driver then
+				-- attach player to llama
+				elseif not self.driver then
 
-				self.object:set_properties({stepheight = 1.1})
-				mobs.attach(self, clicker)
+					self.object:set_properties({stepheight = 1.1})
+					mobs.attach(self, clicker)
+				end
 			end
 
 		end

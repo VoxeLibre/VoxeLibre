@@ -160,7 +160,7 @@ mobs.make_baby_grow_faster = function(self,clicker)
         local stack = clicker:get_wielded_item()
         --safety check
         if not stack then            
-            return
+            return(false)
         end
 
         local item_name = stack:get_name()
@@ -172,6 +172,10 @@ mobs.make_baby_grow_faster = function(self,clicker)
                 stack:take_item()
                 clicker:set_wielded_item(stack)
             end
+
+            return(true)
         end
     end
+
+    return(false)
 end
