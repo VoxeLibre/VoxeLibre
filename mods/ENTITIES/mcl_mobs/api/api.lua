@@ -328,6 +328,8 @@ function mobs:register_mob(name, def)
 
 		minimum_follow_distance = def.minimum_follow_distance or 0.5, --make mobs not freak out when underneath
 
+		memory = 0, -- memory timer if chasing/following
+
 		--for spiders
 		always_climb = def.always_climb,
 

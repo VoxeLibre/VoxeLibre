@@ -899,23 +899,41 @@ mobs.mob_step = function(self, dtime)
 		--go get the closest player
 		if attacking then
 
+			self.memory = 6 --6 seconds of memory
+
 			--set initial punch timer
 			if self.attacking == nil then
 				if self.attack_type == "punch" then
 					self.punch_timer = -1
 				end
 			end
-
 			self.attacking = attacking
-		--no player in area
-		else
 
-			--reset states when coming out of hostile state
-			if self.attacking ~= nil then
-				self.state_timer = -1
+		--no player in area
+		elseif self.memory > 0 then
+			--try to remember
+			self.memory = self.memory - dtime
+			--get if memory player is within viewing range
+			if self.attacking and self.attacking:is_player() then
+				local distance = vector_distance(self.object:get_pos(), self.attacking:get_pos())
+				if distance > self.view_range then
+					self.memory = 0
+				end
+			--out of viewing range, forget em
+			else
+				self.memory = 0
 			end
 
-			self.attacking = nil
+			if self.memory <= 0 then
+
+				--reset states when coming out of hostile state
+				if self.attacking ~= nil then
+					self.state_timer = -1
+				end
+
+				self.attacking = nil
+				self.memory = 0
+			end
 		end
 	end
 
