@@ -21,6 +21,10 @@ local table_remove   = table.remove
 
 -- range for mob count
 local aoc_range = 48
+
+--do mobs spawn?
+local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
+
 --[[
 
 THIS IS THE BIG LIST OF ALL BIOMES - used for programming/updating mobs
@@ -161,9 +165,6 @@ Overworld regular:
 ]]--
 
 
-
-
-local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
 
 -- count how many mobs are in an area
 local count_mobs = function(pos)
