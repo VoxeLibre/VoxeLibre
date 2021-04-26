@@ -1890,8 +1890,11 @@ local function set_layers(data, area, content_id, check, min, max, minp, maxp, l
 end
 
 -- Below the bedrock, generate air/void
-local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	local biomemap --ymin, ymax
+local function basic(c)
+	local vm, data, emin, emax, area, minp, maxp, blockseed = c.vm, c.data, c.emin, c.emax, c.area, c.minp, c.maxp, c.blockseed
+	c.data2 = c.data2 or vm:get_data_param2(lvm_buffer_param2)
+	local data2 = c.data2
+
 	local lvm_used = false
 	local pr = PseudoRandom(blockseed)
 
@@ -1935,7 +1938,8 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 		-- Clay, vines, cocoas
 		lvm_used = generate_clay(minp, maxp, blockseed, data, area, lvm_used)
 
-		biomemap = minetest.get_mapgen_object("biomemap")
+		c.biomemap = c.biomemap or minetest.get_mapgen_object("biomemap")
+
 		lvm_used = generate_tree_decorations(minp, maxp, blockseed, data, data2, area, biomemap, lvm_used, pr)
 
 		----- Interactive block fixing section -----
@@ -2098,5 +2102,5 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	return lvm_used, shadow
 end
 
-mcl_mapgen_core.register_generator("main", basic, nil, 1, true)
+mcl_mapgen.register_chunk_generator_lvm(basic, 1)
 

@@ -416,4 +416,4 @@ function mcl_dungeons.spawn_dungeon(p1, _, pr)
 	emerge_area(p1, p2, ecb_spawn_dungeon, {p1=p1, p2=p2, dim=dim, pr=pr, dontcheck=true})
 end
 
-mcl_mapgen_core.register_generator("dungeons", nil, dungeons_nodes, 999999)
+mcl_mapgen.register_chunk_generator(dungeons_nodes, 999999)

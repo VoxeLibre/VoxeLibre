@@ -3971,13 +3971,14 @@ if mg_name ~= "singlenode" then
 	-- Overworld decorations for v6 are handled in mcl_mapgen_core
 
 	if deco_id_chorus_plant then
-		mcl_mapgen_core.register_generator("chorus_grow", nil, function(minp, maxp, blockseed)
-			local gennotify = minetest.get_mapgen_object("gennotify")
-			--local poslist = {}
-			for _, pos in ipairs(gennotify["decoration#"..deco_id_chorus_plant] or {}) do
+		mcl_mapgen.register_chunk_generator_lvm(function(c)
+			c.gennotify = c.gennotify or minetest.get_mapgen_object("gennotify")
+			local gennotify = c.gennotify
+			for _, pos in pairs(gennotify["decoration#"..deco_id_chorus_plant] or {}) do
 				local realpos = { x = pos.x, y = pos.y + 1, z = pos.z }
-				mcl_end.grow_chorus_plant(realpos)
+				minetest.after(1, mcl_end.grow_chorus_plant, realpos)
 			end
+			return c
 		end)
 	end
 
