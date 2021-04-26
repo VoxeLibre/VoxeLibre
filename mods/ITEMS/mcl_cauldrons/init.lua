@@ -47,7 +47,7 @@ minetest.register_node("mcl_cauldrons:cauldron", {
 	description = S("Cauldron"),
 	_tt_help = S("Stores water"),
 	_doc_items_longdesc = S("Cauldrons are used to store water and slowly fill up under rain."),
-	_doc_items_usagehelp = S("Place a water pucket into the cauldron to fill it with water. Place an empty bucket on a full cauldron to retrieve the water. Place a water bottle into the cauldron to fill the cauldron to one third with water. Place a glass bottle in a cauldron with water to retrieve one third of the water."),
+	_doc_items_usagehelp = S("Place a water bucket into the cauldron to fill it with water. Place an empty bucket on a full cauldron to retrieve the water. Place a water bottle into the cauldron to fill the cauldron to one third with water. Place a glass bottle in a cauldron with water to retrieve one third of the water."),
 	wield_image = "mcl_cauldrons_cauldron.png",
 	inventory_image = "mcl_cauldrons_cauldron.png",
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
