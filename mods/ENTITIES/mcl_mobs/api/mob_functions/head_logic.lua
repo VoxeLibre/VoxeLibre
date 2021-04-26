@@ -102,9 +102,9 @@ mobs.do_head_logic = function(self,dtime)
     end
 
     if self.swap_y_with_x then
-        self.object:set_bone_position("head", bone_pos, vector_new(degrees(head_pitch),degrees(head_yaw),0))
+        self.object:set_bone_position(self.head_bone, bone_pos, vector_new(degrees(head_pitch),degrees(head_yaw),0))
     else
-        self.object:set_bone_position("head", bone_pos, vector_new(degrees(head_pitch),0,degrees(head_yaw)))
+        self.object:set_bone_position(self.head_bone, bone_pos, vector_new(degrees(head_pitch),0,degrees(head_yaw)))
     end
 
 
