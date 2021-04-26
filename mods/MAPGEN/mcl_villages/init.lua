@@ -78,7 +78,7 @@ end
 -- Disable natural generation in singlenode.
 local mg_name = minetest.get_mapgen_setting("mg_name")
 if mg_name ~= "singlenode" then
-	mcl_mapgen_core.register_generator("villages", nil, function(minp, maxp, blockseed)
+	mcl_mapgen.register_chunk_generator(function(minp, maxp, blockseed)
 		-- don't build settlement underground
 		if maxp.y < 0 then return end
 		-- randomly try to build settlements
