@@ -144,3 +144,69 @@ function mcl_mapgen.get_far_node(p)
 	minetest_get_voxel_manip():read_from_map(p, p)
 	return minetest_get_node(p)
 end
+
+-- Calculate mapgen_edge_min/mapgen_edge_max
+local function calculate_mapgen_basics()
+	mcl_mapgen.CS		= math.max(1, tonumber(minetest.get_mapgen_setting("chunksize"))	or 5)
+	mcl_mapgen.BS		= math.max(1, core.MAP_BLOCKSIZE					or 16)
+	mcl_mapgen.LIMIT	= math.max(1, tonumber(minetest.get_mapgen_setting("mapgen_limit"))	or 31000)
+	mcl_mapgen.MAX_LIMIT	= math.max(1, core.MAX_MAP_GENERATION_LIMIT				or 31000)
+	mcl_mapgen.OFFSET	= - math.floor(mcl_mapgen.CS / 2)
+	mcl_mapgen.OFFSET_NODES	= mcl_mapgen.OFFSET * mcl_mapgen.BS
+	mcl_mapgen.CS_NODES	= mcl_mapgen.CS * mcl_mapgen.BS
+
+	local central_chunk_min_pos = mcl_mapgen.OFFSET * mcl_mapgen.BS
+	local central_chunk_max_pos = central_chunk_min_pos + mcl_mapgen.CS_NODES - 1
+
+	local ccfmin = central_chunk_min_pos - mcl_mapgen.BS -- Fullminp/fullmaxp of central chunk, in nodes
+	local ccfmax = central_chunk_max_pos + mcl_mapgen.BS
+
+	local mapgen_limit_b = math.floor(math.min(mcl_mapgen.LIMIT, mcl_mapgen.MAX_LIMIT) / mcl_mapgen.BS)
+	local mapgen_limit_min = - mapgen_limit_b	* mcl_mapgen.BS
+	local mapgen_limit_max =  (mapgen_limit_b + 1)	* mcl_mapgen.BS - 1
+
+	local numcmin = math.max(math.floor((ccfmin - mapgen_limit_min) / mcl_vars.chunk_size_in_nodes), 0) -- Number of complete chunks from central chunk
+	local numcmax = math.max(math.floor((mapgen_limit_max - ccfmax) / mcl_vars.chunk_size_in_nodes), 0) -- fullminp/fullmaxp to effective mapgen limits.
+
+	mcl_mapgen.EDGE_MIN = central_chunk_min_pos - numcmin * mcl_mapgen.CS_NODES
+	mcl_mapgen.EDGE_MAX = central_chunk_max_pos + numcmax * mcl_mapgen.CS_NODES
+end
+
+local function coordinate_to_block(x)
+	return math_floor(x / mcl_mapgen.BS)
+end
+
+local function coordinate_to_chunk(x)
+	return math_floor((coordinate_to_block(x) - central_chunk_offset) / mcl_vars.chunksize)
+end
+
+function mcl_mapgen.pos_to_block(pos)
+	return {
+		x = coordinate_to_block(pos.x),
+		y = coordinate_to_block(pos.y),
+		z = coordinate_to_block(pos.z)
+	}
+end
+
+function mcl_mapgen.pos_to_chunk(pos)
+	return {
+		x = coordinate_to_chunk(pos.x),
+		y = coordinate_to_chunk(pos.y),
+		z = coordinate_to_chunk(pos.z)
+	}
+end
+
+calculate_mapgen_basics()
+
+local k_positive = math.ceil(mcl_mapgen.MAX_LIMIT / mcl_vars.chunk_size_in_nodes)
+local k_positive_z = k_positive * 2
+local k_positive_y = k_positive_z * k_positive_z
+
+function mcl_mapgen.get_chunk_number(pos) -- unsigned int
+	local c = mcl_mapgen.pos_to_chunk(pos)
+	return
+		(c.y + k_positive) * k_positive_y +
+		(c.z + k_positive) * k_positive_z +
+		 c.x + k_positive
+end
+
