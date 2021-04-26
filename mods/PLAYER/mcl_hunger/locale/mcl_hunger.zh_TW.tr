@@ -1,0 +1,8 @@
+# textdomain: mcl_hunger
+@1 succumbed to the poison.=
+Food=食物
+Saturation=飽食度
+%s: %.1f/%d=
+Exhaust.=飢餓值
+%s: %d/%d=
+@1 starved to death.=@1 餓死了。
