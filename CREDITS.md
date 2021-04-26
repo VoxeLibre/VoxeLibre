@@ -9,7 +9,7 @@
 ## Maintainers
 * Fleckenstein
 * kay27
-* oilboi
+* jordan4ibanez
 
 ## Developers
 * bzoss
@@ -74,7 +74,7 @@
 * Rochambeau
 * rubenwardy
 * stu
-* oilboi
+* jordan4ibanez
 * 4aiman
 * Kahrl
 * Krock
