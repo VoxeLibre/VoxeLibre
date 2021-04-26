@@ -40,7 +40,7 @@ local max_y = mcl_vars.mg_overworld_max - 1
 -- Calculate the number of dungeon spawn attempts
 -- In Minecraft, there 8 dungeon spawn attempts Minecraft chunk (16*256*16 = 65536 blocks).
 -- Minetest chunks don't have this size, so scale the number accordingly.
-local attempts = math_ceil(((mcl_vars.chunksize * mcl_vars.MAP_BLOCKSIZE) ^ 3) / 8192) -- 63 = 80*80*80/8192
+local attempts = math_ceil((mcl_mapgen.CS_NODES ^ 3) / 8192) -- 63 = 80*80*80/8192
 
 local dungeonsizes = {
 	{ x=5, y=4, z=5},

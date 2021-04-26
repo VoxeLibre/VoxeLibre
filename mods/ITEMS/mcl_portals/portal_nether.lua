@@ -19,7 +19,7 @@ local W_MIN, W_MAX			= 4, 23
 local H_MIN, H_MAX			= 5, 23
 local N_MIN, N_MAX			= 6, (W_MAX-2) * (H_MAX-2)
 local TRAVEL_X, TRAVEL_Y, TRAVEL_Z	= 8, 1, 8
-local LIM_MIN, LIM_MAX			= mcl_vars.mapgen_edge_min, mcl_vars.mapgen_edge_max
+local LIM_MIN, LIM_MAX			= mcl_mapgen.EDGE_MIN, mcl_mapgen.EDGE_MAX
 local PLAYER_COOLOFF, MOB_COOLOFF	= 3, 14 -- for this many seconds they won't teleported again
 local TOUCH_CHATTER_TIME		= 1 -- prevent multiple teleportation attempts caused by multiple portal touches, for this number of seconds
 local CHATTER_US			= TOUCH_CHATTER_TIME * 1000000
@@ -522,8 +522,8 @@ local function create_portal(pos, limit1, limit2, name, obj)
 	-- so we'll emerge single chunk only: 5x5x5 blocks, 80x80x80 nodes maximum
 	-- and maybe one more chunk from below if (SCAN_2_MAP_CHUNKS = true)
 
-	local pos1 = add(mul(mcl_vars.pos_to_chunk(pos), mcl_vars.chunk_size_in_nodes), mcl_vars.central_chunk_offset_in_nodes)
-	local pos2 = add(pos1, mcl_vars.chunk_size_in_nodes - 1)
+	local pos1 = add(mul(mcl_mapgen.pos_to_chunk(pos), mcl_mapgen.CS_NODES), mcl_mapgen.OFFSET_NODES)
+	local pos2 = add(pos1, mcl_mapgen.CS_NODES - 1)
 
 	if not SCAN_2_MAP_CHUNKS then
 		if limit1 and limit1.x and limit1.y and limit1.z then

@@ -81,7 +81,7 @@ local dir_step = storage:get_int("mcl_spawn_dir_step") or 0
 local dir_ind = storage:get_int("mcl_spawn_dir_ind") or 1
 local emerge_pos1, emerge_pos2
 
-local spawn_limit = mcl_vars.mapgen_edge_max
+local spawn_limit = mcl_mapgen.EDGE_MAX
 
 
 --Functions

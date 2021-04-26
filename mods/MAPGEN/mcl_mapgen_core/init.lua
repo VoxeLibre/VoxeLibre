@@ -1899,7 +1899,7 @@ local function basic(c)
 	local pr = PseudoRandom(blockseed)
 
 	-- The Void below the Nether:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mapgen_edge_min                     , mcl_vars.mg_nether_min                     -1, minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_mapgen.EDGE_MIN	                     , mcl_vars.mg_nether_min                     -1, minp, maxp, lvm_used, pr)
 
 	-- [[ THE NETHER:					mcl_vars.mg_nether_min			       mcl_vars.mg_nether_max							]]
 
