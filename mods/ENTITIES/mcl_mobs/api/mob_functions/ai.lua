@@ -834,15 +834,15 @@ mobs.mob_step = function(self, dtime)
 	--DEBUG TIME!
 	--REMEMBER TO MOVE THIS AFTER DEATH CHECK
 
-	if self.has_head then
-		mobs.do_head_logic(self,dtime)
-	end
+	--if self.has_head then
+	--	mobs.do_head_logic(self,dtime)
+	--end
 
 
 
-	if true then--DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG
-		return
-	end
+	--if true then--DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG
+	--	return
+	--end
 
 	--despawn mechanism
 	--don't despawned tamed or bred mobs

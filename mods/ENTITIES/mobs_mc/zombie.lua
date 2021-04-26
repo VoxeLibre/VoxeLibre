@@ -75,6 +75,22 @@ local zombie = {
 		damage = "mobs_mc_zombie_hurt",
 		distance = 16,
 	},
+
+	--head code
+	has_head = false,
+	head_bone = "Head",
+
+	swap_y_with_x = true,
+	reverse_head_yaw = true,
+
+	head_bone_pos_y = 2.4,
+	head_bone_pos_z = 0,
+
+	head_height_offset = 1.1,
+	head_direction_offset = 0,
+	head_pitch_modifier = 0,
+	--end head code
+
 	eye_height = 1.65,
 	walk_velocity = 1,
 	run_velocity = 3.5,

@@ -34,6 +34,22 @@ local skeleton = {
 		"mcl_bows_bow_0.png", -- bow
 		"mobs_mc_skeleton.png", -- skeleton
 	} },
+
+	--head code
+	has_head = false,
+	head_bone = "head",
+
+	swap_y_with_x = true,
+	reverse_head_yaw = true,
+
+	head_bone_pos_y = 2.4,
+	head_bone_pos_z = 0,
+
+	head_height_offset = 1.1,
+	head_direction_offset = 0,
+	head_pitch_modifier = 0,
+	--end head code
+
 	visual_size = {x=1, y=1},
 	makes_footstep_sound = true,
 	textures = {

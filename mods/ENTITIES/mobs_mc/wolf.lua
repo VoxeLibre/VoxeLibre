@@ -30,6 +30,22 @@ local wolf = {
 	rotate = 270,
 	passive = false,
 	group_attack = true,
+
+	--head code
+	has_head = false,
+	head_bone = "head",
+	
+	swap_y_with_x = false,
+	reverse_head_yaw = false,
+
+	head_bone_pos_y = 3.6,
+	head_bone_pos_z = -0.6,
+
+	head_height_offset = 1.0525,
+	head_direction_offset = 0.5,
+	head_pitch_modifier = 0,
+	--end head code
+
 	collisionbox = {-0.3, -0.00, -0.3, 0.3, 0.85, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_wolf.b3d",

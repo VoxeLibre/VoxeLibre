@@ -19,6 +19,22 @@ mobs:register_mob("mobs_mc:pig", {
 		"mobs_mc_pig.png", -- base
 		"blank.png", -- saddle
 	}},
+
+	--head code
+	has_head = true,
+	head_bone = "head",
+
+	swap_y_with_x = false,
+	reverse_head_yaw = false,
+
+	head_bone_pos_y = 2.4,
+	head_bone_pos_z = 0,
+
+	head_height_offset = 1.1,
+	head_direction_offset = 0,
+	head_pitch_modifier = 0,
+	--end head code
+
 	visual_size = {x=2.5, y=2.5},
 	makes_footstep_sound = true,
 	walk_velocity = 1,
