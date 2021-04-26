@@ -1509,9 +1509,14 @@ local is_at_water_danger = function(self)
 	return false
 end
 
-
-
-
+local function get_light(pos, tod)
+	if minetest.get_node_or_nil(pos) then
+		local lightfunc = minetest.get_natural_light or minetest.get_node_light
+		return lightfunc(pos, tod)
+	else
+		return 0
+	end
+end
 
 -- environmental damage (water, lava, fire, light etc.)
 local do_env_damage = function(self)
@@ -1557,7 +1562,6 @@ local do_env_damage = function(self)
 
 	-- Use get_node_light for Minetest version 5.3 where get_natural_light
 	-- does not exist yet.
-	local get_light = minetest_get_natural_light or minetest_get_node_light
 	local sunlight = get_light(pos, self.time_of_day)
 
 	-- bright light harms mob
