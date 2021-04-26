@@ -108,8 +108,23 @@ mobs:register_mob("mobs_mc:chicken", {
 			gain = 1.0,
 			max_hear_distance = 16,
 		}, true)
-	end,	
-	
+	end,
+
+	--head code
+	has_head = true,
+	head_bone = "head",
+
+	swap_y_with_x = false,
+	reverse_head_yaw = false,
+
+	head_bone_pos_y = 1.675,
+	head_bone_pos_z = 0,
+
+	head_height_offset = 0.55,
+	head_direction_offset = 0.0925,
+
+	head_pitch_modifier = -math.pi/2,
+	--end head code
 })
 
 --spawn

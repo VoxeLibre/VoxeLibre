@@ -78,6 +78,22 @@ mobs:register_mob("mobs_mc:sheep", {
 	makes_footstep_sound = true,
 	walk_velocity = 1,
 	run_velocity = 3,
+	
+	--head code
+	has_head = true,
+	head_bone = "head",
+	
+	swap_y_with_x = false,
+	reverse_head_yaw = false,
+
+	head_bone_pos_y = 3.6,
+	head_bone_pos_z = -0.6,
+
+	head_height_offset = 1.0525,
+	head_direction_offset = 0.5,
+	head_pitch_modifier = 0,
+	--end head code
+
 	drops = {
 		{name = mobs_mc.items.mutton_raw,
 		chance = 1,

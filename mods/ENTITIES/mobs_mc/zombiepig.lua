@@ -43,6 +43,22 @@ local pigman = {
 		damage = "mobs_mc_zombiepig_hurt",
 		distance = 16,
 	},
+
+	--head code
+	has_head = false,
+	head_bone = "head",
+
+	swap_y_with_x = true,
+	reverse_head_yaw = true,
+
+	head_bone_pos_y = 2.4,
+	head_bone_pos_z = 0,
+
+	head_height_offset = 1.1,
+	head_direction_offset = 0,
+	head_pitch_modifier = 0,
+	--end head code
+
 	jump = true,
 	makes_footstep_sound = true,
 	walk_velocity = .8,

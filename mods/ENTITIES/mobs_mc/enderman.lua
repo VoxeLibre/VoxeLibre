@@ -224,6 +224,22 @@ mobs:register_mob("mobs_mc:enderman", {
 		max = 1,
 		looting = "common"},
 	},
+
+	--head code
+	has_head = false,
+	head_bone = "head.low",
+
+	swap_y_with_x = false,
+	reverse_head_yaw = false,
+
+	head_bone_pos_y = 2.4,
+	head_bone_pos_z = 0,
+
+	head_height_offset = 1.1,
+	head_direction_offset = 0,
+	head_pitch_modifier = 0,
+	--end head code
+
 	animation = select_enderman_animation("normal"),
 	_taken_node = "",
 	do_custom = function(self, dtime)
