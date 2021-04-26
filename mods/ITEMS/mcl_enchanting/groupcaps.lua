@@ -45,22 +45,26 @@ end
 -- To make it more efficient it will first check a hash value to determine if
 -- the tool needs to be updated.
 function mcl_enchanting.update_groupcaps(itemstack)
-	if not itemstack:get_meta():get("tool_capabilities") then
+	local name = itemstack:get_name()
+	if not minetest.registered_tools[name].tool_capabilities then
 		return
 	end
 
-	local name = itemstack:get_name()
 	local efficiency = mcl_enchanting.get_enchantment(itemstack, "efficiency")
+	local unbreaking = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
+	if unbreaking == 0 and efficiency == 0 then
+		return
+	end
+
 	local groupcaps = get_efficiency_groupcaps(name, efficiency)
 	local hash = itemstack:get_meta():get_string("groupcaps_hash")
 
 	if not hash or hash ~= groupcaps.hash then
 		local tool_capabilities = itemstack:get_tool_capabilities()
-		tool_capabilities.groupcaps = groupcaps.values
+		tool_capabilities.groupcaps = table.copy(groupcaps.values)
 
 		-- Increase the number of uses depending on the unbreaking level
 		-- of the tool.
-		local unbreaking = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
 		for group, capability in pairs(tool_capabilities.groupcaps) do
 			capability.uses = capability.uses * (1 + unbreaking)
 		end
