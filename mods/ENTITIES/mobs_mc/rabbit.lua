@@ -7,7 +7,7 @@ local rabbit = {
 	spawn_class = "passive",
 	passive = true,
 	reach = 1,
-
+	rotate = 270,
 	hp_min = 3,
 	hp_max = 3,
 	xp_min = 1,
