@@ -4,6 +4,7 @@ mcl_playerplus = {
 	elytra = {},
 }
 
+local player_velocity_old = {x=0, y=0, z=0}
 local get_connected_players = minetest.get_connected_players
 local dir_to_yaw = minetest.dir_to_yaw
 local get_item_group = minetest.get_item_group
@@ -165,6 +166,12 @@ minetest.register_globalstep(function(dtime)
 			and (fly_node == "air" or fly_node == "ignore")
 
 		if elytra.active then
+			if player_velocity.x < (player_velocity_old.x - 10) or player_velocity.x > (player_velocity_old.x + 10) then
+				player:set_hp(player:get_hp() - (math.abs(player_velocity_old.x) * 0.2))
+			end
+			if player_velocity.z < (player_velocity_old.z - 10) or player_velocity.z > (player_velocity_old.z + 10) then
+				player:set_hp(player:get_hp() - (math.abs(player_velocity_old.z) * 0.2))
+			end
 			mcl_player.player_set_animation(player, "fly")
 			if player_velocity.y < -1.5 then
 				player:add_velocity({x=0, y=0.17, z=0})
@@ -217,6 +224,8 @@ minetest.register_globalstep(function(dtime)
 		else
 			player:set_bone_position("Wield_Item", vector.new(-1.5,4.9,1.8), vector.new(135,0,90))
 		end
+
+		player_velocity_old = player:get_velocity() or player:get_player_velocity()
 
 		-- controls right and left arms pitch when shooting a bow
 		if string.find(wielded:get_name(), "mcl_bows:bow") and control.RMB and not control.LMB and not control.up and not control.down and not control.left and not control.right then
