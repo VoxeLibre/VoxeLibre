@@ -1,10 +1,18 @@
+unused_args = false
+allow_defined_top = true
+max_line_length = false
+redefined = false
+
+globals = {
+    "minetest", "core",
+}
+
 read_globals = {
 	"DIR_DELIM",
-	"minetest", "core",
 	"dump", "dump2",
 	"vector",
 	"VoxelManip", "VoxelArea",
-	"PseudoRandom", "PcgRandom",
+	"PseudoRandom", "PcgRandom", "PerlinNoise", "PerlinNoiseMap",
 	"ItemStack",
 	"Settings",
 	"unpack",
