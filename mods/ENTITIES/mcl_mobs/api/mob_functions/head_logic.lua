@@ -97,6 +97,10 @@ mobs.do_head_logic = function(self,dtime)
         head_pitch = minetest.dir_to_yaw(vector.new(vector.distance(vector.new(pos.x,0,pos.z),vector.new(look_at.x,0,look_at.z)),0,pos.y-look_at.y))+(math.pi/2)
     end
 
+    if self.head_pitch_modifier then
+        head_pitch = head_pitch + self.head_pitch_modifier
+    end
+
     if self.swap_y_with_x then
         self.object:set_bone_position("head", bone_pos, vector_new(degrees(head_pitch),degrees(head_yaw),0))
     else

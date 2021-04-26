@@ -393,6 +393,7 @@ function mobs:register_mob(name, def)
 		--this part controls the visual of the head
 		head_bone_pos_y = def.head_bone_pos_y or 3.6,
 		head_bone_pos_z = def.head_bone_pos_z or -0.6,
+		head_pitch_modifier = def.head_pitch_modifier or 0,
 
 		--these variables are switches in case the model
 		--moves the wrong way

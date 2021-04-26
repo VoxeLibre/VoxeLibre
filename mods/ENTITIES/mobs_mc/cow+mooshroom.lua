@@ -97,6 +97,7 @@ local cow_def = {
 
 	head_height_offset = 1.0525,
 	head_direction_offset = 0.5,
+	head_pitch_modifier = 0,
 	--end head code
 }
 

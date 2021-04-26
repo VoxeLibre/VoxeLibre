@@ -65,6 +65,7 @@ mobs:register_mob("mobs_mc:creeper", {
 
 	head_height_offset = 1.1,
 	head_direction_offset = 0,
+	head_pitch_modifier = 0,
 	--end head code
 
 	-- Force-ignite creeper with flint and steel and explode after 1.5 seconds.
