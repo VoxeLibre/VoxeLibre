@@ -823,7 +823,7 @@ local function create_corridor_line(waypoint, axis, sign, length, wood, post, da
 	local s = sign
 	local ud = false -- Up or down
 	local udn = false -- Up or down is next
-	local udp = false -- Up or down was previous
+	local udp -- Up or down was previous
 	local up = false -- true if going up
 	local upp = false -- true if was going up previously
 	for i=1,length do
@@ -911,7 +911,7 @@ local function create_corridor_line(waypoint, axis, sign, length, wood, post, da
 			a="z"
 		elseif a=="z" then
 			a="x"
-	 	end;
+		end;
 		s = pr:next(1, 2) == 1
 	end
 end
