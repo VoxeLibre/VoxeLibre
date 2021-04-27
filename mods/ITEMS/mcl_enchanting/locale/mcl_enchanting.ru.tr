@@ -2,7 +2,7 @@
 Aqua Affinity=Родство с водой
 Increases underwater mining speed.=Увеличивает скорость добычи под водой.
 Bane of Arthropods=Бич членистоногих
-Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Увеличивает урон и применяет Замедление IV к насекомым и членистоногим (паукам, пещерным паукам, чешуйницам и чешуйницам края). 
+Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Увеличивает урон и применяет Замедление IV к насекомым и членистоногим (паукам, пещерным паукам, чешуйницам и чешуйницам края).
 Blast Protection=Взрывоустойчивость
 Reduces explosion damage and knockback.=Уменьшает урон и отдачу от взрывов.
 Channeling=Громовержец
@@ -76,8 +76,8 @@ Reflects some of the damage taken when hit, at the cost of reducing durability w
 Unbreaking=Нерушимость
 Increases item durability.=Увеличивает прочность предмета.
 Inventory=Инвентарь
-@1 × Lapis Lazuli=@1 × Ляпис-лазурь
-Enchantment levels: @1=Уровень зачаровывания: @1
+@1 Lapis Lazuli=@1 Ляпис-лазурь
+@1 Enchantment Levels=@1 Уровень зачаровывания
 Level requirement: @1=Требуемый уровень: @1
 Enchant an item=Зачаровать предмет
 <player> <enchantment> [<level>]=<игрок> <зачарование> [<уровень>]
