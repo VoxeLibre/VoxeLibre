@@ -11,7 +11,6 @@ of the license, or (at your option) any later version.
 
 local S = minetest.get_translator("lightning")
 
-local has_mcl_death_msg = minetest.get_modpath("mcl_death_messages")
 local get_connected_players = minetest.get_connected_players
 local line_of_sight = minetest.line_of_sight
 local get_node = minetest.get_node
@@ -139,48 +138,39 @@ lightning.strike = function(pos)
 	for o=1, #objs do
 		local obj = objs[o]
 		local lua = obj:get_luaentity()
-		if obj:is_player() then
-		-- Player damage
-			if has_mcl_death_msg then
-				mcl_death_messages.player_damage(obj, S("@1 was struck by lightning.", obj:get_player_name()))
-			end
-			obj:set_hp(obj:get_hp()-5, { type = "punch", from = "mod" })
-		-- Mobs
-		elseif lua and lua._cmi_is_mob then
-			-- pig → zombie pigman (no damage)
-			if lua.name == "mobs_mc:pig" then
-				local rot = obj:get_yaw()
-				obj:remove()
-				obj = add_entity(pos2, "mobs_mc:pigman")
-				obj:set_yaw(rot)
+		-- pig → zombie pigman (no damage)
+		if lua and lua.name == "mobs_mc:pig" then
+			local rot = obj:get_yaw()
+			obj:remove()
+			obj = add_entity(pos2, "mobs_mc:pigman")
+			obj:set_yaw(rot)
 			-- mooshroom: toggle color red/brown (no damage)
-			elseif lua.name == "mobs_mc:mooshroom" then
-				if lua.base_texture[1] == "mobs_mc_mooshroom.png" then
-					lua.base_texture = { "mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" }
-				else
-					lua.base_texture = { "mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png" }
-				end
-				obj:set_properties({textures = lua.base_texture})
-			-- villager → witch (no damage)
-			elseif lua.name == "mobs_mc:villager" then
-			-- Witches are incomplete, this code is unused
-			-- TODO: Enable this code when witches are working.
-			--[[
-				local rot = obj:get_yaw()
-				obj:remove()
-				obj = minetest.add_entity(pos2, "mobs_mc:witch")
-				obj:set_yaw(rot)
-			]]
-			-- charged creeper
-			elseif lua.name == "mobs_mc:creeper" then
-				local rot = obj:get_yaw()
-				obj:remove()
-				obj = add_entity(pos2, "mobs_mc:creeper_charged")
-				obj:set_yaw(rot)
-				-- Other mobs: Just damage
+		elseif lua and lua.name == "mobs_mc:mooshroom" then
+			if lua.base_texture[1] == "mobs_mc_mooshroom.png" then
+				lua.base_texture = { "mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" }
 			else
-				obj:set_hp(obj:get_hp()-5, { type = "punch", from = "mod" })
+				lua.base_texture = { "mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png" }
 			end
+			obj:set_properties({textures = lua.base_texture})
+		-- villager → witch (no damage)
+		elseif lua and lua.name == "mobs_mc:villager" then
+		-- Witches are incomplete, this code is unused
+		-- TODO: Enable this code when witches are working.
+		--[[
+			local rot = obj:get_yaw()
+			obj:remove()
+			obj = minetest.add_entity(pos2, "mobs_mc:witch")
+			obj:set_yaw(rot)
+		]]
+		-- charged creeper
+		elseif lua and lua.name == "mobs_mc:creeper" then
+			local rot = obj:get_yaw()
+			obj:remove()
+			obj = add_entity(pos2, "mobs_mc:creeper_charged")
+			obj:set_yaw(rot)
+			-- Other objects: Just damage
+		else
+			mcl_util.deal_damage(obj, 5, {type = "lightning_bolt"})
 		end
 	end
 

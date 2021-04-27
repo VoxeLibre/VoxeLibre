@@ -13,6 +13,7 @@ local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
 
 
 local skeleton = {
+	description = S("Skeleton"),
 	type = "monster",
 	spawn_class = "hostile",
 	hp_min = 20,
@@ -109,6 +110,7 @@ mobs:register_mob("mobs_mc:skeleton", skeleton)
 --###################
 
 local stray = table.copy(skeleton)
+stray.description = S("Stray")
 stray.mesh = "mobs_mc_skeleton.b3d"
 stray.textures = {
 	{

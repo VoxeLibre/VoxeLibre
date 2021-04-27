@@ -927,6 +927,7 @@ end)
 --[=======[ MOB REGISTRATION AND SPAWNING ]=======]
 
 mobs:register_mob("mobs_mc:villager", {
+	description = S("Villager"),
 	type = "npc",
 	spawn_class = "passive",
 	hp_min = 20,

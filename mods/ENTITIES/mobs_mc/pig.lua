@@ -3,6 +3,7 @@
 local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:pig", {
+	description = S("Pig"),
 	type = "animal",
 	spawn_class = "passive",
 	runaway = true,
@@ -183,8 +184,8 @@ mobs:register_mob("mobs_mc:pig", {
 })
 
 mobs:spawn_specific(
-"mobs_mc:pig", 
-"overworld", 
+"mobs_mc:pig",
+"overworld",
 "ground",
 {
 "FlowerForest",
@@ -204,12 +205,12 @@ mobs:spawn_specific(
 "ExtremeHillsM",
 "BirchForestM",
 },
-9, 
-minetest.LIGHT_MAX+1, 
-30, 
-15000, 
-8, 
-mobs_mc.spawn_height.overworld_min, 
+9,
+minetest.LIGHT_MAX+1,
+30,
+15000,
+8,
+mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs

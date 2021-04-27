@@ -12,7 +12,6 @@ under the LGPLv2.1 license.
 
 mcl_explosions = {}
 
-local mod_death_messages = minetest.get_modpath("mcl_death_messages") ~= nil
 local mod_fire = minetest.get_modpath("mcl_fire") ~= nil
 local CONTENT_FIRE = minetest.get_content_id("mcl_fire:fire")
 
@@ -150,7 +149,8 @@ end
 -- raydirs - The directions for each ray
 -- radius - The maximum distance each ray will go
 -- info - Table containing information about explosion
--- puncher - object that punches other objects (optional)
+-- direct - direct source object of the damage (optional)
+-- source - indirect source object of the damage (optional)
 --
 -- Values in info:
 -- drop_chance - The chance that destroyed nodes will drop their items
@@ -165,7 +165,7 @@ end
 -- Note that this function has been optimized, it contains code which has been
 -- inlined to avoid function calls and unnecessary table creation. This was
 -- measured to give a significant performance increase.
-local function trace_explode(pos, strength, raydirs, radius, info, puncher)
+local function trace_explode(pos, strength, raydirs, radius, info, direct, source)
 	local vm = get_voxel_manip()
 
 	local emin, emax = vm:read_from_map(vector.subtract(pos, radius),
@@ -247,7 +247,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 		local ent = obj:get_luaentity()
 
 		-- Ignore items to lower lag
-		if obj:is_player() or (ent and ent.name ~= '__builtin.item') then
+		if (obj:is_player() or (ent and ent.name ~= '__builtin.item')) and obj:get_hp() > 0 then
 			local opos = obj:get_pos()
 			local collisionbox = nil
 
@@ -321,7 +321,6 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 					impact = 0
 				end
 				local damage = math.floor((impact * impact + impact) * 7 * strength + 1)
-				local source = puncher or obj
 
 				local sleep_formspec_doesnt_close_mt53 = false
 				if obj:is_player() then
@@ -333,26 +332,22 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 							sleep_formspec_doesnt_close_mt53 = true
 						end
 					end
-					if mod_death_messages then
-						mcl_death_messages.player_damage(obj, S("@1 was caught in an explosion.", name))
-					end
-					if rawget(_G, "armor") and armor.last_damage_types then
-						armor.last_damage_types[name] = "explosion"
-					end
 				end
 
 				if sleep_formspec_doesnt_close_mt53 then
-					minetest.after(0.3, function(obj, damage, impact, punch_dir) -- 0.2 is minimum delay for closing old formspec and open died formspec -- TODO: REMOVE THIS IN THE FUTURE
-						if not obj then return end
-						obj:punch(obj, 10, { damage_groups = { full_punch_interval = 1, fleshy = damage, knockback = impact * 20.0 } }, punch_dir)
-						obj:add_velocity(vector.multiply(punch_dir, impact * 20))
-					end, obj, damage, impact, vector.new(punch_dir))
-				else
-					obj:punch(source, 10, { damage_groups = { full_punch_interval = 1, fleshy = damage, knockback = impact * 20.0 } }, punch_dir)
+					minetest.after(0.3, function() -- 0.2 is minimum delay for closing old formspec and open died formspec -- TODO: REMOVE THIS IN THE FUTURE
+						if not obj:is_player() then
+							return
+						end
 
-					if obj:is_player() then
+						mcl_util.deal_damage(obj, damage, {type = "explosion", direct = direct, source = source})
+
 						obj:add_velocity(vector.multiply(punch_dir, impact * 20))
-					elseif ent.tnt_knockback then
+					end)
+				else
+					mcl_util.deal_damage(obj, damage, {type = "explosion", direct = direct, source = source})
+
+					if obj:is_player() or ent.tnt_knockback then
 						obj:add_velocity(vector.multiply(punch_dir, impact * 20))
 					end
 				end
@@ -422,7 +417,8 @@ end
 -- pos - The position where the explosion originates from
 -- strength - The blast strength of the explosion (a TNT explosion uses 4)
 -- info - Table containing information about explosion
--- puncher - object that is reported as source of punches/damage (optional)
+-- direct - direct source object of the damage (optional)
+-- source - indirect source object of the damage (optional)
 --
 -- Values in info:
 -- drop_chance - If specified becomes the drop chance of all nodes in the
@@ -436,7 +432,7 @@ end
 -- griefing - If true, the explosion will destroy nodes (default: true)
 -- grief_protected - If true, the explosion will also destroy nodes which have
 --                   been protected (default: false)
-function mcl_explosions.explode(pos, strength, info, puncher)
+function mcl_explosions.explode(pos, strength, info, direct, source)
 	if info == nil then
 		info = {}
 	end
@@ -465,7 +461,7 @@ function mcl_explosions.explode(pos, strength, info, puncher)
 		info.drop_chance = 0
 	end
 
-	trace_explode(pos, strength, shape, radius, info, puncher)
+	trace_explode(pos, strength, shape, radius, info, direct, source)
 
 	if info.particles then
 		add_particles(pos, radius)

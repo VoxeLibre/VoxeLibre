@@ -3,6 +3,7 @@
 local S = minetest.get_translator("mobs_mc")
 
 local cow_def = {
+	description = S("Cow"),
 	type = "animal",
 	spawn_class = "passive",
 	hp_min = 10,
@@ -43,7 +44,7 @@ local cow_def = {
 		stand_speed = 25, 	walk_speed = 40,
 		run_speed = 60,     stand_start = 0,
 		stand_end = 0,      walk_start = 0,
-		walk_end = 40,      run_start = 0,		
+		walk_end = 40,      run_start = 0,
 		run_end = 40,
 	},
 	follow = mobs_mc.follow.cow,
@@ -81,7 +82,7 @@ mobs:register_mob("mobs_mc:cow", cow_def)
 
 -- Mooshroom
 local mooshroom_def = table.copy(cow_def)
-
+mooshroom_def.description = S("Mooshroom")
 mooshroom_def.mesh = "mobs_mc_cow.b3d"
 mooshroom_def.textures = { {"mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png"}, {"mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" } }
 mooshroom_def.on_rightclick = function(self, clicker)
@@ -147,7 +148,7 @@ mobs:register_mob("mobs_mc:mooshroom", mooshroom_def)
 -- Spawning
 mobs:spawn_specific(
 "mobs_mc:cow",
-"overworld", 
+"overworld",
 "ground",
 {
 "FlowerForest",
@@ -167,30 +168,30 @@ mobs:spawn_specific(
 "ExtremeHillsM",
 "BirchForestM",
 },
-9, 
-minetest.LIGHT_MAX+1, 
-30, 
-17000, 
-10, 
-mobs_mc.spawn_height.water, 
+9,
+minetest.LIGHT_MAX+1,
+30,
+17000,
+10,
+mobs_mc.spawn_height.water,
 mobs_mc.spawn_height.overworld_max)
 
 
 
 mobs:spawn_specific(
-"mobs_mc:mooshroom", 
-"overworld", 
+"mobs_mc:mooshroom",
+"overworld",
 "ground",
 {
 "MushroomIslandShore",
 "MushroomIsland"
 },
-9, 
-minetest.LIGHT_MAX+1, 
-30, 
-17000, 
-5, 
-mobs_mc.spawn_height.overworld_min, 
+9,
+minetest.LIGHT_MAX+1,
+30,
+17000,
+5,
+mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn egg
