@@ -83,6 +83,7 @@ end
 
 -- Horse
 local horse = {
+	description = S("Horse"),
 	type = "animal",
 	spawn_class = "passive",
 	visual = "mesh",
@@ -440,6 +441,7 @@ mobs:register_mob("mobs_mc:horse", horse)
 
 -- Skeleton horse
 local skeleton_horse = table.copy(horse)
+skeleton_horse.description = S("Skeleton Horse")
 skeleton_horse.breath_max = -1
 skeleton_horse.armor = {undead = 100, fleshy = 100}
 skeleton_horse.textures = {{"blank.png", "mobs_mc_horse_skeleton.png", "blank.png"}}
@@ -462,6 +464,7 @@ mobs:register_mob("mobs_mc:skeleton_horse", skeleton_horse)
 
 -- Zombie horse
 local zombie_horse = table.copy(horse)
+zombie_horse.description = S("Zombie Horse")
 zombie_horse.breath_max = -1
 zombie_horse.armor = {undead = 100, fleshy = 100}
 zombie_horse.textures = {{"blank.png", "mobs_mc_horse_zombie.png", "blank.png"}}
@@ -486,6 +489,7 @@ mobs:register_mob("mobs_mc:zombie_horse", zombie_horse)
 -- Donkey
 local d = 0.86 -- donkey scale
 local donkey = table.copy(horse)
+donkey.description = S("Donkey")
 donkey.textures = {{"blank.png", "mobs_mc_donkey.png", "blank.png"}}
 donkey.animation = {
 	speed_normal = 25,
@@ -516,6 +520,7 @@ mobs:register_mob("mobs_mc:donkey", donkey)
 -- Mule
 local m = 0.94
 local mule = table.copy(donkey)
+mule.description = S("Mule")
 mule.textures = {{"blank.png", "mobs_mc_mule.png", "blank.png"}}
 mule.visual_size = { x=horse.visual_size.x*m, y=horse.visual_size.y*m }
 mule.sounds = table.copy(donkey.sounds)
@@ -585,18 +590,18 @@ mobs:spawn_specific(
 	"JungleEdge",
 	"SavannaM",
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-15000, 
-4, 
-mobs_mc.spawn_height.water+3, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+15000,
+4,
+mobs_mc.spawn_height.water+3,
 mobs_mc.spawn_height.overworld_max)
 
 
 mobs:spawn_specific(
-"mobs_mc:donkey", 
-"overworld", 
+"mobs_mc:donkey",
+"overworld",
 "ground",
 {
 "Mesa",
@@ -606,12 +611,12 @@ mobs:spawn_specific(
 "MesaPlateauF_grasstop",
 "MesaBryce",
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-15000, 
-4, 
-mobs_mc.spawn_height.water+3, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+15000,
+4,
+mobs_mc.spawn_height.water+3,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs

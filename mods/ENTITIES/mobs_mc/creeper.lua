@@ -148,6 +148,7 @@ mobs:register_mob("mobs_mc:creeper", {
 })
 
 mobs:register_mob("mobs_mc:creeper_charged", {
+	description = S("Creeper"),
 	type = "monster",
 	spawn_class = "hostile",
 	hp_min = 20,
@@ -160,7 +161,7 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 	mesh = "mobs_mc_creeper.b3d",
 
 	--BOOM
-	
+
 	textures = {
 		{"mobs_mc_creeper.png",
 		"mobs_mc_creeper_charge.png"},
@@ -274,8 +275,8 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 })
 
 mobs:spawn_specific(
-"mobs_mc:creeper", 
-"overworld", 
+"mobs_mc:creeper",
+"overworld",
 "ground",
 {
 "Mesa",
@@ -418,12 +419,12 @@ mobs:spawn_specific(
 "ExtremeHillsM_underground",
 "JungleEdgeM_underground",
 },
-0, 
-7, 
-20, 
-16500, 
-2, 
-mobs_mc.spawn_height.overworld_min, 
+0,
+7,
+20,
+16500,
+2,
+mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs

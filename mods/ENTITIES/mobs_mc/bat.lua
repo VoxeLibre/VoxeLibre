@@ -3,6 +3,7 @@
 local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:bat", {
+	description = S("Bat"),
 	type = "animal",
 	spawn_class = "ambient",
 	can_despawn = true,

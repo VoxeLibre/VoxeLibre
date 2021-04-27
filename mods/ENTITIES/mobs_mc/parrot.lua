@@ -12,6 +12,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 mobs:register_mob("mobs_mc:parrot", {
+	description = S("Parrot"),
 	type = "npc",
 	spawn_class = "passive",
 	pathfinding = 1,
@@ -94,7 +95,7 @@ mobs:register_mob("mobs_mc:parrot", {
 -- Parrots spawn rarely in jungles. TODO: Also check for jungle *biome* <- I'll get to this eventually -j4i
 mobs:spawn_specific(
 "mobs_mc:parrot",
-"overworld", 
+"overworld",
 "ground",
 {
 "Jungle",
@@ -102,12 +103,12 @@ mobs:spawn_specific(
 "JungleM",
 "JungleEdge",
 },
-0, 
-minetest.LIGHT_MAX+1, 
-7, 
-30000, 
-1, 
-mobs_mc.spawn_height.water+7, 
+0,
+minetest.LIGHT_MAX+1,
+7,
+30000,
+1,
+mobs_mc.spawn_height.water+7,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs

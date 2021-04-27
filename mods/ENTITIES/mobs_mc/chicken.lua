@@ -9,6 +9,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 mobs:register_mob("mobs_mc:chicken", {
+	description = S("Chicken"),
 	type = "animal",
 	spawn_class = "passive",
 
@@ -129,8 +130,8 @@ mobs:register_mob("mobs_mc:chicken", {
 
 --spawn
 mobs:spawn_specific(
-"mobs_mc:chicken", 
-"overworld", 
+"mobs_mc:chicken",
+"overworld",
 "ground",
 {
 	"FlowerForest_beach",
@@ -181,10 +182,10 @@ mobs:spawn_specific(
 	"JungleEdge",
 	"SavannaM",
 },
-9, 
-minetest.LIGHT_MAX+1, 
-30, 17000, 
-3, 
+9,
+minetest.LIGHT_MAX+1,
+30, 17000,
+3,
 mobs_mc.spawn_height.water,
 mobs_mc.spawn_height.overworld_max)
 

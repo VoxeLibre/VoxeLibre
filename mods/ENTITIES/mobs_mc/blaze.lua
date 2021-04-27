@@ -11,6 +11,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 mobs:register_mob("mobs_mc:blaze", {
+	description = S("Blaze"),
 	type = "monster",
 	spawn_class = "hostile",
 	hp_min = 20,
@@ -84,7 +85,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	shoot_arrow = function(self, pos, dir)
 		-- 2-4 damage per arrow
 		local dmg = math.random(2,4)
-		mobs.shoot_projectile_handling("mobs_mc:blaze_fireball", pos, dir, self.object:get_yaw(), self.object, 7, dmg,nil,nil,nil,-0.4)		
+		mobs.shoot_projectile_handling("mobs_mc:blaze_fireball", pos, dir, self.object:get_yaw(), self.object, 7, dmg,nil,nil,nil,-0.4)
 	end,
 
 	do_custom = function(self)
@@ -164,13 +165,11 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 	tail_texture = "mobs_mc_spit.png^[colorize:black:255", --repurpose spit texture
 	tail_size = 2,
 	tail_distance_divider = 3,
+	_is_fireball = true,
 
 	-- Direct hit, no fire... just plenty of pain
 	hit_player = function(self, player)
-		if rawget(_G, "armor") and armor.last_damage_types then
-			armor.last_damage_types[player:get_player_name()] = "fireball"
-		end
-		mcl_burning.set_on_fire(player, 5, "blaze")
+		mcl_burning.set_on_fire(player, 5)
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = self._damage},

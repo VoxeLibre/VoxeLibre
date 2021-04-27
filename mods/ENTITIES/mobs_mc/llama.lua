@@ -25,6 +25,7 @@ local carpets = {
 }
 
 mobs:register_mob("mobs_mc:llama", {
+	description = S("Llama"),
 	type = "animal",
 	spawn_class = "passive",
 	rotate = 270,
@@ -281,12 +282,12 @@ mobs:spawn_specific(
 "MesaPlateauF_grasstop",
 "MesaBryce",
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-15000, 
-5, 
-mobs_mc.spawn_height.water+15, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+15000,
+5,
+mobs_mc.spawn_height.water+15,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs

@@ -114,37 +114,6 @@ end
 
 local node_stand, node_stand_below, node_head, node_feet
 
-
-minetest.register_on_punchplayer(function(player, hitter, damage)
-	if hitter:is_player() then
-		if hitter:get_player_control().aux1 then
-			player:add_velocity(hitter:get_velocity())
-		end
-		if hitter:get_velocity().y < -6 then
-			player:set_hp(player:get_hp() - (damage * math.random(0.50 , 0.75)))
-			local pos = player:get_pos()
-			minetest.add_particlespawner({
-				amount = 15,
-				time = 0.1,
-				minpos = {x=pos.x-0.5, y=pos.y-0.5, z=pos.z-0.5},
-				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
-				minvel = {x=-0.1, y=-0.1, z=-0.1},
-				maxvel = {x=0.1, y=0.1, z=0.1},
-				minacc = {x=0, y=0, z=0},
-				maxacc = {x=0, y=0, z=0},
-				minexptime = 1,
-				maxexptime = 2,
-				minsize = 1.5,
-				maxsize = 1.5,
-				collisiondetection = false,
-				vertical = false,
-				texture = "mcl_particles_crit.png^[colorize:#bc7a57:127",
-			})
-		end
-	end
-end)
-
-
 minetest.register_globalstep(function(dtime)
 
 	time = time + dtime
@@ -166,6 +135,7 @@ minetest.register_globalstep(function(dtime)
 		local parent = player:get_attach()
 		local wielded = player:get_wielded_item()
 		local player_velocity = player:get_velocity() or player:get_player_velocity()
+		local wielded_def = wielded:get_definition()
 
 		local c_x, c_y = unpack(player_collision(player))
 
@@ -249,7 +219,16 @@ minetest.register_globalstep(function(dtime)
 			playerphysics.remove_physics_factor(player, "gravity", "mcl_playerplus:elytra")
 		end
 
+		if wielded_def and wielded_def._mcl_toollike_wield then
+			player:set_bone_position("Wield_Item", vector.new(0,3.9,1.3), vector.new(90,0,0))
+		elseif string.find(wielded:get_name(), "mcl_bows:bow") then
+			player:set_bone_position("Wield_Item", vector.new(.5,4.5,-1.6), vector.new(90,0,20))
+		else
+			player:set_bone_position("Wield_Item", vector.new(-1.5,4.9,1.8), vector.new(135,0,90))
+		end
+
 		player_velocity_old = player:get_velocity() or player:get_player_velocity()
+
 		-- controls right and left arms pitch when shooting a bow
 		if string.find(wielded:get_name(), "mcl_bows:bow") and control.RMB and not control.LMB and not control.up and not control.down and not control.left and not control.right then
 			player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch+90,-30,pitch * -1 * .35))
@@ -423,8 +402,7 @@ minetest.register_globalstep(function(dtime)
 		-- Check privilege, too
 		and (not check_player_privs(name, {noclip = true})) then
 			if player:get_hp() > 0 then
-				mcl_death_messages.player_damage(player, S("@1 suffocated to death.", name))
-				player:set_hp(player:get_hp() - 1)
+				mcl_util.deal_damage(player, 1, {type = "in_wall"})
 			end
 		end
 
@@ -439,8 +417,7 @@ minetest.register_globalstep(function(dtime)
 			local dist_feet = vector.distance({x=pos.x, y=pos.y-1, z=pos.z}, near)
 			if dist < 1.1 or dist_feet < 1.1 then
 				if player:get_hp() > 0 then
-					mcl_death_messages.player_damage(player, S("@1 was prickled to death by a cactus.", name))
-					player:set_hp(player:get_hp() - 1, { type = "punch", from = "mod" })
+					mcl_util.deal_damage(player, 1, {type = "cactus"})
 				end
 			end
 		end
@@ -546,4 +523,62 @@ minetest.register_on_leaveplayer(function(player)
 
 	mcl_playerplus_internal[name] = nil
 	mcl_playerplus.elytra[player] = nil
+end)
+
+-- Don't change HP if the player falls in the water or through End Portal:
+mcl_damage.register_modifier(function(obj, damage, reason)
+	if reason.type == "fall" then
+		local pos = obj:get_pos()
+		local node = minetest.get_node(pos)
+		local velocity = obj:get_velocity() or obj:get_player_velocity() or {x=0,y=-10,z=0}
+		local v_axis_max = math.max(math.abs(velocity.x), math.abs(velocity.y), math.abs(velocity.z))
+		local step = {x = velocity.x / v_axis_max, y = velocity.y / v_axis_max, z = velocity.z / v_axis_max}
+		for i = 1, math.ceil(v_axis_max/5)+1 do -- trace at least 1/5 of the way per second
+			if not node or node.name == "ignore" then
+				minetest.get_voxel_manip():read_from_map(pos, pos)
+				node = minetest.get_node(pos)
+			end
+			if node then
+				if minetest.registered_nodes[node.name].walkable then
+					return
+				end
+				if minetest.get_item_group(node.name, "water") ~= 0 then
+					return 0
+				end
+				if node.name == "mcl_portals:portal_end" then
+					if mcl_portals and mcl_portals.end_teleport then
+						mcl_portals.end_teleport(obj)
+					end
+					return 0
+				end
+			end
+			pos = vector.add(pos, step)
+			node = minetest.get_node(pos)
+		end
+	end
+end, -200)
+
+minetest.register_on_respawnplayer(function(player)
+	local pos = player:get_pos()
+	minetest.add_particlespawner({
+		amount = 50,
+		time = 0.001,
+		minpos = vector.add(pos, 0),
+		maxpos = vector.add(pos, 0),
+		minvel = vector.new(-5,-5,-5),
+		maxvel = vector.new(5,5,5),
+		minexptime = 1.1,
+		maxexptime = 1.5,
+		minsize = 1,
+		maxsize = 2,
+		collisiondetection = false,
+		vertical = false,
+		texture = "mcl_particles_mob_death.png^[colorize:#000000:255",
+	})
+
+	minetest.sound_play("mcl_mobs_mob_poof", {
+		pos = pos,
+		gain = 1.0,
+		max_hear_distance = 8,
+	}, true)
 end)

@@ -1,6 +1,5 @@
 local S = minetest.get_translator("mcl_nether")
 
-local mod_death_messages = minetest.get_modpath("mcl_death_messages")
 local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
 local on_rotate
 if mod_screwdriver then
@@ -141,10 +140,7 @@ minetest.register_node("mcl_nether:magma", {
 		end
 		-- Hurt players standing on top of this block
 		if player:get_hp() > 0 then
-			if mod_death_messages then
-				mcl_death_messages.player_damage(player, S("@1 stood too long on a magma block.", player:get_player_name()))
-			end
-			player:set_hp(player:get_hp() - 1, { type = "punch", from = "mod" })
+			mcl_util.deal_damage(player, 1, {type = "hot_floor"})
 		end
 	end,
 	_mcl_blast_resistance = 0.5,

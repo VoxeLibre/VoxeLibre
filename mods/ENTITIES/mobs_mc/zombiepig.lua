@@ -11,6 +11,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 local pigman = {
+	description = S("Zombie Pigman"),
 	-- type="animal", passive=false: This combination is needed for a neutral mob which becomes hostile, if attacked
 	type = "animal",
 	passive = false,
@@ -113,6 +114,7 @@ mobs:register_mob("mobs_mc:pigman", pigman)
 -- A smaller and more dangerous variant of the pigman
 
 local baby_pigman = table.copy(pigman)
+baby_pigman.description = S("Baby Zombie Pigman")
 baby_pigman.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
 baby_pigman.xp_min = 13
 baby_pigman.xp_max = 13
@@ -131,33 +133,33 @@ mobs:register_mob("mobs_mc:baby_pigman", baby_pigman)
 
 -- Regular spawning in the Nether
 mobs:spawn_specific(
-"mobs_mc:pigman", 
-"nether", 
+"mobs_mc:pigman",
+"nether",
 "ground",
 {
 "Nether"
 },
-0, 
+0,
 minetest.LIGHT_MAX+1,
-30, 
-6000, 
-3, 
-mobs_mc.spawn_height.nether_min, 
+30,
+6000,
+3,
+mobs_mc.spawn_height.nether_min,
 mobs_mc.spawn_height.nether_max)
 -- Baby zombie is 20 times less likely than regular zombies
 mobs:spawn_specific(
-"mobs_mc:baby_pigman", 
-"nether", 
+"mobs_mc:baby_pigman",
+"nether",
 "ground",
 {
 "Nether"
-}, 
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-100000, 
-4, 
-mobs_mc.spawn_height.nether_min, 
+},
+0,
+minetest.LIGHT_MAX+1,
+30,
+100000,
+4,
+mobs_mc.spawn_height.nether_min,
 mobs_mc.spawn_height.nether_max)
 
 -- Spawning in Nether portals in the Overworld

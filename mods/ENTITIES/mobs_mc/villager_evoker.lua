@@ -12,6 +12,7 @@ local S = minetest.get_translator("mobs_mc")
 local pr = PseudoRandom(os.time()*666)
 
 mobs:register_mob("mobs_mc:evoker", {
+	description = S("Evoker"),
 	type = "monster",
 	spawn_class = "hostile",
 	physical = true,

@@ -59,6 +59,7 @@ mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damag
 	obj:set_yaw(yaw-math.pi/2)
 	local le = obj:get_luaentity()
 	le._shooter = shooter
+	le._source_object = shooter
 	le._damage = damage
 	le._is_critical = is_critical
 	le._startpos = pos

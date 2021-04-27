@@ -27,6 +27,7 @@ end
 
 -- Ocelot
 local ocelot = {
+	description = S("Ocelot"),
 	type = "animal",
 	spawn_class = "passive",
 	can_despawn = true,
@@ -104,6 +105,7 @@ mobs:register_mob("mobs_mc:ocelot", ocelot)
 
 -- Cat
 local cat = table.copy(ocelot)
+cat.description = S("Cat")
 cat.textures = {{"mobs_mc_cat_black.png"}, {"mobs_mc_cat_red.png"}, {"mobs_mc_cat_siamese.png"}}
 cat.can_despawn = false
 cat.owner = ""
@@ -154,8 +156,8 @@ local base_spawn_chance = 5000
 -- Spawn ocelot
 --they get the same as the llama because I'm trying to rework so much of this code right now -j4i
 mobs:spawn_specific(
-"mobs_mc:ocelot", 
-"overworld", 
+"mobs_mc:ocelot",
+"overworld",
 "ground",
 {
 "Jungle",
@@ -163,12 +165,12 @@ mobs:spawn_specific(
 "JungleM",
 "JungleEdge",
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-15000, 
-5, 
-mobs_mc.spawn_height.water+15, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+15000,
+5,
+mobs_mc.spawn_height.water+15,
 mobs_mc.spawn_height.overworld_max)
 --[[
 mobs:spawn({
@@ -183,7 +185,7 @@ mobs:spawn({
 	max_height = mobs_mc.spawn_height.overworld_max,
 	on_spawn = function(self, pos)
 		 Note: Minecraft has a 1/3 spawn failure rate.
-		In this mod it is emulated by reducing the spawn rate accordingly (see above). 
+		In this mod it is emulated by reducing the spawn rate accordingly (see above).
 
 		-- 1/7 chance to spawn 2 ocelot kittens
 		if pr:next(1,7) == 1 then

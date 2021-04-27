@@ -11,6 +11,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 mobs:register_mob("mobs_mc:ghast", {
+	description = S("Ghast"),
 	type = "monster",
 	spawn_class = "hostile",
 	group_attack = true,
@@ -67,7 +68,7 @@ mobs:register_mob("mobs_mc:ghast", {
 	shoot_arrow = function(self, pos, dir)
 		-- 2-4 damage per arrow
 		local dmg = math.random(2,4)
-		mobs.shoot_projectile_handling("mobs_mc:ghast_fireball", pos, dir, self.object:get_yaw(), self.object, 11, dmg,nil,nil,nil,-0.6)		
+		mobs.shoot_projectile_handling("mobs_mc:ghast_fireball", pos, dir, self.object:get_yaw(), self.object, 11, dmg,nil,nil,nil,-0.6)
 	end,
 	--[[
 	do_custom = function(self)
@@ -84,18 +85,18 @@ mobs:register_mob("mobs_mc:ghast", {
 
 
 mobs:spawn_specific(
-"mobs_mc:ghast", 
-"nether", 
+"mobs_mc:ghast",
+"nether",
 "ground",
 {
 "Nether"
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-18000, 
-2, 
-mobs_mc.spawn_height.nether_min, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+18000,
+2,
+mobs_mc.spawn_height.nether_min,
 mobs_mc.spawn_height.nether_max)
 
 -- fireball (projectile)
@@ -108,11 +109,9 @@ mobs:register_arrow("mobs_mc:ghast_fireball", {
 	tail = 1,
 	tail_texture = "mobs_mc_spit.png^[colorize:black:255", --repurpose spit texture
 	tail_size = 5,
+	_is_fireball = true,
 
 	hit_player = function(self, player)
-		if rawget(_G, "armor") and armor.last_damage_types then
-			armor.last_damage_types[player:get_player_name()] = "fireball"
-		end
 		--[[
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,

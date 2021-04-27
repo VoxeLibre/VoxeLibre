@@ -190,6 +190,7 @@ end
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 
 mobs:register_mob("mobs_mc:enderman", {
+	description = S("Enderman"),
 	type = "monster",
 	spawn_class = "passive",
 	neutral = true,
@@ -347,7 +348,7 @@ mobs:register_mob("mobs_mc:enderman", {
 		end
 		-- Check to see if people are near by enough to look at us.
 		for _,obj in pairs(minetest.get_connected_players()) do
-			
+
 			--check if they are within radius
 			local player_pos = obj:get_pos()
 			if player_pos then -- prevent crashing in 1 in a million scenario
@@ -372,7 +373,7 @@ mobs:register_mob("mobs_mc:enderman", {
 						local ender_eye_pos = vector.new(enderpos.x, enderpos.y + 2.75, enderpos.z)
 						local eye_distance_from_player = vector.distance(ender_eye_pos, look_pos)
 						look_pos = vector.add(look_pos, vector.multiply(look_dir, eye_distance_from_player))
-					
+
 						--if looking in general head position, turn hostile
 						if minetest.line_of_sight(ender_eye_pos, look_pos_base) and vector.distance(look_pos, ender_eye_pos) <= 0.4 then
 							self.provoked = "staring"
@@ -386,7 +387,7 @@ mobs:register_mob("mobs_mc:enderman", {
 								self.hostile = true
 								self.state = "attack"
 								self.attacking = obj
-							end						
+							end
 						end
 
 					end
@@ -584,23 +585,23 @@ mobs:register_mob("mobs_mc:enderman", {
 
 -- End spawn
 mobs:spawn_specific(
-"mobs_mc:enderman", 
-"end", 
+"mobs_mc:enderman",
+"end",
 "ground",
 {
 "End"
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-3000, 
-12, 
-mobs_mc.spawn_height.end_min, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+3000,
+12,
+mobs_mc.spawn_height.end_min,
 mobs_mc.spawn_height.end_max)
 -- Overworld spawn
 mobs:spawn_specific(
-"mobs_mc:enderman", 
-"overworld", 
+"mobs_mc:enderman",
+"overworld",
 "ground",
 {
 "Mesa",
@@ -743,28 +744,28 @@ mobs:spawn_specific(
 "ExtremeHillsM_underground",
 "JungleEdgeM_underground",
 },
-0, 
-7, 
-30, 
-19000, 
-2, 
-mobs_mc.spawn_height.overworld_min, 
+0,
+7,
+30,
+19000,
+2,
+mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 -- Nether spawn (rare)
 mobs:spawn_specific(
-"mobs_mc:enderman", 
-"nether", 
+"mobs_mc:enderman",
+"nether",
 "ground",
 {
 "Nether"
 },
-0, 
-7, 
-30, 
-27500, 
-4, 
-mobs_mc.spawn_height.nether_min, 
+0,
+7,
+30,
+27500,
+4,
+mobs_mc.spawn_height.nether_min,
 mobs_mc.spawn_height.nether_max)
 
 -- spawn eggs

@@ -13,6 +13,7 @@ local S = minetest.get_translator("mobs_mc")
 -- Spider by AspireMint (fishyWET (CC-BY-SA 3.0 license for texture)
 
 local spider = {
+	description = S("Spider"),
 	type = "monster",
 	spawn_class = "hostile",
 	passive = false,
@@ -77,6 +78,7 @@ mobs:register_mob("mobs_mc:spider", spider)
 
 -- Cave spider
 local cave_spider = table.copy(spider)
+cave_spider.description = S("Cave Spider")
 cave_spider.textures = { {"mobs_mc_cave_spider.png^(mobs_mc_spider_eyes.png^[makealpha:0,0,0)"} }
 -- TODO: Poison damage
 -- TODO: Revert damage to 2
@@ -93,8 +95,8 @@ mobs:register_mob("mobs_mc:cave_spider", cave_spider)
 
 
 mobs:spawn_specific(
-"mobs_mc:spider", 
-"overworld", 
+"mobs_mc:spider",
+"overworld",
 "ground",
 {
 "Mesa",
@@ -237,12 +239,12 @@ mobs:spawn_specific(
 "ExtremeHillsM_underground",
 "JungleEdgeM_underground",
 },
-0, 
-7, 
-30, 
-17000, 
-2, 
-mobs_mc.spawn_height.overworld_min, 
+0,
+7,
+30,
+17000,
+2,
+mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs

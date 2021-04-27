@@ -196,7 +196,7 @@ function mobs:register_mob(name, def)
 	end
 
 	minetest.register_entity(name, {
-
+		description = def.description,
 		use_texture_alpha = def.use_texture_alpha,
 		stepheight = def.stepheight or 0.6,
 		stepheight_backup = def.stepheight or 0.6,
@@ -542,7 +542,7 @@ function mobs:register_arrow(name, def)
 			local vel = self.object:get_velocity()
 
 			local pos = self.object:get_pos()
-			
+
 			if self.timer > 150
 			or not mobs.within_limits(pos, 0) then
 				mcl_burning.extinguish(self.object)

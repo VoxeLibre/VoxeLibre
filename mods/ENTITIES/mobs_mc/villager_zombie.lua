@@ -26,6 +26,7 @@ local professions = {
 }
 
 mobs:register_mob("mobs_mc:villager_zombie", {
+	description = S("Zombie Villager"),
 	type = "monster",
 	spawn_class = "hostile",
 	hostile = true,

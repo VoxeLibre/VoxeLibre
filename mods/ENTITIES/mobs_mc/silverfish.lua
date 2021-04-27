@@ -5,6 +5,7 @@
 local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:silverfish", {
+	description = S("Silverfish"),
 	type = "monster",
 	spawn_class = "hostile",
 	passive = false,

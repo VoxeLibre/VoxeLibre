@@ -10,8 +10,9 @@ local S = minetest.get_translator("mobs_mc")
 --###################
 
 -- animation 45-80 is transition between passive and attack stance
-   
+
 mobs:register_mob("mobs_mc:shulker", {
+	description = S("Shulker"),
 	type = "monster",
 	spawn_class = "hostile",
 	attack_type = "projectile",
@@ -82,16 +83,16 @@ mobs:register_arrow("mobs_mc:shulkerbullet", {
 mobs:register_egg("mobs_mc:shulker", S("Shulker"), "mobs_mc_spawn_icon_shulker.png", 0)
 
 mobs:spawn_specific(
-"mobs_mc:shulker", 
-"end", 
+"mobs_mc:shulker",
+"end",
 "ground",
 {
 "End"
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-5000, 
-2, 
-mobs_mc.spawn_height.end_min, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+5000,
+2,
+mobs_mc.spawn_height.end_min,
 mobs_mc.spawn_height.end_max)

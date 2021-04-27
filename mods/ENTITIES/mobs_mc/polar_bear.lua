@@ -8,6 +8,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 mobs:register_mob("mobs_mc:polar_bear", {
+	description = S("Polar Bear"),
 	type = "animal",
 	spawn_class = "passive",
 	runaway = false,
@@ -37,7 +38,7 @@ mobs:register_mob("mobs_mc:polar_bear", {
 		chance = 2,
 		min = 0,
 		max = 2,
-		looting = "common",},		
+		looting = "common",},
 		-- 1/4 to drop raw salmon
 		{name = mobs_mc.items.salmon_raw,
 		chance = 4,
