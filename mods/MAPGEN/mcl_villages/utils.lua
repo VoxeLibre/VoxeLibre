@@ -1,4 +1,4 @@
-local get_node = mcl_vars.get_node
+local get_node = mcl_mapgen.get_far_node
 
 -------------------------------------------------------------------------------
 -- function to copy tables

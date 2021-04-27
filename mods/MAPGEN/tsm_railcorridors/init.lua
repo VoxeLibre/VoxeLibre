@@ -94,7 +94,7 @@ end
 -- Max. and min. heights between rail corridors are generated
 local height_min
 if mcl_vars.mg_lava then
-	height_min = mcl_vars.mg_lava_overworld_max + 2
+	height_min = mcl_mapgen.overworld.lava_max + 2
 else
 	height_min = mcl_vars.mg_bedrock_overworld_max + 2
 end

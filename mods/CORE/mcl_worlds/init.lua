@@ -3,25 +3,25 @@ mcl_worlds = {}
 -- For a given position, returns a 2-tuple:
 -- 1st return value: true if pos is in void
 -- 2nd return value: true if it is in the deadly part of the void
+local min1, min2, min3 = mcl_mapgen.overworld.min, mcl_mapgen.end.min, mcl_mapgen.nether.min
+local max1, max2, max3 = mcl_mapgen.overworld.max, mcl_mapgen.end.max, mcl_mapgen.nether.max+128
 function mcl_worlds.is_in_void(pos)
-	local void =
-		not ((pos.y < mcl_vars.mg_overworld_max and pos.y > mcl_vars.mg_overworld_min) or
-		(pos.y < mcl_vars.mg_nether_max+128 and pos.y > mcl_vars.mg_nether_min) or
-		(pos.y < mcl_vars.mg_end_max and pos.y > mcl_vars.mg_end_min))
+	local y = pos.y
+	local void = not ((y < max1 and y > min1) or (y < max2 and y > min2) or (y < max3 and y > min3))
 
 	local void_deadly = false
 	local deadly_tolerance = 64 -- the player must be this many nodes “deep” into the void to be damaged
 	if void then
 		-- Overworld → Void → End → Void → Nether → Void
-		if pos.y < mcl_vars.mg_overworld_min and pos.y > mcl_vars.mg_end_max then
-			void_deadly = pos.y < mcl_vars.mg_overworld_min - deadly_tolerance
-		elseif pos.y < mcl_vars.mg_end_min and pos.y > mcl_vars.mg_nether_max+128 then
+		if y < mcl_vars.min1 and y > max2 then
+			void_deadly = y < min1 - deadly_tolerance
+		elseif y < min2 and y > max3 then
 			-- The void between End and Nether. Like usual, but here, the void
 			-- *above* the Nether also has a small tolerance area, so player
 			-- can fly above the Nether without getting hurt instantly.
-			void_deadly = (pos.y < mcl_vars.mg_end_min - deadly_tolerance) and (pos.y > mcl_vars.mg_nether_max+128 + deadly_tolerance)
-		elseif pos.y < mcl_vars.mg_nether_min then
-			void_deadly = pos.y < mcl_vars.mg_nether_min - deadly_tolerance
+			void_deadly = (y < min2 - deadly_tolerance) and (y > max3 + deadly_tolerance)
+		elseif y < min3 then
+			void_deadly = y < min3 - deadly_tolerance
 		end
 	end
 	return void, void_deadly
@@ -33,12 +33,12 @@ end
 -- If the Y coordinate is not located in any dimension, it will return:
 --     nil, "void"
 function mcl_worlds.y_to_layer(y)
-       if y >= mcl_vars.mg_overworld_min then
-               return y - mcl_vars.mg_overworld_min, "overworld"
-       elseif y >= mcl_vars.mg_nether_min and y <= mcl_vars.mg_nether_max+128 then
-               return y - mcl_vars.mg_nether_min, "nether"
-       elseif y >= mcl_vars.mg_end_min and y <= mcl_vars.mg_end_max then
-               return y - mcl_vars.mg_end_min, "end"
+       if y >= min1 then
+               return y - min1, "overworld"
+       elseif y >= min3 and y <= max3 then
+               return y - min3, "nether"
+       elseif y >= min2 and y <= max2 then
+               return y - min2, "end"
        else
                return nil, "void"
        end

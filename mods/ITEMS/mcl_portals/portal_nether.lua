@@ -27,7 +27,7 @@ local DELAY				= 3 -- seconds before teleporting in Nether portal in Survival mo
 local DISTANCE_MAX			= 128
 local PORTAL				= "mcl_portals:portal"
 local OBSIDIAN				= "mcl_core:obsidian"
-local O_Y_MIN, O_Y_MAX			= max(mcl_vars.mg_overworld_min, -31), min(mcl_vars.mg_overworld_max, 2048)
+local O_Y_MIN, O_Y_MAX			= max(mcl_mapgen.overworld.min, -31), min(mcl_mapgen.overworld.max, 2048)
 local N_Y_MIN, N_Y_MAX			= mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_bedrock_nether_top_min - H_MIN
 
 -- Alpha and particles
@@ -66,7 +66,7 @@ minetest.register_on_shutdown(function()
 	storage:set_string("nether_exits_keys", minetest.serialize(keys))
 end)
 
-local get_node = mcl_vars.get_node
+local get_node = mcl_mapgen.get_far_node
 local set_node = minetest.set_node
 local registered_nodes = minetest.registered_nodes
 local is_protected = minetest.is_protected
@@ -414,7 +414,7 @@ local function create_portal_2(pos1, name, obj)
 	end
 	local exit = build_nether_portal(pos1, W_MIN-2, H_MIN-2, orientation, name)
 	finalize_teleport(obj, exit)
-	local cn = mcl_vars.get_chunk_number(pos1)
+	local cn = mcl_mapgen.get_chunk_number(pos1)
 	chunks[cn] = nil
 	if queue[cn] then
 		for next_obj, _ in pairs(queue[cn]) do
@@ -428,9 +428,9 @@ end
 
 local function get_lava_level(pos, pos1, pos2)
 	if pos.y > -1000 then
-		return max(min(mcl_vars.mg_lava_overworld_max, pos2.y-1), pos1.y+1)
+		return max(min(mcl_mapgen.overworld.lava_max, pos2.y-1), pos1.y+1)
 	end
-	return max(min(mcl_vars.mg_lava_nether_max, pos2.y-1), pos1.y+1)
+	return max(min(mcl_mapgen.nether.lava_max, pos2.y-1), pos1.y+1)
 end
 
 local function ecb_scan_area_2(blockpos, action, calls_remaining, param)
@@ -509,7 +509,7 @@ local function ecb_scan_area_2(blockpos, action, calls_remaining, param)
 end
 
 local function create_portal(pos, limit1, limit2, name, obj)
-	local cn = mcl_vars.get_chunk_number(pos)
+	local cn = mcl_mapgen.get_chunk_number(pos)
 	if chunks[cn] then
 		local q = queue[cn] or {}
 		q[obj] = true
@@ -537,8 +537,8 @@ local function create_portal(pos, limit1, limit2, name, obj)
 	end
 
 	-- Basically the copy of code above, with minor additions to continue the search in single additional chunk below:
-	local next_chunk_1 = {x = pos1.x, y = pos1.y - mcl_vars.chunk_size_in_nodes, z = pos1.z}
-	local next_chunk_2 = add(next_chunk_1, mcl_vars.chunk_size_in_nodes - 1)
+	local next_chunk_1 = {x = pos1.x, y = pos1.y - mcl_mapgen.CS_NODES, z = pos1.z}
+	local next_chunk_2 = add(next_chunk_1, mcl_mapgen.CS_NODES - 1)
 	local next_pos = {x = pos.x, y=max(next_chunk_2.y, limit1.y), z = pos.z}
 	if limit1 and limit1.x and limit1.y and limit1.z then
 		pos1 = {x = max(min(limit1.x, pos.x), pos1.x), y = max(min(limit1.y, pos.y), pos1.y), z = max(min(limit1.z, pos.z), pos1.z)}

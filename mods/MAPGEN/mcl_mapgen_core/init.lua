@@ -97,8 +97,8 @@ for s=1, #specialstones do
 		clust_scarcity = 15*15*15,
 		clust_num_ores = 33,
 		clust_size     = 5,
-		y_min          = mcl_vars.mg_overworld_min,
-		y_max          = mcl_vars.mg_overworld_max,
+		y_min          = mcl_mapgen.overworld.min,
+		y_max          = mcl_mapgen.overworld.max,
 		noise_params = {
 			offset  = 0,
 			scale   = 1,
@@ -117,8 +117,8 @@ for s=1, #specialstones do
 		clust_scarcity = 10*10*10,
 		clust_num_ores = 58,
 		clust_size     = 7,
-		y_min          = mcl_vars.mg_overworld_min,
-		y_max          = mcl_vars.mg_overworld_max,
+		y_min          = mcl_mapgen.overworld.min,
+		y_max          = mcl_mapgen.overworld.max,
 		noise_params = {
 			offset  = 0,
 			scale   = 1,
@@ -142,8 +142,8 @@ minetest.register_ore({
 	clust_scarcity = 15*15*15,
 	clust_num_ores = 33,
 	clust_size     = 4,
-	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_vars.mg_overworld_max,
+	y_min          = mcl_mapgen.overworld.min,
+	y_max          = mcl_mapgen.overworld.max,
 	noise_params = {
 		offset  = 0,
 		scale   = 1,
@@ -164,7 +164,7 @@ minetest.register_ore({
 	clust_scarcity = 14*14*14,
 	clust_num_ores = 33,
 	clust_size     = 5,
-	y_min          = mcl_vars.mg_overworld_min,
+	y_min          = mcl_mapgen.overworld.min,
 	y_max          = mcl_worlds.layer_to_y(111),
 	noise_params = {
 		offset  = 0,
@@ -191,7 +191,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 525*3,
 		clust_num_ores = 5,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = mcl_mapgen.overworld.min,
 		y_max          = mcl_worlds.layer_to_y(50),
 	})
 	minetest.register_ore({
@@ -201,7 +201,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 510*3,
 		clust_num_ores = 8,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = mcl_mapgen.overworld.min,
 		y_max          = mcl_worlds.layer_to_y(50),
 	})
 	minetest.register_ore({
@@ -211,7 +211,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 500*3,
 		clust_num_ores = 12,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = mcl_mapgen.overworld.min,
 		y_max          = mcl_worlds.layer_to_y(50),
 	})
 
@@ -289,7 +289,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 830,
 		clust_num_ores = 5,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = mcl_mapgen.overworld.min,
 		y_max          = mcl_worlds.layer_to_y(39),
 	})
 	minetest.register_ore({
@@ -315,7 +315,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 4775,
 		clust_num_ores = 5,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = mcl_mapgen.overworld.min,
 		y_max          = mcl_worlds.layer_to_y(30),
 	})
 	minetest.register_ore({
@@ -325,7 +325,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 6560,
 		clust_num_ores = 7,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = mcl_mapgen.overworld.min,
 		y_max          = mcl_worlds.layer_to_y(30),
 	})
 
@@ -353,7 +353,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 10000,
 		clust_num_ores = 4,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = mcl_mapgen.overworld.min,
 		y_max          = mcl_worlds.layer_to_y(12),
 	})
 	minetest.register_ore({
@@ -363,7 +363,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 5000,
 		clust_num_ores = 2,
 		clust_size     = 2,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = mcl_mapgen.overworld.min,
 		y_max          = mcl_worlds.layer_to_y(12),
 	})
 	minetest.register_ore({
@@ -373,7 +373,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 10000,
 		clust_num_ores = 8,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = mcl_mapgen.overworld.min,
 		y_max          = mcl_worlds.layer_to_y(12),
 	})
 
@@ -411,7 +411,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 500,
 		clust_num_ores = 4,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = mcl_mapgen.overworld.min,
 		y_max          = mcl_worlds.layer_to_y(13),
 	})
 	minetest.register_ore({
@@ -421,7 +421,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 800,
 		clust_num_ores = 7,
 		clust_size     = 4,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = mcl_mapgen.overworld.min,
 		y_max          = mcl_worlds.layer_to_y(13),
 	})
 
@@ -462,7 +462,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 			clust_scarcity = 14340,
 			clust_num_ores = 1,
 			clust_size     = 1,
-			y_min          = mcl_vars.mg_overworld_min,
+			y_min          = mcl_mapgen.overworld.min,
 			y_max          = mcl_worlds.layer_to_y(29),
 		})
 		-- Rare spawn
@@ -678,7 +678,7 @@ local function register_mgv6_decorations()
 			persist = 0.6
 		},
 		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		decoration = "mcl_core:cactus",
 		height = 1,
 		height_max = 3,
@@ -698,7 +698,7 @@ local function register_mgv6_decorations()
 			persist = 0.7
 		},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		decoration = "mcl_core:reeds",
 		height = 1,
 		height_max = 3,
@@ -728,7 +728,7 @@ local function register_mgv6_decorations()
 			persist = 0.0,
 		},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 	})
 
 	-- Large ferns
@@ -757,7 +757,7 @@ local function register_mgv6_decorations()
 			persist = 0.66,
 		},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 	})
 
 	-- Large flowers
@@ -1006,7 +1006,7 @@ local function register_mgv6_decorations()
 			persist = 0.666
 		},
 		flags = "force_placement",
-		y_min = mcl_vars.mg_lava_overworld_max + 5,
+		y_min = mcl_mapgen.overworld.lava_max + 5,
 		y_max = -20,
 	})
 
@@ -1038,7 +1038,7 @@ local function register_mgv6_decorations()
 				persist = 0.6
 			},
 			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = mcl_mapgen.overworld.max,
 			decoration = mushrooms[m],
 			spawn_by = { "mcl_core:tree", "mcl_core:sprucetree", "mcl_core:darktree", "mcl_core:birchtree", },
 			num_spawn_by = 1,
@@ -1059,7 +1059,7 @@ local function register_mgv6_decorations()
 			persist = 0.6
 		},
 		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		decoration = "mcl_core:deadbush",
 	})
 
@@ -1068,7 +1068,7 @@ local function register_mgv6_decorations()
 			offset = 0
 		end
 		if y_max == nil then
-			y_max = mcl_vars.mg_overworld_max
+			y_max = mcl_mapgen.overworld.max
 		end
 		minetest.register_decoration({
 			deco_type = "simple",
@@ -1111,7 +1111,7 @@ local function register_mgv6_decorations()
 		sidelen = 16,
 		fill_ratio = 11.0, -- complete coverage
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		decoration = "mcl_core:snow",
 	})
 
@@ -1719,7 +1719,7 @@ local generate_underground_mushrooms = function(minp, maxp, seed)
 	local pr_shroom = PseudoRandom(seed-24359)
 	-- Generate rare underground mushrooms
 	-- TODO: Make them appear in groups, use Perlin noise
-	local min, max = mcl_vars.mg_lava_overworld_max + 4, 0
+	local min, max = mcl_mapgen.overworld.lava_max + 4, 0
 	if minp.y > max or maxp.y < min then
 		return
 	end
@@ -1752,7 +1752,7 @@ end
 local generate_nether_decorations = function(minp, maxp, seed)
 	local pr_nether = PseudoRandom(seed+667)
 
-	if minp.y > mcl_vars.mg_nether_max or maxp.y < mcl_vars.mg_nether_min then
+	if minp.y > mcl_mapgen.nether.max or maxp.y < mcl_mapgen.nether.min then
 		return
 	end
 
@@ -1899,23 +1899,23 @@ local function basic(c)
 	local pr = PseudoRandom(blockseed)
 
 	-- The Void below the Nether:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_mapgen.EDGE_MIN	                     , mcl_vars.mg_nether_min                     -1, minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_mapgen.EDGE_MIN	                     , mcl_mapgen.nether.min                     -1, minp, maxp, lvm_used, pr)
 
-	-- [[ THE NETHER:					mcl_vars.mg_nether_min			       mcl_vars.mg_nether_max							]]
+	-- [[ THE NETHER:					mcl_mapgen.nether.min			       mcl_mapgen.nether.max							]]
 
 	-- The Air on the Nether roof, https://git.minetest.land/MineClone2/MineClone2/issues/1186
-	lvm_used = set_layers(data, area, c_air		 , nil, mcl_vars.mg_nether_max			   +1, mcl_vars.mg_nether_max + 128                 , minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_air		 , nil, mcl_mapgen.nether.max			   +1, mcl_mapgen.nether.max + 128                 , minp, maxp, lvm_used, pr)
 	-- The Void above the Nether below the End:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_nether_max + 128               +1, mcl_vars.mg_end_min                        -1, minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_mapgen.nether.max + 128               +1, mcl_mapgen.end.min                        -1, minp, maxp, lvm_used, pr)
 
-	-- [[ THE END:						mcl_vars.mg_end_min			       mcl_vars.mg_end_max							]]
+	-- [[ THE END:						mcl_mapgen.end.min			       mcl_mapgen.end.max							]]
 
 	-- The Void above the End below the Realm barrier:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_end_max                        +1, mcl_vars.mg_realm_barrier_overworld_end_min-1, minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_mapgen.end.max                        +1, mcl_vars.mg_realm_barrier_overworld_end_min-1, minp, maxp, lvm_used, pr)
 	-- Realm barrier between the Overworld void and the End
 	lvm_used = set_layers(data, area, c_realm_barrier, nil, mcl_vars.mg_realm_barrier_overworld_end_min  , mcl_vars.mg_realm_barrier_overworld_end_max  , minp, maxp, lvm_used, pr)
 	-- The Void above Realm barrier below the Overworld:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_realm_barrier_overworld_end_max+1, mcl_vars.mg_overworld_min                  -1, minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_realm_barrier_overworld_end_max+1, mcl_mapgen.overworld.min                  -1, minp, maxp, lvm_used, pr)
 
 
 	if mg_name ~= "singlenode" then
@@ -1931,8 +1931,8 @@ local function basic(c)
 
 		-- Big lava seas by replacing air below a certain height
 		if mcl_vars.mg_lava then
-			lvm_used = set_layers(data, area, c_lava, c_air, mcl_vars.mg_overworld_min, mcl_vars.mg_lava_overworld_max, minp, maxp, lvm_used, pr)
-			lvm_used = set_layers(data, area, c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, minp, maxp, lvm_used, pr)
+			lvm_used = set_layers(data, area, c_lava, c_air, mcl_mapgen.overworld.min, mcl_mapgen.overworld.lava_max, minp, maxp, lvm_used, pr)
+			lvm_used = set_layers(data, area, c_nether_lava, c_air, mcl_mapgen.nether.min, mcl_vars.mg_lava_nether_max, minp, maxp, lvm_used, pr)
 		end
 
 		-- Clay, vines, cocoas
@@ -1948,7 +1948,7 @@ local function basic(c)
 		-- Snow and sand fixes. This code implements snow consistency
 		-- and fixes floating sand and cut plants.
 		-- A snowy grass block must be below a top snow or snow block at all times.
-		if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
+		if minp.y <= mcl_mapgen.overworld.max and maxp.y >= mcl_mapgen.overworld.min then
 			-- v6 mapgen:
 			if mg_name == "v6" then
 
@@ -2014,7 +2014,7 @@ local function basic(c)
 		-- Nether block fixes:
 		-- * Replace water with Nether lava.
 		-- * Replace stone, sand dirt in v6 so the Nether works in v6.
-		elseif emin.y <= mcl_vars.mg_nether_max and emax.y >= mcl_vars.mg_nether_min then
+		elseif emin.y <= mcl_mapgen.nether.max and emax.y >= mcl_mapgen.nether.min then
 			if mg_name == "v6" then
 				local nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
 				for n=1, #nodes do
@@ -2041,7 +2041,7 @@ local function basic(c)
 		-- * Replace water with end stone or air (depending on height).
 		-- * Remove stone, sand, dirt in v6 so our End map generator works in v6.
 		-- * Generate spawn platform (End portal destination)
-		elseif minp.y <= mcl_vars.mg_end_max and maxp.y >= mcl_vars.mg_end_min then
+		elseif minp.y <= mcl_mapgen.end.max and maxp.y >= mcl_mapgen.end.min then
 			local nodes
 			if mg_name == "v6" then
 				nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
@@ -2083,11 +2083,11 @@ local function basic(c)
 	-- Final hackery: Set sun light level in the End.
 	-- -26912 is at a mapchunk border.
 	local shadow = true
-	if minp.y >= -26912 and maxp.y <= mcl_vars.mg_end_max then
+	if minp.y >= -26912 and maxp.y <= mcl_mapgen.end.max then
 		vm:set_lighting({day=15, night=15})
 		lvm_used = true
 	end
-	if minp.y >= mcl_vars.mg_end_min and maxp.y <= -26911 then
+	if minp.y >= mcl_mapgen.end.min and maxp.y <= -26911 then
 		shadow = false
 		lvm_used = true
 	end

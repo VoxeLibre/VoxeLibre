@@ -1,12 +1,17 @@
 mcl_mapgen = {}
+mcl_mapgen.overworld = {}
+mcl_mapgen.nether = {}
+mcl_mapgen.end = {}
 
+local minetest_log, math_floor = minetest.log, math.floor
+local minetest_get_node = minetest.get_node
 
 -- Calculate mapgen_edge_min/mapgen_edge_max
 mcl_mapgen.CS		= math.max(1, tonumber(minetest.get_mapgen_setting("chunksize"))	or 5)
 mcl_mapgen.BS		= math.max(1, core.MAP_BLOCKSIZE					or 16)
 mcl_mapgen.LIMIT	= math.max(1, tonumber(minetest.get_mapgen_setting("mapgen_limit"))	or 31000)
 mcl_mapgen.MAX_LIMIT	= math.max(1, core.MAX_MAP_GENERATION_LIMIT				or 31000)
-mcl_mapgen.OFFSET	= - math.floor(mcl_mapgen.CS / 2)
+mcl_mapgen.OFFSET	= - math_floor(mcl_mapgen.CS / 2)
 mcl_mapgen.OFFSET_NODES	= mcl_mapgen.OFFSET * mcl_mapgen.BS
 mcl_mapgen.CS_NODES	= mcl_mapgen.CS * mcl_mapgen.BS
 
@@ -16,15 +21,17 @@ local central_chunk_max_pos = central_chunk_min_pos + mcl_mapgen.CS_NODES - 1
 local ccfmin = central_chunk_min_pos - mcl_mapgen.BS -- Fullminp/fullmaxp of central chunk, in nodes
 local ccfmax = central_chunk_max_pos + mcl_mapgen.BS
 
-local mapgen_limit_b = math.floor(math.min(mcl_mapgen.LIMIT, mcl_mapgen.MAX_LIMIT) / mcl_mapgen.BS)
+local mapgen_limit_b = math_floor(math.min(mcl_mapgen.LIMIT, mcl_mapgen.MAX_LIMIT) / mcl_mapgen.BS)
 local mapgen_limit_min = - mapgen_limit_b	* mcl_mapgen.BS
 local mapgen_limit_max =  (mapgen_limit_b + 1)	* mcl_mapgen.BS - 1
 
-local numcmin = math.max(math.floor((ccfmin - mapgen_limit_min) / mcl_vars.chunk_size_in_nodes), 0) -- Number of complete chunks from central chunk
-local numcmax = math.max(math.floor((mapgen_limit_max - ccfmax) / mcl_vars.chunk_size_in_nodes), 0) -- fullminp/fullmaxp to effective mapgen limits.
+local numcmin = math.max(math_floor((ccfmin - mapgen_limit_min) / mcl_mapgen.CS_NODES), 0) -- Number of complete chunks from central chunk
+local numcmax = math.max(math_floor((mapgen_limit_max - ccfmax) / mcl_mapgen.CS_NODES), 0) -- fullminp/fullmaxp to effective mapgen limits.
 
 mcl_mapgen.EDGE_MIN = central_chunk_min_pos - numcmin * mcl_mapgen.CS_NODES
 mcl_mapgen.EDGE_MAX = central_chunk_max_pos + numcmax * mcl_mapgen.CS_NODES
+
+minetest_log("action", "[mcl_mapgen] World edges are: mcl_mapgen.EDGE_MIN = " .. tostring(mcl_mapgen.EDGE_MIN) .. ", mcl_mapgen.EDGE_MAX = " .. tostring(mcl_mapgen.EDGE_MAX))
 ------------------------------------------
 
 
@@ -33,11 +40,9 @@ local lvm, block, lvm_block, lvm_chunk, param2, nodes_block, nodes_chunk = 0, 0,
 local lvm_buffer, lvm_param2_buffer = {}, {} -- Static buffer pointers
 local BS, CS = mcl_mapgen.BS, mcl_mapgen.CS -- Mapblock size (in nodes), Mapchunk size (in blocks)
 local LAST_BLOCK, LAST_NODE = CS - 1, BS - 1 -- First mapblock in chunk (node in mapblock) has number 0, last has THIS number. It's for runtime optimization
-local offset = math.floor(mcl_vars.central_chunk_offset_in_nodes / BS) -- Central mapchunk offset (in blocks)
+local offset = mcl_mapgen.OFFSET -- Central mapchunk offset (in blocks)
 
 local DEFAULT_PRIORITY	= 5000
-
-local minetest_log, math_floor = minetest.log, math.floor
 
 function mcl_mapgen.register_chunk_generator(callback_function, priority)
 	nodes_chunk = nodes_chunk + 1
@@ -141,15 +146,17 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 		end
 	end
 
-	if vm_context.write then
-		vm:set_data(data)
+	if lvm > 0 then
+		if vm_context.write then
+			vm:set_data(data)
+		end
+		if vm_context.write_param2 then
+			vm:set_param2_data(data2)
+		end
+		vm:calc_lighting(minp, maxp, vm_context.shadow) -- TODO: check boundaries
+		vm:write_to_map()
+		vm:update_liquids()
 	end
-	if vm_context.write_param2 then
-		vm:set_param2_data(data2)
-	end
-	vm:calc_lighting(p1, p2, shadow)
-	vm:write_to_map()
-	vm:update_liquids()
 
 	for _, v in pairs(node_chunk_queue) do
 		v.f(minp, maxp, blockseed)
@@ -174,11 +181,11 @@ function mcl_mapgen.get_far_node(p)
 end
 
 local function coordinate_to_block(x)
-	return math_floor(x / mcl_mapgen.BS)
+	return math_floor(x / BS)
 end
 
 local function coordinate_to_chunk(x)
-	return math_floor((coordinate_to_block(x) - central_chunk_offset) / mcl_mapgen.CS)
+	return math_floor((coordinate_to_block(x) - offset) / CS)
 end
 
 function mcl_mapgen.pos_to_block(pos)
@@ -197,7 +204,7 @@ function mcl_mapgen.pos_to_chunk(pos)
 	}
 end
 
-local k_positive = math.ceil(mcl_mapgen.MAX_LIMIT / mcl_vars.chunk_size_in_nodes)
+local k_positive = math.ceil(mcl_mapgen.MAX_LIMIT / mcl_mapgen.CS_NODES)
 local k_positive_z = k_positive * 2
 local k_positive_y = k_positive_z * k_positive_z
 
@@ -210,96 +217,79 @@ function mcl_mapgen.get_chunk_number(pos) -- unsigned int
 end
 
 
-
-
-
 -- Mapgen variables
-local mg_name = minetest.get_mapgen_setting("mg_name")
-local minecraft_height_limit = 256
-local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
-local singlenode = mg_name == "singlenode"
+mcl_mapgen.name = minetest.get_mapgen_setting("mg_name")
+mcl_mapgen.superflat = mcl_mapgen.name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
+mcl_mapgen.singlenode = mcl_mapgen.name == "singlenode"
+mcl_mapgen.normal = not mcl_mapgen.superflat and not mcl_mapgen.singlenode
+local superflat, singlenode, normal = mcl_mapgen.superflat, mcl_mapgen.singlenode, mcl_mapgen.normal
 
-if not superflat and not singlenode then
-	-- Normal mode
-	--[[ Realm stacking (h is for height)
-	- Overworld (h>=256)
-	- Void (h>=1000)
-	- Realm Barrier (h=11), to allow escaping the End
-	- End (h>=256)
-	- Void (h>=1000)
-	- Nether (h=128)
-	- Void (h>=1000)
-	]]
+minetest_log("action", "[mcl_mapgen] Mapgen mode: " .. normal and "normal" or (superflat and "superflat" or "singlenode"))
 
-	-- Overworld
-	mcl_vars.mg_overworld_min = -62
-	mcl_vars.mg_overworld_max_official = mcl_vars.mg_overworld_min + minecraft_height_limit
-	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
-	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min + 4
-	mcl_vars.mg_lava_overworld_max = mcl_vars.mg_overworld_min + 10
-	mcl_vars.mg_lava = true
-	mcl_vars.mg_bedrock_is_rough = true
+mcl_mapgen.minecraft_height_limit = 256
 
-elseif singlenode then
-	mcl_vars.mg_overworld_min = -66
-	mcl_vars.mg_overworld_max_official = mcl_vars.mg_overworld_min + minecraft_height_limit
-	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
-	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min
-	mcl_vars.mg_lava = false
-	mcl_vars.mg_lava_overworld_max = mcl_vars.mg_overworld_min
-	mcl_vars.mg_bedrock_is_rough = false
-else
-	-- Classic superflat
-	local ground = minetest.get_mapgen_setting("mgflat_ground_level")
-	ground = tonumber(ground)
-	if not ground then
-		ground = 8
-	end
-	mcl_vars.mg_overworld_min = ground - 3
-	mcl_vars.mg_overworld_max_official = mcl_vars.mg_overworld_min + minecraft_height_limit
-	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
-	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min
-	mcl_vars.mg_lava = false
-	mcl_vars.mg_lava_overworld_max = mcl_vars.mg_overworld_min
-	mcl_vars.mg_bedrock_is_rough = false
+mcl_mapgen.bedrock_is_rough = normal
+
+--[[ Realm stacking (h is for height)
+- Overworld (h>=256)
+- Void (h>=1000)
+- Realm Barrier (h=11), to allow escaping the End
+- End (h>=256)
+- Void (h>=1000)
+- Nether (h=128)
+- Void (h>=1000)
+]]
+
+-- Overworld
+mcl_mapgen.overworld.min = -62
+if superflat then
+	mcl_mapgen.ground = tonumber(minetest.get_mapgen_setting("mgflat_ground_level")) or 8
+	mcl_mapgen.overworld.min = ground - 3
 end
+-- if singlenode then mcl_mapgen.overworld.min = -66 end -- DONT KNOW WHY
+mcl_mapgen.overworld.max = mcl_mapgen.EDGE_MAX
 
-mcl_vars.mg_overworld_max = mcl_mapgen.EDGE_MAX
+mcl_mapgen.overworld.bedrock_min = mcl_mapgen.overworld.min
+mcl_mapgen.overworld.bedrock_max = mcl_mapgen.overworld.bedrock_min + (mcl_mapgen.bedrock_is_rough and 4 or 0)
+
+mcl_mapgen.lava = normal
+mcl_mapgen.lava_overworld_max = mcl_mapgen.overworld.min + (normal and 10 or 0)
+
 
 -- The Nether (around Y = -29000)
-mcl_vars.mg_nether_min = -29067 -- Carefully chosen to be at a mapchunk border
-mcl_vars.mg_nether_max = mcl_vars.mg_nether_min + 128
-mcl_vars.mg_bedrock_nether_bottom_min = mcl_vars.mg_nether_min
-mcl_vars.mg_bedrock_nether_top_max = mcl_vars.mg_nether_max
+mcl_mapgen.nether.min = -29067 -- Carefully chosen to be at a mapchunk border
+mcl_mapgen.nether.max = mcl_mapgen.nether.min + 128
+mcl_mapgen.nether.bedrock_bottom_min = mcl_mapgen.nether.min
+mcl_mapgen.nether.bedrock_top_max = mcl_mapgen.nether.max
 if not superflat then
-	mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min + 4
-	mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max - 4
-	mcl_vars.mg_lava_nether_max = mcl_vars.mg_nether_min + 31
+	mcl_mapgen.nether.bedrock_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min + 4
+	mcl_mapgen.nether.bedrock_top_min = mcl_vars.mg_bedrock_nether_top_max - 4
+	mcl_mapgen.nether.lava_max = mcl_mapgen.nether.min + 31
 else
 	-- Thin bedrock in classic superflat mapgen
-	mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min
-	mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max
-	mcl_vars.mg_lava_nether_max = mcl_vars.mg_nether_min + 2
+	mcl_mapgen.nether.bedrock_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min
+	mcl_mapgen.nether.bedrock_top_min = mcl_vars.mg_bedrock_nether_top_max
+	mcl_mapgen.nether.lava_max = mcl_mapgen.nether.min + 2
 end
-if mg_name == "flat" then
+if mcl_mapgen.name == "flat" then
 	if superflat then
-		mcl_vars.mg_flat_nether_floor = mcl_vars.mg_bedrock_nether_bottom_max + 4
-		mcl_vars.mg_flat_nether_ceiling = mcl_vars.mg_bedrock_nether_bottom_max + 52
+		mcl_mapgen.nether.flat_nether_floor = mcl_mapgen.nether.bedrock_nether_bottom_max + 4
+		mcl_mapgen.nether.flat_nether_ceiling = mcl_mapgen.nether.bedrock_nether_bottom_max + 52
 	else
-		mcl_vars.mg_flat_nether_floor = mcl_vars.mg_lava_nether_max + 4
-		mcl_vars.mg_flat_nether_ceiling = mcl_vars.mg_lava_nether_max + 52
+		mcl_mapgen.nether.flat_nether_floor = mcl_mapgen.nether.lava_nether_max + 4
+		mcl_mapgen.nether.flat_nether_ceiling = mcl_mapgen.nether.lava_nether_max + 52
 	end
 end
 
 -- The End (surface at ca. Y = -27000)
-mcl_vars.mg_end_min = -27073 -- Carefully chosen to be at a mapchunk border
-mcl_vars.mg_end_max_official = mcl_vars.mg_end_min + minecraft_height_limit
-mcl_vars.mg_end_max = mcl_vars.mg_overworld_min - 2000
-mcl_vars.mg_end_platform_pos = { x = 100, y = mcl_vars.mg_end_min + 74, z = 0 }
+mcl_mapgen.end.min = -27073 -- Carefully chosen to be at a mapchunk border
+mcl_mapgen.end.max_official = mcl_mapgen.end.min + mcl_mapgen.minecraft_height_limit
+mcl_mapgen.end.max = mcl_mapgen.overworld.min - 2000
+mcl_vars.mg_end_platform_pos = { x = 100, y = mcl_mapgen.end.min + 74, z = 0 }
 
 -- Realm barrier used to safely separate the End from the void below the Overworld
-mcl_vars.mg_realm_barrier_overworld_end_max = mcl_vars.mg_end_max
-mcl_vars.mg_realm_barrier_overworld_end_min = mcl_vars.mg_end_max - 11
+mcl_vars.mg_realm_barrier_overworld_end_max = mcl_mapgen.end.max
+mcl_vars.mg_realm_barrier_overworld_end_min = mcl_mapgen.end.max - 11
 
 -- Use MineClone 2-style dungeons
 mcl_vars.mg_dungeons = true

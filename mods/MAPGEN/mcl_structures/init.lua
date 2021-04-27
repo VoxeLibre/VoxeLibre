@@ -110,14 +110,14 @@ mcl_structures.generate_igloo = function(pos, rotation, pr)
 	if r == 1 then
 		-- Select basement depth
 		local dim = mcl_worlds.pos_to_dimension(pos)
-		--local buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
+		--local buffer = pos.y - (mcl_mapgen.overworld.lava_max + 10)
 		local buffer
 		if dim == "nether" then
 			buffer = pos.y - (mcl_vars.mg_lava_nether_max + 10)
 		elseif dim == "end" then
 			buffer = pos.y - (mcl_vars.mg_end_min + 1)
 		elseif dim == "overworld" then
-			buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
+			buffer = pos.y - (mcl_mapgen.overworld.lava_max + 10)
 		else
 			return success
 		end
@@ -277,7 +277,7 @@ local function hut_placement_callback(p1, p2, size, orientation, pr)
 	if not p1 or not p2 then return end
 	local legs = minetest.find_nodes_in_area(p1, p2, "mcl_core:tree")
 	for i = 1, #legs do
-		while minetest.get_item_group(mcl_vars.get_node({x=legs[i].x, y=legs[i].y-1, z=legs[i].z}, true, 333333).name, "water") ~= 0 do
+		while minetest.get_item_group(mcl_mapgen.get_far_node({x=legs[i].x, y=legs[i].y-1, z=legs[i].z}, true, 333333).name, "water") ~= 0 do
 			legs[i].y = legs[i].y - 1
 			minetest.swap_node(legs[i], {name = "mcl_core:tree", param2 = 2})
 		end
