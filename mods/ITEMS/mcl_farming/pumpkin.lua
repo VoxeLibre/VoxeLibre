@@ -111,12 +111,16 @@ pumpkin_face_base_def.description = S("Pumpkin")
 pumpkin_face_base_def._doc_items_longdesc = S("A pumpkin can be worn as a helmet. Pumpkins grow from pumpkin stems, which in turn grow from pumpkin seeds.")
 pumpkin_face_base_def._doc_items_usagehelp = nil
 pumpkin_face_base_def.tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"}
+pumpkin_face_base_def.groups.armor=1
+pumpkin_face_base_def.groups.non_combat_armor=1
 pumpkin_face_base_def.groups.armor_head=1
+pumpkin_face_base_def.groups.non_combat_armor_head=1
 pumpkin_face_base_def._mcl_armor_mob_range_factor = 0
 pumpkin_face_base_def._mcl_armor_mob_range_mob = "mobs_mc:enderman"
+pumpkin_face_base_def._mcl_armor_entry = "head"
 pumpkin_face_base_def.groups.non_combat_armor=1
 if minetest.get_modpath("mcl_armor") then
-	pumpkin_face_base_def.on_secondary_use = armor.on_armor_use
+	pumpkin_face_base_def.on_secondary_use = mcl_armor.equip_on_use
 end
 
 -- Register stem growth

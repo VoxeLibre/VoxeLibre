@@ -46,6 +46,7 @@ table.insert(drops_zombie, {
 })
 
 local zombie = {
+	description = S("Zombie"),
 	type = "monster",
 	spawn_class = "hostile",
 	hp_min = 20,
@@ -102,6 +103,7 @@ mobs:register_mob("mobs_mc:zombie", zombie)
 -- A smaller and more dangerous variant of the zombie
 
 local baby_zombie = table.copy(zombie)
+baby_zombie.description = S("Baby Zombie")
 baby_zombie.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
 baby_zombie.xp_min = 12
 baby_zombie.xp_max = 12
@@ -115,6 +117,7 @@ mobs:register_mob("mobs_mc:baby_zombie", baby_zombie)
 -- Husk.
 -- Desert variant of the zombie
 local husk = table.copy(zombie)
+husk.description = S("Husk")
 husk.textures = {
 		{
 			"mobs_mc_empty.png", -- armor
@@ -132,6 +135,7 @@ mobs:register_mob("mobs_mc:husk", husk)
 -- Baby husk.
 -- A smaller and more dangerous variant of the husk
 local baby_husk = table.copy(husk)
+baby_husk.description = S("Baby Husk")
 baby_husk.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
 baby_husk.xp_min = 12
 baby_husk.xp_max = 12
