@@ -28,7 +28,7 @@ local DISTANCE_MAX			= 128
 local PORTAL				= "mcl_portals:portal"
 local OBSIDIAN				= "mcl_core:obsidian"
 local O_Y_MIN, O_Y_MAX			= max(mcl_mapgen.overworld.min, -31), min(mcl_mapgen.overworld.max, 2048)
-local N_Y_MIN, N_Y_MAX			= mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_bedrock_nether_top_min - H_MIN
+local N_Y_MIN, N_Y_MAX			= mcl_mapgen.nether.bedrock_bottom_min, mcl_mapgen.nether.bedrock_top_min - H_MIN
 
 -- Alpha and particles
 local node_particles_allowed = minetest.settings:get("mcl_node_particles") or "none"

@@ -16,8 +16,7 @@ end
 local probability_railcaves_in_mapchunk = P(0.33333)
 setting = tonumber(minetest.settings:get("tsm_railcorridors_probability_railcaves_in_mapchunk"))
 -- Extra check to prevent mod griefing in singlenode, mcimported worlds.
-local mg_name = minetest.get_mapgen_setting("mg_name")
-if mg_name == "singlenode" then
+if mcl_mapgen.singlenode then
 	probability_railcaves_in_mapchunk = P(0)
 elseif setting then
 	probability_railcaves_in_mapchunk = P(setting)
@@ -93,10 +92,10 @@ end
 
 -- Max. and min. heights between rail corridors are generated
 local height_min
-if mcl_vars.mg_lava then
+if mcl_mapgen.lava then
 	height_min = mcl_mapgen.overworld.lava_max + 2
 else
-	height_min = mcl_vars.mg_bedrock_overworld_max + 2
+	height_min = mcl_mapgen.overworld.bedrock_max + 2
 end
 local height_max = mcl_worlds.layer_to_y(60)
 

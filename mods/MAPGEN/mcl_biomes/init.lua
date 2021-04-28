@@ -1,8 +1,7 @@
-local mg_name = minetest.get_mapgen_setting("mg_name")
-local mg_seed = minetest.get_mapgen_setting("seed")
+local mg_seed = mcl_mapgen.seed
 
 -- Some mapgen settings
-local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
+local superflat = mcl_mapgen.superflat
 
 local generate_fallen_logs = minetest.settings:get_bool("mcl_generate_fallen_logs", false)
 
@@ -1505,8 +1504,8 @@ local function register_dimension_biomes()
 		node_cave_liquid = "air",
 		-- FIXME: For some reason the End stops generating early if this constant is not added.
 		-- Figure out why.
-		y_min = mcl_mapgen.end.min,
-		y_max = mcl_mapgen.end.max + 80,
+		y_min = mcl_mapgen.end_.min,
+		y_max = mcl_mapgen.end_.max + 80,
 		heat_point = 50,
 		humidity_point = 50,
 		_mcl_biome_type = "medium",
@@ -1539,7 +1538,7 @@ local function register_biome_ores()
 	-- Rarely replace stone with stone monster eggs.
 	-- In v6 this can happen anywhere, in other mapgens only in Extreme Hills.
 	local monster_egg_scarcity
-	if mg_name == "v6" then
+	if mcl_mapgen.v6 then
 		monster_egg_scarcity = 28 * 28 * 28
 	else
 		monster_egg_scarcity = 26 * 26 * 26
@@ -1561,7 +1560,7 @@ local function register_biome_ores()
 	})
 
 	-- Bonus gold spawn in Mesa
-	if mg_name ~= "v6" then
+	if not mcl_mapgen.v6 then
 		minetest.register_ore({
 			ore_type       = "scatter",
 			ore            = "mcl_core:stone_with_gold",
@@ -2009,7 +2008,7 @@ local function register_dimension_ores()
 		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
 		clust_scarcity  = 26 * 26 * 26,
 		clust_size      = 5,
-		y_min           = mcl_vars.mg_lava_nether_max + 10,
+		y_min           = mcl_mapgen.nether.lava_max + 10,
 		y_max           = mcl_mapgen.nether.max,
 		noise_threshold = 0.0,
 		noise_params    = {
@@ -2077,7 +2076,7 @@ local function register_dimension_ores()
 		clust_num_ores = 1,
 		clust_size     = 1,
 		y_min           = mcl_mapgen.nether.min,
-		y_max           = mcl_vars.mg_lava_nether_max + 1,
+		y_max           = mcl_mapgen.nether.lava_max + 1,
 	})
 
 	minetest.register_ore({
@@ -2087,8 +2086,8 @@ local function register_dimension_ores()
 		clust_scarcity = 1000,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		y_min           = mcl_vars.mg_lava_nether_max + 2,
-		y_max           = mcl_vars.mg_lava_nether_max + 12,
+		y_min           = mcl_mapgen.nether.lava_max + 2,
+		y_max           = mcl_mapgen.nether.lava_max + 12,
 	})
 
 	minetest.register_ore({
@@ -2098,8 +2097,8 @@ local function register_dimension_ores()
 		clust_scarcity = 2000,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		y_min           = mcl_vars.mg_lava_nether_max + 13,
-		y_max           = mcl_vars.mg_lava_nether_max + 48,
+		y_min           = mcl_mapgen.nether.lava_max + 13,
+		y_max           = mcl_mapgen.nether.lava_max + 48,
 	})
 	minetest.register_ore({
 		ore_type       = "scatter",
@@ -2108,7 +2107,7 @@ local function register_dimension_ores()
 		clust_scarcity = 3500,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		y_min           = mcl_vars.mg_lava_nether_max + 49,
+		y_min           = mcl_mapgen.nether.lava_max + 49,
 		y_max           = mcl_mapgen.nether.max,
 	})
 
@@ -2119,7 +2118,7 @@ local function register_dimension_ores()
 	-- FIXME: Broken lighting in v6 mapgen
 
 	local end_wherein
-	if mg_name == "v6" then
+	if mcl_mapgen.v6 then
 		end_wherein = {"air", "mcl_core:stone"}
 	else
 		end_wherein = {"air"}
@@ -2129,11 +2128,11 @@ local function register_dimension_ores()
 		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
-		y_min           = mcl_mapgen.end.min+64,
-		y_max           = mcl_mapgen.end.min+80,
+		y_min           = mcl_mapgen.end_.min+64,
+		y_max           = mcl_mapgen.end_.min+80,
 
 		noise_params = {
-			offset  = mcl_mapgen.end.min+70,
+			offset  = mcl_mapgen.end_.min+70,
 			scale   = -1,
 			spread  = {x=126, y=126, z=126},
 			seed    = mg_seed+9999,
@@ -2156,11 +2155,11 @@ local function register_dimension_ores()
 		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
-		y_min           = mcl_mapgen.end.min+64,
-		y_max           = mcl_mapgen.end.min+80,
+		y_min           = mcl_mapgen.end_.min+64,
+		y_max           = mcl_mapgen.end_.min+80,
 
 		noise_params = {
-			offset  = mcl_mapgen.end.min+72,
+			offset  = mcl_mapgen.end_.min+72,
 			scale   = -3,
 			spread  = {x=84, y=84, z=84},
 			seed    = mg_seed+999,
@@ -2182,11 +2181,11 @@ local function register_dimension_ores()
 		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
-		y_min           = mcl_mapgen.end.min+64,
-		y_max           = mcl_mapgen.end.min+80,
+		y_min           = mcl_mapgen.end_.min+64,
+		y_max           = mcl_mapgen.end_.min+80,
 
 		noise_params = {
-			offset  = mcl_mapgen.end.min+70,
+			offset  = mcl_mapgen.end_.min+70,
 			scale   = -2,
 			spread  = {x=84, y=84, z=84},
 			seed    = mg_seed+99,
@@ -3925,8 +3924,8 @@ local function register_dimension_decorations()
 			octaves = 3,
 			persist = 0.6
 		},
-		y_min = mcl_mapgen.end.min,
-		y_max = mcl_mapgen.end.max,
+		y_min = mcl_mapgen.end_.min,
+		y_max = mcl_mapgen.end_.max,
 		decoration = "mcl_end:chorus_flower",
 		height = 1,
 		biomes = { "End" },
@@ -3943,14 +3942,15 @@ end
 --
 -- Detect mapgen to select functions
 --
-if mg_name ~= "singlenode" then
+
+if not mcl_mapgen.singlenode then
 	if not superflat then
-		if mg_name ~= "v6" then
+		if not mcl_mapgen.v6 then
 			register_biomes()
 			register_biomelike_ores()
 		end
 		register_biome_ores()
-		if mg_name ~= "v6" then
+		if not mcl_mapgen.v6 then
 			register_decorations()
 		end
 	else

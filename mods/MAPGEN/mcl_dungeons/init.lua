@@ -2,10 +2,8 @@
 
 mcl_dungeons = {}
 
-local mg_name = minetest.get_mapgen_setting("mg_name")
-
 -- Are dungeons disabled?
-if mcl_vars.mg_dungeons == false or mg_name == "singlenode" then
+if mcl_mapgen.dungeons == false or mcl_mapgen.singlenode == true then
 	return
 end
 
@@ -35,7 +33,7 @@ local math_ceil        = math.ceil
 local get_node = mcl_mapgen.get_far_node
 
 
-local min_y = math_max(mcl_mapgen.overworld.min, mcl_vars.mg_bedrock_overworld_max) + 1
+local min_y = math_max(mcl_mapgen.overworld.min, mcl_mapgen.overworld.bedrock_max) + 1
 local max_y = mcl_mapgen.overworld.max - 1
 -- Calculate the number of dungeon spawn attempts
 -- In Minecraft, there 8 dungeon spawn attempts Minecraft chunk (16*256*16 = 65536 blocks).
@@ -358,7 +356,7 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 		}
 
 		-- Bonus loot for v6 mapgen: Otherwise unobtainable saplings.
-		if mg_name == "v6" then
+		if mcl_mapgen.v6 then
 			table_insert(loottable, {
 				stacks_min = 1,
 				stacks_max = 3,

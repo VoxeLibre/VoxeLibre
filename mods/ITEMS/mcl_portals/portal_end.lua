@@ -1,10 +1,10 @@
 local S = minetest.get_translator("mcl_portals")
 
 -- Parameters
-local SPAWN_MIN = mcl_vars.mg_end_min+70
-local SPAWN_MAX = mcl_vars.mg_end_min+98
+local SPAWN_MIN = mcl_mapgen.end_.min+70
+local SPAWN_MAX = mcl_mapgen.end_.min+98
 
-local mg_name = minetest.get_mapgen_setting("mg_name")
+local mg_name = mcl_mapgen.name
 
 local destroy_portal = function(pos)
 	local neighbors = {
@@ -178,7 +178,7 @@ function mcl_portals.end_teleport(obj, pos)
 		-- Teleport to the End at a fixed position and generate a
 		-- 5×5 obsidian platform below.
 
-		local platform_pos = mcl_vars.mg_end_platform_pos
+		local platform_pos = mcl_mapgen.end_.platform_pos
 		-- force emerge of target1 area
 		minetest.get_voxel_manip():read_from_map(platform_pos, platform_pos)
 		if not minetest.get_node_or_nil(platform_pos) then

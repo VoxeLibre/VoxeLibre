@@ -3,8 +3,8 @@ mcl_worlds = {}
 -- For a given position, returns a 2-tuple:
 -- 1st return value: true if pos is in void
 -- 2nd return value: true if it is in the deadly part of the void
-local min1, min2, min3 = mcl_mapgen.overworld.min, mcl_mapgen.end.min, mcl_mapgen.nether.min
-local max1, max2, max3 = mcl_mapgen.overworld.max, mcl_mapgen.end.max, mcl_mapgen.nether.max+128
+local min1, min2, min3 = mcl_mapgen.overworld.min, mcl_mapgen.end_.min, mcl_mapgen.nether.min
+local max1, max2, max3 = mcl_mapgen.overworld.max, mcl_mapgen.end_.max, mcl_mapgen.nether.max+128
 function mcl_worlds.is_in_void(pos)
 	local y = pos.y
 	local void = not ((y < max1 and y > min1) or (y < max2 and y > min2) or (y < max3 and y > min3))
@@ -13,7 +13,7 @@ function mcl_worlds.is_in_void(pos)
 	local deadly_tolerance = 64 -- the player must be this many nodes “deep” into the void to be damaged
 	if void then
 		-- Overworld → Void → End → Void → Nether → Void
-		if y < mcl_vars.min1 and y > max2 then
+		if y < min1 and y > max2 then
 			void_deadly = y < min1 - deadly_tolerance
 		elseif y < min2 and y > max3 then
 			-- The void between End and Nether. Like usual, but here, the void
@@ -56,24 +56,24 @@ end
 -- mc_dimension is one of "overworld", "nether", "end" (default: "overworld").
 function mcl_worlds.layer_to_y(layer, mc_dimension)
        if mc_dimension == "overworld" or mc_dimension == nil then
-               return layer + mcl_vars.mg_overworld_min
+               return layer + min1
        elseif mc_dimension == "nether" then
-               return layer + mcl_vars.mg_nether_min
+               return layer + min3
        elseif mc_dimension == "end" then
-               return layer + mcl_vars.mg_end_min
+               return layer + min2
        end
 end
 
 -- Takes a position and returns true if this position can have weather
 function mcl_worlds.has_weather(pos)
        -- Weather in the Overworld and the high part of the void below
-       return pos.y <= mcl_vars.mg_overworld_max and pos.y >= mcl_vars.mg_overworld_min - 64
+       return pos.y <= max1 and pos.y >= min1 - 64
 end
 
 -- Takes a position and returns true if this position can have Nether dust
 function mcl_worlds.has_dust(pos)
        -- Weather in the Overworld and the high part of the void below
-       return pos.y <= mcl_vars.mg_nether_max + 138 and pos.y >= mcl_vars.mg_nether_min - 10
+       return pos.y <= max3 + 138 and pos.y >= min3 - 10
 end
 
 -- Takes a position (pos) and returns true if compasses are working here
@@ -83,7 +83,7 @@ function mcl_worlds.compass_works(pos)
        if dim == "nether" or dim == "end" then
                return false
        elseif dim == "void" then
-               return pos.y <= mcl_vars.mg_overworld_max and pos.y >= mcl_vars.mg_overworld_min - 64
+               return pos.y <= max1 and pos.y >= min1 - 64
        else
                return true
        end

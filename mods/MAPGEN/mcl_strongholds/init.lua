@@ -18,8 +18,7 @@ local stronghold_rings = {
 local strongholds = {}
 local strongholds_inited = false
 
-local mg_name = minetest.get_mapgen_setting("mg_name")
-local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
+local superflat = mcl_mapgen.superflat
 
 -- Determine the stronghold positions and store them into the strongholds table.
 -- The stronghold positions are based on the world seed.
@@ -30,7 +29,7 @@ local init_strongholds = function()
 		return
 	end
 	-- Don't generate strongholds in singlenode
-	if mg_name == "singlenode" then
+	if mcl_mapgen.singlenode then
 		strongholds_inited = true
 		return
 	end
@@ -47,9 +46,9 @@ local init_strongholds = function()
 			local dist = pr:next(ring.min, ring.max)
 			local y
 			if superflat then
-				y = mcl_vars.mg_bedrock_overworld_max + 3
+				y = mcl_mapgen.overworld.bedrock_max + 3
 			else
-				y = pr:next(mcl_vars.mg_bedrock_overworld_max+1, mcl_vars.mg_overworld_min+48)
+				y = pr:next(mcl_mapgen.overworld.bedrock_max+1, mcl_mapgen.overworld.bedrock_min+48)
 			end
 			local pos = { x = math.cos(angle) * dist, y = y, z = math.sin(angle) * dist }
 			pos = vector.round(pos)

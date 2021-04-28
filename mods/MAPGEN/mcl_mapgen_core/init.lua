@@ -1906,12 +1906,12 @@ local function basic(c)
 	-- The Air on the Nether roof, https://git.minetest.land/MineClone2/MineClone2/issues/1186
 	lvm_used = set_layers(data, area, c_air		 , nil, mcl_mapgen.nether.max			   +1, mcl_mapgen.nether.max + 128                 , minp, maxp, lvm_used, pr)
 	-- The Void above the Nether below the End:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_mapgen.nether.max + 128               +1, mcl_mapgen.end.min                        -1, minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_mapgen.nether.max + 128               +1, mcl_mapgen.end_.min                        -1, minp, maxp, lvm_used, pr)
 
-	-- [[ THE END:						mcl_mapgen.end.min			       mcl_mapgen.end.max							]]
+	-- [[ THE END:						mcl_mapgen.end_.min			       mcl_mapgen.end_.max							]]
 
 	-- The Void above the End below the Realm barrier:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_mapgen.end.max                        +1, mcl_vars.mg_realm_barrier_overworld_end_min-1, minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_mapgen.end_.max                        +1, mcl_vars.mg_realm_barrier_overworld_end_min-1, minp, maxp, lvm_used, pr)
 	-- Realm barrier between the Overworld void and the End
 	lvm_used = set_layers(data, area, c_realm_barrier, nil, mcl_vars.mg_realm_barrier_overworld_end_min  , mcl_vars.mg_realm_barrier_overworld_end_max  , minp, maxp, lvm_used, pr)
 	-- The Void above Realm barrier below the Overworld:
@@ -2041,7 +2041,7 @@ local function basic(c)
 		-- * Replace water with end stone or air (depending on height).
 		-- * Remove stone, sand, dirt in v6 so our End map generator works in v6.
 		-- * Generate spawn platform (End portal destination)
-		elseif minp.y <= mcl_mapgen.end.max and maxp.y >= mcl_mapgen.end.min then
+		elseif minp.y <= mcl_mapgen.end_.max and maxp.y >= mcl_mapgen.end_.min then
 			local nodes
 			if mg_name == "v6" then
 				nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
@@ -2083,11 +2083,11 @@ local function basic(c)
 	-- Final hackery: Set sun light level in the End.
 	-- -26912 is at a mapchunk border.
 	local shadow = true
-	if minp.y >= -26912 and maxp.y <= mcl_mapgen.end.max then
+	if minp.y >= -26912 and maxp.y <= mcl_mapgen.end_.max then
 		vm:set_lighting({day=15, night=15})
 		lvm_used = true
 	end
-	if minp.y >= mcl_mapgen.end.min and maxp.y <= -26911 then
+	if minp.y >= mcl_mapgen.end_.min and maxp.y <= -26911 then
 		shadow = false
 		lvm_used = true
 	end

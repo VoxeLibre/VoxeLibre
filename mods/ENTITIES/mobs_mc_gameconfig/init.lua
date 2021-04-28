@@ -241,7 +241,7 @@ mobs_mc.override.spawn_height = {
 	nether_max = mcl_mapgen.nether.max,
 
 	-- End boundaries (inclusive)
-	end_min = mcl_mapgen.end.min,
-	end_max = mcl_mapgen.end.max,
+	end_min = mcl_mapgen.end_.min,
+	end_max = mcl_mapgen.end_.max,
 }
 

@@ -1,10 +1,7 @@
 mcl_mapgen = {}
-mcl_mapgen.overworld = {}
-mcl_mapgen.nether = {}
-mcl_mapgen.end = {}
 
 local minetest_log, math_floor = minetest.log, math.floor
-local minetest_get_node = minetest.get_node
+local minetest_get_node, minetest_get_voxel_manip = minetest.get_node, minetest.get_voxel_manip
 
 -- Calculate mapgen_edge_min/mapgen_edge_max
 mcl_mapgen.CS		= math.max(1, tonumber(minetest.get_mapgen_setting("chunksize"))	or 5)
@@ -88,14 +85,14 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 		vm_context.data = data
 		area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
 		vm_context.area = area
-		for _, v in pairs(lvm_chunk_queue) do
-			vm_context = v.f(vm_context)
-		end
 	end
+
+	local chunk_is_ready = true
 
 	if block > 0 then
 		local x0, y0, z0 = minp.x, minp.y, minp.z
 		local bx0, by0, bz0 = math_floor(x0/BS), math_floor(y0/BS), math_floor(z0/BS)
+		local bx1, by1, bz1 = bx0 + LAST_BLOCK, by0 + LAST_BLOCK, bz0 + LAST_BLOCK -- only for entire chunk check
 		local x1, y1, z1, x2, y2, z2 = emin.x, emin.y, emin.z, emax.x, emax.y, emax.z
 		local x, y, z = x1, y1, z1 -- iterate 7x7x7 mapchunk, {x,y,z} - first node pos. of mapblock
 		local bx, by, bz -- block coords (in blocs)
@@ -133,6 +130,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 						end
 					else
 						blocks[bx][by][bz] = current_mapgen_block_writes
+						chunk_is_ready = chunk_is_ready and (bx < bx0 or bx > bx1 or by < by0 or by > by1 or bz < bz0 or bz > bz1)
 					end
 					z = z + BS
 				end
@@ -147,6 +145,11 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	end
 
 	if lvm > 0 then
+		if chunk_is_ready then
+			for _, v in pairs(lvm_chunk_queue) do
+				vm_context = v.f(vm_context)
+			end
+		end
 		if vm_context.write then
 			vm:set_data(data)
 		end
@@ -158,8 +161,10 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 		vm:update_liquids()
 	end
 
-	for _, v in pairs(node_chunk_queue) do
-		v.f(minp, maxp, blockseed)
+	if chunk_is_ready then
+		for _, v in pairs(node_chunk_queue) do
+			v.f(minp, maxp, blockseed)
+		end
 	end
 
 	for i, b in pairs(current_blocks) do
@@ -218,13 +223,16 @@ end
 
 
 -- Mapgen variables
+local overworld, end_, nether = {}, {}, {}
+mcl_mapgen.seed = minetest.get_mapgen_setting("seed")
 mcl_mapgen.name = minetest.get_mapgen_setting("mg_name")
+mcl_mapgen.v6 = mcl_mapgen.name == "v6"
 mcl_mapgen.superflat = mcl_mapgen.name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 mcl_mapgen.singlenode = mcl_mapgen.name == "singlenode"
 mcl_mapgen.normal = not mcl_mapgen.superflat and not mcl_mapgen.singlenode
 local superflat, singlenode, normal = mcl_mapgen.superflat, mcl_mapgen.singlenode, mcl_mapgen.normal
 
-minetest_log("action", "[mcl_mapgen] Mapgen mode: " .. normal and "normal" or (superflat and "superflat" or "singlenode"))
+minetest_log("action", "[mcl_mapgen] Mapgen mode: " .. (normal and "normal" or (superflat and "superflat" or "singlenode")))
 
 mcl_mapgen.minecraft_height_limit = 256
 
@@ -241,55 +249,58 @@ mcl_mapgen.bedrock_is_rough = normal
 ]]
 
 -- Overworld
-mcl_mapgen.overworld.min = -62
+overworld.min = -62
 if superflat then
 	mcl_mapgen.ground = tonumber(minetest.get_mapgen_setting("mgflat_ground_level")) or 8
-	mcl_mapgen.overworld.min = ground - 3
+	overworld.min = ground - 3
 end
 -- if singlenode then mcl_mapgen.overworld.min = -66 end -- DONT KNOW WHY
-mcl_mapgen.overworld.max = mcl_mapgen.EDGE_MAX
+overworld.max = mcl_mapgen.EDGE_MAX
 
-mcl_mapgen.overworld.bedrock_min = mcl_mapgen.overworld.min
-mcl_mapgen.overworld.bedrock_max = mcl_mapgen.overworld.bedrock_min + (mcl_mapgen.bedrock_is_rough and 4 or 0)
+overworld.bedrock_min = overworld.min
+overworld.bedrock_max = overworld.bedrock_min + (mcl_mapgen.bedrock_is_rough and 4 or 0)
 
 mcl_mapgen.lava = normal
-mcl_mapgen.lava_overworld_max = mcl_mapgen.overworld.min + (normal and 10 or 0)
+overworld.lava_max = overworld.min + (normal and 10 or 0)
 
 
 -- The Nether (around Y = -29000)
-mcl_mapgen.nether.min = -29067 -- Carefully chosen to be at a mapchunk border
-mcl_mapgen.nether.max = mcl_mapgen.nether.min + 128
-mcl_mapgen.nether.bedrock_bottom_min = mcl_mapgen.nether.min
-mcl_mapgen.nether.bedrock_top_max = mcl_mapgen.nether.max
+nether.min = -29067 -- Carefully chosen to be at a mapchunk border
+nether.max = nether.min + 128
+nether.bedrock_bottom_min = nether.min
+nether.bedrock_top_max = nether.max
 if not superflat then
-	mcl_mapgen.nether.bedrock_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min + 4
-	mcl_mapgen.nether.bedrock_top_min = mcl_vars.mg_bedrock_nether_top_max - 4
-	mcl_mapgen.nether.lava_max = mcl_mapgen.nether.min + 31
+	nether.bedrock_bottom_max = nether.bedrock_bottom_min + 4
+	nether.bedrock_top_min = nether.bedrock_top_max - 4
+	nether.lava_max = nether.min + 31
 else
 	-- Thin bedrock in classic superflat mapgen
-	mcl_mapgen.nether.bedrock_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min
-	mcl_mapgen.nether.bedrock_top_min = mcl_vars.mg_bedrock_nether_top_max
-	mcl_mapgen.nether.lava_max = mcl_mapgen.nether.min + 2
+	nether.bedrock_bottom_max = nether.bedrock_bottom_min
+	nether.bedrock_top_min = nether.bedrock_top_max
+	nether.lava_max = nether.min + 2
 end
 if mcl_mapgen.name == "flat" then
 	if superflat then
-		mcl_mapgen.nether.flat_nether_floor = mcl_mapgen.nether.bedrock_nether_bottom_max + 4
-		mcl_mapgen.nether.flat_nether_ceiling = mcl_mapgen.nether.bedrock_nether_bottom_max + 52
+		nether.flat_nether_floor = nether.bedrock_bottom_max + 4
+		nether.flat_nether_ceiling = nether.bedrock_bottom_max + 52
 	else
-		mcl_mapgen.nether.flat_nether_floor = mcl_mapgen.nether.lava_nether_max + 4
-		mcl_mapgen.nether.flat_nether_ceiling = mcl_mapgen.nether.lava_nether_max + 52
+		nether.flat_nether_floor = nether.lava_max + 4
+		nether.flat_nether_ceiling = nether.lava_max + 52
 	end
 end
 
 -- The End (surface at ca. Y = -27000)
-mcl_mapgen.end.min = -27073 -- Carefully chosen to be at a mapchunk border
-mcl_mapgen.end.max_official = mcl_mapgen.end.min + mcl_mapgen.minecraft_height_limit
-mcl_mapgen.end.max = mcl_mapgen.overworld.min - 2000
-mcl_vars.mg_end_platform_pos = { x = 100, y = mcl_mapgen.end.min + 74, z = 0 }
+end_.min = -27073 -- Carefully chosen to be at a mapchunk border
+end_.max = overworld.min - 2000
+end_.platform_pos = { x = 100, y = end_.min + 74, z = 0 }
 
 -- Realm barrier used to safely separate the End from the void below the Overworld
-mcl_vars.mg_realm_barrier_overworld_end_max = mcl_mapgen.end.max
-mcl_vars.mg_realm_barrier_overworld_end_min = mcl_mapgen.end.max - 11
+mcl_mapgen.realm_barrier_overworld_end_max = end_.max
+mcl_mapgen.realm_barrier_overworld_end_min = end_.max - 11
 
--- Use MineClone 2-style dungeons
-mcl_vars.mg_dungeons = true
+-- Use MineClone 2-style dungeons for normal mapgen
+mcl_mapgen.dungeons = normal
+
+mcl_mapgen.overworld = overworld
+mcl_mapgen.end_ = end_
+mcl_mapgen.nether = nether
