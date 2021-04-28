@@ -90,6 +90,8 @@ function mcl_armor.register_set(def)
 	local S = minetest.get_translator(modname)
 	local descriptions = def.descriptions or {}
 	local groups = def.groups or {}
+	local on_equip_callbacks = def.on_equip_callbacks or {}
+	local on_unequip_callbacks = def.on_unequip_callbacks or {}
 	for name, element in pairs(mcl_armor.elements) do
 		local itemname = element.name .. "_" .. def.name
 		local itemstring = modname .. ":" .. itemname
@@ -117,8 +119,8 @@ function mcl_armor.register_set(def)
 			},
 			on_place = mcl_armor.equip_on_use,
 			on_secondary_use = mcl_armor.equip_on_use,
-			_on_equip = def.on_equip,
-			_on_unequip = def.on_unequip,
+			_on_equip = on_equip_callbacks[name] or def.on_equip,
+			_on_unequip = on_unequip_callbacks[name] or def.on_unequip,
 			_mcl_armor_element = name,
 			_mcl_armor_texture = modname .. "_" .. itemname .. ".png",
 			_mcl_armor_preview = modname .. "_" .. itemname .. "_preview.png",
