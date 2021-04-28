@@ -1,9 +1,5 @@
 local S = minetest.get_translator("mcl_hbarmor")
 
-if (not armor) or (not armor.def) then
-	minetest.log("error", "[mcl_hbarmor] Outdated mcl_armor version. Please update your version of mcl_armor!")
-end
-
 local mcl_hbarmor = {}
 
 -- HUD statbar values
@@ -60,11 +56,8 @@ end
 hb.register_hudbar("armor", 0xFFFFFF, S("Armor"), { icon = "hbarmor_icon.png", bgicon = "hbarmor_bgicon.png", bar = "hbarmor_bar.png" }, 0, 0, 20, mcl_hbarmor.autohide)
 
 function mcl_hbarmor.get_armor(player)
-	if not player or not armor.def then
-		return false
-	end
 	local name = player:get_player_name()
-	local pts = armor:get_armor_points(player)
+	local pts = player:get_meta():get_int("mcl_armor:armor_points")
 	if not pts then
 		return false
 	else

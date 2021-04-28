@@ -10,6 +10,7 @@ local S = minetest.get_translator("mobs_mc")
 --###################
 
 mobs:register_mob("mobs_mc:wither", {
+	description = S("Wither"),
 	type = "monster",
 	spawn_class = "hostile",
 	hp_max = 300,

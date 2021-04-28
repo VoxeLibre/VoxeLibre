@@ -7,6 +7,7 @@ local S = minetest.get_translator("mobs_mc")
 local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
 
 mobs:register_mob("mobs_mc:illusioner", {
+	description = S("Illusioner"),
 	type = "monster",
 	spawn_class = "hostile",
 	attack_type = "shoot",

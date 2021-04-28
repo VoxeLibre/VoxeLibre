@@ -10,25 +10,6 @@ local function increase_damage(damage_group, factor)
 	end
 end
 
--- requires engine change
---[[mcl_enchanting.enchantments.aqua_affinity = {
-	name = S("Aqua Affinity"),
-	max_level = 1,
-	primary = {armor_head = true},
-	secondary = {},
-	disallow = {non_combat_armor = true},
-	incompatible = {},
-	weight = 2,
-	description = S("Increases underwater mining speed."),
-	curse = false,
-	on_enchant = function() end,
-	requires_tool = false,
-	treasure = false,
-	power_range_table = {{1, 41}},
-	inv_combat_tab = true,
-	inv_tool_tab = false,
-}]]--
-
 -- implemented via on_enchant and additions in mobs_mc; Slowness IV part unimplemented
 mcl_enchanting.enchantments.bane_of_arthropods = {
 	name = S("Bane of Arthropods"),
@@ -44,25 +25,6 @@ mcl_enchanting.enchantments.bane_of_arthropods = {
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{5, 25}, {13, 33}, {21, 41}, {29, 49}, {37, 57}},
-	inv_combat_tab = true,
-	inv_tool_tab = false,
-}
-
--- implemented in mcl_armor
-mcl_enchanting.enchantments.blast_protection = {
-	name = S("Blast Protection"),
-	max_level = 4,
-	primary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true},
-	secondary = {},
-	disallow = {non_combat_armor = true},
-	incompatible = {fire_protection = true, protection = true, projectile_protection = true},
-	weight = 2,
-	description = S("Reduces explosion damage and knockback."),
-	curse = false,
-	on_enchant = function() end,
-	requires_tool = false,
-	treasure = false,
-	power_range_table = {{5, 13}, {13, 21}, {21, 29}, {29, 37}},
 	inv_combat_tab = true,
 	inv_tool_tab = false,
 }
@@ -85,25 +47,6 @@ mcl_enchanting.enchantments.blast_protection = {
 	inv_combat_tab = true,
 	inv_tool_tab = false,
 }]]--
-
--- implemented in mcl_armor
-mcl_enchanting.enchantments.curse_of_binding = {
-	name = S("Curse of Binding"),
-	max_level = 1,
-	primary = {},
-	secondary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true},
-	disallow = {},
-	incompatible = {},
-	weight = 1,
-	description = S("Item cannot be removed from armor slots except due to death, breaking or in Creative Mode."),
-	curse = true,
-	on_enchant = function() end,
-	requires_tool = false,
-	treasure = true,
-	power_range_table = {{25, 50}},
-	inv_combat_tab = true,
-	inv_tool_tab = false,
-}
 
 -- implemented in mcl_death_drop
 mcl_enchanting.enchantments.curse_of_vanishing = {
@@ -164,24 +107,6 @@ mcl_enchanting.enchantments.efficiency = {
 	inv_tool_tab = true,
 }
 
--- implemented in mcl_armor
-mcl_enchanting.enchantments.feather_falling = {
-	name = S("Feather Falling"),
-	max_level = 4,
-	primary = {armor_feet = true},
-	secondary = {},
-	disallow = {non_combat_armor = true},
-	incompatible = {},
-	weight = 5,
-	description = S("Reduces fall damage."),curse = false,
-	on_enchant = function() end,
-	requires_tool = false,
-	treasure = false,
-	power_range_table = {{5, 11}, {11, 17}, {17, 23}, {23, 29}},
-	inv_combat_tab = true,
-	inv_tool_tab = false,
-}
-
 -- implemented in mcl_mobs and via register_on_punchplayer callback
 mcl_enchanting.enchantments.fire_aspect = {
 	name = S("Fire Aspect"),
@@ -207,30 +132,11 @@ minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, 
 		if wielditem then
 			local fire_aspect_level = mcl_enchanting.get_enchantment(wielditem, "fire_aspect")
 			if fire_aspect_level > 0 then
-				mcl_burning.set_on_fire(player, fire_aspect_level * 4, hitter:get_player_name())
+				mcl_burning.set_on_fire(player, fire_aspect_level * 4)
 			end
 		end
 	end
 end)
-
--- implemented in mcl_armor
-mcl_enchanting.enchantments.fire_protection = {
-	name = S("Fire Protection"),
-	max_level = 4,
-	primary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true},
-	secondary = {},
-	disallow = {non_combat_armor = true},
-	incompatible = {blast_protection = true, protection = true, projectile_protection = true},
-	weight = 5,
-	description = S("Reduces fire damage."),
-	curse = false,
-	on_enchant = function() end,
-	requires_tool = false,
-	treasure = false,
-	power_range_table = {{10, 18}, {18, 26}, {26, 34}, {34, 42}},
-	inv_combat_tab = true,
-	inv_tool_tab = false,
-}
 
 mcl_enchanting.enchantments.flame = {
 	name = S("Flame"),
@@ -530,44 +436,6 @@ mcl_enchanting.enchantments.power = {
 	inv_tool_tab = false,
 }
 
--- implemented in mcl_armor
-mcl_enchanting.enchantments.projectile_protection = {
-	name = S("Projectile Protection"),
-	max_level = 4,
-	primary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true},
-	secondary = {},
-	disallow = {non_combat_armor = true},
-	incompatible = {blast_protection = true, fire_protection = true, protection = true},
-	weight = 5,
-	description = S("Reduces projectile damage."),
-	curse = false,
-	on_enchant = function() end,
-	requires_tool = false,
-	treasure = false,
-	power_range_table = {{1, 16}, {11, 26}, {21, 36}, {31, 46}, {41, 56}},
-	inv_combat_tab = true,
-	inv_tool_tab = false,
-}
-
--- implemented in mcl_armor
-mcl_enchanting.enchantments.protection = {
-	name = S("Protection"),
-	max_level = 4,
-	primary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true},
-	secondary = {},
-	disallow = {non_combat_armor = true},
-	incompatible = {blast_protection = true, fire_protection = true, projectile_protection = true},
-	weight = 10,
-	description = S("Reduces most types of damage by 4% for each level."),
-	curse = false,
-	on_enchant = function() end,
-	requires_tool = false,
-	treasure = false,
-	power_range_table = {{1, 12}, {12, 23}, {23, 34}, {34, 45}},
-	inv_combat_tab = true,
-	inv_tool_tab = false,
-}
-
 -- implemented via minetest.calculate_knockback (together with the Knockback enchantment) and mcl_bows
 mcl_enchanting.enchantments.punch = {
 	name = S("Punch"),
@@ -738,25 +606,6 @@ mcl_enchanting.enchantments.soul_speed = {
 	inv_combat_tab = true,
 	inv_tool_tab = false,
 }]]--
-
--- implemented in mcl_armor
-mcl_enchanting.enchantments.thorns = {
-	name = S("Thorns"),
-	max_level = 3,
-	primary = {armor_head = true},
-	secondary = {armor_torso = true, armor_legs = true, armor_feet = true},
-	disallow = {non_combat_armor = true},
-	incompatible = {},
-	weight = 1,
-	description = S("Reflects some of the damage taken when hit, at the cost of reducing durability with each proc."),
-	curse = false,
-	on_enchant = function() end,
-	requires_tool = false,
-	treasure = false,
-	power_range_table = {{10, 61}, {30, 71}, {50, 81}},
-	inv_combat_tab = true,
-	inv_tool_tab = false,
-}
 
 -- for tools & weapons implemented via on_enchant; for bows implemented in mcl_bows; for armor implemented in mcl_armor and mcl_tt; for fishing rods implemented in mcl_fishing
 mcl_enchanting.enchantments.unbreaking = {

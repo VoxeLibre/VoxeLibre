@@ -35,7 +35,7 @@ function mcl_burning.get_touching_nodes(obj, nodenames, storage)
 	return nodes
 end
 
-function mcl_burning.set_on_fire(obj, burn_time, reason)
+function mcl_burning.set_on_fire(obj, burn_time)
 	if obj:get_hp() < 0 then
 		return
 	end
@@ -47,25 +47,25 @@ function mcl_burning.set_on_fire(obj, burn_time, reason)
 		return
 	end
 
-	local max_fire_prot_lvl = 0
+	if obj:is_player() and minetest.is_creative_enabled(obj:get_player_name()) then
+		burn_time = 0
+	else
+		local max_fire_prot_lvl = 0
+		local inv = mcl_util.get_inventory(obj)
+		local armor_list = inv and inv:get_list("armor")
 
-	if obj:is_player() then
-		if minetest.is_creative_enabled(obj:get_player_name()) then
-			burn_time = burn_time / 100
+		if armor_list then
+			for _, stack in pairs(armor_list) do
+				local fire_prot_lvl = mcl_enchanting.get_enchantment(stack, "fire_protection")
+				if fire_prot_lvl > max_fire_prot_lvl then
+					max_fire_prot_lvl = fire_prot_lvl
+				end
+			end
 		end
 
-		local inv = obj:get_inventory()
-
-		for i = 2, 5 do
-			local stack = inv:get_stack("armor", i)
-
-			local fire_prot_lvl = mcl_enchanting.get_enchantment(stack, "fire_protection")
-			max_fire_prot_lvl = math.max(max_fire_prot_lvl, fire_prot_lvl)
+		if max_fire_prot_lvl > 0 then
+			burn_time = burn_time - math.floor(burn_time * max_fire_prot_lvl * 0.15)
 		end
-	end
-
-	if max_fire_prot_lvl > 0 then
-		burn_time = burn_time - math.floor(burn_time * max_fire_prot_lvl * 0.15)
 	end
 
 	if not storage.burn_time or burn_time >= storage.burn_time then
@@ -79,7 +79,6 @@ function mcl_burning.set_on_fire(obj, burn_time, reason)
 			})
 		end
 		storage.burn_time = burn_time
-		storage.burn_reason = reason
 		storage.fire_damage_timer = 0
 
 		local fire_entity = minetest.add_entity(obj:get_pos(), "mcl_burning:fire")
@@ -120,7 +119,6 @@ function mcl_burning.extinguish(obj)
 			mcl_burning.storage[obj] = {}
 		else
 			storage.burn_time = nil
-			storage.burn_reason = nil
 			storage.fire_damage_timer = nil
 		end
 	end
@@ -140,36 +138,9 @@ function mcl_burning.tick(obj, dtime, storage)
 				storage.fire_damage_timer = 0
 
 				local luaentity = obj:get_luaentity()
-				local is_mob = luaentity and luaentity._cmi_is_mob
-				local hp = is_mob and luaentity.health or obj:get_hp()
 
-				if hp > 0 then
-					local do_damage = true
-
-					if obj:is_player() then
-						if mcl_potions.player_has_effect(obj, "fire_proof") then
-							do_damage = false
-						else
-							local name = obj:get_player_name()
-							armor.last_damage_types[name] = "fire"
-							local deathmsg = S("@1 burned to death.", name)
-							if storage.reason then
-								deathmsg = S("@1 was burned by @2.", name, storage.reason)
-							end
-							mcl_death_messages.player_damage(obj, deathmsg)
-						end
-					elseif luaentity.fire_damage_resistant then
-						do_damage = false
-					end
-
-					if do_damage then
-						local new_hp = hp - 1
-						if is_mob then
-							luaentity.health = new_hp
-						else
-							obj:set_hp(new_hp)
-						end
-					end
+				if not luaentity or not luaentity.fire_damage_resistant then
+					mcl_util.deal_damage(obj, 1, {type = "on_fire"})
 				end
 			end
 		end

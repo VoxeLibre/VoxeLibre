@@ -56,6 +56,7 @@ local gotten_texture = { "blank.png", "mobs_mc_sheep.png" }
 
 --mcsheep
 mobs:register_mob("mobs_mc:sheep", {
+	description = S("Sheep"),
 	type = "animal",
 	spawn_class = "passive",
 	hp_min = 8,
@@ -325,12 +326,12 @@ mobs:spawn_specific(
 "ExtremeHillsM",
 "BirchForestM",
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-15000, 
-3, 
-mobs_mc.spawn_height.overworld_min, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+15000,
+3,
+mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs

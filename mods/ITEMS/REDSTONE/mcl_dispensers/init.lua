@@ -136,94 +136,32 @@ local dispenserdef = {
 				-- Hardcoded dispensions --
 
 				-- Armor, mob heads and pumpkins
-				if igroups.armor_head or igroups.armor_torso or igroups.armor_legs or igroups.armor_feet then
-					local armor_type, armor_slot
-					local armor_dispensed = false
-					if igroups.armor_head then
-						armor_type = "armor_head"
-						armor_slot = 2
-					elseif igroups.armor_torso then
-						armor_type = "armor_torso"
-						armor_slot = 3
-					elseif igroups.armor_legs then
-						armor_type = "armor_legs"
-						armor_slot = 4
-					elseif igroups.armor_feet then
-						armor_type = "armor_feet"
-						armor_slot = 5
-					end
+				if igroups.armor then
+					local droppos_below = {x = droppos.x, y = droppos.y - 1, z = droppos.z}
 
-					local droppos_below = {x=droppos.x, y=droppos.y-1, z=droppos.z}
-					local dropnode_below = minetest.get_node(droppos_below)
-					-- Put armor on player or armor stand
-					local standpos
-					if dropnode.name == "mcl_armor_stand:armor_stand" then
-						standpos = droppos
-					elseif dropnode_below.name == "mcl_armor_stand:armor_stand" then
-						standpos = droppos_below
-					end
-					if standpos then
-						local dropmeta = minetest.get_meta(standpos)
-						local dropinv = dropmeta:get_inventory()
-						if dropinv:room_for_item(armor_type, dropitem) then
-							dropinv:add_item(armor_type, dropitem)
-							minetest.registered_nodes["mcl_armor_stand:armor_stand"].on_metadata_inventory_put(standpos)
-							stack:take_item()
-							inv:set_stack("main", stack_id, stack)
-							armor:play_equip_sound(dropitem, nil, standpos)
-							armor_dispensed = true
-						end
-					else
-						-- Put armor on nearby player
-						-- First search for player in front of dispenser (check 2 nodes)
-						local objs1 = minetest.get_objects_inside_radius(droppos, 1)
-						local objs2 = minetest.get_objects_inside_radius(droppos_below, 1)
-						local objs_table = {objs1, objs2}
-						local player
-						for oi=1, #objs_table do
-							local objs_inner = objs_table[oi]
-							for o=1, #objs_inner do
-								--[[ First player in list is the lucky one. The other player get nothing :-(
-								If multiple players are close to the dispenser, it can be a bit
-								-- unpredictable on who gets the armor. ]]
-								if objs_inner[o]:is_player() then
-									player = objs_inner[o]
-									break
-								end
-							end
-							if player then
+					for _, objs in ipairs({minetest.get_objects_inside_radius(droppos, 1), minetest.get_objects_inside_radius(droppos_below, 1)}) do
+						for _, obj in ipairs(objs) do
+							stack = mcl_armor.equip(stack, obj)
+							if stack:is_empty() then
 								break
 							end
 						end
-						-- If player found, add armor
-						if player then
-							local ainv = minetest.get_inventory({type="detached", name=player:get_player_name().."_armor"})
-							local pinv = player:get_inventory()
-							if ainv:get_stack("armor", armor_slot):is_empty() and pinv:get_stack("armor", armor_slot):is_empty() then
-								ainv:set_stack("armor", armor_slot, dropitem)
-								pinv:set_stack("armor", armor_slot, dropitem)
-								armor:set_player_armor(player)
-								armor:update_inventory(player)
-								armor:play_equip_sound(dropitem, player)
-
-								stack:take_item()
-								inv:set_stack("main", stack_id, stack)
-								armor_dispensed = true
-							end
+						if stack:is_empty() then
+							break
 						end
+					end
 
 						-- Place head or pumpkin as node, if equipping it as armor has failed
-						if not armor_dispensed then
-							if igroups.head or iname == "mcl_farming:pumpkin_face" then
-								if dropnodedef.buildable_to then
-									minetest.set_node(droppos, {name = iname, param2 = node.param2})
-									stack:take_item()
-									inv:set_stack("main", stack_id, stack)
-								end
+					if not stack:is_empty() then
+						if igroups.head or iname == "mcl_farming:pumpkin_face" then
+							if dropnodedef.buildable_to then
+								minetest.set_node(droppos, {name = iname, param2 = node.param2})
+								stack:take_item()
 							end
 						end
 					end
 
+					inv:set_stack("main", stack_id, stack)
 				-- Spawn Egg
 				elseif igroups.spawn_egg then
 					-- Spawn mob
