@@ -92,6 +92,7 @@ function mcl_armor.register_set(def)
 	local groups = def.groups or {}
 	local on_equip_callbacks = def.on_equip_callbacks or {}
 	local on_unequip_callbacks = def.on_unequip_callbacks or {}
+	local on_break_callbacks = def.on_break_callbacks or {}
 	local textures = def.textures or {}
 	local previews = def.previews or {}
 	local durabilities = def.durabilities or {}
@@ -125,6 +126,7 @@ function mcl_armor.register_set(def)
 			on_secondary_use = mcl_armor.equip_on_use,
 			_on_equip = on_equip_callbacks[name] or def.on_equip,
 			_on_unequip = on_unequip_callbacks[name] or def.on_unequip,
+			_on_break = on_break_callbacks[name] or def.on_break,
 			_mcl_armor_element = name,
 			_mcl_armor_texture = textures[name] or modname .. "_" .. itemname .. ".png",
 			_mcl_armor_preview = previews[name] or modname .. "_" .. itemname .. "_preview.png",
