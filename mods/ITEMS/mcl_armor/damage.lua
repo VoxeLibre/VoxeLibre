@@ -1,3 +1,12 @@
+local function use_durability(obj, inv, index, stack, uses)
+	local def = stack:get_definition()
+	mcl_util.use_item_durability(stack, uses)
+	if stack:is_empty() and def and def._on_break then
+		stack = def._on_break(obj) or stack
+	end
+	inv:set_stack("armor", index, stack)
+end
+
 mcl_damage.register_modifier(function(obj, damage, reason)
 	local flags = reason.flags
 
@@ -28,8 +37,7 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 					points = points + minetest.get_item_group(itemname, "mcl_armor_points")
 					toughness = toughness + minetest.get_item_group(itemname, "mcl_armor_toughness")
 
-					mcl_util.use_item_durability(itemstack, uses)
-					inv:set_stack("armor", element.index, itemstack)
+					use_durability(obj, inv, element.index, itemstack, uses)
 				end
 
 				if not flags.bypasses_magic then
@@ -84,8 +92,8 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 		mcl_util.deal_damage(reason.source, thorns_damage, {type = "thorns", direct = obj})
 
 		local thorns_item = thorns_pieces[math.random(#thorns_pieces)]
-		mcl_util.use_item_durability(thorns_item.itemstack, 2)
-		inv:set_stack("armor", thorns_item.index, thorns_item.itemstack)
+
+		use_durability(obj, inv, thorns_item.index, thorns_item.itemstack, 2)
 	end
 
 	mcl_armor.update(obj)
