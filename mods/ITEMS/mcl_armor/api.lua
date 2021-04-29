@@ -92,9 +92,11 @@ function mcl_armor.register_set(def)
 	local groups = def.groups or {}
 	local on_equip_callbacks = def.on_equip_callbacks or {}
 	local on_unequip_callbacks = def.on_unequip_callbacks or {}
+	local on_break_callbacks = def.on_break_callbacks or {}
 	local textures = def.textures or {}
 	local previews = def.previews or {}
 	local durabilities = def.durabilities or {}
+	local element_groups = def.element_groups or {}
 
 	for name, element in pairs(mcl_armor.elements) do
 		local itemname = element.name .. "_" .. def.name
@@ -109,6 +111,10 @@ function mcl_armor.register_set(def)
 		groups.mcl_armor_toughness = def.toughness
 		groups.mcl_armor_uses = (durabilities[name] or math.floor(def.durability * element.durability)) + 1
 		groups.enchantability = def.enchantability
+
+		for k, v in pairs(element_groups) do
+			groups[k] = v
+		end
 
 		minetest.register_tool(itemstring, {
 			description = S(def.description .. " " .. (descriptions[name] or element.description)),
@@ -125,6 +131,7 @@ function mcl_armor.register_set(def)
 			on_secondary_use = mcl_armor.equip_on_use,
 			_on_equip = on_equip_callbacks[name] or def.on_equip,
 			_on_unequip = on_unequip_callbacks[name] or def.on_unequip,
+			_on_break = on_break_callbacks[name] or def.on_break,
 			_mcl_armor_element = name,
 			_mcl_armor_texture = textures[name] or modname .. "_" .. itemname .. ".png",
 			_mcl_armor_preview = previews[name] or modname .. "_" .. itemname .. "_preview.png",
@@ -203,12 +210,26 @@ function mcl_armor.update(obj)
 			if not itemstack:is_empty() then
 				local def = itemstack:get_definition()
 
-				if def._mcl_armor_texture then
-					info.texture = "(" .. def._mcl_armor_texture .. ")" .. (info.texture and "^" .. info.texture or "")
+				local texture = def._mcl_armor_texture
+
+				if texture then
+					if type(texture) == "function" then
+						texture = texture(obj, itemstack)
+					end
+					if texture then
+						info.texture = "(" .. texture .. ")" .. (info.texture and "^" .. info.texture or "")
+					end
 				end
 
-				if obj:is_player() and def._mcl_armor_preview then
-					info.preview = "(player.png^[opacity:0^" .. def._mcl_armor_preview .. ")" .. (info.preview and "^" .. info.preview or "" )
+				local preview = def._mcl_armor_preview
+
+				if obj:is_player() and preview then
+					if type(preview) == "function" then
+						preview = preview(obj, itemstack)
+					end
+					if preview then
+						info.preview = "(player.png^[opacity:0^" .. def._mcl_armor_preview .. ")" .. (info.preview and "^" .. info.preview or "" )
+					end
 				end
 
 				info.points = info.points + minetest.get_item_group(itemname, "mcl_armor_points")
