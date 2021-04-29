@@ -10,9 +10,9 @@
 # Itemname (ca. 25%)
 @1 (ca. @2%)=@1 (ca. @2%)
 # List separator (e.g. “one, two, three”)
-, =, 
+, =,
 # Final list separator (e.g. “One, two and three”)
- and = und 
+ and = und
 1 second=1 Sekunde
 A transparent block, basically empty space. It is usually left behind after digging something.=Ein transparenter Block, praktisch leerer Raum. Er wird üblicherweise hinterlassen, nachdem man etwas ausgegraben hat.
 Air=Luft
@@ -32,7 +32,7 @@ Item reference of items which are neither blocks, tools or weapons (esp. craftin
 Liquids can flow into this block and destroy it.=Flüssigkeiten können in diesen Block hereinfließen und ihn zerstören.
 Maximum stack size: @1=Maximale Stapelgröße: @1
 Mining level: @1=Grabestufe: @1
-Mining ratings:=Grabewertungen: 
+Mining ratings:=Grabewertungen:
 • @1, rating @2: @3 s - @4 s=• @1, Wertung @2: @3 s - @4 s
 • @1, rating @2: @3 s=• @1, Wertung @2: @3 s
 Mining times:=Grabezeiten:
@@ -76,9 +76,8 @@ This block connects to these blocks: @1.=Dieser Block verbindet sich mit den fol
 This block connects to this block: @1.=Dieser Block verbindet sich mit diesem Block: @1.
 This block decreases your breath and causes a drowning damage of @1 hit point every 2 seconds.=Dieser Block reduziert Ihren Atem und verursacht beim Ertrinken einen Schaden von @1 Trefferpunkt alle 2 Sekunden.
 This block decreases your breath and causes a drowning damage of @1 hit points every 2 seconds.=Dieser Block reduziert Ihren Atem und verursacht beim Ertrinken einen Schaden von @1 Trefferpunkten alle 2 Sekunden.
-This block glows faintly. It is barely noticable.=Dieser Block leuchtet schwach. Es ist kaum merklich.
 This block is a light source with a light level of @1.=Dieser Block ist eine Lichtquelle mit einer Helligkeitsstufe von @1.
-This block glows faintly with a light level  of @1.=Dieser Block leuchtet schwach mit einer Helligkeitsstufe von @1.
+This block glows faintly with a light level of @1.=Dieser Block leuchtet schwach mit einer Helligkeitsstufe von @1.
 This block is a building block for creating various buildings.=Dieser Block ist für den Bau diverser Gebäude vorgesehen.
 This block is a liquid with these properties:=Dieser Block ist eine Flüssigkeit mit folgenden Eigenschaften:
 This block is affected by gravity and can fall.=Dieser Block wird von der Schwerkraft beeinflusst und kann fallen.
