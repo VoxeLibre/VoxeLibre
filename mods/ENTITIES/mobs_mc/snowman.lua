@@ -21,6 +21,7 @@ local gotten_texture = {
 }
 
 mobs:register_mob("mobs_mc:snowman", {
+	description = S("Snow Golem"),
 	type = "npc",
 	spawn_class = "passive",
 	passive = true,

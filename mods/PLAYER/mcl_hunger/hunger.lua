@@ -1,5 +1,4 @@
 local S = minetest.get_translator("mcl_hunger")
-local mod_death_messages = minetest.get_modpath("mcl_death_messages")
 
 -- wrapper for minetest.item_eat (this way we make sure other mods can't break this one)
 minetest.do_item_eat = function(hp_change, replace_with_item, itemstack, user, pointed_thing)
@@ -110,10 +109,7 @@ local function poisonp(tick, time, time_left, damage, exhaustion, name)
 	-- Deal damage and exhaust player
 	-- TODO: Introduce fatal poison at higher difficulties
 	if player:get_hp()-damage > 0 then
-		if mod_death_messages then
-			mcl_death_messages.player_damage(player, S("@1 succumbed to the poison.", name))
-		end
-		player:set_hp(player:get_hp()-damage)
+		mcl_util.deal_damage(player, damage, {type = "hunger"})
 	end
 
 	mcl_hunger.exhaust(name, exhaustion)

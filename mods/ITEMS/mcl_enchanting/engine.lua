@@ -6,6 +6,9 @@ function mcl_enchanting.is_book(itemname)
 end
 
 function mcl_enchanting.get_enchantments(itemstack)
+	if not itemstack then
+		return({})
+	end
 	return minetest.deserialize(itemstack:get_meta():get_string("mcl_enchanting:enchantments")) or {}
 end
 
@@ -267,7 +270,8 @@ function mcl_enchanting.initialize()
 			new_def.groups.not_in_creative_inventory = 1
 			new_def.groups.not_in_craft_guide = 1
 			new_def.groups.enchanted = 1
-			new_def.texture = itemdef.texture or itemname:gsub("%:", "_")
+			new_def._mcl_armor_texture = new_def._mcl_armor_texture and new_def._mcl_armor_texture .. mcl_enchanting.overlay
+			new_def._mcl_armor_preview = new_def._mcl_armor_preview and new_def._mcl_armor_preview .. mcl_enchanting.overlay
 			new_def._mcl_enchanting_enchanted_tool = new_name
 			new_def.after_use = get_after_use_callback(itemdef)
 			local register_list = register_item_list

@@ -1,5 +1,4 @@
 local S = minetest.get_translator("mcl_commands")
-local mod_death_messages = minetest.get_modpath("mcl_death_messages")
 
 local function handle_kill_command(suspect, victim)
 	if minetest.settings:get_bool("enable_damage") == false then
@@ -21,17 +20,8 @@ local function handle_kill_command(suspect, victim)
 	if wield:get_name() == "mobs_mc:totem" then
 		victimref:set_wielded_item("")
 	end
-	if mod_death_messages then
-		local msg
-		if suspect == victim then
-			msg = S("@1 committed suicide.", victim)
-		else
-			msg = S("@1 was killed by @2.", victim, suspect)
-		end
-		mcl_death_messages.player_damage(victimref, msg)
-	end
 	-- DIE!
-	victimref:set_hp(0)
+	victimref:set_hp(0, {_mcl_type = "out_of_world"})
 	-- Log
 	if not suspect == victim then
 		minetest.log("action", string.format("%s killed %s using /kill", suspect, victim))

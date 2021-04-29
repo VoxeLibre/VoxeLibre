@@ -1,17 +1,30 @@
 --lua locals
-local get_node       = minetest.get_node
-local get_item_group = minetest.get_item_group
-local get_node_light = minetest.get_node_light
+local get_node                     = minetest.get_node
+local get_item_group               = minetest.get_item_group
+local get_node_light               = minetest.get_node_light
 local find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
-local new_vector     = vector.new
+local get_biome_name               = minetest.get_biome_name
+local get_objects_inside_radius    = minetest.get_objects_inside_radius
+
+
 local math_random    = math.random
-local get_biome_name = minetest.get_biome_name
+local math_floor     = math.floor
 local max            = math.max
-local get_objects_inside_radius = minetest.get_objects_inside_radius
+
 local vector_distance = vector.distance
+local vector_new      = vector.new
+local vector_floor    = vector.floor
+
+local table_copy     = table.copy
+local table_remove   = table.remove
+
 
 -- range for mob count
-local aoc_range = 32
+local aoc_range = 48
+
+--do mobs spawn?
+local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
+
 --[[
 
 THIS IS THE BIG LIST OF ALL BIOMES - used for programming/updating mobs
@@ -153,28 +166,14 @@ Overworld regular:
 
 
 
-
-local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
--- count how many mobs of one type are inside an area
-
-local count_mobs = function(pos,mobtype)
+-- count how many mobs are in an area
+local count_mobs = function(pos)
 	local num = 0
-	local objs = get_objects_inside_radius(pos, aoc_range)
-	for n = 1, #objs do
-		local obj = objs[n]:get_luaentity()
-		if obj and obj.name and obj._cmi_is_mob then
-			-- count hostile mobs only
-			if mobtype == "hostile" then
-				if obj.spawn_class == "hostile" then
-					num = num + 1
-				end
-			-- count passive mobs only
-			else
-				num = num + 1
-			end
+	for _,object in pairs(get_objects_inside_radius(pos, aoc_range)) do
+		if object and object:get_luaentity() and object:get_luaentity()._cmi_is_mob then
+			num = num + 1
 		end
 	end
-
 	return num
 end
 
@@ -484,23 +483,23 @@ end
 
 local axis
 --inner and outer part of square donut radius
-local inner = 1
-local outer = 65
+local inner = 15
+local outer = 64
 local int = {-1,1}
 local position_calculation = function(pos)
 
-	pos = vector.floor(pos)
+	pos = vector_floor(pos)
 
 	--this is used to determine the axis buffer from the player
-	axis = math.random(0,1)
+	axis = math_random(0,1)
 
 	--cast towards the direction
 	if axis == 0 then --x
-		pos.x = pos.x + math.random(inner,outer)*int[math.random(1,2)]
-		pos.z = pos.z + math.random(-outer,outer)
+		pos.x = pos.x + math_random(inner,outer)*int[math_random(1,2)]
+		pos.z = pos.z + math_random(-outer,outer)
 	else --z
-		pos.z = pos.z + math.random(inner,outer)*int[math.random(1,2)]
-		pos.x = pos.x + math.random(-outer,outer)
+		pos.z = pos.z + math_random(inner,outer)*int[math_random(1,2)]
+		pos.x = pos.x + math_random(-outer,outer)
 	end
 	return(pos)
 end
@@ -516,7 +515,7 @@ local decypher_limits_dictionary = {
 local function decypher_limits(posy)
 	--local min_max_table = decypher_limits_dictionary[dimension]
 	--return min_max_table[1],min_max_table[2]
-	posy = math.floor(posy)
+	posy = math_floor(posy)
 	return posy - 32, posy + 32
 end
 
@@ -539,108 +538,169 @@ if mobs_spawn then
 	local timer = 0
 	minetest.register_globalstep(function(dtime)
 		timer = timer + dtime
-		if timer >= 8 then
+		if timer >= 10 then
 			timer = 0
 			for _,player in pairs(minetest.get_connected_players()) do
-				for i = 1,math_random(3,8) do
-					repeat -- after this line each "break" means "continue"
-						local player_pos = player:get_pos()
+				-- after this line each "break" means "continue"
+				local do_mob_spawning = true
+				repeat
+					--don't need to get these variables more than once
+					--they happen in a single server step
 
-						local _,dimension = mcl_worlds.y_to_layer(player_pos.y)
+					local player_pos = player:get_pos()
+					local _,dimension = mcl_worlds.y_to_layer(player_pos.y)
 
-						if dimension == "void" or dimension == "default" then
-							break -- ignore void and unloaded area
-						end
+					if dimension == "void" or dimension == "default" then
+						break -- ignore void and unloaded area
+					end
 
-						local min,max = decypher_limits(player_pos.y)
+					local min,max = decypher_limits(player_pos.y)
 
-						local goal_pos = position_calculation(player_pos)
+					for i = 1,math_random(1,4) do
+						-- after this line each "break" means "continue"
+						local do_mob_algorithm = true
+						repeat
 
-						local spawning_position_list = find_nodes_in_area_under_air(new_vector(goal_pos.x,min,goal_pos.z), vector.new(goal_pos.x,max,goal_pos.z), {"group:solid", "group:water", "group:lava"})
+							local goal_pos = position_calculation(player_pos)
 
-						--couldn't find node
-						if #spawning_position_list <= 0 then
+							local spawning_position_list = find_nodes_in_area_under_air(vector_new(goal_pos.x,min,goal_pos.z), vector_new(goal_pos.x,max,goal_pos.z), {"group:solid", "group:water", "group:lava"})
+
+							--couldn't find node
+							if #spawning_position_list <= 0 then
+								break
+							end
+
+							local spawning_position = spawning_position_list[math_random(1,#spawning_position_list)]
+
+							--Prevent strange behavior   --- this is commented out: /too close to player --fixed with inner circle
+							if not spawning_position then --  or vector_distance(player_pos, spawning_position) < 15 
+								break
+							end
+							
+							--hard code mob limit in area to 5 for now
+							if count_mobs(spawning_position) >= 5 then
+								break
+							end
+
+							local gotten_node = get_node(spawning_position).name
+
+							if not gotten_node or gotten_node == "air" then --skip air nodes
+								break
+							end
+
+							local gotten_biome = minetest.get_biome_data(spawning_position)
+
+							if not gotten_biome then
+								break --skip if in unloaded area
+							end
+
+							gotten_biome = get_biome_name(gotten_biome.biome) --makes it easier to work with
+
+							--add this so mobs don't spawn inside nodes
+							spawning_position.y = spawning_position.y + 1
+
+							--only need to poll for node light if everything else worked
+							local gotten_light = get_node_light(spawning_position)
+
+							local is_water = get_item_group(gotten_node, "water") ~= 0
+							local is_lava  = get_item_group(gotten_node, "lava") ~= 0
+
+							local mob_def = nil
+							
+							--create a disconnected clone of the spawn dictionary
+							--prevents memory leak
+							local mob_library_worker_table = table_copy(spawn_dictionary)
+
+							--grab mob that fits into the spawning location
+							--randomly grab a mob, don't exclude any possibilities
+							local repeat_mob_search = true
+							repeat
+
+								--do not infinite loop
+								if #mob_library_worker_table <= 0 then
+									--print("breaking infinite loop")
+									break
+								end
+
+								local skip = false
+
+								--use this for removing table elements of mobs that do not match
+								local temp_index = math_random(1,#mob_library_worker_table)
+
+								local temp_def = mob_library_worker_table[temp_index]
+
+								--skip if something ridiculous happens (nil mob def)
+								--something truly horrible has happened if skip gets
+								--activated at this point
+								if not temp_def then
+									skip = true
+								end
+
+								if not skip and (spawning_position.y < temp_def.min_height or spawning_position.y > temp_def.max_height) then
+									skip = true
+								end
+
+								--skip if not correct dimension
+								if not skip and (temp_def.dimension ~= dimension) then
+									skip = true
+								end
+
+								--skip if not in correct biome
+								if not skip and (not biome_check(temp_def.biomes, gotten_biome)) then
+									skip = true
+								end
+
+								--don't spawn if not in light limits
+								if not skip and (gotten_light < temp_def.min_light or gotten_light > temp_def.max_light) then
+									skip = true
+								end
+
+								--skip if not in correct spawning type
+								if not skip and (temp_def.type_of_spawning == "ground" and is_water) then
+									skip = true
+								end
+
+								if not skip and (temp_def.type_of_spawning == "ground" and is_lava) then
+									skip = true
+								end
+
+								--found a mob, exit out of loop
+								if not skip then
+									--minetest.log("warning", "found mob:"..temp_def.name)
+									--print("found mob:"..temp_def.name)
+									mob_def = table_copy(temp_def)
+									break
+								else
+									--minetest.log("warning", "deleting temp index "..temp_index)
+									--print("deleting temp index")
+									table_remove(mob_library_worker_table, temp_index)
+								end
+
+							until repeat_mob_search == false --this is needed to sort through mobs randomly
+
+
+							--catch if went through all mobs and something went horribly wrong
+							--could not find a valid mob to spawn that fits the environment
+							if not mob_def then
+								break
+							end
+
+							--adjust the position for water and lava mobs
+							if mob_def.type_of_spawning == "water"  or mob_def.type_of_spawning == "lava" then
+								spawning_position.y = spawning_position.y - 1
+							end
+
+							--print("spawning: " .. mob_def.name)
+
+							--everything is correct, spawn mob
+							minetest.add_entity(spawning_position, mob_def.name)
+
 							break
-						end
+						until do_mob_algorithm == false --this is a safety catch
+					end
 
-						local spawning_position = spawning_position_list[math_random(1,#spawning_position_list)]
-
-						--Prevent strange behavior/too close to player
-						if not spawning_position or vector_distance(player_pos, spawning_position) < 15 then
-							break
-						end
-
-						local gotten_node = get_node(spawning_position).name
-
-						if not gotten_node or gotten_node == "air" then --skip air nodes
-							break
-						end
-
-						local gotten_biome = minetest.get_biome_data(spawning_position)
-
-						if not gotten_biome then
-							break --skip if in unloaded area
-						end
-
-						gotten_biome = get_biome_name(gotten_biome.biome) --makes it easier to work with
-
-						--grab random mob
-						local mob_def = spawn_dictionary[math.random(1,#spawn_dictionary)]
-
-						if not mob_def then
-							break --skip if something ridiculous happens (nil mob def)
-						end
-
-						--skip if not correct dimension
-						if mob_def.dimension ~= dimension then
-							break
-						end
-
-						--skip if not in correct biome
-						if not biome_check(mob_def.biomes, gotten_biome) then
-							break
-						end
-
-						--add this so mobs don't spawn inside nodes
-						spawning_position.y = spawning_position.y + 1
-
-						if spawning_position.y < mob_def.min_height or spawning_position.y > mob_def.max_height then
-							break
-						end
-
-						--only need to poll for node light if everything else worked
-						local gotten_light = get_node_light(spawning_position)
-
-						--don't spawn if not in light limits
-						if gotten_light < mob_def.min_light or gotten_light > mob_def.max_light then
-							break
-						end
-
-						local is_water = get_item_group(gotten_node, "water") ~= 0
-						local is_lava  = get_item_group(gotten_node, "lava") ~= 0
-
-						if mob_def.type_of_spawning == "ground" and is_water then
-							break
-						end
-
-						if mob_def.type_of_spawning == "ground" and is_lava then
-							break
-						end
-
-						--finally do the heavy check (for now) of mobs in area
-						if count_mobs(spawning_position, mob_def.spawn_class) >= mob_def.aoc then
-							break
-						end
-
-						--adjust the position for water and lava mobs
-						if mob_def.type_of_spawning == "water"  or mob_def.type_of_spawning == "lava" then
-							spawning_position.y = spawning_position.y - 1
-						end
-
-						--everything is correct, spawn mob
-						minetest.add_entity(spawning_position, mob_def.name)
-					until true --this is a safety catch
-				end
+					break
+				until do_mob_spawning == false --this is a performance catch
 			end
 		end
 	end)

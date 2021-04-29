@@ -1,7 +1,7 @@
 # textdomain:awards
 @1: @2=@1: @2
 @1 (got)=@1 (erhalten)
-@1’s awards:=Auszeichnungen von @1:
+@1’s awards:=Auszeichnungen von @:
 (Secret Award)=(Geheime Auszeichnung)
 Achievement gotten!=Auszeichnung erhalten!
 Achievement gotten:=Auszeichnung erhalten:
@@ -27,7 +27,6 @@ Awards=Auszeichnungen
 @1/@2 deaths=@1/@2 Tode
 @1/@2 dug=@1/@2 abgebaut
 @1/@2 game joins=@1/@2 Spielen beigetreten
-@1/@2 lines of chat=@1/@2 Chatzeilen
 @1/@2 placed=@1/@2 platziert
 Die @1 times.=Sterben Sie @1 mal.
 Die.=Sterben Sie.
@@ -58,3 +57,7 @@ Invalid action.=Ungültige Aktion.
 Player is not online.=Spieler ist nicht online.
 Done.=Fertig.
 Achievement “@1” does not exist.=Auszeichnung »@1« existiert nicht.
+@1 has made the achievement @2=@1 hat die Auszeichnung @2 erhalten
+Write something in chat.=Schreiben Sie etwas in den Chat.
+Write @1 chat messages.=Schreiben Sie @1 Chatnachrichten.
+@1/@2 chat messages=@1/@2 Chatnachrichten
