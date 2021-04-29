@@ -83,10 +83,15 @@ end
 
 -- Horse
 local horse = {
+	description = S("Horse"),
 	type = "animal",
 	spawn_class = "passive",
 	visual = "mesh",
 	mesh = "mobs_mc_horse.b3d",
+	rotate = 270,
+	walk_velocity = 1,
+	run_velocity = 8,
+	skittish = true,
 	visual_size = {x=3.0, y=3.0},
 	collisionbox = {-0.69825, -0.01, -0.69825, 0.69825, 1.59, 0.69825},
 	animation = {
@@ -96,7 +101,7 @@ local horse = {
 		walk_speed = 25,
 		walk_start = 0,
 		walk_end = 40,
-		run_speed = 60,
+		run_speed = 120,
 		run_start = 0,
 		run_end = 40,
 	},
@@ -113,7 +118,8 @@ local horse = {
 	fly = false,
 	walk_chance = 60,
 	view_range = 16,
-	follow = mobs_mc.follow.horse,
+	follow = "mcl_farming:wheat_item",
+	follow_distance = 3,
 	passive = true,
 	hp_min = 15,
 	hp_max = 30,
@@ -181,7 +187,7 @@ local horse = {
 		-- if driver present and horse has a saddle allow control of horse
 		if self.driver and self._saddle then
 
-			mobs.drive(self, "walk", "stand", false, dtime)
+			mobs.drive(self, "run", "stand", false, dtime)
 
 			return false -- skip rest of mob functions
 		end
@@ -213,6 +219,21 @@ local horse = {
 		local iname = item:get_name()
 		local heal = 0
 
+		--sneak click to breed the horse/feed it
+		if self.owner and self.owner == clicker:get_player_name() then
+			--attempt to enter breed state
+			if mobs.enter_breed_state(self,clicker) then
+				return
+			end
+		end
+
+		--don't do any other logic with the baby
+		--make baby grow faster
+		if self.baby then
+			mobs.make_baby_grow_faster(self,clicker)
+			return
+		end
+
 		-- Taming
 		self.temper = self.temper or (math.random(1,100))
 
@@ -238,6 +259,7 @@ local horse = {
 				self.buck_off_time = 40 -- TODO how long does it take in minecraft?
 				if self.temper > 100 then
 					self.tamed = true -- NOTE taming can only be finished by riding the horse
+					mobs.tamed_effect(self)
 					if not self.owner or self.owner == "" then
 						self.owner = clicker:get_player_name()
 					end
@@ -251,6 +273,14 @@ local horse = {
 
 			-- If nothing happened temper_increase = 0 and addition does nothing
 			self.temper = self.temper + temper_increase
+
+			--give the player some kind of idea
+			--of what's happening with the horse's temper
+			if self.temper <= 100 then
+				mobs.feed_effect(self)
+			else
+				mobs.tamed_effect(self)
+			end
 
 			return
 		end
@@ -278,10 +308,6 @@ local horse = {
 			heal = 20
 		end
 		if heal > 0 and mobs:feed_tame(self, clicker, heal, false, false) then
-			return
-		end
-
-		if mobs:protect(self, clicker) then
 			return
 		end
 
@@ -356,9 +382,6 @@ local horse = {
 				self.object:set_properties({stepheight = 1.1})
 				mobs.attach(self, clicker)
 
-			-- Used to capture horse
-			elseif not self.driver and iname ~= "" then
-				mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 			end
 		end
 	end,
@@ -418,6 +441,7 @@ mobs:register_mob("mobs_mc:horse", horse)
 
 -- Skeleton horse
 local skeleton_horse = table.copy(horse)
+skeleton_horse.description = S("Skeleton Horse")
 skeleton_horse.breath_max = -1
 skeleton_horse.armor = {undead = 100, fleshy = 100}
 skeleton_horse.textures = {{"blank.png", "mobs_mc_horse_skeleton.png", "blank.png"}}
@@ -440,6 +464,7 @@ mobs:register_mob("mobs_mc:skeleton_horse", skeleton_horse)
 
 -- Zombie horse
 local zombie_horse = table.copy(horse)
+zombie_horse.description = S("Zombie Horse")
 zombie_horse.breath_max = -1
 zombie_horse.armor = {undead = 100, fleshy = 100}
 zombie_horse.textures = {{"blank.png", "mobs_mc_horse_zombie.png", "blank.png"}}
@@ -464,6 +489,7 @@ mobs:register_mob("mobs_mc:zombie_horse", zombie_horse)
 -- Donkey
 local d = 0.86 -- donkey scale
 local donkey = table.copy(horse)
+donkey.description = S("Donkey")
 donkey.textures = {{"blank.png", "mobs_mc_donkey.png", "blank.png"}}
 donkey.animation = {
 	speed_normal = 25,
@@ -494,6 +520,7 @@ mobs:register_mob("mobs_mc:donkey", donkey)
 -- Mule
 local m = 0.94
 local mule = table.copy(donkey)
+mule.description = S("Mule")
 mule.textures = {{"blank.png", "mobs_mc_mule.png", "blank.png"}}
 mule.visual_size = { x=horse.visual_size.x*m, y=horse.visual_size.y*m }
 mule.sounds = table.copy(donkey.sounds)
@@ -515,35 +542,66 @@ mobs:spawn_specific(
 "overworld",
 "ground",
 {
-"FlowerForest",
-"Swampland",
-"Taiga",
-"ExtremeHills",
-"BirchForest",
-"MegaSpruceTaiga",
-"MegaTaiga",
-"ExtremeHills+",
-"Forest",
-"Plains",
-"ColdTaiga",
-"SunflowerPlains",
-"RoofedForest",
-"MesaPlateauFM_grasstop",
-"ExtremeHillsM",
-"BirchForestM",
+	"FlowerForest_beach",
+	"Forest_beach",
+	"StoneBeach",
+	"ColdTaiga_beach_water",
+	"Taiga_beach",
+	"Savanna_beach",
+	"Plains_beach",
+	"ExtremeHills_beach",
+	"ColdTaiga_beach",
+	"Swampland_shore",
+	"JungleM_shore",
+	"Jungle_shore",
+	"MesaPlateauFM_sandlevel",
+	"MesaPlateauF_sandlevel",
+	"MesaBryce_sandlevel",
+	"Mesa_sandlevel",
+	"Mesa",
+	"FlowerForest",
+	"Swampland",
+	"Taiga",
+	"ExtremeHills",
+	"Jungle",
+	"Savanna",
+	"BirchForest",
+	"MegaSpruceTaiga",
+	"MegaTaiga",
+	"ExtremeHills+",
+	"Forest",
+	"Plains",
+	"Desert",
+	"ColdTaiga",
+	"IcePlainsSpikes",
+	"SunflowerPlains",
+	"IcePlains",
+	"RoofedForest",
+	"ExtremeHills+_snowtop",
+	"MesaPlateauFM_grasstop",
+	"JungleEdgeM",
+	"ExtremeHillsM",
+	"JungleM",
+	"BirchForestM",
+	"MesaPlateauF",
+	"MesaPlateauFM",
+	"MesaPlateauF_grasstop",
+	"MesaBryce",
+	"JungleEdge",
+	"SavannaM",
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-15000, 
-4, 
-mobs_mc.spawn_height.water+3, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+15000,
+4,
+mobs_mc.spawn_height.water+3,
 mobs_mc.spawn_height.overworld_max)
 
 
 mobs:spawn_specific(
-"mobs_mc:donkey", 
-"overworld", 
+"mobs_mc:donkey",
+"overworld",
 "ground",
 {
 "Mesa",
@@ -553,12 +611,12 @@ mobs:spawn_specific(
 "MesaPlateauF_grasstop",
 "MesaBryce",
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-15000, 
-4, 
-mobs_mc.spawn_height.water+3, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+15000,
+4,
+mobs_mc.spawn_height.water+3,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs

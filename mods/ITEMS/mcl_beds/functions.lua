@@ -6,6 +6,8 @@ local player_in_bed = 0
 local is_sp = minetest.is_singleplayer()
 local weather_mod = minetest.get_modpath("mcl_weather") ~= nil
 local explosions_mod = minetest.get_modpath("mcl_explosions") ~= nil
+local spawn_mod = minetest.get_modpath("mcl_spawn")
+local worlds_mod = minetest.get_modpath("mcl_worlds")
 
 -- Helper functions
 
@@ -76,7 +78,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		bed_center = {x = bed_pos.x - dir.x/2, y = bed_pos.y + 0.1, z = bed_pos.z - dir.z/2}
 
 		-- save respawn position when entering bed
-		if minetest.get_modpath("mcl_spawn") and mcl_spawn.set_spawn_pos(player, bed_pos, false) then
+		if spawn_mod and mcl_spawn.set_spawn_pos(player, bed_pos, nil) then
 			minetest.chat_send_player(name, S("New respawn position set!"))
 		end
 
@@ -86,7 +88,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		end
 
 		for _, other_pos in pairs(mcl_beds.bed_pos) do
-			if vector.distance(bed_pos, other_pos) < 0.1 then
+			if vector.distance(bed_pos2, other_pos) < 0.1 then
 				return false,  S("This bed is already occupied!")
 			end
 		end
@@ -168,7 +170,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 
 		mcl_beds.player[name] = 1
 		mcl_beds.pos[name] = pos
-		mcl_beds.bed_pos[name] = bed_pos
+		mcl_beds.bed_pos[name] = bed_pos2
 		player_in_bed = player_in_bed + 1
 		-- physics, eye_offset, etc
 		player:set_eye_offset({x = 0, y = -13, z = 0}, {x = 0, y = 0, z = 0})
@@ -297,11 +299,15 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 	if player:get_meta():get_string("mcl_beds:sleeping") == "true" then
 		return
 	end
-	if minetest.get_modpath("mcl_worlds") then
+	if worlds_mod then
 		local dim = mcl_worlds.pos_to_dimension(pos)
 		if dim == "nether" or dim == "end" then
 			-- Bed goes BOOM in the Nether or End.
+			local node = minetest.get_node(pos)
+			local dir = minetest.facedir_to_dir(node.param2)
+
 			minetest.remove_node(pos)
+			minetest.remove_node(string.sub(node.name, -4) == "_top" and vector.subtract(pos, dir) or vector.add(pos, dir))
 			if explosions_mod then
 				mcl_explosions.explode(pos, 5, {drop_chance = 1.0, fire = true})
 			end

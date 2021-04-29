@@ -147,8 +147,8 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 				local formspec = "size[8,9]"..
 					header..
 					"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
-					"field[0.75,1;7.25,1;title;"..minetest.formspec_escape(minetest.colorize(mcl_colors.BLACK, S("Enter book title:")))..";]"..
-					"label[0.75,1.5;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("by @1", name))).."]"..
+					"field[0.75,1;7.25,1;title;"..minetest.formspec_escape(minetest.colorize("#000000", S("Enter book title:")))..";]"..
+					"label[0.75,1.5;"..minetest.formspec_escape(minetest.colorize("#404040", S("by @1", name))).."]"..
 					"button_exit[0.75,7.95;3,1;sign;"..minetest.formspec_escape(S("Sign and Close")).."]"..
 					"tooltip[sign;"..minetest.formspec_escape(S("Note: The book will no longer be editable after signing")).."]"..
 					"button[4.25,7.95;3,1;cancel;"..minetest.formspec_escape(S("Cancel")).."]"

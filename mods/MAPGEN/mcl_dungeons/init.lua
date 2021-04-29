@@ -49,12 +49,12 @@ local dungeonsizes = {
 	{ x=7, y=4, z=7},
 }
 
-local dirs = {
+--[[local dirs = {
 	{ x= 1, y=0, z= 0 },
 	{ x= 0, y=0, z= 1 },
 	{ x=-1, y=0, z= 0 },
 	{ x= 0, y=0, z=-1 },
-}
+}]]
 
 local surround_vectors = {
 	{ x=-1, y=0, z=0 },
@@ -66,7 +66,7 @@ local surround_vectors = {
 local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 	if calls_remaining >= 1 then return end
 
-	local p1, p2, dim, pr = param.p1, param.p2, param.dim, param.pr
+	local p1, _, dim, pr = param.p1, param.p2, param.dim, param.pr
 	local x, y, z = p1.x, p1.y, p1.z
 	local check = not (param.dontcheck or false)
 
@@ -404,8 +404,7 @@ local function dungeons_nodes(minp, maxp, blockseed)
 		local p1 = {x=x,y=y,z=z}
 		local p2 = {x = x+dim.x+1, y = y+dim.y+1, z = z+dim.z+1}
 		minetest.log("verbose","[mcl_dungeons] size=" ..minetest.pos_to_string(dim) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
-		local param = {p1=p1, p2=p2, dim=dim, pr=pr}
-		emerge_area(p1, p2, ecb_spawn_dungeon, param)
+		emerge_area(p1, p2, ecb_spawn_dungeon, {p1=p1, p2=p2, dim=dim, pr=pr})
 	end
 end
 
@@ -414,8 +413,7 @@ function mcl_dungeons.spawn_dungeon(p1, _, pr)
 	local dim = dungeonsizes[pr:next(1, #dungeonsizes)]
 	local p2 = {x = p1.x+dim.x+1, y = p1.y+dim.y+1, z = p1.z+dim.z+1}
 	minetest.log("verbose","[mcl_dungeons] size=" ..minetest.pos_to_string(dim) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
-	local param = {p1=p1, p2=p2, dim=dim, pr=pr, dontcheck=true}
-	emerge_area(p1, p2, ecb_spawn_dungeon, param)
+	emerge_area(p1, p2, ecb_spawn_dungeon, {p1=p1, p2=p2, dim=dim, pr=pr, dontcheck=true})
 end
 
 mcl_mapgen_core.register_generator("dungeons", nil, dungeons_nodes, 999999)

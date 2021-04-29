@@ -1,2 +1,0 @@
-name = mcl_firework
-author = NO11, j45

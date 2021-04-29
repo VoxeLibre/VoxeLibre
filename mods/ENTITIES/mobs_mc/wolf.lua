@@ -19,16 +19,35 @@ end
 
 -- Wolf
 local wolf = {
+	description = S("Wolf"),
 	type = "animal",
 	spawn_class = "passive",
 	can_despawn = true,
+	neutral = true,
 	hp_min = 8,
 	hp_max = 8,
 	xp_min = 1,
 	xp_max = 3,
+	rotate = 270,
 	passive = false,
 	group_attack = true,
-	collisionbox = {-0.3, -0.01, -0.3, 0.3, 0.84, 0.3},
+
+	--head code
+	has_head = false,
+	head_bone = "head",
+	
+	swap_y_with_x = false,
+	reverse_head_yaw = false,
+
+	head_bone_pos_y = 3.6,
+	head_bone_pos_z = -0.6,
+
+	head_height_offset = 1.0525,
+	head_direction_offset = 0.5,
+	head_pitch_modifier = 0,
+	--end head code
+
+	collisionbox = {-0.3, -0.00, -0.3, 0.3, 0.85, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_wolf.b3d",
 	textures = {
@@ -52,7 +71,7 @@ local wolf = {
 	run_velocity = 3,
 	damage = 4,
 	reach = 2,
-	attack_type = "dogfight",
+	attack_type = "punch",
 	fear_height = 4,
 	follow = mobs_mc.follow.wolf,
 	on_rightclick = function(self, clicker)
@@ -74,6 +93,7 @@ local wolf = {
 				dog:set_yaw(yaw)
 				ent = dog:get_luaentity()
 				ent.owner = clicker:get_player_name()
+				ent.tamed = true
 				-- cornfirm taming
 				minetest.sound_play("mobs_mc_wolf_bark", {object=dog, max_hear_distance=16}, true)
 				-- Replace wolf
@@ -138,20 +158,32 @@ dog.owner = ""
 -- TODO: Start sitting by default
 dog.order = "roam"
 dog.owner_loyal = true
-dog.follow_velocity = 3.2 
+dog.follow_velocity = 3.2
 -- Automatically teleport dog to owner
 dog.do_custom = mobs_mc.make_owner_teleport_function(12)
-dog.follow = mobs_mc.follow.dog
 dog.attack_animals = nil
 dog.specific_attack = nil
+dog.breed_distance = 1.5
+dog.baby_size = 0.5
+dog.follow_distance = 2
+dog.follow = "mcl_mobitems:beef"
+
 dog.on_rightclick = function(self, clicker)
 	local item = clicker:get_wielded_item()
 
-	if mobs:protect(self, clicker) then
+	--owner is broken for this
+	--attempt to enter breed state
+	if mobs.enter_breed_state(self,clicker) then
 		return
-	elseif item:get_name() ~= "" and mobs:capture_mob(self, clicker, 0, 2, 80, false, nil) then
+	end
+
+	--make baby grow faster
+	if self.baby then
+		mobs.make_baby_grow_faster(self,clicker)
 		return
-	elseif is_food(item:get_name()) then
+	end
+
+	if is_food(item:get_name()) then
 		-- Feed to increase health
 		local hp = self.health
 		local hp_add = 0
@@ -254,12 +286,12 @@ mobs:spawn_specific(
 "ExtremeHillsM",
 "BirchForestM",
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-9000, 
-7, 
-mobs_mc.spawn_height.water+3, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+9000,
+7,
+mobs_mc.spawn_height.water+3,
 mobs_mc.spawn_height.overworld_max)
 
 mobs:register_egg("mobs_mc:wolf", S("Wolf"), "mobs_mc_spawn_icon_wolf.png", 0)

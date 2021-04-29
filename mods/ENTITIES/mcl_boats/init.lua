@@ -188,7 +188,7 @@ function boat.on_punch(self, puncher, time_from_last_punch, tool_capabilities, d
 end
 
 function boat.on_step(self, dtime, moveresult)
-	mcl_burning.tick(self.object, dtime)
+	mcl_burning.tick(self.object, dtime, self)
 
 	self._v = get_v(self.object:get_velocity()) * get_sign(self._v)
 	local v_factor = 1
@@ -394,7 +394,7 @@ for b=1, #boat_ids do
 	if b == 1 then
 		help = true
 		longdesc = S("Boats are used to travel on the surface of water.")
-		usagehelp = S("Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Rightclick the boat again to leave it, punch the boat to make it drop as an item.")
+		usagehelp = S("Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Use [Sneak] to leave the boat, punch the boat to make it drop as an item.")
 		helpname = S("Boat")
 	end
 	tt_help = S("Water vehicle")

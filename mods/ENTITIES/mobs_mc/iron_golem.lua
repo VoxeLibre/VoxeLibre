@@ -12,11 +12,15 @@ local S = minetest.get_translator("mobs_mc")
 
 
 mobs:register_mob("mobs_mc:iron_golem", {
+	description = S("Iron Golem"),
 	type = "npc",
 	spawn_class = "passive",
 	passive = true,
+	rotate = 270,
 	hp_min = 100,
-	hp_max = 100,
+	hp_max = 100,	
+	protect = true,
+	neutral = true,
 	breath_max = -1,
 	collisionbox = {-0.7, -0.01, -0.7, 0.7, 2.69, 0.7},
 	visual = "mesh",
@@ -39,7 +43,7 @@ mobs:register_mob("mobs_mc:iron_golem", {
 	reach = 3,
 	group_attack = true,
 	attacks_monsters = true,
-	attack_type = "dogfight",
+	attack_type = "punch",
 	drops = {
 		{name = mobs_mc.items.iron_ingot,
 		chance = 1,
