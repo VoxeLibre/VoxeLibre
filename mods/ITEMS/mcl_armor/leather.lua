@@ -1,5 +1,6 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 local colorize_value = 125
+local modifier = "[colorize:<color>:"..colorize_value
 
 local str = string
 
@@ -35,3 +36,50 @@ local function calculate_color(first, last)
     --local first_g = tonumber(str.sub(first, 4, 5))
     return  tonumber(first)*tonumber(last)
 end
+
+local function get_texture_function(texture)
+	local function get_texture(obj, itemstack)
+		local color = itemstack:get_meta():get_string("color")
+		if color == "" or color == nil then
+			return texture
+		else
+			return texture.."[colorize:"..color..":"..colorize_value
+		end
+	end
+	return get_texture
+end
+
+mcl_armor.register_set({
+	name = "leather_colored",
+	description = "Colored Leather",
+	descriptions = {
+		head = "Cap",
+		torso = "Tunic",
+		legs = "Pants",
+	},
+	durability = 80,
+	enchantability = 15,
+	points = {
+		head = 1,
+		torso = 3,
+		legs = 2,
+		feet = 1,
+	},
+	textures = {
+		head = get_texture_function("mcl_armor_helmet_leather.png"),
+		torso = get_texture_function("mcl_armor_chestplate_leather.png"),
+		legs = get_texture_function("mcl_armor_leggings_leather.png"),
+		feet = get_texture_function("mcl_armor_boots_leather.png"),
+	},
+	repair_material = "mcl_mobitems:leather",
+})
+
+minetest.register_chatcommand("colort", {
+	params = "<name> <privilege>",  -- Short parameter description
+	description = "Remove privilege from player",  -- Full description
+	func = function(name, param)
+		local player = minetest.get_player_by_name(name)
+		local item = player:get_wielded_item()
+		item:get_meta():set_string("color", "#951d1d")
+	end,
+})
