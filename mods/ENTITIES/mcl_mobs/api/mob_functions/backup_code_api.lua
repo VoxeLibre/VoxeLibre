@@ -1646,6 +1646,8 @@ local do_env_damage = function(self)
 
 			self.health = self.health - self.lava_damage
 
+			mcl_burning.set_on_fire(self.object, 15)
+
 			effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
 
 			if check_for_death(self, "lava", {type = "environment",
@@ -1661,6 +1663,8 @@ local do_env_damage = function(self)
 		if self.fire_damage ~= 0 then
 
 			self.health = self.health - self.fire_damage
+
+			mcl_burning.set_on_fire(self.object, 8)
 
 			effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
 
