@@ -205,12 +205,26 @@ function mcl_armor.update(obj)
 			if not itemstack:is_empty() then
 				local def = itemstack:get_definition()
 
-				if def._mcl_armor_texture then
-					info.texture = "(" .. def._mcl_armor_texture .. ")" .. (info.texture and "^" .. info.texture or "")
+				local texture = def._mcl_armor_texture
+
+				if texture then
+					if type(texture) == "function" then
+						texture = texture(obj, itemstack)
+					end
+					if texture then
+						info.texture = "(" .. texture .. ")" .. (info.texture and "^" .. info.texture or "")
+					end
 				end
 
-				if obj:is_player() and def._mcl_armor_preview then
-					info.preview = "(player.png^[opacity:0^" .. def._mcl_armor_preview .. ")" .. (info.preview and "^" .. info.preview or "" )
+				local preview = def._mcl_armor_preview
+
+				if obj:is_player() and preview then
+					if type(preview) == "function" then
+						preview = preview(obj, itemstack)
+					end
+					if preview then
+						info.preview = "(player.png^[opacity:0^" .. def._mcl_armor_preview .. ")" .. (info.preview and "^" .. info.preview or "" )
+					end
 				end
 
 				info.points = info.points + minetest.get_item_group(itemname, "mcl_armor_points")
