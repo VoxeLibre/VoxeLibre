@@ -1,3 +1,10 @@
+# ______                      
+# |  ___|                     
+# | |_ _ __ ___ _______ _ __  
+# |  _| '__/ _ \_  / _ \ '_ \ 
+# | | | | | (_) / /  __/ | | |
+# \_| |_|  \___/___\___|_| |_|
+
 # MineClone 2
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by davedevils.
 Developed by many people. Not developed or endorsed by Mojang AB.
