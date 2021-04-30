@@ -1515,9 +1515,9 @@ local is_at_water_danger = function(self)
 end
 
 local function get_light(pos, tod)
-	if minetest.get_node_or_nil(pos) then
-		local lightfunc = minetest.get_natural_light or minetest.get_node_light
-		return lightfunc(pos, tod)
+	local ok, light = pcall(minetest.get_natural_light or minetest.get_node_light, pos, tod)
+	if ok then
+		return light
 	else
 		return 0
 	end
@@ -1646,6 +1646,8 @@ local do_env_damage = function(self)
 
 			self.health = self.health - self.lava_damage
 
+			mcl_burning.set_on_fire(self.object, 15)
+
 			effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
 
 			if check_for_death(self, "lava", {type = "environment",
@@ -1661,6 +1663,8 @@ local do_env_damage = function(self)
 		if self.fire_damage ~= 0 then
 
 			self.health = self.health - self.fire_damage
+
+			mcl_burning.set_on_fire(self.object, 8)
 
 			effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
 
