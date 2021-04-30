@@ -1515,9 +1515,9 @@ local is_at_water_danger = function(self)
 end
 
 local function get_light(pos, tod)
-	if minetest.get_node_or_nil(pos) then
-		local lightfunc = minetest.get_natural_light or minetest.get_node_light
-		return lightfunc(pos, tod)
+	local ok, light = pcall(minetest.get_natural_light or minetest.get_node_light, pos, tod)
+	if ok then
+		return light
 	else
 		return 0
 	end
