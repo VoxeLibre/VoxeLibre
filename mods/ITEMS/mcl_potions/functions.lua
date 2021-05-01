@@ -689,7 +689,7 @@ function mcl_potions.healing_func(player, hp)
 			hp = -1
 		end
 
-		mcl_util.deal_damage(obj, -hp, {type = "magic"})
+		mcl_util.deal_damage(player, -hp, {type = "magic"})
 	end
 
 end

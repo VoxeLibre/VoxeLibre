@@ -112,18 +112,3 @@ No effect=Keine Wirkung
 A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect.=Ein werfbarer Trank, der bei Kollision zerbrechen wird, wo er allen nahen Spielern und Mobs einen Statuseffekt geben wird.
 
 This particular arrow is tipped and will give an effect when it hits a player or mob.=Diese Pfeilspitze dieses Pfeils in einem Trank getränkt und gibt einen Effekt, wenn er einen Spieler oder einen Mob trifft.
-
-
-
-##### not used anymore #####
-
-Lingering Weakness Potion=Schwächeverweiltrank
-Lingering Weakness Potion +=Schwächeverweiltrank +
-Lingering Strength Potion=Stärkeverweiltrank
-Lingering Strength Potion II=Stärkeverweiltrank II
-Lingering Strength Potion +=Stärkeverweiltrank +
-Weakness Splash Potion=Schwächewurftrank
-Weakness Splash Potion +=Schwächewurftrank +
-Strength Splash Potion=Stärkewurftrank
-Strength Splash Potion II=Stärkewurftrank II
-Strength Splash Potion +=Stärkewurftrank +

@@ -1,3 +1,5 @@
+# (Currently in feature freeze)
+
 # MineClone 2
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by davedevils.
 Developed by many people. Not developed or endorsed by Mojang AB.
