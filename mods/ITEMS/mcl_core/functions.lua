@@ -197,8 +197,20 @@ minetest.register_abm({
 	interval = 1,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		for _,object in pairs(minetest.get_objects_inside_radius(pos, 0.9)) do
+		for _,object in pairs(minetest.get_objects_inside_radius(pos, 1)) do
 			if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
+				object:remove()
+			elseif not object:is_player() and object:get_luaentity().name == "mcl_minecarts:minecart" then
+				local pos = object:get_pos()
+				local driver = object:get_luaentity()._driver
+				if driver ~= nil then
+					mcl_player.player_attached[driver] = nil
+					local player = minetest.get_player_by_name(driver)
+					player:set_detach()
+					player:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
+					mcl_player.player_set_animation(player, "stand" , 30)
+				end
+				minetest.add_item(pos, "mcl_minecarts:minecart")
 				object:remove()
 			end
 		end
