@@ -2,7 +2,7 @@
 Using it as fuel turns it into: @1.=
 @1 seconds=
 # Item count times item name
-%@1×@2=
+@1×@2=
 # Itemname (25%)
 @1 (@2%)=
 # Itemname (<0.5%)

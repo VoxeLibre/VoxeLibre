@@ -6,7 +6,8 @@ mobs:register_mob("mobs_mc:pig", {
 	description = S("Pig"),
 	type = "animal",
 	spawn_class = "passive",
-	runaway = true,
+	skittish = true,
+	rotate = 270,
 	hp_min = 10,
 	hp_max = 10,
 	xp_min = 1,
@@ -19,11 +20,30 @@ mobs:register_mob("mobs_mc:pig", {
 		"mobs_mc_pig.png", -- base
 		"blank.png", -- saddle
 	}},
+
+	--head code
+	has_head = true,
+	head_bone = "head",
+
+	swap_y_with_x = false,
+	reverse_head_yaw = false,
+
+	head_bone_pos_y = 2.4,
+	head_bone_pos_z = 0,
+
+	head_height_offset = 1.1,
+	head_direction_offset = 0,
+	head_pitch_modifier = 0,
+	--end head code
+
 	visual_size = {x=2.5, y=2.5},
 	makes_footstep_sound = true,
 	walk_velocity = 1,
 	run_velocity = 3,
 	follow_velocity = 3.4,
+	breed_distance = 1.5,
+	baby_size = 0.5,
+	follow_distance = 2,
 	drops = {
 		{name = mobs_mc.items.porkchop_raw,
 		chance = 1,
@@ -50,7 +70,7 @@ mobs:register_mob("mobs_mc:pig", {
 		run_start = 0,
 		run_end = 40,
 	},
-	follow = mobs_mc.follow.pig,
+	follow = "mcl_farming:carrot_item",
 	view_range = 8,
 	do_custom = function(self, dtime)
 
@@ -91,12 +111,17 @@ mobs:register_mob("mobs_mc:pig", {
 			return
 		end
 
-		local wielditem = clicker:get_wielded_item()
-		-- Feed pig
-		if wielditem:get_name() ~= mobs_mc.items.carrot_on_a_stick then
-			if mobs:feed_tame(self, clicker, 1, true, true) then return end
+		--attempt to enter breed state
+		if mobs.enter_breed_state(self,clicker) then
+			return
 		end
-		if mobs:protect(self, clicker) then return end
+
+		--ignore other logic
+		--make baby grow faster
+		if self.baby then
+			mobs.make_baby_grow_faster(self,clicker)
+			return
+		end
 
 		if self.child then
 			return
@@ -104,6 +129,8 @@ mobs:register_mob("mobs_mc:pig", {
 
 		-- Put saddle on pig
 		local item = clicker:get_wielded_item()
+		local wielditem = item
+		
 		if item:get_name() == mobs_mc.items.saddle and self.saddle ~= "yes" then
 			self.base_texture = {
 				"blank.png", -- baby
@@ -164,10 +191,6 @@ mobs:register_mob("mobs_mc:pig", {
 				inv:set_stack("main",self.driver:get_wield_index(), wielditem)
 			end
 			return
-
-		-- Capture pig
-		elseif not self.driver and clicker:get_wielded_item():get_name() ~= "" then
-			mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 		end
 	end,
 
@@ -188,22 +211,53 @@ mobs:spawn_specific(
 "overworld",
 "ground",
 {
-"FlowerForest",
-"Swampland",
-"Taiga",
-"ExtremeHills",
-"BirchForest",
-"MegaSpruceTaiga",
-"MegaTaiga",
-"ExtremeHills+",
-"Forest",
-"Plains",
-"ColdTaiga",
-"SunflowerPlains",
-"RoofedForest",
-"MesaPlateauFM_grasstop",
-"ExtremeHillsM",
-"BirchForestM",
+	"FlowerForest_beach",
+	"Forest_beach",
+	"StoneBeach",
+	"ColdTaiga_beach_water",
+	"Taiga_beach",
+	"Savanna_beach",
+	"Plains_beach",
+	"ExtremeHills_beach",
+	"ColdTaiga_beach",
+	"Swampland_shore",
+	"JungleM_shore",
+	"Jungle_shore",
+	"MesaPlateauFM_sandlevel",
+	"MesaPlateauF_sandlevel",
+	"MesaBryce_sandlevel",
+	"Mesa_sandlevel",
+	"Mesa",
+	"FlowerForest",
+	"Swampland",
+	"Taiga",
+	"ExtremeHills",
+	"Jungle",
+	"Savanna",
+	"BirchForest",
+	"MegaSpruceTaiga",
+	"MegaTaiga",
+	"ExtremeHills+",
+	"Forest",
+	"Plains",
+	"Desert",
+	"ColdTaiga",
+	"IcePlainsSpikes",
+	"SunflowerPlains",
+	"IcePlains",
+	"RoofedForest",
+	"ExtremeHills+_snowtop",
+	"MesaPlateauFM_grasstop",
+	"JungleEdgeM",
+	"ExtremeHillsM",
+	"JungleM",
+	"BirchForestM",
+	"MesaPlateauF",
+	"MesaPlateauFM",
+	"MesaPlateauF_grasstop",
+	"MesaBryce",
+	"JungleEdge",
+	"SavannaM",
 },
 9,
 minetest.LIGHT_MAX+1,
