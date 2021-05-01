@@ -1,13 +1,17 @@
 mcl_mapgen = {}
 
-local minetest_log, math_floor = minetest.log, math.floor
-local minetest_get_node, minetest_get_voxel_manip = minetest.get_node, minetest.get_voxel_manip
+local math_floor		= math.floor
+local math_max			= math.max
+local minetest_get_node		= minetest.get_node
+local minetest_get_voxel_manip	= minetest.get_voxel_manip
+local minetest_log		= minetest.log
+local minetest_pos_to_string	= minetest.pos_to_string
 
 -- Calculate mapgen_edge_min/mapgen_edge_max
-mcl_mapgen.CS		= math.max(1, tonumber(minetest.get_mapgen_setting("chunksize"))	or 5)
-mcl_mapgen.BS		= math.max(1, core.MAP_BLOCKSIZE					or 16)
-mcl_mapgen.LIMIT	= math.max(1, tonumber(minetest.get_mapgen_setting("mapgen_limit"))	or 31000)
-mcl_mapgen.MAX_LIMIT	= math.max(1, core.MAX_MAP_GENERATION_LIMIT				or 31000)
+mcl_mapgen.CS		= math_max(1, tonumber(minetest.get_mapgen_setting("chunksize"))	or 5)
+mcl_mapgen.BS		= math_max(1, core.MAP_BLOCKSIZE					or 16)
+mcl_mapgen.LIMIT	= math_max(1, tonumber(minetest.get_mapgen_setting("mapgen_limit"))	or 31000)
+mcl_mapgen.MAX_LIMIT	= math_max(1, core.MAX_MAP_GENERATION_LIMIT				or 31000) -- might be set to 31000 or removed, see https://github.com/minetest/minetest/issues/10428
 mcl_mapgen.OFFSET	= - math_floor(mcl_mapgen.CS / 2)
 mcl_mapgen.OFFSET_NODES	= mcl_mapgen.OFFSET * mcl_mapgen.BS
 mcl_mapgen.CS_NODES	= mcl_mapgen.CS * mcl_mapgen.BS
@@ -22,8 +26,8 @@ local mapgen_limit_b = math_floor(math.min(mcl_mapgen.LIMIT, mcl_mapgen.MAX_LIMI
 local mapgen_limit_min = - mapgen_limit_b	* mcl_mapgen.BS
 local mapgen_limit_max =  (mapgen_limit_b + 1)	* mcl_mapgen.BS - 1
 
-local numcmin = math.max(math_floor((ccfmin - mapgen_limit_min) / mcl_mapgen.CS_NODES), 0) -- Number of complete chunks from central chunk
-local numcmax = math.max(math_floor((mapgen_limit_max - ccfmax) / mcl_mapgen.CS_NODES), 0) -- fullminp/fullmaxp to effective mapgen limits.
+local numcmin = math_max(math_floor((ccfmin - mapgen_limit_min) / mcl_mapgen.CS_NODES), 0) -- Number of complete chunks from central chunk
+local numcmax = math_max(math_floor((mapgen_limit_max - ccfmax) / mcl_mapgen.CS_NODES), 0) -- fullminp/fullmaxp to effective mapgen limits.
 
 mcl_mapgen.EDGE_MIN = central_chunk_min_pos - numcmin * mcl_mapgen.CS_NODES
 mcl_mapgen.EDGE_MAX = central_chunk_max_pos + numcmax * mcl_mapgen.CS_NODES
@@ -38,6 +42,8 @@ local lvm_buffer, lvm_param2_buffer = {}, {} -- Static buffer pointers
 local BS, CS = mcl_mapgen.BS, mcl_mapgen.CS -- Mapblock size (in nodes), Mapchunk size (in blocks)
 local LAST_BLOCK, LAST_NODE = CS - 1, BS - 1 -- First mapblock in chunk (node in mapblock) has number 0, last has THIS number. It's for runtime optimization
 local offset = mcl_mapgen.OFFSET -- Central mapchunk offset (in blocks)
+
+local CS_3D = CS * CS * CS
 
 local DEFAULT_PRIORITY	= 5000
 
@@ -66,18 +72,22 @@ function mcl_mapgen.register_block_generator_lvm(callback_function, priority)
 end
 
 local storage = minetest.get_mod_storage()
-local blocks = minetest.deserialize(		storage:get_string("mapgen_blocks") or "return {}") or {}
-minetest.register_on_shutdown(function()	storage:set_string("mapgen_blocks", minetest.serialize(blocks)) end)
+local blocks = minetest.deserialize(storage:get_string("mapgen_blocks") or "return {}") or {}
+local chunks = minetest.deserialize(storage:get_string("mapgen_chunks") or "return {}") or {}
+minetest.register_on_shutdown(function()
+	storage:set_string("mapgen_chunks", minetest.serialize(chunks))
+	storage:set_string("mapgen_blocks", minetest.serialize(blocks))
+end)
 
 local vm_context-- here will be many references and flags, like: param2, light_data, heightmap, biomemap, heatmap, humiditymap, gennotify, write_lvm, write_param2, shadow
 local data, data2, area
 local current_blocks = {}
+local current_chunks = {}
 
 minetest.register_on_generated(function(minp, maxp, blockseed)
 	local minp, maxp, blockseed = minp, maxp, blockseed
-	minetest_log("verbose", "[mcl_mapgen] New chunk: minp=" .. minetest.pos_to_string(minp) .. ", maxp=" .. minetest.pos_to_string(maxp) .. ", blockseed=" .. blockseed)
-
 	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
+	minetest_log("warning", "[mcl_mapgen] New_chunk=" .. minetest_pos_to_string(minp) .. "..." .. minetest_pos_to_string(maxp) .. ", shall=" .. minetest_pos_to_string(emin) .. "..." .. minetest_pos_to_string(emax) .. ", blockseed=" .. tostring(blockseed))
 
 	if lvm > 0 then
 		vm_context = {lvm_param2_buffer = lvm_param2_buffer, vm = vm, emin = emin, emax = emax, minp = minp, maxp = maxp, blockseed = blockseed}
@@ -87,12 +97,21 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 		vm_context.area = area
 	end
 
-	local chunk_is_ready = true
-
-	if block > 0 then
+	if safe_functions > 0 then
 		local x0, y0, z0 = minp.x, minp.y, minp.z
 		local bx0, by0, bz0 = math_floor(x0/BS), math_floor(y0/BS), math_floor(z0/BS)
 		local bx1, by1, bz1 = bx0 + LAST_BLOCK, by0 + LAST_BLOCK, bz0 + LAST_BLOCK -- only for entire chunk check
+
+		-- Keep `blockseed` in `chunks[cx][cy][cz].seed` for further safe usage:
+		local cx0, cy0, cz0 = math_floor((bx0-offset)/CS), math_floor((by0-offset)/CS), math_floor((bz0-offset)/CS)
+		if not chunks[cx0] then chunks[cx0] = {} end
+		if not chunks[cx0][cy0] then chunks[cx0][cy0] = {} end
+		if not chunks[cx0][cy0][cz0] then
+			chunks[cx0][cy0][cz0] = {seed = blockseed, counter = 0}
+		else
+			chunks[cx0][cy0][cz0].seed = blockseed
+		end
+
 		local x1, y1, z1, x2, y2, z2 = emin.x, emin.y, emin.z, emax.x, emax.y, emax.z
 		local x, y, z = x1, y1, z1 -- iterate 7x7x7 mapchunk, {x,y,z} - first node pos. of mapblock
 		local bx, by, bz -- block coords (in blocs)
@@ -100,24 +119,43 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 		while x < x2 do
 			bx = math_floor(x/BS)
 			local block_pos_offset_removed = bx - offset
+			local cx = math_floor(block_pos_offset_removed / CS)
 			box = block_pos_offset_removed % CS
 			if not blocks[bx] then blocks[bx]={} end
 			local total_mapgen_block_writes_through_x = (box > 0 and box < LAST_BLOCK) and 4 or 8
 			while y < y2 do
 				by = math_floor(y/BS)
 				block_pos_offset_removed = by - offset
+				local cy = math_floor(block_pos_offset_removed / CS)
 				boy = block_pos_offset_removed % CS
 				if not blocks[bx][by] then blocks[bx][by]={} end
 				local total_mapgen_block_writes_through_y = (boy > 0 and boy < LAST_BLOCK) and math_floor(total_mapgen_block_writes_through_x / 2) or total_mapgen_block_writes_through_x
 				while z < z2 do
 					bz = math_floor(z/BS)
 					block_pos_offset_removed = bz - offset
+					local cz = math_floor(block_pos_offset_removed / CS)
 					boz = block_pos_offset_removed % CS
 					local total_mapgen_block_writes = (boz > 0 and boz < LAST_BLOCK) and math_floor(total_mapgen_block_writes_through_y / 2) or total_mapgen_block_writes_through_y
 					local current_mapgen_block_writes = blocks[bx][by][bz] and (blocks[bx][by][bz] + 1) or 1
 					if current_mapgen_block_writes == total_mapgen_block_writes then
 						-- this block shouldn't be overwritten anymore, no need to keep it in memory
 						blocks[bx][by][bz] = nil
+						if not chunks[cx][cy][cz] then
+							if not chunks[cx] then chunks[cx] = {} end
+							if not chunks[cx][cy] then chunks[cx][cy] = {} end
+							if not chunks[cx][cy][cz] then chunks[cx][cy][cz] = {counter = 1} end
+						else
+							chunks[cx][cy][cz].counter = chunks[cx][cy][cz].counter + 1
+							if chunks[cx][cy][cz].counter >= CS_3D then
+								-- this chunk shouldn't be overwritten anymore, no need to keep it in memory
+								local chunkseed = chunks[cx][cy][cz].seed
+								process_generated_chunk(cx, cy, cz, chunkseed)
+
+								chunks[cx][cy][cz] = nil
+								if next(chunks[cx][cy]) == nil then chunks[cx][cy] = nil end
+								if next(chunks[cx]) == nil then chunks[cx] = nil end
+							end
+						end
 						vm_context.seed = blockseed + box * 7 + boy * 243 + boz * 11931
 						if lvm_block > 0 then
 							vm_context.minp, vm_content.maxp = {x=x, y=y, z=z}, {x=x+LAST_NODE, y=y+LAST_NODE, z=z+LAST_NODE}
@@ -130,7 +168,6 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 						end
 					else
 						blocks[bx][by][bz] = current_mapgen_block_writes
-						chunk_is_ready = chunk_is_ready and (bx < bx0 or bx > bx1 or by < by0 or by > by1 or bz < bz0 or bz > bz1)
 					end
 					z = z + BS
 				end
@@ -145,10 +182,8 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	end
 
 	if lvm > 0 then
-		if chunk_is_ready then
-			for _, v in pairs(lvm_chunk_queue) do
-				vm_context = v.f(vm_context)
-			end
+		for _, v in pairs(lvm_chunk_queue) do
+			vm_context = v.f(vm_context)
 		end
 		if vm_context.write then
 			vm:set_data(data)
@@ -161,10 +196,8 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 		vm:update_liquids()
 	end
 
-	if chunk_is_ready then
-		for _, v in pairs(node_chunk_queue) do
-			v.f(minp, maxp, blockseed)
-		end
+	for _, v in pairs(node_chunk_queue) do
+		v.f(minp, maxp, blockseed)
 	end
 
 	for i, b in pairs(current_blocks) do
