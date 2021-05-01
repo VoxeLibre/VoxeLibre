@@ -37,11 +37,12 @@ minetest_log("action", "[mcl_mapgen] World edges are: mcl_mapgen.EDGE_MIN = " ..
 
 
 local lvm_block_queue, lvm_chunk_queue, node_block_queue, node_chunk_queue = {}, {}, {}, {} -- Generators' queues
-local lvm, block, lvm_block, lvm_chunk, param2, nodes_block, nodes_chunk = 0, 0, 0, 0, 0, 0, 0 -- Requirements: 0 means none; greater than 0 means 'required'
+local lvm, block, lvm_block, lvm_chunk, param2, nodes_block, nodes_chunk, safe_functions = 0, 0, 0, 0, 0, 0, 0, 0 -- Requirements: 0 means none; greater than 0 means 'required'
 local lvm_buffer, lvm_param2_buffer = {}, {} -- Static buffer pointers
 local BS, CS = mcl_mapgen.BS, mcl_mapgen.CS -- Mapblock size (in nodes), Mapchunk size (in blocks)
 local LAST_BLOCK, LAST_NODE = CS - 1, BS - 1 -- First mapblock in chunk (node in mapblock) has number 0, last has THIS number. It's for runtime optimization
 local offset = mcl_mapgen.OFFSET -- Central mapchunk offset (in blocks)
+local CS_NODES = mcl_mapgen.CS_NODES -- 80
 
 local CS_3D = CS * CS * CS
 
@@ -49,6 +50,7 @@ local DEFAULT_PRIORITY	= 5000
 
 function mcl_mapgen.register_chunk_generator(callback_function, priority)
 	nodes_chunk = nodes_chunk + 1
+	safe_functions = safe_functions + 1
 	node_chunk_queue[nodes_chunk] = {i = priority or DEFAULT_PRIORITY, f = callback_function}
 	table.sort(node_chunk_queue, function(a, b) return (a.i <= b.i) end)
 end
@@ -60,6 +62,7 @@ end
 function mcl_mapgen.register_block_generator(callback_function, priority)
 	block = block + 1
 	nodes_block = nodes_block + 1
+	safe_functions = safe_functions + 1
 	node_block_queue[nodes_block] = {i = priority or DEFAULT_PRIORITY, f = callback_function}
 	table.sort(node_block_queue, function(a, b) return (a.i <= b.i) end)
 end
@@ -87,7 +90,7 @@ local current_chunks = {}
 minetest.register_on_generated(function(minp, maxp, blockseed)
 	local minp, maxp, blockseed = minp, maxp, blockseed
 	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
-	minetest_log("warning", "[mcl_mapgen] New_chunk=" .. minetest_pos_to_string(minp) .. "..." .. minetest_pos_to_string(maxp) .. ", shall=" .. minetest_pos_to_string(emin) .. "..." .. minetest_pos_to_string(emax) .. ", blockseed=" .. tostring(blockseed))
+	minetest_log("warning", "[mcl_mapgen] New_chunk=" .. minetest_pos_to_string(minp) .. "..." .. minetest_pos_to_string(maxp) .. ", shell=" .. minetest_pos_to_string(emin) .. "..." .. minetest_pos_to_string(emax) .. ", blockseed=" .. tostring(blockseed))
 
 	if lvm > 0 then
 		vm_context = {lvm_param2_buffer = lvm_param2_buffer, vm = vm, emin = emin, emax = emax, minp = minp, maxp = maxp, blockseed = blockseed}
@@ -140,17 +143,15 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 					if current_mapgen_block_writes == total_mapgen_block_writes then
 						-- this block shouldn't be overwritten anymore, no need to keep it in memory
 						blocks[bx][by][bz] = nil
+						if not chunks[cx] then chunks[cx] = {} end
+						if not chunks[cx][cy] then chunks[cx][cy] = {} end
 						if not chunks[cx][cy][cz] then
-							if not chunks[cx] then chunks[cx] = {} end
-							if not chunks[cx][cy] then chunks[cx][cy] = {} end
 							if not chunks[cx][cy][cz] then chunks[cx][cy][cz] = {counter = 1} end
 						else
 							chunks[cx][cy][cz].counter = chunks[cx][cy][cz].counter + 1
 							if chunks[cx][cy][cz].counter >= CS_3D then
+								current_chunks[#current_chunks+1] = { x = cx, y = cy, z = cz, s = chunks[cx][cy][cz].seed }
 								-- this chunk shouldn't be overwritten anymore, no need to keep it in memory
-								local chunkseed = chunks[cx][cy][cz].seed
-								process_generated_chunk(cx, cy, cz, chunkseed)
-
 								chunks[cx][cy][cz] = nil
 								if next(chunks[cx][cy]) == nil then chunks[cx][cy] = nil end
 								if next(chunks[cx]) == nil then chunks[cx] = nil end
@@ -196,15 +197,23 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 		vm:update_liquids()
 	end
 
-	for _, v in pairs(node_chunk_queue) do
-		v.f(minp, maxp, blockseed)
+	for i, b in pairs(current_chunks) do
+		local cx, cy, cz, seed = b.x, b.y, b.z, b.s
+		local bx, by, bz = cx * CS + offset, cy * CS + offset, cz * CS + offset
+		local x, y, z = bx * BS, by * BS, bz * BS
+		local minp = {x = x, y = y, z = z}
+		local maxp = {x = x + CS_NODES - 1, y = y + CS_NODES - 1, z = z + CS_NODES - 1}
+		for _, v in pairs(node_chunk_queue) do
+			v.f(minp, maxp, seed)
+		end
+		current_chunks[i] = nil
 	end
 
 	for i, b in pairs(current_blocks) do
 		for _, v in pairs(node_block_queue) do
 			v.f(b.minp, b.maxp, b.seed)
 		end
-		current_blocks[id] = nil
+		current_blocks[i] = nil
 	end
 end)
 

@@ -14,7 +14,7 @@ local swap_node        = minetest.swap_node
 local set_node         = minetest.set_node
 local dir_to_facedir   = minetest.dir_to_facedir
 local get_meta         = minetest.get_meta
-local emerge_area      = minetest.emerge_area
+-- local emerge_area      = minetest.emerge_area
 
 --vector
 local vector_add       = vector.add
@@ -61,12 +61,14 @@ local surround_vectors = {
 	{ x=0, y=0, z=1 },
 }
 
-local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
-	if calls_remaining >= 1 then return end
+--local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
+--	if calls_remaining >= 1 then return end
+--	local p1, _, dim, pr = param.p1, param.p2, param.dim, param.pr
+--	local check = not (param.dontcheck or false)
+local function spawn_dungeon(p1, p2, dim, pr, dontcheck)
 
-	local p1, _, dim, pr = param.p1, param.p2, param.dim, param.pr
 	local x, y, z = p1.x, p1.y, p1.z
-	local check = not (param.dontcheck or false)
+	local check = not (dontcheck or false)
 
 	-- Check floor and ceiling: Must be *completely* solid
 	local y_floor = y
@@ -401,8 +403,9 @@ local function dungeons_nodes(minp, maxp, blockseed)
 		local z = pr:next(minp.z, maxp.z-dim.z-1)
 		local p1 = {x=x,y=y,z=z}
 		local p2 = {x = x+dim.x+1, y = y+dim.y+1, z = z+dim.z+1}
-		minetest.log("verbose","[mcl_dungeons] size=" ..minetest.pos_to_string(dim) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
-		emerge_area(p1, p2, ecb_spawn_dungeon, {p1=p1, p2=p2, dim=dim, pr=pr})
+		-- minetest.log("verbose","[mcl_dungeons] size=" ..minetest.pos_to_string(dim) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
+		-- emerge_area(p1, p2, ecb_spawn_dungeon, {p1=p1, p2=p2, dim=dim, pr=pr})
+		spawn_dungeon(p1, p2, dim, pr)
 	end
 end
 
@@ -410,8 +413,9 @@ function mcl_dungeons.spawn_dungeon(p1, _, pr)
 	if not p1 or not pr or not p1.x or not p1.y or not p1.z then return end
 	local dim = dungeonsizes[pr:next(1, #dungeonsizes)]
 	local p2 = {x = p1.x+dim.x+1, y = p1.y+dim.y+1, z = p1.z+dim.z+1}
-	minetest.log("verbose","[mcl_dungeons] size=" ..minetest.pos_to_string(dim) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
-	emerge_area(p1, p2, ecb_spawn_dungeon, {p1=p1, p2=p2, dim=dim, pr=pr, dontcheck=true})
+--	minetest.log("verbose","[mcl_dungeons] size=" ..minetest.pos_to_string(dim) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
+--	emerge_area(p1, p2, ecb_spawn_dungeon, {p1=p1, p2=p2, dim=dim, pr=pr, dontcheck=true})
+	spawn_dungeon(p1, p2, dim, pr, true)
 end
 
 mcl_mapgen.register_chunk_generator(dungeons_nodes, 999999)
