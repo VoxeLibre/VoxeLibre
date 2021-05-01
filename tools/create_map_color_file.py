@@ -1,4 +1,4 @@
-import sys, json, os
+import json, os
 from PIL import Image
 
 colors = {}
