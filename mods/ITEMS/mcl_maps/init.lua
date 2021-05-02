@@ -151,7 +151,6 @@ minetest.register_craftitem("mcl_maps:empty_map", {
 	_doc_items_longdesc = S("Empty maps are not useful as maps, but they can be stacked and turned to maps which can be used."),
 	_doc_items_usagehelp = S("Rightclick to create a filled map (which can't be stacked anymore)."),
 	inventory_image = "mcl_maps_map_empty.png",
-	groups = { not_in_creative_inventory = 1 },
 	on_place = make_filled_map,
 	on_secondary_use = make_filled_map,
 	stack_max = 64,
@@ -162,7 +161,7 @@ minetest.register_craftitem("mcl_maps:filled_map", {
 	_tt_help = S("Shows a map image."),
 	_doc_items_longdesc = S("When created, the map saves the nearby area as an image that can be viewed any time by holding the map."),
 	_doc_items_usagehelp = S("Hold the map in your hand. This will display a map on your screen."),
-	groups = { tool = 1 },
+	groups = {tool = 1, not_in_creative_inventory = 1},
 	inventory_image = "mcl_maps_map_filled.png^(mcl_maps_map_filled_markings.png^[colorize:#000000)",
 	stack_max = 64,
 })
