@@ -46,7 +46,7 @@ local CS_NODES = mcl_mapgen.CS_NODES -- 80
 
 local CS_3D = CS * CS * CS
 
-local DEFAULT_PRIORITY	= 5000
+local DEFAULT_PRIORITY = 5000
 
 function mcl_mapgen.register_chunk_generator(callback_function, priority)
 	nodes_chunk = nodes_chunk + 1
@@ -125,6 +125,12 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 			local cx = math_floor(block_pos_offset_removed / CS)
 			box = block_pos_offset_removed % CS
 			if not blocks[bx] then blocks[bx]={} end
+
+			-- We don't know how many calls, including this one, will overwrite this block's content!
+			-- Start calculating it with `total_mapgen_block_writes_through_x` variable.
+			-- It can be `8 or less`, if we (speaking of `x` axis) are on chunk edge now,
+			-- or it can be `4 or less` - if we are in the middle of the chunk by `x` axis:
+
 			local total_mapgen_block_writes_through_x = (box > 0 and box < LAST_BLOCK) and 4 or 8
 			while y < y2 do
 				by = math_floor(y/BS)
@@ -132,14 +138,34 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 				local cy = math_floor(block_pos_offset_removed / CS)
 				boy = block_pos_offset_removed % CS
 				if not blocks[bx][by] then blocks[bx][by]={} end
+
+				-- Here we just divide `total_mapgen_block_writes_through_x` by 2,
+				-- if we are (speaking of `y` axis now) in the middle of the chunk now.
+				-- Or we don't divide it, if not.
+				-- So, basing on `total_mapgen_block_writes_through_x`,
+				--- we calculate `total_mapgen_block_writes_through_y` this way:
+
 				local total_mapgen_block_writes_through_y = (boy > 0 and boy < LAST_BLOCK) and math_floor(total_mapgen_block_writes_through_x / 2) or total_mapgen_block_writes_through_x
 				while z < z2 do
 					bz = math_floor(z/BS)
 					block_pos_offset_removed = bz - offset
 					local cz = math_floor(block_pos_offset_removed / CS)
 					boz = block_pos_offset_removed % CS
+
+					-- Now we do absolutely the same for `z` axis, basing on our previous result
+					-- from `total_mapgen_block_writes_through_y` variable.
+					-- And our final result is in `total_mapgen_block_writes`.
+					-- It can be still 8, derived from `x` calculation, but it can be less!
+					-- It can be even 1, if we are in safe 3x3x3 area of mapchunk:
+
 					local total_mapgen_block_writes = (boz > 0 and boz < LAST_BLOCK) and math_floor(total_mapgen_block_writes_through_y / 2) or total_mapgen_block_writes_through_y
+
+					-- Get current number of writes from the table, or just set it to 1, if accessed first time:
+
 					local current_mapgen_block_writes = blocks[bx][by][bz] and (blocks[bx][by][bz] + 1) or 1
+
+					-- And compare:
+
 					if current_mapgen_block_writes == total_mapgen_block_writes then
 						-- this block shouldn't be overwritten anymore, no need to keep it in memory
 						blocks[bx][by][bz] = nil
