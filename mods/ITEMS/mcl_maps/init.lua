@@ -164,7 +164,7 @@ minetest.register_craftitem("mcl_maps:filled_map", {
 	_doc_items_usagehelp = S("Hold the map in your hand. This will display a map on your screen."),
 	groups = { tool = 1 },
 	inventory_image = "mcl_maps_map_filled.png^(mcl_maps_map_filled_markings.png^[colorize:#000000)",
-	stack_max = 1,
+	stack_max = 64,
 })
 
 tt.register_priority_snippet(function(itemstring, _, itemstack)
