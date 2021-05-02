@@ -532,6 +532,10 @@ function mcl_util.get_object_name(object)
 	else
 		local luaentity = object:get_luaentity()
 
+		if not luaentity then
+			return ""
+		end
+
 		return luaentity.nametag and luaentity.nametag ~= "" and luaentity.nametag or luaentity.description or luaentity.name
 	end
 end

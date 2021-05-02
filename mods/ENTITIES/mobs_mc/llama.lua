@@ -28,6 +28,15 @@ mobs:register_mob("mobs_mc:llama", {
 	description = S("Llama"),
 	type = "animal",
 	spawn_class = "passive",
+	rotate = 270,
+	neutral = true,
+	group_attack = true,
+	attack_type = "projectile",
+	shoot_arrow = function(self, pos, dir)
+		-- 2-4 damage per arrow
+		local dmg = 1
+		mobs.shoot_projectile_handling("mobs_mc:spit", pos, dir, self.object:get_yaw(), self.object, nil, dmg)		
+	end,
 	hp_min = 15,
 	hp_max = 30,
 	xp_min = 1,
@@ -50,7 +59,11 @@ mobs:register_mob("mobs_mc:llama", {
 	walk_velocity = 1,
 	run_velocity = 4.4,
 	follow_velocity = 4.4,
+	breed_distance = 1.5,
+	baby_size = 0.5,
+	follow_distance = 2,
 	floats = 1,
+	reach = 6,
 	drops = {
 		{name = mobs_mc.items.leather,
 		chance = 1,
@@ -83,7 +96,7 @@ mobs:register_mob("mobs_mc:llama", {
 		look_start = 78,
 		look_end = 108,
 	},
-	follow = mobs_mc.follow.llama,
+	follow = mobs_mc.items.hay_bale,
 	view_range = 16,
 	do_custom = function(self, dtime)
 
@@ -126,30 +139,71 @@ mobs:register_mob("mobs_mc:llama", {
 			return
 		end
 
-		local item = clicker:get_wielded_item()
-		if item:get_name() == mobs_mc.items.hay_bale then
-			-- Breed with hay bale
-			if mobs:feed_tame(self, clicker, 1, true, false) then return end
-		else
-			-- Feed with anything else
-			if mobs:feed_tame(self, clicker, 1, false, true) then return end
+		--owner is broken for this
+		--we'll make the owner this guy
+		--attempt to enter breed state
+		if mobs.enter_breed_state(self,clicker) then
+			self.tamed = true
+			self.owner = clicker:get_player_name()
+			return
+		end		
+
+		--ignore other logic
+		--make baby grow faster
+		if self.baby then
+			mobs.make_baby_grow_faster(self,clicker)
+			return
 		end
-		if mobs:protect(self, clicker) then return end
+
 
 		-- Make sure tamed llama is mature and being clicked by owner only
 		if self.tamed and not self.child and self.owner == clicker:get_player_name() then
 
+			local item = clicker:get_wielded_item()
+			--safety catch
+			if not item then
+				return
+			end
+
+
+
+			--put chest on carpeted llama
+			if self.carpet and not self.chest and item:get_name() == "mcl_chests:chest" then
+				if not minetest.is_creative_enabled(clicker:get_player_name()) then
+					item:take_item()
+					clicker:set_wielded_item(item)
+				end
+
+				self.base_texture = table.copy(self.base_texture)
+				self.base_texture[1] = "mobs_mc_llama_chest.png"
+				self.object:set_properties({
+					textures = self.base_texture,
+				})
+				self.chest = true
+
+				return --don't attempt to ride
+			end
+
+
 			-- Place carpet
-			--[[ TODO: Re-enable this code when carpet textures arrived.
-			if minetest.get_item_group(item:get_name(), "carpet") == 1 and not self.carpet then
+			--TODO: Re-enable this code when carpet textures arrived.
+			if minetest.get_item_group(item:get_name(), "carpet") == 1 then
+
 				for group, carpetdata in pairs(carpets) do
 					if minetest.get_item_group(item:get_name(), group) == 1 then
 						if not minetest.is_creative_enabled(clicker:get_player_name()) then
 							item:take_item()
 							clicker:set_wielded_item(item)
+
+							--shoot off old carpet
+							if self.carpet then
+								minetest.add_item(self.object:get_pos(), self.carpet)
+							end
 						end
+
 						local substr = carpetdata[2]
 						local tex_carpet = "mobs_mc_llama_decor_"..substr..".png"
+
 						self.base_texture = table.copy(self.base_texture)
 						self.base_texture[2] = tex_carpet
 						self.object:set_properties({
@@ -170,23 +224,21 @@ mobs:register_mob("mobs_mc:llama", {
 					end
 				end
 			end
-			]]
 
-			-- detatch player already riding llama
-			if self.driver and clicker == self.driver then
+			if self.carpet then
+				-- detatch player already riding llama
+				if self.driver and clicker == self.driver then
 
-				mobs.detach(clicker, {x = 1, y = 0, z = 1})
+					mobs.detach(clicker, {x = 1, y = 0, z = 1})
 
-			-- attach player to llama
-			elseif not self.driver then
+				-- attach player to llama
+				elseif not self.driver then
 
-				self.object:set_properties({stepheight = 1.1})
-				mobs.attach(self, clicker)
+					self.object:set_properties({stepheight = 1.1})
+					mobs.attach(self, clicker)
+				end
 			end
 
-		-- Used to capture llama
-		elseif not self.driver and clicker:get_wielded_item():get_name() ~= "" then
-			mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 		end
 	end,
 
@@ -240,3 +292,38 @@ mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:llama", S("Llama"), "mobs_mc_spawn_icon_llama.png", 0)
+
+
+-- llama spit
+mobs:register_arrow("mobs_mc:spit", {
+	visual = "sprite",
+	visual_size = {x = 0.3, y = 0.3},
+	textures = {"mobs_mc_spit.png"},
+	velocity = 1,
+	speed = 1,
+	tail = 1,
+	tail_texture = "mobs_mc_spit.png",
+	tail_size = 2,
+	tail_distance_divider = 4,
+
+	hit_player = function(self, player)
+		if rawget(_G, "armor") and armor.last_damage_types then
+			armor.last_damage_types[player:get_player_name()] = "spit"
+		end
+		player:punch(self.object, 1.0, {
+			full_punch_interval = 1.0,
+			damage_groups = {fleshy = self._damage},
+		}, nil)
+	end,
+
+	hit_mob = function(self, mob)		
+		mob:punch(self.object, 1.0, {
+			full_punch_interval = 1.0,
+			damage_groups = {fleshy = _damage},
+		}, nil)
+	end,
+
+	hit_node = function(self, pos, node)
+		--does nothing
+	end
+})

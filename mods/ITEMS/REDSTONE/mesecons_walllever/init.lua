@@ -37,7 +37,6 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 	wield_image = "jeija_wall_lever.png",
 	paramtype = "light",
 	paramtype2 = "facedir",
-	drawtype = "mesh",
 	mesh = "jeija_wall_lever_off.obj",
 	sunlight_propagates = true,
 	walkable = false,

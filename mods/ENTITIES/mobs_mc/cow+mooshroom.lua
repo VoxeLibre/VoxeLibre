@@ -10,6 +10,7 @@ local cow_def = {
 	hp_max = 10,
 	xp_min = 1,
 	xp_max = 3,
+	rotate = 270,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.39, 0.45},
 	visual = "mesh",
 	mesh = "mobs_mc_cow.b3d",
@@ -20,6 +21,7 @@ local cow_def = {
 	visual_size = {x=2.8, y=2.8},
 	makes_footstep_sound = true,
 	walk_velocity = 1,
+	run_velocity = 3,
 	drops = {
 		{name = mobs_mc.items.beef_raw,
 		chance = 1,
@@ -32,7 +34,7 @@ local cow_def = {
 		max = 2,
 		looting = "common",},
 	},
-	runaway = true,
+	skittish = true,
 	sounds = {
 		random = "mobs_mc_cow",
 		damage = "mobs_mc_cow_hurt",
@@ -47,12 +49,17 @@ local cow_def = {
 		walk_end = 40,      run_start = 0,
 		run_end = 40,
 	},
-	follow = mobs_mc.follow.cow,
+	--follow = mobs_mc.follow.cow,
 	on_rightclick = function(self, clicker)
-		if mobs:feed_tame(self, clicker, 1, true, true) then return end
-		if mobs:protect(self, clicker) then return end
 
-		if self.child then
+		--attempt to enter breed state
+		if mobs.enter_breed_state(self,clicker) then
+			return
+		end
+
+		--make baby grow faster
+		if self.baby then
+			mobs.make_baby_grow_faster(self,clicker)
 			return
 		end
 
@@ -71,11 +78,28 @@ local cow_def = {
 			end
 			return
 		end
-		mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 	end,
+	breed_distance = 1.5,
+	baby_size = 0.5,
+	follow_distance = 2,
 	follow = mobs_mc.items.wheat,
 	view_range = 10,
 	fear_height = 4,
+
+	--head code
+	has_head = true,
+	head_bone = "head",
+	
+	swap_y_with_x = false,
+	reverse_head_yaw = false,
+
+	head_bone_pos_y = 3.6,
+	head_bone_pos_z = -0.6,
+
+	head_height_offset = 1.0525,
+	head_direction_offset = 0.5,
+	head_pitch_modifier = 0,
+	--end head code
 }
 
 mobs:register_mob("mobs_mc:cow", cow_def)
@@ -86,12 +110,17 @@ mooshroom_def.description = S("Mooshroom")
 mooshroom_def.mesh = "mobs_mc_cow.b3d"
 mooshroom_def.textures = { {"mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png"}, {"mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" } }
 mooshroom_def.on_rightclick = function(self, clicker)
-	if mobs:feed_tame(self, clicker, 1, true, true) then return end
-	if mobs:protect(self, clicker) then return end
-
-	if self.child then
+	--attempt to enter breed state
+	if mobs.enter_breed_state(self,clicker) then
 		return
 	end
+
+	--make baby grow faster
+	if self.baby then
+		mobs.make_baby_grow_faster(self,clicker)
+		return
+	end
+
 	local item = clicker:get_wielded_item()
 	-- Use shears to get mushrooms and turn mooshroom into cow
 	if item:get_name() == mobs_mc.items.shears then
@@ -139,8 +168,7 @@ mooshroom_def.on_rightclick = function(self, clicker)
 			pos.y = pos.y + 0.5
 			minetest.add_item(pos, {name = mobs_mc.items.mushroom_stew})
 		end
-	end
-	mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
+	end	
 end
 mobs:register_mob("mobs_mc:mooshroom", mooshroom_def)
 
@@ -151,22 +179,53 @@ mobs:spawn_specific(
 "overworld",
 "ground",
 {
-"FlowerForest",
-"Swampland",
-"Taiga",
-"ExtremeHills",
-"BirchForest",
-"MegaSpruceTaiga",
-"MegaTaiga",
-"ExtremeHills+",
-"Forest",
-"Plains",
-"ColdTaiga",
-"SunflowerPlains",
-"RoofedForest",
-"MesaPlateauFM_grasstop",
-"ExtremeHillsM",
-"BirchForestM",
+	"FlowerForest_beach",
+	"Forest_beach",
+	"StoneBeach",
+	"ColdTaiga_beach_water",
+	"Taiga_beach",
+	"Savanna_beach",
+	"Plains_beach",
+	"ExtremeHills_beach",
+	"ColdTaiga_beach",
+	"Swampland_shore",
+	"JungleM_shore",
+	"Jungle_shore",
+	"MesaPlateauFM_sandlevel",
+	"MesaPlateauF_sandlevel",
+	"MesaBryce_sandlevel",
+	"Mesa_sandlevel",
+	"Mesa",
+	"FlowerForest",
+	"Swampland",
+	"Taiga",
+	"ExtremeHills",
+	"Jungle",
+	"Savanna",
+	"BirchForest",
+	"MegaSpruceTaiga",
+	"MegaTaiga",
+	"ExtremeHills+",
+	"Forest",
+	"Plains",
+	"Desert",
+	"ColdTaiga",
+	"IcePlainsSpikes",
+	"SunflowerPlains",
+	"IcePlains",
+	"RoofedForest",
+	"ExtremeHills+_snowtop",
+	"MesaPlateauFM_grasstop",
+	"JungleEdgeM",
+	"ExtremeHillsM",
+	"JungleM",
+	"BirchForestM",
+	"MesaPlateauF",
+	"MesaPlateauFM",
+	"MesaPlateauF_grasstop",
+	"MesaBryce",
+	"JungleEdge",
+	"SavannaM",
 },
 9,
 minetest.LIGHT_MAX+1,
