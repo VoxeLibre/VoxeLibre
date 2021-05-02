@@ -7,6 +7,11 @@ local worldpath = minetest.get_worldpath()
 local map_textures_path = worldpath .. "/mcl_maps/"
 local last_finished_id = storage:get_int("next_id") - 1
 
+dofile(modpath .. "/bit32.lua") -- taken from http://gitea.minetest.one/minetest-mods/turtle/src/branch/master/bit32.lua
+
+bit = bit32
+pngencoder = dofile(modpath .. "/pngencoder.lua") -- taken from https://github.com/wyozi/lua-pngencoder/blob/master/pngencoder.lua
+
 minetest.mkdir(map_textures_path)
 
 local function load_json_file(name)
@@ -32,7 +37,7 @@ function mcl_maps.create_map(pos)
 	local meta = itemstack:get_meta()
 	local id = storage:get_int("next_id")
 	storage:set_int("next_id", id + 1)
-	local texture_file = "mcl_maps_map_texture_" .. id .. ".tga"
+	local texture_file = "mcl_maps_map_texture_" .. id .. ".png"
 	local texture_path = map_textures_path .. texture_file
 	local texture = "[combine:140x140:0,0=mcl_maps_map_background.png:6,6=" .. texture_file
 	meta:set_int("mcl_maps:id", id)
@@ -121,7 +126,16 @@ function mcl_maps.create_map(pos)
 			end
 			last_heightmap = heightmap
 		end
-		tga_encoder.image(pixels):save(texture_path)
+		local image = pngencoder(128, 128, "rgb")
+		for _, row in ipairs(pixels) do
+			for _, pixel in ipairs(row) do
+				image:write(pixel)
+			end
+		end
+		assert(image.done)
+		local f = assert(io.open(texture_path, "w"))
+		f:write(table.concat(image.output))
+		f:close()
 		creating_maps[texture] = false
 	end)
 	return itemstack
