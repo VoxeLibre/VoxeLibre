@@ -14,7 +14,6 @@ local swap_node        = minetest.swap_node
 local set_node         = minetest.set_node
 local dir_to_facedir   = minetest.dir_to_facedir
 local get_meta         = minetest.get_meta
--- local emerge_area      = minetest.emerge_area
 
 --vector
 local vector_add       = vector.add
@@ -403,8 +402,6 @@ local function dungeons_nodes(minp, maxp, blockseed)
 		local z = pr:next(minp.z, maxp.z-dim.z-1)
 		local p1 = {x=x,y=y,z=z}
 		local p2 = {x = x+dim.x+1, y = y+dim.y+1, z = z+dim.z+1}
-		-- minetest.log("verbose","[mcl_dungeons] size=" ..minetest.pos_to_string(dim) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
-		-- emerge_area(p1, p2, ecb_spawn_dungeon, {p1=p1, p2=p2, dim=dim, pr=pr})
 		spawn_dungeon(p1, p2, dim, pr)
 	end
 end
@@ -413,8 +410,6 @@ function mcl_dungeons.spawn_dungeon(p1, _, pr)
 	if not p1 or not pr or not p1.x or not p1.y or not p1.z then return end
 	local dim = dungeonsizes[pr:next(1, #dungeonsizes)]
 	local p2 = {x = p1.x+dim.x+1, y = p1.y+dim.y+1, z = p1.z+dim.z+1}
---	minetest.log("verbose","[mcl_dungeons] size=" ..minetest.pos_to_string(dim) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
---	emerge_area(p1, p2, ecb_spawn_dungeon, {p1=p1, p2=p2, dim=dim, pr=pr, dontcheck=true})
 	spawn_dungeon(p1, p2, dim, pr, true)
 end
 
