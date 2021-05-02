@@ -174,15 +174,47 @@ minetest.register_craftitem("mcl_maps:empty_map", {
 	stack_max = 64,
 })
 
-minetest.register_craftitem("mcl_maps:filled_map", {
+local filled_def = {
 	description = S("Map"),
 	_tt_help = S("Shows a map image."),
 	_doc_items_longdesc = S("When created, the map saves the nearby area as an image that can be viewed any time by holding the map."),
 	_doc_items_usagehelp = S("Hold the map in your hand. This will display a map on your screen."),
-	groups = {tool = 1, not_in_creative_inventory = 1},
 	inventory_image = "mcl_maps_map_filled.png^(mcl_maps_map_filled_markings.png^[colorize:#000000)",
 	stack_max = 64,
-})
+	groups = {not_in_creative_inventory = 1, filled_map = 1, tool = 1},
+}
+
+minetest.register_craftitem("mcl_maps:filled_map", filled_def)
+
+local filled_wield_def = table.copy(filled_def)
+filled_wield_def.use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false
+filled_wield_def.visual_scale = 1
+filled_wield_def.wield_scale = {x = 1, y = 1, z = 1}
+filled_wield_def.paramtype = "light"
+filled_wield_def.drawtype = "mesh"
+filled_wield_def.node_placement_prediction = ""
+filled_wield_def.range = minetest.registered_items[""].range
+
+for _, texture in pairs(mcl_skins.list) do
+	local def = table.copy(filled_wield_def)
+	def.tiles = {texture .. ".png"}
+	def.mesh = "mcl_meshhand.b3d"
+	def._mcl_hand_id = texture
+	minetest.register_node("mcl_maps:filled_map_" .. texture, def)
+
+	local female_def = table.copy(def)
+	female_def.mesh = "mcl_meshhand_female.b3d"
+	female_def._mcl_hand_id = texture .. "_female"
+	minetest.register_node("mcl_maps:filled_map_" .. texture .. "_female", female_def)
+end
+
+local old_add_item = minetest.add_item
+function minetest.add_item(pos, stack)
+	if minetest.get_item_group(stack:get_name(), "filled_map") > 0 then
+		stack:set_name("mcl_maps:filled_map")
+	end
+	return old_add_item(pos, stack)
+end
 
 tt.register_priority_snippet(function(itemstring, _, itemstack)
 	if itemstack and itemstring == "mcl_maps:filled_map" then
@@ -205,13 +237,13 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_maps:filled_map 2",
-	recipe = {"mcl_maps:filled_map", "mcl_maps:empty_map"},
+	recipe = {"group:filled_map", "mcl_maps:empty_map"},
 })
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
 	if itemstack:get_name() == "mcl_maps:filled_map" then
 		for _, stack in pairs(old_craft_grid) do
-			if stack:get_name() == "mcl_maps:filled_map" then
+			if ninetest.get_item_group(stack:get_name(), "filled_map") > 0 then
 				itemstack:get_meta():from_table(stack:get_meta():to_table())
 				return itemstack
 			end
@@ -226,9 +258,9 @@ minetest.register_on_joinplayer(function(player)
 	huds[player] = player:hud_add({
 		hud_elem_type = "image",
 		text = "blank.png",
-		position = {x = 1, y = 1},
+		position = {x = 0.875, y = 0.8},
 		alignment = {x = -1, y = -1},
-		offset = {x = -125, y = -50},
+		offset = {x = 0, y = 0},
 		scale = {x = 2, y = 2},
 	})
 end)
@@ -243,6 +275,14 @@ minetest.register_globalstep(function(dtime)
 		local wield = player:get_wielded_item()
 		local texture = mcl_maps.load_map_item(wield)
 		if texture then
+			local wield_def = wield:get_definition()
+			local hand_def = player:get_inventory():get_stack("hand", 1):get_definition()
+
+			if hand_def and wield_def and hand_def._mcl_hand_id ~= wield_def._mcl_hand_id then
+				wield:set_name("mcl_maps:filled_map_" .. hand_def._mcl_hand_id)
+				player:set_wielded_item(wield)
+			end
+
 			if texture ~= maps[player] then
 				player:hud_change(huds[player], "text", "[combine:140x140:0,0=mcl_maps_map_background.png:6,6=" .. texture)
 				maps[player] = texture
