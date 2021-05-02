@@ -185,6 +185,23 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_maps:filled_map 2",
+	recipe = {"mcl_maps:filled_map", "mcl_maps:empty_map"},
+})
+
+minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+	if itemstack:get_name() == "mcl_maps:filled_map" then
+		for _, stack in pairs(old_craft_grid) do
+			if stack:get_name() == "mcl_maps:filled_map" then
+				itemstack:get_meta():from_table(stack:get_meta():to_table())
+				return itemstack
+			end
+		end
+	end
+end)
+
 local maps = {}
 local huds = {}
 
