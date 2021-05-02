@@ -1,7 +1,5 @@
 tga_encoder = {}
 
-local LUA_ARGS_LIMIT = 1000
-
 local image = setmetatable({}, {
 	__call = function(self, ...)
 		local t = setmetatable({}, {__index = self})
@@ -11,8 +9,7 @@ local image = setmetatable({}, {
 })
 
 function image:constructor(pixels)
-	self.bytes = {}
-	self.chunks = {self.bytes}
+	self.data = ""
 	self.pixels = pixels
 	self.width = #pixels[1]
 	self.height = #pixels
@@ -20,87 +17,59 @@ function image:constructor(pixels)
 	self:encode()
 end
 
-function image:insert(byte)
-	table.insert(self.bytes, byte)
-	if #self.bytes == LUA_ARGS_LIMIT then
-		self.bytes = {}
-		table.insert(self.chunks, self.bytes)
-	end
-end
-
-function image:littleendian(size, value)
-	for i = 1, size do
-		local byte = value % 256
-		value = value - byte
-		value = value / 256
-		self:insert(byte)
-	end
-end
-
 function image:encode_colormap_spec()
-	-- first entry index
-	self:littleendian(2, 0)
-	-- number of entries
-	self:littleendian(2, 0)
-	-- number of bits per pixel
-	self:insert(0)
+	self.data = self.data
+		.. string.char(0, 0) -- first entry index
+		.. string.char(0, 0) -- number of entries
+		.. string.char(0) -- bits per pixel
 end
 
 function image:encode_image_spec()
-	-- X- and Y- origin
-	self:littleendian(2, 0)
-	self:littleendian(2, 0)
-	-- width and height
-	self:littleendian(2, self.width)
-	self:littleendian(2, self.height)
-	-- pixel depth
-	self:insert(24)
-	-- image descriptor
-	self:insert(0)
+	self.data = self.data
+		.. string.char(0, 0) -- X-origin
+		.. string.char(0, 0) -- Y-origin
+		.. string.char(self.width  % 256, math.floor(self.width  / 256)) -- width
+		.. string.char(self.height % 256, math.floor(self.height / 256)) -- height
+		.. string.char(24) -- pixel depth (RGB = 3 bytes = 24 bits)
+		.. string.char(0) -- image descriptor
 end
 
 function image:encode_header()
-	-- id length
-	self:insert(0) -- no image id info
-	-- color map type
-	self:insert(0) -- no color map
-	-- image type
-	self:insert(2) -- uncompressed true-color image
-	-- color map specification
-	self:encode_colormap_spec()
-	-- image specification
-	self:encode_image_spec()
+	self.data = self.data
+		.. string.char(0) -- image id
+		.. string.char(0) -- color map type
+		.. string.char(2) -- image type (uncompressed true-color image = 2)
+	self:encode_colormap_spec() -- color map specification
+	self:encode_image_spec() -- image specification
 end
 
 function image:encode_data()
 	for _, row in ipairs(self.pixels) do
 		for _, pixel in ipairs(row) do
-			self:insert(pixel[3])
-			self:insert(pixel[2])
-			self:insert(pixel[1])
+			self.data = self.data
+				.. string.char(pixel[3], pixel[2], pixel[1])
 		end
 	end
 end
 
-function image:encode()
-	-- encode header
-	self:encode_header()
-	-- no color map and image id data
-	-- encode data
-	self:encode_data()
-	-- no extension area
+function image:encode_footer()
+	self.data = self.data
+		.. string.char(0, 0, 0, 0) -- extension area offset
+		.. string.char(0, 0, 0, 0) -- developer area offset
+		.. "TRUEVISION-XFILE"
+		.. "."
+		.. string.char(0)
 end
 
-function image:get_data()
-	local data = ""
-	for _, bytes in ipairs(self.chunks) do
-		data = data .. string.char(unpack(bytes))
-	end
-	return data .. string.char(0, 0, 0, 0) .. string.char(0, 0, 0, 0) .. "TRUEVISION-XFILE." .. string.char(0)
+function image:encode()
+	self:encode_header() -- header
+	-- no color map and image id data
+	self:encode_data() -- encode data
+	-- no extension or developer area
+	self:encode_footer() -- footer
 end
 
 function image:save(filename)
-	self.data = self.data or self:get_data()
 	local f = assert(io.open(filename, "w"))
 	f:write(self.data)
 	f:close()
