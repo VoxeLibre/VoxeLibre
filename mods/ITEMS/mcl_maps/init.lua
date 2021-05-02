@@ -22,7 +22,6 @@ local palettes = load_json_file("palettes")
 local color_cache = {}
 
 local creating_maps = {}
-local loading_maps = {}
 local loaded_maps = {}
 
 local c_air = minetest.get_content_id("air")
@@ -30,16 +29,12 @@ local c_air = minetest.get_content_id("air")
 function mcl_maps.create_map(pos)
 	local itemstack = ItemStack("mcl_maps:filled_map")
 	local meta = itemstack:get_meta()
-	local id = storage:get_int("next_id")
-	storage:set_int("next_id", id + 1)
-	local texture_file = "mcl_maps_map_texture_" .. id .. ".tga"
-	local texture_path = map_textures_path .. texture_file
-	local texture = "[combine:140x140:0,0=mcl_maps_map_background.png:6,6=" .. texture_file
-	meta:set_int("mcl_maps:id", id)
-	meta:set_string("mcl_maps:texture", texture)
-	meta:set_string("mcl_maps:texture_path", texture_path)
+	local next_id = storage:get_int("next_id")
+	storage:set_int("next_id", next_id + 1)
+	local id = tostring(next_id)
+	meta:set_string("mcl_maps:id", id)
 	tt.reload_itemstack_description(itemstack)
-	creating_maps[texture] = true
+	creating_maps[id] = true
 	local minp = vector.multiply(vector.floor(vector.divide(pos, 128)), 128)
 	local maxp = vector.add(minp, vector.new(127, 127, 127))
 	minetest.emerge_area(minp, maxp, function(blockpos, action, calls_remaining)
@@ -58,7 +53,7 @@ function mcl_maps.create_map(pos)
 			local heightmap = {}
 			for z = 1, 128 do
 				local map_z = minp.z - 1 + z
-				local color
+				local color, height
 				for map_y = maxp.y, minp.y, -1 do
 					local index = area:index(map_x, map_y, map_z)
 					local c_id = data[index]
@@ -111,24 +106,47 @@ function mcl_maps.create_map(pos)
 								}
 							end
 						end
-							height = map_y
+						height = map_y
 						break
 					end
 				end
-				heightmap[z] = height
+				heightmap[z] = height or minp.y
 				pixels[z] = pixels[z] or {}
 				pixels[z][x] = color or {0, 0, 0}
 			end
 			last_heightmap = heightmap
 		end
-		tga_encoder.image(pixels):save(texture_path)
-		creating_maps[texture] = false
+		tga_encoder.image(pixels):save(map_textures_path .. "mcl_maps_map_texture_" .. id .. ".tga")
+		creating_maps[id] = nil
 	end)
 	return itemstack
 end
 
--- Turn empty map into filled map by rightclick
-local make_filled_map = function(itemstack, placer, pointed_thing)
+function mcl_maps.load_map(id)
+	if id == "" or creating_maps[id] then
+		return
+	end
+
+	local texture = "mcl_maps_map_texture_" .. id .. ".tga"
+
+	if not loaded_maps[id] then
+		loaded_maps[id] = true
+		minetest.dynamic_add_media(map_textures_path .. texture, function() end)
+	end
+
+	return texture
+end
+
+function mcl_maps.load_map_item(itemstack)
+	return mcl_maps.load_map(itemstack:get_meta():get_string("mcl_maps:id"))
+end
+
+local function fill_map(itemstack, placer, pointed_thing)
+	local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
+	if new_stack then
+		return new_stack
+	end
+
 	if minetest.settings:get_bool("enable_real_maps", true) then
 		local new_map = mcl_maps.create_map(placer:get_pos())
 		itemstack:take_item()
@@ -151,8 +169,8 @@ minetest.register_craftitem("mcl_maps:empty_map", {
 	_doc_items_longdesc = S("Empty maps are not useful as maps, but they can be stacked and turned to maps which can be used."),
 	_doc_items_usagehelp = S("Rightclick to create a filled map (which can't be stacked anymore)."),
 	inventory_image = "mcl_maps_map_empty.png",
-	on_place = make_filled_map,
-	on_secondary_use = make_filled_map,
+	on_place = fill_map,
+	on_secondary_use = fill_map,
 	stack_max = 64,
 })
 
@@ -220,38 +238,13 @@ minetest.register_on_leaveplayer(function(player)
 	huds[player] = nil
 end)
 
-local function is_holding_map(player)
-	local wield = player:get_wielded_item()
-	if wield:get_name() ~= "mcl_maps:filled_map" then
-		return
-	end
-	local meta = wield:get_meta()
-	local texture = meta:get_string("mcl_maps:texture")
-	if texture == "" then
-		return
-	end
-	if loaded_maps[texture] then
-		return texture
-	end
-	local path = meta:get_string("mcl_maps:texture_path")
-	if not creating_maps[texture] and not loading_maps[texture] then
-		loading_maps[texture] = true
-		local player_name = player:get_player_name()
-		minetest.dynamic_add_media(path, function(finished_name)
-			if player_name == finished_name then
-				loading_maps[texture] = false
-				loaded_maps[texture] = true
-			end
-		end)
-	end
-end
-
 minetest.register_globalstep(function(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
-		local texture = is_holding_map(player)
+		local wield = player:get_wielded_item()
+		local texture = mcl_maps.load_map_item(wield)
 		if texture then
 			if texture ~= maps[player] then
-				player:hud_change(huds[player], "text", texture)
+				player:hud_change(huds[player], "text", "[combine:140x140:0,0=mcl_maps_map_background.png:6,6=" .. texture)
 				maps[player] = texture
 			end
 		elseif maps[player] then
