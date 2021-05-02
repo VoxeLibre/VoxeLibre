@@ -210,6 +210,7 @@ end
 
 local old_add_item = minetest.add_item
 function minetest.add_item(pos, stack)
+	stack = ItemStack(stack)
 	if minetest.get_item_group(stack:get_name(), "filled_map") > 0 then
 		stack:set_name("mcl_maps:filled_map")
 	end
