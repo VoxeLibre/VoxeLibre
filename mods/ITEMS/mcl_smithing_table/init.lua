@@ -23,6 +23,10 @@ function mcl_smithing_table.upgrade_item(itemstack)
 		return
 	end
 
+	if mcl_enchanting.is_enchanted(itemname) then
+		upgrade_item = upgrade_item .. "_enchanted"
+	end
+
 	itemstack:set_name(upgrade_item)
 
 	-- Reload the ToolTips of the tool
