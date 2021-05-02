@@ -219,7 +219,7 @@ function minetest.add_item(pos, stack)
 end
 
 tt.register_priority_snippet(function(itemstring, _, itemstack)
-	if itemstack and itemstring == "mcl_maps:filled_map" then
+	if itemstack and minetest.get_item_group(itemstring, "filled_map") > 0 then
 		local id = itemstack:get_meta():get_string("mcl_maps:id")
 		if id ~= "" then
 			return "#" .. id, mcl_colors.GRAY
