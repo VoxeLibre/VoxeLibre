@@ -35,6 +35,18 @@ mcl_mapgen.EDGE_MAX = central_chunk_max_pos + numcmax * mcl_mapgen.CS_NODES
 minetest_log("action", "[mcl_mapgen] World edges are: mcl_mapgen.EDGE_MIN = " .. tostring(mcl_mapgen.EDGE_MIN) .. ", mcl_mapgen.EDGE_MAX = " .. tostring(mcl_mapgen.EDGE_MAX))
 ------------------------------------------
 
+-- Mapgen variables
+local overworld, end_, nether = {}, {}, {}
+mcl_mapgen.seed = minetest.get_mapgen_setting("seed")
+mcl_mapgen.name = minetest.get_mapgen_setting("mg_name")
+mcl_mapgen.v6 = mcl_mapgen.name == "v6"
+mcl_mapgen.superflat = mcl_mapgen.name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
+mcl_mapgen.singlenode = mcl_mapgen.name == "singlenode"
+mcl_mapgen.normal = not mcl_mapgen.superflat and not mcl_mapgen.singlenode
+local superflat, singlenode, normal = mcl_mapgen.superflat, mcl_mapgen.singlenode, mcl_mapgen.normal
+
+minetest_log("action", "[mcl_mapgen] Mapgen mode: " .. (normal and "normal" or (superflat and "superflat" or "singlenode")))
+------------------------------------------
 
 local lvm_block_queue, lvm_chunk_queue, node_block_queue, node_chunk_queue = {}, {}, {}, {} -- Generators' queues
 local lvm, block, lvm_block, lvm_chunk, param2, nodes_block, nodes_chunk, safe_functions = 0, 0, 0, 0, 0, 0, 0, 0 -- Requirements: 0 means none; greater than 0 means 'required'
@@ -74,6 +86,33 @@ function mcl_mapgen.register_block_generator_lvm(callback_function, priority)
 	table.sort(lvm_block_queue, function(a, b) return (a.i <= b.i) end)
 end
 
+function mcl_mapgen.get_block_seed(pos, seed)
+	local p = pos
+	local x, y, z = p.x, p.y, p.z
+	if x<0 then x = 4294967296+x end
+	if y<0 then y = 4294967296+y end
+	if z<0 then z = 4294967296+z end
+	local seed = (seed or mcl_mapgen.seed or 0) % 4294967296
+	return (seed  +  (z*38134234)%4294967296 + (y*42123)%4294967296 + (x*23)%4294967296) % 4294967296
+end
+
+function mcl_mapgen.get_block_seed_2(pos, seed)
+	local p = pos
+	local seed = seed or mcl_mapgen.seed or 0
+	local x, y, z = p.x, p.y, p.z
+	if x<0 then x = 4294967296+x end
+	if y<0 then y = 4294967296+y end
+	if z<0 then z = 4294967296+z end
+	local n = ((1619*x)%4294967296 + (31337*y)%4294967296 + (52591*z)%4294967296 + (1013*seed)%4294967296) % 4294967296
+--	n = (math_floor(n / 8192) ^ n) % 4294967296
+
+	local m = (n*n) % 4294967296
+	m = (m*60493) % 4294967296
+	m = (m+19990303) % 4294967296
+
+	return (n * m + 1376312589) % 4294967296
+end
+
 local storage = minetest.get_mod_storage()
 local blocks = minetest.deserialize(storage:get_string("mapgen_blocks") or "return {}") or {}
 local chunks = minetest.deserialize(storage:get_string("mapgen_chunks") or "return {}") or {}
@@ -90,7 +129,7 @@ local current_chunks = {}
 minetest.register_on_generated(function(minp, maxp, blockseed)
 	local minp, maxp, blockseed = minp, maxp, blockseed
 	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
-	minetest_log("warning", "[mcl_mapgen] New_chunk=" .. minetest_pos_to_string(minp) .. "..." .. minetest_pos_to_string(maxp) .. ", shell=" .. minetest_pos_to_string(emin) .. "..." .. minetest_pos_to_string(emax) .. ", blockseed=" .. tostring(blockseed))
+	minetest_log("warning", "[mcl_mapgen] New_chunk=" .. minetest_pos_to_string(minp) .. "..." .. minetest_pos_to_string(maxp) .. ", shell=" .. minetest_pos_to_string(emin) .. "..." .. minetest_pos_to_string(emax) .. ", blockseed=" .. tostring(blockseed) .. ", seed1=" .. mcl_mapgen.get_block_seed(minp) .. ", seed2=" .. mcl_mapgen.get_block_seed_2(minp))
 
 	if lvm > 0 then
 		vm_context = {lvm_param2_buffer = lvm_param2_buffer, vm = vm, emin = emin, emax = emax, minp = minp, maxp = maxp, blockseed = blockseed}
@@ -288,19 +327,6 @@ function mcl_mapgen.get_chunk_number(pos) -- unsigned int
 		(c.z + k_positive) * k_positive_z +
 		 c.x + k_positive
 end
-
-
--- Mapgen variables
-local overworld, end_, nether = {}, {}, {}
-mcl_mapgen.seed = minetest.get_mapgen_setting("seed")
-mcl_mapgen.name = minetest.get_mapgen_setting("mg_name")
-mcl_mapgen.v6 = mcl_mapgen.name == "v6"
-mcl_mapgen.superflat = mcl_mapgen.name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
-mcl_mapgen.singlenode = mcl_mapgen.name == "singlenode"
-mcl_mapgen.normal = not mcl_mapgen.superflat and not mcl_mapgen.singlenode
-local superflat, singlenode, normal = mcl_mapgen.superflat, mcl_mapgen.singlenode, mcl_mapgen.normal
-
-minetest_log("action", "[mcl_mapgen] Mapgen mode: " .. (normal and "normal" or (superflat and "superflat" or "singlenode")))
 
 mcl_mapgen.minecraft_height_limit = 256
 
