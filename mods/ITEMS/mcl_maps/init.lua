@@ -242,7 +242,7 @@ minetest.register_craft({
 	recipe = {"group:filled_map", "mcl_maps:empty_map"},
 })
 
-minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+local function on_craft(itemstack, player, old_craft_grid, craft_inv)
 	if itemstack:get_name() == "mcl_maps:filled_map" then
 		for _, stack in pairs(old_craft_grid) do
 			if minetest.get_item_group(stack:get_name(), "filled_map") > 0 then
@@ -251,7 +251,10 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 			end
 		end
 	end
-end)
+end
+
+minetest.register_on_craft(on_craft)
+minetest.register_craft_predict(on_craft)
 
 local maps = {}
 local huds = {}
