@@ -188,6 +188,9 @@ minetest.register_node("mcl_itemframes:item_frame",{
 		end
 		local put_itemstack = ItemStack(itemstack)
 		put_itemstack:set_count(1)
+		if minetest.get_item_group(put_itemstack:get_name(), "compass") > 0 then
+			put_itemstack:set_name("mcl_compass:" .. mcl_compass.get_compass_image(pos, minetest.dir_to_yaw(minetest.facedir_to_dir(node.param2))))
+		end
 		inv:set_stack("main", 1, put_itemstack)
 		update_item_entity(pos, node)
 		-- Add node infotext when item has been named
