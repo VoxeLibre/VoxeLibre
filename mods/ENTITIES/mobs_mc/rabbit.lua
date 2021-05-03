@@ -99,7 +99,7 @@ killer_bunny.on_rightclick = nil
 killer_bunny.run_velocity = 6
 killer_bunny.do_custom = function(self)
 	if not self._killer_bunny_nametag_set then
-		self.nametag = "The Killer Bunny"
+		self.nametag = S("The Killer Bunny")
 		self._killer_bunny_nametag_set = true
 	end
 end
