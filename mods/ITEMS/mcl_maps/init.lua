@@ -27,16 +27,20 @@ local loaded_maps = {}
 local c_air = minetest.get_content_id("air")
 
 function mcl_maps.create_map(pos)
+	local minp = vector.multiply(vector.floor(vector.divide(pos, 128)), 128)
+	local maxp = vector.add(minp, vector.new(127, 127, 127))
+
 	local itemstack = ItemStack("mcl_maps:filled_map")
 	local meta = itemstack:get_meta()
 	local next_id = storage:get_int("next_id")
 	storage:set_int("next_id", next_id + 1)
 	local id = tostring(next_id)
 	meta:set_string("mcl_maps:id", id)
+	meta:set_string("mcl_maps:minp", minetest.pos_to_string(minp))
+	meta:set_string("mcl_maps:maxp", minetest.pos_to_string(maxp))
 	tt.reload_itemstack_description(itemstack)
+
 	creating_maps[id] = true
-	local minp = vector.multiply(vector.floor(vector.divide(pos, 128)), 128)
-	local maxp = vector.add(minp, vector.new(127, 127, 127))
 	minetest.emerge_area(minp, maxp, function(blockpos, action, calls_remaining)
 		if calls_remaining > 0 then
 			return
@@ -260,14 +264,20 @@ local maps = {}
 local huds = {}
 
 minetest.register_on_joinplayer(function(player)
-	huds[player] = player:hud_add({
+	local map_def = {
 		hud_elem_type = "image",
 		text = "blank.png",
-		position = {x = 0.875, y = 0.8},
-		alignment = {x = -1, y = -1},
+		position = {x = 0.75, y = 0.8},
+		alignment = {x = 0, y = -1},
 		offset = {x = 0, y = 0},
 		scale = {x = 2, y = 2},
-	})
+	}
+	local marker_def = table.copy(map_def)
+	marker_def.alignment = {x = 0, y = 0}
+	huds[player] = {
+		map = player:hud_add(map_def),
+		marker = player:hud_add(marker_def),
+	}
 end)
 
 minetest.register_on_leaveplayer(function(player)
@@ -279,6 +289,7 @@ minetest.register_globalstep(function(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
 		local wield = player:get_wielded_item()
 		local texture = mcl_maps.load_map_item(wield)
+		local hud = huds[player]
 		if texture then
 			local wield_def = wield:get_definition()
 			local hand_def = player:get_inventory():get_stack("hand", 1):get_definition()
@@ -289,11 +300,43 @@ minetest.register_globalstep(function(dtime)
 			end
 
 			if texture ~= maps[player] then
-				player:hud_change(huds[player], "text", "[combine:140x140:0,0=mcl_maps_map_background.png:6,6=" .. texture)
+				player:hud_change(hud.map, "text", "[combine:140x140:0,0=mcl_maps_map_background.png:6,6=" .. texture)
 				maps[player] = texture
 			end
+
+			local pos = vector.round(player:get_pos())
+			local meta = wield:get_meta()
+			local minp = minetest.string_to_pos(meta:get_string("mcl_maps:minp"))
+			local maxp = minetest.string_to_pos(meta:get_string("mcl_maps:maxp"))
+
+			local marker = "mcl_maps_player_arrow.png"
+
+			if pos.x < minp.x then
+				marker = "mcl_maps_player_dot.png"
+				pos.x = minp.x
+			elseif pos.x > maxp.x then
+				marker = "mcl_maps_player_dot.png"
+				pos.x = maxp.x
+			end
+
+			if pos.z < minp.z then
+				marker = "mcl_maps_player_dot.png"
+				pos.z = minp.z
+			elseif pos.z > maxp.z then
+				marker = "mcl_maps_player_dot.png"
+				pos.z = maxp.z
+			end
+
+			if marker == "mcl_maps_player_arrow.png" then
+				local yaw = (math.floor(player:get_look_horizontal() * 180 / math.pi / 90 + 0.5) % 4) * 90
+				marker = marker .. "^[transformR" .. yaw
+			end
+
+			player:hud_change(hud.marker, "text", marker)
+			player:hud_change(hud.marker, "offset", {x = (6 - 140 / 2 + pos.x - minp.x) * 2, y = (6 - 140 + maxp.z - pos.z) * 2})
 		elseif maps[player] then
-			player:hud_change(huds[player], "text", "blank.png")
+			player:hud_change(hud.map, "text", "blank.png")
+			player:hud_change(hud.marker, "text", "blank.png")
 			maps[player] = nil
 		end
 	end
