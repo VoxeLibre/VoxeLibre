@@ -93,6 +93,7 @@ if mg_name ~= "singlenode" then
 			local x = pr1:next(0, 40) + minp.x + 19
 			local z = pr1:next(0, 40) + minp.z + 19
 			local y = minetest_get_spawn_level(x, z)
+			if not y then return end
 			if y < (min or y+1) then min = y end
 			if y > (max or y-1) then max = y end
 		end

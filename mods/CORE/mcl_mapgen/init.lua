@@ -1,5 +1,9 @@
 mcl_mapgen = {}
 
+local priority = {
+	OCEAN_MONUMENT = 1000000
+}
+
 local math_floor		= math.floor
 local math_max			= math.max
 local minetest_get_node		= minetest.get_node
@@ -398,3 +402,5 @@ mcl_mapgen.dungeons = normal
 mcl_mapgen.overworld = overworld
 mcl_mapgen.end_ = end_
 mcl_mapgen.nether = nether
+
+mcl_mapgen.priorities = priority
