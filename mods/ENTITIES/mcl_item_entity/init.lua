@@ -406,6 +406,14 @@ minetest.register_entity(":__builtin:item", {
 			return
 		end
 		local stack = ItemStack(itemstring)
+		if minetest.get_item_group(stack:get_name(), "compass") > 0 then
+			stack:set_name("mcl_compass:16")
+			itemstring = stack:to_string()
+			self.itemstring = itemstring
+		end
+		if minetest.get_item_group(stack:get_name(), "clock") > 0 then
+			self.is_clock = true
+		end
 		local count = stack:get_count()
 		local max_count = stack:get_stack_max()
 		if count > max_count then
@@ -428,7 +436,6 @@ minetest.register_entity(":__builtin:item", {
 			description = def.description
 			glow = def.light_source
 		end
-		self.is_clock = minetest.get_item_group(itemname, "clock") > 0
 		local s = 0.2 + 0.1 * (count / max_count)
 		local wield_scale = (def and def.wield_scale and def.wield_scale.x) or 1
 		local c = s
