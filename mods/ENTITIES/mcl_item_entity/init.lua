@@ -98,7 +98,7 @@ end
 
 
 minetest.register_globalstep(function(dtime)
-	
+
 	tick = not tick
 
 	for _,player in pairs(minetest.get_connected_players()) do
@@ -106,7 +106,7 @@ minetest.register_globalstep(function(dtime)
 
 
 			local name = player:get_player_name()
-			
+
 			local pos = player:get_pos()
 
 			if tick == true and pool[name] > 0 then
@@ -124,7 +124,7 @@ minetest.register_globalstep(function(dtime)
 			end
 
 
-			
+
 			local inv = player:get_inventory()
 			local checkpos = {x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}
 
@@ -428,6 +428,7 @@ minetest.register_entity(":__builtin:item", {
 			description = def.description
 			glow = def.light_source
 		end
+		self.is_clock = minetest.get_item_group(itemname, "clock") > 0
 		local s = 0.2 + 0.1 * (count / max_count)
 		local wield_scale = (def and def.wield_scale and def.wield_scale.x) or 1
 		local c = s
@@ -592,6 +593,12 @@ minetest.register_entity(":__builtin:item", {
 		local p = self.object:get_pos()
 		local node = minetest.get_node_or_nil(p)
 		local in_unloaded = (node == nil)
+
+		if self.is_clock then
+			self.object:set_properties({
+				textures = {"mcl_clock:clock_" .. (mcl_worlds.clock_works(p) and mcl_clock.old_time or mcl_clock.random_frame)}
+			})
+		end
 
 		-- If no collector was found for a long enough time, declare the magnet as disabled
 		if self._magnet_active and (self._collector_timer == nil or (self._collector_timer > item_drop_settings.magnet_time)) then
