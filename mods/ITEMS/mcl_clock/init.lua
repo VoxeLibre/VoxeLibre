@@ -92,10 +92,12 @@ minetest.register_globalstep(function(dtime)
 	force_clock_update_timer = 0
 
 	mcl_clock.old_time = now
+	mcl_clock.random_frame = random_frame
 
 	for p, player in pairs(minetest.get_connected_players()) do
 		for s, stack in pairs(player:get_inventory():get_list("main")) do
 			local dim = mcl_worlds.pos_to_dimension(player:get_pos())
+
 			local frame
 			-- Clocks do not work in certain zones
 			if not mcl_worlds.clock_works(player:get_pos()) then
@@ -103,6 +105,7 @@ minetest.register_globalstep(function(dtime)
 			else
 				frame = now
 			end
+
 			local count = stack:get_count()
 			if stack:get_name() == mcl_clock.stereotype then
 				player:get_inventory():set_stack("main", s, "mcl_clock:clock_"..frame.." "..count)
