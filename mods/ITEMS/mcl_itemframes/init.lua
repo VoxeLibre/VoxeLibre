@@ -165,6 +165,21 @@ minetest.register_node("mcl_itemframes:item_frame",{
 	groups = { dig_immediate=3,deco_block=1,dig_by_piston=1,container=7,attached_node_facedir=1 },
 	sounds = mcl_sounds.node_sound_defaults(),
 	node_placement_prediction = "",
+	on_timer = function(pos)
+		local inv = minetest.get_meta(pos):get_inventory()
+		local stack = inv:get_stack("main", 1)
+		local itemname = stack:get_name()
+		if minetest.get_item_group(itemname, "clock") > 0 then
+			local new_name = "mcl_clock:clock_" .. (mcl_worlds.clock_works(pos) and mcl_clock.old_time or mcl_clock.random_frame)
+			if itemname ~= new_name then
+				stack:set_name(new_name)
+				inv:set_stack("main", 1, stack)
+				local node = minetest.get_node(pos)
+				update_item_entity(pos, node, node.param2)
+			end
+			minetest.get_node_timer(pos):start(1.0)
+		end
+	end,
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type ~= "node" then
 			return itemstack
@@ -205,6 +220,13 @@ minetest.register_node("mcl_itemframes:item_frame",{
 		end
 		local put_itemstack = ItemStack(itemstack)
 		put_itemstack:set_count(1)
+		local itemname = put_itemstack:get_name()
+		if minetest.get_item_group(itemname, "compass") > 0 then
+			put_itemstack:set_name("mcl_compass:" .. mcl_compass.get_compass_image(pos, minetest.dir_to_yaw(minetest.facedir_to_dir(node.param2))))
+		end
+		if minetest.get_item_group(itemname, "clock") > 0 then
+			minetest.get_node_timer(pos):start(1.0)
+		end
 		inv:set_stack("main", 1, put_itemstack)
 		update_item_entity(pos, node)
 		-- Add node infotext when item has been named
