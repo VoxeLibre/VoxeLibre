@@ -87,6 +87,12 @@ end
 
 
 mobs.death_logic = function(self, dtime)
+
+	--stop crashing game when object is nil
+	if not self or not self.object or not self.object:get_luaentity() then
+		return
+	end
+
     self.death_animation_timer = self.death_animation_timer + dtime
 
 	--get all attached entities and sort through them

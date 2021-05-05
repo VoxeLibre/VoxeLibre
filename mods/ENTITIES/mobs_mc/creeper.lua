@@ -43,10 +43,10 @@ mobs:register_mob("mobs_mc:creeper", {
 	eye_height = 1.25,
 	--hssssssssssss
 
-	explosion_strength = 10,
-	explosion_radius = 4,
-	explosion_damage_radius = 6,
-	explosiontimer_reset_radius = 6,
+	explosion_strength = 3,
+	--explosion_radius = 3,
+	--explosion_damage_radius = 6,
+	--explosiontimer_reset_radius = 6,
 	reach = 1.5,
 	defuse_reach = 4,
 	explosion_timer = 0.3,
@@ -148,7 +148,7 @@ mobs:register_mob("mobs_mc:creeper", {
 })
 
 mobs:register_mob("mobs_mc:creeper_charged", {
-	description = S("Creeper"),
+	description = S("Charged Creeper"),
 	type = "monster",
 	spawn_class = "hostile",
 	hp_min = 20,
@@ -182,10 +182,10 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 	runaway_from = { "mobs_mc:ocelot", "mobs_mc:cat" },
 	attack_type = "explode",
 
-	explosion_strength = 24,
-	explosion_radius = 12,
-	explosion_damage_radius = 18,
-	explosiontimer_reset_radius = 10,
+	explosion_strength = 6,
+	--explosion_radius = 3,
+	--explosion_damage_radius = 6,
+	--explosiontimer_reset_radius = 3,
 	reach = 1.5,
 	defuse_reach = 4,
 	explosion_timer = 0.3,
