@@ -22,7 +22,7 @@ local leg_materials = {
 local what_we_can_replace_by_legs = {
 	water,
 	air,
-	"mcl_core:water_flow",
+	"mcl_core:water_flowing",
 	"mcl_core:stone",
 }
 
