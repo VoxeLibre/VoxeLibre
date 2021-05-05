@@ -9,33 +9,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_sponges:sponge",
-	recipe = {
-		{ "mcl_farming:hay_block", "mcl_farming:hay_block", "mcl_farming:hay_block" },
-		{ "mcl_farming:hay_block", "mcl_core:goldblock", "mcl_farming:hay_block" },
-		{ "mcl_farming:hay_block", "mcl_farming:hay_block", "mcl_farming:hay_block" },
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_ocean:prismarine_shard",
-	recipe = {
-		{ "mcl_core:glass_cyan", },
-	}
-})
-
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_ocean:prismarine_crystals",
-	recipe = {
-		"mcl_ocean:prismarine_shard",
-		"mcl_ocean:prismarine_shard",
-		"mcl_ocean:prismarine_shard",
-		"mcl_core:gold_ingot",
-	},
-})
-
-minetest.register_craft({
 	output = "mcl_armor:helmet_chain",
 	recipe = {
 		{ "xpanes:bar_flat", "mcl_core:iron_ingot", "xpanes:bar_flat" },
