@@ -53,6 +53,24 @@ minetest.register_entity("mcl_itemframes:item",{
 	end,
 })
 
+minetest.register_entity("mcl_itemframes:map", {
+	initial_properties = {
+		visual = "upright_sprite",
+		visual_size = {x = 1, y = 1},
+		pointable = false,
+		physical = false,
+		collide_with_objects = false,
+		textures = {"blank.png"},
+	},
+	on_activate = function(self, staticdata)
+		self.id = staticdata
+		self.object:set_properties({textures = {mcl_maps.load_map(self.id)}})
+	end,
+	get_staticdata = function(self)
+		return self.id
+	end,
+})
+
 
 local facedir = {}
 facedir[0] = {x=0,y=0,z=1}
@@ -61,13 +79,10 @@ facedir[2] = {x=0,y=0,z=-1}
 facedir[3] = {x=-1,y=0,z=0}
 
 local remove_item_entity = function(pos, node)
-	local objs = nil
 	if node.name == "mcl_itemframes:item_frame" then
-		objs = minetest.get_objects_inside_radius(pos, .5)
-	end
-	if objs then
-		for _, obj in ipairs(objs) do
-			if obj and obj:get_luaentity() and obj:get_luaentity().name == "mcl_itemframes:item" then
+		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 0.5)) do
+			local entity = obj:get_luaentity()
+			if entity and (entity.name == "mcl_itemframes:item" or entity.name == "mcl_itemframes:map") then
 				obj:remove()
 			end
 		end
@@ -89,25 +104,27 @@ local update_item_entity = function(pos, node, param2)
 			pos.y = pos.y + posad.y*6.5/16
 			pos.z = pos.z + posad.z*6.5/16
 		end
-		local e = minetest.add_entity(pos, "mcl_itemframes:item")
-		local lua = e:get_luaentity()
-		lua._nodename = node.name
-		local itemname = item:get_name()
-		if itemname == "" or itemname == nil then
-			lua._texture = "blank.png"
-			lua._scale = 1
-		else
-			lua._texture = itemname
-			local def = minetest.registered_items[itemname]
-			if def and def.wield_scale then
-				lua._scale = def.wield_scale.x
-			else
+		local yaw = math.pi*2 - param2 * math.pi/2
+		local map_id = item:get_meta():get_string("mcl_maps:id")
+		if map_id == "" then
+			local e = minetest.add_entity(pos, "mcl_itemframes:item")
+			local lua = e:get_luaentity()
+			lua._nodename = node.name
+			local itemname = item:get_name()
+			if itemname == "" or itemname == nil then
+				lua._texture = "blank.png"
 				lua._scale = 1
+			else
+				lua._texture = itemname
+				local def = minetest.registered_items[itemname]
+				lua._scale = def and def.wield_scale and def.wield_scale.x or 1
 			end
-		end
-		lua:_update_texture()
-		if node.name == "mcl_itemframes:item_frame" then
-			local yaw = math.pi*2 - param2 * math.pi/2
+			lua:_update_texture()
+			if node.name == "mcl_itemframes:item_frame" then
+				e:set_yaw(yaw)
+			end
+		else
+			local e = minetest.add_entity(pos, "mcl_itemframes:map", map_id)
 			e:set_yaw(yaw)
 		end
 	end
