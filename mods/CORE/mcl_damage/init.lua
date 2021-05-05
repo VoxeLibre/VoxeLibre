@@ -149,7 +149,7 @@ minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
 end, true)
 
 minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
-	if hp_change < 0 then
+	if hp_change < 0 and player:get_hp() > 0 then
 		mcl_damage.run_damage_callbacks(player, -hp_change, mcl_damage.from_mt(mt_reason))
 	end
 end, false)
