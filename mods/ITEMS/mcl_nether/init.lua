@@ -62,8 +62,7 @@ minetest.register_node("mcl_nether:ancient_debris", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 30,
-	_mcl_silk_touch_drop = true,
-	_mcl_fortune_drop = mcl_core.fortune_drop_ore
+	_mcl_silk_touch_drop = true
 })
 
 minetest.register_node("mcl_nether:netheriteblock", {
