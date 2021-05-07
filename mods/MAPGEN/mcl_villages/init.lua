@@ -103,7 +103,7 @@ if mg_name ~= "singlenode" then
 		if height_difference > max_height_difference then return end
 
 		build_a_settlement(minp, maxp, blockseed)
-	end)
+	end, mcl_mapgen.priorities.VILLAGES)
 end
 -- manually place villages
 if minetest.is_creative_enabled("") then

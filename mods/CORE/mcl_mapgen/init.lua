@@ -1,7 +1,14 @@
 mcl_mapgen = {}
 
-local priority = {
-	OCEAN_MONUMENT = 1000000
+local priorities = { -- mcl_mapgen.priorities...
+	DEFAULT		=    5000,
+	CHORUS		=  100000,
+	BUILDINGS	=  200000,
+	VILLAGES	=  900000,
+	DUNGEONS	=  950000,
+	STRONGHOLDS	=  999999,
+	OCEAN_MONUMENT	= 1000000,
+	LARGE_BUILDINGS	= 2000000,
 }
 
 local math_floor		= math.floor
@@ -62,7 +69,7 @@ local CS_NODES = mcl_mapgen.CS_NODES -- 80
 
 local CS_3D = CS * CS * CS
 
-local DEFAULT_PRIORITY = 5000
+local DEFAULT_PRIORITY = priorities.DEFAULT
 
 function mcl_mapgen.register_chunk_generator(callback_function, priority)
 	nodes_chunk = nodes_chunk + 1
@@ -261,7 +268,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 		if vm_context.write_param2 then
 			vm:set_param2_data(data2)
 		end
-		vm:calc_lighting(minp, maxp, vm_context.shadow) -- TODO: check boundaries
+		vm:calc_lighting(minp, maxp, vm_context.shadow or true) -- TODO: check boundaries
 		vm:write_to_map()
 		vm:update_liquids()
 	end
@@ -403,4 +410,4 @@ mcl_mapgen.overworld = overworld
 mcl_mapgen.end_ = end_
 mcl_mapgen.nether = nether
 
-mcl_mapgen.priorities = priority
+mcl_mapgen.priorities = priorities

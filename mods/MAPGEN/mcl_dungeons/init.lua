@@ -413,4 +413,4 @@ function mcl_dungeons.spawn_dungeon(p1, _, pr)
 	spawn_dungeon(p1, p2, dim, pr, true)
 end
 
-mcl_mapgen.register_chunk_generator(dungeons_nodes, 999999)
+mcl_mapgen.register_chunk_generator(dungeons_nodes, mcl_mapgen.priorities.DUNGEONS)

@@ -100,4 +100,4 @@ mcl_mapgen.register_chunk_generator(function(minp, maxp, blockseed)
 			end
 		end
 	end
-end, 999999)
+end, mcl_mapgen.priorities.STRONGHOLDS)

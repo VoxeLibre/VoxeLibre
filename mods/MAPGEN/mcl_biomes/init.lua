@@ -3979,7 +3979,7 @@ if not mcl_mapgen.singlenode then
 				minetest.after(1, mcl_end.grow_chorus_plant, realpos)
 			end
 			return c
-		end)
+		end, mcl_mapgen.priorities.CHORUS)
 	end
 
 end
