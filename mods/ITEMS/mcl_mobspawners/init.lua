@@ -54,6 +54,7 @@ local spawn_count_overrides = {
 
 local function set_doll_properties(doll, mob)
 	local mobinfo = minetest.registered_entities[mob]
+	if not mobinfo then return end
 	local xs, ys
 	if doll_size_overrides[mob] then
 		xs = doll_size_overrides[mob].x
@@ -95,7 +96,7 @@ All the arguments are optional!
 
 * Mob: ID of mob to spawn (default: mobs_mc:pig)
 * MinLight: Minimum light to spawn (default: 0)
-* MaxLight: Maximum light to spawn (default: 15)
+	* MaxLight: Maximum light to spawn (default: 15)
 * MaxMobsInArea: How many mobs are allowed in the area around the spawner (default: 4)
 * PlayerDistance: Spawn mobs only if a player is within this distance; 0 to disable (default: 15)
 * YOffset: Y offset to spawn mobs; 0 to disable (default: 0)
