@@ -258,12 +258,12 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 
 			if collisionbox then
 				-- Create rays from random points in the collision box
-				local x1 = collisionbox[1] * 2
-				local y1 = collisionbox[2] * 2
-				local z1 = collisionbox[3] * 2
-				local x2 = collisionbox[4] * 2
-				local y2 = collisionbox[5] * 2
-				local z2 = collisionbox[6] * 2
+				local x1 = collisionbox[1]
+				local y1 = collisionbox[2]
+				local z1 = collisionbox[3]
+				local x2 = collisionbox[4]
+				local y2 = collisionbox[5]
+				local z2 = collisionbox[6]
 				local x_len = math.abs(x2 - x1)
 				local y_len = math.abs(y2 - y1)
 				local z_len = math.abs(z2 - z1)
