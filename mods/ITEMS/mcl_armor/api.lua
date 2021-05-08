@@ -111,6 +111,7 @@ function mcl_armor.register_set(def)
 		groups.mcl_armor_toughness = def.toughness
 		groups.mcl_armor_uses = (durabilities[name] or math.floor(def.durability * element.durability)) + 1
 		groups.enchantability = def.enchantability
+		groups.upgradable = def.upgradable
 
 		for k, v in pairs(element_groups) do
 			groups[k] = v
