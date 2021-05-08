@@ -79,7 +79,7 @@ mcl_armor.register_set({
 	},
 	toughness = 2,
 	craft_material = "mcl_core:diamond",
-	upgradable = true
+	_mcl_upgradable = true
 })
 
 mcl_armor.register_set({
