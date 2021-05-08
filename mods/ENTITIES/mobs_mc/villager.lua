@@ -195,7 +195,7 @@ local professions = {
 
 			{
 			-- TODO: replace with empty map
-			{ { "mcl_core:emerald", 7, 11}, { "mcl_maps:filled_map", 1, 1 } },
+			{ { "mcl_core:emerald", 7, 11}, { "mcl_maps:empty_map", 1, 1 } },
 			},
 
 			-- TODO: special maps

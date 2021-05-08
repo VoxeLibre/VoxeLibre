@@ -117,8 +117,9 @@ pumpkin_face_base_def.groups.armor_head=1
 pumpkin_face_base_def.groups.non_combat_armor_head=1
 pumpkin_face_base_def._mcl_armor_mob_range_factor = 0
 pumpkin_face_base_def._mcl_armor_mob_range_mob = "mobs_mc:enderman"
-pumpkin_face_base_def._mcl_armor_entry = "head"
-pumpkin_face_base_def.groups.non_combat_armor=1
+pumpkin_face_base_def._mcl_armor_element = "head"
+pumpkin_face_base_def._mcl_armor_texture = "mcl_farming_pumpkin_face.png"
+pumpkin_face_base_def._mcl_armor_preview = "mcl_farming_pumpkin_face_preview.png"
 if minetest.get_modpath("mcl_armor") then
 	pumpkin_face_base_def.on_secondary_use = mcl_armor.equip_on_use
 end
