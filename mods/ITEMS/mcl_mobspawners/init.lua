@@ -96,7 +96,7 @@ All the arguments are optional!
 
 * Mob: ID of mob to spawn (default: mobs_mc:pig)
 * MinLight: Minimum light to spawn (default: 0)
-	* MaxLight: Maximum light to spawn (default: 15)
+* MaxLight: Maximum light to spawn (default: 15)
 * MaxMobsInArea: How many mobs are allowed in the area around the spawner (default: 4)
 * PlayerDistance: Spawn mobs only if a player is within this distance; 0 to disable (default: 15)
 * YOffset: Y offset to spawn mobs; 0 to disable (default: 0)
