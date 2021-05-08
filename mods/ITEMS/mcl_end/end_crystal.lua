@@ -27,8 +27,16 @@ end
 local function crystal_explode(self, puncher)
 	if self._exploded then return end
 	self._exploded = true
-	local strength = puncher and explosion_strength or 1
-	mcl_explosions.explode(vector.add(self.object:get_pos(), {x = 0, y = 1.5, z = 0}), strength, {drop_chance = 1}, puncher)
+	local strength = 1
+	local source
+	if puncher then
+		strength = explosion_strength
+		local reason = {}
+		mcl_damage.from_punch(reason, puncher)
+		mcl_damage.finish_reason(reason)
+		source = reason.source
+	end
+	mcl_explosions.explode(vector.add(self.object:get_pos(), {x = 0, y = 1.5, z = 0}), strength, {drop_chance = 1}, self.object, source)
 	minetest.after(0, self.object.remove, self.object)
 end
 

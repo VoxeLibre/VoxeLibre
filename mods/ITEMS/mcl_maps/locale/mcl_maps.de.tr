@@ -1,10 +1,8 @@
 # textdomain: mcl_maps
 Empty Map=Leere Karte
 Empty maps are not useful as maps, but they can be stacked and turned to maps which can be used.=Leere Karten sind als Karten nicht nützlich, aber sie können gestapelt werden und zu benutzbaren Karten umgewandelt werden.
-Rightclick to start using the map (which can't be stacked anymore).=Rechtsklick, um zu beginnen, die Karte zu benutzen. Sie kann dann nicht mehr gestapelt werden.
+Rightclick to create a filled map (which can't be stacked anymore).=Rechtsklick, um die Karte zu füllen. Sie kann dann nicht mehr gestapelt werden.
 Map=Karte
-Maps show your surroundings as you explore the world.=Karten zeigen Ihre Umgebung, während Sie die Welt erkunden.
-Hold the map in any of the hotbar slots. This allows you to access the minimap by pressing the minimap key (see controls settings).=Halten Sie die Karte in einen beliebigen Platz in der Schnellleiste. Damit können Sie jetzt die Übersichtskarte aktivieren, indem Sie die Taste zum Umschalten der Karte drücken (siehe Tastenbelegung).
-In Creative Mode, you don't need this item; the minimap is always available.=Im Kreativmodus brauchen Sie diesen Gegenstand nicht; die Übersichtskarte ist immer verfügbar.
-Enables minimap=Aktiviert Übersichtskarte
-Use the minimap key to show the map.=Taste „Karte an/aus“ benutzen, um die Karte zu betrachten.
+Shows a map image.=Zeigt ein Kartenbild.
+When created, the map saves the nearby area as an image that can be viewed any time by holding the map.=Beim Erstellen speichert die Karte die Gegend in der Nähe als ein Bild, dass jederzeit durch halten der Karte angesehen werden kann.
+Hold the map in your hand. This will display a map on your screen.=Halten Sie die Karte in Ihrer Hand. Eine Karte wird auf Ihrem Bildschirm angezeigt werden.
