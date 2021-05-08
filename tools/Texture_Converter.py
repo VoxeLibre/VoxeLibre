@@ -196,6 +196,11 @@ def convert_textures():
 				if verbose:
 					print(src_file + " → " + dst_file)
 
+	# Convert map background
+	map_background_file = tex_dir + "/map/map_background.png"
+	if os.path.isfile(map_background_file):
+		os.system("convert " + map_background_file + " -interpolate Integer -filter point -resize \"140x140\" " + target_dir("/mods/ITEMS/mcl_maps/textures") + "/mcl_maps_map_background.png")
+
 	# Convert armor textures (requires ImageMagick)
 	armor_files = [
 		[ tex_dir + "/models/armor/leather_layer_1.png", tex_dir + "/models/armor/leather_layer_2.png", target_dir("/mods/ITEMS/mcl_armor/textures"), "mcl_armor_helmet_leather.png", "mcl_armor_chestplate_leather.png", "mcl_armor_leggings_leather.png", "mcl_armor_boots_leather.png" ],
