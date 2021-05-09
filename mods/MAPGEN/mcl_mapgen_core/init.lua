@@ -1248,9 +1248,14 @@ local function generate_clay(minp, maxp, blockseed, voxelmanip_data, voxelmanip_
 end
 
 local function generate_end_exit_portal(pos)
-	local dragon_entity = minetest.add_entity(vector.add(pos, vector.new(3, 11, 3)), "mobs_mc:enderdragon"):get_luaentity()
-	dragon_entity._initial = true
-	dragon_entity._portal_pos = pos
+	local obj = minetest.add_entity(vector.add(pos, vector.new(3, 11, 3)), "mobs_mc:enderdragon")
+	if obj then
+		local dragon_entity = obj:get_luaentity()
+		dragon_entity._initial = true
+		dragon_entity._portal_pos = pos
+	else
+		minetest.log("error", "[mcl_mapgen_core] ERROR! Ender dragon doesn't want to spawn")
+	end
 	mcl_structures.call_struct(pos, "end_exit_portal")
 end
 
