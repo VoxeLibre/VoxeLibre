@@ -79,7 +79,7 @@ mcl_armor.register_set({
 	},
 	toughness = 2,
 	craft_material = "mcl_core:diamond",
-	_mcl_upgradable = 1
+	upgradable = true,
 })
 
 mcl_armor.register_set({
@@ -94,7 +94,6 @@ mcl_armor.register_set({
 		feet = 3,
 	},
 	toughness = 3,
-	craft_material = "mcl_netherite:netherite_ingot",
 })
 
 mcl_armor.register_protection_enchantment({
