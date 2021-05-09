@@ -3976,9 +3976,12 @@ if mg_name ~= "singlenode" then
 			--local poslist = {}
 			for _, pos in ipairs(gennotify["decoration#"..deco_id_chorus_plant] or {}) do
 				local realpos = { x = pos.x, y = pos.y + 1, z = pos.z }
-				mcl_end.grow_chorus_plant(realpos)
+				local node = minetest.get_node(realpos)
+				if node and node.name == "mcl_end:chorus_flower" then
+					mcl_end.grow_chorus_plant(realpos, node, PseudoRandom(blockseed + 14))
+				end
 			end
-		end)
+		end, 999999999)
 	end
 
 end
