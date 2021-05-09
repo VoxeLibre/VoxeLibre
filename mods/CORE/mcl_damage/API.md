@@ -10,3 +10,7 @@ Register damage modifier.
 * priority: int, define call order of registered functions
   
     You should make use higher values for important or most used functions.
+
+## mcl_damage.from_mt(mt_reason)
+Convert mt damage reason (nil, fall, drown, punch, node_damage) to mc like reason.
+* mt_reason: table, mt damage reason
