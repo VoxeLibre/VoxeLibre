@@ -150,3 +150,6 @@ basic_pseudobiome_villages (Enables very basic, and experimental "pseudobiome-ba
 
 # If enabled, will run an LBM to fix the top 1/2 of double plants in mcimported worlds; defaults to true.
 fix_doubleplants (Mcimport double plant fixes) bool true
+
+# Allow players to create Minecraft-like maps.
+enable_real_maps (Enable Real Maps) bool true

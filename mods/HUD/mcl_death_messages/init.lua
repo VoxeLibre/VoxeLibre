@@ -204,8 +204,9 @@ mcl_damage.register_on_death(function(obj, reason)
 
 	if obj:is_player() then
 		send_to = true
-	end -- ToDo: add mob death messages for owned mobs, only send to owner (sent_to = "player name")
+	end
 
+	-- ToDo: add mob death messages for owned mobs, only send to owner (sent_to = "player name")
 
 	if send_to then
 		local messages = mcl_death_messages.messages[reason.type] or {}
