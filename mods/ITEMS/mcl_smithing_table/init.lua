@@ -11,7 +11,7 @@ function mcl_smithing_table.upgrade_item(itemstack)
 
 	local def = itemstack:get_definition()
 
-	if not def or not def.upgradable then
+	if not def or not def._mcl_upgradable then
 		return
 	end
 
