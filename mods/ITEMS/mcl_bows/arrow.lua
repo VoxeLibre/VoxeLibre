@@ -69,6 +69,7 @@ local ARROW_ENTITY={
 	_stuckrechecktimer=nil,-- An additional timer for periodically re-checking the stuck status of an arrow
 	_stuckin=nil,	--Position of node in which arow is stuck.
 	_shooter=nil,	-- ObjectRef of player or mob who shot it
+	_is_arrow = true,
 
 	_viscosity=0,   -- Viscosity of node the arrow is currently in
 	_deflection_cooloff=0, -- Cooloff timer after an arrow deflection, to prevent many deflections in quick succession
@@ -108,7 +109,7 @@ local damage_particles = function(pos, is_critical)
 end
 
 ARROW_ENTITY.on_step = function(self, dtime)
-	mcl_burning.tick(self.object, dtime)
+	mcl_burning.tick(self.object, dtime, self)
 
 	self._time_in_air = self._time_in_air + .001
 
@@ -254,9 +255,6 @@ ARROW_ENTITY.on_step = function(self, dtime)
 
 					-- Punch target object but avoid hurting enderman.
 					if not lua or lua.name ~= "mobs_mc:enderman" then
-						if obj:is_player() and rawget(_G, "armor") and armor.last_damage_types then
-							armor.last_damage_types[obj:get_player_name()] = "projectile"
-						end
 						if self._in_player == false then
 							damage_particles(self.object:get_pos(), self._is_critical)
 						end

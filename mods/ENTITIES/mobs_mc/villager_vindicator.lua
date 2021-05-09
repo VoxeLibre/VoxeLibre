@@ -11,6 +11,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 mobs:register_mob("mobs_mc:vindicator", {
+	description = S("Vindicator"),
 	type = "monster",
 	spawn_class = "hostile",
 	physical = false,
@@ -36,7 +37,7 @@ mobs:register_mob("mobs_mc:vindicator", {
 	reach = 2,
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
-	attack_type = "dogfight",
+	attack_type = "punch",
 	drops = {
 		{name = mobs_mc.items.emerald,
 		chance = 1,

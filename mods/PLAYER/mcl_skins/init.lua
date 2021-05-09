@@ -7,7 +7,6 @@ mcl_skins = {
 }
 
 local S = minetest.get_translator("mcl_skins")
-local has_mcl_armor = minetest.get_modpath("mcl_armor")
 local has_mcl_inventory = minetest.get_modpath("mcl_inventory")
 
 -- load skin list and metadata
@@ -115,10 +114,6 @@ mcl_skins.set_player_skin = function(player, skin_id)
 	mcl_skins.previews[playername] = preview
 	player:get_meta():set_string("mcl_skins:skin_id", tostring(skin_id))
 	mcl_skins.update_player_skin(player)
-	if has_mcl_armor then
-		armor.textures[playername].skin = skin_file
-		armor:update_player_visuals(player)
-	end
 	if has_mcl_inventory then
 		mcl_inventory.update_inventory_formspec(player)
 	end
@@ -134,7 +129,7 @@ mcl_skins.update_player_skin = function(player)
 		return
 	end
 	local playername = player:get_player_name()
-	mcl_player.player_set_textures(player, { mcl_skins.skins[playername] .. ".png" }, mcl_skins.previews[playername] .. ".png" )
+	mcl_player.player_set_skin(player, mcl_skins.skins[playername] .. ".png", mcl_skins.previews[playername] .. ".png")
 end
 
 -- load player skin on join
@@ -239,7 +234,7 @@ end)
 mcl_skins.show_formspec = function(playername)
 	local formspec = "size[7,8.5]"
 
-	formspec = formspec .. "label[2,2;" .. minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Select player skin:"))) .. "]"
+	formspec = formspec .. "label[2,2;" .. minetest.formspec_escape(minetest.colorize("#383838", S("Select player skin:"))) .. "]"
 		.. "textlist[0,2.5;6.8,6;skins_set;"
 
 	local meta
@@ -267,7 +262,7 @@ mcl_skins.show_formspec = function(playername)
 
 	if meta then
 		if meta.name and meta.name ~= "" then
-			formspec = formspec .. "label[2,0.5;" .. minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Name: @1", meta.name))) .. "]"
+			formspec = formspec .. "label[2,0.5;" .. minetest.formspec_escape(minetest.colorize("#383838", S("Name: @1", meta.name))) .. "]"
 		end
 	end
 

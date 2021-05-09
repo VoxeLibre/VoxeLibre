@@ -3,11 +3,12 @@
 local S = minetest.get_translator("mobs_mc")
 
 local rabbit = {
+	description = S("Rabbit"),
 	type = "animal",
 	spawn_class = "passive",
 	passive = true,
 	reach = 1,
-
+	rotate = 270,
 	hp_min = 3,
 	hp_max = 3,
 	xp_min = 1,
@@ -61,8 +62,6 @@ local rabbit = {
 	on_rightclick = function(self, clicker)
 		-- Feed, tame protect or capture
 		if mobs:feed_tame(self, clicker, 1, true, true) then return end
-		if mobs:protect(self, clicker) then return end
-		if mobs:capture_mob(self, clicker, 0, 50, 80, false, nil) then return end
 	end,
 	do_custom = function(self)
 		-- Easter egg: Change texture if rabbit is named “Toast”
@@ -83,6 +82,7 @@ mobs:register_mob("mobs_mc:rabbit", rabbit)
 
 -- The killer bunny (Only with spawn egg)
 local killer_bunny = table.copy(rabbit)
+killer_bunny.description = S("Killer Bunny")
 killer_bunny.type = "monster"
 killer_bunny.spawn_class = "hostile"
 killer_bunny.attack_type = "dogfight"
@@ -110,33 +110,64 @@ mobs:register_mob("mobs_mc:killer_bunny", killer_bunny)
 -- Different skins depending on spawn location <- we'll get to this when the spawning algorithm is fleshed out
 
 mobs:spawn_specific(
-"mobs_mc:rabbit", 
-"overworld", 
+"mobs_mc:rabbit",
+"overworld",
 "ground",
 {
-"FlowerForest",
-"Swampland",
-"Taiga",
-"ExtremeHills",
-"BirchForest",
-"MegaSpruceTaiga",
-"MegaTaiga",
-"ExtremeHills+",
-"Forest",
-"Plains",
-"ColdTaiga",
-"SunflowerPlains",
-"RoofedForest",
-"MesaPlateauFM_grasstop",
-"ExtremeHillsM",
-"BirchForestM",
+	"FlowerForest_beach",
+	"Forest_beach",
+	"StoneBeach",
+	"ColdTaiga_beach_water",
+	"Taiga_beach",
+	"Savanna_beach",
+	"Plains_beach",
+	"ExtremeHills_beach",
+	"ColdTaiga_beach",
+	"Swampland_shore",
+	"JungleM_shore",
+	"Jungle_shore",
+	"MesaPlateauFM_sandlevel",
+	"MesaPlateauF_sandlevel",
+	"MesaBryce_sandlevel",
+	"Mesa_sandlevel",
+	"Mesa",
+	"FlowerForest",
+	"Swampland",
+	"Taiga",
+	"ExtremeHills",
+	"Jungle",
+	"Savanna",
+	"BirchForest",
+	"MegaSpruceTaiga",
+	"MegaTaiga",
+	"ExtremeHills+",
+	"Forest",
+	"Plains",
+	"Desert",
+	"ColdTaiga",
+	"IcePlainsSpikes",
+	"SunflowerPlains",
+	"IcePlains",
+	"RoofedForest",
+	"ExtremeHills+_snowtop",
+	"MesaPlateauFM_grasstop",
+	"JungleEdgeM",
+	"ExtremeHillsM",
+	"JungleM",
+	"BirchForestM",
+	"MesaPlateauF",
+	"MesaPlateauFM",
+	"MesaPlateauF_grasstop",
+	"MesaBryce",
+	"JungleEdge",
+	"SavannaM",
 },
-9, 
-minetest.LIGHT_MAX+1, 
-30, 
-15000, 
-8, 
-mobs_mc.spawn_height.overworld_min, 
+9,
+minetest.LIGHT_MAX+1,
+30,
+15000,
+8,
+mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 --[[

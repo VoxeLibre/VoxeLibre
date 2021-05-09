@@ -516,8 +516,6 @@ end
 
 -- Evoker
 if c("totem") then
-	local hud_totem = {}
-
 	-- Totem of Undying
 	minetest.register_craftitem("mobs_mc:totem", {
 		description = S("Totem of Undying"),
@@ -527,66 +525,8 @@ if c("totem") then
 		inventory_image = "mcl_totems_totem.png",
 		wield_image = "mcl_totems_totem.png",
 		stack_max = 1,
+		groups = {combat_item=1},
 	})
-
-	minetest.register_on_leaveplayer(function(player)
-		hud_totem[player:get_player_name()] = nil
-	end)
-
-	-- Save the player from death when holding totem of undying in hand
-	minetest.register_on_player_hpchange(function(player, hp_change)
-		local hp = player:get_hp()
-		-- Fatal damage?
-		if hp + hp_change <= 0 then
-			local wield = player:get_wielded_item()
-			if wield:get_name() == "mobs_mc:totem" then
-				local ppos = player:get_pos()
-				local pnname = minetest.get_node(ppos).name
-				-- Some exceptions when _not_ to save the player
-				for n=1, #mobs_mc.misc.totem_fail_nodes do
-					if pnname == mobs_mc.misc.totem_fail_nodes[n] then
-						return hp_change
-					end
-				end
-				-- Reset breath as well
-				if player:get_breath() < 11 then
-					player:set_breath(10)
-				end
-				if not minetest.is_creative_enabled(player:get_player_name()) then
-					wield:take_item()
-					player:set_wielded_item(wield)
-				end
-				-- Effects
-				minetest.sound_play({name = "mcl_totems_totem", gain=1}, {pos=ppos, max_hear_distance=16}, true)
-
-				-- Big totem overlay
-				if not hud_totem[player:get_player_name()] then
-					hud_totem[player:get_player_name()] = player:hud_add({
-						hud_elem_type = "image",
-						text = "mcl_totems_totem.png",
-						position = { x=0.5, y=1 },
-						scale = { x=17, y=17 },
-						offset = { x=0, y=-178 },
-						z_index = 100,
-					})
-					minetest.after(3, function(name)
-						local player = minetest.get_player_by_name(name)
-						if player and player:is_player() then
-							local name = player:get_player_name()
-							if hud_totem[name] then
-								player:hud_remove(hud_totem[name])
-								hud_totem[name] = nil
-							end
-						end
-					end, player:get_player_name())
-				end
-
-				-- Set HP to exactly 1
-				return -hp + 1
-			end
-		end
-		return hp_change
-	end, true)
 end
 
 -- Rotten flesh

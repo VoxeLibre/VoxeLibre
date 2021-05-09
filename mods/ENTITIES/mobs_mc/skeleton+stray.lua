@@ -13,13 +13,18 @@ local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
 
 
 local skeleton = {
+	description = S("Skeleton"),
 	type = "monster",
 	spawn_class = "hostile",
+	hostile = true,
+	rotate = 270,
 	hp_min = 20,
 	hp_max = 20,
 	xp_min = 6,
 	xp_max = 6,
 	breath_max = -1,
+	eye_height = 1.5,
+	projectile_cooldown = 1.5,
 	armor = {undead = 100, fleshy = 100},
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.98, 0.3},
 	pathfinding = 1,
@@ -30,6 +35,22 @@ local skeleton = {
 		"mcl_bows_bow_0.png", -- bow
 		"mobs_mc_skeleton.png", -- skeleton
 	} },
+
+	--head code
+	has_head = false,
+	head_bone = "head",
+
+	swap_y_with_x = true,
+	reverse_head_yaw = true,
+
+	head_bone_pos_y = 2.4,
+	head_bone_pos_z = 0,
+
+	head_height_offset = 1.1,
+	head_direction_offset = 0,
+	head_pitch_modifier = 0,
+	--end head code
+
 	visual_size = {x=1, y=1},
 	makes_footstep_sound = true,
 	textures = {
@@ -42,7 +63,7 @@ local skeleton = {
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
 	damage = 2,
-	reach = 2,
+	reach = 3,
 	drops = {
 		{name = mobs_mc.items.arrow,
 		chance = 1,
@@ -74,6 +95,8 @@ local skeleton = {
 		walk_speed = 15,
 		walk_start = 40,
 		walk_end = 60,
+		run_start = 40,
+		run_end = 60,
 		run_speed = 30,
 		shoot_start = 70,
 		shoot_end = 90,
@@ -85,13 +108,13 @@ local skeleton = {
 	ignited_by_sunlight = true,
 	view_range = 16,
 	fear_height = 4,
-	attack_type = "dogshoot",
+	attack_type = "projectile",
 	arrow = "mcl_bows:arrow_entity",
 	shoot_arrow = function(self, pos, dir)
 		if mod_bows then
 			-- 2-4 damage per arrow
-			local dmg = math.max(4, math.random(2, 8))
-			mcl_bows.shoot_arrow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
+			local dmg = math.random(2,4)
+			mobs.shoot_projectile_handling("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
 		end
 	end,
 	shoot_interval = 2,
@@ -109,6 +132,7 @@ mobs:register_mob("mobs_mc:skeleton", skeleton)
 --###################
 
 local stray = table.copy(skeleton)
+stray.description = S("Stray")
 stray.mesh = "mobs_mc_skeleton.b3d"
 stray.textures = {
 	{

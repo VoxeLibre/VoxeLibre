@@ -1,5 +1,4 @@
 local S = minetest.get_translator("mcl_hunger")
-local mod_death_messages = minetest.get_modpath("mcl_death_messages")
 
 mcl_hunger = {}
 
@@ -159,10 +158,7 @@ minetest.register_globalstep(function(dtime)
 				-- Damage hungry player down to 1 HP
 				-- TODO: Allow starvation at higher difficulty levels
 					if hp-1 > 0 then
-						if mod_death_messages then
-							mcl_death_messages.player_damage(player, S("@1 starved to death.", name))
-						end
-						player:set_hp(hp-1)
+						mcl_util.deal_damage(player, 1, {type = "starve"})
 					end
 				end
 			end

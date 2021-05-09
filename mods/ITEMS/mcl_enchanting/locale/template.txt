@@ -76,8 +76,8 @@ Reflects some of the damage taken when hit, at the cost of reducing durability w
 Unbreaking=
 Increases item durability.=
 Inventory=
-@1 × Lapis Lazuli=
-Enchantment levels: @1=
+@1 Lapis Lazuli=
+@1 Enchantment Levels=
 Level requirement: @1=
 Enchant an item=
 <player> <enchantment> [<level>]=
