@@ -17,14 +17,16 @@ function mcl_smithing_table.upgrade_item(itemstack)
 
 	local itemname = itemstack:get_name()
 
-	local upgrade_item = def._mcl_upgrade_item or itemname:gsub("diamond", "netherite")
+	local upgrade_item = def._mcl_upgrade_item
+
+	if upgrade_item and mcl_enchanting.is_enchanted(itemname) then
+		upgrade_item = upgrade_item .. "_enchanted"
+	end
+
+	upgrade_item = upgrade_item or itemname:gsub("diamond", "netherite")
 
 	if upgrade_item == itemname then
 		return
-	end
-
-	if mcl_enchanting.is_enchanted(itemname) then
-		upgrade_item = upgrade_item .. "_enchanted"
 	end
 
 	itemstack:set_name(upgrade_item)
