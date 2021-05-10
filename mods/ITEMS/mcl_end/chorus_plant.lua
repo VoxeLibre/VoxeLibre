@@ -309,7 +309,7 @@ minetest.register_node("mcl_end:chorus_plant", {
 })
 
 -- Grow a complete chorus plant at pos
-mcl_end.grow_chorus_plant = function(pos, node)
+mcl_end.grow_chorus_plant = function(pos, node, pr)
 	local flowers = { pos }
 	-- Plant initial flower (if it isn't there already)
 	if not node then
@@ -321,7 +321,7 @@ mcl_end.grow_chorus_plant = function(pos, node)
 	while true do
 		local new_flowers_list = {}
 		for f=1, #flowers do
-			local new_flowers = mcl_end.grow_chorus_plant_step(flowers[f], minetest.get_node(flowers[f]))
+			local new_flowers = mcl_end.grow_chorus_plant_step(flowers[f], minetest.get_node(flowers[f]), pr)
 			if #new_flowers > 0 then
 				table.insert(new_flowers_list, new_flowers)
 			end
@@ -340,7 +340,7 @@ end
 
 -- Grow a single step of a chorus plant at pos.
 -- Pos must be a chorus flower.
-mcl_end.grow_chorus_plant_step = function(pos, node)
+mcl_end.grow_chorus_plant_step = function(pos, node, pr)
 	local new_flower_buds = {}
 	local above = { x = pos.x, y = pos.y + 1, z = pos.z }
 	local node_above = minetest.get_node(above)
@@ -396,7 +396,7 @@ mcl_end.grow_chorus_plant_step = function(pos, node)
 
 		if grow_chance then
 			local new_flowers = {}
-			local r = math.random(1, 100)
+			local r = pr:next(1, 100)
 			local age = node.param2
 			if r <= grow_chance then
 				table.insert(new_flowers, above)
@@ -404,13 +404,13 @@ mcl_end.grow_chorus_plant_step = function(pos, node)
 				age = age + 1
 				local branches
 				if branching == false then
-					branches = math.random(1, 4)
+					branches = pr:next(1, 4)
 				elseif branching == true then
-					branches = math.random(0, 3)
+					branches = pr:next(0, 3)
 				end
 				local branch_grown = false
 				for b=1, branches do
-					local next_branch = math.random(1, #around)
+					local next_branch = pr:next(1, #around)
 					local branch = vector.add(pos, around[next_branch])
 					local below_branch = vector.add(branch, {x=0,y=-1,z=0})
 					if minetest.get_node(below_branch).name == "air" then
@@ -457,7 +457,7 @@ minetest.register_abm({
 	interval = 35.0,
 	chance = 4.0,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		mcl_end.grow_chorus_plant_step(pos, node)
+		mcl_end.grow_chorus_plant_step(pos, node, pr)
 	end,
 })
 
