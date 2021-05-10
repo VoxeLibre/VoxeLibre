@@ -28,6 +28,7 @@ mcl_credits.people = {
 		"Nicu",
 		"aligator",
 		"Code-Sploit",
+		"NO11",
 	}},
 	{"Contributors", 0x52FF00, {
 		"Laurent Rocher",
@@ -46,7 +47,6 @@ mcl_credits.people = {
 		"Jared Moody",
 		"Li0n",
 		"Midgard",
-		"NO11",
 		"Saku Laesvuori",
 		"Yukitty",
 		"ZedekThePD",
@@ -107,7 +107,8 @@ mcl_credits.people = {
 		"kingoscargames",
 		"leorockway",
 		"xMrVizzy",
-		"yutyo"
+		"yutyo",
+		"NO11",
 	}},
 	{"Translations", 0x00FF60, {
 		"Wuzzy",
