@@ -54,6 +54,7 @@ local spawn_count_overrides = {
 
 local function set_doll_properties(doll, mob)
 	local mobinfo = minetest.registered_entities[mob]
+	if not mobinfo then return end
 	local xs, ys
 	if doll_size_overrides[mob] then
 		xs = doll_size_overrides[mob].x
