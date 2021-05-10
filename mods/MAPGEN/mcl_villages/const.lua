@@ -7,7 +7,7 @@ end
 
 --[[ Manually set in 'buildings.lua'
 -- material to replace cobblestone with
-wallmaterial = {
+local wallmaterial = {
 	"mcl_core:junglewood",
 	"mcl_core:sprucewood",
 	"mcl_core:wood",
