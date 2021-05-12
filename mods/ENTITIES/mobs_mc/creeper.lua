@@ -43,13 +43,13 @@ mobs:register_mob("mobs_mc:creeper", {
 	eye_height = 1.25,
 	--hssssssssssss
 
-	explosion_strength = 10,
-	explosion_radius = 4,
-	explosion_damage_radius = 6,
+	explosion_strength = 3,
+	explosion_radius = 3.5,
+	explosion_damage_radius = 3.5,
 	explosiontimer_reset_radius = 6,
-	reach = 1.5,
+	reach = 3,
 	defuse_reach = 4,
-	explosion_timer = 0.3,
+	explosion_timer = 1.5,
 	allow_fuse_reset = true,
 	stop_to_explode = true,
 
