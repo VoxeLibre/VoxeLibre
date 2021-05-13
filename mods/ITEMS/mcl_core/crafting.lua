@@ -4,47 +4,45 @@
 -- Crafting definition
 --
 
-minetest.register_craft({
-	output = 'mcl_core:wood 4',
-	recipe = {
-		{'mcl_core:tree'},
-	}
-})
+local craft_planks = function(output, input)
+	minetest.register_craft({
+		output = "mcl_core:"..output.."wood 4",
+		recipe = {
+			{"mcl_core:"..input},
+		}
+	})
+end
 
-minetest.register_craft({
-	output = 'mcl_core:darkwood 4',
-	recipe = {
-		{'mcl_core:darktree'},
-	}
-})
+craft_planks("", "tree")
+craft_planks("", "tree_bark")
+craft_planks("", "stripped_oak")
+craft_planks("", "stripped_oak_bark")
 
-minetest.register_craft({
-	output = 'mcl_core:junglewood 4',
-	recipe = {
-		{'mcl_core:jungletree'},
-	}
-})
+craft_planks("dark", "darktree")
+craft_planks("dark", "darktree_bark")
+craft_planks("dark", "stripped_dark_oak")
+craft_planks("dark", "stripped_dark_oak_bark")
 
-minetest.register_craft({
-	output = 'mcl_core:acaciawood 4',
-	recipe = {
-		{'mcl_core:acaciatree'},
-	}
-})
+craft_planks("jungle", "jungletree")
+craft_planks("jungle", "jungletree_bark")
+craft_planks("jungle", "stripped_jungle")
+craft_planks("jungle", "stripped_jungle_bark")
 
-minetest.register_craft({
-	output = 'mcl_core:sprucewood 4',
-	recipe = {
-		{'mcl_core:sprucetree'},
-	}
-})
+craft_planks("acacia", "acaciatree")
+craft_planks("acacia", "acaciatree_bark")
+craft_planks("acacia", "stripped_acacia")
+craft_planks("acacia", "stripped_acacia_bark")
 
-minetest.register_craft({
-	output = 'mcl_core:birchwood 4',
-	recipe = {
-		{'mcl_core:birchtree'},
-	}
-})
+craft_planks("spruce", "sprucetree")
+craft_planks("spruce", "sprucetree_bark")
+craft_planks("spruce", "stripped_spruce")
+craft_planks("spruce", "stripped_spruce_bark")
+
+craft_planks("birch", "birchtree")
+craft_planks("birch", "birchtree_bark")
+craft_planks("birch", "stripped_birch")
+craft_planks("birch", "stripped_birch_bark")
+
 
 minetest.register_craft({
 	type = 'shapeless',
