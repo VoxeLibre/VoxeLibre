@@ -112,10 +112,11 @@ local last_dimension = {}
 -- * player: Player who changed the dimension
 -- * dimension: New dimension ("overworld", "nether", "end", "void")
 function mcl_worlds.dimension_change(player, dimension)
+    local playername = player:get_player_name()
 	for i=1, #mcl_worlds.registered_on_dimension_change do
-		mcl_worlds.registered_on_dimension_change[i](player, dimension)
-		last_dimension[player:get_player_name()] = dimension
+		mcl_worlds.registered_on_dimension_change[i](player, dimension, last_dimension[playername])
 	end
+    last_dimension[playername] = dimension
 end
 
 ----------------------- INTERNAL STUFF ----------------------
