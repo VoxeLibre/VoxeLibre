@@ -31,6 +31,7 @@ minetest.register_entity("extra_mobs:glow_item_frame_item",{
 	textures = { "blank.png" },
 	_texture = "blank.png",
 	_scale = 1,
+	glow = minetest.LIGHT_MAX,
 
 	on_activate = function(self, staticdata)
 		if staticdata ~= nil and staticdata ~= "" then
@@ -166,7 +167,7 @@ minetest.register_node("extra_mobs:glow_item_frame",{
 	paramtype2 = "facedir",
 
     --FIXME: should only be glowing, no light source. How is that possible with a node?
-    light_source = minetest.LIGHT_MAX,
+    light_source = 1,
 
 	sunlight_propagates = true,
 	groups = { dig_immediate=3,deco_block=1,dig_by_piston=1,container=7,attached_node_facedir=1 },
