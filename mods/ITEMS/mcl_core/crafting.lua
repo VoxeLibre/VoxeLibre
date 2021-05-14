@@ -13,36 +13,21 @@ local craft_planks = function(output, input)
 	})
 end
 
-craft_planks("", "tree")
-craft_planks("", "tree_bark")
-craft_planks("", "stripped_oak")
-craft_planks("", "stripped_oak_bark")
+local planks = {
+	{"", "oak"},
+	{"dark", "dark_oak"},
+	{"jungle", "jungle"},
+	{"acacia", "acacia"},
+	{"spruce", "spruce"},
+	{"birch", "birch"}
+}
 
-craft_planks("dark", "darktree")
-craft_planks("dark", "darktree_bark")
-craft_planks("dark", "stripped_dark_oak")
-craft_planks("dark", "stripped_dark_oak_bark")
-
-craft_planks("jungle", "jungletree")
-craft_planks("jungle", "jungletree_bark")
-craft_planks("jungle", "stripped_jungle")
-craft_planks("jungle", "stripped_jungle_bark")
-
-craft_planks("acacia", "acaciatree")
-craft_planks("acacia", "acaciatree_bark")
-craft_planks("acacia", "stripped_acacia")
-craft_planks("acacia", "stripped_acacia_bark")
-
-craft_planks("spruce", "sprucetree")
-craft_planks("spruce", "sprucetree_bark")
-craft_planks("spruce", "stripped_spruce")
-craft_planks("spruce", "stripped_spruce_bark")
-
-craft_planks("birch", "birchtree")
-craft_planks("birch", "birchtree_bark")
-craft_planks("birch", "stripped_birch")
-craft_planks("birch", "stripped_birch_bark")
-
+for _, p in pairs(planks) do
+	craft_planks(p[1], p[1].."tree")
+	craft_planks(p[1], p[1].."tree_bark")
+	craft_planks(p[1], "stripped_"..p[2])
+	craft_planks(p[1], "stripped_"..p[2].."_bark")
+end
 
 minetest.register_craft({
 	type = 'shapeless',
