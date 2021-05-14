@@ -3988,7 +3988,7 @@ if mg_name ~= "singlenode" then
 		mcl_mapgen_core.register_generator("chorus_grow", nil, function(minp, maxp, blockseed)
 			local gennotify = minetest.get_mapgen_object("gennotify")
 			--local poslist = {}
-			local pr = PseudoRandom(blockseed + 14)
+			pr = PseudoRandom(blockseed + 14)
 			for _, pos in ipairs(gennotify["decoration#"..deco_id_chorus_plant] or {}) do
 				local x, y, z = pos.x, pos.y, pos.z
 				if x < -2 or x > 2 or z < -2 or z > 2 then
