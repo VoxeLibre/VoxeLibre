@@ -938,10 +938,13 @@ mobs.mob_step = function(self, dtime)
 			end
 		end
 
-		if self.burn_timer == 0 and minetest_get_node_light(pos) > 12 and minetest_get_node_light(pos, 0.5) == 15 then
-			mcl_burning.set_on_fire(self.object, 1)
-			self.burn_timer = 1 --1.7 seconds
-			self.pause_timer = 0.4
+		if self.burn_timer == 0 then
+			local light_current, light_day = minetest_get_node_light(pos), minetest_get_node_light(pos, 0.5)
+			if light_current and light_day and light_current > 12 and light_day == 15 then
+				mcl_burning.set_on_fire(self.object, 1)
+				self.burn_timer = 1 --1.7 seconds
+				self.pause_timer = 0.4
+			end
 		end
 	end
 
