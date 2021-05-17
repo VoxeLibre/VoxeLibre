@@ -49,7 +49,7 @@ mobs:register_mob("mobs_mc:creeper", {
 	explosiontimer_reset_radius = 6,
 	reach = 3,
 	defuse_reach = 4,
-	explosion_timer = 1.5,
+	explosion_timer = 0.3,
 	allow_fuse_reset = true,
 	stop_to_explode = true,
 
