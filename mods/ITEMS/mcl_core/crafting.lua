@@ -4,47 +4,30 @@
 -- Crafting definition
 --
 
-minetest.register_craft({
-	output = 'mcl_core:wood 4',
-	recipe = {
-		{'mcl_core:tree'},
-	}
-})
+local craft_planks = function(output, input)
+	minetest.register_craft({
+		output = "mcl_core:"..output.."wood 4",
+		recipe = {
+			{"mcl_core:"..input},
+		}
+	})
+end
 
-minetest.register_craft({
-	output = 'mcl_core:darkwood 4',
-	recipe = {
-		{'mcl_core:darktree'},
-	}
-})
+local planks = {
+	{"", "oak"},
+	{"dark", "dark_oak"},
+	{"jungle", "jungle"},
+	{"acacia", "acacia"},
+	{"spruce", "spruce"},
+	{"birch", "birch"}
+}
 
-minetest.register_craft({
-	output = 'mcl_core:junglewood 4',
-	recipe = {
-		{'mcl_core:jungletree'},
-	}
-})
-
-minetest.register_craft({
-	output = 'mcl_core:acaciawood 4',
-	recipe = {
-		{'mcl_core:acaciatree'},
-	}
-})
-
-minetest.register_craft({
-	output = 'mcl_core:sprucewood 4',
-	recipe = {
-		{'mcl_core:sprucetree'},
-	}
-})
-
-minetest.register_craft({
-	output = 'mcl_core:birchwood 4',
-	recipe = {
-		{'mcl_core:birchtree'},
-	}
-})
+for _, p in pairs(planks) do
+	craft_planks(p[1], p[1].."tree")
+	craft_planks(p[1], p[1].."tree_bark")
+	craft_planks(p[1], "stripped_"..p[2])
+	craft_planks(p[1], "stripped_"..p[2].."_bark")
+end
 
 minetest.register_craft({
 	type = 'shapeless',
