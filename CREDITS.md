@@ -22,6 +22,7 @@
 * Nicu
 * aligator
 * Code-Sploit
+* NO11
 
 ## Contributors
 * Laurent Rocher
@@ -40,7 +41,6 @@
 * Jared Moody
 * Li0n
 * Midgard
-* NO11
 * Saku Laesvuori
 * Yukitty
 * ZedekThePD
@@ -102,6 +102,7 @@
 * leorockway
 * xMrVizzy
 * yutyo
+* NO11
 
 ## Translations
 * Wuzzy

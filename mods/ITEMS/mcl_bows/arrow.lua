@@ -118,16 +118,6 @@ ARROW_ENTITY.on_step = function(self, dtime)
 	dpos = vector.round(dpos)
 	local node = minetest.get_node(dpos)
 
-	if self.object:get_attach() ~= nil and self.object:get_attach(parent):get_hp() < 1 then
-		self.object:remove()
-	end
-
-	minetest.register_on_leaveplayer(function(player)
-		if self.object:get_attach(parent) == player then
-			self.object:remove()
-		end
-	end)
-
 	if self._stuck then
 		self._stucktimer = self._stucktimer + dtime
 		self._stuckrechecktimer = self._stuckrechecktimer + dtime
