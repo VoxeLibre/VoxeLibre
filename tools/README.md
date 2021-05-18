@@ -27,3 +27,17 @@ Usage:
 - Convert the textures
 - Put the new texture directory in the Minetest texture pack directory, just like
   any other Minetest texture pack
+
+## Luacheck Globals Generators
+This is a Python script which list every single global tables in mineclone2 source code.
+It outputs a list to be used in luacheck conf files. 
+
+Modes of operation:
+- List global tables
+
+Requirements:
+- Know how to use the console
+- Python 3
+
+Usage:
+- In the console, run `python3 ./tools/create_luacheck.py` in the MineClone2 directory

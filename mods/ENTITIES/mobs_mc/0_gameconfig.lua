@@ -15,7 +15,7 @@ with name "mobs_mc_gameconfig". ]]
 -- Set to false in your gameconfig mod if you create your own monster egg nodes.
 mobs_mc.create_monster_egg_nodes = true
 
-mobs_mc.items = {}
+--mobs_mc.items = {}
 
 mobs_mc.items = {
 	-- Items defined in mobs_mc

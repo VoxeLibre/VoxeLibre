@@ -66,46 +66,44 @@ local function compute_sphere_rays(radius)
 	local rays = {}
 	local sphere = {}
 
-	for i=1, 2 do
+	local function add_ray(pos)
+		sphere[hash_node_position(pos)] = pos
+	end
+
+	for y = -radius, radius do
+		for z = -radius, radius do
+			for x = -radius, 0 do
+				local d = x * x + y * y + z * z
+				if d <= radius * radius then
+					add_ray(vector.new(x, y, z))
+					add_ray(vector.new(-x, y, z))
+					break
+				end
+			end
+		end
+	end
+
+	for x = -radius, radius do
+		for z = -radius, radius do
+			for y = -radius, 0 do
+				local d = x * x + y * y + z * z
+				if d <= radius * radius then
+					add_ray(vector.new(x, y, z))
+					add_ray(vector.new(x, -y, z))
+					break
+				end
+			end
+		end
+	end
+
+	for x = -radius, radius do
 		for y = -radius, radius do
-			for z = -radius, radius do
-				for x = -radius, 0, 1 do
-					local d = x * x + y * y + z * z
-					if d <= radius * radius then
-						local pos = { x = x, y = y, z = z }
-						sphere[hash_node_position(pos)] = pos
-						break
-					end
-				end
-			end
-		end
-	end
-
-	for i=1,2 do
-		for x = -radius, radius do
-			for z = -radius, radius do
-				for y = -radius, 0, 1 do
-					local d = x * x + y * y + z * z
-					if d <= radius * radius then
-						local pos = { x = x, y = y, z = z }
-						sphere[hash_node_position(pos)] = pos
-						break
-					end
-				end
-			end
-		end
-	end
-
-	for i=1,2 do
-		for x = -radius, radius do
-			for y = -radius, radius do
-				for z = -radius, 0, 1 do
-					local d = x * x + y * y + z * z
-					if d <= radius * radius then
-						local pos = { x = x, y = y, z = z }
-						sphere[hash_node_position(pos)] = pos
-						break
-					end
+			for z = -radius, 0 do
+				local d = x * x + y * y + z * z
+				if d <= radius * radius then
+					add_ray(vector.new(x, y, z))
+					add_ray(vector.new(x, y, -z))
+					break
 				end
 			end
 		end
@@ -260,12 +258,12 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 
 			if collisionbox then
 				-- Create rays from random points in the collision box
-				local x1 = collisionbox[1] * 2
-				local y1 = collisionbox[2] * 2
-				local z1 = collisionbox[3] * 2
-				local x2 = collisionbox[4] * 2
-				local y2 = collisionbox[5] * 2
-				local z2 = collisionbox[6] * 2
+				local x1 = collisionbox[1]
+				local y1 = collisionbox[2]
+				local z1 = collisionbox[3]
+				local x2 = collisionbox[4]
+				local y2 = collisionbox[5]
+				local z2 = collisionbox[6]
 				local x_len = math.abs(x2 - x1)
 				local y_len = math.abs(y2 - y1)
 				local z_len = math.abs(z2 - z1)
