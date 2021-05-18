@@ -275,10 +275,6 @@ function mcl_experience.add_experience(player, experience)
 		end
 		stack:set_wear(math.floor(new_wear))
 		inv:set_stack(list, index, stack)
-		if can.list == "armor" then
-			local armor_inv = minetest.get_inventory({type = "detached", name = player:get_player_name() .. "_armor"})
-			armor_inv:set_stack(list, index, stack)
-		end
 	end
 
 	local old_bar, old_xp, old_level = temp_pool.bar, temp_pool.xp, temp_pool.level
