@@ -11,6 +11,10 @@ tt.register_snippet = function(func)
 	table.insert(tt.registered_snippets, func)
 end
 
+tt.register_priority_snippet = function(func)
+	table.insert(tt.registered_snippets, 1, func)
+end
+
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/snippets.lua")
 
 -- Apply item description updates
@@ -22,8 +26,6 @@ local function apply_snippets(desc, itemstring, toolcaps, itemstack)
 		local str, snippet_color = tt.registered_snippets[s](itemstring, toolcaps, itemstack)
 		if snippet_color == nil then
 			snippet_color = tt.COLOR_DEFAULT
-		elseif snippet_color == false then
-			snippet_color = false
 		end
 		if str then
 			if first then

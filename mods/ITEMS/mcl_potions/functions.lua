@@ -107,7 +107,7 @@ minetest.register_globalstep(function(dtime)
 
 		EF.invisible[player].timer = EF.invisible[player].timer + dtime
 
-		if player:get_pos() then mcl_potions._add_spawner(player, "#B0B0B0") end
+		if player:get_pos() then mcl_potions._add_spawner(player, "#7F8392") end
 
 		if EF.invisible[player].timer >= EF.invisible[player].dur then
 			mcl_potions.make_invisible(player, false)
@@ -129,7 +129,7 @@ minetest.register_globalstep(function(dtime)
 		EF.poisoned[player].timer = EF.poisoned[player].timer + dtime
 		EF.poisoned[player].hit_timer = (EF.poisoned[player].hit_timer or 0) + dtime
 
-		if player:get_pos() then mcl_potions._add_spawner(player, "#225533") end
+		if player:get_pos() then mcl_potions._add_spawner(player, "#4E9331") end
 
 		if EF.poisoned[player].hit_timer >= EF.poisoned[player].step then
 			if mcl_util.get_hp(player) - 1 > 0 then
@@ -158,7 +158,7 @@ minetest.register_globalstep(function(dtime)
 		EF.regenerating[player].timer = EF.regenerating[player].timer + dtime
 		EF.regenerating[player].heal_timer = (EF.regenerating[player].heal_timer or 0) + dtime
 
-		if player:get_pos() then mcl_potions._add_spawner(player, "#A52BB2") end
+		if player:get_pos() then mcl_potions._add_spawner(player, "#CD5CAB") end
 
 		if EF.regenerating[player].heal_timer >= EF.regenerating[player].step then
 
@@ -192,7 +192,7 @@ minetest.register_globalstep(function(dtime)
 
 			EF.water_breathing[player].timer = EF.water_breathing[player].timer + dtime
 
-			if player:get_pos() then mcl_potions._add_spawner(player, "#0000AA") end
+			if player:get_pos() then mcl_potions._add_spawner(player, "#2E5299") end
 
 			if player:get_breath() then
 				if player:get_breath() < 10 then player:set_breath(10) end
@@ -217,7 +217,7 @@ minetest.register_globalstep(function(dtime)
 
 			EF.leaping[player].timer = EF.leaping[player].timer + dtime
 
-			if player:get_pos() then mcl_potions._add_spawner(player, "#00CC33") end
+			if player:get_pos() then mcl_potions._add_spawner(player, "#22FF4C") end
 
 			if EF.leaping[player].timer >= EF.leaping[player].dur then
 				playerphysics.remove_physics_factor(player, "jump", "mcl_potions:leaping")
@@ -239,7 +239,7 @@ minetest.register_globalstep(function(dtime)
 
 			EF.swift[player].timer = EF.swift[player].timer + dtime
 
-			if player:get_pos() then mcl_potions._add_spawner(player, "#009999") end
+			if player:get_pos() then mcl_potions._add_spawner(player, "#7CAFC6") end
 
 			if EF.swift[player].timer >= EF.swift[player].dur then
 				playerphysics.remove_physics_factor(player, "speed", "mcl_potions:swiftness")
@@ -261,7 +261,7 @@ minetest.register_globalstep(function(dtime)
 
 			EF.night_vision[player].timer = EF.night_vision[player].timer + dtime
 
-			if player:get_pos() then mcl_potions._add_spawner(player, "#1010AA") end
+			if player:get_pos() then mcl_potions._add_spawner(player, "#1F1FA1") end
 
 			if EF.night_vision[player].timer >= EF.night_vision[player].dur then
 				EF.night_vision[player] = nil
@@ -286,7 +286,7 @@ minetest.register_globalstep(function(dtime)
 
 			EF.fire_proof[player].timer = EF.fire_proof[player].timer + dtime
 
-			if player:get_pos() then mcl_potions._add_spawner(player, "#E0B050") end
+			if player:get_pos() then mcl_potions._add_spawner(player, "#E49A3A") end
 
 			if EF.fire_proof[player].timer >= EF.fire_proof[player].dur then
 				EF.fire_proof[player] = nil
@@ -307,7 +307,7 @@ minetest.register_globalstep(function(dtime)
 
 			EF.weak[player].timer = EF.weak[player].timer + dtime
 
-			if player:get_pos() then mcl_potions._add_spawner(player, "#7700BB") end
+			if player:get_pos() then mcl_potions._add_spawner(player, "#484D48") end
 
 			if EF.weak[player].timer >= EF.weak[player].dur then
 				EF.weak[player] = nil
@@ -328,7 +328,7 @@ minetest.register_globalstep(function(dtime)
 
 			EF.strong[player].timer = EF.strong[player].timer + dtime
 
-			if player:get_pos() then mcl_potions._add_spawner(player, "#7700BB") end
+			if player:get_pos() then mcl_potions._add_spawner(player, "#932423") end
 
 			if EF.strong[player].timer >= EF.strong[player].dur then
 				EF.strong[player] = nil
