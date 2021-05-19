@@ -1,8 +1,7 @@
-local S = minetest.get_translator("mcl_buckets")
-local modpath = minetest.get_modpath(minetest.get_current_modname())
-
--- Minetest 0.4 mod: bucket
 -- See README.txt for licensing and other information.
+local modname = minetest.get_current_modname()
+local S = minetest.get_translator(modname)
+local modpath = minetest.get_modpath(modname)
 
 minetest.register_alias("bucket:bucket_empty", "mcl_buckets:bucket_empty")
 minetest.register_alias("bucket:bucket_water", "mcl_buckets:bucket_water")
@@ -51,6 +50,7 @@ function mcl_buckets.register_liquid(def)
 		mcl_buckets.liquids[def.source_take[i]] = {
 			source_place = def.source_place,
 			source_take = def.source_take[i],
+			on_take = def.on_take,
 			itemname = def.itemname,
 		}
 		if type(def.source_place) == "string" then
@@ -207,9 +207,9 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 			-- Fill bucket, but not in Creative Mode
 			if not minetest.is_creative_enabled(user:get_player_name()) then
 				new_bucket = ItemStack({name = liquiddef.itemname})
-				if liquiddef.itemname == "mcl_buckets:bucket_lava" and awards and awards.unlock and user and user:is_player() then
-					awards.unlock(user:get_player_name(), "mcl:hotStuff")
-				end
+				if liquiddef.on_take then
+                    liquiddef.on_take(user)
+                end
 			end
 
 			minetest.add_node(pointed_thing.under, {name="air"})

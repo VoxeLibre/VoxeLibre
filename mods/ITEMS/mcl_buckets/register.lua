@@ -1,6 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 local mod_mcl_core = minetest.get_modpath("mcl_core")
 local mod_mclx_core = minetest.get_modpath("mclx_core")
+local has_awards = minetest.get_modpath("awards")
 
 local sound_place = function(itemname, pos)
 	local def = minetest.registered_nodes[itemname]
@@ -28,6 +29,11 @@ if mod_mcl_core then
 			end
 		end,
 		source_take = {"mcl_core:lava_source", "mcl_nether:nether_lava_source"},
+        on_take = function(user)
+            if has_awards and user and user:is_player() then
+                awards.unlock(user:get_player_name(), "mcl:hotStuff")
+            end
+        end,
 		itemname = "mcl_buckets:bucket_lava",
 		inventory_image = "bucket_lava.png",
 		name = S("Lava Bucket"),
