@@ -68,6 +68,7 @@ minetest.register_entity("mcl_burning:fire", {
 		visual = "cube",
 		pointable = false,
 		glow = -1,
+		backface_culling = false,
 	},
 
 	animation_frame = 0,
