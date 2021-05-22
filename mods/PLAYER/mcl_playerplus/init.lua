@@ -1,5 +1,3 @@
-local S = minetest.get_translator("mcl_playerplus")
-
 mcl_playerplus = {
 	elytra = {},
 }
