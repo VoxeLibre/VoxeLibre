@@ -81,7 +81,7 @@ local register_stripped_trunk = function(subname, description_stripped_trunk, de
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
 	})
-	
+
 	minetest.register_craft({
 		output = "mcl_core:"..subname.."_bark 3",
 		recipe = {
@@ -107,13 +107,12 @@ local register_wooden_planks = function(subname, description, tiles)
 end
 
 local register_leaves = function(subname, description, longdesc, tiles, sapling, drop_apples, sapling_chances, leafdecay_distance)
-	local drop
 	if leafdecay_distance == nil then
 		leafdecay_distance = 4
 	end
 	local apple_chances = {200, 180, 160, 120, 40}
 	local stick_chances = {50, 45, 30, 35, 10}
-	
+
 	local function get_drops(fortune_level)
 		local drop = {
 			max_items = 1,

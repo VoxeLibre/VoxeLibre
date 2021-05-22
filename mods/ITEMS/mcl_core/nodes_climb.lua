@@ -120,7 +120,6 @@ minetest.register_node("mcl_core:vine", {
 		local node = minetest.get_node(under)
 		local def = minetest.registered_nodes[node.name]
 		if not def then return itemstack end
-		local groups = def.groups
 
 		-- Check special rightclick action of pointed node
 		if def and def.on_rightclick then
