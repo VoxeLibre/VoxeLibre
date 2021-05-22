@@ -9,7 +9,7 @@ minetest.register_alias("bucket:bucket_lava", "mcl_buckets:bucket_lava")
 
 local mod_doc = minetest.get_modpath("doc")
 local mod_mcl_core = minetest.get_modpath("mcl_core")
-local mod_mclx_core = minetest.get_modpath("mclx_core")
+--local mod_mclx_core = minetest.get_modpath("mclx_core")
 
 if mod_mcl_core then
 	minetest.register_craft({
@@ -76,10 +76,11 @@ function mcl_buckets.register_liquid(def)
 				local node = minetest.get_node(pointed_thing.under)
 				local place_pos = pointed_thing.under
 				local nn = node.name
+				local nodedef = minetest.registered_nodes[nn]
 				-- Call on_rightclick if the pointed node defines it
 				if user and not user:get_player_control().sneak then
-					if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].on_rightclick then
-						return minetest.registered_nodes[nn].on_rightclick(place_pos, node, user, itemstack) or itemstack
+					if nodedef and nodedef.on_rightclick then
+						return nodedef.on_rightclick(place_pos, node, user, itemstack) or itemstack
 					end
 				end
 
@@ -90,11 +91,9 @@ function mcl_buckets.register_liquid(def)
 					node_place = def.source_place
 				end
 				-- Check if pointing to a buildable node
-				local item = itemstack:get_name()
+				--local item = itemstack:get_name()
 
-				if def.extra_check and def.extra_check(place_pos, user) == false then
-					-- Fail placement of liquid
-				elseif minetest.registered_nodes[nn] and minetest.registered_nodes[nn].buildable_to then
+				if def.extra_check and def.extra_check(place_pos, user) == true and nodedef and nodedef.buildable_to then
 					-- buildable; replace the node
 					local pns = user:get_player_name()
 					if minetest.is_protected(place_pos, pns) then
@@ -147,12 +146,12 @@ function mcl_buckets.register_liquid(def)
 				end
 			end,
 			_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
-				local iname = stack:get_name()
+				--local iname = stack:get_name()
 				local buildable = minetest.registered_nodes[dropnode.name].buildable_to or dropnode.name == "mcl_portals:portal"
 
-				if def.extra_check and def.extra_check(droppos, nil) == false then
+				--if def.extra_check and def.extra_check(droppos, nil) == false then
 					-- Fail placement of liquid
-				elseif buildable then
+				if def.extra_check and def.extra_check(droppos, nil) == true and buildable then
 					-- buildable; replace the node
 					local node_place
 					if type(def.source_place) == "function" then
@@ -208,8 +207,8 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 			if not minetest.is_creative_enabled(user:get_player_name()) then
 				new_bucket = ItemStack({name = liquiddef.itemname})
 				if liquiddef.on_take then
-                    liquiddef.on_take(user)
-                end
+					liquiddef.on_take(user)
+				end
 			end
 
 			minetest.add_node(pointed_thing.under, {name="air"})
