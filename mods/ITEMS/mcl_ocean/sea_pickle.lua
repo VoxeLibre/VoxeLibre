@@ -12,7 +12,7 @@ local function sea_pickle_on_place(itemstack, placer, pointed_thing)
 	local node_under = minetest.get_node(pos_under)
 	local node_above = minetest.get_node(pos_above)
 	local def_under = minetest.registered_nodes[node_under.name]
-	local def_above = minetest.registered_nodes[node_above.name]
+	--local def_above = minetest.registered_nodes[node_above.name]
 
 	if def_under and def_under.on_rightclick and not placer:get_player_control().sneak then
 		return def_under.on_rightclick(pos_under, node_under,
