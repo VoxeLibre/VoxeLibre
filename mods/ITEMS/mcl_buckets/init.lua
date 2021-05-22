@@ -11,6 +11,10 @@ local mod_doc = minetest.get_modpath("doc")
 local mod_mcl_core = minetest.get_modpath("mcl_core")
 local mod_mclx_core = minetest.get_modpath("mclx_core")
 
+local vector = vector
+local math = math
+local string = string
+
 local raycast = minetest.raycast
 local get_node = minetest.get_node
 local add_node = minetest.add_node
