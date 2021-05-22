@@ -1904,7 +1904,7 @@ function mcl_mapgen_core.unregister_generator(id)
 	if rec.vf then lvm = lvm - 1 end
 	if rec.nf then nodes = nodes - 1 end
 	if rec.needs_param2 then param2 = param2 - 1 end
-	if rec.needs_level0 then level0 = level0 - 1 end
+	--if rec.needs_level0 then level0 = level0 - 1 end
 end
 
 -- Generate basic layer-based nodes: void, bedrock, realm barrier, lava seas, etc.
