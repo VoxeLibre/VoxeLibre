@@ -23,7 +23,7 @@ minetest.register_abm({
 		local lavatype = minetest.registered_nodes[node.name].liquidtype
 
 		for w=1, #water do
-			local waternode = minetest.get_node(water[w])
+			--local waternode = minetest.get_node(water[w])
 			--local watertype = minetest.registered_nodes[waternode.name].liquidtype
 			-- Lava on top of water: Water turns into stone
 			if water[w].y < pos.y and water[w].x == pos.x and water[w].z == pos.z then
