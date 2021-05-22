@@ -11,6 +11,11 @@ local mod_doc = minetest.get_modpath("doc")
 local mod_mcl_core = minetest.get_modpath("mcl_core")
 local mod_mclx_core = minetest.get_modpath("mclx_core")
 
+local raycast = minetest.raycast
+local get_node = minetest.get_node
+local add_node = minetest.add_node
+local get_node_group = minetest.get_node_group
+
 if mod_mcl_core then
 	minetest.register_craft({
 		output = 'mcl_buckets:bucket_empty 1',
@@ -355,6 +360,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 				return give_bucket(new_bucket, itemstack, user)
 			end
         end
+        return itemstack
 	end,
 	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
 		-- Fill empty bucket with liquid or drop bucket if no liquid
