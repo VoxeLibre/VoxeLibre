@@ -3,8 +3,8 @@ local F = minetest.formspec_escape
 
 mcl_inventory = {}
 
-local mod_player = minetest.get_modpath("mcl_player") ~= nil
-local mod_craftguide = minetest.get_modpath("mcl_craftguide") ~= nil
+--local mod_player = minetest.get_modpath("mcl_player") ~= nil
+--local mod_craftguide = minetest.get_modpath("mcl_craftguide") ~= nil
 
 -- Returns a single itemstack in the given inventory to the main inventory, or drop it when there's no space left
 function return_item(itemstack, dropper, pos, inv)
@@ -59,8 +59,6 @@ local function set_inventory(player, armor_change_only)
 	local inv = player:get_inventory()
 	inv:set_width("craft", 2)
 	inv:set_size("craft", 4)
-
-	local player_name = player:get_player_name()
 
 	-- Show armor and player image
 	local player_preview
@@ -180,6 +178,6 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 if minetest.is_creative_enabled("") then
-	dofile(minetest.get_modpath("mcl_inventory").."/creative.lua")
+	dofile(minetest.get_modpath(minetest.get_current_modname()).."/creative.lua")
 end
 
