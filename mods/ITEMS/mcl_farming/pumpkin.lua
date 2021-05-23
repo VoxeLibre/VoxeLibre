@@ -142,7 +142,6 @@ if minetest.get_modpath("mcl_armor") then
 		})
 	end
 	local remove_pumpkin_hud = function(player)
-		local player_name = player:get_player_name()
 		if pumpkin_hud then
 			player:hud_remove(pumpkin_hud)
 		end
