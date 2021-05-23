@@ -11,7 +11,7 @@ local realtime = true
 local rules_flat = {
 	{ x = 0, y = 0, z = -1, spread = true },
 }
-local get_rules_flat = function(node)
+local function get_rules_flat(node)
 	local rules = rules_flat
 	for i=1, node.param2 do
 		rules = mesecon.rotate_rules_left(rules)
@@ -46,7 +46,7 @@ end
 -- and update the observer state if needed.
 -- TODO: Also scan metadata changes.
 -- TODO: Ignore some node changes.
-local observer_scan = function(pos, initialize)
+local function observer_scan(pos, initialize)
 	local node = minetest.get_node(pos)
 	local front
 	if node.name == "mcl_observers:observer_up_off" or node.name == "mcl_observers:observer_up_on" then
@@ -87,14 +87,14 @@ local observer_scan = function(pos, initialize)
 end
 
 -- Vertical orientation (CURRENTLY DISABLED)
-local observer_orientate = function(pos, placer)
+local function observer_orientate(pos, placer)
 	-- Not placed by player
 	if not placer then return end
 
 	-- Placer pitch in degrees
 	local pitch = placer:get_look_vertical() * (180 / math.pi)
 
-	local node = minetest.get_node(pos)
+	--local node = minetest.get_node(pos)
 	if pitch > 55 then -- player looking upwards
 		-- Observer looking downwards
 		minetest.set_node(pos, {name="mcl_observers:observer_down_off"})
@@ -104,162 +104,167 @@ local observer_orientate = function(pos, placer)
 	end
 end
 
-mesecon.register_node("mcl_observers:observer",
-{
-	is_ground_content = false,
-	sounds = mcl_sounds.node_sound_stone_defaults(),
-	paramtype2 = "facedir",
-	on_rotate = false,
-	_mcl_blast_resistance = 3.5,
-	_mcl_hardness = 3.5,
-},
-{
-	description = S("Observer"),
-	_tt_help = S("Emits redstone pulse when block in front changes"),
-	_doc_items_longdesc = S("An observer is a redstone component which observes the block in front of it and sends a very short redstone pulse whenever this block changes."),
-	_doc_items_usagehelp = S("Place the observer directly in front of the block you want to observe with the “face” looking at the block. The arrow points to the side of the output, which is at the opposite side of the “face”. You can place your redstone dust or any other component here."),
+mesecon.register_node("mcl_observers:observer", {
+		is_ground_content = false,
+		sounds = mcl_sounds.node_sound_stone_defaults(),
+		paramtype2 = "facedir",
+		on_rotate = false,
+		_mcl_blast_resistance = 3.5,
+		_mcl_hardness = 3.5,
+	}, {
+		description = S("Observer"),
+		_tt_help = S("Emits redstone pulse when block in front changes"),
+		_doc_items_longdesc = S("An observer is a redstone component which observes the block in front of it and sends a very short redstone pulse whenever this block changes."),
+		_doc_items_usagehelp = S("Place the observer directly in front of the block you want to observe with the “face” looking at the block. The arrow points to the side of the output, which is at the opposite side of the “face”. You can place your redstone dust or any other component here."),
 
-	groups = {pickaxey=1, material_stone=1, not_opaque=1, },
-	tiles = {
-		"mcl_observers_observer_top.png^[transformR180", "default_furnace_bottom.png",
-		"mcl_observers_observer_side.png", "mcl_observers_observer_side.png",
-		"mcl_observers_observer_front.png", "mcl_observers_observer_back.png",
-	},
-	mesecons = { receptor = {
-		state = mesecon.state.off,
-		rules = get_rules_flat,
-	}},
-	on_construct = function(pos)
-		if not realtime then
-			observer_scan(pos, true)
-		end
-	end,
-	after_place_node = observer_orientate,
-},
-{
-	_doc_items_create_entry = false,
-	groups = {pickaxey=1, material_stone=1, not_opaque=1, not_in_creative_inventory=1 },
-	tiles = {
-		"mcl_observers_observer_top.png^[transformR180", "default_furnace_bottom.png",
-		"mcl_observers_observer_side.png", "mcl_observers_observer_side.png",
-		"mcl_observers_observer_front.png", "mcl_observers_observer_back_lit.png",
-	},
-	mesecons = { receptor = {
-		state = mesecon.state.on,
-		rules = get_rules_flat,
-	}},
+		groups = {pickaxey=1, material_stone=1, not_opaque=1, },
+		tiles = {
+			"mcl_observers_observer_top.png^[transformR180", "default_furnace_bottom.png",
+			"mcl_observers_observer_side.png", "mcl_observers_observer_side.png",
+			"mcl_observers_observer_front.png", "mcl_observers_observer_back.png",
+		},
+		mesecons = {
+			receptor = {
+				state = mesecon.state.off,
+				rules = get_rules_flat,
+			},
+		},
+		on_construct = function(pos)
+			if not realtime then
+				observer_scan(pos, true)
+			end
+		end,
+		after_place_node = observer_orientate,
+	}, {
+		_doc_items_create_entry = false,
+		groups = {pickaxey=1, material_stone=1, not_opaque=1, not_in_creative_inventory=1 },
+		tiles = {
+			"mcl_observers_observer_top.png^[transformR180", "default_furnace_bottom.png",
+			"mcl_observers_observer_side.png", "mcl_observers_observer_side.png",
+			"mcl_observers_observer_front.png", "mcl_observers_observer_back_lit.png",
+		},
+		mesecons = {
+			receptor = {
+				state = mesecon.state.on,
+				rules = get_rules_flat,
+			}
+		},
 
-	-- VERY quickly disable observer after construction
-	on_construct = function(pos)
-		local timer = minetest.get_node_timer(pos)
-		timer:start(mcl_vars.redstone_tick)
-	end,
-	on_timer = function(pos, elapsed)
-		local node = minetest.get_node(pos)
-		minetest.set_node(pos, {name = "mcl_observers:observer_off", param2 = node.param2})
-		mesecon.receptor_off(pos, get_rules_flat(node))
-	end,
-}
+		-- VERY quickly disable observer after construction
+		on_construct = function(pos)
+			local timer = minetest.get_node_timer(pos)
+			timer:start(mcl_vars.redstone_tick)
+		end,
+		on_timer = function(pos, elapsed)
+			local node = minetest.get_node(pos)
+			minetest.set_node(pos, {name = "mcl_observers:observer_off", param2 = node.param2})
+			mesecon.receptor_off(pos, get_rules_flat(node))
+		end,
+	}
 )
 
-mesecon.register_node("mcl_observers:observer_down",
-{
-	is_ground_content = false,
-	sounds = mcl_sounds.node_sound_stone_defaults(),
-	groups = {pickaxey=1, material_stone=1, not_opaque=1, not_in_creative_inventory=1 },
-	on_rotate = false,
-	_mcl_blast_resistance = 3.5,
-	_mcl_hardness = 3.5,
-	drop = "mcl_observers:observer_off",
-},
-{
-	tiles = {
-		"mcl_observers_observer_back.png", "mcl_observers_observer_front.png",
-		"mcl_observers_observer_side.png^[transformR90", "mcl_observers_observer_side.png^[transformR90",
-		"mcl_observers_observer_top.png", "mcl_observers_observer_top.png",
-	},
-	mesecons = { receptor = {
-		state = mesecon.state.off,
-		rules = rules_down,
-	}},
-	on_construct = function(pos)
-		if not realtime then
-			observer_scan(pos, true)
-		end
-	end,
-},
-{
-	_doc_items_create_entry = false,
-	tiles = {
-		"mcl_observers_observer_back_lit.png", "mcl_observers_observer_front.png",
-		"mcl_observers_observer_side.png^[transformR90", "mcl_observers_observer_side.png^[transformR90",
-		"mcl_observers_observer_top.png", "mcl_observers_observer_top.png",
-	},
-	mesecons = { receptor = {
-		state = mesecon.state.on,
-		rules = rules_down,
-	}},
+mesecon.register_node("mcl_observers:observer_down", {
+		is_ground_content = false,
+		sounds = mcl_sounds.node_sound_stone_defaults(),
+		groups = {pickaxey=1, material_stone=1, not_opaque=1, not_in_creative_inventory=1 },
+		on_rotate = false,
+		_mcl_blast_resistance = 3.5,
+		_mcl_hardness = 3.5,
+		drop = "mcl_observers:observer_off",
+	}, {
+		tiles = {
+			"mcl_observers_observer_back.png", "mcl_observers_observer_front.png",
+			"mcl_observers_observer_side.png^[transformR90", "mcl_observers_observer_side.png^[transformR90",
+			"mcl_observers_observer_top.png", "mcl_observers_observer_top.png",
+		},
+		mesecons = {
+			receptor = {
+				state = mesecon.state.off,
+				rules = rules_down,
+			},
+		},
+		on_construct = function(pos)
+			if not realtime then
+				observer_scan(pos, true)
+			end
+		end,
+	}, {
+		_doc_items_create_entry = false,
+		tiles = {
+			"mcl_observers_observer_back_lit.png", "mcl_observers_observer_front.png",
+			"mcl_observers_observer_side.png^[transformR90", "mcl_observers_observer_side.png^[transformR90",
+			"mcl_observers_observer_top.png", "mcl_observers_observer_top.png",
+		},
+		mesecons = {
+			receptor = {
+				state = mesecon.state.on,
+				rules = rules_down,
+			},
+		},
 
-	-- VERY quickly disable observer after construction
-	on_construct = function(pos)
-		local timer = minetest.get_node_timer(pos)
-		timer:start(mcl_vars.redstone_tick)
-	end,
-	on_timer = function(pos, elapsed)
-		local node = minetest.get_node(pos)
-		minetest.set_node(pos, {name = "mcl_observers:observer_down_off", param2 = node.param2})
-		mesecon.receptor_off(pos, rules_down)
-	end,
-})
+		-- VERY quickly disable observer after construction
+		on_construct = function(pos)
+			local timer = minetest.get_node_timer(pos)
+			timer:start(mcl_vars.redstone_tick)
+		end,
+		on_timer = function(pos, elapsed)
+			local node = minetest.get_node(pos)
+			minetest.set_node(pos, {name = "mcl_observers:observer_down_off", param2 = node.param2})
+			mesecon.receptor_off(pos, rules_down)
+		end,
+	}
+)
 
-mesecon.register_node("mcl_observers:observer_up",
-{
-	is_ground_content = false,
-	sounds = mcl_sounds.node_sound_stone_defaults(),
-	groups = {pickaxey=1, material_stone=1, not_opaque=1, not_in_creative_inventory=1 },
-	on_rotate = false,
-	_mcl_blast_resistance = 3.5,
-	_mcl_hardness = 3.5,
-	drop = "mcl_observers:observer_off",
-},
-{
-	tiles = {
-		"mcl_observers_observer_front.png", "mcl_observers_observer_back.png",
-		"mcl_observers_observer_side.png^[transformR270", "mcl_observers_observer_side.png^[transformR270",
-		"mcl_observers_observer_top.png^[transformR180", "mcl_observers_observer_top.png^[transformR180",
-	},
-	mesecons = { receptor = {
-		state = mesecon.state.off,
-		rules = rules_up,
-	}},
-	on_construct = function(pos)
-		if not realtime then
-			observer_scan(pos, true)
-		end
-	end,
-},
-{
-	_doc_items_create_entry = false,
-	tiles = {
-		"mcl_observers_observer_front.png", "mcl_observers_observer_back_lit.png",
-		"mcl_observers_observer_side.png^[transformR270", "mcl_observers_observer_side.png^[transformR270",
-		"mcl_observers_observer_top.png^[transformR180", "mcl_observers_observer_top.png^[transformR180",
-	},
-	mesecons = { receptor = {
-		state = mesecon.state.on,
-		rules = rules_up,
-	}},
+mesecon.register_node("mcl_observers:observer_up", {
+		is_ground_content = false,
+		sounds = mcl_sounds.node_sound_stone_defaults(),
+		groups = {pickaxey=1, material_stone=1, not_opaque=1, not_in_creative_inventory=1 },
+		on_rotate = false,
+		_mcl_blast_resistance = 3.5,
+		_mcl_hardness = 3.5,
+		drop = "mcl_observers:observer_off",
+	}, {
+		tiles = {
+			"mcl_observers_observer_front.png", "mcl_observers_observer_back.png",
+			"mcl_observers_observer_side.png^[transformR270", "mcl_observers_observer_side.png^[transformR270",
+			"mcl_observers_observer_top.png^[transformR180", "mcl_observers_observer_top.png^[transformR180",
+		},
+		mesecons = {
+			receptor = {
+				state = mesecon.state.off,
+				rules = rules_up,
+			},
+		},
+		on_construct = function(pos)
+			if not realtime then
+				observer_scan(pos, true)
+			end
+		end,
+	}, {
+		_doc_items_create_entry = false,
+		tiles = {
+			"mcl_observers_observer_front.png", "mcl_observers_observer_back_lit.png",
+			"mcl_observers_observer_side.png^[transformR270", "mcl_observers_observer_side.png^[transformR270",
+			"mcl_observers_observer_top.png^[transformR180", "mcl_observers_observer_top.png^[transformR180",
+		},
+		mesecons = {
+			receptor = {
+				state = mesecon.state.on,
+				rules = rules_up,
+			},
+		},
 
-	-- VERY quickly disable observer after construction
-	on_construct = function(pos)
-		local timer = minetest.get_node_timer(pos)
-		timer:start(mcl_vars.redstone_tick)
-	end,
-	on_timer = function(pos, elapsed)
-		minetest.set_node(pos, {name = "mcl_observers:observer_up_off"})
-		mesecon.receptor_off(pos, rules_up)
-	end,
-})
+		-- VERY quickly disable observer after construction
+		on_construct = function(pos)
+			local timer = minetest.get_node_timer(pos)
+			timer:start(mcl_vars.redstone_tick)
+		end,
+		on_timer = function(pos, elapsed)
+			minetest.set_node(pos, {name = "mcl_observers:observer_up_off"})
+			mesecon.receptor_off(pos, rules_up)
+		end,
+	}
+)
 
 minetest.register_craft({
 	output = "mcl_observers:observer_off",
@@ -267,7 +272,7 @@ minetest.register_craft({
 		{ "mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble" },
 		{ "mcl_nether:quartz", "mesecons:redstone", "mesecons:redstone" },
 		{ "mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble" },
-	}
+	},
 })
 minetest.register_craft({
 	output = "mcl_observers:observer_off",
@@ -275,7 +280,7 @@ minetest.register_craft({
 		{ "mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble" },
 		{ "mesecons:redstone", "mesecons:redstone", "mcl_nether:quartz" },
 		{ "mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble" },
-	}
+	},
 })
 
 if realtime then
@@ -454,7 +459,7 @@ minetest.register_lbm({
 		"mcl_observers:observer_down_on",
 		"mcl_observers:observer_up_on",
 	},
- 	run_at_every_load = true,
+	run_at_every_load = true,
 	action = function(pos)
 		minetest.after(1, mcl_observers.observer_activate, {x=pos.x, y=pos.y, z=pos.z})
 	end,
