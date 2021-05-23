@@ -129,6 +129,16 @@ if minetest.get_modpath("mcl_armor") then
 			position = {x = 0.5, y = 0.5},
 			scale = {x = -100, y = -100},
 			text = "mcl_farming_pumpkin_hud.png",
+			z_index = -200
+		})
+		--this is a fake crosshair, because hotbar and crosshair doesn't support z_index
+		--TODO: remove this and add correct z_index values when this is fixed: https://github.com/minetest/minetest/issues/9270
+		player:hud_add({
+			hud_elem_type = "image",
+			position = {x = 0.5, y = 0.5},
+			scale = {x = 1, y = 1},
+			text = "crosshair.png",
+			z_index = -100
 		})
 	end
 	local remove_pumpkin_hud = function(player)
@@ -137,7 +147,7 @@ if minetest.get_modpath("mcl_armor") then
 			player:hud_remove(pumpkin_hud)
 		end
 	end
-	
+
 	pumpkin_face_base_def.on_secondary_use = mcl_armor.equip_on_use
 	pumpkin_face_base_def._on_equip = add_pumpkin_hud
 	pumpkin_face_base_def._on_unequip = remove_pumpkin_hud
