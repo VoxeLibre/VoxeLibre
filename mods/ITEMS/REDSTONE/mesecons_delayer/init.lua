@@ -145,8 +145,8 @@ end
 -- Register the 2 (states) x 4 (delay times) delayers
 
 for i = 1, 4 do
-local groups = {}
-if i == 1 then 
+local groups
+if i == 1 then
 	groups = {dig_immediate=3,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,attached_node=1,redstone_repeater=i}
 else
 	groups = {dig_immediate=3,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,attached_node=1,redstone_repeater=i,not_in_creative_inventory=1}
@@ -156,29 +156,29 @@ local delaytime = DELAYS[i]
 
 local boxes
 if i == 1 then
-boxes = {
-	{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },		-- the main slab
-	{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16},     -- still torch
-	{ -1/16, -6/16, 0/16, 1/16, -1/16, 2/16},     -- moved torch 
-}
+	boxes = {
+		{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },		-- the main slab
+		{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16},     -- still torch
+		{ -1/16, -6/16, 0/16, 1/16, -1/16, 2/16},     -- moved torch
+	}
 elseif i == 2 then
-boxes = {
-	{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },		-- the main slab
-	{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16},     -- still torch
-	{ -1/16, -6/16, -2/16, 1/16, -1/16, 0/16},     -- moved torch 
-}
+	boxes = {
+		{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },		-- the main slab
+		{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16},     -- still torch
+		{ -1/16, -6/16, -2/16, 1/16, -1/16, 0/16},     -- moved torch
+	}
 elseif i == 3 then
-boxes = {
-	{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },		-- the main slab
-	{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16},     -- still torch
-	{ -1/16, -6/16, -4/16, 1/16, -1/16, -2/16},     -- moved torch 
-}
+	boxes = {
+		{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },		-- the main slab
+		{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16},     -- still torch
+		{ -1/16, -6/16, -4/16, 1/16, -1/16, -2/16},     -- moved torch
+	}
 elseif i == 4 then
-boxes = {
-	{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },		-- the main slab
-	{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16},     -- still torch
-	{ -1/16, -6/16, -6/16, 1/16, -1/16, -4/16},     -- moved torch 
-}
+	boxes = {
+		{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },		-- the main slab
+		{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16},     -- still torch
+		{ -1/16, -6/16, -6/16, 1/16, -1/16, -4/16},     -- moved torch
+	}
 end
 
 local help, tt, longdesc, usagehelp, icon, on_construct
@@ -248,7 +248,7 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 		"mesecons_delayer_ends_off.png",
 	},
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
-	wield_image = "mesecons_delayer_off.png",
+	--wield_image = "mesecons_delayer_off.png",
 	walkable = true,
 	selection_box = {
 		type = "fixed",
