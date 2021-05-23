@@ -124,26 +124,32 @@ pumpkin_face_base_def._mcl_armor_preview = "mcl_farming_pumpkin_face_preview.png
 if minetest.get_modpath("mcl_armor") then
 	local pumpkin_hud = {}
 	local add_pumpkin_hud = function(player)
-		pumpkin_hud = player:hud_add({
-			hud_elem_type = "image",
-			position = {x = 0.5, y = 0.5},
-			scale = {x = -100, y = -100},
-			text = "mcl_farming_pumpkin_hud.png",
-			z_index = -200
-		})
-		--this is a fake crosshair, because hotbar and crosshair doesn't support z_index
-		--TODO: remove this and add correct z_index values when this is fixed: https://github.com/minetest/minetest/issues/9270
-		player:hud_add({
-			hud_elem_type = "image",
-			position = {x = 0.5, y = 0.5},
-			scale = {x = 1, y = 1},
-			text = "crosshair.png",
-			z_index = -100
-		})
+		local name = player:get_player_name()
+		pumpkin_hud[name] = {
+			pumpkin_blur = player:hud_add({
+				hud_elem_type = "image",
+				position = {x = 0.5, y = 0.5},
+				scale = {x = -100, y = -100},
+				text = "mcl_farming_pumpkin_hud.png",
+				z_index = -200
+			}),
+			--this is a fake crosshair, because hotbar and crosshair doesn't support z_index
+			--TODO: remove this and add correct z_index values
+			fake_crosshair = player:hud_add({
+				hud_elem_type = "image",
+				position = {x = 0.5, y = 0.5},
+				scale = {x = 1, y = 1},
+				text = "crosshair.png",
+				z_index = -100
+			})
+		}
 	end
 	local remove_pumpkin_hud = function(player)
-		if pumpkin_hud then
-			player:hud_remove(pumpkin_hud)
+		local name = player:get_player_name()
+		if pumpkin_hud[name] then
+			player:hud_remove(pumpkin_hud[name].pumpkin_blur)
+			player:hud_remove(pumpkin_hud[name].fake_crosshair)
+			pumpkin_hud[name] = nil
 		end
 	end
 
@@ -157,8 +163,10 @@ if minetest.get_modpath("mcl_armor") then
 			add_pumpkin_hud(player)
 		end
 	end)
-	
 	minetest.register_on_dieplayer(function(player)
+		remove_pumpkin_hud(player)
+	end)
+	minetest.register_on_leaveplayer(function(player)
 		remove_pumpkin_hud(player)
 	end)
 end
