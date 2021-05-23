@@ -276,12 +276,12 @@ minetest.register_node("mcl_itemframes:item_frame",{
 	on_rotate = function(pos, node, user, mode, param2)
 		if mode == screwdriver.ROTATE_FACE then
 			-- Rotate face
-			local meta = minetest.get_meta(pos)
+			--local meta = minetest.get_meta(pos)
 			local node = minetest.get_node(pos)
 
 			local objs = nil
 			if node.name == "mcl_itemframes:item_frame" then
-				objs = minetest.get_objects_inside_radius(pos, .5)
+				objs = minetest.get_objects_inside_radius(pos, 0.5)
 			end
 			if objs then
 				for _, obj in ipairs(objs) do

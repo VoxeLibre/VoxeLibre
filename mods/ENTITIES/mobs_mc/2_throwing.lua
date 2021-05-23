@@ -6,7 +6,7 @@
 -- NOTE: Strings intentionally not marked for translation, other mods already have these items.
 -- TODO: Remove this file eventually, all items here are already outsourced in other mods.
 
-local S = minetest.get_translator("mobs_mc")
+--local S = minetest.get_translator("mobs_mc")
 
 --maikerumines throwing code
 --arrow (weapon)

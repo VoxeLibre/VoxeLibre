@@ -318,12 +318,12 @@ mobs:register_mob("mobs_mc:enderman", {
 		for n = 1, #objs do
 			local obj = objs[n]
 			if obj then
-				if minetest.is_player(obj) then
+				--if minetest.is_player(obj) then
 					-- Warp from players during day.
 					--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
 					--	self:teleport(nil)
 					--end
-				else
+				if not obj:is_player() then
 					local lua = obj:get_luaentity()
 					if lua then
 						if lua.name == "mcl_bows:arrow_entity" or lua.name == "mcl_throwing:snowball_entity" then

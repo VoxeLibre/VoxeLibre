@@ -87,7 +87,7 @@ mcl_skins.set_player_skin = function(player, skin_id)
 		return false
 	end
 	local playername = player:get_player_name()
-	local skin, skin_file, preview
+	local skin, preview
 	if skin_id == nil or type(skin_id) ~= "number" or skin_id < 0 or skin_id > mcl_skins.skin_count then
 		return false
 	elseif skin_id == 0 then
@@ -109,7 +109,7 @@ mcl_skins.set_player_skin = function(player, skin_id)
 			preview = "mcl_skins_player_dummy"
 		end
 	end
-	skin_file = skin .. ".png"
+	--local skin_file = skin .. ".png"
 	mcl_skins.skins[playername] = skin
 	mcl_skins.previews[playername] = preview
 	player:get_meta():set_string("mcl_skins:skin_id", tostring(skin_id))

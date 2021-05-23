@@ -4,11 +4,9 @@ local SHEET_W = 4
 local SHEET_H = 2
 
 -- Randomize initial moon phase, based on map seed
-local phase_offset
 local mg_seed = minetest.get_mapgen_setting("seed")
 local rand = PseudoRandom(mg_seed)
 local phase_offset = rand:next(0, MOON_PHASES - 1)
-rand = nil
 
 minetest.log("info", "[mcl_moon] Moon phase offset of this world: "..phase_offset)
 

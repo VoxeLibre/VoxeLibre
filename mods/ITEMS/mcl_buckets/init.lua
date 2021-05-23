@@ -9,7 +9,7 @@ minetest.register_alias("bucket:bucket_lava", "mcl_buckets:bucket_lava")
 
 local mod_doc = minetest.get_modpath("doc")
 local mod_mcl_core = minetest.get_modpath("mcl_core")
-local mod_mclx_core = minetest.get_modpath("mclx_core")
+--local mod_mclx_core = minetest.get_modpath("mclx_core")
 
 local vector = vector
 local math = math

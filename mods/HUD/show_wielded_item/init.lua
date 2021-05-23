@@ -11,7 +11,7 @@ local xp_mod = minetest.get_modpath("mcl_experience")
 
 local function set_hud(player)
 	if not player:is_player() then return end
-	local player_name = player:get_player_name() 
+	local player_name = player:get_player_name()
 	-- Fixed offset in config file
 	local fixed = tonumber(minetest.settings:get("show_wielded_item_y_offset"))
 	local off
@@ -84,7 +84,7 @@ minetest.register_globalstep(function(dtime)
 			wield[player_name] = wname
 			dtimes[player_name] = 0
 
-			if huds[player_name] then 
+			if huds[player_name] then
 
 				local def = minetest.registered_items[wname]
 				local meta = wstack:get_meta()

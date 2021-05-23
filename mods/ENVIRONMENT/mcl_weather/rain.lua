@@ -249,7 +249,7 @@ if mcl_weather.allow_abm then
 				end
 			end
 		end
-  	})
+	})
 
 	-- Wetten the soil
 	minetest.register_abm({
@@ -264,7 +264,7 @@ if mcl_weather.allow_abm then
 				end
 			end
 		end
-  	})
+	})
 end
 
 if mcl_weather.reg_weathers.rain == nil then

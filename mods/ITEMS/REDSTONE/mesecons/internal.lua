@@ -329,7 +329,7 @@ function mesecon.get_conductor_on(node_off, rulename)
 			return conductor.states[tonumber(binstate,2)+1]
 		end
 	end
-	return offstate
+	return conductor.offstate
 end
 
 function mesecon.get_conductor_off(node_on, rulename)
@@ -345,7 +345,7 @@ function mesecon.get_conductor_off(node_on, rulename)
 			return conductor.states[tonumber(binstate,2)+1]
 		end
 	end
-	return onstate
+	return conductor.onstate
 end
 
 function mesecon.conductor_get_rules(node)
@@ -391,9 +391,7 @@ function mesecon.turnon(pos, link)
 		local f = table.remove(frontiers, 1)
 		local node = get_node_force(f.pos)
 
-		if not node then
-			-- Area does not exist; do nothing
-		elseif mesecon.is_conductor_off(node, f.link) then
+		if node and mesecon.is_conductor_off(node, f.link) then
 			local rules = mesecon.conductor_get_rules(node)
 
 			-- Call turnon on neighbors
@@ -453,9 +451,7 @@ function mesecon.turnoff(pos, link)
 		local f = table.remove(frontiers, 1)
 		local node = get_node_force(f.pos)
 
-		if not node then
-			-- No-op
-		elseif mesecon.is_conductor_on(node, f.link) then
+		if node and mesecon.is_conductor_on(node, f.link) then
 			local rules = mesecon.conductor_get_rules(node)
 			for _, r in pairs(mesecon.rule2meta(f.link, rules)) do
 				local np = vector.add(f.pos, r)

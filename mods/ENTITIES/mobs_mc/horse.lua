@@ -38,9 +38,9 @@ end
 local can_equip_horse_armor = function(entity_id)
 	return entity_id == "mobs_mc:horse" or entity_id == "mobs_mc:skeleton_horse" or entity_id == "mobs_mc:zombie_horse"
 end
-local can_equip_chest = function(entity_id)
+--[[local can_equip_chest = function(entity_id)
 	return entity_id == "mobs_mc:mule" or entity_id == "mobs_mc:donkey"
-end
+end]]
 local can_breed = function(entity_id)
 	return entity_id == "mobs_mc:horse" or "mobs_mc:mule" or entity_id == "mobs_mc:donkey"
 end
@@ -314,7 +314,7 @@ local horse = {
 		-- Make sure tamed horse is mature and being clicked by owner only
 		if self.tamed and not self.child and self.owner == clicker:get_player_name() then
 
-			local inv = clicker:get_inventory()
+			--local inv = clicker:get_inventory()
 
 			-- detatch player already riding horse
 			if self.driver and clicker == self.driver then

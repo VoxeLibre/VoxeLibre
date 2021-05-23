@@ -72,7 +72,7 @@ end
 local function check_commands(commands, player_name)
 	for _, command in pairs(commands:split("\n")) do
 		local pos = command:find(" ")
-		local cmd, param = command, ""
+		local cmd = command
 		if pos then
 			cmd = command:sub(1, pos - 1)
 		end
@@ -103,10 +103,10 @@ local function commandblock_action_on(pos, node)
 	if node.name ~= "mesecons_commandblock:commandblock_off" then
 		return
 	end
-	
+
 	local meta = minetest.get_meta(pos)
 	local commander = meta:get_string("commander")
-	
+
 	if not command_blocks_activated then
 		--minetest.chat_send_player(commander, msg_not_activated)
 		return

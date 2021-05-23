@@ -77,7 +77,7 @@ mesecon.on_dignode = function(pos, node)
 		mesecon.receptor_off(pos, mesecon.receptor_get_rules(node))
 	end
 	if minetest.get_item_group(node.name, "opaque") == 1 then
-		local sources = mesecon.is_powered(pos)
+		--local sources = mesecon.is_powered(pos)
 		local neighbors = mesecon.mcl_get_neighbors(pos)
 		for n=1, #neighbors do
 			local npos = neighbors[n].pos

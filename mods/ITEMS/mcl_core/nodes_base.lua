@@ -990,9 +990,8 @@ for i=1,8 do
 			local itemcount = itemstack:get_count()
 			local fakestack = ItemStack(itemstring.." "..itemcount)
 			fakestack:set_name("mcl_core:snow_"..math.min(8, (i+g)))
-			local success
-			itemstack, success = minetest.item_place(fakestack, placer, pointed_thing)
-			minetest.sound_play(mcl_sounds.node_sound_snow_defaults().place, {pos = below}, true)
+			itemstack = minetest.item_place(fakestack, placer, pointed_thing)
+			minetest.sound_play(mcl_sounds.node_sound_snow_defaults().place, {pos = pointed_thing.under}, true)
 			itemstack:set_name(itemstring)
 			return itemstack
 		end

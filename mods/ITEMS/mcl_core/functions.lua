@@ -23,8 +23,8 @@ minetest.register_abm({
 		local lavatype = minetest.registered_nodes[node.name].liquidtype
 
 		for w=1, #water do
-			local waternode = minetest.get_node(water[w])
-			local watertype = minetest.registered_nodes[waternode.name].liquidtype
+			--local waternode = minetest.get_node(water[w])
+			--local watertype = minetest.registered_nodes[waternode.name].liquidtype
 			-- Lava on top of water: Water turns into stone
 			if water[w].y < pos.y and water[w].x == pos.x and water[w].z == pos.z then
 				minetest.set_node(water[w], {name="mcl_core:stone"})
@@ -336,13 +336,12 @@ end
 -- oak tree.
 function mcl_core.generate_tree(pos, tree_type, options)
 	pos.y = pos.y-1
-	local nodename = minetest.get_node(pos).name
+	--local nodename = minetest.get_node(pos).name
 
 	pos.y = pos.y+1
 	if not minetest.get_node_light(pos) then
 		return
 	end
-	local node
 
 	local two_by_two = options and options.two_by_two
 	local balloon = options and options.balloon
@@ -390,7 +389,7 @@ end
 function mcl_core.generate_v6_oak_tree(pos)
 	local trunk = "mcl_core:tree"
 	local leaves = "mcl_core:leaves"
-	local node = {name = ""}
+	local node
 	for dy=1,4 do
 		pos.y = pos.y+dy
 		if minetest.get_node(pos).name ~= "air" then
@@ -409,10 +408,10 @@ function mcl_core.generate_v6_oak_tree(pos)
 
 	node = {name = leaves}
 	pos.y = pos.y+3
-	local rarity = 0
+	--[[local rarity = 0
 	if math.random(0, 10) == 3 then
 		rarity = 1
-	end
+	end]]
 	for dx=-2,2 do
 		for dz=-2,2 do
 			for dy=0,3 do
@@ -787,7 +786,6 @@ minetest.register_abm({
 		if pos == nil then
 			return
 		end
-		local can_change = false
 		local above = {x=pos.x, y=pos.y+1, z=pos.z}
 		local abovenode = minetest.get_node(above)
 		if minetest.get_item_group(abovenode.name, "liquid") ~= 0 or minetest.get_item_group(abovenode.name, "opaque") == 1 then
@@ -1021,7 +1019,7 @@ local sapling_grow_action = function(tree_id, soil_needed, one_by_one, two_by_tw
 			if one_by_one and check_tree_growth(pos, tree_id) then
 				-- Single sapling
 				minetest.set_node(pos, {name="air"})
-				local r = math.random(1, 12)
+				--local r = math.random(1, 12)
 				mcl_core.generate_tree(pos, tree_id)
 				return
 			end
@@ -1418,7 +1416,7 @@ minetest.register_abm({
 			for s=1, #surround do
 				local spos = vector.add(p0, surround[s])
 				local maybe_vine = minetest.get_node(spos)
-				local surround_inverse = vector.multiply(surround[s], -1)
+				--local surround_inverse = vector.multiply(surround[s], -1)
 				if maybe_vine.name == "mcl_core:vine" and (not mcl_core.check_vines_supported(spos, maybe_vine)) then
 					minetest.remove_node(spos)
 					vinedecay_particles(spos, maybe_vine)

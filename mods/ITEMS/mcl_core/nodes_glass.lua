@@ -20,7 +20,7 @@ minetest.register_node("mcl_core:glass", {
 })
 
 ------------------------
--- Create Color Glass -- 
+-- Create Color Glass --
 ------------------------
 local canonical_color = "yellow"
 function mcl_core.add_stained_glass(desc, recipeitem, colorgroup, color)
@@ -54,7 +54,7 @@ function mcl_core.add_stained_glass(desc, recipeitem, colorgroup, color)
 		_mcl_hardness = 0.3,
 		_mcl_silk_touch_drop = true,
 	})
-	
+
 	minetest.register_craft({
 		output = 'mcl_core:glass_'..color..' 8',
 		recipe = {

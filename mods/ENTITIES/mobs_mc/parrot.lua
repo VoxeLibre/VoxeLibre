@@ -44,7 +44,7 @@ mobs:register_mob("mobs_mc:parrot", {
 		max = 2,
 		looting = "common",},
 	},
-    	animation = {
+		animation = {
 		stand_speed = 50,
 		walk_speed = 50,
 		fly_speed = 50,
