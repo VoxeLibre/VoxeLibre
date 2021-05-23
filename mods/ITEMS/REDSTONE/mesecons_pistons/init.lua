@@ -124,7 +124,7 @@ local piston_off = function (pos, node)
 	local dir = piston_get_direction(pistonspec.dir, node)
 	local pullpos = vector.add(pos, vector.multiply(dir, 2))
 	local meta = minetest.get_meta(pos)
-	local success, stack, oldstack = mesecon.mvps_pull_single(pullpos, vector.multiply(dir, -1), PISTON_MAXIMUM_PUSH, meta:get_string("owner"), pos)
+	local success, stack = mesecon.mvps_pull_single(pullpos, vector.multiply(dir, -1), PISTON_MAXIMUM_PUSH, meta:get_string("owner"), pos)
 	if success then
 		mesecon.mvps_process_stack(pos, dir, stack)
 	end
