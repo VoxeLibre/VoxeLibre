@@ -241,7 +241,6 @@ minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craf
 	for i = 1, player:get_inventory():get_size("craft") do
 		if old_craft_grid[i]:get_name() == "mcl_books:written_book" then
 			original = old_craft_grid[i]
-			index = i
 		end
 	end
 	if not original then
