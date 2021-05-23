@@ -120,8 +120,38 @@ pumpkin_face_base_def._mcl_armor_mob_range_mob = "mobs_mc:enderman"
 pumpkin_face_base_def._mcl_armor_element = "head"
 pumpkin_face_base_def._mcl_armor_texture = "mcl_farming_pumpkin_face.png"
 pumpkin_face_base_def._mcl_armor_preview = "mcl_farming_pumpkin_face_preview.png"
+
 if minetest.get_modpath("mcl_armor") then
+	local pumpkin_hud = {}
+	local add_pumpkin_hud = function(player)
+		pumpkin_hud = player:hud_add({
+			hud_elem_type = "image",
+			position = {x = 0.5, y = 0.5},
+			scale = {x = -100, y = -100},
+			text = "mcl_farming_pumpkin_hud.png",
+		})
+	end
+	local remove_pumpkin_hud = function(player)
+		local player_name = player:get_player_name()
+		if pumpkin_hud then
+			player:hud_remove(pumpkin_hud)
+		end
+	end
+	
 	pumpkin_face_base_def.on_secondary_use = mcl_armor.equip_on_use
+	pumpkin_face_base_def._on_equip = add_pumpkin_hud
+	pumpkin_face_base_def._on_unequip = remove_pumpkin_hud
+	
+	minetest.register_on_joinplayer(function(player)
+		pumpkin_head = player:get_inventory():get_stack("armor", 2):get_name() == "mcl_farming:pumpkin_face"
+		if pumpkin_head then
+			add_pumpkin_hud(player)
+		end
+	end)
+	
+	minetest.register_on_dieplayer(function(player)
+		remove_pumpkin_hud(player)
+	end)
 end
 
 -- Register stem growth
