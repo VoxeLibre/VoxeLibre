@@ -321,12 +321,12 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 	if not mcl_beds.player[name] then
 		local message
 		if is_top then
-			_, message = lay_down(player, ppos, pos)
+			message = select(2, lay_down(player, ppos, pos))
 		else
 			local node = minetest.get_node(pos)
 			local dir = minetest.facedir_to_dir(node.param2)
 			local other = vector.add(pos, dir)
-			_, message = lay_down(player, ppos, other)
+			message = select(2, lay_down(player, ppos, other))
 		end
 		if message then
 			mcl_tmp_message.message(player, message)
