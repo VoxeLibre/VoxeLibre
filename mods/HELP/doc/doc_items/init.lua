@@ -164,7 +164,7 @@ local factoid_toolcaps = function(tool_capabilities, check_uses)
 			local useslines = 0
 			for k,v in pairs(groupcaps) do
 				-- Mining capabilities
-				local minrating, maxrating
+				--[[local minrating, maxrating
 				if v.times then
 					for rating, time in pairs(v.times) do
 						if minrating == nil then minrating = rating else
@@ -177,7 +177,7 @@ local factoid_toolcaps = function(tool_capabilities, check_uses)
 				else
 					minrating = 1
 					maxrating = 1
-				end
+				end]]
 				local maxlevel = v.maxlevel
 				if not maxlevel then
 					-- Default from tool.h
@@ -577,11 +577,8 @@ doc.add_category("nodes", {
 	description = S("Item reference of blocks and other things which are capable of occupying space"),
 	build_formspec = function(data, playername)
 		if data then
-			local formstring = ""
-			local datastring = ""
-
-			formstring = entry_image(data)
-			datastring = factoids_header(data, "nodes")
+			local formstring = entry_image(data)
+			local datastring = factoids_header(data, "nodes")
 
 			local liquid = data.def.liquidtype ~= "none" and minetest.get_item_group(data.itemstring, "fake_liquid") == 0
 			if not forbidden_core_factoids.basics then
@@ -834,7 +831,7 @@ doc.add_category("nodes", {
 				elseif type(data.def.drop) == "table" and data.def.drop.items ~= nil then
 					local max = data.def.drop.max_items
 					local dropstring = ""
-					local dropstring_base = ""
+					local dropstring_base
 					if max == nil then
 						dropstring_base = N("This block will drop the following items when mined: @1.")
 					elseif max == 1 then
@@ -852,7 +849,7 @@ doc.add_category("nodes", {
 					local rarity_history = {}
 					for i=1,#data.def.drop.items do
 						local local_rarity = data.def.drop.items[i].rarity
-						local chance = 1
+						local chance
 						local rarity = 1
 						if local_rarity == nil then
 							local_rarity = 1
@@ -937,7 +934,6 @@ doc.add_category("nodes", {
 						end
 
 						local rarity = probtable.rarity
-						local raritystring = ""
 						-- No percentage if there's only one possible guaranteed drop
 						if not(rarity == 1 and #data.def.drop.items == 1) then
 							local chance = (1/rarity)*100
@@ -1086,11 +1082,8 @@ doc.add_category("tools", {
 	end,
 	build_formspec = function(data, playername)
 		if data then
-			local formstring = ""
-			local datastring = ""
-
-			formstring = entry_image(data)
-			datastring = factoids_header(data, "tools")
+			local formstring = entry_image(data)
+			local datastring = factoids_header(data, "tools")
 
 			-- Overwritten durability info
 			if type(data.def._doc_items_durability) == "number" then
@@ -1120,11 +1113,8 @@ doc.add_category("craftitems", {
 	description = S("Item reference of items which are neither blocks, tools or weapons (esp. crafting items)"),
 	build_formspec = function(data, playername)
 		if data then
-			local formstring = ""
-			local datastring = ""
-
-			formstring = entry_image(data)
-			datastring = factoids_header(data, "craftitems")
+			local formstring = entry_image(data)
+			local datastring = factoids_header(data, "craftitems")
 			datastring = datastring .. factoids_footer(data, playername, "craftitems")
 
 			formstring = formstring .. doc.widgets.text(datastring, nil, nil, doc.FORMSPEC.ENTRY_WIDTH - 1.2)
