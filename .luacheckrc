@@ -48,5 +48,5 @@ read_globals = {
     "default",
 
     --HUD
-    "sfinv", "unified_inventory",
+    "sfinv", "sfinv_buttons", "unified_inventory", "cmsg", "inventory_plus",
 }
