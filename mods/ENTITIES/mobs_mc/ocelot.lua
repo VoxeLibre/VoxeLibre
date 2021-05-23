@@ -151,7 +151,7 @@ end
 
 mobs:register_mob("mobs_mc:cat", cat)
 
-local base_spawn_chance = 5000
+--local base_spawn_chance = 5000
 
 -- Spawn ocelot
 --they get the same as the llama because I'm trying to rework so much of this code right now -j4i
