@@ -121,7 +121,7 @@ local hardness_values = get_hardness_values_for_groups()
 -- hardness_value.  Used for quick lookup.
 local hardness_lookup = get_hardness_lookup_for_groups(hardness_values)
 
-local function compute_creativetimes(group)
+--[[local function compute_creativetimes(group)
 	local creativetimes = {}
 
 	for index, hardness in pairs(hardness_values[group]) do
@@ -129,7 +129,7 @@ local function compute_creativetimes(group)
 	end
 
 	return creativetimes
-end
+end]]
 
 -- Get the list of digging times for using a specific tool on a specific
 -- diggroup.
@@ -239,13 +239,13 @@ function mcl_autogroup.can_harvest(nodename, toolname)
 end
 
 -- Get one groupcap field for using a specific tool on a specific group.
-local function get_groupcap(group, can_harvest, multiplier, efficiency, uses)
+--[[local function get_groupcap(group, can_harvest, multiplier, efficiency, uses)
 	return {
 		times = get_digtimes(group, can_harvest, multiplier, efficiency),
 		uses = uses,
 		maxlevel = 0,
 	}
-end
+end]]
 
 -- Returns the tool_capabilities from a tool definition or a default set of
 -- tool_capabilities
@@ -271,7 +271,7 @@ end
 -- toolname - Name of the tool being enchanted (like "mcl_tools:diamond_pickaxe")
 -- efficiency - The efficiency level the tool is enchanted with (default 0)
 --
--- NOTE: 
+-- NOTE:
 -- This function can only be called after mod initialization.  Otherwise a mod
 -- would have to add _mcl_autogroup as a dependency which would break the mod
 -- loading order.
@@ -288,7 +288,7 @@ end
 -- toolname - Name of the tool used
 -- diggroup - The name of the diggroup the tool is used on
 --
--- NOTE: 
+-- NOTE:
 -- This function can only be called after mod initialization.  Otherwise a mod
 -- would have to add _mcl_autogroup as a dependency which would break the mod
 -- loading order.
@@ -315,12 +315,12 @@ local overwrite = function()
 				newgroups.opaque = 1
 			end
 
-			local creative_breakable = false
+			--local creative_breakable = false
 
 			-- Assign groups used for digging this node depending on
 			-- the registered digging groups
 			for g, gdef in pairs(mcl_autogroup.registered_diggroups) do
-				creative_breakable = true
+				--creative_breakable = true
 				local index = hardness_lookup[g][ndef._mcl_hardness or 0]
 				if ndef.groups[g] then
 					if gdef.levels then
