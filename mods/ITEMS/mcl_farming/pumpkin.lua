@@ -123,7 +123,7 @@ pumpkin_face_base_def._mcl_armor_preview = "mcl_farming_pumpkin_face_preview.png
 
 if minetest.get_modpath("mcl_armor") then
 	local pumpkin_hud = {}
-	local add_pumpkin_hud = function(player)
+	local function add_pumpkin_hud(player)
 		local name = player:get_player_name()
 		pumpkin_hud[name] = {
 			pumpkin_blur = player:hud_add({
@@ -144,7 +144,7 @@ if minetest.get_modpath("mcl_armor") then
 			})
 		}
 	end
-	local remove_pumpkin_hud = function(player)
+	local function remove_pumpkin_hud(player)
 		local name = player:get_player_name()
 		if pumpkin_hud[name] then
 			player:hud_remove(pumpkin_hud[name].pumpkin_blur)
