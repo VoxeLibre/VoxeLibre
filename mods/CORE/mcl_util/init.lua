@@ -457,9 +457,7 @@ function mcl_util.calculate_durability(itemstack)
 			end
 		end
 		if not uses then
-			local toolcaps = itemstack:get_tool_capabilities()
-			local groupcaps = toolcaps.groupcaps
-			for _, v in pairs(groupcaps) do
+			for _, v in pairs(itemstack:get_tool_capabilities().groupcaps) do
 				uses = v.uses
 				break
 			end
