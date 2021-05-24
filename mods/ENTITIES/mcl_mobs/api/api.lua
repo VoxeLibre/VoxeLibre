@@ -92,13 +92,13 @@ local node_snowblock = "mcl_core:snowblock"
 local node_snow      = "mcl_core:snow"
 mobs.fallback_node   = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
 
-local mod_weather     = minetest_get_modpath("mcl_weather") ~= nil
-local mod_explosions  = minetest_get_modpath("mcl_explosions") ~= nil
-local mod_mobspawners = minetest_get_modpath("mcl_mobspawners") ~= nil
-local mod_hunger      = minetest_get_modpath("mcl_hunger") ~= nil
-local mod_worlds      = minetest_get_modpath("mcl_worlds") ~= nil
-local mod_armor       = minetest_get_modpath("mcl_armor") ~= nil
-local mod_experience  = minetest_get_modpath("mcl_experience") ~= nil
+local mod_weather     = minetest_get_modpath("mcl_weather")
+local mod_explosions  = minetest_get_modpath("mcl_explosions")
+local mod_mobspawners = minetest_get_modpath("mcl_mobspawners")
+local mod_hunger      = minetest_get_modpath("mcl_hunger")
+local mod_worlds      = minetest_get_modpath("mcl_worlds")
+local mod_armor       = minetest_get_modpath("mcl_armor")
+local mod_experience  = minetest_get_modpath("mcl_experience")
 
 
 -- random locals I found
@@ -743,7 +743,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 						nametag = string.sub(nametag, 1, MAX_MOB_NAME_LENGTH)
 					end
 					ent.nametag = nametag
-					update_tag(ent)
+					--update_tag(ent)
 				end
 
 				-- if not in creative then take item

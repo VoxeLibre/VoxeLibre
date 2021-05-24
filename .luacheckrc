@@ -47,6 +47,9 @@ read_globals = {
     --GENERAL
     "default",
 
+    --ENTITIES
+    "cmi",
+
     --HUD
     "sfinv", "sfinv_buttons", "unified_inventory", "cmsg", "inventory_plus",
 }

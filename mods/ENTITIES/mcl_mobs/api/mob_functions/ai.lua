@@ -1,12 +1,8 @@
-local math_random = math.random
-local math_pi     = math.pi
-local math_floor  = math.floor
-local math_round  = math.round
+local math = math
+local vector = vector
+local string = string
 
-local vector_multiply = vector.multiply
-local vector_add      = vector.add
-local vector_new      = vector.new
-local vector_distance = vector.distance
+local tonumber = tonumber
 
 local minetest_yaw_to_dir                   = minetest.yaw_to_dir
 local minetest_get_item_group               = minetest.get_item_group
@@ -28,16 +24,16 @@ end
 
 --a simple helper function for rounding
 --http://lua-users.org/wiki/SimpleRound
-function round2(num, numDecimalPlaces)
+local function round2(num, numDecimalPlaces)
 	return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
 end
 
 
 --[[
- _                     _ 
+ _                     _
 | |                   | |
 | |     __ _ _ __   __| |
-| |    / _` | '_ \ / _` | 
+| |    / _` | '_ \ / _` |
 | |___| (_| | | | | (_| |
 \_____/\__,_|_| |_|\__,_|
 ]]--
@@ -50,24 +46,23 @@ local cliff_check = function(self,dtime)
 	end
 
 	local pos = self.object:get_pos()
-    local dir = minetest_yaw_to_dir(self.yaw)
+	local dir = minetest_yaw_to_dir(self.yaw)
 	local collisionbox = self.object:get_properties().collisionbox
 	local radius = collisionbox[4] + 0.5
 
-	dir = vector_multiply(dir,radius)
+	dir = vector.multiply(dir,radius)
 
-	local free_fall, blocker = minetest_line_of_sight(
+	local free_fall = minetest_line_of_sight(
 		{x = pos.x + dir.x, y = pos.y, z = pos.z + dir.z},
 		{x = pos.x + dir.x, y = pos.y - self.fear_height, z = pos.z + dir.z})
 
 	return free_fall
 end
 
-
 -- state switching logic (stand, walk, run, attacks)
 local land_state_list_wandering = {"stand", "walk"}
 
-local land_state_switch = function(self, dtime)
+local function land_state_switch(self, dtime)
 
 	--do math before sure not attacking, following, or running away so continue
 	--doing random walking for mobs if all states are not met
@@ -93,8 +88,8 @@ local land_state_switch = function(self, dtime)
 	end
 
 	--ignore everything else if following
-	if mobs.check_following(self) and 
-	(not self.breed_lookout_timer or (self.breed_lookout_timer and self.breed_lookout_timer == 0)) and 
+	if mobs.check_following(self) and
+	(not self.breed_lookout_timer or (self.breed_lookout_timer and self.breed_lookout_timer == 0)) and
 	(not self.breed_timer or (self.breed_timer and self.breed_timer == 0)) then
 		self.state = "follow"
 		return
@@ -136,7 +131,6 @@ local land_state_execution = function(self,dtime)
 	if not self.object:get_properties() then
 		return
 	end
-	
 
 	--timer to time out looking for mate
 	if self.breed_lookout_timer and self.breed_lookout_timer > 0 then
@@ -176,12 +170,12 @@ local land_state_execution = function(self,dtime)
 			if velocity.y < 0 then
 				--lua is acting really weird so we have to help it
 				if round2(self.object:get_acceleration().y, 1) == -self.gravity then
-					self.object:set_acceleration(vector_new(0,0,0))
+					self.object:set_acceleration(vector.new(0,0,0))
 					mobs.mob_fall_slow(self)
 				end
 			else
 				if round2(self.object:get_acceleration().y, 1) == 0 then
-					self.object:set_acceleration(vector_new(0,-self.gravity,0))
+					self.object:set_acceleration(vector.new(0,-self.gravity,0))
 				end
 			end
 		end
@@ -206,15 +200,13 @@ local land_state_execution = function(self,dtime)
 		end
 
 		mobs.lock_yaw(self)
-	elseif self.state == "follow" then		
-
+	elseif self.state == "follow" then
 		--always look at players
 		mobs.set_yaw_while_following(self)
 
 		--check distance
-		local distance_from_follow_person = vector_distance(self.object:get_pos(), self.following_person:get_pos())
+		local distance_from_follow_person = vector.distance(self.object:get_pos(), self.following_person:get_pos())
 		local distance_2d = mobs.get_2d_distance(self.object:get_pos(), self.following_person:get_pos())
-				
 		--don't push the player if too close
 		--don't spin around randomly
 		if self.follow_distance < distance_from_follow_person and self.minimum_follow_distance < distance_2d then
@@ -240,7 +232,7 @@ local land_state_execution = function(self,dtime)
 			self.walk_timer = math.random(1,6) + math.random()
 
 			--set the mob into a random direction
-			self.yaw = (math_random() * (math.pi * 2))
+			self.yaw = (math.random() * (math.pi * 2))
 		end
 
 		--do animation
@@ -253,15 +245,13 @@ local land_state_execution = function(self,dtime)
 		local node_in_front_of = mobs.jump_check(self)
 
 		if node_in_front_of == 1 then
-
 			mobs.jump(self)
-		
-		--turn if on the edge of cliff
-		--(this is written like this because unlike
-		--jump_check which simply tells the mob to jump
-		--this requires a mob to turn, removing the
-		--ease of a full implementation for it in a single
-		--function)
+			--turn if on the edge of cliff
+			--(this is written like this because unlike
+			--jump_check which simply tells the mob to jump
+			--this requires a mob to turn, removing the
+			--ease of a full implementation for it in a single
+			--function)
 		elseif node_in_front_of == 2 or (self.fear_height ~= 0 and cliff_check(self,dtime)) then
 			--turn 45 degrees if so
 			quick_rotate(self,dtime)
@@ -292,9 +282,7 @@ local land_state_execution = function(self,dtime)
 		local node_in_front_of = mobs.jump_check(self)
 
 		if node_in_front_of == 1 then
-
 			mobs.jump(self)
-		
 		--turn if on the edge of cliff
 		--(this is written like this because unlike
 		--jump_check which simply tells the mob to jump
@@ -342,7 +330,7 @@ local land_state_execution = function(self,dtime)
 			mobs.set_velocity(self, self.walk_velocity)
 
 			--smoosh together basically
-			if vector_distance(self.object:get_pos(), mate:get_pos()) <= self.breed_distance then
+			if vector.distance(self.object:get_pos(), mate:get_pos()) <= self.breed_distance then
 				mobs.set_mob_animation(self, "stand")
 				if self.special_breed_timer == 0 then
 					self.special_breed_timer = 2 --breeding takes 2 seconds
@@ -353,7 +341,7 @@ local land_state_execution = function(self,dtime)
 
 					--pop a baby out, it's a miracle!
 					local baby_pos = vector.divide(vector.add(self.object:get_pos(), mate:get_pos()), 2)
-					local baby_mob = minetest.add_entity(pos, self.name, minetest.serialize({baby = true, grow_up_timer = self.grow_up_goal, bred = true}))
+					minetest.add_entity(baby_pos, self.name, minetest.serialize({baby = true, grow_up_timer = self.grow_up_goal, bred = true}))
 
 					mobs.play_sound_specific(self,"item_drop_pickup")
 
@@ -375,14 +363,13 @@ local land_state_execution = function(self,dtime)
 			mobs.set_velocity(self,0)
 		end
 
-	end	
-	
+	end
 	if float_now then
 		mobs.float(self)
 	else
 		local acceleration = self.object:get_acceleration()
 		if acceleration and acceleration.y == 0 then
-			self.object:set_acceleration(vector_new(0,-self.gravity,0))
+			self.object:set_acceleration(vector.new(0,-self.gravity,0))
 		end
 	end
 end
@@ -391,10 +378,10 @@ end
 
 
 --[[
- _____          _           
-/  ___|        (_)          
-\ `--.__      ___ _ __ ___  
- `--. \ \ /\ / / | '_ ` _ \ 
+ _____          _
+/  ___|        (_)
+\ `--.__      ___ _ __ ___
+ `--. \ \ /\ / / | '_ ` _ \
 /\__/ /\ V  V /| | | | | | |
 \____/  \_/\_/ |_|_| |_| |_|
 ]]--
@@ -416,16 +403,16 @@ end
 --check if a mob needs to turn while swimming
 local swim_turn_check = function(self,dtime)
 
-    local pos = self.object:get_pos()
-    pos.y = pos.y + 0.1
-    local dir = minetest_yaw_to_dir(self.yaw)
+	local pos = self.object:get_pos()
+	pos.y = pos.y + 0.1
+	local dir = minetest_yaw_to_dir(self.yaw)
 
-    local collisionbox = self.object:get_properties().collisionbox
+	local collisionbox = self.object:get_properties().collisionbox
 	local radius = collisionbox[4] + 0.5
 
-    vector_multiply(dir, radius)
+	vector.multiply(dir, radius)
 
-    local test_dir = vector.add(pos,dir)
+	local test_dir = vector.add(pos,dir)
 
 	local green_flag_1 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0
 
@@ -437,11 +424,11 @@ local swim_physics_swapper = function(self,inside_swim_node)
 
 	--should be swimming, gravity is applied, switch to floating
 	if inside_swim_node and self.object:get_acceleration().y ~= 0 then
-		self.object:set_acceleration(vector_new(0,0,0))
+		self.object:set_acceleration(vector.new(0,0,0))
 	--not be swim, gravity isn't applied, switch to falling
 	elseif not inside_swim_node and self.object:get_acceleration().y == 0 then
 		self.pitch = 0
-		self.object:set_acceleration(vector_new(0,-self.gravity,0))
+		self.object:set_acceleration(vector.new(0,-self.gravity,0))
 	end
 end
 
@@ -482,22 +469,17 @@ local swim_state_execution = function(self,dtime)
 			end
 
 			mobs.lock_yaw(self)
-
 		elseif self.state == "swim" then
-
 			self.walk_timer = self.walk_timer - dtime
-
 			--reset the walk timer
 			if self.walk_timer <= 0 then
-	
 				--re-randomize the walk timer
 				self.walk_timer = math.random(1,6) + math.random()
-	
 				--set the mob into a random direction
-				self.yaw = (math_random() * (math.pi * 2))
+				self.yaw = (math.random() * (math.pi * 2))
 
 				--create a truly random pitch, since there is no easy access to pitch math that I can find
-				self.pitch = math_random() * math.random(1,3) * random_pitch_multiplier[math_random(1,2)]
+				self.pitch = math.random() * math.random(1,3) * random_pitch_multiplier[math.random(1,2)]
 			end
 
 			--do animation
@@ -535,14 +517,14 @@ end
 
 
 --[[
-______ _       
-|  ___| |      
-| |_  | |_   _ 
+______ _
+|  ___| |
+| |_  | |_   _
 |  _| | | | | |
 | |   | | |_| |
 \_|   |_|\__, |
-          __/ |
-         |___/ 
+		  __/ |
+		 |___/
 ]]--
 
 -- state switching logic (stand, walk, run, attacks)
@@ -566,16 +548,16 @@ end
 --check if a mob needs to turn while flying
 local fly_turn_check = function(self,dtime)
 
-    local pos = self.object:get_pos()
-    pos.y = pos.y + 0.1
-    local dir = minetest_yaw_to_dir(self.yaw)
+	local pos = self.object:get_pos()
+	pos.y = pos.y + 0.1
+	local dir = minetest_yaw_to_dir(self.yaw)
 
-    local collisionbox = self.object:get_properties().collisionbox
+	local collisionbox = self.object:get_properties().collisionbox
 	local radius = collisionbox[4] + 0.5
 
-    vector_multiply(dir, radius)
+	vector.multiply(dir, radius)
 
-    local test_dir = vector.add(pos,dir)
+	local test_dir = vector.add(pos,dir)
 
 	local green_flag_1 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0
 
@@ -587,11 +569,11 @@ local fly_physics_swapper = function(self,inside_fly_node)
 
 	--should be flyming, gravity is applied, switch to floating
 	if inside_fly_node and self.object:get_acceleration().y ~= 0 then
-		self.object:set_acceleration(vector_new(0,0,0))
+		self.object:set_acceleration(vector.new(0,0,0))
 	--not be fly, gravity isn't applied, switch to falling
 	elseif not inside_fly_node and self.object:get_acceleration().y == 0 then
 		self.pitch = 0
-		self.object:set_acceleration(vector_new(0,-self.gravity,0))
+		self.object:set_acceleration(vector.new(0,-self.gravity,0))
 	end
 end
 
@@ -635,15 +617,13 @@ local fly_state_execution = function(self,dtime)
 
 			--reset the walk timer
 			if self.walk_timer <= 0 then
-	
 				--re-randomize the walk timer
 				self.walk_timer = math.random(1,6) + math.random()
-	
 				--set the mob into a random direction
-				self.yaw = (math_random() * (math.pi * 2))
+				self.yaw = (math.random() * (math.pi * 2))
 
 				--create a truly random pitch, since there is no easy access to pitch math that I can find
-				self.pitch = math_random() * math.random(1,3) * random_pitch_multiplier[math_random(1,2)]
+				self.pitch = math.random() * math.random(1,3) * random_pitch_multiplier[math.random(1,2)]
 			end
 
 			--do animation
@@ -663,9 +643,7 @@ local fly_state_execution = function(self,dtime)
 
 			--enable rotation locking
 			mobs.movement_rotation_lock(self)
-
 		elseif self.state == "attack" then
-		
 			--execute mob attack type
 			--if self.attack_type == "explode" then
 
@@ -697,40 +675,39 @@ end
 
 
 --[[
-   ___                       
-  |_  |                      
-    | |_   _ _ __ ___  _ __  
-    | | | | | '_ ` _ \| '_ \ 
+   ___
+  |_  |
+	| |_   _ _ __ ___  _ __
+	| | | | | '_ ` _ \| '_ \
 /\__/ / |_| | | | | | | |_) |
-\____/ \__,_|_| |_| |_| .__/ 
-                      | |    
-                      |_|    
+\____/ \__,_|_| |_| |_| .__/
+					  | |
+					  |_|
 ]]--
 
 
 --check if a mob needs to turn while jumping
-local jump_turn_check = function(self,dtime)
+--[[local function jump_turn_check(self, dtime)
+	local pos = self.object:get_pos()
+	pos.y = pos.y + 0.1
+	local dir = minetest_yaw_to_dir(self.yaw)
 
-    local pos = self.object:get_pos()
-    pos.y = pos.y + 0.1
-    local dir = minetest_yaw_to_dir(self.yaw)
-
-    local collisionbox = self.object:get_properties().collisionbox
+	local collisionbox = self.object:get_properties().collisionbox
 	local radius = collisionbox[4] + 0.5
 
-    vector_multiply(dir, radius)
+	vector.multiply(dir, radius)
 
-    local test_dir = vector.add(pos,dir)
+	local test_dir = vector.add(pos,dir)
 
 	local green_flag_1 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0
 
-	return(green_flag_1)
-end
+	return green_flag_1
+end]]
 
 -- state switching logic (stand, jump, run, attacks)
 local jump_state_list_wandering = {"stand", "jump"}
 
-local jump_state_switch = function(self, dtime)
+local function jump_state_switch(self, dtime)
 	self.state_timer = self.state_timer - dtime
 	if self.state_timer <= 0 then
 		self.state_timer = math.random(4,10) + math.random()
@@ -739,8 +716,8 @@ local jump_state_switch = function(self, dtime)
 end
 
 -- states are executed here
-local jump_state_execution = function(self,dtime)
-
+local function jump_state_execution(self, dtime)
+	local node_in_front_of = mobs.jump_check(self)
 	local pos = self.object:get_pos()
 	local collisionbox = self.object:get_properties().collisionbox
 	--get the center of the mob
@@ -775,7 +752,7 @@ local jump_state_execution = function(self,dtime)
 			self.walk_timer = math.random(1,6) + math.random()
 
 			--set the mob into a random direction
-			self.yaw = (math_random() * (math.pi * 2))
+			self.yaw = (math.random() * (math.pi * 2))
 		end
 
 		--do animation
@@ -793,15 +770,10 @@ local jump_state_execution = function(self,dtime)
 		mobs.jump_move(self,self.walk_velocity)
 
 	elseif self.state == "run" then
-
 		print("run")
-
 	elseif self.state == "attack" then
-
 		print("attack")
-
-	end	
-	
+	end
 	if float_now then
 		mobs.float(self)
 	end
@@ -811,14 +783,14 @@ end
 
 
 --[[
-___  ___      _         _                 _      
-|  \/  |     (_)       | |               (_)     
-| .  . | __ _ _ _ __   | |     ___   __ _ _  ___ 
+___  ___      _         _                 _
+|  \/  |     (_)       | |               (_)
+| .  . | __ _ _ _ __   | |     ___   __ _ _  ___
 | |\/| |/ _` | | '_ \  | |    / _ \ / _` | |/ __|
-| |  | | (_| | | | | | | |___| (_) | (_| | | (__ 
+| |  | | (_| | | | | | | |___| (_) | (_| | | (__
 \_|  |_/\__,_|_|_| |_| \_____/\___/ \__, |_|\___|
-                                     __/ |       
-                                    |___/        
+									 __/ |
+									|___/
 ]]--
 
 --the main loop
@@ -859,13 +831,13 @@ mobs.mob_step = function(self, dtime)
 	end
 
 	--color modifier which coincides with the pause_timer
-	if self.old_health and self.health < self.old_health then		
+	if self.old_health and self.health < self.old_health then
 		self.object:set_texture_mod("^[colorize:red:120")
 		--fix double death sound
 		if self.health > 0 then
 			mobs.play_sound(self,"damage")
 		end
-	end	
+	end
 	self.old_health = self.health
 
 	--do death logic (animation, poof, explosion, etc)
@@ -916,7 +888,6 @@ mobs.mob_step = function(self, dtime)
 
 		elseif self.breath < self.breath_max then
 			self.breath = self.breath + dtime
-			
 			--clean timer reset
 			if self.breath > self.breath_max then
 				self.breath = self.breath_max
@@ -948,10 +919,6 @@ mobs.mob_step = function(self, dtime)
 		end
 	end
 
-	
-
-	
-
 	--baby grows up
 	if self.baby then
 		--print(self.grow_up_timer)
@@ -968,8 +935,6 @@ mobs.mob_step = function(self, dtime)
 			mobs.baby_grow_up(self)
 		end
 	end
-	
-
 
 	--do custom mob instructions
 	if self.do_custom then
@@ -1015,7 +980,7 @@ mobs.mob_step = function(self, dtime)
 			self.memory = self.memory - dtime
 			--get if memory player is within viewing range
 			if self.attacking and self.attacking:is_player() then
-				local distance = vector_distance(self.object:get_pos(), self.attacking:get_pos())
+				local distance = vector.distance(self.object:get_pos(), self.attacking:get_pos())
 				if distance > self.view_range then
 					self.memory = 0
 				end
@@ -1090,7 +1055,7 @@ mobs.mob_step = function(self, dtime)
 		--jump only (like slimes)
 		if self.jump_only then
 			jump_state_switch(self, dtime)
-			jump_state_execution(self, dtime)		
+			jump_state_execution(self, dtime)
 		--swimming
 		elseif self.swim then
 			swim_state_switch(self, dtime)
@@ -1124,28 +1089,22 @@ mobs.mob_step = function(self, dtime)
 	--overrides absolutely everything
 	--mobs get stuck in cobwebs like players
 	if not self.ignores_cobwebs then
-
 		local pos = self.object:get_pos()
 		local node = pos and minetest_get_node(pos).name
-		
 		if node == "mcl_core:cobweb" then
-
 			--fight the rest of the api
 			if self.object:get_acceleration().y ~= 0 then
-				self.object:set_acceleration(vector_new(0,0,0))
+				self.object:set_acceleration(vector.new(0,0,0))
 			end
-
 			mobs.stick_in_cobweb(self)
-
 			self.was_stuck_in_cobweb = true
-
 		else
 			--do not override other functions
 			if self.was_stuck_in_cobweb == true then
 				--return the mob back to normal
 				self.was_stuck_in_cobweb = nil
 				if self.object:get_acceleration().y == 0 and not self.swim and not self.fly then
-					self.object:set_acceleration(vector_new(0,-self.gravity,0))
+					self.object:set_acceleration(vector.new(0,-self.gravity,0))
 				end
 			end
 		end

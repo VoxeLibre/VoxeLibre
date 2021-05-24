@@ -1,8 +1,11 @@
 
 -- lib_mount by Blert2112 (edited by TenPlus1)
 
-local enable_crash = false
-local crash_threshold = 6.5 -- ignored if enable_crash=false
+--local enable_crash = false
+--local crash_threshold = 6.5 -- ignored if enable_crash=false
+
+local math = math
+local vector = vector
 
 ------------------------------------------------------------------------------
 
@@ -10,7 +13,7 @@ local crash_threshold = 6.5 -- ignored if enable_crash=false
 -- Helper functions
 --
 
-local node_ok = function(pos, fallback)
+--[[local function node_ok(pos, fallback)
 
 	fallback = fallback or mobs.fallback_node
 
@@ -21,10 +24,10 @@ local node_ok = function(pos, fallback)
 	end
 
 	return {name = fallback}
-end
+end]]
 
 
-local function node_is(pos)
+--[[local function node_is(pos)
 
 	local node = node_ok(pos)
 
@@ -45,7 +48,7 @@ local function node_is(pos)
 	end
 
 	return "other"
-end
+end]]
 
 
 local function get_sign(i)
@@ -60,13 +63,11 @@ local function get_sign(i)
 end
 
 
-local function get_velocity(v, yaw, y)
-
+--[[local function get_velocity(v, yaw, y)
 	local x = -math.sin(yaw) * v
 	local z =  math.cos(yaw) * v
-
 	return {x = x, y = y, z = z}
-end
+end]]
 
 
 local function get_v(v)
@@ -172,7 +173,7 @@ function mobs.detach(player, offset)
 
 	--pos = {x = pos.x + offset.x, y = pos.y + 0.2 + offset.y, z = pos.z + offset.z}
 
-	player:add_velocity(vector.new(math.random(-6,6),math.random(5,8),math.random(-6,6))) --throw the rider off
+	player:add_velocity(vector.new(math.random(-6,6), math.random(5,8), math.random(-6,6))) --throw the rider off
 
 	--[[
 	minetest.after(0.1, function(name, pos)
@@ -187,13 +188,13 @@ end
 
 function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 
-	local rot_view = 0
+	--local rot_view = 0
 
-	if entity.player_rotation.y == 90 then
-		rot_view = math.pi/2
-	end
+	--if entity.player_rotation.y == 90 then
+	--	rot_view = math.pi/2
+	--end
 
-	local acce_y = 0
+	--local acce_y = 0
 	local velo = entity.object:get_velocity()
 
 	entity.v = get_v(velo) * get_sign(entity.v)
@@ -388,7 +389,6 @@ end
 -- directional flying routine by D00Med (edited by TenPlus1)
 
 function mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_anim)
-
 	if true then
 		print("succ")
 		return
