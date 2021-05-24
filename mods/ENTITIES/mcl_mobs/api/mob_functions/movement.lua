@@ -22,7 +22,7 @@ local DEFAULT_CLIMB_SPEED = 3
 
 mobs.stick_in_cobweb = function(self)
 	local current_velocity = self.object:get_velocity()
-	
+
 	local goal_velocity = vector_multiply(vector_normalize(current_velocity), 0.4)
 
 	goal_velocity.y = -0.5
@@ -38,8 +38,11 @@ end
 --this is a generic float function
 mobs.float = function(self)
 
-	if self.object:get_acceleration().y ~= 0 then
+	local acceleration = self.object:get_acceleration()
+	if acceleration and acceleration.y ~= 0 then
 		self.object:set_acceleration(vector_new(0,0,0))
+	else
+		return
 	end
 
 	local current_velocity = self.object:get_velocity()
@@ -86,10 +89,10 @@ end
 
 
 --[[
- _                     _ 
+ _                     _
 | |                   | |
 | |     __ _ _ __   __| |
-| |    / _` | '_ \ / _` | 
+| |    / _` | '_ \ / _` |
 | |___| (_| | | | | (_| |
 \_____/\__,_|_| |_|\__,_|
 ]]
@@ -100,7 +103,7 @@ end
 --internal = lua (self.yaw)
 --engine = c++ (self.object:get_yaw())
 mobs.set_velocity = function(self, v)
-	
+
 	local yaw = (self.yaw or 0)
 
 	local current_velocity = self.object:get_velocity()
@@ -152,7 +155,7 @@ mobs.jump = function(self, velocity)
 	--fallback velocity to allow modularity
     velocity = velocity or DEFAULT_JUMP_HEIGHT
 
-    self.object:add_velocity(vector_new(0,velocity,0))    
+    self.object:add_velocity(vector_new(0,velocity,0))
 end
 
 --make mobs fall slowly
@@ -188,10 +191,10 @@ end
 
 
 --[[
- _____          _           
-/  ___|        (_)          
-\ `--.__      ___ _ __ ___  
- `--. \ \ /\ / / | '_ ` _ \ 
+ _____          _
+/  ___|        (_)
+\ `--.__      ___ _ __ ___
+ `--. \ \ /\ / / | '_ ` _ \
 /\__/ /\ V  V /| | | | | | |
 \____/  \_/\_/ |_|_| |_| |_|
 ]]--
@@ -221,7 +224,7 @@ mobs.flop = function(self, velocity)
 	local final_additional_force = vector_multiply(minetest_yaw_to_dir(dir), force)
 
 	--place in the "flop" velocity to make the mob flop
-	final_additional_force.y = velocity	
+	final_additional_force.y = velocity
 
     self.object:add_velocity(final_additional_force)
 
@@ -235,7 +238,7 @@ end
 --internal = lua (self.yaw)
 --engine = c++ (self.object:get_yaw())
 mobs.set_swim_velocity = function(self, v)
-	
+
 	local yaw = (self.yaw or 0)
 	local pitch = (self.pitch or 0)
 
@@ -265,14 +268,14 @@ mobs.set_swim_velocity = function(self, v)
 end
 
 --[[
-______ _       
-|  ___| |      
-| |_  | |_   _ 
+______ _
+|  ___| |
+| |_  | |_   _
 |  _| | | | | |
 | |   | | |_| |
 \_|   |_|\__, |
           __/ |
-         |___/ 
+         |___/
 ]]--
 
 -- move mob in facing direction
@@ -280,7 +283,7 @@ ______ _
 --internal = lua (self.yaw)
 --engine = c++ (self.object:get_yaw())
 mobs.set_fly_velocity = function(self, v)
-	
+
 	local yaw = (self.yaw or 0)
 	local pitch = (self.pitch or 0)
 
@@ -332,14 +335,14 @@ end
 
 
 --[[
-   ___                       
-  |_  |                      
-    | |_   _ _ __ ___  _ __  
-    | | | | | '_ ` _ \| '_ \ 
+   ___
+  |_  |
+    | |_   _ _ __ ___  _ __
+    | | | | | '_ ` _ \| '_ \
 /\__/ / |_| | | | | | | |_) |
-\____/ \__,_|_| |_| |_| .__/ 
-                      | |    
-                      |_|    
+\____/ \__,_|_| |_| |_| .__/
+                      | |
+                      |_|
 ]]--
 
 --special mob jump movement
