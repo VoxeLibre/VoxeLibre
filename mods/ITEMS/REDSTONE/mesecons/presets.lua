@@ -96,12 +96,12 @@ local function rules_from_dir(ruleset, dir)
 	if dir.z == -1 then return ruleset.zn end
 end
 
-mesecon.rules.buttonlike_get = function(node)
+function mesecon.rules.buttonlike_get(node)
 	local dir = minetest.facedir_to_dir(node.param2)
 	return rules_from_dir(rules_buttonlike, dir)
 end
 
-mesecon.rules.wallmounted_get = function(node)
+function mesecon.rules.wallmounted_get(node)
 	local dir = minetest.wallmounted_to_dir(node.param2)
 	return rules_from_dir(rules_wallmounted, dir)
 end

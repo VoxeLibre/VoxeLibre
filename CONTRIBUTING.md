@@ -1,5 +1,5 @@
 # Contributing to MineClone 2
-So you want to MineClone 2?
+So you want to contribute to MineClone 2?
 Wow, thank you! :-)
 
 But first, some things to note:

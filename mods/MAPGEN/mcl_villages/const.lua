@@ -1,5 +1,5 @@
 -- switch for debugging
-settlements.debug = function(message)
+function settlements.debug(message)
 	-- minetest.chat_send_all(message)
 	-- minetest.log("warning", "[mcl_villages] "..message)
 	minetest.log("verbose", "[mcl_villages] "..message)

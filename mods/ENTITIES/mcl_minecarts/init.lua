@@ -496,7 +496,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 end
 
 -- Place a minecart at pointed_thing
-mcl_minecarts.place_minecart = function(itemstack, pointed_thing, placer)
+function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	if not pointed_thing.type == "node" then
 		return
 	end
@@ -540,7 +540,7 @@ mcl_minecarts.place_minecart = function(itemstack, pointed_thing, placer)
 end
 
 
-local register_craftitem = function(itemstring, entity_id, description, tt_help, longdesc, usagehelp, icon, creative)
+local function register_craftitem(itemstring, entity_id, description, tt_help, longdesc, usagehelp, icon, creative)
 	entity_mapping[itemstring] = entity_id
 
 	local groups = { minecart = 1, transport = 1 }
