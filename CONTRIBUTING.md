@@ -46,6 +46,28 @@ Your commit names should be relatively descriptive, e.g. when saying "Fix #issue
 
 Contributors will be credited in `CREDITS.md`.
 
+## Code Style
+
+Each mod must provide `mod.conf`.
+Each mod which add API functions should store functions inside a global table named like the mod.
+Object oriented API shoud be avoided e.g.:`function mobs.register_mod(self)`
+Functions should be defined in this way:
+```
+function mcl_xyz.stuff(param) end
+```
+Insteed of this way:
+```
+mcl_xyz.stuff = function(param) end
+```
+Indentation must be unified, more likely with tabs.
+
+Time sensitive mods should make a local copy of most used API functions to improve performances.
+```
+local vector = vector
+local get_node = minetest.get_node
+```
+
+
 ## Features > 1.12
 
 If you want to make a feature that was added in a Minecraft version later than 1.12, you should fork MineClone5 (mineclone5 branch in the repository) and add your changes to this.
