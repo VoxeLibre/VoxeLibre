@@ -426,13 +426,9 @@ minetest.register_entity(":__builtin:item", {
 		if itemtable then
 			itemname = stack:to_table().name
 		end
-		local item_texture = nil
-		local item_type = ""
 		local glow
 		local def = minetest.registered_items[itemname]
 		if def then
-			item_texture = def.inventory_image
-			item_type = def.type
 			description = def.description
 			glow = def.light_source
 		end

@@ -1,5 +1,5 @@
 local minetest_line_of_sight = minetest.line_of_sight
-local minetest_dir_to_yaw    = minetest.dir_to_yaw
+--local minetest_dir_to_yaw    = minetest.dir_to_yaw
 local minetest_yaw_to_dir    = minetest.yaw_to_dir
 local minetest_get_node      = minetest.get_node
 local minetest_get_item_group = minetest.get_item_group
@@ -18,19 +18,16 @@ local table_copy = table.copy
 local math_abs = math.abs
 
 -- default function when mobs are blown up with TNT
-local do_tnt = function(obj, damage)
-
+--[[local function do_tnt(obj, damage)
 	obj.object:punch(obj.object, 1.0, {
 		full_punch_interval = 1.0,
 		damage_groups = {fleshy = damage},
 	}, nil)
-
 	return false, true, {}
-end
+end]]
 
 --a fast function to be able to detect only players without using objects_in_radius
 mobs.detect_closest_player_within_radius = function(self, line_of_sight, radius, object_height_adder)
-	
 	local pos1 = self.object:get_pos()
 	local players_in_area = {}
 	local winner_player = nil
@@ -49,7 +46,7 @@ mobs.detect_closest_player_within_radius = function(self, line_of_sight, radius,
 					--must add eye height or stuff breaks randomly because of
 					--seethrough nodes being a blocker (like grass)
 					if minetest_line_of_sight(
-							vector_new(pos1.x, pos1.y + object_height_adder, pos1.z), 
+							vector_new(pos1.x, pos1.y + object_height_adder, pos1.z),
 							vector_new(pos2.x, pos2.y + player:get_properties().eye_height, pos2.z)
 						) then
 						players_detected = players_detected + 1
@@ -108,7 +105,7 @@ mobs.jump_check = function(self,dtime)
     if green_flag_1 and green_flag_2 then
 		--can jump over node
         return(1)
-	elseif green_flag_1 and not green_flag_2 then 
+	elseif green_flag_1 and not green_flag_2 then
 		--wall in front of mob
 		return(2)
     end
@@ -180,15 +177,10 @@ end
 -- check if within physical map limits (-30911 to 30927)
 -- within_limits, wmin, wmax = nil, -30913, 30928
 mobs.within_limits = function(pos, radius)
+    local wmin, wmax
 	if mcl_vars then
 		if mcl_vars.mapgen_edge_min and mcl_vars.mapgen_edge_max then
 			wmin, wmax = mcl_vars.mapgen_edge_min, mcl_vars.mapgen_edge_max
-			within_limits = function(pos, radius)
-				return pos
-					and (pos.x - radius) > wmin and (pos.x + radius) < wmax
-					and (pos.y - radius) > wmin and (pos.y + radius) < wmax
-					and (pos.z - radius) > wmin and (pos.z + radius) < wmax
-			end
 		end
 	end
 	return pos

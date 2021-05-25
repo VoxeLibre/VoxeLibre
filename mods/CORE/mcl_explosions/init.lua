@@ -13,9 +13,7 @@ under the LGPLv2.1 license.
 mcl_explosions = {}
 
 local mod_fire = minetest.get_modpath("mcl_fire") ~= nil
-local CONTENT_FIRE = minetest.get_content_id("mcl_fire:fire")
-
-local S = minetest.get_translator("mcl_explosions")
+--local CONTENT_FIRE = minetest.get_content_id("mcl_fire:fire")
 
 local hash_node_position = minetest.hash_node_position
 local get_objects_inside_radius = minetest.get_objects_inside_radius
@@ -174,14 +172,11 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 
 	local ystride = (emax.x - emin_x + 1)
 	local zstride = ystride * (emax.y - emin_y + 1)
-	local pos_x = pos.x
-	local pos_y = pos.y
-	local pos_z = pos.z
 
-	local area = VoxelArea:new {
+	--[[local area = VoxelArea:new {
 		MinEdge = emin,
 		MaxEdge = emax
-	}
+	}]]
 	local data = vm:get_data()
 	local destroy = {}
 

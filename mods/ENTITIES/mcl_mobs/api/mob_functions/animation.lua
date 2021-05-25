@@ -1,7 +1,7 @@
-local math_pi     = math.pi
-local math_floor  = math.floor
-local math_random = math.random
-local HALF_PI     = math_pi/2
+local math = math
+local vector = vector
+
+local HALF_PI     = math.pi/2
 
 
 local vector_direction = vector.direction
@@ -48,8 +48,7 @@ mobs.set_mob_animation = function(self, anim, fixed_frame)
 		self.animation[anim .. "_speed"] or self.animation.speed_normal or 15,
 		0, self.animation[anim .. "_loop"] ~= false)
 
-
-	self.current_animation = anim	
+	self.current_animation = anim
 end
 
 
@@ -65,14 +64,14 @@ mobs.death_effect = function(pos, yaw, collisionbox, rotate)
 		max = { x = 0.5, y = 0.5, z = 0.5 }
 	end
 	if rotate then
-		min = vector.rotate(min, {x=0, y=yaw, z=math_pi/2})
-		max = vector.rotate(max, {x=0, y=yaw, z=math_pi/2})
+		min = vector.rotate(min, {x=0, y=yaw, z=math.pi/2})
+		max = vector.rotate(max, {x=0, y=yaw, z=math.pi/2})
 		min, max = vector.sort(min, max)
 		min = vector.multiply(min, 0.5)
 		max = vector.multiply(max, 0.5)
 	end
 
-	minetest_add_particlespawner({
+	minetest.add_particlespawner({
 		amount = 50,
 		time = 0.001,
 		minpos = vector.add(pos, min),
@@ -88,7 +87,7 @@ mobs.death_effect = function(pos, yaw, collisionbox, rotate)
 		texture = "mcl_particles_mob_death.png^[colorize:#000000:255",
 	})
 
-	minetest_sound_play("mcl_mobs_mob_poof", {
+	minetest.sound_play("mcl_mobs_mob_poof", {
 		pos = pos,
 		gain = 1.0,
 		max_hear_distance = 8,
@@ -99,7 +98,6 @@ end
 --this allows auto facedir rotation while making it so mobs
 --don't look like wet noodles flopping around
 mobs.movement_rotation_lock = function(self)
-	
 	local current_engine_yaw = self.object:get_yaw()
 	local current_lua_yaw = self.yaw
 

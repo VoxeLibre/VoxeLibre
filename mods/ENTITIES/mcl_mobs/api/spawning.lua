@@ -9,9 +9,9 @@ local get_objects_inside_radius    = minetest.get_objects_inside_radius
 
 local math_random    = math.random
 local math_floor     = math.floor
-local max            = math.max
+--local max            = math.max
 
-local vector_distance = vector.distance
+--local vector_distance = vector.distance
 local vector_new      = vector.new
 local vector_floor    = vector.floor
 
@@ -573,10 +573,10 @@ if mobs_spawn then
 							local spawning_position = spawning_position_list[math_random(1,#spawning_position_list)]
 
 							--Prevent strange behavior   --- this is commented out: /too close to player --fixed with inner circle
-							if not spawning_position then --  or vector_distance(player_pos, spawning_position) < 15 
+							if not spawning_position then --  or vector_distance(player_pos, spawning_position) < 15
 								break
 							end
-							
+
 							--hard code mob limit in area to 5 for now
 							if count_mobs(spawning_position) >= 5 then
 								break
@@ -606,7 +606,7 @@ if mobs_spawn then
 							local is_lava  = get_item_group(gotten_node, "lava") ~= 0
 
 							local mob_def = nil
-							
+
 							--create a disconnected clone of the spawn dictionary
 							--prevents memory leak
 							local mob_library_worker_table = table_copy(spawn_dictionary)
