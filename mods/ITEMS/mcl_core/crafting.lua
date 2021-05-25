@@ -4,7 +4,7 @@
 -- Crafting definition
 --
 
-local craft_planks = function(output, input)
+local function craft_planks(output, input)
 	minetest.register_craft({
 		output = "mcl_core:"..output.."wood 4",
 		recipe = {
