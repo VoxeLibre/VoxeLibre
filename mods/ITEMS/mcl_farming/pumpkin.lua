@@ -158,8 +158,7 @@ if minetest.get_modpath("mcl_armor") then
 	pumpkin_face_base_def._on_unequip = remove_pumpkin_hud
 	
 	minetest.register_on_joinplayer(function(player)
-		pumpkin_head = player:get_inventory():get_stack("armor", 2):get_name() == "mcl_farming:pumpkin_face"
-		if pumpkin_head then
+		if player:get_inventory():get_stack("armor", 2):get_name() == "mcl_farming:pumpkin_face" then
 			add_pumpkin_hud(player)
 		end
 	end)
