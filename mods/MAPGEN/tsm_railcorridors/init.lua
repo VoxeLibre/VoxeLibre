@@ -114,7 +114,8 @@ if not tsm_railcorridors.nodes.corridor_woods_function then
 end
 
 -- Random Perlin noise generators
-local pr, pr_carts, pr_treasures, pr_deco, webperlin_major, webperlin_minor
+local pr, pr_carts, pr_deco, webperlin_major, webperlin_minor
+--local pr_treasures
 
 local function InitRandomizer(seed)
 	-- Mostly used for corridor gen.
@@ -124,7 +125,7 @@ local function InitRandomizer(seed)
 	-- Separate randomizer for carts because spawning carts is very timing-dependent
 	pr_carts = PseudoRandom(seed-654)
 	-- Chest contents randomizer
-	pr_treasures = PseudoRandom(seed+777)
+	--pr_treasures = PseudoRandom(seed+777)
 	-- Used for cobweb generation, both noises have to reach a high value for cobwebs to appear
 	webperlin_major = PerlinNoise(934, 3, 0.6, 500)
 	webperlin_minor = PerlinNoise(834, 3, 0.6, 50)
