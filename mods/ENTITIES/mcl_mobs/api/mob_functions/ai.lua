@@ -416,7 +416,7 @@ local swim_turn_check = function(self,dtime)
 
 	local green_flag_1 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0
 
-	return(green_flag_1)
+	return green_flag_1
 end
 
 --this is to swap the built in engine acceleration modifier
@@ -561,7 +561,7 @@ local fly_turn_check = function(self,dtime)
 
 	local green_flag_1 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0
 
-	return(green_flag_1)
+	return green_flag_1
 end
 
 --this is to swap the built in engine acceleration modifier

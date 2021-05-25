@@ -501,7 +501,7 @@ local position_calculation = function(pos)
 		pos.z = pos.z + math_random(inner,outer)*int[math_random(1,2)]
 		pos.x = pos.x + math_random(-outer,outer)
 	end
-	return(pos)
+	return pos
 end
 
 --[[

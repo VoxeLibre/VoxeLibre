@@ -140,9 +140,7 @@ mobs.look_for_mate = function(self)
 			winner_mate = mate
 		end
 	end
-
-	return(winner_mate)
-
+	return winner_mate
 end
 
 --make the baby grow up

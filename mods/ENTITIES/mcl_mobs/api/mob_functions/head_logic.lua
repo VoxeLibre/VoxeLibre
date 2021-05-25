@@ -3,7 +3,7 @@ local vector = vector
 
 --converts yaw to degrees
 local degrees = function(yaw)
-	return(yaw*180.0/math.pi)
+	return yaw*180.0/math.pi
 end
 
 mobs.do_head_logic = function(self,dtime)

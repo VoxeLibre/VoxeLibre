@@ -157,7 +157,7 @@ local calculate_pitch = function(self)
 		return false
 	end
 
-    return(minetest_dir_to_yaw(vector_new(vector_distance(vector_new(pos.x,0,pos.z),vector_new(pos2.x,0,pos2.z)),0,pos.y - pos2.y)) + HALF_PI)
+    return minetest_dir_to_yaw(vector_new(vector_distance(vector_new(pos.x,0,pos.z),vector_new(pos2.x,0,pos2.z)),0,pos.y - pos2.y)) + HALF_PI
 end
 
 --this is a helper function used to make mobs pitch rotation dynamically flow when flying/swimming
