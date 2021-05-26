@@ -456,12 +456,7 @@ function mcl_util.calculate_durability(itemstack)
 				end
 			end
 		end
-		if not uses then
-			for _, v in pairs(itemstack:get_tool_capabilities().groupcaps) do
-				uses = v.uses
-				break
-			end
-		end
+		uses = uses or (next(itemstack:get_tool_capabilities().groupcaps) or {}).uses
 	end
 
 	return uses or 0
