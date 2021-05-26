@@ -33,9 +33,9 @@ def get_errors(file):
             try:
                 _, translated = re.split(r'[^@]=', line)
             except:
-                print("!> Too many =s in line:", line)
+                print("!> Too many '='s in line:", line)
                 continue
-            for word in re.split(r'[\W ]',translated): 
+            for word in re.split(r'\@.|[\W ]',translated): 
                 if not hs.spell(word):
                     result.add(word)
 
