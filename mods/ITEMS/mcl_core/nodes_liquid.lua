@@ -212,7 +212,7 @@ S("• When lava is directly above water, the water turns into stone."),
 	_mcl_hardness = -1,
 })
 
-local emit_lava_particle = function(pos)
+local function emit_lava_particle(pos)
 	local node = minetest.get_node(pos)
 	if minetest.get_item_group(node.name, "lava_source") == 0 then
 		return
