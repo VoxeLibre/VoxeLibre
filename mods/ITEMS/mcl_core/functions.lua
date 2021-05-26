@@ -53,7 +53,7 @@ minetest.register_abm({
 --
 
 -- Functions
-mcl_core.grow_cactus = function(pos, node)
+function mcl_core.grow_cactus(pos, node)
 	pos.y = pos.y-1
 	local name = minetest.get_node(pos).name
 	if minetest.get_item_group(name, "sand") ~= 0 then
@@ -71,7 +71,7 @@ mcl_core.grow_cactus = function(pos, node)
 	end
 end
 
-mcl_core.grow_reeds = function(pos, node)
+function mcl_core.grow_reeds(pos, node)
 	pos.y = pos.y-1
 	local name = minetest.get_node(pos).name
 	if minetest.get_item_group(name, "soil_sugarcane") ~= 0 then
@@ -114,8 +114,8 @@ local function drop_attached_node(p)
 end
 
 -- Helper function for node actions for liquid flow
-local liquid_flow_action = function(pos, group, action)
-	local check_detach = function(pos, xp, yp, zp)
+local function liquid_flow_action(pos, group, action)
+	local function check_detach(pos, xp, yp, zp)
 		local p = {x=pos.x+xp, y=pos.y+yp, z=pos.z+zp}
 		local n = minetest.get_node_or_nil(p)
 		if not n then
@@ -594,13 +594,13 @@ function mcl_core.generate_v6_spruce_tree(pos)
 	vm:write_to_map()
 end
 
-mcl_core.generate_spruce_tree = function(pos)
+function mcl_core.generate_spruce_tree(pos)
 	local r = math.random(1, 3)
 	local path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_spruce_"..r..".mts"
 	minetest.place_schematic({ x = pos.x - 3, y = pos.y - 1, z = pos.z - 3 }, path, "0", nil, false)
 end
 
-mcl_core.generate_huge_spruce_tree = function(pos)
+function mcl_core.generate_huge_spruce_tree(pos)
 	local r1 = math.random(1, 2)
 	local r2 = math.random(1, 4)
 	local path
@@ -911,7 +911,7 @@ minetest.register_lbm({
 --------------------------
 local treelight = 9
 
-local sapling_grow_action = function(tree_id, soil_needed, one_by_one, two_by_two, sapling)
+local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two, sapling)
 	return function(pos)
 		local meta = minetest.get_meta(pos)
 		if meta:get("grown") then return end
@@ -953,7 +953,7 @@ local sapling_grow_action = function(tree_id, soil_needed, one_by_one, two_by_tw
 			-- This sapling grows in a special way when there are 4 saplings in a 2×2 pattern
 			if two_by_two then
 				-- Check 8 surrounding saplings and try to find a 2×2 pattern
-				local is_sapling = function(pos, sapling)
+				local function is_sapling(pos, sapling)
 					return minetest.get_node(pos).name == sapling
 				end
 				local p2 = {x=pos.x+1, y=pos.y, z=pos.z}
@@ -1040,7 +1040,7 @@ local grow_birch = sapling_grow_action(BIRCH_TREE_ID, 1, true, false)
 -- pos: Position
 -- node: Node table of the node at this position, from minetest.get_node
 -- Returns true on success and false on failure
-mcl_core.grow_sapling = function(pos, node)
+function mcl_core.grow_sapling(pos, node)
 	local grow
 	if node.name == "mcl_core:sapling" then
 		grow = grow_oak
@@ -1245,7 +1245,7 @@ minetest.register_abm({
 		end
 
 		-- Add vines below pos (if empty)
-		local spread_down = function(origin, target, dir, node)
+		local function spread_down(origin, target, dir, node)
 			if math.random(1, 2) == 1 then
 				if minetest.get_node(target).name == "air" then
 					minetest.add_node(target, {name = "mcl_core:vine", param2 = node.param2})
@@ -1254,7 +1254,7 @@ minetest.register_abm({
 		end
 
 		-- Add vines above pos if it is backed up
-		local spread_up = function(origin, target, dir, node)
+		local function spread_up(origin, target, dir, node)
 			local vines_in_area = minetest.find_nodes_in_area({x=origin.x-4, y=origin.y-1, z=origin.z-4}, {x=origin.x+4, y=origin.y+1, z=origin.z+4}, "mcl_core:vine")
 			-- Less then 4 vines blocks around the ticked vines block (remember the ticked block is counted by above function as well)
 			if #vines_in_area < 5 then
@@ -1273,7 +1273,7 @@ minetest.register_abm({
 			end
 		end
 
-		local spread_horizontal = function(origin, target, dir, node)
+		local function spread_horizontal(origin, target, dir, node)
 			local vines_in_area = minetest.find_nodes_in_area({x=origin.x-4, y=origin.y-1, z=origin.z-4}, {x=origin.x+4, y=origin.y+1, z=origin.z+4}, "mcl_core:vine")
 			-- Less then 4 vines blocks around the ticked vines block (remember the ticked block is counted by above function as well)
 			if #vines_in_area < 5 then
@@ -1310,7 +1310,7 @@ minetest.register_abm({
 })
 
 -- Returns true of the node supports vines
-mcl_core.supports_vines = function(nodename)
+function mcl_core.supports_vines(nodename)
 	local def = minetest.registered_nodes[nodename]
 	-- Rules: 1) walkable 2) full cube
 	return def.walkable and
@@ -1530,7 +1530,7 @@ end
 --
 -- The snowable nodes also MUST have _mcl_snowed defined to contain the name
 -- of the snowed node.
-mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, tiles, sounds, clear_colorization, desc)
+function mcl_core.register_snowed_node(itemstring_snowed, itemstring_clear, tiles, sounds, clear_colorization, desc)
 	local def = table.copy(minetest.registered_nodes[itemstring_clear])
 	local create_doc_alias
 	if def.description then
@@ -1593,7 +1593,7 @@ end
 -- Reverts a snowed dirtlike node at pos to its original snow-less form.
 -- This function assumes there is no snow cover node above. This function
 -- MUST NOT be called if there is a snow cover node above pos.
-mcl_core.clear_snow_dirt = function(pos, node)
+function mcl_core.clear_snow_dirt(pos, node)
 	local def = minetest.registered_nodes[node.name]
 	if def._mcl_snowless then
 		minetest.swap_node(pos, {name = def._mcl_snowless, param2=node.param2})
@@ -1605,7 +1605,7 @@ end
 
 -- on_construct
 -- Makes constructed snowable node snowed if placed below a snow cover node.
-mcl_core.on_snowable_construct = function(pos)
+function mcl_core.on_snowable_construct(pos)
 	-- Myself
 	local node = minetest.get_node(pos)
 
@@ -1633,7 +1633,7 @@ end
 
 -- on_construct
 -- Makes snowable node below snowed.
-mcl_core.on_snow_construct = function(pos)
+function mcl_core.on_snow_construct(pos)
 	local npos = {x=pos.x, y=pos.y-1, z=pos.z}
 	local node = minetest.get_node(npos)
 	local def = minetest.registered_nodes[node.name]
@@ -1643,7 +1643,7 @@ mcl_core.on_snow_construct = function(pos)
 end
 -- after_destruct
 -- Clears snowed dirtlike node below.
-mcl_core.after_snow_destruct = function(pos)
+function mcl_core.after_snow_destruct(pos)
 	local nn = minetest.get_node(pos).name
 	-- No-op if snow was replaced with snow
 	if minetest.get_item_group(nn, "snow_cover") == 1 then
