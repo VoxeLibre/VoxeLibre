@@ -1,17 +1,22 @@
-local S = minetest.get_translator("hudbars")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+
+local S = minetest.get_translator(modname)
 local N = function(s) return s end
 
-hb = {}
+local math = math
+local table = table
 
-hb.hudtables = {}
-
--- number of registered HUD bars
-hb.hudbars_count = 0
-
--- table which records which HUD bar slots have been “registered” so far; used for automatic positioning
-hb.registered_slots = {}
-
-hb.settings = {}
+hb = {
+    hudtables = {},
+    -- number of registered HUD bars
+    hudbars_count = 0,
+    -- table which records which HUD bar slots have been “registered” so far; used for automatic positioning
+    registered_slots = {},
+    settings = {},
+    -- Table which contains all players with active default HUD bars (only for internal use)
+    players = {},
+}
 
 function hb.load_setting(sname, stype, defaultval, valid_values)
 	local sval
@@ -45,7 +50,8 @@ function hb.load_setting(sname, stype, defaultval, valid_values)
 end
 
 -- Load default settings
-dofile(minetest.get_modpath("hudbars").."/default_settings.lua")
+dofile(modpath.."/default_settings.lua")
+
 if minetest.get_modpath("mcl_experience") and not minetest.is_creative_enabled("") then
 	-- reserve some space for experience bar:
 	hb.settings.start_offset_left.y = hb.settings.start_offset_left.y - 20
@@ -84,9 +90,6 @@ local function make_label(format_string, format_string_config, label, start_valu
 	end
 	return ret
 end
-
--- Table which contains all players with active default HUD bars (only for internal use)
-hb.players = {}
 
 function hb.value_to_barlength(value, max)
 	if max == 0 then
