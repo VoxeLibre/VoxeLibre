@@ -50,7 +50,7 @@ Contributors will be credited in `CREDITS.md`.
 
 Each mod must provide `mod.conf`.
 Each mod which add API functions should store functions inside a global table named like the mod.
-Object oriented API shoud be avoided e.g.:`function mobs.register_mod(self)`
+Public functions should not use self references but rather just access the table directly.
 Functions should be defined in this way:
 ```
 function mcl_xyz.stuff(param) end
