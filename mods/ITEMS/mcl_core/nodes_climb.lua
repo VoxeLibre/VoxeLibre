@@ -1,7 +1,7 @@
 -- Climbable nodes
 local S = minetest.get_translator("mcl_core")
 
-local rotate_climbable = function(pos, node, user, mode)
+local function rotate_climbable(pos, node, user, mode)
 	if mode == screwdriver.ROTATE_FACE then
 		local r = screwdriver.rotate.wallmounted(pos, node, mode)
 		node.param2 = r
