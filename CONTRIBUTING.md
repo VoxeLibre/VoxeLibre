@@ -1,5 +1,5 @@
 # Contributing to MineClone 2
-So you want to MineClone 2?
+So you want to contribute to MineClone 2?
 Wow, thank you! :-)
 
 But first, some things to note:
@@ -45,6 +45,28 @@ We mostly use plain merging rather than rebasing or squash merging.
 Your commit names should be relatively descriptive, e.g. when saying "Fix #issueid", the commit message should also contain the title of the issue.
 
 Contributors will be credited in `CREDITS.md`.
+
+## Code Style
+
+Each mod must provide `mod.conf`.
+Each mod which add API functions should store functions inside a global table named like the mod.
+Public functions should not use self references but rather just access the table directly.
+Functions should be defined in this way:
+```
+function mcl_xyz.stuff(param) end
+```
+Insteed of this way:
+```
+mcl_xyz.stuff = function(param) end
+```
+Indentation must be unified, more likely with tabs.
+
+Time sensitive mods should make a local copy of most used API functions to improve performances.
+```
+local vector = vector
+local get_node = minetest.get_node
+```
+
 
 ## Features > 1.12
 

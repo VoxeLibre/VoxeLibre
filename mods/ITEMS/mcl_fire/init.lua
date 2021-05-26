@@ -522,7 +522,7 @@ end
 -- * pointed_thing: Pointed thing to ignite
 -- * player: Player who sets fire or nil if nobody
 -- * allow_on_fire: If false, can't ignite fire on fire (default: true)
-mcl_fire.set_fire = function(pointed_thing, player, allow_on_fire)
+function mcl_fire.set_fire(pointed_thing, player, allow_on_fire)
 	local pname
 	if player == nil then
 		pname = ""

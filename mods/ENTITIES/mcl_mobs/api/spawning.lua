@@ -167,7 +167,7 @@ Overworld regular:
 
 
 -- count how many mobs are in an area
-local count_mobs = function(pos)
+local function count_mobs(pos)
 	local num = 0
 	for _,object in pairs(get_objects_inside_radius(pos, aoc_range)) do
 		if object and object:get_luaentity() and object:get_luaentity()._cmi_is_mob then
@@ -242,8 +242,7 @@ function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_ligh
 	end
 
 	--[[
-	local spawn_action
-	spawn_action = function(pos, node, active_object_count, active_object_count_wider, name)
+	local function spawn_action(pos, node, active_object_count, active_object_count_wider, name)
 
 			local orig_pos = table.copy(pos)
 			-- is mob actually registered?
@@ -486,7 +485,8 @@ local axis
 local inner = 15
 local outer = 64
 local int = {-1,1}
-local position_calculation = function(pos)
+
+local function position_calculation(pos)
 
 	pos = vector_floor(pos)
 
@@ -501,7 +501,7 @@ local position_calculation = function(pos)
 		pos.z = pos.z + math_random(inner,outer)*int[math_random(1,2)]
 		pos.x = pos.x + math_random(-outer,outer)
 	end
-	return(pos)
+	return pos
 end
 
 --[[

@@ -7,7 +7,7 @@ end
 
 function mcl_enchanting.get_enchantments(itemstack)
 	if not itemstack then
-		return({})
+		return {}
 	end
 	return minetest.deserialize(itemstack:get_meta():get_string("mcl_enchanting:enchantments")) or {}
 end

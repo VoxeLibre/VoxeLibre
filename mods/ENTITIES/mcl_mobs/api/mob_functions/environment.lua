@@ -76,8 +76,7 @@ mobs.detect_closest_player_within_radius = function(self, line_of_sight, radius,
 			winner_player = player
 		end
 	end
-
-	return(winner_player)
+	return winner_player
 end
 
 
@@ -104,14 +103,13 @@ mobs.jump_check = function(self,dtime)
 
     if green_flag_1 and green_flag_2 then
 		--can jump over node
-        return(1)
+        return 1
 	elseif green_flag_1 and not green_flag_2 then
 		--wall in front of mob
-		return(2)
+		return 2
     end
-
 	--nothing to jump over
-	return(0)
+	return 0
 end
 
 -- a helper function to quickly turn neutral passive mobs hostile
@@ -223,12 +221,12 @@ mobs.check_for_player_within_area = function(self, radius)
 			local distance = vector_distance(pos1,pos2)
 			if distance < radius then
 				--found a player
-				return(true)
+				return true
 			end
 		end
 	end
 	--did not find a player
-	return(false)
+	return false
 end
 
 
@@ -236,7 +234,7 @@ end
 mobs.get_2d_distance = function(pos1,pos2)
 	pos1.y = 0
 	pos2.y = 0
-	return(vector_distance(pos1, pos2))
+	return vector_distance(pos1, pos2)
 end
 
 -- fall damage onto solid ground

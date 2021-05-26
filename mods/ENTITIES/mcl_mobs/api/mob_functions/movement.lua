@@ -312,7 +312,7 @@ mobs.calculate_pitch = function(pos1, pos2)
 		return false
 	end
 
-    return(minetest_dir_to_yaw(vector.new(vector.distance(vector.new(pos1.x,0,pos1.z),vector.new(pos2.x,0,pos2.z)),0,pos1.y - pos2.y)) + HALF_PI)
+    return minetest_dir_to_yaw(vector.new(vector.distance(vector.new(pos1.x,0,pos1.z),vector.new(pos2.x,0,pos2.z)),0,pos1.y - pos2.y)) + HALF_PI
 end
 
 --make mobs fly up or down based on their y difference

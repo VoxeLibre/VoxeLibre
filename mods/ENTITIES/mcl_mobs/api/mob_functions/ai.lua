@@ -13,9 +13,8 @@ local minetest_get_node_light               = minetest.get_node_light
 local DOUBLE_PI = math.pi * 2
 local THIRTY_SECONDTH_PI = DOUBLE_PI * 0.03125
 
-
 --a simple helper function which is too small to move into movement.lua
-local quick_rotate = function(self,dtime)
+local function quick_rotate(self,dtime)
 	self.yaw = self.yaw + THIRTY_SECONDTH_PI
 	if self.yaw > DOUBLE_PI then
 		self.yaw = self.yaw - DOUBLE_PI
@@ -39,7 +38,7 @@ end
 ]]--
 
 --this is basically reverse jump_check
-local cliff_check = function(self,dtime)
+local function cliff_check(self,dtime)
 	--mobs will flip out if they are falling without this
 	if self.object:get_velocity().y ~= 0 then
 		return false
@@ -115,7 +114,7 @@ local function land_state_switch(self, dtime)
 end
 
 -- states are executed here
-local land_state_execution = function(self,dtime)
+local function land_state_execution(self, dtime)
 
 	--[[ -- this is a debug which shows the timer and makes mobs breed 100 times faster
 	print(self.breed_timer)
@@ -391,7 +390,7 @@ end
 -- state switching logic (stand, walk, run, attacks)
 local swim_state_list_wandering = {"stand", "swim"}
 
-local swim_state_switch = function(self, dtime)
+local function swim_state_switch(self, dtime)
 	self.state_timer = self.state_timer - dtime
 	if self.state_timer <= 0 then
 		self.state_timer = math.random(4,10) + math.random()
@@ -401,7 +400,7 @@ end
 
 
 --check if a mob needs to turn while swimming
-local swim_turn_check = function(self,dtime)
+local function swim_turn_check(self,dtime)
 
 	local pos = self.object:get_pos()
 	pos.y = pos.y + 0.1
@@ -416,12 +415,11 @@ local swim_turn_check = function(self,dtime)
 
 	local green_flag_1 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0
 
-	return(green_flag_1)
+	return green_flag_1
 end
 
 --this is to swap the built in engine acceleration modifier
-local swim_physics_swapper = function(self,inside_swim_node)
-
+local function swim_physics_swapper(self, inside_swim_node)
 	--should be swimming, gravity is applied, switch to floating
 	if inside_swim_node and self.object:get_acceleration().y ~= 0 then
 		self.object:set_acceleration(vector.new(0,0,0))
@@ -435,7 +433,7 @@ end
 
 local random_pitch_multiplier = {-1,1}
 -- states are executed here
-local swim_state_execution = function(self,dtime)
+local function swim_state_execution(self, dtime)
 
 	local pos = self.object:get_pos()
 
@@ -452,7 +450,7 @@ local swim_state_execution = function(self,dtime)
 	end
 
 	--turn gravity on or off
-	swim_physics_swapper(self,inside_swim_node)
+	swim_physics_swapper(self, inside_swim_node)
 
 	--swim properly if inside swim node
 	if inside_swim_node then
@@ -530,7 +528,7 @@ ______ _
 -- state switching logic (stand, walk, run, attacks)
 local fly_state_list_wandering = {"stand", "fly"}
 
-local fly_state_switch = function(self, dtime)
+local function fly_state_switch(self, dtime)
 
 	if self.hostile and self.attacking then
 		self.state = "attack"
@@ -546,7 +544,7 @@ end
 
 
 --check if a mob needs to turn while flying
-local fly_turn_check = function(self,dtime)
+local function fly_turn_check(self, dtime)
 
 	local pos = self.object:get_pos()
 	pos.y = pos.y + 0.1
@@ -561,11 +559,11 @@ local fly_turn_check = function(self,dtime)
 
 	local green_flag_1 = minetest_get_item_group(minetest_get_node(test_dir).name, "solid") ~= 0
 
-	return(green_flag_1)
+	return green_flag_1
 end
 
 --this is to swap the built in engine acceleration modifier
-local fly_physics_swapper = function(self,inside_fly_node)
+local function fly_physics_swapper(self, inside_fly_node)
 
 	--should be flyming, gravity is applied, switch to floating
 	if inside_fly_node and self.object:get_acceleration().y ~= 0 then
@@ -580,7 +578,7 @@ end
 
 local random_pitch_multiplier = {-1,1}
 -- states are executed here
-local fly_state_execution = function(self,dtime)
+local function fly_state_execution(self, dtime)
 	local pos = self.object:get_pos()
 	pos.y = pos.y + 0.1
 	local current_node = minetest_get_node(pos).name
@@ -794,7 +792,7 @@ ___  ___      _         _                 _
 ]]--
 
 --the main loop
-mobs.mob_step = function(self, dtime)
+function mobs.mob_step(self, dtime)
 
 	--do not continue if non-existent
 	if not self or not self.object or not self.object:get_luaentity() then

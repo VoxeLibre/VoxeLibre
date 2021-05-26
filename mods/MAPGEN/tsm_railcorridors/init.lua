@@ -681,11 +681,11 @@ local function create_corridor_section(waypoint, axis, sign, up_or_down, up_or_d
 		railsegcount = segcount
 	end
 	for i=1,railsegcount do
-		local p = {x=waypoint.x+vek.x*i, y=waypoint.y+vek.y*i-1, z=waypoint.z+vek.z*i}
+		local p = {x = waypoint.x + vek.x * i, y = waypoint.y + vek.y * i-1, z = waypoint.z + vek.z * i}
 
 		-- Randomly returns either the left or right side of the main rail.
 		-- Also returns offset as second return value.
-		local left_or_right = function(pos, vek)
+		local function left_or_right(pos, vek)
 			local off
 			if pr:next(1, 2) == 1 then
 				-- left
@@ -765,7 +765,7 @@ local function create_corridor_section(waypoint, axis, sign, up_or_down, up_or_d
 		-- Place cobwebs left and right in the corridor
 		if place_cobwebs and tsm_railcorridors.nodes.cobweb then
 			-- Helper function to place a cobweb at the side (based on chance an Perlin noise)
-			local cobweb_at_side = function(basepos, vek)
+			local function cobweb_at_side(basepos, vek)
 				if pr:next(1,5) == 1 then
 					local h = pr:next(0, 2) -- 3 possible cobweb heights
 					local cpos = {x=basepos.x+vek.x, y=basepos.y+h, z=basepos.z+vek.z}

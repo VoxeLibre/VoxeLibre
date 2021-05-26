@@ -298,7 +298,7 @@ function mcl_autogroup.get_wear(toolname, diggroup)
 	return math.ceil(65535 / uses)
 end
 
-local overwrite = function()
+local function overwrite()
 	for nname, ndef in pairs(minetest.registered_nodes) do
 		local newgroups = table.copy(ndef.groups)
 		if (nname ~= "ignore" and ndef.diggable) then

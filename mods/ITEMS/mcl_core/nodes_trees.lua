@@ -8,7 +8,7 @@ if mod_screwdriver then
 end
 
 -- Register tree trunk (wood) and bark
-local register_tree_trunk = function(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark, stripped_varient)
+local function register_tree_trunk(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark, stripped_varient)
 	minetest.register_node("mcl_core:"..subname, {
 		description = description_trunk,
 		_doc_items_longdesc = longdesc,
@@ -91,7 +91,7 @@ local register_stripped_trunk = function(subname, description_stripped_trunk, de
 	})
 end
 
-local register_wooden_planks = function(subname, description, tiles)
+local function register_wooden_planks(subname, description, tiles)
 	minetest.register_node("mcl_core:"..subname, {
 		description = description,
 		_doc_items_longdesc = doc.sub.items.temp.build,
@@ -106,7 +106,7 @@ local register_wooden_planks = function(subname, description, tiles)
 	})
 end
 
-local register_leaves = function(subname, description, longdesc, tiles, sapling, drop_apples, sapling_chances, leafdecay_distance)
+local function register_leaves(subname, description, longdesc, tiles, sapling, drop_apples, sapling_chances, leafdecay_distance)
 	if leafdecay_distance == nil then
 		leafdecay_distance = 4
 	end
@@ -173,7 +173,7 @@ local register_leaves = function(subname, description, longdesc, tiles, sapling,
 	})
 end
 
-local register_sapling = function(subname, description, longdesc, tt_help, texture, selbox)
+local function register_sapling(subname, description, longdesc, tt_help, texture, selbox)
 	minetest.register_node("mcl_core:"..subname, {
 		description = description,
 		_tt_help = tt_help,
