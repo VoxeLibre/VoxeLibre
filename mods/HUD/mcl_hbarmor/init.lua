@@ -21,11 +21,11 @@ if tonumber(set) ~= nil then
 end
 
 
-local must_hide = function(playername, arm)
+local function must_hide(playername, arm)
 	return arm == 0
 end
 
-local arm_printable = function(arm)
+local function arm_printable(arm)
 	return math.ceil(math.floor(arm+0.5))
 end
 
