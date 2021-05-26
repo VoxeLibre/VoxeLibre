@@ -86,7 +86,7 @@ minetest.register_node("mcl_core:stone_with_gold", {
 })
 
 local redstone_timer = 68.28
-local redstone_ore_activate = function(pos)
+local function redstone_ore_activate(pos)
 	minetest.swap_node(pos, {name="mcl_core:stone_with_redstone_lit"})
 	local t = minetest.get_node_timer(pos)
 	t:start(redstone_timer)
@@ -124,7 +124,7 @@ minetest.register_node("mcl_core:stone_with_redstone", {
 	}
 })
 
-local redstone_ore_reactivate = function(pos)
+local function redstone_ore_reactivate(pos)
 	local t = minetest.get_node_timer(pos)
 	t:start(redstone_timer)
 end
@@ -864,7 +864,7 @@ minetest.register_node("mcl_core:packed_ice", {
 -- Frosted Ice (4 nodes)
 for i=0,3 do
 	local ice = {}
-	ice.increase_age = function(pos, ice_near, first_melt)
+	function ice.increase_age(pos, ice_near, first_melt)
 		-- Increase age of frosted age or turn to water source if too old
 		local nn = minetest.get_node(pos).name
 		local age = tonumber(string.sub(nn, -1))
