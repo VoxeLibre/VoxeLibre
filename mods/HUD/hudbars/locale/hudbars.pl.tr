@@ -1,0 +1,7 @@
+# textdomain: hudbars
+Health=Życie
+Breath=Tlen
+
+# Default format string for progress bar-style HUD bars, e.g. “Health 5/20”
+@1: @2/@3=@1: @2/@3
+
