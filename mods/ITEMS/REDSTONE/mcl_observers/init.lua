@@ -4,7 +4,7 @@ mcl_observers = {}
 
 local string = string
 
-local get_node = get_node
+local get_node = minetest.get_node
 
 -- Warning! TODO: Remove this message.
 -- 'realtime' is experimental feature! It can slow down the everything!
