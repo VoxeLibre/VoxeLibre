@@ -1,5 +1,11 @@
-local S = minetest.get_translator("doc_items")
+local S = minetest.get_translator(minetest.get_current_modname())
 local N = function(s) return s end
+
+local math = math
+local string = string
+
+local tostring = tostring
+local pairs = pairs
 
 doc.sub.items = {}
 
@@ -34,13 +40,17 @@ local suppressed = {
 local forbidden_core_factoids = {}
 
 -- Helper functions
-local yesno = function(bool)
-	if bool==true then return S("Yes")
-	elseif bool==false then return S("No")
-	else return "N/A" end
+local function yesno(bool)
+	if bool == true then
+        return S("Yes")
+	elseif bool == false then
+        return S("No")
+	else
+        return "N/A"
+    end
 end
 
-local groups_to_string = function(grouptable, filter)
+local function groups_to_string(grouptable, filter)
 	local gstring = ""
 	local groups_count = 0
 	for id, value in pairs(grouptable) do
@@ -66,7 +76,7 @@ local groups_to_string = function(grouptable, filter)
 end
 
 -- Removes all text after the first newline (including the newline)
-local scrub_newlines = function(text)
+local function scrub_newlines(text)
 	local spl = string.split(text, "\n")
 	if spl and #spl > 0 then
 		return spl[1]
@@ -76,7 +86,7 @@ local scrub_newlines = function(text)
 end
 
 --[[ Append a newline to text, unless it already ends with a newline. ]]
-local newline = function(text)
+local function newline(text)
 	if string.sub(text, #text, #text) == "\n" or text == "" then
 		return text
 	else
@@ -85,7 +95,7 @@ local newline = function(text)
 end
 
 --[[ Make sure the text ends with two newlines by appending any missing newlines at the end, if neccessary. ]]
-local newline2 = function(text)
+local function newline2(text)
 	if string.sub(text, #text-1, #text) == "\n\n" or text == "" then
 		return text
 	elseif string.sub(text, #text, #text) == "\n" then
@@ -97,7 +107,7 @@ end
 
 
 -- Extract suitable item description for formspec
-local description_for_formspec = function(itemstring)
+local function description_for_formspec(itemstring)
 	if minetest.registered_items[itemstring] == nil then
 		-- Huh? The item doesn't exist for some reason. Better give a dummy string
 		minetest.log("warning", "[doc] Unknown item detected: "..tostring(itemstring))
@@ -111,7 +121,7 @@ local description_for_formspec = function(itemstring)
 	end
 end
 
-local get_entry_name = function(itemstring)
+local function get_entry_name(itemstring)
 	local def = minetest.registered_items[itemstring]
 	if def._doc_items_entry_name ~= nil then
 		return def._doc_items_entry_name
@@ -122,7 +132,7 @@ local get_entry_name = function(itemstring)
 	end
 end
 
-doc.sub.items.get_group_name = function(groupname)
+function doc.sub.items.get_group_name(groupname)
 	if groupdefs[groupname] ~= nil and doc.sub.items.settings.friendly_group_names == true then
 		return groupdefs[groupname]
 	else
@@ -130,7 +140,7 @@ doc.sub.items.get_group_name = function(groupname)
 	end
 end
 
-local burntime_to_text = function(burntime)
+local function burntime_to_text(burntime)
 	if burntime == nil then
 		return S("unknown")
 	elseif burntime == 1 then
@@ -146,7 +156,7 @@ end
 * Full punch interval
 * Damage groups
 ]]
-local factoid_toolcaps = function(tool_capabilities, check_uses)
+local function factoid_toolcaps(tool_capabilities, check_uses)
 	if forbidden_core_factoids.tool_capabilities then
 		return ""
 	end
@@ -282,7 +292,7 @@ end
 - Digging times/groups
 - level group
 ]]
-local factoid_mining_node = function(data)
+local function factoid_mining_node(data)
 	if forbidden_core_factoids.node_mining then
 		return ""
 	end
@@ -344,7 +354,7 @@ local factoid_mining_node = function(data)
 end
 
 -- Pointing range of itmes
-local range_factoid = function(itemstring, def)
+local function range_factoid(itemstring, def)
 	local handrange = minetest.registered_items[""].range
 	local itemrange = def.range
 	if itemstring == "" then
@@ -364,7 +374,7 @@ local range_factoid = function(itemstring, def)
 end
 
 -- Smelting fuel factoid
-local factoid_fuel = function(itemstring, ctype)
+local function factoid_fuel(itemstring, ctype)
 	if forbidden_core_factoids.fuel then
 		return ""
 	end
@@ -392,7 +402,7 @@ local factoid_fuel = function(itemstring, ctype)
 end
 
 -- Shows the itemstring of an item
-local factoid_itemstring = function(itemstring, playername)
+local function factoid_itemstring(itemstring, playername)
 	if forbidden_core_factoids.itemstring then
 		return ""
 	end
@@ -405,7 +415,7 @@ local factoid_itemstring = function(itemstring, playername)
 	end
 end
 
-local entry_image = function(data)
+local function entry_image(data)
 	local formstring = ""
 	-- No image for air
 	if data.itemstring ~= "air" then
@@ -434,7 +444,7 @@ factoid_generators.craftitems = {}
 * factoid_type: If set, oly returns factoid with a matching factoid_type.
                 If nil, all factoids for this category will be generated
 * data: Entry data to parse ]]
-local factoid_custom = function(category_id, factoid_type, data)
+local function factoid_custom(category_id, factoid_type, data)
 	local ftable = factoid_generators[category_id]
 	local datastring = ""
 	-- Custom factoids are inserted here
@@ -450,7 +460,7 @@ local factoid_custom = function(category_id, factoid_type, data)
 end
 
 -- Shows core information shared by all items, to be inserted at the top
-local factoids_header = function(data, ctype)
+local function factoids_header(data, ctype)
 	local datastring = ""
 	if not forbidden_core_factoids.basics then
 
@@ -510,7 +520,7 @@ local factoids_header = function(data, ctype)
 end
 
 -- Shows less important information shared by all items, to be inserted at the bottom
-local factoids_footer = function(data, playername, ctype)
+local function factoids_footer(data, playername, ctype)
 	local datastring = ""
 	datastring = datastring .. factoid_custom(ctype, "groups", data)
 	datastring = newline2(datastring)
@@ -812,7 +822,7 @@ doc.add_category("nodes", {
 			-- Non-default drops
 			if not forbidden_core_factoids.drops and data.def.drop ~= nil and data.def.drop ~= data.itemstring and data.itemstring ~= "air" then
 				-- TODO: Calculate drop probabilities of max > 1 like for max == 1
-				local get_desc = function(stack)
+				local function get_desc(stack)
 					return description_for_formspec(stack:get_name())
 				end
 				if data.def.drop == "" then
@@ -904,7 +914,7 @@ doc.add_category("nodes", {
 					-- Do some cleanup of the probability table
 					if max == 1 or max == nil then
 						-- Sort by rarity
-						local comp = function(p1, p2)
+						local function comp(p1, p2)
 							return p1.rarity < p2.rarity
 						end
 						table.sort(probtables, comp)
@@ -1232,7 +1242,7 @@ local function gather_descs()
 		})
 	end
 
-	local add_entries = function(deftable, category_id)
+	local function add_entries(deftable, category_id)
 		for id, def in pairs(deftable) do
 			local name, ld, uh, im
 			local forced = false

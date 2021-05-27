@@ -448,13 +448,13 @@ end
 doc.entry_builders = {}
 
 -- Scrollable freeform text
-doc.entry_builders.text = function(data)
+function doc.entry_builders.text(data)
 	local formstring = doc.widgets.text(data, doc.FORMSPEC.ENTRY_START_X, doc.FORMSPEC.ENTRY_START_Y, doc.FORMSPEC.ENTRY_WIDTH - 0.4, doc.FORMSPEC.ENTRY_HEIGHT)
 	return formstring
 end
 
 -- Scrollable freeform text with an optional standard gallery (3 rows, 3:2 aspect ratio)
-doc.entry_builders.text_and_gallery = function(data, playername)
+function doc.entry_builders.text_and_gallery(data, playername)
 	-- How much height the image gallery “steals” from the text widget
 	local stolen_height = 0
 	local formstring = ""
@@ -476,7 +476,7 @@ end
 doc.widgets = {}
 
 -- Scrollable freeform text
-doc.widgets.text = function(data, x, y, width, height)
+function doc.widgets.text(data, x, y, width, height)
 	if x == nil then
 		x = doc.FORMSPEC.ENTRY_START_X
 	end
@@ -502,7 +502,7 @@ end
 
 -- Image gallery
 -- Currently, only one gallery per entry is supported. TODO: Add support for multiple galleries in an entry (low priority)
-doc.widgets.gallery = function(imagedata, playername, x, y, aspect_ratio, width, rows, align_left, align_top)
+function doc.widgets.gallery(imagedata, playername, x, y, aspect_ratio, width, rows, align_left, align_top)
 	if playername == nil then return nil end -- emergency exit
 
 	local formstring = ""
@@ -591,7 +591,7 @@ doc.widgets.gallery = function(imagedata, playername, x, y, aspect_ratio, width,
 end
 
 -- Direct formspec
-doc.entry_builders.formspec = function(data)
+function doc.entry_builders.formspec(data)
 	return data
 end
 
@@ -802,7 +802,7 @@ function doc.get_sorted_entry_names(cid)
 	local cat = doc.data.categories[cid]
 	local used_eids = {}
 	-- Helper function to extract the entry ID out of the output table
-	local extract = function(entry_table)
+	local function extract(entry_table)
 		local eids = {}
 		for k,v in pairs(entry_table) do
 			local eid = v.eid
@@ -1175,7 +1175,7 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 ---[[ Add buttons for inventory mods ]]
-local button_action = function(player)
+local function button_action(player)
 	doc.show_doc(player:get_player_name())
 end
 

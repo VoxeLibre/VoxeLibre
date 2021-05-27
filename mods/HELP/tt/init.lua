@@ -7,11 +7,11 @@ tt.NAME_COLOR = mcl_colors.YELLOW
 -- API
 tt.registered_snippets = {}
 
-tt.register_snippet = function(func)
+function tt.register_snippet(func)
 	table.insert(tt.registered_snippets, func)
 end
 
-tt.register_priority_snippet = function(func)
+function tt.register_priority_snippet(func)
 	table.insert(tt.registered_snippets, 1, func)
 end
 
@@ -60,7 +60,7 @@ end
 
 minetest.register_on_mods_loaded(append_snippets)
 
-tt.reload_itemstack_description = function(itemstack)
+function tt.reload_itemstack_description(itemstack)
 	local itemstring = itemstack:get_name()
 	local def = itemstack:get_definition()
 	local meta = itemstack:get_meta()

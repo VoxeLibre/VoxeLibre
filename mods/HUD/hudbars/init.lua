@@ -179,7 +179,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, direction, 
 		format_string_config.format_max_value = "%d"
 	end
 
-	hudtable.add_all = function(player, hudtable, start_value, start_max, start_hidden)
+	function hudtable.add_all(player, hudtable, start_value, start_max, start_hidden)
 		if start_value == nil then start_value = hudtable.default_start_value end
 		if start_max == nil then start_max = hudtable.default_start_max end
 		if start_hidden == nil then start_hidden = hudtable.default_start_hidden end

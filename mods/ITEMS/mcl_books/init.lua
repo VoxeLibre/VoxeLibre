@@ -30,7 +30,7 @@ end
 -- Get the included text out of the book item
 -- itemstack: Book item
 -- meta: Meta of book (optional)
-local get_text = function(itemstack)
+local function get_text(itemstack)
 	-- Grab the text
 	local meta = itemstack:get_meta()
 	local text = meta:get_string("text")
@@ -56,7 +56,7 @@ local get_text = function(itemstack)
 	return text
 end
 
-local make_description = function(title, author, generation)
+local function make_description(title, author, generation)
 	local desc
 	if generation == 0 then
 		desc = S("“@1”", title)
@@ -71,11 +71,11 @@ local make_description = function(title, author, generation)
 	return desc
 end
 
-local cap_text_length = function(text, max_length)
+local function cap_text_length(text, max_length)
 	return string.sub(text, 1, max_length)
 end
 
-local write = function(itemstack, user, pointed_thing)
+local function write(itemstack, user, pointed_thing)
 	-- Call on_rightclick if the pointed node defines it
 	if pointed_thing.type == "node" then
 		local node = minetest.get_node(pointed_thing.under)
@@ -96,7 +96,7 @@ local write = function(itemstack, user, pointed_thing)
 	minetest.show_formspec(user:get_player_name(), "mcl_books:writable_book", formspec)
 end
 
-local read = function(itemstack, user, pointed_thing)
+local function read(itemstack, user, pointed_thing)
 	-- Call on_rightclick if the pointed node defines it
 	if pointed_thing.type == "node" then
 		local node = minetest.get_node(pointed_thing.under)

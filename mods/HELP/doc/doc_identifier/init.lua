@@ -1,4 +1,4 @@
-local S = minetest.get_translator("doc_identifier")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local doc_identifier = {}
 
@@ -6,15 +6,16 @@ doc_identifier.registered_objects = {}
 
 -- API
 doc.sub.identifier = {}
-doc.sub.identifier.register_object = function(object_name, category_id, entry_id)
+
+function doc.sub.identifier.register_object(object_name, category_id, entry_id)
 	doc_identifier.registered_objects[object_name] = { category = category_id, entry = entry_id }
 end
 
 -- END OF API
 
-doc_identifier.identify = function(itemstack, user, pointed_thing)
+function doc_identifier.identify(itemstack, user, pointed_thing)
 	local username = user:get_player_name()
-	local show_message = function(username, itype, param)
+	local function show_message(username, itype, param)
 		local vsize = 2
 		local message
 		if itype == "error_item" then

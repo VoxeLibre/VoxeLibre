@@ -33,13 +33,13 @@ groups to be set. ]]
 do
 	for name,def in pairs(minetest.registered_items) do
 		if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and def.description ~= "" then
-			local is_redstone = function(def)
+			local function is_redstone(def)
 				return def.mesecons or def.groups.mesecon or def.groups.mesecon_conductor_craftable or def.groups.mesecon_effecor_off
 			end
-			local is_tool = function(def)
+			local function is_tool(def)
 				return def.groups.tool or (def.tool_capabilities ~= nil and def.tool_capabilities.damage_groups == nil)
 			end
-			local is_weapon_or_armor = function(def)
+			local function is_weapon_or_armor(def)
 				return def.groups.weapon or def.groups.weapon_ranged or def.groups.ammo or def.groups.combat_item or ((def.groups.armor_head or def.groups.armor_torso or def.groups.armor_legs or def.groups.armor_feet or def.groups.horse_armor) and def.groups.non_combat_armor ~= 1)
 			end
 			-- Is set to true if it was added in any category besides misc
@@ -208,7 +208,7 @@ local filtername = {}
 local noffset_x_start = -0.24
 local noffset_x = noffset_x_start
 local noffset_y = -0.25
-local next_noffset = function(id, right)
+local function next_noffset(id, right)
 	if right then
 		noffset[id] = { 8.94, noffset_y }
 	else
@@ -291,7 +291,7 @@ filtername["inv"] = S("Survival Inventory")
 end]]
 
 
-mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_size, show, page, filter)
+function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size, show, page, filter)
 	--reset_menu_item_bg()
 	pagenum = math.floor(pagenum) or 1
 

@@ -134,7 +134,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 if not minetest.is_creative_enabled("") then
-	mcl_inventory.update_inventory_formspec = function(player)
+	function mcl_inventory.update_inventory_formspec(player)
 		set_inventory(player)
 	end
 end
@@ -158,7 +158,7 @@ minetest.register_on_joinplayer(function(player)
 	player:hud_set_hotbar_selected_image("mcl_inventory_hotbar_selected.png")
 
 	local old_update_player = mcl_armor.update_player
-	mcl_armor.update_player = function(player, info)
+	function mcl_armor.update_player(player, info)
 		old_update_player(player, info)
 		set_inventory(player, true)
 	end

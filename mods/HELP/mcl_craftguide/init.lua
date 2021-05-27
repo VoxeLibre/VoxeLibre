@@ -726,7 +726,7 @@ local function make_formspec(name)
 	return concat(fs)
 end
 
-local show_fs = function(player, name)
+local function show_fs(player, name)
 	if sfinv_only then
 		sfinv.set_player_inventory_formspec(player)
 	else

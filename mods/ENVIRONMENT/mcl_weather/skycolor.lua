@@ -235,7 +235,7 @@ minetest.register_globalstep(function(dtime)
 
 end)
 
-local initsky = function(player)
+local function initsky(player)
 	if (mcl_weather.skycolor.active) then
 		mcl_weather.skycolor.force_update = true
 	end

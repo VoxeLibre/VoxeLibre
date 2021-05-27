@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_bows")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local math = math
 local vector = vector
@@ -79,7 +79,7 @@ local ARROW_ENTITY={
 }
 
 -- Destroy arrow entity self at pos and drops it as an item
-local spawn_item = function(self, pos)
+local function spawn_item(self, pos)
 	if not minetest.is_creative_enabled("") then
 		local item = minetest.add_item(pos, "mcl_bows:arrow")
 		item:set_velocity({x=0, y=0, z=0})
@@ -89,7 +89,7 @@ local spawn_item = function(self, pos)
 	self.object:remove()
 end
 
-local damage_particles = function(pos, is_critical)
+local function damage_particles(pos, is_critical)
 	if is_critical then
 		minetest.add_particlespawner({
 			amount = 15,
@@ -111,7 +111,7 @@ local damage_particles = function(pos, is_critical)
 	end
 end
 
-ARROW_ENTITY.on_step = function(self, dtime)
+function ARROW_ENTITY.on_step(self, dtime)
 	mcl_burning.tick(self.object, dtime, self)
 
 	self._time_in_air = self._time_in_air + .001
@@ -423,13 +423,13 @@ end
 
 -- Force recheck of stuck arrows when punched.
 -- Otherwise, punching has no effect.
-ARROW_ENTITY.on_punch = function(self)
+function ARROW_ENTITY.on_punch(self)
 	if self._stuck then
 		self._stuckrechecktimer = STUCK_RECHECK_TIME
 	end
 end
 
-ARROW_ENTITY.get_staticdata = function(self)
+function ARROW_ENTITY.get_staticdata(self)
 	local out = {
 		lastpos = self._lastpos,
 		startpos = self._startpos,
@@ -451,7 +451,7 @@ ARROW_ENTITY.get_staticdata = function(self)
 	return minetest.serialize(out)
 end
 
-ARROW_ENTITY.on_activate = function(self, staticdata, dtime_s)
+function ARROW_ENTITY.on_activate(self, staticdata, dtime_s)
 	self._time_in_air = 1.0
 	self._in_player = false
 	local data = minetest.deserialize(staticdata)

@@ -93,11 +93,11 @@ local layer_ratio = 255
 local standing_banner_entity_offset = { x=0, y=-0.499, z=0 }
 local hanging_banner_entity_offset = { x=0, y=-1.7, z=0 }
 
-local rotation_level_to_yaw = function(rotation_level)
+local function rotation_level_to_yaw(rotation_level)
 	return (rotation_level * (math.pi/8)) + math.pi
 end
 
-local on_dig_banner = function(pos, node, digger)
+local function on_dig_banner(pos, node, digger)
 	-- Check protection
 	local name = digger:get_player_name()
 	if minetest.is_protected(pos, name) then
@@ -116,7 +116,7 @@ local on_dig_banner = function(pos, node, digger)
 	minetest.remove_node(pos)
 end
 
-local on_destruct_banner = function(pos, hanging)
+local function on_destruct_banner(pos, hanging)
 	local offset, nodename
 	if hanging then
 		offset = hanging_banner_entity_offset
@@ -136,15 +136,15 @@ local on_destruct_banner = function(pos, hanging)
 	end
 end
 
-local on_destruct_standing_banner = function(pos)
+local function on_destruct_standing_banner(pos)
 	return on_destruct_banner(pos, false)
 end
 
-local on_destruct_hanging_banner = function(pos)
+local function on_destruct_hanging_banner(pos)
 	return on_destruct_banner(pos, true)
 end
 
-local make_banner_texture = function(base_color, layers)
+local function make_banner_texture(base_color, layers)
 	local colorize
 	if mcl_banners.colors[base_color] then
 		colorize = mcl_banners.colors[base_color][4]
@@ -174,7 +174,7 @@ local make_banner_texture = function(base_color, layers)
 	end
 end
 
-local spawn_banner_entity = function(pos, hanging, itemstack)
+local function spawn_banner_entity(pos, hanging, itemstack)
 	local banner
 	if hanging then
 		banner = minetest.add_entity(pos, "mcl_banners:hanging_banner")
@@ -198,7 +198,7 @@ local spawn_banner_entity = function(pos, hanging, itemstack)
 	return banner
 end
 
-local respawn_banner_entity = function(pos, node, force)
+local function respawn_banner_entity(pos, node, force)
 	local hanging = node.name == "mcl_banners:hanging_banner"
 	local offset
 	if hanging then

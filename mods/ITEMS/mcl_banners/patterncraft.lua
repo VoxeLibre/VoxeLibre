@@ -259,7 +259,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 end
 
 -- Create a banner description containing all the layer names
-mcl_banners.make_advanced_banner_description = function(description, layers)
+function mcl_banners.make_advanced_banner_description(description, layers)
 	if layers == nil or #layers == 0 then
 		-- No layers, revert to default
 		return ""
@@ -296,7 +296,7 @@ Parameters same as for minetest.register_craft_predict.
 craft_predict is set true when called from minetest.craft_preview, in this case, this function
 MUST NOT change the crafting grid.
 ]]
-local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_inv, craft_predict)
+local function banner_pattern_craft(itemstack, player, old_craft_grid, craft_inv, craft_predict)
 	if minetest.get_item_group(itemstack:get_name(), "banner") ~= 1 then
 		return
 	end
