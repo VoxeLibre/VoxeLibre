@@ -47,7 +47,7 @@ minetest.register_entity("mcl_chests:chest", {
 		local playerlist = self.players
 		playerlist[playername] = nil
 		if self.is_open then
-			for _ in pairs(playerlist) do
+			if next(playerlist) then
 				return
 			end
 			self:set_animation("close")
