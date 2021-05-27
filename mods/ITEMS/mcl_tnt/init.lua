@@ -114,7 +114,7 @@ function TNT:on_activate(staticdata)
 	self.object:set_texture_mod("^mcl_tnt_blink.png")
 end
 
-local function add_effects(pos, radius, drops)
+--[[local function add_effects(pos, radius, drops)
 	minetest.add_particlespawner({
 		amount = 64,
 		time = 0.5,
@@ -161,7 +161,7 @@ local function add_effects(pos, radius, drops)
 		texture = texture,
 		collisiondetection = true,
 	})
-end
+end]]
 
 function TNT:on_step(dtime)
 	local pos = self.object:get_pos()

@@ -328,10 +328,10 @@ function boat.on_step(self, dtime, moveresult)
 
 	p.y = p.y - boat_y_offset
 	local new_velo
-	local new_acce = {x = 0, y = 0, z = 0}
+	local new_acce
 	if not is_water(p) and not on_ice then
 		-- Not on water or inside water: Free fall
-		local nodedef = minetest.registered_nodes[minetest.get_node(p).name]
+		--local nodedef = minetest.registered_nodes[minetest.get_node(p).name]
 		new_acce = {x = 0, y = -9.8, z = 0}
 		new_velo = get_velocity(self._v, self.object:get_yaw(),
 			self.object:get_velocity().y)

@@ -1,3 +1,0 @@
-# textdomain: mcl_playerplus
-@1 suffocated to death.=
-@1 was prickled to death by a cactus.=

@@ -31,7 +31,7 @@ minetest.register_node("mcl_core:slimeblock", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}, 
+			{-0.25, -0.25, -0.25, 0.25, 0.25, 0.25},
 			{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
 		}
 	},
@@ -39,7 +39,6 @@ minetest.register_node("mcl_core:slimeblock", {
 		type = "regular",
 	},
 	tiles = {"mcl_core_slime.png"},
-	paramtype = "light",
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "blend" or true,
 	stack_max = 64,
 	-- According to Minecraft Wiki, bouncing off a slime block from a height off 255 blocks should result in a bounce height of 50 blocks
@@ -213,7 +212,7 @@ minetest.register_node("mcl_core:barrier", {
 -- Same as barrier, but non-pointable. This node is only to be used internally to separate realms.
 -- It must NOT be used for anything else.
 -- This node only exists because Minetest does not have support for “dimensions” yet and needs to
--- be removed when support for this is implemented. 
+-- be removed when support for this is implemented.
 minetest.register_node("mcl_core:realm_barrier", {
 	description = S("Realm Barrier"),
 	_doc_items_create_entry = false,

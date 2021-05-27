@@ -1,11 +1,14 @@
 local S = minetest.get_translator("mcl_mobspawners")
 
+local math = math
+local table = table
+
 mcl_mobspawners = {}
 
 local default_mob = "mobs_mc:pig"
 
 -- Mob spawner
-local spawner_default = default_mob.." 0 15 4 15"
+--local spawner_default = default_mob.." 0 15 4 15"
 
 local function get_mob_textures(mob)
 	local list = minetest.registered_entities[mob].texture_list
@@ -160,7 +163,7 @@ local spawn_mobs = function(pos, elapsed)
 	-- check objects inside 8×8 area around spawner
 	local objs = minetest.get_objects_inside_radius(pos, 8)
 	local count = 0
-	local ent = nil
+	local ent
 
 
 	local timer = minetest.get_node_timer(pos)

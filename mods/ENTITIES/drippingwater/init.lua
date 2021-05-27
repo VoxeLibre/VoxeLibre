@@ -1,6 +1,8 @@
 --Dripping Water Mod
 --by kddekadenz
 
+local math = math
+
 -- License of code, textures & sounds: CC0
 
 --Drop entities
@@ -20,26 +22,21 @@ minetest.register_entity("drippingwater:drop_water", {
 	spritediv = {x=1, y=1},
 	initial_sprite_basepos = {x=0, y=0},
 	static_save = false,
-
 	on_activate = function(self, staticdata)
 		self.object:set_sprite({x=0,y=0}, 1, 1, true)
 	end,
-
 	on_step = function(self, dtime)
-	local k = math.random(1,222)
-	local ownpos = self.object:get_pos()
-
-	if k==1 then
-	self.object:set_acceleration({x=0, y=-5, z=0})
-	end
-
-	if minetest.get_node({x=ownpos.x, y=ownpos.y +0.5, z=ownpos.z}).name == "air" then
-	self.object:set_acceleration({x=0, y=-5, z=0})
-	end
-	
+		local k = math.random(1,222)
+		local ownpos = self.object:get_pos()
+		if k==1 then
+			self.object:set_acceleration({x=0, y=-5, z=0})
+		end
+		if minetest.get_node({x=ownpos.x, y=ownpos.y +0.5, z=ownpos.z}).name == "air" then
+			self.object:set_acceleration({x=0, y=-5, z=0})
+		end
 		if minetest.get_node({x=ownpos.x, y=ownpos.y -0.5, z=ownpos.z}).name ~= "air" then
-		self.object:remove()
-		minetest.sound_play({name="drippingwater_drip"}, {pos = ownpos, gain = 0.5, max_hear_distance = 8}, true)
+			self.object:remove()
+			minetest.sound_play({name="drippingwater_drip"}, {pos = ownpos, gain = 0.5, max_hear_distance = 8}, true)
 		end
 	end,
 })
@@ -61,27 +58,21 @@ minetest.register_entity("drippingwater:drop_lava", {
 	spritediv = {x=1, y=1},
 	initial_sprite_basepos = {x=0, y=0},
 	static_save = false,
-
 	on_activate = function(self, staticdata)
 		self.object:set_sprite({x=0,y=0}, 1, 0, true)
 	end,
-
 	on_step = function(self, dtime)
-	local k = math.random(1,222)
-	local ownpos = self.object:get_pos()
-
-	if k==1 then
-	self.object:set_acceleration({x=0, y=-5, z=0})
-	end
-
-	if minetest.get_node({x=ownpos.x, y=ownpos.y +0.5, z=ownpos.z}).name == "air" then
-	self.object:set_acceleration({x=0, y=-5, z=0})
-	end
-
-		
+		local k = math.random(1,222)
+		local ownpos = self.object:get_pos()
+		if k == 1 then
+			self.object:set_acceleration({x=0, y=-5, z=0})
+		end
+		if minetest.get_node({x=ownpos.x, y=ownpos.y +0.5, z=ownpos.z}).name == "air" then
+			self.object:set_acceleration({x=0, y=-5, z=0})
+		end
 		if minetest.get_node({x=ownpos.x, y=ownpos.y -0.5, z=ownpos.z}).name ~= "air" then
-		self.object:remove()
-		minetest.sound_play({name="drippingwater_lavadrip"}, {pos = ownpos, gain = 0.5, max_hear_distance = 8}, true)
+			self.object:remove()
+			minetest.sound_play({name="drippingwater_lavadrip"}, {pos = ownpos, gain = 0.5, max_hear_distance = 8}, true)
 		end
 	end,
 })
@@ -90,36 +81,34 @@ minetest.register_entity("drippingwater:drop_lava", {
 
 --Create drop
 
-minetest.register_abm(
-        {
+minetest.register_abm({
 	label = "Create water drops",
 	nodenames = {"group:opaque", "group:leaves"},
 	neighbors = {"group:water"},
-        interval = 2,
-        chance = 22,
-        action = function(pos)
-		if minetest.get_item_group(minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z}).name, "water") ~= 0 and
-				minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name == "air" then
+	interval = 2,
+	chance = 22,
+	action = function(pos)
+		if minetest.get_item_group(minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z}).name, "water") ~= 0
+			and minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name == "air" then
 			local i = math.random(-45,45) / 100
 			minetest.add_entity({x=pos.x + i, y=pos.y - 0.501, z=pos.z + i}, "drippingwater:drop_water")
 		end
-        end,
+	end,
 })
 
 --Create lava drop
 
-minetest.register_abm(
-        {
+minetest.register_abm({
 	label = "Create lava drops",
 	nodenames = {"group:opaque"},
 	neighbors = {"group:lava"},
-        interval = 2,
-        chance = 22,
-        action = function(pos)
-		if minetest.get_item_group(minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z}).name, "lava") ~= 0 and
-				minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name == "air" then
+	interval = 2,
+	chance = 22,
+	action = function(pos)
+		if minetest.get_item_group(minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z}).name, "lava") ~= 0
+			and	minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name == "air" then
 			local i = math.random(-45,45) / 100
 			minetest.add_entity({x=pos.x + i, y=pos.y - 0.501, z=pos.z + i}, "drippingwater:drop_lava")
 		end
-        end,
+	end,
 })

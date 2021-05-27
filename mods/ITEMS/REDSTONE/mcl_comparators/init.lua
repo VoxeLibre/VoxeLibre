@@ -217,94 +217,94 @@ if minetest.get_modpath("screwdriver") then
 end
 
 for _, mode in pairs{"comp", "sub"} do
-for _, state in pairs{mesecon.state.on, mesecon.state.off} do
-	local state_str = state_strs[state]
-	local nodename =
-		"mcl_comparators:comparator_"..state_strs[state].."_"..mode
+	for _, state in pairs{mesecon.state.on, mesecon.state.off} do
+		local state_str = state_strs[state]
+		local nodename =
+			"mcl_comparators:comparator_"..state_str.."_"..mode
 
-	-- Help
-	local longdesc, usagehelp, use_help
-	if state_strs[state] == "off" and mode == "comp" then
-		longdesc = S("Redstone comparators are multi-purpose redstone components.").."\n"..
-		S("They can transmit a redstone signal, detect whether a block contains any items and compare multiple signals.")
+		-- Help
+		local longdesc, usagehelp, use_help
+		if state_str == "off" and mode == "comp" then
+			longdesc = S("Redstone comparators are multi-purpose redstone components.").."\n"..
+			S("They can transmit a redstone signal, detect whether a block contains any items and compare multiple signals.")
 
-		usagehelp = S("A redstone comparator has 1 main input, 2 side inputs and 1 output. The output is in arrow direction, the main input is in the opposite direction. The other 2 sides are the side inputs.").."\n"..
-			S("The main input can powered in 2 ways: First, it can be powered directly by redstone power like any other component. Second, it is powered if, and only if a container (like a chest) is placed in front of it and the container contains at least one item.").."\n"..
-			S("The side inputs are only powered by normal redstone power. The redstone comparator can operate in two modes: Transmission mode and subtraction mode. It starts in transmission mode and the mode can be changed by using the block.").."\n\n"..
-			S("Transmission mode:\nThe front torch is unlit and lowered. The output is powered if, and only if the main input is powered. The two side inputs are ignored.").."\n"..
-			S("Subtraction mode:\nThe front torch is lit. The output is powered if, and only if the main input is powered and none of the side inputs is powered.")
-	else
-		use_help = false
-	end
+			usagehelp = S("A redstone comparator has 1 main input, 2 side inputs and 1 output. The output is in arrow direction, the main input is in the opposite direction. The other 2 sides are the side inputs.").."\n"..
+				S("The main input can powered in 2 ways: First, it can be powered directly by redstone power like any other component. Second, it is powered if, and only if a container (like a chest) is placed in front of it and the container contains at least one item.").."\n"..
+				S("The side inputs are only powered by normal redstone power. The redstone comparator can operate in two modes: Transmission mode and subtraction mode. It starts in transmission mode and the mode can be changed by using the block.").."\n\n"..
+				S("Transmission mode:\nThe front torch is unlit and lowered. The output is powered if, and only if the main input is powered. The two side inputs are ignored.").."\n"..
+				S("Subtraction mode:\nThe front torch is lit. The output is powered if, and only if the main input is powered and none of the side inputs is powered.")
+		else
+			use_help = false
+		end
 
-	local nodedef = {
-		description = S("Redstone Comparator"),
-		inventory_image = icon,
-		wield_image = icon,
-		_doc_items_create_entry = use_help,
-		_doc_items_longdesc = longdesc,
-		_doc_items_usagehelp = usagehelp,
-		drawtype = "nodebox",
-		tiles = get_tiles(state_strs[state], mode),
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
-		wield_image = "mcl_comparators_off.png",
-		walkable = true,
-		selection_box = collision_box,
-		collision_box = collision_box,
-		node_box = {
-			type = "fixed",
-			fixed = node_boxes[mode],
-		},
-		groups = groups,
-		paramtype = "light",
-		paramtype2 = "facedir",
-		sunlight_propagates = false,
-		is_ground_content = false,
-		drop = 'mcl_comparators:comparator_off_comp',
-		on_construct = update_self,
-		on_rightclick =
-			make_rightclick_handler(state_strs[state], mode),
-		comparator_mode = mode,
-		comparator_onstate = "mcl_comparators:comparator_on_"..mode,
-		comparator_offstate = "mcl_comparators:comparator_off_"..mode,
-		sounds = mcl_sounds.node_sound_stone_defaults(),
-		mesecons = {
-			receptor = {
-				state = state,
-				rules = comparator_get_output_rules,
+		local nodedef = {
+			description = S("Redstone Comparator"),
+			inventory_image = icon,
+			wield_image = icon,
+			_doc_items_create_entry = use_help,
+			_doc_items_longdesc = longdesc,
+			_doc_items_usagehelp = usagehelp,
+			drawtype = "nodebox",
+			tiles = get_tiles(state_str, mode),
+			use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
+			--wield_image = "mcl_comparators_off.png",
+			walkable = true,
+			selection_box = collision_box,
+			collision_box = collision_box,
+			node_box = {
+				type = "fixed",
+				fixed = node_boxes[mode],
 			},
-			effector = {
-				rules = comparator_get_input_rules,
-				action_change = update_self,
-			}
-		},
-		on_rotate = on_rotate,
-	}
+			groups = groups,
+			paramtype = "light",
+			paramtype2 = "facedir",
+			sunlight_propagates = false,
+			is_ground_content = false,
+			drop = 'mcl_comparators:comparator_off_comp',
+			on_construct = update_self,
+			on_rightclick =
+				make_rightclick_handler(state_str, mode),
+			comparator_mode = mode,
+			comparator_onstate = "mcl_comparators:comparator_on_"..mode,
+			comparator_offstate = "mcl_comparators:comparator_off_"..mode,
+			sounds = mcl_sounds.node_sound_stone_defaults(),
+			mesecons = {
+				receptor = {
+					state = state,
+					rules = comparator_get_output_rules,
+				},
+				effector = {
+					rules = comparator_get_input_rules,
+					action_change = update_self,
+				}
+			},
+			on_rotate = on_rotate,
+		}
 
-	if mode == "comp" and state == mesecon.state.off then
-		-- This is the prototype
-		nodedef._doc_items_create_entry = true
-	else
-		nodedef.groups = table.copy(nodedef.groups)
-		nodedef.groups.not_in_creative_inventory = 1
-		local extra_desc = {}
-		if mode == "sub" or state == mesecon.state.on then
-			nodedef.inventory_image = nil
+		if mode == "comp" and state == mesecon.state.off then
+			-- This is the prototype
+			nodedef._doc_items_create_entry = true
+		else
+			nodedef.groups = table.copy(nodedef.groups)
+			nodedef.groups.not_in_creative_inventory = 1
+			--local extra_desc = {}
+			if mode == "sub" or state == mesecon.state.on then
+				nodedef.inventory_image = nil
+			end
+			local desc = nodedef.description
+			if mode ~= "sub" and state == mesecon.state.on then
+				desc = S("Redstone Comparator (Powered)")
+			elseif mode == "sub" and state ~= mesecon.state.on then
+				desc = S("Redstone Comparator (Subtract)")
+			elseif mode == "sub" and state == mesecon.state.on then
+				desc = S("Redstone Comparator (Subtract, Powered)")
+			end
+			nodedef.description = desc
 		end
-		local desc = nodedef.description
-		if mode ~= "sub" and state == mesecon.state.on then
-			desc = S("Redstone Comparator (Powered)")
-		elseif mode == "sub" and state ~= mesecon.state.on then
-			desc = S("Redstone Comparator (Subtract)")
-		elseif mode == "sub" and state == mesecon.state.on then
-			desc = S("Redstone Comparator (Subtract, Powered)")
-		end
-		nodedef.description = desc
+
+		minetest.register_node(nodename, nodedef)
+		mcl_wip.register_wip_item(nodename)
 	end
-
-	minetest.register_node(nodename, nodedef)
-	mcl_wip.register_wip_item(nodename)
-end
 end
 
 -- Register recipies
@@ -351,9 +351,9 @@ minetest.register_abm({
 -- Add entry aliases for the Help
 if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_comparators:comparator_off_comp",
-			    "nodes", "mcl_comparators:comparator_off_sub")
+				"nodes", "mcl_comparators:comparator_off_sub")
 	doc.add_entry_alias("nodes", "mcl_comparators:comparator_off_comp",
-			    "nodes", "mcl_comparators:comparator_on_comp")
+				"nodes", "mcl_comparators:comparator_on_comp")
 	doc.add_entry_alias("nodes", "mcl_comparators:comparator_off_comp",
-			    "nodes", "mcl_comparators:comparator_on_sub")
+				"nodes", "mcl_comparators:comparator_on_sub")
 end

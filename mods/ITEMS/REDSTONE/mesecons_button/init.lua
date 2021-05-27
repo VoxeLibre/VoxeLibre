@@ -21,7 +21,7 @@ local boxes_on = {
 }
 
 -- Push the button
-mesecon.push_button = function(pos, node)
+function mesecon.push_button(pos, node)
 	-- No-op if button is already pushed
 	if mesecon.is_receptor_on(node) then
 		return

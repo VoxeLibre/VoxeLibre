@@ -61,14 +61,14 @@ local brewing_formspec = "size[9,8.75]"..
 	"listring[context;stand]"
 
 
-local function swap_node(pos, name)
+--[[local function swap_node(pos, name)
 	local node = minetest.get_node(pos)
 	if node.name == name then
 		return
 	end
 	node.name = name
 	minetest.swap_node(pos, node)
-end
+end]]
 
 
 local function brewable(inv)
@@ -110,12 +110,13 @@ local function brewing_stand_timer(pos, elapsed)
 	local BREW_TIME = 20 -- all brews brew the same
 	local BURN_TIME = BREW_TIME * 10
 
-	local input_item = meta:get_string("input_item") or ""
+	--local input_item = meta:get_string("input_item") or ""
 	local stand_timer = meta:get_float("stand_timer") or 0
 	local fuel = meta:get_float("fuel") or 0
 	local inv = meta:get_inventory()
 
-	local input_list, stand_list, fuel_list, brew_output, d
+	--local input_list, stand_list, fuel_list
+	local brew_output, d
 	local input_count, fuel_name, fuel_count, formspec, fuel_percent, brew_percent
 
 	local update = true
@@ -124,9 +125,9 @@ local function brewing_stand_timer(pos, elapsed)
 
 		update = false
 
-		input_list = inv:get_list("input")
-		stand_list = inv:get_list("stand")
-		fuel_list = inv:get_list("fuel")
+		--input_list = inv:get_list("input")
+		--stand_list = inv:get_list("stand")
+		--fuel_list = inv:get_list("fuel")
 
 		-- TODO ... fix this.  Goal is to reset the process if the stand changes
 		-- for i=1, inv:get_size("stand", i) do -- reset the process due to change
@@ -237,7 +238,7 @@ local function brewing_stand_timer(pos, elapsed)
 end
 
 
-local function allow_metadata_inventory_put(pos, listname, index, stack, player)
+--[[local function allow_metadata_inventory_put(pos, listname, index, stack, player)
 	local name = player:get_player_name()
 	if minetest.is_protected(pos, name) then
 		minetest.record_protection_violation(pos, name)
@@ -273,7 +274,7 @@ local function allow_metadata_inventory_put(pos, listname, index, stack, player)
 	elseif listname == "stand" then
 		return 0
 	end
-end
+end]]
 
 
 -- Drop input items of brewing_stand at pos with metadata meta
@@ -315,12 +316,14 @@ local doc_string =
 	S("When you have found a good combination, the brewing will commence automatically and steam starts to appear, using up the fuel and brewing material. The potions will soon be ready.").."\n"..
 	S("Different combinations of brewing materials and liquids will give different results. Try to experiment!")
 
-local tiles = {"mcl_brewing_top.png", 	--top
-	 "mcl_brewing_base.png", 	--bottom
-	 "mcl_brewing_side.png", 	--right
-	 "mcl_brewing_side.png", 	--left
-	 "mcl_brewing_side.png", 	--back
-	 "mcl_brewing_side.png^[transformFX"} --front
+local tiles = {
+	"mcl_brewing_top.png", 	--top
+	"mcl_brewing_base.png", 	--bottom
+	"mcl_brewing_side.png", 	--right
+	"mcl_brewing_side.png", 	--left
+	"mcl_brewing_side.png", 	--back
+	"mcl_brewing_side.png^[transformFX",   --front
+}
 
 local allow_put = function(pos, listname, index, stack, player)
 	local name = player:get_player_name()
@@ -349,11 +352,11 @@ local on_put = function(pos, listname, index, stack, player)
 	--some code here to enforce only potions getting placed on stands
 end
 
-local after_dig = function(pos, oldnode, oldmetadata, digger)
+--[[local after_dig = function(pos, oldnode, oldmetadata, digger)
 	local meta = minetest.get_meta(pos)
 	meta:from_table(oldmetadata)
 	drop_brewing_stand_items(pos, meta)
-end
+end]]
 
 local on_destruct = function(pos)
 	local meta = minetest.get_meta(pos)

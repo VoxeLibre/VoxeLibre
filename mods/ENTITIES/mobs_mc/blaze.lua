@@ -20,7 +20,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	xp_max = 10,
 	tilt_fly = false,
 	hostile = true,
-	rotate = 270,
+	--rotate = 270,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.79, 0.3},
 	rotate = -180,
 	visual = "mesh",

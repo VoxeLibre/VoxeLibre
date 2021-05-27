@@ -81,11 +81,11 @@ if v6_use_snow_biomes then
 end
 local v6_freq_desert = tonumber(minetest.get_mapgen_setting("mgv6_freq_desert") or 0.45)
 
-local NOISE_MAGIC_X = 1619
-local NOISE_MAGIC_Y = 31337
-local NOISE_MAGIC_Z = 52591
-local NOISE_MAGIC_SEED = 1013
-local noise2d = function(x, y, seed)
+--local NOISE_MAGIC_X = 1619
+--local NOISE_MAGIC_Y = 31337
+--local NOISE_MAGIC_Z = 52591
+--local NOISE_MAGIC_SEED = 1013
+local function noise2d(x, y, seed)
 	-- TODO: implement noise2d function for biome blend
 	return 0
 --[[

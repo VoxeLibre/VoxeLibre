@@ -41,7 +41,7 @@ end
 -- needs to be used up to repair the tool.
 local function get_consumed_materials(tool, material)
 	local wear = tool:get_wear()
-	local health = (MAX_WEAR - wear)
+	--local health = (MAX_WEAR - wear)
 	local matsize = material:get_count()
 	local materials_used = 0
 	for m=1, math.min(4, matsize) do
@@ -74,10 +74,9 @@ end
 local function update_anvil_slots(meta)
 	local inv = meta:get_inventory()
 	local new_name = meta:get_string("set_name")
-	local input1, input2, output
-	input1 = inv:get_stack("input", 1)
-	input2 = inv:get_stack("input", 2)
-	output = inv:get_stack("output", 1)
+	local input1 = inv:get_stack("input", 1)
+	local input2 = inv:get_stack("input", 2)
+	--local output = inv:get_stack("output", 1)
 	local new_output, name_item
 	local just_rename = false
 
@@ -243,7 +242,6 @@ end
 -- Returns true if anvil was destroyed.
 local function damage_anvil(pos)
 	local node = minetest.get_node(pos)
-	local new
 	if node.name == "mcl_anvils:anvil" then
 		minetest.swap_node(pos, {name="mcl_anvils:anvil_damage_1", param2=node.param2})
 		damage_particles(pos, node)
@@ -278,7 +276,6 @@ local function damage_anvil_by_using(pos)
 end
 
 local function damage_anvil_by_falling(pos, distance)
-	local chance
 	local r = math.random(1, 100)
 	if distance > 1 then
 		if r <= (5*distance) then

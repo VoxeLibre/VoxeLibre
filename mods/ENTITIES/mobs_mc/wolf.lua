@@ -35,7 +35,7 @@ local wolf = {
 	--head code
 	has_head = false,
 	head_bone = "head",
-	
+
 	swap_y_with_x = false,
 	reverse_head_yaw = false,
 
@@ -186,7 +186,7 @@ dog.on_rightclick = function(self, clicker)
 	if is_food(item:get_name()) then
 		-- Feed to increase health
 		local hp = self.health
-		local hp_add = 0
+		local hp_add
 		-- Use eatable group to determine health boost
 		local eatable = minetest.get_item_group(item, "eatable")
 		if eatable > 0 then

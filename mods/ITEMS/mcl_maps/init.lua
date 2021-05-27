@@ -5,7 +5,7 @@ local storage = minetest.get_mod_storage()
 local modpath = minetest.get_modpath("mcl_maps")
 local worldpath = minetest.get_worldpath()
 local map_textures_path = worldpath .. "/mcl_maps/"
-local last_finished_id = storage:get_int("next_id") - 1
+--local last_finished_id = storage:get_int("next_id") - 1
 
 minetest.mkdir(map_textures_path)
 

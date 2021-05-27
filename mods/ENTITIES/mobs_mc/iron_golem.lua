@@ -18,7 +18,7 @@ mobs:register_mob("mobs_mc:iron_golem", {
 	passive = true,
 	rotate = 270,
 	hp_min = 100,
-	hp_max = 100,	
+	hp_max = 100,
 	protect = true,
 	neutral = true,
 	breath_max = -1,

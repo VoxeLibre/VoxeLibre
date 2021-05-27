@@ -79,11 +79,11 @@ mobs:register_mob("mobs_mc:sheep", {
 	makes_footstep_sound = true,
 	walk_velocity = 1,
 	run_velocity = 3,
-	
+
 	--head code
 	has_head = true,
 	head_bone = "head",
-	
+
 	swap_y_with_x = false,
 	reverse_head_yaw = false,
 
@@ -150,7 +150,6 @@ mobs:register_mob("mobs_mc:sheep", {
 	do_custom = function(self, dtime)
 		if not self.initial_color_set then
 			local r = math.random(0,100000)
-			local textures
 			if r <= 81836 then
 				-- 81.836%
 				self.color = "unicolor_white"

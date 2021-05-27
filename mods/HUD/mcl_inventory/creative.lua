@@ -7,7 +7,7 @@ local players = {}
 -- Containing all the items for each Creative Mode tab
 local inventory_lists = {}
 
-local mod_player = minetest.get_modpath("mcl_player") ~= nil
+--local mod_player = minetest.get_modpath("mcl_player") ~= nil
 
 -- Create tables
 local builtin_filter_ids = {"blocks","deco","redstone","rail","food","tools","combat","mobs","brew","matr","misc","all"}
@@ -161,7 +161,7 @@ end
 
 local function init(player)
 	local playername = player:get_player_name()
-	local inv = minetest.create_detached_inventory("creative_"..playername, {
+	minetest.create_detached_inventory("creative_"..playername, {
 		allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
 			if minetest.is_creative_enabled(playername) then
 				return count
@@ -203,7 +203,7 @@ local offset = {} -- string offset:
 local boffset = {} --
 local hoch = {}
 local filtername = {}
-local bg = {}
+--local bg = {}
 
 local noffset_x_start = -0.24
 local noffset_x = noffset_x_start
@@ -257,7 +257,6 @@ hoch["mobs"] = "_down"
 hoch["matr"] = "_down"
 hoch["inv"] = "_down"
 
-filtername = {}
 filtername["blocks"] = S("Building Blocks")
 filtername["deco"] = S("Decoration Blocks")
 filtername["redstone"] = S("Redstone")
@@ -272,9 +271,9 @@ filtername["brew"] = S("Brewing")
 filtername["matr"] = S("Materials")
 filtername["inv"] = S("Survival Inventory")
 
-local dark_bg = "crafting_creative_bg_dark.png"
+--local dark_bg = "crafting_creative_bg_dark.png"
 
-local function reset_menu_item_bg()
+--[[local function reset_menu_item_bg()
 	bg["blocks"] = dark_bg
 	bg["deco"] = dark_bg
 	bg["redstone"] = dark_bg
@@ -289,11 +288,11 @@ local function reset_menu_item_bg()
 	bg["matr"] = dark_bg
 	bg["inv"] = dark_bg
 	bg["default"] = dark_bg
-end
+end]]
 
 
 mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_size, show, page, filter)
-	reset_menu_item_bg()
+	--reset_menu_item_bg()
 	pagenum = math.floor(pagenum) or 1
 
 	local playername = player:get_player_name()
@@ -310,7 +309,6 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 	end
 	local pagemax = math.max(1, math.floor((inv_size-1) / (9*5) + 1))
 	local name = "nix"
-	local formspec = ""
 	local main_list
 	local listrings = "listring[detached:creative_"..playername..";main]"..
 		"listring[current_player;main]"..
@@ -322,7 +320,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 			players[playername].page = page
 		end
 	end
-	bg[name] = "crafting_creative_bg.png"
+	--bg[name] = "crafting_creative_bg.png"
 
 		local inv_bg = "crafting_inventory_creative.png"
 		if name == "inv" then
@@ -428,7 +426,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 			caption = "label[0,1.2;"..F(minetest.colorize("#313131", filtername[name])).."]"
 		end
 
-		formspec = "size[10,9.3]"..
+		local formspec = "size[10,9.3]"..
 			"no_prepend[]"..
 			mcl_vars.gui_nonbg..mcl_vars.gui_bg_color..
 			"background[-0.19,-0.25;10.5,9.87;"..inv_bg.."]"..
@@ -560,7 +558,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 
 	-- Figure out current scroll bar from formspec
-	local formspec = player:get_inventory_formspec()
+	--local formspec = player:get_inventory_formspec()
 
 	local start_i = players[name].start_i
 
@@ -628,7 +626,7 @@ if minetest.is_creative_enabled("") then
 	end
 
 	mcl_inventory.update_inventory_formspec = function(player)
-		local page = nil
+		local page
 
 		local name = player:get_player_name()
 
@@ -639,7 +637,7 @@ if minetest.is_creative_enabled("") then
 		end
 
 		-- Figure out current scroll bar from formspec
-		local formspec = player:get_inventory_formspec()
+		--local formspec = player:get_inventory_formspec()
 		local start_i = players[name].start_i
 
 		local inv_size
