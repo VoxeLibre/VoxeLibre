@@ -14,7 +14,7 @@ function settlements.build_schematic(vm, data, va, pos, building, replace_wall, 
   -- schematic conversion to lua
   local schem_lua = minetest.serialize_schematic(building,
     "lua",
-    {lua_use_comments = false, lua_num_indent_spaces = 0}).." return(schematic)"
+    {lua_use_comments = false, lua_num_indent_spaces = 0}).." return schematic"
   -- replace material
   if replace_wall == "y" then
     schem_lua = schem_lua:gsub("mcl_core:cobble", material)
@@ -228,7 +228,7 @@ function settlements.place_schematics(settlement_info, pr)
 		-- schematic conversion to lua
 		local schem_lua = minetest.serialize_schematic(building,
 			"lua",
-			{lua_use_comments = false, lua_num_indent_spaces = 0}).." return(schematic)"
+			{lua_use_comments = false, lua_num_indent_spaces = 0}).." return schematic"
 		schem_lua = schem_lua:gsub("mcl_core:stonebrickcarved", "mcl_villages:stonebrickcarved")
 		-- replace material
 		if replace_wall then

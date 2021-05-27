@@ -233,7 +233,7 @@ end
 
 -- Returns true if the specified entry has been viewed by the player
 function doc.entry_viewed(playername, category_id, entry_id)
-	local entry, category_id, entry_id = get_entry(category_id, entry_id)
+	local _, category_id, entry_id = get_entry(category_id, entry_id)
 	if doc.data.players[playername].stored_data.viewed[category_id] == nil then
 		return false
 	else
@@ -243,7 +243,7 @@ end
 
 -- Returns true if the specified entry is hidden from the player
 function doc.entry_revealed(playername, category_id, entry_id)
-	local entry, category_id, entry_id = get_entry(category_id, entry_id)
+	local _, category_id, entry_id = get_entry(category_id, entry_id)
 	local hidden = doc.data.categories[category_id].entries[entry_id].hidden
 	if doc.data.players[playername].stored_data.revealed[category_id] == nil then
 		return not hidden
@@ -302,7 +302,7 @@ function doc.show_entry(playername, category_id, entry_id, ignore_hidden)
 		minetest.show_formspec(playername, "doc:error_no_categories", doc.formspec_error_no_categories())
 		return
 	end
-	local entry, category_id, entry_id = get_entry(category_id, entry_id)
+	local _, category_id, entry_id = get_entry(category_id, entry_id)
 	if ignore_hidden or doc.entry_revealed(playername, category_id, entry_id) then
 		local playerdata = doc.data.players[playername]
 		playerdata.category = category_id
@@ -587,8 +587,6 @@ doc.widgets.gallery = function(imagedata, playername, x, y, aspect_ratio, width,
 		formstring = formstring .. "label["..nx..","..ny..";"..i.."]"
 		pos = pos + 1
 	end
-	local bw, bh
-
 	return formstring, ih
 end
 

@@ -180,12 +180,12 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 	if not inv_img then
 		inv_img = top_img
 	end
-	local noncreative, create_entry, paramtype2, palette
+	local create_entry, paramtype2, palette
 	if is_flower == nil then
 		is_flower = true
 	end
 
-	local bottom_groups = {flammable=2,fire_encouragement=60,fire_flammability=100, non_mycelium_plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, plant=1,double_plant=1,deco_block=1,not_in_creative_inventory=noncreative}
+	local bottom_groups = {flammable=2, fire_encouragement=60, fire_flammability=100, non_mycelium_plant=1, attached_node=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, plant=1, double_plant=1, deco_block=1}
 	if is_flower then
 		bottom_groups.flower = 1
 		bottom_groups.place_flowerlike = 1
@@ -200,7 +200,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		palette = "mcl_core_palette_grass.png"
 	end
 	if longdesc == nil then
-		noncreative = 1
+		bottom_groups.not_in_creative_inventory = 1
 		create_entry = false
 	end
 	-- Drop itself by default

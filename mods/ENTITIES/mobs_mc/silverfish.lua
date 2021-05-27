@@ -46,7 +46,6 @@ mobs:register_mob("mobs_mc:silverfish", {
 	view_range = 16,
 	attack_type = "punch",
 	damage = 1,
-	reach = 1,
 })
 
 mobs:register_egg("mobs_mc:silverfish", S("Silverfish"), "mobs_mc_spawn_icon_silverfish.png", 0)

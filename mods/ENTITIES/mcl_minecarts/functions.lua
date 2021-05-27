@@ -1,3 +1,5 @@
+local vector = vector
+
 function mcl_minecarts:get_sign(z)
 	if z == 0 then
 		return 0
@@ -38,11 +40,9 @@ end
 
 function mcl_minecarts:check_front_up_down(pos, dir_, check_down, railtype)
 	local dir = vector.new(dir_)
-	local cur = nil
-	
 	-- Front
 	dir.y = 0
-	cur = vector.add(pos, dir)
+	local cur = vector.add(pos, dir)
 	if mcl_minecarts:is_rail(cur, railtype) then
 		return dir
 	end
@@ -65,9 +65,9 @@ end
 
 function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 	local pos = vector.round(pos_)
-	local cur = nil
+	local cur
 	local left_check, right_check = true, true
-	
+
 	-- Check left and right
 	local left = {x=0, y=0, z=0}
 	local right = {x=0, y=0, z=0}
@@ -78,7 +78,7 @@ function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 		left.z = dir.x
 		right.z = -dir.x
 	end
-	
+
 	if ctrl then
 		if old_switch == 1 then
 			left_check = false
@@ -100,13 +100,13 @@ function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 			right_check = true
 		end
 	end
-	
+
 	-- Normal
 	cur = mcl_minecarts:check_front_up_down(pos, dir, true, railtype)
 	if cur then
 		return cur
 	end
-	
+
 	-- Left, if not already checked
 	if left_check then
 		cur = mcl_minecarts:check_front_up_down(pos, left, false, railtype)
@@ -114,7 +114,7 @@ function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 			return cur
 		end
 	end
-	
+
 	-- Right, if not already checked
 	if right_check then
 		cur = mcl_minecarts:check_front_up_down(pos, right, false, railtype)
@@ -122,7 +122,6 @@ function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 			return cur
 		end
 	end
-	
 	-- Backwards
 	if not old_switch then
 		cur = mcl_minecarts:check_front_up_down(pos, {
@@ -134,7 +133,5 @@ function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 			return cur
 		end
 	end
-	
 	return {x=0, y=0, z=0}
 end
-

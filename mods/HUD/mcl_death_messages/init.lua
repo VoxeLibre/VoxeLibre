@@ -237,12 +237,10 @@ mcl_damage.register_on_damage(function(obj, damage, reason)
 end)
 
 minetest.register_globalstep(function(dtime)
-	local new_assist = {}
-
 	for obj, tbl in pairs(mcl_death_messages.assist) do
 		tbl.timeout = tbl.timeout - dtime
-		if (obj:is_player() or obj:get_luaentity()) and tbl.timeout > 0 then
-			new_assist[obj] = tbl
+		if not obj:is_player() and not obj:get_luaentity() or tbl.timeout > 0 then
+			mcl_death_messages.assist[obj] = nil
 		end
 	end
 end)

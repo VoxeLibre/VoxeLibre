@@ -1,5 +1,11 @@
 local S = minetest.get_translator("mcl_experience")
+
 mcl_experience = {}
+
+local vector = vector
+local math = math
+local string = string
+
 local pool = {}
 local registered_nodes
 local max_xp = 2^31-1
@@ -114,9 +120,9 @@ end
 hud_manager.hud_exists = function(player,hud_name)
     local name = player:get_player_name()
     if player_huds[name] and player_huds[name][hud_name] then
-        return(true)
+        return true
     else
-        return(false)
+        return false
     end
 end
 -------------------
@@ -144,7 +150,7 @@ end)
 
 function mcl_experience.get_player_xp_level(player)
 	local name = player:get_player_name()
-	return(pool[name].level)
+	return pool[name].level
 end
 
 function mcl_experience.set_player_xp_level(player,level)
@@ -262,7 +268,6 @@ function mcl_experience.add_experience(player, experience)
 	if #final_candidates > 0 then
 		local can = final_candidates[math.random(#final_candidates)]
 		local stack, list, index, wear = can.stack, can.list, can.index, can.wear
-		local unbreaking_level = mcl_enchanting.get_enchantment(stack, "unbreaking")
 		local uses = mcl_util.calculate_durability(stack)
 		local multiplier = 2 * 65535 / uses
 		local repair = experience * multiplier
@@ -329,14 +334,12 @@ minetest.register_on_dieplayer(function(player)
 	mcl_experience.throw_experience(player:get_pos(), xp_amount)
 end)
 
-
-local name
 local collector, pos, pos2
 local direction, distance, player_velocity, goal
 local currentvel, acceleration, multiplier, velocity
 local node, vel, def
 local is_moving, is_slippery, slippery, slip_factor
-local size, data
+local size
 local function xp_step(self, dtime)
 	--if item set to be collected then only execute go to player
 	if self.collected == true then

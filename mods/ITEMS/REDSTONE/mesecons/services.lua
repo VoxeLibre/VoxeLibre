@@ -1,6 +1,6 @@
 -- Dig and place services
 
-mesecon.on_placenode = function(pos, node)
+function mesecon.on_placenode(pos, node)
 	mesecon.execute_autoconnect_hooks_now(pos, node)
 
 	-- Receptors: Send on signal when active
@@ -70,14 +70,14 @@ mesecon.on_placenode = function(pos, node)
 	end
 end
 
-mesecon.on_dignode = function(pos, node)
+function mesecon.on_dignode(pos, node)
 	if mesecon.is_conductor_on(node) then
 		mesecon.receptor_off(pos, mesecon.conductor_get_rules(node))
 	elseif mesecon.is_receptor_on(node.name) then
 		mesecon.receptor_off(pos, mesecon.receptor_get_rules(node))
 	end
 	if minetest.get_item_group(node.name, "opaque") == 1 then
-		local sources = mesecon.is_powered(pos)
+		--local sources = mesecon.is_powered(pos)
 		local neighbors = mesecon.mcl_get_neighbors(pos)
 		for n=1, #neighbors do
 			local npos = neighbors[n].pos
@@ -95,7 +95,7 @@ mesecon.on_dignode = function(pos, node)
 	mesecon.execute_autoconnect_hooks_queue(pos, node)
 end
 
-mesecon.on_blastnode = function(pos, node)
+function mesecon.on_blastnode(pos, node)
 	local node = minetest.get_node(pos)
 	minetest.remove_node(pos)
 	mesecon.on_dignode(pos, node)

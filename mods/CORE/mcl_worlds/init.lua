@@ -33,15 +33,15 @@ end
 -- If the Y coordinate is not located in any dimension, it will return:
 --     nil, "void"
 function mcl_worlds.y_to_layer(y)
-       if y >= mcl_vars.mg_overworld_min then
-               return y - mcl_vars.mg_overworld_min, "overworld"
-       elseif y >= mcl_vars.mg_nether_min and y <= mcl_vars.mg_nether_max+128 then
-               return y - mcl_vars.mg_nether_min, "nether"
-       elseif y >= mcl_vars.mg_end_min and y <= mcl_vars.mg_end_max then
-               return y - mcl_vars.mg_end_min, "end"
-       else
-               return nil, "void"
-       end
+	if y >= mcl_vars.mg_overworld_min then
+		return y - mcl_vars.mg_overworld_min, "overworld"
+	elseif y >= mcl_vars.mg_nether_min and y <= mcl_vars.mg_nether_max+128 then
+		return y - mcl_vars.mg_nether_min, "nether"
+	elseif y >= mcl_vars.mg_end_min and y <= mcl_vars.mg_end_max then
+		return y - mcl_vars.mg_end_min, "end"
+	else
+		return nil, "void"
+	end
 end
 
 -- Takes a pos and returns the dimension it belongs to (same as above)
@@ -55,38 +55,38 @@ end
 -- MineClone 2.
 -- mc_dimension is one of "overworld", "nether", "end" (default: "overworld").
 function mcl_worlds.layer_to_y(layer, mc_dimension)
-       if mc_dimension == "overworld" or mc_dimension == nil then
-               return layer + mcl_vars.mg_overworld_min
-       elseif mc_dimension == "nether" then
-               return layer + mcl_vars.mg_nether_min
-       elseif mc_dimension == "end" then
-               return layer + mcl_vars.mg_end_min
-       end
+	   if mc_dimension == "overworld" or mc_dimension == nil then
+			   return layer + mcl_vars.mg_overworld_min
+	   elseif mc_dimension == "nether" then
+			   return layer + mcl_vars.mg_nether_min
+	   elseif mc_dimension == "end" then
+			   return layer + mcl_vars.mg_end_min
+	   end
 end
 
 -- Takes a position and returns true if this position can have weather
 function mcl_worlds.has_weather(pos)
-       -- Weather in the Overworld and the high part of the void below
-       return pos.y <= mcl_vars.mg_overworld_max and pos.y >= mcl_vars.mg_overworld_min - 64
+	-- Weather in the Overworld and the high part of the void below
+	return pos.y <= mcl_vars.mg_overworld_max and pos.y >= mcl_vars.mg_overworld_min - 64
 end
 
 -- Takes a position and returns true if this position can have Nether dust
 function mcl_worlds.has_dust(pos)
-       -- Weather in the Overworld and the high part of the void below
-       return pos.y <= mcl_vars.mg_nether_max + 138 and pos.y >= mcl_vars.mg_nether_min - 10
+	-- Weather in the Overworld and the high part of the void below
+	return pos.y <= mcl_vars.mg_nether_max + 138 and pos.y >= mcl_vars.mg_nether_min - 10
 end
 
 -- Takes a position (pos) and returns true if compasses are working here
 function mcl_worlds.compass_works(pos)
-       -- It doesn't work in Nether and the End, but it works in the Overworld and in the high part of the void below
-       local _, dim = mcl_worlds.y_to_layer(pos.y)
-       if dim == "nether" or dim == "end" then
-               return false
-       elseif dim == "void" then
-               return pos.y <= mcl_vars.mg_overworld_max and pos.y >= mcl_vars.mg_overworld_min - 64
-       else
-               return true
-       end
+	-- It doesn't work in Nether and the End, but it works in the Overworld and in the high part of the void below
+	local _, dim = mcl_worlds.y_to_layer(pos.y)
+	if dim == "nether" or dim == "end" then
+		return false
+	elseif dim == "void" then
+		return pos.y <= mcl_vars.mg_overworld_max and pos.y >= mcl_vars.mg_overworld_min - 64
+	else
+		return true
+	end
 end
 
 -- Takes a position (pos) and returns true if clocks are working here
@@ -112,11 +112,11 @@ local last_dimension = {}
 -- * player: Player who changed the dimension
 -- * dimension: New dimension ("overworld", "nether", "end", "void")
 function mcl_worlds.dimension_change(player, dimension)
-    local playername = player:get_player_name()
+	local playername = player:get_player_name()
 	for i=1, #mcl_worlds.registered_on_dimension_change do
 		mcl_worlds.registered_on_dimension_change[i](player, dimension, last_dimension[playername])
 	end
-    last_dimension[playername] = dimension
+	last_dimension[playername] = dimension
 end
 
 ----------------------- INTERNAL STUFF ----------------------

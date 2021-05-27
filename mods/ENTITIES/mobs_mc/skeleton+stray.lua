@@ -31,12 +31,8 @@ local skeleton = {
 	group_attack = true,
 	visual = "mesh",
 	mesh = "mobs_mc_skeleton.b3d",
-	textures = { {
-		"mcl_bows_bow_0.png", -- bow
-		"mobs_mc_skeleton.png", -- skeleton
-	} },
 
-	--head code
+    --head code
 	has_head = false,
 	head_bone = "head",
 

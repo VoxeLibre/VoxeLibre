@@ -327,7 +327,7 @@ minetest.register_craftitem("mcl_dye:white", {
 	_doc_items_usagehelp = S("Rightclick a sheep to turn its wool white. Rightclick a plant to speed up its growth. Note that not all plants can be fertilized like this. When you rightclick a grass block, tall grass and flowers will grow all over the place."),
 	stack_max = 64,
 	groups = dyelocal.dyes[1][4],
-	on_place = function(itemstack, user, pointed_thing) 
+	on_place = function(itemstack, user, pointed_thing)
 		-- Use pointed node's on_rightclick function first, if present
 		local node = minetest.get_node(pointed_thing.under)
 		if user and not user:get_player_control().sneak then

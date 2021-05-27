@@ -1,6 +1,9 @@
 local modpath = minetest.get_modpath("mcl_enchanting")
 local S = minetest.get_translator("mcl_enchanting")
 
+local math = math
+local vector = vector
+
 mcl_enchanting = {
 	book_offset = vector.new(0, 0.75, 0),
 	book_animations = {["close"] = 1, ["opening"] = 2, ["open"] = 3, ["closing"] = 4},
@@ -122,7 +125,7 @@ minetest.register_chatcommand("forceenchant", {
 			return false, S("Player '@1' cannot be found.", target_name)
 		end
 		local itemstack = target:get_wielded_item()
-		local can_enchant, errorstring, extra_info = mcl_enchanting.can_enchant(itemstack, enchantment, level)
+		local _, errorstring = mcl_enchanting.can_enchant(itemstack, enchantment, level)
 		if errorstring == "enchantment invalid" then
 			return false, S("There is no such enchantment '@1'.", enchantment)
 		elseif errorstring == "item missing" then
@@ -242,9 +245,9 @@ minetest.register_node("mcl_enchanting:table", {
 	on_rotate = rotate,
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 		local player_meta = clicker:get_meta()
-		local table_meta = minetest.get_meta(pos)
-		local num_bookshelves = table_meta:get_int("mcl_enchanting:num_bookshelves")
-		local table_name = table_meta:get_string("name")
+		--local table_meta = minetest.get_meta(pos)
+		--local num_bookshelves = table_meta:get_int("mcl_enchanting:num_bookshelves")
+		local table_name = minetest.get_meta(pos):get_string("name")
 		if table_name == "" then
 			table_name = S("Enchant")
 		end

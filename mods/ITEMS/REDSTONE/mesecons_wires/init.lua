@@ -33,7 +33,7 @@ local wire_getconnect = function (from_pos, self_pos)
 	if minetest.registered_nodes[node.name]
 	and minetest.registered_nodes[node.name].mesecons then
 		-- rules of node to possibly connect to
-		local rules = {}
+		local rules
 		if (minetest.registered_nodes[node.name].mesecon_wire) then
 			rules = wire_rules
 		else
@@ -214,8 +214,7 @@ local function register_wires()
 		local dot_off = "redstone_redstone_dust_dot.png^[colorize:#FF0000:"..ratio_off
 		local dot_on = "redstone_redstone_dust_dot.png^[colorize:#FF0000:"..ratio_on
 
-		local tiles_off = { crossing_off, crossing_off, straight0_off, straight1_off, straight0_off, straight1_off }
-		local tiles_on = { crossing_on, crossing_on, straight0_on, straight1_on, straight0_on, straight1_on }
+		local tiles_off, tiles_on
 
 		local wirehelp, tt, longdesc, usagehelp, img, desc_off, desc_on
 		if nodeid == "00000000" then
@@ -238,8 +237,8 @@ S("Read the help entries on the other redstone components to learn how redstone 
 		else
 			-- Connected redstone wire
 			table.insert(nodebox, box_center)
-			tiles_off = { crossing_off, crossing_off, straight0_off, straight1_off, straight0_off, straight1_off, }
-			tiles_on = { crossing_on, crossing_on, straight0_on, straight1_on, straight0_on, straight1_on, }
+			tiles_off = { crossing_off, crossing_off, straight0_off, straight1_off, straight0_off, straight1_off }
+			tiles_on = { crossing_on, crossing_on, straight0_on, straight1_on, straight0_on, straight1_on }
 			wirehelp = false
 			desc_off = S("Redstone Trail (@1)", nodeid)
 			desc_on = S("Powered Redstone Trail (@1)", nodeid)

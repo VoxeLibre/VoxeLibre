@@ -558,8 +558,8 @@ function mcl_potions.make_invisible(player, toggle)
 
 	local is_player = player:is_player()
 	local entity = player:get_luaentity()
-	local playername = player:get_player_name()
-	local skin_file = ""
+	--local playername = player:get_player_name()
+	local skin_file
 
 	if toggle then -- hide player
 
@@ -567,22 +567,22 @@ function mcl_potions.make_invisible(player, toggle)
 
 		if entity then
 			EF.invisible[player].old_size = entity.visual_size
-		elseif not player:is_player() then -- if not a player or entity, do nothing
+		elseif not is_player then -- if not a player or entity, do nothing
 			return
 		end
 
-		if player:is_player() then
-			mcl_player.player_set_skin(player, "mobs_mc_empty.png")
-		elseif not player:is_player() then
+		if is_player then
+			mcl_player.player_set_skin(player, skin_file)
+		elseif not is_player then
 			player:set_properties({visual_size = {x = 0, y = 0}})
 		end
 		player:set_nametag_attributes({color = {a = 0}})
 
 	elseif EF.invisible[player] then -- show player
 
-		if player:is_player() then
+		if is_player then
 			mcl_skins.update_player_skin(player)
-		elseif not player:is_player() then
+		elseif not is_player then
 			player:set_properties({visual_size = EF.invisible[player].old_size})
 		end
 		player:set_nametag_attributes({color = {r = 255, g = 255, b = 255, a = 255}})

@@ -486,7 +486,6 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		if update.pos then
 			self.object:set_pos(pos)
 		end
-		update = nil
 	end
 
 	function cart:get_staticdata()
@@ -497,7 +496,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 end
 
 -- Place a minecart at pointed_thing
-mcl_minecarts.place_minecart = function(itemstack, pointed_thing, placer)
+function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	if not pointed_thing.type == "node" then
 		return
 	end
@@ -541,7 +540,7 @@ mcl_minecarts.place_minecart = function(itemstack, pointed_thing, placer)
 end
 
 
-local register_craftitem = function(itemstring, entity_id, description, tt_help, longdesc, usagehelp, icon, creative)
+local function register_craftitem(itemstring, entity_id, description, tt_help, longdesc, usagehelp, icon, creative)
 	entity_mapping[itemstring] = entity_id
 
 	local groups = { minecart = 1, transport = 1 }
@@ -817,31 +816,30 @@ minetest.register_craft({
 })
 
 -- TODO: Re-enable crafting of special minecarts when they have been implemented
-if false then
-	minetest.register_craft({
-		output = "mcl_minecarts:furnace_minecart",
-		recipe = {
-			{"mcl_furnaces:furnace"},
-			{"mcl_minecarts:minecart"},
-		},
-	})
+--[[minetest.register_craft({
+	output = "mcl_minecarts:furnace_minecart",
+	recipe = {
+		{"mcl_furnaces:furnace"},
+		{"mcl_minecarts:minecart"},
+	},
+})
 
-	minetest.register_craft({
-		output = "mcl_minecarts:hopper_minecart",
-		recipe = {
-			{"mcl_hoppers:hopper"},
-			{"mcl_minecarts:minecart"},
-		},
-	})
+minetest.register_craft({
+	output = "mcl_minecarts:hopper_minecart",
+	recipe = {
+		{"mcl_hoppers:hopper"},
+		{"mcl_minecarts:minecart"},
+	},
+})
 
-	minetest.register_craft({
-		output = "mcl_minecarts:chest_minecart",
-		recipe = {
-			{"mcl_chests:chest"},
-			{"mcl_minecarts:minecart"},
-		},
-	})
-end
+minetest.register_craft({
+	output = "mcl_minecarts:chest_minecart",
+	recipe = {
+		{"mcl_chests:chest"},
+		{"mcl_minecarts:minecart"},
+	},
+})]]
+
 
 if has_mcl_wip then
 	mcl_wip.register_wip_item("mcl_minecarts:chest_minecart")

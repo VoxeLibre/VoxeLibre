@@ -104,7 +104,6 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 	makes_footstep_sound = false,
 	fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
 	jump = false,
-	view_range = 16,
 })
 
 -- Spawning disabled due to size issues <- what do you mean? -j4i

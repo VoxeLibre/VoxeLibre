@@ -426,7 +426,6 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 					if (pitem == d and minetest.get_item_group(itemname, "dye") == 0) or (pitem == e and itemname ~= e and inv_i ~= banner_index) then
 						pattern_ok = false
 						break
-					else
 					end
 					inv_i = inv_i + 1
 					if inv_i > max_i then

@@ -11,133 +11,111 @@ local minetest_get_objects_inside_radius    = minetest.get_objects_inside_radius
 local minetest_get_modpath                  = minetest.get_modpath
 local minetest_registered_nodes             = minetest.registered_nodes
 local minetest_get_node                     = minetest.get_node
-local minetest_get_item_group               = minetest.get_item_group
+--local minetest_get_item_group               = minetest.get_item_group
 local minetest_registered_entities          = minetest.registered_entities
-local minetest_line_of_sight                = minetest.line_of_sight
-local minetest_after                        = minetest.after
-local minetest_sound_play                   = minetest.sound_play
-local minetest_add_particlespawner          = minetest.add_particlespawner
-local minetest_registered_items             = minetest.registered_items
-local minetest_set_node                     = minetest.set_node
+--local minetest_line_of_sight                = minetest.line_of_sight
+--local minetest_after                        = minetest.after
+--local minetest_sound_play                   = minetest.sound_play
+--local minetest_add_particlespawner          = minetest.add_particlespawner
+--local minetest_registered_items             = minetest.registered_items
+--local minetest_set_node                     = minetest.set_node
 local minetest_add_item                     = minetest.add_item
-local minetest_get_craft_result             = minetest.get_craft_result
-local minetest_find_path                    = minetest.find_path
-local minetest_is_protected                 = minetest.is_protected
+--local minetest_get_craft_result             = minetest.get_craft_result
+--local minetest_find_path                    = minetest.find_path
 local minetest_is_creative_enabled          = minetest.is_creative_enabled
-local minetest_find_node_near               = minetest.find_node_near
-local minetest_find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
-local minetest_raycast                      = minetest.raycast
-local minetest_get_us_time                  = minetest.get_us_time
+--local minetest_find_node_near               = minetest.find_node_near
+--local minetest_find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
+--local minetest_raycast                      = minetest.raycast
+--local minetest_get_us_time                  = minetest.get_us_time
 local minetest_add_entity                   = minetest.add_entity
-local minetest_get_natural_light            = minetest.get_natural_light
-local minetest_get_node_or_nil              = minetest.get_node_or_nil
+--local minetest_get_natural_light            = minetest.get_natural_light
+--local minetest_get_node_or_nil              = minetest.get_node_or_nil
 
 -- localize math functions
-local math_pi     = math.pi
-local math_sin    = math.sin
-local math_cos    = math.cos
-local math_abs    = math.abs
-local math_min    = math.min
-local math_max    = math.max
-local math_atan   = math.atan
-local math_random = math.random
-local math_floor  = math.floor
+local math = math
 
 -- localize vector functions
-local vector_new    = vector.new
-local vector_add    = vector.add
-local vector_length = vector.length
-local vector_direction = vector.direction
-local vector_normalize = vector.normalize
-local vector_multiply = vector.multiply
-local vector_divide  = vector.divide
+local vector = vector
+
+local string = string
 
 -- mob constants
-local BREED_TIME          = 30
-local BREED_TIME_AGAIN    = 300
-local CHILD_GROW_TIME     = 60*20
-local DEATH_DELAY         = 0.5
+--local BREED_TIME          = 30
+--local BREED_TIME_AGAIN    = 300
+--local CHILD_GROW_TIME     = 60*20
+--local DEATH_DELAY         = 0.5
 local DEFAULT_FALL_SPEED  = -10
-local FLOP_HEIGHT         = 5.0
-local FLOP_HOR_SPEED      = 1.5
+--local FLOP_HEIGHT         = 5.0
+--local FLOP_HOR_SPEED      = 1.5
 local GRAVITY             = minetest_settings:get("movement_gravity")-- + 9.81
 
+local MAX_MOB_NAME_LENGTH = 30
 
-local MOB_CAP   = {}
+
+--[[local MOB_CAP   = {}
 MOB_CAP.hostile = 70
 MOB_CAP.passive = 10
 MOB_CAP.ambient = 15
 MOB_CAP.water   = 15
+]]
 
 -- Load main settings
-local damage_enabled    = minetest_settings:get_bool("enable_damage")
-local disable_blood     = minetest_settings:get_bool("mobs_disable_blood")
-local mobs_drop_items   = minetest_settings:get_bool("mobs_drop_items") ~= false
-local mobs_griefing     = minetest_settings:get_bool("mobs_griefing") ~= false
-local spawn_protected   = minetest_settings:get_bool("mobs_spawn_protected") ~= false
-local remove_far        = true
+--local damage_enabled    = minetest_settings:get_bool("enable_damage")
+--local disable_blood     = minetest_settings:get_bool("mobs_disable_blood")
+--local mobs_drop_items   = minetest_settings:get_bool("mobs_drop_items") ~= false
+--local mobs_griefing     = minetest_settings:get_bool("mobs_griefing") ~= false
+--local spawn_protected   = minetest_settings:get_bool("mobs_spawn_protected") ~= false
+--local remove_far        = true
 local difficulty        = tonumber(minetest_settings:get("mob_difficulty")) or 1.0
-local show_health       = false
-local max_per_block     = tonumber(minetest_settings:get("max_objects_per_block") or 64)
-local mobs_spawn_chance = tonumber(minetest_settings:get("mobs_spawn_chance") or 2.5)
+--local show_health       = false
+--local max_per_block     = tonumber(minetest_settings:get("max_objects_per_block") or 64)
+---local mobs_spawn_chance = tonumber(minetest_settings:get("mobs_spawn_chance") or 2.5)
 
 -- pathfinding settings
-local enable_pathfinding = true
-local stuck_timeout      = 3 -- how long before mob gets stuck in place and starts searching
-local stuck_path_timeout = 10 -- how long will mob follow path before giving up
+--local enable_pathfinding = true
+--local stuck_timeout      = 3 -- how long before mob gets stuck in place and starts searching
+--local stuck_path_timeout = 10 -- how long will mob follow path before giving up
 
 -- default nodes
-local node_ice       = "mcl_core:ice"
-local node_snowblock = "mcl_core:snowblock"
-local node_snow      = "mcl_core:snow"
+--local node_ice       = "mcl_core:ice"
+--local node_snowblock = "mcl_core:snowblock"
+--local node_snow      = "mcl_core:snow"
 mobs.fallback_node   = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
 
-local mod_weather     = minetest_get_modpath("mcl_weather") ~= nil
-local mod_explosions  = minetest_get_modpath("mcl_explosions") ~= nil
-local mod_mobspawners = minetest_get_modpath("mcl_mobspawners") ~= nil
-local mod_hunger      = minetest_get_modpath("mcl_hunger") ~= nil
-local mod_worlds      = minetest_get_modpath("mcl_worlds") ~= nil
-local mod_armor       = minetest_get_modpath("mcl_armor") ~= nil
-local mod_experience  = minetest_get_modpath("mcl_experience") ~= nil
+--local mod_weather     = minetest_get_modpath("mcl_weather")
+--local mod_explosions  = minetest_get_modpath("mcl_explosions")
+local mod_mobspawners = minetest_get_modpath("mcl_mobspawners")
+--local mod_hunger      = minetest_get_modpath("mcl_hunger")
+--local mod_worlds      = minetest_get_modpath("mcl_worlds")
+--local mod_armor       = minetest_get_modpath("mcl_armor")
+--local mod_experience  = minetest_get_modpath("mcl_experience")
 
 
 -- random locals I found
-local los_switcher    = false
-local height_switcher = false
+--local los_switcher    = false
+--local height_switcher = false
 
 -- Get translator
 local S = minetest.get_translator("mcl_mobs")
 
 -- CMI support check
-local use_cmi = minetest.global_exists("cmi")
-
-
--- Invisibility mod check
-mobs.invis = {}
-if minetest.global_exists("invisibility") then
-	mobs.invis = invisibility
-end
-
+--local use_cmi = minetest.global_exists("cmi")
 
 -- creative check
 function mobs.is_creative(name)
 	return minetest_is_creative_enabled(name)
 end
 
-
-local atan = function(x)
+--[[local function atan(x)
 	if not x or x ~= x then
 		return 0
 	else
-		return math_atan(x)
+		return math.atan(x)
 	end
-end
-
-
-
+end]]
 
 -- Shows helpful debug info above each mob
-local mobs_debug = minetest_settings:get_bool("mobs_debug", false)
+--local mobs_debug = minetest_settings:get_bool("mobs_debug", false)
 
 -- Peaceful mode message so players will know there are no monsters
 if minetest_settings:get_bool("only_peaceful_mobs", false) then
@@ -191,7 +169,7 @@ function mobs:register_mob(name, def)
 		if (not value) or (value == default) or (value == special) then
 			return default
 		else
-			return math_max(min, value * difficulty)
+			return math.max(min, value * difficulty)
 		end
 	end
 
@@ -366,14 +344,10 @@ function mobs:register_mob(name, def)
 		random_sound_timer_min = 3,
 		random_sound_timer_max = 10,
 
-
 		--head code variables
 		--defaults are for the cow's default
 		--because I don't know what else to set them
 		--to :P
-
-		has_head = def.has_head or false,
-		head_bone = def.head_bone,
 
 		--you must use these to adjust the mob's head positions
 
@@ -444,7 +418,7 @@ function mobs:register_mob(name, def)
 		--on_detach_child = mob_detach_child,
 
 		on_activate = function(self, staticdata, dtime)
-			self.object:set_acceleration(vector_new(0,-GRAVITY, 0))
+			self.object:set_acceleration(vector.new(0,-GRAVITY, 0))
 			return mobs.mob_activate(self, staticdata, def, dtime)
 		end,
 
@@ -556,10 +530,10 @@ function mobs:register_arrow(name, def)
 			and def.tail_texture then
 
 				--do this to prevent clipping through main entity sprite
-				local pos_adjustment = vector_multiply(vector_normalize(vel), -1)
+				local pos_adjustment = vector.multiply(vector.normalize(vel), -1)
 				local divider = def.tail_distance_divider or 1
-				pos_adjustment = vector_divide(pos_adjustment, divider)
-				local new_pos = vector_add(pos, pos_adjustment)
+				pos_adjustment = vector.divide(pos_adjustment, divider)
+				local new_pos = vector.add(pos, pos_adjustment)
 				minetest.add_particle({
 					pos = new_pos,
 					velocity = {x = 0, y = 0, z = 0},
@@ -693,12 +667,12 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 
 			if pos
 			--and within_limits(pos, 0)
-			and not minetest_is_protected(pos, placer:get_player_name()) then
+			and not minetest.is_protected(pos, placer:get_player_name()) then
 
 				local name = placer:get_player_name()
 				local privs = minetest.get_player_privs(name)
 				if mod_mobspawners and under.name == "mcl_mobspawners:spawner" then
-					if minetest_is_protected(pointed_thing.under, name) then
+					if minetest.is_protected(pointed_thing.under, name) then
 						minetest.record_protection_violation(pointed_thing.under, name)
 						return itemstack
 					end
@@ -743,7 +717,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 						nametag = string.sub(nametag, 1, MAX_MOB_NAME_LENGTH)
 					end
 					ent.nametag = nametag
-					update_tag(ent)
+					--update_tag(ent)
 				end
 
 				-- if not in creative then take item

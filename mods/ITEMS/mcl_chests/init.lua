@@ -162,13 +162,14 @@ Value:
     Otherwise: nil ]]
 local open_chests = {}
 
-local function back_is_blocked(pos, dir)
+--[[local function back_is_blocked(pos, dir)
 	pos = vector.add(pos, dir)
 	local def = minetest.registered_nodes[minetest.get_node(pos).name]
 	pos.y = pos.y + 1
 	local def2 = minetest.registered_nodes[minetest.get_node(pos).name]
 	return not def or def.groups.opaque == 1 or not def2 or def2.groups.opaque == 1
-end
+end]]
+
 -- To be called if a player opened a chest
 local player_chest_open = function(player, pos, node_name, textures, param2, double, sound, mesh, shulker)
 	local name = player:get_player_name()
@@ -696,7 +697,6 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 
 		minetest.swap_node(p, { name = small_name, param2 = param2 })
 		create_entity(p, small_name, small_textures, param2, false, "default_chest", "mcl_chests_chest", "chest")
-		local meta = minetest.get_meta(pos)
 	end,
 	after_dig_node = drop_items_chest,
 	on_blast = on_chest_blast,
@@ -898,7 +898,7 @@ register_chest("trapped_chest_on",
 	"trapped_chest"
 )
 
-local function close_if_trapped_chest(pos, player)
+--[[local function close_if_trapped_chest(pos, player)
 	local node = minetest.get_node(pos)
 
 	if node.name == "mcl_chests:trapped_chest_on_small" then
@@ -928,7 +928,7 @@ local function close_if_trapped_chest(pos, player)
 
 		player_chest_close(player)
 	end
-end
+end]]
 
 -- Disable chest when it has been closed
 minetest.register_on_player_receive_fields(function(player, formname, fields)
@@ -1330,7 +1330,6 @@ minetest.register_craft({
 
 -- Save metadata of shulker box when used in crafting
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
-	local new = itemstack:get_name()
 	if minetest.get_item_group(itemstack:get_name(), "shulker_box") ~= 1 then
 		return
 	end
