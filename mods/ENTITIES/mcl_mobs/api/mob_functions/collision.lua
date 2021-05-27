@@ -8,9 +8,7 @@ local vector_direction = vector.direction
 local integer_test = {-1,1}
 
 mobs.collision = function(self)
-				
 	local pos = self.object:get_pos()
-
 
 	if not self or not self.object or not self.object:get_luaentity() then
 		return
@@ -20,7 +18,7 @@ mobs.collision = function(self)
 	local collisionbox = self.object:get_properties().collisionbox
 
 	pos.y = pos.y + collisionbox[2]
-	
+
 	local collision_boundary = collisionbox[4]
 
 	local radius = collision_boundary
@@ -41,7 +39,7 @@ mobs.collision = function(self)
 	for _,object in ipairs(minetest_get_objects_inside_radius(pos, radius*1.25)) do
 		if object and object ~= self.object and (object:is_player() or (object:get_luaentity() and object:get_luaentity()._cmi_is_mob == true and object:get_luaentity().health > 0)) and
 		--don't collide with rider, rider don't collide with thing
-		(not object:get_attach() or (object:get_attach() and object:get_attach() ~= self.object)) and 
+		(not object:get_attach() or (object:get_attach() and object:get_attach() ~= self.object)) and
 		(not self.object:get_attach() or (self.object:get_attach() and self.object:get_attach() ~= object)) then
 			--stop infinite loop
 			collision_count = collision_count + 1
@@ -52,7 +50,7 @@ mobs.collision = function(self)
 			end
 
 			local pos2 = object:get_pos()
-			
+
 			local object_collisionbox = object:get_properties().collisionbox
 
 			pos2.y = pos2.y + object_collisionbox[2]
@@ -74,7 +72,7 @@ mobs.collision = function(self)
 				local dir = vector.direction(pos,pos2)
 
 				dir.y = 0
-				
+
 				--eliminate mob being stuck in corners
 				if dir.x == 0 and dir.z == 0 then
 					--slightly adjust mob position to prevent equal length
@@ -84,7 +82,7 @@ mobs.collision = function(self)
 				end
 
 				local velocity = dir
-				
+
 				--0.5 is the max force multiplier
 				local force = 0.5 - (0.5 * distance / (collision_boundary + object_collision_boundary))
 
@@ -104,11 +102,9 @@ mobs.collision = function(self)
 						end
 					end
 				end
-			
 				self.object:add_velocity(vel1)
 				object:add_velocity(vel2)
 			end
-			
 		end
 	end
 end
@@ -116,7 +112,6 @@ end
 
 --this is used for arrow collisions
 mobs.arrow_hit = function(self, player)
-	
     player:punch(self.object, 1.0, {
         full_punch_interval = 1.0,
         damage_groups = {fleshy = self._damage}

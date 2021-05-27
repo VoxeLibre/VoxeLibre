@@ -72,7 +72,6 @@ local function now_playing(player, name)
 			active_huds[playername] = nil
 		end
 	end, {playername, id, hud_sequence_numbers[playername]})
-	
 end
 
 minetest.register_on_leaveplayer(function(player)

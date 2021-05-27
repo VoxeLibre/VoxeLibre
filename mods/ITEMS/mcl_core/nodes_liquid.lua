@@ -3,7 +3,10 @@
 local S = minetest.get_translator("mcl_core")
 local N = function(s) return s end
 
-local WATER_ALPHA = 179
+local vector = vector
+local math = math
+
+--local WATER_ALPHA = 179
 local WATER_VISC = 1
 local LAVA_VISC = 7
 local LIGHT_LAVA = minetest.LIGHT_MAX
@@ -209,13 +212,13 @@ S("• When lava is directly above water, the water turns into stone."),
 	_mcl_hardness = -1,
 })
 
-local emit_lava_particle = function(pos)
+local function emit_lava_particle(pos)
 	local node = minetest.get_node(pos)
 	if minetest.get_item_group(node.name, "lava_source") == 0 then
 		return
 	end
 	local ppos = vector.add(pos, { x = math.random(-7, 7)/16, y = 0.45, z = math.random(-7, 7)/16})
-	local spos = vector.add(ppos, { x = 0, y = -0.2, z = 0 })
+	--local spos = vector.add(ppos, { x = 0, y = -0.2, z = 0 })
 	local vel = { x = math.random(-3, 3)/10, y = math.random(4, 7), z = math.random(-3, 3)/10 }
 	local acc = { x = 0, y = -9.81, z = 0 }
 	-- Lava droplet

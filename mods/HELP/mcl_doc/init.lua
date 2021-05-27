@@ -154,7 +154,7 @@ doc.sub.items.register_factoid(nil, "use", function(itemstring, def)
 	return s
 end)
 doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
-	local def = minetest.registered_items[itemstring]
+	--local def = minetest.registered_items[itemstring]
 	local s = ""
 	local use = minetest.get_item_group(itemstring, "mcl_armor_uses")
 	local pts = minetest.get_item_group(itemstring, "mcl_armor_points")
@@ -289,7 +289,7 @@ doc.sub.items.register_factoid("nodes", "drops", function(itemstring, def)
 			local itemname = item:get_name()
 			local itemcount = item:get_count()
 			local idef = minetest.registered_items[itemname]
-			local text = ""
+			local text
 			if idef.description and idef.description ~= "" then
 				text = idef.description
 			else

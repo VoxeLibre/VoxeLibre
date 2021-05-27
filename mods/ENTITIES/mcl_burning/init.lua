@@ -1,5 +1,4 @@
-local S = minetest.get_translator("mcl_burning")
-local modpath = minetest.get_modpath("mcl_burning")
+local modpath = minetest.get_modpath(minetest.get_current_modname())
 
 mcl_burning = {
 	storage = {},
@@ -56,7 +55,6 @@ minetest.register_on_leaveplayer(function(player)
 	local storage = mcl_burning.storage[player]
 	storage.fire_hud_id = nil
 	player:get_meta():set_string("mcl_burning:data", minetest.serialize(storage))
-
 	mcl_burning.storage[player] = nil
 end)
 
@@ -68,11 +66,10 @@ minetest.register_entity("mcl_burning:fire", {
 		visual = "cube",
 		pointable = false,
 		glow = -1,
+		backface_culling = false,
 	},
-
 	animation_frame = 0,
 	animation_timer = 0,
-
 	on_step = function(self, dtime)
 		local parent, storage = self:sanity_check()
 

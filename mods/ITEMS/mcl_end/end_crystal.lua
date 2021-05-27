@@ -1,5 +1,7 @@
 local S = minetest.get_translator("mcl_end")
 
+local vector = vector
+
 local explosion_strength = 6
 
 local directions = {
@@ -45,7 +47,7 @@ local function set_crystal_animation(self)
 end
 
 local function spawn_crystal(pos)
-	local crystal = minetest.add_entity(pos, "mcl_end:crystal")
+	minetest.add_entity(pos, "mcl_end:crystal")
 	if not vector.equals(pos, vector.floor(pos)) then return end
 	if mcl_worlds.pos_to_dimension(pos) ~= "end" then return end
 	local portal_center

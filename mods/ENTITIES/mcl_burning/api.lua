@@ -1,5 +1,3 @@
-local S = minetest.get_translator("mcl_burning")
-
 function mcl_burning.get_storage(obj)
 	return obj:is_player() and mcl_burning.storage[obj] or obj:get_luaentity()
 end

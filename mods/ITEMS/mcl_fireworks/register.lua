@@ -1,7 +1,5 @@
 local S = minetest.get_translator("mcl_fireworks")
 
-local player_rocketing = {}
-
 local tt_help = S("Flight Duration:")
 local description = S("Firework Rocket")
 

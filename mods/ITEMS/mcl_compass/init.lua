@@ -4,7 +4,8 @@ mcl_compass = {}
 
 local compass_frames = 32
 
-local default_spawn_settings = minetest.settings:get("static_spawnpoint")
+--Not sure spawn point should be dymanic (is it in mc?)
+--local default_spawn_settings = minetest.settings:get("static_spawnpoint")
 
 -- Timer for random compass spinning
 local random_timer = 0
@@ -79,7 +80,9 @@ for i,img in ipairs(images) do
 	if i == stereotype_frame then
 		inv = 0
 	end
-	local use_doc, longdesc, usagehelp, tt
+	local use_doc, longdesc, tt
+    --Why is there no usage help? This should be fixed.
+    --local usagehelp
 	use_doc = i == stereotype_frame
 	if use_doc then
 		tt = S("Points to the world origin")
@@ -91,7 +94,7 @@ for i,img in ipairs(images) do
 		_tt_help = tt,
 		_doc_items_create_entry = use_doc,
 		_doc_items_longdesc = longdesc,
-		_doc_items_usagehelp = usagehelp,
+		--_doc_items_usagehelp = usagehelp,
 		inventory_image = img,
 		wield_image = img,
 		stack_max = 64,

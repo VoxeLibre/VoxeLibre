@@ -1,29 +1,32 @@
 local S = minetest.get_translator("mcl_bows")
 
+local math = math
+local vector = vector
+
 -- Time in seconds after which a stuck arrow is deleted
 local ARROW_TIMEOUT = 60
 -- Time after which stuck arrow is rechecked for being stuck
 local STUCK_RECHECK_TIME = 5
 
-local GRAVITY = 9.81
+--local GRAVITY = 9.81
 
 local YAW_OFFSET = -math.pi/2
 
-local dir_to_pitch = function(dir)
-	local dir2 = vector.normalize(dir)
+local function dir_to_pitch(dir)
+	--local dir2 = vector.normalize(dir)
 	local xz = math.abs(dir.x) + math.abs(dir.z)
 	return -math.atan2(-dir.y, xz)
 end
 
-local random_arrow_positions = function(positions, placement)
-	if positions == 'x' then
+local function random_arrow_positions(positions, placement)
+	if positions == "x" then
 		return math.random(-4, 4)
-	elseif positions == 'y' then
+	elseif positions == "y" then
 		return math.random(0, 10)
 	end
-	if placement == 'front' and positions == 'z' then
+	if placement == "front" and positions == "z" then
 		return 3
-	elseif placement == 'back' and positions == 'z' then
+	elseif placement == "back" and positions == "z" then
 		return -3
 	end
 	return 0
@@ -257,12 +260,12 @@ ARROW_ENTITY.on_step = function(self, dtime)
 								damage_groups={fleshy=self._damage},
 							}, self.object:get_velocity())
 							if obj:is_player() then
-								local placement = ''
+								local placement
 								self._placement = math.random(1, 2)
 								if self._placement == 1 then
-									placement = 'front'
+									placement = "front"
 								else
-									placement = 'back'
+									placement = "back"
 								end
 								self._in_player = true
 								if self._placement == 2 then
@@ -393,7 +396,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			if not v then
 				v = 0
 			end
-			local old_v = self._viscosity
+			--local old_v = self._viscosity
 			self._viscosity = v
 			local vpenalty = math.max(0.1, 0.98 - 0.1 * v)
 			if math.abs(vel.x) > 0.001 then

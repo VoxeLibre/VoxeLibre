@@ -134,6 +134,7 @@ lightning.strike = function(pos)
 	sound_play({ name = "lightning_thunder", gain = 10 }, { pos = pos, max_hear_distance = 500 }, true)
 
 	-- damage nearby objects, transform mobs
+    -- TODO: use an API insteed of hardcoding this behaviour
 	local objs = get_objects_inside_radius(pos2, 3.5)
 	for o=1, #objs do
 		local obj = objs[o]
@@ -153,7 +154,7 @@ lightning.strike = function(pos)
 			end
 			obj:set_properties({textures = lua.base_texture})
 		-- villager → witch (no damage)
-		elseif lua and lua.name == "mobs_mc:villager" then
+		--elseif lua and lua.name == "mobs_mc:villager" then
 		-- Witches are incomplete, this code is unused
 		-- TODO: Enable this code when witches are working.
 		--[[

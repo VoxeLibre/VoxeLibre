@@ -1,3 +1,5 @@
+local table = table
+
 -- Player state for public API
 mcl_playerinfo = {}
 
@@ -21,7 +23,7 @@ end
 
 local time = 0
 
-local get_player_nodes = function(player_pos)
+local function get_player_nodes(player_pos)
 	local work_pos = table.copy(player_pos)
 
 	-- what is around me?

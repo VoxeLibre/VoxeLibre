@@ -170,7 +170,7 @@ end
 
 local canonical_color = "yellow"
 -- Register glass pane (stained and unstained)
-local pane = function(description, node, append)
+local function pane(description, node, append)
 	local texture1, longdesc, entry_name, create_entry
 	local is_canonical = true
 	-- Special case: Default (unstained) glass texture
