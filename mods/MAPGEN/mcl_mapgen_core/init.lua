@@ -1869,7 +1869,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	mcl_vars.add_chunk(minp)
 end)
 
-minetest.register_on_generated=function(node_function)
+function minetest.register_on_generated(node_function)
 	mcl_mapgen_core.register_generator("mod_"..tostring(#registered_generators+1), nil, node_function)
 end
 
