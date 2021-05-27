@@ -1,6 +1,7 @@
 --[[
 
 Copyright (C) 2016 - Auke Kok <sofar@foo-projects.org>
+Adapted by MineClone2 contributors
 
 "lightning" is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as
@@ -9,7 +10,7 @@ of the license, or (at your option) any later version.
 
 --]]
 
-local S = minetest.get_translator("lightning")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local get_connected_players = minetest.get_connected_players
 local line_of_sight = minetest.line_of_sight
@@ -22,22 +23,22 @@ local add_entity = minetest.add_entity
 local get_objects_inside_radius = minetest.get_objects_inside_radius
 local get_item_group = minetest.get_item_group
 
-lightning = {}
-
-lightning.interval_low = 17
-lightning.interval_high = 503
-lightning.range_h = 100
-lightning.range_v = 50
-lightning.size = 100
--- disable this to stop lightning mod from striking
-lightning.auto = true
+lightning = {
+    interval_low = 17,
+    interval_high = 503,
+    range_h = 100,
+    range_v = 50,
+    size = 100,
+    -- disable this to stop lightning mod from striking
+    auto = true,
+}
 
 local rng = PcgRandom(32321123312123)
 
 local ps = {}
 local ttl = -1
 
-local revertsky = function(dtime)
+local function revertsky(dtime)
 	if ttl == 0 then
 		return
 	end
@@ -96,7 +97,7 @@ end
 -- lightning strike API
 -- * pos: optional, if not given a random pos will be chosen
 -- * returns: bool - success if a strike happened
-lightning.strike = function(pos)
+function lightning.strike(pos)
 	if lightning.auto then
 		after(rng:next(lightning.interval_low, lightning.interval_high), lightning.strike)
 	end

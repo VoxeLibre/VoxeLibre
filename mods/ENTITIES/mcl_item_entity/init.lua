@@ -363,6 +363,17 @@ if not time_to_live then
 	time_to_live = 300
 end
 
+local function cxcz(o, cw, one, zero)
+	if cw < 0 then
+		table.insert(o, { [one]=1, y=0, [zero]=0 })
+		table.insert(o, { [one]=-1, y=0, [zero]=0 })
+	else
+		table.insert(o, { [one]=-1, y=0, [zero]=0 })
+		table.insert(o, { [one]=1, y=0, [zero]=0 })
+	end
+	return o
+end
+
 minetest.register_entity(":__builtin:item", {
 	initial_properties = {
 		hp_max = 1,
@@ -642,16 +653,6 @@ minetest.register_entity(":__builtin:item", {
 			-- 1st: closest
 			-- 2nd: other direction
 			-- 3rd and 4th: other axis
-			local cxcz = function(o, cw, one, zero)
-				if cw < 0 then
-					table.insert(o, { [one]=1, y=0, [zero]=0 })
-					table.insert(o, { [one]=-1, y=0, [zero]=0 })
-				else
-					table.insert(o, { [one]=-1, y=0, [zero]=0 })
-					table.insert(o, { [one]=1, y=0, [zero]=0 })
-				end
-				return o
-			end
 			if math.abs(cx) < math.abs(cz) then
 				order = cxcz(order, cx, "x", "z")
 				order = cxcz(order, cz, "z", "x")
