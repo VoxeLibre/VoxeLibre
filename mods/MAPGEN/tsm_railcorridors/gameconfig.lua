@@ -27,7 +27,7 @@ if mg_name == "v6" then
 	}
 else
 	-- This generates dark oak wood in mesa biomes and oak wood everywhere else.
-	tsm_railcorridors.nodes.corridor_woods_function = function(pos, node)
+	function tsm_railcorridors.nodes.corridor_woods_function(pos, node)
 		if minetest.get_item_group(node.name, "hardened_clay") ~= 0 then
 			return "mcl_core:darkwood", "mcl_fences:dark_oak_fence"
 		else

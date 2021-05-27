@@ -1,5 +1,5 @@
 --these are lua locals, used for higher performance
-local minetest,math,vector,ipairs = minetest,math,vector,ipairs
+local minetest, math, vector, ipairs = minetest, math, vector, ipairs
 
 --this is used for the player pool in the sound buffer
 local pool = {}
@@ -38,7 +38,7 @@ item_drop_settings.drop_single_item      = false --if true, the drop control dro
 
 item_drop_settings.magnet_time           = 0.75 -- how many seconds an item follows the player before giving up
 
-local get_gravity = function()
+local function get_gravity()
 	return tonumber(minetest.settings:get("movement_gravity")) or 9.81
 end
 
@@ -60,7 +60,7 @@ mcl_item_entity.register_pickup_achievement("mcl_mobitems:blaze_rod", "mcl:blaze
 mcl_item_entity.register_pickup_achievement("mcl_mobitems:leather", "mcl:killCow")
 mcl_item_entity.register_pickup_achievement("mcl_core:diamond", "mcl:diamonds")
 
-local check_pickup_achievements = function(object, player)
+local function check_pickup_achievements(object, player)
 	if has_awards then
 		local itemname = ItemStack(object:get_luaentity().itemstring):get_name()
 		local playername = player:get_player_name()
@@ -72,7 +72,7 @@ local check_pickup_achievements = function(object, player)
 	end
 end
 
-local enable_physics = function(object, luaentity, ignore_check)
+local function enable_physics(object, luaentity, ignore_check)
 	if luaentity.physical_state == false or ignore_check == true then
 		luaentity.physical_state = true
 		object:set_properties({
@@ -83,7 +83,7 @@ local enable_physics = function(object, luaentity, ignore_check)
 	end
 end
 
-local disable_physics = function(object, luaentity, ignore_check, reset_movement)
+local function disable_physics(object, luaentity, ignore_check, reset_movement)
 	if luaentity.physical_state == true or ignore_check == true then
 		luaentity.physical_state = false
 		object:set_properties({
@@ -98,12 +98,10 @@ end
 
 
 minetest.register_globalstep(function(dtime)
-
 	tick = not tick
 
 	for _,player in pairs(minetest.get_connected_players()) do
 		if player:get_hp() > 0 or not minetest.settings:get_bool("enable_damage") then
-
 
 			local name = player:get_player_name()
 
@@ -426,13 +424,9 @@ minetest.register_entity(":__builtin:item", {
 		if itemtable then
 			itemname = stack:to_table().name
 		end
-		local item_texture = nil
-		local item_type = ""
 		local glow
 		local def = minetest.registered_items[itemname]
 		if def then
-			item_texture = def.inventory_image
-			item_type = def.type
 			description = def.description
 			glow = def.light_source
 		end

@@ -25,7 +25,7 @@ local mcl_playerplus_internal = {}
 local time = 0
 local look_pitch = 0
 
-local player_collision = function(player)
+local function player_collision(player)
 
 	local pos = player:get_pos()
 	--local vel = player:get_velocity()
@@ -48,8 +48,7 @@ local player_collision = function(player)
 			z = z + (vec.z * force)
 		end
 	end
-
-	return({x,z})
+	return {x,z}
 end
 
 -- converts yaw to degrees
@@ -57,7 +56,7 @@ local function degrees(rad)
 	return rad * 180.0 / math.pi
 end
 
-local dir_to_pitch = function(dir)
+local function dir_to_pitch(dir)
 	--local dir2 = vector.normalize(dir)
 	local xz = math.abs(dir.x) + math.abs(dir.z)
 	return -math.atan2(-dir.y, xz)

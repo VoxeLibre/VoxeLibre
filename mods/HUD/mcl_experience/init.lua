@@ -120,9 +120,9 @@ end
 hud_manager.hud_exists = function(player,hud_name)
     local name = player:get_player_name()
     if player_huds[name] and player_huds[name][hud_name] then
-        return(true)
+        return true
     else
-        return(false)
+        return false
     end
 end
 -------------------
@@ -150,7 +150,7 @@ end)
 
 function mcl_experience.get_player_xp_level(player)
 	local name = player:get_player_name()
-	return(pool[name].level)
+	return pool[name].level
 end
 
 function mcl_experience.set_player_xp_level(player,level)

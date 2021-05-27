@@ -450,6 +450,8 @@ function mcl_end.grow_chorus_plant_step(pos, node, pr)
 end
 
 --- ABM ---
+local seed = minetest.get_mapgen_params().seed
+local pr = PseudoRandom(seed)
 minetest.register_abm({
 	label = "Chorus plant growth",
 	nodenames = { "mcl_end:chorus_flower" },

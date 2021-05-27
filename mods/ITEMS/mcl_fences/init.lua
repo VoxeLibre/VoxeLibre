@@ -20,7 +20,7 @@ local cz2 = {-2/16, -0.5, 2/16, 2/16, 1.01, 0.5} --unten(quer) z
 
 mcl_fences = {}
 
-mcl_fences.register_fence = function(id, fence_name, texture, groups, hardness, blast_resistance, connects_to, sounds)
+function mcl_fences.register_fence(id, fence_name, texture, groups, hardness, blast_resistance, connects_to, sounds)
 	local cgroups = table.copy(groups)
 	if cgroups == nil then cgroups = {} end
 	cgroups.fence = 1
@@ -72,7 +72,7 @@ mcl_fences.register_fence = function(id, fence_name, texture, groups, hardness, 
 	return fence_id
 end
 
-mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, hardness, blast_resistance, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
+function mcl_fences.register_fence_gate(id, fence_gate_name, texture, groups, hardness, blast_resistance, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
 	local meta2
 	local state2 = 0
 

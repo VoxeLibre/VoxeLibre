@@ -2,22 +2,19 @@ local minetest_after      = minetest.after
 local minetest_sound_play = minetest.sound_play
 local minetest_dir_to_yaw = minetest.dir_to_yaw
 
-local math_floor  = math.floor
-local math_min    = math.min
-local math_random = math.random
-
-local vector_direction = vector.direction
-local vector_multiply  = vector.multiply
+local math = math
+local vector = vector
 
 local MAX_MOB_NAME_LENGTH = 30
+
+local mod_hunger = minetest.get_modpath("mcl_hunger")
 
 mobs.feed_tame = function(self)
     return nil
 end
 
 -- Code to execute before custom on_rightclick handling
-local on_rightclick_prefix = function(self, clicker)
-
+local function on_rightclick_prefix(self, clicker)
 	local item = clicker:get_wielded_item()
 
 	-- Name mob with nametag
@@ -60,7 +57,6 @@ end
 
 -- deal damage and effects when mob punched
 mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
-
 	--don't do anything if the mob is already dead
 	if self.health <= 0 then
 		return
@@ -94,13 +90,12 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		pos2.y = 0
 
 
-		local dir = vector_direction(pos2,pos1)
+		local dir = vector.direction(pos2,pos1)
 
 		local yaw = minetest_dir_to_yaw(dir)
 
 		self.yaw = yaw
 	end
-
 
 	-- custom punch function
 	if self.do_punch then
@@ -113,23 +108,20 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	--don't do damage until pause timer resets
 	if self.pause_timer > 0 then
 		return
-	end 
+	end
 
-	
 	-- error checking when mod profiling is enabled
 	if not tool_capabilities then
 		minetest.log("warning", "[mobs_mc] Mod profiling enabled, damage not enabled")
 		return
 	end
 
-
 	local is_player = hitter:is_player()
-
 
 	-- punch interval
 	local weapon = hitter:get_wielded_item()
 
-	local punch_interval = 1.4
+	--local punch_interval = 1.4
 
 	-- exhaust attacker
 	if mod_hunger and is_player then
@@ -139,7 +131,6 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	-- calculate mob damage
 	local damage = 0
 	local armor = self.object:get_armor_groups() or {}
-	local tmp
 
 	--calculate damage groups
 	for group,_ in pairs( (tool_capabilities.damage_groups or {}) ) do
@@ -163,13 +154,13 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 	-- healing
 	if damage <= -1 then
-		self.health = self.health - math_floor(damage)
+		self.health = self.health - math.floor(damage)
 		return
 	end
 
-	if tool_capabilities then
-		punch_interval = tool_capabilities.full_punch_interval or 1.4
-	end
+	--if tool_capabilities then
+	--	punch_interval = tool_capabilities.full_punch_interval or 1.4
+	--end
 
 	-- add weapon wear manually
 	-- Required because we have custom health handling ("health" property)
@@ -183,7 +174,7 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 				local weapon = hitter:get_wielded_item(player)
 				local def = weapon:get_definition()
 				if def.tool_capabilities and def.tool_capabilities.punch_attack_uses then
-					local wear = math_floor(65535/tool_capabilities.punch_attack_uses)
+					local wear = math.floor(65535/tool_capabilities.punch_attack_uses)
 					weapon:add_wear(wear)
 					hitter:set_wielded_item(weapon)
 				end
@@ -224,7 +215,7 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 		-- knock back effect
 		local velocity = self.object:get_velocity()
-		
+
 		--2d direction
 		local pos1 = self.object:get_pos()
 		pos1.y = 0
@@ -240,9 +231,8 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			up = 0
 		end
 
-
 		--0.75 for perfect distance to not be too easy, and not be too hard
-		local multiplier = 0.75 
+		local multiplier = 0.75
 
 		-- check if tool already has specific knockback value
 		local knockback_enchant = mcl_enchanting.get_enchantment(hitter:get_wielded_item(), "knockback")
@@ -254,21 +244,16 @@ mobs.mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		--it's coming for you
 		if self.hostile then
 			multiplier = multiplier + 2
-		end	
-
-		dir = vector_multiply(dir,multiplier)
-
+		end
+		dir = vector.multiply(dir,multiplier)
 		dir.y = up
-
 		--add the velocity
 		self.object:add_velocity(dir)
-
 	end
 end
 
 --do internal per mob projectile calculations
 mobs.shoot_projectile = function(self)
-
 	local pos1 = self.object:get_pos()
 	--add mob eye height
 	pos1.y = pos1.y + self.eye_height
@@ -278,7 +263,7 @@ mobs.shoot_projectile = function(self)
 	pos2.y = pos2.y + self.attacking:get_properties().eye_height
 
 	--get direction
-	local dir = vector_direction(pos1,pos2)
+	local dir = vector.direction(pos1,pos2)
 
 	--call internal shoot_arrow function
 	self.shoot_arrow(self,pos1,dir)

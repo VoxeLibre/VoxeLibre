@@ -1,10 +1,12 @@
 local math_random = math.random
 
-local minetest_settings                     = minetest.settings
+local minetest_settings = minetest.settings
+
+-- CMI support check
+local use_cmi = minetest.global_exists("cmi")
 
 -- get entity staticdata
 mobs.mob_staticdata = function(self)
-
 	--despawn mechanism
 	--don't despawned tamed or bred mobs
 	if not self.tamed and not self.bred then
@@ -142,8 +144,6 @@ mobs.mob_activate = function(self, staticdata, def, dtime)
 		self.health = math_random (self.hp_min, self.hp_max)
 	end
 
-	
-
 	if not self.random_sound_timer then
 		self.random_sound_timer = math_random(self.random_sound_timer_min,self.random_sound_timer_max)
 	end
@@ -185,7 +185,6 @@ mobs.mob_activate = function(self, staticdata, def, dtime)
 	self.opinion_sound_cooloff = 0 -- used to prevent sound spam of particular sound types
 
 	self.texture_mods = {}
-	
 
 	self.v_start = false
 	self.timer = 0
@@ -199,7 +198,6 @@ mobs.mob_activate = function(self, staticdata, def, dtime)
 	else
 		self.object:set_texture_mod("")
 	end
-			
 
 	-- set anything changed above
 	self.object:set_properties(self)

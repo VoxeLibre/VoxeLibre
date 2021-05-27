@@ -305,7 +305,7 @@ local flying_bobber_ENTITY={
 }
 
 -- Movement function of flying bobber
-local flying_bobber_on_step = function(self, dtime)
+local function flying_bobber_on_step(self, dtime)
 	self.timer=self.timer+dtime
 	local pos = self.object:get_pos()
 	local node = minetest.get_node(pos)
@@ -315,12 +315,9 @@ local flying_bobber_on_step = function(self, dtime)
 	-- Destroy when hitting a solid node
 	if self._lastpos.x~=nil then
 		if (def and (def.walkable or def.liquidtype == "flowing" or def.liquidtype == "source")) or not def then
-			local make_child= function(object)
-				local ent = object:get_luaentity()
-				ent.player = self._thrower
-				ent.child = true
-			end
-			make_child(minetest.add_entity(self._lastpos, "mcl_fishing:bobber_entity"))
+			local ent = minetest.add_entity(self._lastpos, "mcl_fishing:bobber_entity"):get_luaentity()
+			ent.player = self._thrower
+			ent.child = true
 			self.object:remove()
 			return
 		end

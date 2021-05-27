@@ -1775,7 +1775,7 @@ local function register_biomelike_ores()
 	-- Mesa strata (registered as sheet ores)
 
 	-- Helper function to create strata.
-	local stratum = function(y_min, height, color, seed, is_perfect)
+	local function stratum(y_min, height, color, seed, is_perfect)
 		if not height then
 			height = 1
 		end
@@ -3079,7 +3079,7 @@ local function register_decorations()
 	})
 
 	-- Doubletall grass
-	local register_doubletall_grass = function(offset, scale, biomes)
+	local function register_doubletall_grass(offset, scale, biomes)
 
 		for b=1, #biomes do
 			local param2 = minetest.registered_biomes[biomes[b]]._mcl_palette_index
@@ -3115,7 +3115,7 @@ local function register_decorations()
 	register_doubletall_grass(-0.0005, -0.03, {"Savanna", "SavannaM"})
 
 	-- Large ferns
-	local register_double_fern = function(offset, scale, biomes)
+	local function register_double_fern(offset, scale, biomes)
 		for b=1, #biomes do
 			local param2 = minetest.registered_biomes[biomes[b]]._mcl_palette_index
 			minetest.register_decoration({
@@ -3149,7 +3149,7 @@ local function register_decorations()
 	register_double_fern(0.15, 0.1, { "JungleM" })
 
 	-- Large flowers
-	local register_large_flower = function(name, biomes, seed, offset, flower_forest_offset)
+	local function register_large_flower(name, biomes, seed, offset, flower_forest_offset)
 		local maxi
 		if flower_forest_offset then
 			maxi = 2

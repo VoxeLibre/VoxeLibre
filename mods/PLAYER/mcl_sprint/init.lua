@@ -16,7 +16,7 @@ local players = {}
 
 -- Returns true if the player with the given name is sprinting, false if not.
 -- Returns nil if player does not exist.
-mcl_sprint.is_sprinting = function(playername)
+function mcl_sprint.is_sprinting(playername)
 	if players[playername] then
 		return players[playername].sprinting
 	else
