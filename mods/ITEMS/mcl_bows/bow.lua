@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_bows")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 mcl_bows = {}
 
@@ -66,7 +66,7 @@ function mcl_bows.shoot_arrow(arrow_item, pos, dir, yaw, shooter, power, damage,
 	le._knockback = knockback
 	le._collectable = collectable
 	minetest.sound_play("mcl_bows_bow_shoot", {pos=pos, max_hear_distance=16}, true)
-	if shooter ~= nil and shooter:is_player() then
+	if shooter and shooter:is_player() then
 		if obj:get_luaentity().player == "" then
 			obj:get_luaentity().player = shooter
 		end
@@ -362,19 +362,19 @@ end)
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
 	minetest.register_craft({
-		output = 'mcl_bows:bow',
+		output = "mcl_bows:bow",
 		recipe = {
-			{'', 'mcl_core:stick', 'mcl_mobitems:string'},
-			{'mcl_core:stick', '', 'mcl_mobitems:string'},
-			{'', 'mcl_core:stick', 'mcl_mobitems:string'},
+			{"", "mcl_core:stick", "mcl_mobitems:string"},
+			{"mcl_core:stick", "", "mcl_mobitems:string"},
+			{"", "mcl_core:stick", "mcl_mobitems:string"},
 		}
 	})
 	minetest.register_craft({
-		output = 'mcl_bows:bow',
+		output = "mcl_bows:bow",
 		recipe = {
-			{'mcl_mobitems:string', 'mcl_core:stick', ''},
-			{'mcl_mobitems:string', '', 'mcl_core:stick'},
-			{'mcl_mobitems:string', 'mcl_core:stick', ''},
+			{"mcl_mobitems:string", "mcl_core:stick", ""},
+			{"mcl_mobitems:string", "", "mcl_core:stick"},
+			{"mcl_mobitems:string", "mcl_core:stick", ""},
 		}
 	})
 end

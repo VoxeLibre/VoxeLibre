@@ -1,5 +1,5 @@
 --these are lua locals, used for higher performance
-local minetest, math, vector, ipairs = minetest, math, vector, ipairs
+local minetest, math, vector, ipairs, pairs = minetest, math, vector, ipairs, pairs
 
 --this is used for the player pool in the sound buffer
 local pool = {}
@@ -233,7 +233,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 	local dug_node = minetest.get_node(pos)
 	local tooldef
 	local tool
-	if digger ~= nil then
+	if digger then
 		tool = digger:get_wielded_item()
 		tooldef = minetest.registered_tools[tool:get_name()]
 
@@ -314,7 +314,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 			end
 			-- Spawn item and apply random speed
 			local obj = minetest.add_item(dpos, drop_item)
-			if obj ~= nil then
+			if obj then
 				local x = math.random(1, 5)
 				if math.random(1,2) == 1 then
 					x = -x
@@ -394,7 +394,7 @@ minetest.register_entity(":__builtin:item", {
 	-- The itemstring MUST be set immediately to a non-empty string after creating the entity.
 	-- The hand is NOT permitted as dropped item. ;-)
 	-- Item entities will be deleted if they still have an empty itemstring on their first on_step tick.
-	itemstring = '',
+	itemstring = "",
 
 	-- If true, item will fall
 	physical_state = true,
@@ -585,7 +585,7 @@ minetest.register_entity(":__builtin:item", {
 			return
 		end
 		self.age = self.age + dtime
-		if self._collector_timer ~= nil then
+		if self._collector_timer then
 			self._collector_timer = self._collector_timer + dtime
 		end
 		if time_to_live > 0 and self.age > time_to_live then

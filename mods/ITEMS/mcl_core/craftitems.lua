@@ -1,6 +1,6 @@
 -- mods/default/craftitems.lua
 
-local S = minetest.get_translator("mcl_core")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --
 -- Crafting items

@@ -1,5 +1,5 @@
 settlements = {}
-settlements.modpath = minetest.get_modpath("mcl_villages")
+settlements.modpath = minetest.get_modpath(minetest.get_current_modname())
 
 dofile(settlements.modpath.."/const.lua")
 dofile(settlements.modpath.."/utils.lua")
@@ -37,7 +37,7 @@ minetest.register_node("mcl_villages:stonebrickcarved", {
 --
 -- register inhabitants
 --
-if minetest.get_modpath("mobs_mc") ~= nil then
+if minetest.get_modpath("mobs_mc") then
   mobs:register_spawn("mobs_mc:villager", --name
     {"mcl_core:stonebrickcarved"}, --nodes
     15, --max_light

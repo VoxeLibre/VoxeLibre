@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local path = minetest.get_modpath("mobs_mc")
+local path = minetest.get_modpath(minetest.get_current_modname())
 
 if not minetest.get_modpath("mobs_mc_gameconfig") then
 	mobs_mc = {}

@@ -1,10 +1,10 @@
-local S = minetest.get_translator("mcl_inventory")
+local S = minetest.get_translator(minetest.get_current_modname())
 local F = minetest.formspec_escape
 
 mcl_inventory = {}
 
---local mod_player = minetest.get_modpath("mcl_player") ~= nil
---local mod_craftguide = minetest.get_modpath("mcl_craftguide") ~= nil
+--local mod_player = minetest.get_modpath("mcl_player")
+--local mod_craftguide = minetest.get_modpath("mcl_craftguide")
 
 -- Returns a single itemstack in the given inventory to the main inventory, or drop it when there's no space left
 function return_item(itemstack, dropper, pos, inv)

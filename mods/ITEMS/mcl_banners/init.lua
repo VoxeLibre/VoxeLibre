@@ -1,5 +1,10 @@
-local S = minetest.get_translator("mcl_banners")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
 local N = function(s) return s end
+
+local mod_mcl_core = minetest.get_modpath("mcl_core")
+local mod_doc = minetest.get_modpath("doc")
 
 local node_sounds
 if minetest.get_modpath("mcl_sounds") then
@@ -84,7 +89,7 @@ for k,v in pairs(mcl_banners.colors) do
 end
 
 -- Add pattern/emblazoning crafting recipes
-dofile(minetest.get_modpath("mcl_banners").."/patterncraft.lua")
+dofile(modpath.."/patterncraft.lua")
 
 -- Overlay ratios (0-255)
 local base_color_ratio = 224
@@ -190,7 +195,7 @@ local function spawn_banner_entity(pos, hanging, itemstack)
 	local colorid = colors_reverse[itemstack:get_name()]
 	banner:get_luaentity():_set_textures(colorid, layers)
 	local mname = imeta:get_string("name")
-	if mname ~= nil and mname ~= "" then
+	if mname and mname ~= "" then
 		banner:get_luaentity()._item_name = mname
 		banner:get_luaentity()._item_description = imeta:get_string("description")
 	end
@@ -542,7 +547,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 			end
 			meta:set_int("rotation_level", rotation_level)
 
-			if banner_entity ~= nil then
+			if banner_entity then
 				banner_entity:set_yaw(final_yaw)
 			end
 
@@ -568,7 +573,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 		end,
 	})
 
-	if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_wool") then
+	if mod_mcl_core and minetest.get_modpath("mcl_wool") then
 		minetest.register_craft({
 			output = itemstring,
 			recipe = {
@@ -579,14 +584,14 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 		})
 	end
 
-	if minetest.get_modpath("doc") then
+	if mod_doc then
 		-- Add item to node alias
 		doc.add_entry_alias("nodes", "mcl_banners:standing_banner", "craftitems", itemstring)
 	end
     end
 end
 
-if minetest.get_modpath("doc") then
+if mod_doc then
 	-- Add item to node alias
 	doc.add_entry_alias("nodes", "mcl_banners:standing_banner", "nodes", "mcl_banners:hanging_banner")
 end

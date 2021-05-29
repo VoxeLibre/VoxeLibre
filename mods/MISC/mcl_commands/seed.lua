@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_commands")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 minetest.register_chatcommand("seed", {
 	description = S("Displays the world seed"),

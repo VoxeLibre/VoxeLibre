@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_weather")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local math = math
 
@@ -49,7 +49,7 @@ minetest.register_on_shutdown(save_weather)
 
 function mcl_weather.get_rand_end_time(min_duration, max_duration)
 	local r
-	if min_duration ~= nil and max_duration ~= nil then
+	if min_duration and max_duration then
 		r = math.random(min_duration, max_duration)
 	else
 		r = math.random(mcl_weather.min_duration, mcl_weather.max_duration)
@@ -170,8 +170,8 @@ end
 function mcl_weather.change_weather(new_weather, explicit_end_time, changer_name)
 	local changer_name = changer_name or debug.getinfo(2).name.."()"
 
-	if (mcl_weather.reg_weathers ~= nil and mcl_weather.reg_weathers[new_weather] ~= nil) then
-		if (mcl_weather.state ~= nil and mcl_weather.reg_weathers[mcl_weather.state] ~= nil) then
+	if (mcl_weather.reg_weathers and mcl_weather.reg_weathers[new_weather]) then
+		if (mcl_weather.state and mcl_weather.reg_weathers[mcl_weather.state]) then
 			mcl_weather.reg_weathers[mcl_weather.state].clear()
 		end
 
@@ -269,7 +269,7 @@ minetest.register_chatcommand("toggledownfall", {
 -- Configuration setting which allows user to disable ABM for weathers (if they use it).
 -- Weather mods expected to be use this flag before registering ABM.
 local weather_allow_abm = minetest.settings:get_bool("weather_allow_abm")
-if weather_allow_abm ~= nil and weather_allow_abm == false then
+if weather_allow_abm == false then
 	mcl_weather.allow_abm = false
 end
 

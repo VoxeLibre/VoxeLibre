@@ -1,11 +1,13 @@
 local random = math.random
 
+local ipairs = ipairs
+
 mcl_death_drop = {}
 
 mcl_death_drop.registered_dropped_lists = {}
 
 function mcl_death_drop.register_dropped_list(inv, listname, drop)
-	table.insert(mcl_death_drop.registered_dropped_lists, {inv=inv, listname=listname, drop=drop})
+	table.insert(mcl_death_drop.registered_dropped_lists, {inv = inv, listname = listname, drop = drop})
 end
 
 mcl_death_drop.register_dropped_list("PLAYER", "main", true)
@@ -30,7 +32,7 @@ minetest.register_on_dieplayer(function(player)
 			end
 			local listname = mcl_death_drop.registered_dropped_lists[l].listname
 			local drop = mcl_death_drop.registered_dropped_lists[l].drop
-			if inv ~= nil then
+			if inv then
 				for i, stack in ipairs(inv:get_list(listname)) do
 					local x = random(0, 9)/3
 					local z = random(0, 9)/3

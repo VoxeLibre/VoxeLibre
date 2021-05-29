@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_farming")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Premature potato plants
 
@@ -67,11 +67,11 @@ minetest.register_node("mcl_farming:potato", {
 	inventory_image = "mcl_farming_potatoes_stage_3.png",
 	drop = {
 		items = {
-			{ items = {'mcl_farming:potato_item 1'} },
-			{ items = {'mcl_farming:potato_item 1'}, rarity = 2 },
-			{ items = {'mcl_farming:potato_item 1'}, rarity = 2 },
-			{ items = {'mcl_farming:potato_item 1'}, rarity = 2 },
-			{ items = {'mcl_farming:potato_item_poison 1'}, rarity = 50 }
+			{ items = {"mcl_farming:potato_item 1"} },
+			{ items = {"mcl_farming:potato_item 1"}, rarity = 2 },
+			{ items = {"mcl_farming:potato_item 1"}, rarity = 2 },
+			{ items = {"mcl_farming:potato_item 1"}, rarity = 2 },
+			{ items = {"mcl_farming:potato_item_poison 1"}, rarity = 50 }
 		}
 	},
 	selection_box = {
@@ -97,7 +97,7 @@ minetest.register_craftitem("mcl_farming:potato_item", {
 	on_secondary_use = minetest.item_eat(1),
 	on_place = function(itemstack, placer, pointed_thing)
 		local new = mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:potato_1")
-		if new ~= nil then
+		if new then
 			return new
 		else
 			return minetest.do_item_eat(1, nil, itemstack, placer, pointed_thing)

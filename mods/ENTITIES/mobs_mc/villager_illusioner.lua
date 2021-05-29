@@ -3,8 +3,8 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
-local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
+local S = minetest.get_translator(minetest.get_current_modname())
+local mod_bows = minetest.get_modpath("mcl_bows")
 
 mobs:register_mob("mobs_mc:illusioner", {
 	description = S("Illusioner"),

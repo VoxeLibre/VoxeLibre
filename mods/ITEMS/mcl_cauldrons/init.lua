@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_cauldron")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Cauldron mod, adds cauldrons.
 

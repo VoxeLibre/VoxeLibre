@@ -1,5 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local mod_doc_basics = minetest.get_modpath("doc_basics")
+
 local doc_identifier = {}
 
 doc_identifier.registered_objects = {}
@@ -25,9 +27,9 @@ function doc_identifier.identify(itemstack, user, pointed_thing)
 		elseif itype == "error_unknown" then
 			vsize = vsize + 2
 			local mod
-			if param ~= nil then
+			if param then
 				local colon = string.find(param, ":")
-				if colon ~= nil and colon > 1 then
+				if colon and colon > 1 then
 					mod = string.sub(param,1,colon-1)
 				end
 			end
@@ -37,8 +39,8 @@ function doc_identifier.identify(itemstack, user, pointed_thing)
 				S("• The author of the game or a mod has made a mistake")
 			message = message .. "\n\n"
 
-			if mod ~= nil then
-				if minetest.get_modpath(mod) ~= nil then
+			if mod then
+				if minetest.get_modpath(mod) then
 					message = message .. S("It appears to originate from the mod “@1”, which is enabled.", mod)
 					message = message .. "\n"
 				else
@@ -46,7 +48,7 @@ function doc_identifier.identify(itemstack, user, pointed_thing)
 					message = message .. "\n"
 				end
 			end
-			if param ~= nil then
+			if param then
 				message = message .. S("Its identifier is “@1”.", param)
 			end
 		elseif itype == "error_ignore" then
@@ -67,7 +69,7 @@ function doc_identifier.identify(itemstack, user, pointed_thing)
 	if pointed_thing.type == "node" then
 		local pos = pointed_thing.under
 		local node = minetest.get_node(pos)
-		if minetest.registered_nodes[node.name] ~= nil then
+		if minetest.registered_nodes[node.name] then
 			--local nodedef = minetest.registered_nodes[node.name]
 			if(node.name == "ignore") then
 				show_message(username, "error_ignore")
@@ -83,14 +85,14 @@ function doc_identifier.identify(itemstack, user, pointed_thing)
 		local object = pointed_thing.ref
 		local le = object:get_luaentity()
 		if object:is_player() then
-			if minetest.get_modpath("doc_basics") ~= nil and doc.entry_exists("basics", "players") then
+			if mod_doc_basics and doc.entry_exists("basics", "players") then
 				doc.show_entry(username, "basics", "players", true)
 			else
 				-- Fallback message
 				show_message(username, "player")
 			end
 		-- luaentity exists
-		elseif le ~= nil then
+		elseif le then
 			local ro = doc_identifier.registered_objects[le.name]
 			-- Dropped items
 			if le.name == "__builtin:item" then
@@ -113,7 +115,7 @@ function doc_identifier.identify(itemstack, user, pointed_thing)
 					doc.show_entry(username, "nodes", itemstring, true)
 				end
 			-- A known registered object
-			elseif ro ~= nil then
+			elseif ro then
 				doc.show_entry(username, ro.category, ro.entry, true)
 			-- Undefined object (error)
 			elseif minetest.registered_entities[le.name] == nil then
@@ -196,7 +198,7 @@ minetest.register_craft({
 		   {"group:stick", ""} }
 })
 
-if minetest.get_modpath("mcl_core") ~= nil then
+if minetest.get_modpath("mcl_core") then
 	minetest.register_craft({
 		output = "doc_identifier:identifier_solid",
 		recipe = { { "mcl_core:glass" },

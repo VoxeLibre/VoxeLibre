@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_commands")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 minetest.register_chatcommand("playsound",{
 	params = S("<sound> <target>"), --TODO:add source

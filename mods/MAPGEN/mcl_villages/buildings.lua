@@ -187,10 +187,10 @@ local function construct_node(p1, p2, name)
 			end
 			return nodes
 		end
-		minetest.log("warning","[mcl_villages] No on_construct defined for node name " .. name)
+		minetest.log("warning", "[mcl_villages] No on_construct defined for node name " .. name)
 		return
 	end
-	minetest.log("warning","[mcl_villages] Attempt to 'construct' inexistant nodes: " .. name)
+	minetest.log("warning", "[mcl_villages] Attempt to 'construct' inexistant nodes: " .. name)
 end
 local function init_nodes(p1, p2, size, rotation, pr)
 	construct_node(p1, p2, "mcl_itemframes:item_frame")

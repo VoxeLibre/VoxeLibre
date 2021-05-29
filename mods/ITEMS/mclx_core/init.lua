@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mclx_core")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Liquids: River Water
 

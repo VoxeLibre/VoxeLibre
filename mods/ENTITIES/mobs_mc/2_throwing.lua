@@ -6,7 +6,7 @@
 -- NOTE: Strings intentionally not marked for translation, other mods already have these items.
 -- TODO: Remove this file eventually, all items here are already outsourced in other mods.
 
---local S = minetest.get_translator("mobs_mc")
+--local S = minetest.get_translator(minetest.get_current_modname())
 
 --maikerumines throwing code
 --arrow (weapon)
@@ -83,7 +83,7 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	if self.timer>0.2 then
 		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 1.5)
 		for k, obj in pairs(objs) do
-			if obj:get_luaentity() ~= nil then
+			if obj:get_luaentity() then
 				if obj:get_luaentity().name ~= "mobs_mc:arrow_entity" and obj:get_luaentity().name ~= "__builtin:item" then
 					local damage = 3
 					minetest.sound_play("damage", {pos = pos}, true)
@@ -108,7 +108,7 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	if self.lastpos.x~=nil then
 		if node.name ~= "air" then
 			minetest.sound_play("bowhit1", {pos = pos}, true)
-			minetest.add_item(self.lastpos, 'mobs_mc:arrow')
+			minetest.add_item(self.lastpos, "mobs_mc:arrow")
 			self.object:remove()
 		end
 	end
@@ -155,7 +155,7 @@ end
 
 if c("arrow") and c("flint") and c("feather") and c("stick") then
 	minetest.register_craft({
-		output = 'mobs_mc:arrow 4',
+		output = "mobs_mc:arrow 4",
 		recipe = {
 			{mobs_mc.items.flint},
 			{mobs_mc.items.stick},
@@ -181,11 +181,11 @@ if c("bow") then
 	})
 
 	minetest.register_craft({
-		output = 'mobs_mc:bow_wood',
+		output = "mobs_mc:bow_wood",
 		recipe = {
-			{mobs_mc.items.string, mobs_mc.items.stick, ''},
-			{mobs_mc.items.string, '', mobs_mc.items.stick},
-			{mobs_mc.items.string, mobs_mc.items.stick, ''},
+			{mobs_mc.items.string, mobs_mc.items.stick, ""},
+			{mobs_mc.items.string, "", mobs_mc.items.stick},
+			{mobs_mc.items.string, mobs_mc.items.stick, ""},
 		}
 	})
 end
@@ -259,7 +259,7 @@ if c("egg") then
 	})
 
 	-- shoot egg
-	local mobs_shoot_egg = function (item, player, pointed_thing)
+	local function mobs_shoot_egg(item, player, pointed_thing)
 
 		local playerpos = player:get_pos()
 
@@ -349,7 +349,7 @@ mobs:register_arrow("mobs_mc:snowball_entity", {
 
 if c("snowball") then
 	-- shoot snowball
-	local mobs_shoot_snowball = function (item, player, pointed_thing)
+	local function mobs_shoot_snowball(item, player, pointed_thing)
 
 		local playerpos = player:get_pos()
 

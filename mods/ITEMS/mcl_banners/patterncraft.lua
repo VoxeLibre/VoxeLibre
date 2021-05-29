@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_banners")
+local S = minetest.get_translator(minetest.get_current_modname())
 local N = function(s) return s end
 
 -- Pattern crafting. This file contains the code for crafting all the

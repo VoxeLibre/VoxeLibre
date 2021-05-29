@@ -1,7 +1,10 @@
 -- Chorus plants
 -- This includes chorus flowers, chorus plant stem nodes and chorus fruit
 
-local S = minetest.get_translator("mcl_end")
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local math = math
+local table = table
 
 --- Plant parts ---
 
@@ -32,7 +35,7 @@ local no_detach = {}
 function mcl_end.detach_chorus_plant(start_pos, digger)
 	-- This node should not call a detach function, do NOTHING
 	local hash = minetest.hash_node_position(start_pos)
-	if no_detach[hash] ~= nil then
+	if no_detach[hash] then
 		return
 	end
 
@@ -471,7 +474,7 @@ minetest.register_abm({
 -- * Maximum attempts: 16
 --
 -- Returns true on success.
-local random_teleport = function(player)
+local function random_teleport(player)
 	local pos = player:get_pos()
 	-- 16 attempts to find a suitable position
 	for a=1, 16 do

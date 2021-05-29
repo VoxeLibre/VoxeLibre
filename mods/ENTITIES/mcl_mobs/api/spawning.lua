@@ -5,6 +5,7 @@ local get_node_light               = minetest.get_node_light
 local find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
 local get_biome_name               = minetest.get_biome_name
 local get_objects_inside_radius    = minetest.get_objects_inside_radius
+local get_connected_players        = minetest.get_connected_players
 
 
 local math_random    = math.random
@@ -18,6 +19,7 @@ local vector_floor    = vector.floor
 local table_copy     = table.copy
 local table_remove   = table.remove
 
+local pairs = pairs
 
 -- range for mob count
 local aoc_range = 48
@@ -279,7 +281,7 @@ function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_ligh
 			end
 
 			-- if toggle set to nil then ignore day/night check
-			if day_toggle ~= nil then
+			if day_toggle then
 
 				local tod = (minetest.get_timeofday() or 0) * 24000
 
@@ -369,7 +371,7 @@ function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_ligh
 						if minetest.registered_nodes[node_ok(pos2).name].walkable == true then
 							-- inside block
 							minetest.log("info", "Mob spawn of "..name.." at "..minetest.pos_to_string(pos).." failed, too little space!")
-							if ent.spawn_small_alternative ~= nil and (not minetest.registered_nodes[node_ok(pos).name].walkable) then
+							if ent.spawn_small_alternative and (not minetest.registered_nodes[node_ok(pos).name].walkable) then
 								minetest.log("info", "Trying to spawn smaller alternative mob: "..ent.spawn_small_alternative)
 								spawn_action(orig_pos, node, active_object_count, active_object_count_wider, ent.spawn_small_alternative)
 							end
@@ -540,7 +542,7 @@ if mobs_spawn then
 		timer = timer + dtime
 		if timer >= 10 then
 			timer = 0
-			for _,player in pairs(minetest.get_connected_players()) do
+			for _,player in pairs(get_connected_players()) do
 				-- after this line each "break" means "continue"
 				local do_mob_spawning = true
 				repeat
@@ -548,15 +550,15 @@ if mobs_spawn then
 					--they happen in a single server step
 
 					local player_pos = player:get_pos()
-					local _,dimension = mcl_worlds.y_to_layer(player_pos.y)
+					local dimension = mcl_worlds.pos_to_dimension(player_pos)
 
 					if dimension == "void" or dimension == "default" then
 						break -- ignore void and unloaded area
 					end
 
-					local min,max = decypher_limits(player_pos.y)
+					local min, max = decypher_limits(player_pos.y)
 
-					for i = 1,math_random(1,4) do
+					for i = 1, math_random(1,4) do
 						-- after this line each "break" means "continue"
 						local do_mob_algorithm = true
 						repeat

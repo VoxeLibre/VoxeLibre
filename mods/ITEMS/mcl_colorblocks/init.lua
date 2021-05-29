@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_colorblocks")
+local S = minetest.get_translator(minetest.get_current_modname())
 local doc_mod = minetest.get_modpath("doc")
 
 local block = {}
@@ -173,20 +173,20 @@ for _, row in ipairs(block.dyes) do
 	-- Crafting recipes
 	if craft_color_group then
 		minetest.register_craft({
-			output = 'mcl_colorblocks:hardened_clay_'..name..' 8',
+			output = "mcl_colorblocks:hardened_clay_"..name.." 8",
 			recipe = {
-					{'mcl_colorblocks:hardened_clay', 'mcl_colorblocks:hardened_clay', 'mcl_colorblocks:hardened_clay'},
-					{'mcl_colorblocks:hardened_clay', 'mcl_dye:'..craft_color_group, 'mcl_colorblocks:hardened_clay'},
-					{'mcl_colorblocks:hardened_clay', 'mcl_colorblocks:hardened_clay', 'mcl_colorblocks:hardened_clay'},
+					{"mcl_colorblocks:hardened_clay", "mcl_colorblocks:hardened_clay", "mcl_colorblocks:hardened_clay"},
+					{"mcl_colorblocks:hardened_clay", "mcl_dye:"..craft_color_group, "mcl_colorblocks:hardened_clay"},
+					{"mcl_colorblocks:hardened_clay", "mcl_colorblocks:hardened_clay", "mcl_colorblocks:hardened_clay"},
 			},
 		})
 		minetest.register_craft({
 			type = "shapeless",
-			output = 'mcl_colorblocks:concrete_powder_'..name..' 8',
+			output = "mcl_colorblocks:concrete_powder_"..name.." 8",
 			recipe = {
-				'mcl_core:sand', 'mcl_core:gravel', 'mcl_core:sand',
-				'mcl_core:gravel', 'mcl_dye:'..craft_color_group, 'mcl_core:gravel',
-				'mcl_core:sand', 'mcl_core:gravel', 'mcl_core:sand',
+				"mcl_core:sand", "mcl_core:gravel", "mcl_core:sand",
+				"mcl_core:gravel", "mcl_dye:"..craft_color_group, "mcl_core:gravel",
+				"mcl_core:sand", "mcl_core:gravel", "mcl_core:sand",
 			}
 		})
 

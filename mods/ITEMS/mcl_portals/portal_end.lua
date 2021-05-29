@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_portals")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local table = table
 local vector = vector
@@ -10,7 +10,7 @@ local math = math
 
 --local mg_name = minetest.get_mapgen_setting("mg_name")
 
-local destroy_portal = function(pos)
+local function destroy_portal(pos)
 	local neighbors = {
 		{ x=1, y=0, z=0 },
 		{ x=-1, y=0, z=0 },

@@ -202,7 +202,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 			-- Arrows can only damage players and mobs
 			if obj:is_player() then
 				ok = true
-			elseif obj:get_luaentity() ~= nil then
+			elseif obj:get_luaentity() then
 				if (obj:get_luaentity()._cmi_is_mob or obj:get_luaentity()._hittable_by_projectile) then
 					ok = true
 				end
@@ -222,7 +222,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 
 		-- If an attackable object was found, we will damage the closest one only
 
-		if closest_object ~= nil then
+		if closest_object then
 			local obj = closest_object
 			local is_player = obj:is_player()
 			local lua = obj:get_luaentity()
@@ -273,25 +273,25 @@ function ARROW_ENTITY.on_step(self, dtime)
 								else
 									self._rotation_station = -90
 								end
-								self._y_position = random_arrow_positions('y', placement)
-								self._x_position = random_arrow_positions('x', placement)
+								self._y_position = random_arrow_positions("y", placement)
+								self._x_position = random_arrow_positions("x", placement)
 								if self._y_position > 6 and self._x_position < 2 and self._x_position > -2 then
-									self._attach_parent = 'Head'
+									self._attach_parent = "Head"
 									self._y_position = self._y_position - 6
 								elseif self._x_position > 2 then
-									self._attach_parent = 'Arm_Right'
+									self._attach_parent = "Arm_Right"
 									self._y_position = self._y_position - 3
 									self._x_position = self._x_position - 2
 								elseif self._x_position < -2 then
-									self._attach_parent = 'Arm_Left'
+									self._attach_parent = "Arm_Left"
 									self._y_position = self._y_position - 3
 									self._x_position = self._x_position + 2
 								else
-									self._attach_parent = 'Body'
+									self._attach_parent = "Body"
 								end
 								self._z_rotation = math.random(-30, 30)
 								self._y_rotation = math.random( -30, 30)
-								self.object:set_attach(obj, self._attach_parent, {x=self._x_position,y=self._y_position,z=random_arrow_positions('z', placement)}, {x=0,y=self._rotation_station + self._y_rotation,z=self._z_rotation})
+								self.object:set_attach(obj, self._attach_parent, {x=self._x_position,y=self._y_position,z=random_arrow_positions("z", placement)}, {x=0,y=self._rotation_station + self._y_rotation,z=self._z_rotation})
 								minetest.after(150, function()
 									self.object:remove()
 								end)
@@ -494,15 +494,15 @@ minetest.register_entity("mcl_bows:arrow_entity", ARROW_ENTITY)
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
 	minetest.register_craft({
-		output = 'mcl_bows:arrow 4',
+		output = "mcl_bows:arrow 4",
 		recipe = {
-			{'mcl_core:flint'},
-			{'mcl_core:stick'},
-			{'mcl_mobitems:feather'}
+			{"mcl_core:flint"},
+			{"mcl_core:stick"},
+			{"mcl_mobitems:feather"}
 		}
 	})
 end
 
-if minetest.get_modpath("doc_identifier") ~= nil then
+if minetest.get_modpath("doc_identifier") then
 	doc.sub.identifier.register_object("mcl_bows:arrow_entity", "craftitems", "mcl_bows:arrow")
 end

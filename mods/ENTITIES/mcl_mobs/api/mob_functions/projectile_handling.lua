@@ -36,9 +36,8 @@ mobs.shoot_projectile_handling = function(arrow_item, pos, dir, yaw, shooter, po
 	le._collectable = collectable
 
     --play custom shoot sound
-    if shooter ~= nil and shooter.shoot_sound then
+    if shooter and shooter.shoot_sound then
         minetest.sound_play(shooter.shoot_sound, {pos=pos, max_hear_distance=16}, true)
     end
-
 	return obj
 end

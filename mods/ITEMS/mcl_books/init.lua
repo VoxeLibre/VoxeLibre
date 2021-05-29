@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_books")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local max_text_length = 4500 -- TODO: Increase to 12800 when scroll bar was added to written book
 local max_title_length = 64
@@ -21,9 +21,9 @@ minetest.register_craftitem("mcl_books:book", {
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
 	minetest.register_craft({
-		type = 'shapeless',
-		output = 'mcl_books:book',
-		recipe = { 'mcl_core:paper', 'mcl_core:paper', 'mcl_core:paper', 'mcl_mobitems:leather', }
+		type = "shapeless",
+		output = "mcl_books:book",
+		recipe = { "mcl_core:paper", "mcl_core:paper", "mcl_core:paper", "mcl_mobitems:leather", }
 	})
 end
 
@@ -347,11 +347,11 @@ minetest.register_node("mcl_books:bookshelf", {
 })
 
 minetest.register_craft({
-	output = 'mcl_books:bookshelf',
+	output = "mcl_books:bookshelf",
 	recipe = {
-		{'group:wood', 'group:wood', 'group:wood'},
-		{'mcl_books:book', 'mcl_books:book', 'mcl_books:book'},
-		{'group:wood', 'group:wood', 'group:wood'},
+		{"group:wood", "group:wood", "group:wood"},
+		{"mcl_books:book", "mcl_books:book", "mcl_books:book"},
+		{"group:wood", "group:wood", "group:wood"},
 	}
 })
 

@@ -41,7 +41,7 @@ mobs.explode_attack_walk = function(self,dtime)
     --make mob walk up to player within 2 nodes distance then start exploding
     if distance_from_attacking >= self.reach and
     --don't allow explosion to cancel unless out of the reach boundary
-    not (self.explosion_animation ~= nil and self.explosion_animation > 0 and distance_from_attacking <= self.defuse_reach) then
+    not (self.explosion_animation and self.explosion_animation > 0 and distance_from_attacking <= self.defuse_reach) then
 
         mobs.set_velocity(self, self.run_velocity)
         mobs.set_mob_animation(self,"run")
@@ -85,9 +85,8 @@ end
 
 --this is a small helper function to make working with explosion animations easier
 mobs.reverse_explosion_animation = function(self,dtime)
-
     --if explosion animation was greater than 0 then reverse it
-    if self.explosion_animation ~= nil and self.explosion_animation > 0 then
+    if self.explosion_animation and self.explosion_animation > 0 then
         self.explosion_animation = self.explosion_animation - dtime
         if self.explosion_animation < 0 then
             self.explosion_animation = 0

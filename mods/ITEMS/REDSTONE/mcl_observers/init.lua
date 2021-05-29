@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_observers")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 mcl_observers = {}
 

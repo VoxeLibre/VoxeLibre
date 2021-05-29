@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mesecons_pistons")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local PISTON_MAXIMUM_PUSH = 12
 
@@ -865,7 +865,7 @@ mesecon.register_mvps_stopper("mesecons_pistons:piston_down_sticky_on")
 
 --craft recipes
 minetest.register_craft({
-	output = 'mesecons_pistons:piston_normal_off',
+	output = "mesecons_pistons:piston_normal_off",
 	recipe = {
 		{"group:wood", "group:wood", "group:wood"},
 		{"mcl_core:cobble", "mcl_core:iron_ingot", "mcl_core:cobble"},

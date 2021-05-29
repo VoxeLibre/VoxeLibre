@@ -7,10 +7,10 @@
 All node definitions share a lot of code, so this is the reason why there
 are so many weird tables below.
 ]]
-local S = minetest.get_translator("mcl_dispensers")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- For after_place_node
-local setup_dispenser = function(pos)
+local function setup_dispenser(pos)
 	-- Set formspec and inventory
 	local form = "size[9,8.75]"..
 	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
@@ -29,7 +29,7 @@ local setup_dispenser = function(pos)
 	inv:set_size("main", 9)
 end
 
-local orientate_dispenser = function(pos, placer)
+local function orientate_dispenser(pos, placer)
 	-- Not placed by player
 	if not placer then return end
 
@@ -99,7 +99,7 @@ local dispenserdef = {
 	mesecons = {
 		effector = {
 			-- Dispense random item when triggered
-			action_on = function (pos, node)
+			action_on = function(pos, node)
 				local meta = minetest.get_meta(pos)
 				local inv = meta:get_inventory()
 				local droppos, dropdir
@@ -246,10 +246,11 @@ S("• Flint and steel: Is used to ignite a fire in air and to ignite TNT").."\n
 S("• Spawn eggs: Will summon the mob they contain").."\n"..
 S("• Other items: Are simply dropped")
 
-horizontal_def.after_place_node = function(pos, placer, itemstack, pointed_thing)
+function horizontal_def.after_place_node(pos, placer, itemstack, pointed_thing)
 	setup_dispenser(pos)
 	orientate_dispenser(pos, placer)
 end
+
 horizontal_def.tiles = {
 	"default_furnace_top.png", "default_furnace_bottom.png",
 	"default_furnace_side.png", "default_furnace_side.png",
@@ -287,7 +288,7 @@ minetest.register_node("mcl_dispensers:dispenser_up", up_def)
 
 
 minetest.register_craft({
-	output = 'mcl_dispensers:dispenser',
+	output = "mcl_dispensers:dispenser",
 	recipe = {
 		{"mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble",},
 		{"mcl_core:cobble", "mcl_bows:bow", "mcl_core:cobble",},

@@ -1,6 +1,6 @@
 --Fishing Rod, Bobber, and Flying Bobber mechanics and Bobber artwork by Rootyjr.
 
-local S = minetest.get_translator("mcl_fishing")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local math = math
 
@@ -190,7 +190,7 @@ local bobber_on_step = function(self, dtime)
 	end
 	local wield = player:get_wielded_item()
 	--Check if player is nearby
-	if self.player ~= nil and player ~= nil then
+	if self.player and player then
 		--Destroy bobber if item not wielded.
 		if ((not wield) or (minetest.get_item_group(wield:get_name(), "fishing_rod") <= 0)) then
 			self.object:remove()
@@ -373,17 +373,17 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 minetest.register_craft({
 	output = "mcl_fishing:fishing_rod",
 	recipe = {
-		{'','','mcl_core:stick'},
-		{'','mcl_core:stick','mcl_mobitems:string'},
-		{'mcl_core:stick','','mcl_mobitems:string'},
+		{"","","mcl_core:stick"},
+		{"","mcl_core:stick","mcl_mobitems:string"},
+		{"mcl_core:stick","","mcl_mobitems:string"},
 	}
 })
 minetest.register_craft({
 	output = "mcl_fishing:fishing_rod",
 	recipe = {
-		{'mcl_core:stick', '', ''},
-		{'mcl_mobitems:string', 'mcl_core:stick', ''},
-		{'mcl_mobitems:string','','mcl_core:stick'},
+		{"mcl_core:stick", "", ""},
+		{"mcl_mobitems:string", "mcl_core:stick", ""},
+		{"mcl_mobitems:string","","mcl_core:stick"},
 	}
 })
 minetest.register_craft({

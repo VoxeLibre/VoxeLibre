@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_heads")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local mod_doc = minetest.get_modpath("doc")
 local mod_screwdriver = minetest.get_modpath("screwdriver")

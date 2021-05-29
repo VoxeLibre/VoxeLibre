@@ -43,7 +43,7 @@ local function apply_snippets(desc, itemstring, toolcaps, itemstack)
 end
 
 local function should_change(itemstring, def)
-	return itemstring ~= "" and itemstring ~= "air" and itemstring ~= "ignore" and itemstring ~= "unknown" and def ~= nil and def.description ~= nil and def.description ~= "" and def._tt_ignore ~= true
+	return itemstring ~= "" and itemstring ~= "air" and itemstring ~= "ignore" and itemstring ~= "unknown" and def and def.description and def.description ~= "" and def._tt_ignore ~= true
 end
 
 local function append_snippets()
