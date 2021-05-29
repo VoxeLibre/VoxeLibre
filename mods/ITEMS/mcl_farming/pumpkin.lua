@@ -124,8 +124,7 @@ pumpkin_face_base_def._mcl_armor_preview = "mcl_farming_pumpkin_face_preview.png
 if minetest.get_modpath("mcl_armor") then
 	local pumpkin_hud = {}
 	local function add_pumpkin_hud(player)
-		local name = player:get_player_name()
-		pumpkin_hud[name] = {
+		pumpkin_hud[player] = {
 			pumpkin_blur = player:hud_add({
 				hud_elem_type = "image",
 				position = {x = 0.5, y = 0.5},
@@ -145,11 +144,10 @@ if minetest.get_modpath("mcl_armor") then
 		}
 	end
 	local function remove_pumpkin_hud(player)
-		local name = player:get_player_name()
-		if pumpkin_hud[name] then
-			player:hud_remove(pumpkin_hud[name].pumpkin_blur)
-			player:hud_remove(pumpkin_hud[name].fake_crosshair)
-			pumpkin_hud[name] = nil
+		if pumpkin_hud[player] then
+			player:hud_remove(pumpkin_hud[player].pumpkin_blur)
+			player:hud_remove(pumpkin_hud[player].fake_crosshair)
+			pumpkin_hud[player] = nil
 		end
 	end
 
@@ -166,7 +164,7 @@ if minetest.get_modpath("mcl_armor") then
 		remove_pumpkin_hud(player)
 	end)
 	minetest.register_on_leaveplayer(function(player)
-		remove_pumpkin_hud(player)
+		pumpkin_hud[player] = nil
 	end)
 end
 
