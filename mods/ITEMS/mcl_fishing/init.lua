@@ -2,8 +2,6 @@
 
 local S = minetest.get_translator(minetest.get_current_modname())
 
-local math = math
-
 local bobber_ENTITY={
 	physical = false,
 	timer=0,
@@ -33,141 +31,143 @@ local fish = function(itemstack, player, pointed_thing)
 		end
 	end
 
-	local pos = player:get_pos()
+		local pos = player:get_pos()
 
-	local objs = minetest.get_objects_inside_radius(pos, 125)
-	local ent
-	local noent = false
+		local objs = minetest.get_objects_inside_radius(pos, 125)
+		local num = 0
+		local ent = nil
+		local noent = true
+		
+		local durability = 65
+		local unbreaking = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
+		if unbreaking > 0 then
+			durability = durability * (unbreaking + 1)
+		end
 
-	local durability = 65
-	local unbreaking = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
-	if unbreaking > 0 then
-		durability = durability * (unbreaking + 1)
-	end
+		--Check for bobber if so handle.
+		for n = 1, #objs do
+			ent = objs[n]:get_luaentity()
+			if ent then
+				if ent.player and ent.objtype=="fishing" then
+					if (player:get_player_name() == ent.player) then
+						noent = false
+						if ent._dive == true then
+							local itemname
+							local items
+							local itemcount = 1
+							local pr = PseudoRandom(os.time() * math.random(1, 100))
+							local r = pr:next(1, 100)
+							local fish_values = {85, 84.8, 84.7, 84.5}
+							local junk_values = {10, 8.1, 6.1, 4.2}
+							local luck_of_the_sea = math.min(mcl_enchanting.get_enchantment(itemstack, "luck_of_the_sea"), 3)
+							local index = luck_of_the_sea + 1
+							local fish_value = fish_values[index]
+							local junk_value = junk_values[index] + fish_value
+							if r <= fish_value then
+								-- Fish
+								items = mcl_loot.get_loot({
+									items = {
+										{ itemstring = "mcl_fishing:fish_raw", weight = 60 },
+										{ itemstring = "mcl_fishing:salmon_raw", weight = 25 },
+										{ itemstring = "mcl_fishing:clownfish_raw", weight = 2 },
+										{ itemstring = "mcl_fishing:pufferfish_raw", weight = 13 },
+									}
+								}, pr)
+							elseif r <= junk_value then
+								-- Junk
+								items = mcl_loot.get_loot({
+									items = {
+										{ itemstring = "mcl_core:bowl", weight = 10 },
+										{ itemstring = "mcl_fishing:fishing_rod", weight = 2, wear_min = 6554, wear_max = 65535 }, -- 10%-100% damage
+										{ itemstring = "mcl_mobitems:leather", weight = 10 },
+										{ itemstring = "mcl_armor:boots_leather", weight = 10, wear_min = 6554, wear_max = 65535 }, -- 10%-100% damage
+										{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10 },
+										{ itemstring = "mcl_core:stick", weight = 5 },
+										{ itemstring = "mcl_mobitems:string", weight = 5 },
+										{ itemstring = "mcl_potions:water", weight = 10 },
+										{ itemstring = "mcl_mobitems:bone", weight = 10 },
+										{ itemstring = "mcl_dye:black", weight = 1, amount_min = 10, amount_max = 10 },
+										{ itemstring = "mcl_mobitems:string", weight = 10 }, -- TODO: Tripwire Hook
+									}
+								}, pr)
+							else
+								-- Treasure
+								items = mcl_loot.get_loot({
+									items = {
+										-- TODO: Enchanted Bow
+										{ itemstring = "mcl_bows:bow", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
+										{ itemstack = mcl_enchanting.get_randomly_enchanted_book(30, true, true)},
+										-- TODO: Enchanted Fishing Rod
+										{ itemstring = "mcl_fishing:fishing_rod", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
+										{ itemstring = "mcl_mobs:nametag", },
+										{ itemstring = "mcl_mobitems:saddle", },
+										{ itemstring = "mcl_flowers:waterlily", },
+									}
+								}, pr)
+							end
+							local item
+							if #items >= 1 then
+								item = ItemStack(items[1])
+							else
+								item = ItemStack()
+							end
+							local inv = player:get_inventory()
+							if inv:room_for_item("main", item) then
+								inv:add_item("main", item)
+							else
+								minetest.add_item(pos, item)
+							end
+							if mcl_experience.throw_experience then
+								mcl_experience.throw_experience(pos, math.random(1,6))
+							end
 
-	--Check for bobber if so handle.
-	for n = 1, #objs do
-		ent = objs[n]:get_luaentity()
-		if ent then
-			if ent.player and ent.objtype=="fishing" then
-				if (player:get_player_name() == ent.player) then
-					if ent._dive == true then
-						local items
-						local pr = PseudoRandom(os.time() * math.random(1, 100))
-						local r = pr:next(1, 100)
-						local fish_values = {85, 84.8, 84.7, 84.5}
-						local junk_values = {10, 8.1, 6.1, 4.2}
-						local luck_of_the_sea = math.min(mcl_enchanting.get_enchantment(itemstack, "luck_of_the_sea"), 3)
-						local index = luck_of_the_sea + 1
-						local fish_value = fish_values[index]
-						local junk_value = junk_values[index] + fish_value
-						if r <= fish_value then
-							-- Fish
-							items = mcl_loot.get_loot({
-								items = {
-									{ itemstring = "mcl_fishing:fish_raw", weight = 60 },
-									{ itemstring = "mcl_fishing:salmon_raw", weight = 25 },
-									{ itemstring = "mcl_fishing:clownfish_raw", weight = 2 },
-									{ itemstring = "mcl_fishing:pufferfish_raw", weight = 13 },
-								}
-							}, pr)
-						elseif r <= junk_value then
-							-- Junk
-							items = mcl_loot.get_loot({
-								items = {
-									{ itemstring = "mcl_core:bowl", weight = 10 },
-									{ itemstring = "mcl_fishing:fishing_rod", weight = 2, wear_min = 6554, wear_max = 65535 }, -- 10%-100% damage
-									{ itemstring = "mcl_mobitems:leather", weight = 10 },
-									{ itemstring = "mcl_armor:boots_leather", weight = 10, wear_min = 6554, wear_max = 65535 }, -- 10%-100% damage
-									{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10 },
-									{ itemstring = "mcl_core:stick", weight = 5 },
-									{ itemstring = "mcl_mobitems:string", weight = 5 },
-									{ itemstring = "mcl_potions:water", weight = 10 },
-									{ itemstring = "mcl_mobitems:bone", weight = 10 },
-									{ itemstring = "mcl_dye:black", weight = 1, amount_min = 10, amount_max = 10 },
-									{ itemstring = "mcl_mobitems:string", weight = 10 }, -- TODO: Tripwire Hook
-								}
-							}, pr)
-						else
-							-- Treasure
-							items = mcl_loot.get_loot({
-								items = {
-									-- TODO: Enchanted Bow
-									{ itemstring = "mcl_bows:bow", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
-									{ itemstack = mcl_enchanting.get_randomly_enchanted_book(30, true, true)},
-									-- TODO: Enchanted Fishing Rod
-									{ itemstring = "mcl_fishing:fishing_rod", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
-									{ itemstring = "mcl_mobs:nametag", },
-									{ itemstring = "mcl_mobitems:saddle", },
-									{ itemstring = "mcl_flowers:waterlily", },
-								}
-							}, pr)
-						end
-						local item
-						if #items >= 1 then
-							item = ItemStack(items[1])
-						else
-							item = ItemStack()
-						end
-						local inv = player:get_inventory()
-						if inv:room_for_item("main", item) then
-							inv:add_item("main", item)
-						else
-							minetest.add_item(pos, item)
-						end
-						if mcl_experience.throw_experience then
-							mcl_experience.throw_experience(pos, math.random(1,6))
-						end
-
-						if not minetest.is_creative_enabled(player:get_player_name()) then
-							local idef = itemstack:get_definition()
-							itemstack:add_wear(65535/durability) -- 65 uses
-							if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
-								minetest.sound_play(idef.sound.breaks, {pos=player:get_pos(), gain=0.5}, true)
+							if not minetest.is_creative_enabled(player:get_player_name()) then
+								local idef = itemstack:get_definition()
+								itemstack:add_wear(65535/durability) -- 65 uses
+								if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
+									minetest.sound_play(idef.sound.breaks, {pos=player:get_pos(), gain=0.5}, true)
+								end
 							end
 						end
-					end
-					--Check if object is on land.
-					local epos = ent.object:get_pos()
-					epos.y = math.floor(epos.y)
-					local node = minetest.get_node(epos)
-					local def = minetest.registered_nodes[node.name]
-					if def.walkable then
-						if not minetest.is_creative_enabled(player:get_player_name()) then
-							local idef = itemstack:get_definition()
-							itemstack:add_wear((65535/durability)*2) -- if so and not creative then wear double like in MC.
-							if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
-								minetest.sound_play(idef.sound.breaks, {pos=player:get_pos(), gain=0.5}, true)
+						--Check if object is on land.
+						local epos = ent.object:get_pos()
+						epos.y = math.floor(epos.y)
+						local node = minetest.get_node(epos)
+						local def = minetest.registered_nodes[node.name]
+						if def.walkable then
+							if not minetest.is_creative_enabled(player:get_player_name()) then
+								local idef = itemstack:get_definition()
+								itemstack:add_wear((65535/durability)*2) -- if so and not creative then wear double like in MC.
+								if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
+									minetest.sound_play(idef.sound.breaks, {pos=player:get_pos(), gain=0.5}, true)
+								end
 							end
 						end
+						--Destroy bobber.
+						ent.object:remove()
+						return itemstack
 					end
-					--Destroy bobber.
-					ent.object:remove()
-					noent = false
-					break
 				end
 			end
 		end
-	end
-	--Check for flying bobber.
-	for n = 1, #objs do
-		ent = objs[n]:get_luaentity()
-		if ent then
-			if ent._thrower and ent.objtype=="fishing" then
-				if player:get_player_name() == ent._thrower then
-					noent = false
-					break
+		--Check for flying bobber.
+		for n = 1, #objs do
+			ent = objs[n]:get_luaentity()
+			if ent then
+				if ent._thrower and ent.objtype=="fishing" then
+					if player:get_player_name() == ent._thrower then
+						noent = false
+						break
+					end
 				end
 			end
 		end
-	end
-	--If no bobber or flying_bobber exists then throw bobber.
-	if noent then
-		local playerpos = player:get_pos()
-		local dir = player:get_look_dir()
-		mcl_throwing.throw("mcl_fishing:flying_bobber", {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, 15, player:get_player_name())
-	end
-	return itemstack
+		--If no bobber or flying_bobber exists then throw bobber.
+		if noent == true then
+			local playerpos = player:get_pos()
+			local dir = player:get_look_dir()
+			mcl_throwing.throw("mcl_fishing:flying_bobber", {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, 15, player:get_player_name())
+		end
 end
 
 -- Movement function of bobber
@@ -331,11 +331,13 @@ minetest.register_entity("mcl_fishing:flying_bobber_entity", flying_bobber_ENTIT
 
 mcl_throwing.register_throwable_object("mcl_fishing:flying_bobber", "mcl_fishing:flying_bobber_entity", 5)
 
-local function remove_bobber(player)
+-- If player leaves area, remove bobber.
+minetest.register_on_leaveplayer(function(player)
 	local objs = minetest.get_objects_inside_radius(player:get_pos(), 250)
-
+	local ent = nil
+	local noent = true
 	for n = 1, #objs do
-		local ent = objs[n]:get_luaentity()
+		ent = objs[n]:get_luaentity()
 		if ent then
 			if ent.player and ent.objtype=="fishing" then
 				ent.object:remove()
@@ -344,13 +346,26 @@ local function remove_bobber(player)
 			end
 		end
 	end
-end
-
--- If player leaves area, remove bobber.
-minetest.register_on_leaveplayer(remove_bobber)
+end)
 
 -- If player dies, remove bobber.
-minetest.register_on_dieplayer(remove_bobber)
+minetest.register_on_dieplayer(function(player)
+	local objs = minetest.get_objects_inside_radius(player:get_pos(), 250)
+	local num = 0
+	local ent = nil
+	local noent = true
+
+	for n = 1, #objs do
+		ent = objs[n]:get_luaentity()
+		if ent then
+			if ent.player and ent.objtype=="fishing" then
+				ent.object:remove()
+			elseif ent._thrower and ent.objtype=="fishing" then
+				ent.object:remove()
+			end
+		end
+	end
+end)
 
 -- Fishing Rod
 minetest.register_tool("mcl_fishing:fishing_rod", {
