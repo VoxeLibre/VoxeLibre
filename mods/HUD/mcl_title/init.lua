@@ -1,4 +1,5 @@
 --TODO: use SSCSM to reduce lag and network trafic (just send modchannel messages)
+--TODO: fadeIn and fadeOut animation (needs engine change: SSCSM or native support)
 --TODO: exactly mc like layout
 
 local huds_idx = {}
