@@ -65,6 +65,7 @@ function mcl_title.set(player, type, data)
 	end
 
 	--TODO: enable this code then Fleckenstein's pr get merged
+	--TODO: be sure API is correctly used
 	--[[
 	local bold
 	if data.bold == "true" then
