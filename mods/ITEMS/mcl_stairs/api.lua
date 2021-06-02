@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_stairs")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Core mcl_stairs API
 
@@ -20,7 +20,7 @@ local function place_slab_normal(itemstack, placer, pointed_thing)
 	local p0 = pointed_thing.under
 	local p1 = pointed_thing.above
 
-	local placer_pos = placer:get_pos()
+	--local placer_pos = placer:get_pos()
 
 	local fpos = get_fpos(placer, pointed_thing)
 
@@ -155,7 +155,7 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 
 	if recipeitem then
 		minetest.register_craft({
-			output = 'mcl_stairs:stair_' .. subname .. ' 4',
+			output = "mcl_stairs:stair_" .. subname .. " 4",
 			recipe = {
 				{recipeitem, "", ""},
 				{recipeitem, recipeitem, ""},
@@ -165,7 +165,7 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 
 		-- Flipped recipe
 		minetest.register_craft({
-			output = 'mcl_stairs:stair_' .. subname .. ' 4',
+			output = "mcl_stairs:stair_" .. subname .. " 4",
 			recipe = {
 				{"", "", recipeitem},
 				{"", recipeitem, recipeitem},
@@ -179,7 +179,7 @@ end
 
 
 -- Slab facedir to placement 6d matching table
-local slab_trans_dir = {[0] = 8, 0, 2, 1, 3, 4}
+--local slab_trans_dir = {[0] = 8, 0, 2, 1, 3, 4}
 
 -- Register slabs.
 -- Node will be called mcl_stairs:slab_<subname>
@@ -268,6 +268,7 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 			end
 		end,
 		_mcl_hardness = hardness,
+		_mcl_blast_resistance = blast_resistance,
 		_mcl_other_slab_half = upper_slab,
 		on_rotate = function(pos, node, user, mode, param2)
 			-- Flip slab
@@ -296,7 +297,7 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 	topdef._doc_items_usagehelp = nil
 	topdef.drop = lower_slab
 	topdef._mcl_other_slab_half = lower_slab
-	topdef.on_rotate = function(pos, node, user, mode, param2)
+	function topdef.on_rotate(pos, node, user, mode, param2)
 		-- Flip slab
 		if mode == screwdriver.ROTATE_AXIS then
 			node.name = lower_slab
@@ -331,6 +332,7 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 		sounds = sounds,
 		drop = lower_slab .. " 2",
 		_mcl_hardness = hardness,
+		_mcl_blast_resistance = blast_resistance,
 	})
 
 	if recipeitem then

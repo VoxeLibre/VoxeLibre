@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_commands")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local orig_func = minetest.registered_chatcommands["spawnentity"].func
 local cmd = table.copy(minetest.registered_chatcommands["spawnentity"])

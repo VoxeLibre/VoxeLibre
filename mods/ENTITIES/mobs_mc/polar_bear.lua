@@ -1,6 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### POLARBEAR
@@ -8,6 +8,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 mobs:register_mob("mobs_mc:polar_bear", {
+	description = S("Polar Bear"),
 	type = "animal",
 	spawn_class = "passive",
 	runaway = false,
@@ -30,14 +31,14 @@ mobs:register_mob("mobs_mc:polar_bear", {
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
 	group_attack = true,
-	attack_type = "dogfight",
+	attack_type = "punch",
 	drops = {
 		-- 3/4 chance to drop raw fish (poor approximation)
 		{name = mobs_mc.items.fish_raw,
 		chance = 2,
 		min = 0,
 		max = 2,
-		looting = "common",},		
+		looting = "common",},
 		-- 1/4 to drop raw salmon
 		{name = mobs_mc.items.salmon_raw,
 		chance = 4,

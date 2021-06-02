@@ -2,7 +2,7 @@ mcl_weather.nether_dust = {}
 mcl_weather.nether_dust.particles_count = 99
 
 -- calculates coordinates and draw particles for Nether dust
-mcl_weather.nether_dust.add_dust_particles = function(player)
+function mcl_weather.nether_dust.add_dust_particles(player)
 	for i=mcl_weather.nether_dust.particles_count, 1,-1 do
 		local rpx, rpy, rpz = mcl_weather.get_random_pos_by_player_look_dir(player)
 		minetest.add_particle({

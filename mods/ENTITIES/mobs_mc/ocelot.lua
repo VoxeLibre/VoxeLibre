@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### OCELOT AND CAT
@@ -27,9 +27,12 @@ end
 
 -- Ocelot
 local ocelot = {
+	description = S("Ocelot"),
 	type = "animal",
 	spawn_class = "passive",
 	can_despawn = true,
+	rotate = 270,
+	skittish = true,
 	hp_min = 10,
 	hp_max = 10,
 	xp_min = 1,
@@ -42,7 +45,7 @@ local ocelot = {
 	makes_footstep_sound = true,
 	walk_chance = default_walk_chance,
 	walk_velocity = 1,
-	run_velocity = 3,
+	run_velocity = 10,
 	follow_velocity = 1,
 	floats = 1,
 	runaway = true,
@@ -56,7 +59,7 @@ local ocelot = {
 	},
 	animation = {
 		speed_normal = 25,
-		run_speed = 50,
+		run_speed = 150,
 		stand_start = 0,
 		stand_end = 0,
 		walk_start = 0,
@@ -102,6 +105,7 @@ mobs:register_mob("mobs_mc:ocelot", ocelot)
 
 -- Cat
 local cat = table.copy(ocelot)
+cat.description = S("Cat")
 cat.textures = {{"mobs_mc_cat_black.png"}, {"mobs_mc_cat_red.png"}, {"mobs_mc_cat_siamese.png"}}
 cat.can_despawn = false
 cat.owner = ""
@@ -121,8 +125,6 @@ cat.sounds = {
 }
 cat.on_rightclick = function(self, clicker)
 	if mobs:feed_tame(self, clicker, 1, true, false) then return end
-	if mobs:capture_mob(self, clicker, 0, 60, 5, false, nil) then return end
-	if mobs:protect(self, clicker) then return end
 
 	if self.child then return end
 
@@ -149,13 +151,13 @@ end
 
 mobs:register_mob("mobs_mc:cat", cat)
 
-local base_spawn_chance = 5000
+--local base_spawn_chance = 5000
 
 -- Spawn ocelot
 --they get the same as the llama because I'm trying to rework so much of this code right now -j4i
 mobs:spawn_specific(
-"mobs_mc:ocelot", 
-"overworld", 
+"mobs_mc:ocelot",
+"overworld",
 "ground",
 {
 "Jungle",
@@ -163,12 +165,12 @@ mobs:spawn_specific(
 "JungleM",
 "JungleEdge",
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-15000, 
-5, 
-mobs_mc.spawn_height.water+15, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+15000,
+5,
+mobs_mc.spawn_height.water+15,
 mobs_mc.spawn_height.overworld_max)
 --[[
 mobs:spawn({
@@ -183,7 +185,7 @@ mobs:spawn({
 	max_height = mobs_mc.spawn_height.overworld_max,
 	on_spawn = function(self, pos)
 		 Note: Minecraft has a 1/3 spawn failure rate.
-		In this mod it is emulated by reducing the spawn rate accordingly (see above). 
+		In this mod it is emulated by reducing the spawn rate accordingly (see above).
 
 		-- 1/7 chance to spawn 2 ocelot kittens
 		if pr:next(1,7) == 1 then

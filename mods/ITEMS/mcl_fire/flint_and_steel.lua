@@ -1,11 +1,11 @@
-local S = minetest.get_translator("mcl_fire")
+local S = minetest.get_translator(minetest.get_current_modname())
 local get_node = minetest.get_node
 local add_node = minetest.add_node
 
 -- Flint and Steel
 minetest.register_tool("mcl_fire:flint_and_steel", {
 	description = S("Flint and Steel"),
-	_tt_help = S("Starts fires and ignites blocks"), 
+	_tt_help = S("Starts fires and ignites blocks"),
 	_doc_items_longdesc = S("Flint and steel is a tool to start fires and ignite blocks."),
 	_doc_items_usagehelp = S("Rightclick the surface of a block to attempt to light a fire in front of it or ignite the block. A few blocks have an unique reaction when ignited."),
 	inventory_image = "mcl_fire_flint_and_steel.png",
@@ -14,11 +14,9 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 	groups = { tool = 1, },
 	on_place = function(itemstack, user, pointed_thing)
 		-- Use pointed node's on_rightclick function first, if present
-		local node = get_node(pointed_thing.under)
-		if user and not user:get_player_control().sneak then
-			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
-			end
+        local new_stack = mcl_util.call_on_rightclick(itemstack, user, pointed_thing)
+		if new_stack then
+			return new_stack
 		end
 		-- Check protection
 		local protname = user:get_player_name()
@@ -76,7 +74,7 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 })
 
 minetest.register_craft({
-	type = 'shapeless',
-	output = 'mcl_fire:flint_and_steel',
-	recipe = { 'mcl_core:iron_ingot', 'mcl_core:flint'},
+	type = "shapeless",
+	output = "mcl_fire:flint_and_steel",
+	recipe = { "mcl_core:iron_ingot", "mcl_core:flint"},
 })

@@ -1,7 +1,7 @@
 -- Climbable nodes
-local S = minetest.get_translator("mcl_core")
+local S = minetest.get_translator(minetest.get_current_modname())
 
-local rotate_climbable = function(pos, node, user, mode)
+local function rotate_climbable(pos, node, user, mode)
 	if mode == screwdriver.ROTATE_FACE then
 		local r = screwdriver.rotate.wallmounted(pos, node, mode)
 		node.param2 = r
@@ -120,7 +120,6 @@ minetest.register_node("mcl_core:vine", {
 		local node = minetest.get_node(under)
 		local def = minetest.registered_nodes[node.name]
 		if not def then return itemstack end
-		local groups = def.groups
 
 		-- Check special rightclick action of pointed node
 		if def and def.on_rightclick then

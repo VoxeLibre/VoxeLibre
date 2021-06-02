@@ -1,7 +1,7 @@
-local S = minetest.get_translator("mcl_minecarts")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Template rail function
-local register_rail = function(itemstring, tiles, def_extras, creative)
+local function register_rail(itemstring, tiles, def_extras, creative)
 	local groups = {handy=1,pickaxey=1, attached_node=1,rail=1,connect_to_raillike=minetest.raillike_group("rail"),dig_by_water=1,destroy_by_lava_flow=1, transport=1}
 	if creative == false then
 		groups.not_in_creative_inventory = 1
@@ -206,11 +206,11 @@ register_rail("mcl_minecarts:detector_rail_on",
 
 -- Crafting
 minetest.register_craft({
-	output = 'mcl_minecarts:rail 16',
+	output = "mcl_minecarts:rail 16",
 	recipe = {
-		{'mcl_core:iron_ingot', '', 'mcl_core:iron_ingot'},
-		{'mcl_core:iron_ingot', 'mcl_core:stick', 'mcl_core:iron_ingot'},
-		{'mcl_core:iron_ingot', '', 'mcl_core:iron_ingot'},
+		{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
+		{"mcl_core:iron_ingot", "mcl_core:stick", "mcl_core:iron_ingot"},
+		{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
 	}
 })
 

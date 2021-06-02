@@ -14,11 +14,16 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
+
 -- The global award namespace
 awards = {
-	show_mode = "hud"
+	show_mode = "hud",
 }
-dofile(minetest.get_modpath("awards").."/api_helpers.lua")
+
+dofile(modpath.."/api_helpers.lua")
 
 -- Table Save Load Functions
 function awards.save()
@@ -28,8 +33,6 @@ function awards.save()
 		file:close()
 	end
 end
-
-local S = minetest.get_translator("awards")
 
 function awards.init()
 	awards.players = awards.load()
@@ -53,7 +56,7 @@ end
 function awards.register_trigger(name, func)
 	awards.trigger_types[name] = func
 	awards.on[name] = {}
-	awards['register_on_'..name] = function(func)
+	awards["register_on_"..name] = function(func)
 		table.insert(awards.on[name], func)
 	end
 end
@@ -447,7 +450,7 @@ function awards.getFormspec(name, to, sid)
 			first = false
 
 			if def.secret and not award.got then
-				formspec = formspec .. mcl_colors.DARK_GRAY..minetest.formspec_escape(S("(Secret Award)"))
+				formspec = formspec .. "#707070" .. minetest.formspec_escape(S("(Secret Award)"))
 			else
 				local title = award.name
 				if def and def.title then
@@ -456,7 +459,7 @@ function awards.getFormspec(name, to, sid)
 				if award.got then
 					formspec = formspec .. minetest.formspec_escape(title)
 				else
-					formspec = formspec .. mcl_colors.GRAY.. minetest.formspec_escape(title)
+					formspec = formspec .. "#ACACAC" .. minetest.formspec_escape(title)
 				end
 			end
 		end

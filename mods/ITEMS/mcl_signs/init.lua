@@ -1,5 +1,9 @@
-local S = minetest.get_translator("mcl_signs")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
 local F = minetest.formspec_escape
+
+local table = table
 
 -- Load the characters map (characters.txt)
 --[[ File format of characters.txt:
@@ -13,7 +17,7 @@ After line 3, another info block may follow. This repeats until the end of the f
 All character files must be 5 or 6 pixels wide (5 pixels are preferred)
 ]]
 
-local chars_file = io.open(minetest.get_modpath("mcl_signs").."/characters.txt", "r")
+local chars_file = io.open(modpath.."/characters.txt", "r")
 -- FIXME: Support more characters (many characters are missing). Currently ASCII and Latin-1 Supplement are supported.
 local charmap = {}
 if not chars_file then
@@ -46,7 +50,7 @@ local function round(num, idp)
 	return math.floor(num * mult + 0.5) / mult
 end
 
-local string_to_array = function(str)
+local function string_to_array(str)
 	local tab = {}
 	for i=1,string.len(str) do
 		table.insert(tab, string.sub(str, i,i))
@@ -54,7 +58,7 @@ local string_to_array = function(str)
 	return tab
 end
 
-local string_to_line_array = function(str)
+local function string_to_line_array(str)
 	local tab = {}
 	local current = 1
 	local linechar = 1
@@ -73,7 +77,7 @@ local string_to_line_array = function(str)
 	return tab
 end
 
-local create_lines = function(text)
+local function create_lines(text)
 	local line_num = 1
 	local tab = {}
 	for _, line in ipairs(string_to_line_array(text)) do
@@ -86,19 +90,19 @@ local create_lines = function(text)
 	return tab
 end
 
-local generate_line = function(s, ypos)
+local function generate_line(s, ypos)
 	local i = 1
 	local parsed = {}
 	local width = 0
 	local chars = 0
 	local printed_char_width = CHAR_WIDTH + 1
 	while chars < LINE_LENGTH and i <= #s do
-		local file = nil
+		local file
 		-- Get and render character
-		if charmap[s:sub(i, i)] ~= nil then
+		if charmap[s:sub(i, i)] then
 			file = charmap[s:sub(i, i)]
 			i = i + 1
-		elseif i < #s and charmap[s:sub(i, i + 1)] ~= nil then
+		elseif i < #s and charmap[s:sub(i, i + 1)] then
 			file = charmap[s:sub(i, i + 1)]
 			i = i + 2
 		else
@@ -108,7 +112,7 @@ local generate_line = function(s, ypos)
 			i = i + 1
 			minetest.log("verbose", "[mcl_signs] Unknown symbol in '"..s.."' at "..i)
 		end
-		if file ~= nil then
+		if file then
 			width = width + printed_char_width
 			table.insert(parsed, file)
 			chars = chars + 1
@@ -125,7 +129,7 @@ local generate_line = function(s, ypos)
 	return texture
 end
 
-local generate_texture = function(lines, signnodename)
+local function generate_texture(lines, signnodename)
 	local texture = "[combine:"..SIGN_WIDTH.."x"..SIGN_WIDTH
 	local ypos
 	if signnodename == "mcl_signs:wall_sign" then
@@ -152,6 +156,7 @@ local signtext_info_wall = {
 local signtext_info_standing = {}
 
 local m = -1/16 + 1/64
+
 for rot=0, 15 do
 	local yaw = math.pi*2 - (((math.pi*2) / 16) * rot)
 	local delta = vector.multiply(minetest.yaw_to_dir(yaw), m)
@@ -185,9 +190,9 @@ local function get_wall_signtext_info(param2, nodename)
 	end
 end
 
-local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1, attached_node=1, dig_by_piston=1, flammable=-1}
+local sign_groups = {handy=1,axey=1, deco_block=1, material_wood=1, attached_node=1, dig_by_piston=1, flammable=-1}
 
-local destruct_sign = function(pos)
+local function destruct_sign(pos)
 	local objects = minetest.get_objects_inside_radius(pos, 0.5)
 	for _, v in ipairs(objects) do
 		local ent = v:get_luaentity()
@@ -203,7 +208,7 @@ local destruct_sign = function(pos)
 	end
 end
 
-local update_sign = function(pos, fields, sender, force_remove)
+local function update_sign(pos, fields, sender, force_remove)
 	local meta = minetest.get_meta(pos)
 	if not meta then
 		return
@@ -256,7 +261,7 @@ local update_sign = function(pos, fields, sender, force_remove)
 	text_entity:set_yaw(sign_info.yaw)
 end
 
-local show_formspec = function(player, pos)
+local function show_formspec(player, pos)
 	minetest.show_formspec(
 		player:get_player_name(),
 		"mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z,
@@ -322,7 +327,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 
 		local wdir = minetest.dir_to_wallmounted(dir)
 
-		local placer_pos = placer:get_pos()
+		--local placer_pos = placer:get_pos()
 
 		local fdir = minetest.dir_to_facedir(dir)
 
@@ -518,7 +523,7 @@ minetest.register_entity("mcl_signs:text", {
 	_signnodename = nil, -- node name of sign node to which the text belongs
 
 	on_activate = function(self, staticdata)
-		if staticdata ~= nil and staticdata ~= "" then
+		if staticdata and staticdata ~= "" then
 			local des = minetest.deserialize(staticdata)
 			if des then
 				self._signnodename = des._signnodename
@@ -545,11 +550,11 @@ minetest.register_craft({
 
 if minetest.get_modpath("mcl_core") then
 	minetest.register_craft({
-		output = 'mcl_signs:wall_sign 3',
+		output = "mcl_signs:wall_sign 3",
 		recipe = {
-			{'group:wood', 'group:wood', 'group:wood'},
-			{'group:wood', 'group:wood', 'group:wood'},
-			{'', 'mcl_core:stick', ''},
+			{"group:wood", "group:wood", "group:wood"},
+			{"group:wood", "group:wood", "group:wood"},
+			{"", "mcl_core:stick", ""},
 		}
 	})
 end

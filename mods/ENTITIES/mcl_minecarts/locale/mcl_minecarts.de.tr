@@ -33,3 +33,4 @@ Activates minecarts when powered=Aktiviert Loren, wenn bestromt
 Emits redstone power when a minecart is detected=Gibt ein Redstonesignal aus, wenn eine Lore erfasst wird
 Vehicle for fast travel on rails=Fahrzeug zum schnellen Transport auf Schienen
 Can be ignited by tools or powered activator rail=Kann mit Werkzeugen oder bestromten Aktivierungsschienen angezündet werden
+Sneak to dismount=Zum Aussteigen schleichen

@@ -7,13 +7,16 @@
 -- Note: As this uses basecolor_*, you'd need 9 of these.
 -- minetest.register_craft({
 --     type = "shapeless",
---     output = '<mod>:item_yellow',
---     recipe = {'<mod>:item_no_color', 'group:basecolor_yellow'},
+--     output = "<mod>:item_yellow",
+--     recipe = {"<mod>:item_no_color", "group:basecolor_yellow"},
 -- })
 
 mcl_dye = {}
 
-local S = minetest.get_translator("mcl_dye")
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local math = math
+local string = string
 
 -- Other mods can use these for looping through available colors
 mcl_dye.basecolors = {"white", "grey", "black", "red", "yellow", "green", "cyan", "blue", "magenta"}
@@ -94,7 +97,7 @@ for d=1, #dyelocal.dyes do
 end
 
 -- Takes an unicolor group name (e.g. “unicolor_white”) and returns a corresponding dye name (if it exists), nil otherwise.
-mcl_dye.unicolor_to_dye = function(unicolor_group)
+function mcl_dye.unicolor_to_dye(unicolor_group)
 	local color = dyelocal.unicolor_to_dye_id[unicolor_group]
 	if color then
 		return "mcl_dye:" .. color
@@ -126,7 +129,7 @@ end
 
 -- Bone Meal
 
-mcl_dye.apply_bone_meal = function(pointed_thing)
+function mcl_dye.apply_bone_meal(pointed_thing)
 	-- Bone meal currently spawns all flowers found in the plains.
 	local flowers_table_plains = {
 		"mcl_flowers:dandelion",
@@ -216,25 +219,24 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		end
 		return false
 	-- Wheat, Potato, Carrot, Pumpkin Stem, Melon Stem: Advance by 2-5 stages
-	elseif string.find(n.name, "mcl_farming:wheat_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:wheat_") then
 		local stages = math.random(2, 5)
 		return mcl_farming:grow_plant("plant_wheat", pos, n, stages, true)
-	elseif string.find(n.name, "mcl_farming:potato_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:potato_") then
 		local stages = math.random(2, 5)
 		return mcl_farming:grow_plant("plant_potato", pos, n, stages, true)
-	elseif string.find(n.name, "mcl_farming:carrot_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:carrot_") then
 		local stages = math.random(2, 5)
 		return mcl_farming:grow_plant("plant_carrot", pos, n, stages, true)
-	elseif string.find(n.name, "mcl_farming:pumpkin_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:pumpkin_") then
 		local stages = math.random(2, 5)
 		return mcl_farming:grow_plant("plant_pumpkin_stem", pos, n, stages, true)
-	elseif string.find(n.name, "mcl_farming:melontige_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:melontige_") then
 		local stages = math.random(2, 5)
 		return mcl_farming:grow_plant("plant_melon_stem", pos, n, stages, true)
-
-	elseif string.find(n.name, "mcl_farming:beetroot_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:beetroot_") then
 		-- Beetroot: 75% chance to advance to next stage
-		if math.random(1,100) <= 75 then
+		if math.random(1, 100) <= 75 then
 			return mcl_farming:grow_plant("plant_beetroot", pos, n, 1, true)
 		end
 	elseif n.name == "mcl_cocoas:cocoa_1" or n.name == "mcl_cocoas:cocoa_2" then
@@ -327,7 +329,7 @@ minetest.register_craftitem("mcl_dye:white", {
 	_doc_items_usagehelp = S("Rightclick a sheep to turn its wool white. Rightclick a plant to speed up its growth. Note that not all plants can be fertilized like this. When you rightclick a grass block, tall grass and flowers will grow all over the place."),
 	stack_max = 64,
 	groups = dyelocal.dyes[1][4],
-	on_place = function(itemstack, user, pointed_thing) 
+	on_place = function(itemstack, user, pointed_thing)
 		-- Use pointed node's on_rightclick function first, if present
 		local node = minetest.get_node(pointed_thing.under)
 		if user and not user:get_player_control().sneak then

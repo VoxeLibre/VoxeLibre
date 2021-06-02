@@ -1,5 +1,5 @@
 
-local S = minetest.get_translator("mcl_furnaces")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local LIGHT_ACTIVE_FURNACE = 13
 
@@ -9,12 +9,12 @@ local LIGHT_ACTIVE_FURNACE = 13
 
 local function active_formspec(fuel_percent, item_percent)
 	return "size[9,8.75]"..
-	"label[0,4;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+	"label[0,4;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
 	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Furnace"))).."]"..
+	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Furnace"))).."]"..
 	"list[current_name;src;2.75,0.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
 	"list[current_name;fuel;2.75,2.5;1,1;]"..
@@ -38,12 +38,12 @@ local function active_formspec(fuel_percent, item_percent)
 end
 
 local inactive_formspec = "size[9,8.75]"..
-	"label[0,4;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+	"label[0,4;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
 	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Furnace"))).."]"..
+	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Furnace"))).."]"..
 	"list[current_name;src;2.75,0.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
 	"list[current_name;fuel;2.75,2.5;1,1;]"..
@@ -217,14 +217,14 @@ end
 
 local function furnace_reset_delta_time(pos)
 	local meta = minetest.get_meta(pos)
-	local time_speed = tonumber(minetest.settings:get('time_speed') or 72)
+	local time_speed = tonumber(minetest.settings:get("time_speed") or 72)
 	if (time_speed < 0.1) then
 		return
 	end
 	local time_multiplier = 86400 / time_speed
 	local current_game_time = .0 + ((minetest.get_day_count() + minetest.get_timeofday()) * time_multiplier)
 
-	-- TODO: Change meta:get/set_string() to get/set_float() for 'last_gametime'.
+	-- TODO: Change meta:get/set_string() to get/set_float() for "last_gametime".
 	-- In Windows *_float() works OK but under Linux it returns rounded unusable values like 449540.000000000
 	local last_game_time = meta:get_string("last_gametime")
 	if last_game_time then
@@ -239,7 +239,7 @@ end
 
 local function furnace_get_delta_time(pos, elapsed)
 	local meta = minetest.get_meta(pos)
-	local time_speed = tonumber(minetest.settings:get('time_speed') or 72)
+	local time_speed = tonumber(minetest.settings:get("time_speed") or 72)
 	local current_game_time
 	if (time_speed < 0.1) then
 		return meta, elapsed
@@ -384,7 +384,6 @@ local function furnace_node_timer(pos, elapsed)
 	-- Update formspec and node
 	--
 	local formspec = inactive_formspec
-	local item_state
 	local item_percent = 0
 	if cookable then
 		item_percent = math.floor(src_time / cooked.time * 100)
@@ -414,7 +413,7 @@ local function furnace_node_timer(pos, elapsed)
 	meta:set_float("fuel_time", fuel_time)
 	meta:set_float("src_time", src_time)
 	if srclist then
-		 meta:set_string("src_item", srclist[1]:get_name())
+		 meta:set_string("src_item", src_item)
 	else
 		 meta:set_string("src_item", "")
 	end
@@ -441,7 +440,12 @@ minetest.register_node("mcl_furnaces:furnace", {
 	_tt_help = S("Uses fuel to smelt or cook items"),
 	_doc_items_longdesc = S("Furnaces cook or smelt several items, using a furnace fuel, into something else."),
 	_doc_items_usagehelp =
-			S("Use the furnace to open the furnace menu. Place a furnace fuel in the lower slot and the source material in the upper slot. The furnace will slowly use its fuel to smelt the item. The result will be placed into the output slot at the right side.").."\n"..
+			S([[
+				Use the furnace to open the furnace menu.
+				Place a furnace fuel in the lower slot and the source material in the upper slot.
+				The furnace will slowly use its fuel to smelt the item.
+				The result will be placed into the output slot at the right side.
+			]]).."\n"..
 			S("Use the recipe book to see what you can smelt, what you can use as fuel and how long it will burn."),
 	_doc_items_hidden = false,
 	tiles = {
@@ -474,9 +478,9 @@ minetest.register_node("mcl_furnaces:furnace", {
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", inactive_formspec)
 		local inv = meta:get_inventory()
-		inv:set_size('src', 1)
-		inv:set_size('fuel', 1)
-		inv:set_size('dst', 1)
+		inv:set_size("src", 1)
+		inv:set_size("fuel", 1)
+		inv:set_size("dst", 1)
 	end,
 	on_destruct = function(pos)
 		mcl_particles.delete_node_particlespawners(pos)

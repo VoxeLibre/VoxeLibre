@@ -1,5 +1,10 @@
-local S = minetest.get_translator("mcl_banners")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
 local N = function(s) return s end
+
+local mod_mcl_core = minetest.get_modpath("mcl_core")
+local mod_doc = minetest.get_modpath("doc")
 
 local node_sounds
 if minetest.get_modpath("mcl_sounds") then
@@ -35,13 +40,56 @@ mcl_banners.colors = {
 	["unicolor_light_blue"] = {"light_blue", S("Light Blue Banner"), "mcl_wool:light_blue", "#4040CF", "mcl_dye:lightblue", N("Light Blue") },
 }
 
+
+local pattern_names = {
+      "",
+      "border",
+      "bricks",
+      "circle",
+      "creeper",
+      "cross",
+      "curly_border",
+      "diagonal_up_left",
+      "diagonal_up_right",
+      "diagonal_right",
+      "diagonal_left",
+      "flower",
+      "gradient",
+      "gradient_up",
+      "half_horizontal_bottom",
+      "half_horizontal",
+      "half_vertical",
+      "half_vertical_right",
+      "thing",
+      "rhombus",
+      "skull",
+      "small_stripes",
+      "square_bottom_left",
+      "square_bottom_right",
+      "square_top_left",
+      "square_top_right",
+      "straight_cross",
+      "stripe_bottom",
+      "stripe_center",
+      "stripe_downleft",
+      "stripe_downright",
+      "stripe_left",
+      "stripe_middle",
+      "stripe_right",
+      "stripe_top",
+      "triangle_bottom",
+      "triangle_top",
+      "triangles_bottom",
+      "triangles_top",
+}
+
 local colors_reverse = {}
 for k,v in pairs(mcl_banners.colors) do
 	colors_reverse["mcl_banners:banner_item_"..v[1]] = k
 end
 
 -- Add pattern/emblazoning crafting recipes
-dofile(minetest.get_modpath("mcl_banners").."/patterncraft.lua")
+dofile(modpath.."/patterncraft.lua")
 
 -- Overlay ratios (0-255)
 local base_color_ratio = 224
@@ -50,11 +98,11 @@ local layer_ratio = 255
 local standing_banner_entity_offset = { x=0, y=-0.499, z=0 }
 local hanging_banner_entity_offset = { x=0, y=-1.7, z=0 }
 
-local rotation_level_to_yaw = function(rotation_level)
+local function rotation_level_to_yaw(rotation_level)
 	return (rotation_level * (math.pi/8)) + math.pi
 end
 
-local on_dig_banner = function(pos, node, digger)
+local function on_dig_banner(pos, node, digger)
 	-- Check protection
 	local name = digger:get_player_name()
 	if minetest.is_protected(pos, name) then
@@ -73,7 +121,7 @@ local on_dig_banner = function(pos, node, digger)
 	minetest.remove_node(pos)
 end
 
-local on_destruct_banner = function(pos, hanging)
+local function on_destruct_banner(pos, hanging)
 	local offset, nodename
 	if hanging then
 		offset = hanging_banner_entity_offset
@@ -93,15 +141,15 @@ local on_destruct_banner = function(pos, hanging)
 	end
 end
 
-local on_destruct_standing_banner = function(pos)
+local function on_destruct_standing_banner(pos)
 	return on_destruct_banner(pos, false)
 end
 
-local on_destruct_hanging_banner = function(pos)
+local function on_destruct_hanging_banner(pos)
 	return on_destruct_banner(pos, true)
 end
 
-local make_banner_texture = function(base_color, layers)
+local function make_banner_texture(base_color, layers)
 	local colorize
 	if mcl_banners.colors[base_color] then
 		colorize = mcl_banners.colors[base_color][4]
@@ -131,7 +179,7 @@ local make_banner_texture = function(base_color, layers)
 	end
 end
 
-local spawn_banner_entity = function(pos, hanging, itemstack)
+local function spawn_banner_entity(pos, hanging, itemstack)
 	local banner
 	if hanging then
 		banner = minetest.add_entity(pos, "mcl_banners:hanging_banner")
@@ -147,7 +195,7 @@ local spawn_banner_entity = function(pos, hanging, itemstack)
 	local colorid = colors_reverse[itemstack:get_name()]
 	banner:get_luaentity():_set_textures(colorid, layers)
 	local mname = imeta:get_string("name")
-	if mname ~= nil and mname ~= "" then
+	if mname and mname ~= "" then
 		banner:get_luaentity()._item_name = mname
 		banner:get_luaentity()._item_description = imeta:get_string("description")
 	end
@@ -155,7 +203,7 @@ local spawn_banner_entity = function(pos, hanging, itemstack)
 	return banner
 end
 
-local respawn_banner_entity = function(pos, node, force)
+local function respawn_banner_entity(pos, node, force)
 	local hanging = node.name == "mcl_banners:hanging_banner"
 	local offset
 	if hanging then
@@ -300,24 +348,72 @@ minetest.register_node("mcl_banners:hanging_banner", {
 	end,
 })
 
+-- for pattern_name, pattern in pairs(patterns) do
 for colorid, colortab in pairs(mcl_banners.colors) do
+    for i, pattern_name in ipairs(pattern_names) do
 	local itemid = colortab[1]
 	local desc = colortab[2]
 	local wool = colortab[3]
 	local colorize = colortab[4]
 
-	local itemstring = "mcl_banners:banner_item_"..itemid
-	local inv
-	if colorize then
-		inv = "mcl_banners_item_base.png^(mcl_banners_item_overlay.png^[colorize:"..colorize..")"
+	local itemstring
+	if pattern_name == "" then
+		itemstring = "mcl_banners:banner_item_" .. itemid
 	else
-		inv = "mcl_banners_item_base.png^mcl_banners_item_overlay.png"
+		itemstring = "mcl_banners:banner_preview" .. "_" .. pattern_name .. "_" .. itemid
 	end
 
+	local inv
+	local base
+	local finished_banner
+	if pattern_name == "" then
+	    if colorize then
+		-- Base texture with base color
+		base = "mcl_banners_item_base.png^(mcl_banners_item_overlay.png^[colorize:"..colorize..")^[resize:32x32"
+	    else
+		base = "mcl_banners_item_base.png^mcl_banners_item_overlay.png^[resize:32x32"
+	    end
+	    finished_banner = base
+	else
+		-- Banner item preview background
+		base = "mcl_banners_item_base.png^(mcl_banners_item_overlay.png^[colorize:#CCCCCC)^[resize:32x32"
+
+		desc = S("Preview Banner")
+
+		local pattern = "mcl_banners_" .. pattern_name .. ".png"
+		local color = colorize
+
+		-- Generate layer texture
+
+		-- TODO: The layer texture in the icon is squished
+		-- weirdly because the width/height aspect ratio of
+		-- the banner icon is 1:1.5, whereas the aspect ratio
+		-- of the banner entity is 1:2. A solution would be to
+		-- redraw the pattern textures as low-resolution pixel
+		-- art and use that instead.
+
+		local layer = "(([combine:20x40:-2,-2="..pattern.."^[resize:16x24^[colorize:"..color..":"..layer_ratio.."))"
+
+		function escape(text)
+			 return text:gsub("%^", "\\%^"):gsub(":", "\\:") -- :gsub("%(", "\\%("):gsub("%)", "\\%)")
+		end
+
+		finished_banner = "[combine:32x32:0,0=" .. escape(base) .. ":8,4=" .. escape(layer)
+	end
+
+	inv = finished_banner
+
 	-- Banner items.
-	-- This is the player-visible banner item. It comes in 16 base colors.
+	-- This is the player-visible banner item. It comes in 16 base colors with a lot of patterns.
 	-- The multiple items are really only needed for the different item images.
 	-- TODO: Combine the items into only 1 item.
+	local groups
+	if pattern_name == "" then
+		groups = { banner = 1, deco_block = 1, flammable = -1 }
+	else
+		groups = { not_in_creative_inventory = 1 }
+	end
+
 	minetest.register_craftitem(itemstring, {
 		description = desc,
 		_tt_help = S("Paintable decoration"),
@@ -326,7 +422,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 		wield_image = inv,
 		-- Banner group groups together the banner items, but not the nodes.
 		-- Used for crafting.
-		groups = { banner = 1, deco_block = 1, flammable = -1 },
+		groups = groups,
 		stack_max = 16,
 
 		on_place = function(itemstack, placer, pointed_thing)
@@ -451,7 +547,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 			end
 			meta:set_int("rotation_level", rotation_level)
 
-			if banner_entity ~= nil then
+			if banner_entity then
 				banner_entity:set_yaw(final_yaw)
 			end
 
@@ -477,7 +573,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 		end,
 	})
 
-	if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_wool") then
+	if mod_mcl_core and minetest.get_modpath("mcl_wool") then
 		minetest.register_craft({
 			output = itemstring,
 			recipe = {
@@ -488,13 +584,14 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 		})
 	end
 
-	if minetest.get_modpath("doc") then
+	if mod_doc then
 		-- Add item to node alias
 		doc.add_entry_alias("nodes", "mcl_banners:standing_banner", "craftitems", itemstring)
 	end
+    end
 end
 
-if minetest.get_modpath("doc") then
+if mod_doc then
 	-- Add item to node alias
 	doc.add_entry_alias("nodes", "mcl_banners:standing_banner", "nodes", "mcl_banners:hanging_banner")
 end

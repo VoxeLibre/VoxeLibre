@@ -1,5 +1,9 @@
-local modpath = minetest.get_modpath("mcl_enchanting")
-local S = minetest.get_translator("mcl_enchanting")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
+
+local math = math
+local vector = vector
 
 mcl_enchanting = {
 	book_offset = vector.new(0, 0.75, 0),
@@ -122,7 +126,7 @@ minetest.register_chatcommand("forceenchant", {
 			return false, S("Player '@1' cannot be found.", target_name)
 		end
 		local itemstack = target:get_wielded_item()
-		local can_enchant, errorstring, extra_info = mcl_enchanting.can_enchant(itemstack, enchantment, level)
+		local _, errorstring = mcl_enchanting.can_enchant(itemstack, enchantment, level)
 		if errorstring == "enchantment invalid" then
 			return false, S("There is no such enchantment '@1'.", enchantment)
 		elseif errorstring == "item missing" then
@@ -148,7 +152,7 @@ minetest.register_craftitem("mcl_enchanting:book_enchanted", {
 
 minetest.register_alias("mcl_books:book_enchanted", "mcl_enchanting:book_enchanted")
 
-local spawn_book_entity = function(pos, respawn)
+local function spawn_book_entity(pos, respawn)
 	if respawn then
 		-- Check if we already have a book
 		local objs = minetest.get_objects_inside_radius(pos, 1)
@@ -242,9 +246,9 @@ minetest.register_node("mcl_enchanting:table", {
 	on_rotate = rotate,
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 		local player_meta = clicker:get_meta()
-		local table_meta = minetest.get_meta(pos)
-		local num_bookshelves = table_meta:get_int("mcl_enchanting:num_bookshelves")
-		local table_name = table_meta:get_string("name")
+		--local table_meta = minetest.get_meta(pos)
+		--local num_bookshelves = table_meta:get_int("mcl_enchanting:num_bookshelves")
+		local table_name = minetest.get_meta(pos):get_string("name")
 		if table_name == "" then
 			table_name = S("Enchant")
 		end
@@ -361,4 +365,4 @@ minetest.register_on_joinplayer(mcl_enchanting.initialize_player)
 minetest.register_on_player_receive_fields(mcl_enchanting.handle_formspec_fields)
 minetest.register_allow_player_inventory_action(mcl_enchanting.allow_inventory_action)
 minetest.register_on_player_inventory_action(mcl_enchanting.on_inventory_action)
-table.insert(tt.registered_snippets, 1, mcl_enchanting.enchantments_snippet)
+tt.register_priority_snippet(mcl_enchanting.enchantments_snippet)

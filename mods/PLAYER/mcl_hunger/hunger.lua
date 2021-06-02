@@ -1,10 +1,7 @@
-local S = minetest.get_translator("mcl_hunger")
-local mod_death_messages = minetest.get_modpath("mcl_death_messages")
+--local S = minetest.get_translator(minetest.get_current_modname())
 
 -- wrapper for minetest.item_eat (this way we make sure other mods can't break this one)
-local org_eat = minetest.do_item_eat
-minetest.do_item_eat = function(hp_change, replace_with_item, itemstack, user, pointed_thing)
-
+function minetest.do_item_eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
 	if not user or user:is_player() == false then
 		return itemstack
 	end
@@ -38,7 +35,8 @@ minetest.do_item_eat = function(hp_change, replace_with_item, itemstack, user, p
 	-- FIXME: In singleplayer, there's a cheat to circumvent this, simply by pausing the game between eats.
 	-- This is because os.time() obviously does not care about the pause. A fix needs a different timer mechanism.
 	if no_eat_delay or (mcl_hunger.last_eat[name] < 0) or (os.difftime(os.time(), mcl_hunger.last_eat[name]) >= 2) then
-		local can_eat_when_full = creative or (mcl_hunger.active == false) or minetest.get_item_group(itemstack:get_name(), "can_eat_when_full") == 1
+		local can_eat_when_full = creative or (mcl_hunger.active == false)
+		or minetest.get_item_group(itemstack:get_name(), "can_eat_when_full") == 1
 		-- Don't allow eating when player has full hunger bar (some exceptional items apply)
 		if can_eat_when_full or (mcl_hunger.get_hunger(user) < 20) then
 			itemstack = mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
@@ -67,7 +65,8 @@ function mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_t
 		def.saturation = hp_change
 		def.replace = replace_with_item
 	end
-	local func = mcl_hunger.item_eat(def.saturation, def.replace, def.poisontime, def.poison, def.exhaust, def.poisonchance, def.sound)
+	local func = mcl_hunger.item_eat(def.saturation, def.replace, def.poisontime,
+		def.poison, def.exhaust, def.poisonchance, def.sound)
 	return func(itemstack, user, pointed_thing)
 end
 
@@ -90,7 +89,6 @@ local function poisonp(tick, time, time_left, damage, exhaustion, name)
 	if not player then
 		return
 	end
-	local name = player:get_player_name()
 	-- Abort if food poisonings have been stopped
 	if mcl_hunger.poison_hunger[name] == 0 then
 		return
@@ -110,10 +108,7 @@ local function poisonp(tick, time, time_left, damage, exhaustion, name)
 	-- Deal damage and exhaust player
 	-- TODO: Introduce fatal poison at higher difficulties
 	if player:get_hp()-damage > 0 then
-		if mod_death_messages then
-			mcl_death_messages.player_damage(player, S("@1 succumbed to the poison.", name))
-		end
-		player:set_hp(player:get_hp()-damage)
+		mcl_util.deal_damage(player, damage, {type = "hunger"})
 	end
 
 	mcl_hunger.exhaust(name, exhaustion)
@@ -126,12 +121,12 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 	return function(itemstack, user, pointed_thing)
 		local itemname = itemstack:get_name()
 		local creative = minetest.is_creative_enabled(user:get_player_name())
-		if itemstack:peek_item() ~= nil and user ~= nil then
+		if itemstack:peek_item() and user then
 			if not creative then
 				itemstack:take_item()
 			end
 			local name = user:get_player_name()
-			local hp = user:get_hp()
+			--local hp = user:get_hp()
 
 			local pos = user:get_pos()
 			-- player height

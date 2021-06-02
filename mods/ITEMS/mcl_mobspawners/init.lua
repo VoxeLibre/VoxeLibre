@@ -1,11 +1,14 @@
-local S = minetest.get_translator("mcl_mobspawners")
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local math = math
+local table = table
 
 mcl_mobspawners = {}
 
 local default_mob = "mobs_mc:pig"
 
 -- Mob spawner
-local spawner_default = default_mob.." 0 15 4 15"
+--local spawner_default = default_mob.." 0 15 4 15"
 
 local function get_mob_textures(mob)
 	local list = minetest.registered_entities[mob].texture_list
@@ -19,7 +22,7 @@ end
 local function find_doll(pos)
 	for  _,obj in pairs(minetest.get_objects_inside_radius(pos, 0.5)) do
 		if not obj:is_player() then
-			if obj ~= nil and obj:get_luaentity().name == "mcl_mobspawners:doll" then
+			if obj and obj:get_luaentity().name == "mcl_mobspawners:doll" then
 				return obj
 			end
 		end
@@ -54,6 +57,7 @@ local spawn_count_overrides = {
 
 local function set_doll_properties(doll, mob)
 	local mobinfo = minetest.registered_entities[mob]
+	if not mobinfo then return end
 	local xs, ys
 	if doll_size_overrides[mob] then
 		xs = doll_size_overrides[mob].x
@@ -132,7 +136,7 @@ end
 
 -- Spawn mobs around pos
 -- NOTE: The node is timer-based, rather than ABM-based.
-local spawn_mobs = function(pos, elapsed)
+local function spawn_mobs(pos, elapsed)
 
 	-- get meta
 	local meta = minetest.get_meta(pos)
@@ -159,7 +163,7 @@ local spawn_mobs = function(pos, elapsed)
 	-- check objects inside 8×8 area around spawner
 	local objs = minetest.get_objects_inside_radius(pos, 8)
 	local count = 0
-	local ent = nil
+	local ent
 
 
 	local timer = minetest.get_node_timer(pos)

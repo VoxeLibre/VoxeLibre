@@ -1,4 +1,7 @@
-local S = minetest.get_translator("mcl_potions")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
+
 mcl_potions = {}
 
 -- duration effects of redstone are a factor of 8/3
@@ -16,8 +19,6 @@ mcl_potions.INV_FACTOR = 0.50
 mcl_potions.SPLASH_FACTOR = 0.75
 mcl_potions.LINGERING_FACTOR = 0.25
 
-
-local modpath = minetest.get_modpath("mcl_potions")
 dofile(modpath .. "/functions.lua")
 dofile(modpath .. "/commands.lua")
 dofile(modpath .. "/splash.lua")
@@ -25,11 +26,9 @@ dofile(modpath .. "/lingering.lua")
 dofile(modpath .. "/tipped_arrow.lua")
 dofile(modpath .. "/potions.lua")
 
-local brewhelp = S("Try different combinations to create potions.")
-
 minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	description = S("Fermented Spider Eye"),
-	_doc_items_longdesc = brewhelp,
+	_doc_items_longdesc = S("Try different combinations to create potions."),
 	wield_image = "mcl_potions_spider_eye_fermented.png",
 	inventory_image = "mcl_potions_spider_eye_fermented.png",
 	groups = { brewitem = 1, },
@@ -65,14 +64,12 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 
 			-- Try to fill glass bottle with water
 			local get_water = false
-			local from_liquid_source = false
+			--local from_liquid_source = false
 			local river_water = false
-			if not def then
-				-- Unknown node: no-op
-			elseif def.groups and def.groups.water and def.liquidtype == "source" then
+			if def and def.groups and def.groups.water and def.liquidtype == "source" then
 				-- Water source
 				get_water = true
-				from_liquid_source = true
+				--from_liquid_source = true
 				river_water = node.name == "mclx_core:river_water_source"
 			-- Or reduce water level of cauldron by 1
 			elseif string.sub(node.name, 1, 14) == "mcl_cauldrons:" then
@@ -147,7 +144,7 @@ minetest.register_craft( {
 -- Template function for creating images of filled potions
 -- - colorstring must be a ColorString of form “#RRGGBB”, e.g. “#0000FF” for blue.
 -- - opacity is optional opacity from 0-255 (default: 127)
-local potion_image = function(colorstring, opacity)
+local function potion_image(colorstring, opacity)
 	if not opacity then
 		opacity = 127
 	end
@@ -275,7 +272,7 @@ minetest.register_craftitem("mcl_potions:river_water", {
 })
 
 -- Hurt mobs
-local water_splash = function(obj, damage)
+local function water_splash(obj, damage)
 	if not obj then
 		return
 	end
@@ -318,9 +315,9 @@ minetest.register_craftitem("mcl_potions:speckled_melon", {
 minetest.register_craft({
 	output = "mcl_potions:speckled_melon",
 	recipe = {
-		{'mcl_core:gold_nugget', 'mcl_core:gold_nugget', 'mcl_core:gold_nugget'},
-		{'mcl_core:gold_nugget', 'mcl_farming:melon_item', 'mcl_core:gold_nugget'},
-		{'mcl_core:gold_nugget', 'mcl_core:gold_nugget', 'mcl_core:gold_nugget'},
+		{"mcl_core:gold_nugget", "mcl_core:gold_nugget", "mcl_core:gold_nugget"},
+		{"mcl_core:gold_nugget", "mcl_farming:melon_item", "mcl_core:gold_nugget"},
+		{"mcl_core:gold_nugget", "mcl_core:gold_nugget", "mcl_core:gold_nugget"},
 	}
 })
 
@@ -432,22 +429,20 @@ local mod_table = {
 
 -- Compare two ingredients for compatable alchemy
 function mcl_potions.get_alchemy(ingr, pot)
-
-	if output_table[pot] ~= nil then
+	if output_table[pot] then
 
 		local brew_table = output_table[pot]
 
-		if brew_table[ingr] ~= nil then
+		if brew_table[ingr] then
 			return brew_table[ingr]
 		end
-		
 	end
 
-	if mod_table[ingr] ~= nil then
+	if mod_table[ingr] then
 
 		local brew_table = mod_table[ingr]
 
-		if brew_table[pot] ~= nil then
+		if brew_table[pot] then
 			return brew_table[pot]
 		end
 

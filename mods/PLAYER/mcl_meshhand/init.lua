@@ -34,7 +34,8 @@ for _,texture in pairs(list) do
 		end,
 		groups = { dig_immediate = 3, not_in_creative_inventory = 1 },
 		range = def.range,
-		})
+		_mcl_hand_id = texture,
+	})
 
 	minetest.register_node("mcl_meshhand:"..texture.. "_female", {
 		description = "",
@@ -57,13 +58,13 @@ for _,texture in pairs(list) do
 		end,
 		groups = { dig_immediate = 3, not_in_creative_inventory = 1 },
 		range = def.range,
-		})
+		_mcl_hand_id = texture .. "_female",
+	})
 end
 
 if has_mcl_skins == true then
 	--change the player's hand to their skin
 	mcl_skins.register_on_set_skin(function(player, skin)
-		local name = player:get_player_name()
 		local meta = mcl_skins.meta[skin]
 		if meta.gender == "female" then
 			player:get_inventory():set_stack("hand", 1, "mcl_meshhand:"..skin.."_female")

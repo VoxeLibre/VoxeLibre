@@ -1,8 +1,8 @@
-local S = minetest.get_translator("mesecons_wallever")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local lever_get_output_rules = mesecon.rules.buttonlike_get
 
-local on_rotate = function(pos, node, user, mode)
+local function on_rotate(pos, node, user, mode)
 	if mode == screwdriver.ROTATE_FACE then
 		if node.param2 == 10 then
 			node.param2 = 13
@@ -37,7 +37,6 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 	wield_image = "jeija_wall_lever.png",
 	paramtype = "light",
 	paramtype2 = "facedir",
-	drawtype = "mesh",
 	mesh = "jeija_wall_lever_off.obj",
 	sunlight_propagates = true,
 	walkable = false,
@@ -51,7 +50,7 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 	_tt_help = S("Provides redstone power while it's turned on"),
 	_doc_items_longdesc = S("A lever is a redstone component which can be flipped on and off. It supplies redstone power to adjacent blocks while it is in the “on” state."),
 	_doc_items_usagehelp = S("Use the lever to flip it on or off."),
-	on_rightclick = function (pos, node)
+	on_rightclick = function(pos, node)
 		minetest.swap_node(pos, {name="mesecons_walllever:wall_lever_on", param2=node.param2})
 		mesecon.receptor_on(pos, lever_get_output_rules(node))
 		minetest.sound_play("mesecons_button_push", {pos=pos, max_hear_distance=16}, true)
@@ -149,9 +148,9 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 	},
 	groups = {handy=1, not_in_creative_inventory = 1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1},
 	is_ground_content = false,
-	drop = '"mesecons_walllever:wall_lever_off" 1',
+	drop = "mesecons_walllever:wall_lever_off",
 	_doc_items_create_entry = false,
-	on_rightclick = function (pos, node)
+	on_rightclick = function(pos, node)
 		minetest.swap_node(pos, {name="mesecons_walllever:wall_lever_off", param2=node.param2})
 		mesecon.receptor_off(pos, lever_get_output_rules(node))
 		minetest.sound_play("mesecons_button_push", {pos=pos, max_hear_distance=16, pitch=0.9}, true)
@@ -167,10 +166,10 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 })
 
 minetest.register_craft({
-	output = 'mesecons_walllever:wall_lever_off',
+	output = "mesecons_walllever:wall_lever_off",
 	recipe = {
-		{'mcl_core:stick'},
-		{'mcl_core:cobble'},
+		{"mcl_core:stick"},
+		{"mcl_core:cobble"},
 	}
 })
 

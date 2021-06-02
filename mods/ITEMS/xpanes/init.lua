@@ -1,4 +1,4 @@
-local S = minetest.get_translator("xpanes")
+local S = minetest.get_translator(minetest.get_current_modname())
 local mod_doc = minetest.get_modpath("doc")
 
 local function is_pane(pos)
@@ -142,7 +142,7 @@ function xpanes.register_pane(name, def)
 		tiles = {def.textures[3], def.textures[2], def.textures[1]},
 		use_texture_alpha = def.use_texture_alpha,
 		groups = groups,
-		drop = "xpanes:" .. name .. "_flat",
+		drop = drop,
 		sounds = def.sounds,
 		node_box = {
 			type = "connected",
@@ -153,7 +153,6 @@ function xpanes.register_pane(name, def)
 			connect_right = {{1/32, -1/2, -1/32, 1/2, 1/2, 1/32}},
 		},
 		connects_to = {"group:pane", "group:stone", "group:glass", "group:wood", "group:tree"},
-		drop = drop,
 		_mcl_blast_resistance = def._mcl_blast_resistance,
 		_mcl_hardness = def._mcl_hardness,
 		_mcl_silk_touch_drop = def._mcl_silk_touch_drop and {"xpanes:" .. name .. "_flat"},
@@ -171,7 +170,7 @@ end
 
 local canonical_color = "yellow"
 -- Register glass pane (stained and unstained)
-local pane = function(description, node, append)
+local function pane(description, node, append)
 	local texture1, longdesc, entry_name, create_entry
 	local is_canonical = true
 	-- Special case: Default (unstained) glass texture

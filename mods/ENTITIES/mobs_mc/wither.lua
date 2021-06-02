@@ -3,13 +3,14 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### WITHER
 --###################
 
 mobs:register_mob("mobs_mc:wither", {
+	description = S("Wither"),
 	type = "monster",
 	spawn_class = "hostile",
 	hp_max = 300,
@@ -25,7 +26,6 @@ mobs:register_mob("mobs_mc:wither", {
 		{"mobs_mc_wither.png"},
 	},
 	visual_size = {x=4, y=4},
-	makes_footstep_sound = true,
 	view_range = 16,
 	fear_height = 4,
 	walk_velocity = 2,
@@ -52,7 +52,7 @@ mobs:register_mob("mobs_mc:wither", {
 	},
 	lava_damage = 0,
 	fire_damage = 0,
-	attack_type = "dogshoot",
+	attack_type = "projectile",
 	explosion_strength = 8,
 	dogshoot_stop = true,
 	arrow = "mobs_mc:wither_skull",
@@ -73,14 +73,14 @@ mobs:register_mob("mobs_mc:wither", {
 			self.object:set_properties({textures={self.base_texture}})
 			self.armor = {undead = 80, fleshy = 80}
 		end
-		mcl_bossbars.update_boss(self, "Wither", "dark_purple")
+		mcl_bossbars.update_boss(self.object, "Wither", "dark_purple")
 	end,
 	on_spawn = function(self)
 		minetest.sound_play("mobs_mc_wither_spawn", {object=self.object, gain=1.0, max_hear_distance=64})
 	end,
 })
 
-local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+--local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 
 mobs:register_arrow("mobs_mc:wither_skull", {
 	visual = "sprite",

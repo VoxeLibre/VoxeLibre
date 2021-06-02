@@ -1,6 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Returns a function that spawns children in a circle around pos.
 -- To be used as on_die callback.
@@ -41,10 +41,10 @@ local spawn_children_on_die = function(child_mob, children_count, spawn_distance
 		-- If mother was murdered, children attack the killer after 1 second
 		if self.state == "attack" then
 			minetest.after(1.0, function(children, enemy)
-				for c=1, #children do
+				for c = 1, #children do
 					local child = children[c]
 					local le = child:get_luaentity()
-					if le ~= nil then
+					if le then
 						le.state = "attack"
 						le.attack = enemy
 					end
@@ -56,17 +56,18 @@ end
 
 -- Slime
 local slime_big = {
+	description = S("Slime"),
 	type = "monster",
 	spawn_class = "hostile",
-	pathfinding = 1,
 	group_attack = { "mobs_mc:slime_big", "mobs_mc:slime_small", "mobs_mc:slime_tiny" },
 	hp_min = 16,
 	hp_max = 16,
 	xp_min = 4,
 	xp_max = 4,
+	rotate = 270,
 	collisionbox = {-1.02, -0.01, -1.02, 1.02, 2.03, 1.02},
 	visual_size = {x=12.5, y=12.5},
-	textures = {{"mobs_mc_slime.png"}},
+	textures = {{"mobs_mc_slime.png", "mobs_mc_slime.png"}},
 	visual = "mesh",
 	mesh = "mobs_mc_slime.b3d",
 	makes_footstep_sound = true,
@@ -83,23 +84,21 @@ local slime_big = {
 	drops = {},
 	-- TODO: Fix animations
 	animation = {
-		speed_normal = 24,
-		speed_run = 48,
-		stand_start = 0,
-		stand_end = 23,
-		walk_start = 24,
-		walk_end = 47,
-		run_start = 48,
-		run_end = 62,
-		hurt_start = 64,
-		hurt_end = 86,
-		death_start = 88,
-		death_end = 118,
+		jump_speed = 17,
+		stand_speed = 17,
+		walk_speed = 17,
+		jump_start = 1,
+		jump_end = 20,
+		stand_start = 1,
+		stand_end = 20,
+		walk_start = 1,
+		walk_end = 20,
 	},
 	fall_damage = 0,
 	view_range = 16,
-	attack_type = "dogfight",
+	attack_type = "jump_punch",
 	passive = false,
+	jump_only = true,
 	jump = true,
 	walk_velocity = 2.5,
 	run_velocity = 2.5,
@@ -158,8 +157,8 @@ local smin = mobs_mc.spawn_height.overworld_min
 local smax = mobs_mc.spawn_height.water - 23
 
 mobs:spawn_specific(
-"mobs_mc:slime_tiny", 
-"overworld", 
+"mobs_mc:slime_tiny",
+"overworld",
 "ground",
 {
 "FlowerForest_underground",
@@ -193,17 +192,17 @@ mobs:spawn_specific(
 "ExtremeHillsM_underground",
 "JungleEdgeM_underground",
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-12000, 
-4, 
-smin, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+12000,
+4,
+smin,
 smax)
 
 mobs:spawn_specific(
-"mobs_mc:slime_small", 
-"overworld", 
+"mobs_mc:slime_small",
+"overworld",
 "ground",
 {
 "FlowerForest_underground",
@@ -236,19 +235,19 @@ mobs:spawn_specific(
 "JungleM_underground",
 "ExtremeHillsM_underground",
 "JungleEdgeM_underground",
-}, 
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-8500, 
-4, 
-smin, 
+},
+0,
+minetest.LIGHT_MAX+1,
+30,
+8500,
+4,
+smin,
 smax)
 
 mobs:spawn_specific(
-"mobs_mc:slime_big", 
-"overworld", 
-"ground", 
+"mobs_mc:slime_big",
+"overworld",
+"ground",
 {
 "FlowerForest_underground",
 "JungleEdge_underground",
@@ -281,16 +280,17 @@ mobs:spawn_specific(
 "ExtremeHillsM_underground",
 "JungleEdgeM_underground",
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-10000, 
-4, 
-smin, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+10000,
+4,
+smin,
 smax)
 
 -- Magma cube
 local magma_cube_big = {
+	description = S("Magma Cube"),
 	type = "monster",
 	spawn_class = "hostile",
 	hp_min = 16,
@@ -299,7 +299,7 @@ local magma_cube_big = {
 	xp_max = 4,
 	collisionbox = {-1.02, -0.01, -1.02, 1.02, 2.03, 1.02},
 	visual_size = {x=12.5, y=12.5},
-	textures = {{ "mobs_mc_magmacube.png" }},
+	textures = {{ "mobs_mc_magmacube.png", "mobs_mc_magmacube.png" }},
 	visual = "mesh",
 	mesh = "mobs_mc_magmacube.b3d",
 	makes_footstep_sound = true,
@@ -311,6 +311,7 @@ local magma_cube_big = {
 	},
 	walk_velocity = 4,
 	run_velocity = 4,
+	rotate = 270,
 	damage = 6,
 	reach = 3,
 	armor = 53,
@@ -322,27 +323,25 @@ local magma_cube_big = {
 	},
 	-- TODO: Fix animations
 	animation = {
-		speed_normal = 24,
-		speed_run = 48,
-		stand_start = 0,
-		stand_end = 23,
-		walk_start = 24,
-		walk_end = 47,
-		run_start = 48,
-		run_end = 62,
-		hurt_start = 64,
-		hurt_end = 86,
-		death_start = 88,
-		death_end = 118,
+		jump_speed = 20,
+		stand_speed = 20,
+		walk_speed = 20,
+		jump_start = 1,
+		jump_end = 40,
+		stand_start = 1,
+		stand_end = 1,
+		walk_start = 1,
+		walk_end = 40,
 	},
 	water_damage = 0,
 	lava_damage = 0,
-        fire_damage = 0,
+    fire_damage = 0,
 	light_damage = 0,
 	fall_damage = 0,
 	view_range = 16,
-	attack_type = "dogfight",
+	attack_type = "jump_punch",
 	passive = false,
+	jump_only = true,
 	jump = true,
 	jump_height = 8,
 	walk_chance = 0,
@@ -401,49 +400,49 @@ local mmin = mobs_mc.spawn_height.nether_min
 local mmax = mobs_mc.spawn_height.nether_max
 
 mobs:spawn_specific(
-"mobs_mc:magma_cube_tiny", 
-"nether", 
+"mobs_mc:magma_cube_tiny",
+"nether",
 "ground",
 {
 "Nether"
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-15000, 
-4, 
-mmin, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+15000,
+4,
+mmin,
 mmax)
 
 
 mobs:spawn_specific(
-"mobs_mc:magma_cube_small", 
-"nether", 
+"mobs_mc:magma_cube_small",
+"nether",
 "ground",
 {
 "Nether"
 },
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-15500, 
-4, 
-mmin, 
+0,
+minetest.LIGHT_MAX+1,
+30,
+15500,
+4,
+mmin,
 mmax)
 
 mobs:spawn_specific(
-"mobs_mc:magma_cube_big", 
-"nether", 
+"mobs_mc:magma_cube_big",
+"nether",
 "ground",
 {
 "Nether"
-},	
-0, 
-minetest.LIGHT_MAX+1, 
-30, 
-16000, 
-4, 
-mmin, 
+},
+0,
+minetest.LIGHT_MAX+1,
+30,
+16000,
+4,
+mmin,
 mmax)
 
 --mobs:spawn_specific("mobs_mc:magma_cube_tiny", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11000, 4, mmin, mmax)

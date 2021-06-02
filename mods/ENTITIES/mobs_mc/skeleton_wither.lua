@@ -3,13 +3,14 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### WITHER SKELETON
 --###################
 
 mobs:register_mob("mobs_mc:witherskeleton", {
+	description = S("Wither Skeleton"),
 	type = "monster",
 	spawn_class = "hostile",
 	hp_min = 20,
@@ -25,11 +26,12 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 	mesh = "mobs_mc_witherskeleton.b3d",
 	textures = {
 		{
-			"default_tool_stonesword.png", -- sword
+			"mobs_mc_empty.png", -- armor
 			"mobs_mc_wither_skeleton.png", -- wither skeleton
+			"default_tool_stonesword.png", -- sword
 		}
 	},
-	visual_size = {x=3.6, y=3.6},
+	visual_size = {x=1.2, y=1.2},
 	makes_footstep_sound = true,
 	sounds = {
 		random = "mobs_mc_skeleton_random",
@@ -85,7 +87,7 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 	fire_damage = 0,
 	light_damage = 0,
 	view_range = 16,
-	attack_type = "dogfight",
+	attack_type = "punch",
 	dogshoot_switch = 1,
 	dogshoot_count_max =0.5,
 	fear_height = 4,

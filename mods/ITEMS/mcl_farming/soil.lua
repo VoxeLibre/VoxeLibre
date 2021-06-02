@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_farming")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 minetest.register_node("mcl_farming:soil", {
 	tiles = {"mcl_farming_farmland_dry.png", "default_dirt.png"},
@@ -76,7 +76,7 @@ minetest.register_abm({
 		end
 
 		-- Check an area of 9×2×9 around the node for nodename (9×9 on same level and 9×9 below)
-		local check_surroundings = function(pos, nodename)
+		local function check_surroundings(pos, nodename)
 			local nodes = minetest.find_nodes_in_area({x=pos.x-4,y=pos.y,z=pos.z-4}, {x=pos.x+4,y=pos.y+1,z=pos.z+4}, {nodename})
 			return #nodes > 0
 		end
@@ -99,7 +99,7 @@ minetest.register_abm({
 			-- No decay near unloaded areas since these might include water.
 			if not check_surroundings(pos, "ignore") then
 				if wet <= 0 then
-					local n_def = minetest.registered_nodes[node.name] or nil
+					--local n_def = minetest.registered_nodes[node.name] or nil
 					local nn = minetest.get_node_or_nil({x=pos.x,y=pos.y+1,z=pos.z})
 					if not nn or not nn.name then
 						return

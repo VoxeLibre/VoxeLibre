@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### WITCH
@@ -13,6 +13,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 mobs:register_mob("mobs_mc:witch", {
+	description = S("Witch"),
 	type = "monster",
 	spawn_class = "hostile",
 	hp_min = 26,
@@ -33,7 +34,7 @@ mobs:register_mob("mobs_mc:witch", {
 	run_velocity = 2.4,
 	pathfinding = 1,
 	group_attack = true,
-	attack_type = "dogshoot",
+	attack_type = "projectile",
 	arrow = "mobs_mc:potion_arrow",
 	shoot_interval = 2.5,
 	shoot_offset = 1,

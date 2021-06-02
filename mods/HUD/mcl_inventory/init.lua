@@ -1,11 +1,10 @@
-local S = minetest.get_translator("mcl_inventory")
+local S = minetest.get_translator(minetest.get_current_modname())
 local F = minetest.formspec_escape
 
 mcl_inventory = {}
 
-local show_armor = minetest.get_modpath("mcl_armor") ~= nil
-local mod_player = minetest.get_modpath("mcl_player") ~= nil
-local mod_craftguide = minetest.get_modpath("mcl_craftguide") ~= nil
+--local mod_player = minetest.get_modpath("mcl_player")
+--local mod_craftguide = minetest.get_modpath("mcl_craftguide")
 
 -- Returns a single itemstack in the given inventory to the main inventory, or drop it when there's no space left
 function return_item(itemstack, dropper, pos, inv)
@@ -61,30 +60,12 @@ local function set_inventory(player, armor_change_only)
 	inv:set_width("craft", 2)
 	inv:set_size("craft", 4)
 
-	local player_name = player:get_player_name()
-
 	-- Show armor and player image
 	local player_preview
 	if minetest.settings:get_bool("3d_player_preview", true) then
 		player_preview = mcl_player.get_player_formspec_model(player, 1.0, 0.0, 2.25, 4.5, "")
 	else
-		local img, img_player
-		if mod_player then
-			img_player = mcl_player.player_get_preview(player)
-		else
-			img_player = "player.png"
-		end
-		img = img_player
-		player_preview = "image[0.6,0.2;2,4;"..img.."]"
-		if show_armor and armor.textures[player_name] and armor.textures[player_name].preview then
-			img = armor.textures[player_name].preview
-			local s1 = img:find("character_preview")
-			if s1 ~= nil then
-				s1 = img:sub(s1+21)
-				img = img_player..s1
-			end
-			player_preview = "image[1.1,0.2;2,4;"..img.."]"
-		end
+		player_preview = "image[1.1,0.2;2,4;"..mcl_player.player_get_preview(player).."]"
 	end
 
 	local armor_slots = {"helmet", "chestplate", "leggings", "boots"}
@@ -99,20 +80,20 @@ local function set_inventory(player, armor_change_only)
 	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png]"..
 	player_preview..
 	--armor
-	"list[detached:"..player_name.."_armor;armor;0,0;1,1;1]"..
-	"list[detached:"..player_name.."_armor;armor;0,1;1,1;2]"..
-	"list[detached:"..player_name.."_armor;armor;0,2;1,1;3]"..
-	"list[detached:"..player_name.."_armor;armor;0,3;1,1;4]"..
+	"list[current_player;armor;0,0;1,1;1]"..
+	"list[current_player;armor;0,1;1,1;2]"..
+	"list[current_player;armor;0,2;1,1;3]"..
+	"list[current_player;armor;0,3;1,1;4]"..
 	mcl_formspec.get_itemslot_bg(0,0,1,1)..
 	mcl_formspec.get_itemslot_bg(0,1,1,1)..
 	mcl_formspec.get_itemslot_bg(0,2,1,1)..
 	mcl_formspec.get_itemslot_bg(0,3,1,1)..
 	armor_slot_imgs..
 	-- craft and inventory
-	"label[0,4;"..F(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+	"label[0,4;"..F(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
-	"label[4,0.5;"..F(minetest.colorize(mcl_colors.DARK_GRAY, S("Crafting"))).."]"..
+	"label[4,0.5;"..F(minetest.colorize("#313131", S("Crafting"))).."]"..
 	"list[current_player;craft;4,1;2,2]"..
 	"list[current_player;craftpreview;7,1.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
@@ -133,10 +114,10 @@ local function set_inventory(player, armor_change_only)
 	"tooltip[__mcl_achievements;"..F(S("Achievements")).."]"..
 	-- for shortcuts
 	"listring[current_player;main]"..
-	"listring[current_player;craft]"..
-	"listring[current_player;main]"..
-	"listring[detached:"..player_name.."_armor;armor]"
-
+	"listring[current_player;armor]"..
+	"listring[current_player;main]" ..
+	"listring[current_player;craft]" ..
+	"listring[current_player;main]"
 	player:set_inventory_formspec(form)
 end
 
@@ -153,7 +134,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 if not minetest.is_creative_enabled("") then
-	mcl_inventory.update_inventory_formspec = function(player)
+	function mcl_inventory.update_inventory_formspec(player)
 		set_inventory(player)
 	end
 end
@@ -176,18 +157,10 @@ minetest.register_on_joinplayer(function(player)
 	player:hud_set_hotbar_image("mcl_inventory_hotbar.png")
 	player:hud_set_hotbar_selected_image("mcl_inventory_hotbar_selected.png")
 
-	if show_armor then
-		local set_player_armor_original = armor.set_player_armor
-		local update_inventory_original = armor.update_inventory
-		armor.set_player_armor = function(self, player)
-			set_player_armor_original(self, player)
-		end
-		armor.update_inventory = function(self, player)
-			update_inventory_original(self, player)
-			set_inventory(player, true)
-		end
-		armor:set_player_armor(player)
-		armor:update_inventory(player)
+	local old_update_player = mcl_armor.update_player
+	function mcl_armor.update_player(player, info)
+		old_update_player(player, info)
+		set_inventory(player, true)
 	end
 
 	-- In Creative Mode, the initial inventory setup is handled in creative.lua
@@ -205,6 +178,6 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 if minetest.is_creative_enabled("") then
-	dofile(minetest.get_modpath("mcl_inventory").."/creative.lua")
+	dofile(minetest.get_modpath(minetest.get_current_modname()).."/creative.lua")
 end
 

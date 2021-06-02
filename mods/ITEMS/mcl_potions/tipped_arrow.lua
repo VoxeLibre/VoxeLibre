@@ -1,15 +1,18 @@
-local S = minetest.get_translator("mcl_potions")
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local math = math
+
 -- Time in seconds after which a stuck arrow is deleted
 local ARROW_TIMEOUT = 60
 -- Time after which stuck arrow is rechecked for being stuck
 local STUCK_RECHECK_TIME = 5
 
-local GRAVITY = 9.81
+--local GRAVITY = 9.81
 
 local YAW_OFFSET = -math.pi/2
 
-local dir_to_pitch = function(dir)
-	local dir2 = vector.normalize(dir)
+local function dir_to_pitch(dir)
+	--local dir2 = vector.normalize(dir)
 	local xz = math.abs(dir.x) + math.abs(dir.z)
 	return -math.atan2(-dir.y, xz)
 end
@@ -121,7 +124,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 	}
 
 	-- Destroy arrow entity self at pos and drops it as an item
-	local spawn_item = function(self, pos)
+	local function spawn_item(self, pos)
 		if not minetest.is_creative_enabled("") then
 			local item = minetest.add_item(pos, "mcl_potions:"..name.."_arrow")
 			item:set_velocity({x=0, y=0, z=0})
@@ -130,7 +133,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 		self.object:remove()
 	end
 
-	ARROW_ENTITY.on_step = function(self, dtime)
+	function ARROW_ENTITY.on_step(self, dtime)
 		local pos = self.object:get_pos()
 		local dpos = table.copy(pos) -- digital pos
 		dpos = vector.round(dpos)
@@ -197,7 +200,6 @@ function mcl_potions.register_arrow(name, desc, color, def)
 					glow = 1,
 				})
 			end
-			
 			-- We just check for any hurtable objects nearby.
 			-- The radius of 3 is fairly liberal, but anything lower than than will cause
 			-- arrow to hilariously go through mobs often.
@@ -216,7 +218,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 				-- Arrows can only damage players and mobs
 				if obj ~= self._shooter and obj:is_player() then
 					ok = true
-				elseif obj:get_luaentity() ~= nil then
+				elseif obj:get_luaentity() then
 					if obj ~= self._shooter and obj:get_luaentity()._cmi_is_mob then
 						ok = true
 					end
@@ -235,7 +237,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 			end
 
 			-- If an attackable object was found, we will damage the closest one only
-			if closest_object ~= nil then
+			if closest_object then
 				local obj = closest_object
 				local is_player = obj:is_player()
 				local lua = obj:get_luaentity()
@@ -360,7 +362,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 				if not v then
 					v = 0
 				end
-				local old_v = self._viscosity
+				--local old_v = self._viscosity
 				self._viscosity = v
 				local vpenalty = math.max(0.1, 0.98 - 0.1 * v)
 				if math.abs(vel.x) > 0.001 then
@@ -387,13 +389,13 @@ function mcl_potions.register_arrow(name, desc, color, def)
 
 	-- Force recheck of stuck arrows when punched.
 	-- Otherwise, punching has no effect.
-	ARROW_ENTITY.on_punch = function(self)
+	function ARROW_ENTITY.on_punch(self)
 		if self._stuck then
 			self._stuckrechecktimer = STUCK_RECHECK_TIME
 		end
 	end
 
-	ARROW_ENTITY.get_staticdata = function(self)
+	function ARROW_ENTITY.get_staticdata(self)
 		local out = {
 			lastpos = self._lastpos,
 			startpos = self._startpos,
@@ -414,7 +416,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 		return minetest.serialize(out)
 	end
 
-	ARROW_ENTITY.on_activate = function(self, staticdata, dtime_s)
+	function ARROW_ENTITY.on_activate(self, staticdata, dtime_s)
 		local data = minetest.deserialize(staticdata)
 		if data then
 			self._stuck = data.stuck
@@ -452,20 +454,18 @@ function mcl_potions.register_arrow(name, desc, color, def)
 	minetest.register_entity("mcl_potions:"..name.."_arrow_entity", ARROW_ENTITY)
 
 	if minetest.get_modpath("mcl_bows") then
-
 		minetest.register_craft({
-			output = 'mcl_potions:'..name..'_arrow 8',
+			output = "mcl_potions:"..name.."_arrow 8",
 			recipe = {
-				{'mcl_bows:arrow','mcl_bows:arrow','mcl_bows:arrow'},
-				{'mcl_bows:arrow','mcl_potions:'..name..'_lingering','mcl_bows:arrow'},
-				{'mcl_bows:arrow','mcl_bows:arrow','mcl_bows:arrow'}
+				{"mcl_bows:arrow","mcl_bows:arrow","mcl_bows:arrow"},
+				{"mcl_bows:arrow","mcl_potions:"..name.."_lingering","mcl_bows:arrow"},
+				{"mcl_bows:arrow","mcl_bows:arrow","mcl_bows:arrow"}
 			}
 		})
 
 	end
 
-	if minetest.get_modpath("doc_identifier") ~= nil then
+	if minetest.get_modpath("doc_identifier") then
 		doc.sub.identifier.register_object("mcl_bows:arrow_entity", "craftitems", "mcl_bows:arrow")
 	end
-
 end

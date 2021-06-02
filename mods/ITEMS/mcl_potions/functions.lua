@@ -107,7 +107,7 @@ minetest.register_globalstep(function(dtime)
 
 		EF.invisible[player].timer = EF.invisible[player].timer + dtime
 
-		if player:get_pos() then mcl_potions._add_spawner(player, "#B0B0B0") end
+		if player:get_pos() then mcl_potions._add_spawner(player, "#7F8392") end
 
 		if EF.invisible[player].timer >= EF.invisible[player].dur then
 			mcl_potions.make_invisible(player, false)
@@ -129,20 +129,13 @@ minetest.register_globalstep(function(dtime)
 		EF.poisoned[player].timer = EF.poisoned[player].timer + dtime
 		EF.poisoned[player].hit_timer = (EF.poisoned[player].hit_timer or 0) + dtime
 
-		if player:get_pos() then mcl_potions._add_spawner(player, "#225533") end
+		if player:get_pos() then mcl_potions._add_spawner(player, "#4E9331") end
 
 		if EF.poisoned[player].hit_timer >= EF.poisoned[player].step then
-
-			if entity and entity._cmi_is_mob then
-				entity.health = math.max(entity.health - 1, 1)
-				EF.poisoned[player].hit_timer = 0
-			elseif is_player then
-				player:set_hp( math.max(player:get_hp() - 1, 1), { type = "punch", other = "poison"})
-				EF.poisoned[player].hit_timer = 0
-			else -- if not player or mob then remove
-				EF.poisoned[player] = nil
+			if mcl_util.get_hp(player) - 1 > 0 then
+				mcl_util.deal_damage(player, 1, {type = "magic"})
 			end
-
+			EF.poisoned[player].hit_timer = 0
 		end
 
 		if EF.poisoned[player] and EF.poisoned[player].timer >= EF.poisoned[player].dur then
@@ -165,7 +158,7 @@ minetest.register_globalstep(function(dtime)
 		EF.regenerating[player].timer = EF.regenerating[player].timer + dtime
 		EF.regenerating[player].heal_timer = (EF.regenerating[player].heal_timer or 0) + dtime
 
-		if player:get_pos() then mcl_potions._add_spawner(player, "#A52BB2") end
+		if player:get_pos() then mcl_potions._add_spawner(player, "#CD5CAB") end
 
 		if EF.regenerating[player].heal_timer >= EF.regenerating[player].step then
 
@@ -199,7 +192,7 @@ minetest.register_globalstep(function(dtime)
 
 			EF.water_breathing[player].timer = EF.water_breathing[player].timer + dtime
 
-			if player:get_pos() then mcl_potions._add_spawner(player, "#0000AA") end
+			if player:get_pos() then mcl_potions._add_spawner(player, "#2E5299") end
 
 			if player:get_breath() then
 				if player:get_breath() < 10 then player:set_breath(10) end
@@ -224,7 +217,7 @@ minetest.register_globalstep(function(dtime)
 
 			EF.leaping[player].timer = EF.leaping[player].timer + dtime
 
-			if player:get_pos() then mcl_potions._add_spawner(player, "#00CC33") end
+			if player:get_pos() then mcl_potions._add_spawner(player, "#22FF4C") end
 
 			if EF.leaping[player].timer >= EF.leaping[player].dur then
 				playerphysics.remove_physics_factor(player, "jump", "mcl_potions:leaping")
@@ -246,7 +239,7 @@ minetest.register_globalstep(function(dtime)
 
 			EF.swift[player].timer = EF.swift[player].timer + dtime
 
-			if player:get_pos() then mcl_potions._add_spawner(player, "#009999") end
+			if player:get_pos() then mcl_potions._add_spawner(player, "#7CAFC6") end
 
 			if EF.swift[player].timer >= EF.swift[player].dur then
 				playerphysics.remove_physics_factor(player, "speed", "mcl_potions:swiftness")
@@ -268,7 +261,7 @@ minetest.register_globalstep(function(dtime)
 
 			EF.night_vision[player].timer = EF.night_vision[player].timer + dtime
 
-			if player:get_pos() then mcl_potions._add_spawner(player, "#1010AA") end
+			if player:get_pos() then mcl_potions._add_spawner(player, "#1F1FA1") end
 
 			if EF.night_vision[player].timer >= EF.night_vision[player].dur then
 				EF.night_vision[player] = nil
@@ -293,7 +286,7 @@ minetest.register_globalstep(function(dtime)
 
 			EF.fire_proof[player].timer = EF.fire_proof[player].timer + dtime
 
-			if player:get_pos() then mcl_potions._add_spawner(player, "#E0B050") end
+			if player:get_pos() then mcl_potions._add_spawner(player, "#E49A3A") end
 
 			if EF.fire_proof[player].timer >= EF.fire_proof[player].dur then
 				EF.fire_proof[player] = nil
@@ -314,7 +307,7 @@ minetest.register_globalstep(function(dtime)
 
 			EF.weak[player].timer = EF.weak[player].timer + dtime
 
-			if player:get_pos() then mcl_potions._add_spawner(player, "#7700BB") end
+			if player:get_pos() then mcl_potions._add_spawner(player, "#484D48") end
 
 			if EF.weak[player].timer >= EF.weak[player].dur then
 				EF.weak[player] = nil
@@ -335,7 +328,7 @@ minetest.register_globalstep(function(dtime)
 
 			EF.strong[player].timer = EF.strong[player].timer + dtime
 
-			if player:get_pos() then mcl_potions._add_spawner(player, "#7700BB") end
+			if player:get_pos() then mcl_potions._add_spawner(player, "#932423") end
 
 			if EF.strong[player].timer >= EF.strong[player].dur then
 				EF.strong[player] = nil
@@ -351,37 +344,12 @@ minetest.register_globalstep(function(dtime)
 
 end)
 
-
-local is_fire_node = { ["mcl_core:lava_flowing"]=true,
-	["mcl_core:lava_source"]=true,
-	["mcl_fire:eternal_fire"]=true,
-	["mcl_fire:fire"]=true,
-	["mcl_nether:magma"]=true,
-	["mcl_nether:nether_lava_source"]=true,
-	["mcl_nether:nether_lava_flowing"]=true,
-	["mcl_nether:nether_lava_source"]=true
-}
-
 -- Prevent damage to player with Fire Resistance enabled
-minetest.register_on_player_hpchange(function(player, hp_change, reason)
-
-	if EF.fire_proof[player] and hp_change < 0 then
-		-- This is a bit forced, but it assumes damage is taken by fire and avoids it
-		-- also assumes any change in hp happens between calls to this function
-		-- it's worth noting that you don't take damage from players in this case...
-		local player_info = mcl_playerinfo[player:get_player_name()]
-
-		if is_fire_node[player_info.node_head] or is_fire_node[player_info.node_feet] or is_fire_node[player_info.node_stand] then
-			return 0
-		else
-			return hp_change
-		end
-
-	else
-		return hp_change
+mcl_damage.register_modifier(function(obj, damage, reason)
+	if EF.fire_proof[obj] and not reason.flags.bypasses_magic and reason.flags.is_fire then
+		return 0
 	end
-
-end, true)
+end, -50)
 
 
 
@@ -590,8 +558,8 @@ function mcl_potions.make_invisible(player, toggle)
 
 	local is_player = player:is_player()
 	local entity = player:get_luaentity()
-	local playername = player:get_player_name()
-	local skin_file = ""
+	--local playername = player:get_player_name()
+	local skin_file
 
 	if toggle then -- hide player
 
@@ -599,25 +567,22 @@ function mcl_potions.make_invisible(player, toggle)
 
 		if entity then
 			EF.invisible[player].old_size = entity.visual_size
-		elseif not player:is_player() then -- if not a player or entity, do nothing
+		elseif not is_player then -- if not a player or entity, do nothing
 			return
 		end
 
-		if minetest.get_modpath("mcl_armor") and player:is_player() then
-			armor.textures[playername].skin = skin_file
-			armor:update_player_visuals(player)
-		elseif not player:is_player() and minetest.get_modpath("mcl_armor") or not player:is_player() and not minetest.get_modpath("mcl_armor") then
+		if is_player then
+			mcl_player.player_set_skin(player, skin_file)
+		elseif not is_player then
 			player:set_properties({visual_size = {x = 0, y = 0}})
 		end
 		player:set_nametag_attributes({color = {a = 0}})
 
 	elseif EF.invisible[player] then -- show player
 
-		if minetest.get_modpath("mcl_armor") and player:is_player() then
-			skin_file = mcl_skins.skins[playername] .. ".png"
-			armor.textures[playername].skin = skin_file
-			armor:update_player_visuals(player)
-		elseif not player:is_player() and minetest.get_modpath("mcl_armor") or not player:is_player() and not minetest.get_modpath("mcl_armor") then
+		if is_player then
+			mcl_skins.update_player_skin(player)
+		elseif not is_player then
 			player:set_properties({visual_size = EF.invisible[player].old_size})
 		end
 		player:set_nametag_attributes({color = {r = 255, g = 255, b = 255, a = 255}})
@@ -701,6 +666,10 @@ function mcl_potions.healing_func(player, hp)
 
 	local obj = player:get_luaentity()
 
+	if player:get_hp() == 0 then
+		return
+	end
+
 	if obj and obj.harmed_by_heal then hp = -hp end
 
 	if hp > 0 then
@@ -720,12 +689,7 @@ function mcl_potions.healing_func(player, hp)
 			hp = -1
 		end
 
-		if obj and obj._cmi_is_mob then
-			obj.health = obj.health + hp
-		elseif player:is_player() then
-			player:set_hp(player:get_hp() + hp, { type = "punch", other = "harming" })
-		end
-
+		mcl_util.deal_damage(player, -hp, {type = "magic"})
 	end
 
 end

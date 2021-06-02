@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_books")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local max_text_length = 4500 -- TODO: Increase to 12800 when scroll bar was added to written book
 local max_title_length = 64
@@ -21,16 +21,16 @@ minetest.register_craftitem("mcl_books:book", {
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
 	minetest.register_craft({
-		type = 'shapeless',
-		output = 'mcl_books:book',
-		recipe = { 'mcl_core:paper', 'mcl_core:paper', 'mcl_core:paper', 'mcl_mobitems:leather', }
+		type = "shapeless",
+		output = "mcl_books:book",
+		recipe = { "mcl_core:paper", "mcl_core:paper", "mcl_core:paper", "mcl_mobitems:leather", }
 	})
 end
 
 -- Get the included text out of the book item
 -- itemstack: Book item
 -- meta: Meta of book (optional)
-local get_text = function(itemstack)
+local function get_text(itemstack)
 	-- Grab the text
 	local meta = itemstack:get_meta()
 	local text = meta:get_string("text")
@@ -56,7 +56,7 @@ local get_text = function(itemstack)
 	return text
 end
 
-local make_description = function(title, author, generation)
+local function make_description(title, author, generation)
 	local desc
 	if generation == 0 then
 		desc = S("“@1”", title)
@@ -71,11 +71,11 @@ local make_description = function(title, author, generation)
 	return desc
 end
 
-local cap_text_length = function(text, max_length)
+local function cap_text_length(text, max_length)
 	return string.sub(text, 1, max_length)
 end
 
-local write = function(itemstack, user, pointed_thing)
+local function write(itemstack, user, pointed_thing)
 	-- Call on_rightclick if the pointed node defines it
 	if pointed_thing.type == "node" then
 		local node = minetest.get_node(pointed_thing.under)
@@ -96,7 +96,7 @@ local write = function(itemstack, user, pointed_thing)
 	minetest.show_formspec(user:get_player_name(), "mcl_books:writable_book", formspec)
 end
 
-local read = function(itemstack, user, pointed_thing)
+local function read(itemstack, user, pointed_thing)
 	-- Call on_rightclick if the pointed node defines it
 	if pointed_thing.type == "node" then
 		local node = minetest.get_node(pointed_thing.under)
@@ -147,8 +147,8 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 				local formspec = "size[8,9]"..
 					header..
 					"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
-					"field[0.75,1;7.25,1;title;"..minetest.formspec_escape(minetest.colorize(mcl_colors.BLACK, S("Enter book title:")))..";]"..
-					"label[0.75,1.5;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("by @1", name))).."]"..
+					"field[0.75,1;7.25,1;title;"..minetest.formspec_escape(minetest.colorize("#000000", S("Enter book title:")))..";]"..
+					"label[0.75,1.5;"..minetest.formspec_escape(minetest.colorize("#404040", S("by @1", name))).."]"..
 					"button_exit[0.75,7.95;3,1;sign;"..minetest.formspec_escape(S("Sign and Close")).."]"..
 					"tooltip[sign;"..minetest.formspec_escape(S("Note: The book will no longer be editable after signing")).."]"..
 					"button[4.25,7.95;3,1;cancel;"..minetest.formspec_escape(S("Cancel")).."]"
@@ -238,11 +238,9 @@ minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craf
 	end
 
 	local original
-	local index
 	for i = 1, player:get_inventory():get_size("craft") do
 		if old_craft_grid[i]:get_name() == "mcl_books:written_book" then
 			original = old_craft_grid[i]
-			index = i
 		end
 	end
 	if not original then
@@ -349,11 +347,11 @@ minetest.register_node("mcl_books:bookshelf", {
 })
 
 minetest.register_craft({
-	output = 'mcl_books:bookshelf',
+	output = "mcl_books:bookshelf",
 	recipe = {
-		{'group:wood', 'group:wood', 'group:wood'},
-		{'mcl_books:book', 'mcl_books:book', 'mcl_books:book'},
-		{'group:wood', 'group:wood', 'group:wood'},
+		{"group:wood", "group:wood", "group:wood"},
+		{"mcl_books:book", "mcl_books:book", "mcl_books:book"},
+		{"group:wood", "group:wood", "group:wood"},
 	}
 })
 

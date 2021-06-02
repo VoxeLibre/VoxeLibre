@@ -1,5 +1,11 @@
-local S = minetest.get_translator("doc_items")
+local S = minetest.get_translator(minetest.get_current_modname())
 local N = function(s) return s end
+
+local math = math
+local string = string
+
+local tostring = tostring
+local pairs = pairs
 
 doc.sub.items = {}
 
@@ -34,13 +40,17 @@ local suppressed = {
 local forbidden_core_factoids = {}
 
 -- Helper functions
-local yesno = function(bool)
-	if bool==true then return S("Yes")
-	elseif bool==false then return S("No")
-	else return "N/A" end
+local function yesno(bool)
+	if bool == true then
+		return S("Yes")
+	elseif bool == false then
+		return S("No")
+	else
+		return "N/A"
+	end
 end
 
-local groups_to_string = function(grouptable, filter)
+local function groups_to_string(grouptable, filter)
 	local gstring = ""
 	local groups_count = 0
 	for id, value in pairs(grouptable) do
@@ -50,7 +60,7 @@ local groups_to_string = function(grouptable, filter)
 				-- List seperator
 				gstring = gstring .. S(", ")
 			end
-			if groupdefs[id] ~= nil and doc.sub.items.settings.friendly_group_names == true then
+			if groupdefs[id] and doc.sub.items.settings.friendly_group_names == true then
 				gstring = gstring .. groupdefs[id]
 			else
 				gstring = gstring .. id
@@ -66,7 +76,7 @@ local groups_to_string = function(grouptable, filter)
 end
 
 -- Removes all text after the first newline (including the newline)
-local scrub_newlines = function(text)
+local function scrub_newlines(text)
 	local spl = string.split(text, "\n")
 	if spl and #spl > 0 then
 		return spl[1]
@@ -76,7 +86,7 @@ local scrub_newlines = function(text)
 end
 
 --[[ Append a newline to text, unless it already ends with a newline. ]]
-local newline = function(text)
+local function newline(text)
 	if string.sub(text, #text, #text) == "\n" or text == "" then
 		return text
 	else
@@ -85,7 +95,7 @@ local newline = function(text)
 end
 
 --[[ Make sure the text ends with two newlines by appending any missing newlines at the end, if neccessary. ]]
-local newline2 = function(text)
+local function newline2(text)
 	if string.sub(text, #text-1, #text) == "\n\n" or text == "" then
 		return text
 	elseif string.sub(text, #text, #text) == "\n" then
@@ -97,7 +107,7 @@ end
 
 
 -- Extract suitable item description for formspec
-local description_for_formspec = function(itemstring)
+local function description_for_formspec(itemstring)
 	if minetest.registered_items[itemstring] == nil then
 		-- Huh? The item doesn't exist for some reason. Better give a dummy string
 		minetest.log("warning", "[doc] Unknown item detected: "..tostring(itemstring))
@@ -111,26 +121,26 @@ local description_for_formspec = function(itemstring)
 	end
 end
 
-local get_entry_name = function(itemstring)
+local function get_entry_name(itemstring)
 	local def = minetest.registered_items[itemstring]
-	if def._doc_items_entry_name ~= nil then
+	if def._doc_items_entry_name then
 		return def._doc_items_entry_name
-	elseif item_name_overrides[itemstring] ~= nil then
+	elseif item_name_overrides[itemstring] then
 		return item_name_overrides[itemstring]
 	else
 		return def.description
 	end
 end
 
-doc.sub.items.get_group_name = function(groupname)
-	if groupdefs[groupname] ~= nil and doc.sub.items.settings.friendly_group_names == true then
+function doc.sub.items.get_group_name(groupname)
+	if groupdefs[groupname] and doc.sub.items.settings.friendly_group_names == true then
 		return groupdefs[groupname]
 	else
 		return groupname
 	end
 end
 
-local burntime_to_text = function(burntime)
+local function burntime_to_text(burntime)
 	if burntime == nil then
 		return S("unknown")
 	elseif burntime == 1 then
@@ -146,16 +156,16 @@ end
 * Full punch interval
 * Damage groups
 ]]
-local factoid_toolcaps = function(tool_capabilities, check_uses)
+local function factoid_toolcaps(tool_capabilities, check_uses)
 	if forbidden_core_factoids.tool_capabilities then
 		return ""
 	end
 
 	local formstring = ""
 	if check_uses == nil then check_uses = false end
-	if tool_capabilities ~= nil and tool_capabilities ~= {} then
+	if tool_capabilities and tool_capabilities ~= {} then
 		local groupcaps = tool_capabilities.groupcaps
-		if groupcaps ~= nil then
+		if groupcaps then
 			local miningcapstr = ""
 			local miningtimesstr = ""
 			local miningusesstr = ""
@@ -164,7 +174,7 @@ local factoid_toolcaps = function(tool_capabilities, check_uses)
 			local useslines = 0
 			for k,v in pairs(groupcaps) do
 				-- Mining capabilities
-				local minrating, maxrating
+				--[[local minrating, maxrating
 				if v.times then
 					for rating, time in pairs(v.times) do
 						if minrating == nil then minrating = rating else
@@ -177,7 +187,7 @@ local factoid_toolcaps = function(tool_capabilities, check_uses)
 				else
 					minrating = 1
 					maxrating = 1
-				end
+				end]]
 				local maxlevel = v.maxlevel
 				if not maxlevel then
 					-- Default from tool.h
@@ -188,7 +198,7 @@ local factoid_toolcaps = function(tool_capabilities, check_uses)
 				caplines = caplines + 1
 
 				for rating=3, 1, -1 do
-					if v.times ~= nil and v.times[rating] ~= nil then
+					if v.times and v.times[rating] then
 						local maxtime = v.times[rating]
 						local mintime
 						local mintimestr, maxtimestr
@@ -255,7 +265,7 @@ local factoid_toolcaps = function(tool_capabilities, check_uses)
 
 		-- Weapon data
 		local damage_groups = tool_capabilities.damage_groups
-		if damage_groups ~= nil then
+		if damage_groups then
 			formstring = formstring .. S("This is a melee weapon which deals damage by punching.") .. "\n"
 			-- Damage groups
 			formstring = formstring .. S("Maximum damage per hit:") .. "\n"
@@ -266,7 +276,7 @@ local factoid_toolcaps = function(tool_capabilities, check_uses)
 
 			-- Full punch interval
 			local punch = 1.0
-			if tool_capabilities.full_punch_interval ~= nil then
+			if tool_capabilities.full_punch_interval then
 				punch = tool_capabilities.full_punch_interval
 			end
 			formstring = formstring .. S("Full punch interval: @1 s", string.format("%.1f", punch))
@@ -282,7 +292,7 @@ end
 - Digging times/groups
 - level group
 ]]
-local factoid_mining_node = function(data)
+local function factoid_mining_node(data)
 	if forbidden_core_factoids.node_mining then
 		return ""
 	end
@@ -292,7 +302,7 @@ local factoid_mining_node = function(data)
 		-- Check if there are no mining groups at all
 		local nogroups = true
 		for groupname,_ in pairs(mininggroups) do
-			if data.def.groups[groupname] ~= nil or groupname == "dig_immediate" then
+			if data.def.groups[groupname] or groupname == "dig_immediate" then
 				nogroups = false
 				break
 			end
@@ -324,7 +334,7 @@ local factoid_mining_node = function(data)
 			local minegroupcount = 0
 			for group,_ in pairs(mininggroups) do
 				local rating = data.def.groups[group]
-				if rating ~= nil then
+				if rating then
 					mstring = mstring .. S("• @1: @2", doc.sub.items.get_group_name(group), rating).."\n"
 					minegroupcount = minegroupcount + 1
 				end
@@ -344,18 +354,18 @@ local factoid_mining_node = function(data)
 end
 
 -- Pointing range of itmes
-local range_factoid = function(itemstring, def)
+local function range_factoid(itemstring, def)
 	local handrange = minetest.registered_items[""].range
 	local itemrange = def.range
 	if itemstring == "" then
-		if handrange ~= nil then
+		if handrange then
 			return S("Range: @1", itemrange)
 		else
 			return S("Range: 4")
 		end
 	else
 		if handrange == nil then handrange = 4 end
-		if itemrange ~= nil then
+		if itemrange then
 			return S("Range: @1", itemrange)
 		else
 			return S("Range: @1 (@2)", get_entry_name(""), handrange)
@@ -364,14 +374,14 @@ local range_factoid = function(itemstring, def)
 end
 
 -- Smelting fuel factoid
-local factoid_fuel = function(itemstring, ctype)
+local function factoid_fuel(itemstring, ctype)
 	if forbidden_core_factoids.fuel then
 		return ""
 	end
 
 	local formstring = ""
 	local result, decremented =  minetest.get_craft_result({method = "fuel", items = {itemstring}})
-	if result ~= nil and result.time > 0 then
+	if result and result.time > 0 then
 		local base
 		local burntext = burntime_to_text(result.time)
 		if ctype == "tools" then
@@ -392,7 +402,7 @@ local factoid_fuel = function(itemstring, ctype)
 end
 
 -- Shows the itemstring of an item
-local factoid_itemstring = function(itemstring, playername)
+local function factoid_itemstring(itemstring, playername)
 	if forbidden_core_factoids.itemstring then
 		return ""
 	end
@@ -405,7 +415,7 @@ local factoid_itemstring = function(itemstring, playername)
 	end
 end
 
-local entry_image = function(data)
+local function entry_image(data)
 	local formstring = ""
 	-- No image for air
 	if data.itemstring ~= "air" then
@@ -414,7 +424,7 @@ local entry_image = function(data)
 			formstring = formstring .. "image["..(doc.FORMSPEC.ENTRY_END_X-1)..","..doc.FORMSPEC.ENTRY_START_Y..";1,1;"..
 				minetest.registered_items[""].wield_image.."]"
 		-- Other items
-		elseif data.image ~= nil then
+		elseif data.image then
 			formstring = formstring .. "image["..(doc.FORMSPEC.ENTRY_END_X-1)..","..doc.FORMSPEC.ENTRY_START_Y..";1,1;"..data.image.."]"
 		else
 			formstring = formstring .. "item_image["..(doc.FORMSPEC.ENTRY_END_X-1)..","..doc.FORMSPEC.ENTRY_START_Y..";1,1;"..data.itemstring.."]"
@@ -432,9 +442,9 @@ factoid_generators.craftitems = {}
 --[[ Returns a list of all registered factoids for the specified category and type
 * category_id: Identifier of the Documentation System category in which the factoid appears
 * factoid_type: If set, oly returns factoid with a matching factoid_type.
-                If nil, all factoids for this category will be generated
+				If nil, all factoids for this category will be generated
 * data: Entry data to parse ]]
-local factoid_custom = function(category_id, factoid_type, data)
+local function factoid_custom(category_id, factoid_type, data)
 	local ftable = factoid_generators[category_id]
 	local datastring = ""
 	-- Custom factoids are inserted here
@@ -450,17 +460,17 @@ local factoid_custom = function(category_id, factoid_type, data)
 end
 
 -- Shows core information shared by all items, to be inserted at the top
-local factoids_header = function(data, ctype)
+local function factoids_header(data, ctype)
 	local datastring = ""
 	if not forbidden_core_factoids.basics then
 
 		local longdesc = data.longdesc
 		local usagehelp = data.usagehelp
-		if longdesc ~= nil then
+		if longdesc then
 			datastring = datastring .. S("Description: @1", longdesc)
 			datastring = newline2(datastring)
 		end
-		if usagehelp ~= nil then
+		if usagehelp then
 			datastring = datastring .. S("Usage help: @1", usagehelp)
 			datastring = newline2(datastring)
 		end
@@ -484,7 +494,7 @@ local factoids_header = function(data, ctype)
 				datastring = datastring .. S("This item points to liquids.").."\n"
 			end
 		end
-			if data.def.on_use ~= nil then
+			if data.def.on_use then
 			if ctype == "nodes" then
 				datastring = datastring .. S("Punches with this block don't work as usual; melee combat and mining are either not possible or work differently.").."\n"
 			elseif ctype == "tools" then
@@ -510,7 +520,7 @@ local factoids_header = function(data, ctype)
 end
 
 -- Shows less important information shared by all items, to be inserted at the bottom
-local factoids_footer = function(data, playername, ctype)
+local function factoids_footer(data, playername, ctype)
 	local datastring = ""
 	datastring = datastring .. factoid_custom(ctype, "groups", data)
 	datastring = newline2(datastring)
@@ -518,7 +528,7 @@ local factoids_footer = function(data, playername, ctype)
 	-- Show other “exposable” groups
 	if not forbidden_core_factoids.groups then
 		local gstring, gcount = groups_to_string(data.def.groups, miscgroups)
-		if gstring ~= nil then
+		if gstring then
 			if gcount == 1 then
 				if ctype == "nodes" then
 					datastring = datastring .. S("This block belongs to the @1 group.", gstring) .. "\n"
@@ -577,11 +587,8 @@ doc.add_category("nodes", {
 	description = S("Item reference of blocks and other things which are capable of occupying space"),
 	build_formspec = function(data, playername)
 		if data then
-			local formstring = ""
-			local datastring = ""
-
-			formstring = entry_image(data)
-			datastring = factoids_header(data, "nodes")
+			local formstring = entry_image(data)
+			local datastring = factoids_header(data, "nodes")
 
 			local liquid = data.def.liquidtype ~= "none" and minetest.get_item_group(data.itemstring, "fake_liquid") == 0
 			if not forbidden_core_factoids.basics then
@@ -600,7 +607,7 @@ doc.add_category("nodes", {
 				datastring = datastring .. S("This block is a liquid with these properties:") .. "\n"
 				local range, renew, viscos
 				if data.def.liquid_range then range = data.def.liquid_range else range = 8 end
-				if data.def.liquid_renewable ~= nil then renew = data.def.liquid_renewable else renew = true end
+				if data.def.liquid_renewable then renew = data.def.liquid_renewable else renew = true end
 				if data.def.liquid_viscosity then viscos = data.def.liquid_viscosity else viscos = 0 end
 				if renew then
 					datastring = datastring .. S("• Renewable") .. "\n"
@@ -620,7 +627,7 @@ doc.add_category("nodes", {
 			--- Direct interaction with the player
 			---- Damage (very important)
 			if not forbidden_core_factoids.node_damage then
-				if data.def.damage_per_second ~= nil and data.def.damage_per_second > 1 then
+				if data.def.damage_per_second and data.def.damage_per_second > 1 then
 					datastring = datastring .. S("This block causes a damage of @1 hit points per second.", data.def.damage_per_second) .. "\n"
 				elseif data.def.damage_per_second == 1 then
 					datastring = datastring .. S("This block causes a damage of @1 hit point per second.", data.def.damage_per_second) .. "\n"
@@ -633,7 +640,7 @@ doc.add_category("nodes", {
 					end
 				end
 				local fdap = data.def.groups.fall_damage_add_percent
-				if fdap ~= nil and fdap ~= 0 then
+				if fdap and fdap ~= 0 then
 					if fdap > 0 then
 						datastring = datastring .. S("The fall damage on this block is increased by @1%.", fdap) .. "\n"
 					elseif fdap <= -100 then
@@ -655,11 +662,11 @@ doc.add_category("nodes", {
 					datastring = datastring .. S("This block can be climbed.").."\n"
 				end
 				local bouncy = data.def.groups.bouncy
-				if bouncy ~= nil and bouncy ~= 0 then
+				if bouncy and bouncy ~= 0 then
 					datastring = datastring .. S("This block will make you bounce off with an elasticity of @1%.", bouncy).."\n"
 				end
 				local slippery = data.def.groups.slippery
-				if slippery ~= nil and slippery ~= 0 then
+				if slippery and slippery ~= 0 then
 					datastring = datastring .. S("This block is slippery.") .. "\n"
 				end
 				datastring = datastring .. factoid_custom("nodes", "movement", data)
@@ -759,7 +766,7 @@ doc.add_category("nodes", {
 			datastring = newline2(datastring)
 
 			--- List nodes/groups to which this node connects to
-			if not forbidden_core_factoids.connects_to and data.def.connects_to ~= nil then
+			if not forbidden_core_factoids.connects_to and data.def.connects_to then
 				local nodes = {}
 				local groups = {}
 				for c=1,#data.def.connects_to do
@@ -774,7 +781,7 @@ doc.add_category("nodes", {
 				local nstring = ""
 				for n=1,#nodes do
 					local name
-					if item_name_overrides[nodes[n]] ~= nil then
+					if item_name_overrides[nodes[n]] then
 						name = item_name_overrides[nodes[n]]
 					else
 						name = description_for_formspec(nodes[n])
@@ -782,7 +789,7 @@ doc.add_category("nodes", {
 					if n > 1 then
 						nstring = nstring .. S(", ")
 					end
-					if name ~= nil then
+					if name then
 						nstring = nstring .. name
 					else
 						nstring = nstring .. S("Unknown Node")
@@ -813,9 +820,9 @@ doc.add_category("nodes", {
 			datastring = newline2(datastring)
 
 			-- Non-default drops
-			if not forbidden_core_factoids.drops and data.def.drop ~= nil and data.def.drop ~= data.itemstring and data.itemstring ~= "air" then
+			if not forbidden_core_factoids.drops and data.def.drop and data.def.drop ~= data.itemstring and data.itemstring ~= "air" then
 				-- TODO: Calculate drop probabilities of max > 1 like for max == 1
-				local get_desc = function(stack)
+				local function get_desc(stack)
 					return description_for_formspec(stack:get_name())
 				end
 				if data.def.drop == "" then
@@ -831,10 +838,10 @@ doc.add_category("nodes", {
 							datastring = datastring .. S("This block will drop the following when mined: @1.", desc).."\n"
 						end
 					end
-				elseif type(data.def.drop) == "table" and data.def.drop.items ~= nil then
+				elseif type(data.def.drop) == "table" and data.def.drop.items then
 					local max = data.def.drop.max_items
 					local dropstring = ""
-					local dropstring_base = ""
+					local dropstring_base
 					if max == nil then
 						dropstring_base = N("This block will drop the following items when mined: @1.")
 					elseif max == 1 then
@@ -852,7 +859,7 @@ doc.add_category("nodes", {
 					local rarity_history = {}
 					for i=1,#data.def.drop.items do
 						local local_rarity = data.def.drop.items[i].rarity
-						local chance = 1
+						local chance
 						local rarity = 1
 						if local_rarity == nil then
 							local_rarity = 1
@@ -885,7 +892,7 @@ doc.add_category("nodes", {
 						if chance > 0 then
 							probtable = {}
 							probtable.items = {}
-							for j=1,#data.def.drop.items[i].items do
+							for j = 1, #data.def.drop.items[i].items do
 								local dropstack = ItemStack(data.def.drop.items[i].items[j])
 								local itemstring = dropstack:get_name()
 								local desc = get_desc(dropstack)
@@ -907,7 +914,7 @@ doc.add_category("nodes", {
 					-- Do some cleanup of the probability table
 					if max == 1 or max == nil then
 						-- Sort by rarity
-						local comp = function(p1, p2) 
+						local function comp(p1, p2)
 							return p1.rarity < p2.rarity
 						end
 						table.sort(probtables, comp)
@@ -937,7 +944,6 @@ doc.add_category("nodes", {
 						end
 
 						local rarity = probtable.rarity
-						local raritystring = ""
 						-- No percentage if there's only one possible guaranteed drop
 						if not(rarity == 1 and #data.def.drop.items == 1) then
 							local chance = (1/rarity)*100
@@ -957,7 +963,7 @@ doc.add_category("nodes", {
 						dropstring = dropstring .. dropstring_this
 						pcount = pcount + 1
 					end
-					if max ~= nil and max > 1 then
+					if max and max > 1 then
 						datastring = datastring .. S(dropstring_base, max, dropstring)
 					else
 						datastring = datastring .. S(dropstring_base, dropstring)
@@ -992,15 +998,15 @@ doc.add_category("tools", {
 		if entries[2].eid == "" then return false end
 
 		local comp = {}
-		for e=1, 2 do
+		for e = 1, 2 do
 			comp[e] = {}
 		end
 		-- No tool capabilities: Instant loser
-		if entries[1].data.def.tool_capabilities == nil and entries[2].data.def.tool_capabilities ~= nil then return false end
-		if entries[2].data.def.tool_capabilities == nil and entries[1].data.def.tool_capabilities ~= nil then return true end
+		if entries[1].data.def.tool_capabilities == nil and entries[2].data.def.tool_capabilities then return false end
+		if entries[2].data.def.tool_capabilities == nil and entries[1].data.def.tool_capabilities then return true end
 		-- No tool capabilities for both: Compare by uses
 		if entries[1].data.def.tool_capabilities == nil and entries[2].data.def.tool_capabilities == nil then
-			for e=1, 2 do
+			for e = 1, 2 do
 				if type(entries[e].data.def._doc_items_durability) == "number" then
 					comp[e].uses = entries[e].data.def._doc_items_durability
 				else
@@ -1055,7 +1061,7 @@ doc.add_category("tools", {
 			comp[e].count = groupcount
 			comp[e].group = group
 			comp[e].mintime = mintime
-			if realuses ~= nil then
+			if realuses then
 				comp[e].uses = realuses
 			elseif type(entries[e].data.def._doc_items_durability) == "number" then
 				comp[e].uses = entries[e].data.def._doc_items_durability
@@ -1086,11 +1092,8 @@ doc.add_category("tools", {
 	end,
 	build_formspec = function(data, playername)
 		if data then
-			local formstring = ""
-			local datastring = ""
-
-			formstring = entry_image(data)
-			datastring = factoids_header(data, "tools")
+			local formstring = entry_image(data)
+			local datastring = factoids_header(data, "tools")
 
 			-- Overwritten durability info
 			if type(data.def._doc_items_durability) == "number" then
@@ -1120,11 +1123,8 @@ doc.add_category("craftitems", {
 	description = S("Item reference of items which are neither blocks, tools or weapons (esp. crafting items)"),
 	build_formspec = function(data, playername)
 		if data then
-			local formstring = ""
-			local datastring = ""
-
-			formstring = entry_image(data)
-			datastring = factoids_header(data, "craftitems")
+			local formstring = entry_image(data)
+			local datastring = factoids_header(data, "craftitems")
 			datastring = datastring .. factoids_footer(data, playername, "craftitems")
 
 			formstring = formstring .. doc.widgets.text(datastring, nil, nil, doc.FORMSPEC.ENTRY_WIDTH - 1.2)
@@ -1166,9 +1166,9 @@ local function gather_descs()
 	-- 1st pass: Gather groups of interest
 	for id, def in pairs(minetest.registered_items) do
 		-- Gather all groups used for mining
-		if def.tool_capabilities ~= nil then
+		if def.tool_capabilities then
 			local groupcaps = def.tool_capabilities.groupcaps
-			if groupcaps ~= nil then
+			if groupcaps then
 				for k,v in pairs(groupcaps) do
 					if mininggroups[k] ~= true then
 						mininggroups[k] = true
@@ -1179,7 +1179,7 @@ local function gather_descs()
 
 		-- ... and gather all groups which appear in crafting recipes
 		local crafts = minetest.get_all_craft_recipes(id)
-		if crafts ~= nil then
+		if crafts then
 			for c=1,#crafts do
 				for k,v in pairs(crafts[c].items) do
 					if string.sub(v,1,6) == "group:" then
@@ -1194,7 +1194,7 @@ local function gather_descs()
 		end
 
 		-- ... and gather all groups used in connects_to
-		if def.connects_to ~= nil then
+		if def.connects_to then
 			for c=1, #def.connects_to do
 				if string.sub(def.connects_to[c],1,6) == "group:" then
 					local group = string.sub(def.connects_to[c],7,-1)
@@ -1213,7 +1213,7 @@ local function gather_descs()
 	else
 		help.longdesc["air"] = S("A transparent block, basically empty space. It is usually left behind after digging something.")
 	end
-	if minetest.registered_items["ignore"]._doc_items_create_entry ~= nil then
+	if minetest.registered_items["ignore"]._doc_items_create_entry then
 		suppressed["ignore"] = minetest.registered_items["ignore"]._doc_items_create_entry == true
 	end
 
@@ -1242,23 +1242,23 @@ local function gather_descs()
 		})
 	end
 
-	local add_entries = function(deftable, category_id)
+	local function add_entries(deftable, category_id)
 		for id, def in pairs(deftable) do
 			local name, ld, uh, im
 			local forced = false
-			if def._doc_items_create_entry == true and def ~= nil then forced = true end
+			if def._doc_items_create_entry == true and def then forced = true end
 			name = get_entry_name(id)
 			if not (((def.description == nil or def.description == "") and def._doc_items_entry_name == nil) or (def._doc_items_create_entry == false) or (suppressed[id] == true)) or forced then
 				if def._doc_items_longdesc then
 					ld = def._doc_items_longdesc
 				end
-				if help.longdesc[id] ~= nil then
+				if help.longdesc[id] then
 					ld = help.longdesc[id]
 				end
 				if def._doc_items_usagehelp then
 					uh = def._doc_items_usagehelp
 				end
-				if help.usagehelp[id] ~= nil then
+				if help.usagehelp[id] then
 					uh = help.usagehelp[id]
 				end
 				if def._doc_items_image then
@@ -1269,7 +1269,6 @@ local function gather_descs()
 				if type(def._doc_items_hidden) == "boolean" then
 					hidden = def._doc_items_hidden
 				end
-				local custom_image
 				name = scrub_newlines(name)
 				local infotable = {
 					name = name,
@@ -1308,13 +1307,13 @@ local function reveal_item(playername, itemstring)
 	if itemstring == nil or itemstring == "" or playername == nil or playername == "" then
 		return false
 	end
-	if minetest.registered_nodes[itemstring] ~= nil then
+	if minetest.registered_nodes[itemstring] then
 		category_id = "nodes"
-	elseif minetest.registered_tools[itemstring] ~= nil then
+	elseif minetest.registered_tools[itemstring] then
 		category_id = "tools"
-	elseif minetest.registered_craftitems[itemstring] ~= nil then
+	elseif minetest.registered_craftitems[itemstring] then
 		category_id = "craftitems"
-	elseif minetest.registered_items[itemstring] ~= nil then
+	elseif minetest.registered_items[itemstring] then
 		category_id = "craftitems"
 	else
 		return false
@@ -1334,7 +1333,7 @@ end
 minetest.register_on_dignode(function(pos, oldnode, digger)
 	if digger == nil then return end
 	local playername = digger:get_player_name()
-	if playername ~= nil and playername ~= "" and oldnode ~= nil then
+	if playername and playername ~= "" and oldnode then
 		reveal_item(playername, oldnode.name)
 		reveal_items_in_inventory(digger)
 	end
@@ -1343,7 +1342,7 @@ end)
 minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
 	if puncher == nil then return end
 	local playername = puncher:get_player_name()
-	if playername ~= nil and playername ~= "" and node ~= nil then
+	if playername and playername ~= "" and node then
 		reveal_item(playername, node.name)
 	end
 end)
@@ -1351,7 +1350,7 @@ end)
 minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
 	if placer == nil then return end
 	local playername = placer:get_player_name()
-	if playername ~= nil and playername ~= "" and itemstack ~= nil and not itemstack:is_empty() then
+	if playername and playername ~= "" and itemstack and not itemstack:is_empty() then
 		reveal_item(playername, itemstack:get_name())
 	end
 end)
@@ -1359,7 +1358,7 @@ end)
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
 	if player == nil then return end
 	local playername = player:get_player_name()
-	if playername ~= nil and playername ~= "" and itemstack ~= nil and not itemstack:is_empty() then
+	if playername and playername ~= "" and itemstack and not itemstack:is_empty() then
 		reveal_item(playername, itemstack:get_name())
 	end
 end)
@@ -1371,7 +1370,7 @@ minetest.register_on_player_inventory_action(function(player, action, inventory,
 	if action == "take" or action == "put" then
 		itemstack = inventory_info.stack
 	end
-	if itemstack ~= nil and playername ~= nil and playername ~= "" and (not itemstack:is_empty()) then
+	if itemstack and playername and playername ~= "" and (not itemstack:is_empty()) then
 		reveal_item(playername, itemstack:get_name())
 	end
 end)
@@ -1379,9 +1378,9 @@ end)
 minetest.register_on_item_eat(function(hp_change, replace_with_item, itemstack, user, pointed_thing)
 	if user == nil then return end
 	local playername = user:get_player_name()
-	if playername ~= nil and playername ~= "" and itemstack ~= nil and not itemstack:is_empty() then
+	if playername and playername ~= "" and itemstack and not itemstack:is_empty() then
 		reveal_item(playername, itemstack:get_name())
-		if replace_with_item ~= nil then
+		if replace_with_item then
 			reveal_item(playername, replace_with_item)
 		end
 	end
@@ -1391,10 +1390,12 @@ minetest.register_on_joinplayer(function(player)
 	reveal_items_in_inventory(player)
 end)
 
---[[ Periodically check all items in player inventory and reveal them all.
+--[[
+Periodically check all items in player inventory and reveal them all.
 TODO: Check whether there's a serious performance impact on servers with many players.
-TODO: If possible, try to replace this functionality by updating the revealed items as
-      soon the player obtained a new item (probably needs new Minetest callbacks). ]]
+TODO: If possible, try to replace this functionality by updating the revealed items as soon the player obtained a new item (probably needs new Minetest callbacks).
+]]
+
 local checktime = 8
 local timer = 0
 minetest.register_globalstep(function(dtime)

@@ -2,18 +2,22 @@
 --################### ENDERMITE
 --###################
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 mobs:register_mob("mobs_mc:endermite", {
+	description = S("Endermite"),
 	type = "monster",
 	spawn_class = "hostile",
 	passive = false,
+	rotate = 270,
+	hostile = true,
 	hp_min = 8,
 	hp_max = 8,
 	xp_min = 3,
 	xp_max = 3,
 	armor = {fleshy = 100, arthropod = 100},
 	group_attack = true,
+	attack_type = "punch",
 	collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.29, 0.2},
 	visual = "mesh",
 	mesh = "mobs_mc_endermite.b3d",

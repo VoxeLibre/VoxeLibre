@@ -1,10 +1,10 @@
 -- Global namespace for functions
 
 mcl_fire = {}
-local modpath = minetest.get_modpath(minetest.get_current_modname())
 
-local S = minetest.get_translator("mcl_fire")
-local N = function(s) return s end
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
 
 local has_mcl_portals = minetest.get_modpath("mcl_portals")
 
@@ -47,94 +47,16 @@ local alldirs=
 	{ x = 0, y = 0, z = 1}
 }
 
--- 3 exptime variants because the animation is not tied to particle expiration time.
--- 3 colorized variants to imitate minecraft's
-local smoke_pdef_base = {
-	amount = 0.001,
-	time = 0,
-	-- minpos = vector.add(pos, { x = -0.45, y = -0.45, z = -0.45 }),
-	-- maxpos = vector.add(pos, { x = 0.45, y = 0.45, z = 0.45 }),
+local smoke_pdef = {
+	amount = 0.009,
+	maxexptime = 4.0,
 	minvel = { x = -0.1, y = 0.3, z = -0.1 },
 	maxvel = { x = 0.1, y = 1.6, z = 0.1 },
-	-- minexptime = 3 exptime variants,
-	-- maxexptime = 3 exptime variants
 	minsize = 4.0,
 	maxsize = 4.5,
-	-- texture = "mcl_particles_smoke_anim.png^[colorize:#000000:(3 colourize variants)",
-	animation = {
-		type = "vertical_frames",
-		aspect_w = 8,
-		aspect_h = 8,
-		-- length = 3 exptime variants
-	},
-	collisiondetection = true,
+	minrelpos = { x = -0.45, y = -0.45, z = -0.45 },
+	maxrelpos = { x = 0.45, y = 0.45, z = 0.45 },
 }
-local smoke_pdef_cached = {}
-local spawn_smoke = function(pos)
-	local min = math.min
-	local new_minpos = vector.add(pos, { x = -0.45, y = -0.45, z = -0.45 })
-	local new_maxpos = vector.add(pos, { x = 0.45, y = 0.45, z = 0.45 })
-
-	-- populate the cache
-	if not next(smoke_pdef_cached) then
-		-- the last frame plays for 1/8 * N seconds, so we can take advantage of it
-		-- to have varying exptime for each variant.
-		local exptimes = { 0.75, 1.5, 4.0 }
-		local colorizes = { "199", "209", "243" } -- round(78%, 82%, 90% of 256) - 1
-
-		local id = 1
-		for _,exptime in ipairs(exptimes) do
-			for _,colorize in ipairs(colorizes) do
-				smoke_pdef_base.minpos = new_minpos
-				smoke_pdef_base.maxpos = new_maxpos
-				smoke_pdef_base.maxexptime = exptime
-				smoke_pdef_base.animation.length = exptime + 0.1
-				-- minexptime must be set such that the last frame is actully rendered,
-				-- even if its very short. Larger exptime -> larger range
-				smoke_pdef_base.minexptime = min(exptime, (7.0/8.0 * (exptime + 0.1) + 0.1))
-				smoke_pdef_base.texture = "mcl_particles_smoke_anim.png^[colorize:#000000:" ..colorize
-
-				smoke_pdef_cached[id] = table.copy(smoke_pdef_base)
-
-				mcl_particles.add_node_particlespawner(pos, smoke_pdef_cached[id], "high")
-
-				id = id + 1
-			end
-		end
-
-		-- cache already populated
-	else
-		for i, smoke_pdef in ipairs(smoke_pdef_cached) do
-			smoke_pdef.minpos = new_minpos
-			smoke_pdef.maxpos = new_maxpos
-			mcl_particles.add_node_particlespawner(pos, smoke_pdef, "high")
-		end
-	end
-
---[[ Old smoke pdef
-	local spawn_smoke = function(pos)
-	mcl_particles.add_node_particlespawner(pos, {
-		amount = 0.1,
-		time = 0,
-		minpos = vector.add(pos, { x = -0.45, y = -0.45, z = -0.45 }),
-		maxpos = vector.add(pos, { x = 0.45, y = 0.45, z = 0.45 }),
-		minvel = { x = 0, y = 0.5, z = 0 },
-		maxvel = { x = 0, y = 0.6, z = 0 },
-		minexptime = 2.0,
-		maxexptime = 2.0,
-		minsize = 3.0,
-		maxsize = 4.0,
-		texture = "mcl_particles_smoke_anim.png^[colorize:#000000:127",
-		animation = {
-			type = "vertical_frames",
-			aspect_w = 8,
-			aspect_h = 8,
-			length = 2.1,
-		},
-	}, "high")
-	-- ]]
-
-end
 
 --
 -- Items
@@ -164,18 +86,11 @@ else
 	eternal_fire_help = S("Eternal fire is a damaging block. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.")
 end
 
-local fire_death_messages = {
-	N("@1 has been cooked crisp."),
-	N("@1 felt the burn."),
-	N("@1 died in the flames."),
-	N("@1 died in a fire."),
-}
-
-local fire_timer = function(pos)
+local function fire_timer(pos)
 	minetest.get_node_timer(pos):start(math.random(3, 7))
 end
 
-local spawn_fire = function(pos, age)
+local function spawn_fire(pos, age)
 	set_node(pos, {name="mcl_fire:fire", param2 = age})
 	minetest.check_single_for_falling({x=pos.x, y=pos.y+1, z=pos.z})
 end
@@ -202,7 +117,6 @@ minetest.register_node("mcl_fire:fire", {
 	buildable_to = true,
 	sunlight_propagates = true,
 	damage_per_second = 1,
-	_mcl_node_death_message = fire_death_messages,
 	groups = {fire = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston=1, destroys_items=1, set_on_fire=8},
 	floodable = true,
 	on_flood = function(pos, oldnode, newnode)
@@ -303,7 +217,7 @@ minetest.register_node("mcl_fire:fire", {
 		end
 
 		fire_timer(pos)
-		spawn_smoke(pos)
+		mcl_particles.spawn_smoke(pos, "fire", smoke_pdef)
 	end,
 	on_destruct = function(pos)
 		mcl_particles.delete_node_particlespawners(pos)
@@ -333,7 +247,6 @@ minetest.register_node("mcl_fire:eternal_fire", {
 	buildable_to = true,
 	sunlight_propagates = true,
 	damage_per_second = 1,
-	_mcl_node_death_message = fire_death_messages,
 	groups = {fire = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston = 1, destroys_items = 1, set_on_fire=8},
 	floodable = true,
 	on_flood = function(pos, oldnode, newnode)
@@ -367,7 +280,7 @@ minetest.register_node("mcl_fire:eternal_fire", {
 		if has_mcl_portals then --Calling directly minetest.get_modpath consumes 4x more compute time
 			mcl_portals.light_nether_portal(pos)
 		end
-		spawn_smoke(pos)
+		mcl_particles.spawn_smoke(pos, "fire", smoke_pdef)
 	end,
 	on_destruct = function(pos)
 		mcl_particles.delete_node_particlespawners(pos)
@@ -600,7 +513,7 @@ end
 -- * pointed_thing: Pointed thing to ignite
 -- * player: Player who sets fire or nil if nobody
 -- * allow_on_fire: If false, can't ignite fire on fire (default: true)
-mcl_fire.set_fire = function(pointed_thing, player, allow_on_fire)
+function mcl_fire.set_fire(pointed_thing, player, allow_on_fire)
 	local pname
 	if player == nil then
 		pname = ""
@@ -627,7 +540,7 @@ minetest.register_lbm({
 	nodenames = {"group:fire"},
 	run_at_every_load = true,
 	action = function(pos, node)
-		spawn_smoke(pos)
+		mcl_particles.spawn_smoke(pos, "fire", smoke_pdef)
 	end,
 })
 

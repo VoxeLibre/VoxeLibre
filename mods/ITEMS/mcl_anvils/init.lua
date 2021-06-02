@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_anvils")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local MAX_NAME_LENGTH = 35
 local MAX_WEAR = 65535
@@ -16,7 +16,7 @@ local function get_anvil_formspec(set_name)
 	end
 	return "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;mcl_anvils_inventory.png]"..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
@@ -27,7 +27,7 @@ local function get_anvil_formspec(set_name)
 	mcl_formspec.get_itemslot_bg(4,2.5,1,1)..
 	"list[context;output;8,2.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(8,2.5,1,1)..
-	"label[3,0.1;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Repair and Name"))).."]"..
+	"label[3,0.1;"..minetest.formspec_escape(minetest.colorize("#313131", S("Repair and Name"))).."]"..
 	"field[3.25,1;4,1;name;;"..minetest.formspec_escape(set_name).."]"..
 	"field_close_on_enter[name;false]"..
 	"button[7,0.7;2,1;name_button;"..minetest.formspec_escape(S("Set Name")).."]"..
@@ -41,7 +41,7 @@ end
 -- needs to be used up to repair the tool.
 local function get_consumed_materials(tool, material)
 	local wear = tool:get_wear()
-	local health = (MAX_WEAR - wear)
+	--local health = (MAX_WEAR - wear)
 	local matsize = material:get_count()
 	local materials_used = 0
 	for m=1, math.min(4, matsize) do
@@ -74,10 +74,9 @@ end
 local function update_anvil_slots(meta)
 	local inv = meta:get_inventory()
 	local new_name = meta:get_string("set_name")
-	local input1, input2, output
-	input1 = inv:get_stack("input", 1)
-	input2 = inv:get_stack("input", 2)
-	output = inv:get_stack("output", 1)
+	local input1 = inv:get_stack("input", 1)
+	local input2 = inv:get_stack("input", 2)
+	--local output = inv:get_stack("output", 1)
 	local new_output, name_item
 	local just_rename = false
 
@@ -181,7 +180,7 @@ local function update_anvil_slots(meta)
 	end
 
 	-- Set the new output slot
-	if new_output ~= nil then
+	if new_output then
 		inv:set_stack("output", 1, new_output)
 	end
 end
@@ -243,7 +242,6 @@ end
 -- Returns true if anvil was destroyed.
 local function damage_anvil(pos)
 	local node = minetest.get_node(pos)
-	local new
 	if node.name == "mcl_anvils:anvil" then
 		minetest.swap_node(pos, {name="mcl_anvils:anvil_damage_1", param2=node.param2})
 		damage_particles(pos, node)
@@ -278,7 +276,6 @@ local function damage_anvil_by_using(pos)
 end
 
 local function damage_anvil_by_falling(pos, distance)
-	local chance
 	local r = math.random(1, 100)
 	if distance > 1 then
 		if r <= (5*distance) then

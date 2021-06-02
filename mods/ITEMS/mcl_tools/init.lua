@@ -1,4 +1,6 @@
-local S = minetest.get_translator("mcl_tools")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
 
 -- mods/default/tools.lua
 
@@ -175,7 +177,7 @@ minetest.register_tool("mcl_tools:pick_diamond", {
 	},
 })
 
-local make_grass_path = function(itemstack, placer, pointed_thing)
+local function make_grass_path(itemstack, placer, pointed_thing)
 	-- Use pointed node's on_rightclick function first, if present
 	local node = minetest.get_node(pointed_thing.under)
 	if placer and not placer:get_player_control().sneak then
@@ -213,7 +215,7 @@ end
 
 local carve_pumpkin
 if minetest.get_modpath("mcl_farming") then
-	carve_pumpkin = function(itemstack, placer, pointed_thing)
+	function carve_pumpkin(itemstack, placer, pointed_thing)
 		-- Use pointed node's on_rightclick function first, if present
 		local node = minetest.get_node(pointed_thing.under)
 		if placer and not placer:get_player_control().sneak then
@@ -233,7 +235,7 @@ if minetest.get_modpath("mcl_farming") then
 				local wear = mcl_autogroup.get_wear(toolname, "shearsy")
 				itemstack:add_wear(wear)
 			end
-			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above}, true)
+			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = pointed_thing.above}, true)
 			local dir = vector.subtract(pointed_thing.under, pointed_thing.above)
 			local param2 = minetest.dir_to_facedir(dir)
 			minetest.swap_node(pointed_thing.under, {name="mcl_farming:pumpkin_face", param2 = param2})
@@ -352,54 +354,32 @@ minetest.register_tool("mcl_tools:shovel_diamond", {
 })
 
 -- Axes
+local function make_stripped_trunk(itemstack, placer, pointed_thing)
+    if pointed_thing.type ~= "node" then return end
 
-local make_stripped_trunk = function(itemstack, placer, pointed_thing)
-	if pointed_thing.type == "node" then
-		local pos = minetest.get_pointed_thing_position(pointed_thing)
-		local node = minetest.get_node(pos)
-		local node_name = node.name
-		if placer and not placer:get_player_control().sneak then
-			if minetest.registered_nodes[node_name] and minetest.registered_nodes[node_name].on_rightclick then
-				return minetest.registered_nodes[node_name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
-			end
-		end
-		if minetest.is_protected(pointed_thing.under, placer:get_player_name()) then
-			minetest.record_protection_violation(pointed_thing.under, placer:get_player_name())
-			return itemstack
-		end
+    local node = minetest.get_node(pointed_thing.under)
+    local noddef = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
+
+    if not placer:get_player_control().sneak and noddef.on_rightclick then
+        return minetest.item_place(itemstack, placer, pointed_thing)
+    end
+    if minetest.is_protected(pointed_thing.under, placer:get_player_name()) then
+        minetest.record_protection_violation(pointed_thing.under, placer:get_player_name())
+        return itemstack
+    end
+
+    if noddef._mcl_stripped_varient == nil then
+		return itemstack
+	else
+		minetest.swap_node(pointed_thing.under, {name=noddef._mcl_stripped_varient, param2=node.param2})
 		if not minetest.is_creative_enabled(placer:get_player_name()) then
 			-- Add wear (as if digging a axey node)
 			local toolname = itemstack:get_name()
 			local wear = mcl_autogroup.get_wear(toolname, "axey")
 			itemstack:add_wear(wear)
 		end
-		if node_name == "mcl_core:tree" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_oak"})
-		elseif node_name == "mcl_core:darktree" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_dark_oak"})
-		elseif node_name == "mcl_core:acaciatree" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_acacia"})
-		elseif node_name == "mcl_core:birchtree" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_birch"})
-		elseif node_name == "mcl_core:sprucetree" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_spruce"})
-		elseif node_name == "mcl_core:jungletree" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_jungle"})
-		elseif node_name == "mcl_core:tree_bark" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_oak_bark"})
-		elseif node_name == "mcl_core:darktree_bark" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_dark_oak_bark"})
-		elseif node_name == "mcl_core:acaciatree_bark" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_acacia_bark"})
-		elseif node_name == "mcl_core:birchtree_bark" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_birch_bark"})
-		elseif node_name == "mcl_core:sprucetree_bark" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_spruce_bark"})
-		elseif node_name == "mcl_core:jungletree_bark" then
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:stripped_jungle_bark"})
-		end
 	end
-	return itemstack
+    return itemstack
 end
 
 minetest.register_tool("mcl_tools:axe_wood", {
@@ -632,5 +612,5 @@ minetest.register_tool("mcl_tools:shears", {
 })
 
 
-dofile(minetest.get_modpath("mcl_tools").."/crafting.lua")
-dofile(minetest.get_modpath("mcl_tools").."/aliases.lua")
+dofile(modpath.."/crafting.lua")
+dofile(modpath.."/aliases.lua")

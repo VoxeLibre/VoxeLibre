@@ -98,7 +98,7 @@ animated_chests (Animated chests) bool true
 3d_player_preview (3D Player preview) bool true
 
 # The maximum number of boss bars to simultaniously display on the screen
-max_bossbars (Maximum Boss bars) int 4
+max_bossbars (Maximum Boss bars) int 5
 
 [Experimental]
 # Whether ice is translucent. If disabled, ice is fully opaque.
@@ -150,3 +150,6 @@ basic_pseudobiome_villages (Enables very basic, and experimental "pseudobiome-ba
 
 # If enabled, will run an LBM to fix the top 1/2 of double plants in mcimported worlds; defaults to true.
 fix_doubleplants (Mcimport double plant fixes) bool true
+
+# Allow players to create Minecraft-like maps.
+enable_real_maps (Enable Real Maps) bool true

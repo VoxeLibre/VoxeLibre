@@ -1,11 +1,11 @@
-local S = minetest.get_translator("mcl_brewing")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local function active_brewing_formspec(fuel_percent, brew_percent)
 
 	return "size[9,8.75]"..
 	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]"..
-	"label[4,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Brewing Stand"))).."]"..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+	"label[4,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Brewing Stand"))).."]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.75;9,1;]"..
@@ -35,8 +35,8 @@ end
 
 local brewing_formspec = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]"..
-	"label[4,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Brewing Stand"))).."]"..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+	"label[4,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Brewing Stand"))).."]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.75;9,1;]"..
@@ -61,14 +61,14 @@ local brewing_formspec = "size[9,8.75]"..
 	"listring[context;stand]"
 
 
-local function swap_node(pos, name)
+--[[local function swap_node(pos, name)
 	local node = minetest.get_node(pos)
 	if node.name == name then
 		return
 	end
 	node.name = name
 	minetest.swap_node(pos, node)
-end
+end]]
 
 
 local function brewable(inv)
@@ -110,12 +110,13 @@ local function brewing_stand_timer(pos, elapsed)
 	local BREW_TIME = 20 -- all brews brew the same
 	local BURN_TIME = BREW_TIME * 10
 
-	local input_item = meta:get_string("input_item") or ""
+	--local input_item = meta:get_string("input_item") or ""
 	local stand_timer = meta:get_float("stand_timer") or 0
 	local fuel = meta:get_float("fuel") or 0
 	local inv = meta:get_inventory()
 
-	local input_list, stand_list, fuel_list, brew_output, d
+	--local input_list, stand_list, fuel_list
+	local brew_output, d
 	local input_count, fuel_name, fuel_count, formspec, fuel_percent, brew_percent
 
 	local update = true
@@ -124,9 +125,9 @@ local function brewing_stand_timer(pos, elapsed)
 
 		update = false
 
-		input_list = inv:get_list("input")
-		stand_list = inv:get_list("stand")
-		fuel_list = inv:get_list("fuel")
+		--input_list = inv:get_list("input")
+		--stand_list = inv:get_list("stand")
+		--fuel_list = inv:get_list("fuel")
 
 		-- TODO ... fix this.  Goal is to reset the process if the stand changes
 		-- for i=1, inv:get_size("stand", i) do -- reset the process due to change
@@ -237,7 +238,7 @@ local function brewing_stand_timer(pos, elapsed)
 end
 
 
-local function allow_metadata_inventory_put(pos, listname, index, stack, player)
+--[[local function allow_metadata_inventory_put(pos, listname, index, stack, player)
 	local name = player:get_player_name()
 	if minetest.is_protected(pos, name) then
 		minetest.record_protection_violation(pos, name)
@@ -273,7 +274,7 @@ local function allow_metadata_inventory_put(pos, listname, index, stack, player)
 	elseif listname == "stand" then
 		return 0
 	end
-end
+end]]
 
 
 -- Drop input items of brewing_stand at pos with metadata meta
@@ -315,14 +316,16 @@ local doc_string =
 	S("When you have found a good combination, the brewing will commence automatically and steam starts to appear, using up the fuel and brewing material. The potions will soon be ready.").."\n"..
 	S("Different combinations of brewing materials and liquids will give different results. Try to experiment!")
 
-local tiles = {"mcl_brewing_top.png", 	--top
-	 "mcl_brewing_base.png", 	--bottom
-	 "mcl_brewing_side.png", 	--right
-	 "mcl_brewing_side.png", 	--left
-	 "mcl_brewing_side.png", 	--back
-	 "mcl_brewing_side.png^[transformFX"} --front
+local tiles = {
+	"mcl_brewing_top.png", 	--top
+	"mcl_brewing_base.png", 	--bottom
+	"mcl_brewing_side.png", 	--right
+	"mcl_brewing_side.png", 	--left
+	"mcl_brewing_side.png", 	--back
+	"mcl_brewing_side.png^[transformFX",   --front
+}
 
-local allow_put = function(pos, listname, index, stack, player)
+local function allow_put(pos, listname, index, stack, player)
 	local name = player:get_player_name()
 	if minetest.is_protected(pos, name) then
 		minetest.record_protection_violation(pos, name)
@@ -332,7 +335,7 @@ local allow_put = function(pos, listname, index, stack, player)
 	end
 end
 
-local on_put = function(pos, listname, index, stack, player)
+local function on_put(pos, listname, index, stack, player)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	local str = ""
@@ -349,18 +352,18 @@ local on_put = function(pos, listname, index, stack, player)
 	--some code here to enforce only potions getting placed on stands
 end
 
-local after_dig = function(pos, oldnode, oldmetadata, digger)
+--[[local function after_dig(pos, oldnode, oldmetadata, digger)
 	local meta = minetest.get_meta(pos)
 	meta:from_table(oldmetadata)
 	drop_brewing_stand_items(pos, meta)
-end
+end]]
 
-local on_destruct = function(pos)
+local function on_destruct(pos)
 	local meta = minetest.get_meta(pos)
 	drop_brewing_stand_items(pos, meta)
 end
 
-local allow_take = function(pos, listname, index, stack, player)
+local function allow_take(pos, listname, index, stack, player)
 	local name = player:get_player_name()
 	if minetest.is_protected(pos, name) then
 		minetest.record_protection_violation(pos, name)
@@ -490,7 +493,6 @@ minetest.register_node("mcl_brewing:stand_100", {
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
 	on_metadata_inventory_take = on_put,
-
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
@@ -500,7 +502,6 @@ minetest.register_node("mcl_brewing:stand_100", {
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
-
 	on_receive_fields = function(pos, formname, fields, sender)
 		local sender_name = sender:get_player_name()
 		if minetest.is_protected(pos, sender_name) then
@@ -508,10 +509,10 @@ minetest.register_node("mcl_brewing:stand_100", {
 			return
 		end
 	end,
-
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
 })
+
 minetest.register_node("mcl_brewing:stand_010", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
@@ -564,7 +565,6 @@ minetest.register_node("mcl_brewing:stand_010", {
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
 	on_metadata_inventory_take = on_put,
-
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
@@ -574,7 +574,6 @@ minetest.register_node("mcl_brewing:stand_010", {
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
-
 	on_receive_fields = function(pos, formname, fields, sender)
 		local sender_name = sender:get_player_name()
 		if minetest.is_protected(pos, sender_name) then
@@ -582,10 +581,10 @@ minetest.register_node("mcl_brewing:stand_010", {
 			return
 		end
 	end,
-
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
 })
+
 minetest.register_node("mcl_brewing:stand_001", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
@@ -602,7 +601,6 @@ minetest.register_node("mcl_brewing:stand_001", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-
 			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
 			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
 			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
@@ -634,7 +632,6 @@ minetest.register_node("mcl_brewing:stand_001", {
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
 	on_metadata_inventory_take = on_put,
-
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
@@ -644,7 +641,6 @@ minetest.register_node("mcl_brewing:stand_001", {
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
-
 	on_receive_fields = function(pos, formname, fields, sender)
 		local sender_name = sender:get_player_name()
 		if minetest.is_protected(pos, sender_name) then
@@ -652,10 +648,10 @@ minetest.register_node("mcl_brewing:stand_001", {
 			return
 		end
 	end,
-
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
 })
+
 minetest.register_node("mcl_brewing:stand_110", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
@@ -672,7 +668,6 @@ minetest.register_node("mcl_brewing:stand_110", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-
 			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
 			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
 			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
@@ -714,7 +709,6 @@ minetest.register_node("mcl_brewing:stand_110", {
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
 	on_metadata_inventory_take = on_put,
-
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
@@ -724,7 +718,6 @@ minetest.register_node("mcl_brewing:stand_110", {
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
-
 	on_receive_fields = function(pos, formname, fields, sender)
 		local sender_name = sender:get_player_name()
 		if minetest.is_protected(pos, sender_name) then
@@ -732,10 +725,10 @@ minetest.register_node("mcl_brewing:stand_110", {
 			return
 		end
 	end,
-
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
 })
+
 minetest.register_node("mcl_brewing:stand_101", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
@@ -752,7 +745,6 @@ minetest.register_node("mcl_brewing:stand_101", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-
 			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
 			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
 			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
@@ -790,7 +782,6 @@ minetest.register_node("mcl_brewing:stand_101", {
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
 	on_metadata_inventory_take = on_put,
-
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
@@ -800,7 +791,6 @@ minetest.register_node("mcl_brewing:stand_101", {
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
-
 	on_receive_fields = function(pos, formname, fields, sender)
 		local sender_name = sender:get_player_name()
 		if minetest.is_protected(pos, sender_name) then
@@ -808,10 +798,10 @@ minetest.register_node("mcl_brewing:stand_101", {
 			return
 		end
 	end,
-
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
 })
+
 minetest.register_node("mcl_brewing:stand_011", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
@@ -828,7 +818,6 @@ minetest.register_node("mcl_brewing:stand_011", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-
 			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
 			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
 			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
@@ -866,7 +855,6 @@ minetest.register_node("mcl_brewing:stand_011", {
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
 	on_metadata_inventory_take = on_put,
-
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
@@ -876,7 +864,6 @@ minetest.register_node("mcl_brewing:stand_011", {
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
-
 	on_receive_fields = function(pos, formname, fields, sender)
 		local sender_name = sender:get_player_name()
 		if minetest.is_protected(pos, sender_name) then
@@ -884,10 +871,10 @@ minetest.register_node("mcl_brewing:stand_011", {
 			return
 		end
 	end,
-
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
 })
+
 minetest.register_node("mcl_brewing:stand_111", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
@@ -904,7 +891,6 @@ minetest.register_node("mcl_brewing:stand_111", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-
 			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
 			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
 			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
@@ -949,7 +935,6 @@ minetest.register_node("mcl_brewing:stand_111", {
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
 	on_metadata_inventory_take = on_put,
-
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
@@ -959,7 +944,6 @@ minetest.register_node("mcl_brewing:stand_111", {
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
-
 	on_receive_fields = function(pos, formname, fields, sender)
 		local sender_name = sender:get_player_name()
 		if minetest.is_protected(pos, sender_name) then
@@ -967,7 +951,6 @@ minetest.register_node("mcl_brewing:stand_111", {
 			return
 		end
 	end,
-
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
 })

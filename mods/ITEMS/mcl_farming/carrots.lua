@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_farming")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 for i=1, 7 do
 	local texture, sel_height
@@ -63,10 +63,10 @@ minetest.register_node("mcl_farming:carrot", {
 	drop = {
 		max_items = 1,
 		items = {
-			{ items = {'mcl_farming:carrot_item 4'}, rarity = 5 },
-			{ items = {'mcl_farming:carrot_item 3'}, rarity = 2 },
-			{ items = {'mcl_farming:carrot_item 2'}, rarity = 2 },
-			{ items = {'mcl_farming:carrot_item 1'} },
+			{ items = {"mcl_farming:carrot_item 4"}, rarity = 5 },
+			{ items = {"mcl_farming:carrot_item 3"}, rarity = 2 },
+			{ items = {"mcl_farming:carrot_item 2"}, rarity = 2 },
+			{ items = {"mcl_farming:carrot_item 1"} },
 		}
 	},
 	selection_box = {
@@ -91,7 +91,7 @@ minetest.register_craftitem("mcl_farming:carrot_item", {
 	on_secondary_use = minetest.item_eat(3),
 	on_place = function(itemstack, placer, pointed_thing)
 		local new = mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:carrot_1")
-		if new ~= nil then
+		if new then
 			return new
 		else
 			return minetest.do_item_eat(3, nil, itemstack, placer, pointed_thing)
@@ -112,9 +112,9 @@ minetest.register_craftitem("mcl_farming:carrot_item_gold", {
 minetest.register_craft({
 	output = "mcl_farming:carrot_item_gold",
 	recipe = {
-		{'mcl_core:gold_nugget', 'mcl_core:gold_nugget', 'mcl_core:gold_nugget'},
-		{'mcl_core:gold_nugget', 'mcl_farming:carrot_item', 'mcl_core:gold_nugget'},
-		{'mcl_core:gold_nugget', 'mcl_core:gold_nugget', 'mcl_core:gold_nugget'},
+		{"mcl_core:gold_nugget", "mcl_core:gold_nugget", "mcl_core:gold_nugget"},
+		{"mcl_core:gold_nugget", "mcl_farming:carrot_item", "mcl_core:gold_nugget"},
+		{"mcl_core:gold_nugget", "mcl_core:gold_nugget", "mcl_core:gold_nugget"},
 	}
 })
 

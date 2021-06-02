@@ -3,13 +3,14 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
-local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
+local S = minetest.get_translator(minetest.get_current_modname())
+local mod_bows = minetest.get_modpath("mcl_bows")
 
 mobs:register_mob("mobs_mc:illusioner", {
+	description = S("Illusioner"),
 	type = "monster",
 	spawn_class = "hostile",
-	attack_type = "shoot",
+	attack_type = "projectile",
 	shoot_interval = 2.5,
 	shoot_offset = 1.5,
 	arrow = "mcl_bows:arrow_entity",
@@ -17,7 +18,7 @@ mobs:register_mob("mobs_mc:illusioner", {
 		if mod_bows then
 			-- 1-4 damage per arrow
 			local dmg = math.random(1, 4)
-			mcl_bows.shoot_arrow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
+			mobs.shoot_projectile_handling("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
 		end
 	end,
 	hp_min = 32,

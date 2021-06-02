@@ -1,11 +1,11 @@
-local S = minetest.get_translator("mcl_heads")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local mod_doc = minetest.get_modpath("doc")
 local mod_screwdriver = minetest.get_modpath("screwdriver")
 
 local equip_armor
 if minetest.get_modpath("mcl_armor") then
-	equip_armor = armor.on_armor_use
+	equip_armor = mcl_armor.equip_on_use
 end
 
 -- Heads system
@@ -42,7 +42,7 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 				{ -0.25, -0.5, -0.25, 0.25, 0.0, 0.25, },
 			},
 		},
-		groups = {handy=1, armor_head=1,non_combat_armor=1, head=1, deco_block=1, dig_by_piston=1 },
+		groups = {handy = 1, armor = 1, armor_head = 1, non_combat_armor = 1, non_combat_armor_head = 1, head = 1, deco_block = 1, dig_by_piston = 1},
 		-- The head textures are based off the textures of an actual mob.
 		tiles = {
 			-- Note: bottom texture is overlaid over top texture to get rid of possible transparency.
@@ -91,7 +91,7 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 
 			local itemstring = itemstack:get_name()
 			local fakestack = ItemStack(itemstack)
-			local idef = fakestack:get_definition()
+			--local idef = fakestack:get_definition()
 			local retval
 			if wdir == 0 or wdir == 1 then
 				return minetest.item_place(itemstack, placer, pointed_thing)
@@ -101,9 +101,7 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 			if not retval then
 				return itemstack
 			end
-
-			local success
-			itemstack, success = minetest.item_place(fakestack, placer, pointed_thing, wdir)
+			itemstack = minetest.item_place(fakestack, placer, pointed_thing, wdir)
 			itemstack:set_name(itemstring)
 			return itemstack
 		end,
@@ -113,6 +111,9 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 
 		_mcl_armor_mob_range_mob = rangemob,
 		_mcl_armor_mob_range_factor = rangefactor,
+		_mcl_armor_element = "head",
+		_mcl_armor_texture = "mcl_heads_" .. name .. ".png",
+		_mcl_armor_preview = "mcl_heads_" .. name .. "_preview.png",
 		_mcl_blast_resistance = 1,
 		_mcl_hardness = 1,
 	})

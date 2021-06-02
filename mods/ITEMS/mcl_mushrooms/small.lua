@@ -1,10 +1,9 @@
-local S = minetest.get_translator("mcl_mushrooms")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local on_place = mcl_util.generate_on_place_plant_function(function(place_pos, place_node)
 	local soil_node = minetest.get_node_or_nil({x=place_pos.x, y=place_pos.y-1, z=place_pos.z})
 	if not soil_node then return false end
 	local snn = soil_node.name -- soil node name
-	local sd = minetest.registered_nodes[snn] -- soil definition
 
 	-- Placement rules:
 	-- * Always allowed on podzol or mycelimu
@@ -88,7 +87,7 @@ minetest.register_craftitem("mcl_mushrooms:mushroom_stew", {
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_mushrooms:mushroom_stew",
-	recipe = {'mcl_core:bowl', 'mcl_mushrooms:mushroom_brown', 'mcl_mushrooms:mushroom_red'}
+	recipe = {"mcl_core:bowl", "mcl_mushrooms:mushroom_brown", "mcl_mushrooms:mushroom_red"}
 })
 
 --[[ Mushroom spread and death

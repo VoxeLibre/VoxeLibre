@@ -3,8 +3,8 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
-local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
+local S = minetest.get_translator(minetest.get_current_modname())
+local mod_bows = minetest.get_modpath("mcl_bows")
 
 --###################
 --################### SKELETON
@@ -13,35 +13,53 @@ local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
 
 
 local skeleton = {
+	description = S("Skeleton"),
 	type = "monster",
 	spawn_class = "hostile",
+	hostile = true,
+	rotate = 270,
 	hp_min = 20,
 	hp_max = 20,
 	xp_min = 6,
 	xp_max = 6,
 	breath_max = -1,
+	eye_height = 1.5,
+	projectile_cooldown = 1.5,
 	armor = {undead = 100, fleshy = 100},
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.98, 0.3},
 	pathfinding = 1,
 	group_attack = true,
 	visual = "mesh",
 	mesh = "mobs_mc_skeleton.b3d",
-	textures = { {
-		"mcl_bows_bow_0.png", -- bow
-		"mobs_mc_skeleton.png", -- skeleton
-	} },
-	visual_size = {x=3, y=3},
+
+    --head code
+	has_head = false,
+	head_bone = "head",
+
+	swap_y_with_x = true,
+	reverse_head_yaw = true,
+
+	head_bone_pos_y = 2.4,
+	head_bone_pos_z = 0,
+
+	head_height_offset = 1.1,
+	head_direction_offset = 0,
+	head_pitch_modifier = 0,
+	--end head code
+
+	visual_size = {x=1, y=1},
 	makes_footstep_sound = true,
-	sounds = {
-		random = "mobs_mc_skeleton_random",
-		death = "mobs_mc_skeleton_death",
-		damage = "mobs_mc_skeleton_hurt",
-		distance = 16,
+	textures = {
+		{
+			"mobs_mc_empty.png", -- armor
+			"mobs_mc_skeleton.png", -- texture
+			"mcl_bows_bow_0.png", -- wielded_item
+		}
 	},
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
 	damage = 2,
-	reach = 2,
+	reach = 3,
 	drops = {
 		{name = mobs_mc.items.arrow,
 		chance = 1,
@@ -73,6 +91,8 @@ local skeleton = {
 		walk_speed = 15,
 		walk_start = 40,
 		walk_end = 60,
+		run_start = 40,
+		run_end = 60,
 		run_speed = 30,
 		shoot_start = 70,
 		shoot_end = 90,
@@ -84,13 +104,13 @@ local skeleton = {
 	ignited_by_sunlight = true,
 	view_range = 16,
 	fear_height = 4,
-	attack_type = "dogshoot",
+	attack_type = "projectile",
 	arrow = "mcl_bows:arrow_entity",
 	shoot_arrow = function(self, pos, dir)
 		if mod_bows then
 			-- 2-4 damage per arrow
-			local dmg = math.max(4, math.random(2, 8))
-			mcl_bows.shoot_arrow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
+			local dmg = math.random(2,4)
+			mobs.shoot_projectile_handling("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
 		end
 	end,
 	shoot_interval = 2,
@@ -108,12 +128,13 @@ mobs:register_mob("mobs_mc:skeleton", skeleton)
 --###################
 
 local stray = table.copy(skeleton)
-stray.mesh = "mobs_mc_stray.b3d"
+stray.description = S("Stray")
+stray.mesh = "mobs_mc_skeleton.b3d"
 stray.textures = {
 	{
-		"mcl_bows_bow_0.png",
-		"mobs_mc_stray.png",
 		"mobs_mc_stray_overlay.png",
+		"mobs_mc_stray.png",
+		"mcl_bows_bow_0.png",
 	},
 }
 -- TODO: different sound (w/ echo)
@@ -140,8 +161,8 @@ mobs:register_mob("mobs_mc:stray", stray)
 
 -- Overworld spawn
 mobs:spawn_specific(
-"mobs_mc:skeleton", 
-"overworld", 
+"mobs_mc:skeleton",
+"overworld",
 "ground",
 {
 "Mesa",
@@ -284,36 +305,36 @@ mobs:spawn_specific(
 "ExtremeHillsM_underground",
 "JungleEdgeM_underground",
 },
-0, 
-7, 
-20, 
-17000, 
-2, 
-mobs_mc.spawn_height.overworld_min, 
+0,
+7,
+20,
+17000,
+2,
+mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 
 -- Nether spawn
 mobs:spawn_specific(
-"mobs_mc:skeleton", 
-"nether", 
-"ground", 
+"mobs_mc:skeleton",
+"nether",
+"ground",
 {
 "Nether"
 },
-0, 
-7, 
-30, 
-10000, 
-3, 
-mobs_mc.spawn_height.nether_min, 
+0,
+7,
+30,
+10000,
+3,
+mobs_mc.spawn_height.nether_min,
 mobs_mc.spawn_height.nether_max)
 
 -- Stray spawn
 -- TODO: Spawn directly under the sky
 mobs:spawn_specific(
-"mobs_mc:stray", 
-"overworld", 
+"mobs_mc:stray",
+"overworld",
 "ground",
 {
 "ColdTaiga",
@@ -321,12 +342,12 @@ mobs:spawn_specific(
 "IcePlains",
 "ExtremeHills+_snowtop",
 },
-0, 
-7, 
-20, 
-19000, 
-2, 
-mobs_mc.spawn_height.water, 
+0,
+7,
+20,
+19000,
+2,
+mobs_mc.spawn_height.water,
 mobs_mc.spawn_height.overworld_max)
 
 

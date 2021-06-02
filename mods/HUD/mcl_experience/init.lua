@@ -1,5 +1,11 @@
-local S = minetest.get_translator("mcl_experience")
+local S = minetest.get_translator(minetest.get_current_modname())
+
 mcl_experience = {}
+
+local vector = vector
+local math = math
+local string = string
+
 local pool = {}
 local registered_nodes
 local max_xp = 2^31-1
@@ -34,7 +40,7 @@ minetest.register_on_mods_loaded(function()
 	registered_nodes = minetest.registered_nodes
 end)
 
-local load_data = function(player)
+local function load_data(player)
 	local name = player:get_player_name()
 	pool[name] = {}
 	local temp_pool = pool[name]
@@ -46,7 +52,7 @@ local load_data = function(player)
 end
 
 -- saves data to be utilized on next login
-local save_data = function(player)
+local function save_data(player)
 	local name = player:get_player_name()
 	local temp_pool = pool[name]
 	local meta = player:get_meta()
@@ -64,7 +70,7 @@ minetest.register_on_leaveplayer(function(player)
 end)
 
 -- create instance of new hud
-hud_manager.add_hud = function(player,hud_name,def)
+function hud_manager.add_hud(player,hud_name,def)
     local name = player:get_player_name()
     if minetest.is_creative_enabled(name) then
 		return
@@ -94,7 +100,7 @@ hud_manager.add_hud = function(player,hud_name,def)
 end
 
 -- delete instance of hud
-hud_manager.remove_hud = function(player,hud_name)
+function hud_manager.remove_hud(player,hud_name)
     local name = player:get_player_name()
     if player_huds[name] and player_huds[name][hud_name] then
         player:hud_remove(player_huds[name][hud_name])
@@ -103,7 +109,7 @@ hud_manager.remove_hud = function(player,hud_name)
 end
 
 -- change element of hud
-hud_manager.change_hud = function(data)
+function hud_manager.change_hud(data)
     local name = data.player:get_player_name()
     if player_huds[name] and player_huds[name][data.hud_name] then
         data.player:hud_change(player_huds[name][data.hud_name], data.element, data.data)
@@ -111,12 +117,12 @@ hud_manager.change_hud = function(data)
 end
 
 -- gets if hud exists
-hud_manager.hud_exists = function(player,hud_name)
+function hud_manager.hud_exists(player,hud_name)
     local name = player:get_player_name()
     if player_huds[name] and player_huds[name][hud_name] then
-        return(true)
+        return true
     else
-        return(false)
+        return false
     end
 end
 -------------------
@@ -127,7 +133,7 @@ minetest.register_on_leaveplayer(function(player)
 end)
 
 -- is used for shutdowns to save all data
-local save_all = function()
+local function save_all()
 	for name,_ in pairs(pool) do
 		local player = minetest.get_player_by_name(name)
 		if player then
@@ -144,7 +150,7 @@ end)
 
 function mcl_experience.get_player_xp_level(player)
 	local name = player:get_player_name()
-	return(pool[name].level)
+	return pool[name].level
 end
 
 function mcl_experience.set_player_xp_level(player,level)
@@ -262,35 +268,7 @@ function mcl_experience.add_experience(player, experience)
 	if #final_candidates > 0 then
 		local can = final_candidates[math.random(#final_candidates)]
 		local stack, list, index, wear = can.stack, can.list, can.index, can.wear
-		local unbreaking_level = mcl_enchanting.get_enchantment(stack, "unbreaking")
-		local uses
-		local armor_uses = minetest.get_item_group(stack:get_name(), "mcl_armor_uses")
-		if armor_uses > 0 then
-			uses = armor_uses
-			if unbreaking_level > 0 then
-				uses = uses / (0.6 + 0.4 / (unbreaking_level + 1))
-			end
-		else
-			local def = stack:get_definition()
-			if def then
-				local fixed_uses = def._mcl_uses
-				if fixed_uses then
-					uses = fixed_uses
-					if unbreaking_level > 0 then
-						uses = uses * (unbreaking_level + 1)
-					end
-				end
-			end
-			if not uses then
-				local toolcaps = stack:get_tool_capabilities()
-				local groupcaps = toolcaps.groupcaps
-				for _, v in pairs(groupcaps) do
-					uses = v.uses
-					break
-				end
-			end
-		end
-		uses = uses or 0
+		local uses = mcl_util.calculate_durability(stack)
 		local multiplier = 2 * 65535 / uses
 		local repair = experience * multiplier
 		local new_wear = wear - repair
@@ -302,10 +280,6 @@ function mcl_experience.add_experience(player, experience)
 		end
 		stack:set_wear(math.floor(new_wear))
 		inv:set_stack(list, index, stack)
-		if can.list == "armor" then
-			local armor_inv = minetest.get_inventory({type = "detached", name = player:get_player_name() .. "_armor"})
-			armor_inv:set_stack(list, index, stack)
-		end
 	end
 
 	local old_bar, old_xp, old_level = temp_pool.bar, temp_pool.xp, temp_pool.level
@@ -360,14 +334,12 @@ minetest.register_on_dieplayer(function(player)
 	mcl_experience.throw_experience(player:get_pos(), xp_amount)
 end)
 
-
-local name
 local collector, pos, pos2
 local direction, distance, player_velocity, goal
 local currentvel, acceleration, multiplier, velocity
 local node, vel, def
 local is_moving, is_slippery, slippery, slip_factor
-local size, data
+local size
 local function xp_step(self, dtime)
 	--if item set to be collected then only execute go to player
 	if self.collected == true then

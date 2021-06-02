@@ -1,6 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### CHICKEN
@@ -9,6 +9,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 mobs:register_mob("mobs_mc:chicken", {
+	description = S("Chicken"),
 	type = "animal",
 	spawn_class = "passive",
 
@@ -17,7 +18,8 @@ mobs:register_mob("mobs_mc:chicken", {
 	xp_min = 1,
 	xp_max = 3,
 	collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.69, 0.2},
-	runaway = true,
+	skittish = true,
+	fall_slow = true,
 	floats = 1,
 	visual = "mesh",
 	mesh = "mobs_mc_chicken.b3d",
@@ -25,9 +27,10 @@ mobs:register_mob("mobs_mc:chicken", {
 		{"mobs_mc_chicken.png"},
 	},
 	visual_size = {x=2.2, y=2.2},
-
+	rotate = 270,
 	makes_footstep_sound = true,
 	walk_velocity = 1,
+	run_velocity = 3,
 	drops = {
 		{name = mobs_mc.items.chicken_raw,
 		chance = 1,
@@ -63,14 +66,25 @@ mobs:register_mob("mobs_mc:chicken", {
 		run_start = 0,		run_end = 40,
 	},
 
-	follow = mobs_mc.follow.chicken,
+	follow = "mcl_farming:wheat_seeds",
+	breed_distance = 1.5,
+	baby_size = 0.5,
+	follow_distance = 2,
 	view_range = 16,
 	fear_height = 4,
 
+	--why do chickend breed if they lay eggs??
 	on_rightclick = function(self, clicker)
-		if mobs:feed_tame(self, clicker, 1, true, true) then return end
-		if mobs:protect(self, clicker) then return end
-		if mobs:capture_mob(self, clicker, 0, 60, 5, false, nil) then return end
+		--attempt to enter breed state
+		if mobs.enter_breed_state(self,clicker) then
+			return
+		end
+
+		--make baby grow faster
+		if self.baby then
+			mobs.make_baby_grow_faster(self,clicker)
+			return
+		end
 	end,
 
 	do_custom = function(self, dtime)
@@ -95,37 +109,83 @@ mobs:register_mob("mobs_mc:chicken", {
 			gain = 1.0,
 			max_hear_distance = 16,
 		}, true)
-	end,	
-	
+	end,
+
+	--head code
+	has_head = true,
+	head_bone = "head",
+
+	swap_y_with_x = false,
+	reverse_head_yaw = false,
+
+	head_bone_pos_y = 1.675,
+	head_bone_pos_z = 0,
+
+	head_height_offset = 0.55,
+	head_direction_offset = 0.0925,
+
+	head_pitch_modifier = -math.pi/2,
+	--end head code
 })
 
 --spawn
 mobs:spawn_specific(
-"mobs_mc:chicken", 
-"overworld", 
+"mobs_mc:chicken",
+"overworld",
 "ground",
 {
-"FlowerForest",
-"Swampland",
-"Taiga",
-"ExtremeHills",
-"BirchForest",
-"MegaSpruceTaiga",
-"MegaTaiga",
-"ExtremeHills+",
-"Forest",
-"Plains",
-"ColdTaiga",
-"SunflowerPlains",
-"RoofedForest",
-"MesaPlateauFM_grasstop",
-"ExtremeHillsM",
-"BirchForestM",
+	"FlowerForest_beach",
+	"Forest_beach",
+	"StoneBeach",
+	"ColdTaiga_beach_water",
+	"Taiga_beach",
+	"Savanna_beach",
+	"Plains_beach",
+	"ExtremeHills_beach",
+	"ColdTaiga_beach",
+	"Swampland_shore",
+	"JungleM_shore",
+	"Jungle_shore",
+	"MesaPlateauFM_sandlevel",
+	"MesaPlateauF_sandlevel",
+	"MesaBryce_sandlevel",
+	"Mesa_sandlevel",
+	"Mesa",
+	"FlowerForest",
+	"Swampland",
+	"Taiga",
+	"ExtremeHills",
+	"Jungle",
+	"Savanna",
+	"BirchForest",
+	"MegaSpruceTaiga",
+	"MegaTaiga",
+	"ExtremeHills+",
+	"Forest",
+	"Plains",
+	"Desert",
+	"ColdTaiga",
+	"IcePlainsSpikes",
+	"SunflowerPlains",
+	"IcePlains",
+	"RoofedForest",
+	"ExtremeHills+_snowtop",
+	"MesaPlateauFM_grasstop",
+	"JungleEdgeM",
+	"ExtremeHillsM",
+	"JungleM",
+	"BirchForestM",
+	"MesaPlateauF",
+	"MesaPlateauFM",
+	"MesaPlateauF_grasstop",
+	"MesaBryce",
+	"JungleEdge",
+	"SavannaM",
 },
-9, 
-minetest.LIGHT_MAX+1, 
-30, 17000, 
-3, 
+9,
+minetest.LIGHT_MAX+1,
+30, 17000,
+3,
 mobs_mc.spawn_height.water,
 mobs_mc.spawn_height.overworld_max)
 

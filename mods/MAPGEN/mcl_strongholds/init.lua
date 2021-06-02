@@ -25,7 +25,7 @@ local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superfl
 -- The stronghold positions are based on the world seed.
 -- The actual position might be offset by a few blocks because it might be shifted
 -- to make sure the end portal room is completely within the boundaries of a mapchunk.
-local init_strongholds = function()
+local function init_strongholds()
 	if strongholds_inited then
 		return
 	end
@@ -67,7 +67,7 @@ local init_strongholds = function()
 end
 
 -- Stronghold generation for register_on_generated.
-local generate_strongholds = function(minp, maxp, blockseed)
+local function generate_strongholds(minp, maxp, blockseed)
 	local pr = PseudoRandom(blockseed)
 	for s=1, #strongholds do
 		if not strongholds[s].generated then

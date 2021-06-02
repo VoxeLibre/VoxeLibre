@@ -1,35 +1,34 @@
-local S = minetest.get_translator("mcl_hbarmor")
+local S = minetest.get_translator(minetest.get_current_modname())
 
-if (not armor) or (not armor.def) then
-	minetest.log("error", "[mcl_hbarmor] Outdated mcl_armor version. Please update your version of mcl_armor!")
+local math = math
+local tonumber = tonumber
+
+local get_connected_players = minetest.get_connected_players
+
+local mcl_hbarmor = {
+    -- HUD statbar values
+    armor = {},
+    -- Stores if player's HUD bar has been initialized so far.
+    player_active = {},
+    -- Time difference in seconds between updates to the HUD armor bar.
+    -- Increase this number for slow servers.
+    tick = 0.1,
+    -- If true, the armor bar is hidden when the player does not wear any armor
+    autohide = true,
+}
+
+local tick_config = minetest.settings:get("mcl_hbarmor_tick")
+
+if tonumber(tick_config) then
+	mcl_hbarmor.tick = tonumber(tick_config)
 end
 
-local mcl_hbarmor = {}
 
--- HUD statbar values
-mcl_hbarmor.armor = {}
-
--- Stores if player's HUD bar has been initialized so far.
-mcl_hbarmor.player_active = {}
-
--- Time difference in seconds between updates to the HUD armor bar.
--- Increase this number for slow servers.
-mcl_hbarmor.tick = 0.1
-
--- If true, the armor bar is hidden when the player does not wear any armor
-mcl_hbarmor.autohide = true
-
-set = minetest.settings:get("mcl_hbarmor_tick")
-if tonumber(set) ~= nil then
-	mcl_hbarmor.tick = tonumber(set)
-end
-
-
-local must_hide = function(playername, arm)
+local function must_hide(playername, arm)
 	return arm == 0
 end
 
-local arm_printable = function(arm)
+local function arm_printable(arm)
 	return math.ceil(math.floor(arm+0.5))
 end
 
@@ -60,11 +59,8 @@ end
 hb.register_hudbar("armor", 0xFFFFFF, S("Armor"), { icon = "hbarmor_icon.png", bgicon = "hbarmor_bgicon.png", bar = "hbarmor_bar.png" }, 0, 0, 20, mcl_hbarmor.autohide)
 
 function mcl_hbarmor.get_armor(player)
-	if not player or not armor.def then
-		return false
-	end
 	local name = player:get_player_name()
-	local pts = armor:get_armor_points(player)
+	local pts = player:get_meta():get_int("mcl_armor:armor_points")
 	if not pts then
 		return false
 	else
@@ -113,12 +109,13 @@ end)
 local main_timer = 0
 local timer = 0
 minetest.register_globalstep(function(dtime)
+    --TODO: replace this by playerglobalstep API then implemented
 	main_timer = main_timer + dtime
 	timer = timer + dtime
 	if main_timer > mcl_hbarmor.tick or timer > 4 then
 		if minetest.settings:get_bool("enable_damage") then
 			if main_timer > mcl_hbarmor.tick then main_timer = 0 end
-			for _,player in pairs(minetest.get_connected_players()) do
+			for _,player in pairs(get_connected_players()) do
 				local name = player:get_player_name()
 				if mcl_hbarmor.player_active[name] == true then
 					local ret = mcl_hbarmor.get_armor(player)

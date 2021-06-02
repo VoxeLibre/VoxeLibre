@@ -40,10 +40,9 @@ function mcl_loot.get_loot(loot_definitions, pr)
 		total_weight = total_weight + (loot_definitions.items[i].weight or 1)
 	end
 
-	local stacks_min = loot_definitions.stacks_min
-	local stacks_max = loot_definitions.stacks_max
-	if not stacks_min then stacks_min = 1 end
-	if not stacks_max then stacks_max = 1 end
+	--local stacks_min = loot_definitions.stacks_min or 1
+	--local stacks_max = loot_definitions.stacks_max or 1
+
 	local stacks = pr:next(loot_definitions.stacks_min, loot_definitions.stacks_max)
 	for s=1, stacks do
 		local r = pr:next(1, total_weight)

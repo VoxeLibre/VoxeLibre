@@ -1,4 +1,6 @@
-local S = minetest.get_translator("doc_identifier")
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local mod_doc_basics = minetest.get_modpath("doc_basics")
 
 local doc_identifier = {}
 
@@ -6,15 +8,16 @@ doc_identifier.registered_objects = {}
 
 -- API
 doc.sub.identifier = {}
-doc.sub.identifier.register_object = function(object_name, category_id, entry_id)
+
+function doc.sub.identifier.register_object(object_name, category_id, entry_id)
 	doc_identifier.registered_objects[object_name] = { category = category_id, entry = entry_id }
 end
 
 -- END OF API
 
-doc_identifier.identify = function(itemstack, user, pointed_thing)
+function doc_identifier.identify(itemstack, user, pointed_thing)
 	local username = user:get_player_name()
-	local show_message = function(username, itype, param)
+	local function show_message(username, itype, param)
 		local vsize = 2
 		local message
 		if itype == "error_item" then
@@ -24,9 +27,9 @@ doc_identifier.identify = function(itemstack, user, pointed_thing)
 		elseif itype == "error_unknown" then
 			vsize = vsize + 2
 			local mod
-			if param ~= nil then
+			if param then
 				local colon = string.find(param, ":")
-				if colon ~= nil and colon > 1 then
+				if colon and colon > 1 then
 					mod = string.sub(param,1,colon-1)
 				end
 			end
@@ -36,8 +39,8 @@ doc_identifier.identify = function(itemstack, user, pointed_thing)
 				S("• The author of the game or a mod has made a mistake")
 			message = message .. "\n\n"
 
-			if mod ~= nil then
-				if minetest.get_modpath(mod) ~= nil then
+			if mod then
+				if minetest.get_modpath(mod) then
 					message = message .. S("It appears to originate from the mod “@1”, which is enabled.", mod)
 					message = message .. "\n"
 				else
@@ -45,7 +48,7 @@ doc_identifier.identify = function(itemstack, user, pointed_thing)
 					message = message .. "\n"
 				end
 			end
-			if param ~= nil then
+			if param then
 				message = message .. S("Its identifier is “@1”.", param)
 			end
 		elseif itype == "error_ignore" then
@@ -66,8 +69,8 @@ doc_identifier.identify = function(itemstack, user, pointed_thing)
 	if pointed_thing.type == "node" then
 		local pos = pointed_thing.under
 		local node = minetest.get_node(pos)
-		if minetest.registered_nodes[node.name] ~= nil then
-			local nodedef = minetest.registered_nodes[node.name]
+		if minetest.registered_nodes[node.name] then
+			--local nodedef = minetest.registered_nodes[node.name]
 			if(node.name == "ignore") then
 				show_message(username, "error_ignore")
 			elseif doc.entry_exists("nodes", node.name) then
@@ -82,14 +85,14 @@ doc_identifier.identify = function(itemstack, user, pointed_thing)
 		local object = pointed_thing.ref
 		local le = object:get_luaentity()
 		if object:is_player() then
-			if minetest.get_modpath("doc_basics") ~= nil and doc.entry_exists("basics", "players") then
+			if mod_doc_basics and doc.entry_exists("basics", "players") then
 				doc.show_entry(username, "basics", "players", true)
 			else
 				-- Fallback message
 				show_message(username, "player")
 			end
 		-- luaentity exists
-		elseif le ~= nil then
+		elseif le then
 			local ro = doc_identifier.registered_objects[le.name]
 			-- Dropped items
 			if le.name == "__builtin:item" then
@@ -112,7 +115,7 @@ doc_identifier.identify = function(itemstack, user, pointed_thing)
 					doc.show_entry(username, "nodes", itemstring, true)
 				end
 			-- A known registered object
-			elseif ro ~= nil then
+			elseif ro then
 				doc.show_entry(username, ro.category, ro.entry, true)
 			-- Undefined object (error)
 			elseif minetest.registered_entities[le.name] == nil then
@@ -195,10 +198,10 @@ minetest.register_craft({
 		   {"group:stick", ""} }
 })
 
-if minetest.get_modpath("mcl_core") ~= nil then
+if minetest.get_modpath("mcl_core") then
 	minetest.register_craft({
 		output = "doc_identifier:identifier_solid",
-		recipe = { { "mcl_core:glass" }, 
+		recipe = { { "mcl_core:glass" },
 			   { "group:stick" } }
 	})
 end

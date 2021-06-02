@@ -1,7 +1,7 @@
-local S = minetest.get_translator("mcl_potions")
+local S = minetest.get_translator(minetest.get_current_modname())
 local GRAVITY = tonumber(minetest.settings:get("movement_gravity"))
 
-local splash_image = function(colorstring, opacity)
+local function splash_image(colorstring, opacity)
 	if not opacity then
 		opacity = 127
 	end
@@ -10,7 +10,6 @@ end
 
 
 function mcl_potions.register_splash(name, descr, color, def)
-
 	local id = "mcl_potions:"..name.."_splash"
 	local longdesc = def.longdesc
 	if not def.no_effect then
@@ -123,6 +122,6 @@ function mcl_potions.register_splash(name, descr, color, def)
 	})
 end
 
-local function time_string(dur)
+--[[local function time_string(dur)
 	return math.floor(dur/60)..string.format(":%02d",math.floor(dur % 60))
-end
+end]]

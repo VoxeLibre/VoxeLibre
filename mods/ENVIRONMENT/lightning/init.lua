@@ -1,6 +1,7 @@
 --[[
 
 Copyright (C) 2016 - Auke Kok <sofar@foo-projects.org>
+Adapted by MineClone2 contributors
 
 "lightning" is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as
@@ -9,9 +10,8 @@ of the license, or (at your option) any later version.
 
 --]]
 
-local S = minetest.get_translator("lightning")
+local S = minetest.get_translator(minetest.get_current_modname())
 
-local has_mcl_death_msg = minetest.get_modpath("mcl_death_messages")
 local get_connected_players = minetest.get_connected_players
 local line_of_sight = minetest.line_of_sight
 local get_node = minetest.get_node
@@ -23,22 +23,22 @@ local add_entity = minetest.add_entity
 local get_objects_inside_radius = minetest.get_objects_inside_radius
 local get_item_group = minetest.get_item_group
 
-lightning = {}
-
-lightning.interval_low = 17
-lightning.interval_high = 503
-lightning.range_h = 100
-lightning.range_v = 50
-lightning.size = 100
--- disable this to stop lightning mod from striking
-lightning.auto = true
+lightning = {
+    interval_low = 17,
+    interval_high = 503,
+    range_h = 100,
+    range_v = 50,
+    size = 100,
+    -- disable this to stop lightning mod from striking
+    auto = true,
+}
 
 local rng = PcgRandom(32321123312123)
 
 local ps = {}
 local ttl = -1
 
-local revertsky = function(dtime)
+local function revertsky(dtime)
 	if ttl == 0 then
 		return
 	end
@@ -97,7 +97,7 @@ end
 -- lightning strike API
 -- * pos: optional, if not given a random pos will be chosen
 -- * returns: bool - success if a strike happened
-lightning.strike = function(pos)
+function lightning.strike(pos)
 	if lightning.auto then
 		after(rng:next(lightning.interval_low, lightning.interval_high), lightning.strike)
 	end
@@ -135,52 +135,44 @@ lightning.strike = function(pos)
 	sound_play({ name = "lightning_thunder", gain = 10 }, { pos = pos, max_hear_distance = 500 }, true)
 
 	-- damage nearby objects, transform mobs
+    -- TODO: use an API insteed of hardcoding this behaviour
 	local objs = get_objects_inside_radius(pos2, 3.5)
 	for o=1, #objs do
 		local obj = objs[o]
 		local lua = obj:get_luaentity()
-		if obj:is_player() then
-		-- Player damage
-			if has_mcl_death_msg then
-				mcl_death_messages.player_damage(obj, S("@1 was struck by lightning.", obj:get_player_name()))
-			end
-			obj:set_hp(obj:get_hp()-5, { type = "punch", from = "mod" })
-		-- Mobs
-		elseif lua and lua._cmi_is_mob then
-			-- pig → zombie pigman (no damage)
-			if lua.name == "mobs_mc:pig" then
-				local rot = obj:get_yaw()
-				obj:remove()
-				obj = add_entity(pos2, "mobs_mc:pigman")
-				obj:set_yaw(rot)
+		-- pig → zombie pigman (no damage)
+		if lua and lua.name == "mobs_mc:pig" then
+			local rot = obj:get_yaw()
+			obj:remove()
+			obj = add_entity(pos2, "mobs_mc:pigman")
+			obj:set_yaw(rot)
 			-- mooshroom: toggle color red/brown (no damage)
-			elseif lua.name == "mobs_mc:mooshroom" then
-				if lua.base_texture[1] == "mobs_mc_mooshroom.png" then
-					lua.base_texture = { "mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" }
-				else
-					lua.base_texture = { "mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png" }
-				end
-				obj:set_properties({textures = lua.base_texture})
-			-- villager → witch (no damage)
-			elseif lua.name == "mobs_mc:villager" then
-			-- Witches are incomplete, this code is unused
-			-- TODO: Enable this code when witches are working.
-			--[[
-				local rot = obj:get_yaw()
-				obj:remove()
-				obj = minetest.add_entity(pos2, "mobs_mc:witch")
-				obj:set_yaw(rot)
-			]]
-			-- charged creeper
-			elseif lua.name == "mobs_mc:creeper" then
-				local rot = obj:get_yaw()
-				obj:remove()
-				obj = add_entity(pos2, "mobs_mc:creeper_charged")
-				obj:set_yaw(rot)
-				-- Other mobs: Just damage
+		elseif lua and lua.name == "mobs_mc:mooshroom" then
+			if lua.base_texture[1] == "mobs_mc_mooshroom.png" then
+				lua.base_texture = { "mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" }
 			else
-				obj:set_hp(obj:get_hp()-5, { type = "punch", from = "mod" })
+				lua.base_texture = { "mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png" }
 			end
+			obj:set_properties({textures = lua.base_texture})
+		-- villager → witch (no damage)
+		--elseif lua and lua.name == "mobs_mc:villager" then
+		-- Witches are incomplete, this code is unused
+		-- TODO: Enable this code when witches are working.
+		--[[
+			local rot = obj:get_yaw()
+			obj:remove()
+			obj = minetest.add_entity(pos2, "mobs_mc:witch")
+			obj:set_yaw(rot)
+		]]
+		-- charged creeper
+		elseif lua and lua.name == "mobs_mc:creeper" then
+			local rot = obj:get_yaw()
+			obj:remove()
+			obj = add_entity(pos2, "mobs_mc:creeper_charged")
+			obj:set_yaw(rot)
+			-- Other objects: Just damage
+		else
+			mcl_util.deal_damage(obj, 5, {type = "lightning_bolt"})
 		end
 	end
 

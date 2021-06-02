@@ -1,5 +1,5 @@
 --these are lua locals, used for higher performance
-local minetest,math,vector,ipairs = minetest,math,vector,ipairs
+local minetest, math, vector, ipairs, pairs = minetest, math, vector, ipairs, pairs
 
 --this is used for the player pool in the sound buffer
 local pool = {}
@@ -38,7 +38,7 @@ item_drop_settings.drop_single_item      = false --if true, the drop control dro
 
 item_drop_settings.magnet_time           = 0.75 -- how many seconds an item follows the player before giving up
 
-local get_gravity = function()
+local function get_gravity()
 	return tonumber(minetest.settings:get("movement_gravity")) or 9.81
 end
 
@@ -60,7 +60,7 @@ mcl_item_entity.register_pickup_achievement("mcl_mobitems:blaze_rod", "mcl:blaze
 mcl_item_entity.register_pickup_achievement("mcl_mobitems:leather", "mcl:killCow")
 mcl_item_entity.register_pickup_achievement("mcl_core:diamond", "mcl:diamonds")
 
-local check_pickup_achievements = function(object, player)
+local function check_pickup_achievements(object, player)
 	if has_awards then
 		local itemname = ItemStack(object:get_luaentity().itemstring):get_name()
 		local playername = player:get_player_name()
@@ -72,7 +72,7 @@ local check_pickup_achievements = function(object, player)
 	end
 end
 
-local enable_physics = function(object, luaentity, ignore_check)
+local function enable_physics(object, luaentity, ignore_check)
 	if luaentity.physical_state == false or ignore_check == true then
 		luaentity.physical_state = true
 		object:set_properties({
@@ -83,7 +83,7 @@ local enable_physics = function(object, luaentity, ignore_check)
 	end
 end
 
-local disable_physics = function(object, luaentity, ignore_check, reset_movement)
+local function disable_physics(object, luaentity, ignore_check, reset_movement)
 	if luaentity.physical_state == true or ignore_check == true then
 		luaentity.physical_state = false
 		object:set_properties({
@@ -98,15 +98,13 @@ end
 
 
 minetest.register_globalstep(function(dtime)
-	
 	tick = not tick
 
 	for _,player in pairs(minetest.get_connected_players()) do
 		if player:get_hp() > 0 or not minetest.settings:get_bool("enable_damage") then
 
-
 			local name = player:get_player_name()
-			
+
 			local pos = player:get_pos()
 
 			if tick == true and pool[name] > 0 then
@@ -124,7 +122,7 @@ minetest.register_globalstep(function(dtime)
 			end
 
 
-			
+
 			local inv = player:get_inventory()
 			local checkpos = {x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}
 
@@ -235,7 +233,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 	local dug_node = minetest.get_node(pos)
 	local tooldef
 	local tool
-	if digger ~= nil then
+	if digger then
 		tool = digger:get_wielded_item()
 		tooldef = minetest.registered_tools[tool:get_name()]
 
@@ -316,7 +314,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 			end
 			-- Spawn item and apply random speed
 			local obj = minetest.add_item(dpos, drop_item)
-			if obj ~= nil then
+			if obj then
 				local x = math.random(1, 5)
 				if math.random(1,2) == 1 then
 					x = -x
@@ -365,6 +363,17 @@ if not time_to_live then
 	time_to_live = 300
 end
 
+local function cxcz(o, cw, one, zero)
+	if cw < 0 then
+		table.insert(o, { [one]=1, y=0, [zero]=0 })
+		table.insert(o, { [one]=-1, y=0, [zero]=0 })
+	else
+		table.insert(o, { [one]=-1, y=0, [zero]=0 })
+		table.insert(o, { [one]=1, y=0, [zero]=0 })
+	end
+	return o
+end
+
 minetest.register_entity(":__builtin:item", {
 	initial_properties = {
 		hp_max = 1,
@@ -385,7 +394,7 @@ minetest.register_entity(":__builtin:item", {
 	-- The itemstring MUST be set immediately to a non-empty string after creating the entity.
 	-- The hand is NOT permitted as dropped item. ;-)
 	-- Item entities will be deleted if they still have an empty itemstring on their first on_step tick.
-	itemstring = '',
+	itemstring = "",
 
 	-- If true, item will fall
 	physical_state = true,
@@ -406,6 +415,14 @@ minetest.register_entity(":__builtin:item", {
 			return
 		end
 		local stack = ItemStack(itemstring)
+		if minetest.get_item_group(stack:get_name(), "compass") > 0 then
+			stack:set_name("mcl_compass:16")
+			itemstring = stack:to_string()
+			self.itemstring = itemstring
+		end
+		if minetest.get_item_group(stack:get_name(), "clock") > 0 then
+			self.is_clock = true
+		end
 		local count = stack:get_count()
 		local max_count = stack:get_stack_max()
 		if count > max_count then
@@ -418,13 +435,9 @@ minetest.register_entity(":__builtin:item", {
 		if itemtable then
 			itemname = stack:to_table().name
 		end
-		local item_texture = nil
-		local item_type = ""
 		local glow
 		local def = minetest.registered_items[itemname]
 		if def then
-			item_texture = def.inventory_image
-			item_type = def.type
 			description = def.description
 			glow = def.light_source
 		end
@@ -572,7 +585,7 @@ minetest.register_entity(":__builtin:item", {
 			return
 		end
 		self.age = self.age + dtime
-		if self._collector_timer ~= nil then
+		if self._collector_timer then
 			self._collector_timer = self._collector_timer + dtime
 		end
 		if time_to_live > 0 and self.age > time_to_live then
@@ -592,6 +605,12 @@ minetest.register_entity(":__builtin:item", {
 		local p = self.object:get_pos()
 		local node = minetest.get_node_or_nil(p)
 		local in_unloaded = (node == nil)
+
+		if self.is_clock then
+			self.object:set_properties({
+				textures = {"mcl_clock:clock_" .. (mcl_worlds.clock_works(p) and mcl_clock.old_time or mcl_clock.random_frame)}
+			})
+		end
 
 		-- If no collector was found for a long enough time, declare the magnet as disabled
 		if self._magnet_active and (self._collector_timer == nil or (self._collector_timer > item_drop_settings.magnet_time)) then
@@ -634,16 +653,6 @@ minetest.register_entity(":__builtin:item", {
 			-- 1st: closest
 			-- 2nd: other direction
 			-- 3rd and 4th: other axis
-			local cxcz = function(o, cw, one, zero)
-				if cw < 0 then
-					table.insert(o, { [one]=1, y=0, [zero]=0 })
-					table.insert(o, { [one]=-1, y=0, [zero]=0 })
-				else
-					table.insert(o, { [one]=-1, y=0, [zero]=0 })
-					table.insert(o, { [one]=1, y=0, [zero]=0 })
-				end
-				return o
-			end
 			if math.abs(cx) < math.abs(cz) then
 				order = cxcz(order, cx, "x", "z")
 				order = cxcz(order, cz, "z", "x")

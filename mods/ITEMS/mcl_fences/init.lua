@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_fences")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Node box
 local p = {-2/16, -0.5, -2/16, 2/16, 0.5, 2/16}
@@ -20,7 +20,7 @@ local cz2 = {-2/16, -0.5, 2/16, 2/16, 1.01, 0.5} --unten(quer) z
 
 mcl_fences = {}
 
-mcl_fences.register_fence = function(id, fence_name, texture, groups, hardness, blast_resistance, connects_to, sounds)
+function mcl_fences.register_fence(id, fence_name, texture, groups, hardness, blast_resistance, connects_to, sounds)
 	local cgroups = table.copy(groups)
 	if cgroups == nil then cgroups = {} end
 	cgroups.fence = 1
@@ -72,11 +72,11 @@ mcl_fences.register_fence = function(id, fence_name, texture, groups, hardness, 
 	return fence_id
 end
 
-mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, hardness, blast_resistance, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
+function mcl_fences.register_fence_gate(id, fence_gate_name, texture, groups, hardness, blast_resistance, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
 	local meta2
 	local state2 = 0
 
-	local function update_gate(pos, node) 
+	local function update_gate(pos, node)
 		minetest.set_node(pos, node)
 	end
 
@@ -237,7 +237,7 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 	return gate_id, open_gate_id
 end
 
-mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_name, texture_fence, groups, hardness, blast_resistance, connects_to, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close, texture_fence_gate)
+function mcl_fences.register_fence_and_fence_gate(id, fence_name, fence_gate_name, texture_fence, groups, hardness, blast_resistance, connects_to, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close, texture_fence_gate)
 	if texture_fence_gate == nil then
 		texture_fence_gate = texture_fence
 	end
@@ -272,17 +272,17 @@ for w=1, #woods do
 	mcl_fences.register_fence_and_fence_gate(id, wood[2], wood[3], wood[4], wood_groups, 2, 15, wood_connect, wood_sounds)
 
 	minetest.register_craft({
-		output = 'mcl_fences:'..id..' 3',
+		output = "mcl_fences:"..id.." 3",
 		recipe = {
-			{wood[6], 'mcl_core:stick', wood[6]},
-			{wood[6], 'mcl_core:stick', wood[6]},
+			{wood[6], "mcl_core:stick", wood[6]},
+			{wood[6], "mcl_core:stick", wood[6]},
 		}
 	})
 	minetest.register_craft({
-		output = 'mcl_fences:'..id_gate,
+		output = "mcl_fences:"..id_gate,
 		recipe = {
-			{'mcl_core:stick', wood[6], 'mcl_core:stick'},
-			{'mcl_core:stick', wood[6], 'mcl_core:stick'},
+			{"mcl_core:stick", wood[6], "mcl_core:stick"},
+			{"mcl_core:stick", wood[6], "mcl_core:stick"},
 		}
 	})
 end
@@ -292,7 +292,7 @@ end
 mcl_fences.register_fence("nether_brick_fence", S("Nether Brick Fence"), "mcl_fences_fence_nether_brick.png", {pickaxey=1, deco_block=1, fence_nether_brick=1}, 2, 30, {"group:fence_nether_brick"}, mcl_sounds.node_sound_stone_defaults())
 
 minetest.register_craft({
-	output = 'mcl_fences:nether_brick_fence 6',
+	output = "mcl_fences:nether_brick_fence 6",
 	recipe = {
 		{"mcl_nether:nether_brick", "mcl_nether:netherbrick", "mcl_nether:nether_brick"},
 		{"mcl_nether:nether_brick", "mcl_nether:netherbrick", "mcl_nether:nether_brick"},

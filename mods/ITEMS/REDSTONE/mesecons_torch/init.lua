@@ -1,10 +1,10 @@
 -- REDSTONE TORCH AND BLOCK OF REDSTONE
 
-local S = minetest.get_translator("mesecons_torch")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local TORCH_COOLOFF = 120 -- Number of seconds it takes for a burned-out torch to reactivate
 
-local rotate_torch_rules = function (rules, param2)
+local function rotate_torch_rules(rules, param2)
 	if param2 == 1 then
 		return rules
 	elseif param2 == 5 then
@@ -20,7 +20,7 @@ local rotate_torch_rules = function (rules, param2)
 	end
 end
 
-local torch_get_output_rules = function(node)
+local function torch_get_output_rules(node)
 	if node.param2 == 1 then
 		return {
 			{ x = -1, y =  0, z =  0 },
@@ -41,7 +41,7 @@ local torch_get_output_rules = function(node)
 	end
 end
 
-local torch_get_input_rules = function(node)
+local function torch_get_input_rules(node)
 	if node.param2 == 1 then
 		return {{x = 0, y = -1, z = 0 }}
 	else
@@ -49,7 +49,7 @@ local torch_get_input_rules = function(node)
 	end
 end
 
-local torch_overheated = function(pos)
+local function torch_overheated(pos)
 	minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.02, max_hear_distance = 6}, true)
 	minetest.add_particle({
 		pos = {x=pos.x, y=pos.y+0.2, z=pos.z},
@@ -62,7 +62,7 @@ local torch_overheated = function(pos)
 	timer:start(TORCH_COOLOFF)
 end
 
-local torch_action_on = function(pos, node)
+local function torch_action_on(pos, node)
 	local overheat
 	if node.name == "mesecons_torch:mesecon_torch_on" then
 		overheat = mesecon.do_overheat(pos)
@@ -86,7 +86,7 @@ local torch_action_on = function(pos, node)
 	end
 end
 
-local torch_action_off = function(pos, node)
+local function torch_action_off(pos, node)
 	local overheat
 	if node.name == "mesecons_torch:mesecon_torch_off" or node.name == "mesecons_torch:mesecon_torch_overheated" then
 		overheat = mesecon.do_overheat(pos)
@@ -111,89 +111,96 @@ local torch_action_off = function(pos, node)
 end
 
 minetest.register_craft({
-	output = 'mesecons_torch:mesecon_torch_on',
+	output = "mesecons_torch:mesecon_torch_on",
 	recipe = {
 	{"mesecons:redstone"},
 	{"mcl_core:stick"},}
 })
 
-mcl_torches.register_torch("mesecon_torch_off", S("Redstone Torch (off)"),
-	nil,
-	nil,
-	"jeija_torches_off.png",
-	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
-	{"jeija_torches_off.png"},
-	0,
-	{dig_immediate=3, dig_by_water=1, redstone_torch=2, mesecon_ignore_opaque_dig=1, not_in_creative_inventory=1},
-	mcl_sounds.node_sound_wood_defaults(),
-	{
-		mesecons = {
-			receptor = {
-				state = mesecon.state.off,
-				rules = torch_get_output_rules,
-			},
-			effector = {
-				state = mesecon.state.on,
-				rules = torch_get_input_rules,
-				action_off = torch_action_off,
-			},
+local off_def = {
+	name = "mesecon_torch_off",
+	description = S("Redstone Torch (off)"),
+	doc_items_create_entry = false,
+	icon = "jeija_torches_off.png",
+	tiles = {"jeija_torches_off.png"},
+	light = 0,
+	groups = {dig_immediate=3, dig_by_water=1, redstone_torch=2, mesecon_ignore_opaque_dig=1, not_in_creative_inventory=1},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	drop = "mesecons_torch:mesecon_torch_on",
+}
+
+mcl_torches.register_torch(off_def)
+
+local off_override = {
+	mesecons = {
+		receptor = {
+			state = mesecon.state.off,
+			rules = torch_get_output_rules,
 		},
-		drop = "mesecons_torch:mesecon_torch_on",
-		_doc_items_create_entry = false,
+		effector = {
+			state = mesecon.state.on,
+			rules = torch_get_input_rules,
+			action_off = torch_action_off,
+		},
 	}
-)
+}
 
-mcl_torches.register_torch("mesecon_torch_overheated", S("Redstone Torch (overheated)"),
-	nil,
-	nil,
-	"jeija_torches_off.png",
-	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
-	{"jeija_torches_off.png"},
-	0,
-	{dig_immediate=3, dig_by_water=1, redstone_torch=2, mesecon_ignore_opaque_dig=1, not_in_creative_inventory=1},
-	mcl_sounds.node_sound_wood_defaults(),
-	{
-		drop = "mesecons_torch:mesecon_torch_on",
-		_doc_items_create_entry = false,
-		on_timer = function(pos, elapsed)
-			if not mesecon.is_powered(pos) then
-				local node = minetest.get_node(pos)
-				torch_action_off(pos, node)
-			end
-		end,
-	}
-)
+minetest.override_item("mesecons_torch:mesecon_torch_off", off_override)
+minetest.override_item("mesecons_torch:mesecon_torch_off_wall", off_override)
 
+local overheated_def = table.copy(off_def)
+overheated_def.name = "mesecon_torch_overheated"
+overheated_def.description = S("Redstone Torch (overheated)")
 
+mcl_torches.register_torch(overheated_def)
 
-mcl_torches.register_torch("mesecon_torch_on", S("Redstone Torch"),
-	S("A redstone torch is a redstone component which can be used to invert a redstone signal. It supplies its surrounding blocks with redstone power, except for the block it is attached to. A redstone torch is normally lit, but it can also be turned off by powering the block it is attached to. While unlit, a redstone torch does not power anything."),
-	S("Redstone torches can be placed at the side and on the top of full solid opaque blocks."),
-	"jeija_torches_on.png",
-	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
-	{"jeija_torches_on.png"},
-	7,
-	{dig_immediate=3, dig_by_water=1, redstone_torch=1, mesecon_ignore_opaque_dig=1},
-	mcl_sounds.node_sound_wood_defaults(),
-	{
-		on_destruct = function(pos, oldnode)
+local overheated_override = {
+	on_timer = function(pos, elapsed)
+		if not mesecon.is_powered(pos) then
 			local node = minetest.get_node(pos)
-			torch_action_on(pos, node)
-		end,
-		mesecons = {
-			receptor = {
-				state = mesecon.state.on,
-				rules = torch_get_output_rules
-			},
-			effector = {
-				state = mesecon.state.off,
-				rules = torch_get_input_rules,
-				action_on = torch_action_on,
-			},
+			torch_action_off(pos, node)
+		end
+	end
+}
+
+minetest.override_item("mesecons_torch:mesecon_torch_overheated", overheated_override)
+minetest.override_item("mesecons_torch:mesecon_torch_overheated_wall", overheated_override)
+
+local on_def = {
+	name = "mesecon_torch_on",
+	description = S("Redstone Torch"),
+	doc_items_longdesc = S("A redstone torch is a redstone component which can be used to invert a redstone signal. It supplies its surrounding blocks with redstone power, except for the block it is attached to. A redstone torch is normally lit, but it can also be turned off by powering the block it is attached to. While unlit, a redstone torch does not power anything."),
+	doc_items_usagehelp = S("Redstone torches can be placed at the side and on the top of full solid opaque blocks."),
+	icon = "jeija_torches_on.png",
+	tiles = {"jeija_torches_on.png"},
+	light = 7,
+	groups = {dig_immediate=3, dig_by_water=1, redstone_torch=1, mesecon_ignore_opaque_dig=1},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+}
+
+mcl_torches.register_torch(on_def)
+
+local on_override = {
+	on_destruct = function(pos, oldnode)
+		local node = minetest.get_node(pos)
+		torch_action_on(pos, node)
+	end,
+	mesecons = {
+		receptor = {
+			state = mesecon.state.on,
+			rules = torch_get_output_rules
 		},
-		_tt_help = S("Provides redstone power when it's not powered itself"),
-	}
-)
+		effector = {
+			state = mesecon.state.off,
+			rules = torch_get_input_rules,
+			action_on = torch_action_on,
+		},
+	},
+	_tt_help = S("Provides redstone power when it's not powered itself"),
+}
+
+minetest.override_item("mesecons_torch:mesecon_torch_on", on_override)
+minetest.override_item("mesecons_torch:mesecon_torch_on_wall", on_override)
 
 minetest.register_node("mesecons_torch:redstoneblock", {
 	description = S("Block of Redstone"),
@@ -215,16 +222,16 @@ minetest.register_node("mesecons_torch:redstoneblock", {
 minetest.register_craft({
 	output = "mesecons_torch:redstoneblock",
 	recipe = {
-		{'mesecons:wire_00000000_off','mesecons:wire_00000000_off','mesecons:wire_00000000_off'},
-		{'mesecons:wire_00000000_off','mesecons:wire_00000000_off','mesecons:wire_00000000_off'},
-		{'mesecons:wire_00000000_off','mesecons:wire_00000000_off','mesecons:wire_00000000_off'},
+		{"mesecons:wire_00000000_off","mesecons:wire_00000000_off","mesecons:wire_00000000_off"},
+		{"mesecons:wire_00000000_off","mesecons:wire_00000000_off","mesecons:wire_00000000_off"},
+		{"mesecons:wire_00000000_off","mesecons:wire_00000000_off","mesecons:wire_00000000_off"},
 	}
 })
 
 minetest.register_craft({
-	output = 'mesecons:wire_00000000_off 9',
+	output = "mesecons:wire_00000000_off 9",
 	recipe = {
-		{'mesecons_torch:redstoneblock'},
+		{"mesecons_torch:redstoneblock"},
 	}
 })
 

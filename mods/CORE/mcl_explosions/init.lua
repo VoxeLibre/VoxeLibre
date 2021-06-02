@@ -12,11 +12,12 @@ under the LGPLv2.1 license.
 
 mcl_explosions = {}
 
-local mod_death_messages = minetest.get_modpath("mcl_death_messages") ~= nil
-local mod_fire = minetest.get_modpath("mcl_fire") ~= nil
-local CONTENT_FIRE = minetest.get_content_id("mcl_fire:fire")
+local mod_fire = minetest.get_modpath("mcl_fire")
+--local CONTENT_FIRE = minetest.get_content_id("mcl_fire:fire")
 
-local S = minetest.get_translator("mcl_explosions")
+local math = math
+local vector = vector
+local table = table
 
 local hash_node_position = minetest.hash_node_position
 local get_objects_inside_radius = minetest.get_objects_inside_radius
@@ -27,6 +28,7 @@ local get_voxel_manip = minetest.get_voxel_manip
 local bulk_set_node = minetest.bulk_set_node
 local check_for_falling = minetest.check_for_falling
 local add_item = minetest.add_item
+local pos_to_string = minetest.pos_to_string
 
 -- Saved sphere explosion shapes for various radiuses
 local sphere_shapes = {}
@@ -67,46 +69,44 @@ local function compute_sphere_rays(radius)
 	local rays = {}
 	local sphere = {}
 
-	for i=1, 2 do
+	local function add_ray(pos)
+		sphere[hash_node_position(pos)] = pos
+	end
+
+	for y = -radius, radius do
+		for z = -radius, radius do
+			for x = -radius, 0 do
+				local d = x * x + y * y + z * z
+				if d <= radius * radius then
+					add_ray(vector.new(x, y, z))
+					add_ray(vector.new(-x, y, z))
+					break
+				end
+			end
+		end
+	end
+
+	for x = -radius, radius do
+		for z = -radius, radius do
+			for y = -radius, 0 do
+				local d = x * x + y * y + z * z
+				if d <= radius * radius then
+					add_ray(vector.new(x, y, z))
+					add_ray(vector.new(x, -y, z))
+					break
+				end
+			end
+		end
+	end
+
+	for x = -radius, radius do
 		for y = -radius, radius do
-			for z = -radius, radius do
-				for x = -radius, 0, 1 do
-					local d = x * x + y * y + z * z
-					if d <= radius * radius then
-						local pos = { x = x, y = y, z = z }
-						sphere[hash_node_position(pos)] = pos
-						break
-					end
-				end
-			end
-		end
-	end
-
-	for i=1,2 do
-		for x = -radius, radius do
-			for z = -radius, radius do
-				for y = -radius, 0, 1 do
-					local d = x * x + y * y + z * z
-					if d <= radius * radius then
-						local pos = { x = x, y = y, z = z }
-						sphere[hash_node_position(pos)] = pos
-						break
-					end
-				end
-			end
-		end
-	end
-
-	for i=1,2 do
-		for x = -radius, radius do
-			for y = -radius, radius do
-				for z = -radius, 0, 1 do
-					local d = x * x + y * y + z * z
-					if d <= radius * radius then
-						local pos = { x = x, y = y, z = z }
-						sphere[hash_node_position(pos)] = pos
-						break
-					end
+			for z = -radius, 0 do
+				local d = x * x + y * y + z * z
+				if d <= radius * radius then
+					add_ray(vector.new(x, y, z))
+					add_ray(vector.new(x, y, -z))
+					break
 				end
 			end
 		end
@@ -150,7 +150,8 @@ end
 -- raydirs - The directions for each ray
 -- radius - The maximum distance each ray will go
 -- info - Table containing information about explosion
--- puncher - object that punches other objects (optional)
+-- direct - direct source object of the damage (optional)
+-- source - indirect source object of the damage (optional)
 --
 -- Values in info:
 -- drop_chance - The chance that destroyed nodes will drop their items
@@ -165,7 +166,7 @@ end
 -- Note that this function has been optimized, it contains code which has been
 -- inlined to avoid function calls and unnecessary table creation. This was
 -- measured to give a significant performance increase.
-local function trace_explode(pos, strength, raydirs, radius, info, puncher)
+local function trace_explode(pos, strength, raydirs, radius, info, direct, source)
 	local vm = get_voxel_manip()
 
 	local emin, emax = vm:read_from_map(vector.subtract(pos, radius),
@@ -176,14 +177,11 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 
 	local ystride = (emax.x - emin_x + 1)
 	local zstride = ystride * (emax.y - emin_y + 1)
-	local pos_x = pos.x
-	local pos_y = pos.y
-	local pos_z = pos.z
 
-	local area = VoxelArea:new {
+	--[[local area = VoxelArea:new {
 		MinEdge = emin,
 		MaxEdge = emax
-	}
+	}]]
 	local data = vm:get_data()
 	local destroy = {}
 
@@ -212,7 +210,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 						npos_x - emin_x + 1
 
 				local cid = data[idx]
-				local br = node_blastres[cid]
+				local br = node_blastres[cid] or INDESTRUCT_BLASTRES
 				if br < INDESTRUCT_BLASTRES and br > max_blast_resistance then
 					br = max_blast_resistance
 				end
@@ -247,7 +245,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 		local ent = obj:get_luaentity()
 
 		-- Ignore items to lower lag
-		if obj:is_player() or (ent and ent.name ~= '__builtin.item') then
+		if (obj:is_player() or (ent and ent.name ~= "__builtin.item")) and obj:get_hp() > 0 then
 			local opos = obj:get_pos()
 			local collisionbox = nil
 
@@ -260,12 +258,12 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 
 			if collisionbox then
 				-- Create rays from random points in the collision box
-				local x1 = collisionbox[1] * 2
-				local y1 = collisionbox[2] * 2
-				local z1 = collisionbox[3] * 2
-				local x2 = collisionbox[4] * 2
-				local y2 = collisionbox[5] * 2
-				local z2 = collisionbox[6] * 2
+				local x1 = collisionbox[1]
+				local y1 = collisionbox[2]
+				local z1 = collisionbox[3]
+				local x2 = collisionbox[4]
+				local y2 = collisionbox[5]
+				local z2 = collisionbox[6]
 				local x_len = math.abs(x2 - x1)
 				local y_len = math.abs(y2 - y1)
 				local z_len = math.abs(z2 - z1)
@@ -321,7 +319,6 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 					impact = 0
 				end
 				local damage = math.floor((impact * impact + impact) * 7 * strength + 1)
-				local source = puncher or obj
 
 				local sleep_formspec_doesnt_close_mt53 = false
 				if obj:is_player() then
@@ -333,26 +330,22 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 							sleep_formspec_doesnt_close_mt53 = true
 						end
 					end
-					if mod_death_messages then
-						mcl_death_messages.player_damage(obj, S("@1 was caught in an explosion.", name))
-					end
-					if rawget(_G, "armor") and armor.last_damage_types then
-						armor.last_damage_types[name] = "explosion"
-					end
 				end
 
 				if sleep_formspec_doesnt_close_mt53 then
-					minetest.after(0.3, function(obj, damage, impact, punch_dir) -- 0.2 is minimum delay for closing old formspec and open died formspec -- TODO: REMOVE THIS IN THE FUTURE
-						if not obj then return end
-						obj:punch(obj, 10, { damage_groups = { full_punch_interval = 1, fleshy = damage, knockback = impact * 20.0 } }, punch_dir)
-						obj:add_velocity(vector.multiply(punch_dir, impact * 20))
-					end, obj, damage, impact, vector.new(punch_dir))
-				else
-					obj:punch(source, 10, { damage_groups = { full_punch_interval = 1, fleshy = damage, knockback = impact * 20.0 } }, punch_dir)
+					minetest.after(0.3, function() -- 0.2 is minimum delay for closing old formspec and open died formspec -- TODO: REMOVE THIS IN THE FUTURE
+						if not obj:is_player() then
+							return
+						end
 
-					if obj:is_player() then
+						mcl_util.deal_damage(obj, damage, {type = "explosion", direct = direct, source = source})
+
 						obj:add_velocity(vector.multiply(punch_dir, impact * 20))
-					elseif ent.tnt_knockback then
+					end)
+				else
+					mcl_util.deal_damage(obj, damage, {type = "explosion", direct = direct, source = source})
+
+					if obj:is_player() or ent.tnt_knockback then
 						obj:add_velocity(vector.multiply(punch_dir, impact * 20))
 					end
 				end
@@ -368,9 +361,9 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 		local on_blast = node_on_blast[data[idx]]
 		local remove = true
 
-		if do_drop or on_blast ~= nil then
+		if do_drop or on_blast then
 			local npos = get_position_from_hash(hash)
-			if on_blast ~= nil then
+			if on_blast then
 				on_blast(npos, 1.0, do_drop)
 				remove = false
 			else
@@ -412,8 +405,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, puncher)
 	end
 
 	-- Log explosion
-	minetest.log('action', 'Explosion at ' .. minetest.pos_to_string(pos) ..
-		' with strength ' .. strength .. ' and radius ' .. radius)
+	minetest.log("action", "Explosion at "..pos_to_string(pos).." with strength "..strength.." and radius "..radius)
 end
 
 -- Create an explosion with strength at pos.
@@ -422,7 +414,8 @@ end
 -- pos - The position where the explosion originates from
 -- strength - The blast strength of the explosion (a TNT explosion uses 4)
 -- info - Table containing information about explosion
--- puncher - object that is reported as source of punches/damage (optional)
+-- direct - direct source object of the damage (optional)
+-- source - indirect source object of the damage (optional)
 --
 -- Values in info:
 -- drop_chance - If specified becomes the drop chance of all nodes in the
@@ -436,7 +429,7 @@ end
 -- griefing - If true, the explosion will destroy nodes (default: true)
 -- grief_protected - If true, the explosion will also destroy nodes which have
 --                   been protected (default: false)
-function mcl_explosions.explode(pos, strength, info, puncher)
+function mcl_explosions.explode(pos, strength, info, direct, source)
 	if info == nil then
 		info = {}
 	end
@@ -465,7 +458,7 @@ function mcl_explosions.explode(pos, strength, info, puncher)
 		info.drop_chance = 0
 	end
 
-	trace_explode(pos, strength, shape, radius, info, puncher)
+	trace_explode(pos, strength, shape, radius, info, direct, source)
 
 	if info.particles then
 		add_particles(pos, radius)

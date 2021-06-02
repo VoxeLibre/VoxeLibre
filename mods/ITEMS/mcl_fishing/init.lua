@@ -1,11 +1,6 @@
 --Fishing Rod, Bobber, and Flying Bobber mechanics and Bobber artwork by Rootyjr.
 
-local S = minetest.get_translator("mcl_fishing")
-local mod_throwing = minetest.get_modpath("mcl_throwing")
-
-local entity_mapping = {
-	["mcl_fishing:bobber"] = "mcl_fishing:bobber_entity",
-}
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local bobber_ENTITY={
 	physical = false,
@@ -42,8 +37,7 @@ local fish = function(itemstack, player, pointed_thing)
 		local num = 0
 		local ent = nil
 		local noent = true
-
-
+		
 		local durability = 65
 		local unbreaking = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
 		if unbreaking > 0 then
@@ -61,7 +55,6 @@ local fish = function(itemstack, player, pointed_thing)
 							local itemname
 							local items
 							local itemcount = 1
-							local itemwear = 0
 							local pr = PseudoRandom(os.time() * math.random(1, 100))
 							local r = pr:next(1, 100)
 							local fish_values = {85, 84.8, 84.7, 84.5}
@@ -173,7 +166,7 @@ local fish = function(itemstack, player, pointed_thing)
 		if noent == true then
 			local playerpos = player:get_pos()
 			local dir = player:get_look_dir()
-			local obj = mcl_throwing.throw("mcl_fishing:flying_bobber", {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, 15, player:get_player_name())
+			mcl_throwing.throw("mcl_fishing:flying_bobber", {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, 15, player:get_player_name())
 		end
 end
 
@@ -197,7 +190,7 @@ local bobber_on_step = function(self, dtime)
 	end
 	local wield = player:get_wielded_item()
 	--Check if player is nearby
-	if self.player ~= nil and player ~= nil then
+	if self.player and player then
 		--Destroy bobber if item not wielded.
 		if ((not wield) or (minetest.get_item_group(wield:get_name(), "fishing_rod") <= 0)) then
 			self.object:remove()
@@ -312,7 +305,7 @@ local flying_bobber_ENTITY={
 }
 
 -- Movement function of flying bobber
-local flying_bobber_on_step = function(self, dtime)
+local function flying_bobber_on_step(self, dtime)
 	self.timer=self.timer+dtime
 	local pos = self.object:get_pos()
 	local node = minetest.get_node(pos)
@@ -322,12 +315,9 @@ local flying_bobber_on_step = function(self, dtime)
 	-- Destroy when hitting a solid node
 	if self._lastpos.x~=nil then
 		if (def and (def.walkable or def.liquidtype == "flowing" or def.liquidtype == "source")) or not def then
-			local make_child= function(object)
-				local ent = object:get_luaentity()
-				ent.player = self._thrower
-				ent.child = true
-			end
-			make_child(minetest.add_entity(self._lastpos, "mcl_fishing:bobber_entity"))
+			local ent = minetest.add_entity(self._lastpos, "mcl_fishing:bobber_entity"):get_luaentity()
+			ent.player = self._thrower
+			ent.child = true
 			self.object:remove()
 			return
 		end
@@ -344,10 +334,8 @@ mcl_throwing.register_throwable_object("mcl_fishing:flying_bobber", "mcl_fishing
 -- If player leaves area, remove bobber.
 minetest.register_on_leaveplayer(function(player)
 	local objs = minetest.get_objects_inside_radius(player:get_pos(), 250)
-	local num = 0
 	local ent = nil
 	local noent = true
-
 	for n = 1, #objs do
 		ent = objs[n]:get_luaentity()
 		if ent then
@@ -400,17 +388,17 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 minetest.register_craft({
 	output = "mcl_fishing:fishing_rod",
 	recipe = {
-		{'','','mcl_core:stick'},
-		{'','mcl_core:stick','mcl_mobitems:string'},
-		{'mcl_core:stick','','mcl_mobitems:string'},
+		{"","","mcl_core:stick"},
+		{"","mcl_core:stick","mcl_mobitems:string"},
+		{"mcl_core:stick","","mcl_mobitems:string"},
 	}
 })
 minetest.register_craft({
 	output = "mcl_fishing:fishing_rod",
 	recipe = {
-		{'mcl_core:stick', '', ''},
-		{'mcl_mobitems:string', 'mcl_core:stick', ''},
-		{'mcl_mobitems:string','','mcl_core:stick'},
+		{"mcl_core:stick", "", ""},
+		{"mcl_mobitems:string", "mcl_core:stick", ""},
+		{"mcl_mobitems:string","","mcl_core:stick"},
 	}
 })
 minetest.register_craft({

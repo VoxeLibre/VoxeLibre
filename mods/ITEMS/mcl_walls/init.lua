@@ -1,4 +1,6 @@
-local S = minetest.get_translator("mcl_walls")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
 
 mcl_walls = {}
 
@@ -29,7 +31,7 @@ local function update_wall(pos)
 	local colonpos = thisnode.name:find(":")
 	local underscorepos
 	local itemname, basename, modname
-	if colonpos ~= nil then
+	if colonpos then
 		itemname = thisnode.name:sub(colonpos+1)
 		modname = thisnode.name:sub(1, colonpos-1)
 	end
@@ -151,7 +153,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 
 		minetest.register_node(nodename.."_"..i, {
 			collision_box = {
-				type = 'fixed', 
+				type = "fixed",
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 			},
 			drawtype = "nodebox",
@@ -180,7 +182,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 	minetest.register_node(nodename.."_16", {
 		drawtype = "nodebox",
 		collision_box = {
-				type = 'fixed', 
+				type = "fixed",
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
 		tiles = tiles,
@@ -206,7 +208,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 	minetest.register_node(nodename.."_21", {
 		drawtype = "nodebox",
 		collision_box = {
-				type = 'fixed', 
+				type = "fixed",
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
 		tiles = tiles,
@@ -247,7 +249,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 			fixed = pillar
 		},
 		collision_box = {
-				type = 'fixed', 
+				type = "fixed",
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
 		collisionbox = {-0.2, 0, -0.2, 0.2, 1.4, 0.2},
@@ -267,7 +269,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 	end
 end
 
-dofile(minetest.get_modpath("mcl_walls") .. "/register.lua")
+dofile(modpath.."/register.lua")
 
 minetest.register_on_placenode(update_wall_global)
 minetest.register_on_dignode(update_wall_global)

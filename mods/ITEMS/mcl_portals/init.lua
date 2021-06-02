@@ -4,13 +4,15 @@ mcl_portals = {
 	storage = minetest.get_mod_storage(),
 }
 
+local modpath = minetest.get_modpath(minetest.get_current_modname())
+
 -- Nether portal:
 -- Obsidian frame, activated by flint and steel
-dofile(minetest.get_modpath("mcl_portals").."/portal_nether.lua")
+dofile(modpath.."/portal_nether.lua")
 
 -- End portal (W.I.P):
 -- Red nether brick block frame, activated by an eye of ender
-dofile(minetest.get_modpath("mcl_portals").."/portal_end.lua")
+dofile(modpath.."/portal_end.lua")
 
-dofile(minetest.get_modpath("mcl_portals").."/portal_gateway.lua")
+dofile(modpath.."/portal_gateway.lua")
 

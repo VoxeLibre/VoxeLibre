@@ -1,7 +1,9 @@
-local S = minetest.get_translator("mcl_flowers")
-local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
+
+local mod_screwdriver = minetest.get_modpath("screwdriver")
 local has_mcl_flowerpots = minetest.get_modpath("mcl_flowerpots")
-local modpath = minetest.get_modpath("mcl_flowers")
 
 mcl_flowers = {}
 mcl_flowers.registered_simple_flowers = {}
@@ -58,7 +60,7 @@ function mcl_flowers.register_simple_flower(name, def)
 	local newname = "mcl_flowers:"..name
 	if not def._mcl_silk_touch_drop then def._mcl_silk_touch_drop = nil end
 	if not def.drop then def.drop = newname end
-    mcl_flowers.registered_simple_flowers[newname] = {
+	mcl_flowers.registered_simple_flowers[newname] = {
 		name=name,
 		desc=def.desc,
 		image=def.image,
@@ -101,10 +103,10 @@ local wheat_seed_drop = {
 	max_items = 1,
 	items = {
 		{
-			items = {'mcl_farming:wheat_seeds'},
+			items = {"mcl_farming:wheat_seeds"},
 			rarity = 8,
 		},
-	}
+	},
 }
 
 local fortune_wheat_seed_drop = {
@@ -180,12 +182,12 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 	if not inv_img then
 		inv_img = top_img
 	end
-	local usagehelp, noncreative, create_entry, paramtype2, palette
+	local create_entry, paramtype2, palette
 	if is_flower == nil then
 		is_flower = true
 	end
 
-	local bottom_groups = {flammable=2,fire_encouragement=60,fire_flammability=100, non_mycelium_plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, plant=1,double_plant=1,deco_block=1,not_in_creative_inventory=noncreative}
+	local bottom_groups = {flammable=2, fire_encouragement=60, fire_flammability=100, non_mycelium_plant=1, attached_node=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, plant=1, double_plant=1, deco_block=1}
 	if is_flower then
 		bottom_groups.flower = 1
 		bottom_groups.place_flowerlike = 1
@@ -200,7 +202,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		palette = "mcl_core_palette_grass.png"
 	end
 	if longdesc == nil then
-		noncreative = 1
+		bottom_groups.not_in_creative_inventory = 1
 		create_entry = false
 	end
 	-- Drop itself by default
@@ -458,7 +460,6 @@ minetest.register_node("mcl_flowers:waterlily", {
 				end
 			end
 		end
-
 		return itemstack
 	end,
 	on_rotate = on_rotate,
@@ -469,32 +470,29 @@ minetest.register_alias("mcl_core:tallgrass", "mcl_flowers:tallgrass")
 
 -- mcimport support: re-adds missing double_plant tops in mcimported worlds.
 local mg_name = minetest.get_mapgen_setting("mg_name")
-local mod_mcimport = minetest.get_modpath("mcimport") ~= nil
+local mod_mcimport = minetest.get_modpath("mcimport")
+
 local fix_doubleplants = minetest.settings:get_bool("fix_doubleplants", true)
 
+if mod_mcimport and mg_name == "singlenode" and fix_doubleplants == true then
+	local flowernames = { "peony", "rose_bush", "lilac", "sunflower", "double_fern", "double_grass" }
 
-	if mod_mcimport and mg_name == "singlenode" and fix_doubleplants == true then
-		local flowernames = { "peony", "rose_bush", "lilac", "sunflower", "double_fern", "double_grass" }
-		for c=1, 6 do
-			local flowername = flowernames[c]
-		end
-
-		minetest.register_lbm({
-			label = "Add double plant tops.",
-			name = "mcl_flowers:double_plant_topper",
-			run_at_every_load = true,
-			nodenames = { "mcl_flowers:peony", "mcl_flowers:rose_bush", "mcl_flowers:lilac", "mcl_flowers:sunflower", "mcl_flowers:double_fern", "mcl_flowers:double_grass" },
-			action = function(pos, node)
-				for c=1, 6 do
-					local flowername = flowernames[c]
-					local bottom = pos
-					local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
-					if node.name == "mcl_flowers:"..flowername then
-						minetest.set_node(top, {name = "mcl_flowers:"..flowername.."_top"})
-					end
+	minetest.register_lbm({
+		label = "Add double plant tops.",
+		name = "mcl_flowers:double_plant_topper",
+		run_at_every_load = true,
+		nodenames = { "mcl_flowers:peony", "mcl_flowers:rose_bush", "mcl_flowers:lilac", "mcl_flowers:sunflower", "mcl_flowers:double_fern", "mcl_flowers:double_grass" },
+		action = function(pos, node)
+			for c = 1, 6 do
+				local flowername = flowernames[c]
+				local bottom = pos
+				local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
+				if node.name == "mcl_flowers:"..flowername then
+					minetest.set_node(top, {name = "mcl_flowers:"..flowername.."_top"})
 				end
-			end,
-		})
-	end
+			end
+		end,
+	})
+end
 
 dofile(modpath.."/register.lua")

@@ -1,5 +1,5 @@
-local S = minetest.get_translator("mcl_ocean")
-local mod_doc = minetest.get_modpath("doc") ~= nil
+local S = minetest.get_translator(minetest.get_current_modname())
+local mod_doc = minetest.get_modpath("doc")
 
 local corals = {
 	{ "tube", S("Tube Coral Block"), S("Dead Tube Coral Block"), S("Tube Coral"), S("Dead Tube Coral"), S("Tube Coral Fan"), S("Dead Tube Coral Fan") },
@@ -265,7 +265,6 @@ minetest.register_abm({
 			if minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z}).name ~= "mcl_core:water_source" then
 				-- Find dead form (it's the same as the node's drop)
 				local def = minetest.registered_nodes[node.name]
-				local dead
 				if def then
 					node.name = def.drop
 				else

@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### ZOMBIE VILLAGER
@@ -26,8 +26,12 @@ local professions = {
 }
 
 mobs:register_mob("mobs_mc:villager_zombie", {
+	description = S("Zombie Villager"),
 	type = "monster",
 	spawn_class = "hostile",
+	hostile = true,
+	rotate = 270,
+	eye_height = 1.65,
 	hp_min = 20,
 	hp_max = 20,
 	xp_min = 5,
@@ -38,20 +42,20 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 	visual = "mesh",
 	mesh = "mobs_mc_villager_zombie.b3d",
 	textures = {
-		{"mobs_mc_zombie_butcher.png"},
-		{"mobs_mc_zombie_farmer.png"},
-		{"mobs_mc_zombie_librarian.png"},
-		{"mobs_mc_zombie_priest.png"},
-		{"mobs_mc_zombie_smith.png"},
-		{"mobs_mc_zombie_villager.png"}
+		{"mobs_mc_empty.png", "mobs_mc_zombie_butcher.png", "mobs_mc_empty.png"},
+		{"mobs_mc_empty.png", "mobs_mc_zombie_farmer.png", "mobs_mc_empty.png"},
+		{"mobs_mc_empty.png", "mobs_mc_zombie_librarian.png", "mobs_mc_empty.png"},
+		{"mobs_mc_empty.png", "mobs_mc_zombie_priest.png", "mobs_mc_empty.png"},
+		{"mobs_mc_empty.png", "mobs_mc_zombie_smith.png", "mobs_mc_empty.png"},
+		{"mobs_mc_empty.png", "mobs_mc_zombie_villager.png", "mobs_mc_empty.png"},
 	},
 	visual_size = {x=2.75, y=2.75},
 	makes_footstep_sound = true,
 	damage = 3,
 	reach = 2,
 	walk_velocity = 1.2,
-	run_velocity = 2.4,
-	attack_type = "dogfight",
+	run_velocity = 3.5,
+	attack_type = "punch",
 	group_attack = true,
 	drops = {
 		{name = mobs_mc.items.rotten_flesh,
@@ -147,8 +151,8 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 })
 
 mobs:spawn_specific(
-"mobs_mc:villager_zombie", 
-"overworld", 
+"mobs_mc:villager_zombie",
+"overworld",
 "ground",
 {
 "FlowerForest_underground",
@@ -231,15 +235,14 @@ mobs:spawn_specific(
 "MesaBryce_sandlevel",
 "Mesa_sandlevel",
 },
-0, 
-7, 
-30, 
-4090, 
-4, 
-mobs_mc.spawn_height.overworld_min, 
+0,
+7,
+30,
+4090,
+4,
+mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 --mobs:spawn_specific("mobs_mc:villager_zombie", "overworld", "ground", 0, 7, 30, 60000, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:villager_zombie", S("Zombie Villager"), "mobs_mc_spawn_icon_zombie_villager.png", 0)
-

@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_core")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Simple solid cubic nodes, most of them are the ground materials and simple building blocks
 
@@ -16,7 +16,7 @@ mcl_core.fortune_drop_ore = {
 	discrete_uniform_distribution = true,
 	min_count = 2,
 	max_count = 1,
-	get_chance = function (fortune_level) return 1 - 2 / (fortune_level + 2) end,
+	get_chance = function(fortune_level) return 1 - 2 / (fortune_level + 2) end,
 	multiply = true,
 }
 
@@ -28,7 +28,7 @@ minetest.register_node("mcl_core:stone", {
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
-	drop = 'mcl_core:cobble',
+	drop = "mcl_core:cobble",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
@@ -48,7 +48,7 @@ minetest.register_node("mcl_core:stone_with_coal", {
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {pickaxey=1, building_block=1, material_stone=1, xp=1},
-	drop = 'mcl_core:coal_lump',
+	drop = "mcl_core:coal_lump",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
@@ -63,7 +63,7 @@ minetest.register_node("mcl_core:stone_with_iron", {
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {pickaxey=3, building_block=1, material_stone=1},
-	drop = 'mcl_core:stone_with_iron',
+	drop = "mcl_core:stone_with_iron",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
@@ -86,7 +86,7 @@ minetest.register_node("mcl_core:stone_with_gold", {
 })
 
 local redstone_timer = 68.28
-local redstone_ore_activate = function(pos)
+local function redstone_ore_activate(pos)
 	minetest.swap_node(pos, {name="mcl_core:stone_with_redstone_lit"})
 	local t = minetest.get_node_timer(pos)
 	t:start(redstone_timer)
@@ -124,7 +124,7 @@ minetest.register_node("mcl_core:stone_with_redstone", {
 	}
 })
 
-local redstone_ore_reactivate = function(pos)
+local function redstone_ore_reactivate(pos)
 	local t = minetest.get_node_timer(pos)
 	t:start(redstone_timer)
 end
@@ -179,11 +179,11 @@ minetest.register_node("mcl_core:stone_with_lapis", {
 	drop = {
 		max_items = 1,
 		items = {
-			{items = {'mcl_dye:blue 8'},rarity = 5},
-			{items = {'mcl_dye:blue 7'},rarity = 5},
-			{items = {'mcl_dye:blue 6'},rarity = 5},
-			{items = {'mcl_dye:blue 5'},rarity = 5},
-			{items = {'mcl_dye:blue 4'}},
+			{items = {"mcl_dye:blue 8"},rarity = 5},
+			{items = {"mcl_dye:blue 7"},rarity = 5},
+			{items = {"mcl_dye:blue 6"},rarity = 5},
+			{items = {"mcl_dye:blue 5"},rarity = 5},
+			{items = {"mcl_dye:blue 4"}},
 		}
 	},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -369,7 +369,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {handy=1,shovely=1,dirt=2,grass_block=1, grass_block_no_snow=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, spreading_dirt_type=1, enderman_takable=1, building_block=1},
-	drop = 'mcl_core:dirt',
+	drop = "mcl_core:dirt",
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.1},
 	}),
@@ -422,7 +422,7 @@ minetest.register_node("mcl_core:mycelium", {
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {handy=1,shovely=1, dirt=2,spreading_dirt_type=1, enderman_takable=1, building_block=1},
-	drop = 'mcl_core:dirt',
+	drop = "mcl_core:dirt",
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.1},
 	}),
@@ -442,7 +442,7 @@ minetest.register_node("mcl_core:podzol", {
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {handy=1,shovely=3, dirt=2,soil=1, soil_sapling=2, soil_sugarcane=1, enderman_takable=1, building_block=1},
-	drop = 'mcl_core:dirt',
+	drop = "mcl_core:dirt",
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	on_construct = mcl_core.on_snowable_construct,
 	_mcl_snowed = "mcl_core:podzol_snow",
@@ -487,8 +487,8 @@ minetest.register_node("mcl_core:gravel", {
 	drop = {
 		max_items = 1,
 		items = {
-			{items = {'mcl_core:flint'},rarity = 10},
-			{items = {'mcl_core:gravel'}}
+			{items = {"mcl_core:flint"},rarity = 10},
+			{items = {"mcl_core:gravel"}}
 		}
 	},
 	sounds = mcl_sounds.node_sound_dirt_defaults({
@@ -501,15 +501,15 @@ minetest.register_node("mcl_core:gravel", {
 		[1] = {
 			max_items = 1,
 			items = {
-				{items = {'mcl_core:flint'},rarity = 7},
-				{items = {'mcl_core:gravel'}}
+				{items = {"mcl_core:flint"},rarity = 7},
+				{items = {"mcl_core:gravel"}}
 			}
 		},
 		[2] = {
 			max_items = 1,
 			items = {
-				{items = {'mcl_core:flint'},rarity = 4},
-				{items = {'mcl_core:gravel'}}
+				{items = {"mcl_core:flint"},rarity = 4},
+				{items = {"mcl_core:gravel"}}
 			}
 		},
 		[3] = "mcl_core:flint",
@@ -652,7 +652,7 @@ minetest.register_node("mcl_core:clay", {
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {handy=1,shovely=1, enderman_takable=1, building_block=1},
-	drop = 'mcl_core:clay_lump 4',
+	drop = "mcl_core:clay_lump 4",
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
@@ -683,7 +683,7 @@ minetest.register_node("mcl_core:bedrock", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	on_blast = function() end,
-	drop = '',
+	drop = "",
 	_mcl_blast_resistance = 3600000,
 	_mcl_hardness = -1,
 
@@ -864,7 +864,7 @@ minetest.register_node("mcl_core:packed_ice", {
 -- Frosted Ice (4 nodes)
 for i=0,3 do
 	local ice = {}
-	ice.increase_age = function(pos, ice_near, first_melt)
+	function ice.increase_age(pos, ice_near, first_melt)
 		-- Increase age of frosted age or turn to water source if too old
 		local nn = minetest.get_node(pos).name
 		local age = tonumber(string.sub(nn, -1))
@@ -955,7 +955,7 @@ for i=1,8 do
 			fixed = { -0.5, -0.5, -0.5, 0.5, -0.5 + (2*i)/16, 0.5 },
 		}
 	end
-	local on_place = function(itemstack, placer, pointed_thing)
+	local function on_place(itemstack, placer, pointed_thing)
 		-- Placement is only allowed on top of solid blocks
 		if pointed_thing.type ~= "node" then
 			-- no interaction possible with entities
@@ -990,9 +990,8 @@ for i=1,8 do
 			local itemcount = itemstack:get_count()
 			local fakestack = ItemStack(itemstring.." "..itemcount)
 			fakestack:set_name("mcl_core:snow_"..math.min(8, (i+g)))
-			local success
-			itemstack, success = minetest.item_place(fakestack, placer, pointed_thing)
-			minetest.sound_play(mcl_sounds.node_sound_snow_defaults().place, {pos = below}, true)
+			itemstack = minetest.item_place(fakestack, placer, pointed_thing)
+			minetest.sound_play(mcl_sounds.node_sound_snow_defaults().place, {pos = pointed_thing.under}, true)
 			itemstack:set_name(itemstring)
 			return itemstack
 		end

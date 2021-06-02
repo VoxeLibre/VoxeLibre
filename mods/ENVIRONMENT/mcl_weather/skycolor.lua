@@ -11,7 +11,7 @@ mcl_weather.skycolor = {
 	-- Update interval.
 	update_interval = 15,
 
-	-- Main sky colors: starts from midnight to midnight. 
+	-- Main sky colors: starts from midnight to midnight.
 	-- Please do not set directly. Use add_layer instead.
 	colors = {},
 
@@ -205,8 +205,8 @@ mcl_weather.skycolor = {
 		-- Returns first player sky color. I assume that all players are in same color layout.
 		get_current_bg_color = function()
 			local players = mcl_weather.skycolor.utils.get_players(nil)
-			for _, player in ipairs(players) do
-				return player:get_sky()
+			if players[1] then
+				return players[1]:get_sky()
 			end
 			return nil
 		end
@@ -235,7 +235,7 @@ minetest.register_globalstep(function(dtime)
 
 end)
 
-local initsky = function(player)
+local function initsky(player)
 	if (mcl_weather.skycolor.active) then
 		mcl_weather.skycolor.force_update = true
 	end

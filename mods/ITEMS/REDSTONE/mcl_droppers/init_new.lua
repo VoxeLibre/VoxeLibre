@@ -8,17 +8,17 @@ All node definitions share a lot of code, so this is the reason why there
 are so many weird tables below.
 ]]
 
-local S = minetest.get_translator("mcl_droppers")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- For after_place_node
-local setup_dropper = function(pos)
+local function setup_dropper(pos)
 	-- Set formspec and inventory
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_inventory_9_slots.png]"..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))).."]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
-	"label[3,0;"..minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Dropper"))).."]"..
+	"label[3,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Dropper"))).."]"..
 	"list[current_name;main;3,0.5;3,3;]"..
 	"listring[current_name;main]"..
 	"listring[current_player;main]"
@@ -28,7 +28,7 @@ local setup_dropper = function(pos)
 	inv:set_size("main", 9)
 end
 
-local orientate_dropper = function(pos, placer)
+local function orientate_dropper(pos, placer)
 	-- Not placed by player
 	if not placer then return end
 
@@ -96,7 +96,7 @@ local dropperdef = {
 	_mcl_hardness = 3.5,
 	mesecons = {effector = {
 		-- Drop random item when triggered
-		action_on = function (pos, node)
+		action_on = function(pos, node)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
 			local droppos
@@ -149,14 +149,16 @@ local horizontal_def = table.copy(dropperdef)
 horizontal_def.description = S("Dropper")
 horizontal_def._doc_items_longdesc = S("A dropper is a redstone component and a container with 9 inventory slots which, when supplied with redstone power, drops an item or puts it into a container in front of it.")
 horizontal_def._doc_items_usagehelp = S("Droppers can be placed in 6 possible directions, items will be dropped out of the hole. Use the dropper to access its inventory. Supply it with redstone energy once to make the dropper drop or transfer a random item.")
-horizontal_def.after_place_node = function(pos, placer, itemstack, pointed_thing)
+
+function horizontal_def.after_place_node(pos, placer, itemstack, pointed_thing)
 	setup_dropper(pos)
 	orientate_dropper(pos, placer)
 end
+
 horizontal_def.tiles = {
 	"default_furnace_top.png", "default_furnace_bottom.png",
 	"default_furnace_side.png", "default_furnace_side.png",
-	"default_furnace_side.png", "mcl_droppers_dropper_front_horizontal.png"
+	"default_furnace_side.png", "mcl_droppers_dropper_front_horizontal.png",
 }
 horizontal_def.paramtype2 = "facedir"
 horizontal_def.groups = {pickaxey=1, container=2, material_stone=1}
@@ -170,7 +172,7 @@ down_def.after_place_node = setup_dropper
 down_def.tiles = {
 	"default_furnace_top.png", "mcl_droppers_dropper_front_vertical.png",
 	"default_furnace_side.png", "default_furnace_side.png",
-	"default_furnace_side.png", "default_furnace_side.png"
+	"default_furnace_side.png", "default_furnace_side.png",
 }
 down_def.groups = {pickaxey=1, container=2,not_in_creative_inventory=1, material_stone=1}
 down_def._doc_items_create_entry = false
@@ -184,7 +186,7 @@ up_def.description = S("Upwards-Facing Dropper")
 up_def.tiles = {
 	"mcl_droppers_dropper_front_vertical.png", "default_furnace_bottom.png",
 	"default_furnace_side.png", "default_furnace_side.png",
-	"default_furnace_side.png", "default_furnace_side.png"
+	"default_furnace_side.png", "default_furnace_side.png",
 }
 minetest.register_node("mcl_droppers:dropper_up", up_def)
 
@@ -192,7 +194,7 @@ minetest.register_node("mcl_droppers:dropper_up", up_def)
 
 -- Ladies and gentlemen, I present to you: the crafting recipe!
 minetest.register_craft({
-	output = 'mcl_droppers:dropper',
+	output = "mcl_droppers:dropper",
 	recipe = {
 		{"mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble",},
 		{"mcl_core:cobble", "", "mcl_core:cobble",},

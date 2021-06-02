@@ -1,5 +1,5 @@
 -- switch for debugging
-settlements.debug = function(message)
+function settlements.debug(message)
 	-- minetest.chat_send_all(message)
 	-- minetest.log("warning", "[mcl_villages] "..message)
 	minetest.log("verbose", "[mcl_villages] "..message)
@@ -7,16 +7,16 @@ end
 
 --[[ Manually set in 'buildings.lua'
 -- material to replace cobblestone with
-wallmaterial = {
-	"mcl_core:junglewood", 
-	"mcl_core:sprucewood", 
-	"mcl_core:wood", 
-	"mcl_core:birchwood", 
-	"mcl_core:acaciawood",   
-	"mcl_core:stonebrick", 
-	"mcl_core:cobble", 
-	"mcl_core:sandstonecarved", 
-	"mcl_core:sandstone", 
+local wallmaterial = {
+	"mcl_core:junglewood",
+	"mcl_core:sprucewood",
+	"mcl_core:wood",
+	"mcl_core:birchwood",
+	"mcl_core:acaciawood",
+	"mcl_core:stonebrick",
+	"mcl_core:cobble",
+	"mcl_core:sandstonecarved",
+	"mcl_core:sandstone",
 	"mcl_core:sandstonesmooth2"
 }
 --]]
@@ -78,4 +78,4 @@ max_height_difference = 56
 --
 --
 half_map_chunk_size = 40
-quarter_map_chunk_size = 20
+--quarter_map_chunk_size = 20

@@ -1,7 +1,6 @@
-local S = minetest.get_translator("mcl_nether")
+local S = minetest.get_translator(minetest.get_current_modname())
 
-local mod_death_messages = minetest.get_modpath("mcl_death_messages")
-local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
+local mod_screwdriver = minetest.get_modpath("screwdriver")
 local on_rotate
 if mod_screwdriver then
 	on_rotate = screwdriver.rotate_3way
@@ -17,9 +16,9 @@ minetest.register_node("mcl_nether:glowstone", {
 	drop = {
 	max_items = 1,
 	items = {
-			{items = {'mcl_nether:glowstone_dust 4'},rarity = 3},
-			{items = {'mcl_nether:glowstone_dust 3'},rarity = 3},
-			{items = {'mcl_nether:glowstone_dust 2'}},
+			{items = {"mcl_nether:glowstone_dust 4"}, rarity = 3},
+			{items = {"mcl_nether:glowstone_dust 3"}, rarity = 3},
+			{items = {"mcl_nether:glowstone_dust 2"}},
 		}
 	},
 	paramtype = "light",
@@ -44,7 +43,7 @@ minetest.register_node("mcl_nether:quartz_ore", {
 	tiles = {"mcl_nether_quartz_ore.png"},
 	is_ground_content = true,
 	groups = {pickaxey=1, building_block=1, material_stone=1, xp=3},
-	drop = 'mcl_nether:quartz',
+	drop = "mcl_nether:quartz",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
@@ -54,13 +53,14 @@ minetest.register_node("mcl_nether:quartz_ore", {
 
 -- For eternal fire on top of netherrack and magma blocks
 -- (this code does not require a dependency on mcl_fire)
-local eternal_after_destruct = function(pos, oldnode)
+local function eternal_after_destruct(pos, oldnode)
 	pos.y = pos.y + 1
 	if minetest.get_node(pos).name == "mcl_fire:eternal_fire" then
 		minetest.remove_node(pos)
 	end
 end
-local eternal_on_ignite = function(player, pointed_thing)
+
+local function eternal_on_ignite(player, pointed_thing)
 	local pos = pointed_thing.under
 	local flame_pos = {x = pos.x, y = pos.y + 1, z = pos.z}
 	local fn = minetest.get_node(flame_pos)
@@ -111,10 +111,7 @@ minetest.register_node("mcl_nether:magma", {
 		end
 		-- Hurt players standing on top of this block
 		if player:get_hp() > 0 then
-			if mod_death_messages then
-				mcl_death_messages.player_damage(player, S("@1 stood too long on a magma block.", player:get_player_name()))
-			end
-			player:set_hp(player:get_hp() - 1, { type = "punch", from = "mod" })
+			mcl_util.deal_damage(player, 1, {type = "hot_floor"})
 		end
 	end,
 	_mcl_blast_resistance = 0.5,
@@ -269,34 +266,34 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'mcl_nether:quartz_block',
+	output = "mcl_nether:quartz_block",
 	recipe = {
-		{'mcl_nether:quartz', 'mcl_nether:quartz'},
-		{'mcl_nether:quartz', 'mcl_nether:quartz'},
+		{"mcl_nether:quartz", "mcl_nether:quartz"},
+		{"mcl_nether:quartz", "mcl_nether:quartz"},
 	}
 })
 
 minetest.register_craft({
-	output = 'mcl_nether:quartz_pillar 2',
+	output = "mcl_nether:quartz_pillar 2",
 	recipe = {
-		{'mcl_nether:quartz_block'},
-		{'mcl_nether:quartz_block'},
+		{"mcl_nether:quartz_block"},
+		{"mcl_nether:quartz_block"},
 	}
 })
 
 minetest.register_craft({
 	output = "mcl_nether:glowstone",
 	recipe = {
-		{'mcl_nether:glowstone_dust', 'mcl_nether:glowstone_dust'},
-		{'mcl_nether:glowstone_dust', 'mcl_nether:glowstone_dust'},
+		{"mcl_nether:glowstone_dust", "mcl_nether:glowstone_dust"},
+		{"mcl_nether:glowstone_dust", "mcl_nether:glowstone_dust"},
 	}
 })
 
 minetest.register_craft({
 	output = "mcl_nether:magma",
 	recipe = {
-		{'mcl_mobitems:magma_cream', 'mcl_mobitems:magma_cream'},
-		{'mcl_mobitems:magma_cream', 'mcl_mobitems:magma_cream'},
+		{"mcl_mobitems:magma_cream", "mcl_mobitems:magma_cream"},
+		{"mcl_mobitems:magma_cream", "mcl_mobitems:magma_cream"},
 	}
 })
 
@@ -310,32 +307,32 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_nether:nether_brick",
 	recipe = {
-		{'mcl_nether:netherbrick', 'mcl_nether:netherbrick'},
-		{'mcl_nether:netherbrick', 'mcl_nether:netherbrick'},
+		{"mcl_nether:netherbrick", "mcl_nether:netherbrick"},
+		{"mcl_nether:netherbrick", "mcl_nether:netherbrick"},
 	}
 })
 
 minetest.register_craft({
 	output = "mcl_nether:red_nether_brick",
 	recipe = {
-		{'mcl_nether:nether_wart_item', 'mcl_nether:netherbrick'},
-		{'mcl_nether:netherbrick', 'mcl_nether:nether_wart_item'},
+		{"mcl_nether:nether_wart_item", "mcl_nether:netherbrick"},
+		{"mcl_nether:netherbrick", "mcl_nether:nether_wart_item"},
 	}
 })
 minetest.register_craft({
 	output = "mcl_nether:red_nether_brick",
 	recipe = {
-		{'mcl_nether:netherbrick', 'mcl_nether:nether_wart_item'},
-		{'mcl_nether:nether_wart_item', 'mcl_nether:netherbrick'},
+		{"mcl_nether:netherbrick", "mcl_nether:nether_wart_item"},
+		{"mcl_nether:nether_wart_item", "mcl_nether:netherbrick"},
 	}
 })
 
 minetest.register_craft({
 	output = "mcl_nether:nether_wart_block",
 	recipe = {
-		{'mcl_nether:nether_wart_item', 'mcl_nether:nether_wart_item', 'mcl_nether:nether_wart_item'},
-		{'mcl_nether:nether_wart_item', 'mcl_nether:nether_wart_item', 'mcl_nether:nether_wart_item'},
-		{'mcl_nether:nether_wart_item', 'mcl_nether:nether_wart_item', 'mcl_nether:nether_wart_item'},
+		{"mcl_nether:nether_wart_item", "mcl_nether:nether_wart_item", "mcl_nether:nether_wart_item"},
+		{"mcl_nether:nether_wart_item", "mcl_nether:nether_wart_item", "mcl_nether:nether_wart_item"},
+		{"mcl_nether:nether_wart_item", "mcl_nether:nether_wart_item", "mcl_nether:nether_wart_item"},
 	}
 })
 

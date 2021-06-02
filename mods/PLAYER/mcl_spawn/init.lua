@@ -1,6 +1,6 @@
 mcl_spawn = {}
 
-local S = minetest.get_translator("mcl_spawn")
+local S = minetest.get_translator(minetest.get_current_modname())
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local storage = minetest.get_mod_storage()
 
@@ -379,7 +379,7 @@ function mcl_spawn.search()
 end
 
 
-mcl_spawn.get_world_spawn_pos = function()
+function mcl_spawn.get_world_spawn_pos()
 	local ssp = minetest.setting_get_pos("static_spawnpoint")
 	if ssp then
 		return ssp
@@ -395,11 +395,11 @@ end
 -- If player is nil or not a player, a world spawn point is returned.
 -- The second return value is true if returned spawn point is player-chosen,
 -- false otherwise.
-mcl_spawn.get_bed_spawn_pos = function(player)
+function mcl_spawn.get_bed_spawn_pos(player)
 	local spawn, custom_spawn = nil, false
-	if player ~= nil and player:is_player() then
+	if player and player:is_player() then
 		local attr = player:get_meta():get_string("mcl_beds:spawn")
-		if attr ~= nil and attr ~= "" then
+		if attr and attr ~= "" then
 			spawn = minetest.string_to_pos(attr)
 			custom_spawn = true
 		end
@@ -415,7 +415,7 @@ end
 -- Set pos to nil to clear the spawn position.
 -- If message is set, informs the player with a chat message when the spawn position
 -- changed.
-mcl_spawn.set_spawn_pos = function(player, pos, message)
+function mcl_spawn.set_spawn_pos(player, pos, message)
 	local spawn_changed = false
 	local meta = player:get_meta()
 	if pos == nil then
@@ -443,7 +443,7 @@ mcl_spawn.set_spawn_pos = function(player, pos, message)
 	return spawn_changed
 end
 
-mcl_spawn.get_player_spawn_pos = function(player)
+function mcl_spawn.get_player_spawn_pos(player)
 	local pos, custom_spawn = mcl_spawn.get_bed_spawn_pos(player)
 	if pos and custom_spawn then
 		-- Check if bed is still there
@@ -451,7 +451,7 @@ mcl_spawn.get_player_spawn_pos = function(player)
 		local bgroup = minetest.get_item_group(node_bed.name, "bed")
 		if bgroup ~= 1 and bgroup ~= 2 then
 			-- Bed is destroyed:
-			if player ~= nil and player:is_player() then
+			if player and player:is_player() then
 				player:get_meta():set_string("mcl_beds:spawn", "")
 			end
 			minetest.chat_send_player(player:get_player_name(), S("Your spawn bed was missing or blocked."))
@@ -482,7 +482,7 @@ mcl_spawn.get_player_spawn_pos = function(player)
 	return mcl_spawn.get_world_spawn_pos(), false
 end
 
-mcl_spawn.spawn = function(player)
+function mcl_spawn.spawn(player)
 	local pos, in_bed = mcl_spawn.get_player_spawn_pos(player)
 	player:set_pos(pos)
 	return in_bed or success
@@ -500,10 +500,8 @@ function mcl_spawn.shadow_worker()
 
 	if success then
 		local wsp_node = minetest.get_node(wsp)
-		if wsp_node and wsp_node.name == "ignore" then
-			-- special case - respawn area unloaded from memory - it's okay, skip for now
-
-		elseif ((not good_for_respawn(wsp)) or ((no_trees_area_counter >= 0) and not can_find_tree(wsp))) then
+		if not (wsp_node and wsp_node.name == "ignore")
+		and ((not good_for_respawn(wsp)) or ((no_trees_area_counter >= 0) and not can_find_tree(wsp))) then
 			success = false
 			minetest.log("action", "[mcl_spawn] World spawn position isn't safe anymore: "..minetest.pos_to_string(wsp))
 			mcl_spawn.search()

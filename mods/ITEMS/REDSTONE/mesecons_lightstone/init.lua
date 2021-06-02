@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mesecons_lightstone")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local light = minetest.LIGHT_MAX
 
@@ -11,7 +11,7 @@ minetest.register_node("mesecons_lightstone:lightstone_off", {
 	_doc_items_longdesc = S("Redstone lamps are simple redstone components which glow brightly (light level @1) when they receive redstone power.", light),
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {effector = {
-		action_on = function (pos, node)
+		action_on = function(pos, node)
 			minetest.swap_node(pos, {name="mesecons_lightstone:lightstone_on", param2 = node.param2})
 		end,
 		rules = mesecon.rules.alldirs,
@@ -29,7 +29,7 @@ minetest.register_node("mesecons_lightstone:lightstone_on", {
 	light_source = light,
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {effector = {
-		action_off = function (pos, node)
+		action_off = function(pos, node)
 			minetest.swap_node(pos, {name="mesecons_lightstone:lightstone_off", param2 = node.param2})
 		end,
 		rules = mesecon.rules.alldirs,
@@ -41,9 +41,9 @@ minetest.register_node("mesecons_lightstone:lightstone_on", {
 minetest.register_craft({
     output = "mesecons_lightstone:lightstone_off",
     recipe = {
-	    {'',"mesecons:redstone",''},
-	    {"mesecons:redstone",'mcl_nether:glowstone',"mesecons:redstone"},
-	    {'','mesecons:redstone',''},
+	    {"","mesecons:redstone",""},
+	    {"mesecons:redstone","mcl_nether:glowstone","mesecons:redstone"},
+	    {"","mesecons:redstone",""},
     }
 })
 

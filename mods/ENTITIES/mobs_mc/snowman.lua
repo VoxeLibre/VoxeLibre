@@ -3,12 +3,12 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local snow_trail_frequency = 0.5 -- Time in seconds for checking to add a new snow trail
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
-local mod_throwing = minetest.get_modpath("mcl_throwing") ~= nil
+local mod_throwing = minetest.get_modpath("mcl_throwing")
 
 local gotten_texture = {
 	"mobs_mc_snowman.png",
@@ -21,6 +21,7 @@ local gotten_texture = {
 }
 
 mobs:register_mob("mobs_mc:snowman", {
+	description = S("Snow Golem"),
 	type = "npc",
 	spawn_class = "passive",
 	passive = true,

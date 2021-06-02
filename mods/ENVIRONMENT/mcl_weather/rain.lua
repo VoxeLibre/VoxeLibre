@@ -20,7 +20,7 @@ mcl_weather.rain = {
 	init_done = false,
 }
 
-mcl_weather.rain.sound_handler = function(player)
+function mcl_weather.rain.sound_handler(player)
 	return minetest.sound_play("weather_rain", {
 		to_player = player:get_player_name(),
 		loop = true,
@@ -28,7 +28,7 @@ mcl_weather.rain.sound_handler = function(player)
 end
 
 -- set skybox based on time (uses skycolor api)
-mcl_weather.rain.set_sky_box = function()
+function mcl_weather.rain.set_sky_box()
 	if mcl_weather.state == "rain" then
 		mcl_weather.skycolor.add_layer(
 			"weather-pack-rain-sky",
@@ -46,8 +46,7 @@ end
 
 -- creating manually parctiles instead of particles spawner because of easier to control
 -- spawn position.
-mcl_weather.rain.add_rain_particles = function(player)
-
+function mcl_weather.rain.add_rain_particles(player)
 	mcl_weather.rain.last_rp_count = 0
 	for i=mcl_weather.rain.particles_count, 1,-1 do
 		local random_pos_x, random_pos_y, random_pos_z = mcl_weather.get_random_pos_by_player_look_dir(player)
@@ -70,7 +69,7 @@ mcl_weather.rain.add_rain_particles = function(player)
 end
 
 -- Simple random texture getter
-mcl_weather.rain.get_texture = function()
+function mcl_weather.rain.get_texture()
 	local texture_name
 	local random_number = math.random()
 	if random_number > 0.33 then
@@ -85,7 +84,7 @@ end
 
 -- register player for rain weather.
 -- basically needs for origin sky reference and rain sound controls.
-mcl_weather.rain.add_player = function(player)
+function mcl_weather.rain.add_player(player)
 	if mcl_weather.players[player:get_player_name()] == nil then
 		local player_meta = {}
 		player_meta.origin_sky = {player:get_sky()}
@@ -95,9 +94,9 @@ end
 
 -- remove player from player list effected by rain.
 -- be sure to remove sound before removing player otherwise soundhandler reference will be lost.
-mcl_weather.rain.remove_player = function(player)
+function mcl_weather.rain.remove_player(player)
 	local player_meta = mcl_weather.players[player:get_player_name()]
-	if player_meta ~= nil and player_meta.origin_sky ~= nil then
+	if player_meta and player_meta.origin_sky then
 		player:set_clouds({color="#FFF0F0E5"})
 		mcl_weather.players[player:get_player_name()] = nil
 	end
@@ -119,14 +118,14 @@ end)
 -- adds and removes rain sound depending how much rain particles around player currently exist.
 -- have few seconds delay before each check to avoid on/off sound too often
 -- when player stay on 'edge' where sound should play and stop depending from random raindrop appearance.
-mcl_weather.rain.update_sound = function(player)
+function mcl_weather.rain.update_sound(player)
 	local player_meta = mcl_weather.players[player:get_player_name()]
-	if player_meta ~= nil then
-		if player_meta.sound_updated ~= nil and player_meta.sound_updated + 5 > minetest.get_gametime() then
+	if player_meta then
+		if player_meta.sound_updated and player_meta.sound_updated + 5 > minetest.get_gametime() then
 			return false
 		end
 
-		if player_meta.sound_handler ~= nil then
+		if player_meta.sound_handler then
 			if mcl_weather.rain.last_rp_count == 0 then
 				minetest.sound_fade(player_meta.sound_handler, -0.5, 0.0)
 				player_meta.sound_handler = nil
@@ -140,9 +139,9 @@ mcl_weather.rain.update_sound = function(player)
 end
 
 -- rain sound removed from player.
-mcl_weather.rain.remove_sound = function(player)
+function mcl_weather.rain.remove_sound(player)
 	local player_meta = mcl_weather.players[player:get_player_name()]
-	if player_meta ~= nil and player_meta.sound_handler ~= nil then
+	if player_meta and player_meta.sound_handler then
 		minetest.sound_fade(player_meta.sound_handler, -0.5, 0.0)
 		player_meta.sound_handler = nil
 		player_meta.sound_updated = nil
@@ -150,7 +149,7 @@ mcl_weather.rain.remove_sound = function(player)
 end
 
 -- callback function for removing rain
-mcl_weather.rain.clear = function()
+function mcl_weather.rain.clear()
 	mcl_weather.rain.raining = false
 	mcl_weather.rain.sky_last_update = -1
 	mcl_weather.rain.init_done = false
@@ -166,11 +165,10 @@ minetest.register_globalstep(function(dtime)
 	if mcl_weather.state ~= "rain" then
 		return false
 	end
-
 	mcl_weather.rain.make_weather()
 end)
 
-mcl_weather.rain.make_weather = function()
+function mcl_weather.rain.make_weather()
 	if mcl_weather.rain.init_done == false then
 		mcl_weather.rain.raining = true
 		mcl_weather.rain.set_sky_box()
@@ -190,7 +188,7 @@ mcl_weather.rain.make_weather = function()
 end
 
 -- Switch the number of raindrops: "thunder" for many raindrops, otherwise for normal raindrops
-mcl_weather.rain.set_particles_mode = function(mode)
+function mcl_weather.rain.set_particles_mode(mode)
 	if mode == "thunder" then
 		mcl_weather.rain.particles_count = PARTICLES_COUNT_THUNDER
 	else
@@ -249,7 +247,7 @@ if mcl_weather.allow_abm then
 				end
 			end
 		end
-  	})
+	})
 
 	-- Wetten the soil
 	minetest.register_abm({
@@ -264,7 +262,7 @@ if mcl_weather.allow_abm then
 				end
 			end
 		end
-  	})
+	})
 end
 
 if mcl_weather.reg_weathers.rain == nil then

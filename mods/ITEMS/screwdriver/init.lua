@@ -1,18 +1,21 @@
-local S = minetest.get_translator("screwdriver")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 screwdriver = {}
 
 screwdriver.ROTATE_FACE = 1
 screwdriver.ROTATE_AXIS = 2
-screwdriver.disallow = function(pos, node, user, mode, new_param2)
+
+function screwdriver.disallow(pos, node, user, mode, new_param2)
 	return false
 end
-screwdriver.rotate_simple = function(pos, node, user, mode, new_param2)
+
+function screwdriver.rotate_simple(pos, node, user, mode, new_param2)
 	if mode ~= screwdriver.ROTATE_FACE then
 		return false
 	end
 end
-screwdriver.rotate_3way = function(pos, node, user, mode, new_param2)
+
+function screwdriver.rotate_3way(pos, node, user, mode, new_param2)
 	if mode == screwdriver.ROTATE_AXIS then
 		if node.param2 == 0 then
 			node.param2 = 6
@@ -71,7 +74,7 @@ local facedir_tbl = {
 	},
 }
 
-screwdriver.rotate.facedir = function(pos, node, mode)
+function screwdriver.rotate.facedir(pos, node, mode)
 	local rotation = node.param2 % 32 -- get first 5 bits
 	local other = node.param2 - rotation
 	rotation = facedir_tbl[mode][rotation] or 0
@@ -82,10 +85,10 @@ screwdriver.rotate.colorfacedir = screwdriver.rotate.facedir
 
 local wallmounted_tbl = {
 	[screwdriver.ROTATE_FACE] = {[2] = 5, [3] = 4, [4] = 2, [5] = 3, [1] = 0, [0] = 1},
-	[screwdriver.ROTATE_AXIS] = {[2] = 5, [3] = 4, [4] = 2, [5] = 1, [1] = 0, [0] = 3}
+	[screwdriver.ROTATE_AXIS] = {[2] = 5, [3] = 4, [4] = 2, [5] = 1, [1] = 0, [0] = 3},
 }
 
-screwdriver.rotate.wallmounted = function(pos, node, mode)
+function screwdriver.rotate.wallmounted(pos, node, mode)
 	local rotation = node.param2 % 8 -- get first 3 bits
 	local other = node.param2 - rotation
 	rotation = wallmounted_tbl[mode][rotation] or 0
@@ -105,7 +108,7 @@ end
 screwdriver.rotate.colorwallmounted = screwdriver.rotate.wallmounted
 
 -- Handles rotation
-screwdriver.handler = function(itemstack, user, pointed_thing, mode, uses)
+function screwdriver.handler(itemstack, user, pointed_thing, mode, uses)
 	if pointed_thing.type ~= "node" then
 		return
 	end
@@ -157,7 +160,6 @@ screwdriver.handler = function(itemstack, user, pointed_thing, mode, uses)
 	if should_rotate and new_param2 ~= node.param2 then
 		node.param2 = new_param2
 		minetest.swap_node(pos, node)
-	
 		minetest.check_for_falling(pos)
 		if ndef.after_rotate then
 			ndef.after_rotate(vector.new(pos))

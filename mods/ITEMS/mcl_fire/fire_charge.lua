@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_fire")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local get_node = minetest.get_node
 local add_entity = minetest.add_entity
@@ -6,7 +6,7 @@ local add_entity = minetest.add_entity
 -- Fire Charge
 minetest.register_craftitem("mcl_fire:fire_charge", {
 	description = S("Fire Charge"),
-	_tt_help = S("Dispenser projectile").."\n"..S("Starts fires and ignites blocks"), 
+	_tt_help = S("Dispenser projectile").."\n"..S("Starts fires and ignites blocks"),
 	_doc_items_longdesc = S("Fire charges are primarily projectiles which can be launched from dispensers, they will fly in a straight line and burst into a fire on impact. Alternatively, they can be used to ignite fires directly."),
 	_doc_items_usagehelp = S("Put the fire charge into a dispenser and supply it with redstone power to launch it. To ignite a fire directly, simply place the fire charge on the ground, which uses it up."),
 	inventory_image = "mcl_fire_fire_charge.png",
@@ -14,11 +14,9 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 	stack_max = 64,
 	on_place = function(itemstack, user, pointed_thing)
 		-- Use pointed node's on_rightclick function first, if present
-		local node = get_node(pointed_thing.under)
-		if user and not user:get_player_control().sneak then
-			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
-			end
+		local new_stack = mcl_util.call_on_rightclick(itemstack, user, pointed_thing)
+		if new_stack then
+			return new_stack
 		end
 
 		-- Check protection
@@ -29,6 +27,7 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 		end
 
 		-- Ignite/light fire
+		local node = get_node(pointed_thing.under)
 		if pointed_thing.type == "node" then
 			local nodedef = minetest.registered_nodes[node.name]
 			if nodedef and nodedef._on_ignite then
@@ -59,7 +58,7 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 })
 
 minetest.register_craft({
-	type = 'shapeless',
-	output = 'mcl_fire:fire_charge 3',
-	recipe = { 'mcl_mobitems:blaze_powder', 'group:coal', 'mcl_mobitems:gunpowder' },
+	type = "shapeless",
+	output = "mcl_fire:fire_charge 3",
+	recipe = { "mcl_mobitems:blaze_powder", "group:coal", "mcl_mobitems:gunpowder" },
 })

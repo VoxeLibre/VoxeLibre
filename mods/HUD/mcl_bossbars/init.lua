@@ -39,7 +39,7 @@ local last_id = 0
 function mcl_bossbars.add_bar(player, def, dynamic, priority)
 	local name = player:get_player_name()
 	local bars = mcl_bossbars.bars[name]
-	local bar = {text = def.text, priority = priority or 0}
+	local bar = {text = def.text, priority = priority or 0, timeout = def.timeout}
 	bar.color, bar.image = get_color_info(def.color, def.percentage)
 	if dynamic then
 		for _, other in pairs(bars) do
@@ -60,12 +60,12 @@ function mcl_bossbars.add_bar(player, def, dynamic, priority)
 		bar.id = last_id + 1
 		last_id = bar.id
 		mcl_bossbars.static[bar.id] = bar
-		return id
+		return bar.id
 	end
 end
 
 function mcl_bossbars.remove_bar(id)
-	mcl_bossbars.static[id].bar.static = false
+	mcl_bossbars.static[id].id = nil
 	mcl_bossbars.static[id] = nil
 end
 
@@ -76,16 +76,23 @@ function mcl_bossbars.update_bar(id, def, priority)
 	old.priority = priority or old.priority
 end
 
-function mcl_bossbars.update_boss(luaentity, name, color)
-	local object = luaentity.object
+function mcl_bossbars.update_boss(object, name, color)
+	local props = object:get_luaentity()
+	if not props or not props._cmi_is_mob then
+		props = object:get_properties()
+		props.health = object:get_hp()
+	end
+
 	local bardef = {
-		text = luaentity.nametag,
-		percentage = math.floor(luaentity.health / luaentity.hp_max * 100),
 		color = color,
+		text = props.nametag,
+		percentage = math.floor(props.health / props.hp_max * 100),
 	}
+
 	if not bardef.text or bardef.text == "" then
 		bardef.text = name
 	end
+
 	local pos = object:get_pos()
 	for _, player in pairs(minetest.get_connected_players()) do
 		local d = vector.distance(pos, player:get_pos())
@@ -112,7 +119,7 @@ minetest.register_on_leaveplayer(function(player)
 	mcl_bossbars.bars[name] = nil
 end)
 
-minetest.register_globalstep(function()
+minetest.register_globalstep(function(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
 		local name = player:get_player_name()
 		local bars = mcl_bossbars.bars[name]
@@ -127,7 +134,12 @@ minetest.register_globalstep(function()
 			local hud = table.remove(huds, 1)
 
 			if bar and bar.id then
-				table.insert(bars_new, bar)
+				if bar.timeout then
+					bar.timeout = bar.timeout - dtime
+				end
+				if not bar.timeout or bar.timeout > 0 then
+					table.insert(bars_new, bar)
+				end
 			end
 
 			if bar and not hud then

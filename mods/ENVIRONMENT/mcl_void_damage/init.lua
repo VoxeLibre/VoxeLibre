@@ -1,11 +1,10 @@
-local S = minetest.get_translator("mcl_void_damage")
-local enable_damage = minetest.settings:get_bool("enable_damage")
+local S = minetest.get_translator(minetest.get_current_modname())
+--local enable_damage = minetest.settings:get_bool("enable_damage")
 
 local pos_to_dim = mcl_worlds.pos_to_dimension
 local dim_change = mcl_worlds.dimension_change
 local is_in_void = mcl_worlds.is_in_void
 local get_spawn_pos = mcl_spawn.get_player_spawn_pos
-local death_msg = mcl_death_messages.player_damage
 local send_chat = minetest.chat_send_player
 local get_connected = minetest.get_connected_players
 
@@ -40,10 +39,9 @@ minetest.register_on_mods_loaded(function()
 			end
 			self._void_timer = 0
 
-			local pos = obj:get_pos()
-			local void, void_deadly = is_in_void(pos)
+			local _, void_deadly = is_in_void(pos)
 			if void_deadly then
-				local ent = obj:get_luaentity()
+				--local ent = obj:get_luaentity()
 				obj:remove()
 				return
 			end
@@ -63,7 +61,7 @@ minetest.register_globalstep(function(dtime)
 		for p=1, #players do
 			local player = players[p]
 			local pos = player:get_pos()
-			local void, void_deadly = is_in_void(pos)
+			local _, void_deadly = is_in_void(pos)
 			if void_deadly then
 				local immortal_val = player:get_armor_groups().immortal
 				local is_immortal = false
@@ -80,8 +78,7 @@ minetest.register_globalstep(function(dtime)
 				elseif enable_damage and not is_immortal then
 					-- Damage enabled, not immortal: Deal void damage (4 HP / 0.5 seconds)
 					if player:get_hp() > 0 then
-						death_msg(player, S("@1 fell into the endless void.", player:get_player_name()))
-						player:set_hp(player:get_hp() - VOID_DAMAGE)
+						mcl_util.deal_damage(player, VOID_DAMAGE, {type = "out_of_world"})
 					end
 				end
 			end
