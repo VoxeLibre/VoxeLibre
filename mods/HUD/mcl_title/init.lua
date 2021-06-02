@@ -1,3 +1,5 @@
+--Based on https://www.digminecraft.com/game_commands/title_command.php
+
 --TODO: use SSCSM to reduce lag and network trafic (just send modchannel messages)
 --TODO: fadeIn and fadeOut animation (needs engine change: SSCSM or native support)
 --TODO: exactly mc like layout
