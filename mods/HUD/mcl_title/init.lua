@@ -64,22 +64,10 @@ function mcl_title.set(player, type, data)
 		player:hud_remove(huds_idx[type][player])
 	end
 
-	--TODO: enable this code then Fleckenstein's pr get merged
-	--TODO: be sure API is correctly used
-	--[[
-	local bold
-	if data.bold == "true" then
-		bold = true
-	else
-		bold = false
-	end
+	--TODO: enable this code then Fleckenstein's pr get merged (in about 5-6 years)
 
-	local italic
-	if data.italic == "true" then
-		italic = true
-	else
-		italic = false
-	end]]
+	--if data.bold == nil then data.bold = false end
+	--if data.italic == nil then data.italic = false end
 
 	local stay = mcl_title.params_get(player).stay
 
@@ -88,8 +76,8 @@ function mcl_title.set(player, type, data)
 		position  = mcl_title.layout[type].position,
 		alignment = mcl_title.layout[type].alignment,
 		text      = data.text,
-		--bold = bold,
-		--italic = italic,
+		--bold = data.bold,
+		--italic = data.italic,
 		size      = {x = mcl_title.layout[type].size},
 		number    = hex_color,
 		z_index   = 1100,
