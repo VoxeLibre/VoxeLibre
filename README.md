@@ -85,7 +85,7 @@ Please report all bugs and missing Minecraft features here:
 ## Chating with the community
 Join our discord server at:
 
-<https://discord.gg/84GKcxczG3>
+<https://discord.gg/xE4z8EEpDC>
 
 ## Project description
 The main goal of **MineClone 2** is to be a clone of Minecraft and to be released as free software.
