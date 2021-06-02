@@ -76,8 +76,8 @@ Reflects some of the damage taken when hit, at the cost of reducing durability w
 Unbreaking=Niezniszczalność
 Increases item durability.=Zwiększa wytrzymałość przedmiotu.
 Inventory=Ekwipunek
-@1 × Lapis Lazuli=@1 × Lazuryt 
-Enchantment levels: @1=Poziom zaklęcia: @1
+@1 Lapis Lazuli=@1 Lazurytów
+@1 Enchantment Levels=@1 poziomów zaklęcia 
 Level requirement: @1=Wymagany poziom: @1
 Enchant an item=Zaczaruj przedmiot
 <player> <enchantment> [<level>]=<gracz> <zaklęcie> [<poziom>]
