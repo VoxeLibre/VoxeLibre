@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_enchanting")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Taken from https://minecraft.gamepedia.com/Enchanting
 

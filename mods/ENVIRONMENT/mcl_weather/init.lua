@@ -1,4 +1,4 @@
-local modpath = minetest.get_modpath("mcl_weather")
+local modpath = minetest.get_modpath(minetest.get_current_modname())
 
 mcl_weather = {}
 
@@ -12,6 +12,6 @@ dofile(modpath.."/snow.lua")
 dofile(modpath.."/rain.lua")
 dofile(modpath.."/nether_dust.lua")
 
-if minetest.get_modpath("lightning") ~= nil then
+if minetest.get_modpath("lightning") then
 	dofile(modpath.."/thunder.lua")
 end

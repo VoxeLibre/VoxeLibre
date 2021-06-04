@@ -990,7 +990,7 @@ function mobs.mob_step(self, dtime)
 			if self.memory <= 0 then
 
 				--reset states when coming out of hostile state
-				if self.attacking ~= nil then
+				if self.attacking then
 					self.state_timer = -1
 				end
 

@@ -1,5 +1,10 @@
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 
+local pairs = pairs
+
+local get_connected_players = minetest.get_connected_players
+local get_item_group = minetest.get_item_group
+
 mcl_burning = {
 	storage = {},
 	animation_frames = tonumber(minetest.settings:get("fire_animation_frames")) or 8
@@ -8,7 +13,7 @@ mcl_burning = {
 dofile(modpath .. "/api.lua")
 
 minetest.register_globalstep(function(dtime)
-	for _, player in pairs(minetest.get_connected_players()) do
+	for _, player in pairs(get_connected_players()) do
 		local storage = mcl_burning.storage[player]
 		if not mcl_burning.tick(player, dtime, storage) and not mcl_burning.is_affected_by_rain(player) then
 			local nodes = mcl_burning.get_touching_nodes(player, {"group:puts_out_fire", "group:set_on_fire"}, storage)
@@ -16,12 +21,12 @@ minetest.register_globalstep(function(dtime)
 
 			for _, pos in pairs(nodes) do
 				local node = minetest.get_node(pos)
-				if minetest.get_item_group(node.name, "puts_out_fire") > 0 then
+				if get_item_group(node.name, "puts_out_fire") > 0 then
 					burn_time = 0
 					break
 				end
 
-				local value = minetest.get_item_group(node.name, "set_on_fire")
+				local value = get_item_group(node.name, "set_on_fire")
 				if value > burn_time then
 					burn_time = value
 				end

@@ -55,7 +55,7 @@ if mod_mcl_core then
 		extra_check = function(pos, placer)
 			-- Check protection
 			local placer_name = ""
-			if placer ~= nil then
+			if placer then
 				placer_name = placer:get_player_name()
 			end
 			if placer and minetest.is_protected(pos, placer_name) then
@@ -98,7 +98,7 @@ if mod_mclx_core then
 		extra_check = function(pos, placer)
 			-- Check protection
 			local placer_name = ""
-			if placer ~= nil then
+			if placer then
 				placer_name = placer:get_player_name()
 			end
 			if placer and minetest.is_protected(pos, placer_name) then

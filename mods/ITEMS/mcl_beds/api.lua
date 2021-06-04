@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_beds")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local minetest_get_node = minetest.get_node
 local minetest_get_node_or_nil = minetest.get_node_or_nil

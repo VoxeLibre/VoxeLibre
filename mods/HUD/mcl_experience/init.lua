@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_experience")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 mcl_experience = {}
 
@@ -40,7 +40,7 @@ minetest.register_on_mods_loaded(function()
 	registered_nodes = minetest.registered_nodes
 end)
 
-local load_data = function(player)
+local function load_data(player)
 	local name = player:get_player_name()
 	pool[name] = {}
 	local temp_pool = pool[name]
@@ -52,7 +52,7 @@ local load_data = function(player)
 end
 
 -- saves data to be utilized on next login
-local save_data = function(player)
+local function save_data(player)
 	local name = player:get_player_name()
 	local temp_pool = pool[name]
 	local meta = player:get_meta()
@@ -70,7 +70,7 @@ minetest.register_on_leaveplayer(function(player)
 end)
 
 -- create instance of new hud
-hud_manager.add_hud = function(player,hud_name,def)
+function hud_manager.add_hud(player,hud_name,def)
     local name = player:get_player_name()
     if minetest.is_creative_enabled(name) then
 		return
@@ -100,7 +100,7 @@ hud_manager.add_hud = function(player,hud_name,def)
 end
 
 -- delete instance of hud
-hud_manager.remove_hud = function(player,hud_name)
+function hud_manager.remove_hud(player,hud_name)
     local name = player:get_player_name()
     if player_huds[name] and player_huds[name][hud_name] then
         player:hud_remove(player_huds[name][hud_name])
@@ -109,7 +109,7 @@ hud_manager.remove_hud = function(player,hud_name)
 end
 
 -- change element of hud
-hud_manager.change_hud = function(data)
+function hud_manager.change_hud(data)
     local name = data.player:get_player_name()
     if player_huds[name] and player_huds[name][data.hud_name] then
         data.player:hud_change(player_huds[name][data.hud_name], data.element, data.data)
@@ -117,7 +117,7 @@ hud_manager.change_hud = function(data)
 end
 
 -- gets if hud exists
-hud_manager.hud_exists = function(player,hud_name)
+function hud_manager.hud_exists(player,hud_name)
     local name = player:get_player_name()
     if player_huds[name] and player_huds[name][hud_name] then
         return true
@@ -133,7 +133,7 @@ minetest.register_on_leaveplayer(function(player)
 end)
 
 -- is used for shutdowns to save all data
-local save_all = function()
+local function save_all()
 	for name,_ in pairs(pool) do
 		local player = minetest.get_player_by_name(name)
 		if player then

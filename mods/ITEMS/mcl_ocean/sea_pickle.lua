@@ -1,5 +1,6 @@
-local S = minetest.get_translator("mcl_ocean")
-local mod_doc = minetest.get_modpath("doc") ~= nil
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local mod_doc = minetest.get_modpath("doc")
 
 local function sea_pickle_on_place(itemstack, placer, pointed_thing)
 	if pointed_thing.type ~= "node" or not placer then

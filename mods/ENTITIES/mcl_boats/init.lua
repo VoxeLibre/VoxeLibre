@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_boats")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local boat_visual_size = {x = 1, y = 1, z = 1}
 local paddling_speed = 22
@@ -470,6 +470,6 @@ minetest.register_craft({
 	burntime = 20,
 })
 
-if minetest.get_modpath("doc_identifier") ~= nil then
+if minetest.get_modpath("doc_identifier") then
 	doc.sub.identifier.register_object("mcl_boats:boat", "craftitems", "mcl_boats:boat")
 end

@@ -2,7 +2,7 @@
 --################### GUARDIAN
 --###################
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 mobs:register_mob("mobs_mc:guardian", {
 	description = S("Guardian"),

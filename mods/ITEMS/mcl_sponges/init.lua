@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_sponges")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local absorb = function(pos)
 	local change = false
@@ -73,7 +73,7 @@ minetest.register_node("mcl_sponges:sponge", {
 			on_water = true
 		end
 		local water_found = minetest.find_node_near(pos, 1, "group:water")
-		if water_found ~= nil then
+		if water_found then
 			on_water = true
 		end
 		if on_water then

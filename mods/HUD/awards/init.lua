@@ -14,9 +14,11 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
-dofile(minetest.get_modpath("awards").."/api.lua")
-dofile(minetest.get_modpath("awards").."/chat_commands.lua")
-dofile(minetest.get_modpath("awards").."/sfinv.lua")
-dofile(minetest.get_modpath("awards").."/unified_inventory.lua")
-dofile(minetest.get_modpath("awards").."/triggers.lua")
+local modpath = minetest.get_modpath(minetest.get_current_modname())
+
+dofile(modpath.."/api.lua")
+dofile(modpath.."/chat_commands.lua")
+dofile(modpath.."/sfinv.lua")
+dofile(modpath.."/unified_inventory.lua")
+dofile(modpath.."/triggers.lua")
 

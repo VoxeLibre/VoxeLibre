@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_tt")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --[[local function get_min_digtime(caps)
 	local mintime

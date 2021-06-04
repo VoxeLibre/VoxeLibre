@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_compass")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 mcl_compass = {}
 
@@ -72,7 +72,7 @@ for frame = 0, compass_frames-1 do
 	table.insert(images, "mcl_compass_compass_"..s..".png")
 end
 
-local doc_mod = minetest.get_modpath("doc") ~= nil
+local doc_mod = minetest.get_modpath("doc")
 
 local stereotype_frame = 18
 for i,img in ipairs(images) do
@@ -108,11 +108,11 @@ for i,img in ipairs(images) do
 end
 
 minetest.register_craft({
-	output = 'mcl_compass:'..stereotype_frame,
+	output = "mcl_compass:"..stereotype_frame,
 	recipe = {
-		{'', 'mcl_core:iron_ingot', ''},
-		{'mcl_core:iron_ingot', 'mesecons:redstone', 'mcl_core:iron_ingot'},
-		{'', 'mcl_core:iron_ingot', ''}
+		{"", "mcl_core:iron_ingot", ""},
+		{"mcl_core:iron_ingot", "mesecons:redstone", "mcl_core:iron_ingot"},
+		{"", "mcl_core:iron_ingot", ""}
 	}
 })
 

@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mesecons_solarpanel")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local boxes = { -8/16, -8/16, -8/16,  8/16, -2/16, 8/16 }
 
@@ -81,11 +81,11 @@ minetest.register_node("mesecons_solarpanel:solar_panel_off", {
 })
 
 minetest.register_craft({
-	output = 'mesecons_solarpanel:solar_panel_off',
+	output = "mesecons_solarpanel:solar_panel_off",
 	recipe = {
-		{'mcl_core:glass', 'mcl_core:glass', 'mcl_core:glass'},
-		{'mcl_nether:quartz', 'mcl_nether:quartz', 'mcl_nether:quartz'},
-		{'group:wood_slab', 'group:wood_slab', 'group:wood_slab'},
+		{"mcl_core:glass", "mcl_core:glass", "mcl_core:glass"},
+		{"mcl_nether:quartz", "mcl_nether:quartz", "mcl_nether:quartz"},
+		{"group:wood_slab", "group:wood_slab", "group:wood_slab"},
 	}
 })
 

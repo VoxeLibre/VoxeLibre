@@ -1,5 +1,8 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local math = math
+local vector = vector
+
 -- The snowball entity
 local snowball_ENTITY={
 	physical = false,
@@ -15,6 +18,7 @@ local snowball_ENTITY={
 
 	_lastpos={},
 }
+
 local egg_ENTITY={
 	physical = false,
 	timer=0,
@@ -29,6 +33,7 @@ local egg_ENTITY={
 
 	_lastpos={},
 }
+
 -- Ender pearl entity
 local pearl_ENTITY={
 	physical = false,
@@ -45,7 +50,7 @@ local pearl_ENTITY={
 	_thrower = nil,		-- Player ObjectRef of the player who threw the ender pearl
 }
 
-local check_object_hit = function(self, pos, dmg)
+local function check_object_hit(self, pos, dmg)
 	for _,object in pairs(minetest.get_objects_inside_radius(pos, 1.5)) do
 
 		local entity = object:get_luaentity()
@@ -70,7 +75,7 @@ local check_object_hit = function(self, pos, dmg)
 	return false
 end
 
-local snowball_particles = function(pos, vel)
+local function snowball_particles(pos, vel)
 	local vel = vector.normalize(vector.multiply(vel, -1))
 	minetest.add_particlespawner({
 		amount = 20,
@@ -93,13 +98,12 @@ local snowball_particles = function(pos, vel)
 end
 
 -- Snowball on_step()--> called when snowball is moving.
-local snowball_on_step = function(self, dtime)
-	self.timer=self.timer+dtime
+local function snowball_on_step(self, dtime)
+	self.timer = self.timer + dtime
 	local pos = self.object:get_pos()
 	local vel = self.object:get_velocity()
 	local node = minetest.get_node(pos)
 	local def = minetest.registered_nodes[node.name]
-
 
 	-- Destroy when hitting a solid node
 	if self._lastpos.x~=nil then
@@ -110,33 +114,31 @@ local snowball_on_step = function(self, dtime)
 			return
 		end
 	end
-
 	if check_object_hit(self, pos, {snowball_vulnerable = 3}) then
 		minetest.sound_play("mcl_throwing_snowball_impact_soft", { pos = pos, max_hear_distance=16, gain=0.7 }, true)
 		snowball_particles(pos, vel)
 		self.object:remove()
 		return
 	end
-
 	self._lastpos={x=pos.x, y=pos.y, z=pos.z} -- Set _lastpos-->Node will be added at last pos outside the node
 end
 
 -- Movement function of egg
-local egg_on_step = function(self, dtime)
-	self.timer=self.timer+dtime
+local function egg_on_step(self, dtime)
+	self.timer = self.timer + dtime
 	local pos = self.object:get_pos()
 	local node = minetest.get_node(pos)
 	local def = minetest.registered_nodes[node.name]
 
 	-- Destroy when hitting a solid node with chance to spawn chicks
-	if self._lastpos.x~=nil then
+	if self._lastpos.x then
 		if (def and def.walkable) or not def then
 			-- 1/8 chance to spawn a chick
 			-- FIXME: Chicks have a quite good chance to spawn in walls
 			local r = math.random(1,8)
 
 			-- Turn given object into a child
-			local make_child= function(object)
+			local function make_child(object)
 				local ent = object:get_luaentity()
 				object:set_properties({
 					visual_size = { x = ent.base_size.x/2, y = ent.base_size.y/2 },
@@ -185,8 +187,8 @@ local egg_on_step = function(self, dtime)
 end
 
 -- Movement function of ender pearl
-local pearl_on_step = function(self, dtime)
-	self.timer=self.timer+dtime
+local function pearl_on_step(self, dtime)
+	self.timer = self.timer + dtime
 	local pos = self.object:get_pos()
 	pos.y = math.floor(pos.y)
 	local node = minetest.get_node(pos)

@@ -1,5 +1,5 @@
 -- Climbable nodes
-local S = minetest.get_translator("mcl_core")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local function rotate_climbable(pos, node, user, mode)
 	if mode == screwdriver.ROTATE_FACE then

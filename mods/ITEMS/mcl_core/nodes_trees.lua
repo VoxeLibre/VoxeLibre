@@ -1,7 +1,8 @@
 -- Tree nodes: Wood, Wooden Planks, Sapling, Leaves, Stripped Wood
-local S = minetest.get_translator("mcl_core")
+local S = minetest.get_translator(minetest.get_current_modname())
 
-local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
+local mod_screwdriver = minetest.get_modpath("screwdriver")
+
 local on_rotate
 if mod_screwdriver then
 	on_rotate = screwdriver.rotate_3way
@@ -51,7 +52,7 @@ local function register_tree_trunk(subname, description_trunk, description_bark,
 end
 
 -- Register stripped trunk and stripped wood
-local register_stripped_trunk = function(subname, description_stripped_trunk, description_stripped_bark, longdesc, tile_stripped_inner, tile_stripped_bark)
+local function register_stripped_trunk(subname, description_stripped_trunk, description_stripped_bark, longdesc, tile_stripped_inner, tile_stripped_bark)
 	minetest.register_node("mcl_core:"..subname, {
 		description = description_stripped_trunk,
 		_doc_items_longdesc = longdesc,

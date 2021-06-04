@@ -83,7 +83,7 @@ local function get_hardness_values_for_groups()
 
 	for _, ndef in pairs(minetest.registered_nodes) do
 		for g, _ in pairs(mcl_autogroup.registered_diggroups) do
-			if ndef.groups[g] ~= nil then
+			if ndef.groups[g] then
 				maps[g][ndef._mcl_hardness or 0] = true
 			end
 		end

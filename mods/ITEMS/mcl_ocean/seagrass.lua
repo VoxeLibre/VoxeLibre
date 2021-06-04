@@ -1,5 +1,6 @@
-local S = minetest.get_translator("mcl_ocean")
-local mod_doc = minetest.get_modpath("doc") ~= nil
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local mod_doc = minetest.get_modpath("doc")
 
 -- List of supported surfaces for seagrass
 local surfaces = {

@@ -4,7 +4,7 @@
 
 minetest.register_craft({
 	type = "shapeless",
-	output = 'mcl_chests:trapped_chest',
+	output = "mcl_chests:trapped_chest",
 	recipe = {"mcl_core:iron_ingot", "mcl_core:stick", "group:wood", "mcl_chests:chest"},
 })
 

@@ -1,5 +1,5 @@
 
-local S = minetest.get_translator("mcl_furnaces")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local LIGHT_ACTIVE_FURNACE = 13
 
@@ -217,14 +217,14 @@ end
 
 local function furnace_reset_delta_time(pos)
 	local meta = minetest.get_meta(pos)
-	local time_speed = tonumber(minetest.settings:get('time_speed') or 72)
+	local time_speed = tonumber(minetest.settings:get("time_speed") or 72)
 	if (time_speed < 0.1) then
 		return
 	end
 	local time_multiplier = 86400 / time_speed
 	local current_game_time = .0 + ((minetest.get_day_count() + minetest.get_timeofday()) * time_multiplier)
 
-	-- TODO: Change meta:get/set_string() to get/set_float() for 'last_gametime'.
+	-- TODO: Change meta:get/set_string() to get/set_float() for "last_gametime".
 	-- In Windows *_float() works OK but under Linux it returns rounded unusable values like 449540.000000000
 	local last_game_time = meta:get_string("last_gametime")
 	if last_game_time then
@@ -239,7 +239,7 @@ end
 
 local function furnace_get_delta_time(pos, elapsed)
 	local meta = minetest.get_meta(pos)
-	local time_speed = tonumber(minetest.settings:get('time_speed') or 72)
+	local time_speed = tonumber(minetest.settings:get("time_speed") or 72)
 	local current_game_time
 	if (time_speed < 0.1) then
 		return meta, elapsed
@@ -478,9 +478,9 @@ minetest.register_node("mcl_furnaces:furnace", {
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", inactive_formspec)
 		local inv = meta:get_inventory()
-		inv:set_size('src', 1)
-		inv:set_size('fuel', 1)
-		inv:set_size('dst', 1)
+		inv:set_size("src", 1)
+		inv:set_size("fuel", 1)
+		inv:set_size("dst", 1)
 	end,
 	on_destruct = function(pos)
 		mcl_particles.delete_node_particlespawners(pos)

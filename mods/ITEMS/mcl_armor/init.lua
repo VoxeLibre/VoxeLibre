@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_armor")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 mcl_armor = {
 	longdesc = S("This is a piece of equippable armor which reduces the amount of damage you receive."),

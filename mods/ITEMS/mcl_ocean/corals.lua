@@ -1,5 +1,5 @@
-local S = minetest.get_translator("mcl_ocean")
-local mod_doc = minetest.get_modpath("doc") ~= nil
+local S = minetest.get_translator(minetest.get_current_modname())
+local mod_doc = minetest.get_modpath("doc")
 
 local corals = {
 	{ "tube", S("Tube Coral Block"), S("Dead Tube Coral Block"), S("Tube Coral"), S("Dead Tube Coral"), S("Tube Coral Fan"), S("Dead Tube Coral Fan") },

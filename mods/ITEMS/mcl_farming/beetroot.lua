@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_farming")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 minetest.register_craftitem("mcl_farming:beetroot_seeds", {
 	description = S("Beetroot Seeds"),
