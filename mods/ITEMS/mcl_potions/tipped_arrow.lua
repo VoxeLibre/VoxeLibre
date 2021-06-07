@@ -21,12 +21,7 @@ local function arrow_image(colorstring, opacity)
 	if not opacity then
 		opacity = 127
 	end
-	return {"mcl_bows_arrow.png^[transformFX^(mcl_bows_arrow_overlay.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity)..")",
-		"mcl_bows_arrow.png^[transformFX^(mcl_bows_arrow_overlay.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity)..")",
-		"mcl_bows_arrow_back.png^[colorize:"..colorstring..":"..tostring(opacity),
-		"mcl_bows_arrow_front.png^[colorize:"..colorstring..":"..tostring(opacity),
-		"mcl_bows_arrow.png^(mcl_bows_arrow_overlay.png^[colorize:"..colorstring..":"..tostring(opacity)..")",
-		"mcl_bows_arrow.png^[transformFX^(mcl_bows_arrow_overlay.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity)..")"}
+	return {"mcl_bows_arrow.png^(mcl_bows_arrow_overlay.png^[colorize:"..colorstring..":"..tostring(opacity)..")"}
 end
 
 local how_to_shoot = minetest.registered_items["mcl_bows:arrow"]._doc_items_usagehelp
@@ -105,7 +100,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 		physical = true,
 		visual = "mesh",
 		mesh = "mcl_bows_arrow.obj",
-		visual_size = {x=1, y=1},
+		visual_size = {x=-1, y=1},
 		textures = arrow_image(color, 100),
 		collisionbox = {-0.19, -0.125, -0.19, 0.19, 0.125, 0.19},
 		collide_with_objects = false,
