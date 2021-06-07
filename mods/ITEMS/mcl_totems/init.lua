@@ -7,37 +7,34 @@ end)
 -- Totem particle registration
 -- TODO: real MC colors, these are randomly selected colors:
 local colors = {"#7FFF00", "#698B22", "#BCEE68", "#EEEE00", "#C5F007"}
-for c, color in pairs(colors) do
-	local colorizing = ".png^[colorize:"..color
-	for n = 1, 4 do
-		minetest.register_entity("mcl_totems:totem_particle"..n.."_color"..c, {
-			physical = true,
-			collide_with_objects = false,
-			collisionbox = {-0.02,-0.02,-0.02, 0.02,0.02,0.02},
-			pointable = false,
-			visual = "sprite",
-			visual_size = {x=0.2, y=0.2},
-			textures = {"mcl_particles_totem"..n..colorizing},
-			spritediv = {x=1, y=1},
-			initial_sprite_basepos = {x=0, y=0},
-			static_save = false,
-			glow = 5,
-			on_activate = function(self, staticdata)
-				self.object:set_velocity({x = math.random(-4, 4)*math.random(), y = math.random(-1, 4)*math.random(), z = math.random(-4, 4)*math.random()})
-				minetest.after(0.3, function()
-					self.object:set_acceleration({x=0, y=-4, z=0})
-					self.object:set_velocity({x=0, y=0, z=0})
-				end)
-			end,
-			on_step = function(self, dtime)
-				local r = math.random(1,80)
-				if r == 1 then
-					self.object:remove()
-				end
-			end
+minetest.register_entity("mcl_totems:totem_particle", {
+	physical = true,
+	collide_with_objects = false,
+	collisionbox = {-0.02,-0.02,-0.02, 0.02,0.02,0.02},
+	pointable = false,
+	visual = "sprite",
+	visual_size = {x=0.2, y=0.2},
+	spritediv = {x=1, y=1},
+	initial_sprite_basepos = {x=0, y=0},
+	static_save = false,
+	glow = 5,
+	on_activate = function(self, staticdata)
+		self.object:set_properties({
+			textures = {"mcl_particles_totem"..math.random(1, 4)..".png^[colorize:"..colors[math.random(#colors)]}
 		})
+		self.object:set_velocity({x = math.random(-4, 4)*math.random(), y = math.random(-1, 4)*math.random(), z = math.random(-4, 4)*math.random()})
+		minetest.after(0.3, function()
+			self.object:set_acceleration({x=0, y=-4, z=0})
+			self.object:set_velocity({x=0, y=0, z=0})
+		end)
+	end,
+	on_step = function(self, dtime)
+		local r = math.random(1,50)
+		if r == 1 then
+			self.object:remove()
+		end
 	end
-end
+})
 
 -- Save the player from death when holding totem of undying in hand
 mcl_damage.register_modifier(function(obj, damage, reason)
@@ -68,11 +65,10 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 				minetest.sound_play({name = "mcl_totems_totem", gain=1}, {pos=ppos, max_hear_distance=16}, true)
 
 				--Particles
-				for i = 1, 200 do
-					local particle = "mcl_totems:totem_particle"..math.random(1, 4).."_color"..math.random(1, 5)
+				for i = 1, 150 do
 					minetest.after(math.random(1, 2)*math.random(), function()
 						local new_pos = obj:get_pos()
-						minetest.add_entity({x=new_pos.x, y=new_pos.y + 1, z=new_pos.z}, particle)
+						minetest.add_entity({x = new_pos.x, y = new_pos.y + 1, z = new_pos.z}, "mcl_totems:totem_particle")
 					end)
 				end
 
