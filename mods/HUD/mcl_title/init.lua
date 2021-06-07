@@ -1,7 +1,11 @@
---Based on https://www.digminecraft.com/game_commands/title_command.php
+--Based on:
+--https://www.digminecraft.com/game_commands/title_command.php
+--https://youtu.be/oVrtQRO2hpY
 
 --TODO: use SSCSM to reduce lag and network trafic (just send modchannel messages)
 --TODO: fadeIn and fadeOut animation (needs engine change: SSCSM or native support)
+--TODO: allow obfuscating text (needs engine change: SSCSM or native support)
+--TODO: allow colorizing and styling of part of the text (NEEDS ENGINE CHANGE!!!)
 --TODO: exactly mc like layout
 
 local huds_idx = {}
@@ -13,9 +17,9 @@ huds_idx.actionbar = {}
 mcl_title = {}
 mcl_title.defaults = {fadein = 10, stay = 70, fadeout = 20}
 mcl_title.layout = {}
-mcl_title.layout.title = {position = {x = 0.5, y = 0.5}, alignment = {x = 0, y = -1.3}, size = 5}
-mcl_title.layout.subtitle = {position = {x = 0.5, y = 0.5}, alignment = {x = 0, y = 1.9}, size = 2}
-mcl_title.layout.actionbar = {position = {x = 0.5, y = 1}, alignment = {x = 0, y = -15}, size = 1}
+mcl_title.layout.title = {position = {x = 0.5, y = 0.5}, alignment = {x = 0, y = -1.3}, size = 7}
+mcl_title.layout.subtitle = {position = {x = 0.5, y = 0.5}, alignment = {x = 0, y = 1.7}, size = 4}
+mcl_title.layout.actionbar = {position = {x = 0.5, y = 1}, alignment = {x = 0, y = -11}, size = 2}
 
 local get_color = mcl_util.get_color
 
