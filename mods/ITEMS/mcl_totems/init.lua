@@ -22,8 +22,11 @@ minetest.register_entity("mcl_totems:totem_particle", {
 		self.object:set_properties({
 			textures = {"mcl_particles_totem"..math.random(1, 4)..".png^[colorize:"..colors[math.random(#colors)]}
 		})
-		self.object:set_velocity({x = math.random(-4, 4)*math.random(), y = math.random(-1, 4)*math.random(), z = math.random(-4, 4)*math.random()})
-		minetest.after(0.3, function()
+		local t = math.random(1, 2)*math.random()
+		minetest.after(t, function()
+			self.object:set_velocity({x = math.random(-4, 4)*math.random(), y = math.random(-1, 4)*math.random(), z = math.random(-4, 4)*math.random()})
+		end)
+		minetest.after(0.3 + t, function()
 			self.object:set_acceleration({x=0, y=-4, z=0})
 			self.object:set_velocity({x=0, y=0, z=0})
 		end)
@@ -65,12 +68,14 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 				minetest.sound_play({name = "mcl_totems_totem", gain=1}, {pos=ppos, max_hear_distance=16}, true)
 
 				--Particles
-				for i = 1, 150 do
-					minetest.after(math.random(1, 2)*math.random(), function()
-						local new_pos = obj:get_pos()
+				
+				minetest.after(0.1, function()
+					local new_pos = obj:get_pos()
+					if not new_pos then return end
+					for i = 1, 150 do
 						minetest.add_entity({x = new_pos.x, y = new_pos.y + 1, z = new_pos.z}, "mcl_totems:totem_particle")
-					end)
-				end
+					end
+				end)
 
 				-- Big totem overlay 
 				if not hud_totem[obj] then
