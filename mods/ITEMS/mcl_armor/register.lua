@@ -94,6 +94,7 @@ mcl_armor.register_set({
 		feet = 3,
 	},
 	toughness = 3,
+	repair_material = "mcl_nether:netherite_ingot",
 })
 
 mcl_armor.register_protection_enchantment({
