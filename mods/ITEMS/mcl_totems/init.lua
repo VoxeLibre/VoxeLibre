@@ -72,8 +72,9 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 				minetest.after(0.1, function()
 					local new_pos = obj:get_pos()
 					if not new_pos then return end
+					local particlepos = {x = new_pos.x, y = new_pos.y + 1, z = new_pos.z}
 					for i = 1, 150 do
-						minetest.add_entity({x = new_pos.x, y = new_pos.y + 1, z = new_pos.z}, "mcl_totems:totem_particle")
+						minetest.add_entity(particlepos, "mcl_totems:totem_particle")
 					end
 				end)
 
