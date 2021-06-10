@@ -162,7 +162,7 @@ if minetest.get_modpath("mcl_armor") then
 		end
 	end)
 	minetest.register_on_dieplayer(function(player)
-		if minetest.settings:get("mcl_keepInventory") ~= "true" then
+		if not minetest.settings:get_bool("mcl_keepInventory") then
 			remove_pumpkin_hud(player)
 		end
 	end)
