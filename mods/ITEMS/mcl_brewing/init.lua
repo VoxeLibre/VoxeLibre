@@ -10,9 +10,9 @@ local function active_brewing_formspec(fuel_percent, brew_percent)
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.75;9,1;]"..
 	mcl_formspec.get_itemslot_bg(0,7.75,9,1)..
-	"list[current_name;fuel;0.5,1.75;1,1;]"..
+	"list[context;fuel;0.5,1.75;1,1;]"..
 	mcl_formspec.get_itemslot_bg(0.5,1.75,1,1).."image[0.5,1.75;1,1;mcl_brewing_fuel_bg.png]"..
-	"list[current_name;input;2.75,0.5;1,1;]"..
+	"list[context;input;2.75,0.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
 	"list[context;stand;4.5,2.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(4.5,2.5,1,1).."image[4.5,2.5;1,1;mcl_brewing_bottle_bg.png]"..
@@ -28,8 +28,8 @@ local function active_brewing_formspec(fuel_percent, brew_percent)
 	(brew_percent)..":mcl_brewing_bubbles_active.png]"..
 
 	"listring[current_player;main]"..
-	"listring[current_name;fuel]"..
-	"listring[current_name;input]"..
+	"listring[context;fuel]"..
+	"listring[context;input]"..
 	"listring[context;stand]"
 end
 
@@ -41,9 +41,9 @@ local brewing_formspec = "size[9,8.75]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.75;9,1;]"..
 	mcl_formspec.get_itemslot_bg(0,7.75,9,1)..
-	"list[current_name;fuel;0.5,1.75;1,1;]"..
+	"list[context;fuel;0.5,1.75;1,1;]"..
 	mcl_formspec.get_itemslot_bg(0.5,1.75,1,1).."image[0.5,1.75;1,1;mcl_brewing_fuel_bg.png]"..
-	"list[current_name;input;2.75,0.5;1,1;]"..
+	"list[context;input;2.75,0.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
 	"list[context;stand;4.5,2.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(4.5,2.5,1,1).."image[4.5,2.5;1,1;mcl_brewing_bottle_bg.png]"..
@@ -56,8 +56,8 @@ local brewing_formspec = "size[9,8.75]"..
 	"image[2.76,1.4;1,2.15;mcl_brewing_bubbles.png]"..
 
 	"listring[current_player;main]"..
-	"listring[current_name;fuel]"..
-	"listring[current_name;input]"..
+	"listring[context;fuel]"..
+	"listring[context;input]"..
 	"listring[context;stand]"
 
 
