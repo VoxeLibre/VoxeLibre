@@ -158,11 +158,11 @@ mobs_mc.tools.check_iron_golem_summon = function(pos)
 		if ok then
 			-- Remove the nodes
 			minetest.remove_node(pos)
-			core.check_for_falling(pos)
+			minetest.check_for_falling(pos)
 			for i=1, 4 do
 				local cpos = vector.add(pos, checks[c][i])
 				minetest.remove_node(cpos)
-				core.check_for_falling(cpos)
+				minetest.check_for_falling(cpos)
 			end
 			-- Summon iron golem
 			local place

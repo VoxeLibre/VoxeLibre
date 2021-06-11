@@ -104,7 +104,7 @@ local register_slice = function(level, nodebox, desc)
 			-- Check if we were allowed to eat
 			if newcake:get_name() ~= this or minetest.is_creative_enabled(clicker:get_player_name()) then
 				minetest.remove_node(pos)
-				core.check_for_falling(pos)
+				minetest.check_for_falling(pos)
 			end
 		end
 	end
