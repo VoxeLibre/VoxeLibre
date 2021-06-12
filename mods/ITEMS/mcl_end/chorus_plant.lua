@@ -1,7 +1,10 @@
 -- Chorus plants
 -- This includes chorus flowers, chorus plant stem nodes and chorus fruit
 
-local S = minetest.get_translator("mcl_end")
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local math = math
+local table = table
 
 --- Plant parts ---
 
@@ -29,10 +32,10 @@ local no_detach = {}
 
 -- This detaches all chorus plants that are/were attached
 -- at start_pos.
-mcl_end.detach_chorus_plant = function(start_pos, digger)
+function mcl_end.detach_chorus_plant(start_pos, digger)
 	-- This node should not call a detach function, do NOTHING
 	local hash = minetest.hash_node_position(start_pos)
-	if no_detach[hash] ~= nil then
+	if no_detach[hash] then
 		return
 	end
 
@@ -106,11 +109,11 @@ mcl_end.detach_chorus_plant = function(start_pos, digger)
 	no_detach = {}
 end
 
-mcl_end.check_detach_chorus_plant = function(pos, oldnode, oldmetadata, digger)
+function mcl_end.check_detach_chorus_plant(pos, oldnode, oldmetadata, digger)
 	mcl_end.detach_chorus_plant(pos, digger)
 end
 
-mcl_end.check_blast_chorus_plant = function(pos)
+function mcl_end.check_blast_chorus_plant(pos)
 	minetest.remove_node(pos)
 	mcl_end.detach_chorus_plant(pos)
 end
@@ -139,7 +142,7 @@ minetest.register_node("mcl_end:chorus_flower", {
 	node_placement_prediction = "",
 	on_place = function(itemstack, placer, pointed_thing)
 		local node_under = minetest.get_node(pointed_thing.under)
-		local node_above = minetest.get_node(pointed_thing.above)
+		--local node_above = minetest.get_node(pointed_thing.above)
 		if placer and not placer:get_player_control().sneak then
 			-- Use pointed node's on_rightclick function first, if present
 			if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
@@ -309,7 +312,7 @@ minetest.register_node("mcl_end:chorus_plant", {
 })
 
 -- Grow a complete chorus plant at pos
-mcl_end.grow_chorus_plant = function(pos, node, pr)
+function mcl_end.grow_chorus_plant(pos, node, pr)
 	local flowers = { pos }
 	-- Plant initial flower (if it isn't there already)
 	if not node then
@@ -340,7 +343,7 @@ end
 
 -- Grow a single step of a chorus plant at pos.
 -- Pos must be a chorus flower.
-mcl_end.grow_chorus_plant_step = function(pos, node, pr)
+function mcl_end.grow_chorus_plant_step(pos, node, pr)
 	local new_flower_buds = {}
 	local above = { x = pos.x, y = pos.y + 1, z = pos.z }
 	local node_above = minetest.get_node(above)
@@ -408,7 +411,6 @@ mcl_end.grow_chorus_plant_step = function(pos, node, pr)
 				elseif branching == true then
 					branches = pr:next(0, 3)
 				end
-				local branch_grown = false
 				for b=1, branches do
 					local next_branch = pr:next(1, #around)
 					local branch = vector.add(pos, around[next_branch])
@@ -451,6 +453,8 @@ mcl_end.grow_chorus_plant_step = function(pos, node, pr)
 end
 
 --- ABM ---
+local seed = minetest.get_mapgen_params().seed
+local pr = PseudoRandom(seed)
 minetest.register_abm({
 	label = "Chorus plant growth",
 	nodenames = { "mcl_end:chorus_flower" },
@@ -470,7 +474,7 @@ minetest.register_abm({
 -- * Maximum attempts: 16
 --
 -- Returns true on success.
-local random_teleport = function(player)
+local function random_teleport(player)
 	local pos = player:get_pos()
 	-- 16 attempts to find a suitable position
 	for a=1, 16 do

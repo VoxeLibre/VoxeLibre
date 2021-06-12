@@ -1,11 +1,15 @@
+local math = math
+local tostring = tostring
+
 mcl_farming.plant_lists = {}
+
 local plant_lists = {}
 
 local plant_nodename_to_id_list = {}
 
 local function get_intervals_counter(pos, interval, chance)
 	local meta = minetest.get_meta(pos)
-	local time_speed = tonumber(minetest.settings:get('time_speed') or 72)
+	local time_speed = tonumber(minetest.settings:get("time_speed") or 72)
 	local current_game_time
 	if time_speed == nil then
 		return 1
@@ -161,7 +165,7 @@ function mcl_farming:place_seed(itemstack, placer, pointed_thing, plantname)
 	if string.find(farmland.name, "mcl_farming:soil") and string.find(place_s.name, "air")  then
 		minetest.sound_play(minetest.registered_nodes[plantname].sounds.place, {pos = pos}, true)
 		minetest.add_node(pos, {name=plantname, param2 = minetest.registered_nodes[plantname].place_param2})
-		local intervals_counter = get_intervals_counter(pos, 1, 1)
+		--local intervals_counter = get_intervals_counter(pos, 1, 1)
 	else
 		return
 	end
@@ -190,7 +194,7 @@ end
 
 function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, stem_itemstring, stem_def, stem_drop, gourd_itemstring, gourd_def, grow_interval, grow_chance, connected_stem_texture, gourd_on_construct_extra)
 
-	local connected_stem_names = { 
+	local connected_stem_names = {
 		connected_stem_basename .. "_r",
 		connected_stem_basename .. "_l",
 		connected_stem_basename .. "_t",
@@ -206,7 +210,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 
 	-- Connect the stem at stempos to the first neighboring gourd block.
 	-- No-op if not a stem or no gourd block found
-	local try_connect_stem = function(stempos)
+	local function try_connect_stem(stempos)
 		local stem = minetest.get_node(stempos)
 		if stem.name ~= full_unconnected_stem then
 			return false
@@ -232,7 +236,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 
 	-- Register gourd
 	if not gourd_def.after_dig_node then
-		gourd_def.after_dig_node = function(blockpos, oldnode, oldmetadata, user)
+		function gourd_def.after_dig_node(blockpos, oldnode, oldmetadata, user)
 			-- Disconnect any connected stems, turning them back to normal stems
 			for n=1, #neighbors do
 				local offset = neighbors[n]
@@ -247,7 +251,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		end
 	end
 	if not gourd_def.on_construct then
-		gourd_def.on_construct = function(blockpos)
+		function gourd_def.on_construct(blockpos)
 			-- Connect all unconnected stems at full size
 			for n=1, #neighbors do
 				local stempos = vector.add(blockpos, neighbors[n])
@@ -295,7 +299,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 	end
 
 	if not stem_def.on_construct then
-		stem_def.on_construct = function(stempos)
+		function stem_def.on_construct(stempos)
 			-- Connect stem to gourd (if possible)
 			try_connect_stem(stempos)
 		end

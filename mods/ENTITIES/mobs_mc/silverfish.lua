@@ -2,7 +2,7 @@
 --################### SILVERFISH
 --###################
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 mobs:register_mob("mobs_mc:silverfish", {
 	description = S("Silverfish"),
@@ -46,7 +46,6 @@ mobs:register_mob("mobs_mc:silverfish", {
 	view_range = 16,
 	attack_type = "punch",
 	damage = 1,
-	reach = 1,
 })
 
 mobs:register_egg("mobs_mc:silverfish", S("Silverfish"), "mobs_mc_spawn_icon_silverfish.png", 0)
@@ -62,7 +61,7 @@ if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 		description = "Stone Monster Egg",
 		tiles = {"default_stone.png"},
 		groups = {oddly_breakable_by_hand = 2, spawns_silverfish = 1},
-		drop = '',
+		drop = "",
 		is_ground_content = true,
 		sounds = default.node_sound_stone_defaults(),
 		after_dig_node = spawn_silverfish,
@@ -73,7 +72,7 @@ if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 		tiles = {"default_cobble.png"},
 		is_ground_content = false,
 		groups = {oddly_breakable_by_hand = 2, spawns_silverfish = 1},
-		drop = '',
+		drop = "",
 		sounds = default.node_sound_stone_defaults(),
 		after_dig_node = spawn_silverfish,
 	})
@@ -83,7 +82,7 @@ if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 		tiles = {"default_mossycobble.png"},
 		is_ground_content = false,
 		groups = {oddly_breakable_by_hand = 2, spawns_silverfish = 1},
-		drop = '',
+		drop = "",
 		sounds = default.node_sound_stone_defaults(),
 		after_dig_node = spawn_silverfish,
 	})
@@ -95,7 +94,7 @@ if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 		tiles = {"default_stone_brick.png"},
 		is_ground_content = false,
 		groups = {oddly_breakable_by_hand = 2, spawns_silverfish = 1},
-		drop = '',
+		drop = "",
 		sounds = default.node_sound_stone_defaults(),
 		after_dig_node = spawn_silverfish,
 	})
@@ -105,7 +104,7 @@ if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 		tiles = {"default_stone_block.png"},
 		is_ground_content = false,
 		groups = {oddly_breakable_by_hand = 2, spawns_silverfish = 1},
-		drop = '',
+		drop = "",
 		sounds = default.node_sound_stone_defaults(),
 		after_dig_node = spawn_silverfish,
 	})

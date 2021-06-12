@@ -1,5 +1,6 @@
-local S = minetest.get_translator("mcl_ocean")
-local mod_doc = minetest.get_modpath("doc") ~= nil
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local mod_doc = minetest.get_modpath("doc")
 
 -- List of supported surfaces for seagrass
 local surfaces = {
@@ -105,7 +106,7 @@ for s=1, #surfaces do
 		doc_longdesc = S("Seagrass grows inside water on top of dirt, sand or gravel.")
 		desc = S("Seagrass")
 		doc_create = true
-		doc_img = "mcl_ocean_seagrass.png"
+		doc_img = "mcl_ocean_seagrass.png^[verticalframe:12:0"
 	else
 		doc_create = false
 	end
@@ -113,7 +114,7 @@ for s=1, #surfaces do
 		_doc_items_entry_name = desc,
 		_doc_items_longdesc = doc_longdesc,
 		_doc_items_create_entry = doc_create,
-		_doc_items_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
+		_doc_items_image = doc_img,
 		drawtype = "plantlike_rooted",
 		paramtype = "light",
 		paramtype2 = "meshoptions",

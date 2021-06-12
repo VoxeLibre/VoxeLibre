@@ -6,12 +6,16 @@ local huds = {}
 local dtimes = {}
 local dlimit = 3  -- HUD element will be hidden after this many seconds
 
+local math = math
+local string = string
+local tonumber = tonumber
+
 local hudbars_mod = minetest.get_modpath("hudbars")
 local xp_mod = minetest.get_modpath("mcl_experience")
 
 local function set_hud(player)
 	if not player:is_player() then return end
-	local player_name = player:get_player_name() 
+	local player_name = player:get_player_name()
 	-- Fixed offset in config file
 	local fixed = tonumber(minetest.settings:get("show_wielded_item_y_offset"))
 	local off
@@ -74,7 +78,7 @@ minetest.register_globalstep(function(dtime)
 		if dtimes[player_name] and dtimes[player_name] < dlimit then
 			dtimes[player_name] = dtimes[player_name] + dtime
 			if dtimes[player_name] > dlimit and huds[player_name] then
-				player:hud_change(huds[player_name], 'text', "")
+				player:hud_change(huds[player_name], "text", "")
 			end
 		end
 
@@ -84,7 +88,7 @@ minetest.register_globalstep(function(dtime)
 			wield[player_name] = wname
 			dtimes[player_name] = 0
 
-			if huds[player_name] then 
+			if huds[player_name] then
 
 				local def = minetest.registered_items[wname]
 				local meta = wstack:get_meta()
@@ -105,7 +109,7 @@ minetest.register_globalstep(function(dtime)
 				if firstnewline then
 					desc = string.sub(desc, 1, firstnewline-1)
 				end
-				player:hud_change(huds[player_name], 'text', desc)
+				player:hud_change(huds[player_name], "text", desc)
 			end
 		end
 	end

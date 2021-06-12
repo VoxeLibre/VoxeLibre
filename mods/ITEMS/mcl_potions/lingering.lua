@@ -1,19 +1,16 @@
-local S = minetest.get_translator("mcl_potions")
+local S = minetest.get_translator(minetest.get_current_modname())
 
-local lingering_image = function(colorstring, opacity)
+local function lingering_image(colorstring, opacity)
 	if not opacity then
 		opacity = 127
 	end
 	return "mcl_potions_splash_overlay.png^[colorize:"..colorstring..":"..tostring(opacity).."^mcl_potions_lingering_bottle.png"
 end
 
-
 local lingering_effect_at = {}
 
 local function add_lingering_effect(pos, color, def, is_water, instant)
-
 	lingering_effect_at[pos] = {color = color, timer = 30, def = def, is_water = is_water}
-
 end
 
 local function linger_particles(pos, d, texture, color)

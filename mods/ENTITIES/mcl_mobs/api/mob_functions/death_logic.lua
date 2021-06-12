@@ -1,5 +1,5 @@
 local minetest_add_item = minetest.add_item
-local minetest_sound_play = minetest.sound_play
+--local minetest_sound_play = minetest.sound_play
 
 local math_pi     = math.pi
 local math_random = math.random
@@ -19,7 +19,7 @@ local item_drop = function(self, cooked, looting_level)
 		return
 	end
 
-	local obj, item, num
+	local obj, item
 	local pos = self.object:get_pos()
 
 	self.drops = self.drops or {} -- nil check
@@ -56,8 +56,11 @@ local item_drop = function(self, cooked, looting_level)
 			-- cook items when true
 			if cooked then
 
-				local output = minetest_get_craft_result({
-					method = "cooking", width = 1, items = {item}})
+				local output = minetest.get_craft_result({
+					method = "cooking",
+                    width = 1,
+                    items = {item},
+                })
 
 				if output and output.item and not output.item:is_empty() then
 					item = output.item:get_name()
@@ -117,15 +120,10 @@ mobs.death_logic = function(self, dtime)
 
     --the final POOF of a mob despawning
     if self.death_animation_timer >= 1.25 then
-
         item_drop(self,false,1)
-
         mobs.death_effect(self)
-
 		mcl_experience.throw_experience(self.object:get_pos(), math_random(self.xp_min, self.xp_max))
-		
         self.object:remove()
-
         return
     end
 

@@ -1,6 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### CREEPER
@@ -72,7 +72,7 @@ mobs:register_mob("mobs_mc:creeper", {
 	-- TODO: Make creeper flash after doing this as well.
 	-- TODO: Test and debug this code.
 	on_rightclick = function(self, clicker)
-		if self._forced_explosion_countdown_timer ~= nil then
+		if self._forced_explosion_countdown_timer then
 			return
 		end
 		local item = clicker:get_wielded_item()
@@ -92,7 +92,7 @@ mobs:register_mob("mobs_mc:creeper", {
 		end
 	end,
 	do_custom = function(self, dtime)
-		if self._forced_explosion_countdown_timer ~= nil then
+		if self._forced_explosion_countdown_timer then
 			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
 			if self._forced_explosion_countdown_timer <= 0 then
 				mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)
@@ -196,7 +196,7 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 	-- TODO: Make creeper flash after doing this as well.
 	-- TODO: Test and debug this code.
 	on_rightclick = function(self, clicker)
-		if self._forced_explosion_countdown_timer ~= nil then
+		if self._forced_explosion_countdown_timer then
 			return
 		end
 		local item = clicker:get_wielded_item()
@@ -216,7 +216,7 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 		end
 	end,
 	do_custom = function(self, dtime)
-		if self._forced_explosion_countdown_timer ~= nil then
+		if self._forced_explosion_countdown_timer then
 			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
 			if self._forced_explosion_countdown_timer <= 0 then
 				mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)

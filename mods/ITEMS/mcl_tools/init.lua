@@ -1,4 +1,6 @@
-local S = minetest.get_translator("mcl_tools")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
 
 -- mods/default/tools.lua
 
@@ -198,7 +200,7 @@ minetest.register_tool("mcl_tools:pick_netherite", {
 	},
 })
 
-local make_grass_path = function(itemstack, placer, pointed_thing)
+local function make_grass_path(itemstack, placer, pointed_thing)
 	-- Use pointed node's on_rightclick function first, if present
 	local node = minetest.get_node(pointed_thing.under)
 	if placer and not placer:get_player_control().sneak then
@@ -236,7 +238,7 @@ end
 
 local carve_pumpkin
 if minetest.get_modpath("mcl_farming") then
-	carve_pumpkin = function(itemstack, placer, pointed_thing)
+	function carve_pumpkin(itemstack, placer, pointed_thing)
 		-- Use pointed node's on_rightclick function first, if present
 		local node = minetest.get_node(pointed_thing.under)
 		if placer and not placer:get_player_control().sneak then
@@ -399,7 +401,7 @@ minetest.register_tool("mcl_tools:shovel_netherite", {
 })
 
 -- Axes
-local make_stripped_trunk = function(itemstack, placer, pointed_thing)
+local function make_stripped_trunk(itemstack, placer, pointed_thing)
     if pointed_thing.type ~= "node" then return end
 
     local node = minetest.get_node(pointed_thing.under)
@@ -702,5 +704,5 @@ minetest.register_tool("mcl_tools:shears", {
 })
 
 
-dofile(minetest.get_modpath("mcl_tools").."/crafting.lua")
-dofile(minetest.get_modpath("mcl_tools").."/aliases.lua")
+dofile(modpath.."/crafting.lua")
+dofile(modpath.."/aliases.lua")

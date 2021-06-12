@@ -3,7 +3,7 @@
 -- Model and mobs_blaze.png see https://github.com/22i/minecraft-voxel-blender-models -hi 22i ~jordan4ibanez
 -- blaze.lua partial copy of mobs_mc/ghast.lua
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### BLAZE
@@ -20,7 +20,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	xp_max = 10,
 	tilt_fly = false,
 	hostile = true,
-	rotate = 270,
+	--rotate = 270,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.79, 0.3},
 	rotate = -180,
 	visual = "mesh",

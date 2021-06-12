@@ -5,7 +5,7 @@
 
 local CAKE_HUNGER_POINTS = 2
 
-local S = minetest.get_translator("mcl_cake")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local cake_texture = {"cake_top.png","cake_bottom.png","cake_inner.png","cake_side.png","cake_side.png","cake_side.png"}
 local slice_1 = { -7/16, -8/16, -7/16, -5/16, 0/16, 7/16}
@@ -20,9 +20,9 @@ local full_cake = { -7/16, -8/16, -7/16, 7/16, 0/16, 7/16}
 minetest.register_craft({
 	output = "mcl_cake:cake",
 	recipe = {
-		{'mcl_mobitems:milk_bucket', 'mcl_mobitems:milk_bucket', 'mcl_mobitems:milk_bucket'},
-		{'mcl_core:sugar', 'mcl_throwing:egg', 'mcl_core:sugar'},
-		{'mcl_farming:wheat_item', 'mcl_farming:wheat_item', 'mcl_farming:wheat_item'},
+		{"mcl_mobitems:milk_bucket", "mcl_mobitems:milk_bucket", "mcl_mobitems:milk_bucket"},
+		{"mcl_core:sugar", "mcl_throwing:egg", "mcl_core:sugar"},
+		{"mcl_farming:wheat_item", "mcl_farming:wheat_item", "mcl_farming:wheat_item"},
 	},
 	replacements = {
 		{"mcl_mobitems:milk_bucket", "mcl_buckets:bucket_empty"},
@@ -53,7 +53,7 @@ minetest.register_node("mcl_cake:cake", {
 	},
 	stack_max = 1,
 	groups = {handy=1, cake=7, food=2,no_eat_delay=1, attached_node=1, dig_by_piston=1, comparator_signal=14},
-	drop = '',
+	drop = "",
 	on_rightclick = function(pos, node, clicker, itemstack)
 		-- Cake is subject to protection
 		local name = clicker:get_player_name()
@@ -104,7 +104,7 @@ local register_slice = function(level, nodebox, desc)
 			-- Check if we were allowed to eat
 			if newcake:get_name() ~= this or minetest.is_creative_enabled(clicker:get_player_name()) then
 				minetest.remove_node(pos)
-				core.check_for_falling(pos)
+				minetest.check_for_falling(pos)
 			end
 		end
 	end
@@ -126,7 +126,7 @@ local register_slice = function(level, nodebox, desc)
 			fixed = nodebox,
 			},
 		groups = {handy=1, cake=level, food=2,no_eat_delay=1,attached_node=1,not_in_creative_inventory=1,dig_by_piston=1,comparator_signal=level*2},
-		drop = '',
+		drop = "",
 		on_rightclick = on_rightclick,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 

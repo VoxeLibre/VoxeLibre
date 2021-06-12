@@ -1,12 +1,16 @@
-local S = minetest.get_translator("mcl_portals")
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local table = table
+local vector = vector
+local math = math
 
 -- Parameters
-local SPAWN_MIN = mcl_vars.mg_end_min+70
-local SPAWN_MAX = mcl_vars.mg_end_min+98
+--local SPAWN_MIN = mcl_vars.mg_end_min+70
+--local SPAWN_MAX = mcl_vars.mg_end_min+98
 
-local mg_name = minetest.get_mapgen_setting("mg_name")
+--local mg_name = minetest.get_mapgen_setting("mg_name")
 
-local destroy_portal = function(pos)
+local function destroy_portal(pos)
 	local neighbors = {
 		{ x=1, y=0, z=0 },
 		{ x=-1, y=0, z=0 },
@@ -196,7 +200,6 @@ function mcl_portals.end_teleport(obj, pos)
 			end
 		end
 
-		local platform
 		build_end_portal_destination(platform_pos)
 		check_and_build_end_portal_destination(platform_pos)
 

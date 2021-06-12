@@ -1,6 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local cow_def = {
 	description = S("Cow"),
@@ -89,7 +89,7 @@ local cow_def = {
 	--head code
 	has_head = true,
 	head_bone = "head",
-	
+
 	swap_y_with_x = false,
 	reverse_head_yaw = false,
 
@@ -168,7 +168,7 @@ mooshroom_def.on_rightclick = function(self, clicker)
 			pos.y = pos.y + 0.5
 			minetest.add_item(pos, {name = mobs_mc.items.mushroom_stew})
 		end
-	end	
+	end
 end
 mobs:register_mob("mobs_mc:mooshroom", mooshroom_def)
 

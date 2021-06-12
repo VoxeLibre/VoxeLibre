@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_crafting_table")
+local S = minetest.get_translator(minetest.get_current_modname())
 local formspec_escape = minetest.formspec_escape
 local show_formspec = minetest.show_formspec
 local C = minetest.colorize

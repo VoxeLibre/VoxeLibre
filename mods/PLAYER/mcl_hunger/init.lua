@@ -1,4 +1,7 @@
-local S = minetest.get_translator("mcl_hunger")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+
+local S = minetest.get_translator(modname)
 
 mcl_hunger = {}
 
@@ -36,9 +39,9 @@ mcl_hunger.debug = false
 -- Cooldown timers for each player, to force a short delay between consuming 2 food items
 mcl_hunger.last_eat = {}
 
-dofile(minetest.get_modpath("mcl_hunger").."/api.lua")
-dofile(minetest.get_modpath("mcl_hunger").."/hunger.lua")
-dofile(minetest.get_modpath("mcl_hunger").."/register_foods.lua")
+dofile(modpath.."/api.lua")
+dofile(modpath.."/hunger.lua")
+dofile(modpath.."/register_foods.lua")
 
 --[[ IF HUNGER IS ENABLED ]]
 if mcl_hunger.active == true then

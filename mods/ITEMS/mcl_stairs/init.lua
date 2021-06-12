@@ -7,8 +7,10 @@ mcl_stairs = {}
 
 -- Load other files
 
-dofile(minetest.get_modpath("mcl_stairs").."/api.lua")
-dofile(minetest.get_modpath("mcl_stairs").."/cornerstair.lua")
-dofile(minetest.get_modpath("mcl_stairs").."/register.lua")
-dofile(minetest.get_modpath("mcl_stairs").."/crafting.lua")
-dofile(minetest.get_modpath("mcl_stairs").."/alias.lua")
+local modpath = minetest.get_modpath(minetest.get_current_modname())
+
+dofile(modpath.."/api.lua")
+dofile(modpath.."/cornerstair.lua")
+dofile(modpath.."/register.lua")
+dofile(modpath.."/crafting.lua")
+dofile(modpath.."/alias.lua")

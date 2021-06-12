@@ -1,6 +1,6 @@
-local S = minetest.get_translator("findbiome")
+local S = minetest.get_translator(minetest.get_current_modname())
 
-local mod_biomeinfo = minetest.get_modpath("biomeinfo") ~= nil
+local mod_biomeinfo = minetest.get_modpath("biomeinfo")
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local water_level = tonumber(minetest.get_mapgen_setting("water_level"))
 

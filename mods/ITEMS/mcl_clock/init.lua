@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_clock")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --[[
   mcl_clock, renew of the renew of the mcl_clock mod
@@ -41,7 +41,7 @@ function mcl_clock.get_clock_frame()
 	return tostring(t)
 end
 
-local doc_mod = minetest.get_modpath("doc") ~= nil
+local doc_mod = minetest.get_modpath("doc")
 
 -- Register items
 function mcl_clock.register_item(name, image, creative, frame)
@@ -96,8 +96,6 @@ minetest.register_globalstep(function(dtime)
 
 	for p, player in pairs(minetest.get_connected_players()) do
 		for s, stack in pairs(player:get_inventory():get_list("main")) do
-			local dim = mcl_worlds.pos_to_dimension(player:get_pos())
-
 			local frame
 			-- Clocks do not work in certain zones
 			if not mcl_worlds.clock_works(player:get_pos()) then
@@ -127,9 +125,9 @@ end)
 minetest.register_craft({
 	output = mcl_clock.stereotype,
 	recipe = {
-		{'', 'mcl_core:gold_ingot', ''},
-		{'mcl_core:gold_ingot', 'mesecons:redstone', 'mcl_core:gold_ingot'},
-		{'', 'mcl_core:gold_ingot', ''}
+		{"", "mcl_core:gold_ingot", ""},
+		{"mcl_core:gold_ingot", "mesecons:redstone", "mcl_core:gold_ingot"},
+		{"", "mcl_core:gold_ingot", ""}
 	}
 })
 

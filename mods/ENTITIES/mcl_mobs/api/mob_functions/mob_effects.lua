@@ -1,9 +1,8 @@
 local minetest_add_particlespawner = minetest.add_particlespawner
 
 mobs.death_effect = function(self)
-
     local pos = self.object:get_pos()
-    local yaw = self.object:get_yaw()
+    --local yaw = self.object:get_yaw()
     local collisionbox = self.object:get_properties().collisionbox
 
     local min, max
@@ -33,7 +32,7 @@ end
 mobs.critical_effect = function(self)
 
     local pos = self.object:get_pos()
-    local yaw = self.object:get_yaw()
+    --local yaw = self.object:get_yaw()
     local collisionbox = self.object:get_properties().collisionbox
 
     local min, max
@@ -62,9 +61,8 @@ end
 
 --when feeding a mob
 mobs.feed_effect = function(self)
-
     local pos = self.object:get_pos()
-    local yaw = self.object:get_yaw()
+    --local yaw = self.object:get_yaw()
     local collisionbox = self.object:get_properties().collisionbox
 
     local min, max
@@ -94,7 +92,7 @@ end
 --hearts when tamed
 mobs.tamed_effect = function(self)
     local pos = self.object:get_pos()
-    local yaw = self.object:get_yaw()
+    --local yaw = self.object:get_yaw()
     local collisionbox = self.object:get_properties().collisionbox
 
     local min, max
@@ -124,7 +122,7 @@ end
 --hearts when breeding
 mobs.breeding_effect = function(self)
     local pos = self.object:get_pos()
-    local yaw = self.object:get_yaw()
+    --local yaw = self.object:get_yaw()
     local collisionbox = self.object:get_properties().collisionbox
 
     local min, max

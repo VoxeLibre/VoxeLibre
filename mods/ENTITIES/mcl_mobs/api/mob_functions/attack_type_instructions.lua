@@ -1,11 +1,11 @@
 local vector_direction = vector.direction
-local minetest_dir_to_yaw = minetest.dir_to_yaw
+--local minetest_dir_to_yaw = minetest.dir_to_yaw
 local vector_distance = vector.distance
 local vector_multiply = vector.multiply
 local math_random  = math.random
 
 --[[
- _   _                     _   _ 
+ _   _                     _   _
 | | | |                   | | | |
 | | | |     __ _ _ __   __| | | |
 | | | |    / _` | '_ \ / _` | | |
@@ -16,14 +16,14 @@ local math_random  = math.random
 
 
 --[[
- _____           _           _      
-|  ___|         | |         | |     
-| |____  ___ __ | | ___   __| | ___ 
+ _____           _           _
+|  ___|         | |         | |
+| |____  ___ __ | | ___   __| | ___
 |  __\ \/ / '_ \| |/ _ \ / _` |/ _ \
 | |___>  <| |_) | | (_) | (_| |  __/
 \____/_/\_\ .__/|_|\___/ \__,_|\___|
-          | |                       
-          |_|                       
+          | |
+          |_|
 ]]--
 
 mobs.explode_attack_walk = function(self,dtime)
@@ -41,7 +41,7 @@ mobs.explode_attack_walk = function(self,dtime)
     --make mob walk up to player within 2 nodes distance then start exploding
     if distance_from_attacking >= self.reach and
     --don't allow explosion to cancel unless out of the reach boundary
-    not (self.explosion_animation ~= nil and self.explosion_animation > 0 and distance_from_attacking <= self.defuse_reach) then
+    not (self.explosion_animation and self.explosion_animation > 0 and distance_from_attacking <= self.defuse_reach) then
 
         mobs.set_velocity(self, self.run_velocity)
         mobs.set_mob_animation(self,"run")
@@ -74,7 +74,6 @@ mobs.explode_attack_walk = function(self,dtime)
 	if node_in_front_of == 1 then
 		mobs.jump(self)
     end
-    
 
     --do biggening explosion thing
     if self.explosion_animation and self.explosion_animation > self.explosion_timer then
@@ -86,9 +85,8 @@ end
 
 --this is a small helper function to make working with explosion animations easier
 mobs.reverse_explosion_animation = function(self,dtime)
-
     --if explosion animation was greater than 0 then reverse it
-    if self.explosion_animation ~= nil and self.explosion_animation > 0 then
+    if self.explosion_animation and self.explosion_animation > 0 then
         self.explosion_animation = self.explosion_animation - dtime
         if self.explosion_animation < 0 then
             self.explosion_animation = 0
@@ -102,10 +100,10 @@ end
 
 
 --[[
-______                 _     
-| ___ \               | |    
-| |_/ /   _ _ __   ___| |__  
-|  __/ | | | '_ \ / __| '_ \ 
+______                 _
+| ___ \               | |
+| |_/ /   _ _ __   ___| |__
+|  __/ | | | '_ \ / __| '_ \
 | |  | |_| | | | | (__| | | |
 \_|   \__,_|_| |_|\___|_| |_|
 ]]--
@@ -113,7 +111,6 @@ ______                 _
 
 
 mobs.punch_attack_walk = function(self,dtime)
-    
     --this needs an exception
     if self.attacking == nil or not self.attacking:is_player() then
         self.attacking = nil
@@ -187,14 +184,14 @@ end
 
 
 --[[
-______          _           _   _ _      
-| ___ \        (_)         | | (_) |     
-| |_/ / __ ___  _  ___  ___| |_ _| | ___ 
+______          _           _   _ _
+| ___ \        (_)         | | (_) |
+| |_/ / __ ___  _  ___  ___| |_ _| | ___
 |  __/ '__/ _ \| |/ _ \/ __| __| | |/ _ \
 | |  | | | (_) | |  __/ (__| |_| | |  __/
 \_|  |_|  \___/| |\___|\___|\__|_|_|\___|
-              _/ |                       
-             |__/                        
+              _/ |
+             |__/
 ]]--
 
 
@@ -255,40 +252,39 @@ end
 
 
 --[[
- _  ______ _         _ 
+ _  ______ _         _
 | | |  ___| |       | |
 | | | |_  | |_   _  | |
 | | |  _| | | | | | | |
 |_| | |   | | |_| | |_|
 (_) \_|   |_|\__, | (_)
-              __/ |    
-             |___/     
+              __/ |
+             |___/
 ]]--
 
 
 
 
 --[[
-______          _           _   _ _      
-| ___ \        (_)         | | (_) |     
-| |_/ / __ ___  _  ___  ___| |_ _| | ___ 
+______          _           _   _ _
+| ___ \        (_)         | | (_) |
+| |_/ / __ ___  _  ___  ___| |_ _| | ___
 |  __/ '__/ _ \| |/ _ \/ __| __| | |/ _ \
 | |  | | | (_) | |  __/ (__| |_| | |  __/
 \_|  |_|  \___/| |\___|\___|\__|_|_|\___|
-              _/ |                       
-             |__/                        
+              _/ |
+             |__/
 ]]--
 
 local random_pitch_multiplier = {-1,1}
 
 mobs.projectile_attack_fly = function(self, dtime)
-
     --this needs an exception
     if self.attacking == nil or not self.attacking:is_player() then
         self.attacking = nil
         return
     end
-    
+
     --this is specifically for random ghast movement
     if self.fly_random_while_attack then
 
@@ -315,7 +311,7 @@ mobs.projectile_attack_fly = function(self, dtime)
 
         local distance_from_attacking = vector_distance(self.object:get_pos(), self.attacking:get_pos())
 
-        if distance_from_attacking >= self.reach then    
+        if distance_from_attacking >= self.reach then
             mobs.set_pitch_while_attacking(self)
             mobs.set_fly_velocity(self, self.run_velocity)
             mobs.set_mob_animation(self,"run")

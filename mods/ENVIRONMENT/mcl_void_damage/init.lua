@@ -1,5 +1,5 @@
-local S = minetest.get_translator("mcl_void_damage")
-local enable_damage = minetest.settings:get_bool("enable_damage")
+local S = minetest.get_translator(minetest.get_current_modname())
+--local enable_damage = minetest.settings:get_bool("enable_damage")
 
 local pos_to_dim = mcl_worlds.pos_to_dimension
 local dim_change = mcl_worlds.dimension_change
@@ -39,9 +39,9 @@ minetest.register_on_mods_loaded(function()
 			end
 			self._void_timer = 0
 
-			local void, void_deadly = is_in_void(pos)
+			local _, void_deadly = is_in_void(pos)
 			if void_deadly then
-				local ent = obj:get_luaentity()
+				--local ent = obj:get_luaentity()
 				obj:remove()
 				return
 			end
@@ -61,7 +61,7 @@ minetest.register_globalstep(function(dtime)
 		for p=1, #players do
 			local player = players[p]
 			local pos = player:get_pos()
-			local void, void_deadly = is_in_void(pos)
+			local _, void_deadly = is_in_void(pos)
 			if void_deadly then
 				local immortal_val = player:get_armor_groups().immortal
 				local is_immortal = false

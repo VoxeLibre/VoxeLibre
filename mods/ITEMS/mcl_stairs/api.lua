@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_stairs")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Core mcl_stairs API
 
@@ -155,7 +155,7 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 
 	if recipeitem then
 		minetest.register_craft({
-			output = 'mcl_stairs:stair_' .. subname .. ' 4',
+			output = "mcl_stairs:stair_" .. subname .. " 4",
 			recipe = {
 				{recipeitem, "", ""},
 				{recipeitem, recipeitem, ""},
@@ -165,7 +165,7 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 
 		-- Flipped recipe
 		minetest.register_craft({
-			output = 'mcl_stairs:stair_' .. subname .. ' 4',
+			output = "mcl_stairs:stair_" .. subname .. " 4",
 			recipe = {
 				{"", "", recipeitem},
 				{"", recipeitem, recipeitem},
@@ -297,7 +297,7 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 	topdef._doc_items_usagehelp = nil
 	topdef.drop = lower_slab
 	topdef._mcl_other_slab_half = lower_slab
-	topdef.on_rotate = function(pos, node, user, mode, param2)
+	function topdef.on_rotate(pos, node, user, mode, param2)
 		-- Flip slab
 		if mode == screwdriver.ROTATE_AXIS then
 			node.name = lower_slab

@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_itemframes")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local VISUAL_SIZE = 0.3
 
@@ -13,8 +13,8 @@ minetest.register_entity("mcl_itemframes:item",{
 	_scale = 1,
 
 	on_activate = function(self, staticdata)
-		if staticdata ~= nil and staticdata ~= "" then
-			local data = staticdata:split(';')
+		if staticdata and staticdata ~= "" then
+			local data = staticdata:split(";")
 			if data and data[1] and data[2] then
 				self._nodename = data[1]
 				self._texture = data[2]
@@ -25,7 +25,7 @@ minetest.register_entity("mcl_itemframes:item",{
 				end
 			end
 		end
-		if self._texture ~= nil then
+		if self._texture then
 			self.object:set_properties({
 				textures={self._texture},
 				visual_size={x=VISUAL_SIZE/self._scale, y=VISUAL_SIZE/self._scale},
@@ -33,10 +33,10 @@ minetest.register_entity("mcl_itemframes:item",{
 		end
 	end,
 	get_staticdata = function(self)
-		if self._nodename ~= nil and self._texture ~= nil then
-			local ret = self._nodename .. ';' .. self._texture
-			if self._scale ~= nil then
-				ret = ret .. ';' .. self._scale
+		if self._nodename and self._texture then
+			local ret = self._nodename .. ";" .. self._texture
+			if self._scale then
+				ret = ret .. ";" .. self._scale
 			end
 			return ret
 		end
@@ -44,7 +44,7 @@ minetest.register_entity("mcl_itemframes:item",{
 	end,
 
 	_update_texture = function(self)
-		if self._texture ~= nil then
+		if self._texture then
 			self.object:set_properties({
 				textures={self._texture},
 				visual_size={x=VISUAL_SIZE/self._scale, y=VISUAL_SIZE/self._scale},
@@ -276,12 +276,12 @@ minetest.register_node("mcl_itemframes:item_frame",{
 	on_rotate = function(pos, node, user, mode, param2)
 		if mode == screwdriver.ROTATE_FACE then
 			-- Rotate face
-			local meta = minetest.get_meta(pos)
+			--local meta = minetest.get_meta(pos)
 			local node = minetest.get_node(pos)
 
 			local objs = nil
 			if node.name == "mcl_itemframes:item_frame" then
-				objs = minetest.get_objects_inside_radius(pos, .5)
+				objs = minetest.get_objects_inside_radius(pos, 0.5)
 			end
 			if objs then
 				for _, obj in ipairs(objs) do
@@ -299,11 +299,11 @@ minetest.register_node("mcl_itemframes:item_frame",{
 })
 
 minetest.register_craft({
-	output = 'mcl_itemframes:item_frame',
+	output = "mcl_itemframes:item_frame",
 	recipe = {
-		{'mcl_core:stick', 'mcl_core:stick', 'mcl_core:stick'},
-		{'mcl_core:stick', 'mcl_mobitems:leather', 'mcl_core:stick'},
-		{'mcl_core:stick', 'mcl_core:stick', 'mcl_core:stick'},
+		{"mcl_core:stick", "mcl_core:stick", "mcl_core:stick"},
+		{"mcl_core:stick", "mcl_mobitems:leather", "mcl_core:stick"},
+		{"mcl_core:stick", "mcl_core:stick", "mcl_core:stick"},
 	}
 })
 

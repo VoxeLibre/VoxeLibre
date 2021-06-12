@@ -68,7 +68,7 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 
 					if do_irregular_damage or thorns_damage_regular < 4 and math.random() < enchantments.thorns * 0.15 then
 						if do_irregular_damage then
-							thorns_damage_irregular = thorns_damage_irregular + throrns_level - 10
+							thorns_damage_irregular = thorns_damage_irregular + enchantments.thorns - 10
 						else
 							thorns_damage_regular = math.min(4, thorns_damage_regular + math.random(4))
 						end

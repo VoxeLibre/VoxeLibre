@@ -417,9 +417,9 @@ local function get_tooltip(item, groups, cooktime, burntime)
 			-- and just print the normal item name without special formatting
 			if groups[1] == "compass" or groups[1] == "clock" then
 				groupstr = reg_items[item].description
-			elseif group_names[groups[1]] then
+			elseif g then
 				-- Use the special group name string
-				groupstr = minetest.colorize(gcol, group_names[groups[1]])
+				groupstr = minetest.colorize(gcol, g)
 			else
 				--[[ Fallback: Generic group explanation: This always
 				works, but the internally used group name (which
@@ -545,7 +545,7 @@ local function get_recipe_fs(data, iY)
 
 	if custom_recipe or shapeless or recipe.type == "cooking" then
 		local icon = custom_recipe and custom_recipe.icon or
-			     shapeless and "shapeless" or "furnace"
+				 shapeless and "shapeless" or "furnace"
 
 		if recipe.type == "cooking" then
 			icon = "default_furnace_front_active.png"
@@ -638,7 +638,7 @@ local function make_formspec(name)
 		fs[#fs + 1] = "background9[1,1;1,1;mcl_base_textures_background9.png;true;7]"
 
 		fs[#fs + 1] = fmt([[ tooltip[size_inc;%s]
-				     tooltip[size_dec;%s] ]],
+					 tooltip[size_dec;%s] ]],
 			ESC(S("Increase window size")),
 			ESC(S("Decrease window size")))
 
@@ -656,9 +656,9 @@ local function make_formspec(name)
 	]]
 
 	fs[#fs + 1] = fmt([[ tooltip[search;%s]
-			     tooltip[clear;%s]
-			     tooltip[prev;%s]
-			     tooltip[next;%s] ]],
+				 tooltip[clear;%s]
+				 tooltip[prev;%s]
+				 tooltip[next;%s] ]],
 		ESC(S("Search")),
 		ESC(S("Reset")),
 		ESC(S("Previous page")),
@@ -726,7 +726,7 @@ local function make_formspec(name)
 	return concat(fs)
 end
 
-local show_fs = function(player, name)
+local function show_fs(player, name)
 	if sfinv_only then
 		sfinv.set_player_inventory_formspec(player)
 	else

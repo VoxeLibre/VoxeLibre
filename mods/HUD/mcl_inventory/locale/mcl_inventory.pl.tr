@@ -1,0 +1,22 @@
+# textdomain: mcl_inventory
+Recipe book=Książka z recepturami
+Help=Pomoc
+Select player skin=Wybierz skin gracza
+Achievements=Osiągnięcia
+Building Blocks=Bloki budowlane
+Decoration Blocks=Bloki dekoracyjne
+Redstone=Czerwienit
+Transportation=Transport
+Brewing=Warzenie
+Miscellaneous=Różne
+Search Items=Wyszukaj przedmioty
+Foodstuffs=Jedzenie
+Tools=Narzędzia
+Combat=Walka
+Mobs=Moby
+Materials=Materiały
+Survival Inventory=Ekwipunek przetrwania
+Crafting=Wytwarzanie
+Inventory=Ekwipunek
+@1/@2=@1/@2
+

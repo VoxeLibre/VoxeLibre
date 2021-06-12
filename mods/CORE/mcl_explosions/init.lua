@@ -12,10 +12,12 @@ under the LGPLv2.1 license.
 
 mcl_explosions = {}
 
-local mod_fire = minetest.get_modpath("mcl_fire") ~= nil
-local CONTENT_FIRE = minetest.get_content_id("mcl_fire:fire")
+local mod_fire = minetest.get_modpath("mcl_fire")
+--local CONTENT_FIRE = minetest.get_content_id("mcl_fire:fire")
 
-local S = minetest.get_translator("mcl_explosions")
+local math = math
+local vector = vector
+local table = table
 
 local hash_node_position = minetest.hash_node_position
 local get_objects_inside_radius = minetest.get_objects_inside_radius
@@ -26,6 +28,7 @@ local get_voxel_manip = minetest.get_voxel_manip
 local bulk_set_node = minetest.bulk_set_node
 local check_for_falling = minetest.check_for_falling
 local add_item = minetest.add_item
+local pos_to_string = minetest.pos_to_string
 
 -- Saved sphere explosion shapes for various radiuses
 local sphere_shapes = {}
@@ -66,46 +69,44 @@ local function compute_sphere_rays(radius)
 	local rays = {}
 	local sphere = {}
 
-	for i=1, 2 do
+	local function add_ray(pos)
+		sphere[hash_node_position(pos)] = pos
+	end
+
+	for y = -radius, radius do
+		for z = -radius, radius do
+			for x = -radius, 0 do
+				local d = x * x + y * y + z * z
+				if d <= radius * radius then
+					add_ray(vector.new(x, y, z))
+					add_ray(vector.new(-x, y, z))
+					break
+				end
+			end
+		end
+	end
+
+	for x = -radius, radius do
+		for z = -radius, radius do
+			for y = -radius, 0 do
+				local d = x * x + y * y + z * z
+				if d <= radius * radius then
+					add_ray(vector.new(x, y, z))
+					add_ray(vector.new(x, -y, z))
+					break
+				end
+			end
+		end
+	end
+
+	for x = -radius, radius do
 		for y = -radius, radius do
-			for z = -radius, radius do
-				for x = -radius, 0, 1 do
-					local d = x * x + y * y + z * z
-					if d <= radius * radius then
-						local pos = { x = x, y = y, z = z }
-						sphere[hash_node_position(pos)] = pos
-						break
-					end
-				end
-			end
-		end
-	end
-
-	for i=1,2 do
-		for x = -radius, radius do
-			for z = -radius, radius do
-				for y = -radius, 0, 1 do
-					local d = x * x + y * y + z * z
-					if d <= radius * radius then
-						local pos = { x = x, y = y, z = z }
-						sphere[hash_node_position(pos)] = pos
-						break
-					end
-				end
-			end
-		end
-	end
-
-	for i=1,2 do
-		for x = -radius, radius do
-			for y = -radius, radius do
-				for z = -radius, 0, 1 do
-					local d = x * x + y * y + z * z
-					if d <= radius * radius then
-						local pos = { x = x, y = y, z = z }
-						sphere[hash_node_position(pos)] = pos
-						break
-					end
+			for z = -radius, 0 do
+				local d = x * x + y * y + z * z
+				if d <= radius * radius then
+					add_ray(vector.new(x, y, z))
+					add_ray(vector.new(x, y, -z))
+					break
 				end
 			end
 		end
@@ -176,14 +177,11 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 
 	local ystride = (emax.x - emin_x + 1)
 	local zstride = ystride * (emax.y - emin_y + 1)
-	local pos_x = pos.x
-	local pos_y = pos.y
-	local pos_z = pos.z
 
-	local area = VoxelArea:new {
+	--[[local area = VoxelArea:new {
 		MinEdge = emin,
 		MaxEdge = emax
-	}
+	}]]
 	local data = vm:get_data()
 	local destroy = {}
 
@@ -247,7 +245,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 		local ent = obj:get_luaentity()
 
 		-- Ignore items to lower lag
-		if (obj:is_player() or (ent and ent.name ~= '__builtin.item')) and obj:get_hp() > 0 then
+		if (obj:is_player() or (ent and ent.name ~= "__builtin.item")) and obj:get_hp() > 0 then
 			local opos = obj:get_pos()
 			local collisionbox = nil
 
@@ -260,12 +258,12 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 
 			if collisionbox then
 				-- Create rays from random points in the collision box
-				local x1 = collisionbox[1] * 2
-				local y1 = collisionbox[2] * 2
-				local z1 = collisionbox[3] * 2
-				local x2 = collisionbox[4] * 2
-				local y2 = collisionbox[5] * 2
-				local z2 = collisionbox[6] * 2
+				local x1 = collisionbox[1]
+				local y1 = collisionbox[2]
+				local z1 = collisionbox[3]
+				local x2 = collisionbox[4]
+				local y2 = collisionbox[5]
+				local z2 = collisionbox[6]
 				local x_len = math.abs(x2 - x1)
 				local y_len = math.abs(y2 - y1)
 				local z_len = math.abs(z2 - z1)
@@ -363,9 +361,9 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 		local on_blast = node_on_blast[data[idx]]
 		local remove = true
 
-		if do_drop or on_blast ~= nil then
+		if do_drop or on_blast then
 			local npos = get_position_from_hash(hash)
-			if on_blast ~= nil then
+			if on_blast then
 				on_blast(npos, 1.0, do_drop)
 				remove = false
 			else
@@ -407,8 +405,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 	end
 
 	-- Log explosion
-	minetest.log('action', 'Explosion at ' .. minetest.pos_to_string(pos) ..
-		' with strength ' .. strength .. ' and radius ' .. radius)
+	minetest.log("action", "Explosion at "..pos_to_string(pos).." with strength "..strength.." and radius "..radius)
 end
 
 -- Create an explosion with strength at pos.

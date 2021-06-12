@@ -765,7 +765,7 @@ local function register_mgv6_decorations()
 	})
 
 	-- Large flowers
-	local register_large_flower = function(name, seed, offset)
+	local function register_large_flower(name, seed, offset)
 		minetest.register_decoration({
 			deco_type = "schematic",
 			schematic = {
@@ -1169,7 +1169,7 @@ end
 -- minp and maxp (from an on_generated callback) and returns the real world coordinates
 -- as X, Z.
 -- Inverse function of xz_to_biomemap
---[[local biomemap_to_xz = function(index, minp, maxp)
+--[[local function biomemap_to_xz(index, minp, maxp)
 	local xwidth = maxp.x - minp.x + 1
 	local zwidth = maxp.z - minp.z + 1
 	local x = ((index-1) % xwidth) + minp.x
@@ -1180,7 +1180,7 @@ end]]
 -- Takes x and z coordinates and minp and maxp of a generated chunk
 -- (in on_generated callback) and returns a biomemap index)
 -- Inverse function of biomemap_to_xz
-local xz_to_biomemap_index = function(x, z, minp, maxp)
+local function xz_to_biomemap_index(x, z, minp, maxp)
 	local xwidth = maxp.x - minp.x + 1
 	local zwidth = maxp.z - minp.z + 1
 	local minix = x % xwidth
@@ -1404,7 +1404,7 @@ local function generate_structures(minp, maxp, blockseed, biomemap)
 
 									-- TODO: Spawn witch in or around hut when the mob sucks less.
 
-									local place_tree_if_free = function(pos, prev_result)
+									local function place_tree_if_free(pos, prev_result)
 										local nn = minetest.get_node(pos).name
 										if nn == "mcl_flowers:waterlily" or nn == "mcl_core:water_source" or nn == "mcl_core:water_flowing" or nn == "air" then
 											minetest.set_node(pos, {name="mcl_core:tree", param2=0})
@@ -1599,7 +1599,7 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 
 			if dir < 5
 			and data[p_pos] == c_air
-			and l ~= nil and l > 12 then
+			and l and l > 12 then
 				local c = pr:next(1, 3)
 				if c == 1 then
 					data[p_pos] = c_cocoa_1
@@ -1720,7 +1720,7 @@ end
 
 -- Generate mushrooms in caves manually.
 -- Minetest's API does not support decorations in caves yet. :-(
-local generate_underground_mushrooms = function(minp, maxp, seed)
+local function generate_underground_mushrooms(minp, maxp, seed)
 	local pr_shroom = PseudoRandom(seed-24359)
 	-- Generate rare underground mushrooms
 	-- TODO: Make them appear in groups, use Perlin noise
@@ -1736,7 +1736,7 @@ local generate_underground_mushrooms = function(minp, maxp, seed)
 		bpos = {x = stone[n].x, y = stone[n].y + 1, z = stone[n].z }
 
 		local l = minetest.get_node_light(bpos, 0.5)
-		if bpos.y >= min and bpos.y <= max and l ~= nil and l <= 12 and pr_shroom:next(1,1000) < 4 then
+		if bpos.y >= min and bpos.y <= max and l and l <= 12 and pr_shroom:next(1,1000) < 4 then
 			if pr_shroom:next(1,2) == 1 then
 				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
 			else
@@ -1754,7 +1754,7 @@ else
 end
 -- Generate Nether decorations manually: Eternal fire, mushrooms, nether wart
 -- Minetest's API does not support decorations in caves yet. :-(
-local generate_nether_decorations = function(minp, maxp, seed)
+local function generate_nether_decorations(minp, maxp, seed)
 	local pr_nether = PseudoRandom(seed+667)
 
 	if minp.y > mcl_vars.mg_nether_max or maxp.y < mcl_vars.mg_nether_min then
@@ -1771,7 +1771,7 @@ local generate_nether_decorations = function(minp, maxp, seed)
 	local ssand = minetest.find_nodes_in_area_under_air(minp, maxp, {"mcl_nether:soul_sand"})
 
 	-- Helper function to spawn “fake” decoration
-	local special_deco = function(nodes, spawn_func)
+	local function special_deco(nodes, spawn_func)
 		for n = 1, #nodes do
 			bpos = {x = nodes[n].x, y = nodes[n].y + 1, z = nodes[n].z }
 
@@ -1799,7 +1799,7 @@ local generate_nether_decorations = function(minp, maxp, seed)
 	-- Note: Spawned *after* the fire because of light level checks
 	special_deco(rack, function(bpos)
 		local l = minetest.get_node_light(bpos, 0.5)
-		if bpos.y > mcl_vars.mg_lava_nether_max + 6 and l ~= nil and l <= 12 and pr_nether:next(1,1000) <= 4 then
+		if bpos.y > mcl_vars.mg_lava_nether_max + 6 and l and l <= 12 and pr_nether:next(1,1000) <= 4 then
 			-- TODO: Make mushrooms appear in groups, use Perlin noise
 			if pr_nether:next(1,2) == 1 then
 				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
@@ -1869,7 +1869,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	mcl_vars.add_chunk(minp)
 end)
 
-minetest.register_on_generated=function(node_function)
+function minetest.register_on_generated(node_function)
 	mcl_mapgen_core.register_generator("mod_"..tostring(#registered_generators+1), nil, node_function)
 end
 
@@ -1890,11 +1890,9 @@ function mcl_mapgen_core.register_generator(id, lvm_function, node_function, pri
 	}
 
 	registered_generators[id] = new_record
-	table.sort(
-		registered_generators,
-		function(a, b)
-			return (a.i < b.i) or ((a.i == b.i) and (a.vf ~= nil) and (b.vf == nil))
-		end)
+	table.sort(registered_generators, function(a, b)
+		return (a.i < b.i) or ((a.i == b.i) and a.vf and (b.vf == nil))
+	end)
 end
 
 function mcl_mapgen_core.unregister_generator(id)
@@ -1904,7 +1902,7 @@ function mcl_mapgen_core.unregister_generator(id)
 	if rec.vf then lvm = lvm - 1 end
 	if rec.nf then nodes = nodes - 1 end
 	if rec.needs_param2 then param2 = param2 - 1 end
-	if rec.needs_level0 then level0 = level0 - 1 end
+	--if rec.needs_level0 then level0 = level0 - 1 end
 end
 
 -- Generate basic layer-based nodes: void, bedrock, realm barrier, lava seas, etc.
@@ -1912,7 +1910,7 @@ end
 
 local bedrock_check
 if mcl_vars.mg_bedrock_is_rough then
-	bedrock_check = function(pos, _, pr)
+	function bedrock_check(pos, _, pr)
 		local y = pos.y
 		-- Bedrock layers with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
 		-- This code assumes a bedrock height of 5 layers.

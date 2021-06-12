@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_beds")
+local S = minetest.get_translator(minetest.get_current_modname())
 local mod_doc = minetest.get_modpath("doc")
 
 local nodebox = {

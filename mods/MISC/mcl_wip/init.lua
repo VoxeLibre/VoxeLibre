@@ -1,6 +1,6 @@
--- Mod to mark WIP (Work In Progress) content
+-- Allow items or nodes to be marked as WIP (Work In Progress) or Experimental
 
-local S = minetest.get_translator("mcl_wip")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 mcl_wip = {}
 mcl_wip.registered_wip_items = {}

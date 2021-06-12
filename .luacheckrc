@@ -40,4 +40,16 @@ read_globals = {
 			"factorial"
 		}
 	},
+    ------
+    --MODS
+    ------
+
+    --GENERAL
+    "default",
+
+    --ENTITIES
+    "cmi",
+
+    --HUD
+    "sfinv", "sfinv_buttons", "unified_inventory", "cmsg", "inventory_plus",
 }

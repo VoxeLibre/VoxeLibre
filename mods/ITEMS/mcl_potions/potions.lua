@@ -1,7 +1,7 @@
-local S = minetest.get_translator("mcl_potions")
+local S = minetest.get_translator(minetest.get_current_modname())
 --local brewhelp = S("Try different combinations to create potions.")
 
-local potion_image = function(colorstring, opacity)
+local function potion_image(colorstring, opacity)
 	if not opacity then
 		opacity = 127
 	end
