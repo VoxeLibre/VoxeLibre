@@ -3,7 +3,7 @@ local mod_mcl_core = minetest.get_modpath("mcl_core")
 local mod_mclx_core = minetest.get_modpath("mclx_core")
 local has_awards = minetest.get_modpath("awards")
 
-local sound_place = function(itemname, pos)
+local function sound_place(itemname, pos)
 	local def = minetest.registered_nodes[itemname]
 	if def and def.sounds and def.sounds.place then
 		minetest.sound_play(def.sounds.place, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005}, true)

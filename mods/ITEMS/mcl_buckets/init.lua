@@ -18,7 +18,8 @@ local string = string
 local raycast = minetest.raycast
 local get_node = minetest.get_node
 local add_node = minetest.add_node
-local get_node_group = minetest.get_node_group
+local add_item = minetest.add_item
+
 
 if mod_mcl_core then
 	minetest.register_craft({
@@ -26,7 +27,7 @@ if mod_mcl_core then
 		recipe = {
 			{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
 			{"", "mcl_core:iron_ingot", ""},
-		}
+		},
 	})
 end
 
@@ -34,41 +35,46 @@ mcl_buckets = {}
 mcl_buckets.liquids = {}
 
 -- Sound helper functions for placing and taking liquids
-local sound_place = function(itemname, pos)
+local function sound_place(itemname, pos)
 	local def = minetest.registered_nodes[itemname]
 	if def and def.sounds and def.sounds.place then
 		minetest.sound_play(def.sounds.place, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005}, true)
 	end
 end
 
-local sound_take = function(itemname, pos)
+local function sound_take(itemname, pos)
 	local def = minetest.registered_nodes[itemname]
 	if def and def.sounds and def.sounds.dug then
 		minetest.sound_play(def.sounds.dug, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005}, true)
 	end
 end
 
-local place_liquid = function(pos, itemstring)
+local function place_liquid(pos, itemstring)
 	local fullness = minetest.registered_nodes[itemstring].liquid_range
 	sound_place(itemstring, pos)
 	minetest.add_node(pos, {name=itemstring, param2=fullness})
 end
 local function give_bucket(new_bucket, itemstack, user)
-	if itemstack:get_count() == 1 then
-		return new_bucket
-	else
-		local inv = user:get_inventory()
-		if inv:room_for_item("main", new_bucket) then
-			inv:add_item("main", new_bucket)
-		else
-			minetest.add_item(user:get_pos(), new_bucket)
-		end
-		if not minetest.is_creative_enabled(user:get_player_name()) then
-			itemstack:take_item()
-		end
+	local inv = user:get_inventory()
+	if minetest.is_creative_enabled(user:get_player_name()) then
+		--TODO: is a full bucket added if inv doesn't contain one?
 		return itemstack
+	else
+		if itemstack:get_count() == 1 then
+			return new_bucket
+		else
+			if inv:room_for_item("main", new_bucket) then
+				inv:add_item("main", new_bucket)
+			else
+				add_item(user:get_pos(), new_bucket)
+			end
+			itemstack:take_item()
+			return itemstack
+		end
 	end
 end
+
+local pointable_sources = {}
 
 local function bucket_raycast(user)
 	local pos = user:get_pos()
@@ -77,10 +83,10 @@ local function bucket_raycast(user)
 	look_dir = vector.multiply(look_dir, 6)
 	local pos2 = vector.add(pos, look_dir)
 
-	local ray = raycast(pos, pos2, false, true)		
+	local ray = raycast(pos, pos2, false, true)
 	if ray then
 		for pointed_thing in ray do
-			if pointed_thing and get_node_group(get_node(pointed_thing.above).name, "_mcl_bucket_pointable") == 1 then
+			if pointed_thing and pointable_sources[get_node(pointed_thing.above).name] then
 				--minetest.chat_send_all("found!")
 				return {under=pointed_thing.under,above=pointed_thing.above}
 			end
@@ -97,6 +103,7 @@ function mcl_buckets.register_liquid(def)
 			on_take = def.on_take,
 			itemname = def.itemname,
 		}
+		pointable_sources[source] = true
 		if type(def.source_place) == "string" then
 			mcl_buckets.liquids[def.source_place] = mcl_buckets.liquids[source]
 		end
@@ -137,7 +144,7 @@ function mcl_buckets.register_liquid(def)
 				node_place = def.source_place
 			end
 			-- Check if pointing to a buildable node
-			local item = itemstack:get_name()
+			--local item = itemstack:get_name()
 
 			if def.extra_check and def.extra_check(place_pos, user) == false then
 				-- Fail placement of liquid
@@ -308,7 +315,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 				return minetest.registered_nodes[nn].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
 			end
 		end
-		
+		local new_bucket
 		local liquid_node = bucket_raycast(user)
 		if liquid_node then
 			if minetest.is_protected(liquid_node.above, user:get_player_name()) then
@@ -318,7 +325,6 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 			if liquid_name then
 				local liquid_def = mcl_buckets.liquids[liquid_name]
 				if liquid_def then
-					local new_bucket
 					--minetest.chat_send_all("test")
 					-- Fill bucket, but not in Creative Mode
 					-- FIXME: remove this line
