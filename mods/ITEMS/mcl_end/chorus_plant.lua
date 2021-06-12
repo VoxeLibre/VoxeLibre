@@ -3,8 +3,8 @@
 
 local S = minetest.get_translator(minetest.get_current_modname())
 
-local math = math
-local table = table
+local math_random = math.random
+local math_floor = math.floor
 
 --- Plant parts ---
 
@@ -24,7 +24,7 @@ local chorus_flower_box = {
 -- Helper function
 local function round(num, idp)
 	local mult = 10^(idp or 0)
-	return math.floor(num * mult + 0.5) / mult
+	return math_floor(num * mult + 0.5) / mult
 end
 
 -- This is a list of nodes that SHOULD NOT call their detach function
@@ -344,6 +344,7 @@ end
 -- Grow a single step of a chorus plant at pos.
 -- Pos must be a chorus flower.
 function mcl_end.grow_chorus_plant_step(pos, node, pr)
+	local pr = pr or PseudoRandom()
 	local new_flower_buds = {}
 	local above = { x = pos.x, y = pos.y + 1, z = pos.z }
 	local node_above = minetest.get_node(above)
@@ -452,16 +453,20 @@ function mcl_end.grow_chorus_plant_step(pos, node, pr)
 	return new_flower_buds
 end
 
+local fast_randomizer =	{
+	next = function(self, min, max)
+		return math_random(min, max)
+	end
+}
+
 --- ABM ---
-local seed = minetest.get_mapgen_params().seed
-local pr = PseudoRandom(seed)
 minetest.register_abm({
 	label = "Chorus plant growth",
 	nodenames = { "mcl_end:chorus_flower" },
 	interval = 35.0,
 	chance = 4.0,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		mcl_end.grow_chorus_plant_step(pos, node, pr)
+		mcl_end.grow_chorus_plant_step(pos, node, fast_randomizer)
 	end,
 })
 
