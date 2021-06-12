@@ -1,0 +1,24 @@
+# textdomain: mcl_doors
+Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Drewniane drzwi są blokami o wysokości 2, które mogą być otworzone i zamknięte ręcznie bądź przez zasilenie czerwienitem.
+To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Aby otworzyć lub zamknąć drewniane drzwi, kliknij je prawym przyciskiem bądź zasil ich dolną połowę czerwienitem.
+Oak Door=Dębowe drzwi
+Acacia Door=Akacjowe drzwi
+Birch Door=Brzozowe drzwi
+Dark Oak Door=Ciemno-dębowe drzwi
+Jungle Door=Tropikalne drzwi
+Spruce Door=Świerkowe drzwi
+Iron Door=Żelazne drzwi
+Iron doors are 2-block high barriers which can only be opened or closed by a redstone signal, but not by hand.=Żelazne drzwi są blokami o wysokości dwa, które mogą być otwarte lub zamknięte przez zasilanie czerwienitem, ale nie ręcznie.
+To open or close an iron door, supply its lower half with a redstone signal.=Aby otworzyć lub zamknąć żelazne drzwi zasil ich dolną część czerwienitem.
+Oak Trapdoor=Dębowa klapa
+Acacia Trapdoor=Akacjowa klapa
+Birch Trapdoor=Brzozowa klapa
+Spruce Trapdoor=Świerkowa klapa
+Dark Oak Trapdoor=Ciemno-dębowa klapa
+Jungle Trapdoor=Tropikalna klapa
+Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Drewniane klapy są poziomymi barierami, które mogą być otwarte i zamknięte ręcznie bądź przez zasilenie czerwienitem. Zajmują główną lub dolną część bloku w zależności od tego jak zostaną postawione. Gdy są otwarte można się po nich wspinać jak po drabinie.
+To open or close the trapdoor, rightclick it or send a redstone signal to it.=Aby otworzyć lub zamknąć drewniane klapy, kliknij je prawym przyciskiem bądź zasil ich dolną połowę czerwienitem.
+Iron Trapdoor=Żelazna klapa
+Iron trapdoors are horizontal barriers which can only be opened and closed by redstone signals, but not by hand. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Żelazne klapy są poziomymi barierami, które mogą być otwarte i zamknięte tylko przez zasilenie czerwienitem, ale nie ręcznie. Zajmują główną lub dolną część bloku w zależności od tego jak zostaną postawione. Gdy są otwarte można się po nich wspinać jak po drabinie.
+Openable by players and redstone power=Mogą być otworzone przez graczy i zasilanie czerwienitem
+Openable by redstone power=Mogą być otworzone przez zasilanie czerwienitem

@@ -12,8 +12,12 @@ under the LGPLv2.1 license.
 
 mcl_explosions = {}
 
-local mod_fire = minetest.get_modpath("mcl_fire") ~= nil
+local mod_fire = minetest.get_modpath("mcl_fire")
 --local CONTENT_FIRE = minetest.get_content_id("mcl_fire:fire")
+
+local math = math
+local vector = vector
+local table = table
 
 local hash_node_position = minetest.hash_node_position
 local get_objects_inside_radius = minetest.get_objects_inside_radius
@@ -24,6 +28,7 @@ local get_voxel_manip = minetest.get_voxel_manip
 local bulk_set_node = minetest.bulk_set_node
 local check_for_falling = minetest.check_for_falling
 local add_item = minetest.add_item
+local pos_to_string = minetest.pos_to_string
 
 -- Saved sphere explosion shapes for various radiuses
 local sphere_shapes = {}
@@ -240,7 +245,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 		local ent = obj:get_luaentity()
 
 		-- Ignore items to lower lag
-		if (obj:is_player() or (ent and ent.name ~= '__builtin.item')) and obj:get_hp() > 0 then
+		if (obj:is_player() or (ent and ent.name ~= "__builtin.item")) and obj:get_hp() > 0 then
 			local opos = obj:get_pos()
 			local collisionbox = nil
 
@@ -356,9 +361,9 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 		local on_blast = node_on_blast[data[idx]]
 		local remove = true
 
-		if do_drop or on_blast ~= nil then
+		if do_drop or on_blast then
 			local npos = get_position_from_hash(hash)
-			if on_blast ~= nil then
+			if on_blast then
 				on_blast(npos, 1.0, do_drop)
 				remove = false
 			else
@@ -400,8 +405,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 	end
 
 	-- Log explosion
-	minetest.log('action', 'Explosion at ' .. minetest.pos_to_string(pos) ..
-		' with strength ' .. strength .. ' and radius ' .. radius)
+	minetest.log("action", "Explosion at "..pos_to_string(pos).." with strength "..strength.." and radius "..radius)
 end
 
 -- Create an explosion with strength at pos.

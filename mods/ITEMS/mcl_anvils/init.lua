@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_anvils")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local MAX_NAME_LENGTH = 35
 local MAX_WEAR = 65535
@@ -180,7 +180,7 @@ local function update_anvil_slots(meta)
 	end
 
 	-- Set the new output slot
-	if new_output ~= nil then
+	if new_output then
 		inv:set_stack("output", 1, new_output)
 	end
 end

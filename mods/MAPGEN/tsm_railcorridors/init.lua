@@ -1,3 +1,6 @@
+local pairs = pairs
+local tonumber = tonumber
+
 tsm_railcorridors = {}
 
 -- Load node names
@@ -8,7 +11,7 @@ local setting
 
 -- Probability function
 -- TODO: Check if this is correct
-local P = function (float)
+local function P(float)
 	return math.floor(32767 * float)
 end
 
@@ -80,14 +83,14 @@ end
 -- Enable cobwebs
 local place_cobwebs = true
 setting = minetest.settings:get_bool("tsm_railcorridors_place_cobwebs")
-if setting ~= nil then
+if setting then
 	place_cobwebs = setting
 end
 
 -- Enable mob spawners
 local place_mob_spawners = true
 setting = minetest.settings:get_bool("tsm_railcorridors_place_mob_spawners")
-if setting ~= nil then
+if setting then
 	place_mob_spawners = setting
 end
 
@@ -175,7 +178,7 @@ end
 
 -- Tries to place a rail, taking the damage chance into account
 local function PlaceRail(pos, damage_chance)
-	if damage_chance ~= nil and damage_chance > 0 then
+	if damage_chance and damage_chance > 0 then
 		local x = pr:next(0,100)
 		if x <= damage_chance then
 			return false
@@ -395,7 +398,7 @@ local function RecheckCartHack(params)
 	local cart_id = params[2]
 	-- Find cart
 	for _, obj in pairs(minetest.get_objects_inside_radius(pos, 1)) do
-		if obj ~= nil and obj:get_luaentity().name == cart_id then
+		if obj and obj:get_luaentity().name == cart_id then
 			-- Cart found! We can now safely call the callback func.
 			-- (calling it earlier has the danger of failing)
 			minetest.log("info", "[tsm_railcorridors] Cart spawn succeeded: "..minetest.pos_to_string(pos))

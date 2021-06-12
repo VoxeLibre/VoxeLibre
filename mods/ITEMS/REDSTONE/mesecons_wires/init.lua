@@ -4,7 +4,7 @@
 -- Where 0 means the wire has no visual connection to that direction and
 -- 1 means that the wire visually connects to that other node.
 
-local S = minetest.get_translator("mesecons_wires")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- #######################
 -- ## Update wire looks ##
@@ -28,7 +28,7 @@ local wire_rules =
  {x= 0, y=-1, z=-1}}
 
 -- self_pos = pos of any mesecon node, from_pos = pos of conductor to getconnect for
-local wire_getconnect = function (from_pos, self_pos)
+local function wire_getconnect(from_pos, self_pos)
 	local node = minetest.get_node(self_pos)
 	if minetest.registered_nodes[node.name]
 	and minetest.registered_nodes[node.name].mesecons then
@@ -50,7 +50,7 @@ local wire_getconnect = function (from_pos, self_pos)
 end
 
 -- Update this node
-local wire_updateconnect = function (pos)
+local function wire_updateconnect(pos)
 	local connections = {}
 
 	for _, r in ipairs(wire_rules) do
@@ -83,7 +83,7 @@ local wire_updateconnect = function (pos)
 	minetest.set_node(pos, {name = "mesecons:wire_"..nodeid..state_suffix})
 end
 
-local update_on_place_dig = function (pos, node)
+local function update_on_place_dig(pos, node)
 	-- Update placed node (get_node again as it may have been dug)
 	local nn = minetest.get_node(pos)
 	if (minetest.registered_nodes[nn.name])
@@ -139,8 +139,8 @@ local selectionbox =
 }
 
 -- go to the next nodeid (ex.: 01000011 --> 01000100)
-local nid_inc = function() end
-nid_inc = function (nid)
+local function nid_inc() end
+function nid_inc(nid)
 	local i = 0
 	while nid[i-1] ~= 1 do
 		nid[i] = (nid[i] ~= 1) and 1 or 0

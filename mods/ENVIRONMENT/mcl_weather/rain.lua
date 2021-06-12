@@ -96,7 +96,7 @@ end
 -- be sure to remove sound before removing player otherwise soundhandler reference will be lost.
 function mcl_weather.rain.remove_player(player)
 	local player_meta = mcl_weather.players[player:get_player_name()]
-	if player_meta ~= nil and player_meta.origin_sky ~= nil then
+	if player_meta and player_meta.origin_sky then
 		player:set_clouds({color="#FFF0F0E5"})
 		mcl_weather.players[player:get_player_name()] = nil
 	end
@@ -120,12 +120,12 @@ end)
 -- when player stay on 'edge' where sound should play and stop depending from random raindrop appearance.
 function mcl_weather.rain.update_sound(player)
 	local player_meta = mcl_weather.players[player:get_player_name()]
-	if player_meta ~= nil then
-		if player_meta.sound_updated ~= nil and player_meta.sound_updated + 5 > minetest.get_gametime() then
+	if player_meta then
+		if player_meta.sound_updated and player_meta.sound_updated + 5 > minetest.get_gametime() then
 			return false
 		end
 
-		if player_meta.sound_handler ~= nil then
+		if player_meta.sound_handler then
 			if mcl_weather.rain.last_rp_count == 0 then
 				minetest.sound_fade(player_meta.sound_handler, -0.5, 0.0)
 				player_meta.sound_handler = nil
@@ -141,7 +141,7 @@ end
 -- rain sound removed from player.
 function mcl_weather.rain.remove_sound(player)
 	local player_meta = mcl_weather.players[player:get_player_name()]
-	if player_meta ~= nil and player_meta.sound_handler ~= nil then
+	if player_meta and player_meta.sound_handler then
 		minetest.sound_fade(player_meta.sound_handler, -0.5, 0.0)
 		player_meta.sound_handler = nil
 		player_meta.sound_updated = nil

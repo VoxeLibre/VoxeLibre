@@ -6,7 +6,7 @@ mcl_weather.snow.particles_count = 15
 mcl_weather.snow.init_done = false
 
 -- calculates coordinates and draw particles for snow weather
-mcl_weather.snow.add_snow_particles = function(player)
+function mcl_weather.snow.add_snow_particles(player)
 	mcl_weather.rain.last_rp_count = 0
 	for i=mcl_weather.snow.particles_count, 1,-1 do
 		local random_pos_x, _, random_pos_z = mcl_weather.get_random_pos_by_player_look_dir(player)
@@ -30,7 +30,7 @@ mcl_weather.snow.add_snow_particles = function(player)
 	end
 end
 
-mcl_weather.snow.set_sky_box = function()
+function mcl_weather.snow.set_sky_box()
 	mcl_weather.skycolor.add_layer(
 		"weather-pack-snow-sky",
 		{{r=0, g=0, b=0},

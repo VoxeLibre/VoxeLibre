@@ -37,7 +37,7 @@ end
 
 -- Throw item
 function mcl_throwing.get_player_throw_function(entity_name, velocity)
-	local func = function(item, player, pointed_thing)
+	local function func(item, player, pointed_thing)
 		local playerpos = player:get_pos()
 		local dir = player:get_look_dir()
 		mcl_throwing.throw(item, {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, velocity, player:get_player_name())

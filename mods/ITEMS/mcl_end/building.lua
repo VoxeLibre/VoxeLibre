@@ -1,7 +1,8 @@
 -- Building blocks and decorative nodes
-local S = minetest.get_translator("mcl_end")
+local S = minetest.get_translator(minetest.get_current_modname())
 
-local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
+local mod_screwdriver = minetest.get_modpath("screwdriver")
+
 local on_rotate
 if mod_screwdriver then
 	on_rotate = screwdriver.rotate_3way

@@ -19,7 +19,7 @@ local mcl_hbarmor = {
 
 local tick_config = minetest.settings:get("mcl_hbarmor_tick")
 
-if tonumber(tick_config) ~= nil then
+if tonumber(tick_config) then
 	mcl_hbarmor.tick = tonumber(tick_config)
 end
 

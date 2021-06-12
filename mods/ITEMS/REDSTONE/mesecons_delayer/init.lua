@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mesecons_delayer")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local DELAYS = { 0.1, 0.2, 0.3, 0.4 }
 local DEFAULT_DELAY = DELAYS[1]
@@ -264,8 +264,8 @@ for i = 1, 4 do
 		paramtype2 = "facedir",
 		sunlight_propagates = false,
 		is_ground_content = false,
-		drop = 'mesecons_delayer:delayer_off_1',
-		on_rightclick = function (pos, node, clicker)
+		drop = "mesecons_delayer:delayer_off_1",
+		on_rightclick = function(pos, node, clicker)
 			local protname = clicker:get_player_name()
 			if minetest.is_protected(pos, protname) then
 				minetest.record_protection_violation(pos, protname)
@@ -330,8 +330,8 @@ for i = 1, 4 do
 		paramtype2 = "facedir",
 		sunlight_propagates = false,
 		is_ground_content = false,
-		drop = 'mesecons_delayer:delayer_off_1',
-		on_rightclick = function (pos, node, clicker)
+		drop = "mesecons_delayer:delayer_off_1",
+		on_rightclick = function(pos, node, clicker)
 			local protname = clicker:get_player_name()
 			if minetest.is_protected(pos, protname) then
 				minetest.record_protection_violation(pos, protname)
@@ -410,7 +410,7 @@ minetest.register_node("mesecons_delayer:delayer_off_locked", {
 	paramtype2 = "facedir",
 	sunlight_propagates = false,
 	is_ground_content = false,
-	drop = 'mesecons_delayer:delayer_off_1',
+	drop = "mesecons_delayer:delayer_off_1",
 	delayer_time = DEFAULT_DELAY,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {
@@ -465,7 +465,7 @@ minetest.register_node("mesecons_delayer:delayer_on_locked", {
 	paramtype2 = "facedir",
 	sunlight_propagates = false,
 	is_ground_content = false,
-	drop = 'mesecons_delayer:delayer_off_1',
+	drop = "mesecons_delayer:delayer_off_1",
 	delayer_time = DEFAULT_DELAY,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {

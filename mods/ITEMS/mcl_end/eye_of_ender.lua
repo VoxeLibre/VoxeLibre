@@ -1,5 +1,5 @@
 -- Eye of Ender
-local S = minetest.get_translator("mcl_end")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 minetest.register_entity("mcl_end:ender_eye", {
 	physical = false,

@@ -96,7 +96,7 @@ local mod_mobspawners = minetest_get_modpath("mcl_mobspawners")
 --local height_switcher = false
 
 -- Get translator
-local S = minetest.get_translator("mcl_mobs")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- CMI support check
 --local use_cmi = minetest.global_exists("cmi")
@@ -429,7 +429,7 @@ function mobs:register_mob(name, def)
 		--harmed_by_heal = def.harmed_by_heal,
 	})
 
-	if minetest_get_modpath("doc_identifier") ~= nil then
+	if minetest_get_modpath("doc_identifier") then
 		doc.sub.identifier.register_object(name, "basics", "mobs")
 	end
 

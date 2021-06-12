@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_end")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local vector = vector
 

@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_portals")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local SCAN_2_MAP_CHUNKS = true -- slower but helps to find more suitable places
 
@@ -210,7 +210,7 @@ local function destroy_nether_portal(pos, node)
 	local nn, orientation = node.name, node.param2
 	local obsidian = nn == OBSIDIAN
 
-	local check_remove = function(pos, orientation)
+	local function check_remove(pos, orientation)
 		local node = get_node(pos)
 		if node and (node.name == PORTAL and (orientation == nil or (node.param2 == orientation))) then
 			minetest.remove_node(pos)

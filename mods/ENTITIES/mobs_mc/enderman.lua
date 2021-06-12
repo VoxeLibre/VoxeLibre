@@ -24,9 +24,11 @@
 -- added rain damage.
 -- fixed the grass_with_dirt issue.
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
-local telesound = function(pos, is_source)
+local vector = vector
+
+local function telesound(pos, is_source)
 	local snd
 	if is_source then
 		snd = "mobs_mc_enderman_teleport_src"
@@ -302,7 +304,7 @@ mobs:register_mob("mobs_mc:enderman", {
 				if self.attacking then
 					local target = self.attacking
 					local pos = target:get_pos()
-					if pos ~= nil then
+					if pos then
 						if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
 							self:teleport(target)
 						end
@@ -341,8 +343,8 @@ mobs:register_mob("mobs_mc:enderman", {
 			--	self:teleport(nil)
 			--	self.state = ""
 			--else
-				if self.attack ~= nil and not minetest.settings:get_bool("creative_mode") then
-					self.state = 'attack'
+				if self.attack and not minetest.settings:get_bool("creative_mode") then
+					self.state = "attack"
 				end
 			--end
 		end
@@ -459,7 +461,7 @@ mobs:register_mob("mobs_mc:enderman", {
 					end
 				end
 			end
-		elseif self._taken_node ~= nil and self._taken_node ~= "" and self._take_place_timer >= self._next_take_place_time then
+		elseif self._taken_node and self._taken_node ~= "" and self._take_place_timer >= self._next_take_place_time then
 			-- Place taken node
 			self._take_place_timer = 0
 			self._next_take_place_time = math.random(take_frequency_min, take_frequency_max)
@@ -485,12 +487,12 @@ mobs:register_mob("mobs_mc:enderman", {
 		end
 	end,
 	do_teleport = function(self, target)
-		if target ~= nil then
+		if target then
 			local target_pos = target:get_pos()
 			-- Find all solid nodes below air in a 10×10×10 cuboid centered on the target
 			local nodes = minetest.find_nodes_in_area_under_air(vector.subtract(target_pos, 5), vector.add(target_pos, 5), {"group:solid", "group:cracky", "group:crumbly"})
 			local telepos
-			if nodes ~= nil then
+			if nodes then
 				if #nodes > 0 then
 					-- Up to 64 attempts to teleport
 					for n=1, math.min(64, #nodes) do
@@ -525,7 +527,7 @@ mobs:register_mob("mobs_mc:enderman", {
 				-- We need to add (or subtract) different random numbers to each vector component, so it couldn't be done with a nice single vector.add() or .subtract():
 				local randomCube = vector.new( pos.x + 8*(pr:next(0,16)-8), pos.y + 8*(pr:next(0,16)-8), pos.z + 8*(pr:next(0,16)-8) )
 				local nodes = minetest.find_nodes_in_area_under_air(vector.subtract(randomCube, 4), vector.add(randomCube, 4), {"group:solid", "group:cracky", "group:crumbly"})
-				if nodes ~= nil then
+				if nodes then
 					if #nodes > 0 then
 						-- Up to 8 low-level (in total up to 8*8 = 64) attempts to teleport
 						for n=1, math.min(8, #nodes) do
@@ -557,13 +559,13 @@ mobs:register_mob("mobs_mc:enderman", {
 	end,
 	on_die = function(self, pos)
 		-- Drop carried node on death
-		if self._taken_node ~= nil and self._taken_node ~= "" then
+		if self._taken_node and self._taken_node ~= "" then
 			minetest.add_item(pos, self._taken_node)
 		end
 	end,
 	do_punch = function(self, hitter, tflp, tool_caps, dir)
 		-- damage from rain caused by itself so we don't want it to attack itself.
-		if hitter ~= self.object and hitter ~= nil then
+		if hitter ~= self.object and hitter then
 			--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
 			--	self:teleport(nil)
 			--else

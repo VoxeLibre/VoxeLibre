@@ -2,7 +2,12 @@
 -- Lava vs water interactions
 --
 
+local modpath = minetest.get_modpath(minetest.get_current_modname())
+
 local mg_name = minetest.get_mapgen_setting("mg_name")
+
+local math = math
+local vector = vector
 
 local OAK_TREE_ID = 1
 local DARK_OAK_TREE_ID = 2
@@ -174,7 +179,7 @@ minetest.register_abm({
 		liquid_flow_action(pos, "lava", function(pos)
 			minetest.remove_node(pos)
 			minetest.sound_play("builtin_item_lava", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
-			core.check_for_falling(pos)
+			minetest.check_for_falling(pos)
 		end)
 	end,
 })
@@ -247,7 +252,7 @@ end
 -- Check if a node stops a tree from growing.  Torches, plants, wood, tree,
 -- leaves and dirt does not affect tree growth.
 local function node_stops_growth(node)
-	if node.name == 'air' then
+	if node.name == "air" then
 		return false
 	end
 
@@ -457,12 +462,12 @@ function mcl_core.generate_balloon_oak_tree(pos)
 	local s = math.random(1, 12)
 	if s == 1 then
 		-- Small balloon oak
-		path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_balloon.mts"
+		path = modpath .. "/schematics/mcl_core_oak_balloon.mts"
 		offset = { x = -2, y = -1, z = -2 }
 	else
 		-- Large balloon oak
 		local t = math.random(1, 4)
-		path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_large_"..t..".mts"
+		path = modpath .. "/schematics/mcl_core_oak_large_"..t..".mts"
 		if t == 1 or t == 3 then
 			offset = { x = -3, y = -1, z = -3 }
 		elseif t == 2 or t == 4 then
@@ -473,16 +478,16 @@ function mcl_core.generate_balloon_oak_tree(pos)
 end
 
 -- Oak
-function mcl_core.generate_oak_tree(pos)
-	local path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_classic.mts"
-	local offset = { x = -2, y = -1, z = -2 }
+local path_oak_tree = modpath.."/schematics/mcl_core_oak_classic.mts"
 
-	minetest.place_schematic(vector.add(pos, offset), path, "random", nil, false)
+function mcl_core.generate_oak_tree(pos)
+	local offset = { x = -2, y = -1, z = -2 }
+	minetest.place_schematic(vector.add(pos, offset), path_oak_tree, "random", nil, false)
 end
 
 -- Birch
 function mcl_core.generate_birch_tree(pos)
-	local path = minetest.get_modpath("mcl_core") ..
+	local path = modpath ..
 		"/schematics/mcl_core_birch.mts"
 	minetest.place_schematic({x = pos.x - 2, y = pos.y - 1, z = pos.z - 2}, path, "random", nil, false)
 end
@@ -596,7 +601,7 @@ end
 
 function mcl_core.generate_spruce_tree(pos)
 	local r = math.random(1, 3)
-	local path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_spruce_"..r..".mts"
+	local path = modpath .. "/schematics/mcl_core_spruce_"..r..".mts"
 	minetest.place_schematic({ x = pos.x - 3, y = pos.y - 1, z = pos.z - 3 }, path, "0", nil, false)
 end
 
@@ -607,13 +612,13 @@ function mcl_core.generate_huge_spruce_tree(pos)
 	local offset = { x = -4, y = -1, z = -5 }
 	if r1 <= 2 then
 		-- Mega Spruce Taiga (full canopy)
-		path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_spruce_huge_"..r2..".mts"
+		path = modpath.."/schematics/mcl_core_spruce_huge_"..r2..".mts"
 	else
 		-- Mega Taiga (leaves only at top)
 		if r2 == 1 or r2 == 3 then
 			offset = { x = -3, y = -1, z = -4}
 		end
-		path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_spruce_huge_up_"..r2..".mts"
+		path = modpath.."/schematics/mcl_core_spruce_huge_up_"..r2..".mts"
 	end
 	minetest.place_schematic(vector.add(pos, offset), path, "0", nil, false)
 end
@@ -631,15 +636,14 @@ function mcl_core.generate_acacia_tree(pos)
 	elseif r == 1 or r == 5 then
 		offset = { x = -5, y = -1, z = -5 }
 	end
-	local path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_acacia_"..r..".mts"
+	local path = modpath.."/schematics/mcl_core_acacia_"..r..".mts"
 	minetest.place_schematic(vector.add(pos, offset), path, "random", nil, false)
 end
 
 -- Generate dark oak tree with 2×2 trunk.
 -- With pos being the lower X and the higher Z value of the trunk
 function mcl_core.generate_dark_oak_tree(pos)
-	local path = minetest.get_modpath("mcl_core") ..
-		"/schematics/mcl_core_dark_oak.mts"
+	local path = modpath.."/schematics/mcl_core_dark_oak.mts"
 	minetest.place_schematic({x = pos.x - 3, y = pos.y - 1, z = pos.z - 4}, path, "random", nil, false)
 end
 
@@ -739,8 +743,7 @@ function mcl_core.generate_v6_jungle_tree(pos)
 end
 
 function mcl_core.generate_jungle_tree(pos)
-	local path = minetest.get_modpath("mcl_core") ..
-		"/schematics/mcl_core_jungle_tree.mts"
+	local path = modpath.."/schematics/mcl_core_jungle_tree.mts"
 	minetest.place_schematic({x = pos.x - 2, y = pos.y - 1, z = pos.z - 2}, path, "random", nil, false)
 end
 
@@ -749,8 +752,7 @@ end
 function mcl_core.generate_huge_jungle_tree(pos)
 	-- 2 variants
 	local r = math.random(1, 2)
-	local path = minetest.get_modpath("mcl_core") ..
-		"/schematics/mcl_core_jungle_tree_huge_"..r..".mts"
+	local path = modpath.."/schematics/mcl_core_jungle_tree_huge_"..r..".mts"
 	minetest.place_schematic({x = pos.x - 6, y = pos.y - 1, z = pos.z - 7}, path, "random", nil, false)
 end
 
@@ -1240,7 +1242,7 @@ minetest.register_abm({
 		if not mcl_core.check_vines_supported(pos, node) then
 			minetest.remove_node(pos)
 			vinedecay_particles(pos, node)
-			core.check_for_falling(pos)
+			minetest.check_for_falling(pos)
 			return
 		end
 
@@ -1335,9 +1337,8 @@ mcl_core.leafdecay_enable_cache = true
 mcl_core.leafdecay_trunk_find_allow_accumulator = 0
 
 minetest.register_globalstep(function(dtime)
-	local finds_per_second = 5000
-	mcl_core.leafdecay_trunk_find_allow_accumulator =
-			math.floor(dtime * finds_per_second)
+	--local finds_per_second = 5000
+	mcl_core.leafdecay_trunk_find_allow_accumulator = math.floor(dtime * 5000)
 end)
 
 minetest.register_abm({
@@ -1403,7 +1404,7 @@ minetest.register_abm({
 			-- Remove node
 			minetest.remove_node(p0)
 			leafdecay_particles(p0, n0)
-			core.check_for_falling(p0)
+			minetest.check_for_falling(p0)
 
 			-- Kill depending vines immediately to skip the vines decay delay
 			local surround = {
@@ -1420,7 +1421,7 @@ minetest.register_abm({
 				if maybe_vine.name == "mcl_core:vine" and (not mcl_core.check_vines_supported(spos, maybe_vine)) then
 					minetest.remove_node(spos)
 					vinedecay_particles(spos, maybe_vine)
-					core.check_for_falling(spos)
+					minetest.check_for_falling(spos)
 				end
 			end
 		end
@@ -1444,7 +1445,7 @@ minetest.register_abm({
 			minetest.remove_node(p0)
 			vinedecay_particles(p0, node)
 			-- Just in case a falling node happens to float above vines
-			core.check_for_falling(p0)
+			minetest.check_for_falling(p0)
 		end
 	end
 })

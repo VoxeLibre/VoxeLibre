@@ -1,4 +1,6 @@
-local S = minetest.get_translator("mesecons_noteblock")
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local math = math
 
 minetest.register_node("mesecons_noteblock:noteblock", {
 	description = S("Note Block"),
@@ -28,7 +30,7 @@ S("The note block will only play a note when it is below air, otherwise, it stay
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	is_ground_content = false,
 	place_param2 = 0,
-	on_rightclick = function (pos, node, clicker) -- change sound when rightclicked
+	on_rightclick = function(pos, node, clicker) -- change sound when rightclicked
 		local protname = clicker:get_player_name()
 		if minetest.is_protected(pos, protname) then
 			minetest.record_protection_violation(pos, protname)
@@ -38,12 +40,12 @@ S("The note block will only play a note when it is below air, otherwise, it stay
 		mesecon.noteblock_play(pos, node.param2)
 		minetest.set_node(pos, node)
 	end,
-	on_punch = function (pos, node) -- play current sound when punched
+	on_punch = function(pos, node) -- play current sound when punched
 		mesecon.noteblock_play(pos, node.param2)
 	end,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	mesecons = {effector = { -- play sound when activated
-		action_on = function (pos, node)
+		action_on = function(pos, node)
 			mesecon.noteblock_play(pos, node.param2)
 		end,
 		rules = mesecon.rules.alldirs,
@@ -53,7 +55,7 @@ S("The note block will only play a note when it is below air, otherwise, it stay
 })
 
 minetest.register_craft({
-	output = '"mesecons_noteblock:noteblock" 1',
+	output = "mesecons_noteblock:noteblock",
 	recipe = {
 		{"group:wood", "group:wood", "group:wood"},
 		{"group:wood", "mesecons:redstone", "group:wood"},
@@ -124,7 +126,11 @@ local function param2_to_note_color(param2)
 	return string.format("#%06X", color)
 end
 
-mesecon.noteblock_play = function (pos, param2)
+local function param2_to_pitch(param2)
+    return 2^((param2-12)/12)
+end
+
+function mesecon.noteblock_play(pos, param2)
 	local block_above_name = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z}).name
 	if block_above_name ~= "air" then
 		-- Don't play sound if no air is above
@@ -132,9 +138,6 @@ mesecon.noteblock_play = function (pos, param2)
 	end
 
 	local block_below_name = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name
-	local param2_to_pitch = function(param2)
-		return 2^((param2-12)/12)
-	end
 	local pitched = false
 	local soundname, pitch
 	if block_below_name == "mcl_core:goldblock" then

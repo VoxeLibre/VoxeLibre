@@ -1,9 +1,10 @@
-local S = minetest.get_translator("mcl_minecarts")
+local modname = minetest.get_current_modname()
+local S = minetest.get_translator(modname)
 
 local has_mcl_wip = minetest.get_modpath("mcl_wip")
 
 mcl_minecarts = {}
-mcl_minecarts.modpath = minetest.get_modpath("mcl_minecarts")
+mcl_minecarts.modpath = minetest.get_modpath(modname)
 mcl_minecarts.speed_max = 10
 mcl_minecarts.check_float_time = 15
 
@@ -204,7 +205,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			rou_pos = vector.round(pos)
 			node = minetest.get_node(rou_pos)
 			local g = minetest.get_item_group(node.name, "connect_to_raillike")
-			if g ~= self._railtype and self._railtype ~= nil then
+			if g ~= self._railtype and self._railtype then
 				-- Detach driver
 				if player then
 					if self._old_pos then
@@ -523,7 +524,7 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	local cart = minetest.add_entity(railpos, entity_id)
 	local railtype = minetest.get_item_group(node.name, "connect_to_raillike")
 	local le = cart:get_luaentity()
-	if le ~= nil then
+	if le then
 		le._railtype = railtype
 	end
 	local cart_dir = mcl_minecarts:get_rail_direction(railpos, {x=1, y=0, z=0}, nil, nil, railtype)
@@ -606,7 +607,7 @@ Register a minecart
 local function register_minecart(itemstring, entity_id, description, tt_help, longdesc, usagehelp, mesh, textures, icon, drop, on_rightclick, on_activate_by_rail, creative)
 	register_entity(entity_id, mesh, textures, drop, on_rightclick, on_activate_by_rail)
 	register_craftitem(itemstring, entity_id, description, tt_help, longdesc, usagehelp, icon, creative)
-	if minetest.get_modpath("doc_identifier") ~= nil then
+	if minetest.get_modpath("doc_identifier") then
 		doc.sub.identifier.register_object(entity_id, "craftitems", itemstring)
 	end
 end

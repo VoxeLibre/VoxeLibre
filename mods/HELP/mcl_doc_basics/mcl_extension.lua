@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_doc_basics")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 doc.add_entry("advanced", "creative", {
 	name = S("Creative Mode"),

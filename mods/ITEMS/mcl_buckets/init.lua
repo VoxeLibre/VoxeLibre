@@ -22,10 +22,10 @@ local get_node_group = minetest.get_node_group
 
 if mod_mcl_core then
 	minetest.register_craft({
-		output = 'mcl_buckets:bucket_empty 1',
+		output = "mcl_buckets:bucket_empty 1",
 		recipe = {
-			{'mcl_core:iron_ingot', '', 'mcl_core:iron_ingot'},
-			{'', 'mcl_core:iron_ingot', ''},
+			{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
+			{"", "mcl_core:iron_ingot", ""},
 		}
 	})
 end
@@ -247,7 +247,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 		-- Check if pointing to a liquid source
 		local liquiddef = mcl_buckets.liquids[nn]
 		local new_bucket
-		if liquiddef ~= nil and liquiddef.itemname ~= nil and (nn == liquiddef.source_take) then
+		if liquiddef and liquiddef.itemname and (nn == liquiddef.source_take) then
 
 			-- Fill bucket, but not in Creative Mode
 			if not minetest.is_creative_enabled(user:get_player_name()) then
@@ -372,7 +372,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 
 		local liquiddef = mcl_buckets.liquids[dropnode.name]
 		local new_bucket
-		if liquiddef ~= nil and liquiddef.itemname ~= nil and (dropnode.name  == liquiddef.source_take) then
+		if liquiddef and liquiddef.itemname and (dropnode.name  == liquiddef.source_take) then
 			-- Fill bucket
 			new_bucket = ItemStack({name = liquiddef.itemname})
 			sound_take(dropnode.name, droppos)

@@ -1,6 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### SHEEP
@@ -38,7 +38,7 @@ local rainbow_colors = {
 	"unicolor_red_violet"
 }
 
-if minetest.get_modpath("mcl_wool") ~= nil then
+if minetest.get_modpath("mcl_wool") then
 	colors["unicolor_light_blue"] = { mobs_mc.items.wool_light_blue, "#5050FFD0" }
 end
 

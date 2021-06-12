@@ -1,12 +1,14 @@
 -- Skins for MineClone 2
 
+local modname = minetest.get_current_modname()
+
 mcl_skins = {
 	skins = {}, list = {}, previews = {}, meta = {}, has_preview = {},
-	modpath = minetest.get_modpath("mcl_skins"),
+	modpath = minetest.get_modpath(modname),
 	skin_count = 0, -- counter of _custom_ skins (all skins except character.png)
 }
 
-local S = minetest.get_translator("mcl_skins")
+local S = minetest.get_translator(modname)
 local has_mcl_inventory = minetest.get_modpath("mcl_inventory")
 
 -- load skin list and metadata
@@ -53,7 +55,7 @@ while true do
 
 	data = nil
 	if f then
-		data = minetest.deserialize("return {" .. f:read('*all') .. "}")
+		data = minetest.deserialize("return {" .. f:read("*all") .. "}")
 		f:close()
 	end
 
@@ -138,7 +140,7 @@ minetest.register_on_joinplayer(function(player)
 	local skin_id = player:get_meta():get_string("mcl_skins:skin_id")
 	local set_skin
 	-- do we already have a skin in player attributes?
-	if skin_id ~= nil and skin_id ~= "" then
+	if skin_id and skin_id ~= "" then
 		set_skin = tonumber(skin_id)
 	-- otherwise use random skin if not set
 	end
@@ -220,7 +222,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if mcl_skins.skin_count <= 6 then
 			-- Change skin immediately if there are not many skins
 			mcl_skins.cycle_skin(player)
-			if player:get_attach() ~= nil then
+			if player:get_attach() then
 				mcl_player.player_set_animation(player, "sit")
 			end
 		else

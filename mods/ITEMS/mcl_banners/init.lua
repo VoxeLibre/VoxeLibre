@@ -1,5 +1,10 @@
-local S = minetest.get_translator("mcl_banners")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
 local N = function(s) return s end
+
+local mod_mcl_core = minetest.get_modpath("mcl_core")
+local mod_doc = minetest.get_modpath("doc")
 
 local node_sounds
 if minetest.get_modpath("mcl_sounds") then
@@ -84,7 +89,7 @@ for k,v in pairs(mcl_banners.colors) do
 end
 
 -- Add pattern/emblazoning crafting recipes
-dofile(minetest.get_modpath("mcl_banners").."/patterncraft.lua")
+dofile(modpath.."/patterncraft.lua")
 
 -- Overlay ratios (0-255)
 local base_color_ratio = 224
@@ -93,11 +98,11 @@ local layer_ratio = 255
 local standing_banner_entity_offset = { x=0, y=-0.499, z=0 }
 local hanging_banner_entity_offset = { x=0, y=-1.7, z=0 }
 
-local rotation_level_to_yaw = function(rotation_level)
+local function rotation_level_to_yaw(rotation_level)
 	return (rotation_level * (math.pi/8)) + math.pi
 end
 
-local on_dig_banner = function(pos, node, digger)
+local function on_dig_banner(pos, node, digger)
 	-- Check protection
 	local name = digger:get_player_name()
 	if minetest.is_protected(pos, name) then
@@ -116,7 +121,7 @@ local on_dig_banner = function(pos, node, digger)
 	minetest.remove_node(pos)
 end
 
-local on_destruct_banner = function(pos, hanging)
+local function on_destruct_banner(pos, hanging)
 	local offset, nodename
 	if hanging then
 		offset = hanging_banner_entity_offset
@@ -136,15 +141,15 @@ local on_destruct_banner = function(pos, hanging)
 	end
 end
 
-local on_destruct_standing_banner = function(pos)
+local function on_destruct_standing_banner(pos)
 	return on_destruct_banner(pos, false)
 end
 
-local on_destruct_hanging_banner = function(pos)
+local function on_destruct_hanging_banner(pos)
 	return on_destruct_banner(pos, true)
 end
 
-local make_banner_texture = function(base_color, layers)
+local function make_banner_texture(base_color, layers)
 	local colorize
 	if mcl_banners.colors[base_color] then
 		colorize = mcl_banners.colors[base_color][4]
@@ -174,7 +179,7 @@ local make_banner_texture = function(base_color, layers)
 	end
 end
 
-local spawn_banner_entity = function(pos, hanging, itemstack)
+local function spawn_banner_entity(pos, hanging, itemstack)
 	local banner
 	if hanging then
 		banner = minetest.add_entity(pos, "mcl_banners:hanging_banner")
@@ -190,7 +195,7 @@ local spawn_banner_entity = function(pos, hanging, itemstack)
 	local colorid = colors_reverse[itemstack:get_name()]
 	banner:get_luaentity():_set_textures(colorid, layers)
 	local mname = imeta:get_string("name")
-	if mname ~= nil and mname ~= "" then
+	if mname and mname ~= "" then
 		banner:get_luaentity()._item_name = mname
 		banner:get_luaentity()._item_description = imeta:get_string("description")
 	end
@@ -198,7 +203,7 @@ local spawn_banner_entity = function(pos, hanging, itemstack)
 	return banner
 end
 
-local respawn_banner_entity = function(pos, node, force)
+local function respawn_banner_entity(pos, node, force)
 	local hanging = node.name == "mcl_banners:hanging_banner"
 	local offset
 	if hanging then
@@ -542,7 +547,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 			end
 			meta:set_int("rotation_level", rotation_level)
 
-			if banner_entity ~= nil then
+			if banner_entity then
 				banner_entity:set_yaw(final_yaw)
 			end
 
@@ -568,7 +573,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 		end,
 	})
 
-	if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_wool") then
+	if mod_mcl_core and minetest.get_modpath("mcl_wool") then
 		minetest.register_craft({
 			output = itemstring,
 			recipe = {
@@ -579,14 +584,14 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 		})
 	end
 
-	if minetest.get_modpath("doc") then
+	if mod_doc then
 		-- Add item to node alias
 		doc.add_entry_alias("nodes", "mcl_banners:standing_banner", "craftitems", itemstring)
 	end
     end
 end
 
-if minetest.get_modpath("doc") then
+if mod_doc then
 	-- Add item to node alias
 	doc.add_entry_alias("nodes", "mcl_banners:standing_banner", "nodes", "mcl_banners:hanging_banner")
 end

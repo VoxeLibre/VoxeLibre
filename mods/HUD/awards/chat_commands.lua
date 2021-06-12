@@ -14,7 +14,7 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
-local S = minetest.get_translator("awards")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 minetest.register_chatcommand("awards", {
 	params = S("[c|clear|disable|enable]"),

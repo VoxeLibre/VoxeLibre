@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mesecons_pistons")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local PISTON_MAXIMUM_PUSH = 12
 
@@ -66,7 +66,7 @@ local function piston_remove_pusher(pos, oldnode)
 
 	if pushername == pistonspec.pusher then -- make sure there actually is a pusher
 		minetest.remove_node(pusherpos)
-		core.check_for_falling(pusherpos)
+		minetest.check_for_falling(pusherpos)
 		minetest.sound_play("piston_retract", {
 			pos = pos,
 			max_hear_distance = 31,
@@ -87,7 +87,7 @@ local function piston_remove_base(pos, oldnode)
 
 	if basename == pistonspec.onname then -- make sure there actually is a base node
 		minetest.remove_node(basepos)
-		core.check_for_falling(basepos)
+		minetest.check_for_falling(basepos)
 		minetest.sound_play("piston_retract", {
 			pos = pos,
 			max_hear_distance = 31,
@@ -865,7 +865,7 @@ mesecon.register_mvps_stopper("mesecons_pistons:piston_down_sticky_on")
 
 --craft recipes
 minetest.register_craft({
-	output = 'mesecons_pistons:piston_normal_off',
+	output = "mesecons_pistons:piston_normal_off",
 	recipe = {
 		{"group:wood", "group:wood", "group:wood"},
 		{"mcl_core:cobble", "mcl_core:iron_ingot", "mcl_core:cobble"},
