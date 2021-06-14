@@ -77,10 +77,11 @@ end
 local pointable_sources = {}
 
 local function bucket_raycast(user)
-	local pos = user:get_pos()
+	--local pos = user:get_pos()
+	local pos = mcl_util.get_object_center(user)
 	pos.y = pos.y + user:get_properties().eye_height
 	local look_dir = user:get_look_dir()
-	look_dir = vector.multiply(look_dir, 6)
+	look_dir = vector.multiply(look_dir, 4)
 	local pos2 = vector.add(pos, look_dir)
 
 	local ray = raycast(pos, pos2, false, true)
