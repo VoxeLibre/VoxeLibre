@@ -9,7 +9,7 @@ if mod_screwdriver then
 end
 
 -- Register tree trunk (wood) and bark
-local function register_tree_trunk(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark, stripped_varient)
+local function register_tree_trunk(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark, stripped_variant)
 	minetest.register_node("mcl_core:"..subname, {
 		description = description_trunk,
 		_doc_items_longdesc = longdesc,
@@ -23,7 +23,7 @@ local function register_tree_trunk(subname, description_trunk, description_bark,
 		on_rotate = on_rotate,
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
-		_mcl_stripped_varient = stripped_varient,
+		_mcl_stripped_variant = stripped_variant,
 	})
 
 	minetest.register_node("mcl_core:"..subname.."_bark", {
@@ -39,7 +39,7 @@ local function register_tree_trunk(subname, description_trunk, description_bark,
 		on_rotate = on_rotate,
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
-		_mcl_stripped_varient = stripped_varient.."_bark",
+		_mcl_stripped_variant = stripped_variant.."_bark",
 	})
 
 	minetest.register_craft({
