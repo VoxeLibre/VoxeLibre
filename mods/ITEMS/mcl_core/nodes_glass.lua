@@ -5,10 +5,11 @@ local mod_doc = minetest.get_modpath("doc")
 minetest.register_node("mcl_core:glass", {
 	description = S("Glass"),
 	_doc_items_longdesc = S("A decorative and mostly transparent block."),
-	drawtype = "glasslike",
+	drawtype = "glasslike_framed_optional",
 	is_ground_content = false,
-	tiles = {"default_glass.png"},
+	tiles = {"default_glass.png", "default_glass_detail.png"},
 	paramtype = "light",
+	paramtype2 = "glasslikeliquidlevel",
 	sunlight_propagates = true,
 	stack_max = 64,
 	groups = {handy=1, glass=1, building_block=1, material_glass=1},
