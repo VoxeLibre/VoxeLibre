@@ -191,22 +191,15 @@ minetest.register_globalstep(function(dtime)
 				if vector.length(player_velocity) < 40 then
 					local add_velocity = player.add_velocity or player.add_player_velocity
 					add_velocity(player, vector.multiply(player:get_look_dir(), 4))
-					minetest.add_particlespawner({
-						amount = 1,
-						time = 0.1,
-						minpos = fly_pos,
-						maxpos = fly_pos,
-						minvel = {x = 0, y = 0, z = 0},
-						maxvel = {x = 0, y = 0, z = 0},
-						minacc = {x = 0, y = 0, z = 0},
-						maxacc = {x = 0, y = 0, z = 0},
-						minexptime = 0.3,
-						maxexptime = 0.5,
-						minsize = 1,
-						maxsize = 2.5,
+					add_particle({
+						pos = fly_pos,
+						velocity = {x = 0, y = 0, z = 0},
+						acceleration = {x = 0, y = 0, z = 0},
+						expirationtime = math.random(0.3, 0.5),
+						size = math.random(1, 2),
 						collisiondetection = false,
 						vertical = false,
-						texture = "mcl_particles_crit.png^[colorize:#bc7a57:127",
+						texture = "mcl_particles_bonemeal.png^[colorize:#bc7a57:127",
 						glow = 5,
 					})
 				end
