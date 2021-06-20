@@ -127,9 +127,11 @@ local piglin = {
 					self.state = "stand"
 				end
 				local c_pos = self.object:get_pos()
-				self.what_traded = trading_items[math.random(#trading_items)]
-				for x = 1, math.random(self.what_traded.amount_min, self.what_traded.amount_max) do
-					minetest.add_item({x=math.random(c_pos.x - 1, c_pos.x + 1), y=math.random(c_pos.y - 1, c_pos.y + 1), z= math.random(c_pos.z - 1, c_pos.z + 1)}, self.what_traded.itemstring)
+				if c_pos then
+					self.what_traded = trading_items[math.random(#trading_items)]
+					for x = 1, math.random(self.what_traded.amount_min, self.what_traded.amount_max) do
+						minetest.add_item({x=math.random(c_pos.x - 1, c_pos.x + 1), y=math.random(c_pos.y - 1, c_pos.y + 1), z= math.random(c_pos.z - 1, c_pos.z + 1)}, self.what_traded.itemstring)
+					end
 				end
 			end)
 		end
