@@ -125,6 +125,9 @@ mobs.set_yaw_while_attacking = function(self)
 	pos1.y = 0
 
 	local pos2 = self.attacking:get_pos()
+	if not pos2 then
+		return
+	end
 	pos2.y = 0
 
 	local new_direction = vector_direction(pos1,pos2)
