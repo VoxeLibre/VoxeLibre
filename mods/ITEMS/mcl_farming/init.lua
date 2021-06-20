@@ -27,3 +27,6 @@ dofile(minetest.get_modpath("mcl_farming").."/potatoes.lua")
 
 -- ========= BEETROOT =========
 dofile(minetest.get_modpath("mcl_farming").."/beetroot.lua")
+
+-- ========= SWEET BERRY =========
+dofile(minetest.get_modpath("mcl_farming").."/sweet_berry.lua")
