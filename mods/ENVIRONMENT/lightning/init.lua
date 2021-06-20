@@ -19,7 +19,6 @@ local set_node = minetest.set_node
 local sound_play = minetest.sound_play
 local add_particlespawner = minetest.add_particlespawner
 local after = minetest.after
-local add_entity = minetest.add_entity
 local get_objects_inside_radius = minetest.get_objects_inside_radius
 local get_item_group = minetest.get_item_group
 
@@ -144,7 +143,7 @@ function lightning.strike(pos)
 		if lua and lua.name == "mobs_mc:pig" then
 			local rot = obj:get_yaw()
 			obj:remove()
-			obj = add_entity(pos2, "mobs_mc:pigman")
+			obj = minetest.add_entity(pos2, "mobs_mc:pigman")
 			obj:set_yaw(rot)
 			-- mooshroom: toggle color red/brown (no damage)
 		elseif lua and lua.name == "mobs_mc:mooshroom" then
@@ -168,7 +167,7 @@ function lightning.strike(pos)
 		elseif lua and lua.name == "mobs_mc:creeper" then
 			local rot = obj:get_yaw()
 			obj:remove()
-			obj = add_entity(pos2, "mobs_mc:creeper_charged")
+			obj = minetest.add_entity(pos2, "mobs_mc:creeper_charged")
 			obj:set_yaw(rot)
 			-- Other objects: Just damage
 		else
@@ -205,16 +204,18 @@ function lightning.strike(pos)
 		if get_node(pos2).name == "air" then
 			-- Low chance for a lightning to spawn skeleton horse + skeletons
 			if skeleton_lightning then
-				add_entity(pos2, "mobs_mc:skeleton_horse")
+				minetest.add_entity(pos2, "mobs_mc:skeleton_horse")
 
 				local angle, posadd
 				angle = math.random(0, math.pi*2)
 				for i=1,3 do
 					posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
 					posadd = vector.normalize(posadd)
-					local mob = add_entity(vector.add(pos2, posadd), "mobs_mc:skeleton")
-					mob:set_yaw(angle-math.pi/2)
-					angle = angle + (math.pi*2) / 3
+					local mob = minetest.add_entity(vector.add(pos2, posadd), "mobs_mc:skeleton")
+					if mob then
+						mob:set_yaw(angle-math.pi/2)
+						angle = angle + (math.pi*2) / 3
+					end
 				end
 
 			-- Cause a fire
