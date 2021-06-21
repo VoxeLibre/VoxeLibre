@@ -32,10 +32,13 @@ end
 mobs.float = function(self)
 
 	local acceleration = self.object:get_acceleration()
-	if acceleration and acceleration.y ~= 0 then
-		self.object:set_acceleration(vector.new(0,0,0))
-	else
+
+	if not acceleration then
 		return
+	end
+
+	if acceleration.y ~= 0 then
+		self.object:set_acceleration({x=0, y=0, z=0})
 	end
 
 	local current_velocity = self.object:get_velocity()
@@ -46,7 +49,7 @@ mobs.float = function(self)
 		z = 0,
 	}
 
-	local new_velocity_addition = vector.subtract(goal_velocity,current_velocity)
+	local new_velocity_addition = vector.subtract(goal_velocity, current_velocity)
 
 	new_velocity_addition.x = 0
 	new_velocity_addition.z = 0
