@@ -12,7 +12,7 @@ for i=0, 3 do
 		paramtype2 = "meshoptions",
 		place_param2 = 3,
 		walkable = false,
-		drop = "mcl_farming:sweet_berry",
+		drop = (i>=2) and ("mcl_farming:sweet_berry" .. (i==3 and " 3" or "")) or "",
 		selection_box = {
 			type = "fixed",
 			fixed = {-6 / 16, -0.5, -6 / 16, 6 / 16, 0.5, 6 / 16},
@@ -45,12 +45,21 @@ minetest.register_craftitem("mcl_farming:sweet_berry", {
 minetest.register_alias("mcl_sweet_berry:sweet_berry", "mcl_farming:sweet_berry")
 
 minetest.register_decoration({
-    deco_type = "simple",
-    place_on = {"mcl_core:dirt_with_grass"},
-    sidelen = 16,
-    noise_params = {offset=0, scale=.45, spread={x=100, y=100, z=100}, seed=354, octaves=3, persist=0.7},
-    biomes = {"Taiga","Forest"},
-    y_max = mcl_vars.mg_overworld_max,
-    y_min = mcl_vars.mg_overworld_min,
-    decoration = "mcl_sweet_berry:sweet_berry_bush_2"
+	deco_type = "simple",
+	place_on = {"mcl_core:dirt_with_grass"},
+	sidelen = 16,
+	noise_params = {
+		offset = 0,
+		scale = 0.001,
+		spread = {x = 100, y = 100, z = 100},
+		seed = 354,
+		octaves = 1,
+		persist = 0.5,
+		lacunarity = 1.0,
+		flags = "absvalue"
+	},
+	biomes = {"Taiga","Forest"},
+	y_max = mcl_vars.mg_overworld_max,
+	y_min = 2,
+	decoration = "mcl_sweet_berry:sweet_berry_bush_3"
 })
