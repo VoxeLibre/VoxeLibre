@@ -129,6 +129,7 @@ end
 local api_path = minetest.get_modpath(minetest.get_current_modname()).."/api/mob_functions/"
 
 --ignite all parts of the api
+dofile(api_path .. "flow_lib.lua")
 dofile(api_path .. "ai.lua")
 dofile(api_path .. "animation.lua")
 dofile(api_path .. "collision.lua")
