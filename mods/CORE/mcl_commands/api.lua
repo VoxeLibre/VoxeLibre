@@ -4,6 +4,8 @@ local S = minetest.get_translator(minetest.get_current_modname())
 --TODO: complex command handling
 --TODO: mc like help system
 
+/setblock non 2 2 0 true {}
+
 mcl_commands.types = {
 	bool = {
 		lengh = 1,
@@ -29,7 +31,17 @@ mcl_commands.types = {
 			end
 		end,
 	},
-	float = {},
+	float = {
+		lengh = 1,
+		msg = S("Invalid integer"),
+		func = function(float)
+			if tonumber(float) then
+				return true, tonumber(float)
+			else
+				return false, nil
+			end
+		end,
+	},
 	word = {},
 	text = {},
 	pos = {
@@ -61,6 +73,7 @@ mcl_commands.types = {
 function mcl_commands.register_complex_command()
 end
 
+--aims to avoid complexity for basic commands while keeping proper messages and privs management
 function mcl_commands.register_basic_command(name, def)
 end
 
