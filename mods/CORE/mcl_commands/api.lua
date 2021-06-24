@@ -1,4 +1,5 @@
 local S = minetest.get_translator(minetest.get_current_modname())
+local C = minetest.colorize
 
 --TODO: like mc error message
 --TODO: complex command handling
@@ -94,11 +95,42 @@ end
 
 --aims to avoid complexity for basic commands while keeping proper messages and privs management
 function mcl_commands.register_basic_command(name, def)
+	local func
+	if def.params then
+		return
+	else
+		func = function(name, param)
+			if param == "" then
+				local out, msg = def.func(name)
+				if out then
+					return true, C(mcl_colors.GRAY, msg) or C(mcl_colors.GRAY, S("succesful"))
+				else
+					return false, C(mcl_colors.RED, msg) or C(mcl_colors.RED, S("failed"))
+				end
+			else
+				return false, C(mcl_colors.RED, S("Invalid command usage"))
+			end
+		end
+	end
+	minetest.register_chatcommand(name, {
+		description = def.desc,
+		privs = def.privs,
+		func = func,
+	})
 end
+
+--[[
+mcl_commands.register_basic_command("test", {
+	description = S("testing command"),
+	params = nil,
+	func = function(name)
+	end,
+})
+]]
 
 function mcl_commands.alias_command(alias, original_name, bypass_setting)
 	if minetest.settings:get_bool("mcl_builtin_commands_overide", true) or bypass_setting then
-		local def = minetest.registered_chatcommands[cmd]
+		local def = minetest.registered_chatcommands[original_name]
 		minetest.register_chatcommand(alias, def)
 		minetest.log("action", string.format("[mcl_commands] Aliasing [%s] command to [%s]", original_name, alias))
 	else
@@ -108,9 +140,9 @@ end
 
 function mcl_commands.rename_command(new_name, original_name, bypass_setting)
 	if minetest.settings:get_bool("mcl_builtin_commands_overide", true) or bypass_setting then
-		local def = minetest.registered_chatcommands[cmd]
-		minetest.register_chatcommand(newname, def)
-		minetest.unregister_chatcommand(cmd)
+		local def = minetest.registered_chatcommands[original_name]
+		minetest.register_chatcommand(new_name, def)
+		minetest.unregister_chatcommand(original_name)
 		minetest.log("action", string.format("[mcl_commands] Renaming [%s] command to [%s]", original_name, new_name))
 	else
 		minetest.log("action", string.format("[mcl_commands] Renaming [%s] command to [%s] skipped according to setting", original_name, new_name))
