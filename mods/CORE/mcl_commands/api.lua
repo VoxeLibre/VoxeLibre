@@ -4,8 +4,6 @@ local S = minetest.get_translator(minetest.get_current_modname())
 --TODO: complex command handling
 --TODO: mc like help system
 
-/setblock non 2 2 0 true {}
-
 mcl_commands.types = {
 	bool = {
 		lengh = 1,
