@@ -42,7 +42,17 @@ mcl_commands.types = {
 			end
 		end,
 	},
-	word = {},
+	word = {
+		lengh = 1,
+		msg = S("Invalid word"),
+		func = function(word)
+			if word then
+				return true, word
+			else
+				return false, nil
+			end
+		end,
+	},
 	text = {},
 	pos = {
 		lengh = 3,
@@ -56,7 +66,18 @@ mcl_commands.types = {
 			end
 		end,
 	},
-	target = {},
+	target = {
+		lengh = 1,
+		msg = S("Invalid target selector"),
+		func = function(target)
+			--mcl_commands.get_target_selector(target_selector)
+			if minetest.player_exists(target) then
+				return true, target
+			else
+				return false, nil
+			end
+		end,
+	},
 	playername = {
 		lengh = 1,
 		msg = S("Invalid player name"),
