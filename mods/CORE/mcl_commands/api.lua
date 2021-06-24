@@ -1,10 +1,12 @@
+local S = minetest.get_translator(minetest.get_current_modname())
+
 --TODO: like mc error message
 --TODO: complex command handling
 
 mcl_commands.types = {
 	bool = {
 		lengh = 1,
-		msg = "Invalid boolean",
+		msg = S("Invalid boolean"),
 		func = function(word)
 			if word == "true" then
 				return true, true
@@ -17,7 +19,7 @@ mcl_commands.types = {
 	},
 	int = {
 		lengh = 1,
-		msg = "Invalid integer",
+		msg = S("Invalid integer"),
 		func = function(int)
 			if tonumber(int) and tonumber(int) == math.round(int) then
 				return true, tonumber(int)
@@ -31,8 +33,9 @@ mcl_commands.types = {
 	text = {},
 	pos = {
 		lengh = 3,
-		msg = "Invalid position",
+		msg = S("Invalid position"),
 		func = function(x, y, z)
+			--FIXME
 			if true then
 				return true, nil
 			else
@@ -41,13 +44,23 @@ mcl_commands.types = {
 		end,
 	},
 	target = {},
-	playername = {},
+	playername = {
+		lengh = 1,
+		msg = S("Invalid player name"),
+		func = function(name)
+			if minetest.player_exists(name) then
+				return true, name
+			else
+				return false, nil
+			end
+		end,
+	},
 }
 
 function mcl_commands.register_complex_command()
 end
 
-function mcl_commands.register_basic_command(name, table)
+function mcl_commands.register_basic_command(name, def)
 end
 
 function mcl_commands.alias_command(alias, original_name, bypass_setting)
