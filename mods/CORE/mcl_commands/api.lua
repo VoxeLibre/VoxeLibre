@@ -1,10 +1,45 @@
+--TODO: like mc error message
+--TODO: complex command handling
+
 mcl_commands.types = {
-	bool = {},
-	int = {},
+	bool = {
+		lengh = 1,
+		msg = "Invalid boolean",
+		func = function(word)
+			if word == "true" then
+				return true, true
+			elseif world == "false" then
+				return true, false
+			else
+				return false, nil
+			end
+		end,
+	},
+	int = {
+		lengh = 1,
+		msg = "Invalid integer",
+		func = function(int)
+			if tonumber(int) and tonumber(int) == math.round(int) then
+				return true, tonumber(int)
+			else
+				return false, nil
+			end
+		end,
+	},
 	float = {},
 	word = {},
 	text = {},
-	pos = {},
+	pos = {
+		lengh = 3,
+		msg = "Invalid position",
+		func = function(x, y, z)
+			if true then
+				return true, nil
+			else
+				return false, nil
+			end
+		end,
+	},
 	target = {},
 	playername = {},
 }
@@ -12,7 +47,7 @@ mcl_commands.types = {
 function mcl_commands.register_complex_command()
 end
 
-function mcl_commands.register_basic_command()
+function mcl_commands.register_basic_command(name, table)
 end
 
 function mcl_commands.alias_command(alias, original_name, bypass_setting)
