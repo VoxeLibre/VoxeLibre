@@ -90,8 +90,10 @@ mcl_commands.types = {
 	},
 }
 
-function mcl_commands.match_param(string, type, params)
-
+function mcl_commands.match_param(table, index, type, params)
+	local typedef = mcl_commands.types[type]
+	local params = {}
+	typedef.func()
 end
 
 mcl_commands.registered_commands = {}
@@ -103,8 +105,17 @@ end
 function mcl_commands.register_basic_command(name, def)
 	local func
 	if def.params then
-		local funcparams = ""
-		return
+		func = function(name, param)
+			local funcparams = {}
+			local i = 0
+			for str in string.gmatch(params, "([^ ]+)") do
+				i = i + 1
+				funcparams[i] = str
+			end
+			for _,type in pairs(def.params) do
+				mcl_commands.match_param(funcparams, index, type, params)
+			end
+		end
 	else
 		mcl_commands.registered_commands[name] = {type = "basic", description = def.desc, privs = def.privs}
 		func = function(name, param)
