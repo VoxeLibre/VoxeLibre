@@ -2,6 +2,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 --TODO: like mc error message
 --TODO: complex command handling
+--TODO: mc like help system
 
 mcl_commands.types = {
 	bool = {
