@@ -71,5 +71,19 @@ function mcl_commands.rename_command(new_name, original_name, bypass_setting)
 	end
 end
 
+
+--0: succesfull, table
+--1: not connected player, nil
+--2: invalid target selector, nil
 function mcl_commands.get_target_selector(target_selector)
+	if minetest.player_exists(target_selector) then
+		local obj = minetest.get_player_by_name(target_selector)
+		if obj then
+			return 0, {obj}
+		else
+			return 1, nil
+		end
+	else
+		return 0, {}
+	end
 end
