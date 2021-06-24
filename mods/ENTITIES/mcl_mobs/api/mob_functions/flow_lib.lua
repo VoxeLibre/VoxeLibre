@@ -1,25 +1,24 @@
 --this is from https://github.com/HybridDog/builtin_item/blob/e6dfd9dce86503b3cbd1474257eca5f6f6ca71c2/init.lua#L50
 local
-minetest,vector,math,pairs,minetest_get_node,vector_subtract,minetest_registered_nodes
+pairs, minetest_get_node, vector_subtract, minetest_registered_nodes
 =
-minetest,vector,math,pairs,minetest.get_node,vector.subtract,minetest.registered_nodes
+pairs, minetest.get_node, vector.subtract, minetest.registered_nodes
 
-local tab
-local n
 local function get_nodes(pos)
-	tab,n = {},1
-	for i = -1,1,2 do
-		for _,p in pairs({
-			{x=pos.x+i, y=pos.y, z=pos.z},
-			{x=pos.x, y=pos.y, z=pos.z+i}
-		}) do
-			tab[n] = {p, minetest_get_node(p)}
-			n = n+1
-		end
-	end
-	return tab
+	local x, y, z = pos.x, pos.y, pos.z
+	local node1, node2, node3, node4 =
+		{x = x - 1, y = y, z = z    },
+		{x = x,     y = y, z = z - 1},
+		{x = x + 1, y = y, z = z    },
+		{x = x,     y = y, z = z + 1}
+	local nodes = {
+		 {node1, minetest_get_node(node1)},
+		 {node2, minetest_get_node(node2)},
+		 {node3, minetest_get_node(node3)},
+		 {node4, minetest_get_node(node4)}
+	}
+	return nodes
 end
-
 
 local data
 local param2

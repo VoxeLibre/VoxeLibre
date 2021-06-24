@@ -13,6 +13,8 @@ local DEFAULT_JUMP_HEIGHT = 5
 local DEFAULT_FLOAT_SPEED = 4
 local DEFAULT_CLIMB_SPEED = 3
 
+local flow                = mobs.get_flowing_dir
+
 mobs.stick_in_cobweb = function(self)
 	local current_velocity = self.object:get_velocity()
 
@@ -43,20 +45,24 @@ mobs.float = function(self)
 
 	local current_velocity = self.object:get_velocity()
 
-	local goal_velocity = {
-		x = 0,
-		y = DEFAULT_FLOAT_SPEED,
-		z = 0,
-	}
-
-	local new_velocity_addition = vector.subtract(goal_velocity, current_velocity)
-
-	new_velocity_addition.x = 0
-	new_velocity_addition.z = 0
+	local new_velocity_addition = DEFAULT_FLOAT_SPEED - current_velocity.y
 
 	--smooths out mobs a bit
-	if vector.length(new_velocity_addition) >= 0.0001 then
-		self.object:add_velocity(new_velocity_addition)
+	if new_velocity_addition >= 0.0001 then
+		self.object:add_velocity({x = 0, y = new_velocity_addition, z = 0})
+	end
+
+	--mobs flow from Crafter
+	local pos = self.object:get_pos()
+	if pos then
+		local flow_dir = flow(pos)
+		if flow_dir then
+			flow_dir = vector.multiply(flow_dir,10)
+			local vel = self.object:get_velocity()
+			local acceleration = vector.new(flow_dir.x-vel.x,flow_dir.y-vel.y,flow_dir.z-vel.z)
+			acceleration = vector.multiply(acceleration, 0.1)
+			self.object:add_velocity(acceleration)
+		end
 	end
 end
 
