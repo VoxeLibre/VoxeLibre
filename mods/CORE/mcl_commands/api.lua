@@ -103,7 +103,7 @@ end
 function mcl_commands.register_basic_command(name, def)
 	local func
 	if def.params then
-		local funcparams = 
+		local funcparams = ""
 		return
 	else
 		mcl_commands.registered_commands[name] = {type = "basic", description = def.desc, privs = def.privs}
