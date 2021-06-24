@@ -90,6 +90,12 @@ mcl_commands.types = {
 	},
 }
 
+function mcl_commands.match_param(string, type, params)
+
+end
+
+mcl_commands.registered_commands = {}
+
 function mcl_commands.register_complex_command()
 end
 
@@ -97,8 +103,10 @@ end
 function mcl_commands.register_basic_command(name, def)
 	local func
 	if def.params then
+		local funcparams = 
 		return
 	else
+		mcl_commands.registered_commands[name] = {type = "basic", description = def.desc, privs = def.privs}
 		func = function(name, param)
 			if param == "" then
 				local out, msg = def.func(name)
@@ -127,6 +135,17 @@ mcl_commands.register_basic_command("test", {
 	end,
 })
 ]]
+
+mcl_commands.register_basic_command("testb", {
+	description = S("testing command"),
+	params = {
+		{type="bool"},
+		{type="int", params={min=1, max=10}}
+	},
+	func = function(name, bool, int)
+		return true, "test: "..int
+	end,
+})
 
 function mcl_commands.alias_command(alias, original_name, bypass_setting)
 	if minetest.settings:get_bool("mcl_builtin_commands_overide", true) or bypass_setting then
