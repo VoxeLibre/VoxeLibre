@@ -92,8 +92,12 @@ mcl_commands.types = {
 
 function mcl_commands.match_param(table, index, type, params)
 	local typedef = mcl_commands.types[type]
-	local params = {}
-	typedef.func()
+	if typedef.lengh > 1 then
+		return
+	else
+		local params = {}
+		typedef.func()
+	end
 end
 
 mcl_commands.registered_commands = {}
