@@ -155,7 +155,7 @@ end
 local custom_crafts, craft_types = {}, {}
 
 function mcl_craftguide.register_craft_type(name, def)
-	local func = "mcl_craftguide.register_craft_guide(): "
+	local func = "mcl_craftguide.register_craft_type(): "
 	assert(name, func .. "'name' field missing")
 	assert(def.description, func .. "'description' field missing")
 	assert(def.icon, func .. "'icon' field missing")
