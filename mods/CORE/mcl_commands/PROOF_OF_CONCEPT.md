@@ -41,11 +41,11 @@ mcl_commands.register_command("test", {
 
 #### As a player:
 ```
-mcl_commands.execute_command("test", "foo bar true 1", {commander=player, pos=player:get_pos()})
+mcl_commands.execute_command("test", "foo bar true 1", {type="player", commander=player, pos=player:get_pos()})
 ```
 #### As a command block:
 ```
-mcl_commands.execute_command("test", "foo bar true 1", {commander=commander, pos=node_pos})
+mcl_commands.execute_command("test", "foo bar true 1", {type="commandblock", commander=commander, pos=node_pos})
 ```
 
 ### `mcl_commands.get_target_selector(target_selector)`
