@@ -6,15 +6,8 @@ mcl_death_drop = {}
 
 mcl_death_drop.registered_dropped_lists = {}
 
-function mcl_death_drop.register_dropped_list(inv, listname, drop)
-	table.insert(mcl_death_drop.registered_dropped_lists, {inv = inv, listname = listname, drop = drop})
-end
-
-mcl_death_drop.register_dropped_list("PLAYER", "main", true)
-mcl_death_drop.register_dropped_list("PLAYER", "craft", true)
-mcl_death_drop.register_dropped_list("PLAYER", "armor", true)
-
-minetest.register_on_dieplayer(function(player)
+--This function can be overiden by mods
+function mcl_death_drop.handler(player)
 	local keep = minetest.settings:get_bool("mcl_keepInventory", false)
 	if keep == false then
 		-- Drop inventory, crafting grid and armor
@@ -53,4 +46,16 @@ minetest.register_on_dieplayer(function(player)
 		end
 		mcl_armor.update(player)
 	end
+end
+
+function mcl_death_drop.register_dropped_list(inv, listname, drop)
+	table.insert(mcl_death_drop.registered_dropped_lists, {inv = inv, listname = listname, drop = drop})
+end
+
+mcl_death_drop.register_dropped_list("PLAYER", "main", true)
+mcl_death_drop.register_dropped_list("PLAYER", "craft", true)
+mcl_death_drop.register_dropped_list("PLAYER", "armor", true)
+
+minetest.register_on_dieplayer(function(player)
+	mcl_death_drop.handler(player)
 end)
