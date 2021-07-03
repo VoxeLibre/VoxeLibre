@@ -278,7 +278,7 @@ end
 local function damage_anvil_by_falling(pos, distance)
 	for _,object in pairs(minetest.get_objects_inside_radius(pos, 0.8)) do
 		local entity = object:get_luaentity()
-		if not object:is_player() and entity and entity.name == "__builtin:item" then
+		if entity and entity.name == "__builtin:item" then
 			object:remove()
 		end
 	end
