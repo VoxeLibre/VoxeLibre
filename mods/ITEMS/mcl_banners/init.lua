@@ -573,7 +573,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 		end,
 	})
 
-	if mod_mcl_core and minetest.get_modpath("mcl_wool") then
+	if mod_mcl_core and minetest.get_modpath("mcl_wool") and pattern_name == "" then
 		minetest.register_craft({
 			output = itemstring,
 			recipe = {
