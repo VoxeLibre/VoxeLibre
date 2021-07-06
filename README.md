@@ -77,15 +77,15 @@ To install MineClone 2 (if you haven't already), move this directory into the
 “games” directory of your Minetest data directory. Consult the help of
 Minetest to learn more.
 
-## Reporting bugs
-Please report all bugs and missing Minecraft features here:
+## Useful links
+The MineClone2 repository is hosted at Mesehub. To contribute or report issues, head there.
 
-<https://git.minetest.land/MineClone2/MineClone2/issues>
-
-## Chatting with the community
-Join our discord server at:
-
-<https://discord.gg/xE4z8EEpDC>
+* Mesehub: <https://git.minetest.land/MineClone2/MineClone2>
+* Discord: <https://discord.gg/xE4z8EEpDC>
+* IRC: <https://web.libera.chat/#mineclone2>
+* Matrix: <https://app.element.io/#/room/#mc2:matrix.org>
+* Reddit: <https://www.reddit.com/r/MineClone2/>
+* Minetest forums: <https://forum.minetest.net/viewtopic.php?f=50&t=16407>
 
 ## Project description
 The main goal of **MineClone 2** is to be a clone of Minecraft and to be released as free software.
