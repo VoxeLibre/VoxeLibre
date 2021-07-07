@@ -368,10 +368,10 @@ local function make_stripped_trunk(itemstack, placer, pointed_thing)
         return itemstack
     end
 
-    if noddef._mcl_stripped_varient == nil then
+    if noddef._mcl_stripped_variant == nil then
 		return itemstack
 	else
-		minetest.swap_node(pointed_thing.under, {name=noddef._mcl_stripped_varient, param2=node.param2})
+		minetest.swap_node(pointed_thing.under, {name=noddef._mcl_stripped_variant, param2=node.param2})
 		if not minetest.is_creative_enabled(placer:get_player_name()) then
 			-- Add wear (as if digging a axey node)
 			local toolname = itemstack:get_name()

@@ -1041,7 +1041,7 @@ for i=1,8 do
 		drop = "mcl_throwing:snowball "..(i+1),
 		_mcl_blast_resistance = 0.1,
 		_mcl_hardness = 0.1,
-		_mcl_silk_touch_drop = {"mcl_core:snow " .. (i+1)},
+		_mcl_silk_touch_drop = {"mcl_core:snow " .. i},
 	})
 end
 

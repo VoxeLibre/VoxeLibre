@@ -9,6 +9,8 @@ local minetest_get_item_group               = minetest.get_item_group
 local minetest_get_node                     = minetest.get_node
 local minetest_line_of_sight                = minetest.line_of_sight
 local minetest_get_node_light               = minetest.get_node_light
+local minetest_registered_nodes	            = minetest.registered_nodes
+local flow                                  = mobs.get_flowing_dir
 
 local DOUBLE_PI = math.pi * 2
 local THIRTY_SECONDTH_PI = DOUBLE_PI * 0.03125
@@ -521,8 +523,8 @@ ______ _
 |  _| | | | | |
 | |   | | |_| |
 \_|   |_|\__, |
-		  __/ |
-		 |___/
+	  __/ |
+	 |___/
 ]]--
 
 -- state switching logic (stand, walk, run, attacks)
@@ -675,12 +677,12 @@ end
 --[[
    ___
   |_  |
-	| |_   _ _ __ ___  _ __
-	| | | | | '_ ` _ \| '_ \
+    | |_   _ _ __ ___  _ __
+    | | | | | '_ ` _ \| '_ \
 /\__/ / |_| | | | | | | |_) |
 \____/ \__,_|_| |_| |_| .__/
-					  | |
-					  |_|
+		      | |
+		      |_|
 ]]--
 
 
@@ -787,8 +789,8 @@ ___  ___      _         _                 _
 | |\/| |/ _` | | '_ \  | |    / _ \ / _` | |/ __|
 | |  | | (_| | | | | | | |___| (_) | (_| | | (__
 \_|  |_/\__,_|_|_| |_| \_____/\___/ \__, |_|\___|
-									 __/ |
-									|___/
+				     __/ |
+				    |___/
 ]]--
 
 --the main loop
@@ -1008,6 +1010,19 @@ function mobs.mob_step(self, dtime)
 		if self.hostile_cooldown_timer <= 0 then
 			self.hostile = false
 			self.hostile_cooldown_timer = 0
+		end
+	end
+
+	--mobs flow from Crafter
+	local pos = self.object:get_pos()
+	if pos then
+		local flow_dir = flow(pos)
+		if flow_dir then
+			flow_dir = vector.multiply(flow_dir,10)
+			local vel = self.object:get_velocity()
+			local acceleration = vector.new(flow_dir.x-vel.x,flow_dir.y-vel.y,flow_dir.z-vel.z)
+			acceleration = vector.multiply(acceleration, 0.01)
+			self.object:add_velocity(acceleration)
 		end
 	end
 

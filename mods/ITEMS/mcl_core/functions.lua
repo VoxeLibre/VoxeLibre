@@ -179,7 +179,7 @@ minetest.register_abm({
 		liquid_flow_action(pos, "lava", function(pos)
 			minetest.remove_node(pos)
 			minetest.sound_play("builtin_item_lava", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
-			core.check_for_falling(pos)
+			minetest.check_for_falling(pos)
 		end)
 	end,
 })
@@ -1242,7 +1242,7 @@ minetest.register_abm({
 		if not mcl_core.check_vines_supported(pos, node) then
 			minetest.remove_node(pos)
 			vinedecay_particles(pos, node)
-			core.check_for_falling(pos)
+			minetest.check_for_falling(pos)
 			return
 		end
 
@@ -1404,7 +1404,7 @@ minetest.register_abm({
 			-- Remove node
 			minetest.remove_node(p0)
 			leafdecay_particles(p0, n0)
-			core.check_for_falling(p0)
+			minetest.check_for_falling(p0)
 
 			-- Kill depending vines immediately to skip the vines decay delay
 			local surround = {
@@ -1421,7 +1421,7 @@ minetest.register_abm({
 				if maybe_vine.name == "mcl_core:vine" and (not mcl_core.check_vines_supported(spos, maybe_vine)) then
 					minetest.remove_node(spos)
 					vinedecay_particles(spos, maybe_vine)
-					core.check_for_falling(spos)
+					minetest.check_for_falling(spos)
 				end
 			end
 		end
@@ -1445,7 +1445,7 @@ minetest.register_abm({
 			minetest.remove_node(p0)
 			vinedecay_particles(p0, node)
 			-- Just in case a falling node happens to float above vines
-			core.check_for_falling(p0)
+			minetest.check_for_falling(p0)
 		end
 	end
 })

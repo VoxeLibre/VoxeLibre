@@ -15,11 +15,11 @@ local function active_formspec(fuel_percent, item_percent)
 	"list[current_player;main;0,7.74;9,1;]"..
 	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
 	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Furnace"))).."]"..
-	"list[current_name;src;2.75,0.5;1,1;]"..
+	"list[context;src;2.75,0.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
-	"list[current_name;fuel;2.75,2.5;1,1;]"..
+	"list[context;fuel;2.75,2.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(2.75,2.5,1,1)..
-	"list[current_name;dst;5.75,1.5;1,1;]"..
+	"list[context;dst;5.75,1.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(5.75,1.5,1,1)..
 	"image[2.75,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
 	(100-fuel_percent)..":default_furnace_fire_fg.png]"..
@@ -29,11 +29,11 @@ local function active_formspec(fuel_percent, item_percent)
 	-- TODO: Add it back when the Minetest bug is fixed.
 	--"image_button[8,0;1,1;craftguide_book.png;craftguide;]"..
 	--"tooltip[craftguide;"..minetest.formspec_escape(S("Recipe book")).."]"..
-	"listring[current_name;dst]"..
+	"listring[context;dst]"..
 	"listring[current_player;main]"..
-	"listring[current_name;src]"..
+	"listring[context;src]"..
 	"listring[current_player;main]"..
-	"listring[current_name;fuel]"..
+	"listring[context;fuel]"..
 	"listring[current_player;main]"
 end
 
@@ -44,11 +44,11 @@ local inactive_formspec = "size[9,8.75]"..
 	"list[current_player;main;0,7.74;9,1;]"..
 	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
 	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Furnace"))).."]"..
-	"list[current_name;src;2.75,0.5;1,1;]"..
+	"list[context;src;2.75,0.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
-	"list[current_name;fuel;2.75,2.5;1,1;]"..
+	"list[context;fuel;2.75,2.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(2.75,2.5,1,1)..
-	"list[current_name;dst;5.75,1.5;1,1;]"..
+	"list[context;dst;5.75,1.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(5.75,1.5,1,1)..
 	"image[2.75,1.5;1,1;default_furnace_fire_bg.png]"..
 	"image[4.1,1.5;1.5,1;gui_furnace_arrow_bg.png^[transformR270]"..
@@ -56,11 +56,11 @@ local inactive_formspec = "size[9,8.75]"..
 	-- TODO: Add it back when the Minetest bug is fixed.
 	--"image_button[8,0;1,1;craftguide_book.png;craftguide;]"..
 	--"tooltip[craftguide;"..minetest.formspec_escape(S("Recipe book")).."]"..
-	"listring[current_name;dst]"..
+	"listring[context;dst]"..
 	"listring[current_player;main]"..
-	"listring[current_name;src]"..
+	"listring[context;src]"..
 	"listring[current_player;main]"..
-	"listring[current_name;fuel]"..
+	"listring[context;fuel]"..
 	"listring[current_player;main]"
 
 local receive_fields = function(pos, formname, fields, sender)

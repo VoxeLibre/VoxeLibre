@@ -155,14 +155,16 @@ if minetest.get_modpath("mcl_armor") then
 	pumpkin_face_base_def.on_secondary_use = mcl_armor.equip_on_use
 	pumpkin_face_base_def._on_equip = add_pumpkin_hud
 	pumpkin_face_base_def._on_unequip = remove_pumpkin_hud
-	
+
 	minetest.register_on_joinplayer(function(player)
 		if player:get_inventory():get_stack("armor", 2):get_name() == "mcl_farming:pumpkin_face" then
 			add_pumpkin_hud(player)
 		end
 	end)
 	minetest.register_on_dieplayer(function(player)
-		remove_pumpkin_hud(player)
+		if not minetest.settings:get_bool("mcl_keepInventory") then
+			remove_pumpkin_hud(player)
+		end
 	end)
 	minetest.register_on_leaveplayer(function(player)
 		pumpkin_hud[player] = nil

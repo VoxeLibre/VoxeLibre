@@ -66,7 +66,7 @@ local function piston_remove_pusher(pos, oldnode)
 
 	if pushername == pistonspec.pusher then -- make sure there actually is a pusher
 		minetest.remove_node(pusherpos)
-		core.check_for_falling(pusherpos)
+		minetest.check_for_falling(pusherpos)
 		minetest.sound_play("piston_retract", {
 			pos = pos,
 			max_hear_distance = 31,
@@ -87,7 +87,7 @@ local function piston_remove_base(pos, oldnode)
 
 	if basename == pistonspec.onname then -- make sure there actually is a base node
 		minetest.remove_node(basepos)
-		core.check_for_falling(basepos)
+		minetest.check_for_falling(basepos)
 		minetest.sound_play("piston_retract", {
 			pos = pos,
 			max_hear_distance = 31,
