@@ -5,8 +5,32 @@ minetest.register_on_leaveplayer(function(player)
 end)
 
 -- Totem particle registration
--- TODO: real MC colors, these are randomly selected colors:
-local colors = {"#7FFF00", "#698B22", "#BCEE68", "#EEEE00", "#C5F007"}
+function rgb_to_hex(rgb)
+	local hexadecimal = "#"
+
+	for key, value in pairs(rgb) do
+		local hex = ""
+
+		while value > 0 do
+			local index = math.fmod(value, 16) + 1
+			value = math.floor(value / 16)
+			hex = string.sub("0123456789ABCDEF", index, index) .. hex
+		end
+
+		local len = string.len(hex)
+
+		if len == 0 then
+			hex = "00"
+		elseif len == 1 then
+			hex = "0" .. hex
+		end
+
+		hexadecimal = hexadecimal .. hex
+	end
+
+	return hexadecimal
+end
+
 minetest.register_entity("mcl_totems:totem_particle", {
 	physical = true,
 	collide_with_objects = false,
@@ -17,10 +41,16 @@ minetest.register_entity("mcl_totems:totem_particle", {
 	spritediv = {x=1, y=1},
 	initial_sprite_basepos = {x=0, y=0},
 	static_save = false,
-	glow = 5,
+	glow = 14,
 	on_activate = function(self, staticdata)
+		local color
+		if math.random(0, 3) == 0 then
+			color = rgb_to_hex({ (0.6 + math.random() * 0.2) * 255, (0.6 + math.random() * 0.3) * 255, (math.random() * 0.2) * 255 })
+		else
+			color = rgb_to_hex({ (0.1 + math.random() * 0.4) * 255, (0.6 + math.random() * 0.3) * 255, (math.random() * 0.2) * 255 })
+		end
 		self.object:set_properties({
-			textures = {"mcl_particles_totem"..math.random(1, 4)..".png^[colorize:"..colors[math.random(#colors)]}
+			textures = { "mcl_particles_totem"..math.random(1, 4)..".png^[colorize:"..color }
 		})
 		local t = math.random(1, 2)*math.random()
 		minetest.after(t, function()
