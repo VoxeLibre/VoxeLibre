@@ -19,9 +19,9 @@ local function setup_dispenser(pos)
 	"list[current_player;main;0,7.74;9,1;]"..
 	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
 	"label[3,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Dispenser"))).."]"..
-	"list[current_name;main;3,0.5;3,3;]"..
+	"list[context;main;3,0.5;3,3;]"..
 	mcl_formspec.get_itemslot_bg(3,0.5,3,3)..
-	"listring[current_name;main]"..
+	"listring[context;main]"..
 	"listring[current_player;main]"
 	local meta = minetest.get_meta(pos)
 	meta:set_string("formspec", form)

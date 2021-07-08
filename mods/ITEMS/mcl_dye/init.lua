@@ -138,7 +138,7 @@ local function bone_meal_particle(pos)
 		maxvel = { x = 0, y = 0, z = 0},
 		minacc = { x = 0, y = 0, z = 0},
 		maxacc = { x = 0, y = 0, z = 0},
-		minexptime = 1, 
+		minexptime = 1,
 		maxexptime = 4,
 		minsize = 0.7,
 		maxsize = 2.4,

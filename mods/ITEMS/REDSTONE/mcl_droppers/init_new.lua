@@ -19,8 +19,8 @@ local function setup_dropper(pos)
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
 	"label[3,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Dropper"))).."]"..
-	"list[current_name;main;3,0.5;3,3;]"..
-	"listring[current_name;main]"..
+	"list[context;main;3,0.5;3,3;]"..
+	"listring[context;main]"..
 	"listring[current_player;main]"
 	local meta = minetest.get_meta(pos)
 	meta:set_string("formspec", form)

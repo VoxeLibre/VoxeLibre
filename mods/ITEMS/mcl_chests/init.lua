@@ -1108,14 +1108,14 @@ local function formspec_shulker_box(name)
 	end
 	return "size[9,8.75]"..
 	"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", name)).."]"..
-	"list[current_name;main;0,0.5;9,3;]"..
+	"list[context;main;0,0.5;9,3;]"..
 	mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
 	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
 	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-	"listring[current_name;main]"..
+	"listring[context;main]"..
 	"listring[current_player;main]"
 end
 
