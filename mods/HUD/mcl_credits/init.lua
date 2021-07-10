@@ -156,7 +156,16 @@ function mcl_credits.show(player)
 				offset = {x = -5, y = -5},
 				z_index = 1001,
 				number = 0xFFFFFF,
-			})
+			}),
+			player:hud_add({
+				hud_elem_type = "text",
+				text = "  Jump to speed up (additionally sprint)",
+				position = {x = 0, y = 1},
+			 	alignment = {x = 1, y = -1},
+			 	offset = {x = -5, y = -5},
+				z_index = 1002,
+				number = 0xFFFFFF,
+			}),
 		},
 	}
 	add_hud_element({
@@ -216,13 +225,24 @@ end)
 minetest.register_globalstep(function(dtime)
 	for _, huds in pairs(mcl_credits.players) do
 		local player = huds.player
-		if not huds.new and player:get_player_control().sneak then
+		local control = player:get_player_control()
+		if not huds.new and control.sneak then
 			mcl_credits.hide(player)
 		else
 			local moving = {}
 			local any
 			for id, y in pairs(huds.moving) do
-				y = y - 1
+
+				if not control.jump then
+					y = y - 1
+				else
+					if not control.aux1 then
+						y = y - 3
+					else
+						y = y - 8
+					end
+				end
+				
 				if y > -100 then
 					if id == huds.icon then
 						y = math.max(400, y)
