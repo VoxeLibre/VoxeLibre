@@ -142,7 +142,7 @@ function mcl_credits.show(player)
 		ids = {
 			player:hud_add({
 				hud_elem_type = "image",
-				text = "menu_bg.png",
+				text = "credits_bg.png",
 				position = {x = 0, y = 0},
 				alignment = {x = 1, y = 1},
 				scale = {x = -100, y = -100},
