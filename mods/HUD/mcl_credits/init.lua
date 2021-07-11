@@ -232,14 +232,12 @@ minetest.register_globalstep(function(dtime)
 			local moving = {}
 			local any
 			for id, y in pairs(huds.moving) do
-
-				if not control.jump then
-					y = y - 1
-				else
-					if not control.aux1 then
-						y = y - 3
-					else
-						y = y - 8
+				y = y - 1
+				
+				if control.jump then
+					y = y - 2
+					if control.aux1 then
+						y = y - 5
 					end
 				end
 				
