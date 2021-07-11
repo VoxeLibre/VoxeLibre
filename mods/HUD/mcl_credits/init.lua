@@ -1,23 +1,26 @@
+local modname = minetest.get_current_modname()
+local S = minetest.get_translator(modname)
+
 mcl_credits = {
 	players = {},
 }
 
-mcl_credits.description = "A faithful Open Source clone of Minecraft"
+mcl_credits.description = S("A faithful Open Source clone of Minecraft")
 
 -- Sub-lists are sorted by number of commits, but the list should not be rearranged (-> new contributors are just added at the end of the list)
 mcl_credits.people = {
-	{"Creator of MineClone", 0x0A9400, {
+	{ S("Creator of MineClone"), 0x0A9400, {
 		"davedevils",
 	}},
-	{"Creator of MineClone2", 0xFBF837, {
+	{ S("Creator of MineClone2"), 0xFBF837, {
 		"Wuzzy",
 	}},
-	{"Maintainers", 0xFF51D5, {
+	{ S("Maintainers"), 0xFF51D5, {
 		"Fleckenstein",
 		"kay27",
 		"oilboi",
 	}},
-	{"Developers", 0xF84355, {
+	{ S("Developers"), 0xF84355, {
 		"bzoss",
 		"AFCMS",
 		"epCode",
@@ -30,7 +33,7 @@ mcl_credits.people = {
 		"Code-Sploit",
 		"NO11",
 	}},
-	{"Contributors", 0x52FF00, {
+	{ S("Contributors"), 0x52FF00, {
 		"Laurent Rocher",
 		"HimbeerserverDE",
 		"TechDudie",
@@ -64,7 +67,7 @@ mcl_credits.people = {
 		"NO11",
 		"j45",
 	}},
-	{"Original Mod Authors", 0x343434, {
+	{ S("Original Mod Authors"), 0x343434, {
 		"Wuzzy",
 		"Fleckenstein",
 		"BlockMen",
@@ -96,12 +99,12 @@ mcl_credits.people = {
 		"jordan4ibanez",
 		"paramat",
 	}},
-	{"3D Models", 0x0019FF, {
+	{ S("3D Models"), 0x0019FF, {
 		"22i",
 		"tobyplowy",
 		"epCode",
 	}},
-	{"Textures", 0xFF9705, {
+	{ S("Textures"), 0xFF9705, {
 		"XSSheep",
 		"Wuzzy",
 		"kingoscargames",
@@ -110,7 +113,7 @@ mcl_credits.people = {
 		"yutyo",
 		"NO11",
 	}},
-	{"Translations", 0x00FF60, {
+	{ S("Translations"), 0x00FF60, {
 		"Wuzzy",
 		"Rocher Laurent",
 		"wuniversales",
@@ -150,7 +153,7 @@ function mcl_credits.show(player)
 			}),
 			player:hud_add({
 				hud_elem_type = "text",
-				text = "Sneak to skip",
+				text = S("Sneak to skip"),
 				position = {x = 1, y = 1},
 				alignment = {x = -1, y = -1},
 				offset = {x = -5, y = -5},
@@ -159,7 +162,7 @@ function mcl_credits.show(player)
 			}),
 			player:hud_add({
 				hud_elem_type = "text",
-				text = "  Jump to speed up (additionally sprint)",
+				text = "  "..S("Jump to speed up (additionally sprint)"),
 				position = {x = 0, y = 1},
 			 	alignment = {x = 1, y = -1},
 			 	offset = {x = -5, y = -5},
@@ -233,7 +236,7 @@ minetest.register_globalstep(function(dtime)
 			local any
 			for id, y in pairs(huds.moving) do
 				y = y - 1
-				
+
 				if control.jump then
 					y = y - 2
 					if control.aux1 then
