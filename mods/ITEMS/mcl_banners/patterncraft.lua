@@ -8,9 +8,6 @@ local N = function(s) return s end
 -- Maximum number of layers which can be put on a banner by crafting.
 local max_layers_crafting = 12
 
--- Maximum number of layers when banner includes a gradient (workaround, see below).
-local max_layers_gradient = 3
-
 -- Max. number lines in the descriptions for the banner layers.
 -- This is done to avoid huge tooltips.
 local max_layer_lines = 6
@@ -397,16 +394,6 @@ local function banner_pattern_craft(itemstack, player, old_craft_grid, craft_inv
 	-- Disallow crafting when a certain number of layers is reached or exceeded
 	if #layers >= max_layers_crafting then
 		return ItemStack("")
-	end
-	-- Lower layer limit when banner includes any gradient.
-	-- Workaround to circumvent Minetest bug (https://github.com/minetest/minetest/issues/6210)
-	-- TODO: Remove this restriction when bug #6210 is fixed.
-	if #layers >= max_layers_gradient then
-		for l=1, #layers do
-			if layers[l].pattern == "gradient" or layers[l].pattern == "gradient_up" then
-				return ItemStack("")
-			end
-		end
 	end
 
 	local matching_pattern
