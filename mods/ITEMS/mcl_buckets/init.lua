@@ -153,7 +153,7 @@ function mcl_buckets.register_liquid(def)
 			source_place = def.source_place,
 			source_take = source,
 			on_take = def.on_take,
-			itemname = def.itemname,
+			bucketname = def.bucketname,
 		}
 		pointable_sources[source] = true
 		if type(def.source_place) == "string" then
@@ -161,11 +161,11 @@ function mcl_buckets.register_liquid(def)
 		end
 	end
 
-	if def.itemname == nil or def.itemname == "" then
+	if def.bucketname == nil or def.bucketname == "" then
 		error(string.format("[mcl_bucket] Invalid itemname then registering [%s]!", def.name))
 	end
 
-	minetest.register_craftitem(def.itemname, {
+	minetest.register_craftitem(def.bucketname, {
 		description = def.name,
 		_doc_items_longdesc = def.longdesc,
 		_doc_items_usagehelp = def.usagehelp,
@@ -289,7 +289,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 					-- FIXME: remove this line
 					--if not minetest.is_creative_enabled(user:get_player_name()) then
 					if not false then
-						new_bucket = ItemStack({name = liquid_def.itemname})
+						new_bucket = ItemStack({name = liquid_def.bucketname})
 						if liquid_def.on_take then
 							liquid_def.on_take(user)
 						end
@@ -337,9 +337,9 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 
 		local liquiddef = mcl_buckets.liquids[dropnode.name]
 		local new_bucket
-		if liquiddef and liquiddef.itemname and (dropnode.name  == liquiddef.source_take) then
+		if liquiddef and liquiddef.bucketname and (dropnode.name  == liquiddef.source_take) then
 			-- Fill bucket
-			new_bucket = ItemStack({name = liquiddef.itemname})
+			new_bucket = ItemStack({name = liquiddef.bucketname})
 			sound_take(dropnode.name, droppos)
 			collect_liquid = true
 		end

@@ -34,7 +34,7 @@ if mod_mcl_core then
                 awards.unlock(user:get_player_name(), "mcl:hotStuff")
             end
         end,
-		itemname = "mcl_buckets:bucket_lava",
+		bucketname = "mcl_buckets:bucket_lava",
 		inventory_image = "bucket_lava.png",
 		name = S("Lava Bucket"),
 		longdesc = S("A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution."),
@@ -46,7 +46,7 @@ if mod_mcl_core then
 	mcl_buckets.register_liquid({
 		source_place = "mcl_core:water_source",
 		source_take = {"mcl_core:water_source"},
-		itemname = "mcl_buckets:bucket_water",
+		bucketname = "mcl_buckets:bucket_water",
 		inventory_image = "bucket_water.png",
 		name = S("Water Bucket"),
 		longdesc = S("A bucket can be used to collect and release liquids. This one is filled with water."),
@@ -80,7 +80,7 @@ if mod_mclx_core then
 	mcl_buckets.register_liquid({
 		source_place = "mclx_core:river_water_source",
 		source_take = {"mclx_core:river_water_source"},
-		itemname = "mcl_buckets:bucket_river_water",
+		bucketname = "mcl_buckets:bucket_river_water",
 		inventory_image = "bucket_river_water.png",
 		name = S("River Water Bucket"),
 		longdesc = S("A bucket can be used to collect and release liquids. This one is filled with river water."),
