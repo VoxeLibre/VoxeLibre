@@ -81,7 +81,7 @@ local pointable_sources = {}
 
 local function bucket_raycast(user)
 	--local pos = user:get_pos()
-	local pos = mcl_util.get_object_center(user)
+	local pos = user:get_pos()
 	--local pos = vector.add(user:get_pos(), user:get_bone_position("Head_Control"))
 	pos.y = pos.y + user:get_properties().eye_height
 	local look_dir = user:get_look_dir()
