@@ -182,11 +182,10 @@ function mcl_buckets.register_liquid(itemname, def)
 
 			local undernode = get_node(pointed_thing.under)
 			local abovenode = get_node(pointed_thing.above)
-			local nn = undernode.name
 			local buildable1 = minetest.registered_nodes[undernode.name] and minetest.registered_nodes[undernode.name].buildable_to
 			local buildable2 = minetest.registered_nodes[abovenode.name] and minetest.registered_nodes[abovenode.name].buildable_to
 			if not buildable1 and not buildable2 then return itemstack end --if both nodes aren't buildable_to, skip
-			
+
 			if buildable1 then
 				local result, take_bucket = get_extra_check(def.extra_check, pointed_thing.under, user)
 				if result then
@@ -234,7 +233,6 @@ function mcl_buckets.register_liquid(itemname, def)
 			end
 		end,
 		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
-			local iname = stack:get_name()
 			local buildable = minetest.registered_nodes[dropnode.name].buildable_to or dropnode.name == "mcl_portals:portal"
 			if not buildable then return stack end
 			local result, take_bucket = get_extra_check(def.extra_check, droppos, nil)
