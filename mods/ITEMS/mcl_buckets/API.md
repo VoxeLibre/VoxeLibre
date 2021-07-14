@@ -1,18 +1,15 @@
 # mcl_buckets
 Add an API to register buckets to mcl
 
-## mcl_buckets.register_liquid(itemname, def)
+## mcl_buckets.register_liquid(def)
 
-Register a new bucket of liquid.
-
-`itemname` is the itemstring of the new bucket item
-
-`def` is a table containing the folowing fields:
-
+Register a new liquid
+Accept folowing params:
 * source_place: a string or function.
 	* string: name of the node to place
 	* function(pos): will returns name of the node to place with pos being the placement position
 * source_take: table of liquid source node names to take
+* itemname: itemstring of the new bucket item (or nil if liquid is not takeable)
 * inventory_image: texture of the new bucket item (ignored if itemname == nil)
 * name: user-visible bucket description
 * longdesc: long explanatory description (for help)
@@ -24,7 +21,8 @@ Register a new bucket of liquid.
 
 **Usage exemple:**
 ```lua
-mcl_buckets.register_liquid("dummy:bucket_dummy", {
+mcl_buckets.register_liquid({
+	itemname = "dummy:bucket_dummy",
 	--source_place = "dummy:dummy_source",
 	source_place = function(pos)
 		if condition then

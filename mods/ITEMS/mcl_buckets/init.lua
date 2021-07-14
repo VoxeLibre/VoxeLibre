@@ -147,13 +147,13 @@ local function get_bucket_drop(itemstack, user, take_bucket)
 	end
 end
 
-function mcl_buckets.register_liquid(itemname, def)
+function mcl_buckets.register_liquid(def)
 	for _,source in ipairs(def.source_take) do
 		mcl_buckets.liquids[source] = {
 			source_place = def.source_place,
 			source_take = source,
 			on_take = def.on_take,
-			itemname = itemname,
+			itemname = def.itemname,
 		}
 		pointable_sources[source] = true
 		if type(def.source_place) == "string" then
@@ -161,7 +161,11 @@ function mcl_buckets.register_liquid(itemname, def)
 		end
 	end
 
-	minetest.register_craftitem(itemname, {
+	if def.itemname == nil or def.itemname == "" then
+		error(string.format("[mcl_bucket] Invalid itemname then registering [%s]!", def.name))
+	end
+
+	minetest.register_craftitem(def.itemname, {
 		description = def.name,
 		_doc_items_longdesc = def.longdesc,
 		_doc_items_usagehelp = def.usagehelp,
@@ -231,6 +235,72 @@ function mcl_buckets.register_liquid(itemname, def)
 			else
 				return itemstack
 			end
+
+			-- Check if pointing to a buildable node
+			--local item = itemstack:get_name()
+
+			--[[
+			if buildable_to_1 then
+				if can_place(pos) then
+					Place
+				end
+			else if buildable_to_2 then
+				if can_place2() then
+					Place
+				end
+			end
+			]]
+			--[[
+			if result then -- Fail placement of liquid if result is false
+				local pns = user:get_player_name()
+				if minetest.is_protected(place_pos, pns) then
+					minetest.record_protection_violation(place_pos, pns)
+					return itemstack
+				end
+				place_liquid(place_pos, node_place)
+				if mod_doc and doc.entry_exists("nodes", node_place) then
+					doc.mark_entry_as_revealed(user:get_player_name(), "nodes", node_place)
+				end
+			else
+				-- not buildable to; place the liquid above
+				-- check if the node above can be replaced
+				local abovenode = minetest.get_node(pointed_thing.above)
+				if minetest.registered_nodes[abovenode.name] and minetest.registered_nodes[abovenode.name].buildable_to then
+					local pn = user:get_player_name()
+					if minetest.is_protected(pointed_thing.above, pn) then
+						minetest.record_protection_violation(pointed_thing.above, pn)
+						return itemstack
+					end
+					place_liquid(pointed_thing.above, node_place)
+					if mod_doc and doc.entry_exists("nodes", node_place) then
+						doc.mark_entry_as_revealed(user:get_player_name(), "nodes", node_place)
+					end
+				else
+					-- do not remove the bucket with the liquid
+					return
+				end
+			end
+
+			-- Handle bucket item and inventory stuff
+			if not minetest.is_creative_enabled(user:get_player_name()) then
+				-- Add empty bucket and put it into inventory, if possible.
+				-- Drop empty bucket otherwise.
+				local new_bucket = ItemStack("mcl_buckets:bucket_empty")
+				if itemstack:get_count() == 1 then
+					return new_bucket
+				else
+					local inv = user:get_inventory()
+					if inv:room_for_item("main", new_bucket) then
+						inv:add_item("main", new_bucket)
+					else
+						minetest.add_item(user:get_pos(), new_bucket)
+					end
+					itemstack:take_item()
+					return itemstack
+				end
+			else
+				return
+			end]]
 		end,
 		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
 			local buildable = minetest.registered_nodes[dropnode.name].buildable_to or dropnode.name == "mcl_portals:portal"
@@ -256,6 +326,80 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 	inventory_image = "bucket.png",
 	stack_max = 16,
 	on_place = function(itemstack, user, pointed_thing)
+		--[[-- Must be pointing to node
+		if pointed_thing.type ~= "node" then
+			return itemstack
+		end
+
+		-- Call on_rightclick if the pointed node defines it
+
+
+		local pointed_liquid = bucket_raycast(user)
+
+		-- Can't steal liquids
+		if minetest.is_protected(pointed_liquid.above, user:get_player_name()) then
+			minetest.record_protection_violation(pointed_liquid.under, user:get_player_name())
+			return itemstack
+		end
+		if minetest.is_protected(pointed_thing.above, user:get_player_name()) then
+			minetest.record_protection_violation(pointed_thing.under, user:get_player_name())
+			return itemstack
+		end
+
+		-- Check if pointing to a liquid source
+		local liquiddef = mcl_buckets.liquids[nn]
+		local new_bucket
+		if liquiddef and liquiddef.itemname and (nn == liquiddef.source_take) then
+
+			-- Fill bucket, but not in Creative Mode
+			if not minetest.is_creative_enabled(user:get_player_name()) then
+				new_bucket = ItemStack({name = liquiddef.itemname})
+				if liquiddef.on_take then
+					liquiddef.on_take(user)
+				end
+			end
+
+			minetest.add_node(pointed_thing.under, {name="air"})
+			sound_take(nn, pointed_thing.under)
+
+			if mod_doc and doc.entry_exists("nodes", nn) then
+				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", nn)
+			end
+
+		elseif nn == "mcl_cauldrons:cauldron_3" then
+			-- Take water out of full cauldron
+			minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+			if not minetest.is_creative_enabled(user:get_player_name()) then
+				new_bucket = ItemStack("mcl_buckets:bucket_water")
+			end
+			sound_take("mcl_core:water_source", pointed_thing.under)
+		elseif nn == "mcl_cauldrons:cauldron_3r" then
+			-- Take river water out of full cauldron
+			minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+			if not minetest.is_creative_enabled(user:get_player_name()) then
+				new_bucket = ItemStack("mcl_buckets:bucket_river_water")
+			end
+			sound_take("mclx_core:river_water_source", pointed_thing.under)
+		end
+
+		-- Add liquid bucket and put it into inventory, if possible.
+		-- Drop new bucket otherwise.
+		if new_bucket then
+			if itemstack:get_count() == 1 then
+				return new_bucket
+			else
+				local inv = user:get_inventory()
+				if inv:room_for_item("main", new_bucket) then
+					inv:add_item("main", new_bucket)
+				else
+					minetest.add_item(user:get_pos(), new_bucket)
+				end
+				if not minetest.is_creative_enabled(user:get_player_name()) then
+					itemstack:take_item()
+				end
+				return itemstack
+			end
+		end]]
 		-- Must be pointing to node
 		if pointed_thing.type ~= "node" then
 			return itemstack
