@@ -3,6 +3,7 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
+-- Compatibility with old bucket mod
 minetest.register_alias("bucket:bucket_empty", "mcl_buckets:bucket_empty")
 minetest.register_alias("bucket:bucket_water", "mcl_buckets:bucket_water")
 minetest.register_alias("bucket:bucket_lava", "mcl_buckets:bucket_lava")
@@ -11,6 +12,7 @@ local mod_doc = minetest.get_modpath("doc")
 local mod_mcl_core = minetest.get_modpath("mcl_core")
 --local mod_mclx_core = minetest.get_modpath("mclx_core")
 
+-- Localize some functions for faster access
 local vector = vector
 local math = math
 local string = string
@@ -127,16 +129,15 @@ function mcl_buckets.register_liquid(def)
 			if pointed_thing.type ~= "node" then
 				return
 			end
+			-- Call on_rightclick if the pointed node defines it
+			local new_stack = mcl_util.call_on_rightclick(itemstack, user, pointed_thing)
+			if new_stack then
+				return new_stack
+			end
 
 			local node = minetest.get_node(pointed_thing.under)
 			local place_pos = pointed_thing.under
 			local nn = node.name
-			-- Call on_rightclick if the pointed node defines it
-			if user and not user:get_player_control().sneak then
-				if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].on_rightclick then
-					return minetest.registered_nodes[nn].on_rightclick(place_pos, node, user, itemstack) or itemstack
-				end
-			end
 
 			local node_place
 			if type(def.source_place) == "function" then
@@ -306,16 +307,20 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 				return itemstack
 			end
 		end]]
+		-- Must be pointing to node
 		if pointed_thing.type ~= "node" then
 			return itemstack
 		end
+
+		-- Call on_rightclick if the pointed node defines it
+		local new_stack = mcl_util.call_on_rightclick(itemstack, user, pointed_thing)
+		if new_stack then
+			return new_stack
+		end
+
 		local node = minetest.get_node(pointed_thing.under)
 		local nn = node.name
-		if user and not user:get_player_control().sneak then
-			if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].on_rightclick then
-				return minetest.registered_nodes[nn].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
-			end
-		end
+
 		local new_bucket
 		local liquid_node = bucket_raycast(user)
 		if liquid_node then
