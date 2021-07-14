@@ -56,6 +56,7 @@ local function place_liquid(pos, itemstring)
 	sound_place(itemstring, pos)
 	minetest.add_node(pos, {name=itemstring, param2=fullness})
 end
+
 local function give_bucket(new_bucket, itemstack, user)
 	local inv = user:get_inventory()
 	if minetest.is_creative_enabled(user:get_player_name()) then
@@ -81,6 +82,7 @@ local pointable_sources = {}
 local function bucket_raycast(user)
 	--local pos = user:get_pos()
 	local pos = mcl_util.get_object_center(user)
+	--local pos = vector.add(user:get_pos(), user:get_bone_position("Head_Control"))
 	pos.y = pos.y + user:get_properties().eye_height
 	local look_dir = user:get_look_dir()
 	look_dir = vector.multiply(look_dir, 4)
@@ -96,6 +98,53 @@ local function bucket_raycast(user)
 		end
 	end
 	return nil
+end
+
+local function get_node_place(source_place, place_pos)
+	local node_place
+	if type(source_place) == "function" then
+		node_place = source_place(place_pos)
+	else
+		node_place = source_place
+	end
+	return node_place
+end
+
+local function get_extra_check(check, pos, user)
+	local result
+	local take_bucket
+	if check then
+		result, take_bucket = check(pos, user)
+		if result == nil then result = true end
+		if take_bucket == nil then take_bucket = true end
+	else
+		result = true
+		take_bucket = true
+	end
+	return result, take_bucket
+end
+
+local function get_bucket_drop(itemstack, user, take_bucket)
+	-- Handle bucket item and inventory stuff
+	if take_bucket and not minetest.is_creative_enabled(user:get_player_name()) then
+		-- Add empty bucket and put it into inventory, if possible.
+		-- Drop empty bucket otherwise.
+		local new_bucket = ItemStack("mcl_buckets:bucket_empty")
+		if itemstack:get_count() == 1 then
+			return new_bucket
+		else
+			local inv = user:get_inventory()
+			if inv:room_for_item("main", new_bucket) then
+				inv:add_item("main", new_bucket)
+			else
+				add_item(user:get_pos(), new_bucket)
+			end
+			itemstack:take_item()
+			return itemstack
+		end
+	else
+		return itemstack
+	end
 end
 
 function mcl_buckets.register_liquid(def)
@@ -135,23 +184,75 @@ function mcl_buckets.register_liquid(def)
 				return new_stack
 			end
 
-			local node = minetest.get_node(pointed_thing.under)
-			local place_pos = pointed_thing.under
-			local nn = node.name
+			local undernode = get_node(pointed_thing.under)
+			local abovenode = get_node(pointed_thing.above)
+			local nn = undernode.name
+			local buildable1 = minetest.registered_nodes[undernode.name] and minetest.registered_nodes[undernode.name].buildable_to
+			local buildable2 = minetest.registered_nodes[abovenode.name] and minetest.registered_nodes[abovenode.name].buildable_to
+			if not buildable1 and not buildable2 then return itemstack end --if both nodes aren't buildable_to, skip
+			
+			if buildable1 then
+				local result, take_bucket = get_extra_check(def.extra_check, pointed_thing.under, user)
+				if result then
+					local node_place = get_node_place(def.source_place, pointed_thing.under)
+					local pns = user:get_player_name()
 
-			local node_place
-			if type(def.source_place) == "function" then
-				node_place = def.source_place(place_pos)
+					-- Check protection
+					if minetest.is_protected(pointed_thing.under, pns) then
+						minetest.record_protection_violation(pointed_thing.under, pns)
+						return itemstack
+					end
+
+					-- Place liquid
+					place_liquid(pointed_thing.under, node_place)
+
+					-- Update doc mod
+					if mod_doc and doc.entry_exists("nodes", node_place) then
+						doc.mark_entry_as_revealed(user:get_player_name(), "nodes", node_place)
+					end
+				end
+				return get_bucket_drop(itemstack, user, take_bucket)
+			elseif buildable2 then
+				local result, take_bucket = get_extra_check(def.extra_check, pointed_thing.above, user)
+				if result then
+					local node_place = get_node_place(def.source_place, pointed_thing.above)
+					local pns = user:get_player_name()
+
+					-- Check protection
+					if minetest.is_protected(pointed_thing.above, pns) then
+						minetest.record_protection_violation(pointed_thing.above, pns)
+						return itemstack
+					end
+
+					-- Place liquid
+					place_liquid(pointed_thing.above, node_place)
+
+					-- Update doc mod
+					if mod_doc and doc.entry_exists("nodes", node_place) then
+						doc.mark_entry_as_revealed(user:get_player_name(), "nodes", node_place)
+					end
+				end
+				return get_bucket_drop(itemstack, user, take_bucket)
 			else
-				node_place = def.source_place
+				return itemstack
 			end
+
 			-- Check if pointing to a buildable node
 			--local item = itemstack:get_name()
 
-			if def.extra_check and def.extra_check(place_pos, user) == false then
-				-- Fail placement of liquid
-			elseif minetest.registered_nodes[nn] and minetest.registered_nodes[nn].buildable_to then
-				-- buildable; replace the node
+			--[[
+			if buildable_to_1 then
+				if can_place(pos) then
+					Place
+				end
+			else if buildable_to_2 then
+				if can_place2() then
+					Place
+				end
+			end
+			]]
+			--[[
+			if result then -- Fail placement of liquid if result is false
 				local pns = user:get_player_name()
 				if minetest.is_protected(place_pos, pns) then
 					minetest.record_protection_violation(place_pos, pns)
@@ -200,28 +301,17 @@ function mcl_buckets.register_liquid(def)
 				end
 			else
 				return
-			end
+			end]]
 		end,
 		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
 			local iname = stack:get_name()
 			local buildable = minetest.registered_nodes[dropnode.name].buildable_to or dropnode.name == "mcl_portals:portal"
 			if not buildable then return stack end
-
-			local result
-			if def.extra_check then
-				result = def.extra_check(droppos, nil)
-				if result == nil then result = true end
-			else
-				result = true
-			end
+			local result, take_bucket = get_extra_check(def.extra_check, droppos, nil)
 			if result then -- Fail placement of liquid if result is false
-				local node_place
-				if type(def.source_place) == "function" then
-					node_place = def.source_place(droppos)
-				else
-					node_place = def.source_place
-				end
-				place_liquid(droppos, node_place)
+				place_liquid(droppos, get_node_place(def.source_place, droppos))
+			end
+			if take_bucket then
 				stack:set_name("mcl_buckets:bucket_empty")
 			end
 			return stack

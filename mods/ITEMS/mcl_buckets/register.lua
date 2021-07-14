@@ -53,15 +53,6 @@ if mod_mcl_core then
 		usagehelp = S("Place it to empty the bucket and create a water source."),
 		tt_help = S("Places a water source"),
 		extra_check = function(pos, placer)
-			-- Check protection
-			local placer_name = ""
-			if placer then
-				placer_name = placer:get_player_name()
-			end
-			if placer and minetest.is_protected(pos, placer_name) then
-				minetest.record_protection_violation(pos, placer_name)
-				return false
-			end
 			local nn = minetest.get_node(pos).name
 			-- Pour water into cauldron
 			if minetest.get_item_group(nn, "cauldron") ~= 0 then
@@ -70,13 +61,13 @@ if mod_mcl_core then
 					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3"})
 				end
 				sound_place("mcl_core:water_source", pos)
-				return false
+				return false, true
 			-- Evaporate water if used in Nether (except on cauldron)
 			else
 				local dim = mcl_worlds.pos_to_dimension(pos)
 				if dim == "nether" then
 					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
-					return false
+					return false, true
 				end
 			end
 		end,
@@ -96,15 +87,6 @@ if mod_mclx_core then
 		usagehelp = S("Place it to empty the bucket and create a river water source."),
 		tt_help = S("Places a river water source"),
 		extra_check = function(pos, placer)
-			-- Check protection
-			local placer_name = ""
-			if placer then
-				placer_name = placer:get_player_name()
-			end
-			if placer and minetest.is_protected(pos, placer_name) then
-				minetest.record_protection_violation(pos, placer_name)
-				return false
-			end
 			local nn = minetest.get_node(pos).name
 			-- Pour into cauldron
 			if minetest.get_item_group(nn, "cauldron") ~= 0 then
@@ -113,13 +95,13 @@ if mod_mclx_core then
 					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3r"})
 				end
 				sound_place("mcl_core:water_source", pos)
-				return false
+				return false, true
 			else
 				-- Evaporate water if used in Nether (except on cauldron)
 				local dim = mcl_worlds.pos_to_dimension(pos)
 				if dim == "nether" then
 					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
-					return false
+					return false, true
 				end
 			end
 		end,
