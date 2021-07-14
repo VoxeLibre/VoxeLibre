@@ -23,7 +23,14 @@ Accept folowing params:
 ```lua
 mcl_buckets.register_liquid({
 	itemname = "dummy:bucket_dummy",
-	source_place = "dummy:dummy_source",
+	--source_place = "dummy:dummy_source",
+	source_place = function(pos)
+		if condition then
+			return "dummy:dummy_source"
+		else
+			return "dummy:dummy_source_nether"
+		end
+	end,
 	source_take = {"dummy:dummy_source"},
 	inventory_image = "bucket_dummy.png",
 	name = S("Dummy liquid Bucket"),
