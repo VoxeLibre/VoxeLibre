@@ -94,7 +94,9 @@ minetest.register_craft({
 })
 
 local function play_record(pos, itemstack, player)
-	local name = itemstack:get_name()
+	local item_name = itemstack:get_name()
+	-- ensure the jukebox uses the new record names for old records
+	local name = minetest.registered_aliases[item_name] or item_name
 	if mcl_jukebox.registered_records[name] then
 		local cname = player:get_player_name()
 		if active_tracks[cname] then

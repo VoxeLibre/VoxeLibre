@@ -129,8 +129,13 @@ local dispenserdef = {
 					dropitem:set_count(1)
 					local stack_id = stacks[r].stackpos
 					local stackdef = stack:get_definition()
+
+					if not stackdef then
+						return
+					end
+					
 					local iname = stack:get_name()
-					local igroups = minetest.registered_items[iname].groups
+					local igroups = stackdef.groups
 
 					--[===[ Dispense item ]===]
 

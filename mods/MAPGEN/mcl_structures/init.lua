@@ -187,8 +187,6 @@ function mcl_structures.generate_igloo(pos, rotation, pr)
 		if real_depth <= 6 then
 			return success
 		end
-		-- Place hidden trapdoor
-		minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)}) -- TODO: more reliable param2
 		-- Generate ladder to basement
 		for y=1, real_depth-1 do
 			set_brick({x=tpos.x-1,y=tpos.y-y,z=tpos.z  })
@@ -199,6 +197,10 @@ function mcl_structures.generate_igloo(pos, rotation, pr)
 		end
 		-- Place basement
 		mcl_structures.generate_igloo_basement(bpos, rotation, pr)
+		-- Place hidden trapdoor
+		minetest.after(5, function(tpos, dir)
+			minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)}) -- TODO: more reliable param2
+		end, tpos, dir)
 	end
 	return success
 end
