@@ -203,7 +203,8 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		for _,object in pairs(minetest.get_objects_inside_radius(pos, 0.9)) do
-			if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
+			local entity = object:get_luaentity()
+			if entity and entity.name == "__builtin:item" then
 				object:remove()
 			end
 		end
