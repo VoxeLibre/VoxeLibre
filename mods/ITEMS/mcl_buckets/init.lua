@@ -205,11 +205,16 @@ function mcl_buckets.register_liquid(def)
 		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
 			local iname = stack:get_name()
 			local buildable = minetest.registered_nodes[dropnode.name].buildable_to or dropnode.name == "mcl_portals:portal"
+			if not buildable then return stack end
 
-			if def.extra_check and def.extra_check(droppos, nil) == false then
-				-- Fail placement of liquid
-			elseif buildable then
-				-- buildable; replace the node
+			local result
+			if def.extra_check then
+				result = def.extra_check(droppos, nil)
+				if result == nil then result = true end
+			else
+				result = true
+			end
+			if result then -- Fail placement of liquid if result is false
 				local node_place
 				if type(def.source_place) == "function" then
 					node_place = def.source_place(droppos)
