@@ -74,7 +74,7 @@ minetest.register_node("mcl_mushroom:warped_hyphae", {
 
 minetest.register_node("mcl_mushroom:warped_nylium", {
   description = S("Warped Nylium"),
-  tiles = {"warped_wart_block.png",
+  tiles = {"warped_nylium.png",
            "mcl_nether_netherrack.png",
            "mcl_nether_netherrack.png^warped_nylium_side.png",
            "mcl_nether_netherrack.png^warped_nylium_side.png",
@@ -118,7 +118,7 @@ minetest.register_node("mcl_mushroom:warped_hyphae_wood", {
   _mcl_hardness = 2,
 })
 
-mcl_stairs.register_stair_and_slab_simple("Warped Wood", "mcl_mushroom:warped_hyphae_wood", "Warped Wood Stairs", "Warped Wood Slab", "Double Warped Wood Slab")
+mcl_stairs.register_stair_and_slab_simple("warped_hyphae_wood", "mcl_mushroom:warped_hyphae_wood", "Warped Wood Stairs", "Warped Wood Slab", "Double Warped Wood Slab")
 
 minetest.register_craft({
   output = "mcl_mushroom:warped_hyphae_wood 4",
@@ -243,7 +243,7 @@ minetest.register_node("mcl_mushroom:crimson_hyphae_wood", {
 
 minetest.register_node("mcl_mushroom:crimson_nylium", {
   description = S("Crimson Nylium"),
-  tiles = {"nether_wart_block.png",
+  tiles = {"crimson_nylium.png",
            "mcl_nether_netherrack.png",
            "mcl_nether_netherrack.png^crimson_nylium_side.png",
            "mcl_nether_netherrack.png^crimson_nylium_side.png",
@@ -293,7 +293,7 @@ minetest.register_craft({
   }
 })
 
-mcl_stairs.register_stair_and_slab_simple("Crimson Wood", "mcl_mushroom:crimson_hyphae_wood", "Crimson Wood Stairs", "Crimson Wood Slab", "Double Crimson Wood Slab")
+mcl_stairs.register_stair_and_slab_simple("crimson_hyphae_wood", "mcl_mushroom:crimson_hyphae_wood", "Crimson Wood Stairs", "Crimson Wood Slab", "Double Crimson Wood Slab")
 
 minetest.register_abm({
 	label = "mcl_mushroom:crimson_fungus",
@@ -333,246 +333,168 @@ minetest.register_abm({
 })
 
 function generate_warped_tree(pos)
+  breakgrow = false
+  breakgrow2 = false
   -- Baumgenerator
-  -- Warzen
-  -- erste Etage
-  -- 2+
-  minetest.set_node({x = pos.x + 2, y = pos.y + 3, z = pos.z + 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 3, z = pos.z + 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 3, z = pos.z + 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 3, z = pos.z + 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 3, z = pos.z + 2}, { name = "mcl_mushroom:warped_wart_block" })
-  --1+
-  minetest.set_node({x = pos.x + 2, y = pos.y + 3, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 3, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 3, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 3, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 3, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  --0
-  minetest.set_node({x = pos.x + 2, y = pos.y + 3, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 3, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 3, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 3, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
-  --1-
-  minetest.set_node({x = pos.x + 2, y = pos.y + 3, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 3, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 3, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 3, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 3, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-  --2-
-  minetest.set_node({x = pos.x + 2, y = pos.y + 3, z = pos.z - 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 3, z = pos.z - 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 3, z = pos.z - 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 3, z = pos.z - 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 3, z = pos.z - 2}, { name = "mcl_mushroom:warped_wart_block" })
+  -- erste und zweite Etage
+  	for x = pos.x - 2,pos.x + 2 do
+        	for y = pos.y + 3, pos.y + 4 do
+        	    for z = pos.z - 2, pos.z + 2 do
+        	        if not (minetest.get_node({x = x, y = y, z = z}).name == "air") then breakgrow = true end	
+        	    end
+        	end
+    	end
+  
+  	-- dritte und vierte Etage
+  	for x = pos.x - 1,pos.x + 1 do
+  	      for y = pos.y + 5, pos.y + 6 do
+  	          for z = pos.z - 1, pos.z + 1 do
+  	              if not (minetest.get_node({x = x, y = y, z = z}).name == "air") then breakgrow = true end
+  	          end
+  	      end
+  	  end
+ 
+ 	 -- fünfte Etage
+	if not (minetest.get_node({x = pos.x, y = pos.y + 7, z = pos.z}).name == "air") then breakgrow = true end
 
+ 	 -- Holz
+	 if not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "air") and not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "mcl_mushroom:warped_fungus") then breakgrow = true end
+ 	 for y = pos.y + 1, pos.y + 4 do
+ 	   if not (minetest.get_node({x = pos.x, y = y, z = pos.z}).name == "air") then breakgrow = true end
+	   print(minetest.get_node({x = pos.x, y = y, z = pos.z}).name)
+ 	 end
+	 if not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "air") and not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "mcl_mushroom:warped_fungus") then breakgrow2 = true end
+  print(tostring(breakgrow))
+  if breakgrow == false then
+	-- Warzen
+	-- erste und zweite Etage
+  	for x = pos.x - 2,pos.x + 2 do
+        	for y = pos.y + 3, pos.y + 4 do
+        	    for z = pos.z - 2, pos.z + 2 do
+        	        minetest.set_node({x = x, y = y, z = z}, { name = "mcl_mushroom:warped_wart_block" })
+        	    end
+        	end
+    	end
+  
+  	-- dritte und vierte Etage
+  	for x = pos.x - 1,pos.x + 1 do
+  	      for y = pos.y + 5, pos.y + 6 do
+  	          for z = pos.z - 1, pos.z + 1 do
+  	              minetest.set_node({x = x, y = y, z = z}, { name = "mcl_mushroom:warped_wart_block" })
+  	          end
+  	      end
+  	  end
+ 
+ 	 -- fünfte Etage
+ 	 minetest.set_node({x = pos.x, y = pos.y + 7, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
 
-  -- zweite etage
-  minetest.set_node({x = pos.x + 2, y = pos.y + 4, z = pos.z + 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 4, z = pos.z + 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 4, z = pos.z + 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 4, z = pos.z + 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 4, z = pos.z + 2}, { name = "mcl_mushroom:warped_wart_block" })
-  --1+
-  minetest.set_node({x = pos.x + 2, y = pos.y + 4, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 4, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 4, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 4, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 4, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  --0
-  minetest.set_node({x = pos.x + 2, y = pos.y + 4, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 4, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 4, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 4, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
-  --1-
-  minetest.set_node({x = pos.x + 2, y = pos.y + 4, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 4, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 4, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 4, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 4, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-  --2-
-  minetest.set_node({x = pos.x + 2, y = pos.y + 4, z = pos.z - 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 4, z = pos.z - 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 4, z = pos.z - 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 4, z = pos.z - 2}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 4, z = pos.z - 2}, { name = "mcl_mushroom:warped_wart_block" })
-
-
-  -- dritte etage
-  --1+
-  minetest.set_node({x = pos.x + 1, y = pos.y + 5, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 5, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 5, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  --0
-  minetest.set_node({x = pos.x + 1, y = pos.y + 5, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 5, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 5, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
-  --1-
-  minetest.set_node({x = pos.x + 1, y = pos.y + 5, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 5, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 5, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-
-  -- vierte Etage
-  --1+
-  minetest.set_node({x = pos.x + 1, y = pos.y + 6, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 6, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 6, z = pos.z + 1}, { name = "mcl_mushroom:warped_wart_block" })
-  --0
-  minetest.set_node({x = pos.x + 1, y = pos.y + 6, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 6, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 6, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
-  --1-
-  minetest.set_node({x = pos.x + 1, y = pos.y + 6, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 6, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 6, z = pos.z - 1}, { name = "mcl_mushroom:warped_wart_block" })
-  -- fünfte Etage
-  minetest.set_node({x = pos.x, y = pos.y + 7, z = pos.z}, { name = "mcl_mushroom:warped_wart_block" })
-
-  -- Pilzlich
-  local randomgenerate = math.random(1, 2)
-  if randomgenerate == 1 then
-    local randomx = math.random(-2, 2)
-    local randomz = math.random(-2, 2)
-    minetest.set_node({x = pos.x + randomx, y = pos.y + 3, z = pos.z + randomz}, { name = "mcl_mushroom:shroomlight" })
+ 	 -- Pilzlich
+ 	 local randomgenerate = math.random(1, 2)
+ 	 if randomgenerate == 1 then
+ 	   local randomx = math.random(-2, 2)
+ 	   local randomz = math.random(-2, 2)
+ 	   minetest.set_node({x = pos.x + randomx, y = pos.y + 3, z = pos.z + randomz}, { name = "mcl_mushroom:shroomlight" })
+ 	 end
+ 	 local randomgenerate = math.random(1, 8)
+ 	 if randomgenerate == 4 then
+ 	   local randomx = math.random(-2, 2)
+ 	   local randomz = math.random(-2, 2)
+ 	   minetest.set_node({x = pos.x + randomx, y = pos.y + 3, z = pos.z + randomz}, { name = "mcl_mushroom:shroomlight" })
+ 	 end
+ 	 -- Holz
+ 	 for y = pos.y, pos.y + 4 do
+ 	   minetest.set_node({x = pos.x, y = y, z = pos.z}, { name = "mcl_mushroom:warped_hyphae" })
+ 	   --print("Placed at " .. x .. " " .. y .. " " .. z)
+ 	 end
+  else
+  	if breakgrow2 == false then minetest.set_node(pos,{ name = "mcl_mushroom:warped_fungus" }) end
   end
-  local randomgenerate = math.random(1, 8)
-  if randomgenerate == 4 then
-    local randomx = math.random(-2, 2)
-    local randomz = math.random(-2, 2)
-    minetest.set_node({x = pos.x + randomx, y = pos.y + 3, z = pos.z + randomz}, { name = "mcl_mushroom:shroomlight" })
-  end
-  -- Holz
-  minetest.set_node({x = pos.x, y = pos.y, z = pos.z}, { name = "mcl_mushroom:warped_hyphae" })
-  minetest.set_node({x = pos.x, y = pos.y + 1, z = pos.z}, { name = "mcl_mushroom:warped_hyphae" })
-  minetest.set_node({x = pos.x, y = pos.y + 2, z = pos.z}, { name = "mcl_mushroom:warped_hyphae" })
-  minetest.set_node({x = pos.x, y = pos.y + 3, z = pos.z}, { name = "mcl_mushroom:warped_hyphae" })
-  minetest.set_node({x = pos.x, y = pos.y + 4, z = pos.z}, { name = "mcl_mushroom:warped_hyphae" })
 end
 
-
-
-
 function generate_crimson_tree(pos)
+  breakgrow = false
+  breakgrow2 = false
   -- Baumgenerator
-  -- Warzen
-  -- erste Etage
-  -- 2+
-  minetest.set_node({x = pos.x + 2, y = pos.y + 3, z = pos.z + 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 3, z = pos.z + 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 3, z = pos.z + 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 3, z = pos.z + 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 3, z = pos.z + 2}, { name = "mcl_nether:nether_wart_block" })
-  --1+
-  minetest.set_node({x = pos.x + 2, y = pos.y + 3, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 3, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 3, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 3, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 3, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  --0
-  minetest.set_node({x = pos.x + 2, y = pos.y + 3, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 3, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 3, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 3, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-  --1-
-  minetest.set_node({x = pos.x + 2, y = pos.y + 3, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 3, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 3, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 3, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 3, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-  --2-
-  minetest.set_node({x = pos.x + 2, y = pos.y + 3, z = pos.z - 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 3, z = pos.z - 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 3, z = pos.z - 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 3, z = pos.z - 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 3, z = pos.z - 2}, { name = "mcl_nether:nether_wart_block" })
+  -- erste und zweite Etage
+  	for x = pos.x - 2,pos.x + 2 do
+        	for y = pos.y + 3, pos.y + 4 do
+        	    for z = pos.z - 2, pos.z + 2 do
+        	        if not (minetest.get_node({x = x, y = y, z = z}).name == "air") then breakgrow = true end	
+        	    end
+        	end
+    	end
+  
+  	-- dritte und vierte Etage
+  	for x = pos.x - 1,pos.x + 1 do
+  	      for y = pos.y + 5, pos.y + 6 do
+  	          for z = pos.z - 1, pos.z + 1 do
+  	              if not (minetest.get_node({x = x, y = y, z = z}).name == "air") then breakgrow = true end
+  	          end
+  	      end
+  	  end
+ 
+ 	 -- fünfte Etage
+	if not (minetest.get_node({x = pos.x, y = pos.y + 7, z = pos.z}).name == "air") then breakgrow = true end
 
+ 	 -- Holz
+	 if not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "air") and not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "mcl_mushroom:crimson_fungus") then breakgrow = true end
+ 	 for y = pos.y + 1, pos.y + 4 do
+ 	   if not (minetest.get_node({x = pos.x, y = y, z = pos.z}).name == "air") then breakgrow = true end
+	   print(minetest.get_node({x = pos.x, y = y, z = pos.z}).name)
+ 	 end
+	 if not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "air") and not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "mcl_mushroom:crimson_fungus") then breakgrow2 = true end
+  print(tostring(breakgrow))
+  if breakgrow == false then
+	-- Warzen
+	-- erste und zweite Etage
+  	for x = pos.x - 2,pos.x + 2 do
+        	for y = pos.y + 3, pos.y + 4 do
+        	    for z = pos.z - 2, pos.z + 2 do
+        	        minetest.set_node({x = x, y = y, z = z}, { name = "mcl_nether:nether_wart_block" })
+        	    end
+        	end
+    	end
+  
+  	-- dritte und vierte Etage
+  	for x = pos.x - 1,pos.x + 1 do
+  	      for y = pos.y + 5, pos.y + 6 do
+  	          for z = pos.z - 1, pos.z + 1 do
+  	              minetest.set_node({x = x, y = y, z = z}, { name = "mcl_nether:nether_wart_block" })
+  	          end
+  	      end
+  	  end
+ 
+ 	 -- fünfte Etage
+ 	 minetest.set_node({x = pos.x, y = pos.y + 7, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
 
-  -- zweite etage
-  minetest.set_node({x = pos.x + 2, y = pos.y + 4, z = pos.z + 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 4, z = pos.z + 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 4, z = pos.z + 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 4, z = pos.z + 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 4, z = pos.z + 2}, { name = "mcl_nether:nether_wart_block" })
-  --1+
-  minetest.set_node({x = pos.x + 2, y = pos.y + 4, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 4, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 4, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 4, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 4, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  --0
-  minetest.set_node({x = pos.x + 2, y = pos.y + 4, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 4, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 4, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 4, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-  --1-
-  minetest.set_node({x = pos.x + 2, y = pos.y + 4, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 4, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 4, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 4, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 4, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-  --2-
-  minetest.set_node({x = pos.x + 2, y = pos.y + 4, z = pos.z - 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x + 1, y = pos.y + 4, z = pos.z - 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 4, z = pos.z - 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 4, z = pos.z - 2}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 2 , y = pos.y + 4, z = pos.z - 2}, { name = "mcl_nether:nether_wart_block" })
-
-
-  -- dritte etage
-  --1+
-  minetest.set_node({x = pos.x + 1, y = pos.y + 5, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 5, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 5, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  --0
-  minetest.set_node({x = pos.x + 1, y = pos.y + 5, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 5, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 5, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-  --1-
-  minetest.set_node({x = pos.x + 1, y = pos.y + 5, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 5, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 5, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-
-  -- vierte Etage
-  --1+
-  minetest.set_node({x = pos.x + 1, y = pos.y + 6, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 6, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 6, z = pos.z + 1}, { name = "mcl_nether:nether_wart_block" })
-  --0
-  minetest.set_node({x = pos.x + 1, y = pos.y + 6, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 6, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 6, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-  --1-
-  minetest.set_node({x = pos.x + 1, y = pos.y + 6, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x, y = pos.y + 6, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-  minetest.set_node({x = pos.x - 1 , y = pos.y + 6, z = pos.z - 1}, { name = "mcl_nether:nether_wart_block" })
-  -- fünfte Etage
-  minetest.set_node({x = pos.x, y = pos.y + 7, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-
-  -- Pilzlich
-
-
-  local randomx = math.random(-2, 2)
-  local randomz = math.random(-2, 2)
-  minetest.set_node({x = pos.x + randomx, y = pos.y + 3, z = pos.z + randomz}, { name = "mcl_mushroom:shroomlight" })
-
-  local randomgenerate = math.random(1, 2)
-  if randomgenerate == 2 then
-    local randomx = math.random(-2, 2)
-    local randomz = math.random(-2, 2)
-    minetest.set_node({x = pos.x + randomx, y = pos.y + 3, z = pos.z + randomz}, { name = "mcl_mushroom:shroomlight" })
+ 	 -- Pilzlich
+ 	 local randomgenerate = math.random(1, 2)
+ 	 if randomgenerate == 1 then
+ 	   local randomx = math.random(-2, 2)
+ 	   local randomz = math.random(-2, 2)
+ 	   minetest.set_node({x = pos.x + randomx, y = pos.y + 3, z = pos.z + randomz}, { name = "mcl_mushroom:shroomlight" })
+ 	 end
+ 	 local randomgenerate = math.random(1, 8)
+ 	 if randomgenerate == 4 then
+ 	   local randomx = math.random(-2, 2)
+ 	   local randomz = math.random(-2, 2)
+ 	   minetest.set_node({x = pos.x + randomx, y = pos.y + 3, z = pos.z + randomz}, { name = "mcl_mushroom:shroomlight" })
+ 	 end
+ 	 -- Holz
+ 	 for y = pos.y, pos.y + 4 do
+ 	   minetest.set_node({x = pos.x, y = y, z = pos.z}, { name = "mcl_mushroom:crimson_hyphae" })
+ 	   --print("Placed at " .. x .. " " .. y .. " " .. z)
+ 	 end
+  else
+  	if breakgrow2 == false then minetest.set_node(pos,{ name = "mcl_mushroom:crimson_fungus" }) end
   end
-  -- Holz
-  minetest.set_node({x = pos.x, y = pos.y, z = pos.z}, { name = "mcl_mushroom:crimson_hyphae" })
-  minetest.set_node({x = pos.x, y = pos.y + 1, z = pos.z}, { name = "mcl_mushroom:crimson_hyphae" })
-  minetest.set_node({x = pos.x, y = pos.y + 2, z = pos.z}, { name = "mcl_mushroom:crimson_hyphae" })
-  minetest.set_node({x = pos.x, y = pos.y + 3, z = pos.z}, { name = "mcl_mushroom:crimson_hyphae" })
-  minetest.set_node({x = pos.x, y = pos.y + 4, z = pos.z}, { name = "mcl_mushroom:crimson_hyphae" })
 end
 
 
 --[[
 FIXME: Biomes are to rare
 FIXME: Decoration don't do generate
+WARNING: Outdatet, the biomes gernerate now different, with Ores 
 -- biomes in test!
 minetest.register_biome({
   name = "WarpedForest",
