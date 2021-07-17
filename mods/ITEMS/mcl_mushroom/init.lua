@@ -50,7 +50,7 @@ minetest.register_node("mcl_mushroom:warped_wart_block", {
 minetest.register_node("mcl_mushroom:shroomlight", {
   description = S("Shroomlight"),
   tiles = {"shroomlight.png"},
-  groups = {handy=1,hoe=7,swordy=1, leafdecay=leafdecay_distance, leaves=1, deco_block=1, },
+  groups = {handy=1,hoe=7,swordy=1, leafdecay=1, leafdecay_distance=1, leaves=1, deco_block=1, },
   stack_max = 64,
   _mcl_hardness = 2,
   -- this is 15 in Minecraft
