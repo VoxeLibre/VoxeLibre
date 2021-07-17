@@ -85,7 +85,7 @@ local function bucket_raycast(user)
 	--local pos = vector.add(user:get_pos(), user:get_bone_position("Head_Control"))
 	pos.y = pos.y + user:get_properties().eye_height
 	local look_dir = user:get_look_dir()
-	look_dir = vector.multiply(look_dir, 4)
+	look_dir = vector.multiply(look_dir, 5)
 	local pos2 = vector.add(pos, look_dir)
 
 	local ray = raycast(pos, pos2, false, true)
