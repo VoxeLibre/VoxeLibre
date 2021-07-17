@@ -1,7 +1,7 @@
 -- WALL BUTTON
 -- A button that when pressed emits power for a short moment and then turns off again
 
-local S = minetest.get_translator("mesecons_button")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local button_sounds = {} -- remember button push sounds
 
@@ -21,7 +21,7 @@ local boxes_on = {
 }
 
 -- Push the button
-mesecon.push_button = function(pos, node)
+function mesecon.push_button(pos, node)
 	-- No-op if button is already pushed
 	if mesecon.is_receptor_on(node) then
 		return
@@ -37,7 +37,7 @@ mesecon.push_button = function(pos, node)
 	timer:start(def._mcl_button_timer)
 end
 
-local on_button_place = function(itemstack, placer, pointed_thing)
+local function on_button_place(itemstack, placer, pointed_thing)
 	if pointed_thing.type ~= "node" then
 		-- no interaction possible with entities
 		return itemstack
@@ -86,7 +86,7 @@ end
 
 local buttonuse = S("Use the button to push it.")
 
-mesecon.register_button = function(basename, description, texture, recipeitem, sounds, plusgroups, button_timer, push_by_arrow, longdesc, button_sound)
+function mesecon.register_button(basename, description, texture, recipeitem, sounds, plusgroups, button_timer, push_by_arrow, longdesc, button_sound)
 	local groups_off = table.copy(plusgroups)
 	groups_off.attached_node=1
 	groups_off.dig_by_water=1
@@ -132,7 +132,7 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 		_doc_items_usagehelp = buttonuse,
 		on_place = on_button_place,
 		node_placement_prediction = "",
-		on_rightclick = function (pos, node)
+		on_rightclick = function(pos, node)
 			mesecon.push_button(pos, node)
 		end,
 		sounds = sounds,
@@ -159,7 +159,7 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 		sunlight_propagates = true,
 		node_box = boxes_on,
 		groups = groups_on,
-		drop = 'mesecons_button:button_'..basename..'_off',
+		drop = "mesecons_button:button_"..basename.."_off",
 		_doc_items_create_entry = false,
 		node_placement_prediction = "",
 		sounds = sounds,

@@ -3,7 +3,7 @@
 -- slabs actually take slightly longer to be dug than their stair counterparts.
 -- Note sure if it is a good idea to preserve this oddity.
 
-local S = minetest.get_translator("mcl_stairs")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local woods = {
 	{ "wood", "default_wood.png", S("Oak Wood Stairs"), S("Oak Wood Slab"), S("Double Oak Wood Slab") },

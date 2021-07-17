@@ -1,12 +1,14 @@
 -- Skins for MineClone 2
 
+local modname = minetest.get_current_modname()
+
 mcl_skins = {
 	skins = {}, list = {}, previews = {}, meta = {}, has_preview = {},
-	modpath = minetest.get_modpath("mcl_skins"),
+	modpath = minetest.get_modpath(modname),
 	skin_count = 0, -- counter of _custom_ skins (all skins except character.png)
 }
 
-local S = minetest.get_translator("mcl_skins")
+local S = minetest.get_translator(modname)
 local has_mcl_inventory = minetest.get_modpath("mcl_inventory")
 
 -- load skin list and metadata
@@ -53,7 +55,7 @@ while true do
 
 	data = nil
 	if f then
-		data = minetest.deserialize("return {" .. f:read('*all') .. "}")
+		data = minetest.deserialize("return {" .. f:read("*all") .. "}")
 		f:close()
 	end
 
@@ -70,7 +72,7 @@ while true do
 	id = id + 1
 end
 
-mcl_skins.cycle_skin = function(player)
+function mcl_skins.cycle_skin(player)
 	local skin_id = tonumber(player:get_meta():get_string("mcl_skins:skin_id"))
 	if not skin_id then
 		skin_id = 0
@@ -82,12 +84,12 @@ mcl_skins.cycle_skin = function(player)
 	mcl_skins.set_player_skin(player, skin_id)
 end
 
-mcl_skins.set_player_skin = function(player, skin_id)
+function mcl_skins.set_player_skin(player, skin_id)
 	if not player then
 		return false
 	end
 	local playername = player:get_player_name()
-	local skin, skin_file, preview
+	local skin, preview
 	if skin_id == nil or type(skin_id) ~= "number" or skin_id < 0 or skin_id > mcl_skins.skin_count then
 		return false
 	elseif skin_id == 0 then
@@ -109,7 +111,7 @@ mcl_skins.set_player_skin = function(player, skin_id)
 			preview = "mcl_skins_player_dummy"
 		end
 	end
-	skin_file = skin .. ".png"
+	--local skin_file = skin .. ".png"
 	mcl_skins.skins[playername] = skin
 	mcl_skins.previews[playername] = preview
 	player:get_meta():set_string("mcl_skins:skin_id", tostring(skin_id))
@@ -124,7 +126,7 @@ mcl_skins.set_player_skin = function(player, skin_id)
 	return true
 end
 
-mcl_skins.update_player_skin = function(player)
+function mcl_skins.update_player_skin(player)
 	if not player then
 		return
 	end
@@ -134,12 +136,11 @@ end
 
 -- load player skin on join
 minetest.register_on_joinplayer(function(player)
-
 	local name = player:get_player_name()
 	local skin_id = player:get_meta():get_string("mcl_skins:skin_id")
 	local set_skin
 	-- do we already have a skin in player attributes?
-	if skin_id ~= nil and skin_id ~= "" then
+	if skin_id and skin_id ~= "" then
 		set_skin = tonumber(skin_id)
 	-- otherwise use random skin if not set
 	end
@@ -156,7 +157,7 @@ end)
 
 mcl_skins.registered_on_set_skins = {}
 
-mcl_skins.register_on_set_skin = function(func)
+function mcl_skins.register_on_set_skin(func)
 	table.insert(mcl_skins.registered_on_set_skins, func)
 end
 
@@ -221,7 +222,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if mcl_skins.skin_count <= 6 then
 			-- Change skin immediately if there are not many skins
 			mcl_skins.cycle_skin(player)
-			if player:get_attach() ~= nil then
+			if player:get_attach() then
 				mcl_player.player_set_animation(player, "sit")
 			end
 		else
@@ -231,7 +232,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 
-mcl_skins.show_formspec = function(playername)
+function mcl_skins.show_formspec(playername)
 	local formspec = "size[7,8.5]"
 
 	formspec = formspec .. "label[2,2;" .. minetest.formspec_escape(minetest.colorize("#383838", S("Select player skin:"))) .. "]"

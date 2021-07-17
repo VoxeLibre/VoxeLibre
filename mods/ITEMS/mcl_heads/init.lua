@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_heads")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local mod_doc = minetest.get_modpath("doc")
 local mod_screwdriver = minetest.get_modpath("screwdriver")
@@ -91,7 +91,7 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 
 			local itemstring = itemstack:get_name()
 			local fakestack = ItemStack(itemstack)
-			local idef = fakestack:get_definition()
+			--local idef = fakestack:get_definition()
 			local retval
 			if wdir == 0 or wdir == 1 then
 				return minetest.item_place(itemstack, placer, pointed_thing)
@@ -101,7 +101,7 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 			if not retval then
 				return itemstack
 			end
-			itemstack,_ = minetest.item_place(fakestack, placer, pointed_thing, wdir)
+			itemstack = minetest.item_place(fakestack, placer, pointed_thing, wdir)
 			itemstack:set_name(itemstring)
 			return itemstack
 		end,

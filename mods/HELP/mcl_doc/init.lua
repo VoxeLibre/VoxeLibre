@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_doc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Disable built-in factoids; it is planned to add custom ones as replacements
 doc.sub.items.disable_core_factoid("node_mining")
@@ -50,8 +50,8 @@ end)
 
 doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
 	local formstring = ""
-	if def.groups.leafdecay ~= nil then
-		if def.drop ~= "" and def.drop ~= nil and def.drop ~= itemstring then
+	if def.groups.leafdecay then
+		if def.drop ~= "" and def.drop and def.drop ~= itemstring then
 			formstring = S("This block quickly decays when there is no wood block of any species within a distance of @1. When decaying, it disappears and may drop one of its regular drops. The block does not decay when the block has been placed by a player.", def.groups.leafdecay)
 		else
 			formstring = S("This block quickly decays and disappears when there is no wood block of any species within a distance of @1. The block does not decay when the block has been placed by a player.", def.groups.leafdecay)
@@ -154,7 +154,7 @@ doc.sub.items.register_factoid(nil, "use", function(itemstring, def)
 	return s
 end)
 doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
-	local def = minetest.registered_items[itemstring]
+	--local def = minetest.registered_items[itemstring]
 	local s = ""
 	local use = minetest.get_item_group(itemstring, "mcl_armor_uses")
 	local pts = minetest.get_item_group(itemstring, "mcl_armor_points")
@@ -289,7 +289,7 @@ doc.sub.items.register_factoid("nodes", "drops", function(itemstring, def)
 			local itemname = item:get_name()
 			local itemcount = item:get_count()
 			local idef = minetest.registered_items[itemname]
-			local text = ""
+			local text
 			if idef.description and idef.description ~= "" then
 				text = idef.description
 			else
@@ -399,7 +399,7 @@ doc.sub.items.register_factoid("tools", "misc", function(itemstring, def)
 	local formstring = ""
 	-- Weapon data
 	local damage_groups = tool_capabilities.damage_groups
-	if damage_groups ~= nil and damage_groups.fleshy ~= nil then
+	if damage_groups and damage_groups.fleshy then
 		formstring = formstring .. S("This is a melee weapon which deals damage by punching.") .. "\n"
 
 		-- Damage groups
@@ -408,7 +408,7 @@ doc.sub.items.register_factoid("tools", "misc", function(itemstring, def)
 
 		-- Full punch interval
 		local punch = 1.0
-		if tool_capabilities.full_punch_interval ~= nil then
+		if tool_capabilities.full_punch_interval then
 			punch = tool_capabilities.full_punch_interval
 		end
 		formstring = formstring .. S("Full punch interval: @1 s", string.format("%.1f", punch))

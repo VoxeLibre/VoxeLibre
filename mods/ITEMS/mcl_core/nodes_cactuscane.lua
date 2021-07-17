@@ -1,6 +1,6 @@
 -- Cactus and Sugar Cane
 
-local S = minetest.get_translator("mcl_core")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 minetest.register_node("mcl_core:cactus", {
 	description = S("Cactus"),

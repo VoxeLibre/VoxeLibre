@@ -1,9 +1,11 @@
 -- Liquids: Water and lava
 
-local S = minetest.get_translator("mcl_core")
-local N = function(s) return s end
+local S = minetest.get_translator(minetest.get_current_modname())
 
-local WATER_ALPHA = 179
+local vector = vector
+local math = math
+
+--local WATER_ALPHA = 179
 local WATER_VISC = 1
 local LAVA_VISC = 7
 local LIGHT_LAVA = minetest.LIGHT_MAX
@@ -12,13 +14,6 @@ local USE_TEXTURE_ALPHA = true
 if minetest.features.use_texture_alpha_string_modes then
 	USE_TEXTURE_ALPHA = "blend"
 end
-
-local lava_death_messages = {
-	N("@1 melted in lava."),
-	N("@1 took a bath in a hot lava tub."),
-	N("@1 died in lava."),
-	N("@1 could not survive in lava."),
-}
 
 minetest.register_node("mcl_core:water_flowing", {
 	description = S("Flowing Water"),
@@ -145,7 +140,6 @@ minetest.register_node("mcl_core:lava_flowing", {
 	liquid_renewable = false,
 	liquid_range = 3,
 	damage_per_second = 4*2,
-	_mcl_node_death_message = lava_death_messages,
 	post_effect_color = {a=245, r=208, g=73, b=10},
 	groups = { lava=3, liquid=2, destroys_items=1, not_in_creative_inventory=1, dig_by_piston=1, set_on_fire=15},
 	_mcl_blast_resistance = 100,
@@ -200,7 +194,6 @@ S("• When lava is directly above water, the water turns into stone."),
 	liquid_renewable = false,
 	liquid_range = 3,
 	damage_per_second = 4*2,
-	_mcl_node_death_message = lava_death_messages,
 	post_effect_color = {a=245, r=208, g=73, b=10},
 	stack_max = 64,
 	groups = { lava=3, lava_source=1, liquid=2, destroys_items=1, not_in_creative_inventory=1, dig_by_piston=1, set_on_fire=15, fire_damage=1},
@@ -209,13 +202,13 @@ S("• When lava is directly above water, the water turns into stone."),
 	_mcl_hardness = -1,
 })
 
-local emit_lava_particle = function(pos)
+local function emit_lava_particle(pos)
 	local node = minetest.get_node(pos)
 	if minetest.get_item_group(node.name, "lava_source") == 0 then
 		return
 	end
 	local ppos = vector.add(pos, { x = math.random(-7, 7)/16, y = 0.45, z = math.random(-7, 7)/16})
-	local spos = vector.add(ppos, { x = 0, y = -0.2, z = 0 })
+	--local spos = vector.add(ppos, { x = 0, y = -0.2, z = 0 })
 	local vel = { x = math.random(-3, 3)/10, y = math.random(4, 7), z = math.random(-3, 3)/10 }
 	local acc = { x = 0, y = -9.81, z = 0 }
 	-- Lava droplet

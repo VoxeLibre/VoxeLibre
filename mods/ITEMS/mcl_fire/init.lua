@@ -1,10 +1,10 @@
 -- Global namespace for functions
 
 mcl_fire = {}
-local modpath = minetest.get_modpath(minetest.get_current_modname())
 
-local S = minetest.get_translator("mcl_fire")
-local N = function(s) return s end
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
 
 local has_mcl_portals = minetest.get_modpath("mcl_portals")
 
@@ -86,18 +86,11 @@ else
 	eternal_fire_help = S("Eternal fire is a damaging block. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.")
 end
 
-local fire_death_messages = {
-	N("@1 has been cooked crisp."),
-	N("@1 felt the burn."),
-	N("@1 died in the flames."),
-	N("@1 died in a fire."),
-}
-
-local fire_timer = function(pos)
+local function fire_timer(pos)
 	minetest.get_node_timer(pos):start(math.random(3, 7))
 end
 
-local spawn_fire = function(pos, age)
+local function spawn_fire(pos, age)
 	set_node(pos, {name="mcl_fire:fire", param2 = age})
 	minetest.check_single_for_falling({x=pos.x, y=pos.y+1, z=pos.z})
 end
@@ -124,7 +117,6 @@ minetest.register_node("mcl_fire:fire", {
 	buildable_to = true,
 	sunlight_propagates = true,
 	damage_per_second = 1,
-	_mcl_node_death_message = fire_death_messages,
 	groups = {fire = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston=1, destroys_items=1, set_on_fire=8},
 	floodable = true,
 	on_flood = function(pos, oldnode, newnode)
@@ -255,7 +247,6 @@ minetest.register_node("mcl_fire:eternal_fire", {
 	buildable_to = true,
 	sunlight_propagates = true,
 	damage_per_second = 1,
-	_mcl_node_death_message = fire_death_messages,
 	groups = {fire = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston = 1, destroys_items = 1, set_on_fire=8},
 	floodable = true,
 	on_flood = function(pos, oldnode, newnode)
@@ -522,7 +513,7 @@ end
 -- * pointed_thing: Pointed thing to ignite
 -- * player: Player who sets fire or nil if nobody
 -- * allow_on_fire: If false, can't ignite fire on fire (default: true)
-mcl_fire.set_fire = function(pointed_thing, player, allow_on_fire)
+function mcl_fire.set_fire(pointed_thing, player, allow_on_fire)
 	local pname
 	if player == nil then
 		pname = ""

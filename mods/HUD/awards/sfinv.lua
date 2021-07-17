@@ -1,5 +1,5 @@
 if minetest.get_modpath("sfinv") then
-	local S = minetest.get_translator("awards")
+	local S = minetest.get_translator(minetest.get_current_modname())
 
 	sfinv.register_page("awards:awards", {
 		title = S("Awards"),

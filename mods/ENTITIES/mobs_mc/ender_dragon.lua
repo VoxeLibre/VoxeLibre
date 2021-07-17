@@ -2,7 +2,7 @@
 --################### ENDERDRAGON
 --###################
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 mobs:register_mob("mobs_mc:enderdragon", {
 	description = S("Ender Dragon"),
@@ -16,7 +16,7 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	shoot_arrow = function(self, pos, dir)
 		-- 2-4 damage per arrow
 		local dmg = math.random(2,4)
-		mobs.shoot_projectile_handling("mobs_mc:dragon_fireball", pos, dir, self.object:get_yaw(), self.object, nil, dmg)		
+		mobs.shoot_projectile_handling("mobs_mc:dragon_fireball", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
 	end,
 	hp_max = 200,
 	hp_min = 200,
@@ -24,7 +24,6 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	xp_max = 500,
 	collisionbox = {-2, 0, -2, 2, 2, 2},
 	eye_height = 1,
-	physical = false,
 	visual = "mesh",
 	mesh = "mobs_mc_dragon.b3d",
 	textures = {
@@ -60,8 +59,6 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	arrow = "mobs_mc:dragon_fireball",
 	shoot_interval = 0.5,
 	shoot_offset = -1.0,
-	xp_min = 500,
-	xp_max = 500,
 	animation = {
 		fly_speed = 8, stand_speed = 8,
 		stand_start = 0,		stand_end = 20,
@@ -114,8 +111,8 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	fire_resistant = true,
 })
 
-
-local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+--TODO: replace this setting by a proper gamerules system
+local mobs_griefing = minetest.settings:get_bool("mobs_griefing", true)
 
 -- dragon fireball (projectile)
 mobs:register_arrow("mobs_mc:dragon_fireball", {
@@ -143,7 +140,9 @@ mobs:register_arrow("mobs_mc:dragon_fireball", {
 	-- node hit, explode
 	hit_node = function(self, pos, node)
 		--mobs:boom(self, pos, 2)
-		mcl_explosions.explode(self.object:get_pos(), 2,{ drop_chance = 1.0 })
+		if mobs_griefing then
+			mcl_explosions.explode(self.object:get_pos(), 2, { drop_chance = 1.0 })
+		end
 	end
 })
 

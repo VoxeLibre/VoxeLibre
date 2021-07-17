@@ -61,20 +61,21 @@ In mc, you cant use clock in the nether and the end.
 
 * pos: position
 
-## mcl_worlds.register_on_dimension_change(function(player, dimension))
+## mcl_worlds.register_on_dimension_change(function(player, dimension, last_dimension))
 Register a callback function func(player, dimension).
 It will be called whenever a player changes between dimensions.
 The void counts as dimension.
 
-* player: player, the player who changed the dimension
-* dimension: position, The new dimension of the player ("overworld", "nether", "end", "void").
+* player: player, the player who changed of dimension
+* dimension: string, The new dimension of the player ("overworld", "nether", "end", "void").
+* last_dimension: string, The dimension where the player was ("overworld", "nether", "end", "void").
 
 
 ## mcl_worlds.registered_on_dimension_change
 Table containing all function registered with mcl_worlds.register_on_dimension_change()
 
 ## mcl_worlds.dimension_change(player, dimension)
-Notify this mod of a dimmension change of <player> to <dimension>
+Notify this mod of a dimension change of <player> to <dimension>
 
 * player: player, player who changed the dimension
 * dimension: string, new dimension ("overworld", "nether", "end", "void")

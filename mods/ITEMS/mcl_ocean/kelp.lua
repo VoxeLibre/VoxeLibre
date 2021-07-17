@@ -7,8 +7,8 @@
 -- TODO: In MC, you can't actually destroy kelp by bucket'ing water in the middle.
 -- However, because of the plantlike_rooted hack, we'll just allow it for now.
 
-local S = minetest.get_translator("mcl_ocean")
-local mod_doc = minetest.get_modpath("doc") ~= nil
+local S = minetest.get_translator(minetest.get_current_modname())
+local mod_doc = minetest.get_modpath("doc")
 
 --------------------------------------------------------------------------------
 -- local-ify runtime functions
@@ -38,7 +38,7 @@ local mt_is_creative_enabled = minetest.is_creative_enabled
 local mt_sound_play = minetest.sound_play
 
 local math = math
-local string = string
+--local string = string
 local table = table
 
 -- DEBUG: functions
@@ -422,7 +422,7 @@ end
 
 
 function kelp.surface_after_dig_node(pos, node)
-	return mt_set_node(pos, {name=registred_nodes[node.name].node_dig_prediction})
+	return mt_set_node(pos, {name=minetest.registered_nodes[node.name].node_dig_prediction})
 end
 
 
@@ -759,12 +759,11 @@ minetest.register_craftitem("mcl_ocean:dried_kelp", {
 	groups = { food = 2, eatable = 1 },
 	on_place = minetest.item_eat(1),
 	on_secondary_use = minetest.item_eat(1),
-	groups = { food = 2, eatable = 1 },
 	_mcl_saturation = 0.6,
 })
 
 
-local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
+local mod_screwdriver = minetest.get_modpath("screwdriver")
 local on_rotate
 if mod_screwdriver then
 	on_rotate = screwdriver.rotate_3way

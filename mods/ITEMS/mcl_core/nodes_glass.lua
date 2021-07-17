@@ -1,5 +1,5 @@
 -- Glass nodes
-local S = minetest.get_translator("mcl_core")
+local S = minetest.get_translator(minetest.get_current_modname())
 local mod_doc = minetest.get_modpath("doc")
 
 minetest.register_node("mcl_core:glass", {
@@ -20,7 +20,7 @@ minetest.register_node("mcl_core:glass", {
 })
 
 ------------------------
--- Create Color Glass -- 
+-- Create Color Glass --
 ------------------------
 local canonical_color = "yellow"
 function mcl_core.add_stained_glass(desc, recipeitem, colorgroup, color)
@@ -54,13 +54,13 @@ function mcl_core.add_stained_glass(desc, recipeitem, colorgroup, color)
 		_mcl_hardness = 0.3,
 		_mcl_silk_touch_drop = true,
 	})
-	
+
 	minetest.register_craft({
-		output = 'mcl_core:glass_'..color..' 8',
+		output = "mcl_core:glass_"..color.." 8",
 		recipe = {
-			{'mcl_core:glass','mcl_core:glass','mcl_core:glass'},
-			{'mcl_core:glass',recipeitem,'mcl_core:glass'},
-			{'mcl_core:glass','mcl_core:glass','mcl_core:glass'},
+			{"mcl_core:glass","mcl_core:glass","mcl_core:glass"},
+			{"mcl_core:glass",recipeitem,"mcl_core:glass"},
+			{"mcl_core:glass","mcl_core:glass","mcl_core:glass"},
 		}
 	})
 

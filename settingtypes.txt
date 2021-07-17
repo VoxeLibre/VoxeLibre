@@ -1,4 +1,4 @@
-# This file contains settings of MineClone 2that can be changed in
+# This file contains settings of MineClone 2 that can be changed in
 # minetest.conf
 
 [World]

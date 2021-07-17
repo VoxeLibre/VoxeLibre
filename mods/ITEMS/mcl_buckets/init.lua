@@ -1,8 +1,7 @@
-local S = minetest.get_translator("mcl_buckets")
-local modpath = minetest.get_modpath(minetest.get_current_modname())
-
--- Minetest 0.4 mod: bucket
 -- See README.txt for licensing and other information.
+local modname = minetest.get_current_modname()
+local S = minetest.get_translator(modname)
+local modpath = minetest.get_modpath(modname)
 
 minetest.register_alias("bucket:bucket_empty", "mcl_buckets:bucket_empty")
 minetest.register_alias("bucket:bucket_water", "mcl_buckets:bucket_water")
@@ -10,14 +9,14 @@ minetest.register_alias("bucket:bucket_lava", "mcl_buckets:bucket_lava")
 
 local mod_doc = minetest.get_modpath("doc")
 local mod_mcl_core = minetest.get_modpath("mcl_core")
-local mod_mclx_core = minetest.get_modpath("mclx_core")
+--local mod_mclx_core = minetest.get_modpath("mclx_core")
 
 if mod_mcl_core then
 	minetest.register_craft({
-		output = 'mcl_buckets:bucket_empty 1',
+		output = "mcl_buckets:bucket_empty 1",
 		recipe = {
-			{'mcl_core:iron_ingot', '', 'mcl_core:iron_ingot'},
-			{'', 'mcl_core:iron_ingot', ''},
+			{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
+			{"", "mcl_core:iron_ingot", ""},
 		}
 	})
 end
@@ -51,6 +50,7 @@ function mcl_buckets.register_liquid(def)
 		mcl_buckets.liquids[def.source_take[i]] = {
 			source_place = def.source_place,
 			source_take = def.source_take[i],
+			on_take = def.on_take,
 			itemname = def.itemname,
 		}
 		if type(def.source_place) == "string" then
@@ -58,7 +58,7 @@ function mcl_buckets.register_liquid(def)
 		end
 	end
 
-	if def.itemname ~= nil then
+	if def.itemname then
 		minetest.register_craftitem(def.itemname, {
 			description = def.name,
 			_doc_items_longdesc = def.longdesc,
@@ -76,10 +76,11 @@ function mcl_buckets.register_liquid(def)
 				local node = minetest.get_node(pointed_thing.under)
 				local place_pos = pointed_thing.under
 				local nn = node.name
+				local nodedef = minetest.registered_nodes[nn]
 				-- Call on_rightclick if the pointed node defines it
 				if user and not user:get_player_control().sneak then
-					if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].on_rightclick then
-						return minetest.registered_nodes[nn].on_rightclick(place_pos, node, user, itemstack) or itemstack
+					if nodedef and nodedef.on_rightclick then
+						return nodedef.on_rightclick(place_pos, node, user, itemstack) or itemstack
 					end
 				end
 
@@ -90,11 +91,9 @@ function mcl_buckets.register_liquid(def)
 					node_place = def.source_place
 				end
 				-- Check if pointing to a buildable node
-				local item = itemstack:get_name()
+				--local item = itemstack:get_name()
 
-				if def.extra_check and def.extra_check(place_pos, user) == false then
-					-- Fail placement of liquid
-				elseif minetest.registered_nodes[nn] and minetest.registered_nodes[nn].buildable_to then
+				if def.extra_check and def.extra_check(place_pos, user) == true and nodedef and nodedef.buildable_to then
 					-- buildable; replace the node
 					local pns = user:get_player_name()
 					if minetest.is_protected(place_pos, pns) then
@@ -147,12 +146,12 @@ function mcl_buckets.register_liquid(def)
 				end
 			end,
 			_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
-				local iname = stack:get_name()
+				--local iname = stack:get_name()
 				local buildable = minetest.registered_nodes[dropnode.name].buildable_to or dropnode.name == "mcl_portals:portal"
 
-				if def.extra_check and def.extra_check(droppos, nil) == false then
+				--if def.extra_check and def.extra_check(droppos, nil) == false then
 					-- Fail placement of liquid
-				elseif buildable then
+				if def.extra_check and def.extra_check(droppos, nil) == true and buildable then
 					-- buildable; replace the node
 					local node_place
 					if type(def.source_place) == "function" then
@@ -202,13 +201,13 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 		-- Check if pointing to a liquid source
 		local liquiddef = mcl_buckets.liquids[nn]
 		local new_bucket
-		if liquiddef ~= nil and liquiddef.itemname ~= nil and (nn == liquiddef.source_take) then
+		if liquiddef and liquiddef.itemname and (nn == liquiddef.source_take) then
 
 			-- Fill bucket, but not in Creative Mode
 			if not minetest.is_creative_enabled(user:get_player_name()) then
 				new_bucket = ItemStack({name = liquiddef.itemname})
-				if liquiddef.itemname == "mcl_buckets:bucket_lava" and awards and awards.unlock and user and user:is_player() then
-					awards.unlock(user:get_player_name(), "mcl:hotStuff")
+				if liquiddef.on_take then
+					liquiddef.on_take(user)
 				end
 			end
 
@@ -260,7 +259,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 
 		local liquiddef = mcl_buckets.liquids[dropnode.name]
 		local new_bucket
-		if liquiddef ~= nil and liquiddef.itemname ~= nil and (dropnode.name  == liquiddef.source_take) then
+		if liquiddef and liquiddef.itemname and (dropnode.name  == liquiddef.source_take) then
 			-- Fill bucket
 			new_bucket = ItemStack({name = liquiddef.itemname})
 			sound_take(dropnode.name, droppos)

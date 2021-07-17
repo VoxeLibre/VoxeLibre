@@ -1,12 +1,15 @@
 mcl_paintings = {}
 
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/paintings.lua")
+local modname = minetest.get_current_modname()
+dofile(minetest.get_modpath(modname).."/paintings.lua")
 
-local S = minetest.get_translator("mcl_paintings")
+local S = minetest.get_translator(modname)
+
+local math = math
 
 local wood = "[combine:16x16:-192,0=mcl_paintings_paintings.png"
 
-local is_protected = function(pos, name)
+local function is_protected(pos, name)
 	if minetest.is_protected(pos, name) then
 		minetest.record_protection_violation(pos, name)
 		return true
@@ -17,7 +20,7 @@ end
 -- Check if there's a painting for provided painting size.
 -- If yes, returns the arguments.
 -- If not, returns the next smaller available painting.
-local shrink_painting = function(x, y)
+local function shrink_painting(x, y)
 	if x > 4 or y > 4 then
 		return nil
 	end
@@ -43,7 +46,7 @@ local shrink_painting = function(x, y)
 	end
 end
 
-local get_painting = function(x, y, motive)
+local function get_painting(x, y, motive)
 	local painting = mcl_paintings.paintings[y] and mcl_paintings.paintings[y][x] and mcl_paintings.paintings[y][x][motive]
 	if not painting then
 		return nil
@@ -53,7 +56,7 @@ local get_painting = function(x, y, motive)
 	return "[combine:"..sx.."x"..sy..":"..px..","..py.."=mcl_paintings_paintings.png"
 end
 
-local get_random_painting = function(x, y)
+local function get_random_painting(x, y)
 	if not mcl_paintings.paintings[y] or not mcl_paintings.paintings[y][x] then
 		return nil
 	end
@@ -65,7 +68,7 @@ local get_random_painting = function(x, y)
 	return get_painting(x, y, r), r
 end
 
-local size_to_minmax = function(size)
+--[[local function size_to_minmax(size)
 	local min, max
 	if size == 2 then
 		min = -0.5
@@ -81,13 +84,13 @@ local size_to_minmax = function(size)
 		max = 0.5
 	end
 	return min, max
-end
+end]]
 
-local size_to_minmax_entity = function(size)
+local function size_to_minmax_entity(size)
 	return -size/2, size/2
 end
 
-local set_entity = function(object)
+local function set_entity(object)
 	local ent = object:get_luaentity()
 	local wallm = ent._facing
 	local xsize = ent._xsize
@@ -169,7 +172,7 @@ minetest.register_entity("mcl_paintings:painting", {
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir, damage)
 		-- Drop as item on punch
 		if puncher and puncher:is_player() then
-			kname = puncher:get_player_name()
+			local kname = puncher:get_player_name()
 			local pos = self._pos
 			if not pos then
 				pos = self.object:get_pos()

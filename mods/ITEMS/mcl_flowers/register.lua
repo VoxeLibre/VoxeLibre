@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_flowers")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 mcl_flowers.register_simple_flower("poppy", {
 	desc = S("Poppy"),

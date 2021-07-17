@@ -200,14 +200,14 @@ end
 mobs_mc.override.enderman_block_texture_overrides = {
 	["mcl_core:cactus"] = ctable,
 	-- FIXME: replace colorize colors with colors from palette
-	["mcl_core:dirt_with_grass"] = 
-	{
-	"mcl_core_grass_block_top.png^[colorize:green:90",
-	"default_dirt.png",
-	"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
-	"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
-	"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
-	"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)"}
+	["mcl_core:dirt_with_grass"] = {
+        "mcl_core_grass_block_top.png^[colorize:green:90",
+        "default_dirt.png",
+        "default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
+        "default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
+        "default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
+        "default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
+    },
 }
 
 -- List of nodes on which mobs can spawn

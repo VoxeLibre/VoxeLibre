@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### OCELOT AND CAT
@@ -151,7 +151,7 @@ end
 
 mobs:register_mob("mobs_mc:cat", cat)
 
-local base_spawn_chance = 5000
+--local base_spawn_chance = 5000
 
 -- Spawn ocelot
 --they get the same as the llama because I'm trying to rework so much of this code right now -j4i

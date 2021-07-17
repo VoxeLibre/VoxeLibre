@@ -1,6 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 local mod_mcl_core = minetest.get_modpath("mcl_core")
 local mod_mclx_core = minetest.get_modpath("mclx_core")
+local has_awards = minetest.get_modpath("awards")
 
 local sound_place = function(itemname, pos)
 	local def = minetest.registered_nodes[itemname]
@@ -9,12 +10,12 @@ local sound_place = function(itemname, pos)
 	end
 end
 
-local sound_take = function(itemname, pos)
+--[[local sound_take = function(itemname, pos)
 	local def = minetest.registered_nodes[itemname]
 	if def and def.sounds and def.sounds.dug then
 		minetest.sound_play(def.sounds.dug, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005}, true)
 	end
-end
+end]]
 
 if mod_mcl_core then
 	-- Lava bucket
@@ -28,6 +29,11 @@ if mod_mcl_core then
 			end
 		end,
 		source_take = {"mcl_core:lava_source", "mcl_nether:nether_lava_source"},
+        on_take = function(user)
+            if has_awards and user and user:is_player() then
+                awards.unlock(user:get_player_name(), "mcl:hotStuff")
+            end
+        end,
 		itemname = "mcl_buckets:bucket_lava",
 		inventory_image = "bucket_lava.png",
 		name = S("Lava Bucket"),
@@ -49,7 +55,7 @@ if mod_mcl_core then
 		extra_check = function(pos, placer)
 			-- Check protection
 			local placer_name = ""
-			if placer ~= nil then
+			if placer then
 				placer_name = placer:get_player_name()
 			end
 			if placer and minetest.is_protected(pos, placer_name) then
@@ -92,7 +98,7 @@ if mod_mclx_core then
 		extra_check = function(pos, placer)
 			-- Check protection
 			local placer_name = ""
-			if placer ~= nil then
+			if placer then
 				placer_name = placer:get_player_name()
 			end
 			if placer and minetest.is_protected(pos, placer_name) then

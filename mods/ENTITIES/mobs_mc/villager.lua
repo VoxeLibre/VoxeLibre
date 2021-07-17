@@ -19,7 +19,7 @@
 --     TODO: Internal inventory, pick up items, trade with other villagers
 --     TODO: Farm stuff
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 local N = function(s) return s end
 local F = minetest.formspec_escape
 

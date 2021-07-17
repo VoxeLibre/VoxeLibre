@@ -1,5 +1,3 @@
-local S = minetest.get_translator("mcl_playerplus")
-
 mcl_playerplus = {
 	elytra = {},
 }
@@ -27,7 +25,7 @@ local mcl_playerplus_internal = {}
 local time = 0
 local look_pitch = 0
 
-local player_collision = function(player)
+local function player_collision(player)
 
 	local pos = player:get_pos()
 	--local vel = player:get_velocity()
@@ -50,16 +48,24 @@ local player_collision = function(player)
 			z = z + (vec.z * force)
 		end
 	end
-
-	return({x,z})
+	return {x,z}
 end
+
+local function walking_player(player, control)
+	if control.up or control.down or control.left or control.right then
+		return true
+	else
+		return false
+	end
+end
+
 
 -- converts yaw to degrees
 local function degrees(rad)
 	return rad * 180.0 / math.pi
 end
 
-local dir_to_pitch = function(dir)
+local function dir_to_pitch(dir)
 	--local dir2 = vector.normalize(dir)
 	local xz = math.abs(dir.x) + math.abs(dir.z)
 	return -math.atan2(-dir.y, xz)
@@ -192,22 +198,15 @@ minetest.register_globalstep(function(dtime)
 				if vector.length(player_velocity) < 40 then
 					local add_velocity = player.add_velocity or player.add_player_velocity
 					add_velocity(player, vector.multiply(player:get_look_dir(), 4))
-					minetest.add_particlespawner({
-						amount = 1,
-						time = 0.1,
-						minpos = fly_pos,
-						maxpos = fly_pos,
-						minvel = {x = 0, y = 0, z = 0},
-						maxvel = {x = 0, y = 0, z = 0},
-						minacc = {x = 0, y = 0, z = 0},
-						maxacc = {x = 0, y = 0, z = 0},
-						minexptime = 0.3,
-						maxexptime = 0.5,
-						minsize = 1,
-						maxsize = 2.5,
+					add_particle({
+						pos = fly_pos,
+						velocity = {x = 0, y = 0, z = 0},
+						acceleration = {x = 0, y = 0, z = 0},
+						expirationtime = math.random(0.3, 0.5),
+						size = math.random(1, 2),
 						collisiondetection = false,
 						vertical = false,
-						texture = "mcl_particles_crit.png^[colorize:#bc7a57:127",
+						texture = "mcl_particles_bonemeal.png^[colorize:#bc7a57:127",
 						glow = 5,
 					})
 				end
@@ -227,8 +226,9 @@ minetest.register_globalstep(function(dtime)
 
 		player_velocity_old = player:get_velocity() or player:get_player_velocity()
 
+
 		-- controls right and left arms pitch when shooting a bow
-		if string.find(wielded:get_name(), "mcl_bows:bow") and control.RMB and not control.LMB and not control.up and not control.down and not control.left and not control.right then
+		if string.find(wielded:get_name(), "mcl_bows:bow") and control.RMB then
 			player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch+90,-30,pitch * -1 * .35))
 			player:set_bone_position("Arm_Left_Pitch_Control", vector.new(3.5,5.785,0), vector.new(pitch+90,43,pitch * .35))
 		-- when punching
@@ -547,6 +547,12 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 					if mcl_portals and mcl_portals.end_teleport then
 						mcl_portals.end_teleport(obj)
 					end
+					return 0
+				end
+				if node.name == "mcl_core:cobweb" then
+					return 0
+				end
+				if node.name == "mcl_core:vine" then
 					return 0
 				end
 			end

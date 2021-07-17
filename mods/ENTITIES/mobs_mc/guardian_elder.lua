@@ -4,7 +4,7 @@
 --################### GUARDIAN
 --###################
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 mobs:register_mob("mobs_mc:guardian_elder", {
 	description = S("Elder Guardian"),
@@ -15,7 +15,7 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 	xp_min = 10,
 	xp_max = 10,
 	breath_max = -1,
-    	passive = false,
+    passive = false,
 	attack_type = "punch",
 	pathfinding = 1,
 	view_range = 16,
@@ -104,7 +104,6 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 	makes_footstep_sound = false,
 	fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
 	jump = false,
-	view_range = 16,
 })
 
 -- Spawning disabled due to size issues <- what do you mean? -j4i

@@ -1,5 +1,5 @@
 -- switch for debugging
-settlements.debug = function(message)
+function settlements.debug(message)
 	-- minetest.chat_send_all(message)
 	-- minetest.log("warning", "[mcl_villages] "..message)
 	minetest.log("verbose", "[mcl_villages] "..message)
@@ -7,7 +7,7 @@ end
 
 --[[ Manually set in 'buildings.lua'
 -- material to replace cobblestone with
-wallmaterial = {
+local wallmaterial = {
 	"mcl_core:junglewood",
 	"mcl_core:sprucewood",
 	"mcl_core:wood",

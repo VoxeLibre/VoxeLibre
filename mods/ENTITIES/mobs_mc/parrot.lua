@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### PARROT
@@ -44,7 +44,7 @@ mobs:register_mob("mobs_mc:parrot", {
 		max = 2,
 		looting = "common",},
 	},
-    	animation = {
+		animation = {
 		stand_speed = 50,
 		walk_speed = 50,
 		fly_speed = 50,

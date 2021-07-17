@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_flowerpots")
+local S = minetest.get_translator(minetest.get_current_modname())
 local has_doc = minetest.get_modpath("doc")
 
 mcl_flowerpots = {}
@@ -49,11 +49,11 @@ minetest.register_node("mcl_flowerpots:flower_pot", {
 })
 
 minetest.register_craft({
-	output = 'mcl_flowerpots:flower_pot',
+	output = "mcl_flowerpots:flower_pot",
 	recipe = {
-		{'mcl_core:brick', '', 'mcl_core:brick'},
-		{'', 'mcl_core:brick', ''},
-		{'', '', ''},
+		{"mcl_core:brick", "", "mcl_core:brick"},
+		{"", "mcl_core:brick", ""},
+		{"", "", ""},
 	}
 })
 

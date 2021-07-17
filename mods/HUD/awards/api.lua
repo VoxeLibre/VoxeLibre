@@ -14,11 +14,16 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
+
 -- The global award namespace
 awards = {
-	show_mode = "hud"
+	show_mode = "hud",
 }
-dofile(minetest.get_modpath("awards").."/api_helpers.lua")
+
+dofile(modpath.."/api_helpers.lua")
 
 -- Table Save Load Functions
 function awards.save()
@@ -28,8 +33,6 @@ function awards.save()
 		file:close()
 	end
 end
-
-local S = minetest.get_translator("awards")
 
 function awards.init()
 	awards.players = awards.load()
@@ -53,7 +56,7 @@ end
 function awards.register_trigger(name, func)
 	awards.trigger_types[name] = func
 	awards.on[name] = {}
-	awards['register_on_'..name] = function(func)
+	awards["register_on_"..name] = function(func)
 		table.insert(awards.on[name], func)
 	end
 end

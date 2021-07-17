@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_tnt")
+local S = minetest.get_translator(minetest.get_current_modname())
 local tnt_griefing = minetest.settings:get_bool("mcl_tnt_griefing", true)
 
 local function spawn_tnt(pos, entname)
@@ -9,7 +9,8 @@ local function spawn_tnt(pos, entname)
 end
 
 tnt = {}
-tnt.ignite = function(pos)
+
+function tnt.ignite(pos)
 	minetest.remove_node(pos)
 	local e = spawn_tnt(pos, "mcl_tnt:tnt")
 	minetest.check_for_falling(pos)
@@ -18,7 +19,7 @@ end
 
 -- Add smoke particle of entity at pos.
 -- Intended to be called every step
-tnt.smoke_step = function(pos)
+function tnt.smoke_step(pos)
 	minetest.add_particle({
 		pos = {x=pos.x,y=pos.y+0.5,z=pos.z},
 		velocity = vector.new(math.random() * 0.2 - 0.1, 1.0 + math.random(), math.random() * 0.2 - 0.1),
@@ -114,7 +115,7 @@ function TNT:on_activate(staticdata)
 	self.object:set_texture_mod("^mcl_tnt_blink.png")
 end
 
-local function add_effects(pos, radius, drops)
+--[[local function add_effects(pos, radius, drops)
 	minetest.add_particlespawner({
 		amount = 64,
 		time = 0.5,
@@ -161,7 +162,7 @@ local function add_effects(pos, radius, drops)
 		texture = texture,
 		collisiondetection = true,
 	})
-end
+end]]
 
 function TNT:on_step(dtime)
 	local pos = self.object:get_pos()
@@ -189,9 +190,9 @@ if minetest.get_modpath("mcl_mobitems") then
 	minetest.register_craft({
 		output = "mcl_tnt:tnt",
 		recipe = {
-			{'mcl_mobitems:gunpowder','group:sand','mcl_mobitems:gunpowder'},
-			{'group:sand','mcl_mobitems:gunpowder','group:sand'},
-			{'mcl_mobitems:gunpowder','group:sand','mcl_mobitems:gunpowder'}
+			{"mcl_mobitems:gunpowder", "group:sand", "mcl_mobitems:gunpowder"},
+			{"group:sand", "mcl_mobitems:gunpowder", "group:sand"},
+			{"mcl_mobitems:gunpowder", "group:sand", "mcl_mobitems:gunpowder"}
 		}
 	})
 end

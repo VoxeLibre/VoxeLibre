@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_walls")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 mcl_walls.register_wall("mcl_walls:cobble", S("Cobblestone Wall"), "mcl_core:cobble", {"mcl_walls_cobble_wall_top.png", "default_cobble.png", "mcl_walls_cobble_wall_side.png"})
 mcl_walls.register_wall("mcl_walls:mossycobble", S("Mossy Cobblestone Wall"), "mcl_core:mossycobble", {"mcl_walls_cobble_mossy_wall_top.png", "default_mossycobble.png", "mcl_walls_cobble_mossy_wall_side.png"})

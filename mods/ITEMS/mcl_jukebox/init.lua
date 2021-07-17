@@ -1,4 +1,7 @@
-local S = minetest.get_translator("mcl_jukebox")
+local S = minetest.get_translator(minetest.get_current_modname())
+local C = minetest.colorize
+
+local math = math
 
 mcl_jukebox = {}
 mcl_jukebox.registered_records = {}
@@ -20,8 +23,8 @@ function mcl_jukebox.register_record(title, author, identifier, image, sound)
 	local usagehelp = S("Place a music disc into an empty jukebox to play the music. Use the jukebox again to retrieve the music disc. The music can only be heard by you, not by other players.")
 	minetest.register_craftitem(":mcl_jukebox:record_"..identifier, {
 		description =
-			core.colorize(mcl_colors.AQUA, S("Music Disc")) .. "\n" ..
-			core.colorize(mcl_colors.GRAY, S("@1—@2", author, title)),
+			C(mcl_colors.AQUA, S("Music Disc")) .. "\n" ..
+			C(mcl_colors.GRAY, S("@1—@2", author, title)),
 		_doc_items_create_entry = true,
 		_doc_items_entry_name = entryname,
 		_doc_items_longdesc = longdesc,
@@ -45,7 +48,7 @@ local function now_playing(player, name)
 	end
 
 	local id
-	if hud ~= nil then
+	if hud then
 		id = hud
 		player:hud_change(id, "text", text)
 	else
@@ -67,12 +70,11 @@ local function now_playing(player, name)
 		if not player or not player:is_player() or not active_huds[playername] or not hud_sequence_numbers[playername] or seq ~= hud_sequence_numbers[playername] then
 			return
 		end
-		if id ~= nil and id == active_huds[playername] then
+		if id and id == active_huds[playername] then
 			player:hud_remove(active_huds[playername])
 			active_huds[playername] = nil
 		end
 	end, {playername, id, hud_sequence_numbers[playername]})
-	
 end
 
 minetest.register_on_leaveplayer(function(player)
@@ -83,19 +85,21 @@ end)
 
 -- Jukebox crafting
 minetest.register_craft({
-	output = 'mcl_jukebox:jukebox',
+	output = "mcl_jukebox:jukebox",
 	recipe = {
-		{'group:wood', 'group:wood', 'group:wood'},
-		{'group:wood', 'mcl_core:diamond', 'group:wood'},
-		{'group:wood', 'group:wood', 'group:wood'},
+		{"group:wood", "group:wood", "group:wood"},
+		{"group:wood", "mcl_core:diamond", "group:wood"},
+		{"group:wood", "group:wood", "group:wood"},
 	}
 })
 
-local play_record = function(pos, itemstack, player)
-	local name = itemstack:get_name()
+local function play_record(pos, itemstack, player)
+	local item_name = itemstack:get_name()
+	-- ensure the jukebox uses the new record names for old records
+	local name = minetest.registered_aliases[item_name] or item_name
 	if mcl_jukebox.registered_records[name] then
 		local cname = player:get_player_name()
-		if active_tracks[cname] ~= nil then
+		if active_tracks[cname] then
 			minetest.sound_stop(active_tracks[cname])
 			active_tracks[cname] = nil
 		end
@@ -135,7 +139,7 @@ minetest.register_node("mcl_jukebox:jukebox", {
 		local inv = meta:get_inventory()
 		if not inv:is_empty("main") then
 			-- Jukebox contains a disc: Stop music and remove disc
-			if active_tracks[cname] ~= nil then
+			if active_tracks[cname] then
 				minetest.sound_stop(active_tracks[cname])
 			end
 			local lx = pos.x
@@ -146,11 +150,11 @@ minetest.register_node("mcl_jukebox:jukebox", {
 			-- Rotate record to match with “slot” texture
 			dropped_item:set_yaw(math.pi/2)
 			inv:set_stack("main", 1, "")
-			if active_tracks[cname] ~= nil then
+			if active_tracks[cname] then
 				minetest.sound_stop(active_tracks[cname])
 				active_tracks[cname] = nil
 			end
-			if active_huds[cname] ~= nil then
+			if active_huds[cname] then
 				clicker:hud_remove(active_huds[cname])
 				active_huds[cname] = nil
 			end
@@ -205,11 +209,11 @@ minetest.register_node("mcl_jukebox:jukebox", {
 			local dropped_item = minetest.add_item(p, stack)
 			-- Rotate record to match with “slot” texture
 			dropped_item:set_yaw(math.pi/2)
-			if active_tracks[name] ~= nil then
+			if active_tracks[name] then
 				minetest.sound_stop(active_tracks[name])
 				active_tracks[name] = nil
 			end
-			if active_huds[name] ~= nil then
+			if active_huds[name] then
 				digger:hud_remove(active_huds[name])
 				active_huds[name] = nil
 			end

@@ -14,7 +14,7 @@ function settlements.build_schematic(vm, data, va, pos, building, replace_wall, 
   -- schematic conversion to lua
   local schem_lua = minetest.serialize_schematic(building,
     "lua",
-    {lua_use_comments = false, lua_num_indent_spaces = 0}).." return(schematic)"
+    {lua_use_comments = false, lua_num_indent_spaces = 0}).." return schematic"
   -- replace material
   if replace_wall == "y" then
     schem_lua = schem_lua:gsub("mcl_core:cobble", material)
@@ -187,10 +187,10 @@ local function construct_node(p1, p2, name)
 			end
 			return nodes
 		end
-		minetest.log("warning","[mcl_villages] No on_construct defined for node name " .. name)
+		minetest.log("warning", "[mcl_villages] No on_construct defined for node name " .. name)
 		return
 	end
-	minetest.log("warning","[mcl_villages] Attempt to 'construct' inexistant nodes: " .. name)
+	minetest.log("warning", "[mcl_villages] Attempt to 'construct' inexistant nodes: " .. name)
 end
 local function init_nodes(p1, p2, size, rotation, pr)
 	construct_node(p1, p2, "mcl_itemframes:item_frame")
@@ -228,7 +228,7 @@ function settlements.place_schematics(settlement_info, pr)
 		-- schematic conversion to lua
 		local schem_lua = minetest.serialize_schematic(building,
 			"lua",
-			{lua_use_comments = false, lua_num_indent_spaces = 0}).." return(schematic)"
+			{lua_use_comments = false, lua_num_indent_spaces = 0}).." return schematic"
 		schem_lua = schem_lua:gsub("mcl_core:stonebrickcarved", "mcl_villages:stonebrickcarved")
 		-- replace material
 		if replace_wall then

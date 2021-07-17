@@ -1,5 +1,5 @@
 
-local S = minetest.get_translator("mcl_mobs")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- name tag
 minetest.register_craftitem("mcl_mobs:nametag", {
