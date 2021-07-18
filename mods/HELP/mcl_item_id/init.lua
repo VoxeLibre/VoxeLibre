@@ -17,7 +17,7 @@ local same_id = {
 }
 
 tt.register_snippet(function(itemstring)
-	local def = minetest.registered_items[itemstring]
+    local def = minetest.registered_items[itemstring]
     local desc = def.description
     local item_split = itemstring:find(":")
     local new_id = game .. itemstring:sub(item_split)
