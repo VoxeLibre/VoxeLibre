@@ -36,6 +36,102 @@ minetest.register_node("mcl_mushroom:warped_fungus", {
   end,
 	_mcl_blast_resistance = 0,
 
+	if pointed_thing:get_wielded_item():get_name() == "mcl_dye:white" then
+	      itemstack:take_item()
+	      local nodepos = minetest.get_node({x = pos.x, y = pos.y - 1, z = pos.z})
+	      if nodepos.name == "mcl_mushroom:warped_nylium" or nodepos.name == "mcl_nether:netherrack" then
+	        local random = math.random(1, 5)
+	        if random == 1 then
+	          generate_warped_tree(pos)
+	        end
+	      end
+	    end
+	  end,
+  _mcl_blast_resistance = 0,
+  stack_max = 64,
+})
+
+minetest.register_node("mcl_mushroom:twisting_vines", {
+  description = S("Twisting Vines"),
+	drawtype = "plantlike",
+	tiles = { "twisting_vines_plant.png" },
+	inventory_image = "twisting_vines.png",
+	sunlight_propagates = true,
+	paramtype = "light",
+	walkable = false,
+	climbable = true,
+	buildable_to = true,
+	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1, shearsy = 1},
+	selection_box = {
+		type = "fixed",
+		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
+	},
+	node_placement_prediction = "",
+	on_rightclick = function(pos, node, pointed_thing, itemstack)
+
+	if pointed_thing:get_wielded_item():get_name() == "mcl_mushroom:twisting_vines" then
+	      itemstack:take_item()
+	      grow_twisting_vines(pos, 1)
+	elseif pointed_thing:get_wielded_item():get_name() == "mcl_dye:white" then
+	      itemstack:take_item()
+	      grow_twisting_vines(pos, math.random(1, 3))
+	end
+	end,
+	drop = {
+	max_items = 1,
+	items = {
+			{items = {"mcl_mushroom:twisting_vines"}, rarity = 3},
+		}
+	},
+	_mcl_shears_drop = true,
+	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = { items = {{items = {"mcl_mushroom:twisting_vines"}, rarity = 3},},
+	 											items = {{items = {"mcl_mushroom:twisting_vines"}, rarity = 1.8181818181818181},},
+												"mcl_mushroom:twisting_vines",
+												"mcl_mushroom:twisting_vines"},
+  _mcl_blast_resistance = 0,
+  stack_max = 64,
+})
+
+minetest.register_node("mcl_mushroom:nether_sprouts", {
+  description = S("Nether Sprouts"),
+	drawtype = "plantlike",
+	tiles = { "nether_sprouts.png" },
+	inventory_image = "nether_sprouts.png",
+	sunlight_propagates = true,
+	paramtype = "light",
+	walkable = false,
+	buildable_to = true,
+	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1, shearsy = 1},
+	selection_box = {
+		type = "fixed",
+		fixed = { -4/16, -0.5, -4/16, 4/16, 0, 4/16 },
+	},
+	node_placement_prediction = "",
+	drop = "",
+	_mcl_shears_drop = true,
+	_mcl_silk_touch_drop = false,
+  _mcl_blast_resistance = 0,
+  stack_max = 64,
+})
+
+minetest.register_node("mcl_mushroom:warped_roots", {
+  description = S("Warped Roots"),
+	drawtype = "plantlike",
+	tiles = { "warped_roots.png" },
+	inventory_image = "warped_roots.png",
+	sunlight_propagates = true,
+	paramtype = "light",
+	walkable = false,
+	buildable_to = true,
+	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1, shearsy = 1},
+	selection_box = {
+		type = "fixed",
+		fixed = { -6/16, -0.5, -6/16, 6/16, -4/16, 6/16 },
+	},
+	node_placement_prediction = "",
+	_mcl_silk_touch_drop = false,
+  _mcl_blast_resistance = 0,
   stack_max = 64,
 })
 
@@ -165,6 +261,17 @@ minetest.register_abm({
       elseif randomg == 7 then
         local pos1 = { x = pos.x, y = pos.y + 1, z = pos.z }
         generate_warped_tree(pos1)
+<<<<<<< HEAD
+=======
+			elseif randomg > 15 and randomg <= 45 then
+				grow_twisting_vines({ x = pos.x, y = pos.y, z = pos.z } ,math.random(1, 4))
+			elseif randomg > 45 and randomg <= 50 then
+				minetest.set_node({ x = pos.x, y = pos.y + 1, z = pos.z }, { name = "mcl_mushroom:crimson_fungus" })
+			elseif randomg > 50 and randomg <= 150 then
+				minetest.set_node({ x = pos.x, y = pos.y + 1, z = pos.z }, { name = "mcl_mushroom:nether_sprouts" })
+			elseif randomg > 150 and randomg <= 250 then
+				minetest.set_node({ x = pos.x, y = pos.y + 1, z = pos.z }, { name = "mcl_mushroom:warped_roots" })
+>>>>>>> da0cb4853 (Add more decoration blocks.)
       end
     else
       minetest.swap_node({ x = pos.x, y = pos.y, z = pos.z }, { name = "mcl_nether:netherrack" })
@@ -214,6 +321,26 @@ minetest.register_node("mcl_mushroom:crimson_fungus", {
   end,
 	_mcl_blast_resistance = 0,
 
+  stack_max = 64,
+})
+
+minetest.register_node("mcl_mushroom:crimson_roots", {
+  description = S("Crimson Roots"),
+	drawtype = "plantlike",
+	tiles = { "crimson_roots.png" },
+	inventory_image = "crimson_roots.png",
+	sunlight_propagates = true,
+	paramtype = "light",
+	walkable = false,
+	buildable_to = true,
+	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1, shearsy = 1},
+	selection_box = {
+		type = "fixed",
+		fixed = { -6/16, -0.5, -6/16, 6/16, -4/16, 6/16 },
+	},
+	node_placement_prediction = "",
+	_mcl_silk_touch_drop = false,
+  _mcl_blast_resistance = 0,
   stack_max = 64,
 })
 
@@ -319,12 +446,16 @@ minetest.register_abm({
     local nodepos = minetest.get_node({x = pos.x, y = pos.y + 1, z = pos.z})
     if nodepos.name == "air" then
       minetest.swap_node({ x = pos.x, y = pos.y, z = pos.z }, { name = "mcl_mushroom:crimson_nylium" })
-      local randomg = math.random(1, 40)
-      if randomg == 2 then
+			local randomg = math.random(1, 400)
+      if randomg <= 10 then
         minetest.set_node({ x = pos.x, y = pos.y + 1, z = pos.z }, { name = "mcl_mushroom:crimson_fungus" })
-      elseif randomg == 7 then
+      elseif randomg > 10 and randomg <= 25 then
         local pos1 = { x = pos.x, y = pos.y + 1, z = pos.z }
         generate_crimson_tree(pos1)
+			elseif randomg > 25 and randomg <= 30 then
+	      minetest.set_node({ x = pos.x, y = pos.y + 1, z = pos.z }, { name = "mcl_mushroom:warped_fungus" })
+			elseif randomg > 30 and randomg <= 130 then
+	      minetest.set_node({ x = pos.x, y = pos.y + 1, z = pos.z }, { name = "mcl_mushroom:crimson_roots" })
       end
     else
       minetest.swap_node({ x = pos.x, y = pos.y, z = pos.z }, { name = "mcl_nether:netherrack" })
