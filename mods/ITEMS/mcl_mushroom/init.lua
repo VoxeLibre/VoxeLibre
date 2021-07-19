@@ -214,7 +214,7 @@ minetest.register_node("mcl_mushroom:warped_hyphae_wood", {
   _mcl_hardness = 2,
 })
 
-mcl_stairs.register_stair_and_slab_simple("warped_hyphae_wood", "mcl_mushroom:warped_hyphae_wood", "Warped Wood Stairs", "Warped Wood Slab", "Double Warped Wood Slab")
+mcl_stairs.register_stair_and_slab_simple("warped_hyphae_wood", "mcl_mushroom:warped_hyphae_wood", S("Warped Stair"), S("Warped Slab"), S("Double Warped Slab"))
 
 minetest.register_craft({
   output = "mcl_mushroom:warped_hyphae_wood 4",
@@ -420,7 +420,7 @@ minetest.register_craft({
   }
 })
 
-mcl_stairs.register_stair_and_slab_simple("crimson_hyphae_wood", "mcl_mushroom:crimson_hyphae_wood", "Crimson Wood Stairs", "Crimson Wood Slab", "Double Crimson Wood Slab")
+mcl_stairs.register_stair_and_slab_simple("crimson_hyphae_wood", "mcl_mushroom:crimson_hyphae_wood", "Crimson Stair", "Crimson Slab", "Double Crimson Slab")
 
 minetest.register_abm({
 	label = "mcl_mushroom:crimson_fungus",

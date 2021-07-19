@@ -1,14 +1,23 @@
 # textdomain: mcl_mushroom
 
 Warped Fungus Mushroom=
+Twisting Vines=
+Nether Sprouts=
+Warped Roots=
 Warped Wart Block=
 Shroomlight=
 Warped Hyphae=
 Warped Nylium=
 Warped Checknode - only to check!=
 Warped Hyphae Wood=
+Warped Stair=
+Warped Slab=
 Crimson Fungus Mushroom=
+Crimson Roots=
 Crimson Hyphae=
 Crimson Hyphae Wood=
+Crimson Stair=
+Crimson Slab=
+Double Crimson Slab=
 Crimson Nylium=
 Crimson Checknode - only to check!=
