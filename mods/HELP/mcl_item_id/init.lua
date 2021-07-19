@@ -1,4 +1,4 @@
-local game = "mineclone2"
+local game = "mineclone"
 
 local same_id = {
     heads = { "skeleton", "zombie", "creeper", "wither_skeleton" },
@@ -30,6 +30,6 @@ tt.register_snippet(function(itemstring)
     end
     minetest.register_alias(new_id, itemstring)
     if minetest.settings:get_bool("mcl_item_id_debug", true) then
-		return new_id, "#555555"
-	end
+        return new_id, "#555555"
+    end
 end)
