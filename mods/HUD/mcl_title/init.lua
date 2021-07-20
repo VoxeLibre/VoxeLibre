@@ -134,7 +134,7 @@ function mcl_title.set(player, type, data)
 
 	player:hud_change(huds_idx[type][player], "text", data.text)
 	player:hud_change(huds_idx[type][player], "number", hex_color)
-	hud_hide_timeouts[type][player:get_player_name()] = data.stay or mcl_title.params_get(player).stay
+	hud_hide_timeouts[type][player:get_player_name()] = gametick_to_secondes(data.stay) or mcl_title.params_get(player).stay
 	return true
 end
 

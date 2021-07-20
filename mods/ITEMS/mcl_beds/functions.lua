@@ -330,7 +330,7 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 			message = select(2, lay_down(player, ppos, other))
 		end
 		if message then
-			mcl_title.set(player, "actionbar", {text=message, color="white", stay=3})
+			mcl_title.set(player, "actionbar", {text=message, color="white", stay=60})
 		end
 	else
 		lay_down(player, nil, nil, false)
