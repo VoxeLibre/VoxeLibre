@@ -45,7 +45,7 @@ local player_params = {}
 
 minetest.register_on_joinplayer(function(player)
 	local playername = player:get_player_name()
-	player_params[playername] = {
+	player_params[player] = {
 		stay = gametick_to_secondes(mcl_title.defaults.stay),
 		--fadeIn = gametick_to_secondes(mcl_title.defaults.fadein),
 		--fadeOut = gametick_to_secondes(mcl_title.defaults.fadeout),
@@ -127,14 +127,13 @@ function mcl_title.set(player, type, data)
 		return false
 	end
 
-	--TODO: enable this code then Fleckenstein's pr get merged (in about 5-6 years)
+	--TODO: enable this code then Fleckenstein's pr get merged (in about 5-6 years lol)
 
 	--if data.bold == nil then data.bold = false end
 	--if data.italic == nil then data.italic = false end
 
 	player:hud_change(huds_idx[type][player], "text", data.text)
 	player:hud_change(huds_idx[type][player], "number", hex_color)
-
 	hud_hide_timeouts[type][player:get_player_name()] = data.stay or mcl_title.params_get(player).stay
 	return true
 end

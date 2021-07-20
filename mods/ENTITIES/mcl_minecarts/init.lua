@@ -646,7 +646,7 @@ register_minecart(
 				if player then
 					mcl_player.player_set_animation(player, "sit" , 30)
 					player:set_eye_offset({x=0, y=-5.5, z=0},{x=0, y=-4, z=0})
-					mcl_tmp_message.message(clicker, S("Sneak to dismount"))
+					mcl_title.set(clicker, "actionbar", {text=S("Sneak to dismount"), color="white", stay=3})
 				end
 			end, name)
 		end
