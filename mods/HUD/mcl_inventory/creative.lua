@@ -27,10 +27,9 @@ local function replace_enchanted_books(tbl)
 	end
 end
 
---[[ Populate all the item tables. We only do this once. Note this mod must be
-loaded after _mcl_autogroup for this to work, because it required certain
-groups to be set. ]]
-do
+--[[ Populate all the item tables. We only do this once. Note this code must be
+executed after loading all the other mods in order to work. ]]
+minetest.register_on_mods_loaded(function()
 	for name,def in pairs(minetest.registered_items) do
 		if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and def.description ~= "" then
 			local function is_redstone(def)
@@ -108,7 +107,7 @@ do
 		table.sort(to_sort)
 		replace_enchanted_books(to_sort)
 	end
-end
+end)
 
 local function filter_item(name, description, lang, filter)
 	local desc

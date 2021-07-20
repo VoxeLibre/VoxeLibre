@@ -52,17 +52,17 @@ Each mod must provide `mod.conf`.
 Each mod which add API functions should store functions inside a global table named like the mod.
 Public functions should not use self references but rather just access the table directly.
 Functions should be defined in this way:
-```
+```lua
 function mcl_xyz.stuff(param) end
 ```
 Insteed of this way:
-```
+```lua
 mcl_xyz.stuff = function(param) end
 ```
 Indentation must be unified, more likely with tabs.
 
 Time sensitive mods should make a local copy of most used API functions to improve performances.
-```
+```lua
 local vector = vector
 local get_node = minetest.get_node
 ```
