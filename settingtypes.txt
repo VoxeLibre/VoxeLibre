@@ -153,3 +153,7 @@ fix_doubleplants (Mcimport double plant fixes) bool true
 
 # Allow players to create Minecraft-like maps.
 enable_real_maps (Enable Real Maps) bool true
+
+[Debugging]
+# If enabled, this will show the itemstring of an item in the description.
+mcl_item_id_debug (Item ID Debug) bool false
