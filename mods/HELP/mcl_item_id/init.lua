@@ -28,8 +28,12 @@ tt.register_snippet(function(itemstring)
             end
         end
     end
-    minetest.register_alias_force(new_id, itemstring)
-    if minetest.settings:get_bool("mcl_item_id_debug", true) then
+    if new_id ~= game .. ":book_enchanted" then
+        minetest.register_alias_force(new_id, itemstring)
+    end
+    if minetest.settings:get_bool("mcl_item_id_debug", false) then
         return new_id, "#555555"
     end
 end)
+
+minetest.register_alias_force(game .. ":book_enchanted", "mcl_enchanting:book_enchanted")
