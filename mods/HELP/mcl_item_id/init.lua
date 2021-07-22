@@ -28,7 +28,7 @@ tt.register_snippet(function(itemstring)
             end
         end
     end
-    minetest.register_alias(new_id, itemstring)
+    minetest.register_alias_force(new_id, itemstring)
     if minetest.settings:get_bool("mcl_item_id_debug", true) then
         return new_id, "#555555"
     end
