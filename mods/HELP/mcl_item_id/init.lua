@@ -1,5 +1,20 @@
+mcl_item_id = {}
+
 local game = "mineclone"
-local mcl_mods = {}
+
+function mcl_item_id.set_mod_namespace(modname, namespace)
+    local namespace = namespace or modname
+    mcl_item_id[modname .. "_namespace"] = namespace
+end
+
+function mcl_item_id.get_mod_namespace(modname)
+    local namespace = mcl_item_id[modname .. "_namespace"]
+    if namespace then
+        return namespace
+    else
+        return ""
+    end
+end
 
 local same_id = {
     heads = { "skeleton", "zombie", "creeper", "wither_skeleton" },
@@ -17,28 +32,15 @@ local same_id = {
     },
 }
 
-local worldmt = io.open(minetest.get_worldpath() .. "/world.mt", "r")
-local gameid = worldmt:read("*a"):match("gameid%s*=%s*(%S+)\n")
-worldmt:close()
-
-for _, mod in pairs(minetest.get_modnames()) do
-    if minetest.get_modpath(mod):match("/games/" .. gameid .. "/") then
-        table.insert(mcl_mods, mod)
-    end
-end
-
-local function item_id(id)
-    if minetest.settings:get_bool("mcl_item_id_debug", false) then
-        return id, "#555555"
-    end
-end
-
 tt.register_snippet(function(itemstring)
     local def = minetest.registered_items[itemstring]
     local desc = def.description
     local item_split = itemstring:find(":")
-    local new_id = game .. itemstring:sub(item_split)
-    local mcl_mod = itemstring:sub(1, item_split)
+    local id_part1 = itemstring:sub(1, item_split)
+    local id_part2 = itemstring:sub(item_split)
+    local modname = id_part1:gsub("%:", "")
+    local new_id = game .. id_part2
+    local mod_namespace = mcl_item_id.get_mod_namespace(modname)
     for mod, ids in pairs(same_id) do
         for _, id in pairs(ids) do
             if itemstring == "mcl_" .. mod .. ":" .. id  then
@@ -46,15 +48,16 @@ tt.register_snippet(function(itemstring)
             end
         end
     end
-    for _, modname in pairs(mcl_mods) do
-        if modname .. ":" == mcl_mod then
-            if new_id ~= game .. ":book_enchanted" and new_id ~= itemstring then
-                minetest.register_alias_force(new_id, itemstring)
-            end
-            return item_id(new_id)
-        end
+    
+    if mod_namespace then
+        new_id = mod_namespace .. id_part2
     end
-    return item_id(itemstring)
+    if new_id ~= game .. ":book_enchanted" then
+        minetest.register_alias_force(new_id, itemstring)
+    end
+    if minetest.settings:get_bool("mcl_item_id_debug", false) then
+        return new_id, "#555555"
+    end
 end)
 
 minetest.register_alias_force(game .. ":book_enchanted", "mcl_enchanting:book_enchanted")
