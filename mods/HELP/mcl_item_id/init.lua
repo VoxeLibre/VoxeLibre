@@ -12,7 +12,7 @@ function mcl_item_id.get_mod_namespace(modname)
     if namespace then
         return namespace
     else
-        return ""
+        return
     end
 end
 
