@@ -4,6 +4,8 @@ local table = table
 local vector = vector
 local math = math
 
+local has_doc = minetest.get_modpath("doc")
+
 -- Parameters
 --local SPAWN_MIN = mcl_vars.mg_end_min+70
 --local SPAWN_MAX = mcl_vars.mg_end_min+98
@@ -339,7 +341,7 @@ minetest.register_node("mcl_portals:end_portal_frame_eye", {
 	_mcl_hardness = -1,
 })
 
-if minetest.get_modpath("doc") then
+if has_doc then
 	doc.add_entry_alias("nodes", "mcl_portals:end_portal_frame", "nodes", "mcl_portals:end_portal_frame_eye")
 end
 
@@ -366,7 +368,7 @@ minetest.override_item("mcl_end:ender_eye", {
 			end
 			minetest.set_node(pointed_thing.under, { name = "mcl_portals:end_portal_frame_eye", param2 = node.param2 })
 
-			if minetest.get_modpath("doc") then
+			if has_doc then
 				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:end_portal_frame")
 			end
 			minetest.sound_play(
@@ -381,7 +383,7 @@ minetest.override_item("mcl_end:ender_eye", {
 				-- Epic 'portal open' sound effect that can be heard everywhere
 				minetest.sound_play("mcl_portals_open_end_portal", {gain=0.8}, true)
 				end_portal_area(ppos)
-				if minetest.get_modpath("doc") then
+				if has_doc then
 					doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal_end")
 				end
 			end
