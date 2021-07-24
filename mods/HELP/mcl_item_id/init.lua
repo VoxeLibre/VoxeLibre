@@ -7,18 +7,6 @@ local game = "mineclone"
 function mcl_item_id.set_mod_namespace(modname, namespace)
     local namespace = namespace or modname
     mcl_item_id.mod_namespaces[modname] = namespace
-    minetest.register_on_mods_loaded(function()
-        for item, def in pairs(minetest.registered_items) do
-            local item_split = item:find(":")
-            if item_split then
-                local id_modname = item:sub(1, item_split - 1)
-                local id_string = item:sub(item_split)
-                if id_modname == modname and modname ~= namespace then
-                    minetest.register_alias_force(namespace .. id_string, item)
-                end
-            end
-        end
-    end)
 end
 
 function mcl_item_id.get_mod_namespace(modname)
@@ -64,7 +52,8 @@ tt.register_snippet(function(itemstring)
     end
     if mod_namespace ~= game then
         new_id = mod_namespace .. id_string
-    else
+    end
+    if mod_namespace ~= id_modname then
         minetest.register_alias_force(new_id, itemstring)
     end
     if minetest.settings:get_bool("mcl_item_id_debug", false) then
