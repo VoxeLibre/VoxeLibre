@@ -13,7 +13,7 @@ function mcl_item_id.set_mod_namespace(modname, namespace)
             if item_split then
                 local id_modname = item:sub(1, item_split - 1)
                 local id_string = item:sub(item_split)
-                if id_modname == modname then
+                if id_modname == modname and modname ~= namespace then
                     minetest.register_alias_force(namespace .. id_string, item)
                 end
             end
