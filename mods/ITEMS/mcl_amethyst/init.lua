@@ -1,3 +1,4 @@
+-- Copyright (c) 2021 Cato Yiu (GPLv3)
 local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Amethyst block
