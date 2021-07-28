@@ -1,4 +1,3 @@
--- Copyright (c) 2021 Cato Yiu (GPLv3)
 local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Amethyst block
@@ -91,7 +90,7 @@ local bud_def = {
 }
 for x,y in pairs(bud_def) do
   minetest.register_node("mcl_amethyst:" .. y[1] .. "_amethyst_bud",{
-    description = y[2] .. " Amethyst Bud",
+    description = y[2] .. "Amethyst Bud",
     _mcl_hardness = 1.5,
     _mcl_blast_resistance = 1.5,
     drop = "",
@@ -132,7 +131,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-  output = "mcl_amethyst:tinted_glass",
+  output = "mcl_amethyst:tinted_glass 2",
   recipe = {
     {"","mcl_amethyst:amethyst_shard",""},
     {"mcl_amethyst:amethyst_shard","mcl_core:glass","mcl_amethyst:amethyst_shard",},
