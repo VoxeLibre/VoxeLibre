@@ -1,4 +1,5 @@
 local S = minetest.get_translator(minetest.get_current_modname())
+mcl_amethyst = {}
 
 -- Amethyst block
 minetest.register_node("mcl_amethyst:amethyst_block",{
@@ -90,11 +91,13 @@ local bud_def = {
 }
 for x,y in pairs(bud_def) do
   minetest.register_node("mcl_amethyst:" .. y[1] .. "_amethyst_bud",{
-    description = y[2] .. "Amethyst Bud",
+    description = y[2] .. " Amethyst Bud",
     _mcl_hardness = 1.5,
     _mcl_blast_resistance = 1.5,
     drop = "",
     tiles = {y[1] .. "_amethyst_bud.png",},
+    inventory_image = y[1] .. "_amethyst_bud.png",
+    paramtype1 = "light",
     paramtype2 = "wallmounted",
     drawtype = "plantlike",
     use_texture_alpha = "clip",
@@ -105,6 +108,8 @@ for x,y in pairs(bud_def) do
       dig_by_piston = 1,
       pickaxey = 1,
       deco_block = 1,
+      amethyst_buds = 1,
+      attached_node = 1,
     },
     selection_box = {
       type = "fixed",
@@ -118,8 +123,54 @@ for x,y in pairs(bud_def) do
     },
     _mcl_silk_touch_drop = true,
     _mcl_amethyst_next_grade = y[3],
+    _doc_items_longdesc = S(y[2] .. " Amethyst Bud is the " .. y[1] .. " grouth of amethyst bud."),
   })
 end
+
+minetest.register_node("mcl_amethyst:amethyst_cluster",{
+  description = "Amethyst Cluster",
+  _mcl_hardness = 1.5,
+  _mcl_blast_resistance = 1.5,
+  _doc_items_longdesc = S("Amethyst Cluster is the final grouth of amethyst bud."),
+  drop = {
+    max_items = 1,
+    items = {
+      {
+        tools = {"~mcl_tools:pick_"},
+        items = {"mcl_amethyst:amethyst_shard 4"},
+      },
+      {
+        items = {"mcl_amethyst:amethyst_shard 2"},
+      },
+    }
+  },
+  tiles = {"amethyst_cluster.png",},
+  inventory_image = "amethyst_cluster.png",
+  paramtype2 = "wallmounted",
+  drawtype = "plantlike",
+  paramtype1 = "light",
+  use_texture_alpha = "clip",
+  sunlight_propagates = true,
+  groups = {
+    dig_by_water = 1,
+    destroy_by_lava_flow = 1,
+    dig_by_piston = 1,
+    pickaxey = 1,
+    deco_block = 1,
+    attached_node = 1,
+  },
+  selection_box = {
+    type = "fixed",
+    -- fixed = {-0.5, -0.5, -0.5, 0.5, 0, 0.5},
+    fixed = { -7/16, -8/16, -7/16, 7/16, -7/16, 7/16 },
+  },
+  collision_box = {
+    type = "fixed",
+    -- fixed = {-0.5, -0.5, -0.5, 0.5, 0, 0.5},
+    fixed = { -7/16, -8/16, -7/16, 7/16, -7/16, 7/16 },
+  },
+  _mcl_silk_touch_drop = true,
+})
 
 -- Register Crafts
 minetest.register_craft({
@@ -157,3 +208,6 @@ if minetest.get_modpath("mcl_spyglass") then
     craft_spyglass("mcl_core:iron_ingot")
   end
 end
+
+-- Amethyst Growing
+dofile(minetest.get_modpath(minetest.get_current_modname()) .. "/grow.lua")
