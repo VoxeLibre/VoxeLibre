@@ -511,6 +511,13 @@ minetest.register_entity(":__builtin:item", {
 			local stack = ItemStack(self.itemstring)
 			stack:get_meta():from_table(nil)
 			self.itemstring = stack:to_string()
+			minetest.log(
+				"warning",
+				"Overlong item entity metadata removed: “" ..
+				self.itemstring ..
+				"” had serialized length of " ..
+				#data
+			)
 			return self:get_staticdata()
 		end
 		return data
