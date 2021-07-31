@@ -222,11 +222,6 @@ minetest.register_craft({
 	recipe = {{"mcl_farming:pumpkin"}}
 })
 
-minetest.register_craft({
-	output = "mcl_farming:pumpkin_seeds 4",
-	recipe = {{"mcl_farming:pumpkin_face"}}
-})
-
 minetest.register_craftitem("mcl_farming:pumpkin_pie", {
 	description = S("Pumpkin Pie"),
 	_doc_items_longdesc = S("A pumpkin pie is a tasty food item which can be eaten."),
