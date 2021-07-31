@@ -239,11 +239,6 @@ minetest.register_craft({
 	output = "mcl_farming:pumpkin_pie",
 	recipe = {"mcl_farming:pumpkin", "mcl_core:sugar", "mcl_throwing:egg"},
 })
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_farming:pumpkin_pie",
-	recipe = {"mcl_farming:pumpkin_face", "mcl_core:sugar", "mcl_throwing:egg"},
-})
 
 
 if minetest.get_modpath("doc") then
