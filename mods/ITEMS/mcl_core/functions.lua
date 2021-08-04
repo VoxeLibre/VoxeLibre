@@ -773,8 +773,7 @@ end
 
 local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_setting("seed"))
 
--- Return appropriate grass block node for pos
-function mcl_core.get_grass_block_type(pos)
+function mcl_core.get_grass_palette_index(pos)
 	local biome_data = minetest.get_biome_data(pos)
 	local index = 0
 	if biome_data then
@@ -785,7 +784,12 @@ function mcl_core.get_grass_block_type(pos)
 			index = reg_biome._mcl_palette_index
 		end
 	end
-	return {name="mcl_core:dirt_with_grass", param2=index}
+	return index
+end
+
+-- Return appropriate grass block node for pos
+function mcl_core.get_grass_block_type(pos)
+	return {name = "mcl_core:dirt_with_grass", param2 = mcl_core.get_grass_palette_index(pos)}
 end
 
 ------------------------------
