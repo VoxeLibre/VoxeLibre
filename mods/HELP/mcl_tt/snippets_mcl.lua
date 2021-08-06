@@ -109,6 +109,6 @@ end)
 
 tt.register_snippet(function(itemstring, _, itemstack)
 	if itemstring:sub(1, 23) == "mcl_fishing:fishing_rod" or itemstring:sub(1, 12) == "mcl_bows:bow" then
-		return S("Durability: @1 uses", mcl_util.calculate_durability(itemstack or ItemStack(itemstring)))
+		return S("Durability: @1", S("@1 uses", mcl_util.calculate_durability(itemstack or ItemStack(itemstring))))
 	end
 end)
