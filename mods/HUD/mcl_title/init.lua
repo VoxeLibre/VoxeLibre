@@ -43,6 +43,23 @@ local function gametick_to_secondes(gametick)
 	end
 end
 
+--https://github.com/minetest/minetest/blob/b3b075ea02034306256b486dd45410aa765f035a/doc/lua_api.txt#L8477
+
+local function style_to_bits(bold, italic)
+	if bold then
+		if italic then
+			return 3
+		else
+			return 1
+		end
+	else
+		if italic then
+			return 2
+		else
+			return 0
+		end
+	end
+end
 
 --PARAMS SYSTEM
 local player_params = {}
@@ -60,8 +77,7 @@ minetest.register_on_joinplayer(function(player)
 		position  = mcl_title.layout.title.position,
 		alignment = mcl_title.layout.title.alignment,
 		text      = "",
-		--bold    = data.bold,
-		--italic  = data.italic,
+		style = 0,
 		size      = {x = mcl_title.layout.title.size},
 		number    = hex_color,
 		z_index   = 100,
@@ -71,8 +87,7 @@ minetest.register_on_joinplayer(function(player)
 		position  = mcl_title.layout.subtitle.position,
 		alignment = mcl_title.layout.subtitle.alignment,
 		text      = "",
-		--bold    = data.bold,
-		--italic  = data.italic,
+		style = 0,
 		size      = {x = mcl_title.layout.subtitle.size},
 		number    = hex_color,
 		z_index   = 100,
@@ -82,8 +97,7 @@ minetest.register_on_joinplayer(function(player)
 		position  = mcl_title.layout.actionbar.position,
 		offset    = {x = 0, y = -210},
 		alignment = mcl_title.layout.actionbar.alignment,
-		--bold    = data.bold,
-		--italic  = data.italic,
+		style = 0,
 		text      = "",
 		size      = {x = mcl_title.layout.actionbar.size},
 		number    = hex_color,
@@ -131,13 +145,12 @@ function mcl_title.set(player, type, data)
 		return false
 	end
 
-	--TODO: enable this code then Fleckenstein's pr get merged (in about 5-6 years lol)
-
-	--if data.bold == nil then data.bold = false end
-	--if data.italic == nil then data.italic = false end
-
 	player:hud_change(huds_idx[type][player], "text", data.text)
 	player:hud_change(huds_idx[type][player], "number", hex_color)
+
+	--apply bold and italic
+	player:hud_change(huds_idx[type][player], "style", style_to_bits(data.bold, data.italic))
+
 	hud_hide_timeouts[type][player:get_player_name()] = gametick_to_secondes(data.stay) or gametick_to_secondes(mcl_title.params_get(player).stay)
 	return true
 end
@@ -145,6 +158,7 @@ end
 function mcl_title.remove(player, type)
 	if player then
 		player:hud_change(huds_idx[type][player], "text", "")
+		player:hud_change(huds_idx[type][player], "style", 0) --no styling
 	end
 end
 
@@ -184,7 +198,7 @@ end)
 minetest.register_chatcommand("title", {
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
-		mcl_title.set(player, "title", {text=param, color="gold"})
+		mcl_title.set(player, "title", {text=param, color="gold", bold=true, italic=true})
 	end,
 })
 
