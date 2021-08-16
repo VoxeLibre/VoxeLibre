@@ -36,7 +36,11 @@ local string = string
 local pairs = pairs
 
 local function gametick_to_secondes(gametick)
-	return gametick / 20
+	if gametick then
+		return gametick / 20
+	else
+		return nil
+	end
 end
 
 
@@ -46,9 +50,9 @@ local player_params = {}
 minetest.register_on_joinplayer(function(player)
 	local playername = player:get_player_name()
 	player_params[player] = {
-		stay = gametick_to_secondes(mcl_title.defaults.stay),
-		--fadeIn = gametick_to_secondes(mcl_title.defaults.fadein),
-		--fadeOut = gametick_to_secondes(mcl_title.defaults.fadeout),
+		stay = mcl_title.defaults.stay,
+		--fadeIn = mcl_title.defaults.fadein,
+		--fadeOut = mcl_title.defaults.fadeout,
 	}
 	local _, hex_color = get_color("white") 
 	huds_idx.title[player] = player:hud_add({
@@ -106,9 +110,9 @@ end)
 
 function mcl_title.params_set(player, data)
 	player_params[player] = {
-		stay = gametick_to_secondes(data.stay) or gametick_to_secondes(mcl_title.defaults.stay),
-		--fadeIn = gametick_to_secondes(data.fadeIn) or gametick_to_secondes(mcl_title.defaults.fadein),
-		--fadeOut = gametick_to_secondes(data.fadeOut) or gametick_to_secondes(mcl_title.defaults.fadeout),
+		stay = data.stay or mcl_title.defaults.stay,
+		--fadeIn = data.fadeIn or mcl_title.defaults.fadein,
+		--fadeOut = data.fadeOut or mcl_title.defaults.fadeout,
 	}
 end
 
@@ -134,7 +138,7 @@ function mcl_title.set(player, type, data)
 
 	player:hud_change(huds_idx[type][player], "text", data.text)
 	player:hud_change(huds_idx[type][player], "number", hex_color)
-	hud_hide_timeouts[type][player:get_player_name()] = gametick_to_secondes(data.stay) or mcl_title.params_get(player).stay
+	hud_hide_timeouts[type][player:get_player_name()] = gametick_to_secondes(data.stay) or gametick_to_secondes(mcl_title.params_get(player).stay)
 	return true
 end
 
