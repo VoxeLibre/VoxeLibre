@@ -32,7 +32,7 @@ mcl_title.layout.actionbar = {position = {x = 0.5, y = 1}, alignment = {x = 0, y
 
 local get_color = mcl_util.get_color
 
-local string = string
+--local string = string
 local pairs = pairs
 
 local function gametick_to_secondes(gametick)
@@ -44,7 +44,7 @@ local function gametick_to_secondes(gametick)
 end
 
 --https://github.com/minetest/minetest/blob/b3b075ea02034306256b486dd45410aa765f035a/doc/lua_api.txt#L8477
-
+--[[
 local function style_to_bits(bold, italic)
 	if bold then
 		if italic then
@@ -60,24 +60,25 @@ local function style_to_bits(bold, italic)
 		end
 	end
 end
+]]
 
 --PARAMS SYSTEM
 local player_params = {}
 
 minetest.register_on_joinplayer(function(player)
-	local playername = player:get_player_name()
+	--local playername = player:get_player_name()
 	player_params[player] = {
 		stay = mcl_title.defaults.stay,
 		--fadeIn = mcl_title.defaults.fadein,
 		--fadeOut = mcl_title.defaults.fadeout,
 	}
-	local _, hex_color = get_color("white") 
+	local _, hex_color = get_color("white")
 	huds_idx.title[player] = player:hud_add({
 		hud_elem_type = "text",
 		position  = mcl_title.layout.title.position,
 		alignment = mcl_title.layout.title.alignment,
 		text      = "",
-		style = 0,
+		--style = 0,
 		size      = {x = mcl_title.layout.title.size},
 		number    = hex_color,
 		z_index   = 100,
@@ -87,7 +88,7 @@ minetest.register_on_joinplayer(function(player)
 		position  = mcl_title.layout.subtitle.position,
 		alignment = mcl_title.layout.subtitle.alignment,
 		text      = "",
-		style = 0,
+		--style = 0,
 		size      = {x = mcl_title.layout.subtitle.size},
 		number    = hex_color,
 		z_index   = 100,
@@ -97,7 +98,7 @@ minetest.register_on_joinplayer(function(player)
 		position  = mcl_title.layout.actionbar.position,
 		offset    = {x = 0, y = -210},
 		alignment = mcl_title.layout.actionbar.alignment,
-		style = 0,
+		--style = 0,
 		text      = "",
 		size      = {x = mcl_title.layout.actionbar.size},
 		number    = hex_color,
@@ -116,7 +117,7 @@ minetest.register_on_leaveplayer(function(player)
 	huds_idx.subtitle[player] = nil
 	huds_idx.actionbar[player] = nil
 
-	--remove timers form list
+	--remove timers from list
 	hud_hide_timeouts.title[playername] = nil
 	hud_hide_timeouts.subtitle[playername] = nil
 	hud_hide_timeouts.actionbar[playername] = nil
@@ -149,7 +150,7 @@ function mcl_title.set(player, type, data)
 	player:hud_change(huds_idx[type][player], "number", hex_color)
 
 	--apply bold and italic
-	player:hud_change(huds_idx[type][player], "style", style_to_bits(data.bold, data.italic))
+	--player:hud_change(huds_idx[type][player], "style", style_to_bits(data.bold, data.italic))
 
 	hud_hide_timeouts[type][player:get_player_name()] = gametick_to_secondes(data.stay) or gametick_to_secondes(mcl_title.params_get(player).stay)
 	return true
@@ -158,7 +159,7 @@ end
 function mcl_title.remove(player, type)
 	if player then
 		player:hud_change(huds_idx[type][player], "text", "")
-		player:hud_change(huds_idx[type][player], "style", 0) --no styling
+		--player:hud_change(huds_idx[type][player], "style", 0) --no styling
 	end
 end
 
@@ -193,8 +194,8 @@ minetest.register_globalstep(function(dtime)
 end)
 
 
---TEMP STUFF!!
---TODO: remove then testing/tweaking done
+--DEBUG STUFF!!
+--[[
 minetest.register_chatcommand("title", {
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
@@ -232,3 +233,4 @@ minetest.register_chatcommand("all", {
 		mcl_title.set(player, "actionbar", {text=param, color="gold"})
 	end,
 })
+]]

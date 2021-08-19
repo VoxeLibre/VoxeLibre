@@ -40,3 +40,11 @@ Allow mods to set `stay` and upcomming `fadeIn`/`fadeOut` params.
 ```lua
 mcl_title.params_set(player, {stay = 600}) --elements with no 'data.stay' field will stay during 30s (600/20)
 ```
+
+## mcl_title.params_get(player)
+
+Get `stay` and upcomming `fadeIn` and `fadeOut` params of a player as a table.
+
+```lua
+mcl_title.params_get(player)
+```
