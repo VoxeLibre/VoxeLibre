@@ -21,7 +21,7 @@ mcl_title.set(player, "subtitle", {text="dummy subtitle", color="#612D2D"})
 mcl_title.set(player, "subtitle", {text="dummy actionbar", color="red"})
 
 --show a title in the HUD with minecraft color "gold" staying for 3 seconds (override stay setting)
-mcl_title.set(player, "title", {text="dummy text", color="gold", stay=3})
+mcl_title.set(player, "title", {text="dummy text", color="gold", stay=60})
 ```
 
 ## mcl_title.remove(player, type)
