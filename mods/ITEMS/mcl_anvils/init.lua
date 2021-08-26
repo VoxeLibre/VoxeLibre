@@ -284,6 +284,12 @@ local function damage_anvil_by_falling(pos, distance)
 	end
 end
 
+local anvilbox = {
+	type = "fixed",
+	fixed = {
+		{ -8 / 16, -8 / 16, -6 / 16, 8 / 16, 8 / 16, 6 / 16 },
+	},
+}
 local anvildef = {
 	groups = {pickaxey=1, falling_node=1, falling_node_damage=1, crush_after_fall=1, deco_block=1, anvil=1},
 	tiles = {"mcl_anvils_anvil_top_damaged_0.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"},
@@ -297,12 +303,14 @@ local anvildef = {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{ -6/16, -8/16, -6/16, 6/16, -4/16, 6/16 },
-			{ -5/16, -4/16, -4/16, 5/16, -3/16, 4/16 },
-			{ -4/16, -3/16, -2/16, 4/16, 2/16, 2/16 },
-			{ -8/16, 2/16, -5/16, 8/16, 8/16, 5/16 },
+			{ -6 / 16, -8 / 16, -6 / 16, 6 / 16, -4 / 16, 6 / 16 },
+			{ -5 / 16, -4 / 16, -4 / 16, 5 / 16, -3 / 16, 4 / 16 },
+			{ -4 / 16, -3 / 16, -2 / 16, 4 / 16, 2 / 16, 2 / 16 },
+			{ -8 / 16, 2 / 16, -5 / 16, 8 / 16, 8 / 16, 5 / 16 },
 		}
 	},
+	selection_box = anvilbox,
+	collision_box = anvilbox,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 5,
