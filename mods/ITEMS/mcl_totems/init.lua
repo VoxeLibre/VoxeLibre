@@ -87,7 +87,7 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 					end
 				end)
 
-				-- Big totem overlay 
+				-- Big totem overlay
 				if not hud_totem[obj] then
 					hud_totem[obj] = obj:hud_add({
 						hud_elem_type = "image",
