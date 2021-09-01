@@ -69,55 +69,61 @@ end
 
 -- 3 exptime variants because the animation is not tied to particle expiration time.
 -- 3 colorized variants to imitate minecraft's
-local smoke_pdef_cached = {}
 
-function mcl_particles.spawn_smoke(pos, name, smoke_pdef_base)
-	local min = math.min
-	local new_minpos = vector.add(pos, smoke_pdef_base.minrelpos)
-	local new_maxpos = vector.add(pos, smoke_pdef_base.maxrelpos)
+function mcl_particles.get_smoke_def(def_base)
+	local defs = {}
 
-	-- populate the cache
-	if smoke_pdef_cached[name] then
-		for i, smoke_pdef in ipairs(smoke_pdef_cached[name]) do
-			smoke_pdef.minpos = new_minpos
-			smoke_pdef.maxpos = new_maxpos
-			mcl_particles.add_node_particlespawner(pos, smoke_pdef, "high")
+	local def = table.copy(def_base)
+	def.amount = def.amount / 9
+	def.time = 0
+	def.animation = {
+		type = "vertical_frames",
+		aspect_w = 8,
+		aspect_h = 8,
+		-- length = 3 exptime variants
+	}
+	def.collisiondetection = true
+
+	-- the last frame plays for 1/8 * N seconds, so we can take advantage of it
+	-- to have varying exptime for each variant.
+	local exptimes = {0.175, 0.375, 1.0}
+	local colorizes = {"199", "209", "243"} -- round(78%, 82%, 90% of 256) - 1
+	for _, exptime in ipairs(exptimes) do
+		for _, colorize in ipairs(colorizes) do
+			def.maxexptime = exptime * def_base.maxexptime
+			def.animation.length = exptime + 0.1
+			-- minexptime must be set such that the last frame is actully rendered,
+			-- even if its very short. Larger exptime -> larger range
+			def.minexptime = math.min(exptime, (7.0 / 8.0 * (exptime + 0.1) + 0.1))
+			def.texture = "mcl_particles_smoke_anim.png^[colorize:#000000:" .. colorize
+
+			table.insert(defs, table.copy(def))
 		end
-		-- cache already populated
-	else
-		smoke_pdef_cached[name] = {}
+	end
 
-		local smoke_pdef = table.copy(smoke_pdef_base)
-		smoke_pdef.amount = smoke_pdef_base.amount / 9
-		smoke_pdef.time = 0
-		smoke_pdef.animation = {
-			type = "vertical_frames",
-			aspect_w = 8,
-			aspect_h = 8,
-			-- length = 3 exptime variants
-		}
-		smoke_pdef.collisiondetection = true
-		smoke_pdef.minpos = new_minpos
-		smoke_pdef.maxpos = new_maxpos
+	return defs
+end
 
-		-- the last frame plays for 1/8 * N seconds, so we can take advantage of it
-		-- to have varying exptime for each variant.
-		local exptimes = { 0.175, 0.375, 1.0 }
-		local colorizes = { "199", "209", "243" } -- round(78%, 82%, 90% of 256) - 1
+function mcl_particles.add_node_smoke_particlespawner(pos, defs)
+	local minpos = vector.add(pos, defs[1].minrelpos)
+	local maxpos = vector.add(pos, defs[1].maxrelpos)
 
-		for _,exptime in ipairs(exptimes) do
-			for _,colorize in ipairs(colorizes) do
-				smoke_pdef.maxexptime = exptime * smoke_pdef_base.maxexptime
-				smoke_pdef.animation.length = exptime + 0.1
-				-- minexptime must be set such that the last frame is actully rendered,
-				-- even if its very short. Larger exptime -> larger range
-				smoke_pdef.minexptime = min(exptime, (7.0/8.0 * (exptime + 0.1) + 0.1))
-				smoke_pdef.texture = "mcl_particles_smoke_anim.png^[colorize:#000000:" ..colorize
+	for i, def in ipairs(defs) do
+		def.minpos = minpos
+		def.maxpos = maxpos
+		def.attached = nil
+		mcl_particles.add_node_particlespawner(pos, def, "high")
+	end
+end
 
-				mcl_particles.add_node_particlespawner(pos, smoke_pdef, "high")
+function mcl_particles.add_object_smoke_particlespawner(obj, defs)
+	local minpos = defs[1].minrelpos
+	local maxpos = defs[1].maxrelpos
 
-				table.insert(smoke_pdef_cached[name], table.copy(smoke_pdef))
-			end
-		end
+	for i, def in ipairs(defs) do
+		def.minpos = def.minrelpos
+		def.maxpos = def.maxrelpos
+		def.attached = obj
+		minetest.add_particlespawner(def)
 	end
 end

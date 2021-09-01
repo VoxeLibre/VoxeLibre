@@ -52,7 +52,6 @@ local player_model = {}
 local player_textures = {}
 local player_anim = {}
 local player_sneak = {}
-mcl_player.player_attached = {}
 
 function mcl_player.player_get_animation(player)
 	local name = player:get_player_name()
@@ -149,7 +148,6 @@ end
 -- Update appearance when the player joins
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
-	mcl_player.player_attached[name] = false
 	mcl_player.player_set_model(player, "character.b3d")
 	player_textures[name] = {"blank.png", "blank.png", "blank.png"}
 	--player:set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, 30)
@@ -165,7 +163,6 @@ end)
 
 -- Localize for better performance.
 local player_set_animation = mcl_player.player_set_animation
-local player_attached = mcl_player.player_attached
 
 -- Check each player and apply animations
 minetest.register_globalstep(function(dtime)
@@ -173,7 +170,7 @@ minetest.register_globalstep(function(dtime)
 		local name = player:get_player_name()
 		local model_name = player_model[name]
 		local model = model_name and models[model_name]
-		if model and not player_attached[name] then
+		if model and not mcl_mount.mounted[player] then
 			local controls = player:get_player_control()
 			local walking = false
 			local animation_speed_mod = model.animation_speed or 30

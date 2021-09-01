@@ -1,0 +1,142 @@
+--License for code WTFPL and otherwise stated in readmes
+local S = minetest.get_translator("mcl_mobs")
+
+mcl_mobs.register_mob("mcl_mobs:bat", {
+	description = S("Bat"),
+	type = "animal",
+	spawn_class = "ambient",
+	can_despawn = true,
+	passive = true,
+	rotate = 270,
+	tilt_fly = true,
+	fly = true,
+	hp_min = 6,
+	hp_max = 6,
+	collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.89, 0.25},
+	model = "mcl_mobs_bat.b3d",
+	textures = {
+		{"mcl_mobs_bat.png"},
+	},
+	sounds = {
+		random = "mcl_mobs_bat_idle",
+		damage = "mcl_mobs_bat_hurt",
+		death = "mcl_mobs_bat_death",
+		distance = 16,
+	},
+	walk_velocity = 4.5,
+	run_velocity = 6.0,
+	-- TODO: Hang upside down
+	animation = {
+		stand_speed = 80,
+		stand_start = 0,
+		stand_end = 40,
+		walk_speed = 80,
+		walk_start = 0,
+		walk_end = 40,
+		run_speed = 80,
+		run_start = 0,
+		run_end = 40,
+		die_speed = 60,
+		die_start = 40,
+		die_end = 80,
+		die_loop = false,
+	},
+	walk_chance = 100,
+	fall_damage = 0,
+	view_range = 16,
+	jump = false,
+	makes_footstep_sound = false,
+})
+
+
+-- Spawning
+
+--[[ If the game has been launched between the 20th of October and the 3rd of November system time,
+-- the maximum spawn light level is increased. ]]
+local date = os.date("*t")
+local maxlight
+if (date.month == 10 and date.day >= 20) or (date.month == 11 and date.day <= 3) then
+	maxlight = 6
+else
+	maxlight = 3
+end
+
+-- Spawn on solid blocks at or below Sea level and the selected light level
+mcl_mobs.spawn_specific(
+"mcl_mobs:bat",
+"overworld",
+"ground",
+{
+"FlowerForest_underground",
+"JungleEdge_underground",
+"StoneBeach_underground",
+"MesaBryce_underground",
+"Mesa_underground",
+"RoofedForest_underground",
+"Jungle_underground",
+"Swampland_underground",
+"MushroomIsland_underground",
+"BirchForest_underground",
+"Plains_underground",
+"MesaPlateauF_underground",
+"ExtremeHills_underground",
+"MegaSpruceTaiga_underground",
+"BirchForestM_underground",
+"SavannaM_underground",
+"MesaPlateauFM_underground",
+"Desert_underground",
+"Savanna_underground",
+"Forest_underground",
+"SunflowerPlains_underground",
+"ColdTaiga_underground",
+"IcePlains_underground",
+"IcePlainsSpikes_underground",
+"MegaTaiga_underground",
+"Taiga_underground",
+"ExtremeHills+_underground",
+"JungleM_underground",
+"ExtremeHillsM_underground",
+"JungleEdgeM_underground",
+"Mesa",
+"FlowerForest",
+"Swampland",
+"Taiga",
+"ExtremeHills",
+"Jungle",
+"Savanna",
+"BirchForest",
+"MegaSpruceTaiga",
+"MegaTaiga",
+"ExtremeHills+",
+"Forest",
+"Plains",
+"Desert",
+"ColdTaiga",
+"MushroomIsland",
+"IcePlainsSpikes",
+"SunflowerPlains",
+"IcePlains",
+"RoofedForest",
+"ExtremeHills+_snowtop",
+"MesaPlateauFM_grasstop",
+"JungleEdgeM",
+"ExtremeHillsM",
+"JungleM",
+"BirchForestM",
+"MesaPlateauF",
+"MesaPlateauFM",
+"MesaPlateauF_grasstop",
+"MesaBryce",
+"JungleEdge",
+"SavannaM",
+},
+0,
+maxlight,
+20,
+5000,
+2,
+mcl_mobs.spawn_height.overworld_min,
+mcl_mobs.spawn_height.water-1)
+
+-- spawn eggs
+mcl_mobs.register_egg("mcl_mobs:bat", "mcl_mobs_spawn_icon_bat.png", 0)

@@ -31,7 +31,7 @@ minetest.register_node("mcl_core:slimeblock", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}, 
+			{-0.25, -0.25, -0.25, 0.25, 0.25, 0.25},
 			{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
 		}
 	},
@@ -108,7 +108,7 @@ minetest.register_node("mcl_core:cobweb", {
 	liquid_renewable = false,
 	liquid_range = 0,
 	walkable = false,
-	groups = {swordy_cobweb=1, shearsy_cobweb=1, fake_liquid=1, disable_jump=1, deco_block=1, dig_by_piston=1, dig_by_water=1,destroy_by_lava_flow=1,},
+	groups = {swordy_cobweb=1, shearsy_cobweb=1, fake_liquid=1, disable_jump=1, deco_block=1, dig_by_piston=1, dig_by_water=1,destroy_by_lava_flow=1, stuck = tr},
 	drop = "mcl_mobitems:string",
 	_mcl_shears_drop = true,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
@@ -213,7 +213,7 @@ minetest.register_node("mcl_core:barrier", {
 -- Same as barrier, but non-pointable. This node is only to be used internally to separate realms.
 -- It must NOT be used for anything else.
 -- This node only exists because Minetest does not have support for “dimensions” yet and needs to
--- be removed when support for this is implemented. 
+-- be removed when support for this is implemented.
 minetest.register_node("mcl_core:realm_barrier", {
 	description = S("Realm Barrier"),
 	_doc_items_create_entry = false,

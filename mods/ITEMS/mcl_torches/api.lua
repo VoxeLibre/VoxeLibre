@@ -1,4 +1,4 @@
-local smoke_pdef = {
+local smokedef = mcl_particles.get_smoke_def({
 	amount = 0.5,
 	maxexptime = 2.0,
 	minvel = { x = 0.0, y = 0.5, z = 0.0 },
@@ -7,7 +7,7 @@ local smoke_pdef = {
 	maxsize = 1.5,
 	minrelpos = { x = -1/16, y = 0.04, z = -1/16 },
 	maxrelpos = { x =  1/16, y = 0.06, z =  1/16 },
-}
+})
 
 local spawn_flames_floor = function(pos)
 	-- Flames
@@ -26,10 +26,11 @@ local spawn_flames_floor = function(pos)
 		glow = minetest.registered_nodes[minetest.get_node(pos).name].light_source,
 	}, "low")
 	-- Smoke
-	mcl_particles.spawn_smoke(pos, "torch", smoke_pdef)
+	mcl_particles.add_node_smoke_particlespawner(pos, smokedef)
 end
 
 local spawn_flames_wall = function(pos)
+	--[[
 	--local minrelpos, maxrelpos
 	local node = minetest.get_node(pos)
 	local dir = minetest.wallmounted_to_dir(node.param2)
@@ -69,7 +70,8 @@ local spawn_flames_wall = function(pos)
 		glow = minetest.registered_nodes[node.name].light_source,
 	}, "low")
 	-- Smoke
-	mcl_particles.spawn_smoke(pos, "torch", smoke_pdef)
+	mcl_particles.add_node_smoke_particlespawner(pos, smokedef)
+	--]]
 end
 
 local remove_flames = function(pos)

@@ -57,7 +57,7 @@ local check_object_hit = function(self, pos, dmg)
 				-- TODO: Deal knockback
 				self.object:remove()
 				return true
-			elseif (entity._cmi_is_mob == true or entity._hittable_by_projectile) and (self._thrower ~= object) then
+			elseif (entity.is_mob == true or entity._hittable_by_projectile) and (self._thrower ~= object) then
 				-- FIXME: Knockback is broken
 				object:punch(self.object, 1.0, {
 					full_punch_interval = 1.0,
@@ -152,7 +152,7 @@ local egg_on_step = function(self, dtime)
 				ent.child = true
 			end
 			if r == 1 then
-				make_child(minetest.add_entity(self._lastpos, "mobs_mc:chicken"))
+				make_child(minetest.add_entity(self._lastpos, "mcl_mobs:chicken"))
 
 				-- BONUS ROUND: 1/32 chance to spawn 3 additional chicks
 				local r = math.random(1,32)
@@ -164,7 +164,7 @@ local egg_on_step = function(self, dtime)
 					}
 					for o=1, 3 do
 						local pos = vector.add(self._lastpos, offsets[o])
-						make_child(minetest.add_entity(pos, "mobs_mc:chicken"))
+						make_child(minetest.add_entity(pos, "mcl_mobs:chicken"))
 					end
 				end
 			end
@@ -269,7 +269,7 @@ local pearl_on_step = function(self, dtime)
 				-- 5% chance to spawn endermite at the player's origin
 				local r = math.random(1,20)
 				if r == 1 then
-					minetest.add_entity(oldpos, "mobs_mc:endermite")
+					minetest.add_entity(oldpos, "mcl_mobs:endermite")
 				end
 
 			end

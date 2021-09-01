@@ -159,9 +159,9 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 end
 
 -- Add heads
-addhead("zombie", "mcl_heads_zombie_node.png", S("Zombie Head"), S("A zombie head is a small decorative block which resembles the head of a zombie. It can also be worn as a helmet, which reduces the detection range of zombies by 50%."), "mobs_mc:zombie", 0.5)
-addhead("creeper", "mcl_heads_creeper_node.png", S("Creeper Head"), S("A creeper head is a small decorative block which resembles the head of a creeper. It can also be worn as a helmet, which reduces the detection range of creepers by 50%."), "mobs_mc:creeper", 0.5)
+addhead("zombie", "mcl_heads_zombie_node.png", S("Zombie Head"), S("A zombie head is a small decorative block which resembles the head of a zombie. It can also be worn as a helmet, which reduces the detection range of zombies by 50%."), "mcl_mobs:zombie", 0.5)
+addhead("creeper", "mcl_heads_creeper_node.png", S("Creeper Head"), S("A creeper head is a small decorative block which resembles the head of a creeper. It can also be worn as a helmet, which reduces the detection range of creepers by 50%."), "mcl_mobs:creeper", 0.5)
 -- Original Minecraft name: “Head”
 addhead("steve", "mcl_heads_steve_node.png", S("Human Head"), S("A human head is a small decorative block which resembles the head of a human (i.e. a player character). It can also be worn as a helmet for fun, but does not offer any protection."))
-addhead("skeleton", "mcl_heads_skeleton_node.png", S("Skeleton Skull"), S("A skeleton skull is a small decorative block which resembles the skull of a skeleton. It can also be worn as a helmet, which reduces the detection range of skeletons by 50%."), "mobs_mc:skeleton", 0.5)
+addhead("skeleton", "mcl_heads_skeleton_node.png", S("Skeleton Skull"), S("A skeleton skull is a small decorative block which resembles the skull of a skeleton. It can also be worn as a helmet, which reduces the detection range of skeletons by 50%."), "mcl_mobs:skeleton", 0.5)
 addhead("wither_skeleton", "mcl_heads_wither_skeleton_node.png", S("Wither Skeleton Skull"), S("A wither skeleton skull is a small decorative block which resembles the skull of a wither skeleton. It can also be worn as a helmet for fun, but does not offer any protection."))

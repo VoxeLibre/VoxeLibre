@@ -1,7 +1,17 @@
 local S = minetest.get_translator("mcl_burning")
 
 function mcl_burning.get_storage(obj)
-	return obj:is_player() and mcl_burning.storage[obj] or obj:get_luaentity()
+	if obj:is_player() then
+		return mcl_burning.storage[obj]
+	else
+		local luaentity = obj:get_luaentity()
+
+		if luaentity.is_mob then
+			return luaentity.data
+		end
+
+		return luaentity
+	end
 end
 
 function mcl_burning.is_burning(obj)
@@ -82,21 +92,8 @@ function mcl_burning.set_on_fire(obj, burn_time)
 		storage.fire_damage_timer = 0
 
 		local fire_entity = minetest.add_entity(obj:get_pos(), "mcl_burning:fire")
-		local minp, maxp = mcl_burning.get_collisionbox(obj, false, storage)
-		local obj_size = obj:get_properties().visual_size
-
-		local vertical_grow_factor = 1.2
-		local horizontal_grow_factor = 1.1
-		local grow_vector = vector.new(horizontal_grow_factor, vertical_grow_factor, horizontal_grow_factor)
-
-		local size = vector.subtract(maxp, minp)
-		size = vector.multiply(size, grow_vector)
-		size = vector.divide(size, obj_size)
-		local offset = vector.new(0, size.y * 10 / 2, 0)
-
-		fire_entity:set_properties({visual_size = size})
-		fire_entity:set_attach(obj, "", offset, {x = 0, y = 0, z = 0})
 		local fire_luaentity = fire_entity:get_luaentity()
+		fire_luaentity:update_visual_size(obj, storage)
 		fire_luaentity:update_frame(obj, storage)
 
 		for _, other in pairs(minetest.get_objects_inside_radius(fire_entity:get_pos(), 0)) do
@@ -136,12 +133,7 @@ function mcl_burning.tick(obj, dtime, storage)
 
 			if storage.fire_damage_timer >= 1 then
 				storage.fire_damage_timer = 0
-
-				local luaentity = obj:get_luaentity()
-
-				if not luaentity or not luaentity.fire_damage_resistant then
-					mcl_util.deal_damage(obj, 1, {type = "on_fire"})
-				end
+				mcl_util.deal_damage(obj, 1, {type = "on_fire"})
 			end
 		end
 	end

@@ -2,7 +2,7 @@ local S = minetest.get_translator("mcl_mobspawners")
 
 mcl_mobspawners = {}
 
-local default_mob = "mobs_mc:pig"
+local default_mob = "mcl_mobs:pig"
 
 -- Mob spawner
 local spawner_default = default_mob.." 0 15 4 15"
@@ -34,22 +34,22 @@ end
 -- Manually set the doll sizes for large mobs
 -- TODO: Relocate this code to mobs_mc
 local doll_size_overrides = {
-	["mobs_mc:guardian"] = { x = 0.6, y = 0.6 },
-	["mobs_mc:guardian_elder"] = { x = 0.72, y = 0.72 },
-	["mobs_mc:enderman"] = { x = 0.8, y = 0.8 },
-	["mobs_mc:iron_golem"] = { x = 0.9, y = 0.9 },
-	["mobs_mc:ghast"] = { x = 1.05, y = 1.05 },
-	["mobs_mc:wither"] = { x = 1.2, y = 1.2 },
-	["mobs_mc:enderdragon"] = { x = 0.16, y = 0.16 },
-	["mobs_mc:witch"] = { x = 0.95, y = 0.95 },
+	["mcl_mobs:guardian"] = { x = 0.6, y = 0.6 },
+	["mcl_mobs:guardian_elder"] = { x = 0.72, y = 0.72 },
+	["mcl_mobs:enderman"] = { x = 0.8, y = 0.8 },
+	["mcl_mobs:iron_golem"] = { x = 0.9, y = 0.9 },
+	["mcl_mobs:ghast"] = { x = 1.05, y = 1.05 },
+	["mcl_mobs:wither"] = { x = 1.2, y = 1.2 },
+	["mcl_mobs:enderdragon"] = { x = 0.16, y = 0.16 },
+	["mcl_mobs:witch"] = { x = 0.95, y = 0.95 },
 }
 local spawn_count_overrides = {
-	["mobs_mc:enderdragon"] = 1,
-	["mobs_mc:wither"] = 1,
-	["mobs_mc:ghast"] = 1,
-	["mobs_mc:guardian_elder"] = 1,
-	["mobs_mc:guardian"] = 2,
-	["mobs_mc:iron_golem"] = 2,
+	["mcl_mobs:enderdragon"] = 1,
+	["mcl_mobs:wither"] = 1,
+	["mcl_mobs:ghast"] = 1,
+	["mcl_mobs:guardian_elder"] = 1,
+	["mcl_mobs:guardian"] = 2,
+	["mcl_mobs:iron_golem"] = 2,
 }
 
 local function set_doll_properties(doll, mob)
@@ -152,7 +152,8 @@ local spawn_mobs = function(pos, elapsed)
 	end
 
 	-- are we spawning a registered mob?
-	if not mobs.spawning_mobs[mob] then
+	-- if not mobs.spawning_mobs[mob] then
+	if true then
 		minetest.log("error", "[mcl_mobspawners] Mob Spawner: Mob doesn't exist: "..mob)
 		return
 	end

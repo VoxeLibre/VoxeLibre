@@ -139,34 +139,34 @@ lightning.strike = function(pos)
 		local obj = objs[o]
 		local lua = obj:get_luaentity()
 		-- pig → zombie pigman (no damage)
-		if lua and lua.name == "mobs_mc:pig" then
+		if lua and lua.name == "mcl_mobs:pig" then
 			local rot = obj:get_yaw()
 			obj:remove()
-			obj = add_entity(pos2, "mobs_mc:pigman")
+			obj = add_entity(pos2, "mcl_mobs:pigman")
 			obj:set_yaw(rot)
 			-- mooshroom: toggle color red/brown (no damage)
-		elseif lua and lua.name == "mobs_mc:mooshroom" then
-			if lua.base_texture[1] == "mobs_mc_mooshroom.png" then
-				lua.base_texture = { "mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" }
+		elseif lua and lua.name == "mcl_mobs:mooshroom" then
+			if lua.base_texture[1] == "mcl_mobs_mooshroom.png" then
+				lua.base_texture = { "mcl_mobs_mooshroom_brown.png", "mcl_mobs_mushroom_brown.png" }
 			else
-				lua.base_texture = { "mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png" }
+				lua.base_texture = { "mcl_mobs_mooshroom.png", "mcl_mobs_mushroom_red.png" }
 			end
 			obj:set_properties({textures = lua.base_texture})
 		-- villager → witch (no damage)
-		elseif lua and lua.name == "mobs_mc:villager" then
+		elseif lua and lua.name == "mcl_mobs:villager" then
 		-- Witches are incomplete, this code is unused
 		-- TODO: Enable this code when witches are working.
 		--[[
 			local rot = obj:get_yaw()
 			obj:remove()
-			obj = minetest.add_entity(pos2, "mobs_mc:witch")
+			obj = minetest.add_entity(pos2, "mcl_mobs:witch")
 			obj:set_yaw(rot)
 		]]
 		-- charged creeper
-		elseif lua and lua.name == "mobs_mc:creeper" then
+		elseif lua and lua.name == "mcl_mobs:creeper" then
 			local rot = obj:get_yaw()
 			obj:remove()
-			obj = add_entity(pos2, "mobs_mc:creeper_charged")
+			obj = add_entity(pos2, "mcl_mobs:creeper_charged")
 			obj:set_yaw(rot)
 			-- Other objects: Just damage
 		else
@@ -203,14 +203,14 @@ lightning.strike = function(pos)
 		if get_node(pos2).name == "air" then
 			-- Low chance for a lightning to spawn skeleton horse + skeletons
 			if skeleton_lightning then
-				add_entity(pos2, "mobs_mc:skeleton_horse")
+				add_entity(pos2, "mcl_mobs:skeleton_horse")
 
 				local angle, posadd
 				angle = math.random(0, math.pi*2)
 				for i=1,3 do
 					posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
 					posadd = vector.normalize(posadd)
-					local mob = add_entity(vector.add(pos2, posadd), "mobs_mc:skeleton")
+					local mob = add_entity(vector.add(pos2, posadd), "mcl_mobs:skeleton")
 					mob:set_yaw(angle-math.pi/2)
 					angle = angle + (math.pi*2) / 3
 				end

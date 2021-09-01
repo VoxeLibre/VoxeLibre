@@ -47,7 +47,7 @@ local alldirs=
 	{ x = 0, y = 0, z = 1}
 }
 
-local smoke_pdef = {
+local smokedef = mcl_particles.get_smoke_def({
 	amount = 0.009,
 	maxexptime = 4.0,
 	minvel = { x = -0.1, y = 0.3, z = -0.1 },
@@ -56,7 +56,7 @@ local smoke_pdef = {
 	maxsize = 4.5,
 	minrelpos = { x = -0.45, y = -0.45, z = -0.45 },
 	maxrelpos = { x = 0.45, y = 0.45, z = 0.45 },
-}
+})
 
 --
 -- Items
@@ -225,7 +225,7 @@ minetest.register_node("mcl_fire:fire", {
 		end
 
 		fire_timer(pos)
-		mcl_particles.spawn_smoke(pos, "fire", smoke_pdef)
+		mcl_particles.add_node_smoke_particlespawner(pos, smokedef)
 	end,
 	on_destruct = function(pos)
 		mcl_particles.delete_node_particlespawners(pos)
@@ -289,7 +289,7 @@ minetest.register_node("mcl_fire:eternal_fire", {
 		if has_mcl_portals then --Calling directly minetest.get_modpath consumes 4x more compute time
 			mcl_portals.light_nether_portal(pos)
 		end
-		mcl_particles.spawn_smoke(pos, "fire", smoke_pdef)
+		mcl_particles.add_node_smoke_particlespawner(pos, smokedef)
 	end,
 	on_destruct = function(pos)
 		mcl_particles.delete_node_particlespawners(pos)
@@ -549,7 +549,7 @@ minetest.register_lbm({
 	nodenames = {"group:fire"},
 	run_at_every_load = true,
 	action = function(pos, node)
-		mcl_particles.spawn_smoke(pos, "fire", smoke_pdef)
+		mcl_particles.add_node_smoke_particlespawner(pos, smokedef)
 	end,
 })
 

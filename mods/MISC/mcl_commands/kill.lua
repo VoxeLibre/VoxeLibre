@@ -17,7 +17,7 @@ local function handle_kill_command(suspect, victim)
 	-- If player holds a totem of undying, destroy it before killing,
 	-- so it doesn't rescue the player.
 	local wield = victimref:get_wielded_item()
-	if wield:get_name() == "mobs_mc:totem" then
+	if wield:get_name() == "mcl_mobs:totem" then
 		victimref:set_wielded_item("")
 	end
 	-- DIE!

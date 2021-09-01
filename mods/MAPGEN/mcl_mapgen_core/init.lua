@@ -1248,7 +1248,7 @@ local function generate_clay(minp, maxp, blockseed, voxelmanip_data, voxelmanip_
 end
 
 local function generate_end_exit_portal(pos)
-	local obj = minetest.add_entity(vector.add(pos, vector.new(3, 11, 3)), "mobs_mc:enderdragon")
+	local obj = minetest.add_entity(vector.add(pos, vector.new(3, 11, 3)), "mcl_mobitems:enderdragon")
 	if obj then
 		local dragon_entity = obj:get_luaentity()
 		dragon_entity._initial = true

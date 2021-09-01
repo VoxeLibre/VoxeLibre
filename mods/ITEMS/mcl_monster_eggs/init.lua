@@ -5,7 +5,7 @@ local S = minetest.get_translator("mcl_monster_eggs")
 
 local spawn_silverfish = function(pos, oldnode, oldmetadata, digger)
 	if not minetest.is_creative_enabled("") then
-		minetest.add_entity(pos, "mobs_mc:silverfish")
+		minetest.add_entity(pos, "mcl_mobs:silverfish")
 	end
 end
 

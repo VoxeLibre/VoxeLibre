@@ -116,7 +116,7 @@ pumpkin_face_base_def.groups.non_combat_armor=1
 pumpkin_face_base_def.groups.armor_head=1
 pumpkin_face_base_def.groups.non_combat_armor_head=1
 pumpkin_face_base_def._mcl_armor_mob_range_factor = 0
-pumpkin_face_base_def._mcl_armor_mob_range_mob = "mobs_mc:enderman"
+pumpkin_face_base_def._mcl_armor_mob_range_mob = "mcl_mobs:enderman"
 pumpkin_face_base_def._mcl_armor_element = "head"
 pumpkin_face_base_def._mcl_armor_texture = "mcl_farming_pumpkin_face.png"
 pumpkin_face_base_def._mcl_armor_preview = "mcl_farming_pumpkin_face_preview.png"
@@ -131,8 +131,8 @@ mcl_farming:add_plant("plant_pumpkin_stem", "mcl_farming:pumpkintige_unconnect",
 mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkintige_linked", "mcl_farming:pumpkintige_unconnect", stem_def, stem_drop, "mcl_farming:pumpkin_face", pumpkin_face_base_def, 30, 15, "mcl_farming_pumpkin_stem_connected.png^[colorize:#FFA800:127",
 function(pos)
 	-- Attempt to spawn iron golem or snow golem
-	mobs_mc.tools.check_iron_golem_summon(pos)
-	mobs_mc.tools.check_snow_golem_summon(pos)
+	mcl_mobs.check_iron_golem_summon(pos)
+	mcl_mobs.check_snow_golem_summon(pos)
 end)
 
 -- Jack o'Lantern
@@ -149,8 +149,8 @@ minetest.register_node("mcl_farming:pumpkin_face_light", {
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_construct = function(pos)
 		-- Attempt to spawn iron golem or snow golem
-		mobs_mc.tools.check_iron_golem_summon(pos)
-		mobs_mc.tools.check_snow_golem_summon(pos)
+		mcl_mobs.check_iron_golem_summon(pos)
+		mcl_mobs.check_snow_golem_summon(pos)
 	end,
 	on_rotate = on_rotate,
 	_mcl_blast_resistance = 1,

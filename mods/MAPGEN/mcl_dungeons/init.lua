@@ -317,15 +317,15 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 				stacks_min = 1,
 				stacks_max = 3,
 				items = {
-					{ itemstring = "mcl_mobs:nametag", weight = 20 },
+					{ itemstring = "mcl_mobitems:nametag", weight = 20 },
 					{ itemstring = "mcl_mobitems:saddle", weight = 20 },
 					{ itemstring = "mcl_jukebox:record_1", weight = 15 },
 					{ itemstring = "mcl_jukebox:record_4", weight = 15 },
-					{ itemstring = "mobs_mc:iron_horse_armor", weight = 15 },
+					{ itemstring = "mcl_mobitems:iron_horse_armor", weight = 15 },
 					{ itemstring = "mcl_core:apple_gold", weight = 15 },
 					{ itemstack = mcl_enchanting.get_uniform_randomly_enchanted_book({"soul_speed"}, pr), weight = 10 },
-					{ itemstring = "mobs_mc:gold_horse_armor", weight = 10 },
-					{ itemstring = "mobs_mc:diamond_horse_armor", weight = 5 },
+					{ itemstring = "mcl_mobitems:gold_horse_armor", weight = 10 },
+					{ itemstring = "mcl_mobitems:diamond_horse_armor", weight = 5 },
 					{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2 },
 				}
 			},
@@ -381,10 +381,10 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 		-- ... and place it and select a random mob
 		set_node(sp, {name = "mcl_mobspawners:spawner"})
 		local mobs = {
-			"mobs_mc:zombie",
-			"mobs_mc:zombie",
-			"mobs_mc:spider",
-			"mobs_mc:skeleton",
+			"mcl_mobs:zombie",
+			"mcl_mobs:zombie",
+			"mcl_mobs:spider",
+			"mcl_mobs:skeleton",
 		}
 		local spawner_mob = mobs[pr:next(1, #mobs)]
 

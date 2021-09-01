@@ -33,7 +33,7 @@ local bow_load = {}
 -- Another player table, this one stores the wield index of the bow being charged
 local bow_index = {}
 
-mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damage, is_critical, bow_stack, collectable)
+mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damage, is_critical, bow_stack, collectable, gravity, make_sound)
 	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrow_item.."_entity")
 	if power == nil then
 		power = BOW_MAX_SPEED --19
@@ -41,6 +41,9 @@ mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damag
 	if damage == nil then
 		damage = 3
 	end
+
+	gravity = gravity or -GRAVITY
+
 	local knockback
 	if bow_stack then
 		local enchantments = mcl_enchanting.get_enchantments(bow_stack)
@@ -55,7 +58,7 @@ mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damag
 		end
 	end
 	obj:set_velocity({x=dir.x*power, y=dir.y*power, z=dir.z*power})
-	obj:set_acceleration({x=0, y=-GRAVITY, z=0})
+	obj:set_acceleration({x=0, y=gravity, z=0})
 	obj:set_yaw(yaw-math.pi/2)
 	local le = obj:get_luaentity()
 	le._shooter = shooter
@@ -65,7 +68,9 @@ mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damag
 	le._startpos = pos
 	le._knockback = knockback
 	le._collectable = collectable
-	minetest.sound_play("mcl_bows_bow_shoot", {pos=pos, max_hear_distance=16}, true)
+	if not no_sound then
+		minetest.sound_play("mcl_bows_bow_shoot", {pos=pos, max_hear_distance=16}, true)
+	end
 	if shooter ~= nil and shooter:is_player() then
 		if obj:get_luaentity().player == "" then
 			obj:get_luaentity().player = shooter

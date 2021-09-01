@@ -58,6 +58,8 @@ local ARROW_ENTITY={
 	textures = {"mcl_bows_arrow.png"},
 	collisionbox = {-0.19, -0.125, -0.19, 0.19, 0.125, 0.19},
 	collide_with_objects = false,
+
+	is_arrow = true,
 	_fire_damage_resistant = true,
 
 	_lastpos={},
@@ -69,7 +71,6 @@ local ARROW_ENTITY={
 	_stuckrechecktimer=nil,-- An additional timer for periodically re-checking the stuck status of an arrow
 	_stuckin=nil,	--Position of node in which arow is stuck.
 	_shooter=nil,	-- ObjectRef of player or mob who shot it
-	_is_arrow = true,
 
 	_viscosity=0,   -- Viscosity of node the arrow is currently in
 	_deflection_cooloff=0, -- Cooloff timer after an arrow deflection, to prevent many deflections in quick succession
@@ -187,7 +188,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 				maxsize = 2,
 				collisiondetection = false,
 				vertical = false,
-				texture = "mobs_mc_arrow_particle.png",
+				texture = "mcl_mobs_arrow_particle.png",
 				glow = 1,
 			})
 		end
@@ -210,7 +211,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			if obj:is_player() then
 				ok = true
 			elseif obj:get_luaentity() ~= nil then
-				if (obj:get_luaentity()._cmi_is_mob or obj:get_luaentity()._hittable_by_projectile) then
+				if (obj:get_luaentity().is_mob or obj:get_luaentity()._hittable_by_projectile) then
 					ok = true
 				end
 			end
@@ -233,7 +234,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			local obj = closest_object
 			local is_player = obj:is_player()
 			local lua = obj:get_luaentity()
-			if obj == self._shooter and self._time_in_air > 1.02 or obj ~= self._shooter and (is_player or (lua and (lua._cmi_is_mob or lua._hittable_by_projectile))) then
+			if obj == self._shooter and self._time_in_air > 1.02 or obj ~= self._shooter and (is_player or (lua and (lua.is_mob or lua._hittable_by_projectile))) then
 				if obj:get_hp() > 0 then
 					-- Check if there is no solid node between arrow and object
 					local ray = minetest.raycast(self.object:get_pos(), obj:get_pos(), true)
@@ -254,12 +255,9 @@ ARROW_ENTITY.on_step = function(self, dtime)
 					end
 
 					-- Punch target object but avoid hurting enderman.
-					if not lua or lua.name ~= "mobs_mc:enderman" then
+					if not lua or lua.name ~= "mcl_mobs:enderman" then
 						if self._in_player == false then
 							damage_particles(self.object:get_pos(), self._is_critical)
-						end
-						if mcl_burning.is_burning(self.object) then
-							mcl_burning.set_on_fire(obj, 5)
 						end
 						if self._in_player == false then
 							obj:punch(self.object, 1.0, {
@@ -320,7 +318,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 						-- NOTE: Range has been reduced because mobs unload much earlier than that ... >_>
 						-- TODO: This achievement should be given for the kill, not just a hit
 						if self._shooter and self._shooter:is_player() and vector.distance(pos, self._startpos) >= 20 then
-							if mod_awards and (entity_name == "mobs_mc:skeleton" or entity_name == "mobs_mc:stray" or entity_name == "mobs_mc:witherskeleton") then
+							if mod_awards and (entity_name == "mcl_mobs:skeleton" or entity_name == "mcl_mobs:stray" or entity_name == "mcl_mobs:witherskeleton") then
 								awards.unlock(self._shooter:get_player_name(), "mcl:snipeSkeleton")
 							end
 						end

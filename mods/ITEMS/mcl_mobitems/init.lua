@@ -327,6 +327,67 @@ minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
 	_mcl_toollike_wield = true,
 })
 
+minetest.register_craftitem("mcl_mobitems:nametag", {
+	description = S("Name Tag"),
+	_tt_help = S("Give names to mobs").."\n"..S("Set name at anvil"),
+	_doc_items_longdesc = S("A name tag is an item to name a mob."),
+	_doc_items_usagehelp = S("Before you use the name tag, you need to set a name at an anvil. Then you can use the name tag to name a mob. This uses up the name tag."),
+	inventory_image = "mcl_mobitems_nametag.png",
+	wield_image = "mcl_mobitems_nametag.png",
+	stack_max = 64,
+	groups = { tool=1 },
+})
+
+minetest.register_alias("mobs:nametag", "mcl_mobitems:nametag")
+minetest.register_alias("mcl_mobs:nametag", "mcl_mobitems:nametag")
+
+-- TODO: Balance the horse armor strength, compare with MC horse armor strength
+
+local horse_armor_use = S("Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.")
+
+minetest.register_craftitem("mcl_mobitems:iron_horse_armor", {
+	description = S("Iron Horse Armor"),
+	_doc_items_longdesc = S("Iron horse armor can be worn by horses to increase their protection from harm a bit."),
+	_doc_items_usagehelp = horse_armor_use,
+	inventory_image = "mcl_mobitems_iron_horse_armor.png",
+	_horse_overlay_image = "mcl_mobitems_horse_armor_iron.png",
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_iron",
+	},
+	stack_max = 1,
+	groups = { horse_armor = 85 },
+})
+
+minetest.register_craftitem("mcl_mobitems:gold_horse_armor", {
+	description = S("Golden Horse Armor"),
+	_doc_items_longdesc = S("Golden horse armor can be worn by horses to increase their protection from harm."),
+	_doc_items_usagehelp = horse_armor_use,
+	inventory_image = "mcl_mobitems_gold_horse_armor.png",
+	_horse_overlay_image = "mcl_mobitems_horse_armor_gold.png",
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_iron",
+	},
+	stack_max = 1,
+	groups = { horse_armor = 60 },
+})
+
+minetest.register_craftitem("mcl_mobitems:diamond_horse_armor", {
+	description = S("Diamond Horse Armor"),
+	_doc_items_longdesc = S("Diamond horse armor can be worn by horses to greatly increase their protection from harm."),
+	_doc_items_usagehelp = horse_armor_use,
+	inventory_image = "mcl_mobitems_diamond_horse_armor.png",
+	_horse_overlay_image = "mcl_mobitems_horse_armor_diamond.png",
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_diamond",
+	},
+	stack_max = 1,
+	groups = { horse_armor = 45 },
+})
+
+minetest.register_alias("mobs_mc:iron_horse_armor", "mcl_mobitems:iron_horse_armor")
+minetest.register_alias("mobs_mc:gold_horse_armor", "mcl_mobitems:gold_horse_armor")
+minetest.register_alias("mobs_mc:diamond_horse_armor", "mcl_mobitems:diamond_horse_armor")
+
 -----------
 -- Crafting
 -----------

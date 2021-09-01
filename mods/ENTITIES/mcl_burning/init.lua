@@ -35,6 +35,21 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
+mcl_damage.register_modifier(function(obj, damage, reason)
+	if reason.is_fire then
+		local luaentity = obj:get_luaentity()
+		if luaentity and luaentity.no_fire_damage then
+			return 0
+		end
+	end
+end, -200)
+
+mcl_damage.register_on_damage(function(obj, damage, reason)
+	if reason.direct and mcl_burning.is_burning(obj) then
+		mcl_burning.set_on_fire(obj, 5)
+	end
+end)
+
 minetest.register_on_respawnplayer(function(player)
 	mcl_burning.extinguish(player)
 end)
@@ -112,5 +127,24 @@ minetest.register_entity("mcl_burning:fire", {
 		if parent:is_player() then
 			parent:hud_change(storage.fire_hud_id, "text", "mcl_burning_hud_flame_animated.png" .. frame_overlay)
 		end
+	end,
+	update_visual_size = function(self, parent, storage)
+		parent = parent or self.object:get_attach()
+		storage = storage or mcl_burning.get_storage(parent)
+
+		local minp, maxp = mcl_burning.get_collisionbox(parent, false, storage)
+		local obj_size = parent:get_properties().visual_size
+
+		local vertical_grow_factor = 1.2
+		local horizontal_grow_factor = 1.1
+		local grow_vector = vector.new(horizontal_grow_factor, vertical_grow_factor, horizontal_grow_factor)
+
+		local size = vector.subtract(maxp, minp)
+		size = vector.multiply(size, grow_vector)
+		size = vector.divide(size, obj_size)
+		local offset = vector.new(0, size.y * 10 / 2, 0)
+
+		self.object:set_properties({visual_size = size})
+		self.object:set_attach(parent, "", offset)
 	end,
 })

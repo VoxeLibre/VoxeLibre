@@ -1,18 +1,7 @@
 
--- lib_mount by Blert2112 (edited by TenPlus1)
+--[[local node_ok = function(pos, fallback)
 
-local enable_crash = false
-local crash_threshold = 6.5 -- ignored if enable_crash=false
-
-------------------------------------------------------------------------------
-
---
--- Helper functions
---
-
-local node_ok = function(pos, fallback)
-
-	fallback = fallback or mobs.fallback_node
+	fallback = fallback or "mcl_core:dirt"
 
 	local node = minetest.get_node_or_nil(pos)
 
@@ -25,8 +14,7 @@ end
 
 
 local function node_is(pos)
-
-	local node = node_ok(pos)
+	local node = minetest.get_node(pos)
 
 	if node.name == "air" then
 		return "air"
@@ -40,182 +28,62 @@ local function node_is(pos)
 		return "liquid"
 	end
 
-	if minetest.registered_nodes[node.name].walkable == true then
+	local def = minetest.registered_nodes[node.name]
+
+	if not def or def.walkable then
 		return "walkable"
 	end
 
 	return "other"
 end
+--]]
 
+function mcl_mobs.mob:mount(obj)
+	if mcl_mount.mount(obj) then
+		if self.def.on_mount(obj) == false then
+			return
+		end
 
-local function get_sign(i)
-
-	i = i or 0
-
-	if i == 0 then
-		return 0
-	else
-		return i / math.abs(i)
+		self.driver = obj
+		obj:set_attach(self.object, "", self.def.driver_offset)
+		if obj:is_player() then
+			obj:set_eye_offset(self.def.driver_eye_offset, vector.new(0, 0, 0))
+		end
 	end
 end
 
-
-local function get_velocity(v, yaw, y)
-
-	local x = -math.sin(yaw) * v
-	local z =  math.cos(yaw) * v
-
-	return {x = x, y = y, z = z}
-end
-
-
-local function get_v(v)
-	return math.sqrt(v.x * v.x + v.z * v.z)
-end
-
-
-local function force_detach(player)
-
-	local attached_to = player:get_attach()
-
-	if not attached_to then
-		return
-	end
-
-	local entity = attached_to:get_luaentity()
-
-	if entity.driver
-	and entity.driver == player then
-
-		entity.driver = nil
-	end
-
-	player:set_detach()
-	mcl_player.player_attached[player:get_player_name()] = false
-	player:set_eye_offset({x = 0, y = 0, z = 0}, {x = 0, y = 0, z = 0})
-	mcl_player.player_set_animation(player, "stand" , 30)
-	player:set_properties({visual_size = {x = 1, y = 1} })
-
-end
-
--------------------------------------------------------------------------------
-
-
-minetest.register_on_leaveplayer(function(player)
-	force_detach(player)
-end)
-
-minetest.register_on_shutdown(function()
-	local players = minetest.get_connected_players()
-	for i = 1, #players do
-		force_detach(players[i])
-	end
-end)
-
-minetest.register_on_dieplayer(function(player)
-	force_detach(player)
-	return true
-end)
-
--------------------------------------------------------------------------------
-
-function mobs.attach(entity, player)
-
-	local attach_at, eye_offset
-
-	entity.player_rotation = entity.player_rotation or {x = 0, y = 0, z = 0}
-	entity.driver_attach_at = entity.driver_attach_at or {x = 0, y = 0, z = 0}
-	entity.driver_eye_offset = entity.driver_eye_offset or {x = 0, y = 0, z = 0}
-	entity.driver_scale = entity.driver_scale or {x = 1, y = 1}
+--[[
+function mobs:drive(moving_anim, stand_anim, can_fly, dtime)
 
 	local rot_view = 0
 
-	if entity.player_rotation.y == 90 then
-		rot_view = math.pi/2
-	end
-
-	attach_at = entity.driver_attach_at
-	eye_offset = entity.driver_eye_offset
-	entity.driver = player
-
-	force_detach(player)
-
-	player:set_attach(entity.object, "", attach_at, entity.player_rotation)
-	mcl_player.player_attached[player:get_player_name()] = true
-	player:set_eye_offset(eye_offset, {x = 0, y = 0, z = 0})
-
-	player:set_properties({
-		visual_size = {
-			x = entity.driver_scale.x,
-			y = entity.driver_scale.y
-		}
-	})
-
-	minetest.after(0.2, function(name)
-		local player = minetest.get_player_by_name(name)
-		if player then
-			mcl_player.player_set_animation(player, "sit_mount" , 30)
-		end
-	end, player:get_player_name())
-
-	player:set_look_horizontal(entity.object:get_yaw() - rot_view)
-end
-
-
-function mobs.detach(player, offset)
-
-	force_detach(player)
-
-	mcl_player.player_set_animation(player, "stand" , 30)
-
-	--local pos = player:get_pos()
-
-	--pos = {x = pos.x + offset.x, y = pos.y + 0.2 + offset.y, z = pos.z + offset.z}
-
-	player:add_velocity(vector.new(math.random(-6,6),math.random(5,8),math.random(-6,6))) --throw the rider off
-
-	--[[
-	minetest.after(0.1, function(name, pos)
-		local player = minetest.get_player_by_name(name)
-		if player then
-			player:set_pos(pos)
-		end
-	end, player:get_player_name(), pos)
-	]]--
-end
-
-
-function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
-
-	local rot_view = 0
-
-	if entity.player_rotation.y == 90 then
+	if self.player_rotation.y == 90 then
 		rot_view = math.pi/2
 	end
 
 	local acce_y = 0
-	local velo = entity.object:get_velocity()
+	local velo = self.object:get_velocity()
 
-	entity.v = get_v(velo) * get_sign(entity.v)
+	self.v = get_v(velo) * get_sign(self.v)
 
 	-- process controls
-	if entity.driver then
+	if self.driver then
 
-		local ctrl = entity.driver:get_player_control()
+		local ctrl = self.driver:get_player_control()
 
 		-- move forwards
 		if ctrl.up then
 
-			mobs.set_velocity(entity, entity.run_velocity)
+			self:set_velocity(self.run_velocity)
 
-			mobs.set_mob_animation(entity, moving_anim)
+			self:set_mob_animation( moving_anim)
 
 		-- move backwards
 		elseif ctrl.down then
 
-			mobs.set_velocity(entity, -entity.run_velocity)
+			self:set_velocity(-self.run_velocity)
 
-			mobs.set_mob_animation(entity, moving_anim)
+			self:set_mob_animation(moving_anim)
 
 		--halt
 		else
@@ -253,7 +121,7 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 			end
 
 		else
-			]]--
+			] ]--
 
 		-- jump
 		if ctrl.jump then
@@ -381,7 +249,7 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 	end
 
 	entity.v2 = v
-	]]--
+	] ]--
 end
 
 
@@ -449,3 +317,5 @@ function mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_anim)
 		mobs:set_mob_animation(entity, moving_anim)
 	end
 end
+
+]]--

@@ -280,7 +280,7 @@ local water_splash = function(obj, damage)
 	end
 	-- Damage mobs that are vulnerable to water
 	local lua = obj:get_luaentity()
-	if lua and lua._cmi_is_mob then
+	if lua and lua.is_mob then
 		obj:punch(obj, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {water_vulnerable=damage},

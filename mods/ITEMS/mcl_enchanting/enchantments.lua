@@ -10,7 +10,7 @@ local function increase_damage(damage_group, factor)
 	end
 end
 
--- implemented via on_enchant and additions in mobs_mc; Slowness IV part unimplemented
+-- implemented via on_enchant and additions in mcl_mobs; Slowness IV part unimplemented
 mcl_enchanting.enchantments.bane_of_arthropods = {
 	name = S("Bane of Arthropods"),
 	max_level = 5,
@@ -126,14 +126,13 @@ mcl_enchanting.enchantments.fire_aspect = {
 	inv_tool_tab = false,
 }
 
-minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
-	if hitter and hitter:is_player() then
-		local wielditem = hitter:get_wielded_item()
-		if wielditem then
-			local fire_aspect_level = mcl_enchanting.get_enchantment(wielditem, "fire_aspect")
-			if fire_aspect_level > 0 then
-				mcl_burning.set_on_fire(player, fire_aspect_level * 4)
-			end
+mcl_damage.register_on_damage(function(obj, damage, reason)
+	if reason.direct then
+		local wield = mcl_util.get_wielded_item(reason.direct)
+
+		local fire_aspect_level = mcl_enchanting.get_enchantment(wielditem, "fire_aspect")
+		if fire_aspect_level > 0 then
+			mcl_burning.set_on_fire(player, fire_aspect_level * 4)
 		end
 	end
 end)
@@ -284,7 +283,7 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 	return knockback
 end
 
--- implemented in mcl_mobs and mobs_mc
+-- implemented in mcl_mobs
 mcl_enchanting.enchantments.looting = {
 	name = S("Looting"),
 	max_level = 3,
@@ -550,7 +549,7 @@ mcl_enchanting.enchantments.silk_touch = {
 	inv_tool_tab = true,
 }
 
--- implemented via on_enchant and additions in mobs_mc
+-- implemented via on_enchant and additions in mcl_mobitems
 mcl_enchanting.enchantments.smite = {
 	name = S("Smite"),
 	max_level = 5,

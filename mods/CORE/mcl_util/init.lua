@@ -477,32 +477,22 @@ end
 function mcl_util.deal_damage(target, damage, mcl_reason)
 	local luaentity = target:get_luaentity()
 
-	if luaentity then
-		if luaentity.deal_damage then
-			luaentity:deal_damage(damage, mcl_reason or {type = "generic"})
-			return
-		elseif luaentity._cmi_is_mob then
-			-- local puncher = mcl_reason and mcl_reason.direct or target
-			-- target:punch(puncher, 1.0, {full_punch_interval = 1.0, damage_groups = {fleshy = damage}}, vector.direction(puncher:get_pos(), target:get_pos()), damage)
-			if luaentity.health > 0 then
-				luaentity.health = luaentity.health - damage
-			end
-			return
+	if luaentity and luaentity.deal_damage then
+		luaentity:deal_damage(damage, mcl_reason or {type = "generic"})
+	else
+		local hp = target:get_hp()
+
+		if hp > 0 then
+			target:set_hp(hp - damage, {_mcl_reason = mcl_reason})
 		end
-	end
-
-	local hp = target:get_hp()
-
-	if hp > 0 then
-		target:set_hp(hp - damage, {_mcl_reason = mcl_reason})
 	end
 end
 
 function mcl_util.get_hp(obj)
 	local luaentity = obj:get_luaentity()
 
-	if luaentity and luaentity._cmi_is_mob then
-		return luaentity.health
+	if luaentity and luaentity.is_mob then
+		return luaentity.data.health
 	else
 		return obj:get_hp()
 	end

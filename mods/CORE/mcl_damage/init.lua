@@ -13,7 +13,7 @@ mcl_damage = {
 		starve = {bypasses_armor = true, bypasses_magic = true},
 		cactus = {},
 		fall = {bypasses_armor = true},
-		fly_into_wall = {bypasses_armor = true}, -- unused
+		fly_into_wall = {bypasses_armor = true},
 		out_of_world = {bypasses_armor = true, bypasses_magic = true, bypasses_invulnerability = true},
 		generic = {bypasses_armor = true},
 		magic = {is_magic = true, bypasses_armor = true},
@@ -28,7 +28,7 @@ mcl_damage = {
 		fireball = {is_projectile = true, is_fire = true},
 		thorns = {is_magic = true},
 		explosion = {is_explosion = true},
-		cramming = {bypasses_armor = true}, -- unused
+		cramming = {bypasses_armor = true},
 		fireworks = {is_explosion = true}, -- unused
 	}
 }
@@ -74,11 +74,11 @@ function mcl_damage.from_punch(mcl_reason, object)
 	mcl_reason.direct = object
 	local luaentity = mcl_reason.direct:get_luaentity()
 	if luaentity then
-		if luaentity._is_arrow then
+		if luaentity.is_arrow then
 			mcl_reason.type = "arrow"
-		elseif luaentity._is_fireball then
+		elseif luaentity.is_fireball then
 			mcl_reason.type = "fireball"
-		elseif luaentity._cmi_is_mob then
+		elseif luaentity.is_mob then
 			mcl_reason.type = "mob"
 		end
 		mcl_reason.source = mcl_reason.source or luaentity._source_object

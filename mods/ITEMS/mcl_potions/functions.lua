@@ -165,7 +165,7 @@ minetest.register_globalstep(function(dtime)
 			if is_player then
 				player:set_hp(math.min(player:get_properties().hp_max or 20, player:get_hp() + 1), { type = "set_hp", other = "regeneration" })
 				EF.regenerating[player].heal_timer = 0
-			elseif entity and entity._cmi_is_mob then
+			elseif entity and entity.is_mob then
 				entity.health = math.min(entity.hp_max, entity.health + 1)
 				EF.regenerating[player].heal_timer = 0
 			else -- stop regenerating if not a player or mob
@@ -537,7 +537,7 @@ function mcl_potions.is_obj_hit(self, pos)
 
 		if entity and entity.name ~= self.object:get_luaentity().name then
 
-			if entity._cmi_is_mob then
+			if entity.is_mob then
 				return true
 			end
 
@@ -563,7 +563,7 @@ function mcl_potions.make_invisible(player, toggle)
 
 	if toggle then -- hide player
 
-		skin_file = "mobs_mc_empty.png"
+		skin_file = "empty.png"
 
 		if entity then
 			EF.invisible[player].old_size = entity.visual_size
@@ -572,7 +572,7 @@ function mcl_potions.make_invisible(player, toggle)
 		end
 
 		if player:is_player() then
-			mcl_player.player_set_skin(player, "mobs_mc_empty.png")
+			mcl_player.player_set_skin(player, "empty.png")
 		elseif not player:is_player() then
 			player:set_properties({visual_size = {x = 0, y = 0}})
 		end
@@ -678,7 +678,7 @@ function mcl_potions.healing_func(player, hp)
 			hp = 1
 		end
 
-		if obj and obj._cmi_is_mob then
+		if obj and obj.is_mob then
 			obj.health = math.max(obj.health + hp, obj.hp_max)
 		elseif player:is_player() then
 			player:set_hp(math.min(player:get_hp() + hp, player:get_properties().hp_max), { type = "set_hp", other = "healing" })

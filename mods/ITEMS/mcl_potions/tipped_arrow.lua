@@ -193,7 +193,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 					maxsize = 2,
 					collisiondetection = false,
 					vertical = false,
-					texture = "mobs_mc_arrow_particle.png",
+					texture = "mcl_mobs_arrow_particle.png",
 					glow = 1,
 				})
 			end
@@ -216,7 +216,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 				if obj ~= self._shooter and obj:is_player() then
 					ok = true
 				elseif obj:get_luaentity() ~= nil then
-					if obj ~= self._shooter and obj:get_luaentity()._cmi_is_mob then
+					if obj ~= self._shooter and obj:get_luaentity().is_mob then
 						ok = true
 					end
 				end
@@ -238,7 +238,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 				local obj = closest_object
 				local is_player = obj:is_player()
 				local lua = obj:get_luaentity()
-				if obj ~= self._shooter and (is_player or (lua and lua._cmi_is_mob)) then
+				if obj ~= self._shooter and (is_player or (lua and lua.is_mob)) then
 
 					if obj:get_hp() > 0 then
 						-- Check if there is no solid node between arrow and object
@@ -260,7 +260,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 
 						-- Punch target object but avoid hurting enderman.
 						if lua then
-							if lua.name ~= "mobs_mc:enderman" then
+							if lua.name ~= "mcl_mobs:enderman" then
 								obj:punch(self.object, 1.0, {
 									full_punch_interval=1.0,
 									damage_groups={fleshy=self._damage},
@@ -288,7 +288,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 							-- NOTE: Range has been reduced because mobs unload much earlier than that ... >_>
 							-- TODO: This achievement should be given for the kill, not just a hit
 							if self._shooter and self._shooter:is_player() and vector.distance(pos, self._startpos) >= 20 then
-								if mod_awards and (entity_name == "mobs_mc:skeleton" or entity_name == "mobs_mc:stray" or entity_name == "mobs_mc:witherskeleton") then
+								if mod_awards and (entity_name == "mcl_mobs:skeleton" or entity_name == "mcl_mobs:stray" or entity_name == "mcl_mobs:witherskeleton") then
 									awards.unlock(self._shooter:get_player_name(), "mcl:snipeSkeleton")
 								end
 							end

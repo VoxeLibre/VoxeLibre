@@ -1,6 +1,8 @@
 
 Mobs Redo: MineClone 2 Edition
 API documentation
+
+IMPORTANT NOTE: This is completely outdated and needs to be rewritten
 ==============================
 
 Welcome to the world of mobs in Minetest and hopefully an easy guide to defining
@@ -641,7 +643,7 @@ mobs:register_mob("mob_horse:horse", {
 	visual_size = {x = 1.20, y = 1.20},
 	mesh = "mobs_horse.x",
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.25, 0.4},
-	animation = { 
+	animation = {
 		speed_normal = 15,
 		speed_run = 30,
 		stand_start = 25,

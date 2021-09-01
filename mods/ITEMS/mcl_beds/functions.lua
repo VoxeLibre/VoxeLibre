@@ -50,16 +50,16 @@ end
 
 -- These monsters do not prevent sleep
 local monster_exceptions = {
-	["mobs_mc:ghast"] = true,
-	["mobs_mc:enderdragon"] = true,
-	["mobs_mc:killer_bunny"] = true,
-	["mobs_mc:slime_big"] = true,
-	["mobs_mc:slime_small"] = true,
-	["mobs_mc:slime_tiny"] = true,
-	["mobs_mc:magma_cube_big"] = true,
-	["mobs_mc:magma_cube_small"] = true,
-	["mobs_mc:magma_cube_tiny"] = true,
-	["mobs_mc:shulker"] = true,
+	["mcl_mobs:ghast"] = true,
+	["mcl_mobs:enderdragon"] = true,
+	["mcl_mobs:killer_bunny"] = true,
+	["mcl_mobs:slime_big"] = true,
+	["mcl_mobs:slime_small"] = true,
+	["mcl_mobs:slime_tiny"] = true,
+	["mcl_mobs:magma_cube_big"] = true,
+	["mcl_mobs:magma_cube_small"] = true,
+	["mcl_mobs:magma_cube_tiny"] = true,
+	["mcl_mobs:shulker"] = true,
 }
 
 local function lay_down(player, pos, bed_pos, state, skip)
@@ -110,7 +110,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 				local mobname = ent.name
 				local def = minetest.registered_entities[mobname]
 				-- Approximation of monster detection range
-				if def._cmi_is_mob and ((mobname ~= "mobs_mc:pigman" and def.type == "monster" and not monster_exceptions[mobname]) or (mobname == "mobs_mc:pigman" and ent.state == "attack")) then
+				if def.is_mob and ((mobname ~= "mcl_mobs:pigman" and def.type == "monster" and not monster_exceptions[mobname]) or (mobname == "mcl_mobs:pigman" and ent.state == "attack")) then
 					if math.abs(bed_pos.y - obj:get_pos().y) <= 5 then
 						return false, S("You can't sleep now, monsters are nearby!")
 					end

@@ -1,4 +1,24 @@
+local S = minetest.get_translator("mcl_totems")
+
+mcl_totems = {
+	totem_fail_nodes = {
+		["mcl_core:void"] = true,
+		["mcl_core:realm_barrier"] = true
+	},
+}
+
 local hud_totem = {}
+
+minetest.register_craftitem("mcl_totems:totem", {
+	description = S("Totem of Undying"),
+	_tt_help = minetest.colorize(mcl_colors.GREEN, S("Protects you from death while wielding it")),
+	_doc_items_longdesc = S("A totem of undying is a rare artifact which may safe you from certain death."),
+	_doc_items_usagehelp = S("The totem only works while you hold it in your hand. If you receive fatal damage, you are saved from death and you get a second chance with 1 HP. The totem is destroyed in the process, however."),
+	inventory_image = "mcl_totems_totem.png",
+	wield_image = "mcl_totems_totem.png",
+	stack_max = 1,
+	groups = {combat_item = 1},
+})
 
 minetest.register_on_leaveplayer(function(player)
 	hud_totem[player] = nil
@@ -10,14 +30,12 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 		local hp = obj:get_hp()
 		if hp - damage <= 0 then
 			local wield = obj:get_wielded_item()
-			if wield:get_name() == "mobs_mc:totem" then
+			if wield:get_name() == "mcl_totems:totem" then
 				local ppos = obj:get_pos()
 				local pnname = minetest.get_node(ppos).name
 				-- Some exceptions when _not_ to save the player
-				for n=1, #mobs_mc.misc.totem_fail_nodes do
-					if pnname == mobs_mc.misc.totem_fail_nodes[n] then
-						return
-					end
+				if mcl_totems.fail_nodes[pnname] then
+					return
 				end
 				-- Reset breath as well
 				if obj:get_breath() < 11 then

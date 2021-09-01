@@ -30,25 +30,6 @@ minetest.register_node("mcl_villages:stonebrickcarved", {
 	_mcl_hardness = 1.5,
 })
 
-
-
-
---[[ Enable for testing, but use MineClone2's own spawn code if/when merging.
---
--- register inhabitants
---
-if minetest.get_modpath("mobs_mc") ~= nil then
-  mobs:register_spawn("mobs_mc:villager", --name
-    {"mcl_core:stonebrickcarved"}, --nodes
-    15, --max_light
-    0, --min_light
-    20, --chance
-    7, --active_object_count
-    31000, --max_height
-    nil) --day_toggle
-end
---]]
-
 --
 -- on map generation, try to build a settlement
 --

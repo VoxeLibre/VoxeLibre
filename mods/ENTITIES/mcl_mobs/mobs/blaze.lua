@@ -1,0 +1,220 @@
+-- daufinsyd
+-- My work is under the LGPL terms
+-- Model and mcl_mobs_blaze.png see https://github.com/22i/minecraft-voxel-blender-models -hi 22i ~jordan4ibanez
+-- blaze.lua partial copy of ghast.lua
+local S = minetest.get_translator("mcl_mobs")
+
+local smokedef = mcl_particles.get_smoke_def({
+	amount = 0.009,
+	maxexptime = 4.0,
+	minvel = {x = -0.1, y = 0.3, z = -0.1},
+	maxvel = {x = 0.1, y = 1.6, z = 0.1},
+	minsize = 4.0,
+	maxsize = 4.5,
+	minrelpos = {x = -0.7, y = -0.45, z = -0.7},
+	maxrelpos = {x = 0.7, y = 0.45, z = 0.7},
+})
+
+mcl_mobs.register_mob("mcl_mobs:blaze", {
+	description = S("Blaze"),
+	type = "monster",
+	spawn_class = "hostile",
+	hp_min = 20,
+	hp_max = 20,
+	xp_min = 10,
+	xp_max = 10,
+	tilt_fly = false,
+	hostile = true,
+	rotate = 270,
+	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.79, 0.3},
+	rotate = -180,
+	model = "mcl_mobs_blaze.b3d",
+	textures = {
+		{"mcl_mobs_blaze.png"},
+	},
+	armor = {fleshy = 100, snowball_vulnerable = 100, water_vulnerable = 100},
+	visual_size = {x = 3, y = 3},
+	sounds = {
+		random = "mcl_mobs_blaze_breath",
+		death = "mcl_mobs_blaze_died",
+		damage = "mcl_mobs_blaze_hurt",
+		distance = 16,
+	},
+	walk_velocity = .8,
+	run_velocity = 1.6,
+	damage = 6,
+	reach = 4, -- don't want blaze getting too close
+	pathfinding = 1,
+	drops = {
+		{
+			name = "mcl_mobitems:blaze_rod",
+			chance = 1,
+			min = 0,
+			max = 1,
+			looting = "common",
+		},
+	},
+	animation = {
+		stand_speed = 25,
+		stand_start = 0,
+		stand_end = 100,
+		walk_speed = 25,
+		walk_start = 0,
+		walk_end = 100,
+		run_speed = 50,
+		run_start = 0,
+		run_end = 100,
+	},
+	-- MC Wiki: takes 1 damage every half second while in water
+	water_damage = 2,
+	lava_damage = 0,
+	fall_damage = 0,
+	fall_speed = -2.25,
+	view_range = 48,
+	attack_type = "projectile",
+	arrow = "mobs_mc:blaze_fireball",
+	shoot_interval = 3.5,
+	shoot_offset = 1.0,
+	passive = false,
+	jump = true,
+	jump_height = 4,
+	fly = true,
+	makes_footstep_sound = false,
+	glow = 14,
+	fire_resistant = true,
+	eye_height = 0.75,
+	projectile_cooldown_min = 2,
+	projectile_cooldown_max = 3,
+	arrow = "mcl_mobs:blaze_fireball",
+
+	do_custom = function(self)
+		if self.attacking and self.state == "attack" and vector.distance(self.object:get_pos(), self.attacking:get_pos()) < 1.2 then
+			mcl_burning.set_on_fire(self.attacking, 5)
+		end
+		local pos = self.object:get_pos()
+		minetest.add_particle({
+			pos = {x=pos.x+math.random(-0.7,0.7)*math.random()/2,y=pos.y+math.random(0.7,1.2),z=pos.z+math.random(-0.7,0.7)*math.random()/2},
+			velocity = {x=0, y=math.random(1,1), z=0},
+			expirationtime = math.random(),
+			size = math.random(1, 4),
+			collisiondetection = true,
+			vertical = false,
+			texture = "mcl_particles_smoke_anim.png^[colorize:#2c2c2c:255",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 8,
+				aspect_h = 8,
+				length = 2.05,
+			},
+		})
+		minetest.add_particle({
+			pos = {x=pos.x+math.random(-0.7,0.7)*math.random()/2,y=pos.y+math.random(0.7,1.2),z=pos.z+math.random(-0.7,0.7)*math.random()/2},
+			velocity = {x=0, y=math.random(1,1), z=0},
+			expirationtime = math.random(),
+			size = math.random(1, 4),
+			collisiondetection = true,
+			vertical = false,
+			texture = "mcl_particles_smoke_anim.png^[colorize:#424242:255",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 8,
+				aspect_h = 8,
+				length = 2.05,
+			},
+		})
+		minetest.add_particle({
+			pos = {x=pos.x+math.random(-0.7,0.7)*math.random()/2,y=pos.y+math.random(0.7,1.2),z=pos.z+math.random(-0.7,0.7)*math.random()/2},
+			velocity = {x=0, y=math.random(1,1), z=0},
+			expirationtime = math.random(),
+			size = math.random(1, 4),
+			collisiondetection = true,
+			vertical = false,
+			texture = "mcl_particles_smoke_anim.png^[colorize:#0f0f0f:255",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 8,
+				aspect_h = 8,
+				length = 2.05,
+			},
+		})
+	end,
+})
+
+mobs:spawn_specific(
+"mobs_mc:blaze",
+"nether",
+"ground",
+{"Nether"},
+0,
+minetest.LIGHT_MAX+1,
+30,
+5000,
+3,
+mobs_mc.spawn_height.nether_min,
+mobs_mc.spawn_height.nether_max)
+
+-- Blaze fireball
+mcl_mobs.register_arrow("mobs_mc:blaze_fireball", {
+	type = "fireball",
+	deflectable = false,
+	explosion = false,
+	damage = 5,
+
+})
+mobs:register_arrow("mobs_mc:blaze_fireball", {
+	visual = "sprite",
+	visual_size = {x = 0.3, y = 0.3},
+	textures = {"mcl_fire_fire_charge.png"},
+	velocity = 15,
+	speed = 5,
+	tail = 1,
+	tail_texture = "mobs_mc_spit.png^[colorize:black:255", --repurpose spit texture
+	tail_size = 2,
+	tail_distance_divider = 3,
+	is_fireball = true,
+
+	hit_player = function(self, player)
+		player:punch(self.object, 1.0, {
+			full_punch_interval = 1.0,
+			damage_groups = {fleshy = self._damage},
+		}, nil)
+	end,
+
+	hit_mob = function(self, mob)
+		mob:punch(self.object, 1.0, {
+			full_punch_interval = 1.0,
+			damage_groups = {fleshy = self._damage},
+		}, nil)
+	end,
+
+	hit_object = function(self, object)
+		local lua = object:get_luaentity()
+		if lua then
+			if lua.name == "mcl_minecarts:tnt_minecart" then
+				lua:on_activate_by_rail(2)
+			end
+		end
+	end,
+
+	-- Node hit, make fire
+	hit_node = function(self, pos, node)
+		if node.name ~= "air" then
+			local pos_above = table.copy(pos)
+			pos_above.y = pos_above.y + 1
+			minetest.set_node(pos_above, {name=mobs_mc.items.fire})
+		else
+			local v = self.object:get_velocity()
+			v = vector.normalize(v)
+			local crashpos = vector.subtract(pos, v)
+			local crashnode = minetest.get_node(crashpos)
+			-- Set fire if node is air, or a replacable flammable node (e.g. a plant)
+			if crashnode.name == "air" or
+					(minetest.registered_nodes[crashnode.name].buildable_to and minetest.get_item_group(crashnode.name, "flammable") >= 1) then
+				minetest.set_node(crashpos, {name=mobs_mc.items.fire})
+			end
+		end
+	end
+})
+
+-- spawn eggs
+mcl_mobs.register_egg("mcl_mobs:blaze", "mobs_mc_spawn_icon_blaze.png", 0)

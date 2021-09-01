@@ -245,14 +245,14 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "cooking",
 	output = 'mcl_core:iron_nugget',
-	recipe = 'mobs_mc:iron_horse_armor',
+	recipe = 'mcl_mobs:iron_horse_armor',
 	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = 'mcl_core:gold_nugget',
-	recipe = 'mobs_mc:gold_horse_armor',
+	recipe = 'mcl_mobs:gold_horse_armor',
 	cooktime = 10,
 })
 

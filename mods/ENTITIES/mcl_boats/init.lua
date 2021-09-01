@@ -12,51 +12,40 @@ local function is_group(pos, group)
 	return minetest.get_item_group(nn, group) ~= 0
 end
 
-local is_water = flowlib.is_water
-
-local function is_ice(pos)
-	return is_group(pos, "ice")
-end
-
-local function get_sign(i)
-	if i == 0 then
-		return 0
-	else
-		return i / math.abs(i)
-	end
-end
-
 local function get_velocity(v, yaw, y)
-	local x = -math.sin(yaw) * v
-	local z =  math.cos(yaw) * v
-	return {x = x, y = y, z = z}
+	return vector.add(vector.new(0, y, 0), vector.multiply(minetest.yaw_to_dir(yaw), v))
 end
 
 local function get_v(v)
 	return math.sqrt(v.x ^ 2 + v.z ^ 2)
 end
 
-local function check_object(obj)
-	return obj and (obj:is_player() or obj:get_luaentity()) and obj
+function get_sign(i)
+	if not i or i == 0 then
+		return 0
+	else
+		return i / math.abs(i)
+	end
 end
 
-local function get_visual_size(obj)
-	return obj:is_player() and {x = 1, y = 1, z = 1} or obj:get_luaentity()._old_visual_size or obj:get_properties().visual_size
+local is_water = flowlib.is_water
+
+local function is_ice(pos)
+	return is_group(pos, "ice")
 end
 
 local function set_attach(boat)
-	boat._driver:set_attach(boat.object, "",
-		{x = 0, y = 0.42, z = -1}, {x = 0, y = 0, z = 0})
+	boat._driver:set_attach(boat.object, "", vector.new(0, 0.42, -1), vector.new(0, 0, 0))
 end
 
 local function set_double_attach(boat)
-	boat._driver:set_attach(boat.object, "",
-		{x = 0, y = 0.42, z = 0.8}, {x = 0, y = 0, z = 0})
-	boat._passenger:set_attach(boat.object, "",
-		{x = 0, y = 0.42, z = -2.2}, {x = 0, y = 0, z = 0})
+	boat._driver:set_attach(boat.object, "", vector.new(0, 0.42, 0.8), vector.new(0, 0, 0))
+	boat._passenger:set_attach(boat.object, "", vector.new(0, 0.42, -2.2), vector.new(0, 0, 0))
 end
 
-local function attach_object(self, obj)
+local function enter_boat(self, obj)
+	mcl_mount.mount(obj, self.object)
+
 	if self._driver then
 		if self._driver:is_player() then
 			self._passenger = obj
@@ -68,39 +57,6 @@ local function attach_object(self, obj)
 	else
 		self._driver = obj
 		set_attach(self)
-	end
-
-	local visual_size = get_visual_size(obj)
-	local yaw = self.object:get_yaw()
-	obj:set_properties({visual_size = vector.divide(visual_size, boat_visual_size)})
-
-	if obj:is_player() then
-		local name = obj:get_player_name()
-		mcl_player.player_attached[name] = true
-		minetest.after(0.2, function(name)
-			local player = minetest.get_player_by_name(name)
-			if player then
-				mcl_player.player_set_animation(player, "sit" , 30)
-			end
-		end, name)
-		obj:set_look_horizontal(yaw)
-		mcl_tmp_message.message(obj, S("Sneak to dismount"))
-	else
-		obj:get_luaentity()._old_visual_size = visual_size
-	end
-end
-
-local function detach_object(obj, change_pos)
-	obj:set_detach()
-	obj:set_properties({visual_size = get_visual_size(obj)})
-	if obj:is_player() then
-		mcl_player.player_attached[obj:get_player_name()] = false
-		mcl_player.player_set_animation(obj, "stand" , 30)
-	else
-		obj:get_luaentity()._old_visual_size = nil
-	end
-	if change_pos then
-		 obj:set_pos(vector.add(obj:get_pos(), vector.new(0, 0.2, 0)))
 	end
 end
 
@@ -131,15 +87,12 @@ local boat = {
 	_damage_anim = 0,
 }
 
-minetest.register_on_respawnplayer(detach_object)
-
 function boat.on_rightclick(self, clicker)
 	if self._passenger or not clicker or clicker:get_attach() then
 		return
 	end
-	attach_object(self, clicker)
+	enter_boat(self, clicker)
 end
-
 
 function boat.on_activate(self, staticdata, dtime_s)
 	self.object:set_armor_groups({fleshy = 100})
@@ -172,10 +125,10 @@ function boat.on_death(self, killer)
 		minetest.add_item(self.object:get_pos(), self._itemstring)
 	end
 	if self._driver then
-		detach_object(self._driver)
+		mcl_mount.throw_off(self._driver)
 	end
 	if self._passenger then
-		detach_object(self._passenger)
+		mcl_mount.throw_off(self._passenger)
 	end
 	self._driver = nil
 	self._passenger = nil
@@ -235,19 +188,13 @@ function boat.on_step(self, dtime, moveresult)
 
 	local had_passenger = self._passenger
 
-	self._driver = check_object(self._driver)
-	self._passenger = check_object(self._passenger)
+	self._driver = self._driver and self._driver:get_attach() == self.object and self._driver
+	self._passenger = self._passenger and self._passenger:get_attach() == self.object and self._passenger
 
 	if self._passenger then
 		if not self._driver then
 			self._driver = self._passenger
 			self._passenger = nil
-		else
-			local ctrl = self._passenger:get_player_control()
-			if ctrl and ctrl.sneak then
-				detach_object(self._passenger, true)
-				self._passenger = nil
-			end
 		end
 	end
 
@@ -256,13 +203,8 @@ function boat.on_step(self, dtime, moveresult)
 			set_attach(self)
 		end
 		local ctrl = self._driver:get_player_control()
-		if ctrl and ctrl.sneak then
-			detach_object(self._driver, true)
-			self._driver = nil
-			return
-		end
 		local yaw = self.object:get_yaw()
-		if ctrl.up then
+		if ctrl and ctrl.up then
 			-- Forwards
 			self._v = self._v + 0.1 * v_factor
 
@@ -271,7 +213,7 @@ function boat.on_step(self, dtime, moveresult)
 				self.object:set_animation({x=0, y=40}, paddling_speed, 0, true)
 				self._animation = 1
 			end
-		elseif ctrl.down then
+		elseif ctrl and ctrl.down then
 			-- Backwards
 			self._v = self._v - 0.1 * v_factor
 
@@ -309,8 +251,8 @@ function boat.on_step(self, dtime, moveresult)
 
 		for _, obj in pairs(minetest.get_objects_inside_radius(self.object:get_pos(), 1.3)) do
 			local entity = obj:get_luaentity()
-			if entity and entity._cmi_is_mob then
-				attach_object(self, obj)
+			if entity and entity.is_mob then
+				enter_boat(self, obj)
 				break
 			end
 		end
