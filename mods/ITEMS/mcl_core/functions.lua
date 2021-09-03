@@ -197,7 +197,7 @@ minetest.register_abm({
 })
 
 minetest.register_abm({
-	label = "Cactus destroy items",
+	label = "Cactus mechanisms",
 	nodenames = {"mcl_core:cactus"},
 	interval = 1,
 	chance = 1,
