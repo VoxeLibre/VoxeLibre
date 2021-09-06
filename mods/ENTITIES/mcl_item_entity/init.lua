@@ -575,7 +575,7 @@ minetest.register_entity(":__builtin:item", {
 		return true
 	end,
 
-	on_step = function(self, dtime)
+	on_step = function(self, dtime, moveresult)
 		if self._removed then
 			self.object:set_properties({
 				physical = false
@@ -639,6 +639,18 @@ minetest.register_entity(":__builtin:item", {
 				self._removed = true
 				self.object:remove()
 				return
+			end
+		end
+
+		-- Destroy item when it collides with a cactus
+		if moveresult and moveresult.collides then
+			for _, collision in pairs(moveresult.collisions) do
+				local pos = collision.node_pos
+				if collision.type == "node" and minetest.get_node(pos).name == "mcl_core:cactus" then
+					self._removed = true
+					self.object:remove()
+					return
+				end
 			end
 		end
 
