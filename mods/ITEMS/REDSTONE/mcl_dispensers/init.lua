@@ -217,6 +217,7 @@ local dispenserdef = {
 									minetest.sound_play("mcl_tools_shears_cut", { pos = pos }, true)
 									stack:add_wear(65535 / stackdef._mcl_diggroups.shearsy.uses)
 									inv:set_stack("main", stack_id, stack)
+									break
 								end
 							end
 						end
