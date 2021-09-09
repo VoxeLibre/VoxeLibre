@@ -57,7 +57,7 @@ minetest.register_globalstep(revertsky)
 
 -- lightning strike API
 
--- See README.md
+-- See API.md
 --[[
 	lightning.register_on_strike(function(pos, pos2, objects)
 		-- code
