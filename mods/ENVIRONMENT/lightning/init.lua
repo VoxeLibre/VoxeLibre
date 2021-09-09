@@ -128,8 +128,6 @@ function lightning.strike(pos)
 	end
 end
 
-
-
 lightning.register_on_strike(function(pos, pos2, objects)
 	local particle_pos = vector.offset(pos2, 0, (lightning.size / 2) + 0.5, 0)
 	local particle_size = lightning.size * 10
@@ -158,37 +156,19 @@ lightning.register_on_strike(function(pos, pos2, objects)
 	-- damage nearby objects, transform mobs
 	for _, obj in pairs(objects) do
 		local lua = obj:get_luaentity()
-		-- pig → zombie pigman (no damage)
 		if lua and lua.name == "mobs_mc:pig" then
-			local rot = obj:get_yaw()
-			obj:remove()
-			obj = add_entity(pos2, "mobs_mc:pigman")
-			obj:set_yaw(rot)
-			-- mooshroom: toggle color red/brown (no damage)
+			mcl_util.replace_mob(obj, "mobs_mc:pigman")
 		elseif lua and lua.name == "mobs_mc:mooshroom" then
 			if lua.base_texture[1] == "mobs_mc_mooshroom.png" then
 				lua.base_texture = { "mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" }
 			else
 				lua.base_texture = { "mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png" }
 			end
-			obj:set_properties({textures = lua.base_texture})
-		-- villager → witch (no damage)
-		-- elseif lua and lua.name == "mobs_mc:villager" then
-		-- Witches are incomplete, this code is unused
-		-- TODO: Enable this code when witches are working.
-		--[[
-			local rot = obj:get_yaw()
-			obj:remove()
-			obj = minetest.add_entity(pos2, "mobs_mc:witch")
-			obj:set_yaw(rot)
-		]]
-		-- charged creeper
+			obj:set_properties({ textures = lua.base_texture })
+		elseif lua and lua.name == "mobs_mc:villager" then
+			mcl_util.replace_mob(obj, "mobs_mc:witch")
 		elseif lua and lua.name == "mobs_mc:creeper" then
-			local rot = obj:get_yaw()
-			obj:remove()
-			obj = add_entity(pos2, "mobs_mc:creeper_charged")
-			obj:set_yaw(rot)
-			-- Other objects: Just damage
+			mcl_util.replace_mob(obj, "mobs_mc:creeper_charged")
 		else
 			mcl_util.deal_damage(obj, 5, { type = "lightning_bolt" })
 		end
@@ -204,7 +184,7 @@ lightning.register_on_strike(function(pos, pos2, objects)
 		local name = player:get_player_name()
 		if ps[name] == nil then
 			ps[name] = {p = player, sky = sky}
-			mcl_weather.skycolor.add_layer("lightning", {{r=255,g=255,b=255}}, true)
+			mcl_weather.skycolor.add_layer("lightning", { { r = 255, g = 255, b = 255 } }, true)
 			mcl_weather.skycolor.active = true
 		end
 	end
@@ -219,7 +199,7 @@ lightning.register_on_strike(function(pos, pos2, objects)
 	if rng:next(1,100) <= 3 then
 		skeleton_lightning = true
 	end
-	if get_item_group(get_node({x = pos2.x, y = pos2.y - 1, z = pos2.z}).name, "liquid") < 1 then
+	if get_item_group(get_node({ x = pos2.x, y = pos2.y - 1, z = pos2.z }).name, "liquid") < 1 then
 		if get_node(pos2).name == "air" then
 			-- Low chance for a lightning to spawn skeleton horse + skeletons
 			if skeleton_lightning then
@@ -228,7 +208,7 @@ lightning.register_on_strike(function(pos, pos2, objects)
 				local angle, posadd
 				angle = math.random(0, math.pi*2)
 				for i=1,3 do
-					posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
+					posadd = { x=math.cos(angle),y=0,z=math.sin(angle) }
 					posadd = vector.normalize(posadd)
 					local mob = add_entity(vector.add(pos2, posadd), "mobs_mc:skeleton")
 					mob:set_yaw(angle-math.pi/2)
@@ -237,7 +217,7 @@ lightning.register_on_strike(function(pos, pos2, objects)
 
 			-- Cause a fire
 			else
-				set_node(pos2, {name = "mcl_fire:fire"})
+				set_node(pos2, { name = "mcl_fire:fire" })
 			end
 		end
 	end
