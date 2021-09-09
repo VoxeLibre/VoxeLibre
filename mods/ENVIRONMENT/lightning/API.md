@@ -11,8 +11,8 @@ Custom function called when a lightning strikes.
 ## lightning.strike(pos)
 Let a lightning strike.
 
-* pos: optional, if not given a random pos will be chosen
-* returns: bool - success if a strike happened
+* `pos`: optional, if not given a random pos will be chosen
+* `returns`: bool - success if a strike happened
 
 
 ### Examples:
