@@ -24,13 +24,14 @@ local get_objects_inside_radius = minetest.get_objects_inside_radius
 local get_item_group = minetest.get_item_group
 
 lightning = {
-    interval_low = 17,
-    interval_high = 503,
-    range_h = 100,
-    range_v = 50,
-    size = 100,
-    -- disable this to stop lightning mod from striking
-    auto = true,
+	interval_low = 17,
+	interval_high = 503,
+	range_h = 100,
+	range_v = 50,
+	size = 100,
+	-- disable this to stop lightning mod from striking
+	auto = true,
+	on_strike_functions = {},
 }
 
 local rng = PcgRandom(32321123312123)
@@ -53,6 +54,18 @@ local function revertsky(dtime)
 end
 
 minetest.register_globalstep(revertsky)
+
+-- lightning strike API
+
+-- See README.md
+--[[
+	lightning.register_on_strike(function(pos, pos2, objects)
+		-- code
+	end)
+]]
+function lightning.register_on_strike(func)
+	table.insert(lightning.on_strike_functions, func)
+end
 
 -- select a random strike point, midpoint
 local function choose_pos(pos)
@@ -79,14 +92,14 @@ local function choose_pos(pos)
 		pos.z = math.floor(pos.z - (lightning.range_h / 2) + rng:next(1, lightning.range_h))
 	end
 
-	local b, pos2 = line_of_sight(pos, {x = pos.x, y = pos.y - lightning.range_v, z = pos.z}, 1)
+	local b, pos2 = line_of_sight(pos, { x = pos.x, y = pos.y - lightning.range_v, z = pos.z }, 1)
 
 	-- nothing but air found
 	if b then
 		return nil, nil
 	end
 
-	local n = get_node({x = pos2.x, y = pos2.y - 1/2, z = pos2.z})
+	local n = get_node({ x = pos2.x, y = pos2.y - 1/2, z = pos2.z })
 	if n.name == "air" or n.name == "ignore" then
 		return nil, nil
 	end
@@ -94,7 +107,6 @@ local function choose_pos(pos)
 	return pos, pos2
 end
 
--- lightning strike API
 -- * pos: optional, if not given a random pos will be chosen
 -- * returns: bool - success if a strike happened
 function lightning.strike(pos)
@@ -108,21 +120,30 @@ function lightning.strike(pos)
 	if not pos then
 		return false
 	end
+	local objects = get_objects_inside_radius(pos2, 3.5)
+	if lightning.on_strike_functions then
+		for _, func in pairs(lightning.on_strike_functions) do
+			func(pos, pos2, objects)
+		end
+	end
+end
 
+
+
+lightning.register_on_strike(function(pos, pos2, objects)
+	local particle_pos = vector.offset(pos2, 0, (lightning.size / 2) + 0.5, 0)
+	local particle_size = lightning.size * 10
+	local time = 0.2
 	add_particlespawner({
 		amount = 1,
-		time = 0.2,
+		time = time,
 		-- make it hit the top of a block exactly with the bottom
-		minpos = {x = pos2.x, y = pos2.y + (lightning.size / 2) + 1/2, z = pos2.z },
-		maxpos = {x = pos2.x, y = pos2.y + (lightning.size / 2) + 1/2, z = pos2.z },
-		minvel = {x = 0, y = 0, z = 0},
-		maxvel = {x = 0, y = 0, z = 0},
-		minacc = {x = 0, y = 0, z = 0},
-		maxacc = {x = 0, y = 0, z = 0},
-		minexptime = 0.2,
-		maxexptime = 0.2,
-		minsize = lightning.size * 10,
-		maxsize = lightning.size * 10,
+		minpos = particle_pos,
+		maxpos = particle_pos,
+		minexptime = time,
+		maxexptime = time,
+		minsize = particle_size,
+		maxsize = particle_size,
 		collisiondetection = true,
 		vertical = true,
 		-- to make it appear hitting the node that will get set on fire, make sure
@@ -135,10 +156,7 @@ function lightning.strike(pos)
 	sound_play({ name = "lightning_thunder", gain = 10 }, { pos = pos, max_hear_distance = 500 }, true)
 
 	-- damage nearby objects, transform mobs
-    -- TODO: use an API insteed of hardcoding this behaviour
-	local objs = get_objects_inside_radius(pos2, 3.5)
-	for o=1, #objs do
-		local obj = objs[o]
+	for _, obj in pairs(objects) do
 		local lua = obj:get_luaentity()
 		-- pig → zombie pigman (no damage)
 		if lua and lua.name == "mobs_mc:pig" then
@@ -155,7 +173,7 @@ function lightning.strike(pos)
 			end
 			obj:set_properties({textures = lua.base_texture})
 		-- villager → witch (no damage)
-		--elseif lua and lua.name == "mobs_mc:villager" then
+		-- elseif lua and lua.name == "mobs_mc:villager" then
 		-- Witches are incomplete, this code is unused
 		-- TODO: Enable this code when witches are working.
 		--[[
@@ -172,7 +190,7 @@ function lightning.strike(pos)
 			obj:set_yaw(rot)
 			-- Other objects: Just damage
 		else
-			mcl_util.deal_damage(obj, 5, {type = "lightning_bolt"})
+			mcl_util.deal_damage(obj, 5, { type = "lightning_bolt" })
 		end
 	end
 
@@ -223,8 +241,7 @@ function lightning.strike(pos)
 			end
 		end
 	end
-
-end
+end)
 
 -- if other mods disable auto lightning during initialization, don't trigger the first lightning.
 after(5, function(dtime)
