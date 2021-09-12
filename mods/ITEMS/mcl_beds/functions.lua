@@ -215,11 +215,11 @@ local function update_formspecs(finished, ges)
 		else
 			local comment = "You will fall asleep when "
 			if players_in_bed_setting == 100 then
-				comment = comment .. "all players are in bed."
+				comment = S(comment .. "all players are in bed.")
 			else
-				comment = comment .. players_in_bed_setting .. "% of all players are in bed."
+				comment = S(comment .. "@1% of all players are in bed.", players_in_bed_setting)
 			end
-			text = text .. "\n" .. S(comment)
+			text = text .. "\n" .. comment
 			form_n = form_n .. bg_presleep
 			form_n = form_n .. button_leave
 		end
