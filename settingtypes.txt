@@ -33,6 +33,11 @@ mcl_tnt_griefing (TNT destroys blocks) bool true
 # This setting is only read at startup.
 enable_bed_respawn (Respawn at bed) bool true
 
+# How many players have to sleep to skip the night, in percent.
+# Setting to 0 will mean 1 player is always enough to skip the night. Setting above 100 will prevent skipping the night.
+# 100 by default.
+mcl_playersSleepingPercentage (Players Sleeping Percentage) int 100
+
 # If enabled, the night can be skipped if all players are in bed.
 # This setting is only read at startup.
 enable_bed_night_skip (Skip night when sleeping) bool true
