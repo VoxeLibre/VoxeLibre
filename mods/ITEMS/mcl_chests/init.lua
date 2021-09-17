@@ -1,6 +1,13 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 local F = minetest.formspec_escape
 local C = minetest.colorize
+
+local string = string
+local table = table
+local math = math
+
+local sf = string.format
+
 local mod_doc = minetest.get_modpath("doc")
 
 -- Christmas chest setup
@@ -52,7 +59,7 @@ local entity_animations = {
 		speed = 25,
 		open = {x = 0, y = 7},
 		close = {x = 13, y = 20},
-	}
+	},
 }
 
 minetest.register_entity("mcl_chests:chest", {
@@ -240,7 +247,7 @@ local function chest_update_after_close(pos)
 	local node = minetest.get_node(pos)
 
 	if node.name == "mcl_chests:trapped_chest_on_small" then
-		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_small", param2 = node.param2})
+		minetest.swap_node(pos, {name = "mcl_chests:trapped_chest_small", param2 = node.param2})
 		find_or_create_entity(pos, "mcl_chests:trapped_chest_small", {"mcl_chests_trapped.png"}, node.param2, false, "default_chest", "mcl_chests_chest", "chest"):reinitialize("mcl_chests:trapped_chest_small")
 		mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
 	elseif node.name == "mcl_chests:trapped_chest_on_left" then
@@ -249,10 +256,10 @@ local function chest_update_after_close(pos)
 		mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
 
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
-		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_right", param2 = node.param2})
+		minetest.swap_node(pos_other, {name = "mcl_chests:trapped_chest_right", param2 = node.param2})
 		mesecon.receptor_off(pos_other, trapped_chest_mesecons_rules)
 	elseif node.name == "mcl_chests:trapped_chest_on_right" then
-		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_right", param2 = node.param2})
+		minetest.swap_node(pos, {name = "mcl_chests:trapped_chest_right", param2 = node.param2})
 		mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
 
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
@@ -492,18 +499,29 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 			end
 
 			minetest.show_formspec(clicker:get_player_name(),
-			"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
-			"size[9,8.75]"..
-			"label[0,0;"..F(minetest.colorize("#313131", name)).."]"..
-			"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
-			mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
-			"label[0,4.0;"..F(minetest.colorize("#313131", S("Inventory"))).."]"..
-			"list[current_player;main;0,4.5;9,3;9]"..
-			mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
-			"list[current_player;main;0,7.74;9,1;]"..
-			mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-			"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]"..
-			"listring[current_player;main]")
+				sf("mcl_chests:%s_%s_%s_%s", canonical_basename, pos.x, pos.y, pos.z),
+				table.concat({
+					"formspec_version[4]",
+					"size[11.75,10.375]",
+					"style_type[label;font_size=25]",
+
+					"label[0.375,0.375;"..F(C(mcl_formspec.label_color, name)).."]",
+
+					mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
+					sf("list[nodemeta:%s,%s,%s;main;0.375,0.75;9,3;]", pos.x, pos.y, pos.z),
+
+					"label[0.375,4.7;"..F(C(mcl_formspec.label_color, S("Inventory"))).."]",
+
+					mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
+					"list[current_player;main;0.375,5.1;9,3;9]",
+
+					mcl_formspec.get_itemslot_bg_v4(0.375, 9, 9, 1),
+					"list[current_player;main;0.375,9;9,1;]",
+
+					sf("listring[nodemeta:%s,%s,%s;main]", pos.x, pos.y, pos.z),
+					"listring[current_player;main]",
+				})
+			)
 
 			if on_rightclick_addendum then
 				on_rightclick_addendum(pos, node, clicker)
@@ -856,10 +874,12 @@ register_chest("trapped_chest",
 	S("27 inventory slots") .. "\n" .. S("Can be combined to a large chest") .. "\n" .. S("Emits a redstone signal when opened"),
 	traptiles,
 	nil,
-	{receptor = {
-		state = mesecon.state.off,
-		rules = trapped_chest_mesecons_rules,
-	}},
+	{
+		receptor = {
+			state = mesecon.state.off,
+			rules = trapped_chest_mesecons_rules,
+		},
+	},
 	function(pos, node, clicker)
 		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_on_small", param2 = node.param2})
 		find_or_create_entity(pos, "mcl_chests:trapped_chest_on_small", {"mcl_chests_trapped.png"}, node.param2, false, "default_chest", "mcl_chests_chest", "chest"):reinitialize("mcl_chests:trapped_chest_on_small")
@@ -891,10 +911,12 @@ register_chest("trapped_chest",
 
 register_chest("trapped_chest_on",
 	nil, nil, nil, nil, traptiles, true,
-	{receptor = {
-		state = mesecon.state.on,
-		rules = trapped_chest_mesecons_rules,
-	}},
+	{
+		receptor = {
+			state = mesecon.state.on,
+			rules = trapped_chest_mesecons_rules,
+		},
+	},
 	nil, nil, nil,
 	"trapped_chest",
 	"trapped_chest"
@@ -951,19 +973,19 @@ minetest.register_craft({
 		{"group:wood", "group:wood", "group:wood"},
 		{"group:wood", "", "group:wood"},
 		{"group:wood", "group:wood", "group:wood"},
-	}
+	},
 })
 
 minetest.register_craft({
 	type = "fuel",
 	recipe = "mcl_chests:chest",
-	burntime = 15
+	burntime = 15,
 })
 
 minetest.register_craft({
 	type = "fuel",
 	recipe = "mcl_chests:trapped_chest",
-	burntime = 15
+	burntime = 15,
 })
 
 minetest.register_node("mcl_chests:ender_chest", {
@@ -989,7 +1011,7 @@ minetest.register_node("mcl_chests:ender_chest", {
 
 local formspec_ender_chest = table.concat({
 	"formspec_version[4]",
-	"size[12,10.375]",
+	"size[11.75,10.375]",
 	"style_type[label;font_size=25]",
 
 	"label[0.375,0.375;"..F(C(mcl_formspec.label_color, S("Ender Chest"))).."]",
@@ -1082,7 +1104,7 @@ minetest.register_craft({
 		{"mcl_core:obsidian", "mcl_core:obsidian", "mcl_core:obsidian"},
 		{"mcl_core:obsidian", "mcl_end:ender_eye", "mcl_core:obsidian"},
 		{"mcl_core:obsidian", "mcl_core:obsidian", "mcl_core:obsidian"},
-	}
+	},
 })
 
 -- Shulker boxes
@@ -1125,21 +1147,33 @@ local shulker_mob_textures = {
 }
 local canonical_shulker_color = "violet"
 
+--WARNING: after formspec v4 update, old shulker boxes will need to be placed again to get the new formspec
 local function formspec_shulker_box(name)
-	if name == "" then
+	if not name or name == "" then
 		name = S("Shulker Box")
 	end
-	return "size[9,8.75]"..
-	"label[0,0;"..F(minetest.colorize("#313131", name)).."]"..
-	"list[context;main;0,0.5;9,3;]"..
-	mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
-	"label[0,4.0;"..F(minetest.colorize("#313131", S("Inventory"))).."]"..
-	"list[current_player;main;0,4.5;9,3;9]"..
-	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
-	"list[current_player;main;0,7.74;9,1;]"..
-	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-	"listring[context;main]"..
-	"listring[current_player;main]"
+
+	return table.concat({
+		"formspec_version[4]",
+		"size[11.75,10.375]",
+		"style_type[label;font_size=25]",
+
+		"label[0.375,0.375;"..F(C(mcl_formspec.label_color, name)).."]",
+
+		mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
+		"list[context;main;0.375,0.75;9,3;]",
+
+		"label[0.375,4.7;"..F(C(mcl_formspec.label_color, S("Inventory"))).."]",
+
+		mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
+		"list[current_player;main;0.375,5.1;9,3;9]",
+
+		mcl_formspec.get_itemslot_bg_v4(0.375, 9, 9, 1),
+		"list[current_player;main;0.375,9;9,1;]",
+
+		"listring[context;main]",
+		"listring[current_player;main]",
+	})
 end
 
 local function set_shulkerbox_meta(nmeta, imeta)
@@ -1248,9 +1282,9 @@ for color, desc in pairs(boxtypes) do
 		drop = "",
 		paramtype = "light",
 		paramtype2 = "facedir",
---		TODO: Make shulker boxes rotatable
---		This doesn't work, it just destroys the inventory:
---		on_place = minetest.rotate_node,
+		--	TODO: Make shulker boxes rotatable
+		--	This doesn't work, it just destroys the inventory:
+		--	on_place = minetest.rotate_node,
 		on_construct = function(pos)
 			local meta = minetest.get_meta(pos)
 			meta:set_string("formspec", formspec_shulker_box(nil))
@@ -1336,7 +1370,7 @@ for color, desc in pairs(boxtypes) do
 	minetest.register_craft({
 		type = "shapeless",
 		output = "mcl_chests:"..color.."_shulker_box",
-		recipe = { "group:shulker_box", "mcl_dye:"..color }
+		recipe = {"group:shulker_box", "mcl_dye:"..color},
 	})
 end
 
@@ -1346,7 +1380,7 @@ minetest.register_craft({
 		{"mcl_mobitems:shulker_shell"},
 		{"mcl_chests:chest"},
 		{"mcl_mobitems:shulker_shell"},
-	}
+	},
 })
 
 -- Save metadata of shulker box when used in crafting
@@ -1420,13 +1454,13 @@ minetest.register_lbm({
 })
 
 minetest.register_lbm({
-	label = "Update shulker box formspecs (0.60.0)",
-	name = "mcl_chests:update_shulker_box_formspecs_0_60_0",
+	label = "Update shulker box formspecs (0.72.0)",
+	name = "mcl_chests:update_shulker_box_formspecs_0_72_0",
 	nodenames = { "group:shulker_box" },
 	run_at_every_load = false,
 	action = function(pos, node)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", formspec_shulker_box)
+		meta:set_string("formspec", formspec_shulker_box(meta:get_string("name")))
 	end,
 })
 
