@@ -1,4 +1,6 @@
 local S = minetest.get_translator(minetest.get_current_modname())
+local F = minetest.formspec_escape
+local C = minetest.colorize
 local mod_doc = minetest.get_modpath("doc")
 
 -- Christmas chest setup
@@ -492,10 +494,10 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 			minetest.show_formspec(clicker:get_player_name(),
 			"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 			"size[9,8.75]"..
-			"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", name)).."]"..
+			"label[0,0;"..F(minetest.colorize("#313131", name)).."]"..
 			"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
 			mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
-			"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
+			"label[0,4.0;"..F(minetest.colorize("#313131", S("Inventory"))).."]"..
 			"list[current_player;main;0,4.5;9,3;9]"..
 			mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 			"list[current_player;main;0,7.74;9,1;]"..
@@ -643,12 +645,12 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 			minetest.show_formspec(clicker:get_player_name(),
 			"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 			"size[9,11.5]"..
-			"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", name)).."]"..
+			"label[0,0;"..F(minetest.colorize("#313131", name)).."]"..
 			"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
 			mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
 			"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,3.5;9,3;]"..
 			mcl_formspec.get_itemslot_bg(0,3.5,9,3)..
-			"label[0,7;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
+			"label[0,7;"..F(minetest.colorize("#313131", S("Inventory"))).."]"..
 			"list[current_player;main;0,7.5;9,3;9]"..
 			mcl_formspec.get_itemslot_bg(0,7.5,9,3)..
 			"list[current_player;main;0,10.75;9,1;]"..
@@ -791,12 +793,12 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 			"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 
 			"size[9,11.5]"..
-			"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", name)).."]"..
+			"label[0,0;"..F(minetest.colorize("#313131", name)).."]"..
 			"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,0.5;9,3;]"..
 			mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
 			"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3.5;9,3;]"..
 			mcl_formspec.get_itemslot_bg(0,3.5,9,3)..
-			"label[0,7;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
+			"label[0,7;"..F(minetest.colorize("#313131", S("Inventory"))).."]"..
 			"list[current_player;main;0,7.5;9,3;9]"..
 			mcl_formspec.get_itemslot_bg(0,7.5,9,3)..
 			"list[current_player;main;0,10.75;9,1;]"..
@@ -985,17 +987,27 @@ minetest.register_node("mcl_chests:ender_chest", {
 	end,
 })
 
-local formspec_ender_chest = "size[9,8.75]"..
-	"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Ender Chest"))).."]"..
-	"list[current_player;enderchest;0,0.5;9,3;]"..
-	mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
-	"list[current_player;main;0,4.5;9,3;9]"..
-	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
-	"list[current_player;main;0,7.74;9,1;]"..
-	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-	"listring[current_player;enderchest]"..
-	"listring[current_player;main]"
+local formspec_ender_chest = table.concat({
+	"formspec_version[4]",
+	"size[12,10.375]",
+	"style_type[label;font_size=25]",
+
+	"label[0.375,0.375;"..F(C(mcl_formspec.label_color, S("Ender Chest"))).."]",
+
+	mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
+	"list[current_player;enderchest;0.375,0.75;9,3;]",
+
+	"label[0.375,4.7;"..F(C(mcl_formspec.label_color, S("Inventory"))).."]",
+
+	mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
+	"list[current_player;main;0.375,5.1;9,3;9]",
+
+	mcl_formspec.get_itemslot_bg_v4(0.375, 9, 9, 1),
+	"list[current_player;main;0.375,9;9,1;]",
+
+	"listring[current_player;enderchest]",
+	"listring[current_player;main]",
+})
 
 
 minetest.register_node("mcl_chests:ender_chest_small", {
@@ -1118,10 +1130,10 @@ local function formspec_shulker_box(name)
 		name = S("Shulker Box")
 	end
 	return "size[9,8.75]"..
-	"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", name)).."]"..
+	"label[0,0;"..F(minetest.colorize("#313131", name)).."]"..
 	"list[context;main;0,0.5;9,3;]"..
 	mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
+	"label[0,4.0;"..F(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
