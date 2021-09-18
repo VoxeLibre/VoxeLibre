@@ -502,8 +502,8 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 				sf("mcl_chests:%s_%s_%s_%s", canonical_basename, pos.x, pos.y, pos.z),
 				table.concat({
 					"formspec_version[4]",
-					"size[11.75,10.375]",
-					"style_type[label;font_size=25]",
+					"size[11.75,10.425]",
+					mcl_formspec.apply_label_size,
 
 					"label[0.375,0.375;"..F(C(mcl_formspec.label_color, name)).."]",
 
@@ -515,8 +515,8 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 					mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
 					"list[current_player;main;0.375,5.1;9,3;9]",
 
-					mcl_formspec.get_itemslot_bg_v4(0.375, 9, 9, 1),
-					"list[current_player;main;0.375,9;9,1;]",
+					mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
+					"list[current_player;main;0.375,9.05;9,1;]",
 
 					sf("listring[nodemeta:%s,%s,%s;main]", pos.x, pos.y, pos.z),
 					"listring[current_player;main]",
@@ -661,26 +661,38 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 			end
 
 			minetest.show_formspec(clicker:get_player_name(),
-			"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
-			"size[9,11.5]"..
-			"label[0,0;"..F(minetest.colorize("#313131", name)).."]"..
-			"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
-			mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
-			"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,3.5;9,3;]"..
-			mcl_formspec.get_itemslot_bg(0,3.5,9,3)..
-			"label[0,7;"..F(minetest.colorize("#313131", S("Inventory"))).."]"..
-			"list[current_player;main;0,7.5;9,3;9]"..
-			mcl_formspec.get_itemslot_bg(0,7.5,9,3)..
-			"list[current_player;main;0,10.75;9,1;]"..
-			mcl_formspec.get_itemslot_bg(0,10.75,9,1)..
-			-- BEGIN OF LISTRING WORKAROUND
-			"listring[current_player;main]"..
-			"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";input]"..
-			-- END OF LISTRING WORKAROUND
-			"listring[current_player;main]"..
-			"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]"..
-			"listring[current_player;main]"..
-			"listring[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main]")
+				sf("mcl_chests:%s_%s_%s_%s", canonical_basename, pos.x, pos.y, pos.z),
+				table.concat({
+					"formspec_version[4]",
+					"size[11.75,14.15]",
+					mcl_formspec.apply_label_size,
+
+					"label[0.375,0.375;"..F(C(mcl_formspec.label_color, name)).."]",
+
+					mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
+					sf("list[nodemeta:%s,%s,%s;main;0.375,0.75;9,3;]", pos.x, pos.y, pos.z),
+
+					mcl_formspec.get_itemslot_bg_v4(0.375, 4.5, 9, 3),
+					sf("list[nodemeta:%s,%s,%s;main;0.375,4.5;9,3;]", pos_other.x, pos_other.y, pos_other.z),
+
+					"label[0.375,8.45;"..F(C(mcl_formspec.label_color, S("Inventory"))).."]",
+
+					mcl_formspec.get_itemslot_bg_v4(0.375, 8.825, 9, 3),
+					"list[current_player;main;0.375,8.825;9,3;9]",
+
+					mcl_formspec.get_itemslot_bg_v4(0.375, 12.775, 9, 1),
+					"list[current_player;main;0.375,12.775;9,1;]",
+
+					--BEGIN OF LISTRING WORKAROUND
+					"listring[current_player;main]",
+					sf("listring[nodemeta:%s,%s,%s;input]", pos.x, pos.y, pos.z),
+					--END OF LISTRING WORKAROUND
+					"listring[current_player;main]"..
+					sf("listring[nodemeta:%s,%s,%s;main]", pos.x, pos.y, pos.z),
+					"listring[current_player;main]",
+					sf("listring[nodemeta:%s,%s,%s;main]", pos_other.x, pos_other.y, pos_other.z),
+				})
+			)
 
 			if on_rightclick_addendum_left then
 				on_rightclick_addendum_left(pos, node, clicker)
@@ -808,27 +820,38 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 			end
 
 			minetest.show_formspec(clicker:get_player_name(),
-			"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
+				sf("mcl_chests:%s_%s_%s_%s", canonical_basename, pos.x, pos.y, pos.z),
+				table.concat({
+					"formspec_version[4]",
+					"size[11.75,14.15]",
+					mcl_formspec.apply_label_size,
 
-			"size[9,11.5]"..
-			"label[0,0;"..F(minetest.colorize("#313131", name)).."]"..
-			"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,0.5;9,3;]"..
-			mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
-			"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3.5;9,3;]"..
-			mcl_formspec.get_itemslot_bg(0,3.5,9,3)..
-			"label[0,7;"..F(minetest.colorize("#313131", S("Inventory"))).."]"..
-			"list[current_player;main;0,7.5;9,3;9]"..
-			mcl_formspec.get_itemslot_bg(0,7.5,9,3)..
-			"list[current_player;main;0,10.75;9,1;]"..
-			mcl_formspec.get_itemslot_bg(0,10.75,9,1)..
-			-- BEGIN OF LISTRING WORKAROUND
-			"listring[current_player;main]"..
-			"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";input]"..
-			-- END OF LISTRING WORKAROUND
-			"listring[current_player;main]"..
-			"listring[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main]"..
-			"listring[current_player;main]"..
-			"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]")
+					"label[0.375,0.375;"..F(C(mcl_formspec.label_color, name)).."]",
+
+					mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
+					sf("list[nodemeta:%s,%s,%s;main;0.375,0.75;9,3;]", pos_other.x, pos_other.y, pos_other.z),
+
+					mcl_formspec.get_itemslot_bg_v4(0.375, 4.5, 9, 3),
+					sf("list[nodemeta:%s,%s,%s;main;0.375,4.5;9,3;]", pos.x, pos.y, pos.z),
+
+					"label[0.375,8.45;"..F(C(mcl_formspec.label_color, S("Inventory"))).."]",
+
+					mcl_formspec.get_itemslot_bg_v4(0.375, 8.825, 9, 3),
+					"list[current_player;main;0.375,8.825;9,3;9]",
+
+					mcl_formspec.get_itemslot_bg_v4(0.375, 12.775, 9, 1),
+					"list[current_player;main;0.375,12.775;9,1;]",
+
+					--BEGIN OF LISTRING WORKAROUND
+					"listring[current_player;main]",
+					sf("listring[nodemeta:%s,%s,%s;input]", pos.x, pos.y, pos.z),
+					--END OF LISTRING WORKAROUND
+					"listring[current_player;main]"..
+					sf("listring[nodemeta:%s,%s,%s;main]", pos_other.x, pos_other.y, pos_other.z),
+					"listring[current_player;main]",
+					sf("listring[nodemeta:%s,%s,%s;main]", pos.x, pos.y, pos.z),
+				})
+			)
 
 			if on_rightclick_addendum_right then
 				on_rightclick_addendum_right(pos, node, clicker)
@@ -1011,8 +1034,8 @@ minetest.register_node("mcl_chests:ender_chest", {
 
 local formspec_ender_chest = table.concat({
 	"formspec_version[4]",
-	"size[11.75,10.375]",
-	"style_type[label;font_size=25]",
+	"size[11.75,10.425]",
+	mcl_formspec.apply_label_size,
 
 	"label[0.375,0.375;"..F(C(mcl_formspec.label_color, S("Ender Chest"))).."]",
 
@@ -1024,8 +1047,8 @@ local formspec_ender_chest = table.concat({
 	mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
 	"list[current_player;main;0.375,5.1;9,3;9]",
 
-	mcl_formspec.get_itemslot_bg_v4(0.375, 9, 9, 1),
-	"list[current_player;main;0.375,9;9,1;]",
+	mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
+	"list[current_player;main;0.375,9.05;9,1;]",
 
 	"listring[current_player;enderchest]",
 	"listring[current_player;main]",
@@ -1155,8 +1178,8 @@ local function formspec_shulker_box(name)
 
 	return table.concat({
 		"formspec_version[4]",
-		"size[11.75,10.375]",
-		"style_type[label;font_size=25]",
+		"size[11.75,10.425]",
+		mcl_formspec.apply_label_size,
 
 		"label[0.375,0.375;"..F(C(mcl_formspec.label_color, name)).."]",
 
@@ -1168,8 +1191,8 @@ local function formspec_shulker_box(name)
 		mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
 		"list[current_player;main;0.375,5.1;9,3;9]",
 
-		mcl_formspec.get_itemslot_bg_v4(0.375, 9, 9, 1),
-		"list[current_player;main;0.375,9;9,1;]",
+		mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
+		"list[current_player;main;0.375,9.05;9,1;]",
 
 		"listring[context;main]",
 		"listring[current_player;main]",

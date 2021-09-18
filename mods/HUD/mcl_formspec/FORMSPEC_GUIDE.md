@@ -14,7 +14,7 @@ Just use this code to apply it to your formspec:
 The typical width of an inventory formspec is `0.375 + 9 + ((9-1) * 0.25) + 0.375 = 11.75`
 
 Margins is 0.375
-Space between 1st inventory line and the rest of inventory is 0.4
+Space between 1st inventory line and the rest of inventory is 0.45
 
 Labels should have 0.375 space above if there is no other stuff above and 0.45 between content
 + 0.375 under
