@@ -168,6 +168,60 @@ local dispenserdef = {
 						end
 
 						inv:set_stack("main", stack_id, stack)
+
+					-- Use shears on sheeps
+					elseif igroups.shears then
+						for _, obj in pairs(minetest.get_objects_inside_radius(droppos, 1)) do
+							local entity = obj:get_luaentity()
+							if entity and not entity.child and not entity.gotten then
+								local entname = entity.name
+								local pos = obj:get_pos()
+								local used, texture = false
+								if entname == "mobs_mc:sheep" then
+									minetest.add_item(pos, entity.drops[2].name .. " " .. math.random(1, 3))
+									if not entity.color then
+										entity.color = "unicolor_white"
+									end
+									entity.base_texture = { "blank.png", "mobs_mc_sheep.png" }
+									texture = entity.base_texture
+									entity.drops = {
+										{ name = mobs_mc.items.mutton_raw, chance = 1, min = 1, max = 2 },
+									}
+									used = true
+								elseif entname == "mobs_mc:snowman" then
+									texture = {
+										"mobs_mc_snowman.png",
+										"blank.png", "blank.png",
+										"blank.png", "blank.png",
+										"blank.png", "blank.png",
+									}
+									used = true
+								elseif entname == "mobs_mc:mooshroom" then
+									local droppos = vector.offset(pos, 0, 1.4, 0)
+									if entity.base_texture[1] == "mobs_mc_mooshroom_brown.png" then
+										minetest.add_item(droppos, mobs_mc.items.mushroom_brown .. " 5")
+									else
+										minetest.add_item(droppos, mobs_mc.items.mushroom_red .. " 5")
+									end
+									local oldyaw = obj:get_yaw()
+									obj:remove()
+									local cow = minetest.add_entity(pos, "mobs_mc:cow")
+									cow:set_yaw(oldyaw)
+									obj = cow
+									entity = cow:get_luaentity()
+									used = true
+								end
+								if used then
+									obj:set_properties({ textures = texture })
+									entity.gotten = true
+									minetest.sound_play("mcl_tools_shears_cut", { pos = pos }, true)
+									stack:add_wear(65535 / stackdef._mcl_diggroups.shearsy.uses)
+									inv:set_stack("main", stack_id, stack)
+									break
+								end
+							end
+						end
+
 					-- Spawn Egg
 					elseif igroups.spawn_egg then
 						-- Spawn mob

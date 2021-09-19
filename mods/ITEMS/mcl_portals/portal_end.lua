@@ -391,7 +391,3 @@ minetest.override_item("mcl_end:ender_eye", {
 		return itemstack
 	end,
 })
-minetest.override_item("mcl_core:bedrock", {
-	after_destruct = destroy_portal,
-})
-
