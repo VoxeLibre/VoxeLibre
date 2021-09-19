@@ -6,7 +6,7 @@ minetest.register_privilege("maphack", {
 
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
-	local fly = false
+	local fly = nil
 	if minetest.is_creative_enabled(name) then
 		fly = true
 	end
