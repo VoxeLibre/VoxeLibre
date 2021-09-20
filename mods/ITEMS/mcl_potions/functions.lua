@@ -35,13 +35,13 @@ local function potions_init_icons(player)
 	local name = player:get_player_name()
 	icon_ids[name] = {}
 	for e=1, EFFECT_TYPES do
-		local x = -7 + -38 * e
+		local x = -52 * e - 2
 		local id = player:hud_add({
 			hud_elem_type = "image",
 			text = "blank.png",
 			position = { x = 1, y = 0 },
-			offset = { x = x, y = 272 },
-			scale = { x = 2, y = 2 },
+			offset = { x = x, y = 3 },
+			scale = { x = 3, y = 3 },
 			alignment = { x = 1, y = 1 },
 			z_index = 100,
 		})

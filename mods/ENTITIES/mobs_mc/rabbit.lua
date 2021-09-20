@@ -233,4 +233,4 @@ mobs:spawn(spawn_grass)
 mobs:register_egg("mobs_mc:rabbit", S("Rabbit"), "mobs_mc_spawn_icon_rabbit.png", 0)
 
 -- Note: This spawn egg does not exist in Minecraft
-mobs:register_egg("mobs_mc:killer_bunny", S("Killer Bunny"), "mobs_mc_spawn_icon_rabbit.png^[colorize:#FF0000:192", 0) -- TODO: Update inventory image
+mobs:register_egg("mobs_mc:killer_bunny", S("Killer Bunny"), "mobs_mc_spawn_icon_rabbit_caerbannog.png", 0) 

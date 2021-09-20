@@ -7,6 +7,7 @@ local get_item_group = minetest.get_item_group
 
 mcl_burning = {
 	storage = {},
+	channels = {},
 	animation_frames = tonumber(minetest.settings:get("fire_animation_frames")) or 8
 }
 
@@ -54,12 +55,11 @@ minetest.register_on_joinplayer(function(player)
 	end
 
 	mcl_burning.storage[player] = storage
+	mcl_burning.channels[player] = minetest.mod_channel_join("mcl_burning:" .. player:get_player_name())
 end)
 
 minetest.register_on_leaveplayer(function(player)
-	local storage = mcl_burning.storage[player]
-	storage.fire_hud_id = nil
-	player:get_meta():set_string("mcl_burning:data", minetest.serialize(storage))
+	player:get_meta():set_string("mcl_burning:data", minetest.serialize(mcl_burning.storage[player]))
 	mcl_burning.storage[player] = nil
 end)
 
@@ -68,27 +68,28 @@ minetest.register_entity("mcl_burning:fire", {
 	initial_properties = {
 		physical = false,
 		collisionbox = {0, 0, 0, 0, 0, 0},
-		visual = "cube",
+		visual = "upright_sprite",
+		textures = {
+			name = "mcl_burning_entity_flame_animated.png",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 1.0,
+			},
+		},
+		spritediv = {x = 1, y = mcl_burning.animation_frames},
 		pointable = false,
 		glow = -1,
 		backface_culling = false,
 	},
 	animation_frame = 0,
 	animation_timer = 0,
-	on_step = function(self, dtime)
-		local parent, storage = self:sanity_check()
-
-		if parent then
-			self.animation_timer = self.animation_timer + dtime
-			if self.animation_timer >= 0.1 then
-				self.animation_timer = 0
-				self.animation_frame = self.animation_frame + 1
-				if self.animation_frame > mcl_burning.animation_frames - 1 then
-					self.animation_frame = 0
-				end
-				self:update_frame(parent, storage)
-			end
-		else
+	on_activate = function(self)
+		self.object:set_sprite({x = 0, y = 0}, mcl_burning.animation_frames, 1.0 / mcl_burning.animation_frames)
+	end,
+	on_step = function(self)
+		if not self:sanity_check() then
 			self.object:remove()
 		end
 	end,
@@ -96,23 +97,15 @@ minetest.register_entity("mcl_burning:fire", {
 		local parent = self.object:get_attach()
 
 		if not parent then
-			return
+			return false
 		end
 
 		local storage = mcl_burning.get_storage(parent)
 
 		if not storage or not storage.burn_time then
-			return
+			return false
 		end
 
-		return parent, storage
-	end,
-	update_frame = function(self, parent, storage)
-		local frame_overlay = "^[opacity:180^[verticalframe:" .. mcl_burning.animation_frames .. ":" .. self.animation_frame
-		local fire_texture = "mcl_burning_entity_flame_animated.png" .. frame_overlay
-		self.object:set_properties({textures = {"blank.png", "blank.png", fire_texture, fire_texture, fire_texture, fire_texture}})
-		if parent:is_player() then
-			parent:hud_change(storage.fire_hud_id, "text", "mcl_burning_hud_flame_animated.png" .. frame_overlay)
-		end
+		return true
 	end,
 })

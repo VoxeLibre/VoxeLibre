@@ -152,26 +152,18 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 				-- If false, force item to not spawn any food partiles when eaten
 				if def._food_particles ~= false and texture and texture ~= "" then
 					local v = user:get_velocity() or user:get_player_velocity()
-					local minvel = vector.add(v, {x=-1, y=1, z=-1})
-					local maxvel = vector.add(v, {x=1, y=2, z=1})
-
-					minetest.add_particlespawner({
-						amount = math.min(math.max(8, hunger_change*2), 25),
-						time = 0.1,
-						minpos = {x=pos.x, y=pos.y, z=pos.z},
-						maxpos = {x=pos.x, y=pos.y, z=pos.z},
-						minvel = minvel,
-						maxvel = maxvel,
-						minacc = {x=0, y=-5, z=0},
-						maxacc = {x=0, y=-9, z=0},
-						minexptime = 1,
-						maxexptime = 1,
-						minsize = 1,
-						maxsize = 2,
-						collisiondetection = true,
-						vertical = false,
-						texture = texture,
-					})
+					for i = 0, math.min(math.max(8, hunger_change*2), 25) do
+						minetest.add_particle({
+							pos = { x = pos.x, y = pos.y, z = pos.z },
+							velocity = vector.add(v, { x = math.random(-1, 1), y = math.random(1, 2), z = math.random(-1, 1) }),
+							acceleration = { x = 0, y = math.random(-9, -5), z = 0 },
+							expirationtime = 1,
+							size = math.random(1, 2),
+							collisiondetection = true,
+							vertical = false,
+							texture = "[combine:3x3:" .. -i .. "," .. -i .. "=" .. texture,
+						})
+					end
 				end
 				minetest.sound_play("mcl_hunger_bite", {
 					max_hear_distance = 12,
