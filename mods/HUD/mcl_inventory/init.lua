@@ -15,14 +15,14 @@ function return_item(itemstack, dropper, pos, inv)
 		else
 			-- Drop item on the ground
 			local v = dropper:get_look_dir()
-			local p = {x=pos.x, y=pos.y+1.2, z=pos.z}
-			p.x = p.x+(math.random(1,3)*0.2)
-			p.z = p.z+(math.random(1,3)*0.2)
+			local p = { x = pos.x, y = pos.y + 1.2, z = pos.z }
+			p.x = p.x + (math.random(1, 3) * 0.2)
+			p.z = p.z + (math.random(1, 3) * 0.2)
 			local obj = minetest.add_item(p, itemstack)
 			if obj then
-				v.x = v.x*4
-				v.y = v.y*4 + 2
-				v.z = v.z*4
+				v.x = v.x * 4
+				v.y = v.y * 4 + 2
+				v.z = v.z * 4
 				obj:set_velocity(v)
 				obj:get_luaentity()._insta_collect = false
 			end
@@ -39,7 +39,7 @@ function return_fields(player, name)
 	local inv = player:get_inventory()
 	local list = inv:get_list(name)
 	if not list then return end
-	for i,stack in ipairs(list) do
+	for i, stack in ipairs(list) do
 		return_item(stack, player, player:get_pos(), inv)
 		stack:clear()
 		inv:set_stack(name, i, stack)
@@ -55,11 +55,12 @@ local function set_inventory(player)
 	inv:set_width("craft", 2)
 	inv:set_size("craft", 4)
 
-	local armor_slots = {"helmet", "chestplate", "leggings", "boots"}
+	local armor_slots = { "helmet", "chestplate", "leggings", "boots" }
 	local armor_slot_imgs = ""
-	for a=1,4 do
-		if inv:get_stack("armor", a+1):is_empty() then
-			armor_slot_imgs = armor_slot_imgs .. "image[0,"..(a-1)..";1,1;mcl_inventory_empty_armor_slot_"..armor_slots[a]..".png]"
+	for a = 1, 4 do
+		if inv:get_stack("armor", a + 1):is_empty() then
+			armor_slot_imgs = armor_slot_imgs ..
+				"image[0," .. (a - 1) .. ";1,1;mcl_inventory_empty_armor_slot_" .. armor_slots[a] .. ".png]"
 		end
 	end
 
@@ -76,29 +77,29 @@ local function set_inventory(player)
 		"list[current_player;armor;0,1;1,1;2]" ..
 		"list[current_player;armor;0,2;1,1;3]" ..
 		"list[current_player;armor;0,3;1,1;4]" ..
-		mcl_formspec.get_itemslot_bg(0,0,1,1) ..
-		mcl_formspec.get_itemslot_bg(0,1,1,1) ..
-		mcl_formspec.get_itemslot_bg(0,2,1,1) ..
-		mcl_formspec.get_itemslot_bg(0,3,1,1) ..
+		mcl_formspec.get_itemslot_bg(0, 0, 1, 1) ..
+		mcl_formspec.get_itemslot_bg(0, 1, 1, 1) ..
+		mcl_formspec.get_itemslot_bg(0, 2, 1, 1) ..
+		mcl_formspec.get_itemslot_bg(0, 3, 1, 1) ..
 		"list[current_player;offhand;3,2;1,1]" ..
-		mcl_formspec.get_itemslot_bg(3,2,1,1) ..
+		mcl_formspec.get_itemslot_bg(3, 2, 1, 1) ..
 		armor_slot_imgs ..
 
 		-- Craft and inventory
-		"label[0,4;"..F(minetest.colorize("#313131", S("Inventory"))) .. "]" ..
+		"label[0,4;" .. F(minetest.colorize("#313131", S("Inventory"))) .. "]" ..
 		"list[current_player;main;0,4.5;9,3;9]" ..
 		"list[current_player;main;0,7.74;9,1;]" ..
-		"label[4,0.5;"..F(minetest.colorize("#313131", S("Crafting"))) .. "]" ..
+		"label[4,0.5;" .. F(minetest.colorize("#313131", S("Crafting"))) .. "]" ..
 		"list[current_player;craft;4,1;2,2]" ..
 		"list[current_player;craftpreview;7,1.5;1,1;]" ..
 		mcl_formspec.get_itemslot_bg(0, 4.5, 9, 3) ..
 		mcl_formspec.get_itemslot_bg(0, 7.74, 9, 1) ..
-		mcl_formspec.get_itemslot_bg(4, 1,2, 2) ..
+		mcl_formspec.get_itemslot_bg(4, 1, 2, 2) ..
 		mcl_formspec.get_itemslot_bg(7, 1.5, 1, 1) ..
 
 		-- Crafting guide button
 		"image_button[4.5,3;1,1;craftguide_book.png;__mcl_craftguide;]" ..
-		"tooltip[__mcl_craftguide;"..F(S("Recipe book")) .. "]" ..
+		"tooltip[__mcl_craftguide;" .. F(S("Recipe book")) .. "]" ..
 
 		-- Help button
 		"image_button[8,3;1,1;doc_button_icon_lores.png;__mcl_doc;]" ..
@@ -129,9 +130,9 @@ end
 -- Drop items in craft grid and reset inventory on closing
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.quit then
-		return_fields(player,"craft")
-		return_fields(player,"enchanting_lapis")
-		return_fields(player,"enchanting_item")
+		return_fields(player, "craft")
+		return_fields(player, "enchanting_lapis")
+		return_fields(player, "enchanting_item")
 		if not minetest.is_creative_enabled(player:get_player_name()) and (formname == "" or formname == "main") then
 			set_inventory(player)
 		end
@@ -174,7 +175,7 @@ minetest.register_on_joinplayer(function(player)
 	return_fields(player, "enchanting_lapis")
 end)
 
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/creative.lua")
+dofile(minetest.get_modpath(minetest.get_current_modname()) .. "/creative.lua")
 
 mcl_player.register_on_visual_change(mcl_inventory.update_inventory_formspec)
 
@@ -190,8 +191,26 @@ function minetest.is_creative_enabled(name)
 	return false
 end
 
-local function in_table(n,h)
-	for k,v in pairs(h) do
+--Insta "digging" nodes in gamemode-creative
+minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
+	if not puncher or not puncher:is_player() then return end
+	local name = puncher:get_player_name()
+	if not minetest.is_creative_enabled(name) then return end
+	if pointed_thing.type ~= "node" then return end
+	local def = minetest.registered_nodes[node.name]
+	if def then
+		minetest.node_dig(pos, node, puncher)
+		return true
+	end
+end)
+
+--Don't subtract from inv when placing in gamemode-creative
+minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
+	if placer and placer:is_player() and minetest.is_creative_enabled(placer:get_player_name()) then return true end
+end)
+
+local function in_table(n, h)
+	for k, v in pairs(h) do
 		if v == n then return true end
 	end
 	return false
@@ -202,24 +221,24 @@ local gamemodes = {
 	"creative"
 }
 
-function mcl_inventory.player_set_gamemode(p,g)
+function mcl_inventory.player_set_gamemode(p, g)
 	local m = p:get_meta()
-	m:set_string("gamemode",g)
+	m:set_string("gamemode", g)
 	if g == "survival" then
-		 mcl_experience.setup_hud(p)
-		 mcl_experience.update(p)
+		mcl_experience.setup_hud(p)
+		mcl_experience.update(p)
 	elseif g == "creative" then
-		 mcl_experience.remove_hud(p)
+		mcl_experience.remove_hud(p)
 	end
 	mcl_meshhand.update_player(p)
 	set_inventory(p)
 end
 
-minetest.register_chatcommand("gamemode",{
+minetest.register_chatcommand("gamemode", {
 	params = S("[<gamemode>] [<player>]"),
 	description = S("Change gamemode (survival/creative) for yourself or player"),
 	privs = { server = true },
-	func = function(n,param)
+	func = function(n, param)
 		-- Full input validation ( just for @erlehmann <3 )
 		local p
 		local args = param:split(" ")
@@ -232,15 +251,15 @@ minetest.register_chatcommand("gamemode",{
 		if not p then
 			return false, S("Player not online")
 		end
-		if args[1] ~= nil and not in_table(args[1],gamemodes) then
+		if args[1] ~= nil and not in_table(args[1], gamemodes) then
 			return false, S("Gamemode " .. args[1] .. " does not exist.")
 		elseif args[1] ~= nil then
-			mcl_inventory.player_set_gamemode(p,args[1])
+			mcl_inventory.player_set_gamemode(p, args[1])
 		end
 
 		--Result message - show effective game mode
 		local gm = p:get_meta():get_string("gamemode")
 		if gm == "" then gm = gamemodes[1] end
-		return true, S("Gamemode for player ")..n..S(": "..gm)
+		return true, S("Gamemode for player ") .. n .. S(": " .. gm)
 	end
 })
