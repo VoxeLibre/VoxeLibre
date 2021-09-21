@@ -9,36 +9,36 @@ local weather_mod = minetest.get_modpath("mcl_weather")
 local explosions_mod = minetest.get_modpath("mcl_explosions")
 local spawn_mod = minetest.get_modpath("mcl_spawn")
 local worlds_mod = minetest.get_modpath("mcl_worlds")
-local players_in_bed_setting = tonumber(minetest.settings:get("mcl_playersSleepingPercentage"))
 
 -- Helper functions
 
 local function get_look_yaw(pos)
 	local n = minetest.get_node(pos)
-	if n.param2 == 1 then
-		return math.pi / 2, n.param2
-	elseif n.param2 == 3 then
-		return -math.pi / 2, n.param2
-	elseif n.param2 == 0 then
-		return math.pi, n.param2
+	local param = n.param2
+	if param == 1 then
+		return math.pi / 2, param
+	elseif param == 3 then
+		return -math.pi / 2, param
+	elseif param == 0 then
+		return math.pi, param
 	else
-		return 0, n.param2
+		return 0, param
 	end
 end
 
+local function players_in_bed_setting()
+	return tonumber(minetest.settings:get("mcl_playersSleepingPercentage"))
+end
+
 local function is_night_skip_enabled()
-	local enable_night_skip = minetest.settings:get_bool("enable_bed_night_skip")
-	if enable_night_skip == nil then
-		enable_night_skip = true
-	end
-	return enable_night_skip
+	return players_in_bed_setting() <= 100
 end
 
 local function check_in_beds(players)
 	if not players then
 		players = minetest.get_connected_players()
 	end
-	return players_in_bed_setting <= (#mcl_beds.player * 100) / #players
+	return players_in_bed_setting() <= (player_in_bed * 100) / #players
 end
 
 -- These monsters do not prevent sleep
@@ -190,8 +190,8 @@ end
 local function update_formspecs(finished, ges)
 	local ges = ges or #minetest.get_connected_players()
 	local form_n = "size[12,5;true]"
-	local all_in_bed = players_in_bed_setting <= (player_in_bed * 100) / ges
-	local night_skip = is_night_skip_enabled() and players_in_bed_setting <= 100
+	local all_in_bed = players_in_bed_setting() <= (player_in_bed * 100) / ges
+	local night_skip = is_night_skip_enabled()
 	local button_leave = "button_exit[4,3;4,0.75;leave;"..F(S("Leave bed")).."]"
 	local button_abort = "button_exit[4,3;4,0.75;leave;"..F(S("Abort sleep")).."]"
 	local bg_presleep = "bgcolor[#00000080;true]"
@@ -204,7 +204,7 @@ local function update_formspecs(finished, ges)
 		return
 	elseif not is_sp then
 		local text = S("Players in bed: @1/@2", player_in_bed, ges)
-		if not night_skip or players_in_bed_setting > 100 then
+		if not night_skip then
 			text = text .. "\n" .. S("Note: Night skip is disabled.")
 			form_n = form_n .. bg_presleep
 			form_n = form_n .. button_leave
@@ -214,10 +214,10 @@ local function update_formspecs(finished, ges)
 			form_n = form_n .. button_abort
 		else
 			local comment = "You will fall asleep when "
-			if players_in_bed_setting == 100 then
+			if players_in_bed_setting() == 100 then
 				comment = S(comment .. "all players are in bed.")
 			else
-				comment = S(comment .. "@1% of all players are in bed.", players_in_bed_setting)
+				comment = S(comment .. "@1% of all players are in bed.", players_in_bed_setting())
 			end
 			text = text .. "\n" .. comment
 			form_n = form_n .. bg_presleep
@@ -346,7 +346,6 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 		end)
 	end
 end
-
 
 -- Callbacks
 minetest.register_on_joinplayer(function(player)
