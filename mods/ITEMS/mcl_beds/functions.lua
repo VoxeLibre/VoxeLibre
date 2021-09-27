@@ -38,6 +38,9 @@ local function check_in_beds(players)
 	if not players then
 		players = minetest.get_connected_players()
 	end
+	if player_in_bed < 0 then
+		return false
+	end
 	return players_in_bed_setting() <= (player_in_bed * 100) / #players
 end
 
