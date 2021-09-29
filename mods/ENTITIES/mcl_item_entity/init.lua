@@ -480,7 +480,7 @@ minetest.register_entity(":__builtin:item", {
 	end,
 
 	get_staticdata = function(self)
-		return minetest.serialize({
+		local data = minetest.serialize({
 			itemstring = self.itemstring,
 			always_collect = self.always_collect,
 			age = self.age,
@@ -488,6 +488,39 @@ minetest.register_entity(":__builtin:item", {
 			_flowing = self._flowing,
 			_removed = self._removed,
 		})
+		-- sfan5 guessed that the biggest serializable item
+		-- entity would have a size of 65530 bytes. This has
+		-- been experimentally verified to be still too large.
+		--
+		-- anon5 has calculated that the biggest serializable
+		-- item entity has a size of exactly 65487 bytes:
+		--
+		-- 1. serializeString16 can handle max. 65535 bytes.
+		-- 2. The following engine metadata is always saved:
+		--    • 1 byte (version)
+		--    • 2 byte (length prefix)
+		--    • 14 byte “__builtin:item”
+		--    • 4 byte (length prefix)
+		--    • 2 byte (health)
+		--    • 3 × 4 byte = 12 byte (position)
+		--    • 4 byte (yaw)
+		--    • 1 byte (version 2)
+		--    • 2 × 4 byte = 8 byte (pitch and roll)
+		-- 3. This leaves 65487 bytes for the serialization.
+		if #data > 65487 then -- would crash the engine
+			local stack = ItemStack(self.itemstring)
+			stack:get_meta():from_table(nil)
+			self.itemstring = stack:to_string()
+			minetest.log(
+				"warning",
+				"Overlong item entity metadata removed: “" ..
+				self.itemstring ..
+				"” had serialized length of " ..
+				#data
+			)
+			return self:get_staticdata()
+		end
+		return data
 	end,
 
 	on_activate = function(self, staticdata, dtime_s)
