@@ -6,7 +6,6 @@ minetest.register_privilege("maphack", {
 
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
-
 	local meta = player:get_meta()
 	if meta:get_int("fly_changed") == 1 then return end
 
@@ -14,12 +13,12 @@ minetest.register_on_joinplayer(function(player)
 	if minetest.is_creative_enabled(name) then
 		fly = true
 	end
-	minetest.set_player_privs(name, {
-		fly = fly,
-	})
+	local player_privs = minetest.get_player_privs(name)
+	player_privs.fly = fly
+	minetest.set_player_privs(name, player_privs)
 end)
 
-for _, action in pairs({ "grant", "revoke" }) do
+for _, action in pairs({"grant", "revoke"}) do
 	minetest["register_on_priv_" .. action](function(name, _, priv)
 		if priv == "fly" then
 			local player = minetest.get_player_by_name(name)
