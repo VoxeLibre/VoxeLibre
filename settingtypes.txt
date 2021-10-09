@@ -33,9 +33,12 @@ mcl_tnt_griefing (TNT destroys blocks) bool true
 # This setting is only read at startup.
 enable_bed_respawn (Respawn at bed) bool true
 
-# If enabled, the night can be skipped if all players are in bed.
-# This setting is only read at startup.
-enable_bed_night_skip (Skip night when sleeping) bool true
+# How many players have to sleep to skip the night, in percent.
+# Setting to 0 will mean 1 player is always enough to skip the night. Setting above 100 will prevent skipping the night.
+# 100 by default.
+# The setting can be changed ingame using `/set mcl_playersSleepingPercentage <number>`
+mcl_playersSleepingPercentage (Players Sleeping Percentage) int 100
+
 # Normally, players drop all their items when they die. Enable this
 # setting, so players always keep their inventory on death.
 mcl_keepInventory (Keep inventory on death) bool false

@@ -24,13 +24,14 @@ local get_objects_inside_radius = minetest.get_objects_inside_radius
 local get_item_group = minetest.get_item_group
 
 lightning = {
-    interval_low = 17,
-    interval_high = 503,
-    range_h = 100,
-    range_v = 50,
-    size = 100,
-    -- disable this to stop lightning mod from striking
-    auto = true,
+	interval_low = 17,
+	interval_high = 503,
+	range_h = 100,
+	range_v = 50,
+	size = 100,
+	-- disable this to stop lightning mod from striking
+	auto = true,
+	on_strike_functions = {},
 }
 
 local rng = PcgRandom(32321123312123)
@@ -53,6 +54,18 @@ local function revertsky(dtime)
 end
 
 minetest.register_globalstep(revertsky)
+
+-- lightning strike API
+
+-- See API.md
+--[[
+	lightning.register_on_strike(function(pos, pos2, objects)
+		-- code
+	end)
+]]
+function lightning.register_on_strike(func)
+	table.insert(lightning.on_strike_functions, func)
+end
 
 -- select a random strike point, midpoint
 local function choose_pos(pos)
@@ -79,14 +92,14 @@ local function choose_pos(pos)
 		pos.z = math.floor(pos.z - (lightning.range_h / 2) + rng:next(1, lightning.range_h))
 	end
 
-	local b, pos2 = line_of_sight(pos, {x = pos.x, y = pos.y - lightning.range_v, z = pos.z}, 1)
+	local b, pos2 = line_of_sight(pos, { x = pos.x, y = pos.y - lightning.range_v, z = pos.z }, 1)
 
 	-- nothing but air found
 	if b then
 		return nil, nil
 	end
 
-	local n = get_node({x = pos2.x, y = pos2.y - 1/2, z = pos2.z})
+	local n = get_node({ x = pos2.x, y = pos2.y - 1/2, z = pos2.z })
 	if n.name == "air" or n.name == "ignore" then
 		return nil, nil
 	end
@@ -94,7 +107,6 @@ local function choose_pos(pos)
 	return pos, pos2
 end
 
--- lightning strike API
 -- * pos: optional, if not given a random pos will be chosen
 -- * returns: bool - success if a strike happened
 function lightning.strike(pos)
@@ -108,21 +120,28 @@ function lightning.strike(pos)
 	if not pos then
 		return false
 	end
+	local objects = get_objects_inside_radius(pos2, 3.5)
+	if lightning.on_strike_functions then
+		for _, func in pairs(lightning.on_strike_functions) do
+			func(pos, pos2, objects)
+		end
+	end
+end
 
+lightning.register_on_strike(function(pos, pos2, objects)
+	local particle_pos = vector.offset(pos2, 0, (lightning.size / 2) + 0.5, 0)
+	local particle_size = lightning.size * 10
+	local time = 0.2
 	add_particlespawner({
 		amount = 1,
-		time = 0.2,
+		time = time,
 		-- make it hit the top of a block exactly with the bottom
-		minpos = {x = pos2.x, y = pos2.y + (lightning.size / 2) + 1/2, z = pos2.z },
-		maxpos = {x = pos2.x, y = pos2.y + (lightning.size / 2) + 1/2, z = pos2.z },
-		minvel = {x = 0, y = 0, z = 0},
-		maxvel = {x = 0, y = 0, z = 0},
-		minacc = {x = 0, y = 0, z = 0},
-		maxacc = {x = 0, y = 0, z = 0},
-		minexptime = 0.2,
-		maxexptime = 0.2,
-		minsize = lightning.size * 10,
-		maxsize = lightning.size * 10,
+		minpos = particle_pos,
+		maxpos = particle_pos,
+		minexptime = time,
+		maxexptime = time,
+		minsize = particle_size,
+		maxsize = particle_size,
 		collisiondetection = true,
 		vertical = true,
 		-- to make it appear hitting the node that will get set on fire, make sure
@@ -135,44 +154,27 @@ function lightning.strike(pos)
 	sound_play({ name = "lightning_thunder", gain = 10 }, { pos = pos, max_hear_distance = 500 }, true)
 
 	-- damage nearby objects, transform mobs
-    -- TODO: use an API insteed of hardcoding this behaviour
-	local objs = get_objects_inside_radius(pos2, 3.5)
-	for o=1, #objs do
-		local obj = objs[o]
+	for _, obj in pairs(objects) do
 		local lua = obj:get_luaentity()
-		-- pig → zombie pigman (no damage)
+		if lua and lua._on_strike then
+			lua._on_strike(lua, pos, pos2, objects)
+		end
+		-- remove this when mob API is done
 		if lua and lua.name == "mobs_mc:pig" then
-			local rot = obj:get_yaw()
-			obj:remove()
-			obj = add_entity(pos2, "mobs_mc:pigman")
-			obj:set_yaw(rot)
-			-- mooshroom: toggle color red/brown (no damage)
+			mcl_util.replace_mob(obj, "mobs_mc:pigman")
 		elseif lua and lua.name == "mobs_mc:mooshroom" then
 			if lua.base_texture[1] == "mobs_mc_mooshroom.png" then
 				lua.base_texture = { "mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" }
 			else
 				lua.base_texture = { "mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png" }
 			end
-			obj:set_properties({textures = lua.base_texture})
-		-- villager → witch (no damage)
-		--elseif lua and lua.name == "mobs_mc:villager" then
-		-- Witches are incomplete, this code is unused
-		-- TODO: Enable this code when witches are working.
-		--[[
-			local rot = obj:get_yaw()
-			obj:remove()
-			obj = minetest.add_entity(pos2, "mobs_mc:witch")
-			obj:set_yaw(rot)
-		]]
-		-- charged creeper
+			obj:set_properties({ textures = lua.base_texture })
+		elseif lua and lua.name == "mobs_mc:villager" then
+			mcl_util.replace_mob(obj, "mobs_mc:witch")
 		elseif lua and lua.name == "mobs_mc:creeper" then
-			local rot = obj:get_yaw()
-			obj:remove()
-			obj = add_entity(pos2, "mobs_mc:creeper_charged")
-			obj:set_yaw(rot)
-			-- Other objects: Just damage
+			mcl_util.replace_mob(obj, "mobs_mc:creeper_charged")
 		else
-			mcl_util.deal_damage(obj, 5, {type = "lightning_bolt"})
+			mcl_util.deal_damage(obj, 5, { type = "lightning_bolt" })
 		end
 	end
 
@@ -186,7 +188,7 @@ function lightning.strike(pos)
 		local name = player:get_player_name()
 		if ps[name] == nil then
 			ps[name] = {p = player, sky = sky}
-			mcl_weather.skycolor.add_layer("lightning", {{r=255,g=255,b=255}}, true)
+			mcl_weather.skycolor.add_layer("lightning", { { r = 255, g = 255, b = 255 } }, true)
 			mcl_weather.skycolor.active = true
 		end
 	end
@@ -201,7 +203,7 @@ function lightning.strike(pos)
 	if rng:next(1,100) <= 3 then
 		skeleton_lightning = true
 	end
-	if get_item_group(get_node({x = pos2.x, y = pos2.y - 1, z = pos2.z}).name, "liquid") < 1 then
+	if get_item_group(get_node({ x = pos2.x, y = pos2.y - 1, z = pos2.z }).name, "liquid") < 1 then
 		if get_node(pos2).name == "air" then
 			-- Low chance for a lightning to spawn skeleton horse + skeletons
 			if skeleton_lightning then
@@ -210,7 +212,7 @@ function lightning.strike(pos)
 				local angle, posadd
 				angle = math.random(0, math.pi*2)
 				for i=1,3 do
-					posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
+					posadd = { x=math.cos(angle),y=0,z=math.sin(angle) }
 					posadd = vector.normalize(posadd)
 					local mob = add_entity(vector.add(pos2, posadd), "mobs_mc:skeleton")
 					mob:set_yaw(angle-math.pi/2)
@@ -219,12 +221,11 @@ function lightning.strike(pos)
 
 			-- Cause a fire
 			else
-				set_node(pos2, {name = "mcl_fire:fire"})
+				set_node(pos2, { name = "mcl_fire:fire" })
 			end
 		end
 	end
-
-end
+end)
 
 -- if other mods disable auto lightning during initialization, don't trigger the first lightning.
 after(5, function(dtime)

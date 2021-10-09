@@ -203,12 +203,8 @@ local dispenserdef = {
 									else
 										minetest.add_item(droppos, mobs_mc.items.mushroom_red .. " 5")
 									end
-									local oldyaw = obj:get_yaw()
-									obj:remove()
-									local cow = minetest.add_entity(pos, "mobs_mc:cow")
-									cow:set_yaw(oldyaw)
-									obj = cow
-									entity = cow:get_luaentity()
+									obj = mcl_util.replace_mob(obj, "mobs_mc:cow")
+									entity = obj:get_luaentity()
 									used = true
 								end
 								if used then
