@@ -27,7 +27,7 @@ local function get_look_yaw(pos)
 end
 
 local function players_in_bed_setting()
-	return tonumber(minetest.settings:get("mcl_playersSleepingPercentage"))
+	return tonumber(minetest.settings:get("mcl_playersSleepingPercentage")) or 100
 end
 
 local function is_night_skip_enabled()
