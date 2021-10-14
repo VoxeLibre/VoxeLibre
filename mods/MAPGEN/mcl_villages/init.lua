@@ -13,6 +13,7 @@ dofile(settlements.modpath.."/paths.lua")
 settlements.grundstellungen()
 
 
+local villagegen={}
 --
 -- register block for npc spawn
 --
@@ -29,6 +30,7 @@ minetest.register_node("mcl_villages:stonebrickcarved", {
 	_mcl_hardness = 1.5,
 })
 
+minetest.register_node("mcl_villages:structblock", {drawtype="airlike",groups = {not_in_creative_inventory=1},})
 
 
 
@@ -99,14 +101,31 @@ if mg_name ~= "singlenode" then
 		if blockseed % 77 ~= 17 then return end
 		-- needed for manual and automated settlement building
 		-- don't build settlements on (too) uneven terrain
-		--local heightmap = minetest.get_mapgen_object("heightmap")
+		local n=minetest.get_node_or_nil(minp)
+		if n and n.name == "mcl_villages:structblock" then return end
+		if villagegen[minetest.pos_to_string(minp)] ~= nil then return end
+		minetest.set_node(minp,{name="mcl_villages:structblock"})
+
 		local height_difference = settlements.evaluate_heightmap()
 		if height_difference > max_height_difference then return end
 
-		local param={minp=vector.new(minp), maxp=vector.new(maxp), blockseed=blockseed}
-		minetest.emerge_area(minp, maxp, ecb_village, param)
+		villagegen[minetest.pos_to_string(minp)]={minp=vector.new(minp), maxp=vector.new(maxp), blockseed=blockseed}
 	end)
 end
+
+minetest.register_lbm({
+	name = "mcl_villages:structblock",
+	run_at_every_load = true,
+	nodenames = {"mcl_villages:structblock"},
+	action = function(pos, node)
+		minetest.set_node(pos, {name = "air"})
+		if not villagegen[minetest.pos_to_string(pos)] then return end
+		local minp=villagegen[minetest.pos_to_string(pos)].minp
+		local maxp=villagegen[minetest.pos_to_string(pos)].maxp
+		minetest.emerge_area(minp, maxp, ecb_village, villagegen[minetest.pos_to_string(minp)])
+		villagegen[minetest.pos_to_string(minp)]=nil
+	end
+})
 -- manually place villages
 if minetest.is_creative_enabled("") then
 	minetest.register_craftitem("mcl_villages:tool", {
