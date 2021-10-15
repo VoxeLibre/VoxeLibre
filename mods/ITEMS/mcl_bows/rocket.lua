@@ -4,9 +4,9 @@ local math = math
 local vector = vector
 
 -- Time in seconds after which a stuck arrow is deleted
-local ARROW_TIMEOUT = 60
+local ARROW_TIMEOUT = 1
 -- Time after which stuck arrow is rechecked for being stuck
-local STUCK_RECHECK_TIME = 5
+local STUCK_RECHECK_TIME = 0.1
 
 --local GRAVITY = 9.81
 
@@ -32,18 +32,227 @@ local function random_arrow_positions(positions, placement)
 	return 0
 end
 
+local function damage_explosion(self, damagemulitplier)
+	mcl_explosions.explode(self.object:get_pos(), 3, {})
+	local objects = minetest.get_objects_inside_radius(self.object:get_pos(), 8)
+	for _,obj in pairs(objects) do
+		if obj:is_player() then
+			mcl_util.deal_damage(obj, damagemulitplier - vector.distance(self.object:get_pos(), obj:get_pos()), {type = "explosion"})
+		elseif obj:get_luaentity()._cmi_is_mob then
+			obj:punch(self.object, 1.0, {
+				full_punch_interval=1.0,
+				damage_groups={fleshy=damagemulitplier - vector.distance(self.object:get_pos(), obj:get_pos())},
+			}, self.object:get_velocity())
+		end
+	end
+end
+
+local function particle_explosion(self)
+	local particle_pattern = math.random(1, 3)
+	local fpitch = 0
+	local true_type = ""
+	local type = math.random(1,2)
+	local size = math.random(1,3)
+	local colors = {"red", "yellow", "blue", "green", "white"}
+	local this_colors = {colors[math.random(#colors)], colors[math.random(#colors)], colors[math.random(#colors)]}
+
+	if size == 1 then
+		fpitch = math.random(200, 300)
+	elseif size == 2 then
+		fpitch = math.random(100, 130)
+	else
+		fpitch = math.random(60, 70)
+	end
+
+	if type == 1 then
+		true_type = "Popper"
+	else
+		true_type = "Floof"
+	end
+
+	if type == 1 then
+		minetest.sound_play("mcl_bows_firework", {
+			pos = self.object:get_pos(),
+			max_hear_distance = 100,
+			gain = 3.0,
+			pitch = fpitch/100
+		}, true)
+	else
+		minetest.sound_play("mcl_bows_firework_soft", {
+			pos = self.object:get_pos(),
+			max_hear_distance = 100,
+			gain = 4.0,
+			pitch = fpitch/100
+		}, true)
+	end
+
+	if particle_pattern == 1 then
+		minetest.add_particlespawner({
+				amount = 400 * size,
+				time = 0.0001,
+				minpos = self.object:get_pos(),
+				maxpos = self.object:get_pos(),
+				minvel = vector.new(-7 * size,-7 * size,-7 * size),
+				maxvel = vector.new(7 * size,7 * size,7 * size),
+				minexptime = .6 * size / 2,
+				maxexptime = .9 * size / 2,
+				minsize = 2 * size,
+				maxsize = 3 * size,
+				collisiondetection = false,
+				vertical = false,
+				texture = "mcl_bows_firework_"..this_colors[1]..".png",
+				glow = 14,
+		})
+		minetest.add_particlespawner({
+				amount = 400 * size,
+				time = 0.0001,
+				minpos = self.object:get_pos(),
+				maxpos = self.object:get_pos(),
+				minvel = vector.new(-2 * size,-2 * size,-2 * size),
+				maxvel = vector.new(2 * size,2 * size,2 * size),
+				minexptime = .6 * size / 2,
+				maxexptime = .9 * size / 2,
+				minsize = 2 * size,
+				maxsize = 3 * size,
+				collisiondetection = false,
+				vertical = false,
+				texture = "mcl_bows_firework_"..this_colors[2]..".png",
+				glow = 14,
+		})
+		minetest.add_particlespawner({
+				amount = 100 * size,
+				time = 0.0001,
+				minpos = self.object:get_pos(),
+				maxpos = self.object:get_pos(),
+				minvel = vector.new(-14 * size,-14 * size,-14 * size),
+				maxvel = vector.new(14 * size,14 * size,14 * size),
+				minexptime = .6 * size / 2,
+				maxexptime = .9 * size / 2,
+				minsize = 2 * size,
+				maxsize = 3 * size,
+				collisiondetection = false,
+				vertical = false,
+				texture = "mcl_bows_firework_"..this_colors[3]..".png",
+				glow = 14,
+		})
+	elseif particle_pattern == 2 then
+
+		minetest.add_particlespawner({
+				amount = 240 * size,
+				time = 0.0001,
+				minpos = self.object:get_pos(),
+				maxpos = self.object:get_pos(),
+				minvel = vector.new(-5 * size,-5 * size,-5 * size),
+				maxvel = vector.new(5 * size,5 * size,5 * size),
+				minexptime = .6 * size / 2,
+				maxexptime = .9 * size / 2,
+				minsize = 2 * size,
+				maxsize = 3 * size,
+				collisiondetection = false,
+				vertical = false,
+				texture = "mcl_bows_firework_"..this_colors[1]..".png",
+				glow = 14,
+		})
+		minetest.add_particlespawner({
+				amount = 500 * size,
+				time = 0.0001,
+				minpos = self.object:get_pos(),
+				maxpos = self.object:get_pos(),
+				minvel = vector.new(-2 * size,-2 * size,-2 * size),
+				maxvel = vector.new(2 * size,2 * size,2 * size),
+				minexptime = .6 * size / 2,
+				maxexptime = .9 * size / 2,
+				minsize = 2 * size,
+				maxsize = 3 * size,
+				collisiondetection = false,
+				vertical = false,
+				texture = "mcl_bows_firework_"..this_colors[2]..".png",
+				glow = 14,
+		})
+		minetest.add_particlespawner({
+				amount = 350 * size,
+				time = 0.0001,
+				minpos = self.object:get_pos(),
+				maxpos = self.object:get_pos(),
+				minvel = vector.new(-3 * size,-3 * size,-3 * size),
+				maxvel = vector.new(3 * size,3 * size,3 * size),
+				minexptime = .6 * size / 2,
+				maxexptime = .9 * size / 2,
+				minsize = 2 * size,
+				maxsize = 3 * size,
+				collisiondetection = false,
+				vertical = false,
+				texture = "mcl_bows_firework_"..this_colors[3]..".png",
+				glow = 14,
+		})
+	elseif particle_pattern == 3 then
+
+		minetest.add_particlespawner({
+				amount = 400 * size,
+				time = 0.0001,
+				minpos = self.object:get_pos(),
+				maxpos = self.object:get_pos(),
+				minvel = vector.new(-6 * size,-4 * size,-6 * size),
+				maxvel = vector.new(6 * size,4 * size,6 * size),
+				minexptime = .6 * size,
+				maxexptime = .9 * size,
+				minsize = 2 * size,
+				maxsize = 3 * size,
+				collisiondetection = false,
+				vertical = false,
+				texture = "mcl_bows_firework_"..this_colors[1]..".png",
+				glow = 14,
+		})
+		minetest.add_particlespawner({
+				amount = 120 * size,
+				time = 0.0001,
+				minpos = self.object:get_pos(),
+				maxpos = self.object:get_pos(),
+				minvel = vector.new(-8 * size,6 * size,-8 * size),
+				maxvel = vector.new(8 * size,6 * size,8 * size),
+				minexptime = .6 * size,
+				maxexptime = .9 * size,
+				minsize = 2 * size,
+				maxsize = 3 * size,
+				collisiondetection = false,
+				vertical = false,
+				texture = "mcl_bows_firework_"..this_colors[2]..".png",
+				glow = 14,
+		})
+		minetest.add_particlespawner({
+				amount = 130 * size,
+				time = 0.0001,
+				minpos = self.object:get_pos(),
+				maxpos = self.object:get_pos(),
+				minvel = vector.new(-3 * size,3 * size,-3 * size),
+				maxvel = vector.new(3 * size,3 * size,3 * size),
+				minexptime = .6 * size,
+				maxexptime = .9 * size,
+				minsize = 2 * size,
+				maxsize = 3 * size,
+				collisiondetection = false,
+				vertical = false,
+				texture = "mcl_bows_firework_"..this_colors[3]..".png",
+				glow = 14,
+		})
+	end
+
+	return size
+
+end
+
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
 local mod_button = minetest.get_modpath("mesecons_button")
 
-minetest.register_craftitem("mcl_bows:arrow", {
+minetest.register_craftitem("mcl_bows:rocket", {
 	description = S("Arrow"),
 	_tt_help = S("Ammunition").."\n"..S("Damage from bow: 1-10").."\n"..S("Damage from dispenser: 3"),
 	_doc_items_longdesc = S("Arrows are ammunition for bows and dispensers.").."\n"..
 S("An arrow fired from a bow has a regular damage of 1-9. At full charge, there's a 20% chance of a critical hit dealing 10 damage instead. An arrow fired from a dispenser always deals 3 damage.").."\n"..
 S("Arrows might get stuck on solid blocks and can be retrieved again. They are also capable of pushing wooden buttons."),
 	_doc_items_usagehelp = S("To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory. To retrieve an arrow that sticks in a block, simply walk close to it."),
-	inventory_image = "mcl_bows_arrow_inv.png",
-	groups = { ammo=1, ammo_bow=1, ammo_bow_regular=1, ammo_crossbow=1 },
+	inventory_image = "mcl_bows_rocket.png",
+	groups = { ammo=1, ammo_crossbow=1, ammo_bow_regular=1 },
 	_on_dispense = function(itemstack, dispenserpos, droppos, dropnode, dropdir)
 		-- Shoot arrow
 		local shootpos = vector.add(dispenserpos, vector.multiply(dropdir, 0.51))
@@ -52,13 +261,15 @@ S("Arrows might get stuck on solid blocks and can be retrieved again. They are a
 	end,
 })
 
+
+
 local ARROW_ENTITY={
 	physical = true,
 	pointable = false,
 	visual = "mesh",
-	mesh = "mcl_bows_arrow.obj",
-	visual_size = {x=-1, y=1},
-	textures = {"mcl_bows_arrow.png"},
+	mesh = "mcl_bows_rocket.obj",
+	visual_size = {x=2.5, y=2.5},
+	textures = {"mcl_bows_rocket.png"},
 	collisionbox = {-0.19, -0.125, -0.19, 0.19, 0.125, 0.19},
 	collide_with_objects = false,
 	_fire_damage_resistant = true,
@@ -68,8 +279,8 @@ local ARROW_ENTITY={
 	_damage=1,	-- Damage on impact
 	_is_critical=false, -- Whether this arrow would deal critical damage
 	_stuck=false,   -- Whether arrow is stuck
-	_stucktimer=nil,-- Amount of time (in seconds) the arrow has been stuck so far
-	_stuckrechecktimer=nil,-- An additional timer for periodically re-checking the stuck status of an arrow
+	_fuse=nil,-- Amount of time (in seconds) the arrow has been stuck so far
+	_fuserechecktimer=nil,-- An additional timer for periodically re-checking the stuck status of an arrow
 	_stuckin=nil,	--Position of node in which arow is stuck.
 	_shooter=nil,	-- ObjectRef of player or mob who shot it
 	_is_arrow = true,
@@ -81,7 +292,7 @@ local ARROW_ENTITY={
 -- Destroy arrow entity self at pos and drops it as an item
 local function spawn_item(self, pos)
 	if not minetest.is_creative_enabled("") then
-		local item = minetest.add_item(pos, "mcl_bows:arrow")
+		local item = minetest.add_item(pos, "mcl_bows:rocket")
 		item:set_velocity({x=0, y=0, z=0})
 		item:set_yaw(self.object:get_yaw())
 	end
@@ -116,22 +327,36 @@ function ARROW_ENTITY.on_step(self, dtime)
 
 	self._time_in_air = self._time_in_air + .001
 
+
 	local pos = self.object:get_pos()
 	local dpos = table.copy(pos) -- digital pos
 	dpos = vector.round(dpos)
 	local node = minetest.get_node(dpos)
 
+	if not self._fuse then
+		self._fuse = 0
+	end
+	if not self._fuserechecktimer then
+		self._fuserechecktimer = 0
+	end
+
+	self._fuse = self._fuse + dtime
+	self._fuserechecktimer = self._fuserechecktimer + dtime
+
+	if self._fuse > ARROW_TIMEOUT then
+		self._stuck = true
+	end
 	if self._stuck then
-		self._stucktimer = self._stucktimer + dtime
-		self._stuckrechecktimer = self._stuckrechecktimer + dtime
-		if self._stucktimer > ARROW_TIMEOUT then
+		if self._fuse > ARROW_TIMEOUT then
+			local eploded_particle = particle_explosion(self)
+			damage_explosion(self, eploded_particle * 17)
 			mcl_burning.extinguish(self.object)
 			self.object:remove()
 			return
 		end
 		-- Drop arrow as item when it is no longer stuck
 		-- FIXME: Arrows are a bit slow to react and continue to float in mid air for a few seconds.
-		if self._stuckrechecktimer > STUCK_RECHECK_TIME then
+		if self._fuserechecktimer > STUCK_RECHECK_TIME then
 			local stuckin_def
 			if self._stuckin then
 				stuckin_def = minetest.registered_nodes[minetest.get_node(self._stuckin).name]
@@ -141,15 +366,15 @@ function ARROW_ENTITY.on_step(self, dtime)
 				spawn_item(self, pos)
 				return
 			end
-			self._stuckrechecktimer = 0
+			self._fuserechecktimer = 0
 		end
 		-- Pickup arrow if player is nearby (not in Creative Mode)
 		local objects = minetest.get_objects_inside_radius(pos, 1)
 		for _,obj in ipairs(objects) do
 			if obj:is_player() then
 				if self._collectable and not minetest.is_creative_enabled(obj:get_player_name()) then
-					if obj:get_inventory():room_for_item("main", "mcl_bows:arrow") then
-						obj:get_inventory():add_item("main", "mcl_bows:arrow")
+					if obj:get_inventory():room_for_item("main", "mcl_bows:rocket") then
+						obj:get_inventory():add_item("main", "mcl_bows:rocket")
 						minetest.sound_play("item_drop_pickup", {
 							pos = pos,
 							max_hear_distance = 16,
@@ -166,10 +391,10 @@ function ARROW_ENTITY.on_step(self, dtime)
 	-- Check for object "collision". Done every tick (hopefully this is not too stressing)
 	else
 
-		if self._damage >= 9 and self._in_player == false then
+		if self._in_player == false then
 			minetest.add_particlespawner({
 				amount = 1,
-				time = .001,
+				time = .0001,
 				minpos = pos,
 				maxpos = pos,
 				minvel = vector.new(-0.1,-0.1,-0.1),
@@ -180,7 +405,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 				maxsize = 2,
 				collisiondetection = false,
 				vertical = false,
-				texture = "mobs_mc_arrow_particle.png",
+				texture = "mcl_bows_rocket_particle.png",
 				glow = 1,
 			})
 		end
@@ -260,41 +485,10 @@ function ARROW_ENTITY.on_step(self, dtime)
 								damage_groups={fleshy=self._damage},
 							}, self.object:get_velocity())
 							if obj:is_player() then
-								local placement
-								self._placement = math.random(1, 2)
-								if self._placement == 1 then
-									placement = "front"
-								else
-									placement = "back"
-								end
-								self._in_player = true
-								if self._placement == 2 then
-									self._rotation_station = 90
-								else
-									self._rotation_station = -90
-								end
-								self._y_position = random_arrow_positions("y", placement)
-								self._x_position = random_arrow_positions("x", placement)
-								if self._y_position > 6 and self._x_position < 2 and self._x_position > -2 then
-									self._attach_parent = "Head"
-									self._y_position = self._y_position - 6
-								elseif self._x_position > 2 then
-									self._attach_parent = "Arm_Right"
-									self._y_position = self._y_position - 3
-									self._x_position = self._x_position - 2
-								elseif self._x_position < -2 then
-									self._attach_parent = "Arm_Left"
-									self._y_position = self._y_position - 3
-									self._x_position = self._x_position + 2
-								else
-									self._attach_parent = "Body"
-								end
-								self._z_rotation = math.random(-30, 30)
-								self._y_rotation = math.random( -30, 30)
-								self.object:set_attach(obj, self._attach_parent, {x=self._x_position,y=self._y_position,z=random_arrow_positions("z", placement)}, {x=0,y=self._rotation_station + self._y_rotation,z=self._z_rotation})
-								minetest.after(150, function()
-									self.object:remove()
-								end)
+								local eploded_particle = particle_explosion(self)
+								damage_explosion(self, eploded_particle * 17)
+								mcl_burning.extinguish(self.object)
+								self.object:remove()
 							end
 						end
 					end
@@ -325,6 +519,8 @@ function ARROW_ENTITY.on_step(self, dtime)
 				if not obj:is_player() then
 					mcl_burning.extinguish(self.object)
 					if self._piercing == 0 then
+						local eploded_particle = particle_explosion(self)
+						damage_explosion(self, eploded_particle * 17)
 						self.object:remove()
 					end
 				end
@@ -371,8 +567,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 
 				-- Node was walkable, make arrow stuck
 				self._stuck = true
-				self._stucktimer = 0
-				self._stuckrechecktimer = 0
+				self._fuserechecktimer = 0
 
 				self.object:set_velocity({x=0, y=0, z=0})
 				self.object:set_acceleration({x=0, y=0, z=0})
@@ -427,7 +622,7 @@ end
 -- Otherwise, punching has no effect.
 function ARROW_ENTITY.on_punch(self)
 	if self._stuck then
-		self._stuckrechecktimer = STUCK_RECHECK_TIME
+		self._fuserechecktimer = STUCK_RECHECK_TIME
 	end
 end
 
@@ -441,11 +636,11 @@ function ARROW_ENTITY.get_staticdata(self)
 		stuckin = self._stuckin,
 	}
 	if self._stuck then
-		-- If _stucktimer is missing for some reason, assume the maximum
-		if not self._stucktimer then
-			self._stucktimer = ARROW_TIMEOUT
+		-- If _fuse is missing for some reason, assume the maximum
+		if not self._fuse then
+			self._fuse = ARROW_TIMEOUT
 		end
-		out.stuckstarttime = minetest.get_gametime() - self._stucktimer
+		out.stuckstarttime = minetest.get_gametime() - self._fuse
 	end
 	if self._shooter and self._shooter:is_player() then
 		out.shootername = self._shooter:get_player_name()
@@ -463,16 +658,17 @@ function ARROW_ENTITY.on_activate(self, staticdata, dtime_s)
 			if data.stuckstarttime then
 				-- First, check if the stuck arrow is aleady past its life timer.
 				-- If yes, delete it.
-				self._stucktimer = minetest.get_gametime() - data.stuckstarttime
-				if self._stucktimer > ARROW_TIMEOUT then
+				self._fuse = minetest.get_gametime() - data.stuckstarttime
+				if self._fuse > ARROW_TIMEOUT then
 					mcl_burning.extinguish(self.object)
 					self.object:remove()
 					return
 				end
 			end
 
+			self._fuse = 2
 			-- Perform a stuck recheck on the next step.
-			self._stuckrechecktimer = STUCK_RECHECK_TIME
+			self._fuserechecktimer = STUCK_RECHECK_TIME
 
 			self._stuckin = data.stuckin
 		end
@@ -492,19 +688,19 @@ function ARROW_ENTITY.on_activate(self, staticdata, dtime_s)
 	self.object:set_armor_groups({ immortal = 1 })
 end
 
-minetest.register_entity("mcl_bows:arrow_entity", ARROW_ENTITY)
+minetest.register_entity("mcl_bows:rocket_entity", ARROW_ENTITY)
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
 	minetest.register_craft({
-		output = "mcl_bows:arrow 4",
+		output = "mcl_bows:rocket 1",
 		recipe = {
-			{"mcl_core:flint"},
-			{"mcl_core:stick"},
-			{"mcl_mobitems:feather"}
+			{"mcl_core:paper"},
+			{"mcl_fireworks:rocket_2"},
+			{"mcl_bows:arrow"},
 		}
 	})
 end
 
 if minetest.get_modpath("doc_identifier") then
-	doc.sub.identifier.register_object("mcl_bows:arrow_entity", "craftitems", "mcl_bows:arrow")
+	doc.sub.identifier.register_object("mcl_bows:rocket_entity", "craftitems", "mcl_bows:rocket")
 end

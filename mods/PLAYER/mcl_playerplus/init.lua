@@ -127,6 +127,7 @@ minetest.register_globalstep(function(dtime)
 	for _,player in pairs(get_connected_players()) do
 
 		--[[
+
 						 _                 _   _
 			  __ _ _ __ (_)_ __ ___   __ _| |_(_) ___  _ __  ___
 			 / _` | '_ \| | '_ ` _ \ / _` | __| |/ _ \| '_ \/ __|
@@ -220,6 +221,10 @@ minetest.register_globalstep(function(dtime)
 			player:set_bone_position("Wield_Item", vector.new(0,3.9,1.3), vector.new(90,0,0))
 		elseif string.find(wielded:get_name(), "mcl_bows:bow") then
 			player:set_bone_position("Wield_Item", vector.new(.5,4.5,-1.6), vector.new(90,0,20))
+		elseif string.find(wielded:get_name(), "mcl_bows:crossbow_loaded") then
+			player:set_bone_position("Wield_Item", vector.new(-1.5,5.7,1.8), vector.new(64,90,0))
+		elseif string.find(wielded:get_name(), "mcl_bows:crossbow") then
+			player:set_bone_position("Wield_Item", vector.new(-1.5,5.7,1.8), vector.new(90,90,0))
 		else
 			player:set_bone_position("Wield_Item", vector.new(-1.5,4.9,1.8), vector.new(135,0,90))
 		end
@@ -231,6 +236,14 @@ minetest.register_globalstep(function(dtime)
 		if string.find(wielded:get_name(), "mcl_bows:bow") and control.RMB then
 			player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch+90,-30,pitch * -1 * .35))
 			player:set_bone_position("Arm_Left_Pitch_Control", vector.new(3.5,5.785,0), vector.new(pitch+90,43,pitch * .35))
+		-- controls right and left arms pitch when holing a loaded crossbow
+		elseif string.find(wielded:get_name(), "mcl_bows:crossbow_loaded") then
+			player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch+90,-30,pitch * -1 * .35))
+			player:set_bone_position("Arm_Left_Pitch_Control", vector.new(3.5,5.785,0), vector.new(pitch+90,43,pitch * .35))
+		-- controls right and left arms pitch when loading a crossbow
+	elseif string.find(wielded:get_name(), "mcl_bows:crossbow_") then
+			player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(45,-20,25))
+			player:set_bone_position("Arm_Left_Pitch_Control", vector.new(3,5.785,0), vector.new(55,20,-45))
 		-- when punching
 		elseif control.LMB and not parent then
 			player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch,0,0))
