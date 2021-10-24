@@ -538,3 +538,12 @@ function mcl_util.get_object_name(object)
 		return luaentity.nametag and luaentity.nametag ~= "" and luaentity.nametag or luaentity.description or luaentity.name
 	end
 end
+
+function mcl_util.replace_mob(obj, mob)
+	local rot = obj:get_yaw()
+	local pos = obj:get_pos()
+	obj:remove()
+	obj = minetest.add_entity(pos, mob)
+	obj:set_yaw(rot)
+	return obj
+end

@@ -270,8 +270,14 @@ function mcl_enchanting.initialize()
 			new_def.groups.not_in_creative_inventory = 1
 			new_def.groups.not_in_craft_guide = 1
 			new_def.groups.enchanted = 1
-			new_def._mcl_armor_texture = new_def._mcl_armor_texture and new_def._mcl_armor_texture .. mcl_enchanting.overlay
-			new_def._mcl_armor_preview = new_def._mcl_armor_preview and new_def._mcl_armor_preview .. mcl_enchanting.overlay
+
+			if new_def._mcl_armor_texture and not type(new_def._mcl_armor_texture) == "function" then
+				new_def._mcl_armor_texture = new_def._mcl_armor_texture .. mcl_enchanting.overlay
+			end
+			if new_def._mcl_armor_preview and not type(new_def._mcl_armor_preview) == "function" then
+				new_def._mcl_armor_preview = new_def._mcl_armor_preview .. mcl_enchanting.overlay
+			end
+
 			new_def._mcl_enchanting_enchanted_tool = new_name
 			new_def.after_use = get_after_use_callback(itemdef)
 			local register_list = register_item_list
