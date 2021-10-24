@@ -81,7 +81,6 @@ If your code leads to bugs or crashes after being merged, it is your responsibil
 * Fork the repository (in case you have not already)
 * Do your change in a new branch
 * Create a pull request to get your changes merged into master
-<<<<<<< HEAD
 * Keep your pull request up to date by regulary merging upstream
 * After the pull request got merged, you can delete the branch
 
