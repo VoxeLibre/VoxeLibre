@@ -9,7 +9,7 @@ local animation_blend = 0
 local function get_mouse_button(player)
 	local controls = player:get_player_control()
 	local get_wielded_item_name = player:get_wielded_item():get_name()
-	if controls.RMB and not string.find(get_wielded_item_name, "mcl_bows:bow") or controls.LMB then
+	if controls.RMB and not string.find(get_wielded_item_name, "mcl_bows:bow") and not string.find(get_wielded_item_name, "mcl_bows:crossbow") or controls.LMB then
 		return true
 	else
 		return false
@@ -212,9 +212,9 @@ minetest.register_globalstep(function(dtime)
 					player_set_animation(player, "swim_walk_mine", animation_speed_mod)
 				elseif not controls.sneak and head_in_water and is_sprinting == true then
 					player_set_animation(player, "swim_walk", animation_speed_mod)
-				elseif string.find(player:get_wielded_item():get_name(), "mcl_bows:bow") and controls.RMB and controls.sneak then
+				elseif string.find(player:get_wielded_item():get_name(), "mcl_bows:bow") and controls.RMB and controls.sneak or string.find(player:get_wielded_item():get_name(), "mcl_bows:crossbow_") and controls.sneak then
 					player_set_animation(player, "bow_sneak", animation_speed_mod)
-				elseif string.find(player:get_wielded_item():get_name(), "mcl_bows:bow") and controls.RMB then
+				elseif string.find(player:get_wielded_item():get_name(), "mcl_bows:bow") and controls.RMB or string.find(player:get_wielded_item():get_name(), "mcl_bows:crossbow_") then
 					player_set_animation(player, "bow_walk", animation_speed_mod)
 				elseif is_sprinting == true and get_mouse_button(player) == true and not controls.sneak and not head_in_water then
 					player_set_animation(player, "run_walk_mine", animation_speed_mod)
