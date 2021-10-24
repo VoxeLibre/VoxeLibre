@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_wool")
+local S = minetest.get_translator(minetest.get_current_modname())
 local mod_doc = minetest.get_modpath("doc")
 
 -- minetest/wool/init.lua
@@ -99,13 +99,13 @@ for _, row in ipairs(wool.dyes) do
 	-- Crafting from dye and white wool
 		minetest.register_craft({
 			type = "shapeless",
-			output = 'mcl_wool:'..name,
-			recipe = {"mcl_dye:"..dye, 'mcl_wool:white'},
+			output = "mcl_wool:"..name,
+			recipe = {"mcl_dye:"..dye, "mcl_wool:white"},
 		})
 	end
 	minetest.register_craft({
-		output = 'mcl_wool:'..name..'_carpet 3',
-		recipe = {{'mcl_wool:'..name, 'mcl_wool:'..name}},
+		output = "mcl_wool:"..name.."_carpet 3",
+		recipe = {{"mcl_wool:"..name, "mcl_wool:"..name}},
 	})
 end
 

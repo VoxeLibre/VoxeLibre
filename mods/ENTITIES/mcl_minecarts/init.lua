@@ -1,9 +1,10 @@
-local S = minetest.get_translator("mcl_minecarts")
+local modname = minetest.get_current_modname()
+local S = minetest.get_translator(modname)
 
 local has_mcl_wip = minetest.get_modpath("mcl_wip")
 
 mcl_minecarts = {}
-mcl_minecarts.modpath = minetest.get_modpath("mcl_minecarts")
+mcl_minecarts.modpath = minetest.get_modpath(modname)
 mcl_minecarts.speed_max = 10
 mcl_minecarts.check_float_time = 15
 
@@ -204,7 +205,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			rou_pos = vector.round(pos)
 			node = minetest.get_node(rou_pos)
 			local g = minetest.get_item_group(node.name, "connect_to_raillike")
-			if g ~= self._railtype and self._railtype ~= nil then
+			if g ~= self._railtype and self._railtype then
 				-- Detach driver
 				if player then
 					if self._old_pos then
@@ -486,7 +487,6 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		if update.pos then
 			self.object:set_pos(pos)
 		end
-		update = nil
 	end
 
 	function cart:get_staticdata()
@@ -497,7 +497,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 end
 
 -- Place a minecart at pointed_thing
-mcl_minecarts.place_minecart = function(itemstack, pointed_thing, placer)
+function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	if not pointed_thing.type == "node" then
 		return
 	end
@@ -524,7 +524,7 @@ mcl_minecarts.place_minecart = function(itemstack, pointed_thing, placer)
 	local cart = minetest.add_entity(railpos, entity_id)
 	local railtype = minetest.get_item_group(node.name, "connect_to_raillike")
 	local le = cart:get_luaentity()
-	if le ~= nil then
+	if le then
 		le._railtype = railtype
 	end
 	local cart_dir = mcl_minecarts:get_rail_direction(railpos, {x=1, y=0, z=0}, nil, nil, railtype)
@@ -541,7 +541,7 @@ mcl_minecarts.place_minecart = function(itemstack, pointed_thing, placer)
 end
 
 
-local register_craftitem = function(itemstring, entity_id, description, tt_help, longdesc, usagehelp, icon, creative)
+local function register_craftitem(itemstring, entity_id, description, tt_help, longdesc, usagehelp, icon, creative)
 	entity_mapping[itemstring] = entity_id
 
 	local groups = { minecart = 1, transport = 1 }
@@ -607,7 +607,7 @@ Register a minecart
 local function register_minecart(itemstring, entity_id, description, tt_help, longdesc, usagehelp, mesh, textures, icon, drop, on_rightclick, on_activate_by_rail, creative)
 	register_entity(entity_id, mesh, textures, drop, on_rightclick, on_activate_by_rail)
 	register_craftitem(itemstring, entity_id, description, tt_help, longdesc, usagehelp, icon, creative)
-	if minetest.get_modpath("doc_identifier") ~= nil then
+	if minetest.get_modpath("doc_identifier") then
 		doc.sub.identifier.register_object(entity_id, "craftitems", itemstring)
 	end
 end
@@ -646,7 +646,7 @@ register_minecart(
 				if player then
 					mcl_player.player_set_animation(player, "sit" , 30)
 					player:set_eye_offset({x=0, y=-5.5, z=0},{x=0, y=-4, z=0})
-					mcl_tmp_message.message(clicker, S("Sneak to dismount"))
+					mcl_title.set(clicker, "actionbar", {text=S("Sneak to dismount"), color="white", stay=60})
 				end
 			end, name)
 		end
@@ -817,31 +817,30 @@ minetest.register_craft({
 })
 
 -- TODO: Re-enable crafting of special minecarts when they have been implemented
-if false then
-	minetest.register_craft({
-		output = "mcl_minecarts:furnace_minecart",
-		recipe = {
-			{"mcl_furnaces:furnace"},
-			{"mcl_minecarts:minecart"},
-		},
-	})
+--[[minetest.register_craft({
+	output = "mcl_minecarts:furnace_minecart",
+	recipe = {
+		{"mcl_furnaces:furnace"},
+		{"mcl_minecarts:minecart"},
+	},
+})
 
-	minetest.register_craft({
-		output = "mcl_minecarts:hopper_minecart",
-		recipe = {
-			{"mcl_hoppers:hopper"},
-			{"mcl_minecarts:minecart"},
-		},
-	})
+minetest.register_craft({
+	output = "mcl_minecarts:hopper_minecart",
+	recipe = {
+		{"mcl_hoppers:hopper"},
+		{"mcl_minecarts:minecart"},
+	},
+})
 
-	minetest.register_craft({
-		output = "mcl_minecarts:chest_minecart",
-		recipe = {
-			{"mcl_chests:chest"},
-			{"mcl_minecarts:minecart"},
-		},
-	})
-end
+minetest.register_craft({
+	output = "mcl_minecarts:chest_minecart",
+	recipe = {
+		{"mcl_chests:chest"},
+		{"mcl_minecarts:minecart"},
+	},
+})]]
+
 
 if has_mcl_wip then
 	mcl_wip.register_wip_item("mcl_minecarts:chest_minecart")

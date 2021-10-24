@@ -1,11 +1,12 @@
-local S = minetest.get_translator("mcl_beds")
+local S = minetest.get_translator(minetest.get_current_modname())
 local F = minetest.formspec_escape
 
-local pi = math.pi
+local math = math
+local vector = vector
 local player_in_bed = 0
 local is_sp = minetest.is_singleplayer()
-local weather_mod = minetest.get_modpath("mcl_weather") ~= nil
-local explosions_mod = minetest.get_modpath("mcl_explosions") ~= nil
+local weather_mod = minetest.get_modpath("mcl_weather")
+local explosions_mod = minetest.get_modpath("mcl_explosions")
 local spawn_mod = minetest.get_modpath("mcl_spawn")
 local worlds_mod = minetest.get_modpath("mcl_worlds")
 
@@ -13,39 +14,34 @@ local worlds_mod = minetest.get_modpath("mcl_worlds")
 
 local function get_look_yaw(pos)
 	local n = minetest.get_node(pos)
-	if n.param2 == 1 then
-		return pi / 2, n.param2
-	elseif n.param2 == 3 then
-		return -pi / 2, n.param2
-	elseif n.param2 == 0 then
-		return pi, n.param2
+	local param = n.param2
+	if param == 1 then
+		return math.pi / 2, param
+	elseif param == 3 then
+		return -math.pi / 2, param
+	elseif param == 0 then
+		return math.pi, param
 	else
-		return 0, n.param2
+		return 0, param
 	end
+end
+
+local function players_in_bed_setting()
+	return tonumber(minetest.settings:get("mcl_playersSleepingPercentage")) or 100
 end
 
 local function is_night_skip_enabled()
-	local enable_night_skip = minetest.settings:get_bool("enable_bed_night_skip")
-	if enable_night_skip == nil then
-		enable_night_skip = true
-	end
-	return enable_night_skip
+	return players_in_bed_setting() <= 100
 end
 
 local function check_in_beds(players)
-	local in_bed = mcl_beds.player
 	if not players then
 		players = minetest.get_connected_players()
 	end
-
-	for n, player in pairs(players) do
-		local name = player:get_player_name()
-		if not in_bed[name] then
-			return false
-		end
+	if player_in_bed <= 0 then
+		return false
 	end
-
-	return #players > 0
+	return players_in_bed_setting() <= (player_in_bed * 100) / #players
 end
 
 -- These monsters do not prevent sleep
@@ -105,7 +101,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		-- The exceptions above apply.
 		-- Zombie pigmen only prevent sleep while they are hostle.
 		for _, obj in pairs(minetest.get_objects_inside_radius(bed_pos, 8)) do
-			if obj ~= nil and not obj:is_player() then
+			if obj and not obj:is_player() then
 				local ent = obj:get_luaentity()
 				local mobname = ent.name
 				local def = minetest.registered_entities[mobname]
@@ -122,7 +118,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 	-- stand up
 	if state ~= nil and not state then
 		local p = mcl_beds.pos[name] or nil
-		if mcl_beds.player[name] ~= nil then
+		if mcl_beds.player[name] then
 			mcl_beds.player[name] = nil
 			player_in_bed = player_in_bed - 1
 		end
@@ -157,7 +153,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		local def2 = minetest.registered_nodes[n2.name]
 		if def1.walkable or def2.walkable then
 			return false, S("You can't sleep, the bed is obstructed!")
-		elseif (def1.damage_per_second ~= nil and def1.damage_per_second > 0) or (def2.damage_per_second ~= nil and def2.damage_per_second > 0) then
+		elseif (def1.damage_per_second and def1.damage_per_second > 0) or (def2.damage_per_second and def2.damage_per_second > 0) then
 			return false, S("It's too dangerous to sleep here!")
 		end
 
@@ -197,7 +193,7 @@ end
 local function update_formspecs(finished, ges)
 	local ges = ges or #minetest.get_connected_players()
 	local form_n = "size[12,5;true]"
-	local all_in_bed = ges == player_in_bed
+	local all_in_bed = players_in_bed_setting() <= (player_in_bed * 100) / ges
 	local night_skip = is_night_skip_enabled()
 	local button_leave = "button_exit[4,3;4,0.75;leave;"..F(S("Leave bed")).."]"
 	local button_abort = "button_exit[4,3;4,0.75;leave;"..F(S("Abort sleep")).."]"
@@ -220,7 +216,13 @@ local function update_formspecs(finished, ges)
 			form_n = form_n .. bg_sleep
 			form_n = form_n .. button_abort
 		else
-			text = text .. "\n" .. S("You will fall asleep when all players are in bed.")
+			local comment = "You will fall asleep when "
+			if players_in_bed_setting() == 100 then
+				comment = S(comment .. "all players are in bed.")
+			else
+				comment = S(comment .. "@1% of all players are in bed.", players_in_bed_setting())
+			end
+			text = text .. "\n" .. comment
 			form_n = form_n .. bg_presleep
 			form_n = form_n .. button_leave
 		end
@@ -273,7 +275,7 @@ end
 -- Throw a player out of bed
 function mcl_beds.kick_player(player)
 	local name = player:get_player_name()
-	if mcl_beds.player[name] ~= nil then
+	if mcl_beds.player[name] then
 		lay_down(player, nil, nil, false)
 		update_formspecs(false)
 		minetest.close_formspec(name, "mcl_beds_form")
@@ -319,17 +321,17 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 
 	-- move to bed
 	if not mcl_beds.player[name] then
-		local success, message
+		local message
 		if is_top then
-			success, message = lay_down(player, ppos, pos)
+			message = select(2, lay_down(player, ppos, pos))
 		else
 			local node = minetest.get_node(pos)
 			local dir = minetest.facedir_to_dir(node.param2)
 			local other = vector.add(pos, dir)
-			success, message = lay_down(player, ppos, other)
+			message = select(2, lay_down(player, ppos, other))
 		end
 		if message then
-			mcl_tmp_message.message(player, message)
+			mcl_title.set(player, "actionbar", {text=message, color="white", stay=60})
 		end
 	else
 		lay_down(player, nil, nil, false)
@@ -347,7 +349,6 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 		end)
 	end
 end
-
 
 -- Callbacks
 minetest.register_on_joinplayer(function(player)

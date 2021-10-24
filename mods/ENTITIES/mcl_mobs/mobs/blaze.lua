@@ -1,8 +1,13 @@
 -- daufinsyd
 -- My work is under the LGPL terms
--- Model and mcl_mobs_blaze.png see https://github.com/22i/minecraft-voxel-blender-models -hi 22i ~jordan4ibanez
--- blaze.lua partial copy of ghast.lua
-local S = minetest.get_translator("mcl_mobs")
+-- Model and mobs_blaze.png see https://github.com/22i/minecraft-voxel-blender-models -hi 22i ~jordan4ibanez
+-- blaze.lua partial copy of mobs_mc/ghast.lua
+
+local S = minetest.get_translator(minetest.get_current_modname())
+
+--###################
+--################### BLAZE
+--###################
 
 local smokedef = mcl_particles.get_smoke_def({
 	amount = 0.009,
@@ -25,7 +30,7 @@ mcl_mobs.register_mob("mcl_mobs:blaze", {
 	xp_max = 10,
 	tilt_fly = false,
 	hostile = true,
-	rotate = 270,
+	--rotate = 270,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.79, 0.3},
 	rotate = -180,
 	model = "mcl_mobs_blaze.b3d",

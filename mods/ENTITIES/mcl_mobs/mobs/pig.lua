@@ -1,6 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 mobs:register_mob("mobs_mc:pig", {
 	description = S("Pig"),
@@ -162,7 +162,7 @@ mobs:register_mob("mobs_mc:pig", {
 		end
 
 		-- Mount or detach player
-		local name = clicker:get_player_name()
+		--local name = clicker:get_player_name()
 		if self.driver and clicker == self.driver then
 			-- Detach if already attached
 			mobs.detach(clicker, {x=1, y=0, z=0})

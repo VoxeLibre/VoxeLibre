@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_doors")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Wrapper around mintest.pointed_thing_to_face_pos.
 local function get_fpos(placer, pointed_thing)
@@ -98,13 +98,11 @@ function mcl_doors:register_trapdoor(name, def)
 	if not usagehelp and not def.only_redstone_can_open then
 		usagehelp = S("To open or close this trapdoor, rightclick it or send a redstone signal to it.")
 	end
-	if not tt_help then
-		if def.only_redstone_can_open then
-			tt_help = S("Openable by redstone power")
-		else
-			tt_help = S("Openable by players and redstone power")
-		end
-	end
+    if def.only_redstone_can_open then
+        tt_help = S("Openable by redstone power")
+    else
+        tt_help = S("Openable by players and redstone power")
+    end
 
 	-- Closed trapdoor
 
@@ -164,7 +162,7 @@ function mcl_doors:register_trapdoor(name, def)
 
 			local fpos = get_fpos(placer, pointed_thing)
 
-			local origname = itemstack:get_name()
+			--local origname = itemstack:get_name()
 			if p0.y - 1 == p1.y or (fpos > 0 and fpos < 0.5)
 					or (fpos < -0.5 and fpos > -0.999999999) then
 				param2 = param2 + 20

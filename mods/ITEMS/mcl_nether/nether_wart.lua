@@ -1,4 +1,6 @@
-local S = minetest.get_translator("mcl_nether")
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local table = table
 
 minetest.register_node("mcl_nether:nether_wart_0", {
 	description = S("Premature Nether Wart (Stage 1)"),
@@ -127,7 +129,7 @@ minetest.register_craftitem("mcl_nether:nether_wart_item", {
 
 		-- Check for correct soil type
 		local chk = minetest.get_item_group(minetest.get_node(soilpos).name, "soil_nether_wart")
-		if chk ~= 0 and chk ~= nil then
+		if chk and chk ~= 0 then
 			-- Check if node above soil node allows placement
 			if minetest.registered_items[minetest.get_node(placepos).name].buildable_to then
 				-- Place nether wart

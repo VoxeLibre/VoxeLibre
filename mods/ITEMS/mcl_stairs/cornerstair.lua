@@ -5,7 +5,7 @@
 
 mcl_stairs.cornerstair = {}
 
-local get_stair_param = function(node)
+local function get_stair_param(node)
 	local stair = minetest.get_item_group(node.name, "stair")
 	if stair == 1 then
 		return node.param2
@@ -24,7 +24,7 @@ local get_stair_param = function(node)
 	end
 end
 
-local get_stair_from_param = function(param, stairs)
+local function get_stair_from_param(param, stairs)
 	if param < 12 then
 		if param < 4 then
 			return {name = stairs[1], param2 = param}
@@ -44,7 +44,7 @@ local get_stair_from_param = function(param, stairs)
 	end
 end
 
-local stair_param_to_connect = function(param, ceiling)
+local function stair_param_to_connect(param, ceiling)
 	local out = {false, false, false, false, false, false, false, false}
 	if not ceiling then
 		if param == 0 then
@@ -126,7 +126,7 @@ local stair_param_to_connect = function(param, ceiling)
 	return out
 end
 
-local stair_connect_to_param = function(connect, ceiling)
+local function stair_connect_to_param(connect, ceiling)
 	local param
 	if not ceiling then
 		if connect[3] and connect[8] then
@@ -240,7 +240,7 @@ function mcl_stairs.cornerstair.add(name, stairtiles)
 	inner_groups.stair = 3
 	inner_groups.not_in_craft_guide = 1
 	local drop = node_def.drop or name
-	local after_dig_node = function(pos, oldnode)
+	local function after_dig_node(pos, oldnode)
 		local param = get_stair_param(oldnode)
 		local ceiling
 		if param < 12 then
@@ -273,7 +273,7 @@ function mcl_stairs.cornerstair.add(name, stairtiles)
 				end
 			end
 		end
-		local swap_stair = function(index, n1, n2)
+		local function swap_stair(index, n1, n2)
 			local connect = {false, false, false, false, false, false, false, false}
 			connect[n1] = true
 			connect[n2] = true
@@ -425,13 +425,13 @@ function mcl_stairs.cornerstair.add(name, stairtiles)
 					end
 				end
 			end
-			local reset_node = function(n1, n2)
+			local function reset_node(n1, n2)
 				local connect = {false, false, false, false, false, false, false, false}
 				connect[n1] = true
 				connect[n2] = true
 				node = get_stair_from_param(stair_connect_to_param(connect, ceiling), t[5].stairs)
 			end
-			local swap_stair = function(index, n1, n2)
+			local function swap_stair(index, n1, n2)
 				local connect = {false, false, false, false, false, false, false, false}
 				connect[n1] = true
 				connect[n2] = true

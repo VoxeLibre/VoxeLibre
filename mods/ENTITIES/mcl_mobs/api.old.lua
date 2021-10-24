@@ -1,4 +1,7 @@
-local disable_physics = function(object, luaentity, ignore_check, reset_movement)
+local math = math
+local vector = vector
+
+local function disable_physics(object, luaentity, ignore_check, reset_movement)
 	if luaentity.physical_state == true or ignore_check == true then
 		luaentity.physical_state = false
 		object:set_properties({
@@ -12,7 +15,7 @@ local disable_physics = function(object, luaentity, ignore_check, reset_movement
 end
 
 ----For Water Flowing:
-local enable_physics = function(object, luaentity, ignore_check)
+local function enable_physics(object, luaentity, ignore_check)
 	if luaentity.physical_state == false or ignore_check == true then
 		luaentity.physical_state = true
 		object:set_properties({
@@ -272,7 +275,7 @@ local falling = function(self, pos)
 
 			self.object:set_acceleration({
 				x = 0,
-				y = -self.fall_speed / (math_max(1, v.y) ^ 2),
+				y = -self.fall_speed / (math.max(1, v.y) ^ 2),
 				z = 0
 			})
 		end
@@ -503,9 +506,9 @@ local follow_flop = function(self)
 			if sdef and sdef.walkable then
 				mob_sound(self, "flop")
 				self.object:set_velocity({
-					x = math_random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
+					x = math.random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
 					y = FLOP_HEIGHT,
-					z = math_random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
+					z = math.random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
 				})
 			end
 
@@ -987,7 +990,7 @@ local check_for_death = function(self, cause, cmi_cause)
 			item_drop(self, cooked, looting)
 
 			if mod_experience and ((not self.child) or self.type ~= "animal") and (minetest_get_us_time() - self.xp_timestamp <= 5000000) then
-				mcl_experience.throw_experience(self.object:get_pos(), math_random(self.xp_min, self.xp_max))
+				mcl_experience.throw_experience(self.object:get_pos(), math.random(self.xp_min, self.xp_max))
 			end
 		end
 	end
@@ -1361,7 +1364,7 @@ local do_attack = function(self, player)
 	self.state = "attack"
 
 	-- TODO: Implement war_cry sound without being annoying
-	--if math_random(0, 100) < 90 then
+	--if math.random(0, 100) < 90 then
 		--mob_sound(self, "war_cry", true)
 	--end
 end
@@ -1396,7 +1399,7 @@ local mob_sound = function(self, soundname, is_opinion, fixed_pitch)
 				pitch = base_pitch
 			end
 			-- randomize the pitch a bit
-			pitch = pitch + math_random(-10, 10) * 0.005
+			pitch = pitch + math.random(-10, 10) * 0.005
 		end
 		minetest_sound_play(sound, {
 			object = self.object,
@@ -1699,7 +1702,7 @@ local do_env_damage = function(self)
 		end
 		if drowning then
 
-			self.breath = math_max(0, self.breath - 1)
+			self.breath = math.max(0, self.breath - 1)
 
 			effect(pos, 2, "bubble.png", nil, nil, 1, nil)
 			if self.breath <= 0 then
@@ -2044,7 +2047,7 @@ local breed = function(self)
 
 					-- Give XP
 					if mod_experience then
-						mcl_experience.throw_experience(pos, math_random(1, 7))
+						mcl_experience.throw_experience(pos, math.random(1, 7))
 					end
 
 					-- custom breed function
@@ -2061,7 +2064,7 @@ local breed = function(self)
 
 
 					-- Use texture of one of the parents
-					local p = math_random(1, 2)
+					local p = math.random(1, 2)
 					if p == 1 then
 						ent_c.base_texture = parent1.base_texture
 					else
@@ -2091,7 +2094,7 @@ local replace = function(self, pos)
 	or not self.replace_what
 	or self.child == true
 	or self.object:get_velocity().y ~= 0
-	or math_random(1, self.replace_rate) > 1 then
+	or math.random(1, self.replace_rate) > 1 then
 		return
 	end
 
@@ -2099,7 +2102,7 @@ local replace = function(self, pos)
 
 	if type(self.replace_what[1]) == "table" then
 
-		local num = math_random(#self.replace_what)
+		local num = math.random(#self.replace_what)
 
 		what = self.replace_what[num][1] or ""
 		with = self.replace_what[num][2] or ""
@@ -2163,7 +2166,7 @@ function do_states(self)
 
 	if self.state == "stand" then
 
-		if math_random(1, 4) == 1 then
+		if math.random(1, 4) == 1 then
 
 			local lp = nil
 			local s = self.object:get_pos()
@@ -2189,7 +2192,7 @@ function do_states(self)
 
 				if lp.x > s.x then yaw = yaw + math_pi end
 			else
-				yaw = yaw + math_random(-0.5, 0.5)
+				yaw = yaw + math.random(-0.5, 0.5)
 			end
 
 			yaw = set_yaw(self, yaw, 8)
@@ -2204,7 +2207,7 @@ function do_states(self)
 
 			if self.walk_chance ~= 0
 			and self.facing_fence ~= true
-			and math_random(1, 100) <= self.walk_chance
+			and math.random(1, 100) <= self.walk_chance
 			and is_at_cliff_or_danger(self) == false then
 
 				set_velocity(self, self.walk_velocity)
@@ -2254,7 +2257,7 @@ function do_states(self)
 							{x = s.x + 5, y = s.y + 1, z = s.z + 5},
 							{"group:solid"})
 
-						lp = #lp > 0 and lp[math_random(#lp)]
+						lp = #lp > 0 and lp[math.random(#lp)]
 
 						-- did we find land?
 						if lp then
@@ -2280,8 +2283,8 @@ function do_states(self)
 			else
 
 				-- Randomly turn
-				if math_random(1, 100) <= 30 then
-					yaw = yaw + math_random(-0.5, 0.5)
+				if math.random(1, 100) <= 30 then
+					yaw = yaw + math.random(-0.5, 0.5)
 					yaw = set_yaw(self, yaw, 8)
 				end
 			end
@@ -2289,9 +2292,9 @@ function do_states(self)
 			yaw = set_yaw(self, yaw, 8)
 
 		-- otherwise randomly turn
-		elseif math_random(1, 100) <= 30 then
+		elseif math.random(1, 100) <= 30 then
 
-			yaw = yaw + math_random(-0.5, 0.5)
+			yaw = yaw + math.random(-0.5, 0.5)
 			yaw = set_yaw(self, yaw, 8)
 		end
 
@@ -2302,7 +2305,7 @@ function do_states(self)
 		end
 		if self.facing_fence == true
 		or cliff_or_danger
-		or math_random(1, 100) <= 30 then
+		or math.random(1, 100) <= 30 then
 
 			set_velocity(self, 0)
 			self.state = "stand"
@@ -2602,7 +2605,7 @@ function do_states(self)
 						self.timer = 0
 
 						if self.double_melee_attack
-						and math_random(1, 2) == 1 then
+						and math.random(1, 2) == 1 then
 							set_animation(self, "punch2")
 						else
 							set_animation(self, "punch")
@@ -2669,7 +2672,7 @@ function do_states(self)
 			if self.shoot_interval
 			and self.timer > self.shoot_interval
 			and not minetest_raycast(p, self.attack:get_pos(), false, false):next()
-			and math_random(1, 100) <= 60 then
+			and math.random(1, 100) <= 60 then
 
 				self.timer = 0
 				set_animation(self, "shoot")
@@ -2759,7 +2762,7 @@ end
 
 
 -- Code to execute before custom on_rightclick handling
-local on_rightclick_prefix = function(self, clicker)
+local function on_rightclick_prefix(self, clicker)
 	local item = clicker:get_wielded_item()
 
 	-- Name mob with nametag
@@ -2785,17 +2788,17 @@ local on_rightclick_prefix = function(self, clicker)
 	return false
 end
 
-local create_mob_on_rightclick = function(on_rightclick)
+--[[local function create_mob_on_rightclick(on_rightclick)
 	return function(self, clicker)
 		local stop = on_rightclick_prefix(self, clicker)
 		if (not stop) and (on_rightclick) then
 			on_rightclick(self, clicker)
 		end
 	end
-end
+end]]
 
 -- set and return valid yaw
-local set_yaw = function(self, yaw, delay, dtime)
+local function set_yaw(self, yaw, delay, dtime)
 
 	if not yaw or yaw ~= yaw then
 		yaw = 0
@@ -2805,7 +2808,7 @@ local set_yaw = function(self, yaw, delay, dtime)
 
 	if delay == 0 then
 		if self.shaking and dtime then
-			yaw = yaw + (math_random() * 2 - 1) * 5 * dtime
+			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
 		end
 		self.yaw(yaw)
 		update_roll(self)
@@ -2825,8 +2828,7 @@ function mobs:yaw(self, yaw, delay, dtime)
 end
 
 
-mob_step = function()
-
+--mob_step = function()
 	--if self.state == "die" then
 	--	print("need custom die stop moving thing")
 	--	return
@@ -2901,7 +2903,7 @@ mob_step = function()
 	--end
 
 	-- mob plays random sound at times
-	--if math_random(1, 70) == 1 then
+	--if math.random(1, 70) == 1 then
 	--	mob_sound(self, "random", true)
 	--end
 
@@ -2934,11 +2936,11 @@ mob_step = function()
 
 
 	--if is_at_water_danger(self) and self.state ~= "attack" then
-	--	if math_random(1, 10) <= 6 then
+	--	if math.random(1, 10) <= 6 then
 	--		set_velocity(self, 0)
 	--		self.state = "stand"
 	--		set_animation(self, "stand")
-	--		yaw = yaw + math_random(-0.5, 0.5)
+	--		yaw = yaw + math.random(-0.5, 0.5)
 	--		yaw = set_yaw(self, yaw, 8)
 	--	end
 	--end
@@ -2982,7 +2984,7 @@ mob_step = function()
 			mcl_burning.extinguish(self.object)
 			self.object:remove()
 		elseif self.lifetimer <= 10 then
-			if math_random(10) < 4 then
+			if math.random(10) < 4 then
 				self.despawn_immediately = true
 			else
 				self.lifetimer = 20
@@ -2991,4 +2993,4 @@ mob_step = function()
 	end
 	]]--
 
-end
+--end

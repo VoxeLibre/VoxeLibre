@@ -9,7 +9,7 @@ local smokedef = mcl_particles.get_smoke_def({
 	maxrelpos = { x =  1/16, y = 0.06, z =  1/16 },
 })
 
-local spawn_flames_floor = function(pos)
+local function spawn_flames_floor(pos)
 	-- Flames
 	mcl_particles.add_node_particlespawner(pos, {
 		amount = 8,
@@ -29,7 +29,7 @@ local spawn_flames_floor = function(pos)
 	mcl_particles.add_node_smoke_particlespawner(pos, smokedef)
 end
 
-local spawn_flames_wall = function(pos)
+local function spawn_flames_wall(pos)
 	--[[
 	--local minrelpos, maxrelpos
 	local node = minetest.get_node(pos)
@@ -74,7 +74,7 @@ local spawn_flames_wall = function(pos)
 	--]]
 end
 
-local remove_flames = function(pos)
+local function remove_flames(pos)
 	mcl_particles.delete_node_particlespawners(pos)
 end
 

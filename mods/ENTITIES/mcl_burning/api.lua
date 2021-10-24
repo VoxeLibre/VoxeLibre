@@ -1,5 +1,3 @@
-local S = minetest.get_translator("mcl_burning")
-
 function mcl_burning.get_storage(obj)
 	if obj:is_player() then
 		return mcl_burning.storage[obj]
@@ -79,22 +77,15 @@ function mcl_burning.set_on_fire(obj, burn_time)
 	end
 
 	if not storage.burn_time or burn_time >= storage.burn_time then
-		if obj:is_player() and not storage.fire_hud_id then
-			storage.fire_hud_id = obj:hud_add({
-				hud_elem_type = "image",
-				position = {x = 0.5, y = 0.5},
-				scale = {x = -100, y = -100},
-				text = "mcl_burning_entity_flame_animated.png^[opacity:180^[verticalframe:" .. mcl_burning.animation_frames .. ":" .. 1,
-				z_index = 1000,
-			})
+		if obj:is_player() then
+			mcl_burning.channels[obj]:send_all(tostring(mcl_burning.animation_frames))
+			mcl_burning.channels[obj]:send_all("start")
 		end
 		storage.burn_time = burn_time
 		storage.fire_damage_timer = 0
 
 		local fire_entity = minetest.add_entity(obj:get_pos(), "mcl_burning:fire")
 		local fire_luaentity = fire_entity:get_luaentity()
-		fire_luaentity:update_visual_size(obj, storage)
-		fire_luaentity:update_frame(obj, storage)
 
 		for _, other in pairs(minetest.get_objects_inside_radius(fire_entity:get_pos(), 0)) do
 			local other_luaentity = other:get_luaentity()
@@ -110,9 +101,7 @@ function mcl_burning.extinguish(obj)
 	if mcl_burning.is_burning(obj) then
 		local storage = mcl_burning.get_storage(obj)
 		if obj:is_player() then
-			if storage.fire_hud_id then
-				obj:hud_remove(storage.fire_hud_id)
-			end
+			mcl_burning.channels[obj]:send_all("stop")
 			mcl_burning.storage[obj] = {}
 		else
 			storage.burn_time = nil

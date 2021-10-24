@@ -1,3 +1,5 @@
+local table = table
+
 mesecon.queue.actions={} -- contains all ActionQueue actions
 
 function mesecon.queue:add_function(name, func)
@@ -31,7 +33,7 @@ function mesecon.queue:add_action(pos, func, params, time, overwritecheck, prior
 		end
 	end
 
-	if (toremove ~= nil) then
+	if toremove then
 		table.remove(mesecon.queue.actions, toremove)
 	end
 
@@ -43,7 +45,7 @@ end
 -- this makes sure that resuming mesecons circuits when restarting minetest works fine
 -- However, even that does not work in some cases, that's why we delay the time the globalsteps
 -- start to be execute by 5 seconds
-local get_highest_priority = function (actions)
+local function get_highest_priority(actions)
 	local highestp = -1
 	local highesti
 	for i, ac in ipairs(actions) do

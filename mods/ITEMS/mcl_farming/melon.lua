@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_farming")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Seeds
 minetest.register_craftitem("mcl_farming:melon_seeds", {
@@ -25,11 +25,11 @@ local melon_base_def = {
 	drop = {
 		max_items = 1,
 		items = {
-			{ items = {'mcl_farming:melon_item 7'}, rarity = 14 },
-			{ items = {'mcl_farming:melon_item 6'}, rarity = 10 },
-			{ items = {'mcl_farming:melon_item 5'}, rarity = 5 },
-			{ items = {'mcl_farming:melon_item 4'}, rarity = 2 },
-			{ items = {'mcl_farming:melon_item 3'} },
+			{ items = {"mcl_farming:melon_item 7"}, rarity = 14 },
+			{ items = {"mcl_farming:melon_item 6"}, rarity = 10 },
+			{ items = {"mcl_farming:melon_item 5"}, rarity = 5 },
+			{ items = {"mcl_farming:melon_item 4"}, rarity = 2 },
+			{ items = {"mcl_farming:melon_item 3"} },
 		}
 	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -144,11 +144,11 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'mcl_farming:melon',
+	output = "mcl_farming:melon",
 	recipe = {
-		{'mcl_farming:melon_item', 'mcl_farming:melon_item', 'mcl_farming:melon_item'},
-		{'mcl_farming:melon_item', 'mcl_farming:melon_item', 'mcl_farming:melon_item'},
-		{'mcl_farming:melon_item', 'mcl_farming:melon_item', 'mcl_farming:melon_item'},
+		{"mcl_farming:melon_item", "mcl_farming:melon_item", "mcl_farming:melon_item"},
+		{"mcl_farming:melon_item", "mcl_farming:melon_item", "mcl_farming:melon_item"},
+		{"mcl_farming:melon_item", "mcl_farming:melon_item", "mcl_farming:melon_item"},
 	}
 })
 

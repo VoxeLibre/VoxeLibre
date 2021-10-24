@@ -1,0 +1,23 @@
+# textdomain: mcl_commands
+Players can't be killed right now, damage has been disabled.=Gracze nie mogą się zabić, obrażenia zostały wyłączone.
+Player @1 does not exist.=Gracz @1 nie istnieje.
+You are already dead=Już nie żyjesz
+@1 is already dead=@1 już nie żyje
+@1 committed suicide.=@1 popełniła samobójstwo.
+@1 was killed by @2.=@1 została zabita przez @2.
+[<name>]=[<Imię>]
+Kill player or yourself=Zabij gracza lub siebie
+Can use /say=Może używać /say
+<message>=<wiadomość>
+Send a message to every player=Wyślij wiadomość do każdego gracza
+Invalid usage, see /help say.=Niepoprawne użyciu, zobacz /help say.
+<X>,<Y>,<Z> <NodeString>=<X>,<Y>,<Z> <ID Node'a>
+Set node at given position=Ustaw node w danej pozycji
+Invalid node=Niepoprawny node
+@1 spawned.=@1 przywołany.
+Invalid parameters (see /help setblock)=Niepoprawne parametry (zobacz /help setblock)
+List bans=Pokaż zbanowanych
+Ban list: @1=Lista zbanowanych: @1
+Show who is logged on=Pokaż zalogowanych
+Displays the world seed=Wyświetl ziarno świata
+Only peaceful mobs allowed!=Tylko pokojowe moby dozwolone!

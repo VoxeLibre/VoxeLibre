@@ -3,8 +3,8 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
-local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
+local S = minetest.get_translator(minetest.get_current_modname())
+local mod_bows = minetest.get_modpath("mcl_bows")
 
 --###################
 --################### SKELETON
@@ -31,12 +31,8 @@ local skeleton = {
 	group_attack = true,
 	visual = "mesh",
 	mesh = "mobs_mc_skeleton.b3d",
-	textures = { {
-		"mcl_bows_bow_0.png", -- bow
-		"mobs_mc_skeleton.png", -- skeleton
-	} },
 
-	--head code
+    --head code
 	has_head = false,
 	head_bone = "head",
 

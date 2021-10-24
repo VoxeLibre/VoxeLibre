@@ -1,6 +1,6 @@
 -- mods/default/craftitems.lua
 
-local S = minetest.get_translator("mcl_core")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --
 -- Crafting items
@@ -28,7 +28,6 @@ minetest.register_craftitem("mcl_core:coal_lump", {
 	description = S("Coal"),
 	_doc_items_longdesc = S("“Coal” refers to coal lumps obtained by digging coal ore which can be found underground. Coal is your standard furnace fuel, but it can also be used to make torches, coal blocks and a few other things."),
 	_doc_items_hidden = false,
-	groups = { coal=1 },
 	inventory_image = "default_coal_lump.png",
 	stack_max = 64,
 	groups = { craftitem=1, coal=1 },
@@ -38,7 +37,6 @@ minetest.register_craftitem("mcl_core:charcoal_lump", {
 	description = S("Charcoal"),
 	_doc_items_longdesc = S("Charcoal is an alternative furnace fuel created by cooking wood in a furnace. It has the same burning time as coal and also shares many of its crafting recipes, but it can not be used to create coal blocks."),
 	_doc_items_hidden = false,
-	groups = { coal=1 },
 	inventory_image = "mcl_core_charcoal.png",
 	stack_max = 64,
 	groups = { craftitem=1, coal=1 },
@@ -95,7 +93,7 @@ minetest.register_craftitem("mcl_core:gold_ingot", {
 
 minetest.register_craftitem("mcl_core:emerald", {
 	description = S("Emerald"),
-	_doc_items_longdesc = S("Emeralds are not very useful on their own, but they can exchanged for gold ingots by crafting."),
+	_doc_items_longdesc = S("Emeralds are used in villager trades as currency."),
 	inventory_image = "mcl_core_emerald.png",
 	stack_max = 64,
 	groups = { craftitem=1 },

@@ -1,5 +1,5 @@
 settlements = {}
-settlements.modpath = minetest.get_modpath("mcl_villages")
+settlements.modpath = minetest.get_modpath(minetest.get_current_modname())
 
 dofile(settlements.modpath.."/const.lua")
 dofile(settlements.modpath.."/utils.lua")

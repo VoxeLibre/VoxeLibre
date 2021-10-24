@@ -1,5 +1,5 @@
 --License for code WTFPL and otherwise stated in readmes
-local S = minetest.get_translator("mcl_mobs")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 mcl_mobs.register_mob("mcl_mobs:bat", {
 	description = S("Bat"),

@@ -76,7 +76,7 @@ if mcl_hunger.active then
 				satuchanged = true
 			end
 			if satuchanged then
-				if h ~= nil then h = h end
+				if h then h = h end
 				mcl_hunger.update_saturation_hud(player, mcl_hunger.get_saturation(player), h)
 			end
 		end

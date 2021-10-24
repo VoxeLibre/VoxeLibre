@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_enchanting")
+local S = minetest.get_translator(minetest.get_current_modname())
 local F = minetest.formspec_escape
 
 function mcl_enchanting.is_book(itemname)
@@ -7,7 +7,7 @@ end
 
 function mcl_enchanting.get_enchantments(itemstack)
 	if not itemstack then
-		return({})
+		return {}
 	end
 	return minetest.deserialize(itemstack:get_meta():get_string("mcl_enchanting:enchantments")) or {}
 end
@@ -250,7 +250,7 @@ local function get_after_use_callback(itemdef)
 			itemstack:add_wear(digparams.wear)
 		end
 
-		local enchantments = mcl_enchanting.get_enchantments(itemstack)
+		--local enchantments = mcl_enchanting.get_enchantments(itemstack)
 		mcl_enchanting.update_groupcaps(itemstack)
 	end
 end
@@ -270,8 +270,14 @@ function mcl_enchanting.initialize()
 			new_def.groups.not_in_creative_inventory = 1
 			new_def.groups.not_in_craft_guide = 1
 			new_def.groups.enchanted = 1
-			new_def._mcl_armor_texture = new_def._mcl_armor_texture and new_def._mcl_armor_texture .. mcl_enchanting.overlay
-			new_def._mcl_armor_preview = new_def._mcl_armor_preview and new_def._mcl_armor_preview .. mcl_enchanting.overlay
+
+			if new_def._mcl_armor_texture and not type(new_def._mcl_armor_texture) == "function" then
+				new_def._mcl_armor_texture = new_def._mcl_armor_texture .. mcl_enchanting.overlay
+			end
+			if new_def._mcl_armor_preview and not type(new_def._mcl_armor_preview) == "function" then
+				new_def._mcl_armor_preview = new_def._mcl_armor_preview .. mcl_enchanting.overlay
+			end
+
 			new_def._mcl_enchanting_enchanted_tool = new_name
 			new_def.after_use = get_after_use_callback(itemdef)
 			local register_list = register_item_list
@@ -292,7 +298,7 @@ end
 function mcl_enchanting.get_possible_enchantments(itemstack, enchantment_level, treasure)
 	local possible_enchantments, weights, accum_weight = {}, {}, 0
 	for enchantment, enchantment_def in pairs(mcl_enchanting.enchantments) do
-		local supported, _, _, primary = mcl_enchanting.can_enchant(itemstack, enchantment, 1)
+		local _, _, _, primary = mcl_enchanting.can_enchant(itemstack, enchantment, 1)
 		if primary or treasure then
 			table.insert(possible_enchantments, enchantment)
 			accum_weight = accum_weight + enchantment_def.weight

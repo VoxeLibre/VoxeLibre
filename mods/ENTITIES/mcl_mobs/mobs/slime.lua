@@ -1,6 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Returns a function that spawns children in a circle around pos.
 -- To be used as on_die callback.
@@ -41,10 +41,10 @@ local spawn_children_on_die = function(child_mob, children_count, spawn_distance
 		-- If mother was murdered, children attack the killer after 1 second
 		if self.state == "attack" then
 			minetest.after(1.0, function(children, enemy)
-				for c=1, #children do
+				for c = 1, #children do
 					local child = children[c]
 					local le = child:get_luaentity()
-					if le ~= nil then
+					if le then
 						le.state = "attack"
 						le.attack = enemy
 					end

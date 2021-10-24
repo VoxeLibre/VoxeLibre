@@ -1,6 +1,6 @@
 --Fishing Rod, Bobber, and Flying Bobber mechanics and Bobber artwork by Rootyjr.
 
-local S = minetest.get_translator("mcl_fishing")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local bobber_ENTITY={
 	physical = false,
@@ -190,7 +190,7 @@ local bobber_on_step = function(self, dtime)
 	end
 	local wield = player:get_wielded_item()
 	--Check if player is nearby
-	if self.player ~= nil and player ~= nil then
+	if self.player and player then
 		--Destroy bobber if item not wielded.
 		if ((not wield) or (minetest.get_item_group(wield:get_name(), "fishing_rod") <= 0)) then
 			self.object:remove()
@@ -305,7 +305,7 @@ local flying_bobber_ENTITY={
 }
 
 -- Movement function of flying bobber
-local flying_bobber_on_step = function(self, dtime)
+local function flying_bobber_on_step(self, dtime)
 	self.timer=self.timer+dtime
 	local pos = self.object:get_pos()
 	local node = minetest.get_node(pos)
@@ -315,12 +315,9 @@ local flying_bobber_on_step = function(self, dtime)
 	-- Destroy when hitting a solid node
 	if self._lastpos.x~=nil then
 		if (def and (def.walkable or def.liquidtype == "flowing" or def.liquidtype == "source")) or not def then
-			local make_child= function(object)
-				local ent = object:get_luaentity()
-				ent.player = self._thrower
-				ent.child = true
-			end
-			make_child(minetest.add_entity(self._lastpos, "mcl_fishing:bobber_entity"))
+			local ent = minetest.add_entity(self._lastpos, "mcl_fishing:bobber_entity"):get_luaentity()
+			ent.player = self._thrower
+			ent.child = true
 			self.object:remove()
 			return
 		end
@@ -391,17 +388,17 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 minetest.register_craft({
 	output = "mcl_fishing:fishing_rod",
 	recipe = {
-		{'','','mcl_core:stick'},
-		{'','mcl_core:stick','mcl_mobitems:string'},
-		{'mcl_core:stick','','mcl_mobitems:string'},
+		{"","","mcl_core:stick"},
+		{"","mcl_core:stick","mcl_mobitems:string"},
+		{"mcl_core:stick","","mcl_mobitems:string"},
 	}
 })
 minetest.register_craft({
 	output = "mcl_fishing:fishing_rod",
 	recipe = {
-		{'mcl_core:stick', '', ''},
-		{'mcl_mobitems:string', 'mcl_core:stick', ''},
-		{'mcl_mobitems:string','','mcl_core:stick'},
+		{"mcl_core:stick", "", ""},
+		{"mcl_mobitems:string", "mcl_core:stick", ""},
+		{"mcl_mobitems:string","","mcl_core:stick"},
 	}
 })
 minetest.register_craft({

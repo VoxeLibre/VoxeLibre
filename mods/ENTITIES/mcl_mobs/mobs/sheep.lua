@@ -1,6 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### SHEEP
@@ -142,7 +142,6 @@ mobs:register_mob("mobs_mc:sheep", {
 	do_custom = function(self, dtime)
 		if not self.initial_color_set then
 			local r = math.random(0,100000)
-			local textures
 			if r <= 81836 then
 				-- 81.836%
 				self.color = "unicolor_white"

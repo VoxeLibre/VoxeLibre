@@ -34,7 +34,7 @@ function mcl_mount.mount(obj, parent, animation)
 		obj:set_look_horizontal(parent:get_yaw())
 		mcl_mount.mounted[obj] = true
 		mcl_player.player_set_animation(obj, animation or "sit", 30)
-		mcl_tmp_message.message(obj, S("Sneak to dismount"))
+		mcl_title.set(obj, "actionbar", {text = S("Sneak to dismount"), color = "white", stay = 60})
 	end
 
 	mcl_mount.update_visual_size(obj)

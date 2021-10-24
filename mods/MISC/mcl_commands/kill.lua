@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_commands")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local function handle_kill_command(suspect, victim)
 	if minetest.settings:get_bool("enable_damage") == false then

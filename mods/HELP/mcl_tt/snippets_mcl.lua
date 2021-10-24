@@ -1,8 +1,8 @@
-local S = minetest.get_translator("mcl_tt")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Armor
 tt.register_snippet(function(itemstring)
-	local def = minetest.registered_items[itemstring]
+	--local def = minetest.registered_items[itemstring]
 	local s = ""
 	local head = minetest.get_item_group(itemstring, "armor_head")
 	local torso = minetest.get_item_group(itemstring, "armor_torso")
@@ -26,7 +26,7 @@ tt.register_snippet(function(itemstring)
 	return s
 end)
 tt.register_snippet(function(itemstring, _, itemstack)
-	local def = minetest.registered_items[itemstring]
+	--local def = minetest.registered_items[itemstring]
 	local s = ""
 	local use = minetest.get_item_group(itemstring, "mcl_armor_uses")
 	local pts = minetest.get_item_group(itemstring, "mcl_armor_points")
@@ -75,7 +75,7 @@ tt.register_snippet(function(itemstring)
 end)
 
 tt.register_snippet(function(itemstring)
-	local def = minetest.registered_items[itemstring]
+	--local def = minetest.registered_items[itemstring]
 	if minetest.get_item_group(itemstring, "crush_after_fall") == 1 then
 		return S("Deals damage when falling"), mcl_colors.YELLOW
 	end
@@ -107,3 +107,8 @@ tt.register_snippet(function(itemstring)
 	end
 end)
 
+tt.register_snippet(function(itemstring, _, itemstack)
+	if itemstring:sub(1, 23) == "mcl_fishing:fishing_rod" or itemstring:sub(1, 12) == "mcl_bows:bow" then
+		return S("Durability: @1", S("@1 uses", mcl_util.calculate_durability(itemstack or ItemStack(itemstring))))
+	end
+end)

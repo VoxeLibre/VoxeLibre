@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### WITHER
@@ -26,7 +26,6 @@ mobs:register_mob("mobs_mc:wither", {
 		{"mobs_mc_wither.png"},
 	},
 	visual_size = {x=4, y=4},
-	makes_footstep_sound = true,
 	view_range = 16,
 	fear_height = 4,
 	walk_velocity = 2,
@@ -80,7 +79,7 @@ mobs:register_mob("mobs_mc:wither", {
 	end,
 })
 
-local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+--local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 
 mobs:register_arrow("mobs_mc:wither_skull", {
 	visual = "sprite",

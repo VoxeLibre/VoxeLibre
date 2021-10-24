@@ -1,6 +1,6 @@
 -- Nodes
 
-local S = minetest.get_translator("mcl_ocean")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 minetest.register_node("mcl_ocean:sea_lantern", {
 	description = S("Sea Lantern"),
@@ -12,8 +12,8 @@ minetest.register_node("mcl_ocean:sea_lantern", {
 	drop = {
 		max_items = 1,
 		items = {
-			{ items = {'mcl_ocean:prismarine_crystals 3'}, rarity = 2 },
-			{ items = {'mcl_ocean:prismarine_crystals 2'}}
+			{ items = {"mcl_ocean:prismarine_crystals 3"}, rarity = 2 },
+			{ items = {"mcl_ocean:prismarine_crystals 2"}}
 		}
 	},
 	tiles = {{name="mcl_ocean_sea_lantern.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=1.25}}},
@@ -89,37 +89,37 @@ minetest.register_craftitem("mcl_ocean:prismarine_shard", {
 -- Crafting
 
 minetest.register_craft({
-	output = 'mcl_ocean:sea_lantern',
+	output = "mcl_ocean:sea_lantern",
 	recipe = {
-		{'mcl_ocean:prismarine_shard', 'mcl_ocean:prismarine_crystals', 'mcl_ocean:prismarine_shard'},
-		{'mcl_ocean:prismarine_crystals', 'mcl_ocean:prismarine_crystals', 'mcl_ocean:prismarine_crystals'},
-		{'mcl_ocean:prismarine_shard', 'mcl_ocean:prismarine_crystals', 'mcl_ocean:prismarine_shard'},
+		{"mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_crystals", "mcl_ocean:prismarine_shard"},
+		{"mcl_ocean:prismarine_crystals", "mcl_ocean:prismarine_crystals", "mcl_ocean:prismarine_crystals"},
+		{"mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_crystals", "mcl_ocean:prismarine_shard"},
 	}
 })
 
 minetest.register_craft({
-	output = 'mcl_ocean:prismarine',
+	output = "mcl_ocean:prismarine",
 	recipe = {
-		{'mcl_ocean:prismarine_shard', 'mcl_ocean:prismarine_shard'},
-		{'mcl_ocean:prismarine_shard', 'mcl_ocean:prismarine_shard'},
+		{"mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard"},
+		{"mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard"},
 	}
 })
 
 minetest.register_craft({
-	output = 'mcl_ocean:prismarine_brick',
+	output = "mcl_ocean:prismarine_brick",
 	recipe = {
-		{'mcl_ocean:prismarine_shard', 'mcl_ocean:prismarine_shard', 'mcl_ocean:prismarine_shard'},
-		{'mcl_ocean:prismarine_shard', 'mcl_ocean:prismarine_shard', 'mcl_ocean:prismarine_shard'},
-		{'mcl_ocean:prismarine_shard', 'mcl_ocean:prismarine_shard', 'mcl_ocean:prismarine_shard'},
+		{"mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard"},
+		{"mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard"},
+		{"mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard"},
 	}
 })
 
 minetest.register_craft({
-	output = 'mcl_ocean:prismarine_dark',
+	output = "mcl_ocean:prismarine_dark",
 	recipe = {
-		{'mcl_ocean:prismarine_shard', 'mcl_ocean:prismarine_shard', 'mcl_ocean:prismarine_shard'},
-		{'mcl_ocean:prismarine_shard', 'mcl_dye:black', 'mcl_ocean:prismarine_shard'},
-		{'mcl_ocean:prismarine_shard', 'mcl_ocean:prismarine_shard', 'mcl_ocean:prismarine_shard'},
+		{"mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard"},
+		{"mcl_ocean:prismarine_shard", "mcl_dye:black", "mcl_ocean:prismarine_shard"},
+		{"mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard"},
 	}
 })
 

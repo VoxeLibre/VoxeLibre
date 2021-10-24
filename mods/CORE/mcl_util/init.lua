@@ -150,7 +150,7 @@ function mcl_util.get_eligible_transfer_item_slot(src_inventory, src_list, dst_i
 end
 
 -- Returns true if itemstack is a shulker box
-local is_not_shulker_box = function(itemstack)
+local function is_not_shulker_box(itemstack)
 	local g = minetest.get_item_group(itemstack:get_name(), "shulker_box")
 	return g == 0 or g == nil
 end
@@ -212,7 +212,7 @@ function mcl_util.move_item_container(source_pos, destination_pos, source_list, 
 	end
 
 	-- Normalize double container by forcing to always use the left segment first
-	local normalize_double_container = function(pos, node, ctype)
+	local function normalize_double_container(pos, node, ctype)
 		if ctype == 6 then
 			pos = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
 			if not pos then
@@ -456,14 +456,7 @@ function mcl_util.calculate_durability(itemstack)
 				end
 			end
 		end
-		if not uses then
-			local toolcaps = itemstack:get_tool_capabilities()
-			local groupcaps = toolcaps.groupcaps
-			for _, v in pairs(groupcaps) do
-				uses = v.uses
-				break
-			end
-		end
+		uses = uses or (next(itemstack:get_tool_capabilities().groupcaps) or {}).uses
 	end
 
 	return uses or 0
@@ -534,4 +527,13 @@ function mcl_util.get_object_name(object)
 
 		return luaentity.nametag and luaentity.nametag ~= "" and luaentity.nametag or luaentity.description or luaentity.name
 	end
+end
+
+function mcl_util.replace_mob(obj, mob)
+	local rot = obj:get_yaw()
+	local pos = obj:get_pos()
+	obj:remove()
+	obj = minetest.add_entity(pos, mob)
+	obj:set_yaw(rot)
+	return obj
 end

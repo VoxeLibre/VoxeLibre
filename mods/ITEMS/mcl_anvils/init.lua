@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_anvils")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local MAX_NAME_LENGTH = 35
 local MAX_WEAR = 65535
@@ -41,7 +41,7 @@ end
 -- needs to be used up to repair the tool.
 local function get_consumed_materials(tool, material)
 	local wear = tool:get_wear()
-	local health = (MAX_WEAR - wear)
+	--local health = (MAX_WEAR - wear)
 	local matsize = material:get_count()
 	local materials_used = 0
 	for m=1, math.min(4, matsize) do
@@ -53,6 +53,15 @@ local function get_consumed_materials(tool, material)
 	return materials_used
 end
 
+local function contains(table, value)
+	for _, i in pairs(table) do
+		if i == value then
+			return true
+		end
+	end
+	return false
+end
+
 -- Given 2 input stacks, tells you which is the tool and which is the material.
 -- Returns ("tool", input1, input2) if input1 is tool and input2 is material.
 -- Returns ("material", input2, input1) if input1 is material and input2 is tool.
@@ -60,9 +69,15 @@ end
 local function distinguish_tool_and_material(input1, input2)
 	local def1 = input1:get_definition()
 	local def2 = input2:get_definition()
-	if def1.type == "tool" and def1._repair_material then
+	local r1 = def1._repair_material
+	local r2 = def2._repair_material
+	if def1.type == "tool" and r1 and type(r1) == "table" and contains(r1, input2) then
 		return "tool", input1, input2
-	elseif def2.type == "tool" and def2._repair_material then
+	elseif def2.type == "tool" and r2 and type(r2) == "table" and contains(r2, input1) then
+		return "material", input2, input1
+	elseif def1.type == "tool" and r1 then
+		return "tool", input1, input2
+	elseif def2.type == "tool" and r2 then
 		return "material", input2, input1
 	else
 		return nil
@@ -74,10 +89,9 @@ end
 local function update_anvil_slots(meta)
 	local inv = meta:get_inventory()
 	local new_name = meta:get_string("set_name")
-	local input1, input2, output
-	input1 = inv:get_stack("input", 1)
-	input2 = inv:get_stack("input", 2)
-	output = inv:get_stack("output", 1)
+	local input1 = inv:get_stack("input", 1)
+	local input2 = inv:get_stack("input", 2)
+	--local output = inv:get_stack("output", 1)
 	local new_output, name_item
 	local just_rename = false
 
@@ -122,11 +136,28 @@ local function update_anvil_slots(meta)
 			local distinguished, tool, material = distinguish_tool_and_material(input1, input2)
 			if distinguished then
 				local tooldef = tool:get_definition()
+				local repair = tooldef._repair_material
 				local has_correct_material = false
-				if string.sub(tooldef._repair_material, 1, 6) == "group:" then
-					has_correct_material = minetest.get_item_group(material:get_name(), string.sub(tooldef._repair_material, 7)) ~= 0
-				elseif material:get_name() == tooldef._repair_material then
-					has_correct_material = true
+				local material_name = material:get_name()
+				if type(repair) == "string" then
+					if string.sub(repair, 1, 6) == "group:" then
+						has_correct_material = minetest.get_item_group(material_name, string.sub(repair, 7)) ~= 0
+					elseif material_name == repair then
+						has_correct_material = true
+					end
+				else
+					if contains(repair, material_name) then
+						has_correct_material = true
+					else
+						for _, r in pairs(repair) do
+							if string.sub(r, 1, 6) == "group:" then
+								if minetest.get_item_group(material_name, string.sub(r, 7)) ~= 0 then
+									has_correct_material = true
+								end
+
+							end
+						end
+					end
 				end
 				if has_correct_material and tool:get_wear() > 0 then
 					local materials_used = get_consumed_materials(tool, material)
@@ -181,7 +212,7 @@ local function update_anvil_slots(meta)
 	end
 
 	-- Set the new output slot
-	if new_output ~= nil then
+	if new_output then
 		inv:set_stack("output", 1, new_output)
 	end
 end
@@ -243,7 +274,6 @@ end
 -- Returns true if anvil was destroyed.
 local function damage_anvil(pos)
 	local node = minetest.get_node(pos)
-	local new
 	if node.name == "mcl_anvils:anvil" then
 		minetest.swap_node(pos, {name="mcl_anvils:anvil_damage_1", param2=node.param2})
 		damage_particles(pos, node)
@@ -278,7 +308,6 @@ local function damage_anvil_by_using(pos)
 end
 
 local function damage_anvil_by_falling(pos, distance)
-	local chance
 	local r = math.random(1, 100)
 	if distance > 1 then
 		if r <= (5*distance) then
@@ -287,6 +316,12 @@ local function damage_anvil_by_falling(pos, distance)
 	end
 end
 
+local anvilbox = {
+	type = "fixed",
+	fixed = {
+		{ -8 / 16, -8 / 16, -6 / 16, 8 / 16, 8 / 16, 6 / 16 },
+	},
+}
 local anvildef = {
 	groups = {pickaxey=1, falling_node=1, falling_node_damage=1, crush_after_fall=1, deco_block=1, anvil=1},
 	tiles = {"mcl_anvils_anvil_top_damaged_0.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"},
@@ -300,11 +335,14 @@ local anvildef = {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-8/16, 2/16, -5/16, 8/16, 8/16, 5/16}, --  top
-			{-5/16, -4/16, -2/16, 5/16, 5/16, 2/16}, -- middle
-			{-8/16, -8/16, -5/16, 8/16, -4/16, 5/16}, -- base
+			{ -6 / 16, -8 / 16, -6 / 16, 6 / 16, -4 / 16, 6 / 16 },
+			{ -5 / 16, -4 / 16, -4 / 16, 5 / 16, -3 / 16, 4 / 16 },
+			{ -4 / 16, -3 / 16, -2 / 16, 4 / 16, 2 / 16, 2 / 16 },
+			{ -8 / 16, 2 / 16, -5 / 16, 8 / 16, 8 / 16, 5 / 16 },
 		}
 	},
+	selection_box = anvilbox,
+	collision_box = anvilbox,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 5,

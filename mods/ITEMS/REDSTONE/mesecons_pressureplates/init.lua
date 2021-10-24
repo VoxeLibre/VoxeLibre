@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mesecons_pressureplates")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local PRESSURE_PLATE_INTERVAL = 0.04
 
@@ -116,7 +116,7 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 		wield_image = image_w,
 		paramtype = "light",
 		walkable = false,
-	    	description = description,
+		description = description,
 		on_timer = pp_on_timer,
 		on_construct = function(pos)
 			minetest.get_node_timer(pos):start(PRESSURE_PLATE_INTERVAL)

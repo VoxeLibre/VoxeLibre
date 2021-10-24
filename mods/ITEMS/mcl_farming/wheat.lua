@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_farming")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 minetest.register_craftitem("mcl_farming:wheat_seeds", {
 	-- Original Minecraft name: “Seeds”
@@ -85,10 +85,10 @@ minetest.register_node("mcl_farming:wheat", {
 	drop = {
 		max_items = 4,
 		items = {
-			{ items = {'mcl_farming:wheat_seeds'} },
-			{ items = {'mcl_farming:wheat_seeds'}, rarity = 2},
-			{ items = {'mcl_farming:wheat_seeds'}, rarity = 5},
-			{ items = {'mcl_farming:wheat_item'} }
+			{ items = {"mcl_farming:wheat_seeds"} },
+			{ items = {"mcl_farming:wheat_seeds"}, rarity = 2},
+			{ items = {"mcl_farming:wheat_seeds"}, rarity = 5},
+			{ items = {"mcl_farming:wheat_item"} }
 		}
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1, attached_node=1,
@@ -110,14 +110,14 @@ minetest.register_craftitem("mcl_farming:wheat_item", {
 minetest.register_craft({
 	output = "mcl_farming:bread",
 	recipe = {
-		{'mcl_farming:wheat_item', 'mcl_farming:wheat_item', 'mcl_farming:wheat_item'},
+		{"mcl_farming:wheat_item", "mcl_farming:wheat_item", "mcl_farming:wheat_item"},
 	}
 })
 
 minetest.register_craft({
 	output = "mcl_farming:cookie 8",
 	recipe = {
-		{'mcl_farming:wheat_item', 'mcl_dye:brown', 'mcl_farming:wheat_item'},
+		{"mcl_farming:wheat_item", "mcl_dye:brown", "mcl_farming:wheat_item"},
 	}
 })
 
@@ -142,7 +142,7 @@ minetest.register_craftitem("mcl_farming:bread", {
 	on_secondary_use = minetest.item_eat(5),
 })
 
-local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
+local mod_screwdriver = minetest.get_modpath("screwdriver")
 local on_rotate
 if mod_screwdriver then
 	on_rotate = screwdriver.rotate_3way
@@ -165,18 +165,18 @@ minetest.register_node("mcl_farming:hay_block", {
 })
 
 minetest.register_craft({
-	output = 'mcl_farming:hay_block',
+	output = "mcl_farming:hay_block",
 	recipe = {
-		{'mcl_farming:wheat_item', 'mcl_farming:wheat_item', 'mcl_farming:wheat_item'},
-		{'mcl_farming:wheat_item', 'mcl_farming:wheat_item', 'mcl_farming:wheat_item'},
-		{'mcl_farming:wheat_item', 'mcl_farming:wheat_item', 'mcl_farming:wheat_item'},
+		{"mcl_farming:wheat_item", "mcl_farming:wheat_item", "mcl_farming:wheat_item"},
+		{"mcl_farming:wheat_item", "mcl_farming:wheat_item", "mcl_farming:wheat_item"},
+		{"mcl_farming:wheat_item", "mcl_farming:wheat_item", "mcl_farming:wheat_item"},
 	}
 })
 
 minetest.register_craft({
-	output = 'mcl_farming:wheat_item 9',
+	output = "mcl_farming:wheat_item 9",
 	recipe = {
-		{'mcl_farming:hay_block'},
+		{"mcl_farming:hay_block"},
 	}
 })
 

@@ -25,6 +25,8 @@ mcl_player.player_register_model("mcl_armor_character.b3d", {
 		sit_mount	= {x=484, y=484},
 		die	= {x=498, y=498},
 		fly = {x=502, y=581},
+		bow_walk = {x=650, y=670},
+		bow_sneak = {x=675, y=695},
 	},
 })
 
@@ -55,6 +57,8 @@ mcl_player.player_register_model("mcl_armor_character_female.b3d", {
 		sit_mount	= {x=484, y=484},
 		die	= {x=498, y=498},
 		fly = {x=502, y=581},
+		bow_walk = {x=650, y=670},
+		bow_sneak = {x=675, y=695},
 	},
 })
 

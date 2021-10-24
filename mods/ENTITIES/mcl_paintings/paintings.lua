@@ -3,7 +3,7 @@ local TS = 16 -- texture size
 mcl_paintings.paintings = {
 	[1] = {
 		[1] = {
-	 		{ cx = 0, cy = 0 },
+			{ cx = 0, cy = 0 },
 			{ cx = TS, cy = 0 },
 			{ cx = 2*TS, cy = 0 },
 			{ cx = 3*TS, cy = 0 },
@@ -26,7 +26,7 @@ mcl_paintings.paintings = {
 			{ cx = 0, cy = 4*TS },
 			{ cx = TS, cy = 4*TS },
 		},
-		[2] = { 
+		[2] = {
 			{ cx = 0, cy = 8*TS },
 			{ cx = 2*TS, cy = 8*TS },
 			{ cx = 4*TS, cy = 8*TS },
@@ -35,7 +35,7 @@ mcl_paintings.paintings = {
 			{ cx = 10*TS, cy = 8*TS },
 		},
 		[3] = 2,
-		[4] = { 
+		[4] = {
 			{ cx = 0, cy = 6*TS },
 		},
 	},

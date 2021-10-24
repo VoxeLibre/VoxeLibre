@@ -1,4 +1,7 @@
-local S = minetest.get_translator("mcl_hunger")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+
+local S = minetest.get_translator(modname)
 
 mcl_hunger = {}
 
@@ -36,9 +39,9 @@ mcl_hunger.debug = false
 -- Cooldown timers for each player, to force a short delay between consuming 2 food items
 mcl_hunger.last_eat = {}
 
-dofile(minetest.get_modpath("mcl_hunger").."/api.lua")
-dofile(minetest.get_modpath("mcl_hunger").."/hunger.lua")
-dofile(minetest.get_modpath("mcl_hunger").."/register_foods.lua")
+dofile(modpath.."/api.lua")
+dofile(modpath.."/hunger.lua")
+dofile(modpath.."/register_foods.lua")
 
 --[[ IF HUNGER IS ENABLED ]]
 if mcl_hunger.active == true then
@@ -137,14 +140,14 @@ local timerMult = 1	-- Cycles from 0 to 7, each time when timer hits half a seco
 minetest.register_globalstep(function(dtime)
 	main_timer = main_timer + dtime
 	timer = timer + dtime
-	if main_timer > mcl_hunger.HUD_TICK or timer > 0.5 then
+	if main_timer > mcl_hunger.HUD_TICK or timer > 0.25 then
 		if main_timer > mcl_hunger.HUD_TICK then main_timer = 0 end
 		for _,player in pairs(minetest.get_connected_players()) do
 		local name = player:get_player_name()
 
 		local h = tonumber(mcl_hunger.get_hunger(player))
 		local hp = player:get_hp()
-		if timer > 0.5 then
+		if timer > 0.25 then
 			-- Slow health regeneration, and hunger damage (every 4s).
 			-- Regeneration rate based on tutorial video <https://www.youtube.com/watch?v=zs2t-xCVHBo>.
 			-- Minecraft Wiki seems to be wrong in claiming that full hunger gives 0.5s regen rate.
@@ -166,9 +169,9 @@ minetest.register_globalstep(function(dtime)
 		end
 		end
 	end
-	if timer > 0.5 then
+	if timer > 0.25 then
 		timer = 0
-		timerMult = timerMult + 1
+		timerMult = timerMult + 2
 		if timerMult > 7 then
 			timerMult = 0
 		end

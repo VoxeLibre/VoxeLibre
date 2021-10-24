@@ -1,30 +1,37 @@
-local S = minetest.get_translator("mesecons_pistons")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local PISTON_MAXIMUM_PUSH = 12
 
--- Get mesecon rules of pistons
-local piston_rules =
-{{x=0,  y=0,  z=1}, --everything apart from z- (pusher side)
- {x=1,  y=0,  z=0},
- {x=-1, y=0,  z=0},
- {x=0,  y=1,  z=0},
- {x=0,  y=-1, z=0}}
+--Get mesecon rules of pistons
 
-local piston_up_rules =
-{{x=0,  y=0,  z=-1}, --everything apart from y+ (pusher side)
- {x=0,  y=0,  z=1},
- {x=-1, y=0,  z=0},
- {x=1,  y=0,  z=0},
- {x=0,  y=-1, z=0}}
+--everything apart from z- (pusher side)
+local piston_rules = {
+	{x=0,  y=0,  z=1},
+	{x=1,  y=0,  z=0},
+	{x=-1, y=0,  z=0},
+	{x=0,  y=1,  z=0},
+	{x=0,  y=-1, z=0},
+}
 
-local piston_down_rules =
-{{x=0,  y=0,  z=-1}, --everything apart from y- (pusher side)
- {x=0,  y=0,  z=1},
- {x=-1,  y=0,  z=0},
- {x=1,  y=0,  z=0},
- {x=0,  y=1, z=0}}
+--everything apart from y+ (pusher side)
+local piston_up_rules = {
+	{x=0,  y=0,  z=-1},
+	{x=0,  y=0,  z=1},
+	{x=-1, y=0,  z=0},
+	{x=1,  y=0,  z=0},
+	{x=0,  y=-1, z=0},
+}
 
-local piston_get_rules = function (node)
+--everything apart from y- (pusher side)
+local piston_down_rules = {
+	{x=0,  y=0,  z=-1},
+	{x=0,  y=0,  z=1},
+	{x=-1,  y=0,  z=0},
+	{x=1,  y=0,  z=0},
+	{x=0,  y=1, z=0},
+}
+
+local function piston_get_rules(node)
 	local rules = piston_rules
 	for i = 1, node.param2 do
 		rules = mesecon.rotate_rules_left(rules)
@@ -32,7 +39,7 @@ local piston_get_rules = function (node)
 	return rules
 end
 
-local piston_facedir_direction = function (node)
+local function piston_facedir_direction(node)
 	local rules = {{x = 0, y = 0, z = -1}}
 	for i = 1, node.param2 do
 		rules = mesecon.rotate_rules_left(rules)
@@ -40,7 +47,7 @@ local piston_facedir_direction = function (node)
 	return rules[1]
 end
 
-local piston_get_direction = function (dir, node)
+local function piston_get_direction(dir, node)
 	if type(dir) == "function" then
 		return dir(node)
 	else
@@ -50,7 +57,7 @@ end
 
 -- Remove pusher of piston.
 -- To be used when piston was destroyed or dug.
-local piston_remove_pusher = function (pos, oldnode)
+local function piston_remove_pusher(pos, oldnode)
 	local pistonspec = minetest.registered_nodes[oldnode.name].mesecons_piston
 
 	local dir = piston_get_direction(pistonspec.dir, oldnode)
@@ -59,7 +66,7 @@ local piston_remove_pusher = function (pos, oldnode)
 
 	if pushername == pistonspec.pusher then -- make sure there actually is a pusher
 		minetest.remove_node(pusherpos)
-		core.check_for_falling(pusherpos)
+		minetest.check_for_falling(pusherpos)
 		minetest.sound_play("piston_retract", {
 			pos = pos,
 			max_hear_distance = 31,
@@ -70,7 +77,7 @@ end
 
 -- Remove base node of piston.
 -- To be used when pusher was destroyed.
-local piston_remove_base = function (pos, oldnode)
+local function piston_remove_base(pos, oldnode)
 	local basenodename = minetest.registered_nodes[oldnode.name].corresponding_piston
 	local pistonspec = minetest.registered_nodes[basenodename].mesecons_piston
 
@@ -80,7 +87,7 @@ local piston_remove_base = function (pos, oldnode)
 
 	if basename == pistonspec.onname then -- make sure there actually is a base node
 		minetest.remove_node(basepos)
-		core.check_for_falling(basepos)
+		minetest.check_for_falling(basepos)
 		minetest.sound_play("piston_retract", {
 			pos = pos,
 			max_hear_distance = 31,
@@ -89,7 +96,7 @@ local piston_remove_base = function (pos, oldnode)
 	end
 end
 
-local piston_on = function (pos, node)
+local function piston_on(pos, node)
 	local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
 
 	local dir = piston_get_direction(pistonspec.dir, node)
@@ -113,7 +120,7 @@ local piston_on = function (pos, node)
 	end
 end
 
-local piston_off = function (pos, node)
+local function piston_off(pos, node)
 	local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
 	minetest.swap_node(pos, {param2 = node.param2, name = pistonspec.offname})
 	piston_remove_pusher (pos, node)
@@ -124,13 +131,13 @@ local piston_off = function (pos, node)
 	local dir = piston_get_direction(pistonspec.dir, node)
 	local pullpos = vector.add(pos, vector.multiply(dir, 2))
 	local meta = minetest.get_meta(pos)
-	local success, stack, oldstack = mesecon.mvps_pull_single(pullpos, vector.multiply(dir, -1), PISTON_MAXIMUM_PUSH, meta:get_string("owner"), pos)
+	local success, stack = mesecon.mvps_pull_single(pullpos, vector.multiply(dir, -1), PISTON_MAXIMUM_PUSH, meta:get_string("owner"), pos)
 	if success then
 		mesecon.mvps_process_stack(pos, dir, stack)
 	end
 end
 
-local piston_orientate = function (pos, placer)
+local function piston_orientate(pos, placer)
 	mesecon.mvps_set_owner(pos, placer)
 
 	-- not placed by player
@@ -158,14 +165,14 @@ local piston_pusher_box = {
 	fixed = {
 		{-2/16, -2/16, -.5 + pt, 2/16, 2/16,  .5 + pt},
 		{-.5  , -.5  , -.5     , .5  , .5  , -.5 + pt},
-	}
+	},
 }
 
 local piston_on_box = {
 	type = "fixed",
 	fixed = {
 		{-.5, -.5, -.5 + pt, .5, .5, .5}
-	}
+	},
 }
 
 
@@ -195,18 +202,20 @@ minetest.register_node("mesecons_pistons:piston_normal_off", {
 		"mesecons_piston_bottom.png^[transformR270",
 		"mesecons_piston_back.png",
 		"mesecons_piston_pusher_front.png"
-		},
-	groups = {handy = 1, piston=1},
+	},
+	groups = {handy=1, piston=1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	after_place_node = piston_orientate,
 	mesecons_piston = pistonspec_normal,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	mesecons = {effector={
-		action_on = piston_on,
-		rules = piston_get_rules
-	}},
+	mesecons = {
+		effector = {
+			action_on = piston_on,
+			rules = piston_get_rules
+		},
+	},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_rotate = function(pos, node, user, mode)
@@ -227,8 +236,8 @@ minetest.register_node("mesecons_pistons:piston_normal_on", {
 		"mesecons_piston_bottom.png^[transformR270",
 		"mesecons_piston_back.png",
 		"mesecons_piston_on_front.png"
-		},
-	groups = {handy=1, piston=1, not_in_creative_inventory = 1},
+	},
+	groups = {handy=1, piston=1, not_in_creative_inventory=1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -238,10 +247,12 @@ minetest.register_node("mesecons_pistons:piston_normal_on", {
 	selection_box = piston_on_box,
 	mesecons_piston = pistonspec_normal,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	mesecons = {effector={
-		action_off = piston_off,
-		rules = piston_get_rules
-	}},
+	mesecons = {
+		effector = {
+			action_off = piston_off,
+			rules = piston_get_rules
+		},
+	},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_rotate = false,
@@ -257,10 +268,10 @@ minetest.register_node("mesecons_pistons:piston_pusher_normal", {
 		"mesecons_piston_pusher_right.png",
 		"mesecons_piston_pusher_back.png",
 		"mesecons_piston_pusher_front.png"
-		},
+	},
 	paramtype = "light",
 	paramtype2 = "facedir",
-	groups = { piston_pusher = 1 },
+	groups = {piston_pusher=1},
 	is_ground_content = false,
 	after_destruct = piston_remove_base,
 	diggable = false,
@@ -299,7 +310,7 @@ minetest.register_node("mesecons_pistons:piston_sticky_off", {
 		"mesecons_piston_bottom.png^[transformR270",
 		"mesecons_piston_back.png",
 		"mesecons_piston_pusher_front_sticky.png"
-		},
+	},
 	groups = {handy=1, piston=2},
 	paramtype = "light",
 	paramtype2 = "facedir",
@@ -307,10 +318,12 @@ minetest.register_node("mesecons_pistons:piston_sticky_off", {
 	after_place_node = piston_orientate,
 	mesecons_piston = pistonspec_sticky,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	mesecons = {effector={
-		action_on = piston_on,
-		rules = piston_get_rules
-	}},
+	mesecons = {
+		effector = {
+			action_on = piston_on,
+			rules = piston_get_rules
+		},
+	},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_rotate = function(pos, node, user, mode)
@@ -331,8 +344,8 @@ minetest.register_node("mesecons_pistons:piston_sticky_on", {
 		"mesecons_piston_bottom.png^[transformR270",
 		"mesecons_piston_back.png",
 		"mesecons_piston_on_front.png"
-		},
-	groups = {handy=1, piston=2, not_in_creative_inventory = 1},
+	},
+	groups = {handy=1, piston=2, not_in_creative_inventory=1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -342,10 +355,12 @@ minetest.register_node("mesecons_pistons:piston_sticky_on", {
 	selection_box = piston_on_box,
 	mesecons_piston = pistonspec_sticky,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	mesecons = {effector={
-		action_off = piston_off,
-		rules = piston_get_rules
-	}},
+	mesecons = {
+		effector = {
+			action_off = piston_off,
+			rules = piston_get_rules
+		},
+	},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_rotate = false,
@@ -361,10 +376,10 @@ minetest.register_node("mesecons_pistons:piston_pusher_sticky", {
 		"mesecons_piston_pusher_right.png",
 		"mesecons_piston_pusher_back.png",
 		"mesecons_piston_pusher_front_sticky.png"
-		},
+	},
 	paramtype = "light",
 	paramtype2 = "facedir",
-	groups = { piston_pusher = 2 },
+	groups = {piston_pusher=2},
 	is_ground_content = false,
 	after_destruct = piston_remove_base,
 	diggable = false,
@@ -388,14 +403,14 @@ local piston_up_pusher_box = {
 	fixed = {
 		{-2/16, -.5 - pt, -2/16, 2/16, .5 - pt, 2/16},
 		{-.5  ,  .5 - pt, -.5  , .5  , .5     ,   .5},
-	}
+	},
 }
 
 local piston_up_on_box = {
 	type = "fixed",
 	fixed = {
 		{-.5, -.5, -.5 , .5, .5-pt, .5}
-	}
+	},
 }
 
 -- Normal
@@ -404,7 +419,7 @@ local pistonspec_normal_up = {
 	offname = "mesecons_pistons:piston_up_normal_off",
 	onname = "mesecons_pistons:piston_up_normal_on",
 	dir = {x = 0, y = 1, z = 0},
-	pusher = "mesecons_pistons:piston_up_pusher_normal"
+	pusher = "mesecons_pistons:piston_up_pusher_normal",
 }
 
 -- offstate
@@ -416,17 +431,19 @@ minetest.register_node("mesecons_pistons:piston_up_normal_off", {
 		"mesecons_piston_bottom.png",
 		"mesecons_piston_bottom.png",
 		"mesecons_piston_bottom.png",
-		},
-	groups = {handy=1, piston=1, not_in_creative_inventory = 1},
+	},
+	groups = {handy=1, piston=1, not_in_creative_inventory=1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	drop = "mesecons_pistons:piston_normal_off",
 	mesecons_piston = pistonspec_normal_up,
-	mesecons = {effector={
-		action_on = piston_on,
-		rules = piston_up_rules,
-	}},
+	mesecons = {
+		effector = {
+			action_on = piston_on,
+			rules = piston_up_rules,
+		},
+	},
 	sounds = mcl_sounds.node_sound_stone_defaults({
 		footstep = mcl_sounds.node_sound_wood_defaults().footstep
 	}),
@@ -451,8 +468,8 @@ minetest.register_node("mesecons_pistons:piston_up_normal_on", {
 		"mesecons_piston_bottom.png",
 		"mesecons_piston_bottom.png",
 		"mesecons_piston_bottom.png",
-		},
-	groups = {handy=1, piston_=1, not_in_creative_inventory = 1},
+	},
+	groups = {handy=1, piston_=1, not_in_creative_inventory=1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -462,10 +479,12 @@ minetest.register_node("mesecons_pistons:piston_up_normal_on", {
 	selection_box = piston_up_on_box,
 	mesecons_piston = pistonspec_normal_up,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	mesecons = {effector={
-		action_off = piston_off,
-		rules = piston_up_rules,
-	}},
+	mesecons = {
+		effector = {
+			action_off = piston_off,
+			rules = piston_up_rules,
+		},
+	},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_rotate = false,
@@ -481,10 +500,10 @@ minetest.register_node("mesecons_pistons:piston_up_pusher_normal", {
 		"mesecons_piston_pusher_right.png^[transformR90",
 		"mesecons_piston_pusher_bottom.png",
 		"mesecons_piston_pusher_top.png^[transformR180",
-		},
+	},
 	paramtype = "light",
 	paramtype2 = "facedir",
-	groups = { piston_pusher = 1 },
+	groups = {piston_pusher=1},
 	is_ground_content = false,
 	after_destruct = piston_remove_base,
 	diggable = false,
@@ -507,7 +526,7 @@ local pistonspec_sticky_up = {
 	onname = "mesecons_pistons:piston_up_sticky_on",
 	dir = {x = 0, y = 1, z = 0},
 	pusher = "mesecons_pistons:piston_up_pusher_sticky",
-	sticky = true
+	sticky = true,
 }
 
 -- offstate
@@ -519,8 +538,8 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_off", {
 		"mesecons_piston_bottom.png",
 		"mesecons_piston_bottom.png",
 		"mesecons_piston_bottom.png",
-		},
-	groups = {handy=1, piston=2, not_in_creative_inventory = 1},
+	},
+	groups = {handy=1, piston=2, not_in_creative_inventory=1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -529,10 +548,12 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_off", {
 	sounds = mcl_sounds.node_sound_stone_defaults({
 		footstep = mcl_sounds.node_sound_wood_defaults().footstep
 	}),
-	mesecons = {effector={
-		action_on = piston_on,
-		rules = piston_up_rules,
-	}},
+	mesecons = {
+		effector = {
+			action_on = piston_on,
+			rules = piston_up_rules,
+		},
+	},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_rotate = function(pos, node, user, mode)
@@ -554,8 +575,8 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_on", {
 		"mesecons_piston_bottom.png",
 		"mesecons_piston_bottom.png",
 		"mesecons_piston_bottom.png",
-		},
-	groups = {handy=1, piston=2, not_in_creative_inventory = 1},
+	},
+	groups = {handy=1, piston=2, not_in_creative_inventory=1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -565,10 +586,12 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_on", {
 	selection_box = piston_up_on_box,
 	mesecons_piston = pistonspec_sticky_up,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	mesecons = {effector={
-		action_off = piston_off,
-		rules = piston_up_rules,
-	}},
+	mesecons = {
+		effector = {
+			action_off = piston_off,
+			rules = piston_up_rules,
+		},
+	},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_rotate = false,
@@ -584,10 +607,10 @@ minetest.register_node("mesecons_pistons:piston_up_pusher_sticky", {
 		"mesecons_piston_pusher_right.png^[transformR90",
 		"mesecons_piston_pusher_bottom.png",
 		"mesecons_piston_pusher_top.png^[transformR180",
-		},
+	},
 	paramtype = "light",
 	paramtype2 = "facedir",
-	groups = { piston_pusher = 2 },
+	groups = {piston_pusher=2},
 	is_ground_content = false,
 	after_destruct = piston_remove_base,
 	diggable = false,
@@ -611,14 +634,14 @@ local piston_down_pusher_box = {
 	fixed = {
 		{-2/16, -.5 + pt, -2/16, 2/16,  .5 + pt, 2/16},
 		{-.5  , -.5     , -.5  , .5  , -.5 + pt,   .5},
-	}
+	},
 }
 
 local piston_down_on_box = {
 	type = "fixed",
 	fixed = {
 		{-.5, -.5+pt, -.5 , .5, .5, .5}
-	}
+	},
 }
 
 
@@ -641,18 +664,20 @@ minetest.register_node("mesecons_pistons:piston_down_normal_off", {
 		"mesecons_piston_bottom.png^[transformR180",
 		"mesecons_piston_bottom.png^[transformR180",
 		"mesecons_piston_bottom.png^[transformR180",
-		},
-	groups = {handy=1, piston=1, not_in_creative_inventory = 1},
+	},
+	groups = {handy=1, piston=1, not_in_creative_inventory=1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	drop = "mesecons_pistons:piston_normal_off",
 	mesecons_piston = pistonspec_normal_down,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	mesecons = {effector={
-		action_on = piston_on,
-		rules = piston_down_rules,
-	}},
+	mesecons = {
+		effector = {
+			action_on = piston_on,
+			rules = piston_down_rules,
+		},
+	},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_rotate = function(pos, node, user, mode)
@@ -674,8 +699,8 @@ minetest.register_node("mesecons_pistons:piston_down_normal_on", {
 		"mesecons_piston_bottom.png^[transformR180",
 		"mesecons_piston_bottom.png^[transformR180",
 		"mesecons_piston_bottom.png^[transformR180",
-		},
-	groups = {handy=1, piston=1, not_in_creative_inventory = 1},
+	},
+	groups = {handy=1, piston=1, not_in_creative_inventory=1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -685,10 +710,12 @@ minetest.register_node("mesecons_pistons:piston_down_normal_on", {
 	selection_box = piston_down_on_box,
 	mesecons_piston = pistonspec_normal_down,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	mesecons = {effector={
-		action_off = piston_off,
-		rules = piston_down_rules,
-	}},
+	mesecons = {
+		effector = {
+			action_off = piston_off,
+			rules = piston_down_rules,
+		},
+	},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_rotate = false,
@@ -704,10 +731,10 @@ minetest.register_node("mesecons_pistons:piston_down_pusher_normal", {
 		"mesecons_piston_pusher_right.png^[transformR270",
 		"mesecons_piston_pusher_bottom.png^[transformR180",
 		"mesecons_piston_pusher_top.png",
-		},
+	},
 	paramtype = "light",
 	paramtype2 = "facedir",
-	groups = { piston_pusher = 1 },
+	groups = {piston_pusher=1},
 	is_ground_content = false,
 	after_destruct = piston_remove_base,
 	diggable = false,
@@ -727,7 +754,7 @@ local pistonspec_sticky_down = {
 	offname = "mesecons_pistons:piston_down_sticky_off",
 	dir = {x = 0, y = -1, z = 0},
 	pusher = "mesecons_pistons:piston_down_pusher_sticky",
-	sticky = true
+	sticky = true,
 }
 
 -- offstate
@@ -739,7 +766,7 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_off", {
 		"mesecons_piston_bottom.png^[transformR180",
 		"mesecons_piston_bottom.png^[transformR180",
 		"mesecons_piston_bottom.png^[transformR180",
-		},
+	},
 	groups = {handy=1, piston=2, not_in_creative_inventory = 1},
 	paramtype = "light",
 	paramtype2 = "facedir",
@@ -747,10 +774,12 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_off", {
 	drop = "mesecons_pistons:piston_sticky_off",
 	mesecons_piston = pistonspec_sticky_down,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	mesecons = {effector={
-		action_on = piston_on,
-		rules = piston_down_rules,
-	}},
+	mesecons = {
+		effector = {
+			action_on = piston_on,
+			rules = piston_down_rules,
+		},
+	},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_rotate = function(pos, node, user, mode)
@@ -772,8 +801,8 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_on", {
 		"mesecons_piston_bottom.png^[transformR180",
 		"mesecons_piston_bottom.png^[transformR180",
 		"mesecons_piston_bottom.png^[transformR180",
-		},
-	groups = {handy=1, piston=1, not_in_creative_inventory = 1},
+	},
+	groups = {handy=1, piston=1, not_in_creative_inventory=1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -783,10 +812,12 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_on", {
 	selection_box = piston_down_on_box,
 	mesecons_piston = pistonspec_sticky_down,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	mesecons = {effector={
-		action_off = piston_off,
-		rules = piston_down_rules,
-	}},
+	mesecons = {
+		effector = {
+			action_off = piston_off,
+			rules = piston_down_rules,
+		},
+	},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_rotate = false,
@@ -802,10 +833,10 @@ minetest.register_node("mesecons_pistons:piston_down_pusher_sticky", {
 		"mesecons_piston_pusher_right.png^[transformR270",
 		"mesecons_piston_pusher_bottom.png^[transformR180",
 		"mesecons_piston_pusher_top.png",
-		},
+	},
 	paramtype = "light",
 	paramtype2 = "facedir",
-	groups = { piston_pusher = 2 },
+	groups = {piston_pusher=2},
 	is_ground_content = false,
 	after_destruct = piston_remove_base,
 	diggable = false,
@@ -834,12 +865,12 @@ mesecon.register_mvps_stopper("mesecons_pistons:piston_down_sticky_on")
 
 --craft recipes
 minetest.register_craft({
-	output = 'mesecons_pistons:piston_normal_off',
+	output = "mesecons_pistons:piston_normal_off",
 	recipe = {
 		{"group:wood", "group:wood", "group:wood"},
 		{"mcl_core:cobble", "mcl_core:iron_ingot", "mcl_core:cobble"},
 		{"mcl_core:cobble", "mesecons:redstone", "mcl_core:cobble"},
-	}
+	},
 })
 
 minetest.register_craft({
@@ -847,7 +878,7 @@ minetest.register_craft({
 	recipe = {
 		{"mcl_mobitems:slimeball"},
 		{"mesecons_pistons:piston_normal_off"},
-	}
+	},
 })
 
 -- Add entry aliases for the Help

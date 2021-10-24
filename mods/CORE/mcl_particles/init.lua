@@ -1,3 +1,12 @@
+local vector = vector
+local table = table
+
+local hash_node_position = minetest.hash_node_position
+local add_particlespawner = minetest.add_particlespawner
+local delete_particlespawner = minetest.delete_particlespawner
+
+local ipairs = ipairs
+
 mcl_particles = {}
 
 -- Table of particlespawner IDs on a per-node hash basis
@@ -32,11 +41,11 @@ function mcl_particles.add_node_particlespawner(pos, particlespawner_definition,
 	if allowed_level == 0 or levels[level] > allowed_level then
 		return
 	end
-	local poshash = minetest.hash_node_position(pos)
+	local poshash = hash_node_position(pos)
 	if not poshash then
 		return
 	end
-	local id = minetest.add_particlespawner(particlespawner_definition)
+	local id = add_particlespawner(particlespawner_definition)
 	if id == -1 then
 		return
 	end
@@ -47,6 +56,8 @@ function mcl_particles.add_node_particlespawner(pos, particlespawner_definition,
 	return id
 end
 
+local add_node_particlespawner = mcl_particles.add_node_particlespawner
+
 -- Deletes all particlespawners that are assigned to a node position.
 -- If no particlespawners exist for this position, nothing happens.
 -- pos: Node positon. MUST use integer values!
@@ -55,11 +66,11 @@ function mcl_particles.delete_node_particlespawners(pos)
 	if allowed_level == 0 then
 		return false
 	end
-	local poshash = minetest.hash_node_position(pos)
+	local poshash = hash_node_position(pos)
 	local ids = particle_nodes[poshash]
 	if ids then
 		for i=1, #ids do
-			minetest.delete_particlespawner(ids[i])
+			delete_particlespawner(ids[i])
 		end
 		particle_nodes[poshash] = nil
 		return true

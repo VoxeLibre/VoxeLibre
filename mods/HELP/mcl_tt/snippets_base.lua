@@ -1,6 +1,6 @@
-local S = minetest.get_translator("mcl_tt")
+local S = minetest.get_translator(minetest.get_current_modname())
 
-local function get_min_digtime(caps)
+--[[local function get_min_digtime(caps)
 	local mintime
 	local unique = true
 	local maxlevel = caps.maxlevel
@@ -25,7 +25,7 @@ local function get_min_digtime(caps)
 		end
 	end
 	return mintime, unique
-end
+end]]
 
 local function newline(str)
 	if str ~= "" then
@@ -47,7 +47,7 @@ tt.register_snippet(function(itemstring, toolcaps)
 	local minestring = ""
 	local capstr = ""
 	local caplines = 0
-	for k,v in pairs(groupcaps) do
+	for _,v in pairs(groupcaps) do
 		local speedstr = ""
 		local miningusesstr = ""
 		-- Mining capabilities
@@ -153,9 +153,9 @@ tt.register_snippet(function(itemstring, toolcaps)
 end)
 
 -- Weapon stats
-tt.register_snippet(function(itemstring)
+--[[tt.register_snippet(function(itemstring)
 	local def = minetest.registered_items[itemstring]
-end)
+end)]]
 
 -- Food
 tt.register_snippet(function(itemstring)

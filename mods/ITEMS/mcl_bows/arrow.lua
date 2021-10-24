@@ -1,29 +1,32 @@
-local S = minetest.get_translator("mcl_bows")
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local math = math
+local vector = vector
 
 -- Time in seconds after which a stuck arrow is deleted
 local ARROW_TIMEOUT = 60
 -- Time after which stuck arrow is rechecked for being stuck
 local STUCK_RECHECK_TIME = 5
 
-local GRAVITY = 9.81
+--local GRAVITY = 9.81
 
 local YAW_OFFSET = -math.pi/2
 
-local dir_to_pitch = function(dir)
-	local dir2 = vector.normalize(dir)
+local function dir_to_pitch(dir)
+	--local dir2 = vector.normalize(dir)
 	local xz = math.abs(dir.x) + math.abs(dir.z)
 	return -math.atan2(-dir.y, xz)
 end
 
-local random_arrow_positions = function(positions, placement)
-	if positions == 'x' then
+local function random_arrow_positions(positions, placement)
+	if positions == "x" then
 		return math.random(-4, 4)
-	elseif positions == 'y' then
+	elseif positions == "y" then
 		return math.random(0, 10)
 	end
-	if placement == 'front' and positions == 'z' then
+	if placement == "front" and positions == "z" then
 		return 3
-	elseif placement == 'back' and positions == 'z' then
+	elseif placement == "back" and positions == "z" then
 		return -3
 	end
 	return 0
@@ -40,7 +43,7 @@ S("An arrow fired from a bow has a regular damage of 1-9. At full charge, there'
 S("Arrows might get stuck on solid blocks and can be retrieved again. They are also capable of pushing wooden buttons."),
 	_doc_items_usagehelp = S("To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory. To retrieve an arrow that sticks in a block, simply walk close to it."),
 	inventory_image = "mcl_bows_arrow_inv.png",
-	groups = { ammo=1, ammo_bow=1, ammo_bow_regular=1 },
+	groups = { ammo=1, ammo_bow=1, ammo_bow_regular=1, ammo_crossbow=1 },
 	_on_dispense = function(itemstack, dispenserpos, droppos, dropnode, dropdir)
 		-- Shoot arrow
 		local shootpos = vector.add(dispenserpos, vector.multiply(dropdir, 0.51))
@@ -77,7 +80,7 @@ local ARROW_ENTITY={
 }
 
 -- Destroy arrow entity self at pos and drops it as an item
-local spawn_item = function(self, pos)
+local function spawn_item(self, pos)
 	if not minetest.is_creative_enabled("") then
 		local item = minetest.add_item(pos, "mcl_bows:arrow")
 		item:set_velocity({x=0, y=0, z=0})
@@ -87,7 +90,7 @@ local spawn_item = function(self, pos)
 	self.object:remove()
 end
 
-local damage_particles = function(pos, is_critical)
+local function damage_particles(pos, is_critical)
 	if is_critical then
 		minetest.add_particlespawner({
 			amount = 15,
@@ -109,7 +112,7 @@ local damage_particles = function(pos, is_critical)
 	end
 end
 
-ARROW_ENTITY.on_step = function(self, dtime)
+function ARROW_ENTITY.on_step(self, dtime)
 	mcl_burning.tick(self.object, dtime, self)
 
 	self._time_in_air = self._time_in_air + .001
@@ -118,16 +121,6 @@ ARROW_ENTITY.on_step = function(self, dtime)
 	local dpos = table.copy(pos) -- digital pos
 	dpos = vector.round(dpos)
 	local node = minetest.get_node(dpos)
-
-	if self.object:get_attach() ~= nil and self.object:get_attach(parent):get_hp() < 1 then
-		self.object:remove()
-	end
-
-	minetest.register_on_leaveplayer(function(player)
-		if self.object:get_attach(parent) == player then
-			self.object:remove()
-		end
-	end)
 
 	if self._stuck then
 		self._stucktimer = self._stucktimer + dtime
@@ -210,8 +203,8 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			-- Arrows can only damage players and mobs
 			if obj:is_player() then
 				ok = true
-			elseif obj:get_luaentity() ~= nil then
-				if (obj:get_luaentity().is_mob or obj:get_luaentity()._hittable_by_projectile) then
+			elseif obj:get_luaentity() then
+				if obj:get_luaentity().is_mob or obj:get_luaentity()._hittable_by_projectile then
 					ok = true
 				end
 			end
@@ -230,7 +223,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 
 		-- If an attackable object was found, we will damage the closest one only
 
-		if closest_object ~= nil then
+		if closest_object then
 			local obj = closest_object
 			local is_player = obj:is_player()
 			local lua = obj:get_luaentity()
@@ -265,12 +258,12 @@ ARROW_ENTITY.on_step = function(self, dtime)
 								damage_groups={fleshy=self._damage},
 							}, self.object:get_velocity())
 							if obj:is_player() then
-								local placement = ''
+								local placement
 								self._placement = math.random(1, 2)
 								if self._placement == 1 then
-									placement = 'front'
+									placement = "front"
 								else
-									placement = 'back'
+									placement = "back"
 								end
 								self._in_player = true
 								if self._placement == 2 then
@@ -278,25 +271,25 @@ ARROW_ENTITY.on_step = function(self, dtime)
 								else
 									self._rotation_station = -90
 								end
-								self._y_position = random_arrow_positions('y', placement)
-								self._x_position = random_arrow_positions('x', placement)
+								self._y_position = random_arrow_positions("y", placement)
+								self._x_position = random_arrow_positions("x", placement)
 								if self._y_position > 6 and self._x_position < 2 and self._x_position > -2 then
-									self._attach_parent = 'Head'
+									self._attach_parent = "Head"
 									self._y_position = self._y_position - 6
 								elseif self._x_position > 2 then
-									self._attach_parent = 'Arm_Right'
+									self._attach_parent = "Arm_Right"
 									self._y_position = self._y_position - 3
 									self._x_position = self._x_position - 2
 								elseif self._x_position < -2 then
-									self._attach_parent = 'Arm_Left'
+									self._attach_parent = "Arm_Left"
 									self._y_position = self._y_position - 3
 									self._x_position = self._x_position + 2
 								else
-									self._attach_parent = 'Body'
+									self._attach_parent = "Body"
 								end
 								self._z_rotation = math.random(-30, 30)
 								self._y_rotation = math.random( -30, 30)
-								self.object:set_attach(obj, self._attach_parent, {x=self._x_position,y=self._y_position,z=random_arrow_positions('z', placement)}, {x=0,y=self._rotation_station + self._y_rotation,z=self._z_rotation})
+								self.object:set_attach(obj, self._attach_parent, {x=self._x_position,y=self._y_position,z=random_arrow_positions("z", placement)}, {x=0,y=self._rotation_station + self._y_rotation,z=self._z_rotation})
 								minetest.after(150, function()
 									self.object:remove()
 								end)
@@ -329,7 +322,9 @@ ARROW_ENTITY.on_step = function(self, dtime)
 				end
 				if not obj:is_player() then
 					mcl_burning.extinguish(self.object)
-					self.object:remove()
+					if self._piercing == 0 then
+						self.object:remove()
+					end
 				end
 				return
 			end
@@ -401,7 +396,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			if not v then
 				v = 0
 			end
-			local old_v = self._viscosity
+			--local old_v = self._viscosity
 			self._viscosity = v
 			local vpenalty = math.max(0.1, 0.98 - 0.1 * v)
 			if math.abs(vel.x) > 0.001 then
@@ -428,13 +423,13 @@ end
 
 -- Force recheck of stuck arrows when punched.
 -- Otherwise, punching has no effect.
-ARROW_ENTITY.on_punch = function(self)
+function ARROW_ENTITY.on_punch(self)
 	if self._stuck then
 		self._stuckrechecktimer = STUCK_RECHECK_TIME
 	end
 end
 
-ARROW_ENTITY.get_staticdata = function(self)
+function ARROW_ENTITY.get_staticdata(self)
 	local out = {
 		lastpos = self._lastpos,
 		startpos = self._startpos,
@@ -456,7 +451,7 @@ ARROW_ENTITY.get_staticdata = function(self)
 	return minetest.serialize(out)
 end
 
-ARROW_ENTITY.on_activate = function(self, staticdata, dtime_s)
+function ARROW_ENTITY.on_activate(self, staticdata, dtime_s)
 	self._time_in_air = 1.0
 	self._in_player = false
 	local data = minetest.deserialize(staticdata)
@@ -499,15 +494,15 @@ minetest.register_entity("mcl_bows:arrow_entity", ARROW_ENTITY)
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
 	minetest.register_craft({
-		output = 'mcl_bows:arrow 4',
+		output = "mcl_bows:arrow 4",
 		recipe = {
-			{'mcl_core:flint'},
-			{'mcl_core:stick'},
-			{'mcl_mobitems:feather'}
+			{"mcl_core:flint"},
+			{"mcl_core:stick"},
+			{"mcl_mobitems:feather"}
 		}
 	})
 end
 
-if minetest.get_modpath("doc_identifier") ~= nil then
+if minetest.get_modpath("doc_identifier") then
 	doc.sub.identifier.register_object("mcl_bows:arrow_entity", "craftitems", "mcl_bows:arrow")
 end

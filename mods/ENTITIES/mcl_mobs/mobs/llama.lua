@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### LLAMA
@@ -306,9 +306,9 @@ mobs:register_arrow("mobs_mc:spit", {
 	tail_distance_divider = 4,
 
 	hit_player = function(self, player)
-		if rawget(_G, "armor") and armor.last_damage_types then
+		--[[if rawget(_G, "armor") and armor.last_damage_types then
 			armor.last_damage_types[player:get_player_name()] = "spit"
-		end
+		end]]
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = self._damage},
@@ -318,7 +318,7 @@ mobs:register_arrow("mobs_mc:spit", {
 	hit_mob = function(self, mob)
 		mob:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
-			damage_groups = {fleshy = _damage},
+			damage_groups = {fleshy = self._damage},
 		}, nil)
 	end,
 

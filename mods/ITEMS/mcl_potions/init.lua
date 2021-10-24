@@ -1,4 +1,7 @@
-local S = minetest.get_translator("mcl_potions")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
+
 mcl_potions = {}
 
 -- duration effects of redstone are a factor of 8/3
@@ -16,8 +19,6 @@ mcl_potions.INV_FACTOR = 0.50
 mcl_potions.SPLASH_FACTOR = 0.75
 mcl_potions.LINGERING_FACTOR = 0.25
 
-
-local modpath = minetest.get_modpath("mcl_potions")
 dofile(modpath .. "/functions.lua")
 dofile(modpath .. "/commands.lua")
 dofile(modpath .. "/splash.lua")
@@ -143,7 +144,7 @@ minetest.register_craft( {
 -- Template function for creating images of filled potions
 -- - colorstring must be a ColorString of form “#RRGGBB”, e.g. “#0000FF” for blue.
 -- - opacity is optional opacity from 0-255 (default: 127)
-local potion_image = function(colorstring, opacity)
+local function potion_image(colorstring, opacity)
 	if not opacity then
 		opacity = 127
 	end
@@ -271,7 +272,7 @@ minetest.register_craftitem("mcl_potions:river_water", {
 })
 
 -- Hurt mobs
-local water_splash = function(obj, damage)
+local function water_splash(obj, damage)
 	if not obj then
 		return
 	end
@@ -314,9 +315,9 @@ minetest.register_craftitem("mcl_potions:speckled_melon", {
 minetest.register_craft({
 	output = "mcl_potions:speckled_melon",
 	recipe = {
-		{'mcl_core:gold_nugget', 'mcl_core:gold_nugget', 'mcl_core:gold_nugget'},
-		{'mcl_core:gold_nugget', 'mcl_farming:melon_item', 'mcl_core:gold_nugget'},
-		{'mcl_core:gold_nugget', 'mcl_core:gold_nugget', 'mcl_core:gold_nugget'},
+		{"mcl_core:gold_nugget", "mcl_core:gold_nugget", "mcl_core:gold_nugget"},
+		{"mcl_core:gold_nugget", "mcl_farming:melon_item", "mcl_core:gold_nugget"},
+		{"mcl_core:gold_nugget", "mcl_core:gold_nugget", "mcl_core:gold_nugget"},
 	}
 })
 
@@ -428,21 +429,20 @@ local mod_table = {
 
 -- Compare two ingredients for compatable alchemy
 function mcl_potions.get_alchemy(ingr, pot)
-
-	if output_table[pot] ~= nil then
+	if output_table[pot] then
 
 		local brew_table = output_table[pot]
 
-		if brew_table[ingr] ~= nil then
+		if brew_table[ingr] then
 			return brew_table[ingr]
 		end
 	end
 
-	if mod_table[ingr] ~= nil then
+	if mod_table[ingr] then
 
 		local brew_table = mod_table[ingr]
 
-		if brew_table[pot] ~= nil then
+		if brew_table[pot] then
 			return brew_table[pot]
 		end
 
