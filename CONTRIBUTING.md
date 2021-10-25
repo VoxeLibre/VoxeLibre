@@ -164,7 +164,7 @@ global table named like the mod.
 * Public functions should not use self references but rather just access
 the table directly.
 * Use modern Minetest API
-* Use tabs for indentation (rather than spaces)
+* Tabs should be used for indent, spaces for alignment
 
 ### Changes to Gameplay
 Pull Requests that change gameplay have to be properly researched and
