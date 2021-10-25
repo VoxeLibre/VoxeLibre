@@ -136,9 +136,10 @@ to MineClone2. We can help you avoid writing code that would be deemed
 inadequeate, or help you become familiar with Mineclone2 better, or even
 help using development tools. By asking us to include your changes in
 this game, you agree that they fall under the terms of the GPLv3, which
-basically means they will become part of a free software. If your code
-leads to bugs or crashes after being merged, it is your responsibility
-to fix them as soon as possible.
+basically means they will become part of a free software. Sometimes,
+your code may cause crashes or bugs - we try to avoid such scenarios by
+testing everytime before merging it, but if your merged work causes
+problems, we ask you fix the issues as soon as possible.
 
 ### The recommended workflow
 * Fork the repository (in case you have not already)
