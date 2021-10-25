@@ -118,7 +118,7 @@ Maintainers grant/revoke developer access.
 
 Currently there are two maintainers with different responsibility fields:
 
-* Fleckenstein - responsible for gameplay review, technical guidelines and issue/PR delegation
+* Fleckenstein - responsible for gameplay review, publishing releases, technical guidelines and issue/PR delegation
 * Nicu - responsible for community related issues
 
 #### Creating releases
