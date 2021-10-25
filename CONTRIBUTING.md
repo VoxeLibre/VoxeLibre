@@ -166,7 +166,10 @@ before they are merged.
 You can use these sources:
 
 * Minecraft code (Name the source file and line, however DONT post any
-proprietary code). You can use MCP to decompile Minecraft.
+proprietary code). You can use
+[MCP](https://minecraft.fandom.com/wiki/Programs_and_editors/Mod_Coder_Pack)
+to decompile Minecraft or look at
+[Minestorm](https://github.com/Minestom/Minestom) code.
 * Testing things inside of Minecraft (Attach screenshots / video footage
 of the results)
 * Official Minecraft Wiki (Include a link to the page)
