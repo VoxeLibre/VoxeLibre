@@ -25,10 +25,10 @@ whether you're a programmer or not.
 ## Using git
 MineClone2 is developed using the version control system [git](https://git-scm.com/). If you want to
 contribute code to the project, it is **highly recommended** that you learn the git basics.
-However, if you're not a programmer or don't plan to help with the coding part of the development,
-it's still useful if you know it - in case you want to contribute files that are not related to code,
-or to easily keep your game updated and test out pull requests. However, it's not required in this
-case.
+For non-programmers and people who do not plan to contribute code to Mineclone2, git is not required.
+However, git is a tool that will be referenced frequently because of its usefulness.
+As such, it is valuable in learning how git works and its terminology. It can also help you in
+keeping your game updated, and easily testing pull requests.
 
 ## How you can help as a non-programmer
 
