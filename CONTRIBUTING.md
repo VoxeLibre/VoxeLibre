@@ -94,7 +94,7 @@ If your code leads to bugs or crashes after being merged, it is your responsibil
 * Each mod which add API functions should store functions inside a global table named like the mod.
 * Public functions should not use self references but rather just access the table directly.
 * Use modern Minetest API
-* Use tabs instead of spaces
+* Use tabs for indentation (rather than spaces)
 * Even if it improves performance, it is discouraged to localize variables at the beggining of files, since if another mod overrides some of the functions / variables you localized, you will still have a reference to the old function.
 
 ### Changes to Gameplay
