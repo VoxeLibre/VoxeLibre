@@ -5,7 +5,7 @@ Wow, thank you! :-)
 But first, some things to note:
 
 MineClone2's development target is to make a free software clone of Minecraft,
-***version 1.17***, ***Java Edition***, *** + Optifine features supported by the Minetest Engine ***. The priority is making polished features up to version 1.12.
+***version 1.17***, ***Java Edition***, ***+ Optifine features supported by the Minetest Engine***. The priority is making polished features up to version 1.12.
 
 MineClone2 is maintained by Nicu and Fleckenstein. If you have any
 problems or questions, contact us (See Links section below).
