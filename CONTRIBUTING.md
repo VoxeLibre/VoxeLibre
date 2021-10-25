@@ -126,8 +126,8 @@ If you opened or have contributed to an issue, you receive the
 (Almost) all the MineClone2 development is done using pull requests.
 If you feel like a problem needs to fixed or you want to make a new
 feature, you could start writing the code right away and notifying us
-when you're, but it it never hurts to discuss things first. If there is
-no issue on the topic, open one. If there is an issue, tell us that
+when you're done, but it never hurts to discuss things first. If there
+is no issue on the topic, open one. If there is an issue, tell us that
 you'd like to take care of it, to avoid duplicate work. Note that we
 appreciate any effort, so even if you are a relatively new programmer,
 you can already contribute to the project - if you have problems or
