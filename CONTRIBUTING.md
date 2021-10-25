@@ -5,7 +5,7 @@ Wow, thank you! :-)
 But first, some things to note:
 
 MineClone2's development target is to make a free software clone of Minecraft,
-***version 1.17***, ***Java Edition***, *** + Optifine features supported by the Minetest Engine***. The priority is making polished features up to version 1.12.
+***version 1.17***, ***Java Edition***, *** + Optifine features supported by the Minetest Engine ***. The priority is making polished features up to version 1.12.
 
 MineClone2 is maintained by Nicu and Fleckenstein. If you have any
 problems or questions, contact us (See Links section below).
@@ -40,7 +40,7 @@ report a bug or request a feature.
 ### Rules about both bugs and feature requests
 * Stay polite towards the developers and anyone else involved in the discussion.
 * Choose a descriptive title.
-* Try to use proper english and please start the title with a capital letter.
+* Try to use proper English and please start the title with a capital letter.
 * Always check the currently opened issues before creating a new one. Don't report bugs that have already been reported or request features that already have been requested.
 * If you know about Minetest's inner workings, please think about whether the bug / the feature that you are reporting / requesting is actually an issue with Minetest itself, and if it is, head to the [Minetest issue tracker](https://github.com/minetest/minetest/issues) instead.
 * If you need any help regarding creating a Mesehub account or opening an issue, feel free to ask on the Discord / Matrix server or the IRC channel.
