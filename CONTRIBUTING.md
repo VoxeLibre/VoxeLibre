@@ -67,7 +67,7 @@ If you own a server, a great way to help us improve MineClone2's code is by givi
 Minetest has a built in profiler. Simply set `profiler.load = true` in your configuration file and restart the server. After running the server for some time, just run `/profiler save` in chat - then you will find a file in the world directory containing the results. Open a new issue and upload the file. You can name the issue "<Server name> profiler results".
 
 ### Let us know your opinion
-It is always encouraged to actively contribute to issue discussions, let us know what you think about a topic and help us make decisions.
+It is always encouraged to actively contribute to issue discussions on MeseHub, let us know what you think about a topic and help us make decisions. Also, note that a lot of discussion takes place on the Discord server, so it's definitely worth checking it out.
 
 ### Crediting
 If you opened or have contributed to an issue, you receive the `Community` role on our Discord (after asking for it).
