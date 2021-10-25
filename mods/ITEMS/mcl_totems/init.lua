@@ -37,7 +37,7 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 				for i = 1, 4 do
 					for c = 1, #particle_colors do
 						minetest.add_particlespawner({
-    							amount = math.round(100/(4 * #particle_colors)),
+    							amount = math.floor(100 / (4 * #particle_colors)),
     							time = 1,
     							minpos = vector.offset(ppos, 0, -1, 0),
     							maxpos = vector.offset(ppos, 0, 1, 0),
