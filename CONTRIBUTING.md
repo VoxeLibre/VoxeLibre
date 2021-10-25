@@ -128,15 +128,17 @@ If you feel like a problem needs to fixed or you want to make a new
 feature, you could start writing the code right away and notifying us
 when you're done, but it never hurts to discuss things first. If there
 is no issue on the topic, open one. If there is an issue, tell us that
-you'd like to take care of it, to avoid duplicate work. Note that we
-appreciate any effort, so even if you are a relatively new programmer,
-you can already contribute to the project - if you have problems or
-questions regarding git, Lua, or the Minetest API - or the MineClone2
-codebase, feel free to ask them on our Discord. By asking us to include
-your changes in this game, you agree that they fall under the terms of
-the GPLv3, which basically means they will become part of a free
-software. If your code leads to bugs or crashes after being merged, it
-is your responsibility to fix them as soon as possible.
+you'd like to take care of it, to avoid duplicate work. We appreciate
+any contributing effort to Mineclone2. If you are a relatively new
+programmer, you can reach us on Discord, Matrix or IRC for questions
+about git, Lua, Minetest API, Mineclone2 codebase or anything related
+to MineClone2. We can help you avoid writing code that would be deemed
+inadequeate, or help you become familiar with Mineclone2 better, or even
+help using development tools. By asking us to include your changes in
+this game, you agree that they fall under the terms of the GPLv3, which
+basically means they will become part of a free software. If your code
+leads to bugs or crashes after being merged, it is your responsibility
+to fix them as soon as possible.
 
 ### The recommended workflow
 * Fork the repository (in case you have not already)
