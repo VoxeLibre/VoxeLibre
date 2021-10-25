@@ -161,15 +161,78 @@ issue.
 
 ### Code Guidelines
 * Each mod must provide `mod.conf`.
-* Mod names are snake case, and newly added mods start with `mcl_`
-* Each mod which add API functions should store functions inside a
-global table named like the mod.
+* Mod names are snake case, and newly added mods start with `mcl_`, e.g.
+`mcl_core`, `mcl_farming`, `mcl_monster_eggs`
+* To export functions, store them inside a global table named like the
+mod, e.g.
+
+```lua
+mcl_example = {}
+
+function mcl_example.do_something()
+	-- ...
+end
+
+```
+
 * Public functions should not use self references but rather just access
-the table directly.
-* Use modern Minetest API
-* Tabs should be used for indent, spaces for alignment
-* Use double quotes for strings
-* Use snake_case rather than CamelCase
+the table directly, e.g.
+
+```lua
+-- bad
+function mcl_example:do_something()
+end
+
+-- good
+function mcl_example.do_something()
+end
+```
+
+* Use modern Minetest API, e.g. no usage of `minetest.env`
+* Tabs should be used for indent, spaces for alignment, e.g.
+
+```lua
+
+-- use tabs for indent
+
+for i = 1, 10 do
+	if i % 3 == 0 then
+		print(i)
+	end
+end
+
+-- use tabs for indent and spaces to align things
+
+some_table = {
+	{"a string",                   5},
+	{"a very much longer string", 10},
+}
+```
+
+* Use double quotes for strings, e.g. `"asdf"` rather than `'asdf'`
+* Use snake_case rather than CamelCase, e.g. `my_function` rather than
+`MyFunction`
+* Dont declare functions as an assignment, e.g.
+
+```lua
+-- bad
+local some_local_func = function()
+	-- ...
+end
+
+my_mod.some_func = function()
+	-- ...
+end
+
+-- good
+local function some_local_func()
+	-- ...
+end
+
+function my_mod.some_func()
+	-- ...
+end
+```
 
 ### Changes to Gameplay
 Pull Requests that change gameplay have to be properly researched and
