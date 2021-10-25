@@ -160,6 +160,7 @@ issue.
 
 ### Code Guidelines
 * Each mod must provide `mod.conf`.
+* Mod names are snake case, and newly added mods start with `mcl_`
 * Each mod which add API functions should store functions inside a
 global table named like the mod.
 * Public functions should not use self references but rather just access
@@ -167,6 +168,7 @@ the table directly.
 * Use modern Minetest API
 * Tabs should be used for indent, spaces for alignment
 * Use double quotes for strings
+* Use snake_case rather than CamelCase
 
 ### Changes to Gameplay
 Pull Requests that change gameplay have to be properly researched and
