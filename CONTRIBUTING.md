@@ -77,9 +77,10 @@ e.g. before the crash happened or what causes the faulty behavior
 ### Requesting features
 * Make sure the feature you request is Minecraft 1.17 Java Edition or
 Optifine behavior.
-* Don't beg for something to be implemented. We are not going to rethink
-our development roadmap because someone sais "Pls pls make this I'm
-waiting for this so bad!!!11!".
+* Begging or excessive attention seeking does not help us in the
+slightest, and may very well disrupt Mineclone2 development. It's better
+to put that energy into helping or researching the feature in question.
+After all, we're just volunteers working on our spare time.
 * Check whether the feature has been implemented in a newer version of
 MineClone2, in case you are not using the latest one.
 
