@@ -71,8 +71,9 @@ when the crash happened (or copy the message into your issue). If you
 are a server admin, you can find error messages in the log file of the
 server.
 * Tell us which MineClone2 and minetest versions you are using.
-* It's always useful to tell us what you were doing to trigger the bug,
-e.g. before the crash happened or what causes the faulty behavior
+* Tell us how to reproduce the problem: What you were doing to trigger
+the bug, e.g. before the crash happened or what causes the faulty
+behavior.
 
 ### Requesting features
 * Make sure the feature you request is Minecraft 1.17 Java Edition or
