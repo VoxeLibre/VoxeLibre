@@ -34,20 +34,29 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 				-- Effects
 				minetest.sound_play({name = "mcl_totems_totem", gain = 1}, {pos=ppos, max_hear_distance = 16}, true)
 				
-				for i = 1, 100 do
-					minetest.add_particle({
-						pos = vector.offset(ppos, 0, math.random(-10, 10) / 10, 0),
-        					velocity = vector.new(math.random(-15, 15) / 10, math.random(0, 15) / 10, math.random(-15, 15) / 10),
-        					acceleration = vector.new(0, -math.random(1, 10) / 10, 0),
-        					expirationtime = math.random(1, 3),
-        					size = math.random(1, 2),
-        					collisiondetection = true,
-        					collision_removal = true,
-        					object_collision = false,
-        					texture = "mcl_particles_totem" .. math.random(1, 4) .. ".png^[colorize:#" .. particle_colors[math.random(#particle_colors)],
-        					glow = 10,
-					})
-					
+				for i = 1, 4 do
+					for c = 1, #particle_colors do
+						minetest.add_particlespawner({
+    							amount = math.round(100/(4 * #particle_colors)),
+    							time = 1,
+    							minpos = vector.offset(ppos, 0, -1, 0),
+    							maxpos = vector.offset(ppos, 0, 1, 0),
+    							minvel = vector.new(-1.5, 0, -1.5),
+    							maxvel = vector.new(1.5, 1.5, 1.5),
+    							minacc = vector.new(0, -0.1, 0),
+    							maxacc = vector.new(0, -1, 0),
+    							minexptime = 1,
+    							maxexptime = 3,
+    							minsize = 1,
+    							maxsize = 2,
+    							collisiondetection = true,
+    							collision_removal = true,
+    							object_collision = false,
+    							vertical = false,
+    							texture = "mcl_particles_totem" .. i .. ".png^[colorize:#" .. particle_colors[c],
+    							glow = 10,
+    						})
+					end
 				end
 
 				-- Big totem overlay
