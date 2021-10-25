@@ -28,6 +28,7 @@ Pig=
 Polar Bear=
 Rabbit=
 Killer Bunny=
+The Killer Bunny=
 Sheep=
 Shulker=
 Silverfish=

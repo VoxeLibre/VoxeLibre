@@ -84,7 +84,7 @@ local function attach_object(self, obj)
 			end
 		end, name)
 		obj:set_look_horizontal(yaw)
-		mcl_tmp_message.message(obj, S("Sneak to dismount"))
+		mcl_title.set(obj, "actionbar", {text=S("Sneak to dismount"), color="white", stay=60})
 	else
 		obj:get_luaentity()._old_visual_size = visual_size
 	end

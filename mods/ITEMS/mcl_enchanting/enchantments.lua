@@ -379,8 +379,8 @@ mcl_enchanting.enchantments.mending = {
 	inv_tool_tab = true,
 }
 
--- requires missing MineClone2 feature
---[[mcl_enchanting.enchantments.multishot = {
+
+mcl_enchanting.enchantments.multishot = {
 	name = S("Multishot"),
 	max_level = 1,
 	primary = {crossbow = true},
@@ -396,10 +396,10 @@ mcl_enchanting.enchantments.mending = {
 	power_range_table = {{20, 50}},
 	inv_combat_tab = true,
 	inv_tool_tab = false,
-}]]--
+}
 
 -- requires missing MineClone2 feature
---[[mcl_enchanting.enchantments.piercing = {
+mcl_enchanting.enchantments.piercing = {
 	name = S("Piercing"),
 	max_level = 4,
 	primary = {crossbow = true},
@@ -415,7 +415,7 @@ mcl_enchanting.enchantments.mending = {
 	power_range_table = {{1, 50}, {11, 50}, {21, 50}, {31, 50}},
 	inv_combat_tab = true,
 	inv_tool_tab = false,
-}]]--
+}
 
 -- implemented in mcl_bows
 mcl_enchanting.enchantments.power = {
@@ -456,7 +456,7 @@ mcl_enchanting.enchantments.punch = {
 }
 
 -- requires missing MineClone2 feature
---[[mcl_enchanting.enchantments.quick_charge = {
+mcl_enchanting.enchantments.quick_charge = {
 	name = S("Quick Charge"),
 	max_level = 3,
 	primary = {crossbow = true},
@@ -472,7 +472,7 @@ mcl_enchanting.enchantments.punch = {
 	power_range_table = {{12, 50}, {32, 50}, {52, 50}},
 	inv_combat_tab = true,
 	inv_tool_tab = false,
-}]]--
+}
 
 -- unimplemented
 --[[mcl_enchanting.enchantments.respiration = {

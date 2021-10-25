@@ -95,7 +95,7 @@ Dirt acts as a soil for a few plants. When in light, this block may grow a grass
 Emerald=
 Emerald Ore=
 Emerald ore is the ore of emeralds. It is very rare and can be found alone, not in clusters.=
-Emeralds are not very useful on their own, but they can exchanged for gold ingots by crafting.=
+Emeralds are used in villager trades as currency.=
 Flint=
 Flint is a raw material.=
 Flowing Lava=

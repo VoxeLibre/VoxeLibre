@@ -45,3 +45,4 @@ Mining durability: @1=
 Block breaking strength: @1=
 @1 uses=
 Unlimited uses=
+Durability: @1=

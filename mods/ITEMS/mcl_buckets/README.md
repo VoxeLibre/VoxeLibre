@@ -1,9 +1,12 @@
-Bucket mod.
-Originally taken from Minetest Game, adapted for MineClone 2.
+# MineClone2 Bucket (`mcl_bucket`)
+Originally taken from Minetest Game, adapted for MineClone2.
 
-License of source code:
------------------------
+This mod add buckets to the game, including an API to register your own (see `API.md`).
+
+## License
+
 Copyright (C) 2011-2012 Kahrl <kahrl@gmx.net>
+
 Copyright (C) 2011-2012 celeron55, Perttu Ahola <celeron55@gmail.com>
 
 This program is free software; you can redistribute it and/or modify

@@ -53,6 +53,15 @@ local function get_consumed_materials(tool, material)
 	return materials_used
 end
 
+local function contains(table, value)
+	for _, i in pairs(table) do
+		if i == value then
+			return true
+		end
+	end
+	return false
+end
+
 -- Given 2 input stacks, tells you which is the tool and which is the material.
 -- Returns ("tool", input1, input2) if input1 is tool and input2 is material.
 -- Returns ("material", input2, input1) if input1 is material and input2 is tool.
@@ -60,9 +69,15 @@ end
 local function distinguish_tool_and_material(input1, input2)
 	local def1 = input1:get_definition()
 	local def2 = input2:get_definition()
-	if def1.type == "tool" and def1._repair_material then
+	local r1 = def1._repair_material
+	local r2 = def2._repair_material
+	if def1.type == "tool" and r1 and type(r1) == "table" and contains(r1, input2) then
 		return "tool", input1, input2
-	elseif def2.type == "tool" and def2._repair_material then
+	elseif def2.type == "tool" and r2 and type(r2) == "table" and contains(r2, input1) then
+		return "material", input2, input1
+	elseif def1.type == "tool" and r1 then
+		return "tool", input1, input2
+	elseif def2.type == "tool" and r2 then
 		return "material", input2, input1
 	else
 		return nil
@@ -121,11 +136,28 @@ local function update_anvil_slots(meta)
 			local distinguished, tool, material = distinguish_tool_and_material(input1, input2)
 			if distinguished then
 				local tooldef = tool:get_definition()
+				local repair = tooldef._repair_material
 				local has_correct_material = false
-				if string.sub(tooldef._repair_material, 1, 6) == "group:" then
-					has_correct_material = minetest.get_item_group(material:get_name(), string.sub(tooldef._repair_material, 7)) ~= 0
-				elseif material:get_name() == tooldef._repair_material then
-					has_correct_material = true
+				local material_name = material:get_name()
+				if type(repair) == "string" then
+					if string.sub(repair, 1, 6) == "group:" then
+						has_correct_material = minetest.get_item_group(material_name, string.sub(repair, 7)) ~= 0
+					elseif material_name == repair then
+						has_correct_material = true
+					end
+				else
+					if contains(repair, material_name) then
+						has_correct_material = true
+					else
+						for _, r in pairs(repair) do
+							if string.sub(r, 1, 6) == "group:" then
+								if minetest.get_item_group(material_name, string.sub(r, 7)) ~= 0 then
+									has_correct_material = true
+								end
+
+							end
+						end
+					end
 				end
 				if has_correct_material and tool:get_wear() > 0 then
 					local materials_used = get_consumed_materials(tool, material)
@@ -284,6 +316,12 @@ local function damage_anvil_by_falling(pos, distance)
 	end
 end
 
+local anvilbox = {
+	type = "fixed",
+	fixed = {
+		{ -8 / 16, -8 / 16, -6 / 16, 8 / 16, 8 / 16, 6 / 16 },
+	},
+}
 local anvildef = {
 	groups = {pickaxey=1, falling_node=1, falling_node_damage=1, crush_after_fall=1, deco_block=1, anvil=1},
 	tiles = {"mcl_anvils_anvil_top_damaged_0.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"},
@@ -297,11 +335,14 @@ local anvildef = {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-8/16, 2/16, -5/16, 8/16, 8/16, 5/16}, --  top
-			{-5/16, -4/16, -2/16, 5/16, 5/16, 2/16}, -- middle
-			{-8/16, -8/16, -5/16, 8/16, -4/16, 5/16}, -- base
+			{ -6 / 16, -8 / 16, -6 / 16, 6 / 16, -4 / 16, 6 / 16 },
+			{ -5 / 16, -4 / 16, -4 / 16, 5 / 16, -3 / 16, 4 / 16 },
+			{ -4 / 16, -3 / 16, -2 / 16, 4 / 16, 2 / 16, 2 / 16 },
+			{ -8 / 16, 2 / 16, -5 / 16, 8 / 16, 8 / 16, 5 / 16 },
 		}
 	},
+	selection_box = anvilbox,
+	collision_box = anvilbox,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 5,
