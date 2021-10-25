@@ -46,8 +46,9 @@ you can report a bug or request a feature.
 * Stay polite towards the developers and anyone else involved in the
 discussion.
 * Choose a descriptive title.
-* Try to use proper English and please start the title with a capital
-letter.
+* Please write in plain, understandable English. It will be easier to
+communicate.
+* Please start the issue title with a capital letter.
 * Always check the currently opened issues before creating a new one.
 Don't report bugs that have already been reported or request features
 that already have been requested.
