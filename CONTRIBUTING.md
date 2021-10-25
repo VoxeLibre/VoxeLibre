@@ -166,6 +166,7 @@ global table named like the mod.
 the table directly.
 * Use modern Minetest API
 * Tabs should be used for indent, spaces for alignment
+* Use double quotes for strings
 
 ### Changes to Gameplay
 Pull Requests that change gameplay have to be properly researched and
