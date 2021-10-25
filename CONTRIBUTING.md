@@ -172,7 +172,8 @@ to decompile Minecraft or look at
 [Minestorm](https://github.com/Minestom/Minestom) code.
 * Testing things inside of Minecraft (Attach screenshots / video footage
 of the results)
-* Official Minecraft Wiki (Include a link to the page)
+* [Official Minecraft Wiki](https://minecraft.fandom.com/wiki/Minecraft_Wiki)
+(Include a link to the specific page you used)
 
 ### Developer status
 Active and trusted contributors are often granted write access to the
