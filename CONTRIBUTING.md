@@ -145,7 +145,9 @@ problems, we ask you fix the issues as soon as possible.
 * Fork the repository (in case you have not already)
 * Do your change in a new branch
 * Create a pull request to get your changes merged into master
-* Keep your pull request up to date by regulary merging upstream
+* Keep your pull request up to date by regulary merging upstream. It is
+imperative that conflicts are resolved prior to merging the pull
+request.
 * After the pull request got merged, you can delete the branch
 
 ### Git Guidelines
