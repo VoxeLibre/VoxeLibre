@@ -157,7 +157,8 @@ request.
 * Your commit names should be relatively descriptive, e.g. when saying
 "Fix #issueid", the commit message should also contain the title of the
 issue.
-* Try to keep your commits as atomic as possible
+* Try to keep your commits as atomic as possible (advise, but completely
+optional)
 
 ### Code Guidelines
 * Each mod must provide `mod.conf`.
