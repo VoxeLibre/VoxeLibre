@@ -158,10 +158,6 @@ global table named like the mod.
 the table directly.
 * Use modern Minetest API
 * Use tabs for indentation (rather than spaces)
-* Even if it improves performance, it is discouraged to localize
-variables at the beggining of files, since if another mod overrides some
-of the functions / variables you localized, you will still have a
-reference to the old function.
 
 ### Changes to Gameplay
 Pull Requests that change gameplay have to be properly researched and
