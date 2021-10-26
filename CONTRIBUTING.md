@@ -137,24 +137,8 @@ If you opened or have contributed to an issue, you receive the
 
 ## How you can help as a programmer
 (Almost) all the MineClone2 development is done using pull requests.
-If you feel like a problem needs to fixed or you want to make a new
-feature, you could start writing the code right away and notifying us
-when you're done, but it never hurts to discuss things first. If there
-is no issue on the topic, open one. If there is an issue, tell us that
-you'd like to take care of it, to avoid duplicate work. We appreciate
-any contributing effort to Mineclone2. If you are a relatively new
-programmer, you can reach us on Discord, Matrix or IRC for questions
-about git, Lua, Minetest API, Mineclone2 codebase or anything related
-to MineClone2. We can help you avoid writing code that would be deemed
-inadequeate, or help you become familiar with Mineclone2 better, or even
-help using development tools. By asking us to include your changes in
-this game, you agree that they fall under the terms of the GPLv3, which
-basically means they will become part of a free software. Sometimes,
-your code may cause crashes or bugs - we try to avoid such scenarios by
-testing everytime before merging it, but if your merged work causes
-problems, we ask you fix the issues as soon as possible.
 
-### The recommended workflow
+### Recommended workflow
 * Fork the repository (in case you have not already)
 * Do your change in a new branch
 * Create a pull request to get your changes merged into master
@@ -163,7 +147,45 @@ imperative that conflicts are resolved prior to merging the pull
 request.
 * After the pull request got merged, you can delete the branch
 
-### Git Guidelines
+### Discuss first
+If you feel like a problem needs to fixed or you want to make a new
+feature, you could start writing the code right away and notifying us
+when you're done, but it never hurts to discuss things first. If there
+is no issue on the topic, open one. If there is an issue, tell us that
+you'd like to take care of it, to avoid duplicate work.
+
+### Don't hesitate to ask for help
+We appreciate any contributing effort to MineClone2. If you are a
+relatively new programmer, you can reach us on Discord, Matrix or IRC
+for questions about git, Lua, Minetest API, MineClone2 codebase or
+anything related to MineClone2. We can help you avoid writing code that
+would be deemed inadequeate, or help you become familiar with MineClone2
+better, or even help using development tools.
+
+### Maintain your own code, even if alreay got merged
+Sometimes, your code may cause crashes or bugs - we try to avoid such
+scenarios by testing everytime before merging it, but if your merged
+work causes problems, we ask you fix the issues as soon as possible.
+
+### Changing Gameplay
+Pull Requests that change gameplay have to be properly researched and
+need to state their sources. These PRs also need Fleckenstein's approval
+before they are merged.
+You can use these sources:
+
+* Minecraft code (Name the source file and line, however DONT post any
+proprietary code). You can use
+[MCP](https://minecraft.fandom.com/wiki/Programs_and_editors/Mod_Coder_Pack)
+to decompile Minecraft or look at
+[Minestorm](https://github.com/Minestom/Minestom) code.
+* Testing things inside of Minecraft (Attach screenshots / video footage
+of the results)
+* [Official Minecraft Wiki](https://minecraft.fandom.com/wiki/Minecraft_Wiki)
+(Include a link to the specific page you used)
+
+### Keep our guidelines
+
+#### Git Guidelines
 * We use merge rather than rebase or squash merge
 * We don't use git submodules.
 * Your commit names should be relatively descriptive, e.g. when saying
@@ -172,7 +194,7 @@ issue.
 * Try to keep your commits as atomic as possible (advise, but completely
 optional)
 
-### Code Guidelines
+#### Code Guidelines
 * Each mod must provide `mod.conf`.
 * Mod names are snake case, and newly added mods start with `mcl_`, e.g.
 `mcl_core`, `mcl_farming`, `mcl_monster_eggs`. Keep in mind Minetest
@@ -226,7 +248,7 @@ some_table = {
 * Use double quotes for strings, e.g. `"asdf"` rather than `'asdf'`
 * Use snake_case rather than CamelCase, e.g. `my_function` rather than
 `MyFunction`
-* Dont declare functions as an assignment, e.g.
+* Don't declare functions as an assignment, e.g.
 
 ```lua
 -- bad
@@ -248,21 +270,10 @@ function my_mod.some_func()
 end
 ```
 
-### Changes to Gameplay
-Pull Requests that change gameplay have to be properly researched and
-need to state their sources. These PRs also need Fleckenstein's approval
-before they are merged.
-You can use these sources:
-
-* Minecraft code (Name the source file and line, however DONT post any
-proprietary code). You can use
-[MCP](https://minecraft.fandom.com/wiki/Programs_and_editors/Mod_Coder_Pack)
-to decompile Minecraft or look at
-[Minestorm](https://github.com/Minestom/Minestom) code.
-* Testing things inside of Minecraft (Attach screenshots / video footage
-of the results)
-* [Official Minecraft Wiki](https://minecraft.fandom.com/wiki/Minecraft_Wiki)
-(Include a link to the specific page you used)
+### Licensing
+By asking us to include your changes in
+this game, you agree that they fall under the terms of the GPLv3, which
+basically means they will become part of a free software.
 
 ### Developer status
 Active and trusted contributors are often granted write access to the
