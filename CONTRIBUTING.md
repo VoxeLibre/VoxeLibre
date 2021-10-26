@@ -4,10 +4,22 @@ Wow, thank you! :-)
 
 But first, some things to note:
 
-MineClone2's development target is to make a free software clone of
-Minecraft, ***version 1.17***, ***Java Edition***, ***+ Optifine
-features supported by the Minetest Engine***. The priority is making
-polished features up to version 1.12.
+MineClone2's development target is to...
+
+- Crucially, create a stable, moddable, free/libre clone of Minecraft
+based on the Minetest engine with polished features, usable in both
+singleplayer and multiplayer. Currently, most of **Minecraft Java
+Edition 1.12.2** features are already implemented and polishing existing
+features are prioritised over new feature requests.
+- With lessened priority yet strictly, implement features targetting
+**Minecraft version 1.17 + Optifine** (Optifine only as far as supported
+by the Minetest Engine). This means features in parity with the listed
+Minecraft experiences are prioritised over those that don't fulfill this
+scope.
+- Optionally, create a performant experience that will run relatively
+well on really low spec computers. Unfortunately, due to Minecraft's
+mechanisms and Minetest engine's limitations along with a very small
+playerbase on low spec computers, optimizations are hard to investigate.
 
 MineClone2 is maintained by Nicu and Fleckenstein. If you have any
 problems or questions, contact us (See Links section below).
@@ -298,7 +310,7 @@ version number
 (https://forum.minetest.net/viewtopic.php?f=50&t=16407)
 * Post release announcement and changelog in forums
 
-## Crediting
+### Crediting
 Contributors, Developers and Maintainers will be credited in
 `CREDITS.md`. If you make your first time contribution, please add
 yourself to this file. There are also Discord roles for Contributors,
