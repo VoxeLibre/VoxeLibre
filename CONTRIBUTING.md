@@ -113,6 +113,63 @@ pull requests here:
 requests that start with a `WIP:` are not done yet, and therefore might
 not work, so it's not very useful to try them out yet.
 
+### Contributing assets
+Due to license problems, MineClone2 can unfortunately not use
+Minecraft's assets, therefore we are always looking for asset
+contributions. To contribute assets, it can be useful to learn git
+basics and read the section for Programmers of this document, however
+this is not required. It's also a good idea to join the Discord server
+(or alternatively IRC or Matrix).
+
+#### Textures
+For textures we use the Pixel Perfection texture pack. This is mostly
+enough; however in some cases - e.g. for newer minecraft features, it's
+useful to have texture artists around. If you want to make such
+contributions, join our Discord server. Demands for textures will be
+communicated there.
+
+#### Sounds
+MineClone2 currently does not have a consistent way to handle sounds.
+The sounds in the game come from different sources, like the SnowZone
+ressource pack or minetest_game. Unfortunately, MineClone2 does not play
+a sound in every situation you would get one in Minecraft. Any help with
+sounds is greatly appreciated, however if you add new sounds you should
+probably work together with a programmer, to write the code to actually
+play these sounds in game.
+
+#### 3D Models
+Most of the 3D Models in MineClone2 come from
+[22i's repository](https://github.com/22i/minecraft-voxel-blender-models).
+Similar to the textures, we need people that can make 3D Models with
+Blender on demand. Many of the models have to be patched, some new
+animations have to be added etc.
+
+#### Translations
+
+##### Workflow
+To add/update support for your language to MineClone2, you should take
+the steps documented in the section for Programmers, add/update the
+translation files of the mods that you want to update. You can add
+support for all mods, just some of them or only one mod; you can update
+the translation file entirely or only partly; basically any effort is
+valued. If your changes are small, you can also send them to developers
+via E-Mail, Discord, IRC or Matrix - they will credit you appropriately.
+
+##### Things to note
+You can use the script at `tools/check_translate_files.py` to compare
+the translation files for the language you are working on with the
+template files, to see what is missing and what is out of date with
+the template file. However, template files are often incomplete and/or
+out of date, sometimes they don't match the code. You can update the
+translation files if that is required, you can also modifiy the code in
+your translation PR if it's related to translation. You can also work on
+multiple languages at the same time in one PR.
+
+#### Crediting
+Asset contributions will be credited in their own respective sections in
+CREDITS.md. If you have commited the results yourself, you will also be
+credited in the Contributors section.
+
 ### Profiling
 If you own a server, a great way to help us improve MineClone2's code
 is by giving us profiler results. Profiler results give us detailed
