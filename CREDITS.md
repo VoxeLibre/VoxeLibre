@@ -8,8 +8,8 @@
 
 ## Maintainers
 * Fleckenstein
+* Nicu
 * kay27
-* jordan4ibanez
 
 ## Developers
 * bzoss
@@ -19,7 +19,6 @@
 * iliekprogrammar
 * MysticTempest
 * Rootyjr
-* Nicu
 * aligator
 * Code-Sploit
 * NO11
