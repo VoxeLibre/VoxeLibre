@@ -117,11 +117,13 @@ not work, so it's not very useful to try them out yet.
 If you own a server, a great way to help us improve MineClone2's code
 is by giving us profiler results. Profiler results give us detailed
 information about the game's performance and let us know where the real
-troublespots are. This way we can make the game faster. Minetest has a
-built in profiler. Simply set `profiler.load = true` in your
-configuration file and restart the server. After running the server for
-some time, just run `/profiler save` in chat - then you will find a file
-in the world directory containing the results. Open a new issue and
+troublespots are. This way we can make the game faster.
+
+#### Using Minetest's profiler
+Minetest has a built in profiler. Simply set `profiler.load = true` in
+your configuration file and restart the server. After running the server
+for some time, just run `/profiler save` in chat - then you will find a
+file in the world directory containing the results. Open a new issue and
 upload the file. You can name the issue "<Server name> profiler
 results".
 
