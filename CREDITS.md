@@ -110,6 +110,7 @@
 * wuniversales
 * kay27
 * pitchum
+* todoporlalibertad
 
 ## Special thanks
 * celeron55 for creating Minetest

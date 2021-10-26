@@ -1,100 +1,129 @@
 # textdomain: mcl_enchanting
-Aqua Affinity=
-Increases underwater mining speed.=
-Bane of Arthropods=
-Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=
-Blast Protection=
-Reduces explosion damage and knockback.=
-Channeling=
-Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=
-Curse of Binding=
-Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=
-Curse of Vanishing=
-Item destroyed on death.=
-Depth Strider=
-Increases underwater movement speed.=
-Efficiency=
-Increases mining speed.=
-Feather Falling=
-Reduces fall damage.=
-Fire Aspect=
-Sets target on fire.=
-Fire Protection=
-Reduces fire damage.=
-Flame=
-Arrows set target on fire.=
-Fortune=
-Increases certain block drops.=
-Frost Walker=
-Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=
-Impaling=
-Trident deals additional damage to ocean mobs.=
-Infinity=
-Shooting consumes no regular arrows.=
-Knockback=
-Increases knockback.=
-Looting=
-Increases mob loot.=
-Loyalty=
-Trident returns after being thrown. Higher levels reduce return time.=
-Luck of the Sea=
-Increases rate of good loot (enchanting books, etc.)=
-Lure=
-Decreases time until rod catches something.=
-Mending=
-Repair the item while gaining XP orbs.=
-Multishot=
-Shoot 3 arrows at the cost of one.=
-Piercing=
+
+
+### enchantments.lua ###
+
 Arrows passes through multiple objects.=
-Power=
-Increases arrow damage.=
-Projectile Protection=
-Reduces projectile damage.=
-Protection=
-Reduces most types of damage by 4% for each level.=
-Punch=
-Increases arrow knockback.=
-Quick Charge=
+Arrows set target on fire.=
+Bane of Arthropods=
+Channeling=
+
+Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=
+
+Curse of Vanishing=
 Decreases crossbow charging time.=
-Respiration=
+Decreases time until rod catches something.=
+Depth Strider=
+Efficiency=
 Extends underwater breathing time.=
-Riptide=
-Trident launches player with itself when thrown. Works only in water or rain.=
-Sharpness=
-Increases damage.=
-Silk Touch=
-Mined blocks drop themselves.=
-Smite=
+Fire Aspect=
+Flame=
+Fortune=
+Frost Walker=
+Impaling=
+Increases arrow damage.=
+Increases arrow knockback.=
+Increases certain block drops.=
+
+Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=
+
 Increases damage to undead mobs.=
-Soul Speed=
-Increases walking speed on soul sand.=
-Sweeping Edge=
-Increases sweeping attack damage.=
-Thorns=
-Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=
-Unbreaking=
+Increases damage.=
 Increases item durability.=
-Inventory=
-@1 Lapis Lazuli=
+Increases knockback.=
+Increases mining speed.=
+Increases mob loot.=
+Increases rate of good loot (enchanting books, etc.)=
+Increases sweeping attack damage.=
+Increases underwater movement speed.=
+Increases walking speed on soul sand.=
+Infinity=
+Item destroyed on death.=
+Knockback=
+Looting=
+Loyalty=
+Luck of the Sea=
+Lure=
+Mending=
+Mined blocks drop themselves.=
+Multishot=
+Piercing=
+Power=
+Punch=
+Quick Charge=
+Repair the item while gaining XP orbs.=
+Respiration=
+Riptide=
+Sets target on fire.=
+Sharpness=
+Shoot 3 arrows at the cost of one.=
+Shooting consumes no regular arrows.=
+Silk Touch=
+Smite=
+Soul Speed=
+Sweeping Edge=
+Trident deals additional damage to ocean mobs.=
+
+Trident launches player with itself when thrown. Works only in water or rain.=
+
+Trident returns after being thrown. Higher levels reduce return time.=
+
+Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=
+
+Unbreaking=
+
+### engine.lua ###
+
 @1 Enchantment Levels=
+@1 Lapis Lazuli=
+Inventory=
 Level requirement: @1=
-Enchant an item=
-<player> <enchantment> [<level>]=
-Usage: /enchant <player> <enchantment> [<level>]=
-Player '@1' cannot be found.=
-There is no such enchantment '@1'.=
-The target doesn't hold an item.=
-The selected enchantment can't be added to the target item.=
+
+### init.lua ###
+
 '@1' is not a valid number=
-The number you have entered (@1) is too big, it must be at most @2.=
-The number you have entered (@1) is too small, it must be at least @2.=
-@1 can't be combined with @2.=
-Enchanting succeded.=
-Forcefully enchant an item=
-Usage: /forceenchant <player> <enchantment> [<level>]=
-The target item is not enchantable.=
 '@1' is not a valid number.=
+<player> <enchantment> [<level>]=
+@1 can't be combined with @2.=
+
+After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=
+
+After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=
+
+Enchant=
+Enchant an item=
 Enchanted Book=
 Enchanting Table=
-Enchant=
+
+Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=
+
+Enchanting succeded.=
+Forcefully enchant an item=
+
+Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=
+
+Player '@1' cannot be found.=
+Rightclick the Enchanting Table to open the enchanting menu.=
+Spend experience, and lapis to enchant various items.=
+
+The number you have entered (@1) is too big, it must be at most @2.=
+
+The number you have entered (@1) is too small, it must be at least @2.=
+
+The selected enchantment can't be added to the target item.=
+The target doesn't hold an item.=
+The target item is not enchantable.=
+There is no such enchantment '@1'.=
+
+These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=
+
+To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=
+
+Usage: /enchant <player> <enchantment> [<level>]=
+Usage: /forceenchant <player> <enchantment> [<level>]=
+
+
+##### not used anymore #####
+
+# textdomain: mcl_enchanting
+Aqua Affinity=
