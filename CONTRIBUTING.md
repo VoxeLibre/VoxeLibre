@@ -270,11 +270,6 @@ function my_mod.some_func()
 end
 ```
 
-### Licensing
-By asking us to include your changes in
-this game, you agree that they fall under the terms of the GPLv3, which
-basically means they will become part of a free software.
-
 ### Developer status
 Active and trusted contributors are often granted write access to the
 MineClone2 repository. However you should not push things directly to
@@ -320,6 +315,11 @@ version number
 * Update first post in forum thread
 (https://forum.minetest.net/viewtopic.php?f=50&t=16407)
 * Post release announcement and changelog in forums
+
+### Licensing
+By asking us to include your changes in
+this game, you agree that they fall under the terms of the GPLv3, which
+basically means they will become part of a free software.
 
 ### Crediting
 Contributors, Developers and Maintainers will be credited in
