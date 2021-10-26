@@ -299,19 +299,25 @@ your code. You should be on the Discord (or, if you really don't like
 Discord, Matrix or IRC).
 
 ### Maintainer status
-Maintainers are responsible for making sure issues are addressed and
-pull requests are reviewed and merged, by assigning either themselves or
-Developers to issues / PRs. Maintainers are responsible for making
-releases, making sure guidelines are kept and making project decisions
-based on what the community wants. Maintainers grant/revoke developer
-access. Currently there are two maintainers with different
-responsibility fields:
+Maintainers carry the main responsibility for the project.
 
+#### Maintainer responsibilities
+- Making sure issues are addressed and pull requests are reviewed and
+merged, by assigning either themselves or Developers to issues / PRs
+- Making releases
+- Making sure guidelines are kept
+- Making project decisions based on what the community wants
+- Granting/revoking developer access
+- Enforcing the code of conduct (See CODE_OF_CONDUCT.md)
+- Moderating official community spaces (See Links section)
+- Resolving conflicts and problems within the community
+
+#### Current maintainers
 * Fleckenstein - responsible for gameplay review, publishing releases,
 technical guidelines and issue/PR delegation
 * Nicu - responsible for community related issues
 
-#### Creating releases
+#### Release process
 * Launch MineClone2 to make sure it still runs
 * Update the version number in README.md
 * Use `git tag <version number>` to tag the latest commit with the
