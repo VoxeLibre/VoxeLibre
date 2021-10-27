@@ -94,8 +94,8 @@ Optifine behavior.
 slightest, and may very well disrupt MineClone2 development. It's better
 to put that energy into helping or researching the feature in question.
 After all, we're just volunteers working on our spare time.
-* Check whether the feature has been implemented in a newer version of
-MineClone2, in case you are not using the latest one.
+* Ensure the requested feature has not been implemented in MineClone2
+latest or development versions.
 
 ### Testing code
 If you want to help us with speeding up MineClone2 development and
