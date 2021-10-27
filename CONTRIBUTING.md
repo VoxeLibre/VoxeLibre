@@ -114,7 +114,7 @@ requests that start with a `WIP:` are not done yet, and therefore might
 not work, so it's not very useful to try them out yet.
 
 ### Contributing assets
-Due to license problems, MineClone2 can unfortunately not use
+Due to license problems, MineClone2 unfortunately cannot use
 Minecraft's assets, therefore we are always looking for asset
 contributions. To contribute assets, it can be useful to learn git
 basics and read the section for Programmers of this document, however
