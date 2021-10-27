@@ -88,8 +88,8 @@ the bug, e.g. before the crash happened or what causes the faulty
 behavior.
 
 ### Requesting features
-* Make sure the feature you request is Minecraft 1.17 Java Edition or
-Optifine behavior.
+* Ensure the requested feature fulfills our development targets and
+goals.
 * Begging or excessive attention seeking does not help us in the
 slightest, and may very well disrupt MineClone2 development. It's better
 to put that energy into helping or researching the feature in question.
