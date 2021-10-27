@@ -2,10 +2,13 @@
 So you want to contribute to MineClone2?
 Wow, thank you! :-)
 
-But first, some things to note:
+MineClone2 is maintained by Nicu and Fleckenstein. If you have any
+problems or questions, contact us (See Links section below).
 
-MineClone2's development target is to...
+You can help with MineClone2's development in many different ways,
+whether you're a programmer or not.
 
+## MineClone2's development target is to...
 - Crucially, create a stable, moddable, free/libre clone of Minecraft
 based on the Minetest engine with polished features, usable in both
 singleplayer and multiplayer. Currently, most of **Minecraft Java
@@ -20,12 +23,6 @@ scope.
 well on really low spec computers. Unfortunately, due to Minecraft's
 mechanisms and Minetest engine's limitations along with a very small
 playerbase on low spec computers, optimizations are hard to investigate.
-
-MineClone2 is maintained by Nicu and Fleckenstein. If you have any
-problems or questions, contact us (See Links section below).
-
-You can help with MineClone2's development in many different ways,
-whether you're a programmer or not.
 
 ## Links
 * [Mesehub](https://git.minetest.land/MineClone2/MineClone2)
