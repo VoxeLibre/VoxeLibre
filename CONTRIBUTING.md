@@ -41,7 +41,7 @@ MineClone2 is developed using the version control system
 [git](https://git-scm.com/). If you want to contribute code to the
 project, it is **highly recommended** that you learn the git basics.
 For non-programmers and people who do not plan to contribute code to
-Mineclone2, git is not required. However, git is a tool that will be
+MineClone2, git is not required. However, git is a tool that will be
 referenced frequently because of its usefulness. As such, it is valuable
 in learning how git works and its terminology. It can also help you in
 keeping your game updated, and easily testing pull requests.
@@ -91,7 +91,7 @@ behavior.
 * Make sure the feature you request is Minecraft 1.17 Java Edition or
 Optifine behavior.
 * Begging or excessive attention seeking does not help us in the
-slightest, and may very well disrupt Mineclone2 development. It's better
+slightest, and may very well disrupt MineClone2 development. It's better
 to put that energy into helping or researching the feature in question.
 After all, we're just volunteers working on our spare time.
 * Check whether the feature has been implemented in a newer version of
