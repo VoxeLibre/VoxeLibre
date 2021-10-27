@@ -40,8 +40,8 @@ project, it is **highly recommended** that you learn the git basics.
 For non-programmers and people who do not plan to contribute code to
 MineClone2, git is not required. However, git is a tool that will be
 referenced frequently because of its usefulness. As such, it is valuable
-in learning how git works and its terminology. It can also help you in
-keeping your game updated, and easily testing pull requests.
+in learning how git works and its terminology. It can also help you
+keeping your game updated, and easily test pull requests.
 
 ## How you can help as a non-programmer
 
