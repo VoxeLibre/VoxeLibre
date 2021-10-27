@@ -242,7 +242,7 @@ of the results)
 * [Official Minecraft Wiki](https://minecraft.fandom.com/wiki/Minecraft_Wiki)
 (Include a link to the specific page you used)
 
-### Keep our guidelines
+### Stick to our guidelines
 
 #### Git Guidelines
 * We use merge rather than rebase or squash merge
