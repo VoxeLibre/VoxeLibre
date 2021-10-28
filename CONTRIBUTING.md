@@ -103,9 +103,10 @@ programmer saying "Look, I modified the game, please apply my changes
 to the upstream version of the game". However, every programmer makes
 mistakes sometimes, some of which are hard to spot. You can help by
 downloading this modified version of the game and trying it out - then
-you tell us whether the code works and does what it claims to do or
-whether you have encountered any issues. You can find currently open
-pull requests here:
+tell us if the code works as expected without any issues. Ideally, you
+would report issues will pull requests similar to when you were
+reporting bugs that are the mainline (See Reporting bugs section). You
+can find currently open pull requests here:
 <https://git.minetest.land/MineClone2/MineClone2/pulls>. Note that pull
 requests that start with a `WIP:` are not done yet, and therefore might
 not work, so it's not very useful to try them out yet.
