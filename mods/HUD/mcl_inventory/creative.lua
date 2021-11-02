@@ -417,8 +417,7 @@ function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size,
 		return
 			"style["..this_tab..";border=false;bgimg=;bgimg_pressed=]"..
 			"item_image_button[" .. boffset[this_tab] ..";1,1;"..tab_icon[this_tab]..";"..this_tab..";]"..
-			"image[" .. offset[this_tab] .. ";1.5,1.44;" .. bg_img .. "]" ..
-			"image[" .. boffset[this_tab] .. ";1,1;crafting_creative_marker.png]"
+			"image[" .. offset[this_tab] .. ";1.5,1.44;" .. bg_img .. "]"
 	end
 	local caption = ""
 	if name ~= "inv" and filtername[name] then
