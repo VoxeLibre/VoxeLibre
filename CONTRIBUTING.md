@@ -344,7 +344,7 @@ requests as a developer. In this case it is your responsibility to fix
 the issue / review and merge the pull request when it is ready. You can
 also unassign yourself from the issue / PR if you have no time or don't
 want to take care of it for some other reason. After all, everyone is a
-volunteer and we can't expect you to do work that you are not intrested
+volunteer and we can't expect you to do work that you are not interested
 in. **The important thing is that you make sure to inform us if you
 won't take care of something that has been assigned to you.**
 - Please assign yourself to something that you want to work on to avoid
