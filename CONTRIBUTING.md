@@ -13,11 +13,11 @@ whether you're a programmer or not.
 based on the Minetest engine with polished features, usable in both
 singleplayer and multiplayer. Currently, most of **Minecraft Java
 Edition 1.12.2** features are already implemented and polishing existing
-features are prioritised over new feature requests.
+features are prioritized over new feature requests.
 - With lessened priority yet strictly, implement features targetting
 **Minecraft version 1.17 + Optifine** (Optifine only as far as supported
 by the Minetest Engine). This means features in parity with the listed
-Minecraft experiences are prioritised over those that don't fulfill this
+Minecraft experiences are prioritized over those that don't fulfill this
 scope.
 - Optionally, create a performant experience that will run relatively
 well on really low spec computers. Unfortunately, due to Minecraft's
