@@ -336,7 +336,7 @@ MineClone2 repository.
 MineClone2 master - rather, do your work on a branch on your private
 repository, then create a pull request. This way other people can review
 your changes and make sure they work before they get merged.
-- Merge PRs only when they have recieved the necessary feedback and have
+- Merge PRs only when they have received the necessary feedback and have
 been tested to not lead to any crashes and do what they claim to do by
 at least two different people.
 - You may also be assigned to issues or pull
