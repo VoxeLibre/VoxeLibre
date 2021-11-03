@@ -129,7 +129,7 @@ communicated there.
 #### Sounds
 MineClone2 currently does not have a consistent way to handle sounds.
 The sounds in the game come from different sources, like the SnowZone
-ressource pack or minetest_game. Unfortunately, MineClone2 does not play
+resource pack or minetest_game. Unfortunately, MineClone2 does not play
 a sound in every situation you would get one in Minecraft. Any help with
 sounds is greatly appreciated, however if you add new sounds you should
 probably work together with a programmer, to write the code to actually
