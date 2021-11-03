@@ -378,7 +378,7 @@ technical guidelines and issue/PR delegation
 * Update the version number in README.md
 * Use `git tag <version number>` to tag the latest commit with the
 version number
-* Push to repo (don't forget `--tags`!)
+* Push to repository (don't forget `--tags`!)
 * Update ContentDB
 (https://content.minetest.net/packages/Wuzzy/mineclone2/)
 * Update first post in forum thread
