@@ -116,15 +116,6 @@ function hud_manager.change_hud(data)
     end
 end
 
--- gets if hud exists
-function hud_manager.hud_exists(player,hud_name)
-    local name = player:get_player_name()
-    if player_huds[name] and player_huds[name][hud_name] then
-        return true
-    else
-        return false
-    end
-end
 -------------------
 
 -- saves specific users data for when they relog
