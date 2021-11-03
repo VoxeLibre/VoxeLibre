@@ -15,7 +15,7 @@ singleplayer and multiplayer. Currently, most of **Minecraft Java
 Edition 1.12.2** features are already implemented and polishing existing
 features are prioritized over new feature requests.
 - With lessened priority yet strictly, implement features targetting
-**Minecraft version 1.17 + Optifine** (Optifine only as far as supported
+**Minecraft version 1.17 + OptiFine** (OptiFine only as far as supported
 by the Minetest Engine). This means features in parity with the listed
 Minecraft experiences are prioritized over those that don't fulfill this
 scope.
