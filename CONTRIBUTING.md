@@ -349,9 +349,10 @@ in. **The important thing is that you make sure to inform us if you
 won't take care of something that has been assigned to you.**
 - Please assign yourself to something that you want to work on to avoid
 duplicate work.
-- As a developer, it should be easy to reach you about
-your code. You should be on the Discord (or, if you really don't like
-Discord, Matrix or IRC).
+- As a developer, it should be easy to reach you about your work. You
+should be in at least one of the public MineClone2 discussion rooms -
+preferrably Discord, but if you really don't like Discord, Matrix
+or IRC are fine too.
 
 ### Maintainer status
 Maintainers carry the main responsibility for the project.
