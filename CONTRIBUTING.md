@@ -75,11 +75,11 @@ channel.
 However, it is not a bug if you believe something is missing in the
 game. In this case, please read "Requesting features"
 * If you report a crash, always include the error message. If you play
-in singleplayer, post a screenshot of the message that minetest showed
+in singleplayer, post a screenshot of the message that Minetest showed
 when the crash happened (or copy the message into your issue). If you
 are a server admin, you can find error messages in the log file of the
 server.
-* Tell us which MineClone2 and minetest versions you are using.
+* Tell us which MineClone2 and Minetest versions you are using.
 * Tell us how to reproduce the problem: What you were doing to trigger
 the bug, e.g. before the crash happened or what causes the faulty
 behavior.
