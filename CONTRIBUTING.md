@@ -221,7 +221,7 @@ better, or assist you use development tools.
 
 ### Maintain your own code, even if already got merged
 Sometimes, your code may cause crashes or bugs - we try to avoid such
-scenarios by testing everytime before merging it, but if your merged
+scenarios by testing every time before merging it, but if your merged
 work causes problems, we ask you fix the issues as soon as possible.
 
 ### Changing Gameplay
