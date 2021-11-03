@@ -362,7 +362,7 @@ Maintainers carry the main responsibility for the project.
 merged, by assigning either themselves or Developers to issues / PRs
 - Making releases
 - Making sure guidelines are kept
-- Making project decisions based on what the community wants
+- Making project decisions based on community feedback
 - Granting/revoking developer access
 - Enforcing the code of conduct (See CODE_OF_CONDUCT.md)
 - Moderating official community spaces (See Links section)
