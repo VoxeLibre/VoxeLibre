@@ -216,7 +216,7 @@ We appreciate any contributing effort to MineClone2. If you are a
 relatively new programmer, you can reach us on Discord, Matrix or IRC
 for questions about git, Lua, Minetest API, MineClone2 codebase or
 anything related to MineClone2. We can help you avoid writing code that
-would be deemed inadequeate, or help you become familiar with MineClone2
+would be deemed inadequate, or help you become familiar with MineClone2
 better, or assist you use development tools.
 
 ### Maintain your own code, even if alreay got merged
