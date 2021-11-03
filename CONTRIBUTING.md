@@ -159,7 +159,7 @@ the translation files for the language you are working on with the
 template files, to see what is missing and what is out of date with
 the template file. However, template files are often incomplete and/or
 out of date, sometimes they don't match the code. You can update the
-translation files if that is required, you can also modifiy the code in
+translation files if that is required, you can also modify the code in
 your translation PR if it's related to translation. You can also work on
 multiple languages at the same time in one PR.
 
