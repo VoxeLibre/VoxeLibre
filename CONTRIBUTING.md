@@ -121,7 +121,7 @@ this is not required. It's also a good idea to join the Discord server
 
 #### Textures
 For textures we use the Pixel Perfection texture pack. This is mostly
-enough; however in some cases - e.g. for newer minecraft features, it's
+enough; however in some cases - e.g. for newer Minecraft features, it's
 useful to have texture artists around. If you want to make such
 contributions, join our Discord server. Demands for textures will be
 communicated there.
