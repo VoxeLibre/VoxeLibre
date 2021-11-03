@@ -199,7 +199,7 @@ If you opened or have contributed to an issue, you receive the
 * Fork the repository (in case you have not already)
 * Do your change in a new branch
 * Create a pull request to get your changes merged into master
-* Keep your pull request up to date by regulary merging upstream. It is
+* Keep your pull request up to date by regularly merging upstream. It is
 imperative that conflicts are resolved prior to merging the pull
 request.
 * After the pull request got merged, you can delete the branch
