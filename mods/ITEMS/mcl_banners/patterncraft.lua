@@ -119,8 +119,7 @@ local patterns = {
 
 		name = N("@1 Thing Charge"),
 		type = "shapeless",
-		-- TODO: Replace with enchanted golden apple
-		{ e, "mcl_core:apple_gold", d },
+		{ e, "mcl_core:apple_gold_enchanted", d },
 	},
 	["rhombus"] = {
 		name = N("@1 Lozenge"),
