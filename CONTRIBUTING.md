@@ -334,8 +334,8 @@ MineClone2 repository.
 #### Developer responsibilities
 - You should not push things directly to
 MineClone2 master - rather, do your work on a branch on your private
-repo, then create a pull request. This way other people can review your
-changes and make sure they work before they get merged.
+repository, then create a pull request. This way other people can review
+your changes and make sure they work before they get merged.
 - Merge PRs only when they have recieved the necessary feedback and have
 been tested to not lead to any crashes and do what they claim to do by
 at least two different people.
