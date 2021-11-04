@@ -3,123 +3,8 @@ local S = minetest.get_translator(modname)
 
 mcl_credits = {
 	players = {},
-}
-
-mcl_credits.description = S("A faithful Open Source clone of Minecraft")
-
--- Sub-lists are sorted by number of commits, but the list should not be rearranged (-> new contributors are just added at the end of the list)
-mcl_credits.people = {
-	{ S("Creator of MineClone"), 0x0A9400, {
-		"davedevils",
-	}},
-	{ S("Creator of MineClone2"), 0xFBF837, {
-		"Wuzzy",
-	}},
-	{ S("Maintainers"), 0xFF51D5, {
-		"Fleckenstein",
-		"kay27",
-		"oilboi",
-	}},
-	{ S("Developers"), 0xF84355, {
-		"bzoss",
-		"AFCMS",
-		"epCode",
-		"ryvnf",
-		"iliekprogrammar",
-		"MysticTempest",
-		"Rootyjr",
-		"Nicu",
-		"aligator",
-		"Code-Sploit",
-		"NO11",
-	}},
-	{ S("Contributors"), 0x52FF00, {
-		"Laurent Rocher",
-		"HimbeerserverDE",
-		"TechDudie",
-		"Alexander Minges",
-		"ArTee3",
-		"ZeDique la Ruleta",
-		"pitchum",
-		"wuniversales",
-		"Bu-Gee",
-		"David McMackins II",
-		"Nicholas Niro",
-		"Wouters Dorian",
-		"Blue Blancmange",
-		"Jared Moody",
-		"Li0n",
-		"Midgard",
-		"Saku Laesvuori",
-		"Yukitty",
-		"ZedekThePD",
-		"aldum",
-		"dBeans",
-		"nickolas360",
-		"yutyo",
-		"ztianyang",
-		"j45",
-	}},
-	{"MineClone5", 0xA60014, {
-		"kay27",
-		"Debiankaios",
-		"epCode",
-		"NO11",
-		"j45",
-	}},
-	{ S("Original Mod Authors"), 0x343434, {
-		"Wuzzy",
-		"Fleckenstein",
-		"BlockMen",
-		"TenPlus1",
-		"PilzAdam",
-		"ryvnf",
-		"stujones11",
-		"Arcelmi",
-		"celeron55",
-		"maikerumine",
-		"GunshipPenguin",
-		"Qwertymine3",
-		"Rochambeau",
-		"rubenwardy",
-		"stu",
-		"oilboi",
-		"4aiman",
-		"Kahrl",
-		"Krock",
-		"UgnilJoZ",
-		"lordfingle",
-		"22i",
-		"bzoss",
-		"kilbith",
-		"xeranas",
-		"kddekadenz",
-		"sofar",
-		"4Evergreen4",
-		"jordan4ibanez",
-		"paramat",
-	}},
-	{ S("3D Models"), 0x0019FF, {
-		"22i",
-		"tobyplowy",
-		"epCode",
-	}},
-	{ S("Textures"), 0xFF9705, {
-		"XSSheep",
-		"Wuzzy",
-		"kingoscargames",
-		"leorockway",
-		"xMrVizzy",
-		"yutyo",
-		"NO11",
-	}},
-	{ S("Translations"), 0x00FF60, {
-		"Wuzzy",
-		"Rocher Laurent",
-		"wuniversales",
-		"kay27",
-		"pitchum",
-	}},
+	description = S("A faithful Open Source clone of Minecraft"),
+	people = dofile(minetest.get_modpath(modname) .. "/people.lua"),
 }
 
 local function add_hud_element(def, huds, y)
@@ -243,7 +128,7 @@ minetest.register_globalstep(function(dtime)
 						y = y - 5
 					end
 				end
-				
+
 				if y > -100 then
 					if id == huds.icon then
 						y = math.max(400, y)
