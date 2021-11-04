@@ -336,9 +336,9 @@ MineClone2 repository.
 MineClone2 master - rather, do your work on a branch on your private
 repository, then create a pull request. This way other people can review
 your changes and make sure they work before they get merged.
-- Merge PRs only when they have received the necessary feedback and have
-been tested to not lead to any crashes and do what they claim to do by
-at least two different people.
+- Merge PRs only when they have recieved the necessary feedback and have
+been tested by at least two different people (including the author of
+the pull request), to avoid crashes or the introduction of new bugs.
 - You may also be assigned to issues or pull
 requests as a developer. In this case it is your responsibility to fix
 the issue / review and merge the pull request when it is ready. You can
