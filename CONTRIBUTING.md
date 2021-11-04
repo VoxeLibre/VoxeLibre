@@ -142,9 +142,14 @@ Similar to the textures, we need people that can make 3D Models with
 Blender on demand. Many of the models have to be patched, some new
 animations have to be added etc.
 
-#### Translations
+#### Crediting
+Asset contributions will be credited in their own respective sections in
+CREDITS.md. If you have commited the results yourself, you will also be
+credited in the Contributors section.
 
-##### Workflow
+### Contributing Translations
+
+#### Workflow
 To add/update support for your language to MineClone2, you should take
 the steps documented in the section for Programmers, add/update the
 translation files of the mods that you want to update. You can add
@@ -153,7 +158,7 @@ the translation file entirely or only partly; basically any effort is
 valued. If your changes are small, you can also send them to developers
 via E-Mail, Discord, IRC or Matrix - they will credit you appropriately.
 
-##### Things to note
+#### Things to note
 You can use the script at `tools/check_translate_files.py` to compare
 the translation files for the language you are working on with the
 template files, to see what is missing and what is out of date with
@@ -164,9 +169,9 @@ your translation PR if it's related to translation. You can also work on
 multiple languages at the same time in one PR.
 
 #### Crediting
-Asset contributions will be credited in their own respective sections in
-CREDITS.md. If you have commited the results yourself, you will also be
-credited in the Contributors section.
+Translation contributions will be credited in their own in CREDITS.md.
+If you have commited the results yourself, you will also be credited in
+the Contributors section.
 
 ### Profiling
 If you own a server, a great way to help us improve MineClone2's code
