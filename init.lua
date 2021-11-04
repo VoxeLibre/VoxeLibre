@@ -47,13 +47,13 @@ function image:encode_data()
 	local current_pixel = ''
 	local previous_pixel = ''
 	local count = 1
-	local encoded = ''
+	local packets = {}
 	local rle_packet = ''
 	for _, row in ipairs(self.pixels) do
 		for _, pixel in ipairs(row) do
 			current_pixel = string.char(pixel[3], pixel[2], pixel[1])
 			if current_pixel ~= previous_pixel or count == 128 then
-				encoded = encoded .. rle_packet
+				packets[#packets +1] = rle_packet
 				count = 1
 				previous_pixel = current_pixel
 			else
@@ -62,7 +62,8 @@ function image:encode_data()
 			rle_packet = string.char(128 + count - 1) .. current_pixel
 		end
 	end
-	self.data = self.data .. encoded .. rle_packet
+	packets[#packets +1] = rle_packet
+	self.data = self.data .. table.concat(packets)
 end
 
 function image:encode_footer()
