@@ -396,7 +396,7 @@ version number
 ### Licensing
 By asking us to include your changes in this game, you agree that they
 fall under the terms of the GPLv3, which basically means they will
-become part of a free software.
+become part of a free/libre software.
 
 ### Crediting
 Contributors, Developers and Maintainers will be credited in
