@@ -54,7 +54,8 @@ you can report a bug or request a feature.
 ### Rules about both bugs and feature requests
 * Stay polite towards the developers and anyone else involved in the
 discussion.
-* Choose a descriptive title.
+* Choose a descriptive title (e.g. not just "crash", "bug" or "question"
+).
 * Please write in plain, understandable English. It will be easier to
 communicate.
 * Please start the issue title with a capital letter.
