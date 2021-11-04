@@ -380,6 +380,8 @@ technical guidelines and issue/PR delegation
 * Nicu - responsible for community related issues
 
 #### Release process
+* Run `tools/generate_ingame_credits.lua` to update the ingame credits
+from `CREDITS.md` and commit the result (if anything changed)
 * Launch MineClone2 to make sure it still runs
 * Update the version number in README.md
 * Use `git tag <version number>` to tag the latest commit with the
