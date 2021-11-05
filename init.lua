@@ -30,7 +30,7 @@ function image:encode_image_spec()
 		.. string.char(0, 0) -- Y-origin
 		.. string.char(self.width  % 256, math.floor(self.width  / 256)) -- width
 		.. string.char(self.height % 256, math.floor(self.height / 256)) -- height
-		.. string.char(24) -- pixel depth (RGB = 3 bytes = 24 bits)
+		.. string.char(16) -- pixel depth (ARRRRRGGGGGBBBBB = 2 bytes = 16 bits)
 		.. string.char(0) -- image descriptor
 end
 
@@ -44,24 +44,42 @@ function image:encode_header()
 end
 
 function image:encode_data()
-	local current_pixel = ''
-	local previous_pixel = ''
+	local colorword = nil
+	local previous_r = nil
+	local previous_g = nil
+	local previous_b = nil
 	local count = 1
 	local packets = {}
 	local rle_packet = ''
+	-- Sample depth rescaling is done according to the algorithm presented in:
+	-- <https://www.w3.org/TR/2003/REC-PNG-20031110/#13Sample-depth-rescaling>
+	local max_sample_in = math.pow(2, 8) - 1
+	local max_sample_out = math.pow(2, 5) - 1
 	for _, row in ipairs(self.pixels) do
 		for _, pixel in ipairs(row) do
-			current_pixel = string.char(pixel[3], pixel[2], pixel[1])
-			if current_pixel ~= previous_pixel or count == 128 then
-				packets[#packets +1] = rle_packet
+			if pixel[1] ~= previous_r or pixel[2] ~= previous_g or pixel[3] ~= previous_b or count == 128 then
+			   if nil ~= previous_r then
+					colorword = 32768 +
+						((math.floor((previous_r * max_sample_out / max_sample_in) + 0.5)) * 1024) +
+						((math.floor((previous_g * max_sample_out / max_sample_in) + 0.5)) * 32) +
+						((math.floor((previous_b * max_sample_out / max_sample_in) + 0.5)) * 1)
+					rle_packet = string.char(128 + count - 1, colorword % 256, math.floor(colorword / 256))
+					packets[#packets +1] = rle_packet
+				end
 				count = 1
-				previous_pixel = current_pixel
+				previous_r = pixel[1]
+				previous_g = pixel[2]
+				previous_b = pixel[3]
 			else
 				count = count + 1
 			end
-			rle_packet = string.char(128 + count - 1) .. current_pixel
 		end
 	end
+	colorword = 32768 +
+		((math.floor((previous_r * max_sample_out / max_sample_in) + 0.5)) * 1024) +
+		((math.floor((previous_g * max_sample_out / max_sample_in) + 0.5)) * 32) +
+		((math.floor((previous_b * max_sample_out / max_sample_in) + 0.5)) * 1)
+	rle_packet = string.char(128 + count - 1, colorword % 256, math.floor(colorword / 256))
 	packets[#packets +1] = rle_packet
 	self.data = self.data .. table.concat(packets)
 end
