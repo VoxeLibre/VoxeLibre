@@ -499,7 +499,7 @@ function mcl_enchanting.show_enchanting_formspec(player)
 		.. "real_coordinates[true]"
 		.. "image[3.15,0.6;7.6,4.1;mcl_enchanting_button_background.png]"
 	local itemstack = inv:get_stack("enchanting_item", 1)
-	local player_levels = mcl_experience.get_player_xp_level(player)
+	local player_levels = mcl_experience.get_level(player)
 	local y = 0.65
 	local any_enchantment = false
 	local table_slots = mcl_enchanting.get_table_slots(player, itemstack, num_bookshelves)
@@ -549,11 +549,11 @@ function mcl_enchanting.handle_formspec_fields(player, formname, fields)
 		if not slot then
 			return
 		end
-		local player_level = mcl_experience.get_player_xp_level(player)
+		local player_level = mcl_experience.get_level(player)
 		if player_level < slot.level_requirement then
 			return
 		end
-		mcl_experience.set_player_xp_level(player, player_level - button_pressed)
+		mcl_experience.set_level(player, player_level - button_pressed)
 		inv:remove_item("enchanting_lapis", cost)
 		mcl_enchanting.set_enchanted_itemstring(itemstack)
 		mcl_enchanting.set_enchantments(itemstack, slot.enchantments)
