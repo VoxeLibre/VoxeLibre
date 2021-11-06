@@ -128,26 +128,35 @@ for _, row in ipairs(dyelocal.dyes) do
 end
 
 -- Bone Meal
-local function bone_meal_particle(pos)
+function mcl_dye.add_bone_meal_particle(pos, def)
+	if not def then
+		def = {}
+	end
 	minetest.add_particlespawner({
-		amount = 10,
-		time = 0.1,
-		minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
-		maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
-		minvel = { x = 0, y = 0, z = 0},
-		maxvel = { x = 0, y = 0, z = 0},
-		minacc = { x = 0, y = 0, z = 0},
-		maxacc = { x = 0, y = 0, z = 0},
-		minexptime = 1,
-		maxexptime = 4,
-		minsize = 0.7,
-		maxsize = 2.4,
+		amount = def.amount or 10,
+		time = def.time or 0.1,
+		minpos = def.minpos or vector.subtract(pos, 0.5),
+		maxpos = def.maxpos or vector.add(pos, 0.5),
+		minvel = def.minvel or vector.new(0, 0, 0),
+		maxvel = def.maxvel or vector.new(0, 0, 0),
+		minacc = def.minacc or vector.new(0, 0, 0),
+		minacc = def.minacc or vector.new(0, 0, 0),
+		minexptime = def.minexptime or 1,
+		maxexptime = def.maxexptime or 4,
+		minsize = def.minsize or 0.7,
+		maxsize = def.maxsize or 2.4,
 		texture = "mcl_particles_bonemeal.png^[colorize:#00EE00:125", -- TODO: real MC color
-		glow = 5,
+		glow = def.glow or 5,
 	})
 end
 
-function mcl_dye.apply_bone_meal(pointed_thing)
+mcl_dye.bone_meal_callbacks = {}
+
+function mcl_dye.register_on_bone_meal_apply(func)
+	table.insert(mcl_dye.bone_meal_callbacks, func)
+end
+
+local function apply_bone_meal(pointed_thing)
 	-- Bone meal currently spawns all flowers found in the plains.
 	local flowers_table_plains = {
 		"mcl_flowers:dandelion",
@@ -183,14 +192,21 @@ function mcl_dye.apply_bone_meal(pointed_thing)
 	local pos = pointed_thing.under
 	local n = minetest.get_node(pos)
 	if n.name == "" then return false end
+
+	for _, func in pairs(mcl_dye.bone_meal_callbacks) do
+		if func(pointed_thing, user) then
+			return true
+		end
+	end
+
 	if minetest.get_item_group(n.name, "sapling") >= 1 then
-		bone_meal_particle(pos)
+		mcl_dye.add_bone_meal_particle(pos)
 		-- Saplings: 45% chance to advance growth stage
 		if math.random(1,100) <= 45 then
 			return mcl_core.grow_sapling(pos, n)
 		end
 	elseif minetest.get_item_group(n.name, "mushroom") == 1 then
-		bone_meal_particle(pos)
+		mcl_dye.add_bone_meal_particle(pos)
 		-- Try to grow huge mushroom
 
 		-- Must be on a dirt-type block
@@ -240,39 +256,37 @@ function mcl_dye.apply_bone_meal(pointed_thing)
 		return false
 	-- Wheat, Potato, Carrot, Pumpkin Stem, Melon Stem: Advance by 2-5 stages
 	elseif string.find(n.name, "mcl_farming:wheat_") then
-		bone_meal_particle(pos)
+		mcl_dye.add_bone_meal_particle(pos)
 		local stages = math.random(2, 5)
 		return mcl_farming:grow_plant("plant_wheat", pos, n, stages, true)
 	elseif string.find(n.name, "mcl_farming:potato_") then
-		bone_meal_particle(pos)
+		mcl_dye.add_bone_meal_particle(pos)
 		local stages = math.random(2, 5)
 		return mcl_farming:grow_plant("plant_potato", pos, n, stages, true)
 	elseif string.find(n.name, "mcl_farming:carrot_") then
-		bone_meal_particle(pos)
+		mcl_dye.add_bone_meal_particle(pos)
 		local stages = math.random(2, 5)
 		return mcl_farming:grow_plant("plant_carrot", pos, n, stages, true)
 	elseif string.find(n.name, "mcl_farming:pumpkin_") then
-		bone_meal_particle(pos)
+		mcl_dye.add_bone_meal_particle(pos)
 		local stages = math.random(2, 5)
 		return mcl_farming:grow_plant("plant_pumpkin_stem", pos, n, stages, true)
 	elseif string.find(n.name, "mcl_farming:melontige_") then
-		bone_meal_particle(pos)
+		mcl_dye.add_bone_meal_particle(pos)
 		local stages = math.random(2, 5)
 		return mcl_farming:grow_plant("plant_melon_stem", pos, n, stages, true)
 	elseif string.find(n.name, "mcl_farming:beetroot_") then
-		bone_meal_particle(pos)
+		mcl_dye.add_bone_meal_particle(pos)
 		-- Beetroot: 75% chance to advance to next stage
 		if math.random(1, 100) <= 75 then
 			return mcl_farming:grow_plant("plant_beetroot", pos, n, 1, true)
 		end
 	elseif n.name == "mcl_cocoas:cocoa_1" or n.name == "mcl_cocoas:cocoa_2" then
-		bone_meal_particle(pos)
+		mcl_dye.add_bone_meal_particle(pos)
 		-- Cocoa: Advance by 1 stage
 		mcl_cocoas.grow(pos)
 		return true
 	elseif minetest.get_item_group(n.name, "grass_block") == 1 then
-		local grass_block_pos = {x = pos.x, y = pos.y + 1, z = pos.z}
-		bone_meal_particle(grass_block_pos)
 		-- Grass Block: Generate tall grass and random flowers all over the place
 		for i = -2, 2 do
 			for j = -2, 2 do
@@ -285,6 +299,7 @@ function mcl_dye.apply_bone_meal(pointed_thing)
 					-- Randomly generate flowers, tall grass or nothing
 					if math.random(1,100) <= 90 then
 						-- 90% tall grass, 10% flower
+						mcl_dye.add_bone_meal_particle(pos, {amount = 4})
 						if math.random(1,100) <= 90 then
 							local col = n2.param2
 							minetest.add_node(pos, {name="mcl_flowers:tallgrass", param2=col})
@@ -314,24 +329,24 @@ function mcl_dye.apply_bone_meal(pointed_thing)
 
 	-- Double flowers: Drop corresponding item
 	elseif n.name == "mcl_flowers:rose_bush" or n.name == "mcl_flowers:rose_bush_top" then
-		bone_meal_particle(pos)
+		mcl_dye.add_bone_meal_particle(pos)
 		minetest.add_item(pos, "mcl_flowers:rose_bush")
 		return true
 	elseif n.name == "mcl_flowers:peony" or n.name == "mcl_flowers:peony_top" then
-		bone_meal_particle(pos)
+		mcl_dye.add_bone_meal_particle(pos)
 		minetest.add_item(pos, "mcl_flowers:peony")
 		return true
 	elseif n.name == "mcl_flowers:lilac" or n.name == "mcl_flowers:lilac_top" then
-		bone_meal_particle(pos)
+		mcl_dye.add_bone_meal_particle(pos)
 		minetest.add_item(pos, "mcl_flowers:lilac")
 		return true
 	elseif n.name == "mcl_flowers:sunflower" or n.name == "mcl_flowers:sunflower_top" then
-		bone_meal_particle(pos)
+		mcl_dye.add_bone_meal_particle(pos)
 		minetest.add_item(pos, "mcl_flowers:sunflower")
 		return true
 
 	elseif n.name == "mcl_flowers:tallgrass" then
-		bone_meal_particle(pos)
+		mcl_dye.add_bone_meal_particle(pos)
 		-- Tall Grass: Grow into double tallgrass
 		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
 		local topnode = minetest.get_node(toppos)
@@ -342,7 +357,7 @@ function mcl_dye.apply_bone_meal(pointed_thing)
 		end
 
 	elseif n.name == "mcl_flowers:fern" then
-		bone_meal_particle(pos)
+		mcl_dye.add_bone_meal_particle(pos)
 		-- Fern: Grow into large fern
 		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
 		local topnode = minetest.get_node(toppos)
@@ -374,7 +389,7 @@ minetest.register_craftitem("mcl_dye:white", {
 		end
 
 		-- Use the bone meal on the ground
-		if(mcl_dye.apply_bone_meal(pointed_thing) and (not minetest.is_creative_enabled(user:get_player_name()))) then
+		if (apply_bone_meal(pointed_thing, user) and (not minetest.is_creative_enabled(user:get_player_name()))) then
 			itemstack:take_item()
 		end
 		return itemstack
@@ -387,7 +402,7 @@ minetest.register_craftitem("mcl_dye:white", {
 		else
 			pointed_thing = { above = pos, under = droppos }
 		end
-		local success = mcl_dye.apply_bone_meal(pointed_thing)
+		local success = apply_bone_meal(pointed_thing, nil)
 		if success then
 			stack:take_item()
 		end
