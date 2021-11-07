@@ -130,6 +130,9 @@
 * todoporlalibertad
 * Marcin Serwin
 
+## Funders
+* 40W
+
 ## Special thanks
 * celeron55 for creating Minetest
 * Jordach for the jukebox music compilation from Big Freaking Dig

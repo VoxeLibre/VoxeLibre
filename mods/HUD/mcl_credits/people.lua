@@ -132,6 +132,9 @@ return {
 		"todoporlalibertad",
 		"Marcin Serwin",
 	}},
+	{S("Funders"), 0xF7FF00, {
+		"40W",
+	}},
 	{S("Special thanks"), 0x00E9FF, {
 		"celeron55 for creating Minetest",
 		"Jordach for the jukebox music compilation from Big Freaking Dig",
