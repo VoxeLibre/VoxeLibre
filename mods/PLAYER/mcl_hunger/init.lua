@@ -137,11 +137,16 @@ end)
 
 
 
-local food_tick_timer = 0
+local food_tick_timers = {}		--one food_tick_timer per player, keys are the player-objects
 minetest.register_globalstep(function(dtime)
-	food_tick_timer = food_tick_timer + dtime
-	
 	for _,player in ipairs(minetest.get_connected_players()) do
+	
+		local food_tick_timer = food_tick_timers[player]
+		if food_tick_timer == nil then
+			food_tick_timer = 0
+		else
+			food_tick_timer = food_tick_timer + dtime
+		end
 		
 		local player_name = player:get_player_name()
 		local food_level = mcl_hunger.get_hunger(player)
@@ -172,6 +177,7 @@ minetest.register_globalstep(function(dtime)
 			mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
 		end
 		
+		food_tick_timers[player] = food_tick_timer	--update food_tick_timer table
 	end
 end)
 
