@@ -136,57 +136,42 @@ end)
 
 
 
-local fastFoodTickTimer = 0  -- 0.5 second cycle
-local slowFoodTickTimer = 0  -- 4 second cycle
+
+local food_tick_timer = 0
 minetest.register_globalstep(function(dtime)
-	fastFoodTickTimer = fastFoodTickTimer + dtime
-	slowFoodTickTimer = slowFoodTickTimer + dtime
+	food_tick_timer = food_tick_timer + dtime
 	
-	local fastTimerWrapped = false		-- if the fastFoodTickTimer wrapped around and everything dependent should be updated
-	local slowTimerWrapped = false
-	
-	if fastFoodTickTimer > 0.5 then
-		fastFoodTickTimer = 0
-		fastTimerWrapped = true
-	end
-	if slowFoodTickTimer > 4.0 then
-		slowFoodTickTimer = 0
-		slowTimerWrapped = true
-	end
-	
-	if fastTimerWrapped or slowTimerWrapped then	-- only update players if something must be updated
-		for _,player in ipairs(minetest.get_connected_players()) do
+	for _,player in ipairs(minetest.get_connected_players()) do
+		
+		local player_name = player:get_player_name()
+		local food_level = mcl_hunger.get_hunger(player)
+		local food_saturation_level = mcl_hunger.get_saturation(player)
+		local player_health = player:get_hp()
+		
+		if food_tick_timer > 4.0 then
+			food_tick_timer = 0
 			
-			local playerName = player:get_player_name()
-			local foodLevel = mcl_hunger.get_hunger(player)
-			local foodSaturationLevel = mcl_hunger.get_saturation(player)
-			local playerHealth = player:get_hp()
+			if food_level >= 18 and player_health < 20 then		--slow regenration
+				food_tick_timer = 0
+				player:set_hp(player_health+1)
+				mcl_hunger.exhaust(player_name, mcl_hunger.EXHAUST_REGEN)
+				mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
 			
-			if playerHealth < 20 then
-				if foodLevel == 20 and foodSaturationLevel >= 6 then	-- fast regeneration (2 health per second)
-					if fastTimerWrapped then
-						player:set_hp(playerHealth+1)
-						mcl_hunger.exhaust(playerName, mcl_hunger.EXHAUST_REGEN)
-						mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
-					end
-				elseif foodLevel >= 18 then		-- slow regeneration (1 health every 4 seconds)
-					if slowTimerWrapped then
-						player:set_hp(playerHealth+1)
-						mcl_hunger.exhaust(playerName, mcl_hunger.EXHAUST_REGEN)
-						mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
-					end
-				end
-			end
-			
-			if foodLevel == 0 then	--starvation
-				maximumStarvation = 1	-- the amount of health at which a player will stop to get harmed by starvation (10 for Easy, 1 for Normal, 0 for Hard)
+			elseif food_level == 0 then		--starvation
+				maximumStarvation = 1		--the amount of health at which a player will stop to get harmed by starvation (10 for Easy, 1 for Normal, 0 for Hard)
 				-- TODO: implement Minecraft-like difficulty modes and the update maximumStarvation here
-				if playerHealth > maximumStarvation and slowTimerWrapped then
+				if player_health > maximumStarvation then
 					mcl_util.deal_damage(player, 1, {type = "starve"})
 				end
 			end
-		
+			
+		elseif food_tick_timer > 0.5 and food_level == 20 and food_saturation_level >= 6 then	--fast regeneration
+			food_tick_timer = 0
+			player:set_hp(player_health+1)
+			mcl_hunger.exhaust(player_name, mcl_hunger.EXHAUST_REGEN)
+			mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
 		end
+		
 	end
 end)
 
