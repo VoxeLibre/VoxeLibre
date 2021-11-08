@@ -140,7 +140,7 @@ function mcl_dye.add_bone_meal_particle(pos, def)
 		minvel = def.minvel or vector.new(0, 0, 0),
 		maxvel = def.maxvel or vector.new(0, 0, 0),
 		minacc = def.minacc or vector.new(0, 0, 0),
-		minacc = def.minacc or vector.new(0, 0, 0),
+		maxacc = def.maxacc or vector.new(0, 0, 0),
 		minexptime = def.minexptime or 1,
 		maxexptime = def.maxexptime or 4,
 		minsize = def.minsize or 0.7,
