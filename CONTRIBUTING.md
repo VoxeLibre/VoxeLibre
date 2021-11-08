@@ -32,6 +32,7 @@ playerbase on low spec computers, optimizations are hard to investigate.
 * [Matrix](https://app.element.io/#/room/#mc2:matrix.org)
 * [Reddit](https://www.reddit.com/r/MineClone2/)
 * [Minetest forums](https://forum.minetest.net/viewtopic.php?f=50&t=16407)
+* [ContentDB](https://content.minetest.net/packages/wuzzy/mineclone2/)
 * [OpenCollective](https://opencollective.com/mineclone2)
 
 ## Using git
