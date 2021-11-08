@@ -32,6 +32,8 @@ playerbase on low spec computers, optimizations are hard to investigate.
 * [Matrix](https://app.element.io/#/room/#mc2:matrix.org)
 * [Reddit](https://www.reddit.com/r/MineClone2/)
 * [Minetest forums](https://forum.minetest.net/viewtopic.php?f=50&t=16407)
+* [ContentDB](https://content.minetest.net/packages/wuzzy/mineclone2/)
+* [OpenCollective](https://opencollective.com/mineclone2)
 
 ## Using git
 MineClone2 is developed using the version control system
@@ -194,9 +196,16 @@ MeseHub, let us know what you think about a topic and help us make
 decisions. Also, note that a lot of discussion takes place on the
 Discord server, so it's definitely worth checking it out.
 
+### Funding
+You can help pay for our infrastructure (Mesehub) by donating to our
+OpenCollective link (See Links section).
+
 ### Crediting
 If you opened or have contributed to an issue, you receive the
 `Community` role on our Discord (after asking for it).
+OpenCollective Funders are credited in their own section in
+`CREDITS.md` and receive a special role "Funder" on our discord (unless
+they have made their donation Incognito).
 
 ## How you can help as a programmer
 (Almost) all the MineClone2 development is done using pull requests.

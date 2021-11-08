@@ -13,6 +13,7 @@ local colors = {
 	["3D Models"] = "0x0019FF",
 	["Textures"] = "0xFF9705",
 	["Translations"] = "0x00FF60",
+	["Funders"] = "0xF7FF00",
 	["Special thanks"] = "0x00E9FF",
 }
 
