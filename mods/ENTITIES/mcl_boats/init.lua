@@ -115,7 +115,7 @@ local boat = {
 	collisionbox = {-0.5, -0.35, -0.5, 0.5, 0.3, 0.5},
 	visual = "mesh",
 	mesh = "mcl_boats_boat.b3d",
-	textures = {"mcl_boats_texture_oak_boat.png"},
+	textures = {"mcl_boats_texture_oak_boat.png", "mcl_boats_texture_oak_boat.png", "mcl_boats_texture_oak_boat.png", "mcl_boats_texture_oak_boat.png", "mcl_boats_texture_oak_boat.png"},
 	visual_size = boat_visual_size,
 	hp_max = boat_max_hp,
 	damage_texture_modifier = "^[colorize:white:0",
@@ -148,6 +148,11 @@ function boat.on_activate(self, staticdata, dtime_s)
 		self._v = data.v
 		self._last_v = self._v
 		self._itemstring = data.itemstring
+
+		while #data.textures < 5 do
+			table.insert(data.textures, data.textures[1])
+		end
+
 		self.object:set_properties({textures = data.textures})
 	end
 end
@@ -434,8 +439,9 @@ for b=1, #boat_ids do
 				pos = vector.add(pos, vector.multiply(dir, boat_y_offset_ground))
 			end
 			local boat = minetest.add_entity(pos, "mcl_boats:boat")
+			local texture = "mcl_boats_texture_"..images[b].."_boat.png"
 			boat:get_luaentity()._itemstring = itemstring
-			boat:set_properties({textures = { "mcl_boats_texture_"..images[b].."_boat.png" }})
+			boat:set_properties({textures = { texture, texture, texture, texture, texture }})
 			boat:set_yaw(placer:get_look_horizontal())
 			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				itemstack:take_item()
