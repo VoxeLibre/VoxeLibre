@@ -1,5 +1,27 @@
 mcl_util = {}
 
+-- Updates all values in t using values from to*.
+function table.update(t, ...)
+	for _, to in ipairs{...} do
+		for k,v in pairs(to) do
+			t[k] = v
+		end
+	end
+	return t
+end
+
+-- Updates nil values in t using values from to*.
+function table.update_nil(t, ...)
+	for _, to in ipairs{...} do
+		for k,v in pairs(to) do
+			if t[k] == nil then
+				t[k] = v
+			end
+		end
+	end
+	return t
+end
+
 -- Based on minetest.rotate_and_place
 
 --[[
