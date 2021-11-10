@@ -183,7 +183,7 @@ minetest.register_entity("mcl_enchanting:book", {
 		collisionbox = {0, 0, 0},
 		pointable = false,
 		physical = false,
-		textures = {"mcl_enchanting_book_entity.png"},
+		textures = {"mcl_enchanting_book_entity.png", "mcl_enchanting_book_entity.png", "mcl_enchanting_book_entity.png", "mcl_enchanting_book_entity.png", "mcl_enchanting_book_entity.png"},
 		static_save = false,
 	},
 	_player_near = false,
