@@ -95,7 +95,8 @@ mobs:register_mob("mobs_mc:creeper", {
 		if self._forced_explosion_countdown_timer then
 			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
 			if self._forced_explosion_countdown_timer <= 0 then
-				mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)
+				local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+				mcl_explosions.explode(mcl_util.get_object_center(self.object), self.explosion_strength, { griefing = mobs_griefing, drop_chance = 1.0}, self.object)
 			end
 		end
 	end,
@@ -220,7 +221,8 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 		if self._forced_explosion_countdown_timer then
 			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
 			if self._forced_explosion_countdown_timer <= 0 then
-				mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)
+				local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+				mcl_explosions.explode(mcl_util.get_object_center(self.object), self.explosion_strength, { griefing = mobs_griefing, drop_chance = 1.0}, self.object)
 			end
 		end
 	end,
