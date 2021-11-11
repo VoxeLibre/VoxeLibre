@@ -134,38 +134,37 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 	end
 end)
 
-
-
-
-local food_tick_timers = {}		--one food_tick_timer per player, keys are the player-objects
+local food_tick_timers = {} -- one food_tick_timer per player, keys are the player-objects
 minetest.register_globalstep(function(dtime)
 	for _,player in pairs(minetest.get_connected_players()) do
-	
+
 		local food_tick_timer = food_tick_timers[player] and food_tick_timers[player] + dtime or 0
 		local player_name = player:get_player_name()
 		local food_level = mcl_hunger.get_hunger(player)
 		local food_saturation_level = mcl_hunger.get_saturation(player)
 		local player_health = player:get_hp()
-		
+
 		if food_tick_timer > 4.0 then
 			food_tick_timer = 0
-			
-			if food_level >= 18 then		--slow regenration
+
+			if food_level >= 18 then -- slow regenration
 				if player_health > 0 and player_health < 20 then
 					player:set_hp(player_health+1)
 					mcl_hunger.exhaust(player_name, mcl_hunger.EXHAUST_REGEN)
 					mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
 				end
-			
-			elseif food_level == 0 then		--starvation
-				local maximum_starvation = 1		--the amount of health at which a player will stop to get harmed by starvation (10 for Easy, 1 for Normal, 0 for Hard)
+
+			elseif food_level == 0 then -- starvation
+				-- the amount of health at which a player will stop to get
+				-- harmed by starvation (10 for Easy, 1 for Normal, 0 for Hard)
+				local maximum_starvation = 1
 				-- TODO: implement Minecraft-like difficulty modes and the update maximumStarvation here
 				if player_health > maximum_starvation then
 					mcl_util.deal_damage(player, 1, {type = "starve"})
 				end
 			end
-			
-		elseif food_tick_timer > 0.5 and food_level == 20 and food_saturation_level >= 6 then	--fast regeneration
+
+		elseif food_tick_timer > 0.5 and food_level == 20 and food_saturation_level >= 6 then -- fast regeneration
 			if player_health > 0 and player_health < 20 then
 				food_tick_timer = 0
 				player:set_hp(player_health+1)
@@ -173,8 +172,8 @@ minetest.register_globalstep(function(dtime)
 				mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
 			end
 		end
-		
-		food_tick_timers[player] = food_tick_timer	--update food_tick_timer table
+
+		food_tick_timers[player] = food_tick_timer -- update food_tick_timer table
 	end
 end)
 
