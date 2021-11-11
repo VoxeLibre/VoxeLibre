@@ -151,6 +151,7 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 	description = S("Charged Creeper"),
 	type = "monster",
 	spawn_class = "hostile",
+	hostile = true,
 	hp_min = 20,
 	hp_max = 20,
 	xp_min = 5,
