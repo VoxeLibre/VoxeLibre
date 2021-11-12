@@ -115,16 +115,22 @@ function place_wet_sponge(itemstack, placer, pointed_thing)
 	if mcl_worlds.pos_to_dimension(pointed_thing.above) == "nether" then
 		minetest.item_place_node(ItemStack("mcl_sponges:sponge"), placer, pointed_thing)
 		local pos = pointed_thing.above
-		for n = 0, 25 do
-			minetest.add_particle({
-				pos = {x = pos.x + math.random(-1, 1)*math.random()/2, y = pos.y + 0.6, z = pos.z + math.random(-1, 1)*math.random()/2},
-				velocity = {x = 0, y = math.random(), z = 0},
-				acceleration = {x=0, y=0, z=0},
-				expirationtime = math.random(),
+
+		for n = 1, 5 do
+			minetest.add_particlespawner({
+				amount = 5,
+				time = 0.1,
+				minpos = vector.offset(pos, -0.5, 0.6, -0.5),
+				maxpos = vector.offset(pos, 0.5, 0.6, 0.5),
+				minvel = vector.new(0, 0.1, 0),
+				maxvel = vector.new(0, 1, 0),
+				minexptime = 0.1,
+				maxexptime = 1,
+				minsize = 2,
+				maxsize = 5,
 				collisiondetection = false,
 				vertical = false,
-				size = math.random(2, 5),
-				texture = "mcl_particles_sponge"..math.random(1, 5)..".png",
+				texture = "mcl_particles_sponge" .. n .. ".png",
 			})
 		end
 		if not minetest.is_creative_enabled(name) then

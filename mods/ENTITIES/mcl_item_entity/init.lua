@@ -290,10 +290,10 @@ function minetest.handle_node_drops(pos, drops, digger)
 		end
 	end
 
-	if digger and mcl_experience.throw_experience and not silk_touch_drop then
+	if digger and mcl_experience.throw_xp and not silk_touch_drop then
 		local experience_amount = minetest.get_item_group(dug_node.name,"xp")
 		if experience_amount > 0 then
-			mcl_experience.throw_experience(pos, experience_amount)
+			mcl_experience.throw_xp(pos, experience_amount)
 		end
 	end
 
