@@ -35,8 +35,9 @@ local function register_drop(liquid, glow, sound, nodes)
 				self.object:set_acceleration(vector.new(0, -5, 0))
 			end
 			if minetest.get_node(vector.offset(ownpos, 0, -0.1, 0)).name ~= "air" then
-				if not self.object:get_luaentity()._dropped then
-					self.object:get_luaentity()._dropped = true
+				local ent = self.object:get_luaentity()
+				if not ent._dropped then
+					ent._dropped = true
 					minetest.sound_play({name = "drippingwater_" .. sound .. "drip"}, {pos = ownpos, gain = 0.5, max_hear_distance = 8}, true)
 				end
 				if k < 3 then
