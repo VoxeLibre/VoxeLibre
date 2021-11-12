@@ -288,38 +288,39 @@ local function apply_bone_meal(pointed_thing)
 		return true
 	elseif minetest.get_item_group(n.name, "grass_block") == 1 then
 		-- Grass Block: Generate tall grass and random flowers all over the place
-		for i = -2, 2 do
-			for j = -2, 2 do
-				pos = pointed_thing.above
-				pos = {x=pos.x+i, y=pos.y, z=pos.z+j}
-				n = minetest.get_node(pos)
-				local n2 = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
+		for i = -7, 7 do
+			for j = -7, 7 do
+				for y = -1, 1 do
+					pos = vector.offset(pointed_thing.above, i, y, j)
+					n = minetest.get_node(pos)
+					local n2 = minetest.get_node(vector.offset(pos, 0, -1, 0))
 
-				if n.name ~= "" and n.name == "air" and (minetest.get_item_group(n2.name, "grass_block_no_snow") == 1) then
-					-- Randomly generate flowers, tall grass or nothing
-					if math.random(1,100) <= 90 then
-						-- 90% tall grass, 10% flower
-						mcl_dye.add_bone_meal_particle(pos, {amount = 4})
-						if math.random(1,100) <= 90 then
-							local col = n2.param2
-							minetest.add_node(pos, {name="mcl_flowers:tallgrass", param2=col})
-						else
-							local flowers_table
-							if mg_name == "v6" then
-								flowers_table = flowers_table_plains
+					if n.name ~= "" and n.name == "air" and (minetest.get_item_group(n2.name, "grass_block_no_snow") == 1) then
+						-- Randomly generate flowers, tall grass or nothing
+						if math.random(1, 100) <= 90 / ((math.abs(i) + math.abs(j)) / 2)then
+							-- 90% tall grass, 10% flower
+							mcl_dye.add_bone_meal_particle(pos, {amount = 4})
+							if math.random(1,100) <= 90 then
+								local col = n2.param2
+								minetest.add_node(pos, {name="mcl_flowers:tallgrass", param2=col})
 							else
-								local biome = minetest.get_biome_name(minetest.get_biome_data(pos).biome)
-								if biome == "Swampland" or biome == "Swampland_shore" or biome == "Swampland_ocean" or biome == "Swampland_deep_ocean" or biome == "Swampland_underground" then
-									flowers_table = flowers_table_swampland
-								elseif biome == "FlowerForest" or biome == "FlowerForest_beach" or biome == "FlowerForest_ocean" or biome == "FlowerForest_deep_ocean" or biome == "FlowerForest_underground" then
-									flowers_table = flowers_table_flower_forest
-								elseif biome == "Plains" or biome == "Plains_beach" or biome == "Plains_ocean" or biome == "Plains_deep_ocean" or biome == "Plains_underground" or biome == "SunflowerPlains" or biome == "SunflowerPlains_ocean" or biome == "SunflowerPlains_deep_ocean" or biome == "SunflowerPlains_underground" then
+								local flowers_table
+								if mg_name == "v6" then
 									flowers_table = flowers_table_plains
 								else
-									flowers_table = flowers_table_simple
+									local biome = minetest.get_biome_name(minetest.get_biome_data(pos).biome)
+									if biome == "Swampland" or biome == "Swampland_shore" or biome == "Swampland_ocean" or biome == "Swampland_deep_ocean" or biome == "Swampland_underground" then
+										flowers_table = flowers_table_swampland
+									elseif biome == "FlowerForest" or biome == "FlowerForest_beach" or biome == "FlowerForest_ocean" or biome == "FlowerForest_deep_ocean" or biome == "FlowerForest_underground" then
+										flowers_table = flowers_table_flower_forest
+									elseif biome == "Plains" or biome == "Plains_beach" or biome == "Plains_ocean" or biome == "Plains_deep_ocean" or biome == "Plains_underground" or biome == "SunflowerPlains" or biome == "SunflowerPlains_ocean" or biome == "SunflowerPlains_deep_ocean" or biome == "SunflowerPlains_underground" then
+										flowers_table = flowers_table_plains
+									else
+										flowers_table = flowers_table_simple
+									end
 								end
+								minetest.add_node(pos, {name=flowers_table[math.random(1, #flowers_table)]})
 							end
-							minetest.add_node(pos, {name=flowers_table[math.random(1, #flowers_table)]})
 						end
 					end
 				end
