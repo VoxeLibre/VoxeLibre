@@ -137,8 +137,8 @@ function mcl_dye.add_bone_meal_particle(pos, def)
 		time = def.time or 0.1,
 		minpos = def.minpos or vector.subtract(pos, 0.5),
 		maxpos = def.maxpos or vector.add(pos, 0.5),
-		minvel = def.minvel or vector.new(0, 0, 0),
-		maxvel = def.maxvel or vector.new(0, 0, 0),
+		minvel = def.minvel or vector.new(-0.01, 0.01, -0.01),
+		maxvel = def.maxvel or vector.new(0.01, 0.01, 0.01),
 		minacc = def.minacc or vector.new(0, 0, 0),
 		maxacc = def.maxacc or vector.new(0, 0, 0),
 		minexptime = def.minexptime or 1,
@@ -146,7 +146,7 @@ function mcl_dye.add_bone_meal_particle(pos, def)
 		minsize = def.minsize or 0.7,
 		maxsize = def.maxsize or 2.4,
 		texture = "mcl_particles_bonemeal.png^[colorize:#00EE00:125", -- TODO: real MC color
-		glow = def.glow or 5,
+		glow = def.glow or 1,
 	})
 end
 
