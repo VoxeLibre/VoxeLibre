@@ -103,7 +103,7 @@ mobs:register_mob("mobs_mc:enderdragon", {
 			mcl_portals.spawn_gateway_portal()
 			mcl_structures.call_struct(self._portal_pos, "end_exit_portal_open")
 			if self._initial then
-				mcl_experience.throw_experience(pos, 11500) -- 500 + 11500 = 12000
+				mcl_experience.throw_xp(pos, 11500) -- 500 + 11500 = 12000
 				minetest.set_node(vector.add(self._portal_pos, vector.new(3, 5, 3)), {name = mobs_mc.items.dragon_egg})
 			end
 		end

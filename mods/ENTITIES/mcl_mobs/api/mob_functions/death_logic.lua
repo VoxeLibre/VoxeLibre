@@ -122,7 +122,10 @@ mobs.death_logic = function(self, dtime)
     if self.death_animation_timer >= 1.25 then
         item_drop(self,false,1)
         mobs.death_effect(self)
-		mcl_experience.throw_experience(self.object:get_pos(), math_random(self.xp_min, self.xp_max))
+        mcl_experience.throw_xp(self.object:get_pos(), math_random(self.xp_min, self.xp_max))
+        if self.on_die then
+          self.on_die(self, self.object:get_pos())
+        end
         self.object:remove()
         return
     end

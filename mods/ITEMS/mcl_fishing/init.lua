@@ -37,7 +37,7 @@ local fish = function(itemstack, player, pointed_thing)
 		local num = 0
 		local ent = nil
 		local noent = true
-		
+
 		local durability = 65
 		local unbreaking = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
 		if unbreaking > 0 then
@@ -117,8 +117,8 @@ local fish = function(itemstack, player, pointed_thing)
 							else
 								minetest.add_item(pos, item)
 							end
-							if mcl_experience.throw_experience then
-								mcl_experience.throw_experience(pos, math.random(1,6))
+							if mcl_experience.throw_xp then
+								mcl_experience.throw_xp(pos, math.random(1,6))
 							end
 
 							if not minetest.is_creative_enabled(player:get_player_name()) then

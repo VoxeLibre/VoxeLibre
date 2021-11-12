@@ -75,9 +75,9 @@ local function give_xp(pos, player)
 	local xp = meta:get_int("xp")
 	if xp > 0 then
 		if player then
-			mcl_experience.add_experience(player, xp)
+			mcl_experience.add_xp(player, xp)
 		else
-			mcl_experience.throw_experience(vector.add(pos, dir), xp)
+			mcl_experience.throw_xp(vector.add(pos, dir), xp)
 		end
 		meta:set_int("xp", 0)
 	end
