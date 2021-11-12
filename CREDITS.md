@@ -67,6 +67,7 @@
 * SmallJoker
 * Sven792
 * aldum
+* Dieter44
 
 ## MineClone5
 * kay27
