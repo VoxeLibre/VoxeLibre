@@ -667,3 +667,9 @@ minetest.register_on_joinplayer(function(player)
 	init(player)
 	mcl_inventory.set_creative_formspec(player, 0, 1, nil, false, "nix", "")
 end)
+
+minetest.register_on_player_inventory_action(function(player, action, inventory, inventory_info)
+	if minetest.is_creative_enabled(player:get_player_name()) and action == "put" and inventory_info.listname == "main" then
+		player:get_inventory():set_stack("main", inventory_info.index, inventory_info.stack:get_name() .. " 64")
+	end
+end)
