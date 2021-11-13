@@ -44,18 +44,18 @@ minetest.register_on_respawnplayer(function(player)
 	mcl_burning.extinguish(player)
 end)
 
-minetest.register_on_joinplayer(function(player)
-	local storage
-
-	local burn_data = player:get_meta():get_string("mcl_burning:data")
-	if burn_data == "" then
-		storage = {}
-	else
-		storage = minetest.deserialize(burn_data)
+function mcl_burning.init_player(player)
+	local meta = player:get_meta()
+	-- NOTE: mcl_burning:data may be "return nil" (which deserialize into nil) for reasons unknown.
+	if meta:get_string("mcl_burning:data"):find("return nil", 1, true) then
+		minetest.log("warning", "[mcl_burning] 'mcl_burning:data' player meta field is invalid! Please report this bug")
 	end
-
-	mcl_burning.storage[player] = storage
+	mcl_burning.storage[player] = meta:contains("mcl_burning:data") and minetest.deserialize(meta:get_string("mcl_burning:data")) or {}
 	mcl_burning.channels[player] = minetest.mod_channel_join("mcl_burning:" .. player:get_player_name())
+end
+
+minetest.register_on_joinplayer(function(player)
+	mcl_burning.init_player(player)
 end)
 
 minetest.register_on_leaveplayer(function(player)
