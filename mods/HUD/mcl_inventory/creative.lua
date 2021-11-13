@@ -291,15 +291,17 @@ filtername["inv"] = S("Survival Inventory")
 end]]
 
 local function get_stack_size(player)
-	return player:get_meta():get_int("switch_stack")
+	return player:get_meta():get_int("mcl_inventory:switch_stack")
 end
 
 local function set_stack_size(player, n)
-	player:get_meta():set_int("switch_stack", n)
+	player:get_meta():set_int("mcl_inventory:switch_stack", n)
 end
 
-minetest.register_on_newplayer(function (player)
-	set_stack_size(player, 64)
+minetest.register_on_joinplayer(function (player)
+	if get_stack_size(player) == 0 then
+		set_stack_size(player, 64)
+	end
 end)
 
 function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size, show, page, filter)
