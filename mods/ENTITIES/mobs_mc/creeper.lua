@@ -37,7 +37,7 @@ mobs:register_mob("mobs_mc:creeper", {
 	},
 	makes_footstep_sound = false,
 	walk_velocity = 1.05,
-	run_velocity = 3.25,
+	run_velocity = 2.1,
 	runaway_from = { "mobs_mc:ocelot", "mobs_mc:cat" },
 	attack_type = "explode",
 	eye_height = 1.25,
@@ -47,8 +47,8 @@ mobs:register_mob("mobs_mc:creeper", {
 	--explosion_radius = 3,
 	--explosion_damage_radius = 6,
 	--explosiontimer_reset_radius = 6,
-	reach = 1.5,
-	defuse_reach = 4,
+	reach = 3,
+	defuse_reach = 5.2,
 	explosion_timer = 0.3,
 	allow_fuse_reset = true,
 	stop_to_explode = true,
@@ -95,7 +95,8 @@ mobs:register_mob("mobs_mc:creeper", {
 		if self._forced_explosion_countdown_timer then
 			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
 			if self._forced_explosion_countdown_timer <= 0 then
-				mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)
+				local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+				mcl_explosions.explode(mcl_util.get_object_center(self.object), self.explosion_strength, { griefing = mobs_griefing, drop_chance = 1.0}, self.object)
 			end
 		end
 	end,
@@ -151,6 +152,7 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 	description = S("Charged Creeper"),
 	type = "monster",
 	spawn_class = "hostile",
+	hostile = true,
 	hp_min = 20,
 	hp_max = 20,
 	xp_min = 5,
@@ -186,8 +188,8 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 	--explosion_radius = 3,
 	--explosion_damage_radius = 6,
 	--explosiontimer_reset_radius = 3,
-	reach = 1.5,
-	defuse_reach = 4,
+	reach = 3,
+	defuse_reach = 10.4,
 	explosion_timer = 0.3,
 	allow_fuse_reset = true,
 	stop_to_explode = true,
@@ -219,7 +221,8 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 		if self._forced_explosion_countdown_timer then
 			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
 			if self._forced_explosion_countdown_timer <= 0 then
-				mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)
+				local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+				mcl_explosions.explode(mcl_util.get_object_center(self.object), self.explosion_strength, { griefing = mobs_griefing, drop_chance = 1.0}, self.object)
 			end
 		end
 	end,
