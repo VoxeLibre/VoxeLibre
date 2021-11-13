@@ -670,6 +670,7 @@ end)
 
 minetest.register_on_player_inventory_action(function(player, action, inventory, inventory_info)
 	if minetest.is_creative_enabled(player:get_player_name()) and action == "put" and inventory_info.listname == "main" then
-		player:get_inventory():set_stack("main", inventory_info.index, inventory_info.stack:get_name() .. " 64")
+		local stack = inventory_info.stack
+		player:get_inventory():set_stack("main", inventory_info.index, stack:get_name() .. " " .. stack:get_stack_max())
 	end
 end)
