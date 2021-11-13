@@ -289,6 +289,17 @@ filtername["inv"] = S("Survival Inventory")
 	bg["default"] = dark_bg
 end]]
 
+local function get_stack_size(player)
+	return player:get_meta():get_int("switch_stack")
+end
+
+local function set_stack_size(player, n)
+	player:get_meta():set_int("switch_stack", n)
+end
+
+minetest.register_on_newplayer(function (player)
+	set_stack_size(player, 64)
+end)
 
 function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size, show, page, filter)
 	--reset_menu_item_bg()
@@ -349,6 +360,11 @@ function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size,
 			armor_slot_imgs = armor_slot_imgs .. "image[5.5,2.75;1,1;mcl_inventory_empty_armor_slot_boots.png]"
 		end
 
+		local switch_overlay = "blank.png"
+		if get_stack_size(player) == 64 then
+			switch_overlay = "mcl_inventory_button_switch_stack.png"
+		end
+
 		-- Survival inventory slots
 		main_list = "list[current_player;main;0,3.75;9,3;9]"..
 			mcl_formspec.get_itemslot_bg(0,3.75,9,3)..
@@ -376,7 +392,10 @@ function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size,
 			-- achievements button
 			"image_button[9,4;1,1;mcl_achievements_button.png;__mcl_achievements;]"..
 			--"style_type[image_button;border=;bgimg=;bgimg_pressed=]"..
-			"tooltip[__mcl_achievements;"..F(S("Achievements")).."]"
+			"tooltip[__mcl_achievements;"..F(S("Achievements")).."]"..
+			-- switch stack size button
+			"image_button[9,5;1,1;default_apple.png^" .. switch_overlay .. ";__switch_stack;]"..
+			"tooltip[__switch_stack;"..F(S("Switch stack size")).."]"
 
 		-- For shortcuts
 		listrings = listrings ..
@@ -544,6 +563,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	elseif fields.search and not fields.creative_next and not fields.creative_prev then
 		set_inv_search(string.lower(fields.search),player)
 		page = "nix"
+	elseif fields.__switch_stack then
+		local switch = 1
+		if get_stack_size(player) == 1 then
+			switch = 64
+		end
+		set_stack_size(player, switch)
 	end
 
 	if page then
@@ -669,7 +694,7 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 minetest.register_on_player_inventory_action(function(player, action, inventory, inventory_info)
-	if minetest.is_creative_enabled(player:get_player_name()) and action == "put" and inventory_info.listname == "main" then
+	if minetest.is_creative_enabled(player:get_player_name()) and action == "put" and inventory_info.listname == "main" and get_stack_size(player) == 64 then
 		local stack = inventory_info.stack
 		player:get_inventory():set_stack("main", inventory_info.index, stack:get_name() .. " " .. stack:get_stack_max())
 	end
