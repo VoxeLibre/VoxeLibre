@@ -189,7 +189,7 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 	--explosion_damage_radius = 6,
 	--explosiontimer_reset_radius = 3,
 	reach = 3,
-	defuse_reach = 10.4,
+	defuse_reach = 5.2,
 	explosion_timer = 0.3,
 	allow_fuse_reset = true,
 	stop_to_explode = true,
