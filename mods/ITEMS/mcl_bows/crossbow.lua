@@ -92,7 +92,7 @@ local function get_arrow(player)
 	return arrow_stack, arrow_stack_id
 end
 
-local function player_shoot_arrow(itemstack, player, power, damage, is_critical)
+local function player_shoot_arrow(wielditem, player, power, damage, is_critical)
 	local has_multishot_enchantment = mcl_enchanting.has_enchantment(player:get_wielded_item(), "multishot")
 	local arrow_itemstring = wielditem:get_meta():get("arrow")
 
@@ -286,7 +286,7 @@ end)
 
 controls.register_on_press(function(player, key, time)
 	if key~="LMB" then return end
-		wielditem = player:get_wielded_item()
+		local wielditem = player:get_wielded_item()
 		if wielditem:get_name()=="mcl_bows:crossbow_loaded" or wielditem:get_name()=="mcl_bows:crossbow_loaded_enchanted" then
 		local enchanted = mcl_enchanting.is_enchanted(wielditem:get_name())
 		local speed, damage
