@@ -1,12 +1,12 @@
-Dripping Water Mod
+Dripping Mod
 by kddekadenz
 
-modified for MineClone 2 by Wuzzy
+modified for MineClone 2 by Wuzzy and NO11
 
 
 Installing instructions:
 
-	1. Copy the drippingwater mod folder into games/gamemode/mods
+	1. Copy the mcl_dripping mod folder into games/gamemode/mods
 
 	2. Start game and enjoy :)
 
