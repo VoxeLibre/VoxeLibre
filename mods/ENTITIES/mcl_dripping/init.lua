@@ -6,7 +6,7 @@ local math = math
 -- License of code, textures & sounds: CC0
 
 local function register_drop(liquid, glow, sound, nodes)
-	minetest.register_entity("drippingwater:drop_" .. liquid, {
+	minetest.register_entity("mcl_dripping:drop_" .. liquid, {
 		hp_max = 1,
 		physical = true,
 		collide_with_objects = false,
@@ -56,7 +56,7 @@ local function register_drop(liquid, glow, sound, nodes)
 			if minetest.get_item_group(minetest.get_node(vector.offset(pos, 0, 1, 0)).name, liquid) ~= 0
 			and minetest.get_node(vector.offset(pos, 0, -1, 0)).name == "air" then
 				local x, z = math.random(-45, 45) / 100, math.random(-45, 45) / 100
-				minetest.add_entity(vector.offset(pos, x, -0.520, z), "drippingwater:drop_" .. liquid)
+				minetest.add_entity(vector.offset(pos, x, -0.520, z), "mcl_dripping:drop_" .. liquid)
 			end
 		end,
 	})
