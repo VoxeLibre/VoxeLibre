@@ -215,7 +215,9 @@ lightning.register_on_strike(function(pos, pos2, objects)
 					posadd = { x=math.cos(angle),y=0,z=math.sin(angle) }
 					posadd = vector.normalize(posadd)
 					local mob = add_entity(vector.add(pos2, posadd), "mobs_mc:skeleton")
-					mob:set_yaw(angle-math.pi/2)
+					if mob then
+						mob:set_yaw(angle-math.pi/2)
+					end
 					angle = angle + (math.pi*2) / 3
 				end
 
