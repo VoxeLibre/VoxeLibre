@@ -695,9 +695,9 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 minetest.register_on_player_inventory_action(function(player, action, inventory, inventory_info)
-	local stack = inventory_info.stack
-	local item = stack:get_name()
-	if minetest.is_creative_enabled(player:get_player_name()) and action == "put" and inventory_info.listname == "main" and get_stack_size(player) == 64 and not item:find("mcl_enchanting:book_enchanted") then
-		player:get_inventory():set_stack("main", inventory_info.index, item .. " " .. stack:get_stack_max())
+	if minetest.is_creative_enabled(player:get_player_name()) and get_stack_size(player) == 64 and action == "put" and inventory_info.listname == "main" then
+		local stack = inventory_info.stack
+		stack:set_count(stack:get_stack_max())
+		player:get_inventory():set_stack("main", inventory_info.index, stack)
 	end
 end)
