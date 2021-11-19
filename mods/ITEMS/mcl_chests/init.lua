@@ -293,7 +293,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 
 	local function drop_items_chest(pos, oldnode, oldmetadata)
 		local meta = minetest.get_meta(pos)
-		local meta2 = meta
+		local meta2 = meta:to_table()
 		if oldmetadata then
 			meta:from_table(oldmetadata)
 		end
@@ -305,7 +305,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 				minetest.add_item(p, stack)
 			end
 		end
-		meta:from_table(meta2:to_table())
+		meta:from_table(meta2)
 	end
 
 	local function on_chest_blast(pos)

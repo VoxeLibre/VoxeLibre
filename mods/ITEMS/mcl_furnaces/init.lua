@@ -461,7 +461,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 	on_timer = furnace_node_timer,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
-		local meta2 = meta
+		local meta2 = meta:to_table()
 		meta:from_table(oldmetadata)
 		local inv = meta:get_inventory()
 		for _, listname in ipairs({"src", "dst", "fuel"}) do
@@ -471,7 +471,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 				minetest.add_item(p, stack)
 			end
 		end
-		meta:from_table(meta2:to_table())
+		meta:from_table(meta2)
 	end,
 
 	on_construct = function(pos)
