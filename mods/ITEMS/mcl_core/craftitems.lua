@@ -163,7 +163,7 @@ local function eat_gapple(itemstack, placer, pointed_thing)
 		mcl_potions.fire_resistance_func(placer, 1, 300)
 		mcl_potions.leaping_func(placer, 1, 300)
 	end
-	mcl_potions.swiftness_func(placer, absorbtion_factor, 120)		-- TODO: Absorbtion
+	-- TODO: Absorbtion
 	mcl_potions.regeneration_func(placer, 2, regen_duration)
 	return gapple_hunger_restore(itemstack, placer, pointed_thing)
 end
