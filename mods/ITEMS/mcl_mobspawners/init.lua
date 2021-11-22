@@ -230,7 +230,7 @@ local function spawn_mobs(pos, elapsed)
 
 	-- spawn up to 4 mobs in random air blocks
 	if air then
-		local max = 200
+		local max = 4
 		if spawn_count_overrides[mob] then
 			max = spawn_count_overrides[mob]
 		end
