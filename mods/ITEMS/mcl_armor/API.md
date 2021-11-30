@@ -169,8 +169,9 @@ minetest.register_tool("dummy_mod:random_armor", {
 
 	--this field is used by minetest internally and also by some helper functions
 	--in order for the tool to be shown is the right creative inventory tab, the right groups should be added
-	--mcl_armor_uses is required to give your armor a durability
-	--in that case, tha armor can be worn by 10 points before breaking
+	--"mcl_armor_uses" is required to give your armor a durability
+	--in that case, the armor can be worn by 10 points before breaking
+	--if you want the armor to be enchantable, you should also add the "enchantability" group, with the highest number the better enchants you can apply
 	groups = {armor = 1, non_combat_armor = 1, armor_torso = 1, non_combat_torso = 1, mcl_armor_uses = 10},
 
 	--this table is used by minetest for seraching item specific sounds
@@ -205,5 +206,97 @@ minetest.register_tool("dummy_mod:random_armor", {
 	end,
 	_on_break = function(obj)
 	end,
+})
+```
+
+## Interacting with Armor of an Entity
+
+Mods may want to interact with armor of an entity.
+
+Most global functions not described here may not be stable or may be for internal use only.
+
+You can equip a piece of armor on an entity inside a mod by using `mcl_armor.equip()`.
+
+```lua
+--itemstack: an itemstack containing the armor piece to equip
+--obj: the entity you want to equip the armor on
+--swap: boolean, force equiping the armor piece, even if the entity already have one of the same type
+mcl_armor.equip(itemstack, obj, swap)
+```
+
+You can update the entity apparence by using `mcl_armor.update()`.
+
+This function put the armor overlay on the object's base texture.
+If the object is player it will update his displayed armor points count in HUD.
+
+This function will work both on players and mobs.
+
+```lua
+--obj: the entity you want the apparence to be updated
+mcl_armor.update(obj)
+```
+
+## Handling Enchantments
+
+Armors can be enchanted in most cases.
+
+The enchanting part of MineClone2 is separated from the armor part, but closely linked.
+
+Existing armor enchantments in Minecraft improve most of the time how the armor protect the entity from damage.
+
+The `mcl_armor.register_protection_enchantment()` function aims to simplificate the creation of such enchants.
+
+```lua
+mcl_armor.register_protection_enchantment({
+	--this field is the id that will be used for registering enchanted book and store the enchant inside armor metadata.
+	--(his internal name)
+	id = "magic_protection",
+
+	--visible name of the enchant
+	--this field is used as the name of registered enchanted book and inside armor tooltip
+	--translation should be added
+	name = S("Magic Protection"),
+
+	--this field is used to know that the enchant currently do
+	--translation should be added
+	description = S("Reduces magic damage."),
+
+	--how many levels can the enchant have
+	--ex: 4 => I, II, III, IV
+	--default: 4
+	max_level = 4,
+
+	--which enchants this enchant will not be compatible with
+	--each of these values is a enchant id 
+	incompatible = {blast_protection = true, fire_protection = true, projectile_protection = true},
+
+	--how much will the enchant consume from the enchantability group of the armor item
+	--default: 5
+	weight = 5,
+
+	--false => the enchant can be obtained in an enchanting table
+	--true => the enchant isn't obtainable in the enchanting table
+	--is true, you will probably need to implement some ways to obtain it
+	--even it the field is named "treasure", it will be no way to find it
+	--default: false
+	treasure = false,
+
+	--how much will damage be reduced
+	--see Minecraft Wiki for more informations
+	--https://minecraft.gamepedia.com/Armor#Damage_protection
+	--https://minecraft.gamepedia.com/Armor#Enchantments
+	factor = 1,
+
+	--restrict damage to one type
+	--allow the enchant to only protect of one type of damage 
+	damage_type = "magic",
+
+	--restrict damage to one category
+	--allow to protect from many type of damage at once
+	--this is much less specific than damage_type and also much more customisable
+	--the "is_magic" flag is used in the "magic", "dragon_breath", "wither_skull" and "thorns" damage types
+	--you can checkout the mcl_damage source code for a list of availlable damage types and associated flags
+	--but be warned that mods can register additionnal damage types
+	damage_flag = "is_magic",
 })
 ```
