@@ -1,8 +1,16 @@
 # mcl_armor
 
-## `mcl_armor.register_set(def)`
+This mod implement the ability of creating armors.
 
-This function register a set of armor (head, torso, leggings, feets) using a definition table:
+Armors are basically items that a player can equip on four different slots on him (head, feet, torso and feet) to get advantages.
+
+These armors have also a texture which is visible to other players, inside inventory or in 3rd person view.
+
+## Creating an Armor Set
+
+The `mcl_armor.register_set()` function aims to simplificate the process of creating a full set of armor.
+
+This function register a four piece of armor (head, torso, leggings, feets) using a definition table:
 
 ```lua
 mcl_armor.register_set({
@@ -137,5 +145,65 @@ mcl_armor.register_set({
 	--it basicaly set the _repair_material item field of each piece of the armor
 	--if set to nil no repair material will be added 
 	repair_material = "mcl_core:iron_ingot",
+})
+```
+
+## Creating an Armor Piece
+
+If you don't want to register a full set of armor, then you will need to manually register your own single item.
+
+```lua
+minetest.register_tool("dummy_mod:random_armor", {
+	description = S("Random Armor"),
+
+	--these two item fields are used for ingame documentation
+	--the mcl_armor.longdesc and mcl_armor.usage vars contains the basic usage and purpose of a piece of armor
+	--these vars may not be enough for that you want to do, so you may add some extra informations like that:
+	--_doc_items_longdesc = mcl_armor.longdesc.." "..S("Some extra informations.")
+	_doc_items_longdesc = mcl_armor.longdesc,
+	_doc_items_usagehelp = mcl_armor.usage,
+
+	--this field is similar to any item definition in minetest
+	--it just set the image shown then the armor is dropped as an item or inside an inventory
+	inventory_image = "mcl_armor_inv_elytra.png",
+
+	--this field is used by minetest internally and also by some helper functions
+	--in order for the tool to be shown is the right creative inventory tab, the right groups should be added
+	--mcl_armor_uses is required to give your armor a durability
+	--in that case, tha armor can be worn by 10 points before breaking
+	groups = {armor = 1, non_combat_armor = 1, armor_torso = 1, non_combat_torso = 1, mcl_armor_uses = 10},
+
+	--this table is used by minetest for seraching item specific sounds
+	--the _mcl_armor_equip and _mcl_armor_unequip are used by the armor implementation to play sounds on equip and unequip
+	--note that you don't need to provide any file extention
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_leather",
+		_mcl_armor_unequip = "mcl_armor_unequip_leather",
+	},
+
+	--these fields should be initialised like that in most cases
+	--mcl_armor.equip_on_use is a function that try to equip the piece of armor you have in hand inside the right armor slot if the slot is empty 
+	on_place = mcl_armor.equip_on_use,
+	on_secondary_use = mcl_armor.equip_on_use,
+
+	--this field define that the tool is ACTUALLY an armor piece and in which armor slot you can put it
+	--it should be set to "head", "torso", "legs" or "feet"
+	_mcl_armor_element = "torso",
+
+
+	--this field is used to provide the texture that will be overlayed on the object (player or mob) skin
+	--this field can be a texture name or a function that will be called each time the mcl_armor.update(obj) function is called
+	--see the mcl_armor.register_set() documentation for more explanations
+	_mcl_armor_texture = "mcl_armor_elytra.png"
+
+	--callbacks
+	--see the mcl_armor.register_set() documentation for more explanations
+
+	_on_equip = function(obj, itemstack)
+	end,
+	_on_unequip = function(obj, itemstack)
+	end,
+	_on_break = function(obj)
+	end,
 })
 ```
