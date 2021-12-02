@@ -1055,6 +1055,20 @@ minetest.register_on_joinplayer(function(player)
 	inv:set_size("enderchest", 9*3)
 end)
 
+minetest.register_allow_player_inventory_action(function(player, action, inv, info)
+	if inv:get_location().type == "player" and (
+		   action == "move" and (info.from_list == "enderchest" or info.to_list == "enderchest")
+		or action == "put"  and  info.listname  == "enderchest"
+		or action == "take" and  info.listname  == "enderchest"
+	) then
+		local def = player:get_wielded_item():get_definition()
+
+		if not minetest.find_node_near(player:get_pos(), def and def.range or ItemStack():get_definition().range, "mcl_chests:ender_chest_small", true) then
+			return 0
+		end
+	end
+end)
+
 minetest.register_craft({
 	output = "mcl_chests:ender_chest",
 	recipe = {
