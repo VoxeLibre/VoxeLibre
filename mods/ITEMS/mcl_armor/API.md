@@ -1,16 +1,12 @@
 # mcl_armor
 
-This mod implement the ability of creating armors.
+This mod implements the ability of registering armors.
 
-Armors are basically items that a player can equip on four different slots on him (head, feet, torso and feet) to get advantages.
+## Registering an Armor Set
 
-These armors have also a texture which is visible to other players, inside inventory or in 3rd person view.
+The `mcl_armor.register_set()` function aims to simplify the process of registering a full set of armor.
 
-## Creating an Armor Set
-
-The `mcl_armor.register_set()` function aims to simplificate the process of creating a full set of armor.
-
-This function register a four piece of armor (head, torso, leggings, feets) using a definition table:
+This function register four pieces of armor (head, torso, leggings, feets) based on a definition table:
 
 ```lua
 mcl_armor.register_set({
@@ -18,7 +14,7 @@ mcl_armor.register_set({
 	name = "dummy_armor",
 
 	--description of the armor material
-	--do NOT localize this string, it will be concatenated will each piece of armor's description and result will be automatically fetched from your mod's translation files
+	--do NOT translate this string, it will be concatenated will each piece of armor's description and result will be automatically fetched from your mod's translation files
 	description = "Dummy Armor",
 
 	--overide description of each armor piece
@@ -91,7 +87,7 @@ mcl_armor.register_set({
 		end,
 	},
 
-	--WARNING: 2d preview will be deprecated soon
+	--WARNING: 2d preview is deprecated and will be removed soon
 	--specify textures that will be shown in player inventory then you disabled the 3d player inventory preview
 	--its similar to how works the textures field
 	previews = {
