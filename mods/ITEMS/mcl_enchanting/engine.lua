@@ -295,7 +295,7 @@ function mcl_enchanting.initialize()
 	end
 end
 
-function mcl_enchanting.get_possible_enchantments(itemstack, enchantment_level, treasure)
+function mcl_enchanting.get_possible_enchantments(itemstack, treasure)
 	local possible_enchantments, weights, accum_weight = {}, {}, 0
 	for enchantment, enchantment_def in pairs(mcl_enchanting.enchantments) do
 		local can_enchant, _, _, primary = mcl_enchanting.can_enchant(itemstack, enchantment, 1)
@@ -327,7 +327,7 @@ function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_leve
 		if enchantment_level == 0 then
 			break
 		end
-		local possible, weights, accum_weight = mcl_enchanting.get_possible_enchantments(itemstack, enchantment_level, treasure)
+		local possible, weights, accum_weight = mcl_enchanting.get_possible_enchantments(itemstack, treasure)
 		local selected_enchantment, enchantment_power
 		if #possible > 0 then
 			local r = math.random(accum_weight)
