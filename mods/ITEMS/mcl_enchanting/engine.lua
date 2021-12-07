@@ -295,17 +295,22 @@ function mcl_enchanting.initialize()
 	end
 end
 
-function mcl_enchanting.get_possible_enchantments(itemstack, treasure)
-	local possible_enchantments, weights, accum_weight = {}, {}, 0
+function mcl_enchanting.get_random_enchantment(itemstack, treasure, weighted, exclude, pr)
+	local possible = {}
+
 	for enchantment, enchantment_def in pairs(mcl_enchanting.enchantments) do
 		local can_enchant, _, _, primary = mcl_enchanting.can_enchant(itemstack, enchantment, 1)
-		if can_enchant and (primary or treasure) then
-			table.insert(possible_enchantments, enchantment)
-			accum_weight = accum_weight + enchantment_def.weight
-			weights[enchantment] = accum_weight
+
+		if can_enchant and (primary or treasure) and (not exclude or table.indexof(exclude, enchantment) == -1) then
+			local weight = weighted and enchantment_def.weight or 1
+
+			for i = 1, weight do
+				table.insert(possible, enchantment)
+			end
 		end
 	end
-	return possible_enchantments, weights, accum_weight
+
+	return #possible > 0 and possible[pr and pr:next(1, #possible) or math.random(#possible)]
 end
 
 function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
@@ -324,40 +329,41 @@ function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_leve
 	enchantment_level = enchantment_level * 2
 	repeat
 		enchantment_level = math.floor(enchantment_level / 2)
+
 		if enchantment_level == 0 then
 			break
 		end
-		local possible, weights, accum_weight = mcl_enchanting.get_possible_enchantments(itemstack, treasure)
-		local selected_enchantment, enchantment_power
-		if #possible > 0 then
-			local r = math.random(accum_weight)
-			for _, enchantment in ipairs(possible) do
-				if weights[enchantment] >= r then
-					selected_enchantment = enchantment
-					break
-				end
-			end
-			local enchantment_def = mcl_enchanting.enchantments[selected_enchantment]
-			local power_range_table = enchantment_def.power_range_table
-			for i = enchantment_def.max_level, 1, -1 do
-				local power_range = power_range_table[i]
-				if enchantment_level >= power_range[1] and enchantment_level <= power_range[2] then
-					enchantment_power = i
-					break
-				end
-			end
-			if not description then
-				if not enchantment_power then
-					return
-				end
-				description = mcl_enchanting.get_enchantment_description(selected_enchantment, enchantment_power)
-			end
-			if enchantment_power then
-				enchantments[selected_enchantment] = enchantment_power
-				mcl_enchanting.enchant(itemstack, selected_enchantment, enchantment_power)
-			end
-		else
+
+		local selected_enchantment = mcl_enchanting.get_random_enchantment(itemstack, treasure, true)
+
+		if not selected_enchantment then
 			break
+		end
+
+		local enchantment_def = mcl_enchanting.enchantments[selected_enchantment]
+		local power_range_table = enchantment_def.power_range_table
+
+		local enchantment_power
+
+		for i = enchantment_def.max_level, 1, -1 do
+			local power_range = power_range_table[i]
+			if enchantment_level >= power_range[1] and enchantment_level <= power_range[2] then
+				enchantment_power = i
+				break
+			end
+		end
+
+		if not description then
+			if not enchantment_power then
+				return
+			end
+
+			description = mcl_enchanting.get_enchantment_description(selected_enchantment, enchantment_power)
+		end
+
+		if enchantment_power then
+			enchantments[selected_enchantment] = enchantment_power
+			mcl_enchanting.enchant(itemstack, selected_enchantment, enchantment_power)
 		end
 	until not no_reduced_bonus_chance and math.random() >= (enchantment_level + 1) / 50
 	return enchantments, description
@@ -381,30 +387,19 @@ function mcl_enchanting.get_randomly_enchanted_book(enchantment_level, treasure,
 	return mcl_enchanting.enchant_randomly(ItemStack("mcl_books:book"), enchantment_level, treasure, no_reduced_bonus_chance, true)
 end
 
-function mcl_enchanting.get_uniform_randomly_enchanted_book(except, pr)
-	except = except or except
-	local stack = ItemStack("mcl_enchanting:book_enchanted")
-	local list = {}
-	for enchantment in pairs(mcl_enchanting.enchantments) do
-		if table.indexof(except, enchantment) == -1 then
-			table.insert(list, enchantment)
-		end
+function mcl_enchanting.enchant_uniform_randomly(stack, exclude, pr)
+	local enchantment = mcl_enchanting.get_random_enchantment(stack, true, weighted, exclude, pr)
+
+	if enchantment then
+		local max_level = mcl_enchanting.enchantments[enchantment].max_level
+		mcl_enchanting.enchant(stack, enchantment, pr and pr:next(1, max_level) or math.random(max_level))
 	end
-	local index, level
-	if pr then
-		index = pr:next(1,#list)
-	else
-		index = math.random(#list)
-	end
-	local enchantment = list[index]
-	local enchantment_def = mcl_enchanting.enchantments[enchantment]
-	if pr then
-		level = pr:next(1, enchantment_def.max_level)
-	else
-		level = math.random(enchantment_def.max_level)
-	end
-	mcl_enchanting.enchant(stack, enchantment, level)
+
 	return stack
+end
+
+function mcl_enchanting.get_uniform_randomly_enchanted_book(exclude, pr)
+	return mcl_enchanting.enchant_uniform_randomly(ItemStack("mcl_books:book"), exclude, pr)
 end
 
 function mcl_enchanting.get_random_glyph_row()
