@@ -123,7 +123,7 @@ function mcl_enchanting.can_enchant(itemstack, enchantment, level)
 	if itemname == "" then
 		return false, "item missing"
 	end
-	local supported, primary = mcl_enchanting.item_supports_enchantment(itemstack:get_name(), enchantment)
+	local supported, primary = mcl_enchanting.item_supports_enchantment(itemname, enchantment)
 	if not supported then
 		return false, "item not supported"
 	end
@@ -132,7 +132,7 @@ function mcl_enchanting.can_enchant(itemstack, enchantment, level)
 	end
 	if level > enchantment_def.max_level then
 		return false, "level too high", enchantment_def.max_level
-	elseif  level < 1 then
+	elseif level < 1 then
 		return false, "level too small", 1
 	end
 	local item_enchantments = mcl_enchanting.get_enchantments(itemstack)
@@ -298,8 +298,8 @@ end
 function mcl_enchanting.get_possible_enchantments(itemstack, enchantment_level, treasure)
 	local possible_enchantments, weights, accum_weight = {}, {}, 0
 	for enchantment, enchantment_def in pairs(mcl_enchanting.enchantments) do
-		local _, _, _, primary = mcl_enchanting.can_enchant(itemstack, enchantment, 1)
-		if primary or treasure then
+		local can_enchant, _, _, primary = mcl_enchanting.can_enchant(itemstack, enchantment, 1)
+		if can_enchant and (primary or treasure) then
 			table.insert(possible_enchantments, enchantment)
 			accum_weight = accum_weight + enchantment_def.weight
 			weights[enchantment] = accum_weight
