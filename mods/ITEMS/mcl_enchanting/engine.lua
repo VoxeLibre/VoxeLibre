@@ -295,6 +295,16 @@ function mcl_enchanting.initialize()
 	end
 end
 
+function mcl_enchanting.random(pr, ...)
+	local r = pr and pr:next(...) or math.random(...)
+
+	if pr and not ({...})[1] then
+		r = r / 32767
+	end
+
+	return r
+end
+
 function mcl_enchanting.get_random_enchantment(itemstack, treasure, weighted, exclude, pr)
 	local possible = {}
 
@@ -310,23 +320,30 @@ function mcl_enchanting.get_random_enchantment(itemstack, treasure, weighted, ex
 		end
 	end
 
-	return #possible > 0 and possible[pr and pr:next(1, #possible) or math.random(#possible)]
+	return #possible > 0 and possible[mcl_enchanting.random(pr, 1, #possible)]
 end
 
-function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
+function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted, pr)
 	local itemname = itemstack:get_name()
+
 	if not mcl_enchanting.can_enchant_freshly(itemname) and not ignore_already_enchanted then
 		return
 	end
+
 	itemstack = ItemStack(itemstack)
+
 	local enchantability = minetest.get_item_group(itemname, "enchantability")
-	enchantability = 1 + math.random(0, math.floor(enchantability / 4)) + math.random(0, math.floor(enchantability / 4))
+	enchantability = 1 + mcl_enchanting.random(pr, 0, math.floor(enchantability / 4)) + mcl_enchanting.random(pr, 0, math.floor(enchantability / 4))
+
 	enchantment_level = enchantment_level + enchantability
-	enchantment_level = enchantment_level + enchantment_level * (math.random() + math.random() - 1) * 0.15
+	enchantment_level = enchantment_level + enchantment_level * (mcl_enchanting.random(pr) + mcl_enchanting.random(pr) - 1) * 0.15
 	enchantment_level = math.max(math.floor(enchantment_level + 0.5), 1)
+
 	local enchantments = {}
 	local description
+
 	enchantment_level = enchantment_level * 2
+
 	repeat
 		enchantment_level = math.floor(enchantment_level / 2)
 
@@ -334,7 +351,7 @@ function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_leve
 			break
 		end
 
-		local selected_enchantment = mcl_enchanting.get_random_enchantment(itemstack, treasure, true)
+		local selected_enchantment = mcl_enchanting.get_random_enchantment(itemstack, treasure, true, nil, pr)
 
 		if not selected_enchantment then
 			break
@@ -365,41 +382,39 @@ function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_leve
 			enchantments[selected_enchantment] = enchantment_power
 			mcl_enchanting.enchant(itemstack, selected_enchantment, enchantment_power)
 		end
-	until not no_reduced_bonus_chance and math.random() >= (enchantment_level + 1) / 50
+
+	until not no_reduced_bonus_chance and mcl_enchanting.random(pr) >= (enchantment_level + 1) / 50
+
 	return enchantments, description
 end
 
-function mcl_enchanting.generate_random_enchantments_reliable(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
+function mcl_enchanting.generate_random_enchantments_reliable(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted, pr)
 	local enchantments
+
 	repeat
-		enchantments = mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
+		enchantments = mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted, pr)
 	until enchantments
+
 	return enchantments
 end
 
-function mcl_enchanting.enchant_randomly(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
+function mcl_enchanting.enchant_randomly(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted, pr)
+	local enchantments = mcl_enchanting.generate_random_enchantments_reliable(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted, pr)
+
 	mcl_enchanting.set_enchanted_itemstring(itemstack)
-	mcl_enchanting.set_enchantments(itemstack, mcl_enchanting.generate_random_enchantments_reliable(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted))
+	mcl_enchanting.set_enchantments(itemstack, enchantments)
+
 	return itemstack
 end
 
-function mcl_enchanting.get_randomly_enchanted_book(enchantment_level, treasure, no_reduced_bonus_chance)
-	return mcl_enchanting.enchant_randomly(ItemStack("mcl_books:book"), enchantment_level, treasure, no_reduced_bonus_chance, true)
-end
-
 function mcl_enchanting.enchant_uniform_randomly(stack, exclude, pr)
-	local enchantment = mcl_enchanting.get_random_enchantment(stack, true, weighted, exclude, pr)
+	local enchantment = mcl_enchanting.get_random_enchantment(stack, true, false, exclude, pr)
 
 	if enchantment then
-		local max_level = mcl_enchanting.enchantments[enchantment].max_level
-		mcl_enchanting.enchant(stack, enchantment, pr and pr:next(1, max_level) or math.random(max_level))
+		mcl_enchanting.enchant(stack, enchantment, mcl_enchanting.random(pr, 1, mcl_enchanting.enchantments[enchantment].max_level))
 	end
 
 	return stack
-end
-
-function mcl_enchanting.get_uniform_randomly_enchanted_book(exclude, pr)
-	return mcl_enchanting.enchant_uniform_randomly(ItemStack("mcl_books:book"), exclude, pr)
 end
 
 function mcl_enchanting.get_random_glyph_row()

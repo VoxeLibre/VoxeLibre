@@ -323,6 +323,9 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 					{ itemstring = "mcl_jukebox:record_4", weight = 15 },
 					{ itemstring = "mobs_mc:iron_horse_armor", weight = 15 },
 					{ itemstring = "mcl_core:apple_gold", weight = 15 },
+					{ itemstring = "mcl_books:book", weight = 10, func = function(stack, pr)
+						mcl_enchanting.enchant_uniform_randomly({"soul_speed"}, pr)
+					end },
 					{ itemstack = mcl_enchanting.get_uniform_randomly_enchanted_book({"soul_speed"}, pr), weight = 10 },
 					{ itemstring = "mobs_mc:gold_horse_armor", weight = 10 },
 					{ itemstring = "mobs_mc:diamond_horse_armor", weight = 5 },
