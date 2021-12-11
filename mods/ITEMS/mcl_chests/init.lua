@@ -18,22 +18,22 @@ local tiles_chest_normal_small = {"mcl_chests_normal.png"}
 local tiles_chest_normal_double = {"mcl_chests_normal_double.png"}
 
 if it_is_christmas then
-	tiles_chest_normal_small = {"mcl_chests_normal_present.png"}
-	tiles_chest_normal_double = {"mcl_chests_normal_double_present.png"}
+	tiles_chest_normal_small = {"mcl_chests_normal_present.png^mcl_chests_noise.png"}
+	tiles_chest_normal_double = {"mcl_chests_normal_double_present.png^mcl_chests_noise_double.png"}
 end
 
 local tiles_chest_trapped_small = {"mcl_chests_trapped.png"}
 local tiles_chest_trapped_double = {"mcl_chests_trapped_double.png"}
 
 if it_is_christmas then
-	tiles_chest_trapped_small = {"mcl_chests_trapped_present.png"}
-	tiles_chest_trapped_double = {"mcl_chests_trapped_double_present.png"}
+	tiles_chest_trapped_small = {"mcl_chests_trapped_present.png^mcl_chests_noise.png"}
+	tiles_chest_trapped_double = {"mcl_chests_trapped_double_present.png^mcl_chests_noise_double.png"}
 end
 
 local tiles_chest_ender_small = {"mcl_chests_ender.png"}
 
 if it_is_christmas then
-	tiles_chest_ender_small = {"mcl_chests_ender_present.png"}
+	tiles_chest_ender_small = {"mcl_chests_ender_present.png^mcl_chests_noise.png"}
 end
 
 -- Chest Entity
