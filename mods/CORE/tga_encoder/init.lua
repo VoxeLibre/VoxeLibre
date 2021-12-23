@@ -38,18 +38,32 @@ function image:encode_header()
 	self.data = self.data
 		.. string.char(0) -- image id
 		.. string.char(0) -- color map type
-		.. string.char(2) -- image type (uncompressed true-color image = 2)
+		.. string.char(10) -- image type (RLE RGB = 10)
 	self:encode_colormap_spec() -- color map specification
 	self:encode_image_spec() -- image specification
 end
 
 function image:encode_data()
+	local current_pixel = ''
+	local previous_pixel = ''
+	local count = 1
+	local packets = {}
+	local rle_packet = ''
 	for _, row in ipairs(self.pixels) do
 		for _, pixel in ipairs(row) do
-			self.data = self.data
-				.. string.char(pixel[3], pixel[2], pixel[1])
+			current_pixel = string.char(pixel[3], pixel[2], pixel[1])
+			if current_pixel ~= previous_pixel or count == 128 then
+				packets[#packets +1] = rle_packet
+				count = 1
+				previous_pixel = current_pixel
+			else
+				count = count + 1
+			end
+			rle_packet = string.char(128 + count - 1) .. current_pixel
 		end
 	end
+	packets[#packets +1] = rle_packet
+	self.data = self.data .. table.concat(packets)
 end
 
 function image:encode_footer()

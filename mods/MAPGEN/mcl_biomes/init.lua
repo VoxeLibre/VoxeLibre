@@ -1496,7 +1496,7 @@ local function register_dimension_biomes()
 		heat_point = 100,
 		humidity_point = 0,
 		_mcl_biome_type = "hot",
-		_mcl_palette_index = 19,
+		_mcl_palette_index = 17,
 	})
 
 	--[[ THE END ]]

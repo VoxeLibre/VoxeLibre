@@ -37,5 +37,6 @@ Players in bed: @1/@2=
 Note: Night skip is disabled.=
 You're sleeping.=
 You will fall asleep when all players are in bed.=
+You will fall asleep when @1% of all players are in bed.=
 You're in bed.=
 Allows you to sleep=

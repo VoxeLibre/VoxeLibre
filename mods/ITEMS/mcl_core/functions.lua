@@ -184,6 +184,7 @@ minetest.register_abm({
 	end,
 })
 
+-- Cactus mechanisms
 minetest.register_abm({
 	label = "Cactus growth",
 	nodenames = {"mcl_core:cactus"},
@@ -195,16 +196,29 @@ minetest.register_abm({
 	end,
 })
 
--- Make cactus destroy items
 minetest.register_abm({
-	label = "Cactus destroy items",
+	label = "Cactus mechanisms",
 	nodenames = {"mcl_core:cactus"},
 	interval = 1,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		for _,object in pairs(minetest.get_objects_inside_radius(pos, 0.9)) do
-			if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
+		for _, object in pairs(minetest.get_objects_inside_radius(pos, 0.9)) do
+			local entity = object:get_luaentity()
+			if entity and entity.name == "__builtin:item" then
 				object:remove()
+			end
+		end
+		local posses = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } }
+		for _, p in pairs(posses) do
+			if minetest.registered_nodes[minetest.get_node(vector.new(pos.x + p[1], pos.y, pos.z + p[2])).name].walkable then
+				local posy = pos.y
+				while minetest.get_node(vector.new(pos.x, posy, pos.z)).name == "mcl_core:cactus" do
+					local pos = vector.new(pos.x, posy, pos.z)
+					minetest.remove_node(pos)
+					minetest.add_item(vector.offset(pos, math.random(-0.5, 0.5), 0, math.random(-0.5, 0.5)), "mcl_core:cactus")
+					posy = posy + 1
+				end
+				break
 			end
 		end
 	end,
@@ -759,8 +773,7 @@ end
 
 local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_setting("seed"))
 
--- Return appropriate grass block node for pos
-function mcl_core.get_grass_block_type(pos)
+function mcl_core.get_grass_palette_index(pos)
 	local biome_data = minetest.get_biome_data(pos)
 	local index = 0
 	if biome_data then
@@ -771,7 +784,12 @@ function mcl_core.get_grass_block_type(pos)
 			index = reg_biome._mcl_palette_index
 		end
 	end
-	return {name="mcl_core:dirt_with_grass", param2=index}
+	return index
+end
+
+-- Return appropriate grass block node for pos
+function mcl_core.get_grass_block_type(pos)
+	return {name = "mcl_core:dirt_with_grass", param2 = mcl_core.get_grass_palette_index(pos)}
 end
 
 ------------------------------

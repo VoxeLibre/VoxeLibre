@@ -1,0 +1,60 @@
+#!/bin/sh -eu
+# analyze-packet-spam – show minetest client packet count per second
+# Copyright © 2021  Nils Dagsson Moskopp (erlehmann)
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+
+# Dieses Programm hat das Ziel, die Medienkompetenz der Leser zu
+# steigern. Gelegentlich packe ich sogar einen handfesten Buffer
+# Overflow oder eine Format String Vulnerability zwischen die anderen
+# Codezeilen und schreibe das auch nicht dran.
+
+# This script takes a minetest log with at least INFO log level and
+# outputs the MINETEST network protocol packet count per second.
+
+# To collect such a log file of minetest running for 10 minutes, run:
+# timeout 600 minetest --info >log.txt 2>&1 >/dev/null
+
+# To get packet counts from that file, run:
+# ./analyze-packet-spam <log.txt
+
+TEMPFILE=$(mktemp /tmp/minetest.analyze-packet-spam.XXXXXXXX)
+
+grep -F 'INFO[Main]: cmd' \
+ |while read DATE TIME _ _ PACKET_ID PACKET_NAME _ PACKET_COUNT; do
+  TIMESTAMP=$(date +%s --date "${DATE} ${TIME%:}")
+  PACKET_NAME=${PACKET_NAME#(}
+  PACKET_NAME=${PACKET_NAME%)}
+  VARIABLE=PACKET_COUNT_"${PACKET_NAME}"
+  eval "$( echo $VARIABLE=\$\(\( \${$VARIABLE:-0} + ${PACKET_COUNT} \)\) )"
+  printf '%s ' \
+   "${TIMESTAMP}" \
+   "${VARIABLE}"
+  eval echo \$${VARIABLE}
+done >"${TEMPFILE}"
+
+TIMESTAMP_START=$( <"${TEMPFILE}" head -n1 |cut -d' ' -f1 )
+TIMESTAMP_END=$( <"${TEMPFILE}" tail -n1 |cut -d' ' -f1 )
+DURATION=$(( 30 + ${TIMESTAMP_END} - ${TIMESTAMP_START} ))
+
+PACKET_NAME_SEEN=''
+<"${TEMPFILE}" tac \
+ |while read _ PACKET_NAME PACKET_COUNT; do
+  case "${PACKET_NAME_SEEN}" in
+   *"${PACKET_NAME}"*)
+   ;;
+   *)
+    PACKET_COUNT_PER_SECOND=$(
+     printf '1k %s %s /p' "${PACKET_COUNT}" "${DURATION}" \
+      |dc
+    )
+    printf '%s\t%s\n' "${PACKET_COUNT_PER_SECOND}" "${PACKET_NAME}"
+    PACKET_NAME_SEEN="${PACKET_NAME_SEEN} ${PACKET_NAME}"
+   ;;
+  esac
+ done
+
+unlink "${TEMPFILE}"

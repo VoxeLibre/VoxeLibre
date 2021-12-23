@@ -1,5 +1,6 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 local F = minetest.formspec_escape
+local C = minetest.colorize
 
 -- Prepare player info table
 local players = {}
@@ -27,10 +28,9 @@ local function replace_enchanted_books(tbl)
 	end
 end
 
---[[ Populate all the item tables. We only do this once. Note this mod must be
-loaded after _mcl_autogroup for this to work, because it required certain
-groups to be set. ]]
-do
+--[[ Populate all the item tables. We only do this once. Note this code must be
+executed after loading all the other mods in order to work. ]]
+minetest.register_on_mods_loaded(function()
 	for name,def in pairs(minetest.registered_items) do
 		if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and def.description ~= "" then
 			local function is_redstone(def)
@@ -108,7 +108,7 @@ do
 		table.sort(to_sort)
 		replace_enchanted_books(to_sort)
 	end
-end
+end)
 
 local function filter_item(name, description, lang, filter)
 	local desc
@@ -290,6 +290,19 @@ filtername["inv"] = S("Survival Inventory")
 	bg["default"] = dark_bg
 end]]
 
+local function get_stack_size(player)
+	return player:get_meta():get_int("mcl_inventory:switch_stack")
+end
+
+local function set_stack_size(player, n)
+	player:get_meta():set_int("mcl_inventory:switch_stack", n)
+end
+
+minetest.register_on_joinplayer(function (player)
+	if get_stack_size(player) == 0 then
+		set_stack_size(player, 64)
+	end
+end)
 
 function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size, show, page, filter)
 	--reset_menu_item_bg()
@@ -350,6 +363,8 @@ function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size,
 			armor_slot_imgs = armor_slot_imgs .. "image[5.5,2.75;1,1;mcl_inventory_empty_armor_slot_boots.png]"
 		end
 
+		local stack_size = get_stack_size(player)
+		
 		-- Survival inventory slots
 		main_list = "list[current_player;main;0,3.75;9,3;9]"..
 			mcl_formspec.get_itemslot_bg(0,3.75,9,3)..
@@ -377,7 +392,11 @@ function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size,
 			-- achievements button
 			"image_button[9,4;1,1;mcl_achievements_button.png;__mcl_achievements;]"..
 			--"style_type[image_button;border=;bgimg=;bgimg_pressed=]"..
-			"tooltip[__mcl_achievements;"..F(S("Achievements")).."]"
+			"tooltip[__mcl_achievements;"..F(S("Achievements")).."]"..
+			-- switch stack size button
+			"image_button[9,5;1,1;default_apple.png;__switch_stack;]"..
+			"label[9.4,5.4;".. F(C("#FFFFFF", stack_size ~= 1 and stack_size or "")) .."]"..
+			"tooltip[__switch_stack;"..F(S("Switch stack size")).."]"			
 
 		-- For shortcuts
 		listrings = listrings ..
@@ -418,8 +437,7 @@ function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size,
 		return
 			"style["..this_tab..";border=false;bgimg=;bgimg_pressed=]"..
 			"item_image_button[" .. boffset[this_tab] ..";1,1;"..tab_icon[this_tab]..";"..this_tab..";]"..
-			"image[" .. offset[this_tab] .. ";1.5,1.44;" .. bg_img .. "]" ..
-			"image[" .. boffset[this_tab] .. ";1,1;crafting_creative_marker.png]"
+			"image[" .. offset[this_tab] .. ";1.5,1.44;" .. bg_img .. "]"
 	end
 	local caption = ""
 	if name ~= "inv" and filtername[name] then
@@ -546,6 +564,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	elseif fields.search and not fields.creative_next and not fields.creative_prev then
 		set_inv_search(string.lower(fields.search),player)
 		page = "nix"
+	elseif fields.__switch_stack then
+		local switch = 1
+		if get_stack_size(player) == 1 then
+			switch = 64
+		end
+		set_stack_size(player, switch)
 	end
 
 	if page then
@@ -668,4 +692,12 @@ minetest.register_on_joinplayer(function(player)
 	end
 	init(player)
 	mcl_inventory.set_creative_formspec(player, 0, 1, nil, false, "nix", "")
+end)
+
+minetest.register_on_player_inventory_action(function(player, action, inventory, inventory_info)
+	if minetest.is_creative_enabled(player:get_player_name()) and get_stack_size(player) == 64 and action == "put" and inventory_info.listname == "main" then
+		local stack = inventory_info.stack
+		stack:set_count(stack:get_stack_max())
+		player:get_inventory():set_stack("main", inventory_info.index, stack)
+	end
 end)

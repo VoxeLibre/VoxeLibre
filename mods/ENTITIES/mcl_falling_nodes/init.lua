@@ -19,7 +19,10 @@ local function deal_falling_damage(self, dtime)
 	end
 	self._hit = self._hit or {}
 	for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
-		if mcl_util.get_hp(obj) > 0 and not self._hit[obj] then
+		local entity = obj:get_luaentity()
+		if entity and entity.name == "__builtin:item" then
+			obj:remove()
+		elseif mcl_util.get_hp(obj) > 0 and not self._hit[obj] then
 			self._hit[obj] = true
 			local way = self._startpos.y - pos.y
 			local damage = (way - 1) * 2

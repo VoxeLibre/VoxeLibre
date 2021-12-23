@@ -207,6 +207,10 @@ end
 function mcl_autogroup.can_harvest(nodename, toolname)
 	local ndef = minetest.registered_nodes[nodename]
 
+	if not ndef then
+		return false
+	end
+
 	if minetest.get_item_group(nodename, "dig_immediate") >= 2 then
 		return true
 	end

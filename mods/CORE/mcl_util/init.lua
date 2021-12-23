@@ -1,5 +1,27 @@
 mcl_util = {}
 
+-- Updates all values in t using values from to*.
+function table.update(t, ...)
+	for _, to in ipairs{...} do
+		for k,v in pairs(to) do
+			t[k] = v
+		end
+	end
+	return t
+end
+
+-- Updates nil values in t using values from to*.
+function table.update_nil(t, ...)
+	for _, to in ipairs{...} do
+		for k,v in pairs(to) do
+			if t[k] == nil then
+				t[k] = v
+			end
+		end
+	end
+	return t
+end
+
 -- Based on minetest.rotate_and_place
 
 --[[
@@ -456,7 +478,9 @@ function mcl_util.calculate_durability(itemstack)
 				end
 			end
 		end
-		uses = uses or (next(itemstack:get_tool_capabilities().groupcaps) or {}).uses
+
+		local _, groupcap = next(itemstack:get_tool_capabilities().groupcaps)
+		uses = uses or (groupcap or {}).uses
 	end
 
 	return uses or 0
@@ -537,4 +561,13 @@ function mcl_util.get_object_name(object)
 
 		return luaentity.nametag and luaentity.nametag ~= "" and luaentity.nametag or luaentity.description or luaentity.name
 	end
+end
+
+function mcl_util.replace_mob(obj, mob)
+	local rot = obj:get_yaw()
+	local pos = obj:get_pos()
+	obj:remove()
+	obj = minetest.add_entity(pos, mob)
+	obj:set_yaw(rot)
+	return obj
 end

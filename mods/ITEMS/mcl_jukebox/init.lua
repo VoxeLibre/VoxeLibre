@@ -94,7 +94,9 @@ minetest.register_craft({
 })
 
 local function play_record(pos, itemstack, player)
-	local name = itemstack:get_name()
+	local item_name = itemstack:get_name()
+	-- ensure the jukebox uses the new record names for old records
+	local name = minetest.registered_aliases[item_name] or item_name
 	if mcl_jukebox.registered_records[name] then
 		local cname = player:get_player_name()
 		if active_tracks[cname] then
@@ -239,25 +241,10 @@ mcl_jukebox.register_record("The Clueless Frog (Jordach's Mix)", "SoundHelix", "
 
 --add backward compatibility
 minetest.register_alias("mcl_jukebox:record_1", "mcl_jukebox:record_13")
-mcl_jukebox.registered_records["mcl_jukebox:record_1"] = mcl_jukebox.registered_records["mcl_jukebox:record_13"]
-
 minetest.register_alias("mcl_jukebox:record_2", "mcl_jukebox:record_wait")
-mcl_jukebox.registered_records["mcl_jukebox:record_2"] = mcl_jukebox.registered_records["mcl_jukebox:record_wait"]
-
 minetest.register_alias("mcl_jukebox:record_3", "mcl_jukebox:record_blocks")
-mcl_jukebox.registered_records["mcl_jukebox:record_3"] = mcl_jukebox.registered_records["mcl_jukebox:record_blocks"]
-
 minetest.register_alias("mcl_jukebox:record_4", "mcl_jukebox:record_far")
-mcl_jukebox.registered_records["mcl_jukebox:record_4"] = mcl_jukebox.registered_records["mcl_jukebox:record_far"]
-
 minetest.register_alias("mcl_jukebox:record_5", "mcl_jukebox:record_chirp")
-mcl_jukebox.registered_records["mcl_jukebox:record_5"] = mcl_jukebox.registered_records["mcl_jukebox:record_chirp"]
-
 minetest.register_alias("mcl_jukebox:record_6", "mcl_jukebox:record_strad")
-mcl_jukebox.registered_records["mcl_jukebox:record_6"] = mcl_jukebox.registered_records["mcl_jukebox:record_strad"]
-
 minetest.register_alias("mcl_jukebox:record_7", "mcl_jukebox:record_mellohi")
-mcl_jukebox.registered_records["mcl_jukebox:record_7"] = mcl_jukebox.registered_records["mcl_jukebox:record_mellohi"]
-
 minetest.register_alias("mcl_jukebox:record_8", "mcl_jukebox:record_mall")
-mcl_jukebox.registered_records["mcl_jukebox:record_8"] = mcl_jukebox.registered_records["mcl_jukebox:record_mall"]

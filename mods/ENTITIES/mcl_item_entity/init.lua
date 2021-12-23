@@ -290,10 +290,10 @@ function minetest.handle_node_drops(pos, drops, digger)
 		end
 	end
 
-	if digger and mcl_experience.throw_experience and not silk_touch_drop then
+	if digger and mcl_experience.throw_xp and not silk_touch_drop then
 		local experience_amount = minetest.get_item_group(dug_node.name,"xp")
 		if experience_amount > 0 then
-			mcl_experience.throw_experience(pos, experience_amount)
+			mcl_experience.throw_xp(pos, experience_amount)
 		end
 	end
 
@@ -480,7 +480,7 @@ minetest.register_entity(":__builtin:item", {
 	end,
 
 	get_staticdata = function(self)
-		return minetest.serialize({
+		local data = minetest.serialize({
 			itemstring = self.itemstring,
 			always_collect = self.always_collect,
 			age = self.age,
@@ -488,6 +488,39 @@ minetest.register_entity(":__builtin:item", {
 			_flowing = self._flowing,
 			_removed = self._removed,
 		})
+		-- sfan5 guessed that the biggest serializable item
+		-- entity would have a size of 65530 bytes. This has
+		-- been experimentally verified to be still too large.
+		--
+		-- anon5 has calculated that the biggest serializable
+		-- item entity has a size of exactly 65487 bytes:
+		--
+		-- 1. serializeString16 can handle max. 65535 bytes.
+		-- 2. The following engine metadata is always saved:
+		--    • 1 byte (version)
+		--    • 2 byte (length prefix)
+		--    • 14 byte “__builtin:item”
+		--    • 4 byte (length prefix)
+		--    • 2 byte (health)
+		--    • 3 × 4 byte = 12 byte (position)
+		--    • 4 byte (yaw)
+		--    • 1 byte (version 2)
+		--    • 2 × 4 byte = 8 byte (pitch and roll)
+		-- 3. This leaves 65487 bytes for the serialization.
+		if #data > 65487 then -- would crash the engine
+			local stack = ItemStack(self.itemstring)
+			stack:get_meta():from_table(nil)
+			self.itemstring = stack:to_string()
+			minetest.log(
+				"warning",
+				"Overlong item entity metadata removed: “" ..
+				self.itemstring ..
+				"” had serialized length of " ..
+				#data
+			)
+			return self:get_staticdata()
+		end
+		return data
 	end,
 
 	on_activate = function(self, staticdata, dtime_s)
@@ -575,7 +608,7 @@ minetest.register_entity(":__builtin:item", {
 		return true
 	end,
 
-	on_step = function(self, dtime)
+	on_step = function(self, dtime, moveresult)
 		if self._removed then
 			self.object:set_properties({
 				physical = false
@@ -639,6 +672,18 @@ minetest.register_entity(":__builtin:item", {
 				self._removed = true
 				self.object:remove()
 				return
+			end
+		end
+
+		-- Destroy item when it collides with a cactus
+		if moveresult and moveresult.collides then
+			for _, collision in pairs(moveresult.collisions) do
+				local pos = collision.node_pos
+				if collision.type == "node" and minetest.get_node(pos).name == "mcl_core:cactus" then
+					self._removed = true
+					self.object:remove()
+					return
+				end
 			end
 		end
 

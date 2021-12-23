@@ -37,7 +37,7 @@ local fish = function(itemstack, player, pointed_thing)
 		local num = 0
 		local ent = nil
 		local noent = true
-		
+
 		local durability = 65
 		local unbreaking = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
 		if unbreaking > 0 then
@@ -71,7 +71,9 @@ local fish = function(itemstack, player, pointed_thing)
 										{ itemstring = "mcl_fishing:salmon_raw", weight = 25 },
 										{ itemstring = "mcl_fishing:clownfish_raw", weight = 2 },
 										{ itemstring = "mcl_fishing:pufferfish_raw", weight = 13 },
-									}
+									},
+									stacks_min = 1,
+									stacks_max = 1,
 								}, pr)
 							elseif r <= junk_value then
 								-- Junk
@@ -88,21 +90,29 @@ local fish = function(itemstack, player, pointed_thing)
 										{ itemstring = "mcl_mobitems:bone", weight = 10 },
 										{ itemstring = "mcl_dye:black", weight = 1, amount_min = 10, amount_max = 10 },
 										{ itemstring = "mcl_mobitems:string", weight = 10 }, -- TODO: Tripwire Hook
-									}
+									},
+									stacks_min = 1,
+									stacks_max = 1,
 								}, pr)
 							else
 								-- Treasure
 								items = mcl_loot.get_loot({
 									items = {
-										-- TODO: Enchanted Bow
-										{ itemstring = "mcl_bows:bow", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
-										{ itemstack = mcl_enchanting.get_randomly_enchanted_book(30, true, true)},
-										-- TODO: Enchanted Fishing Rod
-										{ itemstring = "mcl_fishing:fishing_rod", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
+										{ itemstring = "mcl_bows:bow", wear_min = 49144, wear_max = 65535, func = function(stack, pr)
+											mcl_enchanting.enchant_randomly(stack, 30, true, false, false, pr)
+										end }, -- 75%-100% damage
+										{ itemstring = "mcl_books:book", func = function(stack, pr)
+											mcl_enchanting.enchant_randomly(stack, 30, true, true, false, pr)
+										end },
+										{ itemstring = "mcl_fishing:fishing_rod", wear_min = 49144, wear_max = 65535, func = function(stack, pr)
+											mcl_enchanting.enchant_randomly(stack, 30, true, false, false, pr)
+										end }, -- 75%-100% damage
 										{ itemstring = "mcl_mobs:nametag", },
 										{ itemstring = "mcl_mobitems:saddle", },
 										{ itemstring = "mcl_flowers:waterlily", },
-									}
+									},
+									stacks_min = 1,
+									stacks_max = 1,
 								}, pr)
 							end
 							local item
@@ -117,8 +127,8 @@ local fish = function(itemstack, player, pointed_thing)
 							else
 								minetest.add_item(pos, item)
 							end
-							if mcl_experience.throw_experience then
-								mcl_experience.throw_experience(pos, math.random(1,6))
+							if mcl_experience.throw_xp then
+								mcl_experience.throw_xp(pos, math.random(1,6))
 							end
 
 							if not minetest.is_creative_enabled(player:get_player_name()) then

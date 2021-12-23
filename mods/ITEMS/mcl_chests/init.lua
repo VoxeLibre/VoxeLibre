@@ -293,7 +293,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 
 	local function drop_items_chest(pos, oldnode, oldmetadata)
 		local meta = minetest.get_meta(pos)
-		local meta2 = meta
+		local meta2 = meta:to_table()
 		if oldmetadata then
 			meta:from_table(oldmetadata)
 		end
@@ -305,7 +305,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 				minetest.add_item(p, stack)
 			end
 		end
-		meta:from_table(meta2:to_table())
+		meta:from_table(meta2)
 	end
 
 	local function on_chest_blast(pos)
@@ -608,10 +608,12 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 
 		on_rightclick = function(pos, node, clicker)
 			local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
-			if minetest.registered_nodes[minetest.get_node({x = pos.x, y = pos.y + 1, z = pos.z}).name].groups.opaque == 1
-				or minetest.registered_nodes[minetest.get_node({x = pos_other.x, y = pos_other.y + 1, z = pos_other.z}).name].groups.opaque == 1 then
-					-- won't open if there is no space from the top
-					return false
+			local above_def = minetest.registered_nodes[minetest.get_node({x = pos.x, y = pos.y + 1, z = pos.z}).name]
+			local above_def_other = minetest.registered_nodes[minetest.get_node({x = pos_other.x, y = pos_other.y + 1, z = pos_other.z}).name]
+
+			if not above_def or above_def.groups.opaque == 1 or not above_def_other or above_def_other.groups.opaque == 1 then
+				-- won't open if there is no space from the top
+				return false
 			end
 
 			local name = minetest.get_meta(pos):get_string("name")
@@ -1053,6 +1055,20 @@ minetest.register_on_joinplayer(function(player)
 	inv:set_size("enderchest", 9*3)
 end)
 
+minetest.register_allow_player_inventory_action(function(player, action, inv, info)
+	if inv:get_location().type == "player" and (
+		   action == "move" and (info.from_list == "enderchest" or info.to_list == "enderchest")
+		or action == "put"  and  info.listname  == "enderchest"
+		or action == "take" and  info.listname  == "enderchest"
+	) then
+		local def = player:get_wielded_item():get_definition()
+
+		if not minetest.find_node_near(player:get_pos(), def and def.range or ItemStack():get_definition().range, "mcl_chests:ender_chest_small", true) then
+			return 0
+		end
+	end
+end)
+
 minetest.register_craft({
 	output = "mcl_chests:ender_chest",
 	recipe = {
@@ -1133,7 +1149,7 @@ for color, desc in pairs(boxtypes) do
 	if mod_doc then
 		if is_canonical then
 			longdesc = S("A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors.")
-			usagehelp = S("To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out.")
+			usagehelp = S("To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out. Place the shulker box again to be able to retrieve its contents.")
 			entry_name = S("Shulker Box")
 		else
 			create_entry = false

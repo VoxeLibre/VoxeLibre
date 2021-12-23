@@ -3,7 +3,7 @@ local mod_mcl_core = minetest.get_modpath("mcl_core")
 local mod_mclx_core = minetest.get_modpath("mclx_core")
 local has_awards = minetest.get_modpath("awards")
 
-local sound_place = function(itemname, pos)
+local function sound_place(itemname, pos)
 	local def = minetest.registered_nodes[itemname]
 	if def and def.sounds and def.sounds.place then
 		minetest.sound_play(def.sounds.place, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005}, true)
@@ -34,7 +34,7 @@ if mod_mcl_core then
                 awards.unlock(user:get_player_name(), "mcl:hotStuff")
             end
         end,
-		itemname = "mcl_buckets:bucket_lava",
+		bucketname = "mcl_buckets:bucket_lava",
 		inventory_image = "bucket_lava.png",
 		name = S("Lava Bucket"),
 		longdesc = S("A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution."),
@@ -46,22 +46,13 @@ if mod_mcl_core then
 	mcl_buckets.register_liquid({
 		source_place = "mcl_core:water_source",
 		source_take = {"mcl_core:water_source"},
-		itemname = "mcl_buckets:bucket_water",
+		bucketname = "mcl_buckets:bucket_water",
 		inventory_image = "bucket_water.png",
 		name = S("Water Bucket"),
 		longdesc = S("A bucket can be used to collect and release liquids. This one is filled with water."),
 		usagehelp = S("Place it to empty the bucket and create a water source."),
 		tt_help = S("Places a water source"),
 		extra_check = function(pos, placer)
-			-- Check protection
-			local placer_name = ""
-			if placer then
-				placer_name = placer:get_player_name()
-			end
-			if placer and minetest.is_protected(pos, placer_name) then
-				minetest.record_protection_violation(pos, placer_name)
-				return false
-			end
 			local nn = minetest.get_node(pos).name
 			-- Pour water into cauldron
 			if minetest.get_item_group(nn, "cauldron") ~= 0 then
@@ -70,13 +61,13 @@ if mod_mcl_core then
 					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3"})
 				end
 				sound_place("mcl_core:water_source", pos)
-				return false
+				return false, true
 			-- Evaporate water if used in Nether (except on cauldron)
 			else
 				local dim = mcl_worlds.pos_to_dimension(pos)
 				if dim == "nether" then
 					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
-					return false
+					return false, true
 				end
 			end
 		end,
@@ -89,22 +80,13 @@ if mod_mclx_core then
 	mcl_buckets.register_liquid({
 		source_place = "mclx_core:river_water_source",
 		source_take = {"mclx_core:river_water_source"},
-		itemname = "mcl_buckets:bucket_river_water",
+		bucketname = "mcl_buckets:bucket_river_water",
 		inventory_image = "bucket_river_water.png",
 		name = S("River Water Bucket"),
 		longdesc = S("A bucket can be used to collect and release liquids. This one is filled with river water."),
 		usagehelp = S("Place it to empty the bucket and create a river water source."),
 		tt_help = S("Places a river water source"),
 		extra_check = function(pos, placer)
-			-- Check protection
-			local placer_name = ""
-			if placer then
-				placer_name = placer:get_player_name()
-			end
-			if placer and minetest.is_protected(pos, placer_name) then
-				minetest.record_protection_violation(pos, placer_name)
-				return false
-			end
 			local nn = minetest.get_node(pos).name
 			-- Pour into cauldron
 			if minetest.get_item_group(nn, "cauldron") ~= 0 then
@@ -113,13 +95,13 @@ if mod_mclx_core then
 					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3r"})
 				end
 				sound_place("mcl_core:water_source", pos)
-				return false
+				return false, true
 			else
 				-- Evaporate water if used in Nether (except on cauldron)
 				local dim = mcl_worlds.pos_to_dimension(pos)
 				if dim == "nether" then
 					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
-					return false
+					return false, true
 				end
 			end
 		end,

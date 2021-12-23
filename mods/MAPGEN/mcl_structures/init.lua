@@ -187,8 +187,6 @@ function mcl_structures.generate_igloo(pos, rotation, pr)
 		if real_depth <= 6 then
 			return success
 		end
-		-- Place hidden trapdoor
-		minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)}) -- TODO: more reliable param2
 		-- Generate ladder to basement
 		for y=1, real_depth-1 do
 			set_brick({x=tpos.x-1,y=tpos.y-y,z=tpos.z  })
@@ -199,6 +197,10 @@ function mcl_structures.generate_igloo(pos, rotation, pr)
 		end
 		-- Place basement
 		mcl_structures.generate_igloo_basement(bpos, rotation, pr)
+		-- Place hidden trapdoor
+		minetest.after(5, function(tpos, dir)
+			minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)}) -- TODO: more reliable param2
+		end, tpos, dir)
 	end
 	return success
 end
@@ -452,7 +454,9 @@ local function temple_placement_callback(p1, p2, size, rotation, pr)
 				{ itemstring = "mcl_mobitems:bone", weight = 25, amount_min = 4, amount_max=6 },
 				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 25, amount_min = 3, amount_max=7 },
 				{ itemstring = "mcl_mobitems:spider_eye", weight = 25, amount_min = 1, amount_max=3 },
-				{ itemstack = mcl_enchanting.get_uniform_randomly_enchanted_book({"soul_speed"}, pr), weight = 20, },
+				{ itemstring = "mcl_books:book", weight = 20, func = function(stack, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+				end },
 				{ itemstring = "mcl_mobitems:saddle", weight = 20, },
 				{ itemstring = "mcl_core:apple_gold", weight = 20, },
 				{ itemstring = "mcl_core:gold_ingot", weight = 15, amount_min = 2, amount_max = 7 },

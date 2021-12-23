@@ -123,7 +123,7 @@ function mcl_enchanting.can_enchant(itemstack, enchantment, level)
 	if itemname == "" then
 		return false, "item missing"
 	end
-	local supported, primary = mcl_enchanting.item_supports_enchantment(itemstack:get_name(), enchantment)
+	local supported, primary = mcl_enchanting.item_supports_enchantment(itemname, enchantment)
 	if not supported then
 		return false, "item not supported"
 	end
@@ -132,7 +132,7 @@ function mcl_enchanting.can_enchant(itemstack, enchantment, level)
 	end
 	if level > enchantment_def.max_level then
 		return false, "level too high", enchantment_def.max_level
-	elseif  level < 1 then
+	elseif level < 1 then
 		return false, "level too small", 1
 	end
 	local item_enchantments = mcl_enchanting.get_enchantments(itemstack)
@@ -270,8 +270,14 @@ function mcl_enchanting.initialize()
 			new_def.groups.not_in_creative_inventory = 1
 			new_def.groups.not_in_craft_guide = 1
 			new_def.groups.enchanted = 1
-			new_def._mcl_armor_texture = new_def._mcl_armor_texture and new_def._mcl_armor_texture .. mcl_enchanting.overlay
-			new_def._mcl_armor_preview = new_def._mcl_armor_preview and new_def._mcl_armor_preview .. mcl_enchanting.overlay
+
+			if new_def._mcl_armor_texture and not type(new_def._mcl_armor_texture) == "function" then
+				new_def._mcl_armor_texture = new_def._mcl_armor_texture .. mcl_enchanting.overlay
+			end
+			if new_def._mcl_armor_preview and not type(new_def._mcl_armor_preview) == "function" then
+				new_def._mcl_armor_preview = new_def._mcl_armor_preview .. mcl_enchanting.overlay
+			end
+
 			new_def._mcl_enchanting_enchanted_tool = new_name
 			new_def.after_use = get_after_use_callback(itemdef)
 			local register_list = register_item_list
@@ -289,115 +295,125 @@ function mcl_enchanting.initialize()
 	end
 end
 
-function mcl_enchanting.get_possible_enchantments(itemstack, enchantment_level, treasure)
-	local possible_enchantments, weights, accum_weight = {}, {}, 0
-	for enchantment, enchantment_def in pairs(mcl_enchanting.enchantments) do
-		local _, _, _, primary = mcl_enchanting.can_enchant(itemstack, enchantment, 1)
-		if primary or treasure then
-			table.insert(possible_enchantments, enchantment)
-			accum_weight = accum_weight + enchantment_def.weight
-			weights[enchantment] = accum_weight
-		end
+function mcl_enchanting.random(pr, ...)
+	local r = pr and pr:next(...) or math.random(...)
+
+	if pr and not ({...})[1] then
+		r = r / 32767
 	end
-	return possible_enchantments, weights, accum_weight
+
+	return r
 end
 
-function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
+function mcl_enchanting.get_random_enchantment(itemstack, treasure, weighted, exclude, pr)
+	local possible = {}
+
+	for enchantment, enchantment_def in pairs(mcl_enchanting.enchantments) do
+		local can_enchant, _, _, primary = mcl_enchanting.can_enchant(itemstack, enchantment, 1)
+
+		if can_enchant and (primary or treasure) and (not exclude or table.indexof(exclude, enchantment) == -1) then
+			local weight = weighted and enchantment_def.weight or 1
+
+			for i = 1, weight do
+				table.insert(possible, enchantment)
+			end
+		end
+	end
+
+	return #possible > 0 and possible[mcl_enchanting.random(pr, 1, #possible)]
+end
+
+function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted, pr)
 	local itemname = itemstack:get_name()
+
 	if not mcl_enchanting.can_enchant_freshly(itemname) and not ignore_already_enchanted then
 		return
 	end
+
 	itemstack = ItemStack(itemstack)
+
 	local enchantability = minetest.get_item_group(itemname, "enchantability")
-	enchantability = 1 + math.random(0, math.floor(enchantability / 4)) + math.random(0, math.floor(enchantability / 4))
+	enchantability = 1 + mcl_enchanting.random(pr, 0, math.floor(enchantability / 4)) + mcl_enchanting.random(pr, 0, math.floor(enchantability / 4))
+
 	enchantment_level = enchantment_level + enchantability
-	enchantment_level = enchantment_level + enchantment_level * (math.random() + math.random() - 1) * 0.15
+	enchantment_level = enchantment_level + enchantment_level * (mcl_enchanting.random(pr) + mcl_enchanting.random(pr) - 1) * 0.15
 	enchantment_level = math.max(math.floor(enchantment_level + 0.5), 1)
+
 	local enchantments = {}
 	local description
+
 	enchantment_level = enchantment_level * 2
+
 	repeat
 		enchantment_level = math.floor(enchantment_level / 2)
+
 		if enchantment_level == 0 then
 			break
 		end
-		local possible, weights, accum_weight = mcl_enchanting.get_possible_enchantments(itemstack, enchantment_level, treasure)
-		local selected_enchantment, enchantment_power
-		if #possible > 0 then
-			local r = math.random(accum_weight)
-			for _, enchantment in ipairs(possible) do
-				if weights[enchantment] >= r then
-					selected_enchantment = enchantment
-					break
-				end
-			end
-			local enchantment_def = mcl_enchanting.enchantments[selected_enchantment]
-			local power_range_table = enchantment_def.power_range_table
-			for i = enchantment_def.max_level, 1, -1 do
-				local power_range = power_range_table[i]
-				if enchantment_level >= power_range[1] and enchantment_level <= power_range[2] then
-					enchantment_power = i
-					break
-				end
-			end
-			if not description then
-				if not enchantment_power then
-					return
-				end
-				description = mcl_enchanting.get_enchantment_description(selected_enchantment, enchantment_power)
-			end
-			if enchantment_power then
-				enchantments[selected_enchantment] = enchantment_power
-				mcl_enchanting.enchant(itemstack, selected_enchantment, enchantment_power)
-			end
-		else
+
+		local selected_enchantment = mcl_enchanting.get_random_enchantment(itemstack, treasure, true, nil, pr)
+
+		if not selected_enchantment then
 			break
 		end
-	until not no_reduced_bonus_chance and math.random() >= (enchantment_level + 1) / 50
+
+		local enchantment_def = mcl_enchanting.enchantments[selected_enchantment]
+		local power_range_table = enchantment_def.power_range_table
+
+		local enchantment_power
+
+		for i = enchantment_def.max_level, 1, -1 do
+			local power_range = power_range_table[i]
+			if enchantment_level >= power_range[1] and enchantment_level <= power_range[2] then
+				enchantment_power = i
+				break
+			end
+		end
+
+		if not description then
+			if not enchantment_power then
+				return
+			end
+
+			description = mcl_enchanting.get_enchantment_description(selected_enchantment, enchantment_power)
+		end
+
+		if enchantment_power then
+			enchantments[selected_enchantment] = enchantment_power
+			mcl_enchanting.enchant(itemstack, selected_enchantment, enchantment_power)
+		end
+
+	until not no_reduced_bonus_chance and mcl_enchanting.random(pr) >= (enchantment_level + 1) / 50
+
 	return enchantments, description
 end
 
-function mcl_enchanting.generate_random_enchantments_reliable(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
+function mcl_enchanting.generate_random_enchantments_reliable(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted, pr)
 	local enchantments
+
 	repeat
-		enchantments = mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
+		enchantments = mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted, pr)
 	until enchantments
+
 	return enchantments
 end
 
-function mcl_enchanting.enchant_randomly(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted)
+function mcl_enchanting.enchant_randomly(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted, pr)
+	local enchantments = mcl_enchanting.generate_random_enchantments_reliable(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted, pr)
+
 	mcl_enchanting.set_enchanted_itemstring(itemstack)
-	mcl_enchanting.set_enchantments(itemstack, mcl_enchanting.generate_random_enchantments_reliable(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted))
+	mcl_enchanting.set_enchantments(itemstack, enchantments)
+
 	return itemstack
 end
 
-function mcl_enchanting.get_randomly_enchanted_book(enchantment_level, treasure, no_reduced_bonus_chance)
-	return mcl_enchanting.enchant_randomly(ItemStack("mcl_books:book"), enchantment_level, treasure, no_reduced_bonus_chance, true)
-end
+function mcl_enchanting.enchant_uniform_randomly(stack, exclude, pr)
+	local enchantment = mcl_enchanting.get_random_enchantment(stack, true, false, exclude, pr)
 
-function mcl_enchanting.get_uniform_randomly_enchanted_book(except, pr)
-	except = except or except
-	local stack = ItemStack("mcl_enchanting:book_enchanted")
-	local list = {}
-	for enchantment in pairs(mcl_enchanting.enchantments) do
-		if table.indexof(except, enchantment) == -1 then
-			table.insert(list, enchantment)
-		end
+	if enchantment then
+		mcl_enchanting.enchant(stack, enchantment, mcl_enchanting.random(pr, 1, mcl_enchanting.enchantments[enchantment].max_level))
 	end
-	local index, level
-	if pr then
-		index = pr:next(1,#list)
-	else
-		index = math.random(#list)
-	end
-	local enchantment = list[index]
-	local enchantment_def = mcl_enchanting.enchantments[enchantment]
-	if pr then
-		level = pr:next(1, enchantment_def.max_level)
-	else
-		level = math.random(enchantment_def.max_level)
-	end
-	mcl_enchanting.enchant(stack, enchantment, level)
+
 	return stack
 end
 
@@ -493,7 +509,7 @@ function mcl_enchanting.show_enchanting_formspec(player)
 		.. "real_coordinates[true]"
 		.. "image[3.15,0.6;7.6,4.1;mcl_enchanting_button_background.png]"
 	local itemstack = inv:get_stack("enchanting_item", 1)
-	local player_levels = mcl_experience.get_player_xp_level(player)
+	local player_levels = mcl_experience.get_level(player)
 	local y = 0.65
 	local any_enchantment = false
 	local table_slots = mcl_enchanting.get_table_slots(player, itemstack, num_bookshelves)
@@ -543,11 +559,11 @@ function mcl_enchanting.handle_formspec_fields(player, formname, fields)
 		if not slot then
 			return
 		end
-		local player_level = mcl_experience.get_player_xp_level(player)
+		local player_level = mcl_experience.get_level(player)
 		if player_level < slot.level_requirement then
 			return
 		end
-		mcl_experience.set_player_xp_level(player, player_level - button_pressed)
+		mcl_experience.set_level(player, player_level - button_pressed)
 		inv:remove_item("enchanting_lapis", cost)
 		mcl_enchanting.set_enchanted_itemstring(itemstack)
 		mcl_enchanting.set_enchantments(itemstack, slot.enchantments)

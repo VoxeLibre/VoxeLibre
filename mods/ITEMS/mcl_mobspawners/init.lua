@@ -317,7 +317,7 @@ minetest.register_node("mcl_mobspawners:spawner", {
 		if obj then
 			obj:remove()
 		end
-		mcl_experience.throw_experience(pos, math.random(15, 43))
+		mcl_experience.throw_xp(pos, math.random(15, 43))
 	end,
 
 	on_punch = function(pos)
@@ -387,4 +387,3 @@ minetest.register_lbm({
 		respawn_doll(pos)
 	end,
 })
-

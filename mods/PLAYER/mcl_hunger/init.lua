@@ -91,8 +91,8 @@ end
 -- register saturation hudbar
 hb.register_hudbar("hunger", 0xFFFFFF, S("Food"), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png",  bar = "hbhunger_bar.png" }, 1, 20, 20, false)
 if mcl_hunger.debug then
-	hb.register_hudbar("saturation", 0xFFFFFF, S("Saturation"), { icon = "mcl_hunger_icon_saturation.png", bgicon = "mcl_hunger_bgicon_saturation.png", bar = "mcl_hunger_bar_saturation.png" }, 1, mcl_hunger.SATURATION_INIT, 200, false, S("%s: %.1f/%d"))
-	hb.register_hudbar("exhaustion", 0xFFFFFF, S("Exhaust."), { icon = "mcl_hunger_icon_exhaustion.png", bgicon = "mcl_hunger_bgicon_exhaustion.png", bar = "mcl_hunger_bar_exhaustion.png" }, 1, 0, mcl_hunger.EXHAUST_LVL, false, S("%s: %d/%d"))
+	hb.register_hudbar("saturation", 0xFFFFFF, S("Saturation"), { icon = "mcl_hunger_icon_saturation.png", bgicon = "mcl_hunger_bgicon_saturation.png", bar = "mcl_hunger_bar_saturation.png" }, 1, mcl_hunger.SATURATION_INIT, 200, false)
+	hb.register_hudbar("exhaustion", 0xFFFFFF, S("Exhaust."), { icon = "mcl_hunger_icon_exhaustion.png", bgicon = "mcl_hunger_bgicon_exhaustion.png", bar = "mcl_hunger_bar_exhaustion.png" }, 1, 0, mcl_hunger.EXHAUST_LVL, false)
 end
 
 minetest.register_on_joinplayer(function(player)
@@ -134,47 +134,46 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 	end
 end)
 
-local main_timer = 0
-local timer = 0		-- Half second timer
-local timerMult = 1	-- Cycles from 0 to 7, each time when timer hits half a second
+local food_tick_timers = {} -- one food_tick_timer per player, keys are the player-objects
 minetest.register_globalstep(function(dtime)
-	main_timer = main_timer + dtime
-	timer = timer + dtime
-	if main_timer > mcl_hunger.HUD_TICK or timer > 0.25 then
-		if main_timer > mcl_hunger.HUD_TICK then main_timer = 0 end
-		for _,player in pairs(minetest.get_connected_players()) do
-		local name = player:get_player_name()
+	for _,player in pairs(minetest.get_connected_players()) do
 
-		local h = tonumber(mcl_hunger.get_hunger(player))
-		local hp = player:get_hp()
-		if timer > 0.25 then
-			-- Slow health regeneration, and hunger damage (every 4s).
-			-- Regeneration rate based on tutorial video <https://www.youtube.com/watch?v=zs2t-xCVHBo>.
-			-- Minecraft Wiki seems to be wrong in claiming that full hunger gives 0.5s regen rate.
-			if timerMult == 0 then
-				if h >= 18 and hp > 0 and hp < 20 then
-					-- +1 HP, +exhaustion
-					player:set_hp(hp+1)
-					mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_REGEN)
+		local food_tick_timer = food_tick_timers[player] and food_tick_timers[player] + dtime or 0
+		local player_name = player:get_player_name()
+		local food_level = mcl_hunger.get_hunger(player)
+		local food_saturation_level = mcl_hunger.get_saturation(player)
+		local player_health = player:get_hp()
+
+		if food_tick_timer > 4.0 then
+			food_tick_timer = 0
+
+			if food_level >= 18 then -- slow regenration
+				if player_health > 0 and player_health < 20 then
+					player:set_hp(player_health+1)
+					mcl_hunger.exhaust(player_name, mcl_hunger.EXHAUST_REGEN)
 					mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
-				elseif h == 0 then
-				-- Damage hungry player down to 1 HP
-				-- TODO: Allow starvation at higher difficulty levels
-					if hp-1 > 0 then
-						mcl_util.deal_damage(player, 1, {type = "starve"})
-					end
+				end
+
+			elseif food_level == 0 then -- starvation
+				-- the amount of health at which a player will stop to get
+				-- harmed by starvation (10 for Easy, 1 for Normal, 0 for Hard)
+				local maximum_starvation = 1
+				-- TODO: implement Minecraft-like difficulty modes and the update maximumStarvation here
+				if player_health > maximum_starvation then
+					mcl_util.deal_damage(player, 1, {type = "starve"})
 				end
 			end
 
+		elseif food_tick_timer > 0.5 and food_level == 20 and food_saturation_level >= 6 then -- fast regeneration
+			if player_health > 0 and player_health < 20 then
+				food_tick_timer = 0
+				player:set_hp(player_health+1)
+				mcl_hunger.exhaust(player_name, mcl_hunger.EXHAUST_REGEN)
+				mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
+			end
 		end
-		end
-	end
-	if timer > 0.25 then
-		timer = 0
-		timerMult = timerMult + 2
-		if timerMult > 7 then
-			timerMult = 0
-		end
+
+		food_tick_timers[player] = food_tick_timer -- update food_tick_timer table
 	end
 end)
 

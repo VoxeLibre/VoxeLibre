@@ -237,6 +237,11 @@ local function destroy_nether_portal(pos, node)
 	check_remove({x = pos.x, y = pos.y + 1, z = pos.z})
 end
 
+local on_rotate
+if minetest.get_modpath("screwdriver") then
+	on_rotate = screwdriver.disallow
+end
+
 minetest.register_node(PORTAL, {
 	description = S("Nether Portal"),
 	_doc_items_longdesc = S("A Nether portal teleports creatures and objects to the hot and dangerous Nether dimension (and back!). Enter at your own risk!"),
@@ -286,6 +291,7 @@ minetest.register_node(PORTAL, {
 	groups = { creative_breakable = 1, portal = 1, not_in_creative_inventory = 1 },
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	after_destruct = destroy_nether_portal,
+	on_rotate = on_rotate,
 
 	_mcl_hardness = -1,
 	_mcl_blast_resistance = 0,
