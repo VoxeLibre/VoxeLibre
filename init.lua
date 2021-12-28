@@ -74,7 +74,8 @@ minetest.register_craftitem("mcl_sus_stew:night_vision_stew",{
 
 --                                      ____________________________
 --______________________________________/   Using mcl_hunger API    \______________________
-mcl_hunger.register_food("mcl_sus_stew:hunger_stew",10, "", 3.5, 0, 100) -- Register it using mcl_hunger so i can use its poison feature
+mcl_hunger.register_food("mcl_sus_stew:hunger_stew",6, "mcl_core:bowl", 3.5, 0, 100) -- Register it using mcl_hunger so i can use its poison feature
+
 
 --                                         ______________
 --_________________________________________/    Crafts    \________________________________
