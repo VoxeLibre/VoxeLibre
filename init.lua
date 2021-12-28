@@ -64,7 +64,7 @@ minetest.register_craftitem("mcl_sus_stew:regneration_stew",{
     inventory_image = "sus_stew.png", 
     stack_max = 1, 
     on_place = regeneration,
-    groups = { food = 2, eatable = 4,}, --Only the regeneration Suspicious Stew is in the creative inventory so there are not 5 identical looking items in it
+    groups = { food = 2, eatable = 4, not_in_creative_inventory=1,},
     _mcl_saturation = 7.2,
 })
 
