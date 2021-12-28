@@ -38,6 +38,7 @@ minetest.register_craftitem("mcl_sus_stew:poison_stew",{
     stack_max = 1, 
     on_place = poison,
     groups = { food = 2, eatable = 4, not_in_creative_inventory=1,},
+    _mcl_saturation = 7.2,
 })
 
 minetest.register_craftitem("mcl_sus_stew:hunger_stew",{
@@ -46,6 +47,7 @@ minetest.register_craftitem("mcl_sus_stew:hunger_stew",{
     stack_max = 1,
     on_place = hunger,
     groups = { food = 2, eatable = 4, not_in_creative_inventory=1,},
+    _mcl_saturation = 7.2,
 })
 
 minetest.register_craftitem("mcl_sus_stew:jump_boost_stew",{
@@ -54,6 +56,7 @@ minetest.register_craftitem("mcl_sus_stew:jump_boost_stew",{
     stack_max = 1, 
     on_place = jump_boost,
     groups = { food = 2, eatable = 4, not_in_creative_inventory=1,},
+    _mcl_saturation = 7.2,
 })
 
 minetest.register_craftitem("mcl_sus_stew:regneration_stew",{
@@ -62,6 +65,7 @@ minetest.register_craftitem("mcl_sus_stew:regneration_stew",{
     stack_max = 1, 
     on_place = regeneration,
     groups = { food = 2, eatable = 4,}, --Only the regeneration Suspicious Stew is in the creative inventory so there are not 5 identical looking items in it
+    _mcl_saturation = 7.2,
 })
 
 minetest.register_craftitem("mcl_sus_stew:night_vision_stew",{
@@ -70,6 +74,7 @@ minetest.register_craftitem("mcl_sus_stew:night_vision_stew",{
     stack_max = 1, 
     on_place = night_vision,
     groups = { food = 2, eatable = 4, not_in_creative_inventory=1,},
+    _mcl_saturation = 7.2,
 })
 
 --                                      ____________________________
