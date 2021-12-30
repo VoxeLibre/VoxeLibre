@@ -419,6 +419,10 @@ function ARROW_ENTITY.on_step(self, dtime)
 		self.object:set_rotation({ x = 0, y = yaw, z = pitch })
 	end
 
+	if self._in_player and not self.object:get_attach() then
+		self.object:remove()
+	end
+
 	-- Update internal variable
 	self._lastpos={x=pos.x, y=pos.y, z=pos.z}
 end
