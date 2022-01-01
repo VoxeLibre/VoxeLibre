@@ -419,10 +419,6 @@ function ARROW_ENTITY.on_step(self, dtime)
 		self.object:set_rotation({ x = 0, y = yaw, z = pitch })
 	end
 
-	if self._in_player and not self.object:get_attach() then
-		self.object:remove()
-	end
-
 	-- Update internal variable
 	self._lastpos={x=pos.x, y=pos.y, z=pos.z}
 end
@@ -457,11 +453,21 @@ function ARROW_ENTITY.get_staticdata(self)
 	return minetest.serialize(out)
 end
 
+local function remove_arrow_on_joinplayer(staticdata, self)
+	if not staticdata.activated then
+		staticdata.activated = true
+	else
+		self.object:remove()
+	end
+end
+
 function ARROW_ENTITY.on_activate(self, staticdata, dtime_s)
 	self._time_in_air = 1.0
 	self._in_player = false
 	local data = minetest.deserialize(staticdata)
 	if data then
+		remove_arrow_on_joinplayer(data, self)
+
 		self._stuck = data.stuck
 		if data.stuck then
 			if data.stuckstarttime then
