@@ -7,28 +7,44 @@ local eat = minetest.item_eat(6, "mcl_core:bowl") --6 hunger points, player rece
 
 
 local function poison(itemstack, placer, pointed_thing)
-    mcl_potions.poison_func(placer, 1, 12)
-    return eat(itemstack, placer, pointed_thing)
+    local hunger = mcl_hunger.get_hunger(placer)
+    if hunger < 20 then
+        mcl_potions.poison_func(placer, 1, 12)
+        return eat(itemstack, placer, pointed_thing)
+    end
 end
 
 local function hunger(itemstack, placer, pointed_thing, player)
-    return eat(itemstack, placer, pointed_thing)
+    local hunger = mcl_hunger.get_hunger(placer)
+    if hunger < 20 then
+        return eat(itemstack, placer, pointed_thing)
+    end
 end
 
 local function jump_boost(itemstack, placer, pointed_thing)
-    mcl_potions.leaping_func(placer, 1, 6)
-    return eat(itemstack, placer, pointed_thing)
+    local hunger = mcl_hunger.get_hunger(placer)
+    if hunger < 20 then
+        mcl_potions.leaping_func(placer, 1, 6)
+        return eat(itemstack, placer, pointed_thing)
+    end
 end
 
 local function regeneration(itemstack, placer, pointed_thing)
-    mcl_potions.regeneration_func(placer, 1, 8)
-    return eat(itemstack, placer, pointed_thing)
+    local hunger = mcl_hunger.get_hunger(placer)
+    if hunger < 20 then
+        mcl_potions.regeneration_func(placer, 1, 8)
+        return eat(itemstack, placer, pointed_thing)
+    end
 end
 
 local function night_vision(itemstack, placer, pointed_thing)
-    mcl_potions.night_vision_func(placer, 1, 5)
-    return eat(itemstack, placer, pointed_thing)
+    local hunger = mcl_hunger.get_hunger(placer)
+    if hunger < 20 then
+        mcl_potions.night_vision_func(placer, 1, 5)
+        return eat(itemstack, placer, pointed_thing)
+    end
 end
+
 
 --                                          ________________________
 --_________________________________________/    Item Regestration    \_________________
