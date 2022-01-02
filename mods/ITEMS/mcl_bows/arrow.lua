@@ -73,7 +73,7 @@ local ARROW_ENTITY={
 	_stuckin=nil,	--Position of node in which arow is stuck.
 	_shooter=nil,	-- ObjectRef of player or mob who shot it
 	_is_arrow = true,
-
+	_in_player = false,
 	_viscosity=0,   -- Viscosity of node the arrow is currently in
 	_deflection_cooloff=0, -- Cooloff timer after an arrow deflection, to prevent many deflections in quick succession
 }
@@ -439,6 +439,7 @@ function ARROW_ENTITY.get_staticdata(self)
 		is_critical = self._is_critical,
 		stuck = self._stuck,
 		stuckin = self._stuckin,
+		stuckin_player = self._in_player,
 	}
 	if self._stuck then
 		-- If _stucktimer is missing for some reason, assume the maximum
@@ -453,21 +454,10 @@ function ARROW_ENTITY.get_staticdata(self)
 	return minetest.serialize(out)
 end
 
-local function remove_arrow_on_joinplayer(staticdata, self)
-	if not staticdata.activated then
-		staticdata.activated = true
-	else
-		self.object:remove()
-	end
-end
-
 function ARROW_ENTITY.on_activate(self, staticdata, dtime_s)
 	self._time_in_air = 1.0
-	self._in_player = false
 	local data = minetest.deserialize(staticdata)
 	if data then
-		remove_arrow_on_joinplayer(data, self)
-
 		self._stuck = data.stuck
 		if data.stuck then
 			if data.stuckstarttime then
@@ -498,9 +488,22 @@ function ARROW_ENTITY.on_activate(self, staticdata, dtime_s)
 				self._shooter = shooter
 			end
 		end
+
+		if data.stuckin_player then
+			self.object:remove()
+		end
 	end
 	self.object:set_armor_groups({ immortal = 1 })
 end
+
+minetest.register_on_respawnplayer(function(player)
+	for _, obj in pairs(player:get_children()) do
+		local ent = obj:get_luaentity()
+		if ent and ent.name and string.find(ent.name, "mcl_bows:arrow_entity") then
+			obj:remove()
+		end
+	end
+end)
 
 minetest.register_entity("mcl_bows:arrow_entity", ARROW_ENTITY)
 
