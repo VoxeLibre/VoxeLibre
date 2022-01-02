@@ -129,7 +129,7 @@ if minetest.get_modpath("mcl_armor") then
 			pumpkin_blur = player:hud_add({
 				hud_elem_type = "image",
 				position = {x = 0.5, y = 0.5},
-				scale = {x = -100, y = -100},
+				scale = {x = -101, y = -101},
 				text = "mcl_farming_pumpkin_hud.png",
 				z_index = -200
 			}),
