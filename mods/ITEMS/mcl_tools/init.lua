@@ -25,11 +25,11 @@ local groupcaps, hand_range, hand_groups
 if minetest.is_creative_enabled("") then
 	-- Instant breaking in creative mode
 	groupcaps = { creative_breakable = { times = {0}, uses = 0 } }
-	hand_range = 10
+	hand_range = 5
 	hand_groups = { dig_speed_class = 7 }
 else
 	groupcaps = {}
-	hand_range = 4
+	hand_range = 4.5
 	hand_groups = { dig_speed_class = 1 }
 end
 minetest.register_tool(":", {
