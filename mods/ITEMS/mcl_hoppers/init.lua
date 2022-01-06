@@ -61,7 +61,7 @@ local def_hopper = {
 
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
-		local meta2 = meta
+		local meta2 = meta:to_table()
 		meta:from_table(oldmetadata)
 		local inv = meta:get_inventory()
 		for i=1,inv:get_size("main") do
@@ -71,7 +71,7 @@ local def_hopper = {
 				minetest.add_item(p, stack)
 			end
 		end
-		meta:from_table(meta2:to_table())
+		meta:from_table(meta2)
 	end,
 	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		local name = player:get_player_name()
@@ -350,7 +350,7 @@ minetest.register_abm({
 		local inv = meta:get_inventory()
 
 		for _,object in pairs(minetest.get_objects_inside_radius(pos, 2)) do
-			if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
+			if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and not object:get_luaentity()._removed then
 				if inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
 					-- Item must get sucked in when the item just TOUCHES the block above the hopper
 					-- This is the reason for the Y calculation.

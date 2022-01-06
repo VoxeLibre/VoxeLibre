@@ -550,7 +550,8 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 				node = minetest.get_node(pos)
 			end
 			if node then
-				if minetest.registered_nodes[node.name].walkable then
+				local def = minetest.registered_nodes[node.name]
+				if not def or def.walkable then
 					return
 				end
 				if minetest.get_item_group(node.name, "water") ~= 0 then

@@ -342,7 +342,8 @@ function boat.on_step(self, dtime, moveresult)
 			self.object:get_velocity().y)
 	else
 		p.y = p.y + 1
-		if is_water(p) then
+		local is_obsidian_boat = self.object:get_luaentity()._itemstring == "mcl_boats:boat_obsidian"
+		if is_water(p) or is_obsidian_boat then
 			-- Inside water: Slowly sink
 			local y = self.object:get_velocity().y
 			y = y - 0.01
@@ -382,13 +383,13 @@ end
 -- Register one entity for all boat types
 minetest.register_entity("mcl_boats:boat", boat)
 
-local boat_ids = { "boat", "boat_spruce", "boat_birch", "boat_jungle", "boat_acacia", "boat_dark_oak" }
-local names = { S("Oak Boat"), S("Spruce Boat"), S("Birch Boat"), S("Jungle Boat"), S("Acacia Boat"), S("Dark Oak Boat") }
+local boat_ids = { "boat", "boat_spruce", "boat_birch", "boat_jungle", "boat_acacia", "boat_dark_oak", "boat_obsidian" }
+local names = { S("Oak Boat"), S("Spruce Boat"), S("Birch Boat"), S("Jungle Boat"), S("Acacia Boat"), S("Dark Oak Boat"), S("Obsidian Boat") }
 local craftstuffs = {}
 if minetest.get_modpath("mcl_core") then
-	craftstuffs = { "mcl_core:wood", "mcl_core:sprucewood", "mcl_core:birchwood", "mcl_core:junglewood", "mcl_core:acaciawood", "mcl_core:darkwood" }
+	craftstuffs = { "mcl_core:wood", "mcl_core:sprucewood", "mcl_core:birchwood", "mcl_core:junglewood", "mcl_core:acaciawood", "mcl_core:darkwood", "mcl_core:obsidian" }
 end
-local images = { "oak", "spruce", "birch", "jungle", "acacia", "dark_oak" }
+local images = { "oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "obsidian" }
 
 for b=1, #boat_ids do
 	local itemstring = "mcl_boats:"..boat_ids[b]

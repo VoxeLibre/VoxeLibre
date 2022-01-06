@@ -82,7 +82,7 @@ local dispenserdef = {
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
-		local meta2 = meta
+		local meta2 = meta:to_table()
 		meta:from_table(oldmetadata)
 		local inv = meta:get_inventory()
 		for i=1, inv:get_size("main") do
@@ -92,7 +92,7 @@ local dispenserdef = {
 				minetest.add_item(p, stack)
 			end
 		end
-		meta:from_table(meta2:to_table())
+		meta:from_table(meta2)
 	end,
 	_mcl_blast_resistance = 3.5,
 	_mcl_hardness = 3.5,

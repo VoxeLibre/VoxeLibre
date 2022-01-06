@@ -31,12 +31,14 @@ local spawn_children_on_die = function(child_mob, children_count, spawn_distance
 				speed_penalty = 0.5
 			end
 			local mob = minetest.add_entity(newpos, child_mob)
-			if (not mother_stuck) then
-				mob:set_velocity(vector.multiply(dir, eject_speed * speed_penalty))
+			if mob then
+				if (not mother_stuck) then
+					mob:set_velocity(vector.multiply(dir, eject_speed * speed_penalty))
+				end
+				mob:set_yaw(angle - math.pi/2)
+				table.insert(children, mob)
+				angle = angle + (math.pi*2)/children_count
 			end
-			mob:set_yaw(angle - math.pi/2)
-			table.insert(children, mob)
-			angle = angle + (math.pi*2)/children_count
 		end
 		-- If mother was murdered, children attack the killer after 1 second
 		if self.state == "attack" then

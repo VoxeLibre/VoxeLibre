@@ -66,7 +66,9 @@ function tsm_railcorridors.get_treasures(pr)
 		items = {
 			{ itemstring = "mcl_mobs:nametag", weight = 30 },
 			{ itemstring = "mcl_core:apple_gold", weight = 20 },
-			{ itemstack = mcl_enchanting.get_uniform_randomly_enchanted_book({"soul_speed"}, pr), weight = 10 },
+			{ itemstring = "mcl_books:book", weight = 10, func = function(stack, pr)
+				mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+			end },
 			{ itemstring = "", weight = 5},
 			{ itemstring = "mcl_core:pick_iron", weight = 5 },
 			{ itemstring = "mcl_core:apple_gold_enchanted", weight = 1 },

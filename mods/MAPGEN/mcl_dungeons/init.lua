@@ -63,6 +63,67 @@ local surround_vectors = {
 	{ x=0, y=0, z=1 },
 }
 
+local loottable =
+{
+	{
+		stacks_min = 1,
+		stacks_max = 3,
+		items = {
+			{ itemstring = "mcl_mobs:nametag", weight = 20 },
+			{ itemstring = "mcl_mobitems:saddle", weight = 20 },
+			{ itemstring = "mcl_jukebox:record_1", weight = 15 },
+			{ itemstring = "mcl_jukebox:record_4", weight = 15 },
+			{ itemstring = "mobs_mc:iron_horse_armor", weight = 15 },
+			{ itemstring = "mcl_core:apple_gold", weight = 15 },
+			{ itemstring = "mcl_books:book", weight = 10, func = function(stack, pr)
+				mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+			end },
+			{ itemstring = "mobs_mc:gold_horse_armor", weight = 10 },
+			{ itemstring = "mobs_mc:diamond_horse_armor", weight = 5 },
+			{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2 },
+		}
+	},
+	{
+		stacks_min = 1,
+		stacks_max = 4,
+		items = {
+			{ itemstring = "mcl_farming:wheat_item", weight = 20, amount_min = 1, amount_max = 4 },
+			{ itemstring = "mcl_farming:bread", weight = 20 },
+			{ itemstring = "mcl_core:coal_lump", weight = 15, amount_min = 1, amount_max = 4 },
+			{ itemstring = "mesecons:redstone", weight = 15, amount_min = 1, amount_max = 4 },
+			{ itemstring = "mcl_farming:beetroot_seeds", weight = 10, amount_min = 2, amount_max = 4 },
+			{ itemstring = "mcl_farming:melon_seeds", weight = 10, amount_min = 2, amount_max = 4 },
+			{ itemstring = "mcl_farming:pumpkin_seeds", weight = 10, amount_min = 2, amount_max = 4 },
+			{ itemstring = "mcl_core:iron_ingot", weight = 10, amount_min = 1, amount_max = 4 },
+			{ itemstring = "mcl_buckets:bucket_empty", weight = 10 },
+			{ itemstring = "mcl_core:gold_ingot", weight = 5, amount_min = 1, amount_max = 4 },
+		},
+	},
+	{
+		stacks_min = 3,
+		stacks_max = 3,
+		items = {
+			{ itemstring = "mcl_mobitems:bone", weight = 10, amount_min = 1, amount_max = 8 },
+			{ itemstring = "mcl_mobitems:gunpowder", weight = 10, amount_min = 1, amount_max = 8 },
+			{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10, amount_min = 1, amount_max = 8 },
+			{ itemstring = "mcl_mobitems:string", weight = 10, amount_min = 1, amount_max = 8 },
+		},
+	}
+}
+
+-- Bonus loot for v6 mapgen: Otherwise unobtainable saplings.
+if mg_name == "v6" then
+	table.insert(loottable, {
+		stacks_min = 1,
+		stacks_max = 3,
+		items = {
+			{ itemstring = "mcl_core:birchsapling", weight = 1, amount_min = 1, amount_max = 2 },
+			{ itemstring = "mcl_core:acaciasapling", weight = 1, amount_min = 1, amount_max = 2 },
+			{ itemstring = "", weight = 6 },
+		},
+	})
+end
+
 local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 	if calls_remaining >= 1 then return end
 
@@ -310,66 +371,6 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 
 		set_node(pos, {name="mcl_chests:chest", param2=facedir})
 		local meta = get_meta(pos)
-
-		local loottable =
-		{
-			{
-				stacks_min = 1,
-				stacks_max = 3,
-				items = {
-					{ itemstring = "mcl_mobs:nametag", weight = 20 },
-					{ itemstring = "mcl_mobitems:saddle", weight = 20 },
-					{ itemstring = "mcl_jukebox:record_1", weight = 15 },
-					{ itemstring = "mcl_jukebox:record_4", weight = 15 },
-					{ itemstring = "mobs_mc:iron_horse_armor", weight = 15 },
-					{ itemstring = "mcl_core:apple_gold", weight = 15 },
-					{ itemstack = mcl_enchanting.get_uniform_randomly_enchanted_book({"soul_speed"}, pr), weight = 10 },
-					{ itemstring = "mobs_mc:gold_horse_armor", weight = 10 },
-					{ itemstring = "mobs_mc:diamond_horse_armor", weight = 5 },
-					{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2 },
-				}
-			},
-			{
-				stacks_min = 1,
-				stacks_max = 4,
-				items = {
-					{ itemstring = "mcl_farming:wheat_item", weight = 20, amount_min = 1, amount_max = 4 },
-					{ itemstring = "mcl_farming:bread", weight = 20 },
-					{ itemstring = "mcl_core:coal_lump", weight = 15, amount_min = 1, amount_max = 4 },
-					{ itemstring = "mesecons:redstone", weight = 15, amount_min = 1, amount_max = 4 },
-					{ itemstring = "mcl_farming:beetroot_seeds", weight = 10, amount_min = 2, amount_max = 4 },
-					{ itemstring = "mcl_farming:melon_seeds", weight = 10, amount_min = 2, amount_max = 4 },
-					{ itemstring = "mcl_farming:pumpkin_seeds", weight = 10, amount_min = 2, amount_max = 4 },
-					{ itemstring = "mcl_core:iron_ingot", weight = 10, amount_min = 1, amount_max = 4 },
-					{ itemstring = "mcl_buckets:bucket_empty", weight = 10 },
-					{ itemstring = "mcl_core:gold_ingot", weight = 5, amount_min = 1, amount_max = 4 },
-				},
-			},
-			{
-				stacks_min = 3,
-				stacks_max = 3,
-				items = {
-					{ itemstring = "mcl_mobitems:bone", weight = 10, amount_min = 1, amount_max = 8 },
-					{ itemstring = "mcl_mobitems:gunpowder", weight = 10, amount_min = 1, amount_max = 8 },
-					{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10, amount_min = 1, amount_max = 8 },
-					{ itemstring = "mcl_mobitems:string", weight = 10, amount_min = 1, amount_max = 8 },
-				},
-			}
-		}
-
-		-- Bonus loot for v6 mapgen: Otherwise unobtainable saplings.
-		if mg_name == "v6" then
-			table_insert(loottable, {
-				stacks_min = 1,
-				stacks_max = 3,
-				items = {
-					{ itemstring = "mcl_core:birchsapling", weight = 1, amount_min = 1, amount_max = 2 },
-					{ itemstring = "mcl_core:acaciasapling", weight = 1, amount_min = 1, amount_max = 2 },
-					{ itemstring = "", weight = 6 },
-				},
-			})
-		end
-
 		minetest.log("action", "[mcl_dungeons] Filling chest " .. tostring(c) .. " at " .. minetest.pos_to_string(pos))
 		mcl_loot.fill_inventory(meta:get_inventory(), "main", mcl_loot.get_multi_loot(loottable, pr), pr)
 	end

@@ -478,7 +478,9 @@ function mcl_util.calculate_durability(itemstack)
 				end
 			end
 		end
-		uses = uses or (next(itemstack:get_tool_capabilities().groupcaps) or {}).uses
+
+		local _, groupcap = next(itemstack:get_tool_capabilities().groupcaps)
+		uses = uses or (groupcap or {}).uses
 	end
 
 	return uses or 0

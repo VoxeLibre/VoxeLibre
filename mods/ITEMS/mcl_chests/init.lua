@@ -293,7 +293,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 
 	local function drop_items_chest(pos, oldnode, oldmetadata)
 		local meta = minetest.get_meta(pos)
-		local meta2 = meta
+		local meta2 = meta:to_table()
 		if oldmetadata then
 			meta:from_table(oldmetadata)
 		end
@@ -305,7 +305,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 				minetest.add_item(p, stack)
 			end
 		end
-		meta:from_table(meta2:to_table())
+		meta:from_table(meta2)
 	end
 
 	local function on_chest_blast(pos)
@@ -608,10 +608,12 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 
 		on_rightclick = function(pos, node, clicker)
 			local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
-			if minetest.registered_nodes[minetest.get_node({x = pos.x, y = pos.y + 1, z = pos.z}).name].groups.opaque == 1
-				or minetest.registered_nodes[minetest.get_node({x = pos_other.x, y = pos_other.y + 1, z = pos_other.z}).name].groups.opaque == 1 then
-					-- won't open if there is no space from the top
-					return false
+			local above_def = minetest.registered_nodes[minetest.get_node({x = pos.x, y = pos.y + 1, z = pos.z}).name]
+			local above_def_other = minetest.registered_nodes[minetest.get_node({x = pos_other.x, y = pos_other.y + 1, z = pos_other.z}).name]
+
+			if not above_def or above_def.groups.opaque == 1 or not above_def_other or above_def_other.groups.opaque == 1 then
+				-- won't open if there is no space from the top
+				return false
 			end
 
 			local name = minetest.get_meta(pos):get_string("name")
@@ -1051,6 +1053,20 @@ minetest.register_node("mcl_chests:ender_chest_small", {
 minetest.register_on_joinplayer(function(player)
 	local inv = player:get_inventory()
 	inv:set_size("enderchest", 9*3)
+end)
+
+minetest.register_allow_player_inventory_action(function(player, action, inv, info)
+	if inv:get_location().type == "player" and (
+		   action == "move" and (info.from_list == "enderchest" or info.to_list == "enderchest")
+		or action == "put"  and  info.listname  == "enderchest"
+		or action == "take" and  info.listname  == "enderchest"
+	) then
+		local def = player:get_wielded_item():get_definition()
+
+		if not minetest.find_node_near(player:get_pos(), def and def.range or ItemStack():get_definition().range, "mcl_chests:ender_chest_small", true) then
+			return 0
+		end
+	end
 end)
 
 minetest.register_craft({
