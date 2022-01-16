@@ -173,12 +173,6 @@ minetest.register_globalstep(function(dtime)
 			and (fly_node == "air" or fly_node == "ignore")
 
 		if elytra.active then
-			if player_velocity.x < (player_velocity_old.x - 10) or player_velocity.x > (player_velocity_old.x + 10) and fly_node ~= "ignore" then
-				mcl_util.deal_damage(player, math.abs(player_velocity_old.x) * 0.2, {type = "fly_into_wall"})
-			end
-			if player_velocity.z < (player_velocity_old.z - 10) or player_velocity.z > (player_velocity_old.z + 10) and fly_node ~= "ignore" then
-				mcl_util.deal_damage(player, math.abs(player_velocity_old.z) * 0.2, {type = "fly_into_wall"})
-			end
 			mcl_player.player_set_animation(player, "fly")
 			if player_velocity.y < -1.5 then
 				player:add_velocity({x=0, y=0.17, z=0})
