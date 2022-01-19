@@ -89,18 +89,21 @@ function mcl_mapgen.register_on_generated(callback_function, order)
 	queue_unsafe_engine[#queue_unsafe_engine+1] = {i = order or DEFAULT_ORDER, f = callback_function}
 	table.sort(queue_unsafe_engine, function(a, b) return (a.i <= b.i) end)
 end
+
 function mcl_mapgen.register_mapgen(callback_function, order)
 	nodes_chunk = nodes_chunk + 1
 	safe_functions = safe_functions + 1
 	queue_chunks_nodes[nodes_chunk] = {i = order or DEFAULT_ORDER, f = callback_function}
 	table.sort(queue_chunks_nodes, function(a, b) return (a.i <= b.i) end)
 end
+
 function mcl_mapgen.register_mapgen_lvm(callback_function, order)
 	lvm_chunk = lvm_chunk + 1
 	safe_functions = safe_functions + 1
 	queue_chunks_lvm[lvm_chunk] = {i = order or DEFAULT_ORDER, f = callback_function}
 	table.sort(queue_chunks_lvm, function(a, b) return (a.i <= b.i) end)
 end
+
 function mcl_mapgen.register_mapgen_block(callback_function, order)
 	block = block + 1
 	nodes_block = nodes_block + 1
@@ -108,6 +111,7 @@ function mcl_mapgen.register_mapgen_block(callback_function, order)
 	queue_blocks_nodes[nodes_block] = {i = order or DEFAULT_ORDER, f = callback_function}
 	table.sort(queue_blocks_nodes, function(a, b) return (a.i <= b.i) end)
 end
+
 function mcl_mapgen.register_mapgen_block_lvm(callback_function, order)
 	block = block + 1
 	queue_blocks_lvm_counter = queue_blocks_lvm_counter + 1
