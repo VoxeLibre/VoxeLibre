@@ -4,7 +4,8 @@
 
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 
-local mg_name = minetest.get_mapgen_setting("mg_name")
+local mg_name = mcl_mapgen.name
+local v6 = mcl_mapgen.v6
 
 local math = math
 local vector = vector
@@ -204,8 +205,23 @@ minetest.register_abm({
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		for _, object in pairs(minetest.get_objects_inside_radius(pos, 0.9)) do
 			local entity = object:get_luaentity()
-			if entity and entity.name == "__builtin:item" then
-				object:remove()
+			if entity then
+				local entity_name = entity.name
+				if entity_name == "__builtin:item" then
+					object:remove()
+				elseif entity_name == "mcl_minecarts:minecart" then
+					local pos = object:get_pos()
+					local driver = entity._driver
+					if driver then
+						mcl_player.player_attached[driver] = nil
+						local player = minetest.get_player_by_name(driver)
+						player:set_detach()
+						player:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
+						mcl_player.player_set_animation(player, "stand" , 30)
+					end
+					minetest.add_item(pos, "mcl_minecarts:minecart")
+					object:remove()
+				end
 			end
 		end
 		local posses = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } }
@@ -366,7 +382,7 @@ function mcl_core.generate_tree(pos, tree_type, options)
 	local balloon = options and options.balloon
 
 	if tree_type == nil or tree_type == OAK_TREE_ID then
-		if mg_name == "v6" then
+		if v6 then
 			mcl_core.generate_v6_oak_tree(pos)
 		else
 			if balloon then
@@ -381,7 +397,7 @@ function mcl_core.generate_tree(pos, tree_type, options)
 		if two_by_two then
 			mcl_core.generate_huge_spruce_tree(pos)
 		else
-			if mg_name == "v6" then
+			if v6 then
 				mcl_core.generate_v6_spruce_tree(pos)
 			else
 				mcl_core.generate_spruce_tree(pos)
@@ -393,7 +409,7 @@ function mcl_core.generate_tree(pos, tree_type, options)
 		if two_by_two then
 			mcl_core.generate_huge_jungle_tree(pos)
 		else
-			if mg_name == "v6" then
+			if v6 then
 				mcl_core.generate_v6_jungle_tree(pos)
 			else
 				mcl_core.generate_jungle_tree(pos)
@@ -771,7 +787,7 @@ function mcl_core.generate_huge_jungle_tree(pos)
 end
 
 
-local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_setting("seed"))
+local grass_spread_randomizer = PseudoRandom(mcl_mapgen.seed)
 
 function mcl_core.get_grass_palette_index(pos)
 	local biome_data = minetest.get_biome_data(pos)

@@ -1,6 +1,6 @@
 MCL_Villages:
 ============================
-A fork of Rochambeau's "Settlements" mod converted for use in MineClone2.
+A fork of Rochambeau's "Settlements" mod converted for use in MineClone5.
 
 --------------
 Using the mod:

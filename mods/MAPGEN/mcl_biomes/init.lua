@@ -1,8 +1,7 @@
-local mg_name = minetest.get_mapgen_setting("mg_name")
-local mg_seed = minetest.get_mapgen_setting("seed")
+local mg_seed = mcl_mapgen.seed
 
 -- Some mapgen settings
-local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
+local superflat = mcl_mapgen.superflat
 
 local generate_fallen_logs = minetest.settings:get_bool("mcl_generate_fallen_logs", false)
 
@@ -36,8 +35,8 @@ local function register_classic_superflat_biome()
 		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
 		node_stone = "mcl_core:dirt",
-		y_min = mcl_vars.mg_overworld_min - 512,
-		y_max = mcl_vars.mg_overworld_max,
+		y_min = mcl_mapgen.overworld.min - 512,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 50,
 		heat_point = 50,
 		_mcl_biome_type = "medium",
@@ -140,7 +139,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 24,
 		heat_point = -5,
 		_mcl_biome_type = "snowy",
@@ -174,7 +173,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 3,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 58,
 		heat_point = 8,
 		_mcl_biome_type = "snowy",
@@ -245,7 +244,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 76,
 		heat_point = 10,
 		_mcl_biome_type = "cold",
@@ -277,7 +276,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 100,
 		heat_point = 8,
 		_mcl_biome_type = "cold",
@@ -310,7 +309,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
 		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 10,
 		heat_point = 45,
 		_mcl_biome_type = "cold",
@@ -360,7 +359,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:gravel",
 		depth_riverbed = 3,
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 0,
 		heat_point = 25,
 		_mcl_biome_type = "cold",
@@ -413,7 +412,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
 		y_min = 42,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 24,
 		heat_point = 25,
 		_mcl_biome_type = "cold",
@@ -443,7 +442,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 1,
 		y_min = -7,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 0,
 		heat_point = 8,
 		_mcl_biome_type = "cold",
@@ -479,7 +478,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 24,
 		heat_point = 8,
 		_mcl_biome_type = "snowy",
@@ -511,7 +510,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 3,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 39,
 		heat_point = 58,
 		_mcl_biome_type = "medium",
@@ -558,7 +557,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 28,
 		heat_point = 45,
 		_mcl_biome_type = "medium",
@@ -590,7 +589,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 58,
 		heat_point = 22,
 		_mcl_biome_type = "cold",
@@ -637,7 +636,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 61,
 		heat_point = 45,
 		_mcl_biome_type = "medium",
@@ -684,7 +683,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 3,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 44,
 		heat_point = 32,
 		_mcl_biome_type = "medium",
@@ -731,7 +730,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 78,
 		heat_point = 31,
 		_mcl_biome_type = "medium",
@@ -763,7 +762,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 77,
 		heat_point = 27,
 		_mcl_biome_type = "medium",
@@ -796,7 +795,7 @@ local function register_biomes()
 		depth_riverbed = 2,
 		node_stone = "mcl_core:sandstone",
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 26,
 		heat_point = 94,
 		_mcl_biome_type = "hot",
@@ -828,7 +827,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 94,
 		heat_point = 27,
 		_mcl_biome_type = "medium",
@@ -861,7 +860,7 @@ local function register_biomes()
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay",
 		y_min = 11,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 0,
 		heat_point = 100,
 		_mcl_biome_type = "hot",
@@ -911,7 +910,7 @@ local function register_biomes()
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay",
 		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = -5,
 		heat_point = 100,
 		_mcl_biome_type = "hot",
@@ -983,7 +982,7 @@ local function register_biomes()
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay",
 		y_min = 30,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 0,
 		heat_point = 60,
 		_mcl_biome_type = "hot",
@@ -1053,7 +1052,7 @@ local function register_biomes()
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay",
 		y_min = 30,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = -5,
 		heat_point = 60,
 		_mcl_biome_type = "hot",
@@ -1105,7 +1104,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 36,
 		heat_point = 79,
 		_mcl_biome_type = "hot",
@@ -1154,7 +1153,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 48,
 		heat_point = 100,
 		_mcl_biome_type = "hot",
@@ -1186,7 +1185,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 88,
 		heat_point = 81,
 		_mcl_biome_type = "medium",
@@ -1235,7 +1234,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 92,
 		heat_point = 81,
 		_mcl_biome_type = "medium",
@@ -1283,7 +1282,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 88,
 		heat_point = 76,
 		_mcl_biome_type = "medium",
@@ -1318,7 +1317,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		humidity_point = 90,
 		heat_point = 79,
 		_mcl_biome_type = "medium",
@@ -1468,7 +1467,7 @@ local function register_biomes()
 			name = biome .. "_underground",
 			heat_point = minetest.registered_biomes[biome].heat_point,
 			humidity_point = minetest.registered_biomes[biome].humidity_point,
-			y_min = mcl_vars.mg_overworld_min,
+			y_min = mcl_mapgen.overworld.min,
 			y_max = DEEP_OCEAN_MIN - 1,
 			_mcl_biome_type = minetest.registered_biomes[biome]._mcl_biome_type,
 			_mcl_palette_index = minetest.registered_biomes[biome]._mcl_palette_index,
@@ -1489,10 +1488,10 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		y_min = mcl_vars.mg_nether_min,
+		y_min = mcl_mapgen.nether.min,
 		-- FIXME: For some reason the Nether stops generating early if this constant is not added.
 		-- Figure out why.
-		y_max = mcl_vars.mg_nether_max + 80,
+		y_max = mcl_mapgen.nether.max + 80,
 		heat_point = 100,
 		humidity_point = 0,
 		_mcl_biome_type = "hot",
@@ -1509,8 +1508,8 @@ local function register_dimension_biomes()
 		node_cave_liquid = "air",
 		-- FIXME: For some reason the End stops generating early if this constant is not added.
 		-- Figure out why.
-		y_min = mcl_vars.mg_end_min,
-		y_max = mcl_vars.mg_end_max + 80,
+		y_min = mcl_mapgen.end_.min,
+		y_max = mcl_mapgen.end_.max + 80,
 		heat_point = 50,
 		humidity_point = 50,
 		_mcl_biome_type = "medium",
@@ -1543,7 +1542,7 @@ local function register_biome_ores()
 	-- Rarely replace stone with stone monster eggs.
 	-- In v6 this can happen anywhere, in other mapgens only in Extreme Hills.
 	local monster_egg_scarcity
-	if mg_name == "v6" then
+	if mcl_mapgen.v6 then
 		monster_egg_scarcity = 28 * 28 * 28
 	else
 		monster_egg_scarcity = 26 * 26 * 26
@@ -1555,7 +1554,7 @@ local function register_biome_ores()
 		clust_scarcity = monster_egg_scarcity,
 		clust_num_ores = 3,
 		clust_size     = 2,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = mcl_mapgen.overworld.min,
 		y_max          = mcl_worlds.layer_to_y(61),
 		biomes         = {
 			"ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", "ExtremeHills_deep_ocean", "ExtremeHills_underground",
@@ -1565,7 +1564,7 @@ local function register_biome_ores()
 	})
 
 	-- Bonus gold spawn in Mesa
-	if mg_name ~= "v6" then
+	if not mcl_mapgen.v6 then
 		minetest.register_ore({
 			ore_type       = "scatter",
 			ore            = "mcl_core:stone_with_gold",
@@ -1594,8 +1593,8 @@ local function register_biomelike_ores()
 		clust_scarcity	= 1,
 		clust_num_ores	= 12,
 		clust_size	= 10,
-		y_min		= mcl_vars.mg_overworld_min,
-		y_max		= mcl_vars.mg_overworld_max,
+		y_min		= mcl_mapgen.overworld.min,
+		y_max		= mcl_mapgen.overworld.max,
 		noise_threshold = 0.2,
 		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.70},
 		biomes = { "MegaTaiga" },
@@ -1607,8 +1606,8 @@ local function register_biomelike_ores()
 		wherein		= {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		column_height_max = 1,
 		column_midpoint_factor = 0.0,
-		y_min		= mcl_vars.mg_overworld_min,
-		y_max		= mcl_vars.mg_overworld_max,
+		y_min		= mcl_mapgen.overworld.min,
+		y_max		= mcl_mapgen.overworld.max,
 		noise_threshold = 0.0,
 		noise_params = {offset=0, scale=15, spread={x=250, y=250, z=250}, seed=24, octaves=3, persist=0.70},
 		biomes = { "MesaPlateauF_grasstop" },
@@ -1620,8 +1619,8 @@ local function register_biomelike_ores()
 		clust_scarcity	= 1500,
 		clust_num_ores	= 25,
 		clust_size	= 7,
-		y_min		= mcl_vars.mg_overworld_min,
-		y_max		= mcl_vars.mg_overworld_max,
+		y_min		= mcl_mapgen.overworld.min,
+		y_max		= mcl_mapgen.overworld.max,
 		noise_params = {
 			offset  = 0,
 			scale   = 1,
@@ -1640,8 +1639,8 @@ local function register_biomelike_ores()
 		wherein		= {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		column_height_max = 1,
 		column_midpoint_factor = 0.0,
-		y_min		= mcl_vars.mg_overworld_min,
-		y_max		= mcl_vars.mg_overworld_max,
+		y_min		= mcl_mapgen.overworld.min,
+		y_max		= mcl_mapgen.overworld.max,
 		noise_threshold = -2.5,
 		noise_params = {offset=1, scale=15, spread={x=250, y=250, z=250}, seed=24, octaves=3, persist=0.80},
 		biomes = { "MesaPlateauFM_grasstop" },
@@ -1653,8 +1652,8 @@ local function register_biomelike_ores()
 		clust_scarcity	= 1800,
 		clust_num_ores	= 65,
 		clust_size	= 15,
-		y_min		= mcl_vars.mg_overworld_min,
-		y_max		= mcl_vars.mg_overworld_max,
+		y_min		= mcl_mapgen.overworld.min,
+		y_max		= mcl_mapgen.overworld.max,
 		noise_params = {
 			offset  = 0,
 			scale   = 1,
@@ -1674,8 +1673,8 @@ local function register_biomelike_ores()
 		wherein		= {"group:hardened_clay", "group:sand","mcl_core:coarse_dirt"},
 		clust_scarcity	= 4000,
 		clust_size	= 5,
-		y_min		= mcl_vars.mg_overworld_min,
-		y_max		= mcl_vars.mg_overworld_max,
+		y_min		= mcl_mapgen.overworld.min,
+		y_max		= mcl_mapgen.overworld.max,
 		noise_params = {
 			offset  = 0,
 			scale   = 1,
@@ -1694,8 +1693,8 @@ local function register_biomelike_ores()
 		wherein		= {"mcl_colorblocks:hardened_clay_orange"},
 		clust_scarcity	= 300,
 		clust_size	= 8,
-		y_min		= mcl_vars.mg_overworld_min,
-		y_max		= mcl_vars.mg_overworld_max,
+		y_min		= mcl_mapgen.overworld.min,
+		y_max		= mcl_mapgen.overworld.max,
 		noise_params = {
 			offset  = 0,
 			scale   = 1,
@@ -1716,8 +1715,8 @@ local function register_biomelike_ores()
 		clust_scarcity	= 1,
 		clust_num_ores	= 12,
 		clust_size	= 10,
-		y_min		= mcl_vars.mg_overworld_min,
-		y_max		= mcl_vars.mg_overworld_max,
+		y_min		= mcl_mapgen.overworld.min,
+		y_max		= mcl_mapgen.overworld.max,
 		noise_threshold = 0.1,
 		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=95, octaves=3, persist=0.70},
 		biomes = { "MesaPlateauFM" },
@@ -1728,8 +1727,8 @@ local function register_biomelike_ores()
 		wherein		= {"group:hardened_clay"},
 		clust_scarcity	= 1500,
 		clust_size	= 4,
-		y_min		= mcl_vars.mg_overworld_min,
-		y_max		= mcl_vars.mg_overworld_max,
+		y_min		= mcl_mapgen.overworld.min,
+		y_max		= mcl_mapgen.overworld.max,
 		noise_params = {
 			offset  = 0,
 			scale   = 1,
@@ -1752,8 +1751,8 @@ local function register_biomelike_ores()
 		clust_scarcity	= 5000,
 		clust_num_ores	= 12,
 		clust_size	= 4,
-		y_min		= mcl_vars.mg_overworld_min,
-		y_max		= mcl_vars.mg_overworld_max,
+		y_min		= mcl_mapgen.overworld.min,
+		y_max		= mcl_mapgen.overworld.max,
 		noise_threshold = 0.2,
 		noise_params = {offset=0, scale=5, spread={x=250, y=250, z=250}, seed=64, octaves=3, persist=0.60},
 		biomes = { "ExtremeHillsM" },
@@ -1951,7 +1950,7 @@ local function register_dimension_ores()
 		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
 		clust_scarcity  = 13 * 13 * 13,
 		clust_size      = 5,
-		y_min           = mcl_vars.mg_nether_min,
+		y_min           = mcl_mapgen.nether.min,
 		y_max           = mcl_worlds.layer_to_y(64, "nether"),
 		noise_threshold = 0.0,
 		noise_params    = {
@@ -2013,8 +2012,8 @@ local function register_dimension_ores()
 		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
 		clust_scarcity  = 26 * 26 * 26,
 		clust_size      = 5,
-		y_min           = mcl_vars.mg_lava_nether_max + 10,
-		y_max           = mcl_vars.mg_nether_max,
+		y_min           = mcl_mapgen.nether.lava_max + 10,
+		y_max           = mcl_mapgen.nether.max,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -2057,8 +2056,8 @@ local function register_dimension_ores()
 			clust_scarcity = 850,
 			clust_num_ores = 4, -- MC cluster amount: 4-10
 			clust_size     = 3,
-			y_min = mcl_vars.mg_nether_min,
-			y_max = mcl_vars.mg_nether_max,
+			y_min = mcl_mapgen.nether.min,
+			y_max = mcl_mapgen.nether.max,
 		})
 		minetest.register_ore({
 			ore_type       = "scatter",
@@ -2067,8 +2066,22 @@ local function register_dimension_ores()
 			clust_scarcity = 1650,
 			clust_num_ores = 8, -- MC cluster amount: 4-10
 			clust_size     = 4,
-			y_min = mcl_vars.mg_nether_min,
-			y_max = mcl_vars.mg_nether_max,
+			y_min = mcl_mapgen.nether.min,
+			y_max = mcl_mapgen.nether.max,
+		})
+	end
+
+	-- Ancient debris
+	if minetest.settings:get_bool("mcl_generate_ores", true) then
+		minetest.register_ore({
+			ore_type       = "scatter",
+			ore	       = "mcl_nether:ancient_debris",
+			wherein        = {"mcl_nether:netherrack"},
+			clust_scarcity = 10000,
+			clust_num_ores = 4,
+			clust_size     = 1,
+			y_min = mcl_worlds.layer_to_y(8, "nether"),
+			y_max = mcl_worlds.layer_to_y(119, "nether"),
 		})
 	end
 
@@ -2080,8 +2093,8 @@ local function register_dimension_ores()
 		clust_scarcity = 500,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		y_min           = mcl_vars.mg_nether_min,
-		y_max           = mcl_vars.mg_lava_nether_max + 1,
+		y_min           = mcl_mapgen.nether.min,
+		y_max           = mcl_mapgen.nether.lava_max + 1,
 	})
 
 	minetest.register_ore({
@@ -2091,8 +2104,8 @@ local function register_dimension_ores()
 		clust_scarcity = 1000,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		y_min           = mcl_vars.mg_lava_nether_max + 2,
-		y_max           = mcl_vars.mg_lava_nether_max + 12,
+		y_min           = mcl_mapgen.nether.lava_max + 2,
+		y_max           = mcl_mapgen.nether.lava_max + 12,
 	})
 
 	minetest.register_ore({
@@ -2102,8 +2115,8 @@ local function register_dimension_ores()
 		clust_scarcity = 2000,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		y_min           = mcl_vars.mg_lava_nether_max + 13,
-		y_max           = mcl_vars.mg_lava_nether_max + 48,
+		y_min           = mcl_mapgen.nether.lava_max + 13,
+		y_max           = mcl_mapgen.nether.lava_max + 48,
 	})
 	minetest.register_ore({
 		ore_type       = "scatter",
@@ -2112,8 +2125,8 @@ local function register_dimension_ores()
 		clust_scarcity = 3500,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		y_min           = mcl_vars.mg_lava_nether_max + 49,
-		y_max           = mcl_vars.mg_nether_max,
+		y_min           = mcl_mapgen.nether.lava_max + 49,
+		y_max           = mcl_mapgen.nether.max,
 	})
 
 	--[[ THE END ]]
@@ -2123,7 +2136,7 @@ local function register_dimension_ores()
 	-- FIXME: Broken lighting in v6 mapgen
 
 	local end_wherein
-	if mg_name == "v6" then
+	if mcl_mapgen.v6 then
 		end_wherein = {"air", "mcl_core:stone"}
 	else
 		end_wherein = {"air"}
@@ -2133,11 +2146,11 @@ local function register_dimension_ores()
 		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
-		y_min           = mcl_vars.mg_end_min+64,
-		y_max           = mcl_vars.mg_end_min+80,
+		y_min           = mcl_mapgen.end_.min+64,
+		y_max           = mcl_mapgen.end_.min+80,
 
 		noise_params = {
-			offset  = mcl_vars.mg_end_min+70,
+			offset  = mcl_mapgen.end_.min+70,
 			scale   = -1,
 			spread  = {x=126, y=126, z=126},
 			seed    = mg_seed+9999,
@@ -2160,11 +2173,11 @@ local function register_dimension_ores()
 		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
-		y_min           = mcl_vars.mg_end_min+64,
-		y_max           = mcl_vars.mg_end_min+80,
+		y_min           = mcl_mapgen.end_.min+64,
+		y_max           = mcl_mapgen.end_.min+80,
 
 		noise_params = {
-			offset  = mcl_vars.mg_end_min+72,
+			offset  = mcl_mapgen.end_.min+72,
 			scale   = -3,
 			spread  = {x=84, y=84, z=84},
 			seed    = mg_seed+999,
@@ -2186,11 +2199,11 @@ local function register_dimension_ores()
 		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
-		y_min           = mcl_vars.mg_end_min+64,
-		y_max           = mcl_vars.mg_end_min+80,
+		y_min           = mcl_mapgen.end_.min+64,
+		y_max           = mcl_mapgen.end_.min+80,
 
 		noise_params = {
-			offset  = mcl_vars.mg_end_min+70,
+			offset  = mcl_mapgen.end_.min+70,
 			scale   = -2,
 			spread  = {x=84, y=84, z=84},
 			seed    = mg_seed+99,
@@ -2243,7 +2256,7 @@ local function register_grass_decoration(grasstype, offset, scale, biomes)
 			noise_params = noise,
 			biomes = { biomes[b] },
 			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = mcl_mapgen.overworld.max,
 			decoration = node,
 			param2 = param2,
 		})
@@ -2310,7 +2323,7 @@ local function register_decorations()
 		},
 		biomes = {"IcePlainsSpikes"},
 		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_structures.."/schematics/mcl_structures_ice_spike_large.mts",
 		rotation = "random",
 		flags = "place_center_x, place_center_z",
@@ -2331,7 +2344,7 @@ local function register_decorations()
 		},
 		biomes = {"IcePlainsSpikes"},
 		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_structures.."/schematics/mcl_structures_ice_spike_small.mts",
 		rotation = "random",
 		flags = "place_center_x, place_center_z",
@@ -2354,7 +2367,7 @@ local function register_decorations()
 			},
 			biomes = {"Forest"},
 			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = mcl_mapgen.overworld.max,
 			schematic = mod_mcl_core.."/schematics/mcl_core_oak_large_"..i..".mts",
 			flags = "place_center_x, place_center_z",
 			rotation = "random",
@@ -2374,7 +2387,7 @@ local function register_decorations()
 			},
 			biomes = {"ExtremeHills", "ExtremeHillsM", "ExtremeHills+", "ExtremeHills+_snowtop"},
 			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = mcl_mapgen.overworld.max,
 			schematic = mod_mcl_core.."/schematics/mcl_core_oak_large_"..i..".mts",
 			flags = "place_center_x, place_center_z",
 			rotation = "random",
@@ -2395,7 +2408,7 @@ local function register_decorations()
 		},
 		biomes = {"Forest"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -2414,7 +2427,7 @@ local function register_decorations()
 		},
 		biomes = {"FlowerForest"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -2433,7 +2446,7 @@ local function register_decorations()
 		},
 		biomes = {"ExtremeHills", "ExtremeHillsM", "ExtremeHills+", "ExtremeHills+_snowtop"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -2453,7 +2466,7 @@ local function register_decorations()
 		},
 		biomes = {"ExtremeHills+", "ExtremeHills+_snowtop"},
 		y_min = 50,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -2472,7 +2485,7 @@ local function register_decorations()
 		},
 		biomes = {"MesaPlateauF_grasstop"},
 		y_min = 30,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -2491,7 +2504,7 @@ local function register_decorations()
 		},
 		biomes = {"MesaPlateauFM_grasstop"},
 		y_min = 30,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -2511,7 +2524,7 @@ local function register_decorations()
 		},
 		biomes = {"IcePlains"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -2523,7 +2536,7 @@ local function register_decorations()
 		fill_ratio = 0.004,
 		biomes = {"Jungle", "JungleM"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -2535,7 +2548,7 @@ local function register_decorations()
 		fill_ratio = 0.0004,
 		biomes = {"JungleEdge", "JungleEdgeM", "Savanna"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -2557,7 +2570,7 @@ local function register_decorations()
 		},
 		biomes = {"Forest"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_oak_balloon.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -2578,7 +2591,7 @@ local function register_decorations()
 		},
 		biomes = {"Swampland", "Swampland_shore"},
 		y_min = 0,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_oak_swamp.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -2595,7 +2608,7 @@ local function register_decorations()
 			fill_ratio = 0.00125,
 			biomes = {"Jungle"},
 			y_min = 4,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = mcl_mapgen.overworld.max,
 			schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree_huge_"..i..".mts",
 			flags = "place_center_x, place_center_z",
 			rotation = "random",
@@ -2607,7 +2620,7 @@ local function register_decorations()
 			fill_ratio = 0.004,
 			biomes = {"JungleM"},
 			y_min = 4,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = mcl_mapgen.overworld.max,
 			schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree_huge_"..i..".mts",
 			flags = "place_center_x, place_center_z",
 			rotation = "random",
@@ -2622,7 +2635,7 @@ local function register_decorations()
 		fill_ratio = 0.045,
 		biomes = {"Jungle"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -2634,7 +2647,7 @@ local function register_decorations()
 		fill_ratio = 0.0045,
 		biomes = {"JungleEdge", "JungleEdgeM"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -2647,7 +2660,7 @@ local function register_decorations()
 		fill_ratio = 0.09,
 		biomes = {"JungleM"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -2672,7 +2685,7 @@ local function register_decorations()
 			},
 			biomes = biomes,
 			y_min = y,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = mcl_mapgen.overworld.max,
 			schematic = mod_mcl_core.."/schematics/"..sprucename,
 			flags = "place_center_x, place_center_z",
 		})
@@ -2726,7 +2739,7 @@ local function register_decorations()
 		},
 		biomes = {"Taiga", "ColdTaiga"},
 		y_min = 2,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_spruce_lollipop.mts",
 		flags = "place_center_x, place_center_z",
 	})
@@ -2746,7 +2759,7 @@ local function register_decorations()
 		},
 		biomes = {"Taiga", "ColdTaiga"},
 		y_min = 3,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_spruce_matchstick.mts",
 		flags = "place_center_x, place_center_z",
 	})
@@ -2766,7 +2779,7 @@ local function register_decorations()
 		},
 		biomes = {"IcePlains"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_spruce_5.mts",
 		flags = "place_center_x, place_center_z",
 	})
@@ -2780,7 +2793,7 @@ local function register_decorations()
 			fill_ratio = 0.0002,
 			biomes = {"Savanna", "SavannaM"},
 			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = mcl_mapgen.overworld.max,
 			schematic = mod_mcl_core.."/schematics/mcl_core_acacia_"..a..".mts",
 			flags = "place_center_x, place_center_z",
 			rotation = "random",
@@ -2802,7 +2815,7 @@ local function register_decorations()
 		},
 		biomes = {"BirchForest"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_birch.mts",
 		flags = "place_center_x, place_center_z",
 	})
@@ -2820,7 +2833,7 @@ local function register_decorations()
 		},
 		biomes = {"BirchForestM"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_birch_tall.mts",
 		flags = "place_center_x, place_center_z",
 	})
@@ -2839,7 +2852,7 @@ local function register_decorations()
 		},
 		biomes = {"Forest", "FlowerForest"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_birch.mts",
 		flags = "place_center_x, place_center_z",
 	})
@@ -2859,7 +2872,7 @@ local function register_decorations()
 		},
 		biomes = {"RoofedForest"},
 		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_dark_oak.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -2881,7 +2894,7 @@ local function register_decorations()
 		fill_ratio = ratio_mushroom_huge,
 		biomes = { "RoofedForest" },
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_huge_brown.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
@@ -2893,7 +2906,7 @@ local function register_decorations()
 		fill_ratio = ratio_mushroom_giant,
 		biomes = { "RoofedForest" },
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_giant_brown.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
@@ -2906,7 +2919,7 @@ local function register_decorations()
 		fill_ratio = ratio_mushroom_mycelium_huge,
 		biomes = { "MushroomIsland", "MushroomIslandShore" },
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_huge_brown.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
@@ -2918,7 +2931,7 @@ local function register_decorations()
 		fill_ratio = ratio_mushroom_mycelium_giant,
 		biomes = { "MushroomIsland", "MushroomIslandShore" },
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_giant_brown.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
@@ -2932,7 +2945,7 @@ local function register_decorations()
 		fill_ratio = ratio_mushroom_huge,
 		biomes = { "RoofedForest" },
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_huge_red.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
@@ -2944,7 +2957,7 @@ local function register_decorations()
 		fill_ratio = ratio_mushroom_giant,
 		biomes = { "RoofedForest" },
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_giant_red.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
@@ -2957,7 +2970,7 @@ local function register_decorations()
 		fill_ratio = ratio_mushroom_mycelium_huge,
 		biomes = { "MushroomIsland", "MushroomIslandShore" },
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_huge_red.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
@@ -2969,7 +2982,7 @@ local function register_decorations()
 		fill_ratio = ratio_mushroom_mycelium_giant,
 		biomes = { "MushroomIsland", "MushroomIslandShore" },
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_giant_red.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
@@ -2990,7 +3003,7 @@ local function register_decorations()
 		},
 		biomes = {"MegaTaiga", "MegaSpruceTaiga"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_structures.."/schematics/mcl_structures_boulder.mts",
 		flags = "place_center_x, place_center_z",
 	})
@@ -3010,7 +3023,7 @@ local function register_decorations()
 		},
 		biomes = {"MegaTaiga", "MegaSpruceTaiga"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = mod_mcl_structures.."/schematics/mcl_structures_boulder_small.mts",
 		flags = "place_center_x, place_center_z",
 	})
@@ -3029,7 +3042,7 @@ local function register_decorations()
 			persist = 0.6
 		},
 		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		decoration = "mcl_core:cactus",
 		biomes = {"Desert",
 			"Mesa","Mesa_sandlevel",
@@ -3053,7 +3066,7 @@ local function register_decorations()
 			persist = 0.7
 		},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		decoration = "mcl_core:reeds",
 		height = 1,
 		height_max = 3,
@@ -3074,7 +3087,7 @@ local function register_decorations()
 		},
 		biomes = {"Swampland", "Swampland_shore"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		decoration = "mcl_core:reeds",
 		height = 1,
 		height_max = 3,
@@ -3108,7 +3121,7 @@ local function register_decorations()
 					persist = 0.6,
 				},
 				y_min = 1,
-				y_max = mcl_vars.mg_overworld_max,
+				y_max = mcl_mapgen.overworld.max,
 				biomes = { biomes[b] },
 			})
 		end
@@ -3143,7 +3156,7 @@ local function register_decorations()
 					persist = 0.66,
 				},
 				y_min = 1,
-				y_max = mcl_vars.mg_overworld_max,
+				y_max = mcl_mapgen.overworld.max,
 				biomes = biomes[b],
 			})
 		end
@@ -3192,7 +3205,7 @@ local function register_decorations()
 					persist = 0.62,
 				},
 				y_min = 1,
-				y_max = mcl_vars.mg_overworld_max,
+				y_max = mcl_mapgen.overworld.max,
 				flags = "",
 				biomes = b,
 			})
@@ -3220,7 +3233,7 @@ local function register_decorations()
 		},
 		biomes = {"Jungle"},
 		y_min = 3,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = jungle_bush_schematic,
 		flags = "place_center_x, place_center_z",
 	})
@@ -3238,7 +3251,7 @@ local function register_decorations()
 		},
 		biomes = {"JungleM"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = jungle_bush_schematic,
 		flags = "place_center_x, place_center_z",
 	})
@@ -3256,7 +3269,7 @@ local function register_decorations()
 		},
 		biomes = {"JungleEdge", "JungleEdgeM"},
 		y_min = 3,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = jungle_bush_schematic,
 		flags = "place_center_x, place_center_z",
 	})
@@ -3279,7 +3292,7 @@ local function register_decorations()
 			},
 			biomes = {"MegaTaiga", "MegaSpruceTaiga", "Taiga"},
 			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = mcl_mapgen.overworld.max,
 			schematic = {
 				size = {x = 3, y = 3, z = 1},
 				data = {
@@ -3312,7 +3325,7 @@ local function register_decorations()
 			},
 			biomes = {"ColdTaiga"},
 			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = mcl_mapgen.overworld.max,
 			schematic = {
 				size = {x = 3, y = 3, z = 1},
 				data = {
@@ -3345,7 +3358,7 @@ local function register_decorations()
 			},
 			biomes = {"BirchForest", "BirchForestM",},
 			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = mcl_mapgen.overworld.max,
 			schematic = {
 				size = {x = 3, y = 3, z = 1},
 				data = {
@@ -3371,7 +3384,7 @@ local function register_decorations()
 			fill_ratio = 0.005,
 			biomes = {"Jungle", "JungleM"},
 			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = mcl_mapgen.overworld.max,
 			schematic = {
 				size = {x = 3, y = 3, z = 1},
 				data = {
@@ -3404,7 +3417,7 @@ local function register_decorations()
 			},
 			biomes = {"Forest"},
 			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = mcl_mapgen.overworld.max,
 			schematic = {
 				size = {x = 3, y = 3, z = 1},
 				data = {
@@ -3477,7 +3490,7 @@ local function register_decorations()
 			persist = 0.6
 		},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		decoration = "mcl_farming:melon",
 		biomes = { "Jungle" },
 	})
@@ -3494,7 +3507,7 @@ local function register_decorations()
 			persist = 0.6
 		},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		decoration = "mcl_farming:melon",
 		biomes = { "JungleM" },
 	})
@@ -3511,7 +3524,7 @@ local function register_decorations()
 			persist = 0.6
 		},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		decoration = "mcl_farming:melon",
 		biomes = { "JungleEdge", "JungleEdgeM" },
 	})
@@ -3530,7 +3543,7 @@ local function register_decorations()
 			persist = 0.6
 		},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		decoration = "mcl_farming:melon",
 		biomes = { "JungleEdgeM" },
 	})
@@ -3552,7 +3565,7 @@ local function register_decorations()
 			persist = 0.666
 		},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 	})
 
 	-- Grasses and ferns
@@ -3628,7 +3641,7 @@ local function register_decorations()
 			persist = 0.666
 		},
 		flags = "force_placement",
-		y_min = mcl_vars.mg_lava_overworld_max + 5,
+		y_min = mcl_mapgen.overworld.lava_max + 5,
 		y_max = -20,
 	})
 
@@ -3647,7 +3660,7 @@ local function register_decorations()
 		},
 		biomes = {"IcePlains"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = {
 			size = { x=1, y=2, z=1 },
 			data = {
@@ -3670,7 +3683,7 @@ local function register_decorations()
 		},
 		biomes = {"ExtremeHills+_snowtop"},
 		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		schematic = {
 			size = { x=1, y=2, z=1 },
 			data = {
@@ -3695,7 +3708,7 @@ local function register_decorations()
 			persist = 0.6
 		},
 		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		biomes = {"Desert", "Mesa", "Mesa_sandlevel", "MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlateauF_grasstop","MesaBryce","Taiga", "MegaTaiga"},
 		decoration = "mcl_core:deadbush",
 		height = 1,
@@ -3713,7 +3726,7 @@ local function register_decorations()
 			persist = 0.6
 		},
 		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		biomes = {"MesaPlateauFM_grasstop"},
 		decoration = "mcl_core:deadbush",
 		height = 1,
@@ -3731,7 +3744,7 @@ local function register_decorations()
 			persist = 0.6
 		},
 		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		biomes = {"MesaPlateauFM","MesaPlateauFM_sandlevel"},
 		decoration = "mcl_core:deadbush",
 		height = 1,
@@ -3749,7 +3762,7 @@ local function register_decorations()
 			persist = 0.6
 		},
 		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
+		y_max = mcl_mapgen.overworld.max,
 		biomes = {"MesaPlateauFM", "MesaPlateauFM_sandlevel", "MesaPlateauFM_grasstop"},
 		decoration = "mcl_core:deadbush",
 		height = 1,
@@ -3763,8 +3776,8 @@ local function register_decorations()
 		fill_ratio = 0.009,
 		biomes = {"MushroomIsland", "MushroomIslandShore"},
 		noise_threshold = 2.0,
-		y_min = mcl_vars.mg_overworld_min,
-		y_max = mcl_vars.mg_overworld_max,
+		y_min = mcl_mapgen.overworld.min,
+		y_max = mcl_mapgen.overworld.max,
 		decoration = "mcl_mushrooms:mushroom_red",
 	})
 	minetest.register_decoration({
@@ -3773,8 +3786,8 @@ local function register_decorations()
 		sidelen = 80,
 		fill_ratio = 0.009,
 		biomes = {"MushroomIsland", "MushroomIslandShore"},
-		y_min = mcl_vars.mg_overworld_min,
-		y_max = mcl_vars.mg_overworld_max,
+		y_min = mcl_mapgen.overworld.min,
+		y_max = mcl_mapgen.overworld.max,
 		decoration = "mcl_mushrooms:mushroom_brown",
 	})
 
@@ -3785,8 +3798,8 @@ local function register_decorations()
 		sidelen = 80,
 		fill_ratio = 0.003,
 		biomes = {"Taiga", "MegaTaiga", "MegaSpruceTaiga"},
-		y_min = mcl_vars.mg_overworld_min,
-		y_max = mcl_vars.mg_overworld_max,
+		y_min = mcl_mapgen.overworld.min,
+		y_max = mcl_mapgen.overworld.max,
 		decoration = "mcl_mushrooms:mushroom_red",
 	})
 	minetest.register_decoration({
@@ -3795,8 +3808,8 @@ local function register_decorations()
 		sidelen = 80,
 		fill_ratio = 0.003,
 		biomes = {"Taiga", "MegaTaiga", "MegaSpruceTaiga"},
-		y_min = mcl_vars.mg_overworld_min,
-		y_max = mcl_vars.mg_overworld_max,
+		y_min = mcl_mapgen.overworld.min,
+		y_max = mcl_mapgen.overworld.max,
 		decoration = "mcl_mushrooms:mushroom_brown",
 	})
 
@@ -3819,7 +3832,7 @@ local function register_decorations()
 				persist = 0.66,
 			},
 			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = mcl_mapgen.overworld.max,
 			decoration = mushrooms[m],
 			spawn_by = { "mcl_core:tree", "mcl_core:sprucetree", "mcl_core:darktree", "mcl_core:birchtree" },
 			num_spawn_by = 1,
@@ -3839,7 +3852,7 @@ local function register_decorations()
 				persist = 0.6,
 			},
 			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = mcl_mapgen.overworld.max,
 			decoration = mushrooms[m],
 			biomes = { "Swampland"},
 			spawn_by = { "mcl_core:tree", "mcl_core:sprucetree", "mcl_core:darktree", "mcl_core:birchtree" },
@@ -3864,7 +3877,7 @@ local function register_decorations()
 					persist = 0.6
 				},
 				y_min = 1,
-				y_max = mcl_vars.mg_overworld_max,
+				y_max = mcl_mapgen.overworld.max,
 				biomes = biomes,
 				decoration = "mcl_flowers:"..name,
 			})
@@ -3883,7 +3896,7 @@ local function register_decorations()
 					persist = 0.6,
 				},
 				y_min = 1,
-				y_max = mcl_vars.mg_overworld_max,
+				y_max = mcl_mapgen.overworld.max,
 				biomes = {"FlowerForest"},
 				decoration = "mcl_flowers:"..name,
 			})
@@ -3930,8 +3943,8 @@ local function register_dimension_decorations()
 			octaves = 3,
 			persist = 0.6
 		},
-		y_min = mcl_vars.mg_end_min,
-		y_max = mcl_vars.mg_end_max,
+		y_min = mcl_mapgen.end_.min,
+		y_max = mcl_mapgen.end_.max,
 		decoration = "mcl_end:chorus_flower",
 		height = 1,
 		biomes = { "End" },
@@ -3948,14 +3961,15 @@ end
 --
 -- Detect mapgen to select functions
 --
-if mg_name ~= "singlenode" then
+
+if not mcl_mapgen.singlenode then
 	if not superflat then
-		if mg_name ~= "v6" then
+		if not mcl_mapgen.v6 then
 			register_biomes()
 			register_biomelike_ores()
 		end
 		register_biome_ores()
-		if mg_name ~= "v6" then
+		if not mcl_mapgen.v6 then
 			register_decorations()
 		end
 	else
@@ -3976,21 +3990,16 @@ if mg_name ~= "singlenode" then
 	-- Overworld decorations for v6 are handled in mcl_mapgen_core
 
 	if deco_id_chorus_plant then
-		mcl_mapgen_core.register_generator("chorus_grow", nil, function(minp, maxp, blockseed)
-			local gennotify = minetest.get_mapgen_object("gennotify")
-			--local poslist = {}
-			local pr = PseudoRandom(blockseed + 14)
-			for _, pos in ipairs(gennotify["decoration#"..deco_id_chorus_plant] or {}) do
-				local x, y, z = pos.x, pos.y, pos.z
-				if x < -2 or x > 2 or z < -2 or z > 2 then
-					local realpos = { x = x, y = y + 1, z = z }
-					local node = minetest.get_node(realpos)
-					if node and node.name == "mcl_end:chorus_flower" then
-						mcl_end.grow_chorus_plant(realpos, node, pr)
-					end
-				end
+		mcl_mapgen.register_mapgen_block_lvm(function(vm_context)
+			vm_context.gennotify = vm_context.gennotify or minetest.get_mapgen_object("gennotify")
+			local gennotify = vm_context.gennotify
+			for _, pos in pairs(gennotify["decoration#"..deco_id_chorus_plant] or {}) do
+				local realpos = { x = pos.x, y = pos.y + 1, z = pos.z }
+				local pr = PseudoRandom(vm_context.blockseed)
+				minetest.after(1, mcl_end.grow_chorus_plant, realpos, false, pr)
 			end
-		end)
+			return vm_context
+		end, mcl_mapgen.order.CHORUS)
 	end
 
 end

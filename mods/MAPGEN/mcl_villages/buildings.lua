@@ -88,7 +88,7 @@ function settlements.create_site_plan(maxp, minp, pr)
 	-- find center_surface of chunk
 	local center_surface , surface_material = settlements.find_surface(center, true)
 	local chunks = {}
-	chunks[mcl_vars.get_chunk_number(center)] = true
+	chunks[mcl_mapgen.get_chunk_number(center)] = true
 
 	-- go build settlement around center
 	if not center_surface then return false end
@@ -124,7 +124,7 @@ function settlements.create_site_plan(maxp, minp, pr)
 			ptx = settlements.round(ptx, 0)
 			ptz = settlements.round(ptz, 0)
 			local pos1 = { x=ptx, y=center_surface.y+50, z=ptz}
-			local chunk_number = mcl_vars.get_chunk_number(pos1)
+			local chunk_number = mcl_mapgen.get_chunk_number(pos1)
 			local pos_surface, surface_material
 			if chunks[chunk_number] then
 				pos_surface, surface_material = settlements.find_surface(pos1)
@@ -268,15 +268,13 @@ function settlements.place_schematics(settlement_info, pr)
 		local schematic = loadstring(schem_lua)()
 		-- build foundation for the building an make room above
 		-- place schematic
-		mcl_structures.place_schematic(
-			pos,
-			schematic,
-			rotation,
-			nil,
-			true,
-			nil,
-			init_nodes,
-			pr
-		)
+		mcl_structures.place_schematic({
+			pos = pos,
+			schematic = schematic,
+			rotation = rotation,
+			force_placement = true,
+			on_place = init_nodes,
+			pr = pr,
+		})
 	end
 end

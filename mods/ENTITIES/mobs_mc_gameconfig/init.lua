@@ -233,15 +233,15 @@ mobs_mc.override.spawn_height = {
 	water = tonumber(minetest.settings:get("water_level")) or 0, -- Water level in the Overworld
 
 	-- Overworld boundaries (inclusive)
-	overworld_min = mcl_vars.mg_overworld_min,
-	overworld_max = mcl_vars.mg_overworld_max,
+	overworld_min = mcl_mapgen.overworld.min,
+	overworld_max = mcl_mapgen.overworld.max,
 
 	-- Nether boundaries (inclusive)
-	nether_min = mcl_vars.mg_nether_min,
-	nether_max = mcl_vars.mg_nether_max,
+	nether_min = mcl_mapgen.nether.min,
+	nether_max = mcl_mapgen.nether.max,
 
 	-- End boundaries (inclusive)
-	end_min = mcl_vars.mg_end_min,
-	end_max = mcl_vars.mg_end_max,
+	end_min = mcl_mapgen.end_.min,
+	end_max = mcl_mapgen.end_.max,
 }
 

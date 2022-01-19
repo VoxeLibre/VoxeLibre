@@ -81,7 +81,7 @@ local dir_step = storage:get_int("mcl_spawn_dir_step") or 0
 local dir_ind = storage:get_int("mcl_spawn_dir_ind") or 1
 local emerge_pos1, emerge_pos2
 
-local spawn_limit = mcl_vars.mapgen_edge_max
+local spawn_limit = mcl_mapgen.EDGE_MAX
 
 
 --Functions
@@ -500,7 +500,11 @@ function mcl_spawn.shadow_worker()
 
 	if success then
 		local wsp_node = minetest.get_node(wsp)
-		if not (wsp_node and wsp_node.name == "ignore")
+		if wsp_node and 
+		(
+			(minetest.compare_block_status and (minetest.compare_block_status(wsp, "loaded") or minetest.compare_block_status(wsp, "active")))
+			or minetest.get_node_or_nil(wsp)
+		)
 		and ((not good_for_respawn(wsp)) or ((no_trees_area_counter >= 0) and not can_find_tree(wsp))) then
 			success = false
 			minetest.log("action", "[mcl_spawn] World spawn position isn't safe anymore: "..minetest.pos_to_string(wsp))

@@ -1,6 +1,8 @@
 settlements = {}
 settlements.modpath = minetest.get_modpath(minetest.get_current_modname())
 
+local minetest_get_spawn_level = minetest.get_spawn_level
+
 dofile(settlements.modpath.."/const.lua")
 dofile(settlements.modpath.."/utils.lua")
 dofile(settlements.modpath.."/foundation.lua")
@@ -53,6 +55,7 @@ end
 -- on map generation, try to build a settlement
 --
 local function build_a_settlement(minp, maxp, blockseed)
+	minetest.log("action","[mcl_villages] Building village at mapchunk " .. minetest.pos_to_string(minp) .. "..." .. minetest.pos_to_string(maxp) .. ", blockseed = " .. tostring(blockseed))
 	local pr = PseudoRandom(blockseed)
 
 	-- fill settlement_info with buildings and their data
@@ -69,29 +72,38 @@ local function build_a_settlement(minp, maxp, blockseed)
 	settlements.place_schematics(settlement_info, pr)
 end
 
-local function ecb_village(blockpos, action, calls_remaining, param)
-	if calls_remaining >= 1 then return end
-	local minp, maxp, blockseed = param.minp, param.maxp, param.blockseed
-	build_a_settlement(minp, maxp, blockseed)
-end
-
 -- Disable natural generation in singlenode.
 local mg_name = minetest.get_mapgen_setting("mg_name")
 if mg_name ~= "singlenode" then
-	mcl_mapgen_core.register_generator("villages", nil, function(minp, maxp, blockseed)
+	mcl_mapgen.register_mapgen(function(minp, maxp, blockseed)
+		-- local str1 = (maxp.y >= 0 and blockseed % 77 == 17) and "YES" or "no"
+		-- minetest.log("action","[mcl_villages] " .. str1 .. ": minp=" .. minetest.pos_to_string(minp) .. ", maxp=" .. minetest.pos_to_string(maxp) .. ", blockseed=" .. tostring(blockseed))
 		-- don't build settlement underground
 		if maxp.y < 0 then return end
 		-- randomly try to build settlements
 		if blockseed % 77 ~= 17 then return end
-		-- needed for manual and automated settlement building
+
 		-- don't build settlements on (too) uneven terrain
-		--local heightmap = minetest.get_mapgen_object("heightmap")
-		local height_difference = settlements.evaluate_heightmap()
+
+		-- lame and quick replacement of `heightmap` by kay27 - we maybe need to restore `heightmap` analysis if there will be a way for the engine to avoid cavegen conflicts:
+		--------------------------------------------------------------------------
+		local height_difference, min, max
+		local pr1=PseudoRandom(blockseed)
+		for i=1,pr1:next(5,10) do
+			local x = pr1:next(0, 40) + minp.x + 19
+			local z = pr1:next(0, 40) + minp.z + 19
+			local y = minetest_get_spawn_level(x, z)
+			if not y then return end
+			if y < (min or y+1) then min = y end
+			if y > (max or y-1) then max = y end
+		end
+		height_difference = max - min + 1
+		--------------------------------------------------------------------------
+
 		if height_difference > max_height_difference then return end
 
-		local param={minp=vector.new(minp), maxp=vector.new(maxp), blockseed=blockseed}
-		minetest.emerge_area(minp, maxp, ecb_village, param)
-	end)
+		build_a_settlement(minp, maxp, blockseed)
+	end, mcl_mapgen.order.VILLAGES)
 end
 -- manually place villages
 if minetest.is_creative_enabled("") then
