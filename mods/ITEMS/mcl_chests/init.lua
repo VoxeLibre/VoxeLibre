@@ -291,22 +291,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 		end
 	end
 
-	local function drop_items_chest(pos, oldnode, oldmetadata)
-		local meta = minetest.get_meta(pos)
-		local meta2 = meta:to_table()
-		if oldmetadata then
-			meta:from_table(oldmetadata)
-		end
-		local inv = meta:get_inventory()
-		for i=1,inv:get_size("main") do
-			local stack = inv:get_stack("main", i)
-			if not stack:is_empty() then
-				local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
-				minetest.add_item(p, stack)
-			end
-		end
-		meta:from_table(meta2)
-	end
+	local drop_items_chest = mcl_util.drop_items_container_get("main")
 
 	local function on_chest_blast(pos)
 		local node = minetest.get_node(pos)
