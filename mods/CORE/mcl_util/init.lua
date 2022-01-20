@@ -357,6 +357,25 @@ function mcl_util.get_first_occupied_inventory_slot(inventory, listname)
 	return mcl_util.get_eligible_transfer_item_slot(inventory, listname)
 end
 
+function mcl_util.drop_items_container_get(listname)
+	return function(pos, oldnode, oldmetadata)
+		local meta = minetest.get_meta(pos)
+		local meta2 = meta:to_table()
+		if oldmetadata then
+			meta:from_table(oldmetadata)
+		end
+		local inv = meta:get_inventory()
+		for i = 1, inv:get_size(listname) do
+			local stack = inv:get_stack(listname, i)
+			if not stack:is_empty() then
+				local p = vector.add(pos, vector.new(math.random(0, 10)/10 - 0.5, 0, math.random(0, 10)/10 - 0.5))
+				minetest.add_item(p, stack)
+			end
+		end
+		meta:from_table(meta2)
+	end
+end
+
 -- Returns true if item (itemstring or ItemStack) can be used as a furnace fuel.
 -- Returns false otherwise
 function mcl_util.is_fuel(item)
