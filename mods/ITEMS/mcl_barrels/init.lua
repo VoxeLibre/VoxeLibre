@@ -139,3 +139,13 @@ end)
 minetest.register_on_leaveplayer(function(player)
 	close_barrel(player)
 end)
+
+--Minecraft Java Edition craft
+minetest.register_craft({
+	output = "mcl_barrels:barrel_closed",
+	recipe = {
+		{"group:wood", "group:wood_slab", "group:wood"},
+		{"group:wood", "",                "group:wood"},
+		{"group:wood", "group:wood_slab", "group:wood"},
+	}
+})
