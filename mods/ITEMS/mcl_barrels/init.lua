@@ -2,7 +2,6 @@ local S = minetest.get_translator("mcl_barrels")
 local F = minetest.formspec_escape
 local C = minetest.colorize
 
---TODO: add craft
 --TODO: add french translation
 --TODO: complete ingame help and tooltips
 --TODO: fix barrel rotation placement
