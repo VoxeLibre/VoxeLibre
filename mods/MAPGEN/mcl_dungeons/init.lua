@@ -29,7 +29,6 @@ local math_min         = math.min
 local math_max         = math.max
 local math_ceil        = math.ceil
 
---custom mcl_vars
 local get_node = mcl_mapgen.get_far_node
 
 
