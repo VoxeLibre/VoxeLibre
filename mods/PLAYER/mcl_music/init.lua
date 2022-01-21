@@ -25,6 +25,11 @@ local function stop()
 end
 
 local function play()
+	local spec = {
+		name  = pianowtune,
+		gain  = 0.3,
+		pitch = 1.0,
+	}
 	local new_weather_state = mcl_weather.get_weather()
 	local was_good_weather = weather_state == "none" or weather_state == "clear"
 	weather_state = new_weather_state
@@ -32,45 +37,44 @@ local function play()
 	local is_weather_changed = weather_state ~= new_weather_state
 	if is_weather_changed or not is_good_weather then
 		stop()
+		minetest.after(20, play)
 		return
 	end
 	local time = minetest.get_timeofday()
-	if time < 0.2 or time >= 0.8 then
+	if time < 0.25 or time >= 0.75 then
 		stop()
+		minetest.after(10, play)
 		return
 	end
 	for _, player in pairs(minetest.get_connected_players()) do
 		local player_name = player:get_player_name()
-		local listener = listeners[player_name]
-		local old_hp = listener and listener.hp
-		local hp = player:get_hp()
+		local hp          = player:get_hp()
+		local pos         = player:get_pos()
+		local listener    = listeners[player_name]
+		local old_hp      = listener and listener.hp
+		local dimension   = mcl_worlds.pos_to_dimension(pos)
 		local is_hp_changed = old_hp and math.abs(old_hp - hp) > 0.00001
 		local handle = listener and listener.handle
-		if is_hp_changed and handle then
+		if is_hp_changed then
 			stop_music_for_listener_name(player_name)
-			return
+			listeners[player_name].hp = hp
+		elseif dimension ~= "overworld" then
+			stop_music_for_listener_name(player_name)
+		elseif not handle then
+			local parameters = {
+				to_player = player_name,
+				gain      = 1.0,
+				fade      = 0.0,
+				pitch     = 1.0,
+			}
+			handle = minetest.sound_play(spec, parameters, false)
+			listeners[player_name] = {
+				spec       = spec,
+				parameters = parameters,
+				handle     = handle,
+				hp         = hp,
+			}
 		end
-		if handle then
-			return
-		end
-		local spec = {
-			name  = pianowtune,
-			gain  = 0.3,
-			pitch = 1.0,
-		}
-		local parameters = {
-			to_player = player_name,
-			gain      = 1.0,
-			fade      = 0.0,
-			pitch     = 1.0,
-		}
-		handle = minetest.sound_play(spec, parameters, false)
-		listeners[player_name] = {
-			spec       = spec,
-			parameters = parameters,
-			handle     = handle,
-			hp         = hp,
-		}
 	end
 
 	minetest.after(7, play)
