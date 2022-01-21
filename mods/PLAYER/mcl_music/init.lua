@@ -65,16 +65,14 @@ local function play()
 			or is_dimension_changed
 			or (dimension == "overworld" and (is_weather_changed or not is_good_weather))
 			or not track
-			or (listener and (listener.day_count == day_count))
 			then
-			minetest.chat_send_all("here! dc = "..tostring(is_dimension_changed))
 			stop_music_for_listener_name(player_name)
 			if not listeners[player_name] then
 				listeners[player_name] = {}
 			end
 			listeners[player_name].hp = hp
 			listeners[player_name].dimension = dimension
-		elseif not handle then
+		elseif not handle and (not listener or (listener.day_count ~= day_count)) then
 			local spec = {
 				name  = track,
 				gain  = 0.3,
@@ -86,7 +84,6 @@ local function play()
 				fade      = 0.0,
 				pitch     = 1.0,
 			}
-
 			handle = minetest.sound_play(spec, parameters, false)
 			listeners[player_name] = {
 				spec       = spec,
