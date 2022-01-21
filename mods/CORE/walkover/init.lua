@@ -2,19 +2,20 @@
 
 local get_connected_players = minetest.get_connected_players
 local get_node = minetest.get_node
-local vector_add = vector.add
+local vector = vector
 local ceil = math.ceil
 local pairs = pairs
 
 walkover = {}
-walkover.registered_globals = {}
-
-function walkover.register_global(func)
-	table.insert(walkover.registered_globals, func)
-end
 
 local on_walk = {}
 local registered_globals = {}
+
+walkover.registered_globals = registered_globals
+
+function walkover.register_global(func)
+	table.insert(registered_globals, func)
+end
 
 minetest.register_on_mods_loaded(function()
 	for name,def in pairs(minetest.registered_nodes) do
@@ -22,27 +23,24 @@ minetest.register_on_mods_loaded(function()
 			on_walk[name] = def.on_walk_over
 		end
 	end
-	for _,func in ipairs(walkover.registered_globals) do --cache registered globals
-		table.insert(registered_globals, func)
-	end
 end)
 
 local timer = 0
 minetest.register_globalstep(function(dtime)
-	timer = timer + dtime;
+	timer = timer + dtime
 	if timer >= 0.3 then
-		for _,player in pairs(get_connected_players()) do
-		local pp = player:get_pos()
-		pp.y = ceil(pp.y)
-			local loc = vector_add(pp, {x=0,y=-1,z=0})
-			if loc then
-				local nodeiamon = get_node(loc)
-				if nodeiamon then
-					if on_walk[nodeiamon.name] then
-						on_walk[nodeiamon.name](loc, nodeiamon, player)
+		for _, player in pairs(get_connected_players()) do
+			local ppos = player:get_pos()
+			ppos.y = ceil(ppos.y)
+			local npos = vector.add(ppos, vector.new(0, -1, 0))
+			if npos then
+				local node = get_node(npos)
+				if node then
+					if on_walk[node.name] then
+						on_walk[node.name](npos, node, player)
 					end
 					for i = 1, #registered_globals do
-						registered_globals[i](loc, nodeiamon, player)
+						registered_globals[i](npos, node, player)
 					end
 				end
 			end
