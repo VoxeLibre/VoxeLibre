@@ -5,6 +5,26 @@ mcl_weather.snow = {}
 mcl_weather.snow.particles_count = 15
 mcl_weather.snow.init_done = false
 
+local psdef= {
+	amount = 99,
+	time = 0, --stay on til we turn it off
+	minpos = vector.new(-15,-5,-15),
+	maxpos =vector.new(15,10,15),
+	minvel = vector.new(0,-1,0),
+	maxvel = vector.new(0,-4,0),
+	minacc = vector.new(0,-1,0),
+	maxacc = vector.new(0,-4,0),
+	minexptime = 1,
+	maxexptime = 1,
+	minsize = 0.5,
+	maxsize = 5,
+	collisiondetection = true,
+	collision_removal = true,
+	object_collision = true,
+	vertical = true,
+	glow = 1
+}
+
 -- calculates coordinates and draw particles for snow weather
 function mcl_weather.snow.add_snow_particles(player)
 	mcl_weather.rain.last_rp_count = 0
@@ -75,9 +95,13 @@ minetest.register_globalstep(function(dtime)
 
 	for _, player in pairs(get_connected_players()) do
 		if (mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(player:get_pos())) then
+			mcl_weather.remove_spawners_player(player)
 			return false
 		end
-		mcl_weather.snow.add_snow_particles(player)
+		for i=1,2 do
+			psdef.texture="weather_pack_snow_snowflake"..i..".png"
+			mcl_weather.add_spawner_player(player,"snow"..i,psdef)
+		end
 	end
 end)
 
