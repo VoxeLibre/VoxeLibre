@@ -84,7 +84,7 @@ function image:encode()
 end
 
 function image:save(filename)
-	local f = assert(io.open(filename, "w"))
+	local f = assert(io.open(filename, "wb"))
 	f:write(self.data)
 	f:close()
 end
