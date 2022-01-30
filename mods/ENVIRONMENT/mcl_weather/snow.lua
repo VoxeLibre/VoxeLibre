@@ -69,7 +69,7 @@ minetest.register_globalstep(function(dtime)
 	end
 
 	for _, player in pairs(get_connected_players()) do
-		if (mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(player:get_pos())) then
+		if (mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(player:get_pos()) or not mcl_weather.is_outoor(player:get_pos())) then
 			mcl_weather.remove_spawners_player(player)
 			return false
 		end
