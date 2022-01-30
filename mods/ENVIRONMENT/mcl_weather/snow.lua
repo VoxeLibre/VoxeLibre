@@ -25,31 +25,6 @@ local psdef= {
 	glow = 1
 }
 
--- calculates coordinates and draw particles for snow weather
-function mcl_weather.snow.add_snow_particles(player)
-	mcl_weather.rain.last_rp_count = 0
-	for i=mcl_weather.snow.particles_count, 1,-1 do
-		local random_pos_x, _, random_pos_z = mcl_weather.get_random_pos_by_player_look_dir(player)
-		local random_pos_y = math.random() + math.random(player:get_pos().y - 1, player:get_pos().y + 7)
-		if minetest.get_node_light({x=random_pos_x, y=random_pos_y, z=random_pos_z}, 0.5) == 15 then
-			mcl_weather.rain.last_rp_count = mcl_weather.rain.last_rp_count + 1
-			minetest.add_particle({
-				pos = {x=random_pos_x, y=random_pos_y, z=random_pos_z},
-				velocity = {x = math.random(-100,100)*0.001, y = math.random(-300,-100)*0.004, z = math.random(-100,100)*0.001},
-				acceleration = {x = 0, y=0, z = 0},
-				expirationtime = 8.0,
-				size = 1,
-				collisiondetection = true,
-				collision_removal = true,
-				object_collision = false,
-				vertical = false,
-				texture = mcl_weather.snow.get_texture(),
-				playername = player:get_player_name()
-			})
-		end
-	end
-end
-
 function mcl_weather.snow.set_sky_box()
 	mcl_weather.skycolor.add_layer(
 		"weather-pack-snow-sky",
