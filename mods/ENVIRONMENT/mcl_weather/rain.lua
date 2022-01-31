@@ -29,7 +29,7 @@ local psdef= {
 	minpos = vector.new(-6,3,-6),
 	maxpos = vector.new(6,15,6),
 	minvel = vector.new(-vel,-falling_speed,-vel),
-	maxvel = math.random(vel,-falling_speed+vel,vel),
+	maxvel = vector.new(vel,-falling_speed+vel,vel),
 	minacc = vector.new(0,0,0),
 	maxacc = vector.new(0,-0.4,0),
 	minexptime = 0.5,
@@ -118,19 +118,6 @@ function mcl_weather.rain.remove_player(player)
 		update_sound[player:get_player_name()]=true
 	end
 end
-
-mcl_worlds.register_on_dimension_change(function(player, dimension)
-	if dimension ~= "overworld" and dimension ~= "void" then
-		mcl_weather.rain.remove_sound(player)
-		mcl_weather.rain.remove_player(player)
-	elseif dimension == "overworld" then
-		mcl_weather.rain.update_sound(player)
-		if mcl_weather.rain.raining then
-			mcl_weather.rain.add_rain_particles(player)
-			mcl_weather.rain.add_player(player)
-		end
-	end
-end)
 
 -- adds and removes rain sound depending how much rain particles around player currently exist.
 -- have few seconds delay before each check to avoid on/off sound too often
