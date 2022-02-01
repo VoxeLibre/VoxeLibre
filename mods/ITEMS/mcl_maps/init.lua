@@ -453,7 +453,7 @@ core.register_globalstep(function(dtime)
 			local minp, maxp = maps[player][2], maps[player][3]
 
 			-- Use dots when outside of map, indicate direction
-			local marker = "mcl_maps_player_arrow.png"
+			local marker
 			if pos.x < minp.x then
 				marker = "mcl_maps_player_dot.png"
 				pos.x = minp.x
@@ -470,9 +470,13 @@ core.register_globalstep(function(dtime)
 				pos.z = maxp.z
 			end
 
-			if marker == "mcl_maps_player_arrow.png" then
-				local yaw = (floor(player:get_look_horizontal() / HALF_PI + 0.5) % 4) * 90
-				marker = marker .. "^[transformR" .. yaw
+			if not marker then
+				local yaw = (math.floor(player:get_look_horizontal() * 180 / math.pi / 45 + 0.5) % 8) * 45
+				if yaw == 0 or yaw == 90 or yaw == 180 or yaw == 270 then
+					marker = "mcl_maps_player_arrow.png^[transformR" .. yaw
+				else
+					marker = "mcl_maps_player_arrow_diagonal.png^[transformR" .. (yaw - 45)
+				end
 			end
 
 			-- Note the alignment and scale used above
