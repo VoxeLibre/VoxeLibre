@@ -455,18 +455,22 @@ core.register_globalstep(function(dtime)
 			-- Use dots when outside of map, indicate direction
 			local marker
 			if pos.x < minp.x then
-				marker = "mcl_maps_player_dot.png"
+				marker = math.abs(minp.x - pos.x) < 256 and "mcl_maps_player_dot_large.png" or "mcl_maps_player_dot.png"
 				pos.x = minp.x
 			elseif pos.x > maxp.x then
-				marker = "mcl_maps_player_dot.png"
+				marker = math.abs(pos.x - maxp.x) < 256 and "mcl_maps_player_dot_large.png" or "mcl_maps_player_dot.png"
 				pos.x = maxp.x
 			end
 
+			-- we never override the small marker
+			-- yes, this is a literal corner case
 			if pos.z < minp.z then
-				marker = "mcl_maps_player_dot.png"
+				marker = (math.abs(minp.z - pos.z) < 256 and marker ~= "mcl_maps_player_dot.png")
+					and "mcl_maps_player_dot_large.png" or "mcl_maps_player_dot.png"
 				pos.z = minp.z
 			elseif pos.z > maxp.z then
-				marker = "mcl_maps_player_dot.png"
+				marker = (math.abs(pos.z - maxp.z) < 256 and marker ~= "mcl_maps_player_dot.png")
+					and "mcl_maps_player_dot_large.png" or "mcl_maps_player_dot.png"
 				pos.z = maxp.z
 			end
 
