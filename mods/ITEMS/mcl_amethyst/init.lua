@@ -14,10 +14,9 @@ minetest.register_node("mcl_amethyst:amethyst_block",{
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	is_ground_content = true,
 	stack_max = 64,
-	_doc_items_longdesc = S("The Block of Anethyst is a decoration block creft from amethyst shards."),
+	_doc_items_longdesc = S("The Block of Amethyst is a decoration block creft from amethyst shards."),
 })
 
--- (WIP!) Budding Amethyst
 minetest.register_node("mcl_amethyst:budding_amethyst_block",{
 	description = S("Budding Amethyst"),
 	tiles = {"budding_amethyst.png"},
@@ -32,7 +31,7 @@ minetest.register_node("mcl_amethyst:budding_amethyst_block",{
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	is_ground_content = true,
 	stack_max = 64,
-	_doc_items_longdesc = S("The Budding Anethyst can grow amethyst"),
+	_doc_items_longdesc = S("The Budding Amethyst can grow amethyst"),
 })
 mcl_wip.register_wip_item("mcl_amethyst:budding_amethyst_block")
 
@@ -123,7 +122,7 @@ for x,y in pairs(bud_def) do
 		},
 		_mcl_silk_touch_drop = true,
 		_mcl_amethyst_next_grade = y[3],
-		_doc_items_longdesc = S(y[2] .. " Amethyst Bud is the " .. y[1] .. " grouth of amethyst bud."),
+		_doc_items_longdesc = S("@1 Amethyst Bud is the @2 grouth of amethyst bud.", y[2], y[1]),
 	})
 end
 
