@@ -123,6 +123,7 @@ for _, def in pairs(bud_def) do
 		drawtype = "plantlike",
 		use_texture_alpha = "clip",
 		sunlight_propagates = true,
+		light_source = def.light_source,
 		groups = {
 			dig_by_water = 1,
 			destroy_by_lava_flow = 1,
