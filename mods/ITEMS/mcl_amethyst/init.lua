@@ -14,7 +14,7 @@ minetest.register_node("mcl_amethyst:amethyst_block",{
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	is_ground_content = true,
 	stack_max = 64,
-	_doc_items_longdesc = S("The Block of Amethyst is a decoration block creft from amethyst shards."),
+	_doc_items_longdesc = S("The Block of Amethyst is a decoration block crafted from amethyst shards."),
 })
 
 minetest.register_node("mcl_amethyst:budding_amethyst_block",{
@@ -84,18 +84,40 @@ minetest.register_node("mcl_amethyst:tinted_glass",{
 
 -- Amethyst Cluster
 local bud_def = {
-	{"small","Small","mcl_amethyst:medium_amethyst_bud"},
-	{"medium","Medium","mcl_amethyst:large_amethyst_bud"},
-	{"large","Large","mcl_amethyst:amethyst_cluster"},
+	{
+		size         = "small",
+		description  = S("Small Amethyst Bud"),
+		long_desc    = S("Small Amethyst Bud is the first growth of amethyst bud."),
+		light_source = 3,
+		next_stage   = "mcl_amethyst:medium_amethyst_bud",
+	},
+	{
+		size         = "medium",
+		description  = S("Medium Amethyst Bud"),
+		long_desc    = S("Medium Amethyst Bud is the second growth of amethyst bud."),
+		light_source = 4,
+		next_stage   = "mcl_amethyst:large_amethyst_bud",
+	},
+	{
+		size         = "large",
+		description  = S("Large Amethyst Bud"),
+		long_desc    = S("Large Amethyst Bud is the third growth of amethyst bud."),
+		light_source = 5,
+		next_stage   = "mcl_amethyst:amethyst_cluster",
+	},
 }
-for x,y in pairs(bud_def) do
-	minetest.register_node("mcl_amethyst:" .. y[1] .. "_amethyst_bud",{
-		description = y[2] .. " Amethyst Bud",
+for _, def in pairs(bud_def) do
+	local size = def.size
+	local name = "mcl_amethyst:" .. size .. "_amethyst_bud"
+	local tile = size .. "_amethyst_bud.png"
+	local inventory_image = size .. "_amethyst_bud.png"
+	minetest.register_node(name, {
+		description = def.description,
 		_mcl_hardness = 1.5,
 		_mcl_blast_resistance = 1.5,
 		drop = "",
-		tiles = {y[1] .. "_amethyst_bud.png",},
-		inventory_image = y[1] .. "_amethyst_bud.png",
+		tiles = {tile},
+		inventory_image = inventory_image,
 		paramtype1 = "light",
 		paramtype2 = "wallmounted",
 		drawtype = "plantlike",
@@ -112,17 +134,15 @@ for x,y in pairs(bud_def) do
 		},
 		selection_box = {
 			type = "fixed",
-			-- fixed = {-0.5, -0.5, -0.5, 0.5, 0, 0.5},
 			fixed = { -7/16, -8/16, -7/16, 7/16, -7/16, 7/16 },
 		},
 		collision_box = {
 			type = "fixed",
-			-- fixed = {-0.5, -0.5, -0.5, 0.5, 0, 0.5},
 			fixed = { -7/16, -8/16, -7/16, 7/16, -7/16, 7/16 },
 		},
 		_mcl_silk_touch_drop = true,
-		_mcl_amethyst_next_grade = y[3],
-		_doc_items_longdesc = S("@1 Amethyst Bud is the @2 grouth of amethyst bud.", y[2], y[1]),
+		_mcl_amethyst_next_grade = def.next_stage,
+		_doc_items_longdesc = def.longdesc,
 	})
 end
 
@@ -130,7 +150,7 @@ minetest.register_node("mcl_amethyst:amethyst_cluster",{
 	description = "Amethyst Cluster",
 	_mcl_hardness = 1.5,
 	_mcl_blast_resistance = 1.5,
-	_doc_items_longdesc = S("Amethyst Cluster is the final grouth of amethyst bud."),
+	_doc_items_longdesc = S("Amethyst Cluster is the final growth of amethyst bud."),
 	drop = {
 		max_items = 1,
 		items = {
@@ -150,6 +170,7 @@ minetest.register_node("mcl_amethyst:amethyst_cluster",{
 	paramtype1 = "light",
 	use_texture_alpha = "clip",
 	sunlight_propagates = true,
+	light_source = 7,
 	groups = {
 		dig_by_water = 1,
 		destroy_by_lava_flow = 1,
@@ -160,12 +181,10 @@ minetest.register_node("mcl_amethyst:amethyst_cluster",{
 	},
 	selection_box = {
 		type = "fixed",
-		-- fixed = {-0.5, -0.5, -0.5, 0.5, 0, 0.5},
 		fixed = { -7/16, -8/16, -7/16, 7/16, -7/16, 7/16 },
 	},
 	collision_box = {
 		type = "fixed",
-		-- fixed = {-0.5, -0.5, -0.5, 0.5, 0, 0.5},
 		fixed = { -7/16, -8/16, -7/16, 7/16, -7/16, 7/16 },
 	},
 	_mcl_silk_touch_drop = true,
