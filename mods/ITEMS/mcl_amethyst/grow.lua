@@ -48,7 +48,7 @@ minetest.register_abm({
 		local check_node_name = check_node.name
 		if check_node_name ~= "air" and minetest.get_item_group(check_node_name, "water") == 0 then return end
 		local param2 = minetest.dir_to_wallmounted(vector.subtract(pos, check_pos))
-		local new_node = {name = "mcl_amethyst:medium_amethyst_bud", param2 = param2}
+		local new_node = {name = "mcl_amethyst:small_amethyst_bud", param2 = param2}
 		minetest.swap_node(check_pos, new_node)
 	end,
 })

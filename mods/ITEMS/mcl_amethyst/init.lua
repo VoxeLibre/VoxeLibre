@@ -1,6 +1,11 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 mcl_amethyst = {}
 
+local sounds = mcl_sounds.node_sound_glass_defaults({
+	footstep = {name="amethyst_walk", gain=0.4},
+	dug      = {name="amethyst_break", gain=0.44},
+})
+
 -- Amethyst block
 minetest.register_node("mcl_amethyst:amethyst_block",{
 	description = S("Block of Amethyst"),
@@ -11,7 +16,7 @@ minetest.register_node("mcl_amethyst:amethyst_block",{
 		pickaxey = 1,
 		building_block = 1,
 	},
-	sounds = mcl_sounds.node_sound_glass_defaults(),
+	sounds = sounds,
 	is_ground_content = true,
 	stack_max = 64,
 	_doc_items_longdesc = S("The Block of Amethyst is a decoration block crafted from amethyst shards."),
@@ -28,7 +33,7 @@ minetest.register_node("mcl_amethyst:budding_amethyst_block",{
 		building_block = 1,
 		dig_by_piston = 1,
 	},
-	sounds = mcl_sounds.node_sound_glass_defaults(),
+	sounds = sounds,
 	is_ground_content = true,
 	stack_max = 64,
 	_doc_items_longdesc = S("The Budding Amethyst can grow amethyst"),
@@ -85,25 +90,28 @@ minetest.register_node("mcl_amethyst:tinted_glass",{
 -- Amethyst Cluster
 local bud_def = {
 	{
-		size         = "small",
-		description  = S("Small Amethyst Bud"),
-		long_desc    = S("Small Amethyst Bud is the first growth of amethyst bud."),
-		light_source = 3,
-		next_stage   = "mcl_amethyst:medium_amethyst_bud",
+		size          = "small",
+		description   = S("Small Amethyst Bud"),
+		long_desc     = S("Small Amethyst Bud is the first growth of amethyst bud."),
+		light_source  = 3,
+		next_stage    = "mcl_amethyst:medium_amethyst_bud",
+		selection_box = { -4/16, -7/16, -4/16, 4/16, -3/16, 4/16 },
 	},
 	{
-		size         = "medium",
-		description  = S("Medium Amethyst Bud"),
-		long_desc    = S("Medium Amethyst Bud is the second growth of amethyst bud."),
-		light_source = 4,
-		next_stage   = "mcl_amethyst:large_amethyst_bud",
+		size          = "medium",
+		description   = S("Medium Amethyst Bud"),
+		long_desc     = S("Medium Amethyst Bud is the second growth of amethyst bud."),
+		light_source  = 4,
+		next_stage    = "mcl_amethyst:large_amethyst_bud",
+		selection_box = { -4.5/16, -8/16, -4.5/16, 4.5/16, -2/16, 4.5/16 },
 	},
 	{
-		size         = "large",
-		description  = S("Large Amethyst Bud"),
-		long_desc    = S("Large Amethyst Bud is the third growth of amethyst bud."),
-		light_source = 5,
-		next_stage   = "mcl_amethyst:amethyst_cluster",
+		size          = "large",
+		description   = S("Large Amethyst Bud"),
+		long_desc     = S("Large Amethyst Bud is the third growth of amethyst bud."),
+		light_source  = 5,
+		next_stage    = "mcl_amethyst:amethyst_cluster",
+		selection_box = { -4.5/16, -8/16, -4.5/16, 4.5/16, -1/16, 4.5/16 },
 	},
 }
 for _, def in pairs(bud_def) do
@@ -123,6 +131,7 @@ for _, def in pairs(bud_def) do
 		drawtype = "plantlike",
 		use_texture_alpha = "clip",
 		sunlight_propagates = true,
+		walkable = false,
 		light_source = def.light_source,
 		groups = {
 			dig_by_water = 1,
@@ -133,13 +142,10 @@ for _, def in pairs(bud_def) do
 			amethyst_buds = 1,
 			attached_node = 1,
 		},
+		sounds = sounds,
 		selection_box = {
 			type = "fixed",
-			fixed = { -7/16, -8/16, -7/16, 7/16, -7/16, 7/16 },
-		},
-		collision_box = {
-			type = "fixed",
-			fixed = { -7/16, -8/16, -7/16, 7/16, -7/16, 7/16 },
+			fixed = def.selection_box
 		},
 		_mcl_silk_touch_drop = true,
 		_mcl_amethyst_next_grade = def.next_stage,
@@ -171,6 +177,7 @@ minetest.register_node("mcl_amethyst:amethyst_cluster",{
 	paramtype1 = "light",
 	use_texture_alpha = "clip",
 	sunlight_propagates = true,
+	walkable = false,
 	light_source = 7,
 	groups = {
 		dig_by_water = 1,
@@ -180,13 +187,10 @@ minetest.register_node("mcl_amethyst:amethyst_cluster",{
 		deco_block = 1,
 		attached_node = 1,
 	},
+	sounds = sounds,
 	selection_box = {
 		type = "fixed",
-		fixed = { -7/16, -8/16, -7/16, 7/16, -7/16, 7/16 },
-	},
-	collision_box = {
-		type = "fixed",
-		fixed = { -7/16, -8/16, -7/16, 7/16, -7/16, 7/16 },
+		fixed = { -4.8/16, -8/16, -4.8/16, 4.8/16, 3.9/16, 4.8/16 },
 	},
 	_mcl_silk_touch_drop = true,
 })
