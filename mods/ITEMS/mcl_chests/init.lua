@@ -291,7 +291,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 		end
 	end
 
-	local drop_items_chest = mcl_util.drop_items_container_get("main")
+	local drop_items_chest = mcl_util.drop_items_from_meta_container("main")
 
 	local function on_chest_blast(pos)
 		local node = minetest.get_node(pos)

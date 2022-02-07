@@ -357,7 +357,7 @@ function mcl_util.get_first_occupied_inventory_slot(inventory, listname)
 	return mcl_util.get_eligible_transfer_item_slot(inventory, listname)
 end
 
-function mcl_util.drop_items_container_get(listname)
+function mcl_util.drop_items_from_meta_container(listname)
 	return function(pos, oldnode, oldmetadata)
 		local meta = minetest.get_meta(pos)
 		local meta2 = meta:to_table()

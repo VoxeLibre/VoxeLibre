@@ -8,7 +8,7 @@ local C = minetest.colorize
 
 local open_barrels = {}
 
-local drop_content = mcl_util.drop_items_container_get("main")
+local drop_content = mcl_util.drop_items_from_meta_container("main")
 
 local function on_blast(pos)
 	local node = minetest.get_node(pos)
