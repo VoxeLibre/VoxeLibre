@@ -368,7 +368,7 @@ function mcl_util.drop_items_from_meta_container(listname)
 		for i = 1, inv:get_size(listname) do
 			local stack = inv:get_stack(listname, i)
 			if not stack:is_empty() then
-				local p = vector.add(pos, vector.new(math.random(0, 10)/10 - 0.5, 0, math.random(0, 10)/10 - 0.5))
+				local p = vector.add(pos, vector.new(math.random() - 0.5, 0, math.random(0, 10)/10 - 0.5))
 				minetest.add_item(p, stack)
 			end
 		end
