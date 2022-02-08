@@ -5,7 +5,7 @@ mcl_lanterns.register_lantern("lantern", {
 	longdesc = S("Lanterns are light sources which can be placed on the top or the bottom of most blocks."),
 	texture = "mcl_lanterns_lantern.png",
 	texture_inv = "mcl_lanterns_lantern_inv.png",
-	light_level = 15,
+	light_level = 14,
 })
 
 mcl_lanterns.register_lantern("soul_lantern", {
