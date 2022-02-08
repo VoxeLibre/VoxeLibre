@@ -3,27 +3,39 @@ local modpath = minetest.get_modpath("mcl_lanterns")
 
 mcl_lanterns = {}
 
+--[[
+TODO:
+- add lantern specific sounds
+- remove the hack arround walmounted nodes
+]]
 
 function mcl_lanterns.register_lantern(name, def)
 	local itemstring_floor = "mcl_lanterns:"..name.."_floor"
 	local itemstring_ceiling = "mcl_lanterns:"..name.."_ceiling"
 
+	local sounds = mcl_sounds.node_sound_metal_defaults()
+
 	minetest.register_node(itemstring_floor, {
 		description = def.description,
+		_doc_items_longdesc = def.longdesc,
 		drawtype = "mesh",
 		mesh = "mcl_lanterns_lantern_floor.obj",
 		inventory_image = def.texture_inv,
 		wield_image = def.texture_inv,
-		tiles = {{
+		tiles = {
+			{
 				name = def.texture,
 				animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 3.3}
-		}},
+			}
+		},
 		use_texture_alpha = "clip",
 		paramtype = "light",
 		paramtype2 = "wallmounted",
+		place_param2 = 1,
+		node_placement_prediction = "",
 		sunlight_propagates = true,
 		light_source = def.light_level,
-		groups = {choppy=2, dig_immediate=3, flammable=1, attached_node=1, torch=1},
+		groups = {pickaxey = 1, attached_node = 1, deco_block = 1, lantern = 1},
 		selection_box = {
 			type = "fixed",
 			fixed = {
@@ -40,19 +52,16 @@ function mcl_lanterns.register_lantern(name, def)
 				{-0.0625, -0.5, -0.0625, 0.0625, 0.1875, 0.0625},
 			},
 		},
-		--sounds = default.node_sound_wood_defaults(),
+		sounds = sounds,
 		on_place = function(itemstack, placer, pointed_thing)
-			local under = pointed_thing.under
-			local node = minetest.get_node(under)
-			local def = minetest.registered_nodes[node.name]
-			if def and def.on_rightclick and
-				not (placer and placer:is_player() and
-				placer:get_player_control().sneak) then
-				return def.on_rightclick(under, node, placer, itemstack,
-					pointed_thing) or itemstack
+			local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
+			if new_stack then
+				return new_stack
 			end
 
+			local under = pointed_thing.under
 			local above = pointed_thing.above
+
 			local wdir = minetest.dir_to_wallmounted(vector.subtract(under, above))
 			local fakestack = itemstack
 			if wdir == 0 then
@@ -61,38 +70,61 @@ function mcl_lanterns.register_lantern(name, def)
 				fakestack:set_name(itemstring_floor)
 			end
 
-			itemstack = minetest.item_place(fakestack, placer, pointed_thing, wdir)
+			local success
+			itemstack, success = minetest.item_place(fakestack, placer, pointed_thing, wdir)
 			itemstack:set_name(itemstring_floor)
+
+			if success then
+				minetest.sound_play(sounds.place, {pos = under, gain = 1}, true)
+			end
 
 			return itemstack
 		end,
-		--floodable = true,
-		--on_flood = on_flood,
-		on_rotate = false
+		on_rotate = false,
+		_mcl_hardness = 3.5,
+		_mcl_blast_resistance = 3.5,
 	})
 
 	minetest.register_node(itemstring_ceiling, {
+		description = def.description,
+		_doc_items_create_entry = false,
 		drawtype = "mesh",
-		mesh = "mcl_lanterns_lantern_floor.obj",
-		tiles = {{
+		mesh = "mcl_lanterns_lantern_ceiling.obj",
+		tiles = {
+			{
 				name = def.texture,
 				animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 3.3}
-		}},
+			}
+		},
 		use_texture_alpha = "clip",
 		paramtype = "light",
 		paramtype2 = "wallmounted",
+		place_param2 = 0,
+		node_placement_prediction = "",
 		sunlight_propagates = true,
 		light_source = def.light_level,
-		groups = {dig_immediate=3, not_in_creative_inventory=1},
+		groups = {pickaxey = 1, attached_node = 1, deco_block = 1, lantern = 1, not_in_creative_inventory = 1},
 		drop = itemstring_floor,
 		selection_box = {
-			type = "wallmounted",
-			wall_top = {-1/8, -1/16, -5/16, 1/8, 1/2, 1/8},
+			type = "fixed",
+			fixed = {
+				{-0.1875, 0, -0.1875, 0.1875, 0.4375, 0.1875},
+				{-0.125, -0.125, -0.125, 0.125, 0, 0.125},
+				{-0.0625, -0.5, -0.0625, 0.0625, -0.125, 0.0625},
+			},
 		},
-		--sounds = default.node_sound_wood_defaults(),
-		--floodable = true,
-		--on_flood = on_flood,
-		on_rotate = false
+		collision_box = {
+			type = "fixed",
+			fixed = {
+				{-0.1875, 0, -0.1875, 0.1875, 0.4375, 0.1875},
+				{-0.125, -0.125, -0.125, 0.125, 0, 0.125},
+				{-0.0625, -0.5, -0.0625, 0.0625, -0.125, 0.0625},
+			},
+		},
+		sounds = sounds,
+		on_rotate = false,
+		_mcl_hardness = 3.5,
+		_mcl_blast_resistance = 3.5,
 	})
 end
 
@@ -121,6 +153,7 @@ minetest.register_node("mcl_lanterns:chain", {
 		}
 	},
 	groups = {pickaxey = 1, deco_block = 1},
+	sounds = mcl_sounds.node_sound_metal_defaults(),
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type ~= "node" then
 			return itemstack
@@ -156,6 +189,15 @@ minetest.register_node("mcl_lanterns:chain", {
 	end,
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
+})
+
+minetest.register_craft({
+	output = "mcl_lanterns:chain",
+	recipe = {
+		{"mcl_core:iron_nugget"},
+		{"mcl_core:iron_ingot"},
+		{"mcl_core:iron_nugget"},
+	},
 })
 
 dofile(modpath.."/register.lua")
