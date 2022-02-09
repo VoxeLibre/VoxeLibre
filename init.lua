@@ -48,8 +48,11 @@ function image:encode_data()
 	local previous_r = nil
 	local previous_g = nil
 	local previous_b = nil
+	local raw_pixel = ''
+	local raw_pixels = {}
 	local count = 1
 	local packets = {}
+	local raw_packet = ''
 	local rle_packet = ''
 	-- Sample depth rescaling is done according to the algorithm presented in:
 	-- <https://www.w3.org/TR/2003/REC-PNG-20031110/#13Sample-depth-rescaling>
@@ -58,13 +61,37 @@ function image:encode_data()
 	for _, row in ipairs(self.pixels) do
 		for _, pixel in ipairs(row) do
 			if pixel[1] ~= previous_r or pixel[2] ~= previous_g or pixel[3] ~= previous_b or count == 128 then
-			   if nil ~= previous_r then
+				if nil ~= previous_r then
 					colorword = 32768 +
 						((math.floor((previous_r * max_sample_out / max_sample_in) + 0.5)) * 1024) +
 						((math.floor((previous_g * max_sample_out / max_sample_in) + 0.5)) * 32) +
 						((math.floor((previous_b * max_sample_out / max_sample_in) + 0.5)) * 1)
-					rle_packet = string.char(128 + count - 1, colorword % 256, math.floor(colorword / 256))
-					packets[#packets +1] = rle_packet
+					if 1 == count then
+						-- remember pixel verbatim for raw encoding
+						raw_pixel = string.char(colorword % 256, math.floor(colorword / 256))
+						raw_pixels[#raw_pixels + 1] = raw_pixel
+						if 128 == #raw_pixels then
+							raw_packet = string.char(#raw_pixels - 1)
+							packets[#packets + 1] = raw_packet
+							for i=1, #raw_pixels do
+								packets[#packets +1] = raw_pixels[i]
+							end
+							raw_pixels = {}
+						end
+					else
+						-- encode raw pixels, if any
+						if #raw_pixels > 0 then
+							raw_packet = string.char(#raw_pixels - 1)
+							packets[#packets + 1] = raw_packet
+							for i=1, #raw_pixels do
+								packets[#packets +1] = raw_pixels[i]
+							end
+							raw_pixels = {}
+						end
+						-- RLE encoding
+						rle_packet = string.char(128 + count - 1, colorword % 256, math.floor(colorword / 256))
+						packets[#packets +1] = rle_packet
+					end
 				end
 				count = 1
 				previous_r = pixel[1]
@@ -79,8 +106,29 @@ function image:encode_data()
 		((math.floor((previous_r * max_sample_out / max_sample_in) + 0.5)) * 1024) +
 		((math.floor((previous_g * max_sample_out / max_sample_in) + 0.5)) * 32) +
 		((math.floor((previous_b * max_sample_out / max_sample_in) + 0.5)) * 1)
-	rle_packet = string.char(128 + count - 1, colorword % 256, math.floor(colorword / 256))
-	packets[#packets +1] = rle_packet
+	if 1 == count then
+		raw_pixel = string.char(colorword % 256, math.floor(colorword / 256))
+		raw_pixels[#raw_pixels + 1] = raw_pixel
+		raw_packet = string.char(#raw_pixels - 1)
+		packets[#packets + 1] = raw_packet
+		for i=1, #raw_pixels do
+			packets[#packets +1] = raw_pixels[i]
+		end
+		raw_pixels = {}
+	else
+		-- encode raw pixels, if any
+		if #raw_pixels > 0 then
+			raw_packet = string.char(#raw_pixels - 1)
+			packets[#packets + 1] = raw_packet
+			for i=1, #raw_pixels do
+				packets[#packets +1] = raw_pixels[i]
+			end
+			raw_pixels = {}
+		end
+		-- RLE encoding
+		rle_packet = string.char(128 + count - 1, colorword % 256, math.floor(colorword / 256))
+		packets[#packets +1] = rle_packet
+	end
 	self.data = self.data .. table.concat(packets)
 end
 
