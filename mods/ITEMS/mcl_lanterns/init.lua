@@ -9,6 +9,53 @@ TODO:
 - remove the hack arround walmounted nodes
 ]]
 
+local function check_placement(node, wdir)
+	local nn = node.name
+	local def = minetest.registered_nodes[nn]
+
+	if not def then
+		return false
+	else
+		if wdir == 0 then
+			if 	nn ~= "mcl_core:ice" and
+				nn ~= "mcl_nether:soul_sand" and
+				nn ~= "mcl_mobspawners:spawner" and
+				nn ~= "mcl_core:barrier" and
+				nn ~= "mcl_end:chorus_flower" and
+				nn ~= "mcl_end:chorus_flower_dead" and
+				(not def.groups.anvil) and
+				(not def.groups.wall) and
+				(not def.groups.glass) and
+				((not def.groups.solid) or (not def.groups.opaque)) then
+				return false
+			else
+				return true
+			end
+		else --assuming wdir == 1
+			if 	nn ~= "mcl_core:ice" and
+				nn ~= "mcl_nether:soul_sand" and
+				nn ~= "mcl_mobspawners:spawner" and
+				nn ~= "mcl_core:barrier" and
+				nn ~= "mcl_end:chorus_flower" and
+				nn ~= "mcl_end:chorus_flower_dead" and
+				nn ~= "mcl_end:end_rod" and
+				nn ~= "mcl_core:grass_path" and
+				(not def.groups.anvil) and
+				(not def.groups.wall) and
+				(not def.groups.glass) and
+				(not def.groups.fence) and
+				(not def.groups.fence_gate) and
+				(not def.groups.soil) and
+				(not def.groups.pane) and
+				((not def.groups.solid) or (not def.groups.opaque)) then
+				return false
+			else
+				return true
+			end
+		end
+	end
+end
+
 function mcl_lanterns.register_lantern(name, def)
 	local itemstring_floor = "mcl_lanterns:"..name.."_floor"
 	local itemstring_ceiling = "mcl_lanterns:"..name.."_ceiling"
@@ -61,9 +108,15 @@ function mcl_lanterns.register_lantern(name, def)
 
 			local under = pointed_thing.under
 			local above = pointed_thing.above
+			local node = minetest.get_node(under)
 
 			local wdir = minetest.dir_to_wallmounted(vector.subtract(under, above))
 			local fakestack = itemstack
+
+			if check_placement(node, wdir) == false then
+				return itemstack
+			end
+
 			if wdir == 0 then
 				fakestack:set_name(itemstring_ceiling)
 			elseif wdir == 1 then
