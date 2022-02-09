@@ -9,6 +9,33 @@ TODO:
 - remove the hack arround walmounted nodes
 ]]
 
+local allowed_non_solid_nodes_floor = {
+	"mcl_core:ice",
+	"mcl_nether:soul_sand",
+	"mcl_mobspawners:spawner",
+	"mcl_core:barrier",
+	"mcl_end:chorus_flower",
+	"mcl_end:chorus_flower_dead",
+	"mcl_end:end_rod",
+	"mcl_end:dragon_egg",
+	"mcl_portals:end_portal_frame_eye",
+}
+
+local allowed_non_solid_groups_floor = {"anvil", "wall", "glass", "fence", "fence_gate", "pane"}
+
+local allowed_non_solid_nodes_ceiling = {
+	"mcl_core:ice",
+	"mcl_nether:soul_sand",
+	"mcl_mobspawners:spawner",
+	"mcl_core:barrier",
+	"mcl_end:chorus_flower",
+	"mcl_end:chorus_flower_dead",
+	"mcl_end:end_rod",
+	"mcl_core:grass_path",
+}
+
+local allowed_non_solid_groups_ceiling = {"anvil", "wall", "glass", "fence", "fence_gate", "soil", "pane", "end_portal_frame"}
+
 local function check_placement(node, wdir)
 	local nn = node.name
 	local def = minetest.registered_nodes[nn]
@@ -16,41 +43,40 @@ local function check_placement(node, wdir)
 	if not def then
 		return false
 	else
+		--wdir:
+		--0: ceiling
+		--1: floor
 		if wdir == 0 then
-			if 	nn ~= "mcl_core:ice" and
-				nn ~= "mcl_nether:soul_sand" and
-				nn ~= "mcl_mobspawners:spawner" and
-				nn ~= "mcl_core:barrier" and
-				nn ~= "mcl_end:chorus_flower" and
-				nn ~= "mcl_end:chorus_flower_dead" and
-				(not def.groups.anvil) and
-				(not def.groups.wall) and
-				(not def.groups.glass) and
-				((not def.groups.solid) or (not def.groups.opaque)) then
-				return false
-			else
+			if def.groups.solid or def.groups.opaque then
 				return true
+			else
+				for _,i in ipairs(allowed_non_solid_nodes_ceiling) do
+					if nn == i then
+						return true
+					end
+				end
+				for _,j in ipairs(allowed_non_solid_groups_ceiling) do
+					if def.groups[j] then
+						return true
+					end
+				end
+				return false
 			end
 		else --assuming wdir == 1
-			if 	nn ~= "mcl_core:ice" and
-				nn ~= "mcl_nether:soul_sand" and
-				nn ~= "mcl_mobspawners:spawner" and
-				nn ~= "mcl_core:barrier" and
-				nn ~= "mcl_end:chorus_flower" and
-				nn ~= "mcl_end:chorus_flower_dead" and
-				nn ~= "mcl_end:end_rod" and
-				nn ~= "mcl_core:grass_path" and
-				(not def.groups.anvil) and
-				(not def.groups.wall) and
-				(not def.groups.glass) and
-				(not def.groups.fence) and
-				(not def.groups.fence_gate) and
-				(not def.groups.soil) and
-				(not def.groups.pane) and
-				((not def.groups.solid) or (not def.groups.opaque)) then
-				return false
-			else
+			if def.groups.solid or def.groups.opaque then
 				return true
+			else
+				for _,i in ipairs(allowed_non_solid_nodes_floor) do
+					if nn == i then
+						return true
+					end
+				end
+				for _,j in ipairs(allowed_non_solid_groups_floor) do
+					if def.groups[j] then
+						return true
+					end
+				end
+				return false
 			end
 		end
 	end
