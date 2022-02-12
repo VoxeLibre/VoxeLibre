@@ -34,6 +34,7 @@ function mcl_enchanting.load_enchantments(itemstack, enchantments)
 				enchantment_def.on_enchant(itemstack, level)
 			end
 		end
+		mcl_enchanting.update_groupcaps(itemstack)
 	end
 	tt.reload_itemstack_description(itemstack)
 end
