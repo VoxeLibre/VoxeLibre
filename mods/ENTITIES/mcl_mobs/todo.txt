@@ -1,1 +1,0 @@
---use vector.distance to count down mob despawn timer

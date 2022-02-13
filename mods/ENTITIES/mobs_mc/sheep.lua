@@ -1,6 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### SHEEP
@@ -38,7 +38,7 @@ local rainbow_colors = {
 	"unicolor_red_violet"
 }
 
-if minetest.get_modpath("mcl_wool") then
+if minetest.get_modpath("mcl_wool") ~= nil then
 	colors["unicolor_light_blue"] = { mobs_mc.items.wool_light_blue, "#5050FFD0" }
 end
 
@@ -63,13 +63,8 @@ mobs:register_mob("mobs_mc:sheep", {
 	hp_max = 8,
 	xp_min = 1,
 	xp_max = 3,
-	skittish = true,
-	breed_distance = 1.5,
-	baby_size = 0.5,
-	follow_distance = 2,
-	follow = mobs_mc.items.wheat,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.29, 0.45},
-	rotate = 270,
+
 	visual = "mesh",
 	visual_size = {x=3, y=3},
 	mesh = "mobs_mc_sheepfur.b3d",
@@ -78,23 +73,6 @@ mobs:register_mob("mobs_mc:sheep", {
 	color = "unicolor_white",
 	makes_footstep_sound = true,
 	walk_velocity = 1,
-	run_velocity = 3,
-
-	--head code
-	has_head = true,
-	head_bone = "head",
-
-	swap_y_with_x = false,
-	reverse_head_yaw = false,
-
-	head_bone_pos_y = 3.6,
-	head_bone_pos_z = -0.6,
-
-	head_height_offset = 1.0525,
-	head_direction_offset = 0.5,
-	head_pitch_modifier = 0,
-	--end head code
-
 	drops = {
 		{name = mobs_mc.items.mutton_raw,
 		chance = 1,
@@ -121,6 +99,7 @@ mobs:register_mob("mobs_mc:sheep", {
 		walk_start = 0,		walk_end = 40,
 		run_start = 0,		run_end = 40,
 	},
+	follow = mobs_mc.follow.sheep,
 	view_range = 12,
 
 	-- Eat grass
@@ -150,6 +129,7 @@ mobs:register_mob("mobs_mc:sheep", {
 	do_custom = function(self, dtime)
 		if not self.initial_color_set then
 			local r = math.random(0,100000)
+			local textures
 			if r <= 81836 then
 				-- 81.836%
 				self.color = "unicolor_white"
@@ -215,16 +195,8 @@ mobs:register_mob("mobs_mc:sheep", {
 	on_rightclick = function(self, clicker)
 		local item = clicker:get_wielded_item()
 
-		--attempt to enter breed state
-		if mobs.enter_breed_state(self,clicker) then
-			return
-		end
-
-		--make baby grow faster
-		if self.baby then
-			mobs.make_baby_grow_faster(self,clicker)
-			return
-		end
+		if mobs:feed_tame(self, clicker, 1, true, true) then return end
+		if mobs:protect(self, clicker) then return end
 
 		if item:get_name() == mobs_mc.items.shears and not self.gotten and not self.child then
 			self.gotten = true
@@ -280,6 +252,7 @@ mobs:register_mob("mobs_mc:sheep", {
 			end
 			return
 		end
+		if mobs:capture_mob(self, clicker, 0, 5, 70, false, nil) then return end
 	end,
 	on_breed = function(parent1, parent2)
 		-- Breed sheep and choose a fur color for the child.
@@ -336,53 +309,22 @@ mobs:spawn_specific(
 "overworld",
 "ground",
 {
-	"FlowerForest_beach",
-	"Forest_beach",
-	"StoneBeach",
-	"ColdTaiga_beach_water",
-	"Taiga_beach",
-	"Savanna_beach",
-	"Plains_beach",
-	"ExtremeHills_beach",
-	"ColdTaiga_beach",
-	"Swampland_shore",
-	"JungleM_shore",
-	"Jungle_shore",
-	"MesaPlateauFM_sandlevel",
-	"MesaPlateauF_sandlevel",
-	"MesaBryce_sandlevel",
-	"Mesa_sandlevel",
-	"Mesa",
-	"FlowerForest",
-	"Swampland",
-	"Taiga",
-	"ExtremeHills",
-	"Jungle",
-	"Savanna",
-	"BirchForest",
-	"MegaSpruceTaiga",
-	"MegaTaiga",
-	"ExtremeHills+",
-	"Forest",
-	"Plains",
-	"Desert",
-	"ColdTaiga",
-	"IcePlainsSpikes",
-	"SunflowerPlains",
-	"IcePlains",
-	"RoofedForest",
-	"ExtremeHills+_snowtop",
-	"MesaPlateauFM_grasstop",
-	"JungleEdgeM",
-	"ExtremeHillsM",
-	"JungleM",
-	"BirchForestM",
-	"MesaPlateauF",
-	"MesaPlateauFM",
-	"MesaPlateauF_grasstop",
-	"MesaBryce",
-	"JungleEdge",
-	"SavannaM",
+"FlowerForest",
+"Swampland",
+"Taiga",
+"ExtremeHills",
+"BirchForest",
+"MegaSpruceTaiga",
+"MegaTaiga",
+"ExtremeHills+",
+"Forest",
+"Plains",
+"ColdTaiga",
+"SunflowerPlains",
+"RoofedForest",
+"MesaPlateauFM_grasstop",
+"ExtremeHillsM",
+"BirchForestM",
 },
 0,
 minetest.LIGHT_MAX+1,
@@ -394,4 +336,3 @@ mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:sheep", S("Sheep"), "mobs_mc_spawn_icon_sheep.png", 0)
-

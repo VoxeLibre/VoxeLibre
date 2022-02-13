@@ -1,11 +1,8 @@
 
 -- lib_mount by Blert2112 (edited by TenPlus1)
 
---local enable_crash = false
---local crash_threshold = 6.5 -- ignored if enable_crash=false
-
-local math = math
-local vector = vector
+local enable_crash = false
+local crash_threshold = 6.5 -- ignored if enable_crash=false
 
 ------------------------------------------------------------------------------
 
@@ -13,7 +10,7 @@ local vector = vector
 -- Helper functions
 --
 
---[[local function node_ok(pos, fallback)
+local node_ok = function(pos, fallback)
 
 	fallback = fallback or mobs.fallback_node
 
@@ -24,10 +21,10 @@ local vector = vector
 	end
 
 	return {name = fallback}
-end]]
+end
 
 
---[[local function node_is(pos)
+local function node_is(pos)
 
 	local node = node_ok(pos)
 
@@ -48,7 +45,7 @@ end]]
 	end
 
 	return "other"
-end]]
+end
 
 
 local function get_sign(i)
@@ -63,11 +60,13 @@ local function get_sign(i)
 end
 
 
---[[local function get_velocity(v, yaw, y)
+local function get_velocity(v, yaw, y)
+
 	local x = -math.sin(yaw) * v
 	local z =  math.cos(yaw) * v
+
 	return {x = x, y = y, z = z}
-end]]
+end
 
 
 local function get_v(v)
@@ -173,7 +172,7 @@ function mobs.detach(player, offset)
 
 	--pos = {x = pos.x + offset.x, y = pos.y + 0.2 + offset.y, z = pos.z + offset.z}
 
-	player:add_velocity(vector.new(math.random(-6,6), math.random(5,8), math.random(-6,6))) --throw the rider off
+	player:add_velocity(vector.new(math.random(-6,6),math.random(5,8),math.random(-6,6))) --throw the rider off
 
 	--[[
 	minetest.after(0.1, function(name, pos)
@@ -188,13 +187,13 @@ end
 
 function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 
-	--local rot_view = 0
+	local rot_view = 0
 
-	--if entity.player_rotation.y == 90 then
-	--	rot_view = math.pi/2
-	--end
+	if entity.player_rotation.y == 90 then
+		rot_view = math.pi/2
+	end
 
-	--local acce_y = 0
+	local acce_y = 0
 	local velo = entity.object:get_velocity()
 
 	entity.v = get_v(velo) * get_sign(entity.v)
@@ -207,30 +206,21 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 		-- move forwards
 		if ctrl.up then
 
-			mobs.set_velocity(entity, entity.run_velocity)
-
-			mobs.set_mob_animation(entity, moving_anim)
+			entity.v = entity.v + entity.accel / 10
 
 		-- move backwards
 		elseif ctrl.down then
 
-			mobs.set_velocity(entity, -entity.run_velocity)
+			if entity.max_speed_reverse == 0 and entity.v == 0 then
+				return
+			end
 
-			mobs.set_mob_animation(entity, moving_anim)
-
-		--halt
-		else
-
-			mobs.set_velocity(entity, 0)
-
-			mobs.set_mob_animation(entity, stand_anim)
+			entity.v = entity.v - entity.accel / 10
 		end
 
-		-- mob rotation
+		-- fix mob rotation
 		entity.object:set_yaw(entity.driver:get_look_horizontal() - entity.rotate)
-		entity.yaw = entity.driver:get_look_horizontal() - entity.rotate
 
-		--[[
 		if can_fly then
 
 			-- fly up
@@ -254,21 +244,32 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 			end
 
 		else
-			]]--
 
-		-- jump
-		if ctrl.jump then
+			-- jump
+			if ctrl.jump then
 
-			mobs.jump(entity)
+				if velo.y == 0 then
+					velo.y = velo.y + entity.jump_height
+					acce_y = acce_y + (acce_y * 3) + 1
+				end
+			end
+
 		end
-
-		--end
 	end
 
-	--[[
+	-- if not moving then set animation and return
+	if entity.v == 0 and velo.x == 0 and velo.y == 0 and velo.z == 0 then
+
+		if stand_anim then
+			mobs:set_animation(entity, stand_anim)
+		end
+
+		return
+	end
+
 	-- set moving animation
 	if moving_anim then
-		mobs:set_mob_animation(entity, moving_anim)
+		mobs:set_animation(entity, moving_anim)
 	end
 
 	-- Stop!
@@ -382,17 +383,13 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 	end
 
 	entity.v2 = v
-	]]--
 end
 
 
 -- directional flying routine by D00Med (edited by TenPlus1)
 
 function mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_anim)
-	if true then
-		print("succ")
-		return
-	end
+
 	local ctrl = entity.driver:get_player_control()
 	local velo = entity.object:get_velocity()
 	local dir = entity.driver:get_look_dir()
@@ -443,9 +440,9 @@ function mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_anim)
 	-- change animation if stopped
 	if velo.x == 0 and velo.y == 0 and velo.z == 0 then
 
-		mobs:set_mob_animation(entity, stand_anim)
+		mobs:set_animation(entity, stand_anim)
 	else
 		-- moving animation
-		mobs:set_mob_animation(entity, moving_anim)
+		mobs:set_animation(entity, moving_anim)
 	end
 end

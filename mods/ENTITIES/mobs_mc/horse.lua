@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### HORSE
@@ -38,9 +38,9 @@ end
 local can_equip_horse_armor = function(entity_id)
 	return entity_id == "mobs_mc:horse" or entity_id == "mobs_mc:skeleton_horse" or entity_id == "mobs_mc:zombie_horse"
 end
---[[local can_equip_chest = function(entity_id)
+local can_equip_chest = function(entity_id)
 	return entity_id == "mobs_mc:mule" or entity_id == "mobs_mc:donkey"
-end]]
+end
 local can_breed = function(entity_id)
 	return entity_id == "mobs_mc:horse" or "mobs_mc:mule" or entity_id == "mobs_mc:donkey"
 end
@@ -88,10 +88,6 @@ local horse = {
 	spawn_class = "passive",
 	visual = "mesh",
 	mesh = "mobs_mc_horse.b3d",
-	rotate = 270,
-	walk_velocity = 1,
-	run_velocity = 8,
-	skittish = true,
 	visual_size = {x=3.0, y=3.0},
 	collisionbox = {-0.69825, -0.01, -0.69825, 0.69825, 1.59, 0.69825},
 	animation = {
@@ -101,7 +97,7 @@ local horse = {
 		walk_speed = 25,
 		walk_start = 0,
 		walk_end = 40,
-		run_speed = 120,
+		run_speed = 60,
 		run_start = 0,
 		run_end = 40,
 	},
@@ -118,8 +114,7 @@ local horse = {
 	fly = false,
 	walk_chance = 60,
 	view_range = 16,
-	follow = "mcl_farming:wheat_item",
-	follow_distance = 3,
+	follow = mobs_mc.follow.horse,
 	passive = true,
 	hp_min = 15,
 	hp_max = 30,
@@ -187,7 +182,7 @@ local horse = {
 		-- if driver present and horse has a saddle allow control of horse
 		if self.driver and self._saddle then
 
-			mobs.drive(self, "run", "stand", false, dtime)
+			mobs.drive(self, "walk", "stand", false, dtime)
 
 			return false -- skip rest of mob functions
 		end
@@ -219,21 +214,6 @@ local horse = {
 		local iname = item:get_name()
 		local heal = 0
 
-		--sneak click to breed the horse/feed it
-		if self.owner and self.owner == clicker:get_player_name() then
-			--attempt to enter breed state
-			if mobs.enter_breed_state(self,clicker) then
-				return
-			end
-		end
-
-		--don't do any other logic with the baby
-		--make baby grow faster
-		if self.baby then
-			mobs.make_baby_grow_faster(self,clicker)
-			return
-		end
-
 		-- Taming
 		self.temper = self.temper or (math.random(1,100))
 
@@ -259,7 +239,6 @@ local horse = {
 				self.buck_off_time = 40 -- TODO how long does it take in minecraft?
 				if self.temper > 100 then
 					self.tamed = true -- NOTE taming can only be finished by riding the horse
-					mobs.tamed_effect(self)
 					if not self.owner or self.owner == "" then
 						self.owner = clicker:get_player_name()
 					end
@@ -273,14 +252,6 @@ local horse = {
 
 			-- If nothing happened temper_increase = 0 and addition does nothing
 			self.temper = self.temper + temper_increase
-
-			--give the player some kind of idea
-			--of what's happening with the horse's temper
-			if self.temper <= 100 then
-				mobs.feed_effect(self)
-			else
-				mobs.tamed_effect(self)
-			end
 
 			return
 		end
@@ -311,10 +282,14 @@ local horse = {
 			return
 		end
 
+		if mobs:protect(self, clicker) then
+			return
+		end
+
 		-- Make sure tamed horse is mature and being clicked by owner only
 		if self.tamed and not self.child and self.owner == clicker:get_player_name() then
 
-			--local inv = clicker:get_inventory()
+			local inv = clicker:get_inventory()
 
 			-- detatch player already riding horse
 			if self.driver and clicker == self.driver then
@@ -382,6 +357,9 @@ local horse = {
 				self.object:set_properties({stepheight = 1.1})
 				mobs.attach(self, clicker)
 
+			-- Used to capture horse
+			elseif not self.driver and iname ~= "" then
+				mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 			end
 		end
 	end,
@@ -542,53 +520,22 @@ mobs:spawn_specific(
 "overworld",
 "ground",
 {
-	"FlowerForest_beach",
-	"Forest_beach",
-	"StoneBeach",
-	"ColdTaiga_beach_water",
-	"Taiga_beach",
-	"Savanna_beach",
-	"Plains_beach",
-	"ExtremeHills_beach",
-	"ColdTaiga_beach",
-	"Swampland_shore",
-	"JungleM_shore",
-	"Jungle_shore",
-	"MesaPlateauFM_sandlevel",
-	"MesaPlateauF_sandlevel",
-	"MesaBryce_sandlevel",
-	"Mesa_sandlevel",
-	"Mesa",
-	"FlowerForest",
-	"Swampland",
-	"Taiga",
-	"ExtremeHills",
-	"Jungle",
-	"Savanna",
-	"BirchForest",
-	"MegaSpruceTaiga",
-	"MegaTaiga",
-	"ExtremeHills+",
-	"Forest",
-	"Plains",
-	"Desert",
-	"ColdTaiga",
-	"IcePlainsSpikes",
-	"SunflowerPlains",
-	"IcePlains",
-	"RoofedForest",
-	"ExtremeHills+_snowtop",
-	"MesaPlateauFM_grasstop",
-	"JungleEdgeM",
-	"ExtremeHillsM",
-	"JungleM",
-	"BirchForestM",
-	"MesaPlateauF",
-	"MesaPlateauFM",
-	"MesaPlateauF_grasstop",
-	"MesaBryce",
-	"JungleEdge",
-	"SavannaM",
+"FlowerForest",
+"Swampland",
+"Taiga",
+"ExtremeHills",
+"BirchForest",
+"MegaSpruceTaiga",
+"MegaTaiga",
+"ExtremeHills+",
+"Forest",
+"Plains",
+"ColdTaiga",
+"SunflowerPlains",
+"RoofedForest",
+"MesaPlateauFM_grasstop",
+"ExtremeHillsM",
+"BirchForestM",
 },
 0,
 minetest.LIGHT_MAX+1,

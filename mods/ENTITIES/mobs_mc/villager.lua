@@ -19,7 +19,7 @@
 --     TODO: Internal inventory, pick up items, trade with other villagers
 --     TODO: Farm stuff
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 local N = function(s) return s end
 local F = minetest.formspec_escape
 
@@ -195,7 +195,7 @@ local professions = {
 
 			{
 			-- TODO: replace with empty map
-			{ { "mcl_core:emerald", 7, 11}, { "mcl_maps:empty_map", 1, 1 } },
+			{ { "mcl_core:emerald", 7, 11}, { "mcl_maps:filled_map", 1, 1 } },
 			},
 
 			-- TODO: special maps
@@ -409,7 +409,7 @@ local init_trades = function(self, inv)
 			local offered_stack = ItemStack({name = offered_item, count = offered_count})
 			if mcl_enchanting.is_enchanted(offered_item) then
 				if mcl_enchanting.is_book(offered_item) then
-					mcl_enchanting.enchant_uniform_randomly(offered_stack, {"soul_speed"})
+					offered_stack = mcl_enchanting.get_uniform_randomly_enchanted_book({"soul_speed"})
 				else
 					mcl_enchanting.enchant_randomly(offered_stack, math.random(5, 19), false, false, true)
 					mcl_enchanting.unload_enchantments(offered_stack)
@@ -962,18 +962,14 @@ mobs:register_mob("mobs_mc:villager", {
 	},
 	},
 	visual_size = {x=2.75, y=2.75},
-	rotate = 270,
-	skittish = true,
 	makes_footstep_sound = true,
 	walk_velocity = 1.2,
-	run_velocity = 3,
+	run_velocity = 2.4,
 	drops = {},
 	can_despawn = false,
 	-- TODO: sounds
 	sounds = {
 		random = "mobs_mc_villager",
-		damage = "mobs_mc_villager_hurt",
-		death  = "mobs_mc_villager_hurt",
 		distance = 10,
 	},
 	animation = {
