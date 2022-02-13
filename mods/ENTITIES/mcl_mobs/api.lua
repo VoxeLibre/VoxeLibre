@@ -820,7 +820,7 @@ local check_for_death = function(self, cause, cmi_cause)
 			item_drop(self, cooked, looting)
 
 			if mod_experience and ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= 5000000) then
-				mcl_experience.throw_experience(self.object:get_pos(), math.random(self.xp_min, self.xp_max))
+				mcl_experience.throw_xp(self.object:get_pos(), math.random(self.xp_min, self.xp_max))
 			end
 		end
 	end
