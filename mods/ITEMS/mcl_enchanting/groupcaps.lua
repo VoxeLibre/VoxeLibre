@@ -43,7 +43,7 @@ end
 -- the tool needs to be updated.
 function mcl_enchanting.update_groupcaps(itemstack)
 	local name = itemstack:get_name()
-	if not minetest.registered_tools[name].tool_capabilities then
+	if not minetest.registered_tools[name] or not minetest.registered_tools[name].tool_capabilities then
 		return
 	end
 
