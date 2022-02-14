@@ -77,7 +77,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	glow = 14,
 	fire_resistant = true,
 	do_custom = function(self)
-		if self.state == "attack" and vector.distance(self.object:get_pos(), self.attack:get_pos()) < 1.2 then
+		if self.state == "attack" and self.attack:get_pos() and vector.distance(self.object:get_pos(), self.attack:get_pos()) < 1.2 then
 			mcl_burning.set_on_fire(self.attack, 5)
 		end
 		local pos = self.object:get_pos()
