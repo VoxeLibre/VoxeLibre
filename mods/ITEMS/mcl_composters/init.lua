@@ -136,7 +136,7 @@ local compostability = {
 
 local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 	--
-	-- handle filling the composter when rightclicked
+	-- handles filling the composter when rightclicked
 	-- as an on_rightclick handles, it returns an itemstack
 	--
 	if not player or (player:get_player_control() and player:get_player_control().sneak) then
