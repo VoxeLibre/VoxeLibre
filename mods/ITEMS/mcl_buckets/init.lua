@@ -294,17 +294,21 @@ controls.register_on_press(function(player, key)
 
 	local wielded_item = player:get_wielded_item()
 	local itemname = wielded_item:get_name()
-	local pointed_thing = mcl_util.get_pointed_thing(player)
-
-	if not pointed_thing then
-		return
-	end
-
 	local def = mcl_buckets.buckets[itemname]
 
 	if itemname == "mcl_buckets:bucket_empty" then
+		local pointed_thing = mcl_util.get_pointed_thing(player, true)
+
+		if not pointed_thing then
+			return
+		end
 		wielded_item = on_place_bucket_empty(wielded_item, player, pointed_thing)
 	elseif def then
+		local pointed_thing = mcl_util.get_pointed_thing(player, false)
+
+		if not pointed_thing then
+			return
+		end
 		wielded_item = on_place_bucket(wielded_item, player, pointed_thing, def)
 	end
 	
