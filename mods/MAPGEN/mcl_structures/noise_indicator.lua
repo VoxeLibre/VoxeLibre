@@ -57,4 +57,4 @@ mcl_mapgen.register_mapgen(function(minp, maxp, seed, vm_context)
 			end
 		end
 	end
-end, -1)
+end, 99999999999999)

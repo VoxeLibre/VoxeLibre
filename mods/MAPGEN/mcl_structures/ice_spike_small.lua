@@ -3,7 +3,7 @@ local modpath = minetest.get_modpath(modname)
 
 local chance_per_chunk = 3
 local random_offset    = 1264
-local struct_threshold = chance_per_chunk - 1
+local struct_threshold = chance_per_chunk
 local noise_params = {
 	offset = 0,
 	scale  = 1,

@@ -337,9 +337,7 @@ function mcl_structures.call_struct(pos, struct_style, rotation, pr, callback)
 	if not rotation then
 		rotation = "random"
 	end
-	if struct_style == "witch_hut" then
-		return mcl_structures.generate_witch_hut(pos, rotation)
-	elseif struct_style == "boulder" then
+	if struct_style == "boulder" then
 		return mcl_structures.generate_boulder(pos, rotation, pr)
 	elseif struct_style == "end_exit_portal" then
 		return mcl_structures.generate_end_exit_portal(pos, rotation, pr, callback)
@@ -383,27 +381,6 @@ function mcl_structures.generate_boulder(pos, rotation, pr)
 	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
 
 	return minetest.place_schematic(newpos, path, rotation) -- don't serialize schematics for registered biome decorations, for MT 5.4.0, https://github.com/minetest/minetest/issues/10995
-end
-
-local function hut_placement_callback(p1, p2, size, orientation, pr)
-	if not p1 or not p2 then return end
-	local legs = minetest.find_nodes_in_area(p1, p2, "mcl_core:tree")
-	for i = 1, #legs do
-		while minetest.get_item_group(mcl_mapgen.get_far_node({x=legs[i].x, y=legs[i].y-1, z=legs[i].z}, true, 333333).name, "water") ~= 0 do
-			legs[i].y = legs[i].y - 1
-			minetest.swap_node(legs[i], {name = "mcl_core:tree", param2 = 2})
-		end
-	end
-end
-
-function mcl_structures.generate_witch_hut(pos, rotation, pr)
-	local path = modpath.."/schematics/mcl_structures_witch_hut.mts"
-	mcl_structures.place_schematic(pos, path, rotation, nil, true, nil, hut_placement_callback, pr)
-end
-
-function mcl_structures.generate_ice_spike_large(pos, rotation)
-	local path = modpath.."/schematics/mcl_structures_ice_spike_large.mts"
-	return minetest.place_schematic(pos, path, rotation or "random", nil, false) -- don't serialize schematics for registered biome decorations, for MT 5.4.0
 end
 
 function mcl_structures.generate_end_exit_portal(pos, rot, pr, callback)

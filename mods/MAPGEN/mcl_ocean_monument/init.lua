@@ -1,7 +1,10 @@
+-- Check: v7 apple 2320,4,-12558
 
--- Check it:
---	seed 1, v7 mapgen
---	/teleport 14958,8,11370
+local chance_per_chunk = 5
+local noise_multiplier = 1
+local random_offset    = 12342
+local struct_threshold = chance_per_chunk
+local mcl_structures_get_perlin_noise_level = mcl_structures.get_perlin_noise_level
 
 local mcl_mapgen_get_far_node = mcl_mapgen.get_far_node
 local minetest_log = minetest.log
@@ -44,8 +47,12 @@ mcl_mapgen.register_mapgen(function(minp, maxp, seed)
 	local y = minp.y
 	if y ~= y_wanted then return end
 
+	local pr = PseudoRandom(seed + random_offset)
+	local random_number = pr:next(1, chance_per_chunk)
+	local noise = mcl_structures_get_perlin_noise_level(minp) * noise_multiplier
+	if not noise or (random_number + noise) < struct_threshold then return end
+
 	local x, z = minp.x, minp.z
-	local pr = PseudoRandom(seed)
 
 	-- scan the ocean - it should be the ocean:
 	for i = 1, pr:next(10, 100) do

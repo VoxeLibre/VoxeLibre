@@ -2,6 +2,10 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 local table = table
 
+local interval = 35
+local chance = 11
+local max_interval = interval * chance
+
 minetest.register_node("mcl_nether:nether_wart_0", {
 	description = S("Premature Nether Wart (Stage 1)"),
 	_doc_items_longdesc = S("A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension."),
@@ -148,40 +152,65 @@ minetest.register_craftitem("mcl_nether:nether_wart_item", {
 
 local names = {"mcl_nether:nether_wart_0", "mcl_nether:nether_wart_1", "mcl_nether:nether_wart_2"}
 
+local function grow(pos, node)
+	local step = nil
+	for i, name in ipairs(names) do
+		if name == node.name then
+			step = i
+			break
+		end
+	end
+	if not step then return end
+	local new_node = {name = names[step + 1]}
+	if not new_node.name then
+		new_node.name = "mcl_nether:nether_wart"
+	end
+	new_node.param = node.param
+	new_node.param2 = node.param2
+	minetest.set_node(pos, new_node)
+	local meta = minetest.get_meta(pos)
+	meta:set_string("gametime", tostring(mcl_time:get_seconds_irl()))
+
+end
+
 minetest.register_abm({
 	label = "Nether wart growth",
 	nodenames = {"mcl_nether:nether_wart_0", "mcl_nether:nether_wart_1", "mcl_nether:nether_wart_2"},
 	neighbors = {"group:soil_nether_wart"},
-	interval = 35,
-	chance = 11,
+	interval = interval,
+	chance = chance,
 	action = function(pos, node)
 		pos.y = pos.y-1
 		if minetest.get_item_group(minetest.get_node(pos).name, "soil_nether_wart") == 0 then
 			return
 		end
 		pos.y = pos.y+1
-		local step = nil
-		for i,name in ipairs(names) do
-			if name == node.name then
-				step = i
-				break
-			end
+
+		for i = 1, mcl_time.get_number_of_times_at_pos_or_1(pos, interval, chance) do
+			grow(pos, node)
 		end
-		if step == nil then
+	end
+})
+
+minetest.register_lbm({
+	label = "Nether wart growth update",
+	name = "mcl_nether:growth_warts",
+	nodenames = {"mcl_nether:nether_wart_0", "mcl_nether:nether_wart_1", "mcl_nether:nether_wart_2"},
+	run_at_every_load = true,
+	action = function(pos, node)
+		pos.y = pos.y-1
+		if minetest.get_item_group(minetest.get_node(pos).name, "soil_nether_wart") == 0 then
 			return
 		end
-		local new_node = {name=names[step+1]}
-		if new_node.name == nil then
-			new_node.name = "mcl_nether:nether_wart"
+		pos.y = pos.y+1
+		for i = 1, mcl_time.get_number_of_times_at_pos(pos, interval, chance) do
+			grow(pos, node)
 		end
-		new_node.param = node.param
-		new_node.param2 = node.param2
-		minetest.set_node(pos, new_node)
 	end
 })
 
 if minetest.get_modpath("doc") then
-	for i=1,2 do
+	for i=1, 2 do
 		doc.add_entry_alias("nodes", "mcl_nether:nether_wart_0", "nodes", "mcl_nether:nether_wart_"..i)
 	end
 end

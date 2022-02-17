@@ -1,11 +1,13 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
+-- Check: v7 apple -21539,27,2404
+
 local chance_per_chunk = 11
 local noise_multiplier = 1
 local random_offset    = 999
-local scanning_ratio   = 0.00003
-local struct_threshold = chance_per_chunk - 1
+local scanning_ratio   = 0.0003
+local struct_threshold = chance_per_chunk
 
 local mcl_structures_get_perlin_noise_level = mcl_structures.get_perlin_noise_level
 
@@ -130,7 +132,7 @@ mcl_structures.register_structure({
 		place_on = node_list,
 		flags = "all_floors",
 		fill_ratio = scanning_ratio,
-		y_min = 3,
+		y_min = 1,
 		y_max = mcl_mapgen.overworld.max,
 		height = 1,
 		biomes = not mcl_mapgen.v6 and {
