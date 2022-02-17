@@ -125,7 +125,7 @@ local compostability = {
 	["mcl_core:birchsapling"] = 30,
 	["mcl_core:darksapling"] = 30,
 	["mcl_core:junglesapling"] = 30,
-	["mcl_core:spruceapling"] = 30,
+	["mcl_core:sprucesapling"] = 30,
 	["mcl_ocean:seagrass"] = 30,
 	-- missing: small dripleaf
 	["mcl_sweet_berry:sweet_berry"] = 30,
