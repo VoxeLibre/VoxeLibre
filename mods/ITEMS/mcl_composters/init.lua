@@ -335,3 +335,9 @@ minetest.register_node("mcl_composters:composter_ready", {
 	_compost_level = 7,
 	on_rightclick = composter_harvest
 })
+
+-- Add entry aliases for the Help
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mcl_composters:composter", 
+		"nodes", "mcl_composters:composter_ready" )
+end
