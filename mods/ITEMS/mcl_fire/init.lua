@@ -33,7 +33,6 @@ local adjacents = {
 	{ x = 0, y = 0, z = 1 },
 }
 
-math.randomseed(os.time())
 local function shuffle_table(t)
 	for i = #t, 1, -1 do
 		local r = math.random(i)
