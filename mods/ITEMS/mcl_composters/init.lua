@@ -136,8 +136,9 @@ local compostability = {
 
 local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 	--
-	-- handles filling the composter when rightclicked
-	-- as an on_rightclick handles, it returns an itemstack
+	-- handler for filling the composter when rightclicked
+	--
+	-- as an on_rightclick handler, it returns an itemstack
 	--
 	if not player or (player:get_player_control() and player:get_player_control().sneak) then
 		return itemstack
@@ -181,8 +182,9 @@ end
 local function composter_ready(pos)
 	--
 	-- update the composter block to ready for harvesting
-	-- this function is a callback on_timer.
+	-- this function is a node callback on_timer.
 	-- the timer is set in function 'composter_fill' when composter level is 7
+	--
 	-- returns false in order to cancel further activity of the timer
 	--
 	minetest.swap_node(pos, {name = "mcl_composters:composter_ready"})
@@ -193,14 +195,14 @@ end
 
 local function composter_harvest(pos, node, player, itemstack, pointed_thing)
 	--
-	-- handle harvesting bone meal from a ready composter when rightclicked
+	-- handler for harvesting bone meal from a ready composter when rightclicked
 	--
 	if not player or player:get_player_control().sneak then
 		return
 	end
-	-- reset composter to empty
+	-- reset ready type composter to empty type
 	minetest.swap_node(pos, {name="mcl_composters:composter"})
-	-- spawn bone meal item (wtf dye?! is this how the make white cocoa)
+	-- spawn bone meal item (wtf dye?! is this how they make white cocoa)
 	minetest.add_item(pos, "mcl_dye:white")
 	-- TODO play some sounds
 
@@ -208,7 +210,7 @@ end
 
 local function composter_get_nodeboxes(level)
 	--
-	-- Convenience function because the composter nodeboxes are very similar
+	-- Convenience function to construct the nodeboxes for varying levels of compost
 	--
 	local top_y_tbl = {[0]=-7, -5, -3, -1, 1, 3, 5, 7}
 	local top_y = top_y_tbl[level] / 16
@@ -225,7 +227,7 @@ local function composter_get_nodeboxes(level)
 end
 
 --
--- Register empty composter
+-- Register empty composter node
 -- This is the base model that is craftable and can be placed in an inventory
 --
 minetest.register_node("mcl_composters:composter", {
