@@ -571,3 +571,16 @@ function mcl_util.replace_mob(obj, mob)
 	obj:set_yaw(rot)
 	return obj
 end
+
+function mcl_util.get_pointed_thing(player)
+	local pos = vector.offset(player:get_pos(), 0, player:get_properties().eye_height, 0)
+	local look_dir = vector.multiply(player:get_look_dir(), 5)
+	local pos2 = vector.add(pos, look_dir)
+	local ray = minetest.raycast(pos, pos2, false, true)
+	
+	if ray then
+		for pointed_thing in ray do
+			return pointed_thing
+		end
+	end
+end
