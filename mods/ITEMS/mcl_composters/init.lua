@@ -18,8 +18,9 @@ local composter_usagehelp = S(
 	"Every time an item is put in the composter, there is a chance that the " ..
 	"composter adds another layer of compost.  Some items have a bigger chance " ..
 	"of adding an extra layer than other items.  After filling up with 7 layers " ..
-	"of compost, the composter is full and bone meal can be retrieved from it. " ..
-	"Taking out the bone meal empties the composter."
+	"of compost, the composter is full.  After a delay of approximately one " ..
+	"second the composter becomes ready and bone meal can be retrieved from it. " ..
+	"Right-clicking the composter takes out the bone meal empties the composter."
 )
 
 minetest.register_craft({
