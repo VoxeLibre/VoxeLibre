@@ -223,7 +223,6 @@ local function composter_get_nodeboxes(level)
 	}
 end
 
-local composter_wieldimg = minetest.inventorycube("mcl_composter_top.png", "mcl_composter_side.png", "mcl_composter_side.png")
 --
 -- Register empty composter
 -- This is the base model that is craftable and can be placed in an inventory
@@ -233,10 +232,6 @@ minetest.register_node("mcl_composters:composter", {
 	_tt_help = S("Converts organic items into bonemeal"),
 	_doc_items_longdesc = composter_longdesc,
 	_doc_items_usagehelp = composter_usagehelp,
-	-- FIXME: mcl_composter_side.png is fugly.  maybe somehow use minetest.inventorycube(img1, img2, img3)
-	-- eeeww, that is also ugly and weird
-	inventory_image = composter_wieldimg,
-	--inventory_image = "mcl_composter_side.png",
 	paramtype = "light",
 	drawtype = "nodebox",
 	node_box = composter_get_nodeboxes(0),
