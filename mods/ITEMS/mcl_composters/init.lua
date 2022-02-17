@@ -70,7 +70,7 @@ local compostability = {
 	["mcl_flowers:rose_bush"] = 65,
 	["mcl_flowers:sunflower"] = 65,
 	["mcl_flowers:waterlily"] = 65,
-	-- missing: melon block?
+	["mcl_farming:melon"] = 65,
 	-- missing: moss block?
 	-- mushroom aliases below?
 	["mcl_farming:mushroom_brown"] = 65,
