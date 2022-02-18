@@ -26,7 +26,7 @@ minetest.register_node("mcl_nether:nether_wart_0", {
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	after_place_node = mcl_time.touch,
+	on_construct = mcl_time.touch,
 })
 
 minetest.register_node("mcl_nether:nether_wart_1", {
@@ -49,6 +49,7 @@ minetest.register_node("mcl_nether:nether_wart_1", {
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	on_construct = mcl_time.touch,
 })
 
 minetest.register_node("mcl_nether:nether_wart_2", {
@@ -71,6 +72,7 @@ minetest.register_node("mcl_nether:nether_wart_2", {
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	on_construct = mcl_time.touch,
 })
 
 minetest.register_node("mcl_nether:nether_wart", {
@@ -155,6 +157,7 @@ local names = {"mcl_nether:nether_wart_0", "mcl_nether:nether_wart_1", "mcl_neth
 
 local function grow(pos, node)
 	local step = nil
+	local node = node or minetest.get_node(pos)
 	for i, name in ipairs(names) do
 		if name == node.name then
 			step = i
@@ -169,8 +172,6 @@ local function grow(pos, node)
 	new_node.param = node.param
 	new_node.param2 = node.param2
 	minetest.set_node(pos, new_node)
-	local meta = minetest.get_meta(pos)
-	meta:set_string("gametime", tostring(mcl_time:get_seconds_irl()))
 end
 
 minetest.register_abm({
@@ -178,7 +179,7 @@ minetest.register_abm({
 	nodenames = {"mcl_nether:nether_wart_0", "mcl_nether:nether_wart_1", "mcl_nether:nether_wart_2"},
 	neighbors = {"group:soil_nether_wart"},
 	interval = interval,
-	chance = chance,
+	chance = 1,
 	action = function(pos, node)
 		pos.y = pos.y-1
 		if minetest.get_item_group(minetest.get_node(pos).name, "soil_nether_wart") == 0 then
@@ -187,9 +188,8 @@ minetest.register_abm({
 		pos.y = pos.y+1
 
 		for i = 1, mcl_time.get_number_of_times_at_pos(pos, interval, chance) do
-			grow(pos, node)
+			grow(pos)
 		end
-		mcl_time.touch(pos)
 	end
 })
 
@@ -205,9 +205,8 @@ minetest.register_lbm({
 		end
 		pos.y = pos.y+1
 		for i = 1, mcl_time.get_number_of_times_at_pos(pos, interval, chance) do
-			grow(pos, node)
+			grow(pos)
 		end
-		mcl_time.touch(pos)
 	end
 })
 
