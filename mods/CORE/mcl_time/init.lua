@@ -14,11 +14,21 @@ local last_save_seconds_irl = seconds_irl_public
 local next_save_seconds_irl = last_save_seconds_irl + save_to_storage_interval
 
 local previous_seconds_irl = -2
+local time_speed_is_ok = true
+
 local function get_seconds_irl()
 	local time_speed = tonumber(minetest.settings:get("time_speed") or default_time_speed)
 	if time_speed < 1 then
-		minetest.log("warning", "[mcl_time] time_speed < 1 - please increase to make mcl_time api work (default: " .. default_time_speed .. ")")
+		if time_speed_is_ok then
+			minetest.log("warning", "[mcl_time] time_speed < 1 - please increase to make mcl_time api work (default: " .. default_time_speed .. ")")
+			time_speed_is_ok = false
+		end
 		return 0
+	else
+		if not time_speed_is_ok then
+			minetest.log("warning", "[mcl_time] time_speed is now " .. time_speed)
+			time_speed_is_ok = true
+		end
 	end
 	local irl_multiplier = 86400 / time_speed
 	local day_count = minetest.get_day_count()
