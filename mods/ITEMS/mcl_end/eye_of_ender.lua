@@ -10,7 +10,7 @@ minetest.register_entity("mcl_end:ender_eye", {
 
 	-- Save and restore age
 	get_staticdata = function(self)
-		return tostring(self._age)
+		return tostring(self._age) or "0"
 	end,
 	on_activate = function(self, staticdata, dtime_s)
 		local age = tonumber(staticdata)
@@ -87,7 +87,7 @@ minetest.register_craftitem("mcl_end:ender_eye", {
 		end
 		local origin = user:get_pos()
 		origin.y = origin.y + 1.5
-		local strongholds = mcl_structures.get_registered_structures("stronghold")
+		local strongholds = mcl_structures.strongholds
 		local dim = mcl_worlds.pos_to_dimension(origin)
 		local is_creative = minetest.is_creative_enabled(user:get_player_name())
 
