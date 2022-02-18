@@ -11,6 +11,39 @@ local order = { -- mcl_mapgen.order...
 	LARGE_BUILDINGS	= 2000000,
 }
 
+-- Begin of Compatibility stuff
+
+local function unsigned(v)
+    if v < 0 then
+        v = 0x100000000 - (math.abs(v) % 0x100000000)
+    end
+    return v % 0x100000000
+end
+
+if not bit then
+    bit = {}
+    function bit.bxor(a, b)
+        local a = unsigned(a)
+        local b = unsigned(b)
+        local c = 0
+        for n = 31, 0, -1 do
+            local mask = math.floor(2^n)
+            if (a >= mask) ~= (b >= mask) then
+                c = c + mask
+            end
+            a = a % mask
+            b = b % mask
+         end
+         return c
+     end
+end
+
+if not vector.metatable then
+	dofile(minetest.get_modpath(minetest.get_current_modname() .. "/vector.lua"))
+end
+
+-- End of compatibility stuff
+
 local math_floor		= math.floor
 local math_max			= math.max
 local minetest_get_node		= minetest.get_node
