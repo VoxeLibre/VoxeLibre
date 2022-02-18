@@ -96,14 +96,12 @@ function mcl_time.touch(pos)
 	meta:set_int(meta_name, seconds_irl_public)
 end
 
-local touch = mcl_time.touch
-
 function mcl_time.get_number_of_times_at_pos(pos, interval, chance)
 	if not pos then return 0 end
 	local meta = minetest.get_meta(pos)
 	local last_time = meta:get_int(meta_name)
 	local number_of_times = (last_time == 0) and 0 or get_number_of_times(last_time, interval, chance)
-	touch(pos)
+	meta:set_int(meta_name, seconds_irl_public)
 	return number_of_times, seconds_irl_public
 end
 
@@ -118,6 +116,7 @@ function mcl_time.get_irl_seconds_passed_at_pos(pos)
 	local meta = minetest.get_meta(pos)
 	local last_time = meta:get_int(meta_name)
 	local irl_seconds_passed = (last_time == 0) and 0 or (seconds_irl_public - last_time)
+	meta:set_int(meta_name, seconds_irl_public)
 	return irl_seconds_passed
 end
 
@@ -126,6 +125,7 @@ function mcl_time.get_irl_seconds_passed_at_pos_or_1(pos)
 	local meta = minetest.get_meta(pos)
 	local last_time = meta:get_int(meta_name)
 	local irl_seconds_passed = (last_time == 0) and 1 or (seconds_irl_public - last_time)
+	meta:set_int(meta_name, seconds_irl_public)
 	return irl_seconds_passed
 end
 
@@ -136,6 +136,7 @@ function mcl_time.get_irl_seconds_passed_at_pos_or_nil(pos)
 	if last_time == 0 then return end
 	local delta_time = seconds_irl_public - last_time
 	if delta_time <= 0 then return end
+	meta:set_int(meta_name, seconds_irl_public)
 	return delta_time
 end
 
