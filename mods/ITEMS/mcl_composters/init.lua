@@ -197,7 +197,7 @@ local function composter_harvest(pos, node, player, itemstack, pointed_thing)
 	--
 	-- handler for harvesting bone meal from a ready composter when rightclicked
 	--
-	if not player or player:get_player_control().sneak then
+	if not player or (player:get_player_control() and player:get_player_control().sneak) then
 		return
 	end
 	-- reset ready type composter to empty type
