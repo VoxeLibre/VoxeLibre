@@ -43,7 +43,7 @@ mcl_mapgen.register_mapgen_block(function(minp, maxp, seed)
 	local p1 = {x = minp.x + decrease_search_area, y = y1 + decrease_search_area, z = minp.z + decrease_search_area}
 	local p2 = {x = maxp.x - decrease_search_area, y = y2 - decrease_search_area, z = maxp.z - decrease_search_area}
 
-	pos_list = minetest_find_nodes_in_area_under_air(p1, p2, place_on)
+	local pos_list = minetest_find_nodes_in_area_under_air(p1, p2, place_on)
 	local pr = PseudoRandom(seed)
 	wart_perlin = wart_perlin or minetest_get_perlin(noise_params)
 
