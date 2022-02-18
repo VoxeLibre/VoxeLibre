@@ -26,6 +26,7 @@ minetest.register_node("mcl_nether:nether_wart_0", {
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	after_place_node = mcl_time.touch,
 })
 
 minetest.register_node("mcl_nether:nether_wart_1", {
@@ -170,7 +171,6 @@ local function grow(pos, node)
 	minetest.set_node(pos, new_node)
 	local meta = minetest.get_meta(pos)
 	meta:set_string("gametime", tostring(mcl_time:get_seconds_irl()))
-
 end
 
 minetest.register_abm({
@@ -186,9 +186,10 @@ minetest.register_abm({
 		end
 		pos.y = pos.y+1
 
-		for i = 1, mcl_time.get_number_of_times_at_pos_or_1(pos, interval, chance) do
+		for i = 1, mcl_time.get_number_of_times_at_pos(pos, interval, chance) do
 			grow(pos, node)
 		end
+		mcl_time.touch(pos)
 	end
 })
 
@@ -206,6 +207,7 @@ minetest.register_lbm({
 		for i = 1, mcl_time.get_number_of_times_at_pos(pos, interval, chance) do
 			grow(pos, node)
 		end
+		mcl_time.touch(pos)
 	end
 })
 

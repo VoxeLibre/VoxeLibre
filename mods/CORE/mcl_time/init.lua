@@ -76,14 +76,14 @@ local function time_runner()
 end
 
 function mcl_time.get_number_of_times(last_time, interval, chance)
-	if not last_time then return 0 end
-	if seconds_irl_public < 2 then return 0 end
-	if not interval then return 0 end
-	if not chance then return 0 end
-	if interval < 1 then return 0 end
-	if chance < 1 then return 0 end
+	if not last_time then return 0, seconds_irl_publicend end
+	if seconds_irl_public < 2 then return 0, seconds_irl_public end
+	if not interval then return 0, seconds_irl_public end
+	if not chance then return 0, seconds_irl_public end
+	if interval < 1 then return 0, seconds_irl_public end
+	if chance < 1 then return 0, seconds_irl_public end
 	local number_of_intervals = (seconds_irl_public - last_time) / interval
-	if number_of_intervals < 1 then return 0 end
+	if number_of_intervals < 1 then return 0, seconds_irl_public end
 	local average_chance = (1 + chance) / 2
 	local number_of_times = math.floor(number_of_intervals / average_chance)
 	return number_of_times, seconds_irl_public
@@ -98,45 +98,56 @@ end
 
 function mcl_time.get_number_of_times_at_pos(pos, interval, chance)
 	if not pos then return 0 end
+	if not time_speed_is_ok then return 0 end
 	local meta = minetest.get_meta(pos)
 	local last_time = meta:get_int(meta_name)
-	local number_of_times = (last_time == 0) and 0 or get_number_of_times(last_time, interval, chance)
 	meta:set_int(meta_name, seconds_irl_public)
-	return number_of_times, seconds_irl_public
+	local number_of_times = (last_time == 0) and 0 or get_number_of_times(last_time, interval, chance)
+	return number_of_times
 end
 
 local get_number_of_times_at_pos = mcl_time.get_number_of_times_at_pos
 
 function mcl_time.get_number_of_times_at_pos_or_1(pos, interval, chance)
-	return math.max(get_number_of_times_at_pos(pos, interval, chance), 1), seconds_irl_public
+	return math.max(get_number_of_times_at_pos(pos, interval, chance), 1)
+end
+
+function mcl_time.get_number_of_times_at_pos_or_nil(pos, interval, chance)
+	local number_of_times_at_pos = get_number_of_times_at_pos(pos, interval, chance)
+	if number_of_times_at_pos > 0 then
+		return number_of_times_at_pos
+	end
 end
 
 function mcl_time.get_irl_seconds_passed_at_pos(pos)
 	if not pos then return 0 end
+	if not time_speed_is_ok then return 0 end
 	local meta = minetest.get_meta(pos)
 	local last_time = meta:get_int(meta_name)
-	local irl_seconds_passed = (last_time == 0) and 0 or (seconds_irl_public - last_time)
 	meta:set_int(meta_name, seconds_irl_public)
+	local irl_seconds_passed = (last_time == 0) and 0 or (seconds_irl_public - last_time)
 	return irl_seconds_passed
 end
 
 function mcl_time.get_irl_seconds_passed_at_pos_or_1(pos)
 	if not pos then return 1 end
+	if not time_speed_is_ok then return 1 end
 	local meta = minetest.get_meta(pos)
 	local last_time = meta:get_int(meta_name)
-	local irl_seconds_passed = (last_time == 0) and 1 or (seconds_irl_public - last_time)
 	meta:set_int(meta_name, seconds_irl_public)
+	local irl_seconds_passed = (last_time == 0) and 1 or (seconds_irl_public - last_time)
 	return irl_seconds_passed
 end
 
 function mcl_time.get_irl_seconds_passed_at_pos_or_nil(pos)
 	if not pos then return end
+	if not time_speed_is_ok then return end
 	local meta = minetest.get_meta(pos)
 	local last_time = meta:get_int(meta_name)
+	meta:set_int(meta_name, seconds_irl_public)
 	if last_time == 0 then return end
 	local delta_time = seconds_irl_public - last_time
 	if delta_time <= 0 then return end
-	meta:set_int(meta_name, seconds_irl_public)
 	return delta_time
 end
 
