@@ -20,7 +20,7 @@ local function unsigned(v)
     return v % 0x100000000
 end
 
-if not bit then
+if bit == nil then
     bit = {}
     function bit.bxor(a, b)
         local a = unsigned(a)
@@ -38,8 +38,14 @@ if not bit then
      end
 end
 
-if not vector.metatable then
-	dofile(minetest.get_modpath(minetest.get_current_modname() .. "/vector.lua"))
+if vector.metatable == nil then
+	function math.round(x)
+		if x >= 0 then
+			return math.floor(x + 0.5)
+		end
+		return math.ceil(x - 0.5)
+	end
+	dofile(minetest.get_modpath(minetest.get_current_modname()) .. "/vector.lua")
 end
 
 -- End of compatibility stuff

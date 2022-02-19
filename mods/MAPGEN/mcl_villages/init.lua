@@ -436,8 +436,7 @@ local function build_a_village(minp, maxp, pr, placer)
 end
 
 -- Disable natural generation in singlenode.
-if mg_name ~= "singlenode" then
-	local mg_name        = minetest.get_mapgen_setting("mg_name")
+if mcl_mapgen.name ~= "singlenode" then
 	local scan_last_node = mcl_mapgen.LAST_BLOCK * mcl_mapgen.BS - 1
 	local scan_offset    = mcl_mapgen.BS
 	mcl_mapgen.register_mapgen(function(minp, maxp, chunkseed)
