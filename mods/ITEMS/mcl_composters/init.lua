@@ -251,8 +251,8 @@ minetest.register_node("mcl_composters:composter", {
 		flammable=2, fire_encouragement=3, fire_flammability=4,
 	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	_mcl_hardness = 2,
-	_mcl_blast_resistance = 2,
+	_mcl_hardness = 0.6,
+	_mcl_blast_resistance = 0.6,
 	_mcl_compost_level = 0,
 	on_rightclick = composter_add_item
 })
@@ -285,8 +285,8 @@ local function register_filled_composter(level)
 		},
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		drop = "mcl_composters:composter",
-		_mcl_hardness = 2,
-		_mcl_blast_resistance = 2,
+		_mcl_hardness = 0.6,
+		_mcl_blast_resistance = 0.6,
 		_mcl_compost_level = level,
 		on_rightclick = composter_add_item,
 		on_timer = composter_ready
@@ -330,8 +330,8 @@ minetest.register_node("mcl_composters:composter_ready", {
 	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	drop = "mcl_composters:composter",
-	_mcl_hardness = 2,
-	_mcl_blast_resistance = 2,
+	_mcl_hardness = 0.6,
+	_mcl_blast_resistance = 0.6,
 	_mcl_compost_level = 7,
 	on_rightclick = composter_harvest
 })
