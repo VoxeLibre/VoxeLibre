@@ -157,7 +157,7 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 		if chance >= rand then
 			-- get current compost level
 			local node_defs = minetest.registered_nodes[node.name]
-			local level = node_defs["_compost_level"]
+			local level = node_defs["_mcl_compost_level"]
 			-- spawn green particles above new layer
 			mcl_dye.add_bone_meal_particle(vector.add(pos, {x=0, y=level/8, z=0}))
 			-- TODO: play some sounds
@@ -253,7 +253,7 @@ minetest.register_node("mcl_composters:composter", {
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_hardness = 2,
 	_mcl_blast_resistance = 2,
-	_compost_level = 0,
+	_mcl_compost_level = 0,
 	on_rightclick = composter_add_item
 })
 
@@ -287,7 +287,7 @@ local function register_filled_composter(level)
 		drop = "mcl_composters:composter",
 		_mcl_hardness = 2,
 		_mcl_blast_resistance = 2,
-		_compost_level = level,
+		_mcl_compost_level = level,
 		on_rightclick = composter_add_item,
 		on_timer = composter_ready
 	})
@@ -332,7 +332,7 @@ minetest.register_node("mcl_composters:composter_ready", {
 	drop = "mcl_composters:composter",
 	_mcl_hardness = 2,
 	_mcl_blast_resistance = 2,
-	_compost_level = 7,
+	_mcl_compost_level = 7,
 	on_rightclick = composter_harvest
 })
 
