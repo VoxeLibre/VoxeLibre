@@ -165,12 +165,8 @@ local function on_place_bucket(itemstack, user, pointed_thing, def)
 
 	local undernode = get_node(pointed_thing.under)
 	local abovenode = get_node(pointed_thing.above)
-	local name1, name2 = undernode.name, abovenode.name
-	local regnode1, regnode2 = registered_nodes[name1], registered_nodes[name2]
-	local buildable1 = regnode1 and (regnode1.buildable_to or get_item_group(name1, "cauldron") == 1)
-	local buildable2 = regnode2 and (regnode2.buildable_to or get_item_group(name2, "cauldron") == 1)
 
-	if buildable1 then
+	if registered_nodes[undernode.name].buildable_to or get_item_group(undernode.name, "cauldron") == 1 then
 		local result, take_bucket = get_extra_check(def.extra_check, pointed_thing.under, user)
 		if result then
 			local node_place = get_node_place(def.source_place, pointed_thing.under)
@@ -191,7 +187,7 @@ local function on_place_bucket(itemstack, user, pointed_thing, def)
 			end
 		end
 		return get_bucket_drop(itemstack, user, take_bucket)
-	elseif buildable2 then
+	elseif registered_nodes[abovenode.name].buildable_to or get_item_group(abovenode.name, "cauldron") == 1 then
 		local result, take_bucket = get_extra_check(def.extra_check, pointed_thing.above, user)
 		if result then
 			local node_place = get_node_place(def.source_place, pointed_thing.above)
