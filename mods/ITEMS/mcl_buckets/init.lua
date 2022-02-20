@@ -19,6 +19,7 @@ local string = string
 
 local raycast = minetest.raycast
 local get_node = minetest.get_node
+local set_node = minetest.set_node
 local add_node = minetest.add_node
 local add_item = minetest.add_item
 
@@ -58,7 +59,7 @@ end
 local function place_liquid(pos, itemstring)
 	local fullness = registered_nodes[itemstring].liquid_range
 	sound_place(itemstring, pos)
-	minetest.add_node(pos, {name=itemstring, param2=fullness})
+	add_node(pos, {name=itemstring, param2=fullness})
 end
 
 local function give_bucket(new_bucket, itemstack, user)
@@ -272,14 +273,14 @@ local function on_place_bucket_empty(itemstack, user, pointed_thing)
 		-- FIXME: replace this ugly code by cauldrons API
 		if nn == "mcl_cauldrons:cauldron_3" then
 			-- Take water out of full cauldron
-			minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+			set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
 			if not minetest.is_creative_enabled(user:get_player_name()) then
 				new_bucket = ItemStack("mcl_buckets:bucket_water")
 			end
 			sound_take("mcl_core:water_source", pointed_thing.under)
 		elseif nn == "mcl_cauldrons:cauldron_3r" then
 			-- Take river water out of full cauldron
-			minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+			set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
 			if not minetest.is_creative_enabled(user:get_player_name()) then
 				new_bucket = ItemStack("mcl_buckets:bucket_river_water")
 			end
@@ -384,13 +385,13 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 			collect_liquid = true
 		end
 		if collect_liquid then
-			minetest.set_node(droppos, {name="air"})
+			set_node(droppos, {name="air"})
 
 			-- Fill bucket with liquid
 			stack = new_bucket
 		else
 			-- No liquid found: Drop empty bucket
-			minetest.add_item(droppos, stack)
+			add_item(droppos, stack)
 			stack:take_item()
 		end
 		return stack
