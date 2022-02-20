@@ -22,6 +22,8 @@ local get_node = minetest.get_node
 local add_node = minetest.add_node
 local add_item = minetest.add_item
 
+local registered_nodes = minetest.registered_nodes
+
 
 if mod_mcl_core then
 	minetest.register_craft({
@@ -40,21 +42,21 @@ mcl_buckets = {
 
 -- Sound helper functions for placing and taking liquids
 local function sound_place(itemname, pos)
-	local def = minetest.registered_nodes[itemname]
+	local def = registered_nodes[itemname]
 	if def and def.sounds and def.sounds.place then
 		minetest.sound_play(def.sounds.place, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005}, true)
 	end
 end
 
 local function sound_take(itemname, pos)
-	local def = minetest.registered_nodes[itemname]
+	local def = registered_nodes[itemname]
 	if def and def.sounds and def.sounds.dug then
 		minetest.sound_play(def.sounds.dug, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005}, true)
 	end
 end
 
 local function place_liquid(pos, itemstring)
-	local fullness = minetest.registered_nodes[itemstring].liquid_range
+	local fullness = registered_nodes[itemstring].liquid_range
 	sound_place(itemstring, pos)
 	minetest.add_node(pos, {name=itemstring, param2=fullness})
 end
@@ -163,7 +165,7 @@ local function on_place_bucket(itemstack, user, pointed_thing, def)
 	local undernode = get_node(pointed_thing.under)
 	local abovenode = get_node(pointed_thing.above)
 	local name1, name2 = undernode.name, abovenode.name
-	local regnode1, regnode2 = minetest.registered_nodes[name1], minetest.registered_nodes[name2]
+	local regnode1, regnode2 = registered_nodes[name1], registered_nodes[name2]
 	local buildable1 = regnode1 and (regnode1.buildable_to or regnode1.groups.cauldron == 1)
 	local buildable2 = regnode2 and (regnode2.buildable_to or regnode2.groups.cauldron == 1)
 
@@ -347,7 +349,7 @@ function mcl_buckets.register_liquid(def)
 		stack_max = 1,
 		groups = def.groups,
 		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
-			local buildable = minetest.registered_nodes[dropnode.name].buildable_to or dropnode.name == "mcl_portals:portal"
+			local buildable = registered_nodes[dropnode.name].buildable_to or dropnode.name == "mcl_portals:portal"
 			if not buildable then return stack end
 			local result, take_bucket = get_extra_check(def.extra_check, droppos, nil)
 			if result then -- Fail placement of liquid if result is false
