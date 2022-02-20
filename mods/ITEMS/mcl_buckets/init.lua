@@ -226,7 +226,7 @@ local function on_place_bucket_empty(itemstack, user, pointed_thing)
 		return new_stack
 	end
 
-	local node = minetest.get_node(pointed_thing.under)
+	local node = get_node(pointed_thing.under)
 	local nn = node.name
 
 	local new_bucket
