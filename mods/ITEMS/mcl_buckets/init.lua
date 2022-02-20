@@ -162,8 +162,11 @@ local function on_place_bucket(itemstack, user, pointed_thing, def)
 
 	local undernode = get_node(pointed_thing.under)
 	local abovenode = get_node(pointed_thing.above)
-	local buildable1 = minetest.registered_nodes[undernode.name] and minetest.registered_nodes[undernode.name].buildable_to
-	local buildable2 = minetest.registered_nodes[abovenode.name] and minetest.registered_nodes[abovenode.name].buildable_to
+	local name1, name2 = undernode.name, abovenode.name
+	local regnode1, regnode2 = minetest.registered_nodes[name1], minetest.registered_nodes[name2]
+	local buildable1 = regnode1 and (regnode1.buildable_to or regnode1.groups.cauldron == 1)
+	local buildable2 = regnode2 and (regnode2.buildable_to or regnode2.groups.cauldron == 1)
+
 	if not buildable1 and not buildable2 then return itemstack end --if both nodes aren't buildable_to, skip
 
 	if buildable1 then
