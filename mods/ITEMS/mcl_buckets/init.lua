@@ -25,6 +25,9 @@ local add_item = minetest.add_item
 
 local registered_nodes = minetest.registered_nodes
 local get_item_group = minetest.get_item_group
+local is_creative_enabled = minetest.is_creative_enabled
+local is_protected = minetest.is_protected
+local record_protection_violation = minetest.record_protection_violation
 
 if mod_mcl_core then
 	minetest.register_craft({
@@ -64,7 +67,7 @@ end
 
 local function give_bucket(new_bucket, itemstack, user)
 	local inv = user:get_inventory()
-	if minetest.is_creative_enabled(user:get_player_name()) then
+	if is_creative_enabled(user:get_player_name()) then
 		--TODO: is a full bucket added if inv doesn't contain one?
 		return itemstack
 	else
@@ -131,7 +134,7 @@ end
 
 local function get_bucket_drop(itemstack, user, take_bucket)
 	-- Handle bucket item and inventory stuff
-	if take_bucket and not minetest.is_creative_enabled(user:get_player_name()) then
+	if take_bucket and not is_creative_enabled(user:get_player_name()) then
 		-- Add empty bucket and put it into inventory, if possible.
 		-- Drop empty bucket otherwise.
 		local new_bucket = ItemStack("mcl_buckets:bucket_empty")
@@ -173,8 +176,8 @@ local function on_place_bucket(itemstack, user, pointed_thing, def)
 			local pns = user:get_player_name()
 
 			-- Check protection
-			if minetest.is_protected(pointed_thing.under, pns) then
-				minetest.record_protection_violation(pointed_thing.under, pns)
+			if is_protected(pointed_thing.under, pns) then
+				record_protection_violation(pointed_thing.under, pns)
 				return itemstack
 			end
 
@@ -194,8 +197,8 @@ local function on_place_bucket(itemstack, user, pointed_thing, def)
 			local pns = user:get_player_name()
 
 			-- Check protection
-			if minetest.is_protected(pointed_thing.above, pns) then
-				minetest.record_protection_violation(pointed_thing.above, pns)
+			if is_protected(pointed_thing.above, pns) then
+				record_protection_violation(pointed_thing.above, pns)
 				return itemstack
 			end
 
@@ -232,8 +235,8 @@ local function on_place_bucket_empty(itemstack, user, pointed_thing)
 	local new_bucket
 	local liquid_node = bucket_raycast(user)
 	if liquid_node then
-		if minetest.is_protected(liquid_node.above, user:get_player_name()) then
-			minetest.record_protection_violation(liquid_node.above, user:get_player_name())
+		if is_protected(liquid_node.above, user:get_player_name()) then
+			record_protection_violation(liquid_node.above, user:get_player_name())
 		end
 		local liquid_name = get_node(liquid_node.above).name
 		if liquid_name then
@@ -242,7 +245,7 @@ local function on_place_bucket_empty(itemstack, user, pointed_thing)
 				--minetest.chat_send_all("test")
 				-- Fill bucket, but not in Creative Mode
 				-- FIXME: remove this line
-				--if not minetest.is_creative_enabled(user:get_player_name()) then
+				--if not is_creative_enabled(user:get_player_name()) then
 				if not false then
 					new_bucket = ItemStack({name = liquid_def.bucketname})
 					if liquid_def.on_take then
@@ -268,14 +271,14 @@ local function on_place_bucket_empty(itemstack, user, pointed_thing)
 		if nn == "mcl_cauldrons:cauldron_3" then
 			-- Take water out of full cauldron
 			set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
-			if not minetest.is_creative_enabled(user:get_player_name()) then
+			if not is_creative_enabled(user:get_player_name()) then
 				new_bucket = ItemStack("mcl_buckets:bucket_water")
 			end
 			sound_take("mcl_core:water_source", pointed_thing.under)
 		elseif nn == "mcl_cauldrons:cauldron_3r" then
 			-- Take river water out of full cauldron
 			set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
-			if not minetest.is_creative_enabled(user:get_player_name()) then
+			if not is_creative_enabled(user:get_player_name()) then
 				new_bucket = ItemStack("mcl_buckets:bucket_river_water")
 			end
 			sound_take("mclx_core:river_water_source", pointed_thing.under)
