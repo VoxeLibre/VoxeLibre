@@ -170,8 +170,6 @@ local function on_place_bucket(itemstack, user, pointed_thing, def)
 	local buildable1 = regnode1 and (regnode1.buildable_to or get_item_group(name1, "cauldron") == 1)
 	local buildable2 = regnode2 and (regnode2.buildable_to or get_item_group(name2, "cauldron") == 1)
 
-	if not buildable1 and not buildable2 then return itemstack end --if both nodes aren't buildable_to, skip
-
 	if buildable1 then
 		local result, take_bucket = get_extra_check(def.extra_check, pointed_thing.under, user)
 		if result then
