@@ -357,22 +357,29 @@ function mcl_util.get_first_occupied_inventory_slot(inventory, listname)
 	return mcl_util.get_eligible_transfer_item_slot(inventory, listname)
 end
 
+local function drop_item_stack(pos, stack)
+	if not stack or stack:is_empty() then return end
+	local drop_offset = vector.new(math.random() - 0.5, 0, math.random() - 0.5)
+	minetest.add_item(vector.add(pos, drop_offset), stack)
+end
+
 function mcl_util.drop_items_from_meta_container(listname)
 	return function(pos, oldnode, oldmetadata)
-		local meta = minetest.get_meta(pos)
-		local meta2 = meta:to_table()
-		if oldmetadata then
-			meta:from_table(oldmetadata)
-		end
-		local inv = meta:get_inventory()
-		for i = 1, inv:get_size(listname) do
-			local stack = inv:get_stack(listname, i)
-			if not stack:is_empty() then
-				local p = vector.add(pos, vector.new(math.random() - 0.5, 0, math.random(0, 10)/10 - 0.5))
-				minetest.add_item(p, stack)
+		if oldmetadata and oldmetadata.inventory then
+			-- process in after_dig_node callback
+			local main = oldmetadata.inventory.main
+			if not main then return end
+			for _, stack in pairs(main) do
+				drop_item_stack(pos, stack)
 			end
+		else
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			for i = 1, inv:get_size("main") do
+				drop_item_stack(pos, inv:get_stack("main", i))
+			end
+			meta:from_table()
 		end
-		meta:from_table(meta2)
 	end
 end
 
