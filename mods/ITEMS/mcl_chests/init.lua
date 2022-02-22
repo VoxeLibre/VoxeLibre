@@ -1419,3 +1419,5 @@ minetest.register_lbm({
 		minetest.get_meta(pos):set_string("formspec", "")
 	end,
 })
+
+dofile(minetest.get_modpath("mcl_chests").."/barrel.lua")

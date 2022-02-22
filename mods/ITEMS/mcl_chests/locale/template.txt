@@ -34,3 +34,5 @@ Can be combined to a large chest=
 27 interdimensional inventory slots=
 Put items inside, retrieve them from any ender chest=
 Emits a redstone signal when opened=
+Barrel=
+Barrels are containers which provide 27 inventory slots.=

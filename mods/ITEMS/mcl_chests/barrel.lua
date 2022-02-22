@@ -1,8 +1,6 @@
-local S = minetest.get_translator("mcl_barrels")
+local S = minetest.get_translator("mcl_chests")
 local F = minetest.formspec_escape
 local C = minetest.colorize
-
---TODO: fix barrel rotation placement
 
 local open_barrels = {}
 
@@ -24,7 +22,7 @@ local function barrel_open(pos, node, clicker)
 	local playername = clicker:get_player_name()
 
 	minetest.show_formspec(playername,
-		"mcl_barrels:barrel_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"mcl_chests:barrel_"..pos.x.."_"..pos.y.."_"..pos.z,
 		table.concat({
 			"size[9,8.75]",
 			"label[0,0;"..F(C("#313131", name)).."]",
@@ -40,13 +38,13 @@ local function barrel_open(pos, node, clicker)
 		})
 	)
 
-	minetest.swap_node(pos,	{ name = "mcl_barrels:barrel_open", param2 = node.param2 })
+	minetest.swap_node(pos,	{ name = "mcl_chests:barrel_open", param2 = node.param2 })
 	open_barrels[playername] = pos
 end
 
 local function close_forms(pos)
 	local players = minetest.get_connected_players()
-	local formname = "mcl_barrels:barrel_"..pos.x.."_"..pos.y.."_"..pos.z
+	local formname = "mcl_chests:barrel_"..pos.x.."_"..pos.y.."_"..pos.z
 	for p = 1, #players do
 		if vector.distance(players[p]:get_pos(), pos) <= 30 then
 			minetest.close_formspec(players[p]:get_player_name(), formname)
@@ -57,8 +55,8 @@ end
 local function update_after_close(pos)
 	local node = minetest.get_node_or_nil(pos)
 	if not node then return end
-	if node.name == "mcl_barrels:barrel_open" then
-		minetest.swap_node(pos, {name = "mcl_barrels:barrel_closed", param2 = node.param2})
+	if node.name == "mcl_chests:barrel_open" then
+		minetest.swap_node(pos, {name = "mcl_chests:barrel_closed", param2 = node.param2})
 	end
 end
 
@@ -74,12 +72,12 @@ local function close_barrel(player)
 	open_barrels[name] = nil
 end
 
-minetest.register_node("mcl_barrels:barrel_closed", {
+minetest.register_node("mcl_chests:barrel_closed", {
 	description = S("Barrel"),
 	_tt_help = S("27 inventory slots"),
 	_doc_items_longdesc = S("Barrels are containers which provide 27 inventory slots."),
 	_doc_items_usagehelp = S("To access its inventory, rightclick it. When broken, the items will drop out."),
-	tiles = {"mcl_barrels_barrel_top.png^[transformR270", "mcl_barrels_barrel_bottom.png", "mcl_barrels_barrel_side.png"},
+	tiles = {"mcl_chests_barrel_top.png^[transformR270", "mcl_chests_barrel_bottom.png", "mcl_chests_barrel_side.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	--on_place = mcl_util.rotate_axis,
@@ -106,16 +104,16 @@ minetest.register_node("mcl_barrels:barrel_closed", {
 	_mcl_hardness = 2.5,
 })
 
-minetest.register_node("mcl_barrels:barrel_open", {
+minetest.register_node("mcl_chests:barrel_open", {
 	description = S("Barrel Open"),
 	_tt_help = S("27 inventory slots"),
 	_doc_items_longdesc = S("Barrels are containers which provide 27 inventory slots."),
 	_doc_items_usagehelp = S("To access its inventory, rightclick it. When broken, the items will drop out."),
 	_doc_items_create_entry = false,
-	tiles = {"mcl_barrels_barrel_top_open.png", "mcl_barrels_barrel_bottom.png", "mcl_barrels_barrel_side.png"},
+	tiles = {"mcl_chests_barrel_top_open.png", "mcl_chests_barrel_bottom.png", "mcl_chests_barrel_side.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
-	drop = "mcl_barrels:barrel_closed",
+	drop = "mcl_chests:barrel_closed",
 	stack_max = 64,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	groups = {handy = 1, axey = 1, container = 2, material_wood = 1, flammable = -1, deco_block = 1, not_in_creative_inventory = 1},
@@ -128,7 +126,7 @@ minetest.register_node("mcl_barrels:barrel_open", {
 })
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if formname:find("mcl_barrels:") == 1 and fields.quit then
+	if formname:find("mcl_chests:barrel") == 1 and fields.quit then
 		close_barrel(player)
 	end
 end)
@@ -139,10 +137,10 @@ end)
 
 --Minecraft Java Edition craft
 minetest.register_craft({
-	output = "mcl_barrels:barrel_closed",
+	output = "mcl_chests:barrel_closed",
 	recipe = {
 		{"group:wood", "group:wood_slab", "group:wood"},
 		{"group:wood", "",                "group:wood"},
 		{"group:wood", "group:wood_slab", "group:wood"},
-	}
+	},
 })
