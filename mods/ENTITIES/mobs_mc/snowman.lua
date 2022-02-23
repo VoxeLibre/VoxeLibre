@@ -124,6 +124,10 @@ mobs:register_mob("mobs_mc:snowman", {
 			local pos = self.object:get_pos()
 			minetest.sound_play("mcl_tools_shears_cut", {pos = pos}, true)
 
+			if minetest.registered_items["mcl_farming:pumpkin_face"] then
+				minetest.add_item({x=pos.x, y=pos.y+1.4, z=pos.z}, "mcl_farming:pumpkin_face")
+			end
+
 			-- Wear out
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				item:add_wear(mobs_mc.misc.shears_wear)
