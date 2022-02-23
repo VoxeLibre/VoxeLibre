@@ -187,7 +187,7 @@ mcl_farming:add_plant("plant_pumpkin_stem", "mcl_farming:pumpkintige_unconnect",
 mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkintige_linked", "mcl_farming:pumpkintige_unconnect", stem_def, stem_drop, "mcl_farming:pumpkin", pumpkin_base_def, 30, 15, "mcl_farming_pumpkin_stem_connected.png^[colorize:#FFA800:127")
 
 -- Steal function to properly disconnect a carved pumpkin
-pumpkin_face_base_def.after_dig_node = minetest.registered_nodes["mcl_farming:pumpkin"].after_dig_node
+pumpkin_face_base_def.after_destruct = minetest.registered_nodes["mcl_farming:pumpkin"].after_destruct
 minetest.register_node("mcl_farming:pumpkin_face", pumpkin_face_base_def)
 
 -- Jack o'Lantern
