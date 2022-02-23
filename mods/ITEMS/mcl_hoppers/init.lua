@@ -343,7 +343,7 @@ minetest.register_abm({
 		local abovenode = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z})
 		if not minetest.registered_items[abovenode.name] then return end
 		-- Don't bother checking item enties if node above is a container (should save some CPU)
-		if minetest.get_item_group(abovenode.name, "container") then
+		if minetest.get_item_group(abovenode.name, "container") ~= 0 then
 			return
 		end
 		local meta = minetest.get_meta(pos)
