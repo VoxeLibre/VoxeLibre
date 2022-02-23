@@ -179,13 +179,16 @@ if minetest.get_modpath("mcl_armor") then
 		pumpkin_hud[player] = nil
 	end)
 end
-minetest.register_node("mcl_farming:pumpkin_face", pumpkin_face_base_def)
 
 -- Register stem growth
 mcl_farming:add_plant("plant_pumpkin_stem", "mcl_farming:pumpkintige_unconnect", {"mcl_farming:pumpkin_1", "mcl_farming:pumpkin_2", "mcl_farming:pumpkin_3", "mcl_farming:pumpkin_4", "mcl_farming:pumpkin_5", "mcl_farming:pumpkin_6", "mcl_farming:pumpkin_7"}, 30, 5)
 
 -- Register actual pumpkin, connected stems and stem-to-pumpkin growth
 mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkintige_linked", "mcl_farming:pumpkintige_unconnect", stem_def, stem_drop, "mcl_farming:pumpkin", pumpkin_base_def, 30, 15, "mcl_farming_pumpkin_stem_connected.png^[colorize:#FFA800:127")
+
+-- Steal function to properly disconnect a carved pumpkin
+pumpkin_face_base_def.after_dig_node = minetest.registered_nodes["mcl_farming:pumpkin"].after_dig_node
+minetest.register_node("mcl_farming:pumpkin_face", pumpkin_face_base_def)
 
 -- Jack o'Lantern
 minetest.register_node("mcl_farming:pumpkin_face_light", {
