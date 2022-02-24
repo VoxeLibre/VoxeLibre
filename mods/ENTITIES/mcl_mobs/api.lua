@@ -1556,7 +1556,7 @@ local breed = function(self)
 
 					-- Give XP
 					if mod_experience then
-						mcl_experience.throw_experience(pos, math.random(1, 7))
+						mcl_experience.throw_xp(pos, math.random(1, 7))
 					end
 
 					-- custom breed function
