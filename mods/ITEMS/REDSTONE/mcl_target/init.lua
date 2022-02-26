@@ -1,5 +1,7 @@
 local S = minetest.get_translator("mcl_target")
 
+local mod_farming = minetest.get_modpath("mcl_farming")
+
 mcl_target = {}
 
 function mcl_target.hit(pos, time)
@@ -55,3 +57,15 @@ minetest.register_node("mcl_target:target_on", {
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 })
+
+
+if mod_farming then
+	minetest.register_craft({
+		output = "mcl_target:target_off",
+		recipe = {
+			{"",                  "mesecons:redstone",     ""},
+			{"mesecons:redstone", "mcl_farming:hay_block", "mesecons:redstone"},
+			{"",                  "mesecons:redstone",     ""},
+		},
+	})
+end
