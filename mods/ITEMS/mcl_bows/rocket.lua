@@ -18,20 +18,6 @@ local function dir_to_pitch(dir)
 	return -math.atan2(-dir.y, xz)
 end
 
-local function random_arrow_positions(positions, placement)
-	if positions == "x" then
-		return math.random(-4, 4)
-	elseif positions == "y" then
-		return math.random(0, 10)
-	end
-	if placement == "front" and positions == "z" then
-		return 3
-	elseif placement == "back" and positions == "z" then
-		return -3
-	end
-	return 0
-end
-
 local function damage_explosion(self, damagemulitplier)
 	mcl_explosions.explode(self.object:get_pos(), 3, {})
 	local objects = minetest.get_objects_inside_radius(self.object:get_pos(), 8)
@@ -49,10 +35,10 @@ end
 
 local function particle_explosion(self)
 	local particle_pattern = math.random(1, 3)
-	local fpitch = 0
-	local true_type = ""
-	local type = math.random(1,2)
-	local size = math.random(1,3)
+	local fpitch
+	--local true_type
+	local type = math.random(1, 2)
+	local size = math.random(1, 3)
 	local colors = {"red", "yellow", "blue", "green", "white"}
 	local this_colors = {colors[math.random(#colors)], colors[math.random(#colors)], colors[math.random(#colors)]}
 
@@ -64,11 +50,11 @@ local function particle_explosion(self)
 		fpitch = math.random(60, 70)
 	end
 
-	if type == 1 then
+	--[[if type == 1 then
 		true_type = "Popper"
 	else
 		true_type = "Floof"
-	end
+	end]]
 
 	if type == 1 then
 		minetest.sound_play("mcl_bows_firework", {
@@ -243,6 +229,7 @@ end
 
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
 local mod_button = minetest.get_modpath("mesecons_button")
+local mod_target = minetest.get_modpath("mcl_target")
 
 minetest.register_craftitem("mcl_bows:rocket", {
 	description = S("Arrow"),
@@ -576,6 +563,11 @@ function ARROW_ENTITY.on_step(self, dtime)
 
 				if mcl_burning.is_burning(self.object) and snode.name == "mcl_tnt:tnt" then
 					tnt.ignite(self._stuckin)
+				end
+
+				-- Activate target
+				if mod_target and snode.name == "mcl_target:target_off" then
+					mcl_target.hit(self._stuckin, 1) --10 redstone ticks
 				end
 
 				-- Push the button! Push, push, push the button!
