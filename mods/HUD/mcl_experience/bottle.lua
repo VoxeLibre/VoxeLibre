@@ -1,5 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local mod_target = minetest.get_modpath("mcl_target")
+
 minetest.register_entity("mcl_experience:bottle",{
 	textures = {"mcl_experience_bottle.png"},
 	hp_max = 1,
@@ -30,6 +32,9 @@ minetest.register_entity("mcl_experience:bottle",{
 				vertical = false,
 				texture = "mcl_particles_effect.png^[colorize:blue:127",
 			})
+			if mod_target and n == "mcl_target:target_off" then
+				mcl_target.hit(vector.round(pos), 0.4) --4 redstone ticks
+			end
 			self.object:remove()
 		end
 	end,
