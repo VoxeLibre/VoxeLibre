@@ -177,6 +177,9 @@ local function egg_on_step(self, dtime)
 			end
 			minetest.sound_play("mcl_throwing_egg_impact", { pos = self.object:get_pos(), max_hear_distance=10, gain=0.5 }, true)
 			self.object:remove()
+			if mod_target and node.name == "mcl_target:target_off" then
+				mcl_target.hit(vector.round(pos), 0.4) --4 redstone ticks
+			end
 			return
 		end
 	end
