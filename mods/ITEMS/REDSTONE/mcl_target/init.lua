@@ -14,9 +14,8 @@ end
 
 minetest.register_node("mcl_target:target_off", {
 	description = S("Target"),
-	--_tt_help = S(""),
-	--_doc_items_longdesc = longdesc,
-	--_doc_items_usagehelp = buttonuse,
+	_doc_items_longdesc = S("A target is a block that provides a temporary redstone charge when hit by a projectile."),
+	_doc_items_usagehelp = S("Throw a projectile on the target to activate it."),
 	tiles = {"mcl_target_target_top.png", "mcl_target_target_top.png", "mcl_target_target_side.png"},
 	groups = {hoey = 1},
 	sounds = mcl_sounds.node_sound_dirt_defaults({
