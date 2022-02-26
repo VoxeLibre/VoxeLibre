@@ -3,7 +3,6 @@ local S = minetest.get_translator("mcl_target")
 mcl_target = {}
 
 function mcl_target.hit(pos, time)
-	minetest.log("error", "Hello")
 	minetest.set_node(pos, {name="mcl_target:target_on"})
 	mesecon.receptor_on(pos, mesecon.rules.alldirs)
 
