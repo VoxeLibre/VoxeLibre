@@ -284,6 +284,9 @@ local function pearl_on_step(self, dtime)
 
 			end
 			self.object:remove()
+			if mod_target and node.name == "mcl_target:target_off" then
+				mcl_target.hit(vector.round(pos), 0.4) --4 redstone ticks
+			end
 			return
 		end
 	end
