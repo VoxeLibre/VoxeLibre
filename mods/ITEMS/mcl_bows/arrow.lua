@@ -1,5 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local mod_target = minetest.get_modpath("mcl_target")
+
 local math = math
 local vector = vector
 
@@ -117,8 +119,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 	self._time_in_air = self._time_in_air + .001
 
 	local pos = self.object:get_pos()
-	local dpos = table.copy(pos) -- digital pos
-	dpos = vector.round(dpos)
+	local dpos = vector.round(vector.new(pos)) -- digital pos
 	local node = minetest.get_node(dpos)
 
 	if self._stuck then
@@ -381,6 +382,11 @@ function ARROW_ENTITY.on_step(self, dtime)
 
 				if mcl_burning.is_burning(self.object) and snode.name == "mcl_tnt:tnt" then
 					tnt.ignite(self._stuckin)
+				end
+
+				-- Activate target
+				if mod_target and snode.name == "mcl_target:target_off" then
+					mcl_target.hit(self._stuckin, 1) --10 redstone ticks
 				end
 
 				-- Push the button! Push, push, push the button!

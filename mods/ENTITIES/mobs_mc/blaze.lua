@@ -5,6 +5,8 @@
 
 local S = minetest.get_translator("mobs_mc")
 
+local mod_target = minetest.get_modpath("mcl_target")
+
 --###################
 --################### BLAZE
 --###################
@@ -178,17 +180,19 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 
 	-- Node hit, make fire
 	hit_node = function(self, pos, node)
-		if node.name == "air" then
-			minetest.set_node(pos_above, {name=mobs_mc.items.fire})
+		if node == "air" then
+			minetest.set_node(pos, {name = mobs_mc.items.fire})
 		else
-			local v = self.object:get_velocity()
-			v = vector.normalize(v)
+			if self._shot_from_dispenser and mod_target and node == "mcl_target:target_off" then
+				mcl_target.hit(vector.round(pos), 0.4) --4 redstone ticks
+			end
+			local v = vector.normalize(self.object:get_velocity())
 			local crashpos = vector.subtract(pos, v)
 			local crashnode = minetest.get_node(crashpos)
 			-- Set fire if node is air, or a replacable flammable node (e.g. a plant)
 			if crashnode.name == "air" or
 					(minetest.registered_nodes[crashnode.name].buildable_to and minetest.get_item_group(crashnode.name, "flammable") >= 1) then
-				minetest.set_node(crashpos, {name=mobs_mc.items.fire})
+				minetest.set_node(crashpos, {name = mobs_mc.items.fire})
 			end
 		end
 	end

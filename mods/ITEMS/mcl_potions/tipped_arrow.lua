@@ -1,5 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local mod_target = minetest.get_modpath("mcl_target")
+
 local math = math
 
 -- Time in seconds after which a stuck arrow is deleted
@@ -341,6 +343,11 @@ function mcl_potions.register_arrow(name, desc, color, def)
 
 					self.object:set_velocity({x=0, y=0, z=0})
 					self.object:set_acceleration({x=0, y=0, z=0})
+
+					-- Activate target
+					if mod_target and snode.name == "mcl_target:target_off" then
+						mcl_target.hit(self._stuckin, 1) --10 redstone ticks
+					end
 
 					-- Push the button! Push, push, push the button!
 					if mod_button and minetest.get_item_group(node.name, "button") > 0 and minetest.get_item_group(node.name, "button_push_by_arrow") == 1 then
