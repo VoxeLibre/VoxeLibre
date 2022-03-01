@@ -1,0 +1,4 @@
+# textdomain: mcl_info
+Set debug bit mask: 0 @= disable, 1 @= biome name, 2 @= coordinates, 3 @= all=Установка отладочной битовой маски: 0 @= отключить, 1 @= биом, 2 @= координаты, 3 @= всё
+Error! Possible values are integer numbers from @1 to @2=Ошибка! Допустимые значения - целые числа от @1 до @2
+Debug bit mask set to @1=Отладочной битовой маске присвоено значение @1
