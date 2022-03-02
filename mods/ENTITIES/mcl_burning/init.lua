@@ -1,6 +1,18 @@
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 
 mcl_burning = {
+	-- the storage table holds a list of objects (players,luaentities) and tables
+	-- associated with these objects.  These tables have the following attributes:
+	--      burn_time:
+	--              Remaining time that object will burn.
+	--      fire_damage_timer:
+	--              Timer for dealing damage every second while burning.
+	--      fire_hud_id:
+	--              HUD id of the flames animation on a burning player's HUD.
+	--	animation_frame:
+	--		The HUD's current animation frame, used by update_hud().
+	--      collisionbox_cache:
+	--              Used by mcl_burning.get_collisionbox() to avoid recalculations.
 	storage = {}
 }
 
