@@ -35,6 +35,14 @@ function mcl_burning.get_touching_nodes(obj, nodenames, storage)
 	return nodes
 end
 
+-- Manages the fire animation on a burning player's HUD
+--
+-- Parameters:
+--   player - a valid player object;
+--
+-- If the player already has a fire HUD, updates the burning animation.
+-- If the fire does not have a fire HUD, initializes the HUD.
+--
 function mcl_burning.update_hud(player)
 	local animation_frames = tonumber(minetest.settings:get("fire_animation_frames")) or 8
 	local hud_flame_animated = "mcl_burning_hud_flame_animated.png^[opacity:180^[verticalframe:" .. animation_frames .. ":"
