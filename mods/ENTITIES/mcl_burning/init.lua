@@ -70,13 +70,8 @@ minetest.register_entity("mcl_burning:fire", {
 		collisionbox = {0, 0, 0, 0, 0, 0},
 		visual = "upright_sprite",
 		textures = {
-			name = "mcl_burning_entity_flame_animated.png",
-			animation = {
-				type = "vertical_frames",
-				aspect_w = 16,
-				aspect_h = 16,
-				length = 1.0,
-			},
+			"mcl_burning_entity_flame_animated.png",
+			"mcl_burning_entity_flame_animated.png"
 		},
 		spritediv = {x = 1, y = mcl_burning.animation_frames},
 		pointable = false,
