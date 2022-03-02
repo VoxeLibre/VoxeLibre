@@ -26,10 +26,12 @@ function mcl_burning.get_collisionbox(obj, smaller, storage)
 	end
 end
 
+local find_nodes_in_area = minetest.find_nodes_in_area
+
 function mcl_burning.get_touching_nodes(obj, nodenames, storage)
 	local pos = obj:get_pos()
 	local minp, maxp = mcl_burning.get_collisionbox(obj, true, storage)
-	local nodes = minetest.find_nodes_in_area(vector.add(pos, minp), vector.add(pos, maxp), nodenames)
+	local nodes = find_nodes_in_area(vector.add(pos, minp), vector.add(pos, maxp), nodenames)
 	return nodes
 end
 
