@@ -1,14 +1,14 @@
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 
-local pairs = pairs
-local get_connected_players = minetest.get_connected_players
-local get_item_group = minetest.get_item_group
-
 mcl_burning = {
 	storage = {}
 }
 
 dofile(modpath .. "/api.lua")
+
+local pairs = pairs
+local get_connected_players = minetest.get_connected_players
+local get_item_group = minetest.get_item_group
 
 minetest.register_globalstep(function(dtime)
 	for _, player in pairs(get_connected_players()) do
