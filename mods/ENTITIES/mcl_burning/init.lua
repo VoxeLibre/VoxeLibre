@@ -1,14 +1,11 @@
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 
 local pairs = pairs
-
 local get_connected_players = minetest.get_connected_players
 local get_item_group = minetest.get_item_group
 
 mcl_burning = {
-	storage = {},
-	channels = {},
-	animation_frames = tonumber(minetest.settings:get("fire_animation_frames")) or 8
+	storage = {}
 }
 
 dofile(modpath .. "/api.lua")
@@ -44,25 +41,33 @@ minetest.register_on_respawnplayer(function(player)
 	mcl_burning.extinguish(player)
 end)
 
-function mcl_burning.init_player(player)
-	local meta = player:get_meta()
-	-- NOTE: mcl_burning:data may be "return nil" (which deserialize into nil) for reasons unknown.
-	if meta:get_string("mcl_burning:data"):find("return nil", 1, true) then
-		minetest.log("warning", "[mcl_burning] 'mcl_burning:data' player meta field is invalid! Please report this bug")
+minetest.register_on_joinplayer(function(player)
+	local storage = {}
+	local burn_data = player:get_meta():get_string("mcl_burning:data")
+	if burn_data ~= "" then
+		storage = minetest.deserialize(burn_data)
 	end
-	mcl_burning.storage[player] = meta:contains("mcl_burning:data") and minetest.deserialize(meta:get_string("mcl_burning:data")) or {}
-	mcl_burning.channels[player] = minetest.mod_channel_join("mcl_burning:" .. player:get_player_name())
+	mcl_burning.storage[player] = storage
+end)
+
+local function on_leaveplayer(player)
+	local storage = mcl_burning.storage[player]
+	storage.fire_hud_id = nil
+	player:get_meta():set_string("mcl_burning:data", minetest.serialize(storage))
+	mcl_burning.storage[player] = nil
 end
 
-minetest.register_on_joinplayer(function(player)
-	mcl_burning.init_player(player)
-end)
-
 minetest.register_on_leaveplayer(function(player)
-	player:get_meta():set_string("mcl_burning:data", minetest.serialize(mcl_burning.storage[player]))
-	mcl_burning.storage[player] = nil
+	on_leaveplayer(player)
 end)
 
+minetest.register_on_shutdown(function()
+	for _,player in ipairs(minetest.get_connected_players()) do
+		on_leaveplayer(player)
+	end
+end)
+
+local animation_frames = tonumber(minetest.settings:get("fire_animation_frames")) or 8
 
 minetest.register_entity("mcl_burning:fire", {
 	initial_properties = {
@@ -73,7 +78,7 @@ minetest.register_entity("mcl_burning:fire", {
 			"mcl_burning_entity_flame_animated.png",
 			"mcl_burning_entity_flame_animated.png"
 		},
-		spritediv = {x = 1, y = mcl_burning.animation_frames},
+		spritediv = {x = 1, y = animation_frames},
 		pointable = false,
 		glow = -1,
 		backface_culling = false,
@@ -81,26 +86,25 @@ minetest.register_entity("mcl_burning:fire", {
 	animation_frame = 0,
 	animation_timer = 0,
 	on_activate = function(self)
-		self.object:set_sprite({x = 0, y = 0}, mcl_burning.animation_frames, 1.0 / mcl_burning.animation_frames)
+		self.object:set_sprite({x = 0, y = 0}, animation_frames, 1.0 / animation_frames)
 	end,
-	on_step = function(self)
-		if not self:sanity_check() then
-			self.object:remove()
-		end
-	end,
-	sanity_check = function(self)
+	on_step = function(self, dtime)
 		local parent = self.object:get_attach()
-
 		if not parent then
-			return false
+			self.object:remove()
+			return
 		end
-
 		local storage = mcl_burning.get_storage(parent)
-
 		if not storage or not storage.burn_time then
-			return false
+			self.object:remove()
+			return
 		end
-
-		return true
+		if parent:is_player() then
+			self.animation_timer = self.animation_timer + dtime
+			if self.animation_timer >= 0.1 then
+				self.animation_timer = 0
+				mcl_burning.update_hud(parent)
+			end
+		end
 	end,
 })

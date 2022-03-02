@@ -33,6 +33,29 @@ function mcl_burning.get_touching_nodes(obj, nodenames, storage)
 	return nodes
 end
 
+function mcl_burning.update_hud(player)
+	local animation_frames = tonumber(minetest.settings:get("fire_animation_frames")) or 8
+	local hud_flame_animated = "mcl_burning_hud_flame_animated.png^[opacity:180^[verticalframe:" .. animation_frames .. ":"
+
+	local storage = mcl_burning.get_storage(player)
+	if not storage.fire_hud_id then
+		storage.animation_frame = 1
+		storage.fire_hud_id = player:hud_add({
+			hud_elem_type = "image",
+			position = {x = 0.5, y = 0.5},
+			scale = {x = -100, y = -100},
+			text = hud_flame_animated .. storage.animation_frame,
+			z_index = 1000,
+		})
+	else
+		storage.animation_frame = storage.animation_frame + 1
+		if storage.animation_frame > animation_frames - 1 then
+			storage.animation_frame = 0
+		end
+		player:hud_change(storage.fire_hud_id, "text", hud_flame_animated .. storage.animation_frame)
+	end
+end
+
 function mcl_burning.set_on_fire(obj, burn_time)
 	if obj:get_hp() < 0 then
 		return
@@ -68,8 +91,7 @@ function mcl_burning.set_on_fire(obj, burn_time)
 
 	if not storage.burn_time or burn_time >= storage.burn_time then
 		if obj:is_player() then
-			mcl_burning.channels[obj]:send_all(tostring(mcl_burning.animation_frames))
-			mcl_burning.channels[obj]:send_all("start")
+			mcl_burning.update_hud(obj)
 		end
 		storage.burn_time = burn_time
 		storage.fire_damage_timer = 0
@@ -105,7 +127,9 @@ function mcl_burning.extinguish(obj)
 	if mcl_burning.is_burning(obj) then
 		local storage = mcl_burning.get_storage(obj)
 		if obj:is_player() then
-			mcl_burning.channels[obj]:send_all("stop")
+			if storage.fire_hud_id then
+				obj:hud_remove(storage.fire_hud_id)
+			end
 			mcl_burning.storage[obj] = {}
 		else
 			storage.burn_time = nil
