@@ -60,6 +60,9 @@ minetest.register_on_joinplayer(function(player)
 		storage = minetest.deserialize(burn_data)
 	end
 	mcl_burning.storage[player] = storage
+	if storage.burn_time and storage.burn_time > 0 then
+		mcl_burning.update_hud(player)
+	end
 end)
 
 local function on_leaveplayer(player)
