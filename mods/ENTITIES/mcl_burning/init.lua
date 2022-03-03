@@ -57,7 +57,7 @@ minetest.register_on_joinplayer(function(player)
 	local storage = {}
 	local burn_data = player:get_meta():get_string("mcl_burning:data")
 	if burn_data ~= "" then
-		storage = minetest.deserialize(burn_data)
+		storage = minetest.deserialize(burn_data) or storage
 	end
 	mcl_burning.storage[player] = storage
 	if storage.burn_time and storage.burn_time > 0 then
