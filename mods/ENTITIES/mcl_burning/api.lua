@@ -132,6 +132,7 @@ function mcl_burning.set_on_fire(obj, burn_time)
 		mcl_burning.update_hud(obj)
 	end
 
+	--[[
 	--  FIXME: does this code make sense?  It removes attached fire luaentities from
 	--  another object that happen to be at the same position.
 	local fire_luaentity = fire_entity:get_luaentity()
@@ -142,6 +143,7 @@ function mcl_burning.set_on_fire(obj, burn_time)
 			break
 		end
 	end
+	]]--
 end
 
 function mcl_burning.extinguish(obj)
