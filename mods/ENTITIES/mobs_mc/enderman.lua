@@ -478,7 +478,8 @@ mobs:register_mob("mobs_mc:enderman", {
 						-- Selected node needs to have 3 nodes of free space above
 						for u=1, 3 do
 							local node = minetest.get_node({x=nodepos.x, y=nodepos.y+u, z=nodepos.z})
-							if minetest.registered_nodes[node.name].walkable then
+							local ndef = minetest.registered_nodes[node.name]
+							if ndef and ndef.walkable then
 								node_ok = false
 								break
 							end
@@ -512,7 +513,8 @@ mobs:register_mob("mobs_mc:enderman", {
 							node_ok = true
 							for u=1, 3 do
 								local node = minetest.get_node({x=nodepos.x, y=nodepos.y+u, z=nodepos.z})
-								if minetest.registered_nodes[node.name].walkable then
+								local ndef = minetest.registered_nodes[node.name]
+								if ndef and ndef.walkable then
 									node_ok = false
 									break
 								end

@@ -16,7 +16,8 @@ local spawn_children_on_die = function(child_mob, children_count, spawn_distance
 		if not eject_speed then
 			eject_speed = 1
 		end
-		local mother_stuck = minetest.registered_nodes[minetest.get_node(pos).name].walkable
+		local mndef = minetest.registered_nodes[minetest.get_node(pos).name]
+		local mother_stuck = mndef and mndef.walkable
 		angle = math.random(0, math.pi*2)
 		local children = {}
 		for i=1,children_count do
@@ -26,7 +27,8 @@ local spawn_children_on_die = function(child_mob, children_count, spawn_distance
 			-- If child would end up in a wall, use position of the "mother", unless
 			-- the "mother" was stuck as well
 			local speed_penalty = 1
-			if (not mother_stuck) and minetest.registered_nodes[minetest.get_node(newpos).name].walkable then
+			local cndef = minetest.registered_nodes[minetest.get_node(newpos).name]
+			if (not mother_stuck) and cndef and cndef.walkable then
 				newpos = pos
 				speed_penalty = 0.5
 			end

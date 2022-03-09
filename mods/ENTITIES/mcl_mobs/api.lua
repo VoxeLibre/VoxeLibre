@@ -1328,8 +1328,8 @@ local do_jump = function(self)
 		return false
 	end
 
-	if self.walk_chance == 0
-	or minetest.registered_items[nod.name].walkable then
+	local ndef = minetest.registered_nodes[nod.name]
+	if self.walk_chance == 0 or ndef and ndef.walkable then
 
 		if minetest.get_item_group(nod.name, "fence") == 0
 		and minetest.get_item_group(nod.name, "fence_gate") == 0
