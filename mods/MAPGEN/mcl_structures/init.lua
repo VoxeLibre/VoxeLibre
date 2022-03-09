@@ -179,7 +179,7 @@ function mcl_structures.generate_igloo(pos, rotation, pr)
 			real_depth = real_depth + 1
 			local node = minetest.get_node({x=tpos.x,y=tpos.y-y,z=tpos.z})
 			local def = minetest.registered_nodes[node.name]
-			if (not def) or (not def.walkable) or (def.liquidtype ~= "none") or (not def.is_ground_content) then
+			if not (def and def.walkable and def.liquidtype == "none" and def.is_ground_content) then
 				bpos.y = tpos.y-y+1
 				break
 			end
