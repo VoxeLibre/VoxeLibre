@@ -1,0 +1,16 @@
+CORE/_mcl_autogroup/init.lua:
+-> Enumerates entries of the registered_nodes table.  Safe.
+
+CORE/flowlib/init.lua:
+-> All instances are checked before use.
+
+CORE/mcl_explosions/init.lua:
+-> Enumerates entries of the registered_nodes table.  Safe.
+
+CORE/walkover/init.lua:
+-> Enumerates entries of the registered_nodes table.  Safe.
+
+CORE/mcl_util/init.lua:
+-> All instances are checked before use.
+- should use local.
+- defines mcl_util.call_on_rightclick, but does not use it.

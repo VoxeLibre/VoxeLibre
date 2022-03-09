@@ -139,7 +139,7 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 		for tz = z+1, z+dim.z do
 			local fdef = registered_nodes[get_node({x = tx, y = y_floor  , z = tz}).name]
 			local cdef = registered_nodes[get_node({x = tx, y = y_ceiling, z = tz}).name]
-			if not fdev or not fdev.walkable or not cdev or not cdev.walkable then return false end
+			if not fdef or not fdef.walkable or not cdef or not cdef.walkable then return false end
 		end
 		end
 	end
