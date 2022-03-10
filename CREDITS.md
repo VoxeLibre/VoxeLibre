@@ -13,7 +13,6 @@
 
 ## Previous Maintainers
 * Fleckenstein
-* kay27
 * jordan4ibanez
 
 ## Developers
