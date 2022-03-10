@@ -32,6 +32,12 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	type = "fuel",
+	recipe = "mcl_composters:composter",
+	burntime = 15,
+})
+
 local compostability = {
 	["mcl_cake:cake"] = 100,
 	["mcl_farming:pumpkin_pie"] = 100,

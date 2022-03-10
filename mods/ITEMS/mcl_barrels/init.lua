@@ -146,3 +146,9 @@ minetest.register_craft({
 		{"group:wood", "group:wood_slab", "group:wood"},
 	}
 })
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "mcl_barrels:barrel_closed",
+	burntime = 15,
+})
