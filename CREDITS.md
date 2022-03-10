@@ -79,6 +79,16 @@
 * epCode
 * NO11
 * j45
+* 3raven
+* PrarieWind
+* Gustavo1
+* CableGuy67
+
+## Mineclonia
+* erlehmann
+* Li0n
+* E
+* n_to
 
 ## Original Mod Authors
 * Wuzzy
