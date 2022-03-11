@@ -6,10 +6,14 @@
 ## Creator of MineClone2
 * Wuzzy
 
+
 ## Maintainers
-* Fleckenstein
 * Nicu
-* kay27
+* cora
+
+## Previous Maintainers
+* Fleckenstein
+* jordan4ibanez
 
 ## Developers
 * bzoss
@@ -22,8 +26,7 @@
 * aligator
 * Code-Sploit
 * NO11
-* cora
-* jordan4ibanez
+* kabou
 
 ## Contributors
 * Laurent Rocher
@@ -75,6 +78,16 @@
 * epCode
 * NO11
 * j45
+* 3raven
+* PrarieWind
+* Gustavo1
+* CableGuy67
+
+## Mineclonia
+* erlehmann
+* Li0n
+* E
+* n_to
 
 ## Original Mod Authors
 * Wuzzy
