@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### VINDICATOR
@@ -37,7 +37,7 @@ mobs:register_mob("mobs_mc:vindicator", {
 	reach = 2,
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
-	attack_type = "punch",
+	attack_type = "dogfight",
 	drops = {
 		{name = mobs_mc.items.emerald,
 		chance = 1,

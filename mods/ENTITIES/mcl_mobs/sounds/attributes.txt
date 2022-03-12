@@ -1,4 +1,0 @@
- 
-default_punch.1 = https://freesound.org/people/Merrick079/sounds/566436/
-default_punch.2 = https://freesound.org/people/Merrick079/sounds/566435/
-default_punch.3 = https://freesound.org/people/Merrick079/sounds/566434/

@@ -147,11 +147,23 @@ function mcl_maps.load_map(id)
 	local texture = "mcl_maps_map_texture_" .. id .. ".tga"
 
 	if not loaded_maps[id] then
-		loaded_maps[id] = true
-		dynamic_add_media(map_textures_path .. texture, function() end)
+		if not minetest.features.dynamic_add_media_table then
+			-- minetest.dynamic_add_media() blocks in
+			-- Minetest 5.3 and 5.4 until media loads
+			loaded_maps[id] = true
+			dynamic_add_media(map_textures_path .. texture, function() end)
+		else
+			-- minetest.dynamic_add_media() never blocks
+			-- in Minetest 5.5, callback runs after load
+			dynamic_add_media(map_textures_path .. texture, function()
+				loaded_maps[id] = true
+			end)
+		end
 	end
 
-	return texture
+	if loaded_maps[id] then
+		return texture
+	end
 end
 
 function mcl_maps.load_map_item(itemstack)

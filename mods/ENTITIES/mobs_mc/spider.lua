@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### SPIDER
@@ -17,22 +17,17 @@ local spider = {
 	type = "monster",
 	spawn_class = "hostile",
 	passive = false,
-	hostile = true,
-	always_climb = true,
 	docile_by_day = true,
-	attack_type = "punch",
-	punch_timer_cooloff = 0.5,
-	rotate = 270,
+	attack_type = "dogfight",
+	pathfinding = 1,
 	damage = 2,
 	reach = 2,
 	hp_min = 16,
 	hp_max = 16,
-	ignores_cobwebs = true,
 	xp_min = 5,
 	xp_max = 5,
-	eye_height = 0.475,
 	armor = {fleshy = 100, arthropod = 100},
-	collisionbox = {-0.45, 0, -0.45, 0.45, 0.9, 0.45},
+	collisionbox = {-0.7, -0.01, -0.7, 0.7, 0.89, 0.7},
 	visual = "mesh",
 	mesh = "mobs_mc_spider.b3d",
 	textures = {
@@ -49,7 +44,7 @@ local spider = {
 		distance = 16,
 	},
 	walk_velocity = 1.3,
-	run_velocity = 2.75, --spider can become extremely difficult if any higher
+	run_velocity = 2.8,
 	jump = true,
 	jump_height = 4,
 	view_range = 16,

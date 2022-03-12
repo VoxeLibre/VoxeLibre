@@ -54,7 +54,7 @@ minetest.register_node("mcl_core:reeds", {
 	_doc_items_usagehelp = S("Sugar canes can only be placed top of other sugar canes and on top of blocks on which they would grow."),
 	drawtype = "plantlike",
 	paramtype2 = "color",
-	tiles = {"default_papyrus.png"},
+	tiles = {"mcl_core_papyrus.png"},
 	palette = "mcl_core_palette_grass.png",
 	palette_index = 0,
 	inventory_image = "mcl_core_reeds.png",

@@ -256,6 +256,8 @@ function minetest.handle_node_drops(pos, drops, digger)
 
 	local silk_touch_drop = false
 	local nodedef = minetest.registered_nodes[dug_node.name]
+	if not nodedef then return end
+
 	if shearsy_level and shearsy_level > 0 and nodedef._mcl_shears_drop then
 		if nodedef._mcl_shears_drop == true then
 			drops = { dug_node.name }

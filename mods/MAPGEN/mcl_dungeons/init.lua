@@ -134,10 +134,15 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 	-- Check floor and ceiling: Must be *completely* solid
 	local y_floor = y
 	local y_ceiling = y + dim.y + 1
-	if check then for tx = x+1, x+dim.x do for tz = z+1, z+dim.z do
-		if not registered_nodes[get_node({x = tx, y = y_floor  , z = tz}).name].walkable
-		or not registered_nodes[get_node({x = tx, y = y_ceiling, z = tz}).name].walkable then return false end
-	end end end
+	if check then
+		for tx = x+1, x+dim.x do
+		for tz = z+1, z+dim.z do
+			local fdef = registered_nodes[get_node({x = tx, y = y_floor  , z = tz}).name]
+			local cdef = registered_nodes[get_node({x = tx, y = y_ceiling, z = tz}).name]
+			if not fdef or not fdef.walkable or not cdef or not cdef.walkable then return false end
+		end
+		end
+	end
 
 	-- Check for air openings (2 stacked air at ground level) in wall positions
 	local openings_counter = 0
@@ -287,7 +292,8 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 		-- Do not overwrite nodes with is_ground_content == false (e.g. bedrock)
 		-- Exceptions: cobblestone and mossy cobblestone so neighborings dungeons nicely connect to each other
 		local name = get_node(p).name
-		if registered_nodes[name].is_ground_content or name == "mcl_core:cobble" or name == "mcl_core:mossycobble" then
+		local rn = registered_nodes[name]
+		if rn and rn.is_ground_content or name == "mcl_core:cobble" or name == "mcl_core:mossycobble" then
 			-- Floor
 			if ty == y then
 				if pr:next(1,4) == 1 then

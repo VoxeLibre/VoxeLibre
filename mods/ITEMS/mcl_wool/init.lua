@@ -71,7 +71,6 @@ for _, row in ipairs(wool.dyes) do
 			_doc_items_entry_name = name_carpet,
 			_doc_items_longdesc = longdesc_carpet,
 
-			walkable = false, -- See <https://minecraft.gamepedia.com/Materials>
 			is_ground_content = false,
 			tiles = {texture..".png"},
 			wield_image = texture..".png",

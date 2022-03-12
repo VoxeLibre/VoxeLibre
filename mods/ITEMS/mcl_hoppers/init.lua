@@ -343,7 +343,7 @@ minetest.register_abm({
 		local abovenode = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z})
 		if not minetest.registered_items[abovenode.name] then return end
 		-- Don't bother checking item enties if node above is a container (should save some CPU)
-		if minetest.registered_items[abovenode.name].groups.container then
+		if minetest.get_item_group(abovenode.name, "container") ~= 0 then
 			return
 		end
 		local meta = minetest.get_meta(pos)
@@ -397,7 +397,7 @@ minetest.register_abm({
 		-- Suck an item from the container above into the hopper
 		local upnode = minetest.get_node(uppos)
 		if not minetest.registered_nodes[upnode.name] then return end
-		local g = minetest.registered_nodes[upnode.name].groups.container
+		local g = minetest.get_item_group(upnode.name, "container")
 		local sucked = mcl_util.move_item_container(uppos, pos)
 
 		-- Also suck in non-fuel items from furnace fuel slot
@@ -442,7 +442,7 @@ minetest.register_abm({
 		-- Suck an item from the container above into the hopper
 		local abovenode = minetest.get_node(above)
 		if not minetest.registered_nodes[abovenode.name] then return end
-		local g = minetest.registered_nodes[abovenode.name].groups.container
+		local g = minetest.get_item_group(abovenode.name, "container")
 		local sucked = mcl_util.move_item_container(above, pos)
 
 		-- Also suck in non-fuel items from furnace fuel slot
@@ -454,7 +454,7 @@ minetest.register_abm({
 		end
 
 		-- Move an item from the hopper into the container to which the hopper points to
-		local g = minetest.registered_nodes[frontnode.name].groups.container
+		local g = minetest.get_item_group(frontnode.name, "container")
 		if g == 2 or g == 3 or g == 5 or g == 6 then
 			mcl_util.move_item_container(pos, front)
 		elseif g == 4 then

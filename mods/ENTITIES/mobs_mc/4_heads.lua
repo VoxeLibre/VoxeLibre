@@ -3,9 +3,8 @@
 
 -- NOTE: Strings intentionally not marked for translation, other mods already have these items.
 -- TODO: Remove this file eventually, all items here are already outsourced in other mods.
--- TODO: Add translation.
 
---local S = local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 
 -- Heads system
 

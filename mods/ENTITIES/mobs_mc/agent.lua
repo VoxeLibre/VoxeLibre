@@ -2,7 +2,7 @@
 --################### AGENT - seemingly unused
 --###################
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:agent", {
 	type = "npc",
