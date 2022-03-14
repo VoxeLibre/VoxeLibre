@@ -226,7 +226,8 @@ minetest.register_abm({
 		end
 		local posses = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } }
 		for _, p in pairs(posses) do
-			if minetest.registered_nodes[minetest.get_node(vector.new(pos.x + p[1], pos.y, pos.z + p[2])).name].walkable then
+			local ndef = minetest.registered_nodes[minetest.get_node(vector.new(pos.x + p[1], pos.y, pos.z + p[2])).name]
+			if ndef and ndef.walkable then
 				local posy = pos.y
 				while minetest.get_node(vector.new(pos.x, posy, pos.z)).name == "mcl_core:cactus" do
 					local pos = vector.new(pos.x, posy, pos.z)
@@ -857,7 +858,7 @@ minetest.register_abm({
 			-- If this was mycelium, uproot plant above
 			if n2.name == "mcl_core:mycelium" then
 				local tad = minetest.registered_nodes[minetest.get_node(above).name]
-				if tad.groups and tad.groups.non_mycelium_plant then
+				if tad and tad.groups and tad.groups.non_mycelium_plant then
 					minetest.dig_node(above)
 				end
 			end
@@ -1349,7 +1350,7 @@ minetest.register_abm({
 function mcl_core.supports_vines(nodename)
 	local def = minetest.registered_nodes[nodename]
 	-- Rules: 1) walkable 2) full cube
-	return def.walkable and
+	return def and def.walkable and
 			(def.node_box == nil or def.node_box.type == "regular") and
 			(def.collision_box == nil or def.collision_box.type == "regular")
 end

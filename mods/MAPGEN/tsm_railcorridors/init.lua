@@ -153,16 +153,16 @@ local function SetNodeIfCanBuild(pos, node, check_above, can_replace_rail)
 		local abovename = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z}).name
 		local abovedef = minetest.registered_nodes[abovename]
 		if abovename == "unknown" or abovename == "ignore" or
-				(abovedef.groups and abovedef.groups.attached_node) or
+				(abovedef and abovedef.groups and abovedef.groups.attached_node) or
 				-- This is done because cobwebs are often fake liquids
-				(abovedef.liquidtype ~= "none" and abovename ~= tsm_railcorridors.nodes.cobweb) then
+				(abovedef and abovedef.liquidtype ~= "none" and abovename ~= tsm_railcorridors.nodes.cobweb) then
 			return false
 		end
 	end
 	local name = minetest.get_node(pos).name
 	local def = minetest.registered_nodes[name]
 	if name ~= "unknown" and name ~= "ignore" and
-			((def.is_ground_content and def.liquidtype == "none") or
+			((def and def.is_ground_content and def.liquidtype == "none") or
 			name == tsm_railcorridors.nodes.cobweb or
 			name == tsm_railcorridors.nodes.torch_wall or
 			name == tsm_railcorridors.nodes.torch_floor or
@@ -191,7 +191,7 @@ end
 local function IsGround(pos)
 	local nodename = minetest.get_node(pos).name
 	local nodedef = minetest.registered_nodes[nodename]
-	return nodename ~= "unknown" and nodename ~= "ignore" and nodedef.is_ground_content and nodedef.walkable and nodedef.liquidtype == "none"
+	return nodename ~= "unknown" and nodename ~= "ignore" and nodedef and nodedef.is_ground_content and nodedef.walkable and nodedef.liquidtype == "none"
 end
 
 -- Returns true if rails are allowed to be placed on top of this node
@@ -199,7 +199,7 @@ local function IsRailSurface(pos)
 	local nodename = minetest.get_node(pos).name
 	local nodename_above = minetest.get_node({x=pos.x,y=pos.y+2,z=pos.z}).name
 	local nodedef = minetest.registered_nodes[nodename]
-	return nodename ~= "unknown" and nodename ~= "ignore" and nodedef.walkable and (nodedef.node_box == nil or nodedef.node_box.type == "regular") and nodename_above ~= tsm_railcorridors.nodes.rail
+	return nodename ~= "unknown" and nodename ~= "ignore" and nodedef and nodedef.walkable and (nodedef.node_box == nil or nodedef.node_box.type == "regular") and nodename_above ~= tsm_railcorridors.nodes.rail
 end
 
 -- Checks if the node is empty space which requires to be filled by a platform
@@ -210,7 +210,7 @@ local function NeedsPlatform(pos)
 	local falling = minetest.get_item_group(node.name, "falling_node") == 1
 	return
 		-- Node can be replaced if ground content or rail
-		(node.name ~= "ignore" and node.name ~= "unknown" and nodedef.is_ground_content) and
+		(node.name ~= "ignore" and node.name ~= "unknown" and nodedef and nodedef.is_ground_content) and
 		-- Node needs platform if node below is not walkable.
 		-- Unless 2 nodes below there is dirt: This is a special case for the starter cube.
 		((nodedef.walkable == false and node2.name ~= tsm_railcorridors.nodes.dirt) or
@@ -252,7 +252,7 @@ local function Cube(p, radius, node, replace_air_only, wood, post)
 					if yi == y_top then
 						local topnode = minetest.get_node({x=xi,y=yi+1,z=zi})
 						local topdef = minetest.registered_nodes[topnode.name]
-						if minetest.get_item_group(topnode.name, "attached_node") ~= 1 and topdef.liquidtype == "none" then
+						if minetest.get_item_group(topnode.name, "attached_node") ~= 1 and topdef and topdef.liquidtype == "none" then
 							ok = true
 						end
 					elseif column_last_attached and yi == column_last_attached - 1 then
@@ -276,7 +276,7 @@ local function Cube(p, radius, node, replace_air_only, wood, post)
 						elseif wood and (xi == p.x or zi == p.z) and thisnode.name == wood then
 							local topnode = minetest.get_node({x=xi,y=yi+1,z=zi})
 							local topdef = minetest.registered_nodes[topnode.name]
-							if topdef.walkable and topnode.name ~= wood then
+							if topdef and topdef.walkable and topnode.name ~= wood then
 								minetest.set_node({x=xi,y=yi,z=zi}, node)
 								-- Check for torches around the wood and schedule them
 								-- for removal
@@ -428,7 +428,7 @@ local function TryPlaceCobweb(pos, needs_check, side_vector)
 			local cpos = vector.add(pos, check_vectors[c])
 			local cname = minetest.get_node(cpos).name
 			local cdef = minetest.registered_nodes[cname]
-			if cname ~= "ignore" and cdef.walkable then
+			if cname ~= "ignore" and cdef and cdef.walkable then
 				check_passed = true
 				break
 			end
@@ -522,12 +522,12 @@ local function WoodSupport(p, wood, post, torches, dir, torchdir)
 		local nodedef1 = minetest.registered_nodes[minetest.get_node(pos1).name]
 		local nodedef2 = minetest.registered_nodes[minetest.get_node(pos2).name]
 
-		if nodedef1.walkable then
+		if nodedef1 and nodedef1.walkable then
 			pos1.y = pos1.y + 1
 		end
 		SetNodeIfCanBuild(pos1, node, true)
 
-		if nodedef2.walkable then
+		if nodedef2 and nodedef2.walkable then
 			pos2.y = pos2.y + 1
 		end
 		SetNodeIfCanBuild(pos2, node, true)

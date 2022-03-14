@@ -1,6 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### CREEPER
@@ -12,8 +12,6 @@ local S = minetest.get_translator(minetest.get_current_modname())
 mobs:register_mob("mobs_mc:creeper", {
 	type = "monster",
 	spawn_class = "hostile",
-	hostile = true,
-	rotate = 270,
 	hp_min = 20,
 	hp_max = 20,
 	xp_min = 5,
@@ -35,44 +33,28 @@ mobs:register_mob("mobs_mc:creeper", {
 		explode = "tnt_explode",
 		distance = 16,
 	},
-	makes_footstep_sound = false,
+	makes_footstep_sound = true,
 	walk_velocity = 1.05,
 	run_velocity = 2.1,
 	runaway_from = { "mobs_mc:ocelot", "mobs_mc:cat" },
 	attack_type = "explode",
-	eye_height = 1.25,
+
 	--hssssssssssss
 
 	explosion_strength = 3,
-	--explosion_radius = 3,
-	--explosion_damage_radius = 6,
-	--explosiontimer_reset_radius = 6,
+	explosion_radius = 3.5,
+	explosion_damage_radius = 3.5,
+	explosiontimer_reset_radius = 6,
 	reach = 3,
-	defuse_reach = 5.2,
-	explosion_timer = 0.3,
+	explosion_timer = 1.5,
 	allow_fuse_reset = true,
 	stop_to_explode = true,
-
-	--head code
-	has_head = true,
-	head_bone = "head",
-
-	swap_y_with_x = true,
-	reverse_head_yaw = true,
-
-	head_bone_pos_y = 2.4,
-	head_bone_pos_z = 0,
-
-	head_height_offset = 1.1,
-	head_direction_offset = 0,
-	head_pitch_modifier = 0,
-	--end head code
 
 	-- Force-ignite creeper with flint and steel and explode after 1.5 seconds.
 	-- TODO: Make creeper flash after doing this as well.
 	-- TODO: Test and debug this code.
 	on_rightclick = function(self, clicker)
-		if self._forced_explosion_countdown_timer then
+		if self._forced_explosion_countdown_timer ~= nil then
 			return
 		end
 		local item = clicker:get_wielded_item()
@@ -92,11 +74,10 @@ mobs:register_mob("mobs_mc:creeper", {
 		end
 	end,
 	do_custom = function(self, dtime)
-		if self._forced_explosion_countdown_timer then
+		if self._forced_explosion_countdown_timer ~= nil then
 			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
 			if self._forced_explosion_countdown_timer <= 0 then
-				local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
-				mcl_explosions.explode(mcl_util.get_object_center(self.object), self.explosion_strength, { griefing = mobs_griefing, drop_chance = 1.0}, self.object)
+				mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)
 			end
 		end
 	end,
@@ -149,10 +130,9 @@ mobs:register_mob("mobs_mc:creeper", {
 })
 
 mobs:register_mob("mobs_mc:creeper_charged", {
-	description = S("Charged Creeper"),
+	description = S("Creeper"),
 	type = "monster",
 	spawn_class = "hostile",
-	hostile = true,
 	hp_min = 20,
 	hp_max = 20,
 	xp_min = 5,
@@ -169,7 +149,6 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 		"mobs_mc_creeper_charge.png"},
 	},
 	visual_size = {x=3, y=3},
-	rotate = 270,
 	sounds = {
 		attack = "tnt_ignite",
 		death = "mobs_mc_creeper_death",
@@ -178,19 +157,18 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 		explode = "tnt_explode",
 		distance = 16,
 	},
-	makes_footstep_sound = false,
+	makes_footstep_sound = true,
 	walk_velocity = 1.05,
 	run_velocity = 2.1,
 	runaway_from = { "mobs_mc:ocelot", "mobs_mc:cat" },
 	attack_type = "explode",
 
 	explosion_strength = 6,
-	--explosion_radius = 3,
-	--explosion_damage_radius = 6,
-	--explosiontimer_reset_radius = 3,
+	explosion_radius = 8,
+	explosion_damage_radius = 8,
+	explosiontimer_reset_radius = 6,
 	reach = 3,
-	defuse_reach = 5.2,
-	explosion_timer = 0.3,
+	explosion_timer = 1.5,
 	allow_fuse_reset = true,
 	stop_to_explode = true,
 
@@ -198,7 +176,7 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 	-- TODO: Make creeper flash after doing this as well.
 	-- TODO: Test and debug this code.
 	on_rightclick = function(self, clicker)
-		if self._forced_explosion_countdown_timer then
+		if self._forced_explosion_countdown_timer ~= nil then
 			return
 		end
 		local item = clicker:get_wielded_item()
@@ -218,11 +196,10 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 		end
 	end,
 	do_custom = function(self, dtime)
-		if self._forced_explosion_countdown_timer then
+		if self._forced_explosion_countdown_timer ~= nil then
 			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
 			if self._forced_explosion_countdown_timer <= 0 then
-				local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
-				mcl_explosions.explode(mcl_util.get_object_center(self.object), self.explosion_strength, { griefing = mobs_griefing, drop_chance = 1.0}, self.object)
+				mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)
 			end
 		end
 	end,

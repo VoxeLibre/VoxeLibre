@@ -548,7 +548,7 @@ local function get_recipe_fs(data, iY)
 				 shapeless and "shapeless" or "furnace"
 
 		if recipe.type == "cooking" then
-			icon = "default_furnace_front_active.png"
+			icon = "craftguide_furnace.png"
 		elseif not custom_recipe then
 			icon = fmt("craftguide_%s.png", icon)
 		end

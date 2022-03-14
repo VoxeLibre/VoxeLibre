@@ -4,7 +4,7 @@
 --################### SQUID
 --###################
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:squid", {
 	description = S("Squid"),
@@ -17,8 +17,6 @@ mobs:register_mob("mobs_mc:squid", {
     xp_min = 1,
     xp_max = 3,
     armor = 100,
-    rotate = 270,
-    tilt_swim = true,
     -- FIXME: If the squid is near the floor, it turns black
     collisionbox = {-0.4, 0.0, -0.4, 0.4, 0.9, 0.4},
     visual = "mesh",
@@ -50,7 +48,8 @@ mobs:register_mob("mobs_mc:squid", {
 	},
     visual_size = {x=3, y=3},
     makes_footstep_sound = false,
-    swim = true,
+    fly = true,
+    fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
     breathes_in_water = true,
     jump = false,
     view_range = 16,

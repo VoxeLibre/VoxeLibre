@@ -1,6 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 
 -- Returns a function that spawns children in a circle around pos.
 -- To be used as on_die callback.
@@ -16,7 +16,8 @@ local spawn_children_on_die = function(child_mob, children_count, spawn_distance
 		if not eject_speed then
 			eject_speed = 1
 		end
-		local mother_stuck = minetest.registered_nodes[minetest.get_node(pos).name].walkable
+		local mndef = minetest.registered_nodes[minetest.get_node(pos).name]
+		local mother_stuck = mndef and mndef.walkable
 		angle = math.random(0, math.pi*2)
 		local children = {}
 		for i=1,children_count do
@@ -26,27 +27,26 @@ local spawn_children_on_die = function(child_mob, children_count, spawn_distance
 			-- If child would end up in a wall, use position of the "mother", unless
 			-- the "mother" was stuck as well
 			local speed_penalty = 1
-			if (not mother_stuck) and minetest.registered_nodes[minetest.get_node(newpos).name].walkable then
+			local cndef = minetest.registered_nodes[minetest.get_node(newpos).name]
+			if (not mother_stuck) and cndef and cndef.walkable then
 				newpos = pos
 				speed_penalty = 0.5
 			end
 			local mob = minetest.add_entity(newpos, child_mob)
-			if mob then
-				if (not mother_stuck) then
-					mob:set_velocity(vector.multiply(dir, eject_speed * speed_penalty))
-				end
-				mob:set_yaw(angle - math.pi/2)
-				table.insert(children, mob)
-				angle = angle + (math.pi*2)/children_count
+			if (not mother_stuck) then
+				mob:set_velocity(vector.multiply(dir, eject_speed * speed_penalty))
 			end
+			mob:set_yaw(angle - math.pi/2)
+			table.insert(children, mob)
+			angle = angle + (math.pi*2)/children_count
 		end
 		-- If mother was murdered, children attack the killer after 1 second
 		if self.state == "attack" then
 			minetest.after(1.0, function(children, enemy)
-				for c = 1, #children do
+				for c=1, #children do
 					local child = children[c]
 					local le = child:get_luaentity()
-					if le then
+					if le ~= nil then
 						le.state = "attack"
 						le.attack = enemy
 					end
@@ -66,7 +66,6 @@ local slime_big = {
 	hp_max = 16,
 	xp_min = 4,
 	xp_max = 4,
-	rotate = 270,
 	collisionbox = {-1.02, -0.01, -1.02, 1.02, 2.03, 1.02},
 	visual_size = {x=12.5, y=12.5},
 	textures = {{"mobs_mc_slime.png", "mobs_mc_slime.png"}},
@@ -98,9 +97,8 @@ local slime_big = {
 	},
 	fall_damage = 0,
 	view_range = 16,
-	attack_type = "jump_punch",
+	attack_type = "dogfight",
 	passive = false,
-	jump_only = true,
 	jump = true,
 	walk_velocity = 2.5,
 	run_velocity = 2.5,
@@ -313,7 +311,6 @@ local magma_cube_big = {
 	},
 	walk_velocity = 4,
 	run_velocity = 4,
-	rotate = 270,
 	damage = 6,
 	reach = 3,
 	armor = 53,
@@ -337,13 +334,12 @@ local magma_cube_big = {
 	},
 	water_damage = 0,
 	lava_damage = 0,
-    fire_damage = 0,
+        fire_damage = 0,
 	light_damage = 0,
 	fall_damage = 0,
 	view_range = 16,
-	attack_type = "jump_punch",
+	attack_type = "dogfight",
 	passive = false,
-	jump_only = true,
 	jump = true,
 	jump_height = 8,
 	walk_chance = 0,

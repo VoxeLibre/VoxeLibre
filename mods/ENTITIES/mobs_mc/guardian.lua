@@ -2,7 +2,7 @@
 --################### GUARDIAN
 --###################
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:guardian", {
 	description = S("Guardian"),
@@ -13,8 +13,8 @@ mobs:register_mob("mobs_mc:guardian", {
 	xp_min = 10,
 	xp_max = 10,
 	breath_max = -1,
-    passive = false,
-	attack_type = "punch",
+    	passive = false,
+	attack_type = "dogfight",
 	pathfinding = 1,
 	view_range = 16,
 	walk_velocity = 2,
@@ -94,6 +94,7 @@ mobs:register_mob("mobs_mc:guardian", {
 	makes_footstep_sound = false,
 	fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
 	jump = false,
+	view_range = 16,
 })
 
 -- Spawning disabled due to size issues

@@ -176,7 +176,7 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/blocks,cobblestone_mossy.png,/mods/ITEMS/mcl_core/textures,default_mossycobble.png,,,,,,,
 /assets/minecraft/textures/blocks,obsidian.png,/mods/ITEMS/mcl_core/textures,default_obsidian.png,,,,,,,
 /assets/minecraft/textures/items,paper.png,/mods/ITEMS/mcl_core/textures,default_paper.png,,,,,,,
-/assets/minecraft/textures/blocks,reeds.png,/mods/ITEMS/mcl_core/textures,default_papyrus.png,,,,,,,
+/assets/minecraft/textures/blocks,reeds.png,/mods/ITEMS/mcl_core/textures,mcl_core_papyrus.png,,,,,,,
 /assets/minecraft/textures/blocks,sand.png,/mods/ITEMS/mcl_core/textures,default_sand.png,,,,,,,
 /assets/minecraft/textures/blocks,snow.png,/mods/ITEMS/mcl_core/textures,default_snow.png,,,,,,,
 /assets/minecraft/textures/blocks,iron_block.png,/mods/ITEMS/mcl_core/textures,default_steel_block.png,,,,,,,

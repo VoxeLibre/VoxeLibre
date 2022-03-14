@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### EVOKER
@@ -35,7 +35,7 @@ mobs:register_mob("mobs_mc:evoker", {
 	walk_velocity = 0.2,
 	run_velocity = 1.4,
 	group_attack = true,
-	attack_type = "punch",
+	attack_type = "dogfight",
 	-- Summon vexes
 	custom_attack = function(self, to_attack)
 		local r = pr:next(2,4)

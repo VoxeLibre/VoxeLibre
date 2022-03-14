@@ -292,7 +292,8 @@ local function spawn_dungeon(p1, p2, dim, pr, dontcheck)
 		-- Do not overwrite nodes with is_ground_content == false (e.g. bedrock)
 		-- Exceptions: cobblestone and mossy cobblestone so neighborings dungeons nicely connect to each other
 		local name = get_node(p).name
-		if registered_nodes[name].is_ground_content or name == "mcl_core:cobble" or name == "mcl_core:mossycobble" then
+		local rn = registered_nodes[name]
+		if rn and rn.is_ground_content or name == "mcl_core:cobble" or name == "mcl_core:mossycobble" then
 			-- Floor
 			if ty == y then
 				if pr:next(1,4) == 1 then

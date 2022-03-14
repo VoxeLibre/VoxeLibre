@@ -110,7 +110,7 @@ minetest.register_globalstep(function(dtime)
 			if tick == true and pool[name] > 0 then
 				minetest.sound_play("item_drop_pickup", {
 					pos = pos,
-					gain = 0.7,
+					gain = 0.3,
 					max_hear_distance = 16,
 					pitch = math.random(70,110)/100
 				})
@@ -256,6 +256,8 @@ function minetest.handle_node_drops(pos, drops, digger)
 
 	local silk_touch_drop = false
 	local nodedef = minetest.registered_nodes[dug_node.name]
+	if not nodedef then return end
+
 	if shearsy_level and shearsy_level > 0 and nodedef._mcl_shears_drop then
 		if nodedef._mcl_shears_drop == true then
 			drops = { dug_node.name }
