@@ -1,4 +1,4 @@
-# mcl_time v2.0
+# mcl_time v2.2
 ## by kay27 for MineClone 5
 ---------------------------
 This mod counts time when all players sleep or some area is inactive.

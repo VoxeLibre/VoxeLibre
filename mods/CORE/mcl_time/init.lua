@@ -61,10 +61,10 @@ local function get_seconds_irl()
 		next_save_seconds_irl = seconds_irl + save_to_storage_interval
 	end
 
-	return seconds_irl
+	return math.floor(seconds_irl)
 end
 
-local seconds_irl_public = get_seconds_irl()
+seconds_irl_public = get_seconds_irl()
 
 function mcl_time.get_seconds_irl()
 	return seconds_irl_public
@@ -102,7 +102,7 @@ function mcl_time.get_number_of_times_at_pos(pos, interval, chance)
 	local meta = minetest.get_meta(pos)
 	local last_time = meta:get_int(meta_name)
 	meta:set_int(meta_name, seconds_irl_public)
-	local number_of_times = (last_time == 0) and 0 or get_number_of_times(last_time, interval, chance)
+	local number_of_times = (last_time <= 0) and 0 or get_number_of_times(last_time, interval, chance)
 	return number_of_times
 end
 
@@ -125,7 +125,7 @@ function mcl_time.get_irl_seconds_passed_at_pos(pos)
 	local meta = minetest.get_meta(pos)
 	local last_time = meta:get_int(meta_name)
 	meta:set_int(meta_name, seconds_irl_public)
-	local irl_seconds_passed = (last_time == 0) and 0 or (seconds_irl_public - last_time)
+	local irl_seconds_passed = (last_time <= 0) and 0 or (seconds_irl_public - last_time)
 	return irl_seconds_passed
 end
 
@@ -135,7 +135,7 @@ function mcl_time.get_irl_seconds_passed_at_pos_or_1(pos)
 	local meta = minetest.get_meta(pos)
 	local last_time = meta:get_int(meta_name)
 	meta:set_int(meta_name, seconds_irl_public)
-	local irl_seconds_passed = (last_time == 0) and 1 or (seconds_irl_public - last_time)
+	local irl_seconds_passed = (last_time <= 0) and 1 or (seconds_irl_public - last_time)
 	return irl_seconds_passed
 end
 
@@ -145,9 +145,10 @@ function mcl_time.get_irl_seconds_passed_at_pos_or_nil(pos)
 	local meta = minetest.get_meta(pos)
 	local last_time = meta:get_int(meta_name)
 	meta:set_int(meta_name, seconds_irl_public)
-	if last_time == 0 then return end
+	if last_time <= 0 then return end
 	local delta_time = seconds_irl_public - last_time
 	if delta_time <= 0 then return end
+	meta:set_int(meta_name, seconds_irl_public)
 	return delta_time
 end
 

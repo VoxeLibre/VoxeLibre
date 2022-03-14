@@ -14,28 +14,28 @@ local order = { -- mcl_mapgen.order...
 -- Begin of Compatibility stuff
 
 local function unsigned(v)
-    if v < 0 then
-        v = 0x100000000 - (math.abs(v) % 0x100000000)
-    end
-    return v % 0x100000000
+	if v < 0 then
+		v = 0x100000000 - (math.abs(v) % 0x100000000)
+	end
+	return v % 0x100000000
 end
 
 if bit == nil then
-    bit = {}
-    function bit.bxor(a, b)
-        local a = unsigned(a)
-        local b = unsigned(b)
-        local c = 0
-        for n = 31, 0, -1 do
-            local mask = math.floor(2^n)
-            if (a >= mask) ~= (b >= mask) then
-                c = c + mask
-            end
-            a = a % mask
-            b = b % mask
-         end
-         return c
-     end
+	bit = {}
+	function bit.bxor(a, b)
+		local a = unsigned(a)
+		local b = unsigned(b)
+		local c = 0
+		for n = 31, 0, -1 do
+			local mask = math.floor(2^n)
+			if (a >= mask) ~= (b >= mask) then
+				c = c + mask
+			end
+			a = a % mask
+			b = b % mask
+		end
+		return c
+	end
 end
 
 if vector.metatable == nil then
@@ -455,7 +455,7 @@ mcl_mapgen.bedrock_is_rough = normal
 overworld.min = -62
 if superflat then
 	mcl_mapgen.ground = tonumber(minetest.get_mapgen_setting("mgflat_ground_level")) or 8
-	overworld.min = ground - 3
+	overworld.min = mcl_mapgen.ground - 3
 end
 -- if singlenode then mcl_mapgen.overworld.min = -66 end -- DONT KNOW WHY
 overworld.max = mcl_mapgen.EDGE_MAX

@@ -1,6 +1,6 @@
 mcl_villages                     = {}
-local chance_per_chunk           = 90
-local chunk_offset_top           = 15
+local chance_per_chunk           = 100
+local chunk_offset_top           = 16
 local chunk_offset_bottom        = 3
 local max_height_difference      = 12
 local minp_min                   = -64
@@ -436,7 +436,7 @@ local function build_a_village(minp, maxp, pr, placer)
 end
 
 -- Disable natural generation in singlenode.
-if mcl_mapgen.name ~= "singlenode" then
+if not mcl_mapgen.singlenode then
 	local scan_last_node = mcl_mapgen.LAST_BLOCK * mcl_mapgen.BS - 1
 	local scan_offset    = mcl_mapgen.BS
 	mcl_mapgen.register_mapgen(function(minp, maxp, chunkseed)
