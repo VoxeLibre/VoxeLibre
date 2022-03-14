@@ -4,10 +4,10 @@ local modpath = minetest.get_modpath(modname)
 -- Check: v7 apple 28530,6,28070
 -- Check: v7 apple -16343,24,5330
 
-local chance_per_chunk = 30
+local chance_per_chunk = 50
 local noise_multiplier = 1.3
 local random_offset    = 132
-local struct_threshold = chance_per_chunk
+local struct_threshold = chance_per_chunk - 1
 local scanning_ratio   = 0.0003
 
 local mcl_structures_get_perlin_noise_level = mcl_structures.get_perlin_noise_level
