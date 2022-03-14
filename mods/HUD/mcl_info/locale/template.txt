@@ -1,0 +1,4 @@
+# textdomain: mcl_info
+Set debug bit mask: 0 @= disable, 1 @= biome name, 2 @= coordinates, 3 @= all=
+Error! Possible values are integer numbers from @1 to @2=
+Debug bit mask set to @1=
