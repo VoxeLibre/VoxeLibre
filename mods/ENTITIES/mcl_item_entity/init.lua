@@ -110,7 +110,7 @@ minetest.register_globalstep(function(dtime)
 			if tick == true and pool[name] > 0 then
 				minetest.sound_play("item_drop_pickup", {
 					pos = pos,
-					gain = 0.7,
+					gain = 0.3,
 					max_hear_distance = 16,
 					pitch = math.random(70,110)/100
 				})
