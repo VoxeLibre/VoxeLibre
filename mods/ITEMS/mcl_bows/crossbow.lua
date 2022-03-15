@@ -116,7 +116,7 @@ end
 
 -- Bow item, uncharged state
 minetest.register_tool("mcl_bows:crossbow", {
-	description = S("Corssbow"),
+	description = S("Crossbow"),
 	_tt_help = S("Launches arrows"),
 	_doc_items_longdesc = S("Bows are ranged weapons to shoot arrows at your foes.").."\n"..
 S("The speed and damage of the arrow increases the longer you charge. The regular damage of the arrow is between 1 and 9. At full charge, there's also a 20% of a critical hit, dealing 10 damage instead."),
