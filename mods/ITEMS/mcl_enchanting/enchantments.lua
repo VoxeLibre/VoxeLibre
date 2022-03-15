@@ -389,6 +389,7 @@ mcl_experience.register_on_add_xp(function(player, xp)
 		{list = "armor", index = 3},
 		{list = "armor", index = 4},
 		{list = "armor", index = 5},
+		{list = "offhand", index = 1},
 	}
 
 	local final_candidates = {}

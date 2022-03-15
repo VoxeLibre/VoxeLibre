@@ -20,10 +20,26 @@ end)
 
 for _, action in pairs({"grant", "revoke"}) do
 	minetest["register_on_priv_" .. action](function(name, _, priv)
-		if priv == "fly" then
-			local player = minetest.get_player_by_name(name)
+		local player = minetest.get_player_by_name(name)
+		if player then
 			local meta = player:get_meta()
-			meta:set_int("fly_changed", 1)
+
+			if priv == "fly" then
+				meta:set_int("fly_changed", 1)
+			end
+
+			--[[
+				so e.g. hackers who have been revoked of the interact privilege
+				will not automatically get the interact privilege through the mcl shields code back
+			]]
+
+			if priv == "interact" then
+				if action == "revoke" then
+					meta:set_int("ineract_revoked", 1)
+				else
+					meta:set_int("ineract_revoked", 0)
+				end
+			end
 		end
 	end)
 end
