@@ -60,8 +60,6 @@ local flat = mcl_mapgen.flat
 
 -- Content IDs
 local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
-local c_dirt = minetest.get_content_id("mcl_core:dirt")
-local c_dirt_with_grass = minetest.get_content_id("mcl_core:dirt_with_grass")
 local c_void = minetest.get_content_id("mcl_core:void")
 local c_lava = minetest.get_content_id("mcl_core:lava_source")
 

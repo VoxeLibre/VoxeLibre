@@ -5,6 +5,7 @@ local mcl_mushrooms = minetest.get_modpath("mcl_mushrooms")
 local c_water = minetest.get_content_id("mcl_core:water_source")
 local c_stone = minetest.get_content_id("mcl_core:stone")
 local c_sand = minetest.get_content_id("mcl_core:sand")
+local c_dirt = minetest.get_content_id("mcl_core:dirt")
 
 local c_soul_sand = minetest.get_content_id("mcl_nether:soul_sand")
 local c_netherrack = minetest.get_content_id("mcl_nether:netherrack")

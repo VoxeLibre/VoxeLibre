@@ -1,3 +1,4 @@
+local c_dirt_with_grass      = minetest.get_content_id("mcl_core:dirt_with_grass")
 local c_dirt_with_grass_snow = minetest.get_content_id("mcl_core:dirt_with_grass_snow")
 local c_top_snow             = minetest.get_content_id("mcl_core:snow")
 local c_snow_block           = minetest.get_content_id("mcl_core:snowblock")
