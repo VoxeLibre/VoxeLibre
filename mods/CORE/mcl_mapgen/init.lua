@@ -364,7 +364,7 @@ minetest.register_on_generated(function(minp, maxp, chunkseed)
 		--  mcl_mapgen.register_mapgen_lvm(function(vm_context), order_number)    --
 		--                                                                        --
 		for _, v in pairs(queue_chunks_lvm) do
-			vm_context = v.f(vm_context)
+			v.f(vm_context)
 		end
 		--                                                                                         --
 		--  mcl_mapgen.register_mapgen(function(minp, maxp, chunkseed, vm_context), order_number)  --

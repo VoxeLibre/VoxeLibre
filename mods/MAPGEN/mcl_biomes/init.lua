@@ -22,6 +22,10 @@ local OCEAN_MIN = -15
 local DEEP_OCEAN_MAX = OCEAN_MIN - 1
 local DEEP_OCEAN_MIN = -31
 
+local minetest_get_perlin = minetest.get_perlin
+local math_floor = math.floor
+local math_abs = math.abs
+
 --[[ Special biome field: _mcl_biome_type:
 Rough categorization of biomes: One of "snowy", "cold", "medium" and "hot"
 Based off <https://minecraft.gamepedia.com/Biomes> ]]
@@ -3908,6 +3912,16 @@ local function register_decorations()
 end
 
 -- Decorations in non-Overworld dimensions
+
+local chorus_noise_params = {
+	offset = -0.012,
+	scale = 0.024,
+	spread = {x = 100, y = 100, z = 100},
+	seed = 257,
+	octaves = 3,
+	persistence = 0.6,
+}
+
 local function register_dimension_decorations()
 	--[[ NETHER ]]
 	-- TODO: Nether
@@ -3921,14 +3935,7 @@ local function register_dimension_decorations()
 		place_on = {"mcl_end:end_stone", "air"},
 		flags = "all_floors",
 		sidelen = 16,
-		noise_params = {
-			offset = -0.012,
-			scale = 0.024,
-			spread = {x = 100, y = 100, z = 100},
-			seed = 257,
-			octaves = 3,
-			persist = 0.6
-		},
+		noise_params = chorus_noise_params,
 		y_min = mcl_mapgen.end_.min,
 		y_max = mcl_mapgen.end_.max,
 		decoration = "mcl_end:chorus_flower",
@@ -3947,6 +3954,8 @@ end
 --
 -- Detect mapgen to select functions
 --
+
+local chorus_perlin_noise
 
 if not mcl_mapgen.singlenode then
 	if not superflat then
@@ -3980,8 +3989,10 @@ if not mcl_mapgen.singlenode then
 			vm_context.gennotify = vm_context.gennotify or minetest.get_mapgen_object("gennotify")
 			local gennotify = vm_context.gennotify
 			for _, pos in pairs(gennotify["decoration#"..deco_id_chorus_plant] or {}) do
+				chorus_perlin_noise = chorus_perlin_noise or minetest_get_perlin(chorus_noise_params)
 				local realpos = { x = pos.x, y = pos.y + 1, z = pos.z }
-				local pr = PseudoRandom(vm_context.blockseed)
+				local noise = chorus_perlin_noise:get_3d(realpos)
+				local pr = PseudoRandom(math_floor(math_abs(noise * 32767)) % 32768)
 				minetest.after(1, mcl_end.grow_chorus_plant, realpos, false, pr)
 			end
 			return vm_context
