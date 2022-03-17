@@ -48,7 +48,7 @@ local function on_placed(place, rotation, pr, size)
 	 		if not nn then break end
        			local node = minetest.registered_nodes[nn]
 			local groups = node.groups
-			if nn == "mcl_flowers:waterlily" or nn == "mcl_core:water_source" or nn == "mcl_core:water_flowing" or nn == "air" or groups.deco_block then
+			if nn == "mcl_flowers:waterlily" or nn == "mcl_core:river_water_source" or nn == "mcl_core:water_source" or nn == "mcl_core:water_flowing" or nn == "air" or groups.deco_block then
 				minetest.swap_node(tpos, {name="mcl_core:tree"})
 			else
  				break
@@ -101,7 +101,7 @@ mcl_structures.register_structure({
 	decoration = {
 		deco_type = "simple",
 		place_on = node_list,
-		spawn_by = {"mcl_core:water_source", "group:frosted_ice"},
+		spawn_by = {"mcl_core:river_water_source", "mcl_core:water_source", "group:frosted_ice"},
 		num_spawn_by = 1,
 		-- flags = "all_floors",
 		fill_ratio = scanning_ratio,
