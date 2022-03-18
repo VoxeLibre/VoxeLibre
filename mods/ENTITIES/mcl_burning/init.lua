@@ -57,7 +57,7 @@ minetest.register_on_joinplayer(function(player)
 	local storage = {}
 	local burn_data = player:get_meta():get_string("mcl_burning:data")
 	if burn_data ~= "" then
-		storage = minetest.deserialize(burn_data)
+		storage = minetest.deserialize(burn_data) or storage
 	end
 	mcl_burning.storage[player] = storage
 	if storage.burn_time and storage.burn_time > 0 then
@@ -98,8 +98,7 @@ minetest.register_entity("mcl_burning:fire", {
 		glow = -1,
 		backface_culling = false,
 	},
-	animation_frame = 0,
-	animation_timer = 0,
+	_mcl_animation_timer = 0,
 	on_activate = function(self)
 		self.object:set_sprite({x = 0, y = 0}, animation_frames, 1.0 / animation_frames)
 	end,
@@ -115,9 +114,9 @@ minetest.register_entity("mcl_burning:fire", {
 			return
 		end
 		if parent:is_player() then
-			self.animation_timer = self.animation_timer + dtime
-			if self.animation_timer >= 0.1 then
-				self.animation_timer = 0
+			self._mcl_animation_timer = self._mcl_animation_timer + dtime
+			if self._mcl_animation_timer >= 0.1 then
+				self._mcl_animation_timer = 0
 				mcl_burning.update_hud(parent)
 			end
 		end
