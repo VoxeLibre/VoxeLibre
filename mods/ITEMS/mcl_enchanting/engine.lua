@@ -302,7 +302,6 @@ function mcl_enchanting.initialize()
 end
 
 function mcl_enchanting.random(pr, ...)
-	(pr, ...)
 	local r = pr and pr:next(...) or math.random(...)
 
 	if pr and not ({...})[1] then
