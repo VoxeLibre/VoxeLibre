@@ -67,6 +67,7 @@ minetest.register_entity("mcl_shields:shield_entity", {
 	},
 	_blocking = false,
 	_shield_number = 2,
+	_texture_copy = "",
 	on_step = function(self, dtime, moveresult)
 		local player = self.object:get_attach()
 		if not player then
@@ -96,7 +97,13 @@ minetest.register_entity("mcl_shields:shield_entity", {
 		if shield_is_enchanted(player, i) then
 			shield_texture = shield_texture .. overlay
 		end
-		self.object:set_properties({textures = {shield_texture}})
+
+		if self._texture_copy ~= shield_texture then
+			self.object:set_properties({textures = {shield_texture}})
+			minetest.chat_send_all("updated")
+		end
+
+		self._texture_copy = shield_texture
 	end,
 })
 
@@ -297,6 +304,71 @@ local function update_shield_entity(player, blocking, i)
 	end
 end
 
+local function add_shield_hud(shieldstack, player)
+	local texture = hud
+	if mcl_enchanting.is_enchanted(shieldstack:get_name()) then
+		texture = texture .. overlay
+	end
+	local offset = 100
+	if blocking == 1 then
+		texture = texture .. "^[transform4"
+		offset = -100
+	else
+		player:hud_set_flags({wielditem = false})
+	end
+	shield_hud[player] = player:hud_add({
+		hud_elem_type = "image",
+		position = {x = 0.5, y = 0.5},
+		scale = {x = -101, y = -101},
+		offset = {x = offset, y = 0},
+		text = texture,
+		z_index = -200,
+	})
+	playerphysics.add_physics_factor(player, "speed", "shield_speed", 0.5)
+	set_interact(player, nil)
+end
+
+local function update_shield_hud(player, blocking, shieldstack)
+	local shieldhud = shield_hud[player]
+	if not shieldhud then
+		add_shield_hud(shieldstack, player)
+		return
+	end
+
+	local wielditem = player:hud_get_flags().wielditem
+	if blocking == 1 then
+		if not wielditem then
+			player:hud_change(shieldhud, "text", hud .. "^[transform4")
+			player:hud_change(shieldhud, "offset", {x = -100, y = 0})
+			player:hud_set_flags({wielditem = true})
+		end
+	elseif wielditem then
+		player:hud_change(shieldhud, "text", hud)
+		player:hud_change(shieldhud, "offset", {x = 100, y = 0})
+		player:hud_set_flags({wielditem = false})
+	end
+
+	local image = player:hud_get(shieldhud).text
+	local enchanted = hud .. overlay
+	local enchanted1 = image == enchanted
+	local enchanted2 = image == enchanted .. "^[transform4"
+	if mcl_enchanting.is_enchanted(shieldstack:get_name()) then
+		if not enchanted1 and not enchanted2 then
+			if blocking == 1 then
+				player:hud_change(shieldhud, "text", hud .. overlay .. "^[transform4")
+			else
+				player:hud_change(shieldhud, "text", hud .. overlay)
+			end
+		end
+	elseif enchanted1 or enchanted2 then
+		if blocking == 1 then
+			player:hud_change(shieldhud, "text", hud .. "^[transform4")
+		else
+			player:hud_change(shieldhud, "text", hud)
+		end
+	end
+end
+
 minetest.register_globalstep(function(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
 
@@ -305,65 +377,7 @@ minetest.register_globalstep(function(dtime)
 		local blocking, shieldstack = mcl_shields.is_blocking(player)
 
 		if blocking then
-			local shieldhud = shield_hud[player]
-			if not shieldhud then
-				local texture = hud
-				if mcl_enchanting.is_enchanted(shieldstack:get_name()) then
-					texture = texture .. overlay
-				end
-				local offset = 100
-				if blocking == 1 then
-					texture = texture .. "^[transform4"
-					offset = -100
-				else
-					player:hud_set_flags({wielditem = false})
-				end
-				shield_hud[player] = player:hud_add({
-					hud_elem_type = "image",
-					position = {x = 0.5, y = 0.5},
-					scale = {x = -101, y = -101},
-					offset = {x = offset, y = 0},
-					text = texture,
-					z_index = -200,
-				})
-				playerphysics.add_physics_factor(player, "speed", "shield_speed", 0.5)
-				set_interact(player, nil)
-			else
-				local wielditem = player:hud_get_flags().wielditem
-				if blocking == 1 then
-					if not wielditem then
-						player:hud_change(shieldhud, "text", hud .. "^[transform4")
-						player:hud_change(shieldhud, "offset", {x = -100, y = 0})
-						player:hud_set_flags({wielditem = true})
-					end
-				else
-					if wielditem then
-						player:hud_change(shieldhud, "text", hud)
-						player:hud_change(shieldhud, "offset", {x = 100, y = 0})
-						player:hud_set_flags({wielditem = false})
-					end
-				end
-
-				local image = player:hud_get(shieldhud).text
-				local enchanted = hud .. overlay
-				local enchanted1 = image == enchanted
-				local enchanted2 = image == enchanted .. "^[transform4"
-				if mcl_enchanting.is_enchanted(shieldstack:get_name()) then
-					if not enchanted1 and not enchanted2 then
-						if blocking == 1 then
-							player:hud_change(shieldhud, "text", hud .. overlay .. "^[transform4")
-						else
-							player:hud_change(shieldhud, "text", hud .. overlay)
-						end
-					end
-				elseif enchanted1 or enchanted2 then
-					if blocking == 1 then
-						player:hud_change(shieldhud, "text", hud .. "^[transform4")
-					else
-						player:hud_change(shieldhud, "text", hud)
-					end
-				end
-			end
+			update_shield_hud(player, blocking, shieldstack)
 		else
 			remove_shield_hud(player)
 		end
@@ -439,36 +453,38 @@ local function to_shield_texture(banner_texture)
 end
 
 local function craft_banner_on_shield(itemstack, player, old_craft_grid, craft_inv)
-	if string.find(itemstack:get_name(), "mcl_shields:shield_") then
-		local shield_stack
-		for i = 1, player:get_inventory():get_size("craft") do
-			local stack = old_craft_grid[i]
-			local name = stack:get_name()
-			if minetest.get_item_group(name, "shield") then
-				shield_stack = stack
-				break
-			end
-		end
-		for i = 1, player:get_inventory():get_size("craft") do
-			local banner_stack = old_craft_grid[i]
-			local banner_name = banner_stack:get_name()
-			if string.find(banner_name, "mcl_banners:banner") and shield_stack then
-				local banner_meta = banner_stack:get_meta()
-				local layers_meta = banner_meta:get_string("layers")
-				local new_shield_meta = itemstack:get_meta()
-				if layers_meta ~= "" then
-					local color = mcl_banners.color_reverse(banner_name)
-					local layers = minetest.deserialize(layers_meta)
-					local texture = mcl_banners.make_banner_texture(color, layers)
-					new_shield_meta:set_string("description", mcl_banners.make_advanced_banner_description(itemstack:get_description(), layers))
-					new_shield_meta:set_string("mcl_shields:shield_custom_pattern_texture", to_shield_texture(texture))
-				end
-				itemstack:set_wear(shield_stack:get_wear())
-				break
-			end
+	if not string.find(itemstack:get_name(), "mcl_shields:shield_") then
+		return itemstack
+	end
+
+	local shield_stack
+	for i = 1, player:get_inventory():get_size("craft") do
+		local stack = old_craft_grid[i]
+		local name = stack:get_name()
+		if minetest.get_item_group(name, "shield") then
+			shield_stack = stack
+			break
 		end
 	end
-	return itemstack
+
+	for i = 1, player:get_inventory():get_size("craft") do
+		local banner_stack = old_craft_grid[i]
+		local banner_name = banner_stack:get_name()
+		if string.find(banner_name, "mcl_banners:banner") and shield_stack then
+			local banner_meta = banner_stack:get_meta()
+			local layers_meta = banner_meta:get_string("layers")
+			local new_shield_meta = itemstack:get_meta()
+			if layers_meta ~= "" then
+				local color = mcl_banners.color_reverse(banner_name)
+				local layers = minetest.deserialize(layers_meta)
+				local texture = mcl_banners.make_banner_texture(color, layers)
+				new_shield_meta:set_string("description", mcl_banners.make_advanced_banner_description(itemstack:get_description(), layers))
+				new_shield_meta:set_string("mcl_shields:shield_custom_pattern_texture", to_shield_texture(texture))
+			end
+			itemstack:set_wear(shield_stack:get_wear())
+			break
+		end
+	end
 end
 
 minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craft_inv)
