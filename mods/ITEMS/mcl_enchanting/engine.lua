@@ -327,8 +327,7 @@ function mcl_enchanting.get_random_enchantment(itemstack, treasure, weighted, ex
 		end
 	end
 
-	return #possible > 0 and possible[
-		(pr, 1, #possible)]
+	return #possible > 0 and possible[mcl_enchanting.random(pr, 1, #possible)]
 end
 
 function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted, pr)
@@ -341,14 +340,10 @@ function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_leve
 	itemstack = ItemStack(itemstack)
 
 	local enchantability = minetest.get_item_group(itemname, "enchantability")
-	enchantability = 1 + 
-	(pr, 0, math.floor(enchantability / 4)) + 
-	(pr, 0, math.floor(enchantability / 4))
+	enchantability = 1 + mcl_enchanting.random(pr, 0, math.floor(enchantability / 4)) + mcl_enchanting.random(pr, 0, math.floor(enchantability / 4))
 
 	enchantment_level = enchantment_level + enchantability
-	enchantment_level = enchantment_level + enchantment_level * (
-		(pr) + 
-	(pr) - 1) * 0.15
+	enchantment_level = enchantment_level + enchantment_level * (mcl_enchanting.random(pr) + mcl_enchanting.random(pr) - 1) * 0.15
 	enchantment_level = math.max(math.floor(enchantment_level + 0.5), 1)
 
 	local enchantments = {}
@@ -395,8 +390,7 @@ function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_leve
 			mcl_enchanting.enchant(itemstack, selected_enchantment, enchantment_power)
 		end
 
-	until not no_reduced_bonus_chance and 
-	(pr) >= (enchantment_level + 1) / 50
+	until not no_reduced_bonus_chance and mcl_enchanting.random(pr) >= (enchantment_level + 1) / 50
 
 	return enchantments, description
 end
@@ -424,8 +418,7 @@ function mcl_enchanting.enchant_uniform_randomly(stack, exclude, pr)
 	local enchantment = mcl_enchanting.get_random_enchantment(stack, true, false, exclude, pr)
 
 	if enchantment then
-		mcl_enchanting.enchant(stack, enchantment, 
-		(pr, 1, mcl_enchanting.enchantments[enchantment].max_level))
+		mcl_enchanting.enchant(stack, enchantment, mcl_enchanting.random(pr, 1, mcl_enchanting.enchantments[enchantment].max_level))
 	end
 
 	return stack
