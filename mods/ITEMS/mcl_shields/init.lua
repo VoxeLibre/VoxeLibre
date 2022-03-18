@@ -397,7 +397,8 @@ minetest.register_craft({
 })
 
 for _, colortab in pairs(mcl_banners.colors) do
-	minetest.register_tool("mcl_shields:shield_" .. colortab[1], {
+	local color = colortab[1]
+	minetest.register_tool("mcl_shields:shield_" .. color, {
 		description = S(colortab[6] .. " Shield"),
 		_doc_items_longdesc = S("A shield is a tool used for protecting the player against attacks."),
 		inventory_image = "mcl_shield.png^(mcl_shield_item_overlay.png^[colorize:" .. colortab[4] ..")",
@@ -416,11 +417,16 @@ for _, colortab in pairs(mcl_banners.colors) do
 		_shield_color = colortab[4],
 	})
 
-	local banner = "mcl_banners:banner_item_" .. colortab[1]
+	local banner = "mcl_banners:banner_item_" .. color
 	minetest.register_craft({
 		type = "shapeless",
-		output = "mcl_shields:shield_" .. colortab[1],
+		output = "mcl_shields:shield_" .. color,
 		recipe = {"mcl_shields:shield", banner},
+	})
+	minetest.register_craft({
+		type = "shapeless",
+		output = "mcl_shields:shield_" .. color .. "_enchanted",
+		recipe = {"mcl_shields:shield_enchanted", banner},
 	})
 end
 
@@ -438,7 +444,7 @@ local function craft_banner_on_shield(itemstack, player, old_craft_grid, craft_i
 		for i = 1, player:get_inventory():get_size("craft") do
 			local stack = old_craft_grid[i]
 			local name = stack:get_name()
-			if name == "mcl_shields:shield" then
+			if minetest.get_item_group(name, "shield") then
 				shield_stack = stack
 				break
 			end

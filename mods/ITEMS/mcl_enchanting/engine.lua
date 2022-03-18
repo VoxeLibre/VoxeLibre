@@ -301,7 +301,7 @@ function mcl_enchanting.initialize()
 	end
 end
 
-function 
+function mcl_enchanting.random(pr, ...)
 	(pr, ...)
 	local r = pr and pr:next(...) or math.random(...)
 
