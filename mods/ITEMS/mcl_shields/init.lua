@@ -30,7 +30,7 @@ minetest.register_tool("mcl_shields:shield", {
 	groups = {
 		shield = 1,
 		weapon = 1,
-		enchantability = 1,
+		enchantability = -1,
 		no_wieldview = 1,
 		offhand_item = 1,
 	},
@@ -405,7 +405,7 @@ for _, colortab in pairs(mcl_banners.colors) do
 		groups = {
 			shield = 1,
 			weapon = 1,
-			enchantability = 1,
+			enchantability = -1,
 			no_wieldview = 1,
 			not_in_creative_inventory = 1,
 			offhand_item = 1,
