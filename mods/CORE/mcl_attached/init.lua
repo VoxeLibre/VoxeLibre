@@ -56,7 +56,7 @@ end
 --
 -- * causes an unsupported `group:falling_node` node to fall and causes an
 --   unattached `group:attached_node` or `group:attached_node_facedir` node
---   or unsupported `group:supported_node` to drop.
+--   or unsupported `group:supported_node` node to drop.
 -- * does not spread these updates to neighbours.
 --
 -- Returns true if the node at <pos> has spawned a falling node or has been
