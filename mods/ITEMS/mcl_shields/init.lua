@@ -137,6 +137,10 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 		damager = entity._shooter
 	end
 
+	if not damager then
+		return
+	end
+
 	if vector.dot(obj:get_look_dir(), vector.subtract(damager:get_pos(), obj:get_pos())) < 0 then
 		return
 	end
