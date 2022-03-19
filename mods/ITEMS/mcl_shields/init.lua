@@ -100,7 +100,6 @@ minetest.register_entity("mcl_shields:shield_entity", {
 
 		if self._texture_copy ~= shield_texture then
 			self.object:set_properties({textures = {shield_texture}})
-			minetest.chat_send_all("updated")
 		end
 
 		self._texture_copy = shield_texture
