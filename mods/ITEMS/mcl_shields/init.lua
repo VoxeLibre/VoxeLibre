@@ -303,7 +303,7 @@ local function update_shield_entity(player, blocking, i)
 	end
 end
 
-local function add_shield_hud(shieldstack, player)
+local function add_shield_hud(shieldstack, player, blocking)
 	local texture = hud
 	if mcl_enchanting.is_enchanted(shieldstack:get_name()) then
 		texture = texture .. overlay
@@ -330,7 +330,7 @@ end
 local function update_shield_hud(player, blocking, shieldstack)
 	local shieldhud = shield_hud[player]
 	if not shieldhud then
-		add_shield_hud(shieldstack, player)
+		add_shield_hud(shieldstack, player, blocking)
 		return
 	end
 
