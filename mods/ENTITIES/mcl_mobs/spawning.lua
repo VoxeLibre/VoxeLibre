@@ -570,11 +570,21 @@ if mobs_spawn then
 							break
 						end
 
-						local gotten_node = get_node(spawning_position).name
+						local gotten_node = get_node(spawning_position)
+						local gotten_node_name = gotten_node.name
+						local gotten_node_def = minetest.registered_nodes[gotten_node_name]
 
-						if not gotten_node or gotten_node == "air" then --skip air nodes
+						if not gotten_node_name or not gotten_node_def or gotten_node_name == "air" then --skip air nodes
 							break
 						end
+
+						if gotten_node_def.use_texture_alpha and gotten_node_def.use_texture_alpha ~= "opaque" then 
+							break
+						end --don't spawn on nonopaque nodes
+
+						local leaf = minetest.get_item_group(gotten_node_name,"leaves")
+						if leaf ~= 0 then
+							break end --don't spawn on treetops
 
 						local gotten_biome = minetest.get_biome_data(spawning_position)
 
@@ -616,8 +626,8 @@ if mobs_spawn then
 							break
 						end
 
-						local is_water = get_item_group(gotten_node, "water") ~= 0
-						local is_lava  = get_item_group(gotten_node, "lava") ~= 0
+						local is_water = get_item_group(gotten_node_name, "water") ~= 0
+						local is_lava  = get_item_group(gotten_node_name, "lava") ~= 0
 
 						if mob_def.type_of_spawning == "ground" and is_water then
 							break
