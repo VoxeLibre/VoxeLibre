@@ -196,7 +196,7 @@ local function spawn_banner_entity(pos, hanging, itemstack)
 	local imeta = itemstack:get_meta()
 	local layers_raw = imeta:get_string("layers")
 	local layers = minetest.deserialize(layers_raw)
-	local colorid = mcl_banners.color_reverse[itemstack:get_name()]
+	local colorid = mcl_banners.color_reverse(itemstack:get_name())
 	banner:get_luaentity():_set_textures(colorid, layers)
 	local mname = imeta:get_string("name")
 	if mname and mname ~= "" then
