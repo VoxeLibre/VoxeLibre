@@ -270,7 +270,9 @@ local function handle_blocking(player)
 			player_shield.blocking = 2
 		end
 	elseif shield_in_offhand then
-		local offhand_can_block = (wielded_item(player) == "" or not mcl_util.get_pointed_thing(player, true))
+		local offhand_can_block = (wielded_item(player) == "" or not mcl_util.get_pointed_thing(player, true)) 
+		and (minetest.get_item_group(wielded_item(player), "bow") ~= 1 and minetest.get_item_group(wielded_item(player), "crossbow") ~= 1)
+
 		if not offhand_can_block then
 			return
 		end
