@@ -321,8 +321,12 @@ minetest.register_globalstep(function(dtime)
 		player_velocity_old = player:get_velocity() or player:get_player_velocity()
 
 
-		-- controls right and left arms pitch when shooting a bow
-		if string.find(wielded:get_name(), "mcl_bows:bow") and control.RMB then
+		-- controls right and left arms pitch when shooting a bow or blocking
+		if mcl_shields.is_blocking(player) == 2 then
+			set_bone_position_conditional(player, "Arm_Right_Pitch_Control", vector.new(-3, 5.785, 0), vector.new(20, -20, 0))
+		elseif mcl_shields.is_blocking(player) == 1 then
+			set_bone_position_conditional(player, "Arm_Left_Pitch_Control", vector.new(3, 5.785, 0), vector.new(20, 20, 0))
+		elseif string.find(wielded:get_name(), "mcl_bows:bow") and control.RMB then
 			set_bone_position_conditional(player,"Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch+90,-30,pitch * -1 * .35))
 			set_bone_position_conditional(player,"Arm_Left_Pitch_Control", vector.new(3.5,5.785,0), vector.new(pitch+90,43,pitch * .35))
 		-- controls right and left arms pitch when holing a loaded crossbow
@@ -330,7 +334,7 @@ minetest.register_globalstep(function(dtime)
 			set_bone_position_conditional(player,"Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch+90,-30,pitch * -1 * .35))
 			set_bone_position_conditional(player,"Arm_Left_Pitch_Control", vector.new(3.5,5.785,0), vector.new(pitch+90,43,pitch * .35))
 		-- controls right and left arms pitch when loading a crossbow
-	elseif string.find(wielded:get_name(), "mcl_bows:crossbow_") then
+		elseif string.find(wielded:get_name(), "mcl_bows:crossbow_") then
 			set_bone_position_conditional(player,"Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(45,-20,25))
 			set_bone_position_conditional(player,"Arm_Left_Pitch_Control", vector.new(3,5.785,0), vector.new(55,20,-45))
 		-- when punching
