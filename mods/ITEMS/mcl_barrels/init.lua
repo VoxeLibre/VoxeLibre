@@ -14,6 +14,27 @@ local function on_blast(pos)
 	minetest.remove_node(pos)
 end
 
+-- Simple protection checking functions
+local function protection_check_move(pos, from_list, from_index, to_list, to_index, count, player)
+	local name = player:get_player_name()
+	if minetest.is_protected(pos, name) then
+		minetest.record_protection_violation(pos, name)
+		return 0
+	else
+		return count
+	end
+end
+
+local function protection_check_put_take(pos, listname, index, stack, player)
+	local name = player:get_player_name()
+	if minetest.is_protected(pos, name) then
+		minetest.record_protection_violation(pos, name)
+		return 0
+	else
+		return stack:get_count()
+	end
+end
+
 local function barrel_open(pos, node, clicker)
 	local name = minetest.get_meta(pos):get_string("name")
 
@@ -82,7 +103,6 @@ minetest.register_node("mcl_barrels:barrel_closed", {
 	tiles = {"mcl_barrels_barrel_top.png^[transformR270", "mcl_barrels_barrel_bottom.png", "mcl_barrels_barrel_side.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
-	--on_place = mcl_util.rotate_axis,
 	on_place = function(itemstack, placer, pointed_thing)
 		minetest.rotate_and_place(itemstack, placer, pointed_thing, minetest.is_creative_enabled(placer:get_player_name()), {}, false)
 		return itemstack
@@ -97,6 +117,21 @@ minetest.register_node("mcl_barrels:barrel_closed", {
 	end,
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
 		minetest.get_meta(pos):set_string("name", itemstack:get_meta():get_string("name"))
+	end,
+	allow_metadata_inventory_move = protection_check_move,
+	allow_metadata_inventory_take = protection_check_put_take,
+	allow_metadata_inventory_put = protection_check_put_take,
+	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+		minetest.log("action", player:get_player_name()..
+			" moves stuff in barrel at "..minetest.pos_to_string(pos))
+	end,
+	on_metadata_inventory_put = function(pos, listname, index, stack, player)
+		minetest.log("action", player:get_player_name()..
+			" moves stuff to barrel at "..minetest.pos_to_string(pos))
+	end,
+	on_metadata_inventory_take = function(pos, listname, index, stack, player)
+		minetest.log("action", player:get_player_name()..
+			" takes stuff from barrel at "..minetest.pos_to_string(pos))
 	end,
 	after_dig_node = drop_content,
 	on_blast = on_blast,
@@ -119,6 +154,21 @@ minetest.register_node("mcl_barrels:barrel_open", {
 	stack_max = 64,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	groups = {handy = 1, axey = 1, container = 2, material_wood = 1, flammable = -1, deco_block = 1, not_in_creative_inventory = 1},
+	allow_metadata_inventory_move = protection_check_move,
+	allow_metadata_inventory_take = protection_check_put_take,
+	allow_metadata_inventory_put = protection_check_put_take,
+	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+		minetest.log("action", player:get_player_name()..
+			" moves stuff in barrel at "..minetest.pos_to_string(pos))
+	end,
+	on_metadata_inventory_put = function(pos, listname, index, stack, player)
+		minetest.log("action", player:get_player_name()..
+			" moves stuff to barrel at "..minetest.pos_to_string(pos))
+	end,
+	on_metadata_inventory_take = function(pos, listname, index, stack, player)
+		minetest.log("action", player:get_player_name()..
+			" takes stuff from barrel at "..minetest.pos_to_string(pos))
+	end,
 	after_dig_node = drop_content,
 	on_blast = on_blast,
 	on_rightclick = barrel_open,

@@ -131,17 +131,6 @@ function mcl_burning.set_on_fire(obj, burn_time)
 	if obj:is_player() then
 		mcl_burning.update_hud(obj)
 	end
-
-	--  FIXME: does this code make sense?  It removes attached fire luaentities from
-	--  another object that happen to be at the same position.
-	local fire_luaentity = fire_entity:get_luaentity()
-	for _, other in pairs(minetest.get_objects_inside_radius(fire_entity:get_pos(), 0)) do
-		local other_luaentity = other:get_luaentity()
-		if other_luaentity and other_luaentity.name == "mcl_burning:fire" and other_luaentity ~= fire_luaentity then
-			other:remove()
-			break
-		end
-	end
 end
 
 function mcl_burning.extinguish(obj)
