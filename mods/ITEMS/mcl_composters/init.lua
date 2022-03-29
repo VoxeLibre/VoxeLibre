@@ -38,107 +38,7 @@ minetest.register_craft({
 	burntime = 15,
 })
 
-local compostability = {
-	["mcl_cake:cake"] = 100,
-	["mcl_farming:pumpkin_pie"] = 100,
-
-	["mcl_farming:potato_item_baked"] = 85,
-	["mcl_farming:bread"] = 85,
-	["mcl_farming:cookie"] = 85,
-	["mcl_farming:hay_block"] = 85,
-	-- mushroom cap block have 64 variants, wtf!?
-	["mcl_mushrooms:brown_mushroom_block_cap_111111"] = 85,
-	["mcl_mushrooms:red_mushroom_block_cap_111111"] = 85,
-	["mcl_nether:nether_wart_block"] = 85,
-	["mcl_mushroom:warped_wart_block"] = 85,
-
-	["mcl_core:apple"] = 65,
-	-- missing: azalea
-	["mcl_farming:beetroot_item"] = 65,
-	-- missing: big dripleaf
-	["mcl_farming:carrot_item"] = 65,
-	-- what's up with cocoa beans?
-	["mcl_dye:brown"] = 65,
-	["mcl_flowers:fern"] = 65,
-	["mcl_flowers:double_fern"] = 65,
-	["mcl_flowers:allium"] = 65,
-	["mcl_flowers:azure_bluet"] = 65,
-	["mcl_flowers:blue_orchid"] = 65,
-	["mcl_flowers:dandelion"] = 65,
-	["mcl_flowers:lilac"] = 65,
-	["mcl_flowers:oxeye_daisy"] = 65,
-	["mcl_flowers:poppy"] = 65,
-	["mcl_flowers:tulip_orange"] = 65,
-	["mcl_flowers:tulip_pink"] = 65,
-	["mcl_flowers:tulip_red"] = 65,
-	["mcl_flowers:tulip_white"] = 65,
-	["mcl_flowers:peony"] = 65,
-	["mcl_flowers:rose_bush"] = 65,
-	["mcl_flowers:sunflower"] = 65,
-	["mcl_flowers:waterlily"] = 65,
-	["mcl_farming:melon"] = 65,
-	-- missing: moss block?
-	-- mushroom aliases below?
-	["mcl_farming:mushroom_brown"] = 65,
-	["mcl_mushrooms:mushroom_brown"] = 65,
-	["mcl_farming:mushroom_red"] = 65,
-	["mcl_mushrooms:mushroom_red"] = 65,
-	["mcl_mushrooms:brown_mushroom_block_stem_full"] = 65,
-	["mcl_mushrooms:red_mushroom_block_stem_full"] = 65,
-	-- nether wart
-	["mcl_farming:potato_item"] = 65,
-	["mcl_farming:pumpkin"] = 65,
-	["mcl_farming:pumpkin_face_light"] = 65,
-	["mcl_ocean:sea_pickle_"] = 65,
-	["mcl_mushroom:shroomlight"] = 65,
-	-- missing: spore blossom
-	["mcl_farming:wheat_item"] = 65,
-	["mcl_mushroom:crimson_fungus"] = 65,
-	["mcl_mushroom:warped_fungus"] = 65,
-	["mcl_mushroom:crimson_roots"] = 65,
-	["mcl_mushroom:warped_roots"] = 65,
-
-	["mcl_core:cactus"] = 50,
-	["mcl_ocean:dried_kelp_block"] = 50,
-	-- missing: flowering azalea leaves
-	-- missing: glow lichen
-	["mcl_farming:melon_item"] = 50,
-	["mcl_mushroom:nether_sprouts"] = 50,
-	["mcl_core:reeds"] = 50,
-	["mcl_flowers:double_grass"] = 50,
-	["mcl_core:vine"] = 50,
-	-- missing: weeping vines
-	["mcl_mushroom:twisting_vines"] = 50,
-
-	["mcl_flowers:tallgrass"] = 30,
-	["mcl_farming:beetroot_seeds"] = 30,
-	["mcl_core:dirt_with_grass"] = 30,
-	["mcl_core:tallgrass"] = 30,
-	["mcl_ocean:dried_kelp"] = 30,
-	["mcl_ocean:kelp"] = 30,
-	["mcl_core:leaves"] = 30,
-	["mcl_core:acacialeaves"] = 30,
-	["mcl_core:birchleaves"] = 30,
-	["mcl_core:darkleaves"] = 30,
-	["mcl_core:jungleleaves"] = 30,
-	["mcl_core:spruceleaves"] = 30,
-	--
-	["mcl_farming:melon_seeds"] = 30,
-	-- missing: moss carpet
-	["mcl_farming:pumpkin_seeds"] = 30,
-	["mcl_core:sapling"] = 30,
-	["mcl_core:acaciasapling"] = 30,
-	["mcl_core:birchsapling"] = 30,
-	["mcl_core:darksapling"] = 30,
-	["mcl_core:junglesapling"] = 30,
-	["mcl_core:sprucesapling"] = 30,
-	["mcl_ocean:seagrass"] = 30,
-	-- missing: small dripleaf
-	["mcl_sweet_berry:sweet_berry"] = 30,
-	["mcl_farming:sweet_berry"] = 30,
-	["mcl_farming:wheat_seeds"] = 30,
-
-}
+local get_item_group = minetest.get_item_group
 
 local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 	--
@@ -153,8 +53,8 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 		return itemstack
 	end
 	local itemname = itemstack:get_name()
-	local chance = compostability[itemname]
-	if chance then
+	local chance = get_item_group(itemname, "compostability")
+	if chance > 0 then
 		if not minetest.is_creative_enabled(player:get_player_name()) then
 			itemstack:take_item()
 		end
