@@ -71,7 +71,7 @@ local function on_leaveplayer(player)
 		-- For some unexplained reasons, mcl_burning.storage can be `nil` here.
 		-- Logging this exception to assist in finding the cause of this.
 		minetest.log("warning", "on_leaveplayer: missing mcl_burning.storage "
-				.. "for player " .. player.name)
+				.. "for player " .. player:get_player_name())
 		storage = {}
 	end
 	storage.fire_hud_id = nil
