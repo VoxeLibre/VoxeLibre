@@ -44,6 +44,7 @@ local registered_nodes = minetest.registered_nodes
 local swap_node = minetest.swap_node
 local get_node_timer = minetest.get_node_timer
 local add_item = minetest.add_item
+local vector_offset = vector.offset
 
 local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 	--
@@ -69,7 +70,7 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 			-- get current compost level
 			local level = registered_nodes[node.name]["_mcl_compost_level"]
 			-- spawn green particles above new layer
-			mcl_dye.add_bone_meal_particle(vector.add(pos, vector.new(0, level/8, 0)))
+			mcl_dye.add_bone_meal_particle(vector_offset(pos, 0, level/8, 0))
 			-- TODO: play some sounds
 			-- update composter block
 			if level < 7 then
