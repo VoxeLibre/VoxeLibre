@@ -39,6 +39,11 @@ minetest.register_craft({
 })
 
 local get_item_group = minetest.get_item_group
+local is_creative_enabled = minetest.is_creative_enabled
+local registered_nodes = minetest.registered_nodes
+local swap_node = minetest.swap_node
+local get_node_timer = minetest.get_node_timer
+local add_item = minetest.add_item
 
 local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 	--
@@ -49,21 +54,20 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 	if not player or (player:get_player_control() and player:get_player_control().sneak) then
 		return itemstack
 	end
-	if not itemstack and itemstack:is_empty() then
+	if not itemstack or itemstack:is_empty() then
 		return itemstack
 	end
 	local itemname = itemstack:get_name()
 	local chance = get_item_group(itemname, "compostability")
 	if chance > 0 then
-		if not minetest.is_creative_enabled(player:get_player_name()) then
+		if not is_creative_enabled(player:get_player_name()) then
 			itemstack:take_item()
 		end
 		-- calculate leveling up chance
 		local rand = math.random(0,100)
 		if chance >= rand then
 			-- get current compost level
-			local node_defs = minetest.registered_nodes[node.name]
-			local level = node_defs["_mcl_compost_level"]
+			local level = registered_nodes[node.name]["_mcl_compost_level"]
 			-- spawn green particles above new layer
 			mcl_dye.add_bone_meal_particle(vector.add(pos, vector.new(0, level/8, 0)))
 			-- TODO: play some sounds
@@ -73,11 +77,11 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 			else
 				level = "ready"
 			end
-			minetest.swap_node(pos, {name = "mcl_composters:composter_" .. level})
+			swap_node(pos, {name = "mcl_composters:composter_" .. level})
 			-- a full composter becomes ready for harvest after one second
 			-- the block will get updated by the node timer callback set in node reg def
 			if level == 7 then
-				local timer = minetest.get_node_timer(pos)
+				local timer = get_node_timer(pos)
 				timer:start(1)
 			end
 		end
@@ -93,7 +97,7 @@ local function composter_ready(pos)
 	--
 	-- returns false in order to cancel further activity of the timer
 	--
-	minetest.swap_node(pos, {name = "mcl_composters:composter_ready"})
+	swap_node(pos, {name = "mcl_composters:composter_ready"})
 	-- maybe spawn particles again?
 	-- TODO: play some sounds
 	return false
@@ -107,9 +111,9 @@ local function composter_harvest(pos, node, player, itemstack, pointed_thing)
 		return
 	end
 	-- reset ready type composter to empty type
-	minetest.swap_node(pos, {name="mcl_composters:composter"})
+	swap_node(pos, {name="mcl_composters:composter"})
 	-- spawn bone meal item (wtf dye?! is this how they make white cocoa)
-	minetest.add_item(pos, "mcl_dye:white")
+	add_item(pos, "mcl_dye:white")
 	-- TODO play some sounds
 
 end
