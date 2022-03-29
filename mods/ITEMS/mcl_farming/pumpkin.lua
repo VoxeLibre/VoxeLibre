@@ -15,7 +15,7 @@ minetest.register_craftitem("mcl_farming:pumpkin_seeds", {
 	_doc_items_usagehelp = S("Place the pumpkin seeds on farmland (which can be created with a hoe) to plant a pumpkin stem. Pumpkin stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem attempts to grow a pumpkin next to it. Rightclick an animal to feed it pumpkin seeds."),
 	stack_max = 64,
 	inventory_image = "mcl_farming_pumpkin_seeds.png",
-	groups = { craftitem=1 },
+	groups = {craftitem=1, compostability = 30},
 	on_place = function(itemstack, placer, pointed_thing)
 		return mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:pumpkin_1")
 	end
@@ -99,7 +99,10 @@ local pumpkin_base_def = {
 	stack_max = 64,
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png"},
-	groups = {handy=1,axey=1, plant=1,building_block=1, dig_by_piston=1, enderman_takable=1},
+	groups = {
+		handy = 1, axey = 1, plant = 1, building_block = 1, dig_by_piston = 1,
+		enderman_takable = 1, compostability = 65
+	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_rotate = on_rotate,
 	_mcl_blast_resistance = 1,
@@ -230,7 +233,7 @@ minetest.register_craftitem("mcl_farming:pumpkin_pie", {
 	wield_image = "mcl_farming_pumpkin_pie.png",
 	on_place = minetest.item_eat(8),
 	on_secondary_use = minetest.item_eat(8),
-	groups = { food = 2, eatable = 8 },
+	groups = {food = 2, eatable = 8, compostability = 100},
 	_mcl_saturation = 4.8,
 })
 

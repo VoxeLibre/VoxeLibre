@@ -3,7 +3,10 @@ local S = minetest.get_translator(minetest.get_current_modname())
 local vector = vector
 
 local template = {
-	groups = {handy=1,axey=1, building_block = 1, material_wood = 1, flammable = -1 },
+	groups = {
+		handy = 1, axey = 1, building_block = 1, material_wood = 1,
+		flammable = -1, compostability = 85
+	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	is_ground_content = true,
 	_mcl_blast_resistance = 0.2,
@@ -51,6 +54,7 @@ local function register_mushroom(color, species_id, template, d_cap, d_stem, d_s
 	stem_full.tiles = { "mcl_mushrooms_mushroom_block_skin_stem.png" }
 	stem_full.groups.huge_mushroom = species_id
 	stem_full.groups.huge_mushroom_stem = 2
+	stem_full.groups.compostability = 65
 	minetest.register_node("mcl_mushrooms:"..color.."_mushroom_block_stem_full", stem_full)
 
 	-- Stem
@@ -60,6 +64,7 @@ local function register_mushroom(color, species_id, template, d_cap, d_stem, d_s
 	stem.tiles = { "mcl_mushrooms_mushroom_block_inside.png", "mcl_mushrooms_mushroom_block_inside.png", "mcl_mushrooms_mushroom_block_skin_stem.png" }
 	stem.groups.huge_mushroom = species_id
 	stem.groups.huge_mushroom_stem = 1
+	stem.groups.compostability = 65
 	minetest.register_node("mcl_mushrooms:"..color.."_mushroom_block_stem", stem)
 
 	-- Mushroom block (cap)

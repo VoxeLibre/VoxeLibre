@@ -78,7 +78,7 @@ dyelocal.dyes = {
 	{"dark_green", "dye_dark_green",    S("Cactus Green"),{dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_dark_green=1}},
 	{"green", "mcl_dye_lime",           S("Lime Dye"),     {dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_green=1}},
 	{"yellow", "dye_yellow",            S("Dandelion Yellow"),    {dye=1, craftitem=1, basecolor_yellow=1,  excolor_yellow=1,    unicolor_yellow=1}},
-	{"brown", "mcl_dye_brown",          S("Cocoa Beans"),     {dye=1, craftitem=1, basecolor_brown=1,  excolor_orange=1,    unicolor_dark_orange=1}},
+	{"brown", "mcl_dye_brown",          S("Cocoa Beans"),     {dye=1, craftitem=1, basecolor_brown=1,  excolor_orange=1,    unicolor_dark_orange=1, compostability = 65}},
 	{"orange", "dye_orange",            S("Orange Dye"),    {dye=1, craftitem=1, basecolor_orange=1,  excolor_orange=1,    unicolor_orange=1}},
 	{"red", "dye_red",                  S("Rose Red"),       {dye=1, craftitem=1, basecolor_red=1,     excolor_red=1,       unicolor_red=1}},
 	{"magenta", "dye_magenta",          S("Magenta Dye"),   {dye=1, craftitem=1, basecolor_magenta=1, excolor_red_violet=1,unicolor_red_violet=1}},
@@ -561,5 +561,3 @@ minetest.register_craft({
 	output = "mcl_dye:white 3",
 	recipe = {{"mcl_mobitems:bone"}},
 })
-
-

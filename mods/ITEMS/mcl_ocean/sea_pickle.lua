@@ -106,7 +106,10 @@ for s=1,4 do
 		},
 		inventory_image = img,
 		wield_image = img,
-		groups = { dig_immediate = 3, deco_block = 1, sea_pickle=1, not_in_creative_inventory=nici },
+		groups = {
+			dig_immediate = 3, deco_block = 1, sea_pickle = 1,
+			not_in_creative_inventory=nici, compostability = 65
+		},
 		-- Light level: 6 at size 1, +3 for each additional stage
 		light_source = math.min(6 + (s-1)*3, minetest.LIGHT_MAX),
 		selection_box = {

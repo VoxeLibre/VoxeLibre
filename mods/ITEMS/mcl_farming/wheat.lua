@@ -9,7 +9,7 @@ minetest.register_craftitem("mcl_farming:wheat_seeds", {
 		Place the wheat seeds on farmland (which can be created with a hoe) to plant a wheat plant.
 		They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it wheat seeds.
 	]]),
-	groups = { craftitem=1 },
+	groups = {craftitem = 1, compostability = 30},
 	inventory_image = "mcl_farming_wheat_seeds.png",
 	on_place = function(itemstack, placer, pointed_thing)
 		return mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:wheat_1")
@@ -104,7 +104,7 @@ minetest.register_craftitem("mcl_farming:wheat_item", {
 	_doc_items_longdesc = S("Wheat is used in crafting. Some animals like wheat."),
 	_doc_items_usagehelp = S("Use the “Place” key on an animal to try to feed it wheat."),
 	inventory_image = "farming_wheat_harvested.png",
-	groups = { craftitem = 1 },
+	groups = {craftitem = 1, compostability = 65},
 })
 
 minetest.register_craft({
@@ -125,7 +125,7 @@ minetest.register_craftitem("mcl_farming:cookie", {
 	description = S("Cookie"),
 	_doc_items_longdesc = S("This is a food item which can be eaten."),
 	inventory_image = "farming_cookie.png",
-	groups = {food=2, eatable=2},
+	groups = {food = 2, eatable = 2, compostability = 85},
 	_mcl_saturation = 0.4,
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
@@ -136,7 +136,7 @@ minetest.register_craftitem("mcl_farming:bread", {
 	description = S("Bread"),
 	_doc_items_longdesc = S("This is a food item which can be eaten."),
 	inventory_image = "farming_bread.png",
-	groups = {food=2, eatable=5},
+	groups = {food = 2, eatable = 5, compostability = 85},
 	_mcl_saturation = 6.0,
 	on_place = minetest.item_eat(5),
 	on_secondary_use = minetest.item_eat(5),
@@ -156,8 +156,11 @@ minetest.register_node("mcl_farming:hay_block", {
 	stack_max = 64,
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
-	groups = {handy=1, hoey=1, flammable=2, fire_encouragement=60,
-		fire_flammability=20, building_block=1, fall_damage_add_percent=-80},
+	groups = {
+		handy = 1, hoey = 1, building_block = 1, fall_damage_add_percent = -80,
+		flammable = 2, fire_encouragement = 60, fire_flammability = 20,
+		compostability = 85
+	},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	on_rotate = on_rotate,
 	_mcl_blast_resistance = 0.5,

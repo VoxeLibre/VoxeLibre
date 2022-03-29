@@ -110,6 +110,7 @@ minetest.register_craftitem("mcl_nether:nether_wart_item", {
 	_doc_items_usagehelp = S("Place this item on soul sand to plant it and watch it grow."),
 	inventory_image = "mcl_nether_nether_wart.png",
 	wield_image = "mcl_nether_nether_wart.png",
+	groups = {craftitem = 1, brewitem = 1, compostability = 30},
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type ~= "node" then
 			return itemstack
@@ -143,7 +144,6 @@ minetest.register_craftitem("mcl_nether:nether_wart_item", {
 			end
 		end
 	end,
-	groups = { craftitem = 1, brewitem=1 },
 })
 
 local names = {"mcl_nether:nether_wart_0", "mcl_nether:nether_wart_1", "mcl_nether:nether_wart_2"}

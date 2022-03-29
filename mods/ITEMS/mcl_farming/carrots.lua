@@ -86,7 +86,7 @@ minetest.register_craftitem("mcl_farming:carrot_item", {
 	_doc_items_longdesc = S("Carrots can be eaten and planted. Pigs and rabbits like carrots."),
 	_doc_items_usagehelp = S("Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant the carrot. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it."),
 	inventory_image = "farming_carrot.png",
-	groups = { food = 2, eatable = 3 },
+	groups = {food = 2, eatable = 3, compostability = 65},
 	_mcl_saturation = 3.6,
 	on_secondary_use = minetest.item_eat(3),
 	on_place = function(itemstack, placer, pointed_thing)

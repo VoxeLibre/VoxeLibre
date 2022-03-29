@@ -7,7 +7,7 @@ minetest.register_craftitem("mcl_farming:melon_seeds", {
 	_doc_items_longdesc = S("Grows into a melon stem which in turn grows melons. Chickens like melon seeds."),
 	_doc_items_usagehelp = S("Place the melon seeds on farmland (which can be created with a hoe) to plant a melon stem. Melon stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem will attempt to grow a melon at the side. Rightclick an animal to feed it melon seeds."),
 	stack_max = 64,
-	groups = { craftitem=1 },
+	groups = {craftitem = 1, compostability = 30},
 	inventory_image = "mcl_farming_melon_seeds.png",
 	on_place = function(itemstack, placer, pointed_thing)
 		return mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:melontige_1")
@@ -21,7 +21,10 @@ local melon_base_def = {
 	_doc_items_longdesc = S("A melon is a block which can be grown from melon stems, which in turn are grown from melon seeds. It can be harvested for melon slices."),
 	stack_max = 64,
 	tiles = {"farming_melon_top.png", "farming_melon_top.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png"},
-	groups = {handy=1,axey=1, plant=1,building_block=1,enderman_takable=1,dig_by_piston=1},
+	groups = {
+		handy = 1, axey = 1, plant = 1, building_block = 1, dig_by_piston = 1,
+		enderman_takable = 1, compostability = 65
+	},
 	drop = {
 		max_items = 1,
 		items = {
@@ -134,7 +137,7 @@ minetest.register_craftitem("mcl_farming:melon_item", {
 	inventory_image = "farming_melon.png",
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
-	groups = { food = 2, eatable = 2 },
+	groups = {food = 2, eatable = 2, compostability = 50},
 	_mcl_saturation = 1.2,
 })
 

@@ -368,7 +368,12 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	color = "#8EB971",
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {handy=1,shovely=1,dirt=2,grass_block=1, grass_block_no_snow=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, spreading_dirt_type=1, enderman_takable=1, building_block=1},
+	groups = {
+		handy = 1, shovely = 1, dirt = 2, grass_block = 1, grass_block_no_snow = 1,
+		soil = 1, soil_sapling = 2, soil_sugarcane = 1, cultivatable = 2,
+		spreading_dirt_type = 1, enderman_takable = 1, building_block = 1,
+		compostability = 30
+	},
 	drop = "mcl_core:dirt",
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.1},
