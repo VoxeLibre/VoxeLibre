@@ -150,7 +150,6 @@ minetest.register_node("mcl_composters:composter", {
 		"mcl_composter_bottom.png",
 		"mcl_composter_side.png"
 	},
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	is_ground_content = false,
 	groups = {
 		handy=1, material_wood=1, deco_block=1, dirtifier=1,
@@ -181,7 +180,6 @@ local function register_filled_composter(level)
 			"mcl_composter_bottom.png",
 			"mcl_composter_side.png"
 		},
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 		is_ground_content = false,
 		groups = {
 			handy=1, material_wood=1, deco_block=1, dirtifier=1,
@@ -217,7 +215,6 @@ end
 minetest.register_node("mcl_composters:composter_ready", {
 	description = S("Composter") .. "(" .. S("ready for harvest") .. ")",
 	_doc_items_create_entry = false,
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	paramtype = "light",
 	drawtype = "nodebox",
 	node_box = composter_get_nodeboxes(7),
@@ -244,6 +241,6 @@ minetest.register_node("mcl_composters:composter_ready", {
 
 -- Add entry aliases for the Help
 if minetest.get_modpath("doc") then
-	doc.add_entry_alias("nodes", "mcl_composters:composter", 
+	doc.add_entry_alias("nodes", "mcl_composters:composter",
 		"nodes", "mcl_composters:composter_ready" )
 end
