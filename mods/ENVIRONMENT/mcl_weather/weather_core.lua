@@ -47,6 +47,35 @@ local function save_weather()
 end
 minetest.register_on_shutdown(save_weather)
 
+local particlespawners={}
+function mcl_weather.add_spawner_player(pl,id,ps)
+	local name=pl:get_player_name()
+	if not particlespawners[name] then
+		particlespawners[name] = {}
+	end
+	if not particlespawners[name][id] then
+		ps.playername =name
+		ps.attached = pl
+		particlespawners[name][id]=minetest.add_particlespawner(ps)
+		return particlespawners[name][id]
+	end
+end
+function mcl_weather.remove_spawners_player(pl)
+	local name=pl:get_player_name()
+	if not particlespawners[name] then return end
+	for k,v in pairs(particlespawners[name]) do
+		minetest.delete_particlespawner(v)
+	end
+	particlespawners[name] = nil
+	return true
+end
+
+function mcl_weather.remove_all_spawners()
+	for k,v in pairs(minetest.get_connected_players()) do
+		mcl_weather.remove_spawners_player(v)
+	end
+end
+
 function mcl_weather.get_rand_end_time(min_duration, max_duration)
 	local r
 	if min_duration and max_duration then
@@ -90,36 +119,6 @@ function mcl_weather.is_underwater(player)
 		return true
 	end
 	return false
-end
-
--- trying to locate position for particles by player look direction for performance reason.
--- it is costly to generate many particles around player so goal is focus mainly on front view.
-function mcl_weather.get_random_pos_by_player_look_dir(player)
-	local look_dir = player:get_look_dir()
-	local player_pos = player:get_pos()
-
-	local random_pos_x, random_pos_y, random_pos_z
-
-	if look_dir.x > 0 then
-		if look_dir.z > 0 then
-			random_pos_x = math.random() + math.random(player_pos.x - 2.5, player_pos.x + 5)
-			random_pos_z = math.random() + math.random(player_pos.z - 2.5, player_pos.z + 5)
-		else
-			random_pos_x = math.random() + math.random(player_pos.x - 2.5, player_pos.x + 5)
-			random_pos_z = math.random() + math.random(player_pos.z - 5, player_pos.z + 2.5)
-		end
-	else
-		if look_dir.z > 0 then
-			random_pos_x = math.random() + math.random(player_pos.x - 5, player_pos.x + 2.5)
-			random_pos_z = math.random() + math.random(player_pos.z - 2.5, player_pos.z + 5)
-		else
-			random_pos_x = math.random() + math.random(player_pos.x - 5, player_pos.x + 2.5)
-			random_pos_z = math.random() + math.random(player_pos.z - 5, player_pos.z + 2.5)
-		end
-	end
-
-	random_pos_y = math.random() + math.random(player_pos.y + 10, player_pos.y + 15)
-	return random_pos_x, random_pos_y, random_pos_z
 end
 
 local t, wci = 0, mcl_weather.check_interval
