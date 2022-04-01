@@ -45,6 +45,8 @@ local swap_node = minetest.swap_node
 local get_node_timer = minetest.get_node_timer
 local add_item = minetest.add_item
 local vector_offset = vector.offset
+local is_protected = minetest.is_protected
+local record_protection_violation = minetest.record_protection_violation
 
 local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 	--
@@ -53,6 +55,11 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 	-- as an on_rightclick handler, it returns an itemstack
 	--
 	if not player or (player:get_player_control() and player:get_player_control().sneak) then
+		return itemstack
+	end
+	local name = player:get_player_name()
+	if is_protected(pos, name) then
+		record_protection_violation(pos, name)
 		return itemstack
 	end
 	if not itemstack or itemstack:is_empty() then
@@ -110,6 +117,11 @@ local function composter_harvest(pos, node, player, itemstack, pointed_thing)
 	--
 	if not player or (player:get_player_control() and player:get_player_control().sneak) then
 		return
+	end
+	local name = player:get_player_name()
+	if is_protected(pos, name) then
+		record_protection_violation(pos, name)
+		return itemstack
 	end
 	-- reset ready type composter to empty type
 	swap_node(pos, {name="mcl_composters:composter"})
