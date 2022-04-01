@@ -48,12 +48,18 @@ local vector_offset = vector.offset
 local is_protected = minetest.is_protected
 local record_protection_violation = minetest.record_protection_violation
 
+--- Fill the composter when rightclicked.
+--
+-- `on_rightclick` handler for composter blocks of all fill levels except
+-- for the "ready" composter (see: composter_harvest).
+-- If the item used on the composter block is compostable, there is a chance
+-- that the level of the composter may increase, depending on the value of
+-- compostability of the item.
+--
+-- parameters are the standard parameters passed to `on_rightclick`.
+-- returns the remaining itemstack.
+--
 local function composter_add_item(pos, node, player, itemstack, pointed_thing)
-	--
-	-- handler for filling the composter when rightclicked
-	--
-	-- as an on_rightclick handler, it returns an itemstack
-	--
 	if not player or (player:get_player_control() and player:get_player_control().sneak) then
 		return itemstack
 	end
@@ -97,24 +103,31 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 	return itemstack
 end
 
+--- Update a full composter block to ready for harvesting.
+--
+-- `on_timer` handler. The timer is set in function 'composter_add_item'
+-- when the composter level has reached 7.
+--
+-- pos: position of the composter block.
+-- returns false, thereby cancelling further activity of the timer.
+--
 local function composter_ready(pos)
-	--
-	-- update the composter block to ready for harvesting
-	-- this function is a node callback on_timer.
-	-- the timer is set in function 'composter_fill' when composter level is 7
-	--
-	-- returns false in order to cancel further activity of the timer
-	--
 	swap_node(pos, {name = "mcl_composters:composter_ready"})
 	-- maybe spawn particles again?
 	-- TODO: play some sounds
 	return false
 end
 
+--- Spawn bone meal item and reset composter block.
+--
+-- `on_rightclick` handler for the "ready" composter block.  Causes a
+-- bone meal item to be spawned from the composter and resets the
+-- composter block to an empty composter block.
+--
+-- parameterss are the standard parameters passed to `on_rightclick`.
+-- returns itemstack (unchanged in this function).
+--
 local function composter_harvest(pos, node, player, itemstack, pointed_thing)
-	--
-	-- handler for harvesting bone meal from a ready composter when rightclicked
-	--
 	if not player or (player:get_player_control() and player:get_player_control().sneak) then
 		return itemstack
 	end
@@ -131,10 +144,12 @@ local function composter_harvest(pos, node, player, itemstack, pointed_thing)
 	return itemstack
 end
 
+--- Construct composter nodeboxes with varying levels of compost.
+--
+-- level: compost level in the composter
+-- returns a nodebox definition table.
+--
 local function composter_get_nodeboxes(level)
-	--
-	-- Convenience function to construct the nodeboxes for varying levels of compost
-	--
 	local top_y_tbl = {[0]=-7, -5, -3, -1, 1, 3, 5, 7}
 	local top_y = top_y_tbl[level] / 16
 	return {
@@ -149,9 +164,9 @@ local function composter_get_nodeboxes(level)
 	}
 end
 
+--- Register empty composter node.
 --
--- Register empty composter node
--- This is the base model that is craftable and can be placed in an inventory
+-- This is the craftable base model that can be placed in an inventory.
 --
 minetest.register_node("mcl_composters:composter", {
 	description = composter_description,
@@ -179,9 +194,9 @@ minetest.register_node("mcl_composters:composter", {
 	on_rightclick = composter_add_item
 })
 
+--- Template function for composters with compost.
 --
--- Template function for composters with compost
--- For each fill level a custom node is registered
+-- For each fill level a custom node is registered.
 --
 local function register_filled_composter(level)
 	local id = "mcl_composters:composter_"..level
@@ -219,15 +234,13 @@ local function register_filled_composter(level)
 	end
 end
 
---
--- Register filled composters (7 levels)
+--- Register filled composters (7 levels).
 --
 for level = 1, 7 do
 	register_filled_composter(level)
 end
 
---
--- Register composter ready to be harvested
+--- Register composter that is ready to be harvested.
 --
 minetest.register_node("mcl_composters:composter_ready", {
 	description = S("Composter") .. "(" .. S("ready for harvest") .. ")",
