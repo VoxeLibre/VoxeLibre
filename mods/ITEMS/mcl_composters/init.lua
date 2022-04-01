@@ -116,7 +116,7 @@ local function composter_harvest(pos, node, player, itemstack, pointed_thing)
 	-- handler for harvesting bone meal from a ready composter when rightclicked
 	--
 	if not player or (player:get_player_control() and player:get_player_control().sneak) then
-		return
+		return itemstack
 	end
 	local name = player:get_player_name()
 	if is_protected(pos, name) then
@@ -128,7 +128,7 @@ local function composter_harvest(pos, node, player, itemstack, pointed_thing)
 	-- spawn bone meal item (wtf dye?! is this how they make white cocoa)
 	add_item(pos, "mcl_dye:white")
 	-- TODO play some sounds
-
+	return itemstack
 end
 
 local function composter_get_nodeboxes(level)
