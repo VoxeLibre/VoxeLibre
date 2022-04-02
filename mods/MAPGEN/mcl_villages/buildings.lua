@@ -93,10 +93,6 @@ function settlements.create_site_plan(maxp, minp, pr)
 	-- go build settlement around center
 	if not center_surface then return false end
 
-	-- add settlement to list
-	table.insert(settlements_in_world, center_surface)
-	-- save list to file
-	settlements.save()
 	-- initialize all settlement_info table
 	local count_buildings, number_of_buildings, number_built = settlements.initialize_settlement_info(pr)
 	-- first building is townhall in the center

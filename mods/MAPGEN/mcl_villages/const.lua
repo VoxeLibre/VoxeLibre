@@ -66,11 +66,6 @@ settlements.schematic_table = {
 }
 
 --
--- list of settlements, load on server start up
---
-settlements_in_world = {}
---
---
 -- maximum allowed difference in height for building a sttlement
 --
 max_height_difference = 56
