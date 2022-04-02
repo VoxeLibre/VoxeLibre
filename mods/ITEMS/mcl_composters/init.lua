@@ -38,134 +38,52 @@ minetest.register_craft({
 	burntime = 15,
 })
 
-local compostability = {
-	["mcl_cake:cake"] = 100,
-	["mcl_farming:pumpkin_pie"] = 100,
+local get_item_group = minetest.get_item_group
+local is_creative_enabled = minetest.is_creative_enabled
+local registered_nodes = minetest.registered_nodes
+local swap_node = minetest.swap_node
+local get_node_timer = minetest.get_node_timer
+local add_item = minetest.add_item
+local vector_offset = vector.offset
+local is_protected = minetest.is_protected
+local record_protection_violation = minetest.record_protection_violation
 
-	["mcl_farming:potato_item_baked"] = 85,
-	["mcl_farming:bread"] = 85,
-	["mcl_farming:cookie"] = 85,
-	["mcl_farming:hay_block"] = 85,
-	-- mushroom cap block have 64 variants, wtf!?
-	["mcl_mushrooms:brown_mushroom_block_cap_111111"] = 85,
-	["mcl_mushrooms:red_mushroom_block_cap_111111"] = 85,
-	["mcl_nether:nether_wart_block"] = 85,
-	["mcl_mushroom:warped_wart_block"] = 85,
-
-	["mcl_core:apple"] = 65,
-	-- missing: azalea
-	["mcl_farming:beetroot_item"] = 65,
-	-- missing: big dripleaf
-	["mcl_farming:carrot_item"] = 65,
-	-- what's up with cocoa beans?
-	["mcl_dye:brown"] = 65,
-	["mcl_flowers:fern"] = 65,
-	["mcl_flowers:double_fern"] = 65,
-	["mcl_flowers:allium"] = 65,
-	["mcl_flowers:azure_bluet"] = 65,
-	["mcl_flowers:blue_orchid"] = 65,
-	["mcl_flowers:dandelion"] = 65,
-	["mcl_flowers:lilac"] = 65,
-	["mcl_flowers:oxeye_daisy"] = 65,
-	["mcl_flowers:poppy"] = 65,
-	["mcl_flowers:tulip_orange"] = 65,
-	["mcl_flowers:tulip_pink"] = 65,
-	["mcl_flowers:tulip_red"] = 65,
-	["mcl_flowers:tulip_white"] = 65,
-	["mcl_flowers:peony"] = 65,
-	["mcl_flowers:rose_bush"] = 65,
-	["mcl_flowers:sunflower"] = 65,
-	["mcl_flowers:waterlily"] = 65,
-	["mcl_farming:melon"] = 65,
-	-- missing: moss block?
-	-- mushroom aliases below?
-	["mcl_farming:mushroom_brown"] = 65,
-	["mcl_mushrooms:mushroom_brown"] = 65,
-	["mcl_farming:mushroom_red"] = 65,
-	["mcl_mushrooms:mushroom_red"] = 65,
-	["mcl_mushrooms:brown_mushroom_block_stem_full"] = 65,
-	["mcl_mushrooms:red_mushroom_block_stem_full"] = 65,
-	-- nether wart
-	["mcl_farming:potato_item"] = 65,
-	["mcl_farming:pumpkin"] = 65,
-	["mcl_farming:pumpkin_face_light"] = 65,
-	["mcl_ocean:sea_pickle_"] = 65,
-	["mcl_mushroom:shroomlight"] = 65,
-	-- missing: spore blossom
-	["mcl_farming:wheat_item"] = 65,
-	["mcl_mushroom:crimson_fungus"] = 65,
-	["mcl_mushroom:warped_fungus"] = 65,
-	["mcl_mushroom:crimson_roots"] = 65,
-	["mcl_mushroom:warped_roots"] = 65,
-
-	["mcl_core:cactus"] = 50,
-	["mcl_ocean:dried_kelp_block"] = 50,
-	-- missing: flowering azalea leaves
-	-- missing: glow lichen
-	["mcl_farming:melon_item"] = 50,
-	["mcl_mushroom:nether_sprouts"] = 50,
-	["mcl_core:reeds"] = 50,
-	["mcl_flowers:double_grass"] = 50,
-	["mcl_core:vine"] = 50,
-	-- missing: weeping vines
-	["mcl_mushroom:twisting_vines"] = 50,
-
-	["mcl_flowers:tallgrass"] = 30,
-	["mcl_farming:beetroot_seeds"] = 30,
-	["mcl_core:dirt_with_grass"] = 30,
-	["mcl_core:tallgrass"] = 30,
-	["mcl_ocean:dried_kelp"] = 30,
-	["mcl_ocean:kelp"] = 30,
-	["mcl_core:leaves"] = 30,
-	["mcl_core:acacialeaves"] = 30,
-	["mcl_core:birchleaves"] = 30,
-	["mcl_core:darkleaves"] = 30,
-	["mcl_core:jungleleaves"] = 30,
-	["mcl_core:spruceleaves"] = 30,
-	--
-	["mcl_farming:melon_seeds"] = 30,
-	-- missing: moss carpet
-	["mcl_farming:pumpkin_seeds"] = 30,
-	["mcl_core:sapling"] = 30,
-	["mcl_core:acaciasapling"] = 30,
-	["mcl_core:birchsapling"] = 30,
-	["mcl_core:darksapling"] = 30,
-	["mcl_core:junglesapling"] = 30,
-	["mcl_core:sprucesapling"] = 30,
-	["mcl_ocean:seagrass"] = 30,
-	-- missing: small dripleaf
-	["mcl_sweet_berry:sweet_berry"] = 30,
-	["mcl_farming:sweet_berry"] = 30,
-	["mcl_farming:wheat_seeds"] = 30,
-
-}
-
+--- Fill the composter when rightclicked.
+--
+-- `on_rightclick` handler for composter blocks of all fill levels except
+-- for the "ready" composter (see: composter_harvest).
+-- If the item used on the composter block is compostable, there is a chance
+-- that the level of the composter may increase, depending on the value of
+-- compostability of the item.
+--
+-- parameters are the standard parameters passed to `on_rightclick`.
+-- returns the remaining itemstack.
+--
 local function composter_add_item(pos, node, player, itemstack, pointed_thing)
-	--
-	-- handler for filling the composter when rightclicked
-	--
-	-- as an on_rightclick handler, it returns an itemstack
-	--
 	if not player or (player:get_player_control() and player:get_player_control().sneak) then
 		return itemstack
 	end
-	if not itemstack and itemstack:is_empty() then
+	local name = player:get_player_name()
+	if is_protected(pos, name) then
+		record_protection_violation(pos, name)
+		return itemstack
+	end
+	if not itemstack or itemstack:is_empty() then
 		return itemstack
 	end
 	local itemname = itemstack:get_name()
-	local chance = compostability[itemname]
-	if chance then
-		if not minetest.is_creative_enabled(player:get_player_name()) then
+	local chance = get_item_group(itemname, "compostability")
+	if chance > 0 then
+		if not is_creative_enabled(player:get_player_name()) then
 			itemstack:take_item()
 		end
 		-- calculate leveling up chance
 		local rand = math.random(0,100)
 		if chance >= rand then
 			-- get current compost level
-			local node_defs = minetest.registered_nodes[node.name]
-			local level = node_defs["_mcl_compost_level"]
+			local level = registered_nodes[node.name]["_mcl_compost_level"]
 			-- spawn green particles above new layer
-			mcl_dye.add_bone_meal_particle(vector.add(pos, vector.new(0, level/8, 0)))
+			mcl_dye.add_bone_meal_particle(vector_offset(pos, 0, level/8, 0))
 			-- TODO: play some sounds
 			-- update composter block
 			if level < 7 then
@@ -173,11 +91,11 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 			else
 				level = "ready"
 			end
-			minetest.swap_node(pos, {name = "mcl_composters:composter_" .. level})
+			swap_node(pos, {name = "mcl_composters:composter_" .. level})
 			-- a full composter becomes ready for harvest after one second
 			-- the block will get updated by the node timer callback set in node reg def
 			if level == 7 then
-				local timer = minetest.get_node_timer(pos)
+				local timer = get_node_timer(pos)
 				timer:start(1)
 			end
 		end
@@ -185,39 +103,53 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 	return itemstack
 end
 
+--- Update a full composter block to ready for harvesting.
+--
+-- `on_timer` handler. The timer is set in function 'composter_add_item'
+-- when the composter level has reached 7.
+--
+-- pos: position of the composter block.
+-- returns false, thereby cancelling further activity of the timer.
+--
 local function composter_ready(pos)
-	--
-	-- update the composter block to ready for harvesting
-	-- this function is a node callback on_timer.
-	-- the timer is set in function 'composter_fill' when composter level is 7
-	--
-	-- returns false in order to cancel further activity of the timer
-	--
-	minetest.swap_node(pos, {name = "mcl_composters:composter_ready"})
+	swap_node(pos, {name = "mcl_composters:composter_ready"})
 	-- maybe spawn particles again?
 	-- TODO: play some sounds
 	return false
 end
 
+--- Spawn bone meal item and reset composter block.
+--
+-- `on_rightclick` handler for the "ready" composter block.  Causes a
+-- bone meal item to be spawned from the composter and resets the
+-- composter block to an empty composter block.
+--
+-- parameterss are the standard parameters passed to `on_rightclick`.
+-- returns itemstack (unchanged in this function).
+--
 local function composter_harvest(pos, node, player, itemstack, pointed_thing)
-	--
-	-- handler for harvesting bone meal from a ready composter when rightclicked
-	--
 	if not player or (player:get_player_control() and player:get_player_control().sneak) then
-		return
+		return itemstack
+	end
+	local name = player:get_player_name()
+	if is_protected(pos, name) then
+		record_protection_violation(pos, name)
+		return itemstack
 	end
 	-- reset ready type composter to empty type
-	minetest.swap_node(pos, {name="mcl_composters:composter"})
+	swap_node(pos, {name="mcl_composters:composter"})
 	-- spawn bone meal item (wtf dye?! is this how they make white cocoa)
-	minetest.add_item(pos, "mcl_dye:white")
+	add_item(pos, "mcl_dye:white")
 	-- TODO play some sounds
-
+	return itemstack
 end
 
+--- Construct composter nodeboxes with varying levels of compost.
+--
+-- level: compost level in the composter
+-- returns a nodebox definition table.
+--
 local function composter_get_nodeboxes(level)
-	--
-	-- Convenience function to construct the nodeboxes for varying levels of compost
-	--
 	local top_y_tbl = {[0]=-7, -5, -3, -1, 1, 3, 5, 7}
 	local top_y = top_y_tbl[level] / 16
 	return {
@@ -232,9 +164,9 @@ local function composter_get_nodeboxes(level)
 	}
 end
 
+--- Register empty composter node.
 --
--- Register empty composter node
--- This is the base model that is craftable and can be placed in an inventory
+-- This is the craftable base model that can be placed in an inventory.
 --
 minetest.register_node("mcl_composters:composter", {
 	description = composter_description,
@@ -250,7 +182,6 @@ minetest.register_node("mcl_composters:composter", {
 		"mcl_composter_bottom.png",
 		"mcl_composter_side.png"
 	},
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	is_ground_content = false,
 	groups = {
 		handy=1, material_wood=1, deco_block=1, dirtifier=1,
@@ -263,9 +194,9 @@ minetest.register_node("mcl_composters:composter", {
 	on_rightclick = composter_add_item
 })
 
+--- Template function for composters with compost.
 --
--- Template function for composters with compost
--- For each fill level a custom node is registered
+-- For each fill level a custom node is registered.
 --
 local function register_filled_composter(level)
 	local id = "mcl_composters:composter_"..level
@@ -281,7 +212,6 @@ local function register_filled_composter(level)
 			"mcl_composter_bottom.png",
 			"mcl_composter_side.png"
 		},
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 		is_ground_content = false,
 		groups = {
 			handy=1, material_wood=1, deco_block=1, dirtifier=1,
@@ -304,20 +234,17 @@ local function register_filled_composter(level)
 	end
 end
 
---
--- Register filled composters (7 levels)
+--- Register filled composters (7 levels).
 --
 for level = 1, 7 do
 	register_filled_composter(level)
 end
 
---
--- Register composter ready to be harvested
+--- Register composter that is ready to be harvested.
 --
 minetest.register_node("mcl_composters:composter_ready", {
 	description = S("Composter") .. "(" .. S("ready for harvest") .. ")",
 	_doc_items_create_entry = false,
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	paramtype = "light",
 	drawtype = "nodebox",
 	node_box = composter_get_nodeboxes(7),
@@ -344,6 +271,6 @@ minetest.register_node("mcl_composters:composter_ready", {
 
 -- Add entry aliases for the Help
 if minetest.get_modpath("doc") then
-	doc.add_entry_alias("nodes", "mcl_composters:composter", 
+	doc.add_entry_alias("nodes", "mcl_composters:composter",
 		"nodes", "mcl_composters:composter_ready" )
 end

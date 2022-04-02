@@ -72,6 +72,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `coral_block=X`: Coral block (1 = alive, 2 = dead)
 * `coral_species=X`: Specifies the species of a coral; equal X means equal species
 * `set_on_fire=X`: Sets any (not fire-resistant) mob or player on fire for X seconds when touching
+* `compostability=X`: Item can be used on a composter block; X (1-100) is the % chance of adding a level of compost
 
 #### Footnotes
 

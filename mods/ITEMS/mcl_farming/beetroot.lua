@@ -5,7 +5,7 @@ minetest.register_craftitem("mcl_farming:beetroot_seeds", {
 	_tt_help = S("Grows on farmland"),
 	_doc_items_longdesc = S("Grows into a beetroot plant. Chickens like beetroot seeds."),
 	_doc_items_usagehelp = S("Place the beetroot seeds on farmland (which can be created with a hoe) to plant a beetroot plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it beetroot seeds."),
-	groups = { craftitem=1 },
+	groups = {craftitem = 1, compostability = 30},
 	inventory_image = "mcl_farming_beetroot_seeds.png",
 	wield_image = "mcl_farming_beetroot_seeds.png",
 	on_place = function(itemstack, placer, pointed_thing)
@@ -133,7 +133,7 @@ minetest.register_craftitem("mcl_farming:beetroot_item", {
 	wield_image = "mcl_farming_beetroot.png",
 	on_place = minetest.item_eat(1),
 	on_secondary_use = minetest.item_eat(1),
-	groups = { food = 2, eatable = 1 },
+	groups = {food = 2, eatable = 1, compostability = 65},
 	_mcl_saturation = 1.2,
 })
 
