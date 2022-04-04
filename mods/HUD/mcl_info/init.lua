@@ -89,7 +89,7 @@ minetest.register_chatcommand("debug",{
 			minetest.chat_send_player(name, S("Error! Possible values are integer numbers from @1 to @2", 0, 3))
 			return
 		end
-		if dbg == default_dbg then
+		if dbg == default_debug then
 			player_dbg[name] = nil
 		else
 			player_dbg[name] = dbg
