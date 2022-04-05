@@ -101,6 +101,16 @@ local mod_worlds = minetest.get_modpath("mcl_worlds") ~= nil
 local mod_armor = minetest.get_modpath("mcl_armor") ~= nil
 local mod_experience = minetest.get_modpath("mcl_experience") ~= nil
 
+--Helper function to clear all mobs because /clearobjects removes too much
+minetest.register_chatcommand("clearmobs",{
+	privs={maphack=true},
+	description=S("Removes all spawned mobs"),
+	func=function()
+		for k,o in pairs(minetest.luaentities) do
+			if  o.type == "ambient" or o.type == "animal" or o.type == "monster" or o.type == "npc" then o.object:remove() end
+		end
+end})
+
 ----For Water Flowing:
 local enable_physics = function(object, luaentity, ignore_check)
 	if luaentity.physical_state == false or ignore_check == true then
