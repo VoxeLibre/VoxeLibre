@@ -140,8 +140,8 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 	if not damager then
 		return
 	end
-
-	if vector.dot(obj:get_look_dir(), vector.subtract(damager:get_pos(), obj:get_pos())) < 0 then
+	local dpos = damager:get_pos()
+	if dpos and vector.dot(obj:get_look_dir(), vector.subtract(dpos, obj:get_pos())) < 0 then
 		return
 	end
 
