@@ -2833,6 +2833,10 @@ local do_states = function(self, dtime)
 						end
 						ent.switch = 1
 						ent.owner_id = tostring(self.object) -- add unique owner id to arrow
+
+						-- important for mcl_shields
+						ent._shooter = self.object
+						ent._saved_shooter_pos = self.object:get_pos()
 					end
 
 					local amount = (vec.x * vec.x + vec.y * vec.y + vec.z * vec.z) ^ 0.5
@@ -4078,7 +4082,6 @@ end
 
 -- make explosion with protection and tnt mod check
 function mobs:boom(self, pos, strength, fire)
-	self.object:remove()
 	if mod_explosions then
 		if mobs_griefing and not minetest.is_protected(pos, "") then
 			mcl_explosions.explode(pos, strength, { drop_chance = 1.0, fire = fire }, self.object)
@@ -4088,6 +4091,9 @@ function mobs:boom(self, pos, strength, fire)
 	else
 		mobs:safe_boom(self, pos, strength)
 	end
+
+	-- delete the object after it punched the player to avoid nil entities in e.g. mcl_shields!!
+	self.object:remove()
 end
 
 
