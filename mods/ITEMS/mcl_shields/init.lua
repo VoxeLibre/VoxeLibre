@@ -8,7 +8,7 @@ mcl_shields = {
 		player = true,
 		arrow = true,
 		generic = true,
-		explosion = true, -- ghasts don't work
+		explosion = true,
 		dragon_breath = true,
 	},
 	enchantments = {"mending", "unbreaking"},
@@ -128,20 +128,24 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 	local type = reason.type
 	local damager = reason.direct
 	local blocking, shieldstack = mcl_shields.is_blocking(obj)
+	
 	if not (obj:is_player() and blocking and mcl_shields.types[type] and damager) then
 		return
 	end
 
 	local entity = damager:get_luaentity()
-	if entity and (type == "arrow" or type == "generic") then
+	if entity and entity._shooter then
 		damager = entity._shooter
 	end
 
-	if not damager then
-		return
-	end
 	local dpos = damager:get_pos()
-	if dpos and vector.dot(obj:get_look_dir(), vector.subtract(dpos, obj:get_pos())) < 0 then
+
+	-- Used for removed / killed entities before the projectile hits the player
+	if entity and not entity._shooter and entity._saved_shooter_pos then
+		dpos = entity._saved_shooter_pos
+	end
+
+	if not dpos or vector.dot(obj:get_look_dir(), vector.subtract(dpos, obj:get_pos())) < 0 then
 		return
 	end
 
@@ -150,6 +154,7 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 	if unbreaking > 0 then
 		durability = durability * (unbreaking + 1)
 	end
+
 	if not minetest.is_creative_enabled(obj:get_player_name()) and damage >= 3 then
 		shieldstack:add_wear(65535 / durability)
 		if blocking == 2 then
