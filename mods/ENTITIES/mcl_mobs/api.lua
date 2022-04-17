@@ -104,10 +104,15 @@ local mod_experience = minetest.get_modpath("mcl_experience") ~= nil
 --Helper function to clear all mobs because /clearobjects removes too much
 minetest.register_chatcommand("clearmobs",{
 	privs={maphack=true},
-	description=S("Removes all spawned mobs"),
-	func=function()
+	params = "<all>",
+	description=S("Removes all spawned mobs except nametagged ones. Supply the optional all argument to remove all mobs"),
+	func=function(n,p)
 		for k,o in pairs(minetest.luaentities) do
-			if  o.type == "ambient" or o.type == "animal" or o.type == "monster" or o.type == "npc" then o.object:remove() end
+			if  o.type == "ambient" or o.type == "animal" or o.type == "monster" or o.type == "npc" then
+				if p == "all" or not o.nametag  then
+					o.object:remove()
+				end
+			end
 		end
 end})
 
