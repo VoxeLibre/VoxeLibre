@@ -64,6 +64,7 @@ local c_stone = minetest.get_content_id("mcl_core:stone")
 local c_dirt = minetest.get_content_id("mcl_core:dirt")
 local c_dirt_with_grass = minetest.get_content_id("mcl_core:dirt_with_grass")
 local c_dirt_with_grass_snow = minetest.get_content_id("mcl_core:dirt_with_grass_snow")
+local c_reeds = minetest.get_content_id("mcl_core:reeds")
 local c_sand = minetest.get_content_id("mcl_core:sand")
 --local c_sandstone = minetest.get_content_id("mcl_core:sandstone")
 local c_void = minetest.get_content_id("mcl_core:void")
@@ -2095,7 +2096,22 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 						lvm_used = true
 					end
 				end
-
+				
+				-- Set param2 (=color) of sugar cane
+				nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:reeds"})
+				for n=1, #nodes do
+					local n = nodes[n]
+					local p_pos = area:index(n.x, n.y, n.z)
+					local b_pos = aream:index(n.x, 0, n.z)
+					local bn = minetest.get_biome_name(biomemap[b_pos])
+					if bn then
+						local biome = minetest.registered_biomes[bn]
+						if biome and biome._mcl_biome_type then
+							data2[p_pos] = biome._mcl_palette_index
+							lvm_used = true
+						end
+					end
+				end
 			end
 
 		-- Nether block fixes:
@@ -2192,4 +2208,3 @@ local function basic_node(minp, maxp, blockseed)
 end
 
 mcl_mapgen_core.register_generator("main", basic, basic_node, 1, true)
-
