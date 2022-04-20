@@ -35,19 +35,6 @@ minetest.register_node("mcl_mushroom:warped_fungus", {
     end
   end,
 	_mcl_blast_resistance = 0,
-
-	if pointed_thing:get_wielded_item():get_name() == "mcl_dye:white" then
-	      itemstack:take_item()
-	      local nodepos = minetest.get_node({x = pos.x, y = pos.y - 1, z = pos.z})
-	      if nodepos.name == "mcl_mushroom:warped_nylium" or nodepos.name == "mcl_nether:netherrack" then
-	        local random = math.random(1, 5)
-	        if random == 1 then
-	          generate_warped_tree(pos)
-	        end
-	      end
-	    end
-	  end,
-  _mcl_blast_resistance = 0,
   stack_max = 64,
 })
 
@@ -173,7 +160,7 @@ minetest.register_node("mcl_mushroom:warped_hyphae", {
 	_mcl_blast_resistance = 2,
 	stack_max = 64,
 	_mcl_hardness = 2,
-	_mcl_stripped_variant = stripped_variant,
+	_mcl_stripped_variant = "mcl_mushroom:stripped_warped_hyphae",
 })
 
 minetest.register_node("mcl_mushroom:warped_nylium", {
@@ -280,21 +267,12 @@ minetest.register_craft({
 --Wood
 
 minetest.register_node("mcl_mushroom:warped_hyphae_wood", {
-<<<<<<< HEAD
   description = S("Warped Hyphae Wood"),
   tiles = {"warped_hyphae_wood.png"},
   groups = {handy=5,axey=1, flammable=3,wood=1,building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
   paramtype2 = "facedir",
   stack_max = 64,
   _mcl_hardness = 2,
-=======
-	description = S("Warped Hyphae Wood"),
-	tiles = {"warped_hyphae_wood.png"},
-	groups = {handy=5,axey=1, wood=1,building_block=1, material_wood=1},
-	--paramtype2 = "facedir",
-	stack_max = 64,
-	_mcl_hardness = 2,
->>>>>>> 4850b914a (Non flammable/modify by similiraty with trees)
 })
 
 mcl_stairs.register_stair_and_slab_simple("warped_hyphae_wood", "mcl_mushroom:warped_hyphae_wood", S("Warped Stair"), S("Warped Slab"), S("Double Warped Slab"))
@@ -344,17 +322,6 @@ minetest.register_abm({
       elseif randomg == 7 then
         local pos1 = { x = pos.x, y = pos.y + 1, z = pos.z }
         generate_warped_tree(pos1)
-<<<<<<< HEAD
-=======
-			elseif randomg > 15 and randomg <= 45 then
-				grow_twisting_vines({ x = pos.x, y = pos.y, z = pos.z } ,math.random(1, 4))
-			elseif randomg > 45 and randomg <= 50 then
-				minetest.set_node({ x = pos.x, y = pos.y + 1, z = pos.z }, { name = "mcl_mushroom:crimson_fungus" })
-			elseif randomg > 50 and randomg <= 150 then
-				minetest.set_node({ x = pos.x, y = pos.y + 1, z = pos.z }, { name = "mcl_mushroom:nether_sprouts" })
-			elseif randomg > 150 and randomg <= 250 then
-				minetest.set_node({ x = pos.x, y = pos.y + 1, z = pos.z }, { name = "mcl_mushroom:warped_roots" })
->>>>>>> da0cb4853 (Add more decoration blocks.)
       end
     else
       minetest.swap_node({ x = pos.x, y = pos.y, z = pos.z }, { name = "mcl_nether:netherrack" })
@@ -428,20 +395,6 @@ minetest.register_node("mcl_mushroom:crimson_roots", {
 })
 
 minetest.register_node("mcl_mushroom:crimson_hyphae", {
-<<<<<<< HEAD
-  description = S("Crimson Hyphae"),
-  tiles = {"crimson_hyphae.png",
-           "crimson_hyphae.png",
-           "crimson_hyphae_side.png",
-           "crimson_hyphae_side.png",
-           "crimson_hyphae_side.png",
-           "crimson_hyphae_side.png",
-         },
-  groups = {handy=5,axey=1, bark=1, building_block=1, material_wood=1,},
-  paramtype2 = "facedir",
-  stack_max = 64,
-  _mcl_hardness = 2,
-=======
 	description = S("Crimson Hyphae"),
 	_doc_items_longdesc = S("The stem of a crimson hyphae"),
 	_doc_items_hidden = false,
@@ -462,7 +415,6 @@ minetest.register_node("mcl_mushroom:crimson_hyphae", {
 	stack_max = 64,
 	_mcl_hardness = 2,
 	_mcl_stripped_variant = stripped_variant,
->>>>>>> 4850b914a (Non flammable/modify by similiraty with trees)
 })
 
 --Stem bark, stripped stem and bark
