@@ -154,18 +154,26 @@ minetest.register_node("mcl_mushroom:shroomlight", {
 })
 
 minetest.register_node("mcl_mushroom:warped_hyphae", {
-  description = S("Warped Hyphae"),
-  tiles = {"warped_hyphae.png",
-           "warped_hyphae.png",
-           "warped_hyphae_side.png",
-           "warped_hyphae_side.png",
-           "warped_hyphae_side.png",
-           "warped_hyphae_side.png",
-         },
-  groups = {handy=5,axey=1, bark=1, building_block=1, material_wood=1,},
-  paramtype2 = "facedir",
-  stack_max = 64,
-  _mcl_hardness = 2,
+	description = S("Warped Hyphae"),
+	_doc_items_longdesc = S("The stem of a warped hyphae"),
+	_doc_items_hidden = false,
+	tiles = {
+		"warped_hyphae.png",
+        "warped_hyphae.png",
+        "warped_hyphae_side.png",
+        "warped_hyphae_side.png",
+        "warped_hyphae_side.png",
+        "warped_hyphae_side.png",
+    },
+	paramtype2 = "facedir",
+	on_place = mcl_util.rotate_axis,
+	groups = {handy=1,axey=1, tree=1, building_block=1, material_wood=1},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	on_rotate = on_rotate,
+	_mcl_blast_resistance = 2,
+	stack_max = 64,
+	_mcl_hardness = 2,
+	_mcl_stripped_variant = stripped_variant,
 })
 
 minetest.register_node("mcl_mushroom:warped_nylium", {
@@ -214,7 +222,7 @@ minetest.register_node("mcl_mushroom:warped_hyphae_bark", {
 		paramtype2 = "facedir",
 		on_place = mcl_util.rotate_axis,
 		stack_max = 64,
-		groups = {handy=1,axey=1, bark=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
+		groups = {handy=1,axey=1, bark=1, building_block=1, material_wood=1},
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		is_ground_content = false,
 		on_rotate = on_rotate,
@@ -239,7 +247,7 @@ minetest.register_node("mcl_mushroom:stripped_warped_hyphae", {
 		paramtype2 = "facedir",
 		on_place = mcl_util.rotate_axis,
 		stack_max = 64,
-		groups = {handy=1, axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
+		groups = {handy=1, axey=1, tree=1, building_block=1, material_wood=1},
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		on_rotate = on_rotate,
 		_mcl_blast_resistance = 2,
@@ -253,7 +261,7 @@ minetest.register_node("mcl_mushroom:stripped_warped_hyphae_bark", {
 		paramtype2 = "facedir",
 		on_place = mcl_util.rotate_axis,
 		stack_max = 64,
-		groups = {handy=1, axey=1, bark=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
+		groups = {handy=1, axey=1, bark=1, building_block=1, material_wood=1},
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		is_ground_content = false,
 		on_rotate = on_rotate,
@@ -272,12 +280,21 @@ minetest.register_craft({
 --Wood
 
 minetest.register_node("mcl_mushroom:warped_hyphae_wood", {
+<<<<<<< HEAD
   description = S("Warped Hyphae Wood"),
   tiles = {"warped_hyphae_wood.png"},
   groups = {handy=5,axey=1, flammable=3,wood=1,building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
   paramtype2 = "facedir",
   stack_max = 64,
   _mcl_hardness = 2,
+=======
+	description = S("Warped Hyphae Wood"),
+	tiles = {"warped_hyphae_wood.png"},
+	groups = {handy=5,axey=1, wood=1,building_block=1, material_wood=1},
+	--paramtype2 = "facedir",
+	stack_max = 64,
+	_mcl_hardness = 2,
+>>>>>>> 4850b914a (Non flammable/modify by similiraty with trees)
 })
 
 mcl_stairs.register_stair_and_slab_simple("warped_hyphae_wood", "mcl_mushroom:warped_hyphae_wood", S("Warped Stair"), S("Warped Slab"), S("Double Warped Slab"))
@@ -411,6 +428,7 @@ minetest.register_node("mcl_mushroom:crimson_roots", {
 })
 
 minetest.register_node("mcl_mushroom:crimson_hyphae", {
+<<<<<<< HEAD
   description = S("Crimson Hyphae"),
   tiles = {"crimson_hyphae.png",
            "crimson_hyphae.png",
@@ -423,6 +441,28 @@ minetest.register_node("mcl_mushroom:crimson_hyphae", {
   paramtype2 = "facedir",
   stack_max = 64,
   _mcl_hardness = 2,
+=======
+	description = S("Crimson Hyphae"),
+	_doc_items_longdesc = S("The stem of a crimson hyphae"),
+	_doc_items_hidden = false,
+	tiles = {
+		"crimson_hyphae.png",
+        "crimson_hyphae.png",
+        "crimson_hyphae_side.png",
+        "crimson_hyphae_side.png",
+        "crimson_hyphae_side.png",
+        "crimson_hyphae_side.png",
+    },
+	paramtype2 = "facedir",
+	on_place = mcl_util.rotate_axis,
+	groups = {handy=1,axey=1, tree=1, building_block=1, material_wood=1},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	on_rotate = on_rotate,
+	_mcl_blast_resistance = 2,
+	stack_max = 64,
+	_mcl_hardness = 2,
+	_mcl_stripped_variant = stripped_variant,
+>>>>>>> 4850b914a (Non flammable/modify by similiraty with trees)
 })
 
 --Stem bark, stripped stem and bark
@@ -434,7 +474,7 @@ minetest.register_node("mcl_mushroom:crimson_hyphae_bark", {
 		paramtype2 = "facedir",
 		on_place = mcl_util.rotate_axis,
 		stack_max = 64,
-		groups = {handy=1,axey=1, bark=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
+		groups = {handy=1,axey=1, bark=1, building_block=1, material_wood=1,},
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		is_ground_content = false,
 		on_rotate = on_rotate,
@@ -459,7 +499,7 @@ minetest.register_node("mcl_mushroom:stripped_crimson_hyphae", {
 		paramtype2 = "facedir",
 		on_place = mcl_util.rotate_axis,
 		stack_max = 64,
-		groups = {handy=1, axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
+		groups = {handy=1, axey=1, tree=1, building_block=1, material_wood=1},
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		on_rotate = on_rotate,
 		_mcl_blast_resistance = 2,
@@ -473,7 +513,7 @@ minetest.register_node("mcl_mushroom:stripped_crimson_hyphae_bark", {
 		paramtype2 = "facedir",
 		on_place = mcl_util.rotate_axis,
 		stack_max = 64,
-		groups = {handy=1, axey=1, bark=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
+		groups = {handy=1, axey=1, bark=1, building_block=1, material_wood=1},
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		is_ground_content = false,
 		on_rotate = on_rotate,
