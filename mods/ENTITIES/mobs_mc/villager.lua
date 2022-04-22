@@ -74,7 +74,7 @@ local professions = {
 			},
 
 			{
-			{ { "mcl_farming:pumpkin_face", 8, 13 }, E1 },
+			{ { "mcl_farming:pumpkin", 8, 13 }, E1 },
 			{ E1, { "mcl_farming:pumpkin_pie", 2, 3} },
 			},
 
