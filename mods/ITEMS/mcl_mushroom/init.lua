@@ -203,7 +203,7 @@ minetest.register_node("mcl_mushroom:warped_checknode", {
 --Stem bark, stripped stem and bark
 
 minetest.register_node("mcl_mushroom:warped_hyphae_bark", {
-		description = S("Warped Hyphae"),
+		description = S("Warped Hyphae Bark"),
 		_doc_items_longdesc = S("This is a decorative block surrounded by the bark of an hyphae."),
 		tiles = {"warped_hyphae_side.png"},
 		paramtype2 = "facedir",
@@ -420,7 +420,7 @@ minetest.register_node("mcl_mushroom:crimson_hyphae", {
 --Stem bark, stripped stem and bark
 
 minetest.register_node("mcl_mushroom:crimson_hyphae_bark", {
-		description = S("Crimson Hyphae"),
+		description = S("Crimson Hyphae Bark"),
 		_doc_items_longdesc = S("This is a decorative block surrounded by the bark of an hyphae."),
 		tiles = {"crimson_hyphae_side.png"},
 		paramtype2 = "facedir",
