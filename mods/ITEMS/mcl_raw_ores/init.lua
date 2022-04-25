@@ -21,10 +21,6 @@ local function register_raw_ore(description, n)
         _mcl_blast_resistance = 6,
         _mcl_hardness = 5,
     })
-    minetest.override_item("mcl_core:stone_with_"..ore, {
-        drop = raw_ingot,
-        _mcl_fortune_drop = mcl_core.fortune_drop_ore,
-    })
     minetest.register_craft({
         output = raw_ingot.."_block",
         recipe = {
@@ -48,9 +44,3 @@ local function register_raw_ore(description, n)
 end
 register_raw_ore("Iron", "n")
 register_raw_ore("Gold")
-
-
-
-
-
-
