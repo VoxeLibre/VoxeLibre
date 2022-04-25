@@ -822,6 +822,7 @@ mcl_torches.register_torch("soul_torch",
 minetest.register_craft({
 	output = "mcl_blackstone:soul_torch 4",
 	recipe = {
+		{"group:coal"},
 		{ "mcl_nether:soul_sand" },
 		{ "mcl_core:stick" },
 	}
