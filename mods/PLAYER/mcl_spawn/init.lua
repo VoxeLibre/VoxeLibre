@@ -452,11 +452,32 @@ function mcl_spawn.get_player_spawn_pos(player)
 		if bgroup ~= 1 and bgroup ~= 2 then
 			-- Bed is destroyed:
 			if player and player:is_player() then
-				player:get_meta():set_string("mcl_beds:spawn", "")
+				local checkpos = minetest.string_to_pos(player:get_meta():get_string("mcl_beds:spawn"))
+				local checknode = minetest.get_node(checkpos)
+
+				if(string.match(checknode.name, "mcl_beds:respawn_anchor_charged_")) then
+					local charge_level = tonumber(string.sub(checknode.name, -1))
+					if not charge_level then
+						minetest.log("warning","could not get level of players respawn anchor, sending him back to spawn!")
+						player:get_meta():set_string("mcl_beds:spawn", "")
+						minetest.chat_send_player(player:get_player_name(), S("Couldn't get level of your respawn anchor!"))
+						return mcl_spawn.get_world_spawn_pos(), false
+					elseif charge_level ~= 1 then
+						minetest.set_node(checkpos, {name="mcl_beds:respawn_anchor_charged_".. charge_level-1})
+						return checkpos, false
+					else
+						minetest.set_node(checkpos, {name="mcl_beds:respawn_anchor"})
+						return checkpos, false
+					end
+				else
+					player:get_meta():set_string("mcl_beds:spawn", "")
+					minetest.chat_send_player(player:get_player_name(), S("Your spawn bed was missing or blocked, and you had no charged respawn anchor!"))
+					return mcl_spawn.get_world_spawn_pos(), false
+				end                
 			end
-			minetest.chat_send_player(player:get_player_name(), S("Your spawn bed was missing or blocked."))
-			return mcl_spawn.get_world_spawn_pos(), false
 		end
+	
+
 
 		-- Find spawning position on/near the bed free of solid or damaging blocks iterating a square spiral 15x15:
 
