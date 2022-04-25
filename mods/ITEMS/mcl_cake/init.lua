@@ -52,7 +52,10 @@ minetest.register_node("mcl_cake:cake", {
 		fixed = full_cake
 	},
 	stack_max = 1,
-	groups = {handy=1, cake=7, food=2,no_eat_delay=1, attached_node=1, dig_by_piston=1, comparator_signal=14},
+	groups = {
+		handy = 1, attached_node = 1, dig_by_piston = 1, comparator_signal = 14,
+		cake = 7, food = 2, no_eat_delay = 1, compostability = 100
+	},
 	drop = "",
 	on_rightclick = function(pos, node, clicker, itemstack)
 		-- Cake is subject to protection
@@ -125,7 +128,11 @@ local register_slice = function(level, nodebox, desc)
 			type = "fixed",
 			fixed = nodebox,
 			},
-		groups = {handy=1, cake=level, food=2,no_eat_delay=1,attached_node=1,not_in_creative_inventory=1,dig_by_piston=1,comparator_signal=level*2},
+		groups = {
+			handy = 1, attached_node = 1, not_in_creative_inventory = 1,
+			dig_by_piston = 1, cake = level, comparator_signal = level * 2,
+			food = 2, no_eat_delay = 1
+		},
 		drop = "",
 		on_rightclick = on_rightclick,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),

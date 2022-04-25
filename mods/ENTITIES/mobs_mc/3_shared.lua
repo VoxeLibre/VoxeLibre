@@ -50,8 +50,10 @@ mobs_mc.make_owner_teleport_function = function(dist, teleport_check_interval)
 					local telepos_below = {x=telepos.x, y=telepos.y-1, z=telepos.z}
 					table.remove(check_offsets, r)
 					-- Long story short, spawn on a platform
-					if minetest.registered_nodes[minetest.get_node(telepos).name].walkable == false and
-							minetest.registered_nodes[minetest.get_node(telepos_below).name].walkable == true then
+					local trynode = minetest.registered_nodes[minetest.get_node(telepos).name]
+					local trybelownode = minetest.registered_nodes[minetest.get_node(telepos_below).name]
+					if trynode and not trynode.walkable and
+							trybelownode and trybelownode.walkable then
 						-- Correct position found! Let's teleport.
 						self.object:set_pos(telepos)
 						return

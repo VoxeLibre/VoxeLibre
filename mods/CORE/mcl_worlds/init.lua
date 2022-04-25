@@ -153,3 +153,22 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
+function mcl_worlds.get_cloud_parameters()
+	if minetest.get_mapgen_setting("mg_name") == "valleys" then
+		return {
+			height = 384, --valleys has a much higher average elevation thus often "normal" landscape ends up in the clouds
+			speed = {x=-2, z=0},
+			thickness=5,
+			color="#FFF0FEF",
+			ambient = "#201060",
+		}
+	else
+		-- MC-style clouds: Layer 127, thickness 4, fly to the “West”
+		return {
+			height = mcl_worlds.layer_to_y(127),
+			speed = {x=-2, z=0},
+			thickness = 4,
+			color = "#FFF0FEF",
+		}
+	end
+end

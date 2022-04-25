@@ -238,7 +238,7 @@ if minetest.get_modpath("mcl_farming") then
 			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = pointed_thing.above}, true)
 			local dir = vector.subtract(pointed_thing.under, pointed_thing.above)
 			local param2 = minetest.dir_to_facedir(dir)
-			minetest.swap_node(pointed_thing.under, {name="mcl_farming:pumpkin_face", param2 = param2})
+			minetest.set_node(pointed_thing.under, {name="mcl_farming:pumpkin_face", param2 = param2})
 			minetest.add_item(pointed_thing.above, "mcl_farming:pumpkin_seeds 4")
 		end
 		return itemstack

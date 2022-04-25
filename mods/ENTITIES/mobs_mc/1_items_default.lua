@@ -525,7 +525,7 @@ if c("totem") then
 		inventory_image = "mcl_totems_totem.png",
 		wield_image = "mcl_totems_totem.png",
 		stack_max = 1,
-		groups = {combat_item=1},
+		groups = {combat_item = 1, offhand_item = 1},
 	})
 end
 

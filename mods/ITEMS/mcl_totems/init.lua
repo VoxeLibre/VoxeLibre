@@ -12,6 +12,14 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 		local hp = obj:get_hp()
 		if hp - damage <= 0 then
 			local wield = obj:get_wielded_item()
+			local in_offhand = false
+			if not (wield:get_name() == "mobs_mc:totem") then
+				local inv = obj:get_inventory()
+				if inv then
+					wield = obj:get_inventory():get_stack("offhand", 1)
+					in_offhand = true
+				end
+			end
 			if wield:get_name() == "mobs_mc:totem" then
 				local ppos = obj:get_pos()
 				local pnname = minetest.get_node(ppos).name
@@ -28,7 +36,12 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 
 				if not minetest.is_creative_enabled(obj:get_player_name()) then
 					wield:take_item()
-					obj:set_wielded_item(wield)
+					if in_offhand then
+						obj:get_inventory():set_stack("offhand", 1, wield)
+						mcl_inventory.update_inventory_formspec(obj)
+					else
+						obj:set_wielded_item(wield)
+					end
 				end
 
 				-- Effects

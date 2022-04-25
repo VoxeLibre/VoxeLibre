@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### SHULKER
@@ -15,7 +15,7 @@ mobs:register_mob("mobs_mc:shulker", {
 	description = S("Shulker"),
 	type = "monster",
 	spawn_class = "hostile",
-	attack_type = "projectile",
+	attack_type = "shoot",
 	shoot_interval = 0.5,
 	arrow = "mobs_mc:shulkerbullet",
 	shoot_offset = 0.5,

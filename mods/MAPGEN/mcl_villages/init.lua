@@ -10,7 +10,6 @@ dofile(settlements.modpath.."/paths.lua")
 --
 -- load settlements on server
 --
-settlements_in_world = settlements.load()
 settlements.grundstellungen()
 
 

@@ -88,29 +88,6 @@ function settlements.check_distance(settlement_info, building_pos, building_size
 	return true
 end
 -------------------------------------------------------------------------------
--- save list of generated settlements
--------------------------------------------------------------------------------
-function settlements.save()
-	local file = io.open(minetest.get_worldpath().."/settlements.txt", "w")
-	if file then
-		file:write(minetest.serialize(settlements_in_world))
-		file:close()
-	end
-end
--------------------------------------------------------------------------------
--- load list of generated settlements
--------------------------------------------------------------------------------
-function settlements.load()
-	local file = io.open(minetest.get_worldpath().."/settlements.txt", "r")
-	if file then
-		local table = minetest.deserialize(file:read("*all"))
-		if type(table) == "table" then
-			return table
-		end
-	end
-	return {}
-end
--------------------------------------------------------------------------------
 -- fill chests
 -------------------------------------------------------------------------------
 function settlements.fill_chest(pos, pr)

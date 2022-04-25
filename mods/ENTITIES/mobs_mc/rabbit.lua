@@ -1,6 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 
 local rabbit = {
 	description = S("Rabbit"),
@@ -8,7 +8,7 @@ local rabbit = {
 	spawn_class = "passive",
 	passive = true,
 	reach = 1,
-	rotate = 270,
+
 	hp_min = 3,
 	hp_max = 3,
 	xp_min = 1,
@@ -62,6 +62,8 @@ local rabbit = {
 	on_rightclick = function(self, clicker)
 		-- Feed, tame protect or capture
 		if mobs:feed_tame(self, clicker, 1, true, true) then return end
+		if mobs:protect(self, clicker) then return end
+		if mobs:capture_mob(self, clicker, 0, 50, 80, false, nil) then return end
 	end,
 	do_custom = function(self)
 		-- Easter egg: Change texture if rabbit is named “Toast”
@@ -99,7 +101,7 @@ killer_bunny.on_rightclick = nil
 killer_bunny.run_velocity = 6
 killer_bunny.do_custom = function(self)
 	if not self._killer_bunny_nametag_set then
-		self.nametag = S("The Killer Bunny")
+		self.nametag = "The Killer Bunny"
 		self._killer_bunny_nametag_set = true
 	end
 end
@@ -114,53 +116,22 @@ mobs:spawn_specific(
 "overworld",
 "ground",
 {
-	"FlowerForest_beach",
-	"Forest_beach",
-	"StoneBeach",
-	"ColdTaiga_beach_water",
-	"Taiga_beach",
-	"Savanna_beach",
-	"Plains_beach",
-	"ExtremeHills_beach",
-	"ColdTaiga_beach",
-	"Swampland_shore",
-	"JungleM_shore",
-	"Jungle_shore",
-	"MesaPlateauFM_sandlevel",
-	"MesaPlateauF_sandlevel",
-	"MesaBryce_sandlevel",
-	"Mesa_sandlevel",
-	"Mesa",
-	"FlowerForest",
-	"Swampland",
-	"Taiga",
-	"ExtremeHills",
-	"Jungle",
-	"Savanna",
-	"BirchForest",
-	"MegaSpruceTaiga",
-	"MegaTaiga",
-	"ExtremeHills+",
-	"Forest",
-	"Plains",
-	"Desert",
-	"ColdTaiga",
-	"IcePlainsSpikes",
-	"SunflowerPlains",
-	"IcePlains",
-	"RoofedForest",
-	"ExtremeHills+_snowtop",
-	"MesaPlateauFM_grasstop",
-	"JungleEdgeM",
-	"ExtremeHillsM",
-	"JungleM",
-	"BirchForestM",
-	"MesaPlateauF",
-	"MesaPlateauFM",
-	"MesaPlateauF_grasstop",
-	"MesaBryce",
-	"JungleEdge",
-	"SavannaM",
+"FlowerForest",
+"Swampland",
+"Taiga",
+"ExtremeHills",
+"BirchForest",
+"MegaSpruceTaiga",
+"MegaTaiga",
+"ExtremeHills+",
+"Forest",
+"Plains",
+"ColdTaiga",
+"SunflowerPlains",
+"RoofedForest",
+"MesaPlateauFM_grasstop",
+"ExtremeHillsM",
+"BirchForestM",
 },
 9,
 minetest.LIGHT_MAX+1,
@@ -233,4 +204,4 @@ mobs:spawn(spawn_grass)
 mobs:register_egg("mobs_mc:rabbit", S("Rabbit"), "mobs_mc_spawn_icon_rabbit.png", 0)
 
 -- Note: This spawn egg does not exist in Minecraft
-mobs:register_egg("mobs_mc:killer_bunny", S("Killer Bunny"), "mobs_mc_spawn_icon_rabbit_caerbannog.png", 0) 
+mobs:register_egg("mobs_mc:killer_bunny", S("Killer Bunny"), "mobs_mc_spawn_icon_rabbit.png^[colorize:#FF0000:192", 0) -- TODO: Update inventory image

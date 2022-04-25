@@ -2,10 +2,7 @@ local groupcaps_cache = {}
 
 -- Compute a hash value.
 function compute_hash(value)
-	-- minetest.get_password_hash is quite fast, even if it uses a
-	-- cryptographic hashing function (SHA-1).  It is written in C++ and it
-	-- is probably hard to write a faster hashing function in Lua.
-	return string.sub(minetest.get_password_hash("ryvnf", minetest.serialize(value)), 1, 8)
+	return string.sub(minetest.sha1(minetest.serialize(value)), 1, 8)
 end
 
 -- Get the groupcaps and hash for an enchanted tool.  If this function is called
@@ -46,7 +43,7 @@ end
 -- the tool needs to be updated.
 function mcl_enchanting.update_groupcaps(itemstack)
 	local name = itemstack:get_name()
-	if not minetest.registered_tools[name].tool_capabilities then
+	if not minetest.registered_tools[name] or not minetest.registered_tools[name].tool_capabilities then
 		return
 	end
 

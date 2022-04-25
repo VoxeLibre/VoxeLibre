@@ -363,6 +363,10 @@ function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size,
 			armor_slot_imgs = armor_slot_imgs .. "image[5.5,2.75;1,1;mcl_inventory_empty_armor_slot_boots.png]"
 		end
 
+		if inv:get_stack("offhand", 1):is_empty() then
+			armor_slot_imgs = armor_slot_imgs .. "image[1.5,2.025;1,1;mcl_inventory_empty_armor_slot_shield.png]"
+		end
+
 		local stack_size = get_stack_size(player)
 		
 		-- Survival inventory slots
@@ -377,6 +381,8 @@ function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size,
 			mcl_formspec.get_itemslot_bg(2.5,2.75,1,1)..
 			mcl_formspec.get_itemslot_bg(5.5,1.3,1,1)..
 			mcl_formspec.get_itemslot_bg(5.5,2.75,1,1)..
+			"list[current_player;offhand;1.5,2.025;1,1]"..
+			mcl_formspec.get_itemslot_bg(1.5,2.025,1,1)..
 			armor_slot_imgs..
 			-- player preview
 			player_preview..

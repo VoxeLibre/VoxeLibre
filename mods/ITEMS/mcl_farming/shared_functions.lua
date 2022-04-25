@@ -185,7 +185,7 @@ end
 - stem_def: Partial node definition of the fully-grown unconnected stem node. Many fields are already defined. You need to add `tiles` and `description` at minimum. Don't define on_construct without good reason
 - stem_drop: Drop probability table for all stem
 - gourd_itemstring: Desired itemstring of the full gourd node
-- gourd_def: (almost) full definition of the gourd node. This function will add on_construct and after_dig_node to the definition for unconnecting any connected stems
+- gourd_def: (almost) full definition of the gourd node. This function will add on_construct and after_destruct to the definition for unconnecting any connected stems
 - grow_interval: Will attempt to grow a gourd periodically at this interval in seconds
 - grow_chance: Chance of 1/grow_chance to grow a gourd next to the full unconnected stem after grow_interval has passed. Must be a natural number
 - connected_stem_texture: Texture of the connected stem
@@ -235,8 +235,8 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 	end
 
 	-- Register gourd
-	if not gourd_def.after_dig_node then
-		function gourd_def.after_dig_node(blockpos, oldnode, oldmetadata, user)
+	if not gourd_def.after_destruct then
+		gourd_def.after_destruct = function(blockpos, oldnode)
 			-- Disconnect any connected stems, turning them back to normal stems
 			for n=1, #neighbors do
 				local offset = neighbors[n]

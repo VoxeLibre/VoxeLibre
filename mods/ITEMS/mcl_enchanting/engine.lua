@@ -14,10 +14,11 @@ end
 
 function mcl_enchanting.unload_enchantments(itemstack)
 	local itemdef = itemstack:get_definition()
-	if itemdef.tool_capabilities then
-		itemstack:get_meta():set_tool_capabilities(nil)
-	end
 	local meta = itemstack:get_meta()
+	if itemdef.tool_capabilities then
+		meta:set_tool_capabilities(nil)
+		meta:set_string("groupcaps_hash", "")
+	end
 	if meta:get_string("name") == "" then
 		meta:set_string("description", "")
 		meta:set_string("groupcaps_hash", "")
@@ -33,6 +34,7 @@ function mcl_enchanting.load_enchantments(itemstack, enchantments)
 				enchantment_def.on_enchant(itemstack, level)
 			end
 		end
+		mcl_enchanting.update_groupcaps(itemstack)
 	end
 	tt.reload_itemstack_description(itemstack)
 end
@@ -72,8 +74,12 @@ function mcl_enchanting.is_enchanted(itemname)
 	return minetest.get_item_group(itemname, "enchanted") > 0
 end
 
+function mcl_enchanting.not_enchantable_on_enchanting_table(itemname)
+	return mcl_enchanting.get_enchantability(itemname) == -1
+end
+
 function mcl_enchanting.is_enchantable(itemname)
-	return mcl_enchanting.get_enchantability(itemname) > 0
+	return mcl_enchanting.get_enchantability(itemname) > 0 or mcl_enchanting.not_enchantable_on_enchanting_table(itemname)
 end
 
 function mcl_enchanting.can_enchant_freshly(itemname)
@@ -326,7 +332,7 @@ end
 function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted, pr)
 	local itemname = itemstack:get_name()
 
-	if not mcl_enchanting.can_enchant_freshly(itemname) and not ignore_already_enchanted then
+	if (not mcl_enchanting.can_enchant_freshly(itemname) and not ignore_already_enchanted) or mcl_enchanting.not_enchantable_on_enchanting_table(itemname) then
 		return
 	end
 
@@ -452,7 +458,7 @@ function mcl_enchanting.generate_random_table_slots(itemstack, num_bookshelves)
 end
 
 function mcl_enchanting.get_table_slots(player, itemstack, num_bookshelves)
-	if not mcl_enchanting.can_enchant_freshly(itemstack:get_name()) then
+	if (not mcl_enchanting.can_enchant_freshly(itemstack:get_name())) or mcl_enchanting.not_enchantable_on_enchanting_table(itemname) then
 		return {false, false, false}
 	end
 	local itemname = itemstack:get_name()

@@ -71,12 +71,11 @@ for _, row in ipairs(wool.dyes) do
 			_doc_items_entry_name = name_carpet,
 			_doc_items_longdesc = longdesc_carpet,
 
-			walkable = false, -- See <https://minecraft.gamepedia.com/Materials>
 			is_ground_content = false,
 			tiles = {texture..".png"},
 			wield_image = texture..".png",
 			wield_scale = { x=1, y=1, z=0.5 },
-			groups = {handy=1, carpet=1,attached_node=1,flammable=1,fire_encouragement=60, fire_flammability=20, dig_by_water=1,deco_block=1,[color_group]=1},
+			groups = {handy=1, carpet=1,supported_node=1,flammable=1,fire_encouragement=60, fire_flammability=20, dig_by_water=1,deco_block=1,[color_group]=1},
 			sounds = mcl_sounds.node_sound_wool_defaults(),
 			paramtype = "light",
 			sunlight_propagates = true,

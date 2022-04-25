@@ -210,7 +210,8 @@ minetest.register_abm({
 		end
 		local posses = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } }
 		for _, p in pairs(posses) do
-			if minetest.registered_nodes[minetest.get_node(vector.new(pos.x + p[1], pos.y, pos.z + p[2])).name].walkable then
+			local ndef = minetest.registered_nodes[minetest.get_node(vector.new(pos.x + p[1], pos.y, pos.z + p[2])).name]
+			if ndef and ndef.walkable then
 				local posy = pos.y
 				while minetest.get_node(vector.new(pos.x, posy, pos.z)).name == "mcl_core:cactus" do
 					local pos = vector.new(pos.x, posy, pos.z)
@@ -619,6 +620,30 @@ function mcl_core.generate_spruce_tree(pos)
 	minetest.place_schematic({ x = pos.x - 3, y = pos.y - 1, z = pos.z - 3 }, path, "0", nil, false)
 end
 
+local function find_necorner(p)
+	local n=minetest.get_node_or_nil(vector.offset(p,0,1,1))
+	local e=minetest.get_node_or_nil(vector.offset(p,1,1,0))
+	if n and n.name == "mcl_core:sprucetree" then
+		p=vector.offset(p,0,0,1)
+	end
+	if e and e.name == "mcl_core:sprucetree" then
+		p=vector.offset(p,1,0,0)
+	end
+	return p
+end
+
+local function generate_spruce_podzol(ps)
+	local pos=find_necorner(ps)
+	local pos1=vector.offset(pos,-6,-6,-6)
+	local pos2=vector.offset(pos,6,6,6)
+	local nn=minetest.find_nodes_in_area_under_air(pos1, pos2, {"group:dirt"})
+	for k,v in pairs(nn) do
+		if math.random(vector.distance(pos,v)) < 4 and not (math.abs(pos.x-v.x) == 6 and math.abs(pos.z-v.z) == 6) then --leave out the corners
+			minetest.set_node(v,{name="mcl_core:podzol"})
+		end
+	end
+end
+
 function mcl_core.generate_huge_spruce_tree(pos)
 	local r1 = math.random(1, 2)
 	local r2 = math.random(1, 4)
@@ -635,6 +660,7 @@ function mcl_core.generate_huge_spruce_tree(pos)
 		path = modpath.."/schematics/mcl_core_spruce_huge_up_"..r2..".mts"
 	end
 	minetest.place_schematic(vector.add(pos, offset), path, "0", nil, false)
+	generate_spruce_podzol(pos)
 end
 
 -- END of spruce tree functions --
@@ -841,7 +867,7 @@ minetest.register_abm({
 			-- If this was mycelium, uproot plant above
 			if n2.name == "mcl_core:mycelium" then
 				local tad = minetest.registered_nodes[minetest.get_node(above).name]
-				if tad.groups and tad.groups.non_mycelium_plant then
+				if tad and tad.groups and tad.groups.non_mycelium_plant then
 					minetest.dig_node(above)
 				end
 			end
@@ -1333,7 +1359,7 @@ minetest.register_abm({
 function mcl_core.supports_vines(nodename)
 	local def = minetest.registered_nodes[nodename]
 	-- Rules: 1) walkable 2) full cube
-	return def.walkable and
+	return def and def.walkable and
 			(def.node_box == nil or def.node_box.type == "regular") and
 			(def.collision_box == nil or def.collision_box.type == "regular")
 end
@@ -1672,4 +1698,3 @@ function mcl_core.after_snow_destruct(pos)
 	local node = minetest.get_node(npos)
 	mcl_core.clear_snow_dirt(npos, node)
 end
-

@@ -166,18 +166,20 @@ minetest.register_node("mcl_end:dragon_egg", {
 	selection_box = {
 		type = "regular",
 	},
-	groups = {handy=1, falling_node = 1, deco_block = 1, not_in_creative_inventory = 1, dig_by_piston = 1 },
+	groups = {handy = 1, falling_node = 1, deco_block = 1, not_in_creative_inventory = 1, dig_by_piston = 1 },
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 9,
 	_mcl_hardness = 3,
-	on_punch = function(pos, node)
-		local max_dist = vector.new(15, 7, 15)
-		local positions = minetest.find_nodes_in_area(vector.subtract(pos, max_dist), vector.add(pos, max_dist), "air", false)
-		if #positions > 0 then
-			local tpos = positions[math.random(#positions)]
-			minetest.remove_node(pos)
-			minetest.set_node(tpos, node)
-			minetest.check_for_falling(tpos)
+	on_punch = function(pos, node, puncher)
+		if not minetest.is_protected(pos, puncher:get_player_name()) then
+			local max_dist = vector.new(15, 7, 15)
+			local positions = minetest.find_nodes_in_area(vector.subtract(pos, max_dist), vector.add(pos, max_dist), "air", false)
+			if #positions > 0 then
+				local tpos = positions[math.random(#positions)]
+				minetest.remove_node(pos)
+				minetest.set_node(tpos, node)
+				minetest.check_for_falling(tpos)
+			end
 		end
 	end,
 })

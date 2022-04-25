@@ -56,6 +56,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `no_eat_delay=1`: Only for foodstuffs. When eating this, all eating delays are ignored.
 * `can_eat_when_full=1`: Only for foodstuffs. This item can be eaten when the user has a full hunger bar
 * `attached_node_facedir=1`: Like `attached_node`, but for facedir nodes
+* `supported_node=1`: Like `attached_node`, but can be placed on any nodes that do not have the `drawtype="airlike"` attribute.
 * `cauldron`: Cauldron. 1: Empty. 2-4: Water height
 * `anvil`: Anvil. 1: No damage. 2-3: Higher damage levels
 * `no_rename=1`: Item cannot be renamed by anvil
@@ -71,6 +72,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `coral_block=X`: Coral block (1 = alive, 2 = dead)
 * `coral_species=X`: Specifies the species of a coral; equal X means equal species
 * `set_on_fire=X`: Sets any (not fire-resistant) mob or player on fire for X seconds when touching
+* `compostability=X`: Item can be used on a composter block; X (1-100) is the % chance of adding a level of compost
 
 #### Footnotes
 

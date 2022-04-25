@@ -15,7 +15,7 @@ minetest.register_craftitem("mcl_farming:pumpkin_seeds", {
 	_doc_items_usagehelp = S("Place the pumpkin seeds on farmland (which can be created with a hoe) to plant a pumpkin stem. Pumpkin stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem attempts to grow a pumpkin next to it. Rightclick an animal to feed it pumpkin seeds."),
 	stack_max = 64,
 	inventory_image = "mcl_farming_pumpkin_seeds.png",
-	groups = { craftitem=1 },
+	groups = {craftitem=1, compostability = 30},
 	on_place = function(itemstack, placer, pointed_thing)
 		return mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:pumpkin_1")
 	end
@@ -99,13 +99,15 @@ local pumpkin_base_def = {
 	stack_max = 64,
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png"},
-	groups = {handy=1,axey=1, plant=1,building_block=1, dig_by_piston=1, enderman_takable=1},
+	groups = {
+		handy = 1, axey = 1, plant = 1, building_block = 1, dig_by_piston = 1,
+		enderman_takable = 1, compostability = 65
+	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_rotate = on_rotate,
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 }
-minetest.register_node("mcl_farming:pumpkin", pumpkin_base_def)
 
 local pumpkin_face_base_def = table.copy(pumpkin_base_def)
 pumpkin_face_base_def.description = S("Pumpkin")
@@ -118,9 +120,16 @@ pumpkin_face_base_def.groups.armor_head=1
 pumpkin_face_base_def.groups.non_combat_armor_head=1
 pumpkin_face_base_def._mcl_armor_mob_range_factor = 0
 pumpkin_face_base_def._mcl_armor_mob_range_mob = "mobs_mc:enderman"
+
 pumpkin_face_base_def._mcl_armor_element = "head"
 pumpkin_face_base_def._mcl_armor_texture = "mcl_farming_pumpkin_face.png"
 pumpkin_face_base_def._mcl_armor_preview = "mcl_farming_pumpkin_face_preview.png"
+
+pumpkin_face_base_def.on_construct = function(pos)
+	-- Attempt to spawn iron golem or snow golem
+	mobs_mc.tools.check_iron_golem_summon(pos)
+	mobs_mc.tools.check_snow_golem_summon(pos)
+end
 
 if minetest.get_modpath("mcl_armor") then
 	local pumpkin_hud = {}
@@ -129,7 +138,7 @@ if minetest.get_modpath("mcl_armor") then
 			pumpkin_blur = player:hud_add({
 				hud_elem_type = "image",
 				position = {x = 0.5, y = 0.5},
-				scale = {x = -100, y = -100},
+				scale = {x = -101, y = -101},
 				text = "mcl_farming_pumpkin_hud.png",
 				z_index = -200
 			}),
@@ -175,12 +184,11 @@ end
 mcl_farming:add_plant("plant_pumpkin_stem", "mcl_farming:pumpkintige_unconnect", {"mcl_farming:pumpkin_1", "mcl_farming:pumpkin_2", "mcl_farming:pumpkin_3", "mcl_farming:pumpkin_4", "mcl_farming:pumpkin_5", "mcl_farming:pumpkin_6", "mcl_farming:pumpkin_7"}, 30, 5)
 
 -- Register actual pumpkin, connected stems and stem-to-pumpkin growth
-mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkintige_linked", "mcl_farming:pumpkintige_unconnect", stem_def, stem_drop, "mcl_farming:pumpkin_face", pumpkin_face_base_def, 30, 15, "mcl_farming_pumpkin_stem_connected.png^[colorize:#FFA800:127",
-function(pos)
-	-- Attempt to spawn iron golem or snow golem
-	mobs_mc.tools.check_iron_golem_summon(pos)
-	mobs_mc.tools.check_snow_golem_summon(pos)
-end)
+mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkintige_linked", "mcl_farming:pumpkintige_unconnect", stem_def, stem_drop, "mcl_farming:pumpkin", pumpkin_base_def, 30, 15, "mcl_farming_pumpkin_stem_connected.png^[colorize:#FFA800:127")
+
+-- Steal function to properly disconnect a carved pumpkin
+pumpkin_face_base_def.after_destruct = minetest.registered_nodes["mcl_farming:pumpkin"].after_destruct
+minetest.register_node("mcl_farming:pumpkin_face", pumpkin_face_base_def)
 
 -- Jack o'Lantern
 minetest.register_node("mcl_farming:pumpkin_face_light", {
@@ -217,11 +225,6 @@ minetest.register_craft({
 	recipe = {{"mcl_farming:pumpkin"}}
 })
 
-minetest.register_craft({
-	output = "mcl_farming:pumpkin_seeds 4",
-	recipe = {{"mcl_farming:pumpkin_face"}}
-})
-
 minetest.register_craftitem("mcl_farming:pumpkin_pie", {
 	description = S("Pumpkin Pie"),
 	_doc_items_longdesc = S("A pumpkin pie is a tasty food item which can be eaten."),
@@ -230,7 +233,7 @@ minetest.register_craftitem("mcl_farming:pumpkin_pie", {
 	wield_image = "mcl_farming_pumpkin_pie.png",
 	on_place = minetest.item_eat(8),
 	on_secondary_use = minetest.item_eat(8),
-	groups = { food = 2, eatable = 8 },
+	groups = {food = 2, eatable = 8, compostability = 100},
 	_mcl_saturation = 4.8,
 })
 
@@ -238,11 +241,6 @@ minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_farming:pumpkin_pie",
 	recipe = {"mcl_farming:pumpkin", "mcl_core:sugar", "mcl_throwing:egg"},
-})
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_farming:pumpkin_pie",
-	recipe = {"mcl_farming:pumpkin_face", "mcl_core:sugar", "mcl_throwing:egg"},
 })
 
 

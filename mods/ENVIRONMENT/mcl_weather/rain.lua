@@ -1,5 +1,5 @@
-local PARTICLES_COUNT_RAIN = 30
-local PARTICLES_COUNT_THUNDER = 45
+local PARTICLES_COUNT_RAIN = 100
+local PARTICLES_COUNT_THUNDER = 300
 
 local get_connected_players = minetest.get_connected_players
 
@@ -19,6 +19,45 @@ mcl_weather.rain = {
 
 	init_done = false,
 }
+local update_sound={}
+local vel=math.random(0,3)
+local falling_speed=math.random(10,15)
+local size = math.random(1,3)
+local psdef= {
+	amount = mcl_weather.rain.particles_count,
+	time=0,
+	minpos = vector.new(-6,3,-6),
+	maxpos = vector.new(6,15,6),
+	minvel = vector.new(-vel,-falling_speed,-vel),
+	maxvel = vector.new(vel,-falling_speed+vel,vel),
+	minacc = vector.new(0,0,0),
+	maxacc = vector.new(0,-0.4,0),
+	minexptime = 0.5,
+	maxexptime = 2,
+	minsize = size,
+	maxsize= size*2,
+	collisiondetection = true,
+	collision_removal = true,
+	vertical = true,
+}
+local psdef_backsplash= {
+	amount = 10,
+	time=0,
+	minpos = vector.new(-3,-1,-3),
+	maxpos = vector.new(3,0,3),
+	minvel = vector.new(-vel,falling_speed*2,-vel),
+	maxvel = vector.new(vel,falling_speed*2+vel,vel),
+	minacc = vector.new(0,0,0),
+	maxacc = vector.new(0,0,0),
+	minexptime = 0.1,
+	maxexptime = 0.2,
+	minsize = size*0.1,
+	maxsize= size*0.5,
+	collisiondetection = true,
+	collision_removal = true,
+	vertical = true,
+}
+local textures = {"weather_pack_rain_raindrop_1.png", "weather_pack_rain_raindrop_2.png", "weather_pack_rain_raindrop_1.png"}
 
 function mcl_weather.rain.sound_handler(player)
 	return minetest.sound_play("weather_rain", {
@@ -44,42 +83,18 @@ function mcl_weather.rain.set_sky_box()
 	end
 end
 
--- creating manually parctiles instead of particles spawner because of easier to control
--- spawn position.
+-- no no no NO NO f*.. no. no manual particle creatin' PLS!! this sends EVERY particle over the net.
 function mcl_weather.rain.add_rain_particles(player)
-	mcl_weather.rain.last_rp_count = 0
-	for i=mcl_weather.rain.particles_count, 1,-1 do
-		local random_pos_x, random_pos_y, random_pos_z = mcl_weather.get_random_pos_by_player_look_dir(player)
-		if mcl_weather.is_outdoor({x=random_pos_x, y=random_pos_y, z=random_pos_z}) then
-			mcl_weather.rain.last_rp_count = mcl_weather.rain.last_rp_count + 1
-			minetest.add_particle({
-				pos = {x=random_pos_x, y=random_pos_y, z=random_pos_z},
-				velocity = {x=0, y=-10, z=0},
-				acceleration = {x=0, y=-30, z=0},
-				expirationtime = 1.0,
-				size = math.random(0.5, 3),
-				collisiondetection = true,
-				collision_removal = true,
-				vertical = true,
-				texture = mcl_weather.rain.get_texture(),
-				playername = player:get_player_name()
-			})
-		end
+	mcl_weather.rain.last_rp_count = mcl_weather.rain.particles_count
+	for k,v in pairs(textures) do
+		psdef.texture=v
+		mcl_weather.add_spawner_player(player,"rain"..k,psdef)
 	end
-end
-
--- Simple random texture getter
-function mcl_weather.rain.get_texture()
-	local texture_name
-	local random_number = math.random()
-	if random_number > 0.33 then
-		texture_name = "weather_pack_rain_raindrop_1.png"
-	elseif random_number > 0.66 then
-		texture_name = "weather_pack_rain_raindrop_2.png"
-	else
-		texture_name = "weather_pack_rain_raindrop_3.png"
+	psdef_backsplash.texture=textures[math.random(1,#textures)]
+	local l=mcl_weather.add_spawner_player(player,"rainbacksplash",psdef_backsplash)
+	if l then
+		update_sound[player:get_player_name()]=true
 	end
-	return texture_name;
 end
 
 -- register player for rain weather.
@@ -89,6 +104,7 @@ function mcl_weather.rain.add_player(player)
 		local player_meta = {}
 		player_meta.origin_sky = {player:get_sky()}
 		mcl_weather.players[player:get_player_name()] = player_meta
+		update_sound[player:get_player_name()]=true
 	end
 end
 
@@ -99,26 +115,15 @@ function mcl_weather.rain.remove_player(player)
 	if player_meta and player_meta.origin_sky then
 		player:set_clouds({color="#FFF0F0E5"})
 		mcl_weather.players[player:get_player_name()] = nil
+		update_sound[player:get_player_name()]=true
 	end
 end
-
-mcl_worlds.register_on_dimension_change(function(player, dimension)
-	if dimension ~= "overworld" and dimension ~= "void" then
-		mcl_weather.rain.remove_sound(player)
-		mcl_weather.rain.remove_player(player)
-	elseif dimension == "overworld" then
-		mcl_weather.rain.update_sound(player)
-		if mcl_weather.rain.raining then
-			mcl_weather.rain.add_rain_particles(player)
-			mcl_weather.rain.add_player(player)
-		end
-	end
-end)
 
 -- adds and removes rain sound depending how much rain particles around player currently exist.
 -- have few seconds delay before each check to avoid on/off sound too often
 -- when player stay on 'edge' where sound should play and stop depending from random raindrop appearance.
 function mcl_weather.rain.update_sound(player)
+	if not update_sound[player:get_player_name()] then return end
 	local player_meta = mcl_weather.players[player:get_player_name()]
 	if player_meta then
 		if player_meta.sound_updated and player_meta.sound_updated + 5 > minetest.get_gametime() then
@@ -136,6 +141,7 @@ function mcl_weather.rain.update_sound(player)
 
 		player_meta.sound_updated = minetest.get_gametime()
 	end
+	update_sound[player:get_player_name()]=false
 end
 
 -- rain sound removed from player.
@@ -158,7 +164,8 @@ function mcl_weather.rain.clear()
 	for _, player in pairs(get_connected_players()) do
 		mcl_weather.rain.remove_sound(player)
 		mcl_weather.rain.remove_player(player)
-	end
+		mcl_weather.remove_spawners_player(player)
+	end	
 end
 
 minetest.register_globalstep(function(dtime)
@@ -177,8 +184,10 @@ function mcl_weather.rain.make_weather()
 	end
 
 	for _, player in pairs(get_connected_players()) do
-		if (mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(player:get_pos())) then
+		local pos=player:get_pos()
+		if mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(pos) or not  mcl_weather.is_outdoor(pos) then
 			mcl_weather.rain.remove_sound(player)
+			mcl_weather.remove_spawners_player(player)
 			return false
 		end
 		mcl_weather.rain.add_player(player)
@@ -190,8 +199,12 @@ end
 -- Switch the number of raindrops: "thunder" for many raindrops, otherwise for normal raindrops
 function mcl_weather.rain.set_particles_mode(mode)
 	if mode == "thunder" then
+		psdef.amount=PARTICLES_COUNT_THUNDER
+		psdef_backsplash.amount=PARTICLES_COUNT_THUNDER
 		mcl_weather.rain.particles_count = PARTICLES_COUNT_THUNDER
 	else
+		psdef.amount=PARTICLES_COUNT_RAIN
+		psdef_backsplash.amount=PARTICLES_COUNT_RAIN
 		mcl_weather.rain.particles_count = PARTICLES_COUNT_RAIN
 	end
 end

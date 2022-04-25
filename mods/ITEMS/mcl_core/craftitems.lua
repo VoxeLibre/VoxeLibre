@@ -139,7 +139,7 @@ minetest.register_craftitem("mcl_core:apple", {
 	stack_max = 64,
 	on_place = minetest.item_eat(4),
 	on_secondary_use = minetest.item_eat(4),
-	groups = { food = 2, eatable = 4 },
+	groups = { food = 2, eatable = 4, compostability = 65 },
 	_mcl_saturation = 2.4,
 })
 

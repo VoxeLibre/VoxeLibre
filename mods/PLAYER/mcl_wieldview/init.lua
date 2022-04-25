@@ -6,7 +6,7 @@ mcl_wieldview = {
 }
 
 function mcl_wieldview.get_item_texture(itemname)
-	if itemname == "" then
+	if itemname == "" or minetest.get_item_group(itemname, "no_wieldview") ~= 0 then
 		return
 	end
 
@@ -110,6 +110,10 @@ minetest.register_entity("mcl_wieldview:wieldnode", {
 					self.object:set_properties({textures = {itemstring}})
 				-- wield item as flat
 				else
+					self.object:set_properties({textures = {""}})
+				end
+
+				if minetest.get_item_group(itemstring, "no_wieldview") ~= 0 then
 					self.object:set_properties({textures = {""}})
 				end
 

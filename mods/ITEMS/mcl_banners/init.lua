@@ -88,6 +88,10 @@ for k,v in pairs(mcl_banners.colors) do
 	colors_reverse["mcl_banners:banner_item_"..v[1]] = k
 end
 
+function mcl_banners.color_reverse(itemname)
+	return colors_reverse[itemname]
+end
+
 -- Add pattern/emblazoning crafting recipes
 dofile(modpath.."/patterncraft.lua")
 
@@ -149,7 +153,7 @@ local function on_destruct_hanging_banner(pos)
 	return on_destruct_banner(pos, true)
 end
 
-local function make_banner_texture(base_color, layers)
+function mcl_banners.make_banner_texture(base_color, layers)
 	local colorize
 	if mcl_banners.colors[base_color] then
 		colorize = mcl_banners.colors[base_color][4]
@@ -171,11 +175,11 @@ local function make_banner_texture(base_color, layers)
 
 				finished_banner = finished_banner .. "^" .. layer
 			end
-			return { finished_banner }
+			return finished_banner
 		end
-		return { base }
+		return base
 	else
-		return { "mcl_banners_banner_base.png" }
+		return "mcl_banners_banner_base.png"
 	end
 end
 
@@ -192,7 +196,7 @@ local function spawn_banner_entity(pos, hanging, itemstack)
 	local imeta = itemstack:get_meta()
 	local layers_raw = imeta:get_string("layers")
 	local layers = minetest.deserialize(layers_raw)
-	local colorid = colors_reverse[itemstack:get_name()]
+	local colorid = mcl_banners.color_reverse(itemstack:get_name())
 	banner:get_luaentity():_set_textures(colorid, layers)
 	local mname = imeta:get_string("name")
 	if mname and mname ~= "" then
@@ -604,7 +608,7 @@ local entity_standing = {
 	visual = "mesh",
 	mesh = "amc_banner.b3d",
 	visual_size = { x=2.499, y=2.499 },
-	textures = make_banner_texture(),
+	textures = {mcl_banners.make_banner_texture()},
 	pointable = false,
 
 	_base_color = nil, -- base color of banner
@@ -624,7 +628,7 @@ local entity_standing = {
 			self._layers = inp._layers
 			self._name = inp._name
 			self.object:set_properties({
-				textures = make_banner_texture(self._base_color, self._layers),
+				textures = {mcl_banners.make_banner_texture(self._base_color, self._layers)},
 			})
 		end
 		-- Make banner slowly swing
@@ -635,7 +639,7 @@ local entity_standing = {
 	-- Set the banner textures. This function can be used by external mods.
 	-- Meaning of parameters:
 	-- * self: Lua entity reference to entity.
-	-- * other parameters: Same meaning as in make_banner_texture
+	-- * other parameters: Same meaning as in mcl_banners.make_banner_texture
 	_set_textures = function(self, base_color, layers)
 		if base_color then
 			self._base_color = base_color
@@ -643,7 +647,7 @@ local entity_standing = {
 		if layers then
 			self._layers = layers
 		end
-		self.object:set_properties({textures = make_banner_texture(self._base_color, self._layers)})
+		self.object:set_properties({textures = {mcl_banners.make_banner_texture(self._base_color, self._layers)}})
 	end,
 }
 minetest.register_entity("mcl_banners:standing_banner", entity_standing)

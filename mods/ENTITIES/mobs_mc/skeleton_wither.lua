@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### WITHER SKELETON
@@ -87,7 +87,7 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 	fire_damage = 0,
 	light_damage = 0,
 	view_range = 16,
-	attack_type = "punch",
+	attack_type = "dogfight",
 	dogshoot_switch = 1,
 	dogshoot_count_max =0.5,
 	fear_height = 4,

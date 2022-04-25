@@ -267,7 +267,7 @@ function boat.on_step(self, dtime, moveresult)
 			return
 		end
 		local yaw = self.object:get_yaw()
-		if ctrl.up then
+		if ctrl and ctrl.up then
 			-- Forwards
 			self._v = self._v + 0.1 * v_factor
 
@@ -276,7 +276,7 @@ function boat.on_step(self, dtime, moveresult)
 				self.object:set_animation({x=0, y=40}, paddling_speed, 0, true)
 				self._animation = 1
 			end
-		elseif ctrl.down then
+		elseif ctrl and ctrl.down then
 			-- Backwards
 			self._v = self._v - 0.1 * v_factor
 

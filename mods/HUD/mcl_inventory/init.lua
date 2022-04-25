@@ -76,6 +76,10 @@ local function set_inventory(player, armor_change_only)
 		end
 	end
 
+	if inv:get_stack("offhand", 1):is_empty() then
+		armor_slot_imgs = armor_slot_imgs .. "image[3,2;1,1;mcl_inventory_empty_armor_slot_shield.png]"
+	end
+
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png]"..
 	player_preview..
@@ -88,6 +92,8 @@ local function set_inventory(player, armor_change_only)
 	mcl_formspec.get_itemslot_bg(0,1,1,1)..
 	mcl_formspec.get_itemslot_bg(0,2,1,1)..
 	mcl_formspec.get_itemslot_bg(0,3,1,1)..
+	"list[current_player;offhand;3,2;1,1]"..
+	mcl_formspec.get_itemslot_bg(3,2,1,1)..
 	armor_slot_imgs..
 	-- craft and inventory
 	"label[0,4;"..F(minetest.colorize("#313131", S("Inventory"))).."]"..
@@ -148,8 +154,10 @@ end)
 
 minetest.register_on_joinplayer(function(player)
 	--init inventory
-	player:get_inventory():set_width("main", 9)
-	player:get_inventory():set_size("main", 36)
+	local inv = player:get_inventory()
+	inv:set_width("main", 9)
+	inv:set_size("main", 36)
+	inv:set_size("offhand", 1)
 
 	--set hotbar size
 	player:hud_set_hotbar_itemcount(9)

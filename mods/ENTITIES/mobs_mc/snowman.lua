@@ -3,12 +3,12 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mobs_mc")
 
 local snow_trail_frequency = 0.5 -- Time in seconds for checking to add a new snow trail
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
-local mod_throwing = minetest.get_modpath("mcl_throwing")
+local mod_throwing = minetest.get_modpath("mcl_throwing") ~= nil
 
 local gotten_texture = {
 	"mobs_mc_snowman.png",
@@ -124,6 +124,10 @@ mobs:register_mob("mobs_mc:snowman", {
 			local pos = self.object:get_pos()
 			minetest.sound_play("mcl_tools_shears_cut", {pos = pos}, true)
 
+			if minetest.registered_items["mcl_farming:pumpkin_face"] then
+				minetest.add_item({x=pos.x, y=pos.y+1.4, z=pos.z}, "mcl_farming:pumpkin_face")
+			end
+
 			-- Wear out
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				item:add_wear(mobs_mc.misc.shears_wear)
@@ -179,9 +183,9 @@ mobs_mc.tools.check_snow_golem_summon = function(pos)
 			minetest.remove_node(pos)
 			minetest.remove_node(b1)
 			minetest.remove_node(b2)
-			minetest.check_for_falling(pos)
-			minetest.check_for_falling(b1)
-			minetest.check_for_falling(b2)
+			core.check_for_falling(pos)
+			core.check_for_falling(b1)
+			core.check_for_falling(b2)
 			local obj = minetest.add_entity(place, "mobs_mc:snowman")
 			if obj then
 				summon_particles(obj)

@@ -2,7 +2,7 @@
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by davedevils.
 Developed by many people. Not developed or endorsed by Mojang AB.
 
-Version: 0.72.0 (in development)
+Version: 0.74 (in development)
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -66,7 +66,7 @@ Use the `/giveme` chat command to obtain them. See the in-game help for
 an explanation.
 
 ## Installation
-This game requires [Minetest](http://minetest.net) to run (version 5.3.0 or
+This game requires [Minetest](http://minetest.net) to run (version 5.4.1 or
 later). So you need to install Minetest first. Only stable versions of Minetest
 are officially supported.
 There is no support for running MineClone2 in development versions of Minetest.

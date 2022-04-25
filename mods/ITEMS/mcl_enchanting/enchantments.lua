@@ -97,8 +97,9 @@ mcl_enchanting.enchantments.efficiency = {
 	weight = 10,
 	description = S("Increases mining speed."),
 	curse = false,
-	on_enchant = function(itemstack, level)
-		mcl_enchanting.update_groupcaps(itemstack)
+	on_enchant = function()
+		-- Updating digging speed is handled by update_groupcaps which
+		-- is called from load_enchantments.
 	end,
 	requires_tool = false,
 	treasure = false,
@@ -388,6 +389,7 @@ mcl_experience.register_on_add_xp(function(player, xp)
 		{list = "armor", index = 3},
 		{list = "armor", index = 4},
 		{list = "armor", index = 5},
+		{list = "offhand", index = 1},
 	}
 
 	local final_candidates = {}
@@ -671,8 +673,8 @@ mcl_enchanting.enchantments.unbreaking = {
 		tool_capabilities.punch_attack_uses = tool_capabilities.punch_attack_uses * (1 + level)
 		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
 
-		-- Unbreaking for groupcaps is handled in this function.
-		mcl_enchanting.update_groupcaps(itemstack)
+		-- Updating digging durability is handled by update_groupcaps
+		-- which is called from load_enchantments.
 	end,
 	requires_tool = true,
 	treasure = false,
