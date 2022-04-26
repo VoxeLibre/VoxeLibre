@@ -435,8 +435,6 @@ minetest.register_craft({
 })
 
 --Generating
-
-
 local specialstones = { "mcl_blackstone:blackstone", "mcl_blackstone:basalt", "mcl_blackstone:soul_soil" }
 for s=1, #specialstones do
 	local node = specialstones[s]
@@ -462,6 +460,7 @@ for s=1, #specialstones do
 	})
 end
 
+if minetest.settings:get_bool("mcl_generate_ores", true) then
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_blackstone:blackstone_gilded",
@@ -472,7 +471,6 @@ end
 		y_min          = mcl_vars.mg_nether_min,
 		y_max          = mcl_vars.mg_nether_max,
 	})
-
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_blackstone:nether_gold",
@@ -493,14 +491,7 @@ end
 		y_min          = mcl_vars.mg_nether_min,
 		y_max          = mcl_vars.mg_nether_max,
 	})
-
-
-
-
-
-
-
-
+end
 
 --torches   (parts are copied from mineclone2)
 local spawn_flames_floor = function(pos)
