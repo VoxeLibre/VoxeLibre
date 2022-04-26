@@ -26,12 +26,6 @@ local fire_death_messages = {
 }
 
 --nodes
-
-
-
-
-
-
 local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
 local on_rotate
 if mod_screwdriver then
@@ -56,7 +50,6 @@ minetest.register_node("mcl_blackstone:blackstone", {
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 })
-
 minetest.register_node("mcl_blackstone:blackstone_gilded", {
 	description = S("Gilded Blackstone"),
 	tiles = {"mcl_blackstone.png^mcl_blackstone_gilded_side.png"},
@@ -78,7 +71,6 @@ minetest.register_node("mcl_blackstone:blackstone_gilded", {
 	_mcl_silk_touch_drop = true,
 	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
-
 minetest.register_node("mcl_blackstone:nether_gold", {
 	description = S("Nether Gold Ore"),
 	tiles = {"mcl_nether_netherrack.png^mcl_blackstone_gilded_side.png"},
@@ -100,7 +92,6 @@ minetest.register_node("mcl_blackstone:nether_gold", {
 	_mcl_silk_touch_drop = true,
 	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
-
 minetest.register_node("mcl_blackstone:basalt_polished", {
 	description = S("Polished Basalt"),
 	tiles = {"mcl_blackstone_basalt_top_polished.png", "mcl_blackstone_basalt_top_polished.png", "mcl_blackstone_basalt_side_polished.png"},
@@ -113,8 +104,6 @@ minetest.register_node("mcl_blackstone:basalt_polished", {
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 })
-
-
 minetest.register_node("mcl_blackstone:basalt", {
 	description = S("Basalt"),
 	tiles = {"mcl_blackstone_basalt_top.png", "mcl_blackstone_basalt_top.png", "mcl_blackstone_basalt_side.png"},
@@ -127,9 +116,6 @@ minetest.register_node("mcl_blackstone:basalt", {
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 })
-
-
-
 minetest.register_node("mcl_blackstone:blackstone_polished", {
 	description = S("Polished Blackstone"),
 	tiles = {"mcl_blackstone_polished.png"},
@@ -139,8 +125,6 @@ minetest.register_node("mcl_blackstone:blackstone_polished", {
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 })
-
-
 minetest.register_node("mcl_blackstone:blackstone_chiseled_polished", {
 	description = S("Chiseled Polished Blackstone"),
 	tiles = {"mcl_blackstone_chiseled_polished.png"},
@@ -150,8 +134,6 @@ minetest.register_node("mcl_blackstone:blackstone_chiseled_polished", {
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 })
-
-
 minetest.register_node("mcl_blackstone:blackstone_brick_polished", {
 	description = S("Polished Blackstone Bricks"),
 	tiles = {"mcl_blackstone_polished_bricks.png"},
@@ -161,7 +143,6 @@ minetest.register_node("mcl_blackstone:blackstone_brick_polished", {
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 })
-
 minetest.register_node("mcl_blackstone:quartz_brick", {
 	description = S("Quartz Bricks"),
 	tiles = {"mcl_backstone_quartz_bricks.png"},
@@ -172,7 +153,6 @@ minetest.register_node("mcl_blackstone:quartz_brick", {
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 })
-
 minetest.register_node("mcl_blackstone:soul_soil", {
 	description = S("Soul Soil"),
 	tiles = {"mcl_blackstone_soul_soil.png"},
@@ -182,8 +162,6 @@ minetest.register_node("mcl_blackstone:soul_soil", {
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 })
-
-
 minetest.register_node("mcl_blackstone:soul_fire", {
 	description = S("Eternal Soul Fire"),
 	_doc_items_longdesc = eternal_fire_help,
@@ -216,29 +194,16 @@ minetest.register_node("mcl_blackstone:soul_fire", {
 	end,
 })
 
-
 --slabs/stairs
-
 mcl_stairs.register_stair_and_slab_simple("blackstone", "mcl_blackstone:blackstone", "Blackstone Stair", "Blackstone Slab", "Double Blackstone Slab")
-
-
 mcl_stairs.register_stair_and_slab_simple("blackstone_polished", "mcl_blackstone:blackstone_polished", "Polished Blackstone Stair", "Polished Blackstone Slab", "Polished Double Blackstone Slab")
-
-
 mcl_stairs.register_stair_and_slab_simple("blackstone_chiseled_polished", "mcl_blackstone:blackstone_chiseled_polished", "Polished Chiseled Blackstone Stair", "Chiseled Polished Blackstone Slab", "Double Polished Chiseled Blackstone Slab")
-
-
 mcl_stairs.register_stair_and_slab_simple("blackstone_brick_polished", "mcl_blackstone:blackstone_brick_polished", "Polished Blackstone Brick Stair", "Polished Blackstone  Brick Slab", "Double Polished Blackstone Brick Slab")
 
 --Wall
-
 mcl_walls.register_wall("mcl_blackstone:wall", S("Blackstone Wall"), "mcl_blackstone:blackstone")
 
-
-
 --lavacooling
-
-
 minetest.register_abm({
 	label = "Lava cooling (basalt)",
 	nodenames = {"group:lava"},
@@ -247,9 +212,7 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local water = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+1, z=pos.z+1}, "mcl_core:ice")
-
 		local lavatype = minetest.registered_nodes[node.name].liquidtype
-
 		for w=1, #water do
 			local waternode = minetest.get_node(water[w])
 			local watertype = minetest.registered_nodes[waternode.name].liquidtype
@@ -264,9 +227,6 @@ minetest.register_abm({
 	end,
 })
 
-
-
-
 minetest.register_abm({
 	label = "Lava cooling (blackstone)",
 	nodenames = {"group:lava"},
@@ -275,9 +235,7 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local water = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+1, z=pos.z+1}, "mcl_core:packed_ice")
-
 		local lavatype = minetest.registered_nodes[node.name].liquidtype
-
 		for w=1, #water do
 			local waternode = minetest.get_node(water[w])
 			local watertype = minetest.registered_nodes[waternode.name].liquidtype
@@ -293,9 +251,6 @@ minetest.register_abm({
 })
 
 --crafting
-
-
-
 minetest.register_craft({
 	output = 'mcl_blackstone:blackstone_polished 4',
 	recipe = {
@@ -303,7 +258,6 @@ minetest.register_craft({
 		{'mcl_blackstone:blackstone','mcl_blackstone:blackstone'},
 	}
 })
-
 minetest.register_craft({
 	output = 'mcl_blackstone:basalt_polished 4',
 	recipe = {
@@ -311,7 +265,6 @@ minetest.register_craft({
 		{'mcl_blackstone:basalt','mcl_blackstone:basalt'},
 	}
 })
-
 minetest.register_craft({
 	output = 'mcl_blackstone:blackstone_chiseled_polished 2',
 	recipe = {
@@ -326,8 +279,6 @@ minetest.register_craft({
 		{'mcl_blackstone:blackstone_polished','mcl_blackstone:blackstone_polished'},
 	}
 })
-
-
 minetest.register_craft({
 	output = 'mcl_tools:pick_stone',
 	recipe = {
@@ -336,8 +287,6 @@ minetest.register_craft({
 		{'', 'mcl_core:stick', ''},
 	}
 })
-
-
 minetest.register_craft({
 	output = 'mcl_tools:axe_stone',
 	recipe = {
@@ -346,8 +295,6 @@ minetest.register_craft({
 		{'', 'mcl_core:stick'},
 	}
 })
-
-
 minetest.register_craft({
 	output = 'mcl_tools:axe_stone',
 	recipe = {
@@ -356,8 +303,6 @@ minetest.register_craft({
 		{'', 'mcl_core:stick'},
 	}
 })
-
-
 minetest.register_craft({
 	output = 'mcl_tools:shovel_stone',
 	recipe = {
@@ -366,8 +311,6 @@ minetest.register_craft({
 		{'mcl_core:stick'},
 	}
 })
-
-
 minetest.register_craft({
 	output = 'mcl_tools:sword_stone',
 	recipe = {
@@ -376,8 +319,6 @@ minetest.register_craft({
 		{'mcl_core:stick'},
 	}
 })
-
-
 minetest.register_craft({
 	output = "mcl_farming:hoe_stone",
 	recipe = {
@@ -394,7 +335,6 @@ minetest.register_craft({
 		{"mcl_core:stick", ""}
 	}
 })
-
 minetest.register_craft({
 	output = "mcl_furnaces:furnace",
 	recipe = {
@@ -403,7 +343,6 @@ minetest.register_craft({
 		{"mcl_blackstone:blackstone", "mcl_blackstone:blackstone", "mcl_blackstone:blackstone"}
 	}
 })
-
 minetest.register_craft({
 	output = 'mcl_blackstone:quartz_brick 4',
 	recipe = {
@@ -411,22 +350,18 @@ minetest.register_craft({
 		{'mcl_nether:quartz_block','mcl_nether:quartz_block'},
 	}
 })
-
-
 minetest.register_craft({
 	type = "cooking",
 	output = 'mcl_core:gold_ingot',
 	recipe = 'mcl_blackstone:nether_gold',
 	cooktime = 10,
 })
-
 minetest.register_craft({
 	type = "cooking",
 	output = 'mcl_core:gold_ingot',
 	recipe = 'mcl_blackstone:blackstone_gilded',
 	cooktime = 10,
 })
-
 minetest.register_craft({
 	type = "cooking",
 	output = 'mcl_nether:quartz_smooth',
@@ -594,7 +529,6 @@ end
 --
 -- 3d torch part
 --
-
 -- Check if placement at given node is allowed
 local function check_placement_allowed(node, wdir)
 	-- Torch placement rules: Disallow placement on some nodes. General rule: Solid, opaque, full cube collision box nodes are allowed.
@@ -642,13 +576,11 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 	if mesh_floor == nil then mesh_floor = "mcl_torches_torch_floor.obj" end
 	if mesh_wall == nil then mesh_wall = "mcl_torches_torch_wall.obj" end
 	if groups == nil then groups = {} end
-
 	groups.attached_node = 1
 	groups.torch = 1
 	groups.dig_by_water = 1
 	groups.destroy_by_lava_flow = 1
 	groups.dig_by_piston = 1
-
 	local floordef = {
 		description = description,
 		_doc_items_longdesc = doc_items_longdesc,
@@ -679,31 +611,25 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 				-- no interaction possible with entities, for now.
 				return itemstack
 			end
-
 			local under = pointed_thing.under
 			local node = minetest.get_node(under)
 			local def = minetest.registered_nodes[node.name]
 			if not def then return itemstack end
-
 			-- Call on_rightclick if the pointed node defines it
 			if placer and not placer:get_player_control().sneak then
 				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
 					return minetest.registered_nodes[node.name].on_rightclick(under, node, placer, itemstack) or itemstack
 				end
 			end
-
 			local above = pointed_thing.above
 			local wdir = minetest.dir_to_wallmounted({x = under.x - above.x, y = under.y - above.y, z = under.z - above.z})
-
 			if check_placement_allowed(node, wdir) == false then
 				return itemstack
 			end
-
 			local itemstring = itemstack:get_name()
 			local fakestack = ItemStack(itemstack)
 			local idef = fakestack:get_definition()
 			local retval
-
 			if wdir == 1 then
 				retval = fakestack:set_name(itemstring)
 			else
@@ -712,11 +638,9 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 			if not retval then
 				return itemstack
 			end
-
 			local success
 			itemstack, success = minetest.item_place(fakestack, placer, pointed_thing, wdir)
 			itemstack:set_name(itemstring)
-
 			if success and idef.sounds and idef.sounds.place then
 				minetest.sound_play(idef.sounds.place, {pos=under, gain=1}, true)
 			end
@@ -735,10 +659,8 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 		end
 	end
 	minetest.register_node(itemstring, floordef)
-
 	local groups_wall = table.copy(groups)
 	groups_wall.torch = 2
-
 	local walldef = {
 		drawtype = "mesh",
 		mesh = mesh_wall,
@@ -771,13 +693,10 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 		end
 	end
 	minetest.register_node(itemstring_wall, walldef)
-
-
 	-- Add entry alias for the Help
 	if minetest.get_modpath("doc") then
 		doc.add_entry_alias("nodes", itemstring, "nodes", itemstring_wall)
 	end
-
 end
 
 mcl_torches.register_torch("soul_torch",
