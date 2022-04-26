@@ -37,10 +37,16 @@ local on_rotate
 if mod_screwdriver then
 	on_rotate = screwdriver.rotate_3way
 end
-local alldirs = {{x=0,y=0,z=1}, {x=1,y=0,z=0}, {x=0,y=0,z=-1}, {x=-1,y=0,z=0}, {x=0,y=-1,z=0}, {x=0,y=1,z=0}}
+local alldirs = {
+	vector.new(1,0,0),
+	vector.new(0,1,0),
+	vector.new(0,0,1),
+	vector.new(-1,0,0),
+	vector.new(0,-1,0),
+	vector.new(0,0,-1)
+}
 
 --Blocks
-
 minetest.register_node("mcl_blackstone:blackstone", {
 	description = S("Blackstone"),
 	tiles = {"mcl_blackstone.png"},
