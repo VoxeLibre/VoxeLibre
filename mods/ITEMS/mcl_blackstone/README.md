@@ -1,8 +1,6 @@
 # Blackstone Mod
 
-This mod is made for the Minetest Subgame Mineclone2.
-
-It adds new Blocks: Blackstone, Basalt, Soul Fire, Soul Torch etc.
+This mod adds new Blocks: Blackstone, Basalt, Soul Fire, Soul Torch etc.
 
 ## Version:
 
