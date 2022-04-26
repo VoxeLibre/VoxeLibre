@@ -404,17 +404,6 @@ minetest.register_craft({
 	}
 })
 
-
-
-
-minetest.register_craft({
-	output = 'mcl_core:packed_ice',
-	recipe = {
-		{'mcl_core:ice','mcl_core:ice'},
-		{'mcl_core:ice','mcl_core:ice'},
-	}
-})
-
 minetest.register_craft({
 	output = 'mcl_blackstone:quartz_brick 4',
 	recipe = {
