@@ -382,8 +382,14 @@ minetest.register_craft({
 	}
 })
 
--- TODO: Add crafting recipe: 9 ice → 1 packed ice
--- Add it when silk touch tools work.
+minetest.register_craft({
+	output = 'mcl_core:packed_ice 1',
+	recipe = {
+		{'mcl_core:ice', 'mcl_core:ice', 'mcl_core:ice'},
+		{'mcl_core:ice', 'mcl_core:ice', 'mcl_core:ice'},
+		{'mcl_core:ice', 'mcl_core:ice', 'mcl_core:ice'},
+	}
+})
 
 --
 -- Crafting (tool repair)
