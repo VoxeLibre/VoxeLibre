@@ -4,27 +4,6 @@ local LIGHT_TORCH = 10
 
 stairs = {}
 
-local fire_help, eternal_fire_help
-if fire_enabled then
-	fire_help = S("Fire is a damaging and destructive but short-lived kind of block. It will destroy and spread towards near flammable blocks, but fire will disappear when there is nothing to burn left. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.")
-else
-	fire_help = S("Fire is a damaging but non-destructive short-lived kind of block. It will disappear when there is no flammable block around. Fire does not destroy blocks, at least not in this world. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.")
-end
-
-if fire_enabled then
-	eternal_fire_help = S("Eternal fire is a damaging block that might create more fire. It will create fire around it when flammable blocks are nearby. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.")
-else
-	eternal_fire_help = S("Eternal fire is a damaging block. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.")
-end
-
-
-local fire_death_messages = {
-	N("@1 has been cooked crisp."),
-	N("@1 felt the burn."),
-	N("@1 died in the flames."),
-	N("@1 died in a fire."),
-}
-
 --nodes
 local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
 local on_rotate
@@ -164,7 +143,7 @@ minetest.register_node("mcl_blackstone:soul_soil", {
 })
 minetest.register_node("mcl_blackstone:soul_fire", {
 	description = S("Eternal Soul Fire"),
-	_doc_items_longdesc = eternal_fire_help,
+	_doc_items_longdesc = minetest.registered_nodes["mcl_fire:eternal_fire"]._doc_items_longdesc ,
 	drawtype = "firelike",
 	tiles = {
 		{
@@ -184,7 +163,7 @@ minetest.register_node("mcl_blackstone:soul_fire", {
 	buildable_to = true,
 	sunlight_propagates = true,
 	damage_per_second = 2,
-	_mcl_node_death_message = fire_death_messages,
+	_mcl_node_death_message = minetest.registered_nodes["mcl_fire:fire"]._mcl_node_death_message,
 	groups = {fire = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston = 1, destroys_items = 1, set_on_fire=8},
 	floodable = true,
 	on_flood = function(pos, oldnode, newnode)
@@ -192,7 +171,22 @@ minetest.register_node("mcl_blackstone:soul_fire", {
 			minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 		end
 	end,
+	on_construct=function(pos)
+		local under = minetest.get_node(vector.offset(pos,0,-1,0)).name
+		if under ~= "mcl_nether:soul_sand" and under ~= "mcl_blackstone:soul_soil" then
+			minetest.swap_node(pos, {name = "air"})
+		end
+	end
 })
+
+local old_onconstruct=minetest.registered_nodes["mcl_fire:fire"].on_construct
+minetest.registered_nodes["mcl_fire:fire"].on_construct=function(pos)
+	local under = minetest.get_node(vector.offset(pos,0,-1,0)).name
+	if under == "mcl_nether:soul_sand" or under == "mcl_blackstone:soul_soil" then
+		minetest.swap_node(pos, {name = "mcl_blackstone:soul_fire"})
+	end
+	old_onconstruct(pos)
+end
 
 --slabs/stairs
 mcl_stairs.register_stair_and_slab_simple("blackstone", "mcl_blackstone:blackstone", "Blackstone Stair", "Blackstone Slab", "Double Blackstone Slab")
