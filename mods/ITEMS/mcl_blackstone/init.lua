@@ -362,7 +362,7 @@ minetest.register_craft({
 	recipe = 'mcl_nether:quartz_block',
 	cooktime = 10,
 })
-
+--[[ Commented out for now because there the discussion how to handle this is ongoing]
 --Generating
 local specialstones = { "mcl_blackstone:blackstone", "mcl_blackstone:basalt", "mcl_blackstone:soul_soil" }
 for s=1, #specialstones do
@@ -421,7 +421,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_max          = mcl_vars.mg_nether_max,
 	})
 end
-
+--]]
 --soul torch
 mcl_torches.register_torch({
 	name="soul_torch",
