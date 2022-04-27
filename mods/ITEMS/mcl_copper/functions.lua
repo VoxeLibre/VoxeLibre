@@ -104,7 +104,7 @@ local function register_axe_override(axe_name)
 		on_place = anti_oxidation,
 	})
 end
-
+--[[ Commented out for now because there the discussion how to handle this is ongoing
 local stonelike = {"mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite"}
 if not deepslate_mod then
 	if minetest.settings:get_bool("mcl_generate_ores", true) then
@@ -130,7 +130,7 @@ if not deepslate_mod then
 		})
 	end
 end
-
+--]]
 local block_oxidation = {
 	{"", "_exposed"},
 	{"_cut", "_exposed_cut"},

@@ -186,7 +186,7 @@ minetest.register_node("mcl_deepslate:deepslate_with_redstone_lit", {
 		max_count = 5,
 	}
 })
-
+--[[ Commented out for now because there the discussion how to handle this is ongoing
 minetest.register_ore({
     ore_type       = "blob",
     ore            = "mcl_deepslate:deepslate",
@@ -345,7 +345,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		})
 	end
 end
-
+--]]
 local function register_deepslate_variant(item, desc, longdesc)
 	local texture = desc:lower():gsub("% ", "_")
 	minetest.register_node("mcl_deepslate:deepslate_"..item, {
