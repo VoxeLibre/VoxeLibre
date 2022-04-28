@@ -372,6 +372,9 @@ local function biome_check(biome_list, biome_goal)
 	return false
 end
 
+local function is_farm_animal(n)
+	return n == "mobs_mc:pig" or n == "mobs_mc:cow" or n == "mobs_mc:sheep" or n == "mobs_mc:chicken" or n == "mobs_mc:horse" or n == "mobs_mc:donkey"
+end
 
 if mobs_spawn then
 
@@ -405,6 +408,9 @@ if mobs_spawn then
 		local is_water = get_item_group(gotten_node, "water") ~= 0
 		local is_lava  = get_item_group(gotten_node, "lava") ~= 0
 		local is_ground = not (is_water or is_lava)
+		local is_grass = minetest.get_item_group(gotten_node,"grass_block") ~= 0
+		local has_bed = minetest.find_node_near(pos,25,{"group:bed"})
+
 		if not is_ground then
 			spawning_position.y = spawning_position.y - 1
 		end
@@ -431,6 +437,7 @@ if mobs_spawn then
 				step_chance = step_chance + mob_chance
 			end
 			local mob_def = mob_library_worker_table[mob_index]
+			local mob_type = minetest.registered_entities[mob_def.name].type
 			if mob_def
 				and spawning_position.y >= mob_def.min_height
 				and spawning_position.y <= mob_def.max_height
@@ -440,6 +447,8 @@ if mobs_spawn then
 				and gotten_light <= mob_def.max_light
 				and (is_ground or mob_def.type_of_spawning ~= "ground")
 				and (mob_def.check_position and mob_def.check_position(spawning_position) or true)
+				and (not is_farm_animal(mob_def.name) or is_grass)
+				and (mob_type ~= "npc" or has_bed)
 				then
 					--everything is correct, spawn mob
 					local object = minetest.add_entity(spawning_position, mob_def.name)
