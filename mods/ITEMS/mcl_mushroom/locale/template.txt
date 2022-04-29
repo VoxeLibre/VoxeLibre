@@ -1,0 +1,14 @@
+# textdomain: mcl_mushroom
+
+Warped Fungus Mushroom=
+Warped Wart Block=
+Shroomlight=
+Warped Hyphae=
+Warped Nylium=
+Warped Checknode - only to check!=
+Warped Hyphae Wood=
+Crimson Fungus Mushroom=
+Crimson Hyphae=
+Crimson Hyphae Wood=
+Crimson Nylium=
+Crimson Checknode - only to check!=
