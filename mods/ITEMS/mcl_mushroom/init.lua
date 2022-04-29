@@ -249,7 +249,7 @@ minetest.register_abm({
 minetest.register_abm({
 	label = "mcl_mushroom:warped_checknode",
 	nodenames = {"mcl_mushroom:warped_checknode"},
-	interval = 0.1,
+	interval = 1,
 	chance = 1,
 	action = function(pos)
     local nodepos = minetest.get_node({x = pos.x, y = pos.y + 1, z = pos.z})
@@ -440,7 +440,7 @@ minetest.register_abm({
 minetest.register_abm({
 	label = "mcl_mushroom:crimson_checknode",
 	nodenames = {"mcl_mushroom:crimson_checknode"},
-	interval = 0.1,
+	interval = 1,
 	chance = 1,
 	action = function(pos)
     local nodepos = minetest.get_node({x = pos.x, y = pos.y + 1, z = pos.z})
