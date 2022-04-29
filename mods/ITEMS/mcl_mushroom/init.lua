@@ -605,6 +605,7 @@ minetest.register_decoration({
   decoration = "mcl_mushroom:warped_fungus",
 })
 ]]
+--[[ No Ore gen for now
 minetest.register_ore({
   ore_type        = "sheet",
   ore             = "mcl_mushroom:warped_checknode",
@@ -646,7 +647,7 @@ minetest.register_ore({
     persist = 0.0
   },
 })
-
+--]]
 
 minetest.register_decoration({
     deco_type = "simple",
