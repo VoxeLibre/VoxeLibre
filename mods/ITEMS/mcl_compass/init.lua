@@ -19,9 +19,7 @@ local function get_far_node(pos, itemstack) --code from minetest dev wiki: https
 			itemstack:get_meta():set_string("last_forceload", tostring(os.time(os.date("!*t"))))
 			minetest.get_voxel_manip():read_from_map(pos, pos)
 			node = minetest.get_node(pos)
-			minetest.log("forceloaded, cooldown reset!")
 		else
-			minetest.log("cooldown not over yet")
 			node = {name="mcl_compass:lodestone"} --cooldown not over yet, pretend like there is something...
 		end
 	end
