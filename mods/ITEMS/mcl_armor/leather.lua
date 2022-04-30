@@ -39,11 +39,15 @@ end
 
 local function get_texture_function(texture)
 	local function get_texture(obj, itemstack)
+		minetest.chat_send_all("called")
 		local color = itemstack:get_meta():get_string("color")
+		minetest.chat_send_all("|"..color.."|")
 		if color == "" or color == nil then
+			minetest.chat_send_all("No color: "..texture)
 			return texture
 		else
-			return texture.."[colorize:"..color..":"..colorize_value
+			minetest.chat_send_all("Color: "..texture.."^[colorize:"..color..":"..colorize_value)
+			return texture.."^[colorize:"..color..":"..colorize_value
 		end
 	end
 	return get_texture
@@ -75,11 +79,13 @@ mcl_armor.register_set({
 })
 
 minetest.register_chatcommand("colort", {
-	params = "<name> <privilege>",  -- Short parameter description
-	description = "Remove privilege from player",  -- Full description
-	func = function(name, param)
+	params = "",  -- Short parameter description
+	description = "",  -- Full description
+	func = function(name, params)
 		local player = minetest.get_player_by_name(name)
 		local item = player:get_wielded_item()
 		item:get_meta():set_string("color", "#951d1d")
+		player:set_wielded_item(item)
+		return true, "Done."
 	end,
 })
