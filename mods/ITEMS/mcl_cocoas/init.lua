@@ -111,6 +111,11 @@ local crop_def = {
 	on_rotate = false,
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 0.2,
+	_mcl_on_bonemealing = function(pointed_thing, placer)
+		local pos = pointed_thing.under
+		mcl_cocoas.grow(pos)
+		return true
+	end
 }
 
 -- 2nd stage
@@ -178,6 +183,7 @@ crop_def.selection_box = {
 	},
 }
 crop_def.drop = "mcl_dye:brown 3"
+crop_def._mcl_on_bonemealing = nil
 minetest.register_node("mcl_cocoas:cocoa_3", table.copy(crop_def))
 
 
