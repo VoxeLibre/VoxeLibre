@@ -572,3 +572,6 @@ if mod_mcimport and mg_name == "singlenode" and fix_doubleplants == true then
 end
 
 dofile(modpath.."/register.lua")
+
+-- Bonemealing handler and override for "mcl_core:dirt_with_grass":
+dofile(modpath.."/bonemealing.lua")
