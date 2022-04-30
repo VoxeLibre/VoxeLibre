@@ -97,9 +97,6 @@ fire_animation_frames (Fire Animation Frames) int 8
 # Whether to animate chests when open / close
 animated_chests (Animated chests) bool true
 
-# Whether to preview the player in inventory in 3D (requires Minetest 5.4)
-3d_player_preview (3D Player preview) bool true
-
 # The maximum number of boss bars to simultaniously display on the screen
 max_bossbars (Maximum Boss bars) int 5
 

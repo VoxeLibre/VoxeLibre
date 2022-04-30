@@ -340,12 +340,7 @@ function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size,
 		inv_bg = "crafting_inventory_creative_survival.png"
 
 		-- Show armor and player image
-		local player_preview
-		if minetest.settings:get_bool("3d_player_preview", true) then
-			player_preview = mcl_player.get_player_formspec_model(player, 3.9, 1.4, 1.2333, 2.4666, "")
-		else
-			player_preview = "image[3.9,1.4;1.2333,2.4666;"..mcl_player.player_get_preview(player).."]"
-		end
+		local player_preview = mcl_player.get_player_formspec_model(player, 3.9, 1.4, 1.2333, 2.4666, "")
 
 		-- Background images for armor slots (hide if occupied)
 		local armor_slot_imgs = ""
@@ -368,7 +363,7 @@ function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size,
 		end
 
 		local stack_size = get_stack_size(player)
-		
+
 		-- Survival inventory slots
 		main_list = "list[current_player;main;0,3.75;9,3;9]"..
 			mcl_formspec.get_itemslot_bg(0,3.75,9,3)..

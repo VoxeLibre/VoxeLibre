@@ -61,12 +61,7 @@ local function set_inventory(player, armor_change_only)
 	inv:set_size("craft", 4)
 
 	-- Show armor and player image
-	local player_preview
-	if minetest.settings:get_bool("3d_player_preview", true) then
-		player_preview = mcl_player.get_player_formspec_model(player, 1.0, 0.0, 2.25, 4.5, "")
-	else
-		player_preview = "image[1.1,0.2;2,4;"..mcl_player.player_get_preview(player).."]"
-	end
+	local player_preview = mcl_player.get_player_formspec_model(player, 1.0, 0.0, 2.25, 4.5, "")
 
 	local armor_slots = {"helmet", "chestplate", "leggings", "boots"}
 	local armor_slot_imgs = ""

@@ -94,7 +94,6 @@ function mcl_armor.register_set(def)
 	local on_unequip_callbacks = def.on_unequip_callbacks or {}
 	local on_break_callbacks = def.on_break_callbacks or {}
 	local textures = def.textures or {}
-	local previews = def.previews or {}
 	local inventory = def.inventory or {}
 	local durabilities = def.durabilities or {}
 	local element_groups = def.element_groups or {}
@@ -135,7 +134,6 @@ function mcl_armor.register_set(def)
 			_on_break = on_break_callbacks[name] or def.on_break,
 			_mcl_armor_element = name,
 			_mcl_armor_texture = textures[name] or modname .. "_" .. itemname .. ".png",
-			_mcl_armor_preview = previews[name] or modname .. "_" .. itemname .. "_preview.png",
 		})
 
 		if def.craft_material then
