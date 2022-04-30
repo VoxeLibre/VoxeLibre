@@ -192,6 +192,18 @@ def_fern.selection_box = {
 	fixed = { -6/16, -0.5, -6/16, 6/16, 5/16, 6/16 },
 }
 def_fern.groups.compostability = 65
+def_fern._mcl_on_bonemealing = function(pointed_thing, placer)
+		local pos = pointed_thing.under
+		local n = minetest.get_node(pos)
+		-- Grow into double fern.
+		local toppos = vector.offset(pos, 0, 1, 0)
+		local topnode = minetest.get_node(toppos)
+		if minetest.registered_nodes[topnode.name].buildable_to then
+			minetest.set_node(pos, { name = "mcl_flowers:double_fern", param2 = n.param2 })
+			minetest.set_node(toppos, { name = "mcl_flowers:double_fern_top", param2 = n.param2 })
+			return true
+		end
+	end
 
 minetest.register_node("mcl_flowers:fern", def_fern)
 
