@@ -1,11 +1,4 @@
 local S = minetest.get_translator(minetest.get_current_modname())
-local colorize_value = 125
---local modifier = "[colorize:<color>:"..colorize_value
-
-local str = string
-
-local longdesc = S("This is a piece of equippable armor which reduces the amount of damage you receive.")
-local usage = S("To equip it, put it on the corresponding armor slot in your inventory menu.")
 
 local colors = {
 	-- { ID, decription, wool, dye }
@@ -38,16 +31,12 @@ local function calculate_color(first, last)
 end
 
 local function get_texture_function(texture)
-	local function get_texture(obj, itemstack)
-		minetest.chat_send_all("called")
+	local function get_texture(_, itemstack)
 		local color = itemstack:get_meta():get_string("color")
-		minetest.chat_send_all("|"..color.."|")
 		if color == "" or color == nil then
-			minetest.chat_send_all("No color: "..texture)
 			return texture
 		else
-			minetest.chat_send_all("Color: "..texture.."^[colorize:"..color..":"..colorize_value)
-			return texture.."^[colorize:"..color..":"..colorize_value
+			return texture.."^[multiply:"..color
 		end
 	end
 	return get_texture
