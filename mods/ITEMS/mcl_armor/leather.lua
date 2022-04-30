@@ -31,6 +31,7 @@ local function calculate_color(first, last)
 end
 
 local function get_texture_function(texture)
+	--TODO: add enchantments support
 	local function get_texture(_, itemstack)
 		local color = itemstack:get_meta():get_string("color")
 		if color == "" or color == nil then
@@ -59,16 +60,16 @@ mcl_armor.register_set({
 		feet = 1,
 	},
 	textures = {
-		head = get_texture_function("mcl_armor_helmet_leather.png"),
-		torso = get_texture_function("mcl_armor_chestplate_leather.png"),
-		legs = get_texture_function("mcl_armor_leggings_leather.png"),
-		feet = get_texture_function("mcl_armor_boots_leather.png"),
+		head = get_texture_function("mcl_armor_helmet_colored_leather.png"),
+		torso = get_texture_function("mcl_armor_chestplate_colored_leather.png"),
+		legs = get_texture_function("mcl_armor_leggings_colored_leather.png"),
+		feet = get_texture_function("mcl_armor_boots_colored_leather.png"),
 	},
 	inventory = {
-		head = "mcl_armor_inv_helmet_leather.png",
-		torso = "mcl_armor_inv_chestplate_leather.png",
-		legs = "mcl_armor_inv_leggings_leather.png",
-		feet = "mcl_armor_inv_boots_leather.png",
+		head = "mcl_armor_inv_helmet_colored_leather.png",
+		torso = "mcl_armor_inv_chestplate_colored_leather.png",
+		legs = "mcl_armor_inv_leggings_colored_leather.png",
+		feet = "mcl_armor_inv_boots_colored_leather.png",
 	},
 	repair_material = "mcl_mobitems:leather",
 	groups = {armor_leather_colored = 1},
