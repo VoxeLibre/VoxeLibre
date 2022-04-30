@@ -1,5 +1,8 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local modpath = minetest.get_modpath(minetest.get_current_modname())
+local schempath = modpath .. "/schematics/"
+
 local on_place = mcl_util.generate_on_place_plant_function(function(place_pos, place_node)
 	local soil_node = minetest.get_node_or_nil({x=place_pos.x, y=place_pos.y-1, z=place_pos.z})
 	if not soil_node then return false end
@@ -15,6 +18,40 @@ local on_place = mcl_util.generate_on_place_plant_function(function(place_pos, p
 	end
 	return ((snn == "mcl_core:podzol" or snn == "mcl_core:podzol_snow" or snn == "mcl_core:mycelium" or snn == "mcl_core:mycelium_snow") or (light_ok and minetest.get_item_group(snn, "solid") == 1 and minetest.get_item_group(snn, "opaque") == 1))
 end)
+
+-- Try to grow huge mushroom
+local function apply_bonemeal(pos, schematic, offset)
+	-- Must be on a dirt-type block
+	local below = minetest.get_node(vector.offset(pos, 0, -1, 0))
+	if minetest.get_item_group(below.name, "grass_block") ~= 1
+			and below.name ~= "mcl_core:mycelium"
+			and below.name ~= "mcl_core:dirt"
+			and below.name ~= "mcl_core:coarse_dirt"
+			and below.name ~= "mcl_core:podzol" then
+		return false
+	end
+	-- 40% chance
+	if math.random(1, 100) <= 40 then
+		-- Check space requirements
+		for i= 1, 3 do
+			local cpos = vector.offset(pos, 0, i, 0)
+			if minetest.get_node(cpos).name ~= "air" then
+				return false
+			end
+		end
+		local minp = vector.offset(pos, -3, 3, -3)
+		local maxp = vector.offset(pos, 3, 8, 3)
+		local diff = maxp - minp
+		local goodnodes = minetest.find_nodes_in_area(minp, maxp, {"air", "group:leaves"})
+		if #goodnodes < (diff.x + 1) * (diff.y + 1) * (diff.z + 1) then
+			return false
+		end
+		-- Place the huge mushroom
+		minetest.remove_node(pos)
+		return minetest.place_schematic(pos + offset, schematic, 0, nil, false)
+	end
+	return false
+end
 
 local longdesc_intro_brown = S("Brown mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.")
 local longdesc_intro_red = S("Red mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.")
@@ -51,6 +88,11 @@ minetest.register_node("mcl_mushrooms:mushroom_brown", {
 	},
 	node_placement_prediction = "",
 	on_place = on_place,
+	_mcl_on_bonemealing = function(pointed_thing, placer)
+		local schematic = schempath .. "mcl_mushrooms_huge_brown.mts"
+		local offset = vector.new(-3, -1, -3)
+		return apply_bonemeal(pointed_thing.under, schematic, offset)
+	end,
 	_mcl_blast_resistance = 0,
 })
 
@@ -78,6 +120,11 @@ minetest.register_node("mcl_mushrooms:mushroom_red", {
 	},
 	node_placement_prediction = "",
 	on_place = on_place,
+	_mcl_on_bonemealing = function(pointed_thing, placer)
+		local schematic = schempath .. "mcl_mushrooms_huge_red.mts"
+		local offset = vector.new(-2, -1, -2)
+		return apply_bonemeal(pointed_thing.under, schematic, offset)
+	end,
 	_mcl_blast_resistance = 0,
 })
 
