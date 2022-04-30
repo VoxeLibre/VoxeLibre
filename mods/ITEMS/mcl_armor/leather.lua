@@ -1,6 +1,6 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 local colorize_value = 125
-local modifier = "[colorize:<color>:"..colorize_value
+--local modifier = "[colorize:<color>:"..colorize_value
 
 local str = string
 
