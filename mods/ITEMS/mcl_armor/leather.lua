@@ -31,13 +31,19 @@ local function calculate_color(first, last)
 end
 
 local function get_texture_function(texture)
-	--TODO: add enchantments support
 	local function get_texture(_, itemstack)
+		local out
 		local color = itemstack:get_meta():get_string("color")
 		if color == "" or color == nil then
-			return texture
+			out = texture
 		else
-			return texture.."^[multiply:"..color
+			out = texture.."^[multiply:"..color
+		end
+
+		if mcl_enchanting.is_enchanted(itemstack) then
+			return out.."^"..mcl_enchanting.overlay
+		else
+			return out
 		end
 	end
 	return get_texture
