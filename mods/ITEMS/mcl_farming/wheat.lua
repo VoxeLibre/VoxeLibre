@@ -60,6 +60,12 @@ for i=1,7 do
 			dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0,
+		_mcl_on_bonemealing = function(pointed_thing, placer)
+			local pos = pointed_thing.under
+			local n = minetest.get_node(pos)
+			local stages = math.random(2, 5)
+			return mcl_farming:grow_plant("plant_wheat", pos, n, stages, true)
+		end
 	})
 end
 
