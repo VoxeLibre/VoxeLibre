@@ -123,7 +123,6 @@ pumpkin_face_base_def._mcl_armor_mob_range_factor = 0
 pumpkin_face_base_def._mcl_armor_mob_range_mob = "mobs_mc:enderman"
 pumpkin_face_base_def._mcl_armor_element = "head"
 pumpkin_face_base_def._mcl_armor_texture = "mcl_farming_pumpkin_face.png"
-pumpkin_face_base_def._mcl_armor_preview = "mcl_farming_pumpkin_face_preview.png"
 
 if minetest.get_modpath("mcl_armor") then
 	local pumpkin_hud = {}
