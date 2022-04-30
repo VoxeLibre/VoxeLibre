@@ -243,10 +243,16 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 	if name == "double_grass" then
 		bottom_groups.compostability = 50
 	end
+	local on_bonemealing
 	if is_flower then
 		bottom_groups.flower = 1
 		bottom_groups.place_flowerlike = 1
 		bottom_groups.dig_immediate = 3
+		on_bonemealing = function(pointed_thing, placer)
+			local pos = pointed_thing.under
+			minetest.add_item(pos, "mcl_flowers:"..name)
+			return true
+		end
 	else
 		bottom_groups.place_flowerlike = 2
 		bottom_groups.handy = 1
@@ -381,6 +387,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.remove_node(top)
 			end
 		end,
+		_mcl_on_bonemealing = on_bonemealing,
 		groups = bottom_groups,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		mesh = mesh
@@ -419,6 +426,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.remove_node(bottom)
 			end
 		end,
+		_mcl_on_bonemealing = on_bonemealing,
 		groups = top_groups,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 	})
