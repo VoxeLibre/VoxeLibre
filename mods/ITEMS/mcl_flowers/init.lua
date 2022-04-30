@@ -162,6 +162,18 @@ local def_tallgrass = {
 	_mcl_fortune_drop = fortune_wheat_seed_drop,
 	node_placement_prediction = "",
 	on_place = on_place_flower,
+	_mcl_on_bonemealing = function(pointed_thing, placer)
+		local pos = pointed_thing.under
+		local n = minetest.get_node(pos)
+		-- Grow into double tallgrass
+		local toppos = vector.offset(pos, 0, 1, 0)
+		local topnode = minetest.get_node(toppos)
+		if minetest.registered_nodes[topnode.name].buildable_to then
+			minetest.set_node(pos, { name = "mcl_flowers:double_grass", param2 = n.param2 })
+			minetest.set_node(toppos, { name = "mcl_flowers:double_grass_top", param2 = n.param2 })
+			return true
+		end
+	end,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 }
