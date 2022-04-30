@@ -191,7 +191,7 @@ local function make_grass_path(itemstack, placer, pointed_thing)
 		return itemstack
 	end
 
-	if (minetest.get_item_group(node.name, "grass_block") == 1) then
+	if (minetest.get_item_group(node.name, "path_creation_possible") == 1) then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
 		if minetest.get_node(above).name == "air" then

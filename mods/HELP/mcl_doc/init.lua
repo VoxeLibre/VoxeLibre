@@ -31,6 +31,14 @@ doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
 	return ""
 end)
 
+-- usable by shovels
+doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
+	if def.groups.path_creation_possible then
+		return S("This block can be turned into grass path with a shovel.")
+	end
+	return ""
+end)
+
 -- soil
 doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
 	local datastring = ""

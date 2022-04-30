@@ -2,7 +2,7 @@
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by davedevils.
 Developed by many people. Not developed or endorsed by Mojang AB.
 
-Version: 0.74 (in development)
+Version: 0.75 (in development)
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
