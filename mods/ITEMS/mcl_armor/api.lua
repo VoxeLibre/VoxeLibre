@@ -95,6 +95,7 @@ function mcl_armor.register_set(def)
 	local on_break_callbacks = def.on_break_callbacks or {}
 	local textures = def.textures or {}
 	local previews = def.previews or {}
+	local inventory = def.inventory or {}
 	local durabilities = def.durabilities or {}
 	local element_groups = def.element_groups or {}
 
@@ -120,7 +121,7 @@ function mcl_armor.register_set(def)
 			description = S(def.description .. " " .. (descriptions[name] or element.description)),
 			_doc_items_longdesc = mcl_armor.longdesc,
 			_doc_items_usagehelp = mcl_armor.usage,
-			inventory_image = modname .. "_inv_" .. itemname .. ".png",
+			inventory_image = inventory[name] or modname .. "_inv_" .. itemname .. ".png",
 			_repair_material = def.repair_material or def.craft_material,
 			groups = groups,
 			sounds = {
