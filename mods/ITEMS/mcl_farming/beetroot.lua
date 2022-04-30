@@ -13,78 +13,44 @@ minetest.register_craftitem("mcl_farming:beetroot_seeds", {
 	end
 })
 
-minetest.register_node("mcl_farming:beetroot_0", {
-	description = S("Premature Beetroot Plant (Stage 1)"),
-	_doc_items_longdesc = S("Beetroot plants are plants which grow on farmland under sunlight in 4 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature."),
-	_doc_items_entry_name = S("Premature Beetroot Plant"),
-	paramtype = "light",
-	paramtype2 = "meshoptions",
-	sunlight_propagates = true,
-	place_param2 = 3,
-	walkable = false,
-	drawtype = "plantlike",
-	drop = "mcl_farming:beetroot_seeds",
-	tiles = {"mcl_farming_beetroot_0.png"},
-	inventory_image = "mcl_farming_beetroot_0.png",
-	wield_image = "mcl_farming_beetroot_0.png",
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, -5/16, 0.5}
-		},
-	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0,
-})
+local size = {[0]=-5, -3, 2}
 
-minetest.register_node("mcl_farming:beetroot_1", {
-	description = S("Premature Beetroot Plant (Stage 2)"),
-	_doc_items_create_entry = false,
-	paramtype = "light",
-	paramtype2 = "meshoptions",
-	sunlight_propagates = true,
-	place_param2 = 3,
-	walkable = false,
-	drawtype = "plantlike",
-	drop = "mcl_farming:beetroot_seeds",
-	tiles = {"mcl_farming_beetroot_1.png"},
-	inventory_image = "mcl_farming_beetroot_1.png",
-	wield_image = "mcl_farming_beetroot_1.png",
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, -4/16, 0.5}
+for i = 0, 2 do
+	minetest.register_node("mcl_farming:beetroot_".. i, {
+		description = S("Premature Beetroot Plant (Stage ".. i + 1 ..")"),
+		_doc_items_longdesc = S("Beetroot plants are plants which grow on farmland under sunlight in 4 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature."),
+		_doc_items_entry_name = S("Premature Beetroot Plant"),
+		paramtype = "light",
+		paramtype2 = "meshoptions",
+		sunlight_propagates = true,
+		place_param2 = 3,
+		walkable = false,
+		drawtype = "plantlike",
+		drop = "mcl_farming:beetroot_seeds",
+		tiles = {"mcl_farming_beetroot_".. i ..".png"},
+		inventory_image = "mcl_farming_beetroot_".. i ..".png",
+		wield_image = "mcl_farming_beetroot_".. i ..".png",
+		selection_box = {
+			type = "fixed",
+			fixed = { {-0.5, -0.5, -0.5, 0.5, size[i]/16, 0.5} },
 		},
-	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0,
-})
-
-minetest.register_node("mcl_farming:beetroot_2", {
-	description = S("Premature Beetroot Plant (Stage 3)"),
-	_doc_items_create_entry = false,
-	paramtype = "light",
-	paramtype2 = "meshoptions",
-	sunlight_propagates = true,
-	place_param2 = 3,
-	walkable = false,
-	drawtype = "plantlike",
-	drop = "mcl_farming:beetroot_seeds",
-	tiles = {"mcl_farming_beetroot_2.png"},
-	inventory_image = "mcl_farming_beetroot_2.png",
-	wield_image = "mcl_farming_beetroot_2.png",
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, -3/16, 0.5}
+		groups = {
+			dig_immediate=3, not_in_creative_inventory=1,
+			plant=1, attached_node=1, dig_by_water=1,
+			destroy_by_lava_flow=1,dig_by_piston=1
 		},
-	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0,
-})
+		sounds = mcl_sounds.node_sound_leaves_defaults(),
+		_mcl_blast_resistance = 0,
+		_mcl_on_bonemealing = function(pointed_thing, placer)
+			local pos = pointed_thing.under
+			local n = minetest.get_node(pos)
+			-- 75% chance to advance to next stage
+			if math.random(1, 100) <= 75 then
+				return mcl_farming:grow_plant("plant_beetroot", pos, n, 1, true)
+			end
+		end
+	})
+end
 
 minetest.register_node("mcl_farming:beetroot", {
 	description = S("Mature Beetroot Plant"),
