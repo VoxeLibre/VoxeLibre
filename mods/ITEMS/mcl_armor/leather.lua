@@ -75,17 +75,29 @@ mcl_armor.register_set({
 		legs = get_texture_function("mcl_armor_leggings_leather.png"),
 		feet = get_texture_function("mcl_armor_boots_leather.png"),
 	},
+	inventory = {
+		head = "mcl_armor_inv_helmet_leather.png",
+		torso = "mcl_armor_inv_chestplate_leather.png",
+		legs = "mcl_armor_inv_leggings_leather.png",
+		feet = "mcl_armor_inv_boots_leather.png",
+	},
 	repair_material = "mcl_mobitems:leather",
 })
 
-minetest.register_chatcommand("colort", {
-	params = "",  -- Short parameter description
-	description = "",  -- Full description
-	func = function(name, params)
+-- This command is only temporary
+
+minetest.register_chatcommand("color_leather", {
+	params = "<color>",
+	description = "Colorize a leather armor",
+	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
-		local item = player:get_wielded_item()
-		item:get_meta():set_string("color", "#951d1d")
-		player:set_wielded_item(item)
-		return true, "Done."
+		if player then
+			local item = player:get_wielded_item()
+			item:get_meta():set_string("color", param)
+			player:set_wielded_item(item)
+			return true, "Done."
+		else
+			return false, "Player isn't online"
+		end
 	end,
 })
