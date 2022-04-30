@@ -82,7 +82,20 @@ mcl_armor.register_set({
 		feet = "mcl_armor_inv_boots_leather.png",
 	},
 	repair_material = "mcl_mobitems:leather",
+	groups = {armor_leather_colored = 1},
 })
+
+tt.register_priority_snippet(function(_, _, itemstack)
+	if not itemstack or not itemstack:get_definition().groups.armor_leather_colored == 1 then
+		return
+	end
+	local color = itemstack:get_meta():get_string("color")
+	if color and color ~= "" then
+		local text = "Color: "..color
+		return text, false
+	end
+end)
+
 
 -- This command is only temporary
 
@@ -94,6 +107,7 @@ minetest.register_chatcommand("color_leather", {
 		if player then
 			local item = player:get_wielded_item()
 			item:get_meta():set_string("color", param)
+			tt.reload_itemstack_description(item)
 			player:set_wielded_item(item)
 			return true, "Done."
 		else
