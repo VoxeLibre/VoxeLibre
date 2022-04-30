@@ -83,7 +83,7 @@ local function get_hardness_values_for_groups()
 
 	for _, ndef in pairs(minetest.registered_nodes) do
 		for g, _ in pairs(mcl_autogroup.registered_diggroups) do
-			if ndef.groups[g] ~= nil then
+			if ndef.groups[g] then
 				maps[g][ndef._mcl_hardness or 0] = true
 			end
 		end
@@ -206,6 +206,10 @@ end
 -- Returns true if it will yield its useful drop, false otherwise.
 function mcl_autogroup.can_harvest(nodename, toolname)
 	local ndef = minetest.registered_nodes[nodename]
+
+	if not ndef then
+		return false
+	end
 
 	if minetest.get_item_group(nodename, "dig_immediate") >= 2 then
 		return true

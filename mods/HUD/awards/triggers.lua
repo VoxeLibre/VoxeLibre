@@ -14,7 +14,7 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
-local S = minetest.get_translator("awards")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 awards.register_trigger("dig", function(def)
 	local tmp = {
@@ -382,7 +382,7 @@ end)
 minetest.register_on_chat_message(function(name, message)
 	-- Run checks
 	local idx = string.find(message,"/")
-	if not name or (idx ~= nil and idx <= 1)  then
+	if not name or (idx and idx <= 1)  then
 		return
 	end
 

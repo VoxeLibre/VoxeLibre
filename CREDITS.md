@@ -6,9 +6,13 @@
 ## Creator of MineClone2
 * Wuzzy
 
+
 ## Maintainers
+* Nicu
+* cora
+
+## Previous Maintainers
 * Fleckenstein
-* kay27
 * jordan4ibanez
 
 ## Developers
@@ -19,10 +23,10 @@
 * iliekprogrammar
 * MysticTempest
 * Rootyjr
-* Nicu
 * aligator
 * Code-Sploit
 * NO11
+* kabou
 
 ## Contributors
 * Laurent Rocher
@@ -48,8 +52,25 @@
 * dBeans
 * nickolas360
 * yutyo
-* ztianyang
+* Tianyang Zhang
 * j45
+* Marcin Serwin
+* erlehmann
+* E
+* Benjamin Schötz
+* Doloment
+* Sydney Gems
+* talamh
+* Emily2255
+* Emojigit
+* FinishedFragment
+* sfan5
+* Blue Blancmange
+* Jared Moody
+* SmallJoker
+* Sven792
+* aldum
+* Dieter44
 
 ## MineClone5
 * kay27
@@ -57,6 +78,16 @@
 * epCode
 * NO11
 * j45
+* 3raven
+* PrarieWind
+* Gustavo1
+* CableGuy67
+
+## Mineclonia
+* erlehmann
+* Li0n
+* E
+* n_to
 
 ## Original Mod Authors
 * Wuzzy
@@ -74,7 +105,6 @@
 * Rochambeau
 * rubenwardy
 * stu
-* jordan4ibanez
 * 4aiman
 * Kahrl
 * Krock
@@ -103,6 +133,7 @@
 * xMrVizzy
 * yutyo
 * NO11
+* kay27
 
 ## Translations
 * Wuzzy
@@ -110,6 +141,11 @@
 * wuniversales
 * kay27
 * pitchum
+* todoporlalibertad
+* Marcin Serwin
+
+## Funders
+* 40W
 
 ## Special thanks
 * celeron55 for creating Minetest

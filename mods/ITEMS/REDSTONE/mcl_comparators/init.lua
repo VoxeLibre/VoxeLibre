@@ -1,8 +1,8 @@
-local S = minetest.get_translator("mcl_comparators")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Functions that get the input/output rules of the comparator
 
-local comparator_get_output_rules = function(node)
+local function comparator_get_output_rules(node)
 	local rules = {{x = -1, y = 0, z = 0, spread=true}}
 	for i = 0, node.param2 do
 		rules = mesecon.rotate_rules_left(rules)
@@ -11,7 +11,7 @@ local comparator_get_output_rules = function(node)
 end
 
 
-local comparator_get_input_rules = function(node)
+local function comparator_get_input_rules(node)
 	local rules = {
 		-- we rely on this order in update_self below
 		{x = 1, y = 0, z =  0},  -- back
@@ -27,13 +27,13 @@ end
 
 -- Functions that are called after the delay time
 
-local comparator_turnon = function(params)
+local function comparator_turnon(params)
 	local rules = comparator_get_output_rules(params.node)
 	mesecon.receptor_on(params.pos, rules)
 end
 
 
-local comparator_turnoff = function(params)
+local function comparator_turnoff(params)
 	local rules = comparator_get_output_rules(params.node)
 	mesecon.receptor_off(params.pos, rules)
 end
@@ -41,22 +41,28 @@ end
 
 -- Functions that set the correct node type an schedule a turnon/off
 
-local comparator_activate = function(pos, node)
+local function comparator_activate(pos, node)
 	local def = minetest.registered_nodes[node.name]
-	minetest.swap_node(pos, { name = def.comparator_onstate, param2 = node.param2 })
+	local onstate = def.comparator_onstate
+	if onstate then
+		minetest.swap_node(pos, { name = onstate, param2 = node.param2 })
+	end
 	minetest.after(0.1, comparator_turnon , {pos = pos, node = node})
 end
 
 
-local comparator_deactivate = function(pos, node)
+local function comparator_deactivate(pos, node)
 	local def = minetest.registered_nodes[node.name]
-	minetest.swap_node(pos, { name = def.comparator_offstate, param2 = node.param2 })
+	local offstate = def.comparator_offstate
+	if offstate then
+		minetest.swap_node(pos, { name = offstate, param2 = node.param2 })
+	end
 	minetest.after(0.1, comparator_turnoff, {pos = pos, node = node})
 end
 
 
 -- weather pos has an inventory that contains at least one item
-local container_inventory_nonempty = function(pos)
+local function container_inventory_nonempty(pos)
 	local invnode = minetest.get_node(pos)
 	local invnodedef = minetest.registered_nodes[invnode.name]
 	-- Ignore stale nodes
@@ -78,14 +84,14 @@ local container_inventory_nonempty = function(pos)
 end
 
 -- weather pos has an constant signal output for the comparator
-local static_signal_output = function(pos)
+local function static_signal_output(pos)
 	local node = minetest.get_node(pos)
 	local g = minetest.get_item_group(node.name, "comparator_signal")
 	return g > 0
 end
 
 -- whether the comparator should be on according to its inputs
-local comparator_desired_on = function(pos, node)
+local function comparator_desired_on(pos, node)
 	local my_input_rules = comparator_get_input_rules(node);
 	local back_rule = my_input_rules[1]
 	local state
@@ -116,7 +122,7 @@ end
 
 
 -- update comparator state, if needed
-local update_self = function(pos, node)
+local function update_self(pos, node)
 	node = node or minetest.get_node(pos)
 	local old_state = mesecon.is_receptor_on(node.name)
 	local new_state = comparator_desired_on(pos, node)
@@ -131,7 +137,7 @@ end
 
 
 -- compute tile depending on state and mode
-local get_tiles = function(state, mode)
+local function get_tiles(state, mode)
 	local top = "mcl_comparators_"..state..".png^"..
 		"mcl_comparators_"..mode..".png"
 	local sides = "mcl_comparators_sides_"..state..".png^"..
@@ -146,13 +152,13 @@ local get_tiles = function(state, mode)
 end
 
 -- Given one mode, get the other mode
-local flipmode = function(mode)
+local function flipmode(mode)
 	if mode == "comp" then    return "sub"
 	elseif mode == "sub" then return "comp"
 	end
 end
 
-local make_rightclick_handler = function(state, mode)
+local function make_rightclick_handler(state, mode)
 	local newnodename =
 		"mcl_comparators:comparator_"..state.."_"..flipmode(mode)
 	return function (pos, node, clicker)
@@ -260,7 +266,7 @@ for _, mode in pairs{"comp", "sub"} do
 			paramtype2 = "facedir",
 			sunlight_propagates = false,
 			is_ground_content = false,
-			drop = 'mcl_comparators:comparator_off_comp',
+			drop = "mcl_comparators:comparator_off_comp",
 			on_construct = update_self,
 			on_rightclick =
 				make_rightclick_handler(state_str, mode),

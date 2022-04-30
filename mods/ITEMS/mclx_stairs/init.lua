@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mclx_stairs")
+local S = minetest.get_translator(minetest.get_current_modname())
 local doc_mod = minetest.get_modpath("doc")
 
 

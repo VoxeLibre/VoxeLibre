@@ -193,19 +193,18 @@ mobs:register_mob("mobs_mc:enderman", {
 	description = S("Enderman"),
 	type = "monster",
 	spawn_class = "passive",
-	neutral = true,
+	passive = true,
+	pathfinding = 1,
 	hp_min = 40,
 	hp_max = 40,
 	xp_min = 5,
 	xp_max = 5,
-	rotate = 270,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 2.89, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_enderman.b3d",
 	textures = create_enderman_textures(),
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
-	eye_height = 2.5,
 	sounds = {
 		-- TODO: Custom war cry sound
 		war_cry = "mobs_sandmonster",
@@ -214,8 +213,8 @@ mobs:register_mob("mobs_mc:enderman", {
 		random = {name="mobs_mc_enderman_random", gain=0.5},
 		distance = 16,
 	},
-	walk_velocity = 1,
-	run_velocity = 4,
+	walk_velocity = 0.2,
+	run_velocity = 3.4,
 	damage = 7,
 	reach = 2,
 	drops = {
@@ -225,22 +224,6 @@ mobs:register_mob("mobs_mc:enderman", {
 		max = 1,
 		looting = "common"},
 	},
-
-	--head code
-	has_head = false,
-	head_bone = "head.low",
-
-	swap_y_with_x = false,
-	reverse_head_yaw = false,
-
-	head_bone_pos_y = 2.4,
-	head_bone_pos_z = 0,
-
-	head_height_offset = 1.1,
-	head_direction_offset = 0,
-	head_pitch_modifier = 0,
-	--end head code
-
 	animation = select_enderman_animation("normal"),
 	_taken_node = "",
 	do_custom = function(self, dtime)
@@ -299,8 +282,8 @@ mobs:register_mob("mobs_mc:enderman", {
 				--self:teleport(nil)
 				--self.state = ""
 			--else
-				if self.attacking then
-					local target = self.attacking
+				if self.attack then
+					local target = self.attack
 					local pos = target:get_pos()
 					if pos ~= nil then
 						if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
@@ -318,12 +301,12 @@ mobs:register_mob("mobs_mc:enderman", {
 		for n = 1, #objs do
 			local obj = objs[n]
 			if obj then
-				--if minetest.is_player(obj) then
+				if minetest.is_player(obj) then
 					-- Warp from players during day.
 					--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
 					--	self:teleport(nil)
 					--end
-				if not obj:is_player() then
+				else
 					local lua = obj:get_luaentity()
 					if lua then
 						if lua.name == "mcl_bows:arrow_entity" or lua.name == "mcl_throwing:snowball_entity" then
@@ -377,16 +360,11 @@ mobs:register_mob("mobs_mc:enderman", {
 						--if looking in general head position, turn hostile
 						if minetest.line_of_sight(ender_eye_pos, look_pos_base) and vector.distance(look_pos, ender_eye_pos) <= 0.4 then
 							self.provoked = "staring"
-							self.state = "stand"
-							self.hostile = false
+							self.attack = minetest.get_player_by_name(obj:get_player_name())
 							break
-						--begin attacking the player
-						else
+						else -- I'm not sure what this part does, but I don't want to break anything - jordan4ibanez
 							if self.provoked == "staring" then
 								self.provoked = "broke_contact"
-								self.hostile = true
-								self.state = "attack"
-								self.attacking = obj
 							end
 						end
 
@@ -452,7 +430,7 @@ mobs:register_mob("mobs_mc:enderman", {
 						self.base_texture = create_enderman_textures(block_type, self._taken_node)
 						self.object:set_properties({ textures = self.base_texture })
 						self.animation = select_enderman_animation("block")
-						mobs.set_mob_animation(self, self.animation.current)
+						mobs:set_animation(self, self.animation.current)
 						if def.sounds and def.sounds.dug then
 							minetest.sound_play(def.sounds.dug, {pos = take_pos, max_hear_distance = 16}, true)
 						end
@@ -475,7 +453,7 @@ mobs:register_mob("mobs_mc:enderman", {
 					local def = minetest.registered_nodes[self._taken_node]
 					-- Update animation accordingly (removes visible block)
 					self.animation = select_enderman_animation("normal")
-					mobs.set_mob_animation(self, self.animation.current)
+					mobs:set_animation(self, self.animation.current)
 					if def.sounds and def.sounds.place then
 						minetest.sound_play(def.sounds.place, {pos = place_pos, max_hear_distance = 16}, true)
 					end
@@ -500,7 +478,8 @@ mobs:register_mob("mobs_mc:enderman", {
 						-- Selected node needs to have 3 nodes of free space above
 						for u=1, 3 do
 							local node = minetest.get_node({x=nodepos.x, y=nodepos.y+u, z=nodepos.z})
-							if minetest.registered_nodes[node.name].walkable then
+							local ndef = minetest.registered_nodes[node.name]
+							if ndef and ndef.walkable then
 								node_ok = false
 								break
 							end
@@ -534,7 +513,8 @@ mobs:register_mob("mobs_mc:enderman", {
 							node_ok = true
 							for u=1, 3 do
 								local node = minetest.get_node({x=nodepos.x, y=nodepos.y+u, z=nodepos.z})
-								if minetest.registered_nodes[node.name].walkable then
+								local ndef = minetest.registered_nodes[node.name]
+								if ndef and ndef.walkable then
 									node_ok = false
 									break
 								end
@@ -579,7 +559,7 @@ mobs:register_mob("mobs_mc:enderman", {
 	water_damage = 8,
 	view_range = 64,
 	fear_height = 4,
-	attack_type = "punch",
+	attack_type = "dogfight",
 })
 
 

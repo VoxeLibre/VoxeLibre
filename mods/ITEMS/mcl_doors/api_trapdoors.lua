@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_doors")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Wrapper around mintest.pointed_thing_to_face_pos.
 local function get_fpos(placer, pointed_thing)

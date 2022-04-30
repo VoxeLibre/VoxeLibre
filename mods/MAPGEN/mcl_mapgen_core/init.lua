@@ -64,6 +64,7 @@ local c_stone = minetest.get_content_id("mcl_core:stone")
 local c_dirt = minetest.get_content_id("mcl_core:dirt")
 local c_dirt_with_grass = minetest.get_content_id("mcl_core:dirt_with_grass")
 local c_dirt_with_grass_snow = minetest.get_content_id("mcl_core:dirt_with_grass_snow")
+local c_reeds = minetest.get_content_id("mcl_core:reeds")
 local c_sand = minetest.get_content_id("mcl_core:sand")
 --local c_sandstone = minetest.get_content_id("mcl_core:sandstone")
 local c_void = minetest.get_content_id("mcl_core:void")
@@ -1599,7 +1600,7 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 
 			if dir < 5
 			and data[p_pos] == c_air
-			and l ~= nil and l > 12 then
+			and l and l > 12 then
 				local c = pr:next(1, 3)
 				if c == 1 then
 					data[p_pos] = c_cocoa_1
@@ -1736,7 +1737,7 @@ local function generate_underground_mushrooms(minp, maxp, seed)
 		bpos = {x = stone[n].x, y = stone[n].y + 1, z = stone[n].z }
 
 		local l = minetest.get_node_light(bpos, 0.5)
-		if bpos.y >= min and bpos.y <= max and l ~= nil and l <= 12 and pr_shroom:next(1,1000) < 4 then
+		if bpos.y >= min and bpos.y <= max and l and l <= 12 and pr_shroom:next(1,1000) < 4 then
 			if pr_shroom:next(1,2) == 1 then
 				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
 			else
@@ -1799,7 +1800,7 @@ local function generate_nether_decorations(minp, maxp, seed)
 	-- Note: Spawned *after* the fire because of light level checks
 	special_deco(rack, function(bpos)
 		local l = minetest.get_node_light(bpos, 0.5)
-		if bpos.y > mcl_vars.mg_lava_nether_max + 6 and l ~= nil and l <= 12 and pr_nether:next(1,1000) <= 4 then
+		if bpos.y > mcl_vars.mg_lava_nether_max + 6 and l and l <= 12 and pr_nether:next(1,1000) <= 4 then
 			-- TODO: Make mushrooms appear in groups, use Perlin noise
 			if pr_nether:next(1,2) == 1 then
 				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
@@ -1869,7 +1870,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	mcl_vars.add_chunk(minp)
 end)
 
-minetest.register_on_generated=function(node_function)
+function minetest.register_on_generated(node_function)
 	mcl_mapgen_core.register_generator("mod_"..tostring(#registered_generators+1), nil, node_function)
 end
 
@@ -1890,11 +1891,9 @@ function mcl_mapgen_core.register_generator(id, lvm_function, node_function, pri
 	}
 
 	registered_generators[id] = new_record
-	table.sort(
-		registered_generators,
-		function(a, b)
-			return (a.i < b.i) or ((a.i == b.i) and (a.vf ~= nil) and (b.vf == nil))
-		end)
+	table.sort(registered_generators, function(a, b)
+		return (a.i < b.i) or ((a.i == b.i) and a.vf and (b.vf == nil))
+	end)
 end
 
 function mcl_mapgen_core.unregister_generator(id)
@@ -2097,7 +2096,22 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 						lvm_used = true
 					end
 				end
-
+				
+				-- Set param2 (=color) of sugar cane
+				nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:reeds"})
+				for n=1, #nodes do
+					local n = nodes[n]
+					local p_pos = area:index(n.x, n.y, n.z)
+					local b_pos = aream:index(n.x, 0, n.z)
+					local bn = minetest.get_biome_name(biomemap[b_pos])
+					if bn then
+						local biome = minetest.registered_biomes[bn]
+						if biome and biome._mcl_biome_type then
+							data2[p_pos] = biome._mcl_palette_index
+							lvm_used = true
+						end
+					end
+				end
 			end
 
 		-- Nether block fixes:
@@ -2181,15 +2195,16 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 		lvm_used = true
 	end
 
+	return lvm_used, shadow
+end
+
+local function basic_node(minp, maxp, blockseed)
 	if mg_name ~= "singlenode" then
 		-- Generate special decorations
 		generate_underground_mushrooms(minp, maxp, blockseed)
 		generate_nether_decorations(minp, maxp, blockseed)
-		generate_structures(minp, maxp, blockseed, biomemap)
+		generate_structures(minp, maxp, blockseed, minetest.get_mapgen_object("biomemap"))
 	end
-
-	return lvm_used, shadow
 end
 
-mcl_mapgen_core.register_generator("main", basic, nil, 1, true)
-
+mcl_mapgen_core.register_generator("main", basic, basic_node, 1, true)

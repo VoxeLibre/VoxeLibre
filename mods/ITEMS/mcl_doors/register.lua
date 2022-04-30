@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_doors")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --[[ Doors ]]
 
@@ -260,9 +260,9 @@ mcl_doors:register_trapdoor("mcl_doors:iron_trapdoor", {
 })
 
 minetest.register_craft({
-	output = 'mcl_doors:iron_trapdoor',
+	output = "mcl_doors:iron_trapdoor",
 	recipe = {
-		{'mcl_core:iron_ingot', 'mcl_core:iron_ingot'},
-		{'mcl_core:iron_ingot', 'mcl_core:iron_ingot'},
+		{"mcl_core:iron_ingot", "mcl_core:iron_ingot"},
+		{"mcl_core:iron_ingot", "mcl_core:iron_ingot"},
 	}
 })

@@ -1,4 +1,6 @@
-local S = minetest.get_translator("mcl_bows")
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local mod_target = minetest.get_modpath("mcl_target")
 
 local math = math
 local vector = vector
@@ -43,7 +45,7 @@ S("An arrow fired from a bow has a regular damage of 1-9. At full charge, there'
 S("Arrows might get stuck on solid blocks and can be retrieved again. They are also capable of pushing wooden buttons."),
 	_doc_items_usagehelp = S("To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory. To retrieve an arrow that sticks in a block, simply walk close to it."),
 	inventory_image = "mcl_bows_arrow_inv.png",
-	groups = { ammo=1, ammo_bow=1, ammo_bow_regular=1 },
+	groups = { ammo=1, ammo_bow=1, ammo_bow_regular=1, ammo_crossbow=1 },
 	_on_dispense = function(itemstack, dispenserpos, droppos, dropnode, dropdir)
 		-- Shoot arrow
 		local shootpos = vector.add(dispenserpos, vector.multiply(dropdir, 0.51))
@@ -73,33 +75,32 @@ local ARROW_ENTITY={
 	_stuckin=nil,	--Position of node in which arow is stuck.
 	_shooter=nil,	-- ObjectRef of player or mob who shot it
 	_is_arrow = true,
-
+	_in_player = false,
+	_blocked = false,
 	_viscosity=0,   -- Viscosity of node the arrow is currently in
 	_deflection_cooloff=0, -- Cooloff timer after an arrow deflection, to prevent many deflections in quick succession
 }
 
 -- Destroy arrow entity self at pos and drops it as an item
-local spawn_item = function(self, pos)
+local function spawn_item(self, pos)
 	if not minetest.is_creative_enabled("") then
 		local item = minetest.add_item(pos, "mcl_bows:arrow")
-		item:set_velocity({x=0, y=0, z=0})
+		item:set_velocity(vector.new(0, 0, 0))
 		item:set_yaw(self.object:get_yaw())
 	end
 	mcl_burning.extinguish(self.object)
 	self.object:remove()
 end
 
-local damage_particles = function(pos, is_critical)
+local function damage_particles(pos, is_critical)
 	if is_critical then
 		minetest.add_particlespawner({
 			amount = 15,
 			time = 0.1,
-			minpos = {x=pos.x-0.5, y=pos.y-0.5, z=pos.z-0.5},
-			maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
-			minvel = {x=-0.1, y=-0.1, z=-0.1},
-			maxvel = {x=0.1, y=0.1, z=0.1},
-			minacc = {x=0, y=0, z=0},
-			maxacc = {x=0, y=0, z=0},
+			minpos = vector.offset(pos, -0.5, -0.5, -0.5),
+			maxpos = vector.offset(pos, 0.5, 0.5, 0.5),
+			minvel = vector.new(-0.1, -0.1, -0.1),
+			maxvel = vector.new(0.1, 0.1, 0.1),
 			minexptime = 1,
 			maxexptime = 2,
 			minsize = 1.5,
@@ -111,14 +112,13 @@ local damage_particles = function(pos, is_critical)
 	end
 end
 
-ARROW_ENTITY.on_step = function(self, dtime)
+function ARROW_ENTITY.on_step(self, dtime)
 	mcl_burning.tick(self.object, dtime, self)
 
 	self._time_in_air = self._time_in_air + .001
 
 	local pos = self.object:get_pos()
-	local dpos = table.copy(pos) -- digital pos
-	dpos = vector.round(dpos)
+	local dpos = vector.round(vector.new(pos)) -- digital pos
 	local node = minetest.get_node(dpos)
 
 	if self._stuck then
@@ -202,7 +202,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			-- Arrows can only damage players and mobs
 			if obj:is_player() then
 				ok = true
-			elseif obj:get_luaentity() ~= nil then
+			elseif obj:get_luaentity() then
 				if (obj:get_luaentity()._cmi_is_mob or obj:get_luaentity()._hittable_by_projectile) then
 					ok = true
 				end
@@ -222,7 +222,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 
 		-- If an attackable object was found, we will damage the closest one only
 
-		if closest_object ~= nil then
+		if closest_object then
 			local obj = closest_object
 			local is_player = obj:is_player()
 			local lua = obj:get_luaentity()
@@ -248,50 +248,59 @@ ARROW_ENTITY.on_step = function(self, dtime)
 
 					-- Punch target object but avoid hurting enderman.
 					if not lua or lua.name ~= "mobs_mc:enderman" then
-						if self._in_player == false then
+						if not self._in_player then
 							damage_particles(self.object:get_pos(), self._is_critical)
 						end
 						if mcl_burning.is_burning(self.object) then
 							mcl_burning.set_on_fire(obj, 5)
 						end
-						if self._in_player == false then
+						if not self._in_player and not self._blocked then
 							obj:punch(self.object, 1.0, {
 								full_punch_interval=1.0,
 								damage_groups={fleshy=self._damage},
 							}, self.object:get_velocity())
 							if obj:is_player() then
-								local placement
-								self._placement = math.random(1, 2)
-								if self._placement == 1 then
-									placement = "front"
+								if not mcl_shields.is_blocking(obj) then
+									local placement
+									self._placement = math.random(1, 2)
+									if self._placement == 1 then
+										placement = "front"
+									else
+										placement = "back"
+									end
+									self._in_player = true
+									if self._placement == 2 then
+										self._rotation_station = 90
+									else
+										self._rotation_station = -90
+									end
+									self._y_position = random_arrow_positions("y", placement)
+									self._x_position = random_arrow_positions("x", placement)
+									if self._y_position > 6 and self._x_position < 2 and self._x_position > -2 then
+										self._attach_parent = "Head"
+										self._y_position = self._y_position - 6
+									elseif self._x_position > 2 then
+										self._attach_parent = "Arm_Right"
+										self._y_position = self._y_position - 3
+										self._x_position = self._x_position - 2
+									elseif self._x_position < -2 then
+										self._attach_parent = "Arm_Left"
+										self._y_position = self._y_position - 3
+										self._x_position = self._x_position + 2
+									else
+										self._attach_parent = "Body"
+									end
+									self._z_rotation = math.random(-30, 30)
+									self._y_rotation = math.random( -30, 30)
+									self.object:set_attach(
+										obj, self._attach_parent,
+										vector.new(self._x_position, self._y_position, random_arrow_positions("z", placement)),
+										vector.new(0, self._rotation_station + self._y_rotation, self._z_rotation)
+									)
 								else
-									placement = "back"
+									self._blocked = true
+									self.object:set_velocity(vector.multiply(self.object:get_velocity(), -0.25))
 								end
-								self._in_player = true
-								if self._placement == 2 then
-									self._rotation_station = 90
-								else
-									self._rotation_station = -90
-								end
-								self._y_position = random_arrow_positions('y', placement)
-								self._x_position = random_arrow_positions('x', placement)
-								if self._y_position > 6 and self._x_position < 2 and self._x_position > -2 then
-									self._attach_parent = 'Head'
-									self._y_position = self._y_position - 6
-								elseif self._x_position > 2 then
-									self._attach_parent = 'Arm_Right'
-									self._y_position = self._y_position - 3
-									self._x_position = self._x_position - 2
-								elseif self._x_position < -2 then
-									self._attach_parent = 'Arm_Left'
-									self._y_position = self._y_position - 3
-									self._x_position = self._x_position + 2
-								else
-									self._attach_parent = 'Body'
-								end
-								self._z_rotation = math.random(-30, 30)
-								self._y_rotation = math.random( -30, 30)
-								self.object:set_attach(obj, self._attach_parent, {x=self._x_position,y=self._y_position,z=random_arrow_positions('z', placement)}, {x=0,y=self._rotation_station + self._y_rotation,z=self._z_rotation})
 								minetest.after(150, function()
 									self.object:remove()
 								end)
@@ -301,7 +310,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 
 
 					if is_player then
-						if self._shooter and self._shooter:is_player() and self._in_player == false then
+						if self._shooter and self._shooter:is_player() and not self._in_player and not self._blocked then
 							-- “Ding” sound for hitting another player
 							minetest.sound_play({name="mcl_bows_hit_player", gain=0.1}, {to_player=self._shooter:get_player_name()}, true)
 						end
@@ -318,13 +327,15 @@ ARROW_ENTITY.on_step = function(self, dtime)
 							end
 						end
 					end
-					if self._in_player == false then
+					if not self._in_player and not self._blocked then
 						minetest.sound_play({name="mcl_bows_hit_other", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=16}, true)
 					end
 				end
 				if not obj:is_player() then
 					mcl_burning.extinguish(self.object)
-					self.object:remove()
+					if self._piercing == 0 then
+						self.object:remove()
+					end
 				end
 				return
 			end
@@ -342,9 +353,9 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			local dir
 			if math.abs(vel.y) < 0.00001 then
 				if self._lastpos.y < pos.y then
-					dir = {x=0, y=1, z=0}
+					dir = vector.new(0, 1, 0)
 				else
-					dir = {x=0, y=-1, z=0}
+					dir = vector.new(0, -1, 0)
 				end
 			else
 				dir = minetest.facedir_to_dir(minetest.dir_to_facedir(minetest.yaw_to_dir(self.object:get_yaw()-YAW_OFFSET)))
@@ -372,13 +383,18 @@ ARROW_ENTITY.on_step = function(self, dtime)
 				self._stucktimer = 0
 				self._stuckrechecktimer = 0
 
-				self.object:set_velocity({x=0, y=0, z=0})
-				self.object:set_acceleration({x=0, y=0, z=0})
+				self.object:set_velocity(vector.new(0, 0, 0))
+				self.object:set_acceleration(vector.new(0, 0, 0))
 
 				minetest.sound_play({name="mcl_bows_hit_other", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=16}, true)
 
 				if mcl_burning.is_burning(self.object) and snode.name == "mcl_tnt:tnt" then
 					tnt.ignite(self._stuckin)
+				end
+
+				-- Activate target
+				if mod_target and snode.name == "mcl_target:target_off" then
+					mcl_target.hit(self._stuckin, 1) --10 redstone ticks
 				end
 
 				-- Push the button! Push, push, push the button!
@@ -418,18 +434,18 @@ ARROW_ENTITY.on_step = function(self, dtime)
 	end
 
 	-- Update internal variable
-	self._lastpos={x=pos.x, y=pos.y, z=pos.z}
+	self._lastpos = pos
 end
 
 -- Force recheck of stuck arrows when punched.
 -- Otherwise, punching has no effect.
-ARROW_ENTITY.on_punch = function(self)
+function ARROW_ENTITY.on_punch(self)
 	if self._stuck then
 		self._stuckrechecktimer = STUCK_RECHECK_TIME
 	end
 end
 
-ARROW_ENTITY.get_staticdata = function(self)
+function ARROW_ENTITY.get_staticdata(self)
 	local out = {
 		lastpos = self._lastpos,
 		startpos = self._startpos,
@@ -437,6 +453,7 @@ ARROW_ENTITY.get_staticdata = function(self)
 		is_critical = self._is_critical,
 		stuck = self._stuck,
 		stuckin = self._stuckin,
+		stuckin_player = self._in_player,
 	}
 	if self._stuck then
 		-- If _stucktimer is missing for some reason, assume the maximum
@@ -451,9 +468,8 @@ ARROW_ENTITY.get_staticdata = function(self)
 	return minetest.serialize(out)
 end
 
-ARROW_ENTITY.on_activate = function(self, staticdata, dtime_s)
+function ARROW_ENTITY.on_activate(self, staticdata, dtime_s)
 	self._time_in_air = 1.0
-	self._in_player = false
 	local data = minetest.deserialize(staticdata)
 	if data then
 		self._stuck = data.stuck
@@ -486,23 +502,36 @@ ARROW_ENTITY.on_activate = function(self, staticdata, dtime_s)
 				self._shooter = shooter
 			end
 		end
+
+		if data.stuckin_player then
+			self.object:remove()
+		end
 	end
 	self.object:set_armor_groups({ immortal = 1 })
 end
+
+minetest.register_on_respawnplayer(function(player)
+	for _, obj in pairs(player:get_children()) do
+		local ent = obj:get_luaentity()
+		if ent and ent.name and string.find(ent.name, "mcl_bows:arrow_entity") then
+			obj:remove()
+		end
+	end
+end)
 
 minetest.register_entity("mcl_bows:arrow_entity", ARROW_ENTITY)
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
 	minetest.register_craft({
-		output = 'mcl_bows:arrow 4',
+		output = "mcl_bows:arrow 4",
 		recipe = {
-			{'mcl_core:flint'},
-			{'mcl_core:stick'},
-			{'mcl_mobitems:feather'}
+			{"mcl_core:flint"},
+			{"mcl_core:stick"},
+			{"mcl_mobitems:feather"}
 		}
 	})
 end
 
-if minetest.get_modpath("doc_identifier") ~= nil then
+if minetest.get_modpath("doc_identifier") then
 	doc.sub.identifier.register_object("mcl_bows:arrow_entity", "craftitems", "mcl_bows:arrow")
 end

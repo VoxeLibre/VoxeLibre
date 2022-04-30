@@ -31,8 +31,6 @@ local ocelot = {
 	type = "animal",
 	spawn_class = "passive",
 	can_despawn = true,
-	rotate = 270,
-	skittish = true,
 	hp_min = 10,
 	hp_max = 10,
 	xp_min = 1,
@@ -45,7 +43,7 @@ local ocelot = {
 	makes_footstep_sound = true,
 	walk_chance = default_walk_chance,
 	walk_velocity = 1,
-	run_velocity = 10,
+	run_velocity = 3,
 	follow_velocity = 1,
 	floats = 1,
 	runaway = true,
@@ -59,7 +57,7 @@ local ocelot = {
 	},
 	animation = {
 		speed_normal = 25,
-		run_speed = 150,
+		run_speed = 50,
 		stand_start = 0,
 		stand_end = 0,
 		walk_start = 0,
@@ -125,6 +123,8 @@ cat.sounds = {
 }
 cat.on_rightclick = function(self, clicker)
 	if mobs:feed_tame(self, clicker, 1, true, false) then return end
+	if mobs:capture_mob(self, clicker, 0, 60, 5, false, nil) then return end
+	if mobs:protect(self, clicker) then return end
 
 	if self.child then return end
 
@@ -151,7 +151,7 @@ end
 
 mobs:register_mob("mobs_mc:cat", cat)
 
---local base_spawn_chance = 5000
+local base_spawn_chance = 5000
 
 -- Spawn ocelot
 --they get the same as the llama because I'm trying to rework so much of this code right now -j4i

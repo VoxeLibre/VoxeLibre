@@ -12,7 +12,7 @@ Params:
 
 * pos: position
 
-## mcl_worlds.y_to_layer(y)
+## mcl_worlds.y_to_layer(y)
 This function is used to calculate the minetest y layer and dimension of the given <y> minecraft layer.
 Mainly used for ore generation.
 Takes an Y coordinate as input and returns:

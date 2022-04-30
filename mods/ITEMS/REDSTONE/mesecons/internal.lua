@@ -138,7 +138,7 @@ local function receptor_get_rules(node)
 	local receptor = mesecon.get_receptor(node.name)
 	if receptor then
 		local rules = receptor.rules
-		if type(rules) == 'function' then
+		if type(rules) == "function" then
 			return rules(node)
 		elseif rules then
 			return rules
@@ -179,7 +179,7 @@ function mesecon.effector_get_rules(node)
 	local effector = mesecon.get_effector(node.name)
 	if effector then
 		local rules = effector.rules
-		if type(rules) == 'function' then
+		if type(rules) == "function" then
 			return rules(node)
 		elseif rules then
 			return rules
@@ -352,7 +352,7 @@ function mesecon.conductor_get_rules(node)
 	local conductor = mesecon.get_conductor(node.name)
 	if conductor then
 		local rules = conductor.rules
-		if type(rules) == 'function' then
+		if type(rules) == "function" then
 			return rules(node)
 		elseif rules then
 			return rules

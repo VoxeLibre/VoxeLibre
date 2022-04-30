@@ -4,7 +4,7 @@
 
 minetest.register_craft({
 	type = "shapeless",
-	output = 'mcl_chests:trapped_chest',
+	output = "mcl_chests:trapped_chest",
 	recipe = {"mcl_core:iron_ingot", "mcl_core:stick", "group:wood", "mcl_chests:chest"},
 })
 
@@ -33,40 +33,6 @@ minetest.register_craft({
 		"mcl_ocean:prismarine_shard",
 		"mcl_core:gold_ingot",
 	},
-})
-
-minetest.register_craft({
-	output = "mcl_armor:helmet_chain",
-	recipe = {
-		{ "xpanes:bar_flat", "mcl_core:iron_ingot", "xpanes:bar_flat" },
-		{ "xpanes:bar_flat", "", "xpanes:bar_flat" },
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_armor:leggings_chain",
-	recipe = {
-		{ "xpanes:bar_flat", "mcl_core:iron_ingot", "xpanes:bar_flat" },
-		{ "xpanes:bar_flat", "", "xpanes:bar_flat" },
-		{ "xpanes:bar_flat", "", "xpanes:bar_flat" },
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_armor:boots_chain",
-	recipe = {
-		{ "xpanes:bar_flat", "", "xpanes:bar_flat" },
-		{ "xpanes:bar_flat", "", "xpanes:bar_flat" },
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_armor:chestplate_chain",
-	recipe = {
-		{ "xpanes:bar_flat", "", "xpanes:bar_flat" },
-		{ "xpanes:bar_flat", "mcl_core:iron_ingot", "xpanes:bar_flat" },
-		{ "xpanes:bar_flat", "xpanes:bar_flat", "xpanes:bar_flat" },
-	}
 })
 
 -- Make red sand, red sandstone and more craftable in v6

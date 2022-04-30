@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_enchanting")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Taken from https://minecraft.gamepedia.com/Enchanting
 
@@ -97,8 +97,9 @@ mcl_enchanting.enchantments.efficiency = {
 	weight = 10,
 	description = S("Increases mining speed."),
 	curse = false,
-	on_enchant = function(itemstack, level)
-		mcl_enchanting.update_groupcaps(itemstack)
+	on_enchant = function()
+		-- Updating digging speed is handled by update_groupcaps which
+		-- is called from load_enchantments.
 	end,
 	requires_tool = false,
 	treasure = false,
@@ -379,8 +380,52 @@ mcl_enchanting.enchantments.mending = {
 	inv_tool_tab = true,
 }
 
--- requires missing MineClone2 feature
---[[mcl_enchanting.enchantments.multishot = {
+mcl_experience.register_on_add_xp(function(player, xp)
+	local inv = player:get_inventory()
+
+	local candidates = {
+		{list = "main", index = player:get_wield_index()},
+		{list = "armor", index = 2},
+		{list = "armor", index = 3},
+		{list = "armor", index = 4},
+		{list = "armor", index = 5},
+		{list = "offhand", index = 1},
+	}
+
+	local final_candidates = {}
+	for _, can in ipairs(candidates) do
+		local stack = inv:get_stack(can.list, can.index)
+		local wear = stack:get_wear()
+		if mcl_enchanting.has_enchantment(stack, "mending") and wear > 0 then
+			can.stack = stack
+			can.wear = wear
+			table.insert(final_candidates, can)
+		end
+	end
+
+	if #final_candidates > 0 then
+		local can = final_candidates[math.random(#final_candidates)]
+		local stack, list, index, wear = can.stack, can.list, can.index, can.wear
+		local uses = mcl_util.calculate_durability(stack)
+		local multiplier = 2 * 65535 / uses
+		local repair = xp * multiplier
+		local new_wear = wear - repair
+
+		if new_wear < 0 then
+			xp = math.floor(-new_wear / multiplier + 0.5)
+			new_wear = 0
+		else
+			xp = 0
+		end
+
+		stack:set_wear(math.floor(new_wear))
+		inv:set_stack(list, index, stack)
+	end
+
+	return xp
+end, 0)
+
+mcl_enchanting.enchantments.multishot = {
 	name = S("Multishot"),
 	max_level = 1,
 	primary = {crossbow = true},
@@ -396,10 +441,10 @@ mcl_enchanting.enchantments.mending = {
 	power_range_table = {{20, 50}},
 	inv_combat_tab = true,
 	inv_tool_tab = false,
-}]]--
+}
 
 -- requires missing MineClone2 feature
---[[mcl_enchanting.enchantments.piercing = {
+mcl_enchanting.enchantments.piercing = {
 	name = S("Piercing"),
 	max_level = 4,
 	primary = {crossbow = true},
@@ -415,7 +460,7 @@ mcl_enchanting.enchantments.mending = {
 	power_range_table = {{1, 50}, {11, 50}, {21, 50}, {31, 50}},
 	inv_combat_tab = true,
 	inv_tool_tab = false,
-}]]--
+}
 
 -- implemented in mcl_bows
 mcl_enchanting.enchantments.power = {
@@ -456,7 +501,7 @@ mcl_enchanting.enchantments.punch = {
 }
 
 -- requires missing MineClone2 feature
---[[mcl_enchanting.enchantments.quick_charge = {
+mcl_enchanting.enchantments.quick_charge = {
 	name = S("Quick Charge"),
 	max_level = 3,
 	primary = {crossbow = true},
@@ -472,7 +517,7 @@ mcl_enchanting.enchantments.punch = {
 	power_range_table = {{12, 50}, {32, 50}, {52, 50}},
 	inv_combat_tab = true,
 	inv_tool_tab = false,
-}]]--
+}
 
 -- unimplemented
 --[[mcl_enchanting.enchantments.respiration = {
@@ -628,8 +673,8 @@ mcl_enchanting.enchantments.unbreaking = {
 		tool_capabilities.punch_attack_uses = tool_capabilities.punch_attack_uses * (1 + level)
 		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
 
-		-- Unbreaking for groupcaps is handled in this function.
-		mcl_enchanting.update_groupcaps(itemstack)
+		-- Updating digging durability is handled by update_groupcaps
+		-- which is called from load_enchantments.
 	end,
 	requires_tool = true,
 	treasure = false,

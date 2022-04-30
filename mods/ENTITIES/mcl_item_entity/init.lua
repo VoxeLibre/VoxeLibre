@@ -1,5 +1,5 @@
 --these are lua locals, used for higher performance
-local minetest, math, vector, ipairs = minetest, math, vector, ipairs
+local minetest, math, vector, ipairs, pairs = minetest, math, vector, ipairs, pairs
 
 --this is used for the player pool in the sound buffer
 local pool = {}
@@ -110,7 +110,7 @@ minetest.register_globalstep(function(dtime)
 			if tick == true and pool[name] > 0 then
 				minetest.sound_play("item_drop_pickup", {
 					pos = pos,
-					gain = 0.7,
+					gain = 0.3,
 					max_hear_distance = 16,
 					pitch = math.random(70,110)/100
 				})
@@ -233,7 +233,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 	local dug_node = minetest.get_node(pos)
 	local tooldef
 	local tool
-	if digger ~= nil then
+	if digger then
 		tool = digger:get_wielded_item()
 		tooldef = minetest.registered_tools[tool:get_name()]
 
@@ -256,6 +256,8 @@ function minetest.handle_node_drops(pos, drops, digger)
 
 	local silk_touch_drop = false
 	local nodedef = minetest.registered_nodes[dug_node.name]
+	if not nodedef then return end
+
 	if shearsy_level and shearsy_level > 0 and nodedef._mcl_shears_drop then
 		if nodedef._mcl_shears_drop == true then
 			drops = { dug_node.name }
@@ -290,10 +292,10 @@ function minetest.handle_node_drops(pos, drops, digger)
 		end
 	end
 
-	if digger and mcl_experience.throw_experience and not silk_touch_drop then
+	if digger and mcl_experience.throw_xp and not silk_touch_drop then
 		local experience_amount = minetest.get_item_group(dug_node.name,"xp")
 		if experience_amount > 0 then
-			mcl_experience.throw_experience(pos, experience_amount)
+			mcl_experience.throw_xp(pos, experience_amount)
 		end
 	end
 
@@ -314,7 +316,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 			end
 			-- Spawn item and apply random speed
 			local obj = minetest.add_item(dpos, drop_item)
-			if obj ~= nil then
+			if obj then
 				local x = math.random(1, 5)
 				if math.random(1,2) == 1 then
 					x = -x
@@ -363,6 +365,17 @@ if not time_to_live then
 	time_to_live = 300
 end
 
+local function cxcz(o, cw, one, zero)
+	if cw < 0 then
+		table.insert(o, { [one]=1, y=0, [zero]=0 })
+		table.insert(o, { [one]=-1, y=0, [zero]=0 })
+	else
+		table.insert(o, { [one]=-1, y=0, [zero]=0 })
+		table.insert(o, { [one]=1, y=0, [zero]=0 })
+	end
+	return o
+end
+
 minetest.register_entity(":__builtin:item", {
 	initial_properties = {
 		hp_max = 1,
@@ -383,7 +396,7 @@ minetest.register_entity(":__builtin:item", {
 	-- The itemstring MUST be set immediately to a non-empty string after creating the entity.
 	-- The hand is NOT permitted as dropped item. ;-)
 	-- Item entities will be deleted if they still have an empty itemstring on their first on_step tick.
-	itemstring = '',
+	itemstring = "",
 
 	-- If true, item will fall
 	physical_state = true,
@@ -469,7 +482,7 @@ minetest.register_entity(":__builtin:item", {
 	end,
 
 	get_staticdata = function(self)
-		return minetest.serialize({
+		local data = minetest.serialize({
 			itemstring = self.itemstring,
 			always_collect = self.always_collect,
 			age = self.age,
@@ -477,6 +490,39 @@ minetest.register_entity(":__builtin:item", {
 			_flowing = self._flowing,
 			_removed = self._removed,
 		})
+		-- sfan5 guessed that the biggest serializable item
+		-- entity would have a size of 65530 bytes. This has
+		-- been experimentally verified to be still too large.
+		--
+		-- anon5 has calculated that the biggest serializable
+		-- item entity has a size of exactly 65487 bytes:
+		--
+		-- 1. serializeString16 can handle max. 65535 bytes.
+		-- 2. The following engine metadata is always saved:
+		--    • 1 byte (version)
+		--    • 2 byte (length prefix)
+		--    • 14 byte “__builtin:item”
+		--    • 4 byte (length prefix)
+		--    • 2 byte (health)
+		--    • 3 × 4 byte = 12 byte (position)
+		--    • 4 byte (yaw)
+		--    • 1 byte (version 2)
+		--    • 2 × 4 byte = 8 byte (pitch and roll)
+		-- 3. This leaves 65487 bytes for the serialization.
+		if #data > 65487 then -- would crash the engine
+			local stack = ItemStack(self.itemstring)
+			stack:get_meta():from_table(nil)
+			self.itemstring = stack:to_string()
+			minetest.log(
+				"warning",
+				"Overlong item entity metadata removed: “" ..
+				self.itemstring ..
+				"” had serialized length of " ..
+				#data
+			)
+			return self:get_staticdata()
+		end
+		return data
 	end,
 
 	on_activate = function(self, staticdata, dtime_s)
@@ -564,7 +610,7 @@ minetest.register_entity(":__builtin:item", {
 		return true
 	end,
 
-	on_step = function(self, dtime)
+	on_step = function(self, dtime, moveresult)
 		if self._removed then
 			self.object:set_properties({
 				physical = false
@@ -574,7 +620,7 @@ minetest.register_entity(":__builtin:item", {
 			return
 		end
 		self.age = self.age + dtime
-		if self._collector_timer ~= nil then
+		if self._collector_timer then
 			self._collector_timer = self._collector_timer + dtime
 		end
 		if time_to_live > 0 and self.age > time_to_live then
@@ -631,6 +677,18 @@ minetest.register_entity(":__builtin:item", {
 			end
 		end
 
+		-- Destroy item when it collides with a cactus
+		if moveresult and moveresult.collides then
+			for _, collision in pairs(moveresult.collisions) do
+				local pos = collision.node_pos
+				if collision.type == "node" and minetest.get_node(pos).name == "mcl_core:cactus" then
+					self._removed = true
+					self.object:remove()
+					return
+				end
+			end
+		end
+
 		-- Push item out when stuck inside solid opaque node
 		if def and def.walkable and def.groups and def.groups.opaque == 1 then
 			local shootdir
@@ -642,16 +700,6 @@ minetest.register_entity(":__builtin:item", {
 			-- 1st: closest
 			-- 2nd: other direction
 			-- 3rd and 4th: other axis
-			local cxcz = function(o, cw, one, zero)
-				if cw < 0 then
-					table.insert(o, { [one]=1, y=0, [zero]=0 })
-					table.insert(o, { [one]=-1, y=0, [zero]=0 })
-				else
-					table.insert(o, { [one]=-1, y=0, [zero]=0 })
-					table.insert(o, { [one]=1, y=0, [zero]=0 })
-				end
-				return o
-			end
 			if math.abs(cx) < math.abs(cz) then
 				order = cxcz(order, cx, "x", "z")
 				order = cxcz(order, cz, "z", "x")

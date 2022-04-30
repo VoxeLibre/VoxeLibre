@@ -8,7 +8,7 @@
 -- NOTE: Most strings intentionally not marked for translation, other mods already have these items.
 -- TODO: Remove this file eventually, most items are already outsourced in other mods.
 
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local c = mobs_mc.is_item_variable_overridden
 
@@ -234,8 +234,8 @@ end
 if c("ender_eye") and c("blaze_powder") and c("blaze_rod") then
 	minetest.register_craft({
 		type = "shapeless",
-		output = 'mobs_mc:ender_eye',
-		recipe = { 'mobs_mc:blaze_powder', 'mobs_mc:blaze_rod'},
+		output = "mobs_mc:ender_eye",
+		recipe = { "mobs_mc:blaze_powder", "mobs_mc:blaze_rod"},
 	})
 end
 
@@ -525,7 +525,7 @@ if c("totem") then
 		inventory_image = "mcl_totems_totem.png",
 		wield_image = "mcl_totems_totem.png",
 		stack_max = 1,
-		groups = {combat_item=1},
+		groups = {combat_item = 1, offhand_item = 1},
 	})
 end
 

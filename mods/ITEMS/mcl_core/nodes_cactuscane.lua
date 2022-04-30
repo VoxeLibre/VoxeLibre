@@ -1,6 +1,6 @@
 -- Cactus and Sugar Cane
 
-local S = minetest.get_translator("mcl_core")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 minetest.register_node("mcl_core:cactus", {
 	description = S("Cactus"),
@@ -12,7 +12,10 @@ minetest.register_node("mcl_core:cactus", {
 	tiles = {"mcl_core_cactus_top.png", "mcl_core_cactus_bottom.png", "mcl_core_cactus_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {handy=1, attached_node=1, plant=1, deco_block=1, dig_by_piston=1, enderman_takable=1},
+	groups = {
+		handy = 1, attached_node = 1, deco_block = 1, dig_by_piston = 1,
+		plant = 1, enderman_takable = 1, compostability = 50
+	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	paramtype = "light",
 	sunlight_propagates = true,
@@ -53,7 +56,10 @@ minetest.register_node("mcl_core:reeds", {
 	_doc_items_longdesc = S("Sugar canes are a plant which has some uses in crafting. Sugar canes will slowly grow up to 3 blocks when they are next to water and are placed on a grass block, dirt, sand, red sand, podzol or coarse dirt. When a sugar cane is broken, all sugar canes connected above will break as well."),
 	_doc_items_usagehelp = S("Sugar canes can only be placed top of other sugar canes and on top of blocks on which they would grow."),
 	drawtype = "plantlike",
-	tiles = {"default_papyrus.png"},
+	paramtype2 = "color",
+	tiles = {"mcl_core_papyrus.png"},
+	palette = "mcl_core_palette_grass.png",
+	palette_index = 0,
 	inventory_image = "mcl_core_reeds.png",
 	wield_image = "mcl_core_reeds.png",
 	paramtype = "light",
@@ -76,9 +82,13 @@ minetest.register_node("mcl_core:reeds", {
 		},
 	},
 	stack_max = 64,
-	groups = {dig_immediate=3, craftitem=1, deco_block=1, plant=1, non_mycelium_plant=1, dig_by_piston=1},
+	groups = {
+		dig_immediate = 3, craftitem = 1, deco_block = 1, dig_by_piston = 1,
+		plant = 1, non_mycelium_plant = 1, compostability = 50
+	},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_placement_prediction = "",
+	drop = "mcl_core:reeds", -- to prevent color inheritation
 	on_place = mcl_util.generate_on_place_plant_function(function(place_pos, place_node)
 		local soil_pos = {x=place_pos.x, y=place_pos.y-1, z=place_pos.z}
 		local soil_node = minetest.get_node_or_nil(soil_pos)
@@ -114,6 +124,15 @@ minetest.register_node("mcl_core:reeds", {
 		return false
 
 	end),
+	on_construct = function(pos)
+		local node = minetest.get_node(pos)
+		if node.param2 == 0 then
+			node.param2 = mcl_core.get_grass_palette_index(pos)
+			if node.param2 ~= 0 then
+				minetest.set_node(pos, node)
+			end
+		end
+	end,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })

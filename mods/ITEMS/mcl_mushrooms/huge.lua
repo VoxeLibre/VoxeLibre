@@ -1,7 +1,12 @@
-local S = minetest.get_translator("mcl_mushrooms")
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local vector = vector
 
 local template = {
-	groups = {handy=1,axey=1, building_block = 1, material_wood = 1, flammable = -1 },
+	groups = {
+		handy = 1, axey = 1, building_block = 1, material_wood = 1,
+		flammable = -1, compostability = 85
+	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	is_ground_content = true,
 	_mcl_blast_resistance = 0.2,
@@ -12,16 +17,16 @@ local template = {
 local red = table.copy(template)
 red.drop = {
 	items = {
-		{ items = {'mcl_mushrooms:mushroom_red 1'}, rarity = 2 },
-		{ items = {'mcl_mushrooms:mushroom_red 1'}, rarity = 2 },
+		{ items = {"mcl_mushrooms:mushroom_red"}, rarity = 2 },
+		{ items = {"mcl_mushrooms:mushroom_red"}, rarity = 2 },
 	}
 }
 
 local brown= table.copy(template)
 brown.drop = {
 	items = {
-		{ items = {'mcl_mushrooms:mushroom_brown 1'}, rarity = 2 },
-		{ items = {'mcl_mushrooms:mushroom_brown 1'}, rarity = 2 },
+		{ items = {"mcl_mushrooms:mushroom_brown"}, rarity = 2 },
+		{ items = {"mcl_mushrooms:mushroom_brown"}, rarity = 2 },
 	}
 }
 
@@ -40,7 +45,7 @@ local function to_binary(num)
 	return binary
 end
 
-local register_mushroom = function(color, species_id, template, d_cap, d_stem, d_stem_all, longdesc_cap, longdesc_stem)
+local function register_mushroom(color, species_id, template, d_cap, d_stem, d_stem_all, longdesc_cap, longdesc_stem)
 
 	-- Stem texture on all sides
 	local stem_full = table.copy(template)
@@ -49,6 +54,7 @@ local register_mushroom = function(color, species_id, template, d_cap, d_stem, d
 	stem_full.tiles = { "mcl_mushrooms_mushroom_block_skin_stem.png" }
 	stem_full.groups.huge_mushroom = species_id
 	stem_full.groups.huge_mushroom_stem = 2
+	stem_full.groups.compostability = 65
 	minetest.register_node("mcl_mushrooms:"..color.."_mushroom_block_stem_full", stem_full)
 
 	-- Stem
@@ -58,6 +64,7 @@ local register_mushroom = function(color, species_id, template, d_cap, d_stem, d
 	stem.tiles = { "mcl_mushrooms_mushroom_block_inside.png", "mcl_mushrooms_mushroom_block_inside.png", "mcl_mushrooms_mushroom_block_skin_stem.png" }
 	stem.groups.huge_mushroom = species_id
 	stem.groups.huge_mushroom_stem = 1
+	stem.groups.compostability = 65
 	minetest.register_node("mcl_mushrooms:"..color.."_mushroom_block_stem", stem)
 
 	-- Mushroom block (cap)
@@ -73,7 +80,7 @@ local register_mushroom = function(color, species_id, template, d_cap, d_stem, d
 			block._doc_items_usagehelp = S("By placing huge mushroom blocks of the same species next to each other, the sides that touch each other will turn into pores permanently.")
 			block.tiles = { "mcl_mushrooms_mushroom_block_skin_"..color..".png" }
 
-			block.on_construct = function(pos)
+			function block.on_construct(pos)
 				local sides = {
 					{ { x= 0, y= 1, z= 0 }, 2 },
 					{ { x= 0, y=-1, z= 0 }, 1 },
@@ -85,7 +92,7 @@ local register_mushroom = function(color, species_id, template, d_cap, d_stem, d
 
 				-- Replace the side of a mushroom node. Returns the new node.
 				-- Or nil, if unchanged.
-				local replace_side = function(pos, node, side)
+				local function replace_side(pos, node, side)
 					local bin = string.sub(node.name, -6)
 					if string.sub(bin, side, side) == "1" then
 						local new_bin

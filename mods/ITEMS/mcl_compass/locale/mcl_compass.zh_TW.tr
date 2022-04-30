@@ -1,0 +1,4 @@
+# textdomain: mcl_compass
+Compasses are tools which point to the world origin (X@=0, Z@=0) or the spawn point in the Overworld.=指南針是指向世界原點（X@=0，Z@=0）或主世界的出生點的工具。
+Compass=指南針
+Points to the world origin=指向世界原點

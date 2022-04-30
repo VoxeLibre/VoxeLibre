@@ -27,10 +27,10 @@ function hb.load_setting(sname, stype, defaultval, valid_values)
 	elseif stype == "number" then
 		sval = tonumber(minetest.settings:get(sname))
 	end
-	if sval ~= nil then
-		if valid_values ~= nil then
+	if sval then
+		if valid_values then
 			local valid = false
-			for i=1,#valid_values do
+			for i = 1, #valid_values do
 				if sval == valid_values[i] then
 					valid = true
 				end
@@ -114,7 +114,7 @@ function hb.get_hudtable(identifier)
 end
 
 function hb.get_hudbar_position_index(identifier)
-	if hb.settings.sorting[identifier] ~= nil then
+	if hb.settings.sorting[identifier] then
 		return hb.settings.sorting[identifier]
 	else
 		local i = 0
@@ -179,7 +179,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, direction, 
 		format_string_config.format_max_value = "%d"
 	end
 
-	hudtable.add_all = function(player, hudtable, start_value, start_max, start_hidden)
+	function hudtable.add_all(player, hudtable, start_value, start_max, start_hidden)
 		if start_value == nil then start_value = hudtable.default_start_value end
 		if start_max == nil then start_max = hudtable.default_start_max end
 		if start_hidden == nil then start_hidden = hudtable.default_start_hidden end
@@ -215,7 +215,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, direction, 
 				offset = { x = offset.x - 1, y = offset.y - 1 },
 				z_index = 0,
 			})
-			if textures.icon ~= nil then
+			if textures.icon then
 				ids.icon = player:hud_add({
 					hud_elem_type = "image",
 					position = pos,
@@ -335,7 +335,7 @@ function hb.change_hudbar(player, identifier, new_value, new_max_value, new_icon
 	end
 	local value_changed, max_changed = false, false
 
-	if new_value ~= nil then
+	if new_value then
 		if new_value ~= hudtable.hudstate[name].value then
 			hudtable.hudstate[name].value = new_value
 			value_changed = true
@@ -343,7 +343,7 @@ function hb.change_hudbar(player, identifier, new_value, new_max_value, new_icon
 	else
 		new_value = hudtable.hudstate[name].value
 	end
-	if new_max_value ~= nil then
+	if new_max_value then
 		if new_max_value ~= hudtable.hudstate[name].max then
 			hudtable.hudstate[name].max = new_max_value
 			max_changed = true
@@ -353,29 +353,29 @@ function hb.change_hudbar(player, identifier, new_value, new_max_value, new_icon
 	end
 
 	if hb.settings.bar_type == "progress_bar" then
-		if new_icon ~= nil and hudtable.hudids[name].icon ~= nil then
+		if new_icon and hudtable.hudids[name].icon then
 			player:hud_change(hudtable.hudids[name].icon, "text", new_icon)
 		end
-		if new_bgicon ~= nil and hudtable.hudids[name].bgicon ~= nil then
+		if new_bgicon and hudtable.hudids[name].bgicon then
 			player:hud_change(hudtable.hudids[name].bgicon, "text", new_bgicon)
 		end
-		if new_bar ~= nil then
+		if new_bar then
 			player:hud_change(hudtable.hudids[name].bar , "text", new_bar)
 		end
-		if new_label ~= nil then
+		if new_label then
 			hudtable.label = new_label
 			local new_text = make_label(hudtable.format_string, hudtable.format_string_config, new_label, hudtable.hudstate[name].value, hudtable.hudstate[name].max)
 			player:hud_change(hudtable.hudids[name].text, "text", new_text)
 		end
-		if new_text_color ~= nil then
+		if new_text_color then
 			player:hud_change(hudtable.hudids[name].text, "number", new_text_color)
 		end
 
 	else
-		if new_icon ~= nil and hudtable.hudids[name].bar ~= nil then
+		if new_icon and hudtable.hudids[name].bar then
 			player:hud_change(hudtable.hudids[name].bar, "text", new_icon)
 		end
-		if new_bgicon ~= nil and hudtable.hudids[name].bg ~= nil then
+		if new_bgicon and hudtable.hudids[name].bg then
 			player:hud_change(hudtable.hudids[name].bg, "text", new_bgicon)
 		end
 	end
@@ -425,8 +425,9 @@ function hb.hide_hudbar(player, identifier)
 	local name = player:get_player_name()
 	local hudtable = hb.get_hudtable(identifier)
 	if hudtable == nil then return false end
+	if hudtable.hudstate[name].hidden == true then return true end
 	if hb.settings.bar_type == "progress_bar" then
-		if hudtable.hudids[name].icon ~= nil then
+		if hudtable.hudids[name].icon then
 			player:hud_change(hudtable.hudids[name].icon, "scale", {x=0,y=0})
 		end
 		player:hud_change(hudtable.hudids[name].bg, "scale", {x=0,y=0})
@@ -443,10 +444,11 @@ function hb.unhide_hudbar(player, identifier)
 	local name = player:get_player_name()
 	local hudtable = hb.get_hudtable(identifier)
 	if hudtable == nil then return false end
+	if hudtable.hudstate[name].hidden == false then return true end
 	local value = hudtable.hudstate[name].value
 	local max = hudtable.hudstate[name].max
 	if hb.settings.bar_type == "progress_bar" then
-		if hudtable.hudids[name].icon ~= nil then
+		if hudtable.hudids[name].icon then
 			player:hud_change(hudtable.hudids[name].icon, "scale", {x=1,y=1})
 		end
 		if hudtable.hudstate[name].max ~= 0 then
@@ -548,7 +550,7 @@ local function update_hud(player, has_damage)
 end
 
 minetest.register_on_player_hpchange(function(player)
-	if hb.players[player:get_player_name()] ~= nil then
+	if hb.players[player:get_player_name()] then
 		update_health(player)
 	end
 end)

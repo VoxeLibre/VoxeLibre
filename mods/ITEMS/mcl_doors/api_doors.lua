@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_doors")
+local S = minetest.get_translator(minetest.get_current_modname())
 local minetest_get_meta = minetest.get_meta
 
 -- This helper function calls on_place_node callbacks.

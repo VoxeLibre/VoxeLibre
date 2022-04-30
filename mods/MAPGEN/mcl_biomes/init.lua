@@ -6,8 +6,12 @@ local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superfl
 
 local generate_fallen_logs = minetest.settings:get_bool("mcl_generate_fallen_logs", false)
 
+local mod_mcl_structures = minetest.get_modpath("mcl_structures")
+local mod_mcl_core = minetest.get_modpath("mcl_core")
+local mod_mcl_mushrooms = minetest.get_modpath("mcl_mushrooms")
+
 -- Jungle bush schematic. In PC/Java Edition it's Jungle Wood + Oak Leaves
-local jungle_bush_schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush_oak_leaves.mts"
+local jungle_bush_schematic = mod_mcl_core.."/schematics/mcl_core_jungle_bush_oak_leaves.mts"
 
 local deco_id_chorus_plant
 
@@ -1492,7 +1496,7 @@ local function register_dimension_biomes()
 		heat_point = 100,
 		humidity_point = 0,
 		_mcl_biome_type = "hot",
-		_mcl_palette_index = 19,
+		_mcl_palette_index = 17,
 	})
 
 	--[[ THE END ]]
@@ -2307,7 +2311,7 @@ local function register_decorations()
 		biomes = {"IcePlainsSpikes"},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_large.mts",
+		schematic = mod_mcl_structures.."/schematics/mcl_structures_ice_spike_large.mts",
 		rotation = "random",
 		flags = "place_center_x, place_center_z",
 	})
@@ -2328,7 +2332,7 @@ local function register_decorations()
 		biomes = {"IcePlainsSpikes"},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_small.mts",
+		schematic = mod_mcl_structures.."/schematics/mcl_structures_ice_spike_small.mts",
 		rotation = "random",
 		flags = "place_center_x, place_center_z",
 	})
@@ -2351,7 +2355,7 @@ local function register_decorations()
 			biomes = {"Forest"},
 			y_min = 1,
 			y_max = mcl_vars.mg_overworld_max,
-			schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_large_"..i..".mts",
+			schematic = mod_mcl_core.."/schematics/mcl_core_oak_large_"..i..".mts",
 			flags = "place_center_x, place_center_z",
 			rotation = "random",
 		})
@@ -2371,7 +2375,7 @@ local function register_decorations()
 			biomes = {"ExtremeHills", "ExtremeHillsM", "ExtremeHills+", "ExtremeHills+_snowtop"},
 			y_min = 1,
 			y_max = mcl_vars.mg_overworld_max,
-			schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_large_"..i..".mts",
+			schematic = mod_mcl_core.."/schematics/mcl_core_oak_large_"..i..".mts",
 			flags = "place_center_x, place_center_z",
 			rotation = "random",
 		})
@@ -2392,7 +2396,7 @@ local function register_decorations()
 		biomes = {"Forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -2411,7 +2415,7 @@ local function register_decorations()
 		biomes = {"FlowerForest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -2430,7 +2434,7 @@ local function register_decorations()
 		biomes = {"ExtremeHills", "ExtremeHillsM", "ExtremeHills+", "ExtremeHills+_snowtop"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -2450,7 +2454,7 @@ local function register_decorations()
 		biomes = {"ExtremeHills+", "ExtremeHills+_snowtop"},
 		y_min = 50,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -2469,7 +2473,7 @@ local function register_decorations()
 		biomes = {"MesaPlateauF_grasstop"},
 		y_min = 30,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -2488,7 +2492,7 @@ local function register_decorations()
 		biomes = {"MesaPlateauFM_grasstop"},
 		y_min = 30,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -2508,7 +2512,7 @@ local function register_decorations()
 		biomes = {"IcePlains"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -2520,7 +2524,7 @@ local function register_decorations()
 		biomes = {"Jungle", "JungleM"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -2532,7 +2536,7 @@ local function register_decorations()
 		biomes = {"JungleEdge", "JungleEdgeM", "Savanna"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -2554,7 +2558,7 @@ local function register_decorations()
 		biomes = {"Forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_balloon.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_oak_balloon.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -2575,7 +2579,7 @@ local function register_decorations()
 		biomes = {"Swampland", "Swampland_shore"},
 		y_min = 0,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_swamp.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_oak_swamp.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -2592,7 +2596,7 @@ local function register_decorations()
 			biomes = {"Jungle"},
 			y_min = 4,
 			y_max = mcl_vars.mg_overworld_max,
-			schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree_huge_"..i..".mts",
+			schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree_huge_"..i..".mts",
 			flags = "place_center_x, place_center_z",
 			rotation = "random",
 		})
@@ -2604,7 +2608,7 @@ local function register_decorations()
 			biomes = {"JungleM"},
 			y_min = 4,
 			y_max = mcl_vars.mg_overworld_max,
-			schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree_huge_"..i..".mts",
+			schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree_huge_"..i..".mts",
 			flags = "place_center_x, place_center_z",
 			rotation = "random",
 		})
@@ -2619,7 +2623,7 @@ local function register_decorations()
 		biomes = {"Jungle"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -2631,7 +2635,7 @@ local function register_decorations()
 		biomes = {"JungleEdge", "JungleEdgeM"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -2644,7 +2648,7 @@ local function register_decorations()
 		biomes = {"JungleM"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -2669,7 +2673,7 @@ local function register_decorations()
 			biomes = biomes,
 			y_min = y,
 			y_max = mcl_vars.mg_overworld_max,
-			schematic = minetest.get_modpath("mcl_core").."/schematics/"..sprucename,
+			schematic = mod_mcl_core.."/schematics/"..sprucename,
 			flags = "place_center_x, place_center_z",
 		})
 	end
@@ -2723,7 +2727,7 @@ local function register_decorations()
 		biomes = {"Taiga", "ColdTaiga"},
 		y_min = 2,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_lollipop.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_spruce_lollipop.mts",
 		flags = "place_center_x, place_center_z",
 	})
 
@@ -2743,7 +2747,7 @@ local function register_decorations()
 		biomes = {"Taiga", "ColdTaiga"},
 		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_matchstick.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_spruce_matchstick.mts",
 		flags = "place_center_x, place_center_z",
 	})
 
@@ -2763,7 +2767,7 @@ local function register_decorations()
 		biomes = {"IcePlains"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_5.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_spruce_5.mts",
 		flags = "place_center_x, place_center_z",
 	})
 
@@ -2777,7 +2781,7 @@ local function register_decorations()
 			biomes = {"Savanna", "SavannaM"},
 			y_min = 1,
 			y_max = mcl_vars.mg_overworld_max,
-			schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_acacia_"..a..".mts",
+			schematic = mod_mcl_core.."/schematics/mcl_core_acacia_"..a..".mts",
 			flags = "place_center_x, place_center_z",
 			rotation = "random",
 		})
@@ -2799,7 +2803,7 @@ local function register_decorations()
 		biomes = {"BirchForest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_birch.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_birch.mts",
 		flags = "place_center_x, place_center_z",
 	})
 	minetest.register_decoration({
@@ -2817,7 +2821,7 @@ local function register_decorations()
 		biomes = {"BirchForestM"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_birch_tall.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_birch_tall.mts",
 		flags = "place_center_x, place_center_z",
 	})
 
@@ -2836,7 +2840,7 @@ local function register_decorations()
 		biomes = {"Forest", "FlowerForest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_birch.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_birch.mts",
 		flags = "place_center_x, place_center_z",
 	})
 
@@ -2856,7 +2860,7 @@ local function register_decorations()
 		biomes = {"RoofedForest"},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_dark_oak.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_dark_oak.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -2878,7 +2882,7 @@ local function register_decorations()
 		biomes = { "RoofedForest" },
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_brown.mts",
+		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_huge_brown.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
 	})
@@ -2890,7 +2894,7 @@ local function register_decorations()
 		biomes = { "RoofedForest" },
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_giant_brown.mts",
+		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_giant_brown.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
 	})
@@ -2903,7 +2907,7 @@ local function register_decorations()
 		biomes = { "MushroomIsland", "MushroomIslandShore" },
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_brown.mts",
+		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_huge_brown.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
 	})
@@ -2915,7 +2919,7 @@ local function register_decorations()
 		biomes = { "MushroomIsland", "MushroomIslandShore" },
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_giant_brown.mts",
+		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_giant_brown.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
 	})
@@ -2929,7 +2933,7 @@ local function register_decorations()
 		biomes = { "RoofedForest" },
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_red.mts",
+		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_huge_red.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
 	})
@@ -2941,7 +2945,7 @@ local function register_decorations()
 		biomes = { "RoofedForest" },
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_giant_red.mts",
+		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_giant_red.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
 	})
@@ -2954,7 +2958,7 @@ local function register_decorations()
 		biomes = { "MushroomIsland", "MushroomIslandShore" },
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_red.mts",
+		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_huge_red.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
 	})
@@ -2966,7 +2970,7 @@ local function register_decorations()
 		biomes = { "MushroomIsland", "MushroomIslandShore" },
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_giant_red.mts",
+		schematic = mod_mcl_mushrooms.."/schematics/mcl_mushrooms_giant_red.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "0",
 	})
@@ -2987,7 +2991,7 @@ local function register_decorations()
 		biomes = {"MegaTaiga", "MegaSpruceTaiga"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder.mts",
+		schematic = mod_mcl_structures.."/schematics/mcl_structures_boulder.mts",
 		flags = "place_center_x, place_center_z",
 	})
 
@@ -3007,7 +3011,7 @@ local function register_decorations()
 		biomes = {"MegaTaiga", "MegaSpruceTaiga"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder_small.mts",
+		schematic = mod_mcl_structures.."/schematics/mcl_structures_boulder_small.mts",
 		flags = "place_center_x, place_center_z",
 	})
 

@@ -1,4 +1,4 @@
-local S = minetest.get_translator("xpanes")
+local S = minetest.get_translator(minetest.get_current_modname())
 local mod_doc = minetest.get_modpath("doc")
 
 local function is_pane(pos)

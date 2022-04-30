@@ -2,7 +2,7 @@
 Basic help for MCL2. Fork of doc_basics
 ]]
 
-local S = minetest.get_translator("mcl_doc_basics")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 doc.add_category("basics",
 {

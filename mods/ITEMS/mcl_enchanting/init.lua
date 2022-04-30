@@ -1,5 +1,6 @@
-local modpath = minetest.get_modpath("mcl_enchanting")
-local S = minetest.get_translator("mcl_enchanting")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
 
 local math = math
 local vector = vector
@@ -151,7 +152,7 @@ minetest.register_craftitem("mcl_enchanting:book_enchanted", {
 
 minetest.register_alias("mcl_books:book_enchanted", "mcl_enchanting:book_enchanted")
 
-local spawn_book_entity = function(pos, respawn)
+local function spawn_book_entity(pos, respawn)
 	if respawn then
 		-- Check if we already have a book
 		local objs = minetest.get_objects_inside_radius(pos, 1)
@@ -182,7 +183,7 @@ minetest.register_entity("mcl_enchanting:book", {
 		collisionbox = {0, 0, 0},
 		pointable = false,
 		physical = false,
-		textures = {"mcl_enchanting_book_entity.png"},
+		textures = {"mcl_enchanting_book_entity.png", "mcl_enchanting_book_entity.png", "mcl_enchanting_book_entity.png", "mcl_enchanting_book_entity.png", "mcl_enchanting_book_entity.png"},
 		static_save = false,
 	},
 	_player_near = false,

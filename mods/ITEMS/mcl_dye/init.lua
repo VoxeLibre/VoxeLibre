@@ -7,13 +7,16 @@
 -- Note: As this uses basecolor_*, you'd need 9 of these.
 -- minetest.register_craft({
 --     type = "shapeless",
---     output = '<mod>:item_yellow',
---     recipe = {'<mod>:item_no_color', 'group:basecolor_yellow'},
+--     output = "<mod>:item_yellow",
+--     recipe = {"<mod>:item_no_color", "group:basecolor_yellow"},
 -- })
 
 mcl_dye = {}
 
-local S = minetest.get_translator("mcl_dye")
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local math = math
+local string = string
 
 -- Other mods can use these for looping through available colors
 mcl_dye.basecolors = {"white", "grey", "black", "red", "yellow", "green", "cyan", "blue", "magenta"}
@@ -75,7 +78,7 @@ dyelocal.dyes = {
 	{"dark_green", "dye_dark_green",    S("Cactus Green"),{dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_dark_green=1}},
 	{"green", "mcl_dye_lime",           S("Lime Dye"),     {dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_green=1}},
 	{"yellow", "dye_yellow",            S("Dandelion Yellow"),    {dye=1, craftitem=1, basecolor_yellow=1,  excolor_yellow=1,    unicolor_yellow=1}},
-	{"brown", "mcl_dye_brown",          S("Cocoa Beans"),     {dye=1, craftitem=1, basecolor_brown=1,  excolor_orange=1,    unicolor_dark_orange=1}},
+	{"brown", "mcl_dye_brown",          S("Cocoa Beans"),     {dye=1, craftitem=1, basecolor_brown=1,  excolor_orange=1,    unicolor_dark_orange=1, compostability = 65}},
 	{"orange", "dye_orange",            S("Orange Dye"),    {dye=1, craftitem=1, basecolor_orange=1,  excolor_orange=1,    unicolor_orange=1}},
 	{"red", "dye_red",                  S("Rose Red"),       {dye=1, craftitem=1, basecolor_red=1,     excolor_red=1,       unicolor_red=1}},
 	{"magenta", "dye_magenta",          S("Magenta Dye"),   {dye=1, craftitem=1, basecolor_magenta=1, excolor_red_violet=1,unicolor_red_violet=1}},
@@ -94,7 +97,7 @@ for d=1, #dyelocal.dyes do
 end
 
 -- Takes an unicolor group name (e.g. “unicolor_white”) and returns a corresponding dye name (if it exists), nil otherwise.
-mcl_dye.unicolor_to_dye = function(unicolor_group)
+function mcl_dye.unicolor_to_dye(unicolor_group)
 	local color = dyelocal.unicolor_to_dye_id[unicolor_group]
 	if color then
 		return "mcl_dye:" .. color
@@ -125,8 +128,35 @@ for _, row in ipairs(dyelocal.dyes) do
 end
 
 -- Bone Meal
+function mcl_dye.add_bone_meal_particle(pos, def)
+	if not def then
+		def = {}
+	end
+	minetest.add_particlespawner({
+		amount = def.amount or 10,
+		time = def.time or 0.1,
+		minpos = def.minpos or vector.subtract(pos, 0.5),
+		maxpos = def.maxpos or vector.add(pos, 0.5),
+		minvel = def.minvel or vector.new(-0.01, 0.01, -0.01),
+		maxvel = def.maxvel or vector.new(0.01, 0.01, 0.01),
+		minacc = def.minacc or vector.new(0, 0, 0),
+		maxacc = def.maxacc or vector.new(0, 0, 0),
+		minexptime = def.minexptime or 1,
+		maxexptime = def.maxexptime or 4,
+		minsize = def.minsize or 0.7,
+		maxsize = def.maxsize or 2.4,
+		texture = "mcl_particles_bonemeal.png^[colorize:#00EE00:125", -- TODO: real MC color
+		glow = def.glow or 1,
+	})
+end
 
-mcl_dye.apply_bone_meal = function(pointed_thing)
+mcl_dye.bone_meal_callbacks = {}
+
+function mcl_dye.register_on_bone_meal_apply(func)
+	table.insert(mcl_dye.bone_meal_callbacks, func)
+end
+
+local function apply_bone_meal(pointed_thing)
 	-- Bone meal currently spawns all flowers found in the plains.
 	local flowers_table_plains = {
 		"mcl_flowers:dandelion",
@@ -162,12 +192,21 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 	local pos = pointed_thing.under
 	local n = minetest.get_node(pos)
 	if n.name == "" then return false end
+
+	for _, func in pairs(mcl_dye.bone_meal_callbacks) do
+		if func(pointed_thing, user) then
+			return true
+		end
+	end
+
 	if minetest.get_item_group(n.name, "sapling") >= 1 then
+		mcl_dye.add_bone_meal_particle(pos)
 		-- Saplings: 45% chance to advance growth stage
 		if math.random(1,100) <= 45 then
 			return mcl_core.grow_sapling(pos, n)
 		end
 	elseif minetest.get_item_group(n.name, "mushroom") == 1 then
+		mcl_dye.add_bone_meal_particle(pos)
 		-- Try to grow huge mushroom
 
 		-- Must be on a dirt-type block
@@ -190,7 +229,7 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 			return false
 		end
 		-- 40% chance
-		if math.random(1,100) <= 40 then
+		if math.random(1, 100) <= 40 then
 			-- Check space requirements
 			for i=1,3 do
 				local cpos = vector.add(pos, {x=0, y=i, z=0})
@@ -216,64 +255,72 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		end
 		return false
 	-- Wheat, Potato, Carrot, Pumpkin Stem, Melon Stem: Advance by 2-5 stages
-	elseif string.find(n.name, "mcl_farming:wheat_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:wheat_") then
+		mcl_dye.add_bone_meal_particle(pos)
 		local stages = math.random(2, 5)
 		return mcl_farming:grow_plant("plant_wheat", pos, n, stages, true)
-	elseif string.find(n.name, "mcl_farming:potato_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:potato_") then
+		mcl_dye.add_bone_meal_particle(pos)
 		local stages = math.random(2, 5)
 		return mcl_farming:grow_plant("plant_potato", pos, n, stages, true)
-	elseif string.find(n.name, "mcl_farming:carrot_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:carrot_") then
+		mcl_dye.add_bone_meal_particle(pos)
 		local stages = math.random(2, 5)
 		return mcl_farming:grow_plant("plant_carrot", pos, n, stages, true)
-	elseif string.find(n.name, "mcl_farming:pumpkin_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:pumpkin_") then
+		mcl_dye.add_bone_meal_particle(pos)
 		local stages = math.random(2, 5)
 		return mcl_farming:grow_plant("plant_pumpkin_stem", pos, n, stages, true)
-	elseif string.find(n.name, "mcl_farming:melontige_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:melontige_") then
+		mcl_dye.add_bone_meal_particle(pos)
 		local stages = math.random(2, 5)
 		return mcl_farming:grow_plant("plant_melon_stem", pos, n, stages, true)
-
-	elseif string.find(n.name, "mcl_farming:beetroot_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:beetroot_") then
+		mcl_dye.add_bone_meal_particle(pos)
 		-- Beetroot: 75% chance to advance to next stage
-		if math.random(1,100) <= 75 then
+		if math.random(1, 100) <= 75 then
 			return mcl_farming:grow_plant("plant_beetroot", pos, n, 1, true)
 		end
 	elseif n.name == "mcl_cocoas:cocoa_1" or n.name == "mcl_cocoas:cocoa_2" then
+		mcl_dye.add_bone_meal_particle(pos)
 		-- Cocoa: Advance by 1 stage
 		mcl_cocoas.grow(pos)
 		return true
 	elseif minetest.get_item_group(n.name, "grass_block") == 1 then
 		-- Grass Block: Generate tall grass and random flowers all over the place
-		for i = -2, 2 do
-			for j = -2, 2 do
-				pos = pointed_thing.above
-				pos = {x=pos.x+i, y=pos.y, z=pos.z+j}
-				n = minetest.get_node(pos)
-				local n2 = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
+		for i = -7, 7 do
+			for j = -7, 7 do
+				for y = -1, 1 do
+					pos = vector.offset(pointed_thing.above, i, y, j)
+					n = minetest.get_node(pos)
+					local n2 = minetest.get_node(vector.offset(pos, 0, -1, 0))
 
-				if n.name ~= "" and n.name == "air" and (minetest.get_item_group(n2.name, "grass_block_no_snow") == 1) then
-					-- Randomly generate flowers, tall grass or nothing
-					if math.random(1,100) <= 90 then
-						-- 90% tall grass, 10% flower
-						if math.random(1,100) <= 90 then
-							local col = n2.param2
-							minetest.add_node(pos, {name="mcl_flowers:tallgrass", param2=col})
-						else
-							local flowers_table
-							if mg_name == "v6" then
-								flowers_table = flowers_table_plains
+					if n.name ~= "" and n.name == "air" and (minetest.get_item_group(n2.name, "grass_block_no_snow") == 1) then
+						-- Randomly generate flowers, tall grass or nothing
+						if math.random(1, 100) <= 90 / ((math.abs(i) + math.abs(j)) / 2)then
+							-- 90% tall grass, 10% flower
+							mcl_dye.add_bone_meal_particle(pos, {amount = 4})
+							if math.random(1,100) <= 90 then
+								local col = n2.param2
+								minetest.add_node(pos, {name="mcl_flowers:tallgrass", param2=col})
 							else
-								local biome = minetest.get_biome_name(minetest.get_biome_data(pos).biome)
-								if biome == "Swampland" or biome == "Swampland_shore" or biome == "Swampland_ocean" or biome == "Swampland_deep_ocean" or biome == "Swampland_underground" then
-									flowers_table = flowers_table_swampland
-								elseif biome == "FlowerForest" or biome == "FlowerForest_beach" or biome == "FlowerForest_ocean" or biome == "FlowerForest_deep_ocean" or biome == "FlowerForest_underground" then
-									flowers_table = flowers_table_flower_forest
-								elseif biome == "Plains" or biome == "Plains_beach" or biome == "Plains_ocean" or biome == "Plains_deep_ocean" or biome == "Plains_underground" or biome == "SunflowerPlains" or biome == "SunflowerPlains_ocean" or biome == "SunflowerPlains_deep_ocean" or biome == "SunflowerPlains_underground" then
+								local flowers_table
+								if mg_name == "v6" then
 									flowers_table = flowers_table_plains
 								else
-									flowers_table = flowers_table_simple
+									local biome = minetest.get_biome_name(minetest.get_biome_data(pos).biome)
+									if biome == "Swampland" or biome == "Swampland_shore" or biome == "Swampland_ocean" or biome == "Swampland_deep_ocean" or biome == "Swampland_underground" then
+										flowers_table = flowers_table_swampland
+									elseif biome == "FlowerForest" or biome == "FlowerForest_beach" or biome == "FlowerForest_ocean" or biome == "FlowerForest_deep_ocean" or biome == "FlowerForest_underground" then
+										flowers_table = flowers_table_flower_forest
+									elseif biome == "Plains" or biome == "Plains_beach" or biome == "Plains_ocean" or biome == "Plains_deep_ocean" or biome == "Plains_underground" or biome == "SunflowerPlains" or biome == "SunflowerPlains_ocean" or biome == "SunflowerPlains_deep_ocean" or biome == "SunflowerPlains_underground" then
+										flowers_table = flowers_table_plains
+									else
+										flowers_table = flowers_table_simple
+									end
 								end
+								minetest.add_node(pos, {name=flowers_table[math.random(1, #flowers_table)]})
 							end
-							minetest.add_node(pos, {name=flowers_table[math.random(1, #flowers_table)]})
 						end
 					end
 				end
@@ -283,19 +330,24 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 
 	-- Double flowers: Drop corresponding item
 	elseif n.name == "mcl_flowers:rose_bush" or n.name == "mcl_flowers:rose_bush_top" then
+		mcl_dye.add_bone_meal_particle(pos)
 		minetest.add_item(pos, "mcl_flowers:rose_bush")
 		return true
 	elseif n.name == "mcl_flowers:peony" or n.name == "mcl_flowers:peony_top" then
+		mcl_dye.add_bone_meal_particle(pos)
 		minetest.add_item(pos, "mcl_flowers:peony")
 		return true
 	elseif n.name == "mcl_flowers:lilac" or n.name == "mcl_flowers:lilac_top" then
+		mcl_dye.add_bone_meal_particle(pos)
 		minetest.add_item(pos, "mcl_flowers:lilac")
 		return true
 	elseif n.name == "mcl_flowers:sunflower" or n.name == "mcl_flowers:sunflower_top" then
+		mcl_dye.add_bone_meal_particle(pos)
 		minetest.add_item(pos, "mcl_flowers:sunflower")
 		return true
 
 	elseif n.name == "mcl_flowers:tallgrass" then
+		mcl_dye.add_bone_meal_particle(pos)
 		-- Tall Grass: Grow into double tallgrass
 		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
 		local topnode = minetest.get_node(toppos)
@@ -306,6 +358,7 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		end
 
 	elseif n.name == "mcl_flowers:fern" then
+		mcl_dye.add_bone_meal_particle(pos)
 		-- Fern: Grow into large fern
 		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
 		local topnode = minetest.get_node(toppos)
@@ -337,7 +390,7 @@ minetest.register_craftitem("mcl_dye:white", {
 		end
 
 		-- Use the bone meal on the ground
-		if(mcl_dye.apply_bone_meal(pointed_thing) and (not minetest.is_creative_enabled(user:get_player_name()))) then
+		if (apply_bone_meal(pointed_thing, user) and (not minetest.is_creative_enabled(user:get_player_name()))) then
 			itemstack:take_item()
 		end
 		return itemstack
@@ -350,7 +403,7 @@ minetest.register_craftitem("mcl_dye:white", {
 		else
 			pointed_thing = { above = pos, under = droppos }
 		end
-		local success = mcl_dye.apply_bone_meal(pointed_thing)
+		local success = apply_bone_meal(pointed_thing, nil)
 		if success then
 			stack:take_item()
 		end
@@ -508,5 +561,3 @@ minetest.register_craft({
 	output = "mcl_dye:white 3",
 	recipe = {{"mcl_mobitems:bone"}},
 })
-
-

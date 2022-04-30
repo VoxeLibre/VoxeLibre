@@ -8,22 +8,15 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	description = S("Ender Dragon"),
 	type = "monster",
 	spawn_class = "hostile",
+	pathfinding = 1,
 	attacks_animals = true,
 	walk_chance = 100,
-	rotate = 270,
-	tilt_fly = true,
-	hostile = true,
-	shoot_arrow = function(self, pos, dir)
-		-- 2-4 damage per arrow
-		local dmg = math.random(2,4)
-		mobs.shoot_projectile_handling("mobs_mc:dragon_fireball", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
-	end,
 	hp_max = 200,
 	hp_min = 200,
 	xp_min = 500,
 	xp_max = 500,
-	collisionbox = {-2, 0, -2, 2, 2, 2},
-	eye_height = 1,
+	collisionbox = {-2, 3, -2, 2, 5, 2},
+	physical = false,
 	visual = "mesh",
 	mesh = "mobs_mc_dragon.b3d",
 	textures = {
@@ -31,7 +24,6 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	},
 	visual_size = {x=3, y=3},
 	view_range = 35,
-	reach = 20,
 	walk_velocity = 6,
 	run_velocity = 6,
 	can_despawn = false,
@@ -55,10 +47,12 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	lava_damage = 0,
 	fire_damage = 0,
 	on_rightclick = nil,
-	attack_type = "projectile",
+	attack_type = "dogshoot",
 	arrow = "mobs_mc:dragon_fireball",
 	shoot_interval = 0.5,
 	shoot_offset = -1.0,
+	xp_min = 500,
+	xp_max = 500,
 	animation = {
 		fly_speed = 8, stand_speed = 8,
 		stand_start = 0,		stand_end = 20,
@@ -103,7 +97,7 @@ mobs:register_mob("mobs_mc:enderdragon", {
 			mcl_portals.spawn_gateway_portal()
 			mcl_structures.call_struct(self._portal_pos, "end_exit_portal_open")
 			if self._initial then
-				mcl_experience.throw_experience(pos, 11500) -- 500 + 11500 = 12000
+				mcl_experience.throw_xp(pos, 11500) -- 500 + 11500 = 12000
 				minetest.set_node(vector.add(self._portal_pos, vector.new(3, 5, 3)), {name = mobs_mc.items.dragon_egg})
 			end
 		end
@@ -111,8 +105,8 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	fire_resistant = true,
 })
 
---TODO: replace this setting by a proper gamerules system
-local mobs_griefing = minetest.settings:get_bool("mobs_griefing", true)
+
+local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 
 -- dragon fireball (projectile)
 mobs:register_arrow("mobs_mc:dragon_fireball", {
@@ -139,13 +133,10 @@ mobs:register_arrow("mobs_mc:dragon_fireball", {
 
 	-- node hit, explode
 	hit_node = function(self, pos, node)
-		--mobs:boom(self, pos, 2)
-		if mobs_griefing then
-			mcl_explosions.explode(self.object:get_pos(), 2, { drop_chance = 1.0 })
-		end
+		mobs:boom(self, pos, 2)
 	end
 })
 
 mobs:register_egg("mobs_mc:enderdragon", S("Ender Dragon"), "mobs_mc_spawn_icon_dragon.png", 0, true)
 
---mcl_wip.register_wip_item("mobs_mc:enderdragon")
+mcl_wip.register_wip_item("mobs_mc:enderdragon")

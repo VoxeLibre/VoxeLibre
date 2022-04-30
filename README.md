@@ -1,10 +1,8 @@
-# (Currently in feature freeze)
-
-# MineClone 2
+# MineClone2
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by davedevils.
 Developed by many people. Not developed or endorsed by Mojang AB.
 
-Version: 0.72.0 (in development)
+Version: 0.74 (in development)
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -68,39 +66,43 @@ Use the `/giveme` chat command to obtain them. See the in-game help for
 an explanation.
 
 ## Installation
-This game requires [Minetest](http://minetest.net) to run (version 5.3.0 or
+This game requires [Minetest](http://minetest.net) to run (version 5.4.1 or
 later). So you need to install Minetest first. Only stable versions of Minetest
 are officially supported.
-There is no support for running MineClone 2 in development versions of Minetest.
+There is no support for running MineClone2 in development versions of Minetest.
 
-To install MineClone 2 (if you haven't already), move this directory into the
+To install MineClone2 (if you haven't already), move this directory into the
 “games” directory of your Minetest data directory. Consult the help of
 Minetest to learn more.
 
-## Reporting bugs
-Please report all bugs and missing Minecraft features here:
+## Useful links
+The MineClone2 repository is hosted at Mesehub. To contribute or report issues, head there.
 
-<https://git.minetest.land/MineClone2/MineClone2/issues>
+* Mesehub: <https://git.minetest.land/MineClone2/MineClone2>
+* Discord: <https://discord.gg/xE4z8EEpDC>
+* YouTube <https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A>
+* IRC: <https://web.libera.chat/#mineclone2>
+* Matrix: <https://app.element.io/#/room/#mc2:matrix.org>
+* Reddit: <https://www.reddit.com/r/MineClone2/>
+* Minetest forums: <https://forum.minetest.net/viewtopic.php?f=50&t=16407>
+* ContentDB: <https://content.minetest.net/packages/wuzzy/mineclone2/>
+* OpenCollective: <https://opencollective.com/mineclone2>
 
-## Chating with the community
-Join our discord server at:
-
-<https://discord.gg/84GKcxczG3>
-
-## Project description
-The main goal of **MineClone 2** is to be a clone of Minecraft and to be released as free software.
-
-* **Target of development: Minecraft, PC Edition, version 1.12** (later known as “Java Edition”)
-* MineClone2 also includes Optifine features supported by the Minetest
-* In general, Minecraft is aimed to be cloned as good as possible
-* Cloning the gameplay has highest priority
-* MineClone 2 will use different assets, but with a similar style
-* Limitations found in Minetest will be documented in the course of development
-* Features of later Minecraft versions are collected in the mineclone5 branch
-
-## Using features from newer versions of Minecraft
-For > 1.12 features, checkout MineClone5. It includes features from newer Minecraft versions.
-Download it here: https://git.minetest.land/MineClone2/MineClone2/src/branch/mineclone5
+## Target
+- Crucially, create a stable, moddable, free/libre clone of Minecraft
+based on the Minetest engine with polished features, usable in both
+singleplayer and multiplayer. Currently, most of **Minecraft Java
+Edition 1.12.2** features are already implemented and polishing existing
+features are prioritized over new feature requests.
+- With lessened priority yet strictly, implement features targetting
+**Minecraft version 1.17 + OptiFine** (OptiFine only as far as supported
+by the Minetest Engine). This means features in parity with the listed
+Minecraft experiences are prioritized over those that don't fulfill this
+scope.
+- Optionally, create a performant experience that will run relatively
+well on really low spec computers. Unfortunately, due to Minecraft's
+mechanisms and Minetest engine's limitations along with a very small
+playerbase on low spec computers, optimizations are hard to investigate.
 
 ## Completion status
 This game is currently in **beta** stage.
@@ -187,7 +189,7 @@ Technical differences from Minecraft:
 * Different engine (Minetest)
 * Different easter eggs
 
-… and finally, MineClone 2 is free software (“free” as in “freedom”)!
+… and finally, MineClone2 is free software (“free” as in “freedom”)!
 
 ## Other readme files
 

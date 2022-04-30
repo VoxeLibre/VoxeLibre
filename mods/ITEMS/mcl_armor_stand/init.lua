@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_armor_stand")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Spawn a stand entity
 local function spawn_stand_entity(pos, node)

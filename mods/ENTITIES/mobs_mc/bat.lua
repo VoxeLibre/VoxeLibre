@@ -8,9 +8,6 @@ mobs:register_mob("mobs_mc:bat", {
 	spawn_class = "ambient",
 	can_despawn = true,
 	passive = true,
-	rotate = 270,
-	tilt_fly = true,
-	fly = true,
 	hp_min = 6,
 	hp_max = 6,
 	collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.89, 0.25},
@@ -48,7 +45,9 @@ mobs:register_mob("mobs_mc:bat", {
 	fall_damage = 0,
 	view_range = 16,
 	fear_height = 0,
+
 	jump = false,
+	fly = true,
 	makes_footstep_sound = false,
 })
 

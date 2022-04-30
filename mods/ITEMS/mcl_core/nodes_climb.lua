@@ -1,5 +1,5 @@
 -- Climbable nodes
-local S = minetest.get_translator("mcl_core")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local function rotate_climbable(pos, node, user, mode)
 	if mode == screwdriver.ROTATE_FACE then
@@ -104,7 +104,11 @@ minetest.register_node("mcl_core:vine", {
 		type = "wallmounted",
 	},
 	stack_max = 64,
-	groups = {handy=1,axey=1,shearsy=1,swordy=1, flammable=2,deco_block=1,destroy_by_lava_flow=1,dig_by_piston=1, fire_encouragement=15, fire_flammability=100},
+	groups = {
+		handy = 1, axey = 1, shearsy = 1, swordy = 1, deco_block = 1,
+		dig_by_piston = 1, destroy_by_lava_flow = 1, compostability = 50,
+		flammable = 2, fire_encouragement = 15, fire_flammability = 100
+	},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = "",
 	_mcl_shears_drop = true,

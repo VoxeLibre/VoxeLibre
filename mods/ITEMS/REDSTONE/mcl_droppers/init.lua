@@ -8,10 +8,10 @@ All node definitions share a lot of code, so this is the reason why there
 are so many weird tables below.
 ]]
 
-local S = minetest.get_translator("mcl_droppers")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- For after_place_node
-local setup_dropper = function(pos)
+local function setup_dropper(pos)
 	-- Set formspec and inventory
 	local form = "size[9,8.75]"..
 	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
@@ -20,9 +20,9 @@ local setup_dropper = function(pos)
 	"list[current_player;main;0,7.74;9,1;]"..
 	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
 	"label[3,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Dropper"))).."]"..
-	"list[current_name;main;3,0.5;3,3;]"..
+	"list[context;main;3,0.5;3,3;]"..
 	mcl_formspec.get_itemslot_bg(3,0.5,3,3)..
-	"listring[current_name;main]"..
+	"listring[context;main]"..
 	"listring[current_player;main]"
 	local meta = minetest.get_meta(pos)
 	meta:set_string("formspec", form)
@@ -30,7 +30,7 @@ local setup_dropper = function(pos)
 	inv:set_size("main", 9)
 end
 
-local orientate_dropper = function(pos, placer)
+local function orientate_dropper(pos, placer)
 	-- Not placed by player
 	if not placer then return end
 
@@ -55,7 +55,7 @@ local dropperdef = {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
-		local meta2 = meta
+		local meta2 = meta:to_table()
 		meta:from_table(oldmetadata)
 		local inv = meta:get_inventory()
 		for i=1, inv:get_size("main") do
@@ -65,7 +65,7 @@ local dropperdef = {
 				minetest.add_item(p, stack)
 			end
 		end
-		meta:from_table(meta2:to_table())
+		meta:from_table(meta2)
 	end,
 	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		local name = player:get_player_name()
@@ -98,7 +98,7 @@ local dropperdef = {
 	_mcl_hardness = 3.5,
 	mesecons = {effector = {
 		-- Drop random item when triggered
-		action_on = function (pos, node)
+		action_on = function(pos, node)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
 			local droppos
@@ -152,7 +152,7 @@ horizontal_def.description = S("Dropper")
 horizontal_def._tt_help = S("9 inventory slots").."\n"..S("Drops item when powered by redstone power")
 horizontal_def._doc_items_longdesc = S("A dropper is a redstone component and a container with 9 inventory slots which, when supplied with redstone power, drops an item or puts it into a container in front of it.")
 horizontal_def._doc_items_usagehelp = S("Droppers can be placed in 6 possible directions, items will be dropped out of the hole. Use the dropper to access its inventory. Supply it with redstone energy once to make the dropper drop or transfer a random item.")
-horizontal_def.after_place_node = function(pos, placer, itemstack, pointed_thing)
+function horizontal_def.after_place_node(pos, placer, itemstack, pointed_thing)
 	setup_dropper(pos)
 	orientate_dropper(pos, placer)
 end
@@ -195,7 +195,7 @@ minetest.register_node("mcl_droppers:dropper_up", up_def)
 
 -- Ladies and gentlemen, I present to you: the crafting recipe!
 minetest.register_craft({
-	output = 'mcl_droppers:dropper',
+	output = "mcl_droppers:dropper",
 	recipe = {
 		{"mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble",},
 		{"mcl_core:cobble", "", "mcl_core:cobble",},

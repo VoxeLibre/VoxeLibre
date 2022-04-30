@@ -3,7 +3,7 @@
 -- If true, activates achievements from other Minecraft editions (XBox, PS, etc.)
 local non_pc_achievements = false
 
-local S = minetest.get_translator("mcl_achievements")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Achievements from PC Edition
 

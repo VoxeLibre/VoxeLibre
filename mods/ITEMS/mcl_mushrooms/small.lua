@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_mushrooms")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local on_place = mcl_util.generate_on_place_plant_function(function(place_pos, place_node)
 	local soil_node = minetest.get_node_or_nil({x=place_pos.x, y=place_pos.y-1, z=place_pos.z})
@@ -38,7 +38,11 @@ minetest.register_node("mcl_mushrooms:mushroom_brown", {
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
-	groups = {dig_immediate=3,mushroom=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,enderman_takable=1,deco_block=1},
+	groups = {
+		attached_node = 1, deco_block = 1, destroy_by_lava_flow = 1,
+		dig_immediate = 3, dig_by_water = 1, dig_by_piston = 1,
+		mushroom = 1, enderman_takable = 1, compostability = 65
+	},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	light_source = 1,
 	selection_box = {
@@ -62,7 +66,11 @@ minetest.register_node("mcl_mushrooms:mushroom_red", {
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
-	groups = {dig_immediate=3,mushroom=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,enderman_takable=1,deco_block=1},
+	groups = {
+		attached_node = 1, deco_block = 1, destroy_by_lava_flow = 1,
+		dig_immediate = 3, dig_by_water = 1, dig_by_piston = 1,
+		mushroom = 1, enderman_takable = 1, compostability = 65
+	},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -87,7 +95,7 @@ minetest.register_craftitem("mcl_mushrooms:mushroom_stew", {
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_mushrooms:mushroom_stew",
-	recipe = {'mcl_core:bowl', 'mcl_mushrooms:mushroom_brown', 'mcl_mushrooms:mushroom_red'}
+	recipe = {"mcl_core:bowl", "mcl_mushrooms:mushroom_brown", "mcl_mushrooms:mushroom_red"}
 })
 
 --[[ Mushroom spread and death

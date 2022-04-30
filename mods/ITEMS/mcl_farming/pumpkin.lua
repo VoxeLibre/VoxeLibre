@@ -1,6 +1,7 @@
-local S = minetest.get_translator("mcl_farming")
+local S = minetest.get_translator(minetest.get_current_modname())
 
-local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
+local mod_screwdriver = minetest.get_modpath("screwdriver")
+
 local on_rotate
 if mod_screwdriver then
 	on_rotate = screwdriver.rotate_simple
@@ -14,7 +15,7 @@ minetest.register_craftitem("mcl_farming:pumpkin_seeds", {
 	_doc_items_usagehelp = S("Place the pumpkin seeds on farmland (which can be created with a hoe) to plant a pumpkin stem. Pumpkin stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem attempts to grow a pumpkin next to it. Rightclick an animal to feed it pumpkin seeds."),
 	stack_max = 64,
 	inventory_image = "mcl_farming_pumpkin_seeds.png",
-	groups = { craftitem=1 },
+	groups = {craftitem=1, compostability = 30},
 	on_place = function(itemstack, placer, pointed_thing)
 		return mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:pumpkin_1")
 	end
@@ -98,7 +99,10 @@ local pumpkin_base_def = {
 	stack_max = 64,
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png"},
-	groups = {handy=1,axey=1, plant=1,building_block=1, dig_by_piston=1, enderman_takable=1},
+	groups = {
+		handy = 1, axey = 1, plant = 1, building_block = 1, dig_by_piston = 1,
+		enderman_takable = 1, compostability = 65
+	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_rotate = on_rotate,
 	_mcl_blast_resistance = 1,
@@ -120,8 +124,54 @@ pumpkin_face_base_def._mcl_armor_mob_range_mob = "mobs_mc:enderman"
 pumpkin_face_base_def._mcl_armor_element = "head"
 pumpkin_face_base_def._mcl_armor_texture = "mcl_farming_pumpkin_face.png"
 pumpkin_face_base_def._mcl_armor_preview = "mcl_farming_pumpkin_face_preview.png"
+
 if minetest.get_modpath("mcl_armor") then
+	local pumpkin_hud = {}
+	local function add_pumpkin_hud(player)
+		pumpkin_hud[player] = {
+			pumpkin_blur = player:hud_add({
+				hud_elem_type = "image",
+				position = {x = 0.5, y = 0.5},
+				scale = {x = -101, y = -101},
+				text = "mcl_farming_pumpkin_hud.png",
+				z_index = -200
+			}),
+			--this is a fake crosshair, because hotbar and crosshair doesn't support z_index
+			--TODO: remove this and add correct z_index values
+			fake_crosshair = player:hud_add({
+				hud_elem_type = "image",
+				position = {x = 0.5, y = 0.5},
+				scale = {x = 1, y = 1},
+				text = "crosshair.png",
+				z_index = -100
+			})
+		}
+	end
+	local function remove_pumpkin_hud(player)
+		if pumpkin_hud[player] then
+			player:hud_remove(pumpkin_hud[player].pumpkin_blur)
+			player:hud_remove(pumpkin_hud[player].fake_crosshair)
+			pumpkin_hud[player] = nil
+		end
+	end
+
 	pumpkin_face_base_def.on_secondary_use = mcl_armor.equip_on_use
+	pumpkin_face_base_def._on_equip = add_pumpkin_hud
+	pumpkin_face_base_def._on_unequip = remove_pumpkin_hud
+
+	minetest.register_on_joinplayer(function(player)
+		if player:get_inventory():get_stack("armor", 2):get_name() == "mcl_farming:pumpkin_face" then
+			add_pumpkin_hud(player)
+		end
+	end)
+	minetest.register_on_dieplayer(function(player)
+		if not minetest.settings:get_bool("mcl_keepInventory") then
+			remove_pumpkin_hud(player)
+		end
+	end)
+	minetest.register_on_leaveplayer(function(player)
+		pumpkin_hud[player] = nil
+	end)
 end
 
 -- Register stem growth
@@ -183,7 +233,7 @@ minetest.register_craftitem("mcl_farming:pumpkin_pie", {
 	wield_image = "mcl_farming_pumpkin_pie.png",
 	on_place = minetest.item_eat(8),
 	on_secondary_use = minetest.item_eat(8),
-	groups = { food = 2, eatable = 8 },
+	groups = {food = 2, eatable = 8, compostability = 100},
 	_mcl_saturation = 4.8,
 })
 

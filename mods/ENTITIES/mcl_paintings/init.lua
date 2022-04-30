@@ -1,8 +1,9 @@
 mcl_paintings = {}
 
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/paintings.lua")
+local modname = minetest.get_current_modname()
+dofile(minetest.get_modpath(modname).."/paintings.lua")
 
-local S = minetest.get_translator("mcl_paintings")
+local S = minetest.get_translator(modname)
 
 local math = math
 

@@ -1,9 +1,12 @@
+local get_connected_players = minetest.get_connected_players
+local get_item_group = minetest.get_item_group
+
 mcl_wieldview = {
 	players = {}
 }
 
 function mcl_wieldview.get_item_texture(itemname)
-	if itemname == "" then
+	if itemname == "" or minetest.get_item_group(itemname, "no_wieldview") ~= 0 then
 		return
 	end
 
@@ -19,7 +22,7 @@ function mcl_wieldview.get_item_texture(itemname)
 
 	local texture = inv_image
 
-	local transform = minetest.get_item_group(itemname, "wieldview_transform")
+	local transform = get_item_group(itemname, "wieldview_transform")
 	if transform then
 		-- This actually works with groups ratings because transform1, transform2, etc.
 		-- have meaning and transform0 is used for identidy, so it can be ignored
@@ -69,8 +72,9 @@ minetest.register_on_leaveplayer(function(player)
 end)
 
 minetest.register_globalstep(function()
-	for _, player in pairs(minetest.get_connected_players()) do
-		mcl_wieldview.update_wielded_item(player)
+    local players = get_connected_players()
+	for i = 1, #players do
+		mcl_wieldview.update_wielded_item(players[i])
 	end
 end)
 
@@ -106,6 +110,10 @@ minetest.register_entity("mcl_wieldview:wieldnode", {
 					self.object:set_properties({textures = {itemstring}})
 				-- wield item as flat
 				else
+					self.object:set_properties({textures = {""}})
+				end
+
+				if minetest.get_item_group(itemstring, "no_wieldview") ~= 0 then
 					self.object:set_properties({textures = {""}})
 				end
 

@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mesecons_pressureplates")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local PRESSURE_PLATE_INTERVAL = 0.04
 

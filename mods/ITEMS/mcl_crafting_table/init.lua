@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_crafting_table")
+local S = minetest.get_translator(minetest.get_current_modname())
 local formspec_escape = minetest.formspec_escape
 local show_formspec = minetest.show_formspec
 local C = minetest.colorize
@@ -6,6 +6,7 @@ local text_color = "#313131"
 local itemslot_bg = mcl_formspec.get_itemslot_bg
 
 mcl_crafting_table = {}
+
 function mcl_crafting_table.show_crafting_form(player)
 	player:get_inventory():set_width("craft", 3)
 	player:get_inventory():set_size("craft", 9)
@@ -30,7 +31,6 @@ function mcl_crafting_table.show_crafting_form(player)
 	)
 end
 
-local show_crafting_form = mcl_crafting_table.show_crafting_form  --cache function for better performances
 minetest.register_node("mcl_crafting_table:crafting_table", {
 	description = S("Crafting Table"),
 	_tt_help = S("3×3 crafting grid"),
@@ -43,7 +43,9 @@ minetest.register_node("mcl_crafting_table:crafting_table", {
 	paramtype2 = "facedir",
 	groups = {handy=1,axey=1, deco_block=1, material_wood=1,flammable=-1},
 	on_rightclick = function(pos, node, player, itemstack)
-		show_crafting_form(player)
+		if not player:get_player_control().sneak then
+			mcl_crafting_table.show_crafting_form(player)
+		end
 	end,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 2.5,

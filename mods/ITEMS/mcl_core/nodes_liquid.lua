@@ -1,7 +1,6 @@
 -- Liquids: Water and lava
 
-local S = minetest.get_translator("mcl_core")
-local N = function(s) return s end
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local vector = vector
 local math = math
@@ -15,13 +14,6 @@ local USE_TEXTURE_ALPHA = true
 if minetest.features.use_texture_alpha_string_modes then
 	USE_TEXTURE_ALPHA = "blend"
 end
-
-local lava_death_messages = {
-	N("@1 melted in lava."),
-	N("@1 took a bath in a hot lava tub."),
-	N("@1 died in lava."),
-	N("@1 could not survive in lava."),
-}
 
 minetest.register_node("mcl_core:water_flowing", {
 	description = S("Flowing Water"),
@@ -148,7 +140,6 @@ minetest.register_node("mcl_core:lava_flowing", {
 	liquid_renewable = false,
 	liquid_range = 3,
 	damage_per_second = 4*2,
-	_mcl_node_death_message = lava_death_messages,
 	post_effect_color = {a=245, r=208, g=73, b=10},
 	groups = { lava=3, liquid=2, destroys_items=1, not_in_creative_inventory=1, dig_by_piston=1, set_on_fire=15},
 	_mcl_blast_resistance = 100,
@@ -203,7 +194,6 @@ S("• When lava is directly above water, the water turns into stone."),
 	liquid_renewable = false,
 	liquid_range = 3,
 	damage_per_second = 4*2,
-	_mcl_node_death_message = lava_death_messages,
 	post_effect_color = {a=245, r=208, g=73, b=10},
 	stack_max = 64,
 	groups = { lava=3, lava_source=1, liquid=2, destroys_items=1, not_in_creative_inventory=1, dig_by_piston=1, set_on_fire=15, fire_damage=1},

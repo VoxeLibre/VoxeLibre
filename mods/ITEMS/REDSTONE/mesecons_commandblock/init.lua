@@ -1,5 +1,7 @@
-local S = minetest.get_translator("mesecons_commandblock")
+local S = minetest.get_translator(minetest.get_current_modname())
 local F = minetest.formspec_escape
+
+local tonumber = tonumber
 
 local color_red = mcl_colors.RED
 
@@ -27,7 +29,7 @@ local function resolve_commands(commands, pos)
 	local commander = meta:get_string("commander")
 
 	-- A non-printable character used while replacing “@@”.
-	local SUBSTITUTE_CHARACTER = '\26' -- ASCII SUB
+	local SUBSTITUTE_CHARACTER = "\26" -- ASCII SUB
 
 	-- No players online: remove all commands containing
 	-- problematic placeholders.
@@ -137,7 +139,7 @@ local function commandblock_action_off(pos, node)
 	end
 end
 
-local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
+local function on_rightclick(pos, node, player, itemstack, pointed_thing)
 	if not command_blocks_activated then
 		minetest.chat_send_player(player:get_player_name(), msg_not_activated)
 		return
@@ -192,18 +194,18 @@ local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 	minetest.show_formspec(pname, "commandblock_"..pos.x.."_"..pos.y.."_"..pos.z, formspec)
 end
 
-local on_place = function(itemstack, placer, pointed_thing)
+local function on_place(itemstack, placer, pointed_thing)
 	if pointed_thing.type ~= "node" then
 		return itemstack
 	end
 
 	-- Use pointed node's on_rightclick function first, if present
-	local node = minetest.get_node(pointed_thing.under)
-	if placer and not placer:get_player_control().sneak then
-		if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-			return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
-		end
-	end
+    local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
+    if new_stack then
+        return new_stack
+    end
+
+	--local node = minetest.get_node(pointed_thing.under)
 
 	local privs = minetest.get_player_privs(placer:get_player_name())
 	if not privs.maphack then
@@ -295,8 +297,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		end
 
 		local index, _, x, y, z = string.find(formname, "commandblock_(-?%d+)_(-?%d+)_(-?%d+)")
-		if index ~= nil and x ~= nil and y ~= nil and z ~= nil then
-			local pos = {x=tonumber(x), y=tonumber(y), z=tonumber(z)}
+		if index and x and y and z then
+			local pos = {x = tonumber(x), y = tonumber(y), z = tonumber(z)}
 			local meta = minetest.get_meta(pos)
 			if not minetest.is_creative_enabled(player:get_player_name()) then
 				minetest.chat_send_player(player:get_player_name(), S("Editing the command block has failed! You can only change the command block in Creative Mode!"))

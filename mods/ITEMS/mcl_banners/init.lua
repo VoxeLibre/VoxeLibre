@@ -1,5 +1,10 @@
-local S = minetest.get_translator("mcl_banners")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
 local N = function(s) return s end
+
+local mod_mcl_core = minetest.get_modpath("mcl_core")
+local mod_doc = minetest.get_modpath("doc")
 
 local node_sounds
 if minetest.get_modpath("mcl_sounds") then
@@ -83,8 +88,12 @@ for k,v in pairs(mcl_banners.colors) do
 	colors_reverse["mcl_banners:banner_item_"..v[1]] = k
 end
 
+function mcl_banners.color_reverse(itemname)
+	return colors_reverse[itemname]
+end
+
 -- Add pattern/emblazoning crafting recipes
-dofile(minetest.get_modpath("mcl_banners").."/patterncraft.lua")
+dofile(modpath.."/patterncraft.lua")
 
 -- Overlay ratios (0-255)
 local base_color_ratio = 224
@@ -93,11 +102,11 @@ local layer_ratio = 255
 local standing_banner_entity_offset = { x=0, y=-0.499, z=0 }
 local hanging_banner_entity_offset = { x=0, y=-1.7, z=0 }
 
-local rotation_level_to_yaw = function(rotation_level)
+local function rotation_level_to_yaw(rotation_level)
 	return (rotation_level * (math.pi/8)) + math.pi
 end
 
-local on_dig_banner = function(pos, node, digger)
+local function on_dig_banner(pos, node, digger)
 	-- Check protection
 	local name = digger:get_player_name()
 	if minetest.is_protected(pos, name) then
@@ -116,7 +125,7 @@ local on_dig_banner = function(pos, node, digger)
 	minetest.remove_node(pos)
 end
 
-local on_destruct_banner = function(pos, hanging)
+local function on_destruct_banner(pos, hanging)
 	local offset, nodename
 	if hanging then
 		offset = hanging_banner_entity_offset
@@ -136,15 +145,15 @@ local on_destruct_banner = function(pos, hanging)
 	end
 end
 
-local on_destruct_standing_banner = function(pos)
+local function on_destruct_standing_banner(pos)
 	return on_destruct_banner(pos, false)
 end
 
-local on_destruct_hanging_banner = function(pos)
+local function on_destruct_hanging_banner(pos)
 	return on_destruct_banner(pos, true)
 end
 
-local make_banner_texture = function(base_color, layers)
+function mcl_banners.make_banner_texture(base_color, layers)
 	local colorize
 	if mcl_banners.colors[base_color] then
 		colorize = mcl_banners.colors[base_color][4]
@@ -166,15 +175,15 @@ local make_banner_texture = function(base_color, layers)
 
 				finished_banner = finished_banner .. "^" .. layer
 			end
-			return { finished_banner }
+			return finished_banner
 		end
-		return { base }
+		return base
 	else
-		return { "mcl_banners_banner_base.png" }
+		return "mcl_banners_banner_base.png"
 	end
 end
 
-local spawn_banner_entity = function(pos, hanging, itemstack)
+local function spawn_banner_entity(pos, hanging, itemstack)
 	local banner
 	if hanging then
 		banner = minetest.add_entity(pos, "mcl_banners:hanging_banner")
@@ -187,10 +196,10 @@ local spawn_banner_entity = function(pos, hanging, itemstack)
 	local imeta = itemstack:get_meta()
 	local layers_raw = imeta:get_string("layers")
 	local layers = minetest.deserialize(layers_raw)
-	local colorid = colors_reverse[itemstack:get_name()]
+	local colorid = mcl_banners.color_reverse(itemstack:get_name())
 	banner:get_luaentity():_set_textures(colorid, layers)
 	local mname = imeta:get_string("name")
-	if mname ~= nil and mname ~= "" then
+	if mname and mname ~= "" then
 		banner:get_luaentity()._item_name = mname
 		banner:get_luaentity()._item_description = imeta:get_string("description")
 	end
@@ -198,7 +207,7 @@ local spawn_banner_entity = function(pos, hanging, itemstack)
 	return banner
 end
 
-local respawn_banner_entity = function(pos, node, force)
+local function respawn_banner_entity(pos, node, force)
 	local hanging = node.name == "mcl_banners:hanging_banner"
 	local offset
 	if hanging then
@@ -542,7 +551,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 			end
 			meta:set_int("rotation_level", rotation_level)
 
-			if banner_entity ~= nil then
+			if banner_entity then
 				banner_entity:set_yaw(final_yaw)
 			end
 
@@ -568,7 +577,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 		end,
 	})
 
-	if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_wool") then
+	if mod_mcl_core and minetest.get_modpath("mcl_wool") and pattern_name == "" then
 		minetest.register_craft({
 			output = itemstring,
 			recipe = {
@@ -579,14 +588,14 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 		})
 	end
 
-	if minetest.get_modpath("doc") then
+	if mod_doc then
 		-- Add item to node alias
 		doc.add_entry_alias("nodes", "mcl_banners:standing_banner", "craftitems", itemstring)
 	end
     end
 end
 
-if minetest.get_modpath("doc") then
+if mod_doc then
 	-- Add item to node alias
 	doc.add_entry_alias("nodes", "mcl_banners:standing_banner", "nodes", "mcl_banners:hanging_banner")
 end
@@ -599,7 +608,7 @@ local entity_standing = {
 	visual = "mesh",
 	mesh = "amc_banner.b3d",
 	visual_size = { x=2.499, y=2.499 },
-	textures = make_banner_texture(),
+	textures = {mcl_banners.make_banner_texture()},
 	pointable = false,
 
 	_base_color = nil, -- base color of banner
@@ -619,7 +628,7 @@ local entity_standing = {
 			self._layers = inp._layers
 			self._name = inp._name
 			self.object:set_properties({
-				textures = make_banner_texture(self._base_color, self._layers),
+				textures = {mcl_banners.make_banner_texture(self._base_color, self._layers)},
 			})
 		end
 		-- Make banner slowly swing
@@ -630,7 +639,7 @@ local entity_standing = {
 	-- Set the banner textures. This function can be used by external mods.
 	-- Meaning of parameters:
 	-- * self: Lua entity reference to entity.
-	-- * other parameters: Same meaning as in make_banner_texture
+	-- * other parameters: Same meaning as in mcl_banners.make_banner_texture
 	_set_textures = function(self, base_color, layers)
 		if base_color then
 			self._base_color = base_color
@@ -638,7 +647,7 @@ local entity_standing = {
 		if layers then
 			self._layers = layers
 		end
-		self.object:set_properties({textures = make_banner_texture(self._base_color, self._layers)})
+		self.object:set_properties({textures = {mcl_banners.make_banner_texture(self._base_color, self._layers)}})
 	end,
 }
 minetest.register_entity("mcl_banners:standing_banner", entity_standing)

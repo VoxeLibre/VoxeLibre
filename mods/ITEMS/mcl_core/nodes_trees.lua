@@ -1,14 +1,15 @@
 -- Tree nodes: Wood, Wooden Planks, Sapling, Leaves, Stripped Wood
-local S = minetest.get_translator("mcl_core")
+local S = minetest.get_translator(minetest.get_current_modname())
 
-local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
+local mod_screwdriver = minetest.get_modpath("screwdriver")
+
 local on_rotate
 if mod_screwdriver then
 	on_rotate = screwdriver.rotate_3way
 end
 
 -- Register tree trunk (wood) and bark
-local function register_tree_trunk(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark, stripped_varient)
+local function register_tree_trunk(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark, stripped_variant)
 	minetest.register_node("mcl_core:"..subname, {
 		description = description_trunk,
 		_doc_items_longdesc = longdesc,
@@ -22,7 +23,7 @@ local function register_tree_trunk(subname, description_trunk, description_bark,
 		on_rotate = on_rotate,
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
-		_mcl_stripped_varient = stripped_varient,
+		_mcl_stripped_variant = stripped_variant,
 	})
 
 	minetest.register_node("mcl_core:"..subname.."_bark", {
@@ -38,7 +39,7 @@ local function register_tree_trunk(subname, description_trunk, description_bark,
 		on_rotate = on_rotate,
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
-		_mcl_stripped_varient = stripped_varient.."_bark",
+		_mcl_stripped_variant = stripped_variant.."_bark",
 	})
 
 	minetest.register_craft({
@@ -51,7 +52,7 @@ local function register_tree_trunk(subname, description_trunk, description_bark,
 end
 
 -- Register stripped trunk and stripped wood
-local register_stripped_trunk = function(subname, description_stripped_trunk, description_stripped_bark, longdesc, tile_stripped_inner, tile_stripped_bark)
+local function register_stripped_trunk(subname, description_stripped_trunk, description_stripped_bark, longdesc, longdesc_wood, tile_stripped_inner, tile_stripped_bark)
 	minetest.register_node("mcl_core:"..subname, {
 		description = description_stripped_trunk,
 		_doc_items_longdesc = longdesc,
@@ -60,7 +61,7 @@ local register_stripped_trunk = function(subname, description_stripped_trunk, de
 		paramtype2 = "facedir",
 		on_place = mcl_util.rotate_axis,
 		stack_max = 64,
-		groups = {handy=1,axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
+		groups = {handy=1, axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		on_rotate = on_rotate,
 		_mcl_blast_resistance = 2,
@@ -69,12 +70,12 @@ local register_stripped_trunk = function(subname, description_stripped_trunk, de
 
 	minetest.register_node("mcl_core:"..subname.."_bark", {
 		description = description_stripped_bark,
-		_doc_items_longdesc = S("This is a decorative block."),
+		_doc_items_longdesc = longdesc_wood,
 		tiles = {tile_stripped_bark},
 		paramtype2 = "facedir",
 		on_place = mcl_util.rotate_axis,
 		stack_max = 64,
-		groups = {handy=1,axey=1, bark=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
+		groups = {handy=1, axey=1, bark=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		is_ground_content = false,
 		on_rotate = on_rotate,
@@ -151,17 +152,10 @@ local function register_leaves(subname, description, longdesc, tiles, sapling, d
 		paramtype = "light",
 		stack_max = 64,
 		groups = {
-			handy=1,
-			hoey=1,
-			shearsy=1,
-			swordy=1,
-			leafdecay=leafdecay_distance,
-			flammable=2,
-			leaves=1,
-			deco_block=1,
-			dig_by_piston=1,
-			fire_encouragement=30,
-			fire_flammability=60
+			handy = 1, hoey = 1, shearsy = 1, swordy = 1, dig_by_piston = 1,
+			leaves = 1, leafdecay = leafdecay_distance, deco_block = 1,
+			flammable = 2, fire_encouragement = 30, fire_flammability = 60,
+			compostability = 30
 		},
 		drop = get_drops(0),
 		_mcl_shears_drop = true,
@@ -193,7 +187,11 @@ local function register_sapling(subname, description, longdesc, tt_help, texture
 			fixed = selbox
 		},
 		stack_max = 64,
-		groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,dig_by_piston=1,destroy_by_lava_flow=1,deco_block=1},
+		groups = {
+			plant = 1, sapling = 1, non_mycelium_plant = 1, attached_node = 1,
+			deco_block = 1, dig_immediate = 3, dig_by_water = 1, dig_by_piston = 1,
+			destroy_by_lava_flow = 1, compostability = 30
+		},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		on_construct = function(pos)
 			local meta = minetest.get_meta(pos)
@@ -222,13 +220,12 @@ register_tree_trunk("sprucetree", S("Spruce Wood"), S("Spruce Bark"), S("The tru
 register_tree_trunk("birchtree", S("Birch Wood"), S("Birch Bark"), S("The trunk of a birch tree."), "mcl_core_log_birch_top.png", "mcl_core_log_birch.png", "mcl_core:stripped_birch")
 register_tree_trunk("jungletree", S("Jungle Wood"), S("Jungle Bark"), S("The trunk of a jungle tree."), "default_jungletree_top.png", "default_jungletree.png", "mcl_core:stripped_jungle")
 
-register_stripped_trunk("stripped_oak", S("Stripped Oak Log"), S("Stripped Oak Wood"), S("The stripped trunk of an oak tree."), "mcl_core_stripped_oak_top.png", "mcl_core_stripped_oak_side.png")
-register_stripped_trunk("stripped_acacia", S("Stripped Acacia Log"), S("Stripped Acacia Wood"), S("The stripped trunk of an acacia tree."), "mcl_core_stripped_acacia_top.png", "mcl_core_stripped_acacia_side.png")
-register_stripped_trunk("stripped_dark_oak", S("Stripped Dark Oak Log"), S("Stripped Dark Oak Wood"), S("The stripped trunk of an dark oak tree."), "mcl_core_stripped_dark_oak_top.png", "mcl_core_stripped_dark_oak_side.png")
-register_stripped_trunk("stripped_birch", S("Stripped Birch Log"), S("Stripped Birch Wood"), S("The stripped trunk of an birch tree."), "mcl_core_stripped_birch_top.png", "mcl_core_stripped_birch_side.png")
-register_stripped_trunk("stripped_spruce", S("Stripped Spruce Log"), S("Stripped Spruce Wood"), S("The stripped trunk of an spruce tree."), "mcl_core_stripped_spruce_top.png", "mcl_core_stripped_spruce_side.png")
-register_stripped_trunk("stripped_jungle", S("Stripped Jungle Log"), S("Stripped Jungle Wood"), S("The stripped trunk of an jungle tree."),"mcl_core_stripped_jungle_top.png", "mcl_core_stripped_jungle_side.png")
-
+register_stripped_trunk("stripped_oak", S("Stripped Oak Log"), S("Stripped Oak Wood"), S("The stripped trunk of an oak tree."), S("The stripped wood of an oak tree."), "mcl_core_stripped_oak_top.png", "mcl_core_stripped_oak_side.png")
+register_stripped_trunk("stripped_acacia", S("Stripped Acacia Log"), S("Stripped Acacia Wood"), S("The stripped trunk of an acacia tree."), S("The stripped wood of an acacia tree."), "mcl_core_stripped_acacia_top.png", "mcl_core_stripped_acacia_side.png")
+register_stripped_trunk("stripped_dark_oak", S("Stripped Dark Oak Log"), S("Stripped Dark Oak Wood"), S("The stripped trunk of a dark oak tree."), S("The stripped wood of a dark oak tree."), "mcl_core_stripped_dark_oak_top.png", "mcl_core_stripped_dark_oak_side.png")
+register_stripped_trunk("stripped_birch", S("Stripped Birch Log"), S("Stripped Birch Wood"), S("The stripped trunk of a birch tree."), S("The stripped wood of a birch tree."),  "mcl_core_stripped_birch_top.png", "mcl_core_stripped_birch_side.png")
+register_stripped_trunk("stripped_spruce", S("Stripped Spruce Log"), S("Stripped Spruce Wood"), S("The stripped trunk of a spruce tree."), S("The stripped wood of a spruce tree."), "mcl_core_stripped_spruce_top.png", "mcl_core_stripped_spruce_side.png")
+register_stripped_trunk("stripped_jungle", S("Stripped Jungle Log"), S("Stripped Jungle Wood"), S("The stripped trunk of a jungle tree."), S("The stripped wood of a jungle tree."),"mcl_core_stripped_jungle_top.png", "mcl_core_stripped_jungle_side.png")
 register_wooden_planks("wood", S("Oak Wood Planks"), {"default_wood.png"})
 register_wooden_planks("darkwood", S("Dark Oak Wood Planks"), {"mcl_core_planks_big_oak.png"})
 register_wooden_planks("junglewood", S("Jungle Wood Planks"), {"default_junglewood.png"})

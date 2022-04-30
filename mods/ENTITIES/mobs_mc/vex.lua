@@ -36,6 +36,7 @@ mobs:register_mob("mobs_mc:vex", {
 	view_range = 16,
 	walk_velocity = 3.2,
 	run_velocity = 5.9,
+	attack_type = "dogfight",
 	sounds = {
 		-- TODO: random
 		death = "mobs_mc_vex_death",

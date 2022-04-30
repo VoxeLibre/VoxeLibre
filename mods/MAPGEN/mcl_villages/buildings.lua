@@ -93,10 +93,6 @@ function settlements.create_site_plan(maxp, minp, pr)
 	-- go build settlement around center
 	if not center_surface then return false end
 
-	-- add settlement to list
-	table.insert(settlements_in_world, center_surface)
-	-- save list to file
-	settlements.save()
 	-- initialize all settlement_info table
 	local count_buildings, number_of_buildings, number_built = settlements.initialize_settlement_info(pr)
 	-- first building is townhall in the center
@@ -187,10 +183,10 @@ local function construct_node(p1, p2, name)
 			end
 			return nodes
 		end
-		minetest.log("warning","[mcl_villages] No on_construct defined for node name " .. name)
+		minetest.log("warning", "[mcl_villages] No on_construct defined for node name " .. name)
 		return
 	end
-	minetest.log("warning","[mcl_villages] Attempt to 'construct' inexistant nodes: " .. name)
+	minetest.log("warning", "[mcl_villages] Attempt to 'construct' inexistant nodes: " .. name)
 end
 local function init_nodes(p1, p2, size, rotation, pr)
 	construct_node(p1, p2, "mcl_itemframes:item_frame")

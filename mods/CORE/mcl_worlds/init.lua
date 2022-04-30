@@ -1,5 +1,7 @@
 mcl_worlds = {}
 
+local get_connected_players = minetest.get_connected_players
+
 -- For a given position, returns a 2-tuple:
 -- 1st return value: true if pos is in void
 -- 2nd return value: true if it is in the deadly part of the void
@@ -44,11 +46,15 @@ function mcl_worlds.y_to_layer(y)
 	end
 end
 
+local y_to_layer = mcl_worlds.y_to_layer
+
 -- Takes a pos and returns the dimension it belongs to (same as above)
 function mcl_worlds.pos_to_dimension(pos)
-	local _, dim = mcl_worlds.y_to_layer(pos.y)
+	local _, dim = y_to_layer(pos.y)
 	return dim
 end
+
+local pos_to_dimension = mcl_worlds.pos_to_dimension
 
 -- Takes a Minecraft layer and a “dimension” name
 -- and returns the corresponding Y coordinate for
@@ -119,6 +125,8 @@ function mcl_worlds.dimension_change(player, dimension)
 	last_dimension[playername] = dimension
 end
 
+local dimension_change = mcl_worlds.dimension_change
+
 ----------------------- INTERNAL STUFF ----------------------
 
 -- Update the dimension callbacks every DIM_UPDATE seconds
@@ -126,22 +134,41 @@ local DIM_UPDATE = 1
 local dimtimer = 0
 
 minetest.register_on_joinplayer(function(player)
-	last_dimension[player:get_player_name()] = mcl_worlds.pos_to_dimension(player:get_pos())
+	last_dimension[player:get_player_name()] = pos_to_dimension(player:get_pos())
 end)
 
 minetest.register_globalstep(function(dtime)
 	-- regular updates based on iterval
 	dimtimer = dimtimer + dtime;
 	if dimtimer >= DIM_UPDATE then
-		local players = minetest.get_connected_players()
-		for p=1, #players do
-			local dim = mcl_worlds.pos_to_dimension(players[p]:get_pos())
+		local players = get_connected_players()
+		for p = 1, #players do
+			local dim = pos_to_dimension(players[p]:get_pos())
 			local name = players[p]:get_player_name()
 			if dim ~= last_dimension[name] then
-				mcl_worlds.dimension_change(players[p], dim)
+				dimension_change(players[p], dim)
 			end
 		end
 		dimtimer = 0
 	end
 end)
 
+function mcl_worlds.get_cloud_parameters()
+	if minetest.get_mapgen_setting("mg_name") == "valleys" then
+		return {
+			height = 384, --valleys has a much higher average elevation thus often "normal" landscape ends up in the clouds
+			speed = {x=-2, z=0},
+			thickness=5,
+			color="#FFF0FEF",
+			ambient = "#201060",
+		}
+	else
+		-- MC-style clouds: Layer 127, thickness 4, fly to the “West”
+		return {
+			height = mcl_worlds.layer_to_y(127),
+			speed = {x=-2, z=0},
+			thickness = 4,
+			color = "#FFF0FEF",
+		}
+	end
+end

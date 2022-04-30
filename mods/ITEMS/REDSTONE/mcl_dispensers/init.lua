@@ -7,10 +7,10 @@
 All node definitions share a lot of code, so this is the reason why there
 are so many weird tables below.
 ]]
-local S = minetest.get_translator("mcl_dispensers")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- For after_place_node
-local setup_dispenser = function(pos)
+local function setup_dispenser(pos)
 	-- Set formspec and inventory
 	local form = "size[9,8.75]"..
 	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
@@ -19,9 +19,9 @@ local setup_dispenser = function(pos)
 	"list[current_player;main;0,7.74;9,1;]"..
 	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
 	"label[3,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Dispenser"))).."]"..
-	"list[current_name;main;3,0.5;3,3;]"..
+	"list[context;main;3,0.5;3,3;]"..
 	mcl_formspec.get_itemslot_bg(3,0.5,3,3)..
-	"listring[current_name;main]"..
+	"listring[context;main]"..
 	"listring[current_player;main]"
 	local meta = minetest.get_meta(pos)
 	meta:set_string("formspec", form)
@@ -29,7 +29,7 @@ local setup_dispenser = function(pos)
 	inv:set_size("main", 9)
 end
 
-local orientate_dispenser = function(pos, placer)
+local function orientate_dispenser(pos, placer)
 	-- Not placed by player
 	if not placer then return end
 
@@ -82,7 +82,7 @@ local dispenserdef = {
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
-		local meta2 = meta
+		local meta2 = meta:to_table()
 		meta:from_table(oldmetadata)
 		local inv = meta:get_inventory()
 		for i=1, inv:get_size("main") do
@@ -92,14 +92,14 @@ local dispenserdef = {
 				minetest.add_item(p, stack)
 			end
 		end
-		meta:from_table(meta2:to_table())
+		meta:from_table(meta2)
 	end,
 	_mcl_blast_resistance = 3.5,
 	_mcl_hardness = 3.5,
 	mesecons = {
 		effector = {
 			-- Dispense random item when triggered
-			action_on = function (pos, node)
+			action_on = function(pos, node)
 				local meta = minetest.get_meta(pos)
 				local inv = meta:get_inventory()
 				local droppos, dropdir
@@ -129,8 +129,13 @@ local dispenserdef = {
 					dropitem:set_count(1)
 					local stack_id = stacks[r].stackpos
 					local stackdef = stack:get_definition()
+
+					if not stackdef then
+						return
+					end
+					
 					local iname = stack:get_name()
-					local igroups = minetest.registered_items[iname].groups
+					local igroups = stackdef.groups
 
 					--[===[ Dispense item ]===]
 
@@ -163,6 +168,56 @@ local dispenserdef = {
 						end
 
 						inv:set_stack("main", stack_id, stack)
+
+					-- Use shears on sheeps
+					elseif igroups.shears then
+						for _, obj in pairs(minetest.get_objects_inside_radius(droppos, 1)) do
+							local entity = obj:get_luaentity()
+							if entity and not entity.child and not entity.gotten then
+								local entname = entity.name
+								local pos = obj:get_pos()
+								local used, texture = false
+								if entname == "mobs_mc:sheep" then
+									minetest.add_item(pos, entity.drops[2].name .. " " .. math.random(1, 3))
+									if not entity.color then
+										entity.color = "unicolor_white"
+									end
+									entity.base_texture = { "blank.png", "mobs_mc_sheep.png" }
+									texture = entity.base_texture
+									entity.drops = {
+										{ name = mobs_mc.items.mutton_raw, chance = 1, min = 1, max = 2 },
+									}
+									used = true
+								elseif entname == "mobs_mc:snowman" then
+									texture = {
+										"mobs_mc_snowman.png",
+										"blank.png", "blank.png",
+										"blank.png", "blank.png",
+										"blank.png", "blank.png",
+									}
+									used = true
+								elseif entname == "mobs_mc:mooshroom" then
+									local droppos = vector.offset(pos, 0, 1.4, 0)
+									if entity.base_texture[1] == "mobs_mc_mooshroom_brown.png" then
+										minetest.add_item(droppos, mobs_mc.items.mushroom_brown .. " 5")
+									else
+										minetest.add_item(droppos, mobs_mc.items.mushroom_red .. " 5")
+									end
+									obj = mcl_util.replace_mob(obj, "mobs_mc:cow")
+									entity = obj:get_luaentity()
+									used = true
+								end
+								if used then
+									obj:set_properties({ textures = texture })
+									entity.gotten = true
+									minetest.sound_play("mcl_tools_shears_cut", { pos = pos }, true)
+									stack:add_wear(65535 / stackdef._mcl_diggroups.shearsy.uses)
+									inv:set_stack("main", stack_id, stack)
+									break
+								end
+							end
+						end
+
 					-- Spawn Egg
 					elseif igroups.spawn_egg then
 						-- Spawn mob
@@ -246,10 +301,11 @@ S("• Flint and steel: Is used to ignite a fire in air and to ignite TNT").."\n
 S("• Spawn eggs: Will summon the mob they contain").."\n"..
 S("• Other items: Are simply dropped")
 
-horizontal_def.after_place_node = function(pos, placer, itemstack, pointed_thing)
+function horizontal_def.after_place_node(pos, placer, itemstack, pointed_thing)
 	setup_dispenser(pos)
 	orientate_dispenser(pos, placer)
 end
+
 horizontal_def.tiles = {
 	"default_furnace_top.png", "default_furnace_bottom.png",
 	"default_furnace_side.png", "default_furnace_side.png",
@@ -287,7 +343,7 @@ minetest.register_node("mcl_dispensers:dispenser_up", up_def)
 
 
 minetest.register_craft({
-	output = 'mcl_dispensers:dispenser',
+	output = "mcl_dispensers:dispenser",
 	recipe = {
 		{"mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble",},
 		{"mcl_core:cobble", "mcl_bows:bow", "mcl_core:cobble",},

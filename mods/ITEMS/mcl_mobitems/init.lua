@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_mobitems")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 minetest.register_craftitem("mcl_mobitems:rotten_flesh", {
 	description = S("Rotten Flesh"),
@@ -135,7 +135,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 })
 
 -- Reset food poisoning and status effects
-local drink_milk = function(itemstack, player, pointed_thing)
+local function drink_milk(itemstack, player, pointed_thing)
 	local bucket = minetest.do_item_eat(0, "mcl_buckets:bucket_empty", itemstack, player, pointed_thing)
 	-- Check if we were allowed to drink this (eat delay check)
 	if mcl_hunger.active and (bucket:get_name() ~= "mcl_mobitems:milk_bucket" or minetest.is_creative_enabled(player:get_player_name())) then
@@ -426,7 +426,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'mcl_mobitems:slimeball 9',
+	output = "mcl_mobitems:slimeball 9",
 	recipe = {{"mcl_core:slimeblock"}},
 })
 

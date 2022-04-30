@@ -155,7 +155,7 @@ end
 local custom_crafts, craft_types = {}, {}
 
 function mcl_craftguide.register_craft_type(name, def)
-	local func = "mcl_craftguide.register_craft_guide(): "
+	local func = "mcl_craftguide.register_craft_type(): "
 	assert(name, func .. "'name' field missing")
 	assert(def.description, func .. "'description' field missing")
 	assert(def.icon, func .. "'icon' field missing")
@@ -548,7 +548,7 @@ local function get_recipe_fs(data, iY)
 				 shapeless and "shapeless" or "furnace"
 
 		if recipe.type == "cooking" then
-			icon = "default_furnace_front_active.png"
+			icon = "craftguide_furnace.png"
 		elseif not custom_recipe then
 			icon = fmt("craftguide_%s.png", icon)
 		end
@@ -726,7 +726,7 @@ local function make_formspec(name)
 	return concat(fs)
 end
 
-local show_fs = function(player, name)
+local function show_fs(player, name)
 	if sfinv_only then
 		sfinv.set_player_inventory_formspec(player)
 	else

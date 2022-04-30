@@ -1,0 +1,13 @@
+# textdomain: mcl_skins
+[<player>] [<skin number>]=[<玩家名字>] [<皮膚篇號>]
+Select player skin of yourself or another player=替自己或其他玩家選擇皮膚
+Insufficient or wrong parameters=無效或錯誤參數
+Player @1 not online!=玩家 @1 不在線！
+You need the “server” privilege to change the skin of other players!=你需要「server」權限來替換其他玩家的皮膚！
+Invalid skin number! Valid numbers: 0 to @1=無效皮膚篇號！有效篇號：0至@1
+Your skin has been set to: @1=你的皮膚已換成：@1
+Your skin has been set to: @1 (@2)=你的皮膚已換成：@1（@2）
+Skin of @1 set to: @2 (@3)=@1的皮膚已換成：@1
+Select player skin:=選擇玩家皮膚：
+@1 (@2)=@1（@2）
+Name: @1=名稱：@1

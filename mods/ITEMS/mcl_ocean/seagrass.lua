@@ -1,5 +1,6 @@
-local S = minetest.get_translator("mcl_ocean")
-local mod_doc = minetest.get_modpath("doc") ~= nil
+local S = minetest.get_translator(minetest.get_current_modname())
+
+local mod_doc = minetest.get_modpath("doc")
 
 -- List of supported surfaces for seagrass
 local surfaces = {
@@ -84,7 +85,7 @@ minetest.register_craftitem("mcl_ocean:seagrass", {
 	inventory_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
 	wield_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
 	on_place = seagrass_on_place,
-	groups = { deco_block = 1 },
+	groups = {deco_block = 1, compostability = 30},
 })
 
 -- Seagrass nodes: seagrass on a surface node

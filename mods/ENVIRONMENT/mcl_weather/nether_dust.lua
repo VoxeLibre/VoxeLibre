@@ -1,36 +1,66 @@
 mcl_weather.nether_dust = {}
-mcl_weather.nether_dust.particles_count = 99
+mcl_weather.nether_dust.particlespawners = {}
 
--- calculates coordinates and draw particles for Nether dust
-mcl_weather.nether_dust.add_dust_particles = function(player)
-	for i=mcl_weather.nether_dust.particles_count, 1,-1 do
-		local rpx, rpy, rpz = mcl_weather.get_random_pos_by_player_look_dir(player)
-		minetest.add_particle({
-			pos = {x = rpx, y = rpy - math.random(6, 18), z = rpz},
-			velocity = {x = math.random(-30,30)*0.01, y = math.random(-15,15)*0.01, z = math.random(-30,30)*0.01},
-			acceleration = {x = math.random(-50,50)*0.02, y = math.random(-20,20)*0.02, z = math.random(-50,50)*0.02},
-			expirationtime = 3,
-			size = math.random(6,20)*0.01,
-			collisiondetection = false,
-			object_collision = false,
-			vertical = false,
-			glow = math.random(0,minetest.LIGHT_MAX),
-			texture = "mcl_particles_nether_dust"..tostring(i%3+1)..".png",
-			playername = player:get_player_name()
-		})
+local psdef= {
+	amount = 150,
+	time = 0,
+	minpos = vector.new(-15,-15,-15),
+	maxpos =vector.new(15,15,15),
+	minvel = vector.new(-0.3,-0.15,-1),
+	maxvel = vector.new(0.3,0.15,0.3),
+	minacc = vector.new(-1,-0.4,-1),
+	maxacc = vector.new(1,0.4,1),
+	minexptime = 1,
+	maxexptime = 10,
+	minsize = 0.2,
+	maxsize = 0.7,
+	collisiondetection = false,
+	collision_removal = false,
+	object_collision = false,
+	vertical = false
+}
+
+local function check_player(player)
+	local name=player:get_player_name()
+	if mcl_worlds.has_dust(player:get_pos()) and not mcl_weather.nether_dust.particlespawners[name] then
+		return true
+	end	
+end
+
+mcl_weather.nether_dust.add_particlespawners = function(player)
+	local name=player:get_player_name(name)
+	mcl_weather.nether_dust.particlespawners[name]={}
+	psdef.playername = name
+	psdef.attached = player
+	psdef.glow = math.random(0,minetest.LIGHT_MAX)
+	for i=1,3 do
+		psdef.texture="mcl_particles_nether_dust"..i..".png"
+		mcl_weather.nether_dust.particlespawners[name][i]=minetest.add_particlespawner(psdef)
 	end
 end
 
-local timer = 0
-minetest.register_globalstep(function(dtime)
-	timer = timer + dtime
-	if timer < 0.7 then return end
-	timer = 0
-
-	for _, player in pairs(minetest.get_connected_players()) do
-		if not mcl_worlds.has_dust(player:get_pos()) then
-			return false
+mcl_weather.nether_dust.delete_particlespawners = function(player)
+	local name=player:get_player_name(name)
+	if mcl_weather.nether_dust.particlespawners[name] then
+		for i=1,3 do
+			minetest.delete_particlespawner(mcl_weather.nether_dust.particlespawners[name][i])
 		end
-		mcl_weather.nether_dust.add_dust_particles(player)
+		mcl_weather.nether_dust.particlespawners[name]=nil		
 	end
+end
+
+mcl_worlds.register_on_dimension_change(function(player, dimension)
+	if check_player(player) then
+		return mcl_weather.nether_dust.add_particlespawners(player)
+	end
+	mcl_weather.nether_dust.delete_particlespawners(player)
+end)
+
+minetest.register_on_joinplayer(function(player)
+	if check_player(player) then
+		mcl_weather.nether_dust.add_particlespawners(player)
+	end
+end)
+minetest.register_on_leaveplayer(function(player)
+	mcl_weather.nether_dust.delete_particlespawners(player)
 end)

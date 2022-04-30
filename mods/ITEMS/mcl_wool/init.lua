@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_wool")
+local S = minetest.get_translator(minetest.get_current_modname())
 local mod_doc = minetest.get_modpath("doc")
 
 -- minetest/wool/init.lua
@@ -71,12 +71,11 @@ for _, row in ipairs(wool.dyes) do
 			_doc_items_entry_name = name_carpet,
 			_doc_items_longdesc = longdesc_carpet,
 
-			walkable = false, -- See <https://minecraft.gamepedia.com/Materials>
 			is_ground_content = false,
 			tiles = {texture..".png"},
 			wield_image = texture..".png",
 			wield_scale = { x=1, y=1, z=0.5 },
-			groups = {handy=1, carpet=1,attached_node=1,flammable=1,fire_encouragement=60, fire_flammability=20, dig_by_water=1,deco_block=1,[color_group]=1},
+			groups = {handy=1, carpet=1,supported_node=1,flammable=1,fire_encouragement=60, fire_flammability=20, dig_by_water=1,deco_block=1,[color_group]=1},
 			sounds = mcl_sounds.node_sound_wool_defaults(),
 			paramtype = "light",
 			sunlight_propagates = true,
@@ -99,13 +98,13 @@ for _, row in ipairs(wool.dyes) do
 	-- Crafting from dye and white wool
 		minetest.register_craft({
 			type = "shapeless",
-			output = 'mcl_wool:'..name,
-			recipe = {"mcl_dye:"..dye, 'mcl_wool:white'},
+			output = "mcl_wool:"..name,
+			recipe = {"mcl_dye:"..dye, "mcl_wool:white"},
 		})
 	end
 	minetest.register_craft({
-		output = 'mcl_wool:'..name..'_carpet 3',
-		recipe = {{'mcl_wool:'..name, 'mcl_wool:'..name}},
+		output = "mcl_wool:"..name.."_carpet 3",
+		recipe = {{"mcl_wool:"..name, "mcl_wool:"..name}},
 	})
 end
 

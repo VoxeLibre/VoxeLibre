@@ -26,19 +26,63 @@ function mcl_burning.get_collisionbox(obj, smaller, storage)
 	end
 end
 
+local find_nodes_in_area = minetest.find_nodes_in_area
+
 function mcl_burning.get_touching_nodes(obj, nodenames, storage)
 	local pos = obj:get_pos()
 	local minp, maxp = mcl_burning.get_collisionbox(obj, true, storage)
-	local nodes = minetest.find_nodes_in_area(vector.add(pos, minp), vector.add(pos, maxp), nodenames)
+	local nodes = find_nodes_in_area(vector.add(pos, minp), vector.add(pos, maxp), nodenames)
 	return nodes
 end
 
+-- Manages the fire animation on a burning player's HUD
+--
+-- Parameters:
+--   player - a valid player object;
+--
+-- If the player already has a fire HUD, updates the burning animation.
+-- If the fire does not have a fire HUD, initializes the HUD.
+--
+function mcl_burning.update_hud(player)
+	local animation_frames = tonumber(minetest.settings:get("fire_animation_frames")) or 8
+	local hud_flame_animated = "mcl_burning_hud_flame_animated.png^[opacity:180^[verticalframe:" .. animation_frames .. ":"
+
+	local storage = mcl_burning.get_storage(player)
+	if not storage.fire_hud_id then
+		storage.animation_frame = 1
+		storage.fire_hud_id = player:hud_add({
+			hud_elem_type = "image",
+			position = {x = 0.5, y = 0.5},
+			scale = {x = -100, y = -100},
+			text = hud_flame_animated .. storage.animation_frame,
+			z_index = 1000,
+		})
+	else
+		storage.animation_frame = storage.animation_frame + 1
+		if storage.animation_frame > animation_frames - 1 then
+			storage.animation_frame = 0
+		end
+		player:hud_change(storage.fire_hud_id, "text", hud_flame_animated .. storage.animation_frame)
+	end
+end
+
+-- Sets and object state as burning and adds a fire animation to the object.
+--
+-- Parameters:
+--   obj - may be a player or a lua_entity;
+--   burn_time - sets the object's burn duration;
+--
+-- If obj is a player, adds a fire animation to the HUD, if obj is a
+-- lua_entity, adds an animated fire entity to obj.
+-- The effective burn duration is modified by obj's armor protection.
+-- If obj was already burning, its burn duration is updated if the current
+-- duration is less than burn_time.
+-- If obj is dead, fireproof or a creative player, this function does nothing.
+--
 function mcl_burning.set_on_fire(obj, burn_time)
 	if obj:get_hp() < 0 then
 		return
 	end
-
-	local storage = mcl_burning.get_storage(obj)
 
 	local luaentity = obj:get_luaentity()
 	if luaentity and luaentity.fire_resistant then
@@ -60,50 +104,32 @@ function mcl_burning.set_on_fire(obj, burn_time)
 				end
 			end
 		end
-
 		if max_fire_prot_lvl > 0 then
 			burn_time = burn_time - math.floor(burn_time * max_fire_prot_lvl * 0.15)
 		end
 	end
 
-	if not storage.burn_time or burn_time >= storage.burn_time then
-		if obj:is_player() and not storage.fire_hud_id then
-			storage.fire_hud_id = obj:hud_add({
-				hud_elem_type = "image",
-				position = {x = 0.5, y = 0.5},
-				scale = {x = -100, y = -100},
-				text = "mcl_burning_entity_flame_animated.png^[opacity:180^[verticalframe:" .. mcl_burning.animation_frames .. ":" .. 1,
-				z_index = 1000,
-			})
+	local storage = mcl_burning.get_storage(obj)
+	if storage.burn_time then
+		if burn_time > storage.burn_time then
+			storage.burn_time = burn_time
 		end
-		storage.burn_time = burn_time
-		storage.fire_damage_timer = 0
+		return
+	end
+	storage.burn_time = burn_time
+	storage.fire_damage_timer = 0
 
-		local fire_entity = minetest.add_entity(obj:get_pos(), "mcl_burning:fire")
-		local minp, maxp = mcl_burning.get_collisionbox(obj, false, storage)
-		local obj_size = obj:get_properties().visual_size
+	local minp, maxp = mcl_burning.get_collisionbox(obj, false, storage)
+	local size = vector.subtract(maxp, minp)
+	size = vector.multiply(size, vector.new(1.1, 1.2, 1.1))
+	size = vector.divide(size, obj:get_properties().visual_size)
 
-		local vertical_grow_factor = 1.2
-		local horizontal_grow_factor = 1.1
-		local grow_vector = vector.new(horizontal_grow_factor, vertical_grow_factor, horizontal_grow_factor)
+	local fire_entity = minetest.add_entity(obj:get_pos(), "mcl_burning:fire")
+	fire_entity:set_properties({visual_size = size})
+	fire_entity:set_attach(obj, "", vector.new(0, size.y * 5, 0), vector.new(0, 0, 0))
 
-		local size = vector.subtract(maxp, minp)
-		size = vector.multiply(size, grow_vector)
-		size = vector.divide(size, obj_size)
-		local offset = vector.new(0, size.y * 10 / 2, 0)
-
-		fire_entity:set_properties({visual_size = size})
-		fire_entity:set_attach(obj, "", offset, {x = 0, y = 0, z = 0})
-		local fire_luaentity = fire_entity:get_luaentity()
-		fire_luaentity:update_frame(obj, storage)
-
-		for _, other in pairs(minetest.get_objects_inside_radius(fire_entity:get_pos(), 0)) do
-			local other_luaentity = other:get_luaentity()
-			if other_luaentity and other_luaentity.name == "mcl_burning:fire" and other_luaentity ~= fire_luaentity then
-				other:remove()
-				break
-			end
-		end
+	if obj:is_player() then
+		mcl_burning.update_hud(obj)
 	end
 end
 

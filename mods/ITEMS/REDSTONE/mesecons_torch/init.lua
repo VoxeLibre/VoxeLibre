@@ -1,10 +1,10 @@
 -- REDSTONE TORCH AND BLOCK OF REDSTONE
 
-local S = minetest.get_translator("mesecons_torch")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local TORCH_COOLOFF = 120 -- Number of seconds it takes for a burned-out torch to reactivate
 
-local rotate_torch_rules = function (rules, param2)
+local function rotate_torch_rules(rules, param2)
 	if param2 == 1 then
 		return rules
 	elseif param2 == 5 then
@@ -20,7 +20,7 @@ local rotate_torch_rules = function (rules, param2)
 	end
 end
 
-local torch_get_output_rules = function(node)
+local function torch_get_output_rules(node)
 	if node.param2 == 1 then
 		return {
 			{ x = -1, y =  0, z =  0 },
@@ -41,7 +41,7 @@ local torch_get_output_rules = function(node)
 	end
 end
 
-local torch_get_input_rules = function(node)
+local function torch_get_input_rules(node)
 	if node.param2 == 1 then
 		return {{x = 0, y = -1, z = 0 }}
 	else
@@ -49,7 +49,7 @@ local torch_get_input_rules = function(node)
 	end
 end
 
-local torch_overheated = function(pos)
+local function torch_overheated(pos)
 	minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.02, max_hear_distance = 6}, true)
 	minetest.add_particle({
 		pos = {x=pos.x, y=pos.y+0.2, z=pos.z},
@@ -62,7 +62,7 @@ local torch_overheated = function(pos)
 	timer:start(TORCH_COOLOFF)
 end
 
-local torch_action_on = function(pos, node)
+local function torch_action_on(pos, node)
 	local overheat
 	if node.name == "mesecons_torch:mesecon_torch_on" then
 		overheat = mesecon.do_overheat(pos)
@@ -86,7 +86,7 @@ local torch_action_on = function(pos, node)
 	end
 end
 
-local torch_action_off = function(pos, node)
+local function torch_action_off(pos, node)
 	local overheat
 	if node.name == "mesecons_torch:mesecon_torch_off" or node.name == "mesecons_torch:mesecon_torch_overheated" then
 		overheat = mesecon.do_overheat(pos)
@@ -111,7 +111,7 @@ local torch_action_off = function(pos, node)
 end
 
 minetest.register_craft({
-	output = 'mesecons_torch:mesecon_torch_on',
+	output = "mesecons_torch:mesecon_torch_on",
 	recipe = {
 	{"mesecons:redstone"},
 	{"mcl_core:stick"},}
@@ -222,16 +222,16 @@ minetest.register_node("mesecons_torch:redstoneblock", {
 minetest.register_craft({
 	output = "mesecons_torch:redstoneblock",
 	recipe = {
-		{'mesecons:wire_00000000_off','mesecons:wire_00000000_off','mesecons:wire_00000000_off'},
-		{'mesecons:wire_00000000_off','mesecons:wire_00000000_off','mesecons:wire_00000000_off'},
-		{'mesecons:wire_00000000_off','mesecons:wire_00000000_off','mesecons:wire_00000000_off'},
+		{"mesecons:wire_00000000_off","mesecons:wire_00000000_off","mesecons:wire_00000000_off"},
+		{"mesecons:wire_00000000_off","mesecons:wire_00000000_off","mesecons:wire_00000000_off"},
+		{"mesecons:wire_00000000_off","mesecons:wire_00000000_off","mesecons:wire_00000000_off"},
 	}
 })
 
 minetest.register_craft({
-	output = 'mesecons:wire_00000000_off 9',
+	output = "mesecons:wire_00000000_off 9",
 	recipe = {
-		{'mesecons_torch:redstoneblock'},
+		{"mesecons_torch:redstoneblock"},
 	}
 })
 

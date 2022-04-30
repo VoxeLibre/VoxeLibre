@@ -12,15 +12,7 @@ Authors of media (textures)
 BlockMen (CC BY-SA 3.0)
 
 This mod adds a bed to Minetest which allows to skip the night.
-To sleep, rightclick the bed. If playing in singleplayer mode the night gets skipped
-immediately. If playing multiplayer you get shown how many other players are in bed too,
-if all players are sleeping the night gets skipped. The night skip can be forced if more
-than 50% of the players are lying in bed and use this option.
-
-Another feature is a controlled respawning. If you have slept in bed (not just lying in
-it) your respawn point is set to the beds location and you will respawn there after
+To sleep, rightclick the bed.
+Another feature is a controlled respawning. If you have slept in bed your respawn point is set to the beds location and you will respawn there after
 death.
-You can disable the respawn at beds by setting "enable_bed_respawn = false" in
-minetest.conf.
-You can disable the night skip feature by setting "enable_bed_night_skip = false" in
-minetest.conf or by using the /set command in-game.
+Use the mcl_playersSleepingPercentage setting to enable/disable night skipping or set a percentage of how many players need to sleep to skip the night.

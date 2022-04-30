@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_fireworks")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local tt_help = S("Flight Duration:")
 local description = S("Firework Rocket")

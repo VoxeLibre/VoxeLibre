@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_farming")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Premature potato plants
 
@@ -67,11 +67,11 @@ minetest.register_node("mcl_farming:potato", {
 	inventory_image = "mcl_farming_potatoes_stage_3.png",
 	drop = {
 		items = {
-			{ items = {'mcl_farming:potato_item 1'} },
-			{ items = {'mcl_farming:potato_item 1'}, rarity = 2 },
-			{ items = {'mcl_farming:potato_item 1'}, rarity = 2 },
-			{ items = {'mcl_farming:potato_item 1'}, rarity = 2 },
-			{ items = {'mcl_farming:potato_item_poison 1'}, rarity = 50 }
+			{ items = {"mcl_farming:potato_item 1"} },
+			{ items = {"mcl_farming:potato_item 1"}, rarity = 2 },
+			{ items = {"mcl_farming:potato_item 1"}, rarity = 2 },
+			{ items = {"mcl_farming:potato_item 1"}, rarity = 2 },
+			{ items = {"mcl_farming:potato_item_poison 1"}, rarity = 50 }
 		}
 	},
 	selection_box = {
@@ -91,13 +91,13 @@ minetest.register_craftitem("mcl_farming:potato_item", {
 	_doc_items_longdesc = S("Potatoes are food items which can be eaten, cooked in the furnace and planted. Pigs like potatoes."),
 	_doc_items_usagehelp = S("Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant it. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it."),
 	inventory_image = "farming_potato.png",
-	groups = { food = 2, eatable = 1 },
+	groups = {food = 2, eatable = 1, compostability = 65},
 	_mcl_saturation = 0.6,
 	stack_max = 64,
 	on_secondary_use = minetest.item_eat(1),
 	on_place = function(itemstack, placer, pointed_thing)
 		local new = mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:potato_1")
-		if new ~= nil then
+		if new then
 			return new
 		else
 			return minetest.do_item_eat(1, nil, itemstack, placer, pointed_thing)
@@ -112,7 +112,7 @@ minetest.register_craftitem("mcl_farming:potato_item_baked", {
 	inventory_image = "farming_potato_baked.png",
 	on_place = minetest.item_eat(5),
 	on_secondary_use = minetest.item_eat(5),
-	groups = { food = 2, eatable = 5 },
+	groups = {food = 2, eatable = 5, compostability = 85},
 	_mcl_saturation = 6.0,
 })
 
