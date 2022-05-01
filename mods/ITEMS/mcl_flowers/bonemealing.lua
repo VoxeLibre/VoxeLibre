@@ -108,19 +108,18 @@ local function bonemeal_grass(pointed_thing, placer)
 	return true
 end
 
--- Overwrite "mcl_core:dirt_with_grass" bonemealing handler.
+-- Override "mcl_core:dirt_with_grass" bonemealing handler.
 local nodename = "mcl_core:dirt_with_grass"
 local olddef = minetest.registered_nodes[nodename]
 if not olddef then
 	minetest.log("warning", "'mcl_core:dirt_with_grass' not registered, cannot add override!")
 else
 	local oldhandler = olddef._mcl_on_bonemealing
-	local newdef = table.copy(olddef)
-	newdef._mcl_on_bonemealing = function (pointed_thing, placer)
+	local newhandler = function (pointed_thing, placer)
 		bonemeal_grass(pointed_thing, placer)
 		if oldhandler then
 			oldhandler(pointed_thing, placer)
 		end
 	end
-	minetest.register_node(":" .. nodename, newdef)
+	minetest.override_item(nodename, {_mcl_on_bonemealing = newhandler})
 end
