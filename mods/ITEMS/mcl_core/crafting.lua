@@ -126,9 +126,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_core:bone_block",
 	recipe = {
-		{ "mcl_dye:white", "mcl_dye:white", "mcl_dye:white" },
-		{ "mcl_dye:white", "mcl_dye:white", "mcl_dye:white" },
-		{ "mcl_dye:white", "mcl_dye:white", "mcl_dye:white" },
+		{ "mcl_bone_meal:bone_meal", "mcl_bone_meal:bone_meal", "mcl_bone_meal:bone_meal" },
+		{ "mcl_bone_meal:bone_meal", "mcl_bone_meal:bone_meal", "mcl_bone_meal:bone_meal" },
+		{ "mcl_bone_meal:bone_meal", "mcl_bone_meal:bone_meal", "mcl_bone_meal:bone_meal" },
 	},
 })
 
