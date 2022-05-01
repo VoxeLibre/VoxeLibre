@@ -11,7 +11,7 @@ local composter_description = S(
 	"Composter"
 )
 local composter_longdesc = S(
-	"Composters can convert various organic items into bonemeal."
+	"Composters can convert various organic items into bone meal."
 )
 local composter_usagehelp = S(
 	"Use organic items on the composter to fill it with layers of compost. " ..
@@ -83,7 +83,7 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 			-- get current compost level
 			local level = registered_nodes[node.name]["_mcl_compost_level"]
 			-- spawn green particles above new layer
-			mcl_dye.add_bone_meal_particle(vector_offset(pos, 0, level/8, 0))
+			mcl_bone_meal.add_bone_meal_particle(vector_offset(pos, 0, level/8, 0))
 			-- TODO: play some sounds
 			-- update composter block
 			if level < 7 then
@@ -138,8 +138,8 @@ local function composter_harvest(pos, node, player, itemstack, pointed_thing)
 	end
 	-- reset ready type composter to empty type
 	swap_node(pos, {name="mcl_composters:composter"})
-	-- spawn bone meal item (wtf dye?! is this how they make white cocoa)
-	add_item(pos, "mcl_dye:white")
+	-- spawn bone meal item
+	add_item(pos, "mcl_bone_meal:bone_meal")
 	-- TODO play some sounds
 	return itemstack
 end
@@ -170,7 +170,7 @@ end
 --
 minetest.register_node("mcl_composters:composter", {
 	description = composter_description,
-	_tt_help = S("Converts organic items into bonemeal"),
+	_tt_help = S("Converts organic items into bone meal"),
 	_doc_items_longdesc = composter_longdesc,
 	_doc_items_usagehelp = composter_usagehelp,
 	paramtype = "light",
