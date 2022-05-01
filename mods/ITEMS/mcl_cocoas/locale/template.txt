@@ -2,7 +2,7 @@
 Cocoa Beans=
 Grows at the side of jungle trees=
 Cocoa beans can be used to plant cocoa, bake cookies or craft brown dye.=
-Right click on the side of a jungle tree trunk (Jungle Wood) to plant a young cocoa.=
+Rightclick a sheep to turn its wool brown. Rightclick on the side of a jungle tree trunk (Jungle Wood) to plant a young cocoa.=
 Premature Cocoa Pod=
 Cocoa pods grow on the side of jungle trees in 3 stages.=
 Medium Cocoa Pod=
