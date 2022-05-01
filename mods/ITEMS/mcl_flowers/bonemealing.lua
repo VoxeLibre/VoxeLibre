@@ -99,6 +99,9 @@ local function bonemeal_grass(pointed_thing, placer)
 					math.random(1, 100) <= 90 / r then
 				color = below.param2
 				add_random_flower(pos, color)
+				if math.random(1,5) == 1 then
+					mcl_bone_meal.add_bone_meal_particle(pos)
+				end
 			end
 		end
 	end end end
