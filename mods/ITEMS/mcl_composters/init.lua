@@ -11,7 +11,7 @@ local composter_description = S(
 	"Composter"
 )
 local composter_longdesc = S(
-	"Composters can convert various organic items into bonemeal."
+	"Composters can convert various organic items into bone meal."
 )
 local composter_usagehelp = S(
 	"Use organic items on the composter to fill it with layers of compost. " ..
@@ -97,7 +97,7 @@ function composter_progress_chance(pos, node, chance)
 		-- get current compost level
 		local level = registered_nodes[node.name]["_mcl_compost_level"]
 		-- spawn green particles above new layer
-		mcl_dye.add_bone_meal_particle(vector_offset(pos, 0, level/8, 0))
+		mcl_bone_meal.add_bone_meal_particle(vector_offset(pos, 0, level/8, 0))
 		-- update composter block
 		if level < 7 then
 			level = level + 1
@@ -114,9 +114,7 @@ function composter_progress_chance(pos, node, chance)
 		-- the block will get updated by the node timer callback set in node reg def
 		if level == 7 then
 			local timer = get_node_timer(pos)
-			if not timer:is_started() then
-				timer:start(1)
-			end
+			timer:start(1)
 		end
 	end
 end
@@ -203,7 +201,7 @@ end
 --
 minetest.register_node("mcl_composters:composter", {
 	description = composter_description,
-	_tt_help = S("Converts organic items into bonemeal"),
+	_tt_help = S("Converts organic items into bone meal"),
 	_doc_items_longdesc = composter_longdesc,
 	_doc_items_usagehelp = composter_usagehelp,
 	paramtype = "light",
