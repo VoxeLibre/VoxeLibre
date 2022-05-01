@@ -136,22 +136,12 @@ function mcl_dye.register_on_bone_meal_apply(func)
 	minetest.log("warning", "mcl_dye.register_on_bone_meal_apply() is deprecated.  Read mcl_bone_meal/API.md!")
 	mcl_bone_meal.register_on_bone_meal_apply(func)
 end
-
-minetest.register_alias("mcl_dye:white", "mcl_bone_meal:bone_meal")
 -- End of legacy support
 
-minetest.register_craftitem("mcl_dye:brown", {
-	inventory_image = "mcl_dye_brown.png",
-	_tt_help = S("Grows at the side of jungle trees"),
-	_doc_items_longdesc = S("Cocoa beans are a brown dye and can be used to plant cocoas."),
-	_doc_items_usagehelp = S("Rightclick a sheep to turn its wool brown. Rightclick on the side of a jungle tree trunk (Jungle Wood) to plant a young cocoa."),
-	description = S("Cocoa Beans"),
-	stack_max = 64,
-	groups = dyelocal.dyes[12][4],
-	on_place = function(itemstack, placer, pointed_thing)
-		return mcl_cocoas.place(itemstack, placer, pointed_thing, "mcl_cocoas:cocoa_1")
-	end,
-})
+-- aliases for items that are used as dyes.
+minetest.register_alias("mcl_dye:white", "mcl_bone_meal:bone_meal")
+minetest.register_alias("mcl_dye:brown", "mcl_cocoas:cocoa_beans")
+
 
 -- Dye mixing
 minetest.register_craft({
