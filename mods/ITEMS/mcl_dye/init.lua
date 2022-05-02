@@ -61,41 +61,39 @@ mcl_dye.excolors = {"white", "lightgrey", "grey", "darkgrey", "black", "red", "o
 -- - unicolor_medium_<excolor>_s50
 -- - unicolor_dark_<excolor>_s50
 
--- Local stuff
-local dyelocal = {}
-
 -- This collection of colors is partly a historic thing, partly something else.
-dyelocal.dyes = {
-	{"white", "mcl_dye_white",	    S("Bone Meal"),     {dye=1, craftitem=1, basecolor_white=1,   excolor_white=1,     unicolor_white=1}},
-	{"grey", "dye_grey",      	    S("Light Grey Dye"),      {dye=1, craftitem=1, basecolor_grey=1,    excolor_grey=1,      unicolor_grey=1}},
-	{"dark_grey", "dye_dark_grey", 	    S("Grey Dye"), {dye=1, craftitem=1, basecolor_grey=1,    excolor_darkgrey=1,  unicolor_darkgrey=1}},
-	{"black", "mcl_dye_black",     	    S("Ink Sac"),     {dye=1, craftitem=1, basecolor_black=1,   excolor_black=1,     unicolor_black=1}},
-	{"violet", "dye_violet",    	    S("Purple Dye"),    {dye=1, craftitem=1, basecolor_magenta=1, excolor_violet=1,    unicolor_violet=1}},
-	{"blue", "mcl_dye_blue",      	    S("Lapis Lazuli"),      {dye=1, craftitem=1, basecolor_blue=1,    excolor_blue=1,      unicolor_blue=1}},
-	{"lightblue", "mcl_dye_light_blue", S("Light Blue Dye"),      {dye=1, craftitem=1, basecolor_blue=1,    excolor_blue=1,   unicolor_light_blue=1}},
-	{"cyan", "dye_cyan",      	    S("Cyan Dye"),      {dye=1, craftitem=1, basecolor_cyan=1,    excolor_cyan=1,      unicolor_cyan=1}},
-	{"dark_green", "dye_dark_green",    S("Cactus Green"),{dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_dark_green=1}},
-	{"green", "mcl_dye_lime",           S("Lime Dye"),     {dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_green=1}},
-	{"yellow", "dye_yellow",            S("Dandelion Yellow"),    {dye=1, craftitem=1, basecolor_yellow=1,  excolor_yellow=1,    unicolor_yellow=1}},
-	{"brown", "mcl_dye_brown",          S("Cocoa Beans"),     {dye=1, craftitem=1, basecolor_brown=1,  excolor_orange=1,    unicolor_dark_orange=1, compostability = 65}},
-	{"orange", "dye_orange",            S("Orange Dye"),    {dye=1, craftitem=1, basecolor_orange=1,  excolor_orange=1,    unicolor_orange=1}},
-	{"red", "dye_red",                  S("Rose Red"),       {dye=1, craftitem=1, basecolor_red=1,     excolor_red=1,       unicolor_red=1}},
-	{"magenta", "dye_magenta",          S("Magenta Dye"),   {dye=1, craftitem=1, basecolor_magenta=1, excolor_red_violet=1,unicolor_red_violet=1}},
-	{"pink", "dye_pink",                S("Pink Dye"),      {dye=1, craftitem=1, basecolor_red=1,     excolor_red=1,       unicolor_light_red=1}},
+local dyes = {
+	{"white",	S("White Dye"),		{basecolor_white=1,   excolor_white=1,     unicolor_white=1}},
+	{"grey",	S("Light Grey Dye"),	{basecolor_grey=1,    excolor_grey=1,      unicolor_grey=1}},
+	{"dark_grey",	S("Grey Dye"),		{basecolor_grey=1,    excolor_darkgrey=1,  unicolor_darkgrey=1}},
+	{"black",	S("Black Dye"),		{basecolor_black=1,   excolor_black=1,     unicolor_black=1}},
+	{"violet",	S("Purple Dye"),	{basecolor_magenta=1, excolor_violet=1,    unicolor_violet=1}},
+	{"blue",	S("Blue Dye"),		{basecolor_blue=1,    excolor_blue=1,      unicolor_blue=1}},
+	{"lightblue",	S("Light Blue Dye"),	{basecolor_blue=1,    excolor_blue=1,      unicolor_light_blue=1}},
+	{"cyan",	S("Cyan Dye"),		{basecolor_cyan=1,    excolor_cyan=1,      unicolor_cyan=1}},
+	{"dark_green",	S("Cactus Green"),	{basecolor_green=1,   excolor_green=1,     unicolor_dark_green=1}},
+	{"green",	S("Lime Dye"),		{basecolor_green=1,   excolor_green=1,     unicolor_green=1}},
+	{"yellow",	S("Dandelion Yellow"),	{basecolor_yellow=1,  excolor_yellow=1,    unicolor_yellow=1}},
+	{"brown",	S("Brown Dye"),		{basecolor_brown=1,   excolor_orange=1,    unicolor_dark_orange=1}},
+	{"orange",	S("Orange Dye"),	{basecolor_orange=1,  excolor_orange=1,    unicolor_orange=1}},
+	{"red",		S("Rose Red"),		{basecolor_red=1,     excolor_red=1,       unicolor_red=1}},
+	{"magenta",	S("Magenta Dye"),	{basecolor_magenta=1, excolor_red_violet=1,unicolor_red_violet=1}},
+	{"pink",	S("Pink Dye"),		{basecolor_red=1,     excolor_red=1,       unicolor_light_red=1}},
 }
 
-dyelocal.unicolor_to_dye_id = {}
-for d=1, #dyelocal.dyes do
-	for k, _ in pairs(dyelocal.dyes[d][4]) do
+local unicolor_to_dye_id = {}
+for d = 1, #dyes do
+	for k, _ in pairs(dyes[d][3]) do
 		if string.sub(k, 1, 9) == "unicolor_" then
-			dyelocal.unicolor_to_dye_id[k] = dyelocal.dyes[d][1]
+			unicolor_to_dye_id[k] = dyes[d][1]
 		end
 	end
 end
 
--- Takes an unicolor group name (e.g. “unicolor_white”) and returns a corresponding dye name (if it exists), nil otherwise.
+-- Takes an unicolor group name (e.g. “unicolor_white”) and returns a
+-- corresponding dye name (if it exists), nil otherwise.
 function mcl_dye.unicolor_to_dye(unicolor_group)
-	local color = dyelocal.unicolor_to_dye_id[unicolor_group]
+	local color = unicolor_to_dye_id[unicolor_group]
 	if color then
 		return "mcl_dye:" .. color
 	else
@@ -104,24 +102,17 @@ function mcl_dye.unicolor_to_dye(unicolor_group)
 end
 
 -- Define items
-for _, row in ipairs(dyelocal.dyes) do
-	local name = row[1]
-	-- White dye is an alias and brown dye is defined explicitly below
-	if name ~= "white" and name ~= "brown" then
-		local img = row[2]
-		local description = row[3]
-		local groups = row[4]
-		local item_name = "mcl_dye:"..name
-		local item_image = img..".png"
-		minetest.register_craftitem(item_name, {
-			inventory_image = item_image,
-			description = description,
-			_doc_items_longdesc = S("This item is a dye which is used for dyeing and crafting."),
-			_doc_items_usagehelp = S("Rightclick on a sheep to dye its wool. Other things are dyed by crafting."),
-			groups = groups,
-			stack_max = 64,
-		})
-	end
+for _, row in ipairs(dyes) do
+	local groups = row[3]
+	groups.dye = 1
+	groups.craftitem = 1
+	minetest.register_craftitem("mcl_dye:" .. row[1], {
+		inventory_image = "mcl_dye_" .. row[1] .. ".png",
+		description = row[2],
+		_doc_items_longdesc = S("This item is a dye which is used for dyeing and crafting."),
+		_doc_items_usagehelp = S("Rightclick on a sheep to dye its wool. Other things are dyed by crafting."),
+		groups = groups,
+	})
 end
 
 -- Legacy support for things now in mcl_bone_meal.
@@ -137,11 +128,6 @@ function mcl_dye.register_on_bone_meal_apply(func)
 	mcl_bone_meal.register_on_bone_meal_apply(func)
 end
 -- End of legacy support
-
--- aliases for items that are used as dyes.
-minetest.register_alias("mcl_dye:white", "mcl_bone_meal:bone_meal")
-minetest.register_alias("mcl_dye:brown", "mcl_cocoas:cocoa_beans")
-
 
 -- Dye mixing
 minetest.register_craft({
@@ -207,12 +193,24 @@ minetest.register_craft({
 
 -- Dye creation
 minetest.register_craft({
+	output = "mcl_dye:black",
+	recipe = {{"mcl_mobitems:ink_sac"}},
+})
+minetest.register_craft({
+	output = "mcl_dye:white",
+	recipe = {{"mcl_bone_meal:bone_meal"}},
+})
+minetest.register_craft({
 	output = "mcl_dye:yellow",
 	recipe = {{"mcl_flowers:dandelion"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:yellow 2",
 	recipe = {{"mcl_flowers:sunflower"}},
+})
+minetest.register_craft({
+	output = "mcl_dye:blue",
+	recipe = {{"mcl_core:lapis"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:lightblue",
@@ -237,6 +235,10 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_dye:magenta 2",
 	recipe = {{"mcl_flowers:lilac"}},
+})
+minetest.register_craft({
+	output = "mcl_dye:brown",
+	recipe = {{"mcl_cocoas:cocoa_beans"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:orange",
