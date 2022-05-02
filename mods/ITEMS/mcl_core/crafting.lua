@@ -298,14 +298,14 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_core:lapisblock",
 	recipe = {
-		{"mcl_dye:blue", "mcl_dye:blue", "mcl_dye:blue"},
-		{"mcl_dye:blue", "mcl_dye:blue", "mcl_dye:blue"},
-		{"mcl_dye:blue", "mcl_dye:blue", "mcl_dye:blue"},
+		{"mcl_core:lapis", "mcl_core:lapis", "mcl_core:lapis"},
+		{"mcl_core:lapis", "mcl_core:lapis", "mcl_core:lapis"},
+		{"mcl_core:lapis", "mcl_core:lapis", "mcl_core:lapis"},
 	}
 })
 
 minetest.register_craft({
-	output = "mcl_dye:blue 9",
+	output = "mcl_core:lapis 9",
 	recipe = {
 		{"mcl_core:lapisblock"},
 	}
