@@ -41,7 +41,7 @@ local function apply_bonemeal(pos, schematic, offset)
 		end
 		local minp = vector.offset(pos, -3, 3, -3)
 		local maxp = vector.offset(pos, 3, 8, 3)
-		local diff = maxp - minp
+		local diff = vector.subtract(maxp, minp)
 		local goodnodes = minetest.find_nodes_in_area(minp, maxp, {"air", "group:leaves"})
 		if #goodnodes < (diff.x + 1) * (diff.y + 1) * (diff.z + 1) then
 			return false
