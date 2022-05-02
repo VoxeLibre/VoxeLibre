@@ -40,7 +40,7 @@ mobs:register_mob("mobs_mc:squid", {
 		run_end = 60,
 	},
     drops = {
-		{name = mobs_mc.items.black_dye,
+		{name = mobs_mc.items.ink_sac,
 		chance = 1,
 		min = 1,
 		max = 3,
