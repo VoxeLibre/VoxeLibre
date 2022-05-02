@@ -280,9 +280,6 @@ function mcl_enchanting.initialize()
 			if new_def._mcl_armor_texture and not type(new_def._mcl_armor_texture) == "function" then
 				new_def._mcl_armor_texture = new_def._mcl_armor_texture .. mcl_enchanting.overlay
 			end
-			if new_def._mcl_armor_preview and not type(new_def._mcl_armor_preview) == "function" then
-				new_def._mcl_armor_preview = new_def._mcl_armor_preview .. mcl_enchanting.overlay
-			end
 
 			new_def._mcl_enchanting_enchanted_tool = new_name
 			new_def.after_use = get_after_use_callback(itemdef)

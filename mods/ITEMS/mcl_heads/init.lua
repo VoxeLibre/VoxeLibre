@@ -113,7 +113,6 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 		_mcl_armor_mob_range_factor = rangefactor,
 		_mcl_armor_element = "head",
 		_mcl_armor_texture = "mcl_heads_" .. name .. ".png",
-		_mcl_armor_preview = "mcl_heads_" .. name .. "_preview.png",
 		_mcl_blast_resistance = 1,
 		_mcl_hardness = 1,
 	})

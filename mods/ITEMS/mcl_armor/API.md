@@ -48,7 +48,7 @@ mcl_armor.register_set({
 	enchantability = 15,
 
 	--this define how much each piece of armor protect the player
-	--these points will be shown in the HUD (chestplate bar above the health bar) 
+	--these points will be shown in the HUD (chestplate bar above the health bar)
 	points = {
 		head = 1,
 		torso = 3,
@@ -85,16 +85,6 @@ mcl_armor.register_set({
 				return "dummy_texture.png"
 			end
 		end,
-	},
-
-	--WARNING: 2d preview is deprecated and will be removed soon
-	--specify textures that will be shown in player inventory then you disabled the 3d player inventory preview
-	--its similar to how works the textures field
-	previews = {
-		head = "dummy_texture.png",  --default: "<modname>_helmet_<material>_preview.png"
-		torso = "dummy_texture.png", --default: "<modname>_chestplate_<material>_preview.png"
-		legs = "dummy_texture.png",  --default: "<modname>_leggings_<material>_preview.png"
-		feet = "dummy_texture.png",  --default: "<modname>_boots_<material>_preview.png"
 	},
 
 	--inventory textures aren't definable using a table similar to textures or previews
@@ -134,12 +124,12 @@ mcl_armor.register_set({
 	craft_material = "mcl_mobitems:leather",
 
 	--this is used to generate cooking crafts for each piece of armor
-	--if set to nil no craft will be added 
+	--if set to nil no craft will be added
 	cook_material = "mcl_core:gold_nugget", --cooking any piece of this armor will output a gold nugged
 
 	--this is used for allowing each piece of the armor to be repaired by using an anvil with repair_material as aditionnal material
 	--it basicaly set the _repair_material item field of each piece of the armor
-	--if set to nil no repair material will be added 
+	--if set to nil no repair material will be added
 	repair_material = "mcl_core:iron_ingot",
 })
 ```
@@ -179,7 +169,7 @@ minetest.register_tool("dummy_mod:random_armor", {
 	},
 
 	--these fields should be initialised like that in most cases
-	--mcl_armor.equip_on_use is a function that try to equip the piece of armor you have in hand inside the right armor slot if the slot is empty 
+	--mcl_armor.equip_on_use is a function that try to equip the piece of armor you have in hand inside the right armor slot if the slot is empty
 	on_place = mcl_armor.equip_on_use,
 	on_secondary_use = mcl_armor.equip_on_use,
 
@@ -263,7 +253,7 @@ mcl_armor.register_protection_enchantment({
 	max_level = 4,
 
 	--which enchants this enchant will not be compatible with
-	--each of these values is a enchant id 
+	--each of these values is a enchant id
 	incompatible = {blast_protection = true, fire_protection = true, projectile_protection = true},
 
 	--how much will the enchant consume from the enchantability group of the armor item
@@ -284,7 +274,7 @@ mcl_armor.register_protection_enchantment({
 	factor = 1,
 
 	--restrict damage to one type
-	--allow the enchant to only protect of one type of damage 
+	--allow the enchant to only protect of one type of damage
 	damage_type = "magic",
 
 	--restrict damage to one category
