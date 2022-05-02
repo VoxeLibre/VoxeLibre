@@ -201,9 +201,9 @@ local function register_sapling(subname, description, longdesc, tt_help, texture
 			local node_below = minetest.get_node_or_nil({x=pos.x,y=pos.y-1,z=pos.z})
 			if not node_below then return false end
 			local nn = node_below.name
-			return ((minetest.get_item_group(nn, "grass_block") == 1) or
-					nn=="mcl_core:podzol" or nn=="mcl_core:podzol_snow" or
-					nn=="mcl_core:dirt")
+			return minetest.get_item_group(nn, "grass_block") == 1 or
+					nn == "mcl_core:podzol" or nn == "mcl_core:podzol_snow" or
+					nn == "mcl_core:dirt" or nn == "mcl_core:mycelium" or nn == "mcl_core:coarse_dirt"
 		end),
 		node_placement_prediction = "",
 		_mcl_blast_resistance = 0,

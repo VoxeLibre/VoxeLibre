@@ -395,8 +395,9 @@ mobs:register_mob("mobs_mc:enderman", {
 				local node = minetest.get_node(take_pos)
 				-- Don't destroy protected stuff.
 				if not minetest.is_protected(take_pos, "") then
-					local dug = minetest.dig_node(take_pos)
-					if dug then
+					minetest.remove_node(take_pos)
+					local dug = minetest.get_node_or_nil(take_pos)
+					if dug and dug.name == "air" then
 						if mobs_mc.enderman_replace_on_take[node.name] then
 							self._taken_node = mobs_mc.enderman_replace_on_take[node.name]
 						else

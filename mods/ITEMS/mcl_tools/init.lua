@@ -191,7 +191,7 @@ local function make_grass_path(itemstack, placer, pointed_thing)
 		return itemstack
 	end
 
-	if (minetest.get_item_group(node.name, "grass_block") == 1) then
+	if (minetest.get_item_group(node.name, "path_creation_possible") == 1) then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
 		if minetest.get_node(above).name == "air" then
@@ -238,7 +238,7 @@ if minetest.get_modpath("mcl_farming") then
 			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = pointed_thing.above}, true)
 			local dir = vector.subtract(pointed_thing.under, pointed_thing.above)
 			local param2 = minetest.dir_to_facedir(dir)
-			minetest.swap_node(pointed_thing.under, {name="mcl_farming:pumpkin_face", param2 = param2})
+			minetest.set_node(pointed_thing.under, {name="mcl_farming:pumpkin_face", param2 = param2})
 			minetest.add_item(pointed_thing.above, "mcl_farming:pumpkin_seeds 4")
 		end
 		return itemstack

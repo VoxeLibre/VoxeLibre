@@ -3538,7 +3538,7 @@ local function register_decorations()
 	-- Pumpkin
 	minetest.register_decoration({
 		deco_type = "simple",
-		decoration = "mcl_farming:pumpkin_face",
+		decoration = "mcl_farming:pumpkin",
 		param2 = 0,
 		param2_max = 3,
 		place_on = {"group:grass_block_no_snow"},
