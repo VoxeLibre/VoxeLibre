@@ -1,15 +1,15 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 local sounds = mcl_sounds.node_sound_glass_defaults({
-	footstep = {name = "amethyst_walk",  gain = 0.4},
-	dug      = {name = "amethyst_break", gain = 0.44},
+	footstep = {name = "mcl_amethyst_amethyst_walk",  gain = 0.4},
+	dug      = {name = "mcl_amethyst_amethyst_break", gain = 0.44},
 })
 
 -- Amethyst block
 minetest.register_node("mcl_amethyst:amethyst_block",{
 	description = S("Block of Amethyst"),
 	_doc_items_longdesc = S("The Block of Amethyst is a decoration block crafted from amethyst shards."),
-	tiles = {"amethyst_block.png"},
+	tiles = {"mcl_amethyst_amethyst_block.png"},
 	groups = {pickaxey = 1, building_block = 1},
 	sounds = sounds,
 	is_ground_content = true,
@@ -20,7 +20,7 @@ minetest.register_node("mcl_amethyst:amethyst_block",{
 minetest.register_node("mcl_amethyst:budding_amethyst_block",{
 	description = S("Budding Amethyst"),
 	_doc_items_longdesc = S("The Budding Amethyst can grow amethyst"),
-	tiles = {"budding_amethyst.png"},
+	tiles = {"mcl_amethyst_budding_amethyst.png"},
 	drop = "",
 	groups = {
 		pickaxey = 1,
@@ -39,7 +39,7 @@ mcl_wip.register_wip_item("mcl_amethyst:budding_amethyst_block")
 minetest.register_craftitem("mcl_amethyst:amethyst_shard",{
 	description = S("Amethyst Shard"),
 	_doc_items_longdesc = S("An amethyst shard is a crystalline mineral."),
-	inventory_image = "amethyst_shard.png",
+	inventory_image = "mcl_amethyst_amethyst_shard.png",
 	groups = {craftitem = 1},
 })
 
@@ -47,11 +47,8 @@ minetest.register_craftitem("mcl_amethyst:amethyst_shard",{
 minetest.register_node("mcl_amethyst:calcite",{
 	description = S("Calcite"),
 	_doc_items_longdesc = S("Calcite can be found as part of amethyst geodes."),
-	tiles = {"calcite.png"},
-	groups = {
-		pickaxey = 1,
-		building_block = 1,
-	},
+	tiles = {"mcl_amethyst_calcite_block.png"},
+	groups = {pickaxey = 1, building_block = 1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = true,
 	_mcl_hardness = 0.75,
@@ -62,7 +59,7 @@ minetest.register_node("mcl_amethyst:calcite",{
 minetest.register_node("mcl_amethyst:tinted_glass",{
 	description = S("Tinted Glass"),
 	_doc_items_longdesc = S("Tinted Glass is a type of glass which blocks lights while it is visually transparent."),
-	tiles = {"tinted_glass.png"},
+	tiles = {"mcl_amethyst_tinted_glass.png"},
 	_mcl_hardness = 0.3,
 	_mcl_blast_resistance = 0.3,
 	drawtype = "glasslike",
@@ -104,8 +101,8 @@ local bud_def = {
 for _, def in pairs(bud_def) do
 	local size = def.size
 	local name = "mcl_amethyst:" .. size .. "_amethyst_bud"
-	local tile = size .. "_amethyst_bud.png"
-	local inventory_image = size .. "_amethyst_bud.png"
+	local tile = "mcl_amethyst_amethyst_bud_" .. size .. ".png"
+	local inventory_image = "mcl_amethyst_amethyst_bud_" .. size .. ".png"
 	minetest.register_node(name, {
 		description = def.description,
 		_doc_items_longdesc = def.longdesc,
@@ -141,7 +138,7 @@ for _, def in pairs(bud_def) do
 end
 
 minetest.register_node("mcl_amethyst:amethyst_cluster",{
-	description = "Amethyst Cluster",
+	description = S("Amethyst Cluster"),
 	_doc_items_longdesc = S("Amethyst Cluster is the final growth of amethyst bud."),
 	drop = {
 		max_items = 1,
@@ -155,8 +152,8 @@ minetest.register_node("mcl_amethyst:amethyst_cluster",{
 			},
 		}
 	},
-	tiles = {"amethyst_cluster.png",},
-	inventory_image = "amethyst_cluster.png",
+	tiles = {"mcl_amethyst_amethyst_cluster.png",},
+	inventory_image = "mcl_amethyst_amethyst_cluster.png",
 	paramtype2 = "wallmounted",
 	drawtype = "plantlike",
 	paramtype1 = "light",
