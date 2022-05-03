@@ -66,7 +66,7 @@ minetest.register_node("mcl_deepslate:tuff", {
 	_mcl_silk_touch_drop = true,
 })
 
-local function register_deepslate_ore(desc, drop, pick, xp)
+local function register_deepslate_ore(desc, drop, cooked, pick, xp)
 	local item = desc:lower()
 	local item_string
 	if item == "lapis lazuli" then
@@ -74,7 +74,8 @@ local function register_deepslate_ore(desc, drop, pick, xp)
 	else
 		item_string = item
 	end
-	minetest.register_node("mcl_deepslate:deepslate_with_"..item_string, {
+	local nodename = "mcl_deepslate:deepslate_with_"..item_string
+	minetest.register_node(nodename, {
 		description = S("Deepslate "..desc.." Ore"),
 		_doc_items_longdesc = S("Deepslate "..item.." ore is a variant of "..item.." ore that can generate in deepslate and tuff blobs."),
 		_doc_items_hidden = false,
@@ -89,30 +90,40 @@ local function register_deepslate_ore(desc, drop, pick, xp)
 		_mcl_silk_touch_drop = true,
 		_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 	})
+
+	minetest.register_craft({
+		type = "cooking",
+		output = cooked,
+		recipe = nodename,
+		cooktime = 10,
+	})
 end
 
+local lapis_drops = {
+	max_items = 1, items = {
+		{ items = { "mcl_dye:blue 8" }, rarity = 5 },
+		{ items = { "mcl_dye:blue 7" }, rarity = 5 },
+		{ items = { "mcl_dye:blue 6" }, rarity = 5 },
+		{ items = { "mcl_dye:blue 5" }, rarity = 5 },
+		{ items = { "mcl_dye:blue 4" } }
+	}
+}
+
 local deepslate_ores = {
-	{ "Coal", "mcl_core:coal_lump", 1, 1 },
-	{ "Iron", "mcl_raw_ores:raw_iron", 3, 0 },
-	{ "Gold", "mcl_raw_ores:raw_gold", 4, 0 },
-	{ "Emerald", "mcl_core:emerald", 4, 6 },
-	{ "Diamond", "mcl_core:diamond", 4, 4 },
-	{ "Lapis Lazuli", { max_items = 1, items = {
-			{ items = { "mcl_dye:blue 8" }, rarity = 5 },
-			{ items = { "mcl_dye:blue 7" }, rarity = 5 },
-			{ items = { "mcl_dye:blue 6" }, rarity = 5 },
-			{ items = { "mcl_dye:blue 5" }, rarity = 5 },
-			{ items = { "mcl_dye:blue 4" } },
-		}
-	}, 3, 6 },
+	{ "Coal", "mcl_core:coal_lump", "mcl_core:coal_lump", 1, 1 },
+	{ "Iron", "mcl_raw_ores:raw_iron", "mcl_core:iron_ingot", 3, 0 },
+	{ "Gold", "mcl_raw_ores:raw_gold", "mcl_core:gold_ingot", 4, 0 },
+	{ "Emerald", "mcl_core:emerald", "mcl_core:emerald", 4, 6 },
+	{ "Diamond", "mcl_core:diamond", "mcl_core:diamond", 4, 4 },
+	{ "Lapis Lazuli", lapis_drops, "mcl_dye:blue", 3, 6 },
 }
 
 for _, p in pairs(deepslate_ores) do
-	register_deepslate_ore(p[1], p[2], p[3], p[4])
+	register_deepslate_ore(p[1], p[2], p[3], p[4], p[5])
 end
 
 if copper_mod then
-	register_deepslate_ore("Copper", "mcl_copper:raw_copper", 4, 4)
+	register_deepslate_ore("Copper", "mcl_copper:raw_copper", "mcl_copper:copper_ingot", 4, 4)
 end
 
 local redstone_timer = 68.28
@@ -184,7 +195,14 @@ minetest.register_node("mcl_deepslate:deepslate_with_redstone_lit", {
 		items = { "mesecons:redstone" },
 		min_count = 4,
 		max_count = 5,
-	}
+	},
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "mesecons:redstone",
+	recipe = "mcl_deepslate:deepslate_with_redstone",
+	cooktime = 10,
 })
 
 --[[ Commented out for now because there the discussion how to handle this is ongoing
