@@ -1,5 +1,3 @@
-local S = minetest.get_translator(minetest.get_current_modname())
-
 local interval = 10
 local chance = 5
 
@@ -28,12 +26,12 @@ minetest.register_abm({
 })
 
 local all_directions = {
-	vector.new(1,0,0),
-	vector.new(0,1,0),
-	vector.new(0,0,1),
-	vector.new(-1,0,0),
-	vector.new(0,-1,0),
-	vector.new(0,0,-1),
+	vector.new(1, 0, 0),
+	vector.new(0, 1, 0),
+	vector.new(0, 0, 1),
+	vector.new(-1, 0, 0),
+	vector.new(0, -1, 0),
+	vector.new(0, 0, -1),
 }
 
 minetest.register_abm({
