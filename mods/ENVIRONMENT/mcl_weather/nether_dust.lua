@@ -28,7 +28,7 @@ local function check_player(player)
 end
 
 mcl_weather.nether_dust.add_particlespawners = function(player)
-	local name=player:get_player_name(name)
+	local name=player:get_player_name()
 	mcl_weather.nether_dust.particlespawners[name]={}
 	psdef.playername = name
 	psdef.attached = player
