@@ -61,3 +61,4 @@ Achievement “@1” does not exist.=Auszeichnung »@1« existiert nicht.
 Write something in chat.=Schreiben Sie etwas in den Chat.
 Write @1 chat messages.=Schreiben Sie @1 Chatnachrichten.
 @1/@2 chat messages=@1/@2 Chatnachrichten
+Awards are disabled, enable them first by using /awards enable!=Ihre Auszeichnungen sind aktuell deaktiviert, bitte aktivieren Sie diese zuerst indem Sie /awards enable ausführen bevor Sie diesen Befehl erneut verwenden!

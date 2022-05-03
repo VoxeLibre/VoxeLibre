@@ -61,3 +61,4 @@ Achievement “@1” does not exist.=
 @1 has made the achievement @2=
 Mine a block: @1=
 Mine blocks: @1×@2=
+Awards are disabled, enable them first by using /awards enable!=
