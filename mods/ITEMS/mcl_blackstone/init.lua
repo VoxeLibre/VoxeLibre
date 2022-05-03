@@ -1,23 +1,10 @@
 local S = minetest.get_translator("mcl_blackstone")
-local N = function(s) return s end
-local LIGHT_TORCH = 10
 
-stairs = {}
 
---nodes
-local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
 local on_rotate
-if mod_screwdriver then
+if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.rotate_3way
 end
-local alldirs = {
-	vector.new(1,0,0),
-	vector.new(0,1,0),
-	vector.new(0,0,1),
-	vector.new(-1,0,0),
-	vector.new(0,-1,0),
-	vector.new(0,0,-1)
-}
 
 --Blocks
 minetest.register_node("mcl_blackstone:blackstone", {
