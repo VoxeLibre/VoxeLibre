@@ -25,11 +25,11 @@ minetest.register_node("mcl_blackstone:blackstone_gilded", {
 	drop = {
 		max_items = 1,
 		items = {
-			{items = {'mcl_core:gold_nugget 2'},rarity = 5},
-			{items = {'mcl_core:gold_nugget 3'},rarity = 5},
-			{items = {'mcl_core:gold_nugget 4'},rarity = 5},
-			{items = {'mcl_core:gold_nugget 5'},rarity = 5},
-			{items = {'mcl_blackstone:blackstone_gilded'}, rarity = 8},
+			{items = {"mcl_core:gold_nugget 2"},rarity = 5},
+			{items = {"mcl_core:gold_nugget 3"},rarity = 5},
+			{items = {"mcl_core:gold_nugget 4"},rarity = 5},
+			{items = {"mcl_core:gold_nugget 5"},rarity = 5},
+			{items = {"mcl_blackstone:blackstone_gilded"}, rarity = 8},
 		}
 	},
 	_mcl_blast_resistance = 2,
@@ -46,11 +46,11 @@ minetest.register_node("mcl_blackstone:nether_gold", {
 	drop = {
 		max_items = 1,
 		items = {
-			{items = {'mcl_core:gold_nugget 2'},rarity = 5},
-			{items = {'mcl_core:gold_nugget 3'},rarity = 5},
-			{items = {'mcl_core:gold_nugget 4'},rarity = 5},
-			{items = {'mcl_core:gold_nugget 5'},rarity = 5},
-			{items = {'mcl_blackstone:nether_gold'}, rarity = 8},
+			{items = {"mcl_core:gold_nugget 2"},rarity = 5},
+			{items = {"mcl_core:gold_nugget 3"},rarity = 5},
+			{items = {"mcl_core:gold_nugget 4"},rarity = 5},
+			{items = {"mcl_core:gold_nugget 5"},rarity = 5},
+			{items = {"mcl_blackstone:nether_gold"}, rarity = 8},
 		}
 	},
 	_mcl_blast_resistance = 2,
@@ -233,71 +233,71 @@ minetest.register_abm({
 
 --crafting
 minetest.register_craft({
-	output = 'mcl_blackstone:blackstone_polished 4',
+	output = "mcl_blackstone:blackstone_polished 4",
 	recipe = {
-		{'mcl_blackstone:blackstone','mcl_blackstone:blackstone'},
-		{'mcl_blackstone:blackstone','mcl_blackstone:blackstone'},
+		{"mcl_blackstone:blackstone","mcl_blackstone:blackstone"},
+		{"mcl_blackstone:blackstone","mcl_blackstone:blackstone"},
 	}
 })
 minetest.register_craft({
-	output = 'mcl_blackstone:basalt_polished 4',
+	output = "mcl_blackstone:basalt_polished 4",
 	recipe = {
-		{'mcl_blackstone:basalt','mcl_blackstone:basalt'},
-		{'mcl_blackstone:basalt','mcl_blackstone:basalt'},
+		{"mcl_blackstone:basalt","mcl_blackstone:basalt"},
+		{"mcl_blackstone:basalt","mcl_blackstone:basalt"},
 	}
 })
 minetest.register_craft({
-	output = 'mcl_blackstone:blackstone_chiseled_polished 2',
+	output = "mcl_blackstone:blackstone_chiseled_polished 2",
 	recipe = {
-		{'mcl_blackstone:blackstone_polished'},
-		{'mcl_blackstone:blackstone_polished'},
+		{"mcl_blackstone:blackstone_polished"},
+		{"mcl_blackstone:blackstone_polished"},
 	}
 })
 minetest.register_craft({
-	output = 'mcl_blackstone:blackstone_brick_polished 4',
+	output = "mcl_blackstone:blackstone_brick_polished 4",
 	recipe = {
-		{'mcl_blackstone:blackstone_polished','mcl_blackstone:blackstone_polished'},
-		{'mcl_blackstone:blackstone_polished','mcl_blackstone:blackstone_polished'},
+		{"mcl_blackstone:blackstone_polished","mcl_blackstone:blackstone_polished"},
+		{"mcl_blackstone:blackstone_polished","mcl_blackstone:blackstone_polished"},
 	}
 })
 minetest.register_craft({
-	output = 'mcl_tools:pick_stone',
+	output = "mcl_tools:pick_stone",
 	recipe = {
-		{'mcl_blackstone:blackstone', 'mcl_blackstone:blackstone', 'mcl_blackstone:blackstone'},
-		{'', 'mcl_core:stick', ''},
-		{'', 'mcl_core:stick', ''},
+		{"mcl_blackstone:blackstone", "mcl_blackstone:blackstone", "mcl_blackstone:blackstone"},
+		{"", "mcl_core:stick", ""},
+		{"", "mcl_core:stick", ""},
 	}
 })
 minetest.register_craft({
-	output = 'mcl_tools:axe_stone',
+	output = "mcl_tools:axe_stone",
 	recipe = {
-		{'mcl_blackstone:blackstone', 'mcl_blackstone:blackstone'},
-		{'mcl_blackstone:blackstone', 'mcl_core:stick'},
-		{'', 'mcl_core:stick'},
+		{"mcl_blackstone:blackstone", "mcl_blackstone:blackstone"},
+		{"mcl_blackstone:blackstone", "mcl_core:stick"},
+		{"", "mcl_core:stick"},
 	}
 })
 minetest.register_craft({
-	output = 'mcl_tools:axe_stone',
+	output = "mcl_tools:axe_stone",
 	recipe = {
-		{'mcl_blackstone:blackstone', 'mcl_blackstone:blackstone'},
-		{'mcl_core:stick',  'mcl_blackstone:blackstone'},
-		{'', 'mcl_core:stick'},
+		{"mcl_blackstone:blackstone", "mcl_blackstone:blackstone"},
+		{"mcl_core:stick",  "mcl_blackstone:blackstone"},
+		{"", "mcl_core:stick"},
 	}
 })
 minetest.register_craft({
-	output = 'mcl_tools:shovel_stone',
+	output = "mcl_tools:shovel_stone",
 	recipe = {
-		{'mcl_blackstone:blackstone'},
-		{'mcl_core:stick'},
-		{'mcl_core:stick'},
+		{"mcl_blackstone:blackstone"},
+		{"mcl_core:stick"},
+		{"mcl_core:stick"},
 	}
 })
 minetest.register_craft({
-	output = 'mcl_tools:sword_stone',
+	output = "mcl_tools:sword_stone",
 	recipe = {
-		{'mcl_blackstone:blackstone'},
-		{'mcl_blackstone:blackstone'},
-		{'mcl_core:stick'},
+		{"mcl_blackstone:blackstone"},
+		{"mcl_blackstone:blackstone"},
+		{"mcl_core:stick"},
 	}
 })
 minetest.register_craft({
@@ -320,33 +320,33 @@ minetest.register_craft({
 	output = "mcl_furnaces:furnace",
 	recipe = {
 		{"mcl_blackstone:blackstone", "mcl_blackstone:blackstone", "mcl_blackstone:blackstone"},
-		{"mcl_blackstone:blackstone", "",			   "mcl_blackstone:blackstone"},
+		{"mcl_blackstone:blackstone", "", "mcl_blackstone:blackstone"},
 		{"mcl_blackstone:blackstone", "mcl_blackstone:blackstone", "mcl_blackstone:blackstone"}
 	}
 })
 minetest.register_craft({
-	output = 'mcl_blackstone:quartz_brick 4',
+	output = "mcl_blackstone:quartz_brick 4",
 	recipe = {
-		{'mcl_nether:quartz_block','mcl_nether:quartz_block'},
-		{'mcl_nether:quartz_block','mcl_nether:quartz_block'},
+		{"mcl_nether:quartz_block","mcl_nether:quartz_block"},
+		{"mcl_nether:quartz_block","mcl_nether:quartz_block"},
 	}
 })
 minetest.register_craft({
 	type = "cooking",
-	output = 'mcl_core:gold_ingot',
-	recipe = 'mcl_blackstone:nether_gold',
+	output = "mcl_core:gold_ingot",
+	recipe = "mcl_blackstone:nether_gold",
 	cooktime = 10,
 })
 minetest.register_craft({
 	type = "cooking",
-	output = 'mcl_core:gold_ingot',
-	recipe = 'mcl_blackstone:blackstone_gilded',
+	output = "mcl_core:gold_ingot",
+	recipe = "mcl_blackstone:blackstone_gilded",
 	cooktime = 10,
 })
 minetest.register_craft({
 	type = "cooking",
-	output = 'mcl_nether:quartz_smooth',
-	recipe = 'mcl_nether:quartz_block',
+	output = "mcl_nether:quartz_smooth",
+	recipe = "mcl_nether:quartz_block",
 	cooktime = 10,
 })
 --[[ Commented out for now because there the discussion how to handle this is ongoing]
