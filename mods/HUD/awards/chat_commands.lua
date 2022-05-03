@@ -21,9 +21,13 @@ minetest.register_chatcommand("awards", {
 	description = S("Show, clear, disable or enable your achievements"),
 	func = function(name, param)
 		if param == "clear" then
-			awards.clear_player(name)
-			minetest.chat_send_player(name,
-			S("All your awards and statistics have been cleared. You can now start again."))
+			if awards.player(name).disabled ~= nil then
+				minetest.chat_send_player(name, S("Awards are disabled, enable them first by using /awards enable!"))
+			else
+				awards.clear_player(name)
+				minetest.chat_send_player(name,
+				S("All your awards and statistics have been cleared. You can now start again."))
+			end
 		elseif param == "disable" then
 			awards.disable(name)
 			minetest.chat_send_player(name, S("You have disabled your achievements."))
@@ -31,9 +35,17 @@ minetest.register_chatcommand("awards", {
 			awards.enable(name)
 			minetest.chat_send_player(name, S("You have enabled your achievements."))
 		elseif param == "c" then
-			awards.show_to(name, name, nil, true)
+			if awards.player(name).disabled ~= nil then
+				minetest.chat_send_player(name, S("Awards are disabled, enable them first by using /awards enable!"))
+			else
+				awards.show_to(name, name, nil, true)
+			end
 		else
-			awards.show_to(name, name, nil, false)
+			if awards.player(name).disabled ~= nil then
+				minetest.chat_send_player(name, S("Awards are disabled, enable them first by using /awards enable!"))
+			else
+				awards.show_to(name, name, nil, false)
+			end
 		end
 	end
 })
