@@ -1,8 +1,8 @@
 # textdomain: mcl_dye
-Bone Meal=
+White Dye=
 Light Grey Dye=
 Grey Dye=
-Ink Sac=
+Black Dye=
 Purple Dye=
 Blue Dye=
 Light Blue Dye=
@@ -10,7 +10,7 @@ Cyan Dye=
 Cactus Green=
 Lime Dye=
 Dandelion Yellow=
-Cocoa Beans=
+Brown Dye=
 Orange Dye=
 Rose Red=
 Magenta Dye=
