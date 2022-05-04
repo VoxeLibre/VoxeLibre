@@ -167,6 +167,7 @@ for i = 1, 3 do
 	end
 	if i == 3 then
 		def.drop = "mcl_cocoas:cocoa_beans 3"
+		def._mcl_on_bonemealing = nil
 	end
 
 	minetest.register_node("mcl_cocoas:cocoa_" .. i, table.copy(def))

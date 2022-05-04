@@ -8,7 +8,17 @@ The bone meal API provides a callback definition that nodes can use to
 register a handler that is executed when a bone meal item is used on it.
 
 Nodes that wish to use the bone meal API should in their node registration
-define a callback handler named `_mcl_on_bonemealing`.  This handler is a
+define a callback handler named `_mcl_on_bonemealing`.
+
+Note that by registering the callback handler, the node declares that bone
+meal can be used on it and as a result, when the user is not in creative
+mode, the used bone meal is spent and taken from the itemstack passed to
+the `on_place()` handler of the bone meal item used.
+
+It is for all intents and purposes up to the callback defined in the node to
+decide how to handle the specific effect that bone meal has on that node.
+
+The `_mcl_on_bonemealing` callback handler is a
 
   `function(pointed_thing, placer)`
 
@@ -17,10 +27,9 @@ Its arguments are:
 	bone meal is applied
 * `placer`: ObjectRef of the player who aplied the bone meal, can be nil!
 
-The function should return `true` if the bonemealing was succesful.
-
-It is for all intents and purposes up to the callback defined in the node to
-decide how to handle the effect that bone meal has on that particular node.
+The return value of the handler function indicates if the bonemealing had
+its intended effect.  If `true`, 'bone meal particles' are spawned at the
+position of the bonemealed node.
 
 The `on_place` code in the bone meal item will spawn bone meal particles and
 decrease the bone meal itemstack if the handler returned `true` and the
