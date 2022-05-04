@@ -457,10 +457,10 @@ function mcl_enchanting.generate_random_table_slots(itemstack, num_bookshelves)
 end
 
 function mcl_enchanting.get_table_slots(player, itemstack, num_bookshelves)
-	if (not mcl_enchanting.can_enchant_freshly(itemstack:get_name())) or mcl_enchanting.not_enchantable_on_enchanting_table(itemname) then
+	local itemname = itemstack:get_name()
+	if (not mcl_enchanting.can_enchant_freshly(itemname)) or mcl_enchanting.not_enchantable_on_enchanting_table(itemname) then
 		return {false, false, false}
 	end
-	local itemname = itemstack:get_name()
 	local meta = player:get_meta()
 	local player_slots = minetest.deserialize(meta:get_string("mcl_enchanting:slots")) or {}
 	local player_bookshelves_slots = player_slots[num_bookshelves] or {}
