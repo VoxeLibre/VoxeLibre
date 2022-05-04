@@ -1,4 +1,5 @@
-local deepslate_mod = minetest.get_modpath("mcl_deepslate")
+--local deepslate_mod = minetest.get_modpath("mcl_deepslate")
+
 local function register_oxidation_abm(abm_name, node_name, oxidized_variant)
 	minetest.register_abm({
 		label = abm_name,
@@ -6,11 +7,12 @@ local function register_oxidation_abm(abm_name, node_name, oxidized_variant)
 		interval = 500,
 		chance = 3,
 		action = function(pos, node)
-			minetest.swap_node(pos, {name=oxidized_variant, param2=node.param2})
-		end
+			minetest.swap_node(pos, {name = oxidized_variant, param2 = node.param2})
+		end,
 	})
 end
 
+--[[
 local stairs = {
 	{"stair", "exposed", "_inner", "cut_inner"},
 	{"stair", "weathered", "_inner", "exposed_cut_inner"},
@@ -29,9 +31,10 @@ local stairs = {
 	{"slab", "weathered", "_double","exposed_cut_double"},
 	{"stair", "exposed", "","cut"},
 	{"stair", "oxidized", "", "weathered_cut"},
-	{"stair", "weathered", "", "exposed_cut"}
-}
+	{"stair", "weathered", "", "exposed_cut"},
+}]]
 
+--[[
 local function anti_oxidation_particles(pointed_thing)
 	local pos = pointed_thing.under
 	minetest.add_particlespawner({
@@ -103,7 +106,8 @@ local function register_axe_override(axe_name)
 	minetest.override_item("mcl_tools:axe_"..axe_name, {
 		on_place = anti_oxidation,
 	})
-end
+end]]
+
 --[[ Commented out for now because there the discussion how to handle this is ongoing
 local stonelike = {"mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite"}
 if not deepslate_mod then
@@ -168,7 +172,8 @@ end
 for _, s in pairs(stair_oxidation) do
 	register_oxidation_abm("Copper oxidation", "mcl_stairs:"..s[1].."_copper_"..s[2], "mcl_stairs:"..s[1].."_copper_"..s[3])
 end
-local axes = {"wood", "stone", "iron", "gold", "diamond"}
+
+--local axes = {"wood", "stone", "iron", "gold", "diamond"}
 --[[
 for _, axe in pairs(axes) do
 	register_axe_override(axe)

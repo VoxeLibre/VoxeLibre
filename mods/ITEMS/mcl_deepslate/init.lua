@@ -1,20 +1,21 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 
-local layer_max = mcl_worlds.layer_to_y(16)
-local layer_min = mcl_vars.mg_overworld_min
+--local layer_max = mcl_worlds.layer_to_y(16)
+--local layer_min = mcl_vars.mg_overworld_min
+
 local copper_mod = minetest.get_modpath("mcl_copper")
+
 local cobble = "mcl_deepslate:deepslate_cobbled"
 local stick = "mcl_core:stick"
+
+--[[
 local mountains = {
 	"ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", "ExtremeHills_deep_ocean", "ExtremeHills_underground",
 	"ExtremeHills+", "ExtremeHills+_ocean", "ExtremeHills+_deep_ocean", "ExtremeHills+_underground",
 	"ExtremeHillsM", "ExtremeHillsM_ocean", "ExtremeHillsM_deep_ocean", "ExtremeHillsM_underground",
 }
-
-if minetest.get_modpath("mcl_item_id") then
-	mcl_item_id.set_mod_namespace(modname)
-end
+]]
 
 minetest.register_node("mcl_deepslate:deepslate", {
 	description = S("Deepslate"),
@@ -23,7 +24,6 @@ minetest.register_node("mcl_deepslate:deepslate", {
 	tiles = { "mcl_deepslate_top.png", "mcl_deepslate_top.png", "mcl_deepslate.png" },
 	paramtype2 = "facedir",
 	is_ground_content = true,
-	stack_max = 64,
 	on_place = mcl_util.rotate_axis,
 	groups = { pickaxey = 1, stone = 1, building_block = 1, material_stone = 1 },
 	drop = cobble,
@@ -59,7 +59,6 @@ minetest.register_node("mcl_deepslate:tuff", {
 	_doc_items_longdesc = S("Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y=16."),
 	_doc_items_hidden = false,
 	tiles = { "mcl_deepslate_tuff.png" },
-	stack_max = 64,
 	groups = { pickaxey = 1, deco_block = 1 },
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 6,
@@ -72,7 +71,7 @@ local function register_deepslate_ore(desc, drop, pick, xp)
 	local item_string
 	if item == "lapis lazuli" then
 		item_string = "lapis"
-	else 
+	else
 		item_string = item
 	end
 	minetest.register_node("mcl_deepslate:deepslate_with_"..item_string, {
@@ -111,16 +110,19 @@ local deepslate_ores = {
 for _, p in pairs(deepslate_ores) do
 	register_deepslate_ore(p[1], p[2], p[3], p[4])
 end
+
 if copper_mod then
 	register_deepslate_ore("Copper", "mcl_copper:raw_copper", 4, 4)
 end
 
 local redstone_timer = 68.28
+
 local function redstone_ore_activate(pos)
 	minetest.swap_node(pos, { name = "mcl_deepslate:deepslate_with_redstone_lit" })
 	local t = minetest.get_node_timer(pos)
 	t:start(redstone_timer)
 end
+
 local function redstone_ore_reactivate(pos)
 	local t = minetest.get_node_timer(pos)
 	t:start(redstone_timer)
@@ -131,7 +133,6 @@ minetest.register_node("mcl_deepslate:deepslate_with_redstone", {
 	_doc_items_longdesc = S("Deepslate redstone ore is a variant of redstone ore that can generate in deepslate and tuff blobs."),
 	tiles = { "mcl_deepslate_redstone_ore.png" },
 	is_ground_content = true,
-	stack_max = 64,
 	groups = { pickaxey = 4, building_block = 1, material_stone = 1, xp = 7 },
 	drop = {
 		items = {
@@ -161,8 +162,7 @@ minetest.register_node("mcl_deepslate:deepslate_with_redstone_lit", {
 	paramtype = "light",
 	light_source = 9,
 	is_ground_content = true,
-	stack_max = 64,
-	groups = { pickaxey = 4, not_in_creative_inventory = 1, material_stone = 1, xp = 7},
+	groups = { pickaxey = 4, not_in_creative_inventory = 1, material_stone = 1, xp = 7 },
 	drop = {
 		items = {
 			max_items = 1,
@@ -173,7 +173,7 @@ minetest.register_node("mcl_deepslate:deepslate_with_redstone_lit", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_punch = redstone_ore_reactivate,
 	on_walk_over = redstone_ore_reactivate, -- Uses walkover mod
-	on_timer = function(pos, elapsed)
+	on_timer = function(pos, _)
 		minetest.swap_node(pos, { name = "mcl_deepslate:deepslate_with_redstone" })
 	end,
 	_mcl_blast_resistance = 3,
@@ -186,6 +186,7 @@ minetest.register_node("mcl_deepslate:deepslate_with_redstone_lit", {
 		max_count = 5,
 	}
 })
+
 --[[ Commented out for now because there the discussion how to handle this is ongoing
 minetest.register_ore({
     ore_type       = "blob",
@@ -353,7 +354,6 @@ local function register_deepslate_variant(item, desc, longdesc)
 		_doc_items_longdesc = S(longdesc),
 		_doc_items_hidden = false,
 		tiles = { "mcl_"..texture..".png" },
-		stack_max = 64,
 		groups = { pickaxey = 1, building_block = 1, material_stone = 1 },
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 		_mcl_blast_resistance = 6,
@@ -366,7 +366,6 @@ local function register_deepslate_variant(item, desc, longdesc)
 			_doc_items_longdesc = S("Cracked "..desc:lower().." are a cracked variant."),
 			_doc_items_hidden = false,
 			tiles = { "mcl_cracked_"..texture..".png" },
-			stack_max = 64,
 			groups = { pickaxey = 1, building_block = 1, material_stone = 1 },
 			sounds = mcl_sounds.node_sound_stone_defaults(),
 			_mcl_blast_resistance = 6,
@@ -382,21 +381,24 @@ end
 
 local deepslate_variants = {
 	{ "cobbled", "Cobbled Deepslate", "Cobbled deepslate is a stone variant that functions similar to cobblestone or blackstone." },
-	{ "polished", "Polished Deepslate", "Polished deepslate is the stone-like polished version of deepslate." }, 
+	{ "polished", "Polished Deepslate", "Polished deepslate is the stone-like polished version of deepslate." },
 	{ "bricks", "Deepslate Bricks", "Deepslate bricks are the brick version of deepslate." },
 	{ "tiles", "Deepslate Tiles", "Deepslate tiles are a decorative variant of deepslate." },
 	{ "chiseled", "Chiseled Deepslate", "Chiseled deepslate is the chiseled version of deepslate." },
 }
+
 for _, dv in pairs(deepslate_variants) do
 	register_deepslate_variant(dv[1], dv[2], dv[3])
 end
+
 for i = 1, 3 do
 	local s = "mcl_deepslate:deepslate_"..deepslate_variants[i][1]
 	minetest.register_craft({
 		output = "mcl_deepslate:deepslate_"..deepslate_variants[i+1][1].." 4",
-		recipe = { { s, s }, { s, s } } 
+		recipe = { { s, s }, { s, s } }
 	})
 end
+
 for _, p in pairs({ "bricks", "tiles" }) do
 	minetest.register_craft({
 		type = "cooking",
@@ -405,87 +407,98 @@ for _, p in pairs({ "bricks", "tiles" }) do
 		cooktime = 10,
 	})
 end
+
 minetest.register_craft({
 	type = "cooking",
 	output = "mcl_deepslate:deepslate",
 	recipe = cobble,
 	cooktime = 10,
 })
+
 minetest.register_craft({
 	output = "mcl_deepslate:deepslate_chiseled",
 	recipe = {
 		{ "mcl_stairs:slab_deepslate_cobbled" },
 		{ "mcl_stairs:slab_deepslate_cobbled" },
-	}
+	},
 })
+
 minetest.register_craft({
 	output = "mcl_brewing:stand_000",
 	recipe = {
 		{ "", "mcl_mobitems:blaze_rod", "" },
 		{ cobble, cobble, cobble },
-	}
+	},
 })
+
 minetest.register_craft({
 	output = "mcl_furnaces:furnace",
 	recipe = {
 		{ cobble, cobble, cobble },
 		{ cobble, "", cobble },
 		{ cobble, cobble, cobble },
-	}
+	},
 })
+
 minetest.register_craft({
 	output = "mcl_tools:pick_stone",
 	recipe = {
 		{ cobble, cobble, cobble },
 		{ "", stick, "" },
 		{ "", stick, "" },
-	}
+	},
 })
+
 minetest.register_craft({
 	output = "mcl_tools:shovel_stone",
 	recipe = {
 		{ cobble },
 		{ stick },
 		{ stick },
-	}
+	},
 })
+
 minetest.register_craft({
 	output = "mcl_tools:axe_stone",
 	recipe = {
 		{ cobble, cobble },
 		{ cobble, stick },
 		{ "", stick },
-	}
+	},
 })
+
 minetest.register_craft({
 	output = "mcl_tools:axe_stone",
 	recipe = {
 		{ cobble, cobble },
 		{ stick, cobble },
 		{ stick, "" },
-	}
+	},
 })
+
 minetest.register_craft({
 	output = "mcl_tools:sword_stone",
 	recipe = {
 		{ cobble },
 		{ cobble },
 		{ stick },
-	}
+	},
 })
+
 minetest.register_craft({
 	output = "mcl_farming:hoe_stone",
 	recipe = {
 		{ cobble, cobble },
 		{ "", stick },
 		{ "", stick }
-	}
+	},
 })
+
 minetest.register_craft({
 	output = "mcl_farming:hoe_stone",
 	recipe = {
 		{ cobble, cobble },
 		{ stick, "" },
 		{ stick, "" }
-	}
+	},
 })
