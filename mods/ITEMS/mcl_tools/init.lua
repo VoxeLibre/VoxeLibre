@@ -110,7 +110,7 @@ minetest.register_tool("mcl_tools:pick_stone", {
 		punch_attack_uses = 66,
 	},
 	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:cobble",
+	_repair_material = "group:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
 		pickaxey = { speed = 4, level = 3, uses = 132 }
@@ -283,7 +283,7 @@ minetest.register_tool("mcl_tools:shovel_stone", {
 	},
 	on_place = make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:cobble",
+	_repair_material = "group:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
 		shovely = { speed = 4, level = 3, uses = 132 }
@@ -417,7 +417,7 @@ minetest.register_tool("mcl_tools:axe_stone", {
 	},
 	on_place = make_stripped_trunk,
 	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:cobble",
+	_repair_material = "group:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
 		axey = { speed = 4, level = 3, uses = 132 }
@@ -520,7 +520,7 @@ minetest.register_tool("mcl_tools:sword_stone", {
 		punch_attack_uses = 132,
 	},
 	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:cobble",
+	_repair_material = "group:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
 		swordy = { speed = 4, level = 3, uses = 132 },
