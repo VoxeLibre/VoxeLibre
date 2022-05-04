@@ -71,8 +71,18 @@ local biome_flowers_tables = {
 --
 local function add_random_flower(pos, color)
 	-- 90% tall grass, 10% flower
-	if math.random(1,100) <= 90 then
+	local rnd = math.random(1,100)
+	if rnd <= 60 then
 		minetest.add_node(pos, {name="mcl_flowers:tallgrass", param2=color})
+	elseif rnd <= 80 then
+		-- double tallgrass
+		local toppos = vector.offset(pos, 0, 1, 0)
+		local topnode = minetest.get_node(toppos)
+		if minetest.registered_nodes[topnode.name].buildable_to then
+			minetest.set_node(pos, { name = "mcl_flowers:double_grass", param2 = color })
+			minetest.set_node(toppos, { name = "mcl_flowers:double_grass_top", param2 = color })
+			return true
+		end
 	else
 		local flowers_table
 		if mg_name == "v6" then
