@@ -367,7 +367,7 @@ end
 --]]
 local function register_deepslate_variant(item, desc, longdesc)
 	local texture = desc:lower():gsub("% ", "_")
-	minetest.register_node("mcl_deepslate:deepslate_"..item, {
+	local def = {
 		description = S(desc),
 		_doc_items_longdesc = S(longdesc),
 		_doc_items_hidden = false,
@@ -377,19 +377,17 @@ local function register_deepslate_variant(item, desc, longdesc)
 		_mcl_blast_resistance = 6,
 		_mcl_hardness = 3.5,
 		_mcl_silk_touch_drop = true,
-	})
+	}
+	if item == "cobbled" then
+		def.groups.cobble = 1
+	end
+	minetest.register_node("mcl_deepslate:deepslate_"..item, def)
+
 	if item == "bricks" or item == "tiles" then
-		minetest.register_node("mcl_deepslate:deepslate_"..item.."_cracked", {
-			description = S("Cracked "..desc),
-			_doc_items_longdesc = S("Cracked "..desc:lower().." are a cracked variant."),
-			_doc_items_hidden = false,
-			tiles = { "mcl_cracked_"..texture..".png" },
-			groups = { pickaxey = 1, building_block = 1, material_stone = 1 },
-			sounds = mcl_sounds.node_sound_stone_defaults(),
-			_mcl_blast_resistance = 6,
-			_mcl_hardness = 3.5,
-			_mcl_silk_touch_drop = true,
-		})
+		def.description = S("Cracked "..desc)
+		def._doc_items_longdesc = S("Cracked "..desc:lower().." are a cracked variant.")
+		def.tiles = { "mcl_cracked_"..texture..".png" }
+		minetest.register_node("mcl_deepslate:deepslate_"..item.."_cracked", def)
 	end
 	if item ~= "chiseled" then
 		mcl_stairs.register_stair_and_slab_simple("deepslate_"..item, "mcl_deepslate:deepslate_"..item, S(desc.." Stairs"), S(desc.." Slab"), S("Double "..desc.." Slab"))
@@ -438,85 +436,5 @@ minetest.register_craft({
 	recipe = {
 		{ "mcl_stairs:slab_deepslate_cobbled" },
 		{ "mcl_stairs:slab_deepslate_cobbled" },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_brewing:stand_000",
-	recipe = {
-		{ "", "mcl_mobitems:blaze_rod", "" },
-		{ cobble, cobble, cobble },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_furnaces:furnace",
-	recipe = {
-		{ cobble, cobble, cobble },
-		{ cobble, "", cobble },
-		{ cobble, cobble, cobble },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_tools:pick_stone",
-	recipe = {
-		{ cobble, cobble, cobble },
-		{ "", stick, "" },
-		{ "", stick, "" },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_tools:shovel_stone",
-	recipe = {
-		{ cobble },
-		{ stick },
-		{ stick },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_tools:axe_stone",
-	recipe = {
-		{ cobble, cobble },
-		{ cobble, stick },
-		{ "", stick },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_tools:axe_stone",
-	recipe = {
-		{ cobble, cobble },
-		{ stick, cobble },
-		{ stick, "" },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_tools:sword_stone",
-	recipe = {
-		{ cobble },
-		{ cobble },
-		{ stick },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_farming:hoe_stone",
-	recipe = {
-		{ cobble, cobble },
-		{ "", stick },
-		{ "", stick }
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_farming:hoe_stone",
-	recipe = {
-		{ cobble, cobble },
-		{ stick, "" },
-		{ stick, "" }
 	},
 })
