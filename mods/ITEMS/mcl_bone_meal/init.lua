@@ -49,7 +49,7 @@ end
 --
 mcl_bone_meal.bone_meal_callbacks = {}
 
--- Shims for the old API are still available in mcl_dye and refer to
+-- Shims for the old API are still available in mcl_dye and defer to
 -- the real functions in mcl_bone_meal.
 --
 function mcl_bone_meal.register_on_bone_meal_apply(func)
@@ -117,9 +117,9 @@ minetest.register_craftitem("mcl_bone_meal:bone_meal", {
 		if ndef and ndef._mcl_on_bonemealing then
 			if ndef._mcl_on_bonemealing(pointed_thing, placer) then
 				mcl_bone_meal.add_bone_meal_particle(pos)
-				if not minetest.is_creative_enabled(placer:get_player_name()) then
-					itemstack:take_item()
-				end
+			end
+			if not minetest.is_creative_enabled(placer:get_player_name()) then
+				itemstack:take_item()
 			end
 		-- Otherwise try the legacy API.
 		elseif apply_bone_meal(pointed_thing, placer) and
@@ -140,8 +140,9 @@ minetest.register_craftitem("mcl_bone_meal:bone_meal", {
 		-- If the pointed node can be bonemealed, let it handle the processing.
 		if ndef and ndef._mcl_on_bonemealing then
 			if ndef._mcl_on_bonemealing(pointed_thing, nil) then
-				itemstack:take_item()
+				mcl_bone_meal.add_bone_meal_particle(pos)
 			end
+			itemstack:take_item()
 		else
 			-- Otherwise try the legacy API.
 			if apply_bone_meal(pointed_thing, nil) then
