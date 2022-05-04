@@ -1,4 +1,4 @@
-# textdomain: mcl_mushroom
+# textdomain: mcl_crimson
 
 Warped Fungus Mushroom=
 Twisting Vines=
