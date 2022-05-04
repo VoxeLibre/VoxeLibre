@@ -102,6 +102,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `water_bucket=1`: Bucket containing a liquid of group “water”
 * `enchantability=X`: How good the enchantments are the item gets (1 equals book)
 * `enchanted=1`: The item is already enchanted, meaning that it can't be enchanted using an enchanting table
+* `cobble=1`: Cobblestone of any kind
 
 ### Material groups
 
