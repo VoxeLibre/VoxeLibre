@@ -724,7 +724,7 @@ minetest.register_node("mcl_core:cobble", {
 	tiles = {"default_cobble.png"},
 	is_ground_content = false,
 	stack_max = 64,
-	groups = {pickaxey=1, building_block=1, material_stone=1},
+	groups = {pickaxey=1, building_block=1, material_stone=1, cobble=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 2,
