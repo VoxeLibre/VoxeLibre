@@ -10,7 +10,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_tools:pick_stone",
 	recipe = {
-		{"mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble"},
+		{"group:cobble", "group:cobble", "group:cobble"},
 		{"", "mcl_core:stick", ""},
 		{"", "mcl_core:stick", ""},
 	}
@@ -55,7 +55,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_tools:shovel_stone",
 	recipe = {
-		{"mcl_core:cobble"},
+		{"group:cobble"},
 		{"mcl_core:stick"},
 		{"mcl_core:stick"},
 	}
@@ -108,16 +108,16 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_tools:axe_stone",
 	recipe = {
-		{"mcl_core:cobble", "mcl_core:cobble"},
-		{"mcl_core:cobble", "mcl_core:stick"},
+		{"group:cobble", "group:cobble"},
+		{"group:cobble", "mcl_core:stick"},
 		{"", "mcl_core:stick"},
 	}
 })
 minetest.register_craft({
 	output = "mcl_tools:axe_stone",
 	recipe = {
-		{"mcl_core:cobble", "mcl_core:cobble"},
-		{"mcl_core:stick", "mcl_core:cobble"},
+		{"group:cobble", "group:cobble"},
+		{"mcl_core:stick", "group:cobble"},
 		{"mcl_core:stick", ""},
 	}
 })
@@ -185,8 +185,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_tools:sword_stone",
 	recipe = {
-		{"mcl_core:cobble"},
-		{"mcl_core:cobble"},
+		{"group:cobble"},
+		{"group:cobble"},
 		{"mcl_core:stick"},
 	}
 })

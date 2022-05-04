@@ -119,7 +119,7 @@ minetest.register_tool("mcl_farming:hoe_stone", {
 		damage_groups = { fleshy = 1, },
 		punch_attack_uses = uses.stone,
 	},
-	_repair_material = "mcl_core:cobble",
+	_repair_material = "group:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
 		hoey = { speed = 4, level = 3, uses = 132 }
@@ -129,7 +129,7 @@ minetest.register_tool("mcl_farming:hoe_stone", {
 minetest.register_craft({
 	output = "mcl_farming:hoe_stone",
 	recipe = {
-		{"mcl_core:cobble", "mcl_core:cobble"},
+		{"group:cobble", "group:cobble"},
 		{"", "mcl_core:stick"},
 		{"", "mcl_core:stick"}
 	}
@@ -137,7 +137,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_farming:hoe_stone",
 	recipe = {
-		{"mcl_core:cobble", "mcl_core:cobble"},
+		{"group:cobble", "group:cobble"},
 		{"mcl_core:stick", ""},
 		{"mcl_core:stick", ""}
 	}
