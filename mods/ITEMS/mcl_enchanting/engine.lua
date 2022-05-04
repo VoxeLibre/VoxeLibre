@@ -277,11 +277,10 @@ function mcl_enchanting.initialize()
 			new_def.groups.not_in_craft_guide = 1
 			new_def.groups.enchanted = 1
 
-			if new_def._mcl_armor_texture and not type(new_def._mcl_armor_texture) == "function" then
-				new_def._mcl_armor_texture = new_def._mcl_armor_texture .. mcl_enchanting.overlay
-			end
-			if new_def._mcl_armor_preview and not type(new_def._mcl_armor_preview) == "function" then
-				new_def._mcl_armor_preview = new_def._mcl_armor_preview .. mcl_enchanting.overlay
+			if new_def._mcl_armor_texture then
+				if type(new_def._mcl_armor_texture) == "string" then
+					new_def._mcl_armor_texture = new_def._mcl_armor_texture .. mcl_enchanting.overlay
+				end
 			end
 
 			new_def._mcl_enchanting_enchanted_tool = new_name

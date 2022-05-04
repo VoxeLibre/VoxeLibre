@@ -3,7 +3,7 @@
 local modname = minetest.get_current_modname()
 
 mcl_skins = {
-	skins = {}, list = {}, previews = {}, meta = {}, has_preview = {},
+	skins = {}, list = {}, meta = {},
 	modpath = minetest.get_modpath(modname),
 	skin_count = 0, -- counter of _custom_ skins (all skins except character.png)
 }
@@ -18,10 +18,8 @@ while true do
 
 	if id == 0 then
 		skin = "character"
-		mcl_skins.has_preview[id] = true
 	else
 		skin = "mcl_skins_character_" .. id
-		local preview = "mcl_skins_player_" .. id
 
 		-- Does skin file exist?
 		f = io.open(mcl_skins.modpath .. "/textures/" .. skin .. ".png")
@@ -31,19 +29,11 @@ while true do
 			break
 		end
 		f:close()
-
-		-- Does skin preview file exist?
-		local file_preview = io.open(mcl_skins.modpath .. "/textures/" .. preview .. ".png")
-		if file_preview == nil then
-			minetest.log("warning", "[mcl_skins] Player skin #"..id.." does not have preview image (player_"..id..".png)")
-			mcl_skins.has_preview[id] = false
-		else
-			mcl_skins.has_preview[id] = true
-			file_preview:close()
-		end
 	end
 
 	mcl_skins.list[id] = skin
+
+	local metafile
 
 	-- does metadata exist for that skin file ?
 	if id == 0 then
@@ -89,12 +79,11 @@ function mcl_skins.set_player_skin(player, skin_id)
 		return false
 	end
 	local playername = player:get_player_name()
-	local skin, preview
+	local skin
 	if skin_id == nil or type(skin_id) ~= "number" or skin_id < 0 or skin_id > mcl_skins.skin_count then
 		return false
 	elseif skin_id == 0 then
 		skin = "character"
-		preview = "player"
 		mcl_player.player_set_model(player, "mcl_armor_character.b3d")
 	else
 		skin = "mcl_skins_character_" .. tostring(skin_id)
@@ -104,16 +93,9 @@ function mcl_skins.set_player_skin(player, skin_id)
 		else
 			mcl_player.player_set_model(player, "mcl_armor_character.b3d")
 		end
-		if mcl_skins.has_preview[skin_id] then
-			preview = "mcl_skins_player_" .. tostring(skin_id)
-		else
-			-- Fallback preview image if preview image is missing
-			preview = "mcl_skins_player_dummy"
-		end
 	end
 	--local skin_file = skin .. ".png"
 	mcl_skins.skins[playername] = skin
-	mcl_skins.previews[playername] = preview
 	player:get_meta():set_string("mcl_skins:skin_id", tostring(skin_id))
 	mcl_skins.update_player_skin(player)
 	if has_mcl_inventory then
@@ -131,7 +113,7 @@ function mcl_skins.update_player_skin(player)
 		return
 	end
 	local playername = player:get_player_name()
-	mcl_player.player_set_skin(player, mcl_skins.skins[playername] .. ".png", mcl_skins.previews[playername] .. ".png")
+	mcl_player.player_set_skin(player, mcl_skins.skins[playername] .. ".png")
 end
 
 -- load player skin on join
@@ -259,7 +241,11 @@ function mcl_skins.show_formspec(playername)
 
 	formspec = formspec .. ";" .. selected .. ";false]"
 
-	formspec = formspec .. "image[0,0;1.35,2.7;" .. mcl_skins.previews[playername] .. ".png]"
+	local player = minetest.get_player_by_name(playername)
+    if player then
+		--maybe the function could accept both player object and player name?
+		formspec = formspec .. mcl_player.get_player_formspec_model(player, 0, 0, 1.35, 2.7, "mcl_skins:skin_select")
+	end
 
 	if meta then
 		if meta.name and meta.name ~= "" then

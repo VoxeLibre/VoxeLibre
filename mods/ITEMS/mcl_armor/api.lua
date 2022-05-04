@@ -94,7 +94,6 @@ function mcl_armor.register_set(def)
 	local on_unequip_callbacks = def.on_unequip_callbacks or {}
 	local on_break_callbacks = def.on_break_callbacks or {}
 	local textures = def.textures or {}
-	local previews = def.previews or {}
 	local durabilities = def.durabilities or {}
 	local element_groups = def.element_groups or {}
 
@@ -134,7 +133,6 @@ function mcl_armor.register_set(def)
 			_on_break = on_break_callbacks[name] or def.on_break,
 			_mcl_armor_element = name,
 			_mcl_armor_texture = textures[name] or modname .. "_" .. itemname .. ".png",
-			_mcl_armor_preview = previews[name] or modname .. "_" .. itemname .. "_preview.png",
 		})
 
 		if def.craft_material then
@@ -221,17 +219,6 @@ function mcl_armor.update(obj)
 					end
 				end
 
-				local preview = def._mcl_armor_preview
-
-				if obj:is_player() and preview then
-					if type(preview) == "function" then
-						preview = preview(obj, itemstack)
-					end
-					if preview then
-						info.preview = "(player.png^[opacity:0^" .. def._mcl_armor_preview .. ")" .. (info.preview and "^" .. info.preview or "" )
-					end
-				end
-
 				info.points = info.points + minetest.get_item_group(itemname, "mcl_armor_points")
 
 				local mob_range_mob = def._mcl_armor_mob_range_mob
@@ -254,8 +241,6 @@ function mcl_armor.update(obj)
 	info.texture = info.texture or "blank.png"
 
 	if obj:is_player() then
-		info.preview = info.preview or "blank.png"
-
 		mcl_armor.update_player(obj, info)
 	else
 		local luaentity = obj:get_luaentity()

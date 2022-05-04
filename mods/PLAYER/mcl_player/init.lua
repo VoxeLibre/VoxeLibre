@@ -95,35 +95,16 @@ local function set_texture(player, index, texture)
 	player:set_properties({textures = textures})
 end
 
-local function set_preview(player, field, preview)
-	player:get_meta():set_string("mcl_player:" .. field .. "_preview", preview)
-end
-
-function mcl_player.player_set_skin(player, texture, preview)
+function mcl_player.player_set_skin(player, texture)
 	set_texture(player, 1, texture)
-	set_preview(player, "skin", preview)
 end
 
-function mcl_player.player_set_armor(player, texture, preview)
+function mcl_player.player_set_armor(player, texture)
 	set_texture(player, 2, texture)
-	set_preview(player, "armor", preview)
 end
 
 function mcl_player.player_set_wielditem(player, texture)
 	set_texture(player, 3, texture)
-end
-
-function mcl_player.player_get_preview(player)
-	local preview = player:get_meta():get_string("mcl_player:skin_preview")
-	if preview == "" then
-		preview = "player.png"
-	end
-	local armor_preview = player:get_meta():set_string("mcl_player:armor_preview")
-	if armor_preview ~= "" then
-		preview = preview .. "^" .. armor_preview
-	end
-	return preview
-
 end
 
 function mcl_player.get_player_formspec_model(player, x, y, w, h, fsname)
