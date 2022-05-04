@@ -574,9 +574,9 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 minetest.register_craft({
 	output = "mcl_furnaces:furnace",
 	recipe = {
-		{ "mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble" },
-		{ "mcl_core:cobble", "", "mcl_core:cobble" },
-		{ "mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble" },
+		{ "group:cobble", "group:cobble", "group:cobble" },
+		{ "group:cobble", "", "group:cobble" },
+		{ "group:cobble", "group:cobble", "group:cobble" },
 	}
 })
 

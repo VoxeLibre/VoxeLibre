@@ -129,7 +129,7 @@ minetest.register_tool("mcl_farming:hoe_stone", {
 minetest.register_craft({
 	output = "mcl_farming:hoe_stone",
 	recipe = {
-		{"mcl_core:cobble", "mcl_core:cobble"},
+		{"group:cobble", "group:cobble"},
 		{"", "mcl_core:stick"},
 		{"", "mcl_core:stick"}
 	}
@@ -137,7 +137,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_farming:hoe_stone",
 	recipe = {
-		{"mcl_core:cobble", "mcl_core:cobble"},
+		{"group:cobble", "group:cobble"},
 		{"mcl_core:stick", ""},
 		{"mcl_core:stick", ""}
 	}
