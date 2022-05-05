@@ -96,13 +96,12 @@ end
 -- End legacy bone meal API
 
 minetest.register_craftitem("mcl_bone_meal:bone_meal", {
-	inventory_image = "mcl_bone_meal.png",
 	description = S("Bone Meal"),
 	_tt_help = S("Speeds up plant growth"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usagehelp,
-	stack_max = 64,
-	groups = {craftitem=1, dye=1, basecolor_white=1, excolor_white=1, unicolor_white=1},
+	inventory_image = "mcl_bone_meal.png",
+	groups = {craftitem=1},
 	on_place = function(itemstack, placer, pointed_thing)
 		local pos = pointed_thing.under
 		local node = minetest.get_node(pos)
