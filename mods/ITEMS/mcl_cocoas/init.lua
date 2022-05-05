@@ -181,8 +181,7 @@ minetest.register_craftitem("mcl_cocoas:cocoa_beans", {
 	description = S("Cocoa Beans"),
 	stack_max = 64,
 	groups = {
-		dye = 1, craftitem = 1, compostability = 65,
-		basecolor_brown = 1, excolor_orange = 1, unicolor_dark_orange = 1,
+		craftitem = 1, compostability = 65,
 	},
 	on_place = function(itemstack, placer, pointed_thing)
 		return cocoa_place(itemstack, placer, pointed_thing, "mcl_cocoas:cocoa_1")
