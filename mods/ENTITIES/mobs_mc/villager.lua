@@ -314,7 +314,7 @@ local professions = {
 
 			{
 			{ E1, { "mesecons:redstone", 1, 4  } },
-			{ E1, { "mcl_dye:blue", 1, 2 } },
+			{ E1, { "mcl_core:lapis", 1, 2 } },
 			},
 
 			{
