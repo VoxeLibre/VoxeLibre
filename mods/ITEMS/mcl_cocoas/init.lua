@@ -179,10 +179,7 @@ minetest.register_craftitem("mcl_cocoas:cocoa_beans", {
 	_doc_items_longdesc = S("Cocoa beans can be used to plant cocoa, bake cookies or craft brown dye."),
 	_doc_items_usagehelp = S("Right click on the side of a jungle tree trunk (Jungle Wood) to plant a young cocoa."),
 	inventory_image = "mcl_cocoa_beans.png",
-	groups = {
-		dye = 1, craftitem = 1, compostability = 65,
-		basecolor_brown = 1, excolor_orange = 1, unicolor_dark_orange = 1,
-	},
+	groups = {craftitem = 1, compostability = 65},
 	on_place = function(itemstack, placer, pointed_thing)
 		return cocoa_place(itemstack, placer, pointed_thing, "mcl_cocoas:cocoa_1")
 	end,
