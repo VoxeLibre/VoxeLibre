@@ -7,7 +7,6 @@ local S = minetest.get_translator(modname)
 local copper_mod = minetest.get_modpath("mcl_copper")
 
 local cobble = "mcl_deepslate:deepslate_cobbled"
-local stick = "mcl_core:stick"
 
 --[[
 local mountains = {
