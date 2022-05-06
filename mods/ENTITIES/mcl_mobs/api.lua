@@ -102,14 +102,22 @@ local mod_armor = minetest.get_modpath("mcl_armor") ~= nil
 local mod_experience = minetest.get_modpath("mcl_experience") ~= nil
 
 --Helper function to clear all mobs because /clearobjects removes too much
+local function is_mob(o)
+	return o.type == "ambient" or o.type == "animal" or o.type == "monster" or o.type == "npc"
+end
 minetest.register_chatcommand("clearmobs",{
 	privs={maphack=true},
-	params = "<all>",
-	description=S("Removes all spawned mobs except nametagged ones. Supply the optional all argument to remove all mobs"),
-	func=function(n,p)
-		for k,o in pairs(minetest.luaentities) do
-			if  o.type == "ambient" or o.type == "animal" or o.type == "monster" or o.type == "npc" then
-				if p == "all" or not o.nametag  then
+	params = "<all>|<nametagged>|<range>",
+	description=S("Removes all spawned mobs except nametagged and tamed ones. all removes all mobs, nametagged only nametagged ones and with the range paramter all mobs in a distance of the current player are removed."),
+	func=function(n,param)
+		local p = minetest.get_player_by_name(n)
+		local num=tonumber(param)
+		for _,o in pairs(minetest.luaentities) do
+			if is_mob(o) then
+				if  param == "all" or
+				( param == "nametagged" and o.nametag ) or
+				( param == "" and not o.nametag and not o.tamed ) or
+				( num and num > 0 and vector.distance(p:get_pos(),o.object:get_pos()) <= num ) then
 					o.object:remove()
 				end
 			end
