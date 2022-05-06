@@ -381,7 +381,7 @@ local function register_deepslate_variant(item, desc, longdesc)
 	if item == "cobbled" then
 		def.groups.cobble = 1
 	end
-	minetest.register_node("mcl_deepslate:deepslate_"..item, def)
+	minetest.register_node("mcl_deepslate:deepslate_"..item, table.copy(def))
 
 	if item == "bricks" or item == "tiles" then
 		def.description = S("Cracked "..desc)
