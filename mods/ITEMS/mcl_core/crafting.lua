@@ -133,7 +133,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_dye:white 9",
+	output = "mcl_bone_meal:bone_meal 9",
 	recipe = {
 		{ "mcl_core:bone_block" },
 	},
