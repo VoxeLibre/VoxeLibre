@@ -1,4 +1,5 @@
 # textdomain: mcl_spawn
 New respawn position set!=
 Respawn position cleared!=
-Your spawn bed was missing or blocked.=
+Couldn't get level of your respawn anchor!=
+Your spawn bed was missing or blocked, and you had no charged respawn anchor!=
