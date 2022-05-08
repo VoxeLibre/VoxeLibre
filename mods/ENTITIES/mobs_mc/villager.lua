@@ -1029,6 +1029,9 @@ mobs:register_mob("mobs_mc:villager", {
 	_player_scan_timer = 0,
 	_trading_players = {}, -- list of playernames currently trading with villager (open formspec)
 	do_custom = function(self, dtime)
+		if self.bed and vector.distance(self.object:get_pos(),self.bed) > 50 then
+			self.object:set_pos(self.bed)
+		end
 		-- Stand still if player is nearby.
 		if not self._player_scan_timer then
 			self._player_scan_timer = 0

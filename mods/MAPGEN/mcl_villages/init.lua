@@ -48,6 +48,17 @@ if minetest.get_modpath("mobs_mc") then
 end
 --]]
 
+local function spawn_villagers(minp,maxp)
+	local beds=minetest.find_nodes_in_area(minp,maxp,{"mcl_beds:bed_red_bottom"})
+	for _,bed in pairs(beds) do
+		minetest.get_meta(bed):set_string("villagebed","true")
+		local v=minetest.add_entity(bed,"mobs_mc:villager")
+		if v then
+			v:get_luaentity().bed = bed
+		end
+	end
+end
+
 --
 -- on map generation, try to build a settlement
 --
@@ -66,6 +77,10 @@ local function build_a_settlement(minp, maxp, blockseed)
 
 	-- evaluate settlement_info and place schematics
 	settlements.place_schematics(settlement_info, pr)
+
+	minetest.after(20,function()
+		spawn_villagers(minp,maxp)
+	end) --give the village some time to fully generate
 end
 
 local function ecb_village(blockpos, action, calls_remaining, param)
