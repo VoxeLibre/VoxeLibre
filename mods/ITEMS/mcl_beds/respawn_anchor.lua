@@ -56,8 +56,9 @@ for i=0,4 do
 			on_rightclick = rightclick,
 			groups = {pickaxey=1, material_stone=1},
 			_mcl_hardness = 22.5,
-			sounds= mcl_sounds.node_sound_stone_defaults()
+			sounds= mcl_sounds.node_sound_stone_defaults(),
 		})
+		mesecon.register_mvps_stopper("mcl_beds:respawn_anchor")
 	else
 		minetest.register_node("mcl_beds:respawn_anchor_charged_"..i,{
 			description=S("Respawn Anchor"),
@@ -71,8 +72,16 @@ for i=0,4 do
 			on_rightclick = rightclick,
 			groups = {pickaxey=1, material_stone=1, not_in_creative_inventory=1},
 			_mcl_hardness = 22.5,
-			sounds= mcl_sounds.node_sound_stone_defaults()
+			sounds= mcl_sounds.node_sound_stone_defaults(),
+			drop = {
+				max_items = 1,
+				items = {
+					{items = {"mcl_beds:respawn_anchor"}},
+				}
+			},
+			light_source = (4 * i) - 1
 		})
+		mesecon.register_mvps_stopper("mcl_beds:respawn_anchor_charged_"..i)
 	end
  end
 
