@@ -116,6 +116,8 @@ minetest.register_globalstep(function(dtime)
 				meta = player:get_meta()
 				meta:set_string("_is_invisible", minetest.serialize(EF.invisible[player]))
 			end
+			potions_set_hud(player)
+
 		end
 
 	end
@@ -195,6 +197,7 @@ minetest.register_globalstep(function(dtime)
 			if player:get_pos() then mcl_potions._add_spawner(player, "#2E5299") end
 
 			if player:get_breath() then
+				hb.hide_hudbar(player, "breath")
 				if player:get_breath() < 10 then player:set_breath(10) end
 			end
 
@@ -203,6 +206,7 @@ minetest.register_globalstep(function(dtime)
 				meta:set_string("_is_water_breathing", minetest.serialize(EF.water_breathing[player]))
 				EF.water_breathing[player] = nil
 			end
+			potions_set_hud(player)
 
 		else
 			EF.water_breathing[player] = nil
@@ -225,6 +229,7 @@ minetest.register_globalstep(function(dtime)
 				meta = player:get_meta()
 				meta:set_string("_is_leaping", minetest.serialize(EF.leaping[player]))
 			end
+			potions_set_hud(player)
 
 		else
 			EF.leaping[player] = nil
@@ -247,6 +252,7 @@ minetest.register_globalstep(function(dtime)
 				meta = player:get_meta()
 				meta:set_string("_is_swift", minetest.serialize(EF.swift[player]))
 			end
+			potions_set_hud(player)
 
 		else
 			EF.swift[player] = nil
@@ -270,6 +276,7 @@ minetest.register_globalstep(function(dtime)
 				meta:set_int("night_vision", 0)
 			end
 			mcl_weather.skycolor.update_sky_color({player})
+			potions_set_hud(player)
 
 		else
 			EF.night_vision[player] = nil
@@ -293,6 +300,7 @@ minetest.register_globalstep(function(dtime)
 				meta = player:get_meta()
 				meta:set_string("_is_fire_proof", minetest.serialize(EF.fire_proof[player]))
 			end
+			potions_set_hud(player)
 
 		else
 			EF.fire_proof[player] = nil
