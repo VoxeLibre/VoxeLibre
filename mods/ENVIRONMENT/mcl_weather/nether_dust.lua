@@ -40,7 +40,7 @@ mcl_weather.nether_dust.add_particlespawners = function(player)
 end
 
 mcl_weather.nether_dust.delete_particlespawners = function(player)
-	local name=player:get_player_name(name)
+	local name=player:get_player_name()
 	if mcl_weather.nether_dust.particlespawners[name] then
 		for i=1,3 do
 			minetest.delete_particlespawner(mcl_weather.nether_dust.particlespawners[name][i])
