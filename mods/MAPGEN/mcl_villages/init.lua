@@ -78,7 +78,7 @@ local function build_a_settlement(minp, maxp, blockseed)
 	-- evaluate settlement_info and place schematics
 	settlements.place_schematics(settlement_info, pr)
 
-	minetest.after(20,function()
+	minetest.after(60,function()
 		spawn_villagers(minp,maxp)
 	end) --give the village some time to fully generate
 end
