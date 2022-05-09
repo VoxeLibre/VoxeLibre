@@ -946,6 +946,10 @@ local function go_home(entity)
 	if vector.distance(b,s) < 10 then
 		entity.state = "stand"
 		set_velocity(entity,0)
+		local n=minetest.get_node(b)
+		if n and n.name ~= "mcl_beds:bed_red_bottom" then
+			entity.bed=nil --bed is gone, make villager homeless
+		end
 	end
 end
 
