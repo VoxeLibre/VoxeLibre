@@ -118,20 +118,18 @@ local function get_compass_frame(pos, dir, itemstack)
 	end
 end
 
+-- Export stereotype item for other mods to use
+mcl_compass.stereotype = "mcl_compass:" .. stereotype_frame
+
 --- Get partial compass itemname.
 -- Returns partial itemname of a compass with needle direction matching compass position.
 -- Legacy compatibility function for mods using older api.
 --
-function mcl_compass.get_compass_image(pos, dir, itemstack)
+function mcl_compass.get_compass_image(pos, dir)
 	minetest.log("warning", "mcl_compass: deprecated function " ..
 		"get_compass_image() called, use get_compass_itemname().")
-	local itemstack = ItemStack("mcl_compass:" .. stereotype_frame)
+	local itemstack = ItemStack(mcl_compass.stereotype)
 	local frame = get_compass_frame(pos, dir, itemstack)
-	if itemstack:get_meta():get_string("pointsto") ~= "" then
-		return frame .. "_lodestone"
-	else
-		return frame
-	end
 end
 
 --- Get compass itemname.
@@ -247,9 +245,6 @@ minetest.register_craft({
 })
 
 minetest.register_alias("mcl_compass:compass", "mcl_compass:" .. stereotype_frame)
-
--- Export stereotype item for other mods to use
-mcl_compass.stereotype = "mcl_compass:" .. stereotype_frame
 
 
 minetest.register_node("mcl_compass:lodestone",{
