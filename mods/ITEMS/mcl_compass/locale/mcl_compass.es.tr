@@ -1,3 +1,9 @@
 # textdomain: mcl_compass
-Compasses are tools which point to the world origin (X@=0, Z@=0) or the spawn point in the Overworld.=Las brújulas son herramientas que apuntan al origen del mundo (X @ = 0, Z @ = 0) o al punto de generación en el mundo.
 Compass=Brújula
+Points to the world origin=
+Compasses are tools which point to the world origin (X@=0, Z@=0) or the spawn point in the Overworld.=Las brújulas son herramientas que apuntan al origen del mundo (X @ = 0, Z @ = 0) o al punto de generación en el mundo.
+A Compass always points to the world spawn point when the player is in the overworld.  In other dimensions, it spins randomly.=
+Lodestone Compass=
+Points to a lodestone=
+Lodestone compasses resemble regular compasses, but they point to a specific lodestone.=
+A Lodestone compass can be made from an ordinary compass by using it on a lodestone.  After becoming a lodestone compass, it always points to its linked lodestone, provided that they are in the same dimension.  If not in the same dimension, the lodestone compass spins randomly, similarly to a regular compass when outside the overworld.  A lodestone compass can be relinked with another lodestone.=
