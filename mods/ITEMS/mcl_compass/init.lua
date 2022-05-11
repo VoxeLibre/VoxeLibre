@@ -35,7 +35,7 @@ local m_atan2 = math.atan2
 local m_floor = math.floor
 local m_rnd = math.random
 local vec_new = vector.new
-local vec_from_str = vector.from_string
+local string_to_pos = minetest.string_to_pos
 local get_connected_players = minetest.get_connected_players
 local get_item_group = minetest.get_item_group
 local setting_get_pos = minetest.setting_get_pos
@@ -101,7 +101,11 @@ local function get_compass_frame(pos, dir, itemstack)
 			return random_frame
 		end
 	else -- lodestone compass
-		local lpos = vec_from_str(lpos_str)
+		local lpos = string_to_pos(lpos_str)
+		if not lpos then
+			minetest.log("warning", "mcl_compass: invalid lodestone position!")
+			return random_frame
+		end
 		local _, l_dim = y_to_layer(lpos.y)
 		local _, p_dim = y_to_layer(pos.y)
 		-- compass and lodestone must be in the same dimension
