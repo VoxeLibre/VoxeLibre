@@ -35,6 +35,7 @@ local m_atan2 = math.atan2
 local m_floor = math.floor
 local m_rnd = math.random
 local vec_new = vector.new
+local string_find = string.find
 local string_to_pos = minetest.string_to_pos
 local get_connected_players = minetest.get_connected_players
 local get_item_group = minetest.get_item_group
@@ -90,8 +91,7 @@ end
 -- itemstack: the compass including its optional lodestone metadata.
 --
 local function get_compass_frame(pos, dir, itemstack)
-	local lpos_str = itemstack:get_meta():get_string("pointsto")
-	if lpos_str == "" then -- normal compass
+	if not string_find(itemstack:get_name(), "_lodestone") then -- normal compass
 		-- Compasses only work in the overworld
 		if compass_works(pos) then
 			local spawn_pos = setting_get_pos("static_spawnpoint")
@@ -101,6 +101,7 @@ local function get_compass_frame(pos, dir, itemstack)
 			return random_frame
 		end
 	else -- lodestone compass
+		local lpos_str = itemstack:get_meta():get_string("pointsto")
 		local lpos = string_to_pos(lpos_str)
 		if not lpos then
 			minetest.log("warning", "mcl_compass: invalid lodestone position!")
@@ -185,10 +186,11 @@ minetest.register_globalstep(function(dtime)
 				-- check if current compass image still matches true orientation
 				compass_frame = get_compass_frame(pos, dir, stack)
 				if compass_nr - 1 ~= compass_frame then
-					if stack:get_meta():get_string("pointsto") == "" then
-						stack:set_name("mcl_compass:" .. compass_frame)
-					else
+
+					if string_find(stack:get_name(), "_lodestone") then
 						stack:set_name("mcl_compass:" .. compass_frame .. "_lodestone")
+					else
+						stack:set_name("mcl_compass:" .. compass_frame)
 					end
 					inv:set_stack("main", j, stack)
 				end
@@ -251,9 +253,13 @@ minetest.register_alias("mcl_compass:compass", "mcl_compass:" .. stereotype_fram
 minetest.register_node("mcl_compass:lodestone",{
 	description=S("Lodestone"),
 	on_rightclick = function(pos, node, player, itemstack)
-		if itemstack.get_name(itemstack).match(itemstack.get_name(itemstack),"mcl_compass:") then
-			if itemstack.get_name(itemstack) ~= "mcl_compass:lodestone" then
+		local name = itemstack.get_name(itemstack)
+		if string_find(name,"mcl_compass:") then
+			if name ~= "mcl_compass:lodestone" then
 				itemstack:get_meta():set_string("pointsto", minetest.pos_to_string(pos))
+				local dir = player:get_look_horizontal()
+				local frame = get_compass_frame(pos, dir, itemstack)
+				itemstack:set_name("mcl_compass:" .. frame .. "_lodestone")
 			end
 		end
 	end,
