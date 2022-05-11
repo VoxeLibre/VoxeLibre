@@ -205,7 +205,7 @@ end)
 local doc_mod = minetest.get_modpath("doc")
 
 for _, item in pairs(compass_types) do
-	local name_fmt, img_fmt, stack_max
+	local name_fmt, img_fmt
 	if item.name == "compass" then
 		name_fmt = "mcl_compass:%d"
 		img_fmt = "mcl_compass_compass_%02d.png"
