@@ -134,7 +134,7 @@ function mcl_compass.get_compass_image(pos, dir)
 	minetest.log("warning", "mcl_compass: deprecated function " ..
 		"get_compass_image() called, use get_compass_itemname().")
 	local itemstack = ItemStack(mcl_compass.stereotype)
-	local frame = get_compass_frame(pos, dir, itemstack)
+	return get_compass_frame(pos, dir, itemstack)
 end
 
 --- Get compass itemname.
