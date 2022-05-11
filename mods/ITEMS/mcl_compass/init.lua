@@ -207,11 +207,9 @@ for _, item in pairs(compass_types) do
 	if item.name == "compass" then
 		name_fmt = "mcl_compass:%d"
 		img_fmt = "mcl_compass_compass_%02d.png"
-		stack_max = 64
 	elseif item.name == "compass_lodestone" then
 		name_fmt = "mcl_compass:%d_lodestone"
 		img_fmt = "mcl_compass_compass_%02d.png^[colorize:purple:50"
-		stack_max = 1
 	end
 	for i = 0, compass_frames - 1 do
 		local def = {
@@ -219,7 +217,6 @@ for _, item in pairs(compass_types) do
 			_tt_help = item.tt,
 			inventory_image = string.format(img_fmt, i),
 			wield_image = string.format(img_fmt, i),
-			stack_max = stack_max,
 			groups = {compass = i + 1, tool = 1, disable_repair = 1},
 		}
 		if i == stereotype_frame then
