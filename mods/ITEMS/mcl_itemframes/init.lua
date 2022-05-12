@@ -222,7 +222,7 @@ minetest.register_node("mcl_itemframes:item_frame",{
 		put_itemstack:set_count(1)
 		local itemname = put_itemstack:get_name()
 		if minetest.get_item_group(itemname, "compass") > 0 then
-			put_itemstack:set_name("mcl_compass:" .. mcl_compass.get_compass_image(pos, minetest.dir_to_yaw(minetest.facedir_to_dir(node.param2)), put_itemstack))
+			put_itemstack:set_name(mcl_compass.get_compass_itemname(pos, minetest.dir_to_yaw(minetest.facedir_to_dir(node.param2)), put_itemstack))
 		end
 		if minetest.get_item_group(itemname, "clock") > 0 then
 			minetest.get_node_timer(pos):start(1.0)

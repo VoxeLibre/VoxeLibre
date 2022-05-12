@@ -418,7 +418,11 @@ minetest.register_entity(":__builtin:item", {
 		end
 		local stack = ItemStack(itemstring)
 		if minetest.get_item_group(stack:get_name(), "compass") > 0 then
-			stack:set_name("mcl_compass:16")
+			if string.find(stack:get_name(), "_lodestone") then
+				stack:set_name("mcl_compass:18_lodestone")
+			else
+				stack:set_name("mcl_compass:18")
+			end
 			itemstring = stack:to_string()
 			self.itemstring = itemstring
 		end
