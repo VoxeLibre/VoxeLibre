@@ -242,8 +242,7 @@ minetest.register_globalstep(function(dtime)
 		local c_x, c_y = unpack(player_collision(player))
 
 		if player_velocity.x + player_velocity.y < .5 and c_x + c_y > 0 then
-			local add_velocity = player.add_player_velocity or player.add_velocity
-			add_velocity(player, {x = c_x, y = 0, z = c_y})
+			player:add_velocity({x = c_x, y = 0, z = c_y})
 			player_velocity = player:get_velocity() or player:get_player_velocity()
 		end
 
@@ -286,8 +285,7 @@ minetest.register_globalstep(function(dtime)
 			if elytra.rocketing > 0 then
 				elytra.rocketing = elytra.rocketing - dtime
 				if vector.length(player_velocity) < 40 then
-					local add_velocity = player.add_velocity or player.add_player_velocity
-					add_velocity(player, vector.multiply(player:get_look_dir(), 4))
+					player:add_velocity(vector.multiply(player:get_look_dir(), 4))
 					add_particle({
 						pos = fly_pos,
 						velocity = {x = 0, y = 0, z = 0},
