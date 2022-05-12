@@ -214,6 +214,7 @@ for _, item in pairs(compass_types) do
 		img_fmt = "mcl_compass_compass_%02d.png^[colorize:purple:50"
 	end
 	for i = 0, compass_frames - 1 do
+		local itemstring = string.format(name_fmt, i)
 		local def = {
 			description = item.desc,
 			_tt_help = item.tt,
@@ -224,11 +225,13 @@ for _, item in pairs(compass_types) do
 		if i == stereotype_frame then
 			def._doc_items_longdesc = item.longdesc
 			def._doc_items_usagehelp = item.usagehelp
+			if string.match(itemstring, "lodestone") then
+				def.groups.not_in_creative_inventory = 1
+			end
 		else
 			def._doc_items_create_entry = false
 			def.groups.not_in_creative_inventory = 1
 		end
-		local itemstring = string.format(name_fmt, i)
 		minetest.register_craftitem(itemstring, table.copy(def))
 
 		-- Help aliases. Makes sure the lookup tool works correctly
