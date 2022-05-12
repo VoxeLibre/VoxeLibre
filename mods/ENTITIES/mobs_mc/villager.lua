@@ -62,9 +62,15 @@ if minetest.get_mapgen_setting("mg_name") == "v6" then
 end
 
 local professions = {
+	unemployed = {
+		name = N("Unemployed"),
+		texture = "mobs_mc_villager.png",
+		trades = nil,
+	},
 	farmer = {
 		name = N("Farmer"),
 		texture = "mobs_mc_villager_farmer.png",
+		jobsite = "mcl_composters:composter",
 		trades = {
 			{
 			{ { "mcl_farming:wheat_item", 18, 22, }, E1 },
@@ -98,6 +104,7 @@ local professions = {
 	fisherman = {
 		name = N("Fisherman"),
 		texture = "mobs_mc_villager_farmer.png",
+		jobsite = "mcl_barrels:barrel_closed",
 		trades = {
 			{
 			{ { "mcl_fishing:fish_raw", 6, 6, "mcl_core:emerald", 1, 1 },{ "mcl_fishing:fish_cooked", 6, 6 } },
@@ -132,6 +139,7 @@ local professions = {
 	fletcher = {
 		name = N("Fletcher"),
 		texture = "mobs_mc_villager_farmer.png",
+		jobsite = "mcl_villages:stonebrickcarved", --FIXME: fletching table
 		trades = {
 			{
 			{ { "mcl_mobitems:string", 15, 20 }, E1 },
@@ -170,6 +178,7 @@ local professions = {
 	shepherd ={
 		name = N("Shepherd"),
 		texture = "mobs_mc_villager_farmer.png",
+		jobsite = "mcl_villages:stonebrickcarved", --FIXME: loom
 		trades = {
 			{
 			{ { "mcl_wool:white", 16, 22 }, E1 },
@@ -199,6 +208,7 @@ local professions = {
 	librarian = {
 		name = N("Librarian"),
 		texture = "mobs_mc_villager_librarian.png",
+		jobsite = "mcl_villages:stonebrickcarved", --FIXME: lectern
 		trades = {
 			{
 			{ { "mcl_core:paper", 24, 36 }, E1 },
@@ -233,6 +243,7 @@ local professions = {
 	cartographer = {
 		name = N("Cartographer"),
 		texture = "mobs_mc_villager_librarian.png",
+		jobsite = "mcl_villages:stonebrickcarved", --FIXME: cartography table
 		trades = {
 			{
 			{ { "mcl_core:paper", 24, 24 }, E1 },
@@ -275,6 +286,7 @@ local professions = {
 	armorer = {
 		name = N("Armorer"),
 		texture = "mobs_mc_villager_smith.png",
+		jobsite = "mcl_core:lava_source", --FIXME: blast furnace
 		trades = {
 			{
 			{ { "mcl_core:coal_lump", 15, 15 }, E1 },
@@ -311,6 +323,7 @@ local professions = {
 	leatherworker = {
 		name = N("Leatherworker"),
 		texture = "mobs_mc_villager_butcher.png",
+		jobsite = "mcl_cauldrons:cauldron",
 		trades = {
 			{
 			{ { "mcl_mobitems:leather", 9, 12 }, E1 },
@@ -339,6 +352,7 @@ local professions = {
 	butcher = {
 		name = N("Butcher"),
 		texture = "mobs_mc_villager_butcher.png",
+		jobsite = "mcl_villages:stonebrickcarved", --FIXME: smoker
 		trades = {
 			{
 			{ { "mcl_mobitems:beef", 14, 14 }, E1 },
@@ -368,6 +382,7 @@ local professions = {
 	weapon_smith = {
 		name = N("Weapon Smith"),
 		texture = "mobs_mc_villager_smith.png",
+		jobsite = "mcl_villages:stonebrickcarved", --FIXME: grindstone
 		trades = {
 			{
 			{ { "mcl_core:coal_lump", 15, 15 }, E1 },
@@ -395,6 +410,7 @@ local professions = {
 	tool_smith = {
 		name = N("Tool Smith"),
 		texture = "mobs_mc_villager_smith.png",
+		jobsite = "mcl_villages:stonebrickcarved", --FIXME: smithing table
 		trades = {
 			{
 			{ { "mcl_core:coal_lump", 15, 15 }, E1 },
@@ -428,6 +444,7 @@ local professions = {
 	cleric = {
 		name = N("Cleric"),
 		texture = "mobs_mc_villager_priest.png",
+		jobsite = "mcl_brewing:stand",
 		trades = {
 			{
 			{ { "mcl_mobitems:rotten_flesh", 32, 32 }, E1 },
