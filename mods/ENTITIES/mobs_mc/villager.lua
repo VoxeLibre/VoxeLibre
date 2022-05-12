@@ -370,19 +370,25 @@ local professions = {
 		texture = "mobs_mc_villager_smith.png",
 		trades = {
 			{
-			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
-			{ { "mcl_core:emerald", 6, 8 }, { "mcl_tools:axe_iron", 1, 1 } },
+			{ { "mcl_core:coal_lump", 15, 15 }, E1 },
+			{ { "mcl_core:emerald", 3, 3 }, { "mcl_tools:axe_iron", 1, 1 } },
+			{ { "mcl_core:emerald", 7, 21 }, { "mcl_tools:sword_iron_enchanted", 1, 1 } },
 			},
 
 			{
-			{ { "mcl_core:iron_ingot", 7, 9 }, E1 },
-			{ { "mcl_core:emerald", 9, 10 }, { "mcl_tools:sword_iron_enchanted", 1, 1 } },
+			{ { "mcl_core:iron_ingot", 4, 4 }, E1 },
+			--{ { "mcl_core:emerald", 36, 36 }, { "FIXME: Bell", 1, 1 } },
+			},
+			{
+			{ { "mcl_core:flint", 7, 9 }, E1 },
+			},
+			{
+			{ { "mcl_core:diamond", 7, 9 }, E1 },
+			{ { "mcl_core:emerald", 17, 31 }, { "mcl_tools:axe_diamond_enchanted", 1, 1 } },
 			},
 
 			{
-			{ { "mcl_core:diamond", 3, 4 }, E1 },
-			{ { "mcl_core:emerald", 12, 15 }, { "mcl_tools:sword_diamond_enchanted", 1, 1 } },
-			{ { "mcl_core:emerald", 9, 12 }, { "mcl_tools:axe_diamond_enchanted", 1, 1 } },
+			{ { "mcl_core:emerald", 13, 27 }, { "mcl_tools:sword_diamond_enchanted", 1, 1 } },
 			},
 		},
 	},
