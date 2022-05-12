@@ -347,6 +347,42 @@ local stand_still = function(self)
 	self.jump = false
 end
 
+local function set_velocity(self, v)
+	local yaw = (self.object:get_yaw() or 0) + self.rotate
+	self.object:set_velocity({
+		x = (math.sin(yaw) * -v),
+		y = self.object:get_velocity().y,
+		z = (math.cos(yaw) * v),
+	})
+end
+
+local function go_to_pos(entity,b)
+	local s=entity.object:get_pos()
+	local v = { x = b.x - s.x, z = b.z - s.z }
+	local yaw = (math.atan(v.z / v.x) + math.pi / 2) - entity.rotate
+	if b.x > s.x then yaw = yaw + math.pi end
+	entity.object:set_yaw(yaw)
+	set_velocity(entity,entity.follow_velocity)
+	if vector.distance(b,s) < 5 then
+		return true
+	end
+end
+
+local function go_home(entity)
+	entity.state = "go_home"
+	local b=entity.bed
+	if not b then return end
+	if go_to_pos(entity,b) then
+		entity.state = "stand"
+		set_velocity(entity,0)
+		entity.object:set_pos(b)
+		local n=minetest.get_node(b)
+		if n and n.name ~= "mcl_beds:bed_red_bottom" then
+			entity.bed=nil --the stormtroopers have killed uncle owen
+		end
+	end	
+end
+
 local update_max_tradenum = function(self)
 	if not self._trades then
 		return
@@ -924,35 +960,6 @@ minetest.register_on_joinplayer(function(player)
 	inv:set_size("offered", 1)
 end)
 
-local function set_velocity(self, v)
-	local yaw = (self.object:get_yaw() or 0) + self.rotate
-	self.object:set_velocity({
-		x = (math.sin(yaw) * -v),
-		y = self.object:get_velocity().y,
-		z = (math.cos(yaw) * v),
-	})
-end
-
-local function go_home(entity)
-	local b=entity.bed
-	local s=entity.object:get_pos()
-	if not b then return end
-	local v = { x = b.x - s.x, z = b.z - s.z }
-	local yaw = (math.atan(v.z / v.x) + math.pi / 2) - entity.rotate
-	if b.x > s.x then yaw = yaw + math.pi end
-	entity.object:set_yaw(yaw)
-	set_velocity(entity,entity.follow_velocity)
-	entity.state = "go_home"
-	if vector.distance(b,s) < 10 then
-		entity.state = "stand"
-		set_velocity(entity,0)
-		local n=minetest.get_node(b)
-		if n and n.name ~= "mcl_beds:bed_red_bottom" then
-			entity.bed=nil --bed is gone, make villager homeless
-		end
-	end
-end
-
 --[=======[ MOB REGISTRATION AND SPAWNING ]=======]
 
 mobs:register_mob("mobs_mc:villager", {
@@ -1066,13 +1073,15 @@ mobs:register_mob("mobs_mc:villager", {
 	_player_scan_timer = 0,
 	_trading_players = {}, -- list of playernames currently trading with villager (open formspec)
 	do_custom = function(self, dtime)
-		if self.bed and  ( self.state == "go_home" or vector.distance(self.object:get_pos(),self.bed) > 50 ) then
-			go_home(self)
-		end
 		-- Stand still if player is nearby.
 		if not self._player_scan_timer then
 			self._player_scan_timer = 0
 		end
+		
+		if self.bed and  ( self.state == "go_home" or vector.distance(self.object:get_pos(),self.bed) > 50 ) then
+			go_home(self)
+		end
+
 		self._player_scan_timer = self._player_scan_timer + dtime
 		-- Check infrequently to keep CPU load low
 		if self._player_scan_timer > PLAYER_SCAN_INTERVAL then
