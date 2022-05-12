@@ -100,9 +100,32 @@ local professions = {
 		texture = "mobs_mc_villager_farmer.png",
 		trades = {
 			{
-			{ { "mcl_fishing:fish_raw", 6, 6, "mcl_core:emerald", 1, 1 }, { "mcl_fishing:fish_cooked", 6, 6 } },
+			{ { "mcl_fishing:fish_raw", 6, 6, "mcl_core:emerald", 1, 1 },{ "mcl_fishing:fish_cooked", 6, 6 } },
 			{ { "mcl_mobitems:string", 15, 20 }, E1 },
-			{ { "mcl_core:emerald", 3, 11 }, { "mcl_fishing:fishing_rod_enchanted", 1, 1} },
+			{ { "mcl_core:coal_lump", 15, 10 }, E1 },
+			-- FIXME missing: bucket of cod + fish should be cod.
+			},
+			{
+			{ { "mcl_fishing:fish_raw", 6, 15,}, E1 },
+			{ { "mcl_fishing:salmon_raw", 6, 6, "mcl_core:emerald", 1, 1 },{ "mcl_fishing:salmon_cooked", 6, 6 } },
+			-- FIXME missing campfire
+			--	{{ "mcl_core:emerald", 1, 2 },{"mcl_campfires:campfire",1,1} },
+			},
+			{
+			{ { "mcl_fishing:salmon_raw", 6, 13,}, E1 },
+			{ { "mcl_core:emerald", 7, 22 }, { "mcl_fishing:fishing_rod_enchanted", 1, 1} },
+			},
+			{
+			{ { "mcl_fishing:clownfish_raw", 6, 6,}, E1 },
+			},
+			{
+			{ { "mcl_fishing:pufferfish_raw", 4, 4,}, E1 },
+
+			{ { "mcl_boats:boat", 1, 1,}, E1 },
+			{ { "mcl_boats:boat_acacia", 1, 1,}, E1 },
+			{ { "mcl_boats:boat_spruce", 1, 1,}, E1 },
+			{ { "mcl_boats:boat_dark_oak", 1, 1,}, E1 },
+			{ { "mcl_boats:boat_birch", 1, 1,}, E1 },
 			},
 		},
 	},
