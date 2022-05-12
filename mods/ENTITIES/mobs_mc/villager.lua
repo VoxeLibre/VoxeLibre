@@ -136,11 +136,34 @@ local professions = {
 			{
 			{ { "mcl_mobitems:string", 15, 20 }, E1 },
 			{ E1, { "mcl_bows:arrow", 8, 12 } },
-			},
-
-			{
 			{ { "mcl_core:gravel", 10, 10, "mcl_core:emerald", 1, 1 }, { "mcl_core:flint", 6, 10 } },
+			},
+			{
+			{ { "mcl_core:flint", 26, 26 }, E1 },
 			{ { "mcl_core:emerald", 2, 3 }, { "mcl_bows:bow", 1, 1 } },
+			},
+			{
+			{ { "mcl_mobitems:string", 14, 14 }, E1 },
+			{ { "mcl_core:emerald", 3, 3 }, { "mcl_bows:crossbow", 1, 1 } },
+			},
+			{
+			{ { "mcl_mobitems:string", 24, 24 }, E1 },
+			{ { "mcl_core:emerald", 7, 21 } , { "mcl_bows:bow_enchanted", 1, 1 } },
+			},
+			{
+			--FIXME: supposed to be tripwire hook{ { "tripwirehook", 24, 24 }, E1 },
+			{ { "mcl_core:emerald", 8, 22 } , { "mcl_bows:crossbow_enchanted", 1, 1 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:healing_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:harming_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:night_vision_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:swiftness_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:slowness_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:leaping_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:poison_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:regeneration_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:invisibility_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:water_breathing_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:fire_resistance_arrow", 5, 5 } },
 			},
 		}
 	},
