@@ -203,29 +203,30 @@ local professions = {
 			{
 			{ { "mcl_core:paper", 24, 36 }, E1 },
 			{ { "mcl_books:book", 8, 10 }, E1 },
-			{ { "mcl_core:emerald", 10, 12 }, { "mcl_compass:compass", 1 ,1 }},
-			{ { "mcl_core:emerald", 3, 4 }, { "mcl_books:bookshelf", 1 ,1 }},
-			{ { "mcl_core:emerald", 5, 64 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
+			{ { "mcl_core:emerald", 9, 9 }, { "mcl_books:bookshelf", 1 ,1 }},
+			{ { "mcl_core:emerald", 5, 64, "mcl_books:book", 1, 1 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
 			},
-
 			{
 			{ { "mcl_books:written_book", 2, 2 }, E1 },
-			{ { "mcl_core:emerald", 10, 12 }, { "mcl_clock:clock", 1, 1 } },
-			{ E1, { "mcl_core:glass", 3, 5 } },
-			{ { "mcl_core:emerald", 5, 64 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
+			{ { "mcl_core:emerald", 5, 64, "mcl_books:book", 1, 1 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
+			{ E1, { "mcl_lanterns:lantern_floor", 1, 1 } },
 			},
 
 			{
-			{ E1, { "mcl_core:glass", 3, 5 } },
-			{ { "mcl_core:emerald", 5, 64 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
+			{ { "mcl_dye:black", 5, 5 }, E1 },
+			{ { "mcl_core:emerald", 5, 64, "mcl_books:book", 1, 1 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
+			{ E1, { "mcl_core:glass", 4, 4 } },
 			},
 
 			{
-			{ { "mcl_core:emerald", 5, 64 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
+			{ E1, { "mcl_books:writable_book", 1, 1 } },
+			{ { "mcl_core:emerald", 5, 64, "mcl_books:book", 1, 1 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
+			{ { "mcl_core:emerald", 4, 4 }, { "mcl_compass:compass", 1 ,1 }},
+			{ { "mcl_core:emerald", 5, 5 }, { "mcl_clock:clock", 1, 1 } },
 			},
 
 			{
-			{ { "mcl_core:emerald", 20, 22 }, { "mcl_mobs:nametag", 1, 1 } },
+			{ { "mcl_core:emerald", 20, 20 }, { "mcl_mobs:nametag", 1, 1 } },
 			}
 		},
 	},
