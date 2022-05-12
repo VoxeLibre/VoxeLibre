@@ -430,21 +430,23 @@ local professions = {
 		texture = "mobs_mc_villager_priest.png",
 		trades = {
 			{
-			{ { "mcl_mobitems:rotten_flesh", 36, 40 }, E1 },
-			{ { "mcl_core:gold_ingot", 8, 10 }, E1 },
+			{ { "mcl_mobitems:rotten_flesh", 32, 32 }, E1 },
+			{ E1, { "mesecons:redstone", 2, 2  } },
 			},
-
 			{
-			{ E1, { "mesecons:redstone", 1, 4  } },
-			{ E1, { "mcl_dye:blue", 1, 2 } },
+			{ { "mcl_core:gold_ingot", 3, 3 }, E1 },
+			{ E1, { "mcl_dye:blue", 1, 1 } },
 			},
-
 			{
-			{ E1, { "mcl_nether:glowstone", 1, 3 } },
-			{ { "mcl_core:emerald", 4, 7 }, { "mcl_throwing:ender_pearl", 1, 1 } },
+			{ { "mcl_mobitems:rabbit_foot", 2, 2 }, E1 },
+			{ E1, { "mcl_nether:glowstone", 4, 4 } },
+			},
+			{
+			--{ { "FIXME: scute", 4, 4 }, E1 },
+			{ { "mcl_potions:glass_bottle", 9, 9 }, E1 },
+			{ { "mcl_core:emerald", 5, 5 }, { "mcl_throwing:ender_pearl", 1, 1 } },
 			TRADE_V6_RED_SANDSTONE,
 			},
-
 			{
 			 { { "mcl_nether:nether_wart_item", 22, 22 }, E1 },
 			 { { "mcl_core:emerald", 3, 3 }, { "mcl_experience:bottle", 1, 1 } },
