@@ -235,19 +235,40 @@ local professions = {
 		texture = "mobs_mc_villager_librarian.png",
 		trades = {
 			{
-			{ { "mcl_core:paper", 24, 36 }, E1 },
+			{ { "mcl_core:paper", 24, 24 }, E1 },
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_maps:empty_map", 1, 1 } },
 			},
-
 			{
-			-- subject to special checks
+			-- compass subject to special checks
+			{ { "xpanes:pane_natural_flat", 1, 1 }, E1 },
+			--{ { "mcl_core:emerald", 13, 13, "mcl_compass:compass", 1, 1 }, { "FIXME:ocean explorer map" 1, 1} },
+			},
+			{
 			{ { "mcl_compass:compass", 1, 1 }, E1 },
+			--{ { "mcl_core:emerald", 13, 13, "mcl_compass:compass", 1, 1 }, { "FIXME:woodland explorer map" 1, 1} },
 			},
-
 			{
-			-- TODO: replace with empty map
-			{ { "mcl_core:emerald", 7, 11}, { "mcl_maps:filled_map", 1, 1 } },
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_itemframes:item_frame", 1, 1 }},
+			
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_white", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_grey", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_silver", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_black", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_red", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_green", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_cyan", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_blue", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_magenta", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_orange", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_purple", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_brown", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_pink", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_lime", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_light_blue", 1, 1 }},
 			},
-
+			{
+			--{ { "mcl_core:emerald", 8, 8}, { "FIXME: globe banner pattern", 1, 1 } },
+			},
 			-- TODO: special maps
 		},
 	},
