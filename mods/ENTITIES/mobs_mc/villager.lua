@@ -314,15 +314,25 @@ local professions = {
 		trades = {
 			{
 			{ { "mcl_mobitems:leather", 9, 12 }, E1 },
-			{ { "mcl_core:emerald", 2, 4 }, { "mcl_armor:leggings_leather", 2, 4 } },
+			{ { "mcl_core:emerald", 3, 3 }, { "mcl_armor:leggings_leather", 2, 4 } },
+			{ { "mcl_core:emerald", 7, 7 }, { "mcl_armor:chestplate_leather", 2, 4 } },
 			},
-
 			{
-			{ { "mcl_core:emerald", 7, 12 }, { "mcl_armor:chestplate_leather_enchanted", 1, 1 } },
+			{ { "mcl_core:flint", 26, 26 }, E1 },
+			{ { "mcl_core:emerald", 5, 5 }, { "mcl_armor:helmet_leather", 2, 4 } },
+			{ { "mcl_core:emerald", 4, 4 }, { "mcl_armor:boots_leather", 2, 4 } },
 			},
-
 			{
+			{ { "mcl_mobitems:rabbit_hide", 9, 9 }, E1 },
+			{ { "mcl_core:emerald", 7, 7 }, { "mcl_armor:chestplate_leather", 1, 1 } },
+			},
+			{
+			--{ { "FIXME: scute", 4, 4 }, E1 },
 			{ { "mcl_core:emerald", 8, 10 }, { "mcl_mobitems:saddle", 1, 1 } },
+			},
+			{
+			{ { "mcl_core:emerald", 6, 6 }, { "mcl_mobitems:saddle", 1, 1 } },
+			{ { "mcl_core:emerald", 5, 5 }, { "mcl_armor:helmet_leather", 2, 4 } },
 			},
 		},
 	},
