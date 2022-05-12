@@ -277,25 +277,34 @@ local professions = {
 		texture = "mobs_mc_villager_smith.png",
 		trades = {
 			{
-			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
-			{ { "mcl_core:emerald", 4, 6 }, { "mcl_armor:helmet_iron", 1, 1 } },
+			{ { "mcl_core:coal_lump", 15, 15 }, E1 },
+			{ { "mcl_core:emerald", 5, 5 }, { "mcl_armor:helmet_iron", 1, 1 } },
+			{ { "mcl_core:emerald", 9, 9 }, { "mcl_armor:chestplate_iron", 1, 1 } },
+			{ { "mcl_core:emerald", 7, 7 }, { "mcl_armor:leggings_iron", 1, 1 } },
+			{ { "mcl_core:emerald", 4, 4 }, { "mcl_armor:boots_iron", 1, 1 } },
 			},
 
 			{
-			{ { "mcl_core:iron_ingot", 7, 9 }, E1 },
-			{ { "mcl_core:emerald", 10, 14 }, { "mcl_armor:chestplate_iron", 1, 1 } },
+			{ { "mcl_core:iron_ingot", 4, 4 }, E1 },
+			--{ { "mcl_core:emerald", 36, 36 }, { "FIXME: Bell", 1, 1 } },
+			{ { "mcl_core:emerald", 3, 3 }, { "mcl_armor:leggings_chain", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 1 }, { "mcl_armor:boots_chain", 1, 1 } },
+			},
+			{
+			{ { "mcl_buckets:bucket_lava", 1, 1 }, E1 },
+			{ { "mcl_core:diamond", 1, 1 }, E1 },
+			{ { "mcl_core:emerald", 1, 1 }, { "mcl_armor:helmet_chain", 1, 1 } },
+			{ { "mcl_core:emerald", 4, 4 }, { "mcl_armor:chestplate_chain", 1, 1 } },
+			{ { "mcl_core:emerald", 5, 5 }, { "mcl_shields:shield", 1, 1 } },
 			},
 
 			{
-			{ { "mcl_core:diamond", 3, 4 }, E1 },
-			{ { "mcl_core:emerald", 16, 19 }, { "mcl_armor:chestplate_diamond_enchanted", 1, 1 } },
+			{ { "mcl_core:emerald", 19, 33 }, { "mcl_armor:leggings_diamond_enchanted", 1, 1 } },
+			{ { "mcl_core:emerald", 13, 27 }, { "mcl_armor:boots_diamond_enchanted", 1, 1 } },
 			},
-
 			{
-			{ { "mcl_core:emerald", 5, 7 }, { "mcl_armor:boots_chain", 1, 1 } },
-			{ { "mcl_core:emerald", 9, 11 }, { "mcl_armor:leggings_chain", 1, 1 } },
-			{ { "mcl_core:emerald", 5, 7 }, { "mcl_armor:helmet_chain", 1, 1 } },
-			{ { "mcl_core:emerald", 11, 15 }, { "mcl_armor:chestplate_chain", 1, 1 } },
+			{ { "mcl_core:emerald", 13, 27 }, { "mcl_armor:helmet_diamond_enchanted", 1, 1 } },
+			{ { "mcl_core:emerald", 21, 35 }, { "mcl_armor:chestplate_diamond_enchanted", 1, 1 } },
 			},
 		},
 	},
