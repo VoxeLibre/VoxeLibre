@@ -76,16 +76,19 @@ local professions = {
 			{
 			{ { "mcl_farming:pumpkin", 8, 13 }, E1 },
 			{ E1, { "mcl_farming:pumpkin_pie", 2, 3} },
+			{ E1, { "mcl_core:apple", 2, 3} },
 			},
 
 			{
 			{ { "mcl_farming:melon", 7, 12 }, E1 },
-			{ E1, { "mcl_core:apple", 5, 7 }, },
+			{ E1, {"mcl_farming:cookie", 5, 7 }, },
 			},
-
 			{
-			{ E1, { "mcl_farming:cookie", 6, 10 } },
-			{ E1, { "mcl_cake:cake", 1, 1 } },
+			{ E1, { "mcl_mushrooms:mushroom_stew", 6, 10 } }, --FIXME: expert level farmer is supposed to sell sus stews.
+			},
+			{
+			{ E1, { "mcl_farming:carrot_item_gold", 3, 10 } },
+			{ E1, { "mcl_potions:speckled_melon", 4, 1 } },
 			TRADE_V6_BIRCH_SAPLING,
 			TRADE_V6_DARK_OAK_SAPLING,
 			TRADE_V6_ACACIA_SAPLING,
