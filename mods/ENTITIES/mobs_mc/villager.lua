@@ -341,14 +341,27 @@ local professions = {
 		texture = "mobs_mc_villager_butcher.png",
 		trades = {
 			{
-			{ { "mcl_mobitems:beef", 14, 18 }, E1 },
-			{ { "mcl_mobitems:chicken", 14, 18 }, E1 },
+			{ { "mcl_mobitems:beef", 14, 14 }, E1 },
+			{ { "mcl_mobitems:chicken", 7, 7 }, E1 },
+			{ { "mcl_mobitems:rabbit", 4, 4 }, E1 },
+			{ E1, { "mcl_mobitems:rabbit_stew", 1, 1 } },
 			},
 
 			{
-			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
-			{ E1, { "mcl_mobitems:cooked_beef", 5, 7 } },
-			{ E1, { "mcl_mobitems:cooked_chicken", 6, 8 } },
+			{ { "mcl_core:coal_lump", 15, 15 }, E1 },
+			{ E1, { "mcl_mobitems:cooked_porkchop", 5, 5 } },
+			{ E1, { "mcl_mobitems:cooked_chicken", 8, 8 } },
+			},
+			{
+			{ { "mcl_mobitems:mutton", 7, 7 }, E1 },
+			{ { "mcl_mobitems:beef", 10, 10 }, E1 },
+			},
+			{
+			{ { "mcl_mobitems:mutton", 7, 7 }, E1 },
+			{ { "mcl_mobitems:beef", 10, 10 }, E1 },
+			},
+			{
+			--{ { "FIXME: Sweet Berries", 10, 10 }, E1 },
 			},
 		},
 	},
