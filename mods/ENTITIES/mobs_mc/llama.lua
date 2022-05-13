@@ -42,7 +42,6 @@ mobs:register_mob("mobs_mc:llama", {
 		{"blank.png", "blank.png", "mobs_mc_llama_gray.png"},
 		{"blank.png", "blank.png", "mobs_mc_llama_white.png"},
 		{"blank.png", "blank.png", "mobs_mc_llama.png"},
-		-- TODO: Add llama carpet textures (Pixel Perfection seems to use verbatim copy from Minecraft :-( )
 	},
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
@@ -139,50 +138,48 @@ mobs:register_mob("mobs_mc:llama", {
 		-- Make sure tamed llama is mature and being clicked by owner only
 		if self.tamed and not self.child and self.owner == clicker:get_player_name() then
 
-			-- Place carpet
-			--[[ TODO: Re-enable this code when carpet textures arrived.
-			if minetest.get_item_group(item:get_name(), "carpet") == 1 and not self.carpet then
-				for group, carpetdata in pairs(carpets) do
-					if minetest.get_item_group(item:get_name(), group) == 1 then
-						if not minetest.is_creative_enabled(clicker:get_player_name()) then
-							item:take_item()
-							clicker:set_wielded_item(item)
-						end
-						local substr = carpetdata[2]
-						local tex_carpet = "mobs_mc_llama_decor_"..substr..".png"
-						self.base_texture = table.copy(self.base_texture)
-						self.base_texture[2] = tex_carpet
-						self.object:set_properties({
-							textures = self.base_texture,
-						})
-						self.carpet = item:get_name()
-						self.drops = {
-							{name = mobs_mc.items.leather,
-							chance = 1,
-							min = 0,
-							max = 2,},
-							{name = item:get_name(),
-							chance = 1,
-							min = 1,
-							max = 1,},
-						}
-						return
+		-- Place carpet
+		if minetest.get_item_group(item:get_name(), "carpet") == 1 and not self.carpet then
+			for group, carpetdata in pairs(carpets) do
+				if minetest.get_item_group(item:get_name(), group) == 1 then
+					if not minetest.is_creative_enabled(clicker:get_player_name()) then
+						item:take_item()
+						clicker:set_wielded_item(item)
 					end
+					local substr = carpetdata[2]
+					local tex_carpet = "mobs_mc_llama_decor_"..substr..".png"
+					self.base_texture = table.copy(self.base_texture)
+					self.base_texture[2] = tex_carpet
+					self.object:set_properties({
+						textures = self.base_texture,
+					})
+					self.carpet = item:get_name()
+					self.drops = {
+						{name = mobs_mc.items.leather,
+						chance = 1,
+						min = 0,
+						max = 2,},
+						{name = item:get_name(),
+						chance = 1,
+						min = 1,
+						max = 1,},
+					}
+					return
 				end
 			end
-			]]
+		end
 
-			-- detatch player already riding llama
-			if self.driver and clicker == self.driver then
+		-- detatch player already riding llama
+		if self.driver and clicker == self.driver then
 
-				mobs.detach(clicker, {x = 1, y = 0, z = 1})
+			mobs.detach(clicker, {x = 1, y = 0, z = 1})
 
-			-- attach player to llama
-			elseif not self.driver then
+		-- attach player to llama
+		elseif not self.driver then
 
-				self.object:set_properties({stepheight = 1.1})
-				mobs.attach(self, clicker)
-			end
+			self.object:set_properties({stepheight = 1.1})
+			mobs.attach(self, clicker)
+		end
 
 		-- Used to capture llama
 		elseif not self.driver and clicker:get_wielded_item():get_name() ~= "" then
@@ -190,8 +187,6 @@ mobs:register_mob("mobs_mc:llama", {
 		end
 	end,
 
-	--[[
-	TODO: Enable this code when carpet textures arrived.
 	on_breed = function(parent1, parent2)
 		-- When breeding, make sure the child has no carpet
 		local pos = parent1.object:get_pos()
@@ -213,7 +208,6 @@ mobs:register_mob("mobs_mc:llama", {
 			return false
 		end
 	end,
-	]]
 
 })
 
