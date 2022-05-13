@@ -62,9 +62,15 @@ if minetest.get_mapgen_setting("mg_name") == "v6" then
 end
 
 local professions = {
+	unemployed = {
+		name = N("Unemployed"),
+		texture = "mobs_mc_villager.png",
+		trades = nil,
+	},
 	farmer = {
 		name = N("Farmer"),
 		texture = "mobs_mc_villager_farmer.png",
+		jobsite = "mcl_composters:composter",
 		trades = {
 			{
 			{ { "mcl_farming:wheat_item", 18, 22, }, E1 },
@@ -76,16 +82,19 @@ local professions = {
 			{
 			{ { "mcl_farming:pumpkin", 8, 13 }, E1 },
 			{ E1, { "mcl_farming:pumpkin_pie", 2, 3} },
+			{ E1, { "mcl_core:apple", 2, 3} },
 			},
 
 			{
 			{ { "mcl_farming:melon", 7, 12 }, E1 },
-			{ E1, { "mcl_core:apple", 5, 7 }, },
+			{ E1, {"mcl_farming:cookie", 5, 7 }, },
 			},
-
 			{
-			{ E1, { "mcl_farming:cookie", 6, 10 } },
-			{ E1, { "mcl_cake:cake", 1, 1 } },
+			{ E1, { "mcl_mushrooms:mushroom_stew", 6, 10 } }, --FIXME: expert level farmer is supposed to sell sus stews.
+			},
+			{
+			{ E1, { "mcl_farming:carrot_item_gold", 3, 10 } },
+			{ E1, { "mcl_potions:speckled_melon", 4, 1 } },
 			TRADE_V6_BIRCH_SAPLING,
 			TRADE_V6_DARK_OAK_SAPLING,
 			TRADE_V6_ACACIA_SAPLING,
@@ -95,32 +104,81 @@ local professions = {
 	fisherman = {
 		name = N("Fisherman"),
 		texture = "mobs_mc_villager_farmer.png",
+		jobsite = "mcl_barrels:barrel_closed",
 		trades = {
 			{
-			{ { "mcl_fishing:fish_raw", 6, 6, "mcl_core:emerald", 1, 1 }, { "mcl_fishing:fish_cooked", 6, 6 } },
+			{ { "mcl_fishing:fish_raw", 6, 6, "mcl_core:emerald", 1, 1 },{ "mcl_fishing:fish_cooked", 6, 6 } },
 			{ { "mcl_mobitems:string", 15, 20 }, E1 },
-			{ { "mcl_core:emerald", 3, 11 }, { "mcl_fishing:fishing_rod_enchanted", 1, 1} },
+			{ { "mcl_core:coal_lump", 15, 10 }, E1 },
+			-- FIXME missing: bucket of cod + fish should be cod.
+			},
+			{
+			{ { "mcl_fishing:fish_raw", 6, 15,}, E1 },
+			{ { "mcl_fishing:salmon_raw", 6, 6, "mcl_core:emerald", 1, 1 },{ "mcl_fishing:salmon_cooked", 6, 6 } },
+			-- FIXME missing campfire
+			--	{{ "mcl_core:emerald", 1, 2 },{"mcl_campfires:campfire",1,1} },
+			},
+			{
+			{ { "mcl_fishing:salmon_raw", 6, 13,}, E1 },
+			{ { "mcl_core:emerald", 7, 22 }, { "mcl_fishing:fishing_rod_enchanted", 1, 1} },
+			},
+			{
+			{ { "mcl_fishing:clownfish_raw", 6, 6,}, E1 },
+			},
+			{
+			{ { "mcl_fishing:pufferfish_raw", 4, 4,}, E1 },
+
+			{ { "mcl_boats:boat", 1, 1,}, E1 },
+			{ { "mcl_boats:boat_acacia", 1, 1,}, E1 },
+			{ { "mcl_boats:boat_spruce", 1, 1,}, E1 },
+			{ { "mcl_boats:boat_dark_oak", 1, 1,}, E1 },
+			{ { "mcl_boats:boat_birch", 1, 1,}, E1 },
 			},
 		},
 	},
 	fletcher = {
 		name = N("Fletcher"),
 		texture = "mobs_mc_villager_farmer.png",
+		jobsite = "mcl_villages:stonebrickcarved", --FIXME: fletching table
 		trades = {
 			{
 			{ { "mcl_mobitems:string", 15, 20 }, E1 },
 			{ E1, { "mcl_bows:arrow", 8, 12 } },
-			},
-
-			{
 			{ { "mcl_core:gravel", 10, 10, "mcl_core:emerald", 1, 1 }, { "mcl_core:flint", 6, 10 } },
+			},
+			{
+			{ { "mcl_core:flint", 26, 26 }, E1 },
 			{ { "mcl_core:emerald", 2, 3 }, { "mcl_bows:bow", 1, 1 } },
+			},
+			{
+			{ { "mcl_mobitems:string", 14, 14 }, E1 },
+			{ { "mcl_core:emerald", 3, 3 }, { "mcl_bows:crossbow", 1, 1 } },
+			},
+			{
+			{ { "mcl_mobitems:string", 24, 24 }, E1 },
+			{ { "mcl_core:emerald", 7, 21 } , { "mcl_bows:bow_enchanted", 1, 1 } },
+			},
+			{
+			--FIXME: supposed to be tripwire hook{ { "tripwirehook", 24, 24 }, E1 },
+			{ { "mcl_core:emerald", 8, 22 } , { "mcl_bows:crossbow_enchanted", 1, 1 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:healing_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:harming_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:night_vision_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:swiftness_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:slowness_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:leaping_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:poison_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:regeneration_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:invisibility_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:water_breathing_arrow", 5, 5 } },
+			{ { "mcl_core:emerald", 2, 2, "mcl_bows:arrow", 5, 5 }, { "mcl_potions:fire_resistance_arrow", 5, 5 } },
 			},
 		}
 	},
 	shepherd ={
 		name = N("Shepherd"),
 		texture = "mobs_mc_villager_farmer.png",
+		jobsite = "mcl_villages:stonebrickcarved", --FIXME: loom
 		trades = {
 			{
 			{ { "mcl_wool:white", 16, 22 }, E1 },
@@ -150,179 +208,262 @@ local professions = {
 	librarian = {
 		name = N("Librarian"),
 		texture = "mobs_mc_villager_librarian.png",
+		jobsite = "mcl_villages:stonebrickcarved", --FIXME: lectern
 		trades = {
 			{
 			{ { "mcl_core:paper", 24, 36 }, E1 },
 			{ { "mcl_books:book", 8, 10 }, E1 },
-			{ { "mcl_core:emerald", 10, 12 }, { "mcl_compass:compass", 1 ,1 }},
-			{ { "mcl_core:emerald", 3, 4 }, { "mcl_books:bookshelf", 1 ,1 }},
-			{ { "mcl_core:emerald", 5, 64 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
+			{ { "mcl_core:emerald", 9, 9 }, { "mcl_books:bookshelf", 1 ,1 }},
+			{ { "mcl_core:emerald", 5, 64, "mcl_books:book", 1, 1 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
 			},
-
 			{
 			{ { "mcl_books:written_book", 2, 2 }, E1 },
-			{ { "mcl_core:emerald", 10, 12 }, { "mcl_clock:clock", 1, 1 } },
-			{ E1, { "mcl_core:glass", 3, 5 } },
-			{ { "mcl_core:emerald", 5, 64 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
+			{ { "mcl_core:emerald", 5, 64, "mcl_books:book", 1, 1 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
+			{ E1, { "mcl_lanterns:lantern_floor", 1, 1 } },
 			},
 
 			{
-			{ E1, { "mcl_core:glass", 3, 5 } },
-			{ { "mcl_core:emerald", 5, 64 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
+			{ { "mcl_dye:black", 5, 5 }, E1 },
+			{ { "mcl_core:emerald", 5, 64, "mcl_books:book", 1, 1 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
+			{ E1, { "mcl_core:glass", 4, 4 } },
 			},
 
 			{
-			{ { "mcl_core:emerald", 5, 64 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
+			{ E1, { "mcl_books:writable_book", 1, 1 } },
+			{ { "mcl_core:emerald", 5, 64, "mcl_books:book", 1, 1 }, { "mcl_enchanting:book_enchanted", 1 ,1 }},
+			{ { "mcl_core:emerald", 4, 4 }, { "mcl_compass:compass", 1 ,1 }},
+			{ { "mcl_core:emerald", 5, 5 }, { "mcl_clock:clock", 1, 1 } },
 			},
 
 			{
-			{ { "mcl_core:emerald", 20, 22 }, { "mcl_mobs:nametag", 1, 1 } },
+			{ { "mcl_core:emerald", 20, 20 }, { "mcl_mobs:nametag", 1, 1 } },
 			}
 		},
 	},
 	cartographer = {
 		name = N("Cartographer"),
 		texture = "mobs_mc_villager_librarian.png",
+		jobsite = "mcl_villages:stonebrickcarved", --FIXME: cartography table
 		trades = {
 			{
-			{ { "mcl_core:paper", 24, 36 }, E1 },
+			{ { "mcl_core:paper", 24, 24 }, E1 },
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_maps:empty_map", 1, 1 } },
 			},
-
 			{
-			-- subject to special checks
+			-- compass subject to special checks
+			{ { "xpanes:pane_natural_flat", 1, 1 }, E1 },
+			--{ { "mcl_core:emerald", 13, 13, "mcl_compass:compass", 1, 1 }, { "FIXME:ocean explorer map" 1, 1} },
+			},
+			{
 			{ { "mcl_compass:compass", 1, 1 }, E1 },
+			--{ { "mcl_core:emerald", 13, 13, "mcl_compass:compass", 1, 1 }, { "FIXME:woodland explorer map" 1, 1} },
 			},
-
 			{
-			-- TODO: replace with empty map
-			{ { "mcl_core:emerald", 7, 11}, { "mcl_maps:filled_map", 1, 1 } },
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_itemframes:item_frame", 1, 1 }},
+			
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_white", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_grey", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_silver", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_black", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_red", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_green", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_cyan", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_blue", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_magenta", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_orange", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_purple", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_brown", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_pink", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_lime", 1, 1 }},
+			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_light_blue", 1, 1 }},
 			},
-
+			{
+			--{ { "mcl_core:emerald", 8, 8}, { "FIXME: globe banner pattern", 1, 1 } },
+			},
 			-- TODO: special maps
 		},
 	},
 	armorer = {
 		name = N("Armorer"),
 		texture = "mobs_mc_villager_smith.png",
+		jobsite = "mcl_core:lava_source", --FIXME: blast furnace
 		trades = {
 			{
-			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
-			{ { "mcl_core:emerald", 4, 6 }, { "mcl_armor:helmet_iron", 1, 1 } },
+			{ { "mcl_core:coal_lump", 15, 15 }, E1 },
+			{ { "mcl_core:emerald", 5, 5 }, { "mcl_armor:helmet_iron", 1, 1 } },
+			{ { "mcl_core:emerald", 9, 9 }, { "mcl_armor:chestplate_iron", 1, 1 } },
+			{ { "mcl_core:emerald", 7, 7 }, { "mcl_armor:leggings_iron", 1, 1 } },
+			{ { "mcl_core:emerald", 4, 4 }, { "mcl_armor:boots_iron", 1, 1 } },
 			},
 
 			{
-			{ { "mcl_core:iron_ingot", 7, 9 }, E1 },
-			{ { "mcl_core:emerald", 10, 14 }, { "mcl_armor:chestplate_iron", 1, 1 } },
+			{ { "mcl_core:iron_ingot", 4, 4 }, E1 },
+			--{ { "mcl_core:emerald", 36, 36 }, { "FIXME: Bell", 1, 1 } },
+			{ { "mcl_core:emerald", 3, 3 }, { "mcl_armor:leggings_chain", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 1 }, { "mcl_armor:boots_chain", 1, 1 } },
+			},
+			{
+			{ { "mcl_buckets:bucket_lava", 1, 1 }, E1 },
+			{ { "mcl_core:diamond", 1, 1 }, E1 },
+			{ { "mcl_core:emerald", 1, 1 }, { "mcl_armor:helmet_chain", 1, 1 } },
+			{ { "mcl_core:emerald", 4, 4 }, { "mcl_armor:chestplate_chain", 1, 1 } },
+			{ { "mcl_core:emerald", 5, 5 }, { "mcl_shields:shield", 1, 1 } },
 			},
 
 			{
-			{ { "mcl_core:diamond", 3, 4 }, E1 },
-			{ { "mcl_core:emerald", 16, 19 }, { "mcl_armor:chestplate_diamond_enchanted", 1, 1 } },
+			{ { "mcl_core:emerald", 19, 33 }, { "mcl_armor:leggings_diamond_enchanted", 1, 1 } },
+			{ { "mcl_core:emerald", 13, 27 }, { "mcl_armor:boots_diamond_enchanted", 1, 1 } },
 			},
-
 			{
-			{ { "mcl_core:emerald", 5, 7 }, { "mcl_armor:boots_chain", 1, 1 } },
-			{ { "mcl_core:emerald", 9, 11 }, { "mcl_armor:leggings_chain", 1, 1 } },
-			{ { "mcl_core:emerald", 5, 7 }, { "mcl_armor:helmet_chain", 1, 1 } },
-			{ { "mcl_core:emerald", 11, 15 }, { "mcl_armor:chestplate_chain", 1, 1 } },
+			{ { "mcl_core:emerald", 13, 27 }, { "mcl_armor:helmet_diamond_enchanted", 1, 1 } },
+			{ { "mcl_core:emerald", 21, 35 }, { "mcl_armor:chestplate_diamond_enchanted", 1, 1 } },
 			},
 		},
 	},
 	leatherworker = {
 		name = N("Leatherworker"),
 		texture = "mobs_mc_villager_butcher.png",
+		jobsite = "mcl_cauldrons:cauldron",
 		trades = {
 			{
 			{ { "mcl_mobitems:leather", 9, 12 }, E1 },
-			{ { "mcl_core:emerald", 2, 4 }, { "mcl_armor:leggings_leather", 2, 4 } },
+			{ { "mcl_core:emerald", 3, 3 }, { "mcl_armor:leggings_leather", 2, 4 } },
+			{ { "mcl_core:emerald", 7, 7 }, { "mcl_armor:chestplate_leather", 2, 4 } },
 			},
-
 			{
-			{ { "mcl_core:emerald", 7, 12 }, { "mcl_armor:chestplate_leather_enchanted", 1, 1 } },
+			{ { "mcl_core:flint", 26, 26 }, E1 },
+			{ { "mcl_core:emerald", 5, 5 }, { "mcl_armor:helmet_leather", 2, 4 } },
+			{ { "mcl_core:emerald", 4, 4 }, { "mcl_armor:boots_leather", 2, 4 } },
 			},
-
 			{
+			{ { "mcl_mobitems:rabbit_hide", 9, 9 }, E1 },
+			{ { "mcl_core:emerald", 7, 7 }, { "mcl_armor:chestplate_leather", 1, 1 } },
+			},
+			{
+			--{ { "FIXME: scute", 4, 4 }, E1 },
 			{ { "mcl_core:emerald", 8, 10 }, { "mcl_mobitems:saddle", 1, 1 } },
+			},
+			{
+			{ { "mcl_core:emerald", 6, 6 }, { "mcl_mobitems:saddle", 1, 1 } },
+			{ { "mcl_core:emerald", 5, 5 }, { "mcl_armor:helmet_leather", 2, 4 } },
 			},
 		},
 	},
 	butcher = {
 		name = N("Butcher"),
 		texture = "mobs_mc_villager_butcher.png",
+		jobsite = "mcl_villages:stonebrickcarved", --FIXME: smoker
 		trades = {
 			{
-			{ { "mcl_mobitems:beef", 14, 18 }, E1 },
-			{ { "mcl_mobitems:chicken", 14, 18 }, E1 },
+			{ { "mcl_mobitems:beef", 14, 14 }, E1 },
+			{ { "mcl_mobitems:chicken", 7, 7 }, E1 },
+			{ { "mcl_mobitems:rabbit", 4, 4 }, E1 },
+			{ E1, { "mcl_mobitems:rabbit_stew", 1, 1 } },
 			},
 
 			{
-			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
-			{ E1, { "mcl_mobitems:cooked_beef", 5, 7 } },
-			{ E1, { "mcl_mobitems:cooked_chicken", 6, 8 } },
+			{ { "mcl_core:coal_lump", 15, 15 }, E1 },
+			{ E1, { "mcl_mobitems:cooked_porkchop", 5, 5 } },
+			{ E1, { "mcl_mobitems:cooked_chicken", 8, 8 } },
+			},
+			{
+			{ { "mcl_mobitems:mutton", 7, 7 }, E1 },
+			{ { "mcl_mobitems:beef", 10, 10 }, E1 },
+			},
+			{
+			{ { "mcl_mobitems:mutton", 7, 7 }, E1 },
+			{ { "mcl_mobitems:beef", 10, 10 }, E1 },
+			},
+			{
+			--{ { "FIXME: Sweet Berries", 10, 10 }, E1 },
 			},
 		},
 	},
 	weapon_smith = {
 		name = N("Weapon Smith"),
 		texture = "mobs_mc_villager_smith.png",
+		jobsite = "mcl_villages:stonebrickcarved", --FIXME: grindstone
 		trades = {
 			{
-			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
-			{ { "mcl_core:emerald", 6, 8 }, { "mcl_tools:axe_iron", 1, 1 } },
+			{ { "mcl_core:coal_lump", 15, 15 }, E1 },
+			{ { "mcl_core:emerald", 3, 3 }, { "mcl_tools:axe_iron", 1, 1 } },
+			{ { "mcl_core:emerald", 7, 21 }, { "mcl_tools:sword_iron_enchanted", 1, 1 } },
 			},
 
 			{
-			{ { "mcl_core:iron_ingot", 7, 9 }, E1 },
-			{ { "mcl_core:emerald", 9, 10 }, { "mcl_tools:sword_iron_enchanted", 1, 1 } },
+			{ { "mcl_core:iron_ingot", 4, 4 }, E1 },
+			--{ { "mcl_core:emerald", 36, 36 }, { "FIXME: Bell", 1, 1 } },
+			},
+			{
+			{ { "mcl_core:flint", 7, 9 }, E1 },
+			},
+			{
+			{ { "mcl_core:diamond", 7, 9 }, E1 },
+			{ { "mcl_core:emerald", 17, 31 }, { "mcl_tools:axe_diamond_enchanted", 1, 1 } },
 			},
 
 			{
-			{ { "mcl_core:diamond", 3, 4 }, E1 },
-			{ { "mcl_core:emerald", 12, 15 }, { "mcl_tools:sword_diamond_enchanted", 1, 1 } },
-			{ { "mcl_core:emerald", 9, 12 }, { "mcl_tools:axe_diamond_enchanted", 1, 1 } },
+			{ { "mcl_core:emerald", 13, 27 }, { "mcl_tools:sword_diamond_enchanted", 1, 1 } },
 			},
 		},
 	},
 	tool_smith = {
 		name = N("Tool Smith"),
 		texture = "mobs_mc_villager_smith.png",
+		jobsite = "mcl_villages:stonebrickcarved", --FIXME: smithing table
 		trades = {
 			{
-			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
-			{ { "mcl_core:emerald", 5, 7 }, { "mcl_tools:shovel_iron_enchanted", 1, 1 } },
+			{ { "mcl_core:coal_lump", 15, 15 }, E1 },
+			{ E1, { "mcl_tools:axe_stone", 1, 1 } },
+			{ E1, { "mcl_tools:shovel_stone", 1, 1 } },
+			{ E1, { "mcl_tools:pick_stone", 1, 1 } },
+			{ E1, { "mcl_farming:hoe_stone", 1, 1 } },
 			},
 
 			{
-			{ { "mcl_core:iron_ingot", 7, 9 }, E1 },
-			{ { "mcl_core:emerald", 9, 11 }, { "mcl_tools:pick_iron_enchanted", 1, 1 } },
+			{ { "mcl_core:iron_ingot", 4, 4 }, E1 },
+			--{ { "mcl_core:emerald", 36, 36 }, { "FIXME: Bell", 1, 1 } },
 			},
-
 			{
-			{ { "mcl_core:diamond", 3, 4 }, E1 },
-			{ { "mcl_core:emerald", 12, 15 }, { "mcl_tools:pick_diamond_enchanted", 1, 1 } },
+			{ { "mcl_core:flint", 30, 30 }, E1 },
+			{ { "mcl_core:emerald", 6, 20 }, { "mcl_tools:axe_iron_enchanted", 1, 1 } },
+			{ { "mcl_core:emerald", 7, 21 }, { "mcl_tools:shovel_iron_enchanted", 1, 1 } },
+			{ { "mcl_core:emerald", 8, 22 }, { "mcl_tools:pick_iron_enchanted", 1, 1 } },
+			{ { "mcl_core:emerald", 4, 4 }, { "mcl_farming:hoe_diamond", 1, 1 } },
+			},
+			{
+			{ { "mcl_core:diamond", 1, 1 }, E1 },
+			{ { "mcl_core:emerald", 17, 31 }, { "mcl_tools:axe_diamond_enchanted", 1, 1 } },
+			{ { "mcl_core:emerald", 10, 24 }, { "mcl_tools:shovel_diamond_enchanted", 1, 1 } },
+			},
+			{
+			{ { "mcl_core:emerald", 18, 32 }, { "mcl_tools:pick_diamond_enchanted", 1, 1 } },
 			},
 		},
 	},
 	cleric = {
 		name = N("Cleric"),
 		texture = "mobs_mc_villager_priest.png",
+		jobsite = "mcl_brewing:stand",
 		trades = {
 			{
-			{ { "mcl_mobitems:rotten_flesh", 36, 40 }, E1 },
-			{ { "mcl_core:gold_ingot", 8, 10 }, E1 },
+			{ { "mcl_mobitems:rotten_flesh", 32, 32 }, E1 },
+			{ E1, { "mesecons:redstone", 2, 2  } },
 			},
-
 			{
-			{ E1, { "mesecons:redstone", 1, 4  } },
-			{ E1, { "mcl_dye:blue", 1, 2 } },
+			{ { "mcl_core:gold_ingot", 3, 3 }, E1 },
+			{ E1, { "mcl_dye:blue", 1, 1 } },
 			},
-
 			{
-			{ E1, { "mcl_nether:glowstone", 1, 3 } },
-			{ { "mcl_core:emerald", 4, 7 }, { "mcl_throwing:ender_pearl", 1, 1 } },
+			{ { "mcl_mobitems:rabbit_foot", 2, 2 }, E1 },
+			{ E1, { "mcl_nether:glowstone", 4, 4 } },
+			},
+			{
+			--{ { "FIXME: scute", 4, 4 }, E1 },
+			{ { "mcl_potions:glass_bottle", 9, 9 }, E1 },
+			{ { "mcl_core:emerald", 5, 5 }, { "mcl_throwing:ender_pearl", 1, 1 } },
 			TRADE_V6_RED_SANDSTONE,
 			},
-
 			{
 			 { { "mcl_nether:nether_wart_item", 22, 22 }, E1 },
 			 { { "mcl_core:emerald", 3, 3 }, { "mcl_experience:bottle", 1, 1 } },
@@ -345,6 +486,42 @@ end
 local stand_still = function(self)
 	self.walk_chance = 0
 	self.jump = false
+end
+
+local function set_velocity(self, v)
+	local yaw = (self.object:get_yaw() or 0) + self.rotate
+	self.object:set_velocity({
+		x = (math.sin(yaw) * -v),
+		y = self.object:get_velocity().y,
+		z = (math.cos(yaw) * v),
+	})
+end
+
+local function go_to_pos(entity,b)
+	local s=entity.object:get_pos()
+	local v = { x = b.x - s.x, z = b.z - s.z }
+	local yaw = (math.atan(v.z / v.x) + math.pi / 2) - entity.rotate
+	if b.x > s.x then yaw = yaw + math.pi end
+	entity.object:set_yaw(yaw)
+	set_velocity(entity,entity.follow_velocity)
+	if vector.distance(b,s) < 5 then
+		return true
+	end
+end
+
+local function go_home(entity)
+	entity.state = "go_home"
+	local b=entity.bed
+	if not b then return end
+	if go_to_pos(entity,b) then
+		entity.state = "stand"
+		set_velocity(entity,0)
+		entity.object:set_pos(b)
+		local n=minetest.get_node(b)
+		if n and n.name ~= "mcl_beds:bed_red_bottom" then
+			entity.bed=nil --the stormtroopers have killed uncle owen
+		end
+	end	
 end
 
 local update_max_tradenum = function(self)
@@ -924,35 +1101,6 @@ minetest.register_on_joinplayer(function(player)
 	inv:set_size("offered", 1)
 end)
 
-local function set_velocity(self, v)
-	local yaw = (self.object:get_yaw() or 0) + self.rotate
-	self.object:set_velocity({
-		x = (math.sin(yaw) * -v),
-		y = self.object:get_velocity().y,
-		z = (math.cos(yaw) * v),
-	})
-end
-
-local function go_home(entity)
-	local b=entity.bed
-	local s=entity.object:get_pos()
-	if not b then return end
-	local v = { x = b.x - s.x, z = b.z - s.z }
-	local yaw = (math.atan(v.z / v.x) + math.pi / 2) - entity.rotate
-	if b.x > s.x then yaw = yaw + math.pi end
-	entity.object:set_yaw(yaw)
-	set_velocity(entity,entity.follow_velocity)
-	entity.state = "go_home"
-	if vector.distance(b,s) < 10 then
-		entity.state = "stand"
-		set_velocity(entity,0)
-		local n=minetest.get_node(b)
-		if n and n.name ~= "mcl_beds:bed_red_bottom" then
-			entity.bed=nil --bed is gone, make villager homeless
-		end
-	end
-end
-
 --[=======[ MOB REGISTRATION AND SPAWNING ]=======]
 
 mobs:register_mob("mobs_mc:villager", {
@@ -1066,13 +1214,15 @@ mobs:register_mob("mobs_mc:villager", {
 	_player_scan_timer = 0,
 	_trading_players = {}, -- list of playernames currently trading with villager (open formspec)
 	do_custom = function(self, dtime)
-		if self.bed and  ( self.state == "go_home" or vector.distance(self.object:get_pos(),self.bed) > 50 ) then
-			go_home(self)
-		end
 		-- Stand still if player is nearby.
 		if not self._player_scan_timer then
 			self._player_scan_timer = 0
 		end
+		
+		if self.bed and  ( self.state == "go_home" or vector.distance(self.object:get_pos(),self.bed) > 50 ) then
+			go_home(self)
+		end
+
 		self._player_scan_timer = self._player_scan_timer + dtime
 		-- Check infrequently to keep CPU load low
 		if self._player_scan_timer > PLAYER_SCAN_INTERVAL then
