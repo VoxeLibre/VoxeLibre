@@ -64,12 +64,18 @@ end
 local professions = {
 	unemployed = {
 		name = N("Unemployed"),
-		texture = "mobs_mc_villager.png",
+		textures = {
+				"mobs_mc_villager.png",
+				"mobs_mc_villager.png",
+			},
 		trades = nil,
 	},
 	farmer = {
 		name = N("Farmer"),
-		texture = "mobs_mc_villager_farmer.png",
+		textures = {
+				"mobs_mc_villager_farmer.png",
+				"mobs_mc_villager_farmer.png",
+			},
 		jobsite = "mcl_composters:composter",
 		trades = {
 			{
@@ -103,7 +109,10 @@ local professions = {
 	},
 	fisherman = {
 		name = N("Fisherman"),
-		texture = "mobs_mc_villager_farmer.png",
+		textures = {
+				"mobs_mc_villager_farmer.png",
+				"mobs_mc_villager_farmer.png",
+			},
 		jobsite = "mcl_barrels:barrel_closed",
 		trades = {
 			{
@@ -138,7 +147,10 @@ local professions = {
 	},
 	fletcher = {
 		name = N("Fletcher"),
-		texture = "mobs_mc_villager_farmer.png",
+		texture =  {
+				"mobs_mc_villager_farmer.png",
+				"mobs_mc_villager_farmer.png",
+			},
 		jobsite = "mcl_fletching_table:fletching_table",
 		trades = {
 			{
@@ -177,7 +189,10 @@ local professions = {
 	},
 	shepherd ={
 		name = N("Shepherd"),
-		texture = "mobs_mc_villager_farmer.png",
+		texture =  {
+				"mobs_mc_villager_farmer.png",
+				"mobs_mc_villager_farmer.png",
+			},
 		jobsite = "mcl_loom:loom",
 		trades = {
 			{
@@ -207,7 +222,10 @@ local professions = {
 	},
 	librarian = {
 		name = N("Librarian"),
-		texture = "mobs_mc_villager_librarian.png",
+		textures = {
+				"mobs_mc_villager_librarian.png",
+				"mobs_mc_villager_librarian.png",
+			},
 		jobsite = "mcl_villages:stonebrickcarved", --FIXME: lectern
 		trades = {
 			{
@@ -242,7 +260,10 @@ local professions = {
 	},
 	cartographer = {
 		name = N("Cartographer"),
-		texture = "mobs_mc_villager_librarian.png",
+		textures = {
+				"mobs_mc_villager_librarian.png",
+				"mobs_mc_villager_librarian.png",
+			},
 		jobsite = "mcl_cartography_table:cartography_table",
 		trades = {
 			{
@@ -285,7 +306,10 @@ local professions = {
 	},
 	armorer = {
 		name = N("Armorer"),
-		texture = "mobs_mc_villager_smith.png",
+		textures = {
+				"mobs_mc_villager_smith.png",
+				"mobs_mc_villager_smith.png",
+			},
 		jobsite = "mcl_blast_furnace:blast_furnace",
 		trades = {
 			{
@@ -322,7 +346,10 @@ local professions = {
 	},
 	leatherworker = {
 		name = N("Leatherworker"),
-		texture = "mobs_mc_villager_butcher.png",
+		textures = {
+				"mobs_mc_villager_butcher.png",
+				"mobs_mc_villager_butcher.png",
+			},
 		jobsite = "mcl_cauldrons:cauldron",
 		trades = {
 			{
@@ -351,7 +378,10 @@ local professions = {
 	},
 	butcher = {
 		name = N("Butcher"),
-		texture = "mobs_mc_villager_butcher.png",
+		textures = {
+				"mobs_mc_villager_butcher.png",
+				"mobs_mc_villager_butcher.png",
+			},
 		jobsite = "mcl_smoker:smoker",
 		trades = {
 			{
@@ -381,7 +411,10 @@ local professions = {
 	},
 	weapon_smith = {
 		name = N("Weapon Smith"),
-		texture = "mobs_mc_villager_smith.png",
+		textures = {
+				"mobs_mc_villager_smith.png",
+				"mobs_mc_villager_smith.png",
+			},
 		jobsite = "mcl_villages:stonebrickcarved", --FIXME: grindstone
 		trades = {
 			{
@@ -409,7 +442,10 @@ local professions = {
 	},
 	tool_smith = {
 		name = N("Tool Smith"),
-		texture = "mobs_mc_villager_smith.png",
+		textures = {
+				"mobs_mc_villager_smith.png",
+				"mobs_mc_villager_smith.png",
+			},
 		jobsite = "mcl_villages:stonebrickcarved", --FIXME: smithing table
 		trades = {
 			{
@@ -443,8 +479,11 @@ local professions = {
 	},
 	cleric = {
 		name = N("Cleric"),
-		texture = "mobs_mc_villager_priest.png",
-		jobsite = "mcl_brewing:stand",
+		textures = {
+				"mobs_mc_villager_priest.png",
+				"mobs_mc_villager_priest.png",
+			},
+		jobsite = "mcl_brewing:stand_000",
 		trades = {
 			{
 			{ { "mcl_mobitems:rotten_flesh", 32, 32 }, E1 },
@@ -472,7 +511,10 @@ local professions = {
 	},
 	nitwit = {
 		name = N("Nitwit"),
-		texture = "mobs_mc_villager.png",
+		textures = {
+				"mobs_mc_villager.png",
+				"mobs_mc_villager.png",
+			},
 		-- No trades for nitwit
 		trades = nil,
 	}
@@ -483,10 +525,30 @@ for id, _ in pairs(professions) do
 	table.insert(profession_names, id)
 end
 
+local jobsites={}
+for _,n in pairs(profession_names) do
+	table.insert(jobsites,professions[n].jobsite)
+end
+
 local stand_still = function(self)
 	self.walk_chance = 0
 	self.jump = false
 end
+
+local init_trader_vars = function(self)
+	self.object:set_properties({textures=professions[self._profession].textures})
+	if not self._max_trade_tier then
+		self._max_trade_tier = 1
+	end
+	if not self._locked_trades then
+		self._locked_trades = 0
+	end
+	if not self._trading_players then
+		self._trading_players = {}
+	end
+end
+
+----- JOBSITE LOGIC
 
 local function set_velocity(self, v)
 	local yaw = (self.object:get_yaw() or 0) + self.rotate
@@ -499,14 +561,15 @@ end
 
 local function go_to_pos(entity,b)
 	local s=entity.object:get_pos()
+	if vector.distance(b,s) < 5 then
+		set_velocity(entity,0)
+		return true
+	end
 	local v = { x = b.x - s.x, z = b.z - s.z }
 	local yaw = (math.atan(v.z / v.x) + math.pi / 2) - entity.rotate
 	if b.x > s.x then yaw = yaw + math.pi end
 	entity.object:set_yaw(yaw)
 	set_velocity(entity,entity.follow_velocity)
-	if vector.distance(b,s) < 5 then
-		return true
-	end
 end
 
 local function go_home(entity)
@@ -524,6 +587,49 @@ local function go_home(entity)
 	end	
 end
 
+local function get_profession_by_jobsite(js)
+	for k,v in pairs(professions) do
+		if v.jobsite == js then return k end
+	end
+end
+
+local function employ(self,jobsite_pos)
+	local n = minetest.get_node(jobsite_pos)
+	local m = minetest.get_meta(jobsite_pos)
+	local p = get_profession_by_jobsite(n.name)
+	if p and m:get_string("villager") == "" then
+		self._profession=p
+		m:set_string("villager",self._id)
+		self._jobsite = jobsite_pos
+		init_trader_vars(self)
+		return true
+	end
+end
+
+local function unemploy(self)
+	self._profession="unemployed"
+	self._jobsite = nil
+	self.object:set_properties({textures=professions[self._profession].textures})
+end
+
+local function get_a_job(self)
+	local p = self.object:get_pos()
+	local nn = minetest.find_nodes_in_area(vector.offset(p,-8,-8,-8),vector.offset(p,8,8,8),jobsites)
+	for _,n in pairs(nn) do
+		if n and employ(self,n) then return end
+	end
+end
+
+local function check_jobsite(self)
+	local n = minetest.get_node(self._jobsite)
+	local m = minetest.get_meta(self._jobsite)
+	if n.name ~= professions[self._profession].jobsite or m:get_string("villager") ~= self._id then
+		unemploy(self)
+		return false
+	end
+	return true
+end
+
 local update_max_tradenum = function(self)
 	if not self._trades then
 		return
@@ -537,30 +643,6 @@ local update_max_tradenum = function(self)
 		end
 	end
 	self._max_tradenum = #trades
-end
-
-local init_trader_vars = function(self)
-	if not self._profession then
-		-- Select random profession from all professions with matching clothing
-		local texture = self.base_texture[1]
-		local matches = {}
-		for prof_id, prof in pairs(professions) do
-			if texture == prof.texture then
-				table.insert(matches, prof_id)
-			end
-		end
-		local p = math.random(1, #matches)
-		self._profession = matches[p]
-	end
-	if not self._max_trade_tier then
-		self._max_trade_tier = 1
-	end
-	if not self._locked_trades then
-		self._locked_trades = 0
-	end
-	if not self._trading_players then
-		self._trading_players = {}
-	end
 end
 
 local init_trades = function(self, inv)
@@ -1113,30 +1195,8 @@ mobs:register_mob("mobs_mc:villager", {
 	visual = "mesh",
 	mesh = "mobs_mc_villager.b3d",
 	textures = {
-	{
 		"mobs_mc_villager.png",
 		"mobs_mc_villager.png", --hat
-	},
-	{
-		"mobs_mc_villager_farmer.png",
-		"mobs_mc_villager_farmer.png", --hat
-	},
-	{
-		"mobs_mc_villager_priest.png",
-		"mobs_mc_villager_priest.png", --hat
-	},
-	{
-		"mobs_mc_villager_librarian.png",
-		"mobs_mc_villager_librarian.png", --hat
-	},
-	{
-		"mobs_mc_villager_butcher.png",
-		"mobs_mc_villager_butcher.png", --hat
-	},
-	{
-		"mobs_mc_villager_smith.png",
-		"mobs_mc_villager_smith.png", --hat
-	},
 	},
 	visual_size = {x=2.75, y=2.75},
 	makes_footstep_sound = true,
@@ -1169,19 +1229,22 @@ mobs:register_mob("mobs_mc:villager", {
 	fear_height = 4,
 	jump = true,
 	walk_chance = DEFAULT_WALK_CHANCE,
+	bed = nil,
+	_id = nil,
+	_profession = "unemployed",
 	on_rightclick = function(self, clicker)
 		if clicker:get_wielded_item():get_name() == "mcl_farming:bread" then
 			if mobs:feed_tame(self, clicker, 1, true, true) then return end
 			if mobs:protect(self, clicker) then return end
 		end
-		if self.child then
+		if self.child or self._profession == "unemployed" then
 			return
 		end
 		-- Initiate trading
+		--init_trader_vars(self)
 		local name = clicker:get_player_name()
 		self._trading_players[name] = true
 
-		init_trader_vars(self)
 		if self._trades == nil then
 			init_trades(self)
 		end
@@ -1219,10 +1282,6 @@ mobs:register_mob("mobs_mc:villager", {
 			self._player_scan_timer = 0
 		end
 		
-		if self.bed and  ( self.state == "go_home" or vector.distance(self.object:get_pos(),self.bed) > 50 ) then
-			go_home(self)
-		end
-
 		self._player_scan_timer = self._player_scan_timer + dtime
 		-- Check infrequently to keep CPU load low
 		if self._player_scan_timer > PLAYER_SCAN_INTERVAL then
@@ -1244,20 +1303,31 @@ mobs:register_mob("mobs_mc:villager", {
 				self.walk_chance = DEFAULT_WALK_CHANCE
 				self.jump = true
 			end
+			if self.bed and  ( self.state == "go_home" or vector.distance(self.object:get_pos(),self.bed) > 50 ) then
+				go_home(self)
+			end
+			if self._profession == "unemployed" then
+				get_a_job(self)
+			else
+				check_jobsite(self)
+			end
 		end
 	end,
 
 	on_spawn = function(self)
-		init_trader_vars(self)
+		self._id=minetest.sha1(minetest.get_gametime()..minetest.pos_to_string(self.object:get_pos())..tostring(math.random()))
+		self._profession = "unemployed"
 	end,
 	on_die = function(self, pos)
 		-- Close open trade formspecs and give input back to players
 		local trading_players = self._trading_players
-		for name, _ in pairs(trading_players) do
-			minetest.close_formspec(name, "mobs_mc:trade_"..name)
-			local player = minetest.get_player_by_name(name)
-			if player then
-				return_fields(player)
+		if trading_players then
+			for name, _ in pairs(trading_players) do
+				minetest.close_formspec(name, "mobs_mc:trade_"..name)
+				local player = minetest.get_player_by_name(name)
+				if player then
+					return_fields(player)
+				end
 			end
 		end
 	end,
