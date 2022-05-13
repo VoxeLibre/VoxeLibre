@@ -1016,11 +1016,19 @@ mobs:register_mob("mobs_mc:villager", {
 		die_end = 220,
 		die_loop = false,
 	},
+	follow = mobs_mc.follow.villager,
 	view_range = 16,
 	fear_height = 4,
 	jump = true,
 	walk_chance = DEFAULT_WALK_CHANCE,
 	on_rightclick = function(self, clicker)
+		if clicker:get_wielded_item():get_name() == "mcl_farming:bread" then
+			if mobs:feed_tame(self, clicker, 1, true, true) then return end
+			if mobs:protect(self, clicker) then return end
+		end
+		if self.child then
+			return
+		end
 		-- Initiate trading
 		local name = clicker:get_player_name()
 		self._trading_players[name] = true
