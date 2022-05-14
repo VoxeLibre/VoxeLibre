@@ -11,7 +11,7 @@ minetest.register_node("mcl_loom:loom", {
 		"loom_front.png", "loom_front.png"
 	},
 	paramtype2 = "facedir",
-	groups = {choppy=1, container=4, deco_block=1, material_wood=1, flammable=1}
+	groups = {choppy=1, deco_block=1, material_wood=1, flammable=1}
 	})
 	
 
