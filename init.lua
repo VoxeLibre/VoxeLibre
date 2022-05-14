@@ -8,13 +8,16 @@ local image = setmetatable({}, {
 	end,
 })
 
-function image:constructor(pixels)
+function image:constructor(pixels, properties)
+	local properties = properties or {}
+	local pixel_depth = properties.pixel_depth or 16
+
 	self.data = ""
 	self.pixels = pixels
 	self.width = #pixels[1]
 	self.height = #pixels
 
-	self:encode()
+	self:encode(pixel_depth)
 end
 
 function image:encode_colormap_spec()
@@ -24,26 +27,38 @@ function image:encode_colormap_spec()
 		.. string.char(0) -- bits per pixel
 end
 
-function image:encode_image_spec()
+function image:encode_image_spec(pixel_depth)
+	assert(
+		16 == pixel_depth or -- (A1R5G5B5 = 2 bytes = 16 bits)
+		24 == pixel_depth -- (B8G8R8 = 3 bytes = 24 bits)
+	)
 	self.data = self.data
 		.. string.char(0, 0) -- X-origin
 		.. string.char(0, 0) -- Y-origin
 		.. string.char(self.width  % 256, math.floor(self.width  / 256)) -- width
 		.. string.char(self.height % 256, math.floor(self.height / 256)) -- height
-		.. string.char(16) -- pixel depth (ARRRRRGGGGGBBBBB = 2 bytes = 16 bits)
+		.. string.char(pixel_depth)
 		.. string.char(0) -- image descriptor
 end
 
-function image:encode_header()
+function image:encode_header(pixel_depth)
 	self.data = self.data
 		.. string.char(0) -- image id
 		.. string.char(0) -- color map type
 		.. string.char(10) -- image type (RLE RGB = 10)
 	self:encode_colormap_spec() -- color map specification
-	self:encode_image_spec() -- image specification
+	self:encode_image_spec(pixel_depth) -- image specification
 end
 
-function image:encode_data()
+function image:encode_data(pixel_depth)
+	if 16 == pixel_depth then
+		self:encode_data_a1r5g5b5_rle()
+	elseif 24 == pixel_depth then
+		self:encode_data_r8g8b8_rle()
+	end
+end
+
+function image:encode_data_a1r5g5b5_rle()
 	local colorword = nil
 	local previous_r = nil
 	local previous_g = nil
@@ -132,6 +147,82 @@ function image:encode_data()
 	self.data = self.data .. table.concat(packets)
 end
 
+function image:encode_data_r8g8b8_rle()
+	local previous_r = nil
+	local previous_g = nil
+	local previous_b = nil
+	local raw_pixel = ''
+	local raw_pixels = {}
+	local count = 1
+	local packets = {}
+	local raw_packet = ''
+	local rle_packet = ''
+	for _, row in ipairs(self.pixels) do
+		for _, pixel in ipairs(row) do
+			if pixel[1] ~= previous_r or pixel[2] ~= previous_g or pixel[3] ~= previous_b or count == 128 then
+				if nil ~= previous_r then
+					if 1 == count then
+						-- remember pixel verbatim for raw encoding
+						raw_pixel = string.char(previous_b, previous_g, previous_r)
+						raw_pixels[#raw_pixels + 1] = raw_pixel
+						if 128 == #raw_pixels then
+							raw_packet = string.char(#raw_pixels - 1)
+							packets[#packets + 1] = raw_packet
+							for i=1, #raw_pixels do
+								packets[#packets +1] = raw_pixels[i]
+							end
+							raw_pixels = {}
+						end
+					else
+						-- encode raw pixels, if any
+						if #raw_pixels > 0 then
+							raw_packet = string.char(#raw_pixels - 1)
+							packets[#packets + 1] = raw_packet
+							for i=1, #raw_pixels do
+								packets[#packets +1] = raw_pixels[i]
+							end
+							raw_pixels = {}
+						end
+						-- RLE encoding
+						rle_packet = string.char(128 + count - 1, previous_b, previous_g, previous_r)
+						packets[#packets +1] = rle_packet
+					end
+				end
+				count = 1
+				previous_r = pixel[1]
+				previous_g = pixel[2]
+				previous_b = pixel[3]
+			else
+				count = count + 1
+			end
+		end
+	end
+	if 1 == count then
+		raw_pixel = string.char(previous_b, previous_g, previous_r)
+		raw_pixels[#raw_pixels + 1] = raw_pixel
+		raw_packet = string.char(#raw_pixels - 1)
+		packets[#packets + 1] = raw_packet
+		for i=1, #raw_pixels do
+			packets[#packets +1] = raw_pixels[i]
+		end
+		raw_pixels = {}
+	else
+		-- encode raw pixels, if any
+		if #raw_pixels > 0 then
+			raw_packet = string.char(#raw_pixels - 1)
+			packets[#packets + 1] = raw_packet
+			for i=1, #raw_pixels do
+				packets[#packets +1] = raw_pixels[i]
+			end
+			raw_pixels = {}
+		end
+		-- RLE encoding
+		rle_packet = string.char(128 + count - 1, previous_b, previous_g, previous_r)
+		packets[#packets +1] = rle_packet
+	end
+	self.data = self.data .. table.concat(packets)
+end
+
 function image:encode_footer()
 	self.data = self.data
 		.. string.char(0, 0, 0, 0) -- extension area offset
@@ -141,10 +232,10 @@ function image:encode_footer()
 		.. string.char(0)
 end
 
-function image:encode()
-	self:encode_header() -- header
+function image:encode(pixel_depth)
+	self:encode_header(pixel_depth) -- header
 	-- no color map and image id data
-	self:encode_data() -- encode data
+	self:encode_data(pixel_depth) -- encode data
 	-- no extension or developer area
 	self:encode_footer() -- footer
 end

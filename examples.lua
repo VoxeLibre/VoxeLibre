@@ -46,4 +46,5 @@ for x = 1,16,1 do -- left to right
 		pixels[z][x] = color
 	end
 end
-tga_encoder.image(pixels):save("gradients.tga")
+tga_encoder.image(pixels, {pixel_depth=16}):save("gradients_16bpp.tga")
+tga_encoder.image(pixels, {pixel_depth=24}):save("gradients_24bpp.tga")
