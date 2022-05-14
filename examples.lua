@@ -29,6 +29,18 @@ for x = 1,56,1 do
 end
 tga_encoder.image(pixels):save("bitmap_large.tga")
 
+-- note that the uncompressed grayscale TGA file written in this
+-- example is 80 bytes – but an optimized PNG file is 81 bytes …
+local pixels = {}
+for x = 1,6,1 do -- left to right
+	for z = 1,6,1 do -- bottom to top
+		local color = { math.min(x * z * 4 - 1, 255) }
+		pixels[z] = pixels[z] or {}
+		pixels[z][x] = color
+	end
+end
+tga_encoder.image(pixels, {colors="BW", pixel_depth=8}):save("gradients_8bpp.tga")
+
 local pixels = {}
 for x = 1,16,1 do -- left to right
 	for z = 1,16,1 do -- bottom to top
@@ -46,5 +58,5 @@ for x = 1,16,1 do -- left to right
 		pixels[z][x] = color
 	end
 end
-tga_encoder.image(pixels, {pixel_depth=16}):save("gradients_16bpp.tga")
-tga_encoder.image(pixels, {pixel_depth=24}):save("gradients_24bpp.tga")
+tga_encoder.image(pixels, {colors="RGB", pixel_depth=16}):save("gradients_16bpp.tga")
+tga_encoder.image(pixels, {colors="RGB", pixel_depth=24}):save("gradients_24bpp.tga")

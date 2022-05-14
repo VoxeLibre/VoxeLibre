@@ -10,14 +10,15 @@ local image = setmetatable({}, {
 
 function image:constructor(pixels, properties)
 	local properties = properties or {}
-	local pixel_depth = properties.pixel_depth or 16
+	properties.colors = properties.colors or "RGB"
+	properties.pixel_depth = properties.pixel_depth or 16
 
 	self.data = ""
 	self.pixels = pixels
 	self.width = #pixels[1]
 	self.height = #pixels
 
-	self:encode(pixel_depth)
+	self:encode(properties)
 end
 
 function image:encode_colormap_spec()
@@ -27,10 +28,13 @@ function image:encode_colormap_spec()
 		.. string.char(0) -- bits per pixel
 end
 
-function image:encode_image_spec(pixel_depth)
+function image:encode_image_spec(properties)
+	local colors = properties.colors
+	local pixel_depth = properties.pixel_depth
 	assert(
-		16 == pixel_depth or -- (A1R5G5B5 = 2 bytes = 16 bits)
-		24 == pixel_depth -- (B8G8R8 = 3 bytes = 24 bits)
+		"BW" == colors and 8 == pixel_depth or -- (8 bit grayscale = 1 byte = 8 bits)
+		"RGB" == colors and 16 == pixel_depth or -- (A1R5G5B5 = 2 bytes = 16 bits)
+		"RGB" == colors and 24 == pixel_depth -- (B8G8R8 = 3 bytes = 24 bits)
 	)
 	self.data = self.data
 		.. string.char(0, 0) -- X-origin
@@ -41,21 +45,47 @@ function image:encode_image_spec(pixel_depth)
 		.. string.char(0) -- image descriptor
 end
 
-function image:encode_header(pixel_depth)
+function image:encode_header(properties)
+	local colors = properties.colors
+	local pixel_depth = properties.pixel_depth
+	local image_type
+	if "BW" == colors and 8 == pixel_depth then
+		image_type = 3 -- grayscale
+	elseif (
+		"RGB" == colors and 16 == pixel_depth or
+		"RGB" == colors and 24 == pixel_depth
+	) then
+		image_type = 10 -- RLE RGB
+	end
 	self.data = self.data
 		.. string.char(0) -- image id
 		.. string.char(0) -- color map type
-		.. string.char(10) -- image type (RLE RGB = 10)
+		.. string.char(image_type)
 	self:encode_colormap_spec() -- color map specification
-	self:encode_image_spec(pixel_depth) -- image specification
+	self:encode_image_spec(properties) -- image specification
 end
 
-function image:encode_data(pixel_depth)
-	if 16 == pixel_depth then
+function image:encode_data(properties)
+	local colors = properties.colors
+	local pixel_depth = properties.pixel_depth
+	if "BW" == colors and 8 == pixel_depth then
+		self:encode_data_bw8()
+	elseif "RGB" == colors and 16 == pixel_depth then
 		self:encode_data_a1r5g5b5_rle()
-	elseif 24 == pixel_depth then
+	elseif "RGB" == colors and 24 == pixel_depth then
 		self:encode_data_r8g8b8_rle()
 	end
+end
+
+function image:encode_data_bw8()
+	local raw_pixels = {}
+	for _, row in ipairs(self.pixels) do
+		for _, pixel in ipairs(row) do
+			local raw_pixel = string.char(pixel[1])
+			raw_pixels[#raw_pixels + 1] = raw_pixel
+		end
+	end
+	self.data = self.data .. table.concat(raw_pixels)
 end
 
 function image:encode_data_a1r5g5b5_rle()
@@ -232,10 +262,10 @@ function image:encode_footer()
 		.. string.char(0)
 end
 
-function image:encode(pixel_depth)
-	self:encode_header(pixel_depth) -- header
+function image:encode(properties)
+	self:encode_header(properties) -- header
 	-- no color map and image id data
-	self:encode_data(pixel_depth) -- encode data
+	self:encode_data(properties) -- encode data
 	-- no extension or developer area
 	self:encode_footer() -- footer
 end
