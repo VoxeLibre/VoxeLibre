@@ -139,7 +139,7 @@ local professions = {
 	fletcher = {
 		name = N("Fletcher"),
 		texture = "mobs_mc_villager_farmer.png",
-		jobsite = "mcl_villages:stonebrickcarved", --FIXME: fletching table
+		jobsite = "mcl_fletching_table:fletching_table",
 		trades = {
 			{
 			{ { "mcl_mobitems:string", 15, 20 }, E1 },
@@ -178,7 +178,7 @@ local professions = {
 	shepherd ={
 		name = N("Shepherd"),
 		texture = "mobs_mc_villager_farmer.png",
-		jobsite = "mcl_villages:stonebrickcarved", --FIXME: loom
+		jobsite = "mcl_loom:loom",
 		trades = {
 			{
 			{ { "mcl_wool:white", 16, 22 }, E1 },
@@ -243,7 +243,7 @@ local professions = {
 	cartographer = {
 		name = N("Cartographer"),
 		texture = "mobs_mc_villager_librarian.png",
-		jobsite = "mcl_villages:stonebrickcarved", --FIXME: cartography table
+		jobsite = "mcl_cartography_table:cartography_table",
 		trades = {
 			{
 			{ { "mcl_core:paper", 24, 24 }, E1 },
