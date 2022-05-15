@@ -107,11 +107,15 @@ function image:encode_data_r8g8b8_to_bw8_raw()
 	local raw_pixels = {}
 	for _, row in ipairs(self.pixels) do
 		for _, pixel in ipairs(row) do
-			-- see <https://alienryderflex.com/saturation.html>
+			-- the HSP RGB to brightness formula is
+			-- sqrt( 0.299 r² + .587 g² + .114 b² )
+			-- see <https://alienryderflex.com/hsp.html>
 			local gray = math.floor(
-				0.299 * pixel[1] +
-				0.587 * pixel[2] +
-				0.114 * pixel[3]
+				math.sqrt(
+					0.299 * pixel[1]^2 +
+					0.587 * pixel[2]^2 +
+					0.114 * pixel[3]^2
+				) + 0.5
 			)
 			local raw_pixel = string.char(gray)
 			raw_pixels[#raw_pixels + 1] = raw_pixel
