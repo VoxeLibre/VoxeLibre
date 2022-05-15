@@ -65,7 +65,7 @@ minetest.register_node("mcl_core:slimeblock", {
 					neighbor_node = minetest.get_node(neighbor_pos)
 				end
 				local name = neighbor_node.name
-				if name ~= "air" and name ~= "ignore" then
+				if name ~= "air" and name ~= "ignore" and not mesecon.mvps_unsticky[name] then
 					local piston, piston_side, piston_up, piston_down = false, false, false, false
 					if name == "mesecons_pistons:piston_sticky_off" or name == "mesecons_pistons:piston_normal_off" then
 						piston, piston_side = true, true
