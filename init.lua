@@ -12,6 +12,7 @@ function image:constructor(pixels)
 	self.pixels = pixels
 	self.width = #pixels[1]
 	self.height = #pixels
+	self.pixel_depth = #pixels[1][1]
 end
 
 function image:encode_colormap_spec()
@@ -69,7 +70,11 @@ function image:encode_data(properties)
 	local pixel_depth = properties.pixel_depth
 
 	if "BW" == colors and "RAW" == compression and 8 == pixel_depth then
-		self:encode_data_bw8()
+		if 1 == self.pixel_depth then
+			self:encode_data_bw8_to_bw8_raw()
+		elseif 3 == self.pixel_depth then
+			self:encode_data_r8g8b8_to_bw8_raw()
+		end
 	elseif "RGB" == colors and 16 == pixel_depth then
 		if "RAW" == compression then
 			self:encode_data_a1r5g5b5_raw()
@@ -85,7 +90,8 @@ function image:encode_data(properties)
 	end
 end
 
-function image:encode_data_bw8()
+function image:encode_data_bw8_to_bw8_raw()
+	assert(1 == self.pixel_depth)
 	local raw_pixels = {}
 	for _, row in ipairs(self.pixels) do
 		for _, pixel in ipairs(row) do
@@ -96,7 +102,26 @@ function image:encode_data_bw8()
 	self.data = self.data .. table.concat(raw_pixels)
 end
 
+function image:encode_data_r8g8b8_to_bw8_raw()
+	assert(3 == self.pixel_depth)
+	local raw_pixels = {}
+	for _, row in ipairs(self.pixels) do
+		for _, pixel in ipairs(row) do
+			-- see <https://alienryderflex.com/saturation.html>
+			local gray = math.floor(
+				0.299 * pixel[1] +
+				0.587 * pixel[2] +
+				0.114 * pixel[3]
+			)
+			local raw_pixel = string.char(gray)
+			raw_pixels[#raw_pixels + 1] = raw_pixel
+		end
+	end
+	self.data = self.data .. table.concat(raw_pixels)
+end
+
 function image:encode_data_a1r5g5b5_raw()
+	assert(3 == self.pixel_depth)
 	local raw_pixels = {}
 	-- Sample depth rescaling is done according to the algorithm presented in:
 	-- <https://www.w3.org/TR/2003/REC-PNG-20031110/#13Sample-depth-rescaling>
@@ -116,6 +141,7 @@ function image:encode_data_a1r5g5b5_raw()
 end
 
 function image:encode_data_a1r5g5b5_rle()
+	assert(3 == self.pixel_depth)
 	local colorword = nil
 	local previous_r = nil
 	local previous_g = nil
@@ -205,6 +231,7 @@ function image:encode_data_a1r5g5b5_rle()
 end
 
 function image:encode_data_r8g8b8_raw()
+	assert(3 == self.pixel_depth)
 	local raw_pixels = {}
 	for _, row in ipairs(self.pixels) do
 		for _, pixel in ipairs(row) do
@@ -216,6 +243,7 @@ function image:encode_data_r8g8b8_raw()
 end
 
 function image:encode_data_r8g8b8_rle()
+	assert(3 == self.pixel_depth)
 	local previous_r = nil
 	local previous_g = nil
 	local previous_b = nil

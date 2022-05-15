@@ -39,7 +39,7 @@ for x = 1,6,1 do -- left to right
 		pixels[z][x] = color
 	end
 end
-tga_encoder.image(pixels):save("gradients_8bpp_raw.tga", {colors="BW", compression="RAW", pixel_depth=8})
+tga_encoder.image(pixels):save("gradient_8bpp_raw.tga", {colors="BW", compression="RAW", pixel_depth=8})
 
 local pixels = {}
 for x = 1,16,1 do -- left to right
@@ -59,6 +59,7 @@ for x = 1,16,1 do -- left to right
 	end
 end
 local gradients = tga_encoder.image(pixels)
+gradients:save("gradients_8bpp_raw.tga", {colors="BW", compression="RAW", pixel_depth=8})
 gradients:save("gradients_16bpp_raw.tga", {colors="RGB", compression="RAW", pixel_depth=16})
 gradients:save("gradients_16bpp_rle.tga", {colors="RGB", compression="RLE", pixel_depth=16})
 gradients:save("gradients_24bpp_raw.tga", {colors="RGB", compression="RAW", pixel_depth=24})
@@ -84,4 +85,6 @@ for x = 1,512,1 do -- left to right
 		pixels[z][x] = color
 	end
 end
+tga_encoder.image(pixels):save("fractal_8bpp.tga", {colors="BW", pixel_depth=8})
+tga_encoder.image(pixels):save("fractal_16bpp.tga", {colors="RGB", pixel_depth=16})
 tga_encoder.image(pixels):save("fractal_24bpp.tga", {colors="RGB", pixel_depth=24})
