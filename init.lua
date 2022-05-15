@@ -340,8 +340,8 @@ end
 function image:save(filename, properties)
 	local properties = properties or {}
 	properties.colors = properties.colors or "RGB"
-	properties.compression = properties.compression or "RLE"
-	properties.pixel_depth = properties.pixel_depth or 16
+	properties.compression = properties.compression or "RAW"
+	properties.pixel_depth = properties.pixel_depth or 24
 
 	self:encode(properties)
 
