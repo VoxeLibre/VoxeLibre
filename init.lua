@@ -8,17 +8,10 @@ local image = setmetatable({}, {
 	end,
 })
 
-function image:constructor(pixels, properties)
-	local properties = properties or {}
-	properties.colors = properties.colors or "RGB"
-	properties.pixel_depth = properties.pixel_depth or 16
-
-	self.data = ""
+function image:constructor(pixels)
 	self.pixels = pixels
 	self.width = #pixels[1]
 	self.height = #pixels
-
-	self:encode(properties)
 end
 
 function image:encode_colormap_spec()
@@ -263,6 +256,7 @@ function image:encode_footer()
 end
 
 function image:encode(properties)
+	self.data = ""
 	self:encode_header(properties) -- header
 	-- no color map and image id data
 	self:encode_data(properties) -- encode data
@@ -270,7 +264,13 @@ function image:encode(properties)
 	self:encode_footer() -- footer
 end
 
-function image:save(filename)
+function image:save(filename, properties)
+	local properties = properties or {}
+	properties.colors = properties.colors or "RGB"
+	properties.pixel_depth = properties.pixel_depth or 16
+
+	self:encode(properties)
+
 	local f = assert(io.open(filename, "wb"))
 	f:write(self.data)
 	f:close()
