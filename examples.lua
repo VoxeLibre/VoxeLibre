@@ -60,3 +60,25 @@ for x = 1,16,1 do -- left to right
 end
 tga_encoder.image(pixels, {colors="RGB", pixel_depth=16}):save("gradients_16bpp.tga")
 tga_encoder.image(pixels, {colors="RGB", pixel_depth=24}):save("gradients_24bpp.tga")
+
+local pixels = {}
+for x = 1,512,1 do -- left to right
+	for z = 1,512,1 do -- bottom to top
+		local oz = (z - 256) / 256 + 0.75
+		local ox = (x - 256) / 256
+		local px, pz, i = 0, 0, 0
+		while (px * px) + (pz * pz) <= 4 and i < 128 do
+			px = (px * px) - (pz * pz) + oz
+			pz = (2 * px  * pz) + ox
+			i =  i + 1
+		end
+		local color = {
+			math.max(0, math.min(255, math.floor(px * 64))),
+			math.max(0, math.min(255, math.floor(pz * 64))),
+			math.max(0, math.min(255, math.floor(i))),
+		}
+		pixels[z] = pixels[z] or {}
+		pixels[z][x] = color
+	end
+end
+tga_encoder.image(pixels, {colors="RGB", pixel_depth=24}):save("fractal_24bpp.tga")
