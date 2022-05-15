@@ -40,15 +40,20 @@ end
 
 function image:encode_header(properties)
 	local colors = properties.colors
+	local compression = properties.compression
 	local pixel_depth = properties.pixel_depth
 	local image_type
-	if "BW" == colors and 8 == pixel_depth then
+	if "BW" == colors and "RAW" == compression and 8 == pixel_depth then
 		image_type = 3 -- grayscale
 	elseif (
 		"RGB" == colors and 16 == pixel_depth or
 		"RGB" == colors and 24 == pixel_depth
 	) then
-		image_type = 10 -- RLE RGB
+		if "RAW" == compression then
+			image_type = 2 -- RAW RGB
+		elseif "RLE" == compression then
+			image_type = 10 -- RLE RGB
+		end
 	end
 	self.data = self.data
 		.. string.char(0) -- image id
@@ -60,13 +65,23 @@ end
 
 function image:encode_data(properties)
 	local colors = properties.colors
+	local compression = properties.compression
 	local pixel_depth = properties.pixel_depth
-	if "BW" == colors and 8 == pixel_depth then
+
+	if "BW" == colors and "RAW" == compression and 8 == pixel_depth then
 		self:encode_data_bw8()
 	elseif "RGB" == colors and 16 == pixel_depth then
-		self:encode_data_a1r5g5b5_rle()
+		if "RAW" == compression then
+			self:encode_data_a1r5g5b5_raw()
+		elseif "RLE" == compression then
+			self:encode_data_a1r5g5b5_rle()
+		end
 	elseif "RGB" == colors and 24 == pixel_depth then
-		self:encode_data_r8g8b8_rle()
+		if "RAW" == compression then
+			self:encode_data_r8g8b8_raw()
+		elseif "RLE" == compression then
+			self:encode_data_r8g8b8_rle()
+		end
 	end
 end
 
@@ -75,6 +90,25 @@ function image:encode_data_bw8()
 	for _, row in ipairs(self.pixels) do
 		for _, pixel in ipairs(row) do
 			local raw_pixel = string.char(pixel[1])
+			raw_pixels[#raw_pixels + 1] = raw_pixel
+		end
+	end
+	self.data = self.data .. table.concat(raw_pixels)
+end
+
+function image:encode_data_a1r5g5b5_raw()
+	local raw_pixels = {}
+	-- Sample depth rescaling is done according to the algorithm presented in:
+	-- <https://www.w3.org/TR/2003/REC-PNG-20031110/#13Sample-depth-rescaling>
+	local max_sample_in = math.pow(2, 8) - 1
+	local max_sample_out = math.pow(2, 5) - 1
+	for _, row in ipairs(self.pixels) do
+		for _, pixel in ipairs(row) do
+			local colorword = 32768 +
+				((math.floor((pixel[1] * max_sample_out / max_sample_in) + 0.5)) * 1024) +
+				((math.floor((pixel[2] * max_sample_out / max_sample_in) + 0.5)) * 32) +
+				((math.floor((pixel[3] * max_sample_out / max_sample_in) + 0.5)) * 1)
+			local raw_pixel = string.char(colorword % 256, math.floor(colorword / 256))
 			raw_pixels[#raw_pixels + 1] = raw_pixel
 		end
 	end
@@ -168,6 +202,17 @@ function image:encode_data_a1r5g5b5_rle()
 		packets[#packets +1] = rle_packet
 	end
 	self.data = self.data .. table.concat(packets)
+end
+
+function image:encode_data_r8g8b8_raw()
+	local raw_pixels = {}
+	for _, row in ipairs(self.pixels) do
+		for _, pixel in ipairs(row) do
+			local raw_pixel = string.char(pixel[3], pixel[2], pixel[1])
+			raw_pixels[#raw_pixels + 1] = raw_pixel
+		end
+	end
+	self.data = self.data .. table.concat(raw_pixels)
 end
 
 function image:encode_data_r8g8b8_rle()
@@ -267,6 +312,7 @@ end
 function image:save(filename, properties)
 	local properties = properties or {}
 	properties.colors = properties.colors or "RGB"
+	properties.compression = properties.compression or "RLE"
 	properties.pixel_depth = properties.pixel_depth or 16
 
 	self:encode(properties)
