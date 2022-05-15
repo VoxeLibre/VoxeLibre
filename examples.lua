@@ -65,6 +65,15 @@ gradients:save("gradients_16bpp_rle.tga", {colors="RGB", compression="RLE", pixe
 gradients:save("gradients_24bpp_raw.tga", {colors="RGB", compression="RAW", pixel_depth=24})
 gradients:save("gradients_24bpp_rle.tga", {colors="RGB", compression="RLE", pixel_depth=24})
 
+for x = 1,16,1 do -- left to right
+	for z = 1,16,1 do -- bottom to top
+		local color = pixels[z][x]
+		color[#color+1] = ((x * x) + (z * z)) % 256
+		pixels[z][x] = color
+	end
+end
+gradients:save("gradients_32bpp_raw.tga", {colors="RGBA", compression="RAW", pixel_depth=32})
+
 local pixels = {}
 for x = 1,512,1 do -- left to right
 	for z = 1,512,1 do -- bottom to top

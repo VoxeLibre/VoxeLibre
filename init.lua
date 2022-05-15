@@ -12,7 +12,6 @@ function image:constructor(pixels)
 	self.pixels = pixels
 	self.width = #pixels[1]
 	self.height = #pixels
-	self.pixel_depth = #pixels[1][1]
 end
 
 function image:encode_colormap_spec()
@@ -28,7 +27,8 @@ function image:encode_image_spec(properties)
 	assert(
 		"BW" == colors and 8 == pixel_depth or -- (8 bit grayscale = 1 byte = 8 bits)
 		"RGB" == colors and 16 == pixel_depth or -- (A1R5G5B5 = 2 bytes = 16 bits)
-		"RGB" == colors and 24 == pixel_depth -- (B8G8R8 = 3 bytes = 24 bits)
+		"RGB" == colors and 24 == pixel_depth or -- (B8G8R8 = 3 bytes = 24 bits)
+		"RGBA" == colors and 32 == pixel_depth -- (B8G8R8A8 = 4 bytes = 32 bits)
 	)
 	self.data = self.data
 		.. string.char(0, 0) -- X-origin
@@ -48,10 +48,11 @@ function image:encode_header(properties)
 		image_type = 3 -- grayscale
 	elseif (
 		"RGB" == colors and 16 == pixel_depth or
-		"RGB" == colors and 24 == pixel_depth
+		"RGB" == colors and 24 == pixel_depth or
+		"RGBA" == colors and 32 == pixel_depth
 	) then
 		if "RAW" == compression then
-			image_type = 2 -- RAW RGB
+			image_type = 2 -- RAW RGB(A)
 		elseif "RLE" == compression then
 			image_type = 10 -- RLE RGB
 		end
@@ -68,6 +69,7 @@ function image:encode_data(properties)
 	local colors = properties.colors
 	local compression = properties.compression
 	local pixel_depth = properties.pixel_depth
+	self.pixel_depth = #self.pixels[1][1]
 
 	if "BW" == colors and "RAW" == compression and 8 == pixel_depth then
 		if 1 == self.pixel_depth then
@@ -86,6 +88,10 @@ function image:encode_data(properties)
 			self:encode_data_r8g8b8_raw()
 		elseif "RLE" == compression then
 			self:encode_data_r8g8b8_rle()
+		end
+	elseif "RGBA" == colors and 32 == pixel_depth then
+		if "RAW" == compression then
+			self:encode_data_r8g8b8a8_raw()
 		end
 	end
 end
@@ -321,6 +327,18 @@ function image:encode_data_r8g8b8_rle()
 		packets[#packets +1] = rle_packet
 	end
 	self.data = self.data .. table.concat(packets)
+end
+
+function image:encode_data_r8g8b8a8_raw()
+	assert(4 == self.pixel_depth)
+	local raw_pixels = {}
+	for _, row in ipairs(self.pixels) do
+		for _, pixel in ipairs(row) do
+			local raw_pixel = string.char(pixel[3], pixel[2], pixel[1], pixel[4])
+			raw_pixels[#raw_pixels + 1] = raw_pixel
+		end
+	end
+	self.data = self.data .. table.concat(raw_pixels)
 end
 
 function image:encode_footer()
