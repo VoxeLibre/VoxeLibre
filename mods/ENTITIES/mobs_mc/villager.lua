@@ -535,7 +535,7 @@ local stand_still = function(self)
 	self.jump = false
 end
 
-local init_trader_vars = function(self)
+local function init_trader_vars(self)
 	self.object:set_properties({textures=professions[self._profession].textures})
 	if not self._max_trade_tier then
 		self._max_trade_tier = 1
@@ -548,8 +548,7 @@ local init_trader_vars = function(self)
 	end
 end
 
------ JOBSITE LOGIC
-
+--movement stuff - to be abstracted to mcl_mobs
 local function set_velocity(self, v)
 	local yaw = (self.object:get_yaw() or 0) + self.rotate
 	self.object:set_velocity({
@@ -560,8 +559,9 @@ local function set_velocity(self, v)
 end
 
 local function go_to_pos(entity,b)
+	if not entity then return end
 	local s=entity.object:get_pos()
-	if vector.distance(b,s) < 5 then
+	if vector.distance(b,s) < 1 then
 		set_velocity(entity,0)
 		return true
 	end
@@ -572,21 +572,51 @@ local function go_to_pos(entity,b)
 	set_velocity(entity,entity.follow_velocity)
 end
 
+local function check_gowp(self)
+	if not self.waypoints or not self._target then return end
+	local p = self.object:get_pos()
+	if vector.distance(p,self._target) < 1 then
+		self.waypoints = nil
+		self._target = nil
+		self.current_target = nil
+		if self.callback_arrived then return self.callback_arrived(self) end
+		return true
+	end
+	if not self.current_target or go_to_pos(self,self.current_target) then
+		self.current_target = table.remove(self.waypoints, 1)
+	end
+	if not minetest.line_of_sight(self.object:get_pos(),self.current_target) then
+		self.waypoints=minetest.find_path(p,self._target,150,1,4)
+		self.current_target = nil
+	end
+end
+
+local function go_wplist(self,target,wps,callback_arrived)
+	self.waypoints = wps
+	self._target = target
+	self.callback_arrived = callback_arrived
+end
+
 local function go_home(entity)
 	entity.state = "go_home"
 	local b=entity.bed
 	if not b then return end
-	if go_to_pos(entity,b) then
-		entity.state = "stand"
-		set_velocity(entity,0)
-		entity.object:set_pos(b)
-		local n=minetest.get_node(b)
-		if n and n.name ~= "mcl_beds:bed_red_bottom" then
-			entity.bed=nil --the stormtroopers have killed uncle owen
+	go_wplist(entity,b,minetest.find_path(entity.object:get_pos(),b,50,1,4),function(entity,b)
+		if vector.distance(entity.object:get_pos(),b) < 2 then 
+			entity.state = "stand"
+			set_velocity(entity,0)
+			entity.object:set_pos(b)
+			local n=minetest.get_node(b)
+			if n and n.name ~= "mcl_beds:bed_red_bottom" then
+				entity.bed=nil --the stormtroopers have killed uncle owen
+				return false
+			end
+			return true
 		end
-	end	
+	end)	
 end
 
+----- JOBSITE LOGIC
 local function get_profession_by_jobsite(js)
 	for k,v in pairs(professions) do
 		if v.jobsite == js then return k end
@@ -616,7 +646,7 @@ local function get_a_job(self)
 	local p = self.object:get_pos()
 	local nn = minetest.find_nodes_in_area(vector.offset(p,-8,-8,-8),vector.offset(p,8,8,8),jobsites)
 	for _,n in pairs(nn) do
-		if n and employ(self,n) then return end
+		if n and employ(self,n) then return true end
 	end
 end
 
@@ -624,7 +654,7 @@ local function check_jobsite(self)
 	local n = minetest.get_node(self._jobsite)
 	local m = minetest.get_meta(self._jobsite)
 	if n.name ~= professions[self._profession].jobsite or m:get_string("villager") ~= self._id then
-		unemploy(self)
+		--unemploy(self)
 		return false
 	end
 	return true
@@ -1233,6 +1263,9 @@ mobs:register_mob("mobs_mc:villager", {
 	_id = nil,
 	_profession = "unemployed",
 	on_rightclick = function(self, clicker)
+		go_wplist(self,minetest.find_path(self.object:get_pos(),vector.new(0,9,0),50,1,4),function(self,b)
+			minetest.log("arrived at 0,0")
+		end)
 		if clicker:get_wielded_item():get_name() == "mcl_farming:bread" then
 			if mobs:feed_tame(self, clicker, 1, true, true) then return end
 			if mobs:protect(self, clicker) then return end
@@ -1241,7 +1274,7 @@ mobs:register_mob("mobs_mc:villager", {
 			return
 		end
 		-- Initiate trading
-		--init_trader_vars(self)
+		init_trader_vars(self)
 		local name = clicker:get_player_name()
 		self._trading_players[name] = true
 
@@ -1280,6 +1313,8 @@ mobs:register_mob("mobs_mc:villager", {
 		-- Stand still if player is nearby.
 		if not self._player_scan_timer then
 			self._player_scan_timer = 0
+		else
+			check_gowp(self)
 		end
 		
 		self._player_scan_timer = self._player_scan_timer + dtime
@@ -1303,18 +1338,21 @@ mobs:register_mob("mobs_mc:villager", {
 				self.walk_chance = DEFAULT_WALK_CHANCE
 				self.jump = true
 			end
-			if self.bed and  ( self.state == "go_home" or vector.distance(self.object:get_pos(),self.bed) > 50 ) then
+			if self.bed and  ( self.state ~= "go_home" and vector.distance(self.object:get_pos(),self.bed) > 50 ) then
 				go_home(self)
 			end
 			if self._profession == "unemployed" then
 				get_a_job(self)
-			else
-				check_jobsite(self)
+			--	else
+			--	check_jobsite(self)
 			end
 		end
 	end,
 
 	on_spawn = function(self)
+		if self._id then
+			return
+		end
 		self._id=minetest.sha1(minetest.get_gametime()..minetest.pos_to_string(self.object:get_pos())..tostring(math.random()))
 		self._profession = "unemployed"
 	end,
