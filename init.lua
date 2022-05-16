@@ -22,14 +22,21 @@ function image:encode_colormap_spec()
 end
 
 function image:encode_image_spec(properties)
-	local colors = properties.colors
-	local pixel_depth = properties.pixel_depth
+	local color_format = properties.color_format
 	assert(
-		"BW" == colors and 8 == pixel_depth or -- (8 bit grayscale = 1 byte = 8 bits)
-		"RGB" == colors and 16 == pixel_depth or -- (A1R5G5B5 = 2 bytes = 16 bits)
-		"RGB" == colors and 24 == pixel_depth or -- (B8G8R8 = 3 bytes = 24 bits)
-		"RGBA" == colors and 32 == pixel_depth -- (B8G8R8A8 = 4 bytes = 32 bits)
+		"Y8" == color_format or -- (8 bit grayscale = 1 byte = 8 bits)
+		"A1R5G5B5" == color_format or -- (A1R5G5B5 = 2 bytes = 16 bits)
+		"B8G8R8" == color_format or -- (B8G8R8 = 3 bytes = 24 bits)
+		"B8G8R8A8" == color_format -- (B8G8R8A8 = 4 bytes = 32 bits)
 	)
+	pixel_depth_by_color_format = {
+		["Y8"] = 8,
+		["A1R5G5B5"] = 16,
+		["B8G8R8"] = 24,
+		["B8G8R8A8"] = 32,
+	}
+	local pixel_depth = pixel_depth_by_color_format[color_format]
+	assert( nil ~= pixel_depth)
 	self.data = self.data
 		.. string.char(0, 0) -- X-origin
 		.. string.char(0, 0) -- Y-origin
@@ -40,16 +47,15 @@ function image:encode_image_spec(properties)
 end
 
 function image:encode_header(properties)
-	local colors = properties.colors
+	local color_format = properties.color_format
 	local compression = properties.compression
-	local pixel_depth = properties.pixel_depth
 	local image_type
-	if "BW" == colors and "RAW" == compression and 8 == pixel_depth then
+	if "Y8" == color_format and "RAW" == compression then
 		image_type = 3 -- grayscale
 	elseif (
-		"RGB" == colors and 16 == pixel_depth or
-		"RGB" == colors and 24 == pixel_depth or
-		"RGBA" == colors and 32 == pixel_depth
+		"A1R5G5B5" == color_format or
+		"B8G8R8" == color_format or
+		"B8G8R8A8" == color_format
 	) then
 		if "RAW" == compression then
 			image_type = 2 -- RAW RGB(A)
@@ -57,6 +63,7 @@ function image:encode_header(properties)
 			image_type = 10 -- RLE RGB
 		end
 	end
+	assert( nil ~= image_type )
 	self.data = self.data
 		.. string.char(0) -- image id
 		.. string.char(0) -- color map type
@@ -66,37 +73,35 @@ function image:encode_header(properties)
 end
 
 function image:encode_data(properties)
-	local colors = properties.colors
+	local color_format = properties.color_format
 	local compression = properties.compression
-	local pixel_depth = properties.pixel_depth
-	self.pixel_depth = #self.pixels[1][1] * 8
 
-	if "BW" == colors and "RAW" == compression and 8 == pixel_depth then
+	if "Y8" == color_format and "RAW" == compression then
 		if 8 == self.pixel_depth then
-			self:encode_data_bw8_to_bw8_raw()
+			self:encode_data_Y8_as_Y8_raw()
 		elseif 24 == self.pixel_depth then
-			self:encode_data_r8g8b8_to_bw8_raw()
+			self:encode_data_R8G8B8_as_Y8_raw()
 		end
-	elseif "RGB" == colors and 16 == pixel_depth then
+	elseif "A1R5G5B5" == color_format then
 		if "RAW" == compression then
-			self:encode_data_a1r5g5b5_raw()
+			self:encode_data_R8G8B8_as_A1R5G5B5_raw()
 		elseif "RLE" == compression then
-			self:encode_data_a1r5g5b5_rle()
+			self:encode_data_R8G8B8_as_A1R5G5B5_rle()
 		end
-	elseif "RGB" == colors and 24 == pixel_depth then
+	elseif "B8G8R8" == color_format then
 		if "RAW" == compression then
-			self:encode_data_r8g8b8_raw()
+			self:encode_data_R8G8B8_as_B8G8R8_raw()
 		elseif "RLE" == compression then
-			self:encode_data_r8g8b8_rle()
+			self:encode_data_R8G8B8_as_B8G8R8_rle()
 		end
-	elseif "RGBA" == colors and 32 == pixel_depth then
+	elseif "B8G8R8A8" == color_format then
 		if "RAW" == compression then
-			self:encode_data_r8g8b8a8_raw()
+			self:encode_data_R8G8B8A8_as_B8G8R8A8_raw()
 		end
 	end
 end
 
-function image:encode_data_bw8_to_bw8_raw()
+function image:encode_data_Y8_as_Y8_raw()
 	assert(8 == self.pixel_depth)
 	local raw_pixels = {}
 	for _, row in ipairs(self.pixels) do
@@ -108,7 +113,7 @@ function image:encode_data_bw8_to_bw8_raw()
 	self.data = self.data .. table.concat(raw_pixels)
 end
 
-function image:encode_data_r8g8b8_to_bw8_raw()
+function image:encode_data_R8G8B8_as_Y8_raw()
 	assert(24 == self.pixel_depth)
 	local raw_pixels = {}
 	for _, row in ipairs(self.pixels) do
@@ -130,7 +135,7 @@ function image:encode_data_r8g8b8_to_bw8_raw()
 	self.data = self.data .. table.concat(raw_pixels)
 end
 
-function image:encode_data_a1r5g5b5_raw()
+function image:encode_data_R8G8B8_as_A1R5G5B5_raw()
 	assert(24 == self.pixel_depth)
 	local raw_pixels = {}
 	-- Sample depth rescaling is done according to the algorithm presented in:
@@ -150,7 +155,7 @@ function image:encode_data_a1r5g5b5_raw()
 	self.data = self.data .. table.concat(raw_pixels)
 end
 
-function image:encode_data_a1r5g5b5_rle()
+function image:encode_data_R8G8B8_as_A1R5G5B5_rle()
 	assert(24 == self.pixel_depth)
 	local colorword = nil
 	local previous_r = nil
@@ -240,7 +245,7 @@ function image:encode_data_a1r5g5b5_rle()
 	self.data = self.data .. table.concat(packets)
 end
 
-function image:encode_data_r8g8b8_raw()
+function image:encode_data_R8G8B8_as_B8G8R8_raw()
 	assert(24 == self.pixel_depth)
 	local raw_pixels = {}
 	for _, row in ipairs(self.pixels) do
@@ -252,7 +257,7 @@ function image:encode_data_r8g8b8_raw()
 	self.data = self.data .. table.concat(raw_pixels)
 end
 
-function image:encode_data_r8g8b8_rle()
+function image:encode_data_R8G8B8_as_B8G8R8_rle()
 	assert(24 == self.pixel_depth)
 	local previous_r = nil
 	local previous_g = nil
@@ -329,7 +334,7 @@ function image:encode_data_r8g8b8_rle()
 	self.data = self.data .. table.concat(packets)
 end
 
-function image:encode_data_r8g8b8a8_raw()
+function image:encode_data_R8G8B8A8_as_B8G8R8A8_raw()
 	assert(32 == self.pixel_depth)
 	local raw_pixels = {}
 	for _, row in ipairs(self.pixels) do
@@ -361,9 +366,19 @@ end
 
 function image:save(filename, properties)
 	local properties = properties or {}
-	properties.colors = properties.colors or "RGB"
 	properties.compression = properties.compression or "RAW"
-	properties.pixel_depth = properties.pixel_depth or 24
+
+	self.pixel_depth = #self.pixels[1][1] * 8
+	if nil == properties.color_format then
+		if 8 == self.pixel_depth then
+			properties.color_format = "Y8"
+		elseif 24 == self.pixel_depth then
+			properties.color_format = "B8G8R8"
+		elseif 32 == self.pixel_depth then
+			properties.color_format = "B8G8R8A8"
+		end
+	end
+	assert( nil ~= properties.color_format )
 
 	self:encode(properties)
 
