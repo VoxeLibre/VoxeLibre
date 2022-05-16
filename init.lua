@@ -98,6 +98,8 @@ function image:encode_data(properties)
 	elseif "B8G8R8A8" == color_format then
 		if "RAW" == compression then
 			self:encode_data_R8G8B8A8_as_B8G8R8A8_raw()
+		elseif "RLE" == compression then
+			self:encode_data_R8G8B8A8_as_B8G8R8A8_rle()
 		end
 	end
 	local data_length_after = #self.data
@@ -350,6 +352,85 @@ function image:encode_data_R8G8B8A8_as_B8G8R8A8_raw()
 		end
 	end
 	self.data = self.data .. table.concat(raw_pixels)
+end
+
+function image:encode_data_R8G8B8A8_as_B8G8R8A8_rle()
+	assert(32 == self.pixel_depth)
+	local previous_r = nil
+	local previous_g = nil
+	local previous_b = nil
+	local previous_a = nil
+	local raw_pixel = ''
+	local raw_pixels = {}
+	local count = 1
+	local packets = {}
+	local raw_packet = ''
+	local rle_packet = ''
+	for _, row in ipairs(self.pixels) do
+		for _, pixel in ipairs(row) do
+			if pixel[1] ~= previous_r or pixel[2] ~= previous_g or pixel[3] ~= previous_b or pixel[4] ~= previous_a or count == 128 then
+				if nil ~= previous_r then
+					if 1 == count then
+						-- remember pixel verbatim for raw encoding
+						raw_pixel = string.char(previous_b, previous_g, previous_r, previous_a)
+						raw_pixels[#raw_pixels + 1] = raw_pixel
+						if 128 == #raw_pixels then
+							raw_packet = string.char(#raw_pixels - 1)
+							packets[#packets + 1] = raw_packet
+							for i=1, #raw_pixels do
+								packets[#packets +1] = raw_pixels[i]
+							end
+							raw_pixels = {}
+						end
+					else
+						-- encode raw pixels, if any
+						if #raw_pixels > 0 then
+							raw_packet = string.char(#raw_pixels - 1)
+							packets[#packets + 1] = raw_packet
+							for i=1, #raw_pixels do
+								packets[#packets +1] = raw_pixels[i]
+							end
+							raw_pixels = {}
+						end
+						-- RLE encoding
+						rle_packet = string.char(128 + count - 1, previous_b, previous_g, previous_r, previous_a)
+						packets[#packets +1] = rle_packet
+					end
+				end
+				count = 1
+				previous_r = pixel[1]
+				previous_g = pixel[2]
+				previous_b = pixel[3]
+				previous_a = pixel[4]
+			else
+				count = count + 1
+			end
+		end
+	end
+	if 1 == count then
+		raw_pixel = string.char(previous_b, previous_g, previous_r, previous_a)
+		raw_pixels[#raw_pixels + 1] = raw_pixel
+		raw_packet = string.char(#raw_pixels - 1)
+		packets[#packets + 1] = raw_packet
+		for i=1, #raw_pixels do
+			packets[#packets +1] = raw_pixels[i]
+		end
+		raw_pixels = {}
+	else
+		-- encode raw pixels, if any
+		if #raw_pixels > 0 then
+			raw_packet = string.char(#raw_pixels - 1)
+			packets[#packets + 1] = raw_packet
+			for i=1, #raw_pixels do
+				packets[#packets +1] = raw_pixels[i]
+			end
+			raw_pixels = {}
+		end
+		-- RLE encoding
+		rle_packet = string.char(128 + count - 1, previous_b, previous_g, previous_r, previous_a)
+		packets[#packets +1] = rle_packet
+	end
+	self.data = self.data .. table.concat(packets)
 end
 
 function image:encode_footer()

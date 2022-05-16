@@ -73,6 +73,9 @@ for x = 1,16,1 do -- left to right
 	end
 end
 gradients:save("gradients_32bpp_raw.tga", {color_format="B8G8R8A8", compression="RAW"})
+-- the RLE-compressed file is larger than just dumping pixels because
+-- the gradients in this picture can not be compressed well using RLE
+gradients:save("gradients_32bpp_rle.tga", {color_format="B8G8R8A8", compression="RLE"})
 
 local pixels = {}
 for x = 1,512,1 do -- left to right
