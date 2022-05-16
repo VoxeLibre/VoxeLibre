@@ -100,3 +100,29 @@ end
 tga_encoder.image(pixels):save("fractal_8bpp.tga", {color_format="Y8"})
 tga_encoder.image(pixels):save("fractal_16bpp.tga", {color_format="A1R5G5B5"})
 tga_encoder.image(pixels):save("fractal_24bpp.tga", {color_format="B8G8R8"})
+
+-- encode a colormapped bitmap
+local K = { 0 }
+local B = { 1 }
+local R = { 2 }
+local G = { 3 }
+local W = { 4 }
+local colormap = {
+	{   1,   2,   3 }, -- K
+	{   0,   0, 255 }, -- B
+	{ 255,   0,   0 }, -- R
+	{   0, 255,   0 }, -- G
+	{ 253, 254, 255 }, -- W
+}
+local pixels = {
+	{ W, K, W, K, W, K, W },
+	{ R, G, B, R, G, B, K },
+	{ K, W, K, W, K, W, K },
+	{ G, B, R, G, B, R, W },
+	{ W, W, W, K, K, K, W },
+	{ B, R, G, B, R, G, K },
+	{ B, R, G, B, R, G, W },
+}
+-- note that the uncompressed colormapped TGA file written in this
+-- example is 108 bytes – but an optimized PNG file is 121 bytes …
+tga_encoder.image(pixels):save("colormapped_8bpp.tga", {colormap=colormap})
