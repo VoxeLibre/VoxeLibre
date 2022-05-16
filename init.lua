@@ -15,19 +15,15 @@ function image:constructor(pixels)
 end
 
 function image:encode_colormap_spec(properties)
-	local colormap_spec
-	if nil ~= properties.colormap then
-		local color_count = #properties.colormap
-		colormap_spec =
-			string.char(0, 0) .. -- first entry index
-			string.char(color_count % 256, math.floor(color_count / 256)) .. -- number of entries
-			string.char(#properties.colormap[1] * 8) -- bits per pixel
-	else -- no colormap
-		colormap_spec =
-			string.char(0, 0) .. -- first entry index
-			string.char(0, 0) .. -- number of entries
-			string.char(0) -- bits per pixel
+	local colormap = properties.colormap
+	local colormap_pixel_depth = 0
+	if 0 ~= #colormap then
+		colormap_pixel_depth = #colormap[1] * 8
 	end
+	local colormap_spec =
+		string.char(0, 0) .. -- first entry index
+		string.char(#colormap % 256, math.floor(#colormap / 256)) .. -- number of entries
+		string.char(colormap_pixel_depth) -- bits per pixel
 	self.data = self.data .. colormap_spec
 end
 
@@ -46,7 +42,7 @@ function image:encode_image_spec(properties)
 		["B8G8R8A8"] = 32,
 	}
 	local pixel_depth
-	if nil ~= properties.colormap then
+	if 0 ~= #properties.colormap then
 		pixel_depth = self.pixel_depth
 	else
 		pixel_depth = pixel_depth_by_color_format[color_format]
@@ -63,7 +59,7 @@ end
 
 function image:encode_colormap(properties)
 	local colormap = properties.colormap
-	if nil == colormap then
+	if 0 == #colormap then
 		return
 	end
 	local colormap_pixel_depth = #colormap[1] * 8
@@ -87,8 +83,10 @@ function image:encode_header(properties)
 	local color_format = properties.color_format
 	local colormap = properties.colormap
 	local compression = properties.compression
+	local colormap_type
 	local image_type
 	if "Y8" == color_format and "RAW" == compression then
+		colormap_type = 0
 		image_type = 3 -- grayscale
 	elseif (
 		"A1R5G5B5" == color_format or
@@ -96,20 +94,20 @@ function image:encode_header(properties)
 		"B8G8R8A8" == color_format
 	) then
 		if "RAW" == compression then
-			if nil ~= colormap then
+			if 0 ~= #colormap then
+				colormap_type = 1
 				image_type = 1 -- colormapped RGB(A)
 			else
+				colormap_type = 0
 				image_type = 2 -- RAW RGB(A)
 			end
 		elseif "RLE" == compression then
+			colormap_type = 0
 			image_type = 10 -- RLE RGB
 		end
 	end
+	assert( nil ~= colormap_type )
 	assert( nil ~= image_type )
-	local colormap_type = 0
-	if nil ~= colormap then
-		colormap_type = 1
-	end
 	self.data = self.data
 		.. string.char(0) -- image id
 		.. string.char(colormap_type)
@@ -138,7 +136,7 @@ function image:encode_data(properties)
 			self:encode_data_R8G8B8_as_A1R5G5B5_rle()
 		end
 	elseif "B8G8R8" == color_format then
-		if nil ~= colormap then
+		if 0 ~= #colormap then
 			if "RAW" == compression then
 				if 8 == self.pixel_depth then
 					self:encode_data_Y8_as_Y8_raw()
@@ -509,6 +507,7 @@ end
 
 function image:save(filename, properties)
 	local properties = properties or {}
+	properties.colormap = properties.colormap or {}
 	properties.compression = properties.compression or "RAW"
 
 	self.pixel_depth = #self.pixels[1][1] * 8
@@ -519,7 +518,7 @@ function image:save(filename, properties)
 		[32] = "B8G8R8A8",
 	}
 	if nil == properties.color_format then
-		if nil ~= properties.colormap then
+		if 0 ~= #properties.colormap then
 			properties.color_format =
 				color_format_defaults_by_pixel_depth[
 				#properties.colormap[1] * 8
