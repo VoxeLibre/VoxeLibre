@@ -14,11 +14,20 @@ function image:constructor(pixels)
 	self.height = #pixels
 end
 
+local pixel_depth_by_color_format = {
+	["Y8"] = 8,
+	["A1R5G5B5"] = 16,
+	["B8G8R8"] = 24,
+	["B8G8R8A8"] = 32,
+}
+
 function image:encode_colormap_spec(properties)
 	local colormap = properties.colormap
 	local colormap_pixel_depth = 0
 	if 0 ~= #colormap then
-		colormap_pixel_depth = #colormap[1] * 8
+		colormap_pixel_depth = pixel_depth_by_color_format[
+			properties.color_format
+		]
 	end
 	local colormap_spec =
 		string.char(0, 0) .. -- first entry index
@@ -35,12 +44,6 @@ function image:encode_image_spec(properties)
 		"B8G8R8" == color_format or -- (B8G8R8 = 3 bytes = 24 bits)
 		"B8G8R8A8" == color_format -- (B8G8R8A8 = 4 bytes = 32 bits)
 	)
-	pixel_depth_by_color_format = {
-		["Y8"] = 8,
-		["A1R5G5B5"] = 16,
-		["B8G8R8"] = 24,
-		["B8G8R8A8"] = 32,
-	}
 	local pixel_depth
 	if 0 ~= #properties.colormap then
 		pixel_depth = self.pixel_depth
@@ -62,10 +65,30 @@ function image:encode_colormap(properties)
 	if 0 == #colormap then
 		return
 	end
-	local colormap_pixel_depth = #colormap[1] * 8
-	assert( 24 == colormap_pixel_depth )
+	local color_format = properties.color_format
+	assert (
+		"A1R5G5B5" == color_format or
+		"B8G8R8" == color_format
+	)
 	local colors = {}
-	if 24 == colormap_pixel_depth then
+	if "A1R5G5B5" == color_format then
+		-- Sample depth rescaling is done according to the algorithm presented in:
+		-- <https://www.w3.org/TR/2003/REC-PNG-20031110/#13Sample-depth-rescaling>
+		local max_sample_in = math.pow(2, 8) - 1
+		local max_sample_out = math.pow(2, 5) - 1
+		for i = 1,#colormap,1 do
+			local color = colormap[i]
+			local colorword = 32768 +
+				((math.floor((color[1] * max_sample_out / max_sample_in) + 0.5)) * 1024) +
+				((math.floor((color[2] * max_sample_out / max_sample_in) + 0.5)) * 32) +
+				((math.floor((color[3] * max_sample_out / max_sample_in) + 0.5)) * 1)
+			local color_bytes = string.char(
+				colorword % 256,
+				math.floor(colorword / 256)
+			)
+			colors[#colors + 1] = color_bytes
+		end
+	elseif "B8G8R8" == color_format then
 		for i = 1,#colormap,1 do
 			local color = colormap[i]
 			local color_bytes = string.char(
@@ -76,6 +99,7 @@ function image:encode_colormap(properties)
 			colors[#colors + 1] = color_bytes
 		end
 	end
+	assert( 0 ~= #colors )
 	self.data = self.data .. table.concat(colors)
 end
 
@@ -130,10 +154,18 @@ function image:encode_data(properties)
 			self:encode_data_R8G8B8_as_Y8_raw()
 		end
 	elseif "A1R5G5B5" == color_format then
-		if "RAW" == compression then
-			self:encode_data_R8G8B8_as_A1R5G5B5_raw()
-		elseif "RLE" == compression then
-			self:encode_data_R8G8B8_as_A1R5G5B5_rle()
+		if 0 ~= #colormap then
+			if "RAW" == compression then
+				if 8 == self.pixel_depth then
+					self:encode_data_Y8_as_Y8_raw()
+				end
+			end
+		else
+			if "RAW" == compression then
+				self:encode_data_R8G8B8_as_A1R5G5B5_raw()
+			elseif "RLE" == compression then
+				self:encode_data_R8G8B8_as_A1R5G5B5_rle()
+			end
 		end
 	elseif "B8G8R8" == color_format then
 		if 0 ~= #colormap then

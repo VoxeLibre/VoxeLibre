@@ -125,4 +125,6 @@ local pixels = {
 }
 -- note that the uncompressed colormapped TGA file written in this
 -- example is 108 bytes – but an optimized PNG file is 121 bytes …
-tga_encoder.image(pixels):save("colormapped_8bpp.tga", {colormap=colormap})
+tga_encoder.image(pixels):save("colormapped_B8G8R8.tga", {colormap=colormap})
+-- encoding as A1R5G5B5 saves 1 byte per palette entry → 103 bytes
+tga_encoder.image(pixels):save("colormapped_A1R5G5B5.tga", {colormap=colormap, color_format="A1R5G5B5"})
