@@ -76,6 +76,7 @@ function image:encode_data(properties)
 	local color_format = properties.color_format
 	local compression = properties.compression
 
+	local data_length_before = #self.data
 	if "Y8" == color_format and "RAW" == compression then
 		if 8 == self.pixel_depth then
 			self:encode_data_Y8_as_Y8_raw()
@@ -99,6 +100,11 @@ function image:encode_data(properties)
 			self:encode_data_R8G8B8A8_as_B8G8R8A8_raw()
 		end
 	end
+	local data_length_after = #self.data
+	assert(
+		data_length_after ~= data_length_before,
+		"No data encoded for color format: " .. color_format
+	)
 end
 
 function image:encode_data_Y8_as_Y8_raw()
