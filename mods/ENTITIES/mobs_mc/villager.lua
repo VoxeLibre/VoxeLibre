@@ -61,6 +61,14 @@ if minetest.get_mapgen_setting("mg_name") == "v6" then
 	TRADE_V6_BIRCH_SAPLING = { { "mcl_core:emerald", 8, 11 }, { "mcl_core:birchsapling", 1, 1 } }
 end
 
+local tiernames = {
+	"Novice",
+	"Apprentice",
+	"Journeyman",
+	"Expert",
+	"Master",
+}
+
 local professions = {
 	unemployed = {
 		name = N("Unemployed"),
@@ -536,7 +544,6 @@ local stand_still = function(self)
 end
 
 local function init_trader_vars(self)
-	self.object:set_properties({textures=professions[self._profession].textures})
 	if not self._max_trade_tier then
 		self._max_trade_tier = 1
 	end
@@ -562,7 +569,7 @@ local function go_to_pos(entity,b)
 	if not entity then return end
 	local s=entity.object:get_pos()
 	if vector.distance(b,s) < 1 then
-		set_velocity(entity,0)
+		--set_velocity(entity,0)
 		return true
 	end
 	local v = { x = b.x - s.x, z = b.z - s.z }
@@ -631,7 +638,7 @@ local function employ(self,jobsite_pos)
 		self._profession=p
 		m:set_string("villager",self._id)
 		self._jobsite = jobsite_pos
-		init_trader_vars(self)
+		self.object:set_properties({textures=professions[self._profession].textures})
 		return true
 	end
 end
@@ -805,7 +812,7 @@ local function show_trade_formspec(playername, trader, tradenum)
 	"size[9,8.75]"
 	.."background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"
 	..disabled_img
-	.."label[4,0;"..F(minetest.colorize("#313131", S(profession))).."]"
+.."label[3,0;"..F(minetest.colorize("#313131", S(profession).." - "..S(tiernames[trader._max_trade_tier]))) .."]"
 	.."list[current_player;main;0,4.5;9,3;9]"
 	.."list[current_player;main;0,7.74;9,1;]"
 	..b_prev..b_next
@@ -1351,10 +1358,12 @@ mobs:register_mob("mobs_mc:villager", {
 
 	on_spawn = function(self)
 		if self._id then
+			self.object:set_properties({textures=professions[self._profession].textures})
 			return
 		end
 		self._id=minetest.sha1(minetest.get_gametime()..minetest.pos_to_string(self.object:get_pos())..tostring(math.random()))
 		self._profession = "unemployed"
+		self.object:set_properties({textures=professions[self._profession].textures})
 	end,
 	on_die = function(self, pos)
 		-- Close open trade formspecs and give input back to players
