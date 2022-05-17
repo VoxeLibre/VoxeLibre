@@ -204,6 +204,9 @@ These groups are used mostly for informational purposes
 * `building_block=1`: Block is a building block
 * `deco_block=1`: Block is a decorational block
 
+* `blast_furnace_smeltable=1` : Item or node is smeltable by a blast furnace
+* `smoker_cookable=1` : Food is cookable by a smoker. 
+
 
 ## Fake item groups
 These groups put similar items together which should all be treated by the gameplay or the GUI as a single item.

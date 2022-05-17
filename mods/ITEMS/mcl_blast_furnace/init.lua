@@ -293,7 +293,7 @@ local function blast_furnace_node_timer(pos, elapsed)
 		-- Check if we have cookable content: cookable
 		local aftercooked
 		cooked, aftercooked = minetest.get_craft_result({method = "cooking", width = 1, items = srclist})
-		cookable = minetest.get_item_group(inv:get_stack("src", 1):get_name(), "blast_furnace_cookable") == 1
+		cookable = minetest.get_item_group(inv:get_stack("src", 1):get_name(), "blast_furnace_smeltable") == 1
 		if cookable then
 			-- Successful cooking requires space in dst slot and time
 			if not inv:room_for_item("dst", cooked.item) then
