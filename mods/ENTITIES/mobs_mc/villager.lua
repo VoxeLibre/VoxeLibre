@@ -69,6 +69,14 @@ local tiernames = {
 	"Master",
 }
 
+local badges = {
+	"mcl_core:wood",
+	"mcl_core:stone",
+	"mcl_core:goldblock",
+	"mcl_core:emeraldblock",
+	"mcl_core:diamondblock",
+}
+
 local professions = {
 	unemployed = {
 		name = N("Unemployed"),
@@ -454,7 +462,7 @@ local professions = {
 				"mobs_mc_villager_smith.png",
 				"mobs_mc_villager_smith.png",
 			},
-		jobsite = "mcl_villages:stonebrickcarved", --FIXME: smithing table
+		jobsite = "mcl_anvils:anvil", --FIXME: smithing table
 		trades = {
 			{
 			{ { "mcl_core:coal_lump", 15, 15 }, E1 },
@@ -602,10 +610,21 @@ local function employ(self,jobsite_pos)
 	end
 end
 
-local function unemploy(self)
-	self._profession="unemployed"
-	self._jobsite = nil
-	self.object:set_properties({textures=professions[self._profession].textures})
+local function look_for_job(self)
+	local p = self.object:get_pos()
+	local nn = minetest.find_nodes_in_area(vector.offset(p,-48,-48,-48),vector.offset(p,48,48,48),jobsites)
+	for _,n in pairs(nn) do
+		local m=minetest.get_meta(n)
+		if m:get_string("villager") == "" then
+			--minetest.log("goingt to jobsite "..minetest.pos_to_string(n) )
+			minetest.after(0,function()
+				mobs:go_wplist(self,n,function()
+					--minetest.log("arrived jobsite "..minetest.pos_to_string(n) )
+				end)
+			end)
+			return
+		end
+	end
 end
 
 local function get_a_job(self)
@@ -614,16 +633,7 @@ local function get_a_job(self)
 	for _,n in pairs(nn) do
 		if n and employ(self,n) then return true end
 	end
-end
-
-local function check_jobsite(self)
-	local n = minetest.get_node(self._jobsite)
-	local m = minetest.get_meta(self._jobsite)
-	if n.name ~= professions[self._profession].jobsite or m:get_string("villager") ~= self._id then
-		--unemploy(self)
-		return false
-	end
-	return true
+	if self.state ~= "gowp" then look_for_job(self) end
 end
 
 local update_max_tradenum = function(self)
@@ -1231,9 +1241,11 @@ mobs:register_mob("mobs_mc:villager", {
 	look_at_player = true,
 	on_rightclick = function(self, clicker)
 		local trg=vector.new(0,9,0)
-		mobs:go_wplist(self,trg,function()
-			minetest.log("arrived at "..minetest.pos_to_string(trg))
-		end)
+		if self._jobsite then
+			mobs:go_wplist(self,self._jobsite,function()
+				--minetest.log("arrived at jobsite")
+			end)
+		end
 		if clicker:get_wielded_item():get_name() == "mcl_farming:bread" then
 			if mobs:feed_tame(self, clicker, 1, true, true) then return end
 			if mobs:protect(self, clicker) then return end

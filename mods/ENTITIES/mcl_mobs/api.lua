@@ -2329,6 +2329,7 @@ local function go_to_pos(entity,b)
 	if b.x > s.x then yaw = yaw + math.pi end
 	entity.object:set_yaw(yaw)
 	set_velocity(entity,entity.follow_velocity)
+	mobs:set_animation(entity, "walk")
 end
 
 -- execute current state (stand, walk, run, attacks)
@@ -2387,9 +2388,9 @@ local do_states = function(self, dtime)
 		end
 
 	elseif self.state == "gowp" then
-		if not self.waypoints or not self._target then return end
 		local p = self.object:get_pos()
-		if vector.distance(p,self._target) < 1 then
+		if not p or not self._target then return end
+		if vector.distance(p,self._target) < 2 or #self.waypoints == 0 then
 			self.waypoints = nil
 			self._target = nil
 			self.current_target = nil
@@ -2399,13 +2400,19 @@ local do_states = function(self, dtime)
 		end
 		if not self.current_target or vector.distance(p,self.current_target) < 1.5 then
 			self.current_target = table.remove(self.waypoints, 1)
-		else
+			--minetest.log("nextwp:".. tostring(self.current_target) )
+		elseif self.current_target then
 			go_to_pos(self,self.current_target)
 		end
 		
 		if self.current_target and not minetest.line_of_sight(self.object:get_pos(),self.current_target) then
 			self.waypoints=minetest.find_path(p,self._target,150,1,4)
 			self.current_target = nil
+			return
+		end
+		if not self.current_target then
+			--minetest.log("no path")
+			self.state = "walk"
 		end
 
 	elseif self.state == "walk" then
@@ -2913,11 +2920,19 @@ local do_states = function(self, dtime)
 end
 
 function mobs:go_wplist(self,target,callback_arrived)
-	if not target then return end
-	self._target = target
-	self.waypoints = minetest.find_path(self.object:get_pos(),target,150,1,4)
-	self.callback_arrived = callback_arrived
-	self.state = "gowp"
+	local p = self.object:get_pos()
+	local t = vector.offset(target,0,1,0)
+	if not target or not p then return end
+	local wp = minetest.find_path(p,t,150,1,4)
+	if wp and #wp > 0 then
+		self._target = t
+		self.callback_arrived = callback_arrived
+		self.waypoints = wp
+		self.state = "gowp"
+		return true
+	else
+		--minetest.log("no path found")
+	end
 end
 
 
