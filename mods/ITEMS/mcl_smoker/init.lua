@@ -96,15 +96,6 @@ local function allow_metadata_inventory_put(pos, listname, index, stack, player)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	if listname == "fuel" then
-		-- Special case: empty bucket (not a fuel, but used for sponge drying)
-		if stack:get_name() == "mcl_buckets:bucket_empty" then
-			if inv:get_stack(listname, index):get_count() == 0 then
-				return 1
-			else
-				return 0
-			end
-		end
-
 		-- Test stack with size 1 because we burn one fuel at a time
 		local teststack = ItemStack(stack)
 		teststack:set_count(1)
@@ -152,9 +143,7 @@ end
 local function on_metadata_inventory_take(pos, listname, index, stack, player)
 	-- Award smelting achievements
 	if listname == "dst" then
-		if stack:get_name() == "mcl_core:iron_ingot" then
-			awards.unlock(player:get_player_name(), "mcl:acquireIron")
-		elseif stack:get_name() == "mcl_fishing:fish_cooked" then
+		if stack:get_name() == "mcl_fishing:fish_cooked" then
 			awards.unlock(player:get_player_name(), "mcl:cookFish")
 		end
 		give_xp(pos, player)
@@ -352,18 +341,6 @@ local function smoker_node_timer(pos, elapsed)
 				inv:add_item("dst", cooked.item)
 				inv:set_stack("src", 1, aftercooked.items[1])
 
-				-- Unique recipe: Pour water into empty bucket after cooking wet sponge successfully
-				if inv:get_stack("fuel", 1):get_name() == "mcl_buckets:bucket_empty" then
-					if srclist[1]:get_name() == "mcl_sponges:sponge_wet" then
-						inv:set_stack("fuel", 1, "mcl_buckets:bucket_water")
-						fuellist = inv:get_list("fuel")
-					-- Also for river water
-					elseif srclist[1]:get_name() == "mcl_sponges:sponge_wet_river_water" then
-						inv:set_stack("fuel", 1, "mcl_buckets:bucket_river_water")
-						fuellist = inv:get_list("fuel")
-					end
-				end
-
 				srclist = inv:get_list("src")
 				src_time = 0
 
@@ -438,16 +415,16 @@ end
 
 minetest.register_node("mcl_smoker:smoker", {
 	description = S("Smoker"),
-	_tt_help = S("Uses fuel to smelt or cook items"),
-	_doc_items_longdesc = S("Smokers cook or smelt several items, using a furnace fuel, into something else."),
+	_tt_help = S("A smoker is a type of furnace that cooks food items, similar to a furnace, but twice as fast."),
+	_doc_items_longdesc = S("Smokers cook several items, using a furnace fuel, into something else, but twice as fast as a normal furnace"),
 	_doc_items_usagehelp =
 			S([[
-				Use the furnace to open the furnace menu.
+				Use the smoker to open the furnace menu.
 				Place a furnace fuel in the lower slot and the source material in the upper slot.
-				The furnace will slowly use its fuel to smelt the item.
+				The smoker will slowly use its fuel to smelt the item.
 				The result will be placed into the output slot at the right side.
 			]]).."\n"..
-			S("Use the recipe book to see what you can smelt, what you can use as fuel and how long it will burn."),
+			S("Use the recipe book to see what foods you can smelt, what you can use as fuel and how long it will burn."),
 	_doc_items_hidden = false,
 	tiles = {
 		"smoker_top.png", "smoker_bottom.png",
