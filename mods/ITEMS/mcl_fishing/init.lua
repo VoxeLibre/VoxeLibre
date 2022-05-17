@@ -426,7 +426,7 @@ minetest.register_craftitem("mcl_fishing:fish_raw", {
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
 	stack_max = 64,
-	groups = { food=2, eatable = 2 },
+	groups = { food=2, eatable = 2, smoker_cookable = 1 },
 	_mcl_saturation = 0.4,
 })
 
@@ -456,7 +456,7 @@ minetest.register_craftitem("mcl_fishing:salmon_raw", {
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
 	stack_max = 64,
-	groups = { food=2, eatable = 2 },
+	groups = { food=2, eatable = 2, smoker_cookable = 1 },
 	_mcl_saturation = 0.4,
 })
 
