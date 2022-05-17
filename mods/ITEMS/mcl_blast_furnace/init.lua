@@ -96,15 +96,6 @@ local function allow_metadata_inventory_put(pos, listname, index, stack, player)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	if listname == "fuel" then
-		-- Special case: empty bucket (not a fuel, but used for sponge drying)
-		if stack:get_name() == "mcl_buckets:bucket_empty" then
-			if inv:get_stack(listname, index):get_count() == 0 then
-				return 1
-			else
-				return 0
-			end
-		end
-
 		-- Test stack with size 1 because we burn one fuel at a time
 		local teststack = ItemStack(stack)
 		teststack:set_count(1)
@@ -154,8 +145,6 @@ local function on_metadata_inventory_take(pos, listname, index, stack, player)
 	if listname == "dst" then
 		if stack:get_name() == "mcl_core:iron_ingot" then
 			awards.unlock(player:get_player_name(), "mcl:acquireIron")
-		elseif stack:get_name() == "mcl_fishing:fish_cooked" then
-			awards.unlock(player:get_player_name(), "mcl:cookFish")
 		end
 		give_xp(pos, player)
 	end
@@ -304,7 +293,7 @@ local function blast_furnace_node_timer(pos, elapsed)
 		-- Check if we have cookable content: cookable
 		local aftercooked
 		cooked, aftercooked = minetest.get_craft_result({method = "cooking", width = 1, items = srclist})
-		cookable = minetest.get_item_group(inv:get_stack("src", 1):get_name(), "blastFurnace_cookable") == 1
+		cookable = minetest.get_item_group(inv:get_stack("src", 1):get_name(), "blast_furnace_cookable") == 1
 		if cookable then
 			-- Successful cooking requires space in dst slot and time
 			if not inv:room_for_item("dst", cooked.item) then
@@ -345,25 +334,12 @@ local function blast_furnace_node_timer(pos, elapsed)
 
 		-- If there is a cookable item then check if it is ready yet
 		if cookable and active then
-		-- In the src_time variable, the *1.5 is the multiplication that makes the blast furnace work faster than a normal furnace. I (PrairieWind) have it at 1.5 times faster, but it can be OP and 2 times faster, or 1.2 times faster. All are good numbers.
-			src_time = (src_time + el)*1.5
+		-- In the src_time variable, the *2 is the multiplication that makes the blast furnace work faster than a normal furnace.
+			src_time = (src_time + el)*2
 			-- Place result in dst list if done
 			if src_time >= cooked.time then
 				inv:add_item("dst", cooked.item)
 				inv:set_stack("src", 1, aftercooked.items[1])
-
-				-- Unique recipe: Pour water into empty bucket after cooking wet sponge successfully
-				if inv:get_stack("fuel", 1):get_name() == "mcl_buckets:bucket_empty" then
-					if srclist[1]:get_name() == "mcl_sponges:sponge_wet" then
-						inv:set_stack("fuel", 1, "mcl_buckets:bucket_water")
-						fuellist = inv:get_list("fuel")
-					-- Also for river water
-					elseif srclist[1]:get_name() == "mcl_sponges:sponge_wet_river_water" then
-						inv:set_stack("fuel", 1, "mcl_buckets:bucket_river_water")
-						fuellist = inv:get_list("fuel")
-					end
-				end
-
 				srclist = inv:get_list("src")
 				src_time = 0
 
@@ -438,8 +414,8 @@ end
 
 minetest.register_node("mcl_blast_furnace:blast_furnace", {
 	description = S("Blast Furnace"),
-	_tt_help = S("Uses fuel to smelt or cook items"),
-	_doc_items_longdesc = S("Blast Furnaces cook or smelt several items, using a furnace fuel, into something else."),
+	_tt_help = S("A blast furnace is a block that smelts ores, raw metals, iron and gold armor and tools, similar to a furnace, but at twice the speed."),
+	_doc_items_longdesc = S("Blast Furnaces smelt several items, mainly ores and armor, using a furnace fuel, into something else."),
 	_doc_items_usagehelp =
 			S([[
 				Use the furnace to open the furnace menu.
@@ -447,7 +423,7 @@ minetest.register_node("mcl_blast_furnace:blast_furnace", {
 				The furnace will slowly use its fuel to smelt the item.
 				The result will be placed into the output slot at the right side.
 			]]).."\n"..
-			S("Use the recipe book to see what you can smelt, what you can use as fuel and how long it will burn."),
+			S("Use the recipe book to see what ores you can smelt, what you can use as fuel and how long it will burn."),
 	_doc_items_hidden = false,
 	tiles = {
 		"blast_furnace_top.png", "blast_furnace_top.png",
@@ -597,15 +573,3 @@ minetest.register_lbm({
 	end,
 })
 
--- Legacy
-minetest.register_lbm({
-	label = "Update blast_furnace formspecs (0.60.0)",
-	name = "mcl_blast_furnace:update_formspecs_0_60_0",
-	-- Only update inactive furnaces because active ones should update themselves
-	nodenames = { "mcl_blast_furnace:blast_furnace" },
-	run_at_every_load = false,
-	action = function(pos, node)
-		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", inactive_formspec)
-	end,
-})

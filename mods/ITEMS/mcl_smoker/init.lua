@@ -334,8 +334,8 @@ local function smoker_node_timer(pos, elapsed)
 
 		-- If there is a cookable item then check if it is ready yet
 		if cookable and active then
-		-- In the src_time variable, the *1.5 is the multiplication that makes the smoker work faster than a normal furnace. I (PrairieWind) have it at 1.5 times faster, but it can be OP and 2 times faster, or 1.2 times faster. All are good numbers.
-			src_time = (src_time + el)*1.5
+		-- In the src_time variable, the *2 is the multiplication that makes the smoker work faster than a normal furnace.
+			src_time = (src_time + el)*2
 			-- Place result in dst list if done
 			if src_time >= cooked.time then
 				inv:add_item("dst", cooked.item)
@@ -571,18 +571,5 @@ minetest.register_lbm({
 	run_at_every_load = true,
 	action = function(pos, node)
 		spawn_flames(pos, node.param2)
-	end,
-})
-
--- Legacy
-minetest.register_lbm({
-	label = "Update smoker formspecs (0.60.0)",
-	name = "mcl_smoker:update_formspecs_0_60_0",
-	-- Only update inactive furnaces because active ones should update themselves
-	nodenames = { "mcl_smoker:smoker" },
-	run_at_every_load = false,
-	action = function(pos, node)
-		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", inactive_formspec)
 	end,
 })
