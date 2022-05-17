@@ -20,7 +20,7 @@ minetest.register_craftitem("mcl_mobitems:mutton", {
 	wield_image = "mcl_mobitems_mutton_raw.png",
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
-	groups = { food = 2, eatable = 2 },
+	groups = { food = 2, eatable = 2, smoker_cookable = 1 },
 	_mcl_saturation = 1.2,
 	stack_max = 64,
 })
@@ -44,7 +44,7 @@ minetest.register_craftitem("mcl_mobitems:beef", {
 	wield_image = "mcl_mobitems_beef_raw.png",
 	on_place = minetest.item_eat(3),
 	on_secondary_use = minetest.item_eat(3),
-	groups = { food = 2, eatable = 3 },
+	groups = { food = 2, eatable = 3, smoker_cookable = 1 },
 	_mcl_saturation = 1.8,
 	stack_max = 64,
 })
@@ -69,7 +69,7 @@ minetest.register_craftitem("mcl_mobitems:chicken", {
 	wield_image = "mcl_mobitems_chicken_raw.png",
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
-	groups = { food = 2, eatable = 2 },
+	groups = { food = 2, eatable = 2, smoker_cookable = 1 },
 	_mcl_saturation = 1.2,
 	stack_max = 64,
 })
@@ -93,7 +93,7 @@ minetest.register_craftitem("mcl_mobitems:porkchop", {
 	wield_image = "mcl_mobitems_porkchop_raw.png",
 	on_place = minetest.item_eat(3),
 	on_secondary_use = minetest.item_eat(3),
-	groups = { food = 2, eatable = 3 },
+	groups = { food = 2, eatable = 3, smoker_cookable = 1 },
 	_mcl_saturation = 1.8,
 	stack_max = 64,
 })
@@ -117,7 +117,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit", {
 	wield_image = "mcl_mobitems_rabbit_raw.png",
 	on_place = minetest.item_eat(3),
 	on_secondary_use = minetest.item_eat(3),
-	groups = { food = 2, eatable = 3 },
+	groups = { food = 2, eatable = 3, smoker_cookable = 1 },
 	_mcl_saturation = 1.8,
 	stack_max = 64,
 })

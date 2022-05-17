@@ -286,7 +286,7 @@ local professions = {
 	armorer = {
 		name = N("Armorer"),
 		texture = "mobs_mc_villager_smith.png",
-		jobsite = "mcl_core:lava_source", --FIXME: blast furnace
+		jobsite = "mcl_blast_furnace:blast_furnace",
 		trades = {
 			{
 			{ { "mcl_core:coal_lump", 15, 15 }, E1 },
@@ -352,7 +352,7 @@ local professions = {
 	butcher = {
 		name = N("Butcher"),
 		texture = "mobs_mc_villager_butcher.png",
-		jobsite = "mcl_villages:stonebrickcarved", --FIXME: smoker
+		jobsite = "mcl_smoker:smoker",
 		trades = {
 			{
 			{ { "mcl_mobitems:beef", 14, 14 }, E1 },

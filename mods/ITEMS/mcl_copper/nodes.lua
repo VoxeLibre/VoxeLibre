@@ -5,7 +5,7 @@ minetest.register_node("mcl_copper:stone_with_copper", {
 	_doc_items_longdesc = S("Some copper contained in stone, it is pretty common and can be found below sea level."),
 	tiles = {"default_stone.png^mcl_copper_ore.png"},
 	is_ground_content = true,
-	groups = {pickaxey = 3, building_block = 1, material_stone = 1},
+	groups = {pickaxey = 3, building_block = 1, material_stone = 1, blast_furnace_smeltable=1},
 	drop = "mcl_copper:raw_copper",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
