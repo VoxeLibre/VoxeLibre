@@ -2317,17 +2317,28 @@ local dogswitch = function(self, dtime)
 	return self.dogshoot_switch
 end
 
+local function go_to_pos(entity,b)
+	if not entity then return end
+	local s=entity.object:get_pos()
+	if vector.distance(b,s) < 1 then
+		--set_velocity(entity,0)
+		return true
+	end
+	local v = { x = b.x - s.x, z = b.z - s.z }
+	local yaw = (math.atan(v.z / v.x) + math.pi / 2) - entity.rotate
+	if b.x > s.x then yaw = yaw + math.pi end
+	entity.object:set_yaw(yaw)
+	set_velocity(entity,entity.follow_velocity)
+end
+
 -- execute current state (stand, walk, run, attacks)
 -- returns true if mob has died
 local do_states = function(self, dtime)
-
 	local yaw = self.object:get_yaw() or 0
 
 	if self.state == "stand" then
-
 		if random(1, 4) == 1 then
 
-			local lp = nil
 			local s = self.object:get_pos()
 			local objs = minetest.get_objects_inside_radius(s, 3)
 
@@ -2340,7 +2351,7 @@ local do_states = function(self, dtime)
 			end
 
 			-- look at any players nearby, otherwise turn randomly
-			if lp then
+			if self.look_at_players then
 
 				local vec = {
 					x = lp.x - s.x,
@@ -2375,8 +2386,29 @@ local do_states = function(self, dtime)
 			end
 		end
 
-	elseif self.state == "walk" then
+	elseif self.state == "gowp" then
+		if not self.waypoints or not self._target then return end
+		local p = self.object:get_pos()
+		if vector.distance(p,self._target) < 1 then
+			self.waypoints = nil
+			self._target = nil
+			self.current_target = nil
+			self.state = "walk"
+			if self.callback_arrived then return self.callback_arrived(self) end
+			return true
+		end
+		if not self.current_target or vector.distance(p,self.current_target) < 1.5 then
+			self.current_target = table.remove(self.waypoints, 1)
+		else
+			go_to_pos(self,self.current_target)
+		end
+		
+		if self.current_target and not minetest.line_of_sight(self.object:get_pos(),self.current_target) then
+			self.waypoints=minetest.find_path(p,self._target,150,1,4)
+			self.current_target = nil
+		end
 
+	elseif self.state == "walk" then
 		local s = self.object:get_pos()
 		local lp = nil
 
@@ -2878,6 +2910,14 @@ local do_states = function(self, dtime)
 			end
 		end
 	end
+end
+
+function mobs:go_wplist(self,target,callback_arrived)
+	if not target then return end
+	self._target = target
+	self.waypoints = minetest.find_path(self.object:get_pos(),target,150,1,4)
+	self.callback_arrived = callback_arrived
+	self.state = "gowp"
 end
 
 
@@ -3576,8 +3616,7 @@ local mob_step = function(self, dtime)
 	-- attack timer
 	self.timer = self.timer + dtime
 
-	if self.state ~= "attack" then
-
+	if self.state ~= "attack" and self.state ~= "gowp" then
 		if self.timer < 1 then
 			return
 		end
