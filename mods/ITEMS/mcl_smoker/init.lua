@@ -329,7 +329,7 @@ local function smoker_node_timer(pos, elapsed)
 		elseif active then
 			el = math.min(el, fuel_totaltime - fuel_time)
 			-- The furnace is currently active and has enough fuel
-			fuel_time = fuel_time + el
+			fuel_time = ( fuel_time + el ) * 2
 		end
 
 		-- If there is a cookable item then check if it is ready yet
