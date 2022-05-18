@@ -546,7 +546,7 @@ for _,n in pairs(profession_names) do
 	table.insert(jobsites,professions[n].jobsite)
 end
 
-local stand_still = function(self)
+local function stand_still(self)
 	self.walk_chance = 0
 	self.jump = false
 end
@@ -636,7 +636,7 @@ local function get_a_job(self)
 	if self.state ~= "gowp" then look_for_job(self) end
 end
 
-local update_max_tradenum = function(self)
+local function update_max_tradenum(self)
 	if not self._trades then
 		return
 	end
@@ -651,7 +651,7 @@ local update_max_tradenum = function(self)
 	self._max_tradenum = #trades
 end
 
-local init_trades = function(self, inv)
+local function init_trades(self, inv)
 	local profession = professions[self._profession]
 	local trade_tiers = profession.trades
 	if trade_tiers == nil then
@@ -702,7 +702,7 @@ local init_trades = function(self, inv)
 	minetest.deserialize(self._trades)
 end
 
-local set_trade = function(trader, player, inv, concrete_tradenum)
+local function set_trade(trader, player, inv, concrete_tradenum)
 	local trades = minetest.deserialize(trader._trades)
 	if not trades then
 		init_trades(trader)
@@ -801,7 +801,7 @@ local function show_trade_formspec(playername, trader, tradenum)
 	minetest.show_formspec(playername, tradeinv_name, formspec)
 end
 
-local update_offer = function(inv, player, sound)
+local function update_offer(inv, player, sound)
 	local name = player:get_player_name()
 	local trader = player_trading_with[name]
 	local tradenum = player_tradenum[name]
@@ -825,12 +825,12 @@ local update_offer = function(inv, player, sound)
 	-- compass.
 	-- TODO: Remove these check functions when compass and clock are implemented
 	-- as single items.
-	local check_special = function(special_item, group, wanted1, wanted2, input1, input2)
+	local function check_special(special_item, group, wanted1, wanted2, input1, input2)
 		if minetest.registered_aliases[special_item] then
 			special_item = minetest.registered_aliases[special_item]
 		end
 		if wanted1:get_name() == special_item then
-			local check_input = function(input, wanted, group)
+			local function check_input(input, wanted, group)
 				return minetest.get_item_group(input:get_name(), group) ~= 0 and input:get_count() >= wanted:get_count()
 			end
 			if check_input(input1, wanted1, group) then
@@ -845,7 +845,7 @@ local update_offer = function(inv, player, sound)
 	end
 	-- Apply above function to all items which we consider special.
 	-- This function succeeds if ANY item check succeeds.
-	local check_specials = function(wanted1, wanted2, input1, input2)
+	local function check_specials(wanted1, wanted2, input1, input2)
 		return check_special(COMPASS, "compass", wanted1, wanted2, input1, input2)
 	end
 	-- END OF SPECIAL HANDLING OF COMPASS
@@ -899,7 +899,7 @@ local function return_item(itemstack, dropper, pos, inv_p)
 	return itemstack
 end
 
-local return_fields = function(player)
+local function return_fields(player)
 	local name = player:get_player_name()
 	local inv_t = minetest.get_inventory({type="detached", name = "mobs_mc:trade_"..name})
 	local inv_p = player:get_inventory()
@@ -965,7 +965,7 @@ minetest.register_on_leaveplayer(function(player)
 end)
 
 -- Return true if player is trading with villager, and the villager entity exists
-local trader_exists = function(playername)
+local function trader_exists(playername)
 	local trader = player_trading_with[playername]
 	return trader ~= nil and trader.object:get_luaentity() ~= nil
 end
@@ -992,7 +992,7 @@ local trade_inventory = {
 				wanted1:set_count(wanted1:get_count()*2)
 				wanted2:set_count(wanted2:get_count()*2)
 				-- BEGIN OF SPECIAL HANDLING FOR COMPASS
-				local special_checks = function(wanted1, input1, input2)
+				local function special_checks(wanted1, input1, input2)
 					if wanted1:get_name() == COMPASS then
 						local compasses = 0
 						if (minetest.get_item_group(input1:get_name(), "compass") ~= 0) then
