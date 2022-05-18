@@ -329,7 +329,7 @@ local function blast_furnace_node_timer(pos, elapsed)
 		elseif active then
 			el = math.min(el, fuel_totaltime - fuel_time)
 			-- The furnace is currently active and has enough fuel
-			fuel_time = fuel_time + el
+			fuel_time = (fuel_time + el) *2 --multiply speed of fuel consumption to match proper output
 		end
 
 		-- If there is a cookable item then check if it is ready yet
@@ -414,7 +414,7 @@ end
 
 minetest.register_node("mcl_blast_furnace:blast_furnace", {
 	description = S("Blast Furnace"),
-	_tt_help = S("A blast furnace is a block that smelts ores, raw metals, iron and gold armor and tools, similar to a furnace, but at twice the speed."),
+	_tt_help = S("Smelts ores faster than furnace"),
 	_doc_items_longdesc = S("Blast Furnaces smelt several items, mainly ores and armor, using a furnace fuel, into something else."),
 	_doc_items_usagehelp =
 			S([[

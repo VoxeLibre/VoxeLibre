@@ -329,7 +329,7 @@ local function smoker_node_timer(pos, elapsed)
 		elseif active then
 			el = math.min(el, fuel_totaltime - fuel_time)
 			-- The furnace is currently active and has enough fuel
-			fuel_time = fuel_time + el
+			fuel_time = ( fuel_time + el ) * 2
 		end
 
 		-- If there is a cookable item then check if it is ready yet
@@ -415,7 +415,7 @@ end
 
 minetest.register_node("mcl_smoker:smoker", {
 	description = S("Smoker"),
-	_tt_help = S("A smoker is a type of furnace that cooks food items, similar to a furnace, but twice as fast."),
+	_tt_help = S("Cooks food faster than furnace"),
 	_doc_items_longdesc = S("Smokers cook several items, using a furnace fuel, into something else, but twice as fast as a normal furnace"),
 	_doc_items_usagehelp =
 			S([[
