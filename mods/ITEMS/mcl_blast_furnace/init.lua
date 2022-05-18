@@ -414,7 +414,7 @@ end
 
 minetest.register_node("mcl_blast_furnace:blast_furnace", {
 	description = S("Blast Furnace"),
-	_tt_help = S("A blast furnace is a block that smelts ores, raw metals, iron and gold armor and tools, similar to a furnace, but at twice the speed."),
+	_tt_help = S("Smelts ores faster than furnace"),
 	_doc_items_longdesc = S("Blast Furnaces smelt several items, mainly ores and armor, using a furnace fuel, into something else."),
 	_doc_items_usagehelp =
 			S([[

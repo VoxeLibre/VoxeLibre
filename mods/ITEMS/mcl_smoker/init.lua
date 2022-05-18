@@ -415,7 +415,7 @@ end
 
 minetest.register_node("mcl_smoker:smoker", {
 	description = S("Smoker"),
-	_tt_help = S("A smoker is a type of furnace that cooks food items, similar to a furnace, but twice as fast."),
+	_tt_help = S("Cooks food faster than furnace"),
 	_doc_items_longdesc = S("Smokers cook several items, using a furnace fuel, into something else, but twice as fast as a normal furnace"),
 	_doc_items_usagehelp =
 			S([[
