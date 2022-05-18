@@ -575,7 +575,7 @@ local function go_home(entity)
 	entity.state = "go_home"
 	local b=entity.bed
 	if not b then return end
-	mobs:go_wplist(entity,b,function(entity,b)
+	mobs:gopath(entity,b,function(entity,b)
 		if vector.distance(entity.object:get_pos(),b) < 2 then 
 			entity.state = "stand"
 			set_velocity(entity,0)
@@ -618,7 +618,7 @@ local function look_for_job(self)
 		if m:get_string("villager") == "" then
 			--minetest.log("goingt to jobsite "..minetest.pos_to_string(n) )
 			minetest.after(0,function()
-				mobs:go_wplist(self,n,function()
+				mobs:gopath(self,n,function()
 					--minetest.log("arrived jobsite "..minetest.pos_to_string(n) )
 				end)
 			end)
@@ -1242,7 +1242,7 @@ mobs:register_mob("mobs_mc:villager", {
 	on_rightclick = function(self, clicker)
 		local trg=vector.new(0,9,0)
 		if self._jobsite then
-			mobs:go_wplist(self,self._jobsite,function()
+			mobs:gopath(self,self._jobsite,function()
 				--minetest.log("arrived at jobsite")
 			end)
 		end

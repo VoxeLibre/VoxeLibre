@@ -2919,7 +2919,7 @@ local do_states = function(self, dtime)
 	end
 end
 
-function mobs:go_wplist(self,target,callback_arrived)
+function mobs:gopath(self,target,callback_arrived)
 	local p = self.object:get_pos()
 	local t = vector.offset(target,0,1,0)
 	if not target or not p then return end
