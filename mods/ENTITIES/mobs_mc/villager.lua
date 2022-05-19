@@ -1241,7 +1241,18 @@ mobs:register_mob("mobs_mc:villager", {
 	look_at_player = true,
 	pick_up = {"mcl_farming:bread"},
 	on_pick_up = function(self,itementity)
-		minetest.log("picked up "..itementity.itemstring)
+		local clicker
+		for _,p in pairs(minetest.get_connected_players()) do
+			if vector.distance(p:get_pos(),self.object:get_pos()) < 10 then
+				clicker = p
+			end
+		end
+		if not clicker then minetest.log("no clicker") end
+		if clicker then
+			mobs:feed_tame(self, clicker, 1, true, true)
+			return
+		end
+		return true --do not pick up
 	end,
 	on_rightclick = function(self, clicker)
 		local trg=vector.new(0,9,0)
@@ -1249,10 +1260,6 @@ mobs:register_mob("mobs_mc:villager", {
 			mobs:gopath(self,self._jobsite,function()
 				--minetest.log("arrived at jobsite")
 			end)
-		end
-		if clicker:get_wielded_item():get_name() == "mcl_farming:bread" then
-			if mobs:feed_tame(self, clicker, 1, true, true) then return end
-			if mobs:protect(self, clicker) then return end
 		end
 		if self.child or self._profession == "unemployed" then
 			return
