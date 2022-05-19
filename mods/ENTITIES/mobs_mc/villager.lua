@@ -1253,7 +1253,7 @@ mobs:register_mob("mobs_mc:villager", {
 	_id = nil,
 	_profession = "unemployed",
 	look_at_player = true,
-	pick_up = {"mcl_farming:bread"},
+	pick_up = mobs_mc.follow.villager,
 	can_open_doors = true,
 	on_pick_up = function(self,itementity)
 		local clicker

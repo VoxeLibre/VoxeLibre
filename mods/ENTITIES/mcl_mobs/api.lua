@@ -2976,13 +2976,20 @@ function mobs:gopath(self,target,callback_arrived)
 	end
 end
 
+local function player_near(pos)
+	for _,o in pairs(minetest.get_objects_inside_radius(pos,2)) do
+		if o:is_player() then return true end
+	end
+end
+
 local function check_item_pickup(self)
 	if self.pick_up and #self.pick_up > 0 then
-		for _,o in pairs(minetest.get_objects_inside_radius(self.object:get_pos(),2)) do
+		local p = self.object:get_pos()
+		for _,o in pairs(minetest.get_objects_inside_radius(p,2)) do
 			local l=o:get_luaentity()
 			if l and l.name == "__builtin:item" then
 				for k,v in pairs(self.pick_up) do
-					if self.on_pick_up and l.itemstring:find(v) then
+					if not player_near(p) and self.on_pick_up and l.itemstring:find(v) then
 						if self.on_pick_up(self,l) == nil then o:remove() end
 					end
 				end
