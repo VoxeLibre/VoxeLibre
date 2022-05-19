@@ -2920,11 +2920,30 @@ local do_states = function(self, dtime)
 	end
 end
 
+local plane_adjacents = {
+	vector.new(1,0,0),
+	vector.new(-1,0,0),
+	vector.new(0,0,1),
+	vector.new(0,0,-1),
+}
+
 function mobs:gopath(self,target,callback_arrived)
 	local p = self.object:get_pos()
 	local t = vector.offset(target,0,1,0)
-	if not target or not p then return end
 	local wp = minetest.find_path(p,t,150,1,4)
+	if not wp then
+		local d = minetest.find_node_near(target,16,{"group:door"})
+		if d then
+			for _,v in pairs(plane_adjacents) do
+				local pos = vector.add(d,v)
+				local n = minetest.get_node(pos)
+				if n.name == "air" then
+					wp = minetest.find_path(p,pos,150,1,4)
+					if wp then break end
+				end
+			end
+		end
+	end
 	if wp and #wp > 0 then
 		self._target = t
 		self.callback_arrived = callback_arrived

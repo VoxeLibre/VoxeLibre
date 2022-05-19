@@ -617,12 +617,10 @@ local function look_for_job(self)
 		local m=minetest.get_meta(n)
 		if m:get_string("villager") == "" then
 			--minetest.log("goingt to jobsite "..minetest.pos_to_string(n) )
-			minetest.after(0,function()
-				mobs:gopath(self,n,function()
-					--minetest.log("arrived jobsite "..minetest.pos_to_string(n) )
-				end)
+			local gp = mobs:gopath(self,n,function()
+				--minetest.log("arrived jobsite "..minetest.pos_to_string(n) )
 			end)
-			return
+			if gp then return end
 		end
 	end
 end
