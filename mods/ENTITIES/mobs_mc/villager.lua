@@ -1239,6 +1239,10 @@ mobs:register_mob("mobs_mc:villager", {
 	_id = nil,
 	_profession = "unemployed",
 	look_at_player = true,
+	pick_up = {"mcl_farming:bread"},
+	on_pick_up = function(self,itementity)
+		minetest.log("picked up "..itementity.itemstring)
+	end,
 	on_rightclick = function(self, clicker)
 		local trg=vector.new(0,9,0)
 		if self._jobsite then

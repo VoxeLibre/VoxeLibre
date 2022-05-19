@@ -2935,6 +2935,20 @@ function mobs:gopath(self,target,callback_arrived)
 	end
 end
 
+local function check_item_pickup(self)
+	if self.pick_up and #self.pick_up > 0 then
+		for _,o in pairs(minetest.get_objects_inside_radius(self.object:get_pos(),2)) do
+			local l=o:get_luaentity()
+			if l and l.name == "__builtin:item" then
+				for k,v in pairs(self.pick_up) do
+					if self.on_pick_up and l.itemstring:find(v) then
+						if self.on_pick_up(self,l) == nil then o:remove() end
+					end
+				end
+			end
+		end
+	end
+end
 
 -- falling and fall damage
 -- returns true if mob died
@@ -3536,7 +3550,7 @@ end
 
 -- main mob function
 local mob_step = function(self, dtime)
-
+	check_item_pickup(self)
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
 	end
@@ -3964,7 +3978,8 @@ minetest.register_entity(name, {
 	child = def.child or false,
 	texture_mods = {},
 	shoot_arrow = def.shoot_arrow,
-        sounds_child = def.sounds_child,
+    sounds_child = def.sounds_child,
+    pick_up = def.pick_up,
 	explosion_strength = def.explosion_strength,
 	suffocation_timer = 0,
 	follow_velocity = def.follow_velocity or 2.4,
@@ -3987,6 +4002,8 @@ minetest.register_entity(name, {
 	on_breed = def.on_breed,
 
 	on_grown = def.on_grown,
+
+	on_pick_up = def.on_pick_up,
 
 	on_detach_child = mob_detach_child,
 
