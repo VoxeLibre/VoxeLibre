@@ -2390,7 +2390,7 @@ local do_states = function(self, dtime)
 	elseif self.state == "gowp" then
 		local p = self.object:get_pos()
 		if not p or not self._target then return end
-		if vector.distance(p,self._target) < 2 or #self.waypoints == 0 then
+		if vector.distance(p,self._target) < 2 or ( self.waypoints and #self.waypoints == 0 ) then
 			self.waypoints = nil
 			self._target = nil
 			self.current_target = nil
@@ -2398,7 +2398,7 @@ local do_states = function(self, dtime)
 			if self.callback_arrived then return self.callback_arrived(self) end
 			return true
 		end
-		if not self.current_target or vector.distance(p,self.current_target) < 1.5 then
+		if self.waypoints and ( not self.current_target or vector.distance(p,self.current_target) < 1.5 ) then
 			self.current_target = table.remove(self.waypoints, 1)
 			--minetest.log("nextwp:".. tostring(self.current_target) )
 		elseif self.current_target then
