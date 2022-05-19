@@ -2333,9 +2333,30 @@ local function go_to_pos(entity,b)
 	mobs:set_animation(entity, "walk")
 end
 
+local function check_doors(self)
+	local p = self.object:get_pos()
+	local t = minetest.get_timeofday()
+	local dd = minetest.find_nodes_in_area(vector.offset(p,-1,-1,-1),vector.offset(p,1,1,1),{"group:door"})
+	for _,d in pairs(dd) do
+		local n = minetest.get_node(d)
+		if n.name:find("_b_") then
+			local def = minetest.registered_nodes[n.name]
+			local closed = n.name:find("_b_1")
+			if t < 0.3 or t > 0.8 then
+				if not closed then def.on_rightclick(d,n,self) end
+			else
+				if closed then def.on_rightclick(d,n,self) end
+			end
+			
+		end
+	end
+end
+
 -- execute current state (stand, walk, run, attacks)
 -- returns true if mob has died
 local do_states = function(self, dtime)
+	if self.can_open_doors then check_doors(self) end
+	
 	local yaw = self.object:get_yaw() or 0
 
 	if self.state == "stand" then
@@ -3934,6 +3955,7 @@ minetest.register_entity(name, {
 	animation = def.animation,
 	follow = def.follow,
 	nofollow = def.nofollow,
+	can_open_doors = def.can_open_doors,
 	jump = def.jump ~= false,
 	walk_chance = def.walk_chance or 50,
 	attacks_monsters = def.attacks_monsters or false,

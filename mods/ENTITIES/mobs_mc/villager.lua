@@ -1239,6 +1239,7 @@ mobs:register_mob("mobs_mc:villager", {
 	_profession = "unemployed",
 	look_at_player = true,
 	pick_up = {"mcl_farming:bread"},
+	can_open_doors = true,
 	on_pick_up = function(self,itementity)
 		local clicker
 		for _,p in pairs(minetest.get_connected_players()) do
