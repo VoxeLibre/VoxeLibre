@@ -774,12 +774,17 @@ local function show_trade_formspec(playername, trader, tradenum)
 		w2_formspec = "item_image[3,1;1,1;"..wanted2:to_string().."]"
 		.."tooltip[3,1;0.8,0.8;"..F(wanted2:get_description()).."]"
 	end
-
+	local tiername = tiernames[trader._max_trade_tier]
+	if tiername then
+		tiername = S(tiername)
+	else
+		tiername = S("Master")
+	end
 	local formspec =
 	"size[9,8.75]"
 	.."background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"
 	..disabled_img
-.."label[3,0;"..F(minetest.colorize("#313131", S(profession).." - "..S(tiernames[trader._max_trade_tier]))) .."]"
+.."label[3,0;"..F(minetest.colorize("#313131", S(profession).." - "..tiername)) .."]"
 	.."list[current_player;main;0,4.5;9,3;9]"
 	.."list[current_player;main;0,7.74;9,1;]"
 	..b_prev..b_next
