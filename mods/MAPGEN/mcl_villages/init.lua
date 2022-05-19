@@ -53,14 +53,21 @@ end
 local function spawn_villagers(minp,maxp)
 	local beds=minetest.find_nodes_in_area(minp,maxp,{"mcl_beds:bed_red_bottom"})
 	for _,bed in pairs(beds) do
-		minetest.get_meta(bed):set_string("villagebed","true")
-		local v=minetest.add_entity(bed,"mobs_mc:villager")
-		if v then
-			v:get_luaentity().bed = bed
+		local m = minetest.get_meta(bed)
+		if m:get_string("villager") == "" then
+			local v=minetest.add_entity(bed,"mobs_mc:villager")
+			if v then
+				local l=v:get_luaentity()
+				l._bed = bed
+				m:set_string("villager",l._id)
+			end
 		end
+		
 	end
 	local p = minetest.find_node_near(minp,50,"mcl_core:grass_path")
-	minetest.add_entity(p,"mobs_mc:iron_golem")
+	if p then
+		minetest.add_entity(p,"mobs_mc:iron_golem")
+	end
 end
 
 --

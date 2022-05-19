@@ -573,7 +573,7 @@ end
 
 local function go_home(entity)
 	entity.state = "go_home"
-	local b=entity.bed
+	local b=entity._bed
 	if not b then return end
 	mobs:gopath(entity,b,function(entity,b)
 		if vector.distance(entity.object:get_pos(),b) < 2 then 
@@ -582,7 +582,7 @@ local function go_home(entity)
 			entity.object:set_pos(b)
 			local n=minetest.get_node(b)
 			if n and n.name ~= "mcl_beds:bed_red_bottom" then
-				entity.bed=nil --the stormtroopers have killed uncle owen
+				entity._bed=nil --the stormtroopers have killed uncle owen
 				return false
 			end
 			return true
@@ -1239,7 +1239,7 @@ mobs:register_mob("mobs_mc:villager", {
 	fear_height = 4,
 	jump = true,
 	walk_chance = DEFAULT_WALK_CHANCE,
-	bed = nil,
+	_bed = nil,
 	_id = nil,
 	_profession = "unemployed",
 	look_at_player = true,
@@ -1331,7 +1331,7 @@ mobs:register_mob("mobs_mc:villager", {
 				self.walk_chance = DEFAULT_WALK_CHANCE
 				self.jump = true
 			end
-			if self.bed and  ( self.state ~= "go_home" and vector.distance(self.object:get_pos(),self.bed) > 50 ) then
+			if self._bed and  ( self.state ~= "go_home" and vector.distance(self.object:get_pos(),self._bed) > 50 ) then
 				go_home(self)
 			end
 			if self._profession == "unemployed" then
