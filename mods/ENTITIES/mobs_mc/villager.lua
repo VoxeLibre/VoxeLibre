@@ -70,11 +70,11 @@ local tiernames = {
 }
 
 local badges = {
-	"mcl_core:wood",
-	"mcl_core:stone",
-	"mcl_core:goldblock",
-	"mcl_core:emeraldblock",
-	"mcl_core:diamondblock",
+	"default_wood.png",
+	"default_stone.png",
+	"default_gold_block.png",
+	"mcl_core_emerald_block.png",
+	"default_diamond_block.png",
 }
 
 local professions = {
@@ -163,7 +163,7 @@ local professions = {
 	},
 	fletcher = {
 		name = N("Fletcher"),
-		texture =  {
+		textures =  {
 				"mobs_mc_villager_farmer.png",
 				"mobs_mc_villager_farmer.png",
 			},
@@ -205,7 +205,7 @@ local professions = {
 	},
 	shepherd ={
 		name = N("Shepherd"),
-		texture =  {
+		textures =  {
 				"mobs_mc_villager_farmer.png",
 				"mobs_mc_villager_farmer.png",
 			},
@@ -563,12 +563,18 @@ local function init_trader_vars(self)
 	end
 end
 
-local function set_texture(self)
-	local t = table.copy(professions[self._profession].textures)
-	--t[1] = "[combine:<w>x<h>:<x1>,<y1>="..t[1]..":30,50="..badges[self._max_trade_tier].."^[resize:16x16"
-	
-	
-	self.object:set_properties({textures=t})
+local function get_badge_textures(self)
+	local t = professions[self._profession].textures
+	if self._profession == "unemployed" or self._profession == "nitwit" then return t end
+	local tier = self._max_trade_tier or 1
+	return {
+		"[combine:64x64:0,0="..t[1]..":11,55=".. badges[tier].."\\^[resize\\:2x2",
+		t[2]
+	}
+end
+
+local function set_textures(self)
+	self.object:set_properties({textures=get_badge_textures(self)})
 end
 
 local function go_home(entity)
@@ -605,7 +611,7 @@ local function employ(self,jobsite_pos)
 		self._profession=p
 		m:set_string("villager",self._id)
 		self._jobsite = jobsite_pos
-		self.object:set_properties({textures=professions[self._profession].textures})
+		set_textures(self)
 		return true
 	end
 end
@@ -1112,6 +1118,10 @@ local trade_inventory = {
 					-- First-time trade unlock all trades and unlock next trade tier
 					if trade.tier + 1 > trader._max_trade_tier then
 						trader._max_trade_tier = trader._max_trade_tier + 1
+						if trader._max_trade_tier > #professions[trader._profession].trades then
+							trader._max_trade_tier =  #professions[trader._profession].trades
+						end
+						set_textures(trader)
 						update_max_tradenum(trader)
 						update_formspec = true
 					end
@@ -1342,12 +1352,12 @@ mobs:register_mob("mobs_mc:villager", {
 
 	on_spawn = function(self)
 		if self._id then
-			self.object:set_properties({textures=professions[self._profession].textures})
+			set_textures(self)
 			return
 		end
 		self._id=minetest.sha1(minetest.get_gametime()..minetest.pos_to_string(self.object:get_pos())..tostring(math.random()))
 		self._profession = "unemployed"
-		self.object:set_properties({textures=professions[self._profession].textures})
+		set_textures(self)
 	end,
 	on_die = function(self, pos)
 		-- Close open trade formspecs and give input back to players
