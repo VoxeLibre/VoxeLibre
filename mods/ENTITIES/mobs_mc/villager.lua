@@ -1231,6 +1231,7 @@ mobs:register_mob("mobs_mc:villager", {
 		die_loop = false,
 	},
 	follow = mobs_mc.follow.villager,
+	nofollow = true,
 	view_range = 16,
 	fear_height = 4,
 	jump = true,
@@ -1247,7 +1248,6 @@ mobs:register_mob("mobs_mc:villager", {
 				clicker = p
 			end
 		end
-		if not clicker then minetest.log("no clicker") end
 		if clicker then
 			mobs:feed_tame(self, clicker, 1, true, true)
 			return

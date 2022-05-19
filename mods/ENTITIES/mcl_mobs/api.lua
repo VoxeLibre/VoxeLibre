@@ -1438,7 +1438,8 @@ end
 
 -- should mob follow what I'm holding ?
 local follow_holding = function(self, clicker)
-
+	if self.nofollow then return false end
+	
 	if mobs.invis[clicker:get_player_name()] then
 		return false
 	end
@@ -3913,6 +3914,7 @@ minetest.register_entity(name, {
 	sounds = def.sounds or {},
 	animation = def.animation,
 	follow = def.follow,
+	nofollow = def.nofollow,
 	jump = def.jump ~= false,
 	walk_chance = def.walk_chance or 50,
 	attacks_monsters = def.attacks_monsters or false,
@@ -4321,7 +4323,7 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 	end
 
 	-- can eat/tame with item in hand
-	if follow_holding(self, clicker) then
+	if self.nofollow or follow_holding(self, clicker) then
 
 		-- if not in creative then take item
 		if not mobs.is_creative(clicker:get_player_name()) then
