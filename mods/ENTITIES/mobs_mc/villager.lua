@@ -242,7 +242,7 @@ local professions = {
 				"mobs_mc_villager_librarian.png",
 				"mobs_mc_villager_librarian.png",
 			},
-		jobsite = "mcl_villages:stonebrickcarved", --FIXME: lectern
+		jobsite = "mcl_books:bookshelf", --FIXME: lectern
 		trades = {
 			{
 			{ { "mcl_core:paper", 24, 36 }, E1 },
@@ -431,7 +431,7 @@ local professions = {
 				"mobs_mc_villager_smith.png",
 				"mobs_mc_villager_smith.png",
 			},
-		jobsite = "mcl_villages:stonebrickcarved", --FIXME: grindstone
+		jobsite = "mcl_furnaces:furnace", --FIXME: grindstone
 		trades = {
 			{
 			{ { "mcl_core:coal_lump", 15, 15 }, E1 },
