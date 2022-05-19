@@ -59,6 +59,8 @@ local function spawn_villagers(minp,maxp)
 			v:get_luaentity().bed = bed
 		end
 	end
+	local p = minetest.find_node_near(minp,50,"mcl_core:grass_path")
+	minetest.add_entity(p,"mobs_mc:iron_golem")
 end
 
 --
