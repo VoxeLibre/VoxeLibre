@@ -128,3 +128,23 @@ local pixels = {
 tga_encoder.image(pixels):save("colormapped_B8G8R8.tga", {colormap=colormap})
 -- encoding as A1R5G5B5 saves 1 byte per palette entry → 103 bytes
 tga_encoder.image(pixels):save("colormapped_A1R5G5B5.tga", {colormap=colormap, color_format="A1R5G5B5"})
+
+-- encode a colormapped bitmap with transparency
+local _ = { 0 }
+local K = { 1 }
+local W = { 2 }
+local colormap = {
+	{   0,   0,   0,   0 },
+	{   0,   0,   0, 255 },
+	{ 255, 255, 255, 255 },
+}
+local pixels = {
+	{ _, K, K, K, K, K, _ },
+	{ _, K, W, W, W, K, _ },
+	{ K, K, W, W, W, K, K },
+	{ K, W, W, W, W, W, K },
+	{ _, K, W, W, W, K, _ },
+	{ _, _, K, W, K, _, _ },
+	{ _, _, _, K, _, _, _ },
+}
+tga_encoder.image(pixels):save("colormapped_B8G8R8A8.tga", {colormap=colormap})

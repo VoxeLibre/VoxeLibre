@@ -68,7 +68,8 @@ function image:encode_colormap(properties)
 	local color_format = properties.color_format
 	assert (
 		"A1R5G5B5" == color_format or
-		"B8G8R8" == color_format
+		"B8G8R8" == color_format or
+		"B8G8R8A8" == color_format
 	)
 	local colors = {}
 	if "A1R5G5B5" == color_format then
@@ -95,6 +96,17 @@ function image:encode_colormap(properties)
 				color[3], -- B
 				color[2], -- G
 				color[1]  -- R
+			)
+			colors[#colors + 1] = color_bytes
+		end
+	elseif "B8G8R8A8" == color_format then
+		for i = 1,#colormap,1 do
+			local color = colormap[i]
+			local color_bytes = string.char(
+				color[3], -- B
+				color[2], -- G
+				color[1], -- R
+				color[4]  -- A
 			)
 			colors[#colors + 1] = color_bytes
 		end
@@ -182,10 +194,18 @@ function image:encode_data(properties)
 			end
 		end
 	elseif "B8G8R8A8" == color_format then
-		if "RAW" == compression then
-			self:encode_data_R8G8B8A8_as_B8G8R8A8_raw()
-		elseif "RLE" == compression then
-			self:encode_data_R8G8B8A8_as_B8G8R8A8_rle()
+		if 0 ~= #colormap then
+			if "RAW" == compression then
+				if 8 == self.pixel_depth then
+					self:encode_data_Y8_as_Y8_raw()
+				end
+			end
+		else
+			if "RAW" == compression then
+				self:encode_data_R8G8B8A8_as_B8G8R8A8_raw()
+			elseif "RLE" == compression then
+				self:encode_data_R8G8B8A8_as_B8G8R8A8_rle()
+			end
 		end
 	end
 	local data_length_after = #self.data

@@ -59,6 +59,7 @@ These images contain a palette, followed by pixel data.
 
 * `A1R5G5B5` (8bpp RGB)
 * `B8G8R8` (8bpp RGB)
+* `B8G8R8A8` (8bpp RGBA)
 
 ### True-Color Images (Type 2)
 
@@ -82,6 +83,5 @@ These images contain compressed RGB(A) pixel data.
 
 ## TODO
 
-* Support Type 1 `B8G8R8A8` output (color-mapped 8bpp RGBA)
 * Actually support `R8G8B8A8` input for `A1R5G5B5` output
 * Add both zoomable and explorable maps to `mcl_maps`.
