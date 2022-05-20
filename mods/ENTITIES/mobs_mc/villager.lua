@@ -1118,8 +1118,8 @@ local trade_inventory = {
 					-- First-time trade unlock all trades and unlock next trade tier
 					if trade.tier + 1 > trader._max_trade_tier then
 						trader._max_trade_tier = trader._max_trade_tier + 1
-						if trader._max_trade_tier > #professions[trader._profession].trades then
-							trader._max_trade_tier =  #professions[trader._profession].trades
+						if trader._max_trade_tier > 5 then
+							trader._max_trade_tier =  5
 						end
 						set_textures(trader)
 						update_max_tradenum(trader)
