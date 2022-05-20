@@ -193,6 +193,10 @@ local function init_nodes(p1, p2, size, rotation, pr)
 	construct_node(p1, p2, "mcl_furnaces:furnace")
 	construct_node(p1, p2, "mcl_anvils:anvil")
 
+	construct_node(p1, p2, "mcl_smoker:smoker")
+	construct_node(p1, p2, "mcl_barrels:barrel_closed")
+	construct_node(p1, p2, "mcl_blast_furnace:blast_furnace")
+	construct_node(p1, p2, "mcl_brewing:stand_000")
 	local nodes = construct_node(p1, p2, "mcl_chests:chest")
 	if nodes and #nodes > 0 then
 		for p=1, #nodes do
