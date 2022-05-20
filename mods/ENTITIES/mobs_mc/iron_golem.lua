@@ -41,7 +41,26 @@ mobs:register_mob("mobs_mc:iron_golem", {
 	group_attack = true,
 	attacks_monsters = true,
 	attack_type = "dogfight",
+	_got_poppy = false,
 	pick_up = {"mcl_flowers:poppy"},
+	on_pick_up = function(self,n)
+		if n.itemstring:find("mcl_flowers:poppy") then
+			if not self._got_poppy then
+				self._got_poppy=true
+				return
+			end
+			return true
+		end
+	end,
+	replace_what = {"mcl_flowers:poppy"},
+	replace_with = {"air"},
+	on_replace = function(self, pos, oldnode, newnode)
+		if not self.got_poppy and oldnode.name == "mcl_flowers:poppy" then
+			self._got_poppy=true
+			return
+		end
+		return false
+	end,
 	drops = {
 		{name = mobs_mc.items.iron_ingot,
 		chance = 1,
