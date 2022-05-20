@@ -126,8 +126,8 @@ local professions = {
 	fisherman = {
 		name = N("Fisherman"),
 		textures = {
-				"mobs_mc_villager_farmer.png",
-				"mobs_mc_villager_farmer.png",
+				"mobs_mc_villager_fisherman.png",
+				"mobs_mc_villager_fisherman.png",
 			},
 		jobsite = "mcl_barrels:barrel_closed",
 		trades = {
@@ -164,8 +164,8 @@ local professions = {
 	fletcher = {
 		name = N("Fletcher"),
 		textures =  {
-				"mobs_mc_villager_farmer.png",
-				"mobs_mc_villager_farmer.png",
+				"mobs_mc_villager_fletcher.png",
+				"mobs_mc_villager_fletcher.png",
 			},
 		jobsite = "mcl_fletching_table:fletching_table",
 		trades = {
@@ -206,8 +206,8 @@ local professions = {
 	shepherd ={
 		name = N("Shepherd"),
 		textures =  {
-				"mobs_mc_villager_farmer.png",
-				"mobs_mc_villager_farmer.png",
+				"mobs_mc_villager_sheperd.png",
+				"mobs_mc_villager_sheperd.png",
 			},
 		jobsite = "mcl_loom:loom",
 		trades = {
@@ -277,8 +277,8 @@ local professions = {
 	cartographer = {
 		name = N("Cartographer"),
 		textures = {
-				"mobs_mc_villager_librarian.png",
-				"mobs_mc_villager_librarian.png",
+				"mobs_mc_villager_cartographer.png",
+				"mobs_mc_villager_cartographer.png",
 			},
 		jobsite = "mcl_cartography_table:cartography_table",
 		trades = {
@@ -323,8 +323,8 @@ local professions = {
 	armorer = {
 		name = N("Armorer"),
 		textures = {
-				"mobs_mc_villager_smith.png",
-				"mobs_mc_villager_smith.png",
+				"mobs_mc_villager_armorer.png",
+				"mobs_mc_villager_armorer.png",
 			},
 		jobsite = "mcl_blast_furnace:blast_furnace",
 		trades = {
@@ -363,8 +363,8 @@ local professions = {
 	leatherworker = {
 		name = N("Leatherworker"),
 		textures = {
-				"mobs_mc_villager_butcher.png",
-				"mobs_mc_villager_butcher.png",
+				"mobs_mc_villager_leatherworker.png",
+				"mobs_mc_villager_leatherworker.png",
 			},
 		jobsite = "mcl_cauldrons:cauldron",
 		trades = {
@@ -428,8 +428,8 @@ local professions = {
 	weapon_smith = {
 		name = N("Weapon Smith"),
 		textures = {
-				"mobs_mc_villager_smith.png",
-				"mobs_mc_villager_smith.png",
+				"mobs_mc_villager_weaponsmith.png",
+				"mobs_mc_villager_weaponsmith.png",
 			},
 		jobsite = "mcl_furnaces:furnace", --FIXME: grindstone
 		trades = {
@@ -459,8 +459,8 @@ local professions = {
 	tool_smith = {
 		name = N("Tool Smith"),
 		textures = {
-				"mobs_mc_villager_smith.png",
-				"mobs_mc_villager_smith.png",
+				"mobs_mc_villager_toolsmith.png",
+				"mobs_mc_villager_toolsmith.png",
 			},
 		jobsite = "mcl_anvils:anvil", --FIXME: smithing table
 		trades = {
@@ -528,8 +528,8 @@ local professions = {
 	nitwit = {
 		name = N("Nitwit"),
 		textures = {
-				"mobs_mc_villager.png",
-				"mobs_mc_villager.png",
+				"mobs_mc_villager_nitwit.png",
+				"mobs_mc_villager_nitwit.png",
 			},
 		-- No trades for nitwit
 		trades = nil,
@@ -1357,6 +1357,9 @@ mobs:register_mob("mobs_mc:villager", {
 		end
 		self._id=minetest.sha1(minetest.get_gametime()..minetest.pos_to_string(self.object:get_pos())..tostring(math.random()))
 		self._profession = "unemployed"
+		if math.random(100) == 1 then
+			self._profession = "nitwit"
+		end
 		set_textures(self)
 	end,
 	on_die = function(self, pos)
