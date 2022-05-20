@@ -4,6 +4,10 @@ mcl_bells = {}
 
 local has_mcl_wip = minetest.get_modpath("mcl_wip")
 
+function mcl_bells.ring_once(pos)
+      minetest.sound_play( "mcl_bells_bell_stroke", { pos = pos, gain = 1.5, max_hear_distance = 300,});
+end
+
 minetest.register_node("mcl_bells:bell", {
 	description = S("Bell"),
 	inventory_image = "bell.png",
@@ -18,11 +22,11 @@ minetest.register_node("mcl_bells:bell", {
 		},
 	},
 	is_ground_content = false,
-	stack_max = 64,
 	groups = {pickaxey=2, deco_block=1 },
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
+	on_rightclick = mcl_bells.ring_once,
 })
 
 if has_mcl_wip then
