@@ -10,16 +10,21 @@ end
 
 minetest.register_node("mcl_bells:bell", {
 	description = S("Bell"),
-	inventory_image = "bell.png",
-	drawtype = "plantlike",
-	tiles = {"bell.png"},
-	stack_max = 64,
-	selection_box = {
+	inventory_image = "mcl_bells_bell.png",
+	drawtype = "nodebox",
+	node_box = {
 		type = "fixed",
 		fixed = {
-			-4/16, -6/16, -4/16,
-			 4/16,  7/16,  4/16,
-		},
+			{ -8/16, -8/16, -8/16,  8/16, -6/16,  8/16 },
+			{ -6/16, -6/16, -6/16,  6/16,  6/16,  6/16 },
+			{ -2/16,  6/16, -2/16,  2/16,  8/16,  2/16 },
+		}
+	},
+	--tiles = { "blank.png" },
+	tiles = {
+		"mcl_bells_bell_top.png",
+		"mcl_bells_bell_bottom.png",
+		"mcl_bells_bell_side.png",
 	},
 	is_ground_content = false,
 	groups = {pickaxey=2, deco_block=1 },
