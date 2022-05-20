@@ -21,7 +21,6 @@ minetest.register_node("mcl_villages:stonebrickcarved", {
 	description = ("Chiseled Stone Village Bricks"),
 	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"mcl_core_stonebrick_carved.png"},
-	stack_max = 64,
 	drop = "mcl_core:stonebrickcarved",
 	groups = {pickaxey=1, stone=1, stonebrick=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -49,26 +48,6 @@ if minetest.get_modpath("mobs_mc") then
     nil) --day_toggle
 end
 --]]
-
-local function spawn_villagers(minp,maxp)
-	local beds=minetest.find_nodes_in_area(minp,maxp,{"mcl_beds:bed_red_bottom"})
-	for _,bed in pairs(beds) do
-		local m = minetest.get_meta(bed)
-		if m:get_string("villager") == "" then
-			local v=minetest.add_entity(bed,"mobs_mc:villager")
-			if v then
-				local l=v:get_luaentity()
-				l._bed = bed
-				m:set_string("villager",l._id)
-			end
-		end
-		
-	end
-	local p = minetest.find_node_near(minp,50,"mcl_core:grass_path")
-	if p then
-		minetest.add_entity(p,"mobs_mc:iron_golem")
-	end
-end
 
 --
 -- on map generation, try to build a settlement
