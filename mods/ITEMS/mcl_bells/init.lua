@@ -17,7 +17,12 @@ minetest.register_node("mcl_bells:bell", {
 			 4/16,  7/16,  4/16,
 		},
 	},
-	groups = { pickaxey = 1 }
+	is_ground_content = false,
+	stack_max = 64,
+	groups = {pickaxey=2, deco_block=1 },
+	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 5,
 })
 
 if has_mcl_wip then
