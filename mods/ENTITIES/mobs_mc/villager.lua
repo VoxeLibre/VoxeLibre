@@ -10,14 +10,10 @@
 
 -- TODO: Particles
 -- TODO: 4s Regeneration I after trade unlock
--- TODO: Breeding
--- TODO: Baby villagers
--- TODO: Spawning in villages
 -- TODO: Behaviour:
---     TODO: Walk around village, but do not leave it intentionally
---     TODO: Run into house on rain or danger, open doors
---     TODO: Internal inventory, pick up items, trade with other villagers
---     TODO: Farm stuff
+-- TODO: Run into house on rain or danger, open doors
+-- TODO: Internal inventory, trade with other villagers
+-- TODO: Schedule stuff (work,sleep,father)
 
 local S = minetest.get_translator("mobs_mc")
 local N = function(s) return s end
