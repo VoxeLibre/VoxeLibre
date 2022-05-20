@@ -9,7 +9,7 @@ local S = minetest.get_translator("mobs_mc")
 --################### IRON GOLEM
 --###################
 
-
+local etime = 0
 
 mobs:register_mob("mobs_mc:iron_golem", {
 	description = S("Iron Golem"),
@@ -41,6 +41,7 @@ mobs:register_mob("mobs_mc:iron_golem", {
 	group_attack = true,
 	attacks_monsters = true,
 	attack_type = "dogfight",
+	pick_up = {"mcl_flowers:poppy"},
 	drops = {
 		{name = mobs_mc.items.iron_ingot,
 		chance = 1,
@@ -60,6 +61,14 @@ mobs:register_mob("mobs_mc:iron_golem", {
 		punch_start = 40,  punch_end = 50,
 	},
 	jump = true,
+	on_step = function(self,dtime)
+		etime = etime + dtime
+		if etime > 10 then
+			if self._home and vector.distance(self._home,self.object:get_pos()) > 50 then
+				mobs:gopath(self,self._home)
+			end
+		end
+	end,
 })
 
 
