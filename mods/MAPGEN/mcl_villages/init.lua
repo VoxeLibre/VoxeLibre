@@ -67,10 +67,6 @@ local function build_a_settlement(minp, maxp, blockseed)
 
 	-- evaluate settlement_info and place schematics
 	settlements.place_schematics(settlement_info, pr)
-
-	minetest.after(60,function()
-		spawn_villagers(minp,maxp)
-	end) --give the village some time to fully generate
 end
 
 local function ecb_village(blockpos, action, calls_remaining, param)
