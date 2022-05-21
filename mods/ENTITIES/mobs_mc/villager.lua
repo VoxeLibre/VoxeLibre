@@ -334,7 +334,7 @@ local professions = {
 
 			{
 			{ { "mcl_core:iron_ingot", 4, 4 }, E1 },
-			--{ { "mcl_core:emerald", 36, 36 }, { "FIXME: Bell", 1, 1 } },
+			{ { "mcl_core:emerald", 36, 36 }, { "mcl_bells:bell", 1, 1 } },
 			{ { "mcl_core:emerald", 3, 3 }, { "mcl_armor:leggings_chain", 1, 1 } },
 			{ { "mcl_core:emerald", 1, 1 }, { "mcl_armor:boots_chain", 1, 1 } },
 			},
@@ -437,7 +437,7 @@ local professions = {
 
 			{
 			{ { "mcl_core:iron_ingot", 4, 4 }, E1 },
-			--{ { "mcl_core:emerald", 36, 36 }, { "FIXME: Bell", 1, 1 } },
+			{ { "mcl_core:emerald", 36, 36 }, { "mcl_bells:bell", 1, 1 } },
 			},
 			{
 			{ { "mcl_core:flint", 7, 9 }, E1 },
@@ -470,7 +470,7 @@ local professions = {
 
 			{
 			{ { "mcl_core:iron_ingot", 4, 4 }, E1 },
-			--{ { "mcl_core:emerald", 36, 36 }, { "FIXME: Bell", 1, 1 } },
+			{ { "mcl_core:emerald", 36, 36 }, { "mcl_bells:bell", 1, 1 } },
 			},
 			{
 			{ { "mcl_core:flint", 30, 30 }, E1 },
