@@ -5,7 +5,13 @@ mcl_bells = {}
 local has_mcl_wip = minetest.get_modpath("mcl_wip")
 
 function mcl_bells.ring_once(pos)
-      minetest.sound_play( "mcl_bells_bell_stroke", { pos = pos, gain = 1.5, max_hear_distance = 300,});
+	minetest.sound_play( "mcl_bells_bell_stroke", { pos = pos, gain = 1.5, max_hear_distance = 150,})
+	local vv=minetest.get_objects_inside_radius(pos,150)
+	for _,o in pairs(vv) do
+		if o.type == "npc" then
+			mobs:gopath(o:get_luaentity(),pos,function() end)
+		end
+	end
 end
 
 minetest.register_node("mcl_bells:bell", {
