@@ -2982,10 +2982,9 @@ local function check_entity_cramming(self)
 		local l = o:get_luaentity()
 		if l and clear then
 			l.cram = nil
-			ncram = {}
 		elseif l and l.cram == nil then
 			table.insert(ncram,l)
-		elseif l and l.cram then
+		elseif not clear and l and l.cram then
 			damage_mob(l,"cramming",cramming_damage)
 		end
 	end
@@ -3570,7 +3569,6 @@ end
 -- main mob function
 local mob_step = function(self, dtime)
 	check_item_pickup(self)
-	check_entity_cramming(self)
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
 	end
@@ -3684,7 +3682,7 @@ local mob_step = function(self, dtime)
 
 	if (self.state == "attack" and self.env_damage_timer > 1)
 	or self.state ~= "attack" then
-
+		check_entity_cramming(self)
 		self.env_damage_timer = 0
 
 		-- check for environmental damage (water, fire, lava etc.)
