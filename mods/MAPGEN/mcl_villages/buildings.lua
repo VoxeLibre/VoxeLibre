@@ -200,7 +200,7 @@ local function spawn_iron_golem(pos)
 end
 
 local function spawn_villagers(minp,maxp)
-	local beds=minetest.find_nodes_in_area(minp,maxp,{"mcl_beds:bed_red_bottom"})
+	local beds=minetest.find_nodes_in_area(vector.offset(minp,-20,-20,-20),vector.offset(maxp,20,20,20),{"mcl_beds:bed_red_bottom"})
 	for _,bed in pairs(beds) do
 		local m = minetest.get_meta(bed)
 		if m:get_string("villager") == "" then
@@ -234,6 +234,22 @@ end
 
 function settlements.place_schematics(settlement_info, pr)
 	local building_all_info
+	
+	--attempt to place one belltower in the center of the village - this doesn't always work out great but it's a lot better than doing it first or last.
+	local belltower = table.remove(settlement_info,math.floor(#settlement_info/2))
+	mcl_structures.place_schematic(
+		vector.offset(belltower["pos"],0,1,0),
+		settlements.modpath.."/schematics/belltower.mts",
+		belltower["rotation"],
+		nil,
+		true,
+		nil,
+		function(p1, p2, size, rotation, pr)
+			spawn_iron_golem(p1)
+		end,
+		pr
+	)
+	
 	for i, built_house in ipairs(settlement_info) do
 		local is_last = i == #settlement_info
 		
@@ -307,9 +323,6 @@ function settlements.place_schematics(settlement_info, pr)
 			function(p1, p2, size, rotation, pr)
 				init_nodes(p1, p2, size, rotation, pr)
 				spawn_villagers(p1,p2)
-				if is_last then
-					spawn_iron_golem(p1)
-				end
 			end,
 			pr
 		)
