@@ -237,18 +237,20 @@ function settlements.place_schematics(settlement_info, pr)
 	
 	--attempt to place one belltower in the center of the village - this doesn't always work out great but it's a lot better than doing it first or last.
 	local belltower = table.remove(settlement_info,math.floor(#settlement_info/2))
-	mcl_structures.place_schematic(
-		vector.offset(belltower["pos"],0,1,0),
-		settlements.modpath.."/schematics/belltower.mts",
-		belltower["rotation"],
-		nil,
-		true,
-		nil,
-		function(p1, p2, size, rotation, pr)
-			spawn_iron_golem(p1)
-		end,
-		pr
-	)
+	if belltower then
+		mcl_structures.place_schematic(
+			vector.offset(belltower["pos"],0,0,0),
+			settlements.modpath.."/schematics/belltower.mts",
+			belltower["rotation"],
+			nil,
+			true,
+			nil,
+			function(p1, p2, size, rotation, pr)
+				spawn_iron_golem(p1)
+			end,
+			pr
+		)
+	end
 	
 	for i, built_house in ipairs(settlement_info) do
 		local is_last = i == #settlement_info
