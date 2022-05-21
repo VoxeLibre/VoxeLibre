@@ -67,7 +67,7 @@ local tiernames = {
 
 local badges = {
 	"default_wood.png",
-	"default_stone.png",
+	"default_steel_block.png",
 	"default_gold_block.png",
 	"mcl_core_emerald_block.png",
 	"default_diamond_block.png",
