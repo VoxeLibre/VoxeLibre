@@ -2956,6 +2956,48 @@ local function check_item_pickup(self)
 	end
 end
 
+local function damage_mob(self,reason,damage)
+	if not self.health then return end
+	damage = floor(damage)
+	if damage > 0 then
+		self.health = self.health - damage
+
+		effect(pos, 5, "mcl_particles_smoke.png", 1, 2, 2, nil)
+
+		if check_for_death(self, reason, {type = reason}) then
+			return true
+		end
+	end
+end
+
+local entity_cramming_max = 24
+local cramming_damage = 3
+local function check_entity_cramming(self)
+	local p = self.object:get_pos()
+	local oo = minetest.get_objects_inside_radius(p,1)
+	local clear = false
+	if #oo < entity_cramming_max then clear = true end
+	local ncram = {}
+	for _,o in pairs(oo) do
+		local l = o:get_luaentity()
+		if l and clear then
+			l.cram = nil
+			ncram = {}
+		elseif l and l.cram == nil then
+			table.insert(ncram,l)
+		elseif l and l.cram then
+			damage_mob(l,"cramming",cramming_damage)
+		end
+	end
+	for i,l in ipairs(ncram) do
+		if i > entity_cramming_max then
+			l.cram = true
+		else
+			l.cram = nil
+		end
+	end
+end
+
 -- falling and fall damage
 -- returns true if mob died
 local falling = function(self, pos)
@@ -3033,16 +3075,7 @@ local falling = function(self, pos)
 				if add ~= 0 then
 					damage = damage + damage * (add/100)
 				end
-				damage = floor(damage)
-				if damage > 0 then
-					self.health = self.health - damage
-
-					effect(pos, 5, "mcl_particles_smoke.png", 1, 2, 2, nil)
-
-					if check_for_death(self, "fall", {type = "fall"}) then
-						return true
-					end
-				end
+				damage_mob(self,"fall",damage)
 			end
 
 			self.old_y = self.object:get_pos().y
@@ -3537,6 +3570,7 @@ end
 -- main mob function
 local mob_step = function(self, dtime)
 	check_item_pickup(self)
+	check_entity_cramming(self)
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
 	end
