@@ -1438,7 +1438,8 @@ end
 
 -- should mob follow what I'm holding ?
 local follow_holding = function(self, clicker)
-
+	if self.nofollow then return false end
+	
 	if mobs.invis[clicker:get_player_name()] then
 		return false
 	end
@@ -2317,17 +2318,50 @@ local dogswitch = function(self, dtime)
 	return self.dogshoot_switch
 end
 
+local function go_to_pos(entity,b)
+	if not entity then return end
+	local s=entity.object:get_pos()
+	if vector.distance(b,s) < 1 then
+		--set_velocity(entity,0)
+		return true
+	end
+	local v = { x = b.x - s.x, z = b.z - s.z }
+	local yaw = (math.atan(v.z / v.x) + math.pi / 2) - entity.rotate
+	if b.x > s.x then yaw = yaw + math.pi end
+	entity.object:set_yaw(yaw)
+	set_velocity(entity,entity.follow_velocity)
+	mobs:set_animation(entity, "walk")
+end
+
+local function check_doors(self)
+	local p = self.object:get_pos()
+	local t = minetest.get_timeofday()
+	local dd = minetest.find_nodes_in_area(vector.offset(p,-1,-1,-1),vector.offset(p,1,1,1),{"group:door"})
+	for _,d in pairs(dd) do
+		local n = minetest.get_node(d)
+		if n.name:find("_b_") then
+			local def = minetest.registered_nodes[n.name]
+			local closed = n.name:find("_b_1")
+			if t < 0.3 or t > 0.8 then
+				if not closed then def.on_rightclick(d,n,self) end
+			else
+				if closed then def.on_rightclick(d,n,self) end
+			end
+			
+		end
+	end
+end
+
 -- execute current state (stand, walk, run, attacks)
 -- returns true if mob has died
 local do_states = function(self, dtime)
-
+	if self.can_open_doors then check_doors(self) end
+	
 	local yaw = self.object:get_yaw() or 0
 
 	if self.state == "stand" then
-
 		if random(1, 4) == 1 then
 
-			local lp = nil
 			local s = self.object:get_pos()
 			local objs = minetest.get_objects_inside_radius(s, 3)
 
@@ -2340,7 +2374,7 @@ local do_states = function(self, dtime)
 			end
 
 			-- look at any players nearby, otherwise turn randomly
-			if lp then
+			if self.look_at_players then
 
 				local vec = {
 					x = lp.x - s.x,
@@ -2375,8 +2409,35 @@ local do_states = function(self, dtime)
 			end
 		end
 
-	elseif self.state == "walk" then
+	elseif self.state == "gowp" then
+		local p = self.object:get_pos()
+		if not p or not self._target then return end
+		if vector.distance(p,self._target) < 2 or ( self.waypoints and #self.waypoints == 0 ) then
+			self.waypoints = nil
+			self._target = nil
+			self.current_target = nil
+			self.state = "walk"
+			if self.callback_arrived then return self.callback_arrived(self) end
+			return true
+		end
+		if self.waypoints and ( not self.current_target or vector.distance(p,self.current_target) < 1.5 ) then
+			self.current_target = table.remove(self.waypoints, 1)
+			--minetest.log("nextwp:".. tostring(self.current_target) )
+		elseif self.current_target then
+			go_to_pos(self,self.current_target)
+		end
+		
+		if self.current_target and not minetest.line_of_sight(self.object:get_pos(),self.current_target) then
+			self.waypoints=minetest.find_path(p,self._target,150,1,4)
+			self.current_target = nil
+			return
+		end
+		if not self.current_target then
+			--minetest.log("no path")
+			self.state = "walk"
+		end
 
+	elseif self.state == "walk" then
 		local s = self.object:get_pos()
 		local lp = nil
 
@@ -2880,6 +2941,62 @@ local do_states = function(self, dtime)
 	end
 end
 
+local plane_adjacents = {
+	vector.new(1,0,0),
+	vector.new(-1,0,0),
+	vector.new(0,0,1),
+	vector.new(0,0,-1),
+}
+
+function mobs:gopath(self,target,callback_arrived)
+	local p = self.object:get_pos()
+	local t = vector.offset(target,0,1,0)
+	local wp = minetest.find_path(p,t,150,1,4)
+	if not wp then
+		local d = minetest.find_node_near(target,16,{"group:door"})
+		if d then
+			for _,v in pairs(plane_adjacents) do
+				local pos = vector.add(d,v)
+				local n = minetest.get_node(pos)
+				if n.name == "air" then
+					wp = minetest.find_path(p,pos,150,1,4)
+					if wp then break end
+				end
+			end
+		end
+	end
+	if wp and #wp > 0 then
+		self._target = t
+		self.callback_arrived = callback_arrived
+		self.waypoints = wp
+		self.state = "gowp"
+		return true
+	else
+		--minetest.log("no path found")
+	end
+end
+
+local function player_near(pos)
+	for _,o in pairs(minetest.get_objects_inside_radius(pos,2)) do
+		if o:is_player() then return true end
+	end
+end
+
+local function check_item_pickup(self)
+	if self.pick_up and #self.pick_up > 0 then
+		local p = self.object:get_pos()
+		for _,o in pairs(minetest.get_objects_inside_radius(p,2)) do
+			local l=o:get_luaentity()
+			if l and l.name == "__builtin:item" then
+				for k,v in pairs(self.pick_up) do
+					if not player_near(p) and self.on_pick_up and l.itemstring:find(v) then
+						if self.on_pick_up(self,l) == nil then o:remove() end
+					end
+				end
+			end
+		end
+	end
+end
 
 -- falling and fall damage
 -- returns true if mob died
@@ -3481,7 +3598,7 @@ end
 
 -- main mob function
 local mob_step = function(self, dtime)
-
+	check_item_pickup(self)
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
 	end
@@ -3576,8 +3693,7 @@ local mob_step = function(self, dtime)
 	-- attack timer
 	self.timer = self.timer + dtime
 
-	if self.state ~= "attack" then
-
+	if self.state ~= "attack" and self.state ~= "gowp" then
 		if self.timer < 1 then
 			return
 		end
@@ -3845,6 +3961,8 @@ minetest.register_entity(name, {
 	sounds = def.sounds or {},
 	animation = def.animation,
 	follow = def.follow,
+	nofollow = def.nofollow,
+	can_open_doors = def.can_open_doors,
 	jump = def.jump ~= false,
 	walk_chance = def.walk_chance or 50,
 	attacks_monsters = def.attacks_monsters or false,
@@ -3910,7 +4028,8 @@ minetest.register_entity(name, {
 	child = def.child or false,
 	texture_mods = {},
 	shoot_arrow = def.shoot_arrow,
-        sounds_child = def.sounds_child,
+    sounds_child = def.sounds_child,
+    pick_up = def.pick_up,
 	explosion_strength = def.explosion_strength,
 	suffocation_timer = 0,
 	follow_velocity = def.follow_velocity or 2.4,
@@ -3933,6 +4052,8 @@ minetest.register_entity(name, {
 	on_breed = def.on_breed,
 
 	on_grown = def.on_grown,
+
+	on_pick_up = def.on_pick_up,
 
 	on_detach_child = mob_detach_child,
 
@@ -4250,7 +4371,7 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 	end
 
 	-- can eat/tame with item in hand
-	if follow_holding(self, clicker) then
+	if self.nofollow or follow_holding(self, clicker) then
 
 		-- if not in creative then take item
 		if not mobs.is_creative(clicker:get_player_name()) then

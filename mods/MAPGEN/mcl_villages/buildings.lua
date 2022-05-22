@@ -188,11 +188,41 @@ local function construct_node(p1, p2, name)
 	end
 	minetest.log("warning", "[mcl_villages] Attempt to 'construct' inexistant nodes: " .. name)
 end
+
+local function spawn_iron_golem(pos)
+	local p = minetest.find_node_near(pos,50,"mcl_core:grass_path")
+	if p then
+		local l=minetest.add_entity(p,"mobs_mc:iron_golem"):get_luaentity()
+		if l then
+			l._home = p
+		end
+	end
+end
+
+local function spawn_villagers(minp,maxp)
+	local beds=minetest.find_nodes_in_area(vector.offset(minp,-20,-20,-20),vector.offset(maxp,20,20,20),{"mcl_beds:bed_red_bottom"})
+	for _,bed in pairs(beds) do
+		local m = minetest.get_meta(bed)
+		if m:get_string("villager") == "" then
+			local v=minetest.add_entity(bed,"mobs_mc:villager")
+			if v then
+				local l=v:get_luaentity()
+				l._bed = bed
+				m:set_string("villager",l._id)
+			end
+		end
+	end
+end
+
 local function init_nodes(p1, p2, size, rotation, pr)
 	construct_node(p1, p2, "mcl_itemframes:item_frame")
 	construct_node(p1, p2, "mcl_furnaces:furnace")
 	construct_node(p1, p2, "mcl_anvils:anvil")
 
+	construct_node(p1, p2, "mcl_smoker:smoker")
+	construct_node(p1, p2, "mcl_barrels:barrel_closed")
+	construct_node(p1, p2, "mcl_blast_furnace:blast_furnace")
+	construct_node(p1, p2, "mcl_brewing:stand_000")
 	local nodes = construct_node(p1, p2, "mcl_chests:chest")
 	if nodes and #nodes > 0 then
 		for p=1, #nodes do
@@ -201,9 +231,30 @@ local function init_nodes(p1, p2, size, rotation, pr)
 		end
 	end
 end
+
 function settlements.place_schematics(settlement_info, pr)
 	local building_all_info
+	
+	--attempt to place one belltower in the center of the village - this doesn't always work out great but it's a lot better than doing it first or last.
+	local belltower = table.remove(settlement_info,math.floor(#settlement_info/2))
+	if belltower then
+		mcl_structures.place_schematic(
+			vector.offset(belltower["pos"],0,0,0),
+			settlements.modpath.."/schematics/belltower.mts",
+			belltower["rotation"],
+			nil,
+			true,
+			nil,
+			function(p1, p2, size, rotation, pr)
+				spawn_iron_golem(p1)
+			end,
+			pr
+		)
+	end
+	
 	for i, built_house in ipairs(settlement_info) do
+		local is_last = i == #settlement_info
+		
 		for j, schem in ipairs(settlements.schematic_table) do
 			if settlement_info[i]["name"] == schem["name"] then
 				building_all_info = schem
@@ -271,7 +322,10 @@ function settlements.place_schematics(settlement_info, pr)
 			nil,
 			true,
 			nil,
-			init_nodes,
+			function(p1, p2, size, rotation, pr)
+				init_nodes(p1, p2, size, rotation, pr)
+				spawn_villagers(p1,p2)
+			end,
 			pr
 		)
 	end

@@ -169,7 +169,7 @@ mobs_mc.follow = {
 	dog = { mobs_mc.items.rabbit_raw, mobs_mc.items.rabbit_cooked, mobs_mc.items.mutton_raw, mobs_mc.items.mutton_cooked, mobs_mc.items.beef_raw, mobs_mc.items.beef_cooked, mobs_mc.items.chicken_raw, mobs_mc.items.chicken_cooked, mobs_mc.items.rotten_flesh,
 	-- Mobs Redo items
 	"mobs:meat", "mobs:meat_raw" },
-	villager = { "mcl_farming:bread" },
+	villager = { "mcl_farming:bread", "mcl_farming:carrot_item", "mcl_farming:beetroot_item" , "mcl_farming:potato_item" },
 }
 
 -- Contents for replace_what
