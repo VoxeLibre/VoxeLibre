@@ -8,7 +8,35 @@ local S = minetest.get_translator("mobs_mc")
 --###################
 --################### PARROT
 --###################
+local shoulders = {
+	left = vector.new(-3.25,10.5,0),
+	right = vector.new(3.25,10.5,0)
+}
 
+--find a free shoulder or return nil
+local function get_shoulder(player)
+	local sh = 0
+	for _,o in pairs(player:get_children()) do
+		local l = o:get_luaentity()
+		if l and l.name == "mobs_mc:parrot" then
+			local _,_,a = l.object:get_attach()
+			for _,s in pairs(shoulders) do
+				if a and vector.equals(a,s) then sh = sh + 1 end
+			end
+		end
+	end
+	if sh == 0 then return shoulders["left"]
+	elseif sh == 1 then return shoulders["right"] end
+end
+
+local function perch(self,player)
+	if self.tamed and player:get_player_name() == self.owner and not self.object:get_attach() then
+		local shoulder = get_shoulder(player)
+		if not shoulder then return true end
+		self.object:set_attach(player,"",shoulder,vector.new(0,0,0),true)
+		mobs:set_animation(self, "stand")
+	end
+end
 
 
 mcl_mobs:register_mob("mobs_mc:parrot", {
@@ -89,12 +117,35 @@ mcl_mobs:register_mob("mobs_mc:parrot", {
 		end
 
 		-- Feed to tame, but not breed
-		if mcl_mobs:feed_tame(self, clicker, 1, false, true) then return end
-		if mcl_mobs:protect(self, clicker) then return end
-		if mcl_mobs:capture_mob(self, clicker, 0, 50, 80, false, nil) then return end
+		if mobs:feed_tame(self, clicker, 1, false, true) then return end
+		perch(self,clicker)
 	end,
+	do_custom = function(self,dtime)
+		for _,p in pairs(minetest.get_connected_players()) do
+			if vector.distance(self.object:get_pos(),p:get_pos()) < 1 then
+				perch(self,p)
+			end
+			for _,o in pairs(p:get_children()) do
+				local l = o:get_luaentity()
+				if l and l.name == "mobs_mc:parrot" then
+					if minetest.get_node(vector.offset(p:get_pos(),0,-1,0)).name == "air" then
+						o:set_detach()
+					end
+				end
+			end
+		end
+	end
 
 })
+
+minetest.register_on_leaveplayer(function(p)
+	for _,o in pairs(p:get_children()) do
+		local l = o:get_luaentity()
+		if l and l.name == "mobs_mc:parrot" then
+			l.object:set_detach()
+		end
+	end
+end)
 
 -- Parrots spawn rarely in jungles. TODO: Also check for jungle *biome* <- I'll get to this eventually -j4i
 mcl_mobs:spawn_specific(
