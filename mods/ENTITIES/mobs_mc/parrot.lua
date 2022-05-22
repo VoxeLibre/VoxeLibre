@@ -9,24 +9,30 @@ local S = minetest.get_translator("mobs_mc")
 --################### PARROT
 --###################
 local shoulders = {
-	left = vector.new(-3.25,10.5,0),
-	right = vector.new(3.25,10.5,0)
+	left = vector.new(-3.75,10.5,0),
+	right = vector.new(3.75,10.5,0)
 }
 
 --find a free shoulder or return nil
 local function get_shoulder(player)
-	local sh = 0
+	local sh = "left"
 	for _,o in pairs(player:get_children()) do
 		local l = o:get_luaentity()
 		if l and l.name == "mobs_mc:parrot" then
 			local _,_,a = l.object:get_attach()
 			for _,s in pairs(shoulders) do
-				if a and vector.equals(a,s) then sh = sh + 1 end
+				if a and vector.equals(a,s) then
+					if sh == "left" then
+						sh = "right"
+					else
+						return
+					end
+
+				end
 			end
 		end
 	end
-	if sh == 0 then return shoulders["left"]
-	elseif sh == 1 then return shoulders["right"] end
+	return shoulders[sh]
 end
 
 local function perch(self,player)
@@ -38,6 +44,38 @@ local function perch(self,player)
 	end
 end
 
+local function check_perch(self,dtime)
+	if self.object:get_attach() then
+		for _,p in pairs(minetest.get_connected_players()) do
+			for _,o in pairs(p:get_children()) do
+				local l = o:get_luaentity()
+				if l and l.name == "mobs_mc:parrot" then
+					local n1 = minetest.get_node(vector.offset(p:get_pos(),0,-0.6,0)).name
+					local n2 = minetest.get_node(vector.offset(p:get_pos(),0,0,0)).name
+					local n3 = minetest.get_node(vector.offset(p:get_pos(),0,1,0)).name
+					if n1 == "air" or minetest.get_item_group(n2,"water") > 0 or minetest.get_item_group(n2,"lava") > 0 then
+						o:set_detach()
+						self.detach_timer = 0
+						return
+					end
+				end
+			end
+		end
+	elseif not self.detach_timer then
+		for _,p in pairs(minetest.get_connected_players()) do
+			if vector.distance(self.object:get_pos(),p:get_pos()) < 0.5 then
+				perch(self,p)
+				return
+			end
+		end
+	elseif self.detach_timer then
+		if self.detach_timer > 1 then
+			self.detach_timer = nil
+		else
+			self.detach_timer = self.detach_timer + dtime
+		end
+	end
+end
 
 mcl_mobs:register_mob("mobs_mc:parrot", {
 	description = S("Parrot"),
@@ -121,22 +159,7 @@ mcl_mobs:register_mob("mobs_mc:parrot", {
 		perch(self,clicker)
 	end,
 	do_custom = function(self,dtime)
-		for _,p in pairs(minetest.get_connected_players()) do
-			if vector.distance(self.object:get_pos(),p:get_pos()) < 1 then
-				perch(self,p)
-			end
-			for _,o in pairs(p:get_children()) do
-				local l = o:get_luaentity()
-				if l and l.name == "mobs_mc:parrot" then
-					local n1 = minetest.get_node(vector.offset(p:get_pos(),0,-0.6,0)).name
-					local n2 = minetest.get_node(vector.offset(p:get_pos(),0,0,0)).name
-					local n3 = minetest.get_node(vector.offset(p:get_pos(),0,1,0)).name
-					if n1 == "air" or minetest.get_item_group(n2,"water") ~= 0 or minetest.get_item_group(n2,"lava") ~= 0 then
-						o:set_detach()
-					end
-				end
-			end
-		end
+		check_perch(self,dtime)
 	end
 
 })
