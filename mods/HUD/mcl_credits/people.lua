@@ -9,9 +9,12 @@ return {
 		"Wuzzy",
 	}},
 	{S("Maintainers"), 0xFF51D5, {
-		"Fleckenstein",
 		"Nicu",
-		"kay27",
+		"cora",
+	}},
+	{S("Previous Maintainers"), 0xFFFFFF, {
+		"Fleckenstein",
+		"jordan4ibanez",
 	}},
 	{S("Developers"), 0xF84355, {
 		"bzoss",
@@ -24,8 +27,7 @@ return {
 		"aligator",
 		"Code-Sploit",
 		"NO11",
-		"cora",
-		"jordan4ibanez",
+		"kabou",
 	}},
 	{S("Contributors"), 0x52FF00, {
 		"Laurent Rocher",
@@ -69,6 +71,7 @@ return {
 		"SmallJoker",
 		"Sven792",
 		"aldum",
+		"Dieter44",
 	}},
 	{S("MineClone5"), 0xA60014, {
 		"kay27",
@@ -76,6 +79,16 @@ return {
 		"epCode",
 		"NO11",
 		"j45",
+		"3raven",
+		"PrarieWind",
+		"Gustavo1",
+		"CableGuy67",
+	}},
+	{S("Mineclonia"), 0xFFFFFF, {
+		"erlehmann",
+		"Li0n",
+		"E",
+		"n_to",
 	}},
 	{S("Original Mod Authors"), 0x343434, {
 		"Wuzzy",
