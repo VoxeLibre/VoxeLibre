@@ -2982,7 +2982,7 @@ local function check_entity_cramming(self)
 		local l = o:get_luaentity()
 		if l and clear then
 			l.cram = nil
-		elseif l and l.cram == nil then
+		elseif l and l.cram == nil and not self.child then
 			table.insert(ncram,l)
 		elseif not clear and l and l.cram then
 			damage_mob(l,"cramming",cramming_damage)
