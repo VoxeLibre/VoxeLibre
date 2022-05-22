@@ -1259,7 +1259,7 @@ mobs:register_mob("mobs_mc:villager", {
 			end
 		end
 		if clicker then
-			mobs:feed_tame(self, clicker, 1, true, true)
+			mobs:feed_tame(self, clicker, 1, true, false)
 			return
 		end
 		return true --do not pick up
