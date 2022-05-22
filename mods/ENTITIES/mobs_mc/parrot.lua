@@ -128,7 +128,10 @@ mcl_mobs:register_mob("mobs_mc:parrot", {
 			for _,o in pairs(p:get_children()) do
 				local l = o:get_luaentity()
 				if l and l.name == "mobs_mc:parrot" then
-					if minetest.get_node(vector.offset(p:get_pos(),0,-1,0)).name == "air" then
+					local n1 = minetest.get_node(vector.offset(p:get_pos(),0,-0.6,0)).name
+					local n2 = minetest.get_node(vector.offset(p:get_pos(),0,0,0)).name
+					local n3 = minetest.get_node(vector.offset(p:get_pos(),0,1,0)).name
+					if n1 == "air" or minetest.get_item_group(n2,"water") ~= 0 or minetest.get_item_group(n2,"lava") ~= 0 then
 						o:set_detach()
 					end
 				end
