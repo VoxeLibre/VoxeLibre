@@ -153,25 +153,19 @@ mcl_mobs:register_mob("mobs_mc:parrot", {
 			end
 			return
 		end
-
 		-- Feed to tame, but not breed
 		if mobs:feed_tame(self, clicker, 1, false, true) then return end
 		perch(self,clicker)
 	end,
 	do_custom = function(self,dtime)
 		check_perch(self,dtime)
-	end
-
-})
-
-minetest.register_on_leaveplayer(function(p)
-	for _,o in pairs(p:get_children()) do
-		local l = o:get_luaentity()
-		if l and l.name == "mobs_mc:parrot" then
-			l.object:set_detach()
+	end,
+	do_punch = function(self,puncher) --do_punch is the mcl_mobs_redo variant - it gets called by on_punch later....
+		if self.object:get_attach() == puncher then
+			return false --return false explicitly here. mcl_mobs checks for that
 		end
-	end
-end)
+	end,
+})
 
 -- Parrots spawn rarely in jungles. TODO: Also check for jungle *biome* <- I'll get to this eventually -j4i
 mcl_mobs:spawn_specific(
