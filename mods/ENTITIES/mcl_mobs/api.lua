@@ -2975,20 +2975,21 @@ local cramming_damage = 3
 local function check_entity_cramming(self)
 	local p = self.object:get_pos()
 	local oo = minetest.get_objects_inside_radius(p,1)
-	local clear = false
-	if #oo < entity_cramming_max then clear = true end
+	local clear = #oo < entity_cramming_max
 	local ncram = {}
 	for _,o in pairs(oo) do
 		local l = o:get_luaentity()
-		if l and clear then
-			l.cram = nil
-		elseif l and l.cram == nil and not self.child then
-			table.insert(ncram,l)
-		elseif not clear and l and l.cram then
-			damage_mob(l,"cramming",cramming_damage)
+		if l then
+			if clear then
+				l.cram = nil
+			elseif l.cram == nil and not self.child then
+				table.insert(ncram,l)
+			elseif l.cram then
+				damage_mob(l,"cramming",cramming_damage)
+			end
 		end
 	end
-	for i,l in ipairs(ncram) do
+	for i,l in pairs(ncram) do
 		if i > entity_cramming_max then
 			l.cram = true
 		else
