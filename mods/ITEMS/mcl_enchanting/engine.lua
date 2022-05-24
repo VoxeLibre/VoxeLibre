@@ -252,7 +252,7 @@ local function get_after_use_callback(itemdef)
 	-- If the tool does not have after_use, add wear to the tool as if no
 	-- after_use was registered.
 	return function(itemstack, user, node, digparams)
-		if not minetest.is_creative_enabled(user) then
+		if not minetest.is_creative_enabled(user:get_player_name()) then
 			itemstack:add_wear(digparams.wear)
 		end
 
