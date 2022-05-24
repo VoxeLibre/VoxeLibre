@@ -11,6 +11,8 @@ local DEATH_DELAY = 0.5
 local DEFAULT_FALL_SPEED = -10
 local FLOP_HEIGHT = 5.0
 local FLOP_HOR_SPEED = 1.5
+local ENTITY_CRAMMING_MAX = 24
+local CRAMMING_DAMAGE = 3
 
 local MOB_CAP = {}
 MOB_CAP.hostile = 70
@@ -2970,12 +2972,10 @@ local function damage_mob(self,reason,damage)
 	end
 end
 
-local entity_cramming_max = 24
-local cramming_damage = 3
 local function check_entity_cramming(self)
 	local p = self.object:get_pos()
 	local oo = minetest.get_objects_inside_radius(p,1)
-	local clear = #oo < entity_cramming_max
+	local clear = #oo < ENTITY_CRAMMING_MAX
 	local ncram = {}
 	for _,o in pairs(oo) do
 		local l = o:get_luaentity()
@@ -2985,12 +2985,12 @@ local function check_entity_cramming(self)
 			elseif l.cram == nil and not self.child then
 				table.insert(ncram,l)
 			elseif l.cram then
-				damage_mob(l,"cramming",cramming_damage)
+				damage_mob(l,"cramming",CRAMMING_DAMAGE)
 			end
 		end
 	end
 	for i,l in pairs(ncram) do
-		if i > entity_cramming_max then
+		if i > ENTITY_CRAMMING_MAX then
 			l.cram = true
 		else
 			l.cram = nil
