@@ -177,7 +177,35 @@ minetest.register_on_joinplayer(function(player)
 	return_fields(player, "enchanting_lapis")
 end)
 
-if minetest.is_creative_enabled("") then
-	dofile(minetest.get_modpath(minetest.get_current_modname()).."/creative.lua")
+
+dofile(minetest.get_modpath(minetest.get_current_modname()).."/creative.lua")
+
+local mt_is_creative_enabled = minetest.is_creative_enabled
+
+function minetest.is_creative_enabled(name)
+	if mt_is_creative_enabled(name) then return true end
+	local p = minetest.get_player_by_name(name)
+	if p then
+		return p:get_meta():get_string("gamemode_creative") == "true"
+	end
+	return false
 end
 
+minetest.register_chatcommand("gamemode",{
+	privs = { server = true },
+	func = function(n,param)
+		local p = minetest.get_player_by_name(n)
+		if not p then return end
+		local m = p:get_meta()
+		local gm = "survival"
+		if param == "creative" then
+			m:set_string("gamemode_creative","true")
+			gm = "creative"
+			set_inventory(p)
+		elseif param == "survival" then
+			m:set_string("gamemode_creative","")
+			set_inventory(p)
+		end
+		minetest.chat_send_player(n,S("Gamemode for player ")..n..S(": "..gm))
+	end
+})
