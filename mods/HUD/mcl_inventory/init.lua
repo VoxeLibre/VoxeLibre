@@ -186,26 +186,60 @@ function minetest.is_creative_enabled(name)
 	if mt_is_creative_enabled(name) then return true end
 	local p = minetest.get_player_by_name(name)
 	if p then
-		return p:get_meta():get_string("gamemode_creative") == "true"
+		return p:get_meta():get_string("gamemode") == "creative"
 	end
 	return false
+end
+
+local function in_table(n,h)
+	for k,v in pairs(h) do
+		if v == n then return true end
+	end
+	return false
+end
+
+function str_split(s,d)
+	if d == nil then d = "%s" end
+	local t={}
+	for v in string.gmatch(s, "([^"..d.."]+)") do
+			table.insert(t, v)
+	end
+	return t
+end
+
+local gamemodes = {
+	"survival",
+	"creative"
+}
+
+local function player_set_gamemode(p,g)
+	local m = p:get_meta()
+	m:set_string("gamemode",g)
+	set_inventory(p)
 end
 
 minetest.register_chatcommand("gamemode",{
 	privs = { server = true },
 	func = function(n,param)
+		-- Full input validation ( just for @erlehmann <3 )	
 		local p = minetest.get_player_by_name(n)
-		if not p then return end
-		local m = p:get_meta()
-		local gm = "survival"
-		if param == "creative" then
-			m:set_string("gamemode_creative","true")
-			gm = "creative"
-			set_inventory(p)
-		elseif param == "survival" then
-			m:set_string("gamemode_creative","")
-			set_inventory(p)
+		local args = str_split(param)
+		if args[2] ~= nil then
+			p = minetest.get_player_by_name(args[2])
 		end
+		if not p then
+			minetest.chat_send_player(n,S("Player not online"))
+			return
+		end
+		if args[1] ~= nil and not in_table(args[1],gamemodes) then
+			minetest.chat_send_player(n,S("Gamemode "..tostring(args[1]).." does not exist." ))
+			return
+		elseif args[1] ~= nil then
+			player_set_gamemode(p,args[1])
+		end		
+		--Result message - show effective game mode
+		local gm = p:get_meta():get_string("gamemode")
+		if gm == "" then gm = gamemodes[1] end
 		minetest.chat_send_player(n,S("Gamemode for player ")..n..S(": "..gm))
 	end
 })
