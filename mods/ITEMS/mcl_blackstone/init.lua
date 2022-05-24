@@ -124,7 +124,7 @@ minetest.register_node("mcl_blackstone:soul_soil", {
 	tiles = {"mcl_blackstone_soul_soil.png"},
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_sand_defaults(),
-	groups = {cracky = 3, handy=1, shovely=1},
+	groups = { cracky = 3, handy = 1, shovely = 1, soul_block = 1 },
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 })
@@ -154,13 +154,13 @@ minetest.register_node("mcl_blackstone:soul_fire", {
 	groups = {fire = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston = 1, destroys_items = 1, set_on_fire=8},
 	floodable = true,
 	on_flood = function(pos, oldnode, newnode)
-		if minetest.get_item_group(newnode.name, "water") ~= 0 then
+		if minetest.get_item_group(newnode.name, "water") > 0 then
 			minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 		end
 	end,
 	on_construct=function(pos)
 		local under = minetest.get_node(vector.offset(pos,0,-1,0)).name
-		if under ~= "mcl_nether:soul_sand" and under ~= "mcl_blackstone:soul_soil" then
+		if minetest.get_item_group(under,"soul_block") > 0 then
 			minetest.swap_node(pos, {name = "air"})
 		end
 	end
@@ -169,7 +169,7 @@ minetest.register_node("mcl_blackstone:soul_fire", {
 local old_onconstruct=minetest.registered_nodes["mcl_fire:fire"].on_construct
 minetest.registered_nodes["mcl_fire:fire"].on_construct=function(pos)
 	local under = minetest.get_node(vector.offset(pos,0,-1,0)).name
-	if under == "mcl_nether:soul_sand" or under == "mcl_blackstone:soul_soil" then
+	if minetest.get_item_group(under,"soul_block") > 0 then
 		minetest.swap_node(pos, {name = "mcl_blackstone:soul_fire"})
 	end
 	old_onconstruct(pos)
@@ -366,7 +366,7 @@ minetest.register_craft({
 	output = "mcl_blackstone:soul_torch 4",
 	recipe = {
 		{"group:coal"},
-		{ "mcl_nether:soul_sand" },
 		{ "mcl_core:stick" },
+		{ "group:soul_block" },
 	}
 })
