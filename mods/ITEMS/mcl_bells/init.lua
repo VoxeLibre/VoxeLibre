@@ -38,6 +38,7 @@ minetest.register_node("mcl_bells:bell", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	on_rightclick = mcl_bells.ring_once,
+	use_texture_alpha = "clip",
 })
 
 if has_mcl_wip then
