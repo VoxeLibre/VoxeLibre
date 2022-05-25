@@ -38,7 +38,7 @@ minetest.register_node("mcl_villages:structblock", {drawtype="airlike",groups = 
 -- register inhabitants
 --
 if minetest.get_modpath("mobs_mc") then
-  mobs:register_spawn("mobs_mc:villager", --name
+  mcl_mobs:register_spawn("mobs_mc:villager", --name
     {"mcl_core:stonebrickcarved"}, --nodes
     15, --max_light
     0, --min_light

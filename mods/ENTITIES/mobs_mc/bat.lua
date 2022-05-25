@@ -2,7 +2,7 @@
 
 local S = minetest.get_translator("mobs_mc")
 
-mobs:register_mob("mobs_mc:bat", {
+mcl_mobs:register_mob("mobs_mc:bat", {
 	description = S("Bat"),
 	type = "animal",
 	spawn_class = "ambient",
@@ -65,7 +65,7 @@ else
 end
 
 -- Spawn on solid blocks at or below Sea level and the selected light level
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:bat",
 "overworld",
 "ground",
@@ -143,4 +143,4 @@ mobs_mc.spawn_height.water-1)
 
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:bat", S("Bat"), "mobs_mc_spawn_icon_bat.png", 0)
+mcl_mobs:register_egg("mobs_mc:bat", S("Bat"), "mobs_mc_spawn_icon_bat.png", 0)

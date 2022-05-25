@@ -1,9 +1,7 @@
 
 -- API for Mobs Redo: MineClone 2 Edition (MRM)
 
-mobs = {}
-mobs.mod = "mrm"
-mobs.version = "20210106" -- don't rely too much on this, rarely updated, if ever
+mcl_mobs = {}
 
 local MAX_MOB_NAME_LENGTH = 30
 local HORNY_TIME = 30
@@ -23,22 +21,8 @@ MOB_CAP.water = 15
 -- Localize
 local S = minetest.get_translator("mcl_mobs")
 
--- CMI support check
-local use_cmi = minetest.global_exists("cmi")
-
-
 -- Invisibility mod check
-mobs.invis = {}
-if minetest.global_exists("invisibility") then
-	mobs.invis = invisibility
-end
-
-
--- creative check
-function mobs.is_creative(name)
-	return minetest.is_creative_enabled(name)
-end
-
+mcl_mobs.invis = {}
 
 -- localize math functions
 local pi = math.pi
@@ -50,6 +34,7 @@ local max = math.max
 local atann = math.atan
 local random = math.random
 local floor = math.floor
+
 local atan = function(x)
 	if not x or x ~= x then
 		return 0
@@ -91,20 +76,8 @@ local stuck_path_timeout = 10 -- how long will mob follow path before giving up
 local node_ice = "mcl_core:ice"
 local node_snowblock = "mcl_core:snowblock"
 local node_snow = "mcl_core:snow"
-mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
+mcl_mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
 
-local mod_weather = minetest.get_modpath("mcl_weather") ~= nil
-local mod_explosions = minetest.get_modpath("mcl_explosions") ~= nil
-local mod_mobspawners = minetest.get_modpath("mcl_mobspawners") ~= nil
-local mod_hunger = minetest.get_modpath("mcl_hunger") ~= nil
-local mod_worlds = minetest.get_modpath("mcl_worlds") ~= nil
-local mod_armor = minetest.get_modpath("mcl_armor") ~= nil
-local mod_experience = minetest.get_modpath("mcl_experience") ~= nil
-
---Helper function to clear all mobs because /clearobjects removes too much
-local function is_mob(o)
-	return o.type == "ambient" or o.type == "animal" or o.type == "monster" or o.type == "npc"
-end
 minetest.register_chatcommand("clearmobs",{
 	privs={maphack=true},
 	params = "<all>|<nametagged>|<range>",
@@ -113,7 +86,7 @@ minetest.register_chatcommand("clearmobs",{
 		local p = minetest.get_player_by_name(n)
 		local num=tonumber(param)
 		for _,o in pairs(minetest.luaentities) do
-			if is_mob(o) then
+			if o.is_mob then
 				if  param == "all" or
 				( param == "nametagged" and o.nametag ) or
 				( param == "" and not o.nametag and not o.tamed ) or
@@ -199,7 +172,7 @@ local function object_in_range(self, object)
 	end
 	local factor
 	-- Apply view range reduction for special player armor
-	if object:is_player() and mod_armor then
+	if object:is_player() then
 		local factors = mcl_armor.player_view_range_factors[object]
 		factor = factors and factors[self.name]
 	end
@@ -246,7 +219,7 @@ local collision = function(self)
 	for _,object in pairs(minetest.get_objects_inside_radius(pos, width)) do
 
 		local ent = object:get_luaentity()
-		if object:is_player() or (ent and ent._cmi_is_mob and object ~= self.object) then
+		if object:is_player() or (ent and ent.is_mob and object ~= self.object) then
 
 			local pos2 = object:get_pos()
 			local vec  = {x = pos.x - pos2.x, z = pos.z - pos2.z}
@@ -353,7 +326,7 @@ local set_yaw = function(self, yaw, delay, dtime)
 end
 
 -- global function to set mob yaw
-function mobs:yaw(self, yaw, delay, dtime)
+function mcl_mobs:yaw(self, yaw, delay, dtime)
 	set_yaw(self, yaw, delay, dtime)
 end
 
@@ -424,7 +397,7 @@ end
 
 
 -- above function exported for mount.lua
-function mobs:set_animation(self, anim)
+function mcl_mobs:set_animation(self, anim)
 	set_animation(self, anim)
 end
 
@@ -628,7 +601,7 @@ local damage_effect = function(self, damage)
 	end
 end
 
-mobs.death_effect = function(pos, yaw, collisionbox, rotate)
+mcl_mobs.death_effect = function(pos, yaw, collisionbox, rotate)
 	local min, max
 	if collisionbox then
 		min = {x=collisionbox[1], y=collisionbox[2], z=collisionbox[3]}
@@ -842,7 +815,7 @@ local check_for_death = function(self, cause, cmi_cause)
 			local looting = mcl_enchanting.get_enchantment(wielditem, "looting")
 			item_drop(self, cooked, looting)
 
-			if mod_experience and ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= 5000000) then
+			if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= 5000000) then
 				mcl_experience.throw_xp(self.object:get_pos(), math.random(self.xp_min, self.xp_max))
 			end
 		end
@@ -855,10 +828,6 @@ local check_for_death = function(self, cause, cmi_cause)
 		local on_die_exit = self.on_die(self, pos, cmi_cause)
 		if on_die_exit ~= true then
 			death_handle(self)
-		end
-
-		if use_cmi then
-			cmi.notify_die(self.object, cmi_cause)
 		end
 
 		if on_die_exit == true then
@@ -920,9 +889,6 @@ local check_for_death = function(self, cause, cmi_cause)
 		if not self.object:get_luaentity() then
 			return
 		end
-		if use_cmi  then
-			cmi.notify_die(self.object, cmi_cause)
-		end
 
 		death_handle(self)
 		local dpos = self.object:get_pos()
@@ -930,7 +896,7 @@ local check_for_death = function(self, cause, cmi_cause)
 		local yaw = self.object:get_rotation().y
 		mcl_burning.extinguish(self.object)
 		self.object:remove()
-		mobs.death_effect(dpos, yaw, cbox, not self.instant_death)
+		mcl_mobs.death_effect(dpos, yaw, cbox, not self.instant_death)
 	end
 	if length <= 0 then
 		kill(self)
@@ -1042,7 +1008,7 @@ end
 -- get node but use fallback for nil or unknown
 local node_ok = function(pos, fallback)
 
-	fallback = fallback or mobs.fallback_node
+	fallback = fallback or mcl_mobs.fallback_node
 
 	local node = minetest.get_node_or_nil(pos)
 
@@ -1093,7 +1059,7 @@ local do_env_damage = function(self)
 
 	-- Deal light damage to mob, returns true if mob died
 	local deal_light_damage = function(self, pos, damage)
-		if not (mod_weather and (mcl_weather.rain.raining or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos)) then
+		if not ((mcl_weather.rain.raining or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos)) then
 			self.health = self.health - damage
 
 			effect(pos, 5, "mcl_particles_smoke.png")
@@ -1114,10 +1080,7 @@ local do_env_damage = function(self)
 			return true
 		end
 	end
-	local _, dim = nil, "overworld"
-	if mod_worlds then
-		_, dim = mcl_worlds.y_to_layer(pos.y)
-	end
+	local _, dim = mcl_worlds.y_to_layer(pos.y)
 	if (self.sunlight_damage ~= 0 or self.ignited_by_sunlight) and (sunlight or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
 		if self.ignited_by_sunlight then
 			mcl_burning.set_on_fire(self.object, 10)
@@ -1147,7 +1110,7 @@ local do_env_damage = function(self)
 	local nodef = minetest.registered_nodes[self.standing_in]
 
 	-- rain
-	if self.rain_damage > 0 and mod_weather then
+	if self.rain_damage > 0 then
 		if mcl_weather.rain.raining and mcl_weather.is_outdoor(pos) then
 
 			self.health = self.health - self.rain_damage
@@ -1440,7 +1403,7 @@ end
 local follow_holding = function(self, clicker)
 	if self.nofollow then return false end
 	
-	if mobs.invis[clicker:get_player_name()] then
+	if mcl_mobs.invis[clicker:get_player_name()] then
 		return false
 	end
 
@@ -1578,10 +1541,7 @@ local breed = function(self)
 						return
 					end
 
-					-- Give XP
-					if mod_experience then
-						mcl_experience.throw_xp(pos, math.random(1, 7))
-					end
+					mcl_experience.throw_xp(pos, math.random(1, 7))
 
 					-- custom breed function
 					if parent1.on_breed then
@@ -1591,7 +1551,7 @@ local breed = function(self)
 						end
 					end
 
-					local child = mobs:spawn_child(pos, parent1.name)
+					local child = mcl_mobs:spawn_child(pos, parent1.name)
 
 					local ent_c = child:get_luaentity()
 
@@ -1827,7 +1787,7 @@ local smart_mobs = function(self, s, p, dist, dtime)
 
 						if ndef1 and (ndef1.buildable_to or ndef1.groups.liquid) then
 
-								minetest.set_node(s, {name = mobs.fallback_node})
+								minetest.set_node(s, {name = mcl_mobs.fallback_node})
 						end
 					end
 
@@ -1962,7 +1922,7 @@ local monster_attack = function(self)
 
 		if objs[n]:is_player() then
 
-			if mobs.invis[ objs[n]:get_player_name() ] or (not object_in_range(self, objs[n])) then
+			if mcl_mobs.invis[ objs[n]:get_player_name() ] or (not object_in_range(self, objs[n])) then
 				type = ""
 			else
 				player = objs[n]
@@ -2091,7 +2051,7 @@ local runaway_from = function(self)
 
 		if objs[n]:is_player() then
 
-			if mobs.invis[ objs[n]:get_player_name() ]
+			if mcl_mobs.invis[ objs[n]:get_player_name() ]
 			or self.owner == objs[n]:get_player_name()
 			or (not object_in_range(self, objs[n])) then
 				type = ""
@@ -2173,7 +2133,7 @@ local follow_flop = function(self)
 		for n = 1, #players do
 
 			if (object_in_range(self, players[n]))
-			and not mobs.invis[ players[n]:get_player_name() ] then
+			and not mcl_mobs.invis[ players[n]:get_player_name() ] then
 
 				self.following = players[n]
 
@@ -2330,7 +2290,7 @@ local function go_to_pos(entity,b)
 	if b.x > s.x then yaw = yaw + math.pi end
 	entity.object:set_yaw(yaw)
 	set_velocity(entity,entity.follow_velocity)
-	mobs:set_animation(entity, "walk")
+	mcl_mobs:set_animation(entity, "walk")
 end
 
 local function check_doors(self)
@@ -2576,7 +2536,7 @@ local do_states = function(self, dtime)
 		or not self.attack:get_pos()
 		or not object_in_range(self, self.attack)
 		or self.attack:get_hp() <= 0
-		or (self.attack:is_player() and mobs.invis[ self.attack:get_player_name() ]) then
+		or (self.attack:is_player() and mcl_mobs.invis[ self.attack:get_player_name() ]) then
 
 			self.state = "stand"
 			set_velocity(self, 0)
@@ -2667,7 +2627,6 @@ local do_states = function(self, dtime)
 
 					local pos = self.object:get_pos()
 
-					if mod_explosions then
 					if mobs_griefing and not minetest.is_protected(pos, "") then
 						mcl_explosions.explode(mcl_util.get_object_center(self.object), self.explosion_strength, { drop_chance = 1.0 }, self.object)
 					else
@@ -2679,7 +2638,6 @@ local do_states = function(self, dtime)
 
 						entity_physics(pos, entity_damage_radius)
 						effect(pos, 32, "mcl_particles_smoke.png", nil, nil, node_break_radius, 1, 0)
-					end
 					end
 					mcl_burning.extinguish(self.object)
 					self.object:remove()
@@ -2948,7 +2906,7 @@ local plane_adjacents = {
 	vector.new(0,0,-1),
 }
 
-function mobs:gopath(self,target,callback_arrived)
+function mcl_mobs:gopath(self,target,callback_arrived)
 	local p = self.object:get_pos()
 	local t = vector.offset(target,0,1,0)
 	local wp = minetest.find_path(p,t,150,1,4)
@@ -3137,7 +3095,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	local punch_interval = 1.4
 
 	-- exhaust attacker
-	if mod_hunger and is_player then
+	if is_player then
 		mcl_hunger.exhaust(hitter:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
 	end
 
@@ -3151,23 +3109,19 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		tflp = 0.2
 	end
 
-	if use_cmi then
-		damage = cmi.calculate_damage(self.object, hitter, tflp, tool_capabilities, dir)
-	else
 
-		for group,_ in pairs( (tool_capabilities.damage_groups or {}) ) do
+	for group,_ in pairs( (tool_capabilities.damage_groups or {}) ) do
 
-			tmp = tflp / (tool_capabilities.full_punch_interval or 1.4)
+		tmp = tflp / (tool_capabilities.full_punch_interval or 1.4)
 
-			if tmp < 0 then
-				tmp = 0.0
-			elseif tmp > 1 then
-				tmp = 1.0
-			end
-
-			damage = damage + (tool_capabilities.damage_groups[group] or 0)
-				* tmp * ((armor[group] or 0) / 100.0)
+		if tmp < 0 then
+			tmp = 0.0
+		elseif tmp > 1 then
+			tmp = 1.0
 		end
+
+		damage = damage + (tool_capabilities.damage_groups[group] or 0)
+			* tmp * ((armor[group] or 0) / 100.0)
 	end
 
 	if weapon then
@@ -3191,13 +3145,6 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	if damage <= -1 then
 		self.health = self.health - floor(damage)
 		return
-	end
-
-	if use_cmi then
-
-		local cancel =  cmi.notify_punch(self.object, hitter, tflp, tool_capabilities, dir, damage)
-
-		if cancel then return end
 	end
 
 	if tool_capabilities then
@@ -3333,7 +3280,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	and self.state ~= "flop"
 	and (self.child == false or self.type == "monster")
 	and hitter:get_player_name() ~= self.owner
-	and not mobs.invis[ name ] then
+	and not mcl_mobs.invis[ name ] then
 
 		if not die then
 			-- attack whoever punched mob
@@ -3406,10 +3353,6 @@ local mob_staticdata = function(self)
 	self.attack = nil
 	self.following = nil
 	self.state = "stand"
-
-	if use_cmi then
-		self.serialized_cmi_components = cmi.serialize_components(self._cmi_components)
-	end
 
 	local tmp = {}
 
@@ -3588,11 +3531,6 @@ local mob_activate = function(self, staticdata, def, dtime)
 	if def.after_activate then
 		def.after_activate(self, staticdata, def, dtime)
 	end
-
-	if use_cmi then
-		self._cmi_components = cmi.activate_components(self.serialized_cmi_components)
-		cmi.notify_activate(self.object, dtime)
-	end
 end
 
 
@@ -3601,10 +3539,6 @@ local mob_step = function(self, dtime)
 	check_item_pickup(self)
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
-	end
-
-	if use_cmi then
-		cmi.notify_step(self.object, dtime)
 	end
 
 	local pos = self.object:get_pos()
@@ -3841,7 +3775,7 @@ local do_tnt = function(obj, damage)
 end
 
 
-mobs.spawning_mobs = {}
+mcl_mobs.spawning_mobs = {}
 
 -- Code to execute before custom on_rightclick handling
 local on_rightclick_prefix = function(self, clicker)
@@ -3859,7 +3793,7 @@ local on_rightclick_prefix = function(self, clicker)
 
 			update_tag(self)
 
-			if not mobs.is_creative(clicker:get_player_name()) then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
@@ -3880,9 +3814,9 @@ local create_mob_on_rightclick = function(on_rightclick)
 end
 
 -- register mob entity
-function mobs:register_mob(name, def)
+function mcl_mobs:register_mob(name, def)
 
-	mobs.spawning_mobs[name] = true
+	mcl_mobs.spawning_mobs[name] = true
 
 local can_despawn
 if def.can_despawn ~= nil then
@@ -4013,7 +3947,7 @@ minetest.register_entity(name, {
 	runaway_from = def.runaway_from,
 	owner_loyal = def.owner_loyal,
 	facing_fence = false,
-	_cmi_is_mob = true,
+	is_mob = true,
 	pushable = def.pushable or true,
 
 
@@ -4061,6 +3995,7 @@ minetest.register_entity(name, {
 		--this is a temporary hack so mobs stop
 		--glitching and acting really weird with the
 		--default built in engine collision detection
+		self.is_mob = true
 		self.object:set_properties({
 			collide_with_objects = false,
 		})
@@ -4079,11 +4014,11 @@ if minetest.get_modpath("doc_identifier") ~= nil then
 	doc.sub.identifier.register_object(name, "basics", "mobs")
 end
 
-end -- END mobs:register_mob function
+end -- END mcl_mobs:register_mob function
 
 
 -- register arrow for shoot attack
-function mobs:register_arrow(name, def)
+function mcl_mobs:register_arrow(name, def)
 
 	if not name or not def then return end -- errorcheck
 
@@ -4185,7 +4120,7 @@ function mobs:register_arrow(name, def)
 
 					if entity
 					and self.hit_mob
-					and entity._cmi_is_mob == true
+					and entity.is_mob == true
 					and tostring(player) ~= self.owner_id
 					and entity.name ~= self.object:get_luaentity().name then
 						self.hit_mob(self, player)
@@ -4195,7 +4130,7 @@ function mobs:register_arrow(name, def)
 
 					if entity
 					and self.hit_object
-					and (not entity._cmi_is_mob)
+					and (not entity.is_mob)
 					and tostring(player) ~= self.owner_id
 					and entity.name ~= self.object:get_luaentity().name then
 						self.hit_object(self, player)
@@ -4212,7 +4147,7 @@ end
 
 
 -- no damage to nodes explosion
-function mobs:safe_boom(self, pos, strength)
+function mcl_mobs:safe_boom(self, pos, strength)
 	minetest.sound_play(self.sounds and self.sounds.explode or "tnt_explode", {
 		pos = pos,
 		gain = 1.0,
@@ -4225,15 +4160,11 @@ end
 
 
 -- make explosion with protection and tnt mod check
-function mobs:boom(self, pos, strength, fire)
-	if mod_explosions then
-		if mobs_griefing and not minetest.is_protected(pos, "") then
-			mcl_explosions.explode(pos, strength, { drop_chance = 1.0, fire = fire }, self.object)
-		else
-			mobs:safe_boom(self, pos, strength)
-		end
+function mcl_mobs:boom(self, pos, strength, fire)
+	if mobs_griefing and not minetest.is_protected(pos, "") then
+		mcl_explosions.explode(pos, strength, { drop_chance = 1.0, fire = fire }, self.object)
 	else
-		mobs:safe_boom(self, pos, strength)
+		mcl_mobs:safe_boom(self, pos, strength)
 	end
 
 	-- delete the object after it punched the player to avoid nil entities in e.g. mcl_shields!!
@@ -4246,7 +4177,7 @@ end
 -- Note: This also introduces the “spawn_egg” group:
 -- * spawn_egg=1: Spawn egg (generic mob, no metadata)
 -- * spawn_egg=2: Spawn egg (captured/tamed mob, metadata)
-function mobs:register_egg(mob, desc, background, addegg, no_creative)
+function mcl_mobs:register_egg(mob, desc, background, addegg, no_creative)
 
 	local grp = {spawn_egg = 1}
 
@@ -4289,7 +4220,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 
 				local name = placer:get_player_name()
 				local privs = minetest.get_player_privs(name)
-				if mod_mobspawners and under.name == "mcl_mobspawners:spawner" then
+				if under.name == "mcl_mobspawners:spawner" then
 					if minetest.is_protected(pointed_thing.under, name) then
 						minetest.record_protection_violation(pointed_thing.under, name)
 						return itemstack
@@ -4299,7 +4230,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 						return itemstack
 					end
 					mcl_mobspawners.setup_spawner(pointed_thing.under, itemstack:get_name())
-					if not mobs.is_creative(name) then
+					if not minetest.is_creative_enabled(name) then
 						itemstack:take_item()
 					end
 					return itemstack
@@ -4339,7 +4270,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 				end
 
 				-- if not in creative then take item
-				if not mobs.is_creative(placer:get_player_name()) then
+				if not minetest.is_creative_enabled(placer:get_player_name()) then
 					itemstack:take_item()
 				end
 			end
@@ -4353,19 +4284,19 @@ end
 
 -- No-op in MCL2 (capturing mobs is not possible).
 -- Provided for compability with Mobs Redo
-function mobs:capture_mob(self, clicker, chance_hand, chance_net, chance_lasso, force_take, replacewith)
+function mcl_mobs:capture_mob(self, clicker, chance_hand, chance_net, chance_lasso, force_take, replacewith)
 	return false
 end
 
 
 -- No-op in MCL2 (protecting mobs is not possible).
-function mobs:protect(self, clicker)
+function mcl_mobs:protect(self, clicker)
 	return false
 end
 
 
 -- feeding, taming and breeding (thanks blert2112)
-function mobs:feed_tame(self, clicker, feed_count, breed, tame)
+function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame)
 	if not self.follow then
 		return false
 	end
@@ -4374,7 +4305,7 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 	if self.nofollow or follow_holding(self, clicker) then
 
 		-- if not in creative then take item
-		if not mobs.is_creative(clicker:get_player_name()) then
+		if not minetest.is_creative_enabled(clicker:get_player_name()) then
 
 			local item = clicker:get_wielded_item()
 
@@ -4440,7 +4371,7 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 end
 
 -- Spawn a child
-function mobs:spawn_child(pos, mob_type)
+function mcl_mobs:spawn_child(pos, mob_type)
 	local child = minetest.add_entity(pos, mob_type)
 	if not child then
 		return
@@ -4487,7 +4418,7 @@ end
 
 
 -- compatibility function for old entities to new modpack entities
-function mobs:alias_mob(old_name, new_name)
+function mcl_mobs:alias_mob(old_name, new_name)
 
 	-- spawn egg
 	minetest.register_alias(old_name, new_name)
@@ -4518,7 +4449,7 @@ minetest.register_globalstep(function(dtime)
 		local pos = player:get_pos()
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 47)) do
 			local lua = obj:get_luaentity()
-			if lua and lua._cmi_is_mob then
+			if lua and lua.is_mob then
 				lua.lifetimer = math.max(20, lua.lifetimer)
 				lua.despawn_immediately = false
 			end

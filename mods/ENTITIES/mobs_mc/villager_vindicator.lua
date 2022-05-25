@@ -10,7 +10,7 @@ local S = minetest.get_translator("mobs_mc")
 --###################
 
 
-mobs:register_mob("mobs_mc:vindicator", {
+mcl_mobs:register_mob("mobs_mc:vindicator", {
 	description = S("Vindicator"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -72,4 +72,4 @@ mobs:register_mob("mobs_mc:vindicator", {
 })
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:vindicator", S("Vindicator"), "mobs_mc_spawn_icon_vindicator.png", 0)
+mcl_mobs:register_egg("mobs_mc:vindicator", S("Vindicator"), "mobs_mc_spawn_icon_vindicator.png", 0)

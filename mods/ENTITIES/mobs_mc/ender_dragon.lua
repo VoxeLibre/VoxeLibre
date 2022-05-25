@@ -4,7 +4,7 @@
 
 local S = minetest.get_translator("mobs_mc")
 
-mobs:register_mob("mobs_mc:enderdragon", {
+mcl_mobs:register_mob("mobs_mc:enderdragon", {
 	description = S("Ender Dragon"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -109,7 +109,7 @@ mobs:register_mob("mobs_mc:enderdragon", {
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 
 -- dragon fireball (projectile)
-mobs:register_arrow("mobs_mc:dragon_fireball", {
+mcl_mobs:register_arrow("mobs_mc:dragon_fireball", {
 	visual = "sprite",
 	visual_size = {x = 1.25, y = 1.25},
 	textures = {"mobs_mc_dragon_fireball.png"},
@@ -133,10 +133,10 @@ mobs:register_arrow("mobs_mc:dragon_fireball", {
 
 	-- node hit, explode
 	hit_node = function(self, pos, node)
-		mobs:boom(self, pos, 2)
+		mcl_mobs:boom(self, pos, 2)
 	end
 })
 
-mobs:register_egg("mobs_mc:enderdragon", S("Ender Dragon"), "mobs_mc_spawn_icon_dragon.png", 0, true)
+mcl_mobs:register_egg("mobs_mc:enderdragon", S("Ender Dragon"), "mobs_mc_spawn_icon_dragon.png", 0, true)
 
 mcl_wip.register_wip_item("mobs_mc:enderdragon")

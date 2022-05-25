@@ -577,7 +577,7 @@ local function go_home(entity)
 	entity.state = "go_home"
 	local b=entity._bed
 	if not b then return end
-	mobs:gopath(entity,b,function(entity,b)
+	mcl_mobs:gopath(entity,b,function(entity,b)
 		if vector.distance(entity.object:get_pos(),b) < 2 then 
 			entity.state = "stand"
 			set_velocity(entity,0)
@@ -619,7 +619,7 @@ local function look_for_job(self)
 		local m=minetest.get_meta(n)
 		if m:get_string("villager") == "" then
 			--minetest.log("goingt to jobsite "..minetest.pos_to_string(n) )
-			local gp = mobs:gopath(self,n,function()
+			local gp = mcl_mobs:gopath(self,n,function()
 				--minetest.log("arrived jobsite "..minetest.pos_to_string(n) )
 			end)
 			if gp then return end
@@ -1200,7 +1200,7 @@ end)
 
 --[=======[ MOB REGISTRATION AND SPAWNING ]=======]
 
-mobs:register_mob("mobs_mc:villager", {
+mcl_mobs:register_mob("mobs_mc:villager", {
 	description = S("Villager"),
 	type = "npc",
 	spawn_class = "passive",
@@ -1259,7 +1259,7 @@ mobs:register_mob("mobs_mc:villager", {
 			end
 		end
 		if clicker then
-			mobs:feed_tame(self, clicker, 1, true, false)
+			mcl_mobs:feed_tame(self, clicker, 1, true, false)
 			return
 		end
 		return true --do not pick up
@@ -1267,7 +1267,7 @@ mobs:register_mob("mobs_mc:villager", {
 	on_rightclick = function(self, clicker)
 		local trg=vector.new(0,9,0)
 		if self._jobsite then
-			mobs:gopath(self,self._jobsite,function()
+			mcl_mobs:gopath(self,self._jobsite,function()
 				--minetest.log("arrived at jobsite")
 			end)
 		end
@@ -1375,7 +1375,7 @@ mobs:register_mob("mobs_mc:villager", {
 
 
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:villager",
 "overworld",
 "ground",
@@ -1406,4 +1406,4 @@ mobs_mc.spawn_height.water+1,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:villager", S("Villager"), "mobs_mc_spawn_icon_villager.png", 0)
+mcl_mobs:register_egg("mobs_mc:villager", S("Villager"), "mobs_mc_spawn_icon_villager.png", 0)

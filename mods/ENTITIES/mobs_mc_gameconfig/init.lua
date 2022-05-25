@@ -172,42 +172,8 @@ mobs_mc.override.replace = {
 	},
 }
 
--- List of nodes which endermen can take
-mobs_mc.override.enderman_takable = {
-	-- Generic handling, useful for entensions
-	"group:enderman_takable",
-}
-mobs_mc.override.enderman_replace_on_take = {
-}
 mobs_mc.override.misc = {
 	totem_fail_nodes = { "mcl_core:void", "mcl_core:realm_barrier" },
-}
-
--- Texuture overrides for enderman block. Required for cactus because it's original is a nodebox
--- and the textures have tranparent pixels.
-local cbackground = "mobs_mc_gameconfig_enderman_cactus_background.png"
-local ctiles = minetest.registered_nodes["mcl_core:cactus"].tiles
-
-local ctable = {}
-local last
-for i=1, 6 do
-	if ctiles[i] then
-		last = ctiles[i]
-	end
-	table.insert(ctable, cbackground .. "^" .. last)
-end
-
-mobs_mc.override.enderman_block_texture_overrides = {
-	["mcl_core:cactus"] = ctable,
-	-- FIXME: replace colorize colors with colors from palette
-	["mcl_core:dirt_with_grass"] = 
-	{
-	"mcl_core_grass_block_top.png^[colorize:green:90",
-	"default_dirt.png",
-	"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
-	"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
-	"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
-	"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)"}
 }
 
 -- List of nodes on which mobs can spawn

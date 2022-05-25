@@ -195,7 +195,7 @@ local list_of_all_biomes = {
 local function count_mobs(pos)
 	local num = 0
 	for _,object in pairs(get_objects_inside_radius(pos, aoc_range)) do
-		if object and object:get_luaentity() and object:get_luaentity()._cmi_is_mob then
+		if object and object:get_luaentity() and object:get_luaentity().is_mob then
 			num = num + 1
 		end
 	end
@@ -205,7 +205,7 @@ end
 
 -- global functions
 
-function mobs:spawn_abm_check(pos, node, name)
+function mcl_mobs:spawn_abm_check(pos, node, name)
 	-- global function to add additional spawn checks
 	-- return true to stop spawning mob
 end
@@ -241,7 +241,7 @@ WARNING: BIOME INTEGRATION NEEDED -> How to get biome through lua??
 local spawn_dictionary = {}
 local summary_chance = 0
 
-function mobs:spawn_setup(def)
+function mcl_mobs:spawn_setup(def)
 	if not mobs_spawn then return end
 
 	if not def then
@@ -275,10 +275,10 @@ function mobs:spawn_setup(def)
 		chance = tonumber(numbers[1]) or chance
 		aoc = tonumber(numbers[2]) or aoc
 		if chance == 0 then
-			minetest.log("warning", string.format("[mobs] %s has spawning disabled", name))
+			minetest.log("warning", string.format("[mcl_mobs] %s has spawning disabled", name))
 			return
 		end
-		minetest.log("action", string.format("[mobs] Chance setting for %s changed to %s (total: %s)", name, chance, aoc))
+		minetest.log("action", string.format("[mcl_mobs] Chance setting for %s changed to %s (total: %s)", name, chance, aoc))
 	end
 
 	if chance < 1 then
@@ -304,7 +304,7 @@ function mobs:spawn_setup(def)
 	summary_chance = summary_chance + chance
 end
 
-function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_light, max_light, interval, chance, aoc, min_height, max_height, day_toggle, on_spawn)
+function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_light, max_light, interval, chance, aoc, min_height, max_height, day_toggle, on_spawn)
 
 	-- Do mobs spawn at all?
 	if not mobs_spawn then
@@ -320,11 +320,11 @@ function mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_ligh
 		aoc = tonumber(numbers[2]) or aoc
 
 		if chance == 0 then
-			minetest.log("warning", string.format("[mobs] %s has spawning disabled", name))
+			minetest.log("warning", string.format("[mcl_mobs] %s has spawning disabled", name))
 			return
 		end
 
-		minetest.log("action", string.format("[mobs] Chance setting for %s changed to %s (total: %s)", name, chance, aoc))
+		minetest.log("action", string.format("[mcl_mobs] Chance setting for %s changed to %s (total: %s)", name, chance, aoc))
 	end
 
 	--load information into the spawn dictionary

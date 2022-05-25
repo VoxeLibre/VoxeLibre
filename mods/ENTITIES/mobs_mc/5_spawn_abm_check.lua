@@ -3,7 +3,7 @@ local function is_forbidden_node(pos, node)
 	return minetest.get_item_group(node.name, "stair") > 0 or minetest.get_item_group(node.name, "slab") > 0 or minetest.get_item_group(node.name, "carpet") > 0
 end
 
-function mobs:spawn_abm_check(pos, node, name)
+function mcl_mobs:spawn_abm_check(pos, node, name)
 	-- Don't spawn monsters on mycelium
 	if (node.name == "mcl_core:mycelium" or node.name == "mcl_core:mycelium_snow") and minetest.registered_entities[name].type == "monster" then
 		return true

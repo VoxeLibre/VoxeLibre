@@ -9,7 +9,7 @@ local S = minetest.get_translator("mobs_mc")
 --################### WITHER SKELETON
 --###################
 
-mobs:register_mob("mobs_mc:witherskeleton", {
+mcl_mobs:register_mob("mobs_mc:witherskeleton", {
 	description = S("Wither Skeleton"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -96,7 +96,7 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 })
 
 --spawn
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:witherskeleton",
 "nether",
 "ground",
@@ -112,4 +112,4 @@ mobs_mc.spawn_height.nether_min,
 mobs_mc.spawn_height.nether_max)
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:witherskeleton", S("Wither Skeleton"), "mobs_mc_spawn_icon_witherskeleton.png", 0)
+mcl_mobs:register_egg("mobs_mc:witherskeleton", S("Wither Skeleton"), "mobs_mc_spawn_icon_witherskeleton.png", 0)

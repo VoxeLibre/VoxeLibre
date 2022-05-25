@@ -6,7 +6,7 @@
 
 local S = minetest.get_translator("mobs_mc")
 
-mobs:register_mob("mobs_mc:squid", {
+mcl_mobs:register_mob("mobs_mc:squid", {
 	description = S("Squid"),
     type = "animal",
     spawn_class = "water",
@@ -63,7 +63,7 @@ mobs:register_mob("mobs_mc:squid", {
 
 local water = mobs_mc.spawn_height.water
 --name, nodes, neighbours, minlight, maxlight, interval, chance, active_object_count, min_height, max_height
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:squid",
 "overworld",
 "water",
@@ -217,4 +217,4 @@ water-16,
 water+1)
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:squid", S("Squid"), "mobs_mc_spawn_icon_squid.png", 0)
+mcl_mobs:register_egg("mobs_mc:squid", S("Squid"), "mobs_mc_spawn_icon_squid.png", 0)

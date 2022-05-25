@@ -49,8 +49,8 @@ local cow_def = {
 	},
 	follow = mobs_mc.follow.cow,
 	on_rightclick = function(self, clicker)
-		if mobs:feed_tame(self, clicker, 1, true, true) then return end
-		if mobs:protect(self, clicker) then return end
+		if mcl_mobs:feed_tame(self, clicker, 1, true, true) then return end
+		if mcl_mobs:protect(self, clicker) then return end
 
 		if self.child then
 			return
@@ -71,14 +71,14 @@ local cow_def = {
 			end
 			return
 		end
-		mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
+		mcl_mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 	end,
 	follow = mobs_mc.items.wheat,
 	view_range = 10,
 	fear_height = 4,
 }
 
-mobs:register_mob("mobs_mc:cow", cow_def)
+mcl_mobs:register_mob("mobs_mc:cow", cow_def)
 
 -- Mooshroom
 local mooshroom_def = table.copy(cow_def)
@@ -86,8 +86,8 @@ mooshroom_def.description = S("Mooshroom")
 mooshroom_def.mesh = "mobs_mc_cow.b3d"
 mooshroom_def.textures = { {"mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png"}, {"mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" } }
 mooshroom_def.on_rightclick = function(self, clicker)
-	if mobs:feed_tame(self, clicker, 1, true, true) then return end
-	if mobs:protect(self, clicker) then return end
+	if mcl_mobs:feed_tame(self, clicker, 1, true, true) then return end
+	if mcl_mobs:protect(self, clicker) then return end
 
 	if self.child then
 		return
@@ -140,13 +140,13 @@ mooshroom_def.on_rightclick = function(self, clicker)
 			minetest.add_item(pos, {name = mobs_mc.items.mushroom_stew})
 		end
 	end
-	mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
+	mcl_mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 end
-mobs:register_mob("mobs_mc:mooshroom", mooshroom_def)
+mcl_mobs:register_mob("mobs_mc:mooshroom", mooshroom_def)
 
 
 -- Spawning
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:cow",
 "overworld",
 "ground",
@@ -198,7 +198,7 @@ mobs_mc.spawn_height.overworld_max)
 
 
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:mooshroom",
 "overworld",
 "ground",
@@ -215,5 +215,5 @@ mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn egg
-mobs:register_egg("mobs_mc:cow", S("Cow"), "mobs_mc_spawn_icon_cow.png", 0)
-mobs:register_egg("mobs_mc:mooshroom", S("Mooshroom"), "mobs_mc_spawn_icon_mooshroom.png", 0)
+mcl_mobs:register_egg("mobs_mc:cow", S("Cow"), "mobs_mc_spawn_icon_cow.png", 0)
+mcl_mobs:register_egg("mobs_mc:mooshroom", S("Mooshroom"), "mobs_mc_spawn_icon_mooshroom.png", 0)

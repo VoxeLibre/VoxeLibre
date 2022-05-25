@@ -6,7 +6,7 @@
 
 local S = minetest.get_translator("mobs_mc")
 
-mobs:register_mob("mobs_mc:guardian_elder", {
+mcl_mobs:register_mob("mobs_mc:guardian_elder", {
 	description = S("Elder Guardian"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -109,8 +109,8 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 
 -- Spawning disabled due to size issues <- what do you mean? -j4i
 -- TODO: Re-enable spawning
--- mobs:spawn_specific("mobs_mc:guardian_elder", mobs_mc.spawn.water, mobs_mc.spawn_water, 0, minetest.LIGHT_MAX+1, 30, 40000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.water-18)
+-- mcl_mobs:spawn_specific("mobs_mc:guardian_elder", mobs_mc.spawn.water, mobs_mc.spawn_water, 0, minetest.LIGHT_MAX+1, 30, 40000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.water-18)
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:guardian_elder", S("Elder Guardian"), "mobs_mc_spawn_icon_guardian_elder.png", 0)
+mcl_mobs:register_egg("mobs_mc:guardian_elder", S("Elder Guardian"), "mobs_mc_spawn_icon_guardian_elder.png", 0)
 

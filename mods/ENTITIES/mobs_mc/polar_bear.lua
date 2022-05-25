@@ -7,7 +7,7 @@ local S = minetest.get_translator("mobs_mc")
 --###################
 
 
-mobs:register_mob("mobs_mc:polar_bear", {
+mcl_mobs:register_mob("mobs_mc:polar_bear", {
 	description = S("Polar Bear"),
 	type = "animal",
 	spawn_class = "passive",
@@ -68,7 +68,7 @@ mobs:register_mob("mobs_mc:polar_bear", {
 })
 
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:polar_bear",
 "overworld",
 "ground",
@@ -87,4 +87,4 @@ mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn egg
-mobs:register_egg("mobs_mc:polar_bear", S("Polar Bear"), "mobs_mc_spawn_icon_polarbear.png", 0)
+mcl_mobs:register_egg("mobs_mc:polar_bear", S("Polar Bear"), "mobs_mc_spawn_icon_polarbear.png", 0)

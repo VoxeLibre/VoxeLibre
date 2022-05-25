@@ -2,7 +2,7 @@
 
 local S = minetest.get_translator("mobs_mc")
 
-mobs:register_mob("mobs_mc:pig", {
+mcl_mobs:register_mob("mobs_mc:pig", {
 	description = S("Pig"),
 	type = "animal",
 	spawn_class = "passive",
@@ -69,7 +69,7 @@ mobs:register_mob("mobs_mc:pig", {
 		-- if driver present allow control of horse
 		if self.driver then
 
-			mobs.drive(self, "walk", "stand", false, dtime)
+			mcl_mobs.drive(self, "walk", "stand", false, dtime)
 
 			return false -- skip rest of mob functions
 		end
@@ -82,7 +82,7 @@ mobs:register_mob("mobs_mc:pig", {
 		-- drop saddle when horse is killed while riding
 		-- also detach from horse properly
 		if self.driver then
-			mobs.detach(self.driver, {x = 1, y = 0, z = 1})
+			mcl_mobs.detach(self.driver, {x = 1, y = 0, z = 1})
 		end
 	end,
 
@@ -94,9 +94,9 @@ mobs:register_mob("mobs_mc:pig", {
 		local wielditem = clicker:get_wielded_item()
 		-- Feed pig
 		if wielditem:get_name() ~= mobs_mc.items.carrot_on_a_stick then
-			if mobs:feed_tame(self, clicker, 1, true, true) then return end
+			if mcl_mobs:feed_tame(self, clicker, 1, true, true) then return end
 		end
-		if mobs:protect(self, clicker) then return end
+		if mcl_mobs:protect(self, clicker) then return end
 
 		if self.child then
 			return
@@ -139,13 +139,13 @@ mobs:register_mob("mobs_mc:pig", {
 		local name = clicker:get_player_name()
 		if self.driver and clicker == self.driver then
 			-- Detach if already attached
-			mobs.detach(clicker, {x=1, y=0, z=0})
+			mcl_mobs.detach(clicker, {x=1, y=0, z=0})
 			return
 
 		elseif not self.driver and self.saddle == "yes" and wielditem:get_name() == mobs_mc.items.carrot_on_a_stick then
 			-- Ride pig if it has a saddle and player uses a carrot on a stick
 
-			mobs.attach(self, clicker)
+			mcl_mobs.attach(self, clicker)
 
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 
@@ -167,13 +167,13 @@ mobs:register_mob("mobs_mc:pig", {
 
 		-- Capture pig
 		elseif not self.driver and clicker:get_wielded_item():get_name() ~= "" then
-			mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
+			mcl_mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 		end
 	end,
 
 	on_breed = function(parent1, parent2)
 		local pos = parent1.object:get_pos()
-		local child = mobs:spawn_child(pos, parent1.name)
+		local child = mcl_mobs:spawn_child(pos, parent1.name)
 		if child then
 			local ent_c = child:get_luaentity()
 			ent_c.tamed = true
@@ -183,7 +183,7 @@ mobs:register_mob("mobs_mc:pig", {
 	end,
 })
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:pig",
 "overworld",
 "ground",
@@ -234,4 +234,4 @@ mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:pig", S("Pig"), "mobs_mc_spawn_icon_pig.png", 0)
+mcl_mobs:register_egg("mobs_mc:pig", S("Pig"), "mobs_mc_spawn_icon_pig.png", 0)

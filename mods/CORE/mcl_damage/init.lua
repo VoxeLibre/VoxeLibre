@@ -78,7 +78,7 @@ function mcl_damage.from_punch(mcl_reason, object)
 			mcl_reason.type = "arrow"
 		elseif luaentity._is_fireball then
 			mcl_reason.type = "fireball"
-		elseif luaentity._cmi_is_mob then
+		elseif luaentity.is_mob then
 			mcl_reason.type = "mob"
 		end
 		mcl_reason.source = mcl_reason.source or luaentity._source_object

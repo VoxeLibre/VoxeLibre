@@ -55,7 +55,7 @@ end
 local gotten_texture = { "blank.png", "mobs_mc_sheep.png" }
 
 --mcsheep
-mobs:register_mob("mobs_mc:sheep", {
+mcl_mobs:register_mob("mobs_mc:sheep", {
 	description = S("Sheep"),
 	type = "animal",
 	spawn_class = "passive",
@@ -195,8 +195,8 @@ mobs:register_mob("mobs_mc:sheep", {
 	on_rightclick = function(self, clicker)
 		local item = clicker:get_wielded_item()
 
-		if mobs:feed_tame(self, clicker, 1, true, true) then return end
-		if mobs:protect(self, clicker) then return end
+		if mcl_mobs:feed_tame(self, clicker, 1, true, true) then return end
+		if mcl_mobs:protect(self, clicker) then return end
 
 		if item:get_name() == mobs_mc.items.shears and not self.gotten and not self.child then
 			self.gotten = true
@@ -252,12 +252,12 @@ mobs:register_mob("mobs_mc:sheep", {
 			end
 			return
 		end
-		if mobs:capture_mob(self, clicker, 0, 5, 70, false, nil) then return end
+		if mcl_mobs:capture_mob(self, clicker, 0, 5, 70, false, nil) then return end
 	end,
 	on_breed = function(parent1, parent2)
 		-- Breed sheep and choose a fur color for the child.
 		local pos = parent1.object:get_pos()
-		local child = mobs:spawn_child(pos, parent1.name)
+		local child = mcl_mobs:spawn_child(pos, parent1.name)
 		if child then
 			local ent_c = child:get_luaentity()
 			local color1 = parent1.color
@@ -304,7 +304,7 @@ mobs:register_mob("mobs_mc:sheep", {
 		end
 	end,
 })
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:sheep",
 "overworld",
 "ground",
@@ -355,4 +355,4 @@ mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:sheep", S("Sheep"), "mobs_mc_spawn_icon_sheep.png", 0)
+mcl_mobs:register_egg("mobs_mc:sheep", S("Sheep"), "mobs_mc_spawn_icon_sheep.png", 0)

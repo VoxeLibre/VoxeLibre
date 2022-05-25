@@ -11,7 +11,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 
-mobs:register_mob("mobs_mc:parrot", {
+mcl_mobs:register_mob("mobs_mc:parrot", {
 	description = S("Parrot"),
 	type = "npc",
 	spawn_class = "passive",
@@ -84,15 +84,15 @@ mobs:register_mob("mobs_mc:parrot", {
 		end
 
 		-- Feed to tame, but not breed
-		if mobs:feed_tame(self, clicker, 1, false, true) then return end
-		if mobs:protect(self, clicker) then return end
-		if mobs:capture_mob(self, clicker, 0, 50, 80, false, nil) then return end
+		if mcl_mobs:feed_tame(self, clicker, 1, false, true) then return end
+		if mcl_mobs:protect(self, clicker) then return end
+		if mcl_mobs:capture_mob(self, clicker, 0, 50, 80, false, nil) then return end
 	end,
 
 })
 
 -- Parrots spawn rarely in jungles. TODO: Also check for jungle *biome* <- I'll get to this eventually -j4i
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:parrot",
 "overworld",
 "ground",
@@ -111,4 +111,4 @@ mobs_mc.spawn_height.water+7,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:parrot", S("Parrot"), "mobs_mc_spawn_icon_parrot.png", 0)
+mcl_mobs:register_egg("mobs_mc:parrot", S("Parrot"), "mobs_mc_spawn_icon_parrot.png", 0)

@@ -99,7 +99,7 @@ local ocelot = {
 	end,
 }
 
-mobs:register_mob("mobs_mc:ocelot", ocelot)
+mcl_mobs:register_mob("mobs_mc:ocelot", ocelot)
 
 -- Cat
 local cat = table.copy(ocelot)
@@ -122,9 +122,9 @@ cat.sounds = {
 	distance = 16,
 }
 cat.on_rightclick = function(self, clicker)
-	if mobs:feed_tame(self, clicker, 1, true, false) then return end
-	if mobs:capture_mob(self, clicker, 0, 60, 5, false, nil) then return end
-	if mobs:protect(self, clicker) then return end
+	if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
+	if mcl_mobs:capture_mob(self, clicker, 0, 60, 5, false, nil) then return end
+	if mcl_mobs:protect(self, clicker) then return end
 
 	if self.child then return end
 
@@ -149,13 +149,13 @@ cat.on_rightclick = function(self, clicker)
 
 end
 
-mobs:register_mob("mobs_mc:cat", cat)
+mcl_mobs:register_mob("mobs_mc:cat", cat)
 
 local base_spawn_chance = 5000
 
 -- Spawn ocelot
 --they get the same as the llama because I'm trying to rework so much of this code right now -j4i
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:ocelot",
 "overworld",
 "ground",
@@ -232,4 +232,4 @@ mobs:spawn({
 
 -- spawn eggs
 -- FIXME: The spawn icon shows a cat texture, not an ocelot texture
-mobs:register_egg("mobs_mc:ocelot", S("Ocelot"), "mobs_mc_spawn_icon_cat.png", 0)
+mcl_mobs:register_egg("mobs_mc:ocelot", S("Ocelot"), "mobs_mc_spawn_icon_cat.png", 0)

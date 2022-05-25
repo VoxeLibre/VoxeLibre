@@ -4,7 +4,7 @@
 
 local S = minetest.get_translator("mobs_mc")
 
-mobs:register_mob("mobs_mc:silverfish", {
+mcl_mobs:register_mob("mobs_mc:silverfish", {
 	description = S("Silverfish"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -49,7 +49,7 @@ mobs:register_mob("mobs_mc:silverfish", {
 	reach = 1,
 })
 
-mobs:register_egg("mobs_mc:silverfish", S("Silverfish"), "mobs_mc_spawn_icon_silverfish.png", 0)
+mcl_mobs:register_egg("mobs_mc:silverfish", S("Silverfish"), "mobs_mc_spawn_icon_silverfish.png", 0)
 
 -- Monster egg blocks (Minetest Game)
 if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then

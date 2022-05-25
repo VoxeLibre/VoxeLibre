@@ -64,7 +64,7 @@ local function check_object_hit(self, pos, dmg)
 				-- TODO: Deal knockback
 				self.object:remove()
 				return true
-			elseif (entity._cmi_is_mob == true or entity._hittable_by_projectile) and (self._thrower ~= object) then
+			elseif (entity.is_mob == true or entity._hittable_by_projectile) and (self._thrower ~= object) then
 				-- FIXME: Knockback is broken
 				object:punch(self.object, 1.0, {
 					full_punch_interval = 1.0,

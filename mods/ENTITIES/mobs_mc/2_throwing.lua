@@ -198,7 +198,7 @@ if c("egg") then
 	local egg_GRAVITY = 9
 	local egg_VELOCITY = 19
 
-	mobs:register_arrow("mobs_mc:egg_entity", {
+	mcl_mobs:register_arrow("mobs_mc:egg_entity", {
 		visual = "sprite",
 		visual_size = {x=.5, y=.5},
 		textures = {"mobs_chicken_egg.png"},
@@ -318,7 +318,7 @@ end
 local snowball_GRAVITY = 9
 local snowball_VELOCITY = 19
 
-mobs:register_arrow("mobs_mc:snowball_entity", {
+mcl_mobs:register_arrow("mobs_mc:snowball_entity", {
 	visual = "sprite",
 	visual_size = {x=.5, y=.5},
 	textures = {"mcl_throwing_snowball.png"},

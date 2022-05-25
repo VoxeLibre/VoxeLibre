@@ -161,7 +161,7 @@ local horse = {
 		-- Some weird human is riding. Buck them off?
 		if self.driver and not self.tamed and self.buck_off_time <= 0 then
 			if math.random() < 0.2 then
-				mobs.detach(self.driver, {x = 1, y = 0, z = 1})
+				mcl_mobs.detach(self.driver, {x = 1, y = 0, z = 1})
 				-- TODO bucking animation
 			else
 				-- Nah, can't be bothered. Think about it again in one second
@@ -182,7 +182,7 @@ local horse = {
 		-- if driver present and horse has a saddle allow control of horse
 		if self.driver and self._saddle then
 
-			mobs.drive(self, "walk", "stand", false, dtime)
+			mcl_mobs.drive(self, "walk", "stand", false, dtime)
 
 			return false -- skip rest of mob functions
 		end
@@ -198,7 +198,7 @@ local horse = {
 		end
 		-- also detach from horse properly
 		if self.driver then
-			mobs.detach(self.driver, {x = 1, y = 0, z = 1})
+			mcl_mobs.detach(self.driver, {x = 1, y = 0, z = 1})
 		end
 
 	end,
@@ -235,7 +235,7 @@ local horse = {
 			-- Trying to ride
 			elseif not self.driver then
 				self.object:set_properties({stepheight = 1.1})
-				mobs.attach(self, clicker)
+				mcl_mobs.attach(self, clicker)
 				self.buck_off_time = 40 -- TODO how long does it take in minecraft?
 				if self.temper > 100 then
 					self.tamed = true -- NOTE taming can only be finished by riding the horse
@@ -247,7 +247,7 @@ local horse = {
 
 			-- Clicking on the horse while riding ==> unmount
 			elseif self.driver and self.driver == clicker then
-				mobs.detach(clicker, {x = 1, y = 0, z = 1})
+				mcl_mobs.detach(clicker, {x = 1, y = 0, z = 1})
 			end
 
 			-- If nothing happened temper_increase = 0 and addition does nothing
@@ -263,7 +263,7 @@ local horse = {
 			elseif (iname == mobs_mc.items.golden_carrot) then
 				heal = 4
 			end
-			if heal > 0 and mobs:feed_tame(self, clicker, heal, true, false) then
+			if heal > 0 and mcl_mobs:feed_tame(self, clicker, heal, true, false) then
 				return
 			end
 		end
@@ -278,11 +278,11 @@ local horse = {
 		elseif (iname == mobs_mc.items.hay_bale) then
 			heal = 20
 		end
-		if heal > 0 and mobs:feed_tame(self, clicker, heal, false, false) then
+		if heal > 0 and mcl_mobs:feed_tame(self, clicker, heal, false, false) then
 			return
 		end
 
-		if mobs:protect(self, clicker) then
+		if mcl_mobs:protect(self, clicker) then
 			return
 		end
 
@@ -294,7 +294,7 @@ local horse = {
 			-- detatch player already riding horse
 			if self.driver and clicker == self.driver then
 
-				mobs.detach(clicker, {x = 1, y = 0, z = 1})
+				mcl_mobs.detach(clicker, {x = 1, y = 0, z = 1})
 
 			-- Put on saddle if tamed
 			elseif not self.driver and not self._saddle
@@ -355,18 +355,18 @@ local horse = {
 			elseif not self.driver and self._saddle then
 
 				self.object:set_properties({stepheight = 1.1})
-				mobs.attach(self, clicker)
+				mcl_mobs.attach(self, clicker)
 
 			-- Used to capture horse
 			elseif not self.driver and iname ~= "" then
-				mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
+				mcl_mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 			end
 		end
 	end,
 
 	on_breed = function(parent1, parent2)
 		local pos = parent1.object:get_pos()
-		local child = mobs:spawn_child(pos, parent1.name)
+		local child = mcl_mobs:spawn_child(pos, parent1.name)
 		if child then
 			local ent_c = child:get_luaentity()
 			local p = math.random(1, 2)
@@ -415,7 +415,7 @@ local horse = {
 	end,
 }
 
-mobs:register_mob("mobs_mc:horse", horse)
+mcl_mobs:register_mob("mobs_mc:horse", horse)
 
 -- Skeleton horse
 local skeleton_horse = table.copy(horse)
@@ -438,7 +438,7 @@ skeleton_horse.sounds = {
 	distance = 16,
 }
 skeleton_horse.harmed_by_heal = true
-mobs:register_mob("mobs_mc:skeleton_horse", skeleton_horse)
+mcl_mobs:register_mob("mobs_mc:skeleton_horse", skeleton_horse)
 
 -- Zombie horse
 local zombie_horse = table.copy(horse)
@@ -462,7 +462,7 @@ zombie_horse.sounds = {
 	distance = 16,
 }
 zombie_horse.harmed_by_heal = true
-mobs:register_mob("mobs_mc:zombie_horse", zombie_horse)
+mcl_mobs:register_mob("mobs_mc:zombie_horse", zombie_horse)
 
 -- Donkey
 local d = 0.86 -- donkey scale
@@ -493,7 +493,7 @@ donkey.collisionbox = {
 donkey.jump = true
 donkey.jump_height = 3.75 -- can clear 1 block height
 
-mobs:register_mob("mobs_mc:donkey", donkey)
+mcl_mobs:register_mob("mobs_mc:donkey", donkey)
 
 -- Mule
 local m = 0.94
@@ -511,11 +511,11 @@ mule.collisionbox = {
 	horse.collisionbox[5] * m,
 	horse.collisionbox[6] * m,
 }
-mobs:register_mob("mobs_mc:mule", mule)
+mcl_mobs:register_mob("mobs_mc:mule", mule)
 
 --===========================
 --Spawn Function
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:horse",
 "overworld",
 "ground",
@@ -566,7 +566,7 @@ mobs_mc.spawn_height.water+3,
 mobs_mc.spawn_height.overworld_max)
 
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:donkey",
 "overworld",
 "ground",
@@ -587,8 +587,8 @@ mobs_mc.spawn_height.water+3,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:horse", S("Horse"), "mobs_mc_spawn_icon_horse.png", 0)
-mobs:register_egg("mobs_mc:skeleton_horse", S("Skeleton Horse"), "mobs_mc_spawn_icon_horse_skeleton.png", 0)
+mcl_mobs:register_egg("mobs_mc:horse", S("Horse"), "mobs_mc_spawn_icon_horse.png", 0)
+mcl_mobs:register_egg("mobs_mc:skeleton_horse", S("Skeleton Horse"), "mobs_mc_spawn_icon_horse_skeleton.png", 0)
 --mobs:register_egg("mobs_mc:zombie_horse", S("Zombie Horse"), "mobs_mc_spawn_icon_horse_zombie.png", 0)
-mobs:register_egg("mobs_mc:donkey", S("Donkey"), "mobs_mc_spawn_icon_donkey.png", 0)
-mobs:register_egg("mobs_mc:mule", S("Mule"), "mobs_mc_spawn_icon_mule.png", 0)
+mcl_mobs:register_egg("mobs_mc:donkey", S("Donkey"), "mobs_mc_spawn_icon_donkey.png", 0)
+mcl_mobs:register_egg("mobs_mc:mule", S("Mule"), "mobs_mc_spawn_icon_mule.png", 0)

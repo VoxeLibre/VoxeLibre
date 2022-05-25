@@ -215,55 +215,6 @@ mobs_mc.replace = {
 	},
 }
 
--- List of nodes which endermen can take
-mobs_mc.enderman_takable = {
-	-- Generic handling, useful for entensions
-	"group:enderman_takable",
-
-	-- Generic nodes
-	"group:sand",
-	"group:flower",
-
-	-- Minetest Game
-	"default:dirt",
-	"default:dirt_with_grass",
-	"default:dirt_with_dry_grass",
-	"default:dirt_with_snow",
-	"default:dirt_with_rainforest_litter",
-	"default:dirt_with_grass_footsteps",
--- FIXME: For some reason, Minetest has a Lua error when an enderman tries to place a Minetest Game cactus.
--- Maybe this is because default:cactus has rotate_and_place?
---	"default:cactus", -- TODO: Re-enable cactus when it works again
-	"default:gravel",
-	"default:clay",
-	"flowers:mushroom_red",
-	"flowers:mushroom_brown",
-	"tnt:tnt",
-
-	-- Nether mod
-	"nether:rack",
-}
-
---[[ Table of nodes to replace when an enderman takes it.
-If the enderman takes an indexed node, it the enderman will get the item in the value.
-Table indexes: Original node, taken by enderman.
-Table values: The item which the enderman *actually* gets
-Example:
-	mobs_mc.enderman_node_replace = {
-		["default:dirt_with_dry_grass"] = "default_dirt_with_grass",
-	}
--- This means, if the enderman takes a dirt with dry grass, he will get a dirt with grass
--- on his hand instead.
-]]
-mobs_mc.enderman_replace_on_take = {} -- no replacements by default
-
--- A table which can be used to override block textures of blocks carried by endermen.
--- Only works for cube-shaped nodes and nodeboxes.
--- Key: itemstrings of the blocks to replace
--- Value: A table with the texture overrides (6 textures)
-mobs_mc.enderman_block_texture_overrides = {
-}
-
 -- List of nodes on which mobs can spawn
 mobs_mc.spawn = {
 	solid = { "group:cracky", "group:crumbly", "group:shovely", "group:pickaxey" }, -- spawn on "solid" nodes (this is mostly just guessing)
@@ -312,6 +263,7 @@ mobs_mc.misc = {
 -- Item name overrides from mobs_mc_gameconfig (if present)
 if minetest.get_modpath("mobs_mc_gameconfig") and mobs_mc.override then
 	local tables = {"items", "follow", "replace", "spawn", "spawn_height", "misc"}
+
 	for t=1, #tables do
 		local tbl = tables[t]
 		if mobs_mc.override[tbl] then
@@ -319,16 +271,6 @@ if minetest.get_modpath("mobs_mc_gameconfig") and mobs_mc.override then
 				mobs_mc[tbl][k] = v
 			end
 		end
-	end
-
-	if mobs_mc.override.enderman_takable then
-		mobs_mc.enderman_takable = mobs_mc.override.enderman_takable
-	end
-	if mobs_mc.override.enderman_replace_on_take then
-		mobs_mc.enderman_replace_on_take = mobs_mc.override.enderman_replace_on_take
-	end
-	if mobs_mc.enderman_block_texture_overrides then
-		mobs_mc.enderman_block_texture_overrides = mobs_mc.override.enderman_block_texture_overrides
 	end
 end
 

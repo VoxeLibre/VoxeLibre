@@ -28,7 +28,7 @@ local function pp_on_timer(pos, elapsed)
 	local obj_does_activate = function(obj, activated_by)
 		if activated_by.any then
 			return true
-		elseif activated_by.mob and obj:get_luaentity() and obj:get_luaentity()._cmi_is_mob == true then
+		elseif activated_by.mob and obj:get_luaentity() and obj:get_luaentity().is_mob == true then
 			return true
 		elseif activated_by.player and obj:is_player() then
 			return true
