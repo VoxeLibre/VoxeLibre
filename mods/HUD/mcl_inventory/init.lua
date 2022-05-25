@@ -198,48 +198,39 @@ local function in_table(n,h)
 	return false
 end
 
-function str_split(s,d)
-	if d == nil then d = "%s" end
-	local t={}
-	for v in string.gmatch(s, "([^"..d.."]+)") do
-			table.insert(t, v)
-	end
-	return t
-end
-
 local gamemodes = {
 	"survival",
 	"creative"
 }
 
-local function player_set_gamemode(p,g)
+function mcl_inventory.player_set_gamemode(p,g)
 	local m = p:get_meta()
 	m:set_string("gamemode",g)
 	set_inventory(p)
 end
 
 minetest.register_chatcommand("gamemode",{
+	params = S("[<gamemode>] [<player>]"),
+	description = S("Change gamemode (survival/creative) for yourself or player"),
 	privs = { server = true },
 	func = function(n,param)
 		-- Full input validation ( just for @erlehmann <3 )	
 		local p = minetest.get_player_by_name(n)
-		local args = str_split(param)
+		local args = param:split(" ")
 		if args[2] ~= nil then
 			p = minetest.get_player_by_name(args[2])
 		end
 		if not p then
-			minetest.chat_send_player(n,S("Player not online"))
-			return
+			return false, S("Player not online")
 		end
 		if args[1] ~= nil and not in_table(args[1],gamemodes) then
-			minetest.chat_send_player(n,S("Gamemode "..tostring(args[1]).." does not exist." ))
-			return
+			return false, S("Gamemode " .. args[1] .. " does not exist.")
 		elseif args[1] ~= nil then
-			player_set_gamemode(p,args[1])
+			mcl_inventory.player_set_gamemode(p,args[1])
 		end		
 		--Result message - show effective game mode
 		local gm = p:get_meta():get_string("gamemode")
 		if gm == "" then gm = gamemodes[1] end
-		minetest.chat_send_player(n,S("Gamemode for player ")..n..S(": "..gm))
+		return true, S("Gamemode for player ")..n..S(": "..gm)
 	end
 })
