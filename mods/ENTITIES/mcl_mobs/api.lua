@@ -37,6 +37,7 @@ local max = math.max
 local atann = math.atan
 local random = math.random
 local floor = math.floor
+
 local atan = function(x)
 	if not x or x ~= x then
 		return 0
@@ -79,14 +80,6 @@ local node_ice = "mcl_core:ice"
 local node_snowblock = "mcl_core:snowblock"
 local node_snow = "mcl_core:snow"
 mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
-
-local mod_weather = minetest.get_modpath("mcl_weather") ~= nil
-local mod_explosions = minetest.get_modpath("mcl_explosions") ~= nil
-local mod_mobspawners = minetest.get_modpath("mcl_mobspawners") ~= nil
-local mod_hunger = minetest.get_modpath("mcl_hunger") ~= nil
-local mod_worlds = minetest.get_modpath("mcl_worlds") ~= nil
-local mod_armor = minetest.get_modpath("mcl_armor") ~= nil
-local mod_experience = minetest.get_modpath("mcl_experience") ~= nil
 
 --Helper function to clear all mobs because /clearobjects removes too much
 local function is_mob(o)
@@ -186,7 +179,7 @@ local function object_in_range(self, object)
 	end
 	local factor
 	-- Apply view range reduction for special player armor
-	if object:is_player() and mod_armor then
+	if object:is_player() then
 		local factors = mcl_armor.player_view_range_factors[object]
 		factor = factors and factors[self.name]
 	end
@@ -829,7 +822,7 @@ local check_for_death = function(self, cause, cmi_cause)
 			local looting = mcl_enchanting.get_enchantment(wielditem, "looting")
 			item_drop(self, cooked, looting)
 
-			if mod_experience and ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= 5000000) then
+			if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= 5000000) then
 				mcl_experience.throw_xp(self.object:get_pos(), math.random(self.xp_min, self.xp_max))
 			end
 		end
@@ -1073,7 +1066,7 @@ local do_env_damage = function(self)
 
 	-- Deal light damage to mob, returns true if mob died
 	local deal_light_damage = function(self, pos, damage)
-		if not (mod_weather and (mcl_weather.rain.raining or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos)) then
+		if not ((mcl_weather.rain.raining or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos)) then
 			self.health = self.health - damage
 
 			effect(pos, 5, "mcl_particles_smoke.png")
@@ -1094,10 +1087,7 @@ local do_env_damage = function(self)
 			return true
 		end
 	end
-	local _, dim = nil, "overworld"
-	if mod_worlds then
-		_, dim = mcl_worlds.y_to_layer(pos.y)
-	end
+	local _, dim = mcl_worlds.y_to_layer(pos.y)
 	if (self.sunlight_damage ~= 0 or self.ignited_by_sunlight) and (sunlight or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
 		if self.ignited_by_sunlight then
 			mcl_burning.set_on_fire(self.object, 10)
@@ -1127,7 +1117,7 @@ local do_env_damage = function(self)
 	local nodef = minetest.registered_nodes[self.standing_in]
 
 	-- rain
-	if self.rain_damage > 0 and mod_weather then
+	if self.rain_damage > 0 then
 		if mcl_weather.rain.raining and mcl_weather.is_outdoor(pos) then
 
 			self.health = self.health - self.rain_damage
@@ -1558,10 +1548,7 @@ local breed = function(self)
 						return
 					end
 
-					-- Give XP
-					if mod_experience then
-						mcl_experience.throw_xp(pos, math.random(1, 7))
-					end
+					mcl_experience.throw_xp(pos, math.random(1, 7))
 
 					-- custom breed function
 					if parent1.on_breed then
@@ -2647,7 +2634,6 @@ local do_states = function(self, dtime)
 
 					local pos = self.object:get_pos()
 
-					if mod_explosions then
 					if mobs_griefing and not minetest.is_protected(pos, "") then
 						mcl_explosions.explode(mcl_util.get_object_center(self.object), self.explosion_strength, { drop_chance = 1.0 }, self.object)
 					else
@@ -2659,7 +2645,6 @@ local do_states = function(self, dtime)
 
 						entity_physics(pos, entity_damage_radius)
 						effect(pos, 32, "mcl_particles_smoke.png", nil, nil, node_break_radius, 1, 0)
-					end
 					end
 					mcl_burning.extinguish(self.object)
 					self.object:remove()
@@ -3117,7 +3102,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	local punch_interval = 1.4
 
 	-- exhaust attacker
-	if mod_hunger and is_player then
+	if is_player then
 		mcl_hunger.exhaust(hitter:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
 	end
 
@@ -4182,12 +4167,8 @@ end
 
 -- make explosion with protection and tnt mod check
 function mobs:boom(self, pos, strength, fire)
-	if mod_explosions then
-		if mobs_griefing and not minetest.is_protected(pos, "") then
-			mcl_explosions.explode(pos, strength, { drop_chance = 1.0, fire = fire }, self.object)
-		else
-			mobs:safe_boom(self, pos, strength)
-		end
+	if mobs_griefing and not minetest.is_protected(pos, "") then
+		mcl_explosions.explode(pos, strength, { drop_chance = 1.0, fire = fire }, self.object)
 	else
 		mobs:safe_boom(self, pos, strength)
 	end
@@ -4245,7 +4226,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 
 				local name = placer:get_player_name()
 				local privs = minetest.get_player_privs(name)
-				if mod_mobspawners and under.name == "mcl_mobspawners:spawner" then
+				if under.name == "mcl_mobspawners:spawner" then
 					if minetest.is_protected(pointed_thing.under, name) then
 						minetest.record_protection_violation(pointed_thing.under, name)
 						return itemstack
