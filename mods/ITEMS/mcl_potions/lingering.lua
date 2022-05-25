@@ -66,7 +66,7 @@ minetest.register_globalstep(function(dtime)
 			for _, obj in pairs(minetest.get_objects_inside_radius(pos, d)) do
 
 				local entity = obj:get_luaentity()
-				if obj:is_player() or entity._cmi_is_mob then
+				if obj:is_player() or entity.is_mob then
 
 					vals.def.potion_fun(obj)
 					-- TODO: Apply timer penalty only if the potion effect was acutally applied

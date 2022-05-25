@@ -78,7 +78,7 @@ end
 
 function mcl_bossbars.update_boss(object, name, color)
 	local props = object:get_luaentity()
-	if not props or not props._cmi_is_mob then
+	if not props or not props.is_mob then
 		props = object:get_properties()
 		props.health = object:get_hp()
 	end

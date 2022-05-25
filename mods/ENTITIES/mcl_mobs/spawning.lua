@@ -195,7 +195,7 @@ local list_of_all_biomes = {
 local function count_mobs(pos)
 	local num = 0
 	for _,object in pairs(get_objects_inside_radius(pos, aoc_range)) do
-		if object and object:get_luaentity() and object:get_luaentity()._cmi_is_mob then
+		if object and object:get_luaentity() and object:get_luaentity().is_mob then
 			num = num + 1
 		end
 	end

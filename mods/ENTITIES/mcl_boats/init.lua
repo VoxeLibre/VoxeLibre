@@ -314,7 +314,7 @@ function boat.on_step(self, dtime, moveresult)
 
 		for _, obj in pairs(minetest.get_objects_inside_radius(self.object:get_pos(), 1.3)) do
 			local entity = obj:get_luaentity()
-			if entity and entity._cmi_is_mob then
+			if entity and entity.is_mob then
 				attach_object(self, obj)
 				break
 			end

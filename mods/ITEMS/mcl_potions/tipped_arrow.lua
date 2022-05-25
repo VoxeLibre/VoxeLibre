@@ -216,7 +216,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 				if obj ~= self._shooter and obj:is_player() then
 					ok = true
 				elseif obj:get_luaentity() then
-					if obj ~= self._shooter and obj:get_luaentity()._cmi_is_mob then
+					if obj ~= self._shooter and obj:get_luaentity().is_mob then
 						ok = true
 					end
 				end
@@ -238,7 +238,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 				local obj = closest_object
 				local is_player = obj:is_player()
 				local lua = obj:get_luaentity()
-				if obj ~= self._shooter and (is_player or (lua and lua._cmi_is_mob)) then
+				if obj ~= self._shooter and (is_player or (lua and lua.is_mob)) then
 
 					if obj:get_hp() > 0 then
 						-- Check if there is no solid node between arrow and object

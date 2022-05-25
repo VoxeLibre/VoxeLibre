@@ -78,10 +78,6 @@ local node_snowblock = "mcl_core:snowblock"
 local node_snow = "mcl_core:snow"
 mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
 
---Helper function to clear all mobs because /clearobjects removes too much
-local function is_mob(o)
-	return o.type == "ambient" or o.type == "animal" or o.type == "monster" or o.type == "npc"
-end
 minetest.register_chatcommand("clearmobs",{
 	privs={maphack=true},
 	params = "<all>|<nametagged>|<range>",
@@ -90,7 +86,7 @@ minetest.register_chatcommand("clearmobs",{
 		local p = minetest.get_player_by_name(n)
 		local num=tonumber(param)
 		for _,o in pairs(minetest.luaentities) do
-			if is_mob(o) then
+			if o.is_mob then
 				if  param == "all" or
 				( param == "nametagged" and o.nametag ) or
 				( param == "" and not o.nametag and not o.tamed ) or
@@ -223,7 +219,7 @@ local collision = function(self)
 	for _,object in pairs(minetest.get_objects_inside_radius(pos, width)) do
 
 		local ent = object:get_luaentity()
-		if object:is_player() or (ent and ent._cmi_is_mob and object ~= self.object) then
+		if object:is_player() or (ent and ent.is_mob and object ~= self.object) then
 
 			local pos2 = object:get_pos()
 			local vec  = {x = pos.x - pos2.x, z = pos.z - pos2.z}
@@ -3951,7 +3947,7 @@ minetest.register_entity(name, {
 	runaway_from = def.runaway_from,
 	owner_loyal = def.owner_loyal,
 	facing_fence = false,
-	_cmi_is_mob = true,
+	is_mob = true,
 	pushable = def.pushable or true,
 
 
@@ -3999,6 +3995,7 @@ minetest.register_entity(name, {
 		--this is a temporary hack so mobs stop
 		--glitching and acting really weird with the
 		--default built in engine collision detection
+		self.is_mob = true
 		self.object:set_properties({
 			collide_with_objects = false,
 		})
@@ -4123,7 +4120,7 @@ function mobs:register_arrow(name, def)
 
 					if entity
 					and self.hit_mob
-					and entity._cmi_is_mob == true
+					and entity.is_mob == true
 					and tostring(player) ~= self.owner_id
 					and entity.name ~= self.object:get_luaentity().name then
 						self.hit_mob(self, player)
@@ -4133,7 +4130,7 @@ function mobs:register_arrow(name, def)
 
 					if entity
 					and self.hit_object
-					and (not entity._cmi_is_mob)
+					and (not entity.is_mob)
 					and tostring(player) ~= self.owner_id
 					and entity.name ~= self.object:get_luaentity().name then
 						self.hit_object(self, player)
@@ -4452,7 +4449,7 @@ minetest.register_globalstep(function(dtime)
 		local pos = player:get_pos()
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 47)) do
 			local lua = obj:get_luaentity()
-			if lua and lua._cmi_is_mob then
+			if lua and lua.is_mob then
 				lua.lifetimer = math.max(20, lua.lifetimer)
 				lua.despawn_immediately = false
 			end
