@@ -153,6 +153,7 @@ minetest.register_node("mcl_blackstone:soul_fire", {
 	_mcl_node_death_message = minetest.registered_nodes["mcl_fire:fire"]._mcl_node_death_message,
 	groups = {fire = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston = 1, destroys_items = 1, set_on_fire=8},
 	floodable = true,
+	drop = "",
 	on_flood = function(pos, oldnode, newnode)
 		if minetest.get_item_group(newnode.name, "water") > 0 then
 			minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
