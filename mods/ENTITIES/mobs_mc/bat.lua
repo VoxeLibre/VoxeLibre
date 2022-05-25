@@ -138,8 +138,8 @@ maxlight,
 20,
 5000,
 2,
-mobs_mc.spawn_height.overworld_min,
-mobs_mc.spawn_height.water-1)
+mcl_vars.mg_overworld_min,
+mobs_mc.water_level-1)
 
 
 -- spawn eggs

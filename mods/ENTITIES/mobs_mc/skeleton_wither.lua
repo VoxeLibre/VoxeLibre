@@ -44,19 +44,19 @@ mcl_mobs:register_mob("mobs_mc:witherskeleton", {
 	damage = 7,
 	reach = 2,
 	drops = {
-		{name = mobs_mc.items.coal,
+		{name = "mcl_core:coal_lump",
 		chance = 1,
 		min = 0,
 		max = 1,
 		looting = "common",},
-		{name = mobs_mc.items.bone,
+		{name = "mcl_mobitems:bone",
 		chance = 1,
 		min = 0,
 		max = 2,
 		looting = "common",},
 
 		-- Head
-		{name = mobs_mc.items.head_wither_skeleton,
+		{name = "mcl_heads:wither_skeleton",
 		chance = 40, -- 2.5% chance
 		min = 1,
 		max = 1,
@@ -108,8 +108,8 @@ mcl_mobs:spawn_specific(
 30,
 5000,
 5,
-mobs_mc.spawn_height.nether_min,
-mobs_mc.spawn_height.nether_max)
+mcl_vars.mg_nether_min,
+mcl_vars.mg_nether_max)
 
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:witherskeleton", S("Wither Skeleton"), "mobs_mc_spawn_icon_witherskeleton.png", 0)

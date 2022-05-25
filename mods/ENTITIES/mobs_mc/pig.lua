@@ -25,7 +25,7 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 	run_velocity = 3,
 	follow_velocity = 3.4,
 	drops = {
-		{name = mobs_mc.items.porkchop_raw,
+		{name = "mcl_mobitems:porkchop",
 		chance = 1,
 		min = 1,
 		max = 3,
@@ -50,7 +50,12 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 		run_start = 0,
 		run_end = 40,
 	},
-	follow = mobs_mc.follow.pig,
+	follow = {
+		"mcl_farming:potato_item",
+		"mcl_farming:carrot_item",
+		"mcl_farming:beetroot_item",
+		"mcl_mobitems:carrot_on_a_stick"
+	},
 	view_range = 8,
 	do_custom = function(self, dtime)
 
@@ -93,7 +98,7 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 
 		local wielditem = clicker:get_wielded_item()
 		-- Feed pig
-		if wielditem:get_name() ~= mobs_mc.items.carrot_on_a_stick then
+		if wielditem:get_name() ~= "mcl_mobitems:carrot_on_a_stick" then
 			if mcl_mobs:feed_tame(self, clicker, 1, true, true) then return end
 		end
 		if mcl_mobs:protect(self, clicker) then return end
@@ -104,7 +109,7 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 
 		-- Put saddle on pig
 		local item = clicker:get_wielded_item()
-		if item:get_name() == mobs_mc.items.saddle and self.saddle ~= "yes" then
+		if item:get_name() == "mcl_mobitems:saddle" and self.saddle ~= "yes" then
 			self.base_texture = {
 				"blank.png", -- baby
 				"mobs_mc_pig.png", -- base
@@ -116,11 +121,11 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 			self.saddle = "yes"
 			self.tamed = true
 			self.drops = {
-				{name = mobs_mc.items.porkchop_raw,
+				{name = "mcl_mobitems:porkchop",
 				chance = 1,
 				min = 1,
 				max = 3,},
-				{name = mobs_mc.items.saddle,
+				{name = "mcl_mobitems:saddle",
 				chance = 1,
 				min = 1,
 				max = 1,},
@@ -142,7 +147,7 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 			mcl_mobs.detach(clicker, {x=1, y=0, z=0})
 			return
 
-		elseif not self.driver and self.saddle == "yes" and wielditem:get_name() == mobs_mc.items.carrot_on_a_stick then
+		elseif not self.driver and self.saddle == "yes" and wielditem:get_name() == "mcl_mobitems:carrot_on_a_stick" then
 			-- Ride pig if it has a saddle and player uses a carrot on a stick
 
 			mcl_mobs.attach(self, clicker)
@@ -157,7 +162,7 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 					if def.sounds and def.sounds.breaks then
 						minetest.sound_play(def.sounds.breaks, {pos = clicker:get_pos(), max_hear_distance = 8, gain = 0.5}, true)
 					end
-					wielditem = {name = mobs_mc.items.fishing_rod, count = 1}
+					wielditem = {name = "mcl_fishing:fishing_rod", count = 1}
 				else
 					wielditem:add_wear(2521)
 				end
@@ -230,8 +235,8 @@ minetest.LIGHT_MAX+1,
 30,
 15000,
 8,
-mobs_mc.spawn_height.overworld_min,
-mobs_mc.spawn_height.overworld_max)
+mcl_vars.mg_overworld_min,
+mcl_vars.mg_overworld_max)
 
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:pig", S("Pig"), "mobs_mc_spawn_icon_pig.png", 0)

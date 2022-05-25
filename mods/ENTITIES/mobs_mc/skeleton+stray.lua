@@ -45,17 +45,17 @@ local skeleton = {
 	damage = 2,
 	reach = 2,
 	drops = {
-		{name = mobs_mc.items.arrow,
+		{name = "mcl_bows:arrow",
 		chance = 1,
 		min = 0,
 		max = 2,
 		looting = "common",},
-		{name = mobs_mc.items.bow,
+		{name = "mcl_bows:bow",
 		chance = 100 / 8.5,
 		min = 1,
 		max = 1,
 		looting = "rare",},
-		{name = mobs_mc.items.bone,
+		{name = "mcl_mobitems:bone",
 		chance = 1,
 		min = 0,
 		max = 2,
@@ -63,7 +63,7 @@ local skeleton = {
 
 		-- Head
 		-- TODO: Only drop if killed by charged creeper
-		{name = mobs_mc.items.head_skeleton,
+		{name = "mcl_heads:skeleton",
 		chance = 200, -- 0.5% chance
 		min = 1,
 		max = 1,},
@@ -292,8 +292,8 @@ mcl_mobs:spawn_specific(
 20,
 17000,
 2,
-mobs_mc.spawn_height.overworld_min,
-mobs_mc.spawn_height.overworld_max)
+mcl_vars.mg_overworld_min,
+mcl_vars.mg_overworld_max)
 
 
 -- Nether spawn
@@ -309,8 +309,8 @@ mcl_mobs:spawn_specific(
 30,
 10000,
 3,
-mobs_mc.spawn_height.nether_min,
-mobs_mc.spawn_height.nether_max)
+mcl_vars.mg_nether_min,
+mcl_vars.mg_nether_max)
 
 -- Stray spawn
 -- TODO: Spawn directly under the sky
@@ -329,8 +329,8 @@ mcl_mobs:spawn_specific(
 20,
 19000,
 2,
-mobs_mc.spawn_height.water,
-mobs_mc.spawn_height.overworld_max)
+mobs_mc.water_level,
+mcl_vars.mg_overworld_max)
 
 
 -- spawn eggs

@@ -114,7 +114,14 @@ local horse = {
 	fly = false,
 	walk_chance = 60,
 	view_range = 16,
-	follow = mobs_mc.follow.horse,
+	follow = {
+		"mcl_core:apple",
+		"mcl_core:sugar",
+		"mcl_farming:wheat_item",
+		"mcl_farming:hay_block",
+		"mcl_core:apple_gold",
+		"mcl_farming:carrot_item_gold",
+	},
 	passive = true,
 	hp_min = 15,
 	hp_max = 30,
@@ -125,7 +132,7 @@ local horse = {
 	jump = true,
 	jump_height = 5.75, -- can clear 2.5 blocks
 	drops = {
-		{name = mobs_mc.items.leather,
+		{name = "mcl_mobitems:leather",
 		chance = 1,
 		min = 0,
 		max = 2,
@@ -194,7 +201,7 @@ local horse = {
 
 		-- drop saddle when horse is killed while riding
 		if self._saddle then
-			minetest.add_item(pos, mobs_mc.items.saddle)
+			minetest.add_item(pos, "mcl_mobitems:saddle")
 		end
 		-- also detach from horse properly
 		if self.driver then
@@ -222,15 +229,15 @@ local horse = {
 
 			-- Feeding, intentionally not using mobs:feed_tame because horse taming is
 			-- different and more complicated
-			if (iname == mobs_mc.items.sugar) then
+			if (iname == "mcl_core:sugar") then
 				temper_increase = 3
-			elseif (iname == mobs_mc.items.wheat) then
+			elseif (iname == "mcl_farming:wheat_item") then
 				temper_increase = 3
-			elseif (iname == mobs_mc.items.apple) then
+			elseif (iname == "mcl_core:apple") then
 				temper_increase = 3
-			elseif (iname == mobs_mc.items.golden_carrot) then
+			elseif (iname == "mcl_farming:carrot_item_gold") then
 				temper_increase = 5
-			elseif (iname == mobs_mc.items.golden_apple) then
+			elseif (iname == "mcl_core:apple_gold") then
 				temper_increase = 10
 			-- Trying to ride
 			elseif not self.driver then
@@ -258,9 +265,9 @@ local horse = {
 
 		if can_breed(self.name) then
 			-- Breed horse with golden apple or golden carrot
-			if (iname == mobs_mc.items.golden_apple) then
+			if (iname == "mcl_core:apple_gold") then
 				heal = 10
-			elseif (iname == mobs_mc.items.golden_carrot) then
+			elseif (iname == "mcl_farming:carrot_item_gold") then
 				heal = 4
 			end
 			if heal > 0 and mcl_mobs:feed_tame(self, clicker, heal, true, false) then
@@ -269,13 +276,13 @@ local horse = {
 		end
 		-- Feed with anything else
 		-- TODO heal amounts don't work
-		if (iname == mobs_mc.items.sugar) then
+		if (iname == "mcl_core:sugar") then
 			heal = 1
-		elseif (iname == mobs_mc.items.wheat) then
+		elseif (iname == "mcl_farming:wheat_item") then
 			heal = 2
-		elseif (iname == mobs_mc.items.apple) then
+		elseif (iname == "mcl_core:apple") then
 			heal = 3
-		elseif (iname == mobs_mc.items.hay_bale) then
+		elseif (iname == "mcl_farming:hay_block") then
 			heal = 20
 		end
 		if heal > 0 and mcl_mobs:feed_tame(self, clicker, heal, false, false) then
@@ -298,7 +305,7 @@ local horse = {
 
 			-- Put on saddle if tamed
 			elseif not self.driver and not self._saddle
-			and iname == mobs_mc.items.saddle then
+			and iname == "mcl_mobitems:saddle" then
 
 				-- Put on saddle and take saddle from player's inventory
 				local w = clicker:get_wielded_item()
@@ -424,7 +431,7 @@ skeleton_horse.breath_max = -1
 skeleton_horse.armor = {undead = 100, fleshy = 100}
 skeleton_horse.textures = {{"blank.png", "mobs_mc_horse_skeleton.png", "blank.png"}}
 skeleton_horse.drops = {
-	{name = mobs_mc.items.bone,
+	{name = "mcl_mobitems:bone",
 	chance = 1,
 	min = 0,
 	max = 2,},
@@ -447,7 +454,7 @@ zombie_horse.breath_max = -1
 zombie_horse.armor = {undead = 100, fleshy = 100}
 zombie_horse.textures = {{"blank.png", "mobs_mc_horse_zombie.png", "blank.png"}}
 zombie_horse.drops = {
-	{name = mobs_mc.items.rotten_flesh,
+	{name = "mcl_mobitems:rotten_flesh",
 	chance = 1,
 	min = 0,
 	max = 2,},
@@ -562,8 +569,8 @@ minetest.LIGHT_MAX+1,
 30,
 15000,
 4,
-mobs_mc.spawn_height.water+3,
-mobs_mc.spawn_height.overworld_max)
+mobs_mc.water_level+3,
+mcl_vars.mg_overworld_max)
 
 
 mcl_mobs:spawn_specific(
@@ -583,8 +590,8 @@ minetest.LIGHT_MAX+1,
 30,
 15000,
 4,
-mobs_mc.spawn_height.water+3,
-mobs_mc.spawn_height.overworld_max)
+mobs_mc.water_level+3,
+mcl_vars.mg_overworld_max)
 
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:horse", S("Horse"), "mobs_mc_spawn_icon_horse.png", 0)

@@ -55,24 +55,24 @@ mcl_mobs:register_mob("mobs_mc:villager_zombie", {
 	attack_type = "dogfight",
 	group_attack = true,
 	drops = {
-		{name = mobs_mc.items.rotten_flesh,
+		{name = "mcl_mobitems:rotten_flesh",
 		chance = 1,
 		min = 0,
 		max = 2,
 		looting = "common",},
-		{name = mobs_mc.items.iron_ingot,
+		{name = "mcl_core:iron_ingot",
 		chance = 120, -- 2.5% / 3
 		min = 1,
 		max = 1,
 		looting = "rare",
 		looting_factor = 0.01 / 3,},
-		{name = mobs_mc.items.carrot,
+		{name = "mcl_farming:carrot_item",
 		chance = 120, -- 2.5% / 3
 		min = 1,
 		max = 1,
 		looting = "rare",
 		looting_factor = 0.01 / 3,},
-		{name = mobs_mc.items.potato,
+		{name = "mcl_farming:potato_item",
 		chance = 120, -- 2.5% / 3
 		min = 1,
 		max = 1,
@@ -237,9 +237,9 @@ mcl_mobs:spawn_specific(
 30,
 4090,
 4,
-mobs_mc.spawn_height.overworld_min,
-mobs_mc.spawn_height.overworld_max)
---mcl_mobs:spawn_specific("mobs_mc:villager_zombie", "overworld", "ground", 0, 7, 30, 60000, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mcl_vars.mg_overworld_min,
+mcl_vars.mg_overworld_max)
+--mcl_mobs:spawn_specific("mobs_mc:villager_zombie", "overworld", "ground", 0, 7, 30, 60000, 4, mcl_vars.mg_overworld_min, mcl_vars.mg_overworld_max)
 
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:villager_zombie", S("Zombie Villager"), "mobs_mc_spawn_icon_zombie_villager.png", 0)

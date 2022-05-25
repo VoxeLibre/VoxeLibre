@@ -52,7 +52,7 @@ mcl_mobs:register_mob("mobs_mc:snowman", {
                 "farming_pumpkin_top.png", --left
 	},
 	gotten_texture = gotten_texture,
-	drops = {{ name = mobs_mc.items.snowball, chance = 1, min = 0, max = 15 }},
+	drops = {{ name = "mcl_throwing:snowball", chance = 1, min = 0, max = 15 }},
 	visual_size = {x=3, y=3},
 	walk_velocity = 0.6,
 	run_velocity = 2,
@@ -106,7 +106,7 @@ mcl_mobs:register_mob("mobs_mc:snowman", {
 				local belowdef = minetest.registered_nodes[minetest.get_node(below).name]
 				if belowdef and belowdef.walkable and (belowdef.node_box == nil or belowdef.node_box.type == "regular") then
 					-- Place top snow
-					minetest.set_node(pos, {name = mobs_mc.items.top_snow})
+					minetest.set_node(pos, {name = "mcl_core:snow"})
 				end
 			end
 		end
@@ -114,7 +114,7 @@ mcl_mobs:register_mob("mobs_mc:snowman", {
 	-- Remove pumpkin if using shears
 	on_rightclick = function(self, clicker)
 		local item = clicker:get_wielded_item()
-		if self.gotten ~= true and item:get_name() == mobs_mc.items.shears then
+		if self.gotten ~= true and item:get_name() == "mcl_tools:shears" then
 			-- Remove pumpkin
 			self.gotten = true
 			self.object:set_properties({
@@ -130,7 +130,7 @@ mcl_mobs:register_mob("mobs_mc:snowman", {
 
 			-- Wear out
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
-				item:add_wear(mobs_mc.misc.shears_wear)
+				item:add_wear(mobs_mc.shears_wear)
 				clicker:get_inventory():set_stack("main", clicker:get_wield_index(), item)
 			end
 		end
@@ -160,7 +160,7 @@ end
 -- This is to be called when a pumpkin or jack'o lantern has been placed. Recommended: In the on_construct function
 -- of the node.
 -- This summons a snow golen when pos is next to a row of two snow blocks.
-mobs_mc.tools.check_snow_golem_summon = function(pos)
+function mobs_mc.check_snow_golem_summon(pos)
 	local checks = {
 		-- These are the possible placement patterns
 		-- { snow block pos. 1, snow block pos. 2, snow golem spawn position }
@@ -178,7 +178,7 @@ mobs_mc.tools.check_snow_golem_summon = function(pos)
 		local place = checks[c][3]
 		local b1n = minetest.get_node(b1)
 		local b2n = minetest.get_node(b2)
-		if b1n.name == mobs_mc.items.snow_block and b2n.name == mobs_mc.items.snow_block then
+		if b1n.name == "mcl_core:snowblock" and b2n.name == "mcl_core:snowblock" then
 			-- Remove the pumpkin and both snow blocks and summon the snow golem
 			minetest.remove_node(pos)
 			minetest.remove_node(b1)

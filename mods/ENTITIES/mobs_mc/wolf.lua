@@ -6,17 +6,6 @@ local default_walk_chance = 50
 
 local pr = PseudoRandom(os.time()*10)
 
-local is_food = function(itemstring)
-	for f=1, #mobs_mc.follow.dog do
-		if itemstring == mobs_mc.follow.dog[f] then
-			return true
-		elseif string.sub(itemstring, 1, 6) == "group:" and minetest.get_item_group(itemstring, string.sub(itemstring, 7, -1)) ~= 0 then
-			return true
-		end
-	end
-	return false
-end
-
 -- Wolf
 local wolf = {
 	description = S("Wolf"),
@@ -55,13 +44,13 @@ local wolf = {
 	reach = 2,
 	attack_type = "dogfight",
 	fear_height = 4,
-	follow = mobs_mc.follow.wolf,
+	follow = { "mcl_mobitems:bone" },
 	on_rightclick = function(self, clicker)
 		-- Try to tame wolf (intentionally does NOT use mcl_mobs:feed_tame)
 		local tool = clicker:get_wielded_item()
 
 		local dog, ent
-		if tool:get_name() == mobs_mc.items.bone then
+		if tool:get_name() == "mcl_mobitems:bone" then
 
 			minetest.sound_play("mobs_mc_wolf_take_bone", {object=self.object, max_hear_distance=16}, true)
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
@@ -142,9 +131,21 @@ dog.owner_loyal = true
 dog.follow_velocity = 3.2
 -- Automatically teleport dog to owner
 dog.do_custom = mobs_mc.make_owner_teleport_function(12)
-dog.follow = mobs_mc.follow.dog
+dog.follow = {
+	"mcl_mobitems:rabbit", "mcl_mobitems:cooked_rabbit",
+	"mcl_mobitems:mutton", "mcl_mobitems:cooked_mutton",
+	"mcl_mobitems:beef", "mcl_mobitems:cooked_beef",
+	"mcl_mobitems:chicken", "mcl_mobitems:cooked_chicken",
+	"mcl_mobitems:porkchop", "mcl_mobitems:cooked_porkchop",
+	"mcl_mobitems:rotten_flesh",
+}
 dog.attack_animals = nil
 dog.specific_attack = nil
+
+local is_food = function(itemstring)
+	return table.indexof(dog.follow, itemstring) ~= -1
+end
+
 dog.on_rightclick = function(self, clicker)
 	local item = clicker:get_wielded_item()
 
@@ -160,7 +161,7 @@ dog.on_rightclick = function(self, clicker)
 		local eatable = minetest.get_item_group(item, "eatable")
 		if eatable > 0 then
 			hp_add = eatable
-		elseif item:get_name() == mobs_mc.items.rotten_flesh then
+		elseif item:get_name() == "mcl_mobitems:rotten_flesh" then
 			hp_add = 4
 		else
 			hp_add = 4
@@ -260,7 +261,7 @@ minetest.LIGHT_MAX+1,
 30,
 9000,
 7,
-mobs_mc.spawn_height.water+3,
-mobs_mc.spawn_height.overworld_max)
+mobs_mc.water_level+3,
+mcl_vars.mg_overworld_max)
 
 mcl_mobs:register_egg("mobs_mc:wolf", S("Wolf"), "mobs_mc_spawn_icon_wolf.png", 0)

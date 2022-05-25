@@ -249,7 +249,7 @@ mcl_mobs:register_mob("mobs_mc:enderman", {
 	damage = 7,
 	reach = 2,
 	drops = {
-		{name = mobs_mc.items.ender_pearl,
+		{name = "mcl_throwing:ender_pearl",
 		chance = 1,
 		min = 0,
 		max = 1,
@@ -604,8 +604,8 @@ minetest.LIGHT_MAX+1,
 30,
 3000,
 12,
-mobs_mc.spawn_height.end_min,
-mobs_mc.spawn_height.end_max)
+mcl_vars.mg_end_min,
+mcl_vars.mg_end_max)
 -- Overworld spawn
 mcl_mobs:spawn_specific(
 "mobs_mc:enderman",
@@ -757,8 +757,8 @@ mcl_mobs:spawn_specific(
 30,
 19000,
 2,
-mobs_mc.spawn_height.overworld_min,
-mobs_mc.spawn_height.overworld_max)
+mcl_vars.mg_overworld_min,
+mcl_vars.mg_overworld_max)
 
 -- Nether spawn (rare)
 mcl_mobs:spawn_specific(
@@ -773,8 +773,8 @@ mcl_mobs:spawn_specific(
 30,
 27500,
 4,
-mobs_mc.spawn_height.nether_min,
-mobs_mc.spawn_height.nether_max)
+mcl_vars.mg_nether_min,
+mcl_vars.mg_nether_max)
 
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:enderman", S("Enderman"), "mobs_mc_spawn_icon_enderman.png", 0)

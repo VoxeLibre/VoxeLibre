@@ -34,13 +34,13 @@ mcl_mobs:register_mob("mobs_mc:polar_bear", {
 	attack_type = "dogfight",
 	drops = {
 		-- 3/4 chance to drop raw fish (poor approximation)
-		{name = mobs_mc.items.fish_raw,
+		{name = "mcl_fishing:fish_raw",
 		chance = 2,
 		min = 0,
 		max = 2,
 		looting = "common",},
 		-- 1/4 to drop raw salmon
-		{name = mobs_mc.items.salmon_raw,
+		{name = "mcl_fishing:salmon_raw",
 		chance = 4,
 		min = 0,
 		max = 2,
@@ -83,8 +83,8 @@ minetest.LIGHT_MAX+1,
 30,
 7000,
 3,
-mobs_mc.spawn_height.overworld_min,
-mobs_mc.spawn_height.overworld_max)
+mcl_vars.mg_overworld_min,
+mcl_vars.mg_overworld_max)
 
 -- spawn egg
 mcl_mobs:register_egg("mobs_mc:polar_bear", S("Polar Bear"), "mobs_mc_spawn_icon_polarbear.png", 0)

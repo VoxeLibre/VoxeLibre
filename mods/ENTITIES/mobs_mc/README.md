@@ -17,11 +17,6 @@ This mod adds mobs which closely resemble the mobs from the game Minecraft, vers
 * Code: GNU General Public License, version 3 (see `LICENSE`)
 * Media: MIT, CC0, CC BY 3.0 CC BY-SA 4.0, LGPLv2.1, GPLv3. See `LICENSE_media.md` for details
 
-## Useful information for developers
-
-### Game integration
-Want to include this mod in your game? Read `gameconfig.md`.
-
 ### Links
 
 * [`mobs_mc`](https://github.com/maikerumine/mobs_mc)

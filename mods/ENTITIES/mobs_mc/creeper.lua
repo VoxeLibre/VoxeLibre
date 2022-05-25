@@ -58,7 +58,7 @@ mcl_mobs:register_mob("mobs_mc:creeper", {
 			return
 		end
 		local item = clicker:get_wielded_item()
-		if item:get_name() == mobs_mc.items.flint_and_steel then
+		if item:get_name() == "mcl_fire:flint_and_steel" then
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				-- Wear tool
 				local wdef = item:get_definition()
@@ -88,14 +88,14 @@ mcl_mobs:register_mob("mobs_mc:creeper", {
 			if luaentity and luaentity.name:find("arrow") then
 				local shooter_luaentity = luaentity._shooter and luaentity._shooter:get_luaentity()
 				if shooter_luaentity and (shooter_luaentity.name == "mobs_mc:skeleton" or shooter_luaentity.name == "mobs_mc:stray") then
-					minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, mobs_mc.items.music_discs[math.random(1, #mobs_mc.items.music_discs)])
+					minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, "mcl_jukebox:record_" .. math.random(9))
 				end
 			end
 		end
 	end,
 	maxdrops = 2,
 	drops = {
-		{name = mobs_mc.items.gunpowder,
+		{name = "mcl_mobitems:gunpowder",
 		chance = 1,
 		min = 0,
 		max = 2,
@@ -103,7 +103,7 @@ mcl_mobs:register_mob("mobs_mc:creeper", {
 
 		-- Head
 		-- TODO: Only drop if killed by charged creeper
-		{name = mobs_mc.items.head_creeper,
+		{name = "mcl_heads:creeper",
 		chance = 200, -- 0.5%
 		min = 1,
 		max = 1,},
@@ -180,7 +180,7 @@ mcl_mobs:register_mob("mobs_mc:creeper_charged", {
 			return
 		end
 		local item = clicker:get_wielded_item()
-		if item:get_name() == mobs_mc.items.flint_and_steel then
+		if item:get_name() == "mcl_fire:flint_and_steel" then
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				-- Wear tool
 				local wdef = item:get_definition()
@@ -210,14 +210,14 @@ mcl_mobs:register_mob("mobs_mc:creeper_charged", {
 			if luaentity and luaentity.name:find("arrow") then
 				local shooter_luaentity = luaentity._shooter and luaentity._shooter:get_luaentity()
 				if shooter_luaentity and (shooter_luaentity.name == "mobs_mc:skeleton" or shooter_luaentity.name == "mobs_mc:stray") then
-					minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, mobs_mc.items.music_discs[math.random(1, #mobs_mc.items.music_discs)])
+					minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, "mcl_jukebox:record_" .. math.random(9))
 				end
 			end
 		end
 	end,
 	maxdrops = 2,
 	drops = {
-		{name = mobs_mc.items.gunpowder,
+		{name = "mcl_mobitems:gunpowder",
 		chance = 1,
 		min = 0,
 		max = 2,
@@ -225,7 +225,7 @@ mcl_mobs:register_mob("mobs_mc:creeper_charged", {
 
 		-- Head
 		-- TODO: Only drop if killed by charged creeper
-		{name = mobs_mc.items.head_creeper,
+		{name = "mcl_heads:creeper",
 		chance = 200, -- 0.5%
 		min = 1,
 		max = 1,},
@@ -404,8 +404,8 @@ mcl_mobs:spawn_specific(
 20,
 16500,
 2,
-mobs_mc.spawn_height.overworld_min,
-mobs_mc.spawn_height.overworld_max)
+mcl_vars.mg_overworld_min,
+mcl_vars.mg_overworld_max)
 
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:creeper", S("Creeper"), "mobs_mc_spawn_icon_creeper.png", 0)

@@ -62,11 +62,11 @@ mcl_mobs:register_mob("mobs_mc:iron_golem", {
 		return false
 	end,
 	drops = {
-		{name = mobs_mc.items.iron_ingot,
+		{name = "mcl_core:iron_ingot",
 		chance = 1,
 		min = 3,
 		max = 5,},
-		{name = mobs_mc.items.poppy,
+		{name = "mcl_flowers:poppy",
 		chance = 1,
 		min = 0,
 		max = 2,},
@@ -107,7 +107,7 @@ I = Iron block
 . = Air
 ]]
 
-mobs_mc.tools.check_iron_golem_summon = function(pos)
+function mobs_mc.check_iron_golem_summon(pos)
 	local checks = {
 		-- These are the possible placement patterns, with offset from the pumpkin block.
 		-- These tables include the positions of the iron blocks (1-4) and air blocks (5-8)
@@ -165,7 +165,7 @@ mobs_mc.tools.check_iron_golem_summon = function(pos)
 		for i=1, 4 do
 			local cpos = vector.add(pos, checks[c][i])
 			local node = minetest.get_node(cpos)
-			if node.name ~= mobs_mc.items.iron_block then
+			if node.name ~= "mcl_core:ironblock" then
 				ok = false
 				break
 			end

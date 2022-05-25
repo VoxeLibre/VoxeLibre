@@ -42,9 +42,9 @@ local rabbit = {
 	runaway = true,
 	jump = true,
 	drops = {
-		{name = mobs_mc.items.rabbit_raw, chance = 1, min = 0, max = 1, looting = "common",},
-		{name = mobs_mc.items.rabbit_hide, chance = 1, min = 0, max = 1, looting = "common",},
-		{name = mobs_mc.items.rabbit_foot, chance = 10, min = 0, max = 1, looting = "rare", looting_factor = 0.03,},
+		{name = "mcl_mobitems:rabbit", chance = 1, min = 0, max = 1, looting = "common",},
+		{name = "mcl_mobitems:rabbit_hide", chance = 1, min = 0, max = 1, looting = "common",},
+		{name = "mcl_mobitems:rabbit_foot", chance = 10, min = 0, max = 1, looting = "rare", looting_factor = 0.03,},
 	},
 	fear_height = 4,
 	animation = {
@@ -54,11 +54,24 @@ local rabbit = {
 		run_start = 0,		run_end = 20,
 	},
 	-- Follow (yellow) dangelions, carrots and golden carrots
-	follow = mobs_mc.follow.rabbit,
+	follow = {
+		"mcl_flowers:dandelion",
+		"mcl_farming:carrot_item",
+		"mcl_farming:carrot_item_gold",
+	},
 	view_range = 8,
 	-- Eat carrots and reduce their growth stage by 1
 	replace_rate = 10,
-	replace_what = mobs_mc.replace.rabbit,
+	replace_what = {
+		{"mcl_farming:carrot", "mcl_farming:carrot_7", 0},
+		{"mcl_farming:carrot_7", "mcl_farming:carrot_6", 0},
+		{"mcl_farming:carrot_6", "mcl_farming:carrot_5", 0},
+		{"mcl_farming:carrot_5", "mcl_farming:carrot_4", 0},
+		{"mcl_farming:carrot_4", "mcl_farming:carrot_3", 0},
+		{"mcl_farming:carrot_3", "mcl_farming:carrot_2", 0},
+		{"mcl_farming:carrot_2", "mcl_farming:carrot_1", 0},
+		{"mcl_farming:carrot_1", "air", 0},
+	},
 	on_rightclick = function(self, clicker)
 		-- Feed, tame protect or capture
 		if mcl_mobs:feed_tame(self, clicker, 1, true, true) then return end
@@ -137,8 +150,8 @@ minetest.LIGHT_MAX+1,
 30,
 15000,
 8,
-mobs_mc.spawn_height.overworld_min,
-mobs_mc.spawn_height.overworld_max)
+mcl_vars.mg_overworld_min,
+mcl_vars.mg_overworld_max)
 
 --[[
 local spawn = {
@@ -148,12 +161,12 @@ local spawn = {
 	active_object_count = 10,
 	min_light = 0,
 	max_light = minetest.LIGHT_MAX+1,
-	min_height = mobs_mc.spawn_height.overworld_min,
-	max_height = mobs_mc.spawn_height.overworld_max,
+	min_height = mcl_vars.mg_overworld_min,
+	max_height = mcl_vars.mg_overworld_max,
 }
 
 local spawn_desert = table.copy(spawn)
-spawn_desert.nodes = mobs_mc.spawn.desert
+spawn_desert.nodes = { "mcl_core:sand", "mcl_core:sandstone" }
 spawn_desert.on_spawn = function(self, pos)
 	local texture = "mobs_mc_rabbit_gold.png"
 	self.base_texture = { "mobs_mc_rabbit_gold.png" }
@@ -162,7 +175,7 @@ end
 mcl_mobs:spawn(spawn_desert)
 
 local spawn_snow = table.copy(spawn)
-spawn_snow.nodes = mobs_mc.spawn.snow
+spawn_snow.nodes = { "mcl_core:snow", "mcl_core:snowblock", "mcl_core:dirt_with_grass_snow" }
 spawn_snow.on_spawn = function(self, pos)
 	local texture
 	local r = math.random(1, 100)
@@ -179,7 +192,7 @@ end
 mcl_mobs:spawn(spawn_snow)
 
 local spawn_grass = table.copy(spawn)
-spawn_grass.nodes = mobs_mc.spawn.grassland
+spawn_grass.nodes = { "mcl_core:dirt_with_grass" }
 spawn_grass.on_spawn = function(self, pos)
 	local texture
 	local r = math.random(1, 100)

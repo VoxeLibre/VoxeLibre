@@ -41,7 +41,7 @@ mcl_mobs:register_mob("mobs_mc:blaze", {
 	reach = 2,
 	pathfinding = 1,
 	drops = {
-		{name = mobs_mc.items.blaze_rod,
+		{name = "mcl_mobitems:blaze_rod",
 		chance = 1,
 		min = 0,
 		max = 1,
@@ -141,8 +141,8 @@ minetest.LIGHT_MAX+1,
 30,
 5000,
 3,
-mobs_mc.spawn_height.nether_min,
-mobs_mc.spawn_height.nether_max)
+mcl_vars.mg_nether_min,
+mcl_vars.mg_nether_max)
 
 -- Blaze fireball
 mcl_mobs:register_arrow("mobs_mc:blaze_fireball", {
@@ -181,7 +181,7 @@ mcl_mobs:register_arrow("mobs_mc:blaze_fireball", {
 	-- Node hit, make fire
 	hit_node = function(self, pos, node)
 		if node == "air" then
-			minetest.set_node(pos, {name = mobs_mc.items.fire})
+			minetest.set_node(pos, {name = "mcl_fire:fire"})
 		else
 			if self._shot_from_dispenser and mod_target and node == "mcl_target:target_off" then
 				mcl_target.hit(vector.round(pos), 0.4) --4 redstone ticks
@@ -193,7 +193,7 @@ mcl_mobs:register_arrow("mobs_mc:blaze_fireball", {
 			-- Set fire if node is air, or a replacable flammable node (e.g. a plant)
 			if crashnode.name == "air" or
 					(cndef and cndef.buildable_to and minetest.get_item_group(crashnode.name, "flammable") >= 1) then
-				minetest.set_node(crashpos, {name = mobs_mc.items.fire})
+				minetest.set_node(crashpos, {name = "mcl_fire:fire"})
 			end
 		end
 	end

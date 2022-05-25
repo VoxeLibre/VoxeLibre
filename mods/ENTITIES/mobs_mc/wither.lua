@@ -46,7 +46,7 @@ mcl_mobs:register_mob("mobs_mc:wither", {
 	attack_animals = true,
 	can_despawn = false,
 	drops = {
-		{name = mobs_mc.items.nether_star,
+		{name = "mcl_mobitems:nether_star",
 		chance = 1,
 		min = 1,
 		max = 1},

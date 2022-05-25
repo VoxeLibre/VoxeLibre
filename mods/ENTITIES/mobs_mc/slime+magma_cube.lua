@@ -140,7 +140,7 @@ slime_tiny.damage = 0
 slime_tiny.reach = 2.5
 slime_tiny.drops = {
 	-- slimeball
-	{name = mobs_mc.items.slimeball,
+	{name = "mcl_mobitems:slimeball",
 	chance = 1,
 	min = 0,
 	max = 2,},
@@ -153,8 +153,8 @@ slime_tiny.on_die = nil
 
 mcl_mobs:register_mob("mobs_mc:slime_tiny", slime_tiny)
 
-local smin = mobs_mc.spawn_height.overworld_min
-local smax = mobs_mc.spawn_height.water - 23
+local smin = mcl_vars.mg_overworld_min
+local smax = mobs_mc.water_level - 23
 
 mcl_mobs:spawn_specific(
 "mobs_mc:slime_tiny",
@@ -315,7 +315,7 @@ local magma_cube_big = {
 	reach = 3,
 	armor = 53,
 	drops = {
-		{name = mobs_mc.items.magma_cream,
+		{name = "mcl_mobitems:magma_cream",
 		chance = 4,
 		min = 1,
 		max = 1,},
@@ -394,8 +394,8 @@ magma_cube_tiny.on_die = nil
 mcl_mobs:register_mob("mobs_mc:magma_cube_tiny", magma_cube_tiny)
 
 
-local mmin = mobs_mc.spawn_height.nether_min
-local mmax = mobs_mc.spawn_height.nether_max
+local mmin = mcl_vars.mg_nether_min
+local mmax = mcl_vars.mg_nether_max
 
 mcl_mobs:spawn_specific(
 "mobs_mc:magma_cube_tiny",
@@ -443,9 +443,9 @@ minetest.LIGHT_MAX+1,
 mmin,
 mmax)
 
---mcl_mobs:spawn_specific("mobs_mc:magma_cube_tiny", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11000, 4, mmin, mmax)
---mcl_mobs:spawn_specific("mobs_mc:magma_cube_small", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11100, 4, mmin, mmax)
---mcl_mobs:spawn_specific("mobs_mc:magma_cube_big", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11200, 4, mmin, mmax)
+--mcl_mobs:spawn_specific("mobs_mc:magma_cube_tiny", { "mcl_nether:nether_brick", "mcl_nether:netherrack" }, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11000, 4, mmin, mmax)
+--mcl_mobs:spawn_specific("mobs_mc:magma_cube_small", { "mcl_nether:nether_brick", "mcl_nether:netherrack" }, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11100, 4, mmin, mmax)
+--mcl_mobs:spawn_specific("mobs_mc:magma_cube_big", { "mcl_nether:nether_brick", "mcl_nether:netherrack" }, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11200, 4, mmin, mmax)
 
 
 -- spawn eggs

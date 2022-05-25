@@ -10,24 +10,24 @@ local S = minetest.get_translator("mobs_mc")
 --###################
 
 local drops_common = {
-	{name = mobs_mc.items.rotten_flesh,
+	{name = "mcl_mobitems:rotten_flesh",
 	chance = 1,
 	min = 0,
 	max = 2,
 	looting = "common",},
-	{name = mobs_mc.items.iron_ingot,
+	{name = "mcl_core:iron_ingot",
 	chance = 120, -- 2.5% / 3
 	min = 1,
 	max = 1,
 	looting = "rare",
 	looting_factor = 0.01 / 3,},
-	{name = mobs_mc.items.carrot,
+	{name = "mcl_farming:carrot_item",
 	chance = 120, -- 2.5% / 3
 	min = 1,
 	max = 1,
 	looting = "rare",
 	looting_factor = 0.01 / 3,},
-	{name = mobs_mc.items.potato,
+	{name = "mcl_farming:potato_item",
 	chance = 120, -- 2.5% / 3
 	min = 1,
 	max = 1,
@@ -39,7 +39,7 @@ local drops_zombie = table.copy(drops_common)
 table.insert(drops_zombie, {
 	-- Zombie Head
 	-- TODO: Only drop if killed by charged creeper
-	name = mobs_mc.items.head_zombie,
+	name = "mcl_heads:zombie",
 	chance = 200, -- 0.5%
 	min = 1,
 	max = 1,
@@ -238,8 +238,8 @@ mcl_mobs:spawn_specific(
 30,
 6000,
 4,
-mobs_mc.spawn_height.overworld_min,
-mobs_mc.spawn_height.overworld_max)
+mcl_vars.mg_overworld_min,
+mcl_vars.mg_overworld_max)
 -- Baby zombie is 20 times less likely than regular zombies
 mcl_mobs:spawn_specific(
 "mobs_mc:baby_zombie",
@@ -330,8 +330,8 @@ mcl_mobs:spawn_specific(
 30,
 60000,
 4,
-mobs_mc.spawn_height.overworld_min,
-mobs_mc.spawn_height.overworld_max)
+mcl_vars.mg_overworld_min,
+mcl_vars.mg_overworld_max)
 
 
 mcl_mobs:spawn_specific(
@@ -346,8 +346,8 @@ mcl_mobs:spawn_specific(
 30,
 6500,
 4,
-mobs_mc.spawn_height.overworld_min,
-mobs_mc.spawn_height.overworld_max)
+mcl_vars.mg_overworld_min,
+mcl_vars.mg_overworld_max)
 mcl_mobs:spawn_specific(
 "mobs_mc:baby_husk",
 "overworld",
@@ -360,8 +360,8 @@ mcl_mobs:spawn_specific(
 30,
 65000,
 4,
-mobs_mc.spawn_height.overworld_min,
-mobs_mc.spawn_height.overworld_max)
+mcl_vars.mg_overworld_min,
+mcl_vars.mg_overworld_max)
 
 -- Spawn eggs
 mcl_mobs:register_egg("mobs_mc:husk", S("Husk"), "mobs_mc_spawn_icon_husk.png", 0)
