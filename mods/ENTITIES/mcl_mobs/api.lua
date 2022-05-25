@@ -33,13 +33,6 @@ if minetest.global_exists("invisibility") then
 	mobs.invis = invisibility
 end
 
-
--- creative check
-function mobs.is_creative(name)
-	return minetest.is_creative_enabled(name)
-end
-
-
 -- localize math functions
 local pi = math.pi
 local sin = math.sin
@@ -3859,7 +3852,7 @@ local on_rightclick_prefix = function(self, clicker)
 
 			update_tag(self)
 
-			if not mobs.is_creative(clicker:get_player_name()) then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end
@@ -4299,7 +4292,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 						return itemstack
 					end
 					mcl_mobspawners.setup_spawner(pointed_thing.under, itemstack:get_name())
-					if not mobs.is_creative(name) then
+					if not minetest.is_creative_enabled(name) then
 						itemstack:take_item()
 					end
 					return itemstack
@@ -4339,7 +4332,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 				end
 
 				-- if not in creative then take item
-				if not mobs.is_creative(placer:get_player_name()) then
+				if not minetest.is_creative_enabled(placer:get_player_name()) then
 					itemstack:take_item()
 				end
 			end
@@ -4374,7 +4367,7 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 	if self.nofollow or follow_holding(self, clicker) then
 
 		-- if not in creative then take item
-		if not mobs.is_creative(clicker:get_player_name()) then
+		if not minetest.is_creative_enabled(clicker:get_player_name()) then
 
 			local item = clicker:get_wielded_item()
 
