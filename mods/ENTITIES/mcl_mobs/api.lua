@@ -2975,10 +2975,14 @@ end
 local function check_entity_cramming(self)
 	local p = self.object:get_pos()
 	local oo = minetest.get_objects_inside_radius(p,1)
-	local clear = #oo < ENTITY_CRAMMING_MAX
-	local ncram = {}
+	local mobs = {}
 	for _,o in pairs(oo) do
 		local l = o:get_luaentity()
+		if l and l.is_mob and l.health > 0 then table.insert(mobs,l) end
+	end
+	local clear = #mobs < ENTITY_CRAMMING_MAX
+	local ncram = {}
+	for _,l in pairs(mobs) do
 		if l then
 			if clear then
 				l.cram = nil
