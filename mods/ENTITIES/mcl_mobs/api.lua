@@ -23,9 +23,6 @@ local S = minetest.get_translator("mcl_mobs")
 
 -- Invisibility mod check
 mobs.invis = {}
-if minetest.global_exists("invisibility") then
-	mobs.invis = invisibility
-end
 
 -- localize math functions
 local pi = math.pi
