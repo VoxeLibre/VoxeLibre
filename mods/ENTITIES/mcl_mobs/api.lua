@@ -23,10 +23,6 @@ MOB_CAP.water = 15
 -- Localize
 local S = minetest.get_translator("mcl_mobs")
 
--- CMI support check
-local use_cmi = minetest.global_exists("cmi")
-
-
 -- Invisibility mod check
 mobs.invis = {}
 if minetest.global_exists("invisibility") then
@@ -850,10 +846,6 @@ local check_for_death = function(self, cause, cmi_cause)
 			death_handle(self)
 		end
 
-		if use_cmi then
-			cmi.notify_die(self.object, cmi_cause)
-		end
-
 		if on_die_exit == true then
 			self.state = "die"
 			mcl_burning.extinguish(self.object)
@@ -912,9 +904,6 @@ local check_for_death = function(self, cause, cmi_cause)
 	local kill = function(self)
 		if not self.object:get_luaentity() then
 			return
-		end
-		if use_cmi  then
-			cmi.notify_die(self.object, cmi_cause)
 		end
 
 		death_handle(self)
@@ -3144,23 +3133,19 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		tflp = 0.2
 	end
 
-	if use_cmi then
-		damage = cmi.calculate_damage(self.object, hitter, tflp, tool_capabilities, dir)
-	else
 
-		for group,_ in pairs( (tool_capabilities.damage_groups or {}) ) do
+	for group,_ in pairs( (tool_capabilities.damage_groups or {}) ) do
 
-			tmp = tflp / (tool_capabilities.full_punch_interval or 1.4)
+		tmp = tflp / (tool_capabilities.full_punch_interval or 1.4)
 
-			if tmp < 0 then
-				tmp = 0.0
-			elseif tmp > 1 then
-				tmp = 1.0
-			end
-
-			damage = damage + (tool_capabilities.damage_groups[group] or 0)
-				* tmp * ((armor[group] or 0) / 100.0)
+		if tmp < 0 then
+			tmp = 0.0
+		elseif tmp > 1 then
+			tmp = 1.0
 		end
+
+		damage = damage + (tool_capabilities.damage_groups[group] or 0)
+			* tmp * ((armor[group] or 0) / 100.0)
 	end
 
 	if weapon then
@@ -3184,13 +3169,6 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	if damage <= -1 then
 		self.health = self.health - floor(damage)
 		return
-	end
-
-	if use_cmi then
-
-		local cancel =  cmi.notify_punch(self.object, hitter, tflp, tool_capabilities, dir, damage)
-
-		if cancel then return end
 	end
 
 	if tool_capabilities then
@@ -3400,10 +3378,6 @@ local mob_staticdata = function(self)
 	self.following = nil
 	self.state = "stand"
 
-	if use_cmi then
-		self.serialized_cmi_components = cmi.serialize_components(self._cmi_components)
-	end
-
 	local tmp = {}
 
 	for _,stat in pairs(self) do
@@ -3581,11 +3555,6 @@ local mob_activate = function(self, staticdata, def, dtime)
 	if def.after_activate then
 		def.after_activate(self, staticdata, def, dtime)
 	end
-
-	if use_cmi then
-		self._cmi_components = cmi.activate_components(self.serialized_cmi_components)
-		cmi.notify_activate(self.object, dtime)
-	end
 end
 
 
@@ -3594,10 +3563,6 @@ local mob_step = function(self, dtime)
 	check_item_pickup(self)
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
-	end
-
-	if use_cmi then
-		cmi.notify_step(self.object, dtime)
 	end
 
 	local pos = self.object:get_pos()
