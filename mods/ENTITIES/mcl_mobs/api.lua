@@ -2,8 +2,6 @@
 -- API for Mobs Redo: MineClone 2 Edition (MRM)
 
 mobs = {}
-mobs.mod = "mrm"
-mobs.version = "20210106" -- don't rely too much on this, rarely updated, if ever
 
 local MAX_MOB_NAME_LENGTH = 30
 local HORNY_TIME = 30
