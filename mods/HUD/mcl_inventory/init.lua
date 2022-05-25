@@ -177,7 +177,60 @@ minetest.register_on_joinplayer(function(player)
 	return_fields(player, "enchanting_lapis")
 end)
 
-if minetest.is_creative_enabled("") then
-	dofile(minetest.get_modpath(minetest.get_current_modname()).."/creative.lua")
+
+dofile(minetest.get_modpath(minetest.get_current_modname()).."/creative.lua")
+
+local mt_is_creative_enabled = minetest.is_creative_enabled
+
+function minetest.is_creative_enabled(name)
+	if mt_is_creative_enabled(name) then return true end
+	local p = minetest.get_player_by_name(name)
+	if p then
+		return p:get_meta():get_string("gamemode") == "creative"
+	end
+	return false
 end
 
+local function in_table(n,h)
+	for k,v in pairs(h) do
+		if v == n then return true end
+	end
+	return false
+end
+
+local gamemodes = {
+	"survival",
+	"creative"
+}
+
+function mcl_inventory.player_set_gamemode(p,g)
+	local m = p:get_meta()
+	m:set_string("gamemode",g)
+	set_inventory(p)
+end
+
+minetest.register_chatcommand("gamemode",{
+	params = S("[<gamemode>] [<player>]"),
+	description = S("Change gamemode (survival/creative) for yourself or player"),
+	privs = { server = true },
+	func = function(n,param)
+		-- Full input validation ( just for @erlehmann <3 )	
+		local p = minetest.get_player_by_name(n)
+		local args = param:split(" ")
+		if args[2] ~= nil then
+			p = minetest.get_player_by_name(args[2])
+		end
+		if not p then
+			return false, S("Player not online")
+		end
+		if args[1] ~= nil and not in_table(args[1],gamemodes) then
+			return false, S("Gamemode " .. args[1] .. " does not exist.")
+		elseif args[1] ~= nil then
+			mcl_inventory.player_set_gamemode(p,args[1])
+		end		
+		--Result message - show effective game mode
+		local gm = p:get_meta():get_string("gamemode")
+		if gm == "" then gm = gamemodes[1] end
+		return true, S("Gamemode for player ")..n..S(": "..gm)
+	end
+})
