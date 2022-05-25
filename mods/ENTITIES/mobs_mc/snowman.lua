@@ -20,7 +20,7 @@ local gotten_texture = {
 	"blank.png",
 }
 
-mobs:register_mob("mobs_mc:snowman", {
+mcl_mobs:register_mob("mobs_mc:snowman", {
 	description = S("Snow Golem"),
 	type = "npc",
 	spawn_class = "passive",
@@ -196,4 +196,4 @@ mobs_mc.tools.check_snow_golem_summon = function(pos)
 end
 
 -- Spawn egg
-mobs:register_egg("mobs_mc:snowman", S("Snow Golem"), "mobs_mc_spawn_icon_snowman.png", 0)
+mcl_mobs:register_egg("mobs_mc:snowman", S("Snow Golem"), "mobs_mc_spawn_icon_snowman.png", 0)

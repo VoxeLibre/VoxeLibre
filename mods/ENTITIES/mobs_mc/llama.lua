@@ -24,7 +24,7 @@ local carpets = {
 	unicolor_light_blue = { "mcl_wool:light_blue_carpet", "light_blue" },
 }
 
-mobs:register_mob("mobs_mc:llama", {
+mcl_mobs:register_mob("mobs_mc:llama", {
 	description = S("Llama"),
 	type = "animal",
 	spawn_class = "passive",
@@ -101,7 +101,7 @@ mobs:register_mob("mobs_mc:llama", {
 		-- if driver present allow control of llama
 		if self.driver then
 
-			mobs.drive(self, "walk", "stand", false, dtime)
+			mcl_mobs.drive(self, "walk", "stand", false, dtime)
 
 			return false -- skip rest of mob functions
 		end
@@ -113,7 +113,7 @@ mobs:register_mob("mobs_mc:llama", {
 
 		-- detach from llama properly
 		if self.driver then
-			mobs.detach(self.driver, {x = 1, y = 0, z = 1})
+			mcl_mobs.detach(self.driver, {x = 1, y = 0, z = 1})
 		end
 
 	end,
@@ -128,12 +128,12 @@ mobs:register_mob("mobs_mc:llama", {
 		local item = clicker:get_wielded_item()
 		if item:get_name() == mobs_mc.items.hay_bale then
 			-- Breed with hay bale
-			if mobs:feed_tame(self, clicker, 1, true, false) then return end
+			if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
 		else
 			-- Feed with anything else
-			if mobs:feed_tame(self, clicker, 1, false, true) then return end
+			if mcl_mobs:feed_tame(self, clicker, 1, false, true) then return end
 		end
-		if mobs:protect(self, clicker) then return end
+		if mcl_mobs:protect(self, clicker) then return end
 
 		-- Make sure tamed llama is mature and being clicked by owner only
 		if self.tamed and not self.child and self.owner == clicker:get_player_name() then
@@ -172,18 +172,18 @@ mobs:register_mob("mobs_mc:llama", {
 		-- detatch player already riding llama
 		if self.driver and clicker == self.driver then
 
-			mobs.detach(clicker, {x = 1, y = 0, z = 1})
+			mcl_mobs.detach(clicker, {x = 1, y = 0, z = 1})
 
 		-- attach player to llama
 		elseif not self.driver then
 
 			self.object:set_properties({stepheight = 1.1})
-			mobs.attach(self, clicker)
+			mcl_mobs.attach(self, clicker)
 		end
 
 		-- Used to capture llama
 		elseif not self.driver and clicker:get_wielded_item():get_name() ~= "" then
-			mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
+			mcl_mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 		end
 	end,
 
@@ -196,7 +196,7 @@ mobs:register_mob("mobs_mc:llama", {
 		else
 			parent = parent2
 		end
-		child = mobs:spawn_child(pos, parent.name)
+		child = mcl_mobs:spawn_child(pos, parent.name)
 		if child then
 			local ent_c = child:get_luaentity()
 			ent_c.base_texture = table.copy(ent_c.base_texture)
@@ -212,7 +212,7 @@ mobs:register_mob("mobs_mc:llama", {
 })
 
 --spawn
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:llama",
 "overworld",
 "ground",
@@ -239,4 +239,4 @@ mobs_mc.spawn_height.water+15,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:llama", S("Llama"), "mobs_mc_spawn_icon_llama.png", 0)
+mcl_mobs:register_egg("mobs_mc:llama", S("Llama"), "mobs_mc_spawn_icon_llama.png", 0)

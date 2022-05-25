@@ -9,7 +9,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 
-mobs:register_mob("mobs_mc:creeper", {
+mcl_mobs:register_mob("mobs_mc:creeper", {
 	type = "monster",
 	spawn_class = "hostile",
 	hp_min = 20,
@@ -77,7 +77,7 @@ mobs:register_mob("mobs_mc:creeper", {
 		if self._forced_explosion_countdown_timer ~= nil then
 			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
 			if self._forced_explosion_countdown_timer <= 0 then
-				mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)
+				mcl_mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)
 			end
 		end
 	end,
@@ -129,7 +129,7 @@ mobs:register_mob("mobs_mc:creeper", {
 	view_range = 16,
 })
 
-mobs:register_mob("mobs_mc:creeper_charged", {
+mcl_mobs:register_mob("mobs_mc:creeper_charged", {
 	description = S("Creeper"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -199,7 +199,7 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 		if self._forced_explosion_countdown_timer ~= nil then
 			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
 			if self._forced_explosion_countdown_timer <= 0 then
-				mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)
+				mcl_mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)
 			end
 		end
 	end,
@@ -254,7 +254,7 @@ mobs:register_mob("mobs_mc:creeper_charged", {
 	glow = 3,
 })
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:creeper",
 "overworld",
 "ground",
@@ -408,4 +408,4 @@ mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:creeper", S("Creeper"), "mobs_mc_spawn_icon_creeper.png", 0)
+mcl_mobs:register_egg("mobs_mc:creeper", S("Creeper"), "mobs_mc_spawn_icon_creeper.png", 0)

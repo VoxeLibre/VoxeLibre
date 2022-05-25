@@ -12,7 +12,7 @@ local crash_threshold = 6.5 -- ignored if enable_crash=false
 
 local node_ok = function(pos, fallback)
 
-	fallback = fallback or mobs.fallback_node
+	fallback = fallback or mcl_mobs.fallback_node
 
 	local node = minetest.get_node_or_nil(pos)
 
@@ -119,7 +119,7 @@ end)
 
 -------------------------------------------------------------------------------
 
-function mobs.attach(entity, player)
+function mcl_mobs.attach(entity, player)
 
 	local attach_at, eye_offset
 
@@ -162,7 +162,7 @@ function mobs.attach(entity, player)
 end
 
 
-function mobs.detach(player, offset)
+function mcl_mobs.detach(player, offset)
 
 	force_detach(player)
 
@@ -185,7 +185,7 @@ function mobs.detach(player, offset)
 end
 
 
-function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
+function mcl_mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 
 	local rot_view = 0
 
@@ -261,7 +261,7 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 	if entity.v == 0 and velo.x == 0 and velo.y == 0 and velo.z == 0 then
 
 		if stand_anim then
-			mobs:set_animation(entity, stand_anim)
+			mcl_mobs:set_animation(entity, stand_anim)
 		end
 
 		return
@@ -269,7 +269,7 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 
 	-- set moving animation
 	if moving_anim then
-		mobs:set_animation(entity, moving_anim)
+		mcl_mobs:set_animation(entity, moving_anim)
 	end
 
 	-- Stop!
@@ -388,7 +388,7 @@ end
 
 -- directional flying routine by D00Med (edited by TenPlus1)
 
-function mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_anim)
+function mcl_mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_anim)
 
 	local ctrl = entity.driver:get_player_control()
 	local velo = entity.object:get_velocity()
@@ -440,9 +440,9 @@ function mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_anim)
 	-- change animation if stopped
 	if velo.x == 0 and velo.y == 0 and velo.z == 0 then
 
-		mobs:set_animation(entity, stand_anim)
+		mcl_mobs:set_animation(entity, stand_anim)
 	else
 		-- moving animation
-		mobs:set_animation(entity, moving_anim)
+		mcl_mobs:set_animation(entity, moving_anim)
 	end
 end

@@ -12,7 +12,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 
-mobs:register_mob("mobs_mc:witch", {
+mcl_mobs:register_mob("mobs_mc:witch", {
 	description = S("Witch"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -72,7 +72,7 @@ mobs:register_mob("mobs_mc:witch", {
 })
 
 -- potion projectile (EXPERIMENTAL)
-mobs:register_arrow("mobs_mc:potion_arrow", {
+mcl_mobs:register_arrow("mobs_mc:potion_arrow", {
 	visual = "sprite",
 	visual_size = {x = 0.5, y = 0.5},
 	--textures = {"vessels_glass_bottle.png"},  --TODO fix to else if default
@@ -101,9 +101,9 @@ mobs:register_arrow("mobs_mc:potion_arrow", {
 })
 
 -- TODO: Spawn when witch works properly <- eventually -j4i
---mobs:spawn_specific("mobs_mc:witch", mobs_mc.spawn.jungle, {"air"}, 0, minetest.LIGHT_MAX-6, 12, 20000, 2, mobs_mc.spawn_height.water-6, mobs_mc.spawn_height.overworld_max)
+--mcl_mobs:spawn_specific("mobs_mc:witch", mobs_mc.spawn.jungle, {"air"}, 0, minetest.LIGHT_MAX-6, 12, 20000, 2, mobs_mc.spawn_height.water-6, mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:witch", S("Witch"), "mobs_mc_spawn_icon_witch.png", 0, true)
+mcl_mobs:register_egg("mobs_mc:witch", S("Witch"), "mobs_mc_spawn_icon_witch.png", 0, true)
 
 mcl_wip.register_wip_item("mobs_mc:witch")

@@ -102,7 +102,7 @@ local skeleton = {
 	harmed_by_heal = true,
 }
 
-mobs:register_mob("mobs_mc:skeleton", skeleton)
+mcl_mobs:register_mob("mobs_mc:skeleton", skeleton)
 
 
 --###################
@@ -139,10 +139,10 @@ table.insert(stray.drops, {
 	end,
 })
 
-mobs:register_mob("mobs_mc:stray", stray)
+mcl_mobs:register_mob("mobs_mc:stray", stray)
 
 -- Overworld spawn
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:skeleton",
 "overworld",
 "ground",
@@ -297,7 +297,7 @@ mobs_mc.spawn_height.overworld_max)
 
 
 -- Nether spawn
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:skeleton",
 "nether",
 "ground",
@@ -314,7 +314,7 @@ mobs_mc.spawn_height.nether_max)
 
 -- Stray spawn
 -- TODO: Spawn directly under the sky
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:stray",
 "overworld",
 "ground",
@@ -334,5 +334,5 @@ mobs_mc.spawn_height.overworld_max)
 
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:skeleton", S("Skeleton"), "mobs_mc_spawn_icon_skeleton.png", 0)
-mobs:register_egg("mobs_mc:stray", S("Stray"), "mobs_mc_spawn_icon_stray.png", 0)
+mcl_mobs:register_egg("mobs_mc:skeleton", S("Skeleton"), "mobs_mc_spawn_icon_skeleton.png", 0)
+mcl_mobs:register_egg("mobs_mc:stray", S("Stray"), "mobs_mc_spawn_icon_stray.png", 0)

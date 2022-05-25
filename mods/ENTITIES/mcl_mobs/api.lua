@@ -1,7 +1,7 @@
 
 -- API for Mobs Redo: MineClone 2 Edition (MRM)
 
-mobs = {}
+mcl_mobs = {}
 
 local MAX_MOB_NAME_LENGTH = 30
 local HORNY_TIME = 30
@@ -22,7 +22,7 @@ MOB_CAP.water = 15
 local S = minetest.get_translator("mcl_mobs")
 
 -- Invisibility mod check
-mobs.invis = {}
+mcl_mobs.invis = {}
 
 -- localize math functions
 local pi = math.pi
@@ -76,7 +76,7 @@ local stuck_path_timeout = 10 -- how long will mob follow path before giving up
 local node_ice = "mcl_core:ice"
 local node_snowblock = "mcl_core:snowblock"
 local node_snow = "mcl_core:snow"
-mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
+mcl_mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
 
 minetest.register_chatcommand("clearmobs",{
 	privs={maphack=true},
@@ -326,7 +326,7 @@ local set_yaw = function(self, yaw, delay, dtime)
 end
 
 -- global function to set mob yaw
-function mobs:yaw(self, yaw, delay, dtime)
+function mcl_mobs:yaw(self, yaw, delay, dtime)
 	set_yaw(self, yaw, delay, dtime)
 end
 
@@ -397,7 +397,7 @@ end
 
 
 -- above function exported for mount.lua
-function mobs:set_animation(self, anim)
+function mcl_mobs:set_animation(self, anim)
 	set_animation(self, anim)
 end
 
@@ -601,7 +601,7 @@ local damage_effect = function(self, damage)
 	end
 end
 
-mobs.death_effect = function(pos, yaw, collisionbox, rotate)
+mcl_mobs.death_effect = function(pos, yaw, collisionbox, rotate)
 	local min, max
 	if collisionbox then
 		min = {x=collisionbox[1], y=collisionbox[2], z=collisionbox[3]}
@@ -896,7 +896,7 @@ local check_for_death = function(self, cause, cmi_cause)
 		local yaw = self.object:get_rotation().y
 		mcl_burning.extinguish(self.object)
 		self.object:remove()
-		mobs.death_effect(dpos, yaw, cbox, not self.instant_death)
+		mcl_mobs.death_effect(dpos, yaw, cbox, not self.instant_death)
 	end
 	if length <= 0 then
 		kill(self)
@@ -1008,7 +1008,7 @@ end
 -- get node but use fallback for nil or unknown
 local node_ok = function(pos, fallback)
 
-	fallback = fallback or mobs.fallback_node
+	fallback = fallback or mcl_mobs.fallback_node
 
 	local node = minetest.get_node_or_nil(pos)
 
@@ -1403,7 +1403,7 @@ end
 local follow_holding = function(self, clicker)
 	if self.nofollow then return false end
 	
-	if mobs.invis[clicker:get_player_name()] then
+	if mcl_mobs.invis[clicker:get_player_name()] then
 		return false
 	end
 
@@ -1551,7 +1551,7 @@ local breed = function(self)
 						end
 					end
 
-					local child = mobs:spawn_child(pos, parent1.name)
+					local child = mcl_mobs:spawn_child(pos, parent1.name)
 
 					local ent_c = child:get_luaentity()
 
@@ -1787,7 +1787,7 @@ local smart_mobs = function(self, s, p, dist, dtime)
 
 						if ndef1 and (ndef1.buildable_to or ndef1.groups.liquid) then
 
-								minetest.set_node(s, {name = mobs.fallback_node})
+								minetest.set_node(s, {name = mcl_mobs.fallback_node})
 						end
 					end
 
@@ -1922,7 +1922,7 @@ local monster_attack = function(self)
 
 		if objs[n]:is_player() then
 
-			if mobs.invis[ objs[n]:get_player_name() ] or (not object_in_range(self, objs[n])) then
+			if mcl_mobs.invis[ objs[n]:get_player_name() ] or (not object_in_range(self, objs[n])) then
 				type = ""
 			else
 				player = objs[n]
@@ -2051,7 +2051,7 @@ local runaway_from = function(self)
 
 		if objs[n]:is_player() then
 
-			if mobs.invis[ objs[n]:get_player_name() ]
+			if mcl_mobs.invis[ objs[n]:get_player_name() ]
 			or self.owner == objs[n]:get_player_name()
 			or (not object_in_range(self, objs[n])) then
 				type = ""
@@ -2133,7 +2133,7 @@ local follow_flop = function(self)
 		for n = 1, #players do
 
 			if (object_in_range(self, players[n]))
-			and not mobs.invis[ players[n]:get_player_name() ] then
+			and not mcl_mobs.invis[ players[n]:get_player_name() ] then
 
 				self.following = players[n]
 
@@ -2290,7 +2290,7 @@ local function go_to_pos(entity,b)
 	if b.x > s.x then yaw = yaw + math.pi end
 	entity.object:set_yaw(yaw)
 	set_velocity(entity,entity.follow_velocity)
-	mobs:set_animation(entity, "walk")
+	mcl_mobs:set_animation(entity, "walk")
 end
 
 local function check_doors(self)
@@ -2536,7 +2536,7 @@ local do_states = function(self, dtime)
 		or not self.attack:get_pos()
 		or not object_in_range(self, self.attack)
 		or self.attack:get_hp() <= 0
-		or (self.attack:is_player() and mobs.invis[ self.attack:get_player_name() ]) then
+		or (self.attack:is_player() and mcl_mobs.invis[ self.attack:get_player_name() ]) then
 
 			self.state = "stand"
 			set_velocity(self, 0)
@@ -2906,7 +2906,7 @@ local plane_adjacents = {
 	vector.new(0,0,-1),
 }
 
-function mobs:gopath(self,target,callback_arrived)
+function mcl_mobs:gopath(self,target,callback_arrived)
 	local p = self.object:get_pos()
 	local t = vector.offset(target,0,1,0)
 	local wp = minetest.find_path(p,t,150,1,4)
@@ -3280,7 +3280,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	and self.state ~= "flop"
 	and (self.child == false or self.type == "monster")
 	and hitter:get_player_name() ~= self.owner
-	and not mobs.invis[ name ] then
+	and not mcl_mobs.invis[ name ] then
 
 		if not die then
 			-- attack whoever punched mob
@@ -3775,7 +3775,7 @@ local do_tnt = function(obj, damage)
 end
 
 
-mobs.spawning_mobs = {}
+mcl_mobs.spawning_mobs = {}
 
 -- Code to execute before custom on_rightclick handling
 local on_rightclick_prefix = function(self, clicker)
@@ -3814,9 +3814,9 @@ local create_mob_on_rightclick = function(on_rightclick)
 end
 
 -- register mob entity
-function mobs:register_mob(name, def)
+function mcl_mobs:register_mob(name, def)
 
-	mobs.spawning_mobs[name] = true
+	mcl_mobs.spawning_mobs[name] = true
 
 local can_despawn
 if def.can_despawn ~= nil then
@@ -4014,11 +4014,11 @@ if minetest.get_modpath("doc_identifier") ~= nil then
 	doc.sub.identifier.register_object(name, "basics", "mobs")
 end
 
-end -- END mobs:register_mob function
+end -- END mcl_mobs:register_mob function
 
 
 -- register arrow for shoot attack
-function mobs:register_arrow(name, def)
+function mcl_mobs:register_arrow(name, def)
 
 	if not name or not def then return end -- errorcheck
 
@@ -4147,7 +4147,7 @@ end
 
 
 -- no damage to nodes explosion
-function mobs:safe_boom(self, pos, strength)
+function mcl_mobs:safe_boom(self, pos, strength)
 	minetest.sound_play(self.sounds and self.sounds.explode or "tnt_explode", {
 		pos = pos,
 		gain = 1.0,
@@ -4160,11 +4160,11 @@ end
 
 
 -- make explosion with protection and tnt mod check
-function mobs:boom(self, pos, strength, fire)
+function mcl_mobs:boom(self, pos, strength, fire)
 	if mobs_griefing and not minetest.is_protected(pos, "") then
 		mcl_explosions.explode(pos, strength, { drop_chance = 1.0, fire = fire }, self.object)
 	else
-		mobs:safe_boom(self, pos, strength)
+		mcl_mobs:safe_boom(self, pos, strength)
 	end
 
 	-- delete the object after it punched the player to avoid nil entities in e.g. mcl_shields!!
@@ -4177,7 +4177,7 @@ end
 -- Note: This also introduces the “spawn_egg” group:
 -- * spawn_egg=1: Spawn egg (generic mob, no metadata)
 -- * spawn_egg=2: Spawn egg (captured/tamed mob, metadata)
-function mobs:register_egg(mob, desc, background, addegg, no_creative)
+function mcl_mobs:register_egg(mob, desc, background, addegg, no_creative)
 
 	local grp = {spawn_egg = 1}
 
@@ -4284,19 +4284,19 @@ end
 
 -- No-op in MCL2 (capturing mobs is not possible).
 -- Provided for compability with Mobs Redo
-function mobs:capture_mob(self, clicker, chance_hand, chance_net, chance_lasso, force_take, replacewith)
+function mcl_mobs:capture_mob(self, clicker, chance_hand, chance_net, chance_lasso, force_take, replacewith)
 	return false
 end
 
 
 -- No-op in MCL2 (protecting mobs is not possible).
-function mobs:protect(self, clicker)
+function mcl_mobs:protect(self, clicker)
 	return false
 end
 
 
 -- feeding, taming and breeding (thanks blert2112)
-function mobs:feed_tame(self, clicker, feed_count, breed, tame)
+function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame)
 	if not self.follow then
 		return false
 	end
@@ -4371,7 +4371,7 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 end
 
 -- Spawn a child
-function mobs:spawn_child(pos, mob_type)
+function mcl_mobs:spawn_child(pos, mob_type)
 	local child = minetest.add_entity(pos, mob_type)
 	if not child then
 		return
@@ -4418,7 +4418,7 @@ end
 
 
 -- compatibility function for old entities to new modpack entities
-function mobs:alias_mob(old_name, new_name)
+function mcl_mobs:alias_mob(old_name, new_name)
 
 	-- spawn egg
 	minetest.register_alias(old_name, new_name)

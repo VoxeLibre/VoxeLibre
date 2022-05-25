@@ -109,7 +109,7 @@ local slime_big = {
 	on_die = spawn_children_on_die("mobs_mc:slime_small", 4, 1.0, 1.5),
 	use_texture_alpha = true,
 }
-mobs:register_mob("mobs_mc:slime_big", slime_big)
+mcl_mobs:register_mob("mobs_mc:slime_big", slime_big)
 
 local slime_small = table.copy(slime_big)
 slime_small.sounds.base_pitch = 1.15
@@ -126,7 +126,7 @@ slime_small.run_velocity = 1.3
 slime_small.jump_height = 4.3
 slime_small.spawn_small_alternative = "mobs_mc:slime_tiny"
 slime_small.on_die = spawn_children_on_die("mobs_mc:slime_tiny", 4, 0.6, 1.0)
-mobs:register_mob("mobs_mc:slime_small", slime_small)
+mcl_mobs:register_mob("mobs_mc:slime_small", slime_small)
 
 local slime_tiny = table.copy(slime_big)
 slime_tiny.sounds.base_pitch = 1.3
@@ -151,12 +151,12 @@ slime_tiny.jump_height = 3
 slime_tiny.spawn_small_alternative = nil
 slime_tiny.on_die = nil
 
-mobs:register_mob("mobs_mc:slime_tiny", slime_tiny)
+mcl_mobs:register_mob("mobs_mc:slime_tiny", slime_tiny)
 
 local smin = mobs_mc.spawn_height.overworld_min
 local smax = mobs_mc.spawn_height.water - 23
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:slime_tiny",
 "overworld",
 "ground",
@@ -200,7 +200,7 @@ minetest.LIGHT_MAX+1,
 smin,
 smax)
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:slime_small",
 "overworld",
 "ground",
@@ -244,7 +244,7 @@ minetest.LIGHT_MAX+1,
 smin,
 smax)
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:slime_big",
 "overworld",
 "ground",
@@ -348,7 +348,7 @@ local magma_cube_big = {
 	on_die = spawn_children_on_die("mobs_mc:magma_cube_small", 3, 0.8, 1.5),
 	fire_resistant = true,
 }
-mobs:register_mob("mobs_mc:magma_cube_big", magma_cube_big)
+mcl_mobs:register_mob("mobs_mc:magma_cube_big", magma_cube_big)
 
 local magma_cube_small = table.copy(magma_cube_big)
 magma_cube_small.sounds.jump = "mobs_mc_magma_cube_small"
@@ -369,7 +369,7 @@ magma_cube_small.reach = 2.75
 magma_cube_small.armor = 66
 magma_cube_small.spawn_small_alternative = "mobs_mc:magma_cube_tiny"
 magma_cube_small.on_die = spawn_children_on_die("mobs_mc:magma_cube_tiny", 4, 0.6, 1.0)
-mobs:register_mob("mobs_mc:magma_cube_small", magma_cube_small)
+mcl_mobs:register_mob("mobs_mc:magma_cube_small", magma_cube_small)
 
 local magma_cube_tiny = table.copy(magma_cube_big)
 magma_cube_tiny.sounds.jump = "mobs_mc_magma_cube_small"
@@ -391,13 +391,13 @@ magma_cube_tiny.drops = {}
 magma_cube_tiny.spawn_small_alternative = nil
 magma_cube_tiny.on_die = nil
 
-mobs:register_mob("mobs_mc:magma_cube_tiny", magma_cube_tiny)
+mcl_mobs:register_mob("mobs_mc:magma_cube_tiny", magma_cube_tiny)
 
 
 local mmin = mobs_mc.spawn_height.nether_min
 local mmax = mobs_mc.spawn_height.nether_max
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:magma_cube_tiny",
 "nether",
 "ground",
@@ -413,7 +413,7 @@ mmin,
 mmax)
 
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:magma_cube_small",
 "nether",
 "ground",
@@ -428,7 +428,7 @@ minetest.LIGHT_MAX+1,
 mmin,
 mmax)
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:magma_cube_big",
 "nether",
 "ground",
@@ -443,11 +443,11 @@ minetest.LIGHT_MAX+1,
 mmin,
 mmax)
 
---mobs:spawn_specific("mobs_mc:magma_cube_tiny", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11000, 4, mmin, mmax)
---mobs:spawn_specific("mobs_mc:magma_cube_small", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11100, 4, mmin, mmax)
---mobs:spawn_specific("mobs_mc:magma_cube_big", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11200, 4, mmin, mmax)
+--mcl_mobs:spawn_specific("mobs_mc:magma_cube_tiny", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11000, 4, mmin, mmax)
+--mcl_mobs:spawn_specific("mobs_mc:magma_cube_small", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11100, 4, mmin, mmax)
+--mcl_mobs:spawn_specific("mobs_mc:magma_cube_big", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11200, 4, mmin, mmax)
 
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "mobs_mc_spawn_icon_magmacube.png")
-mobs:register_egg("mobs_mc:slime_big", S("Slime"), "mobs_mc_spawn_icon_slime.png")
+mcl_mobs:register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "mobs_mc_spawn_icon_magmacube.png")
+mcl_mobs:register_egg("mobs_mc:slime_big", S("Slime"), "mobs_mc_spawn_icon_slime.png")

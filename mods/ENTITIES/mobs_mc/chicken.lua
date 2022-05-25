@@ -8,7 +8,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 
-mobs:register_mob("mobs_mc:chicken", {
+mcl_mobs:register_mob("mobs_mc:chicken", {
 	description = S("Chicken"),
 	type = "animal",
 	spawn_class = "passive",
@@ -69,9 +69,9 @@ mobs:register_mob("mobs_mc:chicken", {
 	fear_height = 4,
 
 	on_rightclick = function(self, clicker)
-		if mobs:feed_tame(self, clicker, 1, true, true) then return end
-		if mobs:protect(self, clicker) then return end
-		if mobs:capture_mob(self, clicker, 0, 60, 5, false, nil) then return end
+		if mcl_mobs:feed_tame(self, clicker, 1, true, true) then return end
+		if mcl_mobs:protect(self, clicker) then return end
+		if mcl_mobs:capture_mob(self, clicker, 0, 60, 5, false, nil) then return end
 	end,
 
 	do_custom = function(self, dtime)
@@ -101,7 +101,7 @@ mobs:register_mob("mobs_mc:chicken", {
 })
 
 --spawn
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:chicken",
 "overworld",
 "ground",
@@ -151,4 +151,4 @@ mobs_mc.spawn_height.water,
 mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:chicken", S("Chicken"), "mobs_mc_spawn_icon_chicken.png", 0)
+mcl_mobs:register_egg("mobs_mc:chicken", S("Chicken"), "mobs_mc_spawn_icon_chicken.png", 0)

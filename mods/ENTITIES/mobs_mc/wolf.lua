@@ -57,7 +57,7 @@ local wolf = {
 	fear_height = 4,
 	follow = mobs_mc.follow.wolf,
 	on_rightclick = function(self, clicker)
-		-- Try to tame wolf (intentionally does NOT use mobs:feed_tame)
+		-- Try to tame wolf (intentionally does NOT use mcl_mobs:feed_tame)
 		local tool = clicker:get_wielded_item()
 
 		local dog, ent
@@ -94,7 +94,7 @@ local wolf = {
 	specific_attack = { "player", "mobs_mc:sheep" },
 }
 
-mobs:register_mob("mobs_mc:wolf", wolf)
+mcl_mobs:register_mob("mobs_mc:wolf", wolf)
 
 -- Tamed wolf
 
@@ -148,9 +148,9 @@ dog.specific_attack = nil
 dog.on_rightclick = function(self, clicker)
 	local item = clicker:get_wielded_item()
 
-	if mobs:protect(self, clicker) then
+	if mcl_mobs:protect(self, clicker) then
 		return
-	elseif item:get_name() ~= "" and mobs:capture_mob(self, clicker, 0, 2, 80, false, nil) then
+	elseif item:get_name() ~= "" and mcl_mobs:capture_mob(self, clicker, 0, 2, 80, false, nil) then
 		return
 	elseif is_food(item:get_name()) then
 		-- Feed to increase health
@@ -230,10 +230,10 @@ dog.on_rightclick = function(self, clicker)
 	end
 end
 
-mobs:register_mob("mobs_mc:dog", dog)
+mcl_mobs:register_mob("mobs_mc:dog", dog)
 
 -- Spawn
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:wolf",
 "overworld",
 "ground",
@@ -263,4 +263,4 @@ minetest.LIGHT_MAX+1,
 mobs_mc.spawn_height.water+3,
 mobs_mc.spawn_height.overworld_max)
 
-mobs:register_egg("mobs_mc:wolf", S("Wolf"), "mobs_mc_spawn_icon_wolf.png", 0)
+mcl_mobs:register_egg("mobs_mc:wolf", S("Wolf"), "mobs_mc_spawn_icon_wolf.png", 0)

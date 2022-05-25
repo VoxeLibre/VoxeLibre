@@ -11,7 +11,7 @@ local S = minetest.get_translator("mobs_mc")
 
 local pr = PseudoRandom(os.time()*666)
 
-mobs:register_mob("mobs_mc:evoker", {
+mcl_mobs:register_mob("mobs_mc:evoker", {
 	description = S("Evoker"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -84,4 +84,4 @@ mobs:register_mob("mobs_mc:evoker", {
 })
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:evoker", S("Evoker"), "mobs_mc_spawn_icon_evoker.png", 0)
+mcl_mobs:register_egg("mobs_mc:evoker", S("Evoker"), "mobs_mc_spawn_icon_evoker.png", 0)

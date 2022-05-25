@@ -61,9 +61,9 @@ local rabbit = {
 	replace_what = mobs_mc.replace.rabbit,
 	on_rightclick = function(self, clicker)
 		-- Feed, tame protect or capture
-		if mobs:feed_tame(self, clicker, 1, true, true) then return end
-		if mobs:protect(self, clicker) then return end
-		if mobs:capture_mob(self, clicker, 0, 50, 80, false, nil) then return end
+		if mcl_mobs:feed_tame(self, clicker, 1, true, true) then return end
+		if mcl_mobs:protect(self, clicker) then return end
+		if mcl_mobs:capture_mob(self, clicker, 0, 50, 80, false, nil) then return end
 	end,
 	do_custom = function(self)
 		-- Easter egg: Change texture if rabbit is named “Toast”
@@ -80,7 +80,7 @@ local rabbit = {
 	end,
 }
 
-mobs:register_mob("mobs_mc:rabbit", rabbit)
+mcl_mobs:register_mob("mobs_mc:rabbit", rabbit)
 
 -- The killer bunny (Only with spawn egg)
 local killer_bunny = table.copy(rabbit)
@@ -106,12 +106,12 @@ killer_bunny.do_custom = function(self)
 	end
 end
 
-mobs:register_mob("mobs_mc:killer_bunny", killer_bunny)
+mcl_mobs:register_mob("mobs_mc:killer_bunny", killer_bunny)
 
 -- Mob spawning rules.
 -- Different skins depending on spawn location <- we'll get to this when the spawning algorithm is fleshed out
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:rabbit",
 "overworld",
 "ground",
@@ -159,7 +159,7 @@ spawn_desert.on_spawn = function(self, pos)
 	self.base_texture = { "mobs_mc_rabbit_gold.png" }
 	self.object:set_properties({textures = self.base_texture})
 end
-mobs:spawn(spawn_desert)
+mcl_mobs:spawn(spawn_desert)
 
 local spawn_snow = table.copy(spawn)
 spawn_snow.nodes = mobs_mc.spawn.snow
@@ -176,7 +176,7 @@ spawn_snow.on_spawn = function(self, pos)
 	self.base_texture = { texture }
 	self.object:set_properties({textures = self.base_texture})
 end
-mobs:spawn(spawn_snow)
+mcl_mobs:spawn(spawn_snow)
 
 local spawn_grass = table.copy(spawn)
 spawn_grass.nodes = mobs_mc.spawn.grassland
@@ -196,11 +196,11 @@ spawn_grass.on_spawn = function(self, pos)
 	self.base_texture = { texture }
 	self.object:set_properties({textures = self.base_texture})
 end
-mobs:spawn(spawn_grass)
+mcl_mobs:spawn(spawn_grass)
 ]]--
 
 -- Spawn egg
-mobs:register_egg("mobs_mc:rabbit", S("Rabbit"), "mobs_mc_spawn_icon_rabbit.png", 0)
+mcl_mobs:register_egg("mobs_mc:rabbit", S("Rabbit"), "mobs_mc_spawn_icon_rabbit.png", 0)
 
 -- Note: This spawn egg does not exist in Minecraft
-mobs:register_egg("mobs_mc:killer_bunny", S("Killer Bunny"), "mobs_mc_spawn_icon_rabbit.png^[colorize:#FF0000:192", 0) -- TODO: Update inventory image
+mcl_mobs:register_egg("mobs_mc:killer_bunny", S("Killer Bunny"), "mobs_mc_spawn_icon_rabbit.png^[colorize:#FF0000:192", 0) -- TODO: Update inventory image

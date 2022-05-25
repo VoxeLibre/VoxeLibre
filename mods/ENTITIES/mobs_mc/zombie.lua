@@ -97,7 +97,7 @@ local zombie = {
 	harmed_by_heal = true,
 }
 
-mobs:register_mob("mobs_mc:zombie", zombie)
+mcl_mobs:register_mob("mobs_mc:zombie", zombie)
 
 -- Baby zombie.
 -- A smaller and more dangerous variant of the zombie
@@ -112,7 +112,7 @@ baby_zombie.walk_velocity = 1.2
 baby_zombie.run_velocity = 2.4
 baby_zombie.child = 1
 
-mobs:register_mob("mobs_mc:baby_zombie", baby_zombie)
+mcl_mobs:register_mob("mobs_mc:baby_zombie", baby_zombie)
 
 -- Husk.
 -- Desert variant of the zombie
@@ -130,7 +130,7 @@ husk.sunlight_damage = 0
 husk.drops = drops_common
 -- TODO: Husks avoid water
 
-mobs:register_mob("mobs_mc:husk", husk)
+mcl_mobs:register_mob("mobs_mc:husk", husk)
 
 -- Baby husk.
 -- A smaller and more dangerous variant of the husk
@@ -144,12 +144,12 @@ baby_husk.walk_velocity = 1.2
 baby_husk.run_velocity = 2.4
 baby_husk.child = 1
 
-mobs:register_mob("mobs_mc:baby_husk", baby_husk)
+mcl_mobs:register_mob("mobs_mc:baby_husk", baby_husk)
 
 
 -- Spawning
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:zombie",
 "overworld",
 "ground",
@@ -241,7 +241,7 @@ mobs:spawn_specific(
 mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 -- Baby zombie is 20 times less likely than regular zombies
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:baby_zombie",
 "overworld",
 "ground",
@@ -334,7 +334,7 @@ mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:husk",
 "overworld",
 "ground",
@@ -348,7 +348,7 @@ mobs:spawn_specific(
 4,
 mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:baby_husk",
 "overworld",
 "ground",
@@ -364,5 +364,5 @@ mobs_mc.spawn_height.overworld_min,
 mobs_mc.spawn_height.overworld_max)
 
 -- Spawn eggs
-mobs:register_egg("mobs_mc:husk", S("Husk"), "mobs_mc_spawn_icon_husk.png", 0)
-mobs:register_egg("mobs_mc:zombie", S("Zombie"), "mobs_mc_spawn_icon_zombie.png", 0)
+mcl_mobs:register_egg("mobs_mc:husk", S("Husk"), "mobs_mc_spawn_icon_husk.png", 0)
+mcl_mobs:register_egg("mobs_mc:zombie", S("Zombie"), "mobs_mc_spawn_icon_zombie.png", 0)

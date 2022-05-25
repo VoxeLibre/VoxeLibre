@@ -89,7 +89,7 @@ local pigman = {
 	fire_damage_resistant = true,
 }
 
-mobs:register_mob("mobs_mc:pigman", pigman)
+mcl_mobs:register_mob("mobs_mc:pigman", pigman)
 
 -- Baby pigman.
 -- A smaller and more dangerous variant of the pigman
@@ -110,10 +110,10 @@ baby_pigman.run_velocity = 2.4
 baby_pigman.light_damage = 0
 baby_pigman.child = 1
 
-mobs:register_mob("mobs_mc:baby_pigman", baby_pigman)
+mcl_mobs:register_mob("mobs_mc:baby_pigman", baby_pigman)
 
 -- Regular spawning in the Nether
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:pigman",
 "nether",
 "ground",
@@ -128,7 +128,7 @@ minetest.LIGHT_MAX+1,
 mobs_mc.spawn_height.nether_min,
 mobs_mc.spawn_height.nether_max)
 -- Baby zombie is 20 times less likely than regular zombies
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:baby_pigman",
 "nether",
 "ground",
@@ -147,4 +147,4 @@ mobs_mc.spawn_height.nether_max)
 --mobs:spawn_specific("mobs_mc:pigman", mobs_mc.spawn.nether_portal, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 500, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:pigman", S("Zombie Pigman"), "mobs_mc_spawn_icon_zombie_pigman.png", 0)
+mcl_mobs:register_egg("mobs_mc:pigman", S("Zombie Pigman"), "mobs_mc_spawn_icon_zombie_pigman.png", 0)

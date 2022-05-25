@@ -11,7 +11,7 @@ local S = minetest.get_translator("mobs_mc")
 
 local etime = 0
 
-mobs:register_mob("mobs_mc:iron_golem", {
+mcl_mobs:register_mob("mobs_mc:iron_golem", {
 	description = S("Iron Golem"),
 	type = "npc",
 	spawn_class = "passive",
@@ -84,7 +84,7 @@ mobs:register_mob("mobs_mc:iron_golem", {
 		etime = etime + dtime
 		if etime > 10 then
 			if self._home and vector.distance(self._home,self.object:get_pos()) > 50 then
-				mobs:gopath(self,self._home)
+				mcl_mobs:gopath(self,self._home)
 			end
 		end
 	end,
@@ -92,7 +92,7 @@ mobs:register_mob("mobs_mc:iron_golem", {
 
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:iron_golem", S("Iron Golem"), "mobs_mc_spawn_icon_iron_golem.png", 0)
+mcl_mobs:register_egg("mobs_mc:iron_golem", S("Iron Golem"), "mobs_mc_spawn_icon_iron_golem.png", 0)
 
 
 --[[ This is to be called when a pumpkin or jack'o lantern has been placed. Recommended: In the on_construct function of the node.

@@ -10,7 +10,7 @@ local S = minetest.get_translator("mobs_mc")
 --###################
 
 
-mobs:register_mob("mobs_mc:ghast", {
+mcl_mobs:register_mob("mobs_mc:ghast", {
 	description = S("Ghast"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -76,7 +76,7 @@ mobs:register_mob("mobs_mc:ghast", {
 })
 
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:ghast",
 "nether",
 "ground",
@@ -92,7 +92,7 @@ mobs_mc.spawn_height.nether_min,
 mobs_mc.spawn_height.nether_max)
 
 -- fireball (projectile)
-mobs:register_arrow("mobs_mc:fireball", {
+mcl_mobs:register_arrow("mobs_mc:fireball", {
 	visual = "sprite",
 	visual_size = {x = 1, y = 1},
 	textures = {"mcl_fire_fire_charge.png"},
@@ -105,7 +105,7 @@ mobs:register_arrow("mobs_mc:fireball", {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 6},
 		}, nil)
-		mobs:boom(self, self.object:get_pos(), 1, true)
+		mcl_mobs:boom(self, self.object:get_pos(), 1, true)
 	end,
 
 	hit_mob = function(self, mob)
@@ -113,11 +113,11 @@ mobs:register_arrow("mobs_mc:fireball", {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 6},
 		}, nil)
-		mobs:boom(self, self.object:get_pos(), 1, true)
+		mcl_mobs:boom(self, self.object:get_pos(), 1, true)
 	end,
 
 	hit_node = function(self, pos, node)
-		mobs:boom(self, pos, 1, true)
+		mcl_mobs:boom(self, pos, 1, true)
 	end
 })
 
@@ -125,4 +125,4 @@ mobs:register_arrow("mobs_mc:fireball", {
 
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:ghast", S("Ghast"), "mobs_mc_spawn_icon_ghast.png", 0)
+mcl_mobs:register_egg("mobs_mc:ghast", S("Ghast"), "mobs_mc_spawn_icon_ghast.png", 0)

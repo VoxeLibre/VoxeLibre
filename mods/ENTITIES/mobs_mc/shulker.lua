@@ -11,7 +11,7 @@ local S = minetest.get_translator("mobs_mc")
 
 -- animation 45-80 is transition between passive and attack stance
 
-mobs:register_mob("mobs_mc:shulker", {
+mcl_mobs:register_mob("mobs_mc:shulker", {
 	description = S("Shulker"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -55,7 +55,7 @@ mobs:register_mob("mobs_mc:shulker", {
 })
 
 -- bullet arrow (weapon)
-mobs:register_arrow("mobs_mc:shulkerbullet", {
+mcl_mobs:register_arrow("mobs_mc:shulkerbullet", {
 	visual = "sprite",
 	visual_size = {x = 0.25, y = 0.25},
 	textures = {"mobs_mc_shulkerbullet.png"},
@@ -80,9 +80,9 @@ mobs:register_arrow("mobs_mc:shulkerbullet", {
 })
 
 
-mobs:register_egg("mobs_mc:shulker", S("Shulker"), "mobs_mc_spawn_icon_shulker.png", 0)
+mcl_mobs:register_egg("mobs_mc:shulker", S("Shulker"), "mobs_mc_spawn_icon_shulker.png", 0)
 
-mobs:spawn_specific(
+mcl_mobs:spawn_specific(
 "mobs_mc:shulker",
 "end",
 "ground",
