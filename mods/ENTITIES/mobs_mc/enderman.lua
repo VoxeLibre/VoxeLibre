@@ -48,6 +48,37 @@ local take_frequency_max = 245
 local place_frequency_min = 235
 local place_frequency_max = 245
 
+
+-- Texuture overrides for enderman block. Required for cactus because it's original is a nodebox
+-- and the textures have tranparent pixels.
+local block_texture_overrides
+do
+	local cbackground = "mobs_mc_enderman_cactus_background.png"
+	local ctiles = minetest.registered_nodes["mcl_core:cactus"].tiles
+
+	local ctable = {}
+	local last
+	for i=1, 6 do
+		if ctiles[i] then
+			last = ctiles[i]
+		end
+		table.insert(ctable, cbackground .. "^" .. last)
+	end
+
+	block_texture_overrides = {
+		["mcl_core:cactus"] = ctable,
+		-- FIXME: replace colorize colors with colors from palette
+		["mcl_core:dirt_with_grass"] =
+		{
+		"mcl_core_grass_block_top.png^[colorize:green:90",
+		"default_dirt.png",
+		"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
+		"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
+		"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
+		"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)"}
+	}
+end
+
 -- Create the textures table for the enderman, depending on which kind of block
 -- the enderman holds (if any).
 local create_enderman_textures = function(block_type, itemstring)
@@ -69,9 +100,9 @@ local create_enderman_textures = function(block_type, itemstring)
 		local tiles = minetest.registered_nodes[itemstring].tiles
 		local textures = {}
 		local last
-		if mobs_mc.enderman_block_texture_overrides[itemstring] then
+		if block_texture_overrides[itemstring] then
 			-- Texture override available? Use these instead!
-			textures = mobs_mc.enderman_block_texture_overrides[itemstring]
+			textures = block_texture_overrides[itemstring]
 		else
 			-- Extract the texture names
 			for i = 1, 6 do
@@ -388,7 +419,7 @@ mcl_mobs:register_mob("mobs_mc:enderman", {
 			self._take_place_timer = 0
 			self._next_take_place_time = math.random(place_frequency_min, place_frequency_max)
 			local pos = self.object:get_pos()
-			local takable_nodes = minetest.find_nodes_in_area_under_air({x=pos.x-2, y=pos.y-1, z=pos.z-2}, {x=pos.x+2, y=pos.y+1, z=pos.z+2}, mobs_mc.enderman_takable)
+			local takable_nodes = minetest.find_nodes_in_area_under_air({x=pos.x-2, y=pos.y-1, z=pos.z-2}, {x=pos.x+2, y=pos.y+1, z=pos.z+2}, "group:enderman_takable")
 			if #takable_nodes >= 1 then
 				local r = pr:next(1, #takable_nodes)
 				local take_pos = takable_nodes[r]
@@ -398,11 +429,7 @@ mcl_mobs:register_mob("mobs_mc:enderman", {
 					minetest.remove_node(take_pos)
 					local dug = minetest.get_node_or_nil(take_pos)
 					if dug and dug.name == "air" then
-						if mobs_mc.enderman_replace_on_take[node.name] then
-							self._taken_node = mobs_mc.enderman_replace_on_take[node.name]
-						else
-							self._taken_node = node.name
-						end
+						self._taken_node = node.name
 						local def = minetest.registered_nodes[self._taken_node]
 						-- Update animation and texture accordingly (adds visibly carried block)
 						local block_type
