@@ -57,6 +57,7 @@ for i=0,4 do
 			groups = {pickaxey=1, material_stone=1},
 			_mcl_hardness = 22.5,
 			sounds= mcl_sounds.node_sound_stone_defaults(),
+			use_texture_alpha = "blend",
 		})
 		mesecon.register_mvps_stopper("mcl_beds:respawn_anchor")
 	else
@@ -79,7 +80,8 @@ for i=0,4 do
 					{items = {"mcl_beds:respawn_anchor"}},
 				}
 			},
-			light_source = (4 * i) - 1
+			light_source = math.min((4 * i) - 1, minetest.LIGHT_MAX),
+			use_texture_alpha = "blend",
 		})
 		mesecon.register_mvps_stopper("mcl_beds:respawn_anchor_charged_"..i)
 	end
