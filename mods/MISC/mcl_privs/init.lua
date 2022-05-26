@@ -26,7 +26,7 @@ for _, action in pairs({"grant", "revoke"}) do
 		end
 
 		local meta = player:get_meta()
-		
+
 		if priv == "fly" then
 			meta:set_int("mcl_privs:fly_changed", 1)
 		end

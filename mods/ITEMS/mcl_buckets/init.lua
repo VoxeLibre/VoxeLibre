@@ -314,7 +314,7 @@ controls.register_on_press(function(player, key)
 		end
 		wielded_item = on_place_bucket(wielded_item, player, pointed_thing, def)
 	end
-	
+
 	player:set_wielded_item(wielded_item)
 end)
 

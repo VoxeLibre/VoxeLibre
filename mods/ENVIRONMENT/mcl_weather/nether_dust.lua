@@ -24,7 +24,7 @@ local function check_player(player)
 	local name=player:get_player_name()
 	if mcl_worlds.has_dust(player:get_pos()) and not mcl_weather.nether_dust.particlespawners[name] then
 		return true
-	end	
+	end
 end
 
 mcl_weather.nether_dust.add_particlespawners = function(player)
@@ -45,7 +45,7 @@ mcl_weather.nether_dust.delete_particlespawners = function(player)
 		for i=1,3 do
 			minetest.delete_particlespawner(mcl_weather.nether_dust.particlespawners[name][i])
 		end
-		mcl_weather.nether_dust.particlespawners[name]=nil		
+		mcl_weather.nether_dust.particlespawners[name]=nil
 	end
 end
 

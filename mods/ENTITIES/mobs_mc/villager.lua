@@ -293,7 +293,7 @@ local professions = {
 			},
 			{
 			{ { "mcl_core:emerald", 7, 7}, { "mcl_itemframes:item_frame", 1, 1 }},
-			
+
 			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_white", 1, 1 }},
 			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_grey", 1, 1 }},
 			{ { "mcl_core:emerald", 7, 7}, { "mcl_banners:banner_item_silver", 1, 1 }},
@@ -578,7 +578,7 @@ local function go_home(entity)
 	local b=entity._bed
 	if not b then return end
 	mcl_mobs:gopath(entity,b,function(entity,b)
-		if vector.distance(entity.object:get_pos(),b) < 2 then 
+		if vector.distance(entity.object:get_pos(),b) < 2 then
 			entity.state = "stand"
 			set_velocity(entity,0)
 			entity.object:set_pos(b)
@@ -589,7 +589,7 @@ local function go_home(entity)
 			end
 			return true
 		end
-	end)	
+	end)
 end
 
 ----- JOBSITE LOGIC
@@ -1315,7 +1315,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 		if not self._player_scan_timer then
 			self._player_scan_timer = 0
 		end
-		
+
 		self._player_scan_timer = self._player_scan_timer + dtime
 		-- Check infrequently to keep CPU load low
 		if self._player_scan_timer > PLAYER_SCAN_INTERVAL then

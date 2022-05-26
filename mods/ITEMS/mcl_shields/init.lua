@@ -90,7 +90,7 @@ minetest.register_entity("mcl_shields:shield_entity", {
 				local color = minetest.registered_items[item]._shield_color
 				if color then
 					shield_texture = "mcl_shield_base_nopattern.png^(mcl_shield_pattern_base.png^[colorize:" .. color .. ")"
-				end		
+				end
 			end
 		end
 
@@ -128,7 +128,7 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 	local type = reason.type
 	local damager = reason.direct
 	local blocking, shieldstack = mcl_shields.is_blocking(obj)
-	
+
 	if not (obj:is_player() and blocking and mcl_shields.types[type] and damager) then
 		return
 	end
@@ -275,7 +275,7 @@ local function handle_blocking(player)
 			player_shield.blocking = 2
 		end
 	elseif shield_in_offhand then
-		local offhand_can_block = (wielded_item(player) == "" or not mcl_util.get_pointed_thing(player, true)) 
+		local offhand_can_block = (wielded_item(player) == "" or not mcl_util.get_pointed_thing(player, true))
 		and (minetest.get_item_group(wielded_item(player), "bow") ~= 1 and minetest.get_item_group(wielded_item(player), "crossbow") ~= 1)
 
 		if not offhand_can_block then

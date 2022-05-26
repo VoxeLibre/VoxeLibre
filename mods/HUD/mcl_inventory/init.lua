@@ -214,7 +214,7 @@ minetest.register_chatcommand("gamemode",{
 	description = S("Change gamemode (survival/creative) for yourself or player"),
 	privs = { server = true },
 	func = function(n,param)
-		-- Full input validation ( just for @erlehmann <3 )	
+		-- Full input validation ( just for @erlehmann <3 )
 		local p = minetest.get_player_by_name(n)
 		local args = param:split(" ")
 		if args[2] ~= nil then
@@ -227,7 +227,7 @@ minetest.register_chatcommand("gamemode",{
 			return false, S("Gamemode " .. args[1] .. " does not exist.")
 		elseif args[1] ~= nil then
 			mcl_inventory.player_set_gamemode(p,args[1])
-		end		
+		end
 		--Result message - show effective game mode
 		local gm = p:get_meta():get_string("gamemode")
 		if gm == "" then gm = gamemodes[1] end

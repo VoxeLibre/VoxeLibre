@@ -2096,7 +2096,7 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 						lvm_used = true
 					end
 				end
-				
+
 				-- Set param2 (=color) of sugar cane
 				nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:reeds"})
 				for n=1, #nodes do

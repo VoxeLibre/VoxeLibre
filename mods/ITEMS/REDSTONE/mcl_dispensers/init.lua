@@ -133,7 +133,7 @@ local dispenserdef = {
 					if not stackdef then
 						return
 					end
-					
+
 					local iname = stack:get_name()
 					local igroups = stackdef.groups
 

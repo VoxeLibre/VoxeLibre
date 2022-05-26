@@ -473,10 +473,10 @@ function mcl_spawn.get_player_spawn_pos(player)
 					player:get_meta():set_string("mcl_beds:spawn", "")
 					minetest.chat_send_player(player:get_player_name(), S("Your spawn bed was missing or blocked, and you had no charged respawn anchor!"))
 					return mcl_spawn.get_world_spawn_pos(), false
-				end                
+				end
 			end
 		end
-	
+
 
 
 		-- Find spawning position on/near the bed free of solid or damaging blocks iterating a square spiral 15x15:
