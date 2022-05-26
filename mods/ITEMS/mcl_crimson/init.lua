@@ -1,10 +1,17 @@
-local S = minetest.get_translator("mcl_crimson")
+local modname = minetest.get_current_modname()
+local S = minetest.get_translator(modname)
+local modpath = minetest.get_modpath(modname)
+-- Warped and Crimson fungus
+-- by debiankaios
+-- adapted for mcl2 by cora
 
--- Warped fungus
--- Crimson fungus
---Functions and Biomes
+local function generate_warped_tree(pos)
+	minetest.place_schematic(vector.offset(pos,-2,0,-2),modpath.."/schematics/warped_mushroom.mts")
+end
 
--- WARNING: The most comments are in german. Please Translate with an translater if you don't speak good german
+function generate_crimson_tree(pos)
+	minetest.place_schematic(vector.offset(pos,-2,0,-2),modpath.."/schematics/crimson_mushroom.mts")
+end
 
 minetest.register_node("mcl_crimson:warped_fungus", {
 	description = S("Warped Fungus Mushroom"),
@@ -546,164 +553,6 @@ minetest.register_abm({
 		end
 	end
 })
-
-local function generate_warped_tree(pos)
-	local breakgrow = false
-	local breakgrow2 = false
-	-- Baumgenerator
-	-- erste und zweite Etage
-	for x = pos.x - 2,pos.x + 2 do
-		for y = pos.y + 3, pos.y + 4 do
-			for z = pos.z - 2, pos.z + 2 do
-				if not (minetest.get_node(vector.new(x, y, z)).name == "air") then breakgrow = true end
-			end
-		end
-	end
-
-	-- dritte und vierte Etage
-	for x = pos.x - 1,pos.x + 1 do
-		for y = pos.y + 5, pos.y + 6 do
-			for z = pos.z - 1, pos.z + 1 do
-				if not (minetest.get_node(vector.new(x, y, z)).name == "air") then breakgrow = true end
-			end
-		end
-	end
- 
-	 -- fünfte Etage
-	if not (minetest.get_node({x = pos.x, y = pos.y + 7, z = pos.z}).name == "air") then breakgrow = true end
-
-	-- Holz
-	if not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "air") and not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "mcl_crimson:warped_fungus") then breakgrow = true end
-	for y = pos.y + 1, pos.y + 4 do
-		if not (minetest.get_node({x = pos.x, y = y, z = pos.z}).name == "air") then breakgrow = true end
-		--print(minetest.get_node({x = pos.x, y = y, z = pos.z}).name)
-	end
-	if not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "air") and not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "mcl_crimson:warped_fungus") then breakgrow2 = true end
-	--print(tostring(breakgrow))
-	if breakgrow == false then
-		-- Warzen
-		-- erste und zweite Etage
-		for x = pos.x - 2,pos.x + 2 do
-			for y = pos.y + 3, pos.y + 4 do
-				for z = pos.z - 2, pos.z + 2 do
-					minetest.set_node(vector.new(x, y, z), { name = "mcl_crimson:warped_wart_block" })
-				end
-			end
-		end
-
-		-- dritte und vierte Etage
-		for x = pos.x - 1,pos.x + 1 do
-			for y = pos.y + 5, pos.y + 6 do
-				for z = pos.z - 1, pos.z + 1 do
-					minetest.set_node(vector.new(x, y, z), { name = "mcl_crimson:warped_wart_block" })
-				end
-			end
-		end
-
-		-- fünfte Etage
-		minetest.set_node({x = pos.x, y = pos.y + 7, z = pos.z}, { name = "mcl_crimson:warped_wart_block" })
-
-		-- Pilzlich
-		local randomgenerate = math.random(1, 2)
-		if randomgenerate == 1 then
-			local randomx = math.random(-2, 2)
-			local randomz = math.random(-2, 2)
-			minetest.set_node({x = pos.x + randomx, y = pos.y + 3, z = pos.z + randomz}, { name = "mcl_crimson:shroomlight" })
-		end
-		local randomgenerate = math.random(1, 8)
-		if randomgenerate == 4 then
-			local randomx = math.random(-2, 2)
-			local randomz = math.random(-2, 2)
-			minetest.set_node({x = pos.x + randomx, y = pos.y + 3, z = pos.z + randomz}, { name = "mcl_crimson:shroomlight" })
-		end
-		-- Holz
-		for y = pos.y, pos.y + 4 do
-			minetest.set_node({x = pos.x, y = y, z = pos.z}, { name = "mcl_crimson:warped_hyphae" })
-			--print("Placed at " .. x .. " " .. y .. " " .. z)
-		end
-	else
-		if breakgrow2 == false then minetest.set_node(pos, { name = "mcl_crimson:warped_fungus" }) end
-	end
-end
-
-function generate_crimson_tree(pos)
-	local breakgrow = false
-	local breakgrow2 = false
-	-- Baumgenerator
-	-- erste und zweite Etage
-	for x = pos.x - 2,pos.x + 2 do
-		for y = pos.y + 3, pos.y + 4 do
-			for z = pos.z - 2, pos.z + 2 do
-				if not (minetest.get_node(vector.new(x, y, z)).name == "air") then breakgrow = true end
-			end
-		end
-	end
-
-	-- dritte und vierte Etage
-	for x = pos.x - 1,pos.x + 1 do
-		for y = pos.y + 5, pos.y + 6 do
-			for z = pos.z - 1, pos.z + 1 do
-				if not (minetest.get_node(vector.new(x, y, z)).name == "air") then breakgrow = true end
-			end
-		end
-	end
-
-	 -- fünfte Etage
-	if not (minetest.get_node({x = pos.x, y = pos.y + 7, z = pos.z}).name == "air") then breakgrow = true end
-
-	-- Holz
-	if not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "air") and not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "mcl_crimson:crimson_fungus") then breakgrow = true end
-	for y = pos.y + 1, pos.y + 4 do
-		if not (minetest.get_node({x = pos.x, y = y, z = pos.z}).name == "air") then breakgrow = true end
-		--print(minetest.get_node({x = pos.x, y = y, z = pos.z}).name)
-	end
-	if not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "air") and not (minetest.get_node({x = pos.x, y = pos.y, z = pos.z}).name == "mcl_crimson:crimson_fungus") then breakgrow2 = true end
-	--print(tostring(breakgrow))
-	if breakgrow == false then
-		-- Warzen
-		-- erste und zweite Etage
-		for x = pos.x - 2,pos.x + 2 do
-			for y = pos.y + 3, pos.y + 4 do
-				for z = pos.z - 2, pos.z + 2 do
-					minetest.set_node({x = x, y = y, z = z}, { name = "mcl_nether:nether_wart_block" })
-				end
-			end
-		end
-
-		-- dritte und vierte Etage
-		for x = pos.x - 1,pos.x + 1 do
-			for y = pos.y + 5, pos.y + 6 do
-				for z = pos.z - 1, pos.z + 1 do
-					minetest.set_node({x = x, y = y, z = z}, { name = "mcl_nether:nether_wart_block" })
-				end
-			end
-		end
-
-		-- fünfte Etage
-		minetest.set_node({x = pos.x, y = pos.y + 7, z = pos.z}, { name = "mcl_nether:nether_wart_block" })
-
-		-- Pilzlich
-		local randomgenerate = math.random(1, 2)
-		if randomgenerate == 1 then
-			local randomx = math.random(-2, 2)
-			local randomz = math.random(-2, 2)
-			minetest.set_node({x = pos.x + randomx, y = pos.y + 3, z = pos.z + randomz}, { name = "mcl_crimson:shroomlight" })
-		end
-		local randomgenerate = math.random(1, 8)
-		if randomgenerate == 4 then
-			local randomx = math.random(-2, 2)
-			local randomz = math.random(-2, 2)
-			minetest.set_node({x = pos.x + randomx, y = pos.y + 3, z = pos.z + randomz}, { name = "mcl_crimson:shroomlight" })
-		end
-		-- Holz
-		for y = pos.y, pos.y + 4 do
-			minetest.set_node({x = pos.x, y = y, z = pos.z}, { name = "mcl_crimson:crimson_hyphae" })
-			--print("Placed at " .. x .. " " .. y .. " " .. z)
-		end
-	else
-		if breakgrow2 == false then minetest.set_node(pos, { name = "mcl_crimson:crimson_fungus" }) end
-	end
-end
 
 
 --[[
