@@ -282,19 +282,16 @@ end
 
 local function spawn_witch(p1,p2)
 	local c = minetest.find_node_near(p1,15,{"mcl_cauldrons:cauldron"})
-	local nn = minetest.find_nodes_in_area(p1,p2,{"mcl_core:sprucewood"})
 	if c then
-		for _,v in pairs(nn) do
-			local ap = vector.offset(v,0,1,0)
-			local an = minetest.get_node(ap)
-			if ap.y == c.y and an.name == "air" then
-					minetest.add_entity(ap,"mobs_mc:witch"):get_luaentity()._home = c
-					local cat = minetest.add_entity(ap,"mobs_mc:cat")
-					cat:set_properties({textures = {"mobs_mc_cat_black.png"}})
-					cat:get_luaentity().owner = "witch" --so it's not claimable by players (unless they're named witch hehe)
-				return
-			end
-		end
+		local nn = minetest.find_nodes_in_area_under_air(vector.new(p1.x,c.y-1,p1.z),vector.new(p2.x,c.y-1,p2.z),{"mcl_core:sprucewood"})
+		local witch = minetest.add_entity(vector.offset(nn[math.random(#nn)],0,1,0),"mobs_mc:witch"):get_luaentity()
+		local cat = minetest.add_entity(vector.offset(nn[math.random(#nn)],0,1,0),"mobs_mc:cat"):get_luaentity()
+		witch._home = c
+		witch.can_despawn = false
+		cat.object:set_properties({textures = {"mobs_mc_cat_black.png"}})
+		cat.owner = "!witch!" --so it's not claimable by player
+		cat.can_despawn = false
+		return
 	end
 end
 
