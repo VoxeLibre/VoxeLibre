@@ -46,7 +46,7 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 
 				-- Effects
 				minetest.sound_play({name = "mcl_totems_totem", gain = 1}, {pos=ppos, max_hear_distance = 16}, true)
-				
+
 				for i = 1, 4 do
 					for c = 1, #particle_colors do
 						minetest.add_particlespawner({

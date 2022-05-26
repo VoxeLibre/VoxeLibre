@@ -1402,7 +1402,7 @@ end
 -- should mob follow what I'm holding ?
 local follow_holding = function(self, clicker)
 	if self.nofollow then return false end
-	
+
 	if mcl_mobs.invis[clicker:get_player_name()] then
 		return false
 	end
@@ -2307,7 +2307,7 @@ local function check_doors(self)
 			else
 				if closed then def.on_rightclick(d,n,self) end
 			end
-			
+
 		end
 	end
 end
@@ -2316,7 +2316,7 @@ end
 -- returns true if mob has died
 local do_states = function(self, dtime)
 	if self.can_open_doors then check_doors(self) end
-	
+
 	local yaw = self.object:get_yaw() or 0
 
 	if self.state == "stand" then
@@ -2386,7 +2386,7 @@ local do_states = function(self, dtime)
 		elseif self.current_target then
 			go_to_pos(self,self.current_target)
 		end
-		
+
 		if self.current_target and not minetest.line_of_sight(self.object:get_pos(),self.current_target) then
 			self.waypoints=minetest.find_path(p,self._target,150,1,4)
 			self.current_target = nil

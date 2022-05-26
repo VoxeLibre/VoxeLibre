@@ -26,8 +26,8 @@ local same_id = {
     walls = {
         "andesite", "brick", "cobble", "diorite", "endbricks",
         "granite", "mossycobble", "netherbrick", "prismarine",
-        "rednetherbrick", "redsandstone", "sandstone", 
-        "stonebrick", "stonebrickmossy", 
+        "rednetherbrick", "redsandstone", "sandstone",
+        "stonebrick", "stonebrickmossy",
     },
     wool = {
         "black", "blue", "brown", "cyan", "green",

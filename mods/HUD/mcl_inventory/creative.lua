@@ -360,7 +360,7 @@ function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size,
 		end
 
 		local stack_size = get_stack_size(player)
-		
+
 		-- Survival inventory slots
 		main_list = "list[current_player;main;0,3.75;9,3;9]"..
 			mcl_formspec.get_itemslot_bg(0,3.75,9,3)..
@@ -394,7 +394,7 @@ function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size,
 			-- switch stack size button
 			"image_button[9,5;1,1;default_apple.png;__switch_stack;]"..
 			"label[9.4,5.4;".. F(C("#FFFFFF", stack_size ~= 1 and stack_size or "")) .."]"..
-			"tooltip[__switch_stack;"..F(S("Switch stack size")).."]"			
+			"tooltip[__switch_stack;"..F(S("Switch stack size")).."]"
 
 		-- For shortcuts
 		listrings = listrings ..

@@ -90,9 +90,9 @@ for i=0,4 do
 
 minetest.register_craft({ --TODO: Please change this crafting recipe once crying obsidian is implemented!
 	output = "mcl_beds:respawn_anchor",
-	recipe = { 
+	recipe = {
 			{"mcl_core:obsidian", "mcl_core:obsidian", "mcl_core:obsidian"},
 			{"mcl_nether:glowstone", "mcl_nether:glowstone", "mcl_nether:glowstone"},
-			{"mcl_core:obsidian", "mcl_core:obsidian", "mcl_core:obsidian"} 
-		} 
-	}) 
+			{"mcl_core:obsidian", "mcl_core:obsidian", "mcl_core:obsidian"}
+		}
+	})

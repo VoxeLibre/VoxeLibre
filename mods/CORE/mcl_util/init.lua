@@ -603,7 +603,7 @@ function mcl_util.get_pointed_thing(player, liquid)
 	local look_dir = vector.multiply(player:get_look_dir(), 5)
 	local pos2 = vector.add(pos, look_dir)
 	local ray = minetest.raycast(pos, pos2, false, liquid)
-	
+
 	if ray then
 		for pointed_thing in ray do
 			return pointed_thing

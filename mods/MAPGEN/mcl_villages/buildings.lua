@@ -234,7 +234,7 @@ end
 
 function settlements.place_schematics(settlement_info, pr)
 	local building_all_info
-	
+
 	--attempt to place one belltower in the center of the village - this doesn't always work out great but it's a lot better than doing it first or last.
 	local belltower = table.remove(settlement_info,math.floor(#settlement_info/2))
 	if belltower then
@@ -251,10 +251,10 @@ function settlements.place_schematics(settlement_info, pr)
 			pr
 		)
 	end
-	
+
 	for i, built_house in ipairs(settlement_info) do
 		local is_last = i == #settlement_info
-		
+
 		for j, schem in ipairs(settlements.schematic_table) do
 			if settlement_info[i]["name"] == schem["name"] then
 				building_all_info = schem
