@@ -315,16 +315,6 @@ minetest.register_abm({
 	end,
 })
 
-mobs:spawn({
-	name = "mobs_mc:enderman",
-	nodes = "mcl_crimson:warped_nylium",
-	max_light = 15,
-	min_light = 0,
-	chance = 300,
-	active_object_count = 20,
-	max_height = -28940,
-})
-
 minetest.register_node("mcl_crimson:crimson_fungus", {
 	description = S("Crimson Fungus Mushroom"),
 	drawtype = "plantlike",
