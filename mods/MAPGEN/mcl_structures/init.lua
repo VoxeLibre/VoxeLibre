@@ -290,6 +290,7 @@ local function spawn_witch(p1,p2)
 		witch.can_despawn = false
 		cat.object:set_properties({textures = {"mobs_mc_cat_black.png"}})
 		cat.owner = "!witch!" --so it's not claimable by player
+		cat._home = c
 		cat.can_despawn = false
 		return
 	end
