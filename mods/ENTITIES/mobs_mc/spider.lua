@@ -50,8 +50,8 @@ local spider = {
 	view_range = 16,
 	floats = 1,
 	drops = {
-		{name = mobs_mc.items.string, chance = 1, min = 0, max = 2, looting = "common"},
-		{name = mobs_mc.items.spider_eye, chance = 3, min = 1, max = 1, looting = "common", looting_chance_function = function(lvl)
+		{name = "mcl_mobitems:string", chance = 1, min = 0, max = 2, looting = "common"},
+		{name = "mcl_mobitems:spider_eye", chance = 3, min = 1, max = 1, looting = "common", looting_chance_function = function(lvl)
 			return 1 - 2 / (lvl + 3)
 		end},
 	},
@@ -239,8 +239,8 @@ mcl_mobs:spawn_specific(
 30,
 17000,
 2,
-mobs_mc.spawn_height.overworld_min,
-mobs_mc.spawn_height.overworld_max)
+mcl_vars.mg_overworld_min,
+mcl_vars.mg_overworld_max)
 
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:spider", S("Spider"), "mobs_mc_spawn_icon_spider.png", 0)

@@ -47,22 +47,22 @@ local pigman = {
 	run_velocity = 2.6,
 	pathfinding = 1,
 	drops = {
-		{name = mobs_mc.items.rotten_flesh,
+		{name = "mcl_mobitems:rotten_flesh",
 		chance = 1,
 		min = 1,
 		max = 1,
 		looting = "common"},
-		{name = mobs_mc.items.gold_nugget,
+		{name = "mcl_core:gold_nugget",
 		chance = 1,
 		min = 0,
 		max = 1,
 		looting = "common"},
-		{name = mobs_mc.items.gold_ingot,
+		{name = "mcl_core:gold_ingot",
 		chance = 40, -- 2.5%
 		min = 1,
 		max = 1,
 		looting = "rare"},
-		{name = mobs_mc.items.gold_sword,
+		{name = "mcl_tools:sword_gold",
 		chance = 100 / 8.5,
 		min = 1,
 		max = 1,
@@ -125,8 +125,8 @@ minetest.LIGHT_MAX+1,
 30,
 6000,
 3,
-mobs_mc.spawn_height.nether_min,
-mobs_mc.spawn_height.nether_max)
+mcl_vars.mg_nether_min,
+mcl_vars.mg_nether_max)
 -- Baby zombie is 20 times less likely than regular zombies
 mcl_mobs:spawn_specific(
 "mobs_mc:baby_pigman",
@@ -140,11 +140,11 @@ minetest.LIGHT_MAX+1,
 30,
 100000,
 4,
-mobs_mc.spawn_height.nether_min,
-mobs_mc.spawn_height.nether_max)
+mcl_vars.mg_nether_min,
+mcl_vars.mg_nether_max)
 
 -- Spawning in Nether portals in the Overworld
---mobs:spawn_specific("mobs_mc:pigman", mobs_mc.spawn.nether_portal, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 500, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+--mobs:spawn_specific("mobs_mc:pigman", {"mcl_portals:portal"}, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 500, 4, mcl_vars.mg_overworld_min, mcl_vars.mg_overworld_max)
 
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:pigman", S("Zombie Pigman"), "mobs_mc_spawn_icon_zombie_pigman.png", 0)

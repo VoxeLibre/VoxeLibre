@@ -42,13 +42,13 @@ mcl_mobs:register_mob("mobs_mc:witch", {
 	dogshoot_count_max =1.8,
 	max_drops = 3,
 	drops = {
-		{name = mobs_mc.items.glass_bottle, chance = 8, min = 0, max = 2, looting = "common",},
-		{name = mobs_mc.items.glowstone_dust, chance = 8, min = 0, max = 2, looting = "common",},
-		{name = mobs_mc.items.gunpowder, chance = 8, min = 0, max = 2, looting = "common",},
-		{name = mobs_mc.items.redstone, chance = 8, min = 0, max = 2, looting = "common",},
-		{name = mobs_mc.items.spider_eye, chance = 8, min = 0, max = 2, looting = "common",},
-		{name = mobs_mc.items.sugar, chance = 8, min = 0, max = 2, looting = "common",},
-		{name = mobs_mc.items.stick, chance = 4, min = 0, max = 2, looting = "common",},
+		{name = "mcl_potions:glass_bottle", chance = 8, min = 0, max = 2, looting = "common",},
+		{name = "mcl_nether:glowstone_dust", chance = 8, min = 0, max = 2, looting = "common",},
+		{name = "mcl_mobitems:gunpowder", chance = 8, min = 0, max = 2, looting = "common",},
+		{name = "mesecons:redstone", chance = 8, min = 0, max = 2, looting = "common",},
+		{name = "mcl_mobitems:spider_eye", chance = 8, min = 0, max = 2, looting = "common",},
+		{name = "mcl_core:sugar", chance = 8, min = 0, max = 2, looting = "common",},
+		{name = "mcl_core:stick", chance = 4, min = 0, max = 2, looting = "common",},
 	},
 	-- TODO: sounds
 	animation = {
@@ -101,7 +101,7 @@ mcl_mobs:register_arrow("mobs_mc:potion_arrow", {
 })
 
 -- TODO: Spawn when witch works properly <- eventually -j4i
---mcl_mobs:spawn_specific("mobs_mc:witch", mobs_mc.spawn.jungle, {"air"}, 0, minetest.LIGHT_MAX-6, 12, 20000, 2, mobs_mc.spawn_height.water-6, mobs_mc.spawn_height.overworld_max)
+--mcl_mobs:spawn_specific("mobs_mc:witch", { "mcl_core:jungletree", "mcl_core:jungleleaves", "mcl_flowers:fern", "mcl_core:vine" }, {"air"}, 0, minetest.LIGHT_MAX-6, 12, 20000, 2, mobs_mc.water_level-6, mcl_vars.mg_overworld_max)
 
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:witch", S("Witch"), "mobs_mc_spawn_icon_witch.png", 0, true)

@@ -35,7 +35,7 @@ mcl_mobs:register_mob("mobs_mc:shulker", {
 	walk_chance = 0,
 	jump = false,
 	drops = {
-		{name = mobs_mc.items.shulker_shell,
+		{name = "mcl_mobitems:shulker_shell",
 		chance = 2,
 		min = 1,
 		max = 1,
@@ -94,5 +94,5 @@ minetest.LIGHT_MAX+1,
 30,
 5000,
 2,
-mobs_mc.spawn_height.end_min,
-mobs_mc.spawn_height.end_max)
+mcl_vars.mg_end_min,
+mcl_vars.mg_end_max)

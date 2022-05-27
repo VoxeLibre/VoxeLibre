@@ -30,12 +30,12 @@ mcl_mobs:register_mob("mobs_mc:chicken", {
 	makes_footstep_sound = true,
 	walk_velocity = 1,
 	drops = {
-		{name = mobs_mc.items.chicken_raw,
+		{name = "mcl_mobitems:chicken",
 		chance = 1,
 		min = 1,
 		max = 1,
 		looting = "common",},
-		{name = mobs_mc.items.feather,
+		{name = "mcl_mobitems:feather",
 		chance = 1,
 		min = 0,
 		max = 2,
@@ -64,7 +64,12 @@ mcl_mobs:register_mob("mobs_mc:chicken", {
 		run_start = 0,		run_end = 40,
 	},
 
-	follow = mobs_mc.follow.chicken,
+	follow = {
+		"mcl_farming:wheat_seeds",
+		"mcl_farming:melon_seeds",
+		"mcl_farming:pumpkin_seeds",
+		"mcl_farming:beetroot_seeds",
+	},
 	view_range = 16,
 	fear_height = 4,
 
@@ -89,7 +94,7 @@ mcl_mobs:register_mob("mobs_mc:chicken", {
 
 		local pos = self.object:get_pos()
 
-		minetest.add_item(pos, mobs_mc.items.egg)
+		minetest.add_item(pos, "mcl_throwing:egg")
 
 		minetest.sound_play("mobs_mc_chicken_lay_egg", {
 			pos = pos,
@@ -147,8 +152,8 @@ mcl_mobs:spawn_specific(
 minetest.LIGHT_MAX+1,
 30, 17000,
 3,
-mobs_mc.spawn_height.water,
-mobs_mc.spawn_height.overworld_max)
+mobs_mc.water_level,
+mcl_vars.mg_overworld_max)
 
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:chicken", S("Chicken"), "mobs_mc_spawn_icon_chicken.png", 0)

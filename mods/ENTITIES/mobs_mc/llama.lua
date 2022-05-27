@@ -51,7 +51,7 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 	follow_velocity = 4.4,
 	floats = 1,
 	drops = {
-		{name = mobs_mc.items.leather,
+		{name = "mcl_mobitems:leather",
 		chance = 1,
 		min = 0,
 		max = 2,
@@ -82,7 +82,7 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 		look_start = 78,
 		look_end = 108,
 	},
-	follow = mobs_mc.follow.llama,
+	follow = { "mcl_farming:wheat_item", "mcl_farming:hay_block" },
 	view_range = 16,
 	do_custom = function(self, dtime)
 
@@ -126,7 +126,7 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 		end
 
 		local item = clicker:get_wielded_item()
-		if item:get_name() == mobs_mc.items.hay_bale then
+		if item:get_name() == "mcl_farming:hay_block" then
 			-- Breed with hay bale
 			if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
 		else
@@ -155,7 +155,7 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 					})
 					self.carpet = item:get_name()
 					self.drops = {
-						{name = mobs_mc.items.leather,
+						{name = "mcl_mobitems:leather",
 						chance = 1,
 						min = 0,
 						max = 2,},
@@ -235,8 +235,8 @@ minetest.LIGHT_MAX+1,
 30,
 15000,
 5,
-mobs_mc.spawn_height.water+15,
-mobs_mc.spawn_height.overworld_max)
+mobs_mc.water_level+15,
+mcl_vars.mg_overworld_max)
 
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:llama", S("Llama"), "mobs_mc_spawn_icon_llama.png", 0)

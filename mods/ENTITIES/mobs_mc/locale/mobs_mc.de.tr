@@ -1,7 +1,4 @@
 # textdomain: mobs_mc
-Totem of Undying=Totem der Unsterblichkeit
-A totem of undying is a rare artifact which may safe you from certain death.=Ein Totem der Unsterblichkeit ist ein seltenes Artefakt, dass Sie vor dem sicheren Tod bewahren kann.
-The totem only works while you hold it in your hand. If you receive fatal damage, you are saved from death and you get a second chance with 1 HP. The totem is destroyed in the process, however.=Der Totem funktioniert nur, während Sie ihn halten. Wenn Sie normalerweise tödlich hohen Schaden erhalten, werden Sie vor dem Tod bewahrt und Sie erhalten eine zweite Chance mit 1 TP. Der Totem wird dabei zerstört.
 Agent=Akteur
 Bat=Fledermaus
 Blaze=Lohe
@@ -52,13 +49,6 @@ Wolf=Wolf
 Husk=Wüstenzombie
 Zombie=Zombie
 Zombie Pigman=Schweinezombie
-Iron Horse Armor=Eisenpferderüstung
-Iron horse armor can be worn by horses to increase their protection from harm a bit.=Eine Eisenpferderüstung kann von Pferden getragen werden, um ihren Schutz vor Schaden etwas zu erhöhen.
-Golden Horse Armor=Goldpferderüstung
-Golden horse armor can be worn by horses to increase their protection from harm.=Eine Goldpferderüstung kann von Pferden getragen werden, um ihren Schutz vor Schaden zu erhöhen.
-Diamond Horse Armor=Diamantpferderüstung
-Diamond horse armor can be worn by horses to greatly increase their protection from harm.=Eine Diamantpferderüstung kann von Pferden getragen werden, um ihren Schutz vor Schaden beträchtlich zu erhöhen.
-Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.=Platzieren Sie es auf einem Pferd, um die Pferderüstung aufzusetzen. Esel und Maultiere können keine Pferderüstung tragen.
 Farmer=Bauer
 Fisherman=Fischer
 Fletcher=Pfeilmacher
@@ -72,4 +62,3 @@ Weapon Smith=Waffenschmied
 Tool Smith=Werkzeugschmied
 Cleric=Priester
 Nitwit=Dorftrottel
-Protects you from death while wielding it=Schützt vor dem Tod, wenn es gehalten wird

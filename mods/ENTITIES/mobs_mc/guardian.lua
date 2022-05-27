@@ -44,7 +44,7 @@ mcl_mobs:register_mob("mobs_mc:guardian", {
 	},
 	drops = {
 		-- Greatly increased amounts of prismarine
-		{name = mobs_mc.items.prismarine_shard,
+		{name = "mcl_ocean:prismarine_shard",
 		chance = 1,
 		min = 0,
 		max = 32,
@@ -53,37 +53,37 @@ mcl_mobs:register_mob("mobs_mc:guardian", {
 
 		-- The following drops are approximations
 		-- Fish / prismarine crystal
-		{name = mobs_mc.items.fish_raw,
+		{name = "mcl_fishing:fish_raw",
 		chance = 4,
 		min = 1,
 		max = 1,
 		looting = "common",},
-		{name = mobs_mc.items.prismarine_crystals,
+		{name = "mcl_ocean:prismarine_crystals",
 		chance = 4,
 		min = 1,
 		max = 2,
 		looting = "common",},
 
 		-- Rare drop: fish
-		{name = mobs_mc.items.fish_raw,
+		{name = "mcl_fishing:fish_raw",
 		chance = 160, -- 2.5% / 4
 		min = 1,
 		max = 1,
 		looting = "rare",
 		looting_factor = 0.0025,},
-		{name = mobs_mc.items.salmon_raw,
+		{name = "mcl_fishing:salmon_raw",
 		chance = 160,
 		min = 1,
 		max = 1,
 		looting = "rare",
 		looting_factor = 0.0025,},
-		{name = mobs_mc.items.clownfish_raw,
+		{name = "mcl_fishing:clownfish_raw",
 		chance = 160,
 		min = 1,
 		max = 1,
 		looting = "rare",
 		looting_factor = 0.0025,},
-		{name = mobs_mc.items.pufferfish_raw,
+		{name = "mcl_fishing:pufferfish_raw",
 		chance = 160,
 		min = 1,
 		max = 1,
@@ -92,14 +92,14 @@ mcl_mobs:register_mob("mobs_mc:guardian", {
 	},
 	fly = true,
 	makes_footstep_sound = false,
-	fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
+	fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
 	jump = false,
 	view_range = 16,
 })
 
 -- Spawning disabled due to size issues
 -- TODO: Re-enable spawning
---mcl_mobs:spawn_specific("mobs_mc:guardian", mobs_mc.spawn.water, mobs_mc.spawn_water, 0, minetest.LIGHT_MAX+1, 30, 25000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.water - 10)
+--mcl_mobs:spawn_specific("mobs_mc:guardian", { "mcl_core:water_source", "mclx_core:river_water_source" }, { "mcl_core:water_source", "mclx_core:river_water_source" }, 0, minetest.LIGHT_MAX+1, 30, 25000, 2, mcl_vars.mg_overworld_min, mobs_mc.water_level - 10)
 
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:guardian", S("Guardian"), "mobs_mc_spawn_icon_guardian.png", 0)

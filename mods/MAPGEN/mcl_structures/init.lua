@@ -463,9 +463,9 @@ local function temple_placement_callback(p1, p2, size, rotation, pr)
 				{ itemstring = "mcl_core:iron_ingot", weight = 15, amount_min = 1, amount_max = 5 },
 				{ itemstring = "mcl_core:emerald", weight = 15, amount_min = 1, amount_max = 3 },
 				{ itemstring = "", weight = 15, },
-				{ itemstring = "mobs_mc:iron_horse_armor", weight = 15, },
-				{ itemstring = "mobs_mc:gold_horse_armor", weight = 10, },
-				{ itemstring = "mobs_mc:diamond_horse_armor", weight = 5, },
+				{ itemstring = "mcl_mobitems:iron_horse_armor", weight = 15, },
+				{ itemstring = "mcl_mobitems:gold_horse_armor", weight = 10, },
+				{ itemstring = "mcl_mobitems:diamond_horse_armor", weight = 5, },
 				{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 3 },
 				{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2, },
 			}

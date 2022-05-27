@@ -13,16 +13,15 @@ local pr = PseudoRandom(os.time()*12)
 
 local default_walk_chance = 70
 
--- Returns true if the item is food (taming) for the cat/ocelot
-local is_food = function(itemstring)
-	for f=1, #mobs_mc.follow.ocelot do
-		if itemstring == mobs_mc.follow.ocelot[f] then
-			return true
-		elseif string.sub(itemstring, 1, 6) == "group:" and minetest.get_item_group(itemstring, string.sub(itemstring, 7, -1)) ~= 0 then
-			return true
-		end
-	end
-	return false
+local follow = {
+	"mcl_fishing:fish_raw",
+	"mcl_fishing:salmon_raw",
+	"mcl_fishing:clownfish_raw",
+	"mcl_fishing:pufferfish_raw",
+}
+
+local function is_food(itemstring)
+	return table.indexof(follow, itemstring) ~= -1
 end
 
 -- Ocelot
@@ -65,7 +64,7 @@ local ocelot = {
 		run_start = 0,
 		run_end = 40,
 	},
-	follow = mobs_mc.follow.ocelot,
+	follow = follow,
 	view_range = 12,
 	passive = true,
 	attack_type = "dogfight",
@@ -170,19 +169,19 @@ minetest.LIGHT_MAX+1,
 30,
 15000,
 5,
-mobs_mc.spawn_height.water+15,
-mobs_mc.spawn_height.overworld_max)
+mobs_mc.water_level+15,
+mcl_vars.mg_overworld_max)
 --[[
 mobs:spawn({
 	name = "mobs_mc:ocelot",
-	nodes = mobs_mc.spawn.jungle,
+	nodes = { "mcl_core:jungletree", "mcl_core:jungleleaves", "mcl_flowers:fern", "mcl_core:vine" },
 	neighbors = {"air"},
 	light_max = minetest.LIGHT_MAX+1,
 	light_min = 0,
 	chance = math.ceil(base_spawn_chance * 1.5), -- emulates 1/3 spawn failure rate
 	active_object_count = 12,
-	min_height = mobs_mc.spawn_height.water+1, -- Right above ocean level
-	max_height = mobs_mc.spawn_height.overworld_max,
+	min_height = mobs_mc.water_level+1, -- Right above ocean level
+	max_height = mcl_vars.mg_overworld_max,
 	on_spawn = function(self, pos)
 		 Note: Minecraft has a 1/3 spawn failure rate.
 		In this mod it is emulated by reducing the spawn rate accordingly (see above).

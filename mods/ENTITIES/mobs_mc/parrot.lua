@@ -35,13 +35,13 @@ mcl_mobs:register_mob("mobs_mc:parrot", {
 		distance = 16,
 	},
 	drops = {
-		{name = mobs_mc.items.feather,
+		{name = "mcl_mobitems:feather",
 		chance = 1,
 		min = 1,
 		max = 2,
 		looting = "common",},
 	},
-    	animation = {
+   	animation = {
 		stand_speed = 50,
 		walk_speed = 50,
 		fly_speed = 50,
@@ -66,12 +66,17 @@ mcl_mobs:register_mob("mobs_mc:parrot", {
 	makes_footstep_sound = false,
 	fear_height = 0,
 	view_range = 16,
-	follow = mobs_mc.follow.parrot,
+	follow = {
+		"mcl_farming:wheat_seeds",
+		"mcl_farming:melon_seeds",
+		"mcl_farming:pumpkin_seeds",
+		"mcl_farming:beetroot_seeds",
+	},
 	on_rightclick = function(self, clicker)
 		if self._doomed then return end
 		local item = clicker:get_wielded_item()
 		-- Kill parrot if fed with cookie
-		if item:get_name() == mobs_mc.items.cookie then
+		if item:get_name() == "mcl_farming:cookie" then
 			minetest.sound_play("mobs_mc_animal_eat_generic", {object = self.object, max_hear_distance=16}, true)
 			self.health = 0
 			-- Doomed to die
@@ -107,8 +112,8 @@ minetest.LIGHT_MAX+1,
 7,
 30000,
 1,
-mobs_mc.spawn_height.water+7,
-mobs_mc.spawn_height.overworld_max)
+mobs_mc.water_level+7,
+mcl_vars.mg_overworld_max)
 
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:parrot", S("Parrot"), "mobs_mc_spawn_icon_parrot.png", 0)

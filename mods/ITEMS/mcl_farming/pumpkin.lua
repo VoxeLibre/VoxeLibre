@@ -126,8 +126,8 @@ pumpkin_face_base_def._mcl_armor_texture = "mcl_farming_pumpkin_face.png"
 
 pumpkin_face_base_def.on_construct = function(pos)
 	-- Attempt to spawn iron golem or snow golem
-	mobs_mc.tools.check_iron_golem_summon(pos)
-	mobs_mc.tools.check_snow_golem_summon(pos)
+	mobs_mc.check_iron_golem_summon(pos)
+	mobs_mc.check_snow_golem_summon(pos)
 end
 
 if minetest.get_modpath("mcl_armor") then
@@ -203,8 +203,8 @@ minetest.register_node("mcl_farming:pumpkin_face_light", {
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_construct = function(pos)
 		-- Attempt to spawn iron golem or snow golem
-		mobs_mc.tools.check_iron_golem_summon(pos)
-		mobs_mc.tools.check_snow_golem_summon(pos)
+		mobs_mc.check_iron_golem_summon(pos)
+		mobs_mc.check_snow_golem_summon(pos)
 	end,
 	on_rotate = on_rotate,
 	_mcl_blast_resistance = 1,

@@ -40,7 +40,7 @@ mcl_mobs:register_mob("mobs_mc:squid", {
 		run_end = 60,
 	},
     drops = {
-		{name = mobs_mc.items.black_dye,
+		{name = "mcl_dye:black",
 		chance = 1,
 		min = 1,
 		max = 3,
@@ -49,7 +49,7 @@ mcl_mobs:register_mob("mobs_mc:squid", {
     visual_size = {x=3, y=3},
     makes_footstep_sound = false,
     fly = true,
-    fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
+    fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
     breathes_in_water = true,
     jump = false,
     view_range = 16,
@@ -61,7 +61,7 @@ mcl_mobs:register_mob("mobs_mc:squid", {
 
 -- Spawn near the water surface
 
-local water = mobs_mc.spawn_height.water
+local water = mobs_mc.water_level
 --name, nodes, neighbours, minlight, maxlight, interval, chance, active_object_count, min_height, max_height
 mcl_mobs:spawn_specific(
 "mobs_mc:squid",

@@ -327,6 +327,51 @@ minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
 	_mcl_toollike_wield = true,
 })
 
+local horse_armor_use = S("Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.")
+
+minetest.register_craftitem("mcl_mobitems:iron_horse_armor", {
+	description = S("Iron Horse Armor"),
+	_doc_items_longdesc = S("Iron horse armor can be worn by horses to increase their protection from harm a bit."),
+	_doc_items_usagehelp = horse_armor_use,
+	inventory_image = "mcl_mobitems_iron_horse_armor.png",
+	_horse_overlay_image = "mcl_mobitems_horse_armor_iron.png",
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_iron",
+	},
+	stack_max = 1,
+	groups = { horse_armor = 85 },
+})
+
+minetest.register_craftitem("mcl_mobitems:gold_horse_armor", {
+	description = S("Golden Horse Armor"),
+	_doc_items_longdesc = S("Golden horse armor can be worn by horses to increase their protection from harm."),
+	_doc_items_usagehelp = horse_armor_use,
+	inventory_image = "mcl_mobitems_gold_horse_armor.png",
+	_horse_overlay_image = "mcl_mobitems_horse_armor_gold.png",
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_iron",
+	},
+	stack_max = 1,
+	groups = { horse_armor = 60 },
+})
+
+minetest.register_craftitem("mcl_mobitems:diamond_horse_armor", {
+	description = S("Diamond Horse Armor"),
+	_doc_items_longdesc = S("Diamond horse armor can be worn by horses to greatly increase their protection from harm."),
+	_doc_items_usagehelp = horse_armor_use,
+	inventory_image = "mcl_mobitems_diamond_horse_armor.png",
+	_horse_overlay_image = "mcl_mobitems_horse_armor_diamond.png",
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_diamond",
+	},
+	stack_max = 1,
+	groups = { horse_armor = 45 },
+})
+
+minetest.register_alias("mobs_mc:iron_horse_armor", "mcl_mobitems:iron_horse_armor")
+minetest.register_alias("mobs_mc:gold_horse_armor", "mcl_mobitems:gold_horse_armor")
+minetest.register_alias("mobs_mc:diamond_horse_armor", "mcl_mobitems:diamond_horse_armor")
+
 -----------
 -- Crafting
 -----------
@@ -437,11 +482,8 @@ minetest.register_craft({
 		{"mcl_mobitems:slimeball","mcl_mobitems:slimeball","mcl_mobitems:slimeball",}},
 })
 
-minetest.register_on_item_eat(function (hp_change, replace_with_item, itemstack, user, pointed_thing)
-
-	-- poisoning with spider eye
+minetest.register_on_item_eat(function (hp_change, replace_with_item, itemstack, user, pointed_thing)	-- poisoning with spider eye
 	if itemstack:get_name() == "mcl_mobitems:spider_eye" then
 		mcl_potions.poison_func(user, 1, 4)
 	end
-
-end )
+end)

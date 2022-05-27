@@ -1200,6 +1200,8 @@ end)
 
 --[=======[ MOB REGISTRATION AND SPAWNING ]=======]
 
+local pick_up = { "mcl_farming:bread", "mcl_farming:carrot_item", "mcl_farming:beetroot_item" , "mcl_farming:potato_item" }
+
 mcl_mobs:register_mob("mobs_mc:villager", {
 	description = S("Villager"),
 	type = "npc",
@@ -1239,7 +1241,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 		die_end = 220,
 		die_loop = false,
 	},
-	follow = mobs_mc.follow.villager,
+	follow = pick_up,
 	nofollow = true,
 	view_range = 16,
 	fear_height = 4,
@@ -1249,7 +1251,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 	_id = nil,
 	_profession = "unemployed",
 	look_at_player = true,
-	pick_up = mobs_mc.follow.villager,
+	pick_up = pick_up,
 	can_open_doors = true,
 	on_pick_up = function(self,itementity)
 		local clicker
@@ -1402,8 +1404,8 @@ minetest.LIGHT_MAX+1,
 30,
 20,
 4,
-mobs_mc.spawn_height.water+1,
-mobs_mc.spawn_height.overworld_max)
+mobs_mc.water_level+1,
+mcl_vars.mg_overworld_max)
 
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:villager", S("Villager"), "mobs_mc_spawn_icon_villager.png", 0)

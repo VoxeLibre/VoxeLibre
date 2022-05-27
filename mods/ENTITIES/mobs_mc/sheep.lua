@@ -8,21 +8,22 @@ local S = minetest.get_translator("mobs_mc")
 
 local colors = {
 	-- group = { wool, textures }
-	unicolor_white = { mobs_mc.items.wool_white, "#FFFFFF00" },
-	unicolor_dark_orange = { mobs_mc.items.wool_brown, "#502A00D0" },
-	unicolor_grey = { mobs_mc.items.wool_light_grey, "#5B5B5BD0" },
-	unicolor_darkgrey = { mobs_mc.items.wool_grey, "#303030D0" },
-	unicolor_blue = { mobs_mc.items.wool_blue, "#0000CCD0" },
-	unicolor_dark_green = { mobs_mc.items.wool_green, "#005000D0" },
-	unicolor_green = { mobs_mc.items.wool_lime, "#50CC00D0" },
-	unicolor_violet = { mobs_mc.items.wool_purple , "#5000CCD0" },
-	unicolor_light_red = { mobs_mc.items.wool_pink, "#FF5050D0" },
-	unicolor_yellow = { mobs_mc.items.wool_yellow, "#CCCC00D0" },
-	unicolor_orange = { mobs_mc.items.wool_orange, "#CC5000D0" },
-	unicolor_red = { mobs_mc.items.wool_red, "#CC0000D0" },
-	unicolor_cyan  = { mobs_mc.items.wool_cyan, "#00CCCCD0" },
-	unicolor_red_violet = { mobs_mc.items.wool_magenta, "#CC0050D0" },
-	unicolor_black = { mobs_mc.items.wool_black, "#000000D0" },
+	unicolor_white = { "mcl_wool:white", "#FFFFFF00" },
+	unicolor_dark_orange = { "mcl_wool:brown", "#502A00D0" },
+	unicolor_grey = { "mcl_wool:silver", "#5B5B5BD0" },
+	unicolor_darkgrey = { "mcl_wool:grey", "#303030D0" },
+	unicolor_blue = { "mcl_wool:blue", "#0000CCD0" },
+	unicolor_dark_green = { "mcl_wool:green", "#005000D0" },
+	unicolor_green = { "mcl_wool:lime", "#50CC00D0" },
+	unicolor_violet = { "mcl_wool:purple" , "#5000CCD0" },
+	unicolor_light_red = { "mcl_wool:pink", "#FF5050D0" },
+	unicolor_yellow = { "mcl_wool:yellow", "#CCCC00D0" },
+	unicolor_orange = { "mcl_wool:orange", "#CC5000D0" },
+	unicolor_red = { "mcl_wool:red", "#CC0000D0" },
+	unicolor_cyan  = { "mcl_wool:cyan", "#00CCCCD0" },
+	unicolor_red_violet = { "mcl_wool:magenta", "#CC0050D0" },
+	unicolor_black = { "mcl_wool:black", "#000000D0" },
+	unicolor_light_blue = { "mcl_wool:light_blue", "#5050FFD0" },
 }
 
 local rainbow_colors = {
@@ -37,10 +38,6 @@ local rainbow_colors = {
 	"unicolor_violet",
 	"unicolor_red_violet"
 }
-
-if minetest.get_modpath("mcl_wool") ~= nil then
-	colors["unicolor_light_blue"] = { mobs_mc.items.wool_light_blue, "#5050FFD0" }
-end
 
 local sheep_texture = function(color_group)
 	if not color_group then
@@ -74,7 +71,7 @@ mcl_mobs:register_mob("mobs_mc:sheep", {
 	makes_footstep_sound = true,
 	walk_velocity = 1,
 	drops = {
-		{name = mobs_mc.items.mutton_raw,
+		{name = "mcl_mobitems:mutton",
 		chance = 1,
 		min = 1,
 		max = 2,
@@ -99,12 +96,15 @@ mcl_mobs:register_mob("mobs_mc:sheep", {
 		walk_start = 0,		walk_end = 40,
 		run_start = 0,		run_end = 40,
 	},
-	follow = mobs_mc.follow.sheep,
+	follow = { "mcl_farming:wheat_item" },
 	view_range = 12,
 
 	-- Eat grass
 	replace_rate = 20,
-	replace_what = mobs_mc.replace.sheep,
+	replace_what = {
+		{ "mcl_core:dirt_with_grass", "mcl_core:dirt", -1 },
+		{ "mcl_flowers:tallgrass", "air", 0 },
+	},
 	-- Properly regrow wool after eating grass
 	on_replace = function(self, pos, oldnode, newnode)
 		if not self.color or not colors[self.color] then
@@ -114,7 +114,7 @@ mcl_mobs:register_mob("mobs_mc:sheep", {
 		self.base_texture = sheep_texture(self.color)
 		self.object:set_properties({ textures = self.base_texture })
 		self.drops = {
-			{name = mobs_mc.items.mutton_raw,
+			{name = "mcl_mobitems:mutton",
 			chance = 1,
 			min = 1,
 			max = 2,},
@@ -152,7 +152,7 @@ mcl_mobs:register_mob("mobs_mc:sheep", {
 			self.base_texture = sheep_texture(self.color)
 			self.object:set_properties({ textures = self.base_texture })
 			self.drops = {
-				{name = mobs_mc.items.mutton_raw,
+				{name = "mcl_mobitems:mutton",
 				chance = 1,
 				min = 1,
 				max = 2,},
@@ -198,7 +198,7 @@ mcl_mobs:register_mob("mobs_mc:sheep", {
 		if mcl_mobs:feed_tame(self, clicker, 1, true, true) then return end
 		if mcl_mobs:protect(self, clicker) then return end
 
-		if item:get_name() == mobs_mc.items.shears and not self.gotten and not self.child then
+		if item:get_name() == "mcl_tools:shears" and not self.gotten and not self.child then
 			self.gotten = true
 			local pos = self.object:get_pos()
 			minetest.sound_play("mcl_tools_shears_cut", {pos = pos}, true)
@@ -212,11 +212,11 @@ mcl_mobs:register_mob("mobs_mc:sheep", {
 				textures = self.base_texture,
 			})
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
-				item:add_wear(mobs_mc.misc.shears_wear)
+				item:add_wear(mobs_mc.shears_wear)
 				clicker:get_inventory():set_stack("main", clicker:get_wield_index(), item)
 			end
 			self.drops = {
-				{name = mobs_mc.items.mutton_raw,
+				{name = "mcl_mobitems:mutton",
 				chance = 1,
 				min = 1,
 				max = 2,},
@@ -238,7 +238,7 @@ mcl_mobs:register_mob("mobs_mc:sheep", {
 					})
 					self.color = group
 					self.drops = {
-						{name = mobs_mc.items.mutton_raw,
+						{name = "mcl_mobitems:mutton",
 						chance = 1,
 						min = 1,
 						max = 2,},
@@ -351,8 +351,8 @@ minetest.LIGHT_MAX+1,
 30,
 15000,
 3,
-mobs_mc.spawn_height.overworld_min,
-mobs_mc.spawn_height.overworld_max)
+mcl_vars.mg_overworld_min,
+mcl_vars.mg_overworld_max)
 
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:sheep", S("Sheep"), "mobs_mc_spawn_icon_sheep.png", 0)

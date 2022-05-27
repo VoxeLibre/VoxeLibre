@@ -21,12 +21,12 @@ local cow_def = {
 	makes_footstep_sound = true,
 	walk_velocity = 1,
 	drops = {
-		{name = mobs_mc.items.beef_raw,
+		{name = "mcl_mobitems:beef",
 		chance = 1,
 		min = 1,
 		max = 3,
 		looting = "common",},
-		{name = mobs_mc.items.leather,
+		{name = "mcl_mobitems:leather",
 		chance = 1,
 		min = 0,
 		max = 2,
@@ -47,7 +47,6 @@ local cow_def = {
 		walk_end = 40,      run_start = 0,
 		run_end = 40,
 	},
-	follow = mobs_mc.follow.cow,
 	on_rightclick = function(self, clicker)
 		if mcl_mobs:feed_tame(self, clicker, 1, true, true) then return end
 		if mcl_mobs:protect(self, clicker) then return end
@@ -57,23 +56,23 @@ local cow_def = {
 		end
 
 		local item = clicker:get_wielded_item()
-		if item:get_name() == mobs_mc.items.bucket and clicker:get_inventory() then
+		if item:get_name() == "mcl_buckets:bucket_empty" and clicker:get_inventory() then
 			local inv = clicker:get_inventory()
-			inv:remove_item("main", mobs_mc.items.bucket)
+			inv:remove_item("main", "mcl_buckets:bucket_empty")
 			minetest.sound_play("mobs_mc_cow_milk", {pos=self.object:get_pos(), gain=0.6})
 			-- if room add bucket of milk to inventory, otherwise drop as item
-			if inv:room_for_item("main", {name=mobs_mc.items.milk}) then
-				clicker:get_inventory():add_item("main", mobs_mc.items.milk)
+			if inv:room_for_item("main", {name = "mcl_mobitems:milk_bucket"}) then
+				clicker:get_inventory():add_item("main", "mcl_mobitems:milk_bucket")
 			else
 				local pos = self.object:get_pos()
 				pos.y = pos.y + 0.5
-				minetest.add_item(pos, {name = mobs_mc.items.milk})
+				minetest.add_item(pos, {name = "mcl_mobitems:milk_bucket"})
 			end
 			return
 		end
 		mcl_mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 	end,
-	follow = mobs_mc.items.wheat,
+	follow = "mcl_farming:wheat_item",
 	view_range = 10,
 	fear_height = 4,
 }
@@ -94,14 +93,14 @@ mooshroom_def.on_rightclick = function(self, clicker)
 	end
 	local item = clicker:get_wielded_item()
 	-- Use shears to get mushrooms and turn mooshroom into cow
-	if item:get_name() == mobs_mc.items.shears then
+	if item:get_name() == "mcl_tools:shears" then
 		local pos = self.object:get_pos()
 		minetest.sound_play("mcl_tools_shears_cut", {pos = pos}, true)
 
 		if self.base_texture[1] == "mobs_mc_mooshroom_brown.png" then
-			minetest.add_item({x=pos.x, y=pos.y+1.4, z=pos.z}, mobs_mc.items.mushroom_brown .. " 5")
+			minetest.add_item({x=pos.x, y=pos.y+1.4, z=pos.z}, "mcl_mushrooms:mushroom_brown 5")
 		else
-			minetest.add_item({x=pos.x, y=pos.y+1.4, z=pos.z}, mobs_mc.items.mushroom_red .. " 5")
+			minetest.add_item({x=pos.x, y=pos.y+1.4, z=pos.z}, "mcl_mushrooms:mushroom_red 5")
 		end
 
 		local oldyaw = self.object:get_yaw()
@@ -110,34 +109,34 @@ mooshroom_def.on_rightclick = function(self, clicker)
 		cow:set_yaw(oldyaw)
 
 		if not minetest.is_creative_enabled(clicker:get_player_name()) then
-			item:add_wear(mobs_mc.misc.shears_wear)
+			item:add_wear(mobs_mc.shears_wear)
 			clicker:get_inventory():set_stack("main", clicker:get_wield_index(), item)
 		end
 	-- Use bucket to milk
-	elseif item:get_name() == mobs_mc.items.bucket and clicker:get_inventory() then
+	elseif item:get_name() == "mcl_buckets:bucket_empty" and clicker:get_inventory() then
 		local inv = clicker:get_inventory()
-		inv:remove_item("main", mobs_mc.items.bucket)
+		inv:remove_item("main", "mcl_buckets:bucket_empty")
 		minetest.sound_play("mobs_mc_cow_milk", {pos=self.object:get_pos(), gain=0.6})
 		-- If room, add milk to inventory, otherwise drop as item
-		if inv:room_for_item("main", {name=mobs_mc.items.milk}) then
-			clicker:get_inventory():add_item("main", mobs_mc.items.milk)
+		if inv:room_for_item("main", {name="mcl_mobitems:milk_bucket"}) then
+			clicker:get_inventory():add_item("main", "mcl_mobitems:milk_bucket")
 		else
 			local pos = self.object:get_pos()
 			pos.y = pos.y + 0.5
-			minetest.add_item(pos, {name = mobs_mc.items.milk})
+			minetest.add_item(pos, {name = "mcl_mobitems:milk_bucket"})
 		end
 	-- Use bowl to get mushroom stew
-	elseif item:get_name() == mobs_mc.items.bowl and clicker:get_inventory() then
+	elseif item:get_name() == "mcl_core:bowl" and clicker:get_inventory() then
 		local inv = clicker:get_inventory()
-		inv:remove_item("main", mobs_mc.items.bowl)
+		inv:remove_item("main", "mcl_core:bowl")
 		minetest.sound_play("mobs_mc_cow_mushroom_stew", {pos=self.object:get_pos(), gain=0.6})
 		-- If room, add mushroom stew to inventory, otherwise drop as item
-		if inv:room_for_item("main", {name=mobs_mc.items.mushroom_stew}) then
-			clicker:get_inventory():add_item("main", mobs_mc.items.mushroom_stew)
+		if inv:room_for_item("main", {name="mcl_mushrooms:mushroom_stew"}) then
+			clicker:get_inventory():add_item("main", "mcl_mushrooms:mushroom_stew")
 		else
 			local pos = self.object:get_pos()
 			pos.y = pos.y + 0.5
-			minetest.add_item(pos, {name = mobs_mc.items.mushroom_stew})
+			minetest.add_item(pos, {name = "mcl_mushrooms:mushroom_stew"})
 		end
 	end
 	mcl_mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
@@ -193,8 +192,8 @@ minetest.LIGHT_MAX+1,
 30,
 17000,
 10,
-mobs_mc.spawn_height.water,
-mobs_mc.spawn_height.overworld_max)
+mobs_mc.water_level,
+mcl_vars.mg_overworld_max)
 
 
 
@@ -211,8 +210,8 @@ minetest.LIGHT_MAX+1,
 30,
 17000,
 5,
-mobs_mc.spawn_height.overworld_min,
-mobs_mc.spawn_height.overworld_max)
+mcl_vars.mg_overworld_min,
+mcl_vars.mg_overworld_max)
 
 -- spawn egg
 mcl_mobs:register_egg("mobs_mc:cow", S("Cow"), "mobs_mc_spawn_icon_cow.png", 0)

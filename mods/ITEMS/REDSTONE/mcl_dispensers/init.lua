@@ -185,7 +185,7 @@ local dispenserdef = {
 									entity.base_texture = { "blank.png", "mobs_mc_sheep.png" }
 									texture = entity.base_texture
 									entity.drops = {
-										{ name = mobs_mc.items.mutton_raw, chance = 1, min = 1, max = 2 },
+										{ name = "mcl_mobitems:mutton", chance = 1, min = 1, max = 2 },
 									}
 									used = true
 								elseif entname == "mobs_mc:snowman" then
@@ -199,9 +199,9 @@ local dispenserdef = {
 								elseif entname == "mobs_mc:mooshroom" then
 									local droppos = vector.offset(pos, 0, 1.4, 0)
 									if entity.base_texture[1] == "mobs_mc_mooshroom_brown.png" then
-										minetest.add_item(droppos, mobs_mc.items.mushroom_brown .. " 5")
+										minetest.add_item(droppos, "mcl_mushrooms:mushroom_brown 5")
 									else
-										minetest.add_item(droppos, mobs_mc.items.mushroom_red .. " 5")
+										minetest.add_item(droppos, "mcl_mushrooms:mushroom_red 5")
 									end
 									obj = mcl_util.replace_mob(obj, "mobs_mc:cow")
 									entity = obj:get_luaentity()

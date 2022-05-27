@@ -43,8 +43,9 @@ local function wither_spawn(pos)
 	end
 end
 
-local old_onplace=minetest.registered_nodes[mobs_mc.items.head_wither_skeleton].on_place
-minetest.registered_nodes[mobs_mc.items.head_wither_skeleton].on_place=function(itemstack,placer,pointed)
+local wither_head = minetest.registered_nodes["mcl_heads:wither_skeleton"]
+local old_on_place = wither_head.on_place
+function wither_head.on_place(itemstack, placer, pointed)
 	minetest.after(0, wither_spawn, pointed.above)
-	old_onplace(itemstack,placer,pointed)
+	old_on_place(itemstack, placer, pointed)
 end

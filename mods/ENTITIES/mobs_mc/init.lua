@@ -2,45 +2,100 @@
 --maikerumine
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
+mobs_mc = {}
 
-local path = minetest.get_modpath("mobs_mc")
+local pr = PseudoRandom(os.time()*5)
 
-if not minetest.get_modpath("mobs_mc_gameconfig") then
-	mobs_mc = {}
+local offsets = {}
+for x=-2, 2 do
+	for z=-2, 2 do
+		table.insert(offsets, {x=x, y=0, z=z})
+	end
 end
 
--- For utility functions
-mobs_mc.tools = {}
+--[[ Periodically check and teleport mob to owner if not sitting (order ~= "sit") and
+the owner is too far away. To be used with do_custom. Note: Optimized for mobs smaller than 1×1×1.
+Larger mobs might have space problems after teleportation.
 
--- This function checks if the item ID has been overwritten and returns true if it is unchanged
-if minetest.get_modpath("mobs_mc_gameconfig") and mobs_mc.override and mobs_mc.override.items then
-	mobs_mc.is_item_variable_overridden = function(id)
-		return mobs_mc.override.items[id] == nil
+* dist: Minimum required distance from owner to teleport. Default: 12
+* teleport_check_interval: Optional. Interval in seconds to check the mob teleportation. Default: 4 ]]
+mobs_mc.make_owner_teleport_function = function(dist, teleport_check_interval)
+	return function(self, dtime)
+		-- No teleportation if no owner or if sitting
+		if not self.owner or self.order == "sit" then
+			return
+		end
+		if not teleport_check_interval then
+			teleport_check_interval = 4
+		end
+		if not dist then
+			dist = 12
+		end
+		if self._teleport_timer == nil then
+			self._teleport_timer = teleport_check_interval
+			return
+		end
+		self._teleport_timer = self._teleport_timer - dtime
+		if self._teleport_timer <= 0 then
+			self._teleport_timer = teleport_check_interval
+			local mob_pos = self.object:get_pos()
+			local owner = minetest.get_player_by_name(self.owner)
+			if not owner then
+				-- No owner found, no teleportation
+				return
+			end
+			local owner_pos = owner:get_pos()
+			local dist_from_owner = vector.distance(owner_pos, mob_pos)
+			if dist_from_owner > dist then
+				-- Check for nodes below air in a 5×1×5 area around the owner position
+				local check_offsets = table.copy(offsets)
+				-- Attempt to place mob near player. Must be placed on walkable node below a non-walkable one. Place inside that air node.
+				while #check_offsets > 0 do
+					local r = pr:next(1, #check_offsets)
+					local telepos = vector.add(owner_pos, check_offsets[r])
+					local telepos_below = {x=telepos.x, y=telepos.y-1, z=telepos.z}
+					table.remove(check_offsets, r)
+					-- Long story short, spawn on a platform
+					local trynode = minetest.registered_nodes[minetest.get_node(telepos).name]
+					local trybelownode = minetest.registered_nodes[minetest.get_node(telepos_below).name]
+					if trynode and not trynode.walkable and
+							trybelownode and trybelownode.walkable then
+						-- Correct position found! Let's teleport.
+						self.object:set_pos(telepos)
+						return
+					end
+				end
+			end
+		end
 	end
-else
-	-- No items are overwritten, so always return true
-	mobs_mc.is_item_variable_overridden = function(id)
+end
+
+local function is_forbidden_node(pos, node)
+	node = node or minetest.get_node(pos)
+	return minetest.get_item_group(node.name, "stair") > 0 or minetest.get_item_group(node.name, "slab") > 0 or minetest.get_item_group(node.name, "carpet") > 0
+end
+
+function mcl_mobs:spawn_abm_check(pos, node, name)
+	-- Don't spawn monsters on mycelium
+	if (node.name == "mcl_core:mycelium" or node.name == "mcl_core:mycelium_snow") and minetest.registered_entities[name].type == "monster" then
 		return true
+    --Don't Spawn mobs on stairs, slabs, or carpets
+	elseif is_forbidden_node(pos, node) or is_forbidden_node(vector.add(pos, vector.new(0, 1, 0))) then
+		return true
+	-- Spawn on opaque or liquid nodes
+	elseif minetest.get_item_group(node.name, "opaque") ~= 0 or minetest.registered_nodes[node.name].liquidtype ~= "none" or node.name == "mcl_core:grass_path" then
+		return false
 	end
+
+	-- Reject everything else
+	return true
 end
 
---MOB ITEMS SELECTOR SWITCH
-dofile(path .. "/0_gameconfig.lua")
---Items
-dofile(path .. "/1_items_default.lua")
-
--- Bow, arrow and throwables
-dofile(path .. "/2_throwing.lua")
-
--- Shared functions
-dofile(path .. "/3_shared.lua")
-
---Mob heads
-dofile(path .. "/4_heads.lua")
-
-dofile(path .. "/5_spawn_abm_check.lua")
+mobs_mc.shears_wear = 276
+mobs_mc.water_level = tonumber(minetest.settings:get("water_level")) or 0
 
 -- Animals
+local path = minetest.get_modpath("mobs_mc")
 dofile(path .. "/bat.lua") -- Mesh and animation by toby109tt  / https://github.com/22i
 dofile(path .. "/rabbit.lua") -- Mesh and animation byExeterDad
 dofile(path .. "/chicken.lua") -- Mesh and animation by Pavel_S
@@ -57,8 +112,6 @@ dofile(path .. "/squid.lua") -- Animation, sound and egg texture by daufinsyd
 
 -- NPCs
 dofile(path .. "/villager.lua") -- KrupnoPavel Mesh and animation by toby109tt  / https://github.com/22i
--- Agent texture missing
---dofile(path .. "/agent.lua") -- Mesh and animation by toby109tt  / https://github.com/22i
 
 -- Illagers and witch
 dofile(path .. "/villager_evoker.lua") -- Mesh and animation by toby109tt  / https://github.com/22i
@@ -89,12 +142,3 @@ dofile(path .. "/slime+magma_cube.lua") -- Wuzzy
 dofile(path .. "/spider.lua") -- Spider by AspireMint (fishyWET (CC-BY-SA 3.0 license for texture)
 dofile(path .. "/vex.lua") -- KrupnoPavel
 dofile(path .. "/wither.lua") -- Mesh and animation by toby109tt  / https://github.com/22i
---NOTES:
---
---[[
-COLISIONBOX in minetest press f5 to see where you are looking at then put these wool collor nodes on the ground in direction of north/east/west... to make colisionbox editing easier
-#1west-pink/#2down/#3south-blue/#4east-red/#5up/#6north-yelow
-{-1, -0.5, -1, 1, 3, 1}, Right, Bottom, Back, Left, Top, Front
---]]
---
---

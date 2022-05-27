@@ -35,7 +35,14 @@ mcl_mobs:register_mob("mobs_mc:silverfish", {
 	run_velocity = 2,
 	jump = true,
 	fear_height = 4,
-	replace_what = mobs_mc.replace.silverfish,
+	replace_what = {
+		{"mcl_core:stone", "mcl_monster_eggs:monster_egg_stone", -1},
+		{"mcl_core:cobble", "mcl_monster_eggs:monster_egg_cobble", -1},
+		{"mcl_core:stonebrick", "mcl_monster_eggs:monster_egg_stonebrick", -1},
+		{"mcl_core:stonebrickmossy", "mcl_monster_eggs:monster_egg_stonebrickmossy", -1},
+		{"mcl_core:stonebrickcracked", "mcl_monster_eggs:monster_egg_stonebrickcracked", -1},
+		{"mcl_core:stonebrickcarved", "mcl_monster_eggs:monster_egg_stonebrickcarved", -1},
+	},
 	replace_rate = 2,
 	animation = {
 		speed_normal = 25,		speed_run = 50,
