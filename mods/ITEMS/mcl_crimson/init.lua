@@ -6,11 +6,11 @@ local modpath = minetest.get_modpath(modname)
 -- adapted for mcl2 by cora
 
 local function generate_warped_tree(pos)
-	minetest.place_schematic(vector.offset(pos,-2,0,-2),modpath.."/schematics/warped_mushroom.mts")
+	minetest.place_schematic(vector.offset(pos,-2,0,-2),modpath.."/schematics/warped_mushroom.mts","random")
 end
 
 function generate_crimson_tree(pos)
-	minetest.place_schematic(vector.offset(pos,-2,0,-2),modpath.."/schematics/crimson_mushroom.mts")
+	minetest.place_schematic(vector.offset(pos,-2,0,-2),modpath.."/schematics/crimson_mushroom.mts","random")
 end
 
 minetest.register_node("mcl_crimson:warped_fungus", {
