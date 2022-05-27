@@ -40,7 +40,7 @@ local function perch(self,player)
 		local shoulder = get_shoulder(player)
 		if not shoulder then return true end
 		self.object:set_attach(player,"",shoulder,vector.new(0,0,0),true)
-		mobs:set_animation(self, "stand")
+		mcl_mobs:set_animation(self, "stand")
 	end
 end
 
@@ -154,7 +154,7 @@ mcl_mobs:register_mob("mobs_mc:parrot", {
 			return
 		end
 		-- Feed to tame, but not breed
-		if mobs:feed_tame(self, clicker, 1, false, true) then return end
+		if mcl_mobs:feed_tame(self, clicker, 1, false, true) then return end
 		perch(self,clicker)
 	end,
 	do_custom = function(self,dtime)
