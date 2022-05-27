@@ -26,7 +26,7 @@ mcl_vars.tool_wield_scale = { x = 1.8, y = 1.8, z = 1 }
 
 -- Mapgen variables
 local mg_name = minetest.get_mapgen_setting("mg_name")
-local minecraft_height_limit = 256
+local minecraft_height_limit = 320
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 local singlenode = mg_name == "singlenode"
 
@@ -99,7 +99,8 @@ if not superflat and not singlenode then
 	]]
 
 	-- Overworld
-	mcl_vars.mg_overworld_min = -62
+	mcl_vars.mg_overworld_min_old = -62
+	mcl_vars.mg_overworld_min = -128
 	mcl_vars.mg_overworld_max_official = mcl_vars.mg_overworld_min + minecraft_height_limit
 	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
 	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min + 4
@@ -108,7 +109,8 @@ if not superflat and not singlenode then
 	mcl_vars.mg_bedrock_is_rough = true
 
 elseif singlenode then
-	mcl_vars.mg_overworld_min = -66
+	mcl_vars.mg_overworld_min_old = -66
+	mcl_vars.mg_overworld_min = -130
 	mcl_vars.mg_overworld_max_official = mcl_vars.mg_overworld_min + minecraft_height_limit
 	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
 	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min
@@ -262,3 +264,22 @@ function mcl_vars.get_node(p, force, us_timeout)
 	return node
 	-- it still can return "ignore", LOL, even if force = true, but only after time out
 end
+
+
+minetest.register_lbm({
+		label = "Replace bedrock from old bedrock layer and air/void below to deepslate",
+		name = ":mcl_mapgen_core:replace_old_bedrock",
+		nodenames = { "mcl_core:bedrock","mcl_core:void"},
+		run_at_every_load = false,
+		action = function(pos, node)
+			if
+				pos.y >= mcl_vars.mg_overworld_min + 20 and
+				pos.y <= mcl_vars.mg_overworld_min_old + 10
+			then
+				minetest.swap_node(
+					pos,
+					{ name="mcl_deepslate" }
+				)
+			end
+		end,
+})
