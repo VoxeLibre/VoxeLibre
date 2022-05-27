@@ -206,6 +206,12 @@ local gamemodes = {
 function mcl_inventory.player_set_gamemode(p,g)
 	local m = p:get_meta()
 	m:set_string("gamemode",g)
+	if g == "survival" then
+		 mcl_experience.setup_hud(p)
+		 mcl_experience.update(p)
+	elseif g == "creative" then
+		 mcl_experience.remove_hud(p)
+	end
 	set_inventory(p)
 end
 

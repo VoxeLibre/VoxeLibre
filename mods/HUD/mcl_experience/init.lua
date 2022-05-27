@@ -156,33 +156,20 @@ function mcl_experience.throw_xp(pos, total_xp)
 	end
 end
 
-function mcl_experience.update(player)
-	local xp = mcl_experience.get_xp(player)
-	local cache = caches[player]
-
-	cache.level = xp_to_level(xp)
-
-	if not minetest.is_creative_enabled(player:get_player_name()) then
-		player:hud_change(hud_bars[player], "text", "mcl_experience_bar_background.png^[lowpart:"
-			.. math.floor(math.floor(xp_to_bar(xp, cache.level) * 18) / 18 * 100)
-			.. ":mcl_experience_bar.png^[transformR270"
-		)
-
-		if cache.level == 0 then
-			player:hud_change(hud_levels[player], "text", "")
-		else
-			player:hud_change(hud_levels[player], "text", tostring(cache.level))
-		end
+function mcl_experience.remove_hud(player)
+	if hud_bars[player] then
+		player:hud_remove(hud_bars[player])
+		hud_bars[player] = nil
+	end
+	if hud_levels[player] then
+		player:hud_remove(hud_levels[player])
+		hud_levels[player] = nil
 	end
 end
 
-function mcl_experience.register_on_add_xp(func, priority)
-	table.insert(mcl_experience.on_add_xp, {func = func, priority = priority or 0})
-end
-
--- callbacks
-
-minetest.register_on_joinplayer(function(player)
+function mcl_experience.setup_hud(player)
+	if hud_bars[player] and hud_levels[player] then return end
+	mcl_experience.remove_hud(player)
 	caches[player] = {
 		last_time = get_time(),
 	}
@@ -205,7 +192,39 @@ minetest.register_on_joinplayer(function(player)
 			z_index = 12,
 		})
 	end
+end
 
+function mcl_experience.update(player)
+	local xp = mcl_experience.get_xp(player)
+	local cache = caches[player]
+
+	cache.level = xp_to_level(xp)
+
+	if not minetest.is_creative_enabled(player:get_player_name()) then
+		if not hud_bars[player] then
+			mcl_experience.setup_hud(player)
+		end
+		player:hud_change(hud_bars[player], "text", "mcl_experience_bar_background.png^[lowpart:"
+			.. math.floor(math.floor(xp_to_bar(xp, cache.level) * 18) / 18 * 100)
+			.. ":mcl_experience_bar.png^[transformR270"
+		)
+
+		if cache.level == 0 then
+			player:hud_change(hud_levels[player], "text", "")
+		else
+			player:hud_change(hud_levels[player], "text", tostring(cache.level))
+		end
+	end
+end
+
+function mcl_experience.register_on_add_xp(func, priority)
+	table.insert(mcl_experience.on_add_xp, {func = func, priority = priority or 0})
+end
+
+-- callbacks
+
+minetest.register_on_joinplayer(function(player)
+	mcl_experience.setup_hud(player)
 	mcl_experience.update(player)
 end)
 
