@@ -30,6 +30,8 @@ local minecraft_height_limit = 320
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 local singlenode = mg_name == "singlenode"
 
+local convert_old_bedrock = minetest.settings:get_bool("convert_old_bedrock", true)
+
 -- Calculate mapgen_edge_min/mapgen_edge_max
 mcl_vars.chunksize = math.max(1, tonumber(minetest.get_mapgen_setting("chunksize")) or 5)
 mcl_vars.MAP_BLOCKSIZE = math.max(1, minetest.MAP_BLOCKSIZE or 16)
@@ -265,21 +267,23 @@ function mcl_vars.get_node(p, force, us_timeout)
 	-- it still can return "ignore", LOL, even if force = true, but only after time out
 end
 
-
-minetest.register_lbm({
-		label = "Replace bedrock from old bedrock layer and air/void below to deepslate",
-		name = ":mcl_mapgen_core:replace_old_bedrock",
-		nodenames = { "mcl_core:bedrock","mcl_core:void"},
-		run_at_every_load = false,
-		action = function(pos, node)
-			if
-				pos.y >= mcl_vars.mg_overworld_min + 20 and
-				pos.y <= mcl_vars.mg_overworld_min_old + 10
-			then
-				minetest.swap_node(
-					pos,
-					{ name="mcl_deepslate" }
-				)
-			end
-		end,
-})
+-- lbm to update from old mapgen depth to new. potentially affects a lot of nodes inducing lag.
+if convert_old_bedrock then
+	minetest.register_lbm({
+			label = "Replace bedrock from old bedrock layer and air/void below to deepslate",
+			name = ":mcl_mapgen_core:replace_old_bedrock",
+			nodenames = { "mcl_core:bedrock","mcl_core:void","mcl_core:barrier"},
+			run_at_every_load = false,
+			action = function(p)
+				if p.y >= mcl_vars.mg_overworld_min and
+					p.y <= mcl_vars.mg_overworld_min_old + 5 -- 
+				then
+					if p.y <= mcl_vars.mg_bedrock_overworld_max and p.y >= mcl_vars.mg_bedrock_overworld_min then
+						minetest.swap_node(p,{name="mcl_core:bedrock" }) --TODO: bedrock pattern
+					else
+						minetest.swap_node(p,{name="mcl_deepslate:deepslate" })
+					end
+				end
+			end,
+	})
+end
