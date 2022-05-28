@@ -1,5 +1,5 @@
-local PARTICLES_COUNT_RAIN = 100
-local PARTICLES_COUNT_THUNDER = 300
+local PARTICLES_COUNT_RAIN = 800
+local PARTICLES_COUNT_THUNDER = 1200
 
 local get_connected_players = minetest.get_connected_players
 
@@ -26,38 +26,22 @@ local size = math.random(1,3)
 local psdef= {
 	amount = mcl_weather.rain.particles_count,
 	time=0,
-	minpos = vector.new(-6,3,-6),
-	maxpos = vector.new(6,15,6),
-	minvel = vector.new(-vel,-falling_speed,-vel),
-	maxvel = vector.new(vel,-falling_speed+vel,vel),
+	minpos = vector.new(-15,20,-15),
+	maxpos = vector.new(15,25,15),
+	minvel = vector.new(-2,-falling_speed-2,-2),
+	maxvel = vector.new(2,-falling_speed+2,2),
 	minacc = vector.new(0,0,0),
-	maxacc = vector.new(0,-0.4,0),
-	minexptime = 0.5,
-	maxexptime = 2,
+	maxacc = vector.new(0,-0.5,0),
+	minexptime = 15,
+	maxexptime = 30,
 	minsize = size,
 	maxsize= size*2,
 	collisiondetection = true,
 	collision_removal = true,
 	vertical = true,
 }
-local psdef_backsplash= {
-	amount = 10,
-	time=0,
-	minpos = vector.new(-3,-1,-3),
-	maxpos = vector.new(3,0,3),
-	minvel = vector.new(-vel,falling_speed*2,-vel),
-	maxvel = vector.new(vel,falling_speed*2+vel,vel),
-	minacc = vector.new(0,0,0),
-	maxacc = vector.new(0,0,0),
-	minexptime = 0.1,
-	maxexptime = 0.2,
-	minsize = size*0.1,
-	maxsize= size*0.5,
-	collisiondetection = true,
-	collision_removal = true,
-	vertical = true,
-}
-local textures = {"weather_pack_rain_raindrop_1.png", "weather_pack_rain_raindrop_2.png", "weather_pack_rain_raindrop_1.png"}
+
+local textures = {"weather_pack_rain_raindrop_1.png", "weather_pack_rain_raindrop_2.png"}
 
 function mcl_weather.rain.sound_handler(player)
 	return minetest.sound_play("weather_rain", {
@@ -90,8 +74,6 @@ function mcl_weather.rain.add_rain_particles(player)
 		psdef.texture=v
 		mcl_weather.add_spawner_player(player,"rain"..k,psdef)
 	end
-	psdef_backsplash.texture=textures[math.random(1,#textures)]
-	local l=mcl_weather.add_spawner_player(player,"rainbacksplash",psdef_backsplash)
 	if l then
 		update_sound[player:get_player_name()]=true
 	end
@@ -185,14 +167,14 @@ function mcl_weather.rain.make_weather()
 
 	for _, player in pairs(get_connected_players()) do
 		local pos=player:get_pos()
-		if mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(pos) or not  mcl_weather.is_outdoor(pos) then
+		if mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(pos) then
 			mcl_weather.rain.remove_sound(player)
 			mcl_weather.remove_spawners_player(player)
-			return false
+		else
+			mcl_weather.rain.add_player(player)
+			mcl_weather.rain.add_rain_particles(player)
+			mcl_weather.rain.update_sound(player)
 		end
-		mcl_weather.rain.add_player(player)
-		mcl_weather.rain.add_rain_particles(player)
-		mcl_weather.rain.update_sound(player)
 	end
 end
 
@@ -200,11 +182,9 @@ end
 function mcl_weather.rain.set_particles_mode(mode)
 	if mode == "thunder" then
 		psdef.amount=PARTICLES_COUNT_THUNDER
-		psdef_backsplash.amount=PARTICLES_COUNT_THUNDER
 		mcl_weather.rain.particles_count = PARTICLES_COUNT_THUNDER
 	else
 		psdef.amount=PARTICLES_COUNT_RAIN
-		psdef_backsplash.amount=PARTICLES_COUNT_RAIN
 		mcl_weather.rain.particles_count = PARTICLES_COUNT_RAIN
 	end
 end
