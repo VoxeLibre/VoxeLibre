@@ -280,6 +280,22 @@ function mcl_structures.generate_boulder(pos, rotation, pr)
 	return minetest.place_schematic(newpos, path, rotation) -- don't serialize schematics for registered biome decorations, for MT 5.4.0, https://github.com/minetest/minetest/issues/10995
 end
 
+local function spawn_witch(p1,p2)
+	local c = minetest.find_node_near(p1,15,{"mcl_cauldrons:cauldron"})
+	if c then
+		local nn = minetest.find_nodes_in_area_under_air(vector.new(p1.x,c.y-1,p1.z),vector.new(p2.x,c.y-1,p2.z),{"mcl_core:sprucewood"})
+		local witch = minetest.add_entity(vector.offset(nn[math.random(#nn)],0,1,0),"mobs_mc:witch"):get_luaentity()
+		local cat = minetest.add_entity(vector.offset(nn[math.random(#nn)],0,1,0),"mobs_mc:cat"):get_luaentity()
+		witch._home = c
+		witch.can_despawn = false
+		cat.object:set_properties({textures = {"mobs_mc_cat_black.png"}})
+		cat.owner = "!witch!" --so it's not claimable by player
+		cat._home = c
+		cat.can_despawn = false
+		return
+	end
+end
+
 local function hut_placement_callback(p1, p2, size, orientation, pr)
 	if not p1 or not p2 then return end
 	local legs = minetest.find_nodes_in_area(p1, p2, "mcl_core:tree")
@@ -289,6 +305,7 @@ local function hut_placement_callback(p1, p2, size, orientation, pr)
 			minetest.swap_node(legs[i], {name = "mcl_core:tree", param2 = 2})
 		end
 	end
+	spawn_witch(p1,p2)
 end
 
 function mcl_structures.generate_witch_hut(pos, rotation, pr)
