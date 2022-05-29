@@ -11,7 +11,9 @@ minetest.register_node("mcl_cartography_table:cartography_table", {
 		"cartography_table_side3.png", "cartography_table_side1.png"
 	},
 	paramtype2 = "facedir",
-	groups = {choppy=1, deco_block=1, material_wood=1,flammable=1}
+	groups = { axey = 2, handy = 1, deco_block = 1, material_wood = 1, flammable = 1 },
+	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 2.5
 	})
 
 

@@ -10,7 +10,9 @@ minetest.register_node("mcl_fletching_table:fletching_table", {
 		"fletching_table_front.png", "fletching_table_front.png"
 	},
 	paramtype2 = "facedir",
-	groups = {choppy=1, deco_block=1, material_wood=1, flammable=1}
+	groups = { axey = 2, handy = 1, deco_block = 1, material_wood = 1, flammable = 1 },
+	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 2.5
 	})
 
 minetest.register_craft({
