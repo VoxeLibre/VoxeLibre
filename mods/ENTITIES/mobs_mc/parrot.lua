@@ -8,8 +8,74 @@ local S = minetest.get_translator("mobs_mc")
 --###################
 --################### PARROT
 --###################
+local shoulders = {
+	left = vector.new(-3.75,10.5,0),
+	right = vector.new(3.75,10.5,0)
+}
 
+--find a free shoulder or return nil
+local function get_shoulder(player)
+	local sh = "left"
+	for _,o in pairs(player:get_children()) do
+		local l = o:get_luaentity()
+		if l and l.name == "mobs_mc:parrot" then
+			local _,_,a = l.object:get_attach()
+			for _,s in pairs(shoulders) do
+				if a and vector.equals(a,s) then
+					if sh == "left" then
+						sh = "right"
+					else
+						return
+					end
 
+				end
+			end
+		end
+	end
+	return shoulders[sh]
+end
+
+local function perch(self,player)
+	if self.tamed and player:get_player_name() == self.owner and not self.object:get_attach() then
+		local shoulder = get_shoulder(player)
+		if not shoulder then return true end
+		self.object:set_attach(player,"",shoulder,vector.new(0,0,0),true)
+		mcl_mobs:set_animation(self, "stand")
+	end
+end
+
+local function check_perch(self,dtime)
+	if self.object:get_attach() then
+		for _,p in pairs(minetest.get_connected_players()) do
+			for _,o in pairs(p:get_children()) do
+				local l = o:get_luaentity()
+				if l and l.name == "mobs_mc:parrot" then
+					local n1 = minetest.get_node(vector.offset(p:get_pos(),0,-0.6,0)).name
+					local n2 = minetest.get_node(vector.offset(p:get_pos(),0,0,0)).name
+					local n3 = minetest.get_node(vector.offset(p:get_pos(),0,1,0)).name
+					if n1 == "air" or minetest.get_item_group(n2,"water") > 0 or minetest.get_item_group(n2,"lava") > 0 then
+						o:set_detach()
+						self.detach_timer = 0
+						return
+					end
+				end
+			end
+		end
+	elseif not self.detach_timer then
+		for _,p in pairs(minetest.get_connected_players()) do
+			if vector.distance(self.object:get_pos(),p:get_pos()) < 0.5 then
+				perch(self,p)
+				return
+			end
+		end
+	elseif self.detach_timer then
+		if self.detach_timer > 1 then
+			self.detach_timer = nil
+		else
+			self.detach_timer = self.detach_timer + dtime
+		end
+	end
+end
 
 mcl_mobs:register_mob("mobs_mc:parrot", {
 	description = S("Parrot"),
@@ -45,12 +111,12 @@ mcl_mobs:register_mob("mobs_mc:parrot", {
 		stand_speed = 50,
 		walk_speed = 50,
 		fly_speed = 50,
-		stand_start = 30,
-		stand_end = 45,
+		stand_start = 0,
+		stand_end = 0,
 		fly_start = 30,
 		fly_end = 45,
-		walk_start = 30,
-		walk_end = 45,
+		walk_start = 0,
+		walk_end = 20,
 		-- TODO: actual walk animation
 		--walk_start = 0,
 		--walk_end = 20,
@@ -87,13 +153,18 @@ mcl_mobs:register_mob("mobs_mc:parrot", {
 			end
 			return
 		end
-
 		-- Feed to tame, but not breed
 		if mcl_mobs:feed_tame(self, clicker, 1, false, true) then return end
-		if mcl_mobs:protect(self, clicker) then return end
-		if mcl_mobs:capture_mob(self, clicker, 0, 50, 80, false, nil) then return end
+		perch(self,clicker)
 	end,
-
+	do_custom = function(self,dtime)
+		check_perch(self,dtime)
+	end,
+	do_punch = function(self,puncher) --do_punch is the mcl_mobs_redo variant - it gets called by on_punch later....
+		if self.object:get_attach() == puncher then
+			return false --return false explicitly here. mcl_mobs checks for that
+		end
+	end,
 })
 
 -- Parrots spawn rarely in jungles. TODO: Also check for jungle *biome* <- I'll get to this eventually -j4i

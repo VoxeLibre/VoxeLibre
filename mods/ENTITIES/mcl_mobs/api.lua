@@ -363,6 +363,35 @@ local remove_texture_mod = function(self, mod)
 	self.object:set_texture_mod(full_mod)
 end
 
+-- are we flying in what we are suppose to? (taikedz)
+local flight_check = function(self)
+
+	local nod = self.standing_in
+	local def = minetest.registered_nodes[nod]
+
+	if not def then return false end -- nil check
+
+	local fly_in
+	if type(self.fly_in) == "string" then
+		fly_in = { self.fly_in }
+	elseif type(self.fly_in) == "table" then
+		fly_in = self.fly_in
+	else
+		return false
+	end
+
+	for _,checknode in pairs(fly_in) do
+		if nod == checknode then
+			return true
+		elseif checknode == "__airlike" or def.walkable == false and
+				(def.liquidtype == "none" or minetest.get_item_group(nod, "fake_liquid") == 1) then
+			return true
+		end
+	end
+
+	return false
+end
+
 -- set defined animation
 local set_animation = function(self, anim, fixed_frame)
 	if not self.animation or not anim then
@@ -371,6 +400,8 @@ local set_animation = function(self, anim, fixed_frame)
 	if self.state == "die" and anim ~= "die" and anim ~= "stand" then
 		return
 	end
+
+	if flight_check(self) and self.fly and anim == "walk" then anim = "fly" end
 
 	self.animation.current = self.animation.current or ""
 
@@ -512,37 +543,6 @@ local line_of_sight = function(self, pos1, pos2, stepsize)
 
 	return false
 end
-
-
--- are we flying in what we are suppose to? (taikedz)
-local flight_check = function(self)
-
-	local nod = self.standing_in
-	local def = minetest.registered_nodes[nod]
-
-	if not def then return false end -- nil check
-
-	local fly_in
-	if type(self.fly_in) == "string" then
-		fly_in = { self.fly_in }
-	elseif type(self.fly_in) == "table" then
-		fly_in = self.fly_in
-	else
-		return false
-	end
-
-	for _,checknode in pairs(fly_in) do
-		if nod == checknode then
-			return true
-		elseif checknode == "__airlike" and def.walkable == false and
-				(def.liquidtype == "none" or minetest.get_item_group(nod, "fake_liquid") == 1) then
-			return true
-		end
-	end
-
-	return false
-end
-
 
 -- custom particle effects
 local effect = function(pos, amount, texture, min_size, max_size, radius, gravity, glow, go_down)
