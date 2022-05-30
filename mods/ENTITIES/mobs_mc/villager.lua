@@ -724,7 +724,10 @@ local function set_trade(trader, player, inv, concrete_tradenum)
 	local trade = trades[concrete_tradenum]
 	inv:set_stack("wanted", 1, ItemStack(trade.wanted[1]))
 	local offered = ItemStack(trade.offered)
-	mcl_enchanting.load_enchantments(offered)
+	-- Only load enchantments for enchanted items; fixes unnecessary metadata being applied to regular items from villagers.
+	if mcl_enchanting.is_enchanted(offered:get_name()) then
+		mcl_enchanting.load_enchantments(offered)
+	end
 	inv:set_stack("offered", 1, offered)
 	if trade.wanted[2] then
 		local wanted2 = ItemStack(trade.wanted[2])
