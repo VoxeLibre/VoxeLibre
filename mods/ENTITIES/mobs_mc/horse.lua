@@ -81,6 +81,20 @@ for b=1, #horse_base do
 	end
 end
 
+-- in e7898352d890c2414af653eba624939df9c0b8b4 (0.76-dev) all items from mobs_mc were moved to mcl_mobitems
+-- this results in existing horses wearing armor would still have the old texture filename in their
+-- properties this function updates them. It should be removed some time in the future when we can be
+-- reasonably sure all horses that want it get the new nexture.
+local function update_textures(self)
+	local old = "mobs_mc_horse_armor_"
+	local txt = self.object:get_properties().textures
+	if txt[2]:find(old) then
+		txt[2] = txt[2]:gsub(old,"mcl_mobitems_horse_armor_")
+		self.object:set_properties({textures=txt})
+		return
+	end
+end
+
 -- Horse
 local horse = {
 	description = S("Horse"),
@@ -138,7 +152,7 @@ local horse = {
 		max = 2,
 		looting = "common",},
 	},
-
+	on_spawn = update_textures,
 	do_custom = function(self, dtime)
 
 		-- set needed values if not already present
