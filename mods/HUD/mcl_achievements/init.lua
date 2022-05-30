@@ -215,6 +215,13 @@ awards.register_achievement("mcl:countryLode", {
 	icon = "lodestone_side4.png",
 })
 
+-- Triggered in mcl_smithing_table
+awards.register_achievement("mcl:seriousDedication", {
+        title = S("Serious Dedication"),
+        description = S("Use a Netherite Ingot to upgrade a hoe, and then completely reevaluate your life choices"),
+        icon = "farming_tool_netheritehoe.png",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then

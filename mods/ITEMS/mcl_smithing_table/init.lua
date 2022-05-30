@@ -120,6 +120,11 @@ minetest.register_node("mcl_smithing_table:table", {
 			-- ToDo: make epic sound
 			minetest.sound_play("mcl_smithing_table_upgrade", {pos = pos, max_hear_distance = 16})
 		end
+		if listname == "upgraded_item" then
+			if stack:get_name() == "mcl_farming:hoe_netherite" then
+				awards.unlock(player:get_player_name(), "mcl:seriousDedication")
+			end
+		end
 
 		reset_upgraded_item(pos)
 	end,
@@ -127,6 +132,7 @@ minetest.register_node("mcl_smithing_table:table", {
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5
 })
+
 
 minetest.register_craft({
 	output = "mcl_smithing_table:table",
