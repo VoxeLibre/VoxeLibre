@@ -59,8 +59,9 @@ minetest.register_globalstep(function(dtime)
 		local itemstack = mcl_offhand.get_offhand(player)
 		local offhand_item = itemstack:get_name()
 		local offhand_hud = mcl_offhand[player].hud
-		if offhand_item ~= "" then
-			local item_texture = minetest.registered_items[offhand_item].inventory_image .. "^[resize:" .. max_offhand_px .. "x" .. max_offhand_px
+		local item = minetest.registered_items[offhand_item]
+		if offhand_item ~= "" and item then
+			local item_texture = item.inventory_image .. "^[resize:" .. max_offhand_px .. "x" .. max_offhand_px
 			local position = {x = 0.5, y = 1}
 			local offset = {x = -320, y = -32}
 
