@@ -78,7 +78,6 @@ local function enable_physics(object, luaentity, ignore_check)
 		object:set_properties({
 			physical = true
 		})
-		object:set_velocity({x=0,y=0,z=0})
 		object:set_acceleration({x=0,y=-get_gravity(),z=0})
 	end
 end
@@ -774,8 +773,8 @@ minetest.register_entity(":__builtin:item", {
 			return
 		end
 
-		-- Move item around on flowing liquids
-		if def and def.liquidtype == "flowing" then
+		-- Move item around on flowing liquids; add 'source' check to allow items to continue flowing a bit in the source block of flowing water.
+		if def and def.liquidtype == "flowing" or def.liquidtype == "source" then
 
 			--[[ Get flowing direction (function call from flowlib), if there's a liquid.
 			NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
@@ -808,7 +807,7 @@ minetest.register_entity(":__builtin:item", {
 		local nn = minetest.get_node({x=p.x, y=p.y-0.5, z=p.z}).name
 		local v = self.object:get_velocity()
 
-		if not minetest.registered_nodes[nn] or minetest.registered_nodes[nn].walkable and v.y == 0 then
+		if not minetest.registered_nodes[nn] or minetest.registered_nodes[nn].walkable and not minetest.registered_nodes[nn].groups.slippery and v.y == 0 then
 			if self.physical_state then
 				local own_stack = ItemStack(self.object:get_luaentity().itemstring)
 				-- Merge with close entities of the same item
