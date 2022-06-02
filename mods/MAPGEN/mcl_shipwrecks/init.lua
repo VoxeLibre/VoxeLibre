@@ -14,45 +14,53 @@ local schems = {
 	"shipwreck_half_back",
 }
 
-local loottable_supply = {
-	stacks_min = 3,
-	stacks_max = 10,
-	items = {
-		--{ itemstring = "TODO:sus_stew", weight = 10, amount_min = 1, amount_max = 1 },
-		{ itemstring = "mcl_core:paper", weight = 8, amount_min = 1, amount_max = 12 },
-		{ itemstring = "mcl_farming:wheat_item", weight = 7, amount_min = 8, amount_max = 21 },
-		{ itemstring = "mcl_farming:carrot_item", weight = 7, amount_min = 4, amount_max = 8 },
-		{ itemstring = "mcl_farming:potato_item_poison", weight = 7, amount_min = 2, amount_max = 6 },
-		{ itemstring = "mcl_farming:potato_item", weight = 7, amount_min = 2, amount_max = 6 },
-		--{ itemstring = "TODO:moss_block", weight = 7, amount_min = 1, amount_max = 4 },
-		{ itemstring = "mcl_core:coal_lump", weight = 6, amount_min = 2, amount_max = 8 },
-		{ itemstring = "mcl_mobitems:rotten_flesh", weight = 5, amount_min = 5, amount_max = 24 },
-		{ itemstring = "mcl_farming:potato_item", weight = 3, amount_min = 1, amount_max = 5 },
-		{ itemstring = "mcl_armor:helmet_leather_enchanted", weight = 3 },
-		{ itemstring = "mcl_armor:chestplate_leather_enchanted", weight = 3 },
-		{ itemstring = "mcl_armor:leggings_leather_enchanted", weight = 3 },
-		{ itemstring = "mcl_armor:boots_leather_enchanted", weight = 3 },
-		--{ itemstring = "TODO:bamboo", weight = 2, amount_min = 1, amount_max = 3 },
-		{ itemstring = "mcl_farming:pumpkin", weight = 2, amount_min = 1, amount_max = 3 },
-		{ itemstring = "mcl_tnt:tnt", weight = 1, amount_min = 1, amount_max = 2 },
-		
+local function get_supply_loot()
+	return {
+		stacks_min = 3,
+		stacks_max = 10,
+		items = {
+			--{ itemstring = "TODO:sus_stew", weight = 10, amount_min = 1, amount_max = 1 },
+			{ itemstring = "mcl_core:paper", weight = 8, amount_min = 1, amount_max = 12 },
+			{ itemstring = "mcl_farming:wheat_item", weight = 7, amount_min = 8, amount_max = 21 },
+			{ itemstring = "mcl_farming:carrot_item", weight = 7, amount_min = 4, amount_max = 8 },
+			{ itemstring = "mcl_farming:potato_item_poison", weight = 7, amount_min = 2, amount_max = 6 },
+			{ itemstring = "mcl_farming:potato_item", weight = 7, amount_min = 2, amount_max = 6 },
+			--{ itemstring = "TODO:moss_block", weight = 7, amount_min = 1, amount_max = 4 },
+			{ itemstring = "mcl_core:coal_lump", weight = 6, amount_min = 2, amount_max = 8 },
+			{ itemstring = "mcl_mobitems:rotten_flesh", weight = 5, amount_min = 5, amount_max = 24 },
+			{ itemstring = "mcl_farming:potato_item", weight = 3, amount_min = 1, amount_max = 5 },
+			{ itemstring = "mcl_armor:helmet_leather_enchanted", weight = 3, func = function(stack, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
+			{ itemstring = "mcl_armor:chestplate_leather_enchanted", weight = 3, func = function(stack, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
+			{ itemstring = "mcl_armor:leggings_leather_enchanted", weight = 3, func = function(stack, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
+			{ itemstring = "mcl_armor:boots_leather_enchanted", weight = 3, func = function(stack, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
+			--{ itemstring = "TODO:bamboo", weight = 2, amount_min = 1, amount_max = 3 },
+			{ itemstring = "mcl_farming:pumpkin", weight = 2, amount_min = 1, amount_max = 3 },
+			{ itemstring = "mcl_tnt:tnt", weight = 1, amount_min = 1, amount_max = 2 },
+			
+		}
 	}
-}
+end
 
-local loottable_treasure = {
-	stacks_min = 3,
-	stacks_max = 10,
-	items = {
-		{ itemstring = "mcl_core:iron_ingot", weight = 8, amount_min = 1, amount_max = 5 },
-		{ itemstring = "mcl_core:iron_nugget", weight = 8, amount_min = 1, amount_max = 10 },
-		{ itemstring = "mcl_core:emerald", weight = 8, amount_min = 1, amount_max = 12 },
-		{ itemstring = "mcl_dye:blue", weight = 8, amount_min = 1, amount_max = 12 },
-		{ itemstring = "mcl_core:gold_ingot", weight = 8, amount_min = 1, amount_max = 5 },
-		{ itemstring = "mcl_core:gold_nugget", weight = 8, amount_min = 1, amount_max = 10 },
-		{ itemstring = "mcl_experience:bottle", weight = 8, amount_min = 1, amount_max = 10 },
-		{ itemstring = "mcl_core:diamond", weight = 8, amount_min = 1, amount_max = 10 },
+local function get_treasure_loot()
+	return {
+		stacks_min = 3,
+		stacks_max = 10,
+		items = {
+			{ itemstring = "mcl_core:iron_ingot", weight = 8, amount_min = 1, amount_max = 5 },
+			{ itemstring = "mcl_core:iron_nugget", weight = 8, amount_min = 1, amount_max = 10 },
+			{ itemstring = "mcl_core:emerald", weight = 8, amount_min = 1, amount_max = 12 },
+			{ itemstring = "mcl_dye:blue", weight = 8, amount_min = 1, amount_max = 12 },
+			{ itemstring = "mcl_core:gold_ingot", weight = 8, amount_min = 1, amount_max = 5 },
+			{ itemstring = "mcl_core:gold_nugget", weight = 8, amount_min = 1, amount_max = 10 },
+			{ itemstring = "mcl_experience:bottle", weight = 8, amount_min = 1, amount_max = 10 },
+			{ itemstring = "mcl_core:diamond", weight = 8, amount_min = 1, amount_max = 10 },
+		}
 	}
-}
+end
 
 local function fill_chests(p1,p2)
 	for _,p in pairs(minetest.find_nodes_in_area(p1,p2,{"mcl_chests:chest_small"})) do
@@ -60,8 +68,8 @@ local function fill_chests(p1,p2)
 			minetest.registered_nodes["mcl_chests:chest_small"].on_construct(p)
 		end
 		local inv = minetest.get_inventory( {type="node", pos=p} )
-		local loot = loottable_supply
-		if pr:next(1,10) == 1 then loot = loottable_treasure end
+		local loot = get_supply_loot()
+		if pr:next(1,10) == 1 then loot = get_treasure_loot() end
 		mcl_loot.fill_inventory(inv, "main", mcl_loot.get_multi_loot({loot}, pr), pr)
 	end
 end
