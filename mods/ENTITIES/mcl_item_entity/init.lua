@@ -783,11 +783,11 @@ minetest.register_entity(":__builtin:item", {
 			-- Just to make sure we don't manipulate the speed for no reason
 			if vec.x ~= 0 or vec.y ~= 0 or vec.z ~= 0 then
 				-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
-				local f = 1.39
+				local f = 1.2
 				-- Set new item moving speed into the direciton of the liquid
 				local newv = vector.multiply(vec, f)
-				self.object:set_acceleration({x = 0, y = 0, z = 0})
-				self.object:set_velocity({x = newv.x, y = -0.22, z = newv.z})
+				-- Swap to acceleration instead of a static speed to better mimic MC mechanics.
+				self.object:set_acceleration({x = newv.x, y = -0.22, z = newv.z})
 
 				self.physical_state = true
 				self._flowing = true
