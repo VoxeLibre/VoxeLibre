@@ -81,6 +81,13 @@ local function get_ocean_biomes()
 	end
 	return r
 end
+local function get_beach_biomes()
+	local r = {}
+	for k,_ in pairs(minetest.registered_biomes) do
+		if k:find("_beach") or k:find("_shore") then table.insert(r,k) end
+	end
+	return r
+end
 
 minetest.register_node("mcl_shipwrecks:structblock", {drawtype="airlike",groups = {structblock=1,not_in_creative_inventory=1},})
 
@@ -95,6 +102,21 @@ minetest.register_decoration({
 	flags = "place_center_x, place_center_z, force_placement",
 	biomes = get_ocean_biomes(),
 	y_max=mgp.water_level-4,
+})
+
+--rare beached variant
+minetest.register_decoration({
+	decoration = "mcl_shipwrecks:structblock",
+	deco_type = "simple",
+	place_on = {"group:sand","mcl_core:gravel","group:dirt"},
+	spawn_by = {"group:water","air"},
+	num_spawn_by = 4,
+	sidelen = 80,
+	fill_ratio=0.000001,
+	flags = "place_center_x, place_center_z, force_placement",
+	biomes = get_beach_biomes(),
+	y_max = mgp.water_level + 4,
+	y_min = mgp.water_level - 1,
 })
 
 minetest.register_lbm({
