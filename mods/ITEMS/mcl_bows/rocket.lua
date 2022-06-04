@@ -19,15 +19,16 @@ local function dir_to_pitch(dir)
 end
 
 local function damage_explosion(self, damagemulitplier)
-	mcl_explosions.explode(self.object:get_pos(), 3, {})
-	local objects = minetest.get_objects_inside_radius(self.object:get_pos(), 8)
+	local p = self.object:get_pos()
+	mcl_explosions.explode(p, 3, {})
+	local objects = minetest.get_objects_inside_radius(p, 8)
 	for _,obj in pairs(objects) do
 		if obj:is_player() then
-			mcl_util.deal_damage(obj, damagemulitplier - vector.distance(self.object:get_pos(), obj:get_pos()), {type = "explosion"})
+			mcl_util.deal_damage(obj, damagemulitplier - vector.distance(p, obj:get_pos()), {type = "explosion"})
 		elseif obj:get_luaentity().is_mob then
 			obj:punch(self.object, 1.0, {
 				full_punch_interval=1.0,
-				damage_groups={fleshy=damagemulitplier - vector.distance(self.object:get_pos(), obj:get_pos())},
+				damage_groups={fleshy=damagemulitplier - vector.distance(p, obj:get_pos())},
 			}, self.object:get_velocity())
 		end
 	end
