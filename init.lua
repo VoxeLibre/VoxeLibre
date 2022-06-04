@@ -39,13 +39,22 @@ local effects = {
 		return eat(itemstack, placer, pointed_thing)
 	end,
 }
+local function get_random_effect()
+	local keys = {}
+	for k in pairs(effects) do
+		table.insert(keys, k)
+	end
+	return effects[keys[math.random(#keys)]]
+end
 
 local function eat_stew(itemstack, placer, pointed_thing)
 	local e = itemstack:get_meta():get_string("effect")
-	if effects[e] then
-		if effects[e](itemstack,placer,pointed_thing) then
-			return "mcl_core:bowl"
-		end
+	local f = effects[e]
+	if not f then
+		f = get_random_effect()
+	end
+	if f(itemstack,placer,pointed_thing) then
+		return "mcl_core:bowl"
 	end
 end
 
