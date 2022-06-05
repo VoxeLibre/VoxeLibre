@@ -89,7 +89,7 @@ local function get_beach_biomes()
 	return r
 end
 
-minetest.register_node("mcl_shipwrecks:structblock", {drawtype="airlike",groups = {structblock=1,not_in_creative_inventory=1},})
+minetest.register_node("mcl_shipwrecks:structblock", {drawtype="airlike", walkable = false, pointable = false,groups = {structblock=1,not_in_creative_inventory=1}})
 
 minetest.register_decoration({
 	decoration = "mcl_shipwrecks:structblock",
@@ -129,6 +129,6 @@ minetest.register_lbm({
 		local pp = vector.offset(pos,0,pr:next(-4,-2),0)
 		mcl_structures.place_schematic(pp, file, "random", nil, true, "place_center_x,place_center_z", function()
 			fill_chests(vector.offset(pos,-20,-5,-20),vector.offset(pos,20,15,20))
-		end)-- pr, callback_param
+		end,pr)
 	end
 })
