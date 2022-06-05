@@ -530,7 +530,7 @@ function mcl_structures.generate_desert_temple(pos, rotation, pr)
 	mcl_structures.place_schematic(newpos, path, rotation or "random", nil, true, nil, temple_placement_callback, pr)
 end
 
-local registered_structures = {}
+local structure_data = {}
 
 --[[ Returns a table of structure of the specified type.
 Currently the only valid parameter is "stronghold".
@@ -543,18 +543,18 @@ Format of return value:
 
 TODO: Implement this function for all other structure types as well.
 ]]
-function mcl_structures.get_registered_structures(structure_type)
-	if registered_structures[structure_type] then
-		return table.copy(registered_structures[structure_type])
+function mcl_structures.get_structure_data(structure_type)
+	if structure_data[structure_type] then
+		return table.copy(structure_data[structure_type])
 	else
 		return {}
 	end
 end
 
 -- Register a structures table for the given type. The table format is the same as for
--- mcl_structures.get_registered_structures.
-function mcl_structures.register_structures(structure_type, structures)
-	registered_structures[structure_type] = structures
+-- mcl_structures.get_structure_data.
+function mcl_structures.register_structure_data(structure_type, structures)
+	structure_data[structure_type] = structures
 end
 
 local function dir_to_rotation(dir)

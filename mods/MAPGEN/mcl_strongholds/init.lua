@@ -61,7 +61,7 @@ local function init_strongholds()
 		end
 	end
 
-	mcl_structures.register_structures("stronghold", table.copy(strongholds))
+	mcl_structures.register_structure_data("stronghold", table.copy(strongholds))
 
 	strongholds_inited = true
 end
