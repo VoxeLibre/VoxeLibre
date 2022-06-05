@@ -134,6 +134,7 @@ function mcl_burning.set_on_fire(obj, burn_time)
 end
 
 function mcl_burning.extinguish(obj)
+	if not obj:get_pos() then return end
 	if mcl_burning.is_burning(obj) then
 		local storage = mcl_burning.get_storage(obj)
 		if obj:is_player() then
