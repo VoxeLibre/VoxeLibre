@@ -1227,6 +1227,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 	-- TODO: sounds
 	sounds = {
 		random = "mobs_mc_villager",
+		damage = "mobs_mc_villager_hurt",
 		distance = 10,
 	},
 	animation = {
@@ -1239,10 +1240,12 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 		run_speed = 25,
 		run_start = 0,
 		run_end = 40,
-		die_speed = 15,
-		die_start = 210,
-		die_end = 220,
-		die_loop = false,
+		head_shake_start = 210,
+		head_shake_end = 220,
+		head_shake_loop = false,
+		head_nod_start = 210,
+		head_nod_end = 220,
+		head_nod_loop = false,
 	},
 	follow = pick_up,
 	nofollow = true,
