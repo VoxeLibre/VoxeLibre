@@ -197,8 +197,8 @@ function ARROW_ENTITY.on_step(self, dtime)
 			self._deflection_cooloff = self._deflection_cooloff - dtime
 		end
 
-		local arrow_dir = vector.rotate(vector.new(0,0,1), self.object:get_rotation())
-		local raycast = minetest.raycast(pos, vector.add(pos, vector.multiply(arrow_dir, 6)), true, false)
+		local arrow_dir = self.object:get_velocity()
+		local raycast = minetest.raycast(pos, vector.add(pos, vector.multiply(arrow_dir, 0.2)), true, false)
 		for hitpoint in raycast do
 			if hitpoint.type == "object" then
 				local ok = false
@@ -211,8 +211,13 @@ function ARROW_ENTITY.on_step(self, dtime)
 				end
 				if ok then
 					local dist = vector.distance(hitpoint.ref:get_pos(), pos)
-					closest_object = hitpoint.ref
-					closest_distance = dist
+					if not closest_object or not closest_distance then
+						closest_object = hitpoint.ref
+						closest_distance = dist
+					elseif dist < closest_distance then
+						closest_object = hitpoint.ref
+						closest_distance = dist
+					end
 				end
 			end
 		end
