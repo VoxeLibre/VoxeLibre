@@ -188,7 +188,8 @@ function ARROW_ENTITY.on_step(self, dtime)
 		-- The radius of 3 is fairly liberal, but anything lower than than will cause
 		-- arrow to hilariously go through mobs often.
 		-- TODO: Implement an ACTUAL collision detection (engine support needed).
-		local objs = minetest.get_objects_inside_radius(pos, 1.5)
+
+
 		local closest_object
 		local closest_distance
 
@@ -196,31 +197,25 @@ function ARROW_ENTITY.on_step(self, dtime)
 			self._deflection_cooloff = self._deflection_cooloff - dtime
 		end
 
-		-- Iterate through all objects and remember the closest attackable object
-		for k, obj in pairs(objs) do
-			local ok = false
-			-- Arrows can only damage players and mobs
-			if obj:is_player() then
-				ok = true
-			elseif obj:get_luaentity() then
-				if (obj:get_luaentity().is_mob or obj:get_luaentity()._hittable_by_projectile) then
+		local arrow_dir = vector.rotate(vector.new(0,0,1), self.object:get_rotation())
+		local raycast = minetest.raycast(pos, vector.add(pos, vector.multiply(arrow_dir, 6)), true, false)
+		for hitpoint in raycast do
+			if hitpoint.type == "object" and hitpoint.ref ~= self._shooter then
+				local ok = false
+				if hitpoint.ref:is_player() then
 					ok = true
+				elseif hitpoint.ref:get_luaentity() then
+					if (hitpoint.ref:get_luaentity().is_mob or hitpoint.ref:get_luaentity()._hittable_by_projectile) then
+						ok = true
+					end
 				end
-			end
-
-			if ok then
-				local dist = vector.distance(pos, obj:get_pos())
-				if not closest_object or not closest_distance then
-					closest_object = obj
-					closest_distance = dist
-				elseif dist < closest_distance then
-					closest_object = obj
+				if ok then
+					local dist = vector.distance(hitpoint.ref:get_pos(), pos)
+					closest_object = hitpoint.ref
 					closest_distance = dist
 				end
 			end
 		end
-
-		-- If an attackable object was found, we will damage the closest one only
 
 		if closest_object then
 			local obj = closest_object
