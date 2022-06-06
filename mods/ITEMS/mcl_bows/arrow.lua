@@ -200,7 +200,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 		local arrow_dir = vector.rotate(vector.new(0,0,1), self.object:get_rotation())
 		local raycast = minetest.raycast(pos, vector.add(pos, vector.multiply(arrow_dir, 6)), true, false)
 		for hitpoint in raycast do
-			if hitpoint.type == "object" and hitpoint.ref ~= self._shooter then
+			if hitpoint.type == "object" then
 				local ok = false
 				if hitpoint.ref:is_player() then
 					ok = true
@@ -299,6 +299,8 @@ function ARROW_ENTITY.on_step(self, dtime)
 								minetest.after(150, function()
 									self.object:remove()
 								end)
+							else
+								self.object:remove()
 							end
 						end
 					end
