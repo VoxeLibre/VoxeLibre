@@ -1227,6 +1227,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 	-- TODO: sounds
 	sounds = {
 		random = "mobs_mc_villager",
+		damage = "mobs_mc_villager_hurt",
 		distance = 10,
 	},
 	animation = {
