@@ -571,6 +571,8 @@ local function dir_to_rotation(dir)
 	return "0"
 end
 
+dofile(modpath.."/api.lua")
+
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
 	params = "desert_temple | desert_well | igloo | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_exit_portal_open | end_gateway_portal | end_portal_shrine | nether_portal | dungeon",
