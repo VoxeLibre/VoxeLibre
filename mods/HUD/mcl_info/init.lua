@@ -7,8 +7,8 @@ local get_biome_name        = minetest.get_biome_name
 local get_biome_data        = minetest.get_biome_data
 local format                = string.format
 
-local min1, min2, min3 = mcl_mapgen.overworld.min, mcl_mapgen.end_.min, mcl_mapgen.nether.min
-local max1, max2, max3 = mcl_mapgen.overworld.max, mcl_mapgen.end_.max, mcl_mapgen.nether.max + 128
+local min1, min2, min3 = mcl_vars.mg_overworld_min, mcl_vars.mg_end_min, mcl_vars.mg_nether_min
+local max1, max2, max3 = mcl_vars.mg_overworld_max, mcl_vars.mg_end_max, mcl_vars.mg_nether_max + 128
 
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
@@ -19,25 +19,13 @@ local player_dbg = minetest.deserialize(storage:get_string("player_dbg") or "ret
 local function get_text(pos, bits)
 	local bits = bits
 	if bits == 0 then return "" end
-	local y = pos.y
-	if y >= min1 then
-		y = y - min1
-	elseif y >= min3 and y <= max3 then
-		y = y - min3
-	elseif y >= min2 and y <= max2 then
-		y = y - min2
-	end
+
 	local biome_data = get_biome_data(pos)
 	local biome_name = biome_data and get_biome_name(biome_data.biome) or "No biome"
-	local text
-	if bits == 1 then
-		text = biome_name
-	elseif bits == 2 then
-		text = format("x:%.1f y:%.1f z:%.1f", pos.x, y, pos.z)
-	elseif bits == 3 then
-		text = format("%s x:%.1f y:%.1f z:%.1f", biome_name, pos.x, y, pos.z)
-	end
-	return text
+	local biome = format("%s (%s), Humidity: %.1f, Temperature: %.1f",biome_name, biome_data.biome, biome_data.humidity, biome_data.heat)
+	local coord = format("x:%.1f y:%.1f z:%.1f", pos.x, pos.y, pos.z)
+	--local pointed =
+	return biome.."\n"..coord
 end
 
 local function info()
@@ -51,7 +39,7 @@ local function info()
 				hud_elem_type = "text",
 				alignment     = {x = 1, y = -1},
 				scale         = {x = 100, y = 100},
-				position      = {x = 0.0073, y = 0.989},
+				position      = {x = 0.0073, y = 0.889},
 				text          = text,
 				style         = 5,
 				["number"]    = 0xcccac0,
@@ -85,8 +73,8 @@ minetest.register_chatcommand("debug",{
 	description = S("Set debug bit mask: 0 = disable, 1 = biome name, 2 = coordinates, 3 = all"),
 	func = function(name, params)
 		local dbg = math.floor(tonumber(params) or default_debug)
-		if dbg < 0 or dbg > 3 then
-			minetest.chat_send_player(name, S("Error! Possible values are integer numbers from @1 to @2", 0, 3))
+		if dbg < 0 or dbg > 4 then
+			minetest.chat_send_player(name, S("Error! Possible values are integer numbers from @1 to @2", 0, 4))
 			return
 		end
 		if dbg == default_debug then
@@ -98,6 +86,7 @@ minetest.register_chatcommand("debug",{
 	end
 })
 
+--why is this saved on shutdown but not  on playerleave / changes ?
 minetest.register_on_shutdown(function()
 	storage:set_string("player_dbg", minetest.serialize(player_dbg))
 end)
