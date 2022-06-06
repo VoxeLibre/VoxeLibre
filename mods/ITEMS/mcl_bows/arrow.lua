@@ -198,7 +198,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 		end
 
 		local arrow_dir = self.object:get_velocity()
-		local raycast = minetest.raycast(pos, vector.add(pos, vector.multiply(arrow_dir, 0.2)), true, false)
+		local raycast = minetest.raycast(pos, vector.add(pos, vector.multiply(arrow_dir, 0.1)), true, false)
 		for hitpoint in raycast do
 			if hitpoint.type == "object" then
 				local ok = false
@@ -249,7 +249,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 					-- Punch target object but avoid hurting enderman.
 					if not lua or lua.name ~= "mobs_mc:enderman" then
 						if not self._in_player then
-							damage_particles(self.object:get_pos(), self._is_critical)
+							damage_particles(vector.add(pos, vector.multiply(self.object:get_velocity(), 0.1)), self._is_critical)
 						end
 						if mcl_burning.is_burning(self.object) then
 							mcl_burning.set_on_fire(obj, 5)
