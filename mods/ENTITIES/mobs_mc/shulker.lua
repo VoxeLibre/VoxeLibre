@@ -33,6 +33,7 @@ mcl_mobs:register_mob("mobs_mc:shulker", {
 	-- TODO: Make shulker dye-able
 	visual_size = {x=3, y=3},
 	walk_chance = 0,
+	knock_back = false,
 	jump = false,
 	drops = {
 		{name = "mcl_mobitems:shulker_shell",
