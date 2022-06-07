@@ -76,7 +76,7 @@ pillager = {
 	textures = {
 		{
 			"mobs_mc_pillager.png", -- Skin
-			"mcl_bows_crossbow_0.png^[resize:16x16", -- Wielded item
+			"mcl_bows_crossbow_3.png^[resize:16x16", -- Wielded item
 		}
 	},
 	drops = {
