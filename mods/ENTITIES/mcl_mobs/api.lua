@@ -125,6 +125,14 @@ local disable_physics = function(object, luaentity, ignore_check, reset_movement
 end
 
 
+local function dir_to_pitch(dir)
+	--local dir2 = vector.normalize(dir)
+	local xz = math.abs(dir.x) + math.abs(dir.z)
+	return -math.atan2(-dir.y, xz)
+end
+
+
+
 -- play sound
 local mob_sound = function(self, soundname, is_opinion, fixed_pitch)
 
@@ -3644,6 +3652,41 @@ local mob_step = function(self, dtime)
 
 	-- end rotation
 
+	if self.head_swivel and type(self.head_swivel) == "string" then
+		local oldp,oldr = self.object:get_bone_position(self.head_swivel)
+
+		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 10)) do
+			if obj:is_player() then
+				if not self._locked_object then
+					if math.random(50) == 1 then
+						self._locked_object = obj
+					end
+				else
+					if math.random(200) == 1 then
+						self._locked_object = nil
+					end
+				end
+			end
+		end
+
+		if self._locked_object then
+			local player_pos = self._locked_object:get_pos()
+			local direction_player = vector.direction(vector.add(self.object:get_pos(), vector.new(0, self.bone_eye_height*.7, 0)), vector.add(player_pos, vector.new(0, self._locked_object:get_properties().eye_height, 0)))
+			local mob_yaw = math.deg(-(-self.object:get_rotation().y-(-minetest.dir_to_yaw(direction_player))))
+			local mob_pitch = math.deg(-dir_to_pitch(direction_player))
+			if mob_yaw < -60 or mob_yaw > 60 then
+				self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.multiply(oldr, 0.9))
+			else
+				self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, ((mob_yaw-oldr.y)*.3)+oldr.y, 0))
+			end
+		elseif not self._locked_object and math.abs(oldr.y) > 3 and math.abs(oldr.x) < 3 then
+			self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.multiply(oldr, 0.9))
+		else
+			self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.new(0,0,0))
+		end
+
+	end
+
 	-- run custom function (defined in mob lua file)
 	if self.do_custom then
 
@@ -3883,6 +3926,8 @@ end
 minetest.register_entity(name, {
 
 	use_texture_alpha = def.use_texture_alpha,
+	head_swivel = def.head_swivel or nil,
+	bone_eye_height = def.bone_eye_height or 1.4,
 	stepheight = def.stepheight or 0.6,
 	name = name,
 	description = def.description,
