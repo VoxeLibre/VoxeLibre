@@ -151,7 +151,7 @@ S("The speed and damage of the arrow increases the longer you charge. The regula
 })
 
 minetest.register_tool("mcl_bows:crossbow_loaded", {
-	description = S("Corssbow"),
+	description = S("Crossbow"),
 	_tt_help = S("Launches arrows"),
 	_doc_items_longdesc = S("Corssbow are ranged weapons to shoot arrows at your foes.").."\n"..
 S("The speed and damage of the arrow increases the longer you charge. The regular damage of the arrow is between 1 and 9. At full charge, there's also a 20% of a critical hit, dealing 10 damage instead."),
@@ -181,7 +181,7 @@ S("The speed and damage of the arrow increases the longer you charge. The regula
 		itemstack:get_meta():set_string("active", "true")
 		return itemstack
 	end,
-	groups = {weapon=1,weapon_ranged=1,crossbow=1,enchantability=1},
+	groups = {weapon=1,weapon_ranged=1,crossbow=1,enchantability=1,not_in_creative_inventory=1},
 	_mcl_uses = 326,
 })
 
