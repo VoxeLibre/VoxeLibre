@@ -2,10 +2,11 @@ local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 --local S = minetest.get_translator(modname)
 
-local mgp = minetest.get_mapgen_params()
-local pr = PseudoRandom(mgp.seed)
+local seed = minetest.get_mapgen_setting("seed")
+local water_level = minetest.get_mapgen_setting("water_level")
+local pr = PseudoRandom(seed)
 
---schematics by chmodsayshello 
+--schematics by chmodsayshello
 local schems = {
 	"shipwreck_full_damaged",
 	"shipwreck_full_normal",
@@ -101,7 +102,7 @@ minetest.register_decoration({
 	fill_ratio = 0.00002,
 	flags = "place_center_x, place_center_z, force_placement",
 	biomes = get_ocean_biomes(),
-	y_max=mgp.water_level-4,
+	y_max=water_level-4,
 })
 
 --rare beached variant
@@ -115,8 +116,8 @@ minetest.register_decoration({
 	fill_ratio=0.000001,
 	flags = "place_center_x, place_center_z, force_placement",
 	biomes = get_beach_biomes(),
-	y_max = mgp.water_level + 4,
-	y_min = mgp.water_level - 1,
+	y_max = water_level + 4,
+	y_min = water_level - 1,
 })
 
 minetest.register_lbm({
