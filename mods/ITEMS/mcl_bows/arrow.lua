@@ -198,9 +198,11 @@ function ARROW_ENTITY.on_step(self, dtime)
 		end
 
 		local arrow_dir = self.object:get_velocity()
+		--create a raycast from the arrow based on the velocity of the arrow to deal with lag
 		local raycast = minetest.raycast(pos, vector.add(pos, vector.multiply(arrow_dir, 0.1)), true, false)
 		for hitpoint in raycast do
 			if hitpoint.type == "object" then
+				-- find the closest object that is in the way of the arrow
 				local ok = false
 				if hitpoint.ref:is_player() then
 					ok = true
