@@ -60,11 +60,16 @@ local zombie = {
 	mesh = "mobs_mc_zombie.b3d",
 	textures = {
 		{
-			"mobs_mc_empty.png", -- armor
-			"mobs_mc_zombie.png", -- texture
-			"mobs_mc_empty.png", -- wielded_item
+			"mobs_mc_zombie.png", -- skin
+			"mcl_armor_chestplate_diamond.png", -- armor
+			"mobs_mc_empty.png", -- wielded item
 		}
 	},
+	--EXPERIMENTAL
+	head_swivel = "Head_Control",
+	bone_eye_height = 2.35,
+	curiosity = .1,
+	-------------------------------
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	sounds = {

@@ -1221,6 +1221,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 	--EXPERIMENTAL
 	head_swivel = "Head_Control",
 	bone_eye_height = 2.35,
+	curiosity = 10,
 	-------------------------------
 	visual_size = {x=2.75, y=2.75},
 	makes_footstep_sound = true,
