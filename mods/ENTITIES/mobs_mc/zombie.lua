@@ -125,8 +125,8 @@ local husk = table.copy(zombie)
 husk.description = S("Husk")
 husk.textures = {
 		{
-			"mobs_mc_empty.png", -- armor
 			"mobs_mc_husk.png", -- texture
+			"mobs_mc_empty.png", -- armor
 			"mobs_mc_empty.png", -- wielded_item
 		}
 	}
