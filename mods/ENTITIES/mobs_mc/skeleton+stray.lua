@@ -31,6 +31,11 @@ local skeleton = {
 		"mcl_bows_bow_0.png", -- bow
 		"mobs_mc_skeleton.png", -- skeleton
 	} },
+	--EXPERIMENTAL
+	head_swivel = "Head_Control",
+	bone_eye_height = 2.35,
+	curiosity = .1,
+	-------------------------------
 	visual_size = {x=1, y=1},
 	makes_footstep_sound = true,
 	textures = {
