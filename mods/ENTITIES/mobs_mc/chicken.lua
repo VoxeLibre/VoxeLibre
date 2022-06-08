@@ -25,6 +25,12 @@ mcl_mobs:register_mob("mobs_mc:chicken", {
 	textures = {
 		{"mobs_mc_chicken.png"},
 	},
+	--EXPERIMENTAL
+	head_swivel = "Head_Control",
+	bone_eye_height = 1.8,
+	curiosity = 10,
+	head_yaw="z",
+	-------------------------------
 	visual_size = {x=2.2, y=2.2},
 
 	makes_footstep_sound = true,
