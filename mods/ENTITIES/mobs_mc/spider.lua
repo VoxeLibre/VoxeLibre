@@ -33,6 +33,12 @@ local spider = {
 	textures = {
 		{"mobs_mc_spider.png^(mobs_mc_spider_eyes.png^[makealpha:0,0,0)"},
 	},
+	--EXPERIMENTAL
+	head_swivel = "Head_Control",
+	bone_eye_height = 1,
+	curiosity = 10,
+	head_yaw="z",
+	-------------------------------
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = false,
 	sounds = {

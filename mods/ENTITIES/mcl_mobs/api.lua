@@ -3682,9 +3682,17 @@ local mob_step = function(self, dtime)
 			if (mob_yaw < -60 or mob_yaw > 60) and not self.attack then
 				self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.multiply(oldr, 0.9))
 			elseif self.attack then
-				self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.new(mob_pitch, mob_yaw, 0))
+				if self.head_yaw == "y" then
+					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.new(mob_pitch, mob_yaw, 0))
+				elseif self.head_yaw == "z" then
+					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.new(mob_pitch, 0, mob_yaw))
+				end
 			else
-				self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, ((mob_yaw-oldr.y)*.3)+oldr.y, 0))
+				if self.head_yaw == "y" then
+					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, ((mob_yaw-oldr.y)*.3)+oldr.y, 0))
+				elseif self.head_yaw == "z" then
+					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, 0, -(((mob_yaw-oldr.y)*.3)+oldr.y)*3))
+				end
 			end
 		elseif not self._locked_object and math.abs(oldr.y) > 3 and math.abs(oldr.x) < 3 then
 			self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.multiply(oldr, 0.9))
@@ -3937,6 +3945,7 @@ minetest.register_entity(name, {
 	head_yaw_offset = def.head_yaw_offset or 0, -- name of head bone
 	bone_eye_height = def.bone_eye_height or 1.4, -- mob eye height
 	curiosity = def.curiosity or 1, -- factor for staqring at players
+	head_yaw = def.head_yaw or "y", -- factor for staqring at players
 	stepheight = def.stepheight or 0.6,
 	name = name,
 	description = def.description,
