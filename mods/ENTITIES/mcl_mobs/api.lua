@@ -3218,35 +3218,36 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 	local die = false
 
-	-- only play hit sound and show blood effects if damage is 1 or over; lower to 0.1 to ensure armor works appropriately.
-	if damage >= 0.1 then
 
-		-- weapon sounds
-		if weapon:get_definition().sounds ~= nil then
+	if damage >= 0 then
+		-- only play hit sound and show blood effects if damage is 1 or over; lower to 0.1 to ensure armor works appropriately.
+		if damage >= 0.1 then
+			-- weapon sounds
+			if weapon:get_definition().sounds ~= nil then
 
-			local s = random(0, #weapon:get_definition().sounds)
+				local s = random(0, #weapon:get_definition().sounds)
 
-			minetest.sound_play(weapon:get_definition().sounds[s], {
-				object = self.object, --hitter,
-				max_hear_distance = 8
-			}, true)
-		else
-			minetest.sound_play("default_punch", {
-				object = self.object,
-				max_hear_distance = 5
-			}, true)
+				minetest.sound_play(weapon:get_definition().sounds[s], {
+					object = self.object, --hitter,
+					max_hear_distance = 8
+				}, true)
+			else
+				minetest.sound_play("default_punch", {
+					object = self.object,
+					max_hear_distance = 5
+				}, true)
+			end
+
+			damage_effect(self, damage)
+
+			-- do damage
+			self.health = self.health - damage
+
+			-- skip future functions if dead, except alerting others
+			if check_for_death(self, "hit", {type = "punch", puncher = hitter}) then
+				die = true
+			end
 		end
-
-		damage_effect(self, damage)
-
-		-- do damage
-		self.health = self.health - damage
-
-		-- skip future functions if dead, except alerting others
-		if check_for_death(self, "hit", {type = "punch", puncher = hitter}) then
-			die = true
-		end
-
 		-- knock back effect (only on full punch)
 		if not die
 		and self.knock_back
