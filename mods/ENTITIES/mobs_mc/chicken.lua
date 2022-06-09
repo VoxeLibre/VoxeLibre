@@ -28,6 +28,7 @@ mcl_mobs:register_mob("mobs_mc:chicken", {
 	--EXPERIMENTAL
 	head_swivel = "Head_Control",
 	bone_eye_height = 1.8,
+	head_eye_height = 1.5,
 	curiosity = 10,
 	head_yaw="z",
 	-------------------------------

@@ -3674,30 +3674,34 @@ local mob_step = function(self, dtime)
 		end
 
 		if self._locked_object then
+			local _locked_object_eye_height = 2
+			if self._locked_object:is_player() then
+				_locked_object_eye_height = self._locked_object:get_properties().eye_height
+			end
 			local self_rot = self.object:get_rotation()
 			local player_pos = self._locked_object:get_pos()
-			local direction_player = vector.direction(vector.add(self.object:get_pos(), vector.new(0, self.bone_eye_height*.7, 0)), vector.add(player_pos, vector.new(0, self._locked_object:get_properties().eye_height, 0)))
+			local direction_player = vector.direction(vector.add(self.object:get_pos(), vector.new(0, self.head_eye_height*.7, 0)), vector.add(player_pos, vector.new(0, _locked_object_eye_height, 0)))
 			local mob_yaw = math.deg(-(-(self_rot.y)-(-minetest.dir_to_yaw(direction_player))))--+self.head_yaw_offset
 			local mob_pitch = math.deg(-dir_to_pitch(direction_player))
 			if (mob_yaw < -60 or mob_yaw > 60) and not self.attack then
-				self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.multiply(oldr, 0.9))
+				self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.multiply(oldr, 0.9))
 			elseif self.attack then
 				if self.head_yaw == "y" then
-					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.new(mob_pitch, mob_yaw, 0))
+					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, mob_yaw, 0))
 				elseif self.head_yaw == "z" then
-					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.new(mob_pitch, 0, mob_yaw))
+					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, 0, mob_yaw))
 				end
 			else
 				if self.head_yaw == "y" then
-					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, ((mob_yaw-oldr.y)*.3)+oldr.y, 0))
+					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, ((mob_yaw-oldr.y)*.3)+oldr.y, 0))
 				elseif self.head_yaw == "z" then
-					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, 0, -(((mob_yaw-oldr.y)*.3)+oldr.y)*3))
+					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, 0, -(((mob_yaw-oldr.y)*.3)+oldr.y)*3))
 				end
 			end
 		elseif not self._locked_object and math.abs(oldr.y) > 3 and math.abs(oldr.x) < 3 then
-			self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.multiply(oldr, 0.9))
+			self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.multiply(oldr, 0.9))
 		else
-			self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,0), vector.new(0,0,0))
+			self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(0,0,0))
 		end
 
 	end
@@ -3944,8 +3948,10 @@ minetest.register_entity(name, {
 	head_swivel = def.head_swivel or nil, -- name of head bone
 	head_yaw_offset = def.head_yaw_offset or 0, -- name of head bone
 	bone_eye_height = def.bone_eye_height or 1.4, -- mob eye height
+	head_eye_height = def.head_eye_height or def.bone_eye_height or 0, -- factor for staqring at players
 	curiosity = def.curiosity or 1, -- factor for staqring at players
 	head_yaw = def.head_yaw or "y", -- factor for staqring at players
+	horrizonatal_head_height = def.horrizonatal_head_height or 0, -- factor for staqring at players
 	stepheight = def.stepheight or 0.6,
 	name = name,
 	description = def.description,

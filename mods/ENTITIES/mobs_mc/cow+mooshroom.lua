@@ -17,6 +17,14 @@ local cow_def = {
 		"mobs_mc_cow.png",
 		"blank.png",
 	}, },
+	--EXPERIMENTAL
+	head_swivel = "Head_Control",
+	bone_eye_height = 3.4,
+	head_eye_height = 1.1,
+	horrizonatal_head_height=-.7,
+	curiosity = 2,
+	head_yaw="z",
+	-------------------------------
 	visual_size = {x=2.8, y=2.8},
 	makes_footstep_sound = true,
 	walk_velocity = 1,
