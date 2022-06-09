@@ -24,6 +24,14 @@ local wolf = {
 	textures = {
 		{"mobs_mc_wolf.png"},
 	},
+	--EXPERIMENTAL
+	head_swivel = "Head_Control",
+	bone_eye_height = 1.2,
+	head_eye_height = 1.1,
+	horrizonatal_head_height=0,
+	curiosity = 10,
+	head_yaw="z",
+	-------------------------------
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	sounds = {
@@ -73,7 +81,7 @@ local wolf = {
 	end,
 	animation = {
 		speed_normal = 50,		speed_run = 100,
-		stand_start = 40,		stand_end = 45,
+		stand_start = 1,		stand_end = 1,
 		walk_start = 0,		walk_end = 40,
 		run_start = 0,		run_end = 40,
 	},
