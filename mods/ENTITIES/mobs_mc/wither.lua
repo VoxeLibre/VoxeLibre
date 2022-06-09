@@ -25,6 +25,12 @@ mcl_mobs:register_mob("mobs_mc:wither", {
 	textures = {
 		{"mobs_mc_wither.png"},
 	},
+	--EXPERIMENTAL
+	head_swivel = "Head_Control",
+	bone_eye_height = 0.43,
+	head_eye_height = 3,
+	curiosity = 2,
+	-------------------------------
 	visual_size = {x=4, y=4},
 	makes_footstep_sound = true,
 	view_range = 16,
