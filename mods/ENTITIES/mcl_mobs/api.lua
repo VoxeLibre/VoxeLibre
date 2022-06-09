@@ -3670,7 +3670,7 @@ local mob_step = function(self, dtime)
 			end
 		end
 
-		if self.attack then
+		if self.attack and self.type == "monster" then
 			self._locked_object = self.attack
 		end
 
