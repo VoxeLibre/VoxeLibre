@@ -35,6 +35,7 @@ mcl_mobs:register_mob("mobs_mc:enderdragon", {
 	},
 	physical = true,
 	damage = 10,
+	knock_back = false,
 	jump = true,
 	jump_height = 14,
 	fly = true,
