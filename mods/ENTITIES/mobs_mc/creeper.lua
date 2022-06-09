@@ -24,6 +24,11 @@ mcl_mobs:register_mob("mobs_mc:creeper", {
 		{"mobs_mc_creeper.png",
 		"mobs_mc_empty.png"},
 	},
+	--EXPERIMENTAL
+	head_swivel = "Head_Control",
+	bone_eye_height = 2.35,
+	curiosity = 2,
+	-------------------------------
 	visual_size = {x=3, y=3},
 	sounds = {
 		attack = "tnt_ignite",
