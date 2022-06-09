@@ -2,7 +2,7 @@ local registered_structures = {}
 
 --[[] structure def:
 {
-	fill_ratio= OR noise = {} 
+	fill_ratio = OR noise = {}
 	biomes =
 	y_min =
 	y_max =
@@ -28,8 +28,8 @@ local function place_schem(pos, def, pr)
 		local file = def.filenames[pr:next(1,#def.filenames)]
 		local pp = vector.offset(pos,0,y_offset,0)
 		mcl_structures.place_schematic(pp, file, "random", nil, true, "place_center_x,place_center_z",def.after_place,pr,{pos,def})
-	elseif def.place_func and def.place_func(pos,def) then
-		def.after_place(pos,def)
+	elseif def.place_func and def.place_func(pos,def,pr) then
+		def.after_place(pos,def,pr)
 	end
 end
 
