@@ -15,10 +15,19 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 	visual = "mesh",
 	mesh = "mobs_mc_pig.b3d",
 	textures = {{
-		"blank.png", -- baby
-		"mobs_mc_pig.png", -- base
 		"blank.png", -- saddle
+		"mobs_mc_pig.png", -- base
+		"blank.png",
 	}},
+	--EXPERIMENTAL
+	head_swivel = "Head_Control",
+	bone_eye_height = 2.9,
+	head_eye_height = 0.8,
+	horrizonatal_head_height=-.4,
+	curiosity = 3,
+	head_yaw="z",
+	-------------------------------
+
 	visual_size = {x=2.5, y=2.5},
 	makes_footstep_sound = true,
 	walk_velocity = 1,
@@ -111,9 +120,9 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 		local item = clicker:get_wielded_item()
 		if item:get_name() == "mcl_mobitems:saddle" and self.saddle ~= "yes" then
 			self.base_texture = {
-				"blank.png", -- baby
-				"mobs_mc_pig.png", -- base
 				"mobs_mc_pig_saddle.png", -- saddle
+				"mobs_mc_pig.png", -- base
+				"blank.png", -- baby
 			}
 			self.object:set_properties({
 				textures = self.base_texture
