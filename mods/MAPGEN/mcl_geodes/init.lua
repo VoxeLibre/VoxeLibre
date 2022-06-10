@@ -8,7 +8,7 @@ local adjacents = {
 }
 
 local function makegeode(pos,pr)
-	local size = pr:next(4,12)
+	local size = pr:next(2,8)
 	local p1 = vector.offset(pos,-size,-size,-size)
 	local p2 = vector.offset(pos,size,size,size)
 	local nn = minetest.find_nodes_in_area(p1,p2,{"group:material_stone"})

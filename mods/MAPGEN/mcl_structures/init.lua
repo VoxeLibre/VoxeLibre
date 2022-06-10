@@ -630,9 +630,8 @@ minetest.register_on_mods_loaded(function()
 			else
 				for n,d in pairs(mcl_structures.registered_structures) do
 					if n == param then
-						mcl_structures.place_structure(pos,d,PseudoRandom(os.clock()))
-						minetest.chat_send_player(name, message)
-						return
+						mcl_structures.place_structure(pos,d,pr)
+						return true,message
 					end
 				end
 				message = S("Error: Unknown structure type. Please use “/spawnstruct <type>”.")

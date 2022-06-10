@@ -72,6 +72,7 @@ function mcl_structures.register_structure(name,def,nospawn) --nospawn means it 
 		end)
 	end
 	minetest.register_node(":"..structblock, {drawtype="airlike", walkable = false, pointable = false,groups = sbgroups})
+	def.structblock = structblock
 	mcl_structures.registered_structures[name] = def
 end
 
