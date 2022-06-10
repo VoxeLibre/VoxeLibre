@@ -573,60 +573,75 @@ end
 
 dofile(modpath.."/api.lua")
 
--- Debug command
-minetest.register_chatcommand("spawnstruct", {
-	params = "desert_temple | desert_well | igloo | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_exit_portal_open | end_gateway_portal | end_portal_shrine | nether_portal | dungeon",
-	description = S("Generate a pre-defined structure near your position."),
-	privs = {debug = true},
-	func = function(name, param)
-		local player = minetest.get_player_by_name(name)
-		if not player then return end
-		local pos = player:get_pos()
-		if not pos then return end
-		pos = vector.round(pos)
-		local dir = minetest.yaw_to_dir(player:get_look_horizontal())
-		local rot = dir_to_rotation(dir)
-		local pr = PseudoRandom(pos.x+pos.y+pos.z)
-		local errord = false
-		local message = S("Structure placed.")
-		if param == "desert_temple" then
-			mcl_structures.generate_desert_temple(pos, rot, pr)
-		elseif param == "desert_well" then
-			mcl_structures.generate_desert_well(pos, rot)
-		elseif param == "igloo" then
-			mcl_structures.generate_igloo(pos, rot, pr)
-		elseif param == "witch_hut" then
-			mcl_structures.generate_witch_hut(pos, rot, pr)
-		elseif param == "boulder" then
-			mcl_structures.generate_boulder(pos, rot, pr)
-		elseif param == "fossil" then
-			mcl_structures.generate_fossil(pos, rot, pr)
-		elseif param == "ice_spike_small" then
-			mcl_structures.generate_ice_spike_small(pos, rot, pr)
-		elseif param == "ice_spike_large" then
-			mcl_structures.generate_ice_spike_large(pos, rot, pr)
-		elseif param == "end_exit_portal" then
-			mcl_structures.generate_end_exit_portal(pos, rot, pr)
-		elseif param == "end_exit_portal_open" then
-			mcl_structures.generate_end_exit_portal_open(pos, rot, pr)
-		elseif param == "end_gateway_portal" then
-			mcl_structures.generate_end_gateway_portal(pos, rot, pr)
-		elseif param == "end_portal_shrine" then
-			mcl_structures.generate_end_portal_shrine(pos, rot, pr)
-		elseif param == "dungeon" and mcl_dungeons and mcl_dungeons.spawn_dungeon then
-			mcl_dungeons.spawn_dungeon(pos, rot, pr)
-		elseif param == "nether_portal" and mcl_portals and mcl_portals.spawn_nether_portal then
-			mcl_portals.spawn_nether_portal(pos, rot, pr, name)
-		elseif param == "" then
-			message = S("Error: No structure type given. Please use “/spawnstruct <type>”.")
-			errord = true
-		else
-			message = S("Error: Unknown structure type. Please use “/spawnstruct <type>”.")
-			errord = true
-		end
-		minetest.chat_send_player(name, message)
-		if errord then
-			minetest.chat_send_player(name, S("Use /help spawnstruct to see a list of avaiable types."))
-		end
+minetest.register_on_mods_loaded(function()
+	-- Debug command
+	local chatcommand_params = "desert_temple | desert_well | igloo | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_exit_portal_open | end_gateway_portal | end_portal_shrine | nether_portal | dungeon"
+
+	for n,_ in pairs(mcl_structures.registered_structures) do
+		chatcommand_params = chatcommand_params .. " | "..n
 	end
-})
+
+	minetest.register_chatcommand("spawnstruct", {
+		params = chatcommand_params,
+		description = S("Generate a pre-defined structure near your position."),
+		privs = {debug = true},
+		func = function(name, param)
+			local player = minetest.get_player_by_name(name)
+			if not player then return end
+			local pos = player:get_pos()
+			if not pos then return end
+			pos = vector.round(pos)
+			local dir = minetest.yaw_to_dir(player:get_look_horizontal())
+			local rot = dir_to_rotation(dir)
+			local pr = PseudoRandom(pos.x+pos.y+pos.z)
+			local errord = false
+			local message = S("Structure placed.")
+			if param == "desert_temple" then
+				mcl_structures.generate_desert_temple(pos, rot, pr)
+			elseif param == "desert_well" then
+				mcl_structures.generate_desert_well(pos, rot)
+			elseif param == "igloo" then
+				mcl_structures.generate_igloo(pos, rot, pr)
+			elseif param == "witch_hut" then
+				mcl_structures.generate_witch_hut(pos, rot, pr)
+			elseif param == "boulder" then
+				mcl_structures.generate_boulder(pos, rot, pr)
+			elseif param == "fossil" then
+				mcl_structures.generate_fossil(pos, rot, pr)
+			elseif param == "ice_spike_small" then
+				mcl_structures.generate_ice_spike_small(pos, rot, pr)
+			elseif param == "ice_spike_large" then
+				mcl_structures.generate_ice_spike_large(pos, rot, pr)
+			elseif param == "end_exit_portal" then
+				mcl_structures.generate_end_exit_portal(pos, rot, pr)
+			elseif param == "end_exit_portal_open" then
+				mcl_structures.generate_end_exit_portal_open(pos, rot, pr)
+			elseif param == "end_gateway_portal" then
+				mcl_structures.generate_end_gateway_portal(pos, rot, pr)
+			elseif param == "end_portal_shrine" then
+				mcl_structures.generate_end_portal_shrine(pos, rot, pr)
+			elseif param == "dungeon" and mcl_dungeons and mcl_dungeons.spawn_dungeon then
+				mcl_dungeons.spawn_dungeon(pos, rot, pr)
+			elseif param == "nether_portal" and mcl_portals and mcl_portals.spawn_nether_portal then
+				mcl_portals.spawn_nether_portal(pos, rot, pr, name)
+			elseif param == "" then
+				message = S("Error: No structure type given. Please use “/spawnstruct <type>”.")
+				errord = true
+			else
+				for n,d in pairs(mcl_structures.registered_structures) do
+					if n == param then
+						mcl_structures.place_structure(pos,d,PseudoRandom(os.clock()))
+						minetest.chat_send_player(name, message)
+						return
+					end
+				end
+				message = S("Error: Unknown structure type. Please use “/spawnstruct <type>”.")
+				errord = true
+			end
+			minetest.chat_send_player(name, message)
+			if errord then
+				minetest.chat_send_player(name, S("Use /help spawnstruct to see a list of avaiable types."))
+			end
+		end
+	})
+end)

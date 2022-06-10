@@ -1,4 +1,4 @@
-local registered_structures = {}
+mcl_structures.registered_structures = {}
 
 --[[] structure def:
 {
@@ -17,7 +17,7 @@ local registered_structures = {}
 }
 ]]--
 
-local function place_schem(pos, def, pr)
+function mcl_structures.place_structure(pos, def, pr)
 	if not def then return end
 	if type(def.y_offset) == "function" then
 		y_offset = def.y_offset(pr)
@@ -67,12 +67,12 @@ function mcl_structures.register_structure(name,def,nospawn) --nospawn means it 
 			for _, pos in pairs(gennotify["decoration#"..deco_id] or {}) do
 				local realpos = vector.offset(pos,0,-1,0)
 				minetest.remove_node(realpos)
-				place_schem(realpos,def,pr)
+				mcl_structures.place_structure(realpos,def,pr)
 			end
 		end)
 	end
 	minetest.register_node(":"..structblock, {drawtype="airlike", walkable = false, pointable = false,groups = sbgroups})
-	registered_structures[name] = def
+	mcl_structures.registered_structures[name] = def
 end
 
 --lbm for secondary structures (structblock included in base structure)
@@ -82,9 +82,9 @@ minetest.register_lbm({
 	nodenames = {"group:structblock_lbm"},
 	action = function(pos, node)
 		local name = node.name:gsub("mcl_structures:structblock_","")
-		local def = registered_structures[name]
+		local def = mcl_structures.registered_structures[name]
 		if not def then return end
 		minetest.remove_node(pos)
-		place_schem(pos)
+		mcl_structures.place_structure(pos)
 	end
 })

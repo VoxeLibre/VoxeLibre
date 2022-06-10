@@ -8,7 +8,7 @@ local adjacents = {
 }
 
 local function makegeode(pos,pr)
-	local size = pr:next(3,18)
+	local size = pr:next(4,12)
 	local p1 = vector.offset(pos,-size,-size,-size)
 	local p2 = vector.offset(pos,size,size,size)
 	local nn = minetest.find_nodes_in_area(p1,p2,{"group:material_stone"})
@@ -49,7 +49,7 @@ local function makegeode(pos,pr)
 	end
 end
 
-mcl_structures.register_structure("geodes",{
+mcl_structures.register_structure("geode",{
 	place_on = {"mcl_core:stone"},
 	spawn_by = {"air"},
 	num_spawn_by = 2,
@@ -64,12 +64,4 @@ mcl_structures.register_structure("geodes",{
 		local p = vector.new(pos.x + pr:next(-30,30),pos.y,pos.z + pr:next(-30,30))
 		makegeode(pos,pr)
 	end,
-})
-
-minetest.register_chatcommand("makegeode",{
-	privs = { debug = true },
-	func=function(n,p)
-		local pos = pl:get_pos()
-		makegeode(pos,PseudoRandom(minetest.get_mapgen_setting("seed")))
-	end
 })
