@@ -1,24 +1,8 @@
 mcl_structures.registered_structures = {}
 
---[[] structure def:
-{
-	fill_ratio = OR noise = {}
-	biomes =
-	y_min =
-	y_max =
-	place_on =
-	spawn_by =
-	num_spawn_by =
-	flags = (default: "place_center_x, place_center_z, force_placement")
-	(same as decoration def)
-	y_offset =
-	filenames = {} OR place_func = function(pos,filename)
-	after_place = function(pos)
-}
-]]--
-
 function mcl_structures.place_structure(pos, def, pr)
-	if not def then return end
+	if not def then	return end
+	local y_offset = 0
 	if type(def.y_offset) == "function" then
 		y_offset = def.y_offset(pr)
 	elseif def.y_offset then
@@ -28,9 +12,15 @@ function mcl_structures.place_structure(pos, def, pr)
 		local file = def.filenames[pr:next(1,#def.filenames)]
 		local pp = vector.offset(pos,0,y_offset,0)
 		mcl_structures.place_schematic(pp, file, "random", nil, true, "place_center_x,place_center_z",def.after_place,pr,{pos,def})
+		minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pos))
+		return true
 	elseif def.place_func and def.place_func(pos,def,pr) then
-		def.after_place(pos,def,pr)
+		if not def.after_place or ( def.after_place  and def.after_place(pos,def,pr) ) then
+			minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pos))
+			return true
+		end
 	end
+	minetest.log("warning","[mcl_structures] placing "..def.name.." failed at "..minetest.pos_to_string(pos))
 end
 
 function mcl_structures.register_structure(name,def,nospawn) --nospawn means it will be placed by another (non-nospawn) structure that contains it's structblock i.e. it will not be placed by mapgen directly

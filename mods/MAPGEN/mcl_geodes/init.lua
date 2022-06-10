@@ -8,7 +8,7 @@ local adjacents = {
 }
 
 local function makegeode(pos,pr)
-	local size = pr:next(2,8)
+	local size = pr:next(4,7)
 	local p1 = vector.offset(pos,-size,-size,-size)
 	local p2 = vector.offset(pos,size,size,size)
 	local nn = minetest.find_nodes_in_area(p1,p2,{"group:material_stone"})
@@ -47,21 +47,20 @@ local function makegeode(pos,pr)
 			minetest.set_node(vector.offset(v,0,1,0),{name="mcl_amethyst:amethyst_cluster",param2=1})
 		end
 	end
+	return true
 end
 
 mcl_structures.register_structure("geode",{
 	place_on = {"mcl_core:stone"},
-	spawn_by = {"air"},
-	num_spawn_by = 2,
-	fill_ratio = 0.002,
+	fill_ratio = 0.0001,
 	flags = "place_center_x, place_center_z, force_placement",
 	biomes = ocean_biomes,
-	y_max = mcl_vars.mg_overworld_max,
+	y_max = -24,
 	y_min = mcl_vars.mg_overworld_min,
 	filenames = schems,
 	y_offset = function(pr) return pr:next(-4,-2) end,
 	place_func = function(pos,def,pr)
 		local p = vector.new(pos.x + pr:next(-30,30),pos.y,pos.z + pr:next(-30,30))
-		makegeode(pos,pr)
-	end,
+		return makegeode(pos,pr)
+	end
 })
