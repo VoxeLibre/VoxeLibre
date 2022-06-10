@@ -3670,12 +3670,12 @@ local mob_step = function(self, dtime)
 			end
 		end
 
-		if self.attack and self.type == "monster" then
+		if self.attack then
 			self._locked_object = self.attack
 		end
 
-		if self._locked_object then
-			local _locked_object_eye_height = 2
+		if self._locked_object and (self._locked_object:is_player() or self._locked_object:get_luaentity()) and self._locked_object:get_hp() > 0 then
+			local _locked_object_eye_height = 1.5
 			if self._locked_object:is_player() then
 				_locked_object_eye_height = self._locked_object:get_properties().eye_height
 			end
@@ -3684,9 +3684,9 @@ local mob_step = function(self, dtime)
 			local direction_player = vector.direction(vector.add(self.object:get_pos(), vector.new(0, self.head_eye_height*.7, 0)), vector.add(player_pos, vector.new(0, _locked_object_eye_height, 0)))
 			local mob_yaw = math.deg(-(-(self_rot.y)-(-minetest.dir_to_yaw(direction_player))))--+self.head_yaw_offset
 			local mob_pitch = math.deg(-dir_to_pitch(direction_player))
-			if (mob_yaw < -60 or mob_yaw > 60) and not self.attack then
+			if (mob_yaw < -60 or mob_yaw > 60) and not (self.attack and self.type == "monster") then
 				self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.multiply(oldr, 0.9))
-			elseif self.attack then
+			elseif self.attack and self.type == "monster" then
 				if self.head_yaw == "y" then
 					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, mob_yaw, 0))
 				elseif self.head_yaw == "z" then

