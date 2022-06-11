@@ -101,6 +101,17 @@ awards.register_achievement("mcl:bookcase", {
 	}
 })
 
+awards.register_achievement("mcl:buildIronPickaxe", {
+	title = S("Isn't It Iron Pick"),
+	description = S("Craft a iron pickaxe using sticks and iron."),
+	icon = "default_tool_steelpick.png",
+	trigger = {
+		type = "craft",
+		item = "mcl_tools:pick_iron",
+		target = 1
+	}
+})
+
 -- Item pickup achievements: These are awarded when picking up a certain item.
 -- The achivements are manually given in the mod mcl_item_entity.
 awards.register_achievement("mcl:diamonds", {
