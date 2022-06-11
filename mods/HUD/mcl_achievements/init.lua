@@ -187,6 +187,13 @@ awards.register_achievement("mcl:postMortal", {
 	icon = "mcl_totems_totem.png",
 })
 
+-- Triggered in mcl_beds
+awards.register_achievement("mcl:sweetDreams", {
+	title = S("Sweet Dreams"),
+	description = S("Sleep in a bed to change your respawn point."),
+	icon = "mcl_beds_bed_red.png",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then
