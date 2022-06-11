@@ -201,6 +201,13 @@ awards.register_achievement("mcl:whatAdeal", {
 	icon = "mcl_core_emerald.png",
 })
 
+-- Triggered in mcl_fishing
+awards.register_achievement("mcl:fishyBusiness", {
+	title = S("Fishy Business"),
+	description = S("Catch a fish. \nHint: Catch a fish, salmon, clownfish, or pufferfish."),
+	icon = "mcl_fishing_fishing_rod.png",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then
