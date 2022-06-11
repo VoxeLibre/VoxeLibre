@@ -3690,7 +3690,7 @@ local mob_step = function(self, dtime)
 				if self.head_yaw == "y" then
 					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, mob_yaw, 0))
 				elseif self.head_yaw == "z" then
-					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, 0, mob_yaw))
+					self.object:set_bone_position(self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, 0, -mob_yaw))
 				end
 			else
 				if self.head_yaw == "y" then
