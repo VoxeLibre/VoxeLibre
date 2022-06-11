@@ -985,6 +985,11 @@ local trade_inventory = {
 		elseif listname == "output" then
 			if not trader_exists(player:get_player_name()) then
 				return 0
+			-- Begin Award Code
+			-- May need to be moved if award gets unlocked in the wrong cases.
+			elseif trader_exists(player:get_player_name()) then
+				awards.unlock(player:get_player_name(), "mcl:whatAdeal")
+			-- End Award Code
 			end
 			-- Only allow taking full stack
 			local count = stack:get_count()

@@ -194,6 +194,13 @@ awards.register_achievement("mcl:sweetDreams", {
 	icon = "mcl_beds_bed_red.png",
 })
 
+-- Triggered in mobs_mc
+awards.register_achievement("mcl:whatAdeal", {
+	title = S("What A Deal!"),
+	description = S("Successfully trade with a Villager."),
+	icon = "mcl_core_emerald.png",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then
