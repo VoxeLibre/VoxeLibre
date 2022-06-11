@@ -82,6 +82,15 @@ minetest.register_node("mcl_blackstone:basalt", {
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 })
+minetest.register_node("mcl_blackstone:basalt_smooth", {
+	description = S("Smooth Basalt"),
+	tiles = {"mcl_blackstone_basalt_smooth.png"},
+	sounds = mcl_sounds.node_sound_stone_defaults(),
+	is_ground_content = false,
+	groups = {cracky = 3, pickaxey=2, material_stone=1},
+	_mcl_blast_resistance = 2,
+	_mcl_hardness = 2,
+})
 minetest.register_node("mcl_blackstone:blackstone_polished", {
 	description = S("Polished Blackstone"),
 	tiles = {"mcl_blackstone_polished.png"},
