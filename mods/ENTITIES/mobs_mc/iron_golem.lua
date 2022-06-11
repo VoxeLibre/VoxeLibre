@@ -37,6 +37,7 @@ mcl_mobs:register_mob("mobs_mc:iron_golem", {
 	run_velocity = 1.2,
 	-- Approximation
 	damage = 14,
+	knock_back = false,
 	reach = 3,
 	group_attack = true,
 	attacks_monsters = true,
