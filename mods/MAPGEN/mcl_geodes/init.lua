@@ -11,16 +11,18 @@ local function makegeode(pos,pr)
 	local size = pr:next(4,7)
 	local p1 = vector.offset(pos,-size,-size,-size)
 	local p2 = vector.offset(pos,size,size,size)
+	local calcite = {}
 	local nn = minetest.find_nodes_in_area(p1,p2,{"group:material_stone"})
 	table.sort(nn,function(a, b)
 		   return vector.distance(pos, a) < vector.distance(pos, b)
 	end)
 	if not nn[1] then return end
+
 	for i=1,math.random(#nn) do
 		minetest.set_node(nn[i],{name="mcl_amethyst:amethyst_block"})
 	end
-	local nnn = minetest.find_nodes_in_area(p1,p2,{"mcl_amethyst:amethyst_block"})
-	for k,v in pairs(nnn) do
+
+	for k,v in pairs(minetest.find_nodes_in_area(p1,p2,{"mcl_amethyst:amethyst_block"})) do
 		local all_amethyst = true
 		for kk,vv in pairs(adjacents) do
 			local pp = vector.add(v,vv)
@@ -28,6 +30,7 @@ local function makegeode(pos,pr)
 			if an.name ~= "mcl_amethyst:amethyst_block" then
 				if minetest.get_item_group(an.name,"material_stone") > 0 then
 					minetest.set_node(pp,{name="mcl_amethyst:calcite"})
+					table.insert(calcite,pp)
 					if pr:next(1,5) == 1 then
 						minetest.set_node(v,{name="mcl_amethyst:budding_amethyst_block"})
 					end
@@ -40,8 +43,13 @@ local function makegeode(pos,pr)
 		if all_amethyst then minetest.set_node(v,{name="air"}) end
 	end
 
-	local nnnn = minetest.find_nodes_in_area_under_air(p1,p2,{"mcl_amethyst:amethyst_block"})
-	for k,v in pairs(nnnn) do
+	for _,v in pairs(calcite) do
+		for _,vv in pairs(minetest.find_nodes_in_area(vector.offset(v,-1,-1,-1),vector.offset(v,1,1,1),{"group:material_stone"})) do
+			minetest.set_node(vv,{name="mcl_deepslate:deepslate"})
+		end
+	end
+
+	for k,v in pairs(minetest.find_nodes_in_area_under_air(p1,p2,{"mcl_amethyst:amethyst_block","mcl_amethyst:budding_amethyst_block"})) do
 		local r = pr:next(1,50)
 		if r < 10 then
 			minetest.set_node(vector.offset(v,0,1,0),{name="mcl_amethyst:amethyst_cluster",param2=1})
