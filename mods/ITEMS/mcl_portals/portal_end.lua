@@ -241,7 +241,7 @@ function mcl_portals.end_portal_teleport(pos, node)
 			end
 
 			mcl_portals.end_teleport(obj, objpos)
-
+			awards.unlock(obj:get_player_name(), "mcl:enterEndPortal")
 		end
 	end
 end

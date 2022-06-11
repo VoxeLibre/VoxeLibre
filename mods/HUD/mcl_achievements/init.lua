@@ -174,6 +174,12 @@ awards.register_achievement("mcl:buildNetherPortal", {
 	icon = "default_obsidian.png",
 })
 
+awards.register_achievement("mcl:enterEndPortal", {
+	title = S("The End?"),
+	description = S("Or the beginning?\nHint: Enter an end portal."),
+	icon = "mcl_end_end_stone.png",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then
