@@ -208,6 +208,13 @@ awards.register_achievement("mcl:fishyBusiness", {
 	icon = "mcl_fishing_fishing_rod.png",
 })
 
+-- Triggered in mcl_compass
+awards.register_achievement("mcl:countryLode", {
+	title = S("Country Lode, Take Me Home"),
+	description = S("Use a compass on a Lodestone."),
+	icon = "lodestone_side4.png",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then
