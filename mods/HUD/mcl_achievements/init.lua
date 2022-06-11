@@ -180,6 +180,13 @@ awards.register_achievement("mcl:enterEndPortal", {
 	icon = "mcl_end_end_stone.png",
 })
 
+-- Triggered in mcl_totems
+awards.register_achievement("mcl:postMortal", {
+	title = S("Postmortal"),
+	description = S("Use a Totem of Undying to cheat death."),
+	icon = "mcl_totems_totem.png",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then
