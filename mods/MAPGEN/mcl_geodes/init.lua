@@ -7,6 +7,12 @@ local adjacents = {
 	vector.new(0,-1,0)
 }
 
+local function set_node_no_bedrock(pos,node)
+	local n = minetest.get_node(pos)
+	if n.name == "mcl_core:bedrock" then return end
+	return minetest.set_node(pos,node)
+end
+
 local function makegeode(pos,pr)
 	local size = pr:next(4,7)
 	local p1 = vector.offset(pos,-size,-size,-size)
@@ -19,7 +25,7 @@ local function makegeode(pos,pr)
 	if not nn[1] then return end
 
 	for i=1,math.random(#nn) do
-		minetest.set_node(nn[i],{name="mcl_amethyst:amethyst_block"})
+		set_node_no_bedrock(nn[i],{name="mcl_amethyst:amethyst_block"})
 	end
 
 	for k,v in pairs(minetest.find_nodes_in_area(p1,p2,{"mcl_amethyst:amethyst_block"})) do
@@ -29,10 +35,10 @@ local function makegeode(pos,pr)
 			local an = minetest.get_node(pp)
 			if an.name ~= "mcl_amethyst:amethyst_block" then
 				if minetest.get_item_group(an.name,"material_stone") > 0 then
-					minetest.set_node(pp,{name="mcl_amethyst:calcite"})
+					set_node_no_bedrock(pp,{name="mcl_amethyst:calcite"})
 					table.insert(calcite,pp)
 					if pr:next(1,5) == 1 then
-						minetest.set_node(v,{name="mcl_amethyst:budding_amethyst_block"})
+						set_node_no_bedrock(v,{name="mcl_amethyst:budding_amethyst_block"})
 					end
 					all_amethyst = false
 				elseif an.name ~= "mcl_amethyst:amethyst_block" and an.name ~= "air" then
@@ -40,19 +46,19 @@ local function makegeode(pos,pr)
 				end
 			end
 		end
-		if all_amethyst then minetest.set_node(v,{name="air"}) end
+		if all_amethyst then set_node_no_bedrock(v,{name="air"}) end
 	end
 
 	for _,v in pairs(calcite) do
 		for _,vv in pairs(minetest.find_nodes_in_area(vector.offset(v,-1,-1,-1),vector.offset(v,1,1,1),{"group:material_stone"})) do
-			minetest.set_node(vv,{name="mcl_deepslate:deepslate"})
+			set_node_no_bedrock(vv,{name="mcl_deepslate:deepslate"})
 		end
 	end
 
 	for k,v in pairs(minetest.find_nodes_in_area_under_air(p1,p2,{"mcl_amethyst:amethyst_block","mcl_amethyst:budding_amethyst_block"})) do
 		local r = pr:next(1,50)
 		if r < 10 then
-			minetest.set_node(vector.offset(v,0,1,0),{name="mcl_amethyst:amethyst_cluster",param2=1})
+			set_node_no_bedrock(vector.offset(v,0,1,0),{name="mcl_amethyst:amethyst_cluster",param2=1})
 		end
 	end
 	return true
