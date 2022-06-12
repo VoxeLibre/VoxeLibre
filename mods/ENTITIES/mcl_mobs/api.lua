@@ -2326,9 +2326,8 @@ local do_states = function(self, dtime)
 
 			local s = self.object:get_pos()
 			local objs = minetest.get_objects_inside_radius(s, 3)
-
+			local lp
 			for n = 1, #objs do
-
 				if objs[n]:is_player() then
 					lp = objs[n]:get_pos()
 					break
@@ -2336,7 +2335,7 @@ local do_states = function(self, dtime)
 			end
 
 			-- look at any players nearby, otherwise turn randomly
-			if self.look_at_players then
+			if lp and self.look_at_players then
 
 				local vec = {
 					x = lp.x - s.x,
@@ -2964,7 +2963,7 @@ local function damage_mob(self,reason,damage)
 	if damage > 0 then
 		self.health = self.health - damage
 
-		effect(pos, 5, "mcl_particles_smoke.png", 1, 2, 2, nil)
+		effect(self.object:get_pos(), 5, "mcl_particles_smoke.png", 1, 2, 2, nil)
 
 		if check_for_death(self, reason, {type = reason}) then
 			return true
