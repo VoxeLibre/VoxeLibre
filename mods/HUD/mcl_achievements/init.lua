@@ -101,6 +101,17 @@ awards.register_achievement("mcl:bookcase", {
 	}
 })
 
+awards.register_achievement("mcl:buildIronPickaxe", {
+	title = S("Isn't It Iron Pick"),
+	description = S("Craft a iron pickaxe using sticks and iron."),
+	icon = "default_tool_steelpick.png",
+	trigger = {
+		type = "craft",
+		item = "mcl_tools:pick_iron",
+		target = 1
+	}
+})
+
 -- Item pickup achievements: These are awarded when picking up a certain item.
 -- The achivements are manually given in the mod mcl_item_entity.
 awards.register_achievement("mcl:diamonds", {
@@ -161,6 +172,47 @@ awards.register_achievement("mcl:buildNetherPortal", {
 	title = S("Into the Nether"),
 	description = S("Use obsidian and a fire starter to construct a Nether portal."),
 	icon = "default_obsidian.png",
+})
+
+awards.register_achievement("mcl:enterEndPortal", {
+	title = S("The End?"),
+	description = S("Or the beginning?\nHint: Enter an end portal."),
+	icon = "mcl_end_end_stone.png",
+})
+
+-- Triggered in mcl_totems
+awards.register_achievement("mcl:postMortal", {
+	title = S("Postmortal"),
+	description = S("Use a Totem of Undying to cheat death."),
+	icon = "mcl_totems_totem.png",
+})
+
+-- Triggered in mcl_beds
+awards.register_achievement("mcl:sweetDreams", {
+	title = S("Sweet Dreams"),
+	description = S("Sleep in a bed to change your respawn point."),
+	icon = "mcl_beds_bed_red.png",
+})
+
+-- Triggered in mobs_mc
+awards.register_achievement("mcl:whatAdeal", {
+	title = S("What A Deal!"),
+	description = S("Successfully trade with a Villager."),
+	icon = "mcl_core_emerald.png",
+})
+
+-- Triggered in mcl_fishing
+awards.register_achievement("mcl:fishyBusiness", {
+	title = S("Fishy Business"),
+	description = S("Catch a fish. \nHint: Catch a fish, salmon, clownfish, or pufferfish."),
+	icon = "mcl_fishing_fishing_rod.png",
+})
+
+-- Triggered in mcl_compass
+awards.register_achievement("mcl:countryLode", {
+	title = S("Country Lode,\nTake Me Home"),
+	description = S("Use a compass on a Lodestone."),
+	icon = "lodestone_side4.png",
 })
 
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)

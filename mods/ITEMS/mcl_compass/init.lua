@@ -189,6 +189,7 @@ minetest.register_globalstep(function(dtime)
 
 					if string_find(stack:get_name(), "_lodestone") then
 						stack:set_name("mcl_compass:" .. compass_frame .. "_lodestone")
+						awards.unlock(player:get_player_name(), "mcl:countryLode")
 					else
 						stack:set_name("mcl_compass:" .. compass_frame)
 					end

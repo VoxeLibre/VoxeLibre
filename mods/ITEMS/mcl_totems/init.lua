@@ -51,7 +51,8 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 						obj:set_wielded_item(wield)
 					end
 				end
-
+				awards.unlock(obj:get_player_name(), "mcl:postMortal")
+				
 				-- Effects
 				minetest.sound_play({name = "mcl_totems_totem", gain = 1}, {pos=ppos, max_hear_distance = 16}, true)
 
