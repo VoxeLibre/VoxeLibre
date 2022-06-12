@@ -34,7 +34,7 @@ minetest.register_node("mcl_copper:block", {
 	groups = {pickaxey = 2, building_block = 1},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
-	_mcl_hardness = 5,
+	_mcl_hardness = 3,
 })
 
 minetest.register_node("mcl_copper:block_exposed", {

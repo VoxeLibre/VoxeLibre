@@ -40,7 +40,7 @@ minetest.register_node("mcl_ocean:prismarine", {
 	tiles = {{name="mcl_ocean_prismarine_anim.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=45.0}}},
 	groups = {pickaxey=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 1.5,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
 
