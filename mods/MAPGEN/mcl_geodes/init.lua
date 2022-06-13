@@ -51,7 +51,7 @@ local function makegeode(pos,pr)
 
 	for _,v in pairs(calcite) do
 		for _,vv in pairs(minetest.find_nodes_in_area(vector.offset(v,-1,-1,-1),vector.offset(v,1,1,1),{"group:material_stone"})) do
-			set_node_no_bedrock(vv,{name="mcl_deepslate:deepslate"})
+			set_node_no_bedrock(vv,{name="mcl_deepslate:deepslate"}) --Replace with smooth basalt when available
 		end
 	end
 
