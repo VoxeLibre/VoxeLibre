@@ -51,7 +51,7 @@ local function makegeode(pos,pr)
 
 	for _,v in pairs(calcite) do
 		for _,vv in pairs(minetest.find_nodes_in_area(vector.offset(v,-1,-1,-1),vector.offset(v,1,1,1),{"group:material_stone"})) do
-			set_node_no_bedrock(vv,{name="mcl_deepslate:deepslate"}) --Replace with smooth basalt when available
+			set_node_no_bedrock(vv,{name="mcl_blackstone:basalt_smooth"})
 		end
 	end
 
@@ -66,7 +66,15 @@ end
 
 mcl_structures.register_structure("geode",{
 	place_on = {"mcl_core:stone"},
-	fill_ratio = 0.0001,
+	noise_params = {
+		offset = 0,
+		scale = 0.00022,
+		spread = {x = 250, y = 250, z = 250},
+		seed = 7894353,
+		octaves = 3,
+		persist = 0.001,
+		flags = "absvalue",
+	},
 	flags = "place_center_x, place_center_z, force_placement",
 	biomes = ocean_biomes,
 	y_max = -24,
@@ -75,6 +83,6 @@ mcl_structures.register_structure("geode",{
 	y_offset = function(pr) return pr:next(-4,-2) end,
 	place_func = function(pos,def,pr)
 		local p = vector.new(pos.x + pr:next(-30,30),pos.y,pos.z + pr:next(-30,30))
-		return makegeode(pos,pr)
+		return makegeode(p,pr)
 	end
 })

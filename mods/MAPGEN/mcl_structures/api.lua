@@ -43,7 +43,7 @@ function mcl_structures.register_structure(name,def,nospawn) --nospawn means it 
 			num_spawn_by = def.num_spawn_by,
 			sidelen = 80,
 			fill_ratio = def.fill_ratio,
-			noise = def.noise,
+			noise_params = def.noise_params,
 			flags = flags,
 			biomes = def.biomes,
 			y_max = def.y_max,

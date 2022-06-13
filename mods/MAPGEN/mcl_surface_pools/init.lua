@@ -17,7 +17,7 @@ local function set_node_no_bedrock(pos,node)
 end
 
 local function airtower(pos)
-	for i=0,35 do
+	for i=0,55 do
 		set_node_no_bedrock(vector.offset(pos,0,i,0),{name="air"})
 	end
 end
@@ -69,7 +69,15 @@ end
 
 mcl_structures.register_structure("lavapool",{
 	place_on = {"group:sand", "group:dirt", "group:stone"},
-	fill_ratio = 0.000015,
+	noise_params = {
+		offset = 0,
+		scale = 0.0000022,
+		spread = {x = 250, y = 250, z = 250},
+		seed = 78375213,
+		octaves = 3,
+		persist = 0.001,
+		flags = "absvalue",
+	},
 	flags = "place_center_x, place_center_z, force_placement",
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
@@ -80,7 +88,15 @@ mcl_structures.register_structure("lavapool",{
 
 mcl_structures.register_structure("water_lake",{
 	place_on = {"group:dirt","group:stone"},
-	fill_ratio = 0.000052,
+	noise_params = {
+		offset = 0,
+		scale = 0.000032,
+		spread = {x = 250, y = 250, z = 250},
+		seed = 734341353,
+		octaves = 3,
+		persist = 0.001,
+		flags = "absvalue",
+	},
 	flags = "place_center_x, place_center_z, force_placement",
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
