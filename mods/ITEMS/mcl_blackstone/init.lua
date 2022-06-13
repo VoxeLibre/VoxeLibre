@@ -13,8 +13,8 @@ minetest.register_node("mcl_blackstone:blackstone", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	groups = {cracky = 3, pickaxey=2, material_stone=1, cobble=1},
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 1.5,
 })
 minetest.register_node("mcl_blackstone:blackstone_gilded", {
 	description = S("Gilded Blackstone"),
@@ -53,8 +53,8 @@ minetest.register_node("mcl_blackstone:nether_gold", {
 			{items = {"mcl_blackstone:nether_gold"}, rarity = 8},
 		}
 	},
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
+	_mcl_blast_resistance = 3,
+	_mcl_hardness = 3,
 	_mcl_silk_touch_drop = true,
 	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
@@ -67,8 +67,8 @@ minetest.register_node("mcl_blackstone:basalt_polished", {
 	on_rotate = on_rotate,
 	is_ground_content = false,
 	groups = {cracky = 3, pickaxey=2, material_stone=1},
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
+	_mcl_blast_resistance = 4.2,
+	_mcl_hardness = 1.25,
 })
 minetest.register_node("mcl_blackstone:basalt", {
 	description = S("Basalt"),
@@ -79,8 +79,17 @@ minetest.register_node("mcl_blackstone:basalt", {
 	on_rotate = on_rotate,
 	is_ground_content = false,
 	groups = {cracky = 3, pickaxey=2, material_stone=1},
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
+	_mcl_blast_resistance = 4.2,
+	_mcl_hardness = 1.25,
+})
+minetest.register_node("mcl_blackstone:basalt_smooth", {
+	description = S("Smooth Basalt"),
+	tiles = {"mcl_blackstone_basalt_smooth.png"},
+	sounds = mcl_sounds.node_sound_stone_defaults(),
+	is_ground_content = false,
+	groups = {cracky = 3, pickaxey=2, material_stone=1},
+	_mcl_blast_resistance = 4.2,
+	_mcl_hardness = 1.25,
 })
 minetest.register_node("mcl_blackstone:blackstone_polished", {
 	description = S("Polished Blackstone"),
@@ -88,7 +97,7 @@ minetest.register_node("mcl_blackstone:blackstone_polished", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	groups = {cracky = 3, pickaxey=2, material_stone=1},
-	_mcl_blast_resistance = 2,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 2,
 })
 minetest.register_node("mcl_blackstone:blackstone_chiseled_polished", {
@@ -97,8 +106,8 @@ minetest.register_node("mcl_blackstone:blackstone_chiseled_polished", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	groups = {cracky = 3, pickaxey=2, material_stone=1},
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 1.5,
 })
 minetest.register_node("mcl_blackstone:blackstone_brick_polished", {
 	description = S("Polished Blackstone Bricks"),
@@ -106,8 +115,8 @@ minetest.register_node("mcl_blackstone:blackstone_brick_polished", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	groups = {cracky = 3, pickaxey=2, material_stone=1},
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 1.5,
 })
 minetest.register_node("mcl_blackstone:quartz_brick", {
 	description = S("Quartz Bricks"),
@@ -116,8 +125,8 @@ minetest.register_node("mcl_blackstone:quartz_brick", {
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	groups = {cracky = 3, pickaxey=2, material_stone=1},
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
+	_mcl_blast_resistance = 0.8,
+	_mcl_hardness = 0.8,
 })
 minetest.register_node("mcl_blackstone:soul_soil", {
 	description = S("Soul Soil"),

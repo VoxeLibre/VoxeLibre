@@ -782,7 +782,7 @@ minetest.register_node("mcl_ocean:dried_kelp_block", {
 	on_place = mcl_util.rotate_axis,
 	on_rotate = on_rotate,
 	_mcl_hardness = 0.5,
-	_mcl_blast_resistance = 12.5,
+	_mcl_blast_resistance = 2.5,
 })
 
 minetest.register_craft({

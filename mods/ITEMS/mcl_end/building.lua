@@ -29,7 +29,7 @@ minetest.register_node("mcl_end:end_bricks", {
 	groups = {pickaxey=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 9,
-	_mcl_hardness = 0.8,
+	_mcl_hardness = 3,
 })
 
 minetest.register_node("mcl_end:purpur_block", {
