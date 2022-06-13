@@ -8,22 +8,14 @@ minetest.register_tool("mcl_spyglass:spyglass",{
 	_mcl_toollike_wield = true,
 })
 
-local function craft_spyglass(ingot)
-	minetest.register_craft({
-		output = "mcl_spyglass:spyglass",
-		recipe = {
-			{"xpanes:pane_natural_flat"},
-			{ingot},
-			{ingot},
-		}
-	})
-end
-
-if minetest.get_modpath("mcl_copper") then
-	craft_spyglass("mcl_copper:copper_ingot")
-else
-	craft_spyglass("mcl_core:iron_ingot")
-end
+minetest.register_craft({
+	output = "mcl_spyglass:spyglass",
+	recipe = {
+		{"mcl_amethyst:amethyst_shard"},
+		{"mcl_copper:copper_ingot"},
+		{"mcl_copper:copper_ingot"},
+	}
+})
 
 local spyglass_scope = {}
 
