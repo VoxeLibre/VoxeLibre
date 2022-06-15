@@ -232,29 +232,22 @@ dog.on_rightclick = function(self, clicker)
 end
 
 mcl_mobs:register_mob("mobs_mc:dog", dog)
-
 -- Spawn
 mcl_mobs:spawn_specific(
 "mobs_mc:wolf",
 "overworld",
 "ground",
 {
-"FlowerForest",
-"Swampland",
-"Taiga",
-"ExtremeHills",
-"BirchForest",
-"MegaSpruceTaiga",
-"MegaTaiga",
-"ExtremeHills+",
-"Forest",
-"Plains",
-"ColdTaiga",
-"SunflowerPlains",
-"RoofedForest",
-"MesaPlateauFM_grasstop",
-"ExtremeHillsM",
-"BirchForestM",
+	"Taiga",
+	"MegaSpruceTaiga",
+	"MegaTaiga",
+	"Forest",
+	"ColdTaiga",
+	"FlowerForest_beach",
+	"Forest_beach",
+	"ColdTaiga_beach_water",
+	"Taiga_beach",
+	"ColdTaiga_beach",
 },
 0,
 minetest.LIGHT_MAX+1,

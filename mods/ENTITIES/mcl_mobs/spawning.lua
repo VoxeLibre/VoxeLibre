@@ -426,6 +426,7 @@ if mobs_spawn then
 		perlin_noise = perlin_noise or minetest_get_perlin(noise_params)
 		local noise = perlin_noise:get_3d(spawning_position)
 		local current_summary_chance = summary_chance
+		table.shuffle(mob_library_worker_table)
 		while #mob_library_worker_table > 0 do
 			local mob_chance_offset = (math_round(noise * current_summary_chance + 12345) % current_summary_chance) + 1
 			local mob_index = 1
