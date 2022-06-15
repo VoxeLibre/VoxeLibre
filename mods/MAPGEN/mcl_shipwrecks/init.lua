@@ -8,11 +8,11 @@ local pr = PseudoRandom(seed)
 
 --schematics by chmodsayshello
 local schems = {
-	"shipwreck_full_damaged",
-	"shipwreck_full_normal",
-	"shipwreck_full_back_damaged",
-	"shipwreck_half_front",
-	"shipwreck_half_back",
+	modpath.."/schematics/".."shipwreck_full_damaged"..".mts",
+	modpath.."/schematics/".."shipwreck_full_normal"..".mts",
+	modpath.."/schematics/".."shipwreck_full_back_damaged"..".mts",
+	modpath.."/schematics/".."shipwreck_half_front"..".mts",
+	modpath.."/schematics/".."shipwreck_half_back"..".mts",
 }
 
 local function get_supply_loot()
@@ -41,7 +41,7 @@ local function get_supply_loot()
 			--{ itemstring = "TODO:bamboo", weight = 2, amount_min = 1, amount_max = 3 },
 			{ itemstring = "mcl_farming:pumpkin", weight = 2, amount_min = 1, amount_max = 3 },
 			{ itemstring = "mcl_tnt:tnt", weight = 1, amount_min = 1, amount_max = 2 },
-			
+
 		}
 	}
 end
@@ -75,61 +75,105 @@ local function fill_chests(p1,p2)
 	end
 end
 
-local function get_ocean_biomes()
-	local r = {}
-	for k,_ in pairs(minetest.registered_biomes) do
-		if k:find("_ocean") then table.insert(r,k) end
-	end
-	return r
-end
-local function get_beach_biomes()
-	local r = {}
-	for k,_ in pairs(minetest.registered_biomes) do
-		if k:find("_beach") or k:find("_shore") then table.insert(r,k) end
-	end
-	return r
-end
+local ocean_biomes = {
+	"RoofedForest_ocean",
+	"JungleEdgeM_ocean",
+	"BirchForestM_ocean",
+	"BirchForest_ocean",
+	"IcePlains_deep_ocean",
+	"Jungle_deep_ocean",
+	"Savanna_ocean",
+	"MesaPlateauF_ocean",
+	"ExtremeHillsM_deep_ocean",
+	"Savanna_deep_ocean",
+	"SunflowerPlains_ocean",
+	"Swampland_deep_ocean",
+	"Swampland_ocean",
+	"MegaSpruceTaiga_deep_ocean",
+	"ExtremeHillsM_ocean",
+	"JungleEdgeM_deep_ocean",
+	"SunflowerPlains_deep_ocean",
+	"BirchForest_deep_ocean",
+	"IcePlainsSpikes_ocean",
+	"Mesa_ocean",
+	"StoneBeach_ocean",
+	"Plains_deep_ocean",
+	"JungleEdge_deep_ocean",
+	"SavannaM_deep_ocean",
+	"Desert_deep_ocean",
+	"Mesa_deep_ocean",
+	"ColdTaiga_deep_ocean",
+	"Plains_ocean",
+	"MesaPlateauFM_ocean",
+	"Forest_deep_ocean",
+	"JungleM_deep_ocean",
+	"FlowerForest_deep_ocean",
+	"MushroomIsland_ocean",
+	"MegaTaiga_ocean",
+	"StoneBeach_deep_ocean",
+	"IcePlainsSpikes_deep_ocean",
+	"ColdTaiga_ocean",
+	"SavannaM_ocean",
+	"MesaPlateauF_deep_ocean",
+	"MesaBryce_deep_ocean",
+	"ExtremeHills+_deep_ocean",
+	"ExtremeHills_ocean",
+	"MushroomIsland_deep_ocean",
+	"Forest_ocean",
+	"MegaTaiga_deep_ocean",
+	"JungleEdge_ocean",
+	"MesaBryce_ocean",
+	"MegaSpruceTaiga_ocean",
+	"ExtremeHills+_ocean",
+	"Jungle_ocean",
+	"RoofedForest_deep_ocean",
+	"IcePlains_ocean",
+	"FlowerForest_ocean",
+	"ExtremeHills_deep_ocean",
+	"MesaPlateauFM_deep_ocean",
+	"Desert_ocean",
+	"Taiga_ocean",
+	"BirchForestM_deep_ocean",
+	"Taiga_deep_ocean",
+	"JungleM_ocean"
+}
 
-minetest.register_node("mcl_shipwrecks:structblock", {drawtype="airlike", walkable = false, pointable = false,groups = {structblock=1,not_in_creative_inventory=1}})
+local beach_biomes = {
+	"FlowerForest_beach",
+	"Forest_beach",
+	"StoneBeach",
+	"ColdTaiga_beach_water",
+	"Taiga_beach",
+	"Savanna_beach",
+	"Plains_beach",
+	"ExtremeHills_beach",
+	"ColdTaiga_beach",
+	"Swampland_shore",
+	"MushroomIslandShore",
+	"JungleM_shore",
+	"Jungle_shore"
+}
 
-minetest.register_decoration({
-	decoration = "mcl_shipwrecks:structblock",
-	deco_type = "simple",
+mcl_structures.register_structure("shipwreck",{
 	place_on = {"group:sand","mcl_core:gravel"},
 	spawn_by = {"group:water"},
 	num_spawn_by = 4,
-	sidelen = 80,
-	fill_ratio = 0.00002,
-	flags = "place_center_x, place_center_z, force_placement",
-	biomes = get_ocean_biomes(),
-	y_max=water_level-4,
-})
-
---rare beached variant
-minetest.register_decoration({
-	decoration = "mcl_shipwrecks:structblock",
-	deco_type = "simple",
-	place_on = {"group:sand","mcl_core:gravel","group:dirt"},
-	spawn_by = {"group:water","air"},
-	num_spawn_by = 4,
-	sidelen = 80,
-	fill_ratio=0.000001,
-	flags = "place_center_x, place_center_z, force_placement",
-	biomes = get_beach_biomes(),
-	y_max = water_level + 4,
-	y_min = water_level - 1,
-})
-
-minetest.register_lbm({
-	name = "mcl_shipwrecks:struct_lbm",
-	run_at_every_load = true,
-	nodenames = {"mcl_shipwrecks:structblock"},
-	action = function(pos, node)
-		minetest.set_node(pos,{name="air"})
-		local file = modpath.."/schematics/"..schems[pr:next(1,#schems)]..".mts"
-		local pp = vector.offset(pos,0,pr:next(-4,-2),0)
-		mcl_structures.place_schematic(pp, file, "random", nil, true, "place_center_x,place_center_z", function()
-			fill_chests(vector.offset(pos,-20,-5,-20),vector.offset(pos,20,15,20))
-		end,pr)
+	noise_params = {
+		offset = 0,
+		scale = 0.000022,
+		spread = {x = 250, y = 250, z = 250},
+		seed = 3,
+		octaves = 3,
+		persist = 0.001,
+		flags = "absvalue",
+	},
+	flags = "force_placement",
+	biomes = ocean_biomes,
+	y_max = water_level-4,
+	y_min = mcl_vars.mg_overworld_min,
+	filenames = schems,
+	y_offset = function(pr) return pr:next(-4,-2) end,
+	after_place = function(pos)
+		fill_chests(vector.offset(pos,-20,-5,-20),vector.offset(pos,20,15,20))
 	end
 })
