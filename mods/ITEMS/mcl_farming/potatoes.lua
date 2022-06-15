@@ -91,7 +91,7 @@ minetest.register_craftitem("mcl_farming:potato_item", {
 	_doc_items_longdesc = S("Potatoes are food items which can be eaten, cooked in the furnace and planted. Pigs like potatoes."),
 	_doc_items_usagehelp = S("Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant it. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it."),
 	inventory_image = "farming_potato.png",
-	groups = {food = 2, eatable = 1, compostability = 65},
+	groups = {food = 2, eatable = 1, compostability = 65, smoker_cookable = 1},
 	_mcl_saturation = 0.6,
 	stack_max = 64,
 	on_secondary_use = minetest.item_eat(1),
