@@ -238,8 +238,8 @@ after(5, function(dtime)
 end)
 
 minetest.register_chatcommand("lightning", {
-	params = "[<X> <Y> <Z>]",
-	description = S("Let lightning strike at the specified position or yourself"),
+	params = "[<X> <Y> <Z> | <player name>]",
+	description = S("Let lightning strike at the specified position or player. No parameter will strike yourself."),
 	privs = { maphack = true },
 	func = function(name, param)
 		local pos = {}
@@ -247,21 +247,21 @@ minetest.register_chatcommand("lightning", {
 		pos.x = tonumber(pos.x)
 		pos.y = tonumber(pos.y)
 		pos.z = tonumber(pos.z)
+		local player_to_strike
 		if not (pos.x and pos.y and pos.z) then
 			pos = nil
+			player_to_strike = minetest.get_player_by_name(param)
+			if not player_to_strike and param == "" then
+				player_to_strike = minetest.get_player_by_name(name)
+			end
 		end
-		if name == "" and pos == nil then
+		if not player_to_strike and pos == nil then
 			return false, "No position specified and unknown player"
 		end
 		if pos then
 			lightning.strike(pos)
-		else
-			local player = minetest.get_player_by_name(name)
-			if player then
-				lightning.strike(player:get_pos())
-			else
-				return false, S("No position specified and unknown player")
-			end
+		elseif player_to_strike then
+			lightning.strike(player_to_strike:get_pos())
 		end
 		return true
 	end,
