@@ -39,6 +39,10 @@ minetest.register_node("mcl_bells:bell", {
 	_mcl_hardness = 5,
 	on_rightclick = mcl_bells.ring_once,
 	use_texture_alpha = "clip",
+	mesecons = {effector = {
+		action_on = mcl_bells.ring_once,
+		rules = mesecon.rules.flat,
+	}},
 })
 
 if has_mcl_wip then
