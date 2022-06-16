@@ -139,7 +139,7 @@ minetest.register_node("mcl_crimson:warped_wart_block", {
 minetest.register_node("mcl_crimson:shroomlight", {
 	description = S("Shroomlight"),
 	tiles = {"shroomlight.png"},
-	groups = {handy = 1, hoe = 7, swordy = 1, leafdecay = 1, leafdecay_distance = 1, leaves = 1, deco_block = 1},
+	groups = {handy = 1, hoe = 7, swordy = 1, leafdecay = 5, leaves = 1, deco_block = 1},
 	-- this is 15 in Minecraft
 	light_source = 14,
 	_mcl_hardness = 2,
@@ -298,28 +298,6 @@ minetest.register_abm({
 			end
 		end
 	end
-})
-
-minetest.register_abm({
-	label = "mcl_crimson:warped_checknode",
-	nodenames = {"mcl_crimson:warped_checknode"},
-	interval = 1,
-	chance = 1,
-	action = function(pos)
-		local pos1 = vector.offset(pos, 0, 1, 0)
-		local nodepos = minetest.get_node(pos1)
-		if nodepos.name == "air" then
-			minetest.swap_node(pos, { name = "mcl_crimson:warped_nylium" })
-			local randomg = math.random(1, 40)
-			if randomg == 2 then
-				minetest.set_node(pos1, { name = "mcl_crimson:warped_fungus" })
-			elseif randomg == 7 then
-				generate_warped_tree(pos1)
-			end
-		else
-			minetest.swap_node(pos, { name = "mcl_nether:netherrack" })
-		end
-	end,
 })
 
 minetest.register_node("mcl_crimson:crimson_fungus", {
@@ -525,138 +503,3 @@ minetest.register_abm({
 		end
 	end
 })
-
-minetest.register_abm({
-	label = "mcl_crimson:crimson_checknode",
-	nodenames = {"mcl_crimson:crimson_checknode"},
-	interval = 1,
-	chance = 1,
-	action = function(pos)
-		local pos1 = vector.offset(pos, 0, 1, 0)
-		local nodepos = minetest.get_node(pos1)
-		if nodepos.name == "air" then
-			minetest.swap_node(pos, { name = "mcl_crimson:crimson_nylium" })
-
-			local randomg = math.random(1, 400)
-
-			if randomg <= 10 then
-				minetest.set_node(pos1, { name = "mcl_crimson:crimson_fungus" })
-			elseif randomg > 10 and randomg <= 25 then
-				generate_crimson_tree(pos1)
-			elseif randomg > 25 and randomg <= 30 then
-				minetest.set_node(pos1, { name = "mcl_crimson:warped_fungus" })
-			elseif randomg > 30 and randomg <= 130 then
-				minetest.set_node(pos1, { name = "mcl_crimson:crimson_roots" })
-			end
-		else
-			minetest.swap_node(pos, { name = "mcl_nether:netherrack" })
-		end
-	end
-})
-
-
---[[
-FIXME: Biomes are to rare
-FIXME: Decoration don't do generate
-WARNING: Outdatet, the biomes gernerate now different, with Ores 
--- biomes in test!
-minetest.register_biome({
-	name = "WarpedForest",
-	node_filler = "mcl_nether:netherrack",
-	node_stone = "mcl_nether:netherrack",
-	node_top = "mcl_crimson:warped_nylium",
-	node_water = "air",
-	node_river_water = "air",
-	y_min = -29065,
-	y_max = -28940,
-	heat_point = 100,
-	humidity_point = 0,
-	_mcl_biome_type = "hot",
-	_mcl_palette_index = 19,
-})
-minetest.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_crimson:warped_nylium"},
-	sidelen = 16,
-	noise_params = {
-	offset = 0.01,
-	scale = 0.0022,
-	spread = {x = 250, y = 250, z = 250},
-	seed = 2,
-	octaves = 3,
-	persist = 0.66
-	},
-	biomes = {"WarpedForest"},
-	y_min = -29065,
-	y_max = -28940 + 80,
-	decoration = "mcl_crimson:warped_fungus",
-})
-]]
---[[ No Ore gen for now
-minetest.register_ore({
-	ore_type		= "sheet",
-	ore			 = "mcl_crimson:warped_checknode",
-	-- Note: Stone is included only for v6 mapgen support. Netherrack is not generated naturally
-	-- in v6, but instead set with the on_generated function in mcl_mapgen_core.
-	wherein		 = {"mcl_nether:netherrack", "mcl_core:stone"},
-	clust_scarcity	= 14 * 14 * 14,
-	clust_size		= 10,
-	y_min			 = -29065,
-	y_max			 = -28940,
-	noise_threshold = 0.0,
-	noise_params	= {
-	offset = 0.5,
-	scale = 0.1,
-	spread = {x = 8, y = 8, z = 8},
-	seed = 4996,
-	octaves = 1,
-	persist = 0.0
-	},
-})
-
-minetest.register_ore({
-	ore_type		= "sheet",
-	ore			 = "mcl_crimson:crimson_checknode",
-	-- Note: Stone is included only for v6 mapgen support. Netherrack is not generated naturally
-	-- in v6, but instead set with the on_generated function in mcl_mapgen_core.
-	wherein		 = {"mcl_nether:netherrack", "mcl_core:stone"},
-	clust_scarcity	= 10 * 10 * 10,
-	clust_size		= 10,
-	y_min			 = -29065,
-	y_max			 = -28940,
-	noise_threshold = 0.0,
-	noise_params	= {
-	offset = 1,
-	scale = 0.5,
-	spread = {x = 12, y = 12, z = 12},
-	seed = 12948,
-	octaves = 1,
-	persist = 0.0
-	},
-})
---]]
-
---[[
-minetest.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_crimson:warped_nylium"},
-	sidelen = 16,
-	fill_ratio = 0.1,
-	biomes = {"Nether"},
-	y_max = -28940,
-	y_min = -29065,
-	decoration = "mcl_crimson:warped_fungus",
-})
-
-
-minetest.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_crimson:crimson_nylium"},
-	sidelen = 16,
-	fill_ratio = 0.1,
-	biomes = {"Nether"},
-	y_max = -28940,
-	y_min = -29065,
-	decoration = "mcl_crimson:crimson_fungus",
-})
-]]
