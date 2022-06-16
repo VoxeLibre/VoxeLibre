@@ -1367,9 +1367,11 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 			return
 		end
 		self._id=minetest.sha1(minetest.get_gametime()..minetest.pos_to_string(self.object:get_pos())..tostring(math.random()))
-		self._profession = "unemployed"
-		if math.random(100) == 1 then
-			self._profession = "nitwit"
+		if not self._profession then
+			self._profession = "unemployed"
+			if math.random(100) == 1 then
+				self._profession = "nitwit"
+			end
 		end
 		set_textures(self)
 	end,
