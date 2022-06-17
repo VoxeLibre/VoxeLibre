@@ -4114,6 +4114,7 @@ local function register_dimension_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
+		name = "mcl_biomes:warped_tree",
 		place_on = {"mcl_crimson:warped_nylium"},
 		sidelen = 16,
 		fill_ratio = 0.022,
@@ -4161,6 +4162,7 @@ local function register_dimension_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
+		name = "mcl_biomes:crimson_tree",
 		place_on = {"mcl_crimson:crimson_nylium"},
 		sidelen = 16,
 		fill_ratio = 0.022,
@@ -4317,10 +4319,14 @@ if mg_name ~= "singlenode" then
 
 	-- Overworld decorations for v6 are handled in mcl_mapgen_core
 
-	if deco_id_chorus_plant then
+	local deco_id_crimson_tree =minetest.get_decoration_id("mcl_biomes:crimson_tree")
+	local deco_id_warped_tree =minetest.get_decoration_id("mcl_biomes:warped_tree")
+	minetest.set_gen_notify({decoration=true}, { deco_id_crimson_tree })
+	minetest.set_gen_notify({decoration=true}, { deco_id_warped_tree })
+	if deco_id_chorus_plant or deco_id_crimson_tree or deco_id_warped_tree then
 		mcl_mapgen_core.register_generator("chorus_grow", nil, function(minp, maxp, blockseed)
+			if minp.y > -26900 then return end
 			local gennotify = minetest.get_mapgen_object("gennotify")
-			--local poslist = {}
 			local pr = PseudoRandom(blockseed + 14)
 			for _, pos in ipairs(gennotify["decoration#"..deco_id_chorus_plant] or {}) do
 				local x, y, z = pos.x, pos.y, pos.z
@@ -4331,6 +4337,13 @@ if mg_name ~= "singlenode" then
 						mcl_end.grow_chorus_plant(realpos, node, pr)
 					end
 				end
+			end
+			if minp.y > mcl_vars.mg_nether_max then return end
+			for _, pos in ipairs(gennotify["decoration#"..deco_id_crimson_tree] or {}) do
+				minetest.fix_light(vector.offset(pos,-8,-8,-8),vector.offset(pos,8,8,8))
+			end
+			for _, pos in ipairs(gennotify["decoration#"..deco_id_warped_tree] or {}) do
+				minetest.fix_light(vector.offset(pos,-8,-8,-8),vector.offset(pos,8,8,8))
 			end
 		end)
 	end
