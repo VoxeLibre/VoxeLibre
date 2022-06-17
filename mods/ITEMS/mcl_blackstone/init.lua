@@ -323,36 +323,7 @@ for s=1, #specialstones do
 end
 
 if minetest.settings:get_bool("mcl_generate_ores", true) then
-	minetest.register_ore({
-		ore_type       = "scatter",
-		ore            = "mcl_blackstone:blackstone_gilded",
-		wherein        = "mcl_blackstone:blackstone",
-		clust_scarcity = 4775,
-		clust_num_ores = 2,
-		clust_size     = 2,
-		y_min          = mcl_vars.mg_nether_min,
-		y_max          = mcl_vars.mg_nether_max,
-	})
-	minetest.register_ore({
-		ore_type       = "scatter",
-		ore            = "mcl_blackstone:nether_gold",
-		wherein        = "mcl_nether:netherrack",
-		clust_scarcity = 830,
-		clust_num_ores = 5,
-		clust_size     = 3,
-		y_min          = mcl_vars.mg_nether_min,
-		y_max          = mcl_vars.mg_nether_max,
-	})
-	minetest.register_ore({
-		ore_type       = "scatter",
-		ore            = "mcl_blackstone:nether_gold",
-		wherein        = "mcl_nether:netherrack",
-		clust_scarcity = 1660,
-		clust_num_ores = 4,
-		clust_size     = 2,
-		y_min          = mcl_vars.mg_nether_min,
-		y_max          = mcl_vars.mg_nether_max,
-	})
+
 end
 --]]
 --soul torch
