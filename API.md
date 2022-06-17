@@ -42,7 +42,7 @@ A lot of things are possible by using one of the APIs in the mods. Note that not
 * Buckets: `ITEMS/mcl_buckets`
 * Dispenser support: `ITEMS/REDSTONE/mcl_dispensers`
 
-## Mobs
+### Mobs
 * Mobs: `ENTITIES/mcl_mobs`
 
 MineClone 2 uses its own mobs framework, called “Mobs Redo: MineClone 2 Edition” or “MRM” for short.
