@@ -751,6 +751,8 @@ mcl_mobs:spawn_specific(
 "JungleM_underground",
 "ExtremeHillsM_underground",
 "JungleEdgeM_underground",
+"Nether",
+"WarpedForest"
 },
 0,
 7,

@@ -286,6 +286,8 @@ mcl_mobs:spawn_specific(
 "JungleM_underground",
 "ExtremeHillsM_underground",
 "JungleEdgeM_underground",
+"Nether",
+"SoulsandValley"
 },
 0,
 7,

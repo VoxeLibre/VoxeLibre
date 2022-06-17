@@ -189,6 +189,9 @@ local list_of_all_biomes = {
 	"MesaBryce",
 	"JungleEdge",
 	"SavannaM",
+	"Nether",
+	"WarpedForest",
+	"SoulsandValley"
 }
 
 -- count how many mobs are in an area

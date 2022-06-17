@@ -4083,6 +4083,17 @@ local function register_dimension_decorations()
 		max_height = 5,
 		decoration = "mcl_crimson:twisting_vines",
 	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_crimson:warped_nylium"},
+		sidelen = 16,
+		fill_ratio = 0.0812,
+		biomes = {"WarpedForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors",
+		max_height = 5,
+		decoration = "mcl_crimson:warped_roots",
+	})
 	-- CRIMSON FOREST
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -4110,19 +4121,30 @@ local function register_dimension_decorations()
 		deco_type = "simple",
 		place_on = {"mcl_crimson:crimson_nylium"},
 		sidelen = 16,
-		fill_ratio = 0.012,
+		fill_ratio = 0.082,
 		biomes = {"CrimsonForest"},
 		y_min = mcl_vars.mg_lava_nether_max + 1,
 		flags = "all_floors",
 		max_height = 5,
 		decoration = "mcl_crimson:crimson_roots",
 	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_crimson:crimson_nylium"},
+		sidelen = 16,
+		fill_ratio = 0.052,
+		biomes = {"CrimsonForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors",
+		decoration = "mcl_crimson:nether_sprouts",
+	})
 	--SOULSAND VALLEY
 	minetest.register_decoration({
 		deco_type = "simple",
 		place_on = {"mcl_blackstone:soul_soil","mcl_nether:soulsand"},
 		sidelen = 16,
-		fill_ratio = 0.012,
+		fill_ratio = 0.082,
 		biomes = {"SoulsandValley"},
 		y_min = mcl_vars.mg_lava_nether_max + 1,
 		flags = "all_floors",
