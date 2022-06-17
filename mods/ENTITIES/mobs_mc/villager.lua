@@ -613,6 +613,8 @@ local function employ(self,jobsite_pos)
 end
 
 local function look_for_job(self)
+	if self.last_jobhunt and os.time() - self.last_jobhunt < 360 then return end
+	self.last_jobhunt = os.time() + math.random(0,60)
 	local p = self.object:get_pos()
 	local nn = minetest.find_nodes_in_area(vector.offset(p,-48,-48,-48),vector.offset(p,48,48,48),jobsites)
 	for _,n in pairs(nn) do

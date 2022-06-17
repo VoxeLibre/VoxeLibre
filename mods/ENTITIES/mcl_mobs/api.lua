@@ -2314,6 +2314,41 @@ local function check_doors(self)
 	end
 end
 
+local gowp_etime = 0
+
+local function check_gowp(self,dtime)
+	gowp_etime = gowp_etime + dtime
+	if gowp_etime < 1 then return end
+	gowp_etime = 0
+	local p = self.object:get_pos()
+	if not p or not self._target then return end
+	if vector.distance(p,self._target) < 2 or ( self.waypoints and #self.waypoints == 0 ) then
+		self.waypoints = nil
+		self._target = nil
+		self.current_target = nil
+		self.state = "walk"
+		if self.callback_arrived then return self.callback_arrived(self) end
+		return true
+	end
+	if self.waypoints and ( not self.current_target or vector.distance(p,self.current_target) < 1.5 ) then
+		self.current_target = table.remove(self.waypoints, 1)
+		--minetest.log("nextwp:".. tostring(self.current_target) )
+	elseif self.current_target then
+		go_to_pos(self,self.current_target)
+	end
+
+	if self.current_target and not minetest.line_of_sight(self.object:get_pos(),self.current_target) then
+		self.waypoints=minetest.find_path(p,self._target,150,1,4)
+		if not self.waypoints then self.state = "walk" end --give up
+		self.current_target = nil
+		return
+	end
+	if not self.current_target then
+		--minetest.log("no path")
+		self.state = "walk"
+	end
+end
+
 -- execute current state (stand, walk, run, attacks)
 -- returns true if mob has died
 local do_states = function(self, dtime)
@@ -2371,32 +2406,7 @@ local do_states = function(self, dtime)
 		end
 
 	elseif self.state == "gowp" then
-		local p = self.object:get_pos()
-		if not p or not self._target then return end
-		if vector.distance(p,self._target) < 2 or ( self.waypoints and #self.waypoints == 0 ) then
-			self.waypoints = nil
-			self._target = nil
-			self.current_target = nil
-			self.state = "walk"
-			if self.callback_arrived then return self.callback_arrived(self) end
-			return true
-		end
-		if self.waypoints and ( not self.current_target or vector.distance(p,self.current_target) < 1.5 ) then
-			self.current_target = table.remove(self.waypoints, 1)
-			--minetest.log("nextwp:".. tostring(self.current_target) )
-		elseif self.current_target then
-			go_to_pos(self,self.current_target)
-		end
-
-		if self.current_target and not minetest.line_of_sight(self.object:get_pos(),self.current_target) then
-			self.waypoints=minetest.find_path(p,self._target,150,1,4)
-			self.current_target = nil
-			return
-		end
-		if not self.current_target then
-			--minetest.log("no path")
-			self.state = "walk"
-		end
+		check_gowp(self,dtime)
 
 	elseif self.state == "walk" then
 		local s = self.object:get_pos()
@@ -2907,7 +2917,11 @@ local plane_adjacents = {
 	vector.new(0,0,-1),
 }
 
+
+local gopath_last = os.time()
 function mcl_mobs:gopath(self,target,callback_arrived)
+	if os.time() - gopath_last < 15 then return end
+	gopath_last = os.time()
 	local p = self.object:get_pos()
 	local t = vector.offset(target,0,1,0)
 	local wp = minetest.find_path(p,t,150,1,4)
@@ -2931,6 +2945,9 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 		self.state = "gowp"
 		return true
 	else
+	self.state = "walk"
+	self.waypoints = nil
+	self.current_target = nil
 		--minetest.log("no path found")
 	end
 end
