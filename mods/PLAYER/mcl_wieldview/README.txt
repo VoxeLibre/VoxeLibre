@@ -3,19 +3,10 @@
 
 Makes hand wielded items visible to other players.
 
-default settings: [minetest.conf]
-
-# Set number of seconds between visible wielded item updates.
-wieldview_update_time = 2
-
-# Show nodes as tiles, disabled by default
-wieldview_node_tiles = false
-
 
 Info for modders
 ################
 
-Wield image transformation: To apply a simple transformation to the item in
-hand, add the group “wieldview_transform” to the item definition. The group
-rating equals one of the numbers used for the [transform texture modifier
-of the Lua API.
+Add an item to the "no_wieldview" group with a rating of 1 and it will not be shown by the wieldview.
+If an item has the "no_wieldview" group rating of 1, the item definition can specify the property "_wieldview_item".
+"_wieldview_item" should be set to an item name that will be shown by the wieldview instead of the item.

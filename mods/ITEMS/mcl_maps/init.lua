@@ -227,6 +227,8 @@ filled_wield_def.drawtype = "mesh"
 filled_wield_def.node_placement_prediction = ""
 filled_wield_def.range = minetest.registered_items[""].range
 filled_wield_def.on_place = mcl_util.call_on_rightclick
+filled_wield_def.groups.no_wieldview = 1
+filled_wield_def._wieldview_item = "mcl_maps:filled_map"
 
 for _, texture in pairs(mcl_skins.list) do
 	local def = table.copy(filled_wield_def)
