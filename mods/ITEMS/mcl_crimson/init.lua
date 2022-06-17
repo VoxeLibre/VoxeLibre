@@ -6,11 +6,11 @@ local modpath = minetest.get_modpath(modname)
 -- adapted for mcl2 by cora
 
 local function generate_warped_tree(pos)
-	minetest.place_schematic(vector.offset(pos,-2,0,-2),modpath.."/schematics/warped_mushroom.mts","random")
+	minetest.place_schematic(pos,modpath.."/schematics/warped_mushroom.mts","random",nil,false,"place_center_x,place_center_z")
 end
 
 function generate_crimson_tree(pos)
-	minetest.place_schematic(vector.offset(pos,-2,0,-2),modpath.."/schematics/crimson_mushroom.mts","random")
+	minetest.place_schematic(pos,modpath.."/schematics/crimson_mushroom.mts","random",nil,false,"place_center_x,place_center_z")
 end
 
 minetest.register_node("mcl_crimson:warped_fungus", {
@@ -160,7 +160,6 @@ minetest.register_node("mcl_crimson:warped_hyphae", {
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, tree = 1, building_block = 1, material_wood = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	on_rotate = on_rotate,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 	_mcl_stripped_variant = "mcl_crimson:stripped_warped_hyphae",
@@ -185,17 +184,6 @@ minetest.register_node("mcl_crimson:warped_nylium", {
 	_mcl_silk_touch_drop = true,
 })
 
-minetest.register_node("mcl_crimson:warped_checknode", {
-	description = S("Warped Checknode - only to check!"),
-	tiles = {"mcl_nether_netherrack.png"},
-	groups = {pickaxey = 1, building_block = 1, material_stone = 1, not_in_creative_inventory = 1},
-	paramtype2 = "facedir",
-	_mcl_hardness = 0.4,
-	_mcl_blast_resistance = 0.4,
-	is_ground_content = true,
-	drop = "mcl_nether:netherrack"
-})
-
 --Stem bark, stripped stem and bark
 
 minetest.register_node("mcl_crimson:warped_hyphae_bark", {
@@ -207,7 +195,6 @@ minetest.register_node("mcl_crimson:warped_hyphae_bark", {
 	groups = {handy = 1, axey = 1, bark = 1, building_block = 1, material_wood = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	is_ground_content = false,
-	on_rotate = on_rotate,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 	_mcl_stripped_variant = "mcl_crimson:stripped_warped_hyphae_bark",
@@ -222,29 +209,27 @@ minetest.register_craft({
 })
 
 minetest.register_node("mcl_crimson:stripped_warped_hyphae", {
-	description = description_stripped_trunk,
-	_doc_items_longdesc = longdesc,
+	description = S("Stripped warped hyphae"),
+	_doc_items_longdesc = S("The stripped hyphae of a warped fungus"),
 	_doc_items_hidden = false,
-	tiles = {tile_stripped_inner, tile_stripped_inner, tile_stripped_bark},
+	tiles = {"warped_stem_stripped_top.png", "crimson_stem_warped_top.png", "warped_stem_stripped_side.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, tree = 1, building_block = 1, material_wood = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	on_rotate = on_rotate,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 })
 
 minetest.register_node("mcl_crimson:stripped_warped_hyphae_bark", {
-	description = description_stripped_bark,
-	_doc_items_longdesc = longdesc_wood,
-	tiles = {tile_stripped_bark},
+	description = S("Stripped warped hyphae bark"),
+	_doc_items_longdesc = S("The stripped hyphae bark of a warped fungus"),
+	tiles = {"crimson_stem_stripped_side.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, bark = 1, building_block = 1, material_wood = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	is_ground_content = false,
-	on_rotate = on_rotate,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 })
@@ -256,8 +241,6 @@ minetest.register_craft({
 		{ "mcl_crimson:stripped_warped_hyphae", "mcl_crimson:stripped_warped_hyphae" },
 	},
 })
-
---Wood
 
 minetest.register_node("mcl_crimson:warped_hyphae_wood", {
 	description = S("Warped Hyphae Wood"),
@@ -277,7 +260,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_crimson:warped_nyliumd 2",
+	output = "mcl_crimson:warped_nylium 2",
 	recipe = {
 		{"mcl_crimson:warped_wart_block"},
 		{"mcl_nether:netherrack"},
@@ -364,7 +347,6 @@ minetest.register_node("mcl_crimson:crimson_hyphae", {
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, tree = 1, building_block = 1, material_wood = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	on_rotate = on_rotate,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 	_mcl_stripped_variant = stripped_variant,
@@ -381,7 +363,6 @@ minetest.register_node("mcl_crimson:crimson_hyphae_bark", {
 	groups = {handy = 1, axey = 1, bark = 1, building_block = 1, material_wood = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	is_ground_content = false,
-	on_rotate = on_rotate,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 	_mcl_stripped_variant = "mcl_crimson:stripped_crimson_hyphae_bark",
@@ -399,12 +380,11 @@ minetest.register_node("mcl_crimson:stripped_crimson_hyphae", {
 	description = S("Stripped Crimson Hyphae"),
 	_doc_items_longdesc = S("The stripped stem of a crimson hyphae"),
 	_doc_items_hidden = false,
-	tiles = {"stripped_crimson_stem_top.png", "stripped_crimson_stem_top.png", "stripped_crimson_stem_side.png"},
+	tiles = {"crimson_stem_stripped_top.png", "crimson_stem_stripped_top.png", "crimson_stem_stripped_side.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, tree = 1, building_block = 1, material_wood = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	on_rotate = on_rotate,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 })
@@ -412,13 +392,12 @@ minetest.register_node("mcl_crimson:stripped_crimson_hyphae", {
 minetest.register_node("mcl_crimson:stripped_crimson_hyphae_bark", {
 	description =	S("Stripped Crimson Hyphae Bark"),
 	_doc_items_longdesc = S("The stripped wood of a crimson hyphae"),
-	tiles = {"stripped_crimson_stem_side.png"},
+	tiles = {"crimson_stem_stripped_side.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, bark = 1, building_block = 1, material_wood = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	is_ground_content = false,
-	on_rotate = on_rotate,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 })
@@ -430,8 +409,6 @@ minetest.register_craft({
 		{ "mcl_crimson:stripped_crimson_hyphae", "mcl_crimson:stripped_crimson_hyphae" },
 	},
 })
-
---Wood
 
 minetest.register_node("mcl_crimson:crimson_hyphae_wood", {
 	description = S("Crimson Hyphae Wood"),
@@ -460,17 +437,6 @@ minetest.register_node("mcl_crimson:crimson_nylium", {
 	_mcl_silk_touch_drop = true,
 })
 
-minetest.register_node("mcl_crimson:crimson_checknode", {
-	description = S("Crimson Checknode - only to check!"),
-	tiles = {"mcl_nether_netherrack.png"},
-	groups = {pickaxey = 1, building_block = 1, material_stone = 1, not_in_creative_inventory = 1},
-	paramtype2 = "facedir",
-	is_ground_content = true,
-	drop = "mcl_nether:netherrack",
-	_mcl_hardness = 0.4,
-	_mcl_blast_resistance = 0.4,
-})
-
 minetest.register_craft({
 	output = "mcl_crimson:crimson_hyphae_wood 4",
 	recipe = {
@@ -479,7 +445,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_crimson:crimson_nyliumd 2",
+	output = "mcl_crimson:crimson_nylium 2",
 	recipe = {
 		{"mcl_nether:nether_wart"},
 		{"mcl_nether:netherrack"},
