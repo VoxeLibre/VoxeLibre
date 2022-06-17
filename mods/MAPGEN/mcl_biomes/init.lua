@@ -1510,8 +1510,8 @@ local function register_dimension_biomes()
 		y_min = mcl_vars.mg_nether_min,
 
 		y_max = mcl_vars.mg_nether_max + 80,
-		heat_point = 80,
-		humidity_point = 20,
+		heat_point = 77,
+		humidity_point = 33,
 		_mcl_biome_type = "hot",
 		_mcl_palette_index = 17,
 	})
@@ -1561,7 +1561,7 @@ local function register_dimension_biomes()
 
 		y_max = mcl_vars.mg_nether_max + 80,
 		heat_point = 60,
-		humidity_point = 40,
+		humidity_point = 47,
 		_mcl_biome_type = "hot",
 		_mcl_palette_index = 17,
 	})
@@ -1587,8 +1587,8 @@ local function register_dimension_biomes()
 		node_cave_liquid = "air",
 		y_min = mcl_vars.mg_nether_min,
 		y_max = mcl_vars.mg_nether_max + 80,
-		heat_point = 40,
-		humidity_point = 60,
+		heat_point = 37,
+		humidity_point = 70,
 		_mcl_biome_type = "hot",
 		_mcl_palette_index = 17,
 	})
@@ -1614,7 +1614,7 @@ local function register_dimension_biomes()
 		node_cave_liquid = "air",
 		y_min = mcl_vars.mg_nether_min,
 		y_max = mcl_vars.mg_nether_max + 80,
-		heat_point = 20,
+		heat_point = 27,
 		humidity_point = 80,
 		_mcl_biome_type = "hot",
 		_mcl_palette_index = 17,
