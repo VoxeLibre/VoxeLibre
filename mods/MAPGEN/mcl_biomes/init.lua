@@ -4109,6 +4109,7 @@ local function register_dimension_decorations()
 		fill_ratio = 0.02,
 		biomes = {"WarpedForest"},
 		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_lava_nether_max  - 10,
 		flags = "all_floors",
 		decoration = "mcl_crimson:warped_fungus",
 	})
@@ -4149,6 +4150,16 @@ local function register_dimension_decorations()
 		max_height = 5,
 		decoration = "mcl_crimson:warped_roots",
 	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_crimson:crimson_nylium"},
+		sidelen = 16,
+		fill_ratio = 0.052,
+		biomes = {"WarpedForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors",
+		decoration = "mcl_crimson:nether_sprouts",
+	})
 	-- CRIMSON FOREST
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -4157,6 +4168,7 @@ local function register_dimension_decorations()
 		fill_ratio = 0.02,
 		biomes = {"CrimsonForest"},
 		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_lava_nether_max  - 10,
 		flags = "all_floors",
 		decoration = "mcl_crimson:crimson_fungus",
 	})
@@ -4186,16 +4198,6 @@ local function register_dimension_decorations()
 		decoration = "mcl_crimson:crimson_roots",
 	})
 
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_crimson:crimson_nylium"},
-		sidelen = 16,
-		fill_ratio = 0.052,
-		biomes = {"CrimsonForest"},
-		y_min = mcl_vars.mg_lava_nether_max + 1,
-		flags = "all_floors",
-		decoration = "mcl_crimson:nether_sprouts",
-	})
 	--SOULSAND VALLEY
 	minetest.register_decoration({
 		deco_type = "simple",
