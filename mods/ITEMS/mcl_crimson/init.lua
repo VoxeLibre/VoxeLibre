@@ -212,7 +212,7 @@ minetest.register_node("mcl_crimson:stripped_warped_hyphae", {
 	description = S("Stripped warped hyphae"),
 	_doc_items_longdesc = S("The stripped hyphae of a warped fungus"),
 	_doc_items_hidden = false,
-	tiles = {"warped_stem_stripped_top.png", "crimson_stem_warped_top.png", "warped_stem_stripped_side.png"},
+	tiles = {"warped_stem_stripped_top.png", "warped_stem_stripped_top.png", "warped_stem_stripped_side.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, tree = 1, building_block = 1, material_wood = 1},
@@ -349,7 +349,7 @@ minetest.register_node("mcl_crimson:crimson_hyphae", {
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
-	_mcl_stripped_variant = stripped_variant,
+	_mcl_stripped_variant = "mcl_crimson:stripped_crimson_hyphae",
 })
 
 --Stem bark, stripped stem and bark
