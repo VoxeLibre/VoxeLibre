@@ -286,8 +286,6 @@ mcl_mobs:spawn_specific(
 "JungleM_underground",
 "ExtremeHillsM_underground",
 "JungleEdgeM_underground",
-"Nether",
-"SoulsandValley"
 },
 0,
 7,
@@ -304,10 +302,10 @@ mcl_mobs:spawn_specific(
 "nether",
 "ground",
 {
-"Nether"
+"SoulsandValley",
 },
 0,
-7,
+minetest.LIGHT_MAX+1,
 30,
 10000,
 3,
