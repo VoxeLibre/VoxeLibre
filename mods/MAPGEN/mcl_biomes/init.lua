@@ -1499,6 +1499,20 @@ local function register_dimension_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_palette_index = 17,
 	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack","mcl_nether:glowstone","mcl_blackstone:nether_gold","mcl_nether:quartz_ore","mcl_core:gravel","mcl_nether:soul_sand"},
+		sidelen = 16,
+		fill_ratio = 10,
+		biomes = { "Nether" },
+		y_min = -31000,
+		y_max = mcl_vars.mg_nether_max,
+		decoration = "mcl_nether:netherrack",
+		flags = "all_floors",
+		param2 = 0,
+	})
+
 	minetest.register_biome({
 		name = "SoulsandValley",
 		node_filler = "mcl_nether:netherrack",
@@ -4100,6 +4114,51 @@ end
 -- Decorations in non-Overworld dimensions
 local function register_dimension_decorations()
 	--[[ NETHER ]]
+	--NETHER WASTES (Nether)
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack","mcl_nether:magma"},
+		sidelen = 16,
+		fill_ratio = 0.04,
+		biomes = {"Nether"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max  - 1,
+		flags = "all_floors",
+		decoration = "mcl_fire:eternal_fire",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack"},
+		sidelen = 16,
+		fill_ratio = 0.013,
+		biomes = {"Nether"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max  - 1,
+		flags = "all_floors",
+		decoration = "mcl_mushrooms:mushroom_brown",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack"},
+		sidelen = 16,
+		fill_ratio = 0.012,
+		biomes = {"Nether"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max  - 1,
+		flags = "all_floors",
+		decoration = "mcl_mushrooms:mushroom_red",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:soul_sand"},
+		sidelen = 16,
+		fill_ratio = 0.0032,
+		biomes = {"Nether","SoulsandValley"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max  - 1,
+		flags = "all_floors",
+		decoration = "mcl_nether:nether_wart",
+	})
 
 	-- WARPED FOREST
 	minetest.register_decoration({
@@ -4109,7 +4168,7 @@ local function register_dimension_decorations()
 		fill_ratio = 0.02,
 		biomes = {"WarpedForest"},
 		y_min = mcl_vars.mg_lava_nether_max + 1,
-		y_max = mcl_vars.mg_lava_nether_max  - 10,
+		y_max = mcl_vars.mg_nether_max  - 10,
 		flags = "all_floors",
 		decoration = "mcl_crimson:warped_fungus",
 	})
