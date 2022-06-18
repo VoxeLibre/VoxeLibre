@@ -8,6 +8,10 @@ function mcl_structures.place_structure(pos, def, pr)
 	elseif def.y_offset then
 		y_offset = def.y_offset
 	end
+	if def.on_place and not def.on_place(pos,def,pr) then
+		minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pos).." not placed. Conditions not satisfied.")
+		return false
+	end
 	if def.filenames then
 		local file = def.filenames[pr:next(1,#def.filenames)]
 		local pp = vector.offset(pos,0,y_offset,0)
