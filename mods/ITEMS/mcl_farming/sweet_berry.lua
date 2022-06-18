@@ -63,3 +63,6 @@ minetest.register_decoration({
 	y_min = 2,
 	decoration = "mcl_sweet_berry:sweet_berry_bush_3"
 })
+
+-- TODO: Find proper interval and chance values for sweet berry bushes. Current interval and chance values are copied from mcl_farming:beetroot which has similar growth stages.
+mcl_farming:add_plant("plant_sweet_berry_bush", "mcl_farming:sweet_berry_bush_3", {"mcl_farming:sweet_berry_bush_0", "mcl_farming:sweet_berry_bush_1", "mcl_farming:sweet_berry_bush_2"}, 68, 3)
