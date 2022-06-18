@@ -10,6 +10,13 @@ local adjacents = {
 	vector.new(0,-1,0)
 }
 
+local plane_adjacents = {
+	vector.new(1,0,0),
+	vector.new(-1,0,0),
+	vector.new(0,0,1),
+	vector.new(0,0,-1),
+}
+
 local function set_node_no_bedrock(pos,node)
 	local n = minetest.get_node(pos)
 	if n.name == "mcl_core:bedrock" then return end
@@ -92,7 +99,7 @@ mcl_structures.register_structure("water_lake",{
 		offset = 0,
 		scale = 0.000032,
 		spread = {x = 250, y = 250, z = 250},
-		seed = 734341353,
+		seed = 756641353,
 		octaves = 3,
 		persist = 0.001,
 		flags = "absvalue",
@@ -112,9 +119,9 @@ mcl_structures.register_structure("basalt_column",{
 	num_spawn_by = 2,
 	noise_params = {
 		offset = 0,
-		scale = 0.01,
+		scale = 0.02,
 		spread = {x = 250, y = 250, z = 250},
-		seed = 78375213,
+		seed = 7225213,
 		octaves = 5,
 		persist = 0.1,
 		flags = "absvalue",
@@ -130,16 +137,50 @@ mcl_structures.register_structure("basalt_column",{
 		end)
 		if #nn < 1 then return false end
 		for i=1,pr:next(1,#nn) do
-			local dst=vector.distance(pos,nn[i])
-			for ii=0,pr:next(1,15)-dst do
-				set_node_no_bedrock(vector.new(nn[i].x,nn[i].y + ii,nn[i].z),{name="mcl_blackstone:basalt"})
+			if minetest.get_node(vector.offset(nn[i],0,-1,0)).name ~= "air" then
+				local dst=vector.distance(pos,nn[i])
+				for ii=0,pr:next(2,14)-dst do
+					set_node_no_bedrock(vector.new(nn[i].x,nn[i].y + ii,nn[i].z),{name="mcl_blackstone:basalt"})
+				end
+			end
+		end
+		return true
+	end
+})
+mcl_structures.register_structure("basalt_pillar",{
+	place_on = {"mcl_blackstone:blackstone","mcl_blackstone:basalt"},
+	noise_params = {
+		offset = 0,
+		scale = 0.001,
+		spread = {x = 250, y = 250, z = 250},
+		seed = 783213,
+		octaves = 5,
+		persist = 0.1,
+		flags = "absvalue",
+	},
+	flags = "all_floors",
+	y_max = mcl_vars.mg_nether_max,
+	y_min = mcl_vars.mg_lava_nether_max + 1,
+	biomes = { "BasaltDelta" },
+	place_func = function(pos,def,pr)
+		local nn = minetest.find_nodes_in_area(vector.offset(pos,-2,-1,-2),vector.offset(pos,2,-1,2),{"air","mcl_blackstone:basalt","mcl_blackstone:blackstone"})
+		table.sort(nn,function(a, b)
+		   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
+		end)
+		if #nn < 1 then return false end
+		for i=1,pr:next(1,#nn) do
+			if minetest.get_node(vector.offset(nn[i],0,-1,0)).name ~= "air" then
+				local dst=vector.distance(pos,nn[i])
+				for ii=0,pr:next(19,34)-dst do
+					set_node_no_bedrock(vector.new(nn[i].x,nn[i].y + ii,nn[i].z),{name="mcl_blackstone:basalt"})
+				end
 			end
 		end
 		return true
 	end
 })
 
-mcl_structures.register_structure("netherlavapool",{
+mcl_structures.register_structure("lavadelta",{
 	place_on = {"mcl_blackstone:blackstone","mcl_blackstone:basalt"},
 	spawn_by = {"mcl_blackstone:basalt","mcl_blackstone:blackstone"},
 	num_spawn_by = 2,
@@ -157,7 +198,7 @@ mcl_structures.register_structure("netherlavapool",{
 	y_min = mcl_vars.mg_lava_nether_max + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)
-		local nn = minetest.find_nodes_in_area(vector.offset(pos,-15,-1,-15),vector.offset(pos,15,-1,15),{"mcl_blackstone:basalt","mcl_blackstone:blackstone"})
+		local nn = minetest.find_nodes_in_area_under_air(vector.offset(pos,-10,-1,-10),vector.offset(pos,10,-1,10),{"mcl_blackstone:basalt","mcl_blackstone:blackstone"})
 		table.sort(nn,function(a, b)
 		   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
 		end)
