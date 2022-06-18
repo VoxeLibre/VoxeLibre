@@ -146,8 +146,25 @@ mcl_weather.skycolor = {
 				player:set_stars({visible = false})
 				mcl_weather.skycolor.override_day_night_ratio(player, 0.5)
 			elseif dim == "nether" then
-				player:set_sky({ type = "plain",
-					base_color = "#300808",
+				local nether_sky = {
+					Nether = "#300808",
+					BasaltDelta = "#685F70",
+					SoulsandValley = "#1B4745",
+					CrimsonForest = "#330303",
+					WarpedForest = "#1A051A"
+				}
+				local biometint = nether_sky[minetest.get_biome_name(minetest.get_biome_data(player:get_pos()).biome)]
+
+				player:set_sky({
+					type = "regular",
+					sky_color = {
+						day_sky = "#300808",
+						day_horizon = biometint,
+						dawn_sky = "#300808",
+						dawn_horizon = biometint,
+						night_sky = "#300808",
+						night_horizon = biometint,
+					},
 					clouds = false,
 				})
 				player:set_sun({visible = false , sunrise_visible = false})
