@@ -2,11 +2,11 @@ local get_connected_players = minetest.get_connected_players
 
 mcl_weather.snow = {}
 
-mcl_weather.snow.particles_count = 15
+local PARTICLES_COUNT_SNOW = tonumber(minetest.settings:get("mcl_weather_snow_particles")) or 99
 mcl_weather.snow.init_done = false
 
 local psdef= {
-	amount = 99,
+	amount = PARTICLES_COUNT_SNOW,
 	time = 0, --stay on til we turn it off
 	minpos = vector.new(-25,20,-25),
 	maxpos =vector.new(25,25,25),
