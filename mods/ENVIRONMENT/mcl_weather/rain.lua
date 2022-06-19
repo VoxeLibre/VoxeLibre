@@ -1,5 +1,5 @@
-local PARTICLES_COUNT_RAIN = 800
-local PARTICLES_COUNT_THUNDER = 1200
+local PARTICLES_COUNT_RAIN = 500
+local PARTICLES_COUNT_THUNDER = 900
 
 local get_connected_players = minetest.get_connected_players
 
@@ -20,22 +20,20 @@ mcl_weather.rain = {
 	init_done = false,
 }
 local update_sound={}
-local vel=math.random(0,3)
-local falling_speed=math.random(10,15)
-local size = math.random(1,3)
+
 local psdef= {
 	amount = mcl_weather.rain.particles_count,
 	time=0,
 	minpos = vector.new(-15,20,-15),
 	maxpos = vector.new(15,25,15),
-	minvel = vector.new(-2,-falling_speed-2,-2),
-	maxvel = vector.new(2,-falling_speed+2,2),
+	minvel = vector.new(-2,-17,-2),
+	maxvel = vector.new(2,-8,2),
 	minacc = vector.new(0,0,0),
 	maxacc = vector.new(0,-0.5,0),
-	minexptime = 15,
-	maxexptime = 30,
-	minsize = size,
-	maxsize= size*2,
+	minexptime = 1,
+	maxexptime = 4,
+	minsize = 4,
+	maxsize= 8,
 	collisiondetection = true,
 	collision_removal = true,
 	vertical = true,
