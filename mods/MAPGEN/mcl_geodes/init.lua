@@ -76,10 +76,8 @@ mcl_structures.register_structure("geode",{
 		flags = "absvalue",
 	},
 	flags = "place_center_x, place_center_z, force_placement",
-	biomes = ocean_biomes,
 	y_max = -24,
 	y_min = mcl_vars.mg_overworld_min,
-	filenames = schems,
 	y_offset = function(pr) return pr:next(-4,-2) end,
 	place_func = function(pos,def,pr)
 		local p = vector.new(pos.x + pr:next(-30,30),pos.y,pos.z + pr:next(-30,30))

@@ -302,10 +302,10 @@ mcl_mobs:spawn_specific(
 "nether",
 "ground",
 {
-"Nether"
+"SoulsandValley",
 },
 0,
-7,
+minetest.LIGHT_MAX+1,
 30,
 10000,
 3,

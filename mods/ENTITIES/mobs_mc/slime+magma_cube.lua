@@ -402,7 +402,8 @@ mcl_mobs:spawn_specific(
 "nether",
 "ground",
 {
-"Nether"
+"Nether",
+"BasaltDelta",
 },
 0,
 minetest.LIGHT_MAX+1,
@@ -418,7 +419,8 @@ mcl_mobs:spawn_specific(
 "nether",
 "ground",
 {
-"Nether"
+"Nether",
+"BasaltDelta",
 },
 0,
 minetest.LIGHT_MAX+1,
@@ -433,7 +435,8 @@ mcl_mobs:spawn_specific(
 "nether",
 "ground",
 {
-"Nether"
+"Nether",
+"BasaltDelta",
 },
 0,
 minetest.LIGHT_MAX+1,

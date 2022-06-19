@@ -118,7 +118,8 @@ mcl_mobs:spawn_specific(
 "nether",
 "ground",
 {
-"Nether"
+"Nether",
+"CrimsonForest",
 },
 0,
 minetest.LIGHT_MAX+1,

@@ -81,12 +81,14 @@ mcl_mobs:spawn_specific(
 "nether",
 "ground",
 {
-"Nether"
+"Nether",
+"SoulsandValley",
+"BasaltDelta",
 },
 0,
-minetest.LIGHT_MAX+1,
+7,
 30,
-18000,
+72000,
 2,
 mcl_vars.mg_nether_min,
 mcl_vars.mg_nether_max)
