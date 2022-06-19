@@ -13,6 +13,21 @@ function generate_crimson_tree(pos)
 	minetest.place_schematic(pos,modpath.."/schematics/crimson_fungus_1.mts","random",nil,false,"place_center_x,place_center_z")
 end
 
+function grow_twisting_vines(pos, moreontop)
+	local y = pos.y + 1
+		while not (moreontop == 0) do
+			if minetest.get_node({x = pos.x, y = y, z = pos.z}).name == "air" then
+				minetest.set_node({x = pos.x, y = y, z = pos.z}, {name="mcl_crimson:twisting_vines"})
+				moreontop = moreontop - 1
+				y = y + 1
+			elseif minetest.get_node({x = pos.x, y = y, z = pos.z}).name == "mcl_crimson:twisting_vines" then
+				y = y + 1
+			else
+				moreontop = 0
+			end
+	end
+end
+
 minetest.register_node("mcl_crimson:warped_fungus", {
 	description = S("Warped Fungus Mushroom"),
 	drawtype = "plantlike",
