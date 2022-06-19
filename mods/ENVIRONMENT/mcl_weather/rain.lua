@@ -68,9 +68,10 @@ end
 -- no no no NO NO f*.. no. no manual particle creatin' PLS!! this sends EVERY particle over the net.
 function mcl_weather.rain.add_rain_particles(player)
 	mcl_weather.rain.last_rp_count = mcl_weather.rain.particles_count
+	local l = false
 	for k,v in pairs(textures) do
 		psdef.texture=v
-		mcl_weather.add_spawner_player(player,"rain"..k,psdef)
+		l = l or mcl_weather.add_spawner_player(player,"rain"..k,psdef)
 	end
 	if l then
 		update_sound[player:get_player_name()]=true
