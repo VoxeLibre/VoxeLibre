@@ -107,7 +107,12 @@ mcl_mobs:register_arrow("mobs_mc:fireball", {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 6},
 		}, nil)
-		mcl_mobs:boom(self, self.object:get_pos(), 1, true)
+		local p = self.object:get_pos()
+		if p then
+			mcl_mobs:boom(self, p, 1, true)
+		else
+			mcl_mobs:boom(self, player:get_pos(), 1, true)
+		end
 	end,
 
 	hit_mob = function(self, mob)

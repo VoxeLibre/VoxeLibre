@@ -1,8 +1,10 @@
 mcl_weather.nether_dust = {}
 mcl_weather.nether_dust.particlespawners = {}
 
+local PARTICLES_COUNT_NETHER_DUST = tonumber(minetest.settings:get("mcl_weather_rain_particles")) or 150
+
 local psdef= {
-	amount = 150,
+	amount = PARTICLES_COUNT_NETHER_DUST,
 	time = 0,
 	minpos = vector.new(-15,-15,-15),
 	maxpos =vector.new(15,15,15),
