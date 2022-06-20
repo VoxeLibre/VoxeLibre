@@ -427,7 +427,7 @@ local professions = {
 				"mobs_mc_villager_weaponsmith.png",
 				"mobs_mc_villager_weaponsmith.png",
 			},
-		jobsite = "mcl_furnaces:furnace", --FIXME: grindstone
+		jobsite = "mcl_grindstone:grindstone",
 		trades = {
 			{
 			{ { "mcl_core:coal_lump", 15, 15 }, E1 },
