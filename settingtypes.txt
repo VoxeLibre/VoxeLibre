@@ -23,11 +23,14 @@ mcl_doWeatherCycle (Change weather) bool true
 # Amount of rain particles. You can reduce this to get better FPS (default: 500)
 mcl_weather_rain_particles (Rain particles) int 500 0
 
-# Amount of thunder particles. You can reduce this to get better FPS (default: 900)
-mcl_weather_thunder_particles (Thunder particles) int 900 0
+# Amount of thunderstorm rain particles. You can reduce this to get better FPS (default: 900)
+mcl_weather_thunder_particles (Thunderstorm rain particles) int 900 0
 
 # Amount of snow particles. You can reduce this to get better FPS (default: 100)
 mcl_weather_snow_particles (Snow particles) int 100 0
+
+# Amount of nether dust particles. You can reduce this to get better FPS (default: 150)
+mcl_weather_snow_particles (Nether dust particles) int 150 0
 
 # If enabled, breaking blocks will cause them to drop as item.
 # Note that blocks never have drops when in Creative Mode.
