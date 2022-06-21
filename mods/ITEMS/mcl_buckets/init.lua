@@ -282,6 +282,12 @@ local function on_place_bucket_empty(itemstack, user, pointed_thing)
 				new_bucket = ItemStack("mcl_buckets:bucket_river_water")
 			end
 			sound_take("mclx_core:river_water_source", pointed_thing.under)
+		elseif nn == "mcl_cauldrons:cauldron_3_lava" then
+			set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+			if not is_creative_enabled(user:get_player_name()) then
+				new_bucket = ItemStack("mcl_buckets:bucket_lava")
+			end
+			sound_take("mcl_core:lava_source", pointed_thing.under)
 		end
 		if new_bucket then
 			return give_bucket(new_bucket, itemstack, user)
