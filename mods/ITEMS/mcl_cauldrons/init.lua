@@ -36,8 +36,6 @@ local function create_cauldron_nodebox(water_level)
 	}
 end
 
-
-
 -- Empty cauldron
 minetest.register_node("mcl_cauldrons:cauldron", {
 	description = S("Cauldron"),
@@ -105,18 +103,12 @@ local function register_filled_cauldron(water_level, description, liquid)
 end
 
 -- Filled cauldrons (3 levels)
-register_filled_cauldron(1, S("Cauldron (1/3 Water)"))
-register_filled_cauldron(2, S("Cauldron (2/3 Water)"))
-register_filled_cauldron(3, S("Cauldron (3/3 Water)"))
-
-register_filled_cauldron(1, S("Cauldron (1/3 Lava)"),"lava")
-register_filled_cauldron(2, S("Cauldron (2/3 Lava)"),"lava")
-register_filled_cauldron(3, S("Cauldron (3/3 Lava)"),"lava")
-
-if minetest.get_modpath("mclx_core") then
-	register_filled_cauldron(1, S("Cauldron (1/3 River Water)"),"river_water")
-	register_filled_cauldron(2, S("Cauldron (2/3 River Water)"),"river_water")
-	register_filled_cauldron(3, S("Cauldron (3/3 River Water)"),"river_water")
+for i=1,3 do
+	register_filled_cauldron(i, S("Cauldron (" ..i .. "/3 Water)"))
+	register_filled_cauldron(i, S("Cauldron (" ..i .. "/3 Water)"),"lava")
+	if minetest.get_modpath("mclx_core") then
+		register_filled_cauldron(i, S("Cauldron (" ..i .. "/3 Water)"),"river_water")
+	end
 end
 
 minetest.register_craft({
