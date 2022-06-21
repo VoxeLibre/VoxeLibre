@@ -64,12 +64,15 @@ minetest.register_node("mcl_cauldrons:cauldron", {
 })
 
 -- Template function for cauldrons with water
-local function register_filled_cauldron(water_level, description, river_water)
+local function register_filled_cauldron(water_level, description, liquid)
 	local id = "mcl_cauldrons:cauldron_"..water_level
 	local water_tex
-	if river_water then
+	if liquid == "river_water" then
 		id = id .. "r"
 		water_tex = "default_river_water_source_animated.png^[verticalframe:16:0"
+	elseif liquid == "lava" then
+		id = id .. "_lava"
+		water_tex = "default_lava_source_animated.png^[verticalframe:16:0"
 	else
 		water_tex = "default_water_source_animated.png^[verticalframe:16:0"
 	end
@@ -106,10 +109,14 @@ register_filled_cauldron(1, S("Cauldron (1/3 Water)"))
 register_filled_cauldron(2, S("Cauldron (2/3 Water)"))
 register_filled_cauldron(3, S("Cauldron (3/3 Water)"))
 
+register_filled_cauldron(1, S("Cauldron (1/3 Lava)"),"lava")
+register_filled_cauldron(2, S("Cauldron (2/3 Lava)"),"lava")
+register_filled_cauldron(3, S("Cauldron (3/3 Lava)"),"lava")
+
 if minetest.get_modpath("mclx_core") then
-	register_filled_cauldron(1, S("Cauldron (1/3 River Water)"), true)
-	register_filled_cauldron(2, S("Cauldron (2/3 River Water)"), true)
-	register_filled_cauldron(3, S("Cauldron (3/3 River Water)"), true)
+	register_filled_cauldron(1, S("Cauldron (1/3 River Water)"),"river_water")
+	register_filled_cauldron(2, S("Cauldron (2/3 River Water)"),"river_water")
+	register_filled_cauldron(3, S("Cauldron (3/3 River Water)"),"river_water")
 end
 
 minetest.register_craft({
