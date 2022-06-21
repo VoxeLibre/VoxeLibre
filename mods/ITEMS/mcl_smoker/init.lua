@@ -288,7 +288,8 @@ local function smoker_node_timer(pos, elapsed)
 		-- Cooking
 		--
 
-		local el = elapsed_game_time
+		-- Run the smoker at twice the speed of a furnace.
+		local el = elapsed_game_time * 2
 
 		-- Check if we have cookable content: cookable
 		local aftercooked
@@ -329,13 +330,12 @@ local function smoker_node_timer(pos, elapsed)
 		elseif active then
 			el = math.min(el, fuel_totaltime - fuel_time)
 			-- The furnace is currently active and has enough fuel
-			fuel_time = ( fuel_time + el ) * 2
+			fuel_time = fuel_time + el
 		end
 
 		-- If there is a cookable item then check if it is ready yet
 		if cookable and active then
-		-- In the src_time variable, the *2 is the multiplication that makes the smoker work faster than a normal furnace.
-			src_time = (src_time + el)*2
+			src_time = src_time + el
 			-- Place result in dst list if done
 			if src_time >= cooked.time then
 				inv:add_item("dst", cooked.item)
