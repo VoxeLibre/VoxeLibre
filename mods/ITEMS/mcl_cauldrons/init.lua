@@ -5,7 +5,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 -- TODO: Extinguish fire of burning entities
 
 -- Convenience function because the cauldron nodeboxes are very similar
-local create_cauldron_nodebox = function(water_level)
+local function create_cauldron_nodebox(water_level)
 	local floor_y
 	if water_level == 0 then	-- empty
 		floor_y = -0.1875
@@ -36,10 +36,6 @@ local create_cauldron_nodebox = function(water_level)
 	}
 end
 
-local cauldron_nodeboxes = {}
-for w=0,3 do
-	cauldron_nodeboxes[w] = create_cauldron_nodebox(w)
-end
 
 
 -- Empty cauldron
@@ -55,7 +51,7 @@ minetest.register_node("mcl_cauldrons:cauldron", {
 	paramtype = "light",
 	is_ground_content = false,
 	groups = {pickaxey=1, deco_block=1, cauldron=1},
-	node_box = cauldron_nodeboxes[0],
+	node_box = create_cauldron_nodebox(0),
 	selection_box = { type = "regular" },
 	tiles = {
 		"mcl_cauldrons_cauldron_inner.png^mcl_cauldrons_cauldron_top.png",
@@ -68,7 +64,7 @@ minetest.register_node("mcl_cauldrons:cauldron", {
 })
 
 -- Template function for cauldrons with water
-local register_filled_cauldron = function(water_level, description, river_water)
+local function register_filled_cauldron(water_level, description, river_water)
 	local id = "mcl_cauldrons:cauldron_"..water_level
 	local water_tex
 	if river_water then
@@ -85,8 +81,8 @@ local register_filled_cauldron = function(water_level, description, river_water)
 		paramtype = "light",
 		is_ground_content = false,
 		groups = {pickaxey=1, not_in_creative_inventory=1, cauldron=(1+water_level), cauldron_filled=water_level, comparator_signal=water_level},
-		node_box = cauldron_nodeboxes[water_level],
-		collision_box = cauldron_nodeboxes[0],
+		node_box = create_cauldron_nodebox(water_level),
+		collision_box = create_cauldron_nodebox(0),
 		selection_box = { type = "regular" },
 		tiles = {
 			"("..water_tex..")^mcl_cauldrons_cauldron_top.png",
