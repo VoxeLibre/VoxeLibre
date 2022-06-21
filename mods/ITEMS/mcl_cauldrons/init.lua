@@ -120,19 +120,28 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_abm({
-	label = "cauldrons",
-	nodenames = {"group:cauldron_filled"},
-	interval = 0.5,
-	chance = 1,
-	action = function(pos, node)
-		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 0.4)) do
-			if mcl_burning.is_burning(obj) then
-				mcl_burning.extinguish(obj)
-				local new_group = minetest.get_item_group(node.name, "cauldron_filled") - 1
-				minetest.swap_node(pos, {name = "mcl_cauldrons:cauldron" .. (new_group == 0 and "" or "_" .. new_group)})
-				break
+local function cauldron_extinguish(obj,pos)
+	local node = minetest.get_node(pos)
+	if mcl_burning.is_burning(obj) then
+		mcl_burning.extinguish(obj)
+		local new_group = minetest.get_item_group(node.name, "cauldron_filled") - 1
+		minetest.swap_node(pos, {name = "mcl_cauldrons:cauldron" .. (new_group == 0 and "" or "_" .. new_group)})
+	end
+end
+
+minetest.register_globalstep(function(dtime)
+	for _,pl in pairs(minetest.get_connected_players()) do
+		local n = minetest.find_node_near(pl:get_pos(),0.4,{"group:cauldron_filled"},true)
+		if n and not minetest.get_node(n).name:find("lava") then
+			cauldron_extinguish(pl,n)
+		end
+	end
+	for _,ent in pairs(minetest.luaentities) do
+		if ent.object:get_pos() then
+			local n = minetest.find_node_near(ent.object:get_pos(),0.4,{"group:cauldron_filled"},true)
+			if n and not minetest.get_node(n).name:find("lava") then
+				cauldron_extinguish(ent.object,n)
 			end
 		end
 	end
-})
+end)
