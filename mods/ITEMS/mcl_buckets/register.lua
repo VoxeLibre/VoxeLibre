@@ -29,11 +29,21 @@ if mod_mcl_core then
 			end
 		end,
 		source_take = {"mcl_core:lava_source", "mcl_nether:nether_lava_source"},
-        on_take = function(user)
-            if has_awards and user and user:is_player() then
-                awards.unlock(user:get_player_name(), "mcl:hotStuff")
-            end
-        end,
+		on_take = function(user)
+			if has_awards and user and user:is_player() then
+				awards.unlock(user:get_player_name(), "mcl:hotStuff")
+			end
+		end,
+		extra_check = function(pos, placer)
+			local nn = minetest.get_node(pos).name
+			if minetest.get_item_group(nn, "cauldron") ~= 0 then
+				if nn ~= "mcl_cauldrons:cauldron_3_lava" then
+					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3_lava"})
+				end
+				sound_place("mcl_core:lava_source", pos)
+				return false, true
+			end
+		end,
 		bucketname = "mcl_buckets:bucket_lava",
 		inventory_image = "bucket_lava.png",
 		name = S("Lava Bucket"),
