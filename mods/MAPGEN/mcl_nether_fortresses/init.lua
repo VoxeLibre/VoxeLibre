@@ -16,7 +16,7 @@ mcl_structures.register_structure("nether_outpost",{
 	biomes = {"Nether","SoulsandValley","WarpedForest","CrimsonForest","BasaltDelta"},
 	sidelen = 15,
 	solid_ground = true,
-	y_min = mcl_vars.mg_lava_nether_max,
+	y_min = mcl_vars.mg_lava_nether_max - 1,
 	y_max = mcl_vars.mg_nether_max - 30,
 	filenames = { modpath.."/schematics/nether_outpost.mts" },
 	y_offset = 0,

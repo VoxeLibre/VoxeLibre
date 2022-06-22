@@ -118,6 +118,13 @@ mcl_structures.register_structure("water_lake",{
 	end
 })
 
+local pool_adjacents = {
+	vector.new(1,0,0),
+	vector.new(-1,0,0),
+	vector.new(0,-1,0),
+	vector.new(0,0,1),
+	vector.new(0,0,-1),
+}
 
 mcl_structures.register_structure("basalt_column",{
 	place_on = {"mcl_blackstone:blackstone","mcl_blackstone:basalt"},
@@ -126,15 +133,15 @@ mcl_structures.register_structure("basalt_column",{
 	num_spawn_by = 2,
 	noise_params = {
 		offset = 0,
-		scale = 0.02,
+		scale = 0.003,
 		spread = {x = 250, y = 250, z = 250},
-		seed = 7225213,
+		seed = 72235213,
 		octaves = 5,
-		persist = 0.1,
+		persist = 0.3,
 		flags = "absvalue",
 	},
 	flags = "all_floors",
-	y_max = mcl_vars.mg_nether_max,
+	y_max = mcl_vars.mg_nether_max - 20,
 	y_min = mcl_vars.mg_lava_nether_max + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)
@@ -144,14 +151,21 @@ mcl_structures.register_structure("basalt_column",{
 		end)
 		if #nn < 1 then return false end
 		local basalt = {}
+		local magma = {}
 		for i=1,pr:next(1,#nn) do
 			if minetest.get_node(vector.offset(nn[i],0,-1,0)).name ~= "air" then
 				local dst=vector.distance(pos,nn[i])
-				for ii=0,pr:next(2,14)-dst do
-					table.insert(basalt,vector.new(nn[i].x,nn[i].y + ii,nn[i].z))
+				local r = pr:next(1,14)-dst
+				for ii=0,r do
+					if pr:next(1,25) == 1 then
+						table.insert(magma,vector.new(nn[i].x,nn[i].y + ii,nn[i].z))
+					else
+						table.insert(basalt,vector.new(nn[i].x,nn[i].y + ii,nn[i].z))
+					end
 				end
 			end
 		end
+		minetest.bulk_set_node(magma,{name="mcl_nether:magma"})
 		minetest.bulk_set_node(basalt,{name="mcl_blackstone:basalt"})
 		return true
 	end
@@ -163,13 +177,13 @@ mcl_structures.register_structure("basalt_pillar",{
 		offset = 0,
 		scale = 0.001,
 		spread = {x = 250, y = 250, z = 250},
-		seed = 783213,
+		seed = 7113,
 		octaves = 5,
 		persist = 0.1,
 		flags = "absvalue",
 	},
 	flags = "all_floors",
-	y_max = mcl_vars.mg_nether_max,
+	y_max = mcl_vars.mg_nether_max-40,
 	y_min = mcl_vars.mg_lava_nether_max + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)
@@ -179,15 +193,21 @@ mcl_structures.register_structure("basalt_pillar",{
 		end)
 		if #nn < 1 then return false end
 		local basalt = {}
+		local magma = {}
 		for i=1,pr:next(1,#nn) do
 			if minetest.get_node(vector.offset(nn[i],0,-1,0)).name ~= "air" then
 				local dst=vector.distance(pos,nn[i])
-				for ii=0,pr:next(19,34)-dst do
-					table.insert(basalt,vector.new(nn[i].x,nn[i].y + ii,nn[i].z))
+				for ii=0,pr:next(19,35)-dst do
+					if pr:next(1,20) == 1 then
+						table.insert(magma,vector.new(nn[i].x,nn[i].y + ii,nn[i].z))
+					else
+						table.insert(basalt,vector.new(nn[i].x,nn[i].y + ii,nn[i].z))
+					end
 				end
 			end
 		end
 		minetest.bulk_set_node(basalt,{name="mcl_blackstone:basalt"})
+		minetest.bulk_set_node(magma,{name="mcl_nether:magma"})
 		return true
 	end
 })
