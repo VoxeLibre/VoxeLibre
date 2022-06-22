@@ -38,7 +38,7 @@ local function makelake(pos,size,liquid,placein,border,pr)
 	   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
 	end)
 	if not nn[1] then return end
-	local y = pos.y + 1
+	local y = pos.y - 1
 	local lq = {}
 	for i=1,pr:next(1,#nn) do
 		if nn[i].y == y then
