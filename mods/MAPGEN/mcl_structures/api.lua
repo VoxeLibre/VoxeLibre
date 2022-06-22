@@ -2,6 +2,7 @@ mcl_structures.registered_structures = {}
 
 function mcl_structures.place_structure(pos, def, pr)
 	if not def then	return end
+	local logging = not def.terrain_feature
 	local y_offset = 0
 	if type(def.y_offset) == "function" then
 		y_offset = def.y_offset(pr)
@@ -9,22 +10,30 @@ function mcl_structures.place_structure(pos, def, pr)
 		y_offset = def.y_offset
 	end
 	if def.on_place and not def.on_place(pos,def,pr) then
-		minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pos).." not placed. Conditions not satisfied.")
+		if logging then
+			minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pos).." not placed. Conditions not satisfied.")
+		end
 		return false
 	end
 	if def.filenames then
 		local file = def.filenames[pr:next(1,#def.filenames)]
 		local pp = vector.offset(pos,0,y_offset,0)
 		mcl_structures.place_schematic(pp, file, "random", nil, true, "place_center_x,place_center_z",def.after_place,pr,{pos,def})
-		minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pos))
+		if logging then
+			minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pos))
+		end
 		return true
 	elseif def.place_func and def.place_func(pos,def,pr) then
 		if not def.after_place or ( def.after_place  and def.after_place(pos,def,pr) ) then
-			minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pos))
+			if logging then
+				minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pos))
+			end
 			return true
 		end
 	end
-	minetest.log("warning","[mcl_structures] placing "..def.name.." failed at "..minetest.pos_to_string(pos))
+	if logging then
+		minetest.log("warning","[mcl_structures] placing "..def.name.." failed at "..minetest.pos_to_string(pos))
+	end
 end
 
 function mcl_structures.register_structure(name,def,nospawn) --nospawn means it will be placed by another (non-nospawn) structure that contains it's structblock i.e. it will not be placed by mapgen directly

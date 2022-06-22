@@ -80,6 +80,7 @@ end
 
 mcl_structures.register_structure("lavapool",{
 	place_on = {"group:sand", "group:dirt", "group:stone"},
+	terrain_feature = true,
 	noise_params = {
 		offset = 0,
 		scale = 0.0000022,
@@ -99,6 +100,7 @@ mcl_structures.register_structure("lavapool",{
 
 mcl_structures.register_structure("water_lake",{
 	place_on = {"group:dirt","group:stone"},
+	terrain_feature = true,
 	noise_params = {
 		offset = 0,
 		scale = 0.000032,
@@ -119,6 +121,7 @@ mcl_structures.register_structure("water_lake",{
 
 mcl_structures.register_structure("basalt_column",{
 	place_on = {"mcl_blackstone:blackstone","mcl_blackstone:basalt"},
+	terrain_feature = true,
 	spawn_by = {"air"},
 	num_spawn_by = 2,
 	noise_params = {
@@ -155,6 +158,7 @@ mcl_structures.register_structure("basalt_column",{
 })
 mcl_structures.register_structure("basalt_pillar",{
 	place_on = {"mcl_blackstone:blackstone","mcl_blackstone:basalt"},
+	terrain_feature = true,
 	noise_params = {
 		offset = 0,
 		scale = 0.001,
@@ -192,6 +196,7 @@ mcl_structures.register_structure("lavadelta",{
 	place_on = {"mcl_blackstone:blackstone","mcl_blackstone:basalt"},
 	spawn_by = {"mcl_blackstone:basalt","mcl_blackstone:blackstone"},
 	num_spawn_by = 2,
+	terrain_feature = true,
 	noise_params = {
 		offset = 0,
 		scale = 0.01,
