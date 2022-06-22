@@ -14,16 +14,8 @@ mcl_structures.register_structure("nether_outpost",{
 	},
 	flags = "all_floors",
 	biomes = {"Nether","SoulsandValley","WarpedForest","CrimsonForest","BasaltDelta"},
-	on_place = function(pos,def,pr)
-		local sidelen = 15
-		local node = minetest.get_node(vector.offset(pos,1,1,0))
-		local solid = minetest.find_nodes_in_area(vector.offset(pos,-sidelen/2,-1,-sidelen/2),vector.offset(pos,sidelen/2,-1,sidelen/2),{"group:solid"})
-		local air = minetest.find_nodes_in_area(vector.offset(pos,-sidelen/2,1,-sidelen/2),vector.offset(pos,sidelen/2,4,sidelen/2),{"air"})
-		if #solid < ( sidelen * sidelen ) or
-		#air < (sidelen * sidelen ) then return false end
-		minetest.bulk_set_node(solid,node)
-		return true
-	end,
+	sidelen = 15,
+	solid_ground = true,
 	y_min = mcl_vars.mg_lava_nether_max,
 	y_max = mcl_vars.mg_nether_max - 30,
 	filenames = { modpath.."/schematics/nether_outpost.mts" },

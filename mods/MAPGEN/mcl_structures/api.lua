@@ -9,6 +9,19 @@ function mcl_structures.place_structure(pos, def, pr)
 	elseif def.y_offset then
 		y_offset = def.y_offset
 	end
+	if def.solid_ground and def.sidelen then
+		local node = minetest.get_node(vector.offset(pos,1,1,0))
+		local solid = minetest.find_nodes_in_area(vector.offset(pos,-def.sidelen/2,-1,-def.sidelen/2),vector.offset(pos,def.sidelen/2,-1,def.sidelen/2),{"group:solid"})
+		local air = minetest.find_nodes_in_area(vector.offset(pos,-def.sidelen/2,1,-def.sidelen/2),vector.offset(pos,def.sidelen/2,4,def.sidelen/2),{"air"})
+		if #solid < ( def.sidelen * def.sidelen ) or
+		#air < (def.sidelen * def.sidelen ) then
+			if logging then
+				minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pos).." not placed. No solid ground.")
+			end
+			return false
+		end
+		--minetest.bulk_set_node(solid,node)
+	end
 	if def.on_place and not def.on_place(pos,def,pr) then
 		if logging then
 			minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pos).." not placed. Conditions not satisfied.")
