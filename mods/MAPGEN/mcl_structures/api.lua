@@ -53,17 +53,8 @@ function mcl_structures.register_structure(name,def,nospawn) --nospawn means it 
 			y_max = def.y_max,
 			y_min = def.y_min
 		})
-		local deco_id = minetest.get_decoration_id("mcl_structures:deco_"..name)
-		minetest.set_gen_notify({decoration=true}, { deco_id })
-		minetest.register_on_generated(function(minp, maxp, blockseed)
-			local gennotify = minetest.get_mapgen_object("gennotify")
-			local pr = PseudoRandom(blockseed + 42)
-			for _, pos in pairs(gennotify["decoration#"..deco_id] or {}) do
-				local realpos = vector.offset(pos,0,-1,0)
-				minetest.remove_node(realpos)
-				mcl_structures.place_structure(realpos,def,pr)
-			end
-		end)
+		def.deco_id = minetest.get_decoration_id("mcl_structures:deco_"..name)
+		minetest.set_gen_notify({decoration=true}, { def.deco_id })
 	end
 	minetest.register_node(":"..structblock, {drawtype="airlike", walkable = false, pointable = false,groups = sbgroups})
 	def.structblock = structblock

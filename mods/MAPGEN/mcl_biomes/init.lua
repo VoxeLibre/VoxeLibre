@@ -3356,6 +3356,29 @@ local function register_decorations()
 		rotation = "0",
 	})
 
+	--Mushrooms in caves
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:material_stone"},
+		sidelen = 80,
+		fill_ratio = 0.009,
+		noise_threshold = 2.0,
+		flags = "all_floors",
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_mushrooms:mushroom_red",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:material_stone"},
+		sidelen = 80,
+		fill_ratio = 0.009,
+		noise_threshold = 2.0,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_mushrooms:mushroom_brown",
+	})
+
 	-- Mossy cobblestone boulder (3×3)
 	minetest.register_decoration({
 		deco_type = "schematic",
