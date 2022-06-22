@@ -129,18 +129,26 @@ local function cauldron_extinguish(obj,pos)
 	end
 end
 
+local etime = 0
 minetest.register_globalstep(function(dtime)
+	etime = dtime + etime
+	if etime < 0.5 then return end
+	etime = 0
 	for _,pl in pairs(minetest.get_connected_players()) do
 		local n = minetest.find_node_near(pl:get_pos(),0.4,{"group:cauldron_filled"},true)
 		if n and not minetest.get_node(n).name:find("lava") then
 			cauldron_extinguish(pl,n)
+		elseif n and minetest.get_node(n).name:find("lava") then
+				mcl_burning.set_on_fire(pl, 5)
 		end
 	end
 	for _,ent in pairs(minetest.luaentities) do
-		if ent.object:get_pos() then
+		if ent.object:get_pos() and ent.is_mob then
 			local n = minetest.find_node_near(ent.object:get_pos(),0.4,{"group:cauldron_filled"},true)
 			if n and not minetest.get_node(n).name:find("lava") then
 				cauldron_extinguish(ent.object,n)
+			elseif n and minetest.get_node(n).name:find("lava") then
+				mcl_burning.set_on_fire(ent.object, 5)
 			end
 		end
 	end
