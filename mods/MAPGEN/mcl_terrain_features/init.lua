@@ -23,9 +23,9 @@ local function set_node_no_bedrock(pos,node)
 	return minetest.set_node(pos,node)
 end
 
-local function airtower(pos)
-	for i=0,55 do
-		set_node_no_bedrock(vector.offset(pos,0,i,0),{name="air"})
+local function airtower(pos,tbl,h)
+	for i=0,h do
+		table.insert(tbl,vector.offset(pos,0,i,0))
 	end
 end
 
@@ -40,14 +40,16 @@ local function makelake(pos,size,liquid,placein,border,pr)
 	if not nn[1] then return end
 	local y = pos.y - 1
 	local lq = {}
+	local air = {}
 	for i=1,pr:next(1,#nn) do
 		if nn[i].y == y then
-			set_node_no_bedrock(nn[i],{name=liquid})
-			airtower(vector.offset(nn[i],0,1,0))
+			airtower(vector.offset(nn[i],0,1,0),air,55)
 			table.insert(lq,nn[i])
 		end
 	end
-
+	minetest.bulk_set_node(lq,{name=liquid})
+	local air = {}
+	local br = {}
 	for k,v in pairs(lq) do
 		for kk,vv in pairs(adjacents) do
 			local pp = vector.add(v,vv)
@@ -64,13 +66,15 @@ local function makelake(pos,size,liquid,placein,border,pr)
 				if border == "mcl_core:dirt" then border = "mcl_core:dirt_with_grass" end
 			end
 			if an.name ~= liquid then
-				set_node_no_bedrock(pp,{name=border})
+				table.insert(br,pp)
 				if un.name ~= liquid then
-					airtower(vector.offset(pp,0,1,0))
+					airtower(vector.offset(pp,0,1,0),air,55)
 				end
 			end
 		end
 	end
+	minetest.bulk_set_node(air,{name="air"})
+	minetest.bulk_set_node(br,{name=border})
 	return true
 end
 
@@ -136,14 +140,16 @@ mcl_structures.register_structure("basalt_column",{
 		   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
 		end)
 		if #nn < 1 then return false end
+		local basalt = {}
 		for i=1,pr:next(1,#nn) do
 			if minetest.get_node(vector.offset(nn[i],0,-1,0)).name ~= "air" then
 				local dst=vector.distance(pos,nn[i])
 				for ii=0,pr:next(2,14)-dst do
-					set_node_no_bedrock(vector.new(nn[i].x,nn[i].y + ii,nn[i].z),{name="mcl_blackstone:basalt"})
+					table.insert(basalt,vector.new(nn[i].x,nn[i].y + ii,nn[i].z))
 				end
 			end
 		end
+		minetest.bulk_set_node(basalt,{name="mcl_blackstone:basalt"})
 		return true
 	end
 })
@@ -168,14 +174,16 @@ mcl_structures.register_structure("basalt_pillar",{
 		   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
 		end)
 		if #nn < 1 then return false end
+		local basalt = {}
 		for i=1,pr:next(1,#nn) do
 			if minetest.get_node(vector.offset(nn[i],0,-1,0)).name ~= "air" then
 				local dst=vector.distance(pos,nn[i])
 				for ii=0,pr:next(19,34)-dst do
-					set_node_no_bedrock(vector.new(nn[i].x,nn[i].y + ii,nn[i].z),{name="mcl_blackstone:basalt"})
+					table.insert(basalt,vector.new(nn[i].x,nn[i].y + ii,nn[i].z))
 				end
 			end
 		end
+		minetest.bulk_set_node(basalt,{name="mcl_blackstone:basalt"})
 		return true
 	end
 })
@@ -205,20 +213,25 @@ mcl_structures.register_structure("lavadelta",{
 		if #nn < 1 then return false end
 		local lava = {}
 		for i=1,pr:next(1,#nn) do
-			set_node_no_bedrock(nn[i],{name="mcl_nether:nether_lava_source"})
 			table.insert(lava,nn[i])
 		end
+		minetest.bulk_set_node(lava,{name="mcl_nether:nether_lava_source"})
+		local basalt = {}
+		local magma = {}
 		for _,v in pairs(lava) do
 			for _,vv in pairs(adjacents) do
 				local p = vector.add(v,vv)
 				if minetest.get_node(p).name ~= "mcl_nether:nether_lava_source" then
-					set_node_no_bedrock(p,{name="mcl_blackstone:basalt"})
+					table.insert(basalt,p)
+
 				end
 			end
 			if math.random(3) == 1 then
-				set_node_no_bedrock(v,{name="mcl_nether:magma"})
+				table.insert(magma,v)
 			end
 		end
+		minetest.bulk_set_node(basalt,{name="mcl_blackstone:basalt"})
+		minetest.bulk_set_node(magma,{name="mcl_nether:magma"})
 		return true
 	end
 })
