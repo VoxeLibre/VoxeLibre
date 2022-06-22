@@ -5,7 +5,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 -- TODO: Extinguish fire of burning entities
 
 -- Convenience function because the cauldron nodeboxes are very similar
-local create_cauldron_nodebox = function(water_level)
+local function create_cauldron_nodebox(water_level)
 	local floor_y
 	if water_level == 0 then	-- empty
 		floor_y = -0.1875
@@ -36,12 +36,6 @@ local create_cauldron_nodebox = function(water_level)
 	}
 end
 
-local cauldron_nodeboxes = {}
-for w=0,3 do
-	cauldron_nodeboxes[w] = create_cauldron_nodebox(w)
-end
-
-
 -- Empty cauldron
 minetest.register_node("mcl_cauldrons:cauldron", {
 	description = S("Cauldron"),
@@ -55,7 +49,7 @@ minetest.register_node("mcl_cauldrons:cauldron", {
 	paramtype = "light",
 	is_ground_content = false,
 	groups = {pickaxey=1, deco_block=1, cauldron=1},
-	node_box = cauldron_nodeboxes[0],
+	node_box = create_cauldron_nodebox(0),
 	selection_box = { type = "regular" },
 	tiles = {
 		"mcl_cauldrons_cauldron_inner.png^mcl_cauldrons_cauldron_top.png",
@@ -68,12 +62,15 @@ minetest.register_node("mcl_cauldrons:cauldron", {
 })
 
 -- Template function for cauldrons with water
-local register_filled_cauldron = function(water_level, description, river_water)
+local function register_filled_cauldron(water_level, description, liquid)
 	local id = "mcl_cauldrons:cauldron_"..water_level
 	local water_tex
-	if river_water then
+	if liquid == "river_water" then
 		id = id .. "r"
 		water_tex = "default_river_water_source_animated.png^[verticalframe:16:0"
+	elseif liquid == "lava" then
+		id = id .. "_lava"
+		water_tex = "default_lava_source_animated.png^[verticalframe:16:0"
 	else
 		water_tex = "default_water_source_animated.png^[verticalframe:16:0"
 	end
@@ -85,8 +82,8 @@ local register_filled_cauldron = function(water_level, description, river_water)
 		paramtype = "light",
 		is_ground_content = false,
 		groups = {pickaxey=1, not_in_creative_inventory=1, cauldron=(1+water_level), cauldron_filled=water_level, comparator_signal=water_level},
-		node_box = cauldron_nodeboxes[water_level],
-		collision_box = cauldron_nodeboxes[0],
+		node_box = create_cauldron_nodebox(water_level),
+		collision_box = create_cauldron_nodebox(0),
 		selection_box = { type = "regular" },
 		tiles = {
 			"("..water_tex..")^mcl_cauldrons_cauldron_top.png",
@@ -106,14 +103,12 @@ local register_filled_cauldron = function(water_level, description, river_water)
 end
 
 -- Filled cauldrons (3 levels)
-register_filled_cauldron(1, S("Cauldron (1/3 Water)"))
-register_filled_cauldron(2, S("Cauldron (2/3 Water)"))
-register_filled_cauldron(3, S("Cauldron (3/3 Water)"))
-
-if minetest.get_modpath("mclx_core") then
-	register_filled_cauldron(1, S("Cauldron (1/3 River Water)"), true)
-	register_filled_cauldron(2, S("Cauldron (2/3 River Water)"), true)
-	register_filled_cauldron(3, S("Cauldron (3/3 River Water)"), true)
+for i=1,3 do
+	register_filled_cauldron(i, S("Cauldron (" ..i .. "/3 Water)"))
+	register_filled_cauldron(i, S("Cauldron (" ..i .. "/3 Water)"),"lava")
+	if minetest.get_modpath("mclx_core") then
+		register_filled_cauldron(i, S("Cauldron (" ..i .. "/3 Water)"),"river_water")
+	end
 end
 
 minetest.register_craft({
@@ -125,19 +120,36 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_abm({
-	label = "cauldrons",
-	nodenames = {"group:cauldron_filled"},
-	interval = 0.5,
-	chance = 1,
-	action = function(pos, node)
-		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 0.4)) do
-			if mcl_burning.is_burning(obj) then
-				mcl_burning.extinguish(obj)
-				local new_group = minetest.get_item_group(node.name, "cauldron_filled") - 1
-				minetest.swap_node(pos, {name = "mcl_cauldrons:cauldron" .. (new_group == 0 and "" or "_" .. new_group)})
-				break
+local function cauldron_extinguish(obj,pos)
+	local node = minetest.get_node(pos)
+	if mcl_burning.is_burning(obj) then
+		mcl_burning.extinguish(obj)
+		local new_group = minetest.get_item_group(node.name, "cauldron_filled") - 1
+		minetest.swap_node(pos, {name = "mcl_cauldrons:cauldron" .. (new_group == 0 and "" or "_" .. new_group)})
+	end
+end
+
+local etime = 0
+minetest.register_globalstep(function(dtime)
+	etime = dtime + etime
+	if etime < 0.5 then return end
+	etime = 0
+	for _,pl in pairs(minetest.get_connected_players()) do
+		local n = minetest.find_node_near(pl:get_pos(),0.4,{"group:cauldron_filled"},true)
+		if n and not minetest.get_node(n).name:find("lava") then
+			cauldron_extinguish(pl,n)
+		elseif n and minetest.get_node(n).name:find("lava") then
+				mcl_burning.set_on_fire(pl, 5)
+		end
+	end
+	for _,ent in pairs(minetest.luaentities) do
+		if ent.object:get_pos() and ent.is_mob then
+			local n = minetest.find_node_near(ent.object:get_pos(),0.4,{"group:cauldron_filled"},true)
+			if n and not minetest.get_node(n).name:find("lava") then
+				cauldron_extinguish(ent.object,n)
+			elseif n and minetest.get_node(n).name:find("lava") then
+				mcl_burning.set_on_fire(ent.object, 5)
 			end
 		end
 	end
-})
+end)

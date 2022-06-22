@@ -29,15 +29,15 @@ local is_creative_enabled = minetest.is_creative_enabled
 local is_protected = minetest.is_protected
 local record_protection_violation = minetest.record_protection_violation
 
-if mod_mcl_core then
-	minetest.register_craft({
-		output = "mcl_buckets:bucket_empty 1",
-		recipe = {
-			{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
-			{"", "mcl_core:iron_ingot", ""},
-		},
-	})
-end
+
+minetest.register_craft({
+	output = "mcl_buckets:bucket_empty 1",
+	recipe = {
+		{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
+		{"", "mcl_core:iron_ingot", ""},
+	},
+})
+
 
 mcl_buckets = {
 	liquids = {},
@@ -88,9 +88,7 @@ end
 local pointable_sources = {}
 
 local function bucket_raycast(user)
-	--local pos = user:get_pos()
 	local pos = user:get_pos()
-	--local pos = vector.add(user:get_pos(), user:get_bone_position("Head_Control"))
 	pos.y = pos.y + user:get_properties().eye_height
 	local look_dir = user:get_look_dir()
 	look_dir = vector.multiply(look_dir, 5)
@@ -100,7 +98,6 @@ local function bucket_raycast(user)
 	if ray then
 		for pointed_thing in ray do
 			if pointed_thing and pointable_sources[get_node(pointed_thing.above).name] then
-				--minetest.chat_send_all("found!")
 				return {under=pointed_thing.under,above=pointed_thing.above}
 			end
 		end
@@ -242,7 +239,6 @@ local function on_place_bucket_empty(itemstack, user, pointed_thing)
 		if liquid_name then
 			local liquid_def = mcl_buckets.liquids[liquid_name]
 			if liquid_def then
-				--minetest.chat_send_all("test")
 				-- Fill bucket, but not in Creative Mode
 				-- FIXME: remove this line
 				--if not is_creative_enabled(user:get_player_name()) then
@@ -282,6 +278,12 @@ local function on_place_bucket_empty(itemstack, user, pointed_thing)
 				new_bucket = ItemStack("mcl_buckets:bucket_river_water")
 			end
 			sound_take("mclx_core:river_water_source", pointed_thing.under)
+		elseif nn == "mcl_cauldrons:cauldron_3_lava" then
+			set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+			if not is_creative_enabled(user:get_player_name()) then
+				new_bucket = ItemStack("mcl_buckets:bucket_lava")
+			end
+			sound_take("mcl_core:lava_source", pointed_thing.under)
 		end
 		if new_bucket then
 			return give_bucket(new_bucket, itemstack, user)
@@ -366,7 +368,6 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 	_doc_items_longdesc = S("A bucket can be used to collect and release liquids."),
 	_doc_items_usagehelp = S("Punch a liquid source to collect it. You can then use the filled bucket to place the liquid somewhere else."),
 	_tt_help = S("Collects liquids"),
-	--liquids_pointable = true,
 	inventory_image = "bucket.png",
 	stack_max = 16,
 	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)

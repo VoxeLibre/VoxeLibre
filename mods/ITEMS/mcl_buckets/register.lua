@@ -10,13 +10,6 @@ local function sound_place(itemname, pos)
 	end
 end
 
---[[local sound_take = function(itemname, pos)
-	local def = minetest.registered_nodes[itemname]
-	if def and def.sounds and def.sounds.dug then
-		minetest.sound_play(def.sounds.dug, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005}, true)
-	end
-end]]
-
 if mod_mcl_core then
 	-- Lava bucket
 	mcl_buckets.register_liquid({
@@ -29,11 +22,21 @@ if mod_mcl_core then
 			end
 		end,
 		source_take = {"mcl_core:lava_source", "mcl_nether:nether_lava_source"},
-        on_take = function(user)
-            if has_awards and user and user:is_player() then
-                awards.unlock(user:get_player_name(), "mcl:hotStuff")
-            end
-        end,
+		on_take = function(user)
+			if has_awards and user and user:is_player() then
+				awards.unlock(user:get_player_name(), "mcl:hotStuff")
+			end
+		end,
+		extra_check = function(pos, placer)
+			local nn = minetest.get_node(pos).name
+			if minetest.get_item_group(nn, "cauldron") ~= 0 then
+				if nn ~= "mcl_cauldrons:cauldron_3_lava" then
+					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3_lava"})
+				end
+				sound_place("mcl_core:lava_source", pos)
+				return false, true
+			end
+		end,
 		bucketname = "mcl_buckets:bucket_lava",
 		inventory_image = "bucket_lava.png",
 		name = S("Lava Bucket"),
