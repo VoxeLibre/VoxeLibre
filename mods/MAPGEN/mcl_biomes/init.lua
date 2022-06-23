@@ -2495,9 +2495,145 @@ local function register_seagrass_decoration(grasstype, offset, scale, biomes)
 	end
 end
 
+local warm_oceans = {
+	"JungleEdgeM_ocean",
+	"Jungle_deep_ocean",
+	"Savanna_ocean",
+	"MesaPlateauF_ocean",
+	"Swampland_ocean",
+	"Mesa_ocean",
+	"Plains_ocean",
+	"MesaPlateauFM_ocean",
+	"MushroomIsland_ocean",
+	"SavannaM_ocean",
+	"JungleEdge_ocean",
+	"MesaBryce_ocean",
+	"Jungle_ocean",
+	"Desert_ocean",
+	"JungleM_ocean",
+}
+local corals = {
+	"brain",
+	"horn",
+	"bubble",
+	"tube",
+	"fire"
+}
 
+local function register_coral_decos(ck)
+	local c = corals[ck]
+	local noise = {
+			offset = -0.0085,
+			scale = 0.002,
+			spread = {x = 25, y = 120, z = 25},
+			seed = 235,
+			octaves = 5,
+			persist = 1.8,
+			lacunarity = 3.5,
+			flags = "absvalue"
+		}
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:sand","mcl_core:gravel"},
+		sidelen = 80,
+		noise_params = noise,
+		biomes = warm_oceans,
+		y_min = OCEAN_MIN,
+		y_max = -8,
+		schematic = mod_mcl_structures.."/schematics/mcl_structures_coral_"..c.."_1.mts",
+		rotation = "random",
+		flags = "all_floors,force_placement",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:sand","mcl_core:gravel"},
+		noise_params = noise,
+		sidelen = 80,
+		biomes = warm_oceans,
+		y_min = OCEAN_MIN,
+		y_max = -8,
+		schematic = mod_mcl_structures.."/schematics/mcl_structures_coral_"..c.."_2.mts",
+		rotation = "random",
+		flags = "all_floors,force_placement",
+	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_ocean:"..c.."_coral_block"},
+		sidelen = 16,
+		fill_ratio = 3,
+		y_min = OCEAN_MIN,
+		y_max = 1,
+		decoration = "mcl_ocean:"..c.."_coral",
+		biomes = warm_oceans,
+		flags = "force_placement, all_floors",
+		height = 1,
+		height_max = 1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_ocean:horn_coral_block"},
+		sidelen = 16,
+		fill_ratio = 7,
+		y_min = OCEAN_MIN,
+		y_max = 1,
+		decoration = "mcl_ocean:"..c.."_coral_fan",
+		biomes = warm_oceans,
+		flags = "force_placement, all_floors",
+		height = 1,
+		height_max = 1,
+	})
+end
 
 local function register_decorations()
+	-- Coral Reefs
+	for k,_ in pairs(corals) do
+		register_coral_decos(k)
+	end
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:sand","mcl_core:gravel"},
+		sidelen = 16,
+		noise_params = noise,
+		y_min = OCEAN_MIN,
+		y_max = -5,
+		decoration = "mcl_ocean:dead_brain_coral_block",
+		biomes = warm_oceans,
+		flags = "force_placement",
+		height = 1,
+		height_max = 1,
+		place_offset_y = -1,
+	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_ocean:dead_brain_coral_block"},
+		sidelen = 16,
+		fill_ratio = 10,
+		y_min = OCEAN_MIN,
+		y_max = 1,
+		decoration = "mcl_ocean:sea_pickle_1_dead_brain_coral_block",
+		biomes = warm_oceans,
+		flags = "force_placement, all_floors",
+		height = 1,
+		height_max = 1,
+		place_offset_y = -1,
+	})
+	--rare CORAl
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:sand","mcl_core:gravel"},
+		fill_ratio = 0.0001,
+		sidelen = 80,
+		biomes = warm_oceans,
+		y_min = OCEAN_MIN,
+		y_max = -8,
+		schematic = mod_mcl_structures.."/schematics/coral_cora.mts",
+		rotation = "random",
+		flags = "place_center_x,place_center_z, force_placement",
+	})
+
+
 	-- Large ice spike
 	minetest.register_decoration({
 		deco_type = "schematic",
