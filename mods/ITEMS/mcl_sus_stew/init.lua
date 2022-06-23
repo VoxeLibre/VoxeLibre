@@ -5,6 +5,7 @@
 local eat = minetest.item_eat(6, "mcl_core:bowl") --6 hunger points, player receives mcl_core:bowl after eating
 
 local flower_effect = {
+	[ "mcl_flowers:allium" ] = "fire_resistance",
 	[ "mcl_flowers:tulip_white" ] = "poison",
 	[ "mcl_flowers:blue_orchid" ] = "hunger",
 	[ "mcl_flowers:dandelion" ] = "hunger",
@@ -14,6 +15,10 @@ local flower_effect = {
 }
 
 local effects = {
+	[ "fire_resistance" ] = function(itemstack, placer, pointed_thing)
+		mcl_potions.fire_resistance_func(placer, 1, 4)
+		return eat(itemstack, placer, pointed_thing)
+	end,
 	[ "poison" ] = function(itemstack, placer, pointed_thing)
 		mcl_potions.poison_func(placer, 1, 12)
 		return eat(itemstack, placer, pointed_thing)
@@ -77,6 +82,7 @@ minetest.register_craftitem("mcl_sus_stew:stew",{
 	inventory_image = "sus_stew.png",
 	stack_max = 1,
 	on_place = eat_stew,
+	on_secondary_use = eat_stew,
 	groups = { food = 2, eatable = 4, can_eat_when_full = 1, not_in_creative_inventory=1,},
 	_mcl_saturation = 7.2,
 })
@@ -92,6 +98,12 @@ minetest.register_alias("mcl_sus_stew:night_vision_stew", "mcl_sus_stew:stew")
 
 --										 ______________
 --_________________________________________/	Crafts	\________________________________
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_sus_stew:stew",
+	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:allium"},
+})
 
 minetest.register_craft({
 	type = "shapeless",
