@@ -449,21 +449,12 @@ end
 
 mcl_structures.register_structure("witch_hut",{
 	place_on = {"group:sand","group:grass_block","mcl_core:water_source","group:dirt"},
-	noise_params = {
-		offset = 0,
-		scale = 0.0012,
-		spread = {x = 250, y = 250, z = 250},
-		seed = 233,
-		octaves = 3,
-		persist = 0.001,
-		flags = "absvalue",
-	},
+	fill_ratio = 0.01,
 	flags = "place_center_x, place_center_z, liquid_surface, force_placement",
 	sidelen = 5,
-	chunk_probability = 64,
+	chunk_probability = 128,
 	y_max = mcl_vars.mg_overworld_max,
-	y_min = 1,
-	--y_offset = function(pr) return pr:next(-4,1) end,
+	y_min = -4,
 	y_offset = 0,
 	biomes = { "Swampland", "Swampland_ocean", "Swampland_shore" },
 	filenames = { modpath.."/schematics/mcl_structures_witch_hut.mts" },
@@ -471,20 +462,12 @@ mcl_structures.register_structure("witch_hut",{
 })
 mcl_structures.register_structure("desert_well",{
 	place_on = {"group:sand"},
-	noise_params = {
-		offset = 0,
-		scale = 0.00012,
-		spread = {x = 250, y = 250, z = 250},
-		seed = 233,
-		octaves = 3,
-		persist = 0.001,
-		flags = "absvalue",
-	},
+	fill_ratio = 0.01,
 	flags = "place_center_x, place_center_z",
 	not_near = { "desert_temple_new" },
 	solid_ground = true,
 	sidelen = 4,
-	chunk_probability = 64,
+	chunk_probability = 256,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	y_offset = -2,
@@ -493,17 +476,15 @@ mcl_structures.register_structure("desert_well",{
 })
 
 mcl_structures.register_structure("boulder",{
-	flags = "place_center_x, place_center_z",
-	sidelen = 4,
 	filenames = {
 		modpath.."/schematics/mcl_structures_boulder_small.mts",
 		modpath.."/schematics/mcl_structures_boulder_small.mts",
 		modpath.."/schematics/mcl_structures_boulder_small.mts",
 		modpath.."/schematics/mcl_structures_boulder.mts",
+		-- small boulder 3x as likely
 	},
 },true) --is spawned as a normal decoration. this is just for /spawnstruct
 mcl_structures.register_structure("ice_spike_small",{
-	sidelen = 3,
 	filenames = {
 		modpath.."/schematics/mcl_structures_ice_spike_small.mts"
 	},

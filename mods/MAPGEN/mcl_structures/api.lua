@@ -46,13 +46,18 @@ function mcl_structures.place_structure(pos, def, pr)
 		local bn = minetest.get_biome_name(minetest.get_biome_data(pos).biome)
 		local node_top = minetest.registered_biomes[bn].node_top
 		local node_fill = minetest.registered_biomes[bn].node_filler
+		local node_stone = minetest.registered_biomes[bn].node_stone
 		local ground_p1 = vector.offset(pos,-def.sidelen/2,-1,-def.sidelen/2)
 		local ground_p2 = vector.offset(pos,def.sidelen/2,-1,def.sidelen/2)
+		if not node_stone then node_stone = "mcl_core:stone" end
+		if not node_fill then node_fill = "mcl_core:dirt" end
+		if not node_top then node_top = "mcl_core:dirt_with_grass" end
 		local solid = minetest.find_nodes_in_area(ground_p1,ground_p2,{"group:solid"})
 		if #solid < ( def.sidelen * def.sidelen ) then
 			if def.make_foundation then
 				minetest.bulk_set_node(minetest.find_nodes_in_area(ground_p1,ground_p2,{"air","group:liquid"}),{name=node_top})
-				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-1,0),vector.offset(ground_p2,0,-30,0),{"air","group:liquid"}),{name=node_fill})
+				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-1,0),vector.offset(ground_p2,0,-4,0),{"air","group:liquid"}),{name=node_fill})
+				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-5,0),vector.offset(ground_p2,0,-30,0),{"air","group:liquid"}),{name=node_stone})
 			else
 				if logging then
 					minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pos).." not placed. No solid ground.")
@@ -124,7 +129,7 @@ function mcl_structures.register_structure(name,def,nospawn) --nospawn means it 
 				y_max = def.y_max,
 				y_min = def.y_min
 			})
-			minetest.register_node(":"..structblock, {drawtype="airlike", walkable = false, pointable = false,groups = sbgroups})
+			minetest.register_node(":"..structblock, {drawtype="normal", walkable = false, pointable = false,groups = sbgroups})
 			def.structblock = structblock
 			def.deco_id = minetest.get_decoration_id("mcl_structures:deco_"..name)
 			minetest.set_gen_notify({decoration=true}, { def.deco_id })

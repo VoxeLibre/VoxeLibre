@@ -1334,7 +1334,7 @@ local function generate_structures(minp, maxp, blockseed, biomemap)
 						-- Witch hut (v6)
 						if ground_y <= 0 and nn == "mcl_core:dirt" then
 						local prob = minecraft_chunk_probability(48, minp, maxp)
-						if pr:next(1, prob) == 1 then
+						if mg_name == "v6" and pr:next(1, prob) == 1 then
 
 							local swampland = minetest.get_biome_id("Swampland")
 							local swampland_shore = minetest.get_biome_id("Swampland_shore")
@@ -1345,7 +1345,7 @@ local function generate_structures(minp, maxp, blockseed, biomemap)
 								here_be_witches = true
 							end
 							local here_be_witches = false
-							if mg_name == "v6" and  here_be_witches then
+							if here_be_witches then
 
 								local r = tostring(pr:next(0, 3) * 90) -- "0", "90", "180" or 270"
 								local p1 = {x=p.x-1, y=WITCH_HUT_HEIGHT+2, z=p.z-1}

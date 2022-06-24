@@ -4,20 +4,12 @@ local modpath = minetest.get_modpath(modname)
 
 mcl_structures.register_structure("jungle_temple",{
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass"},
-	noise_params = {
-		offset = 0,
-		scale = 0.0000812,
-		spread = {x = 250, y = 250, z = 250},
-		seed = 31585,
-		octaves = 3,
-		persist = -0.2,
-		flags = "absvalue",
-	},
+	fill_ratio = 0.1,
 	flags = "place_center_x, place_center_z",
 	solid_ground = true,
 	make_foundation = true,
-	y_offset = -5,
-	chunk_probability = 256,
+	y_offset = function(pr) return pr:next(-3,0) -5 end,
+	chunk_probability = 1500,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "Jungle" },

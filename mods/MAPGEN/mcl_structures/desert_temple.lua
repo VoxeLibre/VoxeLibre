@@ -34,21 +34,13 @@ end
 
 mcl_structures.register_structure("desert_temple",{
 	place_on = {"group:sand"},
-	noise_params = {
-		offset = 0,
-		scale = 0.0000822,
-		spread = {x = 250, y = 250, z = 250},
-		seed = 34115,
-		octaves = 3,
-		persist = -0.4,
-		flags = "absvalue",
-	},
+	fill_ratio = 0.01,
 	flags = "place_center_x, place_center_z",
 	solid_ground = true,
 	make_foundation = true,
 	sidelen = 18,
 	y_offset = -12,
-	chunk_probability = 256,
+	chunk_probability = 500,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "Desert" },
