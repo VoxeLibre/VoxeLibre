@@ -5,18 +5,27 @@ local modpath = minetest.get_modpath(modname)
 function mcl_structures.generate_igloo_top(pos, pr)
 	-- FIXME: This spawns bookshelf instead of furnace. Fix this!
 	-- Furnace does ot work atm because apparently meta is not set. :-(
-	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
+	local newpos = {x=pos.x,y=pos.y-2,z=pos.z}
 	local path = modpath.."/schematics/mcl_structures_igloo_top.mts"
 	local rotation = tostring(pr:next(0,3)*90)
 	return mcl_structures.place_schematic(newpos, path, rotation, nil, true), rotation
 end
 
-function mcl_structures.generate_igloo_basement(pos, orientation, pr)
+function mcl_structures.generate_igloo_basement(pos, orientation, loot, pr)
 	-- TODO: Add brewing stand
 	-- TODO: Add monster eggs
-	-- TODO: Spawn villager and zombie villager
 	local path = modpath.."/schematics/mcl_structures_igloo_basement.mts"
-	mcl_structures.place_schematic(pos, path, orientation, nil, true, nil, igloo_placement_callback, pr)
+	mcl_structures.place_schematic(pos, path, orientation, nil, true, nil, function()
+		local p1 = vector.offset(pos,-5,-5,-5)
+		local p2 = vector.offset(pos,5,5,5)
+		mcl_structures.fill_chests(p1,p2,loot,pr)
+		local mc = minetest.find_nodes_in_area_under_air(p1,p2,{"mcl_core:stonebrickmossy"})
+		if #mc == 2 then
+			table.shuffle(mc)
+			minetest.add_entity(vector.offset(mc[1],0,1,0),"mobs_mc:villager")
+			minetest.add_entity(vector.offset(mc[2],0,1,0),"mobs_mc:villager_zombie")
+		end
+	end, pr)
 end
 
 function mcl_structures.generate_igloo(pos, def, pr)
@@ -108,7 +117,7 @@ function mcl_structures.generate_igloo(pos, def, pr)
 			minetest.set_node({x=tpos.x,y=tpos.y-y,z=tpos.z}, {name="mcl_core:ladder", param2=ladder_param2})
 		end
 		-- Place basement
-		mcl_structures.generate_igloo_basement(bpos, rotation, pr)
+		mcl_structures.generate_igloo_basement(bpos, rotation, def.loot, pr)
 		-- Place hidden trapdoor
 		minetest.after(5, function(tpos, dir)
 			minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)}) -- TODO: more reliable param2
@@ -122,6 +131,8 @@ mcl_structures.register_structure("igloo",{
 	fill_ratio = 0.01,
 	sidelen = 16,
 	chunk_probability = 4400,
+	solid_ground = true,
+	make_foundation = true,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 0,
 	y_offset = 0,

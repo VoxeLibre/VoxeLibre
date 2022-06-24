@@ -65,7 +65,7 @@ local function makegeode(pos,def,pr)
 end
 
 mcl_structures.register_structure("geode",{
-	place_on = {"mcl_core:stone"},
+	place_on = {"group:material_stone"},
 	noise_params = {
 		offset = 0,
 		scale = 0.00022,
@@ -75,7 +75,7 @@ mcl_structures.register_structure("geode",{
 		persist = 0.001,
 		flags = "absvalue",
 	},
-	flags = "place_center_x, place_center_z, force_placement",
+	flags = "force_placement",
 	terrain_feature = true,
 	y_max = -24,
 	y_min = mcl_vars.mg_overworld_min,

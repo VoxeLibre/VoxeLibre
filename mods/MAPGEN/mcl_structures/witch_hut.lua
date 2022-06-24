@@ -39,7 +39,7 @@ mcl_structures.register_structure("witch_hut",{
 	fill_ratio = 0.01,
 	flags = "place_center_x, place_center_z, liquid_surface, force_placement",
 	sidelen = 5,
-	chunk_probability = 128,
+	chunk_probability = 256,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = -4,
 	y_offset = 0,

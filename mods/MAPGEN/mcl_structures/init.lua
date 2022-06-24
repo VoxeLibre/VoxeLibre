@@ -39,6 +39,7 @@ function mcl_structures.place_schematic(pos, schematic, rotation, replacements, 
 		minetest.log("verbose", "[mcl_structures] size=" ..minetest.pos_to_string(s.size) .. ", rotation=" .. tostring(rotation) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
 		local param = {pos=vector.new(pos), schematic=s, rotation=rotation, replacements=replacements, force_placement=force_placement, flags=flags, p1=p1, p2=p2, after_placement_callback = after_placement_callback, size=vector.new(s.size), pr=pr, callback_param=callback_param}
 		minetest.emerge_area(p1, p2, ecb_place, param)
+		return true
 	end
 end
 
@@ -236,6 +237,7 @@ dofile(modpath.."/jungle_temple.lua")
 dofile(modpath.."/ocean_ruins.lua")
 dofile(modpath.."/witch_hut.lua")
 dofile(modpath.."/igloo.lua")
+dofile(modpath.."/geode.lua")
 
 
 mcl_structures.register_structure("desert_well",{

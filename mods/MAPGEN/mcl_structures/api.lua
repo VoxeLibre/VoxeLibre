@@ -1,13 +1,11 @@
 mcl_structures.registered_structures = {}
 
-local function generate_loot(pos, def, pr)
-	local hl = def.sidelen / 2
-	local p1 = vector.offset(pos,-hl,-hl,-hl)
-	local p2 = vector.offset(pos,hl,hl,hl)
-	for it,lt in pairs(def.loot) do
+
+function mcl_structures.fill_chests(p1,p2,loot,pr)
+	for it,lt in pairs(loot) do
 		local nodes = minetest.find_nodes_in_area(p1, p2, it)
 		for _,p in pairs(nodes) do
-			local lootitems = mcl_loot.get_multi_loot( lt, pr)
+			local lootitems = mcl_loot.get_multi_loot(lt, pr)
 			mcl_structures.init_node_construct(p)
 			local meta = minetest.get_meta(p)
 			local inv = meta:get_inventory()
@@ -15,6 +13,14 @@ local function generate_loot(pos, def, pr)
 		end
 	end
 end
+
+local function generate_loot(pos, def, pr)
+	local hl = def.sidelen / 2
+	local p1 = vector.offset(pos,-hl,-hl,-hl)
+	local p2 = vector.offset(pos,hl,hl,hl)
+	if def.loot then mcl_structures.fill_chests(p1,p2,def.loot,pr) end
+end
+
 
 function mcl_structures.find_lowest_y(pp)
 	local y = 31000
@@ -43,26 +49,31 @@ function mcl_structures.place_structure(pos, def, pr)
 	end
 	local pp = vector.offset(pos,0,y_offset,0)
 	if def.solid_ground and def.sidelen then
-		local node_stone = "mcl_core:stone"
-		local node_filler = "mcl_core:dirt"
-		local node_top = "mcl_core:dirt_with_grass"
-
-		if minetest.get_mapgen_setting("mg_name") ~= "v6" then
-			local b = minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(pos).biome)]
-			if b.node_top then node_top = b.node_top end
-			if b.node_filler then node_filler = b.node_filler end
-			if b.node_stone then node_stone = b.node_stone end
-		end
-
 		local ground_p1 = vector.offset(pos,-def.sidelen/2,-1,-def.sidelen/2)
 		local ground_p2 = vector.offset(pos,def.sidelen/2,-1,def.sidelen/2)
 
 		local solid = minetest.find_nodes_in_area(ground_p1,ground_p2,{"group:solid"})
 		if #solid < ( def.sidelen * def.sidelen ) then
 			if def.make_foundation then
-				minetest.bulk_set_node(minetest.find_nodes_in_area(ground_p1,ground_p2,{"air","group:liquid"}),{name=node_top})
-				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-1,0),vector.offset(ground_p2,0,-4,0),{"air","group:liquid"}),{name=node_filler})
-				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-5,0),vector.offset(ground_p2,0,-30,0),{"air","group:liquid"}),{name=node_stone})
+				local node_stone = "mcl_core:stone"
+				local node_filler = "mcl_core:dirt"
+				local node_top = "mcl_core:dirt_with_grass" or minetest.get_node(ground_p1).name
+				local node_dust = nil
+
+				if minetest.get_mapgen_setting("mg_name") ~= "v6" then
+					local b = minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(pos).biome)]
+					--minetest.log(dump(b.node_top))
+					if b.node_top then node_top = b.node_top end
+					if b.node_filler then node_filler = b.node_filler end
+					if b.node_stone then node_stone = b.node_stone end
+					if b.node_dust then node_dust = b.node_dust end
+				end
+				minetest.bulk_set_node(minetest.find_nodes_in_area(ground_p1,ground_p2,{"air","group:liquid","mcl_core:snow"}),{name=node_top})
+				if node_dust then
+					minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,1,0),vector.offset(ground_p2,0,1,0),{"air"}),{name=node_dust})
+				end
+				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-1,0),vector.offset(ground_p2,0,-4,0),{"air","group:liquid","mcl_core:snow"}),{name=node_filler})
+				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-5,0),vector.offset(ground_p2,0,-30,0),{"air","group:liquid","mcl_core:snow"}),{name=node_stone})
 			else
 				if logging then
 					minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pos).." not placed. No solid ground.")
