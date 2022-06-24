@@ -232,12 +232,14 @@ local function dir_to_rotation(dir)
 end
 
 dofile(modpath.."/api.lua")
+dofile(modpath.."/shipwrecks.lua")
 dofile(modpath.."/desert_temple.lua")
 dofile(modpath.."/jungle_temple.lua")
 dofile(modpath.."/ocean_ruins.lua")
 dofile(modpath.."/witch_hut.lua")
 dofile(modpath.."/igloo.lua")
 dofile(modpath.."/geode.lua")
+
 
 
 mcl_structures.register_structure("desert_well",{
