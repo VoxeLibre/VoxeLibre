@@ -1262,8 +1262,6 @@ end
 
 -- TODO: Try to use more efficient structure generating code
 local function generate_structures(minp, maxp, blockseed, biomemap)
-	local chunk_has_desert_well = false
-	local chunk_has_desert_temple = false
 	local chunk_has_igloo = false
 	local struct_min, struct_max = -3, 111 --64
 
@@ -1301,32 +1299,8 @@ local function generate_structures(minp, maxp, blockseed, biomemap)
 					local nn0 = minetest.get_node(p).name
 					-- Check if the node can be replaced
 					if minetest.registered_nodes[nn0] and minetest.registered_nodes[nn0].buildable_to then
-						-- Desert temples and desert wells
-						if nn == "mcl_core:sand" or (nn == "mcl_core:sandstone") then
-							if not chunk_has_desert_temple and not chunk_has_desert_well and ground_y > 3 then
-								-- Spawn desert temple
-								-- TODO: Check surface
-								if pr:next(1,12000) == 1 then
-									mcl_structures.call_struct(p, "desert_temple", nil, pr)
-									chunk_has_desert_temple = true
-								end
-							end
-							if not chunk_has_desert_temple and not chunk_has_desert_well and ground_y > 3 then
-								local desert_well_prob = minecraft_chunk_probability(1000, minp, maxp)
-
-								-- Spawn desert well
-								if pr:next(1, desert_well_prob) == 1 then
-									-- Check surface
-									local surface = minetest.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, {x=p.x+5, y=p.y-1, z=p.z+5}, "mcl_core:sand")
-									if #surface >= 25 then
-										mcl_structures.call_struct(p, "desert_well", nil, pr)
-										chunk_has_desert_well = true
-									end
-								end
-							end
-
 						-- Igloos
-						elseif not chunk_has_igloo and (nn == "mcl_core:snowblock" or nn == "mcl_core:snow" or (minetest.get_item_group(nn, "grass_block_snow") == 1)) then
+						if not chunk_has_igloo and (nn == "mcl_core:snowblock" or nn == "mcl_core:snow" or (minetest.get_item_group(nn, "grass_block_snow") == 1)) then
 							if pr:next(1, 4400) == 1 then
 								-- Check surface
 								local floor = {x=p.x+9, y=p.y-1, z=p.z+9}
@@ -2211,11 +2185,18 @@ mcl_mapgen_core.register_generator("main", basic, basic_node, 1, true)
 mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blockseed)
 	local gennotify = minetest.get_mapgen_object("gennotify")
 	local pr = PseudoRandom(blockseed + 42)
+	local has_struct = {}
+	local poshash = minetest.hash_node_position(minp)
 	for _,struct in pairs(mcl_structures.registered_structures) do
+		local has = false
+		if has_struct[struct.name] == nil then has_struct[struct.name] = {}	end
 		for _, pos in pairs(gennotify["decoration#"..struct.deco_id] or {}) do
-			local realpos = vector.offset(pos,0,-1,0)
+			local realpos = vector.offset(pos,0,1,0)
 			minetest.remove_node(realpos)
-			mcl_structures.place_structure(realpos,struct,pr)
+			if struct.chunk_probability ~= nil and not has and pr:next(1,struct.chunk_probability) ~= 1 then
+				mcl_structures.place_structure(realpos,struct,pr)
+				has=true
+			end
 		end
 	end
 end, 100, true)

@@ -67,6 +67,7 @@ local function init_node_construct(pos)
 	end
 	return false
 end
+mcl_structures.init_node_construct = init_node_construct
 
 -- The call of Struct
 function mcl_structures.call_struct(pos, struct_style, rotation, pr)
@@ -74,11 +75,7 @@ function mcl_structures.call_struct(pos, struct_style, rotation, pr)
 	if not rotation then
 		rotation = "random"
 	end
-	if struct_style == "desert_temple" then
-		return mcl_structures.generate_desert_temple(pos, rotation, pr)
-	elseif struct_style == "desert_well" then
-		return mcl_structures.generate_desert_well(pos, rotation)
-	elseif struct_style == "igloo" then
+	if struct_style == "igloo" then
 		return mcl_structures.generate_igloo(pos, rotation, pr)
 	elseif struct_style == "witch_hut" then
 		return mcl_structures.generate_witch_hut(pos, rotation)
@@ -99,12 +96,6 @@ function mcl_structures.call_struct(pos, struct_style, rotation, pr)
 	elseif struct_style == "end_portal_shrine" then
 		return mcl_structures.generate_end_portal_shrine(pos, rotation, pr)
 	end
-end
-
-function mcl_structures.generate_desert_well(pos, rot)
-	local newpos = {x=pos.x,y=pos.y-2,z=pos.z}
-	local path = modpath.."/schematics/mcl_structures_desert_well.mts"
-	return mcl_structures.place_schematic(newpos, path, rot or "0", nil, true)
 end
 
 function mcl_structures.generate_igloo(pos, rotation, pr)
@@ -443,93 +434,6 @@ function mcl_structures.generate_end_portal_shrine(pos, rotation, pr)
 	mcl_structures.place_schematic(newpos, path, rotation or "0", nil, true, nil, shrine_placement_callback, pr)
 end
 
-local function temple_placement_callback(p1, p2, size, rotation, pr)
-
-	-- Delete cacti leftovers:
-	local cactus_nodes = minetest.find_nodes_in_area_under_air(p1, p2, "mcl_core:cactus")
-	if cactus_nodes and #cactus_nodes > 0 then
-		for _, pos in pairs(cactus_nodes) do
-			local node_below = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
-			if node_below and node_below.name == "mcl_core:sandstone" then
-				minetest.swap_node(pos, {name="air"})
-			end
-		end
-	end
-
-	-- Find chests.
-	-- FIXME: Searching this large area just for the chets is not efficient. Need a better way to find the chests;
-	-- probably let's just infer it from newpos because the schematic always the same.
-	local chests = minetest.find_nodes_in_area(p1, p2, "mcl_chests:chest")
-
-	-- Add desert temple loot into chests
-	for c=1, #chests do
-		local lootitems = mcl_loot.get_multi_loot({
-		{
-			stacks_min = 2,
-			stacks_max = 4,
-			items = {
-				{ itemstring = "mcl_mobitems:bone", weight = 25, amount_min = 4, amount_max=6 },
-				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 25, amount_min = 3, amount_max=7 },
-				{ itemstring = "mcl_mobitems:spider_eye", weight = 25, amount_min = 1, amount_max=3 },
-				{ itemstring = "mcl_books:book", weight = 20, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
-				end },
-				{ itemstring = "mcl_mobitems:saddle", weight = 20, },
-				{ itemstring = "mcl_core:apple_gold", weight = 20, },
-				{ itemstring = "mcl_core:gold_ingot", weight = 15, amount_min = 2, amount_max = 7 },
-				{ itemstring = "mcl_core:iron_ingot", weight = 15, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_core:emerald", weight = 15, amount_min = 1, amount_max = 3 },
-				{ itemstring = "", weight = 15, },
-				{ itemstring = "mcl_mobitems:iron_horse_armor", weight = 15, },
-				{ itemstring = "mcl_mobitems:gold_horse_armor", weight = 10, },
-				{ itemstring = "mcl_mobitems:diamond_horse_armor", weight = 5, },
-				{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 3 },
-				{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2, },
-			}
-		},
-		{
-			stacks_min = 4,
-			stacks_max = 4,
-			items = {
-				{ itemstring = "mcl_mobitems:bone", weight = 10, amount_min = 1, amount_max = 8 },
-				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10, amount_min = 1, amount_max = 8 },
-				{ itemstring = "mcl_mobitems:gunpowder", weight = 10, amount_min = 1, amount_max = 8 },
-				{ itemstring = "mcl_core:sand", weight = 10, amount_min = 1, amount_max = 8 },
-				{ itemstring = "mcl_mobitems:string", weight = 10, amount_min = 1, amount_max = 8 },
-			}
-		}}, pr)
-		init_node_construct(chests[c])
-		local meta = minetest.get_meta(chests[c])
-		local inv = meta:get_inventory()
-		mcl_loot.fill_inventory(inv, "main", lootitems, pr)
-	end
-
-	-- Initialize pressure plates and randomly remove up to 5 plates
-	local pplates = minetest.find_nodes_in_area(p1, p2, "mesecons_pressureplates:pressure_plate_stone_off")
-	local pplates_remove = 5
-	for p=1, #pplates do
-		if pplates_remove > 0 and pr:next(1, 100) >= 50 then
-			-- Remove plate
-			minetest.remove_node(pplates[p])
-			pplates_remove = pplates_remove - 1
-		else
-			-- Initialize plate
-			minetest.registered_nodes["mesecons_pressureplates:pressure_plate_stone_off"].on_construct(pplates[p])
-		end
-	end
-end
-
-function mcl_structures.generate_desert_temple(pos, rotation, pr)
-	-- No Generating for the temple ... Why using it ? No Change
-	local path = modpath.."/schematics/mcl_structures_desert_temple.mts"
-	local newpos = {x=pos.x,y=pos.y-12,z=pos.z}
-	--local size = {x=22, y=24, z=22}
-	if newpos == nil then
-		return
-	end
-	mcl_structures.place_schematic(newpos, path, rotation or "random", nil, true, nil, temple_placement_callback, pr)
-end
-
 local structure_data = {}
 
 --[[ Returns a table of structure of the specified type.
@@ -572,6 +476,31 @@ local function dir_to_rotation(dir)
 end
 
 dofile(modpath.."/api.lua")
+dofile(modpath.."/desert_temple.lua")
+dofile(modpath.."/jungle_temple.lua")
+
+mcl_structures.register_structure("desert_well",{
+	place_on = {"group:sand"},
+	noise_params = {
+		offset = 0,
+		scale = 0.00012,
+		spread = {x = 250, y = 250, z = 250},
+		seed = 233,
+		octaves = 3,
+		persist = 0.001,
+		flags = "absvalue",
+	},
+	flags = "place_center_x, place_center_z",
+	not_near = { "desert_temple_new" },
+	solid_ground = true,
+	sidelen = 4,
+	chunk_probability = 64,
+	y_max = mcl_vars.mg_overworld_max,
+	y_min = 1,
+	y_offset = -2,
+	biomes = { "Desert" },
+	filenames = { modpath.."/schematics/mcl_structures_desert_well.mts" },
+})
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
@@ -589,11 +518,7 @@ minetest.register_chatcommand("spawnstruct", {
 		local pr = PseudoRandom(pos.x+pos.y+pos.z)
 		local errord = false
 		local message = S("Structure placed.")
-		if param == "desert_temple" then
-			mcl_structures.generate_desert_temple(pos, rot, pr)
-		elseif param == "desert_well" then
-			mcl_structures.generate_desert_well(pos, rot)
-		elseif param == "igloo" then
+		if param == "igloo" then
 			mcl_structures.generate_igloo(pos, rot, pr)
 		elseif param == "witch_hut" then
 			mcl_structures.generate_witch_hut(pos, rot, pr)
