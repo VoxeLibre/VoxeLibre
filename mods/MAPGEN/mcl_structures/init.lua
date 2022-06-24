@@ -478,6 +478,7 @@ end
 dofile(modpath.."/api.lua")
 dofile(modpath.."/desert_temple.lua")
 dofile(modpath.."/jungle_temple.lua")
+dofile(modpath.."/ocean_ruins.lua")
 
 mcl_structures.register_structure("desert_well",{
 	place_on = {"group:sand"},
