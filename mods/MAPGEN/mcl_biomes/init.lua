@@ -3397,6 +3397,7 @@ local function register_decorations()
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = mod_mcl_structures.."/schematics/mcl_structures_boulder.mts",
 		flags = "place_center_x, place_center_z",
+		rotation = "random",
 	})
 
 	-- Small mossy cobblestone boulder (2×2)
@@ -3417,6 +3418,7 @@ local function register_decorations()
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = mod_mcl_structures.."/schematics/mcl_structures_boulder_small.mts",
 		flags = "place_center_x, place_center_z",
+		rotation = "random",
 	})
 
 	-- Cacti

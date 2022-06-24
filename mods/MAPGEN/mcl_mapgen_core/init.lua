@@ -1331,7 +1331,7 @@ local function generate_structures(minp, maxp, blockseed, biomemap)
 							end
 						end
 
-						-- Witch hut
+						-- Witch hut (v6)
 						if ground_y <= 0 and nn == "mcl_core:dirt" then
 						local prob = minecraft_chunk_probability(48, minp, maxp)
 						if pr:next(1, prob) == 1 then
@@ -1339,23 +1339,14 @@ local function generate_structures(minp, maxp, blockseed, biomemap)
 							local swampland = minetest.get_biome_id("Swampland")
 							local swampland_shore = minetest.get_biome_id("Swampland_shore")
 
-							-- Where do witches live?
-
-							local here_be_witches = false
-							if mg_name == "v6" then
-								-- v6: In Normal biome
-								if biomeinfo.get_v6_biome(p) == "Normal" then
-									here_be_witches = true
-								end
-							else
-								-- Other mapgens: In swampland biome
-								local bi = xz_to_biomemap_index(p.x, p.z, minp, maxp)
-								if biomemap[bi] == swampland or biomemap[bi] == swampland_shore then
-									here_be_witches = true
-								end
+						-- Where do witches live?
+							-- v6: In Normal biome
+							if biomeinfo.get_v6_biome(p) == "Normal" then
+								here_be_witches = true
 							end
+							local here_be_witches = false
+							if mg_name == "v6" and  here_be_witches then
 
-							if here_be_witches then
 								local r = tostring(pr:next(0, 3) * 90) -- "0", "90", "180" or 270"
 								local p1 = {x=p.x-1, y=WITCH_HUT_HEIGHT+2, z=p.z-1}
 								local size
@@ -1375,9 +1366,7 @@ local function generate_structures(minp, maxp, blockseed, biomemap)
 									-- FIXME: For some mysterious reason (black magic?) this
 									-- function does sometimes NOT spawn the witch hut. One can only see the
 									-- oak wood nodes in the water, but no hut. :-/
-									mcl_structures.call_struct(place, "witch_hut", r, pr)
-
-									-- TODO: Spawn witch in or around hut when the mob sucks less.
+									mcl_structures.place_structure(place,mcl_structures.registered_structures["witch_hut"],pr)
 
 									local function place_tree_if_free(pos, prev_result)
 										local nn = minetest.get_node(pos).name
@@ -1436,7 +1425,7 @@ local function generate_structures(minp, maxp, blockseed, biomemap)
 
 						-- Ice spikes in v6
 						-- In other mapgens, ice spikes are generated as decorations.
-						if mg_name == "v6" and not chunk_has_igloo and nn == "mcl_core:snowblock" then
+						if mg_name == "v6" and nn == "mcl_core:snowblock" then
 							local spike = pr:next(1,58000)
 							if spike < 3 then
 								-- Check surface
@@ -1446,7 +1435,7 @@ local function generate_structures(minp, maxp, blockseed, biomemap)
 								local spruce_collisions = minetest.find_nodes_in_area({x=p.x+1,y=p.y+2,z=p.z+1}, {x=p.x+4, y=p.y+6, z=p.z+4}, {"mcl_core:sprucetree", "mcl_core:spruceleaves"})
 
 								if #surface >= 9 and #spruce_collisions == 0 then
-									mcl_structures.call_struct(p, "ice_spike_large", nil, pr)
+									mcl_structures.place_structure(p,mcl_structures.registered_structures["ice_spike_large"],pr)
 								end
 							elseif spike < 100 then
 								-- Check surface
@@ -1457,7 +1446,7 @@ local function generate_structures(minp, maxp, blockseed, biomemap)
 								local spruce_collisions = minetest.find_nodes_in_area({x=p.x+1,y=p.y+1,z=p.z+1}, {x=p.x+6, y=p.y+6, z=p.z+6}, {"mcl_core:sprucetree", "mcl_core:spruceleaves"})
 
 								if #surface >= 25 and #spruce_collisions == 0 then
-									mcl_structures.call_struct(p, "ice_spike_small", nil, pr)
+									mcl_structures.place_structure(p,mcl_structures.registered_structures["ice_spike_small"],pr)
 								end
 							end
 						end
@@ -2188,14 +2177,16 @@ mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blocks
 	local has_struct = {}
 	local poshash = minetest.hash_node_position(minp)
 	for _,struct in pairs(mcl_structures.registered_structures) do
-		local has = false
-		if has_struct[struct.name] == nil then has_struct[struct.name] = {}	end
-		for _, pos in pairs(gennotify["decoration#"..struct.deco_id] or {}) do
-			local realpos = vector.offset(pos,0,1,0)
-			minetest.remove_node(realpos)
-			if struct.chunk_probability == nil or (not has and pr:next(1,struct.chunk_probability) == 1 ) then
-				mcl_structures.place_structure(realpos,struct,pr)
-				has=true
+		if struct.deco_id then
+			local has = false
+			if has_struct[struct.name] == nil then has_struct[struct.name] = {}	end
+			for _, pos in pairs(gennotify["decoration#"..struct.deco_id] or {}) do
+				local realpos = vector.offset(pos,0,1,0)
+				minetest.remove_node(realpos)
+				if struct.chunk_probability == nil or (not has and pr:next(1,struct.chunk_probability) == 1 ) then
+					mcl_structures.place_structure(realpos,struct,pr)
+					has=true
+				end
 			end
 		end
 	end

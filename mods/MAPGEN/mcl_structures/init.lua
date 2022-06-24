@@ -77,14 +77,6 @@ function mcl_structures.call_struct(pos, struct_style, rotation, pr)
 	end
 	if struct_style == "igloo" then
 		return mcl_structures.generate_igloo(pos, rotation, pr)
-	elseif struct_style == "witch_hut" then
-		return mcl_structures.generate_witch_hut(pos, rotation)
-	elseif struct_style == "ice_spike_small" then
-		return mcl_structures.generate_ice_spike_small(pos, rotation)
-	elseif struct_style == "ice_spike_large" then
-		return mcl_structures.generate_ice_spike_large(pos, rotation)
-	elseif struct_style == "boulder" then
-		return mcl_structures.generate_boulder(pos, rotation, pr)
 	elseif struct_style == "fossil" then
 		return mcl_structures.generate_fossil(pos, rotation, pr)
 	elseif struct_style == "end_exit_portal" then
@@ -256,21 +248,6 @@ function mcl_structures.generate_igloo_basement(pos, orientation, pr)
 	mcl_structures.place_schematic(pos, path, orientation, nil, true, nil, igloo_placement_callback, pr)
 end
 
-function mcl_structures.generate_boulder(pos, rotation, pr)
-	-- Choose between 2 boulder sizes (2×2×2 or 3×3×3)
-	local r = pr:next(1, 10)
-	local path
-	if r <= 3 then
-		path = modpath.."/schematics/mcl_structures_boulder_small.mts"
-	else
-		path = modpath.."/schematics/mcl_structures_boulder.mts"
-	end
-
-	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
-
-	return minetest.place_schematic(newpos, path, rotation) -- don't serialize schematics for registered biome decorations, for MT 5.4.0, https://github.com/minetest/minetest/issues/10995
-end
-
 local function spawn_witch(p1,p2)
 	local c = minetest.find_node_near(p1,15,{"mcl_cauldrons:cauldron"})
 	if c then
@@ -285,33 +262,6 @@ local function spawn_witch(p1,p2)
 		cat.can_despawn = false
 		return
 	end
-end
-
-local function hut_placement_callback(p1, p2, size, orientation, pr)
-	if not p1 or not p2 then return end
-	local legs = minetest.find_nodes_in_area(p1, p2, "mcl_core:tree")
-	for i = 1, #legs do
-		while minetest.get_item_group(mcl_vars.get_node({x=legs[i].x, y=legs[i].y-1, z=legs[i].z}, true, 333333).name, "water") ~= 0 do
-			legs[i].y = legs[i].y - 1
-			minetest.swap_node(legs[i], {name = "mcl_core:tree", param2 = 2})
-		end
-	end
-	spawn_witch(p1,p2)
-end
-
-function mcl_structures.generate_witch_hut(pos, rotation, pr)
-	local path = modpath.."/schematics/mcl_structures_witch_hut.mts"
-	mcl_structures.place_schematic(pos, path, rotation, nil, true, nil, hut_placement_callback, pr)
-end
-
-function mcl_structures.generate_ice_spike_small(pos, rotation)
-	local path = modpath.."/schematics/mcl_structures_ice_spike_small.mts"
-	return minetest.place_schematic(pos, path, rotation or "random", nil, false) -- don't serialize schematics for registered biome decorations, for MT 5.4.0
-end
-
-function mcl_structures.generate_ice_spike_large(pos, rotation)
-	local path = modpath.."/schematics/mcl_structures_ice_spike_large.mts"
-	return minetest.place_schematic(pos, path, rotation or "random", nil, false) -- don't serialize schematics for registered biome decorations, for MT 5.4.0
 end
 
 function mcl_structures.generate_fossil(pos, rotation, pr)
@@ -480,6 +430,45 @@ dofile(modpath.."/desert_temple.lua")
 dofile(modpath.."/jungle_temple.lua")
 dofile(modpath.."/ocean_ruins.lua")
 
+local function hut_placement_callback(pos,def,pr)
+	local hl = def.sidelen / 2
+	local p1 = vector.offset(pos,-hl,-hl,-hl)
+	local p2 = vector.offset(pos,hl,hl,hl)
+	if not p1 or not p2 then return end
+	local legs = minetest.find_nodes_in_area(p1, p2, "mcl_core:tree")
+	local tree = {}
+	for i = 1, #legs do
+		while minetest.get_item_group(mcl_vars.get_node({x=legs[i].x, y=legs[i].y-1, z=legs[i].z}, true, 333333).name, "water") ~= 0 do
+			legs[i].y = legs[i].y - 1
+			table.insert(tree,legs[i])
+		end
+	end
+	minetest.bulk_set_node(tree, {name = "mcl_core:tree", param2 = 2})
+	spawn_witch(p1,p2)
+end
+
+mcl_structures.register_structure("witch_hut",{
+	place_on = {"group:sand","group:grass_block","mcl_core:water_source","group:dirt"},
+	noise_params = {
+		offset = 0,
+		scale = 0.0012,
+		spread = {x = 250, y = 250, z = 250},
+		seed = 233,
+		octaves = 3,
+		persist = 0.001,
+		flags = "absvalue",
+	},
+	flags = "place_center_x, place_center_z, liquid_surface, force_placement",
+	sidelen = 5,
+	chunk_probability = 64,
+	y_max = mcl_vars.mg_overworld_max,
+	y_min = 1,
+	--y_offset = function(pr) return pr:next(-4,1) end,
+	y_offset = 0,
+	biomes = { "Swampland", "Swampland_ocean", "Swampland_shore" },
+	filenames = { modpath.."/schematics/mcl_structures_witch_hut.mts" },
+	after_place = hut_placement_callback,
+})
 mcl_structures.register_structure("desert_well",{
 	place_on = {"group:sand"},
 	noise_params = {
@@ -503,9 +492,32 @@ mcl_structures.register_structure("desert_well",{
 	filenames = { modpath.."/schematics/mcl_structures_desert_well.mts" },
 })
 
+mcl_structures.register_structure("boulder",{
+	flags = "place_center_x, place_center_z",
+	sidelen = 4,
+	filenames = {
+		modpath.."/schematics/mcl_structures_boulder_small.mts",
+		modpath.."/schematics/mcl_structures_boulder_small.mts",
+		modpath.."/schematics/mcl_structures_boulder_small.mts",
+		modpath.."/schematics/mcl_structures_boulder.mts",
+	},
+},true) --is spawned as a normal decoration. this is just for /spawnstruct
+mcl_structures.register_structure("ice_spike_small",{
+	sidelen = 3,
+	filenames = {
+		modpath.."/schematics/mcl_structures_ice_spike_small.mts"
+	},
+},true) --is spawned as a normal decoration. this is just for /spawnstruct
+mcl_structures.register_structure("ice_spike_large",{
+	sidelen = 6,
+	filenames = {
+		modpath.."/schematics/mcl_structures_ice_spike_large.mts"
+	},
+},true) --is spawned as a normal decoration. this is just for /spawnstruct
+
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "desert_temple | desert_well | igloo | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_exit_portal_open | end_gateway_portal | end_portal_shrine | nether_portal | dungeon",
+	params = "igloo | end_exit_portal | end_exit_portal_open | end_gateway_portal | end_portal_shrine | nether_portal | dungeon",
 	description = S("Generate a pre-defined structure near your position."),
 	privs = {debug = true},
 	func = function(name, param)
@@ -521,16 +533,8 @@ minetest.register_chatcommand("spawnstruct", {
 		local message = S("Structure placed.")
 		if param == "igloo" then
 			mcl_structures.generate_igloo(pos, rot, pr)
-		elseif param == "witch_hut" then
-			mcl_structures.generate_witch_hut(pos, rot, pr)
-		elseif param == "boulder" then
-			mcl_structures.generate_boulder(pos, rot, pr)
 		elseif param == "fossil" then
 			mcl_structures.generate_fossil(pos, rot, pr)
-		elseif param == "ice_spike_small" then
-			mcl_structures.generate_ice_spike_small(pos, rot, pr)
-		elseif param == "ice_spike_large" then
-			mcl_structures.generate_ice_spike_large(pos, rot, pr)
 		elseif param == "end_exit_portal" then
 			mcl_structures.generate_end_exit_portal(pos, rot, pr)
 		elseif param == "end_exit_portal_open" then
