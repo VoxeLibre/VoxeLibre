@@ -2594,7 +2594,16 @@ local function register_decorations()
 		deco_type = "simple",
 		place_on = {"group:sand","mcl_core:gravel"},
 		sidelen = 16,
-		noise_params = noise,
+		noise_params = {
+			offset = -0.0085,
+			scale = 0.002,
+			spread = {x = 25, y = 120, z = 25},
+			seed = 235,
+			octaves = 5,
+			persist = 1.8,
+			lacunarity = 3.5,
+			flags = "absvalue"
+		},
 		y_min = OCEAN_MIN,
 		y_max = -5,
 		decoration = "mcl_ocean:dead_brain_coral_block",
