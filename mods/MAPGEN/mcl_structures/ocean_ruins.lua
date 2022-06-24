@@ -91,7 +91,7 @@ local cold = {
 	y_max = -2,
 	biomes = cold_oceans,
 	chunk_probability = 64,
-	sidelen = 4,
+	sidelen = 8,
 	filenames = {
 		modpath.."/schematics/mcl_structures_ocean_ruins_cold_1.mts",
 		modpath.."/schematics/mcl_structures_ocean_ruins_cold_2.mts",

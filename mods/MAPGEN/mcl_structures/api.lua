@@ -52,8 +52,9 @@ function mcl_structures.place_structure(pos, def, pr)
 		return false
 	end
 	if def.filenames then
-		table.shuffle(def.filenames)
-		local file = def.filenames[1]
+		if #def.filenames <= 0 then return false end
+		local r = pr:next(1,#def.filenames)
+		local file = def.filenames[r]
 		if file then
 			local ap = function(pos,def,pr) end
 			if def.after_place then ap = def.after_place  end
