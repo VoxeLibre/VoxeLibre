@@ -1264,8 +1264,8 @@ end
 local function generate_structures(minp, maxp, blockseed, biomemap)
 	local chunk_has_igloo = false
 	local struct_min, struct_max = -3, 111 --64
-
-	if maxp.y >= struct_min and minp.y <= struct_max then
+	--except end exit portall all v6
+	if mg_name == "v6" and maxp.y >= struct_min and minp.y <= struct_max then
 		-- Generate structures
 		local pr = PcgRandom(blockseed)
 		perlin_structures = perlin_structures or minetest.get_perlin(329, 3, 0.6, 100)
@@ -1334,7 +1334,7 @@ local function generate_structures(minp, maxp, blockseed, biomemap)
 						-- Witch hut (v6)
 						if ground_y <= 0 and nn == "mcl_core:dirt" then
 						local prob = minecraft_chunk_probability(48, minp, maxp)
-						if mg_name == "v6" and pr:next(1, prob) == 1 then
+						if pr:next(1, prob) == 1 then
 
 							local swampland = minetest.get_biome_id("Swampland")
 							local swampland_shore = minetest.get_biome_id("Swampland_shore")
@@ -1425,7 +1425,7 @@ local function generate_structures(minp, maxp, blockseed, biomemap)
 
 						-- Ice spikes in v6
 						-- In other mapgens, ice spikes are generated as decorations.
-						if mg_name == "v6" and nn == "mcl_core:snowblock" then
+						if nn == "mcl_core:snowblock" then
 							local spike = pr:next(1,58000)
 							if spike < 3 then
 								-- Check surface
@@ -1710,14 +1710,9 @@ local function generate_underground_mushrooms(minp, maxp, seed)
 	end
 end
 
-local nether_wart_chance
-if mg_name == "v6" then
-	nether_wart_chance = 85
-else
-	nether_wart_chance = 170
-end
 -- Generate Nether decorations manually: Eternal fire, mushrooms, nether wart
 -- (only v6)
+local nether_wart_chance = 85
 local function generate_nether_decorations(minp, maxp, seed)
 	local pr_nether = PseudoRandom(seed+667)
 

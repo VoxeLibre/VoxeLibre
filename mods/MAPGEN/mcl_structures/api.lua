@@ -43,20 +43,25 @@ function mcl_structures.place_structure(pos, def, pr)
 	end
 	local pp = vector.offset(pos,0,y_offset,0)
 	if def.solid_ground and def.sidelen then
-		local bn = minetest.get_biome_name(minetest.get_biome_data(pos).biome)
-		local node_top = minetest.registered_biomes[bn].node_top
-		local node_fill = minetest.registered_biomes[bn].node_filler
-		local node_stone = minetest.registered_biomes[bn].node_stone
+		local node_stone = "mcl_core:stone"
+		local node_filler = "mcl_core:dirt"
+		local node_top = "mcl_core:dirt_with_grass"
+
+		if minetest.get_mapgen_setting("mg_name") ~= "v6" then
+			local b = minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(pos).biome)]
+			if b.node_top then node_top = b.node_top end
+			if b.node_filler then node_filler = b.node_filler end
+			if b.node_stone then node_stone = b.node_stone end
+		end
+
 		local ground_p1 = vector.offset(pos,-def.sidelen/2,-1,-def.sidelen/2)
 		local ground_p2 = vector.offset(pos,def.sidelen/2,-1,def.sidelen/2)
-		if not node_stone then node_stone = "mcl_core:stone" end
-		if not node_fill then node_fill = "mcl_core:dirt" end
-		if not node_top then node_top = "mcl_core:dirt_with_grass" end
+
 		local solid = minetest.find_nodes_in_area(ground_p1,ground_p2,{"group:solid"})
 		if #solid < ( def.sidelen * def.sidelen ) then
 			if def.make_foundation then
 				minetest.bulk_set_node(minetest.find_nodes_in_area(ground_p1,ground_p2,{"air","group:liquid"}),{name=node_top})
-				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-1,0),vector.offset(ground_p2,0,-4,0),{"air","group:liquid"}),{name=node_fill})
+				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-1,0),vector.offset(ground_p2,0,-4,0),{"air","group:liquid"}),{name=node_filler})
 				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-5,0),vector.offset(ground_p2,0,-30,0),{"air","group:liquid"}),{name=node_stone})
 			else
 				if logging then
