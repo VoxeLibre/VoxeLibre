@@ -17,54 +17,6 @@ local function temple_placement_callback(pos,def, pr)
 		end
 	end
 
-	-- Find chests.
-	-- FIXME: Searching this large area just for the chets is not efficient. Need a better way to find the chests;
-	-- probably let's just infer it from newpos because the schematic always the same.
-	local chests = minetest.find_nodes_in_area(p1, p2, "mcl_chests:chest")
-
-	-- Add desert temple loot into chests
-	for c=1, #chests do
-		local lootitems = mcl_loot.get_multi_loot({
-		{
-			stacks_min = 2,
-			stacks_max = 4,
-			items = {
-				{ itemstring = "mcl_mobitems:bone", weight = 25, amount_min = 4, amount_max=6 },
-				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 25, amount_min = 3, amount_max=7 },
-				{ itemstring = "mcl_mobitems:spider_eye", weight = 25, amount_min = 1, amount_max=3 },
-				{ itemstring = "mcl_books:book", weight = 20, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
-				end },
-				{ itemstring = "mcl_mobitems:saddle", weight = 20, },
-				{ itemstring = "mcl_core:apple_gold", weight = 20, },
-				{ itemstring = "mcl_core:gold_ingot", weight = 15, amount_min = 2, amount_max = 7 },
-				{ itemstring = "mcl_core:iron_ingot", weight = 15, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_core:emerald", weight = 15, amount_min = 1, amount_max = 3 },
-				{ itemstring = "", weight = 15, },
-				{ itemstring = "mcl_mobitems:iron_horse_armor", weight = 15, },
-				{ itemstring = "mcl_mobitems:gold_horse_armor", weight = 10, },
-				{ itemstring = "mcl_mobitems:diamond_horse_armor", weight = 5, },
-				{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 3 },
-				{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2, },
-			}
-		},
-		{
-			stacks_min = 4,
-			stacks_max = 4,
-			items = {
-				{ itemstring = "mcl_mobitems:bone", weight = 10, amount_min = 1, amount_max = 8 },
-				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10, amount_min = 1, amount_max = 8 },
-				{ itemstring = "mcl_mobitems:gunpowder", weight = 10, amount_min = 1, amount_max = 8 },
-				{ itemstring = "mcl_core:sand", weight = 10, amount_min = 1, amount_max = 8 },
-				{ itemstring = "mcl_mobitems:string", weight = 10, amount_min = 1, amount_max = 8 },
-			}
-		}}, pr)
-		mcl_structures.init_node_construct(chests[c])
-		local meta = minetest.get_meta(chests[c])
-		local inv = meta:get_inventory()
-		mcl_loot.fill_inventory(inv, "main", lootitems, pr)
-	end
-
 	-- Initialize pressure plates and randomly remove up to 5 plates
 	local pplates = minetest.find_nodes_in_area(p1, p2, "mesecons_pressureplates:pressure_plate_stone_off")
 	local pplates_remove = 5
@@ -101,5 +53,42 @@ mcl_structures.register_structure("desert_temple",{
 	y_min = 1,
 	biomes = { "Desert" },
 	filenames = { modpath.."/schematics/mcl_structures_desert_temple.mts" },
-	after_place = temple_placement_callback
+	after_place = temple_placement_callback,
+	loot = {
+		["mcl_chests:chest_small" ] ={
+		{
+			stacks_min = 2,
+			stacks_max = 4,
+			items = {
+				{ itemstring = "mcl_mobitems:bone", weight = 25, amount_min = 4, amount_max=6 },
+				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 25, amount_min = 3, amount_max=7 },
+				{ itemstring = "mcl_mobitems:spider_eye", weight = 25, amount_min = 1, amount_max=3 },
+				{ itemstring = "mcl_books:book", weight = 20, func = function(stack, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+				end },
+				{ itemstring = "mcl_mobitems:saddle", weight = 20, },
+				{ itemstring = "mcl_core:apple_gold", weight = 20, },
+				{ itemstring = "mcl_core:gold_ingot", weight = 15, amount_min = 2, amount_max = 7 },
+				{ itemstring = "mcl_core:iron_ingot", weight = 15, amount_min = 1, amount_max = 5 },
+				{ itemstring = "mcl_core:emerald", weight = 15, amount_min = 1, amount_max = 3 },
+				{ itemstring = "", weight = 15, },
+				{ itemstring = "mcl_mobitems:iron_horse_armor", weight = 15, },
+				{ itemstring = "mcl_mobitems:gold_horse_armor", weight = 10, },
+				{ itemstring = "mcl_mobitems:diamond_horse_armor", weight = 5, },
+				{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 3 },
+				{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2, },
+			}
+		},
+		{
+			stacks_min = 4,
+			stacks_max = 4,
+			items = {
+				{ itemstring = "mcl_mobitems:bone", weight = 10, amount_min = 1, amount_max = 8 },
+				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10, amount_min = 1, amount_max = 8 },
+				{ itemstring = "mcl_mobitems:gunpowder", weight = 10, amount_min = 1, amount_max = 8 },
+				{ itemstring = "mcl_core:sand", weight = 10, amount_min = 1, amount_max = 8 },
+				{ itemstring = "mcl_mobitems:string", weight = 10, amount_min = 1, amount_max = 8 },
+			}
+		}}
+	}
 })

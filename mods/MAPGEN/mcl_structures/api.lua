@@ -1,5 +1,21 @@
 mcl_structures.registered_structures = {}
 
+local function generate_loot(pos, def, pr)
+	local hl = def.sidelen / 2
+	local p1 = vector.offset(pos,-hl,-hl,-hl)
+	local p2 = vector.offset(pos,hl,hl,hl)
+	for it,lt in pairs(def.loot) do
+		local nodes = minetest.find_nodes_in_area(p1, p2, it)
+		for _,p in pairs(nodes) do
+			local lootitems = mcl_loot.get_multi_loot( lt, pr)
+			mcl_structures.init_node_construct(p)
+			local meta = minetest.get_meta(p)
+			local inv = meta:get_inventory()
+			mcl_loot.fill_inventory(inv, "main", lootitems, pr)
+		end
+	end
+end
+
 function mcl_structures.place_structure(pos, def, pr)
 	if not def then	return end
 	local logging = not def.terrain_feature
@@ -42,7 +58,10 @@ function mcl_structures.place_structure(pos, def, pr)
 			local ap = function(pos,def,pr) end
 			if def.after_place then ap = def.after_place  end
 
-			mcl_structures.place_schematic(pp, file, "random", nil, true, "place_center_x,place_center_z",function(p) return ap(pos,def,pr) end,pr)
+			mcl_structures.place_schematic(pp, file, "random", nil, true, "place_center_x,place_center_z",function(p)
+				if def.loot then generate_loot(pos,def,pr) end
+				return ap(pos,def,pr)
+			end,pr)
 			if logging then
 				minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pos))
 			end
@@ -88,13 +107,13 @@ function mcl_structures.register_structure(name,def,nospawn) --nospawn means it 
 				y_max = def.y_max,
 				y_min = def.y_min
 			})
+			minetest.register_node(":"..structblock, {drawtype="airlike", walkable = false, pointable = false,groups = sbgroups})
+			def.structblock = structblock
 			def.deco_id = minetest.get_decoration_id("mcl_structures:deco_"..name)
 			minetest.set_gen_notify({decoration=true}, { def.deco_id })
 			--catching of gennotify happens in mcl_mapgen_core
 		end)
 	end
-	minetest.register_node(":"..structblock, {drawtype="airlike", walkable = false, pointable = false,groups = sbgroups})
-	def.structblock = structblock
 	mcl_structures.registered_structures[name] = def
 end
 
