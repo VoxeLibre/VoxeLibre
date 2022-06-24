@@ -13,8 +13,8 @@ local function set_node_no_bedrock(pos,node)
 	return minetest.set_node(pos,node)
 end
 
-local function makegeode(pos,pr)
-	local size = pr:next(4,7)
+local function makegeode(pos,def,pr)
+	local size = pr:next(5,7)
 	local p1 = vector.offset(pos,-size,-size,-size)
 	local p2 = vector.offset(pos,size,size,size)
 	local calcite = {}
@@ -79,8 +79,5 @@ mcl_structures.register_structure("geode",{
 	y_max = -24,
 	y_min = mcl_vars.mg_overworld_min,
 	y_offset = function(pr) return pr:next(-4,-2) end,
-	place_func = function(pos,def,pr)
-		local p = vector.new(pos.x + pr:next(-30,30),pos.y,pos.z + pr:next(-30,30))
-		return makegeode(p,pr)
-	end
+	place_func = makegeode,
 })
