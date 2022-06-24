@@ -1,6 +1,7 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
+
 local cold_oceans = {
 	"RoofedForest_ocean",
 	"BirchForestM_ocean",
@@ -36,7 +37,40 @@ local cold_oceans = {
 	"Taiga_deep_ocean",
 }
 
-mcl_structures.register_structure("cold_ocean_ruins",{
+local warm_oceans = {
+	"JungleEdgeM_ocean",
+	"Jungle_deep_ocean",
+	"Savanna_ocean",
+	"MesaPlateauF_ocean",
+	"Swampland_ocean",
+	"Mesa_ocean",
+	"Plains_ocean",
+	"MesaPlateauFM_ocean",
+	"MushroomIsland_ocean",
+	"SavannaM_ocean",
+	"JungleEdge_ocean",
+	"MesaBryce_ocean",
+	"Jungle_ocean",
+	"Desert_ocean",
+	"JungleM_ocean",
+	"JungleEdgeM_deep_ocean",
+	"Jungle_deep_ocean",
+	"Savanna_deep_ocean",
+	"MesaPlateauF_deep_ocean",
+	"Swampland_deep_ocean",
+	"Mesa_deep_ocean",
+	"Plains_deep_ocean",
+	"MesaPlateauFM_deep_ocean",
+	"MushroomIsland_deep_ocean",
+	"SavannaM_deep_ocean",
+	"JungleEdge_deep_ocean",
+	"MesaBryce_deep_ocean",
+	"Jungle_deep_ocean",
+	"Desert_deep_ocean",
+	"JungleM_deep_ocean",
+}
+
+local cold = {
 	place_on = {"group:sand","mcl_core:gravel","mcl_core:dirt","mcl_core:clay","group:material_stone"},
 	spawn_by = {"mcl_core:water_source"},
 	num_spawn_by = 2,
@@ -52,9 +86,9 @@ mcl_structures.register_structure("cold_ocean_ruins",{
 	flags = "place_center_x, place_center_z, force_placement",
 	solid_ground = true,
 	make_foundation = true,
-	y_offset = 0,
+	y_offset = -1,
 	y_min = mcl_vars.mg_overworld_min,
-	y_max = 1,
+	y_max = -2,
 	biomes = cold_oceans,
 	chunk_probability = 64,
 	sidelen = 4,
@@ -91,4 +125,16 @@ mcl_structures.register_structure("cold_ocean_ruins",{
 			}
 		}
 	},
-})
+}
+
+local warm = table.copy(cold)
+warm.biomes = warm_oceans
+warm.filenames = {
+	modpath.."/schematics/mcl_structures_ocean_ruins_warm_1.mts",
+	modpath.."/schematics/mcl_structures_ocean_ruins_warm_2.mts",
+	modpath.."/schematics/mcl_structures_ocean_ruins_warm_3.mts",
+	modpath.."/schematics/mcl_structures_ocean_ruins_warm_4.mts",
+}
+
+mcl_structures.register_structure("cold_ocean_ruins",cold)
+mcl_structures.register_structure("warm_ocean_ruins",warm)
