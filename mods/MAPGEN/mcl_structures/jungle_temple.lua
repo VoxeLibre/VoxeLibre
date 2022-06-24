@@ -2,7 +2,10 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
-local function temple_placement_callback(p1, p2, pr)
+local function temple_placement_callback(pos,def, pr)
+	local hl = def.sidelen / 2
+	local p1 = vector.offset(pos,-hl,-hl,-hl)
+	local p2 = vector.offset(pos,hl,hl,hl)
 	--dont remove foliage - looks kind of nice for a jt
 	local chests = minetest.find_nodes_in_area(p1, p2, "mcl_chests:trapped_chest_small")
 	-- Add jungle temple loot into chests
@@ -61,10 +64,5 @@ mcl_structures.register_structure("jungle_temple",{
 		modpath.."/schematics/mcl_structures_jungle_temple.mts",
 		modpath.."/schematics/mcl_structures_jungle_temple_nice.mts",
 	},
-	after_place = function(pos,def,pr)
-		local hl = def.sidelen / 2
-		local p1 = vector.offset(pos,-hl,-hl,-hl)
-		local p2 = vector.offset(pos,hl,hl,hl)
-		temple_placement_callback(p1, p2, pr)
-	end,
+	after_place = temple_placement_callback
 })

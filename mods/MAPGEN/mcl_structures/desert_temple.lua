@@ -2,7 +2,10 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
-local function temple_placement_callback(p1, p2, pr)
+local function temple_placement_callback(pos,def, pr)
+	local hl = def.sidelen / 2
+	local p1 = vector.offset(pos,-hl,-hl,-hl)
+	local p2 = vector.offset(pos,hl,hl,hl)
 	-- Delete cacti leftovers:
 	local cactus_nodes = minetest.find_nodes_in_area_under_air(p1, p2, "mcl_core:cactus")
 	if cactus_nodes and #cactus_nodes > 0 then
@@ -97,11 +100,6 @@ mcl_structures.register_structure("desert_temple",{
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "Desert" },
-	after_place = function(pos,def,pr)
-		local hl = def.sidelen / 2
-		local p1 = vector.offset(pos,-hl,-hl,-hl)
-		local p2 = vector.offset(pos,hl,hl,hl)
-		temple_placement_callback(p1, p2, pr)
-	end,
 	filenames = { modpath.."/schematics/mcl_structures_desert_temple.mts" },
+	after_place = temple_placement_callback
 })
