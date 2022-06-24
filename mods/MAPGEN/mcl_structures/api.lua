@@ -16,6 +16,22 @@ local function generate_loot(pos, def, pr)
 	end
 end
 
+function mcl_structures.find_lowest_y(pp)
+	local y = 31000
+	for _,p in pairs(pp) do
+		if p.y < y then y = p.y end
+	end
+	return y
+end
+
+function mcl_structures.find_highest_y(pp)
+	local y = -31000
+	for _,p in pairs(pp) do
+		if p.y > y then y = p.y end
+	end
+	return y
+end
+
 function mcl_structures.place_structure(pos, def, pr)
 	if not def then	return end
 	local logging = not def.terrain_feature

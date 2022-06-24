@@ -2193,7 +2193,7 @@ mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blocks
 		for _, pos in pairs(gennotify["decoration#"..struct.deco_id] or {}) do
 			local realpos = vector.offset(pos,0,1,0)
 			minetest.remove_node(realpos)
-			if struct.chunk_probability ~= nil and not has and pr:next(1,struct.chunk_probability) ~= 1 then
+			if struct.chunk_probability == nil or (not has and pr:next(1,struct.chunk_probability) == 1 ) then
 				mcl_structures.place_structure(realpos,struct,pr)
 				has=true
 			end

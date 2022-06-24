@@ -30,7 +30,7 @@ local function airtower(pos,tbl,h)
 end
 
 local function makelake(pos,size,liquid,placein,border,pr)
-	local node_under = minetest.get_node(vector.offset(pos,0,1,0))
+	local node_under = minetest.get_node(vector.offset(pos,0,-1,0))
 	local p1 = vector.offset(pos,-size,-size,-size)
 	local p2 = vector.offset(pos,size,size,size)
 	local nn = minetest.find_nodes_in_area(p1,p2,placein)
@@ -38,7 +38,7 @@ local function makelake(pos,size,liquid,placein,border,pr)
 	   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
 	end)
 	if not nn[1] then return end
-	local y = pos.y - 1
+	local y = mcl_structures.find_highest_y(nn)
 	local lq = {}
 	local air = {}
 	for i=1,pr:next(1,#nn) do
@@ -59,11 +59,11 @@ local function makelake(pos,size,liquid,placein,border,pr)
 				if minetest.get_item_group(an.name,"solid") > 0 then
 					border = an.name
 				elseif minetest.get_item_group(minetest.get_node(nn[1]).name,"solid") > 0 then
-					border = minetest.get_node(nn[1]).name
+					border = minetest.get_node_or_nil(nn[1]).name
 				else
 					border = "mcl_core:stone"
 				end
-				if border == "mcl_core:dirt" then border = "mcl_core:dirt_with_grass" end
+				if border == nil or border == "mcl_core:dirt" then border = "mcl_core:dirt_with_grass" end
 			end
 			if an.name ~= liquid then
 				table.insert(br,pp)
@@ -94,7 +94,7 @@ mcl_structures.register_structure("lavapool",{
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
 	place_func = function(pos,def,pr)
-		return makelake(pos,5,"mcl_core:lava_source","mcl_core:stone",{"group:material_stone", "group:sand", "group:dirt"},pr)
+		return makelake(pos,5,"mcl_core:lava_source",{"group:material_stone", "group:sand", "group:dirt"},"mcl_core:stone",pr)
 	end
 })
 
@@ -114,7 +114,7 @@ mcl_structures.register_structure("water_lake",{
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
 	place_func = function(pos,def,pr)
-		return makelake(pos,5,"mcl_core:water_source",{"group:material_stone", "group:sand", "group:dirt"},nil,pr)
+		return makelake(pos,5,"mcl_core:water_source",{"group:material_stone", "group:sand", "group:dirt","group:grass_block"},nil,pr)
 	end
 })
 
@@ -219,7 +219,7 @@ mcl_structures.register_structure("lavadelta",{
 	terrain_feature = true,
 	noise_params = {
 		offset = 0,
-		scale = 0.01,
+		scale = 0.005,
 		spread = {x = 250, y = 250, z = 250},
 		seed = 78375213,
 		octaves = 5,
@@ -231,7 +231,7 @@ mcl_structures.register_structure("lavadelta",{
 	y_min = mcl_vars.mg_lava_nether_max + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)
-		local nn = minetest.find_nodes_in_area_under_air(vector.offset(pos,-10,-1,-10),vector.offset(pos,10,-1,10),{"mcl_blackstone:basalt","mcl_blackstone:blackstone"})
+		local nn = minetest.find_nodes_in_area_under_air(vector.offset(pos,-10,-1,-10),vector.offset(pos,10,-2,10),{"mcl_blackstone:basalt","mcl_blackstone:blackstone","mcl_nether:netherrack"})
 		table.sort(nn,function(a, b)
 		   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
 		end)
