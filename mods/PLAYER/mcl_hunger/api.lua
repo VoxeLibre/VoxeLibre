@@ -33,8 +33,9 @@ if mcl_hunger.active then
 		hunger = math.min(20, math.max(0, hunger))
 		player:get_meta():set_string("mcl_hunger:hunger", tostring(hunger))
 		if update_hudbars ~= false then
-			hb.change_hudbar(player, "hunger", hunger)
-			mcl_hunger.update_saturation_hud(player, nil, hunger)
+			-- math.floor(hunger) to stop the hunger float value from breaking the hud.
+			hb.change_hudbar(player, "hunger", math.floor(hunger))
+			mcl_hunger.update_saturation_hud(player, nil, math.floor(hunger))
 		end
 		return true
 	end
@@ -68,6 +69,9 @@ if mcl_hunger.active then
 			local s = mcl_hunger.get_saturation(player)
 			if s > 0 then
 				mcl_hunger.set_saturation(player, math.max(s - 1.0, 0))
+				h = mcl_hunger.get_hunger(player)
+				h = math.max(h-0.25, 0)
+				mcl_hunger.set_hunger(player, h)
 				satuchanged = true
 			elseif s <= 0.0001 then
 				h = mcl_hunger.get_hunger(player)
