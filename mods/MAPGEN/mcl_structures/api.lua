@@ -76,7 +76,7 @@ function mcl_structures.place_structure(pos, def, pr)
 				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-5,0),vector.offset(ground_p2,0,-30,0),{"air","group:liquid","mcl_core:snow"}),{name=node_stone})
 			else
 				if logging then
-					minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pos).." not placed. No solid ground.")
+					minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pp).." not placed. No solid ground.")
 				end
 				return false
 			end
@@ -84,7 +84,7 @@ function mcl_structures.place_structure(pos, def, pr)
 	end
 	if def.on_place and not def.on_place(pos,def,pr) then
 		if logging then
-			minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pos).." not placed. Conditions not satisfied.")
+			minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pp).." not placed. Conditions not satisfied.")
 		end
 		return false
 	end
@@ -101,14 +101,14 @@ function mcl_structures.place_structure(pos, def, pr)
 				return ap(pos,def,pr)
 			end,pr)
 			if logging then
-				minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pos))
+				minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pp))
 			end
 			return true
 		end
 	elseif def.place_func and def.place_func(pos,def,pr) then
 		if not def.after_place or ( def.after_place  and def.after_place(pos,def,pr) ) then
 			if logging then
-				minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pos))
+				minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pp))
 			end
 			return true
 		end
