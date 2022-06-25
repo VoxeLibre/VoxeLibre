@@ -249,7 +249,7 @@ mcl_structures.register_structure("desert_well",{
 	not_near = { "desert_temple_new" },
 	solid_ground = true,
 	sidelen = 4,
-	chunk_probability = 256,
+	chunk_probability = 600,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	y_offset = -2,
@@ -258,14 +258,15 @@ mcl_structures.register_structure("desert_well",{
 })
 
 mcl_structures.register_structure("fossil",{
-	place_on = {"group:material_stone"},
+	place_on = {"group:material_stone","group:sand"},
 	fill_ratio = 0.01,
 	flags = "place_center_x, place_center_z",
 	solid_ground = true,
 	sidelen = 13,
-	chunk_probability = 256,
-	y_max = 1,
-	y_min = mcl_vars.mg_overworld_min,
+	chunk_probability = 1000,
+	y_offset = function(pr) return ( pr:next(1,16) * -1 ) -16 end,
+	y_max = 15,
+	y_min = mcl_vars.mg_overworld_min + 35,
 	biomes = { "Desert" },
 	filenames = {
 		modpath.."/schematics/mcl_structures_fossil_skull_1.mts", -- 4×5×5
