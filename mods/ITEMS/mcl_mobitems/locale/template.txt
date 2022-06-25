@@ -93,6 +93,12 @@ A carrot on a stick can be used on saddled pigs to ride them.=
 
 Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick.=
 
+Nautilus Shell=
+Used to craft a conduit=
+The Nautilus Shell is used to craft a conduit. They can be obtained by fishing or killing a drowned that is wielding a shell.=
+Heart of the Sea=
+The Heart of the Sea is used to craft a conduit. They can be obtained by finding them in a buried treasure chest.=
+
 Iron Horse Armor=
 Iron horse armor can be worn by horses to increase their protection from harm a bit.=
 Golden Horse Armor=
