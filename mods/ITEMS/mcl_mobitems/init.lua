@@ -327,6 +327,15 @@ minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
 	_mcl_toollike_wield = true,
 })
 
+minetest.register_craftitem("mcl_mobitems:nautilus_shell", {
+	description = S("Nautilus Shell"),
+	_tt_help = S("Used to craft a conduit"),
+	_doc_items_longdesc = S("The Nautilus Shell is used to craft a conduit. They can be obtained by fishing or killing a drowned that is wielding a shell."),
+	inventory_image = "mcl_mobitems_nautilus_shell.png",
+	groups = { craftitem=1 },
+	stack_max = 64,
+})
+
 local horse_armor_use = S("Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.")
 
 minetest.register_craftitem("mcl_mobitems:iron_horse_armor", {
