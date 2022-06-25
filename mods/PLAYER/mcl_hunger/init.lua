@@ -28,6 +28,7 @@ mcl_hunger.EXHAUST_SWIM = 10 -- player movement in water
 mcl_hunger.EXHAUST_SPRINT = 100 -- sprint (per node)
 mcl_hunger.EXHAUST_DAMAGE = 100 -- taking damage (protected by armor)
 mcl_hunger.EXHAUST_REGEN = 6000 -- Regenerate 1 HP
+mcl_hunger.EXHAUST_HUNGER = 5 -- Hunger status effect at base level.
 mcl_hunger.EXHAUST_LVL = 4000 -- at what exhaustion player saturation gets lowered
 
 mcl_hunger.SATURATION_INIT = 5 -- Initial saturation for new/respawning players
@@ -147,7 +148,13 @@ minetest.register_globalstep(function(dtime)
 		if food_tick_timer > 4.0 then
 			food_tick_timer = 0
 
-			if food_level >= 18 then -- slow regenration
+			-- let hunger work always
+			if player_health > 0 and player_health <= 20 then
+				--mcl_hunger.exhaust(player_name, mcl_hunger.EXHAUST_HUNGER) -- later for hunger status effect
+				mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
+			end
+
+			if food_level >= 18 then -- slow regeneration
 				if player_health > 0 and player_health < 20 then
 					player:set_hp(player_health+1)
 					mcl_hunger.exhaust(player_name, mcl_hunger.EXHAUST_REGEN)
@@ -164,7 +171,7 @@ minetest.register_globalstep(function(dtime)
 				end
 			end
 
-		elseif food_tick_timer > 0.5 and food_level == 20 and food_saturation_level >= 6 then -- fast regeneration
+		elseif food_tick_timer > 0.5 and food_level == 20 and food_saturation_level > 0 then -- fast regeneration
 			if player_health > 0 and player_health < 20 then
 				food_tick_timer = 0
 				player:set_hp(player_health+1)

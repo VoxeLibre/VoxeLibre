@@ -67,7 +67,7 @@ if mcl_hunger.active then
 			local satuchanged = false
 			local s = mcl_hunger.get_saturation(player)
 			if s > 0 then
-				mcl_hunger.set_saturation(player, math.max(s - 1.0, 0))
+				mcl_hunger.set_saturation(player, math.max(s - 1.5, 0))
 				satuchanged = true
 			elseif s <= 0.0001 then
 				h = mcl_hunger.get_hunger(player)
