@@ -82,7 +82,7 @@ local cold = {
 	y_min = mcl_vars.mg_overworld_min,
 	y_max = -2,
 	biomes = cold_oceans,
-	chunk_probability = 256,
+	chunk_probability = 400,
 	sidelen = 20,
 	filenames = {
 		modpath.."/schematics/mcl_structures_ocean_ruins_cold_1.mts",

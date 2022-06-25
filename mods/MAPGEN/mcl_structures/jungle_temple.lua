@@ -19,7 +19,7 @@ mcl_structures.register_structure("jungle_temple",{
 		modpath.."/schematics/mcl_structures_jungle_temple_nice.mts",
 	},
 	loot = {
-		["mcl_chests:chest_small" ] ={{
+		["mcl_chests:trapped_chest_small" ] ={{
 			stacks_min = 2,
 			stacks_max = 6,
 			items = {

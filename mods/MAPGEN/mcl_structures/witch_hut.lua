@@ -22,12 +22,12 @@ local function hut_placement_callback(pos,def,pr)
 	local hl = def.sidelen / 2
 	local p1 = vector.offset(pos,-hl,-hl,-hl)
 	local p2 = vector.offset(pos,hl,hl,hl)
-	local legs = minetest.find_nodes_in_area(p1, p2, "mcl_core:tree")
+	local legs = minetest.find_nodes_in_area(vector.offset(pos,-hl,0,-hl),vector.offset(pos,hl,0,hl), "mcl_core:tree")
 	local tree = {}
-	for i = 1, #legs do
-		while minetest.get_item_group(mcl_vars.get_node({x=legs[i].x, y=legs[i].y-1, z=legs[i].z}, true, 333333).name, "water") ~= 0 do
-			legs[i].y = legs[i].y - 1
-			table.insert(tree,legs[i])
+	for _,leg in pairs(legs) do
+		while minetest.get_item_group(mcl_vars.get_node(vector.offset(leg,0,-1,0), true, 333333).name, "water") ~= 0 do
+			leg = vector.offset(leg,0,-1,0)
+			table.insert(tree,leg)
 		end
 	end
 	minetest.bulk_set_node(tree, {name = "mcl_core:tree", param2 = 2})
@@ -38,8 +38,8 @@ mcl_structures.register_structure("witch_hut",{
 	place_on = {"group:sand","group:grass_block","mcl_core:water_source","group:dirt"},
 	fill_ratio = 0.01,
 	flags = "place_center_x, place_center_z, liquid_surface, force_placement",
-	sidelen = 5,
-	chunk_probability = 256,
+	sidelen = 8,
+	chunk_probability = 400,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = -4,
 	y_offset = 0,

@@ -34,7 +34,7 @@ end
 
 mcl_structures.register_structure("desert_temple",{
 	place_on = {"group:sand"},
-	fill_ratio = 0.01,
+	fill_ratio = 0.05,
 	flags = "place_center_x, place_center_z",
 	solid_ground = true,
 	make_foundation = true,
