@@ -133,6 +133,8 @@ function mcl_armor.register_set(def)
 			_on_break = on_break_callbacks[name] or def.on_break,
 			_mcl_armor_element = name,
 			_mcl_armor_texture = textures[name] or modname .. "_" .. itemname .. ".png",
+			_mcl_upgradable = def._mcl_upgradable,
+			_mcl_upgrade_item = itemstring:gsub("_diamond","_netherite")
 		})
 
 		if def.craft_material then
