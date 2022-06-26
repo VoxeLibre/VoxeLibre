@@ -119,20 +119,7 @@ mcl_mobs:register_mob("mobs_mc:villager_zombie", {
 				villager_obj:set_yaw(yaw)
 				villager.target_yaw = yaw
 				villager.nametag = self.nametag
-				local texture = self.base_texture[1]:gsub("zombie", "villager")
-				if texture == "mobs_mc_villager_villager.png" then
-					texture = "mobs_mc_villager.png"
-				end
-				local textures = {texture}
-				villager.base_texture = textures
-				villager_obj:set_properties({textures = textures})
-				local matches = {}
-				for prof, tex in pairs(professions) do
-					if texture == tex then
-						table.insert(matches, prof)
-					end
-				end
-				villager._profession = matches[math.random(#matches)]
+				villager._profession = "unemployed"
 				self._curing = nil
 				mcl_burning.extinguish(obj)
 				obj:remove()

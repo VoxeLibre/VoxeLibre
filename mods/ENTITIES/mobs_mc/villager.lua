@@ -1362,17 +1362,17 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 	end,
 
 	on_spawn = function(self)
-		if self._id then
-			set_textures(self)
-			return
-		end
-		self._id=minetest.sha1(minetest.get_gametime()..minetest.pos_to_string(self.object:get_pos())..tostring(math.random()))
 		if not self._profession then
 			self._profession = "unemployed"
 			if math.random(100) == 1 then
 				self._profession = "nitwit"
 			end
 		end
+		if self._id then
+			set_textures(self)
+			return
+		end
+		self._id=minetest.sha1(minetest.get_gametime()..minetest.pos_to_string(self.object:get_pos())..tostring(math.random()))
 		set_textures(self)
 	end,
 	on_die = function(self, pos)
