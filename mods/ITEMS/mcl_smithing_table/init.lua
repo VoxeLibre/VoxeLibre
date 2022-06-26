@@ -85,7 +85,7 @@ minetest.register_node("mcl_smithing_table:table", {
 
 			local inv = meta:get_inventory()
 
-    	inv:set_size("diamond_item", 1)
+			inv:set_size("diamond_item", 1)
 			inv:set_size("netherite", 1)
 			inv:set_size("upgraded_item", 1)
   end,
