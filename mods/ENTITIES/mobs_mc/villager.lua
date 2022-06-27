@@ -458,7 +458,7 @@ local professions = {
 				"mobs_mc_villager_toolsmith.png",
 				"mobs_mc_villager_toolsmith.png",
 			},
-		jobsite = "mcl_anvils:anvil", --FIXME: smithing table
+		jobsite = "mcl_smithing_table:table",
 		trades = {
 			{
 			{ { "mcl_core:coal_lump", 15, 15 }, E1 },
