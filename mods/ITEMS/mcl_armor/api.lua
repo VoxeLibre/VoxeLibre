@@ -115,8 +115,8 @@ function mcl_armor.register_set(def)
 			groups[k] = v
 		end
 		local upgrade_item = nil
-		if itemstring:find("_diamond") then
-			upgrade_item = itemstring:gsub("_diamond","_netherite")
+		if itemstring:find("_diamond") and def._mcl_upgrade_item_material then
+			upgrade_item = itemstring:gsub("_[%l%d]*$",def._mcl_upgrade_item_material)
 		end
 
 		minetest.register_tool(itemstring, {

@@ -80,7 +80,7 @@ mcl_armor.register_set({
 	toughness = 2,
 	craft_material = "mcl_core:diamond",
 	_mcl_upgradable = true,
-	_mcl_upgrade_item_add = "_netherite"
+	_mcl_upgrade_item_material = "_netherite"
 })
 
 mcl_armor.register_set({
