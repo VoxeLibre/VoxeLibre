@@ -31,12 +31,12 @@ minetest.register_tool("mcl_shields:shield", {
 		shield = 1,
 		weapon = 1,
 		enchantability = -1,
-		no_wieldview = 1,
 		offhand_item = 1,
 	},
 	sound = {breaks = "default_tool_breaks"},
 	_repair_material = "group:wood",
 	wield_scale = vector.new(2, 2, 2),
+	_mcl_wieldview_item = "",
 })
 
 local function wielded_item(obj, i)
@@ -438,7 +438,6 @@ for _, colortab in pairs(mcl_banners.colors) do
 			shield = 1,
 			weapon = 1,
 			enchantability = -1,
-			no_wieldview = 1,
 			not_in_creative_inventory = 1,
 			offhand_item = 1,
 		},
@@ -446,6 +445,7 @@ for _, colortab in pairs(mcl_banners.colors) do
 		_repair_material = "group:wood",
 		wield_scale = vector.new(2, 2, 2),
 		_shield_color = colortab[4],
+		_mcl_wieldview_item = "",
 	})
 
 	local banner = "mcl_banners:banner_item_" .. color

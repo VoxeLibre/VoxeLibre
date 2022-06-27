@@ -1,5 +1,3 @@
-local get_item_group = minetest.get_item_group
-
 minetest.register_on_joinplayer(function(player)
 	if not player or not player:is_player() then
 		return
@@ -12,17 +10,28 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 minetest.register_entity("mcl_wieldview:wieldnode", {
-	visual = "wielditem",
-	physical = false,
-	pointable = false,
-	collide_with_objects = false,
-	static_save = false,
-	visual_size  = {x = 0.21, y = 0.21},
+	initial_properties = {
+		hp_max           = 1,
+		visual           = "wielditem",
+		physical         = false,
+		textures         = {""},
+		automatic_rotate = 1.5,
+		is_visible       = true,
+		pointable        = false,
+		collide_with_objects = false,
+		static_save = false,
+		collisionbox = {-0.21, -0.21, -0.21, 0.21, 0.21, 0.21},
+		selectionbox = {-0.21, -0.21, -0.21, 0.21, 0.21, 0.21},
+		visual_size  = {x = 0.21, y = 0.21},
+	},
+	
 	on_step = function(self)
-		if not self._wielder or not self._wielder:is_player() then
-			self.object:remove()
-		end
 		local player = self._wielder
+		
+		if not player or not player:is_player() then
+			self.object:remove()
+			return
+		end
 		
 		local item = player:get_wielded_item():get_name()
 
@@ -30,13 +39,9 @@ minetest.register_entity("mcl_wieldview:wieldnode", {
 		
 		self._item = item
 		
-		if get_item_group(item, "no_wieldview") ~= 0 then
-			local def = player:get_wielded_item():get_definition()
-			if def and def._wieldview_item then
-				item = def._wieldview_item
-			else
-				item = ""
-			end
+		local def = player:get_wielded_item():get_definition()
+		if def and def._mcl_wieldview_item then
+			item = def._mcl_wieldview_item
 		end
 		
 		local item_def = minetest.registered_items[item]
