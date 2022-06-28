@@ -58,7 +58,7 @@ minetest.register_node("mcl_nether:ancient_debris", {
 	tiles = {"mcl_nether_ancient_debris_top.png", "mcl_nether_ancient_debris_side.png"},
 	is_ground_content = true,
 	groups = {pickaxey=4, building_block=1, material_stone=1, xp=0},
-	drop = 'mcl_nether:ancient_debris',
+	drop = "mcl_nether:ancient_debris",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 30,
@@ -72,7 +72,7 @@ minetest.register_node("mcl_nether:netheriteblock", {
 	tiles = {"mcl_nether_netheriteblock.png"},
 	is_ground_content = true,
 	groups = {pickaxey=4, building_block=1, material_stone=1, xp = 0},
-	drop = 'mcl_nether:netheriteblock',
+	drop = "mcl_nether:netheriteblock",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 50,
@@ -319,7 +319,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'mcl_nether:quartz_block',
+	output = "mcl_nether:quartz_block",
 	recipe = {
 		{"mcl_nether:quartz", "mcl_nether:quartz"},
 		{"mcl_nether:quartz", "mcl_nether:quartz"},
@@ -392,27 +392,27 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_nether:netherite_ingot",
 	recipe = {
-		{'mcl_nether:netherite_scrap', 'mcl_nether:netherite_scrap', 'mcl_nether:netherite_scrap'},
-		{'mcl_nether:netherite_scrap', 'mcl_core:gold_ingot', 'mcl_core:gold_ingot'},
-		{'mcl_core:gold_ingot', 'mcl_core:gold_ingot', ''},
+		{"mcl_nether:netherite_scrap", "mcl_nether:netherite_scrap", "mcl_nether:netherite_scrap"},
+		{"mcl_nether:netherite_scrap", "mcl_core:gold_ingot", "mcl_core:gold_ingot"},
+		{"mcl_core:gold_ingot", "mcl_core:gold_ingot", ""},
 	}
 })
 
 minetest.register_craft({
 	output = "mcl_nether:netheriteblock",
 	recipe = {
-		{'mcl_nether:netherite_ingot', 'mcl_nether:netherite_ingot', 'mcl_nether:netherite_ingot'},
-		{'mcl_nether:netherite_ingot', 'mcl_nether:netherite_ingot', 'mcl_nether:netherite_ingot'},
-		{'mcl_nether:netherite_ingot', 'mcl_nether:netherite_ingot', 'mcl_nether:netherite_ingot'}
+		{"mcl_nether:netherite_ingot", "mcl_nether:netherite_ingot", "mcl_nether:netherite_ingot"},
+		{"mcl_nether:netherite_ingot", "mcl_nether:netherite_ingot", "mcl_nether:netherite_ingot"},
+		{"mcl_nether:netherite_ingot", "mcl_nether:netherite_ingot", "mcl_nether:netherite_ingot"}
 	}
 })
 
 minetest.register_craft({
 	output = "mcl_nether:netherite_ingot 9",
 	recipe = {
-		{'mcl_nether:netheriteblock', '', ''},
-		{'', '', ''},
-		{'', '', ''}
+		{"mcl_nether:netheriteblock", "", ""},
+		{"", "", ""},
+		{"", "", ""}
 	}
 })
 
