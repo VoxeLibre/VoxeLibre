@@ -1698,3 +1698,44 @@ function mcl_core.after_snow_destruct(pos)
 	local node = minetest.get_node(npos)
 	mcl_core.clear_snow_dirt(npos, node)
 end
+
+
+-- Obsidian crying
+
+local crying_obsidian_tears = {
+	"mcl_core_crying_obsidian_tear.png",
+	"mcl_core_crying_obsidian_tear2.png",
+	"mcl_core_crying_obsidian_tear3.png"
+}
+
+local psdef = {
+			amount = 10,
+			time = 0.9, --everything longer than 1 is a coord exploit
+			minvel = vector.new(0,-0.15,0),
+			maxvel = vector.new(0,-0.001,0),
+			minacc = vector.new(0,-0.1,0),
+			maxacc = vector.new(0,-0.001,0),
+			minexptime = 1,
+			maxexptime = 6,
+			minsize = 0.1,
+			maxsize = 0.25,
+			collisiondetection = true,
+			collision_removal = true,
+			object_collision = true,
+			vertical = true,
+}
+
+minetest.register_abm({
+	label = "Obsidian cries",
+	nodenames = {"mcl_core:crying_obsidian"},
+	interval = 60,
+	chance = 10,
+	action = function(pos, node)
+		psdef.minpos = vector.offset(pos,-0.6,-0.51,-0.6)
+		psdef.maxpos = vector.offset(pos,0.6,-0.51,0.6)
+		for _,t in pairs(crying_obsidian_tears) do
+			psdef.texture = t
+			minetest.add_particlespawner(psdef)
+		end
+	end
+})
