@@ -74,8 +74,12 @@ minetest.register_node("mcl_smithing_table:table", {
 	groups = {pickaxey = 2, deco_block = 1},
 
 	tiles = {
-		"mcl_smithing_table_top.png", "mcl_smithing_table_front.png", "mcl_smithing_table_side.png",
-		"mcl_smithing_table_side.png", "mcl_smithing_table_side.png", "mcl_smithing_table_side.png"
+		"mcl_smithing_table_top.png",
+		"mcl_smithing_table_bottom.png",
+		"mcl_smithing_table_side.png",
+		"mcl_smithing_table_side.png",
+		"mcl_smithing_table_side.png",
+		"mcl_smithing_table_front.png",
 	},
 
 	sounds = mcl_sounds.node_sound_metal_defaults(),
