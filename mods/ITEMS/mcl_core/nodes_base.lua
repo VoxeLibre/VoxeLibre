@@ -831,6 +831,19 @@ minetest.register_node("mcl_core:obsidian", {
 	end,
 })
 
+minetest.register_node("mcl_core:crying_obsidian", {
+	description = S("Crying Obsidian"),
+	_doc_items_longdesc = S("Crying obsidian is a luminous obsidian that can generate as part of ruined portals."),
+	tiles = {"default_obsidian.png^mcl_core_crying_obsidian.png"},
+	is_ground_content = false,
+	light_source = 10,
+	sounds = mcl_sounds.node_sound_stone_defaults(),
+	stack_max = 64,
+	groups = {pickaxey=5, building_block=1, material_stone=1},
+	_mcl_blast_resistance = 1200,
+	_mcl_hardness = 50,
+})
+
 minetest.register_node("mcl_core:ice", {
 	description = S("Ice"),
 	_doc_items_longdesc = S("Ice is a solid block usually found in cold areas. It melts near block light sources at a light level of 12 or higher. When it melts or is broken while resting on top of another block, it will turn into a water source."),
