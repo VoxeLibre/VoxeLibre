@@ -1,6 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 local mod_target = minetest.get_modpath("mcl_target")
+local enable_pvp = minetest.settings:get_bool("enable_pvp")
 
 local math = math
 local vector = vector
@@ -204,7 +205,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 			if hitpoint.type == "object" then
 				-- find the closest object that is in the way of the arrow
 				local ok = false
-				if hitpoint.ref:is_player() then
+				if hitpoint.ref:is_player() and enable_pvp then
 					ok = true
 				elseif hitpoint.ref:get_luaentity() then
 					if (hitpoint.ref:get_luaentity().is_mob or hitpoint.ref:get_luaentity()._hittable_by_projectile) then
