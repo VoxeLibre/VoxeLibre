@@ -84,6 +84,19 @@ local function distinguish_tool_and_material(input1, input2)
 	end
 end
 
+-- Helper function to make sure update_anvil_slots NEVER overstacks the output slot
+local function fix_stack_size(stack)
+	if not stack or stack == "" then return "" end
+	local count = stack:get_count()
+	local max_count = stack:get_stack_max()
+
+	if count > max_count then
+		stack:set_count(max_count)
+		count = max_count
+	end
+	return count
+end
+
 -- Update the inventory slots of an anvil node.
 -- meta: Metadata of anvil node
 local function update_anvil_slots(meta)
@@ -213,6 +226,7 @@ local function update_anvil_slots(meta)
 
 	-- Set the new output slot
 	if new_output then
+		fix_stack_size(new_output)
 		inv:set_stack("output", 1, new_output)
 	end
 end
