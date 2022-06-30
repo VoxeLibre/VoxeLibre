@@ -114,6 +114,10 @@ function mcl_armor.register_set(def)
 		for k, v in pairs(element_groups) do
 			groups[k] = v
 		end
+		local upgrade_item = nil
+		if def._mcl_upgradable and def._mcl_upgrade_item_material then
+			upgrade_item = itemstring:gsub("_[%l%d]*$",def._mcl_upgrade_item_material)
+		end
 
 		minetest.register_tool(itemstring, {
 			description = S(def.description .. " " .. (descriptions[name] or element.description)),
@@ -133,6 +137,8 @@ function mcl_armor.register_set(def)
 			_on_break = on_break_callbacks[name] or def.on_break,
 			_mcl_armor_element = name,
 			_mcl_armor_texture = textures[name] or modname .. "_" .. itemname .. ".png",
+			_mcl_upgradable = def._mcl_upgradable,
+			_mcl_upgrade_item = upgrade_item
 		})
 
 		if def.craft_material then

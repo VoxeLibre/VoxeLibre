@@ -49,6 +49,8 @@ mcl_armor.register_set({
 	},
 	repair_material = "mcl_core:iron_ingot",
 	cook_material = "mcl_core:iron_nugget",
+	sound_equip = "mcl_armor_equip_iron",
+	sound_unequip = "mcl_armor_unequip_iron",
 })
 
 mcl_armor.register_set({
@@ -64,6 +66,8 @@ mcl_armor.register_set({
 	},
 	craft_material = "mcl_core:iron_ingot",
 	cook_material = "mcl_core:iron_nugget",
+	sound_equip = "mcl_armor_equip_iron",
+	sound_unequip = "mcl_armor_unequip_iron",
 })
 
 mcl_armor.register_set({
@@ -79,6 +83,27 @@ mcl_armor.register_set({
 	},
 	toughness = 2,
 	craft_material = "mcl_core:diamond",
+	sound_equip = "mcl_armor_equip_diamond",
+	sound_unequip = "mcl_armor_unequip_diamond",
+	_mcl_upgradable = true,
+	_mcl_upgrade_item_material = "_netherite",
+})
+
+mcl_armor.register_set({
+	name = "netherite",
+	description = "Netherite",
+	durability = 555,
+	enchantability = 10,
+	points = {
+		head = 3,
+		torso = 8,
+		legs = 6,
+		feet = 3,
+	},
+	toughness = 2,
+	craft_material = "mcl_nether:netherite_ingot",
+	sound_equip = "mcl_armor_equip_diamond",
+	sound_unequip = "mcl_armor_unequip_diamond",
 })
 
 mcl_armor.register_protection_enchantment({
