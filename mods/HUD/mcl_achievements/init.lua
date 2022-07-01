@@ -181,9 +181,9 @@ awards.register_achievement("mcl:snipeSkeleton", {
 
 -- Triggered in mcl_portals
 awards.register_achievement("mcl:buildNetherPortal", {
-	title = S("Into the Nether"),
+	title = S("We Need to Go Deeper"),
 	description = S("Use obsidian and a fire starter to construct a Nether portal."),
-	icon = "default_obsidian.png",
+	icon = "mcl_fire_flint_and_steel.png",
 })
 
 awards.register_achievement("mcl:enterEndPortal", {
