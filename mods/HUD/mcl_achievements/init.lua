@@ -253,6 +253,13 @@ awards.register_achievement("mcl:localBrewery", {
 	icon = "mcl_potions_potion_overlay.png^[colorize:#F82423:"..tostring(127).."^mcl_potions_potion_bottle.png",
 })
 
+-- Triggered in mcl_enchanting
+awards.register_achievement("mcl:enchanter", {
+	title = S("Enchanter"),
+	description = S("Enchant an item using an Enchantment Table."),
+	icon = "mcl_enchanting_book_enchanted.png",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then
