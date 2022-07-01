@@ -388,11 +388,16 @@ local function PlaceChest(pos, param2)
 	end
 end
 
+
 -- This function checks if a cart has ACTUALLY been spawned.
 -- To be calld by minetest.after.
 -- This is a workaround thanks to the fact that minetest.add_entity is unreliable as fuck
 -- See: https://github.com/minetest/minetest/issues/4759
 -- FIXME: Kill this horrible hack with fire as soon you can.
+
+-- Why did anyone activate it in the first place? It doesn't
+-- have a function seeing as there are no chest minecarts yet.
+--[[
 local function RecheckCartHack(params)
 	local pos = params[1]
 	local cart_id = params[2]
@@ -408,6 +413,8 @@ local function RecheckCartHack(params)
 	end
 	minetest.log("info", "[tsm_railcorridors] Cart spawn FAILED: "..minetest.pos_to_string(pos))
 end
+--]]
+
 
 -- Try to place a cobweb.
 -- pos: Position of cobweb
@@ -937,7 +944,10 @@ local function spawn_carts()
 			-- Note that the callback function is also called there.
 			-- TODO: Move callback function to this position when the
 			-- minetest.add_entity bug has been fixed.
-			minetest.after(3, RecheckCartHack, {cpos, cart_id})
+
+			-- minetest.after(3, RecheckCartHack, {cpos, cart_id})
+			-- This whole recheck logic leads to a stub right now
+			-- it can be reenabled when chest carts are a thing.
 		end
 	end
 	carts_table = {}

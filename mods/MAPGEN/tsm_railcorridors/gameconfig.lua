@@ -42,6 +42,14 @@ tsm_railcorridors.carts = { "mcl_minecarts:minecart" }
 
 function tsm_railcorridors.on_construct_cart(pos, cart)
 	-- TODO: Fill cart with treasures
+
+	-- This is it? There's this giant hack announced in
+	-- the other file and I grep for the function and it's
+	-- a stub? :)
+
+	-- The path here using some minetest.after hackery was
+	-- deactivated in init.lua - reactivate when this does
+	-- something the function is called RecheckCartHack.
 end
 
 -- Fallback function. Returns a random treasure. This function is called for chests
