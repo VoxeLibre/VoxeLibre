@@ -33,51 +33,55 @@ local function makelake(pos,size,liquid,placein,border,pr)
 	local node_under = minetest.get_node(vector.offset(pos,0,-1,0))
 	local p1 = vector.offset(pos,-size,-1,-size)
 	local p2 = vector.offset(pos,size,-1,size)
-	local nn = minetest.find_nodes_in_area(p1,p2,placein)
-	table.sort(nn,function(a, b)
-	   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
+	minetest.emerge_area(p1, p2, function(blockpos, action, calls_remaining, param)
+		if calls_remaining ~= 0 then return end
+		local nn = minetest.find_nodes_in_area(p1,p2,placein)
+		table.sort(nn,function(a, b)
+		   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
+		end)
+		if not nn[1] then return end
+		local y = pos.y - pr:next(1,2)
+		local lq = {}
+		local air = {}
+		local r = pr:next(1,#nn)
+		if r > #nn then return end
+		for i=1,r do
+			if nn[i].y == y then
+				airtower(nn[i],air,55)
+				table.insert(lq,nn[i])
+			end
+		end
+		minetest.bulk_set_node(lq,{name=liquid})
+		minetest.bulk_set_node(air,{name="air"})
+		air = {}
+		local br = {}
+		for k,v in pairs(lq) do
+			for kk,vv in pairs(adjacents) do
+				local pp = vector.add(v,vv)
+				local an = minetest.get_node(pp)
+				local un = minetest.get_node(vector.offset(pp,0,1,0))
+				if not border then
+					if minetest.get_item_group(an.name,"solid") > 0 then
+						border = an.name
+					elseif minetest.get_item_group(minetest.get_node(nn[1]).name,"solid") > 0 then
+						border = minetest.get_node_or_nil(nn[1]).name
+					else
+						border = "mcl_core:stone"
+					end
+					if border == nil or border == "mcl_core:dirt" then border = "mcl_core:dirt_with_grass" end
+				end
+				if an.name ~= liquid then
+					table.insert(br,pp)
+					if un.name ~= liquid then
+						airtower(pp,air,55)
+					end
+				end
+			end
+		end
+		minetest.bulk_set_node(br,{name=border})
+		minetest.bulk_set_node(air,{name="air"})
+		return true
 	end)
-	if not nn[1] then return end
-	local y = pos.y - pr:next(1,2)
-	local lq = {}
-	local air = {}
-	local r = pr:next(1,#nn)
-	if r > #nn then return end
-	for i=1,r do
-		if nn[i].y == y then
-			airtower(nn[i],air,55)
-			table.insert(lq,nn[i])
-		end
-	end
-	minetest.bulk_set_node(lq,{name=liquid})
-	minetest.bulk_set_node(air,{name="air"})
-	air = {}
-	local br = {}
-	for k,v in pairs(lq) do
-		for kk,vv in pairs(adjacents) do
-			local pp = vector.add(v,vv)
-			local an = minetest.get_node(pp)
-			local un = minetest.get_node(vector.offset(pp,0,1,0))
-			if not border then
-				if minetest.get_item_group(an.name,"solid") > 0 then
-					border = an.name
-				elseif minetest.get_item_group(minetest.get_node(nn[1]).name,"solid") > 0 then
-					border = minetest.get_node_or_nil(nn[1]).name
-				else
-					border = "mcl_core:stone"
-				end
-				if border == nil or border == "mcl_core:dirt" then border = "mcl_core:dirt_with_grass" end
-			end
-			if an.name ~= liquid then
-				table.insert(br,pp)
-				if un.name ~= liquid then
-					airtower(pp,air,55)
-				end
-			end
-		end
-	end
-	minetest.bulk_set_node(br,{name=border})
-	minetest.bulk_set_node(air,{name="air"})
 	return true
 end
 
