@@ -68,12 +68,13 @@ function mcl_structures.place_structure(pos, def, pr)
 					if b.node_stone then node_stone = b.node_stone end
 					if b.node_dust then node_dust = b.node_dust end
 				end
-				minetest.bulk_set_node(minetest.find_nodes_in_area(ground_p1,ground_p2,{"air","group:liquid","mcl_core:snow"}),{name=node_top})
+				local replace = {"air","group:liquid","mcl_core:snow","group:tree","group:leaves"}
+				minetest.bulk_set_node(minetest.find_nodes_in_area(ground_p1,ground_p2,replace),{name=node_top})
 				if node_dust then
 					minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,1,0),vector.offset(ground_p2,0,1,0),{"air"}),{name=node_dust})
 				end
-				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-1,0),vector.offset(ground_p2,0,-4,0),{"air","group:liquid","mcl_core:snow"}),{name=node_filler})
-				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-5,0),vector.offset(ground_p2,0,-30,0),{"air","group:liquid","mcl_core:snow"}),{name=node_stone})
+				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-1,0),vector.offset(ground_p2,0,-4,0),replace),{name=node_filler})
+				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-5,0),vector.offset(ground_p2,0,-30,0),replace),{name=node_stone})
 			else
 				if logging then
 					minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pp).." not placed. No solid ground.")
