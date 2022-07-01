@@ -136,6 +136,12 @@ awards.register_achievement("mcl:mineWood", {
 	icon = "default_tree.png",
 })
 
+awards.register_achievement("mcl:whosCuttingOnions", {
+	title = S("Who is Cutting Onions?"),
+	description = S("Pick up a crying obsidian from the floor."),
+	icon = "default_obsidian.png^mcl_core_crying_obsidian.png",
+})
+
 -- Smelting achivements: These are awarded when picking up an item from a furnace
 -- output. They are given in mcl_furnaces.
 awards.register_achievement("mcl:acquireIron", {

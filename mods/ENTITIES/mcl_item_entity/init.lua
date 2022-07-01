@@ -59,6 +59,7 @@ mcl_item_entity.register_pickup_achievement("tree", "mcl:mineWood")
 mcl_item_entity.register_pickup_achievement("mcl_mobitems:blaze_rod", "mcl:blazeRod")
 mcl_item_entity.register_pickup_achievement("mcl_mobitems:leather", "mcl:killCow")
 mcl_item_entity.register_pickup_achievement("mcl_core:diamond", "mcl:diamonds")
+mcl_item_entity.register_pickup_achievement("mcl_core:crying_obsidian", "mcl:whosCuttingOnions")
 
 local function check_pickup_achievements(object, player)
 	if has_awards then
