@@ -246,6 +246,13 @@ awards.register_achievement("mcl:seriousDedication", {
 	icon = "farming_tool_netheritehoe.png",
 })
 
+-- Triggered in mcl_brewing
+awards.register_achievement("mcl:localBrewery", {
+	title = S("Local Brewery"),
+	description = S("Brew a Potion.\nHint: Take a potion or glass bottle out of the brewing stand."),
+	icon = "mcl_potions_potion_overlay.png^[colorize:#F82423:"..tostring(127).."^mcl_potions_potion_bottle.png",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then
