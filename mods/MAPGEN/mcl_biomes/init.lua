@@ -2594,7 +2594,16 @@ local function register_decorations()
 		deco_type = "simple",
 		place_on = {"group:sand","mcl_core:gravel"},
 		sidelen = 16,
-		noise_params = noise,
+		noise_params = {
+			offset = -0.0085,
+			scale = 0.002,
+			spread = {x = 25, y = 120, z = 25},
+			seed = 235,
+			octaves = 5,
+			persist = 1.8,
+			lacunarity = 3.5,
+			flags = "absvalue"
+		},
 		y_min = OCEAN_MIN,
 		y_max = -5,
 		decoration = "mcl_ocean:dead_brain_coral_block",
@@ -3356,6 +3365,29 @@ local function register_decorations()
 		rotation = "0",
 	})
 
+	--Mushrooms in caves
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:material_stone"},
+		sidelen = 80,
+		fill_ratio = 0.009,
+		noise_threshold = 2.0,
+		flags = "all_floors",
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_mushrooms:mushroom_red",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:material_stone"},
+		sidelen = 80,
+		fill_ratio = 0.009,
+		noise_threshold = 2.0,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_mushrooms:mushroom_brown",
+	})
+
 	-- Mossy cobblestone boulder (3×3)
 	minetest.register_decoration({
 		deco_type = "schematic",
@@ -3374,6 +3406,7 @@ local function register_decorations()
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = mod_mcl_structures.."/schematics/mcl_structures_boulder.mts",
 		flags = "place_center_x, place_center_z",
+		rotation = "random",
 	})
 
 	-- Small mossy cobblestone boulder (2×2)
@@ -3394,6 +3427,7 @@ local function register_decorations()
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = mod_mcl_structures.."/schematics/mcl_structures_boulder_small.mts",
 		flags = "place_center_x, place_center_z",
+		rotation = "random",
 	})
 
 	-- Cacti
@@ -4550,6 +4584,72 @@ local function register_dimension_decorations()
 		schematic = mod_mcl_blackstone.."/schematics/mcl_blackstone_nether_fossil_4.mts",
 		size = {x = 5, y = 8, z = 5},
 		rotation = "random",
+	})
+	--BASALT DELTA
+	minetest.register_decoration({
+		deco_type = "simple",
+		decoration = "mcl_blackstone:basalt",
+		place_on = {"mcl_blackstone:basalt","mcl_nether:netherrack","mcl_blackstone:blackstone"},
+		sidelen = 80,
+		height_max = 55,
+		noise_params={
+			offset = -0.0085,
+			scale = 0.002,
+			spread = {x = 25, y = 120, z = 25},
+			seed = 2325,
+			octaves = 5,
+			persist = 2,
+			lacunarity = 3.5,
+			flags = "absvalue"
+		},
+		biomes = {"BasaltDelta"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors, all ceilings",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		decoration = "mcl_blackstone:basalt",
+		place_on = {"mcl_blackstone:basalt","mcl_nether:netherrack","mcl_blackstone:blackstone"},
+		sidelen = 80,
+		height_max = 15,
+		noise_params={
+			offset = -0.0085,
+			scale = 0.004,
+			spread = {x = 25, y = 120, z = 25},
+			seed = 235,
+			octaves = 5,
+			persist = 2.5,
+			lacunarity = 3.5,
+			flags = "absvalue"
+		},
+		biomes = {"BasaltDelta"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors, all ceilings",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		decoration = "mcl_nether:magma",
+		place_on = {"mcl_blackstone:basalt","mcl_nether:netherrack","mcl_blackstone:blackstone"},
+		sidelen = 80,
+		fill_ratio = 0.082323,
+		biomes = {"BasaltDelta"},
+		place_offset_y  = -1,
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors, all ceilings",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		decoration = "mcl_nether:nether_lava_source",
+		place_on = {"mcl_blackstone:basalt","mcl_nether:netherrack","mcl_blackstone:blackstone"},
+		spawn_by = {"mcl_blackstone:basalt","mcl_blackstone:blackstone"},
+		num_spawn_by = 14,
+		sidelen = 80,
+		fill_ratio = 4,
+		biomes = {"BasaltDelta"},
+		place_offset_y  = -1,
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max - 5,
+		flags = "all_floors, force_placement",
 	})
 
 	--[[ THE END ]]
