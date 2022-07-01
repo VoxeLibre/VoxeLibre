@@ -24,31 +24,34 @@ local function set_node_no_bedrock(pos,node)
 end
 
 local function airtower(pos,tbl,h)
-	for i=0,h do
+	for i=1,h do
 		table.insert(tbl,vector.offset(pos,0,i,0))
 	end
 end
 
 local function makelake(pos,size,liquid,placein,border,pr)
 	local node_under = minetest.get_node(vector.offset(pos,0,-1,0))
-	local p1 = vector.offset(pos,-size,-size,-size)
-	local p2 = vector.offset(pos,size,size,size)
+	local p1 = vector.offset(pos,-size,-1,-size)
+	local p2 = vector.offset(pos,size,-1,size)
 	local nn = minetest.find_nodes_in_area(p1,p2,placein)
 	table.sort(nn,function(a, b)
 	   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
 	end)
 	if not nn[1] then return end
-	local y = mcl_structures.find_highest_y(nn)
+	local y = pos.y - pr:next(1,2)
 	local lq = {}
 	local air = {}
-	for i=1,pr:next(1,#nn) do
+	local r = pr:next(1,#nn)
+	if r > #nn then return end
+	for i=1,r do
 		if nn[i].y == y then
-			airtower(vector.offset(nn[i],0,1,0),air,55)
+			airtower(nn[i],air,55)
 			table.insert(lq,nn[i])
 		end
 	end
 	minetest.bulk_set_node(lq,{name=liquid})
-	local air = {}
+	minetest.bulk_set_node(air,{name="air"})
+	air = {}
 	local br = {}
 	for k,v in pairs(lq) do
 		for kk,vv in pairs(adjacents) do
@@ -68,13 +71,13 @@ local function makelake(pos,size,liquid,placein,border,pr)
 			if an.name ~= liquid then
 				table.insert(br,pp)
 				if un.name ~= liquid then
-					airtower(vector.offset(pp,0,1,0),air,55)
+					airtower(pp,air,55)
 				end
 			end
 		end
 	end
-	minetest.bulk_set_node(air,{name="air"})
 	minetest.bulk_set_node(br,{name=border})
+	minetest.bulk_set_node(air,{name="air"})
 	return true
 end
 

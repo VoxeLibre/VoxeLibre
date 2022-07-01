@@ -47,7 +47,7 @@ mcl_structures.register_structure("desert_temple",{
 	filenames = { modpath.."/schematics/mcl_structures_desert_temple.mts" },
 	after_place = temple_placement_callback,
 	loot = {
-		["mcl_chests:chest_small" ] ={
+		["mcl_chests:chest" ] ={
 		{
 			stacks_min = 2,
 			stacks_max = 4,
