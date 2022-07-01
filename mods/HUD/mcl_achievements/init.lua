@@ -192,6 +192,12 @@ awards.register_achievement("mcl:enterEndPortal", {
 	icon = "mcl_end_end_stone.png",
 })
 
+awards.register_achievement("mcl:theNether", {
+	title = S("The Nether"),
+	description = S("Bring summer clothes.\nHint: Enter the Nether."),
+	icon = "mcl_nether_netherrack.png",
+})
+
 -- Triggered in mcl_totems
 awards.register_achievement("mcl:postMortal", {
 	title = S("Postmortal"),
