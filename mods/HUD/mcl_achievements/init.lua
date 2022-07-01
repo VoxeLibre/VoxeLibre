@@ -206,6 +206,12 @@ awards.register_achievement("mcl:sweetDreams", {
 	icon = "mcl_beds_bed_red.png",
 })
 
+awards.register_achievement("mcl:notQuiteNineLives", {
+	title = S('Not Quite "Nine" Lives'),
+	description = S("Charge a Respawn Anchor to the maximum."),
+	icon = "respawn_anchor_side4.png",
+})
+
 -- Triggered in mobs_mc
 awards.register_achievement("mcl:whatAdeal", {
 	title = S("What A Deal!"),
