@@ -136,6 +136,18 @@ awards.register_achievement("mcl:mineWood", {
 	icon = "default_tree.png",
 })
 
+awards.register_achievement("mcl:whosCuttingOnions", {
+	title = S("Who is Cutting Onions?"),
+	description = S("Pick up a crying obsidian from the floor."),
+	icon = "default_obsidian.png^mcl_core_crying_obsidian.png",
+})
+
+awards.register_achievement("mcl:hiddenInTheDepths", {
+	title = S("Hidden in the Depths"),
+	description = S("Pick up an Ancient Debris from the floor."),
+	icon = "mcl_nether_ancient_debris_side.png",
+})
+
 -- Smelting achivements: These are awarded when picking up an item from a furnace
 -- output. They are given in mcl_furnaces.
 awards.register_achievement("mcl:acquireIron", {
@@ -169,15 +181,21 @@ awards.register_achievement("mcl:snipeSkeleton", {
 
 -- Triggered in mcl_portals
 awards.register_achievement("mcl:buildNetherPortal", {
-	title = S("Into the Nether"),
+	title = S("We Need to Go Deeper"),
 	description = S("Use obsidian and a fire starter to construct a Nether portal."),
-	icon = "default_obsidian.png",
+	icon = "mcl_fire_flint_and_steel.png",
 })
 
 awards.register_achievement("mcl:enterEndPortal", {
 	title = S("The End?"),
 	description = S("Or the beginning?\nHint: Enter an end portal."),
 	icon = "mcl_end_end_stone.png",
+})
+
+awards.register_achievement("mcl:theNether", {
+	title = S("The Nether"),
+	description = S("Bring summer clothes.\nHint: Enter the Nether."),
+	icon = "mcl_nether_netherrack.png",
 })
 
 -- Triggered in mcl_totems
@@ -194,6 +212,12 @@ awards.register_achievement("mcl:sweetDreams", {
 	icon = "mcl_beds_bed_red.png",
 })
 
+awards.register_achievement("mcl:notQuiteNineLives", {
+	title = S('Not Quite "Nine" Lives'),
+	description = S("Charge a Respawn Anchor to the maximum."),
+	icon = "respawn_anchor_side4.png",
+})
+
 -- Triggered in mobs_mc
 awards.register_achievement("mcl:whatAdeal", {
 	title = S("What A Deal!"),
@@ -204,7 +228,7 @@ awards.register_achievement("mcl:whatAdeal", {
 -- Triggered in mcl_fishing
 awards.register_achievement("mcl:fishyBusiness", {
 	title = S("Fishy Business"),
-	description = S("Catch a fish. \nHint: Catch a fish, salmon, clownfish, or pufferfish."),
+	description = S("Catch a fish.\nHint: Catch a fish, salmon, clownfish, or pufferfish."),
 	icon = "mcl_fishing_fishing_rod.png",
 })
 
@@ -217,9 +241,23 @@ awards.register_achievement("mcl:countryLode", {
 
 -- Triggered in mcl_smithing_table
 awards.register_achievement("mcl:seriousDedication", {
-        title = S("Serious Dedication"),
-        description = S("Use a Netherite Ingot to upgrade a hoe, and then completely reevaluate your life choices"),
-        icon = "farming_tool_netheritehoe.png",
+	title = S("Serious Dedication"),
+	description = S("Use a Netherite Ingot to upgrade a hoe, and then completely reevaluate your life choices."),
+	icon = "farming_tool_netheritehoe.png",
+})
+
+-- Triggered in mcl_brewing
+awards.register_achievement("mcl:localBrewery", {
+	title = S("Local Brewery"),
+	description = S("Brew a Potion.\nHint: Take a potion or glass bottle out of the brewing stand."),
+	icon = "mcl_potions_potion_overlay.png^[colorize:#F82423:"..tostring(127).."^mcl_potions_potion_bottle.png",
+})
+
+-- Triggered in mcl_enchanting
+awards.register_achievement("mcl:enchanter", {
+	title = S("Enchanter"),
+	description = S("Enchant an item using an Enchantment Table."),
+	icon = "mcl_enchanting_book_enchanted.png",
 })
 
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)

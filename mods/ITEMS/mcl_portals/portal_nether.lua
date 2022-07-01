@@ -427,6 +427,9 @@ local function finalize_teleport(obj, exit)
 		mcl_worlds.dimension_change(obj, dim)
 		minetest.sound_play("mcl_portals_teleport", {pos=exit, gain=0.5, max_hear_distance = 16}, true)
 		log("action", "[mcl_portals] player "..name.." teleported to Nether portal at "..pos_to_string(exit)..".")
+		if dim == "nether" then
+			awards.unlock(obj:get_player_name(), "mcl:theNether")
+		end
 	else
 		log("action", "[mcl_portals] entity teleported to Nether portal at "..pos_to_string(exit)..".")
 	end

@@ -39,6 +39,9 @@ for i=0,4 do
 		elseif string.match(node.name, "mcl_beds:respawn_anchor_charged_") then
 			minetest.chat_send_player(player.get_player_name(player), S"New respawn position set!")
 			mcl_spawn.set_spawn_pos(player, pos, nil)
+			if i == 4 then
+				awards.unlock(player:get_player_name(), "mcl:notQuiteNineLives")
+			end
 		end
 	end
 
