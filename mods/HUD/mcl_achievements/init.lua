@@ -142,6 +142,12 @@ awards.register_achievement("mcl:whosCuttingOnions", {
 	icon = "default_obsidian.png^mcl_core_crying_obsidian.png",
 })
 
+awards.register_achievement("mcl:hiddenInTheDepths", {
+	title = S("Hidden in the Depths"),
+	description = S("Pick up an Ancient Debris from the floor."),
+	icon = "mcl_nether_ancient_debris_side.png",
+})
+
 -- Smelting achivements: These are awarded when picking up an item from a furnace
 -- output. They are given in mcl_furnaces.
 awards.register_achievement("mcl:acquireIron", {

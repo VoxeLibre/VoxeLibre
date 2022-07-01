@@ -60,6 +60,7 @@ mcl_item_entity.register_pickup_achievement("mcl_mobitems:blaze_rod", "mcl:blaze
 mcl_item_entity.register_pickup_achievement("mcl_mobitems:leather", "mcl:killCow")
 mcl_item_entity.register_pickup_achievement("mcl_core:diamond", "mcl:diamonds")
 mcl_item_entity.register_pickup_achievement("mcl_core:crying_obsidian", "mcl:whosCuttingOnions")
+mcl_item_entity.register_pickup_achievement("mcl_nether:ancient_debris", "mcl:hiddenInTheDepths")
 
 local function check_pickup_achievements(object, player)
 	if has_awards then
