@@ -1102,7 +1102,9 @@ mcl_mapgen_core.register_generator("railcorridors", nil, function(minp, maxp, bl
 		local buffer = 5
 
 		-- Do up to 10 tries to start a corridor system
-		for t=1,10 do
+		-- 5 Still seems to generate a lot of them and
+		-- makes this noticeably faster.
+		for t=1,5 do
 			-- Get semi-random height in mapchunk
 			local y = pr:next(minp.y + buffer, maxp.y - buffer)
 			y = math.floor(math.max(height_min + buffer, math.min(height_max - buffer, y)))
