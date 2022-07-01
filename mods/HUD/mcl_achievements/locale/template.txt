@@ -71,3 +71,5 @@ Serious Dedication=
 Use a Netherite Ingot to upgrade a hoe, and then completely reevaluate your life choices.=
 Local Brewery=
 Brew a Potion.@nHint: Take a potion or glass bottle out of the brewing stand.=
+Enchanter=
+Enchant an item using an Enchantment Table.=
