@@ -1104,8 +1104,8 @@ end
 
 mcl_structures.register_structure("mineshaft",{
 	place_on = {"group:sand","group:grass_block","mcl_core:water_source","group:dirt","mcl_core:dirt_with_grass","mcl_core:gravel","group:material_stone"},
-	fill_ratio = 0.0001,
-	flags = "place_center_x, place_center_z, liquid_surface, force_placement, all_floors",
+	fill_ratio = 0.00005,
+	flags = "place_center_x, place_center_z, force_placement, all_floors",
 	sidelen = 32,
 	--chunk_probability = 300,
 	y_max = 40,
@@ -1116,7 +1116,7 @@ mcl_structures.register_structure("mineshaft",{
 		if p.y < mcl_vars.mg_overworld_min + 5 then
 			p.y = mcl_vars.mg_overworld_min + 5
 		end
-		if p.y > -10 then return end
+		if p.y > -10 then return true end
 		local p1 = vector.offset(p,-def.sidelen,-def.sidelen,-def.sidelen)
 		local p2 = vector.offset(p,def.sidelen,def.sidelen,def.sidelen)
 		minetest.emerge_area(p1, p2, function(blockpos, action, calls_remaining, param)
@@ -1124,6 +1124,7 @@ mcl_structures.register_structure("mineshaft",{
 			--minetest.log("lol")
 			InitRandomizer(blockseed)
 			create_corridor_system(p, pr)
+			spawn_carts()
 		end)
 		return true
 	end,
