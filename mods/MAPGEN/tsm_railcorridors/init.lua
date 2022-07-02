@@ -1097,11 +1097,40 @@ local function create_corridor_system(main_cave_coords)
 
 	-- At this point, all corridors were generated and all nodes were set.
 	-- We spawn the carts now
-	spawn_carts()
+	--spawn_carts()
 
 	return true
 end
 
+mcl_structures.register_structure("mineshaft",{
+	place_on = {"group:sand","group:grass_block","mcl_core:water_source","group:dirt","mcl_core:dirt_with_grass","mcl_core:gravel","group:material_stone"},
+	fill_ratio = 0.0001,
+	flags = "place_center_x, place_center_z, liquid_surface, force_placement, all_floors",
+	sidelen = 32,
+	--chunk_probability = 300,
+	y_max = 40,
+	y_min = mcl_vars.mg_overworld_min,
+	place_func = function(pos,def,pr,blockseed)
+		local r = pr:next(-50,-10)
+		local p = vector.offset(pos,0,r,0)
+		if p.y < mcl_vars.mg_overworld_min + 5 then
+			p.y = mcl_vars.mg_overworld_min + 5
+		end
+		if p.y > -10 then return end
+		local p1 = vector.offset(p,-def.sidelen,-def.sidelen,-def.sidelen)
+		local p2 = vector.offset(p,def.sidelen,def.sidelen,def.sidelen)
+		minetest.emerge_area(p1, p2, function(blockpos, action, calls_remaining, param)
+			if calls_remaining ~= 0 then return end
+			--minetest.log("lol")
+			InitRandomizer(blockseed)
+			create_corridor_system(p, pr)
+		end)
+		return true
+	end,
+
+})
+
+--[[ Old Generation code this is VERY slow
 -- The rail corridor algorithm starts here
 mcl_mapgen_core.register_generator("railcorridors", nil, function(minp, maxp, blockseed, _pr)
 	-- We re-init the randomizer for every mapchunk as we start generating in the middle of each mapchunk.
@@ -1112,9 +1141,7 @@ mcl_mapgen_core.register_generator("railcorridors", nil, function(minp, maxp, bl
 		local buffer = 5
 
 		-- Do up to 10 tries to start a corridor system
-		-- 5 Still seems to generate a lot of them and
-		-- makes this noticeably faster.
-		for t=1,5 do
+		for t=1,10 do
 			-- Get semi-random height in mapchunk
 			local y = pr:next(minp.y + buffer, maxp.y - buffer)
 			y = math.floor(math.max(height_min + buffer, math.min(height_max - buffer, y)))
@@ -1132,3 +1159,4 @@ mcl_mapgen_core.register_generator("railcorridors", nil, function(minp, maxp, bl
 		end
 	end
 end, 10)
+--]]

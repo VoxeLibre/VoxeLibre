@@ -2168,18 +2168,18 @@ mcl_mapgen_core.register_generator("main", basic, basic_node, 1, true)
 
 mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blockseed)
 	local gennotify = minetest.get_mapgen_object("gennotify")
-	local pr = PseudoRandom(blockseed + 42)
 	local has_struct = {}
 	local poshash = minetest.hash_node_position(minp)
 	for _,struct in pairs(mcl_structures.registered_structures) do
 		if struct.deco_id then
+			local pr = PseudoRandom(blockseed + 42)
 			local has = false
 			if has_struct[struct.name] == nil then has_struct[struct.name] = {}	end
 			for _, pos in pairs(gennotify["decoration#"..struct.deco_id] or {}) do
 				local realpos = vector.offset(pos,0,1,0)
 				minetest.remove_node(realpos)
 				if struct.chunk_probability == nil or (not has and pr:next(1,struct.chunk_probability) == 1 ) then
-					mcl_structures.place_structure(realpos,struct,pr)
+					mcl_structures.place_structure(realpos,struct,pr,blockseed)
 					has=true
 				end
 			end
