@@ -26,7 +26,7 @@ local function makegeode(pos,def,pr)
 		end)
 		if not nn[1] then return end
 
-		for i=1,math.random(#nn) do
+		for i=1,pr:next(1,math.max(2,#nn - math.ceil(#nn/5) )) do
 			set_node_no_bedrock(nn[i],{name="mcl_amethyst:amethyst_block"})
 		end
 
