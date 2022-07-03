@@ -537,9 +537,9 @@ minetest.register_entity(":__builtin:item", {
 				self.itemstring = data.itemstring
 				self.always_collect = data.always_collect
 				if data.age then
-					self.age = data.age + dtime_s
+					self.age = data.age
 				else
-					self.age = dtime_s
+					self.age = self.age
 				end
 				--remember collection data
 				-- If true, can collect item without delay
