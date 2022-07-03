@@ -364,18 +364,24 @@ local function Platform(p, radius, node, node2)
 	if not node2 then
 		node2 = { name = tsm_railcorridors.nodes.dirt }
 	end
+	local n1 = {}
+	local n2 = {}
 	for zi = p.z-radius, p.z+radius do
 		for xi = p.x-radius, p.x+radius do
 			local np, np2 = NeedsPlatform({x=xi,y=p.y,z=zi})
 			if np then
 				if np2 then
-					minetest.set_node({x=xi,y=p.y-1,z=zi}, node2)
+					--minetest.set_node({x=xi,y=p.y-1,z=zi}, node2)
+					table.insert(n1,{x=xi,y=p.y-1,z=zi})
 				else
-					minetest.set_node({x=xi,y=p.y-1,z=zi}, node)
+					--minetest.set_node({x=xi,y=p.y-1,z=zi}, node)
+					table.insert(n2,{x=xi,y=p.y-1,z=zi})
 				end
 			end
 		end
 	end
+	minetest.bulk_set_node(n1,node)
+	minetest.bulk_set_node(n2,node2)
 end
 
 -- Chests
@@ -1097,7 +1103,7 @@ local function create_corridor_system(main_cave_coords)
 
 	-- At this point, all corridors were generated and all nodes were set.
 	-- We spawn the carts now
-	--spawn_carts()
+	spawn_carts()
 
 	return true
 end
