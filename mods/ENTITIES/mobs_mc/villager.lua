@@ -631,10 +631,8 @@ end
 
 local function get_a_job(self)
 	local p = self.object:get_pos()
-	local nn = minetest.find_nodes_in_area(vector.offset(p,-8,-8,-8),vector.offset(p,8,8,8),jobsites)
-	for _,n in pairs(nn) do
-		if n and employ(self,n) then return true end
-	end
+	local n = minetest.find_node_near(p,1,jobsites)
+	if n and employ(self,n) then return true end
 	if self.state ~= "gowp" then look_for_job(self) end
 end
 
