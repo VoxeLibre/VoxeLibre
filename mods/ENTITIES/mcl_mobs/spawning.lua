@@ -453,11 +453,12 @@ if mobs_spawn then
 				and (mob_def.check_position and mob_def.check_position(spawning_position) or true)
 				and (not is_farm_animal(mob_def.name) or is_grass)
 				and (mob_type ~= "npc" or has_bed)
+				and (mob_def.type_of_spawning ~= water or is_water)
 				then
 					--everything is correct, spawn mob
 					local object = minetest.add_entity(spawning_position, mob_def.name)
 					if object then
-						return mob_def.on_spawn and mob_def.on_spawn(object, pos)
+						return mob_def.on_spawn and mob_def.on_spawn(object, spawning_position)
 					end
 			end
 			current_summary_chance = current_summary_chance - mob_chance
