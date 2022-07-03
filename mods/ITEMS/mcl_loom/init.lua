@@ -8,13 +8,13 @@ minetest.register_node("mcl_loom:loom", {
 	tiles = {
 		"loom_top.png", "loom_bottom.png",
 		"loom_side.png", "loom_side.png",
-		"loom_front.png", "loom_front.png"
+		"loom_side.png", "loom_front.png"
 	},
 	paramtype2 = "facedir",
 	groups = { axey = 2, handy = 1, deco_block = 1, material_wood = 1, flammable = 1 },
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5
-	})
+})
 
 
 minetest.register_craft({

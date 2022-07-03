@@ -5,9 +5,9 @@ minetest.register_node("mcl_fletching_table:fletching_table", {
 	_tt_help = S("A fletching table"),
 	_doc_items_longdesc = S("This is the fletcher villager's work station. It currently has no use beyond decoration."),
 	tiles = {
-		"fletching_table_top.png", "fletching_table_top.png",
-		"fletching_table_side.png", "fletching_table_side.png",
-		"fletching_table_front.png", "fletching_table_front.png"
+		"fletching_table_top.png", "fletching_table_bottom.png",
+		"fletching_table_front.png", "fletching_table_front.png",
+		"fletching_table_side.png", "fletching_table_side.png"
 	},
 	paramtype2 = "facedir",
 	groups = { axey = 2, handy = 1, deco_block = 1, material_wood = 1, flammable = 1 },
