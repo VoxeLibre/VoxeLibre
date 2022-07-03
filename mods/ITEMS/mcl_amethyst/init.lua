@@ -117,7 +117,6 @@ for _, def in pairs(bud_def) do
 		walkable = false,
 		light_source = def.light_source,
 		groups = {
-			dig_by_water = 1,
 			destroy_by_lava_flow = 1,
 			dig_by_piston = 1,
 			pickaxey = 1,
@@ -162,7 +161,6 @@ minetest.register_node("mcl_amethyst:amethyst_cluster",{
 	walkable = false,
 	light_source = 7,
 	groups = {
-		dig_by_water = 1,
 		destroy_by_lava_flow = 1,
 		dig_by_piston = 1,
 		pickaxey = 1,
