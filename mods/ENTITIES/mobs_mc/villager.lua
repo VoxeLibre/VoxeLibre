@@ -1391,7 +1391,8 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 })
 
 
-
+--[[
+Villager spawning in mcl_villages
 mcl_mobs:spawn_specific(
 "mobs_mc:villager",
 "overworld",
@@ -1421,6 +1422,6 @@ minetest.LIGHT_MAX+1,
 4,
 mobs_mc.water_level+1,
 mcl_vars.mg_overworld_max)
-
+--]]
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:villager", S("Villager"), "mobs_mc_spawn_icon_villager.png", 0)
