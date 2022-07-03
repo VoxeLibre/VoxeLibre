@@ -1109,11 +1109,10 @@ local function create_corridor_system(main_cave_coords)
 end
 
 mcl_structures.register_structure("mineshaft",{
-	place_on = {"group:sand","group:grass_block","mcl_core:water_source","group:dirt","mcl_core:dirt_with_grass","mcl_core:gravel","group:material_stone"},
-	fill_ratio = 0.00005,
+	place_on = {"group:sand","group:grass_block","mcl_core:water_source","group:dirt","mcl_core:dirt_with_grass","mcl_core:gravel","group:material_stone","mcl_core:snow"},
+	fill_ratio = 0.0001,
 	flags = "place_center_x, place_center_z, force_placement, all_floors",
 	sidelen = 32,
-	--chunk_probability = 300,
 	y_max = 40,
 	y_min = mcl_vars.mg_overworld_min,
 	place_func = function(pos,def,pr,blockseed)
@@ -1130,7 +1129,6 @@ mcl_structures.register_structure("mineshaft",{
 			--minetest.log("lol")
 			InitRandomizer(blockseed)
 			create_corridor_system(p, pr)
-			spawn_carts()
 		end)
 		return true
 	end,
