@@ -43,7 +43,7 @@ local function makegeode(pos,def,pr)
 							set_node_no_bedrock(v,{name="mcl_amethyst:budding_amethyst_block"})
 						end
 						all_amethyst = false
-					elseif an.name ~= "mcl_amethyst:amethyst_block" and an.name ~= "air" then
+					elseif an.name ~= "mcl_amethyst:amethyst_block" and an.name ~= "air" and an.name ~= "mcl_amethyst:budding_amethyst_block" then
 						all_amethyst = false
 					end
 				end
