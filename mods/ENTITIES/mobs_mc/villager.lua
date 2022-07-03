@@ -636,6 +636,16 @@ local function get_a_job(self)
 	if self.state ~= "gowp" then look_for_job(self) end
 end
 
+local function check_jobsite(self)
+	if self._traded or not self._jobsite then return end
+	local n = mcl_vars.get_node(self._jobsite)
+	local m = minetest.get_meta(self._jobsite)
+	if m:get_string("villager") ~= self._id then
+		self._profession = "unemployed"
+		set_textures(self)
+	end
+end
+
 local function update_max_tradenum(self)
 	if not self._trades then
 		return
@@ -654,6 +664,7 @@ end
 local function init_trades(self, inv)
 	local profession = professions[self._profession]
 	local trade_tiers = profession.trades
+	self._traded = true
 	if trade_tiers == nil then
 		-- Empty trades
 		self._trades = false
@@ -1355,6 +1366,8 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 			end
 			if self._profession == "unemployed" then
 				get_a_job(self)
+			else
+				check_jobsite(self)
 			end
 		end
 	end,
