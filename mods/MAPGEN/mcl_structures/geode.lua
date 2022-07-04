@@ -20,13 +20,13 @@ local function makegeode(pos,def,pr)
 	minetest.emerge_area(p1, p2, function(blockpos, action, calls_remaining, param)
 		if calls_remaining ~= 0 then return end
 		local calcite = {}
-		local nn = minetest.find_nodes_in_area(p1,p2,{"group:material_stone"})
+		local nn = minetest.find_nodes_in_area(p1,p2,{"group:material_stone","group:dirt","mcl_core:gravel"})
 		table.sort(nn,function(a, b)
 			   return vector.distance(pos, a) < vector.distance(pos, b)
 		end)
 		if not nn[1] then return end
 
-		for i=1,math.random(#nn) do
+		for i=1,pr:next(1,math.max(2,#nn - math.ceil(#nn/5) )) do
 			set_node_no_bedrock(nn[i],{name="mcl_amethyst:amethyst_block"})
 		end
 
@@ -43,7 +43,7 @@ local function makegeode(pos,def,pr)
 							set_node_no_bedrock(v,{name="mcl_amethyst:budding_amethyst_block"})
 						end
 						all_amethyst = false
-					elseif an.name ~= "mcl_amethyst:amethyst_block" and an.name ~= "air" then
+					elseif an.name ~= "mcl_amethyst:amethyst_block" and an.name ~= "air" and an.name ~= "mcl_amethyst:budding_amethyst_block" then
 						all_amethyst = false
 					end
 				end
