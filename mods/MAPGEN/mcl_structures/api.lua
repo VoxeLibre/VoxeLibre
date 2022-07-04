@@ -38,7 +38,7 @@ function mcl_structures.find_highest_y(pp)
 	return y
 end
 
-function mcl_structures.place_structure(pos, def, pr)
+function mcl_structures.place_structure(pos, def, pr, blockseed)
 	if not def then	return end
 	local logging = not def.terrain_feature
 	local y_offset = 0
@@ -83,7 +83,7 @@ function mcl_structures.place_structure(pos, def, pr)
 			end
 		end
 	end
-	if def.on_place and not def.on_place(pos,def,pr) then
+	if def.on_place and not def.on_place(pos,def,pr,blockseed) then
 		if logging then
 			minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pp).." not placed. Conditions not satisfied.")
 		end
@@ -94,20 +94,20 @@ function mcl_structures.place_structure(pos, def, pr)
 		local r = pr:next(1,#def.filenames)
 		local file = def.filenames[r]
 		if file then
-			local ap = function(pos,def,pr) end
+			local ap = function(pos,def,pr,blockseed) end
 			if def.after_place then ap = def.after_place  end
 
 			mcl_structures.place_schematic(pp, file, "random", nil, true, "place_center_x,place_center_z",function(p)
-				if def.loot then generate_loot(pos,def,pr) end
-				return ap(pos,def,pr)
+				if def.loot then generate_loot(pos,def,pr,blockseed) end
+				return ap(pos,def,pr,blockseed)
 			end,pr)
 			if logging then
 				minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pp))
 			end
 			return true
 		end
-	elseif def.place_func and def.place_func(pos,def,pr) then
-		if not def.after_place or ( def.after_place  and def.after_place(pos,def,pr) ) then
+	elseif def.place_func and def.place_func(pos,def,pr,blockseed) then
+		if not def.after_place or ( def.after_place  and def.after_place(pos,def,pr,blockseed) ) then
 			if logging then
 				minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pp))
 			end

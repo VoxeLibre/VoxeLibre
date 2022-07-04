@@ -364,18 +364,24 @@ local function Platform(p, radius, node, node2)
 	if not node2 then
 		node2 = { name = tsm_railcorridors.nodes.dirt }
 	end
+	local n1 = {}
+	local n2 = {}
 	for zi = p.z-radius, p.z+radius do
 		for xi = p.x-radius, p.x+radius do
 			local np, np2 = NeedsPlatform({x=xi,y=p.y,z=zi})
 			if np then
 				if np2 then
-					minetest.set_node({x=xi,y=p.y-1,z=zi}, node2)
+					--minetest.set_node({x=xi,y=p.y-1,z=zi}, node2)
+					table.insert(n1,{x=xi,y=p.y-1,z=zi})
 				else
-					minetest.set_node({x=xi,y=p.y-1,z=zi}, node)
+					--minetest.set_node({x=xi,y=p.y-1,z=zi}, node)
+					table.insert(n2,{x=xi,y=p.y-1,z=zi})
 				end
 			end
 		end
 	end
+	minetest.bulk_set_node(n1,node)
+	minetest.bulk_set_node(n2,node2)
 end
 
 -- Chests
@@ -388,11 +394,16 @@ local function PlaceChest(pos, param2)
 	end
 end
 
+
 -- This function checks if a cart has ACTUALLY been spawned.
 -- To be calld by minetest.after.
 -- This is a workaround thanks to the fact that minetest.add_entity is unreliable as fuck
 -- See: https://github.com/minetest/minetest/issues/4759
 -- FIXME: Kill this horrible hack with fire as soon you can.
+
+-- Why did anyone activate it in the first place? It doesn't
+-- have a function seeing as there are no chest minecarts yet.
+--[[
 local function RecheckCartHack(params)
 	local pos = params[1]
 	local cart_id = params[2]
@@ -408,6 +419,8 @@ local function RecheckCartHack(params)
 	end
 	minetest.log("info", "[tsm_railcorridors] Cart spawn FAILED: "..minetest.pos_to_string(pos))
 end
+--]]
+
 
 -- Try to place a cobweb.
 -- pos: Position of cobweb
@@ -937,7 +950,10 @@ local function spawn_carts()
 			-- Note that the callback function is also called there.
 			-- TODO: Move callback function to this position when the
 			-- minetest.add_entity bug has been fixed.
-			minetest.after(3, RecheckCartHack, {cpos, cart_id})
+
+			-- minetest.after(3, RecheckCartHack, {cpos, cart_id})
+			-- This whole recheck logic leads to a stub right now
+			-- it can be reenabled when chest carts are a thing.
 		end
 	end
 	carts_table = {}
@@ -1092,6 +1108,34 @@ local function create_corridor_system(main_cave_coords)
 	return true
 end
 
+mcl_structures.register_structure("mineshaft",{
+	place_on = {"group:sand","group:grass_block","mcl_core:water_source","group:dirt","mcl_core:dirt_with_grass","mcl_core:gravel","group:material_stone","mcl_core:snow"},
+	fill_ratio = 0.0001,
+	flags = "place_center_x, place_center_z, force_placement, all_floors",
+	sidelen = 32,
+	y_max = 40,
+	y_min = mcl_vars.mg_overworld_min,
+	place_func = function(pos,def,pr,blockseed)
+		local r = pr:next(-50,-10)
+		local p = vector.offset(pos,0,r,0)
+		if p.y < mcl_vars.mg_overworld_min + 5 then
+			p.y = mcl_vars.mg_overworld_min + 5
+		end
+		if p.y > -10 then return true end
+		local p1 = vector.offset(p,-def.sidelen,-def.sidelen,-def.sidelen)
+		local p2 = vector.offset(p,def.sidelen,def.sidelen,def.sidelen)
+		minetest.emerge_area(p1, p2, function(blockpos, action, calls_remaining, param)
+			if calls_remaining ~= 0 then return end
+			--minetest.log("lol")
+			InitRandomizer(blockseed)
+			create_corridor_system(p, pr)
+		end)
+		return true
+	end,
+
+})
+
+--[[ Old Generation code this is VERY slow
 -- The rail corridor algorithm starts here
 mcl_mapgen_core.register_generator("railcorridors", nil, function(minp, maxp, blockseed, _pr)
 	-- We re-init the randomizer for every mapchunk as we start generating in the middle of each mapchunk.
@@ -1120,3 +1164,4 @@ mcl_mapgen_core.register_generator("railcorridors", nil, function(minp, maxp, bl
 		end
 	end
 end, 10)
+--]]

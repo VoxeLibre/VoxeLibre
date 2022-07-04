@@ -336,7 +336,7 @@ minetest.register_chatcommand("spawnstruct", {
 		else
 			for n,d in pairs(mcl_structures.registered_structures) do
 				if n == param then
-					mcl_structures.place_structure(pos,d,pr)
+					mcl_structures.place_structure(pos,d,pr,math.random())
 					return true,message
 				end
 			end
