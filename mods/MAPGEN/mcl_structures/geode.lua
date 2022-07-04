@@ -20,7 +20,7 @@ local function makegeode(pos,def,pr)
 	minetest.emerge_area(p1, p2, function(blockpos, action, calls_remaining, param)
 		if calls_remaining ~= 0 then return end
 		local calcite = {}
-		local nn = minetest.find_nodes_in_area(p1,p2,{"group:material_stone"})
+		local nn = minetest.find_nodes_in_area(p1,p2,{"group:material_stone","group:dirt","mcl_core:gravel"})
 		table.sort(nn,function(a, b)
 			   return vector.distance(pos, a) < vector.distance(pos, b)
 		end)
