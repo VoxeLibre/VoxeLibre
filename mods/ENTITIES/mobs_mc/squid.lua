@@ -55,6 +55,17 @@ mcl_mobs:register_mob("mobs_mc:squid", {
     view_range = 16,
     runaway = true,
     fear_height = 4,
+    on_spawn = function(self)
+		--make sure squids always spawn in water (and at variable heights)
+		--can be removed once this is provided by the api
+		local p = self.object:get_pos()
+		local nn = minetest.find_nodes_in_area(vector.offset(p,-2,-1,-2),vector.offset(p,2,-15,2),{"group:water"})
+		if nn and #nn > 0 then
+			self.object:set_pos(nn[math.random(#nn)])
+		else
+			self.object:remove()
+		end
+    end,
 })
 
 -- TODO: Behaviour: squirt

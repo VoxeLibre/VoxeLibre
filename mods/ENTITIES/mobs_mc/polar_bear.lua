@@ -76,7 +76,6 @@ mcl_mobs:spawn_specific(
 "ColdTaiga",
 "IcePlainsSpikes",
 "IcePlains",
-"ExtremeHills+_snowtop",
 },
 0,
 minetest.LIGHT_MAX+1,
