@@ -379,6 +379,13 @@ local function is_farm_animal(n)
 	return n == "mobs_mc:pig" or n == "mobs_mc:cow" or n == "mobs_mc:sheep" or n == "mobs_mc:chicken" or n == "mobs_mc:horse" or n == "mobs_mc:donkey"
 end
 
+local function get_water_spawn(p)
+		local nn = minetest.find_nodes_in_area(vector.offset(p,-2,-1,-2),vector.offset(p,2,-15,2),{"group:water"})
+		if nn and #nn > 0 then
+			return nn[math.random(#nn)]
+		end
+end
+
 if mobs_spawn then
 
 	local perlin_noise
@@ -453,8 +460,14 @@ if mobs_spawn then
 				and (mob_def.check_position and mob_def.check_position(spawning_position) or true)
 				and (not is_farm_animal(mob_def.name) or is_grass)
 				and (mob_type ~= "npc" or has_bed)
-				and (mob_def.type_of_spawning ~= water or is_water)
+				and (mob_def.type_of_spawning ~= "water" or is_water)
 				then
+					if mob_def.type_of_spawning == "water" then
+						spawning_position = get_water_spawn(spawning_position)
+						if not spawning_position then
+							return
+						end
+					end
 					--everything is correct, spawn mob
 					local object = minetest.add_entity(spawning_position, mob_def.name)
 					if object then

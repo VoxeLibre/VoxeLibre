@@ -1,70 +1,102 @@
--- v1.1
+--MCmobs v0.4
+--maikerumine
+--made for MC like Survival game
+--License for code WTFPL and otherwise stated in readmes
+
+local pi = math.pi
+local atann = math.atan
+local atan = function(x)
+	if not x or x ~= x then
+		return 0
+	else
+		return atann(x)
+	end
+end
+
+local dir_to_pitch = function(dir)
+	local dir2 = vector.normalize(dir)
+	local xz = math.abs(dir.x) + math.abs(dir.z)
+	return -math.atan2(-dir.y, xz)
+end
+
+local function degrees(rad)
+	return rad * 180.0 / math.pi
+end
+
+local S = minetest.get_translator("extra_mobs")
 
 --###################
---################### SQUID
+--################### dolphin
 --###################
 
-local S = minetest.get_translator("mobs_mc")
-
-mcl_mobs:register_mob("mobs_mc:squid", {
-	description = S("Squid"),
-    type = "animal",
-    spawn_class = "water",
-    can_despawn = true,
-    passive = true,
-    hp_min = 10,
-    hp_max = 10,
-    xp_min = 1,
-    xp_max = 3,
-    armor = 100,
-    -- FIXME: If the squid is near the floor, it turns black
-    collisionbox = {-0.4, 0.0, -0.4, 0.4, 0.9, 0.4},
-    visual = "mesh",
-    mesh = "mobs_mc_squid.b3d",
-    textures = {
-        {"mobs_mc_squid.png"}
-    },
-    sounds = {
-		damage = {name="mobs_mc_squid_hurt", gain=0.3},
-		death = {name="mobs_mc_squid_death", gain=0.4},
-		flop = "mobs_mc_squid_flop",
-		-- TODO: sounds: random
-		distance = 16,
-    },
-    animation = {
-		stand_start = 1,
-		stand_end = 60,
-		walk_start = 1,
-		walk_end = 60,
-		run_start = 1,
-		run_end = 60,
+local dolphin = {
+	type = "monster",
+	spawn_class = "water",
+	can_despawn = true,
+	passive = true,
+	hp_min = 10,
+	hp_max = 10,
+	xp_min = 1,
+	xp_max = 3,
+	armor = 100,
+	walk_chance = 100,
+	breath_max = 120,
+	rotate = 180,
+	tilt_swim = true,
+	collisionbox = {-0.3, 0.0, -0.3, 0.3, 0.79, 0.3},
+	visual = "mesh",
+	mesh = "extra_mobs_dolphin.b3d",
+	textures = {
+		{"extra_mobs_dolphin.png"}
 	},
-    drops = {
-		{name = "mcl_dye:black",
-		chance = 1,
-		min = 1,
-		max = 3,
-		looting = "common",},
+	sounds = {
 	},
-    visual_size = {x=3, y=3},
-    makes_footstep_sound = false,
+	animation = {
+		stand_start = 20,
+		stand_end = 20,
+		walk_start = 0,
+		walk_end = 15,
+		run_start = 30,
+		run_end = 45,
+		},
+		drops = {
+			{name = "mcl_fishing:fish_raw",
+			chance = 1,
+			min = 0,
+			max = 1,},
+	},
+	visual_size = {x=3, y=3},
+	makes_footstep_sound = false,
     fly = true,
     fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
-    breathes_in_water = true,
-    jump = false,
-    view_range = 16,
-    runaway = true,
-    fear_height = 4,
-})
+	breathes_in_water = true,
+	jump = false,
+	view_range = 16,
+	fear_height = 4,
+	walk_velocity = 3,
+	run_velocity = 6,
+	reach = 2,
+	damage = 2.5,
+	attack_type = "dogfight",
+	do_custom = function(self,dtime)
+			--[[ this is supposed to make them jump out the water but doesn't appear to work very well
+		self.object:set_bone_position("body", vector.new(0,1,0), vector.new(degrees(dir_to_pitch(self.object:get_velocity())) * -1 + 90,0,0))
+		if minetest.get_item_group(self.standing_in, "water") ~= 0 then
+			if self.object:get_velocity().y < 5 then
+				self.object:add_velocity({ x = 0 , y = math.random(-.007, .007), z = 0 })
+			end
+		end
+		--]]
+	end,
+}
 
--- TODO: Behaviour: squirt
+mcl_mobs:register_mob("mobs_mc:dolphin", dolphin)
 
--- Spawn near the water surface
 
-local water = mobs_mc.water_level
---name, nodes, neighbours, minlight, maxlight, interval, chance, active_object_count, min_height, max_height
+--spawning TO DO: in schools
+local water = 0
 mcl_mobs:spawn_specific(
-"mobs_mc:squid",
+"mobs_mc:dolphin",
 "overworld",
 "water",
 {
@@ -211,10 +243,10 @@ mcl_mobs:spawn_specific(
 0,
 minetest.LIGHT_MAX+1,
 30,
-5500,
+4000,
 3,
 water-16,
 water+1)
 
--- spawn eggs
-mcl_mobs:register_egg("mobs_mc:squid", S("Squid"), "mobs_mc_spawn_icon_squid.png", 0)
+--spawn egg
+mcl_mobs:register_egg("mobs_mc:dolphin", S("Dolphin"), "extra_mobs_spawn_icon_dolphin.png", 0)
