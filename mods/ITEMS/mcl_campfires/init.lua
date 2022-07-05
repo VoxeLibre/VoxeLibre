@@ -104,7 +104,7 @@ minetest.register_craft({
 	output = "mcl_campfires:campfire_lit",
 	recipe = {
 		{ "", "mcl_core:stick", "" },
-		{ "mcl_core:stick", "mcl_core:charcoal_lump", "mcl_core:stick" },
+		{ "mcl_core:stick", "group:coal", "mcl_core:stick" },
 		{ "group:tree", "group:tree", "group:tree" },
 	}
 })
@@ -113,16 +113,7 @@ minetest.register_craft({
 	output = "mcl_campfires:soul_campfire_lit",
 	recipe = {
 		{ "", "mcl_core:stick", "" },
-		{ "mcl_core:stick", "mcl_blackstone:soul_soil", "mcl_core:stick" },
-		{ "group:tree", "group:tree", "group:tree" },
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_campfires:soul_campfire_lit",
-	recipe = {
-		{ "", "mcl_core:stick", "" },
-		{ "mcl_core:stick", "mcl_nether:soul_sand", "mcl_core:stick" },
+		{ "mcl_core:stick", "group:soul_block", "mcl_core:stick" },
 		{ "group:tree", "group:tree", "group:tree" },
 	}
 })
