@@ -80,6 +80,7 @@ for _, campfire in pairs(campfires) do
 			if player:get_wielded_item():get_name():find("shovel") then
 				node.name = "mcl_campfires:" .. campfire.techname
 				minetest.set_node(pos, node)
+				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 			end
 		end,
 		drop = campfire.drops,
