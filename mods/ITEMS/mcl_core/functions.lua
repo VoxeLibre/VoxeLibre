@@ -1702,7 +1702,7 @@ end
 
 -- Obsidian crying
 
-local psdef = {
+local crobby_psdef = {
 			amount = 1,
 			time = 0.9, --everything longer than 1 is a coord exploit
 			minvel = vector.new(0,-2,0),
@@ -1719,7 +1719,7 @@ local psdef = {
 			vertical = true,
 			texture = "mcl_core_crying_obsidian_tear.png",
 }
-local psdef2 = {
+local crobby_psdef2 = {
 			amount = 1,
 			time = 0.9, --everything longer than 1 is a coord exploit
 			minvel = vector.new(0,-0.01,0),
@@ -1744,21 +1744,21 @@ minetest.register_abm({
 	chance = 10,
 	action = function(pos, node)
 		minetest.after(math.random(0.1,1.5),function()
-			psdef.minpos = vector.offset(pos,-0.6,-0.51,-0.6)
-			psdef.maxpos = vector.offset(pos,0.6,0.51,0.6)
-			minetest.add_particlespawner(psdef)
-			psdef2.minpos = vector.offset(pos,-0.55,-0.51,-0.55)
-			psdef2.maxpos = vector.offset(pos,-0.5,0.51,-0.5)
-			minetest.add_particlespawner(psdef2)
-			psdef2.minpos = vector.offset(pos,0.55,-0.51,-0.55)
-			psdef2.maxpos = vector.offset(pos,0.5,0.51,-0.5)
-			minetest.add_particlespawner(psdef2)
-			psdef2.minpos = vector.offset(pos,0.55,-0.51,0.55)
-			psdef2.maxpos = vector.offset(pos,0.5,0.51,0.5)
-			minetest.add_particlespawner(psdef2)
-			psdef2.minpos = vector.offset(pos,-0.55,-0.51,0.55)
-			psdef2.maxpos = vector.offset(pos,-0.5,0.51,0.5)
-			minetest.add_particlespawner(psdef2)
+			crobby_psdef.minpos = vector.offset(pos,-0.6,-0.51,-0.6)
+			crobby_psdef.maxpos = vector.offset(pos,0.6,0.51,0.6)
+			minetest.add_particlespawner(crobby_psdef)
+			crobby_psdef2.minpos = vector.offset(pos,-0.51,-0.51,-0.51)
+			crobby_psdef2.maxpos = vector.offset(pos,-0.5,0.51,-0.5)
+			minetest.add_particlespawner(crobby_psdef2)
+			crobby_psdef2.minpos = vector.offset(pos,0.51,-0.51,-0.51)
+			crobby_psdef2.maxpos = vector.offset(pos,0.5,0.51,-0.5)
+			minetest.add_particlespawner(crobby_psdef2)
+			crobby_psdef2.minpos = vector.offset(pos,0.51,-0.51,0.51)
+			crobby_psdef2.maxpos = vector.offset(pos,0.5,0.51,0.5)
+			minetest.add_particlespawner(crobby_psdef2)
+			crobby_psdef2.minpos = vector.offset(pos,-0.51,-0.51,0.51)
+			crobby_psdef2.maxpos = vector.offset(pos,-0.5,0.51,0.5)
+			minetest.add_particlespawner(crobby_psdef2)
 
 		end)
 	end
