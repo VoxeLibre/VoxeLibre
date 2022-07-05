@@ -8,11 +8,11 @@
 -- * Add Cooking Meat
 -- * Add Working Sounds
 
-S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator(minetest.get_current_modname())
 
-campfires = {
-{ name = "Campfire", lightlevel = 15, techname = "campfire", damage = 1, drops = "mcl_core:charcoal_lump 2" },
-{ name = "Soul Campfire", lightlevel = 10, techname = "soul_campfire", damage = 2, drops = "mcl_blackstone:soul_soil" },
+local campfires = {
+	{ name = "Campfire", lightlevel = 15, techname = "campfire", damage = 1, drops = "mcl_core:charcoal_lump 2" },
+	{ name = "Soul Campfire", lightlevel = 10, techname = "soul_campfire", damage = 2, drops = "mcl_blackstone:soul_soil" },
 }
 
 for _, campfire in pairs(campfires) do
@@ -25,7 +25,7 @@ for _, campfire in pairs(campfires) do
 		drawtype = "mesh",
 		mesh = "mcl_campfires_campfire.obj",
 		tiles = {{name="mcl_campfires_log.png"},},
-		groups = { handy=1, axey=1, material_wood=1, not_in_creative_inventory=1 },
+		groups = { handy=1, axey=1, material_wood=1, not_in_creative_inventory=1, campfire=1, },
 		paramtype = "light",
 		paramtype2 = "facedir",
 		on_rightclick = function (pos, node, player, itemstack, pointed_thing)
@@ -73,7 +73,7 @@ for _, campfire in pairs(campfires) do
 				length=2.0
 			}}
 		},
-		groups = { handy=1, axey=1, material_wood=1 },
+		groups = { handy=1, axey=1, material_wood=1, campfire=1, lit_campfire=1 },
 		paramtype = "light",
 		paramtype2 = "facedir",
 		on_rightclick = function (pos, node, player, itemstack, pointed_thing)
@@ -117,3 +117,24 @@ minetest.register_craft({
 		{ "group:tree", "group:tree", "group:tree" },
 	}
 })
+
+local etime = 0
+minetest.register_globalstep(function(dtime)
+	etime = dtime + etime
+	if etime < 0.5 then return end
+	etime = 0
+	for _,pl in pairs(minetest.get_connected_players()) do
+		local n = minetest.find_node_near(pl:get_pos(),0.4,{"group:lit_campfire"},true)
+		if n then
+			mcl_burning.set_on_fire(pl, 5)
+		end
+	end
+	for _,ent in pairs(minetest.luaentities) do
+		if ent.object:get_pos() and ent.is_mob then
+			local n = minetest.find_node_near(ent.object:get_pos(),0.4,{"group:lit_campfire"},true)
+			if n then
+				mcl_burning.set_on_fire(ent.object, 5)
+			end
+		end
+	end
+end)
