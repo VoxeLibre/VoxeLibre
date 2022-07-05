@@ -42,6 +42,7 @@ local dolphin = {
 	walk_chance = 100,
 	breath_max = 120,
 	rotate = 180,
+	spawn_in_group = 3,
 	tilt_swim = true,
 	collisionbox = {-0.3, 0.0, -0.3, 0.3, 0.79, 0.3},
 	visual = "mesh",

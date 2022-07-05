@@ -40,6 +40,7 @@ local cod = {
 	xp_max = 3,
 	armor = 100,
 	rotate = 180,
+	spawn_in_group = 10,
 	tilt_swim = true,
 	collisionbox = {-0.3, 0.0, -0.3, 0.3, 0.79, 0.3},
 	visual = "mesh",

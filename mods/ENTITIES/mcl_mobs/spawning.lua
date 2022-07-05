@@ -386,6 +386,13 @@ local function get_water_spawn(p)
 		end
 end
 
+local function spawn_group(p,mob,spawn_on,group_max)
+	local nn = minetest.find_nodes_in_area(vector.offset(p,-3,-3,-3),vector.offset(p,3,3,3),spawn_on)
+	for i = 1, math.random(group_max) do
+		minetest.add_entity(nn[math.random(#nn)],mob)
+	end
+end
+
 if mobs_spawn then
 
 	local perlin_noise
@@ -449,6 +456,7 @@ if mobs_spawn then
 			end
 			local mob_def = mob_library_worker_table[mob_index]
 			local mob_type = minetest.registered_entities[mob_def.name].type
+			local spawn_in_group = minetest.registered_entities[mob_def.name].spawn_in_group
 			if mob_def
 				and spawning_position.y >= mob_def.min_height
 				and spawning_position.y <= mob_def.max_height
@@ -470,6 +478,9 @@ if mobs_spawn then
 					end
 					--everything is correct, spawn mob
 					local object = minetest.add_entity(spawning_position, mob_def.name)
+					if spawn_in_group then
+						spawn_group(spawning_position,mob_def.name,{gotten_node},spawn_in_group)
+					end
 					if object then
 						return mob_def.on_spawn and mob_def.on_spawn(object, spawning_position)
 					end
