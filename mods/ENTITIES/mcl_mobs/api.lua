@@ -2283,6 +2283,9 @@ end
 local function go_to_pos(entity,b)
 	if not entity then return end
 	local s=entity.object:get_pos()
+	if not b then
+		--self.state = "stand"
+		return end
 	if vector.distance(b,s) < 1 then
 		--set_velocity(entity,0)
 		return true
@@ -2318,21 +2321,23 @@ local gowp_etime = 0
 
 local function check_gowp(self,dtime)
 	gowp_etime = gowp_etime + dtime
-	if gowp_etime < 1 then return end
+	if gowp_etime < 0.2 then return end
 	gowp_etime = 0
 	local p = self.object:get_pos()
 	if not p or not self._target then return end
-	if vector.distance(p,self._target) < 2 or ( self.waypoints and #self.waypoints == 0 ) then
+	if vector.distance(p,self._target) < 1 then
 		self.waypoints = nil
 		self._target = nil
 		self.current_target = nil
-		self.state = "walk"
+		self.state = "stand"
 		if self.callback_arrived then return self.callback_arrived(self) end
 		return true
 	end
-	if self.waypoints and ( not self.current_target or vector.distance(p,self.current_target) < 1.5 ) then
+	if self.waypoints and ( not self.current_target or vector.distance(p,self.current_target) < 2 ) then
 		self.current_target = table.remove(self.waypoints, 1)
 		--minetest.log("nextwp:".. tostring(self.current_target) )
+		go_to_pos(self,self.current_target)
+		return
 	elseif self.current_target then
 		go_to_pos(self,self.current_target)
 	end
@@ -2922,6 +2927,7 @@ local gopath_last = os.time()
 function mcl_mobs:gopath(self,target,callback_arrived)
 	if os.time() - gopath_last < 15 then return end
 	gopath_last = os.time()
+	--minetest.log("gowp")
 	local p = self.object:get_pos()
 	local t = vector.offset(target,0,1,0)
 	local wp = minetest.find_path(p,t,150,1,4)
@@ -2941,6 +2947,7 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 	if wp and #wp > 0 then
 		self._target = t
 		self.callback_arrived = callback_arrived
+		table.remove(wp,1)
 		self.waypoints = wp
 		self.state = "gowp"
 		return true
@@ -2948,7 +2955,7 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 	self.state = "walk"
 	self.waypoints = nil
 	self.current_target = nil
-		--minetest.log("no path found")
+	--	minetest.log("no path found")
 	end
 end
 
