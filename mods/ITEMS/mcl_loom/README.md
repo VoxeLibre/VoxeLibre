@@ -10,4 +10,10 @@ LGPLv2.1
 
 License of media
 ----------------
-See the main MineClone 2 README.md file.
+
+loom_bottom.png
+loom_front.png
+loom_side.png
+loom_top.png
+License: CC BY-SA 4.0
+Author: MrRar

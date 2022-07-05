@@ -10,4 +10,10 @@ LGPLv2.1
 
 License of media
 ----------------
-See the main MineClone 2 README.md file.
+
+fletching_table_bottom.png
+fletching_table_front.png
+fletching_table_side.png
+fletching_table_top.png
+License: CC BY-SA 4.0
+Author: MrRar
