@@ -235,6 +235,17 @@ minetest.register_craftitem("mcl_potions:water", {
 		-- Drink the water by default
 		return minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, placer, pointed_thing)
 	end,
+	_on_dispense = function(stack, pos, droppos)
+		local node = minetest.get_node(droppos)
+		if node.name == "mcl_core:dirt" or node.name == "mcl_core:coarse_dirt" then
+			minetest.set_node(droppos, {name = "mcl_core:mud"})
+			minetest.sound_play("mcl_potions_bottle_pour", {pos=droppos, gain=0.5, max_hear_range=16}, true)
+			return ItemStack("mcl_potions:glass_bottle")
+		elseif node.name == "mcl_core:mud" then
+			return stack
+		end
+	end,
+	_dispense_into_walkable = true,
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
 
@@ -297,6 +308,17 @@ minetest.register_craftitem("mcl_potions:river_water", {
 		-- Drink the water by default
 		return minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, placer, pointed_thing)
 	end,
+	_on_dispense = function(stack, pos, droppos)
+		local node = minetest.get_node(droppos)
+		if node.name == "mcl_core:dirt" or node.name == "mcl_core:coarse_dirt" then
+			minetest.set_node(droppos, {name = "mcl_core:mud"})
+			minetest.sound_play("mcl_potions_bottle_pour", {pos=droppos, gain=0.5, max_hear_range=16}, true)
+			return ItemStack("mcl_potions:glass_bottle")
+		elseif node.name == "mcl_core:mud" then
+			return stack
+		end
+	end,
+	_dispense_into_walkable = true,
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 
 })
