@@ -222,7 +222,7 @@ minetest.register_craftitem("mcl_potions:water", {
 				end
 
 				-- convert to mud
-				minetest.set_node(pointed_thing.under, {name="mcl_core:mud"})
+				minetest.set_node(pointed_thing.under, {name="mcl_mud:mud"})
 				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
 				if minetest.is_creative_enabled(placer:get_player_name()) then
 					return itemstack
@@ -238,10 +238,10 @@ minetest.register_craftitem("mcl_potions:water", {
 	_on_dispense = function(stack, pos, droppos)
 		local node = minetest.get_node(droppos)
 		if node.name == "mcl_core:dirt" or node.name == "mcl_core:coarse_dirt" then
-			minetest.set_node(droppos, {name = "mcl_core:mud"})
+			minetest.set_node(droppos, {name = "mcl_mud:mud"})
 			minetest.sound_play("mcl_potions_bottle_pour", {pos=droppos, gain=0.5, max_hear_range=16}, true)
 			return ItemStack("mcl_potions:glass_bottle")
-		elseif node.name == "mcl_core:mud" then
+		elseif node.name == "mcl_mud:mud" then
 			return stack
 		end
 	end,
@@ -295,7 +295,7 @@ minetest.register_craftitem("mcl_potions:river_water", {
 				end
 
 				-- convert to mud
-				minetest.set_node(pointed_thing.under, {name="mcl_core:mud"})
+				minetest.set_node(pointed_thing.under, {name="mcl_mud:mud"})
 				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
 				if minetest.is_creative_enabled(placer:get_player_name()) then
 					return itemstack
@@ -311,10 +311,10 @@ minetest.register_craftitem("mcl_potions:river_water", {
 	_on_dispense = function(stack, pos, droppos)
 		local node = minetest.get_node(droppos)
 		if node.name == "mcl_core:dirt" or node.name == "mcl_core:coarse_dirt" then
-			minetest.set_node(droppos, {name = "mcl_core:mud"})
+			minetest.set_node(droppos, {name = "mcl_mud:mud"})
 			minetest.sound_play("mcl_potions_bottle_pour", {pos=droppos, gain=0.5, max_hear_range=16}, true)
 			return ItemStack("mcl_potions:glass_bottle")
-		elseif node.name == "mcl_core:mud" then
+		elseif node.name == "mcl_mud:mud" then
 			return stack
 		end
 	end,
