@@ -214,20 +214,16 @@ minetest.register_craftitem("mcl_potions:water", {
 				else
 					return "mcl_potions:glass_bottle"
 				end
-			
-			-- convert dirt to mud
 			elseif node.name == "mcl_core:dirt" or node.name == "mcl_core:coarse_dirt" then
-
 				local pname = placer:get_player_name()
 				if minetest.is_protected(pointed_thing.under, pname) then
 					minetest.record_protection_violation(pointed_thing.under, pname)
 					return itemstack
 				end
 
-				-- set the node to mud
+				-- convert to mud
 				minetest.set_node(pointed_thing.under, {name="mcl_core:mud"})
 				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
-
 				if minetest.is_creative_enabled(placer:get_player_name()) then
 					return itemstack
 				else
@@ -280,19 +276,16 @@ minetest.register_craftitem("mcl_potions:river_water", {
 				else
 					return "mcl_potions:glass_bottle"
 				end
-			-- convert dirt to mud
 			elseif node.name == "mcl_core:dirt" or node.name == "mcl_core:coarse_dirt" then
-
 				local pname = placer:get_player_name()
 				if minetest.is_protected(pointed_thing.under, pname) then
 					minetest.record_protection_violation(pointed_thing.under, pname)
 					return itemstack
 				end
 
-				-- set the node to mud
+				-- convert to mud
 				minetest.set_node(pointed_thing.under, {name="mcl_core:mud"})
 				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
-
 				if minetest.is_creative_enabled(placer:get_player_name()) then
 					return itemstack
 				else
