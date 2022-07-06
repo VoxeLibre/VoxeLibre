@@ -457,6 +457,19 @@ minetest.register_node("mcl_core:podzol", {
 })
 mcl_core.register_snowed_node("mcl_core:podzol_snow", "mcl_core:podzol", nil, nil, false, S("Podzol with Snow"))
 
+minetest.register_node("mcl_core:mud", {
+	description = S("Mud"),
+	_doc_items_longdesc = S("Mud is a decorative block found in mangrove swamps.  Mud can be obtained by using a watter bottle on a dirt or coarse dirt block."),
+	_doc_items_hidden = false,
+	tiles = {"mcl_core_mud.png"},
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {handy=1, shovely=1, enderman_takable=1, building_block=1},
+	sounds = mcl_sounds.node_sound_dirt_defaults(),
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
 minetest.register_node("mcl_core:dirt", {
 	description = S("Dirt"),
 	_doc_items_longdesc = S("Dirt acts as a soil for a few plants. When in light, this block may grow a grass or mycelium cover if such blocks are nearby."),
