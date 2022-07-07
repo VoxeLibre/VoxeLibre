@@ -629,6 +629,7 @@ local function look_for_job(self)
 end
 
 local function get_a_job(self)
+	if self.child then return end
 	local p = self.object:get_pos()
 	local n = minetest.find_node_near(p,1,jobsites)
 	if n and employ(self,n) then return true end
