@@ -642,6 +642,7 @@ local function check_jobsite(self)
 	local m = minetest.get_meta(self._jobsite)
 	if m:get_string("villager") ~= self._id then
 		self._profession = "unemployed"
+		self._trades = nil
 		set_textures(self)
 	end
 end
@@ -664,7 +665,6 @@ end
 local function init_trades(self, inv)
 	local profession = professions[self._profession]
 	local trade_tiers = profession.trades
-	self._traded = true
 	if trade_tiers == nil then
 		-- Empty trades
 		self._trades = false
@@ -1113,6 +1113,7 @@ local trade_inventory = {
 			local trader = player_trading_with[name]
 			local tradenum = player_tradenum[name]
 			local trades
+			trader._traded = true
 			if trader and trader._trades then
 				trades = minetest.deserialize(trader._trades)
 			end
