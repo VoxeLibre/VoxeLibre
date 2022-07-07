@@ -1289,7 +1289,6 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 		return true --do not pick up
 	end,
 	on_rightclick = function(self, clicker)
-		local trg=vector.new(0,9,0)
 		if self._jobsite then
 			mcl_mobs:gopath(self,self._jobsite,function()
 				--minetest.log("arrived at jobsite")
