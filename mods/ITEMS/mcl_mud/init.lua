@@ -6,10 +6,15 @@ minetest.register_node("mcl_mud:mud", {
 	_doc_items_hidden = false,
 	tiles = {"mcl_mud.png"},
 	is_ground_content = true,
-	stack_max = 64,
 	groups = {handy=1,shovely=1, enderman_takable=1, building_block=1},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
+	collision_box = {
+		type = "fixed",
+		fixed = {
+			{-8 / 16, -8 / 16, -8 / 16, 8 / 16, 7 / 16, 8 / 16},
+		},
+	},
 })
 
 minetest.register_node("mcl_mud:packed_mud", {
@@ -17,18 +22,37 @@ minetest.register_node("mcl_mud:packed_mud", {
 	_doc_items_longdesc = S("Packed mud is a decorative block used to craft mud bricks."),
 	_doc_items_hidden = false,
 	tiles = {"mcl_mud_packed_mud.png"},
-	is_ground_content = true,
-	stack_max = 64,
 	groups = {handy=1, pickaxey=1, enderman_takable=1, building_block=1},
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 1,
 })
 
+minetest.register_node("mcl_mud:mud_bricks", {
+	description = S("Mud Bricks"),
+	_doc_items_longdesc = S("Decorative block crafted from packed mud."),
+	_doc_items_hidden = false,
+	tiles = {"mcl_mud_bricks.png"},
+	groups = {handy=1, pickaxey=1, building_block=1},
+	_mcl_blast_resistance = 3,
+	_mcl_hardness = 1.5,
+})
+
+-- packed mud
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_mud:packed_mud",
 	recipe = {
 		"mcl_mud:mud",
 		"mcl_farming:wheat_item",
+	}
+})
+
+-- mud bricks
+minetest.register_craft({
+	type = "shaped",
+	output = "mcl_mud:mud_bricks 4",
+	recipe = {
+		{"mcl_mud:packed_mud", "mcl_mud:packed_mud"},
+		{"mcl_mud:packed_mud", "mcl_mud:packed_mud"}
 	}
 })
