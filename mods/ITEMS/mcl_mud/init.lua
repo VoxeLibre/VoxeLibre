@@ -6,6 +6,11 @@ minetest.register_node("mcl_mud:mud", {
 	_doc_items_hidden = false,
 	tiles = {"mcl_mud.png"},
 	is_ground_content = true,
+	sounds = {
+		footstep = {name="mud_footsteps", gain=1},
+		dug = {name="mud_place_dug", gain=1},
+		place = {name="mud_place_dug", gain=1},
+	},
 	groups = {handy=1,shovely=1, enderman_takable=1, building_block=1},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
@@ -22,7 +27,8 @@ minetest.register_node("mcl_mud:packed_mud", {
 	_doc_items_longdesc = S("Packed mud is a decorative block used to craft mud bricks."),
 	_doc_items_hidden = false,
 	tiles = {"mcl_mud_packed_mud.png"},
-	groups = {handy=1, pickaxey=1, enderman_takable=1, building_block=1},
+	groups = {handy=1, pickaxey=1, building_block=1},
+	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 1,
 })
