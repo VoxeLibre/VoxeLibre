@@ -225,6 +225,12 @@ awards.register_achievement("mcl:whatAdeal", {
 	icon = "mcl_core_emerald.png",
 })
 
+awards.register_achievement("mcl:tacticalFishing", {
+	title = S("Tactical Fishing"),
+	description = S("Catch a fish... without a fishing rod!"),
+	icon = "pufferfish_bucket.png",
+})
+
 -- Triggered in mcl_fishing
 awards.register_achievement("mcl:fishyBusiness", {
 	title = S("Fishy Business"),
