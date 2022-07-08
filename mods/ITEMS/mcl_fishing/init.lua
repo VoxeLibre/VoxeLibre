@@ -529,10 +529,10 @@ for _, fish in pairs(fish_names) do
 	mcl_buckets.register_liquid({
 		bucketname = "mcl_fishing:bucket_" .. fish.techname,
 		source_place = function(pos)
-			minetest.add_entity(pos, "extra_mobs:" .. fish.techname)
+			minetest.add_entity(pos, "mobs_mc:" .. fish.techname)
 			return "mcl_core:water_source"
 		end,
-		source_take = {"extra_mobs:" .. fish.techname},
+		source_take = {"mobs_mc:" .. fish.techname},
 		inventory_image = fish.techname .. "_bucket.png",
 		name = S("Bucket of @1", S(fish.name)),
 		longdesc = S("This bucket is filled with water and @1.", S(fish.name)),
