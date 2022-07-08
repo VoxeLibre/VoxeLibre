@@ -1284,7 +1284,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 			end
 		end
 		if clicker then
-			mcl_mobs:feed_tame(self, clicker, 1, true, false)
+			mcl_mobs:feed_tame(self, clicker, 1, true, false, true)
 			return
 		end
 		return true --do not pick up

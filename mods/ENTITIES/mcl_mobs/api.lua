@@ -4357,7 +4357,7 @@ end
 
 
 -- feeding, taming and breeding (thanks blert2112)
-function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame)
+function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 	if not self.follow then
 		return false
 	end
@@ -4370,7 +4370,7 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame)
 
 			local item = clicker:get_wielded_item()
 
-			item:take_item()
+			if not notake then item:take_item() end
 
 			clicker:set_wielded_item(item)
 		end
