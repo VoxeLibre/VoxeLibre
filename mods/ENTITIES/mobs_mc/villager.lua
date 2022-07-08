@@ -629,6 +629,7 @@ local function look_for_job(self)
 end
 
 local function get_a_job(self)
+	if self.child then return end
 	local p = self.object:get_pos()
 	local n = minetest.find_node_near(p,1,jobsites)
 	if n and employ(self,n) then return true end
@@ -641,6 +642,7 @@ local function check_jobsite(self)
 	local m = minetest.get_meta(self._jobsite)
 	if m:get_string("villager") ~= self._id then
 		self._profession = "unemployed"
+		self._trades = nil
 		set_textures(self)
 	end
 end
@@ -663,7 +665,6 @@ end
 local function init_trades(self, inv)
 	local profession = professions[self._profession]
 	local trade_tiers = profession.trades
-	self._traded = true
 	if trade_tiers == nil then
 		-- Empty trades
 		self._trades = false
@@ -1112,6 +1113,7 @@ local trade_inventory = {
 			local trader = player_trading_with[name]
 			local tradenum = player_tradenum[name]
 			local trades
+			trader._traded = true
 			if trader and trader._trades then
 				trades = minetest.deserialize(trader._trades)
 			end
@@ -1282,13 +1284,12 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 			end
 		end
 		if clicker then
-			mcl_mobs:feed_tame(self, clicker, 1, true, false)
+			mcl_mobs:feed_tame(self, clicker, 1, true, false, true)
 			return
 		end
 		return true --do not pick up
 	end,
 	on_rightclick = function(self, clicker)
-		local trg=vector.new(0,9,0)
 		if self._jobsite then
 			mcl_mobs:gopath(self,self._jobsite,function()
 				--minetest.log("arrived at jobsite")

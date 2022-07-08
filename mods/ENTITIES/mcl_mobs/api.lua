@@ -298,9 +298,13 @@ local function update_roll(self)
 
 	if is_Fleckenstein then
 		cbox[2], cbox[5] = -cbox[5], -cbox[2]
+		self.object:set_properties({collisionbox = cbox})
+	-- This leads to child mobs having the wrong collisionbox
+	-- and seeing as it seems to be nothing but an easter egg
+	-- i've put it inside the if. Which just makes it be upside
+	-- down lol.
 	end
 
-	self.object:set_properties({collisionbox = cbox})
 end
 
 -- set and return valid yaw
@@ -4357,7 +4361,7 @@ end
 
 
 -- feeding, taming and breeding (thanks blert2112)
-function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame)
+function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 	if not self.follow then
 		return false
 	end
@@ -4370,7 +4374,7 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame)
 
 			local item = clicker:get_wielded_item()
 
-			item:take_item()
+			if not notake then item:take_item() end
 
 			clicker:set_wielded_item(item)
 		end
