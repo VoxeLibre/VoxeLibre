@@ -298,9 +298,13 @@ local function update_roll(self)
 
 	if is_Fleckenstein then
 		cbox[2], cbox[5] = -cbox[5], -cbox[2]
+		self.object:set_properties({collisionbox = cbox})
+	-- This leads to child mobs having the wrong collisionbox
+	-- and seeing as it seems to be nothing but an easter egg
+	-- i've put it inside the if. Which just makes it be upside
+	-- down lol.
 	end
 
-	self.object:set_properties({collisionbox = cbox})
 end
 
 -- set and return valid yaw
