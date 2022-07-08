@@ -1122,14 +1122,8 @@ mcl_structures.register_structure("mineshaft",{
 			p.y = mcl_vars.mg_overworld_min + 5
 		end
 		if p.y > -10 then return true end
-		local p1 = vector.offset(p,-def.sidelen,-def.sidelen,-def.sidelen)
-		local p2 = vector.offset(p,def.sidelen,def.sidelen,def.sidelen)
-		minetest.emerge_area(p1, p2, function(blockpos, action, calls_remaining, param)
-			if calls_remaining ~= 0 then return end
-			--minetest.log("lol")
-			InitRandomizer(blockseed)
-			create_corridor_system(p, pr)
-		end)
+		InitRandomizer(blockseed)
+		create_corridor_system(p, pr)
 		return true
 	end,
 

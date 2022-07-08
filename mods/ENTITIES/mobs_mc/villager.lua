@@ -136,8 +136,7 @@ local professions = {
 			{
 			{ { "mcl_fishing:fish_raw", 6, 15,}, E1 },
 			{ { "mcl_fishing:salmon_raw", 6, 6, "mcl_core:emerald", 1, 1 },{ "mcl_fishing:salmon_cooked", 6, 6 } },
-			-- FIXME missing campfire
-			--	{{ "mcl_core:emerald", 1, 2 },{"mcl_campfires:campfire",1,1} },
+			{ { "mcl_core:emerald", 1, 2 },{"mcl_campfires:campfire_lit",1,1} },
 			},
 			{
 			{ { "mcl_fishing:salmon_raw", 6, 13,}, E1 },
