@@ -23,7 +23,7 @@ local function degrees(rad)
 	return rad * 180.0 / math.pi
 end
 
-local S = minetest.get_translator("extra_mobs")
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --###################
 --################### dolphin
