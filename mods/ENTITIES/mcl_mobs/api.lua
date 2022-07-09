@@ -4036,6 +4036,7 @@ minetest.register_entity(name, {
 	fire_resistant = def.fire_resistant or false,
 	fire_damage_resistant = def.fire_damage_resistant or false,
 	ignited_by_sunlight = def.ignited_by_sunlight or false,
+	spawn_in_group = def.spawn_in_group,
 	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,

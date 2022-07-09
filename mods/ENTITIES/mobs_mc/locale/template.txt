@@ -62,3 +62,6 @@ Weapon Smith=
 Tool Smith=
 Cleric=
 Nitwit=
+Cod=
+Salmon=
+Dolphin=

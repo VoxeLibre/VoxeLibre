@@ -379,6 +379,20 @@ local function is_farm_animal(n)
 	return n == "mobs_mc:pig" or n == "mobs_mc:cow" or n == "mobs_mc:sheep" or n == "mobs_mc:chicken" or n == "mobs_mc:horse" or n == "mobs_mc:donkey"
 end
 
+local function get_water_spawn(p)
+		local nn = minetest.find_nodes_in_area(vector.offset(p,-2,-1,-2),vector.offset(p,2,-15,2),{"group:water"})
+		if nn and #nn > 0 then
+			return nn[math.random(#nn)]
+		end
+end
+
+local function spawn_group(p,mob,spawn_on,group_max)
+	local nn = minetest.find_nodes_in_area(vector.offset(p,-3,-3,-3),vector.offset(p,3,3,3),spawn_on)
+	for i = 1, math.random(group_max) do
+		minetest.add_entity(nn[math.random(#nn)],mob)
+	end
+end
+
 if mobs_spawn then
 
 	local perlin_noise
@@ -442,6 +456,7 @@ if mobs_spawn then
 			end
 			local mob_def = mob_library_worker_table[mob_index]
 			local mob_type = minetest.registered_entities[mob_def.name].type
+			local spawn_in_group = minetest.registered_entities[mob_def.name].spawn_in_group
 			if mob_def
 				and spawning_position.y >= mob_def.min_height
 				and spawning_position.y <= mob_def.max_height
@@ -453,10 +468,19 @@ if mobs_spawn then
 				and (mob_def.check_position and mob_def.check_position(spawning_position) or true)
 				and (not is_farm_animal(mob_def.name) or is_grass)
 				and (mob_type ~= "npc" or has_bed)
-				and (mob_def.type_of_spawning ~= water or is_water)
+				and (mob_def.type_of_spawning ~= "water" or is_water)
 				then
+					if mob_def.type_of_spawning == "water" then
+						spawning_position = get_water_spawn(spawning_position)
+						if not spawning_position then
+							return
+						end
+					end
 					--everything is correct, spawn mob
 					local object = minetest.add_entity(spawning_position, mob_def.name)
+					if spawn_in_group then
+						spawn_group(spawning_position,mob_def.name,{gotten_node},spawn_in_group)
+					end
 					if object then
 						return mob_def.on_spawn and mob_def.on_spawn(object, spawning_position)
 					end
