@@ -176,6 +176,76 @@ local fill_cauldron = function(cauldron, water_type)
 	end
 end
 
+-- function to set node and empty water bottle (used for cauldrons and mud)
+local function set_node_empty_bottle(itemstack, placer, pointed_thing, newitemstring)
+	local pname = placer:get_player_name()
+	if minetest.is_protected(pointed_thing.under, pname) then
+		minetest.record_protection_violation(pointed_thing.under, pname)
+		return itemstack
+	end
+
+	-- set the node to `itemstring`
+	minetest.set_node(pointed_thing.under, {name=newitemstring})
+
+	-- play sound
+	minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
+
+	-- 
+	if minetest.is_creative_enabled(placer:get_player_name()) then
+		return itemstack
+	else
+		return "mcl_potions:glass_bottle"
+	end
+end
+
+-- used for water bottles and river water bottles
+local function dispense_water_bottle(stack, pos, droppos)
+	local node = minetest.get_node(droppos)
+	if node.name == "mcl_core:dirt" or node.name == "mcl_core:coarse_dirt" then
+		-- convert dirt/coarse dirt to mud
+		minetest.set_node(droppos, {name = "mcl_mud:mud"})
+		minetest.sound_play("mcl_potions_bottle_pour", {pos=droppos, gain=0.5, max_hear_range=16}, true)
+		return ItemStack("mcl_potions:glass_bottle")
+
+	elseif node.name == "mcl_mud:mud" then
+		-- dont dispense into mud
+		return stack
+	end
+end
+
+-- on_place function for `mcl_potions:water` and `mcl_potions:river_water`
+
+local function water_bottle_on_place(itemstack, placer, pointed_thing)
+	if pointed_thing.type == "node" then
+		local node = minetest.get_node(pointed_thing.under)
+		local def = minetest.registered_nodes[node.name]
+
+		-- Call on_rightclick if the pointed node defines it
+		if placer and not placer:get_player_control().sneak then
+			if def and def.on_rightclick then
+				return def.on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+			end
+		end
+
+		local cauldron = nil
+		if itemstack:get_name() == "mcl_potions:water" then -- regular water
+			cauldron = fill_cauldron(node.name, "mcl_core:water_source")
+		elseif itemstack:get_name() == "mcl_potions:river_water" then -- river water
+			cauldron = fill_cauldron(node.name, "mclx_core:river_water_source")
+		end
+
+
+		if cauldron then
+			set_node_empty_bottle(itemstack, placer, pointed_thing, cauldron)
+		elseif node.name == "mcl_core:dirt" or node.name == "mcl_core:coarse_dirt" then
+			set_node_empty_bottle(itemstack, placer, pointed_thing, "mcl_mud:mud")
+		end
+	end
+
+	-- Drink the water by default
+	return minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, placer, pointed_thing)
+end
+
 -- Itemstring of potions is “mcl_potions:<NBT Potion Tag>”
 
 minetest.register_craftitem("mcl_potions:water", {
@@ -187,39 +257,9 @@ minetest.register_craftitem("mcl_potions:water", {
 	inventory_image = potion_image("#0022FF"),
 	wield_image = potion_image("#0022FF"),
 	groups = {brewitem=1, food=3, can_eat_when_full=1, water_bottle=1},
-	on_place = function(itemstack, placer, pointed_thing)
-		if pointed_thing.type == "node" then
-			local node = minetest.get_node(pointed_thing.under)
-			local def = minetest.registered_nodes[node.name]
-
-			-- Call on_rightclick if the pointed node defines it
-			if placer and not placer:get_player_control().sneak then
-				if def and def.on_rightclick then
-					return def.on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
-				end
-			end
-
-			local cauldron = fill_cauldron(node.name, "mcl_core:water_source")
-			if cauldron then
-				local pname = placer:get_player_name()
-				if minetest.is_protected(pointed_thing.under, pname) then
-					minetest.record_protection_violation(pointed_thing.under, pname)
-					return itemstack
-				end
-				-- Increase water level of cauldron by 1
-				minetest.set_node(pointed_thing.under, {name=cauldron})
-				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
-				if minetest.is_creative_enabled(placer:get_player_name()) then
-					return itemstack
-				else
-					return "mcl_potions:glass_bottle"
-				end
-			end
-		end
-
-		-- Drink the water by default
-		return minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, placer, pointed_thing)
-	end,
+	on_place = water_bottle_on_place,
+	_on_dispense = dispense_water_bottle,
+	_dispense_into_walkable = true,
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
 
@@ -234,39 +274,9 @@ minetest.register_craftitem("mcl_potions:river_water", {
 	inventory_image = potion_image("#0044FF"),
 	wield_image = potion_image("#0044FF"),
 	groups = {brewitem=1, food=3, can_eat_when_full=1, water_bottle=1},
-	on_place = function(itemstack, placer, pointed_thing)
-		if pointed_thing.type == "node" then
-			local node = minetest.get_node(pointed_thing.under)
-			local def = minetest.registered_nodes[node.name]
-
-			-- Call on_rightclick if the pointed node defines it
-			if placer and not placer:get_player_control().sneak then
-				if def and def.on_rightclick then
-					return def.on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
-				end
-			end
-
-			local cauldron = fill_cauldron(node.name, "mclx_core:river_water_source")
-			if cauldron then
-				local pname = placer:get_player_name()
-				if minetest.is_protected(pointed_thing.under, pname) then
-					minetest.record_protection_violation(pointed_thing.under, pname)
-					return itemstack
-				end
-				-- Increase water level of cauldron by 1
-				minetest.set_node(pointed_thing.under, {name=cauldron})
-				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
-				if minetest.is_creative_enabled(placer:get_player_name()) then
-					return itemstack
-				else
-					return "mcl_potions:glass_bottle"
-				end
-			end
-		end
-
-		-- Drink the water by default
-		return minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, placer, pointed_thing)
-	end,
+	on_place = water_bottle_on_place,
+	_on_dispense = dispense_water_bottle,
+	_dispense_into_walkable = true,
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 
 })

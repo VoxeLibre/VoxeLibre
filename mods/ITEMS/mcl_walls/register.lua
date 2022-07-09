@@ -14,3 +14,4 @@ mcl_walls.register_wall("mcl_walls:prismarine", S("Prismarine Wall"), "mcl_ocean
 mcl_walls.register_wall("mcl_walls:endbricks", S("End Stone Brick Wall"), "mcl_end:end_bricks")
 mcl_walls.register_wall("mcl_walls:netherbrick", S("Nether Brick Wall"), "mcl_nether:nether_brick")
 mcl_walls.register_wall("mcl_walls:rednetherbrick", S("Red Nether Brick Wall"), "mcl_nether:red_nether_brick")
+mcl_walls.register_wall("mcl_walls:mudbrick", S("Mud Brick Wall"), "mcl_mud:mud_bricks")
