@@ -388,6 +388,10 @@ end
 
 local function spawn_group(p,mob,spawn_on,group_max)
 	local nn = minetest.find_nodes_in_area(vector.offset(p,-3,-3,-3),vector.offset(p,3,3,3),spawn_on)
+	if not nn or #nn < 1 then
+		nn = {}
+		table.insert(nn,p)
+	end
 	for i = 1, math.random(group_max) do
 		minetest.add_entity(nn[math.random(#nn)],mob)
 	end
