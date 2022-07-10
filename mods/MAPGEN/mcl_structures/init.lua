@@ -244,6 +244,7 @@ dofile(modpath.."/ocean_ruins.lua")
 dofile(modpath.."/witch_hut.lua")
 dofile(modpath.."/igloo.lua")
 dofile(modpath.."/woodland_mansion.lua")
+dofile(modpath.."/ruined_portal.lua")
 dofile(modpath.."/geode.lua")
 
 
