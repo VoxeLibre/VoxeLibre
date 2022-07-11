@@ -17,6 +17,23 @@ mcl_structures.register_structure("woodland_cabin",{
 		modpath.."/schematics/mcl_structures_woodland_cabin.mts",
 		modpath.."/schematics/mcl_structures_woodland_outpost.mts",
 	},
+	after_place = function(p,def,pr)
+		local spawnon = {"mcl_deepslate:deepslate","mcl_wool:white_carpet","mcl_wool:white_carpet"}
+		for i=1,5 do
+			local vindicator = minetest.find_node_near(p,25,spawnon)
+			if vindicator then
+				minetest.add_entity(vindicator,"mobs_mc:vindicator")
+			end
+		end
+		local evoker = minetest.find_node_near(p,25,spawnon)
+		if evoker then
+			minetest.add_entity(evoker,"mobs_mc:evoker")
+		end
+		local parrot = minetest.find_node_near(p,25,{"mcl_heads:wither_skeleton"})
+		if parrot then
+			minetest.add_entity(parrot,"mobs_mc:parrot")
+		end
+	end,
 	loot = {
 		["mcl_chests:chest_small" ] ={{
 			stacks_min = 3,
