@@ -46,6 +46,9 @@ end
 local wither_head = minetest.registered_nodes["mcl_heads:wither_skeleton"]
 local old_on_place = wither_head.on_place
 function wither_head.on_place(itemstack, placer, pointed)
-	minetest.after(0, wither_spawn, pointed.above)
-	old_on_place(itemstack, placer, pointed)
+	local n = minetest.get_node(vector.offset(pointed.above,0,-1,0))
+	if n and n.name  == "mcl_nether:soul_sand" then
+		minetest.after(0, wither_spawn, pointed.above)
+	end
+	return old_on_place(itemstack, placer, pointed)
 end
