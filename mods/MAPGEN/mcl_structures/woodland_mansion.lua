@@ -17,6 +17,28 @@ mcl_structures.register_structure("woodland_cabin",{
 		modpath.."/schematics/mcl_structures_woodland_cabin.mts",
 		modpath.."/schematics/mcl_structures_woodland_outpost.mts",
 	},
+	after_place = function(p,def,pr)
+		local spawnon = {"mcl_deepslate:deepslate","mcl_core:birchwood","mcl_wool:red_carpet","mcl_wool:brown_carpet"}
+		local p1=vector.offset(p,-def.sidelen,-1,-def.sidelen)
+		local p2=vector.offset(p,def.sidelen,def.sidelen,def.sidelen)
+		local sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
+		if sp and #sp > 0 then
+			for i=1,5 do
+				local pos = sp[pr:next(1,#sp)]
+				if pos then
+					minetest.add_entity(pos,"mobs_mc:vindicator")
+				end
+			end
+			local pos = sp[pr:next(1,#sp)]
+			if pos then
+				minetest.add_entity(pos,"mobs_mc:evoker")
+			end
+		end
+		local parrot = minetest.find_node_near(p,25,{"mcl_heads:wither_skeleton"})
+		if parrot then
+			minetest.add_entity(parrot,"mobs_mc:parrot")
+		end
+	end,
 	loot = {
 		["mcl_chests:chest_small" ] ={{
 			stacks_min = 3,
