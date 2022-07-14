@@ -12,7 +12,7 @@ end
 local function reset_animation(self, animation)
 	if not self or not self.object or self.current_animation ~= animation then return end
 	self.current_animation = "stand_reload" -- Mobs Redo won't set the animation unless we do this
-	mobs.set_mob_animation(self, animation)
+	mcl_mobs.set_mob_animation(self, animation)
 end
 
 pillager = {
@@ -135,15 +135,15 @@ pillager = {
 		self.object:set_properties(props)
 		local old_anim = self.current_animation
 		if old_anim == "run" then
-			mobs.set_mob_animation(self, "reload_run")
+			mcl_mobs.set_mob_animation(self, "reload_run")
 		end
 		if old_anim == "stand" then
-			mobs.set_mob_animation(self, "reload_stand")
+			mcl_mobs.set_mob_animation(self, "reload_stand")
 		end
 		self.current_animation = old_anim -- Mobs Redo will imediately reset the animation otherwise
 		minetest.after(1, reload, self)
 		minetest.after(2, reset_animation, self, old_anim)
-		mobs.shoot_projectile_handling(
+		mcl_mobs.shoot_projectile_handling(
 			"mcl_bows:arrow", pos, dir, self.object:get_yaw(),
 			self.object, 30, math.random(3,4))
 		
