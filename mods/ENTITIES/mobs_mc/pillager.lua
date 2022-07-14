@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mobs_mc")
+local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
 
 local function reload(self)
 	if not self or not self.object then return end
@@ -11,8 +12,8 @@ end
 
 local function reset_animation(self, animation)
 	if not self or not self.object or self.current_animation ~= animation then return end
-	self.current_animation = "stand_reload" -- Mobs Redo won't set the animation unless we do this
-	mcl_mobs.set_mob_animation(self, animation)
+	self.animation.current = "stand_reload" -- Mobs Redo won't set the animation unless we do this
+	mcl_mobs:set_animation(self, animation)
 end
 
 pillager = {
@@ -20,7 +21,7 @@ pillager = {
 	type = "monster",
 	spawn_class = "hostile",
 	hostile = true,
-	rotate = 270,
+	rotate = 0,
 	hp_min = 24,
 	hp_max = 24,
 	xp_min = 6,
@@ -64,7 +65,7 @@ pillager = {
 	reach = 8,
 	view_range = 16,
 	fear_height = 4,
-	attack_type = "projectile",
+	attack_type = "shoot",
 	arrow = "mcl_bows:arrow_entity",
 	sounds = {
 		random = "mobs_mc_pillager_grunt2",
@@ -133,19 +134,21 @@ pillager = {
 		local props = self.object:get_properties()
 		props.textures[2] = "mcl_bows_crossbow_0.png^[resize:16x16"
 		self.object:set_properties(props)
-		local old_anim = self.current_animation
+		local old_anim = self.animation.current
 		if old_anim == "run" then
-			mcl_mobs.set_mob_animation(self, "reload_run")
+			mcl_mobs:set_animation(self, "reload_run")
 		end
 		if old_anim == "stand" then
-			mcl_mobs.set_mob_animation(self, "reload_stand")
+			mcl_mobs:set_animation(self, "reload_stand")
 		end
-		self.current_animation = old_anim -- Mobs Redo will imediately reset the animation otherwise
+		self.animation.current = old_anim -- Mobs Redo will imediately reset the animation otherwise
 		minetest.after(1, reload, self)
 		minetest.after(2, reset_animation, self, old_anim)
-		mcl_mobs.shoot_projectile_handling(
-			"mcl_bows:arrow", pos, dir, self.object:get_yaw(),
-			self.object, 30, math.random(3,4))
+		if mod_bows then
+			-- 2-4 damage per arrow
+			local dmg = math.max(4, math.random(2, 8))
+			mcl_bows_s.shoot_arrow_crossbow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
+		end
 		
 		-- While we are at it, change the sounds since there is no way to do this in Mobs Redo
 		if self.sounds and self.sounds.random then
