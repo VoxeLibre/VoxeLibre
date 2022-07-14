@@ -24,6 +24,9 @@ local def = {
 	filenames = {
 		modpath.."/schematics/mcl_structures_ruined_portal_1.mts",
 		modpath.."/schematics/mcl_structures_ruined_portal_2.mts",
+		modpath.."/schematics/mcl_structures_ruined_portal_3.mts",
+		modpath.."/schematics/mcl_structures_ruined_portal_4.mts",
+		modpath.."/schematics/mcl_structures_ruined_portal_5.mts",
 		modpath.."/schematics/mcl_structures_ruined_portal_99.mts",
 	},
 	after_place = function(pos,def,pr)
@@ -76,7 +79,7 @@ local def = {
 }
 mcl_structures.register_structure("ruined_portal_overworld",def)
 local ndef = table.copy(def)
-ndef.y_min=mcl_vars.mg_nether_lava_min
+ndef.y_min=mcl_vars.mg_lava_nether_max +10
 ndef.y_max=mcl_vars.mg_nether_max - 15
 ndef.place_on = {"mcl_nether:netherrack","group:soul_block","mcl_blackstone:basalt,mcl_blackstone:blackstone","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium"},
 mcl_structures.register_structure("ruined_portal_nether",ndef)
