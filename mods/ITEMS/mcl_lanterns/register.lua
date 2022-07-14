@@ -28,8 +28,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_lanterns:soul_lantern_floor",
 	recipe = {
-		{"mcl_core:iron_nugget", "mcl_core:iron_nugget"		, "mcl_core:iron_nugget"},
-		{"mcl_core:iron_nugget", "mcl_blackstone:soul_torch", "mcl_core:iron_nugget"},
-		{"mcl_core:iron_nugget", "mcl_core:iron_nugget"		, "mcl_core:iron_nugget"},
+		{"mcl_core:iron_nugget", "mcl_core:iron_nugget"      , "mcl_core:iron_nugget"},
+		{"mcl_core:iron_nugget", "mcl_blackstone:soul_torch" , "mcl_core:iron_nugget"},
+		{"mcl_core:iron_nugget", "mcl_core:iron_nugget"      , "mcl_core:iron_nugget"},
 	},
 })
