@@ -428,6 +428,7 @@ if mobs_spawn then
 
 		local is_water = get_item_group(gotten_node, "water") ~= 0
 		local is_lava  = get_item_group(gotten_node, "lava") ~= 0
+		local is_leaf  = get_item_group(gotten_node, "leaves") ~= 0
 		local is_ground = not (is_water or is_lava)
 		local is_grass = minetest.get_item_group(gotten_node,"grass_block") ~= 0
 		local has_bed = minetest.find_node_near(pos,25,{"group:bed"})
@@ -469,6 +470,7 @@ if mobs_spawn then
 				and gotten_light >= mob_def.min_light
 				and gotten_light <= mob_def.max_light
 				and (is_ground or mob_def.type_of_spawning ~= "ground")
+				and (mob_def.type_of_spawning ~= "ground" or not is_leaf)
 				and (mob_def.check_position and mob_def.check_position(spawning_position) or true)
 				and (not is_farm_animal(mob_def.name) or is_grass)
 				and (mob_type ~= "npc" or has_bed)
