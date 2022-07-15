@@ -19,7 +19,7 @@ pathlist = Path(path).rglob('*.lua')
 for path in pathlist:
     path_in_str = str(path)
     # print(path_in_str)
-    trouve = False
+    found = False
     with open(path_in_str) as f:
         local_vars = []
         for i, line in enumerate(f.readlines()):
@@ -38,7 +38,7 @@ for path in pathlist:
                     local_vars.append(n.group('local_var'))
 
         if not found:
-            nb_varloc = len(variables_locales)
+            nb_varloc = len(local_vars)
             #print(path_in_str, ": -", "({} variables locales)".format(nb_varloc) if nb_varloc > 0 else '')
 
 print(', '.join(['"{}"'.format(v) for v in global_vars]))
