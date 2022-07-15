@@ -207,7 +207,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 				local ok = false
 				if hitpoint.ref:is_player() and enable_pvp then
 					ok = true
-				elseif hitpoint.ref:get_luaentity() then
+				elseif not hitpoint.ref:is_player() and hitpoint.ref:get_luaentity() then
 					if (hitpoint.ref:get_luaentity().is_mob or hitpoint.ref:get_luaentity()._hittable_by_projectile) then
 						ok = true
 					end
