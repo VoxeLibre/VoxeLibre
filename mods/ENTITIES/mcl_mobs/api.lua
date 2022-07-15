@@ -91,7 +91,7 @@ minetest.register_chatcommand("clearmobs",{
 			if o.is_mob then
 				if  param == "all" or
 				( param == "nametagged" and o.nametag ) or
-				( param == "" and not o.nametag and not o.tamed ) or
+				( param == "" and ( not o.nametag or o.nametag == "" ) and not o.tamed ) or
 				( num and num > 0 and vector.distance(p:get_pos(),o.object:get_pos()) <= num ) then
 					o.object:remove()
 				end
