@@ -2312,9 +2312,9 @@ local function check_doors(self)
 			local def = minetest.registered_nodes[n.name]
 			local closed = n.name:find("_b_1")
 			if t < 0.3 or t > 0.8 then
-				if not closed then def.on_rightclick(d,n,self) end
+				if not closed and def.on_rightclick then def.on_rightclick(d,n,self) end
 			else
-				if closed then def.on_rightclick(d,n,self) end
+				if closed and def.on_rightclick then def.on_rightclick(d,n,self) end
 			end
 
 		end
