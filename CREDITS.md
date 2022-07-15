@@ -27,6 +27,8 @@
 * Code-Sploit
 * NO11
 * kabou
+* PrarieWind
+* RandomLegoBrick
 
 ## Contributors
 * Laurent Rocher
@@ -71,6 +73,10 @@
 * Sven792
 * aldum
 * Dieter44
+* Pepebotella
+* MrRar
+* Lazerbeak12345
+* mrminer
 
 ## MineClone5
 * kay27
@@ -134,6 +140,8 @@
 * yutyo
 * NO11
 * kay27
+* RandomLegoBrick
+* cora
 
 ## Translations
 * Wuzzy
@@ -143,6 +151,8 @@
 * pitchum
 * todoporlalibertad
 * Marcin Serwin
+* Pepebotella
+* Emojigit
 
 ## Funders
 * 40W
@@ -150,5 +160,6 @@
 ## Special thanks
 * celeron55 for creating Minetest
 * Jordach for the jukebox music compilation from Big Freaking Dig
+* wsor for working tirelessly in the shadows for the good of all of us, particularly helping with solving contentDB and copyright issues.
 * The workaholics who spent way too much time writing for the Minecraft Wiki. It's an invaluable resource for creating this game
 * Notch and Jeb for being the major forces behind Minecraft
