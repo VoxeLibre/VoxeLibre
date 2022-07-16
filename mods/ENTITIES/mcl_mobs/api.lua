@@ -1905,11 +1905,10 @@ local specific_attack = function(list, what)
 	return false
 end
 
--- monster find someone to attack
+-- find someone to attack
 local monster_attack = function(self)
 
-	if self.type ~= "monster"
-	or not damage_enabled
+	if not damage_enabled
 	or minetest.is_creative_enabled("")
 	or self.passive
 	or self.state == "attack"
