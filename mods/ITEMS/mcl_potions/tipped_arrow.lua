@@ -30,6 +30,7 @@ local how_to_shoot = minetest.registered_items["mcl_bows:arrow"]._doc_items_usag
 
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
 local mod_button = minetest.get_modpath("mesecons_button")
+local enable_pvp = minetest.settings:get_bool("enable_pvp")
 
 local arrow_longdesc = minetest.registered_items["mcl_bows:arrow"]._doc_items_longdesc or ""
 local arrow_tt = minetest.registered_items["mcl_bows:arrow"]._tt_help or ""
@@ -217,9 +218,9 @@ function mcl_potions.register_arrow(name, desc, color, def)
 				if hitpoint.type == "object" then
 					-- find the closest object that is in the way of the arrow
 					local ok = false
-					if hitpoint.ref:is_player() then
+					if hitpoint.ref:is_player() and enable_pvp then
 						ok = true
-					elseif hitpoint.ref:get_luaentity() then
+					elseif not hitpoint.ref:is_player() and hitpoint.ref:get_luaentity() then
 						if (hitpoint.ref:get_luaentity().is_mob or hitpoint.ref:get_luaentity()._hittable_by_projectile) then
 							ok = true
 						end
@@ -283,7 +284,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 						if is_player then
 							if self._shooter and self._shooter:is_player() then
 								-- “Ding” sound for hitting another player
-								minetest.sound_play({name="mcl_bows_hit_player", gain=0.1}, {to_player=self._shooter}, true)
+								minetest.sound_play({name="mcl_bows_hit_player", gain=0.1}, {to_player=self._shooter:get_player_name()}, true)
 							end
 						end
 
