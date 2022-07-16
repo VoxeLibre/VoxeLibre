@@ -27,6 +27,8 @@
 * Code-Sploit
 * NO11
 * kabou
+* rudzik8
+* chmodsayshello
 * PrarieWind
 * RandomLegoBrick
 
@@ -84,10 +86,12 @@
 * epCode
 * NO11
 * j45
+* chmodsayshello
 * 3raven
 * PrarieWind
 * Gustavo1
 * CableGuy67
+* MrRar
 
 ## Mineclonia
 * erlehmann
@@ -140,6 +144,7 @@
 * yutyo
 * NO11
 * kay27
+* MysticTempest
 * RandomLegoBrick
 * cora
 
