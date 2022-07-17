@@ -578,7 +578,7 @@ mcl_mobs:spawn_specific(
 	"Savanna_beach",
 	"Plains_beach",
 },
-0,
+9,
 minetest.LIGHT_MAX+1,
 30,
 15000,

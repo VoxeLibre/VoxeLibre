@@ -446,11 +446,6 @@ minetest.LIGHT_MAX+1,
 mmin,
 mmax)
 
---mcl_mobs:spawn_specific("mobs_mc:magma_cube_tiny", { "mcl_nether:nether_brick", "mcl_nether:netherrack" }, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11000, 4, mmin, mmax)
---mcl_mobs:spawn_specific("mobs_mc:magma_cube_small", { "mcl_nether:nether_brick", "mcl_nether:netherrack" }, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11100, 4, mmin, mmax)
---mcl_mobs:spawn_specific("mobs_mc:magma_cube_big", { "mcl_nether:nether_brick", "mcl_nether:netherrack" }, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11200, 4, mmin, mmax)
-
-
 -- spawn eggs
 mcl_mobs:register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "mobs_mc_spawn_icon_magmacube.png")
 mcl_mobs:register_egg("mobs_mc:slime_big", S("Slime"), "mobs_mc_spawn_icon_slime.png")

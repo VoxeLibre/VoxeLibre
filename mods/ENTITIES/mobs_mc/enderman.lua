@@ -767,10 +767,10 @@ mcl_mobs:spawn_specific(
 "ground",
 {
 "Nether",
-"SoulsandValley",
+"SoulsandVall3ey",
 },
 0,
-minetest.LIGHT_MAX+1,
+11,
 30,
 27500,
 4,
@@ -786,7 +786,7 @@ mcl_mobs:spawn_specific(
 "WarpedForest"
 },
 0,
-minetest.LIGHT_MAX+1,
+11,
 30,
 5000,
 4,
