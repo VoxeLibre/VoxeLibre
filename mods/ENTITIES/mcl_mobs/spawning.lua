@@ -386,15 +386,18 @@ local function get_water_spawn(p)
 		end
 end
 
-local function spawn_group(p,mob,spawn_on,group_max)
-	local nn = minetest.find_nodes_in_area(vector.offset(p,-3,-3,-3),vector.offset(p,3,3,3),spawn_on)
+local function spawn_group(p,mob,spawn_on,group_max,group_min)
+	if not group_min then group_min = 1 end
+	local nn = minetest.find_nodes_in_area(vector.offset(p,-5,-3,-5),vector.offset(p,5,3,5),spawn_on)
+	local o
 	if not nn or #nn < 1 then
 		nn = {}
 		table.insert(nn,p)
 	end
-	for i = 1, math.random(group_max) do
-		minetest.add_entity(nn[math.random(#nn)],mob)
+	for i = 1, math.random(group_min,group_max) do
+		o = minetest.add_entity(nn[math.random(#nn)],mob)
 	end
+	return o
 end
 
 if mobs_spawn then
@@ -461,7 +464,7 @@ if mobs_spawn then
 			end
 			local mob_def = mob_library_worker_table[mob_index]
 			local mob_type = minetest.registered_entities[mob_def.name].type
-			local spawn_in_group = minetest.registered_entities[mob_def.name].spawn_in_group
+			local spawn_in_group = minetest.registered_entities[mob_def.name].spawn_in_group or 4
 			if mob_def
 				and spawning_position.y >= mob_def.min_height
 				and spawning_position.y <= mob_def.max_height
@@ -483,10 +486,13 @@ if mobs_spawn then
 						end
 					end
 					--everything is correct, spawn mob
-					local object = minetest.add_entity(spawning_position, mob_def.name)
+					local object
 					if spawn_in_group then
-						spawn_group(spawning_position,mob_def.name,{gotten_node},spawn_in_group)
+						object = spawn_group(spawning_position,mob_def.name,{gotten_node},spawn_in_group,spawn_in_group_min)
+					else object = minetest.add_entity(spawning_position, mob_def.name)
 					end
+
+
 					if object then
 						return mob_def.on_spawn and mob_def.on_spawn(object, spawning_position)
 					end
