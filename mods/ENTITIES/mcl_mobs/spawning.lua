@@ -388,7 +388,12 @@ end
 
 local function spawn_group(p,mob,spawn_on,group_max,group_min)
 	if not group_min then group_min = 1 end
-	local nn = minetest.find_nodes_in_area(vector.offset(p,-5,-3,-5),vector.offset(p,5,3,5),spawn_on)
+	local nn
+	if mob.spawn_class == "water" then
+		nn= minetest.find_nodes_in_area(vector.offset(p,-5,-3,-5),vector.offset(p,5,3,5),spawn_on)
+	else
+		nn= minetest.find_nodes_in_area_under_air(vector.offset(p,-5,-3,-5),vector.offset(p,5,3,5),spawn_on)
+	end
 	local o
 	if not nn or #nn < 1 then
 		nn = {}
