@@ -91,7 +91,7 @@ minetest.register_chatcommand("clearmobs",{
 			if o.is_mob then
 				if  param == "all" or
 				( param == "nametagged" and o.nametag ) or
-				( param == "" and not o.nametag and not o.tamed ) or
+				( param == "" and ( not o.nametag or o.nametag == "" ) and not o.tamed ) or
 				( num and num > 0 and vector.distance(p:get_pos(),o.object:get_pos()) <= num ) then
 					o.object:remove()
 				end
@@ -2312,9 +2312,9 @@ local function check_doors(self)
 			local def = minetest.registered_nodes[n.name]
 			local closed = n.name:find("_b_1")
 			if t < 0.3 or t > 0.8 then
-				if not closed then def.on_rightclick(d,n,self) end
+				if not closed and def.on_rightclick then def.on_rightclick(d,n,self) end
 			else
-				if closed then def.on_rightclick(d,n,self) end
+				if closed and def.on_rightclick then def.on_rightclick(d,n,self) end
 			end
 
 		end

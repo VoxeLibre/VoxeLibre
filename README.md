@@ -2,7 +2,7 @@
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by davedevils.
 Developed by many people. Not developed or endorsed by Mojang AB.
 
-Version: 0.75 (in development)
+Version: 0.78 (in development)
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -91,11 +91,11 @@ The MineClone2 repository is hosted at Mesehub. To contribute or report issues, 
 ## Target
 - Crucially, create a stable, moddable, free/libre clone of Minecraft
 based on the Minetest engine with polished features, usable in both
-singleplayer and multiplayer. Currently, most of **Minecraft Java
-Edition 1.12.2** features are already implemented and polishing existing
+singleplayer and multiplayer. Currently, a lot of **Minecraft Java
+Edition** features are already implemented and polishing existing
 features are prioritized over new feature requests.
 - With lessened priority yet strictly, implement features targetting
-**Minecraft version 1.17 + OptiFine** (OptiFine only as far as supported
+**Current Minecraft versions + OptiFine** (OptiFine only as far as supported
 by the Minetest Engine). This means features in parity with the listed
 Minecraft experiences are prioritized over those that don't fulfill this
 scope.
@@ -108,8 +108,7 @@ playerbase on low spec computers, optimizations are hard to investigate.
 This game is currently in **beta** stage.
 It is playable, but not yet feature-complete.
 Backwards-compability is not entirely guaranteed, updating your world might cause small bugs.
-If you want to use the git version of MineClone2 in production, consider using the production branch.
-It is updated weekly and contains relatively stable code for servers.
+If you want to use the development version of MineClone2 in production, the master branch is usually relatively stable. The testing branch often features some experimental PRs and should be considered less stable.
 
 The following main features are available:
 
@@ -124,7 +123,7 @@ The following main features are available:
 * Most blocks in the overworld
 * Water and lava
 * Weather
-* 28 biomes
+* 28 biomes + 5 Nether Biomes
 * The Nether, a fiery underworld in another dimension
 * Redstone circuits (partially)
 * Minecarts (partial)
@@ -162,7 +161,7 @@ The following features are incomplete:
 * Special minecarts
 * A couple of non-trivial blocks and items
 
-Bonus features (not found in Minecraft 1.12):
+Bonus features (not found in Minecraft):
 
 * Built-in crafting guide which shows you crafting and smelting recipes
 * In-game help system containing extensive help about gameplay basics, blocks, items and more
@@ -175,6 +174,9 @@ Bonus features (not found in Minecraft 1.12):
     * Nether Brick Fence Gate
     * Red Nether Brick Fence
     * Red Nether Brick Fence Gate
+* Structure replacements - these small variants of Minecraft structures serve as replacements until we can get large structures working:
+    * Woodland Cabin (Mansions)
+    * Nether Outpost (Fortress)
 
 Technical differences from Minecraft:
 
