@@ -1926,10 +1926,9 @@ local monster_attack = function(self)
 	for n = 1, #objs do
 
 		if objs[n]:is_player() then
-
 			if mcl_mobs.invis[ objs[n]:get_player_name() ] or (not object_in_range(self, objs[n])) then
 				type = ""
-			else
+			elseif (self.type == "monster" or self._aggro) then
 				player = objs[n]
 				type = "player"
 				name = "player"
@@ -3345,11 +3344,11 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	and (self.child == false or self.type == "monster")
 	and hitter:get_player_name() ~= self.owner
 	and not mcl_mobs.invis[ name ] then
-
 		if not die then
 			-- attack whoever punched mob
 			self.state = ""
 			do_attack(self, hitter)
+			self._aggro= true
 		end
 
 		-- alert others to the attack
@@ -3361,7 +3360,6 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			obj = objs[n]:get_luaentity()
 
 			if obj then
-
 				-- only alert members of same mob or friends
 				if obj.group_attack
 				and obj.state ~= "attack"
@@ -3371,6 +3369,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 					elseif type(obj.group_attack) == "table" then
 						for i=1, #obj.group_attack do
 							if obj.name == obj.group_attack[i] then
+								obj._aggro = true
 								do_attack(obj, hitter)
 								break
 							end
