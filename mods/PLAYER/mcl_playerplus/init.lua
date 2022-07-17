@@ -499,12 +499,10 @@ minetest.register_globalstep(function(dtime)
 
 		-- Is player suffocating inside node? (Only for solid full opaque cube type nodes
 		-- without group disable_suffocation=1)
-
-		local ndef = nil
+		-- if swimming, check the feet node instead, because the head node will be above the player when swimming
+		local ndef = minetest.registered_nodes[node_head]
 		if is_swimming then
 			ndef = minetest.registered_nodes[node_feet]
-		else
-			ndef = minetest.registered_nodes[node_head]
 		end
 		if (ndef.walkable == nil or ndef.walkable == true)
 		and (ndef.collision_box == nil or ndef.collision_box.type == "regular")
