@@ -29,6 +29,7 @@ mcl_mobs:register_mob("mobs_mc:villager_zombie", {
 	description = S("Zombie Villager"),
 	type = "monster",
 	spawn_class = "hostile",
+	spawn_in_group = 1,
 	hp_min = 20,
 	hp_max = 20,
 	xp_min = 5,

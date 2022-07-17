@@ -6,9 +6,10 @@ local rabbit = {
 	description = S("Rabbit"),
 	type = "animal",
 	spawn_class = "passive",
+	spawn_in_group_min = 2,
+	spawn_in_group = 3,
 	passive = true,
 	reach = 1,
-
 	hp_min = 3,
 	hp_max = 3,
 	xp_min = 1,

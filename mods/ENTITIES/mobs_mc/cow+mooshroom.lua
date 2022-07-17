@@ -83,6 +83,8 @@ mcl_mobs:register_mob("mobs_mc:cow", cow_def)
 local mooshroom_def = table.copy(cow_def)
 mooshroom_def.description = S("Mooshroom")
 mooshroom_def.mesh = "mobs_mc_cow.b3d"
+mooshroom_def.spawn_in_group_min = 4
+mooshroom_def.spawn_in_group = 8
 mooshroom_def.textures = { {"mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png"}, {"mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" } }
 mooshroom_def.on_rightclick = function(self, clicker)
 	if mcl_mobs:feed_tame(self, clicker, 1, true, true) then return end

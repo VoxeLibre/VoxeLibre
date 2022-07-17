@@ -7,6 +7,7 @@ mcl_mobs:register_mob("mobs_mc:bat", {
 	type = "animal",
 	spawn_class = "ambient",
 	can_despawn = true,
+	spawn_in_group = 8,
 	passive = true,
 	hp_min = 6,
 	hp_max = 6,

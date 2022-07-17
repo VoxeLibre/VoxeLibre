@@ -28,6 +28,8 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 	description = S("Llama"),
 	type = "animal",
 	spawn_class = "passive",
+	spawn_in_group_min = 4,
+	spawn_in_group = 6,
 	hp_min = 15,
 	hp_max = 30,
 	xp_min = 1,
