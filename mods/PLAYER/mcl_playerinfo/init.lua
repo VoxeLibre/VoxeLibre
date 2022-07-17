@@ -34,14 +34,10 @@ local function get_player_nodes(player_pos)
 	work_pos.y = work_pos.y + 1.5 -- head level
 	local node_head = node_ok(work_pos)
 
-	work_pos.y = work_pos.y + 2.2 -- above head level
-	local node_above_head = node_ok(work_pos)
-	work_pos.y = work_pos.y - 2.2 -- above head level
-
 	work_pos.y = work_pos.y - 1.2 -- feet level
 	local node_feet = node_ok(work_pos)
 
-	return node_stand, node_stand_below, node_head, node_feet, node_above_head
+	return node_stand, node_stand_below, node_head, node_feet
 end
 
 minetest.register_globalstep(function(dtime)
@@ -66,12 +62,11 @@ minetest.register_globalstep(function(dtime)
 		local pos = player:get_pos()
 
 		-- what is around me?
-		local node_stand, node_stand_below, node_head, node_feet, node_above_head = get_player_nodes(pos)
+		local node_stand, node_stand_below, node_head, node_feet = get_player_nodes(pos)
 		mcl_playerinfo[name].node_stand = node_stand
 		mcl_playerinfo[name].node_stand_below = node_stand_below
 		mcl_playerinfo[name].node_head = node_head
 		mcl_playerinfo[name].node_feet = node_feet
-		mcl_playerinfo[name].node_above_head = node_above_head
 
 	end
 
@@ -86,7 +81,6 @@ minetest.register_on_joinplayer(function(player)
 		node_feet = "",
 		node_stand = "",
 		node_stand_below = "",
-		node_above_head = "",
 	}
 
 end)

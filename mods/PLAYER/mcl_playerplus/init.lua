@@ -118,7 +118,7 @@ function limit_vel_yaw(player_vel_yaw, yaw)
 	return player_vel_yaw
 end
 
-local node_stand, node_stand_below, node_head, node_feet, node_above_head
+local node_stand, node_stand_below, node_head, node_feet
 local is_swimming
 
 -- This following part is 2 wrapper functions for player:set_bones
@@ -400,16 +400,14 @@ minetest.register_globalstep(function(dtime)
 			node_stand = mcl_playerinfo[name].node_stand
 			node_stand_below = mcl_playerinfo[name].node_stand_below
 			node_head = mcl_playerinfo[name].node_head
-			node_above_head = mcl_playerinfo[name].node_above_head
 			node_feet = mcl_playerinfo[name].node_feet
-			if not node_stand or not node_stand_below or not node_head or not node_feet or not node_above_head then
+			if not node_stand or not node_stand_below or not node_head or not node_feet then
 				return
 			end
 			if (not minetest.registered_nodes[node_stand]
 			or not minetest.registered_nodes[node_stand_below]
 			or not minetest.registered_nodes[node_head]
-			or not minetest.registered_nodes[node_feet]
-			or not minetest.registered_nodes[node_above_head]) then
+			or not minetest.registered_nodes[node_feet]) then
 				return
 			end
 
@@ -467,9 +465,8 @@ minetest.register_globalstep(function(dtime)
 		local node_stand = mcl_playerinfo[name].node_stand
 		local node_stand_below = mcl_playerinfo[name].node_stand_below
 		local node_head = mcl_playerinfo[name].node_head
-		local node_above_head = mcl_playerinfo[name].node_above_head
 		local node_feet = mcl_playerinfo[name].node_feet
-		if not node_stand or not node_stand_below or not node_head or not node_feet or not node_above_head then
+		if not node_stand or not node_stand_below or not node_head or not node_feet then
 			return
 		end
 
