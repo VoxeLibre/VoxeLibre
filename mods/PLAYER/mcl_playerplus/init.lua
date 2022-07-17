@@ -377,7 +377,7 @@ minetest.register_globalstep(function(dtime)
 			set_properties_conditional(player,{collisionbox = {-0.312,0,-0.312,0.312,0.8,0.312}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 			-- control body bone when swimming
 			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new(degrees(dir_to_pitch(player_velocity)) - 90,-player_vel_yaw + yaw + 180,0))
-		elseif is_swimming and mcl_playerinfo[name].node_head == "air" or get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 then
+		elseif mcl_playerinfo[name].node_head == "air" or get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 then
 			-- sets eye height, and nametag color accordingly
 			is_swimming = false
 			set_properties_conditional(player,{collisionbox = {-0.312,0,-0.312,0.312,1.8,0.312}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
@@ -503,12 +503,10 @@ minetest.register_globalstep(function(dtime)
 		local ndef = nil
 		if is_swimming then
 			ndef = minetest.registered_nodes[node_feet]
-			-- mcl_util.deal_damage(player, 1, {type = "in_wall"})
 		else
 			ndef = minetest.registered_nodes[node_head]
 		end
 		if (ndef.walkable == nil or ndef.walkable == true)
-		or not is_swimming
 		and (ndef.collision_box == nil or ndef.collision_box.type == "regular")
 		and (ndef.node_box == nil or ndef.node_box.type == "regular")
 		and (ndef.groups.disable_suffocation ~= 1)
