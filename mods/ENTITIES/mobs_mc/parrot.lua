@@ -40,7 +40,7 @@ end
 local function check_mobimitate(self,dtime)
 	if not self._mobimitate_timer or self._mobimitate_timer > 30 then
 		self._mobimitate_timer = 0
-		for _,o in pairs(minetest.get_objects_inside_radius(self.object:get_pos(),32)) do
+		for _,o in pairs(minetest.get_objects_inside_radius(self.object:get_pos(),20)) do
 			local l = o:get_luaentity()
 			if l and l.is_mob and l.name ~= "mobs_mc:parrot" then
 				imitate_mob_sound(self,l)
