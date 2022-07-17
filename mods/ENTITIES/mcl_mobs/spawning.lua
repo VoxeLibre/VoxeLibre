@@ -15,7 +15,7 @@ local math_cos       = math.cos
 local math_sin       = math.sin
 local math_round     = function(x) return (x > 0) and math_floor(x + 0.5) or math_ceil(x - 0.5) end
 
---local vector_distance = vector.distance
+local vector_distance = vector.distance
 local vector_new      = vector.new
 local vector_floor    = vector.floor
 
@@ -25,7 +25,15 @@ local table_remove   = table.remove
 local pairs = pairs
 
 -- range for mob count
-local aoc_range = 32
+local aoc_range = 136
+
+local mob_cap = {
+	monster = 70,
+	animal =10,
+	ambient =15,
+	water = 5, --currently unused
+	water_ambient = 20, --currently unused
+}
 
 --do mobs spawn?
 local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
@@ -153,6 +161,10 @@ local list_of_all_biomes = {
 	-- dimension biome:
 
 	"Nether",
+	"BasaltDelta",
+	"CrimsonForest",
+	"WarpedForest",
+	"SoulsandValley",
 	"End",
 
 	-- Overworld regular:
@@ -189,27 +201,29 @@ local list_of_all_biomes = {
 	"MesaBryce",
 	"JungleEdge",
 	"SavannaM",
-	"Nether",
-	"WarpedForest",
-	"SoulsandValley"
 }
 
 -- count how many mobs are in an area
-local function count_mobs(pos)
+local function count_mobs(pos,r,mob_type)
 	local num = 0
-	for _,object in pairs(get_objects_inside_radius(pos, aoc_range)) do
-		if object and object:get_luaentity() and object:get_luaentity().is_mob then
-			num = num + 1
+	for _,l in pairs(minetest.luaentities) do
+		if l and l.is_mob and (mob_type == nil or l.type == mob_type) then
+			local p = l.object:get_pos()
+			if p and vector_distance(p,pos) < r then
+				num = num + 1
+			end
 		end
 	end
 	return num
 end
 
-local function count_mobs_total()
+local function count_mobs_total(mob_type)
 	local num = 0
 	for _,l in pairs(minetest.luaentities) do
 		if l.is_mob then
-			num = num + 1
+			if mob_type == nil or l.type == mob_type then
+				num = num + 1
+			end
 		end
 	end
 	return num
@@ -302,7 +316,7 @@ function mcl_mobs:spawn_setup(def)
 	spawn_dictionary[#spawn_dictionary + 1] = {
 		name             = name,
 		dimension        = dimension,
-                type_of_spawning = type_of_spawning,
+		type_of_spawning = type_of_spawning,
 		biomes           = biomes,
 		min_light        = min_light,
 		max_light        = max_light,
@@ -401,19 +415,18 @@ local dbg_spawn_succ = 0
 
 local function spawn_group(p,mob,spawn_on,group_max,group_min)
 	if not group_min then group_min = 1 end
-	local nn
-	if mob.spawn_class == "water" then
-		nn= minetest.find_nodes_in_area(vector.offset(p,-5,-3,-5),vector.offset(p,5,3,5),spawn_on)
-	else
-		nn= minetest.find_nodes_in_area_under_air(vector.offset(p,-5,-3,-5),vector.offset(p,5,3,5),spawn_on)
-	end
+	local nn= minetest.find_nodes_in_area_under_air(vector.offset(p,-5,-3,-5),vector.offset(p,5,3,5),spawn_on)
 	local o
 	if not nn or #nn < 1 then
 		nn = {}
 		table.insert(nn,p)
 	end
 	for i = 1, math.random(group_min,group_max) do
-		o = minetest.add_entity(nn[math.random(#nn)],mob)
+		local sp = vector.offset(nn[math.random(#nn)],0,1,0)
+		if mob.type_of_spawning == "water" then
+			sp = get_water_spawn(sp)
+		end
+		o = minetest.add_entity(sp,mob.name)
 		if o then dbg_spawn_succ = dbg_spawn_succ + 1 end
 	end
 	return o
@@ -423,7 +436,7 @@ minetest.register_chatcommand("mobstats",{
 	privs = { debug = true },
 	func = function(n,param)
 		local pos = minetest.get_player_by_name(n):get_pos()
-		minetest.chat_send_player(n,"mobs within 32 radius of player:"..count_mobs(pos))
+		minetest.chat_send_player(n,"mobs within 32 radius of player:"..count_mobs(pos,32))
 		minetest.chat_send_player(n,"total mobs:"..count_mobs_total())
 		minetest.chat_send_player(n,"spawning attempts since server start:"..dbg_spawn_attempts)
 		minetest.chat_send_player(n,"successful spawns since server start:"..dbg_spawn_succ)
@@ -445,9 +458,6 @@ if mobs_spawn then
 		)
 		if #spawning_position_list <= 0 then return end
 		local spawning_position = spawning_position_list[math_random(1, #spawning_position_list)]
-
-		--hard code mob limit in area to 5 for now
-		if count_mobs(spawning_position) >= 5 then return end
 
 		local gotten_node = get_node(spawning_position).name
 		local gotten_biome = minetest.get_biome_data(spawning_position)
@@ -497,7 +507,11 @@ if mobs_spawn then
 			local mob_def = mob_library_worker_table[mob_index]
 			local mob_type = minetest.registered_entities[mob_def.name].type
 			local spawn_in_group = minetest.registered_entities[mob_def.name].spawn_in_group or 4
+			local mob_count_wide = count_mobs(pos,aoc_range,mob_type)
+			local mob_count = count_mobs(spawning_position,32,mob_type)
 			if mob_def
+				and mob_count_wide < (mob_cap[mob_type] or 15)
+				and mob_count < 5
 				and spawning_position.y >= mob_def.min_height
 				and spawning_position.y <= mob_def.max_height
 				and mob_def.dimension == dimension
@@ -521,7 +535,7 @@ if mobs_spawn then
 					--everything is correct, spawn mob
 					local object
 					if spawn_in_group then
-						object = spawn_group(spawning_position,mob_def.name,{gotten_node},spawn_in_group,spawn_in_group_min)
+						object = spawn_group(spawning_position,mob_def,{gotten_node},spawn_in_group,spawn_in_group_min)
 					else object = minetest.add_entity(spawning_position, mob_def.name)
 					end
 
