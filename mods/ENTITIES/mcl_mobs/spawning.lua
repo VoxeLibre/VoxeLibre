@@ -205,6 +205,16 @@ local function count_mobs(pos)
 	return num
 end
 
+local function count_mobs_total()
+	local num = 0
+	for _,l in pairs(minetest.luaentities) do
+		if l.is_mob then
+			num = num + 1
+		end
+	end
+	return num
+end
+
 
 -- global functions
 
@@ -386,6 +396,9 @@ local function get_water_spawn(p)
 		end
 end
 
+local dbg_spawn_attempts = 0
+local dbg_spawn_succ = 0
+
 local function spawn_group(p,mob,spawn_on,group_max,group_min)
 	if not group_min then group_min = 1 end
 	local nn
@@ -401,15 +414,28 @@ local function spawn_group(p,mob,spawn_on,group_max,group_min)
 	end
 	for i = 1, math.random(group_min,group_max) do
 		o = minetest.add_entity(nn[math.random(#nn)],mob)
+		if o then dbg_spawn_succ = dbg_spawn_succ + 1 end
 	end
 	return o
 end
+
+minetest.register_chatcommand("mobstats",{
+	privs = { debug = true },
+	func = function(n,param)
+		local pos = minetest.get_player_by_name(n):get_pos()
+		minetest.chat_send_player(n,"mobs within 32 radius of player:"..count_mobs(pos))
+		minetest.chat_send_player(n,"total mobs:"..count_mobs_total())
+		minetest.chat_send_player(n,"spawning attempts since server start:"..dbg_spawn_attempts)
+		minetest.chat_send_player(n,"successful spawns since server start:"..dbg_spawn_succ)
+	end
+})
 
 if mobs_spawn then
 
 	local perlin_noise
 
 	local function spawn_a_mob(pos, dimension, y_min, y_max)
+		dbg_spawn_attempts = dbg_spawn_attempts + 1
 		local dimension = dimension or mcl_worlds.pos_to_dimension(pos)
 		local goal_pos = get_next_mob_spawn_pos(pos)
 		local spawning_position_list = find_nodes_in_area_under_air(
