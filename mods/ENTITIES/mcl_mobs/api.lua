@@ -4394,7 +4394,7 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 
 		-- feed and tame
 		self.food = (self.food or 0) + 1
-		if self.food >= feed_count then
+		if not self.child and self.food >= feed_count then
 
 			self.food = 0
 
@@ -4416,7 +4416,7 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 			-- make sound when fed so many times
 			mob_sound(self, "random", true)
 		end
-		-- if not in creative then take item
+		-- if not in creative then take item if it was used
 		if not minetest.is_creative_enabled(clicker:get_player_name()) and consume_food then
 
 			local item = clicker:get_wielded_item()
