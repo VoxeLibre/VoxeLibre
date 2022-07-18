@@ -4365,40 +4365,28 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 	if not self.follow then
 		return false
 	end
-
 	-- can eat/tame with item in hand
 	if self.nofollow or follow_holding(self, clicker) then
-
-		-- if not in creative then take item
-		if not minetest.is_creative_enabled(clicker:get_player_name()) then
-
-			local item = clicker:get_wielded_item()
-
-			if not notake then item:take_item() end
-
-			clicker:set_wielded_item(item)
-		end
-
-		mob_sound(self, "eat", nil, true)
+		local consume_food = false
 
 		-- increase health
-		self.health = self.health + 4
 
-		if self.health >= self.hp_max then
-
-			self.health = self.hp_max
+		if self.health < self.hp_max then
+			consume_food = true
+			self.health = min(self.health + 4, self.hp_max)
 
 			if self.htimer < 1 then
 				self.htimer = 5
 			end
+			self.object:set_hp(self.health)
 		end
 
-		self.object:set_hp(self.health)
 
 		update_tag(self)
 
 		-- make children grow quicker
 		if self.child == true then
+			consume_food = true
 
 			-- deduct 10% of the time to adulthood
 			self.hornytimer = self.hornytimer + ((CHILD_GROW_TIME - self.hornytimer) * 0.1)
@@ -4412,8 +4400,9 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 
 			self.food = 0
 
-			if breed and self.hornytimer == 0 then
+			if breed and self.hornytimer == 0 and not self.horny then
 				self.horny = true
+				consume_food = true
 			end
 
 			if tame then
@@ -4422,16 +4411,27 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 
 				if not self.owner or self.owner == "" then
 					self.owner = clicker:get_player_name()
+					consume_food = true
 				end
 			end
 
 			-- make sound when fed so many times
 			mob_sound(self, "random", true)
 		end
+		-- if not in creative then take item
+		if not minetest.is_creative_enabled(clicker:get_player_name()) and consume_food then
 
+			local item = clicker:get_wielded_item()
+
+			if not notake then
+				item:take_item()
+				mob_sound(self, "eat", nil, true)
+			end
+
+			clicker:set_wielded_item(item)
+		end
 		return true
 	end
-
 	return false
 end
 
