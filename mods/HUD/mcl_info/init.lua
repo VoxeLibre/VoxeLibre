@@ -1,3 +1,4 @@
+mcl_info = {}
 local refresh_interval      = .63
 local huds                  = {}
 local default_debug         = 0
@@ -35,15 +36,55 @@ local function player_setting(p,s)
 	return player_dbg[name]
 end
 
-local function get_text(pos, bits)
+mcl_info.registered_debug_fields = {}
+function mcl_info.register_debug_field(name,def)
+	mcl_info.registered_debug_fields[name]=def
+end
+
+local function nodeinfo(pos)
+	local n = minetest.get_node_or_nil(pos)
+	if not n then return "" end
+	local l = minetest.get_node_light(pos)
+	local ld = minetest.get_node_light(pos,0.5)
+	local r = n.name .. " p1:"..n.param1.." p2:"..n.param2
+	if l and ld then
+		r = r .. " Light: "..l.."/"..ld
+	end
+	return r
+end
+
+mcl_info.register_debug_field("Node feet",{
+	level = 4,
+	func = function(pl,pos)
+		return nodeinfo(pos)
+	end
+})
+mcl_info.register_debug_field("Node below",{
+	level = 4,
+	func = function(pl,pos)
+		return nodeinfo(vector.offset(pos,0,-1,0))
+	end
+})
+
+local function get_text(player, bits)
+	local pos = vector.offset(player:get_pos(),0,0.5,0)
 	local bits = bits
 	if bits == 0 then return "" end
 
+	local r = ""
+	for n,def in pairs(mcl_info.registered_debug_fields) do
+		if def.level == nil or def.level <= bits then
+			r = r .. n..": "..tostring(def.func(player,pos)).."\n"
+		end
+	end
+
 	local biome_data = get_biome_data(pos)
-	local biome_name = biome_data and get_biome_name(biome_data.biome) or "No biome"
-	local biome = format("%s (%s), Humidity: %.1f, Temperature: %.1f",biome_name, biome_data.biome, biome_data.humidity, biome_data.heat)
+	local biome = biome_data and get_biome_name(biome_data.biome) or "No biome"
+	if biome_data then
+		biome = format("%s (%s), Humidity: %.1f, Temperature: %.1f",biome, biome_data.biome, biome_data.humidity, biome_data.heat)
+	end
 	local coord = format("x:%.1f y:%.1f z:%.1f", pos.x, pos.y, pos.z)
-	return biome.."\n"..coord
+	return r..biome.."\n"..coord
 end
 
 local function info()
@@ -51,7 +92,7 @@ local function info()
 		local name = player:get_player_name()
 		local s = player_setting(player)
 		local pos = player:get_pos()
-		local text = get_text(pos, s)
+		local text = get_text(player, s)
 		local hud = huds[name]
 		if s and not hud then
 			local def = {
