@@ -23,6 +23,7 @@ mcl_mobs:register_mob("mobs_mc:ghast", {
 	collisionbox = {-2, 5, -2, 2, 9, 2},
 	visual = "mesh",
 	mesh = "mobs_mc_ghast.b3d",
+	spawn_in_group = 1,
 	textures = {
 		{"mobs_mc_ghast.png"},
 	},

@@ -100,6 +100,8 @@ local horse = {
 	description = S("Horse"),
 	type = "animal",
 	spawn_class = "passive",
+	spawn_in_group_min = 2,
+	spawn_in_group = 6,
 	visual = "mesh",
 	mesh = "mobs_mc_horse.b3d",
 	visual_size = {x=3.0, y=3.0},
@@ -490,6 +492,8 @@ local d = 0.86 -- donkey scale
 local donkey = table.copy(horse)
 donkey.description = S("Donkey")
 donkey.textures = {{"blank.png", "mobs_mc_donkey.png", "blank.png"}}
+donkey.spawn_in_group = 3
+donkey.spawn_in_group_min = 1
 donkey.animation = {
 	speed_normal = 25,
 	stand_start = 0, stand_end = 0,
@@ -574,7 +578,7 @@ mcl_mobs:spawn_specific(
 	"Savanna_beach",
 	"Plains_beach",
 },
-0,
+9,
 minetest.LIGHT_MAX+1,
 30,
 15000,

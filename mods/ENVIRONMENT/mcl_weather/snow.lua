@@ -2,7 +2,7 @@ local get_connected_players = minetest.get_connected_players
 
 mcl_weather.snow = {}
 
-local PARTICLES_COUNT_SNOW = tonumber(minetest.settings:get("mcl_weather_snow_particles")) or 99
+local PARTICLES_COUNT_SNOW = tonumber(minetest.settings:get("mcl_weather_snow_particles")) or 100
 mcl_weather.snow.init_done = false
 
 local psdef= {
