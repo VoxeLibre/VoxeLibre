@@ -346,7 +346,7 @@ mcl_mobs:spawn_specific(
 	"Swampland",
 	"Swampland_shore"
 },
-0,
+9,
 minetest.LIGHT_MAX+1,
 30,
 15000,

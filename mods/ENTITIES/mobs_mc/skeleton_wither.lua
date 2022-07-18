@@ -101,7 +101,8 @@ mcl_mobs:spawn_specific(
 "nether",
 "ground",
 {
-"Nether"
+"Nether",
+"SoulsandValley",
 },
 0,
 7,

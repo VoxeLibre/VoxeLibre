@@ -122,8 +122,6 @@ mcl_mobs:spawn_specific(
 	"ExtremeHills_beach",
 	"ExtremeHillsM",
 	"ExtremeHills+",
-	"ExtremeHills+_snowtop",
-	"StoneBeach",
 	"Plains",
 	"Plains_beach",
 	"SunflowerPlains",
