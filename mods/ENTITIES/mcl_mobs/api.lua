@@ -1907,10 +1907,9 @@ end
 
 -- find someone to attack
 local monster_attack = function(self)
-
 	if not damage_enabled
 	or minetest.is_creative_enabled("")
-	or self.passive
+	or self.passive ~= false
 	or self.state == "attack"
 	or day_docile(self) then
 		return
@@ -3596,10 +3595,23 @@ local mob_activate = function(self, staticdata, def, dtime)
 	end
 end
 
+local function check_aggro(self,dtime)
+	if not self._aggro or not self.attack then return end
+	if not self._check_aggro_timer or self._check_aggro_timer > 5 then
+		self._check_aggro_timer = 0
+		if not self.attack:get_pos() or vector.distance(self.attack:get_pos(),self.object:get_pos()) > 128 then
+			self._aggro = nil
+			self.attack = nil
+			self.state = "stand"
+		end
+	end
+	self._check_aggro_timer = self._check_aggro_timer + dtime
+end
 
 -- main mob function
 local mob_step = function(self, dtime)
 	check_item_pickup(self)
+	check_aggro(self,dtime)
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
 	end
@@ -3930,7 +3942,7 @@ minetest.register_entity(name, {
 	xp_max = def.xp_max or 0,
 	xp_timestamp = 0,
 	breath_max = def.breath_max or 15,
-        breathes_in_water = def.breathes_in_water or false,
+	breathes_in_water = def.breathes_in_water or false,
 	physical = true,
 	collisionbox = collisionbox,
 	selectionbox = def.selectionbox or def.collisionbox,
