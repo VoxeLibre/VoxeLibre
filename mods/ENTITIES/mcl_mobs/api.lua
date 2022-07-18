@@ -4390,8 +4390,6 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 
 			-- deduct 10% of the time to adulthood
 			self.hornytimer = self.hornytimer + ((CHILD_GROW_TIME - self.hornytimer) * 0.1)
-
-			return true
 		end
 
 		-- feed and tame
