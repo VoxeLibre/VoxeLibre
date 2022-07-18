@@ -37,7 +37,9 @@ local function player_setting(p,s)
 end
 
 mcl_info.registered_debug_fields = {}
+local fields_keyset = {}
 function mcl_info.register_debug_field(name,def)
+	table.insert(fields_keyset,name)
 	mcl_info.registered_debug_fields[name]=def
 end
 
@@ -53,38 +55,20 @@ local function nodeinfo(pos)
 	return r
 end
 
-mcl_info.register_debug_field("Node feet",{
-	level = 4,
-	func = function(pl,pos)
-		return nodeinfo(pos)
-	end
-})
-mcl_info.register_debug_field("Node below",{
-	level = 4,
-	func = function(pl,pos)
-		return nodeinfo(vector.offset(pos,0,-1,0))
-	end
-})
-
 local function get_text(player, bits)
 	local pos = vector.offset(player:get_pos(),0,0.5,0)
 	local bits = bits
 	if bits == 0 then return "" end
 
 	local r = ""
-	for n,def in pairs(mcl_info.registered_debug_fields) do
+	for _,key in ipairs(fields_keyset) do
+		local def = mcl_info.registered_debug_fields[key]
 		if def.level == nil or def.level <= bits then
-			r = r .. n..": "..tostring(def.func(player,pos)).."\n"
+			r = r ..key..": "..tostring(def.func(player,pos)).."\n"
 		end
 	end
 
-	local biome_data = get_biome_data(pos)
-	local biome = biome_data and get_biome_name(biome_data.biome) or "No biome"
-	if biome_data then
-		biome = format("%s (%s), Humidity: %.1f, Temperature: %.1f",biome, biome_data.biome, biome_data.humidity, biome_data.heat)
-	end
-	local coord = format("x:%.1f y:%.1f z:%.1f", pos.x, pos.y, pos.z)
-	return r..biome.."\n"..coord
+	return r
 end
 
 local function info()
@@ -122,6 +106,7 @@ local function info()
 	end
 	after(refresh_interval, info)
 end
+info()
 
 minetest.register_on_leaveplayer(function(p)
 	local name = p:get_player_name()
@@ -145,4 +130,32 @@ minetest.register_chatcommand("debug",{
 	end
 })
 
-info()
+mcl_info.register_debug_field("Node feet",{
+	level = 4,
+	func = function(pl,pos)
+		return nodeinfo(pos)
+	end
+})
+mcl_info.register_debug_field("Node below",{
+	level = 4,
+	func = function(pl,pos)
+		return nodeinfo(vector.offset(pos,0,-1,0))
+	end
+})
+mcl_info.register_debug_field("Biome",{
+	level = 3,
+	func = function(pl,pos)
+		local biome_data = get_biome_data(pos)
+		local biome = biome_data and get_biome_name(biome_data.biome) or "No biome"
+		if biome_data then
+			return format("%s (%s), Humidity: %.1f, Temperature: %.1f",biome, biome_data.biome, biome_data.humidity, biome_data.heat)
+		end
+		return "No biome"
+	end
+})
+mcl_info.register_debug_field("Coords",{
+	level = 2,
+	func = function(pl,pos)
+		return format("x:%.1f y:%.1f z:%.1f", pos.x, pos.y, pos.z)
+	end
+})
