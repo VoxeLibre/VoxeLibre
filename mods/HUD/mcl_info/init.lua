@@ -1,6 +1,6 @@
 local refresh_interval      = .63
 local huds                  = {}
-local default_debug         = 3
+local default_debug         = 0
 local after                 = minetest.after
 local get_connected_players = minetest.get_connected_players
 local get_biome_name        = minetest.get_biome_name
@@ -14,7 +14,26 @@ local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 local storage = minetest.get_mod_storage()
-local player_dbg = minetest.deserialize(storage:get_string("player_dbg") or "return {}") or {}
+local player_dbg = {}
+
+local function check_setting(s)
+	return s
+end
+
+--return player setting, set it to 2nd argument if supplied
+local function player_setting(p,s)
+	local name = p:get_player_name()
+	if check_setting(s) then
+		p:get_meta():set_string("mcl_info_show",s)
+		player_dbg[name] = tonumber(s)
+	end
+	if not player_dbg[name] then
+		local r = p:get_meta():get_string("mcl_info_show")
+		if r == nil or r == "" then r = 0 end
+		player_dbg[name] = tonumber(r)
+	end
+	return player_dbg[name]
+end
 
 local function get_text(pos, bits)
 	local bits = bits
@@ -24,17 +43,17 @@ local function get_text(pos, bits)
 	local biome_name = biome_data and get_biome_name(biome_data.biome) or "No biome"
 	local biome = format("%s (%s), Humidity: %.1f, Temperature: %.1f",biome_name, biome_data.biome, biome_data.humidity, biome_data.heat)
 	local coord = format("x:%.1f y:%.1f z:%.1f", pos.x, pos.y, pos.z)
-	--local pointed =
 	return biome.."\n"..coord
 end
 
 local function info()
 	for _, player in pairs(get_connected_players()) do
 		local name = player:get_player_name()
+		local s = player_setting(player)
 		local pos = player:get_pos()
-		local text = get_text(pos, player_dbg[name] or default_debug)
+		local text = get_text(pos, s)
 		local hud = huds[name]
-		if not hud then
+		if s and not hud then
 			local def = {
 				hud_elem_type = "text",
 				alignment     = {x = 1, y = -1},
@@ -63,32 +82,26 @@ local function info()
 	after(refresh_interval, info)
 end
 
-minetest.register_on_authplayer(function(name, ip, is_success)
-	if is_success then
-		huds[name] = nil
-	end
+minetest.register_on_leaveplayer(function(p)
+	local name = p:get_player_name()
+	huds[name] = nil
+	player_dbg[name] = nil
 end)
 
 minetest.register_chatcommand("debug",{
 	description = S("Set debug bit mask: 0 = disable, 1 = biome name, 2 = coordinates, 3 = all"),
+	params = S("<bitmask>"),
+	privs = { debug = true },
 	func = function(name, params)
+		local player = minetest.get_player_by_name(name)
+		if params == "" then return true, "Debug bitmask is "..player_setting(player) end
 		local dbg = math.floor(tonumber(params) or default_debug)
 		if dbg < 0 or dbg > 4 then
 			minetest.chat_send_player(name, S("Error! Possible values are integer numbers from @1 to @2", 0, 4))
-			return
+			return false,"Current bitmask: "..player_setting(player)
 		end
-		if dbg == default_debug then
-			player_dbg[name] = nil
-		else
-			player_dbg[name] = dbg
-		end
-		minetest.chat_send_player(name, S("Debug bit mask set to @1", dbg))
+		return true, "Debug bit mask set to "..player_setting(player,dbg)
 	end
 })
-
---why is this saved on shutdown but not  on playerleave / changes ?
-minetest.register_on_shutdown(function()
-	storage:set_string("player_dbg", minetest.serialize(player_dbg))
-end)
 
 info()
