@@ -1,7 +1,7 @@
 mcl_weather.nether_dust = {}
 mcl_weather.nether_dust.particlespawners = {}
 
-local PARTICLES_COUNT_NETHER_DUST = tonumber(minetest.settings:get("mcl_weather_rain_particles")) or 150
+local PARTICLES_COUNT_NETHER_DUST = tonumber(minetest.settings:get("mcl_weather_dust_particles")) or 150
 
 local psdef= {
 	amount = PARTICLES_COUNT_NETHER_DUST,
