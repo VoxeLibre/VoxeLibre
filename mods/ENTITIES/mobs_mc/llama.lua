@@ -28,13 +28,17 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 	description = S("Llama"),
 	type = "animal",
 	spawn_class = "passive",
+	passive = false,
+	attack_type = "shoot",
+	shoot_interval = 5.5,
+	arrow = "mobs_mc:llamaspit",
+	shoot_offset = 1, --3.5 *would* be a good value visually but it somehow messes with the projectiles trajectory
 	spawn_in_group_min = 4,
 	spawn_in_group = 6,
 	hp_min = 15,
 	hp_max = 30,
 	xp_min = 1,
 	xp_max = 3,
-	passive = false,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.86, 0.45},
 	visual = "mesh",
 	mesh = "mobs_mc_llama.b3d",
@@ -47,7 +51,7 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 	},
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
-	runaway = true,
+	runaway = false,
 	walk_velocity = 1,
 	run_velocity = 4.4,
 	follow_velocity = 4.4,
@@ -211,6 +215,30 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 		end
 	end,
 
+})
+
+-- spit arrow (weapon)
+mcl_mobs:register_arrow("mobs_mc:llamaspit", {
+	visual = "sprite",
+	visual_size = {x = 0.10, y = 0.10},
+	textures = {"mobs_mc_llama_spit.png"},
+	velocity = 5,
+	hit_player = function(self, player)
+		player:punch(self.object, 1.0, {
+			full_punch_interval = 1.0,
+			damage_groups = {fleshy = 1},
+		}, nil)
+	end,
+
+	hit_mob = function(self, mob)
+		mob:punch(self.object, 1.0, {
+			full_punch_interval = 1.0,
+			damage_groups = {fleshy = 1},
+		}, nil)
+	end,
+
+	hit_node = function(self, pos, node)
+	end
 })
 
 --spawn
