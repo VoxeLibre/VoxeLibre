@@ -4369,7 +4369,7 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 	if self.nofollow or follow_holding(self, clicker) then
 		local consume_food = false
 
-		-- feed and tame
+		-- tame if not still a baby
 
 		if tame and not self.child then
 			if not self.owner or self.owner == "" then
