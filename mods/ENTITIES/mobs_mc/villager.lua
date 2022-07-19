@@ -1295,7 +1295,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 				--minetest.log("arrived at jobsite")
 			end)
 		end
-		if self.child or self._profession == "unemployed" then
+		if self.child or self._profession == "unemployed" or self._profession == "nitwit" then
 			return
 		end
 		-- Initiate trading
