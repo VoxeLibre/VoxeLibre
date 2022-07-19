@@ -4371,7 +4371,7 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 
 		-- increase health
 
-		if self.health < self.hp_max then
+		if not consume_food and self.health < self.hp_max then
 			consume_food = true
 			self.health = min(self.health + 4, self.hp_max)
 
@@ -4381,41 +4381,40 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 			self.object:set_hp(self.health)
 		end
 
-
-		update_tag(self)
-
-		-- make children grow quicker
-		if self.child == true then
-			consume_food = true
-
-			-- deduct 10% of the time to adulthood
-			self.hornytimer = self.hornytimer + ((CHILD_GROW_TIME - self.hornytimer) * 0.1)
-		end
-
 		-- feed and tame
+
 		self.food = (self.food or 0) + 1
-		if not self.child and self.food >= feed_count then
+		if self.food >= feed_count then
 
 			self.food = 0
 
-			if breed and self.hornytimer == 0 and not self.horny then
-				self.horny = true
-				consume_food = true
-			end
-
 			if tame then
-
 				self.tamed = true
-
 				if not self.owner or self.owner == "" then
 					self.owner = clicker:get_player_name()
 					consume_food = true
 				end
 			end
 
+			if breed and not self.child and not consume_food
+			and self.hornytimer == 0 and not self.horny then
+				self.horny = true
+				consume_food = true
+			end
 			-- make sound when fed so many times
 			mob_sound(self, "random", true)
 		end
+
+		update_tag(self)
+
+		-- make children grow quicker
+		if not consume_food and self.child == true then
+			consume_food = true
+
+			-- deduct 10% of the time to adulthood
+			self.hornytimer = self.hornytimer + ((CHILD_GROW_TIME - self.hornytimer) * 0.1)
+		end
+
 		-- if not in creative then take item if it was used
 		if not minetest.is_creative_enabled(clicker:get_player_name()) and consume_food then
 
