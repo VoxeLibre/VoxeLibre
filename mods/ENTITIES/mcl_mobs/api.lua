@@ -4383,26 +4383,23 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 
 		-- feed and tame
 
-		self.food = (self.food or 0) + 1
-		if self.food >= feed_count then
-
-			self.food = 0
-
-			if tame then
-				self.tamed = true
-				if not self.owner or self.owner == "" then
-					self.owner = clicker:get_player_name()
-					consume_food = true
-				end
-			end
-
-			if breed and not self.child and not consume_food
-			and self.hornytimer == 0 and not self.horny then
-				self.horny = true
+		if tame then
+			self.tamed = true
+			if not self.owner or self.owner == "" then
+				self.owner = clicker:get_player_name()
 				consume_food = true
 			end
-			-- make sound when fed so many times
-			mob_sound(self, "random", true)
+		end
+
+
+		if breed and not self.child and not consume_food
+		and self.hornytimer == 0 and not self.horny then
+			self.food = (self.food or 0) + 1
+			consume_food = true
+			if self.food >= feed_count then
+				self.food = 0
+				self.horny = true
+			end
 		end
 
 		update_tag(self)
@@ -4426,6 +4423,9 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 			end
 
 			clicker:set_wielded_item(item)
+		else
+			-- make sound when fed so many times
+			mob_sound(self, "random", true)
 		end
 		return true
 	end
