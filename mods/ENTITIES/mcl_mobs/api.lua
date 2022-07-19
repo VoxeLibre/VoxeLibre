@@ -4371,7 +4371,7 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 
 		-- increase health
 
-		if not consume_food and self.health < self.hp_max then
+		if self.health < self.hp_max then
 			consume_food = true
 			self.health = min(self.health + 4, self.hp_max)
 
