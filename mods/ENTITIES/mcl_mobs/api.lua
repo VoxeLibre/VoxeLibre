@@ -4369,6 +4369,16 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 	if self.nofollow or follow_holding(self, clicker) then
 		local consume_food = false
 
+		-- feed and tame
+
+		if tame then
+			self.tamed = true
+			if not self.owner or self.owner == "" then
+				self.owner = clicker:get_player_name()
+				consume_food = true
+			end
+		end
+
 		-- increase health
 
 		if self.health < self.hp_max then
@@ -4380,17 +4390,6 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 			end
 			self.object:set_hp(self.health)
 		end
-
-		-- feed and tame
-
-		if tame then
-			self.tamed = true
-			if not self.owner or self.owner == "" then
-				self.owner = clicker:get_player_name()
-				consume_food = true
-			end
-		end
-
 
 		if breed and not self.child and not consume_food
 		and self.hornytimer == 0 and not self.horny then
