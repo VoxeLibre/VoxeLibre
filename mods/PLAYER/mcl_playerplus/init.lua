@@ -118,7 +118,8 @@ function limit_vel_yaw(player_vel_yaw, yaw)
 	return player_vel_yaw
 end
 
-local node_stand, node_stand_below, node_head, node_feet
+local node_stand, node_stand_below, node_head, node_feet, node_head_top
+local is_swimming
 
 -- This following part is 2 wrapper functions for player:set_bones
 -- and player:set_properties preventing them from being resent on
@@ -370,13 +371,16 @@ minetest.register_globalstep(function(dtime)
 			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new(0, -player_vel_yaw + yaw, 0))
 		elseif get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and is_sprinting(name) == true then
 			-- set head pitch and yaw when swimming
+			is_swimming = true
 			set_bone_position_conditional(player,"Head_Control", vector.new(0,6.3,0), vector.new(pitch-degrees(dir_to_pitch(player_velocity)),player_vel_yaw - yaw,0))
 			-- sets eye height, and nametag color accordingly
 			set_properties_conditional(player,{collisionbox = {-0.312,0,-0.312,0.312,0.8,0.312}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 			-- control body bone when swimming
 			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new(degrees(dir_to_pitch(player_velocity)) - 90,-player_vel_yaw + yaw + 180,0))
-		else
+		elseif get_item_group(mcl_playerinfo[name].node_head, "opaque") == 0
+		and get_item_group(mcl_playerinfo[name].node_head_top, "opaque") == 0 then
 			-- sets eye height, and nametag color accordingly
+			is_swimming = false
 			set_properties_conditional(player,{collisionbox = {-0.312,0,-0.312,0.312,1.8,0.312}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 
 			set_bone_position_conditional(player,"Head_Control", vector.new(0,6.3,0), vector.new(pitch, player_vel_yaw - yaw, 0))
@@ -398,10 +402,15 @@ minetest.register_globalstep(function(dtime)
 			node_stand_below = mcl_playerinfo[name].node_stand_below
 			node_head = mcl_playerinfo[name].node_head
 			node_feet = mcl_playerinfo[name].node_feet
+			node_head_top = mcl_playerinfo[name].node_head_top
 			if not node_stand or not node_stand_below or not node_head or not node_feet then
 				return
 			end
-			if not minetest.registered_nodes[node_stand] or not minetest.registered_nodes[node_stand_below] or not minetest.registered_nodes[node_head] or not minetest.registered_nodes[node_feet] then
+			if (not minetest.registered_nodes[node_stand]
+			or not minetest.registered_nodes[node_stand_below]
+			or not minetest.registered_nodes[node_head]
+			or not minetest.registered_nodes[node_feet]
+			or not minetest.registered_nodes[node_head_top]) then
 				return
 			end
 
@@ -460,7 +469,8 @@ minetest.register_globalstep(function(dtime)
 		local node_stand_below = mcl_playerinfo[name].node_stand_below
 		local node_head = mcl_playerinfo[name].node_head
 		local node_feet = mcl_playerinfo[name].node_feet
-		if not node_stand or not node_stand_below or not node_head or not node_feet then
+		local node_head_top = mcl_playerinfo[name].node_head_top
+		if not node_stand or not node_stand_below or not node_head or not node_feet or not node_head_top then
 			return
 		end
 
@@ -493,8 +503,11 @@ minetest.register_globalstep(function(dtime)
 
 		-- Is player suffocating inside node? (Only for solid full opaque cube type nodes
 		-- without group disable_suffocation=1)
+		-- if swimming, check the feet node instead, because the head node will be above the player when swimming
 		local ndef = minetest.registered_nodes[node_head]
-
+		if is_swimming then
+			ndef = minetest.registered_nodes[node_feet]
+		end
 		if (ndef.walkable == nil or ndef.walkable == true)
 		and (ndef.collision_box == nil or ndef.collision_box.type == "regular")
 		and (ndef.node_box == nil or ndef.node_box.type == "regular")
