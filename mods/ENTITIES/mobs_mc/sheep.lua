@@ -70,6 +70,8 @@ mcl_mobs:register_mob("mobs_mc:sheep", {
 	color = "unicolor_white",
 	makes_footstep_sound = true,
 	walk_velocity = 1,
+	runaway = true,
+	runaway_from = {"mobs_mc:wolf"},
 	drops = {
 		{name = "mcl_mobitems:mutton",
 		chance = 1,
