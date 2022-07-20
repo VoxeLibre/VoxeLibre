@@ -23,7 +23,7 @@ local function make_drop(pos,liquid,sound,interval)
 			pt.collisiondetection = true
 			pt.expirationtime = math.random() + math.random(1, interval/2)
 			minetest.add_particle(pt)
-			minetest.sound_play({name = "drippingwater_" .. sound .. "drip"}, {pos = ownpos, gain = 0.5, max_hear_distance = 8}, true)
+			minetest.sound_play({name = "drippingwater_" .. sound .. "drip"}, {pos = pos, gain = 0.5, max_hear_distance = 8}, true)
 		end)
 	end)
 end
