@@ -4429,18 +4429,18 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 		update_tag(self)
 
 		-- if not in creative then take item if it was used
-		if not minetest.is_creative_enabled(clicker:get_player_name()) and consume_food then
-
-			local item = clicker:get_wielded_item()
-
-			if not notake then
+		if consume_food then
+			-- don't consume food if clicker is in creative
+			if not minetest.is_creative_enabled(clicker:get_player_name()) and not notake then
+				local item = clicker:get_wielded_item()
 				item:take_item()
-				mob_sound(self, "eat", nil, true)
+				clicker:set_wielded_item(item)
 			end
+			-- always play the eat sound if food is used, even in creative
+			mob_sound(self, "eat", nil, true)
 
-			clicker:set_wielded_item(item)
 		else
-			-- make sound when fed so many times
+			-- make sound when the mob doesn't want food
 			mob_sound(self, "random", true)
 		end
 		return true
