@@ -69,6 +69,7 @@ local wolf = {
 				mcl_mobs:set_animation(ent, "sit")
 				ent.walk_chance = 0
 				ent.jump = false
+				ent.health = self.health
 				-- cornfirm taming
 				minetest.sound_play("mobs_mc_wolf_bark", {object=dog, max_hear_distance=16}, true)
 				-- Replace wolf
