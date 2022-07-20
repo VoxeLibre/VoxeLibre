@@ -4493,31 +4493,6 @@ function mcl_mobs:spawn_child(pos, mob_type)
 	return child
 end
 
-
--- compatibility function for old entities to new modpack entities
-function mcl_mobs:alias_mob(old_name, new_name)
-
-	-- spawn egg
-	minetest.register_alias(old_name, new_name)
-
-	-- entity
-	minetest.register_entity(":" .. old_name, {
-
-		physical = false,
-
-		on_step = function(self)
-
-			if minetest.registered_entities[new_name] then
-				minetest.add_entity(self.object:get_pos(), new_name)
-			end
-
-			self.object:remove()
-		end
-	})
-
-end
-
-
 local timer = 0
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
