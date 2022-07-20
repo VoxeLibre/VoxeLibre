@@ -4427,8 +4427,7 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 		end
 
 		update_tag(self)
-
-		-- if not in creative then take item if it was used
+		-- play a sound if the animal used the item and take the item if not in creative
 		if consume_food then
 			-- don't consume food if clicker is in creative
 			if not minetest.is_creative_enabled(clicker:get_player_name()) and not notake then
