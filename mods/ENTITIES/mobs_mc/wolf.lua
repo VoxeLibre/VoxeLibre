@@ -65,6 +65,7 @@ local wolf = {
 				dog:set_yaw(yaw)
 				ent = dog:get_luaentity()
 				ent.owner = clicker:get_player_name()
+				ent.tamed = true
 				-- cornfirm taming
 				minetest.sound_play("mobs_mc_wolf_bark", {object=dog, max_hear_distance=16}, true)
 				-- Replace wolf
