@@ -248,7 +248,7 @@ local set_velocity = function(self, v)
 	end
 
 	-- halt mob if it has been ordered to stay
-	if self.order == "stand" then
+	if self.order == "stand" or self.order == "sit" then
 		self.object:set_velocity({x = 0, y = 0, z = 0})
 		return
 	end
@@ -2392,9 +2392,13 @@ local do_states = function(self, dtime)
 
 			yaw = set_yaw(self, yaw, 8)
 		end
-
-		set_velocity(self, 0)
-		set_animation(self, "stand")
+		if self.order == "sit" then
+			set_animation(self, "sit")
+			set_velocity(self, 0)
+		else
+			set_animation(self, "stand")
+			set_velocity(self, 0)
+		end
 
 		-- npc's ordered to stand stay standing
 		if self.type ~= "npc"
