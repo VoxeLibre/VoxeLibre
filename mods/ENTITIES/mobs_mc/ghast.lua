@@ -65,6 +65,14 @@ mcl_mobs:register_mob("mobs_mc:ghast", {
 	makes_footstep_sound = false,
 	instant_death = true,
 	fire_resistant = true,
+	can_spawn = function(pos)
+		if not minetest.get_item_group(minetest.get_node(pos).name,"solid") then return false end
+		local p1=vector.offset(pos,-2,1,-2)
+		local p2=vector.offset(pos,2,5,2)
+		local nn = minetest.find_nodes_in_area(p1,p2,{"air"})
+		if #nn< 41 then return false end
+		return true
+	end,
 	do_custom = function(self)
 		if self.firing == true then
 			self.base_texture = {"mobs_mc_ghast_firing.png"}
