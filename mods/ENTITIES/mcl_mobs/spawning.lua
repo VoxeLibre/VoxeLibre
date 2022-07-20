@@ -533,6 +533,9 @@ if mobs_spawn then
 							return
 						end
 					end
+					if minetest.registered_entities[mob_def.name].can_spawn and not minetest.registered_entities[mob_def.name].can_spawn(pos) then
+						return
+					end
 					--everything is correct, spawn mob
 					local object
 					if spawn_in_group then

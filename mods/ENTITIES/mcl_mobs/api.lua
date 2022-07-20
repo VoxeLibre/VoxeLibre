@@ -4034,6 +4034,7 @@ minetest.register_entity(name, {
 	teleport = teleport,
 	do_teleport = def.do_teleport,
 	spawn_class = def.spawn_class,
+	can_spawn = def.can_spawn,
 	ignores_nametag = def.ignores_nametag or false,
 	rain_damage = def.rain_damage or 0,
 	glow = def.glow,
