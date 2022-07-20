@@ -150,32 +150,11 @@ end
 dog.on_rightclick = function(self, clicker)
 	local item = clicker:get_wielded_item()
 
-	if mcl_mobs:protect(self, clicker) then
+	if mcl_mobs:feed_tame(self, clicker, 1, true, false) then
+		return
+	elseif mcl_mobs:protect(self, clicker) then
 		return
 	elseif item:get_name() ~= "" and mcl_mobs:capture_mob(self, clicker, 0, 2, 80, false, nil) then
-		return
-	elseif is_food(item:get_name()) then
-		-- Feed to increase health
-		local hp = self.health
-		local hp_add = 0
-		-- Use eatable group to determine health boost
-		local eatable = minetest.get_item_group(item, "eatable")
-		if eatable > 0 then
-			hp_add = eatable
-		elseif item:get_name() == "mcl_mobitems:rotten_flesh" then
-			hp_add = 4
-		else
-			hp_add = 4
-		end
-		local new_hp = hp + hp_add
-		if new_hp > self.hp_max then
-			new_hp = self.hp_max
-		end
-		if not minetest.is_creative_enabled(clicker:get_player_name()) then
-			item:take_item()
-			clicker:set_wielded_item(item)
-		end
-		self.health = new_hp
 		return
 	elseif minetest.get_item_group(item:get_name(), "dye") == 1 then
 		-- Dye (if possible)
