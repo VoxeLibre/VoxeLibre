@@ -1,3 +1,4 @@
+local GRAVITY = tonumber(minetest.settings:get("movement_gravity"))
 local table = table
 
 --register stoppers for movestones/pistons
@@ -328,17 +329,17 @@ function mesecon.mvps_move_objects(pos, dir, nodestack)
 	-- Move object at tip of stack, pushpos is position at tip of stack
 	local pushpos = vector.add(pos, vector.multiply(dir, #nodestack))
 
-	local objects = minetest.get_objects_inside_radius(pushpos, 1)
+	local objects = minetest.get_objects_inside_radius(pushpos, 1.15)
 	for _, obj in ipairs(objects) do
 		table.insert(objects_to_move, obj)
 	end
 
 	-- Move objects lying/standing on the stack (before it was pushed - oldstack)
-	if tonumber(minetest.settings:get("movement_gravity")) > 0 and dir.y == 0 then
+	if GRAVITY > 0 then
 		-- If gravity positive and dir horizontal, push players standing on the stack
 		for _, n in ipairs(nodestack) do
 			local p_above = vector.add(n.pos, {x=0, y=1, z=0})
-			local objects = minetest.get_objects_inside_radius(p_above, 1)
+			local objects = minetest.get_objects_inside_radius(p_above, 1.15)
 			for _, obj in ipairs(objects) do
 				table.insert(objects_to_move, obj)
 			end
@@ -347,7 +348,10 @@ function mesecon.mvps_move_objects(pos, dir, nodestack)
 
 	for _, obj in ipairs(objects_to_move) do
 		local entity = obj:get_luaentity()
-		if not entity or not mesecon.is_mvps_unmov(entity.name) then
+		local player = obj:is_player()
+
+
+		if not entity or not player and not mesecon.is_mvps_unmov(entity.name) then
 			local np = vector.add(obj:get_pos(), dir)
 
 			--move only if destination is not solid
@@ -355,6 +359,30 @@ function mesecon.mvps_move_objects(pos, dir, nodestack)
 			if not ((not minetest.registered_nodes[nn.name])
 			or minetest.registered_nodes[nn.name].walkable) then
 				obj:set_pos(np)
+				-- Launch Player, TNT & mobs like in Minecraft
+				-- Only doing so if slimeblock is attached.
+				for _, r in ipairs(mesecon.rules.alldirs) do
+					local adjpos = vector.add(np, r)
+					local adjnode = minetest.get_node(adjpos)
+					if minetest.registered_nodes[adjnode.name] and minetest.registered_nodes[adjnode.name].mvps_sticky then
+						local np = vector.add(obj:get_pos(), dir)
+
+						-- Reset acceleration of all objects before launching.
+						-- Fixes eggs, & snowballs thrown by dispensers
+						obj:set_acceleration({x=dir.x, y=-GRAVITY, z=dir.z})
+
+						--Need to set velocities differently for players, items & mobs/tnt, and falling anvils.
+						if player then
+							obj:add_velocity({x = dir.x * 10, y = dir.y * 13, z = dir.z * 10})
+						elseif entity.name == "__builtin:item" then
+							obj:add_velocity({x = dir.x * 9, y = dir.y * 11, z = dir.z * 9})
+						elseif entity.name == "__builtin:falling_node" then
+							obj:add_velocity({x = dir.x * 43, y = dir.y * 72, z = dir.z * 43})
+						else
+							obj:add_velocity({x = dir.x * 6, y = dir.y * 9, z = dir.z * 6})
+						end
+					end
+				end
 			end
 		end
 	end
