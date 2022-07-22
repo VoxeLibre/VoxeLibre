@@ -662,7 +662,7 @@ minetest.register_entity(":__builtin:item", {
 		and math.abs(self.object:get_velocity().z) < sleep_threshold
 		local is_floating = (is_stationary
 			and is_in_water
-			and nn_above == "air")
+			and (minetest.get_item_group(nn_above, "liquid") == 0))
 		if is_floating then
 			self.object:set_velocity({x = 0, y = 0, z = 0})
 			self.object:set_acceleration({x = 0, y = 0, z = 0})
