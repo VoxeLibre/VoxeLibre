@@ -645,7 +645,8 @@ minetest.register_entity(":__builtin:item", {
 		local is_floating = (is_stationary
 			and is_in_water
 			and (minetest.get_item_group(nn_above, "liquid") == 0))
-		if is_floating then
+
+		if is_floating and self.physical_state == true then
 			self.object:set_velocity({x = 0, y = 0, z = 0})
 			self.object:set_acceleration({x = 0, y = 0, z = 0})
 			disable_physics(self.object, self)
