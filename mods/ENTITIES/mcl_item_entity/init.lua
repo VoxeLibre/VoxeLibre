@@ -635,7 +635,7 @@ minetest.register_entity(":__builtin:item", {
 		end
 
 		local nn = node.name
-		local is_in_water = (minetest.get_item_group(nn, "water") ~= 0)
+		local is_in_water = (minetest.get_item_group(nn, "liquid") ~= 0)
 		local nn_above = minetest.get_node({x=p.x, y=p.y+0.1, z=p.z}).name
 		--  make sure it's more or less stationary and is at water level
 		local sleep_threshold = 0.3
@@ -671,7 +671,7 @@ minetest.register_entity(":__builtin:item", {
 		local dg = minetest.get_item_group(nn, "destroys_items")
 		if (def and (lg ~= 0 or fg ~= 0 or dg == 1)) then
 			--Wait 2 seconds to allow mob drops to be cooked, & picked up instead of instantly destroyed.
-			if self.age > 2 then
+			if self.age > 2 and minetest.get_item_group(self.itemstring, "fire_immune") == 0 then
 				if dg ~= 2 then
 					minetest.sound_play("builtin_item_lava", {pos = self.object:get_pos(), gain = 0.5})
 				end
