@@ -666,6 +666,7 @@ minetest.register_entity(":__builtin:item", {
 
 		-- Destroy item in lava, fire or special nodes
 		local nn = node.name
+		local is_in_water = (minetest.get_item_group(nn, "water") ~= 0)
 		local def = minetest.registered_nodes[nn]
 		local lg = minetest.get_item_group(nn, "lava")
 		local fg = minetest.get_item_group(nn, "fire")
@@ -695,7 +696,7 @@ minetest.register_entity(":__builtin:item", {
 		end
 
 		-- Push item out when stuck inside solid opaque node
-		if def and def.walkable and def.groups and def.groups.opaque == 1 then
+		if not is_in_water and def and def.walkable and def.groups and def.groups.opaque == 1 then
 			local shootdir
 			local cx = (p.x % 1) - 0.5
 			local cz = (p.z % 1) - 0.5
@@ -775,8 +776,10 @@ minetest.register_entity(":__builtin:item", {
 			return
 		end
 
+		local is_floating_on_water = false
 		-- Move item around on flowing liquids; add 'source' check to allow items to continue flowing a bit in the source block of flowing water.
-		if def and def.liquidtype == "flowing" or def.liquidtype == "source" then
+		if def and (def.liquidtype == "flowing" or def.liquidtype == "source") then
+			self._flowing = true
 
 			--[[ Get flowing direction (function call from flowlib), if there's a liquid.
 			NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
@@ -798,10 +801,27 @@ minetest.register_entity(":__builtin:item", {
 				})
 				return
 			end
-		elseif self._flowing == true then
+			if is_in_water and def.liquidtype == "source" then
+				local cur_vec = self.object:get_velocity()
+				-- apply some acceleration in the opposite direction so it doesn't slide forever
+				local vec = {
+					x = 0 -cur_vec.x*0.9,
+					y = 3 -cur_vec.y*0.9,
+					z = 0 -cur_vec.z*0.9}
+				self.object:set_acceleration(vec)
+				if self.physical_state ~= false or self._flowing ~= true then
+					self.physical_state = true
+					self._flowing = true
+					self.object:set_properties({
+						physical = true
+					})
+				end
+			end
+		elseif self._flowing == true and not is_in_water then
 			-- Disable flowing physics if not on/in flowing liquid
 			self._flowing = false
-			enable_physics(self.object, self, true)
+			local pos = self.object:get_pos()
+			disable_physics(self.object, self, false, false)
 			return
 		end
 
@@ -822,7 +842,9 @@ minetest.register_entity(":__builtin:item", {
 						end
 					end
 				end
-				disable_physics(self.object, self)
+				if not is_in_water then
+					disable_physics(self.object, self)
+				end
 			end
 		else
 			if self._magnet_active == false then
