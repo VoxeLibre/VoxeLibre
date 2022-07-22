@@ -464,24 +464,6 @@ minetest.register_entity(":__builtin:item", {
 		}
 		self.object:set_properties(prop)
 		if item_drop_settings.random_item_velocity == true then
-			minetest.after(0, function(self)
-				if not self or not self.object or not self.object:get_luaentity() then
-					return
-				end
-				local vel = self.object:get_velocity()
-				if vel and vel.x == 0 and vel.z == 0 then
-					local x = math.random(1, 5)
-					if math.random(1,2) == 1 then
-						x = -x
-					end
-					local z = math.random(1, 5)
-					if math.random(1,2) == 1 then
-						z = -z
-					end
-					local y = math.random(2,4)
-					self.object:set_velocity({x=1/x, y=y, z=1/z})
-				end
-			end, self)
 		end
 
 	end,
@@ -602,9 +584,9 @@ minetest.register_entity(":__builtin:item", {
 		end
 		-- Merge the remote stack into this one
 
-		local pos = object:get_pos()
-		pos.y = pos.y + ((total_count - count) / max_count) * 0.15
-		self.object:move_to(pos)
+		-- local pos = object:get_pos()
+		-- pos.y = pos.y + ((total_count - count) / max_count) * 0.15
+		-- self.object:move_to(pos)
 
 		self.age = 0 -- Handle as new entity
 		own_stack:set_count(total_count)
@@ -848,9 +830,12 @@ minetest.register_entity(":__builtin:item", {
 		-- If node is not registered or node is walkably solid and resting on nodebox
 		local nn = minetest.get_node({x=p.x, y=p.y-0.5, z=p.z}).name
 		local v = self.object:get_velocity()
+		local is_on_floor = (minetest.registered_nodes[nn].walkable
+			and not minetest.registered_nodes[nn].groups.slippery and v.y == 0)
 
-		if not minetest.registered_nodes[nn] or minetest.registered_nodes[nn].walkable and not minetest.registered_nodes[nn].groups.slippery and v.y == 0 then
-			if self.physical_state then
+		if not minetest.registered_nodes[nn]
+		or is_floating or is_on_floor then
+			if true then
 				local own_stack = ItemStack(self.object:get_luaentity().itemstring)
 				-- Merge with close entities of the same item
 				for _, object in pairs(minetest.get_objects_inside_radius(p, 0.8)) do
@@ -867,7 +852,7 @@ minetest.register_entity(":__builtin:item", {
 				end
 			end
 		else
-			if self._magnet_active == false and not is_floating then
+			if self._magnet_active == false and not is_floating and not is_in_water then
 				enable_physics(self.object, self)
 			end
 		end
