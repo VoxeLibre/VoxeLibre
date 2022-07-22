@@ -652,6 +652,22 @@ minetest.register_entity(":__builtin:item", {
 			})
 		end
 
+		local nn = node.name
+		local is_in_water = (minetest.get_item_group(nn, "water") ~= 0)
+		local nn_above = minetest.get_node({x=p.x, y=p.y+0.1, z=p.z}).name
+		--  make sure it's more or less stationary and is at water level
+		local sleep_threshold = 0.3
+		local is_stationary = math.abs(self.object:get_velocity().x) < sleep_threshold
+		and math.abs(self.object:get_velocity().y) < sleep_threshold
+		and math.abs(self.object:get_velocity().z) < sleep_threshold
+		local is_floating = (is_stationary
+			and is_in_water
+			and nn_above == "air")
+		if is_floating then
+			self.object:set_velocity({x = 0, y = 0, z = 0})
+			self.object:set_acceleration({x = 0, y = 0, z = 0})
+			disable_physics(self.object, self)
+		end
 		-- If no collector was found for a long enough time, declare the magnet as disabled
 		if self._magnet_active and (self._collector_timer == nil or (self._collector_timer > item_drop_settings.magnet_time)) then
 			self._magnet_active = false
@@ -665,8 +681,7 @@ minetest.register_entity(":__builtin:item", {
 		end
 
 		-- Destroy item in lava, fire or special nodes
-		local nn = node.name
-		local is_in_water = (minetest.get_item_group(nn, "water") ~= 0)
+
 		local def = minetest.registered_nodes[nn]
 		local lg = minetest.get_item_group(nn, "lava")
 		local fg = minetest.get_item_group(nn, "fire")
@@ -737,8 +752,8 @@ minetest.register_entity(":__builtin:item", {
 			local newv = vector.multiply(shootdir, 3)
 			self.object:set_acceleration({x = 0, y = 0, z = 0})
 			self.object:set_velocity(newv)
-
 			disable_physics(self.object, self, false, false)
+
 
 			if shootdir.y == 0 then
 				self._force = newv
@@ -776,9 +791,8 @@ minetest.register_entity(":__builtin:item", {
 			return
 		end
 
-		local is_floating_on_water = false
 		-- Move item around on flowing liquids; add 'source' check to allow items to continue flowing a bit in the source block of flowing water.
-		if def and (def.liquidtype == "flowing" or def.liquidtype == "source") then
+		if def and not is_floating and (def.liquidtype == "flowing" or def.liquidtype == "source") then
 			self._flowing = true
 
 			--[[ Get flowing direction (function call from flowlib), if there's a liquid.
@@ -809,6 +823,12 @@ minetest.register_entity(":__builtin:item", {
 					y = 3 -cur_vec.y*0.9,
 					z = 0 -cur_vec.z*0.9}
 				self.object:set_acceleration(vec)
+				-- slow down the item in water
+				local vel = self.object:get_velocity()
+				if vel.y < 0 then
+					vel.y = vel.y * 0.9
+				end
+				self.object:set_velocity(vel)
 				if self.physical_state ~= false or self._flowing ~= true then
 					self.physical_state = true
 					self._flowing = true
@@ -817,7 +837,7 @@ minetest.register_entity(":__builtin:item", {
 					})
 				end
 			end
-		elseif self._flowing == true and not is_in_water then
+		elseif self._flowing == true and not is_in_water and not is_floating then
 			-- Disable flowing physics if not on/in flowing liquid
 			self._flowing = false
 			local pos = self.object:get_pos()
@@ -847,10 +867,11 @@ minetest.register_entity(":__builtin:item", {
 				end
 			end
 		else
-			if self._magnet_active == false then
+			if self._magnet_active == false and not is_floating then
 				enable_physics(self.object, self)
 			end
 		end
+
 	end,
 
 	-- Note: on_punch intentionally left out. The player should *not* be able to collect items by punching
