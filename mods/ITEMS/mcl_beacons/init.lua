@@ -86,15 +86,12 @@ minetest.register_node("mcl_beacons:beacon", {
     end,
     on_receive_fields = function(pos, formname, fields, sender)
         if fields.swiftness or fields.regeneration or fields.leaping or fields.strenght then
-            minetest.log("field recived")
             local sender_name = sender:get_player_name()
             local power_level = beacon_blockcheck(pos)
             if minetest.is_protected(pos, sender_name) then
 			    minetest.record_protection_violation(pos, sender_name)
-                minetest.log("returned prot")
 			    return
 		    elseif power_level == 0 then
-                minetest.log("returned pw")
                 return
             end
 
@@ -105,7 +102,6 @@ minetest.register_node("mcl_beacons:beacon", {
             if input:is_empty() then
                 return
             end
-            minetest.log("Not empty!")
 
             local valid_item = false
 
@@ -189,8 +185,6 @@ local function effect_player(effect,pos,power_level, effect_level)
            elseif effect == "regeneration" then
                mcl_potions.regeneration_func(obj2, effect_level, 16)
                return
-           else
-               minetest.log("invalid effect")
            end
         end
     end
