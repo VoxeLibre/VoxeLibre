@@ -100,6 +100,7 @@ mcl_armor.register_set({
 		legs = 6,
 		feet = 3,
 	},
+	groups = { fire_immune=1 },
 	toughness = 2,
 	craft_material = "mcl_nether:netherite_ingot",
 	sound_equip = "mcl_armor_equip_diamond",
