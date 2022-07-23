@@ -467,24 +467,6 @@ minetest.register_entity(":__builtin:item", {
 			glow = glow,
 		}
 		self.object:set_properties(prop)
-		if item_drop_settings.random_item_velocity == true and self.age < 2 then
-			minetest.after(0, function(self)
-				if not self or not self.object or not self.object:get_luaentity() then
-					return
-				end
-				local vel = self.object:get_velocity()
-				if vel and vel.x == 0 and vel.z == 0 and self.random_velocity > 0 then
-					local v = self.random_velocity
-					local x = math.random(2, 10) / 10 * v
-					if math.random(0,10) < 5 then x = -x end
-					local z = math.random(2, 10) / 10 * v
-					if math.random(0,10) < 5 then z = -z end
-					local y = math.random(2,4)
-					self.object:set_velocity({x=x, y=y, z=z})
-				end
-				self.random_velocity = 0
-			end, self)
-		end
 
 	end,
 
