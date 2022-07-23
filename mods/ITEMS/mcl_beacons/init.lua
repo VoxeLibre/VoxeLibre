@@ -7,7 +7,6 @@ Valid strings:
     regeneration
 ]]--
 --TODO: add beacon beam
---TODO: beacons should only work when there are no blocks (few exceptions) above them!
 --TODO: add translation
 
 
@@ -85,7 +84,6 @@ local function effect_player(effect,pos,power_level, effect_level)
     end
 end
 
-
 local function globalstep_function(pos)
     local meta = minetest.get_meta(pos) 
     local power_level = beacon_blockcheck(pos)
@@ -93,10 +91,19 @@ local function globalstep_function(pos)
     if meta:get_int("effect_level") == 2 and power_level < 4 then
         return
     else
+        local obstructed = false
+        for y=pos.y+1, pos.y+301 do
+            if y >= 31000 then return end
+            local nodename = minetest.get_node({x=pos.x,y=y, z = pos.z}).name
+            if nodename ~= "mcl_core:bedrock" and nodename ~= "air" and nodename ~= "ignore" then --ignore means not loaded, let's just assume that's air
+                obstructed = true
+                return
+            end
+        end
+        if obstructed then return end
         effect_player(effect_string,pos,power_level,meta:get_int("effect_level"))
     end
 end
-
 
 minetest.register_node("mcl_beacons:beacon", {
     --glasslike drawtype?
