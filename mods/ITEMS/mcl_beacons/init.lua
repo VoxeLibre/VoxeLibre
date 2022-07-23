@@ -64,21 +64,17 @@ local function beacon_blockcheck(pos)
 end
 
 local function effect_player(effect,pos,power_level, effect_level)
-    local all_objects = minetest.get_objects_inside_radius(pos, (power_level+1)*10)
-    for _,obj2 in ipairs(all_objects) do
-        if obj2:is_player() then
+    local all_objects = minetest.get_objects_inside_radius(pos, ((power_level+1)*10))
+    for _,obj in ipairs(all_objects) do
+        if obj:is_player() then
             if effect == "swiftness" then
-                mcl_potions.swiftness_func(obj2,effect_level,16)
-               return
+                mcl_potions.swiftness_func(obj,effect_level,16)
            elseif effect == "leaping" then
-               mcl_potions.leaping_func(obj2, effect_level, 16)
-               return
+               mcl_potions.leaping_func(obj, effect_level, 16)
            elseif effect == "strenght" then
-               mcl_potions.strength_func(obj2, effect_level, 16)
-               return
+               mcl_potions.strength_func(obj, effect_level, 16)
            elseif effect == "regeneration" then
-               mcl_potions.regeneration_func(obj2, effect_level, 16)
-               return
+               mcl_potions.regeneration_func(obj, effect_level, 16)
            end
         end
     end
