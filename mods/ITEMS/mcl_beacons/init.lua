@@ -63,7 +63,42 @@ local function beacon_blockcheck(pos)
         end
     end
 end
-    
+
+local function effect_player(effect,pos,power_level, effect_level)
+    local all_objects = minetest.get_objects_inside_radius(pos, (power_level+1)*10)
+    for _,obj2 in ipairs(all_objects) do
+        if obj2:is_player() then
+            if effect == "swiftness" then
+                mcl_potions.swiftness_func(obj2,effect_level,16)
+               return
+           elseif effect == "leaping" then
+               mcl_potions.leaping_func(obj2, effect_level, 16)
+               return
+           elseif effect == "strenght" then
+               mcl_potions.strength_func(obj2, effect_level, 16)
+               return
+           elseif effect == "regeneration" then
+               mcl_potions.regeneration_func(obj2, effect_level, 16)
+               return
+           end
+        end
+    end
+end
+
+
+local function globalstep_function(pos, forceexecute)
+    local meta = minetest.get_meta(pos)
+    if(meta:get_int("last-effect-cycle")+10 < os.time() or forceexecute) then 
+        meta:set_int("last-effect-cycle", os.time())
+        local power_level = beacon_blockcheck(pos)
+        local effect_string =  meta:get_string("effect") 
+        if meta:get_int("effect_level") == 2 and power_level < 4 then
+            return
+        else
+            effect_player(effect_string,pos,power_level,meta:get_int("effect_level"))
+        end
+    end
+end
 
 
 minetest.register_node("mcl_beacons:beacon", {
@@ -83,6 +118,8 @@ minetest.register_node("mcl_beacons:beacon", {
         inv:set_size("input", 1)
         local form = formspec_string
 		meta:set_string("formspec", form)
+
+        meta:set_int("last-effect-cycle", os.time()-10)
     end,
     on_receive_fields = function(pos, formname, fields, sender)
         if fields.swiftness or fields.regeneration or fields.leaping or fields.strenght then
@@ -148,6 +185,7 @@ minetest.register_node("mcl_beacons:beacon", {
             if successful then
                 input:take_item()
                 inv:set_stack("input",1,input)
+                globalstep_function(pos,true)--call it once outside the globalstep so the player gets the effect right after selecting it
             end
         end
     end,
@@ -169,47 +207,18 @@ function register_beaconfuel(itemstring)
     table.insert(beacon_fuellist, itemstring)
 end
 
-local function effect_player(effect,pos,power_level, effect_level)
-    local all_objects = minetest.get_objects_inside_radius(pos, (power_level+1)*10)
-    for _,obj2 in ipairs(all_objects) do
-        if obj2:is_player() then
-            if effect == "swiftness" then
-                mcl_potions.swiftness_func(obj2,effect_level,16)
-               return
-           elseif effect == "leaping" then
-               mcl_potions.leaping_func(obj2, effect_level, 16)
-               return
-           elseif effect == "strenght" then
-               mcl_potions.strength_func(obj2, effect_level, 16)
-               return
-           elseif effect == "regeneration" then
-               mcl_potions.regeneration_func(obj2, effect_level, 16)
-               return
-           end
+local timer = 0
+
+minetest.register_globalstep(function(dtime)
+    timer = timer + dtime
+    if timer >= 3  then
+        for _, player in ipairs(minetest.get_connected_players()) do
+            local player_pos = player.get_pos(player)
+            local pos_list = minetest.find_nodes_in_area({x=player_pos.x-50, y=player_pos.y-50, z=player_pos.z-50}, {x=player_pos.x+50, y=player_pos.y+50, z=player_pos.z+50},"mcl_beacons:beacon")
+            for _, pos in ipairs(pos_list) do
+                globalstep_function(pos, false)
+            end
         end
+        timer = 0
     end
-
-    
-end
-
-
-local function abm_function(pos)
-    local power_level = beacon_blockcheck(pos)
-    local meta = minetest.get_meta(pos)
-    local effect_string =  meta:get_string("effect") 
-    if meta:get_int("effect_level") == 2 and power_level < 4 then
-        return
-    else
-        effect_player(effect_string,pos,power_level,meta:get_int("effect_level"))
-    end
-
-end
-
-
-minetest.register_abm{
-    label = "beacon check & apply effect(s)",
-    nodenames = {"mcl_beacons:beacon"},
-    interval = 5,
-    chance = 1,
-    action = abm_function,
-}
+end)
