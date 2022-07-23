@@ -318,15 +318,17 @@ function minetest.handle_node_drops(pos, drops, digger)
 			-- Spawn item and apply random speed
 			local obj = minetest.add_item(dpos, drop_item)
 			if obj then
-				local x = math.random(1, 5)
-				if math.random(1,2) == 1 then
-					x = -x
-				end
-				local z = math.random(1, 5)
-				if math.random(1,2) == 1 then
-					z = -z
-				end
-				obj:set_velocity({x=1/x, y=obj:get_velocity().y, z=1/z})
+				-- set the velocity multiplier to the stored amount or if the game dug this node, apply a bigger velocity
+				local v = 1
+				if digger and digger:is_player() then v = obj:get_luaentity().random_velocity
+				else v = 6 end
+
+				local x = math.random(2, 10) / 10 * v
+				if math.random(0,10) < 5 then x = -x end
+				local z = math.random(2, 10) / 10 * v
+				if math.random(0,10) < 5 then z = -z end
+				local y = math.random(2,4)
+				obj:set_velocity({x=x, y=y, z=z})
 
 				obj:get_luaentity().age = item_drop_settings.dug_buffer
 
@@ -408,6 +410,8 @@ minetest.register_entity(":__builtin:item", {
 	-- Number of seconds this item entity has existed so far
 	age = 0,
 
+	random_velocity = 1,
+
 	-- How old it has become in the collection animation
 	collection_age = 0,
 
@@ -463,7 +467,23 @@ minetest.register_entity(":__builtin:item", {
 			glow = glow,
 		}
 		self.object:set_properties(prop)
-		if item_drop_settings.random_item_velocity == true then
+		if item_drop_settings.random_item_velocity == true and self.age < 2 then
+			minetest.after(0, function(self)
+				if not self or not self.object or not self.object:get_luaentity() then
+					return
+				end
+				local vel = self.object:get_velocity()
+				if vel and vel.x == 0 and vel.z == 0 and self.random_velocity > 0 then
+					local v = self.random_velocity
+					local x = math.random(2, 10) / 10 * v
+					if math.random(0,10) < 5 then x = -x end
+					local z = math.random(2, 10) / 10 * v
+					if math.random(0,10) < 5 then z = -z end
+					local y = math.random(2,4)
+					self.object:set_velocity({x=x, y=y, z=z})
+				end
+				self.random_velocity = 0
+			end, self)
 		end
 
 	end,
@@ -554,7 +574,7 @@ minetest.register_entity(":__builtin:item", {
 		self._forcetimer = 0
 
 		self.object:set_armor_groups({immortal = 1})
-		self.object:set_velocity({x = 0, y = 2, z = 0})
+		-- self.object:set_velocity({x = 0, y = 2, z = 0})
 		self.object:set_acceleration({x = 0, y = -get_gravity(), z = 0})
 		self:set_item(self.itemstring)
 	end,
@@ -590,6 +610,7 @@ minetest.register_entity(":__builtin:item", {
 
 		self.age = 0 -- Handle as new entity
 		own_stack:set_count(total_count)
+		self.random_velocity = 0
 		self:set_item(own_stack:to_string())
 
 		entity._removed = true
