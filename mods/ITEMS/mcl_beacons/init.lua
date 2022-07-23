@@ -86,17 +86,14 @@ local function effect_player(effect,pos,power_level, effect_level)
 end
 
 
-local function globalstep_function(pos, forceexecute)
-    local meta = minetest.get_meta(pos)
-    if(meta:get_int("last-effect-cycle")+10 < os.time() or forceexecute) then 
-        meta:set_int("last-effect-cycle", os.time())
-        local power_level = beacon_blockcheck(pos)
-        local effect_string =  meta:get_string("effect") 
-        if meta:get_int("effect_level") == 2 and power_level < 4 then
-            return
-        else
-            effect_player(effect_string,pos,power_level,meta:get_int("effect_level"))
-        end
+local function globalstep_function(pos)
+    local meta = minetest.get_meta(pos) 
+    local power_level = beacon_blockcheck(pos)
+    local effect_string =  meta:get_string("effect") 
+    if meta:get_int("effect_level") == 2 and power_level < 4 then
+        return
+    else
+        effect_player(effect_string,pos,power_level,meta:get_int("effect_level"))
     end
 end
 
@@ -118,8 +115,6 @@ minetest.register_node("mcl_beacons:beacon", {
         inv:set_size("input", 1)
         local form = formspec_string
 		meta:set_string("formspec", form)
-
-        meta:set_int("last-effect-cycle", os.time()-10)
     end,
     on_receive_fields = function(pos, formname, fields, sender)
         if fields.swiftness or fields.regeneration or fields.leaping or fields.strenght then
@@ -148,7 +143,7 @@ minetest.register_node("mcl_beacons:beacon", {
                 end
             end
 
-            if valid_item ~= true then
+            if not valid_item then
                 return
             end
 
@@ -185,7 +180,7 @@ minetest.register_node("mcl_beacons:beacon", {
             if successful then
                 input:take_item()
                 inv:set_stack("input",1,input)
-                globalstep_function(pos,true)--call it once outside the globalstep so the player gets the effect right after selecting it
+                globalstep_function(pos)--call it once outside the globalstep so the player gets the effect right after selecting it
             end
         end
     end,
@@ -216,7 +211,7 @@ minetest.register_globalstep(function(dtime)
             local player_pos = player.get_pos(player)
             local pos_list = minetest.find_nodes_in_area({x=player_pos.x-50, y=player_pos.y-50, z=player_pos.z-50}, {x=player_pos.x+50, y=player_pos.y+50, z=player_pos.z+50},"mcl_beacons:beacon")
             for _, pos in ipairs(pos_list) do
-                globalstep_function(pos, false)
+                globalstep_function(pos)
             end
         end
         timer = 0
