@@ -83,7 +83,7 @@ local tropical_fish = {
 		run_end = 40,
 	},
 	drops = {
-		{name = "mcl_fishing:tropical_fish_raw",
+		{name = "mcl_fishing:clownfish_raw",
 		chance = 1,
 		min = 1,
 		max = 1,},
