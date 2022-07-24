@@ -18,6 +18,7 @@ Catches fish in water=
 Very poisonous=
 Cod=
 Salmon=
+Tropical Fish=
 Bucket of @1=
 This bucket is filled with water and @1.=
 Place it to empty the bucket and place a @1. Obtain by right clicking on a @2 fish with a bucket of water.=
