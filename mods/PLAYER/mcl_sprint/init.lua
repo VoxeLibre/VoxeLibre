@@ -67,6 +67,7 @@ end
 local function setSprinting(playerName, sprinting) --Sets the state of a player (0=stopped/moving, 1=sprinting)
 	local player = minetest.get_player_by_name(playerName)
 	local controls = player:get_player_control()
+	if not sprinting and not mcl_sprint.is_sprinting(playerName) then return end
 	if players[playerName] then
 		players[playerName].sprinting = sprinting
 		local fov_old = players[playerName].fov
