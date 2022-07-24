@@ -189,7 +189,10 @@ minetest.register_node("mcl_beacons:beacon", {
         end
     end,
     light_source = 15,
+    groups = {handy=1},
+    drop = "mcl_beacons:beacon",
     sounds = mcl_sounds.node_sound_glass_defaults(),
+    _mcl_hardness = 3,
 })
 
 mesecon.register_mvps_stopper("mcl_beacons:beacon")
