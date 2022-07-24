@@ -221,3 +221,12 @@ minetest.register_globalstep(function(dtime)
         timer = 0
     end
 end)
+
+minetest.register_craft({
+    output = "mcl_beacons:beacon",
+    recipe = { 
+        {"mcl_core:glass", "mcl_core:glass", "mcl_core:glass"},
+        {"mcl_core:glass", "mcl_mobitems:nether_star", "mcl_core:glass"},
+        {"mcl_core:obsidian", "mcl_core:obsidian", "mcl_core:obsidian"}
+    }
+})
