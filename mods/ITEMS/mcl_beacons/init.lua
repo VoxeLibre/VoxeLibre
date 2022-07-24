@@ -63,24 +63,21 @@ local function beacon_blockcheck(pos)
     end
 end
 
-local function effect_player(effect,pos,power_level, effect_level)
-    local all_objects = minetest.get_objects_inside_radius(pos, ((power_level+1)*10))
-    for _,obj in ipairs(all_objects) do
-        if obj:is_player() then
-            if effect == "swiftness" then
-                mcl_potions.swiftness_func(obj,effect_level,16)
-           elseif effect == "leaping" then
-               mcl_potions.leaping_func(obj, effect_level, 16)
-           elseif effect == "strenght" then
-               mcl_potions.strength_func(obj, effect_level, 16)
-           elseif effect == "regeneration" then
-               mcl_potions.regeneration_func(obj, effect_level, 16)
-           end
-        end
+local function effect_player(effect,pos,power_level, effect_level,player)
+    local distance =  vector.distance(player:get_pos(), pos)
+    if distance > (power_level+1)*10 then return end
+    if effect == "swiftness" then
+        mcl_potions.swiftness_func(player,effect_level,16)
+    elseif effect == "leaping" then
+        mcl_potions.leaping_func(player, effect_level, 16)
+    elseif effect == "strenght" then
+        mcl_potions.strength_func(player, effect_level, 16)
+    elseif effect == "regeneration" then
+        mcl_potions.regeneration_func(player, effect_level, 16)
     end
 end
 
-local function globalstep_function(pos)
+local function globalstep_function(pos,player)
     local meta = minetest.get_meta(pos) 
     local power_level = beacon_blockcheck(pos)
     local effect_string =  meta:get_string("effect") 
@@ -97,7 +94,7 @@ local function globalstep_function(pos)
             end
         end
         if obstructed then return end
-        effect_player(effect_string,pos,power_level,meta:get_int("effect_level"))
+        effect_player(effect_string,pos,power_level,meta:get_int("effect_level"),player)
     end
 end
 
@@ -181,9 +178,13 @@ minetest.register_node("mcl_beacons:beacon", {
                 successful = true
             end
             if successful then
+                if power_level == 4 then
+                    awards.unlock(sender:get_player_name(),"mcl:maxed_beacon")
+                end
+                awards.unlock(sender:get_player_name(),"mcl:beacon")
                 input:take_item()
                 inv:set_stack("input",1,input)
-                globalstep_function(pos)--call it once outside the globalstep so the player gets the effect right after selecting it
+                globalstep_function(pos,sender)--call it once outside the globalstep so the player gets the effect right after selecting it
             end
         end
     end,
@@ -214,7 +215,7 @@ minetest.register_globalstep(function(dtime)
             local player_pos = player.get_pos(player)
             local pos_list = minetest.find_nodes_in_area({x=player_pos.x-50, y=player_pos.y-50, z=player_pos.z-50}, {x=player_pos.x+50, y=player_pos.y+50, z=player_pos.z+50},"mcl_beacons:beacon")
             for _, pos in ipairs(pos_list) do
-                globalstep_function(pos)
+                globalstep_function(pos,player)
             end
         end
         timer = 0
