@@ -320,16 +320,12 @@ function minetest.handle_node_drops(pos, drops, digger)
 			if obj then
 				-- set the velocity multiplier to the stored amount or if the game dug this node, apply a bigger velocity
 				local v = 1
-				if digger and digger:is_player() then v = obj:get_luaentity().random_velocity
-				else v = 6 end
 
-				local x = math.random(2, 10) / 10 * v
-				if math.random(0,10) < 5 then x = -x end
-				local z = math.random(2, 10) / 10 * v
-				if math.random(0,10) < 5 then z = -z end
-				local y = math.random(2,4)
-				obj:set_velocity({x=x, y=y, z=z})
-
+				if digger and digger:is_player() then
+					obj:get_luaentity().random_velocity = 1
+				else
+					obj:get_luaentity().random_velocity = 1.6
+				end
 				obj:get_luaentity().age = item_drop_settings.dug_buffer
 
 				obj:get_luaentity()._insta_collect = false
@@ -415,6 +411,26 @@ minetest.register_entity(":__builtin:item", {
 	-- How old it has become in the collection animation
 	collection_age = 0,
 
+	apply_random_vel = function(self, speed)
+		if not self or not self.object or not self.object:get_luaentity() then
+			return
+		end
+
+		if speed ~= nil then self.random_velocity = speed end
+
+		local vel = self.object:get_velocity()
+		if vel and vel.x == 0 and vel.z == 0 and self.random_velocity > 0 then
+			local v = self.random_velocity
+			local x = math.random(5, 10) / 10 * v
+			if math.random(0,10) < 5 then x = -x end
+			local z = math.random(5, 10) / 10 * v
+			if math.random(0,10) < 5 then z = -z end
+			local y = math.random(2,4)
+			self.object:set_velocity({x=x, y=y, z=z})
+		end
+		self.random_velocity = 0
+	end,
+
 	set_item = function(self, itemstring)
 		self.itemstring = itemstring
 		if self.itemstring == "" then
@@ -467,7 +483,9 @@ minetest.register_entity(":__builtin:item", {
 			glow = glow,
 		}
 		self.object:set_properties(prop)
-
+		if item_drop_settings.random_item_velocity == true and self.age < 2 then
+			minetest.after(0, self.apply_random_vel, self)
+		end
 	end,
 
 	get_staticdata = function(self)

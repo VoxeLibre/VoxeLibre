@@ -215,8 +215,8 @@ minetest.register_abm({
 				local posy = pos.y
 				while minetest.get_node(vector.new(pos.x, posy, pos.z)).name == "mcl_core:cactus" do
 					local pos = vector.new(pos.x, posy, pos.z)
-					minetest.remove_node(pos)
-					minetest.add_item(vector.offset(pos, math.random(-0.5, 0.5), 0, math.random(-0.5, 0.5)), "mcl_core:cactus")
+					minetest.dig_node(pos)
+					-- minetest.add_item(vector.offset(pos, math.random(-0.5, 0.5), 0, math.random(-0.5, 0.5)), "mcl_core:cactus")
 					posy = posy + 1
 				end
 				break
