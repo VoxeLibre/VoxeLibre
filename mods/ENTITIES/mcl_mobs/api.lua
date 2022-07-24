@@ -248,7 +248,7 @@ local set_velocity = function(self, v)
 	end
 
 	-- halt mob if it has been ordered to stay
-	if self.order == "stand" then
+	if self.order == "stand" or self.order == "sit" then
 		self.object:set_velocity({x = 0, y = 0, z = 0})
 		return
 	end
@@ -1907,10 +1907,9 @@ end
 
 -- find someone to attack
 local monster_attack = function(self)
-
 	if not damage_enabled
 	or minetest.is_creative_enabled("")
-	or self.passive
+	or self.passive ~= false
 	or self.state == "attack"
 	or day_docile(self) then
 		return
@@ -2393,9 +2392,13 @@ local do_states = function(self, dtime)
 
 			yaw = set_yaw(self, yaw, 8)
 		end
-
-		set_velocity(self, 0)
-		set_animation(self, "stand")
+		if self.order == "sit" then
+			set_animation(self, "sit")
+			set_velocity(self, 0)
+		else
+			set_animation(self, "stand")
+			set_velocity(self, 0)
+		end
 
 		-- npc's ordered to stand stay standing
 		if self.type ~= "npc"
@@ -3596,10 +3599,23 @@ local mob_activate = function(self, staticdata, def, dtime)
 	end
 end
 
+local function check_aggro(self,dtime)
+	if not self._aggro or not self.attack then return end
+	if not self._check_aggro_timer or self._check_aggro_timer > 5 then
+		self._check_aggro_timer = 0
+		if not self.attack:get_pos() or vector.distance(self.attack:get_pos(),self.object:get_pos()) > 128 then
+			self._aggro = nil
+			self.attack = nil
+			self.state = "stand"
+		end
+	end
+	self._check_aggro_timer = self._check_aggro_timer + dtime
+end
 
 -- main mob function
 local mob_step = function(self, dtime)
 	check_item_pickup(self)
+	check_aggro(self,dtime)
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
 	end
@@ -3930,7 +3946,7 @@ minetest.register_entity(name, {
 	xp_max = def.xp_max or 0,
 	xp_timestamp = 0,
 	breath_max = def.breath_max or 15,
-        breathes_in_water = def.breathes_in_water or false,
+	breathes_in_water = def.breathes_in_water or false,
 	physical = true,
 	collisionbox = collisionbox,
 	selectionbox = def.selectionbox or def.collisionbox,
@@ -4018,6 +4034,7 @@ minetest.register_entity(name, {
 	teleport = teleport,
 	do_teleport = def.do_teleport,
 	spawn_class = def.spawn_class,
+	can_spawn = def.can_spawn,
 	ignores_nametag = def.ignores_nametag or false,
 	rain_damage = def.rain_damage or 0,
 	glow = def.glow,
@@ -4365,73 +4382,69 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 	if not self.follow then
 		return false
 	end
-
 	-- can eat/tame with item in hand
 	if self.nofollow or follow_holding(self, clicker) then
+		local consume_food = false
 
-		-- if not in creative then take item
-		if not minetest.is_creative_enabled(clicker:get_player_name()) then
+		-- tame if not still a baby
 
-			local item = clicker:get_wielded_item()
-
-			if not notake then item:take_item() end
-
-			clicker:set_wielded_item(item)
+		if tame and not self.child then
+			if not self.owner or self.owner == "" then
+				self.tamed = true
+				self.owner = clicker:get_player_name()
+				consume_food = true
+			end
 		end
 
-		mob_sound(self, "eat", nil, true)
-
 		-- increase health
-		self.health = self.health + 4
 
-		if self.health >= self.hp_max then
-
-			self.health = self.hp_max
+		if self.health < self.hp_max and not consume_food then
+			consume_food = true
+			self.health = min(self.health + 4, self.hp_max)
 
 			if self.htimer < 1 then
 				self.htimer = 5
 			end
+			self.object:set_hp(self.health)
 		end
-
-		self.object:set_hp(self.health)
-
-		update_tag(self)
 
 		-- make children grow quicker
-		if self.child == true then
 
+		if not consume_food and self.child == true then
+			consume_food = true
 			-- deduct 10% of the time to adulthood
 			self.hornytimer = self.hornytimer + ((CHILD_GROW_TIME - self.hornytimer) * 0.1)
-
-			return true
 		end
 
-		-- feed and tame
-		self.food = (self.food or 0) + 1
-		if self.food >= feed_count then
+		--  breed animals
 
-			self.food = 0
-
-			if breed and self.hornytimer == 0 then
+		if breed and not consume_food and self.hornytimer == 0 and not self.horny then
+			self.food = (self.food or 0) + 1
+			consume_food = true
+			if self.food >= feed_count then
+				self.food = 0
 				self.horny = true
 			end
-
-			if tame then
-
-				self.tamed = true
-
-				if not self.owner or self.owner == "" then
-					self.owner = clicker:get_player_name()
-				end
-			end
-
-			-- make sound when fed so many times
-			mob_sound(self, "random", true)
 		end
 
+		update_tag(self)
+		-- play a sound if the animal used the item and take the item if not in creative
+		if consume_food then
+			-- don't consume food if clicker is in creative
+			if not minetest.is_creative_enabled(clicker:get_player_name()) and not notake then
+				local item = clicker:get_wielded_item()
+				item:take_item()
+				clicker:set_wielded_item(item)
+			end
+			-- always play the eat sound if food is used, even in creative
+			mob_sound(self, "eat", nil, true)
+
+		else
+			-- make sound when the mob doesn't want food
+			mob_sound(self, "random", true)
+		end
 		return true
 	end
-
 	return false
 end
 
@@ -4480,31 +4493,6 @@ function mcl_mobs:spawn_child(pos, mob_type)
 
 	return child
 end
-
-
--- compatibility function for old entities to new modpack entities
-function mcl_mobs:alias_mob(old_name, new_name)
-
-	-- spawn egg
-	minetest.register_alias(old_name, new_name)
-
-	-- entity
-	minetest.register_entity(":" .. old_name, {
-
-		physical = false,
-
-		on_step = function(self)
-
-			if minetest.registered_entities[new_name] then
-				minetest.add_entity(self.object:get_pos(), new_name)
-			end
-
-			self.object:remove()
-		end
-	})
-
-end
-
 
 local timer = 0
 minetest.register_globalstep(function(dtime)
