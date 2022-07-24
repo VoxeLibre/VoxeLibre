@@ -31,9 +31,10 @@ local formspec_string=
     "item_image[2.2,7;1,1;mcl_core:emerald]"..
     "item_image[3.4,7;1,1;mcl_core:iron_ingot]"..
     "item_image[4.6,7;1,1;mcl_core:gold_ingot]"..
+    "item_image[5.8,7;1,1;mcl_nether:netherite_ingot]"..
 
-    mcl_formspec.get_itemslot_bg(6,7,1,1)..
-	"list[context;input;6,7;1,1;]"..
+    mcl_formspec.get_itemslot_bg(7.2,7,1,1)..
+	"list[context;input;7.2,7;1,1;]"..
 	mcl_formspec.get_itemslot_bg(1,9,9,3)..
     "list[current_player;main;1,9;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(1,12.5,9,1)..
@@ -198,8 +199,8 @@ minetest.register_node("mcl_beacons:beacon", {
 mesecon.register_mvps_stopper("mcl_beacons:beacon")
 mcl_wip.register_wip_item("mcl_beacons:beacon")
 
-beacon_blocklist = {"mcl_core:diamondblock","mcl_core:ironblock","mcl_core:goldblock","mcl_core:emeraldblock"}--this is supposed to be a global, don't change that! || TODO: add netherite blocks once implemented!
-beacon_fuellist ={"mcl_core:diamond","mcl_core:emerald","mcl_core:iron_ingot","mcl_core:gold_ingot"}
+beacon_blocklist = {"mcl_core:diamondblock","mcl_core:ironblock","mcl_core:goldblock","mcl_core:emeraldblock","mcl_nether:netheriteblock"}--this is supposed to be a global, don't change that!
+beacon_fuellist ={"mcl_core:diamond","mcl_core:emerald","mcl_core:iron_ingot","mcl_core:gold_ingot","mcl_nether:netherite_ingot"}
 
 function register_beaconblock (itemstring)--API function for other mods
     table.insert(beacon_blocklist, itemstring)
