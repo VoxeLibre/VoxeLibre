@@ -372,3 +372,85 @@ mcl_structures.register_structure("lavadelta",{
 		return true
 	end
 })
+
+mcl_structures.register_structure("iceberg",{
+	place_on = {"mcl_core:ice","mcl_core:water_source"},
+	spawn_by = {"air"},
+	num_spawn_by = 2,
+	terrain_feature = true,
+	noise_params = {
+		offset = 0,
+		scale = 0.005,
+		spread = {x = 250, y = 250, z = 250},
+		seed = 78375213,
+		octaves = 5,
+		persist = 0.1,
+		flags = "absvalue",
+	},
+	flags = "liquid_surface",
+	y_max = mcl_vars.mg_overworld_max,
+	y_min = mcl_vars.mg_overworld_min + 1,
+	--biomes = { "BasaltDelta" },
+	place_func = function(pos,def,pr)
+		local p1 = vector.offset(pos,-7,-1,-7)
+		local p2 = vector.offset(pos,7,1,7)
+		local nn = minetest.find_nodes_in_area_under_air(p1,p2,{"mcl_core:ice","mcl_core:water_source","air"})
+		table.sort(nn,function(a, b)
+		  return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
+		end)
+		if #nn < 1 then return false end
+		local ice = {}
+		local ii = #nn / 3
+		if ii > 32000 then ii = 32000 end
+		if ii < 1 then ii = 1 end
+		for i=1,pr:next(1,ii) do
+			local dst=vector.distance(pos,nn[i])
+			local r = pr:next(5,14)-dst
+			for h=0,r do
+				table.insert(ice,vector.new(nn[i].x,nn[i].y + h,nn[i].z))
+				table.insert(ice,vector.new(nn[i].x,nn[i].y - dst,nn[i].z))
+			end
+		end
+		minetest.bulk_set_node(ice,{name="mcl_core:ice"})
+	end
+})
+
+mcl_structures.register_structure("iceberg_large",{
+	place_on = {"mcl_core:ice","mcl_core:water_source"},
+	spawn_by = {"air"},
+	num_spawn_by = 2,
+	terrain_feature = true,
+	noise_params = {
+		offset = 0,
+		scale = 0.005,
+		spread = {x = 250, y = 250, z = 250},
+		seed = 78213,
+		octaves = 5,
+		persist = 0.1,
+		flags = "absvalue",
+	},
+	flags = "liquid_surface",
+	y_max = mcl_vars.mg_overworld_max,
+	y_min = mcl_vars.mg_overworld_min + 1,
+	place_func = function(pos,def,pr)
+		local p1 = vector.offset(pos,-10,-1,-10)
+		local p2 = vector.offset(pos,10,1,10)
+		local nn = minetest.find_nodes_in_area_under_air(p1,p2,{"mcl_core:ice","mcl_core:water_source","air"})
+		table.sort(nn,function(a, b)
+		  return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
+		end)
+		if #nn < 1 then return false end
+		local ice = {}
+		local ii = #nn / 3
+		if ii > 32000 then ii = 32000 end
+		for i=1,pr:next(1,ii) do
+			local dst=vector.distance(pos,nn[i])
+			local r = pr:next(8,20)-dst
+			for h=0,r do
+				table.insert(ice,vector.new(nn[i].x,nn[i].y + h,nn[i].z))
+				table.insert(ice,vector.new(nn[i].x,nn[i].y -dst,nn[i].z))
+			end
+		end
+		minetest.bulk_set_node(ice,{name="mcl_core:ice"})
+	end
+})
