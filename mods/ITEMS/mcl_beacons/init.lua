@@ -112,6 +112,14 @@ minetest.register_node("mcl_beacons:beacon", {
         local form = formspec_string
 		meta:set_string("formspec", form)
     end,
+    on_destruct = function(pos)
+        local meta = minetest.get_meta(pos)
+        local input = meta:get_inventory():get_stack("input",1)
+        if not input:is_empty() then
+            local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5} --from mcl_anvils
+            minetest.add_item(p, input)
+        end
+    end,
     on_receive_fields = function(pos, formname, fields, sender)
         if fields.swiftness or fields.regeneration or fields.leaping or fields.strenght then
             local sender_name = sender:get_player_name()
