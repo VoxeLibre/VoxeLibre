@@ -85,6 +85,9 @@ function mcl_hunger.update_saturation_hud(player, saturation, hunger)
 end
 function mcl_hunger.update_exhaustion_hud(player, exhaustion)
 	if mcl_hunger.debug then
+		if not exhaustion then
+			exhaustion =  mcl_hunger.get_exhaustion(player)
+		end
 		hb.change_hudbar(player, "exhaustion", exhaustion)
 	end
 end
@@ -151,14 +154,14 @@ minetest.register_globalstep(function(dtime)
 			-- let hunger work always
 			if player_health > 0 and player_health <= 20 then
 				--mcl_hunger.exhaust(player_name, mcl_hunger.EXHAUST_HUNGER) -- later for hunger status effect
-				mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
+				mcl_hunger.update_exhaustion_hud(player)
 			end
 
 			if food_level >= 18 then -- slow regeneration
 				if player_health > 0 and player_health < 20 then
 					player:set_hp(player_health+1)
 					mcl_hunger.exhaust(player_name, mcl_hunger.EXHAUST_REGEN)
-					mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
+					mcl_hunger.update_exhaustion_hud(player)
 				end
 
 			elseif food_level == 0 then -- starvation
@@ -176,7 +179,7 @@ minetest.register_globalstep(function(dtime)
 				food_tick_timer = 0
 				player:set_hp(player_health+1)
 				mcl_hunger.exhaust(player_name, mcl_hunger.EXHAUST_REGEN)
-				mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
+				mcl_hunger.update_exhaustion_hud(player)
 			end
 		end
 
