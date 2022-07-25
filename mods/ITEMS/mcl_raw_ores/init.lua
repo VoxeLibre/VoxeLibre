@@ -42,7 +42,7 @@ local function register_raw_ore(description, n)
 		type = "cooking",
 		output = "mcl_core:"..ore.."block",
 		recipe = raw_ingot.."_block",
-		cooktime = 20,
+		cooktime = 90,
 	})
 
 	minetest.register_craft({
