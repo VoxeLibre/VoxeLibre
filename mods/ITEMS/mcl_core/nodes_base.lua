@@ -63,11 +63,12 @@ minetest.register_node("mcl_core:stone_with_iron", {
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {pickaxey=3, building_block=1, material_stone=1, blast_furnace_smeltable=1},
-	drop = "mcl_core:stone_with_iron",
+	drop = "mcl_raw_ores:raw_iron",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
 
 
@@ -78,11 +79,12 @@ minetest.register_node("mcl_core:stone_with_gold", {
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {pickaxey=4, building_block=1, material_stone=1, blast_furnace_smeltable=1},
-	drop = "mcl_core:stone_with_gold",
+	drop = "mcl_raw_ores:raw_gold",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
 
 local redstone_timer = 68.28
