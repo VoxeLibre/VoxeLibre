@@ -231,6 +231,12 @@ awards.register_achievement("mcl:tacticalFishing", {
 	icon = "pufferfish_bucket.png",
 })
 
+awards.register_achievement("mcl:witheringHeights", {
+	title = S("Withering Heights"),
+	description = S("Summon the wither from the dead."),
+	icon = "mcl_mobitems_nether_star.png",
+})
+
 -- Triggered in mcl_fishing
 awards.register_achievement("mcl:fishyBusiness", {
 	title = S("Fishy Business"),
