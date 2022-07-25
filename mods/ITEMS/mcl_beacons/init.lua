@@ -272,7 +272,7 @@ minetest.register_node("mcl_beacons:beacon", {
                 
                 local beam_itemstring = "mcl_beacons:beacon_beam_e8e3e3"
 
-                for y = pos.y +1, pos.y + 301 do
+                for y = pos.y +1, pos.y + 501 do
                     local node = minetest.get_node({x=pos.x,y=y,z=pos.z})
                     if node.name == ignore then
                         minetest.get_voxel_manip():read_from_map({x=pos.x,y=y,z=pos.z}, {x=pos.x,y=y,z=pos.z})
