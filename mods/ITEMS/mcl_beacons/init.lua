@@ -9,6 +9,41 @@ Valid strings:
 --TODO: add beacon beam
 --TODO: add translation
 
+--[[
+cyan: #cdf4e9
+white: #f9fcfb
+brown: #7c5e3d
+dark-blue: #1826c9
+light-blue: #16f4f4
+pink: #f483fc
+purple: #9712bc
+red: #ea1212
+light-gray: #adadad
+gray: #535454
+light-green: #19e52a
+green: #549159
+orange: #ef8813
+yellow: #ebf704
+black: #000000
+magenta: #e502d6
+default: #e8e3e3
+--]]
+
+minetest.register_node("mcl_beacons:beacon_beam", {
+    tiles = {"^[colorize:#cdf4e9"},
+    drawtype = "nodebox",
+    node_box = {
+        type = "fixed",
+        fixed = {
+            {-0.1250, -0.5000, -0.1250, 0.1250, 0.5000, 0.1250}
+        }
+    },
+    light_source = 15,
+    walkable = false,
+    groups = {not_in_creative_inventory=1},
+    _mcl_blast_resistance = 1200,
+})
+
 
 local formspec_string=
     "size[11,14]"..
@@ -40,7 +75,21 @@ local formspec_string=
 	mcl_formspec.get_itemslot_bg(1,12.5,9,1)..
     "list[current_player;main;1,12.5;9,1;]"
 
-
+local function remove_beacon_beam(pos) --beacon pos
+    for y=pos.y+1, pos.y+301 do
+        local node = minetest.get_node({x=pos.x,y=y,z=pos.z})
+        if node.name ~= "air" and node.name ~= "mcl_core:bedrock" then
+            if node.name == "ignore" then
+                minetest.get_voxel_manip():read_from_map({x=pos.x,y=y,z=pos.z}, {x=pos.x,y=y,z=pos.z})
+                node = minetest.get_node({x=pos.x,y=y,z=pos.z})
+            end
+            
+            if node.name == "mcl_beacons:beacon_beam" then
+                minetest.remove_node({x=pos.x,y=y,z=pos.z})
+            end
+        end
+    end
+end
 
 local function beacon_blockcheck(pos)
     for y_offset = 1,4 do
@@ -89,12 +138,15 @@ local function globalstep_function(pos,player)
         for y=pos.y+1, pos.y+301 do
             if y >= 31000 then return end
             local nodename = minetest.get_node({x=pos.x,y=y, z = pos.z}).name
-            if nodename ~= "mcl_core:bedrock" and nodename ~= "air" and nodename ~= "ignore" then --ignore means not loaded, let's just assume that's air
+            if nodename ~= "mcl_core:bedrock" and nodename ~= "air" and nodename ~= "mcl_beacons:beacon_beam" and nodename ~= "ignore" then --ignore means not loaded, let's just assume that's air
                 obstructed = true
+                remove_beacon_beam(pos)
                 return
             end
         end
-        if obstructed then return end
+        if obstructed then
+            return
+        end
         effect_player(effect_string,pos,power_level,meta:get_int("effect_level"),player)
     end
 end
@@ -119,6 +171,7 @@ minetest.register_node("mcl_beacons:beacon", {
             local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5} --from mcl_anvils
             minetest.add_item(p, input)
         end
+        remove_beacon_beam(pos)
     end,
     on_receive_fields = function(pos, formname, fields, sender)
         if fields.swiftness or fields.regeneration or fields.leaping or fields.strenght then
@@ -188,6 +241,19 @@ minetest.register_node("mcl_beacons:beacon", {
                 awards.unlock(sender:get_player_name(),"mcl:beacon")
                 input:take_item()
                 inv:set_stack("input",1,input)
+
+                for y = pos.y +1, pos.y + 301 do
+                    local node = minetest.get_node({x=pos.x,y=y,z=pos.z})
+                    if node.name == ignore then
+                        minetest.get_voxel_manip():read_from_map({x=pos.x,y=y,z=pos.z}, {x=pos.x,y=y,z=pos.z})
+                        node = minetest.get_node({x=pos.x,y=y,z=pos.z})
+                    end
+                    
+                    if node.name == "air" then
+                        minetest.set_node({x=pos.x,y=y,z=pos.z},{name="mcl_beacons:beacon_beam"})
+                    end
+                end
+
                 globalstep_function(pos,sender)--call it once outside the globalstep so the player gets the effect right after selecting it
             end
         end
