@@ -232,7 +232,6 @@ minetest.register_node("mcl_beacons:beacon", {
                         minetest.set_node({x=pos.x,y=y,z=pos.z},{name="mcl_beacons:beacon_beam"})
                     end
                 end
-
                 globalstep_function(pos,sender)--call it once outside the globalstep so the player gets the effect right after selecting it
             end
         end
@@ -264,7 +263,7 @@ minetest.register_globalstep(function(dtime)
     timer = timer + dtime
     if timer >= 3  then
         for _, player in ipairs(minetest.get_connected_players()) do
-            local player_pos = player.get_pos(player)
+            local player_pos = player:get_pos()
             local pos_list = minetest.find_nodes_in_area({x=player_pos.x-50, y=player_pos.y-50, z=player_pos.z-50}, {x=player_pos.x+50, y=player_pos.y+50, z=player_pos.z+50},"mcl_beacons:beacon")
             for _, pos in ipairs(pos_list) do
                 globalstep_function(pos,player)
