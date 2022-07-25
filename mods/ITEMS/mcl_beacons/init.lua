@@ -1,3 +1,4 @@
+local S = minetest.get_translator(minetest.get_current_modname())
 --[[
 there are strings in meta, which are being used to see which effect will be given to the player(s)
 Valid strings:
@@ -26,9 +27,9 @@ minetest.register_node("mcl_beacons:beacon_beam", {
 local formspec_string=
     "size[11,14]"..
 
-    "label[4.5,0.5;Beacon:]"..
-    "label[0.5,1;Primary Power:]"..
-    "label[0.5,8.25;Inventory:]"..
+    "label[4.5,0.5;"..minetest.formspec_escape(S("Beacon:")).."]"..
+    "label[0.5,1;"..minetest.formspec_escape(S("Primary Power:")).."]"..
+    "label[0.5,8.25;"..minetest.formspec_escape( S("Inventory:")).."]"..
 
     "image[1,1.5;1,1;custom_beacom_symbol_4.png]"..
     "image[1,3;1,1;custom_beacom_symbol_3.png]"..
@@ -130,7 +131,7 @@ local function globalstep_function(pos,player)
 end
 
 minetest.register_node("mcl_beacons:beacon", {
-    description = "Beacon",
+    description = S"Beacon",
     drawtype = "glasslike",
     tiles = {
 		"default_glass.png^beacon_overlay.png"
