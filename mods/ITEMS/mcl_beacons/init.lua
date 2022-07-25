@@ -6,28 +6,6 @@ Valid strings:
     strenght
     regeneration
 ]]--
---TODO: add beacon beam
---TODO: add translation
-
---[[
-cyan: #cdf4e9
-white: #f9fcfb
-brown: #7c5e3d
-dark-blue: #1826c9
-light-blue: #16f4f4
-pink: #f483fc
-purple: #9712bc
-red: #ea1212
-light-gray: #adadad
-gray: #535454
-light-green: #19e52a
-green: #549159
-orange: #ef8813
-yellow: #ebf704
-black: #000000
-magenta: #e502d6
-default: #e8e3e3
---]]
 
 minetest.register_node("mcl_beacons:beacon_beam", {
     tiles = {"^[colorize:#cdf4e9"},
@@ -75,7 +53,7 @@ local formspec_string=
 	mcl_formspec.get_itemslot_bg(1,12.5,9,1)..
     "list[current_player;main;1,12.5;9,1;]"
 
-local function remove_beacon_beam(pos) --beacon pos
+local function remove_beacon_beam(pos)
     for y=pos.y+1, pos.y+301 do
         local node = minetest.get_node({x=pos.x,y=y,z=pos.z})
         if node.name ~= "air" and node.name ~= "mcl_core:bedrock" then
@@ -96,7 +74,7 @@ local function beacon_blockcheck(pos)
         local block_y = pos.y - y_offset
         for block_x = (pos.x-y_offset),(pos.x+y_offset) do
             for block_z = (pos.z-y_offset),(pos.z+y_offset) do
-                local valid_block = false --boolean to which stores if block is valid or not
+                local valid_block = false --boolean which stores if block is valid or not
                 for _, beacon_block in pairs(beacon_blocklist) do
                     if beacon_block == minetest.get_node({x=block_x,y=block_y,z=block_z}).name and not valid_block then --is the block in the pyramid a valid beacon block
                         valid_block =true
