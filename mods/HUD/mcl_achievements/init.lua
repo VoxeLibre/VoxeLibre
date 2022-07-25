@@ -276,13 +276,13 @@ awards.register_achievement("mcl:enchanter", {
 awards.register_achievement("mcl:beacon", {
 	title = S("Bring Home the Beacon"),
 	description = S("Use a beacon."),
-	icon = "beacon_side_3.png",
+	icon = "beacon_overlay.png",
 })
 
 awards.register_achievement("mcl:maxed_beacon", {
 	title = S("Beaconator"),
 	description = S("Use a fully powered beacon."),
-	icon = "beacon_side_4.png",
+	icon = "beacon_overlay.png",
 })
 
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)

@@ -100,15 +100,10 @@ local function globalstep_function(pos,player)
 end
 
 minetest.register_node("mcl_beacons:beacon", {
-    --glasslike drawtype?
     description = "Beacon",
+    drawtype = "glasslike",
     tiles = {
-		"beacon_top.png",
-		"beacon_bottom.png",
-		"beacon_side_1.png",
-		"beacon_side_2.png",
-		"beacon_side_3.png",
-		"beacon_side_4.png"
+		"default_glass.png^beacon_overlay.png"
 	},
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
