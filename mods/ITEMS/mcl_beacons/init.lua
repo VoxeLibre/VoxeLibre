@@ -8,20 +8,65 @@ Valid strings:
     regeneration
 ]]--
 
-minetest.register_node("mcl_beacons:beacon_beam", {
-    tiles = {"^[colorize:#cdf4e9"},
-    drawtype = "nodebox",
-    node_box = {
-        type = "fixed",
-        fixed = {
-            {-0.1250, -0.5000, -0.1250, 0.1250, 0.5000, 0.1250}
-        }
-    },
-    light_source = 15,
-    walkable = false,
-    groups = {not_in_creative_inventory=1},
-    _mcl_blast_resistance = 1200,
-})
+
+local color_list = {"cdf4e9","f9fcfb","7c5e3d","1826c9","16f4f4","f483fc","9712bc","ea1212","adadad","535454","19e52a","549159","ef8813","ebf704","000000","e502d6","e8e3e3"}
+
+local function get_beacon_beam(glass_nodename)
+    if string.match(glass_nodename, "cyan") then
+        return "mcl_beacons:beacon_beam_cdf4e9"
+    elseif string.match(glass_nodename,"white") then
+        return "mcl_beacons:beacon_beam_f9fcfb"
+    elseif string.match(glass_nodename,"brown") then
+        return "mcl_beacons:beacon_beam_7c5e3d"
+    elseif string.match(glass_nodename,"blue") and not string.match(glass_nodename, "light") then
+        return "mcl_beacons:beacon_beam_1826c9"
+    elseif string.match(glass_nodename,"light_blue") then
+        return "mcl_beacons:beacon_beam_16f4f4"
+    elseif string.match(glass_nodename,"pink") then
+        return "mcl_beacons:beacon_beam_f483fc"
+    elseif string.match(glass_nodename, "purple") then
+        return "mcl_beacons:beacon_beam_9712bc"
+    elseif string.match(glass_nodename, "red") then
+        return "mcl_beacons:beacon_beam_ea1212"
+    elseif string.match(glass_nodename, "silver") then
+        return "mcl_beacons:beacon_beam_adadad"
+    elseif string.match(glass_nodename, "gray") then
+        return "mcl_beacons:beacon_beam_535454"
+    elseif string.match(glass_nodename, "lime") then
+        return "mcl_beacons:beacon_beam_19e52a"
+    elseif string.match(glass_nodename, "green") then
+        return "mcl_beacons:beacon_beam_549159"
+    elseif string.match(glass_nodename, "orange") then
+        return "mcl_beacons:beacon_beam_ef8813"
+    elseif string.match(glass_nodename, "yellow") then
+        return "mcl_beacons:beacon_beam_ebf704"
+    elseif string.match(glass_nodename, "black") then
+        return "mcl_beacons:beacon_beam_000000"
+    elseif string.match(glass_nodename, "magenta") then
+        return "mcl_beacons:beacon_beam_e502d6"
+    else
+        return "mcl_beacons:beacon_beam_e8e3e3"
+    end
+end
+
+
+
+for _, color in ipairs(color_list) do
+    minetest.register_node("mcl_beacons:beacon_beam_"..color, {
+        tiles = {"^[colorize:#"..color},
+        drawtype = "nodebox",
+        node_box = {
+            type = "fixed",
+            fixed = {
+                {-0.1250, -0.5000, -0.1250, 0.1250, 0.5000, 0.1250}
+            }
+        },
+        light_source = 15,
+        walkable = false,
+        groups = {not_in_creative_inventory=1},
+        _mcl_blast_resistance = 1200,
+    })
+end
 
 
 local formspec_string=
@@ -55,7 +100,7 @@ local formspec_string=
     "list[current_player;main;1,12.5;9,1;]"
 
 local function remove_beacon_beam(pos)
-    for y=pos.y+1, pos.y+301 do
+    for y=pos.y+1, pos.y+501 do
         local node = minetest.get_node({x=pos.x,y=y,z=pos.z})
         if node.name ~= "air" and node.name ~= "mcl_core:bedrock" then
             if node.name == "ignore" then
@@ -63,7 +108,7 @@ local function remove_beacon_beam(pos)
                 node = minetest.get_node({x=pos.x,y=y,z=pos.z})
             end
             
-            if node.name == "mcl_beacons:beacon_beam" then
+            if string.match(node.name,"mcl_beacons:beacon_beam_") then
                 minetest.remove_node({x=pos.x,y=y,z=pos.z})
             end
         end
@@ -114,13 +159,17 @@ local function globalstep_function(pos,player)
         return
     else
         local obstructed = false
-        for y=pos.y+1, pos.y+301 do
+        for y=pos.y+1, pos.y+501 do
             if y >= 31000 then return end
             local nodename = minetest.get_node({x=pos.x,y=y, z = pos.z}).name
-            if nodename ~= "mcl_core:bedrock" and nodename ~= "air" and nodename ~= "mcl_beacons:beacon_beam" and nodename ~= "ignore" then --ignore means not loaded, let's just assume that's air
-                obstructed = true
-                remove_beacon_beam(pos)
-                return
+            if nodename ~= "mcl_core:bedrock" and nodename ~= "air" and nodename ~= "ignore" then --ignore means not loaded, let's just assume that's air
+                if not string.match(nodename,"mcl_beacons:beacon_beam_") then
+                    if minetest.get_item_group(nodename,"glass") == 0 then
+                        obstructed = true
+                        remove_beacon_beam(pos)
+                        return
+                    end
+                end
             end
         end
         if obstructed then
@@ -214,12 +263,15 @@ minetest.register_node("mcl_beacons:beacon", {
                 successful = true
             end
             if successful then
+                minetest.log("1")
                 if power_level == 4 then
                     awards.unlock(sender:get_player_name(),"mcl:maxed_beacon")
                 end
                 awards.unlock(sender:get_player_name(),"mcl:beacon")
                 input:take_item()
                 inv:set_stack("input",1,input)
+                
+                local beam_itemstring = "mcl_beacons:beacon_beam_e8e3e3"
 
                 for y = pos.y +1, pos.y + 301 do
                     local node = minetest.get_node({x=pos.x,y=y,z=pos.z})
@@ -228,8 +280,18 @@ minetest.register_node("mcl_beacons:beacon", {
                         node = minetest.get_node({x=pos.x,y=y,z=pos.z})
                     end
                     
+
+                    if y == pos.y+1 then
+                        if  minetest.get_item_group(node.name, "glass") ~= 0 then
+                            beam_itemstring = get_beacon_beam(node.name)
+                        elseif node.name == air then
+                            minetest.set_node({x=pos.x,y=y,z=pos.z},{name=beam_itemstring})
+                        end
+                    end
+
+                    --if minetest.get_node_group(nodename, "glass") ~= 0 then
                     if node.name == "air" then
-                        minetest.set_node({x=pos.x,y=y,z=pos.z},{name="mcl_beacons:beacon_beam"})
+                        minetest.set_node({x=pos.x,y=y,z=pos.z},{name=beam_itemstring})
                     end
                 end
                 globalstep_function(pos,sender)--call it once outside the globalstep so the player gets the effect right after selecting it
