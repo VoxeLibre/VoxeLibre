@@ -66,6 +66,7 @@ for _, color in ipairs(color_list) do
         groups = {not_in_creative_inventory=1},
         _mcl_blast_resistance = 1200,
     })
+    mesecon.register_mvps_stopper("mcl_beacons:beacon_beam_"..color)
 end
 
 
