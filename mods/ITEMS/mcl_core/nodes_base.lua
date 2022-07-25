@@ -68,6 +68,7 @@ minetest.register_node("mcl_core:stone_with_iron", {
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
 
 
@@ -83,6 +84,7 @@ minetest.register_node("mcl_core:stone_with_gold", {
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
 
 local redstone_timer = 68.28
