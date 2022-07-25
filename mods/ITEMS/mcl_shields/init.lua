@@ -219,12 +219,11 @@ end
 local shield_hud = {}
 
 local function remove_shield_hud(player)
-	if shield_hud[player] then
-		player:hud_remove(shield_hud[player])
-		shield_hud[player] = nil
-		set_shield(player, false, 1)
-		set_shield(player, false, 2)
-	end
+	if not shield_hud[player] then return end --this function takes a long time. only run it when necessary
+	player:hud_remove(shield_hud[player])
+	shield_hud[player] = nil
+	set_shield(player, false, 1)
+	set_shield(player, false, 2)
 
 	local hf = player:hud_get_flags()
 	if not hf.wielditem then
