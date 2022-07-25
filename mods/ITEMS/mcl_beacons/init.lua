@@ -263,7 +263,6 @@ minetest.register_node("mcl_beacons:beacon", {
                 successful = true
             end
             if successful then
-                minetest.log("1")
                 if power_level == 4 then
                     awards.unlock(sender:get_player_name(),"mcl:maxed_beacon")
                 end
