@@ -38,6 +38,12 @@ local function wither_spawn(pos)
 			if check_schem(p, schem) then
 				remove_schem(p, schem)
 				minetest.add_entity(vector.add(p, {x = 0, y = 1, z = 0, [d] = 1}), "mobs_mc:wither")
+				local objects = minetest.get_objects_inside_radius(pos, 20)
+				for _, players in ipairs(objects) do
+					if players:is_player() then
+						awards.unlock(players:get_player_name(), "mcl:witheringHeights")
+					end
+				end
 			end
 		end
 	end

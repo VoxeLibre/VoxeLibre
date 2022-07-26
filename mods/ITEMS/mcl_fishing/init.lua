@@ -520,9 +520,9 @@ end )
 -- Fish Buckets
 fish_names = {
 	{ techname = "cod", name = "Cod" },
-	{ techname = "salmon", name = "Salmon" }
+	{ techname = "salmon", name = "Salmon" },
 	--{ techname = "pufferfish", name = "Pufferfish" } FIXME: Uncomment when pufferfish mobs are added.
-	--{ techname = "tropical_fish", name = "Tropical Fish" } FIXME: Uncomment when pufferfish mobs are added.
+	{ techname = "tropical_fish", name = "Tropical Fish" }
 }
 
 for _, fish in pairs(fish_names) do

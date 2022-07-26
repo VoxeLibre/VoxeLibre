@@ -145,4 +145,5 @@ dofile(path .. "/wither.lua") -- Mesh and animation by toby109tt  / https://gith
 
 dofile(path .. "/cod.lua")
 dofile(path .. "/salmon.lua")
+dofile(path .. "/tropical_fish.lua")
 dofile(path .. "/dolphin.lua")

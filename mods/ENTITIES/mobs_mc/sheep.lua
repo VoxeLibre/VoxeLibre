@@ -70,6 +70,8 @@ mcl_mobs:register_mob("mobs_mc:sheep", {
 	color = "unicolor_white",
 	makes_footstep_sound = true,
 	walk_velocity = 1,
+	runaway = true,
+	runaway_from = {"mobs_mc:wolf"},
 	drops = {
 		{name = "mcl_mobitems:mutton",
 		chance = 1,
@@ -195,7 +197,7 @@ mcl_mobs:register_mob("mobs_mc:sheep", {
 	on_rightclick = function(self, clicker)
 		local item = clicker:get_wielded_item()
 
-		if mcl_mobs:feed_tame(self, clicker, 1, true, true) then return end
+		if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
 		if mcl_mobs:protect(self, clicker) then return end
 
 		if item:get_name() == "mcl_tools:shears" and not self.gotten and not self.child then

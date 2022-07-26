@@ -65,6 +65,11 @@ local wolf = {
 				dog:set_yaw(yaw)
 				ent = dog:get_luaentity()
 				ent.owner = clicker:get_player_name()
+				ent.tamed = true
+				mcl_mobs:set_animation(ent, "sit")
+				ent.walk_chance = 0
+				ent.jump = false
+				ent.health = self.health
 				-- cornfirm taming
 				minetest.sound_play("mobs_mc_wolf_bark", {object=dog, max_hear_distance=16}, true)
 				-- Replace wolf
@@ -74,9 +79,10 @@ local wolf = {
 	end,
 	animation = {
 		speed_normal = 50,		speed_run = 100,
-		stand_start = 40,		stand_end = 45,
-		walk_start = 0,		walk_end = 40,
-		run_start = 0,		run_end = 40,
+		stand_start = 0,		stand_end = 40,
+		walk_start = 40,		walk_end = 80,
+		run_start = 80,		run_end = 120,
+		sit_start = 121,		sit_end = 140,
 	},
 	jump = true,
 	attacks_monsters = true,
@@ -127,7 +133,8 @@ dog.hp_max = 20
 dog.textures = get_dog_textures("unicolor_red")
 dog.owner = ""
 -- TODO: Start sitting by default
-dog.order = "roam"
+dog.order = "sit"
+dog.state = "stand"
 dog.owner_loyal = true
 dog.follow_velocity = 3.2
 -- Automatically teleport dog to owner
@@ -150,32 +157,11 @@ end
 dog.on_rightclick = function(self, clicker)
 	local item = clicker:get_wielded_item()
 
-	if mcl_mobs:protect(self, clicker) then
+	if mcl_mobs:feed_tame(self, clicker, 1, true, false) then
+		return
+	elseif mcl_mobs:protect(self, clicker) then
 		return
 	elseif item:get_name() ~= "" and mcl_mobs:capture_mob(self, clicker, 0, 2, 80, false, nil) then
-		return
-	elseif is_food(item:get_name()) then
-		-- Feed to increase health
-		local hp = self.health
-		local hp_add = 0
-		-- Use eatable group to determine health boost
-		local eatable = minetest.get_item_group(item, "eatable")
-		if eatable > 0 then
-			hp_add = eatable
-		elseif item:get_name() == "mcl_mobitems:rotten_flesh" then
-			hp_add = 4
-		else
-			hp_add = 4
-		end
-		local new_hp = hp + hp_add
-		if new_hp > self.hp_max then
-			new_hp = self.hp_max
-		end
-		if not minetest.is_creative_enabled(clicker:get_player_name()) then
-			item:take_item()
-			clicker:set_wielded_item(item)
-		end
-		self.health = new_hp
 		return
 	elseif minetest.get_item_group(item:get_name(), "dye") == 1 then
 		-- Dye (if possible)
@@ -210,14 +196,18 @@ dog.on_rightclick = function(self, clicker)
 		if not self.order or self.order == "" or self.order == "sit" then
 			particle = "mobs_mc_wolf_icon_roam.png"
 			self.order = "roam"
+			self.state = "stand"
 			self.walk_chance = default_walk_chance
 			self.jump = true
+			mcl_mobs:set_animation(self, "stand")
 			-- TODO: Add sitting model
 		else
 			particle = "mobs_mc_wolf_icon_sit.png"
 			self.order = "sit"
+			self.state = "stand"
 			self.walk_chance = 0
 			self.jump = false
+			mcl_mobs:set_animation(self, "sit")
 		end
 		-- Display icon to show current order (sit or roam)
 		minetest.add_particle({
