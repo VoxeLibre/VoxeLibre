@@ -101,9 +101,9 @@ local formspec_string=
     "list[current_player;main;1,12.5;9,1;]"
 
 local function remove_beacon_beam(pos)
-    for y=pos.y+1, pos.y+501 do
+    for y=pos.y+1, pos.y+401 do
         local node = minetest.get_node({x=pos.x,y=y,z=pos.z})
-        if node.name ~= "air" and node.name ~= "mcl_core:bedrock" then
+        if node.name ~= "air" and node.name ~= "mcl_core:bedrock" and node.name ~= "mcl_core:void" then
             if node.name == "ignore" then
                 minetest.get_voxel_manip():read_from_map({x=pos.x,y=y,z=pos.z}, {x=pos.x,y=y,z=pos.z})
                 node = minetest.get_node({x=pos.x,y=y,z=pos.z})
@@ -160,10 +160,9 @@ local function globalstep_function(pos,player)
         return
     else
         local obstructed = false
-        for y=pos.y+1, pos.y+501 do
-            if y >= 31000 then return end
+        for y=pos.y+1, pos.y+301 do
             local nodename = minetest.get_node({x=pos.x,y=y, z = pos.z}).name
-            if nodename ~= "mcl_core:bedrock" and nodename ~= "air" and nodename ~= "ignore" then --ignore means not loaded, let's just assume that's air
+            if nodename ~= "mcl_core:bedrock" and nodename ~= "air" and nodename ~= "ignore"  and nodename ~= "mcl_core:void" then --ignore means not loaded, let's just assume that's air
                 if not string.match(nodename,"mcl_beacons:beacon_beam_") then
                     if minetest.get_item_group(nodename,"glass") == 0 then
                         obstructed = true
@@ -273,7 +272,7 @@ minetest.register_node("mcl_beacons:beacon", {
                 
                 local beam_itemstring = "mcl_beacons:beacon_beam_e8e3e3"
 
-                for y = pos.y +1, pos.y + 501 do
+                for y = pos.y +1, pos.y + 401 do
                     local node = minetest.get_node({x=pos.x,y=y,z=pos.z})
                     if node.name == ignore then
                         minetest.get_voxel_manip():read_from_map({x=pos.x,y=y,z=pos.z}, {x=pos.x,y=y,z=pos.z})
@@ -284,8 +283,6 @@ minetest.register_node("mcl_beacons:beacon", {
                     if y == pos.y+1 then
                         if  minetest.get_item_group(node.name, "glass") ~= 0 then
                             beam_itemstring = get_beacon_beam(node.name)
-                        elseif node.name == air then
-                            minetest.set_node({x=pos.x,y=y,z=pos.z},{name=beam_itemstring})
                         end
                     end
 
