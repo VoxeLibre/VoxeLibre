@@ -31,8 +31,7 @@ minetest.register_globalstep(function(dtime)
 	if timer >= 0.3 then
 		for _, player in pairs(get_connected_players()) do
 			local ppos = player:get_pos()
-			ppos.y = ceil(ppos.y)
-			local npos = vector.add(ppos, vector.new(0, -1, 0))
+			local npos = vector.add(ppos, vector.new(0, -0.1, 0))
 			if npos then
 				local node = get_node(npos)
 				if node then
