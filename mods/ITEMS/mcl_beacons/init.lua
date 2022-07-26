@@ -182,10 +182,10 @@ end
 
 minetest.register_node("mcl_beacons:beacon", {
     description = S"Beacon",
-    drawtype = "glasslike",
-    tiles = {
-		"default_glass.png^beacon_overlay.png"
-	},
+    drawtype = "mesh",
+    collisionbox = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
+    mesh = "mcl_beacon.b3d",
+    tiles = {"beacon_UV.png"},
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
@@ -289,7 +289,6 @@ minetest.register_node("mcl_beacons:beacon", {
                         end
                     end
 
-                    --if minetest.get_node_group(nodename, "glass") ~= 0 then
                     if node.name == "air" then
                         minetest.set_node({x=pos.x,y=y,z=pos.z},{name=beam_itemstring})
                     end
