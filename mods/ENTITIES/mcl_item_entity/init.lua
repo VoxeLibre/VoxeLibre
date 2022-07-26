@@ -320,14 +320,12 @@ function minetest.handle_node_drops(pos, drops, digger)
 			if obj then
 				-- set the velocity multiplier to the stored amount or if the game dug this node, apply a bigger velocity
 				local v = 1
-
 				if digger and digger:is_player() then
 					obj:get_luaentity().random_velocity = 1
 				else
 					obj:get_luaentity().random_velocity = 1.6
 				end
 				obj:get_luaentity().age = item_drop_settings.dug_buffer
-
 				obj:get_luaentity()._insta_collect = false
 			end
 		end
@@ -406,16 +404,18 @@ minetest.register_entity(":__builtin:item", {
 	-- Number of seconds this item entity has existed so far
 	age = 0,
 
+	-- Multiplier for initial random velocity when the item is spawned
 	random_velocity = 1,
 
 	-- How old it has become in the collection animation
 	collection_age = 0,
 
+	-- Function to apply a random velocity
 	apply_random_vel = function(self, speed)
 		if not self or not self.object or not self.object:get_luaentity() then
 			return
 		end
-
+		-- if you passed a value then use that for the velocity multiplier
 		if speed ~= nil then self.random_velocity = speed end
 
 		local vel = self.object:get_velocity()
@@ -483,7 +483,7 @@ minetest.register_entity(":__builtin:item", {
 			glow = glow,
 		}
 		self.object:set_properties(prop)
-		if item_drop_settings.random_item_velocity == true and self.age < 2 then
+		if item_drop_settings.random_item_velocity == true and self.age < 1 then
 			minetest.after(0, self.apply_random_vel, self)
 		end
 	end,
@@ -660,12 +660,14 @@ minetest.register_entity(":__builtin:item", {
 		local nn_above = minetest.get_node({x=p.x, y=p.y+0.1, z=p.z}).name
 		--  make sure it's more or less stationary and is at water level
 		local sleep_threshold = 0.3
+		local is_floating = false
 		local is_stationary = math.abs(self.object:get_velocity().x) < sleep_threshold
 		and math.abs(self.object:get_velocity().y) < sleep_threshold
 		and math.abs(self.object:get_velocity().z) < sleep_threshold
-		local is_floating = (is_stationary
-			and is_in_water
-			and (minetest.get_item_group(nn_above, "liquid") == 0))
+		if is_in_water and is_stationary then
+			is_floating = (is_in_water
+				and (minetest.get_item_group(nn_above, "liquid") == 0))
+		end
 
 		if is_floating and self.physical_state == true then
 			self.object:set_velocity({x = 0, y = 0, z = 0})
@@ -857,24 +859,23 @@ minetest.register_entity(":__builtin:item", {
 
 		if not minetest.registered_nodes[nn]
 		or is_floating or is_on_floor then
-			if true then
-				local own_stack = ItemStack(self.object:get_luaentity().itemstring)
-				-- Merge with close entities of the same item
-				for _, object in pairs(minetest.get_objects_inside_radius(p, 0.8)) do
-					local obj = object:get_luaentity()
-					if obj and obj.name == "__builtin:item"
-							and obj.physical_state == false then
-						if self:try_merge_with(own_stack, object, obj) then
-							return
-						end
+			local own_stack = ItemStack(self.object:get_luaentity().itemstring)
+			-- Merge with close entities of the same item
+			for _, object in pairs(minetest.get_objects_inside_radius(p, 0.8)) do
+				local obj = object:get_luaentity()
+				if obj and obj.name == "__builtin:item"
+						and obj.physical_state == false then
+					if self:try_merge_with(own_stack, object, obj) then
+						return
 					end
 				end
+				-- don't disable if underwater
 				if not is_in_water then
 					disable_physics(self.object, self)
 				end
 			end
 		else
-			if self._magnet_active == false and not is_floating and not is_in_water then
+			if self._magnet_active == false and not is_floating then
 				enable_physics(self.object, self)
 			end
 		end
