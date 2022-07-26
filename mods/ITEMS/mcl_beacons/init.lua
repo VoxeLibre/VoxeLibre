@@ -271,7 +271,7 @@ minetest.register_node("mcl_beacons:beacon", {
                 inv:set_stack("input",1,input)
                 
                 local beam_itemstring = "mcl_beacons:beacon_beam_e8e3e3"
-
+                remove_beacon_beam(pos)
                 for y = pos.y +1, pos.y + 401 do
                     local node = minetest.get_node({x=pos.x,y=y,z=pos.z})
                     if node.name == ignore then
