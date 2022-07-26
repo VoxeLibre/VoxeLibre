@@ -28,7 +28,7 @@ end)
 local timer = 0
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
-	if timer >= 0.3 then
+	if timer >= 0.6 then
 		for _, player in pairs(get_connected_players()) do
 			local ppos = player:get_pos()
 			local npos = vector.add(ppos, vector.new(0, -0.1, 0))
