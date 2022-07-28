@@ -63,10 +63,12 @@ function mcl_structures.place_structure(pos, def, pr, blockseed)
 				if minetest.get_mapgen_setting("mg_name") ~= "v6" then
 					local b = minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(pos).biome)]
 					--minetest.log(dump(b.node_top))
-					if b.node_top then node_top = b.node_top end
-					if b.node_filler then node_filler = b.node_filler end
-					if b.node_stone then node_stone = b.node_stone end
-					if b.node_dust then node_dust = b.node_dust end
+					if b then
+						if b.node_top then node_top = b.node_top end
+						if b.node_filler then node_filler = b.node_filler end
+						if b.node_stone then node_stone = b.node_stone end
+						if b.node_dust then node_dust = b.node_dust end
+					end
 				end
 				local replace = {"air","group:liquid","mcl_core:snow","group:tree","group:leaves"}
 				minetest.bulk_set_node(minetest.find_nodes_in_area(ground_p1,ground_p2,replace),{name=node_top})
