@@ -11,6 +11,7 @@ local mod_mcl_core = minetest.get_modpath("mcl_core")
 local mod_mcl_mushrooms = minetest.get_modpath("mcl_mushrooms")
 local mod_mcl_crimson = minetest.get_modpath("mcl_crimson")
 local mod_mcl_blackstone = minetest.get_modpath("mcl_blackstone")
+local mod_mcl_mangrove = minetest.get_modpath("mcl_mangrove")
 
 -- Jungle bush schematic. In PC/Java Edition it's Jungle Wood + Oak Leaves
 local jungle_bush_schematic = mod_mcl_core.."/schematics/mcl_core_jungle_bush_oak_leaves.mts"
@@ -3020,6 +3021,43 @@ local function register_decorations()
 		y_min = 0,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_oak_swamp.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.045,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove.."/schematics/mcl_mangrove_tree_1.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.045,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove.."/schematics/mcl_mangrove_tree_2.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.045,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove.."/schematics/mcl_mangrove_tree_3.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
