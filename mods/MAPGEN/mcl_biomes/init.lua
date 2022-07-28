@@ -1357,7 +1357,7 @@ local function register_biomes()
 		y_max = 23,
 		humidity_point = 95,
 		heat_point = 54,
-		_mcl_biome_type = "medium",
+		_mcl_biome_type = "hot",
 		_mcl_palette_index = 28,
 	})
 	minetest.register_biome({
@@ -1372,7 +1372,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 95,
 		heat_point = 54,
-		_mcl_biome_type = "medium",
+		_mcl_biome_type = "hot",
 		_mcl_palette_index = 28,
 	})
 	minetest.register_biome({
@@ -1381,14 +1381,14 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_mud:mud",
 		depth_filler = 3,
-		node_riverbed = "mcl_mud:mud",
+		node_riverbed = "mcl_core:gravel",
 		depth_riverbed = 2,
 		y_min = OCEAN_MIN,
 		y_max = -6,
 		vertical_blend = 1,
 		humidity_point = 95,
 		heat_point = 54,
-		_mcl_biome_type = "medium",
+		_mcl_biome_type = "hot",
 		_mcl_palette_index = 28,
 	})
 	-- Swampland
@@ -3031,12 +3031,12 @@ local function register_decorations()
 		deco_type = "schematic",
 		place_on = {"mcl_mud:mud"},
 		sidelen = 80,
-		fill_ratio = 0.045,
+		fill_ratio = 0.0065,
 		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = mod_mcl_mangrove.."/schematics/mcl_mangrove_tree_1.mts",
-		flags = "place_center_x, place_center_z",
+		flags = "place_center_x, place_center_z, force_placement",
 		rotation = "random",
 	})
 	minetest.register_decoration({
@@ -3044,12 +3044,12 @@ local function register_decorations()
 		deco_type = "schematic",
 		place_on = {"mcl_mud:mud"},
 		sidelen = 80,
-		fill_ratio = 0.045,
+		fill_ratio = 0.0045,
 		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
-		y_min = 1,
+		y_min = -1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = mod_mcl_mangrove.."/schematics/mcl_mangrove_tree_2.mts",
-		flags = "place_center_x, place_center_z",
+		flags = "place_center_x, place_center_z, force_placement",
 		rotation = "random",
 	})
 	minetest.register_decoration({
@@ -3057,12 +3057,12 @@ local function register_decorations()
 		deco_type = "schematic",
 		place_on = {"mcl_mud:mud"},
 		sidelen = 80,
-		fill_ratio = 0.045,
+		fill_ratio = 0.023,
 		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
-		y_min = 1,
+		y_min = -1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = mod_mcl_mangrove.."/schematics/mcl_mangrove_tree_3.mts",
-		flags = "place_center_x, place_center_z",
+		flags = "place_center_x, place_center_z, force_placement",
 		rotation = "random",
 	})
 
@@ -4870,14 +4870,15 @@ if mg_name ~= "singlenode" then
 				for _, pos in ipairs(gennotify["decoration#"..f] or {}) do
 					local nn=minetest.find_nodes_in_area(vector.offset(pos,-8,-1,-8),vector.offset(pos,8,2,8),{"mcl_mangrove:mangrove_roots"})
 					for _,v in pairs(nn) do
+						local l = pr:next(2,16)
 						if minetest.get_node(vector.offset(v,0,-1,0)).name == "mcl_core:water_source" then
-							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-10,0),{"mcl_core:water_source"}),{name="mcl_mangrove:water_logged_roots"})
+							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-l,0),{"mcl_core:water_source"}),{name="mcl_mangrove:water_logged_roots"})
 						end
 						if minetest.get_node(vector.offset(v,0,-1,0)).name == "mcl_mud:mud" then
-							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-10,0),{"mcl_mud:mud"}),{name="mcl_mangrove:mud_roots"})
+							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-l,0),{"mcl_mud:mud"}),{name="mcl_mangrove:mangrove_mud_roots"})
 						end
 						if minetest.get_node(vector.offset(v,0,-1,0)).name == "air" then
-							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-10,0),{"air"}),{name="mcl_mangrove:mangrove_roots"})
+							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-l,0),{"air"}),{name="mcl_mangrove:mangrove_roots"})
 						end
 					end
 				end
