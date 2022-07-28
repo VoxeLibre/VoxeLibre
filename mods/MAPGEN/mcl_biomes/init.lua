@@ -1342,6 +1342,54 @@ local function register_biomes()
 		_mcl_palette_index = 27,
 	})
 
+	-- Mangrove swamp
+	minetest.register_biome({
+		name = "MangroveSwamp",
+		node_top = "mcl_mud:mud",
+		depth_top = 1,
+		node_filler = "mcl_mud:mud",
+		depth_filler = 3,
+		node_riverbed = "mcl_mud:mud",
+		depth_riverbed = 2,
+		y_min = 1,
+		-- Note: Limited in height!
+		y_max = 23,
+		humidity_point = 95,
+		heat_point = 54,
+		_mcl_biome_type = "medium",
+		_mcl_palette_index = 28,
+	})
+	minetest.register_biome({
+		name = "MangroveSwamp_shore",
+		node_top = "mcl_mud:mud",
+		depth_top = 1,
+		node_filler = "mcl_mud:mud",
+		depth_filler = 3,
+		node_riverbed = "mcl_mud:mud",
+		depth_riverbed = 2,
+		y_min = -5,
+		y_max = 0,
+		humidity_point = 95,
+		heat_point = 54,
+		_mcl_biome_type = "medium",
+		_mcl_palette_index = 28,
+	})
+	minetest.register_biome({
+		name = "MangroveSwamp_ocean",
+		node_top = "mcl_mud:mud",
+		depth_top = 1,
+		node_filler = "mcl_mud:mud",
+		depth_filler = 3,
+		node_riverbed = "mcl_mud:mud",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -6,
+		vertical_blend = 1,
+		humidity_point = 95,
+		heat_point = 54,
+		_mcl_biome_type = "medium",
+		_mcl_palette_index = 28,
+	})
 	-- Swampland
 	minetest.register_biome({
 		name = "Swampland",
@@ -2422,11 +2470,11 @@ local function register_grass_decoration(grasstype, offset, scale, biomes)
 	local place_on, seed, node
 	if grasstype == "fern" then
 		node = "mcl_flowers:fern"
-		place_on = {"group:grass_block_no_snow", "mcl_core:podzol"}
+		place_on = {"group:grass_block_no_snow", "mcl_core:podzol","mcl_mud:mud"}
 		seed = 333
 	elseif grasstype == "tallgrass" then
 		node = "mcl_flowers:tallgrass"
-		place_on = {"group:grass_block_no_snow"}
+		place_on = {"group:grass_block_no_snow","mcl_mud:mud"}
 		seed = 420
 	end
 	local noise = {
@@ -3975,7 +4023,7 @@ local function register_decorations()
 	-- Grasses and ferns
 	local grass_forest = {"Plains", "Taiga", "Forest", "FlowerForest", "BirchForest", "BirchForestM", "RoofedForest", "Swampland", }
 	local grass_mpf = {"MesaPlateauF_grasstop"}
-	local grass_plains = {"Plains", "SunflowerPlains", "JungleEdge", "JungleEdgeM" }
+	local grass_plains = {"Plains", "SunflowerPlains", "JungleEdge", "JungleEdgeM", "MangroveSwamp" }
 	local grass_savanna = {"Savanna", "SavannaM"}
 	local grass_sparse = {"ExtremeHills", "ExtremeHills+", "ExtremeHills+_snowtop", "ExtremeHillsM", "Jungle" }
 	local grass_mpfm = {"MesaPlateauFM_grasstop" }
@@ -3998,7 +4046,7 @@ local function register_decorations()
 	register_grass_decoration("tallgrass", 0.05, -0.03, grass_sparse)
 	register_grass_decoration("tallgrass", 0.05, 0.05, grass_mpfm)
 
-	local fern_minimal = { "Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "MegaTaiga", "MegaSpruceTaiga", "ColdTaiga" }
+	local fern_minimal = { "Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "MegaTaiga", "MegaSpruceTaiga", "ColdTaiga", "MangroveSwamp" }
 	local fern_low = { "Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "MegaTaiga", "MegaSpruceTaiga" }
 	local fern_Jungle = { "Jungle", "JungleM", "JungleEdge", "JungleEdgeM" }
 	--local fern_JungleM = { "JungleM" },
