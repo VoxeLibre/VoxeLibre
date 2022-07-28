@@ -649,6 +649,12 @@ minetest.register_entity(":__builtin:item", {
 		local node = minetest.get_node_or_nil(p)
 		local in_unloaded = (node == nil)
 
+		if in_unloaded then
+			-- Don't infinetly fall into unloaded map
+			disable_physics(self.object, self)
+			return
+		end
+
 		if self.is_clock then
 			self.object:set_properties({
 				textures = {"mcl_clock:clock_" .. (mcl_worlds.clock_works(p) and mcl_clock.old_time or mcl_clock.random_frame)}
@@ -678,11 +684,6 @@ minetest.register_entity(":__builtin:item", {
 		if self._magnet_active and (self._collector_timer == nil or (self._collector_timer > item_drop_settings.magnet_time)) then
 			self._magnet_active = false
 			enable_physics(self.object, self)
-			return
-		end
-		if in_unloaded then
-			-- Don't infinetly fall into unloaded map
-			disable_physics(self.object, self)
 			return
 		end
 
