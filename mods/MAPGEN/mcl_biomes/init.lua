@@ -2585,7 +2585,7 @@ local function register_coral_decos(ck)
 		}
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"group:sand","mcl_core:gravel"},
+		place_on = {"group:sand","mcl_core:gravel","mcl_mud:mud"},
 		sidelen = 80,
 		noise_params = noise,
 		biomes = warm_oceans,
@@ -2597,7 +2597,7 @@ local function register_coral_decos(ck)
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"group:sand","mcl_core:gravel"},
+		place_on = {"group:sand","mcl_core:gravel","mcl_mud:mud"},
 		noise_params = noise,
 		sidelen = 80,
 		biomes = warm_oceans,
@@ -2643,7 +2643,7 @@ local function register_decorations()
 	end
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"group:sand","mcl_core:gravel"},
+		place_on = {"group:sand","mcl_core:gravel","mcl_mud:mud"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.0085,
