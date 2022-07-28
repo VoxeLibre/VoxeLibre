@@ -318,18 +318,14 @@ function minetest.handle_node_drops(pos, drops, digger)
 			-- Spawn item and apply random speed
 			local obj = minetest.add_item(dpos, drop_item)
 			if obj then
-				local x = math.random(1, 5)
-				if math.random(1,2) == 1 then
-					x = -x
+				-- set the velocity multiplier to the stored amount or if the game dug this node, apply a bigger velocity
+				local v = 1
+				if digger and digger:is_player() then
+					obj:get_luaentity().random_velocity = 1
+				else
+					obj:get_luaentity().random_velocity = 1.6
 				end
-				local z = math.random(1, 5)
-				if math.random(1,2) == 1 then
-					z = -z
-				end
-				obj:set_velocity({x=1/x, y=obj:get_velocity().y, z=1/z})
-
 				obj:get_luaentity().age = item_drop_settings.dug_buffer
-
 				obj:get_luaentity()._insta_collect = false
 			end
 		end
@@ -408,8 +404,32 @@ minetest.register_entity(":__builtin:item", {
 	-- Number of seconds this item entity has existed so far
 	age = 0,
 
+	-- Multiplier for initial random velocity when the item is spawned
+	random_velocity = 1,
+
 	-- How old it has become in the collection animation
 	collection_age = 0,
+
+	-- Function to apply a random velocity
+	apply_random_vel = function(self, speed)
+		if not self or not self.object or not self.object:get_luaentity() then
+			return
+		end
+		-- if you passed a value then use that for the velocity multiplier
+		if speed ~= nil then self.random_velocity = speed end
+
+		local vel = self.object:get_velocity()
+		if vel and vel.x == 0 and vel.z == 0 and self.random_velocity > 0 then
+			local v = self.random_velocity
+			local x = math.random(5, 10) / 10 * v
+			if math.random(0,10) < 5 then x = -x end
+			local z = math.random(5, 10) / 10 * v
+			if math.random(0,10) < 5 then z = -z end
+			local y = math.random(2,4)
+			self.object:set_velocity({x=x, y=y, z=z})
+		end
+		self.random_velocity = 0
+	end,
 
 	set_item = function(self, itemstring)
 		self.itemstring = itemstring
@@ -463,27 +483,9 @@ minetest.register_entity(":__builtin:item", {
 			glow = glow,
 		}
 		self.object:set_properties(prop)
-		if item_drop_settings.random_item_velocity == true then
-			minetest.after(0, function(self)
-				if not self or not self.object or not self.object:get_luaentity() then
-					return
-				end
-				local vel = self.object:get_velocity()
-				if vel and vel.x == 0 and vel.z == 0 then
-					local x = math.random(1, 5)
-					if math.random(1,2) == 1 then
-						x = -x
-					end
-					local z = math.random(1, 5)
-					if math.random(1,2) == 1 then
-						z = -z
-					end
-					local y = math.random(2,4)
-					self.object:set_velocity({x=1/x, y=y, z=1/z})
-				end
-			end, self)
+		if item_drop_settings.random_item_velocity == true and self.age < 1 then
+			minetest.after(0, self.apply_random_vel, self)
 		end
-
 	end,
 
 	get_staticdata = function(self)
@@ -572,7 +574,7 @@ minetest.register_entity(":__builtin:item", {
 		self._forcetimer = 0
 
 		self.object:set_armor_groups({immortal = 1})
-		self.object:set_velocity({x = 0, y = 2, z = 0})
+		-- self.object:set_velocity({x = 0, y = 2, z = 0})
 		self.object:set_acceleration({x = 0, y = -get_gravity(), z = 0})
 		self:set_item(self.itemstring)
 	end,
@@ -602,12 +604,13 @@ minetest.register_entity(":__builtin:item", {
 		end
 		-- Merge the remote stack into this one
 
-		local pos = object:get_pos()
-		pos.y = pos.y + ((total_count - count) / max_count) * 0.15
-		self.object:move_to(pos)
+		-- local pos = object:get_pos()
+		-- pos.y = pos.y + ((total_count - count) / max_count) * 0.15
+		-- self.object:move_to(pos)
 
 		self.age = 0 -- Handle as new entity
 		own_stack:set_count(total_count)
+		self.random_velocity = 0
 		self:set_item(own_stack:to_string())
 
 		entity._removed = true
@@ -646,33 +649,53 @@ minetest.register_entity(":__builtin:item", {
 		local node = minetest.get_node_or_nil(p)
 		local in_unloaded = (node == nil)
 
-		if self.is_clock then
-			self.object:set_properties({
-				textures = {"mcl_clock:clock_" .. (mcl_worlds.clock_works(p) and mcl_clock.old_time or mcl_clock.random_frame)}
-			})
-		end
-
-		-- If no collector was found for a long enough time, declare the magnet as disabled
-		if self._magnet_active and (self._collector_timer == nil or (self._collector_timer > item_drop_settings.magnet_time)) then
-			self._magnet_active = false
-			enable_physics(self.object, self)
-			return
-		end
 		if in_unloaded then
 			-- Don't infinetly fall into unloaded map
 			disable_physics(self.object, self)
 			return
 		end
 
-		-- Destroy item in lava, fire or special nodes
+		if self.is_clock then
+			self.object:set_properties({
+				textures = {"mcl_clock:clock_" .. (mcl_worlds.clock_works(p) and mcl_clock.old_time or mcl_clock.random_frame)}
+			})
+		end
+
 		local nn = node.name
+		local is_in_water = (minetest.get_item_group(nn, "liquid") ~= 0)
+		local nn_above = minetest.get_node({x=p.x, y=p.y+0.1, z=p.z}).name
+		--  make sure it's more or less stationary and is at water level
+		local sleep_threshold = 0.3
+		local is_floating = false
+		local is_stationary = math.abs(self.object:get_velocity().x) < sleep_threshold
+		and math.abs(self.object:get_velocity().y) < sleep_threshold
+		and math.abs(self.object:get_velocity().z) < sleep_threshold
+		if is_in_water and is_stationary then
+			is_floating = (is_in_water
+				and (minetest.get_item_group(nn_above, "liquid") == 0))
+		end
+
+		if is_floating and self.physical_state == true then
+			self.object:set_velocity({x = 0, y = 0, z = 0})
+			self.object:set_acceleration({x = 0, y = 0, z = 0})
+			disable_physics(self.object, self)
+		end
+		-- If no collector was found for a long enough time, declare the magnet as disabled
+		if self._magnet_active and (self._collector_timer == nil or (self._collector_timer > item_drop_settings.magnet_time)) then
+			self._magnet_active = false
+			enable_physics(self.object, self)
+			return
+		end
+
+		-- Destroy item in lava, fire or special nodes
+
 		local def = minetest.registered_nodes[nn]
 		local lg = minetest.get_item_group(nn, "lava")
 		local fg = minetest.get_item_group(nn, "fire")
 		local dg = minetest.get_item_group(nn, "destroys_items")
 		if (def and (lg ~= 0 or fg ~= 0 or dg == 1)) then
 			--Wait 2 seconds to allow mob drops to be cooked, & picked up instead of instantly destroyed.
-			if self.age > 2 then
+			if self.age > 2 and minetest.get_item_group(self.itemstring, "fire_immune") == 0 then
 				if dg ~= 2 then
 					minetest.sound_play("builtin_item_lava", {pos = self.object:get_pos(), gain = 0.5})
 				end
@@ -695,7 +718,7 @@ minetest.register_entity(":__builtin:item", {
 		end
 
 		-- Push item out when stuck inside solid opaque node
-		if def and def.walkable and def.groups and def.groups.opaque == 1 then
+		if not is_in_water and def and def.walkable and def.groups and def.groups.opaque == 1 then
 			local shootdir
 			local cx = (p.x % 1) - 0.5
 			local cz = (p.z % 1) - 0.5
@@ -736,8 +759,8 @@ minetest.register_entity(":__builtin:item", {
 			local newv = vector.multiply(shootdir, 3)
 			self.object:set_acceleration({x = 0, y = 0, z = 0})
 			self.object:set_velocity(newv)
-
 			disable_physics(self.object, self, false, false)
+
 
 			if shootdir.y == 0 then
 				self._force = newv
@@ -776,7 +799,8 @@ minetest.register_entity(":__builtin:item", {
 		end
 
 		-- Move item around on flowing liquids; add 'source' check to allow items to continue flowing a bit in the source block of flowing water.
-		if def and def.liquidtype == "flowing" or def.liquidtype == "source" then
+		if def and not is_floating and (def.liquidtype == "flowing" or def.liquidtype == "source") then
+			self._flowing = true
 
 			--[[ Get flowing direction (function call from flowlib), if there's a liquid.
 			NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
@@ -798,37 +822,65 @@ minetest.register_entity(":__builtin:item", {
 				})
 				return
 			end
-		elseif self._flowing == true then
+			if is_in_water and def.liquidtype == "source" then
+				local cur_vec = self.object:get_velocity()
+				-- apply some acceleration in the opposite direction so it doesn't slide forever
+				local vec = {
+					x = 0 -cur_vec.x*0.9,
+					y = 3 -cur_vec.y*0.9,
+					z = 0 -cur_vec.z*0.9}
+				self.object:set_acceleration(vec)
+				-- slow down the item in water
+				local vel = self.object:get_velocity()
+				if vel.y < 0 then
+					vel.y = vel.y * 0.9
+				end
+				self.object:set_velocity(vel)
+				if self.physical_state ~= false or self._flowing ~= true then
+					self.physical_state = true
+					self._flowing = true
+					self.object:set_properties({
+						physical = true
+					})
+				end
+			end
+		elseif self._flowing == true and not is_in_water and not is_floating then
 			-- Disable flowing physics if not on/in flowing liquid
 			self._flowing = false
-			enable_physics(self.object, self, true)
+			local pos = self.object:get_pos()
+			disable_physics(self.object, self, false, false)
 			return
 		end
 
 		-- If node is not registered or node is walkably solid and resting on nodebox
 		local nn = minetest.get_node({x=p.x, y=p.y-0.5, z=p.z}).name
 		local v = self.object:get_velocity()
+		local is_on_floor = (minetest.registered_nodes[nn].walkable
+			and not minetest.registered_nodes[nn].groups.slippery and v.y == 0)
 
-		if not minetest.registered_nodes[nn] or minetest.registered_nodes[nn].walkable and not minetest.registered_nodes[nn].groups.slippery and v.y == 0 then
-			if self.physical_state then
-				local own_stack = ItemStack(self.object:get_luaentity().itemstring)
-				-- Merge with close entities of the same item
-				for _, object in pairs(minetest.get_objects_inside_radius(p, 0.8)) do
-					local obj = object:get_luaentity()
-					if obj and obj.name == "__builtin:item"
-							and obj.physical_state == false then
-						if self:try_merge_with(own_stack, object, obj) then
-							return
-						end
+		if not minetest.registered_nodes[nn]
+		or is_floating or is_on_floor then
+			local own_stack = ItemStack(self.object:get_luaentity().itemstring)
+			-- Merge with close entities of the same item
+			for _, object in pairs(minetest.get_objects_inside_radius(p, 0.8)) do
+				local obj = object:get_luaentity()
+				if obj and obj.name == "__builtin:item"
+						and obj.physical_state == false then
+					if self:try_merge_with(own_stack, object, obj) then
+						return
 					end
 				end
-				disable_physics(self.object, self)
+				-- don't disable if underwater
+				if not is_in_water then
+					disable_physics(self.object, self)
+				end
 			end
 		else
-			if self._magnet_active == false then
+			if self._magnet_active == false and not is_floating then
 				enable_physics(self.object, self)
 			end
 		end
+
 	end,
 
 	-- Note: on_punch intentionally left out. The player should *not* be able to collect items by punching

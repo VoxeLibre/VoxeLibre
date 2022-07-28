@@ -71,7 +71,7 @@ minetest.register_node("mcl_nether:netheriteblock", {
 	stack_max = 64,
 	tiles = {"mcl_nether_netheriteblock.png"},
 	is_ground_content = true,
-	groups = {pickaxey=4, building_block=1, material_stone=1, xp = 0},
+	groups = { pickaxey=4, building_block=1, material_stone=1, xp = 0, fire_immune=1 },
 	drop = "mcl_nether:netheriteblock",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 1200,
@@ -285,7 +285,7 @@ minetest.register_craftitem("mcl_nether:netherite_scrap", {
 	_doc_items_longdesc = S("Netherite scrap is a crafting ingredient for netherite ingots."),
 	inventory_image = "mcl_nether_netherite_scrap.png",
 	stack_max = 64,
-	groups = { craftitem = 1 },
+	groups = { craftitem = 1, fire_immune=1 },
 })
 
 minetest.register_craftitem("mcl_nether:netherite_ingot", {
@@ -293,7 +293,7 @@ minetest.register_craftitem("mcl_nether:netherite_ingot", {
 	_doc_items_longdesc = S("Netherite ingots can be used with a smithing table to upgrade items to netherite."),
 	inventory_image = "mcl_nether_netherite_ingot.png",
 	stack_max = 64,
-	groups = { craftitem = 1 },
+	groups = { craftitem = 1, fire_immune=1 },
 })
 
 minetest.register_craftitem("mcl_nether:netherbrick", {

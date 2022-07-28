@@ -252,7 +252,16 @@ local dispenserdef = {
 								elseif inv:room_for_item("main", od_ret) then
 									inv:add_item("main", od_ret)
 								else
-									minetest.add_item(droppos, dropitem)
+									local pos_variation = 100
+									droppos = {
+										x = droppos.x + math.random(-pos_variation, pos_variation) / 1000,
+										y = droppos.y + math.random(-pos_variation, pos_variation) / 1000,
+										z = droppos.z + math.random(-pos_variation, pos_variation) / 1000,
+									}
+									local item_entity = minetest.add_item(droppos, dropitem)
+									local drop_vel = vector.subtract(droppos, pos)
+									local speed = 3
+									item_entity:set_velocity(drop_vel * speed)
 								end
 							else
 								stack:take_item()
@@ -260,7 +269,16 @@ local dispenserdef = {
 							end
 						else
 							-- Drop item otherwise
-							minetest.add_item(droppos, dropitem)
+							local pos_variation = 100
+							droppos = {
+								x = droppos.x + math.random(-pos_variation, pos_variation) / 1000,
+								y = droppos.y + math.random(-pos_variation, pos_variation) / 1000,
+								z = droppos.z + math.random(-pos_variation, pos_variation) / 1000,
+							}
+							local item_entity = minetest.add_item(droppos, dropitem)
+							local drop_vel = vector.subtract(droppos, pos)
+							local speed = 3
+							item_entity:set_velocity(drop_vel * speed)
 							stack:take_item()
 							inv:set_stack("main", stack_id, stack)
 						end

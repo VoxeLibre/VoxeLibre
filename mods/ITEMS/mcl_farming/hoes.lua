@@ -285,7 +285,7 @@ minetest.register_tool("mcl_farming:hoe_netherite", {
 	inventory_image = "farming_tool_netheritehoe.png",
 	wield_scale = mcl_vars.tool_wield_scale,
 	on_place = hoe_on_place_function(uses.netherite),
-	groups = { tool=1, hoe=1, enchantability=10 },
+	groups = { tool=1, hoe=1, enchantability=10, fire_immune=1 },
 	tool_capabilities = {
 		full_punch_interval = 0.25,
 		damage_groups = { fleshy = 4, },
