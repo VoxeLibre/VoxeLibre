@@ -1,5 +1,6 @@
+local S = minetest.get_translator("mcl_mangrove")
 
-local S = minetest.get_translator("mcl_core")
+local leafdecay_distance = 4
 
 local register_tree_trunk = function(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark)
 minetest.register_node("mcl_mangrove:"..subname, {
@@ -309,10 +310,8 @@ minetest.register_node("mcl_mangrove:mangrove_roots", {
 	drawtype = "mesh",
 	mesh = "node.obj",
 	groups = {
-		handy = 1, hoey = 1, shearsy = 1, axey = 1,  swordy = 1, dig_by_piston = 0,
-		leaves = 1, leafdecay = leafdecay_distance, deco_block = 1,
-		flammable = 10, fire_encouragement = 30, fire_flammability = 60,
-		compostability = 30
+		handy = 1, hoey = 1, shearsy = 1, axey = 1, swordy = 1, dig_by_piston = 0,
+		leaves = 1, deco_block = 1,flammable = 10, fire_encouragement = 30, fire_flammability = 60,	compostability = 30
 	},
 	drop = "mcl_mangrove:mangrove_roots",
 	_mcl_shears_drop = true,
@@ -609,9 +608,7 @@ minetest.register_node("mcl_mangrove:water_logged_roots", {
 	drop = "mcl_mangrove:mangrove_roots",
 	stack_max = 64,
 		groups = {
-		handy = 1, hoey = 1, shearsy = 1, swordy = 1, water=3, liquid=3, puts_out_fire=1, dig_by_piston = 1,
-		leaves = 1, leafdecay = leafdecay_distance, deco_block = 1,  not_in_creative_inventory=1, fire_encouragement = 0, fire_flammability = 0,
-	},
+		handy = 1, hoey = 1, water=3, liquid=3, puts_out_fire=1, dig_by_piston = 1, deco_block = 1,  not_in_creative_inventory=1 },
 	_mcl_blast_resistance = 100,
 	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
 	_mcl_hardness = -1,
@@ -681,6 +678,29 @@ minetest.register_node("mcl_mangrove:hanging_propagule_1", {
 	tiles = {"mcl_mangrove_propagule_hanging.png"},
 	inventory_image = "mcl_mangrove_propagule.png",
 	wield_image = "mcl_mangrove_propagule.png",
+})
+
+local adjacents = {
+	vector.new(1,0,0),
+	vector.new(-1,0,0),
+	vector.new(0,0,1),
+	vector.new(0,0,-1),
+}
+
+minetest.register_abm({
+	label = "Waterlog mangrove roots",
+	nodenames = {"mcl_mangrove:mangrove_roots"},
+	neighbors = {"mcl_core:water_source"},
+	interval = 5,
+	chance = 5,
+	action = function(pos,value)
+		for _,v in pairs(adjacents) do
+			if minetest.get_node(vector.add(pos,v)).name == "mcl_core:water_source" then
+				minetest.swap_node(pos,{name="mcl_mangrove:water_logged_roots"})
+				return
+			end
+		end
+	end
 })
 
 ------------tree_growth_abm------------

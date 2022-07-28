@@ -2562,6 +2562,7 @@ local warm_oceans = {
 	"Jungle_ocean",
 	"Desert_ocean",
 	"JungleM_ocean",
+	"MangroveSwamp_ocean"
 }
 local corals = {
 	"brain",
@@ -3026,6 +3027,7 @@ local function register_decorations()
 	})
 
 	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_tree_1",
 		deco_type = "schematic",
 		place_on = {"mcl_mud:mud"},
 		sidelen = 80,
@@ -3038,6 +3040,7 @@ local function register_decorations()
 		rotation = "random",
 	})
 	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_tree_2",
 		deco_type = "schematic",
 		place_on = {"mcl_mud:mud"},
 		sidelen = 80,
@@ -3050,6 +3053,7 @@ local function register_decorations()
 		rotation = "random",
 	})
 	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_tree_3",
 		deco_type = "schematic",
 		place_on = {"mcl_mud:mud"},
 		sidelen = 80,
@@ -3060,6 +3064,43 @@ local function register_decorations()
 		schematic = mod_mcl_mangrove.."/schematics/mcl_mangrove_tree_3.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.045,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		y_min = 0,
+		y_max = 0,
+		decoration = "mcl_mangrove:water_logged_roots",
+		flags = "place_center_x, place_center_z, force_placement",
+	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_mangrove:mangrove_roots"},
+		spawn_by = {"mcl_core:water_source"},
+		num_spawn_by = 2,
+		sidelen = 80,
+		fill_ratio = 10,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		y_min = 0,
+		y_max = 0,
+		decoration = "mcl_mangrove:water_logged_roots",
+		flags = "place_center_x, place_center_z, force_placement, all_ceilings",
+	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.045,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		place_offset_y = -1,
+		decoration = "mcl_mangrove:mangrove_mud_roots",
+		flags = "place_center_x, place_center_z, force_placement",
 	})
 
 	-- Jungle tree
@@ -4810,14 +4851,38 @@ if mg_name ~= "singlenode" then
 		minetest.get_decoration_id("mcl_biomes:warped_tree2"),
 		minetest.get_decoration_id("mcl_biomes:warped_tree3")
 	}
+	local deco_ids_trees = {
+		minetest.get_decoration_id("mcl_biomes:mangrove_tree_1"),
+		minetest.get_decoration_id("mcl_biomes:mangrove_tree_2"),
+		minetest.get_decoration_id("mcl_biomes:mangrove_tree_3"),
+	}
 	for _,f in pairs(deco_ids_fungus) do
 		minetest.set_gen_notify({decoration=true}, { f })
 	end
-	if deco_id_chorus_plant or deco_id_crimson_tree or deco_id_warped_tree then
+	for _,f in pairs(deco_ids_trees) do
+		minetest.set_gen_notify({decoration=true}, { f })
+	end
+	if deco_id_chorus_plant or deco_ids_fungus or deco_ids_trees then
 		mcl_mapgen_core.register_generator("chorus_grow", nil, function(minp, maxp, blockseed)
-			if minp.y > -26900 then return end
 			local gennotify = minetest.get_mapgen_object("gennotify")
 			local pr = PseudoRandom(blockseed + 14)
+			for _,f in pairs(deco_ids_trees) do
+				for _, pos in ipairs(gennotify["decoration#"..f] or {}) do
+					local nn=minetest.find_nodes_in_area(vector.offset(pos,-8,-1,-8),vector.offset(pos,8,2,8),{"mcl_mangrove:mangrove_roots"})
+					for _,v in pairs(nn) do
+						if minetest.get_node(vector.offset(v,0,-1,0)).name == "mcl_core:water_source" then
+							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-10,0),{"mcl_core:water_source"}),{name="mcl_mangrove:water_logged_roots"})
+						end
+						if minetest.get_node(vector.offset(v,0,-1,0)).name == "mcl_mud:mud" then
+							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-10,0),{"mcl_mud:mud"}),{name="mcl_mangrove:mud_roots"})
+						end
+						if minetest.get_node(vector.offset(v,0,-1,0)).name == "air" then
+							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-10,0),{"air"}),{name="mcl_mangrove:mangrove_roots"})
+						end
+					end
+				end
+			end
+			if minp.y > -26900 then return end
 			for _, pos in ipairs(gennotify["decoration#"..deco_id_chorus_plant] or {}) do
 				local x, y, z = pos.x, pos.y, pos.z
 				if x < -2 or x > 2 or z < -2 or z > 2 then
