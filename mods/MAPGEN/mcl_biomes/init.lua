@@ -3066,6 +3066,32 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z, force_placement",
 		rotation = "random",
 	})
+	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_tree_4",
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.023,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		y_min = -1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove.."/schematics/mcl_mangrove_tree_4.mts",
+		flags = "place_center_x, place_center_z, force_placement",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_tree_4",
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.023,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		y_min = -1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove.."/schematics/mcl_mangrove_tree_5.mts",
+		flags = "place_center_x, place_center_z, force_placement",
+		rotation = "random",
+	})
 
 	minetest.register_decoration({
 		deco_type = "simple",
