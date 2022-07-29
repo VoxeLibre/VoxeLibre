@@ -3082,7 +3082,7 @@ local function register_decorations()
 	minetest.register_decoration({
 		deco_type = "simple",
 		place_on = {"mcl_mangrove:mangrove_roots"},
-		spawn_by = {"mcl_core:water_source"},
+		spawn_by = {"group:water"},
 		num_spawn_by = 2,
 		sidelen = 80,
 		fill_ratio = 10,
@@ -4886,16 +4886,19 @@ if mg_name ~= "singlenode" then
 			local pr = PseudoRandom(blockseed + 14)
 			for _,f in pairs(deco_ids_trees) do
 				for _, pos in ipairs(gennotify["decoration#"..f] or {}) do
-					local nn=minetest.find_nodes_in_area(vector.offset(pos,-8,-1,-8),vector.offset(pos,8,2,8),{"mcl_mangrove:mangrove_roots"})
+					local nn=minetest.find_nodes_in_area(vector.offset(pos,-8,-1,-8),vector.offset(pos,8,0,8),{"mcl_mangrove:mangrove_roots"})
 					for _,v in pairs(nn) do
 						local l = pr:next(2,16)
-						if minetest.get_node(vector.offset(v,0,-1,0)).name == "mcl_core:water_source" then
-							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-l,0),{"mcl_core:water_source"}),{name="mcl_mangrove:water_logged_roots"})
-						end
-						if minetest.get_node(vector.offset(v,0,-1,0)).name == "mcl_mud:mud" then
+						local n = minetest.get_node(vector.offset(v,0,-1,0)).name
+						if minetest.get_item_group(n,"water") > 0 then
+							local wl = "mcl_mangrove:water_logged_roots"
+							if n:find("river") then
+								wl = "mcl_mangrove:river_water_logged_roots"
+							end
+							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-l,0),{"group:water"}),{name=wl})
+						elseif n == "mcl_mud:mud" then
 							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-l,0),{"mcl_mud:mud"}),{name="mcl_mangrove:mangrove_mud_roots"})
-						end
-						if minetest.get_node(vector.offset(v,0,-1,0)).name == "air" then
+						elseif n == "air" then
 							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-l,0),{"air"}),{name="mcl_mangrove:mangrove_roots"})
 						end
 					end

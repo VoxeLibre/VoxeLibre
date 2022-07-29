@@ -583,7 +583,7 @@ end
 local water_tex = "default_water_source_animated.png^[verticalframe:16:0"
 
 
-minetest.register_node("mcl_mangrove:water_logged_roots", {
+local wlroots = {
 	description = ("water_logged_mangrove_roots"),
 	_doc_items_entry_name = S("water_logged_roots"),
 	_doc_items_longdesc =
@@ -618,7 +618,16 @@ minetest.register_node("mcl_mangrove:water_logged_roots", {
 			minetest.set_node(pos, {name="mcl_core:water_source"})
 		end
 	end,
-})
+}
+minetest.register_node("mcl_mangrove:water_logged_roots", wlroots)
+local rwlroots = table.copy(wlroots)
+water_tex = "default_river_water_source_animated.png^[verticalframe:16:0"
+rwlroots.tiles = {
+	"("..water_tex..")^mcl_mangrove_roots_top.png", "("..water_tex..")^mcl_mangrove_roots_top.png",
+	"("..water_tex..")^mcl_mangrove_roots_side.png", "("..water_tex..")^mcl_mangrove_roots_side.png",
+	"("..water_tex..")^mcl_mangrove_roots_side.png", "("..water_tex..")^mcl_mangrove_roots_side.png"
+}
+minetest.register_node("mcl_mangrove:river_water_logged_roots",rwlroots)
 
 ------------------------
 if minetest.get_modpath("mcl_mud") then
@@ -690,14 +699,20 @@ local adjacents = {
 minetest.register_abm({
 	label = "Waterlog mangrove roots",
 	nodenames = {"mcl_mangrove:mangrove_roots"},
-	neighbors = {"mcl_core:water_source"},
+	neighbors = {"group:water"},
 	interval = 5,
 	chance = 5,
 	action = function(pos,value)
 		for _,v in pairs(adjacents) do
-			if minetest.get_node(vector.add(pos,v)).name == "mcl_core:water_source" then
-				minetest.swap_node(pos,{name="mcl_mangrove:water_logged_roots"})
-				return
+			local n = minetest.get_node(vector.add(pos,v)).name
+			if minetest.get_item_group(n,"water") > 0 then
+				if n:find("river") then
+					minetest.swap_node(pos,{name="mcl_mangrove:river_water_logged_roots"})
+					return
+				else
+					minetest.swap_node(pos,{name="mcl_mangrove:water_logged_roots"})
+					return
+				end
 			end
 		end
 	end
