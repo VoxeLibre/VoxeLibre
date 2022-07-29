@@ -23,7 +23,7 @@ local function get_drops(fortune_level)
 		max_items = 1,
 		items = {
 			{
-				items = {sapling},
+				items = {"mcl_mangrove:propagule"},
 				rarity = sapling_chances[fortune_level + 1] or sapling_chances[fortune_level]
 			},
 			{
@@ -109,7 +109,7 @@ minetest.register_node("mcl_mangrove:mangrove_stripped_trunk", {
 
 	groups = {handy=1, axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	on_rotate = on_rotate,
+	on_rotate = mcl_util.rotate_axis_and_place,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 })
@@ -234,13 +234,13 @@ local wlroots = {
 		"("..water_tex..")^mcl_mangrove_roots_side.png"
 	},
 	sounds = mcl_sounds.node_sound_water_defaults(),
-	use_texture_alpha = USE_TEXTURE_ALPHA,
+	use_texture_alpha = "clip",
 	is_ground_content = false,
 	paramtype = "light",
 	walkable = true,
 	pointable = true,
 	diggable = true,
-	buildable_to = flase,
+	buildable_to = false,
 	liquids_pointable = true,
 	drop = "mcl_mangrove:mangrove_roots",
 
