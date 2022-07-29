@@ -312,6 +312,7 @@ local function check_growth_width(pos, width, height)
 	end
 	return true
 end
+mcl_core.check_growth_width = check_growth_width
 
 -- Check if a tree with id can grow at a position. Options is a table of flags
 -- for varieties of trees. The 'two_by_two' option is used to check if there is
