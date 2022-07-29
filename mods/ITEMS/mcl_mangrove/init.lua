@@ -226,15 +226,23 @@ local wlroots = {
 		("These cannot be crafted yet only occure when get in contact of water."),
 	_doc_items_hidden = false,
 	tiles = {
-		"("..water_tex..")^mcl_mangrove_roots_top.png",
-		"("..water_tex..")^mcl_mangrove_roots_top.png",
-		"("..water_tex..")^mcl_mangrove_roots_side.png",
-		"("..water_tex..")^mcl_mangrove_roots_side.png",
-		"("..water_tex..")^mcl_mangrove_roots_side.png",
-		"("..water_tex..")^mcl_mangrove_roots_side.png"
+		{name="default_water_source_animated.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=5.0}}
+	},
+	special_tiles = {
+		-- New-style water source material (mostly unused)
+		{
+			name="default_water_source_animated.png",
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=5.0},
+			backface_culling = false,
+		}
+	},
+	overlay_tiles = {
+		"mcl_mangrove_roots_top.png",
+		"mcl_mangrove_roots_side.png",
+		"mcl_mangrove_roots_side.png",
 	},
 	sounds = mcl_sounds.node_sound_water_defaults(),
-	use_texture_alpha = "clip",
+	use_texture_alpha = "blend",
 	is_ground_content = false,
 	paramtype = "light",
 	walkable = true,
@@ -259,11 +267,8 @@ local rwlroots = table.copy(wlroots)
 water_tex = "default_river_water_source_animated.png^[verticalframe:16:0"
 rwlroots.tiles = {
 	"("..water_tex..")^mcl_mangrove_roots_top.png",
-	"("..water_tex..")^mcl_mangrove_roots_top.png",
 	"("..water_tex..")^mcl_mangrove_roots_side.png",
 	"("..water_tex..")^mcl_mangrove_roots_side.png",
-	"("..water_tex..")^mcl_mangrove_roots_side.png",
-	"("..water_tex..")^mcl_mangrove_roots_side.png"
 }
 
 minetest.register_node("mcl_mangrove:water_logged_roots", wlroots)
@@ -274,9 +279,9 @@ minetest.register_node("mcl_mangrove:mangrove_mud_roots", {
 	_tt_help = S("crafted with Mud and Mangrove roots"),
 	_doc_items_longdesc = S("Muddy Mangrove Roots is a block from mangrove swamp.It drowns player a bit inside it"),
 	tiles = {
-		"mcl_mud.png^mcl_mangrove_roots_top.png", "mcl_mud.png^mcl_mangrove_roots_top.png",
-		"mcl_mud.png^mcl_mangrove_roots_side.png", "mcl_mud.png^mcl_mangrove_roots_side.png",
-		"mcl_mud.png^mcl_mangrove_roots_side.png", "mcl_mud.png^mcl_mangrove_roots_side.png",
+		"mcl_mud.png^mcl_mangrove_roots_top.png",
+		"mcl_mud.png^mcl_mangrove_roots_side.png",
+		"mcl_mud.png^mcl_mangrove_roots_side.png",
 	},
 	is_ground_content = true,
 	groups = {handy = 1, shovely = 1, axey = 1, building_block = 1},
