@@ -128,6 +128,7 @@ local function register_biomes()
 		"MesaBryce",
 		"MesaPlateauF",
 		"MesaPlateauFM",
+		"MangroveSwamp",
 	}
 
 	-- Ice Plains Spikes (rare)
@@ -1350,15 +1351,15 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_mud:mud",
 		depth_filler = 3,
-		node_riverbed = "mcl_mud:mud",
+		node_riverbed = "mcl_core:dirt",
 		depth_riverbed = 2,
 		y_min = 1,
 		-- Note: Limited in height!
-		y_max = 23,
+		y_max = 27,
 		humidity_point = 95,
-		heat_point = 54,
+		heat_point = 94,
 		_mcl_biome_type = "hot",
-		_mcl_palette_index = 28,
+		_mcl_palette_index = 27,
 	})
 	minetest.register_biome({
 		name = "MangroveSwamp_shore",
@@ -1366,20 +1367,20 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_mud:mud",
 		depth_filler = 3,
-		node_riverbed = "mcl_mud:mud",
+		node_riverbed = "mcl_core:dirt",
 		depth_riverbed = 2,
 		y_min = -5,
 		y_max = 0,
 		humidity_point = 95,
-		heat_point = 54,
+		heat_point = 94,
 		_mcl_biome_type = "hot",
-		_mcl_palette_index = 28,
+		_mcl_palette_index = 27,
 	})
 	minetest.register_biome({
 		name = "MangroveSwamp_ocean",
-		node_top = "mcl_mud:mud",
+		node_top = "mcl_core:dirt",
 		depth_top = 1,
-		node_filler = "mcl_mud:mud",
+		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:gravel",
 		depth_riverbed = 2,
@@ -1387,9 +1388,9 @@ local function register_biomes()
 		y_max = -6,
 		vertical_blend = 1,
 		humidity_point = 95,
-		heat_point = 54,
+		heat_point = 94,
 		_mcl_biome_type = "hot",
-		_mcl_palette_index = 28,
+		_mcl_palette_index = 27,
 	})
 	-- Swampland
 	minetest.register_biome({
@@ -3091,7 +3092,6 @@ local function register_decorations()
 		decoration = "mcl_mangrove:water_logged_roots",
 		flags = "place_center_x, place_center_z, force_placement, all_ceilings",
 	})
-
 	minetest.register_decoration({
 		deco_type = "simple",
 		place_on = {"mcl_mud:mud"},
@@ -3101,6 +3101,24 @@ local function register_decorations()
 		place_offset_y = -1,
 		decoration = "mcl_mangrove:mangrove_mud_roots",
 		flags = "place_center_x, place_center_z, force_placement",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.008,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		decoration = "mcl_core:deadbush",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:water_source"},
+		sidelen = 80,
+		fill_ratio = 0.035,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		decoration = "mcl_flowers:waterlily",
+		flags = "place_center_x, place_center_z, liquid_surface",
 	})
 
 	-- Jungle tree
