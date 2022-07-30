@@ -67,6 +67,7 @@ function mcl_weather.has_snow(pos)
 	local bn = minetest.get_biome_name(bd.biome)
 	local minheight = -64
 	if bn:find("Taiga") then minheight = 100 end
+	if bn:find("ColdTaiga") then minheight = 0 end
 	if bn:find("MegaSpruce") then minheight = 140 end
 	if pos.y < minheight then return false end
 	if table.indexof(snow_biomes,bn) ~= -1 then return true end
@@ -143,3 +144,34 @@ if mcl_weather.reg_weathers.snow == nil then
 		}
 	}
 end
+
+minetest.register_abm({
+	label = "Snow piles up",
+	nodenames = {"group:opaque","group:leaves","group:snow_cover"},
+	neighbors = {"air"},
+	interval = 27,
+	chance = 33,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		if node.name == "mcl_core:snowblock" then return end
+		local above = vector.offset(pos,0,1,0)
+		local above_node = minetest.get_node(above)
+		if above_node.name ~= "air" then return end
+		if (mcl_weather.state == "rain" or mcl_weather.state == "thunder" or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos) and mcl_weather.has_snow(pos) then
+			local nn = nil
+			if node.name:find("snow") then
+				local l = node.name:sub(-1)
+				l = tonumber(l)
+				if node.name == "mcl_core:snow" then
+					nn={name = "mcl_core:snow_2"}
+				elseif l and l < 7 then
+					nn={name="mcl_core:snow_"..tostring(math.min(8,l + 1))}
+				elseif l and l >= 7 then
+					nn={name = "mcl_core:snowblock"}
+				end
+				if nn then minetest.set_node(pos,nn) end
+			else
+				minetest.set_node(above,{name = "mcl_core:snow"})
+			end
+		end
+	end
+})
