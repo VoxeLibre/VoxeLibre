@@ -54,6 +54,8 @@ function mcl_weather.add_spawner_player(pl,id,ps)
 		particlespawners[name] = {}
 	end
 	if not particlespawners[name][id] then
+		mcl_weather.remove_spawners_player(pl)
+		particlespawners[name] = {}
 		ps.playername =name
 		ps.attached = pl
 		particlespawners[name][id]=minetest.add_particlespawner(ps)

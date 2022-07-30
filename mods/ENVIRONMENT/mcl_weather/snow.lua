@@ -4,6 +4,42 @@ mcl_weather.snow = {}
 
 local PARTICLES_COUNT_SNOW = tonumber(minetest.settings:get("mcl_weather_snow_particles")) or 100
 mcl_weather.snow.init_done = false
+local mgname = minetest.get_mapgen_setting("mg_name")
+
+local snow_biomes = {
+	"ColdTaiga_underground",
+	"IcePlains_underground",
+	"IcePlainsSpikes_underground",
+	"MegaTaiga_underground",
+	"Taiga_underground",
+	"IcePlains_deep_ocean",
+	"MegaSpruceTaiga_deep_ocean",
+	"IcePlainsSpikes_ocean",
+	"StoneBeach_ocean",
+	"ColdTaiga_deep_ocean",
+	"MegaTaiga_ocean",
+	"StoneBeach_deep_ocean",
+	"IcePlainsSpikes_deep_ocean",
+	"ColdTaiga_ocean",
+	"MegaTaiga_deep_ocean",
+	"MegaSpruceTaiga_ocean",
+	"ExtremeHills+_ocean",
+	"IcePlains_ocean",
+	"Taiga_ocean",
+	"Taiga_deep_ocean",
+	"StoneBeach",
+	"ColdTaiga_beach_water",
+	"Taiga_beach",
+	"ColdTaiga_beach",
+	"Taiga",
+	"ExtremeHills+_snowtop",
+	"MegaSpruceTaiga",
+	"MegaTaiga",
+	"ExtremeHills+",
+	"ColdTaiga",
+	"IcePlainsSpikes",
+	"IcePlains",
+}
 
 local psdef= {
 	amount = PARTICLES_COUNT_SNOW,
@@ -24,6 +60,18 @@ local psdef= {
 	vertical = true,
 	glow = 1
 }
+
+function mcl_weather.has_snow(pos)
+	if  mgname == "singlenode" or mgname == "v6" then return true end
+	local bd = minetest.get_biome_data(pos)
+	local bn = minetest.get_biome_name(bd.biome)
+	local minheight = -64
+	if bn:find("Taiga") then minheight = 100 end
+	if bn:find("MegaSpruce") then minheight = 140 end
+	if pos.y < minheight then return false end
+	if table.indexof(snow_biomes,bn) ~= -1 then return true end
+	return false
+end
 
 function mcl_weather.snow.set_sky_box()
 	mcl_weather.skycolor.add_layer(
@@ -46,9 +94,11 @@ function mcl_weather.snow.clear()
 	mcl_weather.remove_all_spawners()
 end
 
--- Simple random texture getter
-function mcl_weather.snow.get_texture()
-	return "weather_pack_snow_snowflake"..math.random(1,2)..".png"
+function mcl_weather.snow.add_player(player)
+	for i=1,2 do
+		psdef.texture="weather_pack_snow_snowflake"..i..".png"
+		mcl_weather.add_spawner_player(player,"snow"..i,psdef)
+	end
 end
 
 local timer = 0
@@ -70,13 +120,10 @@ minetest.register_globalstep(function(dtime)
 	end
 
 	for _, player in pairs(get_connected_players()) do
-		if mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(player:get_pos()) then
+		if mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(player:get_pos()) or not mcl_weather.has_snow(player:get_pos()) then
 			mcl_weather.remove_spawners_player(player)
 		else
-			for i=1,2 do
-				psdef.texture="weather_pack_snow_snowflake"..i..".png"
-				mcl_weather.add_spawner_player(player,"snow"..i,psdef)
-			end
+			mcl_weather.snow.add_player(player)
 		end
 	end
 end)
