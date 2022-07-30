@@ -44,7 +44,9 @@ local textures = {"weather_pack_rain_raindrop_1.png", "weather_pack_rain_raindro
 function mcl_weather.has_rain(pos)
 	if  mgname == "singlenode" or mgname == "v6" then return true end
 	local bd = minetest.get_biome_data(pos)
-	if bd.heat > 90 then return false end
+	local bn = minetest.get_biome_name(bd.biome)
+	if not mcl_worlds.has_weather(pos) or bn:find("Desert") or bd.heat > 85 then
+		return false end
 	return true
 end
 
@@ -173,7 +175,7 @@ function mcl_weather.rain.make_weather()
 
 	for _, player in pairs(get_connected_players()) do
 		local pos=player:get_pos()
-		if mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(pos) or not mcl_weather.has_rain(pos) then
+		if mcl_weather.is_underwater(player) or not mcl_weather.has_rain(pos) then
 			mcl_weather.rain.remove_sound(player)
 			mcl_weather.remove_spawners_player(player)
 		else
