@@ -101,6 +101,7 @@ local zombie = {
 		self.object:set_properties({visual_size = self.visual_size})
 		self.base_size = self.visual_size
 	end,
+	attack_npcs = true,
 }
 
 mcl_mobs:register_mob("mobs_mc:zombie", zombie)
