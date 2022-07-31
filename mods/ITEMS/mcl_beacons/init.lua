@@ -157,9 +157,8 @@ local function globalstep_function(pos,player)
     if meta:get_int("effect_level") == 2 and power_level < 4 then
         return
     else
-        local colorblock = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})
         local obstructed = false
-        for y=pos.y+1, pos.y+170 do
+        for y=pos.y+1, pos.y+175 do
 
             local nodename = minetest.get_node({x=pos.x,y=y, z = pos.z}).name
             if nodename ~= "mcl_core:bedrock" and nodename ~= "air" and nodename ~= "mcl_core:void" and nodename ~= "ignore" then --ignore means not loaded, let's just assume that's air
