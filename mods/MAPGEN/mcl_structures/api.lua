@@ -38,6 +38,73 @@ function mcl_structures.find_highest_y(pp)
 	return y
 end
 
+local function smooth_cube(nn,pos,plane,amnt)
+	local r = {}
+	local amnt = amnt or 9
+	table.sort(nn,function(a, b)
+		if false or plane then
+			return vector.distance(vector.new(pos.x,0,pos.z), vector.new(a.x,0,a.z)) < vector.distance(vector.new(pos.x,0,pos.z), vector.new(b.x,0,b.z))
+		else
+			return vector.distance(pos, a) < vector.distance(pos, b)
+		end
+	end)
+	for i=1,math.max(1,#nn-amnt) do table.insert(r,nn[i]) end
+	return r
+end
+
+local function get_foundation_nodes(ground_p1,ground_p2,pos,sidelen)
+	local replace = {"air","group:liquid","mcl_core:snow","group:tree","group:leaves","group:plant"}
+	local nn = smooth_cube(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-1,0),vector.offset(ground_p2,0,-30,0),replace),vector.offset(pos,0,-30,0),true,sidelen * 64)
+	local stone = {}
+	local filler = {}
+	local top = {}
+	local dust = {}
+	for l,v in pairs(nn) do
+		if v.y == ground_p1.y - 1 then
+			table.insert(filler,v)
+			table.insert(top,vector.offset(v,0,1,0))
+			table.insert(dust,vector.offset(v,0,2,0))
+		elseif v.y < ground_p1.y -1 and v.y > ground_p2.y -4 then table.insert(filler,v)
+		elseif v.y < ground_p2.y - 3 and v.y > ground_p2.y -5 then
+			if math.random(3) == 1 then
+				table.insert(filler,v)
+			else
+				table.insert(stone,v)
+			end
+		else
+			table.insert(stone,v)
+		end
+	end
+	return stone,filler,top,dust
+end
+
+local function foundation(ground_p1,ground_p2,pos,sidelen)
+	local stone,filler,top,dust = get_foundation_nodes(ground_p1,ground_p2,pos,sidelen)
+	local node_stone = "mcl_core:stone"
+	local node_filler = "mcl_core:dirt"
+	local node_top = "mcl_core:dirt_with_grass" or minetest.get_node(ground_p1).name
+	local node_dust = nil
+
+	if minetest.get_mapgen_setting("mg_name") ~= "v6" then
+		local b = minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(pos).biome)]
+		--minetest.log(dump(b.node_top))
+		if b then
+			if b.node_top then node_top = b.node_top end
+			if b.node_filler then node_filler = b.node_filler end
+			if b.node_stone then node_stone = b.node_stone end
+			if b.node_dust then node_dust = b.node_dust end
+		end
+	end
+
+	minetest.bulk_set_node(top,{name=node_top})
+
+	if node_dust then
+		minetest.bulk_set_node(dust,{name=node_dust})
+	end
+	minetest.bulk_set_node(filler,{name=node_filler})
+	minetest.bulk_set_node(stone,{name=node_stone})
+end
+
 function mcl_structures.place_structure(pos, def, pr, blockseed)
 	if not def then	return end
 	local logging = not def.terrain_feature
@@ -55,28 +122,7 @@ function mcl_structures.place_structure(pos, def, pr, blockseed)
 		local solid = minetest.find_nodes_in_area(ground_p1,ground_p2,{"group:solid"})
 		if #solid < ( def.sidelen * def.sidelen ) then
 			if def.make_foundation then
-				local node_stone = "mcl_core:stone"
-				local node_filler = "mcl_core:dirt"
-				local node_top = "mcl_core:dirt_with_grass" or minetest.get_node(ground_p1).name
-				local node_dust = nil
-
-				if minetest.get_mapgen_setting("mg_name") ~= "v6" then
-					local b = minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(pos).biome)]
-					--minetest.log(dump(b.node_top))
-					if b then
-						if b.node_top then node_top = b.node_top end
-						if b.node_filler then node_filler = b.node_filler end
-						if b.node_stone then node_stone = b.node_stone end
-						if b.node_dust then node_dust = b.node_dust end
-					end
-				end
-				local replace = {"air","group:liquid","mcl_core:snow","group:tree","group:leaves"}
-				minetest.bulk_set_node(minetest.find_nodes_in_area(ground_p1,ground_p2,replace),{name=node_top})
-				if node_dust then
-					minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,1,0),vector.offset(ground_p2,0,1,0),{"air"}),{name=node_dust})
-				end
-				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-1,0),vector.offset(ground_p2,0,-4,0),replace),{name=node_filler})
-				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-5,0),vector.offset(ground_p2,0,-30,0),replace),{name=node_stone})
+				foundation(vector.offset(pos,-def.sidelen/2 - 3,-1,-def.sidelen/2 - 3),vector.offset(pos,def.sidelen/2 + 3,-1,def.sidelen/2 + 3),pos,def.sidelen)
 			else
 				if logging then
 					minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pp).." not placed. No solid ground.")
