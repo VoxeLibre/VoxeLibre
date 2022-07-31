@@ -272,6 +272,19 @@ awards.register_achievement("mcl:enchanter", {
 	icon = "mcl_enchanting_book_enchanted.png",
 })
 
+--Triggered in mcl_beacons
+awards.register_achievement("mcl:beacon", {
+	title = S("Bring Home the Beacon"),
+	description = S("Use a beacon."),
+	icon = "beacon_achievement_icon.png",
+})
+
+awards.register_achievement("mcl:maxed_beacon", {
+	title = S("Beaconator"),
+	description = S("Use a fully powered beacon."),
+	icon = "beacon_achievement_icon.png",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then
