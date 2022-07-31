@@ -62,6 +62,7 @@ local psdef= {
 }
 
 function mcl_weather.has_snow(pos)
+	if not mcl_worlds.has_weather(pos) then return false end
 	if  mgname == "singlenode" or mgname == "v6" then return true end
 	local bd = minetest.get_biome_data(pos)
 	local bn = minetest.get_biome_name(bd.biome)
@@ -121,7 +122,7 @@ minetest.register_globalstep(function(dtime)
 	end
 
 	for _, player in pairs(get_connected_players()) do
-		if mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(player:get_pos()) or not mcl_weather.has_snow(player:get_pos()) then
+		if mcl_weather.is_underwater(player) or not mcl_weather.has_snow(player:get_pos()) then
 			mcl_weather.remove_spawners_player(player)
 		else
 			mcl_weather.snow.add_player(player)

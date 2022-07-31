@@ -42,6 +42,7 @@ local psdef= {
 local textures = {"weather_pack_rain_raindrop_1.png", "weather_pack_rain_raindrop_2.png"}
 
 function mcl_weather.has_rain(pos)
+	if not mcl_worlds.has_weather(pos) then return false end
 	if  mgname == "singlenode" or mgname == "v6" then return true end
 	local bd = minetest.get_biome_data(pos)
 	local bn = minetest.get_biome_name(bd.biome)
