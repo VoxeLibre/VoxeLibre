@@ -66,12 +66,11 @@ function mcl_weather.has_snow(pos)
 	if  mgname == "singlenode" or mgname == "v6" then return true end
 	local bd = minetest.get_biome_data(pos)
 	local bn = minetest.get_biome_name(bd.biome)
-	local minheight = -64
-	if bn:find("Taiga") then minheight = 100 end
-	if bn:find("ColdTaiga") then minheight = 0 end
-	if bn:find("MegaSpruce") then minheight = 140 end
-	if pos.y < minheight then return false end
-	if table.indexof(snow_biomes,bn) ~= -1 then return true end
+	if minetest.registered_biomes[bn]._mcl_biome_type == "snowy" then return true end
+	if minetest.registered_biomes[bn]._mcl_biome_type == "cold" then
+		if bn == "Taiga" and pos.y > 140 then return true end
+		if bn == "MegaSpruceTaiga" and pos.y > 100 then return true end
+	end
 	return false
 end
 
