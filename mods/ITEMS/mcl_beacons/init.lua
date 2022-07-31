@@ -158,7 +158,7 @@ local function globalstep_function(pos,player)
         return
     else
         local obstructed = false
-        for y=pos.y+1, pos.y+175 do
+        for y=pos.y+1, pos.y+100 do
 
             local nodename = minetest.get_node({x=pos.x,y=y, z = pos.z}).name
             if nodename ~= "mcl_core:bedrock" and nodename ~= "air" and nodename ~= "mcl_core:void" and nodename ~= "ignore" then --ignore means not loaded, let's just assume that's air
@@ -342,7 +342,7 @@ minetest.register_abm{
         if node_below.name == "air" then
             remove_beacon_beam(pos)
         elseif node_above.name == "air" then
-            minetest.set_node({x=pos.x,y=pos.y+1,z=pos.z},{name="mcl_beacons:beacon_beam",param2=node_above.param2})
+            minetest.set_node({x=pos.x,y=pos.y+1,z=pos.z},{name="mcl_beacons:beacon_beam",param2=node_below.param2})
         end
     end,
 }
