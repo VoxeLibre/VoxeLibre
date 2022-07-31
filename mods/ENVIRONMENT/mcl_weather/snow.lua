@@ -4,7 +4,7 @@ mcl_weather.snow = {}
 
 local PARTICLES_COUNT_SNOW = tonumber(minetest.settings:get("mcl_weather_snow_particles")) or 100
 mcl_weather.snow.init_done = false
-local mgname = minetest.get_mapgen_setting("mgname")
+local mgname = minetest.get_mapgen_setting("mg_name")
 
 local snow_biomes = {
 	"ColdTaiga_underground",
@@ -63,11 +63,11 @@ local psdef= {
 
 function mcl_weather.has_snow(pos)
 	if not mcl_worlds.has_weather(pos) then return false end
-	if  mgname == "singlenode" or mgname == "v6" then return true end
-	local bd = minetest.get_biome_data(pos)
-	local bn = minetest.get_biome_name(bd.biome)
-	if minetest.registered_biomes[bn]._mcl_biome_type == "snowy" then return true end
-	if minetest.registered_biomes[bn]._mcl_biome_type == "cold" then
+	if  mgname == "singlenode" or mgname == "v6" then return false end
+	local bn = minetest.get_biome_name(minetest.get_biome_data(pos).biome)
+	local bd = minetest.registered_biomes[bn]
+	if bd._mcl_biome_type == "snowy" then return true end
+	if bd._mcl_biome_type == "cold" then
 		if bn == "Taiga" and pos.y > 140 then return true end
 		if bn == "MegaSpruceTaiga" and pos.y > 100 then return true end
 	end
