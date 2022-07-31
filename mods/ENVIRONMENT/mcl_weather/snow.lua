@@ -123,8 +123,10 @@ minetest.register_globalstep(function(dtime)
 	for _, player in pairs(get_connected_players()) do
 		if mcl_weather.is_underwater(player) or not mcl_weather.has_snow(player:get_pos()) then
 			mcl_weather.remove_spawners_player(player)
+			mcl_weather.set_sky_box_clear(player)
 		else
 			mcl_weather.snow.add_player(player)
+			mcl_weather.snow.set_sky_box()
 		end
 	end
 end)
