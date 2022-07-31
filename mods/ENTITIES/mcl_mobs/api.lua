@@ -311,7 +311,10 @@ end
 
 -- set and return valid yaw
 local set_yaw = function(self, yaw, delay, dtime)
-
+	if true then
+		self.object:set_yaw(yaw)
+		return yaw
+	end
 	if not yaw or yaw ~= yaw then
 		yaw = 0
 	end
