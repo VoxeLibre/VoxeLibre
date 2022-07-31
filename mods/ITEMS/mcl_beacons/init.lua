@@ -8,9 +8,6 @@ Valid strings:
     regeneration
 ]]--
 
-
---local color_list = {"cdf4e9","f9fcfb","7c5e3d","1826c9","16f4f4","f483fc","9712bc","ea1212","adadad","535454","19e52a","549159","ef8813","ebf704","000000","e502d6","e8e3e3"}
-
 local function get_beacon_beam(glass_nodename)
     if string.match(glass_nodename, "cyan") then
         return 1
