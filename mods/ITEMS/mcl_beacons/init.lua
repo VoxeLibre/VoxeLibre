@@ -279,10 +279,8 @@ minetest.register_node("mcl_beacons:beacon", {
                     end
                     
 
-                    if y == pos.y+1 then
-                        if  minetest.get_item_group(node.name, "glass") ~= 0 then
-                            beam_palette_index = get_beacon_beam(node.name)
-                        end
+                    if  minetest.get_item_group(node.name, "glass") ~= 0 then
+                        beam_palette_index = get_beacon_beam(node.name)
                     end
 
                     if node.name == "air" then
