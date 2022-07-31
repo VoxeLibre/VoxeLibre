@@ -1949,7 +1949,7 @@ local monster_attack = function(self)
 
 		-- find specific mob to attack, failing that attack player/npc/animal
 		if specific_attack(self.specific_attack, name)
-		and (type == "player" or type == "npc"
+		and (type == "player" or ( type == "npc" and self.attack_npcs )
 			or (type == "animal" and self.attack_animals == true)) then
 
 			p = player:get_pos()
@@ -4033,6 +4033,7 @@ minetest.register_entity(name, {
 	dogshoot_count_max = def.dogshoot_count_max or 5,
 	dogshoot_count2_max = def.dogshoot_count2_max or (def.dogshoot_count_max or 5),
 	attack_animals = def.attack_animals or false,
+	attack_npcs = def.attack_npcs or false,
 	specific_attack = def.specific_attack,
 	runaway_from = def.runaway_from,
 	owner_loyal = def.owner_loyal,
