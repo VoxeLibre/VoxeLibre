@@ -82,10 +82,8 @@ local pallete_order = {
 }
 
 local function get_beacon_beam(glass_nodename)
-    minetest.log(glass_nodename)
     if glass_nodename == "air" then return 0 end
     local glass_string = glass_nodename:split(':')[2]
-    minetest.log(glass_string)
     if not pallete_order[glass_string] then return 0 end
     return pallete_order[glass_string]
 end
