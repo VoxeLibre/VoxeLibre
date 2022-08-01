@@ -304,7 +304,7 @@ minetest.register_globalstep(function(dtime)
 			-- NOTE: do not set this higher than about 0.7 or the game will get the wrong vel and it will be broken
 			v = vector.multiply(v, -0.3)
 			player:add_velocity(v)
-			vel.y = vel.y - (100 / math.max(speed_mult, 2)) * dtime
+			vel.y = vel.y - (300 / math.max(speed_mult, 1)) * dtime
 			player:add_velocity(vel)
 			playerphysics.add_physics_factor(player, "gravity", "mcl_playerplus:elytra", 0.1)
 
