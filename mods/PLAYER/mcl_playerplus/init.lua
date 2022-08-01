@@ -266,13 +266,17 @@ minetest.register_globalstep(function(dtime)
 			local v = math.sqrt(vector.x^2 + vector.y^2 + vector.z^2)
 			return v
 		end
+		local function anglediff(a1, a2)
+			local a = a1 - a2
+		 	return math.abs((a + math.pi) % (math.pi*2) - math.pi)
+		end
 
 		local function clamp(num, min, max)
 			return math.min(max, math.max(num, min))
 		end
 
 		if not elytra.active then
-			elytra.speed = 10
+			elytra.speed = 2
 		end
 
 		elytra.active = player:get_inventory():get_stack("armor", 3):get_name() == "mcl_armor:elytra"
@@ -282,36 +286,26 @@ minetest.register_globalstep(function(dtime)
 
 		if elytra.active then
 			mcl_player.player_set_animation(player, "fly")
-			local slowdown_mult = 0.2 -- amount of vel to take
+			local slowdown_mult = 0.2 -- amount of vel to take per sec
 			local speedup_mult = 10 -- amount of speed to add based on look dir
-			local max_speed = 60
+			local max_speed = 120
 			local direction = player:get_look_dir()
 			local v = player:get_velocity()
-			local direction_mult = clamp(direction.y*2, -0.5, 0.5)
-			local speed_mult = clamp(elytra.speed - direction_mult * speedup_mult * dtime, -max_speed, max_speed)
+			local direction_mult = clamp(-direction.y*2, -0.5, 0.5)
+			local speed_mult = clamp(elytra.speed + direction_mult * speedup_mult * dtime, -max_speed, max_speed)
 			speed_mult = speed_mult - slowdown_mult * speed_mult * dtime -- slow down
 			speed_mult = math.max(speed_mult, -1)
 			speed_mult = math.min(speed_mult, max_speed)
 			elytra.speed = speed_mult
 			vel = direction
-			vel = vector.multiply(vel, speed_mult)
-			vel = {
-				x = clamp(vel.x, -max_speed, max_speed),
-				y = clamp(vel.y, -max_speed, max_speed),
-				z = clamp(vel.z, -max_speed, max_speed)}
 
-			-- slow the player down so less spongy movement by applying half the inverse vel
-			-- NOTE: do not set this higher than about 0.7 or the game will get the wrong vel and it will be broken
-			v = vector.multiply(v, -0.3)
-			player:add_velocity(v)
-			vel.y = vel.y - (300 / math.max(speed_mult, 1)) * dtime
-			player:add_velocity(vel)
 			playerphysics.add_physics_factor(player, "gravity", "mcl_playerplus:elytra", 0.1)
-
 			if elytra.rocketing > 0 then
 				elytra.rocketing = elytra.rocketing - dtime
 				if vector.length(player_velocity) < 40 then
-					player:add_velocity(vector.multiply(player:get_look_dir(), 4))
+					-- player:add_velocity(vector.multiply(player:get_look_dir(), 4))
+					speed_mult = 30
+					elytra.speed = speed_mult
 					add_particle({
 						pos = fly_pos,
 						velocity = {x = 0, y = 0, z = 0},
@@ -324,10 +318,23 @@ minetest.register_globalstep(function(dtime)
 						glow = 5,
 					})
 				end
+			else
+				elytra.rocketing = 0
+				playerphysics.remove_physics_factor(player, "gravity", "mcl_playerplus:elytra")
 			end
-		else
-			elytra.rocketing = 0
-			playerphysics.remove_physics_factor(player, "gravity", "mcl_playerplus:elytra")
+
+			vel = vector.multiply(vel, speed_mult)
+			vel = {
+				x = clamp(vel.x, -max_speed, max_speed),
+				y = clamp(vel.y, -max_speed, max_speed),
+				z = clamp(vel.z, -max_speed, max_speed)}
+
+			-- slow the player down so less spongy movement by applying half the inverse vel
+			-- NOTE: do not set this higher than about 0.7 or the game will get the wrong vel and it will be broken
+			v = vector.multiply(v, -0.4)
+			player:add_velocity(v)
+			vel.y = vel.y - (200 / math.max(speed_mult+1, 1)) * dtime
+			player:add_velocity(vel)
 		end
 
 		if wielded_def and wielded_def._mcl_toollike_wield then
