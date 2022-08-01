@@ -16,69 +16,69 @@ local beacon_blocklist = mcl_beacons.blocks
 local beacon_fuellist = mcl_beacons.fuel
 
 local pallete_order = {
-	glass_cyan		  = 1,
-	pane_cyan_flat	  = 1,
-	pane_cyan		   = 1,
+	glass_cyan		 		= 1,
+	pane_cyan_flat			= 1,
+	pane_cyan				= 1,
 
-	glass_white		 = 2,
-	pane_white_flat	 = 2,
-	pane_white		  = 2,
+	glass_white		 		= 2,
+	pane_white_flat			= 2,
+	pane_white				= 2,
 
-	glass_brown		 = 3,
-	pane_brown_flat	 = 3,
-	pane_brown		  = 3,
+	glass_brown				= 3,
+	pane_brown_flat			= 3,
+	pane_brown				= 3,
 
-	glass_blue		  = 4,
-	pane_blue_flat	  = 4,
-	pane_blue		   = 4,
+	glass_blue				= 4,
+	pane_blue_flat			= 4,
+	pane_blue				= 4,
 
-	glass_light_blue	= 5,
-	pane_light_blue_flat= 5,
-	pane_light_blue	 = 5,
+	glass_light_blue		= 5,
+	pane_light_blue_flat	= 5,
+	pane_light_blue			= 5,
 
-	glass_pink		  = 6,
-	pane_pink_flat	  = 6,
-	pane_pink		   = 6,
+	glass_pink				= 6,
+	pane_pink_flat			= 6,
+	pane_pink				= 6,
 
-	glass_purple		= 7,
-	pane_purple_flat	= 7,
-	pane_purple		 = 7,
+	glass_purple			= 7,
+	pane_purple_flat		= 7,
+	pane_purple		 		= 7,
 
-	glass_red		   = 8,
-	pane_red_flat	   = 8,
-	pane_red			= 8,
+	glass_red				= 8,
+	pane_red_flat			= 8,
+	pane_red				= 8,
 
-	glass_silver		= 9,
-	pane_silver_flat	= 9,
-	pane_silver		 = 9,
+	glass_silver			= 9,
+	pane_silver_flat		= 9,
+	pane_silver				= 9,
 
-	glass_gray		  = 10,
-	pane_gray_flat	  = 10,
-	pane_gray		   = 10,
+	glass_gray		 		= 10,
+	pane_gray_flat	 		= 10,
+	pane_gray		   		= 10,
 
-	glass_lime		  = 11,
-	pane_lime_flat	  = 11,
-	pane_lime		   = 11,
+	glass_lime		  		= 11,
+	pane_lime_flat	  		= 11,
+	pane_lime		   		= 11,
 
-	glass_green		 = 12,
-	pane_green_flat	 = 12,
-	pane_green		  = 12,
+	glass_green		 		= 12,
+	pane_green_flat	 		= 12,
+	pane_green		  		= 12,
 
-	glass_orange		= 13,
-	pane_orange_flat	= 13,
-	pane_orange		 = 13,
+	glass_orange			= 13,
+	pane_orange_flat		= 13,
+	pane_orange		 		= 13,
 
-	glass_yellow		= 14,
-	pane_yellow_flat	= 14,
-	pane_yellow		 = 14,
+	glass_yellow			= 14,
+	pane_yellow_flat		= 14,
+	pane_yellow		 		= 14,
 
-	glass_black		 = 15,
-	pane_black_flat	 = 15,
-	pane_black		  = 15,
+	glass_black		 		= 15,
+	pane_black_flat	 		= 15,
+	pane_black		  		= 15,
 
-	glass_magenta	   = 16,
-	pane_magenta_flat   = 16,
-	pane_magenta		= 16
+	glass_magenta	   		= 16,
+	pane_magenta_flat   	= 16,
+	pane_magenta			= 16
 }
 
 local function get_beacon_beam(glass_nodename)
@@ -386,7 +386,7 @@ minetest.register_abm{
 				minetest.set_node({x=pos.x,y=pos.y-1,z=pos.z},{name="mcl_beacons:beacon_beam",param2=0})
 			end
 			remove_beacon_beam(pos)
-		elseif node_above.name == "air" then
+		elseif node_above.name == "air" or (node_above.name == "mcl_beacons:beacon_beam" and node_above.param2 ~= node_current.param2) then
 			minetest.set_node({x=pos.x,y=pos.y+1,z=pos.z},{name="mcl_beacons:beacon_beam",param2=node_current.param2})
 		elseif minetest.get_item_group(node_above.name, "glass") ~= 0 or minetest.get_item_group(node_above.name,"material_glass") ~= 0 then
 			minetest.set_node({x=pos.x,y=pos.y+2,z=pos.z},{name="mcl_beacons:beacon_beam",param2=get_beacon_beam(node_above.name)})
