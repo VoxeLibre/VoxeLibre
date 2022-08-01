@@ -13,6 +13,12 @@ local function is_group(pos, group)
 end
 
 local is_water = flowlib.is_water
+local function is_river_water(p)
+	local n = minetest.get_node(p).name
+	if n == "mclx_core:river_water_source" or n == "mclx_core:river_water_flowing" then
+		return true
+	end
+end
 
 local function is_ice(pos)
 	return is_group(pos, "ice")
@@ -204,6 +210,7 @@ function boat.on_step(self, dtime, moveresult)
 	local on_water = true
 	local on_ice = false
 	local in_water = is_water({x=p.x, y=p.y-boat_y_offset+1, z=p.z})
+	local in_river_water = is_river_water({x=p.x, y=p.y-boat_y_offset+1, z=p.z})
 	local waterp = {x=p.x, y=p.y-boat_y_offset - 0.1, z=p.z}
 	if not is_water(waterp) then
 		on_water = false
@@ -213,7 +220,7 @@ function boat.on_step(self, dtime, moveresult)
 			v_slowdown = 0.04
 			v_factor = 0.5
 		end
-	elseif in_water then
+	elseif in_water and not in_river_water then
 		on_water = false
 		in_water = true
 		v_factor = 0.75
@@ -345,7 +352,18 @@ function boat.on_step(self, dtime, moveresult)
 	else
 		p.y = p.y + 1
 		local is_obsidian_boat = self.object:get_luaentity()._itemstring == "mcl_boats:boat_obsidian"
-		if is_water(p) or is_obsidian_boat then
+		if is_river_water(p) then
+			local y = self.object:get_velocity().y
+			if y >= 5 then
+				y = 5
+			elseif y < 0 then
+				new_acce = {x = 0, y = 10, z = 0}
+			else
+				new_acce = {x = 0, y = 2, z = 0}
+			end
+			new_velo = get_velocity(self._v, self.object:get_yaw(), y)
+			self.object:set_pos(self.object:get_pos())
+		elseif is_water(p) and not is_river_water(p) or is_obsidian_boat then
 			-- Inside water: Slowly sink
 			local y = self.object:get_velocity().y
 			y = y - 0.01
