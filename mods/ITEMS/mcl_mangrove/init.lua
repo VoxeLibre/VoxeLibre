@@ -13,7 +13,10 @@ local propagule_allowed_nodes = {
 	"mcl_farming:soil",
 	"mcl_farming:soil_wet",
 	"mcl_core:clay",
+	"mcl_mud:mud",
 }
+local propagule_water_nodes = {"mcl_mud:mud","mcl_core:dirt","mcl_core:coarse_dirt","mcl_core:clay"}
+ --"mcl_lush_caves:moss","mcl_lush_caves:rooted_dirt
 
 local function get_drops(fortune_level)
 	local apple_chances = {200, 180, 160, 120, 40}
@@ -173,10 +176,19 @@ minetest.register_node("mcl_mangrove:propagule", {
 	node_placement_prediction = "",
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
-	on_place = mcl_util.generate_on_place_plant_function(function(place_pos, place_node)
-		local snn = minetest.get_node_or_nil(vector.offset(place_pos,0,-1,0)).name
+	on_place = mcl_util.generate_on_place_plant_function(function(place_pos, place_node,stack)
+		local under = vector.offset(place_pos,0,-1,0)
+		local snn = minetest.get_node_or_nil(under).name
 		if not snn then return false end
-		return table.indexof(propagule_allowed_nodes,snn) ~= -1
+		if table.indexof(propagule_allowed_nodes,snn) ~= -1 then
+			local n = minetest.get_node(place_pos)
+			if minetest.get_item_group(n.name,"water") > 0 and table.indexof(propagule_water_nodes,snn) ~= -1 then
+					minetest.set_node(under,{name="mcl_mangrove:propagule_"..snn:split(":")[2]})
+					stack:take_item()
+					return stack
+			end
+			return true
+		end
 	end)
 })
 
@@ -208,6 +220,47 @@ minetest.register_node("mcl_mangrove:hanging_propagule_1", {
 	inventory_image = "mcl_mangrove_propagule.png",
 	wield_image = "mcl_mangrove_propagule.png",
 })
+local propagule_rooted_nodes = {}
+for _,root in pairs(propagule_water_nodes) do
+	local r = root:split(":")[2]
+	local def = minetest.registered_nodes[root]
+	local tx = def.tiles
+	local n = "mcl_mangrove:propagule_"..r
+	table.insert(propagule_rooted_nodes,n)
+	minetest.register_node(n, {
+		drawtype = "plantlike_rooted",
+		paramtype = "light",
+		place_param2 = 1,
+		tiles = tx,
+		special_tiles = { { name = "mcl_mangrove_propagule_item.png" } },
+		inventory_image = "mcl_mangrove_propagule_item.png",
+		wield_image = "mcl_mangrove_propagule.png",
+		selection_box = {
+			type = "fixed",
+			fixed = {
+				{ -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+				{ -0.5, 0.5, -0.5, 0.5, 1.0, 0.5 },
+			}
+		},
+		groups = {
+			plant = 1, sapling = 1, non_mycelium_plant = 1, attached_node = 1,not_in_creative_inventory=1,
+			deco_block = 1, dig_immediate = 3, dig_by_piston = 1,
+			destroy_by_lava_flow = 1, compostability = 30
+		},
+		sounds = mcl_sounds.node_sound_leaves_defaults(),
+		drop = "mcl_mangrove:propagule",
+		node_placement_prediction = "",
+		node_dig_prediction = "",
+		after_dig_node = function(pos)
+			minetest.set_node(pos, {name=root})
+		end,
+		_mcl_hardness = 0,
+		_mcl_blast_resistance = 0,
+		_mcl_silk_touch_drop = true,
+	})
+
+end
+
 
 mcl_flowerpots.register_potted_flower("mcl_mangrove:propagule", {
 	name = "propagule",
@@ -438,10 +491,11 @@ minetest.register_abm({
 	end
 })
 
-
+local abm_nodes = table.copy(propagule_rooted_nodes)
+table.insert(abm_nodes,"mcl_mangrove:propagule")
 minetest.register_abm({
 	label = "Mangrove_tree_growth",
-	nodenames = {"mcl_mangrove:propagule"},
+	nodenames = abm_nodes,
 	interval = 30,
 	chance = 5,
 	action = function(pos,node)
@@ -450,9 +504,21 @@ minetest.register_abm({
 		local path = modpath .."/schematics/mcl_mangrove_tree_"..tostring(r)..".mts"
 		local w = 5
 		local h = 10
+		local fp = true
+		pos.y = pos.y - 1
+		if table.indexof(propagule_rooted_nodes,node.name) ~= -1 then
+			local nn = minetest.find_nodes_in_area(vector.offset(pos,0,-1,0),vector.offset(pos,0,h,0),{"group:water","air"})
+			if #nn >= h then
+				minetest.place_schematic(pos, path, "random", function()
+					local nnv = minetest.find_nodes_in_area(vector.offset(pos,-5,-1,-5),vector.offset(pos,5,h/2,5),{"mcl_core:vine"})
+					minetest.bulk_set_node(nnv,{"air"})
+				end, true, "place_center_x, place_center_z")
+			end
+			return
+		end
 		if r > 3 then h = 18 end
 		if mcl_core.check_growth_width(pos,w,h) then
-			minetest.place_schematic(pos, path, "random", nil, false, "place_center_x, place_center_z")
+			minetest.place_schematic(pos, path, "random", nil, true, "place_center_x, place_center_z")
 		end
 end
 })
