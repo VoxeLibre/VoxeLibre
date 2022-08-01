@@ -4,6 +4,7 @@ mcl_playerplus = {
 
 local player_velocity_old = {x=0, y=0, z=0}
 local player_position_old = {x=0, y=0, z=0}
+local is_pressing_jump = false
 local get_connected_players = minetest.get_connected_players
 local dir_to_yaw = minetest.dir_to_yaw
 local get_item_group = minetest.get_item_group
@@ -280,15 +281,21 @@ minetest.register_globalstep(function(dtime)
 			elytra.speed = 2
 		end
 
+		local is_just_jumped = control.jump and not is_pressing_jump
+		is_pressing_jump = control.jump
+		if is_just_jumped and not elytra.active then
+			elytra.speed = clamp(get_overall_velocity(player:get_velocity()) - 1, 0, 20)
+		end
+
 		elytra.active = player:get_inventory():get_stack("armor", 3):get_name() == "mcl_armor:elytra"
 			and not player:get_attach()
-			and (elytra.active or (control.jump and player_velocity.y < -1))
+			and (elytra.active or (is_just_jumped and player_velocity.y < -0))
 			and (fly_node == "air" or fly_node == "ignore")
 
 		if elytra.active then
 			mcl_player.player_set_animation(player, "fly")
 			local slowdown_mult = 1 -- amount of vel to take per sec
-			local fall_speed = 40 -- amount to fall down per sec in nodes
+			local fall_speed = 10 -- amount to fall down per sec in nodes
 			local speedup_mult = 15 -- amount of speed to add based on look dir
 			local max_speed = 120
 			local direction = player:get_look_dir()
@@ -299,6 +306,7 @@ minetest.register_globalstep(function(dtime)
 			speed_mult = speed_mult - slowdown_mult * dtime -- slow down
 			speed_mult = math.max(speed_mult, -1)
 			speed_mult = math.min(speed_mult, max_speed)
+
 			elytra.speed = speed_mult -- set the speed so you can keep track of it and add to it
 			new_vel = direction -- use the facing direction as a base
 
@@ -337,7 +345,7 @@ minetest.register_globalstep(function(dtime)
 			-- this is far from ideal, but there's no good way to set_velocity on the player
 			player_vel = vector.multiply(player_vel, -0.4)
 			player:add_velocity(player_vel)
-			new_vel.y = new_vel.y - (400 / math.max(speed_mult, 2)) * dtime
+			new_vel.y = new_vel.y - (200 / math.max(speed_mult, 2)) * dtime
 			new_vel.y = new_vel.y - fall_speed * dtime
 			player:add_velocity(new_vel)
 		end
