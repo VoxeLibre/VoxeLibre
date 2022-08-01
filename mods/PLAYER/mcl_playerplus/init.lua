@@ -263,8 +263,16 @@ minetest.register_globalstep(function(dtime)
 		local elytra = mcl_playerplus.elytra[player]
 
 		local function get_overall_velocity(vector)
-			local v = sqrt(vector.x^2 + vector.y^2 + vector.z^2)
-			return 0
+			local v = math.sqrt(vector.x^2 + vector.y^2 + vector.z^2)
+			return v
+		end
+
+		local function clamp(num, min, max)
+			return math.min(max, math.max(num, min))
+		end
+
+		if not elytra.active then
+			elytra.speed = 10
 		end
 
 		elytra.active = player:get_inventory():get_stack("armor", 3):get_name() == "mcl_armor:elytra"
@@ -274,18 +282,18 @@ minetest.register_globalstep(function(dtime)
 
 		if elytra.active then
 			mcl_player.player_set_animation(player, "fly")
-			if player_velocity.y < -1.5 then
-				player:add_velocity({x=0, y=0.17, z=0})
-			end
-			if math.abs(player_velocity.x) + math.abs(player_velocity.z) < 20 then
-				local dir = minetest.yaw_to_dir(player:get_look_horizontal())
-				if degrees(player:get_look_vertical()) * -.01 < .1 then
-					look_pitch = degrees(player:get_look_vertical()) * -.01
-				else
-					look_pitch = .1
-				end
-				player:add_velocity({x=dir.x, y=look_pitch, z=dir.z})
-			end
+			local max_speed = 10000
+			local direction = player:get_look_dir()
+			-- local vel = player:get_velocity()
+			local speed_mult = clamp(elytra.speed - direction.y * dtime, -max_speed, max_speed)
+			elytra.speed = speed_mult
+			vel = direction
+			vel = vector.multiply(vel, speed_mult*100)
+			vel = {
+				x = clamp(vel.x, -max_speed, max_speed),
+				y = clamp(vel.y, -max_speed, max_speed),
+				z = clamp(vel.z, -max_speed, max_speed)}
+			player:set_velocity(vel)
 			playerphysics.add_physics_factor(player, "gravity", "mcl_playerplus:elytra", 0.1)
 
 			if elytra.rocketing > 0 then
