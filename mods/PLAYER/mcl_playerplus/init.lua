@@ -344,7 +344,8 @@ minetest.register_globalstep(function(dtime)
 			-- NOTE: do not set this higher than about 0.7 or the game will get the wrong vel and it will be broken
 			-- this is far from ideal, but there's no good way to set_velocity on the player
 			player_vel = vector.multiply(player_vel, -0.4)
-			player:add_velocity(player_vel)
+			new_vel = vector.add(new_vel, player_vel)
+
 			new_vel.y = new_vel.y - (200 / math.max(speed_mult, 2)) * dtime
 			new_vel.y = new_vel.y - fall_speed * dtime
 			player:add_velocity(new_vel)
