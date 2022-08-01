@@ -259,12 +259,17 @@ minetest.register_globalstep(function(dtime)
 		player_vel_yaws[name] = player_vel_yaw
 
 		local fly_pos = player:get_pos()
-		local fly_node = minetest.get_node({x = fly_pos.x, y = fly_pos.y - 0.5, z = fly_pos.z}).name
+		local fly_node = minetest.get_node({x = fly_pos.x, y = fly_pos.y - 0.05, z = fly_pos.z}).name
 		local elytra = mcl_playerplus.elytra[player]
+
+		local function get_overall_velocity(vector)
+			local v = sqrt(vector.x^2 + vector.y^2 + vector.z^2)
+			return 0
+		end
 
 		elytra.active = player:get_inventory():get_stack("armor", 3):get_name() == "mcl_armor:elytra"
 			and not player:get_attach()
-			and (elytra.active or control.jump and player_velocity.y < -6)
+			and (elytra.active or (control.jump and player_velocity.y < -1))
 			and (fly_node == "air" or fly_node == "ignore")
 
 		if elytra.active then
@@ -629,7 +634,7 @@ minetest.register_on_joinplayer(function(player)
 		swimDistance = 0,
 		jump_cooldown = -1,	-- Cooldown timer for jumping, we need this to prevent the jump exhaustion to increase rapidly
 	}
-	mcl_playerplus.elytra[player] = {active = false, rocketing = 0}
+	mcl_playerplus.elytra[player] = {active = false, rocketing = 0, speed = 0}
 end)
 
 -- clear when player leaves
