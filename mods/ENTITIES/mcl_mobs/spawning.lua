@@ -488,6 +488,25 @@ local function spawn_group(p,mob,spawn_on,group_max,group_min)
 	return o
 end
 
+function mcl_mobs.spawn(pos,id)
+	local def = minetest.registered_entities[id] or minetest.registered_entities["mobs_mc:"..id] or minetest.registered_entities["extra_mobs:"..id]
+	if not def or (def.can_spawn and not def.can_spawn(pos)) or not def.is_mob then
+		return false
+	end
+	return minetest.add_entity(pos, def.name)
+end
+
+minetest.register_chatcommand("spawn_mob",{
+	privs = { debug = true },
+	func = function(n,param)
+		local pos = minetest.get_player_by_name(n):get_pos()
+		if mcl_mobs.spawn(pos,param) then
+			return true, param.." spawned at "..minetest.pos_to_string(pos)
+		end
+		return false, "Couldn't spawn "..param
+	end
+})
+
 if mobs_spawn then
 
 	local perlin_noise
