@@ -356,7 +356,7 @@ mcl_doors:register_door("mcl_mangrove:mangrove_door", {
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
-mcl_doors:register_trapdoor(":mcl_doors:mangrove_trapdoor", {
+mcl_doors:register_trapdoor("mcl_mangrove:mangrove_trapdoor", {
 	description = S("Mangrove Trapdoor"),
 	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
 	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
