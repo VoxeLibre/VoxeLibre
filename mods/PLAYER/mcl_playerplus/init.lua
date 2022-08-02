@@ -333,9 +333,6 @@ minetest.register_globalstep(function(dtime)
 						glow = 5,
 					})
 				end
-			else
-				elytra.rocketing = 0
-				playerphysics.remove_physics_factor(player, "gravity", "mcl_playerplus:elytra")
 			end
 
 			new_vel = vector.multiply(new_vel, speed_mult)
@@ -353,6 +350,9 @@ minetest.register_globalstep(function(dtime)
 			new_vel.y = new_vel.y - (200 / math.max(speed_mult, 2)) * dtime
 			new_vel.y = new_vel.y - fall_speed * dtime
 			player:add_velocity(new_vel)
+		else
+			elytra.rocketing = 0
+			playerphysics.remove_physics_factor(player, "gravity", "mcl_playerplus:elytra")
 		end
 
 		if wielded_def and wielded_def._mcl_toollike_wield then
