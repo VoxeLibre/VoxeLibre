@@ -302,13 +302,13 @@ minetest.register_globalstep(function(dtime)
 			mcl_player.player_set_animation(player, "fly")
 			local slowdown_mult = 0.2 -- amount of vel to take per sec
 			local fall_speed = 20 -- amount to fall down per sec in nodes
-			local speedup_mult = 5 -- amount of speed to add based on look dir
+			local speedup_mult = 7 -- amount of speed to add based on look dir
 			local max_speed = 100
 			local direction = player:get_look_dir()
 			local player_vel = player:get_velocity()
 			local turn_amount = anglediff(minetest.dir_to_yaw(direction), minetest.dir_to_yaw(player_vel))
 			local direction_mult = clamp(-direction.y - 0.2, -0.8, 1)
-			if direction_mult < 0 then direction_mult = -(direction_mult^2) / 4 end
+			if direction_mult < 0 then direction_mult = -(direction_mult^2) / 2 end
 
 			local speed_mult = elytra.speed + direction_mult * speedup_mult * dtime
 			speed_mult = speed_mult - slowdown_mult * dtime -- slow down
@@ -318,16 +318,12 @@ minetest.register_globalstep(function(dtime)
 				speed_mult = speed_mult - (speed_mult * (turn_amount / (math.pi*3)))
 			end
 
-			elytra.speed = speed_mult -- set the speed so you can keep track of it and add to it
-			new_vel = direction -- use the facing direction as a base
-
 			playerphysics.add_physics_factor(player, "gravity", "mcl_playerplus:elytra", 0.1)
 			if elytra.rocketing > 0 then
 				elytra.rocketing = elytra.rocketing - dtime
 				if vector.length(player_velocity) < 40 then
 					-- player:add_velocity(vector.multiply(player:get_look_dir(), 4))
 					speed_mult = 10
-					elytra.speed = speed_mult
 					add_particle({
 						pos = fly_pos,
 						velocity = {x = 0, y = 0, z = 0},
@@ -342,21 +338,19 @@ minetest.register_globalstep(function(dtime)
 				end
 			end
 
+			elytra.speed = speed_mult -- set the speed so you can keep track of it and add to it
+
+			local new_vel = direction -- use the facing direction as a base
 			new_vel = vector.multiply(new_vel, speed_mult)
-			new_vel = {
-				x = clamp(new_vel.x, -max_speed, max_speed),
-				y = clamp(new_vel.y, -max_speed, max_speed),
-				z = clamp(new_vel.z, -max_speed, max_speed)}
-			-- new_vel = vector.multiply(new_vel, dtime * 30)
 
 			-- slow the player down so less spongy movement by applying half the inverse vel
-			-- NOTE: do not set this higher than about 0.7 or the game will get the wrong vel and it will be broken
+			-- NOTE: do not set this higher than about 0.2 or the game will get the wrong vel and it will be broken
 			-- this is far from ideal, but there's no good way to set_velocity on the player
 			player_vel = vector.multiply(player_vel, -0.1)
 			if speed_mult < 1 then player_vel.y = player_vel.y * 0.1 end
 			new_vel = vector.add(new_vel, player_vel)
 
-			new_vel.y = new_vel.y + clamp(speed_mult * dtime * 10, -10, 0)
+			-- new_vel.y = new_vel.y + clamp(speed_mult * dtime * 10, -10, 0)
 			new_vel.y = new_vel.y - fall_speed * dtime
 			player:add_velocity(new_vel)
 		else
