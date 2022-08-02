@@ -282,7 +282,7 @@ minetest.register_globalstep(function(dtime)
 		local is_just_jumped = control.jump and not is_pressing_jump and not elytra.active
 		is_pressing_jump = control.jump
 		if is_just_jumped and not elytra.active then
-			elytra.speed = clamp(get_overall_velocity(player:get_velocity()) - 1, 0, 20)
+			elytra.speed = clamp(get_overall_velocity(player:get_velocity()) - 1, 0, 2)
 		end
 		-- don't let player get too fast by spamming jump
 		local block_below = minetest.get_node(vector.offset(player:get_velocity(), 0, -0.7, 0)).name
@@ -353,9 +353,10 @@ minetest.register_globalstep(function(dtime)
 			-- NOTE: do not set this higher than about 0.7 or the game will get the wrong vel and it will be broken
 			-- this is far from ideal, but there's no good way to set_velocity on the player
 			player_vel = vector.multiply(player_vel, -0.1)
+			if speed_mult < 1 then player_vel.y = player_vel.y * 0.1 end
 			new_vel = vector.add(new_vel, player_vel)
 
-			new_vel.y = new_vel.y - (200 / math.max(speed_mult*10, 2)) * dtime
+			new_vel.y = new_vel.y + clamp(speed_mult * dtime * 10, -10, 0)
 			new_vel.y = new_vel.y - fall_speed * dtime
 			player:add_velocity(new_vel)
 		else
