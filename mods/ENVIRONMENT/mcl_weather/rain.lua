@@ -41,6 +41,14 @@ local psdef= {
 
 local textures = {"weather_pack_rain_raindrop_1.png", "weather_pack_rain_raindrop_2.png"}
 
+function mcl_weather.has_rain(pos)
+	if not mcl_worlds.has_weather(pos) then return false end
+	if  mgname == "singlenode" or mgname == "v6" then return true end
+	local bd = minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(pos).biome)]
+	if bd and bd._mcl_biome_type == "hot" then return false end
+	return true
+end
+
 function mcl_weather.rain.sound_handler(player)
 	return minetest.sound_play("weather_rain", {
 		to_player = player:get_player_name(),
@@ -166,13 +174,23 @@ function mcl_weather.rain.make_weather()
 
 	for _, player in pairs(get_connected_players()) do
 		local pos=player:get_pos()
-		if mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(pos) then
+		if mcl_weather.is_underwater(player) or not mcl_weather.has_rain(pos) then
 			mcl_weather.rain.remove_sound(player)
 			mcl_weather.remove_spawners_player(player)
+			if mcl_worlds.has_weather(pos) then
+				mcl_weather.set_sky_box_clear(player)
+			end
 		else
-			mcl_weather.rain.add_player(player)
-			mcl_weather.rain.add_rain_particles(player)
-			mcl_weather.rain.update_sound(player)
+			if mcl_weather.has_snow(pos) then
+				mcl_weather.rain.remove_sound(player)
+				mcl_weather.snow.add_player(player)
+				mcl_weather.snow.set_sky_box()
+			else
+				mcl_weather.rain.add_player(player)
+				mcl_weather.rain.add_rain_particles(player)
+				mcl_weather.rain.update_sound(player)
+				mcl_weather.rain.set_sky_box()
+			end
 		end
 	end
 end
