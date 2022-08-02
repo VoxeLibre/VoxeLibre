@@ -307,7 +307,7 @@ minetest.register_globalstep(function(dtime)
 			local direction = player:get_look_dir()
 			local player_vel = player:get_velocity()
 			local turn_amount = anglediff(minetest.dir_to_yaw(direction), minetest.dir_to_yaw(player_vel))
-			local direction_mult = clamp(-direction.y + 0, -0.8, 1)
+			local direction_mult = clamp(-direction.y - 0.2, -0.8, 1)
 			if direction_mult < 0 then direction_mult = -(direction_mult^2) / 2 end
 
 			local speed_mult = elytra.speed + direction_mult * speedup_mult * dtime
