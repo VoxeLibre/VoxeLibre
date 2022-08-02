@@ -69,6 +69,7 @@ minetest.register_node("mcl_mangrove:mangrove_tree_bark", {
 	on_place = mcl_util.rotate_axis,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
+	_mcl_stripped_variant = "mcl_mangrove:mangrove_stripped_bark",
 })
 
 minetest.register_node("mcl_mangrove:mangrove_wood", {
@@ -103,13 +104,25 @@ minetest.register_node("mcl_mangrove:mangroveleaves", {
 })
 
 minetest.register_node("mcl_mangrove:mangrove_stripped_trunk", {
-	description = "The stripped wood of an Mangove tree",
-	_doc_items_longdesc = "The stripped wood of an Mangove tree",
+	description = "The stripped wood of a Mangove tree",
+	_doc_items_longdesc = "The stripped wood of a Mangove tree",
 	_doc_items_hidden = false,
 	tiles ={"mcl_stripped_mangrove_log_top.png","mcl_stripped_mangrove_log_side.png",},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
-
+	groups = {handy=1, axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	on_rotate = mcl_util.rotate_axis_and_place,
+	_mcl_blast_resistance = 2,
+	_mcl_hardness = 2,
+})
+minetest.register_node("mcl_mangrove:mangrove_stripped_bark", {
+	description = "The stripped bark of a Mangove tree",
+	_doc_items_longdesc = "The stripped bark of a Mangove tree",
+	_doc_items_hidden = false,
+	tiles ={"mcl_stripped_mangrove_log_side.png","mcl_stripped_mangrove_log_side.png",},
+	paramtype2 = "facedir",
+	on_place = mcl_util.rotate_axis,
 	groups = {handy=1, axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_rotate = mcl_util.rotate_axis_and_place,
