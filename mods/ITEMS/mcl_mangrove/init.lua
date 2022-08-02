@@ -47,7 +47,7 @@ end
 
 minetest.register_node("mcl_mangrove:mangrove_tree", {
 	description = S("Mangrove Wood"),
-	_doc_items_longdesc = S("The trunk of an Mangrove tree."),
+	_doc_items_longdesc = S("The trunk of a Mangrove tree."),
 	_doc_items_hidden = false,
 	tiles = {"mcl_mangrove_log_top.png", "mcl_mangrove_log_top.png", "mcl_mangrove_log.png"},
 	paramtype2 = "facedir",
@@ -57,10 +57,11 @@ minetest.register_node("mcl_mangrove:mangrove_tree", {
 	on_place = mcl_util.rotate_axis,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
+	_mcl_stripped_variant = "mcl_mangrove:mangrove_stripped_trunk",
 })
 minetest.register_node("mcl_mangrove:mangrove_tree_bark", {
 	description = S("Mangrove Bark"),
-	_doc_items_longdesc = S("The bark of an Mangrove tree."),
+	_doc_items_longdesc = S("The bark of a Mangrove tree."),
 	_doc_items_hidden = false,
 	tiles = {"mcl_mangrove_log.png", "mcl_mangrove_log.png", "mcl_mangrove_log.png"},
 	paramtype2 = "facedir",
@@ -137,14 +138,12 @@ minetest.register_node("mcl_mangrove:mangrove_roots", {
 	waving = 0,
 	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	tiles = {
-		"mcl_mangrove_roots_top.png", "mcl_mangrove_roots_top.png",
-		"mcl_mangrove_roots_side.png", "mcl_mangrove_roots_side.png",
-		"mcl_mangrove_roots_side.png", "mcl_mangrove_roots_side.png"
+		"mcl_mangrove_roots_top.png",
+		"mcl_mangrove_roots_side.png",
+		"mcl_mangrove_roots_side.png",
 	},
 	paramtype = "light",
-
-	drawtype = "mesh",
-	mesh = "node.obj",
+	drawtype = "allfaces_optional",
 	groups = {
 		handy = 1, hoey = 1, shearsy = 1, axey = 1, swordy = 1, dig_by_piston = 0,
 		leaves = 1, deco_block = 1,flammable = 10, fire_encouragement = 30, fire_flammability = 60,	compostability = 30
@@ -175,7 +174,6 @@ minetest.register_node("mcl_mangrove:propagule", {
 		type = "fixed",
 		fixed = {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16}
 	},
-
 	groups = {
 		plant = 1, sapling = 1, non_mycelium_plant = 1, attached_node = 1,
 		deco_block = 1, dig_immediate = 3, dig_by_water = 0, dig_by_piston = 1,
@@ -284,8 +282,8 @@ mcl_flowerpots.register_potted_flower("mcl_mangrove:propagule", {
 local water_tex = "default_water_source_animated.png^[verticalframe:16:0"
 
 local wlroots = {
-	description = ("water_logged_mangrove_roots"),
-	_doc_items_entry_name = S("water_logged_roots"),
+	description = ("water logged mangrove roots"),
+	_doc_items_entry_name = S("water logged mangrove roots"),
 	_doc_items_longdesc =
 		("Mangrove roots are decorative blocks that form as part of mangrove trees.").."\n\n"..
 		("Mangrove roots, despite being a full block, can be waterlogged and do not flow water out").."\n\n"..
@@ -308,7 +306,8 @@ local wlroots = {
 		"mcl_mangrove_roots_side.png",
 	},
 	sounds = mcl_sounds.node_sound_water_defaults(),
-	use_texture_alpha = "blend",
+	drawtype = "allfaces_optional",
+	use_texture_alpha = "clip",
 	is_ground_content = false,
 	paramtype = "light",
 	walkable = true,
