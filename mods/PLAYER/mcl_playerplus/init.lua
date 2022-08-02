@@ -284,6 +284,11 @@ minetest.register_globalstep(function(dtime)
 		if is_just_jumped and not elytra.active then
 			elytra.speed = clamp(get_overall_velocity(player:get_velocity()) - 1, 0, 20)
 		end
+		-- don't let player get too fast by spamming jump
+		local block_below = minetest.get_node(vector.offset(player:get_velocity(), 0, -0.7, 0)).name
+		if minetest.registered_nodes[block_below].walkable then
+			elytra.speed = clamp(elytra.speed, -1, 5)
+		end
 
 		elytra.active = player:get_inventory():get_stack("armor", 3):get_name() == "mcl_armor:elytra"
 			and not player:get_attach()
@@ -298,18 +303,20 @@ minetest.register_globalstep(function(dtime)
 			local slowdown_mult = 1 -- amount of vel to take per sec
 			local fall_speed = 10 -- amount to fall down per sec in nodes
 			local speedup_mult = 10 -- amount of speed to add based on look dir
-			local max_speed = 120
+			local max_speed = 300
 			local direction = player:get_look_dir()
 			local player_vel = player:get_velocity()
 			local turn_amount = anglediff(minetest.dir_to_yaw(direction), minetest.dir_to_yaw(player_vel))
 			local direction_mult = clamp(-direction.y + 0, -1, 1)
-			if direction_mult < 0 then direction_mult = -(direction_mult^2) + direction_mult/2 end
+			if direction_mult < 0 then direction_mult = -(direction_mult^2) end
 
 			local speed_mult = elytra.speed + direction_mult * speedup_mult * dtime
 			speed_mult = speed_mult - slowdown_mult * dtime -- slow down
 			speed_mult = math.max(speed_mult, -1)
 			speed_mult = math.min(speed_mult, max_speed)
-			speed_mult = speed_mult - (speed_mult * turn_amount / (math.pi*3))
+			if turn_amount > 0.1 then
+				speed_mult = speed_mult - (speed_mult * turn_amount / (math.pi*3))
+			end
 
 			elytra.speed = speed_mult -- set the speed so you can keep track of it and add to it
 			new_vel = direction -- use the facing direction as a base
@@ -335,7 +342,7 @@ minetest.register_globalstep(function(dtime)
 				end
 			end
 
-			new_vel = vector.multiply(new_vel, speed_mult)
+			new_vel = vector.multiply(new_vel, speed_mult * dtime * 30)
 			new_vel = {
 				x = clamp(new_vel.x, -max_speed, max_speed),
 				y = clamp(new_vel.y, -max_speed, max_speed),
@@ -344,7 +351,7 @@ minetest.register_globalstep(function(dtime)
 			-- slow the player down so less spongy movement by applying half the inverse vel
 			-- NOTE: do not set this higher than about 0.7 or the game will get the wrong vel and it will be broken
 			-- this is far from ideal, but there's no good way to set_velocity on the player
-			player_vel = vector.multiply(player_vel, -0.4)
+			player_vel = vector.multiply(player_vel, -0.4 * dtime * 30)
 			new_vel = vector.add(new_vel, player_vel)
 
 			new_vel.y = new_vel.y - (200 / math.max(speed_mult, 2)) * dtime
