@@ -2,8 +2,6 @@ mcl_playerplus = {
 	elytra = {},
 }
 
-local player_velocity_old = {x=0, y=0, z=0}
-local player_position_old = {x=0, y=0, z=0}
 local is_pressing_jump = false
 local get_connected_players = minetest.get_connected_players
 local dir_to_yaw = minetest.dir_to_yaw
@@ -368,10 +366,6 @@ minetest.register_globalstep(function(dtime)
 		else
 			set_bone_position_conditional(player,"Wield_Item", vector.new(-1.5,4.9,1.8), vector.new(135,0,90))
 		end
-
-		player_velocity_old = player:get_velocity() or player:get_player_velocity()
-		player_position_old = player:get_pos()
-
 
 		-- controls right and left arms pitch when shooting a bow or blocking
 		if mcl_shields.is_blocking(player) == 2 then
