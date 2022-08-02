@@ -177,7 +177,9 @@ function mcl_weather.rain.make_weather()
 		if mcl_weather.is_underwater(player) or not mcl_weather.has_rain(pos) then
 			mcl_weather.rain.remove_sound(player)
 			mcl_weather.remove_spawners_player(player)
-			mcl_weather.set_sky_box_clear(player)
+			if mcl_worlds.has_weather(pos) then
+				mcl_weather.set_sky_box_clear(player)
+			end
 		else
 			if mcl_weather.has_snow(pos) then
 				mcl_weather.rain.remove_sound(player)

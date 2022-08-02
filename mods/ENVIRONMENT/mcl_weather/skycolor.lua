@@ -95,7 +95,7 @@ mcl_weather.skycolor = {
 		for _, player in ipairs(players) do
 			local pos = player:get_pos()
 			local dim = mcl_worlds.pos_to_dimension(pos)
-			local has_weather = ((mcl_weather.state == "snow" or mcl_weather.state =="rain" or mcl_weather.state == "thunder") and mcl_weather.has_snow(pos)) or ((mcl_weather.state =="rain" or mcl_weather.state == "thunder") and mcl_weather.has_rain(pos))
+			local has_weather = (mcl_worlds.has_weather(pos) and (mcl_weather.state == "snow" or mcl_weather.state =="rain" or mcl_weather.state == "thunder") and mcl_weather.has_snow(pos)) or ((mcl_weather.state =="rain" or mcl_weather.state == "thunder") and mcl_weather.has_rain(pos))
 			if dim == "overworld" then
 				if (mcl_weather.state == "none") then
 					-- Clear weather
