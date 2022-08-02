@@ -302,7 +302,7 @@ minetest.register_globalstep(function(dtime)
 			mcl_player.player_set_animation(player, "fly")
 			local slowdown_mult = 0.2 -- amount of vel to take per sec
 			local fall_speed = 20 -- amount to fall down per sec in nodes
-			local speedup_mult = 10 -- amount of speed to add based on look dir
+			local speedup_mult = 5 -- amount of speed to add based on look dir
 			local max_speed = 100
 			local direction = player:get_look_dir()
 			local player_vel = player:get_velocity()
@@ -355,7 +355,7 @@ minetest.register_globalstep(function(dtime)
 			player_vel = vector.multiply(player_vel, -0.1)
 			new_vel = vector.add(new_vel, player_vel)
 
-			new_vel.y = new_vel.y - (100 / math.max(speed_mult, 1)) * dtime
+			new_vel.y = new_vel.y - (200 / math.max(speed_mult*10, 2)) * dtime
 			new_vel.y = new_vel.y - fall_speed * dtime
 			player:add_velocity(new_vel)
 		else
