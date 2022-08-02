@@ -1,6 +1,21 @@
 local mods_loaded = false
 local NIGHT_VISION_RATIO = 0.45
 
+function mcl_weather.set_sky_box_clear(player)
+	player:set_sky({
+		type = "regular",
+		sky_color = {
+			day_sky = "#92B9FF",
+			day_horizon = "#B4D0FF",
+			dawn_sky = "#B4BAFA",
+			dawn_horizon = "#BAC1F0",
+			night_sky = "#006AFF",
+			night_horizon = "#4090FF",
+		},
+		clouds = true,
+	})
+end
+
 mcl_weather.skycolor = {
 	-- Should be activated before do any effect.
 	active = true,
@@ -9,7 +24,7 @@ mcl_weather.skycolor = {
 	force_update = true,
 
 	-- Update interval.
-	update_interval = 15,
+	update_interval = 3,
 
 	-- Main sky colors: starts from midnight to midnight.
 	-- Please do not set directly. Use add_layer instead.
@@ -80,26 +95,34 @@ mcl_weather.skycolor = {
 		for _, player in ipairs(players) do
 			local pos = player:get_pos()
 			local dim = mcl_worlds.pos_to_dimension(pos)
+			local has_weather = (mcl_worlds.has_weather(pos) and (mcl_weather.state == "snow" or mcl_weather.state =="rain" or mcl_weather.state == "thunder") and mcl_weather.has_snow(pos)) or ((mcl_weather.state =="rain" or mcl_weather.state == "thunder") and mcl_weather.has_rain(pos))
 			if dim == "overworld" then
 				if (mcl_weather.state == "none") then
 					-- Clear weather
-					player:set_sky({
-						type = "regular",
-						sky_color = {
-							day_sky = "#92B9FF",
-							day_horizon = "#B4D0FF",
-							dawn_sky = "#B4BAFA",
-							dawn_horizon = "#BAC1F0",
-							night_sky = "#006AFF",
-							night_horizon = "#4090FF",
-						},
-						clouds = true,
-					})
+					mcl_weather.set_sky_box_clear(player)
 					player:set_sun({visible = true, sunrise_visible = true})
 					player:set_moon({visible = true})
 					player:set_stars({visible = true})
 					mcl_weather.skycolor.override_day_night_ratio(player, nil)
-				else
+				elseif not has_weather then
+					local day_color = mcl_weather.skycolor.get_sky_layer_color(0.15)
+					local dawn_color = mcl_weather.skycolor.get_sky_layer_color(0.27)
+					local night_color = mcl_weather.skycolor.get_sky_layer_color(0.1)
+					player:set_sky({ type = "regular",
+						sky_color = {
+							day_sky = day_color,
+							day_horizon = day_color,
+							dawn_sky = dawn_color,
+							dawn_horizon = dawn_color,
+							night_sky = night_color,
+							night_horizon = night_color,
+						},
+						clouds = true,
+					})
+					player:set_sun({visible = false, sunrise_visible = false})
+					player:set_moon({visible = false})
+					player:set_stars({visible = false})
+				elseif has_weather then
 					-- Weather skies
 					local day_color = mcl_weather.skycolor.get_sky_layer_color(0.5)
 					local dawn_color = mcl_weather.skycolor.get_sky_layer_color(0.75)
