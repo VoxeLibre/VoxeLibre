@@ -296,12 +296,13 @@ minetest.register_globalstep(function(dtime)
 			mcl_player.player_set_animation(player, "fly")
 			local slowdown_mult = 1 -- amount of vel to take per sec
 			local fall_speed = 10 -- amount to fall down per sec in nodes
-			local speedup_mult = 15 -- amount of speed to add based on look dir
+			local speedup_mult = 10 -- amount of speed to add based on look dir
 			local max_speed = 120
 			local direction = player:get_look_dir()
 			local player_vel = player:get_velocity()
 			local turn_amount = anglediff(minetest.dir_to_yaw(direction), minetest.dir_to_yaw(player_vel))
-			local direction_mult = clamp(-direction.y*2, -0.5, 0.5)
+			local direction_mult = clamp(-direction.y + 0, -1, 1)
+			if direction_mult < 0 then direction_mult = -(direction_mult^2) + direction_mult/2 end
 
 			local speed_mult = elytra.speed + direction_mult * speedup_mult * dtime
 			speed_mult = speed_mult - slowdown_mult * dtime -- slow down
