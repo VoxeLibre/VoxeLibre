@@ -281,7 +281,7 @@ minetest.register_globalstep(function(dtime)
 			elytra.speed = 2
 		end
 
-		local is_just_jumped = control.jump and not is_pressing_jump
+		local is_just_jumped = control.jump and not is_pressing_jump and not elytra.active
 		is_pressing_jump = control.jump
 		if is_just_jumped and not elytra.active then
 			elytra.speed = clamp(get_overall_velocity(player:get_velocity()) - 1, 0, 20)
@@ -293,6 +293,9 @@ minetest.register_globalstep(function(dtime)
 			and (fly_node == "air" or fly_node == "ignore")
 
 		if elytra.active then
+			if is_just_jumped then -- move the player up when they start flying to give some clearance
+				player:set_pos(vector.offset(player:get_pos(), 0, 0.8, 0))
+			end
 			mcl_player.player_set_animation(player, "fly")
 			local slowdown_mult = 1 -- amount of vel to take per sec
 			local fall_speed = 10 -- amount to fall down per sec in nodes
