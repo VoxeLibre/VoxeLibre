@@ -314,8 +314,8 @@ minetest.register_globalstep(function(dtime)
 			speed_mult = speed_mult - slowdown_mult * dtime -- slow down
 			speed_mult = math.max(speed_mult, -1)
 			speed_mult = math.min(speed_mult, max_speed)
-			if turn_amount > 0.1 then
-				speed_mult = speed_mult - (speed_mult * turn_amount / (math.pi*3))
+			if turn_amount > 0.3 then
+				speed_mult = speed_mult - (speed_mult * (turn_amount / (math.pi*3)))
 			end
 
 			elytra.speed = speed_mult -- set the speed so you can keep track of it and add to it
@@ -342,11 +342,12 @@ minetest.register_globalstep(function(dtime)
 				end
 			end
 
-			new_vel = vector.multiply(new_vel, speed_mult * dtime * 30)
+			new_vel = vector.multiply(new_vel, speed_mult)
 			new_vel = {
 				x = clamp(new_vel.x, -max_speed, max_speed),
 				y = clamp(new_vel.y, -max_speed, max_speed),
 				z = clamp(new_vel.z, -max_speed, max_speed)}
+			new_vel = vector.multiply(new_vel, dtime * 30)
 
 			-- slow the player down so less spongy movement by applying half the inverse vel
 			-- NOTE: do not set this higher than about 0.7 or the game will get the wrong vel and it will be broken
@@ -697,6 +698,9 @@ end)
 -- Don't change HP if the player falls in the water or through End Portal:
 mcl_damage.register_modifier(function(obj, damage, reason)
 	if reason.type == "fall" then
+		if minetest.is_creative_enabled(obj:get_player_name()) then
+			return 0
+		end
 		local pos = obj:get_pos()
 		local node = minetest.get_node(pos)
 		local velocity = obj:get_velocity() or obj:get_player_velocity() or {x=0,y=-10,z=0}
