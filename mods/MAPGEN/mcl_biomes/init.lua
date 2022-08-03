@@ -11,6 +11,7 @@ local mod_mcl_core = minetest.get_modpath("mcl_core")
 local mod_mcl_mushrooms = minetest.get_modpath("mcl_mushrooms")
 local mod_mcl_crimson = minetest.get_modpath("mcl_crimson")
 local mod_mcl_blackstone = minetest.get_modpath("mcl_blackstone")
+local mod_mcl_mangrove = minetest.get_modpath("mcl_mangrove")
 
 -- Jungle bush schematic. In PC/Java Edition it's Jungle Wood + Oak Leaves
 local jungle_bush_schematic = mod_mcl_core.."/schematics/mcl_core_jungle_bush_oak_leaves.mts"
@@ -127,6 +128,7 @@ local function register_biomes()
 		"MesaBryce",
 		"MesaPlateauF",
 		"MesaPlateauFM",
+		"MangroveSwamp",
 	}
 
 	-- Ice Plains Spikes (rare)
@@ -1342,6 +1344,54 @@ local function register_biomes()
 		_mcl_palette_index = 27,
 	})
 
+	-- Mangrove swamp
+	minetest.register_biome({
+		name = "MangroveSwamp",
+		node_top = "mcl_mud:mud",
+		depth_top = 1,
+		node_filler = "mcl_mud:mud",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:dirt",
+		depth_riverbed = 2,
+		y_min = 1,
+		-- Note: Limited in height!
+		y_max = 27,
+		humidity_point = 95,
+		heat_point = 94,
+		_mcl_biome_type = "hot",
+		_mcl_palette_index = 27,
+	})
+	minetest.register_biome({
+		name = "MangroveSwamp_shore",
+		node_top = "mcl_mud:mud",
+		depth_top = 1,
+		node_filler = "mcl_mud:mud",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:dirt",
+		depth_riverbed = 2,
+		y_min = -5,
+		y_max = 0,
+		humidity_point = 95,
+		heat_point = 94,
+		_mcl_biome_type = "hot",
+		_mcl_palette_index = 27,
+	})
+	minetest.register_biome({
+		name = "MangroveSwamp_ocean",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:gravel",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -6,
+		vertical_blend = 1,
+		humidity_point = 95,
+		heat_point = 94,
+		_mcl_biome_type = "hot",
+		_mcl_palette_index = 27,
+	})
 	-- Swampland
 	minetest.register_biome({
 		name = "Swampland",
@@ -2422,11 +2472,11 @@ local function register_grass_decoration(grasstype, offset, scale, biomes)
 	local place_on, seed, node
 	if grasstype == "fern" then
 		node = "mcl_flowers:fern"
-		place_on = {"group:grass_block_no_snow", "mcl_core:podzol"}
+		place_on = {"group:grass_block_no_snow", "mcl_core:podzol","mcl_mud:mud"}
 		seed = 333
 	elseif grasstype == "tallgrass" then
 		node = "mcl_flowers:tallgrass"
-		place_on = {"group:grass_block_no_snow"}
+		place_on = {"group:grass_block_no_snow","mcl_mud:mud"}
 		seed = 420
 	end
 	local noise = {
@@ -2513,6 +2563,7 @@ local warm_oceans = {
 	"Jungle_ocean",
 	"Desert_ocean",
 	"JungleM_ocean",
+	"MangroveSwamp_ocean"
 }
 local corals = {
 	"brain",
@@ -2536,7 +2587,7 @@ local function register_coral_decos(ck)
 		}
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"group:sand","mcl_core:gravel"},
+		place_on = {"group:sand","mcl_core:gravel","mcl_mud:mud"},
 		sidelen = 80,
 		noise_params = noise,
 		biomes = warm_oceans,
@@ -2548,7 +2599,7 @@ local function register_coral_decos(ck)
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"group:sand","mcl_core:gravel"},
+		place_on = {"group:sand","mcl_core:gravel","mcl_mud:mud"},
 		noise_params = noise,
 		sidelen = 80,
 		biomes = warm_oceans,
@@ -2594,7 +2645,7 @@ local function register_decorations()
 	end
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"group:sand","mcl_core:gravel"},
+		place_on = {"group:sand","mcl_core:gravel","mcl_mud:mud"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.0085,
@@ -2974,6 +3025,126 @@ local function register_decorations()
 		schematic = mod_mcl_core.."/schematics/mcl_core_oak_swamp.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_tree_1",
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.0065,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove.."/schematics/mcl_mangrove_tree_1.mts",
+		flags = "place_center_x, place_center_z, force_placement",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_tree_2",
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.0045,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		y_min = -1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove.."/schematics/mcl_mangrove_tree_2.mts",
+		flags = "place_center_x, place_center_z, force_placement",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_tree_3",
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.023,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		y_min = -1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove.."/schematics/mcl_mangrove_tree_3.mts",
+		flags = "place_center_x, place_center_z, force_placement",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_tree_4",
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.023,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		y_min = -1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove.."/schematics/mcl_mangrove_tree_4.mts",
+		flags = "place_center_x, place_center_z, force_placement",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_tree_4",
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.023,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		y_min = -1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove.."/schematics/mcl_mangrove_tree_5.mts",
+		flags = "place_center_x, place_center_z, force_placement",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.045,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		y_min = 0,
+		y_max = 0,
+		decoration = "mcl_mangrove:water_logged_roots",
+		flags = "place_center_x, place_center_z, force_placement",
+	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_mangrove:mangrove_roots"},
+		spawn_by = {"group:water"},
+		num_spawn_by = 2,
+		sidelen = 80,
+		fill_ratio = 10,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		y_min = 0,
+		y_max = 0,
+		decoration = "mcl_mangrove:water_logged_roots",
+		flags = "place_center_x, place_center_z, force_placement, all_ceilings",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.045,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		place_offset_y = -1,
+		decoration = "mcl_mangrove:mangrove_mud_roots",
+		flags = "place_center_x, place_center_z, force_placement",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.008,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		decoration = "mcl_core:deadbush",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:water_source"},
+		sidelen = 80,
+		fill_ratio = 0.035,
+		biomes = {"MangroveSwamp","MangroveSwamp_shore"},
+		decoration = "mcl_flowers:waterlily",
+		flags = "place_center_x, place_center_z, liquid_surface",
 	})
 
 	-- Jungle tree
@@ -3975,7 +4146,7 @@ local function register_decorations()
 	-- Grasses and ferns
 	local grass_forest = {"Plains", "Taiga", "Forest", "FlowerForest", "BirchForest", "BirchForestM", "RoofedForest", "Swampland", }
 	local grass_mpf = {"MesaPlateauF_grasstop"}
-	local grass_plains = {"Plains", "SunflowerPlains", "JungleEdge", "JungleEdgeM" }
+	local grass_plains = {"Plains", "SunflowerPlains", "JungleEdge", "JungleEdgeM", "MangroveSwamp" }
 	local grass_savanna = {"Savanna", "SavannaM"}
 	local grass_sparse = {"ExtremeHills", "ExtremeHills+", "ExtremeHills+_snowtop", "ExtremeHillsM", "Jungle" }
 	local grass_mpfm = {"MesaPlateauFM_grasstop" }
@@ -3998,7 +4169,7 @@ local function register_decorations()
 	register_grass_decoration("tallgrass", 0.05, -0.03, grass_sparse)
 	register_grass_decoration("tallgrass", 0.05, 0.05, grass_mpfm)
 
-	local fern_minimal = { "Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "MegaTaiga", "MegaSpruceTaiga", "ColdTaiga" }
+	local fern_minimal = { "Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "MegaTaiga", "MegaSpruceTaiga", "ColdTaiga", "MangroveSwamp" }
 	local fern_low = { "Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "MegaTaiga", "MegaSpruceTaiga" }
 	local fern_Jungle = { "Jungle", "JungleM", "JungleEdge", "JungleEdgeM" }
 	--local fern_JungleM = { "JungleM" },
@@ -4724,14 +4895,42 @@ if mg_name ~= "singlenode" then
 		minetest.get_decoration_id("mcl_biomes:warped_tree2"),
 		minetest.get_decoration_id("mcl_biomes:warped_tree3")
 	}
+	local deco_ids_trees = {
+		minetest.get_decoration_id("mcl_biomes:mangrove_tree_1"),
+		minetest.get_decoration_id("mcl_biomes:mangrove_tree_2"),
+		minetest.get_decoration_id("mcl_biomes:mangrove_tree_3"),
+	}
 	for _,f in pairs(deco_ids_fungus) do
 		minetest.set_gen_notify({decoration=true}, { f })
 	end
-	if deco_id_chorus_plant or deco_id_crimson_tree or deco_id_warped_tree then
+	for _,f in pairs(deco_ids_trees) do
+		minetest.set_gen_notify({decoration=true}, { f })
+	end
+	if deco_id_chorus_plant or deco_ids_fungus or deco_ids_trees then
 		mcl_mapgen_core.register_generator("chorus_grow", nil, function(minp, maxp, blockseed)
-			if minp.y > -26900 then return end
 			local gennotify = minetest.get_mapgen_object("gennotify")
 			local pr = PseudoRandom(blockseed + 14)
+			for _,f in pairs(deco_ids_trees) do
+				for _, pos in ipairs(gennotify["decoration#"..f] or {}) do
+					local nn=minetest.find_nodes_in_area(vector.offset(pos,-8,-1,-8),vector.offset(pos,8,0,8),{"mcl_mangrove:mangrove_roots"})
+					for _,v in pairs(nn) do
+						local l = pr:next(2,16)
+						local n = minetest.get_node(vector.offset(v,0,-1,0)).name
+						if minetest.get_item_group(n,"water") > 0 then
+							local wl = "mcl_mangrove:water_logged_roots"
+							if n:find("river") then
+								wl = "mcl_mangrove:river_water_logged_roots"
+							end
+							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-l,0),{"group:water"}),{name=wl})
+						elseif n == "mcl_mud:mud" then
+							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-l,0),{"mcl_mud:mud"}),{name="mcl_mangrove:mangrove_mud_roots"})
+						elseif n == "air" then
+							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v,0,0,0),vector.offset(v,0,-l,0),{"air"}),{name="mcl_mangrove:mangrove_roots"})
+						end
+					end
+				end
+			end
+			if minp.y > -26900 then return end
 			for _, pos in ipairs(gennotify["decoration#"..deco_id_chorus_plant] or {}) do
 				local x, y, z = pos.x, pos.y, pos.z
 				if x < -2 or x > 2 or z < -2 or z > 2 then
