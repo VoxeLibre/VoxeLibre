@@ -300,15 +300,15 @@ minetest.register_globalstep(function(dtime)
 				player:set_pos(vector.offset(player:get_pos(), 0, 0.8, 0))
 			end
 			mcl_player.player_set_animation(player, "fly")
-			local slowdown_mult = 0.2 -- amount of vel to take per sec
-			local fall_speed = 20 -- amount to fall down per sec in nodes
+			local slowdown_mult = 0 -- amount of vel to take per sec
+			local fall_speed = 40 -- amount to fall down per sec in nodes
 			local speedup_mult = 7 -- amount of speed to add based on look dir
 			local max_speed = 100
 			local direction = player:get_look_dir()
 			local player_vel = player:get_velocity()
 			local turn_amount = anglediff(minetest.dir_to_yaw(direction), minetest.dir_to_yaw(player_vel))
-			local direction_mult = clamp(-direction.y - 0.2, -0.8, 1)
-			if direction_mult < 0 then direction_mult = -(direction_mult^2) / 2 end
+			local direction_mult = clamp(-direction.y - 0.1, -0.8, 1)
+			if direction_mult < 0 then direction_mult = -((direction_mult*2)^2) / 6 end
 
 			local speed_mult = elytra.speed + direction_mult * speedup_mult * dtime
 			speed_mult = speed_mult - slowdown_mult * dtime -- slow down
@@ -347,7 +347,7 @@ minetest.register_globalstep(function(dtime)
 			-- NOTE: do not set this higher than about 0.2 or the game will get the wrong vel and it will be broken
 			-- this is far from ideal, but there's no good way to set_velocity on the player
 			player_vel = vector.multiply(player_vel, -0.1)
-			if speed_mult < 1 then player_vel.y = player_vel.y * 0.1 end
+			-- if speed_mult < 1 then player_vel.y = player_vel.y * 0.1 end
 			new_vel = vector.add(new_vel, player_vel)
 
 			-- new_vel.y = new_vel.y + clamp(speed_mult * dtime * 10, -10, 0)
