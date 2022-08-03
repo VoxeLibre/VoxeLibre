@@ -393,14 +393,14 @@ mcl_fences.register_fence_and_fence_gate(
 	mcl_sounds.node_sound_wood_defaults(), "mcl_mangrove_mangrove_wood_fence_gate_open", "mcl_mangrove_mangrove_wood_fence_gate_close", 1, 1,
 	"mcl_mangrove_fence_gate.png")
 
-mcl_stairs.register_stair("mangrove_wood", "mcl_core:stair_mangrove",
+mcl_stairs.register_stair("mangrove_wood", "mcl_mangrove:mangrove_wood",
 	{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
 	{"mcl_mangrove_planks.png"},
 	S("Mangrove Wood Stairs"),
 	mcl_sounds.node_sound_wood_defaults(), 3, 2,
 	"woodlike")
 
-mcl_stairs.register_slab("mangrove_wood", "mcl_core:slab_mangrove",
+mcl_stairs.register_slab("mangrove_wood", "mcl_mangrove:mangrove_wood",
 	{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
 	{"mcl_mangrove_planks.png"},
 	S("Mangrove Wood Slab"),
@@ -423,7 +423,13 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_doors:mangrove_door 3",
+	type = "fuel",
+	recipe = "mcl_mangrove:mangrove_door",
+	burntime = 15,
+})
+
+minetest.register_craft({
+	output = "mcl_mangrove:mangrove_door 3",
 	recipe = {
 		{"mcl_mangrove:mangrove_wood", "mcl_mangrove:mangrove_wood"},
 		{"mcl_mangrove:mangrove_wood", "mcl_mangrove:mangrove_wood"},
@@ -432,7 +438,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_doors:trapdoor_mangrove 2",
+	output = "mcl_mangrove:mangrove_trapdoor 2",
 	recipe = {
 		{"mcl_mangrove:mangrove_wood","mcl_mangrove:mangrove_wood","mcl_mangrove:mangrove_wood"},
 		{"mcl_mangrove:mangrove_wood","mcl_mangrove:mangrove_wood","mcl_mangrove:mangrove_wood"},
@@ -441,7 +447,7 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "mcl_doors:trapdoor_mangrove",
+	recipe = "mcl_mangrove:mangrove_trapdoor",
 	burntime = 15,
 })
 
