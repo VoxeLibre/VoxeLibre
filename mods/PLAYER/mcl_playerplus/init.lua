@@ -301,7 +301,7 @@ minetest.register_globalstep(function(dtime)
 			end
 			mcl_player.player_set_animation(player, "fly")
 			local slowdown_mult = 0 -- amount of vel to take per sec
-			local fall_speed = 40 -- amount to fall down per sec in nodes
+			local fall_speed = 20 -- amount to fall down per sec in nodes
 			local speedup_mult = 7 -- amount of speed to add based on look dir
 			local max_speed = 100
 			local direction = player:get_look_dir()
@@ -315,10 +315,10 @@ minetest.register_globalstep(function(dtime)
 			speed_mult = math.max(speed_mult, -1)
 			speed_mult = math.min(speed_mult, max_speed)
 			if turn_amount > 0.3 then
-				speed_mult = speed_mult - (speed_mult * (turn_amount / (math.pi*3)))
+				speed_mult = speed_mult - (speed_mult * (turn_amount / (math.pi*8)))
 			end
 
-			playerphysics.add_physics_factor(player, "gravity", "mcl_playerplus:elytra", 0.1)
+			playerphysics.add_physics_factor(player, "gravity", "mcl_playerplus:elytra", 0.01)
 			if elytra.rocketing > 0 then
 				elytra.rocketing = elytra.rocketing - dtime
 				if vector.length(player_velocity) < 40 then
