@@ -285,7 +285,7 @@ minetest.register_globalstep(function(dtime)
 			elytra.speed = clamp(get_overall_velocity(player:get_velocity()) - 1, 0, 2)
 		end
 		-- don't let player get too fast by spamming jump
-		local block_below = minetest.get_node(vector.offset(player:get_velocity(), 0, -0.7, 0)).name
+		local block_below = minetest.get_node(vector.offset(player:get_pos(), 0, -0.7, 0)).name
 		if minetest.registered_nodes[block_below].walkable then
 			elytra.speed = clamp(elytra.speed, -1, 5)
 		end
