@@ -3617,6 +3617,7 @@ local mob_step = function(self, dtime)
 	check_item_pickup(self)
 	check_aggro(self,dtime)
 	if not self.fire_resistant then
+		-- ERROR: [#2523] THIS WILL CAUSE INVALID OBJECTREFS
 		mcl_burning.tick(self.object, dtime, self)
 	end
 

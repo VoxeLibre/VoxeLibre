@@ -201,6 +201,7 @@ function boat.on_punch(self, puncher, time_from_last_punch, tool_capabilities, d
 end
 
 function boat.on_step(self, dtime, moveresult)
+	-- ERROR: [#2523] THIS WILL CAUSE INVALID OBJECTREFS
 	mcl_burning.tick(self.object, dtime, self)
 
 	self._v = get_v(self.object:get_velocity()) * get_sign(self._v)
