@@ -1,8 +1,8 @@
 mcl_playerplus = {
 	elytra = {},
+	is_pressing_jump = {},
 }
 
-local is_pressing_jump = false
 local get_connected_players = minetest.get_connected_players
 local dir_to_yaw = minetest.dir_to_yaw
 local get_item_group = minetest.get_item_group
@@ -279,8 +279,8 @@ minetest.register_globalstep(function(dtime)
 			elytra.speed = 2
 		end
 
-		local is_just_jumped = control.jump and not is_pressing_jump and not elytra.active
-		is_pressing_jump = control.jump
+		local is_just_jumped = control.jump and not mcl_playerplus.is_pressing_jump[name] and not elytra.active
+		mcl_playerplus.is_pressing_jump[name] = control.jump
 		if is_just_jumped and not elytra.active then
 			elytra.speed = clamp(get_overall_velocity(player:get_velocity()) - 1, 0, 2)
 		end
