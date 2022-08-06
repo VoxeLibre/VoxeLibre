@@ -20,7 +20,7 @@ local def = {
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	sidelen = 10,
-	y_offset = -4,
+	y_offset = -5,
 	filenames = {
 		modpath.."/schematics/mcl_structures_ruined_portal_1.mts",
 		modpath.."/schematics/mcl_structures_ruined_portal_2.mts",
