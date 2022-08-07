@@ -114,8 +114,9 @@ local function damage_particles(pos, is_critical)
 end
 
 function ARROW_ENTITY.on_step(self, dtime)
-	-- ERROR: [#2523] THIS WILL CAUSE INVALID OBJECTREFS
 	mcl_burning.tick(self.object, dtime, self)
+	-- mcl_burning.tick may remove object immediately
+	if not self.object:get_pos() then return end
 
 	self._time_in_air = self._time_in_air + .001
 
