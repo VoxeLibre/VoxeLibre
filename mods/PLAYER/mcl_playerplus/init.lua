@@ -227,10 +227,12 @@ local function clamp(num, min, max)
 end
 
 local elytra_vars = {
-	slowdown_mult = 0, -- amount of vel to take per sec
-	fall_speed = 20, -- amount to fall down per sec in nodes
-	speedup_mult = 7, -- amount of speed to add based on look dir
-	max_speed = 100, -- max amount to multiply against look direction when flying
+	slowdown_mult = 0.05, -- amount of vel to take per sec
+	fall_speed = 1, -- amount of vel to fall down per sec
+	speedup_mult = 3, -- amount of speed to add based on look dir
+	max_speed = 30, -- max amount to multiply against look direction when flying
+	pitch_penalty = 0.8, -- if pitching up, slow down at this rate as a multiplier
+	rocket_speed = 5,
 }
 
 
@@ -308,23 +310,22 @@ minetest.register_globalstep(function(dtime)
 			local direction = player:get_look_dir()
 			local player_vel = player:get_velocity()
 			local turn_amount = anglediff(minetest.dir_to_yaw(direction), minetest.dir_to_yaw(player_vel))
-			local direction_mult = clamp(-direction.y - 0.1, -0.8, 1)
-			if direction_mult < 0 then direction_mult = -((direction_mult*2)^2) / 6 end
+			local direction_mult = clamp(-(direction.y), -1, 1)
+			if direction_mult < 0 then direction_mult = direction_mult * elytra_vars.pitch_penalty end
 
 			local speed_mult = elytra.speed + direction_mult * elytra_vars.speedup_mult * dtime
 			speed_mult = speed_mult - elytra_vars.slowdown_mult * dtime -- slow down
-			speed_mult = math.max(speed_mult, -1)
-			speed_mult = math.min(speed_mult, elytra_vars.max_speed)
-			if turn_amount > 0.3 then
+			speed_mult = clamp(speed_mult, -elytra_vars.max_speed, elytra_vars.max_speed)
+			if turn_amount > 0.3 and math.abs(direction.y) < 0.98 then -- don't do this if looking straight up / down
 				speed_mult = speed_mult - (speed_mult * (turn_amount / (math.pi*8)))
 			end
 
-			playerphysics.add_physics_factor(player, "gravity", "mcl_playerplus:elytra", 0.01)
+			playerphysics.add_physics_factor(player, "gravity", "mcl_playerplus:elytra", elytra_vars.fall_speed)
 			if elytra.rocketing > 0 then
 				elytra.rocketing = elytra.rocketing - dtime
 				if vector.length(player_velocity) < 40 then
 					-- player:add_velocity(vector.multiply(player:get_look_dir(), 4))
-					speed_mult = 10
+					speed_mult = elytra_vars.rocket_speed
 					add_particle({
 						pos = fly_pos,
 						velocity = {x = 0, y = 0, z = 0},
@@ -341,20 +342,18 @@ minetest.register_globalstep(function(dtime)
 
 			elytra.speed = speed_mult -- set the speed so you can keep track of it and add to it
 
-			local new_vel = direction -- use the facing direction as a base
-			new_vel = vector.multiply(new_vel, speed_mult)
+			local new_vel = vector.multiply(direction, speed_mult) -- use the look dir and speed as a mult
+			-- new_vel.y = new_vel.y - elytra_vars.fall_speed * dtime -- make the player fall a set amount
 
-			-- slow the player down so less spongy movement by applying half the inverse vel
+			-- slow the player down so less spongy movement by applying some of the inverse velocity
 			-- NOTE: do not set this higher than about 0.2 or the game will get the wrong vel and it will be broken
-			-- this is far from ideal, but there's no good way to set_velocity on the player
+			-- this is far from ideal, but there's no good way to set_velocity or slow down the player
 			player_vel = vector.multiply(player_vel, -0.1)
 			-- if speed_mult < 1 then player_vel.y = player_vel.y * 0.1 end
 			new_vel = vector.add(new_vel, player_vel)
 
-			-- new_vel.y = new_vel.y + clamp(speed_mult * dtime * 10, -10, 0)
-			new_vel.y = new_vel.y - elytra_vars.fall_speed * dtime
 			player:add_velocity(new_vel)
-		else
+		else -- reset things when you stop flying with elytra
 			elytra.rocketing = 0
 			playerphysics.remove_physics_factor(player, "gravity", "mcl_playerplus:elytra")
 		end
