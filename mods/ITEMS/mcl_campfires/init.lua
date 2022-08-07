@@ -11,7 +11,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 local campfires = {
-	{ name = "Campfire", lightlevel = 15, techname = "campfire", damage = 1, drops = "mcl_core:charcoal_lump 2" },
+	{ name = "Campfire", lightlevel = 14, techname = "campfire", damage = 1, drops = "mcl_core:charcoal_lump 2" },
 	{ name = "Soul Campfire", lightlevel = 10, techname = "soul_campfire", damage = 2, drops = "mcl_blackstone:soul_soil" },
 }
 
@@ -25,6 +25,7 @@ for _, campfire in pairs(campfires) do
 		drawtype = "mesh",
 		mesh = "mcl_campfires_campfire.obj",
 		tiles = {{name="mcl_campfires_log.png"},},
+		use_texture_alpha = "clip",
 		groups = { handy=1, axey=1, material_wood=1, not_in_creative_inventory=1, campfire=1, },
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -73,6 +74,7 @@ for _, campfire in pairs(campfires) do
 				length=2.0
 			}}
 		},
+		use_texture_alpha = "clip",
 		groups = { handy=1, axey=1, material_wood=1, campfire=1, lit_campfire=1 },
 		paramtype = "light",
 		paramtype2 = "facedir",
