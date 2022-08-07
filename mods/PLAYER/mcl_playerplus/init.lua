@@ -406,7 +406,7 @@ minetest.register_globalstep(function(dtime)
 			-- sets eye height, and nametag color accordingly
 			set_properties_conditional(player,{collisionbox = {-0.35,0,-0.35,0.35,0.8,0.35}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 			-- control body bone when flying
-			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new(degrees(dir_to_pitch(player_velocity)) - 90,-player_vel_yaw + yaw + 180,0))
+			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new((75-degrees(dir_to_pitch(player_velocity))) , -player_vel_yaw + yaw, 0))
 		elseif parent then
 			local parent_yaw = degrees(parent:get_yaw())
 			set_properties_conditional(player,{collisionbox = {-0.312,0,-0.312,0.312,1.8,0.312}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
@@ -422,11 +422,11 @@ minetest.register_globalstep(function(dtime)
 		elseif get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and is_sprinting(name) == true then
 			-- set head pitch and yaw when swimming
 			is_swimming = true
-			set_bone_position_conditional(player,"Head_Control", vector.new(0,6.3,0), vector.new(pitch-degrees(dir_to_pitch(player_velocity)),player_vel_yaw - yaw,0))
+			set_bone_position_conditional(player,"Head_Control", vector.new(0,6.3,0), vector.new(pitch-degrees(dir_to_pitch(player_velocity))+20,player_vel_yaw - yaw,0))
 			-- sets eye height, and nametag color accordingly
 			set_properties_conditional(player,{collisionbox = {-0.312,0,-0.312,0.312,0.8,0.312}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 			-- control body bone when swimming
-			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new(degrees(dir_to_pitch(player_velocity)) - 90,-player_vel_yaw + yaw + 180,0))
+			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new((75-degrees(dir_to_pitch(player_velocity))) , -player_vel_yaw + yaw, 0))
 		elseif get_item_group(mcl_playerinfo[name].node_head, "opaque") == 0
 		and get_item_group(mcl_playerinfo[name].node_head_top, "opaque") == 0 then
 			-- sets eye height, and nametag color accordingly
