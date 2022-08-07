@@ -120,11 +120,10 @@ function lightning.strike(pos)
 	if not pos then
 		return false
 	end
-	-- ERROR: [#2523] THIS WILL CAUSE INVALID OBJECTREFS
-	-- mcl_util.deal_damage inside one of on_strike_functions
-	local objects = get_objects_inside_radius(pos2, 3.5)
 	if lightning.on_strike_functions then
 		for _, func in pairs(lightning.on_strike_functions) do
+			-- allow on_strike callbacks to destroy entities by re-obtaining objects for each callback
+			local objects = get_objects_inside_radius(pos2, 3.5)
 			func(pos, pos2, objects)
 		end
 	end
@@ -176,7 +175,7 @@ lightning.register_on_strike(function(pos, pos2, objects)
 		elseif lua and lua.name == "mobs_mc:creeper" then
 			mcl_util.replace_mob(obj, "mobs_mc:creeper_charged")
 		else
-			-- ERROR: [#2523] THIS WILL CAUSE INVALID OBJECTREFS
+			-- WARNING: unsafe entity handling. object may be removed immediately
 			mcl_util.deal_damage(obj, 5, { type = "lightning_bolt" })
 		end
 	end
