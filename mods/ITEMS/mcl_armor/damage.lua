@@ -89,8 +89,9 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 	local thorns_damage = thorns_damage_regular + thorns_damage_irregular
 
 	if thorns_damage > 0 and reason.type ~= "thorns" and reason.source ~= obj then
-		-- ERROR: [#2523] THIS WILL CAUSE INVALID OBJECTREFS
 		mcl_util.deal_damage(reason.source, thorns_damage, {type = "thorns", direct = obj})
+		-- mcl_util.deal_damage may remove object immediately
+		if not reason.source:get_pos() then return end
 
 		local thorns_item = thorns_pieces[math.random(#thorns_pieces)]
 
