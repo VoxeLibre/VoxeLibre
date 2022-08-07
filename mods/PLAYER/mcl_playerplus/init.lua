@@ -214,6 +214,24 @@ local function set_bone_position_conditional(player,b,p,r) --bone,position,rotat
 	player:set_bone_position(b,p,r)
 end
 
+local function get_overall_velocity(vector)
+	local v = math.sqrt(vector.x^2 + vector.y^2 + vector.z^2)
+	return v
+end
+local function anglediff(a1, a2)
+	local a = a1 - a2
+ 	return math.abs((a + math.pi) % (math.pi*2) - math.pi)
+end
+local function clamp(num, min, max)
+	return math.min(max, math.max(num, min))
+end
+
+local elytra_vars = {
+	slowdown_mult = 0, -- amount of vel to take per sec
+	fall_speed = 20, -- amount to fall down per sec in nodes
+	speedup_mult = 7, -- amount of speed to add based on look dir
+	max_speed = 100, -- max amount to multiply against look direction when flying
+}
 
 
 minetest.register_globalstep(function(dtime)
@@ -262,19 +280,6 @@ minetest.register_globalstep(function(dtime)
 		local fly_node = minetest.get_node({x = fly_pos.x, y = fly_pos.y - 0.05, z = fly_pos.z}).name
 		local elytra = mcl_playerplus.elytra[player]
 
-		local function get_overall_velocity(vector)
-			local v = math.sqrt(vector.x^2 + vector.y^2 + vector.z^2)
-			return v
-		end
-		local function anglediff(a1, a2)
-			local a = a1 - a2
-		 	return math.abs((a + math.pi) % (math.pi*2) - math.pi)
-		end
-
-		local function clamp(num, min, max)
-			return math.min(max, math.max(num, min))
-		end
-
 		if not elytra.active then
 			elytra.speed = 2
 		end
@@ -300,20 +305,16 @@ minetest.register_globalstep(function(dtime)
 				player:set_pos(vector.offset(player:get_pos(), 0, 0.8, 0))
 			end
 			mcl_player.player_set_animation(player, "fly")
-			local slowdown_mult = 0 -- amount of vel to take per sec
-			local fall_speed = 20 -- amount to fall down per sec in nodes
-			local speedup_mult = 7 -- amount of speed to add based on look dir
-			local max_speed = 100
 			local direction = player:get_look_dir()
 			local player_vel = player:get_velocity()
 			local turn_amount = anglediff(minetest.dir_to_yaw(direction), minetest.dir_to_yaw(player_vel))
 			local direction_mult = clamp(-direction.y - 0.1, -0.8, 1)
 			if direction_mult < 0 then direction_mult = -((direction_mult*2)^2) / 6 end
 
-			local speed_mult = elytra.speed + direction_mult * speedup_mult * dtime
-			speed_mult = speed_mult - slowdown_mult * dtime -- slow down
+			local speed_mult = elytra.speed + direction_mult * elytra_vars.speedup_mult * dtime
+			speed_mult = speed_mult - elytra_vars.slowdown_mult * dtime -- slow down
 			speed_mult = math.max(speed_mult, -1)
-			speed_mult = math.min(speed_mult, max_speed)
+			speed_mult = math.min(speed_mult, elytra_vars.max_speed)
 			if turn_amount > 0.3 then
 				speed_mult = speed_mult - (speed_mult * (turn_amount / (math.pi*8)))
 			end
@@ -351,7 +352,7 @@ minetest.register_globalstep(function(dtime)
 			new_vel = vector.add(new_vel, player_vel)
 
 			-- new_vel.y = new_vel.y + clamp(speed_mult * dtime * 10, -10, 0)
-			new_vel.y = new_vel.y - fall_speed * dtime
+			new_vel.y = new_vel.y - elytra_vars.fall_speed * dtime
 			player:add_velocity(new_vel)
 		else
 			elytra.rocketing = 0
