@@ -71,6 +71,7 @@ local list_of_all_biomes = {
 	"JungleM_underground",
 	"ExtremeHillsM_underground",
 	"JungleEdgeM_underground",
+	"MangroveSwamp_underground",
 
 	-- ocean:
 
@@ -134,6 +135,8 @@ local list_of_all_biomes = {
 	"BirchForestM_deep_ocean",
 	"Taiga_deep_ocean",
 	"JungleM_ocean",
+	"MangroveSwamp_ocean",
+	"MangroveSwamp_deep_ocean",
 
 	-- water or beach?
 
@@ -157,6 +160,7 @@ local list_of_all_biomes = {
 	"MushroomIslandShore",
 	"JungleM_shore",
 	"Jungle_shore",
+	"MangroveSwamp_shore",
 
 	-- dimension biome:
 
@@ -202,6 +206,7 @@ local list_of_all_biomes = {
 	"MesaBryce",
 	"JungleEdge",
 	"SavannaM",
+	"MangroveSwamp",
 }
 
 -- count how many mobs are in an area

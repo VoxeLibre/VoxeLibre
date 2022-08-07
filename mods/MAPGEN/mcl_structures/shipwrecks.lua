@@ -143,19 +143,32 @@ mcl_structures.register_structure("shipwreck",{
 
 			},
 			{
-			stacks_min = 3,
-			stacks_max = 10,
+			stacks_min = 2,
+			stacks_max = 6,
 			items = {
-				{ itemstring = "mcl_core:iron_ingot", weight = 8, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_core:iron_nugget", weight = 8, amount_min = 1, amount_max = 10 },
-				{ itemstring = "mcl_core:emerald", weight = 8, amount_min = 1, amount_max = 12 },
-				{ itemstring = "mcl_dye:blue", weight = 8, amount_min = 1, amount_max = 12 },
-				{ itemstring = "mcl_core:gold_ingot", weight = 8, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_core:gold_nugget", weight = 8, amount_min = 1, amount_max = 10 },
-				{ itemstring = "mcl_experience:bottle", weight = 8, amount_min = 1, amount_max = 10 },
-				{ itemstring = "mcl_core:diamond", weight = 8, amount_min = 1, amount_max = 10 },
+				{ itemstring = "mcl_core:iron_ingot", weight = 90, amount_min = 1, amount_max = 5 },
+				{ itemstring = "mcl_core:iron_nugget", weight = 50, amount_min = 1, amount_max = 10 },
+				{ itemstring = "mcl_core:emerald", weight = 40, amount_min = 1, amount_max = 5 },
+				{ itemstring = "mcl_dye:blue", weight = 20, amount_min = 1, amount_max = 10 },
+				{ itemstring = "mcl_core:gold_ingot", weight = 10, amount_min = 1, amount_max = 5 },
+				{ itemstring = "mcl_core:gold_nugget", weight = 10, amount_min = 1, amount_max = 10 },
+				{ itemstring = "mcl_experience:bottle", weight = 5, amount_min = 1, amount_max = 1 },
+				{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 1 },
 				}
-			}
+			},{
+			stacks_min = 3,
+			stacks_max = 3,
+			items = {
+				--{ itemstring = "FIXME TREASURE MAP", weight = 8, amount_min = 1, amount_max = 5 },
+				{ itemstring = "mcl_core:paper", weight = 20, amount_min = 1, amount_max = 10 },
+				{ itemstring = "mcl_mobitems:feather", weight = 10, amount_min = 1, amount_max = 5 },
+				{ itemstring = "mcl_books:book", weight = 5, amount_min = 1, amount_max = 5 },
+				{ itemstring = "mcl_clock:clock", weight = 1, amount_min = 1, amount_max = 1 },
+				{ itemstring = "mcl_compass:compass", weight = 1, amount_min = 1, amount_max = 1 },
+				{ itemstring = "mcl_maps:empty_map", weight = 1, amount_min = 1, amount_max = 1 },
+
+				}
+			},
 		}
 	}
 })
