@@ -31,6 +31,7 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 			length=1
 		}}
 	},
+	use_texture_alpha = "clip",
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",

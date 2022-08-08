@@ -288,7 +288,7 @@ minetest.register_tool("mcl_tools:shovel_wood", {
 	_repair_material = "group:wood",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		shovely = { speed = 2, level = 1, uses = 60 }
+		shovely = { speed = 2, level = 2, uses = 60 }
 	},
 })
 minetest.register_tool("mcl_tools:shovel_stone", {

@@ -337,7 +337,6 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 						if not obj:is_player() then
 							return
 						end
-
 						mcl_util.deal_damage(obj, damage, {type = "explosion", direct = direct, source = source})
 
 						obj:add_velocity(vector.multiply(punch_dir, impact * 20))
