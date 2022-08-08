@@ -228,10 +228,10 @@ end
 
 local elytra_vars = {
 	slowdown_mult = 0.05, -- amount of vel to take per sec
-	fall_speed = 1, -- amount of vel to fall down per sec
-	speedup_mult = 3, -- amount of speed to add based on look dir
+	fall_speed = 0.3, -- amount of vel to fall down per sec
+	speedup_mult = 2, -- amount of speed to add based on look dir
 	max_speed = 30, -- max amount to multiply against look direction when flying
-	pitch_penalty = 0.8, -- if pitching up, slow down at this rate as a multiplier
+	pitch_penalty = 1.3, -- if pitching up, slow down at this rate as a multiplier
 	rocket_speed = 5,
 }
 
@@ -289,12 +289,14 @@ minetest.register_globalstep(function(dtime)
 		local is_just_jumped = control.jump and not mcl_playerplus.is_pressing_jump[name] and not elytra.active
 		mcl_playerplus.is_pressing_jump[name] = control.jump
 		if is_just_jumped and not elytra.active then
-			elytra.speed = clamp(get_overall_velocity(player:get_velocity()) - 1, 0, 2)
-		end
-		-- don't let player get too fast by spamming jump
-		local block_below = minetest.get_node(vector.offset(player:get_pos(), 0, -0.7, 0)).name
-		if minetest.registered_nodes[block_below].walkable then
-			elytra.speed = clamp(elytra.speed, -1, 5)
+			elytra.speed = clamp(get_overall_velocity(player:get_velocity()), 1, 5)
+			-- don't let player get too fast by spamming jump
+			local block_below = minetest.get_node(vector.offset(fly_pos, 0, -0.9, 0)).name
+			local block_below2 = minetest.get_node(vector.offset(fly_pos, 0, -1.9, 0)).name
+			if minetest.registered_nodes[block_below].walkable
+			or minetest.registered_nodes[block_below2].walkable then
+				elytra.speed = 1.5
+			end
 		end
 
 		elytra.active = player:get_inventory():get_stack("armor", 3):get_name() == "mcl_armor:elytra"
@@ -310,7 +312,7 @@ minetest.register_globalstep(function(dtime)
 			local direction = player:get_look_dir()
 			local player_vel = player:get_velocity()
 			local turn_amount = anglediff(minetest.dir_to_yaw(direction), minetest.dir_to_yaw(player_vel))
-			local direction_mult = clamp(-(direction.y), -1, 1)
+			local direction_mult = clamp(-(direction.y+0.1), -1, 1)
 			if direction_mult < 0 then direction_mult = direction_mult * elytra_vars.pitch_penalty end
 
 			local speed_mult = elytra.speed + direction_mult * elytra_vars.speedup_mult * dtime
