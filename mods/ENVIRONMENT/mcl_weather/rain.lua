@@ -2,6 +2,7 @@ local PARTICLES_COUNT_RAIN = tonumber(minetest.settings:get("mcl_weather_rain_pa
 local PARTICLES_COUNT_THUNDER = tonumber(minetest.settings:get("mcl_weather_thunder_particles")) or 900
 
 local get_connected_players = minetest.get_connected_players
+local mgname = minetest.get_mapgen_setting("mg_name")
 
 mcl_weather.rain = {
 	-- max rain particles created at time
