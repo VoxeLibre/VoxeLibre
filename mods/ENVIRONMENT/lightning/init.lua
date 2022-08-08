@@ -184,8 +184,9 @@ lightning.register_on_strike(function(pos, pos2, objects)
 	for i = 1, #playerlist do
 		local player = playerlist[i]
 		local sky = {}
+		local sky_table = player:get_sky(true)
 
-		sky.bgcolor, sky.type, sky.textures = player:get_sky()
+		sky.bgcolor, sky.type, sky.textures = sky_table.base_color, sky_table.type, sky_table.textures
 
 		local name = player:get_player_name()
 		if ps[name] == nil then
