@@ -227,12 +227,12 @@ local function clamp(num, min, max)
 end
 
 local elytra_vars = {
-	slowdown_mult = 0.05, -- amount of vel to take per sec
-	fall_speed = 0.3, -- amount of vel to fall down per sec
-	speedup_mult = 2, -- amount of speed to add based on look dir
-	max_speed = 30, -- max amount to multiply against look direction when flying
+	slowdown_mult = 0.0, -- amount of vel to take per sec
+	fall_speed = 0.2, -- amount of vel to fall down per sec
+	speedup_mult = 4, -- amount of speed to add based on look dir
+	max_speed = 6, -- max amount to multiply against look direction when flying
 	pitch_penalty = 1.3, -- if pitching up, slow down at this rate as a multiplier
-	rocket_speed = 5,
+	rocket_speed = 5.5,
 }
 
 
@@ -316,7 +316,7 @@ minetest.register_globalstep(function(dtime)
 			if direction_mult < 0 then direction_mult = direction_mult * elytra_vars.pitch_penalty end
 
 			local speed_mult = elytra.speed + direction_mult * elytra_vars.speedup_mult * dtime
-			speed_mult = speed_mult - elytra_vars.slowdown_mult * dtime -- slow down
+			speed_mult = speed_mult - elytra_vars.slowdown_mult * clamp(dtime, 0.09, 0.2) -- slow down but don't overdo it
 			speed_mult = clamp(speed_mult, -elytra_vars.max_speed, elytra_vars.max_speed)
 			if turn_amount > 0.3 and math.abs(direction.y) < 0.98 then -- don't do this if looking straight up / down
 				speed_mult = speed_mult - (speed_mult * (turn_amount / (math.pi*8)))
@@ -344,7 +344,7 @@ minetest.register_globalstep(function(dtime)
 
 			elytra.speed = speed_mult -- set the speed so you can keep track of it and add to it
 
-			local new_vel = vector.multiply(direction, speed_mult) -- use the look dir and speed as a mult
+			local new_vel = vector.multiply(direction, speed_mult * dtime * 30) -- use the look dir and speed as a mult
 			-- new_vel.y = new_vel.y - elytra_vars.fall_speed * dtime -- make the player fall a set amount
 
 			-- slow the player down so less spongy movement by applying some of the inverse velocity
