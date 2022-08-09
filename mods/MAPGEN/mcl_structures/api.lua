@@ -1,5 +1,12 @@
 mcl_structures.registered_structures = {}
 
+local disabled_structures = minetest.settings:get("mcl_disabled_structures")
+if disabled_structures then	disabled_structures = disabled_structures:split(",")
+else disabled_structures = {} end
+
+function mcl_structures.is_disabled(structname)
+	if table.indexof(disabled_structures,structname) ~= -1 then return true end
+end
 
 function mcl_structures.fill_chests(p1,p2,loot,pr)
 	for it,lt in pairs(loot) do
@@ -168,6 +175,7 @@ function mcl_structures.place_structure(pos, def, pr, blockseed)
 end
 
 function mcl_structures.register_structure(name,def,nospawn) --nospawn means it will be placed by another (non-nospawn) structure that contains it's structblock i.e. it will not be placed by mapgen directly
+	if mcl_structures.is_disabled(name) then return end
 	local structblock = "mcl_structures:structblock_"..name
 	local flags = "place_center_x, place_center_z, force_placement"
 	local y_offset = 0
