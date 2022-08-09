@@ -3618,6 +3618,8 @@ local mob_step = function(self, dtime)
 	check_aggro(self,dtime)
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
+		-- mcl_burning.tick may remove object immediately
+		if not self.object:get_pos() then return end
 	end
 
 	local pos = self.object:get_pos()

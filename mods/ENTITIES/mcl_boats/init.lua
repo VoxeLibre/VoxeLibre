@@ -206,6 +206,8 @@ end
 
 function boat.on_step(self, dtime, moveresult)
 	mcl_burning.tick(self.object, dtime, self)
+	-- mcl_burning.tick may remove object immediately
+	if not self.object:get_pos() then return end
 
 	self._v = get_v(self.object:get_velocity()) * get_sign(self._v)
 	local v_factor = 1
