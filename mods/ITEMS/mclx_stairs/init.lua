@@ -1,6 +1,6 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 local doc_mod = minetest.get_modpath("doc")
-
+--[[]
 
 local barks = {
 	{ "", S("Oak Bark Stairs"), S("Oak Bark Slab"), S("Double Oak Bark Slab") },
@@ -143,3 +143,4 @@ minetest.register_craft({
 	-- Same as wood slab
 	burntime = 8,
 })
+--]]

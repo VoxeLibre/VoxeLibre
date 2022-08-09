@@ -17,7 +17,7 @@ local propagule_allowed_nodes = {
 }
 local propagule_water_nodes = {"mcl_mud:mud","mcl_core:dirt","mcl_core:coarse_dirt","mcl_core:clay"}
  --"mcl_lush_caves:moss","mcl_lush_caves:rooted_dirt
-
+--[[]
 local function get_drops(fortune_level)
 	local apple_chances = {200, 180, 160, 120, 40}
 	local stick_chances = {50, 45, 30, 35, 10}
@@ -540,3 +540,4 @@ minetest.register_abm({
 		end
 end
 })
+--]]
