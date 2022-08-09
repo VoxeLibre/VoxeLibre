@@ -223,12 +223,9 @@ function boat.on_step(self, dtime, moveresult)
 		if not in_water and is_ice(waterp) then
 			on_ice = true
 		elseif is_fire({x=p.x, y=p.y-boat_y_offset, z=p.z}) then
-			if self.object:get_hp() <= 0 then
-				boat.on_death(self, nil)
-				self.object:remove()
-				return
-			end
-			self.object:set_hp(self.object:get_hp()-1)
+			boat.on_death(self, nil)
+			self.object:remove()
+			return
 		else
 			v_slowdown = 0.04
 			v_factor = 0.5
