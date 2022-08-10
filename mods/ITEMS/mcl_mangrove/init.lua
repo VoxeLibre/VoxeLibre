@@ -16,121 +16,9 @@ local propagule_allowed_nodes = {
 	"mcl_mud:mud",
 }
 local propagule_water_nodes = {"mcl_mud:mud","mcl_core:dirt","mcl_core:coarse_dirt","mcl_core:clay"}
---mcl_wood.register_wood("mangrove")
+mcl_wood.register_wood("mangrove",false,true)
  --"mcl_lush_caves:moss","mcl_lush_caves:rooted_dirt
---[[]
-local function get_drops(fortune_level)
-	local apple_chances = {200, 180, 160, 120, 40}
-	local stick_chances = {50, 45, 30, 35, 10}
-	local sapling_chances = {20, 16, 12, 10}
-	return {
-		max_items = 1,
-		items = {
-			{
-				items = {"mcl_mangrove:propagule"},
-				rarity = sapling_chances[fortune_level + 1] or sapling_chances[fortune_level]
-			},
-			{
-				items = {"mcl_core:stick 1"},
-				rarity = stick_chances[fortune_level + 1]
-			},
-			{
-				items = {"mcl_core:stick 2"},
-				rarity = stick_chances[fortune_level + 1]
-			},
-			{
-				items = {"mcl_core:apple"},
-				rarity = apple_chances[fortune_level + 1]
-			}
-		}
-	}
-end
 
-minetest.register_node("mcl_mangrove:mangrove_tree", {
-	description = S("Mangrove Wood"),
-	_doc_items_longdesc = S("The trunk of a Mangrove tree."),
-	_doc_items_hidden = false,
-	tiles = {"mcl_mangrove_log_top.png", "mcl_mangrove_log_top.png", "mcl_mangrove_log.png"},
-	paramtype2 = "facedir",
-	on_place = mcl_util.rotate_axis,
-	groups = {handy=1,axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	on_place = mcl_util.rotate_axis,
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
-	_mcl_stripped_variant = "mcl_mangrove:mangrove_stripped_trunk",
-})
-minetest.register_node("mcl_mangrove:mangrove_tree_bark", {
-	description = S("Mangrove Bark"),
-	_doc_items_longdesc = S("The bark of a Mangrove tree."),
-	_doc_items_hidden = false,
-	tiles = {"mcl_mangrove_log.png", "mcl_mangrove_log.png", "mcl_mangrove_log.png"},
-	paramtype2 = "facedir",
-	groups = {handy=1,axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	on_place = mcl_util.rotate_axis,
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
-	_mcl_stripped_variant = "mcl_mangrove:mangrove_stripped_bark",
-})
-
-minetest.register_node("mcl_mangrove:mangrove_wood", {
-	description = S("Mangrove Wood Planks"),
-	_doc_items_longdesc = doc.sub.items.temp.build,
-	_doc_items_hidden = false,
-	tiles = {"mcl_mangrove_planks.png"},
-
-	is_ground_content = false,
-	groups = {handy=1,axey=1, flammable=3,wood=1,building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	_mcl_blast_resistance = 3,
-	_mcl_hardness = 2,
-})
-
-minetest.register_node("mcl_mangrove:mangroveleaves", {
-	description = S("Mangrove Leaves"),
-	_doc_items_longdesc = S("mangrove leaves are grown from mangrove trees."),
-	_doc_items_hidden = false,
-	drawtype = "allfaces_optional",
-	waving = 2,
-	place_param2 = 1, -- Prevent leafdecay for placed nodes
-	tiles = {"mcl_mangrove_leaves.png"},
-	paramtype = "light",
-	groups = {handy=1,shearsy=1,swordy=1, leafdecay=10, flammable=2, leaves=1, deco_block=1, dig_by_piston=1, fire_encouragement=30, fire_flammability=60},
-	_mcl_shears_drop = true,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0.2,
-	_mcl_hardness = 0.2,
-	_mcl_silk_touch_drop = true,
-	_mcl_fortune_drop = { get_drops(1), get_drops(2), get_drops(3), get_drops(4) },
-})
-
-minetest.register_node("mcl_mangrove:mangrove_stripped_trunk", {
-	description = "The stripped wood of a Mangove tree",
-	_doc_items_longdesc = "The stripped wood of a Mangove tree",
-	_doc_items_hidden = false,
-	tiles ={"mcl_stripped_mangrove_log_top.png","mcl_stripped_mangrove_log_side.png",},
-	paramtype2 = "facedir",
-	on_place = mcl_util.rotate_axis,
-	groups = {handy=1, axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	on_rotate = mcl_util.rotate_axis_and_place,
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
-})
-minetest.register_node("mcl_mangrove:mangrove_stripped_bark", {
-	description = "The stripped bark of a Mangove tree",
-	_doc_items_longdesc = "The stripped bark of a Mangove tree",
-	_doc_items_hidden = false,
-	tiles ={"mcl_stripped_mangrove_log_side.png","mcl_stripped_mangrove_log_side.png",},
-	paramtype2 = "facedir",
-	on_place = mcl_util.rotate_axis,
-	groups = {handy=1, axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	on_rotate = mcl_util.rotate_axis_and_place,
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
-})
 
 minetest.register_node("mcl_mangrove:mangrove_roots", {
 	description = "Mangrove_Roots",
@@ -364,8 +252,8 @@ mcl_doors:register_door("mcl_mangrove:mangrove_door", {
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
-	tiles_bottom = {"mcl_mangrove_door_bottom.png", "mcl_mangrove_planks.png"},
-	tiles_top = {"mcl_mangrove_door_top.png", "mcl_mangrove_planks.png"},
+	tiles_bottom = {"mcl_mangrove_door_bottom.png", "mcl_wood_planks_mangrove.png"},
+	tiles_top = {"mcl_mangrove_door_top.png", "mcl_wood_planks_mangrove.png"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -374,7 +262,7 @@ mcl_doors:register_trapdoor("mcl_mangrove:mangrove_trapdoor", {
 	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
 	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
 	tile_front = "mcl_mangrove_trapdoor.png",
-	tile_side = "mcl_mangrove_planks.png",
+	tile_side = "mcl_wood_planks_mangrove.png",
 	wield_image = "mcl_mangrove_trapdoor.png",
 	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
@@ -393,20 +281,6 @@ mcl_fences.register_fence_and_fence_gate(
 	{"group:fence_wood"},
 	mcl_sounds.node_sound_wood_defaults(), "mcl_mangrove_mangrove_wood_fence_gate_open", "mcl_mangrove_mangrove_wood_fence_gate_close", 1, 1,
 	"mcl_mangrove_fence_gate.png")
-
-mcl_stairs.register_stair("mangrove_wood", "mcl_mangrove:mangrove_wood",
-	{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
-	{"mcl_mangrove_planks.png"},
-	S("Mangrove Wood Stairs"),
-	mcl_sounds.node_sound_wood_defaults(), 3, 2,
-	"woodlike")
-
-mcl_stairs.register_slab("mangrove_wood", "mcl_mangrove:mangrove_wood",
-	{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
-	{"mcl_mangrove_planks.png"},
-	S("Mangrove Wood Slab"),
-	mcl_sounds.node_sound_wood_defaults(), 3, 2,
-	S("Double Mangrove Wood Slab"))
 
 minetest.register_craft({
 	output = "mcl_mangrove:mangrove_tree_bark 3",
@@ -541,4 +415,3 @@ minetest.register_abm({
 		end
 end
 })
---]]

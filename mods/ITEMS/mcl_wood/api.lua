@@ -218,7 +218,7 @@ function readable_name(str)
 end
 
 
-function mcl_wood.register_wood(name)
+function mcl_wood.register_wood(name,nether,nosap)
 	local rname = readable_name(name)
 	register_tree_trunk("tree_"..name, S(rname.." Wood"), S(rname.." Bark"), S("The trunk of an "..name.." tree."), "mcl_wood_tree_"..name.."_top.png", "mcl_wood_tree_"..name..".png", "mcl_wood:stripped_"..name)
 
@@ -226,7 +226,9 @@ function mcl_wood.register_wood(name)
 
 	register_wooden_planks("wood_"..name, S(rname.." Wood Planks"), {"mcl_wood_planks_"..name..".png"})
 
-	register_sapling("sapling_"..name, S(rname.." Sapling"),S("When placed on soil (such as dirt) and exposed to light, an "..name.." sapling will grow into an "..name.." after some time."),S("Needs soil and light to grow"),"mcl_wood_sapling_"..name..".png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
+	if not nosap then
+		register_sapling("sapling_"..name, S(rname.." Sapling"),S("When placed on soil (such as dirt) and exposed to light, an "..name.." sapling will grow into an "..name.." after some time."),S("Needs soil and light to grow"),"mcl_wood_sapling_"..name..".png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
+	end
 
 	register_leaves("leaves_"..name, S(rname.." Leaves"), S(rname.." leaves are grown from "..name.." trees."), {"mcl_wood_leaves_"..name..".png"}, "mcl_wood:sapling_"..name, true, {20, 16, 12, 10})
 
