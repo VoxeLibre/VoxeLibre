@@ -118,7 +118,7 @@ end
 
 mcl_mobs:register_mob("mobs_mc:parrot", {
 	description = S("Parrot"),
-	type = "npc",
+	type = "passive",
 	spawn_class = "passive",
 	pathfinding = 1,
 	hp_min = 6,
