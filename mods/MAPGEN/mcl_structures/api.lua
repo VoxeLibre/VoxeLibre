@@ -59,9 +59,24 @@ local function smooth_cube(nn,pos,plane,amnt)
 	return r
 end
 
-local function get_foundation_nodes(ground_p1,ground_p2,pos,sidelen)
-	local replace = {"air","group:liquid","mcl_core:snow","group:tree","group:leaves","group:plant"}
-	local nn = smooth_cube(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-1,0),vector.offset(ground_p2,0,-30,0),replace),vector.offset(pos,0,-30,0),true,sidelen * 64)
+local function find_ground(pos,nn,gn)
+	local r = 0
+	for _,v in pairs(nn) do
+		local p=vector.new(v)
+		repeat
+			local n = minetest.get_node(p).name
+			p = vector.offset(p,0,-1,0)
+		until not n or n == "mcl_core:bedrock" or n == "ignore" or n == gn
+	--minetest.log(tostring(pos.y - p.y))
+		if pos.y - p.y > r then r = pos.y - p.y end
+	end
+	return r
+end
+
+local function get_foundation_nodes(ground_p1,ground_p2,pos,sidelen,node_stone)
+	local replace = {"air","group:liquid","mcl_core:snow","group:tree","group:leaves","group:plant","grass_block","group:dirt"}
+	local depth = find_ground(pos,minetest.find_nodes_in_area(ground_p1,ground_p2,replace),node_stone)
+	local nn = smooth_cube(minetest.find_nodes_in_area(vector.offset(ground_p1,0,-1,0),vector.offset(ground_p2,0,-depth,0),replace),vector.offset(pos,0,-depth,0),true,sidelen * 64)
 	local stone = {}
 	local filler = {}
 	local top = {}
@@ -86,7 +101,6 @@ local function get_foundation_nodes(ground_p1,ground_p2,pos,sidelen)
 end
 
 local function foundation(ground_p1,ground_p2,pos,sidelen)
-	local stone,filler,top,dust = get_foundation_nodes(ground_p1,ground_p2,pos,sidelen)
 	local node_stone = "mcl_core:stone"
 	local node_filler = "mcl_core:dirt"
 	local node_top = "mcl_core:dirt_with_grass" or minetest.get_node(ground_p1).name
@@ -103,7 +117,8 @@ local function foundation(ground_p1,ground_p2,pos,sidelen)
 		end
 	end
 
-	minetest.bulk_set_node(top,{name=node_top})
+	local stone,filler,top,dust = get_foundation_nodes(ground_p1,ground_p2,pos,sidelen,node_stone)
+	minetest.bulk_set_node(top,{name=node_top},node_stone)
 
 	if node_dust then
 		minetest.bulk_set_node(dust,{name=node_dust})
