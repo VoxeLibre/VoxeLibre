@@ -9,6 +9,9 @@ if mod_screwdriver then
 	on_rotate = screwdriver.rotate_3way
 end
 
+local door_longdesc = S("Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.")
+local door_usagehelp = S("To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.")
+
 -- Register tree trunk (wood) and bark
 local function register_tree_trunk(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark, stripped_variant)
 	minetest.register_node(":mcl_wood:"..subname, {
@@ -218,7 +221,8 @@ function readable_name(str)
 end
 
 
-function mcl_wood.register_wood(name,nether,nosap)
+function mcl_wood.register_wood(name,p)
+	if not p then p = {} end
 	local rname = readable_name(name)
 	register_tree_trunk("tree_"..name, S(rname.." Wood"), S(rname.." Bark"), S("The trunk of an "..name.." tree."), "mcl_wood_tree_"..name.."_top.png", "mcl_wood_tree_"..name..".png", "mcl_wood:stripped_"..name)
 
@@ -226,7 +230,7 @@ function mcl_wood.register_wood(name,nether,nosap)
 
 	register_wooden_planks("wood_"..name, S(rname.." Wood Planks"), {"mcl_wood_planks_"..name..".png"})
 
-	if not nosap then
+	if not p.nosap then
 		register_sapling("sapling_"..name, S(rname.." Sapling"),S("When placed on soil (such as dirt) and exposed to light, an "..name.." sapling will grow into an "..name.." after some time."),S("Needs soil and light to grow"),"mcl_wood_sapling_"..name..".png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
 	end
 
@@ -244,4 +248,42 @@ function mcl_wood.register_wood(name,nether,nosap)
 			S(rname.." Wood Slab"),
 			mcl_sounds.node_sound_wood_defaults(), 3, 2,
 			S("Double "..rname.." Wood Slab"))
+
+	mcl_fences.register_fence_and_fence_gate(
+		name.."_wood_fence",
+		S(rname.." Wood Fence"),
+		S(rname.." Wood Fence"),
+		"mcl_fences_fence_"..name..".png",
+		{handy=1,axey=1, flammable=2,fence_wood=1, fire_encouragement=5, fire_flammability=20},
+		minetest.registered_nodes["mcl_wood:wood_oak"]._mcl_hardness,
+		minetest.registered_nodes["mcl_wood:wood_oak"]._mcl_blast_resistance,
+		{"group:fence_wood"},
+		mcl_sounds.node_sound_wood_defaults(), "doors_fencegate_open", "doors_fencegate_close", 1, 1,
+		"mcl_fences_fence_gate_"..name..".png")
+
+	mcl_doors:register_door(":mcl_doors:door_"..name, {
+		description = S(rname.." Door"),
+		_doc_items_longdesc = door_longdesc,
+		_doc_items_usagehelp = door_usagehelp,
+		inventory_image = "mcl_doors_door_"..name..".png",
+		groups = {handy=1,axey=1, material_wood=1, flammable=-1},
+		_mcl_hardness = 3,
+		_mcl_blast_resistance = 3,
+		tiles_bottom = {"mcl_doors_door_"..name.."_lower.png", "mcl_wood_planks_"..name..".png"},
+		tiles_top = {"mcl_doors_door_"..name.."_upper.png", "mcl_wood_planks_"..name..".png"},
+		sounds = mcl_sounds.node_sound_wood_defaults(),
+	})
+
+	mcl_doors:register_trapdoor(":mcl_doors:trapdoor_"..name, {
+		description = S(rname.." Trapdoor"),
+		_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
+		_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
+		tile_front = "mcl_doors_trapdoor_"..name..".png",
+		tile_side = "mcl_wood_planks_"..name..".png",
+		wield_image = "mcl_doors_trapdoor_"..name..".png",
+		groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
+		_mcl_hardness = 3,
+		_mcl_blast_resistance = 3,
+		sounds = mcl_sounds.node_sound_wood_defaults(),
+	})
 end

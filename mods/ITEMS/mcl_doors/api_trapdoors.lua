@@ -68,11 +68,11 @@ function mcl_doors:register_trapdoor(name, def)
 		-- Close
 		if minetest.get_item_group(me.name, "trapdoor") == 2 then
 			minetest.sound_play(def.sound_close, {pos = pos, gain = 0.3, max_hear_distance = 16}, true)
-			tmp_node = {name=name, param1=me.param1, param2=me.param2}
+			tmp_node = {name=name:gsub(":mcl_doors","mcl_doors"), param1=me.param1, param2=me.param2}
 		-- Open
 		else
 			minetest.sound_play(def.sound_open, {pos = pos, gain = 0.3, max_hear_distance = 16}, true)
-			tmp_node = {name=name.."_open", param1=me.param1, param2=me.param2}
+			tmp_node = {name=name:gsub(":mcl_doors","mcl_doors").."_open", param1=me.param1, param2=me.param2}
 		end
 		minetest.set_node(pos, tmp_node)
 	end

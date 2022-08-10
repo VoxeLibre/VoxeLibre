@@ -157,8 +157,8 @@ function mcl_doors:register_door(name, def)
 			local left_node = minetest.get_node(pt_left)
 
 			-- Set door nodes
-			minetest.set_node(pt, {name=name.."_b_1", param2=p2})
-			minetest.set_node(pt2, {name=name.."_t_1", param2=p2})
+			minetest.set_node(pt, {name=name:gsub(":mcl_doors","mcl_doors").."_b_1", param2=p2})
+			minetest.set_node(pt2, {name=name:gsub(":mcl_doors","mcl_doors").."_t_1", param2=p2})
 
 			if def.sounds and def.sounds.place then
 				minetest.sound_play(def.sounds.place, {pos=pt}, true)
@@ -217,9 +217,9 @@ function mcl_doors:register_door(name, def)
 		local p2 = minetest.get_node(pos).param2
 		local np2 = params[p2+1]
 
-		minetest.swap_node(pos, {name=replace_dir, param2=np2})
+		minetest.swap_node(pos, {name=replace_dir:gsub(":mcl_doors","mcl_doors"), param2=np2})
 		pos.y = pos.y-dir
-		minetest.swap_node(pos, {name=replace, param2=np2})
+		minetest.swap_node(pos, {name=replace:gsub(":mcl_doors","mcl_doors"), param2=np2})
 
 		local door_switching_sound
 		if meta1:get_int("is_open") == 1 then
@@ -265,7 +265,7 @@ function mcl_doors:register_door(name, def)
 	if not def.only_redstone_can_open then
 		on_rightclick = function(pos, node, clicker)
 			if check_player_priv(pos, clicker) then
-				on_open_close(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2")
+				on_open_close(pos, 1, name:gsub(":mcl_doors","mcl_doors").."_t_1", name:gsub(":mcl_doors","mcl_doors").."_b_2", name:gsub(":mcl_doors","mcl_doors").."_t_2")
 			end
 		end
 	end
@@ -299,7 +299,7 @@ function mcl_doors:register_door(name, def)
 			else
 				minetest.add_item(bottom, name)
 				local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
-				if minetest.get_node(bottom).name ~= name.."_b_2" and minetest.get_node(top).name == name.."_t_1" then
+				if minetest.get_node(bottom).name ~= name:gsub(":mcl_doors","mcl_doors").."_b_2" and minetest.get_node(top).name == name:gsub(":mcl_doors","mcl_doors").."_t_1" then
 					minetest.remove_node(top)
 				end
 			end
@@ -337,7 +337,7 @@ function mcl_doors:register_door(name, def)
 	else
 		on_rightclick = function(pos, node, clicker)
 			if check_player_priv(pos, clicker) then
-				on_open_close(pos, -1, name.."_b_1", name.."_t_2", name.."_b_2")
+				on_open_close(pos, -1, name:gsub(":mcl_doors","mcl_doors").."_b_1", name:gsub(":mcl_doors","mcl_doors").."_t_2", name:gsub(":mcl_doors","mcl_doors").."_b_2")
 			end
 		end
 	end
@@ -370,7 +370,7 @@ function mcl_doors:register_door(name, def)
 				meta_top:set_int("rotation", 0)
 			else
 				local bottom = { x = top.x, y = top.y - 1, z = top.z }
-				if minetest.get_node(top).name ~= name.."_t_2" and minetest.get_node(bottom).name == name.."_b_1" and oldnode.name == name.."_t_1" then
+				if minetest.get_node(top).name ~= name.."_t_2" and minetest.get_node(bottom).name == name:gsub(":mcl_doors","mcl_doors").."_b_1" and oldnode.name == name:gsub(":mcl_doors","mcl_doors").."_t_1" then
 					minetest.dig_node(bottom)
 				end
 			end
@@ -393,7 +393,7 @@ function mcl_doors:register_door(name, def)
 				local bottom = {x=top.x,y=top.y-1,z=top.z}
 				local meta_bottom = minetest_get_meta(bottom)
 				meta_bottom:set_int("rotation", 1)
-				node.name = name .."_b_1"
+				node.name = node.name:gsub(":mcl_doors","mcl_doors").."_b_1"
 				minetest.swap_node(bottom, node)
 
 				return true
@@ -409,7 +409,7 @@ function mcl_doors:register_door(name, def)
 	else
 		on_rightclick = function(pos, node, clicker)
 			if check_player_priv(pos, clicker) then
-				on_open_close(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1")
+				on_open_close(pos, 1, name:gsub(":mcl_doors","mcl_doors").."_t_2", name:gsub(":mcl_doors","mcl_doors").."_b_1", name:gsub(":mcl_doors","mcl_doors").."_t_1")
 			end
 		end
 	end

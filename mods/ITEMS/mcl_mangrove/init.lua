@@ -16,9 +16,9 @@ local propagule_allowed_nodes = {
 	"mcl_mud:mud",
 }
 local propagule_water_nodes = {"mcl_mud:mud","mcl_core:dirt","mcl_core:coarse_dirt","mcl_core:clay"}
-mcl_wood.register_wood("mangrove",false,true)
  --"mcl_lush_caves:moss","mcl_lush_caves:rooted_dirt
 
+mcl_wood.register_wood("mangrove",{nosap=true})
 
 minetest.register_node("mcl_mangrove:mangrove_roots", {
 	description = "Mangrove_Roots",
@@ -244,43 +244,7 @@ minetest.register_node("mcl_mangrove:mangrove_mud_roots", {
 	_mcl_hardness = 0.7,
 })
 
-mcl_doors:register_door("mcl_mangrove:mangrove_door", {
-	description = ("Mangrove Door"),
-	_doc_items_longdesc = "",
-	_doc_items_usagehelp = "",
-	inventory_image = "mcl_mangrove_doors.png",
-	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
-	_mcl_hardness = 3,
-	_mcl_blast_resistance = 3,
-	tiles_bottom = {"mcl_mangrove_door_bottom.png", "mcl_wood_planks_mangrove.png"},
-	tiles_top = {"mcl_mangrove_door_top.png", "mcl_wood_planks_mangrove.png"},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-})
 
-mcl_doors:register_trapdoor("mcl_mangrove:mangrove_trapdoor", {
-	description = S("Mangrove Trapdoor"),
-	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
-	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
-	tile_front = "mcl_mangrove_trapdoor.png",
-	tile_side = "mcl_wood_planks_mangrove.png",
-	wield_image = "mcl_mangrove_trapdoor.png",
-	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
-	_mcl_hardness = 3,
-	_mcl_blast_resistance = 3,
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-})
-
-mcl_fences.register_fence_and_fence_gate(
-	"mangrove_wood_fence",
-	S("Mangrove Wood Fence"),
-	S("Mangrove Wood Plank Fence"),
-	"mcl_mangrove_fence.png",
-	{handy=1,axey=1, flammable=2,fence_wood=1, fire_encouragement=5, fire_flammability=20},
-	minetest.registered_nodes["mcl_core:wood"]._mcl_hardness,
-	minetest.registered_nodes["mcl_core:wood"]._mcl_blast_resistance,
-	{"group:fence_wood"},
-	mcl_sounds.node_sound_wood_defaults(), "mcl_mangrove_mangrove_wood_fence_gate_open", "mcl_mangrove_mangrove_wood_fence_gate_close", 1, 1,
-	"mcl_mangrove_fence_gate.png")
 
 minetest.register_craft({
 	output = "mcl_mangrove:mangrove_tree_bark 3",
