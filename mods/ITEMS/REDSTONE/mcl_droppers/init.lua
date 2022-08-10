@@ -143,7 +143,7 @@ local dropperdef = {
 					local item_entity = minetest.add_item(droppos, dropitem)
 					local drop_vel = vector.subtract(droppos, pos)
 					local speed = 3
-					item_entity:set_velocity(drop_vel * speed)
+					item_entity:set_velocity(vector.multiply(drop_vel,speed))
 					stack:take_item()
 					inv:set_stack("main", stack_id, stack)
 				end
