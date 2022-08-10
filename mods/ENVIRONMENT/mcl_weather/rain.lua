@@ -91,7 +91,7 @@ end
 function mcl_weather.rain.add_player(player)
 	if mcl_weather.players[player:get_player_name()] == nil then
 		local player_meta = {}
-		player_meta.origin_sky = {player:get_sky()}
+		player_meta.origin_sky = {player:get_sky(true)}
 		mcl_weather.players[player:get_player_name()] = player_meta
 		update_sound[player:get_player_name()]=true
 	end
