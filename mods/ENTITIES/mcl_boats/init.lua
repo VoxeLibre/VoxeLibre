@@ -24,6 +24,10 @@ local function is_ice(pos)
 	return is_group(pos, "ice")
 end
 
+local function is_fire(pos)
+	return is_group(pos, "set_on_fire")
+end
+
 local function get_sign(i)
 	if i == 0 then
 		return 0
@@ -218,6 +222,10 @@ function boat.on_step(self, dtime, moveresult)
 		on_water = false
 		if not in_water and is_ice(waterp) then
 			on_ice = true
+		elseif is_fire({x=p.x, y=p.y-boat_y_offset, z=p.z}) then
+			boat.on_death(self, nil)
+			self.object:remove()
+			return
 		else
 			v_slowdown = 0.04
 			v_factor = 0.5
