@@ -283,7 +283,7 @@ minetest.register_globalstep(function(dtime)
 		local elytra = mcl_playerplus.elytra[player]
 
 		if not elytra.active then
-			elytra.speed = 2
+			elytra.speed = 0
 		end
 
 		local is_just_jumped = control.jump and not mcl_playerplus.is_pressing_jump[name] and not elytra.active
@@ -295,7 +295,7 @@ minetest.register_globalstep(function(dtime)
 			local block_below2 = minetest.get_node(vector.offset(fly_pos, 0, -1.9, 0)).name
 			if minetest.registered_nodes[block_below].walkable
 			or minetest.registered_nodes[block_below2].walkable then
-				elytra.speed = 1.5
+				elytra.speed = 1
 			end
 		end
 
