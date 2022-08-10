@@ -5,31 +5,6 @@
 
 local S = minetest.get_translator(minetest.get_current_modname())
 
-local woods = {
-	{ "wood", "default_wood.png", S("Oak Wood Stairs"), S("Oak Wood Slab"), S("Double Oak Wood Slab") },
-	{ "junglewood", "default_junglewood.png", S("Jungle Wood Stairs"), S("Jungle Wood Slab"), S("Double Jungle Wood Slab") },
-	{ "acaciawood", "default_acacia_wood.png", S("Acacia Wood Stairs"), S("Acacia Wood Slab"), S("Double Acacia Wood Slab") },
-	{ "sprucewood", "mcl_core_planks_spruce.png", S("Spruce Wood Stairs"), S("Spruce Wood Slab"), S("Double Spruce Wood Slab") },
-	{ "birchwood", "mcl_core_planks_birch.png", S("Birch Wood Stairs"), S("Birch Wood Slab"), S("Double Birch Wood Slab") },
-	{ "darkwood", "mcl_core_planks_big_oak.png", S("Dark Oak Wood Stairs"), S("Dark Oak Wood Slab"), S("Double Dark Oak Wood Slab") },
-}
-
-for w=1, #woods do
-	local wood = woods[w]
-	mcl_stairs.register_stair(wood[1], "mcl_core:"..wood[1],
-			{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
-			{wood[2]},
-			wood[3],
-			mcl_sounds.node_sound_wood_defaults(), 3, 2,
-			"woodlike")
-	mcl_stairs.register_slab(wood[1], "mcl_core:"..wood[1],
-			{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
-			{wood[2]},
-			wood[4],
-			mcl_sounds.node_sound_wood_defaults(), 3, 2,
-			wood[5])
-end
-
 mcl_stairs.register_stair_and_slab_simple("stone_rough", "mcl_core:stone", S("Stone Stairs"), S("Stone Slab"), S("Double Stone Slab"))
 
 mcl_stairs.register_slab("stone", "mcl_core:stone_smooth",

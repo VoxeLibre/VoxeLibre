@@ -16,6 +16,7 @@ local propagule_allowed_nodes = {
 	"mcl_mud:mud",
 }
 local propagule_water_nodes = {"mcl_mud:mud","mcl_core:dirt","mcl_core:coarse_dirt","mcl_core:clay"}
+--mcl_wood.register_wood("mangrove")
  --"mcl_lush_caves:moss","mcl_lush_caves:rooted_dirt
 --[[]
 local function get_drops(fortune_level)

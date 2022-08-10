@@ -11,7 +11,7 @@ end
 
 -- Register tree trunk (wood) and bark
 local function register_tree_trunk(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark, stripped_variant)
-	minetest.register_node("mcl_wood:"..subname, {
+	minetest.register_node(":mcl_wood:"..subname, {
 		description = description_trunk,
 		_doc_items_longdesc = longdesc,
 		_doc_items_hidden = false,
@@ -27,7 +27,7 @@ local function register_tree_trunk(subname, description_trunk, description_bark,
 		_mcl_stripped_variant = stripped_variant,
 	})
 
-	minetest.register_node("mcl_wood:"..subname.."_bark", {
+	minetest.register_node(":mcl_wood:"..subname.."_bark", {
 		description = description_bark,
 		_doc_items_longdesc = S("This is a decorative block surrounded by the bark of a tree trunk."),
 		tiles = {tile_bark},
@@ -54,7 +54,7 @@ end
 
 -- Register stripped trunk and stripped wood
 local function register_stripped_trunk(subname, description_stripped_trunk, description_stripped_bark, longdesc, longdesc_wood, tile_stripped_inner, tile_stripped_bark)
-	minetest.register_node("mcl_wood:"..subname, {
+	minetest.register_node(":mcl_wood:"..subname, {
 		description = description_stripped_trunk,
 		_doc_items_longdesc = longdesc,
 		_doc_items_hidden = false,
@@ -69,7 +69,7 @@ local function register_stripped_trunk(subname, description_stripped_trunk, desc
 		_mcl_hardness = 2,
 	})
 
-	minetest.register_node("mcl_wood:"..subname.."_bark", {
+	minetest.register_node(":mcl_wood:"..subname.."_bark", {
 		description = description_stripped_bark,
 		_doc_items_longdesc = longdesc_wood,
 		tiles = {tile_stripped_bark},
@@ -94,7 +94,7 @@ local function register_stripped_trunk(subname, description_stripped_trunk, desc
 end
 
 local function register_wooden_planks(subname, description, tiles)
-	minetest.register_node("mcl_wood:"..subname, {
+	minetest.register_node(":mcl_wood:"..subname, {
 		description = description,
 		_doc_items_longdesc = doc.sub.items.temp.build,
 		_doc_items_hidden = false,
@@ -142,7 +142,7 @@ local function register_leaves(subname, description, longdesc, tiles, sapling, d
 		return drop
 	end
 
-	minetest.register_node("mcl_wood:"..subname, {
+	minetest.register_node(":mcl_wood:"..subname, {
 		description = description,
 		_doc_items_longdesc = longdesc,
 		_doc_items_hidden = false,
@@ -169,7 +169,7 @@ local function register_leaves(subname, description, longdesc, tiles, sapling, d
 end
 
 local function register_sapling(subname, description, longdesc, tt_help, texture, selbox)
-	minetest.register_node("mcl_wood:"..subname, {
+	minetest.register_node(":mcl_wood:"..subname, {
 		description = description,
 		_tt_help = tt_help,
 		_doc_items_longdesc = longdesc,
@@ -229,4 +229,17 @@ function mcl_wood.register_wood(name)
 	register_sapling("sapling_"..name, S(rname.." Sapling"),S("When placed on soil (such as dirt) and exposed to light, an "..name.." sapling will grow into an "..name.." after some time."),S("Needs soil and light to grow"),"mcl_wood_sapling_"..name..".png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
 
 	register_leaves("leaves_"..name, S(rname.." Leaves"), S(rname.." leaves are grown from "..name.." trees."), {"mcl_wood_leaves_"..name..".png"}, "mcl_wood:sapling_"..name, true, {20, 16, 12, 10})
+
+	mcl_stairs.register_stair(name, "mcl_wood:"..name,
+			{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
+			{"mcl_wood_planks_"..name..".png"},
+			S("Oak Wood Stairs"),
+			mcl_sounds.node_sound_wood_defaults(), 3, 2,
+			"woodlike")
+	mcl_stairs.register_slab(name, "mcl_wood:"..name,
+			{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
+			{"mcl_wood_planks_"..name..".png"},
+			S(rname.." Wood Slab"),
+			mcl_sounds.node_sound_wood_defaults(), 3, 2,
+			S("Double "..rname.." Wood Slab"))
 end
