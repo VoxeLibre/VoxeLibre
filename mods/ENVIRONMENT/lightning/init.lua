@@ -120,9 +120,10 @@ function lightning.strike(pos)
 	if not pos then
 		return false
 	end
-	local objects = get_objects_inside_radius(pos2, 3.5)
 	if lightning.on_strike_functions then
 		for _, func in pairs(lightning.on_strike_functions) do
+			-- allow on_strike callbacks to destroy entities by re-obtaining objects for each callback
+			local objects = get_objects_inside_radius(pos2, 3.5)
 			func(pos, pos2, objects)
 		end
 	end
@@ -174,6 +175,7 @@ lightning.register_on_strike(function(pos, pos2, objects)
 		elseif lua and lua.name == "mobs_mc:creeper" then
 			mcl_util.replace_mob(obj, "mobs_mc:creeper_charged")
 		else
+			-- WARNING: unsafe entity handling. object may be removed immediately
 			mcl_util.deal_damage(obj, 5, { type = "lightning_bolt" })
 		end
 	end
@@ -182,8 +184,9 @@ lightning.register_on_strike(function(pos, pos2, objects)
 	for i = 1, #playerlist do
 		local player = playerlist[i]
 		local sky = {}
+		local sky_table = player:get_sky(true)
 
-		sky.bgcolor, sky.type, sky.textures = player:get_sky()
+		sky.bgcolor, sky.type, sky.textures = sky_table.base_color, sky_table.type, sky_table.textures
 
 		local name = player:get_player_name()
 		if ps[name] == nil then

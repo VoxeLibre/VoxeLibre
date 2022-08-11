@@ -246,7 +246,7 @@ dofile(modpath.."/igloo.lua")
 dofile(modpath.."/woodland_mansion.lua")
 dofile(modpath.."/ruined_portal.lua")
 dofile(modpath.."/geode.lua")
-
+dofile(modpath.."/pillager_outpost.lua")
 
 
 mcl_structures.register_structure("desert_well",{

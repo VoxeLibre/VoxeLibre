@@ -246,7 +246,7 @@ mcl_weather.skycolor = {
 		get_current_bg_color = function()
 			local players = mcl_weather.skycolor.utils.get_players(nil)
 			if players[1] then
-				return players[1]:get_sky()
+				return players[1]:get_sky(true).sky_color
 			end
 			return nil
 		end

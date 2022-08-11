@@ -115,6 +115,8 @@ end
 
 function ARROW_ENTITY.on_step(self, dtime)
 	mcl_burning.tick(self.object, dtime, self)
+	-- mcl_burning.tick may remove object immediately
+	if not self.object:get_pos() then return end
 
 	self._time_in_air = self._time_in_air + .001
 
