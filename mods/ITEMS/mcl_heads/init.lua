@@ -11,6 +11,9 @@ end
 
 mcl_heads = {}
 
+-- rotations of head nodes within a quadrant (0° ≤ θ ≤ 90°)
+mcl_heads.FLOOR_DEGREES = { [0]='', '22_5', '45', '67_5', }
+
 -- box of head nodes
 mcl_heads.FLOOR_BOX = { -0.25, -0.5, -0.25, 0.25, 0.0, 0.25, }
 
@@ -50,6 +53,38 @@ mcl_heads.deftemplate_floor = {
 	on_secondary_use = equip_armor,
 }
 
+mcl_heads.deftemplate_floor_angled = {
+	drawtype = "mesh",
+	selection_box = {
+		type = "fixed",
+		fixed = mcl_heads.FLOOR_BOX,
+	},
+	collision_box = {
+		type = "fixed",
+		fixed = mcl_heads.FLOOR_BOX,
+	},
+	groups = {
+		handy = 1,
+		head = 1,
+		deco_block = 1,
+		dig_by_piston = 1,
+		not_in_creative_inventory = 1,
+	},
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
+	paramtype = "light",
+	paramtype2 = "facedir",
+	stack_max = 64,
+	sunlight_propagates = true,
+	sounds = mcl_sounds.node_sound_defaults{
+		footstep = {name="default_hard_footstep", gain=0.3},
+	},
+	is_ground_content = false,
+
+	_doc_items_create_entry = false,
+	_mcl_blast_resistance = 1,
+	_mcl_hardness = 1,
+}
+
 function mcl_heads.deftemplate_floor.on_rotate(pos, node, user, mode, new_param2)
 	if mode == screwdriver.ROTATE_AXIS then
 		node.name = node.name .. "_wall"
@@ -80,16 +115,30 @@ function mcl_heads.deftemplate_floor.on_place(itemstack, placer, pointed_thing)
 	local dir = {x = under.x - above.x, y = under.y - above.y, z = under.z - above.z}
 	local wdir = minetest.dir_to_wallmounted(dir)
 
-	-- place floor mob head
-	if wdir == 0 or wdir == 1 then
-		return minetest.item_place(itemstack, placer, pointed_thing)
-	end
-
-	-- place wall mob head
 	local itemstring = itemstack:get_name()
 	local placestack = ItemStack(itemstack)
-	placestack:set_name(itemstring .."_wall")
-	itemstack = minetest.item_place(placestack, placer, pointed_thing, wdir)
+
+	-- place wall head node (elsewhere)
+	if wdir ~= 0 and wdir ~= 1 then
+		placestack:set_name(itemstring .."_wall")
+		itemstack = minetest.item_place(placestack, placer, pointed_thing, wdir)
+	-- place floor head node (floor and ceiling)
+	else
+		local fdir = minetest.dir_to_facedir(dir)
+
+		-- determine the head node rotation based on player's yaw (in cw direction from North/Z+)
+		local yaw = math.pi*2 - placer:get_look_horizontal()
+
+		local rotation_level = math.min(math.max(math.round((yaw / (math.pi*2)) * 16), 0), 15)
+		placestack:set_name(itemstring ..mcl_heads.FLOOR_DEGREES[rotation_level % 4])
+
+		-- determine the head node face direction based on rotation level
+		fdir = math.floor(rotation_level / 4)
+
+		itemstack = minetest.item_place(placestack, placer, pointed_thing, fdir)
+	end
+
+	-- restore item from angled and wall head nodes
 	itemstack:set_name(itemstring)
 	return itemstack
 end
@@ -173,6 +222,15 @@ function mcl_heads.register_head(head_def)
 		_mcl_armor_mob_range_factor = head_def.range_factor,
 		_mcl_armor_texture = head_def.armor_texture
 	}))
+
+	-- register the angled floor head nodes
+	for i, d in ipairs(mcl_heads.FLOOR_DEGREES) do
+		minetest.register_node(name ..d, table.update(table.copy(mcl_heads.deftemplate_floor_angled), {
+			mesh = "mcl_heads_floor" ..d ..".obj",
+			tiles = { head_def.armor_texture },
+			drop = name,
+		}))
+	end
 
 	-- register the wall head node
 	minetest.register_node(name .."_wall", table.update(table.copy(mcl_heads.deftemplate_wall), {
