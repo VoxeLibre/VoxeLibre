@@ -189,10 +189,9 @@ end
 
 --- @class HeadDef
 --- @field name string identifier for node
---- @field texture string texture filename for node
+--- @field texture string armor texture for node
 --- @field description string translated description
 --- @field longdesc string translated doc description
---- @field armor_texture string texture filename for armor
 --- @field range_mob string name of mob affected by range reduction
 --- @field range_factor number factor of range reduction
 
@@ -210,24 +209,25 @@ function mcl_heads.register_head(head_def)
 		tiles = {
 			-- Note: bottom texture is overlaid over top texture to get rid of possible transparency.
 			-- This is required for skeleton skull and wither skeleton skull.
-			"[combine:16x16:-4,4="  ..head_def.texture, -- top
-			"([combine:16x16:-4,4=" ..head_def.texture..")^([combine:16x16:-12,4="..head_def.texture..")", -- bottom
-			"[combine:16x16:-12,0=" ..head_def.texture, -- left
-			"[combine:16x16:4,0="   ..head_def.texture, -- right
-			"[combine:16x16:-20,0=" ..head_def.texture, -- back
-			"[combine:16x16:-4,0="  ..head_def.texture, -- front
+			-- Note: -x coords go right per-pixel, -y coords go down per-pixel
+			"[combine:16x16:-36,4="  ..head_def.texture, -- top
+			"([combine:16x16:-36,4=" ..head_def.texture..")^([combine:16x16:-44,4="..head_def.texture..")", -- bottom
+			"[combine:16x16:-28,0=" ..head_def.texture, -- left
+			"[combine:16x16:-44,0=" ..head_def.texture, -- right
+			"[combine:16x16:-52,0=" ..head_def.texture, -- back
+			"[combine:16x16:-36,0="  ..head_def.texture, -- front
 		},
 
 		_mcl_armor_mob_range_mob = head_def.range_mob,
 		_mcl_armor_mob_range_factor = head_def.range_factor,
-		_mcl_armor_texture = head_def.armor_texture
+		_mcl_armor_texture = head_def.texture
 	}))
 
 	-- register the angled floor head nodes
 	for i, d in ipairs(mcl_heads.FLOOR_DEGREES) do
 		minetest.register_node(name ..d, table.update(table.copy(mcl_heads.deftemplate_floor_angled), {
 			mesh = "mcl_heads_floor" ..d ..".obj",
-			tiles = { head_def.armor_texture },
+			tiles = { head_def.texture },
 			drop = name,
 		}))
 	end
@@ -235,15 +235,16 @@ function mcl_heads.register_head(head_def)
 	-- register the wall head node
 	minetest.register_node(name .."_wall", table.update(table.copy(mcl_heads.deftemplate_wall), {
 		-- The head textures are based off the textures of an actual mob.
+		-- Note: -x coords go right per-pixel, -y coords go down per-pixel
 		tiles = {
-			{ name = "[combine:16x16:-4,-4=" ..head_def.texture, align_style = "world" }, -- front
-			{ name = "[combine:16x16:-20,-4="..head_def.texture, align_style = "world" }, -- back
-			{ name = "[combine:16x16:-8,-4=" ..head_def.texture, align_style = "world" }, -- left
-			{ name = "[combine:16x16:0,-4="  ..head_def.texture, align_style = "world" }, -- right
-			{ name = "([combine:16x16:-4,0=" ..head_def.texture ..")^[transformR180", align_style = "node" }, -- top
+			{ name = "[combine:16x16:-36,-4=" ..head_def.texture, align_style = "world" }, -- front
+			{ name = "[combine:16x16:-52,-4="..head_def.texture, align_style = "world" }, -- back
+			{ name = "[combine:16x16:-40,-4=" ..head_def.texture, align_style = "world" }, -- right
+			{ name = "[combine:16x16:-32,-4="  ..head_def.texture, align_style = "world" }, -- left
+			{ name = "([combine:16x16:-36,0=" ..head_def.texture ..")^[transformR180", align_style = "node" }, -- top
 			-- Note: bottom texture is overlaid over top texture to get rid of possible transparency.
 			-- This is required for skeleton skull and wither skeleton skull.
-			{ name = "([combine:16x16:-4,8=" ..head_def.texture ..")^([combine:16x16:-12,8=" ..head_def.texture..")", align_style = "node" }, -- bottom
+			{ name = "([combine:16x16:-36,0=" ..head_def.texture ..")^([combine:16x16:-44,8=" ..head_def.texture..")", align_style = "node" }, -- bottom
 		},
 		drop = name,
 	}))
@@ -253,20 +254,18 @@ end
 
 mcl_heads.register_head{
 	name = "zombie",
-	texture = "mcl_heads_zombie_node.png",
+	texture = "mcl_heads_zombie.png",
 	description = S("Zombie Head"),
 	longdesc = S("A zombie head is a small decorative block which resembles the head of a zombie. It can also be worn as a helmet, which reduces the detection range of zombies by 50%."),
-	armor_texture = "mcl_heads_zombie.png",
 	range_mob = "mobs_mc:zombie",
 	range_factor = 0.5,
 }
 
 mcl_heads.register_head{
 	name = "creeper",
-	texture = "mcl_heads_creeper_node.png",
+	texture = "mcl_heads_creeper.png",
 	description = S("Creeper Head"),
 	longdesc = S("A creeper head is a small decorative block which resembles the head of a creeper. It can also be worn as a helmet, which reduces the detection range of creepers by 50%."),
-	armor_texture = "mcl_heads_creeper.png",
 	range_mob = "mobs_mc:creeper",
 	range_factor = 0.5,
 }
@@ -274,26 +273,23 @@ mcl_heads.register_head{
 -- Original Minecraft name: “Head”
 mcl_heads.register_head{
 	name = "steve",
-	texture = "mcl_heads_steve_node.png",
+	texture = "mcl_heads_steve.png",
 	description = S("Human Head"),
 	longdesc = S("A human head is a small decorative block which resembles the head of a human (i.e. a player character). It can also be worn as a helmet for fun, but does not offer any protection."),
-	armor_texture = "mcl_heads_steve.png",
 }
 
 mcl_heads.register_head{
 	name = "skeleton",
-	texture = "mcl_heads_skeleton_node.png",
+	texture = "mcl_heads_skeleton.png",
 	description = S("Skeleton Skull"),
 	longdesc = S("A skeleton skull is a small decorative block which resembles the skull of a skeleton. It can also be worn as a helmet, which reduces the detection range of skeletons by 50%."),
-	armor_texture = "mcl_heads_skeleton.png",
 	range_mob = "mobs_mc:skeleton",
 	range_factor = 0.5,
 }
 
 mcl_heads.register_head{
 	name = "wither_skeleton",
-	texture = "mcl_heads_wither_skeleton_node.png",
+	texture = "mcl_heads_wither_skeleton.png",
 	description = S("Wither Skeleton Skull"),
 	longdesc = S("A wither skeleton skull is a small decorative block which resembles the skull of a wither skeleton. It can also be worn as a helmet for fun, but does not offer any protection."),
-	armor_texture = "mcl_heads_wither_skeleton.png",
 }
