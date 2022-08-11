@@ -229,7 +229,7 @@ end
 local elytra_vars = {
 	slowdown_mult = 0.0, -- amount of vel to take per sec
 	fall_speed = 0.2, -- amount of vel to fall down per sec
-	speedup_mult = 4, -- amount of speed to add based on look dir
+	speedup_mult = 2, -- amount of speed to add based on look dir
 	max_speed = 6, -- max amount to multiply against look direction when flying
 	pitch_penalty = 1.3, -- if pitching up, slow down at this rate as a multiplier
 	rocket_speed = 5.5,
@@ -279,7 +279,7 @@ minetest.register_globalstep(function(dtime)
 		player_vel_yaws[name] = player_vel_yaw
 
 		local fly_pos = player:get_pos()
-		local fly_node = minetest.get_node({x = fly_pos.x, y = fly_pos.y - 0.05, z = fly_pos.z}).name
+		local fly_node = minetest.get_node({x = fly_pos.x, y = fly_pos.y - 0.1, z = fly_pos.z}).name
 		local elytra = mcl_playerplus.elytra[player]
 
 		if not elytra.active then
@@ -289,7 +289,7 @@ minetest.register_globalstep(function(dtime)
 		local is_just_jumped = control.jump and not mcl_playerplus.is_pressing_jump[name] and not elytra.active
 		mcl_playerplus.is_pressing_jump[name] = control.jump
 		if is_just_jumped and not elytra.active then
-			elytra.speed = clamp(get_overall_velocity(player:get_velocity()), 1, 5)
+			elytra.speed = clamp(get_overall_velocity(player:get_velocity()), 1, 3)
 			-- don't let player get too fast by spamming jump
 			local block_below = minetest.get_node(vector.offset(fly_pos, 0, -0.9, 0)).name
 			local block_below2 = minetest.get_node(vector.offset(fly_pos, 0, -1.9, 0)).name
@@ -302,7 +302,7 @@ minetest.register_globalstep(function(dtime)
 		elytra.active = player:get_inventory():get_stack("armor", 3):get_name() == "mcl_armor:elytra"
 			and not player:get_attach()
 			and (elytra.active or (is_just_jumped and player_velocity.y < -0))
-			and (fly_node == "air" or fly_node == "ignore")
+			and ((not minetest.registered_nodes[fly_node].walkable) or fly_node == "ignore")
 
 		if elytra.active then
 			if is_just_jumped then -- move the player up when they start flying to give some clearance
@@ -315,7 +315,11 @@ minetest.register_globalstep(function(dtime)
 			local direction_mult = clamp(-(direction.y+0.1), -1, 1)
 			if direction_mult < 0 then direction_mult = direction_mult * elytra_vars.pitch_penalty end
 
-			local speed_mult = elytra.speed + direction_mult * elytra_vars.speedup_mult * dtime
+			local speed_mult = elytra.speed
+			local block_below = minetest.get_node(vector.offset(fly_pos, 0, -0.9, 0)).name
+			if (not minetest.registered_nodes[block_below].walkable) and (player_vel.y ~= 0) then
+				speed_mult = speed_mult + direction_mult * elytra_vars.speedup_mult * dtime
+			end
 			speed_mult = speed_mult - elytra_vars.slowdown_mult * clamp(dtime, 0.09, 0.2) -- slow down but don't overdo it
 			speed_mult = clamp(speed_mult, -elytra_vars.max_speed, elytra_vars.max_speed)
 			if turn_amount > 0.3 and math.abs(direction.y) < 0.98 then -- don't do this if looking straight up / down
