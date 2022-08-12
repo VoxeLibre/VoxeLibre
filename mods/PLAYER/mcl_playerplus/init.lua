@@ -289,14 +289,8 @@ minetest.register_globalstep(function(dtime)
 		local is_just_jumped = control.jump and not mcl_playerplus.is_pressing_jump[name] and not elytra.active
 		mcl_playerplus.is_pressing_jump[name] = control.jump
 		if is_just_jumped and not elytra.active then
-			elytra.speed = clamp(get_overall_velocity(player:get_velocity()), 1, 3)
-			-- don't let player get too fast by spamming jump
-			local block_below = minetest.get_node(vector.offset(fly_pos, 0, -0.9, 0)).name
-			local block_below2 = minetest.get_node(vector.offset(fly_pos, 0, -1.9, 0)).name
-			if minetest.registered_nodes[block_below].walkable
-			or minetest.registered_nodes[block_below2].walkable then
-				elytra.speed = 1
-			end
+			local direction = player:get_look_dir()
+			elytra.speed = 1 - (direction.y/2 + 0.5)
 		end
 
 		elytra.active = player:get_inventory():get_stack("armor", 3):get_name() == "mcl_armor:elytra"
