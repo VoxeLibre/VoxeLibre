@@ -276,6 +276,11 @@ minetest.register_globalstep(function(dtime)
 end)
 
 local function initsky(player)
+
+	if player.set_lighting then
+		player:set_lighting({ shadows = { intensity = tonumber(minetest.settings:get("mcl_default_shadow_intensity") or 0.33) } })
+	end
+
 	if (mcl_weather.skycolor.active) then
 		mcl_weather.skycolor.force_update = true
 	end
