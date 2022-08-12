@@ -16,11 +16,11 @@ local def = {
 	flags = "place_center_x, place_center_z, all_floors",
 	solid_ground = true,
 	make_foundation = true,
-	chunk_probability = 400,
+	chunk_probability = 800,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	sidelen = 10,
-	y_offset = -4,
+	y_offset = -5,
 	filenames = {
 		modpath.."/schematics/mcl_structures_ruined_portal_1.mts",
 		modpath.."/schematics/mcl_structures_ruined_portal_2.mts",

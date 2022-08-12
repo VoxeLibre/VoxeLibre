@@ -106,7 +106,7 @@ local function info()
 	end
 	after(refresh_interval, info)
 end
-info()
+minetest.after(0,info)
 
 minetest.register_on_leaveplayer(function(p)
 	local name = p:get_player_name()
