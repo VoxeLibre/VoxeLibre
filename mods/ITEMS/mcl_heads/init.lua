@@ -122,18 +122,20 @@ function mcl_heads.deftemplate_floor.on_place(itemstack, placer, pointed_thing)
 	if wdir ~= 0 and wdir ~= 1 then
 		placestack:set_name(itemstring .."_wall")
 		itemstack = minetest.item_place(placestack, placer, pointed_thing, wdir)
+
 	-- place floor head node (floor and ceiling)
 	else
 		local fdir = minetest.dir_to_facedir(dir)
 
 		-- determine the head node rotation based on player's yaw (in cw direction from North/Z+)
-		local yaw = math.pi*2 - placer:get_look_horizontal()
+		local yaw = placer:get_look_horizontal()
+		yaw = wdir == 1 and math.pi*2 - yaw or yaw
 
 		local rotation_level = math.min(math.max(math.round((yaw / (math.pi*2)) * 16), 0), 15)
 		placestack:set_name(itemstring ..mcl_heads.FLOOR_DEGREES[rotation_level % 4])
 
 		-- determine the head node face direction based on rotation level
-		fdir = math.floor(rotation_level / 4)
+		fdir = math.floor(rotation_level / 4) + (wdir == 1 and 0 or 20)
 
 		itemstack = minetest.item_place(placestack, placer, pointed_thing, fdir)
 	end
