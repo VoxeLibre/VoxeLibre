@@ -49,6 +49,7 @@ minetest.register_node("mcl_core:water_flowing", {
 	liquid_alternative_source = "mcl_core:water_source",
 	liquid_viscosity = WATER_VISC,
 	liquid_range = 7,
+	waving = 3,
 	post_effect_color = {a=209, r=0x03, g=0x3C, b=0x5C},
 	groups = { water=3, liquid=3, puts_out_fire=1, not_in_creative_inventory=1, freezes=1, melt_around=1, dig_by_piston=1},
 	_mcl_blast_resistance = 100,
@@ -67,6 +68,7 @@ S("• When flowing water touches flowing lava either from above or horizontally
 S("• When water is directly below lava, the water turns into stone."),
 	_doc_items_hidden = false,
 	drawtype = "liquid",
+	waving = 3,
 	tiles = {
 		{name="default_water_source_animated.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=5.0}}
 	},
