@@ -847,8 +847,7 @@ minetest.register_entity(":__builtin:item", {
 		elseif self._flowing == true and not is_in_water and not is_floating then
 			-- Disable flowing physics if not on/in flowing liquid
 			self._flowing = false
-			local pos = self.object:get_pos()
-			disable_physics(self.object, self, false, false)
+			disable_physics(self.object, self, true)
 			return
 		end
 
