@@ -816,7 +816,7 @@ local function show_trade_formspec(playername, trader, tradenum)
 	.."listring[current_player;main]"
 	.."listring["..tradeinv..";input]"
 	.."listring[current_player;main]"
-	minetest.sound_play("mobs_mc_villager_trade", {to_player = playername}, true)
+	minetest.sound_play("mobs_mc_villager_trade", {to_player = playername,object=trader.object}, true)
 	minetest.show_formspec(playername, tradeinv_name, formspec)
 end
 
@@ -878,13 +878,13 @@ local function update_offer(inv, player, sound)
 			(trade.locked == false)) then
 		inv:set_stack("output", 1, inv:get_stack("offered", 1))
 		if sound then
-			minetest.sound_play("mobs_mc_villager_accept", {to_player = name}, true)
+			minetest.sound_play("mobs_mc_villager_accept", {to_player = name,object=trader.object}, true)
 		end
 		return true
 	else
 		inv:set_stack("output", 1, ItemStack(""))
 		if sound then
-			minetest.sound_play("mobs_mc_villager_deny", {to_player = name}, true)
+			minetest.sound_play("mobs_mc_villager_deny", {to_player = name,object=trader.object}, true)
 		end
 		return false
 	end
@@ -1084,7 +1084,8 @@ local trade_inventory = {
 			if not wanted2:is_empty() then
 				inv:remove_item("input", inv:get_stack("wanted", 2))
 			end
-			minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()}, true)
+			local trader = player_trading_with[name]
+			minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name(),object=trader.object}, true)
 		end
 		update_offer(inv, player, true)
 	end,
@@ -1194,10 +1195,11 @@ local trade_inventory = {
 		elseif listname == "input" then
 			update_offer(inv, player, false)
 		end
+		local trader = player_trading_with[name]
 		if accept then
-			minetest.sound_play("mobs_mc_villager_accept", {to_player = name}, true)
+			minetest.sound_play("mobs_mc_villager_accept", {to_player = name,object=trader.object}, true)
 		else
-			minetest.sound_play("mobs_mc_villager_deny", {to_player = name}, true)
+			minetest.sound_play("mobs_mc_villager_deny", {to_player = name,object=trader.object}, true)
 		end
 	end,
 }
