@@ -432,15 +432,9 @@ minetest.register_globalstep(function(dtime)
 			-- sets eye height, and nametag color accordingly
 			set_properties_conditional(player,{collisionbox = {-0.312,0,-0.312,0.312,0.8,0.312}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 			-- control body bone when swimming
-<<<<<<< HEAD
 			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new((75-degrees(dir_to_pitch(player_velocity))) , -player_vel_yaw + yaw, 0))
-		elseif get_item_group(mcl_playerinfo[name].node_head, "opaque") == 0
-		and get_item_group(mcl_playerinfo[name].node_head_top, "opaque") == 0 then
-=======
-			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new(degrees(dir_to_pitch(player_velocity)) - 90,-player_vel_yaw + yaw + 180,0))
 		elseif get_item_group(mcl_playerinfo[name].node_head, "solid") == 0
 		and get_item_group(mcl_playerinfo[name].node_head_top, "solid") == 0 then
->>>>>>> master
 			-- sets eye height, and nametag color accordingly
 			is_swimming = false
 			set_properties_conditional(player,{collisionbox = {-0.312,0,-0.312,0.312,1.8,0.312}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
