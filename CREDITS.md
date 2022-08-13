@@ -31,6 +31,7 @@
 * chmodsayshello
 * PrarieWind
 * RandomLegoBrick
+* SumianVoice
 
 ## Contributors
 * Laurent Rocher
@@ -79,6 +80,8 @@
 * MrRar
 * Lazerbeak12345
 * mrminer
+* Thunder1035
+* opfromthestart
 
 ## MineClone5
 * kay27
