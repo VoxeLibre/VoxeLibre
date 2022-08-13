@@ -344,9 +344,6 @@ minetest.register_node("mcl_beacons:beacon", {
 mesecon.register_mvps_stopper("mcl_beacons:beacon")
 mcl_wip.register_wip_item("mcl_beacons:beacon")
 
-beacon_blocklist = {"mcl_core:diamondblock","mcl_core:ironblock","mcl_core:goldblock","mcl_core:emeraldblock","mcl_nether:netheriteblock"}--this is supposed to be a global, don't change that!
-beacon_fuellist ={"mcl_core:diamond","mcl_core:emerald","mcl_core:iron_ingot","mcl_core:gold_ingot","mcl_nether:netherite_ingot"}
-
 function register_beaconblock (itemstring)--API function for other mods
 	table.insert(beacon_blocklist, itemstring)
 end
