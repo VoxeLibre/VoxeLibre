@@ -246,7 +246,7 @@ mcl_weather.skycolor = {
 		get_current_bg_color = function()
 			local players = mcl_weather.skycolor.utils.get_players(nil)
 			if players[1] then
-				return players[1]:get_sky()
+				return players[1]:get_sky(true).sky_color
 			end
 			return nil
 		end
@@ -276,6 +276,11 @@ minetest.register_globalstep(function(dtime)
 end)
 
 local function initsky(player)
+
+	if player.set_lighting then
+		player:set_lighting({ shadows = { intensity = tonumber(minetest.settings:get("mcl_default_shadow_intensity") or 0.33) } })
+	end
+
 	if (mcl_weather.skycolor.active) then
 		mcl_weather.skycolor.force_update = true
 	end

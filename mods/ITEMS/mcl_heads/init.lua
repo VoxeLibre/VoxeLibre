@@ -1,5 +1,6 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local minetest = minetest
 local mod_doc = minetest.get_modpath("doc")
 local mod_screwdriver = minetest.get_modpath("screwdriver")
 
@@ -8,159 +9,289 @@ if minetest.get_modpath("mcl_armor") then
 	equip_armor = mcl_armor.equip_on_use
 end
 
--- Heads system
+mcl_heads = {}
 
-local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
-	local on_rotate_floor, on_rotate_wall
-	if mod_screwdriver then
-		on_rotate_floor = function(pos, node, user, mode, new_param2)
-			if mode == screwdriver.ROTATE_AXIS then
-				node.name = node.name .. "_wall"
-				node.param2 = minetest.dir_to_wallmounted(minetest.facedir_to_dir(node.param2))
-				minetest.set_node(pos, node)
-				return true
-			end
-		end
-		on_rotate_wall = function(pos, node, user, mode, new_param2)
-			if mode == screwdriver.ROTATE_AXIS then
-				node.name = string.sub(node.name, 1, string.len(node.name)-5)
-				node.param2 = minetest.dir_to_facedir(minetest.wallmounted_to_dir(node.param2))
-				minetest.set_node(pos, node)
-				return true
-			end
+-- rotations of head nodes within a quadrant (0° ≤ θ ≤ 90°)
+mcl_heads.FLOOR_DEGREES = { [0]='', '22_5', '45', '67_5', }
+
+-- box of head nodes
+mcl_heads.FLOOR_BOX = { -0.25, -0.5, -0.25, 0.25, 0.0, 0.25, }
+
+-- floor head node nodedef template ------------------------------------------------------------------------------------
+
+--- node definition template for floor mod heads
+mcl_heads.deftemplate_floor = {
+	drawtype = "nodebox",
+	node_box = {
+		type = "fixed",
+		fixed = mcl_heads.FLOOR_BOX,
+	},
+	groups = {
+		handy = 1,
+		armor = 1,
+		armor_head = 1,
+		non_combat_armor = 1,
+		non_combat_armor_head = 1,
+		head = 1,
+		deco_block = 1,
+		dig_by_piston = 1,
+	},
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
+	paramtype = "light",
+	paramtype2 = "facedir",
+	stack_max = 64,
+	sunlight_propagates = true,
+	sounds = mcl_sounds.node_sound_defaults{
+		footstep = {name="default_hard_footstep", gain=0.3},
+	},
+	is_ground_content = false,
+
+	_mcl_armor_element = "head",
+	_mcl_blast_resistance = 1,
+	_mcl_hardness = 1,
+
+	on_secondary_use = equip_armor,
+}
+
+mcl_heads.deftemplate_floor_angled = {
+	drawtype = "mesh",
+	selection_box = {
+		type = "fixed",
+		fixed = mcl_heads.FLOOR_BOX,
+	},
+	collision_box = {
+		type = "fixed",
+		fixed = mcl_heads.FLOOR_BOX,
+	},
+	groups = {
+		handy = 1,
+		head = 1,
+		deco_block = 1,
+		dig_by_piston = 1,
+		not_in_creative_inventory = 1,
+	},
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
+	paramtype = "light",
+	paramtype2 = "facedir",
+	stack_max = 64,
+	sunlight_propagates = true,
+	sounds = mcl_sounds.node_sound_defaults{
+		footstep = {name="default_hard_footstep", gain=0.3},
+	},
+	is_ground_content = false,
+
+	_doc_items_create_entry = false,
+	_mcl_blast_resistance = 1,
+	_mcl_hardness = 1,
+}
+
+function mcl_heads.deftemplate_floor.on_rotate(pos, node, user, mode, new_param2)
+	if mode == screwdriver.ROTATE_AXIS then
+		node.name = node.name .. "_wall"
+		node.param2 = minetest.dir_to_wallmounted(minetest.facedir_to_dir(node.param2))
+		minetest.set_node(pos, node)
+		return true
+	end
+end
+
+function mcl_heads.deftemplate_floor.on_place(itemstack, placer, pointed_thing)
+	if pointed_thing.type ~= "node" then
+		return itemstack
+	end
+
+	local under = pointed_thing.under
+	local node = minetest.get_node(under)
+	local def = minetest.registered_nodes[node.name]
+	if not def then return itemstack end
+
+	-- Allow pointed node's on_rightclick callback to override place.
+	if placer and not placer:get_player_control().sneak then
+		if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+			return minetest.registered_nodes[node.name].on_rightclick(under, node, placer, itemstack) or itemstack
 		end
 	end
 
-	minetest.register_node("mcl_heads:"..name, {
-		description = desc,
-		_doc_items_longdesc = longdesc,
-		drawtype = "nodebox",
-		is_ground_content = false,
-		node_box = {
-			type = "fixed",
-			fixed = {
-				{ -0.25, -0.5, -0.25, 0.25, 0.0, 0.25, },
-			},
-		},
-		groups = {handy = 1, armor = 1, armor_head = 1, non_combat_armor = 1, non_combat_armor_head = 1, head = 1, deco_block = 1, dig_by_piston = 1},
+	local above = pointed_thing.above
+	local dir = {x = under.x - above.x, y = under.y - above.y, z = under.z - above.z}
+	local wdir = minetest.dir_to_wallmounted(dir)
+
+	local itemstring = itemstack:get_name()
+	local placestack = ItemStack(itemstack)
+
+	-- place wall head node (elsewhere)
+	if wdir ~= 0 and wdir ~= 1 then
+		placestack:set_name(itemstring .."_wall")
+		itemstack = minetest.item_place(placestack, placer, pointed_thing, wdir)
+
+	-- place floor head node (floor and ceiling)
+	else
+		local fdir = minetest.dir_to_facedir(dir)
+
+		-- determine the head node rotation based on player's yaw (in cw direction from North/Z+)
+		local yaw = placer:get_look_horizontal()
+		yaw = wdir == 1 and math.pi*2 - yaw or yaw
+
+		local rotation_level = math.min(math.max(math.round((yaw / (math.pi*2)) * 16), 0), 15)
+		placestack:set_name(itemstring ..mcl_heads.FLOOR_DEGREES[rotation_level % 4])
+
+		-- determine the head node face direction based on rotation level
+		fdir = math.floor(rotation_level / 4) + (wdir == 1 and 0 or 20)
+
+		itemstack = minetest.item_place(placestack, placer, pointed_thing, fdir)
+	end
+
+	-- restore item from angled and wall head nodes
+	itemstack:set_name(itemstring)
+	return itemstack
+end
+
+-- wall head node nodedef template -------------------------------------------------------------------------------------
+
+--- node definition template for wall mod heads
+mcl_heads.deftemplate_wall = {
+	drawtype = "nodebox",
+	node_box = {
+		type = "wallmounted",
+		wall_bottom = { -0.25, -0.5, -0.25, 0.25, 0.0, 0.25, },
+		wall_top = { -0.25, 0.0, -0.25, 0.25, 0.5, 0.25, },
+		wall_side = { -0.5, -0.25, -0.25, 0.0, 0.25, 0.25, },
+	},
+	groups = {
+		handy = 1,
+		head = 1,
+		deco_block = 1,
+		dig_by_piston = 1,
+		not_in_creative_inventory = 1,
+	},
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
+	paramtype = "light",
+	paramtype2 = "wallmounted",
+	stack_max = 64,
+	sunlight_propagates = true,
+	sounds = mcl_sounds.node_sound_defaults{
+		footstep = {name="default_hard_footstep", gain=0.3},
+	},
+	is_ground_content = false,
+
+	_doc_items_create_entry = false,
+	_mcl_blast_resistance = 1,
+	_mcl_hardness = 1,
+}
+
+function mcl_heads.deftemplate_wall.on_rotate(pos, node, user, mode, new_param2)
+	if mode == screwdriver.ROTATE_AXIS then
+		node.name = string.sub(node.name, 1, string.len(node.name)-5)
+		node.param2 = minetest.dir_to_facedir(minetest.wallmounted_to_dir(node.param2))
+		minetest.set_node(pos, node)
+		return true
+	end
+end
+
+-- API functions -------------------------------------------------------------------------------------------------------
+
+--- @class HeadDef
+--- @field name string identifier for node
+--- @field texture string armor texture for node
+--- @field description string translated description
+--- @field longdesc string translated doc description
+--- @field range_mob string name of mob affected by range reduction
+--- @field range_factor number factor of range reduction
+
+--- registers a head
+--- @param head_def HeadDef head node definition
+function mcl_heads.register_head(head_def)
+	local name = "mcl_heads:" ..head_def.name
+
+	-- register the floor head node
+	minetest.register_node(name, table.update(table.copy(mcl_heads.deftemplate_floor), {
+		description = head_def.description,
+		_doc_items_longdesc = head_def.longdesc,
+
 		-- The head textures are based off the textures of an actual mob.
 		tiles = {
 			-- Note: bottom texture is overlaid over top texture to get rid of possible transparency.
 			-- This is required for skeleton skull and wither skeleton skull.
-			"[combine:16x16:-4,4="..texture, -- top
-			"([combine:16x16:-4,4="..texture..")^([combine:16x16:-12,4="..texture..")", -- bottom
-			"[combine:16x16:-12,0="..texture, -- left
-			"[combine:16x16:4,0="..texture, -- right
-			"[combine:16x16:-20,0="..texture, -- back
-			"[combine:16x16:-4,0="..texture, -- front
+			-- Note: -x coords go right per-pixel, -y coords go down per-pixel
+			"[combine:16x16:-36,4="  ..head_def.texture, -- top
+			"([combine:16x16:-36,4=" ..head_def.texture..")^([combine:16x16:-44,4="..head_def.texture..")", -- bottom
+			"[combine:16x16:-28,0=" ..head_def.texture, -- left
+			"[combine:16x16:-44,0=" ..head_def.texture, -- right
+			"[combine:16x16:-52,0=" ..head_def.texture, -- back
+			"[combine:16x16:-36,0="  ..head_def.texture, -- front
 		},
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
-		paramtype = "light",
-		stack_max = 64,
-		paramtype2 = "facedir",
-		sunlight_propagates = true,
-		walkable = true,
-		selection_box = {
-			type = "fixed",
-			fixed = { -0.25, -0.5, -0.25, 0.25, 0.0, 0.25, },
-		},
-		sounds = mcl_sounds.node_sound_defaults({
-			footstep = {name="default_hard_footstep", gain=0.3}
-		}),
-		on_place = function(itemstack, placer, pointed_thing)
-			if pointed_thing.type ~= "node" then
-				-- no interaction possible with entities, for now.
-				return itemstack
-			end
 
-			local under = pointed_thing.under
-			local node = minetest.get_node(under)
-			local def = minetest.registered_nodes[node.name]
-			if not def then return itemstack end
+		_mcl_armor_mob_range_mob = head_def.range_mob,
+		_mcl_armor_mob_range_factor = head_def.range_factor,
+		_mcl_armor_texture = head_def.texture
+	}))
 
-			-- Call on_rightclick if the pointed node defines it
-			if placer and not placer:get_player_control().sneak then
-				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-					return minetest.registered_nodes[node.name].on_rightclick(under, node, placer, itemstack) or itemstack
-				end
-			end
-
-			local above = pointed_thing.above
-			local diff = {x = under.x - above.x, y = under.y - above.y, z = under.z - above.z}
-			local wdir = minetest.dir_to_wallmounted(diff)
-
-			local itemstring = itemstack:get_name()
-			local fakestack = ItemStack(itemstack)
-			--local idef = fakestack:get_definition()
-			local retval
-			if wdir == 0 or wdir == 1 then
-				return minetest.item_place(itemstack, placer, pointed_thing)
-			else
-				retval = fakestack:set_name("mcl_heads:"..name.."_wall")
-			end
-			if not retval then
-				return itemstack
-			end
-			itemstack = minetest.item_place(fakestack, placer, pointed_thing, wdir)
-			itemstack:set_name(itemstring)
-			return itemstack
-		end,
-		on_secondary_use = equip_armor,
-
-		on_rotate = on_rotate_floor,
-
-		_mcl_armor_mob_range_mob = rangemob,
-		_mcl_armor_mob_range_factor = rangefactor,
-		_mcl_armor_element = "head",
-		_mcl_armor_texture = "mcl_heads_" .. name .. ".png",
-		_mcl_blast_resistance = 1,
-		_mcl_hardness = 1,
-	})
-
-	minetest.register_node("mcl_heads:"..name.."_wall", {
-		_doc_items_create_entry = false,
-		drawtype = "nodebox",
-		is_ground_content = false,
-		node_box = {
-			type = "wallmounted",
-			wall_bottom = { -0.25, -0.5, -0.25, 0.25, 0.0, 0.25, },
-			wall_top = { -0.25, 0.0, -0.25, 0.25, 0.5, 0.25, },
-			wall_side = { -0.5, -0.25, -0.25, 0.0, 0.25, 0.25, },
-		},
-		groups = {handy=1, head=1, deco_block=1, dig_by_piston=1, not_in_creative_inventory=1},
-		-- The head textures are based off the textures of an actual mob.
-		tiles = {
-			{ name = "[combine:16x16:-4,-4="..texture, align_style = "world" }, -- front
-			{ name = "[combine:16x16:-20,-4="..texture, align_style = "world" }, -- back
-			{ name = "[combine:16x16:-8,-4="..texture, align_style = "world" }, -- left
-			{ name = "[combine:16x16:0,-4="..texture, align_style = "world" }, -- right
-			{ name = "([combine:16x16:-4,0="..texture..")^[transformR180", align_style = "node" }, -- top
-			{ name = "([combine:16x16:-4,8="..texture..")^([combine:16x16:-12,8="..texture..")", align_style = "node" }, -- bottom
-		},
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
-		paramtype = "light",
-		stack_max = 64,
-		paramtype2 = "wallmounted",
-		sunlight_propagates = true,
-		walkable = true,
-		sounds = mcl_sounds.node_sound_defaults({
-			footstep = {name="default_hard_footstep", gain=0.3}
-		}),
-		drop = "mcl_heads:"..name,
-		on_rotate = on_rotate_wall,
-		_mcl_blast_resistance = 1,
-		_mcl_hardness = 1,
-	})
-
-	if mod_doc then
-		doc.add_entry_alias("nodes", "mcl_heads:" .. name, "nodes", "mcl_heads:" .. name .. "_wall")
+	-- register the angled floor head nodes
+	for i, d in ipairs(mcl_heads.FLOOR_DEGREES) do
+		minetest.register_node(name ..d, table.update(table.copy(mcl_heads.deftemplate_floor_angled), {
+			mesh = "mcl_heads_floor" ..d ..".obj",
+			tiles = { head_def.texture },
+			drop = name,
+		}))
 	end
+
+	-- register the wall head node
+	minetest.register_node(name .."_wall", table.update(table.copy(mcl_heads.deftemplate_wall), {
+		-- The head textures are based off the textures of an actual mob.
+		-- Note: -x coords go right per-pixel, -y coords go down per-pixel
+		tiles = {
+			{ name = "[combine:16x16:-36,-4=" ..head_def.texture, align_style = "world" }, -- front
+			{ name = "[combine:16x16:-52,-4="..head_def.texture, align_style = "world" }, -- back
+			{ name = "[combine:16x16:-40,-4=" ..head_def.texture, align_style = "world" }, -- right
+			{ name = "[combine:16x16:-32,-4="  ..head_def.texture, align_style = "world" }, -- left
+			{ name = "([combine:16x16:-36,0=" ..head_def.texture ..")^[transformR180", align_style = "node" }, -- top
+			-- Note: bottom texture is overlaid over top texture to get rid of possible transparency.
+			-- This is required for skeleton skull and wither skeleton skull.
+			{ name = "([combine:16x16:-36,0=" ..head_def.texture ..")^([combine:16x16:-44,8=" ..head_def.texture..")", align_style = "node" }, -- bottom
+		},
+		drop = name,
+	}))
 end
 
--- Add heads
-addhead("zombie", "mcl_heads_zombie_node.png", S("Zombie Head"), S("A zombie head is a small decorative block which resembles the head of a zombie. It can also be worn as a helmet, which reduces the detection range of zombies by 50%."), "mobs_mc:zombie", 0.5)
-addhead("creeper", "mcl_heads_creeper_node.png", S("Creeper Head"), S("A creeper head is a small decorative block which resembles the head of a creeper. It can also be worn as a helmet, which reduces the detection range of creepers by 50%."), "mobs_mc:creeper", 0.5)
+-- initial heads -------------------------------------------------------------------------------------------------------
+
+mcl_heads.register_head{
+	name = "zombie",
+	texture = "mcl_heads_zombie.png",
+	description = S("Zombie Head"),
+	longdesc = S("A zombie head is a small decorative block which resembles the head of a zombie. It can also be worn as a helmet, which reduces the detection range of zombies by 50%."),
+	range_mob = "mobs_mc:zombie",
+	range_factor = 0.5,
+}
+
+mcl_heads.register_head{
+	name = "creeper",
+	texture = "mcl_heads_creeper.png",
+	description = S("Creeper Head"),
+	longdesc = S("A creeper head is a small decorative block which resembles the head of a creeper. It can also be worn as a helmet, which reduces the detection range of creepers by 50%."),
+	range_mob = "mobs_mc:creeper",
+	range_factor = 0.5,
+}
+
 -- Original Minecraft name: “Head”
-addhead("steve", "mcl_heads_steve_node.png", S("Human Head"), S("A human head is a small decorative block which resembles the head of a human (i.e. a player character). It can also be worn as a helmet for fun, but does not offer any protection."))
-addhead("skeleton", "mcl_heads_skeleton_node.png", S("Skeleton Skull"), S("A skeleton skull is a small decorative block which resembles the skull of a skeleton. It can also be worn as a helmet, which reduces the detection range of skeletons by 50%."), "mobs_mc:skeleton", 0.5)
-addhead("wither_skeleton", "mcl_heads_wither_skeleton_node.png", S("Wither Skeleton Skull"), S("A wither skeleton skull is a small decorative block which resembles the skull of a wither skeleton. It can also be worn as a helmet for fun, but does not offer any protection."))
+mcl_heads.register_head{
+	name = "steve",
+	texture = "mcl_heads_steve.png",
+	description = S("Human Head"),
+	longdesc = S("A human head is a small decorative block which resembles the head of a human (i.e. a player character). It can also be worn as a helmet for fun, but does not offer any protection."),
+}
+
+mcl_heads.register_head{
+	name = "skeleton",
+	texture = "mcl_heads_skeleton.png",
+	description = S("Skeleton Skull"),
+	longdesc = S("A skeleton skull is a small decorative block which resembles the skull of a skeleton. It can also be worn as a helmet, which reduces the detection range of skeletons by 50%."),
+	range_mob = "mobs_mc:skeleton",
+	range_factor = 0.5,
+}
+
+mcl_heads.register_head{
+	name = "wither_skeleton",
+	texture = "mcl_heads_wither_skeleton.png",
+	description = S("Wither Skeleton Skull"),
+	longdesc = S("A wither skeleton skull is a small decorative block which resembles the skull of a wither skeleton. It can also be worn as a helmet for fun, but does not offer any protection."),
+}

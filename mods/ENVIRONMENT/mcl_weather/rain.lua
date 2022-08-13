@@ -2,6 +2,7 @@ local PARTICLES_COUNT_RAIN = tonumber(minetest.settings:get("mcl_weather_rain_pa
 local PARTICLES_COUNT_THUNDER = tonumber(minetest.settings:get("mcl_weather_thunder_particles")) or 900
 
 local get_connected_players = minetest.get_connected_players
+local mgname = minetest.get_mapgen_setting("mg_name")
 
 mcl_weather.rain = {
 	-- max rain particles created at time
@@ -91,7 +92,7 @@ end
 function mcl_weather.rain.add_player(player)
 	if mcl_weather.players[player:get_player_name()] == nil then
 		local player_meta = {}
-		player_meta.origin_sky = {player:get_sky()}
+		player_meta.origin_sky = {player:get_sky(true)}
 		mcl_weather.players[player:get_player_name()] = player_meta
 		update_sound[player:get_player_name()]=true
 	end

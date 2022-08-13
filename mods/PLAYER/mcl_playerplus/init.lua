@@ -1,8 +1,8 @@
 mcl_playerplus = {
 	elytra = {},
+	is_pressing_jump = {},
 }
 
-local player_velocity_old = {x=0, y=0, z=0}
 local get_connected_players = minetest.get_connected_players
 local dir_to_yaw = minetest.dir_to_yaw
 local get_item_group = minetest.get_item_group
@@ -214,6 +214,26 @@ local function set_bone_position_conditional(player,b,p,r) --bone,position,rotat
 	player:set_bone_position(b,p,r)
 end
 
+local function get_overall_velocity(vector)
+	local v = math.sqrt(vector.x^2 + vector.y^2 + vector.z^2)
+	return v
+end
+local function anglediff(a1, a2)
+	local a = a1 - a2
+ 	return math.abs((a + math.pi) % (math.pi*2) - math.pi)
+end
+local function clamp(num, min, max)
+	return math.min(max, math.max(num, min))
+end
+
+local elytra_vars = {
+	slowdown_mult = 0.0, -- amount of vel to take per sec
+	fall_speed = 0.2, -- amount of vel to fall down per sec
+	speedup_mult = 2, -- amount of speed to add based on look dir
+	max_speed = 6, -- max amount to multiply against look direction when flying
+	pitch_penalty = 1.3, -- if pitching up, slow down at this rate as a multiplier
+	rocket_speed = 5.5,
+}
 
 
 minetest.register_globalstep(function(dtime)
@@ -259,34 +279,53 @@ minetest.register_globalstep(function(dtime)
 		player_vel_yaws[name] = player_vel_yaw
 
 		local fly_pos = player:get_pos()
-		local fly_node = minetest.get_node({x = fly_pos.x, y = fly_pos.y - 0.5, z = fly_pos.z}).name
+		local fly_node = minetest.get_node({x = fly_pos.x, y = fly_pos.y - 0.1, z = fly_pos.z}).name
 		local elytra = mcl_playerplus.elytra[player]
+
+		if not elytra.active then
+			elytra.speed = 0
+		end
+
+		local is_just_jumped = control.jump and not mcl_playerplus.is_pressing_jump[name] and not elytra.active
+		mcl_playerplus.is_pressing_jump[name] = control.jump
+		if is_just_jumped and not elytra.active then
+			local direction = player:get_look_dir()
+			elytra.speed = 1 - (direction.y/2 + 0.5)
+		end
 
 		elytra.active = player:get_inventory():get_stack("armor", 3):get_name() == "mcl_armor:elytra"
 			and not player:get_attach()
-			and (elytra.active or control.jump and player_velocity.y < -6)
-			and (fly_node == "air" or fly_node == "ignore")
+			and (elytra.active or (is_just_jumped and player_velocity.y < -0))
+			and ((not minetest.registered_nodes[fly_node].walkable) or fly_node == "ignore")
 
 		if elytra.active then
+			if is_just_jumped then -- move the player up when they start flying to give some clearance
+				player:set_pos(vector.offset(player:get_pos(), 0, 0.8, 0))
+			end
 			mcl_player.player_set_animation(player, "fly")
-			if player_velocity.y < -1.5 then
-				player:add_velocity({x=0, y=0.17, z=0})
-			end
-			if math.abs(player_velocity.x) + math.abs(player_velocity.z) < 20 then
-				local dir = minetest.yaw_to_dir(player:get_look_horizontal())
-				if degrees(player:get_look_vertical()) * -.01 < .1 then
-					look_pitch = degrees(player:get_look_vertical()) * -.01
-				else
-					look_pitch = .1
-				end
-				player:add_velocity({x=dir.x, y=look_pitch, z=dir.z})
-			end
-			playerphysics.add_physics_factor(player, "gravity", "mcl_playerplus:elytra", 0.1)
+			local direction = player:get_look_dir()
+			local player_vel = player:get_velocity()
+			local turn_amount = anglediff(minetest.dir_to_yaw(direction), minetest.dir_to_yaw(player_vel))
+			local direction_mult = clamp(-(direction.y+0.1), -1, 1)
+			if direction_mult < 0 then direction_mult = direction_mult * elytra_vars.pitch_penalty end
 
+			local speed_mult = elytra.speed
+			local block_below = minetest.get_node(vector.offset(fly_pos, 0, -0.9, 0)).name
+			if (not minetest.registered_nodes[block_below].walkable) and (player_vel.y ~= 0) then
+				speed_mult = speed_mult + direction_mult * elytra_vars.speedup_mult * dtime
+			end
+			speed_mult = speed_mult - elytra_vars.slowdown_mult * clamp(dtime, 0.09, 0.2) -- slow down but don't overdo it
+			speed_mult = clamp(speed_mult, -elytra_vars.max_speed, elytra_vars.max_speed)
+			if turn_amount > 0.3 and math.abs(direction.y) < 0.98 then -- don't do this if looking straight up / down
+				speed_mult = speed_mult - (speed_mult * (turn_amount / (math.pi*8)))
+			end
+
+			playerphysics.add_physics_factor(player, "gravity", "mcl_playerplus:elytra", elytra_vars.fall_speed)
 			if elytra.rocketing > 0 then
 				elytra.rocketing = elytra.rocketing - dtime
 				if vector.length(player_velocity) < 40 then
-					player:add_velocity(vector.multiply(player:get_look_dir(), 4))
+					-- player:add_velocity(vector.multiply(player:get_look_dir(), 4))
+					speed_mult = elytra_vars.rocket_speed
 					add_particle({
 						pos = fly_pos,
 						velocity = {x = 0, y = 0, z = 0},
@@ -300,7 +339,21 @@ minetest.register_globalstep(function(dtime)
 					})
 				end
 			end
-		else
+
+			elytra.speed = speed_mult -- set the speed so you can keep track of it and add to it
+
+			local new_vel = vector.multiply(direction, speed_mult * dtime * 30) -- use the look dir and speed as a mult
+			-- new_vel.y = new_vel.y - elytra_vars.fall_speed * dtime -- make the player fall a set amount
+
+			-- slow the player down so less spongy movement by applying some of the inverse velocity
+			-- NOTE: do not set this higher than about 0.2 or the game will get the wrong vel and it will be broken
+			-- this is far from ideal, but there's no good way to set_velocity or slow down the player
+			player_vel = vector.multiply(player_vel, -0.1)
+			-- if speed_mult < 1 then player_vel.y = player_vel.y * 0.1 end
+			new_vel = vector.add(new_vel, player_vel)
+
+			player:add_velocity(new_vel)
+		else -- reset things when you stop flying with elytra
 			elytra.rocketing = 0
 			playerphysics.remove_physics_factor(player, "gravity", "mcl_playerplus:elytra")
 		end
@@ -316,9 +369,6 @@ minetest.register_globalstep(function(dtime)
 		else
 			set_bone_position_conditional(player,"Wield_Item", vector.new(-1.5,4.9,1.8), vector.new(135,0,90))
 		end
-
-		player_velocity_old = player:get_velocity() or player:get_player_velocity()
-
 
 		-- controls right and left arms pitch when shooting a bow or blocking
 		if mcl_shields.is_blocking(player) == 2 then
@@ -356,7 +406,7 @@ minetest.register_globalstep(function(dtime)
 			-- sets eye height, and nametag color accordingly
 			set_properties_conditional(player,{collisionbox = {-0.35,0,-0.35,0.35,0.8,0.35}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 			-- control body bone when flying
-			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new(degrees(dir_to_pitch(player_velocity)) - 90,-player_vel_yaw + yaw + 180,0))
+			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new((75-degrees(dir_to_pitch(player_velocity))) , -player_vel_yaw + yaw, 0))
 		elseif parent then
 			local parent_yaw = degrees(parent:get_yaw())
 			set_properties_conditional(player,{collisionbox = {-0.312,0,-0.312,0.312,1.8,0.312}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
@@ -372,13 +422,13 @@ minetest.register_globalstep(function(dtime)
 		elseif get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and is_sprinting(name) == true then
 			-- set head pitch and yaw when swimming
 			is_swimming = true
-			set_bone_position_conditional(player,"Head_Control", vector.new(0,6.3,0), vector.new(pitch-degrees(dir_to_pitch(player_velocity)),player_vel_yaw - yaw,0))
+			set_bone_position_conditional(player,"Head_Control", vector.new(0,6.3,0), vector.new(pitch-degrees(dir_to_pitch(player_velocity))+20,player_vel_yaw - yaw,0))
 			-- sets eye height, and nametag color accordingly
 			set_properties_conditional(player,{collisionbox = {-0.312,0,-0.312,0.312,0.8,0.312}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 			-- control body bone when swimming
-			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new(degrees(dir_to_pitch(player_velocity)) - 90,-player_vel_yaw + yaw + 180,0))
-		elseif get_item_group(mcl_playerinfo[name].node_head, "opaque") == 0
-		and get_item_group(mcl_playerinfo[name].node_head_top, "opaque") == 0 then
+			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new((75-degrees(dir_to_pitch(player_velocity))) , -player_vel_yaw + yaw, 0))
+		elseif get_item_group(mcl_playerinfo[name].node_head, "solid") == 0
+		and get_item_group(mcl_playerinfo[name].node_head_top, "solid") == 0 then
 			-- sets eye height, and nametag color accordingly
 			is_swimming = false
 			set_properties_conditional(player,{collisionbox = {-0.312,0,-0.312,0.312,1.8,0.312}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
@@ -629,7 +679,7 @@ minetest.register_on_joinplayer(function(player)
 		swimDistance = 0,
 		jump_cooldown = -1,	-- Cooldown timer for jumping, we need this to prevent the jump exhaustion to increase rapidly
 	}
-	mcl_playerplus.elytra[player] = {active = false, rocketing = 0}
+	mcl_playerplus.elytra[player] = {active = false, rocketing = 0, speed = 0}
 end)
 
 -- clear when player leaves
@@ -643,6 +693,9 @@ end)
 -- Don't change HP if the player falls in the water or through End Portal:
 mcl_damage.register_modifier(function(obj, damage, reason)
 	if reason.type == "fall" then
+		if minetest.is_creative_enabled(obj:get_player_name()) then
+			return 0
+		end
 		local pos = obj:get_pos()
 		local node = minetest.get_node(pos)
 		local velocity = obj:get_velocity() or obj:get_player_velocity() or {x=0,y=-10,z=0}

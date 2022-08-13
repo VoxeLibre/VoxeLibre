@@ -39,6 +39,9 @@ mcl_doTileDrops (Blocks have drops) bool true
 # If enabled, TNT explosions destroy blocks.
 mcl_tnt_griefing (TNT destroys blocks) bool true
 
+# Comma separated list of disabled structure names
+mcl_disabled_structures (Disabled structures) string
+
 [Players]
 # If enabled, players respawn at the bed they last lay on instead of normal
 # spawn.
@@ -111,6 +114,9 @@ animated_chests (Animated chests) bool true
 
 # The maximum number of boss bars to simultaniously display on the screen
 max_bossbars (Maximum Boss bars) int 5
+
+# Default intensity of shadows (default: 0.33)
+mcl_default_shadow_intensity (Default shadow intensity) float 0.33 0.0 1.0
 
 [Experimental]
 # Whether ice is translucent. If disabled, ice is fully opaque.
