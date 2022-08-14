@@ -1,5 +1,79 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local MAX_WEAR = 65535
+
+local function get_grindstone_formspec()
+	return "size[9,8.75]"..
+	"image[3,1.5;1.5,1;gui_crafting_arrow.png]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
+	"label[1,0.1;"..minetest.formspec_escape(minetest.colorize("#313131", S("Repair & Disenchant"))).."]"..
+	"list[context;main;0,0;8,4;]"..
+	"list[current_player;main;0,4.5;9,3;9]"..
+	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
+	"list[current_player;main;0,7.74;9,1;]"..
+	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
+	"list[context;input;1,1;1,1;]"..
+	mcl_formspec.get_itemslot_bg(1,1,1,1)..
+	"list[context;input;1,2;1,1;1]"..
+	mcl_formspec.get_itemslot_bg(1,2,1,1)..
+	"list[context;output;6,1.5;1,1;]"..
+	mcl_formspec.get_itemslot_bg(6,1.5,1,1)..
+	"listring[context;output]"..
+	"listring[current_player;main]"..
+	"listring[context;input]"..
+	"listring[current_player;main]"
+end
+
+-- Helper function to make sure update_anvil_slots NEVER overstacks the output slot
+local function fix_stack_size(stack)
+	if not stack or stack == "" then return "" end
+	local count = stack:get_count()
+	local max_count = stack:get_stack_max()
+
+	if count > max_count then
+		stack:set_count(max_count)
+		count = max_count
+	end
+	return count
+end
+
+local function update_grindstone_slots(meta)
+	local inv = meta:get_inventory()
+	local input1 = inv:get_stack("input", 1)
+	local input2 = inv:get_stack("input", 2)
+
+	local new_output
+
+	if (not input1:is_empty() and not input2:is_empty()) then
+		-- Repair, if tool
+		local def1 = input1:get_definition()
+		local def2 = input2:get_definition()
+		local name1 = input1:get_name()
+		local name2 = input2:get_name()
+
+		local function calculate_repair(dur1, dur2)
+			local new_durability = (MAX_WEAR - dur1) + (MAX_WEAR - dur2) * 1.05
+			return math.max(0, math.min(MAX_WEAR, MAX_WEAR - new_durability))
+		end
+
+		if def1.type == "tool" and def2.type == "tool" and name1 == name2 then
+			local new_wear = calculate_repair(input1:get_wear(), input2:get_wear())
+			input1:set_wear(new_wear)
+			new_output = input1
+		else
+			new_output = ""
+		end
+	else
+		new_output = ""
+	end
+
+	-- Set the new output slot
+	if new_output then
+		fix_stack_size(new_output)
+		inv:set_stack("output", 1, new_output)
+	end
+end
+
 minetest.register_node("mcl_grindstone:grindstone", {
 	description = S("Grindstone"),
 	_tt_help = S("Used to disenchant/fix tools"),
@@ -18,14 +92,117 @@ minetest.register_node("mcl_grindstone:grindstone", {
 		type = "fixed",
 		-- created with nodebox editor
 		fixed = {
-			{-0.25, -0.25, -0.375, 0.25, 0.5, 0.375}, 
+			{-0.25, -0.25, -0.375, 0.25, 0.5, 0.375},
 			{-0.375, -0.0625, -0.1875, -0.25, 0.3125, 0.1875},
 			{0.25, -0.0625, -0.1875, 0.375, 0.3125, 0.1875},
 			{0.25, -0.5, -0.125, 0.375, -0.0625, 0.125},
 			{-0.375, -0.5, -0.125, -0.25, -0.0625, 0.125},
 		}
 	},
+	selection_box = node_box,
 	groups = {pickaxey = 1, deco_block = 1},
+
+	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		else
+			return stack:get_count()
+		end
+	end,
+	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		elseif listname == "output" then
+			return 0
+		else
+			return stack:get_count()
+		end
+	end,
+	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		elseif to_list == "output" then
+			return 0
+		elseif from_list == "output" and to_list == "input" then
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			if inv:get_stack(to_list, to_index):is_empty() then
+				return count
+			else
+				return 0
+			end
+		else
+			return count
+		end
+	end,
+
+	on_metadata_inventory_put = function(pos, listname, index, stack, player)
+		local meta = minetest.get_meta(pos)
+		update_grindstone_slots(meta)
+	end,
+
+	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+		local meta = minetest.get_meta(pos)
+		if from_list == "output" and to_list == "input" then
+			local inv = meta:get_inventory()
+			for i=1, inv:get_size("input") do
+				if i ~= to_index then
+					local istack = inv:get_stack("input", i)
+					istack:set_count(math.max(0, istack:get_count() - count))
+					inv:set_stack("input", i, istack)
+				end
+			end
+		end
+		update_grindstone_slots(meta)
+	end,
+	on_metadata_inventory_take = function(pos, listname, index, stack, player)
+		local meta = minetest.get_meta(pos)
+		if listname == "output" then
+			local inv = meta:get_inventory()
+			local input1 = inv:get_stack("input", 1)
+			local input2 = inv:get_stack("input", 2)
+			-- Both slots occupied?
+			if not input1:is_empty() and not input2:is_empty() then
+				input1:take_item()
+				input2:take_item()
+				inv:set_stack("input", 1, input1)
+				inv:set_stack("input", 2, input2)
+			else
+				if not input1:is_empty() then
+					input1:set_count(math.max(0, input1:get_count() - stack:get_count()))
+					inv:set_stack("input", 1, input1)
+				end
+				if not input2:is_empty() then
+					input2:set_count(math.max(0, input2:get_count() - stack:get_count()))
+					inv:set_stack("input", 2, input2)
+				end
+			end
+		elseif listname == "input" then
+			update_grindstone_slots(meta)
+		end
+	end,
+
+	on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		local inv = meta:get_inventory()
+		inv:set_size("input", 2)
+		inv:set_size("output", 1)
+		local form = get_grindstone_formspec()
+		meta:set_string("formspec", form)
+	end,
+	on_rightclick = function(pos, node, player, itemstack)
+		if not player:get_player_control().sneak then
+			local meta = minetest.get_meta(pos)
+			update_grindstone_slots(meta)
+			meta:set_string("formspec", get_grindstone_formspec())
+		end
+	end,
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 2
 })
