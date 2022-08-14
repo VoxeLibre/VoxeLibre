@@ -312,24 +312,24 @@ mcl_mobs:register_mob("mobs_mc:enderman", {
 		else return end
 		-- AGRESSIVELY WARP/CHASE PLAYER BEHAVIOUR HERE.
 		if self.state == "attack" then
-			--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
-				--self:teleport(nil)
-				--self.state = ""
-			--else
-				if self.attack then
-					local target = self.attack
-					local pos = target:get_pos()
-					if pos ~= nil then
-						if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
-							self:teleport(target)
-						end
+			if self.attack then
+				local target = self.attack
+				local pos = target:get_pos()
+				if pos ~= nil then
+					if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
+						self:teleport(target)
 					end
 				end
-			--end
+			end
+		else --if not attacking try to tp to the dark
+			if minetest.get_node_light(enderpos) > minetest.LIGHT_MAX then
+				self:teleport(nil)
+			end
 		end
 		-- ARROW / DAYTIME PEOPLE AVOIDANCE BEHAVIOUR HERE.
 		-- Check for arrows and people nearby.
-		local enderpos = self.object:get_pos()
+
+		enderpos = self.object:get_pos()
 		enderpos.y = enderpos.y + 1.5
 		local objs = minetest.get_objects_inside_radius(enderpos, 2)
 		for n = 1, #objs do
