@@ -1,5 +1,6 @@
 mcl_mapgen_core = {}
 local registered_generators = {}
+local registered_generators_count = 0
 
 local lvm, nodes, param2 = 0, 0, 0
 local lvm_buffer = {}
@@ -1866,7 +1867,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 end)
 
 function minetest.register_on_generated(node_function)
-	mcl_mapgen_core.register_generator("mod_"..tostring(#registered_generators+1), nil, node_function)
+	mcl_mapgen_core.register_generator("mod_"..minetest.get_current_modname().."_"..tostring(registered_generators_count+1), nil, node_function)
 end
 
 function mcl_mapgen_core.register_generator(id, lvm_function, node_function, priority, needs_param2)
@@ -1875,7 +1876,7 @@ function mcl_mapgen_core.register_generator(id, lvm_function, node_function, pri
 	local priority = priority or 5000
 
 	if lvm_function then lvm = lvm + 1 end
-	if lvm_function then nodes = nodes + 1 end
+	if node_function then nodes = nodes + 1 end
 	if needs_param2 then param2 = param2 + 1 end
 
 	local new_record = {
@@ -1886,6 +1887,7 @@ function mcl_mapgen_core.register_generator(id, lvm_function, node_function, pri
 	}
 
 	registered_generators[id] = new_record
+	registered_generators_count = registered_generators_count + 1
 	table.sort(registered_generators, function(a, b)
 		return (a.i < b.i) or ((a.i == b.i) and a.vf and (b.vf == nil))
 	end)
@@ -1895,6 +1897,7 @@ function mcl_mapgen_core.unregister_generator(id)
 	if not registered_generators[id] then return end
 	local rec = registered_generators[id]
 	registered_generators[id] = nil
+	registered_generators_count = registered_generators_count - 1
 	if rec.vf then lvm = lvm - 1 end
 	if rec.nf then nodes = nodes - 1 end
 	if rec.needs_param2 then param2 = param2 - 1 end
