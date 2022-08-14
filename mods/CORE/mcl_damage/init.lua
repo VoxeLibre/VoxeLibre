@@ -161,9 +161,9 @@ minetest.register_on_dieplayer(function(player, mt_reason)
 	if mt_reason.approved then
 		mcl_damage.run_death_callbacks(player, mcl_damage.from_mt(mt_reason))
 	end
+	minetest.log("action","Player "..player:get_player_name().." died at "..minetest.pos_to_string(vector.round(player:get_pos())))
 end)
 
 minetest.register_on_mods_loaded(function()
 	table.sort(mcl_damage.modifiers, function(a, b) return a.priority < b.priority end)
 end)
-
