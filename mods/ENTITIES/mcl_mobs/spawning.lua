@@ -513,6 +513,7 @@ if mobs_spawn then
 			local mob_def = mob_library_worker_table[mob_index]
 			local mob_type = minetest.registered_entities[mob_def.name].type
 			local spawn_in_group = minetest.registered_entities[mob_def.name].spawn_in_group or 4
+			local spawn_in_group_min = minetest.registered_entities[mob_def.name].spawn_in_group_min or 1
 			local mob_count_wide = count_mobs(pos,aoc_range,mob_type)
 			local mob_count = count_mobs(spawning_position,32,mob_type)
 			if mob_def
