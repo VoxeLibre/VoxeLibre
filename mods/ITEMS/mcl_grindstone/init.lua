@@ -24,6 +24,34 @@ local function get_grindstone_formspec()
 	"listring[current_player;main]"
 end
 
+local function create_new_item(name_item, meta, wear)
+	local new_item = ItemStack(name_item)
+	new_item:set_wear(wear)
+	local new_meta = new_item:get_meta()
+	new_meta:set_string("name", meta:get_string("name"))
+	tt.reload_itemstack_description(new_item)
+	return new_item
+end
+
+local function remove_enchant_name(stack)
+	if mcl_enchanting.is_enchanted(stack:get_name()) then
+		local name = stack:get_name()
+		return name.sub(name, 1, -11)
+	else
+		return stack:get_name()
+	end
+end
+
+local function transfer_curse(old_itemstack, new_itemstack)
+	local enchants = mcl_enchanting.get_enchantments(old_itemstack)
+	for enchant, level in pairs(enchants) do
+		if mcl_enchanting.enchantments[enchant].curse == true then
+			new_itemstack = mcl_enchanting.enchant(new_itemstack, enchant, level)
+		end
+	end
+	return new_itemstack
+end
+
 -- Helper function to make sure update_anvil_slots NEVER overstacks the output slot
 local function fix_stack_size(stack)
 	if not stack or stack == "" then return "" end
@@ -41,15 +69,15 @@ local function update_grindstone_slots(meta)
 	local inv = meta:get_inventory()
 	local input1 = inv:get_stack("input", 1)
 	local input2 = inv:get_stack("input", 2)
+	local meta = input1:get_meta()
 
 	local new_output
 
 	if (not input1:is_empty() and not input2:is_empty()) then
-		-- Repair, if tool
 		local def1 = input1:get_definition()
 		local def2 = input2:get_definition()
-		local name1 = input1:get_name()
-		local name2 = input2:get_name()
+		local name1 = remove_enchant_name(input1)
+		local name2 = remove_enchant_name(input2)
 
 		local function calculate_repair(dur1, dur2)
 			local new_durability = (MAX_WEAR - dur1) + (MAX_WEAR - dur2) * 1.05
@@ -58,10 +86,38 @@ local function update_grindstone_slots(meta)
 
 		if def1.type == "tool" and def2.type == "tool" and name1 == name2 then
 			local new_wear = calculate_repair(input1:get_wear(), input2:get_wear())
-			input1:set_wear(new_wear)
-			new_output = input1
+			local new_item = create_new_item(name1, meta, new_wear)
+			if mcl_enchanting.is_enchanted(input1:get_name()) then
+				new_output = transfer_curse(input1, new_item)
+			else
+				new_output = transfer_curse(input2, new_item)
+			end
 		else
 			new_output = ""
+		end
+	elseif (not input1:is_empty() and input2:is_empty()) or (input1:is_empty() and not input2:is_empty()) then
+		if input2:is_empty() then
+			local def1 = input1:get_definition()
+			local meta = input1:get_meta()
+			if def1.type == "tool" and mcl_enchanting.is_enchanted(input1:get_name()) then
+				local name = remove_enchant_name(input1)
+				local wear = input1:get_wear()
+				local new_item = create_new_item(name, meta, wear)
+				new_output = transfer_curse(input1, new_item)
+			else
+				new_output = ""
+			end
+		else
+			local def2 = input2:get_definition()
+			local meta = input2:get_meta()
+			if def2.type == "tool" and mcl_enchanting.is_enchanted(input2:get_name()) then
+				local name = remove_enchant_name(input2)
+				local wear = input2:get_wear()
+				local new_item = create_new_item(name, meta, wear)
+				new_output = transfer_curse(input2, new_item)
+			else
+				new_output = ""
+			end
 		end
 	else
 		new_output = ""
@@ -100,6 +156,8 @@ minetest.register_node("mcl_grindstone:grindstone", {
 		}
 	},
 	selection_box = node_box,
+	collision_box = node_box,
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	groups = {pickaxey = 1, deco_block = 1},
 
 	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
@@ -167,6 +225,9 @@ minetest.register_node("mcl_grindstone:grindstone", {
 			local inv = meta:get_inventory()
 			local input1 = inv:get_stack("input", 1)
 			local input2 = inv:get_stack("input", 2)
+			if mcl_experience.throw_xp then
+				mcl_experience.throw_xp(pos, math.random(1,6))
+			end
 			-- Both slots occupied?
 			if not input1:is_empty() and not input2:is_empty() then
 				input1:take_item()
