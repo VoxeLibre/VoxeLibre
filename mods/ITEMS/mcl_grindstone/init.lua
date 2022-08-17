@@ -24,6 +24,7 @@ local function get_grindstone_formspec()
 	"listring[current_player;main]"
 end
 
+-- Creates a new item with the wear of the items and custom name
 local function create_new_item(name_item, meta, wear)
 	local new_item = ItemStack(name_item)
 	new_item:set_wear(wear)
@@ -33,6 +34,7 @@ local function create_new_item(name_item, meta, wear)
 	return new_item
 end
 
+-- If an item has an enchanment then remove "_enchanted" from the name
 local function remove_enchant_name(stack)
 	if mcl_enchanting.is_enchanted(stack:get_name()) then
 		local name = stack:get_name()
@@ -42,6 +44,7 @@ local function remove_enchant_name(stack)
 	end
 end
 
+-- If an input has a curse transfer it to the new item
 local function transfer_curse(old_itemstack, new_itemstack)
 	local enchants = mcl_enchanting.get_enchantments(old_itemstack)
 	for enchant, level in pairs(enchants) do
@@ -52,7 +55,19 @@ local function transfer_curse(old_itemstack, new_itemstack)
 	return new_itemstack
 end
 
--- Helper function to make sure update_anvil_slots NEVER overstacks the output slot
+-- Depending on an enchantment level and isn't a curse multiply xp given
+local function calculate_xp(stack)
+	local xp = 0
+	local enchants = mcl_enchanting.get_enchantments(stack)
+	for enchant, level in pairs(enchants) do
+		if level > 0 and mcl_enchanting.enchantments[enchant].curse == false then
+			xp = xp + math.random(7, 13) * level
+		end
+	end
+	return xp
+end
+
+-- Helper function to make sure update_grindstone_slots NEVER overstacks the output slot
 local function fix_stack_size(stack)
 	if not stack or stack == "" then return "" end
 	local count = stack:get_count()
@@ -65,6 +80,9 @@ local function fix_stack_size(stack)
 	return count
 end
 
+
+-- Update the inventory slots of an grindstone node.
+-- meta: Metadata of grindstone node
 local function update_grindstone_slots(meta)
 	local inv = meta:get_inventory()
 	local input1 = inv:get_stack("input", 1)
@@ -73,28 +91,32 @@ local function update_grindstone_slots(meta)
 
 	local new_output
 
+	-- Both input slots are occupied
 	if (not input1:is_empty() and not input2:is_empty()) then
 		local def1 = input1:get_definition()
 		local def2 = input2:get_definition()
+		-- Remove enchant name if they have one
 		local name1 = remove_enchant_name(input1)
 		local name2 = remove_enchant_name(input2)
 
+		-- Calculate repair
 		local function calculate_repair(dur1, dur2)
+			-- Grindstone gives a 5% bonus to durability
 			local new_durability = (MAX_WEAR - dur1) + (MAX_WEAR - dur2) * 1.05
 			return math.max(0, math.min(MAX_WEAR, MAX_WEAR - new_durability))
 		end
 
+		-- Check if both are tools and have the same tool type
 		if def1.type == "tool" and def2.type == "tool" and name1 == name2 then
 			local new_wear = calculate_repair(input1:get_wear(), input2:get_wear())
 			local new_item = create_new_item(name1, meta, new_wear)
-			if mcl_enchanting.is_enchanted(input1:get_name()) then
-				new_output = transfer_curse(input1, new_item)
-			else
-				new_output = transfer_curse(input2, new_item)
-			end
+			-- Transfer curses if both items have any
+			new_output = transfer_curse(input1, new_item)
+			new_output = transfer_curse(input2, new_output)
 		else
 			new_output = ""
 		end
+	-- Check if at least one input has an item
 	elseif (not input1:is_empty() and input2:is_empty()) or (input1:is_empty() and not input2:is_empty()) then
 		if input2:is_empty() then
 			local def1 = input1:get_definition()
@@ -133,7 +155,12 @@ end
 minetest.register_node("mcl_grindstone:grindstone", {
 	description = S("Grindstone"),
 	_tt_help = S("Used to disenchant/fix tools"),
-	_doc_items_longdesc = S("This is currently a decorative block which serves as the weapon smith's work station.  In minecraft this is used to disenchant/fix tools howerver this has not yet been implemented"),
+	_doc_items_longdesc = S("Grindstone disenchants tools and armour except for curses, and repairs two items of the same type it is also the weapon smith's work station."),
+	_doc_items_usagehelp = S("To use the grindstone, rightclick it, Two input slots (on the left) and a single output slot.").."\n"..
+												 S("To disenchant an item place enchanted item in one of the input slots and take the disenchanted item from the output.").."\n"..
+												 S("To repair a tool you need a tool of the same type and material, put both items in the input slot and the output slot will combine two items durabilities with 5% bonus.").."\n"..
+												 S("If both items have enchantments the player will get xp from both items from the disenchant.").."\n"..
+												 S("Curses cannot be removed and will be transfered to the new repaired item, if both items have a different curse the curses will be combined."),
 	tiles = {
 		"grindstone_top.png",
 		"grindstone_top.png",
@@ -160,6 +187,13 @@ minetest.register_node("mcl_grindstone:grindstone", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	groups = {pickaxey = 1, deco_block = 1},
 
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		local meta = minetest.get_meta(pos)
+		local meta2 = meta:to_table()
+		meta:from_table(oldmetadata)
+		drop_grindstone_items(pos, meta)
+		meta:from_table(meta2)
+	end,
 	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
 		local name = player:get_player_name()
 		if minetest.is_protected(pos, name) then
@@ -199,12 +233,10 @@ minetest.register_node("mcl_grindstone:grindstone", {
 			return count
 		end
 	end,
-
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
 		update_grindstone_slots(meta)
 	end,
-
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		local meta = minetest.get_meta(pos)
 		if from_list == "output" and to_list == "input" then
@@ -222,27 +254,34 @@ minetest.register_node("mcl_grindstone:grindstone", {
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
 		if listname == "output" then
+			local xp_earnt = 0
 			local inv = meta:get_inventory()
 			local input1 = inv:get_stack("input", 1)
 			local input2 = inv:get_stack("input", 2)
-			if mcl_experience.throw_xp then
-				mcl_experience.throw_xp(pos, math.random(1,6))
-			end
 			-- Both slots occupied?
 			if not input1:is_empty() and not input2:is_empty() then
+				-- Get xp earnt from the enchanted items
+				xp_earnt = calculate_xp(input1) + calculate_xp(input1)
 				input1:take_item()
 				input2:take_item()
 				inv:set_stack("input", 1, input1)
 				inv:set_stack("input", 2, input2)
 			else
+				-- If only one input item
 				if not input1:is_empty() then
+					xp_earnt = calculate_xp(input1)
 					input1:set_count(math.max(0, input1:get_count() - stack:get_count()))
 					inv:set_stack("input", 1, input1)
 				end
 				if not input2:is_empty() then
+					xp_earnt = calculate_xp(input2)
 					input2:set_count(math.max(0, input2:get_count() - stack:get_count()))
 					inv:set_stack("input", 2, input2)
 				end
+			end
+			-- Give the player xp
+			if mcl_experience.throw_xp and xp_earnt > 0 then
+				mcl_experience.throw_xp(pos, xp_earnt)
 			end
 		elseif listname == "input" then
 			update_grindstone_slots(meta)
