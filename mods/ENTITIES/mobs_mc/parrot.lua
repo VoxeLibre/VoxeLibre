@@ -13,12 +13,20 @@ local shoulders = {
 	right = vector.new(3.75,10.5,0)
 }
 
+local function table_get_rand(tbl)
+	local keys = {}
+	for k in pairs(tbl) do
+		table.insert(keys, k)
+	end
+	return tbl[keys[math.random(#keys)]]
+end
+
 local function get_random_mob_sound()
 	local t = table.copy(minetest.registered_entities)
 	table.shuffle(t)
 	for _,e in pairs(t) do
-		if e.is_mob and e.sounds then
-			return e.sounds[math.random(#e.sounds)]
+		if e.is_mob and e.sounds and #e.sounds > 0 then
+			return table_get_rand(e.sounds)
 		end
 	end
 	return minetest.registered_entities["mobs_mc:parrot"].sounds.random
