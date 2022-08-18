@@ -30,7 +30,9 @@ end
 -- Creates a new item with the wear of the items and custom name
 local function create_new_item(name_item, meta, wear)
 	local new_item = ItemStack(name_item)
-	new_item:set_wear(wear)
+	if wear ~= nil then
+			new_item:set_wear(wear)
+	end
 	local new_meta = new_item:get_meta()
 	new_meta:set_string("name", meta:get_string("name"))
 	tt.reload_itemstack_description(new_item)
@@ -64,6 +66,7 @@ local function calculate_xp(stack)
 	local enchants = mcl_enchanting.get_enchantments(stack)
 	for enchant, level in pairs(enchants) do
 		if level > 0 and mcl_enchanting.enchantments[enchant].curse == false then
+			-- Add a bit of uniform randomisation
 			xp = xp + math.random(7, 13) * level
 		end
 	end
@@ -131,7 +134,7 @@ local function update_grindstone_slots(meta)
 				local new_item = create_new_item(name, meta, wear)
 				new_output = transfer_curse(input1, new_item)
 			elseif input1:get_name() == "mcl_enchanting:book_enchanted" then
-				local new_item = ItemStack("mcl_books:book")
+				new_item = create_new_item("mcl_books:book", meta, nil)
 				new_output = transfer_curse(input1, new_item)
 			else
 				new_output = ""
@@ -145,7 +148,7 @@ local function update_grindstone_slots(meta)
 				local new_item = create_new_item(name, meta, wear)
 				new_output = transfer_curse(input2, new_item)
 			elseif input2:get_name() == "mcl_enchanting:book_enchanted" then
-				local new_item = ItemStack("mcl_books:book")
+				new_item = create_new_item("mcl_books:book", meta, nil)
 				new_output = transfer_curse(input2, new_item)
 			else
 				new_output = ""
