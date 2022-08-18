@@ -1,7 +1,10 @@
+-- Code based from mcl_anvils
+
 local S = minetest.get_translator(minetest.get_current_modname())
 
 local MAX_WEAR = 65535
 
+-- formspecs
 local function get_grindstone_formspec()
 	return "size[9,8.75]"..
 	"image[3,1.5;1.5,1;gui_crafting_arrow.png]"..
@@ -117,6 +120,7 @@ local function update_grindstone_slots(meta)
 			new_output = ""
 		end
 	-- Check if at least one input has an item
+	-- Check if the item is's an enchanted book or tool
 	elseif (not input1:is_empty() and input2:is_empty()) or (input1:is_empty() and not input2:is_empty()) then
 		if input2:is_empty() then
 			local def1 = input1:get_definition()
@@ -125,6 +129,9 @@ local function update_grindstone_slots(meta)
 				local name = remove_enchant_name(input1)
 				local wear = input1:get_wear()
 				local new_item = create_new_item(name, meta, wear)
+				new_output = transfer_curse(input1, new_item)
+			elseif input1:get_name() == "mcl_enchanting:book_enchanted" then
+				local new_item = ItemStack("mcl_books:book")
 				new_output = transfer_curse(input1, new_item)
 			else
 				new_output = ""
@@ -136,6 +143,9 @@ local function update_grindstone_slots(meta)
 				local name = remove_enchant_name(input2)
 				local wear = input2:get_wear()
 				local new_item = create_new_item(name, meta, wear)
+				new_output = transfer_curse(input2, new_item)
+			elseif input2:get_name() == "mcl_enchanting:book_enchanted" then
+				local new_item = ItemStack("mcl_books:book")
 				new_output = transfer_curse(input2, new_item)
 			else
 				new_output = ""
@@ -149,6 +159,18 @@ local function update_grindstone_slots(meta)
 	if new_output then
 		fix_stack_size(new_output)
 		inv:set_stack("output", 1, new_output)
+	end
+end
+
+-- Drop any items inside the grindstone if destroyed
+local function drop_grindstone_items(pos, meta)
+	local inv = meta:get_inventory()
+	for i=1, inv:get_size("input") do
+		local stack = inv:get_stack("input", i)
+		if not stack:is_empty() then
+			local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
+			minetest.add_item(p, stack)
+		end
 	end
 end
 
