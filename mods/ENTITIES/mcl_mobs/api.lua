@@ -407,15 +407,15 @@ local set_animation = function(self, anim, fixed_frame)
 
 	if flight_check(self) and self.fly and anim == "walk" then anim = "fly" end
 
-	self.animation.current = self.animation.current or ""
+	self._current_animation = self._current_animation or ""
 
-	if (anim == self.animation.current
+	if (anim == self._current_animation
 	or not self.animation[anim .. "_start"]
 	or not self.animation[anim .. "_end"]) and self.state ~= "die" then
 		return
 	end
 
-	self.animation.current = anim
+	self._current_animation = anim
 
 	local a_start = self.animation[anim .. "_start"]
 	local a_end
