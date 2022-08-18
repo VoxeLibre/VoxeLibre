@@ -4,7 +4,7 @@ minetest.register_on_joinplayer(function(player)
 	end
 	local itementity = minetest.add_entity(player:get_pos(), "mcl_wieldview:wieldnode")
 	if not itementity then return end
-	itementity:set_attach(player, "Wield_Item", vector.new(0, 0, 0), vector.new(0, 0, 0))
+	itementity:set_attach(player, "Wield_Item")
 	--itementity:set_attach(player, "Hand_Right", vector.new(0, 1, 0), vector.new(90, 45, 90))
 	itementity:get_luaentity()._wielder = player
 end)
