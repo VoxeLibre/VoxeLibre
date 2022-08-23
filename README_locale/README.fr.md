@@ -1,5 +1,5 @@
-# MinecClone2
-Un jeu non-officiel similaire à Minecraft pour Minetest. Forké depuis Mineclone par devedevils. Développé par de nombreuses personnes. Ni développé ni supporté par Mojang AB.
+# MineClone2
+Un jeu non-officiel similaire à Minecraft pour Minetest. Forké depuis Mineclone par devedevils. Développé par de nombreuses personnes. Ni développé ou supporté par Mojang AB.
 
  Version: 0.79 (en dévelopment)
 
@@ -81,7 +81,68 @@ Le dépôt de MineClone2 est hébergé sur Mesehub. Pour contribuer ou rapporter
 Ce jeu est actuellement au stade **beta**.
 Il est jouable mais incomplet en fonctionalités.
 La rétro-compatibilité n'est pas entièrement garantie, mettre votre monde à jour peut causer de petits bugs.
-Si vous voulez utiliser la version de développement de MineClone2 en production, la branche master est habituellement relativement stable. 
+Si vous voulez utiliser la version de développement de MineClone2 en production, la branche master est habituellement relativement stable. Les branches de test fusionnent souvent des pull requests expérimentales et doivent être considérées comme moins stable.
+
+Les principales fonctionalités suivantes sont disponibles :
+
+* Outils, armes
+* Armure
+* Système de fabrication : grille 2x2, table d'artisanat (grille 3x3), four, incluant un guide de fabrication
+* Coffres, grands coffres, coffre ender, boite de shulker
+* Fours, entonnoirs
+* Faim
+* La plupart des monstres et animaux
+* Tout les minerais de Minecraft
+* La plupart des blocs de l'overworld
+* Eau et lave
+* Météo
+* 28 biomes + 5 biomes du nether
+* Le Nether, monde souterrain brûlant dans une autre dimension
+* Circuits Redstone (partiel)
+* Effets de Statut (partiel)
+* Expérience
+* Enchantement
+* Brassage, potions, flèches trempées (partiel)
+* Bâteaux
+* Feu
+* Blocs de construction : escaliers, dalles, portes, trappes, barrière, portillon, muret
+* Horloge
+* Boussole
+* Eponge
+* Bloc de slime 
+* Petites plantes et pousses
+* Teintures
+* Bannières
+* Blocs de décoration : verre, verre teinté, vitres, barres de fer, terre cuites (et couleurs), têtes et plus
+* Cadres d'objets 
+* Juke-boxes
+* Livres pour écrire
+* Commandes
+* Villages
+* L'End 
+* et plus !
+
+Les fonctionalités suivantes sont incomplètes :
+
+* certains monstres et animaux
+* certains composants de Redstone
+* Wagonnets spéciaux
+* quelques blocs et objets non-triviaux
+
+Fonctionalités bonus (absentes de Minecraft) :
+
+* Guide d'artisanat intégré au jeu qui montre les recettes d'artisanat et de cuisson
+* Système d'aide intégré au jeu contenant des informations à propos des techniques de base, blocs, objets et plus
+* Recettes d'artisanat temporaires. Elles existent uniquement pour rendre des objets accessibles qui ne le seraient pas autrement sauf en mode créatif. Elles seront retirées au cours de l'avancement du développement et de l'ajout de nouvelles fonctionalités.
+* Pousses dans les coffres en mapgen v6
+* Entièrement moddable (grâce la puissante API lua de Minetest)
+* Nouveaux blocs et objets :
+    * Outil de recherche, montre l'aide de ce qu'il touche
+    * Plus de dalles et d'escaliers
+    * Portillon en briques du Nether
+    * Barrière en briques du Nether rouges
+    * Portillon en briques du Nether rouges
+* Structures de remplacement - ces petites variantes de structures de Minecraft servent de remplacement en attendant qu'on arrive à en faire fonctionner de plus grandes
 
 ## Autres fichiers readme
 
