@@ -6,18 +6,45 @@ Iron Helmet=Casque de Fer
 Golden Helmet=Casque d'Or
 Diamond Helmet=Casque de Diamant
 Chain Helmet=Casque de Mailles
+Netherite Helmet=Casque de Netherite
 Leather Tunic=Tunique en Cuir
 Iron Chestplate=Plastron de Fer
 Golden Chestplate=Plastron d'Or
 Diamond Chestplate=Plastron de Diamant
 Chain Chestplate=Cotte de Mailles
+Netherite Chestplate=Plastron de Netherite
 Leather Pants=Pantalon de Cuir
 Iron Leggings=Jambières de Fer
 Golden Leggings=Jambières d'Or
 Diamond Leggings=Jambières de Diamant
 Chain Leggings=Jambières de Mailles
+Netherite Leggings=Jambières de Netherite
 Leather Boots=Bottes de Cuir
 Iron Boots=Bottes de Fer
 Golden Boots=Bottes d'Or
 Diamond Boots=Bottes de Diamant
 Chain Boots=Bottes de Mailles
+Netherite Boots=Bottes de Netherite
+Elytra=Élytres
+
+#Translations of enchantements
+Increases underwater mining speed.=Augmente la vitesse de minage sous-marine.
+Blast Protection=Protection contre les explosions
+Reduces explosion damage and knockback.=Réduit les dégâts d'explosion et de recul.
+Curse of Binding=Malédiction du lien éternel
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=L'objet ne peut pas être retiré des emplacements d'armure sauf en cas de mort, de rupture ou en mode créatif.
+Feather Falling=Chute amortie
+Reduces fall damage.=Réduit les dégats de chute.
+Fire Protection=Protection contre le feu
+Reduces fire damage.=Reduit les dégats de feu.
+Shooting consumes no regular arrows.=Le tir ne consomme pas de flèches standard.
+Shoot 3 arrows at the cost of one.=Tirez sur 3 flèches au prix d'une.
+Projectile Protection=Protection contre les projectiles
+Reduces projectile damage.=Réduit les dommages causés par les projectiles.
+Protection=Protection
+Reduces most types of damage by 4% for each level.=Réduit la plupart des types de dégâts de 4% pour chaque niveau.
+Thorns=Épines
+Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflète une partie des dégâts subis lors de la frappe, au prix d'une réduction de la durabilité à chaque déclenchement.
+Aqua Affinity=Affinité aquatique
+
+
