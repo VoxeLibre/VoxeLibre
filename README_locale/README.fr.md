@@ -28,3 +28,22 @@ Vous atterissez dans un monde fait entièrement de cubes et généré aléatoire
 * **Cliquez droit la table d'artisanat** (icone livre) pour apprendre toutes les recettes possibles
 * **Fabriquez une pioche de bois** pour miner la pierre
 * Différents outils minent différentes sortes de blocs. Essayez les !
+* Continuez à jouer comme vous voulez. Amusez vous !
+
+### Agriculture
+* Trouvez des graines
+* Fabriquez une houe
+* Cliquez droit la terre ou des blocs similaires avec la houe pour créer des terres agricoles
+* Placer des graines sur des terres agricoles et regardez les pousser
+* Récoltez les plantes une fois matûres
+* Les terres agricoles proche de l'eau deviennent humides et accélèrent la croissance
+
+### Four
+* Fabriquer un Four
+* Le four permet d'obtenir plus d'objets
+* L'emplacement du haut doit contienir un objet fondable (par ex : minerai de fer)
+* L'emplacement du bas doit contienir un objet combustible (par ex : charbon)
+* Voir le guide d'artisanat pour en apprendre plus sur les objets fondables et combustibles
+
+### Aide supplémentaire
+Plus d'aide à propos du jeu, des blocs, objets et plus encore peuvent être trouvés dans le jeu. Vous pouvez accéder à l'aide depuis le menu inventaire.
