@@ -7,7 +7,6 @@ Mangrove Wood Planks=
 Mangrove Leaves=
 mangrove leaves are grown from mangrove trees.=
 The stripped wood of a Mangrove tree=
-Mangrove_Roots=
 Mangrove roots are decorative blocks that form as part of mangrove trees.=
 Needs soil and light to grow=
 When placed on soil (such as dirt) and exposed to light, an propagule will grow into an mangrove after some time.=
