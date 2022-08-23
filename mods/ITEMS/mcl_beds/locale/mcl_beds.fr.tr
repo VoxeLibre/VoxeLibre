@@ -37,5 +37,7 @@ Players in bed: @1/@2=Joueurs au lit: @1/@2
 Note: Night skip is disabled.=Remarque: Le saut de nuit est désactivé.
 You're sleeping.=Tu dors.
 You will fall asleep when all players are in bed.=Vous vous endormirez lorsque tous les joueurs seront au lit.
+You will fall asleep when @1% of all players are in bed.=Vous vous endormirez lorsque @1% de tous les joueurs seront au lit.
 You're in bed.=Tu es au lit.
 Allows you to sleep=Vous permet de dormir
+Respawn Anchor=Ancre de réapparition
