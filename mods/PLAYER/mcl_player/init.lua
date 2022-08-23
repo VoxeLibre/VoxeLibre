@@ -103,10 +103,6 @@ function mcl_player.player_set_armor(player, texture)
 	set_texture(player, 2, texture)
 end
 
-function mcl_player.player_set_wielditem(player, texture)
-	set_texture(player, 3, texture)
-end
-
 function mcl_player.get_player_formspec_model(player, x, y, w, h, fsname)
 	local name = player:get_player_name()
 	local model = player_model[name]

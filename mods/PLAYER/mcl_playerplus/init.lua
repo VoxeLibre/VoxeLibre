@@ -359,15 +359,17 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		if wielded_def and wielded_def._mcl_toollike_wield then
-			set_bone_position_conditional(player,"Wield_Item", vector.new(0,3.9,1.3), vector.new(90,0,0))
+			set_bone_position_conditional(player,"Wield_Item", vector.new(0,4.7,3.1), vector.new(-90,225,90))
 		elseif string.find(wielded:get_name(), "mcl_bows:bow") then
-			set_bone_position_conditional(player,"Wield_Item", vector.new(.5,4.5,-1.6), vector.new(90,0,20))
+			set_bone_position_conditional(player,"Wield_Item", vector.new(1,4,0), vector.new(90,130,115))
 		elseif string.find(wielded:get_name(), "mcl_bows:crossbow_loaded") then
-			set_bone_position_conditional(player,"Wield_Item", vector.new(-1.5,5.7,1.8), vector.new(64,90,0))
+			set_bone_position_conditional(player,"Wield_Item", vector.new(0,5.2,1.2), vector.new(0,180,73))
 		elseif string.find(wielded:get_name(), "mcl_bows:crossbow") then
-			set_bone_position_conditional(player,"Wield_Item", vector.new(-1.5,5.7,1.8), vector.new(90,90,0))
+			set_bone_position_conditional(player,"Wield_Item", vector.new(0,5.2,1.2), vector.new(0,180,45))
+		elseif wielded_def.inventory_image == "" then
+			set_bone_position_conditional(player,"Wield_Item", vector.new(0,6,2), vector.new(180,-45,0))
 		else
-			set_bone_position_conditional(player,"Wield_Item", vector.new(-1.5,4.9,1.8), vector.new(135,0,90))
+			set_bone_position_conditional(player,"Wield_Item", vector.new(0,5.3,2), vector.new(90,0,0))
 		end
 
 		-- controls right and left arms pitch when shooting a bow or blocking

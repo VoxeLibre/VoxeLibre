@@ -321,7 +321,7 @@ minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
 	_tt_help = S("Lets you ride a saddled pig"),
 	_doc_items_longdesc = S("A carrot on a stick can be used on saddled pigs to ride them."),
 	_doc_items_usagehelp = S("Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick."),
-	wield_image = "mcl_mobitems_carrot_on_a_stick.png",
+	wield_image = "mcl_mobitems_carrot_on_a_stick.png^[transformFY^[transformR90",
 	inventory_image = "mcl_mobitems_carrot_on_a_stick.png",
 	groups = { transport = 1 },
 	_mcl_toollike_wield = true,
