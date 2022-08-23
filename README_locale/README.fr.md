@@ -47,3 +47,46 @@ Vous atterissez dans un monde fait entièrement de cubes et généré aléatoire
 
 ### Aide supplémentaire
 Plus d'aide à propos du jeu, des blocs, objets et plus encore peuvent être trouvés dans le jeu. Vous pouvez accéder à l'aide depuis le menu inventaire.
+
+### Objets spéciaux
+Les objets suivants sont intéressants pour le mode Créatif et pour les constructeurs de cartes d'aventure. Ils ne peuvent être obtenus dans le jeu ou dans l'inventaire créatif. 
+
+* Barrière : `mcl_core:barrier`
+
+Utilisez la commande de chat `/giveme` pour les obtenir. Voir l'aide interne au jeu pour une explication.
+
+## Installation
+Ce jeu nécessite [Minetest](http://minetest.net) pour fonctionner (version 5.4.1 ou plus). Vous devez donc installer Minetest d'abord. Seules les versions stables de Minetest sont officielement supportées.
+Il n'y a pas de support de MineClone2 dans les versions développement de Minetest.
+
+Pour installer MineClone2 (si ce n'est pas déjà fait), déplacez ce dossier dans le dossier “games” de Minetest. Consultez l'aide de Minetest pour en apprendre plus.
+
+## Liens utiles 
+Le dépôt de MineClone2 est hébergé sur Mesehub. Pour contribuer ou rapporter des problèmes, aller là-bas.
+
+* Mesehub: <https://git.minetest.land/MineClone2/MineClone2>
+* Discord: <https://discord.gg/xE4z8EEpDC>
+* YouTube <https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A>
+* IRC: <https://web.libera.chat/#mineclone2>
+* Matrix: <https://app.element.io/#/room/#mc2:matrix.org>
+* Reddit: <https://www.reddit.com/r/MineClone2/>
+* Minetest forums: <https://forum.minetest.net/viewtopic.php?f=50&t=16407>
+* ContentDB: <https://content.minetest.net/packages/wuzzy/mineclone2/>
+* OpenCollective: <https://opencollective.com/mineclone2>
+
+## Objectif
+- 
+
+## Statut de complétion
+Ce jeu est actuellement au stade **beta**.
+Il est jouable mais incomplet en fonctionalités.
+La rétro-compatibilité n'est pas entièrement garantie, mettre votre monde à jour peut causer de petits bugs.
+Si vous voulez utiliser la version de développement de MineClone2 en production, la branche master est habituellement relativement stable. 
+
+## Autres fichiers readme
+
+* `LICENSE.txt`: Le texte de la license GPLv3
+* `CONTRIBUTING.md`: Information pour ceux qui veulent contribuer
+* `API.md`: Pour les modders Minetest qui veulent modder ce jeu
+* `LEGAL.md`: Information légale
+* `CREDITS.md`: Liste des contributeurs
