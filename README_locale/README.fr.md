@@ -142,7 +142,22 @@ Fonctionalités bonus (absentes de Minecraft) :
     * Portillon en briques du Nether
     * Barrière en briques du Nether rouges
     * Portillon en briques du Nether rouges
-* Structures de remplacement - ces petites variantes de structures de Minecraft servent de remplacement en attendant qu'on arrive à en faire fonctionner de plus grandes
+* Structures de remplacement - ces petites variantes de structures de Minecraft servent de remplacement en attendant qu'on arrive à en faire fonctionner de plus grandes :
+    * Cabine dans les bois (Manoir des bois)
+    * Avant-poste du Nether (Forteresse)
+
+Différences techniques avec Minecraft :
+* Limite en hauteur de 31000 blocs (bien plus grand que Minecraft)
+* Taille horizontale du monde 62000×62000 blocs (bien plus petit que Minecraft mais toujours très grand)
+* Toujours assez incomplet et buggé
+* Des blocs, objets, ennemis et fonctionalités manquent
+* Quelques objets ont des noms légèrement différents pour être plus faciles à distinguer
+* Des musiques différentes pour le juke-boxe
+* Des textures différentes (Pixel Perfection)
+* Des sons différents (sources diverses)
+* Un moteur de jeu différent (Minetest)
+* Des bonus cachés différents
+...et enfin MineClone2 est un logiciel libre !
 
 ## Autres fichiers readme
 
