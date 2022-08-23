@@ -105,8 +105,8 @@ minetest.register_node("mcl_mangrove:mangroveleaves", {
 })
 
 minetest.register_node("mcl_mangrove:mangrove_stripped_trunk", {
-	description = "The stripped wood of a Mangove tree",
-	_doc_items_longdesc = "The stripped wood of a Mangove tree",
+	description = "The stripped wood of a Mangrove tree",
+	_doc_items_longdesc = "The stripped wood of a Mangrove tree",
 	_doc_items_hidden = false,
 	tiles ={"mcl_stripped_mangrove_log_top.png","mcl_stripped_mangrove_log_side.png",},
 	paramtype2 = "facedir",
@@ -118,8 +118,8 @@ minetest.register_node("mcl_mangrove:mangrove_stripped_trunk", {
 	_mcl_hardness = 2,
 })
 minetest.register_node("mcl_mangrove:mangrove_stripped_bark", {
-	description = "The stripped bark of a Mangove tree",
-	_doc_items_longdesc = "The stripped bark of a Mangove tree",
+	description = "The stripped bark of a Mangrove tree",
+	_doc_items_longdesc = "The stripped bark of a Mangrove tree",
 	_doc_items_hidden = false,
 	tiles ={"mcl_stripped_mangrove_log_side.png","mcl_stripped_mangrove_log_side.png",},
 	paramtype2 = "facedir",
@@ -342,7 +342,7 @@ minetest.register_node("mcl_mangrove:river_water_logged_roots",rwlroots)
 minetest.register_node("mcl_mangrove:mangrove_mud_roots", {
 	description = S("Muddy Mangrove Roots"),
 	_tt_help = S("crafted with Mud and Mangrove roots"),
-	_doc_items_longdesc = S("Muddy Mangrove Roots is a block from mangrove swamp.It drowns player a bit inside it"),
+	_doc_items_longdesc = S("Muddy Mangrove Roots is a block from mangrove swamp.It drowns player a bit inside it."),
 	tiles = {
 		"mcl_mud.png^mcl_mangrove_roots_top.png",
 		"mcl_mud.png^mcl_mangrove_roots_side.png",
