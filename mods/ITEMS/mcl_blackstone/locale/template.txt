@@ -1,7 +1,7 @@
 # textdomain: mcl_blackstone
 Blackstone=
 Polished Blackstone=
-Chieseled Polished Blackstone=
+Chiseled Polished Blackstone=
 Polished Blackstone Bricks=
 Basalt=
 Polished Basalt=
