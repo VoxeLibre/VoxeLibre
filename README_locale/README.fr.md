@@ -75,7 +75,9 @@ Le dépôt de MineClone2 est hébergé sur Mesehub. Pour contribuer ou rapporter
 * OpenCollective: <https://opencollective.com/mineclone2>
 
 ## Objectif
-- 
+* Créer un clone stable, moddable, libre et gratuit basé sur le moteur de jeu Minetest avec des fonctionalités abouties, utilisable à la fois en mode solo et multijoueur. Actuellement, beaucoup des fonctionalités de **Minecraft Java Edition** sont déjà implémentées et leur amélioration est prioritaire sur les nouvelles demandes.
+* Avec une priorité moindre, implémenter les fonctionalités des versions **Minecraft + OptiFine** (OtiFine autant que supporté par le moteur Minetest). Cela signifie que les fonctionalités présentes dans les versions listées sont priorisées.
+* Dans l'idéal, créer une expérience performante qui tourne bien sur des ordinateurs à basse performance. Malheureusement, en raison des mécanismes de Minecraft et des limitations du moteur Minetest ainsi que de la petite taille de la communauté de joueurs sur des ordinateurs à basse performances, les optimisations sont difficiles à explorer.
 
 ## Statut de complétion
 Ce jeu est actuellement au stade **beta**.
