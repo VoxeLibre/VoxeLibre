@@ -1,5 +1,5 @@
 # MineClone2
-Un jeu non-officiel similaire à Minecraft pour Minetest. Forké depuis Mineclone par devedevils. Développé par de nombreuses personnes. Ni développé ou supporté par Mojang AB.
+Un jeu non-officiel similaire à Minecraft pour Minetest. Forké depuis Mineclone par davedevils. Développé par de nombreuses personnes. Ni développé ou supporté par Mojang AB.
 
  Version: 0.79 (en dévelopment)
 
