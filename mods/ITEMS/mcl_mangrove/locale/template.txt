@@ -1,4 +1,4 @@
-#textdomain: mcl_mangrove
+# textdomain: mcl_mangrove
 Mangrove Wood=
 The trunk of a Mangrove tree.=
 Mangrove Bark=
