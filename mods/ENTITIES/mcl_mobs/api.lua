@@ -3467,7 +3467,10 @@ local mob_activate = function(self, staticdata, def, dtime)
 			def.textures = {def.textures}
 		end
 
-		self.base_texture = def.textures[random(1, #def.textures)]
+		local c = 1
+		if #def.textures > c then c = #def.textures end
+
+		self.base_texture = def.textures[math.random(c)]
 		self.base_mesh = def.mesh
 		self.base_size = self.visual_size
 		self.base_colbox = self.collisionbox
