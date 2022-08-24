@@ -283,3 +283,4 @@ Grows on sand or dirt next to water=
 Stackable=
 Crying Obsidian=
 Crying obsidian is a luminous obsidian that can generate as part of ruined portals.=
+Enchanted Golden Apple=
