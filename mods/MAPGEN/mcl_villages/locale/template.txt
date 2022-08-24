@@ -1,3 +1,2 @@
 # textdomain: mcl_villages
 Chiseled Stone Village Bricks=
-Map chunk @1 to @2 is not suitable for placing villages.=
