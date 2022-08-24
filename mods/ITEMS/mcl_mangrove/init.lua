@@ -105,7 +105,7 @@ minetest.register_node("mcl_mangrove:mangroveleaves", {
 })
 
 minetest.register_node("mcl_mangrove:mangrove_stripped_trunk", {
-	description = "The stripped wood of a Mangrove tree",
+	description = "Stripped Mangrove Wood",
 	_doc_items_longdesc = "The stripped wood of a Mangrove tree",
 	_doc_items_hidden = false,
 	tiles ={"mcl_stripped_mangrove_log_top.png","mcl_stripped_mangrove_log_side.png",},
@@ -118,7 +118,7 @@ minetest.register_node("mcl_mangrove:mangrove_stripped_trunk", {
 	_mcl_hardness = 2,
 })
 minetest.register_node("mcl_mangrove:mangrove_stripped_bark", {
-	description = "The stripped bark of a Mangrove tree",
+	description = "Stripped Mangrove Bark",
 	_doc_items_longdesc = "The stripped bark of a Mangrove tree",
 	_doc_items_hidden = false,
 	tiles ={"mcl_stripped_mangrove_log_side.png","mcl_stripped_mangrove_log_side.png",},
