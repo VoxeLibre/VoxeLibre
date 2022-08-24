@@ -12,7 +12,7 @@ dofile(settlements.modpath.."/paths.lua")
 --
 settlements.grundstellungen()
 
-local S = minetest.get_translator(modname)
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local villagegen={}
 --
