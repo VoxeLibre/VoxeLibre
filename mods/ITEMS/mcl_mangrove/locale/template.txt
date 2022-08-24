@@ -18,7 +18,6 @@ When placed on soil (such as dirt) and exposed to light, an propagule will grow 
 Hanging Propagule=
 Grows on Mangrove leaves=
 water logged mangrove roots=
-Mangrove roots are decorative blocks that form as part of mangrove trees.=
 Mangrove roots, despite being a full block, can be waterlogged and do not flow water out=
 These cannot be crafted yet only occure when get in contact of water.=
 Muddy Mangrove Roots=
