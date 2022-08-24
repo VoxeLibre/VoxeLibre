@@ -12,13 +12,14 @@ dofile(settlements.modpath.."/paths.lua")
 --
 settlements.grundstellungen()
 
+local S = minetest.get_translator(modname)
 
 local villagegen={}
 --
 -- register block for npc spawn
 --
 minetest.register_node("mcl_villages:stonebrickcarved", {
-	description = ("Chiseled Stone Village Bricks"),
+	description = S("Chiseled Stone Village Bricks"),
 	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"mcl_core_stonebrick_carved.png"},
 	drop = "mcl_core:stonebrickcarved",
