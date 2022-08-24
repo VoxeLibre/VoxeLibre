@@ -132,7 +132,7 @@ minetest.register_node("mcl_mangrove:mangrove_stripped_bark", {
 })
 
 minetest.register_node("mcl_mangrove:mangrove_roots", {
-	description = "Mangrove_Roots",
+	description = "Mangrove Roots",
 	_doc_items_longdesc = "Mangrove roots are decorative blocks that form as part of mangrove trees.",
 	_doc_items_hidden = false,
 	waving = 0,
@@ -157,7 +157,7 @@ minetest.register_node("mcl_mangrove:mangrove_roots", {
 })
 
 minetest.register_node("mcl_mangrove:propagule", {
-	description = S("mangrove_propagule"),
+	description = S("Mangrove Propagule"),
 	_tt_help = S("Needs soil and light to grow"),
 	_doc_items_longdesc = S("When placed on soil (such as dirt) and exposed to light, an propagule will grow into an mangrove after some time."),
 	_doc_items_hidden = false,
@@ -357,8 +357,8 @@ minetest.register_node("mcl_mangrove:mangrove_mud_roots", {
 
 mcl_doors:register_door("mcl_mangrove:mangrove_door", {
 	description = ("Mangrove Door"),
-	_doc_items_longdesc = "",
-	_doc_items_usagehelp = "",
+	_doc_items_longdesc = "Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.",
+	_doc_items_usagehelp = "To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.",
 	inventory_image = "mcl_mangrove_doors.png",
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
@@ -384,7 +384,7 @@ mcl_doors:register_trapdoor("mcl_mangrove:mangrove_trapdoor", {
 mcl_fences.register_fence_and_fence_gate(
 	"mangrove_wood_fence",
 	S("Mangrove Wood Fence"),
-	S("Mangrove Wood Plank Fence"),
+	S("Mangrove Wood Fence Gate"),
 	"mcl_mangrove_fence.png",
 	{handy=1,axey=1, flammable=2,fence_wood=1, fire_encouragement=5, fire_flammability=20},
 	minetest.registered_nodes["mcl_core:wood"]._mcl_hardness,
