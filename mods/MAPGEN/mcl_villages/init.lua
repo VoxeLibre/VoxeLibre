@@ -114,7 +114,7 @@ minetest.register_lbm({
 -- manually place villages
 if minetest.is_creative_enabled("") then
 	minetest.register_craftitem("mcl_villages:tool", {
-		description = "mcl_villages build tool",
+		description = S("mcl_villages build tool"),
 		inventory_image = "default_tool_woodshovel.png",
 		-- build ssettlement
 		on_place = function(itemstack, placer, pointed_thing)
