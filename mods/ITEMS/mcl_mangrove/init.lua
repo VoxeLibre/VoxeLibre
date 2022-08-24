@@ -105,8 +105,8 @@ minetest.register_node("mcl_mangrove:mangroveleaves", {
 })
 
 minetest.register_node("mcl_mangrove:mangrove_stripped_trunk", {
-	description = "Stripped Mangrove Wood",
-	_doc_items_longdesc = "The stripped wood of a Mangrove tree",
+	description = S("Stripped Mangrove Wood"),
+	_doc_items_longdesc = S("The stripped wood of a Mangrove tree"),
 	_doc_items_hidden = false,
 	tiles ={"mcl_stripped_mangrove_log_top.png","mcl_stripped_mangrove_log_side.png",},
 	paramtype2 = "facedir",
@@ -118,8 +118,8 @@ minetest.register_node("mcl_mangrove:mangrove_stripped_trunk", {
 	_mcl_hardness = 2,
 })
 minetest.register_node("mcl_mangrove:mangrove_stripped_bark", {
-	description = "Stripped Mangrove Bark",
-	_doc_items_longdesc = "The stripped bark of a Mangrove tree",
+	description = S("Stripped Mangrove Bark"),
+	_doc_items_longdesc = S("The stripped bark of a Mangrove tree"),
 	_doc_items_hidden = false,
 	tiles ={"mcl_stripped_mangrove_log_side.png","mcl_stripped_mangrove_log_side.png",},
 	paramtype2 = "facedir",
@@ -132,8 +132,8 @@ minetest.register_node("mcl_mangrove:mangrove_stripped_bark", {
 })
 
 minetest.register_node("mcl_mangrove:mangrove_roots", {
-	description = "Mangrove Roots",
-	_doc_items_longdesc = "Mangrove roots are decorative blocks that form as part of mangrove trees.",
+	description = S("Mangrove Roots"),
+	_doc_items_longdesc = S("Mangrove roots are decorative blocks that form as part of mangrove trees."),
 	_doc_items_hidden = false,
 	waving = 0,
 	place_param2 = 1, -- Prevent leafdecay for placed nodes
@@ -282,12 +282,12 @@ mcl_flowerpots.register_potted_flower("mcl_mangrove:propagule", {
 local water_tex = "default_water_source_animated.png^[verticalframe:16:0"
 
 local wlroots = {
-	description = ("water logged mangrove roots"),
+	description = S("water logged mangrove roots"),
 	_doc_items_entry_name = S("water logged mangrove roots"),
 	_doc_items_longdesc =
-		("Mangrove roots are decorative blocks that form as part of mangrove trees.").."\n\n"..
-		("Mangrove roots, despite being a full block, can be waterlogged and do not flow water out").."\n\n"..
-		("These cannot be crafted yet only occure when get in contact of water."),
+		S("Mangrove roots are decorative blocks that form as part of mangrove trees.").."\n\n"..
+		S("Mangrove roots, despite being a full block, can be waterlogged and do not flow water out").."\n\n"..
+		S("These cannot be crafted yet only occure when get in contact of water."),
 	_doc_items_hidden = false,
 	tiles = {
 		{name="default_water_source_animated.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=5.0}}
@@ -356,9 +356,9 @@ minetest.register_node("mcl_mangrove:mangrove_mud_roots", {
 })
 
 mcl_doors:register_door("mcl_mangrove:mangrove_door", {
-	description = ("Mangrove Door"),
-	_doc_items_longdesc = "Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.",
-	_doc_items_usagehelp = "To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.",
+	description = S("Mangrove Door"),
+	_doc_items_longdesc = S("Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal."),
+	_doc_items_usagehelp = S("To open or close a wooden door, rightclick it or supply its lower half with a redstone signal."),
 	inventory_image = "mcl_mangrove_doors.png",
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
