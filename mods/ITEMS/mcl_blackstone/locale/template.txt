@@ -22,3 +22,7 @@ Gilded Blackstone=
 Nether Gold Ore=
 Smooth Basalt=
 Blackstone Wall=
+Double Blackstone Slab=
+Polished Double Blackstone Slab=
+Double Polished Chiseled Blackstone Slab=
+Double Polished Blackstone Brick Slab=
