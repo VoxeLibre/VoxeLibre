@@ -7,19 +7,15 @@ mcl_smithing_table = {}
 
 -- Function to upgrade diamond tool/armor to netherite tool/armor
 function mcl_smithing_table.upgrade_item(itemstack)
-	itemstack = ItemStack(itemstack)	-- Copy the stack
-
 	local def = itemstack:get_definition()
 
 	if not def or not def._mcl_upgradable then
 		return
 	end
-
 	local itemname = itemstack:get_name()
+	local upgrade_item = itemname:gsub("diamond", "netherite")
 
-	local upgrade_item = def._mcl_upgrade_item or itemname:gsub("diamond", "netherite")
-
-	if upgrade_item == itemname then
+	if def._mcl_upgrade_item and upgrade_item == itemname then
 		return
 	end
 
