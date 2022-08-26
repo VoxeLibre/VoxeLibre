@@ -2,7 +2,7 @@
 So you want to contribute to MineClone2?
 Wow, thank you! :-)
 
-MineClone2 is maintained by Nicu and Fleckenstein. If you have any
+MineClone2 is maintained by Nicu and Cora. If you have any
 problems or questions, contact us (See Links section below).
 
 You can help with MineClone2's development in many different ways,
@@ -11,18 +11,9 @@ whether you're a programmer or not.
 ## MineClone2's development target is to...
 - Crucially, create a stable, moddable, free/libre clone of Minecraft
 based on the Minetest engine with polished features, usable in both
-singleplayer and multiplayer. Currently, most of **Minecraft Java
-Edition 1.12.2** features are already implemented and polishing existing
-features are prioritized over new feature requests.
-- With lessened priority yet strictly, implement features targetting
-**Minecraft version 1.17 + OptiFine** (OptiFine only as far as supported
-by the Minetest Engine). This means features in parity with the listed
-Minecraft experiences are prioritized over those that don't fulfill this
-scope.
-- Optionally, create a performant experience that will run relatively
-well on really low spec computers. Unfortunately, due to Minecraft's
-mechanisms and Minetest engine's limitations along with a very small
-playerbase on low spec computers, optimizations are hard to investigate.
+singleplayer and multiplayer. Currently, a lot of Minecraft features
+are already implemented.
+Polishing existing features is always welcome.
 
 ## Links
 * [Mesehub](https://git.minetest.land/MineClone2/MineClone2)
@@ -45,8 +36,10 @@ referenced frequently because of its usefulness. As such, it is valuable
 in learning how git works and its terminology. It can also help you
 keeping your game updated, and easily test pull requests.
 
-## How you can help as a non-programmer
+Look at our wiki for some concrete guides:
+https://git.minetest.land/MineClone2/MineClone2/wiki/
 
+## How you can help as a non-programmer
 As someone who does not know how to write programs in Lua or does not
 know how to use the Minetest API, you can still help us out a lot. For
 example, by opening an issue in the
@@ -58,12 +51,10 @@ you can report a bug or request a feature.
 discussion.
 * Choose a descriptive title (e.g. not just "crash", "bug" or "question"
 ).
-* Please write in plain, understandable English. It will be easier to
-communicate.
-* Please start the issue title with a capital letter.
 * Always check the currently opened issues before creating a new one.
-Don't report bugs that have already been reported or request features
-that already have been requested.
+Try not to report bugs that have already been reported or request features
+that already have been requested. This can often be ambiguous though.
+If in doubt open an issue!
 * If you know about Minetest's inner workings, please think about
 whether the bug / the feature that you are reporting / requesting is
 actually an issue with Minetest itself, and if it is, head to the
@@ -72,6 +63,9 @@ instead.
 * If you need any help regarding creating a Mesehub account or opening
 an issue, feel free to ask on the Discord / Matrix server or the IRC
 channel.
+
+The link to the mesehub registration page is: https://git.minetest.land/user/sign_up
+(It appears to sometimes get lost on the page itsself)
 
 ### Reporting bugs
 * A bug is an unintended behavior or, in the worst case, a crash.
@@ -111,23 +105,28 @@ would report issues will pull requests similar to when you were
 reporting bugs that are the mainline (See Reporting bugs section). You
 can find currently open pull requests here:
 <https://git.minetest.land/MineClone2/MineClone2/pulls>. Note that pull
-requests that start with a `WIP:` are not done yet, and therefore might
-not work, so it's not very useful to try them out yet.
+requests that start with a `WIP:` are not done yet and therefore could
+still undergo substantial change. Testing these is still helpful however
+because that is the reason developers put them up as WIP so other people
+can have a look at the PR.
 
 ### Contributing assets
-Due to license problems, MineClone2 unfortunately cannot use
-Minecraft's assets, therefore we are always looking for asset
-contributions. To contribute assets, it can be useful to learn git
-basics and read the section for Programmers of this document, however
-this is not required. It's also a good idea to join the Discord server
+Due to license problems, MineClone2 cannot use Minecraft's assets,
+therefore we are always looking for asset contributions.
+
+To contribute assets, it can be useful to learn git basics and read
+the section for Programmers of this document, however this is not required.
+It's also a good idea to join the Discord server
 (or alternatively IRC or Matrix).
 
 #### Textures
-For textures we use the Pixel Perfection texture pack. This is mostly
-enough; however in some cases - e.g. for newer Minecraft features, it's
-useful to have texture artists around. If you want to make such
-contributions, join our Discord server. Demands for textures will be
-communicated there.
+For textures we use the Pixel Perfection texture pack. For older Minecraft
+features that is mostly enough but a lot of the newer textures in it are
+copies or slight modifications of the original MC textures so great caution
+needs to be taken when using any textures coming from Minecraft texture
+packs.
+If you want to make such contributions, join our Discord server. Demands
+for textures will be communicated there.
 
 #### Sounds
 MineClone2 currently does not have a consistent way to handle sounds.
@@ -251,16 +250,25 @@ of the results)
 * [Official Minecraft Wiki](https://minecraft.fandom.com/wiki/Minecraft_Wiki)
 (Include a link to the specific page you used)
 
-### Stick to our guidelines
+### Guidelines
 
 #### Git Guidelines
-* We use merge rather than rebase or squash merge
-* We don't use git submodules.
-* Your commit names should be relatively descriptive, e.g. when saying
-"Fix #issueid", the commit message should also contain the title of the
-issue.
-* Try to keep your commits as atomic as possible (advise, but completely
-optional)
+* Pushing to master is disabled - don't even try it.
+* Every change is tracked as a PR.
+* All but the tiniest changes require at least one approval from a Developer
+* To update branches we use rebase not merge (so we don't end up with
+excessive git bureaucracy commits in master)
+* We use merge to add the commits from a PR/branch to master
+* Submodules should only be used if a) upstream is highly reliable and
+b) it is 100% certain that no mcl2 specific changes to the code will  be
+needed (this has never been the case before, hence mcl2 is submodule free so far)
+* Commit messages should be descriptive and never contain mcl2 specific
+issueids - there are other projects who might use commits from mcl2 and
+it will confuse their issue trackers.
+* Try to group your submissions best as you can:
+* Try to keep your PRs small: In some cases things reasonably be can't
+split up but in general multiple small PRs are better than a big one.
+* Similarly multiple small commits are better than a giant one. (use git commit -p)
 
 #### Code Guidelines
 * Each mod must provide `mod.conf`.
@@ -343,36 +351,23 @@ Active and trusted contributors are often granted write access to the
 MineClone2 repository.
 
 #### Developer responsibilities
-- You should not push things directly to
-MineClone2 master - rather, do your work on a branch on your private
-repository, then create a pull request. This way other people can review
-your changes and make sure they work before they get merged.
-- Merge PRs only when they have recieved the necessary feedback and have
-been tested by at least two different people (including the author of
-the pull request), to avoid crashes or the introduction of new bugs.
-- You may also be assigned to issues or pull
-requests as a developer. In this case it is your responsibility to fix
-the issue / review and merge the pull request when it is ready. You can
-also unassign yourself from the issue / PR if you have no time or don't
-want to take care of it for some other reason. After all, everyone is a
-volunteer and we can't expect you to do work that you are not interested
-in. **The important thing is that you make sure to inform us if you
-won't take care of something that has been assigned to you.**
-- Please assign yourself to something that you want to work on to avoid
-duplicate work.
-- As a developer, it should be easy to reach you about your work. You
-should be in at least one of the public MineClone2 discussion rooms -
-preferrably Discord, but if you really don't like Discord, Matrix
-or IRC are fine too.
+- If you have developer privileges you can just open a new branch in the
+mcl2 repository (which is preferred). From that you create a pull request.
+This way other people can review your changes and make sure they work
+before they get merged.
+- If you do not (yet) have developer privs you do your work on a branch
+on your private repository e.g. using the "fork" function on mesehub.
+- Any developer is welcome to review, test and merge PRs. A PR needs
+at least one approval (by someone else than the author) but the maintainers
+are usually relatively quick to react to new submissions.
 
 ### Maintainer status
 Maintainers carry the main responsibility for the project.
 
 #### Maintainer responsibilities
 - Making sure issues are addressed and pull requests are reviewed and
-merged, by assigning either themselves or Developers to issues / PRs
+merged.
 - Making releases
-- Making sure guidelines are kept
 - Making project decisions based on community feedback
 - Granting/revoking developer access
 - Enforcing the code of conduct (See CODE_OF_CONDUCT.md)
@@ -380,8 +375,8 @@ merged, by assigning either themselves or Developers to issues / PRs
 - Resolving conflicts and problems within the community
 
 #### Current maintainers
-* Fleckenstein - responsible for gameplay review, publishing releases,
-technical guidelines and issue/PR delegation
+* Cora - responsible for gameplay review, publishing releases,
+technical guidelines
 * Nicu - responsible for community related issues
 
 #### Release process
