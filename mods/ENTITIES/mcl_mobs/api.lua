@@ -213,11 +213,11 @@ end
 local collision = function(self)
 
 	local pos = self.object:get_pos()
+	if not pos then return {0,0} end
 	local vel = self.object:get_velocity()
 	local x = 0
 	local z = 0
 	local width = -self.collisionbox[1] + self.collisionbox[4] + 0.5
-
 	for _,object in pairs(minetest.get_objects_inside_radius(pos, width)) do
 
 		local ent = object:get_luaentity()
@@ -254,12 +254,14 @@ local set_velocity = function(self, v)
 	end
 
 	local yaw = (self.object:get_yaw() or 0) + self.rotate
-
-	self.object:set_velocity({
-		x = (sin(yaw) * -v) + c_x,
-		y = self.object:get_velocity().y,
-		z = (cos(yaw) * v) + c_y,
-	})
+	local vv = self.object:get_velocity()
+	if vv then
+		self.object:set_velocity({
+			x = (sin(yaw) * -v) + c_x,
+			y = vv.y,
+			z = (cos(yaw) * v) + c_y,
+		})
+	end
 end
 
 
@@ -407,15 +409,15 @@ local set_animation = function(self, anim, fixed_frame)
 
 	if flight_check(self) and self.fly and anim == "walk" then anim = "fly" end
 
-	self.animation.current = self.animation.current or ""
+	self._current_animation = self._current_animation or ""
 
-	if (anim == self.animation.current
+	if (anim == self._current_animation
 	or not self.animation[anim .. "_start"]
 	or not self.animation[anim .. "_end"]) and self.state ~= "die" then
 		return
 	end
 
-	self.animation.current = anim
+	self._current_animation = anim
 
 	local a_start = self.animation[anim .. "_start"]
 	local a_end
@@ -3002,6 +3004,7 @@ end
 
 local function check_entity_cramming(self)
 	local p = self.object:get_pos()
+	if not p then return end
 	local oo = minetest.get_objects_inside_radius(p,1)
 	local mobs = {}
 	for _,o in pairs(oo) do
@@ -3467,7 +3470,10 @@ local mob_activate = function(self, staticdata, def, dtime)
 			def.textures = {def.textures}
 		end
 
-		self.base_texture = def.textures[random(1, #def.textures)]
+		local c = 1
+		if #def.textures > c then c = #def.textures end
+
+		self.base_texture = def.textures[math.random(c)]
 		self.base_mesh = def.mesh
 		self.base_size = self.visual_size
 		self.base_colbox = self.collisionbox

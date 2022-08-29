@@ -847,15 +847,16 @@ minetest.register_entity(":__builtin:item", {
 		elseif self._flowing == true and not is_in_water and not is_floating then
 			-- Disable flowing physics if not on/in flowing liquid
 			self._flowing = false
-			disable_physics(self.object, self, true)
+			enable_physics(self.object, self, true)
 			return
 		end
 
 		-- If node is not registered or node is walkably solid and resting on nodebox
 		local nn = minetest.get_node({x=p.x, y=p.y-0.5, z=p.z}).name
+		local def = minetest.registered_nodes[nn]
 		local v = self.object:get_velocity()
-		local is_on_floor = (minetest.registered_nodes[nn].walkable
-			and not minetest.registered_nodes[nn].groups.slippery and v.y == 0)
+		local is_on_floor = def and (def.walkable
+			and not def.groups.slippery and v.y == 0)
 
 		if not minetest.registered_nodes[nn]
 		or is_floating or is_on_floor then
