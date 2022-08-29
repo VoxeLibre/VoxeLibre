@@ -440,7 +440,6 @@ local function spawn_check(pos,spawn_def)
 	local is_leaf  = get_item_group(gotten_node, "leaves") ~= 0
 	local is_bedrock  = gotten_node == "mcl_core:bedrock"
 	local is_grass = minetest.get_item_group(gotten_node,"grass_block") ~= 0
-	local has_bed = minetest.find_node_near(pos,25,{"group:bed"})
 	local mob_count_wide = count_mobs(pos,aoc_range,mob_type)
 	local mob_count = count_mobs(pos,32,mob_type)
 
@@ -455,7 +454,6 @@ local function spawn_check(pos,spawn_def)
 	and (spawn_def.type_of_spawning ~= "ground" or not is_leaf)
 	and (spawn_def.check_position and spawn_def.check_position(pos) or true)
 	and (not is_farm_animal(spawn_def.name) or is_grass)
-	and (mob_type ~= "npc" or has_bed)
 	and (spawn_def.type_of_spawning ~= "water" or is_water)
 	and not is_bedrock then
 		--only need to poll for node light if everything else worked
