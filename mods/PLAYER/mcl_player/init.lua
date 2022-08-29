@@ -129,7 +129,7 @@ minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	mcl_player.player_attached[name] = false
 	mcl_player.player_set_model(player, "character.b3d")
-	player_textures[name] = {"blank.png", "blank.png", "blank.png"}
+	player_textures[name] = {"character.png", "blank.png", "blank.png"}
 	--player:set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, 30)
 	player:set_fov(86.1) -- see <https://minecraft.gamepedia.com/Options#Video_settings>>>>
 end)

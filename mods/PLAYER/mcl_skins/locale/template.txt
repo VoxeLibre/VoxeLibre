@@ -1,13 +1,13 @@
 # textdomain: mcl_skins
-[<player>] [<skin number>]=
-Select player skin of yourself or another player=
-Insufficient or wrong parameters=
-Player @1 not online!=
-You need the “server” privilege to change the skin of other players!=
-Invalid skin number! Valid numbers: 0 to @1=
-Your skin has been set to: @1=
-Your skin has been set to: @1 (@2)=
-Skin of @1 set to: @2 (@3)=
-Select player skin:=
-@1 (@2)=
-Name: @1=
+Templates=
+Arm size=
+Bases=
+Footwears=
+Eyes=
+Mouths=
+Bottoms=
+Tops=
+Hairs=
+Headwears=
+Open skin configuration screen.=
+Select=

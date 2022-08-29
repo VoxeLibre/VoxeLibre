@@ -229,17 +229,40 @@ filled_wield_def.range = minetest.registered_items[""].range
 filled_wield_def.on_place = mcl_util.call_on_rightclick
 filled_wield_def._mcl_wieldview_item = "mcl_maps:filled_map"
 
-for _, texture in pairs(mcl_skins.list) do
-	local def = table.copy(filled_wield_def)
-	def.tiles = {texture .. ".png"}
-	def.mesh = "mcl_meshhand.b3d"
-	def._mcl_hand_id = texture
-	minetest.register_node("mcl_maps:filled_map_" .. texture, def)
+local mcl_skins_enabled = minetest.global_exists("mcl_skins")
 
-	local female_def = table.copy(def)
-	female_def.mesh = "mcl_meshhand_female.b3d"
-	female_def._mcl_hand_id = texture .. "_female"
-	minetest.register_node("mcl_maps:filled_map_" .. texture .. "_female", female_def)
+local function player_base_to_node_id(base, colorspec, sex)
+	return base:gsub("%.", "") .. minetest.colorspec_to_colorstring(colorspec):gsub("#", "") .. sex
+end
+
+if mcl_skins_enabled then
+	local bases = mcl_skins.base
+	local base_colors = mcl_skins.base_color
+	
+	-- Generate a node for every skin
+	for _, base in pairs(bases) do
+		for _, base_color in pairs(base_colors) do
+			local node_id = player_base_to_node_id(base, base_color, "male")
+			local texture = mcl_skins.make_hand_texture(base, base_color)
+			local male = table.copy(filled_wield_def)
+			male._mcl_hand_id = node_id
+			male.mesh = "mcl_meshhand.b3d"
+			male.tiles = {texture}
+			minetest.register_node("mcl_maps:filled_map_" .. node_id, male)
+			
+			node_id = player_base_to_node_id(base, base_color, "female")
+			local female = table.copy(filled_wield_def)
+			female._mcl_hand_id = node_id
+			female.mesh = "mcl_meshhand_female.b3d"
+			female.tiles = {texture}
+			minetest.register_node("mcl_maps:filled_map_" .. node_id, female)
+		end
+	end
+else
+	filled_wield_def._mcl_hand_id = "hand"
+	filled_wield_def.mesh = "mcl_meshhand.b3d"
+	filled_wield_def.tiles = {"character.png"}
+	minetest.register_node("mcl_maps:filled_map_hand", filled_wield_def)
 end
 
 local old_add_item = minetest.add_item
