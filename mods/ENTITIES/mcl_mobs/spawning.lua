@@ -23,7 +23,8 @@ local table_copy     = table.copy
 local table_remove   = table.remove
 
 local pairs = pairs
-
+local dbg_spawn_attempts = 0
+local dbg_spawn_succ = 0
 -- range for mob count
 local aoc_range = 136
 
@@ -416,47 +417,89 @@ local function get_water_spawn(p)
 		end
 end
 
-local dbg_spawn_attempts = 0
-local dbg_spawn_succ = 0
+local function spawn_check(pos,spawn_def)
+	if not spawn_def then return end
+	dbg_spawn_attempts = dbg_spawn_attempts + 1
+	local dimension = mcl_worlds.pos_to_dimension(pos)
+	local mob_type = minetest.registered_entities[spawn_def.name].type
+	local gotten_node = get_node(pos).name
+	local gotten_biome = minetest.get_biome_data(pos)
+	if not gotten_node or not gotten_biome then return end
+	gotten_biome = get_biome_name(gotten_biome.biome) --makes it easier to work with
+
+	local is_ground = minetest.get_item_group(gotten_node,"solid") ~= 0
+	if not is_ground then
+		pos.y = pos.y - 1
+		gotten_node = get_node(pos).name
+		is_ground = minetest.get_item_group(gotten_node,"solid") ~= 0
+	end
+	pos.y = pos.y + 1
+
+	local is_water = get_item_group(gotten_node, "water") ~= 0
+	local is_lava  = get_item_group(gotten_node, "lava") ~= 0
+	local is_leaf  = get_item_group(gotten_node, "leaves") ~= 0
+	local is_bedrock  = gotten_node == "mcl_core:bedrock"
+	local is_grass = minetest.get_item_group(gotten_node,"grass_block") ~= 0
+	local has_bed = minetest.find_node_near(pos,25,{"group:bed"})
+	local mob_count_wide = count_mobs(pos,aoc_range,mob_type)
+	local mob_count = count_mobs(pos,32,mob_type)
+
+	if pos and spawn_def
+	and mob_count_wide < (mob_cap[mob_type] or 15)
+	and mob_count < 5
+	and pos.y >= spawn_def.min_height
+	and pos.y <= spawn_def.max_height
+	and spawn_def.dimension == dimension
+	and biome_check(spawn_def.biomes, gotten_biome)
+	and (is_ground or spawn_def.type_of_spawning ~= "ground")
+	and (spawn_def.type_of_spawning ~= "ground" or not is_leaf)
+	and (spawn_def.check_position and spawn_def.check_position(pos) or true)
+	and (not is_farm_animal(spawn_def.name) or is_grass)
+	and (mob_type ~= "npc" or has_bed)
+	and (spawn_def.type_of_spawning ~= "water" or is_water)
+	and not is_bedrock then
+		--only need to poll for node light if everything else worked
+		local gotten_light = get_node_light(pos)
+		if gotten_light >= spawn_def.min_light and gotten_light <= spawn_def.max_light then
+			return true
+		end
+	end
+	return false
+end
 
 local function spawn_group(p,mob,spawn_on,group_max,group_min)
 	if not group_min then group_min = 1 end
 	local nn= minetest.find_nodes_in_area_under_air(vector.offset(p,-5,-3,-5),vector.offset(p,5,3,5),spawn_on)
 	local o
+	table.shuffle(nn)
 	if not nn or #nn < 1 then
 		nn = {}
 		table.insert(nn,p)
 	end
 	for i = 1, math.random(group_min,group_max) do
 		local sp = vector.offset(nn[math.random(#nn)],0,1,0)
-		if mob.type_of_spawning == "water" then
-			sp = get_water_spawn(sp)
+		if spawn_check(nn[math.random(#nn)],mob) then
+			if mob.type_of_spawning == "water" then
+				sp = get_water_spawn(sp)
+			end
+			o = minetest.add_entity(sp,mob.name)
+			if o then dbg_spawn_succ = dbg_spawn_succ + 1 end
 		end
-		o = minetest.add_entity(sp,mob.name)
-		if o then dbg_spawn_succ = dbg_spawn_succ + 1 end
 	end
 	return o
 end
-
-minetest.register_chatcommand("mobstats",{
-	privs = { debug = true },
-	func = function(n,param)
-		local pos = minetest.get_player_by_name(n):get_pos()
-		minetest.chat_send_player(n,"mobs within 32 radius of player:"..count_mobs(pos,32))
-		minetest.chat_send_player(n,"total mobs:"..count_mobs_total())
-		minetest.chat_send_player(n,"spawning attempts since server start:"..dbg_spawn_attempts)
-		minetest.chat_send_player(n,"successful spawns since server start:"..dbg_spawn_succ)
-	end
-})
 
 if mobs_spawn then
 
 	local perlin_noise
 
 	local function spawn_a_mob(pos, dimension, y_min, y_max)
-		dbg_spawn_attempts = dbg_spawn_attempts + 1
-		local dimension = dimension or mcl_worlds.pos_to_dimension(pos)
+		--create a disconnected clone of the spawn dictionary
+		--prevents memory leak
+		local mob_library_worker_table = table_copy(spawn_dictionary)
 		local goal_pos = get_next_mob_spawn_pos(pos)
+		--grab mob that fits into the spawning location
+		--randomly grab a mob, don't exclude any possibilities
 		local spawning_position_list = find_nodes_in_area_under_air(
 			{x = goal_pos.x, y = y_min, z = goal_pos.z},
 			{x = goal_pos.x, y = y_max, z = goal_pos.z},
@@ -465,37 +508,6 @@ if mobs_spawn then
 		if #spawning_position_list <= 0 then return end
 		local spawning_position = spawning_position_list[math_random(1, #spawning_position_list)]
 
-		local gotten_node = get_node(spawning_position).name
-		local gotten_biome = minetest.get_biome_data(spawning_position)
-		if not gotten_node or not gotten_biome then return end
-		gotten_biome = get_biome_name(gotten_biome.biome) --makes it easier to work with
-
-		--add this so mobs don't spawn inside nodes
-		spawning_position.y = spawning_position.y + 1
-
-		--only need to poll for node light if everything else worked
-		local gotten_light = get_node_light(spawning_position)
-
-		local is_water = get_item_group(gotten_node, "water") ~= 0
-		local is_lava  = get_item_group(gotten_node, "lava") ~= 0
-		local is_leaf  = get_item_group(gotten_node, "leaves") ~= 0
-		local is_bedrock  = gotten_node == "mcl_core:bedrock"
-		local is_ground = not (is_water or is_lava)
-		local is_grass = minetest.get_item_group(gotten_node,"grass_block") ~= 0
-		local has_bed = minetest.find_node_near(pos,25,{"group:bed"})
-
-		if not is_ground then
-			spawning_position.y = spawning_position.y - 1
-		end
-
-		local mob_def
-
-		--create a disconnected clone of the spawn dictionary
-		--prevents memory leak
-		local mob_library_worker_table = table_copy(spawn_dictionary)
-
-		--grab mob that fits into the spawning location
-		--randomly grab a mob, don't exclude any possibilities
 		perlin_noise = perlin_noise or minetest_get_perlin(noise_params)
 		local noise = perlin_noise:get_3d(spawning_position)
 		local current_summary_chance = summary_chance
@@ -511,28 +523,9 @@ if mobs_spawn then
 				step_chance = step_chance + mob_chance
 			end
 			local mob_def = mob_library_worker_table[mob_index]
-			local mob_type = minetest.registered_entities[mob_def.name].type
 			local spawn_in_group = minetest.registered_entities[mob_def.name].spawn_in_group or 4
 			local spawn_in_group_min = minetest.registered_entities[mob_def.name].spawn_in_group_min or 1
-			local mob_count_wide = count_mobs(pos,aoc_range,mob_type)
-			local mob_count = count_mobs(spawning_position,32,mob_type)
-			if mob_def
-				and mob_count_wide < (mob_cap[mob_type] or 15)
-				and mob_count < 5
-				and spawning_position.y >= mob_def.min_height
-				and spawning_position.y <= mob_def.max_height
-				and mob_def.dimension == dimension
-				and biome_check(mob_def.biomes, gotten_biome)
-				and gotten_light >= mob_def.min_light
-				and gotten_light <= mob_def.max_light
-				and (is_ground or mob_def.type_of_spawning ~= "ground")
-				and (mob_def.type_of_spawning ~= "ground" or not is_leaf)
-				and (mob_def.check_position and mob_def.check_position(spawning_position) or true)
-				and (not is_farm_animal(mob_def.name) or is_grass)
-				and (mob_type ~= "npc" or has_bed)
-				and (mob_def.type_of_spawning ~= "water" or is_water)
-				and not is_bedrock
-				then
+			if spawn_check(spawning_position,mob_def) then
 					if mob_def.type_of_spawning == "water" then
 						spawning_position = get_water_spawn(spawning_position)
 						if not spawning_position then
@@ -545,8 +538,9 @@ if mobs_spawn then
 					--everything is correct, spawn mob
 					local object
 					if spawn_in_group then
-						object = spawn_group(spawning_position,mob_def,{gotten_node},spawn_in_group,spawn_in_group_min)
-					else object = minetest.add_entity(spawning_position, mob_def.name)
+						object = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name},spawn_in_group,spawn_in_group_min)
+					else
+						object = minetest.add_entity(spawning_position, mob_def.name)
 					end
 
 
@@ -580,3 +574,14 @@ if mobs_spawn then
 		end
 	end)
 end
+
+minetest.register_chatcommand("mobstats",{
+	privs = { debug = true },
+	func = function(n,param)
+		local pos = minetest.get_player_by_name(n):get_pos()
+		minetest.chat_send_player(n,"mobs within 32 radius of player:"..count_mobs(pos,32))
+		minetest.chat_send_player(n,"total mobs:"..count_mobs_total())
+		minetest.chat_send_player(n,"spawning attempts since server start:"..dbg_spawn_attempts)
+		minetest.chat_send_player(n,"successful spawns since server start:"..dbg_spawn_succ)
+	end
+})
