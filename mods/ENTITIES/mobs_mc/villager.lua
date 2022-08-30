@@ -591,6 +591,58 @@ local function go_home(entity)
 	end)
 end
 
+local function has_golem(pos)
+	local r = false
+	for _,o in pairs(minetest.get_objects_inside_radius(pos,16)) do
+		local l = o:get_luaentity()
+		if l and l.name == "mobs_mc:iron_golem" then return true end
+	end
+end
+
+local function has_summon_participants(self)
+	local r = 0
+	for _,o in pairs(minetest.get_objects_inside_radius(self.object:get_pos(),10)) do
+		local l = o:get_luaentity()
+		--TODO check for panicking or gossiping
+		if l and l.name == "mobs_mc:villager" then r = r + 1 end
+	end
+	return r > 2
+end
+
+local function summon_golem(self)
+	self._summon_locked = true
+	vector.offset(self.object:get_pos(),-10,-10,-10)
+	local nn = minetest.find_nodes_in_area_under_air(vector.offset(self.object:get_pos(),-10,-10,-10),vector.offset(self.object:get_pos(),10,10,10),{"group:solid"})
+	for _,n in pairs(nn) do
+		local up = minetest.find_nodes_in_area(vector.offset(n,0,1,0),vector.offset(n,0,3,0),{"air"})
+		if up and #up >= 3 then
+				for _,o in pairs(minetest.get_objects_inside_radius(self.object:get_pos(),10)) do
+				local l = o:get_luaentity()
+				if l and l.name == "mobs_mc:villager" then l._summon_locked = true end
+			end
+			minetest.sound_play("mcl_portals_open_end_portal", {pos=n, gain=0.5, max_hear_distance = 16}, true)
+			return minetest.add_entity(vector.offset(n,0,1,0),"mobs_mc:iron_golem")
+		end
+	end
+end
+
+local function check_summon(self,dtime)
+	-- TODO has selpt in last 20?
+	if self._summon_timer and self._summon_timer > 30 then
+		local pos = self.object:get_pos()
+		self._summon_timer = 0
+		self._summon_locked = nil
+		self._has_golem = self._has_golem or has_golem(pos)
+		if self._has_golem then return false end
+		if self._summon_locked then return false end
+		if not has_summon_participants(self) then return end
+		summon_golem(self)
+	elseif self._summon_timer == nil  then
+		self._summon_timer = 0
+	end
+	self._summon_timer = self._summon_timer + dtime
+end
+
 ----- JOBSITE LOGIC
 local function get_profession_by_jobsite(js)
 	for k,v in pairs(professions) do
@@ -1337,6 +1389,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 	_player_scan_timer = 0,
 	_trading_players = {}, -- list of playernames currently trading with villager (open formspec)
 	do_custom = function(self, dtime)
+		check_summon(self,dtime)
 		-- Stand still if player is nearby.
 		if not self._player_scan_timer then
 			self._player_scan_timer = 0
