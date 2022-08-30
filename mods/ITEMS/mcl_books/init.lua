@@ -411,7 +411,7 @@ minetest.register_node("mcl_books:bookshelf", {
 	is_ground_content = false,
 	groups = {
 		handy=1, axey=1, deco_block=1, material_wood=1,
-		flammable=3, fire_encouragement=30, fire_flammability=20
+		flammable=3, fire_encouragement=30, fire_flammability=20, container=1
 	},
 	drop = "mcl_books:book 3",
 	sounds = wood_sound,
