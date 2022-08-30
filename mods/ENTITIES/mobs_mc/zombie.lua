@@ -94,6 +94,13 @@ local zombie = {
 	view_range = 16,
 	attack_type = "dogfight",
 	harmed_by_heal = true,
+	on_spawn = function(self)
+		-- Remove saved visual_size on old existing entites.
+		-- Old entities were 3 now it's 1.
+		self.visual_size = nil
+		self.object:set_properties({visual_size = self.visual_size})
+		self.base_size = self.visual_size
+	end,
 }
 
 mcl_mobs:register_mob("mobs_mc:zombie", zombie)
