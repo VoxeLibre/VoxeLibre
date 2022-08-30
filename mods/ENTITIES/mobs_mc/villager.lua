@@ -610,16 +610,12 @@ local function has_summon_participants(self)
 end
 
 local function summon_golem(self)
-	self._summon_locked = true
 	vector.offset(self.object:get_pos(),-10,-10,-10)
-	local nn = minetest.find_nodes_in_area_under_air(vector.offset(self.object:get_pos(),-10,-10,-10),vector.offset(self.object:get_pos(),10,10,10),{"group:solid"})
+	local nn = minetest.find_nodes_in_area_under_air(vector.offset(self.object:get_pos(),-10,-10,-10),vector.offset(self.object:get_pos(),10,10,10),{"group:solid","group:water"})
+	table.shuffle(nn)
 	for _,n in pairs(nn) do
 		local up = minetest.find_nodes_in_area(vector.offset(n,0,1,0),vector.offset(n,0,3,0),{"air"})
 		if up and #up >= 3 then
-				for _,o in pairs(minetest.get_objects_inside_radius(self.object:get_pos(),10)) do
-				local l = o:get_luaentity()
-				if l and l.name == "mobs_mc:villager" then l._summon_locked = true end
-			end
 			minetest.sound_play("mcl_portals_open_end_portal", {pos=n, gain=0.5, max_hear_distance = 16}, true)
 			return minetest.add_entity(vector.offset(n,0,1,0),"mobs_mc:iron_golem")
 		end
@@ -631,10 +627,7 @@ local function check_summon(self,dtime)
 	if self._summon_timer and self._summon_timer > 30 then
 		local pos = self.object:get_pos()
 		self._summon_timer = 0
-		self._summon_locked = nil
-		self._has_golem = self._has_golem or has_golem(pos)
-		if self._has_golem then return false end
-		if self._summon_locked then return false end
+		if has_golem(pos) then return false end
 		if not has_summon_participants(self) then return end
 		summon_golem(self)
 	elseif self._summon_timer == nil  then
