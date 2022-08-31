@@ -345,7 +345,8 @@ mcl_mobs:register_mob("mobs_mc:enderman", {
 				end
 			end
 		else --if not attacking try to tp to the dark
-			if minetest.get_node_light(enderpos) > minetest.LIGHT_MAX then
+			local light = minetest.get_node_light(enderpos)
+			if light and light > minetest.LIGHT_MAX then
 				self:teleport(nil)
 			end
 		end
