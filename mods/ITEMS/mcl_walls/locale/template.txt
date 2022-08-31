@@ -14,3 +14,4 @@ Prismarine Wall=
 End Stone Brick Wall=
 Nether Brick Wall=
 Red Nether Brick Wall=
+Mud Brick Wall=

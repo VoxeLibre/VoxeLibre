@@ -1,4 +1,4 @@
-# textdomain: mcl_cauldron
+# textdomain: mcl_cauldrons
 Cauldron=Котёл
 Cauldrons are used to store water and slowly fill up under rain. They can also be used to wash off banners.=Котлы используются для хранения воды и медленного наполнения под дождём. Они также могут использоваться для промывания флагов.
 Place a water bucket into the cauldron to fill it with water. Place an empty bucket on a full cauldron to retrieve the water. Place a water bottle into the cauldron to fill the cauldron to one third with water. Place a glass bottle in a cauldron with water to retrieve one third of the water. Use an emblazoned banner on a cauldron with water to wash off its top layer.=Попытайтесь поместить ведро воды в котёл, чтобы наполнить его водой. Попытка поместить пустое ведро приведёт к освобождению котла. Поместите в котёл бутылку воды, чтобы наполнить его на треть.
