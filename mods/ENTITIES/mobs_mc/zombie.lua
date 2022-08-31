@@ -55,7 +55,7 @@ local zombie = {
 	xp_max = 5,
 	breath_max = -1,
 	armor = {undead = 90, fleshy = 90},
-	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
+	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.8, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_zombie.b3d",
 	textures = {
@@ -65,7 +65,6 @@ local zombie = {
 			"mobs_mc_empty.png", -- wielded_item
 		}
 	},
-	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	sounds = {
 		random = "mobs_mc_zombie_growl",
@@ -85,16 +84,23 @@ local zombie = {
 	group_attack = { "mobs_mc:zombie", "mobs_mc:baby_zombie", "mobs_mc:husk", "mobs_mc:baby_husk" },
 	drops = drops_zombie,
 	animation = {
-		speed_normal = 25,		speed_run = 50,
-		stand_start = 40,		stand_end = 80,
-		walk_start = 0,		walk_end = 40,
-		run_start = 0,		run_end = 40,
+		stand_start = 40, stand_end = 49, stand_speed = 2,
+		walk_start = 0, walk_end = 39, speed_normal = 25,
+		run_start = 0, run_end = 39, speed_run = 50,
+		punch_start = 50, punch_end = 59, punch_speed = 20,
 	},
 	ignited_by_sunlight = true,
 	sunlight_damage = 2,
 	view_range = 16,
 	attack_type = "dogfight",
 	harmed_by_heal = true,
+	on_spawn = function(self)
+		-- Remove saved visual_size on old existing entites.
+		-- Old entities were 3 now it's 1.
+		self.visual_size = nil
+		self.object:set_properties({visual_size = self.visual_size})
+		self.base_size = self.visual_size
+	end,
 }
 
 mcl_mobs:register_mob("mobs_mc:zombie", zombie)
@@ -104,13 +110,20 @@ mcl_mobs:register_mob("mobs_mc:zombie", zombie)
 
 local baby_zombie = table.copy(zombie)
 baby_zombie.description = S("Baby Zombie")
-baby_zombie.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
+baby_zombie.collisionbox = {-0.25, -0.01, -0.25, 0.25, 1, 0.25}
 baby_zombie.xp_min = 12
 baby_zombie.xp_max = 12
-baby_zombie.visual_size = {x=zombie.visual_size.x/2, y=zombie.visual_size.y/2}
+baby_zombie.visual_size = {x = 1 / 2, y = 1 / 2}
 baby_zombie.walk_velocity = 1.2
 baby_zombie.run_velocity = 2.4
 baby_zombie.child = 1
+baby_zombie.reach = 1
+baby_zombie.animation = {
+	stand_start = 100, stand_end = 109, stand_speed = 2,
+	walk_start = 60, walk_end = 99, speed_normal = 40,
+	run_start = 60, run_end = 99, speed_run = 80,
+	punch_start = 109, punch_end = 119
+}
 
 mcl_mobs:register_mob("mobs_mc:baby_zombie", baby_zombie)
 
@@ -134,15 +147,16 @@ mcl_mobs:register_mob("mobs_mc:husk", husk)
 
 -- Baby husk.
 -- A smaller and more dangerous variant of the husk
-local baby_husk = table.copy(husk)
+local baby_husk = table.copy(baby_zombie)
 baby_husk.description = S("Baby Husk")
-baby_husk.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
-baby_husk.xp_min = 12
-baby_husk.xp_max = 12
-baby_husk.visual_size = {x=zombie.visual_size.x/2, y=zombie.visual_size.y/2}
-baby_husk.walk_velocity = 1.2
-baby_husk.run_velocity = 2.4
-baby_husk.child = 1
+baby_husk.textures = {{
+	"mobs_mc_empty.png", -- armor
+	"mobs_mc_husk.png", -- texture
+	"mobs_mc_empty.png", -- wielded_item
+}}
+baby_husk.ignited_by_sunlight = false
+baby_husk.sunlight_damage = 0
+baby_husk.drops = drops_common
 
 mcl_mobs:register_mob("mobs_mc:baby_husk", baby_husk)
 

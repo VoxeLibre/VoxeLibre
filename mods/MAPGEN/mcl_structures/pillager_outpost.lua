@@ -8,7 +8,7 @@ mcl_structures.register_structure("pillager_outpost",{
 	flags = "place_center_x, place_center_z",
 	solid_ground = true,
 	make_foundation = true,
-	sidelen = 18,
+	sidelen = 23,
 	y_offset = 0,
 	chunk_probability = 600,
 	y_max = mcl_vars.mg_overworld_max,

@@ -177,15 +177,27 @@ local function drop_grindstone_items(pos, meta)
 	end
 end
 
+local node_box = {
+	type = "fixed",
+	-- created with nodebox editor
+	fixed = {
+		{-0.25, -0.25, -0.375, 0.25, 0.5, 0.375},
+		{-0.375, -0.0625, -0.1875, -0.25, 0.3125, 0.1875},
+		{0.25, -0.0625, -0.1875, 0.375, 0.3125, 0.1875},
+		{0.25, -0.5, -0.125, 0.375, -0.0625, 0.125},
+		{-0.375, -0.5, -0.125, -0.25, -0.0625, 0.125},
+	}
+}
+
 minetest.register_node("mcl_grindstone:grindstone", {
 	description = S("Grindstone"),
 	_tt_help = S("Used to disenchant/fix tools"),
 	_doc_items_longdesc = S("Grindstone disenchants tools and armour except for curses, and repairs two items of the same type it is also the weapon smith's work station."),
 	_doc_items_usagehelp = S("To use the grindstone, rightclick it, Two input slots (on the left) and a single output slot.").."\n"..
-												 S("To disenchant an item place enchanted item in one of the input slots and take the disenchanted item from the output.").."\n"..
-												 S("To repair a tool you need a tool of the same type and material, put both items in the input slot and the output slot will combine two items durabilities with 5% bonus.").."\n"..
-												 S("If both items have enchantments the player will get xp from both items from the disenchant.").."\n"..
-												 S("Curses cannot be removed and will be transfered to the new repaired item, if both items have a different curse the curses will be combined."),
+	S("To disenchant an item place enchanted item in one of the input slots and take the disenchanted item from the output.").."\n"..
+	S("To repair a tool you need a tool of the same type and material, put both items in the input slot and the output slot will combine two items durabilities with 5% bonus.").."\n"..
+	S("If both items have enchantments the player will get xp from both items from the disenchant.").."\n"..
+	S("Curses cannot be removed and will be transfered to the new repaired item, if both items have a different curse the curses will be combined."),
 	tiles = {
 		"grindstone_top.png",
 		"grindstone_top.png",
@@ -196,17 +208,7 @@ minetest.register_node("mcl_grindstone:grindstone", {
 	},
 	drawtype = "nodebox",
 	paramtype2 = "facedir",
-	node_box = {
-		type = "fixed",
-		-- created with nodebox editor
-		fixed = {
-			{-0.25, -0.25, -0.375, 0.25, 0.5, 0.375},
-			{-0.375, -0.0625, -0.1875, -0.25, 0.3125, 0.1875},
-			{0.25, -0.0625, -0.1875, 0.375, 0.3125, 0.1875},
-			{0.25, -0.5, -0.125, 0.375, -0.0625, 0.125},
-			{-0.375, -0.5, -0.125, -0.25, -0.0625, 0.125},
-		}
-	},
+	node_box = node_box,
 	selection_box = node_box,
 	collision_box = node_box,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
