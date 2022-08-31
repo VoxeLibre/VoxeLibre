@@ -467,7 +467,7 @@ minetest.register_craft({
 	},
 })
 
-mcl_stairs.register_stair_and_slab_simple("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", "Crimson Stair", "Crimson Slab", "Double Crimson Slab")
+mcl_stairs.register_stair_and_slab_simple("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", S("Crimson Stair"), S("Crimson Slab"), S("Double Crimson Slab"))
 
 minetest.register_abm({
 	label = "mcl_crimson:crimson_fungus",

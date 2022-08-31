@@ -105,8 +105,8 @@ minetest.register_node("mcl_mangrove:mangroveleaves", {
 })
 
 minetest.register_node("mcl_mangrove:mangrove_stripped_trunk", {
-	description = "The stripped wood of a Mangove tree",
-	_doc_items_longdesc = "The stripped wood of a Mangove tree",
+	description = S("Stripped Mangrove Wood"),
+	_doc_items_longdesc = S("The stripped wood of a Mangrove tree"),
 	_doc_items_hidden = false,
 	tiles ={"mcl_stripped_mangrove_log_top.png","mcl_stripped_mangrove_log_side.png",},
 	paramtype2 = "facedir",
@@ -118,8 +118,8 @@ minetest.register_node("mcl_mangrove:mangrove_stripped_trunk", {
 	_mcl_hardness = 2,
 })
 minetest.register_node("mcl_mangrove:mangrove_stripped_bark", {
-	description = "The stripped bark of a Mangove tree",
-	_doc_items_longdesc = "The stripped bark of a Mangove tree",
+	description = S("Stripped Mangrove Bark"),
+	_doc_items_longdesc = S("The stripped bark of a Mangrove tree"),
 	_doc_items_hidden = false,
 	tiles ={"mcl_stripped_mangrove_log_side.png","mcl_stripped_mangrove_log_side.png",},
 	paramtype2 = "facedir",
@@ -132,8 +132,8 @@ minetest.register_node("mcl_mangrove:mangrove_stripped_bark", {
 })
 
 minetest.register_node("mcl_mangrove:mangrove_roots", {
-	description = "Mangrove_Roots",
-	_doc_items_longdesc = "Mangrove roots are decorative blocks that form as part of mangrove trees.",
+	description = S("Mangrove Roots"),
+	_doc_items_longdesc = S("Mangrove roots are decorative blocks that form as part of mangrove trees."),
 	_doc_items_hidden = false,
 	waving = 0,
 	place_param2 = 1, -- Prevent leafdecay for placed nodes
@@ -157,7 +157,7 @@ minetest.register_node("mcl_mangrove:mangrove_roots", {
 })
 
 minetest.register_node("mcl_mangrove:propagule", {
-	description = S("mangrove_propagule"),
+	description = S("Mangrove Propagule"),
 	_tt_help = S("Needs soil and light to grow"),
 	_doc_items_longdesc = S("When placed on soil (such as dirt) and exposed to light, an propagule will grow into an mangrove after some time."),
 	_doc_items_hidden = false,
@@ -282,12 +282,12 @@ mcl_flowerpots.register_potted_flower("mcl_mangrove:propagule", {
 local water_tex = "default_water_source_animated.png^[verticalframe:16:0"
 
 local wlroots = {
-	description = ("water logged mangrove roots"),
+	description = S("water logged mangrove roots"),
 	_doc_items_entry_name = S("water logged mangrove roots"),
 	_doc_items_longdesc =
-		("Mangrove roots are decorative blocks that form as part of mangrove trees.").."\n\n"..
-		("Mangrove roots, despite being a full block, can be waterlogged and do not flow water out").."\n\n"..
-		("These cannot be crafted yet only occure when get in contact of water."),
+		S("Mangrove roots are decorative blocks that form as part of mangrove trees.").."\n\n"..
+		S("Mangrove roots, despite being a full block, can be waterlogged and do not flow water out").."\n\n"..
+		S("These cannot be crafted yet only occure when get in contact of water."),
 	_doc_items_hidden = false,
 	tiles = {
 		{name="default_water_source_animated.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=5.0}}
@@ -342,7 +342,7 @@ minetest.register_node("mcl_mangrove:river_water_logged_roots",rwlroots)
 minetest.register_node("mcl_mangrove:mangrove_mud_roots", {
 	description = S("Muddy Mangrove Roots"),
 	_tt_help = S("crafted with Mud and Mangrove roots"),
-	_doc_items_longdesc = S("Muddy Mangrove Roots is a block from mangrove swamp.It drowns player a bit inside it"),
+	_doc_items_longdesc = S("Muddy Mangrove Roots is a block from mangrove swamp.It drowns player a bit inside it."),
 	tiles = {
 		"mcl_mud.png^mcl_mangrove_roots_top.png",
 		"mcl_mud.png^mcl_mangrove_roots_side.png",
@@ -356,9 +356,9 @@ minetest.register_node("mcl_mangrove:mangrove_mud_roots", {
 })
 
 mcl_doors:register_door("mcl_mangrove:mangrove_door", {
-	description = ("Mangrove Door"),
-	_doc_items_longdesc = "",
-	_doc_items_usagehelp = "",
+	description = S("Mangrove Door"),
+	_doc_items_longdesc = S("Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal."),
+	_doc_items_usagehelp = S("To open or close a wooden door, rightclick it or supply its lower half with a redstone signal."),
 	inventory_image = "mcl_mangrove_doors.png",
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
@@ -384,7 +384,7 @@ mcl_doors:register_trapdoor("mcl_mangrove:mangrove_trapdoor", {
 mcl_fences.register_fence_and_fence_gate(
 	"mangrove_wood_fence",
 	S("Mangrove Wood Fence"),
-	S("Mangrove Wood Plank Fence"),
+	S("Mangrove Wood Fence Gate"),
 	"mcl_mangrove_fence.png",
 	{handy=1,axey=1, flammable=2,fence_wood=1, fire_encouragement=5, fire_flammability=20},
 	minetest.registered_nodes["mcl_core:wood"]._mcl_hardness,

@@ -3,7 +3,7 @@ A piece of wall. It cannot be jumped over with a simple jump. When multiple of t
 Cobblestone Wall=Muret de Pierres
 Mossy Cobblestone Wall=Muret de Pierres Moussu
 Andesite Wall=Muret d'Andésite
-Granite Wall=Muret de Granit
+Granite Wall=Muret de Granite
 Diorite Wall=Muret de Diorite
 Brick Wall=Muret en Brique
 Sandstone Wall=Muret de Grès
@@ -14,3 +14,4 @@ Prismarine Wall=Muret de Prismarine
 End Stone Brick Wall=Muret de Brique de l'End
 Nether Brick Wall=Muret de Brique du Nether
 Red Nether Brick Wall=Muret de Brique Rouge du Nether
+Mud Brick Wall=Muret de Brique de Boue

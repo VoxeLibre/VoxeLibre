@@ -33,14 +33,11 @@
 @1 was roasted in dragon breath by @2=
 @1 withered away=
 @1 withered away whilst fighting @2=
-@1 was killed by magic=
 @1 was shot by a skull from @2=
 @1 was squashed by a falling anvil=
 @1 was squashed by a falling anvil whilst fighting @2=
 @1 was squashed by a falling block=
 @1 was squashed by a falling block whilst fighting @2=
-@1 was slain by @2=
-@1 was slain by @2 using @3=
 @1 was slain by @2=
 @1 was slain by @2 using @3=
 @1 was shot by @2=

@@ -10,3 +10,4 @@ Rightclick on a water source to place the boat. Rightclick the boat to enter it.
 Spruce Boat=
 Water vehicle=
 Sneak to dismount=
+Obsidian Boat=
