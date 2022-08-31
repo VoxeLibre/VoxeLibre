@@ -1,3 +1,15 @@
+
+local deepslate_max = mcl_worlds.layer_to_y(16)
+local deepslate_min = mcl_vars.mg_overworld_min
+
+local copper_mod = minetest.get_modpath("mcl_copper")
+
+local mountains = {
+	"ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", "ExtremeHills_deep_ocean", "ExtremeHills_underground",
+	"ExtremeHills+", "ExtremeHills+_ocean", "ExtremeHills+_deep_ocean", "ExtremeHills+_underground",
+	"ExtremeHillsM", "ExtremeHillsM_ocean", "ExtremeHillsM_deep_ocean", "ExtremeHillsM_underground",
+}
+
 -- Diorite, andesite and granite
 local specialstones = { "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite" }
 for s=1, #specialstones do
@@ -90,6 +102,98 @@ minetest.register_ore({
 	}
 })
 
+
+minetest.register_ore({
+    ore_type       = "blob",
+    ore            = "mcl_deepslate:deepslate",
+    wherein        = { "mcl_core:stone" },
+    clust_scarcity = 200,
+    clust_num_ores = 100,
+    clust_size     = 10,
+    y_min          = deepslate_min,
+    y_max          = deepslate_max,
+    noise_params = {
+        offset  = 0,
+        scale   = 1,
+        spread  = { x = 250, y = 250, z = 250 },
+        seed    = 12345,
+        octaves = 3,
+        persist = 0.6,
+        lacunarity = 2,
+        flags = "defaults",
+    }
+})
+
+minetest.register_ore({
+	ore_type       = "blob",
+	ore            = "mcl_deepslate:tuff",
+	wherein        = { "mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite", "mcl_deepslate:deepslate" },
+	clust_scarcity = 10*10*10,
+	clust_num_ores = 58,
+	clust_size     = 7,
+	y_min          = deepslate_min,
+    y_max          = deepslate_max,
+	noise_params = {
+		offset  = 0,
+		scale   = 1,
+		spread  = {x=250, y=250, z=250},
+		seed    = 12345,
+		octaves = 3,
+		persist = 0.6,
+		lacunarity = 2,
+		flags = "defaults",
+	}
+})
+
+-- DEEPSLATE
+if minetest.settings:get_bool("mcl_generate_deepslate", true) then
+
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_deepslate:infested_deepslate",
+		wherein        = "mcl_deepslate:deepslate",
+		clust_scarcity = 26 * 26 * 26,
+		clust_num_ores = 3,
+		clust_size     = 2,
+		y_min          = deepslate_min,
+		y_max          = deepslate_max,
+		biomes         = mountains,
+	})
+
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_core:water_source",
+		wherein        = "mcl_deepslate:deepslate",
+		clust_scarcity = 9000,
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min          = mcl_worlds.layer_to_y(5),
+		y_max          = deepslate_max,
+	})
+
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_core:lava_source",
+		wherein        = "mcl_deepslate:deepslate",
+		clust_scarcity = 2000,
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min          = mcl_worlds.layer_to_y(1),
+		y_max          = mcl_worlds.layer_to_y(10),
+	})
+
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_core:lava_source",
+		wherein        = "mcl_deepslate:deepslate",
+		clust_scarcity = 9000,
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min          = mcl_worlds.layer_to_y(11),
+		y_max          = deepslate_max,
+	})
+
+end
 
 if minetest.settings:get_bool("mcl_generate_ores", true) then
 	--
@@ -540,6 +644,77 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_worlds.layer_to_y(31),
 		y_max          = mcl_worlds.layer_to_y(32),
 	})
+
+	if minetest.settings:get_bool("mcl_generate_deepslate", true) then
+			local stonelike = { "mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite" }
+		local function register_ore_mg(ore, scarcity, num, size, y_min, y_max, biomes)
+			biomes = biomes or ""
+			minetest.register_ore({
+				ore_type       = "scatter",
+				ore            = ore,
+				wherein        = { "mcl_deepslate:deepslate", "mcl_deepslate:tuff" },
+				clust_scarcity = scarcity,
+				clust_num_ores = num,
+				clust_size     = size,
+				y_min          = y_min,
+				y_max          = y_max,
+				biomes		   = biomes,
+			})
+		end
+		local ore_mapgen = {
+			{ "coal", 1575, 5, 3, deepslate_min, deepslate_max },
+			{ "coal", 1530, 8, 3, deepslate_min, deepslate_max },
+			{ "coal", 1500, 12, 3, deepslate_min, deepslate_max },
+			{ "iron", 830, 5, 3, deepslate_min, deepslate_max },
+			{ "gold", 4775, 5, 3, deepslate_min, deepslate_max },
+			{ "gold", 6560, 7, 3, deepslate_min, deepslate_max },
+			{ "diamond", 10000, 4, 3, deepslate_min, mcl_worlds.layer_to_y(12) },
+			{ "diamond", 5000, 2, 3, deepslate_min, mcl_worlds.layer_to_y(12) },
+			{ "diamond", 10000, 8, 3, deepslate_min, mcl_worlds.layer_to_y(12) },
+			{ "diamond", 20000, 1, 1, mcl_worlds.layer_to_y(13), mcl_worlds.layer_to_y(15) },
+			{ "diamond", 20000, 2, 2, mcl_worlds.layer_to_y(13), mcl_worlds.layer_to_y(15) },
+			{ "redstone", 500, 4, 3, deepslate_min, mcl_worlds.layer_to_y(13) },
+			{ "redstone", 800, 7, 4, deepslate_min, mcl_worlds.layer_to_y(13) },
+			{ "redstone", 1000, 4, 3, mcl_worlds.layer_to_y(13), mcl_worlds.layer_to_y(15) },
+			{ "redstone", 1600, 7, 4, mcl_worlds.layer_to_y(13), mcl_worlds.layer_to_y(15) },
+			{ "lapis", 10000, 7, 4, mcl_worlds.layer_to_y(14), deepslate_max },
+			{ "lapis", 12000, 6, 3, mcl_worlds.layer_to_y(10), mcl_worlds.layer_to_y(13) },
+			{ "lapis", 14000, 5, 3, mcl_worlds.layer_to_y(6), mcl_worlds.layer_to_y(9) },
+			{ "lapis", 16000, 4, 3, mcl_worlds.layer_to_y(2), mcl_worlds.layer_to_y(5) },
+			{ "lapis", 18000, 3, 2, mcl_worlds.layer_to_y(0), mcl_worlds.layer_to_y(2) },
+		}
+		for _, o in pairs(ore_mapgen) do
+			register_ore_mg("mcl_deepslate:deepslate_with_"..o[1], o[2], o[3], o[4], o[5], o[6])
+		end
+		if minetest.get_mapgen_setting("mg_name") == "v6" then
+			register_ore_mg("mcl_deepslate:deepslate_with_emerald", 14340, 1, 1, deepslate_min, deepslate_max)
+		else
+			register_ore_mg("mcl_deepslate:deepslate_with_emerald", 16384, 1, 1, mcl_worlds.layer_to_y(4), deepslate_max, mountains)
+		end
+		if copper_mod then
+			register_ore_mg("mcl_deepslate:deepslate_with_copper", 830, 5, 3, deepslate_min, deepslate_max)
+			minetest.register_ore({
+				ore_type       = "scatter",
+				ore            = "mcl_copper:stone_with_copper",
+				wherein        = stonelike,
+				clust_scarcity = 830,
+				clust_num_ores = 5,
+				clust_size     = 3,
+				y_min          = mcl_vars.mg_overworld_min,
+				y_max          = mcl_worlds.layer_to_y(39),
+			})
+			minetest.register_ore({
+				ore_type       = "scatter",
+				ore            = "mcl_copper:stone_with_copper",
+				wherein        = stonelike,
+				clust_scarcity = 1660,
+				clust_num_ores = 4,
+				clust_size     = 2,
+				y_min          = mcl_worlds.layer_to_y(40),
+				y_max          = mcl_worlds.layer_to_y(63),
+			})
+		end
+	end
 end
 
 if not superflat then
