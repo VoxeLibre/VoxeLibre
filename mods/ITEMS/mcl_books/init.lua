@@ -444,7 +444,7 @@ minetest.register_node("mcl_books:bookshelf", {
 	after_dig_node = drop_content,
 	on_blast = on_blast,
 	on_rightclick = bookshelf_gui,
-	on_destruct = close_gui,
+	on_destruct = close_forms,
 })
 
 minetest.register_craft({
