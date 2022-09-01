@@ -618,6 +618,7 @@ mcl_mobs:register_mob("mobs_mc:enderman", {
 })
 
 minetest.register_on_leaveplayer(function(player)
+	if not spawners[player] then return end
 	for _,s in pairs(spawners[player]) do
 		minetest.delete_particlespawner(s)
 	end
