@@ -5,6 +5,8 @@ local C = minetest.colorize
 local max_text_length = 4500 -- TODO: Increase to 12800 when scroll bar was added to written book
 local max_title_length = 64
 
+local bookshelf_inv = minetest.settings:get_bool("mcl_bookshelf_inventories",true)
+
 local header = ""
 if minetest.get_modpath("mcl_init") then
 	header = "no_prepend[]" .. mcl_vars.gui_nonbg .. mcl_vars.gui_bg_color ..
@@ -366,6 +368,7 @@ local function protection_check_put_take(pos, listname, index, stack, player)
 end
 
 local function bookshelf_gui(pos, node, clicker)
+	if not bookshelf_inv then return end
 	local name = minetest.get_meta(pos):get_string("name")
 
 	if name == "" then
