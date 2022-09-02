@@ -79,6 +79,13 @@ local function lay_down(player, pos, bed_pos, state, skip)
 			awards.unlock(player:get_player_name(), "mcl:sweetDreams")
 		end
 
+		-- Check day of time and weather
+		local tod = minetest.get_timeofday() * 24000
+		-- Values taken from Minecraft Wiki with offset of +6000
+		if tod < 18541 and tod > 5458 and (not weather_mod or (mcl_weather.get_weather() ~= "thunder")) then
+			return false, S("You can only sleep at night or during a thunderstorm.")
+		end
+
 		-- No sleeping if too far away
 		if vector.distance(bed_pos, pos) > 2 and vector.distance(bed_pos2, pos) > 2 then
 			return false, S("You can't sleep, the bed's too far away!")
@@ -156,13 +163,6 @@ local function lay_down(player, pos, bed_pos, state, skip)
 			return false, S("You can't sleep, the bed is obstructed!")
 		elseif (def1.damage_per_second and def1.damage_per_second > 0) or (def2.damage_per_second and def2.damage_per_second > 0) then
 			return false, S("It's too dangerous to sleep here!")
-		end
-
-		-- Check day of time and weather
-		local tod = minetest.get_timeofday() * 24000
-		-- Values taken from Minecraft Wiki with offset of +6000
-		if tod < 18541 and tod > 5458 and (not weather_mod or (mcl_weather.get_weather() ~= "thunder")) then
-			return false, S("You can only sleep at night or during a thunderstorm.")
 		end
 
 		mcl_beds.player[name] = 1
