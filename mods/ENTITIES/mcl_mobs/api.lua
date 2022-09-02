@@ -4339,7 +4339,8 @@ function mcl_mobs:register_egg(mob, desc, background, addegg, no_creative)
 				pos.y = pos.y - 0.5
 
 				local mob = minetest.add_entity(pos, mob)
-				minetest.log("action", "Mob spawned: "..name.." at "..minetest.pos_to_string(pos))
+				local entityname = itemstack:get_name()
+				minetest.log("action", "Player " ..name.." spawned "..entityname.." at "..minetest.pos_to_string(pos))
 				local ent = mob:get_luaentity()
 
 				-- don't set owner if monster or sneak pressed
