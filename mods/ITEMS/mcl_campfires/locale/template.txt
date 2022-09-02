@@ -1,3 +1,4 @@
+# textdomain: mcl_campfires
 Campfire=
 Soul Campfire=
 Cooks food and keeps bees happy.=

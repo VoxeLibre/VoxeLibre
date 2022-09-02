@@ -12,13 +12,14 @@ dofile(settlements.modpath.."/paths.lua")
 --
 settlements.grundstellungen()
 
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local villagegen={}
 --
 -- register block for npc spawn
 --
 minetest.register_node("mcl_villages:stonebrickcarved", {
-	description = ("Chiseled Stone Village Bricks"),
+	description = S("Chiseled Stone Village Bricks"),
 	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"mcl_core_stonebrick_carved.png"},
 	drop = "mcl_core:stonebrickcarved",
@@ -113,7 +114,7 @@ minetest.register_lbm({
 -- manually place villages
 if minetest.is_creative_enabled("") then
 	minetest.register_craftitem("mcl_villages:tool", {
-		description = "mcl_villages build tool",
+		description = S("mcl_villages build tool"),
 		inventory_image = "default_tool_woodshovel.png",
 		-- build ssettlement
 		on_place = function(itemstack, placer, pointed_thing)

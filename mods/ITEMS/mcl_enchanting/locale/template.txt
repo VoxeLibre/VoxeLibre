@@ -127,3 +127,18 @@ Usage: /forceenchant <player> <enchantment> [<level>]=
 
 # textdomain: mcl_enchanting
 Aqua Affinity=
+Increases underwater mining speed.=
+Blast Protection=
+Reduces explosion damage and knockback.=
+Curse of Binding=Malédiction du lien éternel
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=
+Feather Falling=
+Reduces fall damage.=
+Fire Protection=
+Reduces fire damage.=
+Projectile Protection=
+Reduces projectile damage.=
+Protection=
+Reduces most types of damage by 4% for each level.=
+Thorns=
+Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=

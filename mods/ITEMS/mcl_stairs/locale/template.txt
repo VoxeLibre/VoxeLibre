@@ -99,3 +99,6 @@ Polished Diorite Stairs=
 Mossy Stone Brick Stairs=
 Mossy Stone Brick Slab=
 Double Mossy Stone Brick Slab=
+Mud Brick Stair=
+Mud Brick Slab=
+Double Mud Brick Slab=
