@@ -1,6 +1,5 @@
 mcl_mapgen_core = {}
 local registered_generators = {}
-local registered_generators_count = 0
 
 local lvm, nodes, param2 = 0, 0, 0
 local lvm_buffer = {}
@@ -1831,7 +1830,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 		end
 		local area = VoxelArea:new({MinEdge=e1, MaxEdge=e2})
 
-		for _, rec in pairs(registered_generators) do
+		for _, rec in ipairs(registered_generators) do
 			if rec.vf then
 				local lvm_used0, shadow0 = rec.vf(vm, data, data2, e1, e2, area, p1, p2, blockseed)
 				if lvm_used0 then
@@ -1856,7 +1855,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	end
 
 	if nodes > 0 then
-		for _, rec in pairs(registered_generators) do
+		for _, rec in ipairs(registered_generators) do
 			if rec.nf then
 				rec.nf(p1, p2, blockseed)
 			end
@@ -1867,7 +1866,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 end)
 
 function minetest.register_on_generated(node_function)
-	mcl_mapgen_core.register_generator("mod_"..minetest.get_current_modname().."_"..tostring(registered_generators_count+1), nil, node_function)
+	mcl_mapgen_core.register_generator("mod_"..minetest.get_current_modname().."_"..tostring(#registered_generators+1), nil, node_function)
 end
 
 function mcl_mapgen_core.register_generator(id, lvm_function, node_function, priority, needs_param2)
@@ -1880,24 +1879,30 @@ function mcl_mapgen_core.register_generator(id, lvm_function, node_function, pri
 	if needs_param2 then param2 = param2 + 1 end
 
 	local new_record = {
+		id = id,
 		i = priority,
 		vf = lvm_function,
 		nf = node_function,
 		needs_param2 = needs_param2,
 	}
 
-	registered_generators[id] = new_record
-	registered_generators_count = registered_generators_count + 1
+	table.insert(registered_generators, new_record)
 	table.sort(registered_generators, function(a, b)
 		return (a.i < b.i) or ((a.i == b.i) and a.vf and (b.vf == nil))
 	end)
 end
 
 function mcl_mapgen_core.unregister_generator(id)
-	if not registered_generators[id] then return end
-	local rec = registered_generators[id]
-	registered_generators[id] = nil
-	registered_generators_count = registered_generators_count - 1
+	local index
+	for i, gen in ipairs(registered_generators) do
+		if gen.id == id then
+			index = i
+			break
+		end
+	end
+	if not index then return end
+	local rec = registered_generators[index]
+	table.remove(registered_generators, index)
 	if rec.vf then lvm = lvm - 1 end
 	if rec.nf then nodes = nodes - 1 end
 	if rec.needs_param2 then param2 = param2 - 1 end
