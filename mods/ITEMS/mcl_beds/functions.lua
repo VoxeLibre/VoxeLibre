@@ -251,16 +251,30 @@ end
 
 -- Handle environment stuff related to sleeping: skip night and thunderstorm
 function mcl_beds.sleep()
-	local storm_skipped = mcl_beds.skip_thunderstorm()
-	-- Always clear weather
 	if weather_mod then
-		mcl_weather.change_weather("none")
-	end
-	if is_night_skip_enabled() then
-		if not storm_skipped then
-			mcl_beds.skip_night()
+		if mcl_weather.get_weather() == "thunder" then
+			local tod = minetest.get_timeofday() * 24000
+			if (tod < 18541 and tod > 5458) then
+				mcl_beds.skip_night()
+				mcl_beds.kick_players()
+			else
+				-- Sleep for a half day (=minimum thunderstorm duration)
+				minetest.set_timeofday((minetest.get_timeofday() + 0.5) % 1)
+				mcl_beds.kick_players()
+			end
+		else
+			if is_night_skip_enabled() then
+				mcl_beds.skip_night()
+				mcl_beds.kick_players()
+			end
 		end
-		mcl_beds.kick_players()
+		-- Always clear weather
+		mcl_weather.change_weather("none")
+	else
+		if is_night_skip_enabled() then
+			mcl_beds.skip_night()
+			mcl_beds.kick_players()
+		end
 	end
 end
 
@@ -285,16 +299,6 @@ end
 
 function mcl_beds.skip_night()
 	minetest.set_timeofday(0.25) -- tod = 6000
-end
-
-function mcl_beds.skip_thunderstorm()
-	-- Skip thunderstorm
-	if weather_mod and mcl_weather.get_weather() == "thunder" then
-		-- Sleep for a half day (=minimum thunderstorm duration)
-		minetest.set_timeofday((minetest.get_timeofday() + 0.5) % 1)
-		return true
-	end
-	return false
 end
 
 function mcl_beds.on_rightclick(pos, player, is_top)
