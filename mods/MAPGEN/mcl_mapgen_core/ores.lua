@@ -10,6 +10,28 @@ local mountains = {
 	"ExtremeHillsM", "ExtremeHillsM_ocean", "ExtremeHillsM_deep_ocean", "ExtremeHillsM_underground",
 }
 
+--Clay
+minetest.register_ore({
+	ore_type       = "blob",
+	ore            = node,
+	wherein        = {"mcl_core:sand","mcl_core:stone","mcl_core:gravel"},
+	clust_scarcity = 15*15*15,
+	clust_num_ores = 33,
+	clust_size     = 5,
+	y_min          = -5,
+	y_max          = 0,
+	noise_params = {
+		offset  = 0,
+		scale   = 1,
+		spread  = {x=250, y=250, z=250},
+		seed    = 3245123,
+		octaves = 3,
+		persist = 0.6,
+		lacunarity = 2,
+		flags = "defaults",
+	}
+})
+
 -- Diorite, andesite and granite
 local specialstones = { "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite" }
 for s=1, #specialstones do
