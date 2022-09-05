@@ -58,9 +58,12 @@ local monster_exceptions = {
 	["mobs_mc:shulker"] = true,
 }
 
-function mcl_beds.is_night()
+function mcl_beds.is_night(tod)
 	-- Values taken from Minecraft Wiki with offset of +600
-	local tod = ( minetest.get_timeofday() * 24000 ) % 24000
+	if not tod then
+		tod = minetest.get_timeofday()
+	end
+	tod = ( tod * 24000 ) % 24000
 	return  tod > 18541 or tod < 5458
 end
 
