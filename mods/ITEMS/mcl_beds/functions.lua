@@ -58,6 +58,12 @@ local monster_exceptions = {
 	["mobs_mc:shulker"] = true,
 }
 
+function mcl_beds.is_night()
+	-- Values taken from Minecraft Wiki with offset of +600
+	local tod = ( minetest.get_timeofday() * 24000 ) % 24000
+	return  tod > 18541 or tod < 5458
+end
+
 local function lay_down(player, pos, bed_pos, state, skip)
 	local name = player:get_player_name()
 	local hud_flags = player:hud_get_flags()
@@ -79,10 +85,8 @@ local function lay_down(player, pos, bed_pos, state, skip)
 			awards.unlock(player:get_player_name(), "mcl:sweetDreams")
 		end
 
-		-- Check day of time and weather
-		local tod = minetest.get_timeofday() * 24000
-		-- Values taken from Minecraft Wiki with offset of +6000
-		if tod < 18541 and tod > 5458 and (not weather_mod or (mcl_weather.get_weather() ~= "thunder")) then
+
+		if not mcl_beds.is_night() and (not weather_mod or (mcl_weather.get_weather() ~= "thunder")) then
 			return false, S("You can only sleep at night or during a thunderstorm.")
 		end
 
@@ -253,8 +257,7 @@ end
 function mcl_beds.sleep()
 	if weather_mod then
 		if mcl_weather.get_weather() == "thunder" then
-			local tod = minetest.get_timeofday() * 24000
-			if (tod < 18541 and tod > 5458) then
+			if  mcl_beds.is_night() then
 				mcl_beds.skip_night()
 				mcl_beds.kick_players()
 			else
