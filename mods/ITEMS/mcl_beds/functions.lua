@@ -258,26 +258,19 @@ end
 
 -- Handle environment stuff related to sleeping: skip night and thunderstorm
 function mcl_beds.sleep()
-	if weather_mod then
-		if mcl_weather.get_weather() == "thunder" then
-			if  mcl_beds.is_night() then
-				mcl_beds.skip_night()
+	if is_night_skip_enabled() then
+		if weather_mod and mcl_weather.get_weather() == "thunder" then
+			endtime = mcl_weather.end_time / 24000
+			minetest.set_timeofday((minetest.get_timeofday() + endtime) %1)
+			if not mcl_beds.is_night() then
 				mcl_beds.kick_players()
 			else
-				-- Sleep for a half day (=minimum thunderstorm duration)
-				minetest.set_timeofday((minetest.get_timeofday() + 0.5) % 1)
-				mcl_beds.kick_players()
-			end
-		else
-			if is_night_skip_enabled() then
 				mcl_beds.skip_night()
 				mcl_beds.kick_players()
 			end
-		end
-		-- Always clear weather
-		mcl_weather.change_weather("none")
-	else
-		if is_night_skip_enabled() then
+			-- Always clear weather
+			mcl_weather.change_weather("none")
+		elseif mcl_beds.is_night() then
 			mcl_beds.skip_night()
 			mcl_beds.kick_players()
 		end
