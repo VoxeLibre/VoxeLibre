@@ -21,31 +21,22 @@ local node_def = {
 	range = minetest.registered_items[""].range
 }
 
-local function player_base_to_node_id(base, colorspec, sex)
-	return base:gsub("%.", "") .. minetest.colorspec_to_colorstring(colorspec):gsub("#", "") .. sex
-end
-
 if mcl_skins_enabled then
-	local bases = mcl_skins.base
-	local base_colors = mcl_skins.base_color
-	
 	-- Generate a node for every skin
-	for _, base in pairs(bases) do
-		for _, base_color in pairs(base_colors) do
-			local node_id = player_base_to_node_id(base, base_color, "male")
-			local texture = mcl_skins.make_hand_texture(base, base_color)
-			local male = table.copy(node_def)
-			male._mcl_hand_id = node_id
-			male.mesh = "mcl_meshhand.b3d"
-			male.tiles = {texture}
-			minetest.register_node("mcl_meshhand:" .. node_id, male)
-			
-			node_id = player_base_to_node_id(base, base_color, "female")
+	local list = mcl_skins.get_skin_list()
+	for _, skin in pairs(list) do
+		if skin.slim_arms then
 			local female = table.copy(node_def)
-			female._mcl_hand_id = node_id
+			female._mcl_hand_id = skin.id
 			female.mesh = "mcl_meshhand_female.b3d"
-			female.tiles = {texture}
-			minetest.register_node("mcl_meshhand:" .. node_id, female)
+			female.tiles = {skin.texture}
+			minetest.register_node("mcl_meshhand:" .. skin.id, female)
+		else
+			local male = table.copy(node_def)
+			male._mcl_hand_id = skin.id
+			male.mesh = "mcl_meshhand.b3d"
+			male.tiles = {skin.texture}
+			minetest.register_node("mcl_meshhand:" .. skin.id, male)
 		end
 	end
 else
@@ -58,8 +49,7 @@ end
 if mcl_skins_enabled then
 	-- Change the player's hand to their skin
 	mcl_skins.register_on_set_skin(function(player)
-		local data = mcl_skins.players[player:get_player_name()]
-		local node_id = player_base_to_node_id(data.base, data.base_color, data.slim_arms and "female" or "male")
+		local node_id = mcl_skins.get_node_id_by_player(player)
 		player:get_inventory():set_stack("hand", 1, "mcl_meshhand:" .. node_id)
 	end)
 else

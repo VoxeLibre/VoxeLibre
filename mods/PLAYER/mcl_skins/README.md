@@ -1,11 +1,11 @@
-# mcl_skins
+# Mineclone Skins
 
 This mod allows advanced skin customization.
 Use the /skin command to open the skin configuration screen.
 
 ## License
 Code under MIT license
-Author: MrRar
+Author: TenPlus1, Zeg9, MrRar
 
 See image_credits.txt for image licensing.
 
@@ -48,9 +48,18 @@ This parameter is optional. Must be a number. If it is not a valid page number t
 Register a function to be called whenever a player skin changes.
 The function will be given a player ObjectRef as a parameter.
 
-### `mcl_skins.make_hand_texture(base, colorspec)`
-Generate a texture string from a base texture and color.
-This function is used by mods that want to have a first person hand textured like the player skin.
+### `mcl_skins.get_skin_list()`
+This function is used by mods that want a list of skins to register nodes that use the player skin as a texture.
+Returns an array of tables containing information about each skin.
+Each table contains the following properties:
+
+`id`: A string representing the node ID. A node can be registered using this node ID.
+`texture`: A texture string that can be used in the node defintion.
+`slim_arms`: A boolean value. If true, this texture is used with the "female" player mesh. Otherwise the regular mesh is to be used.
+
+### `mcl_skins.get_node_id_by_player(player)`
+`player` is a player ObjectRef.
+Returns a string node ID based on players current skin for use by mods that want to register nodes that use the player skin.
 
 ### `mcl_skins.save(player)`
 Save player skin. `player` is a player ObjectRef.
@@ -67,7 +76,7 @@ These colors are separate from `mcl_skins.color` because some mods register two 
 A table of ColorSpec integers that the player can select to color colorable skin items.
 
 ### `mcl_skins.players`
-A table mapped by player name containing tables holding the player's selected skin items and colors.
+A table mapped by player ObjectRef containing tables holding the player's selected skin items and colors.
 Only stores skin information for logged in users.
 
 ### mcl_skins.compile_skin(skin)

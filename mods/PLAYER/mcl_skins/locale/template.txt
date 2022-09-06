@@ -1,4 +1,5 @@
 # textdomain: mcl_skins
+Skins=
 Templates=
 Arm size=
 Bases=

@@ -173,7 +173,8 @@
 	},
 	{
 		"type": "headwear",
-		"steve": true
+		"steve": true,
+		"alex": true
 	},
 	{
 		"type": "bottom",
