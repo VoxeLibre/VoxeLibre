@@ -66,6 +66,10 @@ mcl_showDeathMessages (Show death messages) bool true
 # If disabled, all recipes will be shown.
 mcl_craftguide_progressive_mode	(Learn crafting recipes progressively) bool true
 
+# If disabled, the skin of all players will be character.png
+mcl_enable_skin_customization (Enable player skin customization) bool true
+
+
 [Mobs]
 # If enabled, mobs will spawn naturally. This does not affect
 # affect mob spawners.

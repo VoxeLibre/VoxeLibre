@@ -229,17 +229,31 @@ filled_wield_def.range = minetest.registered_items[""].range
 filled_wield_def.on_place = mcl_util.call_on_rightclick
 filled_wield_def._mcl_wieldview_item = "mcl_maps:filled_map"
 
-for _, texture in pairs(mcl_skins.list) do
-	local def = table.copy(filled_wield_def)
-	def.tiles = {texture .. ".png"}
-	def.mesh = "mcl_meshhand.b3d"
-	def._mcl_hand_id = texture
-	minetest.register_node("mcl_maps:filled_map_" .. texture, def)
+local mcl_skins_enabled = minetest.global_exists("mcl_skins")
 
-	local female_def = table.copy(def)
-	female_def.mesh = "mcl_meshhand_female.b3d"
-	female_def._mcl_hand_id = texture .. "_female"
-	minetest.register_node("mcl_maps:filled_map_" .. texture .. "_female", female_def)
+if mcl_skins_enabled then
+	-- Generate a node for every skin
+	local list = mcl_skins.get_skin_list()
+	for _, skin in pairs(list) do
+		if skin.slim_arms then
+			local female = table.copy(filled_wield_def)
+			female._mcl_hand_id = skin.id
+			female.mesh = "mcl_meshhand_female.b3d"
+			female.tiles = {skin.texture}
+			minetest.register_node("mcl_maps:filled_map_" .. skin.id, female)
+		else
+			local male = table.copy(filled_wield_def)
+			male._mcl_hand_id = skin.id
+			male.mesh = "mcl_meshhand.b3d"
+			male.tiles = {skin.texture}
+			minetest.register_node("mcl_maps:filled_map_" .. skin.id, male)
+		end
+	end
+else
+	filled_wield_def._mcl_hand_id = "hand"
+	filled_wield_def.mesh = "mcl_meshhand.b3d"
+	filled_wield_def.tiles = {"character.png"}
+	minetest.register_node("mcl_maps:filled_map_hand", filled_wield_def)
 end
 
 local old_add_item = minetest.add_item
