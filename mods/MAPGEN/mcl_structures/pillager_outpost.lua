@@ -56,17 +56,17 @@ mcl_structures.register_structure("pillager_outpost",{
 		}}
 	},
 	after_place = function(p,def,pr)
-		if not peaceful then
-			local p1 = vector.offset(p,-7,0,-7)
-			local p2 = vector.offset(p,7,14,7)
-			local spawnon = {"mcl_core:stripped_oak"}
-			local sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
-			for _,n in pairs(minetest.find_nodes_in_area(p1,p2,{"group:wall"})) do
-				local def = minetest.registered_nodes[minetest.get_node(n).name:gsub("_%d+$","")]
-				if def and def.on_construct then
-					def.on_construct(n)
-				end
+		local p1 = vector.offset(p,-7,0,-7)
+		local p2 = vector.offset(p,7,14,7)
+		local spawnon = {"mcl_core:stripped_oak"}
+		local sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
+		for _,n in pairs(minetest.find_nodes_in_area(p1,p2,{"group:wall"})) do
+			local def = minetest.registered_nodes[minetest.get_node(n).name:gsub("_%d+$","")]
+			if def and def.on_construct then
+				def.on_construct(n)
 			end
+		end
+		if not peaceful then
 			if sp and #sp > 0 then
 				for i=1,5 do
 					local pos = sp[pr:next(1,#sp)]
