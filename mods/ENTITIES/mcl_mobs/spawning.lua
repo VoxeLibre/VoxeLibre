@@ -434,7 +434,7 @@ local function spawn_check(pos,spawn_def)
 		is_ground = minetest.get_item_group(gotten_node,"solid") ~= 0
 	end
 	pos.y = pos.y + 1
-
+	local has_room = #minetest.find_nodes_in_area(pos,vector.offset(pos,0,1,0),{"air"}) or 0 >= 2
 	local is_water = get_item_group(gotten_node, "water") ~= 0
 	local is_lava  = get_item_group(gotten_node, "lava") ~= 0
 	local is_leaf  = get_item_group(gotten_node, "leaves") ~= 0
@@ -452,6 +452,7 @@ local function spawn_check(pos,spawn_def)
 	and biome_check(spawn_def.biomes, gotten_biome)
 	and (is_ground or spawn_def.type_of_spawning ~= "ground")
 	and (spawn_def.type_of_spawning ~= "ground" or not is_leaf)
+	and (spawn_def.type_of_spawning ~= "ground" or has_room)
 	and (spawn_def.check_position and spawn_def.check_position(pos) or true)
 	and (not is_farm_animal(spawn_def.name) or is_grass)
 	and (spawn_def.type_of_spawning ~= "water" or is_water)

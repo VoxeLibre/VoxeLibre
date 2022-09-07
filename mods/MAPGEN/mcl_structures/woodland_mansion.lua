@@ -1,6 +1,7 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
+local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
 mcl_structures.register_structure("woodland_cabin",{
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass"},
@@ -22,16 +23,18 @@ mcl_structures.register_structure("woodland_cabin",{
 		local p1=vector.offset(p,-def.sidelen,-1,-def.sidelen)
 		local p2=vector.offset(p,def.sidelen,def.sidelen,def.sidelen)
 		local sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
-		if sp and #sp > 0 then
-			for i=1,5 do
+		if not peaceful then
+			if sp and #sp > 0 then
+				for i=1,5 do
+					local pos = sp[pr:next(1,#sp)]
+					if pos then
+						minetest.add_entity(pos,"mobs_mc:vindicator")
+					end
+				end
 				local pos = sp[pr:next(1,#sp)]
 				if pos then
-					minetest.add_entity(pos,"mobs_mc:vindicator")
+					minetest.add_entity(pos,"mobs_mc:evoker")
 				end
-			end
-			local pos = sp[pr:next(1,#sp)]
-			if pos then
-				minetest.add_entity(pos,"mobs_mc:evoker")
 			end
 		end
 		local parrot = minetest.find_node_near(p,25,{"mcl_heads:wither_skeleton"})
