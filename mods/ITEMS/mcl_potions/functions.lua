@@ -375,38 +375,41 @@ end, -50)
 -- ███████╗╚█████╔╝██║░░██║██████╔╝██╔╝░░░██████╔╝██║░░██║░░╚██╔╝░░███████╗
 -- ╚══════╝░╚════╝░╚═╝░░╚═╝╚═════╝░╚═╝░░░░╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░╚══════╝
 
-
-function mcl_potions._reset_player_effects(player, set_hud)
-
-	if not player:is_player() then
-		return
-	end
-	meta = player:get_meta()
-
-	mcl_potions.make_invisible(player, false)
+function mcl_potions._clear_cached_player_data(player)
 	EF.invisible[player] = nil
 	EF.poisoned[player] = nil
 	EF.regenerating[player] = nil
 	EF.strong[player] = nil
 	EF.weak[player] = nil
 	EF.water_breathing[player] = nil
-
 	EF.leaping[player] = nil
-	playerphysics.remove_physics_factor(player, "jump", "mcl_potions:leaping")
-
 	EF.swift[player] = nil
-	playerphysics.remove_physics_factor(player, "speed", "mcl_potions:swiftness")
-
 	EF.night_vision[player] = nil
-	meta:set_int("night_vision", 0)
-	mcl_weather.skycolor.update_sky_color({player})
-
 	EF.fire_proof[player] = nil
+	
+	meta = player:get_meta()
+	meta:set_int("night_vision", 0)
+end
+
+function mcl_potions._reset_player_effects(player, set_hud)
+
+	if not player:is_player() then
+		return
+	end
+
+	mcl_potions.make_invisible(player, false)
+
+	playerphysics.remove_physics_factor(player, "jump", "mcl_potions:leaping")
+	
+	playerphysics.remove_physics_factor(player, "speed", "mcl_potions:swiftness")
+	
+	mcl_weather.skycolor.update_sky_color({player})
 
 	if set_hud ~= false then
 		potions_set_hud(player)
 	end
 
+	mcl_potions._clear_cached_player_data(player)
 end
 
 function mcl_potions._save_player_effects(player)
@@ -489,7 +492,7 @@ end
 
 minetest.register_on_leaveplayer( function(player)
 	mcl_potions._save_player_effects(player)
-	mcl_potions._reset_player_effects(player) -- clearout the buffer to prevent looking for a player not there
+	mcl_potions._clear_cached_player_data(player) -- clearout the buffer to prevent looking for a player not there
 	icon_ids[player:get_player_name()] = nil
 end)
 
