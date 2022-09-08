@@ -126,7 +126,7 @@ minetest.registered_entities["mcl_experience:orb"].on_step = function(self,dtime
 	if n.name == "mcl_sculk:sculk" and not self._sculkdrop then
 		local c = minetest.find_node_near(p,range,{"mcl_sculk:catalyst"})
 		if c then
-			local nnn = minetest.find_nodes_in_area(vector.offset(p,-range,-2,-range),vector.offset(p,range,2,range),spread_to)
+			local nnn = minetest.find_nodes_in_area(vector.offset(p,-range,-range,-range),vector.offset(p,range,range,range),spread_to)
 			local nn={}
 			for _,v in pairs(nnn) do
 				if has_air(v) then

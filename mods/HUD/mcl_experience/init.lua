@@ -136,7 +136,7 @@ end
 
 function mcl_experience.throw_xp(pos, total_xp)
 	local i, j = 0, 0
-
+	local obs = {}
 	while i < total_xp and j < 100 do
 		local xp = math.min(math.random(1, math.min(32767, total_xp - math.floor(i / 2))), total_xp - i)
 		local obj = minetest.add_entity(pos, "mcl_experience:orb", tostring(xp))
@@ -153,7 +153,9 @@ function mcl_experience.throw_xp(pos, total_xp)
 
 		i = i + xp
 		j = j + 1
+		table.insert(obs,obj)
 	end
+	return obs
 end
 
 function mcl_experience.remove_hud(player)
