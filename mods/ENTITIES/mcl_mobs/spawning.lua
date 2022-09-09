@@ -481,7 +481,7 @@ local function spawn_group(p,mob,spawn_on,group_max,group_min)
 			if mob.type_of_spawning == "water" then
 				sp = get_water_spawn(sp)
 			end
-			o = minetest.add_entity(sp,mob.name)
+			o =  mcl_mobs.spawn(sp,mob.name)
 			if o then dbg_spawn_succ = dbg_spawn_succ + 1 end
 		end
 	end
@@ -560,7 +560,7 @@ if mobs_spawn then
 						object = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name},spawn_in_group,spawn_in_group_min)
 						minetest.log("action", "A group of mob " .. mob_def.name .. " spawns at " .. minetest.pos_to_string(spawning_position, 1))
 					else
-						object = minetest.add_entity(spawning_position, mob_def.name)
+						object = mcl_mobs.spawn(spawning_position, mob_def.name)
 						minetest.log("action", "Mob " .. mob_def.name .. " spawns at " .. minetest.pos_to_string(spawning_position, 1))
 					end
 
