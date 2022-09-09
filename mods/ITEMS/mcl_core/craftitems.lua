@@ -2,6 +2,8 @@
 
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local enable_fapples = minetest.settings:get_bool("mcl_enable_fapples",true)
+
 --
 -- Crafting items
 --
@@ -162,6 +164,9 @@ local function eat_gapple(itemstack, placer, pointed_thing)
 		regen_duration, absorbtion_factor = 20, 4
 		mcl_potions.fire_resistance_func(placer, 1, 300)
 		mcl_potions.leaping_func(placer, 1, 300)
+		if enable_fapples then
+			mcl_potions.swiftness_func(placer, absorbtion_factor, 120)
+		end
 	end
 	-- TODO: Absorbtion
 	mcl_potions.regeneration_func(placer, 2, regen_duration)
