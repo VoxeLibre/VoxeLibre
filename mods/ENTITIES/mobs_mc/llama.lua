@@ -231,10 +231,6 @@ mcl_mobs:register_arrow("mobs_mc:llamaspit", {
 	end,
 
 	hit_mob = function(self, mob)
-		mob:punch(self.object, 1.0, {
-			full_punch_interval = 1.0,
-			damage_groups = {fleshy = 1},
-		}, nil)
 	end,
 
 	hit_node = function(self, pos, node)
