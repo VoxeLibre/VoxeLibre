@@ -1,3 +1,4 @@
+local string = string
 local sf = string.format
 
 -- Minetest 0.4 mod: player
@@ -134,7 +135,6 @@ function mcl_player.player_set_armor(player, texture)
 	update_player_textures(player)
 end
 
----comment
 ---@param player ObjectRef
 ---@param x number
 ---@param y number
