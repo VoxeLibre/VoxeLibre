@@ -6,8 +6,12 @@ mcl_inventory = {}
 --local mod_player = minetest.get_modpath("mcl_player")
 --local mod_craftguide = minetest.get_modpath("mcl_craftguide")
 
--- Returns a single itemstack in the given inventory to the main inventory, or drop it when there's no space left
-function return_item(itemstack, dropper, pos, inv)
+---Returns a single itemstack in the given inventory to the main inventory, or drop it when there's no space left.
+---@param itemstack ItemStack
+---@param dropper ObjectRef
+---@param pos Vector
+---@param inv InvRef
+local function return_item(itemstack, dropper, pos, inv)
 	if dropper:is_player() then
 		-- Return to main inventory
 		if inv:room_for_item("main", itemstack) then
@@ -15,7 +19,7 @@ function return_item(itemstack, dropper, pos, inv)
 		else
 			-- Drop item on the ground
 			local v = dropper:get_look_dir()
-			local p = { x = pos.x, y = pos.y + 1.2, z = pos.z }
+			local p = vector.offset(pos, 0, 1.2, 0)
 			p.x = p.x + (math.random(1, 3) * 0.2)
 			p.z = p.z + (math.random(1, 3) * 0.2)
 			local obj = minetest.add_item(p, itemstack)
@@ -34,9 +38,14 @@ function return_item(itemstack, dropper, pos, inv)
 	return itemstack
 end
 
--- Return items in the given inventory list (name) to the main inventory, or drop them if there is no space left
-function return_fields(player, name)
+---Return items in the given inventory list (name) to the main inventory, or drop them if there is no space left.
+---@param player ObjectRef
+---@param name string
+local function return_fields(player, name)
 	local inv = player:get_inventory()
+
+	---@diagnostic disable need-check-nil
+
 	local list = inv:get_list(name)
 	if not list then return end
 	for i, stack in ipairs(list) do
@@ -44,85 +53,102 @@ function return_fields(player, name)
 		stack:clear()
 		inv:set_stack(name, i, stack)
 	end
+
+	---@diagnostic enable need-check-nil
 end
 
+---@param player ObjectRef
 local function set_inventory(player)
 	if minetest.is_creative_enabled(player:get_player_name()) then
 		mcl_inventory.set_creative_formspec(player)
 		return
 	end
+
 	local inv = player:get_inventory()
+
+	---@diagnostic disable need-check-nil
 	inv:set_width("craft", 2)
 	inv:set_size("craft", 4)
 
 	local armor_slots = { "helmet", "chestplate", "leggings", "boots" }
 	local armor_slot_imgs = ""
+
 	for a = 1, 4 do
 		if inv:get_stack("armor", a + 1):is_empty() then
 			armor_slot_imgs = armor_slot_imgs ..
-				"image[0," .. (a - 1) .. ";1,1;mcl_inventory_empty_armor_slot_" .. armor_slots[a] .. ".png]"
+				"image[0.375," ..
+				(0.375 + (a - 1) * 1.25) .. ";1,1;mcl_inventory_empty_armor_slot_" .. armor_slots[a] .. ".png]"
 		end
 	end
 
 	if inv:get_stack("offhand", 1):is_empty() then
-		armor_slot_imgs = armor_slot_imgs .. "image[3,2;1,1;mcl_inventory_empty_armor_slot_shield.png]"
+		armor_slot_imgs = armor_slot_imgs .. "image[5.375,4.125;1,1;mcl_inventory_empty_armor_slot_shield.png]"
 	end
 
-	local form = "size[9,8.75]" ..
-		"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png]" ..
-		mcl_player.get_player_formspec_model(player, 1.0, 0.0, 2.25, 4.5, "") ..
+	---@diagnostic enable need-check-nil
 
-		-- Armor
-		"list[current_player;armor;0,0;1,1;1]" ..
-		"list[current_player;armor;0,1;1,1;2]" ..
-		"list[current_player;armor;0,2;1,1;3]" ..
-		"list[current_player;armor;0,3;1,1;4]" ..
-		mcl_formspec.get_itemslot_bg(0, 0, 1, 1) ..
-		mcl_formspec.get_itemslot_bg(0, 1, 1, 1) ..
-		mcl_formspec.get_itemslot_bg(0, 2, 1, 1) ..
-		mcl_formspec.get_itemslot_bg(0, 3, 1, 1) ..
-		"list[current_player;offhand;3,2;1,1]" ..
-		mcl_formspec.get_itemslot_bg(3, 2, 1, 1) ..
-		armor_slot_imgs ..
+	local form = table.concat({
+		"formspec_version[6]",
+		"size[11.75,10.9]",
 
-		-- Craft and inventory
-		"label[0,4;" .. F(minetest.colorize("#313131", S("Inventory"))) .. "]" ..
-		"list[current_player;main;0,4.5;9,3;9]" ..
-		"list[current_player;main;0,7.74;9,1;]" ..
-		"label[4,0.5;" .. F(minetest.colorize("#313131", S("Crafting"))) .. "]" ..
-		"list[current_player;craft;4,1;2,2]" ..
-		"list[current_player;craftpreview;7,1.5;1,1;]" ..
-		mcl_formspec.get_itemslot_bg(0, 4.5, 9, 3) ..
-		mcl_formspec.get_itemslot_bg(0, 7.74, 9, 1) ..
-		mcl_formspec.get_itemslot_bg(4, 1, 2, 2) ..
-		mcl_formspec.get_itemslot_bg(7, 1.5, 1, 1) ..
+		--Armor slots
+		mcl_formspec.get_itemslot_bg_v4(0.375, 0.375, 1, 4),
+		"list[current_player;armor;0.375,0.375;1,1;1]",
+		"list[current_player;armor;0.375,1.625;1,1;2]",
+		"list[current_player;armor;0.375,2.875;1,1;3]",
+		"list[current_player;armor;0.375,4.125;1,1;4]",
 
-		-- Crafting guide button
-		"image_button[4.5,3;1,1;craftguide_book.png;__mcl_craftguide;]" ..
-		"tooltip[__mcl_craftguide;" .. F(S("Recipe book")) .. "]" ..
+		--Main inventory
+		mcl_formspec.get_itemslot_bg_v4(0.375, 5.575, 9, 3),
+		"list[current_player;main;0.375,5.575;9,3;9]",
 
-		-- Help button
-		"image_button[8,3;1,1;doc_button_icon_lores.png;__mcl_doc;]" ..
-		"tooltip[__mcl_doc;" .. F(S("Help")) .. "]"
+		--Hotbar
+		mcl_formspec.get_itemslot_bg_v4(0.375, 9.525, 9, 1),
+		"list[current_player;main;0.375,9.525;9,1;]",
 
-	-- Skins button
-	if minetest.global_exists("mcl_skins") then
-		form = form ..
-			"image_button[3,3;1,1;mcl_skins_button.png;__mcl_skins;]" ..
-			"tooltip[__mcl_skins;" .. F(S("Select player skin")) .. "]"
-	end
+		--Player model
+		"image[1.57,0.343;3.62,4.85;mcl_inventory_background9.png;2]",
+		mcl_player.get_player_formspec_model(player, 1.57, 0.4, 3.62, 4.85, ""),
 
-	form = form ..
-		-- Achievements button
-		"image_button[7,3;1,1;mcl_achievements_button.png;__mcl_achievements;]" ..
-		"tooltip[__mcl_achievements;" .. F(S("Advancements")) .. "]" ..
+		--Offhand
+		mcl_formspec.get_itemslot_bg_v4(5.375, 4.125, 1, 1),
+		"list[current_player;offhand;5.375,4.125;1,1]",
 
-		-- For shortcuts
-		"listring[current_player;main]" ..
-		"listring[current_player;armor]" ..
-		"listring[current_player;main]" ..
-		"listring[current_player;craft]" ..
-		"listring[current_player;main]"
+		armor_slot_imgs,
+
+		--Craft grid
+		"label[6.61,0.5;" .. F(minetest.colorize(mcl_formspec.label_color, S("Crafting"))) .. "]",
+		mcl_formspec.get_itemslot_bg_v4(6.625, 0.875, 2, 2),
+		"list[current_player;craft;6.625,0.875;2,2]",
+
+		"image[9.125,1.5;1,1;crafting_formspec_arrow.png]",
+
+		mcl_formspec.get_itemslot_bg_v4(10.375, 1.5, 1, 1),
+		"list[current_player;craftpreview;10.375,1.5;1,1;]",
+
+		--Crafting guide button
+		"image_button[6.575,4.075;1.1,1.1;craftguide_book.png;__mcl_craftguide;]",
+		"tooltip[__mcl_craftguide;" .. F(S("Recipe book")) .. "]",
+
+		--Help button
+		"image_button[7.825,4.075;1.1,1.1;doc_button_icon_lores.png;__mcl_doc;]",
+		"tooltip[__mcl_doc;" .. F(S("Help")) .. "]",
+
+		--Skins button
+		"image_button[9.075,4.075;1.1,1.1;mcl_skins_button.png;__mcl_skins;]",
+		"tooltip[__mcl_skins;" .. F(S("Select player skin")) .. "]",
+
+		--Advancements button
+		"image_button[10.325,4.075;1.1,1.1;mcl_achievements_button.png;__mcl_achievements;]",
+		"tooltip[__mcl_achievements;" .. F(S("Advancements")) .. "]",
+
+		--Listring
+		"listring[current_player;main]",
+		"listring[current_player;armor]",
+		"listring[current_player;main]",
+		"listring[current_player;craft]",
+		"listring[current_player;main]",
+	})
 
 	player:set_inventory_formspec(form)
 end
@@ -151,9 +177,13 @@ end)
 minetest.register_on_joinplayer(function(player)
 	--init inventory
 	local inv = player:get_inventory()
+
+	---get_inventory can return nil if object isn't a player, but we are sure this is one :)
+	---@diagnostic disable need-check-nil
 	inv:set_width("main", 9)
 	inv:set_size("main", 36)
 	inv:set_size("offhand", 1)
+	---@diagnostic enable need-check-nil
 
 	--set hotbar size
 	player:hud_set_hotbar_itemcount(9)
@@ -175,9 +205,8 @@ minetest.register_on_joinplayer(function(player)
 	return_fields(player, "enchanting_lapis")
 end)
 
-dofile(minetest.get_modpath(minetest.get_current_modname()) .. "/creative.lua")
 
-mcl_player.register_on_visual_change(mcl_inventory.update_inventory_formspec)
+dofile(minetest.get_modpath(minetest.get_current_modname()) .. "/creative.lua")
 
 local mt_is_creative_enabled = minetest.is_creative_enabled
 
