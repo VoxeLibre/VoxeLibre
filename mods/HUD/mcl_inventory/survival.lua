@@ -161,7 +161,7 @@ mcl_inventory.register_survival_inventory_tab({
 	handle = function() end,
 })
 
---
+--[[
 mcl_inventory.register_survival_inventory_tab({
 	id = "test",
 	description = "Test",
@@ -173,7 +173,7 @@ mcl_inventory.register_survival_inventory_tab({
 	handle = function(player, fields)
 		print(dump(fields))
 	end,
-})
+})]]
 
 ---@param player ObjectRef
 function mcl_inventory.build_survival_formspec(player)
