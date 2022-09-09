@@ -1,16 +1,12 @@
-local string = string
-local table = table
-
-local sf = string.format
-
 mcl_formspec = {}
 
 mcl_formspec.label_color = "#313131"
 
-mcl_formspec.label_size = tonumber(minetest.settings:get("mcl_label_font_size")) or 24
-
-mcl_formspec.apply_label_size = sf("style_type[label;font_size=%s]", mcl_formspec.label_size)
-
+---@param x number
+---@param y number
+---@param w number
+---@param h number
+---@return string
 function mcl_formspec.get_itemslot_bg(x, y, w, h)
 	local out = ""
 	for i = 0, w - 1, 1 do

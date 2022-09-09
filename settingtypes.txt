@@ -192,11 +192,6 @@ animated_chests (Animated chests) bool true
 # The maximum number of boss bars to simultaniously display on the screen
 max_bossbars (Maximum Boss bars) int 5
 
-# Define how wide font will be displayed in mineclone2 formspecs
-# This allow MineClone2 to have a label size similar to minecraft, but allowing at least singleplayer to use his own font with custom size
-# (some fonts may be bigger than the default one and break formspecs)    
-mcl_label_font_size (Label Font Size) int 24
-
 # Default intensity of shadows (default: 0.33)
 mcl_default_shadow_intensity (Default shadow intensity) float 0.33 0.0 1.0
 
