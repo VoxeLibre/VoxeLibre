@@ -3406,21 +3406,20 @@ end
 -- get entity staticdata
 local mob_staticdata = function(self)
 
---[[
+
 	-- remove mob when out of range unless tamed
 	if remove_far
 	and self.can_despawn
 	and self.remove_ok
 	and ((not self.nametag) or (self.nametag == ""))
 	and self.lifetimer <= 20 then
-
-		minetest.log("action", "Mob "..name.." despawns in mob_staticdata at "..minetest.pos_to_string(self.object.get_pos(), 1))
+		minetest.log("action", "Mob "..tostring(self.name).." despawns in mob_staticdata at "..minetest.pos_to_string(self.object:get_pos()))
 		mcl_burning.extinguish(self.object)
 		self.object:remove()
 
-		return ""-- nil
+		return "remove"-- nil
 	end
---]]
+
 	self.remove_ok = true
 	self.attack = nil
 	self.following = nil
@@ -3456,6 +3455,11 @@ local mob_activate = function(self, staticdata, def, dtime)
 		return
 	end
 
+	if staticdata == "remove" then
+		mcl_burning.extinguish(self.object)
+		self.object:remove()
+		return
+	end
 	-- load entity variables
 	local tmp = minetest.deserialize(staticdata)
 
@@ -3623,6 +3627,7 @@ end
 
 -- main mob function
 local mob_step = function(self, dtime)
+	self.lifetimer = self.lifetimer - dtime
 	check_item_pickup(self)
 	check_aggro(self,dtime)
 	if not self.fire_resistant then
@@ -3836,12 +3841,11 @@ local mob_step = function(self, dtime)
 	and ((not self.nametag) or (self.nametag == ""))
 	and self.state ~= "attack"
 	and self.following == nil then
-
-		self.lifetimer = self.lifetimer - dtime
 		if self.despawn_immediately or self.lifetimer <= 0 then
 			minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos, 1))
 			mcl_burning.extinguish(self.object)
 			self.object:remove()
+			return
 		elseif self.lifetimer <= 10 then
 			if math.random(10) < 4 then
 				self.despawn_immediately = true

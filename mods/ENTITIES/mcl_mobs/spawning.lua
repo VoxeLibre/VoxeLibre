@@ -466,6 +466,15 @@ local function spawn_check(pos,spawn_def)
 	return false
 end
 
+function mcl_mobs.spawn(pos,id)
+	local def = minetest.registered_entities[id] or minetest.registered_entities["mobs_mc:"..id] or minetest.registered_entities["extra_mobs:"..id]
+	if not def or (def.can_spawn and not def.can_spawn(pos)) or not def.is_mob then
+		return false
+	end
+	return minetest.add_entity(pos, def.name)
+end
+
+
 local function spawn_group(p,mob,spawn_on,group_max,group_min)
 	if not group_min then group_min = 1 end
 	local nn= minetest.find_nodes_in_area_under_air(vector.offset(p,-5,-3,-5),vector.offset(p,5,3,5),spawn_on)
@@ -488,13 +497,7 @@ local function spawn_group(p,mob,spawn_on,group_max,group_min)
 	return o
 end
 
-function mcl_mobs.spawn(pos,id)
-	local def = minetest.registered_entities[id] or minetest.registered_entities["mobs_mc:"..id] or minetest.registered_entities["extra_mobs:"..id]
-	if not def or (def.can_spawn and not def.can_spawn(pos)) or not def.is_mob then
-		return false
-	end
-	return minetest.add_entity(pos, def.name)
-end
+mcl_mobs.spawn_group = spawn_group
 
 minetest.register_chatcommand("spawn_mob",{
 	privs = { debug = true },
