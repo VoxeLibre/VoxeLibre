@@ -11,7 +11,8 @@ local inventory_lists = {}
 --local mod_player = minetest.get_modpath("mcl_player")
 
 -- Create tables
-local builtin_filter_ids = {"blocks","deco","redstone","rail","food","tools","combat","mobs","brew","matr","misc","all"}
+local builtin_filter_ids = { "blocks", "deco", "redstone", "rail", "food", "tools", "combat", "mobs", "brew", "matr",
+	"misc", "all" }
 for _, f in pairs(builtin_filter_ids) do
 	inventory_lists[f] = {}
 end
@@ -31,17 +32,26 @@ end
 --[[ Populate all the item tables. We only do this once. Note this code must be
 executed after loading all the other mods in order to work. ]]
 minetest.register_on_mods_loaded(function()
-	for name,def in pairs(minetest.registered_items) do
-		if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and def.description ~= "" then
+	for name, def in pairs(minetest.registered_items) do
+		if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and
+			def.description ~= "" then
 			local function is_redstone(def)
-				return def.mesecons or def.groups.mesecon or def.groups.mesecon_conductor_craftable or def.groups.mesecon_effecor_off
+				return def.mesecons or def.groups.mesecon or def.groups.mesecon_conductor_craftable or
+				def.groups.mesecon_effecor_off
 			end
+
 			local function is_tool(def)
 				return def.groups.tool or (def.tool_capabilities and def.tool_capabilities.damage_groups == nil)
 			end
+
 			local function is_weapon_or_armor(def)
-				return def.groups.weapon or def.groups.weapon_ranged or def.groups.ammo or def.groups.combat_item or ((def.groups.armor_head or def.groups.armor_torso or def.groups.armor_legs or def.groups.armor_feet or def.groups.horse_armor) and def.groups.non_combat_armor ~= 1)
+				return def.groups.weapon or def.groups.weapon_ranged or def.groups.ammo or def.groups.combat_item or
+					(
+						(
+							def.groups.armor_head or def.groups.armor_torso or def.groups.armor_legs or def.groups.armor_feet or
+							def.groups.horse_armor) and def.groups.non_combat_armor ~= 1)
 			end
+
 			-- Is set to true if it was added in any category besides misc
 			local nonmisc = false
 			if def.groups.building_block then
@@ -122,11 +132,12 @@ end
 
 local function set_inv_search(filter, player)
 	local playername = player:get_player_name()
-	local inv = minetest.get_inventory({type="detached", name="creative_"..playername})
+	local inv = minetest.get_inventory({ type = "detached", name = "creative_" .. playername })
 	local creative_list = {}
 	local lang = minetest.get_player_information(playername).lang_code
-	for name,def in pairs(minetest.registered_items) do
-		if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and def.description ~= "" then
+	for name, def in pairs(minetest.registered_items) do
+		if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and
+			def.description ~= "" then
 			if filter_item(string.lower(def.name), def.description, lang, filter) then
 				table.insert(creative_list, name)
 			end
@@ -149,7 +160,7 @@ end
 
 local function set_inv_page(page, player)
 	local playername = player:get_player_name()
-	local inv = minetest.get_inventory({type="detached", name="creative_"..playername})
+	local inv = minetest.get_inventory({ type = "detached", name = "creative_" .. playername })
 	inv:set_size("main", 0)
 	local creative_list = {}
 	if inventory_lists[page] then -- Standard filter
@@ -162,7 +173,7 @@ end
 
 local function init(player)
 	local playername = player:get_player_name()
-	minetest.create_detached_inventory("creative_"..playername, {
+	minetest.create_detached_inventory("creative_" .. playername, {
 		allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
 			if minetest.is_creative_enabled(playername) then
 				return count
@@ -200,7 +211,7 @@ local trash = minetest.create_detached_inventory("trash", {
 trash:set_size("main", 1)
 
 local noffset = {} -- numeric tab offset
-local offset = {} -- string offset:
+local offset = {}  -- string offset:
 local boffset = {} --
 local hoch = {}
 local filtername = {}
@@ -238,9 +249,9 @@ next_noffset("mobs")
 next_noffset("matr")
 next_noffset("inv", true)
 
-for k,v in pairs(noffset) do
+for k, v in pairs(noffset) do
 	offset[k] = tostring(v[1]) .. "," .. tostring(v[2])
-	boffset[k] = tostring(v[1]+0.19) .. "," .. tostring(v[2]+0.25)
+	boffset[k] = tostring(v[1] + 0.19) .. "," .. tostring(v[2] + 0.25)
 end
 
 hoch["blocks"] = ""
@@ -299,7 +310,7 @@ local function set_stack_size(player, n)
 	player:get_meta():set_int("mcl_inventory:switch_stack", n)
 end
 
-minetest.register_on_joinplayer(function (player)
+minetest.register_on_joinplayer(function(player)
 	if get_stack_size(player) == 0 then
 		set_stack_size(player, 64)
 	end
@@ -310,14 +321,26 @@ function mcl_inventory.set_creative_formspec(player)
 	if not players[playername] then return end
 
 	local start_i = players[playername].start_i
-	local pagenum = start_i / (9*5) + 1
+	local pagenum = start_i / (9 * 5) + 1
 	local name = players[playername].page
 	local inv_size = players[playername].inv_size
 	local filter = players[playername].filter
-	local pagemax = math.max(1, math.floor((inv_size-1) / (9*5) + 1))
+
+	if not inv_size then
+		if page == "nix" then
+			local inv = minetest.get_inventory({ type = "detached", name = "creative_" .. playername })
+			inv_size = inv:get_size("main")
+		elseif page and page ~= "inv" then
+			inv_size = #(inventory_lists[page])
+		else
+			inv_size = 0
+		end
+	end
+	local pagemax = math.max(1, math.floor((inv_size - 1) / (9 * 5) + 1))
+	local name = "nix"
 	local main_list
-	local listrings = "listring[detached:creative_"..playername..";main]"..
-		"listring[current_player;main]"..
+	local listrings = "listring[detached:creative_" .. playername .. ";main]" ..
+		"listring[current_player;main]" ..
 		"listring[detached:trash;main]"
 
 	local inv_bg = "crafting_inventory_creative.png"
@@ -349,7 +372,7 @@ function mcl_inventory.set_creative_formspec(player)
 		-- Survival inventory slots
 		main_list = "list[current_player;main;0,3.75;9,3;9]" ..
 			mcl_formspec.get_itemslot_bg(0, 3.75, 9, 3) ..
-			
+
 			-- Armor
 			"list[current_player;armor;2.5,1.3;1,1;1]" ..
 			"list[current_player;armor;2.5,2.75;1,1;2]" ..
@@ -362,46 +385,46 @@ function mcl_inventory.set_creative_formspec(player)
 			"list[current_player;offhand;1.5,2.025;1,1]" ..
 			mcl_formspec.get_itemslot_bg(1.5, 2.025, 1, 1) ..
 			armor_slot_imgs ..
-			
+
 			-- Player preview
 			mcl_player.get_player_formspec_model(player, 3.9, 1.4, 1.2333, 2.4666, "") ..
-			
+
 			-- Crafting guide button
 			"image_button[9,1;1,1;craftguide_book.png;__mcl_craftguide;]" ..
-			"tooltip[__mcl_craftguide;"..F(S("Recipe book")) .. "]" ..
-			
+			"tooltip[__mcl_craftguide;" .. F(S("Recipe book")) .. "]" ..
+
 			-- Help button
 			"image_button[9,2;1,1;doc_button_icon_lores.png;__mcl_doc;]" ..
 			"tooltip[__mcl_doc;" .. F(S("Help")) .. "]" ..
-			
-			-- Achievements button
+
+			-- Advancements button
 			"image_button[9,3;1,1;mcl_achievements_button.png;__mcl_achievements;]" ..
 			--"style_type[image_button;border=;bgimg=;bgimg_pressed=]" ..
-			"tooltip[__mcl_achievements;"..F(S("Advancements")) .. "]" ..
-			
+			"tooltip[__mcl_achievements;" .. F(S("Advancements")) .. "]" ..
+
 			-- Switch stack size button
 			"image_button[9,4;1,1;default_apple.png;__switch_stack;]" ..
 			"label[9.4,4.4;" .. F(C("#FFFFFF", stack_size ~= 1 and stack_size or "")) .. "]" ..
 			"tooltip[__switch_stack;" .. F(S("Switch stack size")) .. "]"
-			
+
 		-- Skins button
 		if minetest.global_exists("mcl_skins") then
 			main_list = main_list ..
 				"image_button[9,5;1,1;mcl_skins_button.png;__mcl_skins;]" ..
-				"tooltip[__mcl_skins;"..F(S("Select player skin")) .. "]"
+				"tooltip[__mcl_skins;" .. F(S("Select player skin")) .. "]"
 		end
 
 		-- For shortcuts
 		listrings = listrings ..
-			"listring[detached:"..playername.."_armor;armor]"..
+			"listring[detached:" .. playername .. "_armor;armor]" ..
 			"listring[current_player;main]"
 	else
 		-- Creative inventory slots
-		main_list = "list[detached:creative_"..playername..";main;0,1.75;9,5;"..tostring(start_i).."]"..
-			mcl_formspec.get_itemslot_bg(0,1.75,9,5)..
-		-- Page buttons
-			"label[9.0,5.5;"..F(S("@1/@2", pagenum, pagemax)).."]"..
-			"image_button[9.0,6.0;0.7,0.7;crafting_creative_prev.png;creative_prev;]"..
+		main_list = "list[detached:creative_" .. playername .. ";main;0,1.75;9,5;" .. tostring(start_i) .. "]" ..
+			mcl_formspec.get_itemslot_bg(0, 1.75, 9, 5) ..
+			-- Page buttons
+			"label[9.0,5.5;" .. F(S("@1/@2", pagenum, pagemax)) .. "]" ..
+			"image_button[9.0,6.0;0.7,0.7;crafting_creative_prev.png;creative_prev;]" ..
 			"image_button[9.5,6.0;0.7,0.7;crafting_creative_next.png;creative_next;]"
 	end
 
@@ -423,65 +446,65 @@ function mcl_inventory.set_creative_formspec(player)
 	local function tab(current_tab, this_tab)
 		local bg_img
 		if current_tab == this_tab then
-			bg_img = "crafting_creative_active"..hoch[this_tab]..".png"
+			bg_img = "crafting_creative_active" .. hoch[this_tab] .. ".png"
 		else
-			bg_img = "crafting_creative_inactive"..hoch[this_tab]..".png"
+			bg_img = "crafting_creative_inactive" .. hoch[this_tab] .. ".png"
 		end
-		return
-			"style["..this_tab..";border=false;bgimg=;bgimg_pressed=]"..
-			"item_image_button[" .. boffset[this_tab] ..";1,1;"..tab_icon[this_tab]..";"..this_tab..";]"..
+		return "style[" .. this_tab .. ";border=false;bgimg=;bgimg_pressed=]" ..
+			"item_image_button[" .. boffset[this_tab] .. ";1,1;" .. tab_icon[this_tab] .. ";" .. this_tab .. ";]" ..
 			"image[" .. offset[this_tab] .. ";1.5,1.44;" .. bg_img .. "]"
 	end
+
 	local caption = ""
 	if name ~= "inv" and filtername[name] then
-		caption = "label[0,1.2;"..F(minetest.colorize("#313131", filtername[name])).."]"
+		caption = "label[0,1.2;" .. F(minetest.colorize("#313131", filtername[name])) .. "]"
 	end
 
-	local formspec = "size[10,9.3]"..
-		"no_prepend[]"..
-		mcl_vars.gui_nonbg..mcl_vars.gui_bg_color..
-		"background[-0.19,-0.25;10.5,9.87;"..inv_bg.."]"..
-		"label[-5,-5;"..name.."]"..
+	local formspec = "size[10,9.3]" ..
+		"no_prepend[]" ..
+		mcl_vars.gui_nonbg .. mcl_vars.gui_bg_color ..
+		"background[-0.19,-0.25;10.5,9.87;" .. inv_bg .. "]" ..
+		"label[-5,-5;" .. name .. "]" ..
 		tab(name, "blocks") ..
-		"tooltip[blocks;"..F(filtername["blocks"]).."]"..
+		"tooltip[blocks;" .. F(filtername["blocks"]) .. "]" ..
 		tab(name, "deco") ..
-		"tooltip[deco;"..F(filtername["deco"]).."]"..
+		"tooltip[deco;" .. F(filtername["deco"]) .. "]" ..
 		tab(name, "redstone") ..
-		"tooltip[redstone;"..F(filtername["redstone"]).."]"..
+		"tooltip[redstone;" .. F(filtername["redstone"]) .. "]" ..
 		tab(name, "rail") ..
-		"tooltip[rail;"..F(filtername["rail"]).."]"..
+		"tooltip[rail;" .. F(filtername["rail"]) .. "]" ..
 		tab(name, "misc") ..
-		"tooltip[misc;"..F(filtername["misc"]).."]"..
+		"tooltip[misc;" .. F(filtername["misc"]) .. "]" ..
 		tab(name, "nix") ..
-		"tooltip[nix;"..F(filtername["nix"]).."]"..
-		caption..
-		"list[current_player;main;0,7;9,1;]"..
-		mcl_formspec.get_itemslot_bg(0,7,9,1)..
-		main_list..
+		"tooltip[nix;" .. F(filtername["nix"]) .. "]" ..
+		caption ..
+		"list[current_player;main;0,7;9,1;]" ..
+		mcl_formspec.get_itemslot_bg(0, 7, 9, 1) ..
+		main_list ..
 		tab(name, "food") ..
-		"tooltip[food;"..F(filtername["food"]).."]"..
+		"tooltip[food;" .. F(filtername["food"]) .. "]" ..
 		tab(name, "tools") ..
-		"tooltip[tools;"..F(filtername["tools"]).."]"..
+		"tooltip[tools;" .. F(filtername["tools"]) .. "]" ..
 		tab(name, "combat") ..
-		"tooltip[combat;"..F(filtername["combat"]).."]"..
+		"tooltip[combat;" .. F(filtername["combat"]) .. "]" ..
 		tab(name, "mobs") ..
-		"tooltip[mobs;"..F(filtername["mobs"]).."]"..
+		"tooltip[mobs;" .. F(filtername["mobs"]) .. "]" ..
 		tab(name, "brew") ..
-		"tooltip[brew;"..F(filtername["brew"]).."]"..
+		"tooltip[brew;" .. F(filtername["brew"]) .. "]" ..
 		tab(name, "matr") ..
-		"tooltip[matr;"..F(filtername["matr"]).."]"..
+		"tooltip[matr;" .. F(filtername["matr"]) .. "]" ..
 		tab(name, "inv") ..
-		"tooltip[inv;"..F(filtername["inv"]).."]"..
-		"list[detached:trash;main;9,7;1,1;]"..
-		mcl_formspec.get_itemslot_bg(9,7,1,1)..
-		"image[9,7;1,1;crafting_creative_trash.png]"..
+		"tooltip[inv;" .. F(filtername["inv"]) .. "]" ..
+		"list[detached:trash;main;9,7;1,1;]" ..
+		mcl_formspec.get_itemslot_bg(9, 7, 1, 1) ..
+		"image[9,7;1,1;crafting_creative_trash.png]" ..
 		listrings
 
 	if name == "nix" then
-		formspec = formspec .. "field[5.3,1.34;4,0.75;search;;"..minetest.formspec_escape(filter).."]"
+		formspec = formspec .. "field[5.3,1.34;4,0.75;search;;" .. minetest.formspec_escape(filter) .. "]"
 		formspec = formspec .. "field_close_on_enter[search;false]"
 	end
-	if pagenum then formspec = formspec .. "p"..tostring(pagenum) end
+	if pagenum then formspec = formspec .. "p" .. tostring(pagenum) end
 	player:set_inventory_formspec(formspec)
 end
 
@@ -500,50 +523,50 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	if fields.blocks then
 		if players[name].page == "blocks" then return end
-		set_inv_page("blocks",player)
+		set_inv_page("blocks", player)
 		page = "blocks"
 	elseif fields.deco then
 		if players[name].page == "deco" then return end
-		set_inv_page("deco",player)
+		set_inv_page("deco", player)
 		page = "deco"
 	elseif fields.redstone then
 		if players[name].page == "redstone" then return end
-		set_inv_page("redstone",player)
+		set_inv_page("redstone", player)
 		page = "redstone"
 	elseif fields.rail then
 		if players[name].page == "rail" then return end
-		set_inv_page("rail",player)
+		set_inv_page("rail", player)
 		page = "rail"
 	elseif fields.misc then
 		if players[name].page == "misc" then return end
-		set_inv_page("misc",player)
+		set_inv_page("misc", player)
 		page = "misc"
 	elseif fields.nix then
-		set_inv_page("all",player)
+		set_inv_page("all", player)
 		page = "nix"
 	elseif fields.food then
 		if players[name].page == "food" then return end
-		set_inv_page("food",player)
+		set_inv_page("food", player)
 		page = "food"
 	elseif fields.tools then
 		if players[name].page == "tools" then return end
-		set_inv_page("tools",player)
+		set_inv_page("tools", player)
 		page = "tools"
 	elseif fields.combat then
 		if players[name].page == "combat" then return end
-		set_inv_page("combat",player)
+		set_inv_page("combat", player)
 		page = "combat"
 	elseif fields.mobs then
 		if players[name].page == "mobs" then return end
-		set_inv_page("mobs",player)
+		set_inv_page("mobs", player)
 		page = "mobs"
 	elseif fields.brew then
 		if players[name].page == "brew" then return end
-		set_inv_page("brew",player)
+		set_inv_page("brew", player)
 		page = "brew"
 	elseif fields.matr then
 		if players[name].page == "matr" then return end
-		set_inv_page("matr",player)
+		set_inv_page("matr", player)
 		page = "matr"
 	elseif fields.inv then
 		if players[name].page == "inv" then return end
@@ -552,7 +575,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		set_inv_page("all", player)
 		page = "nix"
 	elseif fields.search and not fields.creative_next and not fields.creative_prev then
-		set_inv_search(string.lower(fields.search),player)
+		set_inv_search(string.lower(fields.search), player)
 		page = "nix"
 	elseif fields.__switch_stack then
 		local switch = 1
@@ -570,20 +593,20 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	local start_i = players[name].start_i
 	if fields.creative_prev then
-		start_i = start_i - 9*5
+		start_i = start_i - 9 * 5
 	elseif fields.creative_next then
-		start_i = start_i + 9*5
+		start_i = start_i + 9 * 5
 	else
 		-- Reset scroll bar if not scrolled
 		start_i = 0
 	end
 	if start_i < 0 then
-		start_i = start_i + 9*5
+		start_i = start_i + 9 * 5
 	end
 
 	local inv_size
 	if page == "nix" then
-		local inv = minetest.get_inventory({type="detached", name="creative_"..name})
+		local inv = minetest.get_inventory({ type = "detached", name = "creative_" .. name })
 		inv_size = inv:get_size("main")
 	elseif page and page ~= "inv" then
 		inv_size = #(inventory_lists[page])
@@ -593,7 +616,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	players[name].inv_size = inv_size
 
 	if start_i >= inv_size then
-		start_i = start_i - 9*5
+		start_i = start_i - 9 * 5
 	end
 	if start_i < 0 or start_i >= inv_size then
 		start_i = 0
@@ -606,13 +629,66 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		players[name].filter = ""
 	end
 
-	mcl_inventory.set_creative_formspec(player)
+	mcl_inventory.set_creative_formspec(player, start_i, start_i / (9 * 5) + 1, inv_size, false, page, filter)
 end)
 
 
-minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack)
-	return placer and placer:is_player() and minetest.is_creative_enabled(placer:get_player_name())
-end)
+if minetest.is_creative_enabled("") then
+	minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack)
+		-- Place infinite nodes, except for shulker boxes
+		local group = minetest.get_item_group(itemstack:get_name(), "shulker_box")
+		return group == 0 or group == nil
+	end)
+
+	function minetest.handle_node_drops(pos, drops, digger)
+		if not digger or not digger:is_player() then
+			for _, item in ipairs(drops) do
+				minetest.add_item(pos, item)
+			end
+		end
+		local inv = digger:get_inventory()
+		if inv then
+			for _, item in ipairs(drops) do
+				if not inv:contains_item("main", item, true) then
+					inv:add_item("main", item)
+				end
+			end
+		end
+	end
+
+	mcl_inventory.update_inventory_formspec = function(player)
+		local page
+
+		local name = player:get_player_name()
+
+		if players[name].page then
+			page = players[name].page
+		else
+			page = "nix"
+		end
+
+		-- Figure out current scroll bar from formspec
+		--local formspec = player:get_inventory_formspec()
+		local start_i = players[name].start_i
+
+		local inv_size
+		if page == "nix" then
+			local inv = minetest.get_inventory({ type = "detached", name = "creative_" .. name })
+			inv_size = inv:get_size("main")
+		elseif page and page ~= "inv" then
+			inv_size = #(inventory_lists[page])
+		else
+			inv_size = 0
+		end
+
+		local filter = players[name].filter
+		if filter == nil then
+			filter = ""
+		end
+
+		mcl_inventory.set_creative_formspec(player, start_i, start_i / (9 * 5) + 1, inv_size, false, page, filter)
+	end
+end
 
 minetest.register_on_joinplayer(function(player)
 	-- Initialize variables and inventory
@@ -629,7 +705,8 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 minetest.register_on_player_inventory_action(function(player, action, inventory, inventory_info)
-	if minetest.is_creative_enabled(player:get_player_name()) and get_stack_size(player) == 64 and action == "put" and inventory_info.listname == "main" then
+	if minetest.is_creative_enabled(player:get_player_name()) and get_stack_size(player) == 64 and action == "put" and
+		inventory_info.listname == "main" then
 		local stack = inventory_info.stack
 		stack:set_count(stack:get_stack_max())
 		player:get_inventory():set_stack("main", inventory_info.index, stack)
