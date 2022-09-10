@@ -58,6 +58,15 @@ local monster_exceptions = {
 	["mobs_mc:shulker"] = true,
 }
 
+function mcl_beds.is_night(tod)
+	-- Values taken from Minecraft Wiki with offset of +600
+	if not tod then
+		tod = minetest.get_timeofday()
+	end
+	tod = ( tod * 24000 ) % 24000
+	return  tod > 18541 or tod < 5458
+end
+
 local function lay_down(player, pos, bed_pos, state, skip)
 	local name = player:get_player_name()
 	local hud_flags = player:hud_get_flags()
@@ -77,6 +86,11 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		if spawn_mod and mcl_spawn.set_spawn_pos(player, bed_pos, nil) then
 			minetest.chat_send_player(name, S("New respawn position set!"))
 			awards.unlock(player:get_player_name(), "mcl:sweetDreams")
+		end
+
+
+		if not mcl_beds.is_night() and (not weather_mod or (mcl_weather.get_weather() ~= "thunder")) then
+			return false, S("You can only sleep at night or during a thunderstorm.")
 		end
 
 		-- No sleeping if too far away
@@ -156,13 +170,6 @@ local function lay_down(player, pos, bed_pos, state, skip)
 			return false, S("You can't sleep, the bed is obstructed!")
 		elseif (def1.damage_per_second and def1.damage_per_second > 0) or (def2.damage_per_second and def2.damage_per_second > 0) then
 			return false, S("It's too dangerous to sleep here!")
-		end
-
-		-- Check day of time and weather
-		local tod = minetest.get_timeofday() * 24000
-		-- Values taken from Minecraft Wiki with offset of +6000
-		if tod < 18541 and tod > 5458 and (not weather_mod or (mcl_weather.get_weather() ~= "thunder")) then
-			return false, S("You can only sleep at night or during a thunderstorm.")
 		end
 
 		mcl_beds.player[name] = 1
@@ -251,16 +258,22 @@ end
 
 -- Handle environment stuff related to sleeping: skip night and thunderstorm
 function mcl_beds.sleep()
-	local storm_skipped = mcl_beds.skip_thunderstorm()
-	-- Always clear weather
-	if weather_mod then
-		mcl_weather.change_weather("none")
-	end
 	if is_night_skip_enabled() then
-		if not storm_skipped then
+		if weather_mod and mcl_weather.get_weather() == "thunder" then
+			local endtime = (mcl_weather.end_time - minetest.get_gametime()) * 72 / 24000
+			minetest.set_timeofday((minetest.get_timeofday() + endtime) %1)
+			if mcl_beds.is_night() then
+				mcl_beds.skip_night()
+				mcl_beds.kick_players()
+			else
+				mcl_beds.kick_players()
+			end
+			-- Always clear weather
+			mcl_weather.change_weather("none")
+		elseif mcl_beds.is_night() then
 			mcl_beds.skip_night()
+			mcl_beds.kick_players()
 		end
-		mcl_beds.kick_players()
 	end
 end
 
@@ -285,16 +298,6 @@ end
 
 function mcl_beds.skip_night()
 	minetest.set_timeofday(0.25) -- tod = 6000
-end
-
-function mcl_beds.skip_thunderstorm()
-	-- Skip thunderstorm
-	if weather_mod and mcl_weather.get_weather() == "thunder" then
-		-- Sleep for a half day (=minimum thunderstorm duration)
-		minetest.set_timeofday((minetest.get_timeofday() + 0.5) % 1)
-		return true
-	end
-	return false
 end
 
 function mcl_beds.on_rightclick(pos, player, is_top)
