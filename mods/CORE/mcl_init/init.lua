@@ -163,6 +163,7 @@ mcl_vars.mg_end_min = -27073 -- Carefully chosen to be at a mapchunk border
 mcl_vars.mg_end_max_official = mcl_vars.mg_end_min + minecraft_height_limit
 mcl_vars.mg_end_max = mcl_vars.mg_overworld_min - 2000
 mcl_vars.mg_end_platform_pos = { x = 100, y = mcl_vars.mg_end_min + 74, z = 0 }
+mcl_vars.mg_end_exit_portal_pos = vector.new(-3, mcl_vars.mg_end_min + 72, -3)
 
 -- Realm barrier used to safely separate the End from the void below the Overworld
 mcl_vars.mg_realm_barrier_overworld_end_max = mcl_vars.mg_end_max

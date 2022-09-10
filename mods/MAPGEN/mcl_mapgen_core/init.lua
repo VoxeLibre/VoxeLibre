@@ -118,6 +118,36 @@ if string.len(mg_flags_str) > 0 then
 end
 minetest.set_mapgen_setting("mg_flags", mg_flags_str, true)
 
+local function between(x, y, z) -- x is between y and z (inclusive)
+    return y <= x and x <= z
+end
+local function in_cube(tpos,wpos1,wpos2)
+	local xmax=wpos2.x
+	local xmin=wpos1.x
+
+	local ymax=wpos2.y
+	local ymin=wpos1.y
+
+	local zmax=wpos2.z
+	local zmin=wpos1.z
+	if wpos1.x > wpos2.x then
+		xmax=wpos1.x
+		xmin=wpos2.x
+	end
+	if wpos1.y > wpos2.y then
+		ymax=wpos1.y
+		ymin=wpos2.y
+	end
+	if wpos1.z > wpos2.z then
+		zmax=wpos1.z
+		zmin=wpos2.z
+	end
+	if between(tpos.x,xmin,xmax) and between(tpos.y,ymin,ymax) and between(tpos.z,zmin,zmax) then
+		return true
+	end
+	return false
+end
+
 -- Helper function for converting a MC probability to MT, with
 -- regards to MapBlocks.
 -- Some MC generated structures are generated on per-chunk
@@ -212,23 +242,6 @@ local function generate_clay(minp, maxp, blockseed, voxelmanip_data, voxelmanip_
 		end
 	end
 	return lvm_used
-end
-
-local function generate_end_exit_portal(pos)
-	local obj = minetest.add_entity(vector.add(pos, vector.new(3, 11, 3)), "mobs_mc:enderdragon")
-	if obj then
-		local dragon_entity = obj:get_luaentity()
-		dragon_entity._initial = true
-		dragon_entity._portal_pos = pos
-	else
-		minetest.log("error", "[mcl_mapgen_core] ERROR! Ender dragon doesn't want to spawn")
-	end
-	mcl_structures.call_struct(pos, "end_exit_portal")
-end
-
-local function generate_structures(minp, maxp, blockseed, biomemap)
-	-- End exit portal
-
 end
 
 -- Buffers for LuaVoxelManip
@@ -710,28 +723,6 @@ local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blocksee
 			end
 		end
 	end
-	-- Obsidian spawn platform
-	if minp.y <= mcl_vars.mg_end_platform_pos.y and maxp.y >= mcl_vars.mg_end_platform_pos.y and
-		minp.x <= mcl_vars.mg_end_platform_pos.x and maxp.x >= mcl_vars.mg_end_platform_pos.z and
-		minp.z <= mcl_vars.mg_end_platform_pos.z and maxp.z >= mcl_vars.mg_end_platform_pos.z then
-
-		--local pos1 = {x = math.max(minp.x, mcl_vars.mg_end_platform_pos.x-2), y = math.max(minp.y, mcl_vars.mg_end_platform_pos.y),   z = math.max(minp.z, mcl_vars.mg_end_platform_pos.z-2)}
-		--local pos2 = {x = math.min(maxp.x, mcl_vars.mg_end_platform_pos.x+2), y = math.min(maxp.y, mcl_vars.mg_end_platform_pos.y+2), z = math.min(maxp.z, mcl_vars.mg_end_platform_pos.z+2)}
-
-		for x=math.max(minp.x, mcl_vars.mg_end_platform_pos.x-2), math.min(maxp.x, mcl_vars.mg_end_platform_pos.x+2) do
-		for z=math.max(minp.z, mcl_vars.mg_end_platform_pos.z-2), math.min(maxp.z, mcl_vars.mg_end_platform_pos.z+2) do
-		for y=math.max(minp.y, mcl_vars.mg_end_platform_pos.y), math.min(maxp.y, mcl_vars.mg_end_platform_pos.y+2) do
-			local p_pos = area:index(x, y, z)
-			if y == mcl_vars.mg_end_platform_pos.y then
-				data[p_pos] = c_obsidian
-			else
-				data[p_pos] = c_air
-			end
-		end
-		end
-		end
-		lvm_used = true
-	end
 	-- Final hackery: Set sun light level in the End.
 	-- -26912 is at a mapchunk border.
 	vm:set_lighting({day=15, night=15})
@@ -746,24 +737,12 @@ local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blocksee
 end
 
 
-local function end_node(minp, maxp, blockseed)
-	if	minp.y <= END_EXIT_PORTAL_POS.y and maxp.y >= END_EXIT_PORTAL_POS.y and
-		minp.x <= END_EXIT_PORTAL_POS.x and maxp.x >= END_EXIT_PORTAL_POS.x and
-		minp.z <= END_EXIT_PORTAL_POS.z and maxp.z >= END_EXIT_PORTAL_POS.z then
-		for y=maxp.y, minp.y, -1 do
-			local p = {x=END_EXIT_PORTAL_POS.x, y=y, z=END_EXIT_PORTAL_POS.z}
-			if minetest.get_node(p).name == "mcl_end:end_stone" then
-				generate_end_exit_portal(p)
-				return
-			end
-		end
-		generate_end_exit_portal(END_EXIT_PORTAL_POS)
-	end
-end
-
 mcl_mapgen_core.register_generator("main", basic, nil, 1, true)
-mcl_mapgen_core.register_generator("end_fixes", end_basic, end_node, 20, true)
+mcl_mapgen_core.register_generator("end_fixes", end_basic, nil, 20, true)
 
+if mg_name ~= "v6" then
+	mcl_mapgen_core.register_generator("block_fixes", block_fixes, nil, 5, true)
+end
 
 mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blockseed)
 	local gennotify = minetest.get_mapgen_object("gennotify")
@@ -771,14 +750,20 @@ mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blocks
 	local has = false
 	local poshash = minetest.hash_node_position(minp)
 	for _,struct in pairs(mcl_structures.registered_structures) do
+		local pr = PseudoRandom(blockseed + 42)
 		if struct.deco_id then
-			local pr = PseudoRandom(blockseed + 42)
 			for _, pos in pairs(gennotify["decoration#"..struct.deco_id] or {}) do
 				local realpos = vector.offset(pos,0,1,0)
 				minetest.remove_node(realpos)
 				if struct.chunk_probability == nil or (not has and pr:next(1,struct.chunk_probability) == 1 ) then
 					mcl_structures.place_structure(realpos,struct,pr,blockseed)
 					has=true
+				end
+			end
+		elseif struct.static_pos then
+			for _,p in pairs(struct.static_pos) do
+				if in_cube(p,minp,maxp) then
+					mcl_structures.place_structure(p,struct,pr,blockseed)
 				end
 			end
 		end
