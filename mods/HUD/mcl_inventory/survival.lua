@@ -48,7 +48,7 @@ end)
 ---@param content string
 ---@param inventory boolean
 ---@param tabname string
-function build_page(player, content, inventory, tabname)
+local function build_page(player, content, inventory, tabname)
 	local tab_buttons = "style_type[image;noclip=true]"
 
 	if #mcl_inventory.registered_survival_inventory_tabs ~= 1 then
