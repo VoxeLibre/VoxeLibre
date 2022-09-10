@@ -1,34 +1,51 @@
+---@diagnostic disable lowercase-global
+
 local S = minetest.get_translator(minetest.get_current_modname())
-local formspec_escape = minetest.formspec_escape
-local show_formspec = minetest.show_formspec
+local F = minetest.formspec_escape
 local C = minetest.colorize
-local text_color = "#313131"
-local itemslot_bg = mcl_formspec.get_itemslot_bg
+local show_formspec = minetest.show_formspec
 
 mcl_crafting_table = {}
 
-function mcl_crafting_table.show_crafting_form(player)
-	player:get_inventory():set_width("craft", 3)
-	player:get_inventory():set_size("craft", 9)
+mcl_crafting_table.formspec = table.concat({
+	"formspec_version[4]",
+	"size[11.75,10.425]",
 
-	show_formspec(player:get_player_name(), "main",
-		"size[9,8.75]"..
-		"image[4.7,1.5;1.5,1;gui_crafting_arrow.png]"..
-		"label[0,4;"..formspec_escape(C(text_color, S("Inventory"))).."]"..
-		"list[current_player;main;0,4.5;9,3;9]"..
-		itemslot_bg(0,4.5,9,3)..
-		"list[current_player;main;0,7.74;9,1;]"..
-		itemslot_bg(0,7.74,9,1)..
-		"label[1.75,0;"..formspec_escape(C(text_color, S("Crafting"))).."]"..
-		"list[current_player;craft;1.75,0.5;3,3;]"..
-		itemslot_bg(1.75,0.5,3,3)..
-		"list[current_player;craftpreview;6.1,1.5;1,1;]"..
-		itemslot_bg(6.1,1.5,1,1)..
-		"image_button[0.75,1.5;1,1;craftguide_book.png;__mcl_craftguide;]"..
-		"tooltip[__mcl_craftguide;"..formspec_escape(S("Recipe book")).."]"..
-		"listring[current_player;main]"..
-		"listring[current_player;craft]"
-	)
+	"label[2.25,0.375;" .. F(C(mcl_formspec.label_color, S("Crafting"))) .. "]",
+
+	mcl_formspec.get_itemslot_bg_v4(2.25, 0.75, 3, 3),
+	"list[current_player;craft;2.25,0.75;3,3;]",
+
+	"image[6.125,2;1.5,1;gui_crafting_arrow.png]",
+
+	mcl_formspec.get_itemslot_bg_v4(8.2, 2, 1, 1, 0.2),
+	"list[current_player;craftpreview;8.2,2;1,1;]",
+
+	"label[0.375,4.7;" .. F(C(mcl_formspec.label_color, S("Inventory"))) .. "]",
+
+	mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
+	"list[current_player;main;0.375,5.1;9,3;9]",
+
+	mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
+	"list[current_player;main;0.375,9.05;9,1;]",
+
+	"listring[current_player;craft]",
+	"listring[current_player;main]",
+
+	--Crafting guide button
+	"image_button[0.325,1.95;1.1,1.1;craftguide_book.png;__mcl_craftguide;]",
+	"tooltip[__mcl_craftguide;" .. F(S("Recipe book")) .. "]",
+})
+
+---@param player ObjectRef
+function mcl_crafting_table.show_crafting_form(player)
+	local inv = player:get_inventory()
+	if inv then
+		inv:set_width("craft", 3)
+		inv:set_size("craft", 9)
+	end
+
+	show_formspec(player:get_player_name(), "main", mcl_crafting_table.formspec)
 end
 
 minetest.register_node("mcl_crafting_table:crafting_table", {
@@ -38,10 +55,10 @@ minetest.register_node("mcl_crafting_table:crafting_table", {
 	_doc_items_usagehelp = S("Rightclick the crafting table to access the 3×3 crafting grid."),
 	_doc_items_hidden = false,
 	is_ground_content = false,
-	tiles = {"crafting_workbench_top.png", "default_wood.png", "crafting_workbench_side.png",
-		"crafting_workbench_side.png", "crafting_workbench_front.png", "crafting_workbench_front.png"},
+	tiles = { "crafting_workbench_top.png", "default_wood.png", "crafting_workbench_side.png",
+		"crafting_workbench_side.png", "crafting_workbench_front.png", "crafting_workbench_front.png" },
 	paramtype2 = "facedir",
-	groups = {handy=1,axey=1, deco_block=1, material_wood=1,flammable=-1},
+	groups = { handy = 1, axey = 1, deco_block = 1, material_wood = 1, flammable = -1 },
 	on_rightclick = function(pos, node, player, itemstack)
 		if not player:get_player_control().sneak then
 			mcl_crafting_table.show_crafting_form(player)
@@ -55,9 +72,9 @@ minetest.register_node("mcl_crafting_table:crafting_table", {
 minetest.register_craft({
 	output = "mcl_crafting_table:crafting_table",
 	recipe = {
-		{"group:wood", "group:wood"},
-		{"group:wood", "group:wood"}
-	}
+		{ "group:wood", "group:wood" },
+		{ "group:wood", "group:wood" }
+	},
 })
 
 minetest.register_craft({
