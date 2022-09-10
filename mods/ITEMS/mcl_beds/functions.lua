@@ -260,12 +260,12 @@ end
 function mcl_beds.sleep()
 	if is_night_skip_enabled() then
 		if weather_mod and mcl_weather.get_weather() == "thunder" then
-			endtime = mcl_weather.end_time / 24000
+			local endtime = (mcl_weather.end_time - minetest.get_gametime()) * 72 / 24000
 			minetest.set_timeofday((minetest.get_timeofday() + endtime) %1)
-			if not mcl_beds.is_night() then
+			if mcl_beds.is_night() then
+				mcl_beds.skip_night()
 				mcl_beds.kick_players()
 			else
-				mcl_beds.skip_night()
 				mcl_beds.kick_players()
 			end
 			-- Always clear weather
