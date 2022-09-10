@@ -8,6 +8,7 @@ mcl_structures.register_structure("end_spawn_obsidian_platform",{
 	place_func = function(pos,def,pr)
 		local nn = minetest.find_nodes_in_area(vector.offset(pos,-2,0,-2),vector.offset(pos,2,0,2),{"air","mcl_end:end_stone"})
 		minetest.bulk_set_node(nn,{name="mcl_core:obsidian"})
+		return true
 	end,
 })
 
