@@ -504,7 +504,8 @@ minetest.register_chatcommand("spawn_mob",{
 	func = function(n,param)
 		local pos = minetest.get_player_by_name(n):get_pos()
 		if mcl_mobs.spawn(pos,param) then
-			return true, param.." spawned at "..minetest.pos_to_string(pos)
+			return true, param.." spawned at "..minetest.pos_to_string(pos),
+			minetest.log("action", n.." spawned "..param.." at "..minetest.pos_to_string(pos))
 		end
 		return false, "Couldn't spawn "..param
 	end
