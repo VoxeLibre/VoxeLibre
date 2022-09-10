@@ -55,8 +55,6 @@ minetest.register_alias("mapgen_stair_desert_stone", "mcl_stairs:stair_sandstone
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 
-local WITCH_HUT_HEIGHT = 3 -- Exact Y level to spawn witch huts at. This height refers to the height of the floor
-
 -- End exit portal position
 local END_EXIT_PORTAL_POS = vector.new(-3, -27003, -3)
 
@@ -614,6 +612,26 @@ local function set_layers(data, area, content_id, check, min, max, minp, maxp, l
 	return lvm_used
 end
 
+local function set_palette(minp,maxp,data2,area,biomemap,nodes)
+	-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
+	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
+	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
+	for n=1, #nodes do
+		local n = nodes[n]
+		local p_pos = area:index(n.x, n.y, n.z)
+		local b_pos = aream:index(n.x, 0, n.z)
+		local bn = minetest.get_biome_name(biomemap[b_pos])
+		if bn then
+			local biome = minetest.registered_biomes[bn]
+			if biome and biome._mcl_biome_type then
+				data2[p_pos] = biome._mcl_palette_index
+				lvm_used = true
+			end
+		end
+	end
+	return lvm_used
+end
+
 -- Below the bedrock, generate air/void
 local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	local biomemap --ymin, ymax
@@ -656,134 +674,79 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 			lvm_used = set_layers(data, area, c_lava, c_air, mcl_vars.mg_overworld_min, mcl_vars.mg_lava_overworld_max, minp, maxp, lvm_used, pr)
 			lvm_used = set_layers(data, area, c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, minp, maxp, lvm_used, pr)
 		end
+	end
 
-		-- Clay, vines, cocoas
-		lvm_used = generate_clay(minp, maxp, blockseed, data, area, lvm_used)
+	return lvm_used, false
+end
 
-		biomemap = minetest.get_mapgen_object("biomemap")
-		lvm_used = generate_tree_decorations(minp, maxp, blockseed, data, data2, area, biomemap, lvm_used, pr)
+local function block_fixes(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
+	local biomemap = minetest.get_mapgen_object("biomemap")
+	local lvm_used = false
+	local pr = PseudoRandom(blockseed)
+	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
+		-- Set param2 (=color) of sugar cane and grass
+		lvm_used = set_palette(minp,maxp,data2,area,biomemap,{"mcl_core:reeds","mcl_core:dirt_with_grass"})
+	end
+	return lvm_used
+end
 
-		----- Interactive block fixing section -----
-		----- The section to perform basic block overrides of the core mapgen generated world. -----
 
-		-- Snow and sand fixes. This code implements snow consistency
-		-- and fixes floating sand and cut plants.
-		-- A snowy grass block must be below a top snow or snow block at all times.
-		if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
-			-- v6 mapgen:
-			if mg_name ~= "v6" then
-			-- Non-v6 mapgens:
-				-- Set param2 (=color) of grass blocks.
-				-- Clear snowy grass blocks without snow above to ensure consistency.
-				local nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow"})
-
-				-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
-				local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
-				for n=1, #nodes do
-					local n = nodes[n]
-					local p_pos = area:index(n.x, n.y, n.z)
-					local p_pos_above = area:index(n.x, n.y+1, n.z)
-					--local p_pos_below = area:index(n.x, n.y-1, n.z)
-					local b_pos = aream:index(n.x, 0, n.z)
-					local bn = minetest.get_biome_name(biomemap[b_pos])
-					if bn then
-						local biome = minetest.registered_biomes[bn]
-						if biome and biome._mcl_biome_type then
-							data2[p_pos] = biome._mcl_palette_index
-							lvm_used = true
-						end
-					end
-					if data[p_pos] == c_dirt_with_grass_snow and p_pos_above and data[p_pos_above] ~= c_top_snow and data[p_pos_above] ~= c_snow_block then
-						data[p_pos] = c_dirt_with_grass
-						lvm_used = true
-					end
-				end
-
-				-- Set param2 (=color) of sugar cane
-				nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:reeds"})
-				for n=1, #nodes do
-					local n = nodes[n]
-					local p_pos = area:index(n.x, n.y, n.z)
-					local b_pos = aream:index(n.x, 0, n.z)
-					local bn = minetest.get_biome_name(biomemap[b_pos])
-					if bn then
-						local biome = minetest.registered_biomes[bn]
-						if biome and biome._mcl_biome_type then
-							data2[p_pos] = biome._mcl_palette_index
-							lvm_used = true
-						end
-					end
-				end
-			end
-
-		-- Nether block fixes:
-		-- * Replace water with Nether lava.
-		-- * Replace stone, sand dirt in v6 so the Nether works in v6.
-		elseif emin.y <= mcl_vars.mg_nether_max and emax.y >= mcl_vars.mg_nether_min then
-			if mg_name ~= "v6" then
-				local nodes = minetest.find_nodes_in_area(emin, emax, {"group:water"})
-				for _, n in pairs(nodes) do
-					data[area:index(n.x, n.y, n.z)] = c_nether_lava
-				end
-			end
-
-		-- End block fixes:
-		-- * Replace water with end stone or air (depending on height).
-		-- * Remove stone, sand, dirt in v6 so our End map generator works in v6.
-		-- * Generate spawn platform (End portal destination)
-		elseif minp.y <= mcl_vars.mg_end_max and maxp.y >= mcl_vars.mg_end_min then
-			local nodes
-			if mg_name ~= "v6" then
-				nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source"})
-				if #nodes > 0 then
-					lvm_used = true
-					for _,n in pairs(nodes) do
-						data[area:index(n.x, n.y, n.z)] = c_air
-					end
-				end
-			end
-			-- Obsidian spawn platform
-			if minp.y <= mcl_vars.mg_end_platform_pos.y and maxp.y >= mcl_vars.mg_end_platform_pos.y and
-				minp.x <= mcl_vars.mg_end_platform_pos.x and maxp.x >= mcl_vars.mg_end_platform_pos.z and
-				minp.z <= mcl_vars.mg_end_platform_pos.z and maxp.z >= mcl_vars.mg_end_platform_pos.z then
-
-				--local pos1 = {x = math.max(minp.x, mcl_vars.mg_end_platform_pos.x-2), y = math.max(minp.y, mcl_vars.mg_end_platform_pos.y),   z = math.max(minp.z, mcl_vars.mg_end_platform_pos.z-2)}
-				--local pos2 = {x = math.min(maxp.x, mcl_vars.mg_end_platform_pos.x+2), y = math.min(maxp.y, mcl_vars.mg_end_platform_pos.y+2), z = math.min(maxp.z, mcl_vars.mg_end_platform_pos.z+2)}
-
-				for x=math.max(minp.x, mcl_vars.mg_end_platform_pos.x-2), math.min(maxp.x, mcl_vars.mg_end_platform_pos.x+2) do
-				for z=math.max(minp.z, mcl_vars.mg_end_platform_pos.z-2), math.min(maxp.z, mcl_vars.mg_end_platform_pos.z+2) do
-				for y=math.max(minp.y, mcl_vars.mg_end_platform_pos.y), math.min(maxp.y, mcl_vars.mg_end_platform_pos.y+2) do
-					local p_pos = area:index(x, y, z)
-					if y == mcl_vars.mg_end_platform_pos.y then
-						data[p_pos] = c_obsidian
-					else
-						data[p_pos] = c_air
-					end
-				end
-				end
-				end
-				lvm_used = true
+-- End block fixes:
+-- * Replace water with end stone or air (depending on height).
+-- * Remove stone, sand, dirt in v6 so our End map generator works in v6.
+-- * Generate spawn platform (End portal destination)
+local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
+	if minp.y < -26912 or maxp.y >= mcl_vars.mg_end_max then return end
+	local biomemap --ymin, ymax
+	local lvm_used = false
+	local pr = PseudoRandom(blockseed)
+	local nodes
+	if mg_name ~= "v6" then
+		nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source"})
+		if #nodes > 0 then
+			lvm_used = true
+			for _,n in pairs(nodes) do
+				data[area:index(n.x, n.y, n.z)] = c_air
 			end
 		end
 	end
-	-- Final hackery: Set sun light level in the End.
-	-- -26912 is at a mapchunk border.
-	local shadow = true
-	if minp.y >= -26912 and maxp.y <= mcl_vars.mg_end_max then
-		vm:set_lighting({day=15, night=15})
+	-- Obsidian spawn platform
+	if minp.y <= mcl_vars.mg_end_platform_pos.y and maxp.y >= mcl_vars.mg_end_platform_pos.y and
+		minp.x <= mcl_vars.mg_end_platform_pos.x and maxp.x >= mcl_vars.mg_end_platform_pos.z and
+		minp.z <= mcl_vars.mg_end_platform_pos.z and maxp.z >= mcl_vars.mg_end_platform_pos.z then
+
+		--local pos1 = {x = math.max(minp.x, mcl_vars.mg_end_platform_pos.x-2), y = math.max(minp.y, mcl_vars.mg_end_platform_pos.y),   z = math.max(minp.z, mcl_vars.mg_end_platform_pos.z-2)}
+		--local pos2 = {x = math.min(maxp.x, mcl_vars.mg_end_platform_pos.x+2), y = math.min(maxp.y, mcl_vars.mg_end_platform_pos.y+2), z = math.min(maxp.z, mcl_vars.mg_end_platform_pos.z+2)}
+
+		for x=math.max(minp.x, mcl_vars.mg_end_platform_pos.x-2), math.min(maxp.x, mcl_vars.mg_end_platform_pos.x+2) do
+		for z=math.max(minp.z, mcl_vars.mg_end_platform_pos.z-2), math.min(maxp.z, mcl_vars.mg_end_platform_pos.z+2) do
+		for y=math.max(minp.y, mcl_vars.mg_end_platform_pos.y), math.min(maxp.y, mcl_vars.mg_end_platform_pos.y+2) do
+			local p_pos = area:index(x, y, z)
+			if y == mcl_vars.mg_end_platform_pos.y then
+				data[p_pos] = c_obsidian
+			else
+				data[p_pos] = c_air
+			end
+		end
+		end
+		end
 		lvm_used = true
 	end
-	if minp.y >= mcl_vars.mg_end_min and maxp.y <= -26911 then
+	-- Final hackery: Set sun light level in the End.
+	-- -26912 is at a mapchunk border.
+	vm:set_lighting({day=15, night=15})
+	lvm_used = true
+
+	local shadow = true
+	if emin.y >= mcl_vars.mg_end_min and emax.y <= -26911 then
 		shadow = false
 		lvm_used = true
 	end
-
 	return lvm_used, shadow
 end
 
-mcl_mapgen_core.register_generator("main", basic, basic_node, 1, true)
 
-mcl_mapgen_core.register_generator("end_exit_portal",nil, function(minp, maxp, blockseed)
+local function end_node(minp, maxp, blockseed)
 	if	minp.y <= END_EXIT_PORTAL_POS.y and maxp.y >= END_EXIT_PORTAL_POS.y and
 		minp.x <= END_EXIT_PORTAL_POS.x and maxp.x >= END_EXIT_PORTAL_POS.x and
 		minp.z <= END_EXIT_PORTAL_POS.z and maxp.z >= END_EXIT_PORTAL_POS.z then
@@ -796,7 +759,11 @@ mcl_mapgen_core.register_generator("end_exit_portal",nil, function(minp, maxp, b
 		end
 		generate_end_exit_portal(END_EXIT_PORTAL_POS)
 	end
-end,101,true)
+end
+
+mcl_mapgen_core.register_generator("main", basic, nil, 1, true)
+mcl_mapgen_core.register_generator("end_fixes", end_basic, end_node, 20, true)
+
 
 mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blockseed)
 	local gennotify = minetest.get_mapgen_object("gennotify")

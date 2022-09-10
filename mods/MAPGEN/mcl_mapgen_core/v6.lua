@@ -1,3 +1,5 @@
+local WITCH_HUT_HEIGHT = 3 -- Exact Y level to spawn witch huts at. This height refers to the height of the floor
+
 local function register_mgv6_decorations()
 	-- Cacti
 	minetest.register_decoration({
@@ -773,11 +775,19 @@ local function remove_mgv6_broken_plants(minp,maxp)
 	end
 end
 
-local function nether_fixes(minp,maxp)
+local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	if not (minp.y <= mcl_vars.mg_nether_max and maxp.y >= mcl_vars.mg_nether_min) then
 		return
 	end
-	local nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
+		-- Nether block fixes:
+	-- * Replace water with Nether lava.
+	-- * Replace stone, sand dirt in v6 so the Nether works in v6.
+	local nodes = minetest.find_nodes_in_area(emin, emax, {"group:water"})
+	for _, n in pairs(nodes) do
+		data[area:index(n.x, n.y, n.z)] = c_nether_lava
+		lvm_used = true
+	end
+	nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
 	for n=1, #nodes do
 		local p_pos = area:index(nodes[n].x, nodes[n].y, nodes[n].z)
 		if data[p_pos] == c_water then
@@ -812,7 +822,6 @@ local function basic_node(minp, maxp, blockseed)
 		if mg_name == "v6" then
 			generate_underground_mushrooms(minp, maxp, blockseed)
 			generate_nether_decorations(minp, maxp, blockseed)
-			nether_fixes(minp,maxp)
 			end_fixes(minp,maxp)
 			remove_mgv6_broken_plants(minp,maxp,blockseed)
 			generate_mgv6_structures(minp, maxp, blockseed, minetest.get_mapgen_object("biomemap"))
@@ -820,4 +829,4 @@ local function basic_node(minp, maxp, blockseed)
 	end
 end
 
-mcl_mapgen_core.register_generator("mgv6-fixes", nil, basic_node, 2, true)
+mcl_mapgen_core.register_generator("mgv6-fixes", basic, basic_node, 10, true)
