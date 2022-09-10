@@ -18,8 +18,13 @@ mcl_structures.register_structure("end_exit_portal",{
 		modpath.."/schematics/mcl_structures_end_exit_portal.mts"
 	},
 	after_place = function(pos,def,pr)
-		local nn = minetest.find_nodes_in_area(vector.offset(pos,-5,-1,-5),vector.offset(pos,5,5,5),{"mcl_end:portal_end"})
-		minetest.bulk_set_node(nn,{name="air"})
+		local p1 = vector.offset(pos,-5,-5,-5)
+		local p2 = vector.offset(pos,5,5,5)
+		minetest.emerge_area(p1, p2, function(blockpos, action, calls_remaining, param)
+			if calls_remaining ~= 0 then return end
+			local nn = minetest.find_nodes_in_area(p1,p2,{"mcl_portals:portal_end"})
+			minetest.bulk_set_node(nn,{name="air"})
+		end)
 	end
 })
 mcl_structures.register_structure("end_exit_portal_open",{
