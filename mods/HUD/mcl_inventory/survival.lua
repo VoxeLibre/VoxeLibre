@@ -21,6 +21,10 @@ function mcl_inventory.register_survival_inventory_tab(def)
 	assert(def.build)
 	assert(def.handle)
 
+	for _, d in ipairs(mcl_inventory.registered_survival_inventory_tabs) do
+		assert(d.id ~= def.id, "Another tab exists with the same name!")
+	end
+
 	if not def.access then
 		function def.access(player)
 			return true
@@ -62,6 +66,7 @@ local function build_page(player, content, inventory, tabname)
 					",-1.34;1.5,1.44;" .. (tabname == d.id and "crafting_creative_active.png" or "crafting_creative_inactive.png") ..
 					"]",
 				"item_image_button[" .. (0.44 + (i - 1) * 1.6) .. ",-1.1;1,1;" .. d.item_icon .. ";" .. btn_name .. ";]",
+				"tooltip[" .. btn_name .. ";" .. F(d.description) .. "]"
 			})
 		end
 	end
