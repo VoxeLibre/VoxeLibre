@@ -431,15 +431,16 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 ---@param player ObjectRef
-function mcl_inventory.update_inventory(player)
+---@param armor_change_only? boolean
+function mcl_inventory.update_inventory(player, armor_change_only)
 	local player_gamemode = mcl_gamemode.get_gamemode(player)
 	if player_gamemode == "creative" then
-		--if armor_change_only then
-		-- Stay on survival inventory plage if only the armor has been changed
-		--	mcl_inventory.set_creative_formspec(player, 0, 0, nil, nil, "inv")
-		--else
-		mcl_inventory.set_creative_formspec(player, 0, 1)
-		--end
+		if armor_change_only then
+			-- Stay on survival inventory plage if only the armor has been changed
+			mcl_inventory.set_creative_formspec(player, 0, 0, nil, nil, "inv")
+		else
+			mcl_inventory.set_creative_formspec(player, 0, 1)
+		end
 	elseif player_gamemode == "survival" then
 		player:set_inventory_formspec(mcl_inventory.build_survival_formspec(player))
 	end
