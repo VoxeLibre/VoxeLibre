@@ -96,7 +96,8 @@ minetest.register_entity("mcl_chests:chest", {
 				return
 			end
 			self:set_animation("close")
-			minetest.sound_play(self.sound_prefix .. "_close", { pos = self.node_pos, gain = 0.3, max_hear_distance = 16 },
+			minetest.sound_play(self.sound_prefix .. "_close",
+				{ pos = self.node_pos, gain = 0.3, max_hear_distance = 16 },
 				true)
 			self.is_open = false
 		end
@@ -148,7 +149,8 @@ minetest.register_entity("mcl_chests:chest", {
 })
 
 local function get_entity_pos(pos, dir, double)
-	pos = vector.new(pos)
+	pos = vector.copy(pos)
+	pos.y = pos.y - 0.49
 	if double then
 		local add, mul, vec, cross = vector.add, vector.multiply, vector.new, vector.cross
 		pos = add(pos, mul(cross(dir, vec(0, 1, 0)), -0.5))
@@ -398,10 +400,9 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 		drawtype = "mesh",
 		mesh = "mcl_chests_chest.b3d",
 		tiles = small_textures,
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
+		use_texture_alpha = "opaque",
 		paramtype = "light",
 		paramtype2 = "facedir",
-		stack_max = 64,
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		groups = { deco_block = 1 },
 		on_construct = function(pos, node)
@@ -436,14 +437,13 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 			fixed = { -0.4375, -0.5, -0.4375, 0.4375, 0.375, 0.4375 },
 		},
 		tiles = { "blank.png^[resize:16x16" },
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+		use_texture_alpha = "clip",
 		_chest_entity_textures = small_textures,
 		_chest_entity_sound = "default_chest",
 		_chest_entity_mesh = "mcl_chests_chest",
 		_chest_entity_animation_type = "chest",
 		paramtype = "light",
 		paramtype2 = "facedir",
-		stack_max = 64,
 		drop = drop,
 		groups = {
 			handy = 1,
@@ -585,7 +585,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 			fixed = { -0.4375, -0.5, -0.4375, 0.5, 0.375, 0.4375 },
 		},
 		tiles = { "blank.png^[resize:16x16" },
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+		use_texture_alpha = "clip",
 		_chest_entity_textures = left_textures,
 		_chest_entity_sound = "default_chest",
 		_chest_entity_mesh = "mcl_chests_chest",
@@ -761,7 +761,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 			fixed = { -0.5, -0.5, -0.4375, 0.4375, 0.375, 0.4375 },
 		},
 		tiles = { "blank.png^[resize:16x16" },
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+		use_texture_alpha = "clip",
 		groups = {
 			handy = 1,
 			axey = 1,
@@ -930,7 +930,7 @@ local chestusage = S("To access its inventory, rightclick it. When broken, the i
 register_chest("chest",
 	S("Chest"),
 	S(
-	"Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other.")
+		"Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other.")
 	,
 	chestusage,
 	S("27 inventory slots") .. "\n" .. S("Can be combined to a large chest"),
@@ -958,7 +958,7 @@ local traptiles = {
 register_chest("trapped_chest",
 	S("Trapped Chest"),
 	S(
-	"A trapped chest is a container which provides 27 inventory slots. When it is opened, it sends a redstone signal to its adjacent blocks as long it stays open. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other.")
+		"A trapped chest is a container which provides 27 inventory slots. When it is opened, it sends a redstone signal to its adjacent blocks as long it stays open. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other.")
 	,
 	chestusage,
 	S("27 inventory slots") ..
@@ -1086,20 +1086,19 @@ minetest.register_craft({
 minetest.register_node("mcl_chests:ender_chest", {
 	description = S("Ender Chest"),
 	_tt_help = S("27 interdimensional inventory slots") ..
-	"\n" .. S("Put items inside, retrieve them from any ender chest"),
+		"\n" .. S("Put items inside, retrieve them from any ender chest"),
 	_doc_items_longdesc = S(
-	"Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chests. Each player will only see their own items, but not the items of other players."),
+		"Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chests. Each player will only see their own items, but not the items of other players."),
 	_doc_items_usagehelp = S("Rightclick the ender chest to access your personal interdimensional inventory."),
 	drawtype = "mesh",
 	mesh = "mcl_chests_chest.b3d",
 	tiles = tiles_chest_ender_small,
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
+	use_texture_alpha = "opaque",
 	paramtype = "light",
 	paramtype2 = "facedir",
-	stack_max = 64,
 	groups = { deco_block = 1 },
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	on_construct = function(pos, node)
+	on_construct = function(pos)
 		local node = minetest.get_node(pos)
 		node.name = "mcl_chests:ender_chest_small"
 		minetest.set_node(pos, node)
@@ -1128,9 +1127,9 @@ local formspec_ender_chest = table.concat({
 minetest.register_node("mcl_chests:ender_chest_small", {
 	description = S("Ender Chest"),
 	_tt_help = S("27 interdimensional inventory slots") ..
-	"\n" .. S("Put items inside, retrieve them from any ender chest"),
+		"\n" .. S("Put items inside, retrieve them from any ender chest"),
 	_doc_items_longdesc = S(
-	"Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chests. Each player will only see their own items, but not the items of other players."),
+		"Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chests. Each player will only see their own items, but not the items of other players."),
 	_doc_items_usagehelp = S("Rightclick the ender chest to access your personal interdimensional inventory."),
 	drawtype = "nodebox",
 	node_box = {
@@ -1142,7 +1141,7 @@ minetest.register_node("mcl_chests:ender_chest_small", {
 	_chest_entity_mesh = "mcl_chests_chest",
 	_chest_entity_animation_type = "chest",
 	tiles = { "blank.png^[resize:16x16" },
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+	use_texture_alpha = "clip",
 	-- Note: The “container” group is missing here because the ender chest does not
 	-- have an inventory on its own
 	groups = { pickaxey = 1, deco_block = 1, material_stone = 1, chest_entity = 1, not_in_creative_inventory = 1 },
@@ -1157,7 +1156,7 @@ minetest.register_node("mcl_chests:ender_chest_small", {
 			"mcl_chests_enderchest", "mcl_chests_chest", "chest")
 	end,
 	on_rightclick = function(pos, node, clicker)
-		if minetest.registered_nodes[minetest.get_node({ x = pos.x, y = pos.y + 1, z = pos.z }).name].groups.opaque == 1 then
+		if minetest.registered_nodes[minetest.get_node(vector.offset(pos, 0, 1, 0)).name].groups.opaque == 1 then
 			-- won't open if there is no space from the top
 			return false
 		end
@@ -1284,9 +1283,9 @@ for color, desc in pairs(boxtypes) do
 	if mod_doc then
 		if is_canonical then
 			longdesc = S(
-			"A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors.")
+				"A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors.")
 			usagehelp = S(
-			"To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out. Place the shulker box again to be able to retrieve its contents.")
+				"To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out. Place the shulker box again to be able to retrieve its contents.")
 			entry_name = S("Shulker Box")
 		else
 			create_entry = false
@@ -1303,7 +1302,7 @@ for color, desc in pairs(boxtypes) do
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = usagehelp,
 		tiles = { mob_texture },
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
+		use_texture_alpha = "opaque",
 		drawtype = "mesh",
 		mesh = "mcl_chests_shulker.b3d",
 		groups = {
@@ -1374,7 +1373,7 @@ for color, desc in pairs(boxtypes) do
 			fixed = { -0.48, -0.5, -0.48, 0.48, 0.489, 0.48 },
 		},
 		tiles = { "blank.png^[resize:16x16" },
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+		use_texture_alpha = "clip",
 		_chest_entity_textures = { mob_texture },
 		_chest_entity_sound = "mcl_chests_shulker",
 		_chest_entity_mesh = "mcl_chests_shulker",
