@@ -366,8 +366,6 @@ local function set_inventory(player, armor_change_only)
 		return
 	end
 
-
-
 	player:set_inventory_formspec(mcl_inventory.build_survival_formspec(player))
 end
 
@@ -436,7 +434,7 @@ function mcl_inventory.update_inventory(player, armor_change_only)
 	local player_gamemode = mcl_gamemode.get_gamemode(player)
 	if player_gamemode == "creative" then
 		if armor_change_only then
-			-- Stay on survival inventory plage if only the armor has been changed
+			-- Stay on survival inventory page if only the armor has been changed
 			mcl_inventory.set_creative_formspec(player, 0, 0, nil, nil, "inv")
 		else
 			mcl_inventory.set_creative_formspec(player, 0, 1)
