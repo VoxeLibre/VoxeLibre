@@ -3215,7 +3215,6 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
-
 	-- Spruce
 	local function quick_spruce(seed, offset, sprucename, biomes, y)
 		if not y then

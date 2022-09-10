@@ -201,28 +201,31 @@ function mcl_structures.register_structure(name,def,nospawn) --nospawn means it 
 		sbgroups.structblock = nil
 		sbgroups.structblock_lbm = 1
 	else
-		minetest.register_on_mods_loaded(function() --make sure all previous decorations and biomes have been registered
-			def.deco = minetest.register_decoration({
-				name = "mcl_structures:deco_"..name,
-				decoration = structblock,
-				deco_type = "simple",
-				place_on = def.place_on,
-				spawn_by = def.spawn_by,
-				num_spawn_by = def.num_spawn_by,
-				sidelen = 80,
-				fill_ratio = def.fill_ratio,
-				noise_params = def.noise_params,
-				flags = flags,
-				biomes = def.biomes,
-				y_max = def.y_max,
-				y_min = def.y_min
-			})
-			minetest.register_node(":"..structblock, {drawtype="airlike", walkable = false, pointable = false,groups = sbgroups})
-			def.structblock = structblock
-			def.deco_id = minetest.get_decoration_id("mcl_structures:deco_"..name)
-			minetest.set_gen_notify({decoration=true}, { def.deco_id })
-			--catching of gennotify happens in mcl_mapgen_core
-		end)
+		if def.place_on then
+			minetest.register_on_mods_loaded(function() --make sure all previous decorations and biomes have been registered
+				def.deco = minetest.register_decoration({
+					name = "mcl_structures:deco_"..name,
+					decoration = structblock,
+					deco_type = "simple",
+					place_on = def.place_on,
+					spawn_by = def.spawn_by,
+					num_spawn_by = def.num_spawn_by,
+					sidelen = 80,
+					fill_ratio = def.fill_ratio,
+					noise_params = def.noise_params,
+					flags = flags,
+					biomes = def.biomes,
+					y_max = def.y_max,
+					y_min = def.y_min
+				})
+
+				minetest.register_node(":"..structblock, {drawtype="airlike", walkable = false, pointable = false,groups = sbgroups})
+				def.structblock = structblock
+				def.deco_id = minetest.get_decoration_id("mcl_structures:deco_"..name)
+				minetest.set_gen_notify({decoration=true}, { def.deco_id })
+				--catching of gennotify happens in mcl_mapgen_core
+			end)
+		end
 	end
 	mcl_structures.registered_structures[name] = def
 end

@@ -81,26 +81,11 @@ function mcl_structures.call_struct(pos, struct_style, rotation, pr)
 	if not rotation then
 		rotation = "random"
 	end
-	if struct_style == "end_exit_portal" then
-		return mcl_structures.generate_end_exit_portal(pos, rotation)
-	elseif struct_style == "end_exit_portal_open" then
-		return mcl_structures.generate_end_exit_portal_open(pos, rotation)
-	elseif struct_style == "end_gateway_portal" then
+	if struct_style == "end_gateway_portal" then
 		return mcl_structures.generate_end_gateway_portal(pos, rotation)
 	elseif struct_style == "end_portal_shrine" then
 		return mcl_structures.generate_end_portal_shrine(pos, rotation, pr)
 	end
-end
-
-
-function mcl_structures.generate_end_exit_portal(pos, rot)
-	local path = modpath.."/schematics/mcl_structures_end_exit_portal.mts"
-	return mcl_structures.place_schematic(pos, path, rot or "0", {["mcl_portals:portal_end"] = "air"}, true)
-end
-
-function mcl_structures.generate_end_exit_portal_open(pos, rot)
-	local path = modpath.."/schematics/mcl_structures_end_exit_portal.mts"
-	return mcl_structures.place_schematic(pos, path, rot or "0", nil, true)
 end
 
 function mcl_structures.generate_end_gateway_portal(pos, rot)
@@ -247,6 +232,7 @@ dofile(modpath.."/woodland_mansion.lua")
 dofile(modpath.."/ruined_portal.lua")
 dofile(modpath.."/geode.lua")
 dofile(modpath.."/pillager_outpost.lua")
+dofile(modpath.."/end_spawn.lua")
 
 
 mcl_structures.register_structure("desert_well",{
@@ -310,7 +296,7 @@ mcl_structures.register_structure("ice_spike_large",{
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "end_exit_portal | end_exit_portal_open | end_gateway_portal | end_portal_shrine | nether_portal | dungeon",
+	params = "end_gateway_portal | end_portal_shrine | nether_portal | dungeon",
 	description = S("Generate a pre-defined structure near your position."),
 	privs = {debug = true},
 	func = function(name, param)
@@ -324,11 +310,7 @@ minetest.register_chatcommand("spawnstruct", {
 		local pr = PseudoRandom(pos.x+pos.y+pos.z)
 		local errord = false
 		local message = S("Structure placed.")
-		if param == "end_exit_portal" then
-			mcl_structures.generate_end_exit_portal(pos, rot, pr)
-		elseif param == "end_exit_portal_open" then
-			mcl_structures.generate_end_exit_portal_open(pos, rot, pr)
-		elseif param == "end_gateway_portal" then
+		if param == "end_gateway_portal" then
 			mcl_structures.generate_end_gateway_portal(pos, rot, pr)
 		elseif param == "end_portal_shrine" then
 			mcl_structures.generate_end_portal_shrine(pos, rot, pr)
