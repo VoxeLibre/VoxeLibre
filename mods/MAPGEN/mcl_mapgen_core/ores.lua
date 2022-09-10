@@ -4,6 +4,9 @@ local deepslate_min = mcl_vars.mg_overworld_min
 
 local copper_mod = minetest.get_modpath("mcl_copper")
 
+local mg_name = minetest.get_mapgen_setting("mg_name")
+local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
+
 local mountains = {
 	"ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", "ExtremeHills_deep_ocean", "ExtremeHills_underground",
 	"ExtremeHills+", "ExtremeHills+_ocean", "ExtremeHills+_deep_ocean", "ExtremeHills+_underground",
@@ -13,7 +16,7 @@ local mountains = {
 --Clay
 minetest.register_ore({
 	ore_type       = "blob",
-	ore            = node,
+	ore            = "mcl_core:clay",
 	wherein        = {"mcl_core:sand","mcl_core:stone","mcl_core:gravel"},
 	clust_scarcity = 15*15*15,
 	clust_num_ores = 33,
@@ -24,7 +27,7 @@ minetest.register_ore({
 		offset  = 0,
 		scale   = 1,
 		spread  = {x=250, y=250, z=250},
-		seed    = 3245123,
+		seed    = 34843,
 		octaves = 3,
 		persist = 0.6,
 		lacunarity = 2,

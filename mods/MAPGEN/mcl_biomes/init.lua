@@ -3538,6 +3538,18 @@ local function register_decorations()
 		rotation = "0",
 	})
 
+	--Snow on snowy dirt
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass_snow"},
+		sidelen = 80,
+		fill_ratio = 10,
+		flags = "all_floors",
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_core:snow",
+	})
+
 	--Mushrooms in caves
 	minetest.register_decoration({
 		deco_type = "simple",
