@@ -428,7 +428,7 @@ end
 -- * Remove stone, sand, dirt in v6 so our End map generator works in v6.
 -- * Generate spawn platform (End portal destination)
 local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	if minp.y < -26912 or maxp.y >= mcl_vars.mg_end_max then return end
+	if maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max then return end
 	local biomemap --ymin, ymax
 	local lvm_used = false
 	local pr = PseudoRandom(blockseed)
@@ -448,9 +448,8 @@ local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blocksee
 	lvm_used = true
 
 	local shadow = true
-	if emin.y >= mcl_vars.mg_end_min and emax.y <= -26911 then
+	if minp.y >= mcl_vars.mg_end_min and maxp.y <= -26911 then
 		shadow = false
-		lvm_used = true
 	end
 	return lvm_used, shadow
 end
