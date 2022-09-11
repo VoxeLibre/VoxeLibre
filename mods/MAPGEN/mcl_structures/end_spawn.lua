@@ -49,6 +49,23 @@ local function make_endspike(pos,width,height)
 	return vector.offset(pos,0,height,0)
 end
 
+function make_cage(pos,width)
+	local nodes = {}
+	local nodes2 = {}
+	local r = math.floor(width/2) -1
+	for x=-r,r do for y = 0,width do for z = -r,r do
+		if x == r or x == -r or z==r or z == -r then
+			table.insert(nodes,vector.add(pos,vector.new(x,y,z)))
+		end
+	end end end
+	if xpanes then
+		minetest.bulk_set_node(nodes,{ name="xpanes:bar_flat"} )
+		for _,p in pairs(nodes) do
+			xpanes.update_pane(p)
+		end
+	end
+end
+
 local function get_points_on_circle(pos,r,n)
 	local rt = {}
 	for i=1, n do
@@ -63,12 +80,15 @@ mcl_structures.register_structure("end_spike",{
 		local d = pr:next(6,12)
 		local h = d * pr:next(4,6)
 		local p1 = vector.add(pos,-d/2,0,-d/2)
-		local p2 = vector.add(pos,d/2,h+5,d/2)
+		local p2 = vector.add(pos,d/2,h+d,d/2)
 		minetest.emerge_area(p1, p2, function(blockpos, action, calls_remaining, param)
 			if calls_remaining ~= 0 then return end
 			local s = make_endspike(pos,d,h)
 			minetest.set_node(vector.offset(s,0,1,0),{name="mcl_core:bedrock"})
 			minetest.add_entity(vector.offset(s,0,2,0),"mcl_end:crystal")
+			if pr:next(1,3) == 1 then
+				make_cage(vector.offset(s,0,1,0),d)
+			end
 		end)
 		return true
 	end,
