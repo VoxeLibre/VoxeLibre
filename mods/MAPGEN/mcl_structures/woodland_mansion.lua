@@ -18,6 +18,7 @@ mcl_structures.register_structure("woodland_cabin",{
 		modpath.."/schematics/mcl_structures_woodland_cabin.mts",
 		modpath.."/schematics/mcl_structures_woodland_outpost.mts",
 	},
+	construct_nodes = {"mcl_barrels:barrel_closed"},
 	after_place = function(p,def,pr)
 		local spawnon = {"mcl_deepslate:deepslate","mcl_core:birchwood","mcl_wool:red_carpet","mcl_wool:brown_carpet"}
 		local p1=vector.offset(p,-def.sidelen,-1,-def.sidelen)
