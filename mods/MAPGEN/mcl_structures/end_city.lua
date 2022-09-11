@@ -3,12 +3,16 @@ local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
 local function spawn_shulkers(pos,def,pr)
-	local nn = minetest.find_nodes_in_area_under_air(vector.offset(pos,-def.sidelen/2,-1,-def.sidelen/2),vector.offset(pos,def.sidelen/2,def.sidelen,def.sidelen/2),def.construct_nodes)
+	local nn = minetest.find_nodes_in_area_under_air(vector.offset(pos,-def.sidelen/2,-1,-def.sidelen/2),vector.offset(pos,def.sidelen/2,def.sidelen,def.sidelen/2),{"mcl_end:purpur_block"})
 	if nn and #nn > 0 then
-		local n = pr:next(1,#nn)
-		for i = 1,n do
-			minetest.add_entity(vector.offset(nn[i],0,1,0),"mobs_mc:shulker")
+		table.shuffle(nn)
+		for i = 1,pr:next(1,math.min(6,#nn)) do
+			minetest.add_entity(vector.offset(nn[i],0,0.5,0),"mobs_mc:shulker")
 		end
+	end
+	local guard = minetest.find_node_near(pos,def.sidelen,{"mcl_itemframes:item_frame"})
+	if guard then
+		minetest.add_entity(vector.offset(guard,0,-1.5,0),"mobs_mc:shulker")
 	end
 end
 
@@ -25,9 +29,24 @@ mcl_structures.register_structure("end_shipwreck",{
 	filenames = {
 		modpath.."/schematics/mcl_structures_end_shipwreck_1.mts",
 	},
-	construct_nodes = {"mcl_chests:ender_chest_small","mcl_chests:ender_chest","mcl_brewing:stand_000"},
-	after_place = spawn_shulkers,
+	construct_nodes = {"mcl_chests:ender_chest_small","mcl_chests:ender_chest","mcl_brewing:stand_000","mcl_chests:violet_shulker_box_small"},
+	after_place = function(pos,def,pr)
+		local fr = minetest.find_node_near(pos,def.sidelen,{"mcl_itemframes:item_frame"})
+		if fr then
+			if mcl_itemframes then
+				mcl_itemframes.update_item_entity(fr,minetest.get_node(fr))
+			end
+		end
+		return spawn_shulkers(pos,def,pr)
+	end,
 	loot = {
+		[ "mcl_itemframes:item_frame" ] ={{
+			stacks_min = 1,
+			stacks_max = 1,
+			items = {
+				{ itemstring = "mcl_armor:elytra", weight = 100 },
+			},
+		}},
 		[ "mcl_chests:chest_small" ] ={{
 			stacks_min = 2,
 			stacks_max = 6,
@@ -62,7 +81,6 @@ mcl_structures.register_structure("end_shipwreck",{
 				{ itemstring = "mcl_mobitems:gold_horse_armor", weight = 1, },
 				{ itemstring = "mcl_mobitems:diamond_horse_armor", weight = 1, },
 				{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2, },
-				{ itemstring = "mcl_elytra:elytra", weight = 1, },
 			}
 		}}
 	}
@@ -82,7 +100,7 @@ mcl_structures.register_structure("end_boat",{
 		modpath.."/schematics/mcl_structures_end_boat.mts",
 	},
 	after_place = spawn_shulkers,
-	construct_nodes = {"mcl_chests:ender_chest_small","mcl_chests:ender_chest","mcl_brewing:stand_000"},
+	construct_nodes = {"mcl_chests:ender_chest_small","mcl_chests:ender_chest","mcl_brewing:stand_000","mcl_chests:violet_shulker_box_small"},
 	loot = {
 		[ "mcl_chests:chest_small" ] ={{
 			stacks_min = 2,

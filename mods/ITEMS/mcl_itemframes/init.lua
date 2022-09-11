@@ -1,3 +1,4 @@
+mcl_itemframes = {}
 local S = minetest.get_translator(minetest.get_current_modname())
 
 local VISUAL_SIZE = 0.3
@@ -132,6 +133,7 @@ local update_item_entity = function(pos, node, param2)
 		end
 	end
 end
+mcl_itemframes.update_item_entity = update_item_entity
 
 local drop_item = function(pos, node, meta, clicker)
 	local cname = ""

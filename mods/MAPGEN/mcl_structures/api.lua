@@ -5,7 +5,7 @@ if disabled_structures then	disabled_structures = disabled_structures:split(",")
 else disabled_structures = {} end
 
 function mcl_structures.is_disabled(structname)
-	if table.indexof(disabled_structures,structname) ~= -1 then return true end
+	return table.indexof(disabled_structures,structname) ~= -1
 end
 
 function mcl_structures.fill_chests(p1,p2,loot,pr)
@@ -31,10 +31,7 @@ end
 local function construct_nodes(pos,def,pr)
 	local nn = minetest.find_nodes_in_area(vector.offset(pos,-def.sidelen/2,0,-def.sidelen/2),vector.offset(pos,def.sidelen/2,def.sidelen,def.sidelen/2),def.construct_nodes)
 	for _,p in pairs(nn) do
-		local def = minetest.registered_nodes[minetest.get_node(p).name]
-		if def and def.on_construct then
-			def.on_construct(p)
-		end
+		mcl_structures.init_node_construct(p)
 	end
 end
 
@@ -187,8 +184,8 @@ function mcl_structures.place_structure(pos, def, pr, blockseed)
 			end
 			return true
 		end
-	elseif def.place_func and def.place_func(pos,def,pr,blockseed) then
-		if not def.after_place or ( def.after_place  and def.after_place(pos,def,pr,blockseed) ) then
+	elseif def.place_func and def.place_func(pp,def,pr,blockseed) then
+		if not def.after_place or ( def.after_place  and def.after_place(pp,def,pr,blockseed) ) then
 			if def.loot then generate_loot(pp,def,pr,blockseed) end
 			if def.construct_nodes then construct_nodes(pp,def,pr,blockseed) end
 			if logging then
@@ -231,12 +228,12 @@ function mcl_structures.register_structure(name,def,nospawn) --nospawn means it 
 					y_max = def.y_max,
 					y_min = def.y_min
 				})
-
 				minetest.register_node(":"..structblock, {drawtype="airlike", walkable = false, pointable = false,groups = sbgroups})
 				def.structblock = structblock
 				def.deco_id = minetest.get_decoration_id("mcl_structures:deco_"..name)
 				minetest.set_gen_notify({decoration=true}, { def.deco_id })
 				--catching of gennotify happens in mcl_mapgen_core
+
 			end)
 		end
 	end
