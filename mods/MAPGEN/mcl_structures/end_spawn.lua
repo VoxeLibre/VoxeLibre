@@ -20,11 +20,7 @@ mcl_structures.register_structure("end_exit_portal",{
 	after_place = function(pos,def,pr)
 		local p1 = vector.offset(pos,-5,-5,-5)
 		local p2 = vector.offset(pos,5,5,5)
-		minetest.emerge_area(p1, p2, function(blockpos, action, calls_remaining, param)
-			if calls_remaining ~= 0 then return end
-			local nn = minetest.find_nodes_in_area(p1,p2,{"mcl_portals:portal_end"})
-			minetest.bulk_set_node(nn,{name="air"})
-		end)
+		minetest.bulk_set_node(minetest.find_nodes_in_area(p1,p2,{"mcl_portals:portal_end"}),{name="air"})
 	end
 })
 mcl_structures.register_structure("end_exit_portal_open",{
@@ -74,5 +70,6 @@ mcl_structures.register_structure("end_spike",{
 			minetest.set_node(vector.offset(s,0,1,0),{name="mcl_core:bedrock"})
 			minetest.add_entity(vector.offset(s,0,2,0),"mcl_end:crystal")
 		end)
+		return true
 	end,
 })
