@@ -21,6 +21,14 @@ mcl_structures.register_structure("end_exit_portal",{
 		local p1 = vector.offset(pos,-5,-5,-5)
 		local p2 = vector.offset(pos,5,5,5)
 		minetest.bulk_set_node(minetest.find_nodes_in_area(p1,p2,{"mcl_portals:portal_end"}),{name="air"})
+		local obj = minetest.add_entity(vector.offset(pos,3, 11, 3), "mobs_mc:enderdragon")
+		if obj then
+			local dragon_entity = obj:get_luaentity()
+			dragon_entity._initial = true
+			dragon_entity._portal_pos = pos
+		else
+			minetest.log("error", "[mcl_mapgen_core] ERROR! Ender dragon doesn't want to spawn")
+		end
 	end
 })
 mcl_structures.register_structure("end_exit_portal_open",{
