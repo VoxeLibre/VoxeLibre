@@ -1733,12 +1733,84 @@ local function register_dimension_biomes()
 		y_max = mcl_vars.mg_end_max + 80,
 		heat_point = 1000, --ridiculously high values so End Island always takes precedent
 		humidity_point = 1000,
+		vertical_blend = 16,
+		_mcl_biome_type = "medium",
+		_mcl_palette_index = 0,
+	})
+	minetest.register_biome({
+		name = "EndMidlands",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		-- FIXME: For some reason the End stops generating early if this constant is not added.
+		-- Figure out why.
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 1000, --ridiculously high values so End Island always takes precedent
+		humidity_point = 1000,
+		vertical_blend = 16,
+		_mcl_biome_type = "medium",
+		_mcl_palette_index = 0,
+	})
+	minetest.register_biome({
+		name = "EndHighlands",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		-- FIXME: For some reason the End stops generating early if this constant is not added.
+		-- Figure out why.
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 1000, --ridiculously high values so End Island always takes precedent
+		humidity_point = 1000,
+		vertical_blend = 16,
+		_mcl_biome_type = "medium",
+		_mcl_palette_index = 0,
+	})
+	minetest.register_biome({
+		name = "EndSmallIslands",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		-- FIXME: For some reason the End stops generating early if this constant is not added.
+		-- Figure out why.
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 1000, --ridiculously high values so End Island always takes precedent
+		humidity_point = 1000,
+		vertical_blend = 16,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 0,
 	})
 
 	minetest.register_biome({
-		name = "End Island",
+		name = "EndBorder",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		-- FIXME: For some reason the End stops generating early if this constant is not added.
+		-- Figure out why.
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 500,
+		humidity_point = 500,
+		vertical_blend = 16,
+		max_pos = {x = 1250, y = mcl_vars.mg_end_min + 512, z = 1250},
+		min_pos = {x = -1250, y = mcl_vars.mg_end_min, z = -1250},
+		_mcl_biome_type = "medium",
+		_mcl_palette_index = 0,
+	})
+
+	minetest.register_biome({
+		name = "EndIsland",
 		node_stone = "air",
 		node_filler = "air",
 		node_water = "air",
@@ -1748,6 +1820,7 @@ local function register_dimension_biomes()
 		min_pos = {x = -1000, y = mcl_vars.mg_end_min, z = -1000},
 		heat_point = 50,
 		humidity_point = 50,
+		vertical_blend = 16,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 0,
 	})
@@ -2397,11 +2470,47 @@ local function register_dimension_ores()
 		end_wherein = {"air"}
 	end
 
+	local mult = 1.0
+
+	minetest.register_ore({
+		ore_type        = "blob",
+		ore             = "mcl_end:end_stone",
+		wherein         = end_wherein,
+		biomes          = {"EndSmallIslands","Endborder"},
+		y_min           = mcl_vars.mg_end_min+64,
+		y_max           = mcl_vars.mg_end_min+80,
+		clust_num_ores  = 3375,
+		clust_size      = 15,
+
+		noise_params = {
+			offset  = mcl_vars.mg_end_min+70,
+			scale   = -1,
+			spread  = {x=84, y=84, z=84},
+			seed    = 145,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			--flags = "defaults",
+		},
+
+		np_stratum_thickness = {
+			offset  = 0,
+			scale   = 15,
+			spread  = {x=84, y=84, z=84},
+			seed    = 145,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			--flags = "defaults",
+		},
+		clust_scarcity = 1,
+	})
+
 	minetest.register_ore({
 		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
-		biomes          = {"End"},
+		biomes          = {"End","EndMidlands","EndHighlands","EndBarrens"},
 		y_min           = mcl_vars.mg_end_min+64,
 		y_max           = mcl_vars.mg_end_min+80,
 
@@ -2429,7 +2538,7 @@ local function register_dimension_ores()
 		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
-		biomes          = {"End"},
+		biomes          = {"End","EndMidlands","EndHighlands","EndBarrens"},
 		y_min           = mcl_vars.mg_end_min+64,
 		y_max           = mcl_vars.mg_end_min+80,
 
@@ -2456,7 +2565,7 @@ local function register_dimension_ores()
 		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
-		biomes          = {"End"},
+		biomes          = {"End","EndMidlands","EndHighlands","EndBarrens"},
 		y_min           = mcl_vars.mg_end_min+64,
 		y_max           = mcl_vars.mg_end_min+80,
 
@@ -4858,9 +4967,9 @@ local function register_dimension_decorations()
 
 	-- Chorus plant
 	minetest.register_decoration({
-		name = "mcl_biomes:chorus_plant",
+		name = "mcl_biomes:chorus",
 		deco_type = "simple",
-		place_on = {"mcl_end:end_stone", "air"},
+		place_on = {"mcl_end:end_stone"},
 		flags = "all_floors",
 		sidelen = 16,
 		noise_params = {
@@ -4873,9 +4982,31 @@ local function register_dimension_decorations()
 		},
 		y_min = mcl_vars.mg_end_min,
 		y_max = mcl_vars.mg_end_max,
+		decoration = "mcl_end:chorus_plant",
+		height = 1,
+		height_max = 8,
+		biomes = { "End", "EndIsland", "EndMidlands", "EndHighlands", "EndBarrens", "EndSmallIslands" },
+	})
+	minetest.register_decoration({
+		name = "mcl_biomes:chorus_plant",
+		deco_type = "simple",
+		place_on = {"mcl_end:chorus_plant"},
+		flags = "all_floors",
+		sidelen = 16,
+		fill_ratio = 10,
+		--[[noise_params = {
+			offset = -0.012,
+			scale = 0.024,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 257,
+			octaves = 3,
+			persist = 0.6
+		},--]]
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max,
 		decoration = "mcl_end:chorus_flower",
 		height = 1,
-		biomes = { "End" },
+		biomes = { "End", "EndIsland", "EndMidlands", "EndHighlands", "EndBarrens", "EndSmallIslands" },
 	})
 
 	deco_id_chorus_plant = minetest.get_decoration_id("mcl_biomes:chorus_plant")
@@ -4962,7 +5093,7 @@ if mg_name ~= "singlenode" then
 			if minp.y > -26900 then return end
 			for _, pos in ipairs(gennotify["decoration#"..deco_id_chorus_plant] or {}) do
 				local x, y, z = pos.x, pos.y, pos.z
-				if x < -2 or x > 2 or z < -2 or z > 2 then
+				if x < -10 or x > 10 or z < -10 or z > 10 then
 					local realpos = { x = x, y = y + 1, z = z }
 					local node = minetest.get_node(realpos)
 					if node and node.name == "mcl_end:chorus_flower" then

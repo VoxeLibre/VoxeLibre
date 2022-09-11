@@ -179,7 +179,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	minetest.log("action", "[mcl_mapgen_core] Generating chunk " .. minetest.pos_to_string(minp) .. " ... " .. minetest.pos_to_string(maxp))
 	local p1, p2 = {x=minp.x, y=minp.y, z=minp.z}, {x=maxp.x, y=maxp.y, z=maxp.z}
 	if lvm > 0 then
-		local lvm_used, shadow = false, false
+		local lvm_used, shadow, deco_used = false, false
 		local lb2 = {} -- param2
 		local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
 		local e1, e2 = {x=emin.x, y=emin.y, z=emin.z}, {x=emax.x, y=emax.y, z=emax.z}
@@ -192,12 +192,15 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 
 		for _, rec in ipairs(registered_generators) do
 			if rec.vf then
-				local lvm_used0, shadow0 = rec.vf(vm, data, data2, e1, e2, area, p1, p2, blockseed)
+				local lvm_used0, shadow0, deco = rec.vf(vm, data, data2, e1, e2, area, p1, p2, blockseed)
 				if lvm_used0 then
 					lvm_used = true
 				end
 				if shadow0 then
 					shadow = true
+				end
+				if deco then
+					deco_used = true
 				end
 			end
 		end
@@ -207,6 +210,9 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 			vm:set_data(data)
 			if param2 > 0 then
 				vm:set_param2_data(data2)
+			end
+			if deco_used then
+				minetest.generate_decorations(vm)
 			end
 			vm:calc_lighting(p1, p2, shadow)
 			vm:write_to_map()
