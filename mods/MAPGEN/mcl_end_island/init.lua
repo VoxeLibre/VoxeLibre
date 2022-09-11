@@ -24,8 +24,14 @@ mcl_mapgen_core.register_generator("end_island", function(vm, data, data2, emin,
 			data[idx] = c_end_stone
 		end
 	end
-	--vm:calc_lighting()
-	--vm:update_liquids()
-	--vm:write_to_map()
-	return true,true
-end, nil, 15, true)
+	return true,true,true
+end, function(minp,maxp,blockseed)
+	local nn = minetest.find_nodes_in_area(minp,maxp,{"mcl_end:chorus_flower"})
+	local pr = PseudoRandom(blockseed)
+	for _,pos in pairs(nn) do
+		local x, y, z = pos.x, pos.y, pos.z
+		if x < -10 or x > 10 or z < -10 or z > 10 then
+			mcl_end.grow_chorus_plant(pos,{name="mcl_end:chorus_flower"},pr)
+		end
+	end
+end, 15, true)
