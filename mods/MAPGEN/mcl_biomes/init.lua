@@ -1731,6 +1731,21 @@ local function register_dimension_biomes()
 		-- Figure out why.
 		y_min = mcl_vars.mg_end_min,
 		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 1000, --ridiculously high values so End Island always takes precedent
+		humidity_point = 1000,
+		_mcl_biome_type = "medium",
+		_mcl_palette_index = 0,
+	})
+
+	minetest.register_biome({
+		name = "End Island",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		max_pos = {x = 1000, y = mcl_vars.mg_end_min + 512, z = 1000},
+		min_pos = {x = -1000, y = mcl_vars.mg_end_min, z = -1000},
 		heat_point = 50,
 		humidity_point = 50,
 		_mcl_biome_type = "medium",
@@ -2386,6 +2401,7 @@ local function register_dimension_ores()
 		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
+		biomes          = {"End"},
 		y_min           = mcl_vars.mg_end_min+64,
 		y_max           = mcl_vars.mg_end_min+80,
 
@@ -2413,6 +2429,7 @@ local function register_dimension_ores()
 		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
+		biomes          = {"End"},
 		y_min           = mcl_vars.mg_end_min+64,
 		y_max           = mcl_vars.mg_end_min+80,
 
@@ -2439,6 +2456,7 @@ local function register_dimension_ores()
 		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
+		biomes          = {"End"},
 		y_min           = mcl_vars.mg_end_min+64,
 		y_max           = mcl_vars.mg_end_min+80,
 
