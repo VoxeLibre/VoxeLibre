@@ -632,7 +632,12 @@ mcl_mobs:spawn_specific(
 "end",
 "ground",
 {
-"End"
+"End",
+"EndIsland",
+"EndMidlands",
+"EndBarrens",
+"EndBorder",
+"EndSmallIslands"
 },
 0,
 minetest.LIGHT_MAX+1,
@@ -797,7 +802,7 @@ mcl_mobs:spawn_specific(
 "ground",
 {
 "Nether",
-"SoulsandVall3ey",
+"SoulsandValley",
 },
 0,
 11,
