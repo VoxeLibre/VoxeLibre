@@ -23,7 +23,7 @@ mcl_mobs:register_mob("mobs_mc:enderdragon", {
 		{"mobs_mc_dragon.png"},
 	},
 	visual_size = {x=3, y=3},
-	view_range = 35,
+	view_range = 64,
 	walk_velocity = 6,
 	run_velocity = 6,
 	can_despawn = false,
