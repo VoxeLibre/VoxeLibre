@@ -52,7 +52,7 @@ end
 function make_cage(pos,width)
 	local nodes = {}
 	local nodes2 = {}
-	local r = math.floor(width/2) -1
+	local r = math.min(1,math.floor(width/2) - 2)
 	for x=-r,r do for y = 0,width do for z = -r,r do
 		if x == r or x == -r or z==r or z == -r then
 			table.insert(nodes,vector.add(pos,vector.new(x,y,z)))

@@ -52,11 +52,11 @@ minetest.register_alias("mapgen_stair_sandstonebrick", "mcl_stairs:stair_sandsto
 minetest.register_alias("mapgen_stair_sandstone_block", "mcl_stairs:stair_sandstone")
 minetest.register_alias("mapgen_stair_desert_stone", "mcl_stairs:stair_sandstone")
 
+dofile(modpath.."/api.lua")
+dofile(modpath.."/ores.lua")
+
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
-
--- End exit portal position
-local END_EXIT_PORTAL_POS = vector.new(-3, -27003, -3)
 
 -- Content IDs
 local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
@@ -88,8 +88,6 @@ local c_cocoa_3 = minetest.get_content_id("mcl_cocoas:cocoa_3")
 local c_vine = minetest.get_content_id("mcl_core:vine")
 local c_air = minetest.CONTENT_AIR
 
-dofile(modpath.."/ores.lua")
-
 local mg_flags = minetest.settings:get_flags("mg_flags")
 
 -- Inform other mods of dungeon setting for MCL2-style dungeons
@@ -120,6 +118,7 @@ minetest.set_mapgen_setting("mg_flags", mg_flags_str, true)
 local function between(x, y, z) -- x is between y and z (inclusive)
     return y <= x and x <= z
 end
+
 local function in_cube(tpos,wpos1,wpos2)
 	local xmax=wpos2.x
 	local xmin=wpos1.x
@@ -172,108 +171,7 @@ local function xz_to_biomemap_index(x, z, minp, maxp)
 
 	return (minix + miniz * zwidth) + 1
 end
--- Buffers for LuaVoxelManip
--- local lvm_buffer = {}
--- local lvm_buffer_param2 = {}
-minetest.register_on_generated(function(minp, maxp, blockseed)
-	minetest.log("action", "[mcl_mapgen_core] Generating chunk " .. minetest.pos_to_string(minp) .. " ... " .. minetest.pos_to_string(maxp))
-	local p1, p2 = {x=minp.x, y=minp.y, z=minp.z}, {x=maxp.x, y=maxp.y, z=maxp.z}
-	if lvm > 0 then
-		local lvm_used, shadow, deco_used = false, false
-		local lb2 = {} -- param2
-		local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
-		local e1, e2 = {x=emin.x, y=emin.y, z=emin.z}, {x=emax.x, y=emax.y, z=emax.z}
-		local data2
-		local data = vm:get_data(lvm_buffer)
-		if param2 > 0 then
-			data2 = vm:get_param2_data(lb2)
-		end
-		local area = VoxelArea:new({MinEdge=e1, MaxEdge=e2})
 
-		for _, rec in ipairs(registered_generators) do
-			if rec.vf then
-				local lvm_used0, shadow0, deco = rec.vf(vm, data, data2, e1, e2, area, p1, p2, blockseed)
-				if lvm_used0 then
-					lvm_used = true
-				end
-				if shadow0 then
-					shadow = true
-				end
-				if deco then
-					deco_used = true
-				end
-			end
-		end
-
-		if lvm_used then
-			-- Write stuff
-			vm:set_data(data)
-			if param2 > 0 then
-				vm:set_param2_data(data2)
-			end
-			if deco_used then
-				minetest.generate_decorations(vm)
-			end
-			vm:calc_lighting(p1, p2, shadow)
-			vm:write_to_map()
-			vm:update_liquids()
-		end
-	end
-
-	if nodes > 0 then
-		for _, rec in ipairs(registered_generators) do
-			if rec.nf then
-				rec.nf(p1, p2, blockseed)
-			end
-		end
-	end
-
-	mcl_vars.add_chunk(minp)
-end)
-
-function minetest.register_on_generated(node_function)
-	mcl_mapgen_core.register_generator("mod_"..minetest.get_current_modname().."_"..tostring(#registered_generators+1), nil, node_function)
-end
-
-function mcl_mapgen_core.register_generator(id, lvm_function, node_function, priority, needs_param2)
-	if not id then return end
-
-	local priority = priority or 5000
-
-	if lvm_function then lvm = lvm + 1 end
-	if node_function then nodes = nodes + 1 end
-	if needs_param2 then param2 = param2 + 1 end
-
-	local new_record = {
-		id = id,
-		i = priority,
-		vf = lvm_function,
-		nf = node_function,
-		needs_param2 = needs_param2,
-	}
-
-	table.insert(registered_generators, new_record)
-	table.sort(registered_generators, function(a, b)
-		return (a.i < b.i) or ((a.i == b.i) and a.vf and (b.vf == nil))
-	end)
-end
-
-function mcl_mapgen_core.unregister_generator(id)
-	local index
-	for i, gen in ipairs(registered_generators) do
-		if gen.id == id then
-			index = i
-			break
-		end
-	end
-	if not index then return end
-	local rec = registered_generators[index]
-	table.remove(registered_generators, index)
-	if rec.vf then lvm = lvm - 1 end
-	if rec.nf then nodes = nodes - 1 end
-	if rec.needs_param2 then param2 = param2 - 1 end
-	--if rec.needs_level0 then level0 = level0 - 1 end
-end
 
 -- Generate basic layer-based nodes: void, bedrock, realm barrier, lava seas, etc.
 -- Also perform some basic node replacements.
@@ -371,7 +269,7 @@ local function set_palette(minp,maxp,data2,area,biomemap,nodes)
 end
 
 -- Below the bedrock, generate air/void
-local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
+local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	local biomemap --ymin, ymax
 	local lvm_used = false
 	local pr = PseudoRandom(blockseed)
@@ -461,13 +359,18 @@ local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blocksee
 end
 
 
-mcl_mapgen_core.register_generator("main", basic, nil, 1, true)
+mcl_mapgen_core.register_generator("world_structure", world_structure, nil, 1, true)
 mcl_mapgen_core.register_generator("end_fixes", end_basic, nil, 20, true)
 
 if mg_name ~= "v6" then
 	mcl_mapgen_core.register_generator("block_fixes", block_fixes, nil, 5, true)
 end
 
+if mg_name == "v6" then
+	dofile(modpath.."/v6.lua")
+end
+
+-- This should be moved to mcl_structures eventually if the dependencies can be sorted out.
 mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blockseed)
 	local gennotify = minetest.get_mapgen_object("gennotify")
 	local has_struct = {}
@@ -493,7 +396,3 @@ mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blocks
 		end
 	end
 end, 100, true)
-
-if mg_name == "v6" then
-	dofile(modpath.."/v6.lua")
-end
