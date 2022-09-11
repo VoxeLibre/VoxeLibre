@@ -1727,8 +1727,6 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		-- FIXME: For some reason the End stops generating early if this constant is not added.
-		-- Figure out why.
 		y_min = mcl_vars.mg_end_min,
 		y_max = mcl_vars.mg_end_max + 80,
 		heat_point = 1000, --ridiculously high values so End Island always takes precedent
@@ -1744,11 +1742,9 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		-- FIXME: For some reason the End stops generating early if this constant is not added.
-		-- Figure out why.
 		y_min = mcl_vars.mg_end_min,
 		y_max = mcl_vars.mg_end_max + 80,
-		heat_point = 1000, --ridiculously high values so End Island always takes precedent
+		heat_point = 1000,
 		humidity_point = 1000,
 		vertical_blend = 16,
 		_mcl_biome_type = "medium",
@@ -1761,11 +1757,9 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		-- FIXME: For some reason the End stops generating early if this constant is not added.
-		-- Figure out why.
 		y_min = mcl_vars.mg_end_min,
 		y_max = mcl_vars.mg_end_max + 80,
-		heat_point = 1000, --ridiculously high values so End Island always takes precedent
+		heat_point = 1000,
 		humidity_point = 1000,
 		vertical_blend = 16,
 		_mcl_biome_type = "medium",
@@ -1778,11 +1772,9 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		-- FIXME: For some reason the End stops generating early if this constant is not added.
-		-- Figure out why.
 		y_min = mcl_vars.mg_end_min,
 		y_max = mcl_vars.mg_end_max + 80,
-		heat_point = 1000, --ridiculously high values so End Island always takes precedent
+		heat_point = 1000,
 		humidity_point = 1000,
 		vertical_blend = 16,
 		_mcl_biome_type = "medium",
@@ -1796,8 +1788,6 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		-- FIXME: For some reason the End stops generating early if this constant is not added.
-		-- Figure out why.
 		y_min = mcl_vars.mg_end_min,
 		y_max = mcl_vars.mg_end_max + 80,
 		heat_point = 500,
@@ -1816,8 +1806,8 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		max_pos = {x = 1000, y = mcl_vars.mg_end_min + 512, z = 1000},
-		min_pos = {x = -1000, y = mcl_vars.mg_end_min, z = -1000},
+		max_pos = {x = 650, y = mcl_vars.mg_end_min + 512, z = 650},
+		min_pos = {x = -650, y = mcl_vars.mg_end_min, z = -650},
 		heat_point = 50,
 		humidity_point = 50,
 		vertical_blend = 16,
@@ -2473,7 +2463,7 @@ local function register_dimension_ores()
 	local mult = 1.0
 
 	minetest.register_ore({
-		ore_type        = "blob",
+		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
 		biomes          = {"EndSmallIslands","Endborder"},
