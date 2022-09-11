@@ -44,15 +44,31 @@ mcl_mobs:register_mob("mobs_mc:shulker", {
 		looting_factor = 0.0625},
 	},
 	animation = {
-		stand_speed = 25, walk_speed = 25, run_speed = 50, punch_speed = 25,
+		stand_speed = 25, walk_speed = 0, run_speed = 50, punch_speed = 25,
 		speed_normal = 25,		speed_run = 50,
-		stand_start = 0,		stand_end = 45,
-		walk_start = 0,		walk_end = 45,
-		run_start = 0,		run_end = 45,
+		stand_start = 0,		stand_end = 25,
+		walk_start = 25,		walk_end = 45,
+		run_start = 45,		run_end = 85,
         punch_start = 80,  punch_end = 100,
 	},
 	view_range = 16,
-	fear_height = 4,
+	fear_height = 0,
+	noyaw = true,
+	do_custom = function(self,dtime)
+		if math.floor(self.object:get_yaw()) ~=0 then
+			self.object:set_yaw(0)
+			mcl_mobs:yaw(self, 0, 0, dtime)
+		end
+		if self.state == "walk" or self.state == "stand" then
+			self.state = "stand"
+			mcl_mobs:set_animation(self, "stand")
+		end
+		if self.state == "attack" then
+			mcl_mobs:set_animation(self, "punch")
+		end
+		self.path.way = false
+		self.look_at_players = false
+	end,
 })
 
 -- bullet arrow (weapon)
