@@ -18,8 +18,9 @@ local adjacents = {
 	vector.new(0,0,-1),
 }
 local function check_spot(pos)
+	pos = vector.offset(pos,0,0.5,0)
 	local n = minetest.get_node(pos)
-	if n.name~="air" then return false end
+	if n.name ~="air" then return false end
 	for _,a in pairs(adjacents) do
 		local p = vector.add(pos,a)
 		local pn = minetest.get_node(p)
