@@ -28,6 +28,16 @@ local function generate_loot(pos, def, pr)
 	if def.loot then mcl_structures.fill_chests(p1,p2,def.loot,pr) end
 end
 
+local function construct_nodes(pos,def,pr)
+	local nn = minetest.find_nodes_in_area(vector.offset(pos,-def.sidelen/2,0,-def.sidelen/2),vector.offset(pos,def.sidelen/2,def.sidelen,def.sidelen/2),def.construct_nodes)
+	for _,p in pairs(nn) do
+		local def = minetest.registered_nodes[minetest.get_node(p).name]
+		if def and def.on_construct then
+			def.on_construct(p)
+		end
+	end
+end
+
 
 function mcl_structures.find_lowest_y(pp)
 	local y = 31000
@@ -168,8 +178,9 @@ function mcl_structures.place_structure(pos, def, pr, blockseed)
 			if def.after_place then ap = def.after_place  end
 
 			mcl_structures.place_schematic(pp, file, "random", nil, true, "place_center_x,place_center_z",function(p)
-				if def.loot then generate_loot(pos,def,pr,blockseed) end
-				return ap(pos,def,pr,blockseed)
+				if def.loot then generate_loot(pp,def,pr,blockseed) end
+				if def.construct_nodes then construct_nodes(pp,def,pr,blockseed) end
+				return ap(pp,def,pr,blockseed)
 			end,pr)
 			if logging then
 				minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pp))
@@ -178,6 +189,8 @@ function mcl_structures.place_structure(pos, def, pr, blockseed)
 		end
 	elseif def.place_func and def.place_func(pos,def,pr,blockseed) then
 		if not def.after_place or ( def.after_place  and def.after_place(pos,def,pr,blockseed) ) then
+			if def.loot then generate_loot(pp,def,pr,blockseed) end
+			if def.construct_nodes then construct_nodes(pp,def,pr,blockseed) end
 			if logging then
 				minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pp))
 			end
