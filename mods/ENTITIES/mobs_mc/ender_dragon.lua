@@ -84,7 +84,7 @@ mcl_mobs:register_mob("mobs_mc:enderdragon", {
 			if type(self._portal_pos) == "string" then
 				self._portal_pos = minetest.string_to_pos(self._portal_pos)
 			end
-			local portal_center = vector.add(self._portal_pos, vector.new(3, 11, 3))
+			local portal_center = vector.add(self._portal_pos, vector.new(0, 11, 0))
 			local pos = self.object:get_pos()
 			if vector.distance(pos, portal_center) > 50 then
 				self.object:set_pos(self._last_good_pos or portal_center)
@@ -93,10 +93,10 @@ mcl_mobs:register_mob("mobs_mc:enderdragon", {
 			end
 		end
 	end,
-	on_die = function(self, pos)
+	on_die = function(self, pos, cmi_cause)
 		if self._portal_pos then
 			mcl_portals.spawn_gateway_portal()
-			mcl_structures.place_structure(self._portal_pos,mcl_structures.registered_structures["end_exit_portal_open"],PseudoRandom(minetest.get_mapgen_setting("seed")),math.random())
+			mcl_structures.place_structure(self._portal_pos,mcl_structures.registered_structures["end_exit_portal_open"],PseudoRandom(minetest.get_mapgen_setting("seed")),-1)
 			if self._initial then
 				mcl_experience.throw_xp(pos, 11500) -- 500 + 11500 = 12000
 				minetest.set_node(vector.add(self._portal_pos, vector.new(0, 5, 0)), {name = "mcl_end:dragon_egg"})
