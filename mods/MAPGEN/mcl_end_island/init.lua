@@ -24,7 +24,7 @@ mcl_mapgen_core.register_generator("end_island", function(vm, data, data2, emin,
 			data[idx] = c_end_stone
 		end
 	end
-	return true,true,true
+	return true,false,true
 end, function(minp,maxp,blockseed)
 	local nn = minetest.find_nodes_in_area(minp,maxp,{"mcl_end:chorus_flower"})
 	local pr = PseudoRandom(blockseed)

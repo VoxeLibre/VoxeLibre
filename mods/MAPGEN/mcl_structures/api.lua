@@ -4,6 +4,8 @@ local disabled_structures = minetest.settings:get("mcl_disabled_structures")
 if disabled_structures then	disabled_structures = disabled_structures:split(",")
 else disabled_structures = {} end
 
+local logging = minetest.settings:get_bool("mcl_logging_structures",true)
+
 function mcl_structures.is_disabled(structname)
 	return table.indexof(disabled_structures,structname) ~= -1
 end
@@ -136,7 +138,7 @@ end
 
 function mcl_structures.place_structure(pos, def, pr, blockseed)
 	if not def then	return end
-	local logging = not def.terrain_feature
+	local log_enabled = logging and not def.terrain_feature
 	local y_offset = 0
 	if type(def.y_offset) == "function" then
 		y_offset = def.y_offset(pr)
@@ -153,7 +155,7 @@ function mcl_structures.place_structure(pos, def, pr, blockseed)
 			if def.make_foundation then
 				foundation(vector.offset(pos,-def.sidelen/2 - 3,-1,-def.sidelen/2 - 3),vector.offset(pos,def.sidelen/2 + 3,-1,def.sidelen/2 + 3),pos,def.sidelen)
 			else
-				if logging then
+				if log_enabled then
 					minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pp).." not placed. No solid ground.")
 				end
 				return false
@@ -161,7 +163,7 @@ function mcl_structures.place_structure(pos, def, pr, blockseed)
 		end
 	end
 	if def.on_place and not def.on_place(pos,def,pr,blockseed) then
-		if logging then
+		if log_enabled then
 			minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pp).." not placed. Conditions not satisfied.")
 		end
 		return false
@@ -179,7 +181,7 @@ function mcl_structures.place_structure(pos, def, pr, blockseed)
 				if def.construct_nodes then construct_nodes(pp,def,pr,blockseed) end
 				return ap(pp,def,pr,blockseed)
 			end,pr)
-			if logging then
+			if log_enabled then
 				minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pp))
 			end
 			return true
@@ -188,13 +190,13 @@ function mcl_structures.place_structure(pos, def, pr, blockseed)
 		if not def.after_place or ( def.after_place  and def.after_place(pp,def,pr,blockseed) ) then
 			if def.loot then generate_loot(pp,def,pr,blockseed) end
 			if def.construct_nodes then construct_nodes(pp,def,pr,blockseed) end
-			if logging then
+			if log_enabled then
 				minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pp))
 			end
 			return true
 		end
 	end
-	if logging then
+	if log_enabled then
 		minetest.log("warning","[mcl_structures] placing "..def.name.." failed at "..minetest.pos_to_string(pos))
 	end
 end
