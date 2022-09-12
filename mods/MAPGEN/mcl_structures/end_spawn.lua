@@ -34,9 +34,13 @@ mcl_structures.register_structure("end_exit_portal",{
 	end
 })
 mcl_structures.register_structure("end_exit_portal_open",{
-	--static_pos = { mcl_vars.mg_end_exit_portal_pos },
 	filenames = {
 		modpath.."/schematics/mcl_structures_end_exit_portal.mts"
+	},
+})
+mcl_structures.register_structure("end_gateway_portal",{
+	filenames = {
+		modpath.."/schematics/mcl_structures_end_gateway_portal.mts"
 	},
 })
 
