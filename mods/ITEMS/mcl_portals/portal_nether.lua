@@ -906,3 +906,18 @@ minetest.override_item(OBSIDIAN, {
 		end
 	end,
 })
+
+mcl_structures.register_structure("nether_portal",{
+	nospawn = true,
+	filenames = {
+		modpath.."/schematics/mcl_portals_nether_portal.mts"
+	},
+	after_place = function(pos,def,pr,blockseed)
+	end
+})
+mcl_structures.register_structure("nether_portal_open",{
+	nospawn = true,
+	filenames = {
+		modpath.."/schematics/mcl_portals_nether_portal_open.mts"
+	},
+})
