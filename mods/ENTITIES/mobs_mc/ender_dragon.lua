@@ -4,6 +4,50 @@
 
 local S = minetest.get_translator("mobs_mc")
 
+local BEAM_CHECK_FREQUENCY = 2
+local POS_CHECK_FREQUENCY = 15
+local HEAL_AMMOUNT = 37
+
+local function heal(self)
+	local o = self.object
+	self.health = math.min(self.hp_max,self.health + HEAL_AMMOUNT)
+end
+local function check_beam(self)
+	for _, obj in ipairs(minetest.get_objects_inside_radius(self.object:get_pos(), 80)) do
+		local luaentity = obj:get_luaentity()
+		if luaentity and luaentity.name == "mcl_end:crystal" then
+			if luaentity.beam then
+				if luaentity.beam == self.beam then
+					heal(self)
+					break
+				end
+			else
+				if self.beam then
+					self.beam:remove()
+				end
+				minetest.add_entity(self.object:get_pos(), "mcl_end:crystal_beam"):get_luaentity():init(self.object, obj)
+				break
+			end
+		end
+	end
+end
+
+local function check_pos(self)
+	if self._portal_pos then
+		-- migrate old format
+		if type(self._portal_pos) == "string" then
+			self._portal_pos = minetest.string_to_pos(self._portal_pos)
+		end
+		local portal_center = vector.add(self._portal_pos, vector.new(0, 11, 0))
+		local pos = self.object:get_pos()
+		if vector.distance(pos, portal_center) > 50 then
+			self.object:set_pos(self._last_good_pos or portal_center)
+		else
+			self._last_good_pos = pos
+		end
+	end
+end
+
 mcl_mobs:register_mob("mobs_mc:enderdragon", {
 	description = S("Ender Dragon"),
 	type = "monster",
@@ -61,37 +105,18 @@ mcl_mobs:register_mob("mobs_mc:enderdragon", {
 		run_start = 0,		run_end = 20,
 	},
 	ignores_nametag = true,
-	do_custom = function(self)
+	do_custom = function(self,dtime)
 		mcl_bossbars.update_boss(self.object, "Ender Dragon", "light_purple")
-		for _, obj in ipairs(minetest.get_objects_inside_radius(self.object:get_pos(), 80)) do
-			local luaentity = obj:get_luaentity()
-			if luaentity and luaentity.name == "mcl_end:crystal" then
-				if luaentity.beam then
-					if luaentity.beam == self.beam then
-						break
-					end
-				else
-					if self.beam then
-						self.beam:remove()
-					end
-					minetest.add_entity(self.object:get_pos(), "mcl_end:crystal_beam"):get_luaentity():init(self.object, obj)
-					break
-				end
-			end
+		if self._pos_timer == nil or self._pos_timer > POS_CHECK_FREQUENCY then
+			self._pos_timer = 0
+			check_pos(self)
 		end
-		if self._portal_pos then
-			-- migrate old format
-			if type(self._portal_pos) == "string" then
-				self._portal_pos = minetest.string_to_pos(self._portal_pos)
-			end
-			local portal_center = vector.add(self._portal_pos, vector.new(0, 11, 0))
-			local pos = self.object:get_pos()
-			if vector.distance(pos, portal_center) > 50 then
-				self.object:set_pos(self._last_good_pos or portal_center)
-			else
-				self._last_good_pos = pos
-			end
+		if self._beam_timer == nil or self._beam_timer > BEAM_CHECK_FREQUENCY then
+			self._beam_timer = 0
+			check_beam(self)
 		end
+		self._beam_timer = self._beam_timer + dtime
+		self._pos_timer = self._pos_timer + dtime
 	end,
 	on_die = function(self, pos, cmi_cause)
 		if self._portal_pos then
