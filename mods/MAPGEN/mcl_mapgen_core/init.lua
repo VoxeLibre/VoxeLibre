@@ -328,9 +328,6 @@ end
 
 
 -- End block fixes:
--- * Replace water with end stone or air (depending on height).
--- * Remove stone, sand, dirt in v6 so our End map generator works in v6.
--- * Generate spawn platform (End portal destination)
 local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	if maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max then return end
 	local biomemap --ymin, ymax
@@ -346,24 +343,18 @@ local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blocksee
 			end
 		end
 	end
-	-- Final hackery: Set sun light level in the End.
-	-- -26912 is at a mapchunk border.
 	vm:set_lighting({day=15, night=15})
-	lvm_used = true
-
-	local shadow = true
-	if minp.y >= mcl_vars.mg_end_min and maxp.y <= -26911 then
-		shadow = false
-	end
-	return lvm_used, shadow
+	return true, false
 end
 
 
 mcl_mapgen_core.register_generator("world_structure", world_structure, nil, 1, true)
-mcl_mapgen_core.register_generator("end_fixes", end_basic, nil, 20, true)
+mcl_mapgen_core.register_generator("end_fixes", end_basic, function(minp,maxp)
+	if maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max then return end
+end, 9999, true)
 
 if mg_name ~= "v6" then
-	mcl_mapgen_core.register_generator("block_fixes", block_fixes, nil, 5, true)
+	mcl_mapgen_core.register_generator("block_fixes", block_fixes, nil, 9999, true)
 end
 
 if mg_name == "v6" then
@@ -395,4 +386,5 @@ mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blocks
 			end
 		end
 	end
+	return false, false, false
 end, 100, true)

@@ -3,11 +3,19 @@ local registered_generators = {}
 local lvm, nodes, param2 = 0, 0, 0
 local lvm_buffer = {}
 
+local logging = minetest.settings:get_bool("mcl_logging_mapgen",false)
+
+local function roundN(n, d)
+	if type(n) ~= "number" then return n end
+    local m = 10^d
+    return math.floor(n * m + 0.5) / m
+end
+
 minetest.register_on_generated(function(minp, maxp, blockseed)
-	minetest.log("action", "[mcl_mapgen_core] Generating chunk " .. minetest.pos_to_string(minp) .. " ... " .. minetest.pos_to_string(maxp))
+	local t1 = os.clock()
 	local p1, p2 = {x=minp.x, y=minp.y, z=minp.z}, {x=maxp.x, y=maxp.y, z=maxp.z}
 	if lvm > 0 then
-		local lvm_used, shadow, deco_used = false, false
+		local lvm_used, shadow, deco_used = false, false, false
 		local lb2 = {} -- param2
 		local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
 		local e1, e2 = {x=emin.x, y=emin.y, z=emin.z}, {x=emax.x, y=emax.y, z=emax.z}
@@ -57,6 +65,9 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	end
 
 	mcl_vars.add_chunk(minp)
+	if logging then
+		minetest.log("action", "[mcl_mapgen_core] Generating chunk " .. minetest.pos_to_string(minp) .. " ... " .. minetest.pos_to_string(maxp).."..."..tostring(roundN(((os.clock() - t1)*1000),2)).."ms")
+	end
 end)
 
 function minetest.register_on_generated(node_function)
