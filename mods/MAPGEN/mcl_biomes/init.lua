@@ -13,9 +13,6 @@ local mod_mcl_crimson = minetest.get_modpath("mcl_crimson")
 local mod_mcl_blackstone = minetest.get_modpath("mcl_blackstone")
 local mod_mcl_mangrove = minetest.get_modpath("mcl_mangrove")
 
--- Jungle bush schematic. In PC/Java Edition it's Jungle Wood + Oak Leaves
-local jungle_bush_schematic = mod_mcl_core.."/schematics/mcl_core_jungle_bush_oak_leaves.mts"
-
 local deco_id_chorus_plant
 
 --
@@ -3266,13 +3263,13 @@ local function register_decorations()
 
 	-- Jungle tree
 
-	-- Huge jungle tree (2 variants)
-	for i=1, 2 do
+	-- Huge jungle tree (4 variants)
+	for i=1, 4 do
 		minetest.register_decoration({
 			deco_type = "schematic",
 			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 			sidelen = 80,
-			fill_ratio = 0.00125,
+			fill_ratio = 0.0008,
 			biomes = {"Jungle"},
 			y_min = 4,
 			y_max = mcl_vars.mg_overworld_max,
@@ -3284,7 +3281,7 @@ local function register_decorations()
 			deco_type = "schematic",
 			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 			sidelen = 80,
-			fill_ratio = 0.004,
+			fill_ratio = 0.003,
 			biomes = {"JungleM"},
 			y_min = 4,
 			y_max = mcl_vars.mg_overworld_max,
@@ -3299,7 +3296,55 @@ local function register_decorations()
 		deco_type = "schematic",
 		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 80,
-		fill_ratio = 0.045,
+		fill_ratio = 0.025,
+		biomes = {"Jungle"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.015,
+		biomes = {"Jungle"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree_2.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.005,
+		biomes = {"Jungle"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree_3.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.005,
+		biomes = {"Jungle"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree_4.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.025,
 		biomes = {"Jungle"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
@@ -3328,7 +3373,7 @@ local function register_decorations()
 		biomes = {"JungleM"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree_2.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -3928,7 +3973,7 @@ local function register_decorations()
 		sidelen = 80,
 		noise_params = {
 			offset = 0.0196,
-			scale = 0.025,
+			scale = 0.015,
 			spread = {x = 250, y = 250, z = 250},
 			seed = 2930,
 			octaves = 4,
@@ -3937,7 +3982,25 @@ local function register_decorations()
 		biomes = {"Jungle"},
 		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = jungle_bush_schematic,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_bush_oak_leaves.mts",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.0196,
+			scale = 0.005,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2930,
+			octaves = 4,
+			persist = 0.6,
+		},
+		biomes = {"Jungle"},
+		y_min = 3,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_bush_oak_leaves_2.mts",
 		flags = "place_center_x, place_center_z",
 	})
 	minetest.register_decoration({
@@ -3955,7 +4018,7 @@ local function register_decorations()
 		biomes = {"JungleM"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = jungle_bush_schematic,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_bush_oak_leaves.mts",
 		flags = "place_center_x, place_center_z",
 	})
 	minetest.register_decoration({
@@ -3973,7 +4036,7 @@ local function register_decorations()
 		biomes = {"JungleEdge", "JungleEdgeM"},
 		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = jungle_bush_schematic,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_bush_oak_leaves.mts",
 		flags = "place_center_x, place_center_z",
 	})
 
