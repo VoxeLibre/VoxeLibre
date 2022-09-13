@@ -39,6 +39,7 @@ local mob_cap = {
 --do mobs spawn?
 local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
+local logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",true)
 
 local noise_params = {
 	offset = 0,
@@ -456,8 +457,8 @@ local function spawn_check(pos,spawn_def)
 	and (spawn_def.check_position and spawn_def.check_position(pos) or true)
 	and (not is_farm_animal(spawn_def.name) or is_grass)
 	and (spawn_def.type_of_spawning ~= "water" or is_water)
-	and not spawn_protected or not minetest.is_protected(s, "")
-	and not is_bedrock
+	and ( not spawn_protected or not minetest.is_protected(s, "") )
+	and not is_bedrock then
 		--only need to poll for node light if everything else worked
 		local gotten_light = get_node_light(pos)
 		if gotten_light >= spawn_def.min_light and gotten_light <= spawn_def.max_light then
@@ -562,11 +563,16 @@ if mobs_spawn then
 					--everything is correct, spawn mob
 					local object
 					if spawn_in_group and ( mob_type ~= "monster" or math.random(5) == 1 ) then
+						if logging then
+							minetest.log("action", "[mcl_mobs] A group of mob " .. mob_def.name .. " spawns at " .. minetest.pos_to_string(spawning_position, 1))
+						end
 						object = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name},spawn_in_group,spawn_in_group_min)
-						minetest.log("action", "A group of mob " .. mob_def.name .. " spawns at " .. minetest.pos_to_string(spawning_position, 1))
+
 					else
+						if logging then
+							minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns at " .. minetest.pos_to_string(spawning_position, 1))
+						end
 						object = mcl_mobs.spawn(spawning_position, mob_def.name)
-						minetest.log("action", "Mob " .. mob_def.name .. " spawns at " .. minetest.pos_to_string(spawning_position, 1))
 					end
 
 

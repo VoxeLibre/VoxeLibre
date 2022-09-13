@@ -51,6 +51,7 @@ local show_health = false
 
 -- Shows helpful debug info above each mob
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
+local spawn_logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",true)
 
 -- Peaceful mode message so players will know there are no monsters
 if minetest.settings:get_bool("only_peaceful_mobs", false) then
@@ -3404,7 +3405,9 @@ local mob_staticdata = function(self)
 	and self.remove_ok
 	and ((not self.nametag) or (self.nametag == ""))
 	and self.lifetimer <= 20 then
-		minetest.log("action", "Mob "..tostring(self.name).." despawns in mob_staticdata at "..minetest.pos_to_string(self.object:get_pos()))
+		if spawn_logging then
+			minetest.log("action", "[mcl_mobs] Mob "..tostring(self.name).." despawns in mob_staticdata at "..minetest.pos_to_string(self.object:get_pos()))
+		end
 		mcl_burning.extinguish(self.object)
 		self.object:remove()
 
@@ -3833,7 +3836,9 @@ local mob_step = function(self, dtime)
 	and self.state ~= "attack"
 	and self.following == nil then
 		if self.despawn_immediately or self.lifetimer <= 0 then
-			minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos, 1))
+			if spawn_logging then
+				minetest.log("action", "[mcl_mobs] Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos, 1))
+			end
 			mcl_burning.extinguish(self.object)
 			self.object:remove()
 			return
