@@ -41,6 +41,7 @@ pillager = {
 	fear_height = 4,
 	arrow = "mcl_bows:arrow_entity",
 	attack_type = "dogshoot", -- Alternate punching/shooting
+	attack_npcs = true,
 	reach = 0, -- Punching max distance
 	damage = 0, -- Punching damage
 	dogshoot_switch = 1, -- Start of shooting

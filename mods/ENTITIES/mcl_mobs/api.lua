@@ -1,4 +1,3 @@
-
 -- API for Mobs Redo: MineClone 2 Edition (MRM)
 
 mcl_mobs = {}
@@ -13,12 +12,6 @@ local FLOP_HEIGHT = 5.0
 local FLOP_HOR_SPEED = 1.5
 local ENTITY_CRAMMING_MAX = 24
 local CRAMMING_DAMAGE = 3
-
-local MOB_CAP = {}
-MOB_CAP.hostile = 70
-MOB_CAP.passive = 10
-MOB_CAP.ambient = 15
-MOB_CAP.water = 15
 
 -- Localize
 local S = minetest.get_translator("mcl_mobs")
@@ -36,6 +29,7 @@ local max = math.max
 local atann = math.atan
 local random = math.random
 local floor = math.floor
+local ceil = math.ceil
 
 local atan = function(x)
 	if not x or x ~= x then
@@ -44,7 +38,6 @@ local atan = function(x)
 		return atann(x)
 	end
 end
-
 
 -- Load settings
 local damage_enabled = minetest.settings:get_bool("enable_damage")
@@ -55,11 +48,10 @@ local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= fa
 local remove_far = true
 local difficulty = tonumber(minetest.settings:get("mob_difficulty")) or 1.0
 local show_health = false
-local max_per_block = tonumber(minetest.settings:get("max_objects_per_block") or 64)
-local mobs_spawn_chance = tonumber(minetest.settings:get("mobs_spawn_chance") or 2.5)
 
 -- Shows helpful debug info above each mob
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
+local spawn_logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",true)
 
 -- Peaceful mode message so players will know there are no monsters
 if minetest.settings:get_bool("only_peaceful_mobs", false) then
@@ -155,7 +147,7 @@ local mob_sound = function(self, soundname, is_opinion, fixed_pitch)
 				pitch = base_pitch
 			end
 			-- randomize the pitch a bit
-			pitch = pitch + math.random(-10, 10) * 0.005
+			pitch = pitch + random(-10, 10) * 0.005
 		end
 		minetest.sound_play(sound, {
 			object = self.object,
@@ -288,7 +280,7 @@ local function update_roll(self)
 	local cbox = table.copy(self.collisionbox)
 	local acbox = self.object:get_properties().collisionbox
 
-	if math.abs(cbox[2] - acbox[2]) > 0.1 then
+	if abs(cbox[2] - acbox[2]) > 0.1 then
 		was_Fleckenstein = true
 	end
 
@@ -311,7 +303,10 @@ end
 
 -- set and return valid yaw
 local set_yaw = function(self, yaw, delay, dtime)
-
+	if true then
+		self.object:set_yaw(yaw)
+		return yaw
+	end
 	if not yaw or yaw ~= yaw then
 		yaw = 0
 	end
@@ -320,7 +315,7 @@ local set_yaw = function(self, yaw, delay, dtime)
 
 	if delay == 0 then
 		if self.shaking and dtime then
-			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
+			yaw = yaw + (random() * 2 - 1) * 5 * dtime
 		end
 		self.object:set_yaw(yaw)
 		update_roll(self)
@@ -589,7 +584,7 @@ local damage_effect = function(self, damage)
 	-- damage particles
 	if (not disable_blood) and damage > 0 then
 
-		local amount_large = math.floor(damage / 2)
+		local amount_large = floor(damage / 2)
 		local amount_small = damage % 2
 
 		local pos = self.object:get_pos()
@@ -715,7 +710,7 @@ local item_drop = function(self, cooked, looting_level)
 		end
 
 		if do_common_looting then
-			num = num + math.floor(math.random(0, looting_level) + 0.5)
+			num = num + floor(random(0, looting_level) + 0.5)
 		end
 
 		if num > 0 then
@@ -824,7 +819,7 @@ local check_for_death = function(self, cause, cmi_cause)
 			item_drop(self, cooked, looting)
 
 			if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= 5000000) then
-				mcl_experience.throw_xp(self.object:get_pos(), math.random(self.xp_min, self.xp_max))
+				mcl_experience.throw_xp(self.object:get_pos(), random(self.xp_min, self.xp_max))
 			end
 		end
 	end
@@ -1205,7 +1200,7 @@ local do_env_damage = function(self)
 		end
 		if drowning then
 
-			self.breath = math.max(0, self.breath - 1)
+			self.breath = max(0, self.breath - 1)
 
 			effect(pos, 2, "bubble.png", nil, nil, 1, nil)
 			if self.breath <= 0 then
@@ -1223,7 +1218,7 @@ local do_env_damage = function(self)
 				return true
 			end
 		else
-			self.breath = math.min(self.breath_max, self.breath + 1)
+			self.breath = min(self.breath_max, self.breath + 1)
 		end
 	end
 
@@ -1549,7 +1544,7 @@ local breed = function(self)
 						return
 					end
 
-					mcl_experience.throw_xp(pos, math.random(1, 7))
+					mcl_experience.throw_xp(pos, random(1, 7))
 
 					-- custom breed function
 					if parent1.on_breed then
@@ -1565,7 +1560,7 @@ local breed = function(self)
 
 
 					-- Use texture of one of the parents
-					local p = math.random(1, 2)
+					local p = random(1, 2)
 					if p == 1 then
 						ent_c.base_texture = parent1.base_texture
 					else
@@ -1727,7 +1722,7 @@ local smart_mobs = function(self, s, p, dist, dtime)
 		end, self)
 	end
 
-	if math.abs(vector.subtract(s,target_pos).y) > self.stepheight then
+	if abs(vector.subtract(s,target_pos).y) > self.stepheight then
 
 		if height_switcher then
 			use_pathfind = true
@@ -1768,7 +1763,7 @@ local smart_mobs = function(self, s, p, dist, dtime)
 		if self.fear_height ~= 0 then dropheight = self.fear_height end
 		local jumpheight = 0
 		if self.jump and self.jump_height >= 4 then
-			jumpheight = math.min(math.ceil(self.jump_height / 4), 4)
+			jumpheight = min(ceil(self.jump_height / 4), 4)
 		elseif self.stepheight > 0.5 then
 			jumpheight = 1
 		end
@@ -1799,7 +1794,7 @@ local smart_mobs = function(self, s, p, dist, dtime)
 						end
 					end
 
-					local sheight = math.ceil(self.collisionbox[5]) + 1
+					local sheight = ceil(self.collisionbox[5]) + 1
 
 					-- assume mob is 2 blocks high so it digs above its head
 					s.y = s.y + sheight
@@ -1946,7 +1941,7 @@ local monster_attack = function(self)
 
 		-- find specific mob to attack, failing that attack player/npc/animal
 		if specific_attack(self.specific_attack, name)
-		and (type == "player" or type == "npc"
+		and (type == "player" or ( type == "npc" and self.attack_npcs )
 			or (type == "animal" and self.attack_animals == true)) then
 
 			p = player:get_pos()
@@ -2237,9 +2232,9 @@ local follow_flop = function(self)
 			if sdef and sdef.walkable then
 				mob_sound(self, "flop")
 				self.object:set_velocity({
-					x = math.random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
+					x = random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
 					y = FLOP_HEIGHT,
-					z = math.random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
+					z = random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
 				})
 			end
 
@@ -2294,8 +2289,8 @@ local function go_to_pos(entity,b)
 		return true
 	end
 	local v = { x = b.x - s.x, z = b.z - s.z }
-	local yaw = (math.atan(v.z / v.x) + math.pi / 2) - entity.rotate
-	if b.x > s.x then yaw = yaw + math.pi end
+	local yaw = (atann(v.z / v.x) + pi / 2) - entity.rotate
+	if b.x > s.x then yaw = yaw + pi end
 	entity.object:set_yaw(yaw)
 	set_velocity(entity,entity.follow_velocity)
 	mcl_mobs:set_animation(entity, "walk")
@@ -3403,21 +3398,22 @@ end
 -- get entity staticdata
 local mob_staticdata = function(self)
 
---[[
+
 	-- remove mob when out of range unless tamed
 	if remove_far
 	and self.can_despawn
 	and self.remove_ok
 	and ((not self.nametag) or (self.nametag == ""))
 	and self.lifetimer <= 20 then
-
-		minetest.log("action", "Mob "..name.." despawns in mob_staticdata at "..minetest.pos_to_string(self.object.get_pos(), 1))
+		if spawn_logging then
+			minetest.log("action", "[mcl_mobs] Mob "..tostring(self.name).." despawns in mob_staticdata at "..minetest.pos_to_string(self.object:get_pos()))
+		end
 		mcl_burning.extinguish(self.object)
 		self.object:remove()
 
-		return ""-- nil
+		return "remove"-- nil
 	end
---]]
+
 	self.remove_ok = true
 	self.attack = nil
 	self.following = nil
@@ -3453,6 +3449,11 @@ local mob_activate = function(self, staticdata, def, dtime)
 		return
 	end
 
+	if staticdata == "remove" then
+		mcl_burning.extinguish(self.object)
+		self.object:remove()
+		return
+	end
 	-- load entity variables
 	local tmp = minetest.deserialize(staticdata)
 
@@ -3473,7 +3474,7 @@ local mob_activate = function(self, staticdata, def, dtime)
 		local c = 1
 		if #def.textures > c then c = #def.textures end
 
-		self.base_texture = def.textures[math.random(c)]
+		self.base_texture = def.textures[random(c)]
 		self.base_mesh = def.mesh
 		self.base_size = self.visual_size
 		self.base_colbox = self.collisionbox
@@ -3620,6 +3621,7 @@ end
 
 -- main mob function
 local mob_step = function(self, dtime)
+	self.lifetimer = self.lifetimer - dtime
 	check_item_pickup(self)
 	check_aggro(self,dtime)
 	if not self.fire_resistant then
@@ -3686,7 +3688,7 @@ local mob_step = function(self, dtime)
 
 		self.delay = self.delay - 1
 		if self.shaking then
-			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
+			yaw = yaw + (random() * 2 - 1) * 5 * dtime
 		end
 		self.object:set_yaw(yaw)
 		update_roll(self)
@@ -3833,14 +3835,15 @@ local mob_step = function(self, dtime)
 	and ((not self.nametag) or (self.nametag == ""))
 	and self.state ~= "attack"
 	and self.following == nil then
-
-		self.lifetimer = self.lifetimer - dtime
 		if self.despawn_immediately or self.lifetimer <= 0 then
-			minetest.log("action", "Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos, 1))
+			if spawn_logging then
+				minetest.log("action", "[mcl_mobs] Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos, 1))
+			end
 			mcl_burning.extinguish(self.object)
 			self.object:remove()
+			return
 		elseif self.lifetimer <= 10 then
-			if math.random(10) < 4 then
+			if random(10) < 4 then
 				self.despawn_immediately = true
 			else
 				self.lifetimer = 20
@@ -4030,6 +4033,7 @@ minetest.register_entity(name, {
 	dogshoot_count_max = def.dogshoot_count_max or 5,
 	dogshoot_count2_max = def.dogshoot_count2_max or (def.dogshoot_count_max or 5),
 	attack_animals = def.attack_animals or false,
+	attack_npcs = def.attack_npcs or false,
 	specific_attack = def.specific_attack,
 	runaway_from = def.runaway_from,
 	owner_loyal = def.owner_loyal,
@@ -4512,7 +4516,7 @@ minetest.register_globalstep(function(dtime)
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 47)) do
 			local lua = obj:get_luaentity()
 			if lua and lua.is_mob then
-				lua.lifetimer = math.max(20, lua.lifetimer)
+				lua.lifetimer = max(20, lua.lifetimer)
 				lua.despawn_immediately = false
 			end
 		end

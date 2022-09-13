@@ -29,16 +29,17 @@ local dbg_spawn_succ = 0
 local aoc_range = 136
 
 local mob_cap = {
-	monster = 70,
-	animal =10,
-	ambient =15,
-	water = 5, --currently unused
-	water_ambient = 20, --currently unused
+	monster = minetest.settings:get_bool("mcl_mob_cap_monster") or 70,
+	animal = minetest.settings:get_bool("mcl_mob_cap_animal") or 10,
+	ambient = minetest.settings:get_bool("mcl_mob_cap_ambient") or 15,
+	water = minetest.settings:get_bool("mcl_mob_cap_water") or 5, --currently unused
+	water_ambient = minetest.settings:get_bool("mcl_mob_cap_water_ambient") or 20, --currently unused
 }
 
 --do mobs spawn?
 local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
-
+local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
+local logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",true)
 
 local noise_params = {
 	offset = 0,
@@ -456,6 +457,7 @@ local function spawn_check(pos,spawn_def)
 	and (spawn_def.check_position and spawn_def.check_position(pos) or true)
 	and (not is_farm_animal(spawn_def.name) or is_grass)
 	and (spawn_def.type_of_spawning ~= "water" or is_water)
+	and ( not spawn_protected or not minetest.is_protected(s, "") )
 	and not is_bedrock then
 		--only need to poll for node light if everything else worked
 		local gotten_light = get_node_light(pos)
@@ -465,6 +467,15 @@ local function spawn_check(pos,spawn_def)
 	end
 	return false
 end
+
+function mcl_mobs.spawn(pos,id)
+	local def = minetest.registered_entities[id] or minetest.registered_entities["mobs_mc:"..id] or minetest.registered_entities["extra_mobs:"..id]
+	if not def or (def.can_spawn and not def.can_spawn(pos)) or not def.is_mob then
+		return false
+	end
+	return minetest.add_entity(pos, def.name)
+end
+
 
 local function spawn_group(p,mob,spawn_on,group_max,group_min)
 	if not group_min then group_min = 1 end
@@ -481,12 +492,26 @@ local function spawn_group(p,mob,spawn_on,group_max,group_min)
 			if mob.type_of_spawning == "water" then
 				sp = get_water_spawn(sp)
 			end
-			o = minetest.add_entity(sp,mob.name)
+			o =  mcl_mobs.spawn(sp,mob.name)
 			if o then dbg_spawn_succ = dbg_spawn_succ + 1 end
 		end
 	end
 	return o
 end
+
+mcl_mobs.spawn_group = spawn_group
+
+minetest.register_chatcommand("spawn_mob",{
+	privs = { debug = true },
+	func = function(n,param)
+		local pos = minetest.get_player_by_name(n):get_pos()
+		if mcl_mobs.spawn(pos,param) then
+			return true, param.." spawned at "..minetest.pos_to_string(pos),
+			minetest.log("action", n.." spawned "..param.." at "..minetest.pos_to_string(pos))
+		end
+		return false, "Couldn't spawn "..param
+	end
+})
 
 if mobs_spawn then
 
@@ -538,11 +563,16 @@ if mobs_spawn then
 					--everything is correct, spawn mob
 					local object
 					if spawn_in_group and ( mob_type ~= "monster" or math.random(5) == 1 ) then
+						if logging then
+							minetest.log("action", "[mcl_mobs] A group of mob " .. mob_def.name .. " spawns at " .. minetest.pos_to_string(spawning_position, 1))
+						end
 						object = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name},spawn_in_group,spawn_in_group_min)
-						minetest.log("action", "A group of mob " .. mob_def.name .. " spawns at " .. minetest.pos_to_string(spawning_position, 1))
+
 					else
-						object = minetest.add_entity(spawning_position, mob_def.name)
-						minetest.log("action", "Mob " .. mob_def.name .. " spawns at " .. minetest.pos_to_string(spawning_position, 1))
+						if logging then
+							minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns at " .. minetest.pos_to_string(spawning_position, 1))
+						end
+						object = mcl_mobs.spawn(spawning_position, mob_def.name)
 					end
 
 

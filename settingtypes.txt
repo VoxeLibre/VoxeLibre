@@ -76,10 +76,6 @@ mcl_enable_skin_customization (Enable player skin customization) bool true
 # This setting is only read at startup.
 mobs_spawn (Spawn mobs naturally) bool true
 
-# Controls the overall amount of mobs that spawn. The higher the number,
-# the less often mobs will spawn. This does not affect mob spawners.
-mobs_spawn_chance (Mob spawn chance) float 2.5 0.0
-
 # If enabled, only peaceful mobs will appear naturally. This does not
 # affect mob spawners.
 # This setting is only read at startup.
@@ -102,6 +98,15 @@ mobs_griefing (Mobs change blocks) bool true
 
 # If enabled, mobs won't damage particles when they got hurt.
 mobs_disable_blood (Disable mob damage particles) bool false
+
+#Maximum amount of monsters that will spawn near a player (default:70)
+mcl_mob_cap_monster (Mob cap monsters) int 70 0 2048
+
+#Maximum amount of animals that will spawn near a player (default:10)
+mcl_mob_cap_animal (Mob cap animals) int 10 0 1024
+
+#Maximum amount of ambient mobs that will spawn near a player (default:15)
+mcl_mob_cap_ambient (Mob cap ambient mobs) int 15 0 1024
 
 [Audio]
 # Enable flame sound.
@@ -186,3 +191,6 @@ mcl_enable_fapples (Enable swiftness on enchanted golden apples) bool true
 [Debugging]
 # If enabled, this will show the itemstring of an item in the description.
 mcl_item_id_debug (Item ID Debug) bool false
+
+#Log mob spawning and despawning events
+mcl_logging_mobs_spawn (Log Mob Spawning) bool true

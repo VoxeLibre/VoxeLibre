@@ -38,6 +38,7 @@ mcl_mobs:register_mob("mobs_mc:vindicator", {
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
 	attack_type = "dogfight",
+	attack_npcs = true,
 	drops = {
 		{name = "mcl_core:emerald",
 		chance = 1,
