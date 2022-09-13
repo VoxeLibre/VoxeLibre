@@ -2,6 +2,7 @@ mcl_mapgen_core = {}
 local registered_generators = {}
 
 local lvm, nodes, param2 = 0, 0, 0
+local lvm_used = false
 local lvm_buffer = {}
 
 local modname = minetest.get_current_modname()
