@@ -24,14 +24,17 @@ mcl_mapgen_core.register_generator("end_island", function(vm, data, data2, emin,
 			data[idx] = c_end_stone
 		end
 	end
-	return true,false,true
+	return true,false,false
 end, function(minp,maxp,blockseed)
-	local nn = minetest.find_nodes_in_area(minp,maxp,{"mcl_end:chorus_flower"})
+	if maxp.y < (-27025 + y_offset) or minp.y > (-27000 + y_offset + 4) or maxp.x < -width or minp.x > width  or maxp.z < -width or minp.z > width then
+		return
+	end
+	local nn = minetest.find_nodes_in_area_under_air(minp,maxp,{"mcl_end:end_stone"})
 	local pr = PseudoRandom(blockseed)
-	for _,pos in pairs(nn) do
-		local x, y, z = pos.x, pos.y, pos.z
-		if x < -10 or x > 10 or z < -10 or z > 10 then
-			mcl_end.grow_chorus_plant(pos,{name="mcl_end:chorus_flower"},pr)
+	table.shuffle(nn)
+	if nn and #nn > 0 then
+		for i=1,pr:next(1,math.min(5,#nn)) do
+			minetest.add_entity(vector.offset(nn[i],0,1,0),"mobs_mc:enderman")
 		end
 	end
 end, 15, true)
