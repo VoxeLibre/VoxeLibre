@@ -249,6 +249,12 @@ awards.register_achievement("mcl:witheringHeights", {
 	icon = "mcl_mobitems_nether_star.png",
 })
 
+awards.register_achievement("mcl:freeTheEnd", {
+	title = S("Free the End"),
+	description = S("Kill the ender dragon. Good Luck!"),
+	icon = "mobs_mc_spawn_icon_dragon.png", -- TODO: Dragon Head Icon
+})
+
 -- Triggered in mcl_fishing
 awards.register_achievement("mcl:fishyBusiness", {
 	title = S("Fishy Business"),
