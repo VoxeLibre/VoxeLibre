@@ -1,4 +1,4 @@
-local width = 115
+local width = 200
 
 local noisemap = PerlinNoiseMap({
 	offset = 0.5,

@@ -6,8 +6,10 @@ local modpath = minetest.get_modpath(modname)
 mcl_structures.register_structure("end_spawn_obsidian_platform",{
 	static_pos ={mcl_vars.mg_end_platform_pos},
 	place_func = function(pos,def,pr)
-		local nn = minetest.find_nodes_in_area(vector.offset(pos,-2,0,-2),vector.offset(pos,2,0,2),{"air","mcl_end:end_stone"})
-		minetest.bulk_set_node(nn,{name="mcl_core:obsidian"})
+		local obby = minetest.find_nodes_in_area(vector.offset(pos,-2,0,-2),vector.offset(pos,2,0,2),{"air","mcl_end:end_stone"})
+		local air = minetest.find_nodes_in_area(vector.offset(pos,-2,1,-2),vector.offset(pos,2,3,2),{"air","mcl_end:end_stone"})
+		minetest.bulk_set_node(obby,{name="mcl_core:obsidian"})
+		minetest.bulk_set_node(air,{name="air"})
 		return true
 	end,
 })
@@ -19,19 +21,22 @@ mcl_structures.register_structure("end_exit_portal",{
 	},
 	after_place = function(pos,def,pr,blockseed)
 		local p1 = vector.offset(pos,-16,-16,-16)
-		local p2 = vector.offset(pos,16,16,16)
-		minetest.bulk_set_node(minetest.find_nodes_in_area(p1,p2,{"mcl_portals:portal_end"}),{name="air"})
-		local obj = minetest.add_entity(vector.offset(pos,3, 11, 3), "mobs_mc:enderdragon")
-		if obj then
-			local dragon_entity = obj:get_luaentity()
-			dragon_entity._portal_pos = pos
-			if blockseed ~= -1 then
-				dragon_entity._initial = true
+		local p2 = vector.offset(pos,16,21,16)
+		minetest.emerge_area(p1,p2,function(blockpos, action, calls_remaining, param)
+			if calls_remaining > 0 then return end
+			minetest.bulk_set_node(minetest.find_nodes_in_area(p1,p2,{"mcl_portals:portal_end"}),{name="air"})
+			local obj = minetest.add_entity(vector.offset(pos,3, 11, 3), "mobs_mc:enderdragon")
+			if obj then
+				local dragon_entity = obj:get_luaentity()
+				dragon_entity._portal_pos = pos
+				if blockseed ~= -1 then
+					dragon_entity._initial = true
+				end
+			else
+				minetest.log("error", "[mcl_mapgen_core] ERROR! Ender dragon doesn't want to spawn")
 			end
-		else
-			minetest.log("error", "[mcl_mapgen_core] ERROR! Ender dragon doesn't want to spawn")
-		end
-		minetest.fix_light(p1,p2)
+			minetest.fix_light(p1,p2)
+		end)
 	end
 })
 mcl_structures.register_structure("end_exit_portal_open",{
