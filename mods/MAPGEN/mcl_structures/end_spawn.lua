@@ -20,6 +20,9 @@ mcl_structures.register_structure("end_exit_portal",{
 		modpath.."/schematics/mcl_structures_end_exit_portal.mts"
 	},
 	after_place = function(pos,def,pr,blockseed)
+		if  minetest.settings:get_bool("only_peaceful_mobs", false) then
+			return
+		end
 		local p1 = vector.offset(pos,-16,-16,-16)
 		local p2 = vector.offset(pos,16,21,16)
 		minetest.emerge_area(p1,p2,function(blockpos, action, calls_remaining, param)
