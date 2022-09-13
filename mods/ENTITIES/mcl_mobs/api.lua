@@ -3148,6 +3148,10 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			return
 		end
 
+		if minetest.is_creative_enabled(hitter:get_player_name()) then
+			self.health = 0
+		end
+
 		-- set/update 'drop xp' timestamp if hitted by player
 		self.xp_timestamp = minetest.get_us_time()
 	end
