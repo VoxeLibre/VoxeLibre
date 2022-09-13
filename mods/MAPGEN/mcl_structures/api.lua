@@ -24,7 +24,7 @@ function mcl_structures.fill_chests(p1,p2,loot,pr)
 end
 
 local function generate_loot(pos, def, pr)
-	local hl = def.sidelen / 2
+	local hl = def.sidelen
 	local p1 = vector.offset(pos,-hl,-hl,-hl)
 	local p2 = vector.offset(pos,hl,hl,hl)
 	if def.loot then mcl_structures.fill_chests(p1,p2,def.loot,pr) end
