@@ -131,7 +131,7 @@ mcl_mobs:register_mob("mobs_mc:enderdragon", {
 		-- Free The End Advancement
 		for _,players in pairs(minetest.get_objects_inside_radius(pos,64)) do
 			if players:is_player() then
-				awards.unlock(o:get_player_name(), "mcl:freeTheEnd")
+				awards.unlock(players:get_player_name(), "mcl:freeTheEnd")
 			end
 		end
 	end,
