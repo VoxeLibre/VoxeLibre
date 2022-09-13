@@ -99,6 +99,15 @@ mobs_griefing (Mobs change blocks) bool true
 # If enabled, mobs won't damage particles when they got hurt.
 mobs_disable_blood (Disable mob damage particles) bool false
 
+#Maximum amount of monsters that will spawn near a player (default:70)
+mcl_mob_cap_monster (Mob cap monsters) int 70 0 2048
+
+#Maximum amount of animals that will spawn near a player (default:10)
+mcl_mob_cap_animal (Mob cap animals) int 10 0 1024
+
+#Maximum amount of ambient mobs that will spawn near a player (default:15)
+mcl_mob_cap_ambient (Mob cap ambient mobs) int 15 0 1024
+
 [Audio]
 # Enable flame sound.
 flame_sound (Flame sound) bool true

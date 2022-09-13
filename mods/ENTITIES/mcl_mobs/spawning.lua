@@ -29,11 +29,11 @@ local dbg_spawn_succ = 0
 local aoc_range = 136
 
 local mob_cap = {
-	monster = 70,
-	animal =10,
-	ambient =15,
-	water = 5, --currently unused
-	water_ambient = 20, --currently unused
+	monster = minetest.settings:get_bool("mcl_mob_cap_monster") or 70,
+	animal = minetest.settings:get_bool("mcl_mob_cap_animal") or 10,
+	ambient = minetest.settings:get_bool("mcl_mob_cap_ambient") or 15,
+	water = minetest.settings:get_bool("mcl_mob_cap_water") or 5, --currently unused
+	water_ambient = minetest.settings:get_bool("mcl_mob_cap_water_ambient") or 20, --currently unused
 }
 
 --do mobs spawn?
