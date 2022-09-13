@@ -81,3 +81,5 @@ Beaconator=
 Use a fully powered beacon.=
 The Next Generation=
 Hold the Dragon Egg.@nHint: Pick up the egg from the ground and have it in your inventory.=
+The End... Again...=
+Respawn the Ender Dragon.=

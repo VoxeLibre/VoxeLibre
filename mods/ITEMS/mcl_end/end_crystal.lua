@@ -1,5 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
+
 local vector = vector
 
 local explosion_strength = 6
@@ -68,6 +70,11 @@ local function spawn_crystal(pos)
 	for _,o in pairs(minetest.get_objects_inside_radius(pos,64)) do
 		local l = o:get_luaentity()
 		if l and l.name == "mobs_mc:enderdragon" then return end
+		if not peaceful then
+			if o:is_player() then
+				awards.unlock(o:get_player_name(), "mcl:theEndAgain")
+			end
+		end
 	end
 	for _, crystal in pairs(crystals) do
 		crystal_explode(crystal)

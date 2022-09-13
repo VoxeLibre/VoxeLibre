@@ -291,6 +291,13 @@ awards.register_achievement("mcl:maxed_beacon", {
 	icon = "beacon_achievement_icon.png",
 })
 
+-- Triggered in mcl_end
+awards.register_achievement("mcl:theEndAgain", {
+	title = S("The End... Again..."),
+	description = S("Respawn the Ender Dragon."),
+	icon = "mcl_end_crystal_item.png",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then
