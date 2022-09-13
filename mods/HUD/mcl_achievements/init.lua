@@ -148,6 +148,12 @@ awards.register_achievement("mcl:hiddenInTheDepths", {
 	icon = "mcl_nether_ancient_debris_side.png",
 })
 
+awards.register_achievement("mcl:PickUpDragonEgg", {
+	title = S("The Next Generation"),
+	description = S("Hold the Dragon Egg.\nHint: Pick up the egg from the ground and have it in your inventory."),
+	icon = "mcl_end_dragon_egg.png",
+})
+
 -- Smelting achivements: These are awarded when picking up an item from a furnace
 -- output. They are given in mcl_furnaces.
 awards.register_achievement("mcl:acquireIron", {
