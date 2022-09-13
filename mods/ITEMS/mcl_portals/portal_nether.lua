@@ -1,4 +1,6 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local modname = minetest.get_current_modname()
+local S = minetest.get_translator(modname)
+local modpath = minetest.get_modpath(modname)
 
 local SCAN_2_MAP_CHUNKS = true -- slower but helps to find more suitable places
 
@@ -89,6 +91,27 @@ local limits = {
 		pmax = {x=LIM_MAX, y = O_Y_MAX, z = LIM_MAX},
 	},
 }
+
+local function save_portal_pos(pos,target_pos)
+	local p1 = vector.offset(pos,-2,-1,-2)
+	local p2 = vector.offset(pos,2,15,2)
+	local nn = find_nodes_in_area(p1,p2,{"mcl_portals:portal"})
+	for _,p in pairs(nn) do
+		minetest.get_meta(p):set_string("target_portal",minetest.hash_node_position(target_pos))
+	end
+end
+
+local function get_portal_pos(pos)
+	local p1 = vector.offset(pos,-5,-1,-5)
+	local p2 = vector.offset(pos,5,5,5)
+	local nn = find_nodes_in_area(p1,p2,{"mcl_portals:portal"})
+	for _,p in pairs(nn) do
+		local m = minetest.get_meta(p):get_string("target_portal")
+		if m and m ~= "" and mcl_vars.get_node(p).name == "mcl_portals:portal" then
+			return minetest.get_position_from_hash(m)
+		end
+	end
+end
 
 -- This function registers exits from Nether portals.
 -- Incoming verification performed: two nodes must be portal nodes, and an obsidian below them.
@@ -406,6 +429,10 @@ local function finalize_teleport(obj, exit)
 	end
 	local _, dim = mcl_worlds.y_to_layer(exit.y)
 
+	local saved_portal = find_exit(get_portal_pos(objpos),10,10,10)
+
+	if saved_portal then exit = saved_portal end
+
 
 	-- If player stands, player is at ca. something+0.5 which might cause precision problems, so we used ceil for objpos.y
 	objpos = {x = floor(objpos.x+0.5), y = ceil(objpos.y), z = floor(objpos.z+0.5)}
@@ -421,8 +448,11 @@ local function finalize_teleport(obj, exit)
 	teleport_cooloff(obj)
 
 	-- Teleport
+	save_portal_pos(objpos,exit)
 	obj:set_pos(exit)
-
+	minetest.after(1,function()
+		save_portal_pos(exit,objpos)
+	end)
 	if is_player then
 		mcl_worlds.dimension_change(obj, dim)
 		minetest.sound_play("mcl_portals_teleport", {pos=exit, gain=0.5, max_hear_distance = 16}, true)
