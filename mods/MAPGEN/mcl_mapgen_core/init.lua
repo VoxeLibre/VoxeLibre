@@ -343,7 +343,6 @@ local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blocksee
 			end
 		end
 	end
-	vm:set_lighting({day=15, night=15})
 	return true, false
 end
 
@@ -373,6 +372,7 @@ mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blocks
 			for _, pos in pairs(gennotify["decoration#"..struct.deco_id] or {}) do
 				local realpos = vector.offset(pos,0,1,0)
 				minetest.remove_node(realpos)
+				minetest.fix_light(vector.offset(pos,-1,-1,-1),vector.offset(pos,1,3,1))
 				if struct.chunk_probability == nil or (not has and pr:next(1,struct.chunk_probability) == 1 ) then
 					mcl_structures.place_structure(realpos,struct,pr,blockseed)
 					has=true

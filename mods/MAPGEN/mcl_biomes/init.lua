@@ -5038,7 +5038,7 @@ local function register_dimension_decorations()
 		decoration = "mcl_end:chorus_plant",
 		height = 1,
 		height_max = 8,
-		biomes = { "End", "EndIsland", "EndMidlands", "EndHighlands", "EndBarrens", "EndSmallIslands" },
+		biomes = { "End", "EndMidlands", "EndHighlands", "EndBarrens", "EndSmallIslands" },
 	})
 	minetest.register_decoration({
 		name = "mcl_biomes:chorus_plant",
@@ -5059,7 +5059,7 @@ local function register_dimension_decorations()
 		y_max = mcl_vars.mg_end_max,
 		decoration = "mcl_end:chorus_flower",
 		height = 1,
-		biomes = { "End", "EndIsland", "EndMidlands", "EndHighlands", "EndBarrens", "EndSmallIslands" },
+		biomes = { "End", "EndMidlands", "EndHighlands", "EndBarrens", "EndSmallIslands" },
 	})
 
 	deco_id_chorus_plant = minetest.get_decoration_id("mcl_biomes:chorus_plant")

@@ -18,8 +18,8 @@ mcl_structures.register_structure("end_exit_portal",{
 		modpath.."/schematics/mcl_structures_end_exit_portal.mts"
 	},
 	after_place = function(pos,def,pr,blockseed)
-		local p1 = vector.offset(pos,-5,-5,-5)
-		local p2 = vector.offset(pos,5,5,5)
+		local p1 = vector.offset(pos,-16,-16,-16)
+		local p2 = vector.offset(pos,16,16,16)
 		minetest.bulk_set_node(minetest.find_nodes_in_area(p1,p2,{"mcl_portals:portal_end"}),{name="air"})
 		local obj = minetest.add_entity(vector.offset(pos,3, 11, 3), "mobs_mc:enderdragon")
 		if obj then
@@ -31,12 +31,18 @@ mcl_structures.register_structure("end_exit_portal",{
 		else
 			minetest.log("error", "[mcl_mapgen_core] ERROR! Ender dragon doesn't want to spawn")
 		end
+		minetest.fix_light(p1,p2)
 	end
 })
 mcl_structures.register_structure("end_exit_portal_open",{
 	filenames = {
 		modpath.."/schematics/mcl_structures_end_exit_portal.mts"
 	},
+	after_place  = function(pos,def,pr)
+		local p1 = vector.offset(pos,-16,-16,-16)
+		local p2 = vector.offset(pos,16,16,16)
+		minetest.fix_light(p1,p2)
+	end
 })
 mcl_structures.register_structure("end_gateway_portal",{
 	filenames = {
