@@ -20,6 +20,7 @@ end
 
 local function damage_explosion(self, damagemulitplier)
 	local p = self.object:get_pos()
+	if not p then return end
 	mcl_explosions.explode(p, 3, {})
 	local objects = minetest.get_objects_inside_radius(p, 8)
 	for _,obj in pairs(objects) do
