@@ -154,6 +154,12 @@ awards.register_achievement("mcl:PickUpDragonEgg", {
 	icon = "mcl_end_dragon_egg.png",
 })
 
+awards.register_achievement("mcl:skysTheLimit", {
+	title = S("Sky's the Limit"),
+	description = S("Find the elytra and prepare to fly above and beyond!"),
+	icon = "mcl_armor_inv_elytra.png",
+}) -- TODO: Make also unlock when moved to inventory, not just picking up from ground
+
 -- Smelting achivements: These are awarded when picking up an item from a furnace
 -- output. They are given in mcl_furnaces.
 awards.register_achievement("mcl:acquireIron", {
