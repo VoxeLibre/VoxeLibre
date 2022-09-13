@@ -196,12 +196,27 @@ local mt_is_creative_enabled = minetest.is_creative_enabled
 
 function minetest.is_creative_enabled(name)
 	if mt_is_creative_enabled(name) then return true end
+	if not name then return false end
 	local p = minetest.get_player_by_name(name)
 	if p then
 		return p:get_meta():get_string("gamemode") == "creative"
 	end
 	return false
 end
+
+--Insta "digging" nodes in gamemode-creative
+minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
+	if minetest.is_creative_enabled() then return end
+	local name = puncher:get_player_name()
+	if not minetest.is_creative_enabled(name) then return end
+	if pointed_thing.type ~= "node" then return end
+	local def = minetest.registered_nodes[node.name]
+	if def then
+		if def.on_destruct then def.on_destruct(pos) end
+		minetest.remove_node(pos)
+		return true
+	end
+end)
 
 local function in_table(n,h)
 	for k,v in pairs(h) do
