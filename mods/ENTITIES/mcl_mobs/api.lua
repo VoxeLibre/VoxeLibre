@@ -1,4 +1,3 @@
-
 -- API for Mobs Redo: MineClone 2 Edition (MRM)
 
 mcl_mobs = {}
@@ -13,12 +12,6 @@ local FLOP_HEIGHT = 5.0
 local FLOP_HOR_SPEED = 1.5
 local ENTITY_CRAMMING_MAX = 24
 local CRAMMING_DAMAGE = 3
-
-local MOB_CAP = {}
-MOB_CAP.hostile = 70
-MOB_CAP.passive = 10
-MOB_CAP.ambient = 15
-MOB_CAP.water = 15
 
 -- Localize
 local S = minetest.get_translator("mcl_mobs")
@@ -55,8 +48,6 @@ local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= fa
 local remove_far = true
 local difficulty = tonumber(minetest.settings:get("mob_difficulty")) or 1.0
 local show_health = false
-local max_per_block = tonumber(minetest.settings:get("max_objects_per_block") or 64)
-local mobs_spawn_chance = tonumber(minetest.settings:get("mobs_spawn_chance") or 2.5)
 
 -- Shows helpful debug info above each mob
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false)

@@ -38,7 +38,7 @@ local mob_cap = {
 
 --do mobs spawn?
 local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
-
+local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
 
 local noise_params = {
 	offset = 0,
@@ -456,7 +456,8 @@ local function spawn_check(pos,spawn_def)
 	and (spawn_def.check_position and spawn_def.check_position(pos) or true)
 	and (not is_farm_animal(spawn_def.name) or is_grass)
 	and (spawn_def.type_of_spawning ~= "water" or is_water)
-	and not is_bedrock then
+	and not spawn_protected or not minetest.is_protected(s, "")
+	and not is_bedrock
 		--only need to poll for node light if everything else worked
 		local gotten_light = get_node_light(pos)
 		if gotten_light >= spawn_def.min_light and gotten_light <= spawn_def.max_light then
