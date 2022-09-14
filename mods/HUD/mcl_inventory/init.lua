@@ -206,6 +206,7 @@ end
 
 --Insta "digging" nodes in gamemode-creative
 minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
+	if not puncher or not puncher:is_player() then return end
 	if minetest.is_creative_enabled() then return end
 	local name = puncher:get_player_name()
 	if not minetest.is_creative_enabled(name) then return end
@@ -220,7 +221,7 @@ end)
 
 --Don't subtract from inv when placing in gamemode-creative
 minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
-	if minetest.is_creative_enabled(placer:get_player_name()) then return true end
+	if placer and placer:is_player() and minetest.is_creative_enabled(placer:get_player_name()) then return true end
 end)
 
 local function in_table(n,h)
