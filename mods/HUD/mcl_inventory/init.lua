@@ -75,7 +75,7 @@ local function set_inventory(player, armor_change_only)
 	local form = "size[9,8.75]" ..
 		"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png]" ..
 		mcl_player.get_player_formspec_model(player, 1.0, 0.0, 2.25, 4.5, "") ..
-		
+
 		-- Armor
 		"list[current_player;armor;0,0;1,1;1]" ..
 		"list[current_player;armor;0,1;1,1;2]" ..
@@ -88,7 +88,7 @@ local function set_inventory(player, armor_change_only)
 		"list[current_player;offhand;3,2;1,1]" ..
 		mcl_formspec.get_itemslot_bg(3,2,1,1) ..
 		armor_slot_imgs ..
-		
+
 		-- Craft and inventory
 		"label[0,4;"..F(minetest.colorize("#313131", S("Inventory"))) .. "]" ..
 		"list[current_player;main;0,4.5;9,3;9]" ..
@@ -100,34 +100,34 @@ local function set_inventory(player, armor_change_only)
 		mcl_formspec.get_itemslot_bg(0, 7.74, 9, 1) ..
 		mcl_formspec.get_itemslot_bg(4, 1,2, 2) ..
 		mcl_formspec.get_itemslot_bg(7, 1.5, 1, 1) ..
-		
+
 		-- Crafting guide button
 		"image_button[4.5,3;1,1;craftguide_book.png;__mcl_craftguide;]" ..
 		"tooltip[__mcl_craftguide;"..F(S("Recipe book")) .. "]" ..
-		
+
 		-- Help button
 		"image_button[8,3;1,1;doc_button_icon_lores.png;__mcl_doc;]" ..
 		"tooltip[__mcl_doc;" .. F(S("Help")) .. "]"
-		
+
 	-- Skins button
 	if minetest.global_exists("mcl_skins") then
 		form = form ..
 			"image_button[3,3;1,1;mcl_skins_button.png;__mcl_skins;]" ..
 			"tooltip[__mcl_skins;" .. F(S("Select player skin")) .. "]"
 	end
-	
+
 	form = form ..
 		-- Achievements button
 		"image_button[7,3;1,1;mcl_achievements_button.png;__mcl_achievements;]" ..
 		"tooltip[__mcl_achievements;" .. F(S("Achievements")) .. "]" ..
-		
+
 		-- For shortcuts
 		"listring[current_player;main]" ..
 		"listring[current_player;armor]" ..
 		"listring[current_player;main]" ..
 		"listring[current_player;craft]" ..
 		"listring[current_player;main]"
-	
+
 	player:set_inventory_formspec(form)
 end
 
@@ -216,6 +216,11 @@ minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
 		minetest.remove_node(pos)
 		return true
 	end
+end)
+
+--Don't subtract from inv when placing in gamemode-creative
+minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
+	if minetest.is_creative_enabled(placer:get_player_name()) then return true end
 end)
 
 local function in_table(n,h)
