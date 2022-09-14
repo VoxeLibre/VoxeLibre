@@ -30,9 +30,10 @@ return {
 		"kabou",
 		"rudzik8",
 		"chmodsayshello",
-		"PrarieWind",
+		"PrairieWind",
 		"RandomLegoBrick",
 		"SumianVoice",
+		"MrRar",
 	}},
 	{S("Contributors"), 0x52FF00, {
 		"Laurent Rocher",
@@ -83,6 +84,8 @@ return {
 		"mrminer",
 		"Thunder1035",
 		"opfromthestart",
+		"snowyu",
+		"FaceDeer",
 	}},
 	{S("MineClone5"), 0xA60014, {
 		"kay27",
@@ -92,7 +95,7 @@ return {
 		"j45",
 		"chmodsayshello",
 		"3raven",
-		"PrarieWind",
+		"PrairieWind",
 		"Gustavo1",
 		"CableGuy67",
 		"MrRar",
@@ -133,6 +136,7 @@ return {
 		"4Evergreen4",
 		"jordan4ibanez",
 		"paramat",
+		"cora",
 	}},
 	{S("3D Models"), 0x0019FF, {
 		"22i",
@@ -162,6 +166,8 @@ return {
 		"Marcin Serwin",
 		"Pepebotella",
 		"Emojigit",
+		"snowyu",
+		"3raven",
 	}},
 	{S("Funders"), 0xF7FF00, {
 		"40W",

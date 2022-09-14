@@ -29,9 +29,10 @@
 * kabou
 * rudzik8
 * chmodsayshello
-* PrarieWind
+* PrairieWind
 * RandomLegoBrick
 * SumianVoice
+* MrRar
 
 ## Contributors
 * Laurent Rocher
@@ -82,6 +83,8 @@
 * mrminer
 * Thunder1035
 * opfromthestart
+* snowyu
+* FaceDeer
 
 ## MineClone5
 * kay27
@@ -91,7 +94,7 @@
 * j45
 * chmodsayshello
 * 3raven
-* PrarieWind
+* PrairieWind
 * Gustavo1
 * CableGuy67
 * MrRar
@@ -132,6 +135,7 @@
 * 4Evergreen4
 * jordan4ibanez
 * paramat
+* cora
 
 ## 3D Models
 * 22i
@@ -161,6 +165,8 @@
 * Marcin Serwin
 * Pepebotella
 * Emojigit
+* snowyu
+* 3raven
 
 ## Funders
 * 40W
