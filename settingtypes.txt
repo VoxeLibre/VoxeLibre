@@ -156,6 +156,9 @@ mcl_generate_fallen_logs (Generate fallen logs) bool false
 # But creating new flat worlds after changing this setting should be safe.
 mcl_superflat_classic (Classic superflat map generation) bool false
 
+# If disabled, no deepslate will be generated.
+mcl_generate_deepslate (Generate Deepslate) bool true
+
 # If disabled, no ores will be generated.
 mcl_generate_ores (Generate Ores) bool true
 
@@ -194,3 +197,9 @@ mcl_item_id_debug (Item ID Debug) bool false
 
 #Log mob spawning and despawning events
 mcl_logging_mobs_spawn (Log Mob Spawning) bool true
+
+# If enabled mapgen timings will be dumped to log
+mcl_logging_mapgen (Chunk generation logging) bool false
+
+# If enabled generated structures will be logged
+mcl_logging_structures (Structure generation logging) bool true

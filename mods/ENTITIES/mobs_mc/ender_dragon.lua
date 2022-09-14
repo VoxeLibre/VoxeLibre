@@ -4,6 +4,50 @@
 
 local S = minetest.get_translator("mobs_mc")
 
+local BEAM_CHECK_FREQUENCY = 2
+local POS_CHECK_FREQUENCY = 15
+local HEAL_AMMOUNT = 37
+
+local function heal(self)
+	local o = self.object
+	self.health = math.min(self.hp_max,self.health + HEAL_AMMOUNT)
+end
+local function check_beam(self)
+	for _, obj in ipairs(minetest.get_objects_inside_radius(self.object:get_pos(), 80)) do
+		local luaentity = obj:get_luaentity()
+		if luaentity and luaentity.name == "mcl_end:crystal" then
+			if luaentity.beam then
+				if luaentity.beam == self.beam then
+					heal(self)
+					break
+				end
+			else
+				if self.beam then
+					self.beam:remove()
+				end
+				minetest.add_entity(self.object:get_pos(), "mcl_end:crystal_beam"):get_luaentity():init(self.object, obj)
+				break
+			end
+		end
+	end
+end
+
+local function check_pos(self)
+	if self._portal_pos then
+		-- migrate old format
+		if type(self._portal_pos) == "string" then
+			self._portal_pos = minetest.string_to_pos(self._portal_pos)
+		end
+		local portal_center = vector.add(self._portal_pos, vector.new(0, 11, 0))
+		local pos = self.object:get_pos()
+		if vector.distance(pos, portal_center) > 50 then
+			self.object:set_pos(self._last_good_pos or portal_center)
+		else
+			self._last_good_pos = pos
+		end
+	end
+end
+
 mcl_mobs:register_mob("mobs_mc:enderdragon", {
 	description = S("Ender Dragon"),
 	type = "monster",
@@ -23,7 +67,7 @@ mcl_mobs:register_mob("mobs_mc:enderdragon", {
 		{"mobs_mc_dragon.png"},
 	},
 	visual_size = {x=3, y=3},
-	view_range = 35,
+	view_range = 64,
 	walk_velocity = 6,
 	run_velocity = 6,
 	can_despawn = false,
@@ -61,45 +105,33 @@ mcl_mobs:register_mob("mobs_mc:enderdragon", {
 		run_start = 0,		run_end = 20,
 	},
 	ignores_nametag = true,
-	do_custom = function(self)
+	do_custom = function(self,dtime)
 		mcl_bossbars.update_boss(self.object, "Ender Dragon", "light_purple")
-		for _, obj in ipairs(minetest.get_objects_inside_radius(self.object:get_pos(), 80)) do
-			local luaentity = obj:get_luaentity()
-			if luaentity and luaentity.name == "mcl_end:crystal" then
-				if luaentity.beam then
-					if luaentity.beam == self.beam then
-						break
-					end
-				else
-					if self.beam then
-						self.beam:remove()
-					end
-					minetest.add_entity(self.object:get_pos(), "mcl_end:crystal_beam"):get_luaentity():init(self.object, obj)
-					break
-				end
-			end
+		if self._pos_timer == nil or self._pos_timer > POS_CHECK_FREQUENCY then
+			self._pos_timer = 0
+			check_pos(self)
 		end
-		if self._portal_pos then
-			-- migrate old format
-			if type(self._portal_pos) == "string" then
-				self._portal_pos = minetest.string_to_pos(self._portal_pos)
-			end
-			local portal_center = vector.add(self._portal_pos, vector.new(3, 11, 3))
-			local pos = self.object:get_pos()
-			if vector.distance(pos, portal_center) > 50 then
-				self.object:set_pos(self._last_good_pos or portal_center)
-			else
-				self._last_good_pos = pos
-			end
+		if self._beam_timer == nil or self._beam_timer > BEAM_CHECK_FREQUENCY then
+			self._beam_timer = 0
+			check_beam(self)
 		end
+		self._beam_timer = self._beam_timer + dtime
+		self._pos_timer = self._pos_timer + dtime
 	end,
-	on_die = function(self, pos)
+	on_die = function(self, pos, cmi_cause)
 		if self._portal_pos then
 			mcl_portals.spawn_gateway_portal()
-			mcl_structures.call_struct(self._portal_pos, "end_exit_portal_open")
+			mcl_structures.place_structure(self._portal_pos,mcl_structures.registered_structures["end_exit_portal_open"],PseudoRandom(minetest.get_mapgen_setting("seed")),-1)
 			if self._initial then
 				mcl_experience.throw_xp(pos, 11500) -- 500 + 11500 = 12000
-				minetest.set_node(vector.add(self._portal_pos, vector.new(3, 5, 3)), {name = "mcl_end:dragon_egg"})
+				minetest.set_node(vector.add(self._portal_pos, vector.new(0, 5, 0)), {name = "mcl_end:dragon_egg"})
+			end
+		end
+		
+		-- Free The End Advancement
+		for _,players in pairs(minetest.get_objects_inside_radius(pos,64)) do
+			if players:is_player() then
+				awards.unlock(players:get_player_name(), "mcl:freeTheEnd")
 			end
 		end
 	end,

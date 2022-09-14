@@ -4,8 +4,10 @@ local disabled_structures = minetest.settings:get("mcl_disabled_structures")
 if disabled_structures then	disabled_structures = disabled_structures:split(",")
 else disabled_structures = {} end
 
+local logging = minetest.settings:get_bool("mcl_logging_structures",true)
+
 function mcl_structures.is_disabled(structname)
-	if table.indexof(disabled_structures,structname) ~= -1 then return true end
+	return table.indexof(disabled_structures,structname) ~= -1
 end
 
 function mcl_structures.fill_chests(p1,p2,loot,pr)
@@ -22,10 +24,17 @@ function mcl_structures.fill_chests(p1,p2,loot,pr)
 end
 
 local function generate_loot(pos, def, pr)
-	local hl = def.sidelen / 2
+	local hl = def.sidelen
 	local p1 = vector.offset(pos,-hl,-hl,-hl)
 	local p2 = vector.offset(pos,hl,hl,hl)
 	if def.loot then mcl_structures.fill_chests(p1,p2,def.loot,pr) end
+end
+
+local function construct_nodes(pos,def,pr)
+	local nn = minetest.find_nodes_in_area(vector.offset(pos,-def.sidelen/2,0,-def.sidelen/2),vector.offset(pos,def.sidelen/2,def.sidelen,def.sidelen/2),def.construct_nodes)
+	for _,p in pairs(nn) do
+		mcl_structures.init_node_construct(p)
+	end
 end
 
 
@@ -129,7 +138,7 @@ end
 
 function mcl_structures.place_structure(pos, def, pr, blockseed)
 	if not def then	return end
-	local logging = not def.terrain_feature
+	local log_enabled = logging and not def.terrain_feature
 	local y_offset = 0
 	if type(def.y_offset) == "function" then
 		y_offset = def.y_offset(pr)
@@ -146,7 +155,7 @@ function mcl_structures.place_structure(pos, def, pr, blockseed)
 			if def.make_foundation then
 				foundation(vector.offset(pos,-def.sidelen/2 - 3,-1,-def.sidelen/2 - 3),vector.offset(pos,def.sidelen/2 + 3,-1,def.sidelen/2 + 3),pos,def.sidelen)
 			else
-				if logging then
+				if log_enabled then
 					minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pp).." not placed. No solid ground.")
 				end
 				return false
@@ -154,7 +163,7 @@ function mcl_structures.place_structure(pos, def, pr, blockseed)
 		end
 	end
 	if def.on_place and not def.on_place(pos,def,pr,blockseed) then
-		if logging then
+		if log_enabled then
 			minetest.log("warning","[mcl_structures] "..def.name.." at "..minetest.pos_to_string(pp).." not placed. Conditions not satisfied.")
 		end
 		return false
@@ -168,23 +177,26 @@ function mcl_structures.place_structure(pos, def, pr, blockseed)
 			if def.after_place then ap = def.after_place  end
 
 			mcl_structures.place_schematic(pp, file, "random", nil, true, "place_center_x,place_center_z",function(p)
-				if def.loot then generate_loot(pos,def,pr,blockseed) end
-				return ap(pos,def,pr,blockseed)
+				if def.loot then generate_loot(pp,def,pr,blockseed) end
+				if def.construct_nodes then construct_nodes(pp,def,pr,blockseed) end
+				return ap(pp,def,pr,blockseed)
 			end,pr)
-			if logging then
+			if log_enabled then
 				minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pp))
 			end
 			return true
 		end
-	elseif def.place_func and def.place_func(pos,def,pr,blockseed) then
-		if not def.after_place or ( def.after_place  and def.after_place(pos,def,pr,blockseed) ) then
-			if logging then
+	elseif def.place_func and def.place_func(pp,def,pr,blockseed) then
+		if not def.after_place or ( def.after_place  and def.after_place(pp,def,pr,blockseed) ) then
+			if def.loot then generate_loot(pp,def,pr,blockseed) end
+			if def.construct_nodes then construct_nodes(pp,def,pr,blockseed) end
+			if log_enabled then
 				minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pp))
 			end
 			return true
 		end
 	end
-	if logging then
+	if log_enabled then
 		minetest.log("warning","[mcl_structures] placing "..def.name.." failed at "..minetest.pos_to_string(pos))
 	end
 end
@@ -201,28 +213,31 @@ function mcl_structures.register_structure(name,def,nospawn) --nospawn means it 
 		sbgroups.structblock = nil
 		sbgroups.structblock_lbm = 1
 	else
-		minetest.register_on_mods_loaded(function() --make sure all previous decorations and biomes have been registered
-			def.deco = minetest.register_decoration({
-				name = "mcl_structures:deco_"..name,
-				decoration = structblock,
-				deco_type = "simple",
-				place_on = def.place_on,
-				spawn_by = def.spawn_by,
-				num_spawn_by = def.num_spawn_by,
-				sidelen = 80,
-				fill_ratio = def.fill_ratio,
-				noise_params = def.noise_params,
-				flags = flags,
-				biomes = def.biomes,
-				y_max = def.y_max,
-				y_min = def.y_min
-			})
-			minetest.register_node(":"..structblock, {drawtype="airlike", walkable = false, pointable = false,groups = sbgroups})
-			def.structblock = structblock
-			def.deco_id = minetest.get_decoration_id("mcl_structures:deco_"..name)
-			minetest.set_gen_notify({decoration=true}, { def.deco_id })
-			--catching of gennotify happens in mcl_mapgen_core
-		end)
+		if def.place_on then
+			minetest.register_on_mods_loaded(function() --make sure all previous decorations and biomes have been registered
+				def.deco = minetest.register_decoration({
+					name = "mcl_structures:deco_"..name,
+					decoration = structblock,
+					deco_type = "simple",
+					place_on = def.place_on,
+					spawn_by = def.spawn_by,
+					num_spawn_by = def.num_spawn_by,
+					sidelen = 80,
+					fill_ratio = def.fill_ratio,
+					noise_params = def.noise_params,
+					flags = flags,
+					biomes = def.biomes,
+					y_max = def.y_max,
+					y_min = def.y_min
+				})
+				minetest.register_node(":"..structblock, {drawtype="airlike", walkable = false, pointable = false,groups = sbgroups,sunlight_propagates = true,})
+				def.structblock = structblock
+				def.deco_id = minetest.get_decoration_id("mcl_structures:deco_"..name)
+				minetest.set_gen_notify({decoration=true}, { def.deco_id })
+				--catching of gennotify happens in mcl_mapgen_core
+
+			end)
+		end
 	end
 	mcl_structures.registered_structures[name] = def
 end

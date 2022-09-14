@@ -69,16 +69,16 @@ local function update_pane(pos)
 end
 
 minetest.register_on_placenode(function(pos, node)
-	if minetest.get_item_group(node, "pane") then
-		update_pane(pos)
-	end
+	if minetest.get_item_group(node.name, "pane") <= 0 then return end
+	update_pane(pos)
 	for i = 0, 3 do
 		local dir = minetest.facedir_to_dir(i)
 		update_pane(vector.add(pos, dir))
 	end
 end)
 
-minetest.register_on_dignode(function(pos)
+minetest.register_on_dignode(function(pos,node)
+	if minetest.get_item_group(node.name, "pane") <= 0 then return end
 	for i = 0, 3 do
 		local dir = minetest.facedir_to_dir(i)
 		update_pane(vector.add(pos, dir))
@@ -86,6 +86,7 @@ minetest.register_on_dignode(function(pos)
 end)
 
 xpanes = {}
+xpanes.update_pane = update_pane
 function xpanes.register_pane(name, def)
 	for i = 1, 15 do
 		minetest.register_alias("xpanes:" .. name .. "_" .. i, "xpanes:" .. name .. "_flat")

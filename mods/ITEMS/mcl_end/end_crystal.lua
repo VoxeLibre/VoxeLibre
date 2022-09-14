@@ -1,5 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
+
 local vector = vector
 
 local explosion_strength = 6
@@ -65,12 +67,20 @@ local function spawn_crystal(pos)
 		crystals[i] = find_crystal(crystal_pos)
 		if not crystals[i] then return end
 	end
+	for _,o in pairs(minetest.get_objects_inside_radius(pos,64)) do
+		local l = o:get_luaentity()
+		if l and l.name == "mobs_mc:enderdragon" then return end
+		if not peaceful then
+			if o:is_player() then
+				awards.unlock(o:get_player_name(), "mcl:theEndAgain")
+			end
+		end
+	end
 	for _, crystal in pairs(crystals) do
 		crystal_explode(crystal)
 	end
-	local portal_pos = vector.add(portal_center, vector.new(-3, -1, -3))
-	mcl_structures.call_struct(portal_pos, "end_exit_portal")
-	minetest.add_entity(vector.add(portal_pos, vector.new(3, 11, 3)), "mobs_mc:enderdragon"):get_luaentity()._portal_pos = portal_pos
+	local portal_pos = vector.add(portal_center, vector.new(0, -1, 0))
+	mcl_structures.place_structure(portal_pos,mcl_structures.registered_structures["end_exit_portal"],PseudoRandom(minetest.get_mapgen_setting("seed")),-1)
 end
 
 minetest.register_entity("mcl_end:crystal", {

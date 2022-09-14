@@ -148,6 +148,18 @@ awards.register_achievement("mcl:hiddenInTheDepths", {
 	icon = "mcl_nether_ancient_debris_side.png",
 })
 
+awards.register_achievement("mcl:PickUpDragonEgg", {
+	title = S("The Next Generation"),
+	description = S("Hold the Dragon Egg.\nHint: Pick up the egg from the ground and have it in your inventory."),
+	icon = "mcl_end_dragon_egg.png",
+})
+
+awards.register_achievement("mcl:skysTheLimit", {
+	title = S("Sky's the Limit"),
+	description = S("Find the elytra and prepare to fly above and beyond!"),
+	icon = "mcl_armor_inv_elytra.png",
+}) -- TODO: Make also unlock when moved to inventory, not just picking up from ground
+
 -- Smelting achivements: These are awarded when picking up an item from a furnace
 -- output. They are given in mcl_furnaces.
 awards.register_achievement("mcl:acquireIron", {
@@ -237,6 +249,12 @@ awards.register_achievement("mcl:witheringHeights", {
 	icon = "mcl_mobitems_nether_star.png",
 })
 
+awards.register_achievement("mcl:freeTheEnd", {
+	title = S("Free the End"),
+	description = S("Kill the ender dragon. Good Luck!"),
+	icon = "mobs_mc_spawn_icon_dragon.png", -- TODO: Dragon Head Icon
+})
+
 -- Triggered in mcl_fishing
 awards.register_achievement("mcl:fishyBusiness", {
 	title = S("Fishy Business"),
@@ -283,6 +301,13 @@ awards.register_achievement("mcl:maxed_beacon", {
 	title = S("Beaconator"),
 	description = S("Use a fully powered beacon."),
 	icon = "beacon_achievement_icon.png",
+})
+
+-- Triggered in mcl_end
+awards.register_achievement("mcl:theEndAgain", {
+	title = S("The End... Again..."),
+	description = S("Respawn the Ender Dragon."),
+	icon = "mcl_end_crystal_item.png",
 })
 
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)

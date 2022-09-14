@@ -13,9 +13,6 @@ local mod_mcl_crimson = minetest.get_modpath("mcl_crimson")
 local mod_mcl_blackstone = minetest.get_modpath("mcl_blackstone")
 local mod_mcl_mangrove = minetest.get_modpath("mcl_mangrove")
 
--- Jungle bush schematic. In PC/Java Edition it's Jungle Wood + Oak Leaves
-local jungle_bush_schematic = mod_mcl_core.."/schematics/mcl_core_jungle_bush_oak_leaves.mts"
-
 local deco_id_chorus_plant
 
 --
@@ -1727,12 +1724,90 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		-- FIXME: For some reason the End stops generating early if this constant is not added.
-		-- Figure out why.
 		y_min = mcl_vars.mg_end_min,
 		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 1000, --ridiculously high values so End Island always takes precedent
+		humidity_point = 1000,
+		vertical_blend = 16,
+		_mcl_biome_type = "medium",
+		_mcl_palette_index = 0,
+	})
+	minetest.register_biome({
+		name = "EndMidlands",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 1000,
+		humidity_point = 1000,
+		vertical_blend = 16,
+		_mcl_biome_type = "medium",
+		_mcl_palette_index = 0,
+	})
+	minetest.register_biome({
+		name = "EndHighlands",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 1000,
+		humidity_point = 1000,
+		vertical_blend = 16,
+		_mcl_biome_type = "medium",
+		_mcl_palette_index = 0,
+	})
+	minetest.register_biome({
+		name = "EndSmallIslands",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 1000,
+		humidity_point = 1000,
+		vertical_blend = 16,
+		_mcl_biome_type = "medium",
+		_mcl_palette_index = 0,
+	})
+
+	minetest.register_biome({
+		name = "EndBorder",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 500,
+		humidity_point = 500,
+		vertical_blend = 16,
+		max_pos = {x = 1250, y = mcl_vars.mg_end_min + 512, z = 1250},
+		min_pos = {x = -1250, y = mcl_vars.mg_end_min, z = -1250},
+		_mcl_biome_type = "medium",
+		_mcl_palette_index = 0,
+	})
+
+	minetest.register_biome({
+		name = "EndIsland",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		max_pos = {x = 650, y = mcl_vars.mg_end_min + 512, z = 650},
+		min_pos = {x = -650, y = mcl_vars.mg_end_min, z = -650},
 		heat_point = 50,
 		humidity_point = 50,
+		vertical_blend = 16,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 0,
 	})
@@ -2382,10 +2457,47 @@ local function register_dimension_ores()
 		end_wherein = {"air"}
 	end
 
+	local mult = 1.0
+
 	minetest.register_ore({
 		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
+		biomes          = {"EndSmallIslands","Endborder"},
+		y_min           = mcl_vars.mg_end_min+64,
+		y_max           = mcl_vars.mg_end_min+80,
+		clust_num_ores  = 3375,
+		clust_size      = 15,
+
+		noise_params = {
+			offset  = mcl_vars.mg_end_min+70,
+			scale   = -1,
+			spread  = {x=84, y=84, z=84},
+			seed    = 145,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			--flags = "defaults",
+		},
+
+		np_stratum_thickness = {
+			offset  = 0,
+			scale   = 15,
+			spread  = {x=84, y=84, z=84},
+			seed    = 145,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			--flags = "defaults",
+		},
+		clust_scarcity = 1,
+	})
+
+	minetest.register_ore({
+		ore_type        = "stratum",
+		ore             = "mcl_end:end_stone",
+		wherein         = end_wherein,
+		biomes          = {"End","EndMidlands","EndHighlands","EndBarrens"},
 		y_min           = mcl_vars.mg_end_min+64,
 		y_max           = mcl_vars.mg_end_min+80,
 
@@ -2413,6 +2525,7 @@ local function register_dimension_ores()
 		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
+		biomes          = {"End","EndMidlands","EndHighlands","EndBarrens"},
 		y_min           = mcl_vars.mg_end_min+64,
 		y_max           = mcl_vars.mg_end_min+80,
 
@@ -2439,6 +2552,7 @@ local function register_dimension_ores()
 		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
+		biomes          = {"End","EndMidlands","EndHighlands","EndBarrens"},
 		y_min           = mcl_vars.mg_end_min+64,
 		y_max           = mcl_vars.mg_end_min+80,
 
@@ -3149,13 +3263,13 @@ local function register_decorations()
 
 	-- Jungle tree
 
-	-- Huge jungle tree (2 variants)
-	for i=1, 2 do
+	-- Huge jungle tree (4 variants)
+	for i=1, 4 do
 		minetest.register_decoration({
 			deco_type = "schematic",
 			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 			sidelen = 80,
-			fill_ratio = 0.00125,
+			fill_ratio = 0.0008,
 			biomes = {"Jungle"},
 			y_min = 4,
 			y_max = mcl_vars.mg_overworld_max,
@@ -3167,7 +3281,7 @@ local function register_decorations()
 			deco_type = "schematic",
 			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 			sidelen = 80,
-			fill_ratio = 0.004,
+			fill_ratio = 0.003,
 			biomes = {"JungleM"},
 			y_min = 4,
 			y_max = mcl_vars.mg_overworld_max,
@@ -3182,7 +3296,55 @@ local function register_decorations()
 		deco_type = "schematic",
 		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 80,
-		fill_ratio = 0.045,
+		fill_ratio = 0.025,
+		biomes = {"Jungle"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.015,
+		biomes = {"Jungle"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree_2.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.005,
+		biomes = {"Jungle"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree_3.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.005,
+		biomes = {"Jungle"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree_4.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.025,
 		biomes = {"Jungle"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
@@ -3211,11 +3373,10 @@ local function register_decorations()
 		biomes = {"JungleM"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree.mts",
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_tree_2.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
-
 	-- Spruce
 	local function quick_spruce(seed, offset, sprucename, biomes, y)
 		if not y then
@@ -3538,6 +3699,18 @@ local function register_decorations()
 		rotation = "0",
 	})
 
+	--Snow on snowy dirt
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass_snow"},
+		sidelen = 80,
+		fill_ratio = 10,
+		flags = "all_floors",
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_core:snow",
+	})
+
 	--Mushrooms in caves
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -3800,7 +3973,7 @@ local function register_decorations()
 		sidelen = 80,
 		noise_params = {
 			offset = 0.0196,
-			scale = 0.025,
+			scale = 0.015,
 			spread = {x = 250, y = 250, z = 250},
 			seed = 2930,
 			octaves = 4,
@@ -3809,7 +3982,25 @@ local function register_decorations()
 		biomes = {"Jungle"},
 		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = jungle_bush_schematic,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_bush_oak_leaves.mts",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.0196,
+			scale = 0.005,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2930,
+			octaves = 4,
+			persist = 0.6,
+		},
+		biomes = {"Jungle"},
+		y_min = 3,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_bush_oak_leaves_2.mts",
 		flags = "place_center_x, place_center_z",
 	})
 	minetest.register_decoration({
@@ -3827,7 +4018,7 @@ local function register_decorations()
 		biomes = {"JungleM"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = jungle_bush_schematic,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_bush_oak_leaves.mts",
 		flags = "place_center_x, place_center_z",
 	})
 	minetest.register_decoration({
@@ -3845,7 +4036,7 @@ local function register_decorations()
 		biomes = {"JungleEdge", "JungleEdgeM"},
 		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = jungle_bush_schematic,
+		schematic = mod_mcl_core.."/schematics/mcl_core_jungle_bush_oak_leaves.mts",
 		flags = "place_center_x, place_center_z",
 	})
 
@@ -4829,9 +5020,9 @@ local function register_dimension_decorations()
 
 	-- Chorus plant
 	minetest.register_decoration({
-		name = "mcl_biomes:chorus_plant",
+		name = "mcl_biomes:chorus",
 		deco_type = "simple",
-		place_on = {"mcl_end:end_stone", "air"},
+		place_on = {"mcl_end:end_stone"},
 		flags = "all_floors",
 		sidelen = 16,
 		noise_params = {
@@ -4844,9 +5035,31 @@ local function register_dimension_decorations()
 		},
 		y_min = mcl_vars.mg_end_min,
 		y_max = mcl_vars.mg_end_max,
+		decoration = "mcl_end:chorus_plant",
+		height = 1,
+		height_max = 8,
+		biomes = { "End", "EndMidlands", "EndHighlands", "EndBarrens", "EndSmallIslands" },
+	})
+	minetest.register_decoration({
+		name = "mcl_biomes:chorus_plant",
+		deco_type = "simple",
+		place_on = {"mcl_end:chorus_plant"},
+		flags = "all_floors",
+		sidelen = 16,
+		fill_ratio = 10,
+		--[[noise_params = {
+			offset = -0.012,
+			scale = 0.024,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 257,
+			octaves = 3,
+			persist = 0.6
+		},--]]
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max,
 		decoration = "mcl_end:chorus_flower",
 		height = 1,
-		biomes = { "End" },
+		biomes = { "End", "EndMidlands", "EndHighlands", "EndBarrens", "EndSmallIslands" },
 	})
 
 	deco_id_chorus_plant = minetest.get_decoration_id("mcl_biomes:chorus_plant")
@@ -4933,7 +5146,7 @@ if mg_name ~= "singlenode" then
 			if minp.y > -26900 then return end
 			for _, pos in ipairs(gennotify["decoration#"..deco_id_chorus_plant] or {}) do
 				local x, y, z = pos.x, pos.y, pos.z
-				if x < -2 or x > 2 or z < -2 or z > 2 then
+				if x < -10 or x > 10 or z < -10 or z > 10 then
 					local realpos = { x = x, y = y + 1, z = z }
 					local node = minetest.get_node(realpos)
 					if node and node.name == "mcl_end:chorus_flower" then
