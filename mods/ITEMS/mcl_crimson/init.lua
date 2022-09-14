@@ -452,6 +452,36 @@ minetest.register_node("mcl_crimson:crimson_nylium", {
 	_mcl_silk_touch_drop = true,
 })
 
+local function has_nylium_neighbor(pos)
+	local p = minetest.find_node_near(pos,1,{"mcl_crimson:warped_nylium","mcl_crimson:crimson_nylium"})
+	if p then
+		return minetest.get_node(p)
+	end
+end
+
+local function spread_nylium(pos)
+	local nn = minetest.find_nodes_in_area_under_air(vector.offset(pos,-5,-3,-5),vector.offset(pos,5,3,5),{"mcl_nether:netherrack"})
+	table.insert(nn,pos)
+	table.sort(nn,function(a, b)
+		return vector.distance(pos, a) < vector.distance(pos, b)
+	end)
+	for i=1,math.random(1,math.min(#nn,15)) do
+		local n = has_nylium_neighbor(nn[i])
+		if n then
+			minetest.set_node(nn[i],n)
+			mcl_dye.add_bone_meal_particle(vector.offset(nn[i],0,1,0))
+		end
+	end
+end
+
+mcl_dye.register_on_bone_meal_apply(function(pt,user)
+	if not pt.type == "node" then return end
+	if minetest.get_node(pt.under).name ~= "mcl_nether:netherrack" then return end
+	if has_nylium_neighbor(pt.under) then
+		spread_nylium(pt.under)
+	end
+end)
+
 minetest.register_craft({
 	output = "mcl_crimson:crimson_hyphae_wood 4",
 	recipe = {
