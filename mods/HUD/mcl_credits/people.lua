@@ -33,6 +33,7 @@ return {
 		"PrarieWind",
 		"RandomLegoBrick",
 		"SumianVoice",
+		"MrRar",
 	}},
 	{S("Contributors"), 0x52FF00, {
 		"Laurent Rocher",
@@ -83,6 +84,7 @@ return {
 		"mrminer",
 		"Thunder1035",
 		"opfromthestart",
+		"snowyu",
 	}},
 	{S("MineClone5"), 0xA60014, {
 		"kay27",
@@ -133,6 +135,7 @@ return {
 		"4Evergreen4",
 		"jordan4ibanez",
 		"paramat",
+		"cora",
 	}},
 	{S("3D Models"), 0x0019FF, {
 		"22i",
@@ -162,6 +165,8 @@ return {
 		"Marcin Serwin",
 		"Pepebotella",
 		"Emojigit",
+		"snowyu",
+		"3raven",
 	}},
 	{S("Funders"), 0xF7FF00, {
 		"40W",
