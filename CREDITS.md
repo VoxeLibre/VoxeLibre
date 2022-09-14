@@ -29,7 +29,7 @@
 * kabou
 * rudzik8
 * chmodsayshello
-* PrarieWind
+* PrairieWind
 * RandomLegoBrick
 * SumianVoice
 * MrRar
@@ -93,7 +93,7 @@
 * j45
 * chmodsayshello
 * 3raven
-* PrarieWind
+* PrairieWind
 * Gustavo1
 * CableGuy67
 * MrRar
