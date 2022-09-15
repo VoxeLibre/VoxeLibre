@@ -28,6 +28,38 @@ function grow_vines(pos, moreontop ,vine, dir)
 	until n.name ~= "air" and n.name ~= vine
 end
 
+local nether_plants = {
+	["mcl_crimson:crimson_nylium"] = {
+		"mcl_crimson:crimson_roots",
+		"mcl_crimson:crimson_fungus",
+		"mcl_crimson:warped_fungus",
+	},
+	["mcl_crimson:warped_nylium"] = {
+		"mcl_crimson:warped_roots",
+		"mcl_crimson:warped_fungus",
+		"mcl_crimson:twisting_vines",
+		"mcl_crimson:nether_sprouts",
+	},
+}
+
+local function has_nylium_neighbor(pos)
+	local p = minetest.find_node_near(pos,1,{"mcl_crimson:warped_nylium","mcl_crimson:crimson_nylium"})
+	if p then
+		return minetest.get_node(p)
+	end
+end
+
+local function spread_nether_plants(pos,node)
+	local n = node.name
+	local nn = minetest.find_nodes_in_area_under_air(vector.offset(pos,-5,-3,-5),vector.offset(pos,5,3,5),{n})
+	table.shuffle(nn)
+	nn[1] = pos
+	for i=1,math.random(1,math.min(#nn,12)) do
+		minetest.set_node(vector.offset(nn[i],0,1,0),{name=nether_plants[n][math.random(#nether_plants[n])]})
+		mcl_dye.add_bone_meal_particle(vector.offset(nn[i],0,1,0))
+	end
+end
+
 minetest.register_node("mcl_crimson:warped_fungus", {
 	description = S("Warped Fungus Mushroom"),
 	drawtype = "plantlike",
@@ -483,54 +515,6 @@ minetest.register_node("mcl_crimson:crimson_nylium", {
 	_mcl_silk_touch_drop = true,
 })
 
-local function has_nylium_neighbor(pos)
-	local p = minetest.find_node_near(pos,1,{"mcl_crimson:warped_nylium","mcl_crimson:crimson_nylium"})
-	if p then
-		return minetest.get_node(p)
-	end
-end
-
-local nether_plants = {
-	["mcl_crimson:crimson_nylium"] = {
-		"mcl_crimson:crimson_roots",
-		"mcl_crimson:crimson_fungus",
-		"mcl_crimson:weeping_vines",
-		"mcl_crimson:warped_fungus",
-	},
-	["mcl_crimson:warped_nylium"] = {
-		"mcl_crimson:warped_roots",
-		"mcl_crimson:warped_fungus",
-		"mcl_crimson:twisting_vines",
-		"mcl_crimson:nether_sprouts",
-	},
-}
-
-local function spread_nylium(pos)
-	local nn = minetest.find_nodes_in_area_under_air(vector.offset(pos,-5,-3,-5),vector.offset(pos,5,3,5),{"mcl_nether:netherrack"})
-	table.insert(nn,pos)
-	table.sort(nn,function(a, b)
-		return vector.distance(pos, a) < vector.distance(pos, b)
-	end)
-	for i=1,math.random(1,math.min(#nn,15)) do
-		local n = has_nylium_neighbor(nn[i])
-		if n then
-			minetest.set_node(nn[i],n)
-			if math.random(5) == 1 then
-				minetest.set_node(vector.offset(nn[i],0,1,0),{name=nether_plants[n.name][math.random(#nether_plants[n.name])]})
-			end
-			mcl_dye.add_bone_meal_particle(vector.offset(nn[i],0,1,0))
-		end
-	end
-end
-
-mcl_dye.register_on_bone_meal_apply(function(pt,user)
-	if not pt.type == "node" then return end
-	if minetest.get_node(pt.under).name ~= "mcl_nether:netherrack" then return end
-	if has_nylium_neighbor(pt.under) then
-		spread_nylium(pt.under)
-	end
-end)
-
 minetest.register_craft({
 	output = "mcl_crimson:crimson_hyphae_wood 4",
 	recipe = {
@@ -547,6 +531,19 @@ minetest.register_craft({
 })
 
 mcl_stairs.register_stair_and_slab_simple("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", S("Crimson Stair"), S("Crimson Slab"), S("Double Crimson Slab"))
+
+mcl_dye.register_on_bone_meal_apply(function(pt,user)
+	if not pt.type == "node" then return end
+	local node = minetest.get_node(pt.under)
+	if node.name == "mcl_nether:netherrack" then
+		local n = has_nylium_neighbor(pt.under)
+		if n then
+			minetest.set_node(pt.under,n)
+		end
+	elseif node.name == "mcl_crimson:warped_nylium" or node.name == "mcl_crimson:crimson_nylium" then
+		spread_nether_plants(pt.under,node)
+	end
+end)
 
 minetest.register_abm({
 	label = "mcl_crimson:crimson_fungus",
