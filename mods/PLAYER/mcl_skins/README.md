@@ -44,10 +44,6 @@ Can be one of: "arm", "base", "footwear", "eye", "mouth", "bottom", "top", "hair
 `page_num` The page number to display of there are multiple pages of items.
 This parameter is optional. Must be a number. If it is not a valid page number the closest page number will be shown.
 
-### `mcl_skins.register_on_set_skin(func)`
-Register a function to be called whenever a player skin changes.
-The function will be given a player ObjectRef as a parameter.
-
 ### `mcl_skins.get_skin_list()`
 This function is used by mods that want a list of skins to register nodes that use the player skin as a texture.
 Returns an array of tables containing information about each skin.

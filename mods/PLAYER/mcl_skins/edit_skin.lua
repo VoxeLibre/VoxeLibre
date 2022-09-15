@@ -127,12 +127,6 @@ function mcl_skins.update_player_skin(player)
 	end
 	local model = slim_arms and "mcl_armor_character_female.b3d" or "mcl_armor_character.b3d"
 	mcl_player.player_set_model(player, model)
-	
-	mcl_inventory.update_inventory_formspec(player)
-	
-	for i=1, #mcl_skins.registered_on_set_skins do
-		mcl_skins.registered_on_set_skins[i](player)
-	end
 end
 
 -- Load player skin on join
@@ -169,12 +163,6 @@ end)
 minetest.register_on_leaveplayer(function(player)
 	mcl_skins.players[player] = nil
 end)
-
-mcl_skins.registered_on_set_skins = {}
-
-function mcl_skins.register_on_set_skin(func)
-	table.insert(mcl_skins.registered_on_set_skins, func)
-end
 
 function mcl_skins.show_formspec(player, active_tab, page_num)
 	local skin = mcl_skins.players[player]
