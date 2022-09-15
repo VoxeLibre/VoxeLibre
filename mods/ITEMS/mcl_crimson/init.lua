@@ -13,19 +13,19 @@ function generate_crimson_tree(pos)
 	minetest.place_schematic(pos,modpath.."/schematics/crimson_fungus_1.mts","random",nil,false,"place_center_x,place_center_z")
 end
 
-function grow_twisting_vines(pos, moreontop)
-	local y = pos.y + 1
-		while not (moreontop == 0) do
-			if minetest.get_node({x = pos.x, y = y, z = pos.z}).name == "air" then
-				minetest.set_node({x = pos.x, y = y, z = pos.z}, {name="mcl_crimson:twisting_vines"})
-				moreontop = moreontop - 1
-				y = y + 1
-			elseif minetest.get_node({x = pos.x, y = y, z = pos.z}).name == "mcl_crimson:twisting_vines" then
-				y = y + 1
-			else
-				moreontop = 0
+function grow_vines(pos, moreontop ,vine, dir)
+	if dir == nil then dir = 1 end
+	local n
+	repeat
+		pos = vector.offset(pos,0,dir,0)
+		n = minetest.get_node(pos)
+		if n.name == "air" then
+			for i=0,math.max(moreontop,1) do
+				minetest.set_node(vector.offset(pos,0,i*dir,0),{name=vine})
 			end
-	end
+			break
+		end
+	until n.name ~= "air" and n.name ~= vine
 end
 
 minetest.register_node("mcl_crimson:warped_fungus", {
@@ -77,10 +77,10 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 	on_rightclick = function(pos, node, pointed_thing, itemstack)
 		if pointed_thing:get_wielded_item():get_name() == "mcl_crimson:twisting_vines" then
 			itemstack:take_item()
-			grow_twisting_vines(pos, 1)
+			grow_vines(pos, 1, "mcl_crimson:twisting_vines")
 		elseif pointed_thing:get_wielded_item():get_name() == "mcl_dye:white" then
 			itemstack:take_item()
-			grow_twisting_vines(pos, math.random(1, 3))
+			grow_vines(pos, math.random(1, 3),"mcl_crimson:twisting_vines")
 		end
 	end,
 	drop = {

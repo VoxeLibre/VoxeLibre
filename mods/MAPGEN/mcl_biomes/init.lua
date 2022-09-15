@@ -4794,7 +4794,7 @@ local function register_dimension_decorations()
 		deco_type = "simple",
 		place_on = {"mcl_crimson:warped_nylium","mcl_crimson:twisting_vines"},
 		sidelen = 16,
-		fill_ratio = 0.012,
+		fill_ratio = 0.032,
 		biomes = {"WarpedForest"},
 		y_min = mcl_vars.mg_lava_nether_max + 1,
 		flags = "all_floors",
@@ -4876,6 +4876,18 @@ local function register_dimension_decorations()
 		schematic = mod_mcl_crimson.."/schematics/crimson_fungus_3.mts",
 		size = {x = 7, y = 13, z = 7},
 		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_crimson:warped_nylium","mcl_crimson:weeping_vines","mcl_nether:netherrack"},
+		sidelen = 16,
+		fill_ratio = 0.063,
+		biomes = {"CrimsonForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_ceilings",
+		height = 2,
+		height_max = 8,
+		decoration = "mcl_crimson:weeping_vines",
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
