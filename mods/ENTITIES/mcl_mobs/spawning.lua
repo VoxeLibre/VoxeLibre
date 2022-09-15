@@ -457,7 +457,7 @@ local function spawn_check(pos,spawn_def)
 	and (spawn_def.check_position and spawn_def.check_position(pos) or true)
 	and (not is_farm_animal(spawn_def.name) or is_grass)
 	and (spawn_def.type_of_spawning ~= "water" or is_water)
-	and ( not spawn_protected or not minetest.is_protected(s, "") )
+	and ( not spawn_protected or not minetest.is_protected(pos, "") )
 	and not is_bedrock then
 		--only need to poll for node light if everything else worked
 		local gotten_light = get_node_light(pos)
