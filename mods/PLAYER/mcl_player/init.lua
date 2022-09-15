@@ -1,3 +1,5 @@
+local sf = string.format
+
 -- Minetest 0.4 mod: player
 -- See README.txt for licensing and other information.
 mcl_player = {}
@@ -53,15 +55,53 @@ local player_model = {}
 local player_textures = {}
 local player_anim = {}
 local player_sneak = {}
+local player_visible = {}
 mcl_player.player_attached = {}
 
 function mcl_player.player_get_animation(player)
 	local name = player:get_player_name()
+	local textures = player_textures[name]
+
+	if not player_visible[name] then
+		textures = table.copy(textures)
+		textures[1] = "blank.png"
+	end
+
 	return {
 		model = player_model[name],
-		textures = player_textures[name],
+		textures = textures,
 		animation = player_anim[name],
+		visibility = player_visibility[name]
 	}
+end
+
+local registered_on_visual_change = {}
+
+function mcl_player.register_on_visual_change(func)
+	table.insert(registered_on_visual_change, func)
+end
+
+local function update_player_textures(player)
+	local name = player:get_player_name()
+	local textures = player_textures[name]
+
+	if not player_visible[name] then
+		textures = table.copy(textures)
+		textures[1] = "blank.png"
+	end
+
+	player:set_properties({ textures = textures })
+	
+	-- Delay calling the callbacks because mods (including mcl_player)
+	-- need to fully initialize player data from minetest.register_on_joinplayer
+	-- before callbacks run
+	minetest.after(0.1, function()
+		if player:is_player() then
+			for i, func in ipairs(registered_on_visual_change) do
+				func(player)
+			end
+		end
+	end)
 end
 
 -- Called when a player's appearance needs to be updated
@@ -74,11 +114,11 @@ function mcl_player.player_set_model(player, model_name)
 		end
 		player:set_properties({
 			mesh = model_name,
-			textures = player_textures[name] or model.textures,
 			visual = "mesh",
 			visual_size = model.visual_size or {x=1, y=1},
 			damage_texture_modifier = "^[colorize:red:130",
 		})
+		update_player_textures(player)
 		mcl_player.player_set_animation(player, "stand")
 	else
 		player:set_properties({
@@ -89,25 +129,36 @@ function mcl_player.player_set_model(player, model_name)
 	player_model[name] = model_name
 end
 
-local function set_texture(player, index, texture)
-	local textures = player_textures[player:get_player_name()]
-	textures[index] = texture
-	player:set_properties({textures = textures})
+function mcl_player.player_set_visibility(player, visible)
+	local name = player:get_player_name()
+	if player_visible[name] == visible then return end
+	player_visible[name] = visible
+	update_player_textures(player)
 end
 
 function mcl_player.player_set_skin(player, texture)
-	set_texture(player, 1, texture)
+	local name = player:get_player_name()
+	player_textures[name][1] = texture
+	update_player_textures(player)
 end
 
 function mcl_player.player_set_armor(player, texture)
-	set_texture(player, 2, texture)
+	local name = player:get_player_name()
+	player_textures[name][2] = texture
+	update_player_textures(player)
 end
 
 function mcl_player.get_player_formspec_model(player, x, y, w, h, fsname)
 	local name = player:get_player_name()
 	local model = player_model[name]
 	local anim = models[model].animations[player_anim[name]]
-	return "model["..x..","..y..";"..w..","..h..";"..fsname..";"..model..";"..table.concat(player_textures[name], ",")..";0,".. 180 ..";false;false;"..anim.x..","..anim.y.."]"
+	local textures = player_textures[name]
+	if not player_visible[name] then
+		textures = table.copy(textures)
+		textures[1] = "blank.png"
+	end
+	return sf("model[%s,%s;%s,%s;%s;%s;%s;0,180;false;false;%s,%s]", x, y, w, h, fsname, model,
+		table.concat(textures, ","), anim.x, anim.y)
 end
 
 function mcl_player.player_set_animation(player, anim_name, speed)
@@ -128,6 +179,7 @@ end
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	mcl_player.player_attached[name] = false
+	player_visible[name] = true
 	mcl_player.player_set_model(player, "character.b3d")
 	player_textures[name] = {"character.png", "blank.png", "blank.png"}
 	--player:set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, 30)
@@ -139,6 +191,8 @@ minetest.register_on_leaveplayer(function(player)
 	player_model[name] = nil
 	player_anim[name] = nil
 	player_textures[name] = nil
+	player_sneak[name] = nil
+	player_visible[name] = nil
 end)
 
 -- Localize for better performance.

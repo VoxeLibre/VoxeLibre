@@ -405,11 +405,11 @@ function mcl_potions._reset_player_effects(player, set_hud)
 	
 	mcl_weather.skycolor.update_sky_color({player})
 
+	mcl_potions._clear_cached_player_data(player)
+
 	if set_hud ~= false then
 		potions_set_hud(player)
 	end
-
-	mcl_potions._clear_cached_player_data(player)
 end
 
 function mcl_potions._save_player_effects(player)
@@ -561,45 +561,24 @@ function mcl_potions.is_obj_hit(self, pos)
 end
 
 
-function mcl_potions.make_invisible(player, toggle)
-
-	if not player then
-		return false
+function mcl_potions.make_invisible(obj_ref, hide)
+	if obj_ref:is_player() then
+		if hide then
+			mcl_player.player_set_visibility(obj_ref, false)
+			obj_ref:set_nametag_attributes({ color = { a = 0 } })
+		else
+			mcl_player.player_set_visibility(obj_ref, true)
+			obj_ref:set_nametag_attributes({ color = { r = 255, g = 255, b = 255, a = 255 } })
+		end
+	else
+		if hide then
+			local luaentity = obj_ref:get_luaentity()
+			EF.invisible[obj_ref].old_size = luaentity.visual_size
+			obj_ref:set_properties({ visual_size = { x = 0, y = 0 } })
+		else
+			obj_ref:set_properties({ visual_size = EF.invisible[obj_ref].old_size })
+		end
 	end
-
-	local is_player = player:is_player()
-	local entity = player:get_luaentity()
-	--local playername = player:get_player_name()
-	local skin_file
-
-	if toggle then -- hide player
-
-		skin_file = "mobs_mc_empty.png"
-
-		if entity then
-			EF.invisible[player].old_size = entity.visual_size
-		elseif not is_player then -- if not a player or entity, do nothing
-			return
-		end
-
-		if is_player then
-			mcl_player.player_set_skin(player, skin_file)
-		elseif not is_player then
-			player:set_properties({visual_size = {x = 0, y = 0}})
-		end
-		player:set_nametag_attributes({color = {a = 0}})
-
-	elseif EF.invisible[player] then -- show player
-
-		if is_player then
-			mcl_skins.update_player_skin(player)
-		elseif not is_player then
-			player:set_properties({visual_size = EF.invisible[player].old_size})
-		end
-		player:set_nametag_attributes({color = {r = 255, g = 255, b = 255, a = 255}})
-
-	end
-
 end
 
 

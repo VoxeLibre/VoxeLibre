@@ -189,8 +189,9 @@ minetest.register_on_joinplayer(function(player)
 	return_fields(player, "enchanting_lapis")
 end)
 
-
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/creative.lua")
+
+mcl_player.register_on_visual_change(mcl_inventory.update_inventory_formspec)
 
 local mt_is_creative_enabled = minetest.is_creative_enabled
 

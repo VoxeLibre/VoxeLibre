@@ -48,7 +48,7 @@ end
 
 if mcl_skins_enabled then
 	-- Change the player's hand to their skin
-	mcl_skins.register_on_set_skin(function(player)
+	mcl_player.register_on_visual_change(function(player)
 		local node_id = mcl_skins.get_node_id_by_player(player)
 		player:get_inventory():set_stack("hand", 1, "mcl_meshhand:" .. node_id)
 	end)
