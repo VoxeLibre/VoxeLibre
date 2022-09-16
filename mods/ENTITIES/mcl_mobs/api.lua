@@ -1025,15 +1025,6 @@ local node_ok = function(pos, fallback)
 	return minetest.registered_nodes[fallback]
 end
 
-local function get_light(pos, tod)
-	if minetest.get_node_or_nil(pos) then
-		local lightfunc = minetest.get_natural_light or minetest.get_node_light
-		return lightfunc(pos, tod)
-	else
-		return 0
-	end
-end
-
 -- environmental damage (water, lava, fire, light etc.)
 local do_env_damage = function(self)
 
@@ -1076,9 +1067,7 @@ local do_env_damage = function(self)
 		end
 	end
 
-	-- Use get_node_light for Minetest version 5.3 where get_natural_light
-	-- does not exist yet.
-	local sunlight = get_light(pos, self.time_of_day)
+	local sunlight = minetest.get_natural_light(pos, self.time_of_day)
 
 	-- bright light harms mob
 	if self.light_damage ~= 0 and (sunlight or 0) > 12 then
