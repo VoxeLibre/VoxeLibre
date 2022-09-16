@@ -2,7 +2,17 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 local spread_to = {"mcl_core:stone","mcl_core:dirt","mcl_core:sand","mcl_core:dirt_with_grass","group:grass_block","mcl_core:andesite","mcl_core:diorite","mcl_core:granite"}
 
-local range = 8
+local RANGE = 8
+
+local adjacents = {
+	vector.new(1,0,0),
+	vector.new(-1,0,0),
+	vector.new(0,1,0),
+	vector.new(0,-1,0),
+	vector.new(0,0,1),
+	vector.new(0,0,-1),
+}
+
 local function get_node_xp(pos)
 	local meta = minetest.get_meta(pos)
 	return meta:get_int("xp")
@@ -23,6 +33,74 @@ local function sculk_on_destruct(pos)
 		local l = v:get_luaentity()
 		l._sculkdrop = true
 	end
+end
+
+local function has_air(pos)
+	for _,v in pairs(adjacents) do
+		if minetest.get_item_group(minetest.get_node(vector.add(pos,v)).name,"solid") <= 0 then return true end
+	end
+end
+
+local function has_nonsculk(pos)
+	for _,v in pairs(adjacents) do
+		local p = vector.add(pos,v)
+		if minetest.get_item_group(minetest.get_node(p).name,"sculk") <= 0 and minetest.get_item_group(minetest.get_node(p).name,"solid") > 0 then return p end
+	end
+end
+
+local old_on_step = minetest.registered_entities["mcl_experience:orb"].on_step
+
+minetest.registered_entities["mcl_experience:orb"].on_step = function(self,dtime)
+	local p = self.object:get_pos()
+	local n = minetest.find_node_near(p,2,{"mcl_sculk:sculk"})
+	local nu = minetest.get_node(vector.offset(p,0,-1,0))
+	local ret = old_on_step(self,dtime)
+	if n and not self._sculkdrop then
+		local c = minetest.find_node_near(p,RANGE,{"mcl_sculk:catalyst"})
+		if c then
+			local nnn = minetest.find_nodes_in_area(vector.offset(p,-RANGE,-RANGE,-RANGE),vector.offset(p,RANGE,RANGE,RANGE),spread_to)
+			local nn={}
+			for _,v in pairs(nnn) do
+				if has_air(v) then
+					table.insert(nn,v)
+				end
+			end
+			table.sort(nn,function(a, b)
+				return vector.distance(p, a) < vector.distance(p, b)
+			end)
+			if nn and #nn > 0 and self._xp > 0 then
+				local d = math.random(100)
+				--[[ --enable to generate shriekers and sensors
+				if d <= 1 then
+					minetest.set_node(nn[1],{name = "mcl_sculk:shrieker"})
+					set_node_xp(nn[1],math.min(1,self._xp - 10))
+					self.object:remove()
+					return ret
+				elseif d <= 9 then
+					minetest.set_node(nn[1],{name = "mcl_sculk:sensor"})
+					set_node_xp(nn[1],math.min(1,self._xp - 5))
+					self.object:remove()
+					return ret
+				else --]]
+					local r = math.min(math.random(#nn),self._xp)
+					for i=1,r do
+						minetest.set_node(nn[i],{name = "mcl_sculk:sculk" })
+						set_node_xp(nn[i],math.floor(self._xp / r))
+					end
+					for i=1,r do
+						local p = has_nonsculk(nn[i])
+						if p and has_air(p) then
+							minetest.set_node(vector.offset(p,0,1,0),{name = "mcl_sculk:vein", param2 = 1})
+						end
+					end
+					set_node_xp(nn[1],get_node_xp(nn[1]) + self._xp % r)
+					self.object:remove()
+					return ret
+				--end
+			end
+		end
+	end
+	return ret
 end
 
 minetest.register_node("mcl_sculk:sculk", {
@@ -97,6 +175,7 @@ minetest.register_node("mcl_sculk:catalyst", {
 	_mcl_silk_touch_drop = true,
 })
 
+--[[
 minetest.register_node("mcl_sculk:sensor", {
 	description = S("Sculk Sensor"),
 	tiles = {
@@ -133,79 +212,4 @@ minetest.register_node("mcl_sculk:shrieker", {
 	_mcl_hardness = 3,
 	_mcl_silk_touch_drop = true,
 })
-
-local adjacents = {
-	vector.new(1,0,0),
-	vector.new(-1,0,0),
-	vector.new(0,1,0),
-	vector.new(0,-1,0),
-	vector.new(0,0,1),
-	vector.new(0,0,-1),
-}
-
-local function has_air(pos)
-	for _,v in pairs(adjacents) do
-		if minetest.get_item_group(minetest.get_node(vector.add(pos,v)).name,"solid") <= 0 then return true end
-	end
-end
-
-local function has_nonsculk(pos)
-	for _,v in pairs(adjacents) do
-		local p = vector.add(pos,v)
-		if minetest.get_item_group(minetest.get_node(p).name,"sculk") <= 0 and minetest.get_item_group(minetest.get_node(p).name,"solid") > 0 then return p end
-	end
-end
-
-local old_on_step = minetest.registered_entities["mcl_experience:orb"].on_step
-
-minetest.registered_entities["mcl_experience:orb"].on_step = function(self,dtime)
-	local p = self.object:get_pos()
-	local n = minetest.find_node_near(p,2,{"mcl_sculk:sculk"})
-	local nu = minetest.get_node(vector.offset(p,0,-1,0))
-	local ret = old_on_step(self,dtime)
-	if n and not self._sculkdrop then
-		local c = minetest.find_node_near(p,range,{"mcl_sculk:catalyst"})
-		if c then
-			local nnn = minetest.find_nodes_in_area(vector.offset(p,-range,-range,-range),vector.offset(p,range,range,range),spread_to)
-			local nn={}
-			for _,v in pairs(nnn) do
-				if has_air(v) then
-					table.insert(nn,v)
-				end
-			end
-			table.sort(nn,function(a, b)
-				return vector.distance(p, a) < vector.distance(p, b)
-			end)
-			if nn and #nn > 0 and self._xp > 0 then
-				local d = math.random(100)
-				if d <= 1 then
-					minetest.set_node(nn[1],{name = "mcl_sculk:shrieker"})
-					set_node_xp(nn[1],math.min(1,self._xp - 10))
-					self.object:remove()
-					return ret
-				elseif d <= 9 then
-					minetest.set_node(nn[1],{name = "mcl_sculk:sensor"})
-					set_node_xp(nn[1],math.min(1,self._xp - 5))
-					self.object:remove()
-					return ret
-				else
-					local r = math.min(math.random(#nn),self._xp)
-					for i=1,r do
-						minetest.set_node(nn[i],{name = "mcl_sculk:sculk" })
-						set_node_xp(nn[i],math.floor(self._xp / r))
-					end
-					for i=1,r do
-						local p = has_nonsculk(nn[i])
-						if p and has_air(p) then
-							minetest.set_node(vector.offset(p,0,1,0),{name = "mcl_sculk:vein", param2 = 1})
-						end
-					end
-					set_node_xp(nn[1],get_node_xp(nn[1]) + self._xp % r)
-					self.object:remove()
-					return ret
-				end
-			end
-		end
-	end
-	return ret
-end
+ --]]
