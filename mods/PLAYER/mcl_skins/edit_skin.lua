@@ -213,7 +213,7 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 	formspec = formspec ..
 		"model[10,0.3;3,7;player_mesh;" .. mesh .. ";" ..
 		mcl_skins.compile_skin(skin) ..
-		",blank.png,blank.png;0,180;false;true;0,0;0]"
+		",blank.png,blank.png;0,180;false;true;0,0]"
 
 	if active_tab == "skin" then
 		local page_start = (page_num - 1) * 8 - 1
@@ -222,7 +222,7 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 			"style_type[button;bgcolor=#00000000]"
 		
 		local skin = table.copy(skin)
-		skin_id = skin.simple_skins_id or -1
+		local skin_id = skin.simple_skins_id or -1
 		skin.simple_skins_id = nil
 		
 		local skins = table.copy(mcl_skins.simple_skins)
@@ -242,7 +242,7 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 			formspec = formspec ..
 				"model[" .. x .. "," .. y .. ";1.5,3;player_mesh;" .. mesh .. ";" ..
 				skin.texture ..
-				",blank.png,blank.png;0,180;false;true;0,0;0]"
+				",blank.png,blank.png;0,180;false;true;0,0]"
 			
 			if skin_id == i then
 				formspec = formspec ..
@@ -261,13 +261,13 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 		formspec = formspec ..
 			"model[4,2;2,3;player_mesh;mcl_armor_character.b3d;" ..
 			mcl_skins.compile_skin(mcl_skins.steve) ..
-			",blank.png,blank.png;0,180;false;true;0,0;0]" ..
+			",blank.png,blank.png;0,180;false;true;0,0]" ..
 
 			"button[4,5.2;2,0.8;steve;" .. S("Select") .. "]" ..
 
 			"model[6.5,2;2,3;player_mesh;mcl_armor_character_female.b3d;" ..
 			mcl_skins.compile_skin(mcl_skins.alex) ..
-			",blank.png,blank.png;0,180;false;true;0,0;0]" ..
+			",blank.png,blank.png;0,180;false;true;0,0]" ..
 			
 			"button[6.5,5.2;2,0.8;alex;" .. S("Select") .. "]"
 			
@@ -310,7 +310,7 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 				"model[" .. x .. "," .. y ..
 				";1.5,1.5;" .. mesh .. ";" .. mesh .. ";" ..
 				preview ..
-				";" .. rot_x .. "," .. rot_y .. ";false;false;0,0;0]"
+				";" .. rot_x .. "," .. rot_y .. ";false;false;0,0]"
 			
 			if skin[active_tab] == texture then
 				formspec = formspec ..
