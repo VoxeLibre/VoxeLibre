@@ -313,7 +313,7 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 		end
 	end
 
-	return lvm_used, false
+	return lvm_used, lvm_used
 end
 
 local function block_fixes(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
