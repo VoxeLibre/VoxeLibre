@@ -1,8 +1,17 @@
 local S = minetest.get_translator(minetest.get_current_modname())
+local mt_sound_play = minetest.sound_play
 
 local spread_to = {"mcl_core:stone","mcl_core:dirt","mcl_core:sand","mcl_core:dirt_with_grass","group:grass_block","mcl_core:andesite","mcl_core:diorite","mcl_core:granite"}
 
-local RANGE = 8
+local sounds = {
+	footstep = {name = "mcl_sculk_block", },
+	dug      = {name = "mcl_sculk_block", },
+}
+
+local SPREAD_RANGE = 8
+local SENSOR_RANGE = 8
+local SENSOR_DELAY = 0.5
+local SHRIEKER_COOLDOWN = 10
 
 local adjacents = {
 	vector.new(1,0,0),
@@ -12,6 +21,50 @@ local adjacents = {
 	vector.new(0,0,1),
 	vector.new(0,0,-1),
 }
+
+local function sensor_action(p,tp)
+	local s = minetest.find_node_near(p,SPREAD_RANGE,{"mcl_sculk:shrieker"})
+	local n = minetest.get_node(s)
+	if s and n.param2 ~= 1 then
+		minetest.sound_play("mcl_sculk_shrieker", {pos=s, gain=1.5, max_hear_distance = 16}, true)
+		n.param2 = 1
+		minetest.set_node(s,n)
+		minetest.after(SHRIEKER_COOLDOWN,function(s)
+			minetest.set_node(s,{name = "mcl_sculk:shrieker",param2=0})
+		end,s)
+	end
+	--local p1 = vector.offset(p,-SENSOR_RANGE,-SENSOR_RANGE,-SENSOR_RANGE)
+	--local p2 = vector.offset(p,SENSOR_RANGE,SENSOR_RANGE,SENSOR_RANGE)
+	--darken_area(p1,p2)
+end
+
+function minetest.sound_play(spec, parameters, ephemeral)
+	local rt = mt_sound_play(spec, parameters, ephemeral)
+	if parameters.pos then
+		pos = parameters.pos
+	elseif parameters.to_player then
+		pos = minetest.get_player_by_name(parameters.to_player):get_pos()
+	end
+	if not pos then return rt end
+	local s = minetest.find_node_near(pos,SPREAD_RANGE,{"mcl_sculk:sensor"})
+	if s then
+		--minetest.after(SENSOR_DELAY,sensor_action,s,pos)
+	end
+	return rt
+end
+
+walkover.register_global(function(pos, node, player)
+	local s = minetest.find_node_near(pos,SPREAD_RANGE,{"mcl_sculk:sensor"})
+	if not s then return end
+	local v = player:get_velocity()
+	if v.x == 0 and v.y == 0 and v.z == 0 then return end
+	if player:get_player_control().sneak then return end
+	local def = minetest.registered_nodes[node.name]
+	if def and def.sounds then
+		minetest.log("walkover "..node.name)
+		minetest.after(SENSOR_DELAY,sensor_action,s,pos)
+	end
+end)
 
 local function get_node_xp(pos)
 	local meta = minetest.get_meta(pos)
@@ -52,13 +105,12 @@ local old_on_step = minetest.registered_entities["mcl_experience:orb"].on_step
 
 minetest.registered_entities["mcl_experience:orb"].on_step = function(self,dtime)
 	local p = self.object:get_pos()
-	local n = minetest.find_node_near(p,2,{"mcl_sculk:sculk"})
 	local nu = minetest.get_node(vector.offset(p,0,-1,0))
 	local ret = old_on_step(self,dtime)
-	if n and not self._sculkdrop then
-		local c = minetest.find_node_near(p,RANGE,{"mcl_sculk:catalyst"})
+	if not self._sculkdrop then
+		local c = minetest.find_node_near(p,SPREAD_RANGE,{"mcl_sculk:catalyst"})
 		if c then
-			local nnn = minetest.find_nodes_in_area(vector.offset(p,-RANGE,-RANGE,-RANGE),vector.offset(p,RANGE,RANGE,RANGE),spread_to)
+			local nnn = minetest.find_nodes_in_area(vector.offset(p,-SPREAD_RANGE,-SPREAD_RANGE,-SPREAD_RANGE),vector.offset(p,SPREAD_RANGE,SPREAD_RANGE,SPREAD_RANGE),spread_to)
 			local nn={}
 			for _,v in pairs(nnn) do
 				if has_air(v) then
@@ -117,7 +169,7 @@ minetest.register_node("mcl_sculk:sculk", {
 	drop = "",
 	groups = {handy = 1, hoey = 1, building_block=1, sculk = 1,},
 	place_param2 = 1,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	sounds = sounds,
 	is_ground_content = false,
 	on_destruct = sculk_on_destruct,
 	_mcl_blast_resistance = 0.2,
@@ -141,16 +193,14 @@ minetest.register_node("mcl_sculk:vein", {
 	selection_box = {
 		type = "wallmounted",
 	},
-	stack_max = 64,
 	groups = {
 		handy = 1, axey = 1, shearsy = 1, swordy = 1, deco_block = 1,
 		dig_by_piston = 1, destroy_by_lava_flow = 1, sculk = 1,
 	},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	sounds = sounds,
 	drop = "",
 	_mcl_shears_drop = true,
 	node_placement_prediction = "",
-	-- Restrict placement of vines
 	_mcl_blast_resistance = 0.2,
 	_mcl_hardness = 0.2,
 	on_rotate = false,
@@ -164,7 +214,7 @@ minetest.register_node("mcl_sculk:catalyst", {
 		"mcl_sculk_catalyst_side.png"
 	},
 	drop = "",
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	sounds = sounds,
 	groups = {handy = 1, hoey = 1, building_block=1, sculk = 1,},
 	place_param2 = 1,
 	is_ground_content = false,
@@ -175,7 +225,6 @@ minetest.register_node("mcl_sculk:catalyst", {
 	_mcl_silk_touch_drop = true,
 })
 
---[[
 minetest.register_node("mcl_sculk:sensor", {
 	description = S("Sculk Sensor"),
 	tiles = {
@@ -184,7 +233,7 @@ minetest.register_node("mcl_sculk:sensor", {
 		"mcl_sculk_sensor_side.png"
 	},
 	drop = "",
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	sounds = sounds,
 	groups = {handy = 1, hoey = 1, building_block=1, sculk = 1,},
 	place_param2 = 1,
 	is_ground_content = false,
@@ -202,9 +251,9 @@ minetest.register_node("mcl_sculk:shrieker", {
 		"mcl_sculk_shrieker_side.png"
 	},
 	drop = "",
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	sounds = sounds,
 	groups = {handy = 1, hoey = 1, building_block=1, sculk = 1,},
-	place_param2 = 1,
+	place_param2 = 0,
 	is_ground_content = false,
 	on_destruct = sculk_on_destruct,
 	_mcl_blast_resistance = 3,
@@ -212,4 +261,3 @@ minetest.register_node("mcl_sculk:shrieker", {
 	_mcl_hardness = 3,
 	_mcl_silk_touch_drop = true,
 })
- --]]
