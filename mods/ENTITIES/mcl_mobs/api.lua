@@ -3593,6 +3593,13 @@ local mob_activate = function(self, staticdata, def, dtime)
 	if not self.nametag then
 		self.nametag = def.nametag
 	end
+	if not self.custom_visual_size and not self.child then
+		-- Remove saved visual_size on old existing entites.
+		-- Old entities were 3 now it's 1.
+		self.visual_size = nil
+		self.object:set_properties({visual_size = self.visual_size})
+		self.base_size = self.visual_size
+	end
 
 	-- set anything changed above
 	self.object:set_properties(self)

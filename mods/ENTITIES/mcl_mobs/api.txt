@@ -259,6 +259,7 @@ functions needed for the mob to work properly which contains the following:
 						that are bred in a different way.
 	'pick_up'			table of itemstrings the mob will pick up (e.g. for breeding)
 	'on_pick_up'		function that will be called on item pickup - return true to not pickup the item
+	'custom_visual_size' will not reset visual_size from the base class on reload
 
 	mobs:gopath(self,target,callback_arrived)		pathfind a way to target and run callback on arrival
 
@@ -433,7 +434,7 @@ true the mob will not spawn.
 MineClone 2 extensions
 ----------------------
 
-mobs:spawn_child(pos, mob_type)
+mcl_mobs:spawn_child(pos, mob_type)
 
 This function spawns a mob as a child. The parameter mob_type is the
 entitystring of the new mob.
@@ -443,6 +444,7 @@ mobs:death_effect(pos, collisionbox)
 
 Create death particles at pos with the given collisionbox.
 
+mcl_mobs.spawn(pos,name/entity name)
 
 Making Arrows
 -------------
