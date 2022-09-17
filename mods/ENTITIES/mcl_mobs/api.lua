@@ -915,23 +915,21 @@ end
 
 
 -- check if within physical map limits (-30911 to 30927)
-local within_limits, wmin, wmax = nil, -30913, 30928
-within_limits = function(pos, radius)
+local function within_limits(pos, radius)
+	local wmin, wmax = -30912, 30928
 	if mcl_vars then
 		if mcl_vars.mapgen_edge_min and mcl_vars.mapgen_edge_max then
 			wmin, wmax = mcl_vars.mapgen_edge_min, mcl_vars.mapgen_edge_max
-			within_limits = function(pos, radius)
-				return pos
-					and (pos.x - radius) > wmin and (pos.x + radius) < wmax
-					and (pos.y - radius) > wmin and (pos.y + radius) < wmax
-					and (pos.z - radius) > wmin and (pos.z + radius) < wmax
-			end
 		end
 	end
-	return pos
-		and (pos.x - radius) > wmin and (pos.x + radius) < wmax
-		and (pos.y - radius) > wmin and (pos.y + radius) < wmax
-		and (pos.z - radius) > wmin and (pos.z + radius) < wmax
+	if radius then
+		wmin = wmin - radius
+		wmax = wmax + radius
+	end
+	for _,v in pairs(pos) do
+		if v < wmin or v > wmax then return false end
+	end
+	return true
 end
 
 
