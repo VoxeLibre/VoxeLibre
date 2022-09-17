@@ -1067,7 +1067,10 @@ local do_env_damage = function(self)
 		end
 	end
 
-	local sunlight = minetest.get_natural_light(pos, self.time_of_day)
+	local sunlight = 10
+	if within_limits(pos,0) then
+		sunlight = minetest.get_natural_light(pos, self.time_of_day)
+	end
 
 	-- bright light harms mob
 	if self.light_damage ~= 0 and (sunlight or 0) > 12 then
