@@ -730,7 +730,7 @@ register_minecart(
 				"mcl_minecarts_minecart.png",
 			}})
 		end
-	end, nil, false
+	end, nil, true
 )
 
 -- Minecart with Command Block
@@ -830,8 +830,7 @@ minetest.register_craft({
 	},
 })
 
--- TODO: Re-enable crafting of special minecarts when they have been implemented
---[[minetest.register_craft({
+minetest.register_craft({
 	output = "mcl_minecarts:furnace_minecart",
 	recipe = {
 		{"mcl_furnaces:furnace"},
@@ -839,7 +838,9 @@ minetest.register_craft({
 	},
 })
 
-minetest.register_craft({
+-- TODO: Re-enable crafting of special minecarts when they have been implemented
+
+--[[minetest.register_craft({
 	output = "mcl_minecarts:hopper_minecart",
 	recipe = {
 		{"mcl_hoppers:hopper"},
