@@ -915,23 +915,21 @@ end
 
 
 -- check if within physical map limits (-30911 to 30927)
-local within_limits, wmin, wmax = nil, -30913, 30928
-within_limits = function(pos, radius)
+local function within_limits(pos, radius)
+	local wmin, wmax = -30912, 30928
 	if mcl_vars then
 		if mcl_vars.mapgen_edge_min and mcl_vars.mapgen_edge_max then
 			wmin, wmax = mcl_vars.mapgen_edge_min, mcl_vars.mapgen_edge_max
-			within_limits = function(pos, radius)
-				return pos
-					and (pos.x - radius) > wmin and (pos.x + radius) < wmax
-					and (pos.y - radius) > wmin and (pos.y + radius) < wmax
-					and (pos.z - radius) > wmin and (pos.z + radius) < wmax
-			end
 		end
 	end
-	return pos
-		and (pos.x - radius) > wmin and (pos.x + radius) < wmax
-		and (pos.y - radius) > wmin and (pos.y + radius) < wmax
-		and (pos.z - radius) > wmin and (pos.z + radius) < wmax
+	if radius then
+		wmin = wmin - radius
+		wmax = wmax + radius
+	end
+	for _,v in pairs(pos) do
+		if v < wmin or v > wmax then return false end
+	end
+	return true
 end
 
 
@@ -1025,15 +1023,6 @@ local node_ok = function(pos, fallback)
 	return minetest.registered_nodes[fallback]
 end
 
-local function get_light(pos, tod)
-	if minetest.get_node_or_nil(pos) then
-		local lightfunc = minetest.get_natural_light or minetest.get_node_light
-		return lightfunc(pos, tod)
-	else
-		return 0
-	end
-end
-
 -- environmental damage (water, lava, fire, light etc.)
 local do_env_damage = function(self)
 
@@ -1076,9 +1065,10 @@ local do_env_damage = function(self)
 		end
 	end
 
-	-- Use get_node_light for Minetest version 5.3 where get_natural_light
-	-- does not exist yet.
-	local sunlight = get_light(pos, self.time_of_day)
+	local sunlight = 10
+	if within_limits(pos,0) then
+		sunlight = minetest.get_natural_light(pos, self.time_of_day)
+	end
 
 	-- bright light harms mob
 	if self.light_damage ~= 0 and (sunlight or 0) > 12 then
