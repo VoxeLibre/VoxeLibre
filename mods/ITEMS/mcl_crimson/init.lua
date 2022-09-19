@@ -13,18 +13,53 @@ function generate_crimson_tree(pos)
 	minetest.place_schematic(pos,modpath.."/schematics/crimson_fungus_1.mts","random",nil,false,"place_center_x,place_center_z")
 end
 
-function grow_twisting_vines(pos, moreontop)
-	local y = pos.y + 1
-		while not (moreontop == 0) do
-			if minetest.get_node({x = pos.x, y = y, z = pos.z}).name == "air" then
-				minetest.set_node({x = pos.x, y = y, z = pos.z}, {name="mcl_crimson:twisting_vines"})
-				moreontop = moreontop - 1
-				y = y + 1
-			elseif minetest.get_node({x = pos.x, y = y, z = pos.z}).name == "mcl_crimson:twisting_vines" then
-				y = y + 1
-			else
-				moreontop = 0
+function grow_vines(pos, moreontop ,vine, dir)
+	if dir == nil then dir = 1 end
+	local n
+	repeat
+		pos = vector.offset(pos,0,dir,0)
+		n = minetest.get_node(pos)
+		if n.name == "air" then
+			for i=0,math.max(moreontop,1) do
+				minetest.set_node(vector.offset(pos,0,i*dir,0),{name=vine})
 			end
+			break
+		end
+	until n.name ~= "air" and n.name ~= vine
+end
+
+local nether_plants = {
+	["mcl_crimson:crimson_nylium"] = {
+		"mcl_crimson:crimson_roots",
+		"mcl_crimson:crimson_fungus",
+		"mcl_crimson:warped_fungus",
+	},
+	["mcl_crimson:warped_nylium"] = {
+		"mcl_crimson:warped_roots",
+		"mcl_crimson:warped_fungus",
+		"mcl_crimson:twisting_vines",
+		"mcl_crimson:nether_sprouts",
+	},
+}
+
+local function has_nylium_neighbor(pos)
+	local p = minetest.find_node_near(pos,1,{"mcl_crimson:warped_nylium","mcl_crimson:crimson_nylium"})
+	if p then
+		return minetest.get_node(p)
+	end
+end
+
+local function spread_nether_plants(pos,node)
+	local n = node.name
+	local nn = minetest.find_nodes_in_area_under_air(vector.offset(pos,-5,-3,-5),vector.offset(pos,5,3,5),{n})
+	table.shuffle(nn)
+	nn[1] = pos
+	for i=1,math.random(1,math.min(#nn,12)) do
+		local p = vector.offset(nn[i],0,1,0)
+		if minetest.get_node(p).name == "air" then
+			minetest.set_node(p,{name=nether_plants[n][math.random(#nether_plants[n])]})
+			mcl_dye.add_bone_meal_particle(vector.offset(nn[i],0,1,0))
+		end
 	end
 end
 
@@ -50,6 +85,7 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 			if nodepos.name == "mcl_crimson:warped_nylium" or nodepos.name == "mcl_nether:netherrack" then
 				local random = math.random(1, 5)
 				if random == 1 then
+					minetest.remove_node(pos)
 					generate_warped_tree(pos)
 				end
 			end
@@ -77,10 +113,10 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 	on_rightclick = function(pos, node, pointed_thing, itemstack)
 		if pointed_thing:get_wielded_item():get_name() == "mcl_crimson:twisting_vines" then
 			itemstack:take_item()
-			grow_twisting_vines(pos, 1)
+			grow_vines(pos, 1, "mcl_crimson:twisting_vines")
 		elseif pointed_thing:get_wielded_item():get_name() == "mcl_dye:white" then
 			itemstack:take_item()
-			grow_twisting_vines(pos, math.random(1, 3))
+			grow_vines(pos, math.random(1, 3),"mcl_crimson:twisting_vines")
 		end
 	end,
 	drop = {
@@ -100,6 +136,52 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		},
 		"mcl_crimson:twisting_vines",
 		"mcl_crimson:twisting_vines",
+	},
+	_mcl_blast_resistance = 0,
+})
+
+minetest.register_node("mcl_crimson:weeping_vines", {
+	description = S("Weeping Vines"),
+	drawtype = "plantlike",
+	tiles = { "mcl_crimson_weeping_vines.png" },
+	inventory_image = "mcl_crimson_weeping_vines.png",
+	sunlight_propagates = true,
+	paramtype = "light",
+	walkable = false,
+	climbable = true,
+	buildable_to = true,
+	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1, shearsy = 1},
+	selection_box = {
+		type = "fixed",
+		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
+	},
+	node_placement_prediction = "",
+	on_rightclick = function(pos, node, pointed_thing, itemstack)
+		if pointed_thing:get_wielded_item():get_name() == "mcl_crimson:weeping_vines" then
+			itemstack:take_item()
+			grow_vines(pos, 1, "mcl_crimson:weeping_vines", -1)
+		elseif pointed_thing:get_wielded_item():get_name() == "mcl_dye:white" then
+			itemstack:take_item()
+			grow_vines(pos, math.random(1, 3),"mcl_crimson:weeping_vines", -1)
+		end
+	end,
+	drop = {
+		max_items = 1,
+		items = {
+			{items = {"mcl_crimson:weeping_vines"}, rarity = 3},
+		},
+	},
+	_mcl_shears_drop = true,
+	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = {
+		items = {
+			{items = {"mcl_crimson:weeping_vines"}, rarity = 3},
+		},
+		items = {
+			{items = {"mcl_crimson:weeping_vines"}, rarity = 1.8181818181818181},
+		},
+		"mcl_crimson:weeping_vines",
+		"mcl_crimson:weeping_vines",
 	},
 	_mcl_blast_resistance = 0,
 })
@@ -282,21 +364,6 @@ minetest.register_craft({
 	},
 })
 
-minetest.register_abm({
-	label = "mcl_crimson:warped_fungus",
-	nodenames = {"mcl_crimson:warped_fungus"},
-	interval = 11,
-	chance = 128,
-	action = function(pos)
-		local nodepos = minetest.get_node(vector.offset(pos, 0, -1, 0))
-		if nodepos.name == "mcl_crimson:warped_nylium" or nodepos.name == "mcl_nether:netherrack" then
-			if pos.y < -28400 then
-				generate_warped_tree(pos)
-			end
-		end
-	end
-})
-
 minetest.register_node("mcl_crimson:crimson_fungus", {
 	description = S("Crimson Fungus Mushroom"),
 	drawtype = "plantlike",
@@ -319,6 +386,7 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 			if nodepos.name == "mcl_crimson:crimson_nylium" or nodepos.name == "mcl_nether:netherrack" then
 				local random = math.random(1, 5)
 				if random == 1 then
+					minetest.remove_node(pos)
 					generate_crimson_tree(pos)
 				end
 			end
@@ -469,6 +537,19 @@ minetest.register_craft({
 
 mcl_stairs.register_stair_and_slab_simple("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", S("Crimson Stair"), S("Crimson Slab"), S("Double Crimson Slab"))
 
+mcl_dye.register_on_bone_meal_apply(function(pt,user)
+	if not pt.type == "node" then return end
+	local node = minetest.get_node(pt.under)
+	if node.name == "mcl_nether:netherrack" then
+		local n = has_nylium_neighbor(pt.under)
+		if n then
+			minetest.set_node(pt.under,n)
+		end
+	elseif node.name == "mcl_crimson:warped_nylium" or node.name == "mcl_crimson:crimson_nylium" then
+		spread_nether_plants(pt.under,node)
+	end
+end)
+
 minetest.register_abm({
 	label = "mcl_crimson:crimson_fungus",
 	nodenames = {"mcl_crimson:crimson_fungus"},
@@ -479,6 +560,21 @@ minetest.register_abm({
 		if nodepos.name == "mcl_crimson:crimson_nylium" or nodepos.name == "mcl_nether:netherrack" then
 			if pos.y < -28400 then
 				generate_crimson_tree(pos)
+			end
+		end
+	end
+})
+
+minetest.register_abm({
+	label = "mcl_crimson:warped_fungus",
+	nodenames = {"mcl_crimson:warped_fungus"},
+	interval = 11,
+	chance = 128,
+	action = function(pos)
+		local nodepos = minetest.get_node(vector.offset(pos, 0, -1, 0))
+		if nodepos.name == "mcl_crimson:warped_nylium" or nodepos.name == "mcl_nether:netherrack" then
+			if pos.y < -28400 then
+				generate_warped_tree(pos)
 			end
 		end
 	end
