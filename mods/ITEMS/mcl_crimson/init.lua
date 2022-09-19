@@ -55,8 +55,11 @@ local function spread_nether_plants(pos,node)
 	table.shuffle(nn)
 	nn[1] = pos
 	for i=1,math.random(1,math.min(#nn,12)) do
-		minetest.set_node(vector.offset(nn[i],0,1,0),{name=nether_plants[n][math.random(#nether_plants[n])]})
-		mcl_dye.add_bone_meal_particle(vector.offset(nn[i],0,1,0))
+		local p = vector.offset(nn[i],0,1,0)
+		if minetest.get_node(p).name == "air" then
+			minetest.set_node(p,{name=nether_plants[n][math.random(#nether_plants[n])]})
+			mcl_dye.add_bone_meal_particle(vector.offset(nn[i],0,1,0))
+		end
 	end
 end
 
@@ -82,6 +85,7 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 			if nodepos.name == "mcl_crimson:warped_nylium" or nodepos.name == "mcl_nether:netherrack" then
 				local random = math.random(1, 5)
 				if random == 1 then
+					minetest.remove_node(pos)
 					generate_warped_tree(pos)
 				end
 			end
@@ -382,6 +386,7 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 			if nodepos.name == "mcl_crimson:crimson_nylium" or nodepos.name == "mcl_nether:netherrack" then
 				local random = math.random(1, 5)
 				if random == 1 then
+					minetest.remove_node(pos)
 					generate_crimson_tree(pos)
 				end
 			end
