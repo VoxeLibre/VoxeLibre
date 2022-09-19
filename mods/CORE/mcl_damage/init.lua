@@ -33,6 +33,8 @@ mcl_damage = {
 	}
 }
 
+local damage_enabled = minetest.settings:get_bool("enabled_damage",true)
+
 function mcl_damage.register_modifier(func, priority)
 	table.insert(mcl_damage.modifiers, {func = func, priority = priority or 0})
 end
@@ -139,6 +141,7 @@ function mcl_damage.register_type(name, def)
 end
 
 minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
+	if not damage_enabled then return 0 end
 	if hp_change < 0 then
 		if player:get_hp() <= 0 then
 			return 0
@@ -149,6 +152,7 @@ minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
 end, true)
 
 minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
+	if not damage_enabled then return 0 end
 	if player:get_hp() > 0 then
 		mt_reason.approved = true
 		if hp_change < 0 then
