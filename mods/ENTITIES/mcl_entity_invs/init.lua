@@ -33,14 +33,17 @@ local function load_inv(ent,size)
 	return inv
 end
 
-local function show_form(ent,player,show_name)
+local function show_form(ent,player,show_name,size)
 	if not ent._inv_id then return end
 	local playername = player:get_player_name()
+	local rows = 3
+	local cols = (math.ceil(size/rows))
+	local spacing = (9 - cols) / 2
 	local formspec = "size[9,8.75]"
 	.. "label[0,0;" .. minetest.formspec_escape(
 			minetest.colorize("#313131", show_name)) .. "]"
-	.. "list[detached:"..ent._inv_id..";main;0,0.5;9,3;]"
-	.. mcl_formspec.get_itemslot_bg(0,0.5,9,3)
+	.. "list[detached:"..ent._inv_id..";main;"..spacing..",0.5;"..cols..","..rows..";]"
+	.. mcl_formspec.get_itemslot_bg(spacing,0.5,cols,rows)
 	.. "label[0,4.0;" .. minetest.formspec_escape(
 			minetest.colorize("#313131", "Inventory")) .. "]"
 	.. "list[current_player;main;0,4.5;9,3;9]"
@@ -61,8 +64,11 @@ local function drop_inv(ent)
 end
 
 function mcl_entity_invs.register_inv(entity_name,show_name,size)
+	assert(minetest.registered_entities[entity_name],"mcl_entity_invs.register_inv called with invalid entity: "..tostring(entity_name))
 	local old_oa = minetest.registered_entities[entity_name].on_activate
 	minetest.registered_entities[entity_name].on_activate  = function(self,staticdata,dtime_s)
+		local r
+		if old_oa then r=old_oa(self,clicker) end
 		local d = minetest.deserialize(staticdata)
 		if type(d) == "table" and d._inv_id then
 			self._inv_id = d._inv_id
@@ -74,19 +80,19 @@ function mcl_entity_invs.register_inv(entity_name,show_name,size)
 		if self._inv_id then
 			self._inv = load_inv(self,size)
 		end
-		if old_oa then return old_oa(self,clicker) end
+		return r
 	end
 
 	local old_rc = minetest.registered_entities[entity_name].on_rightclick
 	minetest.registered_entities[entity_name].on_rightclick = function(self,clicker)
-		show_form(self,clicker,show_name)
+		show_form(self,clicker,show_name,size)
 		if old_rc then return old_rc(self,clicker) end
 	end
 	local old_gsd = minetest.registered_entities[entity_name].get_staticdata
 	minetest.registered_entities[entity_name].get_staticdata  = function(self)
 		local old_sd = old_gsd(self)
 		local d = minetest.deserialize(old_sd)
-		assert(type(d) == "table","Entyinvs currently only works with entities that return a (serialized) table in get_staticdata. "..tostring(self.name).." returned: "..tostring(old_sd))
+		assert(type(d) == "table","mcl_entity_invs currently only works with entities that return a (serialized) table in get_staticdata. "..tostring(self.name).." returned: "..tostring(old_sd))
 		d._inv_id = self._inv_id
 		d._items = {}
 		for i,it in pairs(self._inv:get_list("main")) do
