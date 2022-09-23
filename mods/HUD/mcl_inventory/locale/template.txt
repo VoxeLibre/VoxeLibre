@@ -2,7 +2,7 @@
 Recipe book=
 Help=
 Select player skin=
-Achievements=
+Advancements=
 Building Blocks=
 Decoration Blocks=
 Redstone=
