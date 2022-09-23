@@ -413,13 +413,21 @@ end
 -- Register one entity for all boat types
 minetest.register_entity("mcl_boats:boat", boat)
 
-local boat_ids = { "boat", "boat_spruce", "boat_birch", "boat_jungle", "boat_acacia", "boat_dark_oak", "boat_obsidian" }
-local names = { S("Oak Boat"), S("Spruce Boat"), S("Birch Boat"), S("Jungle Boat"), S("Acacia Boat"), S("Dark Oak Boat"), S("Obsidian Boat") }
+local cboat = table.copy(boat)
+cboat.mesh = "mcl_boats_boat_with_chest.b3d"
+cboat.textures = {"mcl_boats_texture_oak_chest_boat.png", "mcl_boats_texture_oak_chest_boat.png", "mcl_boats_texture_oak_chest_boat.png", "mcl_boats_texture_oak_chest_boat.png", "mcl_boats_texture_oak_chest_boat.png"}
+cboat._itemstring = "mcl_boats:chest_boat"
+
+minetest.register_entity("mcl_boats:chest_boat", cboat)
+mcl_entity_invs.register_inv("mcl_boats:chest_boat","Boat",27)
+
+local boat_ids = { "boat", "boat_spruce", "boat_birch", "boat_jungle", "boat_acacia", "boat_dark_oak", "boat_obsidian", "chest_boat", "chest_boat_spruce", "chest_boat_birch", "chest_boat_jungle", "chest_boat_acacia", "chest_boat_dark_oak" }
+local names = { S("Oak Boat"), S("Spruce Boat"), S("Birch Boat"), S("Jungle Boat"), S("Acacia Boat"), S("Dark Oak Boat"), S("Obsidian Boat"), S("Oak Chest Boat"), S("Spruce Chest Boat"), S("Birch Chest Boat"), S("Jungle Chest Boat"), S("Acacia Chest Boat"), S("Dark Oak Chest Boat") }
 local craftstuffs = {}
 if minetest.get_modpath("mcl_core") then
-	craftstuffs = { "mcl_core:wood", "mcl_core:sprucewood", "mcl_core:birchwood", "mcl_core:junglewood", "mcl_core:acaciawood", "mcl_core:darkwood", "mcl_core:obsidian" }
+	craftstuffs = { "mcl_core:wood", "mcl_core:sprucewood", "mcl_core:birchwood", "mcl_core:junglewood", "mcl_core:acaciawood", "mcl_core:darkwood", "mcl_core:obsidian", "mcl_core:wood", "mcl_core:sprucewood", "mcl_core:birchwood", "mcl_core:junglewood", "mcl_core:acaciawood", "mcl_core:darkwood", }
 end
-local images = { "oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "obsidian" }
+local images = { "oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "obsidian", "oak_chest", "spruce_chest", "birch_chest", "jungle_chest", "acacia_chest", "dark_oak_chest" }
 
 for b=1, #boat_ids do
 	local itemstring = "mcl_boats:"..boat_ids[b]
@@ -469,7 +477,11 @@ for b=1, #boat_ids do
 			else
 				pos = vector.add(pos, vector.multiply(dir, boat_y_offset_ground))
 			end
-			local boat = minetest.add_entity(pos, "mcl_boats:boat")
+			local boat_ent = "mcl_boats:boat"
+			if itemstring:find("chest") then
+				boat_ent = "mcl_boats:chest_boat"
+			end
+			local boat = minetest.add_entity(pos, boat_ent)
 			local texture = "mcl_boats_texture_"..images[b].."_boat.png"
 			boat:get_luaentity()._itemstring = itemstring
 			boat:set_properties({textures = { texture, texture, texture, texture, texture }})
