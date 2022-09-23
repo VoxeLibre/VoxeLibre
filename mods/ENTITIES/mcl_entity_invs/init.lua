@@ -52,6 +52,14 @@ local function show_form(ent,player,show_name)
 	minetest.show_formspec(playername,ent._inv_id,formspec)
 end
 
+local function drop_inv(ent)
+	local pos = ent.object:get_pos()
+	for i,it in pairs(ent._inv:get_list("main")) do
+		local p = vector.add(pos,vector.new(math.random() - 0.5, math.random()-0.5, math.random()-0.5))
+		minetest.add_item(p,it:to_string())
+	end
+end
+
 function mcl_entity_invs.register_inv(entity_name,show_name,size)
 	local old_oa = minetest.registered_entities[entity_name].on_activate
 	minetest.registered_entities[entity_name].on_activate  = function(self,staticdata,dtime_s)
@@ -87,4 +95,16 @@ function mcl_entity_invs.register_inv(entity_name,show_name,size)
 		return minetest.serialize(d)
 	end
 
+	local old_ode = minetest.registered_entities[entity_name].on_deactivate
+	minetest.registered_entities[entity_name].on_deactivate = function(self,removal)
+		minetest.remove_detached_inventory(self._inv_id)
+		if old_ode then return old_ode(self,removal) end
+	end
+
+	local old_od = minetest.registered_entities[entity_name].on_death
+	minetest.registered_entities[entity_name].on_death = function(self,clicker)
+		drop_inv(self)
+		minetest.remove_detached_inventory(self._inv_id)
+		if old_od then return old_od(self,clicker) end
+	end
 end
