@@ -1,0 +1,8 @@
+mcl_entity_invs
+===============
+
+Inventories for your entities. It's simple. Depend on mcl_entity_invs and register your entity like so:
+
+* mcl_entity_invs.register_inv("entity:name","Title shown in formspec",inventory_size)
+
+It works by setting up a detached inventory per entity which is accessed by an id/hash generated from the entities position at creation, the progressed gametime at creation and a random salt.
