@@ -504,13 +504,22 @@ for b=1, #boat_ids do
 	})
 
 	local c = craftstuffs[b]
-	minetest.register_craft({
-		output = itemstring,
-		recipe = {
-			{c, "", c},
-			{c, c, c},
-		},
-	})
+	if not itemstring:find("chest") then
+		minetest.register_craft({
+			output = itemstring:gsub(":boat",":chest_boat"),
+			recipe = {
+				{"mcl_chests:chest"},
+				{itemstring},
+			},
+		})
+		minetest.register_craft({
+			output = itemstring,
+			recipe = {
+				{c, "", c},
+				{c, c, c},
+			},
+		})
+	end
 end
 
 minetest.register_craft({
