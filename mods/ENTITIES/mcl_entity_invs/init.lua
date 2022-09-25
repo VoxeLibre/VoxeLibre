@@ -33,8 +33,25 @@ local function load_inv(ent,size)
 	return inv
 end
 
+local function save_inv(ent)
+	if ent._inv then
+		ent._items = {}
+		for i,it in ipairs(ent._inv:get_list("main")) do
+			ent._items[i] = it:to_string()
+		end
+	end
+	minetest.remove_detached_inventory(ent._inv_id)
+end
+
+local open_invs = {}
+
 local function show_form(ent,player,show_name,size)
 	if not ent._inv_id then return end
+	ent._inv = load_inv(ent,size)
+	if not open_invs[ent] then
+		open_invs[ent] = {}
+	end
+	table.insert(open_invs[ent],player:get_player_name())
 	local playername = player:get_player_name()
 	local rows = 3
 	local cols = (math.ceil(size/rows))
@@ -57,11 +74,22 @@ end
 
 local function drop_inv(ent)
 	local pos = ent.object:get_pos()
-	for i,it in pairs(ent._inv:get_list("main")) do
+	for i,it in pairs(ent._items) do
 		local p = vector.add(pos,vector.new(math.random() - 0.5, math.random()-0.5, math.random()-0.5))
-		minetest.add_item(p,it:to_string())
+		minetest.add_item(p,it)
 	end
 end
+
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	for k,v in pairs(open_invs) do
+		if formname == k._inv_id then
+			if #v < 2 then
+				save_inv(k)
+				open_invs[k] = nil
+			end
+		end
+	end
+end)
 
 function mcl_entity_invs.register_inv(entity_name,show_name,size)
 	assert(minetest.registered_entities[entity_name],"mcl_entity_invs.register_inv called with invalid entity: "..tostring(entity_name))
@@ -76,9 +104,6 @@ function mcl_entity_invs.register_inv(entity_name,show_name,size)
 		else
 			self._inv_id="entity_inv_"..minetest.sha1(minetest.get_gametime()..minetest.pos_to_string(self.object:get_pos())..tostring(math.random()))
 			--gametime and position for collision safety and math.random salt to protect against position brute-force
-		end
-		if self._inv_id then
-			self._inv = load_inv(self,size)
 		end
 		return r
 	end
@@ -95,8 +120,10 @@ function mcl_entity_invs.register_inv(entity_name,show_name,size)
 		assert(type(d) == "table","mcl_entity_invs currently only works with entities that return a (serialized) table in get_staticdata. "..tostring(self.name).." returned: "..tostring(old_sd))
 		d._inv_id = self._inv_id
 		d._items = {}
-		for i,it in pairs(self._inv:get_list("main")) do
-			d._items[i] = it:to_string()
+		if self._items then
+			for i,it in ipairs(self._items) do
+				d._items[i] = it
+			end
 		end
 		return minetest.serialize(d)
 	end
