@@ -77,7 +77,6 @@ minetest.register_node("mcl_nether:netheriteblock", {
 	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 50,
 	_mcl_silk_touch_drop = true,
-	_mcl_fortune_drop = mcl_core.fortune_drop_ore
 })
 
 -- For eternal fire on top of netherrack and magma blocks
