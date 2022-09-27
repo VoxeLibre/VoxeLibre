@@ -677,7 +677,8 @@ register_minecart(
 	{ "mcl_chests_normal.png", "mcl_minecarts_minecart.png" },
 	"mcl_minecarts_minecart_chest.png",
 	{"mcl_minecarts:minecart", "mcl_chests:chest"},
-	nil, nil, false)
+	nil, nil, true)
+mcl_entity_invs.register_inv("mcl_minecarts:chest_minecart","Minecart",27)
 
 -- Minecart with Furnace
 register_minecart(
@@ -847,6 +848,7 @@ minetest.register_craft({
 		{"mcl_minecarts:minecart"},
 	},
 })
+--]]
 
 minetest.register_craft({
 	output = "mcl_minecarts:chest_minecart",
@@ -854,7 +856,7 @@ minetest.register_craft({
 		{"mcl_chests:chest"},
 		{"mcl_minecarts:minecart"},
 	},
-})]]
+})
 
 
 if has_mcl_wip then
