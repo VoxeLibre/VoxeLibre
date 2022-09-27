@@ -25,11 +25,12 @@ minetest.register_node("mcl_blackstone:blackstone_gilded", {
 	drop = {
 		max_items = 1,
 		items = {
-			{items = {"mcl_core:gold_nugget 2"},rarity = 5},
-			{items = {"mcl_core:gold_nugget 3"},rarity = 5},
-			{items = {"mcl_core:gold_nugget 4"},rarity = 5},
-			{items = {"mcl_core:gold_nugget 5"},rarity = 5},
-			{items = {"mcl_blackstone:blackstone_gilded"}, rarity = 8},
+			{items = {"mcl_core:gold_nugget 2"},rarity = 40},
+			{items = {"mcl_core:gold_nugget 3"},rarity = 40},
+			{items = {"mcl_core:gold_nugget 4"},rarity = 40},
+			{items = {"mcl_core:gold_nugget 5"},rarity = 40},
+			-- 4x 1 in 40 chance adds up to a 10% chance
+			{items = {"mcl_blackstone:blackstone_gilded"}, rarity = 1},
 		}
 	},
 	_mcl_blast_resistance = 2,
@@ -46,11 +47,11 @@ minetest.register_node("mcl_blackstone:nether_gold", {
 	drop = {
 		max_items = 1,
 		items = {
-			{items = {"mcl_core:gold_nugget 2"},rarity = 5},
-			{items = {"mcl_core:gold_nugget 3"},rarity = 5},
-			{items = {"mcl_core:gold_nugget 4"},rarity = 5},
+			{items = {"mcl_core:gold_nugget 6"},rarity = 5},
 			{items = {"mcl_core:gold_nugget 5"},rarity = 5},
-			{items = {"mcl_blackstone:nether_gold"}, rarity = 8},
+			{items = {"mcl_core:gold_nugget 4"},rarity = 5},
+			{items = {"mcl_core:gold_nugget 3"},rarity = 5},
+			{items = {"mcl_core:gold_nugget 2"},rarity = 1},
 		}
 	},
 	_mcl_blast_resistance = 3,
