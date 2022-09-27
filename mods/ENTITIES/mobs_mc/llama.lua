@@ -135,6 +135,10 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 		if item:get_name() == "mcl_farming:hay_block" then
 			-- Breed with hay bale
 			if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
+		elseif not self._has_chest and item:get_name() == "mcl_chests:chest" then
+			item:take_item()
+			clicker:set_wielded_item(item)
+			self._has_chest = true
 		else
 			-- Feed with anything else
 			if mcl_mobs:feed_tame(self, clicker, 1, false, true) then return end
@@ -175,21 +179,20 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 			end
 		end
 
-		-- detatch player already riding llama
-		if self.driver and clicker == self.driver then
-
-			mcl_mobs.detach(clicker, {x = 1, y = 0, z = 1})
-
-		-- attach player to llama
-		elseif not self.driver then
-
-			self.object:set_properties({stepheight = 1.1})
-			mcl_mobs.attach(self, clicker)
+		if clicker:get_player_control().sneak then
+			if self._has_chest then
+				mcl_entity_invs.show_inv_form(self,clicker,"Llama - Strength "..math.floor(self._inv_size / 3))
+			end
+		else
+			-- detatch player already riding llama
+			if self.driver and clicker == self.driver then
+				mcl_mobs.detach(clicker, {x = 1, y = 0, z = 1})
+			-- attach player to llama
+			elseif not self.driver then
+				self.object:set_properties({stepheight = 1.1})
+				mcl_mobs.attach(self, clicker)
+			end
 		end
-
-		-- Used to capture llama
-		elseif not self.driver and clicker:get_wielded_item():get_name() ~= "" then
-			mcl_mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 		end
 	end,
 
@@ -214,8 +217,25 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 			return false
 		end
 	end,
-
+	on_spawn = function(self)
+		if not self._inv_size then
+			local r = math.random(1000)
+			if r < 80 then
+				self._inv_size = 15
+			elseif r < 160 then
+				self._inv_size = 12
+			elseif r < 488 then
+				self._inv_size = 9
+			elseif r < 816 then
+				self._inv_size = 6
+			else
+				self._inv_size = 3
+			end
+		end
+	end,
 })
+
+mcl_entity_invs.register_inv("mobs_mc:llama","Llama",nil,true)
 
 -- spit arrow (weapon)
 mcl_mobs:register_arrow("mobs_mc:llamaspit", {
