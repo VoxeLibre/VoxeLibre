@@ -1,5 +1,7 @@
 mcl_entity_invs = {}
 
+local open_invs = {}
+
 local function check_distance(inv,player,count)
 	for _,o in pairs(minetest.get_objects_inside_radius(player:get_pos(),5)) do
 		local l = o:get_luaentity()
@@ -39,22 +41,21 @@ local function save_inv(ent)
 		for i,it in ipairs(ent._inv:get_list("main")) do
 			ent._items[i] = it:to_string()
 		end
+		minetest.remove_detached_inventory(ent._inv_id)
+		ent._inv = nil
 	end
-	minetest.remove_detached_inventory(ent._inv_id)
 end
 
-local open_invs = {}
-
-local function show_form(ent,player,show_name,size)
+function mcl_entity_invs.show_inv_form(ent,player,show_name)
 	if not ent._inv_id then return end
-	ent._inv = load_inv(ent,size)
 	if not open_invs[ent] then
-		open_invs[ent] = {}
+		open_invs[ent] = 0
 	end
-	table.insert(open_invs[ent],player:get_player_name())
+	ent._inv = load_inv(ent,ent._inv_size)
+	open_invs[ent] = open_invs[ent] + 1
 	local playername = player:get_player_name()
 	local rows = 3
-	local cols = (math.ceil(size/rows))
+	local cols = (math.ceil(ent._inv_size/rows))
 	local spacing = (9 - cols) / 2
 	local formspec = "size[9,8.75]"
 	.. "label[0,0;" .. minetest.formspec_escape(
@@ -83,7 +84,8 @@ end
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	for k,v in pairs(open_invs) do
 		if formname == k._inv_id then
-			if #v < 2 then
+			open_invs[k] = open_invs[k] - 1
+			if open_invs[k] < 1 then
 				save_inv(k)
 				open_invs[k] = nil
 			end
@@ -91,8 +93,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 
-function mcl_entity_invs.register_inv(entity_name,show_name,size)
+function mcl_entity_invs.register_inv(entity_name,show_name,size,no_on_righclick)
 	assert(minetest.registered_entities[entity_name],"mcl_entity_invs.register_inv called with invalid entity: "..tostring(entity_name))
+	minetest.registered_entities[entity_name]._inv_size = size
+
 	local old_oa = minetest.registered_entities[entity_name].on_activate
 	minetest.registered_entities[entity_name].on_activate  = function(self,staticdata,dtime_s)
 		local r
@@ -101,24 +105,28 @@ function mcl_entity_invs.register_inv(entity_name,show_name,size)
 		if type(d) == "table" and d._inv_id then
 			self._inv_id = d._inv_id
 			self._items = d._items
+			self._inv_size = d._inv_size
 		else
 			self._inv_id="entity_inv_"..minetest.sha1(minetest.get_gametime()..minetest.pos_to_string(self.object:get_pos())..tostring(math.random()))
 			--gametime and position for collision safety and math.random salt to protect against position brute-force
 		end
 		return r
 	end
-
-	local old_rc = minetest.registered_entities[entity_name].on_rightclick
-	minetest.registered_entities[entity_name].on_rightclick = function(self,clicker)
-		show_form(self,clicker,show_name,size)
-		if old_rc then return old_rc(self,clicker) end
+	if not no_on_righclick then
+		local old_rc = minetest.registered_entities[entity_name].on_rightclick
+		minetest.registered_entities[entity_name].on_rightclick = function(self,clicker)
+			mcl_entity_invs.show_inv_form(self,clicker,show_name)
+			if old_rc then return old_rc(self,clicker) end
+		end
 	end
+
 	local old_gsd = minetest.registered_entities[entity_name].get_staticdata
 	minetest.registered_entities[entity_name].get_staticdata  = function(self)
 		local old_sd = old_gsd(self)
 		local d = minetest.deserialize(old_sd)
 		assert(type(d) == "table","mcl_entity_invs currently only works with entities that return a (serialized) table in get_staticdata. "..tostring(self.name).." returned: "..tostring(old_sd))
 		d._inv_id = self._inv_id
+		d._inv_size = self._inv_size
 		d._items = {}
 		if self._items then
 			for i,it in ipairs(self._items) do
@@ -130,7 +138,7 @@ function mcl_entity_invs.register_inv(entity_name,show_name,size)
 
 	local old_ode = minetest.registered_entities[entity_name].on_deactivate
 	minetest.registered_entities[entity_name].on_deactivate = function(self,removal)
-		minetest.remove_detached_inventory(self._inv_id)
+		save_inv(self)
 		if old_ode then return old_ode(self,removal) end
 	end
 
