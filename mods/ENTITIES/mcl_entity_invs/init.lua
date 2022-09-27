@@ -100,7 +100,7 @@ function mcl_entity_invs.register_inv(entity_name,show_name,size,no_on_righclick
 	local old_oa = minetest.registered_entities[entity_name].on_activate
 	minetest.registered_entities[entity_name].on_activate  = function(self,staticdata,dtime_s)
 		local r
-		if old_oa then r=old_oa(self,clicker) end
+		if old_oa then r=old_oa(self,staticdata,dtime_s) end
 		local d = minetest.deserialize(staticdata)
 		if type(d) == "table" and d._inv_id then
 			self._inv_id = d._inv_id
@@ -143,9 +143,9 @@ function mcl_entity_invs.register_inv(entity_name,show_name,size,no_on_righclick
 	end
 
 	local old_od = minetest.registered_entities[entity_name].on_death
-	minetest.registered_entities[entity_name].on_death = function(self,clicker)
+	minetest.registered_entities[entity_name].on_death = function(self,killer)
 		drop_inv(self)
 		minetest.remove_detached_inventory(self._inv_id)
-		if old_od then return old_od(self,clicker) end
+		if old_od then return old_od(self,killer) end
 	end
 end
