@@ -248,12 +248,10 @@ mcl_mobs:spawn_specific(
 	"SavannaM_beach",
 	"Savanna_beach",
 	"Savanna_ocean",
-	"JungleEdge",
-	"JungleEdgeM",
 	"ExtremeHills",
 	"ExtremeHills_beach",
 	"ExtremeHillsM",
-},
+}, --FIXME: Needs Windswept Forest when that is added.
 0,
 minetest.LIGHT_MAX+1,
 30,
