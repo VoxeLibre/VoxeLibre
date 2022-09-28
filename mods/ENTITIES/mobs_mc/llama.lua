@@ -85,7 +85,7 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 
 		-- set needed values if not already present
 		if not self.v3 then
-			self.v2 = 0
+			self.v3 = 0
 			self.max_speed_forward = 4
 			self.max_speed_reverse = 2
 			self.accel = 4
