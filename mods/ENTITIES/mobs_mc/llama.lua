@@ -49,7 +49,6 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 		{"blank.png", "blank.png", "mobs_mc_llama_white.png"},
 		{"blank.png", "blank.png", "mobs_mc_llama.png"},
 	},
-	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	runaway = false,
 	walk_velocity = 1,
@@ -71,36 +70,28 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 		distance = 16,
 	},
 	animation = {
-		speed_normal = 24,
-		run_speed = 60,
-		run_start = 0,
-		run_end = 40,
-		stand_start = 0,
-		stand_end = 0,
-		walk_start = 0,
-		walk_end = 40,
-		hurt_start = 118,
-		hurt_end = 154,
-		death_start = 154,
-		death_end = 179,
-		eat_start = 49,
-		eat_end = 78,
-		look_start = 78,
-		look_end = 108,
+		stand_start = 0, stand_end = 0,
+		walk_start = 0, walk_end = 40, walk_speed = 35,
+		run_start = 0, run_end = 40, run_speed = 50,
+	},
+	child_animations = {
+		stand_start = 41, stand_end = 41,
+		walk_start = 41, walk_end = 81, walk_speed = 50,
+		run_start = 41, run_end = 81, run_speed = 75,
 	},
 	follow = { "mcl_farming:wheat_item", "mcl_farming:hay_block" },
 	view_range = 16,
 	do_custom = function(self, dtime)
 
 		-- set needed values if not already present
-		if not self.v2 then
+		if not self.v3 then
 			self.v2 = 0
 			self.max_speed_forward = 4
 			self.max_speed_reverse = 2
 			self.accel = 4
 			self.terrain_type = 3
-			self.driver_attach_at = {x = 0, y = 4.17, z = -1.5}
-			self.driver_eye_offset = {x = 0, y = 3, z = 0}
+			self.driver_attach_at = {x = 0, y = 12.7, z = -5}
+			self.driver_eye_offset = {x = 0, y = 6, z = 0}
 			self.driver_scale = {x = 1/self.visual_size.x, y = 1/self.visual_size.y}
 		end
 
