@@ -15,11 +15,9 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 	visual = "mesh",
 	mesh = "mobs_mc_pig.b3d",
 	textures = {{
-		"blank.png", -- baby
 		"mobs_mc_pig.png", -- base
 		"blank.png", -- saddle
 	}},
-	visual_size = {x=2.5, y=2.5},
 	makes_footstep_sound = true,
 	walk_velocity = 1,
 	run_velocity = 3,
@@ -40,15 +38,14 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 		distance = 16,
 	},
 	animation = {
-		stand_speed = 40,
-		walk_speed = 40,
-		run_speed = 90,
-		stand_start = 0,
-		stand_end = 0,
-		walk_start = 0,
-		walk_end = 40,
-		run_start = 0,
-		run_end = 40,
+		stand_start = 0, stand_end = 0,
+		walk_start = 0, walk_end = 40, walk_speed = 60,
+		run_start = 0, run_end = 40, run_speed = 90,
+	},
+	child_animations = {
+		stand_start = 41, stand_end = 41,
+		walk_start = 41, walk_end = 81, walk_speed = 90,
+		run_start = 41, run_end = 81, run_speed = 135,
 	},
 	follow = {
 		"mcl_farming:potato_item",
@@ -60,15 +57,17 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 	do_custom = function(self, dtime)
 
 		-- set needed values if not already present
-		if not self.v2 then
-			self.v2 = 0
+		if not self.v3 then
+			self.v3 = 0
 			self.max_speed_forward = 4
 			self.max_speed_reverse = 2
 			self.accel = 4
 			self.terrain_type = 3
-			self.driver_attach_at = {x = 0.0, y = 2.75, z = -1.5}
+			self.driver_attach_at = {x = 0.0, y = 6.5, z = -3.75}
 			self.driver_eye_offset = {x = 0, y = 3, z = 0}
 			self.driver_scale = {x = 1/self.visual_size.x, y = 1/self.visual_size.y}
+			self.base_texture = self.texture_list[1]
+			self.object:set_properties({textures = self.base_texture})
 		end
 
 		-- if driver present allow control of horse
@@ -111,7 +110,6 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 		local item = clicker:get_wielded_item()
 		if item:get_name() == "mcl_mobitems:saddle" and self.saddle ~= "yes" then
 			self.base_texture = {
-				"blank.png", -- baby
 				"mobs_mc_pig.png", -- base
 				"mobs_mc_pig_saddle.png", -- saddle
 			}

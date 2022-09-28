@@ -63,7 +63,6 @@ mcl_mobs:register_mob("mobs_mc:sheep", {
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.29, 0.45},
 
 	visual = "mesh",
-	visual_size = {x=3, y=3},
 	mesh = "mobs_mc_sheepfur.b3d",
 	textures = { sheep_texture("unicolor_white") },
 	gotten_texture = gotten_texture,
@@ -93,10 +92,14 @@ mcl_mobs:register_mob("mobs_mc:sheep", {
 		distance = 16,
 	},
 	animation = {
-		speed_normal = 25,	run_speed = 65,
-		stand_start = 40,	stand_end = 80,
-		walk_start = 0,		walk_end = 40,
-		run_start = 0,		run_end = 40,
+		stand_start = 0, stand_end = 0,
+		walk_start = 0, walk_end = 40, walk_speed = 30,
+		run_start = 0, run_end = 40, run_speed = 40,
+	},
+	child_animations = {
+		stand_start = 81, stand_end = 81,
+		walk_start = 81, walk_end = 121, walk_speed = 45,
+		run_start = 81, run_end = 121, run_speed = 60,
 	},
 	follow = { "mcl_farming:wheat_item" },
 	view_range = 12,

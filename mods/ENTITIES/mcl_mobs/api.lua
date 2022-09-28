@@ -1459,6 +1459,11 @@ local breed = function(self)
 					z = 0
 				})
 			end
+			
+			self.animation = nil
+			local anim = self._current_animation
+			self._current_animation = nil -- Mobs Redo does nothing otherwise
+			mcl_mobs.set_animation(self, anim)
 		end
 
 		return
@@ -3583,18 +3588,23 @@ local mob_activate = function(self, staticdata, def, dtime)
 	if not self.nametag then
 		self.nametag = def.nametag
 	end
-	if not self.custom_visual_size and not self.child then
+	if not self.custom_visual_size then
 		-- Remove saved visual_size on old existing entites.
-		-- Old entities were 3 now it's 1.
 		self.visual_size = nil
-		self.object:set_properties({visual_size = self.visual_size})
 		self.base_size = self.visual_size
+		if self.child then
+			self.visual_size = {
+				x = self.visual_size.x * 0.5,
+				y = self.visual_size.y * 0.5,
+			}
+		end
 	end
 
 	-- set anything changed above
 	self.object:set_properties(self)
 	set_yaw(self, (random(0, 360) - 180) / 180 * pi, 6)
 	update_tag(self)
+	self._current_animation = nil
 	set_animation(self, "stand")
 
 	-- run on_spawn function if found
@@ -4059,6 +4069,7 @@ minetest.register_entity(name, {
 	texture_mods = {},
 	shoot_arrow = def.shoot_arrow,
     sounds_child = def.sounds_child,
+	_child_animations = def.child_animations,
     pick_up = def.pick_up,
 	explosion_strength = def.explosion_strength,
 	suffocation_timer = 0,
@@ -4508,6 +4519,10 @@ function mcl_mobs:spawn_child(pos, mob_type)
 			ent.base_selbox[6] * .5,
 		},
 	})
+	
+	ent.animation = ent._child_animations
+	ent._current_animation = nil
+	set_animation(ent, "stand")
 
 	return child
 end

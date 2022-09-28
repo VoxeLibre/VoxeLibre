@@ -17,7 +17,6 @@ local cow_def = {
 		"mobs_mc_cow.png",
 		"blank.png",
 	}, },
-	visual_size = {x=2.8, y=2.8},
 	makes_footstep_sound = true,
 	walk_velocity = 1,
 	drops = {
@@ -41,11 +40,14 @@ local cow_def = {
 		distance = 16,
 	},
 	animation = {
-		stand_speed = 25, 	walk_speed = 40,
-		run_speed = 60,     stand_start = 0,
-		stand_end = 0,      walk_start = 0,
-		walk_end = 40,      run_start = 0,
-		run_end = 40,
+		stand_start = 0, stand_end = 0,
+		walk_start = 0, walk_end = 40, walk_speed = 30,
+		run_start = 0, run_end = 40, run_speed = 40,
+	},
+	child_animations = {
+		stand_start = 41, stand_end = 41,
+		walk_start = 41, walk_end = 81, walk_speed = 45,
+		run_start = 41, run_end = 81, run_speed = 60,
 	},
 	on_rightclick = function(self, clicker)
 		if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
@@ -82,7 +84,6 @@ mcl_mobs:register_mob("mobs_mc:cow", cow_def)
 -- Mooshroom
 local mooshroom_def = table.copy(cow_def)
 mooshroom_def.description = S("Mooshroom")
-mooshroom_def.mesh = "mobs_mc_cow.b3d"
 mooshroom_def.spawn_in_group_min = 4
 mooshroom_def.spawn_in_group = 8
 mooshroom_def.textures = { {"mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png"}, {"mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" } }
