@@ -130,8 +130,13 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 			item:take_item()
 			clicker:set_wielded_item(item)
 			self._has_chest = true
-			self.textures[1] = "mcl_chests_normal.png"
-			self.object:set_properties({textures = self.textures})
+			local tex_chest = "mcl_chests_normal.png"
+			self.base_texture = table.copy(self.base_texture)
+			self.base_texture[1] = tex_chest
+			self.object:set_properties({
+				textures = self.base_texture,
+			})
+			table.insert(self.drops,{name = "mcl_chests:chest",chance=1,min=1,max=1})
 		else
 			-- Feed with anything else
 			if mcl_mobs:feed_tame(self, clicker, 1, false, true) then return end
