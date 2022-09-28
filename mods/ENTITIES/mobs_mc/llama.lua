@@ -130,6 +130,8 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 			item:take_item()
 			clicker:set_wielded_item(item)
 			self._has_chest = true
+			self.textures[1] = "mcl_chests_normal.png"
+			self.object:set_properties({textures = self.textures})
 		else
 			-- Feed with anything else
 			if mcl_mobs:feed_tame(self, clicker, 1, false, true) then return end
