@@ -49,7 +49,6 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 		{"blank.png", "blank.png", "mobs_mc_llama_white.png"},
 		{"blank.png", "blank.png", "mobs_mc_llama.png"},
 	},
-	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	runaway = false,
 	walk_velocity = 1,
@@ -71,36 +70,28 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 		distance = 16,
 	},
 	animation = {
-		speed_normal = 24,
-		run_speed = 60,
-		run_start = 0,
-		run_end = 40,
-		stand_start = 0,
-		stand_end = 0,
-		walk_start = 0,
-		walk_end = 40,
-		hurt_start = 118,
-		hurt_end = 154,
-		death_start = 154,
-		death_end = 179,
-		eat_start = 49,
-		eat_end = 78,
-		look_start = 78,
-		look_end = 108,
+		stand_start = 0, stand_end = 0,
+		walk_start = 0, walk_end = 40, walk_speed = 35,
+		run_start = 0, run_end = 40, run_speed = 50,
+	},
+	child_animations = {
+		stand_start = 41, stand_end = 41,
+		walk_start = 41, walk_end = 81, walk_speed = 50,
+		run_start = 41, run_end = 81, run_speed = 75,
 	},
 	follow = { "mcl_farming:wheat_item", "mcl_farming:hay_block" },
 	view_range = 16,
 	do_custom = function(self, dtime)
 
 		-- set needed values if not already present
-		if not self.v2 then
-			self.v2 = 0
+		if not self.v3 then
+			self.v3 = 0
 			self.max_speed_forward = 4
 			self.max_speed_reverse = 2
 			self.accel = 4
 			self.terrain_type = 3
-			self.driver_attach_at = {x = 0, y = 4.17, z = -1.5}
-			self.driver_eye_offset = {x = 0, y = 3, z = 0}
+			self.driver_attach_at = {x = 0, y = 12.7, z = -5}
+			self.driver_eye_offset = {x = 0, y = 6, z = 0}
 			self.driver_scale = {x = 1/self.visual_size.x, y = 1/self.visual_size.y}
 		end
 
@@ -135,6 +126,17 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 		if item:get_name() == "mcl_farming:hay_block" then
 			-- Breed with hay bale
 			if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
+		elseif not self._has_chest and item:get_name() == "mcl_chests:chest" then
+			item:take_item()
+			clicker:set_wielded_item(item)
+			self._has_chest = true
+			local tex_chest = "mcl_chests_normal.png"
+			self.base_texture = table.copy(self.base_texture)
+			self.base_texture[1] = tex_chest
+			self.object:set_properties({
+				textures = self.base_texture,
+			})
+			table.insert(self.drops,{name = "mcl_chests:chest",chance=1,min=1,max=1})
 		else
 			-- Feed with anything else
 			if mcl_mobs:feed_tame(self, clicker, 1, false, true) then return end
@@ -175,21 +177,20 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 			end
 		end
 
-		-- detatch player already riding llama
-		if self.driver and clicker == self.driver then
-
-			mcl_mobs.detach(clicker, {x = 1, y = 0, z = 1})
-
-		-- attach player to llama
-		elseif not self.driver then
-
-			self.object:set_properties({stepheight = 1.1})
-			mcl_mobs.attach(self, clicker)
+		if clicker:get_player_control().sneak then
+			if self._has_chest then
+				mcl_entity_invs.show_inv_form(self,clicker,"Llama - Strength "..math.floor(self._inv_size / 3))
+			end
+		else
+			-- detatch player already riding llama
+			if self.driver and clicker == self.driver then
+				mcl_mobs.detach(clicker, {x = 1, y = 0, z = 1})
+			-- attach player to llama
+			elseif not self.driver then
+				self.object:set_properties({stepheight = 1.1})
+				mcl_mobs.attach(self, clicker)
+			end
 		end
-
-		-- Used to capture llama
-		elseif not self.driver and clicker:get_wielded_item():get_name() ~= "" then
-			mcl_mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 		end
 	end,
 
@@ -214,8 +215,25 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 			return false
 		end
 	end,
-
+	on_spawn = function(self)
+		if not self._inv_size then
+			local r = math.random(1000)
+			if r < 80 then
+				self._inv_size = 15
+			elseif r < 160 then
+				self._inv_size = 12
+			elseif r < 488 then
+				self._inv_size = 9
+			elseif r < 816 then
+				self._inv_size = 6
+			else
+				self._inv_size = 3
+			end
+		end
+	end,
 })
+
+mcl_entity_invs.register_inv("mobs_mc:llama","Llama",nil,true)
 
 -- spit arrow (weapon)
 mcl_mobs:register_arrow("mobs_mc:llamaspit", {
