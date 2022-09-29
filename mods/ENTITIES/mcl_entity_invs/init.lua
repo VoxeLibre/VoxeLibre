@@ -81,6 +81,12 @@ local function drop_inv(ent)
 	end
 end
 
+local function on_remove(self,killer,oldf)
+		save_inv(self)
+		drop_inv(self)
+		if oldf then return oldf(self,killer) end
+end
+
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	for k,v in pairs(open_invs) do
 		if formname == k._inv_id then
@@ -139,13 +145,22 @@ function mcl_entity_invs.register_inv(entity_name,show_name,size,no_on_righclick
 	local old_ode = minetest.registered_entities[entity_name].on_deactivate
 	minetest.registered_entities[entity_name].on_deactivate = function(self,removal)
 		save_inv(self)
+		if removal then
+			on_remove(self)
+		end
 		if old_ode then return old_ode(self,removal) end
 	end
 
 	local old_od = minetest.registered_entities[entity_name].on_death
 	minetest.registered_entities[entity_name].on_death = function(self,killer)
-		drop_inv(self)
-		minetest.remove_detached_inventory(self._inv_id)
-		if old_od then return old_od(self,killer) end
+		if not self.is_mob then
+			on_remove(self,killer,old_od)
+		end
+	end
+	local old_odi = minetest.registered_entities[entity_name].on_die
+	minetest.registered_entities[entity_name].on_die = function(self,killer)
+		if self.is_mob then
+			on_remove(self,killer,old_od)
+		end
 	end
 end
