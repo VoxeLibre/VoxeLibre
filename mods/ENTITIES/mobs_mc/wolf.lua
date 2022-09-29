@@ -25,7 +25,6 @@ local wolf = {
 	textures = {
 		{"mobs_mc_wolf.png"},
 	},
-	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	sounds = {
 		attack = "mobs_mc_wolf_bark",
@@ -78,11 +77,16 @@ local wolf = {
 		end
 	end,
 	animation = {
-		speed_normal = 50,		speed_run = 100,
-		stand_start = 0,		stand_end = 40,
-		walk_start = 40,		walk_end = 80,
-		run_start = 80,		run_end = 120,
-		sit_start = 121,		sit_end = 140,
+		stand_start = 0, stand_end = 0,
+		walk_start = 0, walk_end = 40, walk_speed = 50,
+		run_start = 0, run_end = 40, run_speed = 100,
+		sit_start = 45, sit_end = 45,
+	},
+	child_animations = {
+		stand_start = 46, stand_end = 46,
+		walk_start = 46, walk_end = 86, walk_speed = 75,
+		run_start = 46, run_end = 86, run_speed = 150,
+		sit_start = 91, sit_end = 91,
 	},
 	jump = true,
 	attacks_monsters = true,

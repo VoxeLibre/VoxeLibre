@@ -25,7 +25,6 @@ mcl_mobs:register_mob("mobs_mc:chicken", {
 	textures = {
 		{"mobs_mc_chicken.png"},
 	},
-	visual_size = {x=2.2, y=2.2},
 
 	makes_footstep_sound = true,
 	walk_velocity = 1,
@@ -58,12 +57,15 @@ mcl_mobs:register_mob("mobs_mc:chicken", {
 		distance = 16,
 	},
 	animation = {
-		stand_speed = 25, walk_speed = 25, run_speed = 50,
-		stand_start = 0,		stand_end = 0,
-		walk_start = 0,		walk_end = 40,
-		run_start = 0,		run_end = 40,
+		stand_start = 0, stand_end = 0,
+		walk_start = 0, walk_end = 20, walk_speed = 25,
+		run_start = 0, run_end = 20, run_speed = 50,
 	},
-
+	child_animations = {
+		stand_start = 31, stand_end = 31,
+		walk_start = 31, walk_end = 51, walk_speed = 37,
+		run_start = 31, run_end = 51, run_speed = 75,
+	},
 	follow = {
 		"mcl_farming:wheat_seeds",
 		"mcl_farming:melon_seeds",

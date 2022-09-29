@@ -29,7 +29,6 @@ mcl_mobs:register_mob("mobs_mc:evoker", {
 		"blank.png", --no hat
 		-- TODO: Attack glow
 	} },
-	visual_size = {x=2.75, y=2.75},
 	makes_footstep_sound = true,
 	damage = 6,
 	walk_velocity = 0.2,
@@ -65,19 +64,10 @@ mcl_mobs:register_mob("mobs_mc:evoker", {
 	},
 	-- TODO: sounds
 	animation = {
-		stand_speed = 25,
-		stand_start = 40,
-		stand_end = 59,
-		walk_speed = 25,
-		walk_start = 0,
-		walk_end = 40,
-		run_speed = 25,
-		shoot_start = 120, --magic arm swinging
-		shoot_end = 140,
-		die_speed = 15,
-		die_start = 190,
-		die_end = 200,
-		die_loop = false,
+		stand_start = 0, stand_end = 0,
+		walk_start = 0, walk_end = 40, walk_speed = 6,
+		run_start = 0, run_end = 40, run_speed = 24,
+		shoot_start = 142, shoot_end = 152, -- Magic arm swinging
 	},
 	view_range = 16,
 	fear_height = 4,

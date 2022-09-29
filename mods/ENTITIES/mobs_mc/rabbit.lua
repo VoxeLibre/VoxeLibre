@@ -26,7 +26,6 @@ local rabbit = {
         {"mobs_mc_rabbit_salt.png"},
         {"mobs_mc_rabbit_black.png"},
 	},
-	visual_size = {x=1.5, y=1.5},
 	sounds = {
 		random = "mobs_mc_rabbit_random",
 		damage = "mobs_mc_rabbit_hurt",
@@ -49,10 +48,14 @@ local rabbit = {
 	},
 	fear_height = 4,
 	animation = {
-		speed_normal = 25,		speed_run = 50,
-		stand_start = 0,		stand_end = 0,
-		walk_start = 0,		walk_end = 20,
-		run_start = 0,		run_end = 20,
+		stand_start = 0, stand_end = 0,
+		walk_start = 0, walk_end = 20, walk_speed = 20,
+		run_start = 0, run_end = 20, run_speed = 30,
+	},
+	child_animations = {
+		stand_start = 21, stand_end = 21,
+		walk_start = 21, walk_end = 41, walk_speed = 30,
+		run_start = 21, run_end = 41, run_speed = 45,
 	},
 	-- Follow (yellow) dangelions, carrots and golden carrots
 	follow = {

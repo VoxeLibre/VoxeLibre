@@ -140,24 +140,8 @@ local function egg_on_step(self, dtime)
 			-- FIXME: Chicks have a quite good chance to spawn in walls
 			local r = math.random(1,8)
 
-			-- Turn given object into a child
-			local function make_child(object)
-				local ent = object:get_luaentity()
-				object:set_properties({
-					visual_size = { x = ent.base_size.x/2, y = ent.base_size.y/2 },
-					collisionbox = {
-						ent.base_colbox[1]/2,
-						ent.base_colbox[2]/2,
-						ent.base_colbox[3]/2,
-						ent.base_colbox[4]/2,
-						ent.base_colbox[5]/2,
-						ent.base_colbox[6]/2,
-					}
-				})
-				ent.child = true
-			end
 			if r == 1 then
-				make_child(minetest.add_entity(self._lastpos, "mobs_mc:chicken"))
+				mcl_mobs:spawn_child(self._lastpos, "mobs_mc:chicken")
 
 				-- BONUS ROUND: 1/32 chance to spawn 3 additional chicks
 				local r = math.random(1,32)
@@ -169,7 +153,7 @@ local function egg_on_step(self, dtime)
 					}
 					for o=1, 3 do
 						local pos = vector.add(self._lastpos, offsets[o])
-						make_child(minetest.add_entity(pos, "mobs_mc:chicken"))
+						mcl_mobs:spawn_child(pos, "mobs_mc:chicken")
 					end
 				end
 			end
