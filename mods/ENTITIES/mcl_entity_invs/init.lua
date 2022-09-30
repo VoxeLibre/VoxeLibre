@@ -74,6 +74,7 @@ function mcl_entity_invs.show_inv_form(ent,player,show_name)
 end
 
 local function drop_inv(ent)
+	if not ent._items then return end
 	local pos = ent.object:get_pos()
 	for i,it in pairs(ent._items) do
 		local p = vector.add(pos,vector.new(math.random() - 0.5, math.random()-0.5, math.random()-0.5))
