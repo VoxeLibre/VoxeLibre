@@ -22,6 +22,7 @@ local adjacents = {
 	vector.new(0,0,-1),
 }
 
+--[[
 local function sensor_action(p,tp)
 	local s = minetest.find_node_near(p,SPREAD_RANGE,{"mcl_sculk:shrieker"})
 	local n = minetest.get_node(s)
@@ -65,6 +66,7 @@ walkover.register_global(function(pos, node, player)
 		minetest.after(SENSOR_DELAY,sensor_action,s,pos)
 	end
 end)
+--]]
 
 local function get_node_xp(pos)
 	local meta = minetest.get_meta(pos)
@@ -225,6 +227,7 @@ minetest.register_node("mcl_sculk:catalyst", {
 	_mcl_silk_touch_drop = true,
 })
 
+--[[
 minetest.register_node("mcl_sculk:sensor", {
 	description = S("Sculk Sensor"),
 	tiles = {
@@ -261,3 +264,4 @@ minetest.register_node("mcl_sculk:shrieker", {
 	_mcl_hardness = 3,
 	_mcl_silk_touch_drop = true,
 })
+--]]
