@@ -237,6 +237,24 @@ local horse = {
 		local iname = item:get_name()
 		local heal = 0
 
+		if self._inv_id then
+			if not self._has_chest and item:get_name() == "mcl_chests:chest" then
+				item:take_item()
+				clicker:set_wielded_item(item)
+				self._has_chest = true
+				local tex_chest = "mcl_chests_normal.png"
+				self.base_texture = table.copy(self.base_texture)
+				self.base_texture[1] = tex_chest
+				self.object:set_properties({
+					textures = self.base_texture,
+				})
+				table.insert(self.drops,{name = "mcl_chests:chest",chance=1,min=1,max=1})
+			elseif self._has_chest and clicker:get_player_control().sneak then
+				mcl_entity_invs.show_inv_form(self,clicker,"Donkey")
+				return
+			end
+		end
+
 		-- Taming
 		self.temper = self.temper or (math.random(1,100))
 
@@ -518,8 +536,9 @@ donkey.collisionbox = {
 donkey.jump = true
 donkey.jump_height = 3.75 -- can clear 1 block height
 
-mcl_mobs:register_mob("mobs_mc:donkey", donkey)
 
+mcl_mobs:register_mob("mobs_mc:donkey", donkey)
+mcl_entity_invs.register_inv("mobs_mc:donkey","Donkey",15,true)
 -- Mule
 local m = 0.94
 local mule = table.copy(donkey)
