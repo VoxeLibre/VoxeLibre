@@ -143,45 +143,43 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 		end
 		if mcl_mobs:protect(self, clicker) then return end
 
+		if self._has_chest and clicker:get_player_control().sneak then
+			mcl_entity_invs.show_inv_form(self,clicker,"Llama - Strength "..math.floor(self._inv_size / 3))
+			return
+		end
 		-- Make sure tamed llama is mature and being clicked by owner only
 		if self.tamed and not self.child and self.owner == clicker:get_player_name() then
-
-		-- Place carpet
-		if minetest.get_item_group(item:get_name(), "carpet") == 1 and not self.carpet then
-			for group, carpetdata in pairs(carpets) do
-				if minetest.get_item_group(item:get_name(), group) == 1 then
-					if not minetest.is_creative_enabled(clicker:get_player_name()) then
-						item:take_item()
-						clicker:set_wielded_item(item)
+			-- Place carpet
+			if minetest.get_item_group(item:get_name(), "carpet") == 1 and not self.carpet then
+				for group, carpetdata in pairs(carpets) do
+					if minetest.get_item_group(item:get_name(), group) == 1 then
+						if not minetest.is_creative_enabled(clicker:get_player_name()) then
+							item:take_item()
+							clicker:set_wielded_item(item)
+						end
+						local substr = carpetdata[2]
+						local tex_carpet = "mobs_mc_llama_decor_"..substr..".png"
+						self.base_texture = table.copy(self.base_texture)
+						self.base_texture[2] = tex_carpet
+						self.object:set_properties({
+							textures = self.base_texture,
+						})
+						self.carpet = item:get_name()
+						self.drops = {
+							{name = "mcl_mobitems:leather",
+							chance = 1,
+							min = 0,
+							max = 2,},
+							{name = item:get_name(),
+							chance = 1,
+							min = 1,
+							max = 1,},
+						}
+						return
 					end
-					local substr = carpetdata[2]
-					local tex_carpet = "mobs_mc_llama_decor_"..substr..".png"
-					self.base_texture = table.copy(self.base_texture)
-					self.base_texture[2] = tex_carpet
-					self.object:set_properties({
-						textures = self.base_texture,
-					})
-					self.carpet = item:get_name()
-					self.drops = {
-						{name = "mcl_mobitems:leather",
-						chance = 1,
-						min = 0,
-						max = 2,},
-						{name = item:get_name(),
-						chance = 1,
-						min = 1,
-						max = 1,},
-					}
-					return
 				end
 			end
-		end
 
-		if clicker:get_player_control().sneak then
-			if self._has_chest then
-				mcl_entity_invs.show_inv_form(self,clicker,"Llama - Strength "..math.floor(self._inv_size / 3))
-			end
-		else
 			-- detatch player already riding llama
 			if self.driver and clicker == self.driver then
 				mcl_mobs.detach(clicker, {x = 1, y = 0, z = 1})
@@ -190,7 +188,6 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 				self.object:set_properties({stepheight = 1.1})
 				mcl_mobs.attach(self, clicker)
 			end
-		end
 		end
 	end,
 
