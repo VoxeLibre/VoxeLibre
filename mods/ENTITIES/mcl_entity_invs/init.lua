@@ -46,11 +46,12 @@ local function save_inv(ent)
 	end
 end
 
-function mcl_entity_invs.show_inv_form(ent,player,show_name)
+function mcl_entity_invs.show_inv_form(ent,player,text)
 	if not ent._inv_id then return end
 	if not open_invs[ent] then
 		open_invs[ent] = 0
 	end
+	text = text or ""
 	ent._inv = load_inv(ent,ent._inv_size)
 	open_invs[ent] = open_invs[ent] + 1
 	local playername = player:get_player_name()
@@ -59,7 +60,7 @@ function mcl_entity_invs.show_inv_form(ent,player,show_name)
 	local spacing = (9 - cols) / 2
 	local formspec = "size[9,8.75]"
 	.. "label[0,0;" .. minetest.formspec_escape(
-			minetest.colorize("#313131", show_name)) .. "]"
+			minetest.colorize("#313131", ent._inv_title .. " ".. text)) .. "]"
 	.. "list[detached:"..ent._inv_id..";main;"..spacing..",0.5;"..cols..","..rows..";]"
 	.. mcl_formspec.get_itemslot_bg(spacing,0.5,cols,rows)
 	.. "label[0,4.0;" .. minetest.formspec_escape(
@@ -103,6 +104,7 @@ end)
 function mcl_entity_invs.register_inv(entity_name,show_name,size,no_on_righclick)
 	assert(minetest.registered_entities[entity_name],"mcl_entity_invs.register_inv called with invalid entity: "..tostring(entity_name))
 	minetest.registered_entities[entity_name]._inv_size = size
+	minetest.registered_entities[entity_name]._inv_title = show_name
 
 	local old_oa = minetest.registered_entities[entity_name].on_activate
 	minetest.registered_entities[entity_name].on_activate  = function(self,staticdata,dtime_s)

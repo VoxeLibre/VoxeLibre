@@ -251,8 +251,9 @@ local horse = {
 				self.base_texture = tex
 				self.object:set_properties({textures = self.base_texture})
 				table.insert(self.drops,{name = "mcl_chests:chest",chance=1,min=1,max=1})
+				return
 			elseif self._chest and clicker:get_player_control().sneak then
-				mcl_entity_invs.show_inv_form(self,clicker,"Donkey")
+				mcl_entity_invs.show_inv_form(self,clicker)
 				return
 			end
 		end
@@ -558,6 +559,7 @@ mule.collisionbox = {
 	horse.collisionbox[6] * m,
 }
 mcl_mobs:register_mob("mobs_mc:mule", mule)
+mcl_entity_invs.register_inv("mobs_mc:mule","Mule",15,true)
 
 --===========================
 --Spawn Function

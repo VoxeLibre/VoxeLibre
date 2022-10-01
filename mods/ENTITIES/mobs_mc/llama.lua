@@ -136,16 +136,16 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 				textures = self.base_texture,
 			})
 			table.insert(self.drops,{name = "mcl_chests:chest",chance=1,min=1,max=1})
+			return
+		elseif self._has_chest and clicker:get_player_control().sneak then
+			mcl_entity_invs.show_inv_form(self,clicker," - Strength "..math.floor(self._inv_size / 3))
+			return
 		else
 			-- Feed with anything else
 			if mcl_mobs:feed_tame(self, clicker, 1, false, true) then return end
 		end
 		if mcl_mobs:protect(self, clicker) then return end
 
-		if self._has_chest and clicker:get_player_control().sneak then
-			mcl_entity_invs.show_inv_form(self,clicker,"Llama - Strength "..math.floor(self._inv_size / 3))
-			return
-		end
 		-- Make sure tamed llama is mature and being clicked by owner only
 		if self.tamed and not self.child and self.owner == clicker:get_player_name() then
 			-- Place carpet
