@@ -238,18 +238,20 @@ local horse = {
 		local heal = 0
 
 		if self._inv_id then
-			if not self._has_chest and item:get_name() == "mcl_chests:chest" then
+			if not self._chest and item:get_name() == "mcl_chests:chest" then
 				item:take_item()
 				clicker:set_wielded_item(item)
-				self._has_chest = true
-				local tex_chest = "mcl_chests_normal.png"
-				self.base_texture = table.copy(self.base_texture)
-				self.base_texture[1] = tex_chest
-				self.object:set_properties({
-					textures = self.base_texture,
-				})
+				self._chest = true
+				-- Update texture
+				if not self._naked_texture then
+					-- Base horse texture without chest or saddle
+					self._naked_texture = self.base_texture[2]
+				end
+				local tex = horse_extra_texture(self)
+				self.base_texture = tex
+				self.object:set_properties({textures = self.base_texture})
 				table.insert(self.drops,{name = "mcl_chests:chest",chance=1,min=1,max=1})
-			elseif self._has_chest and clicker:get_player_control().sneak then
+			elseif self._chest and clicker:get_player_control().sneak then
 				mcl_entity_invs.show_inv_form(self,clicker,"Donkey")
 				return
 			end
