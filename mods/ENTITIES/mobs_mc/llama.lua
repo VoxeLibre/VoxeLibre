@@ -130,9 +130,8 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 			item:take_item()
 			clicker:set_wielded_item(item)
 			self._has_chest = true
-			local tex_chest = "mcl_chests_normal.png"
 			self.base_texture = table.copy(self.base_texture)
-			self.base_texture[1] = tex_chest
+			self.base_texture[1] = self.base_texture[3]
 			self.object:set_properties({
 				textures = self.base_texture,
 			})
