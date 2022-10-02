@@ -177,7 +177,8 @@ mcl_mobs:register_arrow("mobs_mc:shulkerbullet", {
 })
 
 
-mcl_mobs:register_egg("mobs_mc:shulker", S("Shulker"), "mobs_mc_spawn_icon_shulker.png", 0)
+mcl_mobs:register_egg("mobs_mc:shulker", S("Shulker"), "(spawn_egg.png^[multiply:#946694)^(spawn_egg_overlay.png^[multiply:#4d3852)", 0)
+
 --[[
 mcl_mobs:spawn_specific(
 "mobs_mc:shulker",

@@ -275,4 +275,4 @@ mobs_mc.water_level+15,
 mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:llama", S("Llama"), "mobs_mc_spawn_icon_llama.png", 0)
+mcl_mobs:register_egg("mobs_mc:llama", S("Llama"), "(spawn_egg.png^[multiply:#c09e7d)^(spawn_egg_overlay.png^[multiply:#995f40)", 0)

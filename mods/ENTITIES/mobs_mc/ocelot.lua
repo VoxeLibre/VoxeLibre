@@ -233,5 +233,4 @@ mobs:spawn({
 ]]--
 
 -- spawn eggs
--- FIXME: The spawn icon shows a cat texture, not an ocelot texture
-mcl_mobs:register_egg("mobs_mc:ocelot", S("Ocelot"), "mobs_mc_spawn_icon_cat.png", 0)
+mcl_mobs:register_egg("mobs_mc:ocelot", S("Ocelot"), "(spawn_egg.png^[multiply:#efde7d)^(spawn_egg_overlay.png^[multiply:#564434)", 0)

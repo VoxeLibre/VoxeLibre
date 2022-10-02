@@ -208,7 +208,7 @@ mcl_mobs:spawn(spawn_grass)
 ]]--
 
 -- Spawn egg
-mcl_mobs:register_egg("mobs_mc:rabbit", S("Rabbit"), "mobs_mc_spawn_icon_rabbit.png", 0)
+mcl_mobs:register_egg("mobs_mc:rabbit", S("Rabbit"), "(spawn_egg.png^[multiply:#995f40)^(spawn_egg_overlay.png^[multiply:#734831)", 0)
 
 -- Note: This spawn egg does not exist in Minecraft
-mcl_mobs:register_egg("mobs_mc:killer_bunny", S("Killer Bunny"), "mobs_mc_spawn_icon_rabbit.png^[colorize:#FF0000:192", 0) -- TODO: Update inventory image
+mcl_mobs:register_egg("mobs_mc:killer_bunny", S("Killer Bunny"), "(spawn_egg.png^[multiply:#f2f2f2)^(spawn_egg_overlay.png^[multiply:#ff0000)", 0)
