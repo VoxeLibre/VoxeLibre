@@ -1066,7 +1066,8 @@ local do_env_damage = function(self)
 	end
 
 	local sunlight = 10
-	if within_limits(pos,0) then
+	if within_limits(pos,0) and minetest.get_node(pos) then
+		minetest.log("action","get_light_pos: "..minetest.pos_to_string(pos))
 		sunlight = minetest.get_natural_light(pos, self.time_of_day)
 	end
 
