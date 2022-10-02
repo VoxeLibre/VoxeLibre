@@ -202,4 +202,4 @@ mcl_mobs:register_arrow("mobs_mc:blaze_fireball", {
 })
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:blaze", S("Blaze"), "mobs_mc_spawn_icon_blaze.png", 0)
+mcl_mobs:register_egg("mobs_mc:blaze", S("Blaze"), "(spawn_egg.png^[multiply:#f6b201)^(spawn_egg_overlay.png^[multiply:#fff87e)", 0)

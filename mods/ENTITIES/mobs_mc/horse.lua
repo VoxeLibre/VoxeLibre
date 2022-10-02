@@ -587,8 +587,8 @@ mobs_mc.water_level+3,
 mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:horse", S("Horse"), "mobs_mc_spawn_icon_horse.png", 0)
-mcl_mobs:register_egg("mobs_mc:skeleton_horse", S("Skeleton Horse"), "mobs_mc_spawn_icon_horse_skeleton.png", 0)
---mobs:register_egg("mobs_mc:zombie_horse", S("Zombie Horse"), "mobs_mc_spawn_icon_horse_zombie.png", 0)
-mcl_mobs:register_egg("mobs_mc:donkey", S("Donkey"), "mobs_mc_spawn_icon_donkey.png", 0)
-mcl_mobs:register_egg("mobs_mc:mule", S("Mule"), "mobs_mc_spawn_icon_mule.png", 0)
+mcl_mobs:register_egg("mobs_mc:horse", S("Horse"), "(spawn_egg.png^[multiply:#c09e7d)^(spawn_egg_overlay.png^[multiply:#eee500)", 0)
+mcl_mobs:register_egg("mobs_mc:skeleton_horse", S("Skeleton Horse"), "(spawn_egg.png^[multiply:#68684f)^(spawn_egg_overlay.png^[multiply:#e5e5d8)", 0)
+--mobs:register_egg("mobs_mc:zombie_horse", S("Zombie Horse"), "(spawn_egg.png^[multiply:#2a5a37)^(spawn_egg_overlay.png^[multiply:#84d080)", 0)
+mcl_mobs:register_egg("mobs_mc:donkey", S("Donkey"), "(spawn_egg.png^[multiply:#534539)^(spawn_egg_overlay.png^[multiply:#867566)", 0)
+mcl_mobs:register_egg("mobs_mc:mule", S("Mule"), "(spawn_egg.png^[multiply:#1b0200)^(spawn_egg_overlay.png^[multiply:#51331d)", 0)

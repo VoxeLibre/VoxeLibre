@@ -156,4 +156,4 @@ mobs_mc.water_level,
 mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:chicken", S("Chicken"), "mobs_mc_spawn_icon_chicken.png", 0)
+mcl_mobs:register_egg("mobs_mc:chicken", S("Chicken"), "(spawn_egg.png^[multiply:#a1a1a1)^(spawn_egg_overlay.png^[multiply:#ff0000)", 0)

@@ -141,4 +141,4 @@ mcl_mobs:register_arrow("mobs_mc:fireball", {
 
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:ghast", S("Ghast"), "mobs_mc_spawn_icon_ghast.png", 0)
+mcl_mobs:register_egg("mobs_mc:ghast", S("Ghast"), "(spawn_egg.png^[multiply:#f9f9f9)^(spawn_egg_overlay.png^[multiply:#bcbcbc)", 0)

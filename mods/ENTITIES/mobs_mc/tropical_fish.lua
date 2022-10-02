@@ -183,4 +183,4 @@ water-16,
 water+1)
 
 --spawn egg
-mcl_mobs:register_egg("mobs_mc:tropical_fish", S("Tropical fish"), "extra_mobs_spawn_icon_tropical_fish.png", 0)
+mcl_mobs:register_egg("mobs_mc:tropical_fish", S("Tropical fish"), "(spawn_egg.png^[multiply:#ef6915)^(spawn_egg_overlay.png^[multiply:#fff9ef)", 0)

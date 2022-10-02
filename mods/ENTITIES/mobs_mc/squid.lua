@@ -217,4 +217,4 @@ water-16,
 water+1)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:squid", S("Squid"), "mobs_mc_spawn_icon_squid.png", 0)
+mcl_mobs:register_egg("mobs_mc:squid", S("Squid"), "(spawn_egg.png^[multiply:#223b4d)^(spawn_egg_overlay.png^[multiply:#708999)", 0)
