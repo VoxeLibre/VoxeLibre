@@ -258,6 +258,10 @@ function awards.unlock(name, award)
 	if not custom_announce then
 		if awdef.secret then
 			custom_announce = S("Secret Advancement Made:")
+		elseif awdef.type == "Goal" then
+			custom_announce = S("Goal Completed:")
+		elseif awdef.type == "Challenge" then
+			custom_announce = S("Challenge Completed:")
 		else
 			custom_announce = S("Advancement Made:")
 		end
@@ -284,6 +288,10 @@ function awards.unlock(name, award)
 		local chat_announce
 		if awdef.secret == true then
 			chat_announce = S("Secret Advancement Made: @1")
+		elseif awdef.type == "Goal" then
+			chat_announce = S("Goal Completed: @1")
+		elseif awdef.type == "Challenge" then
+			chat_announce = S("Challenge Completed: @1")
 		else
 			chat_announce = S("Advancement Made: @1")
 		end
@@ -307,6 +315,10 @@ function awards.unlock(name, award)
 		local hud_announce
 		if awdef.secret == true then
 			hud_announce = S("Secret Advancement Made!")
+		elseif awdef.type == "Goal" then
+			hud_announce = S("Goal Completed!")
+		elseif awdef.type == "Challenge" then
+			hud_announce = S("Challenge Completed!")
 		else
 			hud_announce = S("Advancement Made!")
 		end
