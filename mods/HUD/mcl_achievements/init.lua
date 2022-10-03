@@ -17,6 +17,7 @@ awards.register_achievement("mcl_buildWorkBench", {
 		target = 1
 	},
 	type = "Advancement",
+	group = "Overworld",
 })
 awards.register_achievement("mcl:buildPickaxe", {
 	title = S("Time to Mine!"),
@@ -28,6 +29,7 @@ awards.register_achievement("mcl:buildPickaxe", {
 		target = 1
 	},
 	type = "Advancement",
+	group = "Overworld",
 })
 awards.register_achievement("mcl:buildFurnace", {
 	title = S("Hot Topic"),
@@ -38,7 +40,8 @@ awards.register_achievement("mcl:buildFurnace", {
 		item = "mcl_furnaces:furnace",
 		target = 1
 	},
-	type = "Advancement"
+	type = "Advancement",
+	group = "Overworld",
 })
 awards.register_achievement("mcl:buildHoe", {
 	title = S("Time to Farm!"),
@@ -50,6 +53,7 @@ awards.register_achievement("mcl:buildHoe", {
 		target = 1
 	},
 	type = "Advancement",
+	group = "Husbandry",
 })
 awards.register_achievement("mcl:makeBread", {
 	title = S("Bake Bread"),
@@ -61,6 +65,7 @@ awards.register_achievement("mcl:makeBread", {
 		target = 1
 	},
 	type = "Advancement",
+	group = "Husbandry",
 })
 
 awards.register_achievement("mcl:bakeCake", {
@@ -73,6 +78,7 @@ awards.register_achievement("mcl:bakeCake", {
 		target = 1
 	},
 	type = "Advancement",
+	group = "Husbandry",
 })
 awards.register_achievement("mcl:buildBetterPickaxe", {
 	title = S("Getting an Upgrade"),
@@ -85,6 +91,7 @@ awards.register_achievement("mcl:buildBetterPickaxe", {
 		target = 1
 	},
 	type = "Advancement",
+	group = "Overworld",
 })
 awards.register_achievement("mcl:buildSword", {
 	title = S("Time to Strike!"),
@@ -96,6 +103,7 @@ awards.register_achievement("mcl:buildSword", {
 		target = 1
 	},
 	type = "Advancement",
+	group = "Adventure",
 })
 
 awards.register_achievement("mcl:bookcase", {
@@ -108,6 +116,7 @@ awards.register_achievement("mcl:bookcase", {
 		target = 1
 	},
 	type = "Advancement",
+	group = "Overworld",
 })
 
 awards.register_achievement("mcl:buildIronPickaxe", {
@@ -120,6 +129,7 @@ awards.register_achievement("mcl:buildIronPickaxe", {
 		target = 1
 	},
 	type = "Advancement",
+	group = "Overworld",
 })
 
 -- Item pickup achievements: These are awarded when picking up a certain item.
@@ -135,6 +145,7 @@ awards.register_achievement("mcl:blazeRod", {
 	description = S("Pick up a blaze rod from the floor."),
 	icon = "mcl_mobitems_blaze_rod.png",
 	type = "Advancement",
+	group = "Nether",
 })
 
 awards.register_achievement("mcl:killCow", {
@@ -142,12 +153,14 @@ awards.register_achievement("mcl:killCow", {
 	description = S("Pick up leather from the floor.\nHint: Cows and some other animals have a chance to drop leather, when killed."),
 	icon = "mcl_mobitems_leather.png",
 	type = "Advancement",
+	group = "Adventure",
 })
 awards.register_achievement("mcl:mineWood", {
 	title = S("Getting Wood"),
 	description = S("Pick up a wood item from the ground.\nHint: Punch a tree trunk until it pops out as an item."),
 	icon = "default_tree.png",
 	type = "Advancement",
+	group = "Overworld",
 })
 
 awards.register_achievement("mcl:whosCuttingOnions", {
@@ -155,6 +168,7 @@ awards.register_achievement("mcl:whosCuttingOnions", {
 	description = S("Pick up a crying obsidian from the floor."),
 	icon = "default_obsidian.png^mcl_core_crying_obsidian.png",
 	type = "Advancement",
+	group = "Nether",
 })
 
 awards.register_achievement("mcl:hiddenInTheDepths", {
@@ -162,6 +176,7 @@ awards.register_achievement("mcl:hiddenInTheDepths", {
 	description = S("Pick up an Ancient Debris from the floor."),
 	icon = "mcl_nether_ancient_debris_side.png",
 	type = "Advancement",
+	group = "Nether",
 })
 
 awards.register_achievement("mcl:PickUpDragonEgg", {
@@ -169,6 +184,7 @@ awards.register_achievement("mcl:PickUpDragonEgg", {
 	description = S("Hold the Dragon Egg.\nHint: Pick up the egg from the ground and have it in your inventory."),
 	icon = "mcl_end_dragon_egg.png",
 	type = "Goal",
+	group = "End",
 })
 
 awards.register_achievement("mcl:skysTheLimit", {
@@ -176,6 +192,7 @@ awards.register_achievement("mcl:skysTheLimit", {
 	description = S("Find the elytra and prepare to fly above and beyond!"),
 	icon = "mcl_armor_inv_elytra.png",
 	type = "Goal",
+	group = "End",
 }) -- TODO: Make also unlock when moved to inventory, not just picking up from ground
 
 -- Smelting achivements: These are awarded when picking up an item from a furnace
@@ -185,12 +202,14 @@ awards.register_achievement("mcl:acquireIron", {
 	description = S("Take an iron ingot from a furnace's output slot.\nHint: To smelt an iron ingot, put a fuel (like coal) and iron ore into a furnace."),
 	icon = "default_steel_ingot.png",
 	type = "Advancement",
+	group = "Overworld",
 })
 awards.register_achievement("mcl:cookFish", {
 	title = S("Delicious Fish"),
 	description = S("Take a cooked fish from a furnace.\nHint: Use a fishing rod to catch a fish and cook it in a furnace."),
 	icon = "mcl_fishing_fish_cooked.png",
 	type = "Advancement",
+	group = "Husbandry",
 })
 
 -- Other achievements triggered outside of mcl_achievements
@@ -201,6 +220,7 @@ awards.register_achievement("mcl:onARail", {
 	description = S("Travel by minecart for at least 1000 meters from your starting point in a single ride."),
 	icon = "default_rail.png",
 	type = "Challenge",
+	group = "Adventure",
 })
 
 -- Triggered in mcl_bows
@@ -211,6 +231,7 @@ awards.register_achievement("mcl:snipeSkeleton", {
 	description = S("Hit a skeleton, wither skeleton or stray by bow and arrow from a distance of at least 20 meters."),
 	icon = "mcl_bows_bow.png",
 	type = "Challenge",
+	group = "Adventure",
 })
 
 -- Triggered in mcl_portals
@@ -219,6 +240,7 @@ awards.register_achievement("mcl:buildNetherPortal", {
 	description = S("Use obsidian and a fire starter to construct a Nether portal."),
 	icon = "mcl_fire_flint_and_steel.png",
 	type = "Advancement",
+	group = "Overworld",
 })
 
 awards.register_achievement("mcl:enterEndPortal", {
@@ -226,6 +248,7 @@ awards.register_achievement("mcl:enterEndPortal", {
 	description = S("Or the beginning?\nHint: Enter an end portal."),
 	icon = "mcl_end_end_stone.png",
 	type = "Advancement",
+	group = "Overworld",
 })
 
 awards.register_achievement("mcl:theNether", {
@@ -233,6 +256,7 @@ awards.register_achievement("mcl:theNether", {
 	description = S("Bring summer clothes.\nHint: Enter the Nether."),
 	icon = "mcl_nether_netherrack.png",
 	type = "Advancement",
+	group = "Nether",
 })
 
 -- Triggered in mcl_totems
@@ -241,6 +265,7 @@ awards.register_achievement("mcl:postMortal", {
 	description = S("Use a Totem of Undying to cheat death."),
 	icon = "mcl_totems_totem.png",
 	type = "Goal",
+	group = "Adventure",
 })
 
 -- Triggered in mcl_beds
@@ -249,6 +274,7 @@ awards.register_achievement("mcl:sweetDreams", {
 	description = S("Sleep in a bed to change your respawn point."),
 	icon = "mcl_beds_bed_red_inv.png",
 	type = "Advancement",
+	group = "Adventure",
 })
 
 awards.register_achievement("mcl:notQuiteNineLives", {
@@ -256,6 +282,7 @@ awards.register_achievement("mcl:notQuiteNineLives", {
 	description = S("Charge a Respawn Anchor to the maximum."),
 	icon = "respawn_anchor_side4.png",
 	type = "Advancement",
+	group = "Nether",
 })
 
 -- Triggered in mobs_mc
@@ -264,6 +291,7 @@ awards.register_achievement("mcl:whatAdeal", {
 	description = S("Successfully trade with a Villager."),
 	icon = "mcl_core_emerald.png",
 	type = "Advancement",
+	group = "Adventure",
 })
 
 awards.register_achievement("mcl:tacticalFishing", {
@@ -271,6 +299,7 @@ awards.register_achievement("mcl:tacticalFishing", {
 	description = S("Catch a fish... without a fishing rod!"),
 	icon = "pufferfish_bucket.png",
 	type = "Advancement",
+	group = "Husbandry",
 })
 
 awards.register_achievement("mcl:witheringHeights", {
@@ -278,6 +307,7 @@ awards.register_achievement("mcl:witheringHeights", {
 	description = S("Summon the wither from the dead."),
 	icon = "mcl_mobitems_nether_star.png",
 	type = "Advancement",
+	group = "Nether",
 })
 
 awards.register_achievement("mcl:freeTheEnd", {
@@ -285,6 +315,7 @@ awards.register_achievement("mcl:freeTheEnd", {
 	description = S("Kill the ender dragon. Good Luck!"),
 	icon = "(spawn_egg.png^[multiply:#252525)^(spawn_egg_overlay.png^[multiply:#b313c9)", -- TODO: Dragon Head Icon
 	type = "Advancement",
+	group = "End",
 })
 
 -- Triggered in mcl_fishing
@@ -293,6 +324,7 @@ awards.register_achievement("mcl:fishyBusiness", {
 	description = S("Catch a fish.\nHint: Catch a fish, salmon, clownfish, or pufferfish."),
 	icon = "mcl_fishing_fishing_rod.png",
 	type = "Advancement",
+	group = "Husbandry",
 })
 
 -- Triggered in mcl_compass
@@ -301,6 +333,7 @@ awards.register_achievement("mcl:countryLode", {
 	description = S("Use a compass on a Lodestone."),
 	icon = "lodestone_side4.png",
 	type = "Advancement",
+	group = "Nether",
 })
 
 -- Triggered in mcl_smithing_table
@@ -309,6 +342,7 @@ awards.register_achievement("mcl:seriousDedication", {
 	description = S("Use a Netherite Ingot to upgrade a hoe, and then completely reevaluate your life choices."),
 	icon = "farming_tool_netheritehoe.png",
 	type = "Challenge",
+	group = "Husbandry",
 })
 
 -- Triggered in mcl_brewing
@@ -317,6 +351,7 @@ awards.register_achievement("mcl:localBrewery", {
 	description = S("Brew a Potion.\nHint: Take a potion or glass bottle out of the brewing stand."),
 	icon = "mcl_potions_potion_overlay.png^[colorize:#F82423:"..tostring(127).."^mcl_potions_potion_bottle.png",
 	type = "Advancement",
+	group = "Nether",
 })
 
 -- Triggered in mcl_enchanting
@@ -325,6 +360,7 @@ awards.register_achievement("mcl:enchanter", {
 	description = S("Enchant an item using an Enchantment Table."),
 	icon = "mcl_enchanting_book_enchanted.png",
 	type = "Advancement",
+	group = "Overworld",
 })
 
 --Triggered in mcl_beacons
@@ -333,6 +369,7 @@ awards.register_achievement("mcl:beacon", {
 	description = S("Use a beacon."),
 	icon = "beacon_achievement_icon.png",
 	type = "Advancement",
+	group = "Nether",
 })
 
 awards.register_achievement("mcl:maxed_beacon", {
@@ -340,6 +377,7 @@ awards.register_achievement("mcl:maxed_beacon", {
 	description = S("Use a fully powered beacon."),
 	icon = "beacon_achievement_icon.png",
 	type = "Goal",
+	group = "Nether",
 })
 
 -- Triggered in mcl_end
@@ -348,6 +386,7 @@ awards.register_achievement("mcl:theEndAgain", {
 	description = S("Respawn the Ender Dragon."),
 	icon = "mcl_end_crystal_item.png",
 	type = "Goal",
+	group = "End",
 })
 
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
@@ -432,16 +471,19 @@ awards.register_achievement("mcl:stoneAge", {
 	description	= S("Mine a stone with new pickaxe."),
 	icon		= "default_cobble.png",
 	type = "Advancement",
+	group = "Overworld",
 })
 awards.register_achievement("mcl:hotStuff", {
 	title		= S("Hot Stuff"),
 	description	= S("Put lava in a bucket."),
 	icon		= "bucket_lava.png",
 	type = "Advancement",
+	group = "Overworld",
 })
 awards.register_achievement("mcl:obsidian", {
 	title		= S("Ice Bucket Challenge"),
 	description	= S("Obtain an obsidian block."),
 	icon		= "default_obsidian.png",
 	type = "Advancement",
+	group = "Overworld",
 })
