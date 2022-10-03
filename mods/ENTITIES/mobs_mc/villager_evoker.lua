@@ -74,4 +74,4 @@ mcl_mobs:register_mob("mobs_mc:evoker", {
 })
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:evoker", S("Evoker"), "(spawn_egg.png^[multiply:#959b9b)^(spawn_egg_overlay.png^[multiply:#1e1c1a)", 0)
+mcl_mobs:register_egg("mobs_mc:evoker", S("Evoker"), "#959b9b", "#1e1c1a", 0)

@@ -94,4 +94,4 @@ mcl_mobs:register_mob("mobs_mc:vex", {
 
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:vex", S("Vex"), "(spawn_egg.png^[multiply:#7a90a4)^(spawn_egg_overlay.png^[multiply:#e8edf1)", 0)
+mcl_mobs:register_egg("mobs_mc:vex", S("Vex"), "#7a90a4", "#e8edf1", 0)

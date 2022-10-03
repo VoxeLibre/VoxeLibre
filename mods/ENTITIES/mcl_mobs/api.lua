@@ -4287,7 +4287,7 @@ end
 -- Note: This also introduces the “spawn_egg” group:
 -- * spawn_egg=1: Spawn egg (generic mob, no metadata)
 -- * spawn_egg=2: Spawn egg (captured/tamed mob, metadata)
-function mcl_mobs:register_egg(mob, desc, background, addegg, no_creative)
+function mcl_mobs:register_egg(mob, desc, background_color, overlay_color, addegg, no_creative)
 
 	local grp = {spawn_egg = 1}
 
@@ -4296,7 +4296,7 @@ function mcl_mobs:register_egg(mob, desc, background, addegg, no_creative)
 		grp.not_in_creative_inventory = 1
 	end
 
-	local invimg = background
+	local invimg = "(spawn_egg.png^[multiply:" .. background_color ..")^(spawn_egg_overlay.png^[multiply:" .. overlay_color .. ")"
 
 	if addegg == 1 then
 		invimg = "mobs_chicken_egg.png^(" .. invimg ..

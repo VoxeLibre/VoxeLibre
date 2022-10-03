@@ -252,4 +252,4 @@ minetest.LIGHT_MAX+1,
 mobs_mc.water_level+3,
 mcl_vars.mg_overworld_max)
 
-mcl_mobs:register_egg("mobs_mc:wolf", S("Wolf"), "(spawn_egg.png^[multiply:#d7d3d3)^(spawn_egg_overlay.png^[multiply:#ceaf96)", 0)
+mcl_mobs:register_egg("mobs_mc:wolf", S("Wolf"), "#d7d3d3", "#ceaf96", 0)

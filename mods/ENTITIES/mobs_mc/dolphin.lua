@@ -250,4 +250,4 @@ water-16,
 water+1)
 
 --spawn egg
-mcl_mobs:register_egg("mobs_mc:dolphin", S("Dolphin"), "(spawn_egg.png^[multiply:#223b4d)^(spawn_egg_overlay.png^[multiply:#f9f9f9)", 0)
+mcl_mobs:register_egg("mobs_mc:dolphin", S("Dolphin"), "#223b4d", "#f9f9f9", 0)

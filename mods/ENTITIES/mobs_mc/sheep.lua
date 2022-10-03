@@ -360,4 +360,4 @@ mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:sheep", S("Sheep"), "(spawn_egg.png^[multiply:#e7e7e7)^(spawn_egg_overlay.png^[multiply:#ffb5b5)", 0)
+mcl_mobs:register_egg("mobs_mc:sheep", S("Sheep"), "#e7e7e7", "#ffb5b5", 0)

@@ -486,13 +486,13 @@ This function registers a arrow for mobs with the attack type shoot.
 Spawn Eggs
 ----------
 
-mobs:register_egg(name, description, background, addegg, no_creative)
+mobs:register_egg(name, description, background_color, overlay_color, addegg, no_creative)
 
 This function registers a spawn egg which can be used by admin to properly spawn in a mob.
 
 	'name'		this is the name of your new mob to spawn e.g. "mob:sheep"
 	'description' the name of the new egg you are creating e.g. "Spawn Sheep"
-	'background'the texture displayed for the egg in inventory
+	'background_color' and 'overlay_color' define the colors for the texture displayed for the egg in inventory
 	'addegg'	would you like an egg image in front of your texture (1 = yes,
 				 0 = no)
 	'no_creative' when set to true this stops spawn egg appearing in creative

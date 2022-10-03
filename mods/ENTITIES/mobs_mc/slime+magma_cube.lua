@@ -447,6 +447,6 @@ mmin,
 mmax)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "(spawn_egg.png^[multiply:#350000)^(spawn_egg_overlay.png^[multiply:#fcfc00)")
+mcl_mobs:register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "#350000", "#fcfc00")
 
-mcl_mobs:register_egg("mobs_mc:slime_big", S("Slime"), "(spawn_egg.png^[multiply:#52a03e)^(spawn_egg_overlay.png^[multiply:#7ebf6d)")
+mcl_mobs:register_egg("mobs_mc:slime_big", S("Slime"), "#52a03e", "#7ebf6d")
