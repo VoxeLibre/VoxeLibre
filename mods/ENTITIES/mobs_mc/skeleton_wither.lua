@@ -113,4 +113,4 @@ mcl_vars.mg_nether_min,
 mcl_vars.mg_nether_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:witherskeleton", S("Wither Skeleton"), "(spawn_egg.png^[multiply:#141414)^(spawn_egg_overlay.png^[multiply:#474d4d)", 0)
+mcl_mobs:register_egg("mobs_mc:witherskeleton", S("Wither Skeleton"), "#141414", "#474d4d", 0)

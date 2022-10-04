@@ -120,4 +120,4 @@ pillager = {
 }
 
 mcl_mobs:register_mob("mobs_mc:pillager", pillager)
-mcl_mobs:register_egg("mobs_mc:pillager", S("Pillager"), "(spawn_egg.png^[multiply:#532f36)^(spawn_egg_overlay.png^[multiply:#959b9b)", 0)
+mcl_mobs:register_egg("mobs_mc:pillager", S("Pillager"), "#532f36", "#959b9b", 0)

@@ -144,4 +144,4 @@ mobs_mc.water_level-1)
 
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:bat", S("Bat"), "(spawn_egg.png^[multiply:#4c3e30)^(spawn_egg_overlay.png^[multiply:#0f0f0f)", 0)
+mcl_mobs:register_egg("mobs_mc:bat", S("Bat"), "#4c3e30", "#0f0f0f", 0)

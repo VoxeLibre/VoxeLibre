@@ -252,7 +252,7 @@ awards.register_achievement("mcl:witheringHeights", {
 awards.register_achievement("mcl:freeTheEnd", {
 	title = S("Free the End"),
 	description = S("Kill the ender dragon. Good Luck!"),
-	icon = "mobs_mc_spawn_icon_dragon.png", -- TODO: Dragon Head Icon
+	icon = "(spawn_egg.png^[multiply:#252525)^(spawn_egg_overlay.png^[multiply:#b313c9)", -- TODO: Dragon Head Icon
 })
 
 -- Triggered in mcl_fishing

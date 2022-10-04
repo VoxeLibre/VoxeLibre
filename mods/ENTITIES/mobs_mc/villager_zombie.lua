@@ -228,4 +228,4 @@ mcl_vars.mg_overworld_max)
 --mcl_mobs:spawn_specific("mobs_mc:villager_zombie", "overworld", "ground", 0, 7, 30, 60000, 4, mcl_vars.mg_overworld_min, mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:villager_zombie", S("Zombie Villager"), "(spawn_egg.png^[multiply:#563d33)^(spawn_egg_overlay.png^[multiply:#799c66)", 0)
+mcl_mobs:register_egg("mobs_mc:villager_zombie", S("Zombie Villager"), "#563d33", "#799c66", 0)

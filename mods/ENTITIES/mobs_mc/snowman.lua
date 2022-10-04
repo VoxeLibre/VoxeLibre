@@ -196,4 +196,4 @@ function mobs_mc.check_snow_golem_summon(pos)
 end
 
 -- Spawn egg
-mcl_mobs:register_egg("mobs_mc:snowman", S("Snow Golem"), "(spawn_egg.png^[multiply:#f2f2f2)^(spawn_egg_overlay.png^[multiply:#fd8f47)", 0)
+mcl_mobs:register_egg("mobs_mc:snowman", S("Snow Golem"), "#f2f2f2", "#fd8f47", 0)

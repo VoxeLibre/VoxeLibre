@@ -73,4 +73,4 @@ mcl_mobs:register_mob("mobs_mc:vindicator", {
 })
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:vindicator", S("Vindicator"), "(spawn_egg.png^[multiply:#959b9b)^(spawn_egg_overlay.png^[multiply:#275e61)", 0)
+mcl_mobs:register_egg("mobs_mc:vindicator", S("Vindicator"), "#959b9b", "#275e61", 0)

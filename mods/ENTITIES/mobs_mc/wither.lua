@@ -115,6 +115,6 @@ mcl_mobs:register_arrow("mobs_mc:wither_skull", {
 -- TODO: Add blue wither skull
 
 --Spawn egg
-mcl_mobs:register_egg("mobs_mc:wither", S("Wither"), "(spawn_egg.png^[multiply:#4f4f4f)^(spawn_egg_overlay.png^[multiply:#4f4f4f)", 0, true)
+mcl_mobs:register_egg("mobs_mc:wither", S("Wither"), "#4f4f4f", "#4f4f4f", 0, true)
 
 mcl_wip.register_wip_item("mobs_mc:wither")

@@ -56,7 +56,7 @@ mcl_mobs:register_mob("mobs_mc:silverfish", {
 	reach = 1,
 })
 
-mcl_mobs:register_egg("mobs_mc:silverfish", S("Silverfish"), "(spawn_egg.png^[multiply:#6d6d6d)^(spawn_egg_overlay.png^[multiply:#313131)", 0)
+mcl_mobs:register_egg("mobs_mc:silverfish", S("Silverfish"), "#6d6d6d", "#313131", 0)
 
 -- Monster egg blocks (Minetest Game)
 if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then

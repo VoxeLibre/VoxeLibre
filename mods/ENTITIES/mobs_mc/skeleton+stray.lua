@@ -329,6 +329,6 @@ mcl_vars.mg_overworld_max)
 
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:skeleton", S("Skeleton"), "(spawn_egg.png^[multiply:#c1c1c1)^(spawn_egg_overlay.png^[multiply:#494949)", 0)
+mcl_mobs:register_egg("mobs_mc:skeleton", S("Skeleton"), "#c1c1c1", "#494949", 0)
 
-mcl_mobs:register_egg("mobs_mc:stray", S("Stray"), "(spawn_egg.png^[multiply:#5f7476)^(spawn_egg_overlay.png^[multiply:#dae8e7)", 0)
+mcl_mobs:register_egg("mobs_mc:stray", S("Stray"), "#5f7476", "#dae8e7", 0)

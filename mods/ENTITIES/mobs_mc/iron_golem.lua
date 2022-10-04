@@ -93,7 +93,7 @@ mcl_mobs:register_mob("mobs_mc:iron_golem", {
 
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:iron_golem", S("Iron Golem"), "(spawn_egg.png^[multiply:#3b3b3b)^(spawn_egg_overlay.png^[multiply:#f57223)", 0)
+mcl_mobs:register_egg("mobs_mc:iron_golem", S("Iron Golem"), "#3b3b3b", "#f57223", 0)
 
 --[[ This is to be called when a pumpkin or jack'o lantern has been placed. Recommended: In the on_construct function of the node.
 This summons an iron golen if placing the pumpkin created an iron golem summon pattern:
