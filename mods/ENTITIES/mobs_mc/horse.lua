@@ -34,6 +34,30 @@ local horse_extra_texture = function(horse)
 	return textures
 end
 
+
+local function get_drops(self)
+	self.drops = {}
+	table.insert(self.drops,
+		{name = "mcl_mobitems:leather",
+		chance = 1,
+		min = 0,
+		max = 2,
+		looting = "common",
+		})
+	if self._saddle then
+		table.insert(self.drops,{name = "mcl_mobitems:saddle",
+		chance = 1,
+		min = 1,
+		max = 1,})
+	end
+	if self._chest then
+		table.insert(self.drops,{name = "mcl_chests:chest",
+		chance = 1,
+		min = 1,
+		max = 1,})
+	end
+end
+
 -- Helper functions to determine equipment rules
 local can_equip_horse_armor = function(entity_id)
 	return entity_id == "mobs_mc:horse" or entity_id == "mobs_mc:skeleton_horse" or entity_id == "mobs_mc:zombie_horse"
@@ -250,7 +274,7 @@ local horse = {
 				local tex = horse_extra_texture(self)
 				self.base_texture = tex
 				self.object:set_properties({textures = self.base_texture})
-				table.insert(self.drops,{name = "mcl_chests:chest",chance=1,min=1,max=1})
+				get_drops(self)
 				return
 			elseif self._chest and clicker:get_player_control().sneak then
 				mcl_entity_invs.show_inv_form(self,clicker)
@@ -361,6 +385,7 @@ local horse = {
 				self.base_texture = tex
 				self.object:set_properties({textures = self.base_texture})
 				minetest.sound_play({name = "mcl_armor_equip_leather"}, {gain=0.5, max_hear_distance=12, pos=self.object:get_pos()}, true)
+				get_drops(self)
 
 			-- Put on horse armor if tamed
 			elseif can_equip_horse_armor(self.name) and not self.driver and not self._horse_armor
