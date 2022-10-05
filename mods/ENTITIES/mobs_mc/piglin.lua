@@ -38,6 +38,8 @@ local piglin = {
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "extra_mobs_piglin.b3d",
+	spawn_in_group = 5,
+	spawn_in_group_min = 3,
 	textures = { {
 		"extra_mobs_piglin.png",
 		"mcl_bows_bow_2.png",
@@ -71,11 +73,12 @@ local piglin = {
 	},
 	fear_height = 4,
 	view_range = 16,
+	pick_up = {"mcl_core:gold_ingot"},
 	on_spawn = function(self)
 		self.weapon = self.base_texture[2]
 		self.gold_items = 0
 	end,
-  do_custom = function(self)
+	do_custom = function(self)
 		if self.object:get_pos().y > -100 then
 			--local zog = minetest.add_entity(self.object:get_pos(), "mobs_mc:zombified_piglin")
 			--zog:set_rotation(self.object:get_rotation())
@@ -110,7 +113,14 @@ local piglin = {
     	end
     end
   end,
-	on_rightclick = function(self, clicker)
+	on_pick_up  = function(self, itementity)
+		local clicker
+		for _,p in pairs(minetest.get_connected_players()) do
+			if vector.distance(p:get_pos(),self.object:get_pos()) < 10 then
+				clicker = p
+			end
+		end
+		--return true --do not pick up
 		if clicker:is_player() and clicker:get_wielded_item():get_name() == "mcl_core:gold_ingot" and self.state ~= "attack" and self.gold_items < 3 then
 			local item_gold = clicker:get_wielded_item()
 			item_gold:take_item(1)
