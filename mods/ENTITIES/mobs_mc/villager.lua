@@ -66,11 +66,11 @@ local tiernames = {
 }
 
 local badges = {
-	"default_wood.png",
-	"default_steel_block.png",
-	"default_gold_block.png",
-	"mcl_core_emerald_block.png",
-	"default_diamond_block.png",
+	"mobs_mc_stone.png",
+	"mobs_mc_iron.png",
+	"mobs_mc_gold.png",
+	"mobs_mc_emerald.png",
+	"mobs_mc_diamond.png",
 }
 
 local professions = {
@@ -84,10 +84,7 @@ local professions = {
 	},
 	farmer = {
 		name = N("Farmer"),
-		textures = {
-				"mobs_mc_villager_farmer.png",
-				"mobs_mc_villager_farmer.png",
-			},
+		texture = "mobs_mc_villager_farmer.png",
 		jobsite = "mcl_composters:composter",
 		trades = {
 			{
@@ -121,10 +118,7 @@ local professions = {
 	},
 	fisherman = {
 		name = N("Fisherman"),
-		textures = {
-				"mobs_mc_villager_fisherman.png",
-				"mobs_mc_villager_fisherman.png",
-			},
+		texture = "mobs_mc_villager_fisherman.png",
 		jobsite = "mcl_barrels:barrel_closed",
 		trades = {
 			{
@@ -158,10 +152,7 @@ local professions = {
 	},
 	fletcher = {
 		name = N("Fletcher"),
-		textures =  {
-				"mobs_mc_villager_fletcher.png",
-				"mobs_mc_villager_fletcher.png",
-			},
+		texture = "mobs_mc_villager_fletcher.png",
 		jobsite = "mcl_fletching_table:fletching_table",
 		trades = {
 			{
@@ -200,10 +191,7 @@ local professions = {
 	},
 	shepherd ={
 		name = N("Shepherd"),
-		textures =  {
-				"mobs_mc_villager_sheperd.png",
-				"mobs_mc_villager_sheperd.png",
-			},
+		texture =  "mobs_mc_villager_sheperd.png",
 		jobsite = "mcl_loom:loom",
 		trades = {
 			{
@@ -233,10 +221,7 @@ local professions = {
 	},
 	librarian = {
 		name = N("Librarian"),
-		textures = {
-				"mobs_mc_villager_librarian.png",
-				"mobs_mc_villager_librarian.png",
-			},
+		texture = "mobs_mc_villager_librarian.png",
 		jobsite = "mcl_books:bookshelf", --FIXME: lectern
 		trades = {
 			{
@@ -271,10 +256,7 @@ local professions = {
 	},
 	cartographer = {
 		name = N("Cartographer"),
-		textures = {
-				"mobs_mc_villager_cartographer.png",
-				"mobs_mc_villager_cartographer.png",
-			},
+		texture = "mobs_mc_villager_cartographer.png",
 		jobsite = "mcl_cartography_table:cartography_table",
 		trades = {
 			{
@@ -317,10 +299,7 @@ local professions = {
 	},
 	armorer = {
 		name = N("Armorer"),
-		textures = {
-				"mobs_mc_villager_armorer.png",
-				"mobs_mc_villager_armorer.png",
-			},
+		texture = "mobs_mc_villager_armorer.png",
 		jobsite = "mcl_blast_furnace:blast_furnace",
 		trades = {
 			{
@@ -357,10 +336,7 @@ local professions = {
 	},
 	leatherworker = {
 		name = N("Leatherworker"),
-		textures = {
-				"mobs_mc_villager_leatherworker.png",
-				"mobs_mc_villager_leatherworker.png",
-			},
+		texture = "mobs_mc_villager_leatherworker.png",
 		jobsite = "mcl_cauldrons:cauldron",
 		trades = {
 			{
@@ -389,10 +365,7 @@ local professions = {
 	},
 	butcher = {
 		name = N("Butcher"),
-		textures = {
-				"mobs_mc_villager_butcher.png",
-				"mobs_mc_villager_butcher.png",
-			},
+		texture = "mobs_mc_villager_butcher.png",
 		jobsite = "mcl_smoker:smoker",
 		trades = {
 			{
@@ -422,10 +395,7 @@ local professions = {
 	},
 	weapon_smith = {
 		name = N("Weapon Smith"),
-		textures = {
-				"mobs_mc_villager_weaponsmith.png",
-				"mobs_mc_villager_weaponsmith.png",
-			},
+		texture = "mobs_mc_villager_weaponsmith.png",
 		jobsite = "mcl_grindstone:grindstone",
 		trades = {
 			{
@@ -453,10 +423,7 @@ local professions = {
 	},
 	tool_smith = {
 		name = N("Tool Smith"),
-		textures = {
-				"mobs_mc_villager_toolsmith.png",
-				"mobs_mc_villager_toolsmith.png",
-			},
+		texture = "mobs_mc_villager_toolsmith.png",
 		jobsite = "mcl_smithing_table:table",
 		trades = {
 			{
@@ -490,10 +457,7 @@ local professions = {
 	},
 	cleric = {
 		name = N("Cleric"),
-		textures = {
-				"mobs_mc_villager_priest.png",
-				"mobs_mc_villager_priest.png",
-			},
+		texture = "mobs_mc_villager_priest.png",
 		jobsite = "mcl_brewing:stand_000",
 		trades = {
 			{
@@ -522,10 +486,7 @@ local professions = {
 	},
 	nitwit = {
 		name = N("Nitwit"),
-		textures = {
-				"mobs_mc_villager_nitwit.png",
-				"mobs_mc_villager_nitwit.png",
-			},
+		texture = "mobs_mc_villager_nitwit.png",
 		-- No trades for nitwit
 		trades = nil,
 	}
@@ -559,12 +520,11 @@ local function init_trader_vars(self)
 end
 
 local function get_badge_textures(self)
-	local t = professions[self._profession].textures
+	local t = professions[self._profession].texture
 	if self._profession == "unemployed" or self._profession == "nitwit" then return t end
 	local tier = self._max_trade_tier or 1
 	return {
-		"[combine:64x64:0,0="..t[1]..":11,55=".. badges[tier].."\\^[resize\\:2x2",
-		t[2]
+		t .. "^" .. badges[tier]
 	}
 end
 
