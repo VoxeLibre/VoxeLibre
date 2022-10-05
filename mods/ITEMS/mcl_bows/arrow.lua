@@ -171,27 +171,23 @@ function ARROW_ENTITY.on_step(self, dtime)
 
 		if self._damage >= 9 and self._in_player == false then
 			minetest.add_particlespawner({
-				amount = 1,
-				time = .001,
-				minpos = pos,
-				maxpos = pos,
+				amount = 20,
+				time = .2,
+				minpos = vector.new(0,0,0),
+				maxpos = vector.new(0,0,0),
 				minvel = vector.new(-0.1,-0.1,-0.1),
 				maxvel = vector.new(0.1,0.1,0.1),
 				minexptime = 0.5,
 				maxexptime = 0.5,
 				minsize = 2,
 				maxsize = 2,
+				attached = self.object,
 				collisiondetection = false,
 				vertical = false,
 				texture = "mobs_mc_arrow_particle.png",
 				glow = 1,
 			})
 		end
-		-- We just check for any hurtable objects nearby.
-		-- The radius of 3 is fairly liberal, but anything lower than than will cause
-		-- arrow to hilariously go through mobs often.
-		-- TODO: Implement an ACTUAL collision detection (engine support needed).
-
 
 		local closest_object
 		local closest_distance
