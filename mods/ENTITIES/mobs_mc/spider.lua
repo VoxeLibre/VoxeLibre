@@ -11,6 +11,22 @@ local S = minetest.get_translator("mobs_mc")
 
 
 -- Spider by AspireMint (fishyWET (CC-BY-SA 3.0 license for texture)
+minetest.register_entity("mobs_mc:spider_eyes", {
+	visual = "mesh",
+	mesh = "mobs_mc_spider.b3d",
+	visual_size = {x=1.01, y=1.01},
+	textures = {
+		"mobs_mc_spider_eyes.png",
+	},
+	on_activate = function(self)
+		minetest.after(0.1, function()
+			if not self.object:get_attach() then
+				self.object:remove()
+			end
+		end)
+	end,
+	glow = 50,
+})
 
 local spider = {
 	description = S("Spider"),
@@ -27,11 +43,23 @@ local spider = {
 	xp_min = 5,
 	xp_max = 5,
 	armor = {fleshy = 100, arthropod = 100},
+	on_spawn = function(self)
+		local spider_eyes=false
+		for n = 1, #self.object:get_children() do
+			local obj = self.object:get_children()[n]
+			if obj:get_luaentity() and self.object:get_luaentity().name == "mobs_mc:spider_eyes" then
+				spider_eyes = true
+			end
+		end
+		if not spider_eyes then
+			minetest.add_entity(self.object:get_pos(), "mobs_mc:spider_eyes"):set_attach(self.object, "body.head", vector.new(0,-0.98,2), vector.new(90,180,180))
+		end
+	end,
 	collisionbox = {-0.7, -0.01, -0.7, 0.7, 0.89, 0.7},
 	visual = "mesh",
 	mesh = "mobs_mc_spider.b3d",
 	textures = {
-		{"mobs_mc_spider.png^(mobs_mc_spider_eyes.png^[makealpha:0,0,0)"},
+		{"mobs_mc_spider.png"},
 	},
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = false,
