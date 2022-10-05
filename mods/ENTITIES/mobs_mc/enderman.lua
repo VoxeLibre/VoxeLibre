@@ -24,6 +24,23 @@
 -- added rain damage.
 -- fixed the grass_with_dirt issue.
 
+minetest.register_entity("mobs_mc:ender_eyes", {
+	visual = "mesh",
+	mesh = "mobs_mc_spider.b3d",
+	visual_size = {x=1.01, y=1.01},
+	textures = {
+		"mobs_mc_enderman_eyes.png",
+	},
+	on_activate = function(self)
+		minetest.after(0.1, function()
+			if not self.object:get_attach() then
+				self.object:remove()
+			end
+		end)
+	end,
+	glow = 50,
+})
+
 local S = minetest.get_translator("mobs_mc")
 
 local telesound = function(pos, is_source)
@@ -237,6 +254,19 @@ mcl_mobs:register_mob("mobs_mc:enderman", {
 	textures = create_enderman_textures(),
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
+	on_spawn = function(self)
+		local spider_eyes=false
+		for n = 1, #self.object:get_children() do
+			local obj = self.object:get_children()[n]
+			if obj:get_luaentity() and self.object:get_luaentity().name == "mobs_mc:ender_eyes" then
+				spider_eyes = true
+			end
+		end
+		if not spider_eyes then
+			minetest.add_entity(self.object:get_pos(), "mobs_mc:ender_eyes"):set_attach(self.object, "head.low", vector.new(0,3.25,-1.98), vector.new(90,0,180))
+			minetest.add_entity(self.object:get_pos(), "mobs_mc:ender_eyes"):set_attach(self.object, "head.low", vector.new(1,3.25,-1.98), vector.new(90,0,180))
+		end
+	end,
 	sounds = {
 		-- TODO: Custom war cry sound
 		war_cry = "mobs_sandmonster",
