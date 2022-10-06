@@ -81,6 +81,7 @@ local function drop_inv(ent)
 		local p = vector.add(pos,vector.new(math.random() - 0.5, math.random()-0.5, math.random()-0.5))
 		minetest.add_item(p,it)
 	end
+	ent._items = nil
 end
 
 local function on_remove(self,killer,oldf)
