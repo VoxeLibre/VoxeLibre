@@ -129,27 +129,24 @@ if minetest.get_modpath("mcl_sounds") then
 end
 
 function mcl_beds.register_bed(name, def)
-	local node_box_bottom, selection_box_bottom, collision_box_bottom
-	if def.nodebox and def.nodebox.bottom then
-		node_box_bottom = { type = "fixed", fixed = def.nodebox.bottom }
-	end
-	if def.selectionbox and def.selectionbox.bottom then
-		selection_box_bottom = { type = "fixed", fixed = def.selectionbox.bottom }
-	end
-	if def.collisionbox and def.collisionbox.bottom then
-		collision_box_bottom = { type = "fixed", fixed = def.collisionbox.bottom }
-	end
+	local common_box = {
+			type = "fixed",
+			fixed = {-0.5, -0.5, -0.5, 0.5, 0.06, 0.5},
+		}
+		
 	minetest.register_node(name .. "_bottom", {
 		description = def.description,
 		_tt_help = S("Allows you to sleep"),
+		
 		_doc_items_longdesc = def._doc_items_longdesc or beddesc,
 		_doc_items_usagehelp = def._doc_items_usagehelp or beduse,
 		_doc_items_create_entry = def._doc_items_create_entry,
 		_doc_items_entry_name = def._doc_items_entry_name,
 		inventory_image = def.inventory_image,
 		wield_image = def.wield_image,
-		drawtype = "nodebox",
-		tiles = def.tiles.bottom,
+		drawtype = "mesh",
+		mesh = "mcl_beds_bed_bottom.obj",
+		tiles = def.tiles,
 		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -159,11 +156,11 @@ function mcl_beds.register_bed(name, def)
 		_mcl_hardness = 0.2,
 		_mcl_blast_resistance = 1,
 		sounds = def.sounds or default_sounds,
-		node_box = node_box_bottom,
-		selection_box = selection_box_bottom,
-		collision_box = collision_box_bottom,
+		selection_box = common_box,
+		collision_box = common_box,
 		drop = "",
 		node_placement_prediction = "",
+		
 		on_place = function(itemstack, placer, pointed_thing)
 			local under = pointed_thing.under
 
@@ -229,20 +226,12 @@ function mcl_beds.register_bed(name, def)
 		on_rotate = rotate,
 	})
 
-	local node_box_top, selection_box_top, collision_box_top
-	if def.nodebox and def.nodebox.top then
-		node_box_top = { type = "fixed", fixed = def.nodebox.top }
-	end
-	if def.selectionbox and def.selectionbox.top then
-		selection_box_top = { type = "fixed", fixed = def.selectionbox.top }
-	end
-	if def.collisionbox and def.collisionbox.top then
-		collision_box_top = { type = "fixed", fixed = def.collisionbox.top }
-	end
+	
 
 	minetest.register_node(name .. "_top", {
-		drawtype = "nodebox",
-		tiles = def.tiles.top,
+		drawtype = "mesh",
+		mesh = "mcl_beds_bed_top.obj",
+		tiles = def.tiles,
 		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -253,13 +242,14 @@ function mcl_beds.register_bed(name, def)
 		_mcl_blast_resistance = 1,
 		sounds = def.sounds or default_sounds,
 		drop = "",
-		node_box = node_box_top,
-		selection_box = selection_box_top,
-		collision_box = collision_box_top,
+		selection_box = common_box,
+		collision_box = common_box,
+		
 		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 			mcl_beds.on_rightclick(pos, clicker, true)
 			return itemstack
 		end,
+
 		on_rotate = rotate,
 		after_destruct = destruct_bed,
 	})

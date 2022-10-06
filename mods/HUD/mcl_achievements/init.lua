@@ -221,7 +221,7 @@ awards.register_achievement("mcl:postMortal", {
 awards.register_achievement("mcl:sweetDreams", {
 	title = S("Sweet Dreams"),
 	description = S("Sleep in a bed to change your respawn point."),
-	icon = "mcl_beds_bed_red.png",
+	icon = "mcl_beds_bed_red_inv.png",
 })
 
 awards.register_achievement("mcl:notQuiteNineLives", {
