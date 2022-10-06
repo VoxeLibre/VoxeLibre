@@ -3717,13 +3717,13 @@ local mob_step = function(self, dtime)
 		local oldp,oldr = self.object:get_bone_position(self.head_swivel)
 
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 10)) do
-			if obj:is_player() and not self.attack then
+			if obj:is_player() and not self.attack or obj:get_luaentity() and obj:get_luaentity().name == self.name and self ~= obj:get_luaentity() then
 				if not self._locked_object then
-					if math.random(50/self.curiosity) == 1 then
+					if math.random(5000/self.curiosity) == 1 then
 						self._locked_object = obj
 					end
 				else
-					if math.random(200*self.curiosity) == 1 then
+					if math.random(5000/self.curiosity) == 1 then
 						self._locked_object = nil
 					end
 				end
@@ -3736,6 +3736,9 @@ local mob_step = function(self, dtime)
 
 		if self._locked_object and (self._locked_object:is_player() or self._locked_object:get_luaentity()) and self._locked_object:get_hp() > 0 then
 			local _locked_object_eye_height = 1.5
+			if self._locked_object:get_luaentity() then
+				_locked_object_eye_height = self._locked_object:get_luaentity().head_eye_height
+			end
 			if self._locked_object:is_player() then
 				_locked_object_eye_height = self._locked_object:get_properties().eye_height
 			end
