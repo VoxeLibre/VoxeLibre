@@ -53,6 +53,11 @@ local zombie = {
 	hp_max = 20,
 	xp_min = 5,
 	xp_max = 5,
+	head_swivel = "head.control",
+	bone_eye_height = 6.3,
+	head_eye_height = 2.2,
+	curiosity = 7,
+	head_pitch_multiplier=-1,
 	breath_max = -1,
 	armor = {undead = 90, fleshy = 90},
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.8, 0.3},
@@ -60,8 +65,8 @@ local zombie = {
 	mesh = "mobs_mc_zombie.b3d",
 	textures = {
 		{
-			"mobs_mc_zombie.png", -- texture
 			"mobs_mc_empty.png", -- armor
+			"mobs_mc_zombie.png", -- texture
 		}
 	},
 	makes_footstep_sound = true,
@@ -126,8 +131,8 @@ local husk = table.copy(zombie)
 husk.description = S("Husk")
 husk.textures = {
 		{
-			"mobs_mc_husk.png", -- texture
 			"mobs_mc_empty.png", -- armor
+			"mobs_mc_husk.png", -- texture
 		}
 	}
 husk.ignited_by_sunlight = false
@@ -142,8 +147,8 @@ mcl_mobs:register_mob("mobs_mc:husk", husk)
 local baby_husk = table.copy(baby_zombie)
 baby_husk.description = S("Baby Husk")
 baby_husk.textures = {{
-	"mobs_mc_husk.png", -- texture
 	"mobs_mc_empty.png", -- wielded_item
+	"mobs_mc_husk.png", -- texture
 }}
 baby_husk.ignited_by_sunlight = false
 baby_husk.sunlight_damage = 0

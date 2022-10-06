@@ -3723,7 +3723,7 @@ local mob_step = function(self, dtime)
 						self._locked_object = obj
 					end
 				else
-					if math.random(5000/self.curiosity) == 1 then
+					if math.random(10000/self.curiosity) == 1 then
 						self._locked_object = nil
 					end
 				end
@@ -3746,7 +3746,7 @@ local mob_step = function(self, dtime)
 			local player_pos = self._locked_object:get_pos()
 			local direction_player = vector.direction(vector.add(self.object:get_pos(), vector.new(0, self.head_eye_height*.7, 0)), vector.add(player_pos, vector.new(0, _locked_object_eye_height, 0)))
 			local mob_yaw = math.deg(-(-(self_rot.y)-(-minetest.dir_to_yaw(direction_player))))--+self.head_yaw_offset
-			local mob_pitch = math.deg(-dir_to_pitch(direction_player))
+			local mob_pitch = math.deg(-dir_to_pitch(direction_player))*self.head_pitch_multiplier
 			if (mob_yaw < -60 or mob_yaw > 60) and not (self.attack and self.type == "monster") then
 				mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.multiply(oldr, 0.9))
 			elseif self.attack and self.type == "monster" then
@@ -4012,6 +4012,7 @@ minetest.register_entity(name, {
 	use_texture_alpha = def.use_texture_alpha,
 	head_swivel = def.head_swivel or nil, -- bool to activate this function
 	head_yaw_offset = def.head_yaw_offset or 0, -- for wonkey model bones
+	head_pitch_multiplier = def.head_pitch_multiplier or 1, --for inverted pitch
 	bone_eye_height = def.bone_eye_height or 1.4, -- head bone offset
 	head_eye_height = def.head_eye_height or def.bone_eye_height or 0, -- how hight aproximatly the mobs head is fromm the ground to tell the mob how high to look up at the player
 	curiosity = def.curiosity or 1, -- how often mob will look at player on idle
