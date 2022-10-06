@@ -1459,7 +1459,7 @@ local breed = function(self)
 					z = 0
 				})
 			end
-			
+
 			self.animation = nil
 			local anim = self._current_animation
 			self._current_animation = nil -- Mobs Redo does nothing otherwise
@@ -3408,10 +3408,8 @@ local mob_staticdata = function(self)
 	and ((not self.nametag) or (self.nametag == ""))
 	and self.lifetimer <= 20 then
 		if spawn_logging then
-			minetest.log("action", "[mcl_mobs] Mob "..tostring(self.name).." despawns in mob_staticdata at "..minetest.pos_to_string(self.object:get_pos()))
+			minetest.log("action", "[mcl_mobs] Mob "..tostring(self.name).." despawns in mob_staticdata at "..minetest.pos_to_string(vector.round(self.object:get_pos())))
 		end
-		mcl_burning.extinguish(self.object)
-		self.object:remove()
 
 		return "remove"-- nil
 	end
@@ -3441,21 +3439,19 @@ end
 
 -- activate mob and reload settings
 local mob_activate = function(self, staticdata, def, dtime)
-
+	if not self.object:get_pos() or staticdata == "remove" then
+		mcl_burning.extinguish(self.object)
+		self.object:remove()
+		return
+	end
 	-- remove monsters in peaceful mode
 	if self.type == "monster"
 	and minetest.settings:get_bool("only_peaceful_mobs", false) then
 		mcl_burning.extinguish(self.object)
 		self.object:remove()
-
 		return
 	end
 
-	if staticdata == "remove" then
-		mcl_burning.extinguish(self.object)
-		self.object:remove()
-		return
-	end
 	-- load entity variables
 	local tmp = minetest.deserialize(staticdata)
 
@@ -4519,7 +4515,7 @@ function mcl_mobs:spawn_child(pos, mob_type)
 			ent.base_selbox[6] * .5,
 		},
 	})
-	
+
 	ent.animation = ent._child_animations
 	ent._current_animation = nil
 	set_animation(ent, "stand")
