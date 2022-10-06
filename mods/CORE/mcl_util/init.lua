@@ -22,6 +22,15 @@ function table.update_nil(t, ...)
 	return t
 end
 
+function mcl_util.file_exists(name)
+	local f = io.open(name)
+	if not f then
+		return false
+	end
+	f:close()
+	return true
+end
+
 -- Based on minetest.rotate_and_place
 
 --[[
