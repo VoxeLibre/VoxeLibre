@@ -4444,7 +4444,10 @@ function mcl_mobs:register_egg(mob, desc, background_color, overlay_color, addeg
 	local invimg = "(spawn_egg.png^[multiply:" .. background_color ..")^(spawn_egg_overlay.png^[multiply:" .. overlay_color .. ")"
 	if old_spawn_icons then
 		local mobname = mob:gsub("mobs_mc:","")
-		invimg = "mobs_mc_spawn_icon_"..mobname..".png"
+		local fn = "mobs_mc_spawn_icon_"..mobname..".png"
+		if mcl_util.file_exists(minetest.get_modpath("mobs_mc").."/textures/"..fn) then
+			invimg = fn
+		end
 	end
 	if addegg == 1 then
 		invimg = "mobs_chicken_egg.png^(" .. invimg ..
