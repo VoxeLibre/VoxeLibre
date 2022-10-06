@@ -49,7 +49,7 @@ local function init_strongholds()
 			if superflat then
 				y = mcl_vars.mg_bedrock_overworld_max + 3
 			else
-				y = pr:next(mcl_vars.mg_bedrock_overworld_max+1, mcl_vars.mg_overworld_min+48)
+				y = pr:next(-50, -30)
 			end
 			local pos = { x = math.cos(angle) * dist, y = y, z = math.sin(angle) * dist }
 			pos = vector.round(pos)

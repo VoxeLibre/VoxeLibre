@@ -136,6 +136,9 @@ mcl_default_shadow_intensity (Default shadow intensity) float 0.33 0.0 1.0
 # See also: https://github.com/minetest/minetest/issues/95
 mcl_translucent_ice (Translucent ice) bool false
 
+# Overworld min deep (default: -128)
+mcl_overworld_min (Overworld min deep) int -128 -25000 -62
+
 # Whether to generate fallen logs in some biomes.
 # They might not always look pretty and have strange overhangs.
 mcl_generate_fallen_logs (Generate fallen logs) bool false

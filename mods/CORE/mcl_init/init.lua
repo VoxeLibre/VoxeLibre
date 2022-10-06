@@ -101,8 +101,10 @@ if not superflat and not singlenode then
 	]]
 
 	-- Overworld
+	local mg_overworld_min_default = -128
 	mcl_vars.mg_overworld_min_old = -62
-	mcl_vars.mg_overworld_min = -128
+	mcl_vars.mg_overworld_min = tonumber(minetest.settings:get("mcl_overworld_min")) or mg_overworld_min_default
+
 	mcl_vars.mg_overworld_max_official = mcl_vars.mg_overworld_min + minecraft_height_limit
 	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
 	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min + 4

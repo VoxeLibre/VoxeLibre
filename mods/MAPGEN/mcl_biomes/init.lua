@@ -1095,7 +1095,6 @@ local function register_biomes()
 		_mcl_palette_index = 22,
 	})
 
-
 	-- Savanna
 	minetest.register_biome({
 		name = "Savanna",

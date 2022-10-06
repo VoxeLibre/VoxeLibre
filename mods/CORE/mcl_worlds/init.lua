@@ -61,13 +61,13 @@ local pos_to_dimension = mcl_worlds.pos_to_dimension
 -- MineClone 2.
 -- mc_dimension is one of "overworld", "nether", "end" (default: "overworld").
 function mcl_worlds.layer_to_y(layer, mc_dimension)
-	   if mc_dimension == "overworld" or mc_dimension == nil then
-			   return layer + mcl_vars.mg_overworld_min_old
-	   elseif mc_dimension == "nether" then
-			   return layer + mcl_vars.mg_nether_min
-	   elseif mc_dimension == "end" then
-			   return layer + mcl_vars.mg_end_min
-	   end
+	if mc_dimension == "overworld" or mc_dimension == nil then
+		return layer + mcl_vars.mg_overworld_min_old
+	elseif mc_dimension == "nether" then
+		return layer + mcl_vars.mg_nether_min
+	elseif mc_dimension == "end" then
+		return layer + mcl_vars.mg_end_min
+	end
 end
 
 -- Takes a position and returns true if this position can have weather
