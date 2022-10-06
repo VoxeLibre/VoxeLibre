@@ -24,6 +24,29 @@ local carpets = {
 	unicolor_light_blue = { "mcl_wool:light_blue_carpet", "light_blue" },
 }
 
+local function get_drops(self)
+	self.drops = {}
+	table.insert(self.drops,
+		{name = "mcl_mobitems:leather",
+		chance = 1,
+		min = 0,
+		max = 2,
+		looting = "common",
+		})
+	if self.carpet then
+		table.insert(self.drops,{name = self.carpet,
+		chance = 1,
+		min = 1,
+		max = 1,})
+	end
+	if self._has_chest then
+		table.insert(self.drops,{name = "mcl_chests:chest",
+		chance = 1,
+		min = 1,
+		max = 1,})
+	end
+end
+
 mcl_mobs:register_mob("mobs_mc:llama", {
 	description = S("Llama"),
 	type = "animal",
@@ -135,17 +158,17 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 			self.object:set_properties({
 				textures = self.base_texture,
 			})
-			table.insert(self.drops,{name = "mcl_chests:chest",chance=1,min=1,max=1})
+			get_drops(self)
+			return
+		elseif self._has_chest and clicker:get_player_control().sneak then
+			mcl_entity_invs.show_inv_form(self,clicker," - Strength "..math.floor(self._inv_size / 3))
+			return
 		else
 			-- Feed with anything else
 			if mcl_mobs:feed_tame(self, clicker, 1, false, true) then return end
 		end
 		if mcl_mobs:protect(self, clicker) then return end
 
-		if self._has_chest and clicker:get_player_control().sneak then
-			mcl_entity_invs.show_inv_form(self,clicker,"Llama - Strength "..math.floor(self._inv_size / 3))
-			return
-		end
 		-- Make sure tamed llama is mature and being clicked by owner only
 		if self.tamed and not self.child and self.owner == clicker:get_player_name() then
 			-- Place carpet
@@ -164,16 +187,7 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 							textures = self.base_texture,
 						})
 						self.carpet = item:get_name()
-						self.drops = {
-							{name = "mcl_mobitems:leather",
-							chance = 1,
-							min = 0,
-							max = 2,},
-							{name = item:get_name(),
-							chance = 1,
-							min = 1,
-							max = 1,},
-						}
+						get_drops(self)
 						return
 					end
 				end

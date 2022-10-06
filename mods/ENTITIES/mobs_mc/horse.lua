@@ -34,6 +34,30 @@ local horse_extra_texture = function(horse)
 	return textures
 end
 
+
+local function get_drops(self)
+	self.drops = {}
+	table.insert(self.drops,
+		{name = "mcl_mobitems:leather",
+		chance = 1,
+		min = 0,
+		max = 2,
+		looting = "common",
+		})
+	if self._saddle then
+		table.insert(self.drops,{name = "mcl_mobitems:saddle",
+		chance = 1,
+		min = 1,
+		max = 1,})
+	end
+	if self._chest then
+		table.insert(self.drops,{name = "mcl_chests:chest",
+		chance = 1,
+		min = 1,
+		max = 1,})
+	end
+end
+
 -- Helper functions to determine equipment rules
 local can_equip_horse_armor = function(entity_id)
 	return entity_id == "mobs_mc:horse" or entity_id == "mobs_mc:skeleton_horse" or entity_id == "mobs_mc:zombie_horse"
@@ -237,6 +261,27 @@ local horse = {
 		local iname = item:get_name()
 		local heal = 0
 
+		if self._inv_id then
+			if not self._chest and item:get_name() == "mcl_chests:chest" then
+				item:take_item()
+				clicker:set_wielded_item(item)
+				self._chest = true
+				-- Update texture
+				if not self._naked_texture then
+					-- Base horse texture without chest or saddle
+					self._naked_texture = self.base_texture[2]
+				end
+				local tex = horse_extra_texture(self)
+				self.base_texture = tex
+				self.object:set_properties({textures = self.base_texture})
+				get_drops(self)
+				return
+			elseif self._chest and clicker:get_player_control().sneak then
+				mcl_entity_invs.show_inv_form(self,clicker)
+				return
+			end
+		end
+
 		-- Taming
 		self.temper = self.temper or (math.random(1,100))
 
@@ -340,6 +385,7 @@ local horse = {
 				self.base_texture = tex
 				self.object:set_properties({textures = self.base_texture})
 				minetest.sound_play({name = "mcl_armor_equip_leather"}, {gain=0.5, max_hear_distance=12, pos=self.object:get_pos()}, true)
+				get_drops(self)
 
 			-- Put on horse armor if tamed
 			elseif can_equip_horse_armor(self.name) and not self.driver and not self._horse_armor
@@ -518,8 +564,9 @@ donkey.collisionbox = {
 donkey.jump = true
 donkey.jump_height = 3.75 -- can clear 1 block height
 
-mcl_mobs:register_mob("mobs_mc:donkey", donkey)
 
+mcl_mobs:register_mob("mobs_mc:donkey", donkey)
+mcl_entity_invs.register_inv("mobs_mc:donkey","Donkey",15,true)
 -- Mule
 local m = 0.94
 local mule = table.copy(donkey)
@@ -537,6 +584,7 @@ mule.collisionbox = {
 	horse.collisionbox[6] * m,
 }
 mcl_mobs:register_mob("mobs_mc:mule", mule)
+mcl_entity_invs.register_inv("mobs_mc:mule","Mule",15,true)
 
 --===========================
 --Spawn Function
