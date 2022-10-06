@@ -55,6 +55,10 @@ local spider = {
 			minetest.add_entity(self.object:get_pos(), "mobs_mc:spider_eyes"):set_attach(self.object, "body.head", vector.new(0,-0.98,2), vector.new(90,180,180))
 		end
 	end,
+	head_swivel = "Head_Control",
+	bone_eye_height = 1,
+	curiosity = 10,
+	head_yaw="z",
 	collisionbox = {-0.7, -0.01, -0.7, 0.7, 0.89, 0.7},
 	visual = "mesh",
 	mesh = "mobs_mc_spider.b3d",

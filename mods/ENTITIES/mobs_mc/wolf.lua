@@ -26,6 +26,12 @@ local wolf = {
 		{"mobs_mc_wolf.png"},
 	},
 	makes_footstep_sound = true,
+	head_swivel = "Head_Control",
+	bone_eye_height = 1.2,
+	head_eye_height = 1.1,
+	horrizonatal_head_height=0,
+	curiosity = 10,
+	head_yaw="z",
 	sounds = {
 		attack = "mobs_mc_wolf_bark",
 		war_cry = "mobs_mc_wolf_growl",

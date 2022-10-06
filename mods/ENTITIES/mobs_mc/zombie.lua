@@ -60,9 +60,8 @@ local zombie = {
 	mesh = "mobs_mc_zombie.b3d",
 	textures = {
 		{
-			"mobs_mc_empty.png", -- armor
 			"mobs_mc_zombie.png", -- texture
-			"mobs_mc_empty.png", -- wielded_item
+			"mobs_mc_empty.png", -- armor
 		}
 	},
 	makes_footstep_sound = true,
@@ -127,9 +126,8 @@ local husk = table.copy(zombie)
 husk.description = S("Husk")
 husk.textures = {
 		{
-			"mobs_mc_empty.png", -- armor
 			"mobs_mc_husk.png", -- texture
-			"mobs_mc_empty.png", -- wielded_item
+			"mobs_mc_empty.png", -- armor
 		}
 	}
 husk.ignited_by_sunlight = false
@@ -144,7 +142,6 @@ mcl_mobs:register_mob("mobs_mc:husk", husk)
 local baby_husk = table.copy(baby_zombie)
 baby_husk.description = S("Baby Husk")
 baby_husk.textures = {{
-	"mobs_mc_empty.png", -- armor
 	"mobs_mc_husk.png", -- texture
 	"mobs_mc_empty.png", -- wielded_item
 }}
