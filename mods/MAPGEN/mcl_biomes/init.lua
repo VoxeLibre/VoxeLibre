@@ -1489,6 +1489,33 @@ local function register_biomes()
 		_mcl_palette_index = 29,
 	})
 
+	minetest.register_biome({
+		name = "DeepDark",
+		node_top = "mcl_sculk:sculk",
+		depth_top = 1,
+		node_filler = "mcl_deepslate:deepslate",
+		node_riverbed = "mcl_deepslate:deepslate",
+		depth_riverbed = 1,
+		node_stone = "mcl_deepslate:deepslate",
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_min_old,
+		humidity_point = 0,
+		heat_point = 60,
+		vertical_blend = 8,
+		_mcl_biome_type = "hot",
+		_mcl_palette_index = 21,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:material_stone","mcl_deepslate:deepslate"},
+		sidelen = 16,
+		fill_ratio = 10,
+		biomes = { "DeepDark" },
+		decoration = "mcl_sculk:sculk",
+		flags = "all_floors",
+		param2 = 0,
+	})
+
 	-- Add deep ocean and underground biomes automatically.
 	for i=1, #overworld_biomes do
 		local biome = overworld_biomes[i]
@@ -2763,6 +2790,16 @@ local function register_coral_decos(ck)
 end
 
 local function register_decorations()
+	--Deep Dark
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_sculk:sculk"},
+		sidelen = 16,
+		fill_ratio = 0.1,
+		decoration = "mcl_sculk:catalyst",
+		biomes = {"DeepDark"},
+		flags = "all_floors",
+	})
 	-- Coral Reefs
 	for k,_ in pairs(corals) do
 		register_coral_decos(k)
