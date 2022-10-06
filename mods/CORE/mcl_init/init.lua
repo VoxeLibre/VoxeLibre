@@ -30,7 +30,7 @@ local minecraft_height_limit = 320
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 local singlenode = mg_name == "singlenode"
 
-local convert_old_bedrock = minetest.settings:get_bool("mcl_convert_old_bedrock", false)
+local convert_old_bedrock = minetest.settings:get_bool("mcl_convert_old_bedrock", true)
 
 -- Calculate mapgen_edge_min/mapgen_edge_max
 mcl_vars.chunksize = math.max(1, tonumber(minetest.get_mapgen_setting("chunksize")) or 5)
@@ -269,36 +269,36 @@ end
 
 -- lbm to update from old mapgen depth to new. potentially affects a lot of nodes inducing lag.
 -- Also it will not generate ores or bedrock pattern.
-local function register_lbms()
-	minetest.register_lbm({
-		label = "Replace bedrock from old bedrock layer and air/void below to deepslate",
-		name = ":mcl_mapgen_core:replace_old_bedrock",
-		nodenames = { "mcl_core:bedrock" },
-		run_at_every_load = true,
-		action = function(p)
-			if p.y >= mcl_vars.mg_overworld_min_old - 1 and p.y <= mcl_vars.mg_overworld_min_old + 5 then
-				minetest.swap_node(p,{name="mcl_deepslate:deepslate"})
-			end
-			--minetest.log("bedrock")
-		end
-	})
-	minetest.register_lbm({
+local function register_abms()
+	minetest.register_abm({
 		label = "Replace bedrock from old bedrock layer and air/void below to deepslate",
 		name = ":mcl_mapgen_core:replace_old_void",
 		nodenames = { "mcl_core:void" },
-		run_at_every_load = true,
+		chance = 30,
+		interval = 25,
+		min_y = mcl_vars.mg_bedrock_overworld_max,
+		max_y = mcl_vars.mg_overworld_min_old,
 		action = function(p)
-			if p.y <= mcl_vars.mg_overworld_min_old and p.y >= mcl_vars.mg_bedrock_overworld_min then
-				if p.y <= mcl_vars.mg_bedrock_overworld_max and p.y >= mcl_vars.mg_bedrock_overworld_min then
-					minetest.swap_node(p,{name="mcl_core:bedrock" })
-				else
-					minetest.swap_node(p,{name="mcl_deepslate:deepslate"})
-				end
+			minetest.after(0,function(p)
+				minetest.delete_area(p,p)
+			end,p)
+		end
+	})
+	minetest.register_abm({
+		label = "Replace bedrock from old bedrock layer and air/void below to deepslate",
+		name = ":mcl_mapgen_core:replace_old_bedrock",
+		nodenames = { "mcl_core:bedrock" },
+		chance = 5,
+		interval = 5,
+		min_y = mcl_vars.mg_overworld_min_old,
+		max_y = mcl_vars.mg_overworld_min_old + 4,
+		action = function(p)
+			if minetest.get_node(vector.offset(p,0,-1,0)).name ~= "mcl_core:void" then
+				minetest.set_node(p,{name="mcl_core:stone"})
 			end
-			--minetest.log("void")
 		end
 	})
 end
 if convert_old_bedrock then
-	register_lbms()
+	register_abms()
 end
