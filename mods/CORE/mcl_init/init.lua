@@ -269,21 +269,37 @@ function mcl_vars.get_node(p, force, us_timeout)
 	-- it still can return "ignore", LOL, even if force = true, but only after time out
 end
 
--- lbm to update from old mapgen depth to new. potentially affects a lot of nodes inducing lag.
+-- Abm to update from old mapgen depth to new. potentially affects a lot of nodes inducing lag.
 -- Also it will not generate ores or bedrock pattern.
+
+local adjacents = {
+	vector.new(1,0,0),
+	vector.new(0,1,0),
+	vector.new(0,0,1),
+	vector.new(-1,0,0),
+	vector.new(0,-1,0),
+	vector.new(0,0,-1),
+}
 local function register_abms()
 	minetest.register_abm({
 		label = "Replace bedrock from old bedrock layer and air/void below to deepslate",
 		name = ":mcl_mapgen_core:replace_old_void",
 		nodenames = { "mcl_core:void" },
-		chance = 30,
-		interval = 25,
+		chance = 1,
+		interval = 5,
 		min_y = mcl_vars.mg_bedrock_overworld_max,
 		max_y = mcl_vars.mg_overworld_min_old,
 		action = function(p)
-			minetest.after(0,function(p)
-				minetest.delete_area(p,p)
-			end,p)
+		minetest.log("void")
+			if p.y > mcl_vars.mg_overworld_min_old - 5 then
+				minetest.bulk_set_node(minetest.find_nodes_in_area(vector.new(p.x-5,mcl_vars.mg_overworld_min_old-5,p.z-5),vector.new(p.x+5,mcl_vars.mg_overworld_min_old,p.z+5),{"mcl_core:void"}),{name="mcl_deepslate:deepslate"})
+			else
+				minetest.after(0,function(p)
+					if minetest.get_node(p).name == "mcl_core:void" then
+						minetest.delete_area(p,p)
+					end
+				end,p)
+			end
 		end
 	})
 	minetest.register_abm({
@@ -295,9 +311,11 @@ local function register_abms()
 		min_y = mcl_vars.mg_overworld_min_old,
 		max_y = mcl_vars.mg_overworld_min_old + 4,
 		action = function(p)
-			if minetest.get_node(vector.offset(p,0,-1,0)).name ~= "mcl_core:void" then
-				minetest.set_node(p,{name="mcl_core:stone"})
+			minetest.log("bedr")
+			if minetest.find_node_near(p,24,{"mcl_core:void"}) then
+				return
 			end
+			minetest.bulk_set_node(minetest.find_nodes_in_area(vector.new(p.x-5,mcl_vars.mg_overworld_min_old-1,p.z-5),vector.new(p.x+5,mcl_vars.mg_overworld_min_old+5,p.z+5),{"mcl_core:bedrock",}),{name="mcl_deepslate:deepslate"})
 		end
 	})
 end
