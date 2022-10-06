@@ -20,10 +20,19 @@ minetest.register_entity("mobs_mc:spider_eyes", {
 	},
 	on_activate = function(self)
 		minetest.after(0.1, function()
+			if self and self.object then
+				if not self.object:get_attach() then
+					self.object:remove()
+				end
+			end
+		end)
+	end,
+	on_step = function(self)
+		if self and self.object then
 			if not self.object:get_attach() then
 				self.object:remove()
 			end
-		end)
+		end
 	end,
 	glow = 50,
 })
@@ -53,6 +62,14 @@ local spider = {
 		end
 		if not spider_eyes then
 			minetest.add_entity(self.object:get_pos(), "mobs_mc:spider_eyes"):set_attach(self.object, "body.head", vector.new(0,-0.98,2), vector.new(90,180,180))
+		end
+	end,
+	on_die = function(self)
+		for n = 1, #self.object:get_children() do
+			local obj = self.object:get_children()[n]
+			if obj:get_luaentity() and self.object:get_luaentity().name == "mobs_mc:spider_eyes" then
+				obj:remove()
+			end
 		end
 	end,
 	collisionbox = {-0.7, -0.01, -0.7, 0.7, 0.89, 0.7},
