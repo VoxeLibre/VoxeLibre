@@ -31,12 +31,12 @@ minetest.register_entity("mobs_mc:ender_eyes", {
 	textures = {
 		"mobs_mc_enderman_eyes.png",
 	},
-	on_activate = function(self)
-		minetest.after(0.1, function()
+	on_step = function(self)
+		if self and self.object then
 			if not self.object:get_attach() then
 				self.object:remove()
 			end
-		end)
+		end
 	end,
 	glow = 50,
 })
