@@ -1517,8 +1517,18 @@ local function register_biomes()
 			name = biome .. "_underground",
 			heat_point = minetest.registered_biomes[biome].heat_point,
 			humidity_point = minetest.registered_biomes[biome].humidity_point,
-			y_min = mcl_vars.mg_overworld_min,
+			y_min = mcl_vars.mg_overworld_min_old,
 			y_max = DEEP_OCEAN_MIN - 1,
+			_mcl_biome_type = minetest.registered_biomes[biome]._mcl_biome_type,
+			_mcl_palette_index = minetest.registered_biomes[biome]._mcl_palette_index,
+		})
+		minetest.register_biome({
+			name = biome .. "_deep_underground",
+			heat_point = minetest.registered_biomes[biome].heat_point,
+			humidity_point = minetest.registered_biomes[biome].humidity_point,
+			node_stone = "mcl_deepslate:deepslate",
+			y_min = mcl_vars.mg_overworld_min,
+			y_max = mcl_vars.mg_overworld_min_old,
 			_mcl_biome_type = minetest.registered_biomes[biome]._mcl_biome_type,
 			_mcl_palette_index = minetest.registered_biomes[biome]._mcl_palette_index,
 		})
