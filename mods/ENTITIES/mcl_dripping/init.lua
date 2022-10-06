@@ -42,7 +42,7 @@ local function register_drop(liquid, glow, sound, nodes, interval, chance)
 			--with longer abm cycles
 			table.shuffle(nn)
 			for i=1,math.random(#nn) do
-				if minetest.get_item_group(minetest.get_node(vector.offset(nn[i], 0, 1, 0)).name, liquid) ~= 0
+				if nn[i] and minetest.get_item_group(minetest.get_node(vector.offset(nn[i], 0, 1, 0)).name, liquid) ~= 0
 				and minetest.get_node(vector.offset(nn[i], 0, -1, 0)).name == "air" then
 					make_drop(nn[i],liquid,sound,interval)
 				end
