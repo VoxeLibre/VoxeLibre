@@ -18,10 +18,10 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 		"mobs_mc_pig.png", -- base
 		"blank.png", -- saddle
 	}},
-	head_swivel = "Head_Control",
-	bone_eye_height = 2.9,
+	head_swivel = "head.control",
+	bone_eye_height = 7.5,
 	head_eye_height = 0.8,
-	horrizonatal_head_height=-.4,
+	horrizonatal_head_height=-1,
 	curiosity = 3,
 	head_yaw="z",
 	makes_footstep_sound = true,
