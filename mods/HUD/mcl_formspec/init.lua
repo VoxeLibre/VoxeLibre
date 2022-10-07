@@ -21,10 +21,12 @@ end
 ---@param x number
 ---@param y number
 ---@param size number
+---@param texture? string
 ---@return string
-local function get_slot(x, y, size)
+---@nodiscard
+local function get_slot(x, y, size, texture)
 	local t = "image[" .. x - size .. "," .. y - size .. ";" .. 1 + (size * 2) ..
-		"," .. 1 + (size * 2) .. ";mcl_formspec_itemslot.png]"
+		"," .. 1 + (size * 2) .. ";" .. (texture and texture or "mcl_formspec_itemslot.png") .. "]"
 	return t
 end
 
@@ -34,16 +36,18 @@ mcl_formspec.itemslot_border_size = 0.05
 ---@param y number
 ---@param w integer
 ---@param h integer
----@param size? number
+---@param size? number Optional size of the slot border (default: 0.05)
+---@param texture? string Optional texture to replace the default one
 ---@return string
-function mcl_formspec.get_itemslot_bg_v4(x, y, w, h, size)
+---@nodiscard
+function mcl_formspec.get_itemslot_bg_v4(x, y, w, h, size, texture)
 	if not size then
 		size = mcl_formspec.itemslot_border_size
 	end
 	local out = ""
 	for i = 0, w - 1, 1 do
 		for j = 0, h - 1, 1 do
-			out = out .. get_slot(x + i + (i * 0.25), y + j + (j * 0.25), size)
+			out = out .. get_slot(x + i + (i * 0.25), y + j + (j * 0.25), size, texture)
 		end
 	end
 	return out

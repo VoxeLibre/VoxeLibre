@@ -37,7 +37,7 @@ minetest.register_on_mods_loaded(function()
 			def.description ~= "" then
 			local function is_redstone(def)
 				return def.mesecons or def.groups.mesecon or def.groups.mesecon_conductor_craftable or
-				def.groups.mesecon_effecor_off
+					def.groups.mesecon_effecor_off
 			end
 
 			local function is_tool(def)
@@ -217,15 +217,15 @@ local hoch = {}
 local filtername = {}
 --local bg = {}
 
-local noffset_x_start = -0.24
+local noffset_x_start = 0.2
 local noffset_x = noffset_x_start
-local noffset_y = -0.25
+local noffset_y = -1.34
 local function next_noffset(id, right)
 	if right then
-		noffset[id] = { 8.94, noffset_y }
+		noffset[id] = { 11.3, noffset_y }
 	else
 		noffset[id] = { noffset_x, noffset_y }
-		noffset_x = noffset_x + 1.25
+		noffset_x = noffset_x + 1.6
 	end
 end
 
@@ -239,7 +239,7 @@ next_noffset("misc")
 next_noffset("nix", true)
 
 noffset_x = noffset_x_start
-noffset_y = 8.12
+noffset_y = 8.64
 
 -- Lower row
 next_noffset("food")
@@ -251,7 +251,7 @@ next_noffset("inv", true)
 
 for k, v in pairs(noffset) do
 	offset[k] = tostring(v[1]) .. "," .. tostring(v[2])
-	boffset[k] = tostring(v[1] + 0.19) .. "," .. tostring(v[2] + 0.25)
+	boffset[k] = tostring(v[1] + 0.24) .. "," .. tostring(v[2] + 0.25)
 end
 
 hoch["blocks"] = ""
@@ -302,10 +302,30 @@ filtername["inv"] = S("Survival Inventory")
 	bg["default"] = dark_bg
 end]]
 
+local tab_icon = {
+	blocks = "mcl_core:brick_block",
+	deco = "mcl_flowers:peony",
+	redstone = "mesecons:redstone",
+	rail = "mcl_minecarts:golden_rail",
+	misc = "mcl_buckets:bucket_lava",
+	nix = "mcl_compass:compass",
+	food = "mcl_core:apple",
+	tools = "mcl_core:axe_iron",
+	combat = "mcl_core:sword_gold",
+	mobs = "mobs_mc:cow",
+	brew = "mcl_potions:dragon_breath",
+	matr = "mcl_core:stick",
+	inv = "mcl_chests:chest",
+}
+
+---@param player ObjectRef
+---@return integer
 local function get_stack_size(player)
 	return player:get_meta():get_int("mcl_inventory:switch_stack")
 end
 
+---@param player ObjectRef
+---@param n integer
 local function set_stack_size(player, n)
 	player:get_meta():set_int("mcl_inventory:switch_stack", n)
 end
@@ -322,7 +342,7 @@ function mcl_inventory.set_creative_formspec(player)
 
 	local start_i = players[playername].start_i
 	local pagenum = start_i / (9 * 5) + 1
-	local name = players[playername].page
+	local page = players[playername].page
 	local inv_size = players[playername].inv_size
 	local filter = players[playername].filter
 
@@ -339,80 +359,89 @@ function mcl_inventory.set_creative_formspec(player)
 	local pagemax = math.max(1, math.floor((inv_size - 1) / (9 * 5) + 1))
 	local name = "nix"
 	local main_list
-	local listrings = "listring[detached:creative_" .. playername .. ";main]" ..
-		"listring[current_player;main]" ..
-		"listring[detached:trash;main]"
+	local listrings = table.concat({
+		"listring[detached:creative_" .. playername .. ";main]",
+		"listring[current_player;main]",
+		"listring[detached:trash;main]",
+	})
 
-	local inv_bg = "crafting_inventory_creative.png"
+	if page then
+		name = page
+		if players[playername] then
+			players[playername].page = page
+		end
+	end
+
 	if name == "inv" then
-		inv_bg = "crafting_inventory_creative_survival.png"
-
 		-- Background images for armor slots (hide if occupied)
 		local armor_slot_imgs = ""
 		local inv = player:get_inventory()
 		if inv:get_stack("armor", 2):is_empty() then
-			armor_slot_imgs = armor_slot_imgs .. "image[2.5,1.3;1,1;mcl_inventory_empty_armor_slot_helmet.png]"
+			armor_slot_imgs = armor_slot_imgs .. "image[3.5,0.375;1,1;mcl_inventory_empty_armor_slot_helmet.png]"
 		end
 		if inv:get_stack("armor", 3):is_empty() then
-			armor_slot_imgs = armor_slot_imgs .. "image[2.5,2.75;1,1;mcl_inventory_empty_armor_slot_chestplate.png]"
+			armor_slot_imgs = armor_slot_imgs .. "image[3.5,2.125;1,1;mcl_inventory_empty_armor_slot_chestplate.png]"
 		end
 		if inv:get_stack("armor", 4):is_empty() then
-			armor_slot_imgs = armor_slot_imgs .. "image[5.5,1.3;1,1;mcl_inventory_empty_armor_slot_leggings.png]"
+			armor_slot_imgs = armor_slot_imgs .. "image[7.25,0.375;1,1;mcl_inventory_empty_armor_slot_leggings.png]"
 		end
 		if inv:get_stack("armor", 5):is_empty() then
-			armor_slot_imgs = armor_slot_imgs .. "image[5.5,2.75;1,1;mcl_inventory_empty_armor_slot_boots.png]"
+			armor_slot_imgs = armor_slot_imgs .. "image[7.25,2.125;1,1;mcl_inventory_empty_armor_slot_boots.png]"
 		end
 
 		if inv:get_stack("offhand", 1):is_empty() then
-			armor_slot_imgs = armor_slot_imgs .. "image[1.5,2.025;1,1;mcl_inventory_empty_armor_slot_shield.png]"
+			armor_slot_imgs = armor_slot_imgs .. "image[2.25,1.25;1,1;mcl_inventory_empty_armor_slot_shield.png]"
 		end
 
 		local stack_size = get_stack_size(player)
 
 		-- Survival inventory slots
-		main_list = "list[current_player;main;0,3.75;9,3;9]" ..
-			mcl_formspec.get_itemslot_bg(0, 3.75, 9, 3) ..
+		main_list = table.concat({
+			mcl_formspec.get_itemslot_bg_v4(0.375, 3.375, 9, 3),
+			"list[current_player;main;0.375,3.375;9,3;9]",
 
 			-- Armor
-			"list[current_player;armor;2.5,1.3;1,1;1]" ..
-			"list[current_player;armor;2.5,2.75;1,1;2]" ..
-			"list[current_player;armor;5.5,1.3;1,1;3]" ..
-			"list[current_player;armor;5.5,2.75;1,1;4]" ..
-			mcl_formspec.get_itemslot_bg(2.5, 1.3, 1, 1) ..
-			mcl_formspec.get_itemslot_bg(2.5, 2.75, 1, 1) ..
-			mcl_formspec.get_itemslot_bg(5.5, 1.3, 1, 1) ..
-			mcl_formspec.get_itemslot_bg(5.5, 2.75, 1, 1) ..
-			"list[current_player;offhand;1.5,2.025;1,1]" ..
-			mcl_formspec.get_itemslot_bg(1.5, 2.025, 1, 1) ..
-			armor_slot_imgs ..
+			mcl_formspec.get_itemslot_bg_v4(3.5, 0.375, 1, 1),
+			mcl_formspec.get_itemslot_bg_v4(3.5, 2.125, 1, 1),
+			mcl_formspec.get_itemslot_bg_v4(7.25, 0.375, 1, 1),
+			mcl_formspec.get_itemslot_bg_v4(7.25, 2.125, 1, 1),
+			"list[current_player;armor;3.5,0.375;1,1;1]",
+			"list[current_player;armor;3.5,2.125;1,1;2]",
+			"list[current_player;armor;7.25,0.375;1,1;3]",
+			"list[current_player;armor;7.25,2.125;1,1;4]",
+
+			-- Offhand
+			mcl_formspec.get_itemslot_bg_v4(2.25, 1.25, 1, 1),
+			"list[current_player;offhand;2.25,1.25;1,1]",
+
+			armor_slot_imgs,
 
 			-- Player preview
-			mcl_player.get_player_formspec_model(player, 3.9, 1.4, 1.2333, 2.4666, "") ..
+			"image[4.75,0.33;2.25,2.83;mcl_inventory_background9.png;2]",
+			mcl_player.get_player_formspec_model(player, 4.75, 0.45, 2.25, 2.75, ""),
 
 			-- Crafting guide button
-			"image_button[9,1;1,1;craftguide_book.png;__mcl_craftguide;]" ..
-			"tooltip[__mcl_craftguide;" .. F(S("Recipe book")) .. "]" ..
+			"image_button[11.575,0.825;1.1,1.1;craftguide_book.png;__mcl_craftguide;]",
+			"tooltip[__mcl_craftguide;" .. F(S("Recipe book")) .. "]",
 
 			-- Help button
-			"image_button[9,2;1,1;doc_button_icon_lores.png;__mcl_doc;]" ..
-			"tooltip[__mcl_doc;" .. F(S("Help")) .. "]" ..
+			"image_button[11.575,2.075;1.1,1.1;doc_button_icon_lores.png;__mcl_doc;]",
+			"tooltip[__mcl_doc;" .. F(S("Help")) .. "]",
 
 			-- Advancements button
-			"image_button[9,3;1,1;mcl_achievements_button.png;__mcl_achievements;]" ..
+			"image_button[11.575,3.3;1.1,1.1;mcl_achievements_button.png;__mcl_achievements;]" ..
 			--"style_type[image_button;border=;bgimg=;bgimg_pressed=]" ..
 			"tooltip[__mcl_achievements;" .. F(S("Advancements")) .. "]" ..
 
 			-- Switch stack size button
-			"image_button[9,4;1,1;default_apple.png;__switch_stack;]" ..
-			"label[9.4,4.4;" .. F(C("#FFFFFF", stack_size ~= 1 and stack_size or "")) .. "]" ..
-			"tooltip[__switch_stack;" .. F(S("Switch stack size")) .. "]"
+			"image_button[11.575,4.575;1.1,1.1;default_apple.png;__switch_stack;]",
+			"label[12.275,5.28;" .. F(C("#FFFFFF", tostring(stack_size ~= 1 and stack_size or ""))) .. "]",
+			"tooltip[__switch_stack;" .. F(S("Switch stack size")) .. "]",
 
-		-- Skins button
-		if minetest.global_exists("mcl_skins") then
-			main_list = main_list ..
-				"image_button[9,5;1,1;mcl_skins_button.png;__mcl_skins;]" ..
-				"tooltip[__mcl_skins;" .. F(S("Select player skin")) .. "]"
-		end
+			-- Skins button
+			"image_button[11.575,5.825;1.1,1.1;mcl_skins_button.png;__mcl_skins;]",
+			"tooltip[__mcl_skins;" .. F(S("Select player skin")) .. "]",
+		})
 
 		-- For shortcuts
 		listrings = listrings ..
@@ -420,29 +449,16 @@ function mcl_inventory.set_creative_formspec(player)
 			"listring[current_player;main]"
 	else
 		-- Creative inventory slots
-		main_list = "list[detached:creative_" .. playername .. ";main;0,1.75;9,5;" .. tostring(start_i) .. "]" ..
-			mcl_formspec.get_itemslot_bg(0, 1.75, 9, 5) ..
+		main_list = table.concat({
+			mcl_formspec.get_itemslot_bg_v4(0.375, 0.875, 9, 5),
+			"list[detached:creative_" .. playername .. ";main;0.375,0.875;9,5;" .. tostring(start_i) .. "]",
 			-- Page buttons
-			"label[9.0,5.5;" .. F(S("@1/@2", pagenum, pagemax)) .. "]" ..
-			"image_button[9.0,6.0;0.7,0.7;crafting_creative_prev.png;creative_prev;]" ..
-			"image_button[9.5,6.0;0.7,0.7;crafting_creative_next.png;creative_next;]"
+			"label[11.65,5.6;" .. F(S("@1 / @2", pagenum, pagemax)) .. "]",
+			"image_button[11.575,5.83;0.55,1.1;crafting_creative_prev.png;creative_prev;]",
+			"image_button[12.075,5.83;0.55,1.1;crafting_creative_next.png;creative_next;]",
+		})
 	end
 
-	local tab_icon = {
-		blocks = "mcl_core:brick_block",
-		deco = "mcl_flowers:peony",
-		redstone = "mesecons:redstone",
-		rail = "mcl_minecarts:golden_rail",
-		misc = "mcl_buckets:bucket_lava",
-		nix = "mcl_compass:compass",
-		food = "mcl_core:apple",
-		tools = "mcl_core:axe_iron",
-		combat = "mcl_core:sword_gold",
-		mobs = "mobs_mc:cow",
-		brew = "mcl_potions:dragon_breath",
-		matr = "mcl_core:stick",
-		inv = "mcl_chests:chest",
-	}
 	local function tab(current_tab, this_tab)
 		local bg_img
 		if current_tab == this_tab then
@@ -450,59 +466,66 @@ function mcl_inventory.set_creative_formspec(player)
 		else
 			bg_img = "crafting_creative_inactive" .. hoch[this_tab] .. ".png"
 		end
-		return "style[" .. this_tab .. ";border=false;bgimg=;bgimg_pressed=]" ..
-			"item_image_button[" .. boffset[this_tab] .. ";1,1;" .. tab_icon[this_tab] .. ";" .. this_tab .. ";]" ..
-			"image[" .. offset[this_tab] .. ";1.5,1.44;" .. bg_img .. "]"
+		return table.concat({
+			"style[" .. this_tab .. ";border=false;bgimg=;bgimg_pressed=;noclip=true]",
+			"image[" .. offset[this_tab] .. ";1.5,1.44;" .. bg_img .. "]",
+			"item_image_button[" .. boffset[this_tab] .. ";1,1;" .. tab_icon[this_tab] .. ";" .. this_tab .. ";]",
+			"tooltip[blocks;" .. F(filtername[this_tab]) .. "]"
+		})
 	end
 
 	local caption = ""
 	if name ~= "inv" and filtername[name] then
-		caption = "label[0,1.2;" .. F(minetest.colorize("#313131", filtername[name])) .. "]"
+		caption = "label[0.375,0.375;" .. F(minetest.colorize("#313131", filtername[name])) .. "]"
 	end
 
-	local formspec = "size[10,9.3]" ..
-		"no_prepend[]" ..
-		mcl_vars.gui_nonbg .. mcl_vars.gui_bg_color ..
-		"background[-0.19,-0.25;10.5,9.87;" .. inv_bg .. "]" ..
-		"label[-5,-5;" .. name .. "]" ..
-		tab(name, "blocks") ..
-		"tooltip[blocks;" .. F(filtername["blocks"]) .. "]" ..
-		tab(name, "deco") ..
-		"tooltip[deco;" .. F(filtername["deco"]) .. "]" ..
-		tab(name, "redstone") ..
-		"tooltip[redstone;" .. F(filtername["redstone"]) .. "]" ..
-		tab(name, "rail") ..
-		"tooltip[rail;" .. F(filtername["rail"]) .. "]" ..
-		tab(name, "misc") ..
-		"tooltip[misc;" .. F(filtername["misc"]) .. "]" ..
-		tab(name, "nix") ..
-		"tooltip[nix;" .. F(filtername["nix"]) .. "]" ..
-		caption ..
-		"list[current_player;main;0,7;9,1;]" ..
-		mcl_formspec.get_itemslot_bg(0, 7, 9, 1) ..
-		main_list ..
-		tab(name, "food") ..
-		"tooltip[food;" .. F(filtername["food"]) .. "]" ..
-		tab(name, "tools") ..
-		"tooltip[tools;" .. F(filtername["tools"]) .. "]" ..
-		tab(name, "combat") ..
-		"tooltip[combat;" .. F(filtername["combat"]) .. "]" ..
-		tab(name, "mobs") ..
-		"tooltip[mobs;" .. F(filtername["mobs"]) .. "]" ..
-		tab(name, "brew") ..
-		"tooltip[brew;" .. F(filtername["brew"]) .. "]" ..
-		tab(name, "matr") ..
-		"tooltip[matr;" .. F(filtername["matr"]) .. "]" ..
-		tab(name, "inv") ..
-		"tooltip[inv;" .. F(filtername["inv"]) .. "]" ..
-		"list[detached:trash;main;9,7;1,1;]" ..
-		mcl_formspec.get_itemslot_bg(9, 7, 1, 1) ..
-		"image[9,7;1,1;crafting_creative_trash.png]" ..
-		listrings
+	local formspec = table.concat({
+		"formspec_version[6]",
+		"size[13,8.75]",
+
+		"style_type[image;noclip=true]",
+
+		-- Hotbar
+		mcl_formspec.get_itemslot_bg_v4(0.375, 7.375, 9, 1),
+		"list[current_player;main;0.375,7.375;9,1;]",
+
+		-- Trash
+		mcl_formspec.get_itemslot_bg_v4(11.625, 7.375, 1, 1, mcl_formspec.itemslot_border_size,
+			"crafting_creative_trash.png"),
+		"list[detached:trash;main;11.625,7.375;1,1;]",
+
+		main_list,
+
+		caption,
+
+		listrings,
+
+		tab(name, "blocks"),
+		tab(name, "deco"),
+		tab(name, "redstone"),
+		tab(name, "rail"),
+		tab(name, "misc"),
+		tab(name, "nix"),
+
+		tab(name, "food"),
+		tab(name, "tools"),
+		tab(name, "combat"),
+		tab(name, "mobs"),
+		tab(name, "brew"),
+		tab(name, "matr"),
+		tab(name, "inv"),
+	})
 
 	if name == "nix" then
-		formspec = formspec .. "field[5.3,1.34;4,0.75;search;;" .. minetest.formspec_escape(filter) .. "]"
-		formspec = formspec .. "field_close_on_enter[search;false]"
+		if filter == nil then
+			filter = ""
+		end
+
+		formspec = formspec .. table.concat({
+			"field[5.325,0.15;6.1,0.6;search;;" .. minetest.formspec_escape(filter) .. "]",
+			"field_close_on_enter[search;false]",
+			"set_focus[search;true]",
+		})
 	end
 	if pagenum then formspec = formspec .. "p" .. tostring(pagenum) end
 	player:set_inventory_formspec(formspec)
@@ -629,7 +652,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		players[name].filter = ""
 	end
 
-	mcl_inventory.set_creative_formspec(player, start_i, start_i / (9 * 5) + 1, inv_size, false, page, filter)
+	mcl_inventory.set_creative_formspec(player)
 end)
 
 
@@ -654,39 +677,6 @@ if minetest.is_creative_enabled("") then
 				end
 			end
 		end
-	end
-
-	mcl_inventory.update_inventory_formspec = function(player)
-		local page
-
-		local name = player:get_player_name()
-
-		if players[name].page then
-			page = players[name].page
-		else
-			page = "nix"
-		end
-
-		-- Figure out current scroll bar from formspec
-		--local formspec = player:get_inventory_formspec()
-		local start_i = players[name].start_i
-
-		local inv_size
-		if page == "nix" then
-			local inv = minetest.get_inventory({ type = "detached", name = "creative_" .. name })
-			inv_size = inv:get_size("main")
-		elseif page and page ~= "inv" then
-			inv_size = #(inventory_lists[page])
-		else
-			inv_size = 0
-		end
-
-		local filter = players[name].filter
-		if filter == nil then
-			filter = ""
-		end
-
-		mcl_inventory.set_creative_formspec(player, start_i, start_i / (9 * 5) + 1, inv_size, false, page, filter)
 	end
 end
 
