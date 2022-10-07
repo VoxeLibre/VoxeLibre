@@ -263,8 +263,8 @@ mcl_mobs:register_mob("mobs_mc:enderman", {
 			end
 		end
 		if not spider_eyes then
-			minetest.add_entity(self.object:get_pos(), "mobs_mc:ender_eyes"):set_attach(self.object, "head.low", vector.new(0,3.25,-1.98), vector.new(90,0,180))
-			minetest.add_entity(self.object:get_pos(), "mobs_mc:ender_eyes"):set_attach(self.object, "head.low", vector.new(1,3.25,-1.98), vector.new(90,0,180))
+			minetest.add_entity(self.object:get_pos(), "mobs_mc:ender_eyes"):set_attach(self.object, "head.top", vector.new(0,2.54,-1.99), vector.new(90,0,180))
+			minetest.add_entity(self.object:get_pos(), "mobs_mc:ender_eyes"):set_attach(self.object, "head.top", vector.new(1,2.54,-1.99), vector.new(90,0,180))
 		end
 	end,
 	sounds = {

@@ -33,6 +33,10 @@ mcl_mobs:register_mob("mobs_mc:illusioner", {
 		"mobs_mc_illusionist.png", --hat
 		"mcl_bows_bow.png",
 	}, },
+	head_swivel = "head.control",
+	bone_eye_height = 2.2,
+	head_eye_height = 2.2,
+	curiosity = 10,
 	sounds = {
 		-- TODO: more sounds
 		distance = 16,
