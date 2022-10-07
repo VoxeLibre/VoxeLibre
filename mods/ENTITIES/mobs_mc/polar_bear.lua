@@ -24,6 +24,12 @@ mcl_mobs:register_mob("mobs_mc:polar_bear", {
 	textures = {
 		{"mobs_mc_polarbear.png"},
 	},
+	head_swivel = "head.control",
+	bone_eye_height = 2.6,
+	head_eye_height = 1,
+	horrizonatal_head_height = 0,
+	curiosity = 20,
+	head_yaw="z",
 	visual_size = {x=3.0, y=3.0},
 	makes_footstep_sound = true,
 	damage = 6,
