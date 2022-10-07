@@ -25,6 +25,7 @@ local table_remove   = table.remove
 local pairs = pairs
 local dbg_spawn_attempts = 0
 local dbg_spawn_succ = 0
+local dbg_spawn_counts = {}
 -- range for mob count
 local aoc_range = 136
 
@@ -473,6 +474,11 @@ function mcl_mobs.spawn(pos,id)
 	if not def or (def.can_spawn and not def.can_spawn(pos)) or not def.is_mob then
 		return false
 	end
+	if not dbg_spawn_counts[def.name] then
+		dbg_spawn_counts[def.name] = 1
+	else
+		dbg_spawn_counts[def.name] = dbg_spawn_counts[def.name] + 1
+	end
 	return minetest.add_entity(pos, def.name)
 end
 
@@ -672,6 +678,7 @@ end
 minetest.register_chatcommand("mobstats",{
 	privs = { debug = true },
 	func = function(n,param)
+		minetest.chat_send_player(n,dump(dbg_spawn_counts))
 		local pos = minetest.get_player_by_name(n):get_pos()
 		minetest.chat_send_player(n,"mobs within 32 radius of player:"..count_mobs(pos,32))
 		minetest.chat_send_player(n,"total mobs:"..count_mobs_total())
