@@ -2,6 +2,7 @@ mcl_formspec = {}
 
 mcl_formspec.label_color = "#313131"
 
+---Get the background of inventory slots (formspec version = 1)
 ---@param x number
 ---@param y number
 ---@param w number
@@ -32,6 +33,7 @@ end
 
 mcl_formspec.itemslot_border_size = 0.05
 
+---Get the background of inventory slots (formspec version > 1)
 ---@param x number
 ---@param y number
 ---@param w integer
