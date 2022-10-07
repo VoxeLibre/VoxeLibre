@@ -61,6 +61,13 @@ if minetest.settings:get_bool("only_peaceful_mobs", false) then
 	end)
 end
 
+
+local function dir_to_pitch(dir)
+	--local dir2 = vector.normalize(dir)
+	local xz = math.abs(dir.x) + math.abs(dir.z)
+	return -math.atan2(-dir.y, xz)
+end
+
 -- pathfinding settings
 local enable_pathfinding = true
 local stuck_timeout = 3 -- how long before mob gets stuck in place and starts searching
@@ -3706,6 +3713,63 @@ local mob_step = function(self, dtime)
 
 	-- end rotation
 
+	if self.head_swivel and type(self.head_swivel) == "string" then
+		local oldp,oldr = self.object:get_bone_position(self.head_swivel)
+
+		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 10)) do
+			if obj:is_player() and not self.attack or obj:get_luaentity() and obj:get_luaentity().name == self.name and self ~= obj:get_luaentity() then
+				if not self._locked_object then
+					if math.random(5000/self.curiosity) == 1 then
+						self._locked_object = obj
+					end
+				else
+					if math.random(10000/self.curiosity) == 1 then
+						self._locked_object = nil
+					end
+				end
+			end
+		end
+
+		if self.attack then
+			self._locked_object = self.attack
+		end
+
+		if self._locked_object and (self._locked_object:is_player() or self._locked_object:get_luaentity()) and self._locked_object:get_hp() > 0 then
+			local _locked_object_eye_height = 1.5
+			if self._locked_object:get_luaentity() then
+				_locked_object_eye_height = self._locked_object:get_luaentity().head_eye_height
+			end
+			if self._locked_object:is_player() then
+				_locked_object_eye_height = self._locked_object:get_properties().eye_height
+			end
+			local self_rot = self.object:get_rotation()
+			local player_pos = self._locked_object:get_pos()
+			local direction_player = vector.direction(vector.add(self.object:get_pos(), vector.new(0, self.head_eye_height*.7, 0)), vector.add(player_pos, vector.new(0, _locked_object_eye_height, 0)))
+			local mob_yaw = math.deg(-(-(self_rot.y)-(-minetest.dir_to_yaw(direction_player))))+self.head_yaw_offset
+			local mob_pitch = math.deg(-dir_to_pitch(direction_player))*self.head_pitch_multiplier
+			if (mob_yaw < -60 or mob_yaw > 60) and not (self.attack and self.type == "monster") then
+				mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.multiply(oldr, 0.9))
+			elseif self.attack and self.type == "monster" then
+				if self.head_yaw == "y" then
+					mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, mob_yaw, 0))
+				elseif self.head_yaw == "z" then
+					mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, 0, -mob_yaw))
+				end
+			else
+				if self.head_yaw == "y" then
+					mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, ((mob_yaw-oldr.y)*.3)+oldr.y, 0))
+				elseif self.head_yaw == "z" then
+					mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, 0, -(((mob_yaw-oldr.y)*.3)+oldr.y)*3))
+				end
+			end
+		elseif not self._locked_object and math.abs(oldr.y) > 3 and math.abs(oldr.x) < 3 then
+			mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.multiply(oldr, 0.9))
+		else
+			mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(0,0,0))
+		end
+
+	end
+
 	-- run custom function (defined in mob lua file)
 	if self.do_custom then
 
@@ -3946,6 +4010,14 @@ end
 minetest.register_entity(name, {
 
 	use_texture_alpha = def.use_texture_alpha,
+	head_swivel = def.head_swivel or nil, -- bool to activate this function
+	head_yaw_offset = def.head_yaw_offset or 0, -- for wonkey model bones
+	head_pitch_multiplier = def.head_pitch_multiplier or 1, --for inverted pitch
+	bone_eye_height = def.bone_eye_height or 1.4, -- head bone offset
+	head_eye_height = def.head_eye_height or def.bone_eye_height or 0, -- how hight aproximatly the mobs head is fromm the ground to tell the mob how high to look up at the player
+	curiosity = def.curiosity or 1, -- how often mob will look at player on idle
+	head_yaw = def.head_yaw or "y", -- axis to rotate head on
+	horrizonatal_head_height = def.horrizonatal_head_height or 0,
 	stepheight = def.stepheight or 0.6,
 	name = name,
 	description = def.description,

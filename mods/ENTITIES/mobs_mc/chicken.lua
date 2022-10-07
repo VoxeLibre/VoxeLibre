@@ -20,6 +20,13 @@ mcl_mobs:register_mob("mobs_mc:chicken", {
 	collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.69, 0.2},
 	runaway = true,
 	floats = 1,
+	head_swivel = "head.control",
+	bone_eye_height = 4,
+	head_eye_height = 1.5,
+	horrizonatal_head_height = -.3,
+	curiosity = 10,
+	head_yaw="z",
+	visual_size = {x=1,y=1},
 	visual = "mesh",
 	mesh = "mobs_mc_chicken.b3d",
 	textures = {

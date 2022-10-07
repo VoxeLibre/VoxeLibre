@@ -25,13 +25,17 @@ local pigman = {
 	group_attack = { "mobs_mc:pigman", "mobs_mc:baby_pigman" },
 	damage = 9,
 	reach = 2,
+	head_swivel = "head.control",
+	bone_eye_height = 2.4,
+	head_eye_height = 1.4,
+	curiosity = 15,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_zombie_pigman.b3d",
 	textures = { {
+		"mobs_mc_zombie_pigman.png", --pigman
 		"blank.png", --baby
 		"default_tool_goldsword.png", --sword
-		"mobs_mc_zombie_pigman.png", --pigman
 	} },
 	visual_size = {x=3, y=3},
 	sounds = {

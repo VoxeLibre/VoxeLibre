@@ -26,6 +26,12 @@ mcl_mobs:register_mob("mobs_mc:blaze", {
 	rotate = -180,
 	visual = "mesh",
 	mesh = "mobs_mc_blaze.b3d",
+	head_swivel = "head.control",
+	bone_eye_height = 4,
+	head_eye_height = 3.5,
+	curiosity = 10,
+	head_yaw_offset = 180,
+	head_pitch_multiplier=-1,
 	textures = {
 		{"mobs_mc_blaze.png"},
 	},

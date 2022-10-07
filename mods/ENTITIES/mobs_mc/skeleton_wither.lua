@@ -24,11 +24,14 @@ mcl_mobs:register_mob("mobs_mc:witherskeleton", {
 	collisionbox = {-0.35, -0.01, -0.35, 0.35, 2.39, 0.35},
 	visual = "mesh",
 	mesh = "mobs_mc_witherskeleton.b3d",
+	head_swivel = "head.control",
+	bone_eye_height = 2.38,
+	curiosity = 60,
 	textures = {
 		{
 			"mobs_mc_empty.png", -- armor
-			"mobs_mc_wither_skeleton.png", -- wither skeleton
 			"default_tool_stonesword.png", -- sword
+			"mobs_mc_wither_skeleton.png", -- wither skeleton
 		}
 	},
 	visual_size = {x=1.2, y=1.2},

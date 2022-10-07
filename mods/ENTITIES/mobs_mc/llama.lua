@@ -58,6 +58,14 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 	shoot_offset = 1, --3.5 *would* be a good value visually but it somehow messes with the projectiles trajectory
 	spawn_in_group_min = 4,
 	spawn_in_group = 6,
+
+	head_swivel = "head.control",
+	bone_eye_height = 11,
+	head_eye_height = 3,
+	horrizonatal_head_height=0,
+	curiosity = 60,
+	head_yaw = "z",
+
 	hp_min = 15,
 	hp_max = 30,
 	xp_min = 1,
