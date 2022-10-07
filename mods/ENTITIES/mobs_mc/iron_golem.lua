@@ -22,6 +22,9 @@ mcl_mobs:register_mob("mobs_mc:iron_golem", {
 	collisionbox = {-0.7, -0.01, -0.7, 0.7, 2.69, 0.7},
 	visual = "mesh",
 	mesh = "mobs_mc_iron_golem.b3d",
+	head_swivel = "head.control",
+	bone_eye_height = 3.38,
+	curiosity = 1000,
 	textures = {
 		{"mobs_mc_iron_golem.png"},
 	},
