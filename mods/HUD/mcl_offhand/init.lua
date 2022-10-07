@@ -70,8 +70,8 @@ minetest.register_globalstep(function(dtime)
 					hud_elem_type = "image",
 					position = position,
 					offset = offset,
-					scale = {x = 2.75, y = 2.75},
-					text = "mcl_offhand_slot.png",
+					scale = {x = 0.46875, y = 0.46875},
+					text = "mcl_offhand_slot.png" .. "^[resize:" .. max_offhand_px .. "x" .. max_offhand_px,
 					z_index = 0,
 				})
 			end
@@ -80,7 +80,7 @@ minetest.register_globalstep(function(dtime)
 					hud_elem_type = "image",
 					position = position,
 					offset = offset,
-					scale = {x = 0.4, y = 0.4},
+					scale = {x = 0.375, y = 0.375},
 					text = item_texture,
 					z_index = 1,
 				})
