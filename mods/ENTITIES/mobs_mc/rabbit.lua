@@ -15,7 +15,12 @@ local rabbit = {
 	xp_min = 1,
 	xp_max = 3,
 	collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.49, 0.2},
-
+	head_swivel = "head.control",
+	bone_eye_height = 2,
+	head_eye_height = 0.5,
+	horrizonatal_head_height = -.3,
+	curiosity = 20,
+	head_yaw="z",
 	visual = "mesh",
 	mesh = "mobs_mc_rabbit.b3d",
 	textures = {
