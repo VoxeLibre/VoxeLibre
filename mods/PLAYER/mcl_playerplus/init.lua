@@ -605,9 +605,6 @@ end)
 -- Don't change HP if the player falls in the water or through End Portal:
 mcl_damage.register_modifier(function(obj, damage, reason)
 	if reason.type == "fall" then
-		if minetest.is_creative_enabled(obj:get_player_name()) then
-			return 0
-		end
 		local pos = obj:get_pos()
 		local node = minetest.get_node(pos)
 		local velocity = obj:get_velocity() or obj:get_player_velocity() or {x=0,y=-10,z=0}

@@ -1910,7 +1910,6 @@ end
 -- find someone to attack
 local monster_attack = function(self)
 	if not damage_enabled
-	or minetest.is_creative_enabled("")
 	or self.passive ~= false
 	or self.state == "attack"
 	or day_docile(self) then

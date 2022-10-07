@@ -1,3 +1,5 @@
+local enable_damage = minetest.settings:get_bool("enable_damage")
+
 function mcl_burning.get_storage(obj)
 	return obj:is_player() and mcl_burning.storage[obj] or obj:get_luaentity()
 end
@@ -77,7 +79,7 @@ end
 -- The effective burn duration is modified by obj's armor protection.
 -- If obj was already burning, its burn duration is updated if the current
 -- duration is less than burn_time.
--- If obj is dead, fireproof or a creative player, this function does nothing.
+-- If obj is dead, fireproof or enable_damage is disabled, this function does nothing.
 --
 function mcl_burning.set_on_fire(obj, burn_time)
 	if obj:get_hp() < 0 then
@@ -89,8 +91,9 @@ function mcl_burning.set_on_fire(obj, burn_time)
 		return
 	end
 
-	if obj:is_player() and minetest.is_creative_enabled(obj:get_player_name()) then
+	if obj:is_player() and not enable_damage then
 		burn_time = 0
+		return
 	else
 		local max_fire_prot_lvl = 0
 		local inv = mcl_util.get_inventory(obj)
