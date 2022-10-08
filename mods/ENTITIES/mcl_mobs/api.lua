@@ -3129,6 +3129,31 @@ local function check_item_pickup(self)
 	end
 end
 
+local check_herd_timer = 0
+local function check_herd(self,dtime)
+	local pos = self.object:get_pos()
+	if not pos then return end
+	check_herd_timer = check_herd_timer + dtime
+	if check_herd_timer < 4 then return end
+	check_herd_timer = 0
+	for _,o in pairs(minetest.get_objects_inside_radius(pos,self.view_range)) do
+		local l = o:get_luaentity()
+		local p,y
+		if l and l.is_mob and l.name == self.name then
+			if self.horny and l.horny then
+				p = l.object:get_pos()
+			else
+				y = o:get_yaw()
+			end
+			if p then
+				go_to_pos(self,p)
+			elseif y then
+				set_yaw(self,y)
+			end
+		end
+	end
+end
+
 local function damage_mob(self,reason,damage)
 	if not self.health then return end
 	damage = floor(damage)
@@ -4015,6 +4040,10 @@ local mob_step = function(self, dtime)
 			set_animation(self, "stand")
 			yaw = yaw + random(-0.5, 0.5)
 			yaw = set_yaw(self, yaw, 8)
+		end
+	else
+		if self.move_in_group ~= false then
+			check_herd(self,dtime)
 		end
 	end
 
