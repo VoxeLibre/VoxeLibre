@@ -219,8 +219,8 @@ end)
 
 
 --DEBUG STUFF!!
---[[
 minetest.register_chatcommand("title", {
+	privs = { debug = true },
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 		if player then
@@ -233,6 +233,7 @@ minetest.register_chatcommand("title", {
 })
 
 minetest.register_chatcommand("subtitle", {
+	privs = { debug = true },
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 		if player then
@@ -245,10 +246,11 @@ minetest.register_chatcommand("subtitle", {
 })
 
 minetest.register_chatcommand("actionbar", {
+	privs = { debug = true },
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 		if player then
-			mcl_title.set(player, "actionbar", { text = param, color = "gold" })
+			mcl_title.set(player, "actionbar", { text = param, color = "gold", bold = true, italic = true })
 			return true
 		else
 			return false
@@ -256,7 +258,8 @@ minetest.register_chatcommand("actionbar", {
 	end,
 })
 
-minetest.register_chatcommand("timeout", {
+minetest.register_chatcommand("title_timeout", {
+	privs = { debug = true },
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 		if player then
@@ -268,7 +271,8 @@ minetest.register_chatcommand("timeout", {
 	end,
 })
 
-minetest.register_chatcommand("all", {
+minetest.register_chatcommand("title_all", {
+	privs = { debug = true },
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 		if player then
@@ -282,4 +286,19 @@ minetest.register_chatcommand("all", {
 		end
 	end,
 })
-]]
+
+minetest.register_chatcommand("title_all_styles", {
+	privs = { debug = true },
+	func = function(name, param)
+		local player = minetest.get_player_by_name(name)
+		if player then
+			mcl_title.params_set(player, { stay = 600 })
+			mcl_title.set(player, "title", { text = param, color = "gold" })
+			mcl_title.set(player, "subtitle", { text = param, color = "gold", bold = true })
+			mcl_title.set(player, "actionbar", { text = param, color = "gold", italic = true })
+			return true
+		else
+			return false
+		end
+	end,
+})
