@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("extra_mobs")
+local S = minetest.get_translator("mobs_mc")
 
 local base_psdef = {
 	amount = 8,
