@@ -95,7 +95,7 @@ mcl_mobs:register_mob("mobs_mc:glow_squid", {
 					psdef.playername = p:get_player_name()
 					table.insert(self.particlespawners[p],minetest.add_particlespawner(psdef))
 				end
-			elseif vector.distance(pos,p:get_pos()) > 150 then
+			elseif vector.distance(pos,p:get_pos()) > 150 and self.particlespawners[p] then
 				for _,ps in pairs(self.particlespawners[p]) do
 					minetest.delete_particlespawner(ps)
 				end
