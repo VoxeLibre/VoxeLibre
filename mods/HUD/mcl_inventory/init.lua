@@ -209,7 +209,6 @@ end
 minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
 	if not puncher or not puncher:is_player() then return end
 	local name = puncher:get_player_name()
-	if minetest.is_creative_enabled(name) then return end
 	if not minetest.is_creative_enabled(name) then return end
 	if pointed_thing.type ~= "node" then return end
 	local def = minetest.registered_nodes[node.name]
