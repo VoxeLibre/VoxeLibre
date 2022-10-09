@@ -16,6 +16,29 @@ local CRAMMING_DAMAGE = 3
 -- Localize
 local S = minetest.get_translator("mcl_mobs")
 
+local function shortest_term_of_yaw_rotatoin(self, rot_origin, rot_target, nums)
+
+	if not rot_origin or not rot_target then
+		return
+	end
+
+	rot_origin = math.deg(rot_origin)
+	rot_target = math.deg(rot_target)
+
+
+
+	if math.abs(rot_target - rot_origin) < 180 then
+		return rot_target - rot_origin
+	else
+		if (rot_target - rot_origin) > 0 then
+			return 360-(rot_target - rot_origin)
+		else
+			return (rot_target - rot_origin)+360
+		end
+	end
+end
+
+
 -- Invisibility mod check
 mcl_mobs.invis = {}
 
@@ -309,16 +332,47 @@ local function update_roll(self)
 end
 
 -- set and return valid yaw
+
+
 local set_yaw = function(self, yaw, delay, dtime)
 
 	if self.noyaw then return end
 	if true then
-		self.object:set_yaw(yaw)
-		return yaw
-	end
+		self._turn_to = yaw
+		--clamp our yaw to a 360 range
+		if math.deg(self.object:get_yaw()) > 360 then
+			self.object:set_yaw(math.rad(10))
+		elseif math.deg(self.object:get_yaw()) < 0 then
+			self.object:set_yaw(math.rad(350))
+		end
 
-	if not yaw or yaw ~= yaw then
-		yaw = 0
+		--calculate the shortest way to turn to find our target
+		local target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), yaw, true)
+
+		--turn in the shortest path possible toward our target. if we are attacking, don't dance.
+		if math.abs(target_shortest_path) > 100 and (self.attack and self.attack:get_pos() or self.following and self.following:get_pos()) then
+			if self.following then
+				target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.following:get_pos())), true)
+			else
+				target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.attack:get_pos())), true)
+			end
+		end
+
+		local ddtime = 0.05 --set_tick_rate
+
+		if dtime then
+			ddtime = dtime
+		end
+
+		if math.abs(target_shortest_path) > 120*ddtime then
+			if target_shortest_path > 0 then
+				self.object:set_yaw(self.object:get_yaw()+3*ddtime)
+			else
+				self.object:set_yaw(self.object:get_yaw()-3*ddtime)
+			end
+		end
+
+		return yaw
 	end
 
 	delay = delay or 0
@@ -3669,6 +3723,9 @@ local mob_step = function(self, dtime)
 	end
 
 	-- smooth rotation by ThomasMonroe314
+	if self._turn_to and (not self.type == "monster" and self.state == "attack") then
+		set_yaw(self, self._turn_to, .1)
+	end
 
 	if self.delay and self.delay > 0 then
 
