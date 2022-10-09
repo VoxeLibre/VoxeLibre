@@ -336,52 +336,51 @@ end
 
 local set_yaw = function(self, yaw, delay, dtime)
 
+
 	if self.noyaw then return end
-	if true then
-		self._turn_to = yaw
-		--clamp our yaw to a 360 range
-		if math.deg(self.object:get_yaw()) > 360 then
-			self.object:set_yaw(math.rad(10))
-		elseif math.deg(self.object:get_yaw()) < 0 then
-			self.object:set_yaw(math.rad(350))
+
+	self._turn_to = yaw
+	--clamp our yaw to a 360 range
+	if math.deg(self.object:get_yaw()) > 360 then
+		self.object:set_yaw(math.rad(10))
+	elseif math.deg(self.object:get_yaw()) < 0 then
+		self.object:set_yaw(math.rad(350))
+	end
+
+	--calculate the shortest way to turn to find our target
+	local target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), yaw, true)
+
+	--turn in the shortest path possible toward our target. if we are attacking, don't dance.
+	if math.abs(target_shortest_path) > 100 and (self.attack and self.attack:get_pos() or self.following and self.following:get_pos()) then
+		if self.following then
+			target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.following:get_pos())), true)
+		else
+			target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.attack:get_pos())), true)
 		end
+	end
 
-		--calculate the shortest way to turn to find our target
-		local target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), yaw, true)
+	local ddtime = 0.05 --set_tick_rate
 
-		--turn in the shortest path possible toward our target. if we are attacking, don't dance.
-		if math.abs(target_shortest_path) > 100 and (self.attack and self.attack:get_pos() or self.following and self.following:get_pos()) then
-			if self.following then
-				target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.following:get_pos())), true)
-			else
-				target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.attack:get_pos())), true)
-			end
+	if dtime then
+		ddtime = dtime
+	end
+
+	if math.abs(target_shortest_path) > 120*ddtime then
+		if target_shortest_path > 0 then
+			self.object:set_yaw(self.object:get_yaw()+3*ddtime)
+		else
+			self.object:set_yaw(self.object:get_yaw()-3*ddtime)
 		end
-
-		local ddtime = 0.05 --set_tick_rate
-
-		if dtime then
-			ddtime = dtime
-		end
-
-		if math.abs(target_shortest_path) > 120*ddtime then
-			if target_shortest_path > 0 then
-				self.object:set_yaw(self.object:get_yaw()+3*ddtime)
-			else
-				self.object:set_yaw(self.object:get_yaw()-3*ddtime)
-			end
-		end
-
-		return yaw
 	end
 
 	delay = delay or 0
+
+	yaw = self.object:get_yaw()
 
 	if delay == 0 then
 		if self.shaking and dtime then
 			yaw = yaw + (random() * 2 - 1) * 5 * dtime
 		end
-		self.object:set_yaw(yaw)
 		update_roll(self)
 		return yaw
 	end
