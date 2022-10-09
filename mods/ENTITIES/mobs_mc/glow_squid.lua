@@ -64,7 +64,7 @@ mcl_mobs:register_mob("mobs_mc:glow_squid", {
 		run_end = 60,
 	},
 	drops = {
-		{ name = "mobs_mc:glow_ink_sac",
+		{ name = "mcl_mobitems:glow_ink_sac",
 		  chance = 1,
 		  min = 1,
 		  max = 3,
