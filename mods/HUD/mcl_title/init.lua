@@ -219,15 +219,18 @@ end)
 
 
 --DEBUG STUFF!!
+--TODO:Proper /title command that can send the title to other players.
+--These commands are just for debugging right now.
+local dbg_msg = "Note that these are just debug commands right now. e.g. the title is only sent to he player issuing the command. Proper /title commands will be added in the future."
 minetest.register_chatcommand("title", {
 	privs = { debug = true },
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 		if player then
 			mcl_title.set(player, "title", { text = param, color = "gold", bold = true, italic = true })
-			return true
+			return true, dbg_msg
 		else
-			return false
+			return false, dbg_msg
 		end
 	end,
 })
@@ -238,9 +241,9 @@ minetest.register_chatcommand("subtitle", {
 		local player = minetest.get_player_by_name(name)
 		if player then
 			mcl_title.set(player, "subtitle", { text = param, color = "gold" })
-			return true
+			return true, dbg_msg
 		else
-			return false
+			return false, dbg_msg
 		end
 	end,
 })
@@ -251,9 +254,9 @@ minetest.register_chatcommand("actionbar", {
 		local player = minetest.get_player_by_name(name)
 		if player then
 			mcl_title.set(player, "actionbar", { text = param, color = "gold", bold = true, italic = true })
-			return true
+			return true, dbg_msg
 		else
-			return false
+			return false, dbg_msg
 		end
 	end,
 })
@@ -264,9 +267,9 @@ minetest.register_chatcommand("title_timeout", {
 		local player = minetest.get_player_by_name(name)
 		if player then
 			mcl_title.params_set(player, { stay = 600 })
-			return true
+			return true, dbg_msg
 		else
-			return false
+			return false, dbg_msg
 		end
 	end,
 })
@@ -280,9 +283,9 @@ minetest.register_chatcommand("title_all", {
 			mcl_title.set(player, "title", { text = param, color = "gold" })
 			mcl_title.set(player, "subtitle", { text = param, color = "gold" })
 			mcl_title.set(player, "actionbar", { text = param, color = "gold" })
-			return true
+			return true, dbg_msg
 		else
-			return false
+			return false, dbg_msg
 		end
 	end,
 })
@@ -296,9 +299,9 @@ minetest.register_chatcommand("title_all_styles", {
 			mcl_title.set(player, "title", { text = param, color = "gold" })
 			mcl_title.set(player, "subtitle", { text = param, color = "gold", bold = true })
 			mcl_title.set(player, "actionbar", { text = param, color = "gold", italic = true })
-			return true
+			return true, dbg_msg
 		else
-			return false
+			return false, dbg_msg
 		end
 	end,
 })
