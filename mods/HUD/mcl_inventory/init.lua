@@ -208,8 +208,8 @@ end
 --Insta "digging" nodes in gamemode-creative
 minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
 	if not puncher or not puncher:is_player() then return end
-	if minetest.is_creative_enabled() then return end
 	local name = puncher:get_player_name()
+	if minetest.is_creative_enabled(name) then return end
 	if not minetest.is_creative_enabled(name) then return end
 	if pointed_thing.type ~= "node" then return end
 	local def = minetest.registered_nodes[node.name]
@@ -255,10 +255,13 @@ minetest.register_chatcommand("gamemode",{
 	privs = { server = true },
 	func = function(n,param)
 		-- Full input validation ( just for @erlehmann <3 )
-		local p = minetest.get_player_by_name(n)
+		local p
 		local args = param:split(" ")
 		if args[2] ~= nil then
 			p = minetest.get_player_by_name(args[2])
+			n = args[2]
+		else
+			p = minetest.get_player_by_name(n)
 		end
 		if not p then
 			return false, S("Player not online")
@@ -268,6 +271,7 @@ minetest.register_chatcommand("gamemode",{
 		elseif args[1] ~= nil then
 			mcl_inventory.player_set_gamemode(p,args[1])
 		end
+
 		--Result message - show effective game mode
 		local gm = p:get_meta():get_string("gamemode")
 		if gm == "" then gm = gamemodes[1] end
