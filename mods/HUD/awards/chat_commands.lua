@@ -18,7 +18,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 minetest.register_chatcommand("awards", {
 	params = S("[c|clear|disable|enable]"),
-	description = S("Show, clear, disable or enable your achievements"),
+	description = S("Show, clear, disable or enable your advancements."),
 	func = function(name, param)
 		if param == "clear" then
 			if awards.player(name).disabled ~= nil then
@@ -30,10 +30,10 @@ minetest.register_chatcommand("awards", {
 			end
 		elseif param == "disable" then
 			awards.disable(name)
-			minetest.chat_send_player(name, S("You have disabled your achievements."))
+			minetest.chat_send_player(name, S("You have disabled your advancements."))
 		elseif param == "enable" then
 			awards.enable(name)
-			minetest.chat_send_player(name, S("You have enabled your achievements."))
+			minetest.chat_send_player(name, S("You have enabled your advancements."))
 		elseif param == "c" then
 			if awards.player(name).disabled ~= nil then
 				minetest.chat_send_player(name, S("Awards are disabled, enable them first by using /awards enable!"))
@@ -50,16 +50,16 @@ minetest.register_chatcommand("awards", {
 	end
 })
 
-minetest.register_privilege("achievements", {
-	description = S("Can give achievements to any player"),
+minetest.register_privilege("advancements", {
+	description = S("Can give advancements to any player"),
 	give_to_singleplayer = false,
 	give_to_admin = false,
 })
 
-minetest.register_chatcommand("achievement", {
-	params = S("(grant <player> (<achievement> | all)) | list"),
-	privs = { achievements = true },
-	description = S("Give achievement to player or list all achievements"),
+minetest.register_chatcommand("advancement", {
+	params = S("(grant <player> (<advancement> | all)) | list"),
+	privs = { advancements = true },
+	description = S("Give advancement to player or list all advancements"),
 	func = function(name, param)
 		if param == "list" then
 			local list = {}
@@ -92,7 +92,7 @@ minetest.register_chatcommand("achievement", {
 			awards.unlock(playername, achievement)
 			return true, S("Done.")
 		else
-			return false, S("Achievement “@1” does not exist.", achievement)
+			return false, S("Advancement “@1” does not exist.", achievement)
 		end
 	end
 })

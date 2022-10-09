@@ -119,7 +119,7 @@ local function set_inventory(player, armor_change_only)
 	form = form ..
 		-- Achievements button
 		"image_button[7,3;1,1;mcl_achievements_button.png;__mcl_achievements;]" ..
-		"tooltip[__mcl_achievements;" .. F(S("Achievements")) .. "]" ..
+		"tooltip[__mcl_achievements;" .. F(S("Advancements")) .. "]" ..
 
 		-- For shortcuts
 		"listring[current_player;main]" ..

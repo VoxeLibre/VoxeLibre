@@ -217,7 +217,7 @@ function awards.unlock(name, award)
 
 	-- Get award
 	minetest.log("action", name.." has gotten award "..award)
-	minetest.chat_send_all(S("@1 has made the achievement @2", name, minetest.colorize(mcl_colors.GREEN, "[" .. (awdef.title or award) .. "]")))
+	minetest.chat_send_all(S("@1 has made the advancement @2", name, minetest.colorize(mcl_colors.GREEN, "[" .. (awdef.title or award) .. "]")))
 	data.unlocked[award] = award
 	awards.save()
 
@@ -257,9 +257,13 @@ function awards.unlock(name, award)
 	local custom_announce = awdef.custom_announce
 	if not custom_announce then
 		if awdef.secret then
-			custom_announce = S("Secret achievement gotten:")
+			custom_announce = S("Secret Advancement Made:")
+		elseif awdef.type == "Goal" then
+			custom_announce = S("Goal Completed:")
+		elseif awdef.type == "Challenge" then
+			custom_announce = S("Challenge Completed:")
 		else
-			custom_announce = S("Achievement gotten:")
+			custom_announce = S("Advancement Made:")
 		end
 	end
 
@@ -283,9 +287,13 @@ function awards.unlock(name, award)
 	elseif awards.show_mode == "chat" then
 		local chat_announce
 		if awdef.secret == true then
-			chat_announce = S("Secret achievement gotten: @1")
+			chat_announce = S("Secret Advancement Made: @1")
+		elseif awdef.type == "Goal" then
+			chat_announce = S("Goal Completed: @1")
+		elseif awdef.type == "Challenge" then
+			chat_announce = S("Challenge Completed: @1")
 		else
-			chat_announce = S("Achievement gotten: @1")
+			chat_announce = S("Advancement Made: @1")
 		end
 		-- use the chat console to send it
 		minetest.chat_send_player(name, string.format(chat_announce, title))
@@ -306,9 +314,13 @@ function awards.unlock(name, award)
 		})
 		local hud_announce
 		if awdef.secret == true then
-			hud_announce = S("Secret achievement gotten!")
+			hud_announce = S("Secret Advancement Made!")
+		elseif awdef.type == "Goal" then
+			hud_announce = S("Goal Completed!")
+		elseif awdef.type == "Challenge" then
+			hud_announce = S("Challenge Completed!")
 		else
-			hud_announce = S("Achievement gotten!")
+			hud_announce = S("Advancement Made!")
 		end
 		local two = player:hud_add({
 			hud_elem_type = "text",
@@ -389,10 +401,10 @@ function awards.getFormspec(name, to, sid)
 		local def = awards.def[item.name]
 
 		if def and def.secret and not item.got then
-			formspec = formspec .. "label[1,2.75;"..minetest.formspec_escape(S("(Secret achievement)")).."]"..
+			formspec = formspec .. "label[1,2.75;"..minetest.formspec_escape(S("(Secret Advancement)")).."]"..
 								"image[1,0;3,3;awards_unknown.png]"
 			if def and def.description then
-				formspec = formspec	.. "textarea[0.25,3.25;4.8,1.7;;"..minetest.formspec_escape(S("Get this achievement to find out what it is."))..";]"
+				formspec = formspec	.. "textarea[0.25,3.25;4.8,1.7;;"..minetest.formspec_escape(S("Make this advancement to find out what it is."))..";]"
 			end
 		else
 			local title = item.name
@@ -450,7 +462,7 @@ function awards.getFormspec(name, to, sid)
 			first = false
 
 			if def.secret and not award.got then
-				formspec = formspec .. "#707070" .. minetest.formspec_escape(S("(Secret Award)"))
+				formspec = formspec .. "#707070" .. minetest.formspec_escape(S("(Secret Advancement)"))
 			else
 				local title = award.name
 				if def and def.title then
