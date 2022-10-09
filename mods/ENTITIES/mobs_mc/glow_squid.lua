@@ -5,6 +5,30 @@
 
 local S = minetest.get_translator("extra_mobs")
 
+local base_psdef = {
+	amount = 8,
+	time=0,
+	minpos = vector.new(-1,-1,-1),
+	maxpos = vector.new(1,1,1),
+	minvel = vector.new(-0.25,-0.25,-0.25),
+	maxvel = vector.new(0.25,0.25,0.25),
+	minacc = vector.new(-0.5,-0.5,-0.5),
+	maxacc = vector.new(0.5,0.5,0.5),
+	minexptime = 1,
+	maxexptime = 2,
+	minsize = 0.8,
+	maxsize= 1.5,
+	glow = 5,
+	collisiondetection = true,
+	collision_removal = true,
+}
+local psdefs = {}
+for i=1,4 do
+	local p = table.copy(base_psdef)
+	p.texture = "extra_mobs_glow_squid_glint"..i..".png"
+	table.insert(psdefs,p)
+end
+
 mcl_mobs:register_mob("mobs_mc:glow_squid", {
     type = "animal",
     spawn_class = "water",
@@ -61,24 +85,22 @@ mcl_mobs:register_mob("mobs_mc:glow_squid", {
     glow = minetest.LIGHT_MAX,
 
     do_custom = function(self, dtime)
-        local glowSquidPos = 0
-        if self.object:get_pos() ~= nil then
-            glowSquidPos = self.object:get_pos()
-
-            local chanceOfParticle = math.random(0, 2)
-            if chanceOfParticle >= 1 then
-                minetest.add_particle({
-                    pos = { x = glowSquidPos.x + math.random(-2, 2) * math.random() / 2, y = glowSquidPos.y + math.random(-1, 2), z = glowSquidPos.z + math.random(-2, 2) * math.random() / 2 },
-                    velocity = { x = math.random(-0.25, 0.25), y = math.random(-0.25, 0.25), z = math.random(-0.25, 0.25) },
-                    acceleration = { x = math.random(-0.5, 0.5), y = math.random(-0.5, 0.5), z = math.random(-0.5, 0.5) },
-                    expirationtime = math.random(),
-                    size = 1.5 + math.random(),
-                    collisiondetection = true,
-                    vertical = false,
-                    texture = "extra_mobs_glow_squid_glint" .. math.random(1, 4) .. ".png",
-                    glow = minetest.LIGHT_MAX,
-                })
-            end
+        if not self.particlespawners then self.particlespawners = {} end
+        local pos = self.object:get_pos()
+        for _,p in pairs(minetest.get_connected_players()) do
+			if vector.distance(pos,p:get_pos()) < 150  and not self.particlespawners[p] then
+				self.particlespawners[p] = {}
+				for _,psdef in pairs(psdefs) do
+					psdef.attached = self.object
+					psdef.playername = p:get_player_name()
+					table.insert(self.particlespawners[p],minetest.add_particlespawner(psdef))
+				end
+			elseif vector.distance(pos,p:get_pos()) > 150 then
+				for _,ps in pairs(self.particlespawners[p]) do
+					minetest.delete_particlespawner(ps)
+				end
+				self.particlespawners[p] = nil
+			end
         end
     end
 })
