@@ -11,8 +11,10 @@
 --Note that the table storing timeouts use playername as index insteed of player objects (faster)
 --This is intended in order to speedup the process of removing HUD elements the the timeout is up
 
+---@type table<string, table<ObjectRef, any>>
 local huds_idx = {}
 
+---@type table<string, table<string, number>>
 local hud_hide_timeouts = {}
 
 hud_hide_timeouts.title = {}
@@ -24,17 +26,19 @@ huds_idx.subtitle = {}
 huds_idx.actionbar = {}
 
 mcl_title = {}
-mcl_title.defaults = {fadein = 10, stay = 70, fadeout = 20}
+mcl_title.defaults = { fadein = 10, stay = 70, fadeout = 20 }
 mcl_title.layout = {}
-mcl_title.layout.title = {position = {x = 0.5, y = 0.5}, alignment = {x = 0, y = -1.3}, size = 7}
-mcl_title.layout.subtitle = {position = {x = 0.5, y = 0.5}, alignment = {x = 0, y = 1.7}, size = 4}
-mcl_title.layout.actionbar = {position = {x = 0.5, y = 1}, alignment = {x = 0, y = 0}, size = 1}
+mcl_title.layout.title = { position = { x = 0.5, y = 0.5 }, alignment = { x = 0, y = -1.3 }, size = 7 }
+mcl_title.layout.subtitle = { position = { x = 0.5, y = 0.5 }, alignment = { x = 0, y = 1.7 }, size = 4 }
+mcl_title.layout.actionbar = { position = { x = 0.5, y = 1 }, alignment = { x = 0, y = 0 }, size = 1 }
 
 local get_color = mcl_util.get_color
 
 --local string = string
 local pairs = pairs
 
+---@param gametick integer
+---@return number?
 local function gametick_to_secondes(gametick)
 	if gametick then
 		return gametick / 20
@@ -44,7 +48,10 @@ local function gametick_to_secondes(gametick)
 end
 
 --https://github.com/minetest/minetest/blob/b3b075ea02034306256b486dd45410aa765f035a/doc/lua_api.txt#L8477
---[[
+
+---@param bold? boolean
+---@param italic? boolean
+---@return integer
 local function style_to_bits(bold, italic)
 	if bold then
 		if italic then
@@ -60,9 +67,11 @@ local function style_to_bits(bold, italic)
 		end
 	end
 end
-]]
 
---PARAMS SYSTEM
+local no_style = style_to_bits(false, false)
+
+---PARAMS SYSTEM
+---@type table<ObjectRef, {stay: integer}>
 local player_params = {}
 
 minetest.register_on_joinplayer(function(player)
@@ -75,34 +84,34 @@ minetest.register_on_joinplayer(function(player)
 	local _, hex_color = get_color("white")
 	huds_idx.title[player] = player:hud_add({
 		hud_elem_type = "text",
-		position  = mcl_title.layout.title.position,
-		alignment = mcl_title.layout.title.alignment,
-		text      = "",
-		--style = 0,
-		size      = {x = mcl_title.layout.title.size},
-		number    = hex_color,
-		z_index   = 100,
+		position      = mcl_title.layout.title.position,
+		alignment     = mcl_title.layout.title.alignment,
+		text          = "",
+		style         = no_style,
+		size          = { x = mcl_title.layout.title.size },
+		number        = hex_color,
+		z_index       = 100,
 	})
 	huds_idx.subtitle[player] = player:hud_add({
 		hud_elem_type = "text",
-		position  = mcl_title.layout.subtitle.position,
-		alignment = mcl_title.layout.subtitle.alignment,
-		text      = "",
-		--style = 0,
-		size      = {x = mcl_title.layout.subtitle.size},
-		number    = hex_color,
-		z_index   = 100,
+		position      = mcl_title.layout.subtitle.position,
+		alignment     = mcl_title.layout.subtitle.alignment,
+		text          = "",
+		style         = no_style,
+		size          = { x = mcl_title.layout.subtitle.size },
+		number        = hex_color,
+		z_index       = 100,
 	})
 	huds_idx.actionbar[player] = player:hud_add({
 		hud_elem_type = "text",
-		position  = mcl_title.layout.actionbar.position,
-		offset    = {x = 0, y = -210},
-		alignment = mcl_title.layout.actionbar.alignment,
-		--style = 0,
-		text      = "",
-		size      = {x = mcl_title.layout.actionbar.size},
-		number    = hex_color,
-		z_index   = 100,
+		position      = mcl_title.layout.actionbar.position,
+		offset        = { x = 0, y = -210 },
+		alignment     = mcl_title.layout.actionbar.alignment,
+		style         = no_style,
+		text          = "",
+		size          = { x = mcl_title.layout.actionbar.size },
+		number        = hex_color,
+		z_index       = 100,
 	})
 end)
 
@@ -123,6 +132,8 @@ minetest.register_on_leaveplayer(function(player)
 	hud_hide_timeouts.actionbar[playername] = nil
 end)
 
+---@param player ObjectRef
+---@param data {stay: integer}
 function mcl_title.params_set(player, data)
 	player_params[player] = {
 		stay = data.stay or mcl_title.defaults.stay,
@@ -131,12 +142,18 @@ function mcl_title.params_set(player, data)
 	}
 end
 
+---@param player ObjectRef
+---@return {stay: integer}
 function mcl_title.params_get(player)
 	return player_params[player]
 end
 
 --API FUNCTIONS
 
+---@param player ObjectRef
+---@param type '"title"'|'"subtitle"'|'"actionbar"'
+---@param data {text: string, color: string, stay: integer, bold: boolean, italic: boolean}
+---@return boolean
 function mcl_title.set(player, type, data)
 	if not data.color then
 		data.color = "white"
@@ -149,20 +166,25 @@ function mcl_title.set(player, type, data)
 	player:hud_change(huds_idx[type][player], "text", data.text)
 	player:hud_change(huds_idx[type][player], "number", hex_color)
 
-	--apply bold and italic
-	--player:hud_change(huds_idx[type][player], "style", style_to_bits(data.bold, data.italic))
+	-- Apply bold and italic
+	player:hud_change(huds_idx[type][player], "style", style_to_bits(data.bold, data.italic))
 
-	hud_hide_timeouts[type][player:get_player_name()] = gametick_to_secondes(data.stay) or gametick_to_secondes(mcl_title.params_get(player).stay)
+	hud_hide_timeouts[type][player:get_player_name()] = gametick_to_secondes(data.stay) or
+		gametick_to_secondes(mcl_title.params_get(player).stay)
+
 	return true
 end
 
+---@param player ObjectRef?
+---@param type '"title"'|'"subtitle"'|'"actionbar"'
 function mcl_title.remove(player, type)
 	if player then
 		player:hud_change(huds_idx[type][player], "text", "")
-		--player:hud_change(huds_idx[type][player], "style", 0) --no styling
+		player:hud_change(huds_idx[type][player], "style", no_style)
 	end
 end
 
+---@param player ObjectRef
 function mcl_title.clear(player)
 	mcl_title.remove(player, "title")
 	mcl_title.remove(player, "subtitle")
@@ -179,6 +201,7 @@ minetest.register_globalstep(function(dtime)
 		subtitle = {},
 		actionbar = {},
 	}
+
 	for element, content in pairs(hud_hide_timeouts) do
 		for name, timeout in pairs(content) do
 			timeout = timeout - dtime
@@ -190,47 +213,95 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 	end
+
 	hud_hide_timeouts = new_timeouts
 end)
 
 
 --DEBUG STUFF!!
---[[
+--TODO:Proper /title command that can send the title to other players.
+--These commands are just for debugging right now.
+local dbg_msg = "Note that these are just debug commands right now. e.g. the title is only sent to he player issuing the command. Proper /title commands will be added in the future."
 minetest.register_chatcommand("title", {
+	privs = { debug = true },
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
-		mcl_title.set(player, "title", {text=param, color="gold", bold=true, italic=true})
+		if player then
+			mcl_title.set(player, "title", { text = param, color = "gold", bold = true, italic = true })
+			return true, dbg_msg
+		else
+			return false, dbg_msg
+		end
 	end,
 })
 
 minetest.register_chatcommand("subtitle", {
+	privs = { debug = true },
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
-		mcl_title.set(player, "subtitle", {text=param, color="gold"})
+		if player then
+			mcl_title.set(player, "subtitle", { text = param, color = "gold" })
+			return true, dbg_msg
+		else
+			return false, dbg_msg
+		end
 	end,
 })
 
 minetest.register_chatcommand("actionbar", {
+	privs = { debug = true },
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
-		mcl_title.set(player, "actionbar", {text=param, color="gold"})
+		if player then
+			mcl_title.set(player, "actionbar", { text = param, color = "gold", bold = true, italic = true })
+			return true, dbg_msg
+		else
+			return false, dbg_msg
+		end
 	end,
 })
 
-minetest.register_chatcommand("timeout", {
+minetest.register_chatcommand("title_timeout", {
+	privs = { debug = true },
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
-		mcl_title.params_set(player, {stay = 600})
+		if player then
+			mcl_title.params_set(player, { stay = 600 })
+			return true, dbg_msg
+		else
+			return false, dbg_msg
+		end
 	end,
 })
 
-minetest.register_chatcommand("all", {
+minetest.register_chatcommand("title_all", {
+	privs = { debug = true },
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
-		mcl_title.params_set(player, {stay = 600})
-		mcl_title.set(player, "title", {text=param, color="gold"})
-		mcl_title.set(player, "subtitle", {text=param, color="gold"})
-		mcl_title.set(player, "actionbar", {text=param, color="gold"})
+		if player then
+			mcl_title.params_set(player, { stay = 600 })
+			mcl_title.set(player, "title", { text = param, color = "gold" })
+			mcl_title.set(player, "subtitle", { text = param, color = "gold" })
+			mcl_title.set(player, "actionbar", { text = param, color = "gold" })
+			return true, dbg_msg
+		else
+			return false, dbg_msg
+		end
 	end,
 })
-]]
+
+minetest.register_chatcommand("title_all_styles", {
+	privs = { debug = true },
+	func = function(name, param)
+		local player = minetest.get_player_by_name(name)
+		if player then
+			mcl_title.params_set(player, { stay = 600 })
+			mcl_title.set(player, "title", { text = param, color = "gold" })
+			mcl_title.set(player, "subtitle", { text = param, color = "gold", bold = true })
+			mcl_title.set(player, "actionbar", { text = param, color = "gold", italic = true })
+			return true, dbg_msg
+		else
+			return false, dbg_msg
+		end
+	end,
+})
