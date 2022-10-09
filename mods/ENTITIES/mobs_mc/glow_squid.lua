@@ -240,14 +240,4 @@ mcl_mobs:spawn_specific(
         water)
 
 -- spawn egg
-mcl_mobs:register_egg("mobs_mc:glow_squid", S("Glow Squid"), "#0000FF", "#ffffff", 1)
-
--- dropped item (used to craft glowing itemframe)
-
-minetest.register_craftitem("mobs_mc:glow_ink_sac", {
-    description = S("Glow Ink Sac"),
-    _doc_items_longdesc = S("Use it to craft the Glow Item Frame."),
-    _doc_items_usagehelp = S("Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame."),
-    inventory_image = "extra_mobs_glow_ink_sac.png",
-    groups = { craftitem = 1 },
-})
+mcl_mobs:register_egg("mobs_mc:glow_squid", S("Glow Squid"), "#0000FF", "#ffffff", 0)
