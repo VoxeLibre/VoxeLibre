@@ -148,3 +148,5 @@ dofile(path .. "/cod.lua")
 dofile(path .. "/salmon.lua")
 dofile(path .. "/tropical_fish.lua")
 dofile(path .. "/dolphin.lua")
+
+dofile(path .. "/glow_squid.lua")
