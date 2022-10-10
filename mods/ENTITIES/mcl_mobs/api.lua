@@ -3722,7 +3722,7 @@ local mob_step = function(self, dtime)
 	end
 
 	-- smooth rotation by ThomasMonroe314
-	if self._turn_to and (not self.type == "monster" and self.state == "attack") then
+	if self._turn_to then
 		set_yaw(self, self._turn_to, .1)
 	end
 
