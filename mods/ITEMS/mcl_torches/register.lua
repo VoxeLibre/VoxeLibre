@@ -15,6 +15,7 @@ mcl_torches.register_torch({
 	groups = {dig_immediate = 3, deco_block = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	particles = true,
+	flame_type = 1,
 })
 
 minetest.register_craft({

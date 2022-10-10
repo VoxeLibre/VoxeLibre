@@ -1,3 +1,5 @@
+local flame_texture = {"mcl_particles_flame.png", "mcl_particles_soul_fire_flame.png"}
+
 local smoke_pdef = {
 	amount = 0.5,
 	maxexptime = 2.0,
@@ -9,7 +11,8 @@ local smoke_pdef = {
 	maxrelpos = { x =  1/16, y = 0.06, z =  1/16 },
 }
 
-local function spawn_flames_floor(pos)
+local function spawn_flames_floor(pos, flame_type)
+	
 	-- Flames
 	mcl_particles.add_node_particlespawner(pos, {
 		amount = 8,
@@ -22,32 +25,32 @@ local function spawn_flames_floor(pos)
 		maxexptime = 0.6,
 		minsize = 0.7,
 		maxsize = 2,
-		texture = "mcl_particles_flame.png",
+		texture = flame_texture[flame_type],
 		glow = minetest.registered_nodes[minetest.get_node(pos).name].light_source,
 	}, "low")
 	-- Smoke
 	mcl_particles.spawn_smoke(pos, "torch", smoke_pdef)
 end
 
-local function spawn_flames_wall(pos)
+local function spawn_flames_wall(pos, flame_type)
 	--local minrelpos, maxrelpos
 	local node = minetest.get_node(pos)
 	local dir = minetest.wallmounted_to_dir(node.param2)
-
+	
 	local smoke_pdef = table.copy(smoke_pdef)
 
 	if dir.x < 0 then
-		smoke_pdef.minrelpos = { x = -0.38, y = 0.04, z = -0.1 }
-		smoke_pdef.maxrelpos = { x = -0.2, y = 0.14, z = 0.1 }
+		smoke_pdef.minrelpos = { x = -0.38, y = 0.24, z = -0.1 }
+		smoke_pdef.maxrelpos = { x = -0.2, y = 0.34, z = 0.1 }
 	elseif dir.x > 0 then
-		smoke_pdef.minrelpos = { x = 0.2, y = 0.04, z = -0.1 }
-		smoke_pdef.maxrelpos = { x = 0.38, y = 0.14, z = 0.1 }
+		smoke_pdef.minrelpos = { x = 0.2, y = 0.24, z = -0.1 }
+		smoke_pdef.maxrelpos = { x = 0.38, y = 0.34, z = 0.1 }
 	elseif dir.z < 0 then
-		smoke_pdef.minrelpos = { x = -0.1, y = 0.04, z = -0.38 }
-		smoke_pdef.maxrelpos = { x = 0.1, y = 0.14, z = -0.2 }
+		smoke_pdef.minrelpos = { x = -0.1, y = 0.24, z = -0.38 }
+		smoke_pdef.maxrelpos = { x = 0.1, y = 0.34, z = -0.2 }
 	elseif dir.z > 0 then
-		smoke_pdef.minrelpos = { x = -0.1, y = 0.04, z = 0.2 }
-		smoke_pdef.maxrelpos = { x = 0.1, y = 0.14, z = 0.38 }
+		smoke_pdef.minrelpos = { x = -0.1, y = 0.24, z = 0.2 }
+		smoke_pdef.maxrelpos = { x = 0.1, y = 0.34, z = 0.38 }
 	else
 		return
 	end
@@ -65,11 +68,23 @@ local function spawn_flames_wall(pos)
 		maxexptime = 0.6,
 		minsize = 0.7,
 		maxsize = 2,
-		texture = "mcl_particles_flame.png",
+		texture = flame_texture[flame_type],
 		glow = minetest.registered_nodes[node.name].light_source,
 	}, "low")
 	-- Smoke
 	mcl_particles.spawn_smoke(pos, "torch", smoke_pdef)
+end
+
+local function set_flames(pos, flame_type, attached_to)
+	if attached_to == "wall" then
+		return function(pos)
+			spawn_flames_wall(pos, flame_type)
+		end
+	end
+	
+	return function(pos)
+		spawn_flames_floor(pos, flame_type)
+	end
 end
 
 local function remove_flames(pos)
@@ -124,6 +139,7 @@ function mcl_torches.register_torch(def)
 	def.light = def.light or minetest.LIGHT_MAX
 	def.mesh_floor = def.mesh_floor or "mcl_torches_torch_floor.obj"
 	def.mesh_wall = def.mesh_wall or "mcl_torches_torch_wall.obj"
+	def.flame_type = def.flame_type or 1
 
 	local groups = def.groups or {}
 
@@ -133,7 +149,8 @@ function mcl_torches.register_torch(def)
 	groups.dig_by_water = 1
 	groups.destroy_by_lava_flow = 1
 	groups.dig_by_piston = 1
-
+	groups.flame_type = def.flame_type or 1
+	
 	local floordef = {
 		description = def.description,
 		_doc_items_longdesc = def.doc_items_longdesc,
@@ -145,7 +162,6 @@ function mcl_torches.register_torch(def)
 		inventory_image = def.icon,
 		wield_image = def.icon,
 		tiles = def.tiles,
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 		paramtype = "light",
 		paramtype2 = "wallmounted",
 		sunlight_propagates = true,
@@ -157,8 +173,7 @@ function mcl_torches.register_torch(def)
 		drop = def.drop or itemstring,
 		selection_box = {
 			type = "wallmounted",
-			wall_top = {-1/16, -1/16, -1/16, 1/16, 0.5, 1/16},
-			wall_bottom = {-1/16, -0.5, -1/16, 1/16, 1/16, 1/16},
+			wall_bottom = {-2/16, -0.5, -2/16, 2/16, 1/16, 2/16},
 		},
 		sounds = def.sounds,
 		node_placement_prediction = "",
@@ -211,7 +226,7 @@ function mcl_torches.register_torch(def)
 			return itemstack
 		end,
 		on_rotate = false,
-		on_construct = def.particles and spawn_flames_floor,
+		on_construct = def.particles and set_flames(pos, def.flame_type, "floor"),
 		on_destruct = def.particles and remove_flames,
 	}
 	minetest.register_node(itemstring, floordef)
@@ -223,7 +238,6 @@ function mcl_torches.register_torch(def)
 		drawtype = "mesh",
 		mesh = def.mesh_wall,
 		tiles = def.tiles,
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 		paramtype = "light",
 		paramtype2 = "wallmounted",
 		sunlight_propagates = true,
@@ -234,13 +248,11 @@ function mcl_torches.register_torch(def)
 		drop = def.drop or itemstring,
 		selection_box = {
 			type = "wallmounted",
-			wall_top = {-0.1, -0.1, -0.1, 0.1, 0.5, 0.1},
-			wall_bottom = {-0.1, -0.5, -0.1, 0.1, 0.1, 0.1},
-			wall_side = {-0.5, -0.5, -0.1, -0.2, 0.1, 0.1},
+			wall_side = {-0.5, -0.3, -0.1, -0.2, 0.325, 0.1},
 		},
 		sounds = def.sounds,
 		on_rotate = false,
-		on_construct = def.particles and spawn_flames_wall,
+		on_construct = def.particles and set_flames(pos, def.flame_type, "wall"),
 		on_destruct = def.particles and remove_flames,
 	}
 	minetest.register_node(itemstring_wall, walldef)
@@ -259,9 +271,9 @@ minetest.register_lbm({
 	action = function(pos, node)
 		local torch_group = minetest.get_item_group(node.name, "torch")
 		if torch_group == 1 then
-			spawn_flames_floor(pos)
+			spawn_flames_floor(pos, minetest.get_item_group(node.name, "flame_type"))
 		elseif torch_group == 2 then
-			spawn_flames_wall(pos)
+			spawn_flames_wall(pos, minetest.get_item_group(node.name, "flame_type"))
 		end
 	end,
 })
