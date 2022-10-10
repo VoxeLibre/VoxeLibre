@@ -69,12 +69,12 @@ mcl_structures.register_structure("pillager_outpost",{
 		if not peaceful then
 			if sp and #sp > 0 then
 				for i=1,5 do
-					local pos = sp[pr:next(1,#sp)]
+					local pos = vector.offset(sp[pr:next(1,#sp)],0,1,0)
 					if pos then
 						minetest.add_entity(pos,"mobs_mc:pillager")
 					end
 				end
-				local pos = sp[pr:next(1,#sp)]
+				local pos = vector.offset(sp[pr:next(1,#sp)],0,1,0)
 				if pos then
 					minetest.add_entity(pos,"mobs_mc:evoker")
 				end
