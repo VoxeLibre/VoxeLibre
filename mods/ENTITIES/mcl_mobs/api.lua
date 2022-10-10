@@ -3366,9 +3366,9 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			elseif luaentity and luaentity._knockback then
 				kb = kb + luaentity._knockback
 			end
-			self._kb_turn = false
-			self._turn_to=self.object:get_yaw()+1.57
-			minetest.after(0.5, function()
+			--self._kb_turn = false
+			self._turn_to=self.object:get_yaw()+0.85
+			minetest.after(0.2, function()
 				if self and self.object then
 					self._kb_turn = true
 				end
