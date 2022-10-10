@@ -339,7 +339,9 @@ local set_yaw = function(self, yaw, delay, dtime)
 
 	if self.noyaw then return end
 
-	self._turn_to = yaw
+	if self._kb_turn then
+		self._turn_to = yaw
+	end
 	--clamp our yaw to a 360 range
 	if math.deg(self.object:get_yaw()) > 360 then
 		self.object:set_yaw(math.rad(10))
@@ -367,9 +369,9 @@ local set_yaw = function(self, yaw, delay, dtime)
 
 	if math.abs(target_shortest_path) > 280*ddtime then
 		if target_shortest_path > 0 then
-			self.object:set_yaw(self.object:get_yaw()+1.5*ddtime)
+			self.object:set_yaw(self.object:get_yaw()+3.6*ddtime)
 		else
-			self.object:set_yaw(self.object:get_yaw()-1.5*ddtime)
+			self.object:set_yaw(self.object:get_yaw()-3.6*ddtime)
 		end
 	end
 
@@ -3364,6 +3366,13 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			elseif luaentity and luaentity._knockback then
 				kb = kb + luaentity._knockback
 			end
+			self._kb_turn = false
+			self._turn_to=self.object:get_yaw()+1.57
+			minetest.after(0.5, function()
+				if self and self.object then
+					self._kb_turn = true
+				end
+			end)
 
 			self.object:set_velocity({
 				x = dir.x * kb,
