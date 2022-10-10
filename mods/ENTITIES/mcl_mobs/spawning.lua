@@ -632,13 +632,13 @@ if mobs_spawn then
 					local object
 					if spawn_in_group and ( mob_type ~= "monster" or math.random(5) == 1 ) then
 						if logging then
-							minetest.log("action", "[mcl_mobs] A group of mob " .. mob_def.name .. " spawns at " .. minetest.pos_to_string(spawning_position, 1))
+							minetest.log("action", "[mcl_mobs] A group of mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at " .. minetest.pos_to_string(spawning_position, 1))
 						end
 						object = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name},spawn_in_group,spawn_in_group_min)
 
 					else
 						if logging then
-							minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns at " .. minetest.pos_to_string(spawning_position, 1))
+							minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at ".. minetest.pos_to_string(spawning_position, 1))
 						end
 						object = mcl_mobs.spawn(spawning_position, mob_def.name)
 					end
