@@ -34,7 +34,6 @@ local skeleton = {
 		"mcl_bows_bow_0.png", -- bow
 		"mobs_mc_skeleton.png", -- skeleton
 	} },
-	visual_size = {x=1, y=1},
 	makes_footstep_sound = true,
 	textures = {
 		{
@@ -81,11 +80,27 @@ local skeleton = {
 		run_speed = 30,
 		shoot_start = 70,
 		shoot_end = 90,
+		jockey_start = 172,
+		jockey_end = 172,
 		die_start = 160,
 		die_end = 170,
 		die_speed = 15,
 		die_loop = false,
 	},
+	jock = "mobs_mc:spider",
+	on_spawn = function(self)
+		self.jockey = false
+		if math.random(100) == 1 then -- 1% like from MCwiki
+			self.jockey = true
+			local jock = minetest.add_entity(self.object:get_pos(), "mobs_mc:spider")
+			jock:get_luaentity().docile_by_day = false
+			self.object:set_attach(jock, "", vector.new(0,0,0), vector.new(0,0,0))
+		end
+		return true
+	end,
+	on_detach=function(self, parent)
+		self.jockey = false
+	end,
 	ignited_by_sunlight = true,
 	view_range = 16,
 	fear_height = 4,
@@ -93,6 +108,9 @@ local skeleton = {
 	arrow = "mcl_bows:arrow_entity",
 	shoot_arrow = function(self, pos, dir)
 		if mod_bows then
+			if self.attack then
+				self.object:set_yaw(minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.attack:get_pos())))
+			end
 			-- 2-4 damage per arrow
 			local dmg = math.max(4, math.random(2, 8))
 			mcl_bows.shoot_arrow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)

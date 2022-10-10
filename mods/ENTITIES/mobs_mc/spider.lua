@@ -14,7 +14,7 @@ local S = minetest.get_translator("mobs_mc")
 minetest.register_entity("mobs_mc:spider_eyes", {
 	visual = "mesh",
 	mesh = "mobs_mc_spider.b3d",
-	visual_size = {x=1.01, y=1.01},
+	visual_size = {x=1.01/3, y=1.01/3},
 	textures = {
 		"mobs_mc_spider_eyes.png",
 	},
@@ -44,6 +44,7 @@ local spider = {
 	xp_max = 5,
 	armor = {fleshy = 100, arthropod = 100},
 	on_spawn = function(self)
+		self.object:set_properties({visual_size={x=1,y=1}})
 		local spider_eyes=false
 		for n = 1, #self.object:get_children() do
 			local obj = self.object:get_children()[n]
@@ -55,6 +56,14 @@ local spider = {
 			minetest.add_entity(self.object:get_pos(), "mobs_mc:spider_eyes"):set_attach(self.object, "body.head", vector.new(0,-0.98,2), vector.new(90,180,180))
 		end
 	end,
+	on_die=function(self)
+		if self.object:get_children() and self.object:get_children()[1] then
+			self.object:get_children()[1]:set_detach()
+		end
+	end,
+	detach_child=function(self, child)
+		child:get_luaentity().jockey = false
+	end,
 	head_swivel = "Head_Control",
 	bone_eye_height = 1,
 	curiosity = 10,
@@ -65,7 +74,7 @@ local spider = {
 	textures = {
 		{"mobs_mc_spider.png"},
 	},
-	visual_size = {x=3, y=3},
+	visual_size = {x=1, y=1},
 	makes_footstep_sound = false,
 	sounds = {
 		random = "mobs_mc_spider_random",
