@@ -157,6 +157,16 @@ cat.on_rightclick = function(self, clicker)
 
 end
 
+cat.on_spawn  = function(self)
+	if self.owner == "!witch!" then
+		self._texture = {"mobs_mc_cat_black.png"}
+	end
+	if not self._texture then
+		self._texture = cat.textures[math.random(#cat.textures)]
+	end
+	self.object:set_properties({textures = {self._texture}})
+end
+
 mcl_mobs:register_mob("mobs_mc:cat", cat)
 
 local base_spawn_chance = 5000
