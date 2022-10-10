@@ -237,7 +237,23 @@ local select_enderman_animation = function(animation_type)
 end
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
-local spawners = {}
+local psdefs = {{
+	amount = 5,
+	minpos = vector.new(-0.6,0,-0.6),
+	maxpos = vector.new(0.6,3,0.6),
+	minvel = vector.new(-0.25,-0.25,-0.25),
+	maxvel = vector.new(0.25,0.25,0.25),
+	minacc = vector.new(-0.5,-0.5,-0.5),
+	maxacc = vector.new(0.5,0.5,0.5),
+	minexptime = 0.2,
+	maxexptime = 3,
+	minsize = 0.2,
+	maxsize = 1.2,
+	collisiondetection = true,
+	vertical = false,
+	time = 0,
+	texture = "mcl_portals_particle"..math.random(1, 5)..".png",
+}}
 
 mcl_mobs:register_mob("mobs_mc:enderman", {
 	description = S("Enderman"),
@@ -280,6 +296,7 @@ mcl_mobs:register_mob("mobs_mc:enderman", {
 	run_velocity = 3.4,
 	damage = 7,
 	reach = 2,
+	particlespawners = psdefs,
 	drops = {
 		{name = "mcl_throwing:ender_pearl",
 		chance = 1,
@@ -293,42 +310,6 @@ mcl_mobs:register_mob("mobs_mc:enderman", {
 		return #minetest.find_nodes_in_area(vector.offset(pos,0,1,0),vector.offset(pos,0,3,0),{"air"}) > 2
 	end,
 	do_custom = function(self, dtime)
-		-- PARTICLE BEHAVIOUR HERE.
-		local enderpos = self.object:get_pos()
-		if self._particle_timer and self._particle_timer >= 1 then
-			for _,player in pairs(minetest.get_connected_players()) do
-				if not spawners[player] then spawners[player] = {} end
-				local dst = vector.distance(player:get_pos(),enderpos)
-				if dst < 128 and not spawners[player][self.object] then
-					self._particle_timer = 0
-					spawners[player][self.object] = minetest.add_particlespawner({
-						amount = 5,
-						minpos = vector.new(-0.6,0,-0.6),
-						maxpos = vector.new(0.6,3,0.6),
-						minvel = vector.new(-0.25,-0.25,-0.25),
-						maxvel = vector.new(0.25,0.25,0.25),
-						minacc = vector.new(-0.5,-0.5,-0.5),
-						maxacc = vector.new(0.5,0.5,0.5),
-						minexptime = 0.2,
-						maxexptime = 3,
-						minsize = 0.2,
-						maxsize = 1.2,
-						collisiondetection = true,
-						vertical = false,
-						time = 0,
-						texture = "mcl_portals_particle"..math.random(1, 5)..".png",
-						attached = self.object,
-						playername = player:get_player_name(),
-					})
-				elseif dst > 128 and spawners[player][self.object] then
-					minetest.delete_particlespawner(spawners[player][self.object])
-					spawners[player][self.object] = nil
-				end
-			end
-		elseif not self._particle_timer then
-			self._particle_timer = 0
-		end
-		self._particle_timer = self._particle_timer + dtime
 		-- RAIN DAMAGE / EVASIVE WARP BEHAVIOUR HERE.
 		enderpos = self.object:get_pos()
 		local dim = mcl_worlds.pos_to_dimension(enderpos)
@@ -647,15 +628,6 @@ mcl_mobs:register_mob("mobs_mc:enderman", {
 	fear_height = 4,
 	attack_type = "dogfight",
 })
-
-minetest.register_on_leaveplayer(function(player)
-	if not spawners[player] then return end
-	for _,s in pairs(spawners[player]) do
-		minetest.delete_particlespawner(s)
-	end
-	spawners[player] = nil
-end)
-
 
 -- End spawn
 mcl_mobs:spawn_specific(
