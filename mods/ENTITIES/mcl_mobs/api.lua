@@ -365,11 +365,13 @@ local set_yaw = function(self, yaw, delay, dtime)
 		ddtime = dtime
 	end
 
-	if math.abs(target_shortest_path) > 200*ddtime then
+	minetest.chat_send_all(math.abs(target_shortest_path))
+
+	if math.abs(target_shortest_path) > 280*ddtime then
 		if target_shortest_path > 0 then
-			self.object:set_yaw(self.object:get_yaw()+3*ddtime)
+			self.object:set_yaw(self.object:get_yaw()+1.5*ddtime)
 		else
-			self.object:set_yaw(self.object:get_yaw()-3*ddtime)
+			self.object:set_yaw(self.object:get_yaw()-1.5*ddtime)
 		end
 	end
 
