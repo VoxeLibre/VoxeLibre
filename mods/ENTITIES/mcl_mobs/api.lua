@@ -365,7 +365,7 @@ local set_yaw = function(self, yaw, delay, dtime)
 		ddtime = dtime
 	end
 
-	if math.abs(target_shortest_path) > 120*ddtime then
+	if math.abs(target_shortest_path) > 200*ddtime then
 		if target_shortest_path > 0 then
 			self.object:set_yaw(self.object:get_yaw()+3*ddtime)
 		else
