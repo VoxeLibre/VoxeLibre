@@ -83,26 +83,7 @@ mcl_mobs:register_mob("mobs_mc:glow_squid", {
 		-- don't add "mcl_core:water_flowing", or it won't move vertically.
 
 	glow = minetest.LIGHT_MAX,
-
-	do_custom = function(self, dtime)
-		if not self.particlespawners then self.particlespawners = {} end
-		local pos = self.object:get_pos()
-		for _,p in pairs(minetest.get_connected_players()) do
-			if vector.distance(pos,p:get_pos()) < 150  and not self.particlespawners[p] then
-				self.particlespawners[p] = {}
-				for _,psdef in pairs(psdefs) do
-					psdef.attached = self.object
-					psdef.playername = p:get_player_name()
-					table.insert(self.particlespawners[p],minetest.add_particlespawner(psdef))
-				end
-			elseif vector.distance(pos,p:get_pos()) > 150 and self.particlespawners[p] then
-				for _,ps in pairs(self.particlespawners[p]) do
-					minetest.delete_particlespawner(ps)
-				end
-				self.particlespawners[p] = nil
-			end
-		end
-	end
+	particlespawners = psdefs,
 })
 
 -- spawning
