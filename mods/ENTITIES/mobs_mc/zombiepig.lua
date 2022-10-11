@@ -103,7 +103,6 @@ baby_pigman.description = S("Baby Zombie Pigman")
 baby_pigman.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
 baby_pigman.xp_min = 13
 baby_pigman.xp_max = 13
-baby_pigman.visual_size = {x=pigman.visual_size.x/2, y=pigman.visual_size.y/2}
 baby_pigman.textures = { {
 	"mobs_mc_zombie_pigman.png", --baby
 	"default_tool_goldsword.png", --sword
