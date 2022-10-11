@@ -155,10 +155,17 @@ function mcl_doors:register_door(name, def)
 			end
 
 			local left_node = minetest.get_node(pt_left)
+			local mirrored = false
+			local door_dir = 1
+			if left_node.name:sub(1, #name) == name then
+				mirrored = true
+				door_dir = 2
+				p2 = left_node.param2
+			end
 
 			-- Set door nodes
-			minetest.set_node(pt, {name=name.."_b_1", param2=p2})
-			minetest.set_node(pt2, {name=name.."_t_1", param2=p2})
+			minetest.set_node(pt, {name=name.."_b_"..door_dir, param2=p2})
+			minetest.set_node(pt2, {name=name.."_t_"..door_dir, param2=p2})
 
 			if def.sounds and def.sounds.place then
 				minetest.sound_play(def.sounds.place, {pos=pt}, true)
@@ -174,7 +181,7 @@ function mcl_doors:register_door(name, def)
 			local meta1 = minetest_get_meta(pt)
 			local meta2 = minetest_get_meta(pt2)
 			-- save mirror state for the correct door
-			if left_node.name:sub(1, #name) == name then
+			if mirrored then
 				meta1:set_int("is_mirrored", 1)
 				meta2:set_int("is_mirrored", 1)
 			end
