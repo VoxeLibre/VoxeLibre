@@ -243,4 +243,4 @@ mcl_mobs:spawn_specific(
 		water)
 
 -- spawn egg
-mcl_mobs:register_egg("mobs_mc:glow_squid", S("Glow Squid"), "#0000FF", "#ffffff", 0)
+mcl_mobs:register_egg("mobs_mc:glow_squid", S("Glow Squid"), "#095757", "#87f6c0", 0)
