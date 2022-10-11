@@ -69,6 +69,7 @@ local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
 local player_transfer_distance = tonumber(minetest.settings:get("player_transfer_distance")) or 128
+if player_transfer_distance == 0 then player_transfer_distance = math.huge end
 local remove_far = true
 local difficulty = tonumber(minetest.settings:get("mob_difficulty")) or 1.0
 local show_health = false
