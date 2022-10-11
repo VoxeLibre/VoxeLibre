@@ -467,6 +467,10 @@ local set_animation = function(self, anim, fixed_frame)
 		return
 	end
 
+	if self.jockey then
+		anim = "jockey"
+	end
+
 	if flight_check(self) and self.fly and anim == "walk" then anim = "fly" end
 
 	self._current_animation = self._current_animation or ""
@@ -3459,6 +3463,11 @@ end
 
 local mob_detach_child = function(self, child)
 
+	if self.detach_child then
+		if self.detach_child(self, child) then
+			return
+		end
+	end
 	if self.driver == child then
 		self.driver = nil
 	end
@@ -3807,6 +3816,9 @@ local mob_step = function(self, dtime)
 				_locked_object_eye_height = self._locked_object:get_properties().eye_height
 			end
 			local self_rot = self.object:get_rotation()
+			if self.object:get_attach() then
+				self_rot = self.object:get_attach():get_rotation()
+			end
 			local player_pos = self._locked_object:get_pos()
 			local direction_player = vector.direction(vector.add(self.object:get_pos(), vector.new(0, self.head_eye_height*.7, 0)), vector.add(player_pos, vector.new(0, _locked_object_eye_height, 0)))
 			local mob_yaw = math.deg(-(-(self_rot.y)-(-minetest.dir_to_yaw(direction_player))))+self.head_yaw_offset
@@ -4094,6 +4106,7 @@ minetest.register_entity(name, {
 	on_die = def.on_die,
 	spawn_small_alternative = def.spawn_small_alternative,
 	do_custom = def.do_custom,
+	detach_child = def.detach_child,
 	jump_height = def.jump_height or 4, -- was 6
 	rotate = math.rad(def.rotate or 0), --  0=front, 90=side, 180=back, 270=side2
 	lifetimer = def.lifetimer or 57.73,
