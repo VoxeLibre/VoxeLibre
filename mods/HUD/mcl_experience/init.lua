@@ -181,7 +181,7 @@ function mcl_experience.setup_hud(player)
 			hud_elem_type = "image",
 			position = {x = 0.5, y = 1},
 			offset = {x = (-9 * 28) - 3, y = -(48 + 24 + 16 - 5)},
-			scale = {x = 2.8, y = 3.0},
+			scale = {x = 0.35, y = 0.375},
 			alignment = {x = 1, y = 1},
 			z_index = 11,
 		})
@@ -206,9 +206,10 @@ function mcl_experience.update(player)
 		if not hud_bars[player] then
 			mcl_experience.setup_hud(player)
 		end
-		player:hud_change(hud_bars[player], "text", "mcl_experience_bar_background.png^[lowpart:"
+
+		player:hud_change(hud_bars[player], "text", "(mcl_experience_bar_background.png^[lowpart:"
 			.. math.floor(math.floor(xp_to_bar(xp, cache.level) * 18) / 18 * 100)
-			.. ":mcl_experience_bar.png^[transformR270"
+			.. ":mcl_experience_bar.png)^[resize:40x1456^[transformR270"
 		)
 
 		if cache.level == 0 then
