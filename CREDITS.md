@@ -85,6 +85,8 @@
 * opfromthestart
 * snowyu
 * FaceDeer
+* Faerraven
+* FossFanatic
 
 ## MineClone5
 * kay27
