@@ -3739,6 +3739,9 @@ local mob_step = function(self, dtime)
 		return
 	end
 
+	--Mob following code.
+	follow_flop(self)
+
 	-- smooth rotation by ThomasMonroe314
 	if self._turn_to then
 		set_yaw(self, self._turn_to, .1)
@@ -3967,9 +3970,6 @@ local mob_step = function(self, dtime)
 			enable_physics(self.object, self, true)
 			return
 		end
-
-	--Mob following code.
-	follow_flop(self)
 
 	if is_at_cliff_or_danger(self) then
 			set_velocity(self, 0)
