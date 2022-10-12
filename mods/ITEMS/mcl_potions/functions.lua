@@ -41,7 +41,7 @@ local function potions_init_icons(player)
 			text = "blank.png",
 			position = { x = 1, y = 0 },
 			offset = { x = x, y = 3 },
-			scale = { x = 3, y = 3 },
+			scale = { x = 0.375, y = 0.375 },
 			alignment = { x = 1, y = 1 },
 			z_index = 100,
 		})
@@ -70,7 +70,7 @@ local function potions_set_icons(player)
 		if effect_name == nil then
 			player:hud_change(icon, "text", "blank.png")
 		else
-			player:hud_change(icon, "text", "mcl_potions_effect_"..effect_name..".png")
+			player:hud_change(icon, "text", "mcl_potions_effect_"..effect_name..".png^[resize:128x128")
 		end
 	end
 
