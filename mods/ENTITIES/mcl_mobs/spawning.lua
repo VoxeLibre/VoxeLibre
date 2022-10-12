@@ -419,7 +419,7 @@ local function get_water_spawn(p)
 		end
 end
 
-local function spawn_check(pos,spawn_def)
+local function spawn_check(pos,spawn_def,ignore_caps)
 	if not spawn_def then return end
 	dbg_spawn_attempts = dbg_spawn_attempts + 1
 	local dimension = mcl_worlds.pos_to_dimension(pos)
@@ -442,12 +442,17 @@ local function spawn_check(pos,spawn_def)
 	local is_leaf  = get_item_group(gotten_node, "leaves") ~= 0
 	local is_bedrock  = gotten_node == "mcl_core:bedrock"
 	local is_grass = minetest.get_item_group(gotten_node,"grass_block") ~= 0
-	local mob_count_wide = count_mobs(pos,aoc_range,mob_type)
-	local mob_count = count_mobs(pos,32,mob_type)
+	local mob_count_wide = 0
+
+	local mob_count = 0
+	if not ignore_caps then
+		mob_count = count_mobs(pos,32,mob_type)
+		mob_count_wide = count_mobs(pos,aoc_range,mob_type)
+	end
 
 	if pos and spawn_def
-	and mob_count_wide < (mob_cap[mob_type] or 15)
-	and mob_count < 5
+	and ( mob_count_wide < (mob_cap[mob_type] or 15) )
+	and ( mob_count < 5 )
 	and pos.y >= spawn_def.min_height
 	and pos.y <= spawn_def.max_height
 	and spawn_def.dimension == dimension
@@ -494,7 +499,7 @@ local function spawn_group(p,mob,spawn_on,group_max,group_min)
 	end
 	for i = 1, math.random(group_min,group_max) do
 		local sp = vector.offset(nn[math.random(#nn)],0,1,0)
-		if spawn_check(nn[math.random(#nn)],mob) then
+		if spawn_check(nn[math.random(#nn)],mob,true) then
 			if mob.type_of_spawning == "water" then
 				sp = get_water_spawn(sp)
 			end
