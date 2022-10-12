@@ -204,6 +204,13 @@ local disable_physics = function(object, luaentity, ignore_check, reset_movement
 	end
 end
 
+local function player_in_active_range(self)
+	for _,p in pairs(minetest.get_connected_players()) do
+		if vector.distance(self.object:get_pos(),p:get_pos()) <= 38 then return true end
+		-- slightly larger than the mc 32 since mobs spawn on that circle and easily stand still immediately right after spawning.
+	end
+end
+
 
 -- play sound
 local mob_sound = function(self, soundname, is_opinion, fixed_pitch)
@@ -3819,6 +3826,11 @@ end
 -- main mob function
 local mob_step = function(self, dtime)
 	self.lifetimer = self.lifetimer - dtime
+	if not player_in_active_range(self) then
+		set_animation(self, "stand", true)
+		self.object:set_velocity(vector.new(0,0,0))
+		return
+	end
 	check_item_pickup(self)
 	check_aggro(self,dtime)
 	particlespawner_check(self,dtime)
