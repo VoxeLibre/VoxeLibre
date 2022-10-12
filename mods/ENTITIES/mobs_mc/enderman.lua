@@ -27,7 +27,7 @@
 minetest.register_entity("mobs_mc:ender_eyes", {
 	visual = "mesh",
 	mesh = "mobs_mc_spider.b3d",
-	visual_size = {x=1.01, y=1.01},
+	visual_size = {x=1.01/3, y=1.01/3},
 	textures = {
 		"mobs_mc_enderman_eyes.png",
 	},
