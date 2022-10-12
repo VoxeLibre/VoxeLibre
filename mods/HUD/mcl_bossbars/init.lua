@@ -13,13 +13,13 @@ function mcl_bossbars.recalculate_colors()
 	local frame_count = color_count * 2
 	for i, color in ipairs(colors) do
 		local idx = i * 2 - 1
-		local image = "mcl_bossbars.png"
+		local image = "(mcl_bossbars.png"
 			.. "^[transformR270"
 			.. "^[verticalframe:" .. frame_count .. ":" .. (idx - 1)
-			.. "^(mcl_bossbars_empty.png"
+			.. "^mcl_bossbars_empty.png"
 			.. "^[lowpart:%d:mcl_bossbars.png"
 			.. "^[transformR270"
-			.. "^[verticalframe:" .. frame_count .. ":" .. idx .. ")"
+			.. "^[verticalframe:" .. frame_count .. ":" .. idx .. ")^[resize:1456x40"
 		local _, hex = mcl_util.get_color(color)
 		sorted[color] = {
 			image = image,
@@ -162,7 +162,7 @@ minetest.register_globalstep(function(dtime)
 							position = {x = 0.5, y = 0},
 							alignment = {x = 0, y = 1},
 							offset = {x = 0, y = i * 40 + 25},
-							scale = {x = 3, y = 3},
+							scale = {x = 0.375, y = 0.375},
 						}),
 					}
 				end
