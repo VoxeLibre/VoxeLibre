@@ -87,6 +87,7 @@
 * FaceDeer
 * Faerraven
 * FossFanatic
+* Herbert West
 
 ## MineClone5
 * kay27
