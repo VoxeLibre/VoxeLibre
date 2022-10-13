@@ -3134,7 +3134,7 @@ local function check_item_pickup(self)
 				for k,v in pairs(self.pick_up) do
 					if not player_near(p) and self.on_pick_up and l.itemstring:find(v) then
 						local r =  self.on_pick_up(self,l)
-						if  r then
+						if  r and r:get_count() > 0 then
 							l.itemstring = r:to_string()
 						else
 							o:remove()
