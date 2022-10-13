@@ -16,10 +16,10 @@ function mcl_bossbars.recalculate_colors()
 		local image = "(mcl_bossbars.png"
 			.. "^[transformR270"
 			.. "^[verticalframe:" .. frame_count .. ":" .. (idx - 1)
-			.. "^mcl_bossbars_empty.png"
+			.. "^(mcl_bossbars_empty.png"
 			.. "^[lowpart:%d:mcl_bossbars.png"
 			.. "^[transformR270"
-			.. "^[verticalframe:" .. frame_count .. ":" .. idx .. ")^[resize:1456x40"
+			.. "^[verticalframe:" .. frame_count .. ":" .. idx .. "))^[resize:1456x40"
 		local _, hex = mcl_util.get_color(color)
 		sorted[color] = {
 			image = image,
