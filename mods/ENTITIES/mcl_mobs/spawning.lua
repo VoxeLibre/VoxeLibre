@@ -1,4 +1,5 @@
 --lua locals
+local minetest,vector,math,table = minetest,vector,math,table
 local get_node                     = minetest.get_node
 local get_item_group               = minetest.get_item_group
 local get_node_light               = minetest.get_node_light
@@ -421,11 +422,38 @@ local function get_water_spawn(p)
 		end
 end
 
+local function has_room(self,pos)
+	local cb = self.collisionbox
+	local nodes = {}
+	if self.fly_in then
+		local t = type(self.fly_in)
+		if t == "table" then
+			nodes = table.copy(self.fly_in)
+		elseif t == "string" then
+			table.insert(nodes,self.fly_in)
+		end
+	end
+	table.insert(nodes,"air")
+	local x = cb[4] - cb[1]
+	local y = cb[5] - cb[2]
+	local z = cb[6] - cb[3]
+	local r = math.ceil(x * y * z)
+	local p1 = vector.offset(pos,cb[1],cb[2],cb[3])
+	local p2 = vector.offset(pos,cb[4],cb[5],cb[6])
+	local n = #minetest.find_nodes_in_area(p1,p2,nodes) or 0
+	if r > n then
+		minetest.log("no room for mob "..self.name)
+		return false
+	end
+	return true
+end
+
 local function spawn_check(pos,spawn_def,ignore_caps)
 	if not spawn_def then return end
 	dbg_spawn_attempts = dbg_spawn_attempts + 1
 	local dimension = mcl_worlds.pos_to_dimension(pos)
-	local mob_type = minetest.registered_entities[spawn_def.name].type
+	local mob_def = minetest.registered_entities[spawn_def.name]
+	local mob_type = mob_def.type
 	local gotten_node = get_node(pos).name
 	local gotten_biome = minetest.get_biome_data(pos)
 	if not gotten_node or not gotten_biome then return end
@@ -438,7 +466,6 @@ local function spawn_check(pos,spawn_def,ignore_caps)
 		is_ground = minetest.get_item_group(gotten_node,"solid") ~= 0
 	end
 	pos.y = pos.y + 1
-	local has_room = #minetest.find_nodes_in_area(pos,vector.offset(pos,0,1,0),{"air"}) or 0 >= 2
 	local is_water = get_item_group(gotten_node, "water") ~= 0
 	local is_lava  = get_item_group(gotten_node, "lava") ~= 0
 	local is_leaf  = get_item_group(gotten_node, "leaves") ~= 0
@@ -461,7 +488,7 @@ local function spawn_check(pos,spawn_def,ignore_caps)
 	and biome_check(spawn_def.biomes, gotten_biome)
 	and (is_ground or spawn_def.type_of_spawning ~= "ground")
 	and (spawn_def.type_of_spawning ~= "ground" or not is_leaf)
-	and (spawn_def.type_of_spawning ~= "ground" or has_room)
+	and has_room(mob_def,pos)
 	and (spawn_def.check_position and spawn_def.check_position(pos) or true)
 	and (not is_farm_animal(spawn_def.name) or is_grass)
 	and (spawn_def.type_of_spawning ~= "water" or is_water)
@@ -630,12 +657,12 @@ if mobs_spawn then
 				if mob_def.type_of_spawning == "water" then
 					spawning_position = get_water_spawn(spawning_position)
 					if not spawning_position then
-						minetest.log("return")
+						minetest.log("warning","[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..minetest.pos_to_string(vector.round(pos)))
 						return
 					end
 				end
 				if minetest.registered_entities[mob_def.name].can_spawn and not minetest.registered_entities[mob_def.name].can_spawn(pos) then
-					minetest.log("return")
+					minetest.log("warning","[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(pos)))
 					return
 				end
 				--everything is correct, spawn mob
