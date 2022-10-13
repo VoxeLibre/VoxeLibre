@@ -38,8 +38,8 @@ local piglin = {
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "extra_mobs_piglin.b3d",
-	spawn_in_group = 5,
-	spawn_in_group_min = 3,
+	spawn_in_group = 4,
+	spawn_in_group_min = 2,
 	textures = { {
 		"extra_mobs_piglin.png",
 		"mcl_bows_bow_2.png",
@@ -155,12 +155,15 @@ local piglin = {
 	arrow = "mcl_bows:arrow_entity",
 	shoot_arrow = function(self, pos, dir)
 		if mod_bows then
+			if self.attack then
+				self.object:set_yaw(minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.attack:get_pos())))
+			end
 			-- 2-4 damage per arrow
 			local dmg = math.max(4, math.random(2, 8))
-			--mobs.shoot_projectile_handling("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
+			mcl_bows.shoot_arrow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
 		end
 	end,
-	shoot_interval = 1.2,
+	shoot_interval = 2,
 	shoot_offset = 1.5,
 	dogshoot_switch = 1,
 	dogshoot_count_max =1.8,
