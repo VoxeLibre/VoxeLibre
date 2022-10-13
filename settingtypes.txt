@@ -108,6 +108,9 @@ mcl_mob_cap_animal (Mob cap animals) int 10 0 1024
 #Maximum amount of ambient mobs that will spawn near a player (default:15)
 mcl_mob_cap_ambient (Mob cap ambient mobs) int 15 0 1024
 
+#Display mob icons in inventory instead of mc-like spawn eggs
+mcl_old_spawn_icons (Old spawn icons instead of eggs) bool false
+
 [Audio]
 # Enable flame sound.
 flame_sound (Flame sound) bool true

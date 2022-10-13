@@ -71,7 +71,7 @@ local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= fa
 local remove_far = true
 local difficulty = tonumber(minetest.settings:get("mob_difficulty")) or 1.0
 local show_health = false
-
+local old_spawn_icons = minetest.settings:get_bool("mcl_old_spawn_icons",false)
 -- Shows helpful debug info above each mob
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
 local spawn_logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",true)
@@ -4442,7 +4442,13 @@ function mcl_mobs:register_egg(mob, desc, background_color, overlay_color, addeg
 	end
 
 	local invimg = "(spawn_egg.png^[multiply:" .. background_color ..")^(spawn_egg_overlay.png^[multiply:" .. overlay_color .. ")"
-
+	if old_spawn_icons then
+		local mobname = mob:gsub("mobs_mc:","")
+		local fn = "mobs_mc_spawn_icon_"..mobname..".png"
+		if mcl_util.file_exists(minetest.get_modpath("mobs_mc").."/textures/"..fn) then
+			invimg = fn
+		end
+	end
 	if addegg == 1 then
 		invimg = "mobs_chicken_egg.png^(" .. invimg ..
 			"^[mask:mobs_chicken_egg_overlay.png)"
