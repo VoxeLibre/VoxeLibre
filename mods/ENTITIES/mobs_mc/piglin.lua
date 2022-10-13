@@ -79,10 +79,11 @@ local piglin = {
 		self.gold_items = 0
 	end,
 	do_custom = function(self)
-		if self.object:get_pos().y > -100 then
-			--local zog = minetest.add_entity(self.object:get_pos(), "mobs_mc:zombified_piglin")
-			--zog:set_rotation(self.object:get_rotation())
-			--self.object:remove()
+		if self.object:get_pos().y > mcl_vars.mg_overworld_min then
+			local zog = minetest.add_entity(self.object:get_pos(), "mobs_mc:zombified_piglin")
+			zog:set_rotation(self.object:get_rotation())
+			self.object:remove()
+			return
 		end
 		if self.trading == true then
 			self.state = "trading"
