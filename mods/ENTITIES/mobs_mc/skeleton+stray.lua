@@ -89,14 +89,18 @@ local skeleton = {
 	},
 	jock = "mobs_mc:spider",
 	on_spawn = function(self)
-		self.jockey = false
-		if math.random(100) == 1 then -- 1% like from MCwiki
-			self.jockey = true
-			local jock = minetest.add_entity(self.object:get_pos(), "mobs_mc:spider")
-			jock:get_luaentity().docile_by_day = false
-			self.object:set_attach(jock, "", vector.new(0,0,0), vector.new(0,0,0))
-		end
-		return true
+		minetest.after(1,function()
+			if self and self.object then
+				if math.random(100) == 1 or self.jockey == true then -- 1% like from MCwiki
+					self.jockey = true
+					local jock = minetest.add_entity(self.object:get_pos(), "mobs_mc:spider")
+					jock:get_luaentity().docile_by_day = false
+					self.object:set_attach(jock, "", vector.new(0,0,0), vector.new(0,0,0))
+				end
+				self.jockey = false
+				return true
+			end
+		end)
 	end,
 	on_detach=function(self, parent)
 		self.jockey = false

@@ -501,15 +501,77 @@ end
 
 mcl_mobs.spawn_group = spawn_group
 
+local S = minetest.get_translator("mcl_mobs")
+
 minetest.register_chatcommand("spawn_mob",{
 	privs = { debug = true },
+	description=S("spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolian, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: \n spawn_mob skeleton:var<passive=true>:\n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: \n spawn_mob skeleton:var<jump_height=NUM10>:\n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: \n spawn_mob skeleton:var<passive=true>::var<jump_height=NUM10>::var<fly_in=air>::var<fly=true>:\n etc."),
 	func = function(n,param)
 		local pos = minetest.get_player_by_name(n):get_pos()
-		if mcl_mobs.spawn(pos,param) then
-			return true, param.." spawned at "..minetest.pos_to_string(pos),
-			minetest.log("action", n.." spawned "..param.." at "..minetest.pos_to_string(pos))
+
+		local modifiers = {}
+		for capture in string.gmatch(param, "%:(.-)%:") do
+			table.insert(modifiers, ":"..capture)
 		end
-		return false, "Couldn't spawn "..param
+
+		local mod1 = string.find(param, ":")
+
+
+
+		local mobname = param
+		if mod1 then
+			mobname = string.sub(param, 1, mod1-1)
+		end
+
+		local mob = mcl_mobs.spawn(pos,mobname)
+
+		for c=1, #modifiers do
+			modifs = modifiers[c]
+
+			local mod1 = string.find(modifs, ":")
+			local mod_start = string.find(modifs, "<")
+			local mod_vals = string.find(modifs, "=")
+			local mod_end = string.find(modifs, ">")
+			local mod_end = string.find(modifs, ">")
+			if mob then
+				local mob_entity = mob:get_luaentity()
+				if string.sub(modifs, mod1+1, mod1+3) == "var" then
+					if mod1 and mod_start and mod_vals and mod_end then
+						local variable = string.sub(modifs, mod_start+1, mod_vals-1)
+						local value = string.sub(modifs, mod_vals+1, mod_end-1)
+
+						number_tag = string.find(value, "NUM")
+						if number_tag then
+							value = tonumber(string.sub(value, 4, -1))
+						end
+
+						if value == "true" then
+							value = true
+						elseif value == "false" then
+							value = false
+						end
+
+						if not mob_entity[variable] then
+							minetest.log("warning", n.." mob variable "..variable.." previously unset")
+						end
+
+						mob_entity[variable] = value
+
+					else
+						minetest.log("warning", n.." couldn't modify "..mobname.." at "..minetest.pos_to_string(pos).. ", missing paramaters")
+					end
+				else
+					minetest.log("warning", n.." couldn't modify "..mobname.." at "..minetest.pos_to_string(pos).. ", missing modification type")
+				end
+			end
+		end
+
+
+		if mob then
+			return true, mobname.." spawned at "..minetest.pos_to_string(pos),
+			minetest.log("action", n.." spawned "..mobname.." at "..minetest.pos_to_string(pos))
+		end
+		return false, "Couldn't spawn "..mobname
 	end
 })
 
