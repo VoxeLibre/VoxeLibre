@@ -21,6 +21,16 @@ local trading_items = {
 local S = minetest.get_translator("mobs_mc")
 local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
 
+function mobs_mc.player_wears_gold(player)
+	for i=1, 6 do
+		local stack = player:get_inventory():get_stack("armor", i)
+		local item = stack:get_name()
+		if item == "mcl_armor:chestplate_gold" or item == "mcl_armor:leggings_gold" or item == "mcl_armor:helmet_gold" or item == "mcl_armor:boots_gold" then
+			return true
+		end
+	end
+end
+
 --###################
 --################### piglin
 --###################
@@ -84,8 +94,7 @@ local piglin = {
 			zog:set_rotation(self.object:get_rotation())
 			self.object:remove()
 			return
-		end
-		if self.trading == true then
+		elseif self.trading == true then
 			self.state = "trading"
 			self.object:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(20,-20,18))
 			self.object:set_bone_position("Head", vector.new(0,6.3,0), vector.new(-40,0,0))
@@ -101,19 +110,12 @@ local piglin = {
 
 		if self.state ~= "attack" then
 			self._attacked_by_player = false
+		elseif self.attack:is_player() and mobs_mc.player_wears_gold(self.attack) then
+			if self._attacked_by_player == false then
+				self.state = "stand"
+			end
 		end
-    if self.state == "attack" and self.attack:is_player() then
-			for i=1, 6 do
-				local stack = self.attack:get_inventory():get_stack("armor", i)
-				local item = stack:get_name()
-				if item == "mcl_armor:chestplate_gold" or item == "mcl_armor:leggings_gold" or item == "mcl_armor:helmet_gold" or item == "mcl_armor:boots_gold" then
-					if self._attacked_by_player == false then
-						self.state = "stand"
-					end
-				end
-    	end
-    end
-  end,
+	end,
 	on_pick_up  = function(self, itementity)
 		local item = itementity.itemstring:split(" ")[1]
 		local it = ItemStack(itementity.itemstring)
