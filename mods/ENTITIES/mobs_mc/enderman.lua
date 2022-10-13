@@ -311,7 +311,7 @@ mcl_mobs:register_mob("mobs_mc:enderman", {
 	end,
 	do_custom = function(self, dtime)
 		-- RAIN DAMAGE / EVASIVE WARP BEHAVIOUR HERE.
-		enderpos = self.object:get_pos()
+		local enderpos = self.object:get_pos()
 		local dim = mcl_worlds.pos_to_dimension(enderpos)
 		if dim == "overworld" then
 			if mcl_weather.state == "rain" or mcl_weather.state == "lightning" then
