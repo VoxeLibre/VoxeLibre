@@ -2049,7 +2049,7 @@ local monster_attack = function(self)
 				player = obj.object
 				name = obj.name or ""
 			end
-			if obj.type = self.type and obj.passive == false and obj.state == "attack" and obj.attack then
+			if obj.type == self.type and obj.passive == false and obj.state == "attack" and obj.attack then
 				table.insert(blacklist_attack, obj.attack)
 			end
 		end
