@@ -309,5 +309,5 @@ minetest.LIGHT_MAX+1,
 mcl_vars.mg_lava_nether_max,
 mcl_vars.mg_nether_max)
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:piglin", S("Piglin"), "#00ff00","#000000", 0)
-mcl_mobs:register_egg("mobs_mc:piglin_brute", S("Piglin Brute"), "#ff0000","#000000", 0)
+mcl_mobs:register_egg("mobs_mc:piglin", S("Piglin"), "#7b4a17","#d5c381", 0)
+mcl_mobs:register_egg("mobs_mc:piglin_brute", S("Piglin Brute"), "#562b0c","#ddc89d", 0)

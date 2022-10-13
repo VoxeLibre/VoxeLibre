@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-local S = minetest.get_translator("extra_mobs")
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### hoglin
@@ -132,4 +132,4 @@ mcl_vars.mg_nether_min,
 mcl_vars.mg_nether_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:hoglin", S("Hoglin"), "extra_mobs_spawn_icon_hoglin.png", 0)
+mcl_mobs:register_egg("mobs_mc:hoglin", S("Hoglin"), "#85682e", "#2b2140", 0)
