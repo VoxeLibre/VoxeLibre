@@ -30,11 +30,13 @@ local dbg_spawn_counts = {}
 local aoc_range = 136
 
 local mob_cap = {
-	monster = minetest.settings:get_bool("mcl_mob_cap_monster") or 70,
-	animal = minetest.settings:get_bool("mcl_mob_cap_animal") or 10,
-	ambient = minetest.settings:get_bool("mcl_mob_cap_ambient") or 15,
-	water = minetest.settings:get_bool("mcl_mob_cap_water") or 5, --currently unused
-	water_ambient = minetest.settings:get_bool("mcl_mob_cap_water_ambient") or 20, --currently unused
+	monster = tonumber(minetest.settings:get("mcl_mob_cap_monster")) or 70,
+	animal = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 10,
+	ambient = tonumber(minetest.settings:get("mcl_mob_cap_ambient")) or 15,
+	water = tonumber(minetest.settings:get("mcl_mob_cap_water")) or 5, --currently unused
+	water_ambient = tonumber(minetest.settings:get("mcl_mob_cap_water_ambient")) or 20, --currently unused
+	player = tonumber(minetest.settings:get("mcl_mob_cap_player")) or 75,
+	total = tonumber(minetest.settings:get("mcl_mob_cap_total")) or 500,
 }
 
 --do mobs spawn?
@@ -664,7 +666,13 @@ if mobs_spawn then
 		timer = timer + dtime
 		if timer < 10 then return end
 		timer = 0
-		for _, player in pairs(get_connected_players()) do
+		local players = get_connected_players()
+		local total_mobs = count_mobs_total()
+		if total_mobs > mob_cap.total or total_mobs > #players * mob_cap.player then
+			minetest.log("warning","[mcl_mobs] mob cap reached. no cycle spawning.")
+			return
+		end --mob cap per player
+		for _, player in pairs(players) do
 			local pos = player:get_pos()
 			local dimension = mcl_worlds.pos_to_dimension(pos)
 			-- ignore void and unloaded area
