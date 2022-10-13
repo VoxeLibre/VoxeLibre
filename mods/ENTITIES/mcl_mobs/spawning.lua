@@ -647,11 +647,6 @@ if mobs_spawn then
 						end
 						object = mcl_mobs.spawn(spawning_position, mob_def.name)
 					end
-
-
-					if object then
-						return mob_def.on_spawn and mob_def.on_spawn(object, spawning_position)
-					end
 			end
 			current_summary_chance = current_summary_chance - mob_chance
 			table_remove(mob_library_worker_table, mob_index)
