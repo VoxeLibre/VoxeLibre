@@ -228,9 +228,11 @@ function lightning.strike(pos)
 		for _, func in pairs(lightning.on_strike_functions) do
 			-- allow on_strike callbacks to destroy entities by re-obtaining objects for each callback
 			local objects = get_objects_inside_radius(pos2, 3.5)
-			local p,p2,stop = func(pos, pos2, objects)
-			if p then pos = p end
-			if p2 then pos2 = p2 end
+			local p,stop = func(pos, pos2, objects)
+			if p then
+				pos = p
+				pos2 = choose_pos(p)
+			end
 			do_strike = do_strike and not stop
 		end
 	end
