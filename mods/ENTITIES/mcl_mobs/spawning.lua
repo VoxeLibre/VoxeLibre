@@ -241,6 +241,17 @@ local function count_mobs_total(mob_type)
 	return num
 end
 
+local function count_mobs_total_cap(mob_type)
+	local num = 0
+	for _,l in pairs(minetest.luaentities) do
+		if l.is_mob then
+			if ( mob_type == nil or l.type == mob_type ) and l.can_despawn and not l.nametag then
+				num = num + 1
+			end
+		end
+	end
+	return num
+end
 
 -- global functions
 
@@ -694,9 +705,9 @@ if mobs_spawn then
 		if timer < 10 then return end
 		timer = 0
 		local players = get_connected_players()
-		local total_mobs = count_mobs_total()
+		local total_mobs = count_mobs_total_cap()
 		if total_mobs > mob_cap.total or total_mobs > #players * mob_cap.player then
-			minetest.log("warning","[mcl_mobs] mob cap reached. no cycle spawning.")
+			minetest.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
 			return
 		end --mob cap per player
 		for _, player in pairs(players) do
