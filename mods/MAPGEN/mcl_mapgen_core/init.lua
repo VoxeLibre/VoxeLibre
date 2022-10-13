@@ -251,6 +251,7 @@ end
 
 local function set_palette(minp,maxp,data2,area,biomemap,nodes)
 	-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
+	if not biomemap then return end
 	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
 	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
 	for n=1, #nodes do
