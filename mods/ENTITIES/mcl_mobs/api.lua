@@ -3133,7 +3133,12 @@ local function check_item_pickup(self)
 			if l and l.name == "__builtin:item" then
 				for k,v in pairs(self.pick_up) do
 					if not player_near(p) and self.on_pick_up and l.itemstring:find(v) then
-						if self.on_pick_up(self,l) == nil then o:remove() end
+						local r =  self.on_pick_up(self,l)
+						if  r then
+							l.itemstring = r:to_string()
+						else
+							o:remove()
+						end
 					end
 				end
 			end
