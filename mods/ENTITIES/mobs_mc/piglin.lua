@@ -115,17 +115,11 @@ local piglin = {
     end
   end,
 	on_pick_up  = function(self, itementity)
-		local clicker
-		for _,p in pairs(minetest.get_connected_players()) do
-			if vector.distance(p:get_pos(),self.object:get_pos()) < 10 then
-				clicker = p
-			end
-		end
+		local item = itementity.itemstring:split(" ")[1]
+		local it = ItemStack(itementity.itemstring)
 		--return true --do not pick up
-		if clicker:is_player() and clicker:get_wielded_item():get_name() == "mcl_core:gold_ingot" and self.state ~= "attack" and self.gold_items < 3 then
-			local item_gold = clicker:get_wielded_item()
-			item_gold:take_item(1)
-			clicker:set_wielded_item(item_gold)
+		if item == "mcl_core:gold_ingot" and self.state ~= "attack" and self.gold_items < 3 then
+			it:take_item(1)
 			self.state = "stand"
 			self.object:set_animation({x=0,y=79})
 			self.trading = true
@@ -146,6 +140,7 @@ local piglin = {
 				end
 			end)
 		end
+		return it
 	end,
 	do_punch = function(self, hitter)
 		if hitter:is_player() then
