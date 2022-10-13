@@ -153,4 +153,4 @@ dofile(path .. "/dolphin.lua")
 dofile(path .. "/glow_squid.lua")
 
 dofile(path .. "/piglin.lua")
-
+dofile(path .. "/hoglin+zoglin.lua")
