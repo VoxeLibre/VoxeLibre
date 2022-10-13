@@ -68,6 +68,8 @@ local disable_blood = minetest.settings:get_bool("mobs_disable_blood")
 local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
+local player_transfer_distance = tonumber(minetest.settings:get("player_transfer_distance")) or 128
+if player_transfer_distance == 0 then player_transfer_distance = math.huge end
 local remove_far = true
 local difficulty = tonumber(minetest.settings:get("mob_difficulty")) or 1.0
 local show_health = false
@@ -83,6 +85,8 @@ if minetest.settings:get_bool("only_peaceful_mobs", false) then
 			S("Peaceful mode active! No monsters will spawn."))
 	end)
 end
+
+local active_particlespawners = {}
 
 
 local function dir_to_pitch(dir)
@@ -120,6 +124,60 @@ minetest.register_chatcommand("clearmobs",{
 			end
 		end
 end})
+
+local function remove_particlespawners(pn,self)
+	if not active_particlespawners[pn] then return end
+	if not active_particlespawners[pn][self.object] then return end
+	for k,v in pairs(active_particlespawners[pn][self.object]) do
+		minetest.delete_particlespawner(v)
+	end
+end
+
+local function add_particlespawners(pn,self)
+	if not active_particlespawners[pn] then active_particlespawners[pn] = {} end
+	if not active_particlespawners[pn][self.object] then active_particlespawners[pn][self.object] = {} end
+	for _,ps in pairs(self.particlespawners) do
+		ps.attached = self.object
+		ps.playername = pn
+		table.insert(active_particlespawners[pn][self.object],minetest.add_particlespawner(ps))
+	end
+end
+
+local function particlespawner_check(self,dtime)
+	if not self.particlespawners then return end
+	--minetest.log(dump(active_particlespawners))
+	if self._particle_timer and self._particle_timer >= 1 then
+		self._particle_timer = 0
+		local players = {}
+		for _,player in pairs(minetest.get_connected_players()) do
+			local pn = player:get_player_name()
+			table.insert(players,pn)
+			if not active_particlespawners[pn] then
+				active_particlespawners[pn] = {} end
+
+			local dst = vector.distance(player:get_pos(),self.object:get_pos())
+			if dst < player_transfer_distance and not active_particlespawners[pn][self.object] then
+				add_particlespawners(pn,self)
+			elseif dst >= player_transfer_distance and active_particlespawners[pn][self.object] then
+				remove_particlespawners(pn,self)
+			end
+		end
+	elseif not self._particle_timer then
+		self._particle_timer = 0
+	end
+	self._particle_timer = self._particle_timer + dtime
+end
+
+minetest.register_on_leaveplayer(function(player)
+	local pn = player:get_player_name()
+	if not active_particlespawners[pn] then return end
+	for _,m in pairs(active_particlespawners[pn]) do
+		for k,v in pairs(m) do
+			minetest.delete_particlespawner(v)
+		end
+	end
+	active_particlespawners[pn] = nil
+end)
 
 ----For Water Flowing:
 local enable_physics = function(object, luaentity, ignore_check)
@@ -3477,7 +3535,9 @@ end
 -- get entity staticdata
 local mob_staticdata = function(self)
 
-
+	for _,p in pairs(minetest.get_connected_players()) do
+		remove_particlespawners(p:get_player_name(),self)
+	end
 	-- remove mob when out of range unless tamed
 	if remove_far
 	and self.can_despawn
@@ -3711,6 +3771,7 @@ local mob_step = function(self, dtime)
 	self.lifetimer = self.lifetimer - dtime
 	check_item_pickup(self)
 	check_aggro(self,dtime)
+	particlespawner_check(self,dtime)
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
 		-- mcl_burning.tick may remove object immediately
@@ -4226,6 +4287,7 @@ minetest.register_entity(name, {
 	spawn_in_group = def.spawn_in_group,
 	spawn_in_group_min = def.spawn_in_group_min,
 	noyaw = def.noyaw or false,
+	particlespawners = def.particlespawners,
 	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,
