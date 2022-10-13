@@ -453,7 +453,7 @@ local function has_room(self,pos)
 	local p2 = vector.offset(pos,cb[4],cb[5],cb[6])
 	local n = #minetest.find_nodes_in_area(p1,p2,nodes) or 0
 	if r > n then
-		minetest.log("no room for mob "..self.name)
+		minetest.log("warning","[mcl_mobs] No room for mob "..self.name.." at "..minetest.pos_to_string(vector.round(pos)))
 		return false
 	end
 	return true
