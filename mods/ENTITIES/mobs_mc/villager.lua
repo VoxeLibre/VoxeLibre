@@ -265,7 +265,7 @@ local professions = {
 			},
 			{
 			-- compass subject to special checks
-			{ { "xpanes:pane_natural_flat", 1, 1 }, E1 },
+			{ { "xpanes:pane_natural_flat", 11, 11 }, E1 },
 			--{ { "mcl_core:emerald", 13, 13, "mcl_compass:compass", 1, 1 }, { "FIXME:ocean explorer map" 1, 1} },
 			},
 			{
