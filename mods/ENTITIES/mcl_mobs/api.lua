@@ -135,7 +135,7 @@ end
 
 local function add_particlespawners(pn,self)
 	if not active_particlespawners[pn] then active_particlespawners[pn] = {} end
-	if not active_particlespawners[pn][object] then active_particlespawners[pn][self.object] = {} end
+	if not active_particlespawners[pn][self.object] then active_particlespawners[pn][self.object] = {} end
 	for _,ps in pairs(self.particlespawners) do
 		ps.attached = self.object
 		ps.playername = pn
