@@ -107,29 +107,7 @@ local function choose_pos(pos)
 	return pos, pos2
 end
 
--- * pos: optional, if not given a random pos will be chosen
--- * returns: bool - success if a strike happened
-function lightning.strike(pos)
-	if lightning.auto then
-		after(rng:next(lightning.interval_low, lightning.interval_high), lightning.strike)
-	end
-
-	local pos2
-	pos, pos2 = choose_pos(pos)
-
-	if not pos then
-		return false
-	end
-	if lightning.on_strike_functions then
-		for _, func in pairs(lightning.on_strike_functions) do
-			-- allow on_strike callbacks to destroy entities by re-obtaining objects for each callback
-			local objects = get_objects_inside_radius(pos2, 3.5)
-			func(pos, pos2, objects)
-		end
-	end
-end
-
-lightning.register_on_strike(function(pos, pos2, objects)
+function lightning.strike_func(pos, pos2, objects)
 	local particle_pos = vector.offset(pos2, 0, (lightning.size / 2) + 0.5, 0)
 	local particle_size = lightning.size * 10
 	local time = 0.2
@@ -230,7 +208,36 @@ lightning.register_on_strike(function(pos, pos2, objects)
 			end
 		end
 	end
-end)
+end
+
+-- * pos: optional, if not given a random pos will be chosen
+-- * returns: bool - success if a strike happened
+function lightning.strike(pos)
+	if lightning.auto then
+		after(rng:next(lightning.interval_low, lightning.interval_high), lightning.strike)
+	end
+
+	local pos2
+	pos, pos2 = choose_pos(pos)
+
+	if not pos then
+		return false
+	end
+	local do_strike = true
+	if lightning.on_strike_functions then
+		for _, func in pairs(lightning.on_strike_functions) do
+			-- allow on_strike callbacks to destroy entities by re-obtaining objects for each callback
+			local objects = get_objects_inside_radius(pos2, 3.5)
+			local p,p2,stop = func(pos, pos2, objects)
+			if p then pos = p end
+			if p2 then pos2 = p2 end
+			do_strike = do_strike and not stop
+		end
+	end
+	if do_strike then
+		lightning.strike_func(pos,pos2,get_objects_inside_radius(pos2, 3.5))
+	end
+end
 
 -- if other mods disable auto lightning during initialization, don't trigger the first lightning.
 after(5, function(dtime)
