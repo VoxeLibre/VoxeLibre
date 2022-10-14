@@ -3,8 +3,7 @@ local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
 function mcl_structures.generate_igloo_top(pos, pr)
-	-- FIXME: This spawns bookshelf instead of furnace. Fix this!
-	-- Furnace does ot work atm because apparently meta is not set. :-(
+	-- Furnace does ot work atm because apparently meta is not set. Need a bit of help with fixing this for furnaces, bookshelves, and brewing stands.
 	local newpos = {x=pos.x,y=pos.y-2,z=pos.z}
 	local path = modpath.."/schematics/mcl_structures_igloo_top.mts"
 	local rotation = tostring(pr:next(0,3)*90)
@@ -12,7 +11,6 @@ function mcl_structures.generate_igloo_top(pos, pr)
 end
 
 function mcl_structures.generate_igloo_basement(pos, orientation, loot, pr)
-	-- TODO: Add brewing stand
 	-- TODO: Add monster eggs
 	local path = modpath.."/schematics/mcl_structures_igloo_basement.mts"
 	mcl_structures.place_schematic(pos, path, orientation, nil, true, nil, function()
@@ -58,19 +56,19 @@ function mcl_structures.generate_igloo(pos, def, pr)
 		if rotation == "0" then
 			dir = {x=-1, y=0, z=0}
 			tdir = {x=1, y=0, z=0}
-			tpos = {x=pos.x+7, y=pos.y-1, z=pos.z+3}
+			tpos = {x=pos.x+7, y=pos.y-2, z=pos.z+3}
 		elseif rotation == "90" then
 			dir = {x=0, y=0, z=-1}
 			tdir = {x=0, y=0, z=-1}
-			tpos = {x=pos.x+3, y=pos.y-1, z=pos.z+1}
+			tpos = {x=pos.x+3, y=pos.y-2, z=pos.z+1}
 		elseif rotation == "180" then
 			dir = {x=1, y=0, z=0}
 			tdir = {x=-1, y=0, z=0}
-			tpos = {x=pos.x+1, y=pos.y-1, z=pos.z+3}
+			tpos = {x=pos.x+1, y=pos.y-2, z=pos.z+3}
 		elseif rotation == "270" then
 			dir = {x=0, y=0, z=1}
 			tdir = {x=0, y=0, z=1}
-			tpos = {x=pos.x+3, y=pos.y-1, z=pos.z+7}
+			tpos = {x=pos.x+3, y=pos.y-2, z=pos.z+7}
 		else
 			return success
 		end
