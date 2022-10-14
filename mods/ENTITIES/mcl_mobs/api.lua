@@ -336,18 +336,18 @@ local set_velocity = function(self, v)
 
 	-- halt mob if it has been ordered to stay
 	if self.order == "stand" or self.order == "sit" then
-		self.object:set_velocity({x = 0, y = 0, z = 0})
-		return
+	  self.acc=vector.new(0,0,0)
+	  return
 	end
 
 	local yaw = (self.object:get_yaw() or 0) + self.rotate
 	local vv = self.object:get_velocity()
 	if vv then
-		self.object:set_velocity({
-			x = (sin(yaw) * -v) + c_x,
-			y = vv.y,
-			z = (cos(yaw) * v) + c_y,
-		})
+		self.acc={
+		  x = ((sin(yaw) * -v) + c_x)*.27,
+		  y = 0,
+		  z = ((cos(yaw) * v) + c_y)*.27,
+		}
 	end
 end
 
@@ -535,6 +535,7 @@ local set_animation = function(self, anim, fixed_frame)
 	if self.jockey then
 		anim = "jockey"
 	end
+
 
 	if flight_check(self) and self.fly and anim == "walk" then anim = "fly" end
 
@@ -1013,9 +1014,6 @@ local check_for_death = function(self, cause, cmi_cause)
 		length = max(frames / speed, 0) + DEATH_DELAY
 		set_animation(self, "die")
 	else
-		local rot = self.object:get_rotation()
-		rot.z = pi/2
-		self.object:set_rotation(rot)
 		length = 1 + DEATH_DELAY
 		set_animation(self, "stand", true)
 	end
@@ -1411,9 +1409,16 @@ local do_jump = function(self)
 		return false
 	end
 
+	local v = self.object:get_velocity()
+	local v2 = abs(v.x)+abs(v.z)*.833
+	local jump_c_multiplier = 1
+	if v2/self.walk_velocity/2>1 then
+		jump_c_multiplier = v2/self.walk_velocity/2
+	end
+
 	-- where is front
-	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
-	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)
+	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+.4
+	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+.4
 
 	-- what is in front of mob?
 	nod = node_ok({
@@ -3849,6 +3854,12 @@ local mob_step = function(self, dtime)
 		end
 	end
 
+	if self.state and self.state=="die" or check_for_death(self) then
+		local rot = self.object:get_rotation()
+		rot.z = ((pi/2-rot.z)*.2)+rot.z
+		self.object:set_rotation(rot)
+	end
+
 	if not player_in_active_range(self) then
 		set_animation(self, "stand", true)
 		self.object:set_velocity(vector.new(0,0,0))
@@ -3886,6 +3897,23 @@ local mob_step = function(self, dtime)
 
 	--Mob following code.
 	follow_flop(self)
+
+	--set animation speed relitive to velocity
+	local v = self.object:get_velocity()
+	if v then
+		local v2 = abs(v.x)+abs(v.z)*.833
+		self.object:set_animation_frame_speed((v2/self.walk_velocity)*25)
+
+
+		--diffuse object velocity
+		self.object:set_velocity({x = v.x*.85, y = v.y, z = v.z*.85})
+
+		--set_speed
+		if self.acc then
+			self.object:add_velocity(self.acc)
+		end
+	end
+
 
 	-- smooth rotation by ThomasMonroe314
 	if self._turn_to then
