@@ -171,6 +171,7 @@ function mcl_torches.register_torch(def)
 		light_source = def.light,
 		groups = groups,
 		drop = def.drop or itemstring,
+		use_texture_alpha = "clip",
 		selection_box = {
 			type = "wallmounted",
 			wall_bottom = {-2/16, -0.5, -2/16, 2/16, 1/16, 2/16},
