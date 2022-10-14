@@ -169,6 +169,9 @@ local piglin = {
 	shoot_offset = 1.5,
 	dogshoot_switch = 1,
 	dogshoot_count_max =1.8,
+	attacks_monsters = true,
+	attack_animals = true,
+	specific_attack = { "player", "mobs_mc:hoglin" },
 }
 
 mcl_mobs:register_mob("mobs_mc:piglin", piglin)
