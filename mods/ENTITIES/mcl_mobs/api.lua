@@ -2039,8 +2039,24 @@ local monster_attack = function(self)
 	local type, name = "", ""
 	local min_dist = self.view_range + 1
 	local objs = minetest.get_objects_inside_radius(s, self.view_range)
+	local blacklist_attack = {}
 
 	for n = 1, #objs do
+		if not objs[n]:is_player() then
+			obj = objs[n]:get_luaentity()
+
+			if obj then
+				player = obj.object
+				name = obj.name or ""
+			end
+			if obj.type == self.type and obj.passive == false and obj.state == "attack" and obj.attack then
+				table.insert(blacklist_attack, obj.attack)
+			end
+		end
+	end
+
+	for n = 1, #objs do
+
 
 		if objs[n]:is_player() then
 			if mcl_mobs.invis[ objs[n]:get_player_name() ] or (not object_in_range(self, objs[n])) then
@@ -2058,6 +2074,7 @@ local monster_attack = function(self)
 				type = obj.type
 				name = obj.name or ""
 			end
+
 		end
 
 		-- find specific mob to attack, failing that attack player/npc/animal
@@ -2074,16 +2091,24 @@ local monster_attack = function(self)
 			p.y = p.y + 1
 			sp.y = sp.y + 1
 
-
+			local attacked_p = false
+			for c=1, #blacklist_attack do
+				if blacklist_attack[c] == player then
+					attacked_p = true
+				end
+			end
 			-- choose closest player to attack
 			if dist < min_dist
+			and not attacked_p
 			and line_of_sight(self, sp, p, 2) == true then
 				min_dist = dist
 				min_player = player
 			end
 		end
 	end
-
+	if not min_player then
+		min_player=blacklist_attack[math.random(#blacklist_attack)]
+	end
 	-- attack player
 	if min_player then
 		do_attack(self, min_player)
