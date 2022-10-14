@@ -71,3 +71,12 @@ lightning.register_on_strike(function(pos,pos2,objects)
 	local lr = minetest.find_node_near(pos,128,{"group:attracts_lightning"},true)
 	return lr,nil
 end)
+
+minetest.register_craft({
+	output = "mcl_lightning_rods:rod",
+	recipe = {
+		{"", "mcl_copper:copper_ingot",""},
+		{"", "mcl_copper:copper_ingot",""},
+		{"", "mcl_copper:copper_ingot",""},
+	}
+})
