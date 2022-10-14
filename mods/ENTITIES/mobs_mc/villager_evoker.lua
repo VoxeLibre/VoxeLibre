@@ -15,6 +15,7 @@ mcl_mobs:register_mob("mobs_mc:evoker", {
 	description = S("Evoker"),
 	type = "monster",
 	spawn_class = "hostile",
+	can_despawn = false,
 	physical = true,
 	pathfinding = 1,
 	hp_min = 24,

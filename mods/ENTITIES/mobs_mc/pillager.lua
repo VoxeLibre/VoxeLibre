@@ -28,6 +28,7 @@ pillager = {
 	shoot_interval = 3,
 	shoot_offset = 1.5,
 	armor = {fleshy = 100},
+	can_despawn = false,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.98, 0.3},
 	pathfinding = 1,
 	group_attack = true,

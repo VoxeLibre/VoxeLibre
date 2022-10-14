@@ -1,4 +1,5 @@
 --lua locals
+local minetest,vector,math,table = minetest,vector,math,table
 local get_node                     = minetest.get_node
 local get_item_group               = minetest.get_item_group
 local get_node_light               = minetest.get_node_light
@@ -25,15 +26,18 @@ local table_remove   = table.remove
 local pairs = pairs
 local dbg_spawn_attempts = 0
 local dbg_spawn_succ = 0
+local dbg_spawn_counts = {}
 -- range for mob count
 local aoc_range = 136
 
 local mob_cap = {
-	monster = minetest.settings:get_bool("mcl_mob_cap_monster") or 70,
-	animal = minetest.settings:get_bool("mcl_mob_cap_animal") or 10,
-	ambient = minetest.settings:get_bool("mcl_mob_cap_ambient") or 15,
-	water = minetest.settings:get_bool("mcl_mob_cap_water") or 5, --currently unused
-	water_ambient = minetest.settings:get_bool("mcl_mob_cap_water_ambient") or 20, --currently unused
+	monster = tonumber(minetest.settings:get("mcl_mob_cap_monster")) or 70,
+	animal = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 10,
+	ambient = tonumber(minetest.settings:get("mcl_mob_cap_ambient")) or 15,
+	water = tonumber(minetest.settings:get("mcl_mob_cap_water")) or 5, --currently unused
+	water_ambient = tonumber(minetest.settings:get("mcl_mob_cap_water_ambient")) or 20, --currently unused
+	player = tonumber(minetest.settings:get("mcl_mob_cap_player")) or 75,
+	total = tonumber(minetest.settings:get("mcl_mob_cap_total")) or 500,
 }
 
 --do mobs spawn?
@@ -237,6 +241,17 @@ local function count_mobs_total(mob_type)
 	return num
 end
 
+local function count_mobs_total_cap(mob_type)
+	local num = 0
+	for _,l in pairs(minetest.luaentities) do
+		if l.is_mob then
+			if ( mob_type == nil or l.type == mob_type ) and l.can_despawn and not l.nametag then
+				num = num + 1
+			end
+		end
+	end
+	return num
+end
 
 -- global functions
 
@@ -418,11 +433,38 @@ local function get_water_spawn(p)
 		end
 end
 
-local function spawn_check(pos,spawn_def)
+local function has_room(self,pos)
+	local cb = self.collisionbox
+	local nodes = {}
+	if self.fly_in then
+		local t = type(self.fly_in)
+		if t == "table" then
+			nodes = table.copy(self.fly_in)
+		elseif t == "string" then
+			table.insert(nodes,self.fly_in)
+		end
+	end
+	table.insert(nodes,"air")
+	local x = cb[4] - cb[1]
+	local y = cb[5] - cb[2]
+	local z = cb[6] - cb[3]
+	local r = math.ceil(x * y * z)
+	local p1 = vector.offset(pos,cb[1],cb[2],cb[3])
+	local p2 = vector.offset(pos,cb[4],cb[5],cb[6])
+	local n = #minetest.find_nodes_in_area(p1,p2,nodes) or 0
+	if r > n then
+		minetest.log("warning","[mcl_mobs] No room for mob "..self.name.." at "..minetest.pos_to_string(vector.round(pos)))
+		return false
+	end
+	return true
+end
+
+local function spawn_check(pos,spawn_def,ignore_caps)
 	if not spawn_def then return end
 	dbg_spawn_attempts = dbg_spawn_attempts + 1
 	local dimension = mcl_worlds.pos_to_dimension(pos)
-	local mob_type = minetest.registered_entities[spawn_def.name].type
+	local mob_def = minetest.registered_entities[spawn_def.name]
+	local mob_type = mob_def.type
 	local gotten_node = get_node(pos).name
 	local gotten_biome = minetest.get_biome_data(pos)
 	if not gotten_node or not gotten_biome then return end
@@ -435,25 +477,29 @@ local function spawn_check(pos,spawn_def)
 		is_ground = minetest.get_item_group(gotten_node,"solid") ~= 0
 	end
 	pos.y = pos.y + 1
-	local has_room = #minetest.find_nodes_in_area(pos,vector.offset(pos,0,1,0),{"air"}) or 0 >= 2
 	local is_water = get_item_group(gotten_node, "water") ~= 0
 	local is_lava  = get_item_group(gotten_node, "lava") ~= 0
 	local is_leaf  = get_item_group(gotten_node, "leaves") ~= 0
 	local is_bedrock  = gotten_node == "mcl_core:bedrock"
 	local is_grass = minetest.get_item_group(gotten_node,"grass_block") ~= 0
-	local mob_count_wide = count_mobs(pos,aoc_range,mob_type)
-	local mob_count = count_mobs(pos,32,mob_type)
+	local mob_count_wide = 0
+
+	local mob_count = 0
+	if not ignore_caps then
+		mob_count = count_mobs(pos,32,mob_type)
+		mob_count_wide = count_mobs(pos,aoc_range,mob_type)
+	end
 
 	if pos and spawn_def
-	and mob_count_wide < (mob_cap[mob_type] or 15)
-	and mob_count < 5
+	and ( mob_count_wide < (mob_cap[mob_type] or 15) )
+	and ( mob_count < 5 )
 	and pos.y >= spawn_def.min_height
 	and pos.y <= spawn_def.max_height
 	and spawn_def.dimension == dimension
 	and biome_check(spawn_def.biomes, gotten_biome)
 	and (is_ground or spawn_def.type_of_spawning ~= "ground")
 	and (spawn_def.type_of_spawning ~= "ground" or not is_leaf)
-	and (spawn_def.type_of_spawning ~= "ground" or has_room)
+	and has_room(mob_def,pos)
 	and (spawn_def.check_position and spawn_def.check_position(pos) or true)
 	and (not is_farm_animal(spawn_def.name) or is_grass)
 	and (spawn_def.type_of_spawning ~= "water" or is_water)
@@ -473,6 +519,11 @@ function mcl_mobs.spawn(pos,id)
 	if not def or (def.can_spawn and not def.can_spawn(pos)) or not def.is_mob then
 		return false
 	end
+	if not dbg_spawn_counts[def.name] then
+		dbg_spawn_counts[def.name] = 1
+	else
+		dbg_spawn_counts[def.name] = dbg_spawn_counts[def.name] + 1
+	end
 	return minetest.add_entity(pos, def.name)
 end
 
@@ -488,7 +539,7 @@ local function spawn_group(p,mob,spawn_on,group_max,group_min)
 	end
 	for i = 1, math.random(group_min,group_max) do
 		local sp = vector.offset(nn[math.random(#nn)],0,1,0)
-		if spawn_check(nn[math.random(#nn)],mob) then
+		if spawn_check(nn[math.random(#nn)],mob,true) then
 			if mob.type_of_spawning == "water" then
 				sp = get_water_spawn(sp)
 			end
@@ -609,38 +660,36 @@ if mobs_spawn then
 				step_chance = step_chance + mob_chance
 			end
 			local mob_def = mob_library_worker_table[mob_index]
+			--minetest.log(mob_def.name.." "..step_chance.. " "..mob_chance)
 			local spawn_in_group = minetest.registered_entities[mob_def.name].spawn_in_group or 4
 			local spawn_in_group_min = minetest.registered_entities[mob_def.name].spawn_in_group_min or 1
 			local mob_type = minetest.registered_entities[mob_def.name].type
 			if spawn_check(spawning_position,mob_def) then
-					if mob_def.type_of_spawning == "water" then
-						spawning_position = get_water_spawn(spawning_position)
-						if not spawning_position then
-							return
-						end
-					end
-					if minetest.registered_entities[mob_def.name].can_spawn and not minetest.registered_entities[mob_def.name].can_spawn(pos) then
+				if mob_def.type_of_spawning == "water" then
+					spawning_position = get_water_spawn(spawning_position)
+					if not spawning_position then
+						minetest.log("warning","[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..minetest.pos_to_string(vector.round(pos)))
 						return
 					end
-					--everything is correct, spawn mob
-					local object
-					if spawn_in_group and ( mob_type ~= "monster" or math.random(5) == 1 ) then
-						if logging then
-							minetest.log("action", "[mcl_mobs] A group of mob " .. mob_def.name .. " spawns at " .. minetest.pos_to_string(spawning_position, 1))
-						end
-						object = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name},spawn_in_group,spawn_in_group_min)
-
-					else
-						if logging then
-							minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns at " .. minetest.pos_to_string(spawning_position, 1))
-						end
-						object = mcl_mobs.spawn(spawning_position, mob_def.name)
+				end
+				if minetest.registered_entities[mob_def.name].can_spawn and not minetest.registered_entities[mob_def.name].can_spawn(pos) then
+					minetest.log("warning","[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(pos)))
+					return
+				end
+				--everything is correct, spawn mob
+				local object
+				if spawn_in_group and ( mob_type ~= "monster" or math.random(5) == 1 ) then
+					if logging then
+						minetest.log("action", "[mcl_mobs] A group of mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at " .. minetest.pos_to_string(spawning_position, 1))
 					end
+					object = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name},spawn_in_group,spawn_in_group_min)
 
-
-					if object then
-						return mob_def.on_spawn and mob_def.on_spawn(object, spawning_position)
+				else
+					if logging then
+						minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at ".. minetest.pos_to_string(spawning_position, 1))
 					end
+					object = mcl_mobs.spawn(spawning_position, mob_def.name)
+				end
 			end
 			current_summary_chance = current_summary_chance - mob_chance
 			table_remove(mob_library_worker_table, mob_index)
@@ -655,7 +704,13 @@ if mobs_spawn then
 		timer = timer + dtime
 		if timer < 10 then return end
 		timer = 0
-		for _, player in pairs(get_connected_players()) do
+		local players = get_connected_players()
+		local total_mobs = count_mobs_total_cap()
+		if total_mobs > mob_cap.total or total_mobs > #players * mob_cap.player then
+			minetest.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
+			return
+		end --mob cap per player
+		for _, player in pairs(players) do
 			local pos = player:get_pos()
 			local dimension = mcl_worlds.pos_to_dimension(pos)
 			-- ignore void and unloaded area
@@ -672,6 +727,7 @@ end
 minetest.register_chatcommand("mobstats",{
 	privs = { debug = true },
 	func = function(n,param)
+		minetest.chat_send_player(n,dump(dbg_spawn_counts))
 		local pos = minetest.get_player_by_name(n):get_pos()
 		minetest.chat_send_player(n,"mobs within 32 radius of player:"..count_mobs(pos,32))
 		minetest.chat_send_player(n,"total mobs:"..count_mobs_total())

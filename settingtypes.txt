@@ -99,6 +99,12 @@ mobs_griefing (Mobs change blocks) bool true
 # If enabled, mobs won't damage particles when they got hurt.
 mobs_disable_blood (Disable mob damage particles) bool false
 
+#Maximum amount mobs (default:500)
+mcl_mob_cap_total (Global mob cap) int 500 0 2048
+
+#Maximum amount of mobs per player (default:75)
+mcl_mob_cap_player (Mob cap per player) int 75 0 2048
+
 #Maximum amount of monsters that will spawn near a player (default:70)
 mcl_mob_cap_monster (Mob cap monsters) int 70 0 2048
 

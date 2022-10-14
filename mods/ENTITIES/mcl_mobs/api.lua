@@ -204,6 +204,13 @@ local disable_physics = function(object, luaentity, ignore_check, reset_movement
 	end
 end
 
+local function player_in_active_range(self)
+	for _,p in pairs(minetest.get_connected_players()) do
+		if vector.distance(self.object:get_pos(),p:get_pos()) <= 38 then return true end
+		-- slightly larger than the mc 32 since mobs spawn on that circle and easily stand still immediately right after spawning.
+	end
+end
+
 
 -- play sound
 local mob_sound = function(self, soundname, is_opinion, fixed_pitch)
@@ -1375,7 +1382,6 @@ end
 
 -- jump if facing a solid node (not fences or gates)
 local do_jump = function(self)
-
 	if not self.jump
 	or self.jump_height == 0
 	or self.fly
@@ -1443,7 +1449,7 @@ local do_jump = function(self)
 
 			local v = self.object:get_velocity()
 
-			v.y = self.jump_height
+			v.y = self.jump_height + 0.1
 
 			set_animation(self, "jump") -- only when defined
 
@@ -3129,6 +3135,31 @@ local function check_item_pickup(self)
 	end
 end
 
+local check_herd_timer = 0
+local function check_herd(self,dtime)
+	local pos = self.object:get_pos()
+	if not pos then return end
+	check_herd_timer = check_herd_timer + dtime
+	if check_herd_timer < 4 then return end
+	check_herd_timer = 0
+	for _,o in pairs(minetest.get_objects_inside_radius(pos,self.view_range)) do
+		local l = o:get_luaentity()
+		local p,y
+		if l and l.is_mob and l.name == self.name then
+			if self.horny and l.horny then
+				p = l.object:get_pos()
+			else
+				y = o:get_yaw()
+			end
+			if p then
+				go_to_pos(self,p)
+			elseif y then
+				set_yaw(self,y)
+			end
+		end
+	end
+end
+
 local function damage_mob(self,reason,damage)
 	if not self.health then return end
 	damage = floor(damage)
@@ -3570,7 +3601,7 @@ local mob_staticdata = function(self)
 	and ((not self.nametag) or (self.nametag == ""))
 	and self.lifetimer <= 20 then
 		if spawn_logging then
-			minetest.log("action", "[mcl_mobs] Mob "..tostring(self.name).." despawns in mob_staticdata at "..minetest.pos_to_string(vector.round(self.object:get_pos())))
+			minetest.log("action", "[mcl_mobs] Mob "..tostring(self.name).." despawns at "..minetest.pos_to_string(vector.round(self.object:get_pos())) .. " - out of range")
 		end
 
 		return "remove"-- nil
@@ -3794,6 +3825,35 @@ end
 -- main mob function
 local mob_step = function(self, dtime)
 	self.lifetimer = self.lifetimer - dtime
+
+	local pos = self.object:get_pos()
+	-- Despawning: when lifetimer expires, remove mob
+	if remove_far
+	and self.can_despawn == true
+	and ((not self.nametag) or (self.nametag == ""))
+	and self.state ~= "attack"
+	and self.following == nil then
+		if self.despawn_immediately or self.lifetimer <= 0 then
+			if spawn_logging then
+				minetest.log("action", "[mcl_mobs] Mob "..self.name.." despawns at "..minetest.pos_to_string(pos, 1) .. " lifetimer ran out")
+			end
+			mcl_burning.extinguish(self.object)
+			self.object:remove()
+			return
+		elseif self.lifetimer <= 10 then
+			if random(10) < 4 then
+				self.despawn_immediately = true
+			else
+				self.lifetimer = 20
+			end
+		end
+	end
+
+	if not player_in_active_range(self) then
+		set_animation(self, "stand", true)
+		self.object:set_velocity(vector.new(0,0,0))
+		return
+	end
 	check_item_pickup(self)
 	check_aggro(self,dtime)
 	particlespawner_check(self,dtime)
@@ -3803,7 +3863,6 @@ local mob_step = function(self, dtime)
 		if not self.object:get_pos() then return end
 	end
 
-	local pos = self.object:get_pos()
 	local yaw = 0
 
 	if mobs_debug then
@@ -4016,6 +4075,10 @@ local mob_step = function(self, dtime)
 			yaw = yaw + random(-0.5, 0.5)
 			yaw = set_yaw(self, yaw, 8)
 		end
+	else
+		if self.move_in_group ~= false then
+			check_herd(self,dtime)
+		end
 	end
 
 	-- Add water flowing for mobs from mcl_item_entity
@@ -4063,28 +4126,6 @@ local mob_step = function(self, dtime)
 			set_animation(self, "stand")
 			local yaw = self.object:get_yaw() or 0
 			yaw = set_yaw(self, yaw + 0.78, 8)
-	end
-
-	-- Despawning: when lifetimer expires, remove mob
-	if remove_far
-	and self.can_despawn == true
-	and ((not self.nametag) or (self.nametag == ""))
-	and self.state ~= "attack"
-	and self.following == nil then
-		if self.despawn_immediately or self.lifetimer <= 0 then
-			if spawn_logging then
-				minetest.log("action", "[mcl_mobs] Mob "..self.name.." despawns in mob_step at "..minetest.pos_to_string(pos, 1))
-			end
-			mcl_burning.extinguish(self.object)
-			self.object:remove()
-			return
-		elseif self.lifetimer <= 10 then
-			if random(10) < 4 then
-				self.despawn_immediately = true
-			else
-				self.lifetimer = 20
-			end
-		end
 	end
 end
 
