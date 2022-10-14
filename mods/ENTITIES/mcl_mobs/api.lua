@@ -344,9 +344,9 @@ local set_velocity = function(self, v)
 	local vv = self.object:get_velocity()
 	if vv then
 		self.acc={
-		  x = ((sin(yaw) * -v) + c_x)*.3,
+		  x = ((sin(yaw) * -v) + c_x)*.27,
 		  y = 0,
-		  z = ((cos(yaw) * v) + c_y)*.3,
+		  z = ((cos(yaw) * v) + c_y)*.27,
 		}
 	end
 end
@@ -535,6 +535,7 @@ local set_animation = function(self, anim, fixed_frame)
 	if self.jockey then
 		anim = "jockey"
 	end
+
 
 	if flight_check(self) and self.fly and anim == "walk" then anim = "fly" end
 
@@ -3887,18 +3888,20 @@ local mob_step = function(self, dtime)
 	--Mob following code.
 	follow_flop(self)
 
-
 	--set animation speed relitive to velocity
 	local v = self.object:get_velocity()
-	local v2 = abs(v.x)+abs(v.z)*.833
-	self.object:set_animation_frame_speed((v2/self.walk_velocity)*25)
+	if v then
+		local v2 = abs(v.x)+abs(v.z)*.833
+		self.object:set_animation_frame_speed((v2/self.walk_velocity)*25)
 
-	--diffuse object velocity
-	self.object:set_velocity({x = v.x*.8, y = v.y, z = v.z*.8})
 
-	--set_speed
-	if self.acc then
-		self.object:add_velocity(self.acc)
+		--diffuse object velocity
+		self.object:set_velocity({x = v.x*.85, y = v.y, z = v.z*.85})
+
+		--set_speed
+		if self.acc then
+			self.object:add_velocity(self.acc)
+		end
 	end
 
 
