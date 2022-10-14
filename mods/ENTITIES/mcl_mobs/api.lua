@@ -336,18 +336,18 @@ local set_velocity = function(self, v)
 
 	-- halt mob if it has been ordered to stay
 	if self.order == "stand" or self.order == "sit" then
-		self.object:set_velocity({x = 0, y = 0, z = 0})
-		return
+	  self.acc=vector.new(0,0,0)
+	  return
 	end
 
 	local yaw = (self.object:get_yaw() or 0) + self.rotate
 	local vv = self.object:get_velocity()
 	if vv then
-		self.object:set_velocity({
-			x = (sin(yaw) * -v) + c_x,
-			y = vv.y,
-			z = (cos(yaw) * v) + c_y,
-		})
+		self.acc={
+		  x = ((sin(yaw) * -v) + c_x)*.3,
+		  y = 0,
+		  z = ((cos(yaw) * v) + c_y)*.3,
+		}
 	end
 end
 
@@ -3886,6 +3886,21 @@ local mob_step = function(self, dtime)
 
 	--Mob following code.
 	follow_flop(self)
+
+
+	--set animation speed relitive to velocity
+	local v = self.object:get_velocity()
+	local v2 = abs(v.x)+abs(v.z)*.833
+	self.object:set_animation_frame_speed((v2/self.walk_velocity)*25)
+
+	--diffuse object velocity
+	self.object:set_velocity({x = v.x*.8, y = v.y, z = v.z*.8})
+
+	--set_speed
+	if self.acc then
+		self.object:add_velocity(self.acc)
+	end
+
 
 	-- smooth rotation by ThomasMonroe314
 	if self._turn_to then
