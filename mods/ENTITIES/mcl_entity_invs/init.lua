@@ -125,7 +125,7 @@ function mcl_entity_invs.register_inv(entity_name,show_name,size,no_on_righclick
 	if not no_on_righclick then
 		local old_rc = minetest.registered_entities[entity_name].on_rightclick
 		minetest.registered_entities[entity_name].on_rightclick = function(self,clicker)
-			mcl_entity_invs.show_inv_form(self,clicker,show_name)
+			mcl_entity_invs.show_inv_form(self,clicker,"")
 			if old_rc then return old_rc(self,clicker) end
 		end
 	end
