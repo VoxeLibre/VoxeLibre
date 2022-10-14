@@ -3991,27 +3991,29 @@ local mob_step = function(self, dtime)
 			if self._locked_object:is_player() then
 				_locked_object_eye_height = self._locked_object:get_properties().eye_height
 			end
-			local self_rot = self.object:get_rotation()
-			if self.object:get_attach() then
-				self_rot = self.object:get_attach():get_rotation()
-			end
-			local player_pos = self._locked_object:get_pos()
-			local direction_player = vector.direction(vector.add(self.object:get_pos(), vector.new(0, self.head_eye_height*.7, 0)), vector.add(player_pos, vector.new(0, _locked_object_eye_height, 0)))
-			local mob_yaw = math.deg(-(-(self_rot.y)-(-minetest.dir_to_yaw(direction_player))))+self.head_yaw_offset
-			local mob_pitch = math.deg(-dir_to_pitch(direction_player))*self.head_pitch_multiplier
-			if (mob_yaw < -60 or mob_yaw > 60) and not (self.attack and self.type == "monster") then
-				mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.multiply(oldr, 0.9))
-			elseif self.attack and self.type == "monster" then
-				if self.head_yaw == "y" then
-					mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, mob_yaw, 0))
-				elseif self.head_yaw == "z" then
-					mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, 0, -mob_yaw))
+			if _locked_object_eye_height then
+				local self_rot = self.object:get_rotation()
+				if self.object:get_attach() then
+					self_rot = self.object:get_attach():get_rotation()
 				end
-			else
-				if self.head_yaw == "y" then
-					mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, ((mob_yaw-oldr.y)*.3)+oldr.y, 0))
-				elseif self.head_yaw == "z" then
-					mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, 0, -(((mob_yaw-oldr.y)*.3)+oldr.y)*3))
+				local player_pos = self._locked_object:get_pos()
+				local direction_player = vector.direction(vector.add(self.object:get_pos(), vector.new(0, self.head_eye_height*.7, 0)), vector.add(player_pos, vector.new(0, _locked_object_eye_height, 0)))
+				local mob_yaw = math.deg(-(-(self_rot.y)-(-minetest.dir_to_yaw(direction_player))))+self.head_yaw_offset
+				local mob_pitch = math.deg(-dir_to_pitch(direction_player))*self.head_pitch_multiplier
+				if (mob_yaw < -60 or mob_yaw > 60) and not (self.attack and self.type == "monster") then
+					mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.multiply(oldr, 0.9))
+				elseif self.attack and self.type == "monster" then
+					if self.head_yaw == "y" then
+						mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, mob_yaw, 0))
+					elseif self.head_yaw == "z" then
+						mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, 0, -mob_yaw))
+					end
+				else
+					if self.head_yaw == "y" then
+						mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, ((mob_yaw-oldr.y)*.3)+oldr.y, 0))
+					elseif self.head_yaw == "z" then
+						mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, 0, -(((mob_yaw-oldr.y)*.3)+oldr.y)*3))
+					end
 				end
 			end
 		elseif not self._locked_object and math.abs(oldr.y) > 3 and math.abs(oldr.x) < 3 then
