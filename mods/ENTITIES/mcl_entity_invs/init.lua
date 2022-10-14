@@ -102,7 +102,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 
-function mcl_entity_invs.register_inv(entity_name,show_name,size,no_on_righclick)
+function mcl_entity_invs.register_inv(entity_name,show_name,size,no_on_righclick,no_sneak)
 	assert(minetest.registered_entities[entity_name],"mcl_entity_invs.register_inv called with invalid entity: "..tostring(entity_name))
 	minetest.registered_entities[entity_name]._inv_size = size
 	minetest.registered_entities[entity_name]._inv_title = show_name
@@ -125,9 +125,9 @@ function mcl_entity_invs.register_inv(entity_name,show_name,size,no_on_righclick
 	if not no_on_righclick then
 		local old_rc = minetest.registered_entities[entity_name].on_rightclick
 		minetest.registered_entities[entity_name].on_rightclick = function(self,clicker)
-			if clicker:get_player_control().sneak  then
+			if no_sneak or clicker:get_player_control().sneak  then
 				mcl_entity_invs.show_inv_form(self,clicker,"")
-				return
+				if not no_sneak then return end
 			end
 			if old_rc then return old_rc(self,clicker) end
 		end

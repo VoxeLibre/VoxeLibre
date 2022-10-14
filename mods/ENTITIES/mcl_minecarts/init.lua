@@ -678,7 +678,7 @@ register_minecart(
 	"mcl_minecarts_minecart_chest.png",
 	{"mcl_minecarts:minecart", "mcl_chests:chest"},
 	nil, nil, true)
-mcl_entity_invs.register_inv("mcl_minecarts:chest_minecart","Minecart",27)
+mcl_entity_invs.register_inv("mcl_minecarts:chest_minecart","Minecart",27,false,true)
 
 -- Minecart with Furnace
 register_minecart(
