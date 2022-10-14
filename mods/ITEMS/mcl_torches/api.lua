@@ -12,7 +12,7 @@ local smoke_pdef = {
 }
 
 local function spawn_flames_floor(pos, flame_type)
-	
+
 	-- Flames
 	mcl_particles.add_node_particlespawner(pos, {
 		amount = 8,
@@ -36,7 +36,7 @@ local function spawn_flames_wall(pos, flame_type)
 	--local minrelpos, maxrelpos
 	local node = minetest.get_node(pos)
 	local dir = minetest.wallmounted_to_dir(node.param2)
-	
+
 	local smoke_pdef = table.copy(smoke_pdef)
 
 	if dir.x < 0 then
@@ -81,7 +81,7 @@ local function set_flames(pos, flame_type, attached_to)
 			spawn_flames_wall(pos, flame_type)
 		end
 	end
-	
+
 	return function(pos)
 		spawn_flames_floor(pos, flame_type)
 	end
@@ -150,7 +150,7 @@ function mcl_torches.register_torch(def)
 	groups.destroy_by_lava_flow = 1
 	groups.dig_by_piston = 1
 	groups.flame_type = def.flame_type or 1
-	
+
 	local floordef = {
 		description = def.description,
 		_doc_items_longdesc = def.doc_items_longdesc,
@@ -227,7 +227,11 @@ function mcl_torches.register_torch(def)
 			return itemstack
 		end,
 		on_rotate = false,
-		on_construct = def.particles and set_flames(pos, def.flame_type, "floor"),
+		on_construct = function(pos)
+			if def.particles then
+				set_flames(pos, def.flame_type, "floor")
+			end
+		end,
 		on_destruct = def.particles and remove_flames,
 	}
 	minetest.register_node(itemstring, floordef)
@@ -247,13 +251,18 @@ function mcl_torches.register_torch(def)
 		light_source = def.light,
 		groups = groups_wall,
 		drop = def.drop or itemstring,
+		use_texture_alpha = "clip",
 		selection_box = {
 			type = "wallmounted",
 			wall_side = {-0.5, -0.3, -0.1, -0.2, 0.325, 0.1},
 		},
 		sounds = def.sounds,
 		on_rotate = false,
-		on_construct = def.particles and set_flames(pos, def.flame_type, "wall"),
+		on_construct = function(pos)
+			if def.particles then
+				set_flames(pos, def.flame_type, "wall")
+			end
+		end,
 		on_destruct = def.particles and remove_flames,
 	}
 	minetest.register_node(itemstring_wall, walldef)
