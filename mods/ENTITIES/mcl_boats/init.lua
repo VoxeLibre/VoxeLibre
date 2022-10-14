@@ -65,9 +65,13 @@ local function set_double_attach(boat)
 	boat._passenger:set_attach(boat.object, "",
 		{x = 0, y = 0.42, z = -2.2}, {x = 0, y = 0, z = 0})
 end
+local function set_choat_attach(boat)
+	boat._driver:set_attach(boat.object, "",
+		{x = 0, y = 0.42, z = 1.8}, {x = 0, y = 0, z = 0})
+end
 
 local function attach_object(self, obj)
-	if self._driver then
+	if self._driver and not self._inv_id then
 		if self._driver:is_player() then
 			self._passenger = obj
 		else
@@ -77,7 +81,11 @@ local function attach_object(self, obj)
 		set_double_attach(self)
 	else
 		self._driver = obj
-		set_attach(self)
+		if self._inv_id then
+			set_choat_attach(self)
+		else
+			set_attach(self)
+		end
 	end
 
 	local visual_size = get_visual_size(obj)
@@ -123,8 +131,8 @@ local boat = {
 	pointable = true,
 	-- Warning: Do not change the position of the collisionbox top surface,
 	-- lowering it causes the boat to fall through the world if underwater
-	collisionbox = {-0.5, -0.35, -0.5, 0.5, 0.3, 0.5},
-	selectionbox = {-0.7, -0.35, -0.7, 0.7, 0.3, 0.7},
+	collisionbox = {-0.5, -0.15, -0.5, 0.5, 0.55, 0.5},
+	selectionbox = {-0.7, -0.15, -0.7, 0.7, 0.55, 0.7},
 	visual = "mesh",
 	mesh = "mcl_boats_boat.b3d",
 	textures = {"mcl_boats_texture_oak_boat.png", "mcl_boats_texture_oak_boat.png", "mcl_boats_texture_oak_boat.png", "mcl_boats_texture_oak_boat.png", "mcl_boats_texture_oak_boat.png"},
@@ -417,6 +425,8 @@ local cboat = table.copy(boat)
 cboat.mesh = "mcl_boats_boat_with_chest.b3d"
 cboat.textures = {"mcl_boats_texture_oak_chest_boat.png", "mcl_boats_texture_oak_chest_boat.png", "mcl_boats_texture_oak_chest_boat.png", "mcl_boats_texture_oak_chest_boat.png", "mcl_boats_texture_oak_chest_boat.png"}
 cboat._itemstring = "mcl_boats:chest_boat"
+cboat.collisionbox = {-0.5, -0.15, -0.5, 0.5, 0.75, 0.5}
+cboat.selectionbox = {-0.7, -0.15, -0.7, 0.7, 0.75, 0.7}
 
 minetest.register_entity("mcl_boats:chest_boat", cboat)
 mcl_entity_invs.register_inv("mcl_boats:chest_boat","Boat",27)
