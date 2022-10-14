@@ -159,3 +159,5 @@ dofile(path .. "/strider.lua")
 
 dofile(path .. "/turtle.lua")
 dofile(path .. "/bee.lua")
+
+dofile(path .. "/fox.lua")
