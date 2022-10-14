@@ -137,7 +137,12 @@ local piglin = {
 				if c_pos then
 					self.what_traded = trading_items[math.random(#trading_items)]
 					for x = 1, math.random(self.what_traded.amount_min, self.what_traded.amount_max) do
-						minetest.add_item({x=math.random(c_pos.x - 1, c_pos.x + 1), y=math.random(c_pos.y - 1, c_pos.y + 1), z= math.random(c_pos.z - 1, c_pos.z + 1)}, self.what_traded.itemstring)
+						local p = c_pos
+						local nn=minetest.find_nodes_in_area_under_air(vector.offset(c_pos,-1,-1,-1),vector.offset(c_pos,1,1,1),{"group:solid"})
+						if nn and #nn > 0 then
+							p = vector.offset(nn[math.random(#nn)],0,1,0)
+						end
+						minetest.add_item(p, self.what_traded.itemstring)
 					end
 				end
 			end)
