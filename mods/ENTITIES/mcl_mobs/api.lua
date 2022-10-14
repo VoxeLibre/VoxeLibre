@@ -1014,9 +1014,6 @@ local check_for_death = function(self, cause, cmi_cause)
 		length = max(frames / speed, 0) + DEATH_DELAY
 		set_animation(self, "die")
 	else
-		local rot = self.object:get_rotation()
-		rot.z = pi/2
-		self.object:set_rotation(rot)
 		length = 1 + DEATH_DELAY
 		set_animation(self, "stand", true)
 	end
@@ -3848,6 +3845,12 @@ local mob_step = function(self, dtime)
 				self.lifetimer = 20
 			end
 		end
+	end
+
+	if self.state and self.state=="die" or check_for_death(self) then
+		local rot = self.object:get_rotation()
+		rot.z = ((pi/2-rot.z)*.2)+rot.z
+		self.object:set_rotation(rot)
 	end
 
 	if not player_in_active_range(self) then
