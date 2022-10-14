@@ -119,8 +119,7 @@ local piglin = {
 	on_pick_up  = function(self, itementity)
 		local item = itementity.itemstring:split(" ")[1]
 		local it = ItemStack(itementity.itemstring)
-		--return true --do not pick up
-		if item == "mcl_core:gold_ingot" and self.state ~= "attack" and self.gold_items < 3 then
+		if item == "mcl_core:gold_ingot" and self.state ~= "attack" and self.gold_items and self.gold_items < 3 then
 			it:take_item(1)
 			self.state = "stand"
 			self.object:set_animation({x=0,y=79})
