@@ -1409,9 +1409,16 @@ local do_jump = function(self)
 		return false
 	end
 
+	local v = self.object:get_velocity()
+	local v2 = abs(v.x)+abs(v.z)*.833
+	local jump_c_multiplier = 1
+	if v2/self.walk_velocity/2>1 then
+		jump_c_multiplier = v2/self.walk_velocity/2
+	end
+
 	-- where is front
-	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
-	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)
+	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+.4
+	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+.4
 
 	-- what is in front of mob?
 	nod = node_ok({
