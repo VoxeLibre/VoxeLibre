@@ -1449,7 +1449,7 @@ local do_jump = function(self)
 
 			local v = self.object:get_velocity()
 
-			v.y = self.jump_height
+			v.y = self.jump_height + 0.1
 
 			set_animation(self, "jump") -- only when defined
 
