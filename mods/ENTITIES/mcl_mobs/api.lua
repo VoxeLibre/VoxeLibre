@@ -1385,7 +1385,6 @@ local do_jump = function(self)
 	if not self.jump
 	or self.jump_height == 0
 	or self.fly
-	or self.fly_in
 	or (self.child and self.type ~= "monster")
 	or self.order == "stand" then
 		return false
