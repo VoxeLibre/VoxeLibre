@@ -130,10 +130,10 @@ local function add_particles(pos, radius)
 		time = 0.125,
 		minpos = pos,
 		maxpos = pos,
-		minvel = {x = -radius, y = -radius, z = -radius},
-		maxvel = {x = radius, y = radius, z = radius},
-		minacc = vector.new(),
-		maxacc = vector.new(),
+		minvel = vector.new(-radius, -radius, -radius),
+		maxvel = vector.new(radius, radius, radius),
+		minacc = vector.zero(),
+		maxacc = vector.zero(),
 		minexptime = 0.5,
 		maxexptime = 1.0,
 		minsize = radius * 0.5,
@@ -207,7 +207,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 				local npos_z = math.floor(rpos_z + 0.5)
 				local npos = { x = npos_x, y = npos_y, z = npos_z }
 				local idx = (npos_z - emin_z) * zstride + (npos_y - emin_y) * ystride +
-						npos_x - emin_x + 1
+					npos_x - emin_x + 1
 
 				local cid = data[idx]
 				local br = node_blastres[cid] or INDESTRUCT_BLASTRES
@@ -288,7 +288,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 					rdir_y = rdir_y / rdir_len
 					rdir_z = rdir_z / rdir_len
 
-					for i=0, rdir_len / STEP_LENGTH do
+					for i = 0, rdir_len / STEP_LENGTH do
 						rpos_x = rpos_x + rdir_x * STEP_LENGTH
 						rpos_y = rpos_y + rdir_y * STEP_LENGTH
 						rpos_z = rpos_z + rdir_z * STEP_LENGTH
@@ -296,7 +296,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 						local npos_y = math.floor(rpos_y + 0.5)
 						local npos_z = math.floor(rpos_z + 0.5)
 						local idx = (npos_z - emin_z) * zstride + (npos_y - emin_y) * ystride +
-								npos_x - emin_x + 1
+							npos_x - emin_x + 1
 
 
 						local cid = data[idx]
@@ -333,16 +333,17 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 				end
 
 				if sleep_formspec_doesnt_close_mt53 then
-					minetest.after(0.3, function() -- 0.2 is minimum delay for closing old formspec and open died formspec -- TODO: REMOVE THIS IN THE FUTURE
-						if not obj:is_player() then
-							return
-						end
-						mcl_util.deal_damage(obj, damage, {type = "explosion", direct = direct, source = source})
+					minetest.after(0.3,
+						function() -- 0.2 is minimum delay for closing old formspec and open died formspec -- TODO: REMOVE THIS IN THE FUTURE
+							if not obj:is_player() then
+								return
+							end
+							mcl_util.deal_damage(obj, damage, { type = "explosion", direct = direct, source = source })
 
-						obj:add_velocity(vector.multiply(punch_dir, impact * 20))
-					end)
+							obj:add_velocity(vector.multiply(punch_dir, impact * 20))
+						end)
 				else
-					mcl_util.deal_damage(obj, damage, {type = "explosion", direct = direct, source = source})
+					mcl_util.deal_damage(obj, damage, { type = "explosion", direct = direct, source = source })
 
 					if obj:is_player() or ent.tnt_knockback then
 						obj:add_velocity(vector.multiply(punch_dir, impact * 20))
@@ -388,23 +389,24 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 	-- We use bulk_set_node instead of LVM because we want to have on_destruct and
 	-- on_construct being called
 	if #airs > 0 then
-		bulk_set_node(airs, {name="air"})
+		bulk_set_node(airs, { name = "air" })
 	end
 	if #fires > 0 then
-		bulk_set_node(fires, {name="mcl_fire:fire"})
+		bulk_set_node(fires, { name = "mcl_fire:fire" })
 	end
 	-- Update falling nodes
-	for a=1, #airs do
+	for a = 1, #airs do
 		local p = airs[a]
-		check_for_falling({x=p.x, y=p.y+1, z=p.z})
+		check_for_falling(vector.offset(p, 0, 1, 0))
 	end
-	for f=1, #fires do
+	for f = 1, #fires do
 		local p = fires[f]
-		check_for_falling({x=p.x, y=p.y+1, z=p.z})
+		check_for_falling(vector.offset(p, 0, 1, 0))
 	end
 
 	-- Log explosion
-	minetest.log("action", "Explosion at "..pos_to_string(pos).." with strength "..strength.." and radius "..radius)
+	minetest.log("action", "Explosion at " .. pos_to_string(pos) .. " with strength " .. strength .. " and radius " ..
+		radius)
 end
 
 -- Create an explosion with strength at pos.
@@ -428,6 +430,11 @@ end
 -- griefing - If true, the explosion will destroy nodes (default: true)
 -- grief_protected - If true, the explosion will also destroy nodes which have
 --                   been protected (default: false)
+---@param pos Vector
+---@param strength number
+---@param info {drop_chance: number, max_blast_resistance: number, sound: boolean, particles: boolean, fire: boolean, griefing: boolean, grief_protected: boolean}
+---@param direct? ObjectRef
+---@param source? ObjectRef
 function mcl_explosions.explode(pos, strength, info, direct, source)
 	if info == nil then
 		info = {}
