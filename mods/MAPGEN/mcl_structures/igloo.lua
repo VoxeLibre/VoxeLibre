@@ -142,7 +142,7 @@ mcl_structures.register_structure("igloo",{
 	biomes = { 	"ColdTaiga", "IcePlainsSpikes",	"IcePlains" },
 	place_func = mcl_structures.generate_igloo,
 	loot = {
-		["mcl_chests:chest"] = {{
+		["mcl_chests:chest_small"] = {{
 			stacks_min = 1,
 			stacks_max = 1,
 			items = {
@@ -160,6 +160,7 @@ mcl_structures.register_structure("igloo",{
 				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10 },
 				{ itemstring = "mcl_tools:axe_stone", weight = 2 },
 				{ itemstring = "mcl_core:emerald", weight = 1 },
+				{ itemstring = "mcl_core:apple_gold", weight = 1 },
 			}
 		}},
 	}
