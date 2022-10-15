@@ -4831,7 +4831,7 @@ local function register_dimension_decorations()
 		fill_ratio = 0.02,
 		biomes = {"CrimsonForest"},
 		y_min = mcl_vars.mg_lava_nether_max + 1,
-		y_max = mcl_vars.mg_lava_nether_max  - 10,
+		y_max = mcl_vars.mg_nether_max  - 10,
 		flags = "all_floors",
 		decoration = "mcl_crimson:crimson_fungus",
 	})
@@ -4884,6 +4884,7 @@ local function register_dimension_decorations()
 		fill_ratio = 0.063,
 		biomes = {"CrimsonForest"},
 		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max -5,
 		flags = "all_ceilings",
 		height = 2,
 		height_max = 8,

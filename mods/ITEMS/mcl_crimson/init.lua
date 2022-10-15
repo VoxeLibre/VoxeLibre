@@ -549,33 +549,3 @@ mcl_dye.register_on_bone_meal_apply(function(pt,user)
 		spread_nether_plants(pt.under,node)
 	end
 end)
-
-minetest.register_abm({
-	label = "mcl_crimson:crimson_fungus",
-	nodenames = {"mcl_crimson:crimson_fungus"},
-	interval = 11,
-	chance = 128,
-	action = function(pos)
-		local nodepos = minetest.get_node(vector.offset(pos, 0, -1, 0))
-		if nodepos.name == "mcl_crimson:crimson_nylium" or nodepos.name == "mcl_nether:netherrack" then
-			if pos.y < -28400 then
-				generate_crimson_tree(pos)
-			end
-		end
-	end
-})
-
-minetest.register_abm({
-	label = "mcl_crimson:warped_fungus",
-	nodenames = {"mcl_crimson:warped_fungus"},
-	interval = 11,
-	chance = 128,
-	action = function(pos)
-		local nodepos = minetest.get_node(vector.offset(pos, 0, -1, 0))
-		if nodepos.name == "mcl_crimson:warped_nylium" or nodepos.name == "mcl_nether:netherrack" then
-			if pos.y < -28400 then
-				generate_warped_tree(pos)
-			end
-		end
-	end
-})
