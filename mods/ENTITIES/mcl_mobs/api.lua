@@ -7,8 +7,8 @@ local HORNY_TIME = 30
 local HORNY_AGAIN_TIME = 300
 local CHILD_GROW_TIME = 60*20
 local DEATH_DELAY = 0.5
-local DEFAULT_FALL_SPEED = -10
-local FLOP_HEIGHT = 5.0
+local DEFAULT_FALL_SPEED = -9.81*1.5
+local FLOP_HEIGHT = 6
 local FLOP_HOR_SPEED = 1.5
 local ENTITY_CRAMMING_MAX = 24
 local CRAMMING_DAMAGE = 3
@@ -187,7 +187,7 @@ local enable_physics = function(object, luaentity, ignore_check)
 			physical = true
 		})
 		object:set_velocity({x=0,y=0,z=0})
-		object:set_acceleration({x=0,y=-9.81,z=0})
+		object:set_acceleration({x=0,y=DEFAULT_FALL_SPEED,z=0})
 	end
 end
 
@@ -514,9 +514,6 @@ local flight_check = function(self)
 	for _,checknode in pairs(fly_in) do
 		if nod == checknode then
 			return true
-		elseif checknode == "__airlike" or def.walkable == false and
-				(def.liquidtype == "none" or minetest.get_item_group(nod, "fake_liquid") == 1) then
-			return true
 		end
 	end
 
@@ -556,12 +553,13 @@ local set_animation = function(self, anim, fixed_frame)
 	else
 		a_end = self.animation[anim .. "_end"]
 	end
-
-	self.object:set_animation({
-		x = a_start,
-		y = a_end},
-		self.animation[anim .. "_speed"] or self.animation.speed_normal or 15,
-		0, self.animation[anim .. "_loop"] ~= false)
+	if a_start and a_end then
+		self.object:set_animation({
+			x = a_start,
+			y = a_end},
+			self.animation[anim .. "_speed"] or self.animation.speed_normal or 15,
+			0, self.animation[anim .. "_loop"] ~= false)
+		end
 end
 
 
@@ -686,7 +684,7 @@ local effect = function(pos, amount, texture, min_size, max_size, radius, gravit
 	radius = radius or 2
 	min_size = min_size or 0.5
 	max_size = max_size or 1
-	gravity = gravity or -10
+	gravity = gravity or DEFAULT_FALL_SPEED
 	glow = glow or 0
 	go_down = go_down or false
 
@@ -909,10 +907,10 @@ local check_for_death = function(self, cause, cmi_cause)
 
 		-- play damage sound if health was reduced and make mob flash red.
 		if damaged then
-			add_texture_mod(self, "^[colorize:red:130")
-			minetest.after(.2, function(self)
+			add_texture_mod(self, "^[colorize:#d42222:175")
+			minetest.after(1, function(self)
 				if self and self.object then
-					remove_texture_mod(self, "^[colorize:red:130")
+					remove_texture_mod(self, "^[colorize:#d42222:175")
 				end
 			end, self)
 			mob_sound(self, "damage")
@@ -1454,7 +1452,7 @@ local do_jump = function(self)
 
 			local v = self.object:get_velocity()
 
-			v.y = self.jump_height + 0.1
+			v.y = self.jump_height + 0.1 * 3
 
 			set_animation(self, "jump") -- only when defined
 
@@ -1467,7 +1465,7 @@ local do_jump = function(self)
 				end
 				self.object:set_acceleration({
 					x = v.x * 2,
-					y = -10,
+					y = DEFAULT_FALL_SPEED,
 					z = v.z * 2,
 				})
 			end, self, v)
@@ -1590,7 +1588,7 @@ local breed = function(self)
 				-- jump when fully grown so as not to fall into ground
 				self.object:set_velocity({
 					x = 0,
-					y = self.jump_height,
+					y = self.jump_height*3,
 					z = 0
 				})
 			end
@@ -2384,15 +2382,18 @@ local follow_flop = function(self)
 			self.state = "flop"
 			self.object:set_acceleration({x = 0, y = DEFAULT_FALL_SPEED, z = 0})
 
-			local sdef = minetest.registered_nodes[self.standing_on]
+			local p = self.object:get_pos()
+			local sdef = minetest.registered_nodes[node_ok(vector.add(p, vector.new(0,self.collisionbox[2]-0.2,0))).name]
 			-- Flop on ground
 			if sdef and sdef.walkable then
-				mob_sound(self, "flop")
-				self.object:set_velocity({
-					x = random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
-					y = FLOP_HEIGHT,
-					z = random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
-				})
+				if self.object:get_velocity().y < 0.1 then
+					mob_sound(self, "flop")
+					self.object:set_velocity({
+						x = random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
+						y = FLOP_HEIGHT,
+						z = random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
+					})
+				end
 			end
 
 			set_animation(self, "stand", true)
@@ -3232,7 +3233,7 @@ local falling = function(self, pos)
 		-- apply gravity when moving up
 		self.object:set_acceleration({
 			x = 0,
-			y = -10,
+			y = DEFAULT_FALL_SPEED,
 			z = 0
 		})
 
@@ -3453,23 +3454,26 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			end
 		end
 		-- knock back effect (only on full punch)
-		if not die
-		and self.knock_back
+		if self.knock_back
 		and tflp >= punch_interval then
+			-- direction error check
+			dir = dir or {x = 0, y = 0, z = 0}
 
 			local v = self.object:get_velocity()
 			local r = 1.4 - min(punch_interval, 1.4)
-			local kb = r * 2.0
+			local kb = r * (abs(v.x)+abs(v.z))
 			local up = 2
 
+			if die==true then
+				kb=kb*2
+			end
+
 			-- if already in air then dont go up anymore when hit
-			if v.y ~= 0
+			if abs(v.y) > 0.1
 			or self.fly then
 				up = 0
 			end
 
-			-- direction error check
-			dir = dir or {x = 0, y = 0, z = 0}
 
 			-- check if tool already has specific knockback value
 			if tool_capabilities.damage_groups["knockback"] then
@@ -3490,16 +3494,22 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 				kb = kb + luaentity._knockback
 			end
 			--self._kb_turn = false
-			self._turn_to=self.object:get_yaw()+0.85
+			self._turn_to=self.object:get_yaw()+1.57
+			self.frame_speed_multiplier=2.3
+			if self.animation.run_end then
+				set_animation(self, "run")
+			elseif self.animation.walk_end then
+				set_animation(self, "walk")
+			end
 			minetest.after(0.2, function()
 				if self and self.object then
+					self.frame_speed_multiplier=1
 					self._kb_turn = true
 				end
 			end)
-
-			self.object:set_velocity({
+			self.object:add_velocity({
 				x = dir.x * kb,
-				y = dir.y * kb + up * 2,
+				y = up*2,
 				z = dir.z * kb
 			})
 
@@ -3510,21 +3520,13 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	-- if skittish then run away
 	if not die and self.runaway == true and self.state ~= "flop" then
 
-		local lp = hitter:get_pos()
-		local s = self.object:get_pos()
-		local vec = {
-			x = lp.x - s.x,
-			y = lp.y - s.y,
-			z = lp.z - s.z
-		}
-
-		local yaw = (atan(vec.z / vec.x) + 3 * pi / 2) - self.rotate
-
-		if lp.x > s.x then
-			yaw = yaw + pi
-		end
-
-		yaw = set_yaw(self, yaw, 6)
+		yaw = set_yaw(self, minetest.dir_to_yaw(vector.direction(hitter:get_pos(), self.object:get_pos())))
+		minetest.after(0.2,function()
+			if self and self.object then
+				yaw = set_yaw(self, minetest.dir_to_yaw(vector.direction(hitter:get_pos(), self.object:get_pos())))
+				set_velocity(self, self.run_velocity)
+			end
+		end)
 		self.state = "runaway"
 		self.runaway_timer = 0
 		self.following = nil
@@ -3854,11 +3856,21 @@ local mob_step = function(self, dtime)
 		end
 	end
 
-	if self.state and self.state=="die" or check_for_death(self) then
+	local v = self.object:get_velocity()
+	local d = 0.85
+
+	if self.state and self.state=="die" or check_for_death(self) and not self.animation.die_end then
+		d = 0.92
 		local rot = self.object:get_rotation()
 		rot.z = ((pi/2-rot.z)*.2)+rot.z
 		self.object:set_rotation(rot)
 	end
+
+	if v then
+		--diffuse object velocity
+		self.object:set_velocity({x = v.x*d, y = v.y, z = v.z*d})
+	end
+
 
 	if not player_in_active_range(self) then
 		set_animation(self, "stand", true)
@@ -3901,12 +3913,13 @@ local mob_step = function(self, dtime)
 	--set animation speed relitive to velocity
 	local v = self.object:get_velocity()
 	if v then
-		local v2 = abs(v.x)+abs(v.z)*.833
-		self.object:set_animation_frame_speed((v2/self.walk_velocity)*25)
-
-
-		--diffuse object velocity
-		self.object:set_velocity({x = v.x*.85, y = v.y, z = v.z*.85})
+		if self.frame_speed_multiplier then
+			local v2 = abs(v.x)+abs(v.z)*.833
+			if not self.animation.walk_speed then
+				self.animation.walk_speed = 25
+			end
+			self.object:set_animation_frame_speed((v2/self.walk_velocity)*self.animation.walk_speed*self.frame_speed_multiplier)
+		end
 
 		--set_speed
 		if self.acc then
@@ -4299,7 +4312,7 @@ minetest.register_entity(name, {
 	arrow = def.arrow,
 	shoot_interval = def.shoot_interval,
 	sounds = def.sounds or {},
-	animation = def.animation,
+	animation = def.animation or {},
 	follow = def.follow,
 	nofollow = def.nofollow,
 	can_open_doors = def.can_open_doors,
@@ -4325,6 +4338,7 @@ minetest.register_entity(name, {
 	hornytimer = 0,
 	gotten = false,
 	health = 0,
+	frame_speed_multiplier = 1,
 	reach = def.reach or 3,
 	htimer = 0,
 	texture_list = def.textures,
