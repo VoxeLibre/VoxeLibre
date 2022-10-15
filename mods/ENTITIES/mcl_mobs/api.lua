@@ -7,7 +7,7 @@ local HORNY_TIME = 30
 local HORNY_AGAIN_TIME = 300
 local CHILD_GROW_TIME = 60*20
 local DEATH_DELAY = 0.5
-local DEFAULT_FALL_SPEED = -10
+local DEFAULT_FALL_SPEED = -9.81*1.5
 local FLOP_HEIGHT = 5.0
 local FLOP_HOR_SPEED = 1.5
 local ENTITY_CRAMMING_MAX = 24
@@ -187,7 +187,7 @@ local enable_physics = function(object, luaentity, ignore_check)
 			physical = true
 		})
 		object:set_velocity({x=0,y=0,z=0})
-		object:set_acceleration({x=0,y=-9.81,z=0})
+		object:set_acceleration({x=0,y=DEFAULT_FALL_SPEED,z=0})
 	end
 end
 
@@ -514,9 +514,6 @@ local flight_check = function(self)
 	for _,checknode in pairs(fly_in) do
 		if nod == checknode then
 			return true
-		elseif checknode == "__airlike" or def.walkable == false and
-				(def.liquidtype == "none" or minetest.get_item_group(nod, "fake_liquid") == 1) then
-			return true
 		end
 	end
 
@@ -687,7 +684,7 @@ local effect = function(pos, amount, texture, min_size, max_size, radius, gravit
 	radius = radius or 2
 	min_size = min_size or 0.5
 	max_size = max_size or 1
-	gravity = gravity or -10
+	gravity = gravity or DEFAULT_FALL_SPEED
 	glow = glow or 0
 	go_down = go_down or false
 
@@ -1455,7 +1452,7 @@ local do_jump = function(self)
 
 			local v = self.object:get_velocity()
 
-			v.y = self.jump_height + 0.1
+			v.y = self.jump_height + 0.1 * 3
 
 			set_animation(self, "jump") -- only when defined
 
@@ -1468,7 +1465,7 @@ local do_jump = function(self)
 				end
 				self.object:set_acceleration({
 					x = v.x * 2,
-					y = -10,
+					y = DEFAULT_FALL_SPEED,
 					z = v.z * 2,
 				})
 			end, self, v)
@@ -1591,7 +1588,7 @@ local breed = function(self)
 				-- jump when fully grown so as not to fall into ground
 				self.object:set_velocity({
 					x = 0,
-					y = self.jump_height,
+					y = self.jump_height*3,
 					z = 0
 				})
 			end
@@ -3233,7 +3230,7 @@ local falling = function(self, pos)
 		-- apply gravity when moving up
 		self.object:set_acceleration({
 			x = 0,
-			y = -10,
+			y = DEFAULT_FALL_SPEED,
 			z = 0
 		})
 
