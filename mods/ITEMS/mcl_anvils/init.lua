@@ -1,4 +1,6 @@
 local S = minetest.get_translator(minetest.get_current_modname())
+local F = minetest.formspec_escape
+local C = minetest.colorize
 
 local MAX_NAME_LENGTH = 35
 local MAX_WEAR = 65535
@@ -10,41 +12,65 @@ local MATERIAL_TOOL_REPAIR_BOOST = {
 	MAX_WEAR, -- 100%
 }
 
+---@param set_name? string
 local function get_anvil_formspec(set_name)
 	if not set_name then
 		set_name = ""
 	end
-	return "size[9,8.75]"..
-	"background[-0.19,-0.25;9.41,9.49;mcl_anvils_inventory.png]"..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
-	"list[current_player;main;0,4.5;9,3;9]"..
-	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
-	"list[current_player;main;0,7.74;9,1;]"..
-	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-	"list[context;input;1,2.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(1,2.5,1,1)..
-	"list[context;input;4,2.5;1,1;1]"..
-	mcl_formspec.get_itemslot_bg(4,2.5,1,1)..
-	"list[context;output;8,2.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(8,2.5,1,1)..
-	"label[3,0.1;"..minetest.formspec_escape(minetest.colorize("#313131", S("Repair and Name"))).."]"..
-	"field[3.25,1;4,1;name;;"..minetest.formspec_escape(set_name).."]"..
-	"field_close_on_enter[name;false]"..
-	"button[7,0.7;2,1;name_button;"..minetest.formspec_escape(S("Set Name")).."]"..
-	"listring[context;output]"..
-	"listring[current_player;main]"..
-	"listring[context;input]"..
-	"listring[current_player;main]"
+
+	return table.concat({
+		"formspec_version[4]",
+		"size[11.75,10.425]",
+
+		"label[4.125,0.375;" .. F(C(mcl_formspec.label_color, S("Repair and Name"))) .. "]",
+
+		"image[0.875,0.375;1.75,1.75;mcl_anvils_inventory_hammer.png]",
+
+		"field[4.125,0.75;7.25,1;name;;" .. F(set_name) .. "]",
+		"field_close_on_enter[name;false]",
+		"set_focus[name;true]",
+
+		mcl_formspec.get_itemslot_bg_v4(1.625, 2.6, 1, 1),
+		"list[context;input;1.625,2.6;1,1;]",
+
+		"image[3.5,2.6;1,1;mcl_anvils_inventory_cross.png]",
+
+		mcl_formspec.get_itemslot_bg_v4(5.375, 2.6, 1, 1),
+		"list[context;input;5.375,2.6;1,1;1]",
+
+		"image[6.75,2.6;2,1;mcl_anvils_inventory_arrow.png]",
+
+		mcl_formspec.get_itemslot_bg_v4(9.125, 2.6, 1, 1),
+		"list[context;output;9.125,2.6;1,1;]",
+
+		-- Player Inventory
+
+		mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
+		"list[current_player;main;0.375,5.1;9,3;9]",
+
+		mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
+		"list[current_player;main;0.375,9.05;9,1;]",
+
+		-- Listrings
+
+		"listring[context;output]",
+		"listring[current_player;main]",
+		"listring[context;input]",
+		"listring[current_player;main]",
+	})
 end
 
 -- Given a tool and material stack, returns how many items of the material stack
 -- needs to be used up to repair the tool.
+---@param tool ItemStack
+---@param material ItemStack
+---@return integer
 local function get_consumed_materials(tool, material)
 	local wear = tool:get_wear()
 	--local health = (MAX_WEAR - wear)
 	local matsize = material:get_count()
 	local materials_used = 0
-	for m=1, math.min(4, matsize) do
+	for m = 1, math.min(4, matsize) do
 		materials_used = materials_used + 1
 		if (wear - MATERIAL_TOOL_REPAIR_BOOST[m]) <= 0 then
 			break
@@ -53,6 +79,9 @@ local function get_consumed_materials(tool, material)
 	return materials_used
 end
 
+---@param table table
+---@param value any
+---@return boolean
 local function contains(table, value)
 	for _, i in pairs(table) do
 		if i == value then
@@ -66,6 +95,8 @@ end
 -- Returns ("tool", input1, input2) if input1 is tool and input2 is material.
 -- Returns ("material", input2, input1) if input1 is material and input2 is tool.
 -- Returns nil otherwise.
+---@param input1 ItemStack
+---@param input2 ItemStack
 local function distinguish_tool_and_material(input1, input2)
 	local def1 = input1:get_definition()
 	local def2 = input2:get_definition()
@@ -84,7 +115,8 @@ local function distinguish_tool_and_material(input1, input2)
 	end
 end
 
--- Helper function to make sure update_anvil_slots NEVER overstacks the output slot
+---Helper function to make sure update_anvil_slots NEVER overstacks the output slot
+---@param stack ItemStack
 local function fix_stack_size(stack)
 	if not stack or stack == "" then return "" end
 	local count = stack:get_count()
@@ -99,6 +131,7 @@ end
 
 -- Update the inventory slots of an anvil node.
 -- meta: Metadata of anvil node
+---@param meta NodeMetaRef
 local function update_anvil_slots(meta)
 	local inv = meta:get_inventory()
 	local new_name = meta:get_string("set_name")
@@ -137,7 +170,7 @@ local function update_anvil_slots(meta)
 
 			name_item = input1
 			new_output = name_item
-		-- Tool + repair item
+			-- Tool + repair item
 		else
 			-- Any tool can have a repair item. This may be defined in the tool's item definition
 			-- as an itemstring in the field `_repair_material`. Only if this field is set, the
@@ -185,7 +218,7 @@ local function update_anvil_slots(meta)
 				new_output = ""
 			end
 		end
-	-- Exactly 1 input slot occupied
+		-- Exactly 1 input slot occupied
 	elseif (not input1:is_empty() and input2:is_empty()) or (input1:is_empty() and not input2:is_empty()) then
 		-- Just rename item
 		if input1:is_empty() then
@@ -231,28 +264,32 @@ local function update_anvil_slots(meta)
 	end
 end
 
--- Drop input items of anvil at pos with metadata meta
+---Drop input items of anvil at pos with metadata meta
+---@param pos Vector
+---@param meta NodeMetaRef
 local function drop_anvil_items(pos, meta)
 	local inv = meta:get_inventory()
-	for i=1, inv:get_size("input") do
+	for i = 1, inv:get_size("input") do
 		local stack = inv:get_stack("input", i)
 		if not stack:is_empty() then
-			local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
+			local p = vector.offset(pos, math.random(0, 10) / 10 - 0.5, 0, math.random(0, 10) / 10 - 0.5)
 			minetest.add_item(p, stack)
 		end
 	end
 end
 
+---@param pos Vector
+---@param node node
 local function damage_particles(pos, node)
 	minetest.add_particlespawner({
 		amount = 30,
 		time = 0.1,
-		minpos = vector.add(pos, {x=-0.5, y=-0.5, z=-0.5}),
-		maxpos = vector.add(pos, {x=0.5, y=-0.25, z=0.5}),
-		minvel = {x=-0.5, y=0.05, z=-0.5},
-		maxvel = {x=0.5, y=0.3, z=0.5},
-		minacc = {x=0, y=-9.81, z=0},
-		maxacc = {x=0, y=-9.81, z=0},
+		minpos = vector.offset(pos, -0.5, -0.5, -0.5),
+		maxpos = vector.offset(pos, 0.5, -0.25, 0.5),
+		minvel = vector.new(-0.5, 0.05, -0.5),
+		maxvel = vector.new(0.5, 0.3, 0.5),
+		minacc = vector.new(0, -9.81, 0),
+		maxacc = vector.new(0, -9.81, 0),
 		minexptime = 0.1,
 		maxexptime = 0.5,
 		minsize = 0.4,
@@ -267,12 +304,12 @@ local function destroy_particles(pos, node)
 	minetest.add_particlespawner({
 		amount = math.random(20, 30),
 		time = 0.1,
-		minpos = vector.add(pos, {x=-0.4, y=-0.4, z=-0.4}),
-		maxpos = vector.add(pos, {x=0.4, y=0.4, z=0.4}),
-		minvel = {x=-0.5, y=-0.1, z=-0.5},
-		maxvel = {x=0.5, y=0.2, z=0.5},
-		minacc = {x=0, y=-9.81, z=0},
-		maxacc = {x=0, y=-9.81, z=0},
+		minpos = vector.offset(pos, -0.4, -0.4, -0.4),
+		maxpos = vector.offset(pos, 0.4, 0.4, 0.4),
+		minvel = vector.new(-0.5, -0.1, -0.5),
+		maxvel = vector.new(0.5, 0.2, 0.5),
+		minacc = vector.new(0, -9.81, 0),
+		maxacc = vector.new(0, -9.81, 0),
 		minexptime = 0.2,
 		maxexptime = 0.65,
 		minsize = 0.8,
@@ -289,28 +326,29 @@ end
 local function damage_anvil(pos)
 	local node = minetest.get_node(pos)
 	if node.name == "mcl_anvils:anvil" then
-		minetest.swap_node(pos, {name="mcl_anvils:anvil_damage_1", param2=node.param2})
+		minetest.swap_node(pos, { name = "mcl_anvils:anvil_damage_1", param2 = node.param2 })
 		damage_particles(pos, node)
-		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, {pos=pos, max_hear_distance=16}, true)
+		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, { pos = pos, max_hear_distance = 16 }, true)
 		return false
 	elseif node.name == "mcl_anvils:anvil_damage_1" then
-		minetest.swap_node(pos, {name="mcl_anvils:anvil_damage_2", param2=node.param2})
+		minetest.swap_node(pos, { name = "mcl_anvils:anvil_damage_2", param2 = node.param2 })
 		damage_particles(pos, node)
-		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, {pos=pos, max_hear_distance=16}, true)
+		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, { pos = pos, max_hear_distance = 16 }, true)
 		return false
 	elseif node.name == "mcl_anvils:anvil_damage_2" then
 		-- Destroy anvil
 		local meta = minetest.get_meta(pos)
 		drop_anvil_items(pos, meta)
-		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dug, {pos=pos, max_hear_distance=16}, true)
+		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dug, { pos = pos, max_hear_distance = 16 }, true)
 		minetest.remove_node(pos)
 		destroy_particles(pos, node)
-		minetest.check_single_for_falling({x=pos.x, y=pos.y+1, z=pos.z})
+		minetest.check_single_for_falling(vector.offset(pos, 0, 1, 0))
 		return true
 	end
 end
 
--- Roll a virtual dice and damage anvil at a low chance.
+---Roll a virtual dice and damage anvil at a low chance.
+---@param pos Vector
 local function damage_anvil_by_using(pos)
 	local r = math.random(1, 100)
 	-- 12% chance
@@ -321,25 +359,30 @@ local function damage_anvil_by_using(pos)
 	end
 end
 
+---@param pos Vector
+---@param distance number
 local function damage_anvil_by_falling(pos, distance)
 	local r = math.random(1, 100)
 	if distance > 1 then
-		if r <= (5*distance) then
+		if r <= (5 * distance) then
 			damage_anvil(pos)
 		end
 	end
 end
 
+---@type nodebox
 local anvilbox = {
 	type = "fixed",
 	fixed = {
 		{ -8 / 16, -8 / 16, -6 / 16, 8 / 16, 8 / 16, 6 / 16 },
 	},
 }
+
+---@type node_definition
 local anvildef = {
-	groups = {pickaxey=1, falling_node=1, falling_node_damage=1, crush_after_fall=1, deco_block=1, anvil=1},
-	tiles = {"mcl_anvils_anvil_top_damaged_0.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"},
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
+	groups = { pickaxey = 1, falling_node = 1, falling_node_damage = 1, crush_after_fall = 1, deco_block = 1, anvil = 1 },
+	tiles = { "mcl_anvils_anvil_top_damaged_0.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png" },
+	use_texture_alpha = "opaque",
 	_tt_help = S("Repair and rename items"),
 	paramtype = "light",
 	sunlight_propagates = true,
@@ -353,7 +396,7 @@ local anvildef = {
 			{ -5 / 16, -4 / 16, -4 / 16, 5 / 16, -3 / 16, 4 / 16 },
 			{ -4 / 16, -3 / 16, -2 / 16, 4 / 16, 2 / 16, 2 / 16 },
 			{ -8 / 16, 2 / 16, -5 / 16, 8 / 16, 8 / 16, 5 / 16 },
-		}
+		},
 	},
 	selection_box = anvilbox,
 	collision_box = anvilbox,
@@ -416,7 +459,7 @@ local anvildef = {
 		local meta = minetest.get_meta(pos)
 		if from_list == "output" and to_list == "input" then
 			local inv = meta:get_inventory()
-			for i=1, inv:get_size("input") do
+			for i = 1, inv:get_size("input") do
 				if i ~= to_index then
 					local istack = inv:get_stack("input", i)
 					istack:set_count(math.max(0, istack:get_count() - count))
@@ -504,22 +547,20 @@ local anvildef = {
 			minetest.record_protection_violation(pos, sender_name)
 			return
 		end
-		if fields.name_button or fields.name then
-			local set_name
-			if fields.name == nil then
-				set_name = ""
-			else
-				set_name = fields.name
-			end
+
+		if fields.name then
 			local meta = minetest.get_meta(pos)
+
 			-- Limit name length
-			set_name = string.sub(set_name, 1, MAX_NAME_LENGTH)
+			local set_name = string.sub(fields.name, 1, MAX_NAME_LENGTH)
+
 			meta:set_string("set_name", set_name)
 			update_anvil_slots(meta)
 			meta:set_string("formspec", get_anvil_formspec(set_name))
 		end
 	end,
 }
+
 if minetest.get_modpath("screwdriver") then
 	anvildef.on_rotate = screwdriver.rotate_simple
 end
@@ -529,27 +570,32 @@ anvildef0.description = S("Anvil")
 anvildef0._doc_items_longdesc =
 S("The anvil allows you to repair tools and armor, and to give names to items. It has a limited durability, however. Don't let it fall on your head, it could be quite painful!")
 anvildef0._doc_items_usagehelp =
-S("To use an anvil, rightclick it. An anvil has 2 input slots (on the left) and one output slot.").."\n"..
-S("To rename items, put an item stack in one of the item slots while keeping the other input slot empty. Type in a name, hit enter or “Set Name”, then take the renamed item from the output slot.").."\n"..
-S("There are two possibilities to repair tools (and armor):").."\n"..
-S("• Tool + Tool: Place two tools of the same type in the input slots. The “health” of the repaired tool is the sum of the “health” of both input tools, plus a 12% bonus.").."\n"..
-S("• Tool + Material: Some tools can also be repaired by combining them with an item that it's made of. For example, iron pickaxes can be repaired with iron ingots. This repairs the tool by 25%.").."\n"..
-S("Armor counts as a tool. It is possible to repair and rename a tool in a single step.").."\n\n"..
-S("The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. Anvils also have a chance of being damaged when they fall by more than 1 block. If a very damaged anvil is damaged again, it is destroyed.")
+S("To use an anvil, rightclick it. An anvil has 2 input slots (on the left) and one output slot.") .. "\n" ..
+	S("To rename items, put an item stack in one of the item slots while keeping the other input slot empty. Type in a name, hit enter or “Set Name”, then take the renamed item from the output slot.")
+	.. "\n" ..
+	S("There are two possibilities to repair tools (and armor):") .. "\n" ..
+	S("• Tool + Tool: Place two tools of the same type in the input slots. The “health” of the repaired tool is the sum of the “health” of both input tools, plus a 12% bonus.")
+	.. "\n" ..
+	S("• Tool + Material: Some tools can also be repaired by combining them with an item that it's made of. For example, iron pickaxes can be repaired with iron ingots. This repairs the tool by 25%.")
+	.. "\n" ..
+	S("Armor counts as a tool. It is possible to repair and rename a tool in a single step.") .. "\n\n" ..
+	S("The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. Anvils also have a chance of being damaged when they fall by more than 1 block. If a very damaged anvil is damaged again, it is destroyed.")
 
 local anvildef1 = table.copy(anvildef)
 anvildef1.description = S("Slightly Damaged Anvil")
 anvildef1._doc_items_create_entry = false
 anvildef1.groups.anvil = 2
 anvildef1._doc_items_create_entry = false
-anvildef1.tiles = {"mcl_anvils_anvil_top_damaged_1.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"}
+anvildef1.tiles = { "mcl_anvils_anvil_top_damaged_1.png^[transformR90", "mcl_anvils_anvil_base.png",
+	"mcl_anvils_anvil_side.png" }
 
 local anvildef2 = table.copy(anvildef)
 anvildef2.description = S("Very Damaged Anvil")
 anvildef2._doc_items_create_entry = false
 anvildef2.groups.anvil = 3
 anvildef2._doc_items_create_entry = false
-anvildef2.tiles = {"mcl_anvils_anvil_top_damaged_2.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"}
+anvildef2.tiles = { "mcl_anvils_anvil_top_damaged_2.png^[transformR90", "mcl_anvils_anvil_base.png",
+	"mcl_anvils_anvil_side.png" }
 
 minetest.register_node("mcl_anvils:anvil", anvildef0)
 minetest.register_node("mcl_anvils:anvil_damage_1", anvildef1)
@@ -562,7 +608,7 @@ if minetest.get_modpath("mcl_core") then
 			{ "mcl_core:ironblock", "mcl_core:ironblock", "mcl_core:ironblock" },
 			{ "", "mcl_core:iron_ingot", "" },
 			{ "mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot" },
-		}
+		},
 	})
 end
 
