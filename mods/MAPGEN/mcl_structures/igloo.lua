@@ -7,7 +7,11 @@ function mcl_structures.generate_igloo_top(pos, pr)
 	local newpos = {x=pos.x,y=pos.y-2,z=pos.z}
 	local path = modpath.."/schematics/mcl_structures_igloo_top.mts"
 	local rotation = tostring(pr:next(0,3)*90)
-	return mcl_structures.place_schematic(newpos, path, rotation, nil, true), rotation
+	return mcl_structures.place_schematic(newpos, path, rotation, nil, true, nil, function()
+		local p1 = vector.offset(pos,-5,-5,-5)
+		local p2 = vector.offset(pos,5,5,5)
+		mcl_structures.construct_nodes(p1,p2,{"mcl_furnaces:furnace","mcl_books:bookshelf"})
+	end), rotation
 end
 
 function mcl_structures.generate_igloo_basement(pos, orientation, loot, pr)
@@ -17,6 +21,7 @@ function mcl_structures.generate_igloo_basement(pos, orientation, loot, pr)
 		local p1 = vector.offset(pos,-5,-5,-5)
 		local p2 = vector.offset(pos,5,5,5)
 		mcl_structures.fill_chests(p1,p2,loot,pr)
+		mcl_structures.construct_nodes(p1,p2,{"mcl_brewing:stand_000","mcl_books:bookshelf"})
 		local mc = minetest.find_nodes_in_area_under_air(p1,p2,{"mcl_core:stonebrickmossy"})
 		if #mc == 2 then
 			table.shuffle(mc)
