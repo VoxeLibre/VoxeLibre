@@ -30,11 +30,15 @@ local function generate_loot(pos, def, pr)
 	if def.loot then mcl_structures.fill_chests(p1,p2,def.loot,pr) end
 end
 
-local function construct_nodes(pos,def,pr)
-	local nn = minetest.find_nodes_in_area(vector.offset(pos,-def.sidelen/2,0,-def.sidelen/2),vector.offset(pos,def.sidelen/2,def.sidelen,def.sidelen/2),def.construct_nodes)
+function mcl_structures.construct_nodes(p1,p2,nodes)
+	local nn=minetest.find_nodes_in_area(p1,p2,nodes)
 	for _,p in pairs(nn) do
 		mcl_structures.init_node_construct(p)
 	end
+end
+
+local function construct_nodes(pos,def,pr)
+	return mcl_structures.construct_nodes(vector.offset(pos,-def.sidelen/2,0,-def.sidelen/2),vector.offset(pos,def.sidelen/2,def.sidelen,def.sidelen/2))
 end
 
 

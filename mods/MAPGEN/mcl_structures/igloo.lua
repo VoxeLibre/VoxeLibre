@@ -3,22 +3,25 @@ local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
 function mcl_structures.generate_igloo_top(pos, pr)
-	-- FIXME: This spawns bookshelf instead of furnace. Fix this!
-	-- Furnace does ot work atm because apparently meta is not set. :-(
+	-- Furnace does ot work atm because apparently meta is not set. Need a bit of help with fixing this for furnaces, bookshelves, and brewing stands.
 	local newpos = {x=pos.x,y=pos.y-2,z=pos.z}
 	local path = modpath.."/schematics/mcl_structures_igloo_top.mts"
 	local rotation = tostring(pr:next(0,3)*90)
-	return mcl_structures.place_schematic(newpos, path, rotation, nil, true), rotation
+	return mcl_structures.place_schematic(newpos, path, rotation, nil, true, nil, function()
+		local p1 = vector.offset(pos,-5,-5,-5)
+		local p2 = vector.offset(pos,5,5,5)
+		mcl_structures.construct_nodes(p1,p2,{"mcl_furnaces:furnace","mcl_books:bookshelf"})
+	end), rotation
 end
 
 function mcl_structures.generate_igloo_basement(pos, orientation, loot, pr)
-	-- TODO: Add brewing stand
 	-- TODO: Add monster eggs
 	local path = modpath.."/schematics/mcl_structures_igloo_basement.mts"
 	mcl_structures.place_schematic(pos, path, orientation, nil, true, nil, function()
 		local p1 = vector.offset(pos,-5,-5,-5)
 		local p2 = vector.offset(pos,5,5,5)
 		mcl_structures.fill_chests(p1,p2,loot,pr)
+		mcl_structures.construct_nodes(p1,p2,{"mcl_brewing:stand_000","mcl_books:bookshelf"})
 		local mc = minetest.find_nodes_in_area_under_air(p1,p2,{"mcl_core:stonebrickmossy"})
 		if #mc == 2 then
 			table.shuffle(mc)
@@ -58,19 +61,19 @@ function mcl_structures.generate_igloo(pos, def, pr)
 		if rotation == "0" then
 			dir = {x=-1, y=0, z=0}
 			tdir = {x=1, y=0, z=0}
-			tpos = {x=pos.x+7, y=pos.y-1, z=pos.z+3}
+			tpos = {x=pos.x+7, y=pos.y-2, z=pos.z+3}
 		elseif rotation == "90" then
 			dir = {x=0, y=0, z=-1}
 			tdir = {x=0, y=0, z=-1}
-			tpos = {x=pos.x+3, y=pos.y-1, z=pos.z+1}
+			tpos = {x=pos.x+3, y=pos.y-2, z=pos.z+1}
 		elseif rotation == "180" then
 			dir = {x=1, y=0, z=0}
 			tdir = {x=-1, y=0, z=0}
-			tpos = {x=pos.x+1, y=pos.y-1, z=pos.z+3}
+			tpos = {x=pos.x+1, y=pos.y-2, z=pos.z+3}
 		elseif rotation == "270" then
 			dir = {x=0, y=0, z=1}
 			tdir = {x=0, y=0, z=1}
-			tpos = {x=pos.x+3, y=pos.y-1, z=pos.z+7}
+			tpos = {x=pos.x+3, y=pos.y-2, z=pos.z+7}
 		else
 			return success
 		end
@@ -139,7 +142,7 @@ mcl_structures.register_structure("igloo",{
 	biomes = { 	"ColdTaiga", "IcePlainsSpikes",	"IcePlains" },
 	place_func = mcl_structures.generate_igloo,
 	loot = {
-		["mcl_chests:chest"] = {{
+		["mcl_chests:chest_small"] = {{
 			stacks_min = 1,
 			stacks_max = 1,
 			items = {
@@ -157,6 +160,7 @@ mcl_structures.register_structure("igloo",{
 				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10 },
 				{ itemstring = "mcl_tools:axe_stone", weight = 2 },
 				{ itemstring = "mcl_core:emerald", weight = 1 },
+				{ itemstring = "mcl_core:apple_gold", weight = 1 },
 			}
 		}},
 	}
