@@ -8,7 +8,7 @@ local HORNY_AGAIN_TIME = 300
 local CHILD_GROW_TIME = 60*20
 local DEATH_DELAY = 0.5
 local DEFAULT_FALL_SPEED = -9.81*1.5
-local FLOP_HEIGHT = 5.0
+local FLOP_HEIGHT = 6
 local FLOP_HOR_SPEED = 1.5
 local ENTITY_CRAMMING_MAX = 24
 local CRAMMING_DAMAGE = 3
@@ -2382,15 +2382,18 @@ local follow_flop = function(self)
 			self.state = "flop"
 			self.object:set_acceleration({x = 0, y = DEFAULT_FALL_SPEED, z = 0})
 
-			local sdef = minetest.registered_nodes[self.standing_on]
+			local p = self.object:get_pos()
+			local sdef = minetest.registered_nodes[node_ok(vector.add(p, vector.new(0,self.collisionbox[2]-0.2,0))).name]
 			-- Flop on ground
 			if sdef and sdef.walkable then
-				mob_sound(self, "flop")
-				self.object:set_velocity({
-					x = random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
-					y = FLOP_HEIGHT,
-					z = random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
-				})
+				if self.object:get_velocity().y < 0.1 then
+					mob_sound(self, "flop")
+					self.object:set_velocity({
+						x = random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
+						y = FLOP_HEIGHT,
+						z = random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
+					})
+				end
 			end
 
 			set_animation(self, "stand", true)
