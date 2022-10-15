@@ -1239,6 +1239,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 	bone_eye_height = 6.3,
 	head_eye_height = 2.2,
 	curiosity = 10,
+	runaway = true,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_villager.b3d",
