@@ -435,7 +435,7 @@ function mcl_inventory.set_creative_formspec(player)
 
 			-- Switch stack size button
 			"image_button[11.575,4.575;1.1,1.1;default_apple.png;__switch_stack;]",
-			"label[12.275,5.28;" .. F(C("#FFFFFF", tostring(stack_size ~= 1 and stack_size or ""))) .. "]",
+			"label[12.275,5.35;" .. F(C("#FFFFFF", tostring(stack_size ~= 1 and stack_size or ""))) .. "]",
 			"tooltip[__switch_stack;" .. F(S("Switch stack size")) .. "]",
 
 			-- Skins button
