@@ -3278,11 +3278,10 @@ local falling = function(self, pos)
 		-- fall damage onto solid ground
 		if self.fall_damage == 1
 		and self.object:get_velocity().y == 0 then
-
+			local n = node_ok(vector.offset(pos,0,-1,0)).name
 			local d = (self.old_y or 0) - self.object:get_pos().y
 
-			if d > 5 then
-
+			if d > 5 and n ~= "air" and n ~= "ignore" then
 				local add = minetest.get_item_group(self.standing_on, "fall_damage_add_percent")
 				local damage = d - 5
 				if add ~= 0 then
