@@ -519,8 +519,8 @@ mcl_enchanting.enchantments.quick_charge = {
 	inv_tool_tab = false,
 }
 
--- unimplemented
---[[mcl_enchanting.enchantments.respiration = {
+-- implemented in mcl_armor/api.lua
+mcl_enchanting.enchantments.respiration = {
 	name = S("Respiration"),
 	max_level = 3,
 	primary = {armor_head = true},
@@ -536,7 +536,7 @@ mcl_enchanting.enchantments.quick_charge = {
 	power_range_table = {{10, 40}, {20, 50}, {30, 60}},
 	inv_combat_tab = true,
 	inv_tool_tab = false,
-}]]--
+}
 
 -- requires missing MineClone2 feature
 --[[mcl_enchanting.enchantments.riptide = {

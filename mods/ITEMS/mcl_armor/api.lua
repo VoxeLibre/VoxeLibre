@@ -197,11 +197,29 @@ function mcl_armor.register_protection_enchantment(def)
 	}
 end
 
+local function activate_respiration(player,r)
+	if player:get_meta():get_int("respiration") ~= 0 then return end
+	if r then
+		local new_breath = 15 + (15 * r)
+		player:get_meta():set_int("respiration",r)
+		player:set_properties({breath_max=new_breath})
+		if player:get_breath() == 15 then
+			player:set_breath(new_breath)
+		end
+	end
+end
+
+local function deactivate_respiration(player)
+	if player:get_meta():get_int("respiration") == 0 then return end
+	player:get_meta():set_int("respiration",0)
+	player:set_properties({breath_max=15})
+end
+
 function mcl_armor.update(obj)
 	local info = {points = 0, view_range_factors = {}}
 
 	local inv = mcl_util.get_inventory(obj)
-
+	local resp = 0
 	if inv then
 		for i = 2, 5 do
 			local itemstack = inv:get_stack("armor", i)
@@ -210,8 +228,8 @@ function mcl_armor.update(obj)
 			if minetest.registered_aliases[itemname] then
 				itemname = minetest.registered_aliases[itemname]
 			end
-
 			if not itemstack:is_empty() then
+				resp = math.max(mcl_enchanting.get_enchantments(itemstack).respiration or 0, resp or 0)
 				local def = itemstack:get_definition()
 
 				local texture = def._mcl_armor_texture
@@ -247,6 +265,11 @@ function mcl_armor.update(obj)
 	info.texture = info.texture or "blank.png"
 
 	if obj:is_player() then
+		if resp ~= 0 then
+			activate_respiration(obj,resp)
+		else
+			deactivate_respiration(obj)
+		end
 		mcl_armor.update_player(obj, info)
 	else
 		local luaentity = obj:get_luaentity()
