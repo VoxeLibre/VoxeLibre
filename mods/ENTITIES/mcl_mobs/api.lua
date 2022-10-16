@@ -3875,6 +3875,7 @@ local mob_step = function(self, dtime)
 	if not player_in_active_range(self) then
 		set_animation(self, "stand", true)
 		self.object:set_velocity(vector.new(0,0,0))
+		falling(self, pos)
 		return
 	end
 	check_item_pickup(self)
