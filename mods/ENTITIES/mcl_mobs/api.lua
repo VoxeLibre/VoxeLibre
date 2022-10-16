@@ -3494,7 +3494,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 				kb = kb + luaentity._knockback
 			end
 			--self._kb_turn = false
-			self._turn_to=self.object:get_yaw()+1.57
+			self._turn_to=self.object:get_yaw()-1.57
 			self.frame_speed_multiplier=2.3
 			if self.animation.run_end then
 				set_animation(self, "run")
@@ -3859,7 +3859,7 @@ local mob_step = function(self, dtime)
 	local v = self.object:get_velocity()
 	local d = 0.85
 
-	if self.state and self.state=="die" or check_for_death(self) and not self.animation.die_end then
+	if (self.state and self.state=="die" or check_for_death(self)) and not self.animation.die_end then
 		d = 0.92
 		local rot = self.object:get_rotation()
 		rot.z = ((pi/2-rot.z)*.2)+rot.z
