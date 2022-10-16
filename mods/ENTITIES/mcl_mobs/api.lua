@@ -3865,18 +3865,25 @@ local mob_step = function(self, dtime)
 		self.object:set_rotation(rot)
 	end
 
+	if not player_in_active_range(self) then
+		set_animation(self, "stand", true)
+		local node_under = node_ok(vector.offset(pos,0,-1,0)).name
+		local acc = self.object:get_acceleration()
+		if acc.y > 0 or node_under ~= "air" then
+			self.object:set_acceleration(vector.new(0,0,0))
+			self.object:set_velocity(vector.new(0,0,0))
+		end
+		if acc.y == 0 and node_under == "air" then
+			falling(self, pos)
+		end
+		return
+	end
+
 	if v then
 		--diffuse object velocity
 		self.object:set_velocity({x = v.x*d, y = v.y, z = v.z*d})
 	end
 
-
-	if not player_in_active_range(self) then
-		set_animation(self, "stand", true)
-		self.object:set_velocity(vector.new(0,0,0))
-		falling(self, pos)
-		return
-	end
 	check_item_pickup(self)
 	check_aggro(self,dtime)
 	particlespawner_check(self,dtime)
