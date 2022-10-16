@@ -93,14 +93,14 @@ minetest.register_chatcommand("gamemode", {
 		if not p then
 			return false, S("Player not online")
 		end
-		if args[1] ~= nil and not in_table(args[1], gamemodes) then
+		if args[1] ~= nil and not in_table(args[1], mcl_gamemode.gamemodes) then
 			return false, S("Gamemode " .. args[1] .. " does not exist.")
 		elseif args[1] ~= nil then
-			mcl_inventory.player_set_gamemode(p, args[1])
+			mcl_gamemode.set_gamemode(p, args[1])
 		end
 		--Result message - show effective game mode
 		local gm = p:get_meta():get_string("gamemode")
-		if gm == "" then gm = gamemodes[1] end
+		if gm == "" then gm = mcl_gamemode.gamemodes[1] end
 		return true, S("Gamemode for player ") .. n .. S(": " .. gm)
 	end
 })
