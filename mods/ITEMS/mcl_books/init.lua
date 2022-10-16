@@ -392,6 +392,7 @@ local function bookshelf_gui(pos, node, clicker)
 			"label[0.375,0.375;" .. F(C(mcl_formspec.label_color, name)) .. "]",
 
 			mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
+			mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3, 0, "mcl_book_book_empty_slot.png"),
 			"list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0.375,0.75;9,3;]",
 
 			"label[0.375,4.7;" .. F(C(mcl_formspec.label_color, S("Inventory"))) .. "]",
