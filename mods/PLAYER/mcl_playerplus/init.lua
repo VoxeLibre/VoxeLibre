@@ -196,6 +196,10 @@ minetest.register_globalstep(function(dtime)
 			elytra.speed = 0
 		end
 
+		if not elytra.last_yaw then
+			elytra.last_yaw = player:get_look_horizontal()
+		end
+
 		local is_just_jumped = control.jump and not mcl_playerplus.is_pressing_jump[name] and not elytra.active
 		mcl_playerplus.is_pressing_jump[name] = control.jump
 		if is_just_jumped and not elytra.active then
@@ -314,7 +318,7 @@ minetest.register_globalstep(function(dtime)
 
 		if elytra.active then
 			-- set head pitch and yaw when flying
-			set_bone_position_conditional(player,"Head_Control", vector.new(0,6.3,0), vector.new(pitch-degrees(dir_to_pitch(player_velocity)),player_vel_yaw - yaw,0))
+			set_bone_position_conditional(player,"Head_Control", vector.new(0,6.3,0), vector.new(pitch-degrees(dir_to_pitch(player_velocity))+50,player_vel_yaw - yaw,0))
 			-- sets eye height, and nametag color accordingly
 			set_properties_conditional(player,{collisionbox = {-0.35,0,-0.35,0.35,0.8,0.35}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
 			-- control body bone when flying
@@ -349,6 +353,7 @@ minetest.register_globalstep(function(dtime)
 			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new(0, -player_vel_yaw + yaw, 0))
 		end
 
+		elytra.last_yaw = player:get_look_horizontal()
 		-- Update jump status immediately since we need this info in real time.
 		-- WARNING: This section is HACKY as hell since it is all just based on heuristics.
 
