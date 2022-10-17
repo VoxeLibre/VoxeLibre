@@ -3459,6 +3459,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			dir = dir or {x = 0, y = 0, z = 0}
 
 			local v = self.object:get_velocity()
+			if not v then return end
 			local r = 1.4 - min(punch_interval, 1.4)
 			local kb = r * (abs(v.x)+abs(v.z))
 			local up = 2
