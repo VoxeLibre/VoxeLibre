@@ -91,7 +91,7 @@ local function update_player_textures(player)
 	end
 
 	player:set_properties({ textures = textures })
-	
+
 	-- Delay calling the callbacks because mods (including mcl_player)
 	-- need to fully initialize player data from minetest.register_on_joinplayer
 	-- before callbacks run
@@ -231,13 +231,21 @@ minetest.register_globalstep(function(dtime)
 
 			local velocity = player:get_velocity() or player:get_player_velocity()
 
+			local mod_speed = 5
+			if player:get_meta():get("punched") and tonumber(player:get_meta():get("punched")) > 0 then
+				mod_speed = 10
+			end
 			-- Apply animations based on what the player is doing
 			if player:get_hp() == 0 then
 				player_set_animation(player, "die")
+			elseif player:get_meta():get("punched") and tonumber(player:get_meta():get("punched")) > 0 then
+				player_set_animation(player, "run_walk", animation_speed_mod)
+				player:set_animation_frame_speed((math.abs(velocity.x)+math.abs(velocity.z))*mod_speed)
 			elseif walking and velocity.x > 0.35
 			or walking and velocity.x < -0.35
 			or walking and velocity.z > 0.35
 			or walking and velocity.z < -0.35 then
+				player:set_animation_frame_speed((math.abs(velocity.x)+math.abs(velocity.z))*mod_speed)
 				local wielded_itemname = player:get_wielded_item():get_name()
 				local no_arm_moving = string.find(wielded_itemname, "mcl_bows:bow") or mcl_shields.wielding_shield(player, 1) or mcl_shields.wielding_shield(player, 2)
 				if player_sneak[name] ~= controls.sneak then

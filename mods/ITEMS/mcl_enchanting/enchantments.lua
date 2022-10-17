@@ -130,6 +130,20 @@ mcl_enchanting.enchantments.fire_aspect = {
 minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
 	if hitter and hitter:is_player() then
 		local wielditem = hitter:get_wielded_item()
+		local p = player:get_pos()
+		if time_from_last_punch > 0.5 then
+			local yy=0
+			if math.abs(player:get_velocity().y) < 0.1 then
+				yy=4
+			end
+			player:get_meta():set_string("punched", tostring(minetest.get_gametime()))
+			minetest.after(0.4, function()
+				player:get_meta():set_string("punched", "0")
+			end)
+
+			local d = hitter:get_look_dir()
+			player:add_velocity({x=d.x*4,y=yy,z=d.z*4})
+		end
 		if wielditem then
 			local fire_aspect_level = mcl_enchanting.get_enchantment(wielditem, "fire_aspect")
 			if fire_aspect_level > 0 then
