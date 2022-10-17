@@ -292,7 +292,7 @@ mcl_mobs:register_mob("mobs_mc:enderman", {
 		random = {name="mobs_mc_enderman_random", gain=0.5},
 		distance = 16,
 	},
-	walk_velocity = 0.2,
+	walk_velocity = 2.5,
 	run_velocity = 3.4,
 	damage = 7,
 	reach = 2,
