@@ -59,7 +59,7 @@ local ARROW_ENTITY={
 	physical = true,
 	pointable = false,
 	visual = "mesh",
-	mesh = "mcl_bows_arrow.obj",
+	mesh = "mcl_bows_arrow.b3d",
 	visual_size = {x=-1, y=1},
 	textures = {"mcl_bows_arrow.png"},
 	collisionbox = {-0.19, -0.125, -0.19, 0.19, 0.125, 0.19},
@@ -132,6 +132,9 @@ function ARROW_ENTITY.on_step(self, dtime)
 			self.object:remove()
 			return
 		end
+		if self._stuck_pos and self.object:get_pos() ~= self._stuck_pos then
+			self.object:set_pos(self._stuck_pos)
+		end
 		-- Drop arrow as item when it is no longer stuck
 		-- FIXME: Arrows are a bit slow to react and continue to float in mid air for a few seconds.
 		if self._stuckrechecktimer > STUCK_RECHECK_TIME then
@@ -172,7 +175,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 		if self._damage >= 9 and self._in_player == false then
 			minetest.add_particlespawner({
 				amount = 20,
-				time = .2,
+				time = .1,
 				minpos = vector.new(0,0,0),
 				maxpos = vector.new(0,0,0),
 				minvel = vector.new(-0.1,-0.1,-0.1),
@@ -198,7 +201,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 
 		local arrow_dir = self.object:get_velocity()
 		--create a raycast from the arrow based on the velocity of the arrow to deal with lag
-		local raycast = minetest.raycast(pos, vector.add(pos, vector.multiply(arrow_dir, 0.1)), true, false)
+		local raycast = minetest.raycast(vector.add(pos, vector.multiply(arrow_dir, -0.03)), vector.add(pos, vector.multiply(arrow_dir, 0.1)), true, false)
 		for hitpoint in raycast do
 			if hitpoint.type == "object" then
 				-- find the closest object that is in the way of the arrow
@@ -219,6 +222,11 @@ function ARROW_ENTITY.on_step(self, dtime)
 						closest_object = hitpoint.ref
 						closest_distance = dist
 					end
+				end
+			elseif hitpoint.type == "node" then
+				if not self._stuck and minetest.registered_nodes[minetest.get_node(hitpoint.under).name].walkable then
+					self._stuck_pos = hitpoint.intersection_point
+					self._stuckin = hitpoint.under
 				end
 			end
 		end
@@ -351,25 +359,27 @@ function ARROW_ENTITY.on_step(self, dtime)
 		local vel = self.object:get_velocity()
 		-- Arrow has stopped in one axis, so it probably hit something.
 		-- This detection is a bit clunky, but sadly, MT does not offer a direct collision detection for us. :-(
-		if (math.abs(vel.x) < 0.0001) or (math.abs(vel.z) < 0.0001) or (math.abs(vel.y) < 0.00001) then
+		if (math.abs(vel.x) < 0.0001) or (math.abs(vel.z) < 0.0001) or (math.abs(vel.y) < 0.00001) or self._stuck_pos then
 			-- Check for the node to which the arrow is pointing
-			local dir
-			if math.abs(vel.y) < 0.00001 then
-				if self._lastpos.y < pos.y then
-					dir = vector.new(0, 1, 0)
+			if not self._stuck_pos then
+				local dir
+				if math.abs(vel.y) < 0.00001 then
+					if self._lastpos.y < pos.y then
+						dir = vector.new(0, 1, 0)
+					else
+						dir = vector.new(0, -1, 0)
+					end
 				else
-					dir = vector.new(0, -1, 0)
+					dir = minetest.facedir_to_dir(minetest.dir_to_facedir(minetest.yaw_to_dir(self.object:get_yaw()-YAW_OFFSET)))
 				end
-			else
-				dir = minetest.facedir_to_dir(minetest.dir_to_facedir(minetest.yaw_to_dir(self.object:get_yaw()-YAW_OFFSET)))
+				self._stuckin = vector.add(dpos, dir)
 			end
-			self._stuckin = vector.add(dpos, dir)
 			local snode = minetest.get_node(self._stuckin)
 			local sdef = minetest.registered_nodes[snode.name]
 
 			-- If node is non-walkable, unknown or ignore, don't make arrow stuck.
 			-- This causes a deflection in the engine.
-			if not sdef or sdef.walkable == false or snode.name == "ignore" then
+			if (not sdef or sdef.walkable == false or snode.name == "ignore") and not self._stuck_pos then
 				self._stuckin = nil
 				if self._deflection_cooloff <= 0 then
 					-- Lose 1/3 of velocity on deflection
@@ -380,7 +390,6 @@ function ARROW_ENTITY.on_step(self, dtime)
 					self._deflection_cooloff = 1.0
 				end
 			else
-
 				-- Node was walkable, make arrow stuck
 				self._stuck = true
 				self._stucktimer = 0
@@ -389,7 +398,13 @@ function ARROW_ENTITY.on_step(self, dtime)
 				self.object:set_velocity(vector.new(0, 0, 0))
 				self.object:set_acceleration(vector.new(0, 0, 0))
 
+				if self._stuck_pos then
+					self.object:set_pos(self._stuck_pos)
+				end
+
 				minetest.sound_play({name="mcl_bows_hit_other", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=16}, true)
+
+				self.object:set_animation({x=1,y=20}, 50, 0, false)
 
 				if mcl_burning.is_burning(self.object) and snode.name == "mcl_tnt:tnt" then
 					tnt.ignite(self._stuckin)
