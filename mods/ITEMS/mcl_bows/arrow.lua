@@ -224,7 +224,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 					end
 				end
 			elseif hitpoint.type == "node" then
-				if not self._stuck and minetest.registered_nodes[minetest.get_node(hitpoint.under).name].walkable then
+				if not self._stuck and minetest.registered_nodes[minetest.get_node(hitpoint.under).name].walkable and self._time_in_air > 1.4 then
 					self._stuck_pos = hitpoint.intersection_point
 					self._stuckin = hitpoint.under
 				end
@@ -403,6 +403,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 				end
 
 				minetest.sound_play({name="mcl_bows_hit_other", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=16}, true)
+				minetest.sound_play({name="mcl_bows_hit_wiggle", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=9}, true)
 
 				self.object:set_animation({x=1,y=20}, 50, 0, false)
 
