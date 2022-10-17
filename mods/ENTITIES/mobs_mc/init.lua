@@ -161,3 +161,5 @@ dofile(path .. "/turtle.lua")
 dofile(path .. "/bee.lua")
 
 dofile(path .. "/fox.lua")
+
+dofile(path .. "/phantom.lua")
