@@ -2058,7 +2058,7 @@ local monster_attack = function(self)
 				player = obj.object
 				name = obj.name or ""
 			end
-			if obj.type == self.type and obj.passive == false and obj.state == "attack" and obj.attack then
+			if obj and obj.type == self.type and obj.passive == false and obj.state == "attack" and obj.attack then
 				table.insert(blacklist_attack, obj.attack)
 			end
 		end
@@ -3278,11 +3278,10 @@ local falling = function(self, pos)
 		-- fall damage onto solid ground
 		if self.fall_damage == 1
 		and self.object:get_velocity().y == 0 then
-
+			local n = node_ok(vector.offset(pos,0,-1,0)).name
 			local d = (self.old_y or 0) - self.object:get_pos().y
 
-			if d > 5 then
-
+			if d > 5 and n ~= "air" and n ~= "ignore" then
 				local add = minetest.get_item_group(self.standing_on, "fall_damage_add_percent")
 				local damage = d - 5
 				if add ~= 0 then
@@ -3866,17 +3865,25 @@ local mob_step = function(self, dtime)
 		self.object:set_rotation(rot)
 	end
 
+	if not player_in_active_range(self) then
+		set_animation(self, "stand", true)
+		local node_under = node_ok(vector.offset(pos,0,-1,0)).name
+		local acc = self.object:get_acceleration()
+		if acc.y > 0 or node_under ~= "air" then
+			self.object:set_acceleration(vector.new(0,0,0))
+			self.object:set_velocity(vector.new(0,0,0))
+		end
+		if acc.y == 0 and node_under == "air" then
+			falling(self, pos)
+		end
+		return
+	end
+
 	if v then
 		--diffuse object velocity
 		self.object:set_velocity({x = v.x*d, y = v.y, z = v.z*d})
 	end
 
-
-	if not player_in_active_range(self) then
-		set_animation(self, "stand", true)
-		self.object:set_velocity(vector.new(0,0,0))
-		return
-	end
 	check_item_pickup(self)
 	check_aggro(self,dtime)
 	particlespawner_check(self,dtime)
