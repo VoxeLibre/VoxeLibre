@@ -1286,16 +1286,17 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 	can_open_doors = true,
 	on_pick_up = function(self,itementity)
 		local clicker
+		local it = ItemStack(itementity.itemstring)
 		for _,p in pairs(minetest.get_connected_players()) do
 			if vector.distance(p:get_pos(),self.object:get_pos()) < 10 then
 				clicker = p
 			end
 		end
-		if clicker then
+		if clicker and not self.horny then
 			mcl_mobs:feed_tame(self, clicker, 1, true, false, true)
-			return
+			it:take_item(1)
 		end
-		return true --do not pick up
+		return it
 	end,
 	on_rightclick = function(self, clicker)
 		if self._jobsite then
