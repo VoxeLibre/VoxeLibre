@@ -3518,11 +3518,11 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	end -- END if damage
 
 	-- if skittish then run away
-	if not die and self.runaway == true and self.state ~= "flop" then
+	if hitter and is_player and hitter:get_pos() and not die and self.runaway == true and self.state ~= "flop" then
 
 		yaw = set_yaw(self, minetest.dir_to_yaw(vector.direction(hitter:get_pos(), self.object:get_pos())))
 		minetest.after(0.2,function()
-			if self and self.object then
+			if self and self.object and self.object:get_pos() and hitter and is_player and hitter:get_pos() then
 				yaw = set_yaw(self, minetest.dir_to_yaw(vector.direction(hitter:get_pos(), self.object:get_pos())))
 				set_velocity(self, self.run_velocity)
 			end
