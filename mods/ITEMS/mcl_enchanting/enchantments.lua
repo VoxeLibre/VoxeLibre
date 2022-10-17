@@ -148,7 +148,7 @@ minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, 
 			end
 			player:add_velocity({x=d.x*4,y=yy,z=d.z*4})
 		end
-		
+
 		if hitter:is_player() then
 			local wielditem = hitter:get_wielded_item()
 			if wielditem then

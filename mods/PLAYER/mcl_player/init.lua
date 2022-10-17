@@ -232,9 +232,6 @@ minetest.register_globalstep(function(dtime)
 			local velocity = player:get_velocity() or player:get_player_velocity()
 
 			local mod_speed = 5
-			if player:get_meta():get("punched") and tonumber(player:get_meta():get("punched")) > 0 then
-				mod_speed = 10
-			end
 			-- Apply animations based on what the player is doing
 			if player:get_hp() == 0 then
 				player_set_animation(player, "die")
