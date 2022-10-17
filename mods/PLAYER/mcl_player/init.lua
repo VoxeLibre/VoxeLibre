@@ -91,7 +91,7 @@ local function update_player_textures(player)
 	end
 
 	player:set_properties({ textures = textures })
-	
+
 	-- Delay calling the callbacks because mods (including mcl_player)
 	-- need to fully initialize player data from minetest.register_on_joinplayer
 	-- before callbacks run
@@ -234,6 +234,8 @@ minetest.register_globalstep(function(dtime)
 			-- Apply animations based on what the player is doing
 			if player:get_hp() == 0 then
 				player_set_animation(player, "die")
+			elseif mcl_playerplus.elytra[player] and mcl_playerplus.elytra[player].active then
+				player_set_animation(player, "stand")
 			elseif walking and velocity.x > 0.35
 			or walking and velocity.x < -0.35
 			or walking and velocity.z > 0.35
