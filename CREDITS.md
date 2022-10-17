@@ -33,6 +33,7 @@
 * RandomLegoBrick
 * SumianVoice
 * MrRar
+* talamh
 
 ## Contributors
 * Laurent Rocher
@@ -66,7 +67,6 @@
 * Benjamin Schötz
 * Doloment
 * Sydney Gems
-* talamh
 * Emily2255
 * Emojigit
 * FinishedFragment
