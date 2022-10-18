@@ -44,7 +44,7 @@ local turtle = {
 		"mobs_mc_turtle.png",
 	} },
 	visual_size = {x=3, y=3},
-	rotate = 180,
+	rotate = 0,
 	sounds = {
 	},
 	drops = {
