@@ -69,6 +69,13 @@ mcl_craftguide_progressive_mode	(Learn crafting recipes progressively) bool true
 # If disabled, the skin of all players will be character.png
 mcl_enable_skin_customization (Enable player skin customization) bool true
 
+# How far the player hand can reach
+# Default:4.5
+mcl_hand_range (Hand range) float 4.5 1 128
+
+# How far the player hand can reach in creative mode (not gamemode-creative)
+# Default:10
+mcl_hand_range_creative (Creative mode hand range) float 10 1 128
 
 [Mobs]
 # If enabled, mobs will spawn naturally. This does not affect
