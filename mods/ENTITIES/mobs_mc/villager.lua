@@ -492,6 +492,9 @@ local professions = {
 	}
 }
 
+local WORK = "work"
+local SLEEP = "sleep"
+
 local profession_names = {}
 for id, _ in pairs(professions) do
 	table.insert(profession_names, id)
@@ -499,8 +502,15 @@ end
 
 local jobsites={}
 for _,n in pairs(profession_names) do
-	table.insert(jobsites,professions[n].jobsite)
+	if n then
+		if professions[n].jobsite then
+			table.insert(jobsites,professions[n].jobsite)
+		end
+	end
 end
+
+local spawnable_bed={}
+table.insert(spawnable_bed, "mcl_beds:bed_red_bottom")
 
 local function stand_still(self)
 	self.walk_chance = 0
@@ -532,23 +542,124 @@ local function set_textures(self)
 	self.object:set_properties({textures=get_badge_textures(self)})
 end
 
-local function go_home(entity)
-	entity.state = "go_home"
-	local b=entity._bed
-	if not b then return end
-	mcl_mobs:gopath(entity,b,function(entity,b)
-		if vector.distance(entity.object:get_pos(),b) < 2 then
-			entity.state = "stand"
-			set_velocity(entity,0)
-			entity.object:set_pos(b)
-			local n=minetest.get_node(b)
-			if n and n.name ~= "mcl_beds:bed_red_bottom" then
-				entity._bed=nil --the stormtroopers have killed uncle owen
+
+function get_activity(tod)
+	-- night hours = tod > 18541 or tod < 5458
+	if not tod then
+		tod = minetest.get_timeofday()
+	end
+	tod = ( tod * 24000 ) % 24000
+
+	local lunch_start = 12000
+	local lunch_end = 13300
+	local work_start = 8300
+	local work_end = 16300
+
+	local activity = nil
+	if (tod > work_start and tod < lunch_start) or  (tod > lunch_end and tod < work_end) then
+		activity = WORK
+	elseif mcl_beds.is_night() then
+		activity = SLEEP
+	elseif tod > lunch_start and tod < lunch_end then
+		activity = "chill"
+	else
+		activity = "undefined"
+	end
+	--minetest.log("Time is " .. tod ..". Activity is: ".. activity)
+	return activity
+
+end
+
+
+local function go_home(entity, sleep)
+	local b = entity._bed
+	if not b then
+		return
+	end
+
+	local bed_node = minetest.get_node(b)
+	if not bed_node then
+		entity._bed = nil
+		--minetest.log("Cannot find bed. Unset it")
+		return
+	end
+
+
+	if vector.distance(entity.object:get_pos(),b) < 2 then
+		if sleep then
+			entity.order = SLEEP
+			--minetest.log("Sleep time!")
+		end
+	else
+		if sleep and entity.order == SLEEP then
+			entity.order = nil
+			return
+		end
+
+		mcl_mobs:gopath(entity,b,function(entity,b)
+			local b = entity._bed
+
+			if not b then
+				--minetest.log("NO BED, problem")
 				return false
 			end
-			return true
+
+			if not minetest.get_node(b) then
+				--minetest.log("NO BED NODE, problem")
+				return false
+			end
+
+			if vector.distance(entity.object:get_pos(),b) < 2 then
+				--minetest.log("Managed to walk home callback!")
+				return true
+			else
+				--minetest.log("Need to walk to home")
+			end
+		end)
+	end
+end
+
+local function check_bed (entity)
+	local b = entity._bed
+	if not b then
+		--minetest.log("No bed set on villager")
+		return false
+	end
+
+	local n = minetest.get_node(b)
+	if n and n.name ~= "mcl_beds:bed_red_bottom" then
+		--minetest.log("Where did my bed go?!")
+		entity._bed = nil --the stormtroopers have killed uncle owen
+		return false
+	else
+		return true
+	end
+end
+
+local function take_bed (entity)
+	if not entity then return end
+
+	local p = entity.object:get_pos()
+	local nn = minetest.find_nodes_in_area(vector.offset(p,-48,-48,-48), vector.offset(p,48,48,48), spawnable_bed)
+
+	for _,n in pairs(nn) do
+		local m=minetest.get_meta(n)
+		--minetest.log("Bed owner: ".. m:get_string("villager"))
+		if m:get_string("villager") == "" then
+			--minetest.log("Can we path to bed: "..minetest.pos_to_string(n) )
+			local gp = mcl_mobs:gopath(entity,n,function()
+				--minetest.log("We did path to bed. This is great: "..minetest.pos_to_string(n) )
+			end)
+			if gp then
+				--minetest.log("Nice bed. I'll defintely take it as I can path")
+				m:set_string("villager", entity._id)
+				entity._bed = n
+				break
+			else
+				--minetest.log("Awww. I can't find my bed.")
+			end
 		end
-	end)
+	end
 end
 
 local function has_golem(pos)
@@ -608,11 +719,14 @@ local function employ(self,jobsite_pos)
 	local m = minetest.get_meta(jobsite_pos)
 	local p = get_profession_by_jobsite(n.name)
 	if p and m:get_string("villager") == "" then
+		minetest.log("Taking this job")
 		self._profession=p
 		m:set_string("villager",self._id)
 		self._jobsite = jobsite_pos
 		set_textures(self)
 		return true
+	else
+		--minetest.log("I can not steal someone's job!")
 	end
 end
 
@@ -621,10 +735,12 @@ local function look_for_job(self)
 	self.last_jobhunt = os.time() + math.random(0,60)
 	local p = self.object:get_pos()
 	local nn = minetest.find_nodes_in_area(vector.offset(p,-48,-48,-48),vector.offset(p,48,48,48),jobsites)
+	--minetest.log("Looking for jobs")
 	for _,n in pairs(nn) do
 		local m=minetest.get_meta(n)
+		--minetest.log("Job owner: ".. m:get_string("villager"))
 		if m:get_string("villager") == "" then
-			--minetest.log("goingt to jobsite "..minetest.pos_to_string(n) )
+			--minetest.log("It's a free job for me (".. minetest.pos_to_string(p) .. ")! I'll take: "..minetest.pos_to_string(n) )
 			local gp = mcl_mobs:gopath(self,n,function()
 				--minetest.log("arrived jobsite "..minetest.pos_to_string(n) )
 			end)
@@ -634,22 +750,97 @@ local function look_for_job(self)
 end
 
 local function get_a_job(self)
+	--minetest.log("In get a job")
 	if self.child then return end
+
 	local p = self.object:get_pos()
 	local n = minetest.find_node_near(p,1,jobsites)
+
+	if not n then
+		--minetest.log("Job hunt failed. No job block near.")
+	else
+		--minetest.log("Found job block near. Is it free though?")
+	end
+
 	if n and employ(self,n) then return true end
+
 	if self.state ~= "gowp" then look_for_job(self) end
 end
 
-local function check_jobsite(self)
-	if self._traded or not self._jobsite then return end
+local function find_jobsite (self)
+	if not self or not self._jobsite then
+		--minetest.log("find_jobsite. Invalid params")
+		return
+	end
+
 	local n = mcl_vars.get_node(self._jobsite)
 	local m = minetest.get_meta(self._jobsite)
-	if m:get_string("villager") ~= self._id then
+	if m:get_string("villager") == self._id then
+		--minetest.log("find_jobsite. is my job.")
+		return n
+	else
+		--minetest.log("find_jobsite. Not my job")
+	end
+	return
+end
+
+local function check_jobsite(self)
+	if self._traded then
+		return false
+	end
+
+	if not find_jobsite (self) then
 		self._profession = "unemployed"
 		self._trades = nil
 		set_textures(self)
+		return false
+	else
+		return true
 	end
+end
+
+
+
+local function do_work (self)
+	local jobsite2 = find_jobsite (self)
+	local jobsite = self._jobsite
+
+	if self and jobsite2 and self._jobsite then
+		if self.order == WORK then
+			--minetest.log("I'm already working, boss!")
+
+			self.object:set_velocity({x = 0, y = 0, z = 0})
+			--minetest.log("[mobs_mc] Villager velocity is: ".. minetest.pos_to_string(self.object:get_velocity()))
+			return
+		end
+
+		if vector.distance(self.object:get_pos(),self._jobsite) < 2 then
+			--minetest.log("Made it to work ok!")
+			self.order = WORK
+		else
+			--self.state = "go_to_work"
+			mcl_mobs:gopath(self, jobsite, function(self,jobsite)
+				if not self then
+					--minetest.log("missing self. not good")
+					return false
+				end
+				if not self._jobsite then
+					--minetest.log("Jobsite not valid")
+					return false
+				end
+				if vector.distance(self.object:get_pos(),self._jobsite) < 2 then
+					--minetest.log("Made it to work ok callback!")
+					return true
+				else
+					--minetest.log("Need to walk to work. Not sure we can get here.")
+				end
+
+			end)
+		end
+	else
+		--minetest.log("Cannot find the jobsite in do_work. Do nothing.")
+	end
+
 end
 
 local function update_max_tradenum(self)
@@ -724,7 +915,7 @@ local function set_trade(trader, player, inv, concrete_tradenum)
 		init_trades(trader)
 		trades = minetest.deserialize(trader._trades)
 		if not trades then
-			minetest.log("error", "[mobs_mc] Failed to select villager trade!")
+			--minetest.log("error", "[mobs_mc] Failed to select villager trade!")
 			return
 		end
 	end
@@ -1345,18 +1536,21 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 	_trading_players = {}, -- list of playernames currently trading with villager (open formspec)
 	do_custom = function(self, dtime)
 		check_summon(self,dtime)
+
 		-- Stand still if player is nearby.
 		if not self._player_scan_timer then
 			self._player_scan_timer = 0
 		end
-
 		self._player_scan_timer = self._player_scan_timer + dtime
+
 		-- Check infrequently to keep CPU load low
 		if self._player_scan_timer > PLAYER_SCAN_INTERVAL then
+
 			self._player_scan_timer = 0
 			local selfpos = self.object:get_pos()
 			local objects = minetest.get_objects_inside_radius(selfpos, PLAYER_SCAN_RADIUS)
 			local has_player = false
+
 			for o, obj in pairs(objects) do
 				if obj:is_player() then
 					has_player = true
@@ -1367,18 +1561,59 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 				minetest.log("verbose", "[mobs_mc] Player near villager found!")
 				stand_still(self)
 			else
-				minetest.log("verbose", "[mobs_mc] No player near villager found!")
+				--minetest.log("verbose", "[mobs_mc] No player near villager found!")
 				self.walk_chance = DEFAULT_WALK_CHANCE
 				self.jump = true
 			end
-			if self._bed and  ( self.state ~= "go_home" and vector.distance(self.object:get_pos(),self._bed) > 50 ) then
-				go_home(self)
+
+			if not self._bed then
+				--minetest.log("[mobs_mc] Villager has no bed. Currently at location: "..minetest.pos_to_string(self.object:get_pos()))
+				take_bed (self)
 			end
-			if self._profession == "unemployed" then
-				get_a_job(self)
+			if check_bed (self) then
+				--self.state ~= "go_home"
+				local wandered_too_far = ( self.state ~= "gowp" ) and (vector.distance(self.object:get_pos(),self._bed) > 50 )
+
+				if wandered_too_far then minetest.log("[mobs_mc] Wandered too far! Return home ") end
+				if wandered_too_far  then
+					go_home(self, false)
+					return
+				elseif mcl_beds.is_night() then
+					--minetest.log("[mobs_mc] It's night. Better get to bed ")
+					go_home(self, true)
+					return
+				else
+					-- work
+					-- or gossip at town bell
+				end
 			else
-				check_jobsite(self)
+				--minetest.log("[mobs_mc] check bed failed ")
 			end
+
+			-- Daytime is work and play time
+			if not mcl_beds.is_night() then
+				if self.order == SLEEP then self.order = nil end
+				if self._profession == "unemployed" then
+					--minetest.log("[mobs_mc] I'm unemployed. Can I get a job?")
+					get_a_job(self)
+				else
+					if get_activity() == WORK then
+						--minetest.log("[mobs_mc] Time for work")
+						if check_jobsite(self) then
+							--minetest.log("[mobs_mc] My jobsite is valid. Let's do work ")
+							do_work(self)
+							-- at night or thunder, go to safety (bed)
+						else
+							--minetest.log("[mobs_mc] My job site is invalid or i'm already working. I cannot work.")
+						end
+					else
+						self.order = nil
+					end
+				end
+			else
+				if self.order == WORK then self.order = nil end
+			end
+
 		end
 	end,
 

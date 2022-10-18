@@ -2486,6 +2486,8 @@ local function check_gowp(self,dtime)
 		self._target = nil
 		self.current_target = nil
 		self.state = "stand"
+		self.object:set_velocity({x = 0, y = 0, z = 0})
+		self.object:set_acceleration({x = 0, y = 0, z = 0})
 		if self.callback_arrived then return self.callback_arrived(self) end
 		return true
 	end
@@ -2556,8 +2558,8 @@ local do_states = function(self, dtime)
 		end
 
 		-- npc's ordered to stand stay standing
-		if self.type ~= "npc"
-		or self.order ~= "stand" then
+		if self.type ~= "npc" or
+		 (self.order ~= "stand" and self.order ~= "sleep" and self.order ~= "work") then
 
 			if self.walk_chance ~= 0
 			and self.facing_fence ~= true
