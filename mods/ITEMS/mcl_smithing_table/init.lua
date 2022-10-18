@@ -1,11 +1,13 @@
---[[
-By EliasFleckenstein03 and Code-Sploit
-]]
+-- By EliasFleckenstein03 and Code-Sploit
 
 local S = minetest.get_translator("mcl_smithing_table")
+local F = minetest.formspec_escape
+local C = minetest.colorize
+
 mcl_smithing_table = {}
 
--- Function to upgrade diamond tool/armor to netherite tool/armor
+---Function to upgrade diamond tool/armor to netherite tool/armor
+---@param itemstack ItemStack
 function mcl_smithing_table.upgrade_item(itemstack)
 	local def = itemstack:get_definition()
 
@@ -29,28 +31,48 @@ function mcl_smithing_table.upgrade_item(itemstack)
 	return itemstack
 end
 
--- Badly copied over from mcl_anvils
--- ToDo: Make better formspec
+local formspec = table.concat({
+	"formspec_version[4]",
+	"size[11.75,10.425]",
 
-local formspec = "size[9,9]" ..
-		"background[-0.19,-0.25;9.41,9.49;mcl_smithing_table_inventory.png]"..
-		"label[0,4.0;" .. minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Inventory"))) .. "]" ..
-		"list[current_player;main;0,4.5;9,3;9]" ..
-		mcl_formspec.get_itemslot_bg(0,4.5,9,3) ..
-		"list[current_player;main;0,7.74;9,1;]" ..
-		mcl_formspec.get_itemslot_bg(0,7.74,9,1) ..
-		"list[context;diamond_item;1,2.5;1,1;]" ..
-		mcl_formspec.get_itemslot_bg(1,2.5,1,1) ..
-		"list[context;netherite;4,2.5;1,1;]" ..
-		mcl_formspec.get_itemslot_bg(4,2.5,1,1) ..
-		"list[context;upgraded_item;8,2.5;1,1;]" ..
-		mcl_formspec.get_itemslot_bg(8,2.5,1,1) ..
-		"label[3,0.1;" .. minetest.formspec_escape(minetest.colorize(mcl_colors.DARK_GRAY, S("Upgrade Gear"))) .. "]" ..
-		"listring[context;output]"..
-		"listring[current_player;main]"..
-		"listring[context;input]"..
-		"listring[current_player;main]"
+	"label[4.125,0.375;" .. F(C(mcl_formspec.label_color, S("Upgrade Gear"))) .. "]",
 
+	"image[0.875,0.375;1.75,1.75;mcl_smithing_table_inventory_hammer.png]",
+
+	mcl_formspec.get_itemslot_bg_v4(1.625, 2.6, 1, 1),
+	"list[context;diamond_item;1.625,2.6;1,1;]",
+
+	"image[3.5,2.6;1,1;mcl_anvils_inventory_cross.png]",
+
+	mcl_formspec.get_itemslot_bg_v4(5.375, 2.6, 1, 1),
+	"list[context;netherite;5.375,2.6;1,1;]",
+
+	"image[6.75,2.6;2,1;mcl_anvils_inventory_arrow.png]",
+
+	mcl_formspec.get_itemslot_bg_v4(9.125, 2.6, 1, 1),
+	"list[context;upgraded_item;9.125,2.6;1,1;]",
+
+	-- Player Inventory
+
+	mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
+	"list[current_player;main;0.375,5.1;9,3;9]",
+
+	mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
+	"list[current_player;main;0.375,9.05;9,1;]",
+
+	-- Listrings
+
+	"listring[context;diamond_item]",
+	"listring[current_player;main]",
+	"listring[context;netherite]",
+	"listring[current_player;main]",
+	"listring[context;upgraded_item]",
+	"listring[current_player;main]",
+	"listring[current_player;main]",
+	"listring[context;diamond_item]",
+})
+
+---@param pos Vector
 local function reset_upgraded_item(pos)
 	local inv = minetest.get_meta(pos):get_inventory()
 	local upgraded_item
@@ -66,8 +88,7 @@ minetest.register_node("mcl_smithing_table:table", {
 	description = S("Smithing table"),
 	-- ToDo: Add _doc_items_longdesc and _doc_items_usagehelp
 
-	stack_max = 64,
-	groups = {pickaxey = 2, deco_block = 1},
+	groups = { pickaxey = 2, deco_block = 1 },
 
 	tiles = {
 		"mcl_smithing_table_top.png",
@@ -92,7 +113,8 @@ minetest.register_node("mcl_smithing_table:table", {
 	end,
 
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-		if listname == "diamond_item" and mcl_smithing_table.upgrade_item(stack) or listname == "netherite" and stack:get_name() == "mcl_nether:netherite_ingot" then
+		if listname == "diamond_item" and mcl_smithing_table.upgrade_item(stack) or
+			listname == "netherite" and stack:get_name() == "mcl_nether:netherite_ingot" then
 			return stack:get_count()
 		end
 
@@ -119,7 +141,7 @@ minetest.register_node("mcl_smithing_table:table", {
 			take_item("netherite")
 
 			-- ToDo: make epic sound
-			minetest.sound_play("mcl_smithing_table_upgrade", {pos = pos, max_hear_distance = 16})
+			minetest.sound_play("mcl_smithing_table_upgrade", { pos = pos, max_hear_distance = 16 })
 		end
 		if listname == "upgraded_item" then
 			if stack:get_name() == "mcl_farming:hoe_netherite" then
@@ -138,8 +160,8 @@ minetest.register_node("mcl_smithing_table:table", {
 minetest.register_craft({
 	output = "mcl_smithing_table:table",
 	recipe = {
-		{"mcl_core:iron_ingot", "mcl_core:iron_ingot", ""},
-		{"group:wood", "group:wood", ""},
-		{"group:wood", "group:wood", ""}
-	}
+		{ "mcl_core:iron_ingot", "mcl_core:iron_ingot", "" },
+		{ "group:wood", "group:wood", "" },
+		{ "group:wood", "group:wood", "" }
+	},
 })
