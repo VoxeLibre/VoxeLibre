@@ -34,6 +34,7 @@ return {
 		"RandomLegoBrick",
 		"SumianVoice",
 		"MrRar",
+		"talamh",
 	}},
 	{S("Contributors"), 0x52FF00, {
 		"Laurent Rocher",
@@ -67,7 +68,6 @@ return {
 		"Benjamin Schötz",
 		"Doloment",
 		"Sydney Gems",
-		"talamh",
 		"Emily2255",
 		"Emojigit",
 		"FinishedFragment",
@@ -86,6 +86,10 @@ return {
 		"opfromthestart",
 		"snowyu",
 		"FaceDeer",
+		"Faerraven",
+		"FossFanatic",
+		"Herbert West",
+		"GuyLiner",
 	}},
 	{S("MineClone5"), 0xA60014, {
 		"kay27",
