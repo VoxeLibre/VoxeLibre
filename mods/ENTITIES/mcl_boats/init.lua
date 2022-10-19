@@ -56,7 +56,7 @@ end
 
 local function set_attach(boat)
 	boat._driver:set_attach(boat.object, "",
-		{x = 0, y = 0.42, z = -1}, {x = 0, y = 0, z = 0})
+		{x = 0, y = 1.5, z = 1}, {x = 0, y = 0, z = 0})
 end
 
 local function set_double_attach(boat)
@@ -67,7 +67,7 @@ local function set_double_attach(boat)
 end
 local function set_choat_attach(boat)
 	boat._driver:set_attach(boat.object, "",
-		{x = 0, y = 0.42, z = 1.8}, {x = 0, y = 0, z = 0})
+		{x = 0, y = 1.5, z = 1}, {x = 0, y = 0, z = 0})
 end
 
 local function attach_object(self, obj)
@@ -135,7 +135,7 @@ local boat = {
 	selectionbox = {-0.7, -0.15, -0.7, 0.7, 0.55, 0.7},
 	visual = "mesh",
 	mesh = "mcl_boats_boat.b3d",
-	textures = {"mcl_boats_texture_oak_boat.png", "mcl_boats_texture_oak_boat.png", "mcl_boats_texture_oak_boat.png", "mcl_boats_texture_oak_boat.png", "mcl_boats_texture_oak_boat.png"},
+	textures = { "mcl_boats_texture_oak_boat.png", "blank.png" },
 	visual_size = boat_visual_size,
 	hp_max = boat_max_hp,
 	damage_texture_modifier = "^[colorize:white:0",
@@ -146,7 +146,7 @@ local boat = {
 	_last_v = 0, -- Temporary speed variable
 	_removed = false, -- If true, boat entity is considered removed (e.g. after punch) and should be ignored
 	_itemstring = "mcl_boats:boat", -- Itemstring of the boat item (implies boat type)
-	_animation = 0, -- 0: not animated; 1: paddling forwards; -1: paddling forwards
+	_animation = 0, -- 0: not animated; 1: paddling forwards; -1: paddling backwards
 	_regen_timer = 0,
 	_damage_anim = 0,
 }
@@ -169,8 +169,14 @@ function boat.on_activate(self, staticdata, dtime_s)
 		self._last_v = self._v
 		self._itemstring = data.itemstring
 
-		while #data.textures < 5 do
-			table.insert(data.textures, data.textures[1])
+		-- Update the texutes for existing old boat entity instances.
+		-- Maybe remove this in the future.
+		if #data.textures ~= 2 then
+			local has_chest = self._itemstring:find("chest")
+			data.textures = {
+				data.textures[1]:gsub("_chest", ""),
+				has_chest and "mcl_chests_normal.png" or "blank.png"
+			}
 		end
 
 		self.object:set_properties({textures = data.textures})
@@ -422,8 +428,7 @@ end
 minetest.register_entity("mcl_boats:boat", boat)
 
 local cboat = table.copy(boat)
-cboat.mesh = "mcl_boats_boat_with_chest.b3d"
-cboat.textures = {"mcl_boats_texture_oak_chest_boat.png", "mcl_boats_texture_oak_chest_boat.png", "mcl_boats_texture_oak_chest_boat.png", "mcl_boats_texture_oak_chest_boat.png", "mcl_boats_texture_oak_chest_boat.png"}
+cboat.textures = { "mcl_boats_texture_oak_chest_boat.png", "mcl_chests_normal.png" }
 cboat._itemstring = "mcl_boats:chest_boat"
 cboat.collisionbox = {-0.5, -0.15, -0.5, 0.5, 0.75, 0.5}
 cboat.selectionbox = {-0.7, -0.15, -0.7, 0.7, 0.75, 0.7}
@@ -433,11 +438,7 @@ mcl_entity_invs.register_inv("mcl_boats:chest_boat","Boat",27)
 
 local boat_ids = { "boat", "boat_spruce", "boat_birch", "boat_jungle", "boat_acacia", "boat_dark_oak", "boat_obsidian", "boat_mangrove", "chest_boat", "chest_boat_spruce", "chest_boat_birch", "chest_boat_jungle", "chest_boat_acacia", "chest_boat_dark_oak", "chest_boat_mangrove" }
 local names = { S("Oak Boat"), S("Spruce Boat"), S("Birch Boat"), S("Jungle Boat"), S("Acacia Boat"), S("Dark Oak Boat"), S("Obsidian Boat"), S("Mangrove Boat"), S("Oak Chest Boat"), S("Spruce Chest Boat"), S("Birch Chest Boat"), S("Jungle Chest Boat"), S("Acacia Chest Boat"), S("Dark Oak Chest Boat"), S("Mangrove Chest Boat") }
-local craftstuffs = {}
-if minetest.get_modpath("mcl_core") then
-	craftstuffs = { "mcl_core:wood", "mcl_core:sprucewood", "mcl_core:birchwood", "mcl_core:junglewood", "mcl_core:acaciawood", "mcl_core:darkwood", "mcl_core:obsidian", "mcl_mangrove:mangrove_wood" }
-end
-local images = { "oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "obsidian", "mangrove", "oak_chest", "spruce_chest", "birch_chest", "jungle_chest", "acacia_chest", "dark_oak_chest", "mangrove_chest" }
+local craftstuffs = { "mcl_core:wood", "mcl_core:sprucewood", "mcl_core:birchwood", "mcl_core:junglewood", "mcl_core:acaciawood", "mcl_core:darkwood", "mcl_core:obsidian", "mcl_mangrove:mangrove_wood" }
 
 for b=1, #boat_ids do
 	local itemstring = "mcl_boats:"..boat_ids[b]
@@ -453,6 +454,21 @@ for b=1, #boat_ids do
 	end
 	tt_help = S("Water vehicle")
 
+	local inventory_image
+	local texture
+	local id = boat_ids[b]
+	if id:find("chest") then
+		if id == "chest_boat" then id = "oak" end
+		local id = id:gsub("chest_boat_", "")
+		inventory_image = "mcl_boats_" .. id .. "_chest_boat.png"
+		texture = "mcl_boats_texture_" .. id .. "_boat.png"
+	else
+		if id == "boat" then id = "oak" end
+		local id = id:gsub("boat_", "")
+		inventory_image = "mcl_boats_" .. id .. "_boat.png"
+		texture = "mcl_boats_texture_" .. id .. "_boat.png"
+	end
+	
 	minetest.register_craftitem(itemstring, {
 		description = names[b],
 		_tt_help = tt_help,
@@ -460,7 +476,7 @@ for b=1, #boat_ids do
 		_doc_items_entry_name = helpname,
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = usagehelp,
-		inventory_image = "mcl_boats_"..images[b].."_boat.png",
+		inventory_image = inventory_image,
 		liquids_pointable = true,
 		groups = { boat = 1, transport = 1},
 		stack_max = 1,
@@ -488,13 +504,14 @@ for b=1, #boat_ids do
 				pos = vector.add(pos, vector.multiply(dir, boat_y_offset_ground))
 			end
 			local boat_ent = "mcl_boats:boat"
+			local chest_tex = "blank.png"
 			if itemstring:find("chest") then
 				boat_ent = "mcl_boats:chest_boat"
+				chest_tex = "mcl_chests_normal.png"
 			end
 			local boat = minetest.add_entity(pos, boat_ent)
-			local texture = "mcl_boats_texture_"..images[b].."_boat.png"
 			boat:get_luaentity()._itemstring = itemstring
-			boat:set_properties({textures = { texture, texture, texture, texture, texture }})
+			boat:set_properties({ textures = { texture, chest_tex } })
 			boat:set_yaw(placer:get_look_horizontal())
 			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				itemstack:take_item()
