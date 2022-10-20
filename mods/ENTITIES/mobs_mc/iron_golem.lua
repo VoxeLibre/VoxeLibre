@@ -48,13 +48,14 @@ mcl_mobs:register_mob("mobs_mc:iron_golem", {
 	_got_poppy = false,
 	pick_up = {"mcl_flowers:poppy"},
 	on_pick_up = function(self,n)
-		if n.itemstring:find("mcl_flowers:poppy") then
+		local it = ItemStack(n.itemstring)
+		if it:get_name() == "mcl_flowers:poppy" then
 			if not self._got_poppy then
 				self._got_poppy=true
-				return
+				it:take_item(1)
 			end
-			return true
 		end
+		return it
 	end,
 	replace_what = {"mcl_flowers:poppy"},
 	replace_with = {"air"},
