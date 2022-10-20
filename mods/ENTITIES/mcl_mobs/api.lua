@@ -3931,7 +3931,7 @@ local mob_step = function(self, dtime)
 			if not self.animation.walk_speed then
 				self.animation.walk_speed = 25
 			end
-			self.object:set_animation_frame_speed((v2/self.run_velocity)*self.animation.walk_speed*self.frame_speed_multiplier)
+			self.object:set_animation_frame_speed((v2/math.max(1,self.run_velocity))*self.animation.walk_speed*self.frame_speed_multiplier)
 		end
 
 		--set_speed
