@@ -33,9 +33,9 @@ local pigman = {
 	visual = "mesh",
 	mesh = "mobs_mc_zombie_pigman.b3d",
 	textures = { {
-		"mobs_mc_zombie_pigman.png", --pigman
 		"blank.png", --baby
 		"default_tool_goldsword.png", --sword
+		"mobs_mc_zombie_pigman.png", --pigman
 	} },
 	visual_size = {x=3, y=3},
 	sounds = {
