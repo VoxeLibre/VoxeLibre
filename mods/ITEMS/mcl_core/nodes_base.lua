@@ -88,10 +88,13 @@ minetest.register_node("mcl_core:stone_with_gold", {
 })
 
 local redstone_timer = 68.28
-local function redstone_ore_activate(pos)
+local function redstone_ore_activate(pos, node, puncher, pointed_thing)
 	minetest.swap_node(pos, {name="mcl_core:stone_with_redstone_lit"})
 	local t = minetest.get_node_timer(pos)
 	t:start(redstone_timer)
+	if puncher and pointed_thing then
+		return minetest.node_punch(pos, node, puncher, pointed_thing)
+	end
 end
 minetest.register_node("mcl_core:stone_with_redstone", {
 	description = S("Redstone Ore"),
@@ -126,9 +129,12 @@ minetest.register_node("mcl_core:stone_with_redstone", {
 	}
 })
 
-local function redstone_ore_reactivate(pos)
+local function redstone_ore_reactivate(pos, node, puncher, pointed_thing)
 	local t = minetest.get_node_timer(pos)
 	t:start(redstone_timer)
+	if puncher and pointed_thing then
+		return minetest.node_punch(pos, node, puncher, pointed_thing)
+	end
 end
 -- Light the redstone ore up when it has been touched
 minetest.register_node("mcl_core:stone_with_redstone_lit", {
