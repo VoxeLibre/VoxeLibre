@@ -123,6 +123,7 @@ minetest.register_craft({
 fish_names = {
 	{ techname = "cod", name = "Cod" },
 	{ techname = "salmon", name = "Salmon" },
+    { techname = "axolotl", name = "Axolotl" },
 	--{ techname = "pufferfish", name = "Pufferfish" } FIXME: Uncomment when pufferfish mobs are added.
 	{ techname = "tropical_fish", name = "Tropical Fish" }
 }
