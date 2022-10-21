@@ -517,6 +517,8 @@ local function register_biomes()
 		heat_point = 58,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 0,
+		_mcl_skycolor = "#78A7FF",
+		_mcl_fogcolor = "#C0D8FF"
 	})
 	minetest.register_biome({
 		name = "Plains_beach",
