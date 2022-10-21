@@ -1,17 +1,30 @@
 local mods_loaded = false
 local NIGHT_VISION_RATIO = 0.45
 
-function mcl_weather.set_sky_box_clear(player)
-	player:set_sky({
-		type = "regular",
-		sky_color = {
+local mg_name = minetest.get_mapgen_setting("mg_name")
+
+function mcl_weather.set_sky_box_clear(player,sky,fog)
+	local sc = {
 			day_sky = "#92B9FF",
-			day_horizon = "#B4D0FF",
+			day_horizon = "#C0D8FF",
 			dawn_sky = "#B4BAFA",
 			dawn_horizon = "#BAC1F0",
 			night_sky = "#006AFF",
 			night_horizon = "#4090FF",
-		},
+		}
+	if sky then
+		sc.day_sky = sky
+		sc.dawn_sky = sky
+		sc.night_sky = sky
+	end
+	if fog then
+		sc.day_horizon = fog
+		sc.dawn_horizon = fog
+		sc.night_horizon = fog
+	end
+	player:set_sky({
+		type = "regular",
+		sky_color = sc,
 		clouds = true,
 	})
 end
@@ -97,9 +110,17 @@ mcl_weather.skycolor = {
 			local dim = mcl_worlds.pos_to_dimension(pos)
 			local has_weather = (mcl_worlds.has_weather(pos) and (mcl_weather.state == "snow" or mcl_weather.state =="rain" or mcl_weather.state == "thunder") and mcl_weather.has_snow(pos)) or ((mcl_weather.state =="rain" or mcl_weather.state == "thunder") and mcl_weather.has_rain(pos))
 			if dim == "overworld" then
+				local biomesky
+				local biomefog
+				if mg_name ~= "v6" and mg_name ~= "singlenode" then
+					local biome = minetest.get_biome_name(minetest.get_biome_data(player:get_pos()).biome)
+					biomesky = minetest.registered_biomes[biome]._mcl_skycolor
+					biomefog = minetest.registered_biomes[biome]._mcl_fogcolor
+				end
+
 				if (mcl_weather.state == "none") then
 					-- Clear weather
-					mcl_weather.set_sky_box_clear(player)
+					mcl_weather.set_sky_box_clear(player,biomesky,biomefog)
 					player:set_sun({visible = true, sunrise_visible = true})
 					player:set_moon({visible = true})
 					player:set_stars({visible = true})
