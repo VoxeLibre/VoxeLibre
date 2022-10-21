@@ -164,3 +164,4 @@ dofile(path .. "/fox.lua")
 
 dofile(path .. "/phantom.lua")
 dofile(path .. "/drowned.lua")
+dofile(path .. "/panda.lua")
