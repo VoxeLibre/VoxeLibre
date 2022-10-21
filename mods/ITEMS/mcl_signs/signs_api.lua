@@ -4,7 +4,7 @@
 --- DateTime: 10/14/22 4:05 PM
 ---
 
-local DEBUG = false -- special debug setting.
+local DEBUG = minetest.settings:get_bool("mcl_logging_mcl_signs",true) -- special debug setting.
 local table = table -- copied from the original signs init file.
 
 if DEBUG then
