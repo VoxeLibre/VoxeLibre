@@ -30,6 +30,7 @@ local turtle = {
 	makes_footstep_sound = true,
 	fly = true,
 	fly_in = {"mcl_core:water_source","mcl_core:water_flowing"},
+	breath_max = -1,
 	walk_velocity = 1,
 	run_velocity = 2,
 	follow_velocity = 2,
