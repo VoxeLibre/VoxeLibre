@@ -1,0 +1,63 @@
+local S = minetest.get_translator("mobs_mc")
+
+mcl_mobs:register_mob("mobs_mc:drowned", {
+	description = S("Drowned"),
+	type = "monster",
+	spawn_class = "hostile",
+	hp_min = 20,
+	hp_max = 20,
+	xp_min = 5,
+	xp_max = 5,
+	head_swivel = "head.control",
+	bone_eye_height = 6.3,
+	head_eye_height = 2.2,
+	curiosity = 7,
+	head_pitch_multiplier=-1,
+	breath_max = -1,
+	--floats = 0,
+	armor = {undead = 90, fleshy = 90},
+	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.8, 0.3},
+	visual = "mesh",
+	mesh = "mobs_mc_zombie.b3d",
+	fly = true,
+	fly_in = {"mcl_core:water_source","mcl_core:water_flowing"},
+	textures = {
+		{
+			"mobs_mc_empty.png",
+			"mobs_mc_drowned.png",
+			--"mobs_mc_drowned_outer_layer.png",
+		}
+	},
+	makes_footstep_sound = true,
+	sounds = {
+		random = "mobs_mc_zombie_growl",
+		war_cry = "mobs_mc_zombie_growl",
+		death = "mobs_mc_zombie_death",
+		damage = "mobs_mc_zombie_hurt",
+		distance = 16,
+	},
+	walk_velocity = .8,
+	run_velocity = 1.6,
+	damage = 3,
+	reach = 2,
+	fear_height = 4,
+	pathfinding = 1,
+	jump = true,
+	jump_height = 4,
+	group_attack = { "mobs_mc:drowned", "mobs_mc:zombie", "mobs_mc:baby_zombie", "mobs_mc:husk", "mobs_mc:baby_husk" },
+	drops = drops_zombie,
+	animation = {
+		stand_start = 40, stand_end = 49, stand_speed = 2,
+		walk_start = 0, walk_end = 39, speed_normal = 25,
+		run_start = 0, run_end = 39, speed_run = 50,
+		punch_start = 50, punch_end = 59, punch_speed = 20,
+	},
+	ignited_by_sunlight = true,
+	sunlight_damage = 2,
+	view_range = 16,
+	attack_type = "dogfight",
+	harmed_by_heal = true,
+	attack_npcs = true,
+})
+
+mcl_mobs:register_egg("mobs_mc:drowned", S("Drowned"), "#00afff", "#199c66", 0)
