@@ -1,0 +1,267 @@
+--MCmobs v0.4
+--maikerumine
+--made for MC like Survival game
+--License for code WTFPL and otherwise stated in readmes
+
+local pi = math.pi
+local atann = math.atan
+local atan = function(x)
+	if not x or x ~= x then
+		return 0
+	else
+		return atann(x)
+	end
+end
+
+local dir_to_pitch = function(dir)
+	local dir2 = vector.normalize(dir)
+	local xz = math.abs(dir.x) + math.abs(dir.z)
+	return -math.atan2(-dir.y, xz)
+end
+
+local function degrees(rad)
+	return rad * 180.0 / math.pi
+end
+
+local S = minetest.get_translator(minetest.get_current_modname())
+
+--###################
+--################### axolotl
+--###################
+
+local axolotl = {
+	type = "animal",
+	spawn_class = "water",
+	can_despawn = true,
+	passive = true,
+	hp_min = 14,
+	hp_max = 14,
+	xp_min = 1,
+	xp_max = 7,
+	armor = 100,
+	rotate = 180,
+	spawn_in_group_min = 3,
+	spawn_in_group = 5,
+	tilt_swim = true,
+	collisionbox = {-0.3, 0.0, -0.3, 0.3, 0.79, 0.3},
+	visual = "mesh",
+	mesh = "extra_mobs_axolotl.b3d",
+	textures = {
+		{"extra_mobs_axolotl_brown.png"},{"extra_mobs_axolotl_yellow.png"},{"extra_mobs_axolotl_green.png"},{"extra_mobs_axolotl_pink.png"},{"extra_mobs_axolotl_black.png"},{"extra_mobs_axolotl_purple.png"},{"extra_mobs_axolotl_white.png"}
+	},
+    sounds = {
+random = "extra_mobs_axolotl",
+		damage = "extra_mobs_axolotl_hurt",
+		distance = 16,
+    },
+	animation = {
+		stand_start = 1,
+		stand_end = 20,
+		walk_start = 1,
+		walk_end = 20,
+		run_start = 1,
+		run_end = 20,
+	},
+	visual_size = {x=3, y=3},
+	makes_footstep_sound = false,
+    fly = true,
+    fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
+	breathes_in_water = true,
+	jump = true,
+	view_range = 16,
+	runaway = true,
+	fear_height = 4,
+	do_custom = function(self)
+		--[[ this is supposed to make them jump out the water but doesn't appear to work very well
+		self.object:set_bone_position("body", vector.new(0,1,0), vector.new(degrees(dir_to_pitch(self.object:get_velocity())) * -1 + 90,0,0))
+		if minetest.get_item_group(self.standing_in, "water") ~= 0 then
+			if self.object:get_velocity().y < 5 then
+				self.object:add_velocity({ x = 0 , y = math.random(-.007, .007), z = 0 })
+			end
+		end
+--]]
+		for _,object in pairs(minetest.get_objects_inside_radius(self.object:get_pos(), 10)) do
+			local lp = object:get_pos()
+			local s = self.object:get_pos()
+			local vec = {
+				x = lp.x - s.x,
+				y = lp.y - s.y,
+				z = lp.z - s.z
+			}
+			if object and not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "mobs_mc:axolotl" then
+				self.state = "runaway"
+				self.object:set_rotation({x=0,y=(atan(vec.z / vec.x) + 3 * pi / 2) - self.rotate,z=0})
+			end
+		end
+	end,
+	on_rightclick = function(self, clicker)
+		if clicker:get_wielded_item():get_name() == "mcl_buckets:bucket_water" then
+			self.object:remove()
+			clicker:set_wielded_item("mcl_buckets:bucket_axolotl")
+			awards.unlock(clicker:get_player_name(), "mcl:tacticalFishing")
+		end
+	end
+}
+
+mcl_mobs:register_mob("mobs_mc:axolotl", axolotl)
+
+
+--spawning TODO: in schools
+
+local water = 0
+
+mcl_mobs:spawn_specific(
+"mobs_mc:axolotl",
+"overworld",
+"water",
+{
+"Mesa",
+"FlowerForest",
+"Swampland",
+"Taiga",
+"ExtremeHills",
+"Jungle",
+"Savanna",
+"BirchForest",
+"MegaSpruceTaiga",
+"MegaTaiga",
+"ExtremeHills+",
+"Forest",
+"Plains",
+"Desert",
+"ColdTaiga",
+"MushroomIsland",
+"IcePlainsSpikes",
+"SunflowerPlains",
+"IcePlains",
+"RoofedForest",
+"ExtremeHills+_snowtop",
+"MesaPlateauFM_grasstop",
+"JungleEdgeM",
+"ExtremeHillsM",
+"JungleM",
+"BirchForestM",
+"MesaPlateauF",
+"MesaPlateauFM",
+"MesaPlateauF_grasstop",
+"MesaBryce",
+"JungleEdge",
+"SavannaM",
+"FlowerForest_beach",
+"Forest_beach",
+"StoneBeach",
+"ColdTaiga_beach_water",
+"Taiga_beach",
+"Savanna_beach",
+"Plains_beach",
+"ExtremeHills_beach",
+"ColdTaiga_beach",
+"Swampland_shore",
+"MushroomIslandShore",
+"JungleM_shore",
+"Jungle_shore",
+"MesaPlateauFM_sandlevel",
+"MesaPlateauF_sandlevel",
+"MesaBryce_sandlevel",
+"Mesa_sandlevel",
+"RoofedForest_ocean",
+"JungleEdgeM_ocean",
+"BirchForestM_ocean",
+"BirchForest_ocean",
+"IcePlains_deep_ocean",
+"Jungle_deep_ocean",
+"Savanna_ocean",
+"MesaPlateauF_ocean",
+"ExtremeHillsM_deep_ocean",
+"Savanna_deep_ocean",
+"SunflowerPlains_ocean",
+"Swampland_deep_ocean",
+"Swampland_ocean",
+"MegaSpruceTaiga_deep_ocean",
+"ExtremeHillsM_ocean",
+"JungleEdgeM_deep_ocean",
+"SunflowerPlains_deep_ocean",
+"BirchForest_deep_ocean",
+"IcePlainsSpikes_ocean",
+"Mesa_ocean",
+"StoneBeach_ocean",
+"Plains_deep_ocean",
+"JungleEdge_deep_ocean",
+"SavannaM_deep_ocean",
+"Desert_deep_ocean",
+"Mesa_deep_ocean",
+"ColdTaiga_deep_ocean",
+"Plains_ocean",
+"MesaPlateauFM_ocean",
+"Forest_deep_ocean",
+"JungleM_deep_ocean",
+"FlowerForest_deep_ocean",
+"MushroomIsland_ocean",
+"MegaTaiga_ocean",
+"StoneBeach_deep_ocean",
+"IcePlainsSpikes_deep_ocean",
+"ColdTaiga_ocean",
+"SavannaM_ocean",
+"MesaPlateauF_deep_ocean",
+"MesaBryce_deep_ocean",
+"ExtremeHills+_deep_ocean",
+"ExtremeHills_ocean",
+"MushroomIsland_deep_ocean",
+"Forest_ocean",
+"MegaTaiga_deep_ocean",
+"JungleEdge_ocean",
+"MesaBryce_ocean",
+"MegaSpruceTaiga_ocean",
+"ExtremeHills+_ocean",
+"Jungle_ocean",
+"RoofedForest_deep_ocean",
+"IcePlains_ocean",
+"FlowerForest_ocean",
+"ExtremeHills_deep_ocean",
+"MesaPlateauFM_deep_ocean",
+"Desert_ocean",
+"Taiga_ocean",
+"BirchForestM_deep_ocean",
+"Taiga_deep_ocean",
+"JungleM_ocean",
+"FlowerForest_underground",
+"JungleEdge_underground",
+"StoneBeach_underground",
+"MesaBryce_underground",
+"Mesa_underground",
+"RoofedForest_underground",
+"Jungle_underground",
+"Swampland_underground",
+"MushroomIsland_underground",
+"BirchForest_underground",
+"Plains_underground",
+"MesaPlateauF_underground",
+"ExtremeHills_underground",
+"MegaSpruceTaiga_underground",
+"BirchForestM_underground",
+"SavannaM_underground",
+"MesaPlateauFM_underground",
+"Desert_underground",
+"Savanna_underground",
+"Forest_underground",
+"SunflowerPlains_underground",
+"ColdTaiga_underground",
+"IcePlains_underground",
+"IcePlainsSpikes_underground",
+"MegaTaiga_underground",
+"Taiga_underground",
+"ExtremeHills+_underground",
+"JungleM_underground",
+"ExtremeHillsM_underground",
+"JungleEdgeM_underground",
+},
+0,
+minetest.LIGHT_MAX+1,
+30,
+4000,
+3,
+water-16,
+water+1)
+
+--spawn egg
+mcl_mobs:register_egg("mobs_mc:axolotl", S("Axolotl"), "extra_mobs_spawn_icon_axolotl.png", 0)
