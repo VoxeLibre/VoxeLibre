@@ -4,15 +4,14 @@
 --- DateTime: 10/14/22 4:05 PM
 ---
 
-local DEBUG = minetest.settings:get_bool("mcl_logging_mcl_signs",true) -- special debug setting.
+--local logging = minetest.settings:get_bool("mcl_logging_mcl_signs",true)
+
+local DEBUG = minetest.settings:get_bool("mcl_logging_mcl_signs", true) -- special debug setting.
 local table = table -- copied from the original signs init file.
 
 if DEBUG then
-    minetest.log("Action","Signs API Loading")
+    minetest.log("action", "[mcl_signs] Signs API Loading")
 end
-
--- INITIALIZE THE GLOBAL API FOR SIGNS.
-mcl_signs = {}
 
 -- LOCALIZATION
 local S = minetest.get_translator("mcl_signs")
@@ -30,6 +29,13 @@ local NUMBER_OF_LINES = 4
 
 local LINE_HEIGHT = 14
 local CHAR_WIDTH = 5
+-- -----------------------
+
+-- CACHE NODE_SOUNDS
+local node_sounds
+if minetest.get_modpath("mcl_sounds") then
+    node_sounds = mcl_sounds.node_sound_wood_defaults()
+end
 
 -- SET UP THE CHARACTER MAPPING
 -- Load the characters map (characters.txt)
@@ -62,12 +68,19 @@ else
     end
 end
 
-local pi = math.pi
-local n = 23 / 56 - 1 / 128
+local pi = 3.1415926 -- enough accuracy, to build an engine for a car.
+
+-- locally cached copy of the official colors; this way, it updates as mcl_colors updates.
+local mcl_colors_official = mcl_colors
+if DEBUG then
+    minetest.log("verbose", "[mcl_signs]Official MCL_Colors:\n" .. dump(mcl_colors_official))
+end
+
+-- INITIALIZE THE GLOBAL API FOR SIGNS.
+mcl_signs = {}
 
 -- GLOBALS
 mcl_signs.sign_groups = { handy = 1, axey = 1, deco_block = 1, material_wood = 1, attached_node = 1, dig_by_piston = 1, flammable = -1 }
-
 --- colors used for wools.
 mcl_signs.mcl_wool_colors = {
     unicolor_white = "#FFFFFF",
@@ -89,6 +102,8 @@ mcl_signs.mcl_wool_colors = {
 }
 mcl_signs.signtext_info_wall = {}
 mcl_signs.signtext_info_standing = {} -- built in build_signs_info().
+-- the rotational levels for all of the standing signs.
+mcl_signs.standing_rotation_levels = {}
 
 -- data structure block for dynamically registered signs.
 mcl_signs.registered_signs = {}
@@ -99,24 +114,359 @@ mcl_signs.registered_signs.hanging_signs = {} -- unused. prepping for future use
 mcl_signs.wall_standard = {} -- initialize
 mcl_signs.standing_standard = {} -- initialize
 
-mcl_signs.registered_sign_nodenames = {}
+function mcl_signs.build_signs_info()
+    local n = 23 / 56 - 1 / 128 -- some required magic number from the original code.
+    local m = -1 / 16 + 1 / 64  -- "     "        "     "       "    "   "       "
 
--- locally cached copy of the official colors; this way, it updates as mcl_colors updates.
-local mcl_colors_official = mcl_colors
-if DEBUG then
-    minetest.log("Official MCL_Colors:\n" .. dump(mcl_colors_official))
+    mcl_signs.signtext_info_wall = {
+        { delta = { x = 0, y = 0, z = n }, yaw = 0 },
+        { delta = { x = n, y = 0, z = 0 }, yaw = pi / -2 },
+        { delta = { x = 0, y = 0, z = -n }, yaw = pi },
+        { delta = { x = -n, y = 0, z = 0 }, yaw = pi / 2 },
+    }
+
+    -- PLACE YAW VALUES INTO THE TABLE.
+    for rot = 0, 15 do
+        local yaw = pi * 2 - (((pi * 2) / 16) * rot)
+        local delta = vector.multiply(minetest.yaw_to_dir(yaw), m)
+        -- Offset because sign is a bit above node boundaries
+        delta.y = delta.y + 2 / 28
+        table.insert(mcl_signs.signtext_info_standing, { delta = delta, yaw = yaw })
+    end
+
 end
 
-mcl_signs.woods = { "mcl_core:sprucewood", "mcl_core:darkwood", "mcl_core:wood", "mcl_core:birchwood", "mcl_core:junglewood", "mcl_core:acaciawood", "mcl_mangrove:mangrove_wood" }
+-- wall signs' & hanging signs' base (definition)
+mcl_signs.wall_standard = {
+    description = S("Sign"),
+    _tt_help = S("Can be written"),
+    _doc_items_longdesc = S("Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them."),
+    _doc_items_usagehelp = S("After placing the sign, you can write something on it. You have 4 lines of text with up to 15 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can not be changed once it has been written; you have to break and place the sign again. Can be colored and made to glow."),
+    inventory_image = "default_sign.png",
+    walkable = false,
+    is_ground_content = false,
+    wield_image = "default_sign.png",
+    node_placement_prediction = "",
+    paramtype = "light",
+    sunlight_propagates = true,
+    paramtype2 = "wallmounted",
+    drawtype = "mesh",
+    mesh = "mcl_signs_signonwallmount.obj",
+    selection_box = { type = "wallmounted", wall_side = { -0.5, -7 / 28, -0.5, -23 / 56, 7 / 28, 0.5 } },
+    tiles = { "mcl_signs_sign.png" },
+    use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
+    groups = mcl_signs.sign_groups,
+    stack_max = 16,
+    sounds = node_sounds,
 
-mcl_signs.signtext_info_wall = {
-    { delta = { x = 0, y = 0, z = n }, yaw = 0 },
-    { delta = { x = n, y = 0, z = 0 }, yaw = pi / -2 },
-    { delta = { x = 0, y = 0, z = -n }, yaw = pi },
-    { delta = { x = -n, y = 0, z = 0 }, yaw = pi / 2 },
+    on_place = function(itemstack, placer, pointed_thing)
+        local above = pointed_thing.above
+        local under = pointed_thing.under
+
+        -- Use pointed node's on_rightclick function first, if present
+        local node_under = minetest.get_node(under)
+        if placer and not placer:get_player_control().sneak then
+            if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
+                return minetest.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
+            end
+        end
+
+        local dir = vector.subtract(under, above)
+
+        -- Only build when it's legal
+        local abovenodedef = minetest.registered_nodes[minetest.get_node(above).name]
+        if not abovenodedef or abovenodedef.buildable_to == false then
+            return itemstack
+        end
+
+        local wdir = minetest.dir_to_wallmounted(dir)
+
+        --local placer_pos = placer:get_pos()
+
+        local fdir = minetest.dir_to_facedir(dir)
+
+        local sign_info
+        local nodeitem = ItemStack(itemstack)
+        -- Ceiling
+        if wdir == 0 then
+            --how would you add sign to ceiling?
+            return itemstack
+            -- Floor
+        end
+
+        if wdir == 1 then
+            -- Standing sign
+
+            -- Determine the sign rotation based on player's yaw
+            local yaw = pi * 2 - placer:get_look_horizontal()
+
+            -- Select one of 16 possible rotations (0-15)
+            local rotation_level = mcl_signs:round((yaw / (pi * 2)) * 16)
+
+            if rotation_level > 15 then
+                rotation_level = 0
+            elseif rotation_level < 0 then
+                rotation_level = 15
+            end
+
+            -- The actual rotation is a combination of predefined mesh and facedir (see node definition)
+            if rotation_level % 4 == 0 then
+                nodeitem:set_name("mcl_signs:standing_sign")
+            elseif rotation_level % 4 == 1 then
+                nodeitem:set_name("mcl_signs:standing_sign22_5")
+            elseif rotation_level % 4 == 2 then
+                nodeitem:set_name("mcl_signs:standing_sign45")
+            elseif rotation_level % 4 == 3 then
+                nodeitem:set_name("mcl_signs:standing_sign67_5")
+            end
+            fdir = math.floor(rotation_level / 4)
+
+            -- Place the node!
+            local _, success = minetest.item_place_node(nodeitem, placer, pointed_thing, fdir)
+            if not success then
+                return itemstack
+            end
+            if not minetest.is_creative_enabled(placer:get_player_name()) then
+                itemstack:take_item()
+            end
+            sign_info = mcl_signs.signtext_info_standing[rotation_level + 1]
+            -- Side
+        else
+            -- Wall sign
+            local _, success = minetest.item_place_node(itemstack, placer, pointed_thing, wdir)
+            if not success then
+                return itemstack
+            end
+            sign_info = mcl_signs.signtext_info_wall[fdir + 1]
+        end
+
+        -- Determine spawn position of entity
+        local place_pos
+        if minetest.registered_nodes[node_under.name].buildable_to then
+            place_pos = under
+        else
+            place_pos = above
+        end
+
+        local text_entity = minetest.add_entity({
+            x = place_pos.x + sign_info.delta.x,
+            y = place_pos.y + sign_info.delta.y,
+            z = place_pos.z + sign_info.delta.z }, "mcl_signs:text")
+        text_entity:set_yaw(sign_info.yaw)
+        text_entity:get_luaentity()._signnodename = nodeitem:get_name()
+        if DEBUG then
+            minetest.log("verbose", "[mcl_signs]Placed position:" .. dump(place_pos) .. "\nSign_info: " .. dump(sign_info))
+        end
+
+        minetest.sound_play({ name = "default_place_node_hard", gain = 1.0 }, { pos = place_pos }, true)
+
+        mcl_signs:show_formspec(placer, place_pos)
+        return itemstack
+    end,
+    on_destruct = function(pos)
+        mcl_signs:destruct_sign(pos)
+    end,
+
+    -- Not Useless Code. force updates the sign.
+    on_punch = function(pos, node, puncher)
+        mcl_signs:update_sign(pos)
+        if DISINTEGRATE then
+            mcl_signs:destruct_sign(pos)
+        end
+    end,
+    on_rotate = function(pos, node, user, mode)
+        if mode == screwdriver.ROTATE_FACE then
+            local r = screwdriver.rotate.wallmounted(pos, node, mode)
+            node.param2 = r
+            minetest.swap_node(pos, node)
+            mcl_signs:update_sign(pos, nil, nil, true)
+            return true
+        else
+            return false
+        end
+    end,
+    on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+        if DEBUG then
+            minetest.log("verbose", "[mcl_signs] Wall_Sign Right Click event.")
+        end
+
+        -- make sure player is clicking
+        if not clicker or not clicker:is_player() then
+            return
+        end
+
+        local item = clicker:get_wielded_item()
+        local iname = item:get_name()
+
+        if node then
+            if DEBUG then
+                minetest.log("verbose", "[mcl_signs] Wall_Sign Right Click event on valid node.")
+            end
+
+            -- handle glow from glow_ink_sac *first*
+            if (iname == "mcl_mobitems:glow_ink_sac") then
+                clicker:set_wielded_item(item)
+                local success = mcl_signs:glow_sign(pos)
+                if success then
+                    if DEBUG then
+                        minetest.log("verbose", "[mcl_signs] Sign Glow Success.")
+                    end
+                    itemstack:take_item()
+                end
+                return
+            end
+
+            -- "mcl_dye:black" is a special case: it makes the sign's lettering black AND removes glow.
+            if (iname == "mcl_dye:black") then
+                clicker:set_wielded_item(item)
+                local success = mcl_signs:glow_sign(pos, true)
+                mcl_signs:color_sign(pos, mcl_colors.BLACK)
+                if success then
+                    if DEBUG then
+                        minetest.log("verbose", "[mcl_signs] Sign Glow removal Success.")
+                    end
+
+                    itemstack:take_item()
+                end
+                return
+            end
+
+            -- check the wielded item to make sure that it is a dye.
+            local txt_color = mcl_signs:get_color_for_sign(iname)
+            if txt_color ~= "false" then
+                clicker:set_wielded_item(item)
+                local success = mcl_signs:color_sign(pos, txt_color)
+                if success then
+                    if DEBUG then
+                        minetest.log("verbose", "[mcl_signs] Sign Color Success.")
+                    end
+                    itemstack:take_item()
+                end
+            end
+        end
+    end,
+
+    _mcl_hardness = 1,
+    _mcl_blast_resistance = 1,
 }
-mcl_signs.signtext_info_standing = {}
-mcl_signs.sign_groups = { handy = 1, axey = 1, deco_block = 1, material_wood = 1, attached_node = 1, dig_by_piston = 1, flammable = -1 }
+-- standing sign base (definition)
+mcl_signs.standing_standard = {
+    paramtype = "light",
+    use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
+    sunlight_propagates = true,
+    walkable = false,
+    is_ground_content = false,
+    paramtype2 = "facedir",
+    drawtype = "mesh",
+    mesh = "mcl_signs_sign.obj",
+    selection_box = { type = "fixed", fixed = { -0.2, -0.5, -0.2, 0.2, 0.5, 0.2 } },
+    tiles = { "mcl_signs_sign.png" },
+    groups = mcl_signs.sign_groups,
+    drop = "mcl_signs:wall_sign",
+    stack_max = 16,
+    sounds = node_sounds,
+
+    on_destruct = function(pos)
+        mcl_signs:destruct_sign(pos)
+    end,
+
+    -- Not Useless Code. this force updates the sign.
+    on_punch = function(pos, node, puncher)
+        mcl_signs:update_sign(pos)
+        if DISINTEGRATE then
+            mcl_signs:destruct_sign(pos)
+        end
+    end,
+    on_rotate = function(pos, node, user, mode)
+        if mode == screwdriver.ROTATE_FACE then
+            node.name = "mcl_signs:standing_sign22_5"
+            minetest.swap_node(pos, node)
+        elseif mode == screwdriver.ROTATE_AXIS then
+            return false
+        end
+        mcl_signs:update_sign(pos, nil, nil, true)
+        return true
+    end,
+
+    on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+
+        if DEBUG then
+            minetest.log("verbose", "[mcl_signs] Standing_Sign Right Click event.")
+        end
+
+        -- make sure player is clicking
+        if not clicker or not clicker:is_player() then
+            return
+        end
+
+        local item = clicker:get_wielded_item()
+        local iname = item:get_name()
+
+        if node then
+            -- handle glow from glow_ink_sac *first*
+            if DEBUG then
+                minetest.log("verbose", "[mcl_signs] Standing_Sign Right Click event on valid node.")
+            end
+
+            if (iname == "mcl_mobitems:glow_ink_sac") then
+                clicker:set_wielded_item(item)
+                local success = mcl_signs:glow_sign(pos)
+                if success then
+                    if DEBUG then
+                        minetest.log("verbose", "[mcl_signs] Sign Glow Success.")
+                    end
+                    itemstack:take_item()
+                end
+                return
+            end
+
+            -- check the wielded item to make sure that it is a dye.
+            local txt_color = mcl_signs:get_color_for_sign(iname)
+            if txt_color ~= "false" then
+                clicker:set_wielded_item(item)
+                local success = mcl_signs:color_sign(pos, txt_color)
+                if success then
+                    if DEBUG then
+                        minetest.log("verbose", "[mcl_signs] Sign Color Success.")
+                    end
+                    itemstack:take_item()
+                end
+            end
+        end
+    end,
+
+    _mcl_hardness = 1,
+    _mcl_blast_resistance = 1,
+}
+
+function mcl_signs.make_lbm()
+
+    local registered_sign_nodenames = {}
+
+    for i = 0, #mcl_signs.registered_signs.wall_signs do
+        table.insert(registered_sign_nodenames, mcl_signs.registered_signs.wall_signs[i])
+    end
+
+    for i = 0, #mcl_signs.registered_signs.standing_signs do
+        table.insert(registered_sign_nodenames, mcl_signs.registered_signs.standing_signs[i])
+    end
+
+    for i = 0, #mcl_signs.registered_signs.hanging_signs do
+        table.insert(registered_sign_nodenames, mcl_signs.registered_signs.hanging_signs[i])
+    end
+
+    -- the above is not yet used.
+    minetest.register_lbm({
+        name = "mcl_signs:respawn_entities",
+        label = "Respawn sign text entities",
+        run_at_every_load = true,
+        nodenames =  registered_sign_nodenames ,
+        action = function(pos, node)
+            mcl_signs:update_sign(pos)
+        end,
+    })
+
+end
 
 -- HELPER FUNCTIONS' VARIABLES
 local sign_glow = 6
@@ -143,7 +493,6 @@ local Dyes_table = {
     { "mcl_dye:yellow", mcl_colors_official.YELLOW },
 }
 
---- Registers a new dye to use for sign text coloring. Is 100% functional. 
 function mcl_signs.register_dye (modname, item_name, color_code)
     if minetest.get_modpath(modname) then
         table.insert(Dyes_table, { item_name, color_code })
@@ -161,18 +510,6 @@ local function update_sign_registry(type, name)
         table.insert(mcl_signs.registered_signs.hanging_signs, name)
     end
 end
-
---- This allows optional mods and helps prevent breaking.
----
---- modname: the mod that defines the wood to add; item_name: the item_string of the wood to add.
---- eventually, this will become modname, item_name, coloration_code.
-function mcl_signs.register_wood (modname, item_name)
-    if minetest.get_modpath(modname) then
-        table.insert(mcl_signs.woods,item_name)
-    end
-end
-
--- the Reigister_sign* functions aren't yet in use, due to an error with them that is currently being debugged. Added here for the forthcoming use.
 
 --- Register a new sign, tint the textures, and gives it an unique node name. Creates both wall and standing signs.
 --- modname: optional (pass "" or "false" to ignore), for use with other mods to
@@ -293,7 +630,7 @@ function mcl_signs.register_sign (modname, color, _name, ttsign)
         end
 
         if DEBUG then
-            minetest.log("Register_Sign::Placed position:" .. dump(place_pos) .. "\nSign_info: " .. dump(sign_info))
+            minetest.log("action", "[mcl_signs] Register_Sign::Placed position:" .. dump(place_pos) .. "\nSign_info: " .. dump(sign_info))
         end
 
         local text_entity = minetest.add_entity({
@@ -314,8 +651,8 @@ function mcl_signs.register_sign (modname, color, _name, ttsign)
 
     -- debug step
     if DEBUG then
-        minetest.log("Registered: mcl_signs:wall_sign" .. _name .. color .. "\n" .. dump(new_sign))
-        minetest.log("mcl_signs:wall_sign_standard\n" .. dump(mcl_signs.wall_standard))
+        minetest.log("action", "[mcl_signs] Registered: mcl_signs:wall_sign" .. _name .. color .. "\n" .. dump(new_sign))
+        minetest.log("action", "[mcl_signs] mcl_signs:wall_sign_standard\n" .. dump(mcl_signs.wall_standard))
     end
 
     -- standing sign base.
@@ -329,7 +666,7 @@ function mcl_signs.register_sign (modname, color, _name, ttsign)
     update_sign_registry("standing", "mcl_signs:standing_sign" .. _name)
     -- debug step
     if DEBUG then
-        minetest.log("Registered: mcl_signs:standing_sign" .. _name .. color .. "\n" .. dump(new_sign_standing))
+        minetest.log("action", "[mcl_signs] Registered: mcl_signs:standing_sign" .. _name .. color .. "\n" .. dump(new_sign_standing))
     end
 
     -- 22.5°
@@ -389,9 +726,16 @@ function mcl_signs.register_sign (modname, color, _name, ttsign)
         doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign45" .. _name)
         doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign67_5" .. _name)
     end
+
+    --register standing sign's rotation_levels
+    table.insert(mcl_signs.standing_rotation_levels, {"mcl_signs:standing_sign22_5" .. _name , 1})
+    table.insert(mcl_signs.standing_rotation_levels, {"mcl_signs:standing_sign45" .. _name , 2})
+    table.insert(mcl_signs.standing_rotation_levels, {"mcl_signs:standing_sign67_5" .. _name , 3})
 end
 
---- the same as register_sign, except caller defines the textures.
+--- The same as register_sign, except caller defines the textures. Note, there is a greyscale version of the sign,
+--- called "default_sign_greyscale.png" and "mcl_signs_sign_greyscale.png" for optional use in the textures directory.
+---
 --- modname: optional (pass "" or "false" to ignore), for use with other mods to
 --- allow the creation of a sign from the mod's wood (if installed).
 --- type: "wall", "standing".
@@ -399,6 +743,9 @@ end
 --- _name: the sign's name suffix, such as "_dark" or "_red", etc., appended to "wall_sign" or "standing_sign"
 ---
 --- tiles: the texture file to use for the sign.
+---
+--- color: color the texture file to use with this color. Use white (#FFFFFF) to negate the color,
+--- and just use the texture as is
 ---
 --- inventory_image: the texture file to use for the sign's display in inventory.
 ---
@@ -408,7 +755,7 @@ end
 ---
 --- ttsign: the tool tip of the sign that gets translated. Shown when the mouse hovers the inventory sign.
 --- For example: the basic, default oak (wood) sign is just "Sign"; and a spruce sign would be "Spruce Sign"
-function mcl_signs.register_sign_custom (modname, _name, tiles, inventory_image, wield_image, ttsign)
+function mcl_signs.register_sign_custom (modname, _name, tiles, color, inventory_image, wield_image, ttsign)
     local mod_name_pass = false
     if modname ~= "" and modname ~= "false" then
         if minetest.get_modpath(modname) then
@@ -422,9 +769,9 @@ function mcl_signs.register_sign_custom (modname, _name, tiles, inventory_image,
 
     new_sign = table.copy(mcl_signs.wall_standard)
 
-    new_sign.wield_image = wield_image
-    new_sign.tiles = { tiles }
-    new_sign.inventory_image = inventory_image
+    new_sign.wield_image ="("..wield_image.."^[multiply:" .. color .. ")"
+    new_sign.tiles = { "("..tiles.."^[multiply:" .. color .. ")" }
+    new_sign.inventory_image = "("..inventory_image.."^[multiply:" .. color .. ")"
     new_sign.description = S(ttsign)
     -- currently have to do this, because of how the base node placement works.
     new_sign.on_place = function(itemstack, placer, pointed_thing)
@@ -530,9 +877,9 @@ function mcl_signs.register_sign_custom (modname, _name, tiles, inventory_image,
     local new_sign_standing = {}
     new_sign_standing = table.copy(mcl_signs.standing_standard)
     new_sign_standing.drop = "mcl_signs:wall_sign" .. _name
-    new_sign_standing.wield_image = wield_image
-    new_sign_standing.tiles = { tiles }
-    new_sign_standing.inventory_image = inventory_image
+    new_sign_standing.wield_image ="("..wield_image.."^[multiply:" .. color .. ")"
+    new_sign_standing.tiles = { "("..tiles.."^[multiply:" .. color .. ")" }
+    new_sign_standing.inventory_image = "("..inventory_image.."^[multiply:" .. color .. ")"
     minetest.register_node("mcl_signs:standing_sign" .. _name, new_sign_standing)
     update_sign_registry("standing", "mcl_signs:standing_sign" .. _name)
 
@@ -594,6 +941,11 @@ function mcl_signs.register_sign_custom (modname, _name, tiles, inventory_image,
         doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign67_5" .. _name)
     end
 
+    --register standing sign's rotation_levels
+    table.insert(mcl_signs.standing_rotation_levels, {"mcl_signs:standing_sign22_5" .. _name , 1})
+    table.insert(mcl_signs.standing_rotation_levels, {"mcl_signs:standing_sign45" .. _name , 2})
+    table.insert(mcl_signs.standing_rotation_levels, {"mcl_signs:standing_sign67_5" .. _name , 3})
+
 end
 
 --- Usage: Call this with the mod's name, the wood's item string (for the planks), and with the sign's suffix.
@@ -625,7 +977,7 @@ function mcl_signs.register_sign_craft(modname, wood_item_string, _name)
 
     -- debug step
     if DEBUG then
-        minetest.log("Action", "Register Sign Crafts: \n" .. modname .. "\n" .. wood_item_string .. "\n" .. _name)
+        minetest.log("action", "[mcl_signs] Register Sign Crafts: \n" .. modname .. "\n" .. wood_item_string .. "\n" .. _name)
     end
 
     -- register crafts (actual recipe)
@@ -647,41 +999,35 @@ end
 
 -- Helper functions
 local function string_to_array(str)
-    local tab = {}
+    local string_table = {}
     for i = 1, string.len(str) do
-        table.insert(tab, string.sub(str, i, i))
+        table.insert(string_table, string.sub(str, i, i))
     end
-    return tab
+    return string_table
 end
 
 local function string_to_line_array(str)
-    local tab = {}
+    local linechar_table = {}
     local current = 1
     local linechar = 1
-    tab[1] = ""
+    linechar_table[1] = ""
     for _, char in ipairs(string_to_array(str)) do
         -- New line
         if char == "\n" then
             current = current + 1
-            tab[current] = ""
+            linechar_table[current] = ""
             linechar = 1
         else
-            tab[current] = tab[current] .. char
+            linechar_table[current] = linechar_table[current] .. char
             linechar = linechar + 1
         end
     end
-    return tab
+    return linechar_table
 end
 
 local function get_rotation_level(facedir, nodename)
-    local nnames = {
-        { "mcl_signs:standing_sign22_5", 1 },
-        { "mcl_signs:standing_sign22_5_dark", 1 },
-        { "mcl_signs:standing_sign45", 2 },
-        { "mcl_signs:standing_sign45_dark", 2 },
-        { "mcl_signs:standing_sign67_5", 3 },
-        { "mcl_signs:standing_sign67_5_dark", 3 }
-    }
+    local nnames = mcl_signs.standing_rotation_levels -- functional copy... was easier this way. #LazyAF :P
+
     local rl
     local offset = 0
     for x = 1, #nnames do
@@ -691,8 +1037,8 @@ local function get_rotation_level(facedir, nodename)
         end
     end
     rl = facedir * 4 + offset
-    if DEBUG then
-        minetest.log("NodeName: " .. nodename .. " RL value: " .. rl)
+    if 1 == 1 then
+        minetest.log("action", "[mcl_signs] GetRotationLevel: NodeName: " .. nodename .. " RL value: " .. rl)
     end
     return rl
 end
@@ -719,13 +1065,12 @@ function mcl_signs:color_sign (pos, text_color)
     -- debug step
     local meta = minetest.get_meta(pos)
     if not meta then
-        if DEBUG then
-            minetest.log("verbose", "Sign Color Fail - Metadata.")
-        end
+        minetest.log("error", "[mcl_signs] Sign Color Fail - Metadata.")
+
         return false
     end
     if DEBUG then
-        minetest.log("verbose", "Post-Sign Color: " .. meta:get_string("mcl_signs:text_color") .. " " .. meta:get_string("mcl_signs:glowing_sign") .. ".\n" .. dump(pos))
+        minetest.log("verbose", "[mcl_signs] Post-Sign Color: " .. meta:get_string("mcl_signs:text_color") .. " " .. meta:get_string("mcl_signs:glowing_sign") .. ".\n" .. dump(pos))
     end
 
     return success
@@ -775,10 +1120,14 @@ function mcl_signs:glow_sign (pos, remove_glow)
         })
         meta:set_string("mcl_signs:glowing_sign", "true")
     end
+    if not text_entity then
+        return false
+    end
+    text_entity:get_luaentity()._glowing_sign = meta:get_string("mcl_signs:glowing_sign")
 
     -- debug step
     if DEBUG then
-        minetest.log("verbose", "Post-Sign Glow: " .. meta:get_string("mcl_signs:text_color") .. " " .. meta:get_string("mcl_signs:glowing_sign") .. ".\n" .. dump(pos))
+        minetest.log("verbose", "[mcl_signs] Post-Sign Glow: " .. meta:get_string("mcl_signs:text_color") .. " " .. meta:get_string("mcl_signs:glowing_sign") .. ".\n" .. dump(pos))
     end
     return success
 end
@@ -789,20 +1138,25 @@ function mcl_signs:create_lettering(text, signnodename, sign_color)
     end
     local texture = mcl_signs:generate_texture(mcl_signs:create_lines(text), signnodename, sign_color)
 
+    -- debug step
+    if DEBUG then
+        minetest.log("action", "[mcl_signs] Creating sign text; text:" .. text)
+    end
+
     return texture
 end
 
 function mcl_signs:create_lines(text)
     local line_num = 1
-    local tab = {}
+    local text_table = {}
     for _, line in ipairs(string_to_line_array(text)) do
         if line_num > NUMBER_OF_LINES then
             break
         end
-        table.insert(tab, line)
+        table.insert(text_table, line)
         line_num = line_num + 1
     end
-    return tab
+    return text_table
 end
 
 function mcl_signs:generate_line(s, ypos)
@@ -839,8 +1193,9 @@ function mcl_signs:generate_line(s, ypos)
 
     local texture = ""
     local xpos = math.floor((SIGN_WIDTH - width) / 2)
-    for i = 1, #parsed do
-        texture = texture .. ":" .. xpos .. "," .. ypos .. "=" .. parsed[i] .. ".png"
+
+    for j = 1, #parsed do
+        texture = texture .. ":" .. xpos .. "," .. ypos .. "=" .. parsed[j] .. ".png"
         xpos = xpos + printed_char_width
     end
     return texture
@@ -848,12 +1203,41 @@ end
 
 function mcl_signs:generate_texture(lines, signnodename, letter_color)
     local texture = "[combine:" .. SIGN_WIDTH .. "x" .. SIGN_WIDTH
-    local ypos
+    local ypos = 0
+
+    -- Handle all of the dynamically created signs.
+    for x = 1, #mcl_signs.registered_signs.wall_signs do
+        if signnodename == mcl_signs.registered_signs.wall_signs[x] then
+            ypos = 30
+            break
+        end
+    end
+    for x = 1, #mcl_signs.registered_signs.standing_signs do
+        if signnodename == mcl_signs.registered_signs.standing_signs[x] then
+            ypos = 0
+            break
+        end
+    end
+    -- for future inclusion, when the hanging sings are made.
+    --[[
+    for x = 1, #mcl_signs.registered_signs.hanging_signs do
+        if signnodename == mcl_signs.registered_signs.hanging_signs[x] then
+            ypos = 30
+            break
+        end
+    end
+    ]]
+
+    -- kept in for now, compatibility with existing hard coded signs. TODO: Remove after done with api.
     if signnodename == "mcl_signs:wall_sign" or signnodename == "mcl_signs:wall_sign_dark" then
         ypos = 30
-    else
-        ypos = 0
     end
+
+    -- debug step
+    if DEBUG then
+        minetest.log("action", "[mcl_signs] Generate_Texture::Debug_Data:\nSignNodeName: " .. dump(signnodename) .. "\nYPOS: " .. ypos)
+    end
+
     for i = 1, #lines do
         texture = texture .. mcl_signs:generate_line(lines[i], ypos)
         ypos = ypos + LINE_HEIGHT
@@ -908,9 +1292,6 @@ function mcl_signs:update_sign(pos, fields, sender, force_remove, text_color)
         text = ""
     end
 
-    --local placer_pos = placer:get_pos()
-    -- mcl_signs:show_formspec(placer, place_pos)
-
     -- find text color.
     local sign_color
 
@@ -922,7 +1303,7 @@ function mcl_signs:update_sign(pos, fields, sender, force_remove, text_color)
         sign_color = meta:get_string("mcl_signs:text_color")
     end
 
-    if text_color == nil then
+    if text_color == nil or text == "" then
         text_color = "false"
     end
 
@@ -942,24 +1323,44 @@ function mcl_signs:update_sign(pos, fields, sender, force_remove, text_color)
 
     -- debug step
     if DEBUG then
-        minetest.log("Pre-Sign Update: " .. sign_color .. " " .. meta:get_string("mcl_signs:glowing_sign") .. ".\n" .. dump(pos))
+        minetest.log("action", "[mcl_signs] Update_Signs: Pre-Sign Update: " .. sign_color .. " " .. meta:get_string("mcl_signs:glowing_sign") .. ".\n" .. dump(pos))
     end
 
     local sign_info
-    local n = minetest.get_node(pos)
-    local nn = n.name
+    local npos = minetest.get_node(pos)
+    local npos_name = npos.name
 
-    if nn == "mcl_signs:standing_sign" or nn == "mcl_signs:standing_sign22_5" or nn == "mcl_signs:standing_sign45" or nn == "mcl_signs:standing_sign67_5" then
-        sign_info = mcl_signs.signtext_info_standing[get_rotation_level(n.param2, nn) + 1]
-    elseif nn == "mcl_signs:standing_sign_dark" or nn == "mcl_signs:standing_sign22_5_dark" or nn == "mcl_signs:standing_sign45_dark" or nn == "mcl_signs:standing_sign67_5_dark" then
-        sign_info = mcl_signs.signtext_info_standing[get_rotation_level(n.param2, nn) + 1]
-    elseif nn == "mcl_signs:wall_sign" or nn == "mcl_signs:wall_sign_dark" then
-        sign_info = mcl_signs.signtext_info_wall[mcl_signs:get_wall_signtext_info(n.param2)]
+    -- Handle all of the dynamically created signs.
+    for x = 1, #mcl_signs.registered_signs.wall_signs do
+        if npos_name == mcl_signs.registered_signs.wall_signs[x] then
+            sign_info = mcl_signs.signtext_info_wall[mcl_signs:get_wall_signtext_info(npos.param2)]
+            break
+        end
+    end
+    for x = 1, #mcl_signs.registered_signs.standing_signs do
+        if npos_name == mcl_signs.registered_signs.standing_signs[x] then
+            sign_info = mcl_signs.signtext_info_standing[get_rotation_level(npos.param2, npos_name) + 1]
+            break
+        end
+    end
+    -- for future inclusion, when the hanging sings are made.
+    --[[
+    for x = 1, #mcl_signs.registered_signs.hanging_signs do
+        if nn == mcl_signs.registered_signs.hanging_signs[x] then
+            sign_info = mcl_signs.signtext_info_wall[mcl_signs:get_wall_signtext_info(n.param2)]
+            break
+        end
+    end
+    ]]
+
+    -- the following if..elseif..end block is here for compatibility with the old code. TODO: remove this block after the new api is complete.
+    if npos_name == "mcl_signs:standing_sign_dark" or npos_name == "mcl_signs:standing_sign22_5_dark" or npos_name == "mcl_signs:standing_sign45_dark" or npos_name == "mcl_signs:standing_sign67_5_dark" then
+        sign_info = mcl_signs.signtext_info_standing[get_rotation_level(npos.param2, npos_name) + 1]
+    elseif npos_name == "mcl_signs:wall_sign_dark" then
+        sign_info = mcl_signs.signtext_info_wall[mcl_signs:get_wall_signtext_info(npos.param2)]
     end
     if sign_info == nil then
-        if DEBUG then
-            minetest.log("error", "[mcl_signs::update] Missing sign_info!")
-        end
+        minetest.log("error", "[mcl_signs] Update_Signs: Missing sign_info!")
         return false
     end
 
@@ -978,16 +1379,36 @@ function mcl_signs:update_sign(pos, fields, sender, force_remove, text_color)
     end
 
     if not text_entity then
+        if DEBUG then
+            minetest.log("action", "[mcl_signs] Update_Sign: Text_Entity - does not exist, creating it now.")
+        end
         text_entity = minetest.add_entity({
             x = pos.x + sign_info.delta.x,
             y = pos.y + sign_info.delta.y,
             z = pos.z + sign_info.delta.z }, "mcl_signs:text")
+
+        if DEBUG then
+            minetest.log("action", "[mcl_signs] Update_Sign: Placed position:" .. dump(pos) .. "\nSign_info: " .. dump(sign_info))
+        end
     end
-    text_entity:get_luaentity()._signnodename = nn
+    text_entity:get_luaentity()._signnodename = npos_name
+
+    -- set up special case: Dark Oak Sign. Dark Oak signs are soooo dark, they start off with white lettering.
+    if npos_name == "mcl_signs:wall_sign_darkwood" or
+            npos_name == "mcl_signs:standing_sign67_5_darkwood" or
+            npos_name == "mcl_signs:standing_sign45_darkwood" or
+            npos_name == "mcl_signs:standing_sign22_5_darkwood" or
+            npos_name == "mcl_signs:standing_sign_darkwood"
+    then
+        if text_color == "#000000" then
+            text_color = "#ffffff"
+        end
+    end
 
     -- Set the actual properties for the sign
+
     text_entity:set_properties({
-        textures = { mcl_signs:create_lettering(text, nn, text_color) },
+        textures = { mcl_signs:create_lettering(text, npos_name, text_color) },
     })
 
     if has_glow then
@@ -997,12 +1418,16 @@ function mcl_signs:update_sign(pos, fields, sender, force_remove, text_color)
     end
 
     text_entity:set_yaw(sign_info.yaw)
+    if DEBUG then
+        minetest.log("verbose", "[mcl_signs] Update_Sign: After texture recreation.")
+        minetest.log("action","[mcl_signs] Update_Sign: " .. npos_name .. "\nPlaced position:" .. dump(pos) .. "\nSign_info: " .. dump(sign_info))
+    end
 
     -- save sign metadata.
     meta:set_string("mcl_signs:text_color", text_color)
     -- debug step
     if DEBUG then
-        minetest.log("Post-Sign Update: " .. meta:get_string("mcl_signs:text_color") .. " " .. meta:get_string("mcl_signs:glowing_sign") .. ".\n" .. dump(pos))
+        minetest.log("action", "[mcl_signs] Update_Sign: Post-Sign Update: " .. meta:get_string("mcl_signs:text_color") .. " " .. meta:get_string("mcl_signs:glowing_sign") .. ".\n" .. dump(pos))
     end
 
     return true
@@ -1016,524 +1441,3 @@ function mcl_signs:show_formspec(player, pos)
             "size[6,3]textarea[0.25,0.25;6,1.5;text;" .. F(S("Enter sign text:")) .. ";]label[0,1.5;" .. F(S("Maximum line length: 15")) .. "\n" .. F(S("Maximum lines: 4")) .. "]button_exit[0,2.5;6,1;submit;" .. F(S("Done")) .. "]"
     )
 end
-
-function mcl_signs:generate_signs()
-    local node_sounds
-    if minetest.get_modpath("mcl_sounds") then
-        node_sounds = mcl_sounds.node_sound_wood_defaults()
-    end
-
-    -- wall signs' & hanging signs' base
-    mcl_signs.wall_standard = {
-        description = S("Sign"),
-        _tt_help = S("Can be written"),
-        _doc_items_longdesc = S("Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them."),
-        _doc_items_usagehelp = S("After placing the sign, you can write something on it. You have 4 lines of text with up to 15 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can not be changed once it has been written; you have to break and place the sign again. Can be colored and made to glow."),
-        inventory_image = "default_sign.png",
-        walkable = false,
-        is_ground_content = false,
-        wield_image = "default_sign.png",
-        node_placement_prediction = "",
-        paramtype = "light",
-        sunlight_propagates = true,
-        paramtype2 = "wallmounted",
-        drawtype = "mesh",
-        mesh = "mcl_signs_signonwallmount.obj",
-        selection_box = { type = "wallmounted", wall_side = { -0.5, -7 / 28, -0.5, -23 / 56, 7 / 28, 0.5 } },
-        tiles = { "mcl_signs_sign.png" },
-        use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
-        groups = mcl_signs.sign_groups,
-        stack_max = 16,
-        sounds = node_sounds,
-
-        on_place = function(itemstack, placer, pointed_thing)
-            local above = pointed_thing.above
-            local under = pointed_thing.under
-
-            -- Use pointed node's on_rightclick function first, if present
-            local node_under = minetest.get_node(under)
-            if placer and not placer:get_player_control().sneak then
-                if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
-                    return minetest.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
-                end
-            end
-
-            local dir = vector.subtract(under, above)
-
-            -- Only build when it's legal
-            local abovenodedef = minetest.registered_nodes[minetest.get_node(above).name]
-            if not abovenodedef or abovenodedef.buildable_to == false then
-                return itemstack
-            end
-
-            local wdir = minetest.dir_to_wallmounted(dir)
-
-            --local placer_pos = placer:get_pos()
-
-            local fdir = minetest.dir_to_facedir(dir)
-
-            local sign_info
-            local nodeitem = ItemStack(itemstack)
-            -- Ceiling
-            if wdir == 0 then
-                --how would you add sign to ceiling?
-                return itemstack
-                -- Floor
-            end
-
-            if wdir == 1 then
-                -- Standing sign
-
-                -- Determine the sign rotation based on player's yaw
-                local yaw = pi * 2 - placer:get_look_horizontal()
-
-                -- Select one of 16 possible rotations (0-15)
-                local rotation_level = mcl_signs:round((yaw / (pi * 2)) * 16)
-
-                if rotation_level > 15 then
-                    rotation_level = 0
-                elseif rotation_level < 0 then
-                    rotation_level = 15
-                end
-
-                -- The actual rotation is a combination of predefined mesh and facedir (see node definition)
-                if rotation_level % 4 == 0 then
-                    nodeitem:set_name("mcl_signs:standing_sign")
-                elseif rotation_level % 4 == 1 then
-                    nodeitem:set_name("mcl_signs:standing_sign22_5")
-                elseif rotation_level % 4 == 2 then
-                    nodeitem:set_name("mcl_signs:standing_sign45")
-                elseif rotation_level % 4 == 3 then
-                    nodeitem:set_name("mcl_signs:standing_sign67_5")
-                end
-                fdir = math.floor(rotation_level / 4)
-
-                -- Place the node!
-                local _, success = minetest.item_place_node(nodeitem, placer, pointed_thing, fdir)
-                if not success then
-                    return itemstack
-                end
-                if not minetest.is_creative_enabled(placer:get_player_name()) then
-                    itemstack:take_item()
-                end
-                sign_info = mcl_signs.signtext_info_standing[rotation_level + 1]
-                -- Side
-            else
-                -- Wall sign
-                local _, success = minetest.item_place_node(itemstack, placer, pointed_thing, wdir)
-                if not success then
-                    return itemstack
-                end
-                sign_info = mcl_signs.signtext_info_wall[fdir + 1]
-            end
-
-            -- Determine spawn position of entity
-            local place_pos
-            if minetest.registered_nodes[node_under.name].buildable_to then
-                place_pos = under
-            else
-                place_pos = above
-            end
-
-            local text_entity = minetest.add_entity({
-                x = place_pos.x + sign_info.delta.x,
-                y = place_pos.y + sign_info.delta.y,
-                z = place_pos.z + sign_info.delta.z }, "mcl_signs:text")
-            text_entity:set_yaw(sign_info.yaw)
-            text_entity:get_luaentity()._signnodename = nodeitem:get_name()
-
-            minetest.sound_play({ name = "default_place_node_hard", gain = 1.0 }, { pos = place_pos }, true)
-
-            mcl_signs:show_formspec(placer, place_pos)
-            return itemstack
-        end,
-        on_destruct = function(pos)
-            mcl_signs:destruct_sign(pos)
-        end,
-
-        -- Not Useless Code. If a sign is created without text, this shows the formspec again for textual entry.
-        on_punch = function(pos, node, puncher)
-            mcl_signs:update_sign(pos)
-        end,
-        on_rotate = function(pos, node, user, mode)
-            if mode == screwdriver.ROTATE_FACE then
-                local r = screwdriver.rotate.wallmounted(pos, node, mode)
-                node.param2 = r
-                minetest.swap_node(pos, node)
-                mcl_signs:update_sign(pos, nil, nil, true)
-                return true
-            else
-                return false
-            end
-        end,
-        on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
-            if DEBUG then
-                minetest.log("verbose", "MCL_SIGNS::Wall_Sign Right Click event.")
-            end
-
-            -- make sure player is clicking
-            if not clicker or not clicker:is_player() then
-                return
-            end
-
-            local item = clicker:get_wielded_item()
-            local iname = item:get_name()
-
-            if node then
-                if DEBUG then
-                    minetest.log("verbose", "MCL_SIGNS::Wall_Sign Right Click event on valid node.")
-                end
-
-                -- handle glow from glow_ink_sac *first*
-                if (iname == "mcl_mobitems:glow_ink_sac") then
-                    clicker:set_wielded_item(item)
-                    local success = mcl_signs:glow_sign(pos)
-                    if success then
-                        if DEBUG then
-                            minetest.log("verbose", "Sign Glow Success.")
-                        end
-                        itemstack:take_item()
-                    end
-                    return
-                end
-
-                -- "mcl_dye:black" is a special case: it makes the sign's lettering black AND removes glow.
-                if (iname == "mcl_dye:black") then
-                    clicker:set_wielded_item(item)
-                    local success = mcl_signs:glow_sign(pos, true)
-                    mcl_signs:color_sign(pos, mcl_colors.BLACK)
-                    if success then
-                        if DEBUG then
-                            minetest.log("verbose", "Sign Glow removal Success.")
-                        end
-
-                        itemstack:take_item()
-                    end
-                    return
-                end
-
-                -- check the wielded item to make sure that it is a dye.
-                local txt_color = mcl_signs:get_color_for_sign(iname)
-                if txt_color ~= "false" then
-                    clicker:set_wielded_item(item)
-                    local success = mcl_signs:color_sign(pos, txt_color)
-                    if success then
-                        if DEBUG then
-                            minetest.log("verbose", "Sign Color Success.")
-                        end
-                        itemstack:take_item()
-                    end
-                end
-            end
-        end,
-
-        _mcl_hardness = 1,
-        _mcl_blast_resistance = 1,
-    }
-    if DEBUG then
-        minetest.log(dump(mcl_signs.wall_standard))
-    end
-
-    -- Standing sign nodes.
-    -- 4 rotations at 0°, 22.5°, 45° and 67.5°.
-    -- These are 4 out of 16 possible rotations.
-    -- With facedir the remaining 12 rotations are constructed.
-
-    -- standing sign base.
-    mcl_signs.standing_standard = {
-        paramtype = "light",
-        use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
-        sunlight_propagates = true,
-        walkable = false,
-        is_ground_content = false,
-        paramtype2 = "facedir",
-        drawtype = "mesh",
-        mesh = "mcl_signs_sign.obj",
-        selection_box = { type = "fixed", fixed = { -0.2, -0.5, -0.2, 0.2, 0.5, 0.2 } },
-        tiles = { "mcl_signs_sign.png" },
-        groups = mcl_signs.sign_groups,
-        drop = "mcl_signs:wall_sign",
-        stack_max = 16,
-        sounds = node_sounds,
-
-        on_destruct = function(pos)
-            mcl_signs:destruct_sign(pos)
-        end,
-
-        -- Not Useless Code. If a sign is created without text, this shows the formspec again for textual entry.
-        on_punch = function(pos, node, puncher)
-            mcl_signs:update_sign(pos)
-        end,
-        on_rotate = function(pos, node, user, mode)
-            if mode == screwdriver.ROTATE_FACE then
-                node.name = "mcl_signs:standing_sign22_5"
-                minetest.swap_node(pos, node)
-            elseif mode == screwdriver.ROTATE_AXIS then
-                return false
-            end
-            mcl_signs:update_sign(pos, nil, nil, true)
-            return true
-        end,
-
-        on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
-
-            if DEBUG then
-                minetest.log("verbose", "MCL_SIGNS::Standing_Sign Right Click event.")
-            end
-
-            -- make sure player is clicking
-            if not clicker or not clicker:is_player() then
-                return
-            end
-
-            local item = clicker:get_wielded_item()
-            local iname = item:get_name()
-
-            if node then
-                -- handle glow from glow_ink_sac *first*
-                if DEBUG then
-                    minetest.log("verbose", "MCL_SIGNS::Standing_Sign Right Click event on valid node.")
-                end
-
-                if (iname == "mcl_mobitems:glow_ink_sac") then
-                    clicker:set_wielded_item(item)
-                    local success = mcl_signs:glow_sign(pos)
-                    if success then
-                        if DEBUG then
-                            minetest.log("verbose", "Sign Glow Success.")
-                        end
-                        itemstack:take_item()
-                    end
-                    return
-                end
-
-                -- check the wielded item to make sure that it is a dye.
-                local txt_color = mcl_signs:get_color_for_sign(iname)
-                if txt_color ~= "false" then
-                    clicker:set_wielded_item(item)
-                    local success = mcl_signs:color_sign(pos, txt_color)
-                    if success then
-                        if DEBUG then
-                            minetest.log("verbose", "Sign Color Success.")
-                        end
-                        itemstack:take_item()
-                    end
-                end
-            end
-        end,
-
-        _mcl_hardness = 1,
-        _mcl_blast_resistance = 1,
-    }
-
-    minetest.register_node("mcl_signs:wall_sign", mcl_signs.wall_standard)
-    -- 0°
-    minetest.register_node("mcl_signs:standing_sign", mcl_signs.standing_standard)
-    -- 22.5°
-    local ssign22_5 = table.copy(mcl_signs.standing_standard)
-    ssign22_5.mesh = "mcl_signs_sign22.5.obj"
-    ssign22_5.on_rotate = function(pos, node, user, mode)
-        if mode == screwdriver.ROTATE_FACE then
-            node.name = "mcl_signs:standing_sign45"
-            minetest.swap_node(pos, node)
-        elseif mode == screwdriver.ROTATE_AXIS then
-            return false
-        end
-        mcl_signs:update_sign(pos, nil, nil, true)
-        return true
-    end
-    minetest.register_node("mcl_signs:standing_sign22_5", ssign22_5)
-
-    -- 45°
-    local ssign45 = table.copy(mcl_signs.standing_standard)
-    ssign45.mesh = "mcl_signs_sign45.obj"
-    ssign45.on_rotate = function(pos, node, user, mode)
-        if mode == screwdriver.ROTATE_FACE then
-            node.name = "mcl_signs:standing_sign67_5"
-            minetest.swap_node(pos, node)
-        elseif mode == screwdriver.ROTATE_AXIS then
-            return false
-        end
-        mcl_signs:update_sign(pos, nil, nil, true)
-        return true
-    end
-    minetest.register_node("mcl_signs:standing_sign45", ssign45)
-
-    -- 67.5°
-    local ssign67_5 = table.copy(mcl_signs.standing_standard)
-    ssign67_5.mesh = "mcl_signs_sign67.5.obj"
-    ssign67_5.on_rotate = function(pos, node, user, mode)
-        if mode == screwdriver.ROTATE_FACE then
-            node.name = "mcl_signs:standing_sign"
-            node.param2 = (node.param2 + 1) % 4
-            minetest.swap_node(pos, node)
-        elseif mode == screwdriver.ROTATE_AXIS then
-            return false
-        end
-        mcl_signs:update_sign(pos, nil, nil, true)
-        return true
-    end
-    minetest.register_node("mcl_signs:standing_sign67_5", ssign67_5)
-
-    -- standard signs, dark:
-    -- dark standard wall sign / hanging sign base
-    mcl_signs.wall_standard_dark = table.copy(mcl_signs.wall_standard)
-    mcl_signs.wall_standard_dark.wield_image = "default_sign_dark.png"
-    mcl_signs.wall_standard_dark.tiles = { "mcl_signs_sign_dark.png" }
-    mcl_signs.wall_standard_dark.inventory_image = "default_sign_dark.png"
-    mcl_signs.wall_standard_dark.on_place = function(itemstack, placer, pointed_thing)
-        local above = pointed_thing.above
-        local under = pointed_thing.under
-
-        -- Use pointed node's on_rightclick function first, if present
-        local node_under = minetest.get_node(under)
-        if placer and not placer:get_player_control().sneak then
-            if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
-                return minetest.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
-            end
-        end
-
-        local dir = vector.subtract(under, above)
-
-        -- Only build when it's legal
-        local abovenodedef = minetest.registered_nodes[minetest.get_node(above).name]
-        if not abovenodedef or abovenodedef.buildable_to == false then
-            return itemstack
-        end
-
-        local wdir = minetest.dir_to_wallmounted(dir)
-        local fdir = minetest.dir_to_facedir(dir)
-
-        local sign_info
-        local nodeitem = ItemStack(itemstack)
-        -- Ceiling
-        if wdir == 0 then
-            --how would you add sign to ceiling?
-            return itemstack
-            -- Floor
-        elseif wdir == 1 then
-            -- Standing sign
-
-            -- Determine the sign rotation based on player's yaw
-            local yaw = pi * 2 - placer:get_look_horizontal()
-
-            -- Select one of 16 possible rotations (0-15)
-            local rotation_level = mcl_signs:round((yaw / (pi * 2)) * 16)
-
-            if rotation_level > 15 then
-                rotation_level = 0
-            elseif rotation_level < 0 then
-                rotation_level = 15
-            end
-
-            -- The actual rotation is a combination of predefined mesh and facedir (see node definition)
-            if rotation_level % 4 == 0 then
-                nodeitem:set_name("mcl_signs:standing_sign_dark")
-            elseif rotation_level % 4 == 1 then
-                nodeitem:set_name("mcl_signs:standing_sign22_5_dark")
-            elseif rotation_level % 4 == 2 then
-                nodeitem:set_name("mcl_signs:standing_sign45_dark")
-            elseif rotation_level % 4 == 3 then
-                nodeitem:set_name("mcl_signs:standing_sign67_5_dark")
-            end
-            fdir = math.floor(rotation_level / 4)
-
-            -- Place the node!
-            local _, success = minetest.item_place_node(nodeitem, placer, pointed_thing, fdir)
-            if not success then
-                return itemstack
-            end
-            if not minetest.is_creative_enabled(placer:get_player_name()) then
-                itemstack:take_item()
-            end
-            sign_info = mcl_signs.signtext_info_standing[rotation_level + 1]
-            -- Side
-        else
-            -- Wall sign
-            local _, success = minetest.item_place_node(itemstack, placer, pointed_thing, wdir)
-            if not success then
-                return itemstack
-            end
-            sign_info = mcl_signs.signtext_info_wall[fdir + 1]
-        end
-
-        -- Determine spawn position of entity
-        local place_pos
-        if minetest.registered_nodes[node_under.name].buildable_to then
-            place_pos = under
-        else
-            place_pos = above
-        end
-
-        local text_entity = minetest.add_entity({
-            x = place_pos.x + sign_info.delta.x,
-            y = place_pos.y + sign_info.delta.y,
-            z = place_pos.z + sign_info.delta.z }, "mcl_signs:text")
-        text_entity:set_yaw(sign_info.yaw)
-        text_entity:get_luaentity()._signnodename = nodeitem:get_name()
-
-        minetest.sound_play({ name = "default_place_node_hard", gain = 1.0 }, { pos = place_pos }, true)
-
-        mcl_signs:show_formspec(placer, place_pos)
-        return itemstack
-    end
-    minetest.register_node("mcl_signs:wall_sign_dark", mcl_signs.wall_standard_dark)
-
-    -- 0°
-    -- dark standing sign
-    mcl_signs.standing_standard_dark = table.copy(mcl_signs.standing_standard)
-    mcl_signs.standing_standard_dark.wield_image = "default_sign_dark.png"
-    mcl_signs.standing_standard_dark.tiles = { "mcl_signs_sign_dark.png" }
-    mcl_signs.standing_standard_dark.inventory_image = "default_sign_dark.png"
-    mcl_signs.standing_standard_dark.drop = "mcl_signs:wall_sign_dark"
-    minetest.register_node("mcl_signs:standing_sign_dark", mcl_signs.standing_standard_dark)
-
-    -- 22.5°
-    local ssign22_5d = table.copy(mcl_signs.standing_standard_dark)
-    ssign22_5d.mesh = "mcl_signs_sign22.5.obj"
-    ssign22_5d.on_rotate = function(pos, node, user, mode)
-        if mode == screwdriver.ROTATE_FACE then
-            node.name = "mcl_signs:standing_sign45"
-            minetest.swap_node(pos, node)
-        elseif mode == screwdriver.ROTATE_AXIS then
-            return false
-        end
-        mcl_signs:update_sign(pos, nil, nil, true)
-        return true
-    end
-    minetest.register_node("mcl_signs:standing_sign22_5_dark", ssign22_5d)
-
-    -- 45°
-    local ssign45d = table.copy(mcl_signs.standing_standard_dark)
-    ssign45d.mesh = "mcl_signs_sign45.obj"
-    ssign45d.on_rotate = function(pos, node, user, mode)
-        if mode == screwdriver.ROTATE_FACE then
-            node.name = "mcl_signs:standing_sign67_5"
-            minetest.swap_node(pos, node)
-        elseif mode == screwdriver.ROTATE_AXIS then
-            return false
-        end
-        mcl_signs:update_sign(pos, nil, nil, true)
-        return true
-    end
-    minetest.register_node("mcl_signs:standing_sign45_dark", ssign45d)
-
-    -- 67.5°
-    local ssign67_5d = table.copy(mcl_signs.standing_standard_dark)
-    ssign67_5d.mesh = "mcl_signs_sign67.5.obj"
-    ssign67_5d.on_rotate = function(pos, node, user, mode)
-        if mode == screwdriver.ROTATE_FACE then
-            node.name = "mcl_signs:standing_sign"
-            node.param2 = (node.param2 + 1) % 4
-            minetest.swap_node(pos, node)
-        elseif mode == screwdriver.ROTATE_AXIS then
-            return false
-        end
-        mcl_signs:update_sign(pos, nil, nil, true)
-        return true
-    end
-    minetest.register_node("mcl_signs:standing_sign67_5_dark", ssign67_5d)
-
-
-end
-

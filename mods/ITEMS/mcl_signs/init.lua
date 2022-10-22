@@ -7,23 +7,11 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
-local table = table
-local m = -1 / 16 + 1 / 64
-
 -- Signs API
 dofile(modpath .. "/signs_api.lua")
 
 -- LOCALIZATION
 local S = minetest.get_translator(modname)
-
--- PLACE YAW VALUES INTO THE TABLE.
-for rot = 0, 15 do
-    local yaw = math.pi * 2 - (((math.pi * 2) / 16) * rot)
-    local delta = vector.multiply(minetest.yaw_to_dir(yaw), m)
-    -- Offset because sign is a bit above node boundaries
-    delta.y = delta.y + 2 / 28
-    table.insert(mcl_signs.signtext_info_standing, { delta = delta, yaw = yaw })
-end
 
 -- HANDLE THE FORMSPEC CALLBACK
 minetest.register_on_player_receive_fields(function(player, formname, fields)
@@ -37,8 +25,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
     end
 end)
 
-mcl_signs:generate_signs() -- initialize the nodes for the signs.
-
 -- FIXME: Prevent entity destruction by /clearobjects
 minetest.register_entity("mcl_signs:text", {
     pointable = false,
@@ -50,94 +36,108 @@ minetest.register_entity("mcl_signs:text", {
     _signnodename = nil, -- node name of sign node to which the text belongs
 
     on_activate = function(self, staticdata)
+
+        local meta = minetest.get_meta(self.object:get_pos())
+        local text = meta:get_string("text")
+        local text_color = meta:get_string("mcl_signs:text_color")
+        local glowing_sign = meta:get_string("mcl_signs:glowing_sign")
         if staticdata and staticdata ~= "" then
             local des = minetest.deserialize(staticdata)
             if des then
                 self._signnodename = des._signnodename
+                if des._text_color ~= nil and des._text_color ~= "" then
+                    self.text_color = des._text_color
+                end
+                if des._glowing_sign ~= nil and des._glowing_sign ~= "" then
+                    self.glowing_sign = des._glowing_sign
+                end
             end
         end
-        local meta = minetest.get_meta(self.object:get_pos())
-        local text = meta:get_string("text")
+
+        if text_color == "" or text_color == nil then
+            text_color = "#000000" -- default to black text.
+            meta:set_string("mcl_signs:text_color", text_color)
+        end
+
+        if glowing_sign == "" or glowing_sign == nil then
+            glowing_sign = "false" -- default to not glowing.
+            meta:set_string("mcl_signs:glowing_sign", glowing_sign)
+        end
+
         self.object:set_properties({
-            textures = { mcl_signs:create_lettering(text, self._signnodename) },
+            textures = { mcl_signs:create_lettering(text, self._signnodename, text_color) },
         })
+        if glowing_sign == "true" then
+            self.object:set_properties({
+                glow = 6, --sign_glow,
+            })
+        end
+
         self.object:set_armor_groups({ immortal = 1 })
+
     end,
     get_staticdata = function(self)
-        local out = { _signnodename = self._signnodename }
+        local out = {
+            _signnodename = self._signnodename,
+        }
         return minetest.serialize(out)
     end,
 })
 
--- Make the wall signs burnable.
-minetest.register_craft({
-    type = "fuel",
-    recipe = "mcl_signs:wall_sign",
-    burntime = 10,
-})
+-- Build the signs x,y,z & rotations so that they work. (IE, do not remove!)
+mcl_signs.build_signs_info()
 
-minetest.register_craft({
-    type = "fuel",
-    recipe = "mcl_signs:wall_sign_dark",
-    burntime = 10,
-})
+-- ---------------------------- --
+--   Register Signs for use.    --
+-- ---------------------------- --
+local mcl_colors_official = mcl_colors
 
--- register crafts (actual recipes)
-if minetest.get_modpath("mcl_core") then
+-- Standard (original) Sign
+mcl_signs.register_sign("mcl_core", "#ffffff", "", "Sign")
+mcl_signs.register_sign_craft("mcl_core", "mcl_core:wood", "")
 
-    -- debug step
-    minetest.log("verbose", "Register Sign Crafts: \n" .. dump(mcl_signs.woods))
+-- birchwood Sign
+--mcl_signs.register_sign("mcl_core", "#d5cb8d", "_birchwood", "Birch Sign")
+mcl_signs.register_sign_custom("mcl_core", "_birchwood",
+        "mcl_signs_sign_greyscale.png",mcl_colors_official.YELLOW, "default_sign_greyscale.png",
+        "default_sign_greyscale.png", "Birch Sign"
+)
 
-    for w = 1, #mcl_signs.woods do
-        local itemstring = ""
+mcl_signs.register_sign_craft("mcl_core", "mcl_core:birchwood", "_birchwood")
 
-        if mcl_signs.woods[w] == "mcl_core:sprucewood" or mcl_signs.woods[w] == "mcl_core:darkwood" then
-            itemstring = "mcl_signs:wall_sign_dark"
-        else
-            itemstring = "mcl_signs:wall_sign 3"
-        end
+-- sprucewood Sign
+mcl_signs.register_sign_custom("mcl_core", "_sprucewood",
+        "mcl_signs_sign_dark.png","#ffffff", "default_sign_dark.png",
+        "default_sign_dark.png", "Spruce Sign"
+)
+mcl_signs.register_sign_craft("mcl_core", "mcl_core:sprucewood", "_sprucewood")
 
-        local c = mcl_signs.woods[w]
+-- darkwood Sign
+--mcl_signs.register_sign("mcl_core","#291f1a", "_darkwood", "Dark Oak Sign")
+mcl_signs.register_sign_custom("mcl_core", "_darkwood",
+        "mcl_signs_sign_greyscale.png","#856443", "default_sign_greyscale.png",
+        "default_sign_greyscale.png", "Dark Oak Sign"
+)
 
-        minetest.register_craft({
-            output = itemstring.." 3",
-            recipe = {
-                { c, c, c },
-                { c, c, c },
-                { "", "mcl_core:stick", "" },
-            },
-        })
-    end
-end
+mcl_signs.register_sign_craft("mcl_core", "mcl_core:darkwood", "_darkwood")
 
-if minetest.get_modpath("doc") then
-    doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign")
-    doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign22_5")
-    doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign45")
-    doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign67_5")
-    doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:wall_sign_dark")
-    doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign_dark")
-    doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign22_5_dark")
-    doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign45_dark")
-    doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign67_5_dark")
-end
+-- junglewood Sign
+mcl_signs.register_sign("mcl_core", "#866249", "_junglewood", "Jungle Sign")
+mcl_signs.register_sign_craft("mcl_core", "mcl_core:junglewood", "_junglewood")
 
+-- acaciawood Sign "b8693d"
+mcl_signs.register_sign("mcl_core", "#ea7479", "_acaciawood", "Acacia Sign")
+mcl_signs.register_sign_craft("mcl_core", "mcl_core:acaciawood", "_acaciawood")
+
+-- mangrove_wood Sign  "#c7545c"
+mcl_signs.register_sign("mcl_core", "#b8693d", "_mangrove_wood", "Mangrove Sign")
+mcl_signs.register_sign_craft("mcl_core", "mcl_core:mangrove_wood", "_mangrove_wood")
+
+-- Register the LBMs for the created signs.
+mcl_signs.make_lbm()
+
+-- really ancient compatibility.
 minetest.register_alias("signs:sign_wall", "mcl_signs:wall_sign")
 minetest.register_alias("signs:sign_yard", "mcl_signs:standing_sign")
-minetest.register_alias("mcl_signs:wall_sign 3", "mcl_signs:wall_sign")
-
-minetest.register_lbm({
-    name = "mcl_signs:respawn_entities",
-    label = "Respawn sign text entities",
-    run_at_every_load = true,
-    nodenames = {
-        "mcl_signs:wall_sign", "mcl_signs:wall_sign_dark",
-        "mcl_signs:standing_sign", "mcl_signs:standing_sign_dark",
-        "mcl_signs:standing_sign22_5", "mcl_signs:standing_sign22_5_dark",
-        "mcl_signs:standing_sign45", "mcl_signs:standing_sign45_dark",
-        "mcl_signs:standing_sign67_5", "mcl_signs:standing_sign67_5_dark"
-    },
-    action = function(pos, node)
-        mcl_signs:update_sign(pos)
-    end,
-})
+minetest.register_alias("mcl_signs:wall_sign_dark", "mcl_signs:wall_sign_sprucewood")
+minetest.register_alias("mcl_signs:standing_sign_dark", "mcl_signs:standing_sign_sprucewood")
