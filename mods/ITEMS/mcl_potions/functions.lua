@@ -9,6 +9,7 @@ EF.leaping = {}
 EF.swift = {} -- for swiftness AND slowness
 EF.night_vision = {}
 EF.fire_proof = {}
+EF.bad_omen = {}
 
 local EFFECT_TYPES = 0
 for _,_ in pairs(EF) do
@@ -350,6 +351,28 @@ minetest.register_globalstep(function(dtime)
 
 	end
 
+		-- Check for Bad Omen
+	for player, vals in pairs(EF.bad_omen) do
+
+		is_player = player:is_player()
+		entity = player:get_luaentity()
+
+		EF.bad_omen[player].timer = EF.bad_omen[player].timer + dtime
+
+		if player:get_pos() then mcl_potions._add_spawner(player, "#0b6138") end
+
+		if EF.bad_omen[player] and EF.bad_omen[player].timer >= EF.bad_omen[player].dur then
+			EF.bad_omen[player] = nil
+			mcl_raids.spawn_raid(player:get_pos(), 1)
+			if is_player then
+				meta = player:get_meta()
+				meta:set_string("_had_bad_omen", minetest.serialize(EF.bad_omen[player]))
+				potions_set_hud(player)
+			end
+		end
+
+	end
+
 end)
 
 -- Prevent damage to player with Fire Resistance enabled
@@ -386,6 +409,7 @@ function mcl_potions._clear_cached_player_data(player)
 	EF.swift[player] = nil
 	EF.night_vision[player] = nil
 	EF.fire_proof[player] = nil
+	EF.bad_omen[player] = nil
 	
 	meta = player:get_meta()
 	meta:set_int("night_vision", 0)
@@ -429,6 +453,7 @@ function mcl_potions._save_player_effects(player)
 	meta:set_string("_is_swift", minetest.serialize(EF.swift[player]))
 	meta:set_string("_is_cat", minetest.serialize(EF.night_vision[player]))
 	meta:set_string("_is_fire_proof", minetest.serialize(EF.fire_proof[player]))
+	meta:set_string("_has_bad_omen", minetest.serialize(EF.bad_omen[player]))
 
 end
 
@@ -478,6 +503,10 @@ function mcl_potions._load_player_effects(player)
 
 	if minetest.deserialize(meta:get_string("_is_fire_proof")) then
 		EF.fire_proof[player] = minetest.deserialize(meta:get_string("_is_fire_proof"))
+	end
+
+	if minetest.deserialize(meta:get_string("_had_bad_omen")) then
+		EF.bad_omen[player] = minetest.deserialize(meta:get_string("_has_bad_omen"))
 	end
 
 end
@@ -965,4 +994,23 @@ function mcl_potions._extinguish_nearby_fire(pos, radius)
 		end
 	end
 	return exting
+end
+
+function mcl_potions.bad_omen_func(player, null, duration)
+
+	if not EF.bad_omen[player] then
+
+		EF.bad_omen[player] = {dur = duration, timer = 0}
+
+	else
+
+		local victim = EF.bad_omen[player]
+		victim.dur = math.max(duration, victim.dur - victim.timer)
+		victim.timer = 0
+	end
+
+	if player:is_player() then
+		potions_set_icons(player)
+	end
+
 end

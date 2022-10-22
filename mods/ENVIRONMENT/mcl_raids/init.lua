@@ -47,45 +47,49 @@ mcl_raids.wave_definitions = {
 	},
 }
 
+mcl_raids.spawn_raid = function(pos, wave)
+	local illager_count = 0
+	local spawnable = false
+	local r = 32
+	local n = 12
+	local i = math.random(1, n)
+	local raid_pos = vector.offset(pos,r * math.cos(((i-1)/n) * (2*math.pi)),0,  r * math.sin(((i-1)/n) * (2*math.pi)))
+	local sn = minetest.find_nodes_in_area_under_air(vector.offset(raid_pos,0,100,0), vector.offset(raid_pos,0,-100,0), {"group:grass_block", "group:grass_block_snow", "group:snow_cover", "group:sand"})
+	if sn and #sn > 0 then
+		spawn_pos = sn[1]
+		if spawn_pos then
+			minetest.log("action", "[mcl_raids] Raid Spawn Position chosen at " .. minetest.pos_to_string(spawn_pos) .. ".")
+			spawnable = true
+		else
+			minetest.log("action", "[mcl_raids] Raid Spawn Postion not chosen.")
+		end
+	elseif not sn then
+		minetest.log("action", "[mcl_raids] Raid Spawn Position error, no appropriate site found.")
+	end
+	if spawnable and spawn_pos then
+		for _, raiddefs in pairs(mcl_raids.wave_definitions) do
+			local wave_count = raiddefs.wave_1
+			for i = 0, wave_count do
+				local entity = minetest.add_entity(spawn_pos, raiddefs.illager_name)
+				if entity then
+					local l = entity:get_luaentity()
+					l.raidmember = true
+					illager_count = illager_count + 1
+				end
+			end
+		end
+		minetest.log("action", "[mcl_raids] Raid Spawned. Illager Count: " .. illager_count .. ".")
+	end
+end
+
 minetest.register_chatcommand("spawn_raid", {
 	privs = {
 		server = true,
 	},
 	func = function(name)
 		local wave = 1
-		local illager_count = 0
 		local player = minetest.get_player_by_name(name)
 		local pos = player:get_pos()
-		local spawnable = false
-		local r = 32
-		local n = 12
-		local i = math.random(1, n)
-		local raid_pos = vector.offset(pos,r * math.cos(((i-1)/n) * (2*math.pi)),0,  r * math.sin(((i-1)/n) * (2*math.pi)))
-		local sn = minetest.find_nodes_in_area_under_air(vector.offset(raid_pos,0,100,0), vector.offset(raid_pos,0,-100,0), {"group:grass_block", "group:grass_block_snow", "group:snow_cover", "group:sand"})
-		if sn and #sn > 0 then
-			spawn_pos = sn[1]
-			if spawn_pos then
-				minetest.log("action", "[mcl_raids] Raid Spawn Position chosen at " .. minetest.pos_to_string(spawn_pos) .. ".")
-				spawnable = true
-			else
-				minetest.log("action", "[mcl_raids] Raid Spawn Postion not chosen.")
-			end
-		elseif not sn then
-			minetest.log("action", "[mcl_raids] Raid Spawn Position error, no appropriate site found.")
-		end
-		if spawnable and spawn_pos then
-			for _, raiddefs in pairs(mcl_raids.wave_definitions) do
-				local wave_count = raiddefs.wave_1
-				for i = 0, wave_count do
-					local entity = minetest.add_entity(spawn_pos, raiddefs.illager_name)
-					if entity then
-						local l = entity:get_luaentity()
-						l.raidmember = true
-						illager_count = illager_count + 1
-					end
-				end
-			end
-			minetest.log("action", "[mcl_raids] Raid Spawned. Illager Count: " .. illager_count .. ".")
-		end
+		mcl_raids.spawn_raid(pos, wave)
 	end
 })
