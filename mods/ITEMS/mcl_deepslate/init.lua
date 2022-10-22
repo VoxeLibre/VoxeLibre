@@ -116,15 +116,21 @@ end
 
 local redstone_timer = 68.28
 
-local function redstone_ore_activate(pos)
+local function redstone_ore_activate(pos, node, puncher, pointed_thing)
 	minetest.swap_node(pos, { name = "mcl_deepslate:deepslate_with_redstone_lit" })
 	local t = minetest.get_node_timer(pos)
 	t:start(redstone_timer)
+	if puncher and pointed_thing then
+		return minetest.node_punch(pos, node, puncher, pointed_thing)
+	end
 end
 
-local function redstone_ore_reactivate(pos)
+local function redstone_ore_reactivate(pos, node, puncher, pointed_thing)
 	local t = minetest.get_node_timer(pos)
 	t:start(redstone_timer)
+	if puncher and pointed_thing then
+		return minetest.node_punch(pos, node, puncher, pointed_thing)
+	end
 end
 
 minetest.register_node("mcl_deepslate:deepslate_with_redstone", {
