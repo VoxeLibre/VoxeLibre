@@ -44,10 +44,12 @@ local etime = 0
 function check_events(dtime)
 	for idx,ae in pairs(active_events) do
 		if ae.cond_complete and ae:cond_complete() then
+			ae.finished = true
 			finish_event(ae,idx)
-		elseif ae.max_stage and ae.max_stage < ae.stage then
+		elseif not ae.cond_complete and ae.max_stage and ae.max_stage <= ae.stage then
+			ae.finished = true
 			finish_event(ae,idx)
-		elseif ae.cond_progress then
+		elseif not ae.finished and ae.cond_progress then
 			local p = ae:cond_progress()
 			if p == true then
 				ae.stage = ae.stage + 1
@@ -58,8 +60,7 @@ function check_events(dtime)
 				minetest.log("event progressed to stage "..ae.stage)
 				ae:on_stage_begin()
 			end
-
-		elseif ae.on_step then
+		elseif not ae.finished and ae.on_step then
 			ae:on_step()
 		end
 	end
@@ -92,7 +93,6 @@ mcl_events.register_event("infestation",{
 	end,
 	on_start = function(self)
 		self.mobs = {}
-		minetest.log("inf")
 	end,
 	cond_progress = function(self)
 		local m = {}
@@ -112,6 +112,9 @@ mcl_events.register_event("infestation",{
 				table.insert(self.mobs,m)
 			end
 		end
+	end,
+	cond_complete = function(self)
+		return self.stage >= self.max_stage
 	end,
 	on_complete = function(self)
 		minetest.log("INFESTATION complete")
