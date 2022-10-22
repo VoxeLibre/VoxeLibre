@@ -355,7 +355,6 @@ minetest.register_globalstep(function(dtime)
 	for player, vals in pairs(EF.bad_omen) do
 
 		is_player = player:is_player()
-		entity = player:get_luaentity()
 
 		EF.bad_omen[player].timer = EF.bad_omen[player].timer + dtime
 
@@ -363,10 +362,9 @@ minetest.register_globalstep(function(dtime)
 
 		if EF.bad_omen[player] and EF.bad_omen[player].timer >= EF.bad_omen[player].dur then
 			EF.bad_omen[player] = nil
-			mcl_raids.spawn_raid(player:get_pos(), 1)
 			if is_player then
 				meta = player:get_meta()
-				meta:set_string("_had_bad_omen", minetest.serialize(EF.bad_omen[player]))
+				meta:set_string("_has_bad_omen", minetest.serialize(EF.bad_omen[player]))
 				potions_set_hud(player)
 			end
 		end
@@ -505,7 +503,7 @@ function mcl_potions._load_player_effects(player)
 		EF.fire_proof[player] = minetest.deserialize(meta:get_string("_is_fire_proof"))
 	end
 
-	if minetest.deserialize(meta:get_string("_had_bad_omen")) then
+	if minetest.deserialize(meta:get_string("_has_bad_omen")) then
 		EF.bad_omen[player] = minetest.deserialize(meta:get_string("_has_bad_omen"))
 	end
 
