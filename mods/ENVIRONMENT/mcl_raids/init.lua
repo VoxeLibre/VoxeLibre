@@ -56,7 +56,7 @@ mcl_raids.spawn_raid = function(pos, wave)
 	local raid_pos = vector.offset(pos,r * math.cos(((i-1)/n) * (2*math.pi)),0,  r * math.sin(((i-1)/n) * (2*math.pi)))
 	local sn = minetest.find_nodes_in_area_under_air(vector.offset(raid_pos,0,100,0), vector.offset(raid_pos,0,-100,0), {"group:grass_block", "group:grass_block_snow", "group:snow_cover", "group:sand"})
 	if sn and #sn > 0 then
-		spawn_pos = sn[1]
+		local spawn_pos = sn[1]
 		if spawn_pos then
 			minetest.log("action", "[mcl_raids] Raid Spawn Position chosen at " .. minetest.pos_to_string(spawn_pos) .. ".")
 			spawnable = true
@@ -83,22 +83,26 @@ mcl_raids.spawn_raid = function(pos, wave)
 end
 
 mcl_raids.find_villager = function(pos)
-	local obj = minetest.get_objects_inside_radius(pos, 16)
-	for _, objects in pairs(obj) do
-		object = objects:get_luaentity()
-		if object and object.name == "mobs_mc:villager" then
-			minetest.log("action", "[mcl_raids] Villager Found.")
-			return true
-		else
-			minetest.log("action", "[mcl_raids] No Villager Found.")
-			return false
+	local obj = minetest.get_objects_inside_radius(pos, 8)
+	for _, objects in ipairs(obj) do
+		local object = objects:get_luaentity()
+		if object then
+			if object.name ~= "mobs_mc:villager" then
+				return
+			elseif object.name == "mobs_mc:villager" then
+				minetest.log("action", "[mcl_raids] Villager Found.")
+				return true
+			else
+				minetest.log("action", "[mcl_raids] No Villager Found.")
+				return false
+			end
 		end
 	end
 end
 
 mcl_raids.find_bed = function(pos)
 	local beds = minetest.find_nodes_in_area(vector.offset(pos, -8, -8, -8), vector.offset(pos, 8, 8, 8), "mcl_beds:bed_red_bottom")
-	if beds then
+	if beds[1] then
 		minetest.log("action", "[mcl_raids] Bed Found.")
 		return true
 	else
@@ -113,10 +117,17 @@ mcl_raids.find_village = function(pos)
 	local raid_started = false
 	
 	if (bed and villager) and raid_started == false then
-		mcl_raids.spawn_raid(pos, 1)
-		raid_started = true
-		minetest.log("action", "[mcl_raids] Village found, starting raid.")
+		local raid = mcl_raids.spawn_raid(pos, 1)
+		if raid then
+			minetest.log("action", "[mcl_raids] Village found, starting raid.")
+			raid_started = true
+		else
+			minetest.log("action", "[mcl_raids] Village found.")
+		end
 		return true
+	elseif raid_started == true then
+		minetest.log("action", "[mcl_raids] Raid already started.")
+		return
 	else
 		minetest.log("action", "[mcl_raids] Village not found, raid is not starting.")
 		return false
