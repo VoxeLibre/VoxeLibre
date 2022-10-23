@@ -575,15 +575,11 @@ function get_activity(tod)
 	end
 	tod = ( tod * 24000 ) % 24000
 
-	local lunch_start = 12000
-	local lunch_end = 13000
-	local work_start = 6500
-	local work_end = 18000
 
-	--local lunch_start = 12000
-	--local lunch_end = 13300
-	--local work_start = 8300
-	--local work_end = 16300
+	local lunch_start = 12000
+	local lunch_end = 13500
+	local work_start = 8500
+	local work_end = 16300
 
 
 	local activity = nil
@@ -614,8 +610,7 @@ local function go_home(entity, sleep)
 		mcl_log("Cannot find bed. Unset it")
 		return
 	end
-
-
+	
 	if vector.distance(entity.object:get_pos(),b) < 2 then
 		if sleep then
 			entity.order = SLEEP
@@ -795,7 +790,7 @@ local function employ(self,jobsite_pos)
 	local p = get_profession_by_jobsite(n.name)
 	if p and m:get_string("villager") == "" then
 		mcl_log("Taking this jobsite")
-		
+
 		m:set_string("villager",self._id)
 		self._jobsite = jobsite_pos
 
@@ -992,7 +987,6 @@ local function do_work (self)
 			end
 		end
 	elseif self._profession == "unemployed" then
-		--self.order == JOB_HUNTING
 		get_a_job(self)
 	elseif has_traded(self) then
 		mcl_log("My job site is invalid or gone. I cannot work.")
