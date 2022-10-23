@@ -104,6 +104,10 @@ if superflat then
 	minetest.set_mapgen_setting("mgflat_spflags", "nolakes,nohills", true)
 end
 
+if mg_name == "v7" then
+	minetest.set_mapgen_setting("mgv7_cavern_threshold", "0.15", true)
+end
+
 local mg_flags_str = ""
 for k,v in pairs(mg_flags) do
 	if v == false then
