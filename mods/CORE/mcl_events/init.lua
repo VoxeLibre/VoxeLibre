@@ -138,7 +138,7 @@ mcl_events.register_event("infestation",{
 			return true end
 	end,
 	on_stage_begin = function(self)
-		self.health_max = 1
+		self.health_max = 0
 		for i=1,15 * self.stage do
 			local m = mcl_mobs.spawn(vector.add(self.pos,vector.new(math.random(20)-10,0,math.random(20)-10)),"mobs_mc:silverfish")
 			local l = m:get_luaentity()
