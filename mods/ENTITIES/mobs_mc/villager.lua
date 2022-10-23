@@ -610,7 +610,7 @@ local function go_home(entity, sleep)
 		mcl_log("Cannot find bed. Unset it")
 		return
 	end
-	
+
 	if vector.distance(entity.object:get_pos(),b) < 2 then
 		if sleep then
 			entity.order = SLEEP
@@ -1576,6 +1576,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 	description = S("Villager"),
 	type = "npc",
 	spawn_class = "passive",
+	passive = true,
 	hp_min = 20,
 	hp_max = 20,
 	head_swivel = "head.control",
