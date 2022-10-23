@@ -23,7 +23,12 @@ License of code and font: MIT License
 Font source: 04.jp.org, some modifications and additions were made (added support for Latin-1 Supplement)
 Original font license text states: “YOU MAY USE THEM AS YOU LIKE” (in about.gif file distributed with the font)
 
-License of textures: See README.md in top directory of MineClone 2.
+License of textures: See README.md in top directory of MineClone 2, with the exception of the following:
+default_sign.png, default_sign_dark.png, default_sign_greyscale.png, mcl_signs_sign_dark.png,
+mcl_signs_sign_greyscale.png are licensed as follows:
+Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) (https://creativecommons.org/licenses/by-sa/4.0/).
+Credit Michieal (Faerraven). The extra sign textures are provided for you to use, modify, etc., with the goal being to
+make the game better. (All of these textures were changed / created by me, to make them usable / better.)
 
 License of models: GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
 
