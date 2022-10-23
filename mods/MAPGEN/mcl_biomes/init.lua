@@ -1578,7 +1578,7 @@ local function register_dimension_biomes()
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_nether:netherrack","mcl_nether:glowstone"},
+		place_on = {"mcl_nether:netherrack","mcl_nether:glowstone","mcl_nether:magma"},
 		sidelen = 16,
 		fill_ratio = 10,
 		biomes = { "SoulsandValley" },
@@ -1628,7 +1628,7 @@ local function register_dimension_biomes()
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_nether:netherrack","mcl_nether:glowstone","mcl_blackstone:nether_gold","mcl_nether:quartz_ore","mcl_core:gravel","mcl_nether:soul_sand"},
+		place_on = {"mcl_nether:netherrack","mcl_nether:glowstone","mcl_blackstone:nether_gold","mcl_nether:quartz_ore","mcl_core:gravel","mcl_nether:soul_sand","mcl_nether:magma","mcl_blackstone:blackstone"},
 		sidelen = 16,
 		fill_ratio = 10,
 		biomes = { "CrimsonForest" },
@@ -1655,7 +1655,7 @@ local function register_dimension_biomes()
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_nether:netherrack","mcl_nether:glowstone","mcl_blackstone:nether_gold","mcl_nether:quartz_ore","mcl_core:gravel","mcl_nether:soul_sand"},
+		place_on = {"mcl_nether:netherrack","mcl_nether:glowstone","mcl_blackstone:nether_gold","mcl_nether:quartz_ore","mcl_core:gravel","mcl_nether:soul_sand","mcl_nether:magma","mcl_blackstone:blackstone"},
 		sidelen = 16,
 		fill_ratio = 10,
 		biomes = { "WarpedForest" },
@@ -1681,6 +1681,19 @@ local function register_dimension_biomes()
 		_mcl_palette_index = 17,
 	})
 
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack","mcl_nether:glowstone","mcl_blackstone:nether_gold","mcl_nether:quartz_ore","mcl_core:gravel","mcl_nether:soul_sand","mcl_blackstone:blackstone","mcl_nether:magma"},
+		sidelen = 16,
+		fill_ratio = 10,
+		biomes = { "BasaltDelta" },
+		y_min = -31000,
+		y_max = mcl_vars.mg_nether_max,
+		decoration = "mcl_blackstone:basalt",
+		flags = "all_floors",
+		param2 = 0,
+	})
+
 	minetest.register_ore({
 	ore_type       = "blob",
 	ore            = "mcl_blackstone:blackstone",
@@ -1701,19 +1714,6 @@ local function register_dimension_biomes()
 		lacunarity = 2,
 		flags = "defaults",
 	}
-	})
-
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_nether:netherrack","mcl_nether:glowstone","mcl_blackstone:nether_gold","mcl_nether:quartz_ore","mcl_core:gravel","mcl_nether:soul_sand","mcl_blackstone:blackstone"},
-		sidelen = 16,
-		fill_ratio = 10,
-		biomes = { "BasaltDelta" },
-		y_min = -31000,
-		y_max = mcl_vars.mg_nether_max,
-		decoration = "mcl_blackstone:basalt",
-		flags = "all_floors",
-		param2 = 0,
 	})
 
 	--[[ THE END ]]
