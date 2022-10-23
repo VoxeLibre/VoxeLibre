@@ -3,10 +3,10 @@ mcl_events.registered_events = {}
 local active_events = {}
 
 local tpl_eventdef = {
-	stage = 1,
+	stage = 0,
 	max_stage = 1,
 	percent = 100,
-	bossbars = {},
+	bars = {},
 	--pos = vector.zero(),
 	--time_start = 0,
 	completed = false,
@@ -45,12 +45,12 @@ local function start_event(p,e)
 	local idx = #active_events + 1
 	active_events[idx] = table.copy(e)
 	setmetatable(active_events[idx],e)
+	active_events[idx].stage = 0
+	active_events[idx].percent = 100
+	active_events[idx].bars = {}
 	active_events[idx].pos = vector.copy(p)
-	active_events[idx].stage = 1
 	active_events[idx].time_start = os.time()
 	active_events[idx]:on_start(p)
-	active_events[idx].bars = {}
-	active_events[idx].percent = 0
 	addbars(active_events[idx])
 end
 
@@ -131,15 +131,15 @@ mcl_events.register_event("infestation",{
 				table.insert(m,o)
 			end
 		end
+		self.mobs = m
 		self.health = h
 		self.percent = math.max(0,(self.health / self.health_max ) * 100)
 		if #m < 1 then
 			return true end
-		self.mobs = m
 	end,
 	on_stage_begin = function(self)
 		self.health_max = 1
-		for i=1,5 * self.stage do
+		for i=1,15 * self.stage do
 			local m = mcl_mobs.spawn(vector.add(self.pos,vector.new(math.random(20)-10,0,math.random(20)-10)),"mobs_mc:silverfish")
 			local l = m:get_luaentity()
 			if l then
