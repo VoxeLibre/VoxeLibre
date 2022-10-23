@@ -16,6 +16,14 @@ local CRAMMING_DAMAGE = 3
 -- Localize
 local S = minetest.get_translator("mcl_mobs")
 
+local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager",false)
+local LOG_MODULE = "[Mobs]"
+local function mcl_log (message)
+	if LOGGING_ON and message then
+		minetest.log(LOG_MODULE .. " " .. message)
+	end
+end
+
 local function shortest_term_of_yaw_rotatoin(self, rot_origin, rot_target, nums)
 
 	if not rot_origin or not rot_target then
@@ -1562,6 +1570,7 @@ end
 -- find two animals of same type and breed if nearby and horny
 local breed = function(self)
 
+	--mcl_log("In breed function")
 	-- child takes a long time before growing into adult
 	if self.child == true then
 
@@ -1619,6 +1628,8 @@ local breed = function(self)
 	if self.horny == true
 	and self.hornytimer <= HORNY_TIME then
 
+		mcl_log("In breed function. All good. Do the magic.")
+
 		local pos = self.object:get_pos()
 
 		effect({x = pos.x, y = pos.y + 1, z = pos.z}, 8, "heart.png", 3, 4, 1, 0.1)
@@ -1653,6 +1664,8 @@ local breed = function(self)
 				end
 			end
 
+			if canmate then mcl_log("In breed function. Can mate.") end
+
 			if ent
 			and canmate == true
 			and ent.horny == true
@@ -1667,6 +1680,8 @@ local breed = function(self)
 				ent.hornytimer = HORNY_TIME + 1
 
 				-- spawn baby
+
+
 				minetest.after(5, function(parent1, parent2, pos)
 					if not parent1.object:get_luaentity() then
 						return
@@ -2480,18 +2495,42 @@ local function check_gowp(self,dtime)
 	if gowp_etime < 0.2 then return end
 	gowp_etime = 0
 	local p = self.object:get_pos()
-	if not p or not self._target then return end
-	if vector.distance(p,self._target) < 1 then
+
+	-- no destination
+	if not p or not self._target then
+		mcl_log("p: ".. tostring(p))
+		mcl_log("self._target: ".. tostring(self._target))
+		return
+	end
+
+	-- arrived at location
+	local distance_to_targ = vector.distance(p,self._target)
+	mcl_log("Distance to targ: ".. tostring(distance_to_targ))
+	if distance_to_targ < 2 then
+		mcl_log("Arrived at _target")
 		self.waypoints = nil
 		self._target = nil
 		self.current_target = nil
 		self.state = "stand"
+		self.order = "stand"
+		self.object:set_velocity({x = 0, y = 0, z = 0})
+		self.object:set_acceleration({x = 0, y = 0, z = 0})
 		if self.callback_arrived then return self.callback_arrived(self) end
 		return true
 	end
+
 	if self.waypoints and ( not self.current_target or vector.distance(p,self.current_target) < 2 ) then
+		if not self.current_target then
+			for i, j in pairs (self.waypoints) do
+				mcl_log("Way: ".. tostring(i))
+				mcl_log("Val: ".. tostring(j))
+			end
+			--mcl_log("nextwp:".. tostring(self.waypoints) )
+		end
+
 		self.current_target = table.remove(self.waypoints, 1)
-		--minetest.log("nextwp:".. tostring(self.current_target) )
+		mcl_log("current target:".. tostring(self.current_target) )
+		--mcl_log("type:".. type(self.current_target) )
 		go_to_pos(self,self.current_target)
 		return
 	elseif self.current_target then
@@ -2505,7 +2544,7 @@ local function check_gowp(self,dtime)
 		return
 	end
 	if not self.current_target then
-		--minetest.log("no path")
+		--mcl_log("no path")
 		self.state = "walk"
 	end
 end
@@ -2556,9 +2595,9 @@ local do_states = function(self, dtime)
 		end
 
 		-- npc's ordered to stand stay standing
-		if self.type ~= "npc"
-		or self.order ~= "stand" then
+		if self.type == "npc" or (self.order == "stand" or self.order == "sleep" or self.order == "work") then
 
+		else
 			if self.walk_chance ~= 0
 			and self.facing_fence ~= true
 			and random(1, 100) <= self.walk_chance
@@ -3071,6 +3110,8 @@ local do_states = function(self, dtime)
 					end
 				end
 			end
+		else
+
 		end
 	end
 end
@@ -3085,23 +3126,46 @@ local plane_adjacents = {
 
 local gopath_last = os.time()
 function mcl_mobs:gopath(self,target,callback_arrived)
-	if os.time() - gopath_last < 15 then return end
+	if self.state == "gowp" then mcl_log("Already set as gowp, don't set another path until done.") return end
+
+	if os.time() - gopath_last < 15 then
+		mcl_log("Not ready to path yet")
+		return
+	end
 	gopath_last = os.time()
-	--minetest.log("gowp")
+
+	self.order = nil
+
+	mcl_log("gowp target: " .. minetest.pos_to_string(target))
 	local p = self.object:get_pos()
 	local t = vector.offset(target,0,1,0)
 	local wp = minetest.find_path(p,t,150,1,4)
+
+	--Path to door first
 	if not wp then
+		--mcl_log("gowp. no wp. Look for door")
 		local d = minetest.find_node_near(target,16,{"group:door"})
 		if d then
+			--mcl_log("Found a door near")
 			for _,v in pairs(plane_adjacents) do
 				local pos = vector.add(d,v)
 				local n = minetest.get_node(pos)
 				if n.name == "air" then
 					wp = minetest.find_path(p,pos,150,1,4)
-					if wp then break end
+					if wp then
+						--mcl_log("Found a path to next to door".. minetest.pos_to_string(pos))
+						break
+
+					else
+						--mcl_log("This block next to door doesn't work.")
+					end
+				else
+					--mcl_log("Block is not air, it is: ".. n.name)
 				end
+
 			end
+		else
+			mcl_log("No door found")
 		end
 	end
 	if wp and #wp > 0 then
