@@ -33,6 +33,7 @@
 * RandomLegoBrick
 * SumianVoice
 * MrRar
+* talamh
 
 ## Contributors
 * Laurent Rocher
@@ -66,7 +67,6 @@
 * Benjamin Schötz
 * Doloment
 * Sydney Gems
-* talamh
 * Emily2255
 * Emojigit
 * FinishedFragment
@@ -85,6 +85,10 @@
 * opfromthestart
 * snowyu
 * FaceDeer
+* Faerraven / Michieal
+* FossFanatic
+* Herbert West
+* GuyLiner
 
 ## MineClone5
 * kay27
@@ -95,7 +99,7 @@
 * chmodsayshello
 * 3raven
 * PrairieWind
-* Gustavo1
+* Gustavo6046 / wallabra
 * CableGuy67
 * MrRar
 
