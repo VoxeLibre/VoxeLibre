@@ -550,6 +550,11 @@ end
 
 local function get_badge_textures(self)
 	local t = professions[self._profession].texture
+	if self._profession == "unemployed"	then
+		t = professions[self._profession].textures -- ideally both scenarios should be textures with a list containing 1 or multiple
+		--mcl_log("t: " .. tostring(t))
+	end
+
 	if self._profession == "unemployed" or self._profession == "nitwit" then return t end
 	local tier = self._max_trade_tier or 1
 	return {
@@ -670,8 +675,8 @@ local function take_bed (entity)
 
 	for _,n in pairs(nn) do
 		local m=minetest.get_meta(n)
-		mcl_log("Bed owner: ".. m:get_string("villager"))
-		if m:get_string("villager") == "" and not entity.state == "gowp" then
+		--mcl_log("Bed owner: ".. m:get_string("villager"))
+		if m:get_string("villager") == "" and not (entity.state == "gowp") then
 			mcl_log("Can we path to bed: "..minetest.pos_to_string(n) )
 			local gp = mcl_mobs:gopath(entity,n,function(self)
 				if self then
@@ -690,7 +695,7 @@ local function take_bed (entity)
 				mcl_log("Awww. I can't find my bed.")
 			end
 		else
-			mcl_log("Currently gowp, or it's taken.")
+			mcl_log("Currently gowp, or it's taken: ".. m:get_string("villager"))
 		end
 	end
 end
@@ -742,6 +747,12 @@ end
 
 local function has_traded (self)
 	--mcl_log("Checking name: " .. self._trades)
+
+	if not self._trades then
+		mcl_log("No trades set. has_traded is false")
+		return false
+	end
+
 	local cur_trades_tab = minetest.deserialize(self._trades)
 
 	if cur_trades_tab and type(cur_trades_tab) == "table" then
@@ -765,7 +776,7 @@ end
 
 local function unlock_trades (self)
 	if self then
-		mcl_log("We should now try to unlock trades")
+		--mcl_log("We should now try to unlock trades")
 	else
 		mcl_log("Missing self")
 	end
@@ -784,15 +795,14 @@ local function employ(self,jobsite_pos)
 	local p = get_profession_by_jobsite(n.name)
 	if p and m:get_string("villager") == "" then
 		mcl_log("Taking this jobsite")
-
+		
 		m:set_string("villager",self._id)
 		self._jobsite = jobsite_pos
 
-		if not self.traded then
+		if not has_traded(self) then
 			self._profession=p
 			set_textures(self)
 		end
-
 		return true
 	else
 		mcl_log("I can not steal someone's job!")
@@ -801,15 +811,19 @@ end
 
 
 local function look_for_job(self, requested_jobsites)
-	if self.last_jobhunt and os.time() - self.last_jobhunt < 40 then return end
-	self.last_jobhunt = os.time() + math.random(0,30)
+
+	--if self.last_jobhunt and os.time() - self.last_jobhunt < 15 then
+	--	mcl_log("Is time less than 40?" .. tostring(os.time() - self.last_jobhunt))
+	--	return
+	--end
+	--self.last_jobhunt = os.time() + math.random(0,30)
 
 	mcl_log("Looking for jobs")
 
 	local looking_for_type = jobsites
 	if requested_jobsites then
-		mcl_log("Looking for jobs of my type")
-		local looking_for_type = requested_jobsites
+		mcl_log("Looking for jobs of my type: " .. tostring(requested_jobsites))
+		looking_for_type = requested_jobsites
 	else
 		mcl_log("Looking for any job type")
 	end
@@ -839,7 +853,7 @@ local function look_for_job(self, requested_jobsites)
 				end
 				return n
 			else
-				mcl_log("We could not path to block")
+				mcl_log("We could not path to block or it's not ready to path yet.")
 			end
 		end
 	end
@@ -899,16 +913,21 @@ local function retrieve_my_jobsite (self)
 end
 
 local function validate_jobsite(self)
+	if self._profession == "unemployed" then return false end
+
 	if not retrieve_my_jobsite (self) then
-		if not self._traded then
+		self._jobsite = nil
+		if self.order == WORK then
+			self.order = nil
+		end
+
+		if not has_traded(self) then
 			mcl_log("Cannot retrieve my jobsite. I am now unemployed.")
-			self._jobsite = nil
 			self._profession = "unemployed"
 			self._trades = nil
 			set_textures(self)
-			if self.order == WORK then
-				self.order = nil
-			end
+		else
+			mcl_log("Cannot retrieve my jobsite but I've traded so only remove jobsite.")
 		end
 		return false
 	else
@@ -931,12 +950,12 @@ local function do_work (self)
 
 		if self and jobsite2 and self._jobsite then
 
-			mcl_log("Villager: ".. minetest.pos_to_string(self.object:get_pos()) ..  ", jobsite: " .. minetest.pos_to_string(self._jobsite))
+			--mcl_log("Villager: ".. minetest.pos_to_string(self.object:get_pos()) ..  ", jobsite: " .. minetest.pos_to_string(self._jobsite))
 			if vector.distance(self.object:get_pos(),self._jobsite) < 2 then
 				mcl_log("Made it to work ok!")
 
 				if not (self.state == "gowp") then
-					mcl_log("Setting order to work.")
+					--mcl_log("Setting order to work.")
 					self.order = WORK
 				else
 					mcl_log("Not gowp. What is it: " .. self.state)
@@ -1728,7 +1747,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 					go_home(self, false)
 					return
 				elseif mcl_beds.is_night() or (weather_mod and mcl_weather.get_weather() == "thunder") then
-					mcl_log("It's night or thunderstorm. Better get to bed ")
+					mcl_log("It's night or thunderstorm. Better get to bed. Weather is: " .. mcl_weather.get_weather())
 					go_home(self, true)
 					return
 				end

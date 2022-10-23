@@ -3128,7 +3128,10 @@ local gopath_last = os.time()
 function mcl_mobs:gopath(self,target,callback_arrived)
 	if self.state == "gowp" then mcl_log("Already set as gowp, don't set another path until done.") return end
 
-	if os.time() - gopath_last < 15 then return end
+	if os.time() - gopath_last < 15 then
+		mcl_log("Not ready to path yet")
+		return
+	end
 	gopath_last = os.time()
 
 	self.order = nil
@@ -3143,14 +3146,26 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 		--mcl_log("gowp. no wp. Look for door")
 		local d = minetest.find_node_near(target,16,{"group:door"})
 		if d then
+			--mcl_log("Found a door near")
 			for _,v in pairs(plane_adjacents) do
 				local pos = vector.add(d,v)
 				local n = minetest.get_node(pos)
 				if n.name == "air" then
 					wp = minetest.find_path(p,pos,150,1,4)
-					if wp then break end
+					if wp then
+						--mcl_log("Found a path to next to door".. minetest.pos_to_string(pos))
+						break
+
+					else
+						--mcl_log("This block next to door doesn't work.")
+					end
+				else
+					--mcl_log("Block is not air, it is: ".. n.name)
 				end
+
 			end
+		else
+			mcl_log("No door found")
 		end
 	end
 	if wp and #wp > 0 then
