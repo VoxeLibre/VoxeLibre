@@ -1,5 +1,4 @@
 -- mcl_raids
-
 mcl_raids = {}
 
 -- Define the amount of illagers to spawn each wave.
@@ -39,7 +38,7 @@ local extra_wave = {
 	--["mobs_mc:ravager"] = 2,
 }
 
-mcl_raids.spawn_raid = function(event)
+function mcl_raids.spawn_raid(event)
 	local pos = event.pos
 	local wave = event.stage
 	local illager_count = 0
@@ -73,7 +72,7 @@ mcl_raids.spawn_raid = function(event)
 	end
 end
 
-mcl_raids.find_villager = function(pos)
+function mcl_raids.find_villager(pos)
 	local obj = minetest.get_objects_inside_radius(pos, 8)
 	for _, objects in ipairs(obj) do
 		local object = objects:get_luaentity()
@@ -91,7 +90,7 @@ mcl_raids.find_villager = function(pos)
 	end
 end
 
-mcl_raids.find_bed = function(pos)
+function mcl_raids.find_bed(pos)
 	local beds = minetest.find_nodes_in_area(vector.offset(pos, -8, -8, -8), vector.offset(pos, 8, 8, 8), "mcl_beds:bed_red_bottom")
 	if beds[1] then
 		minetest.log("action", "[mcl_raids] Bed Found.")
@@ -102,7 +101,7 @@ mcl_raids.find_bed = function(pos)
 	end
 end
 
-mcl_raids.find_village = function(pos)
+function mcl_raids.find_village(pos)
 	local bed = mcl_raids.find_bed(pos)
 	local villager = mcl_raids.find_villager(pos)
 	local raid_started = false
