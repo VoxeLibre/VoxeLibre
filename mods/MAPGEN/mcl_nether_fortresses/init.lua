@@ -19,7 +19,6 @@ mcl_structures.register_structure("nether_outpost",{
 	after_place = function(pos)
 		local sp = minetest.find_nodes_in_area(pos,vector.offset(pos,0,20,0),{"mcl_mobspawners:spawner"})
 		if not sp[1] then return end
-		table.shuffle(sp)
 		mcl_mobspawners.setup_spawner(sp[1], "mobs_mc:blaze", 0, minetest.LIGHT_MAX+1, 10, 8, 0)
 	end
 })
@@ -36,6 +35,9 @@ mcl_structures.register_structure("nether_bulwark",{
 	y_max = mcl_vars.mg_nether_max - 30,
 	filenames = {
 		modpath.."/schematics/mcl_nether_fortresses_nether_bulwark.mts"
+	},
+	daughters = {
+		[modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_interior_1.mts"] = vector.new(5,0,5),
 	},
 	y_offset = 0,
 	construct_nodes = {"group:wall"},

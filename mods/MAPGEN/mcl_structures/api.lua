@@ -1,5 +1,11 @@
 mcl_structures.registered_structures = {}
-
+local rotations = {
+	"0",
+	"90",
+	"180",
+	"270"
+}
+local place_queue = {}
 local disabled_structures = minetest.settings:get("mcl_disabled_structures")
 if disabled_structures then	disabled_structures = disabled_structures:split(",")
 else disabled_structures = {} end
@@ -206,7 +212,19 @@ local function foundation(ground_p1,ground_p2,pos,sidelen)
 	minetest.bulk_set_node(stone,{name=node_stone})
 end
 
-function mcl_structures.place_structure(pos, def, pr, blockseed,rot)
+local function process_queue()
+	if #place_queue < 1 then return end
+	local s = table.remove(place_queue)
+	mcl_structures.place_schematic(s.pos, s.file, s.rot, nil, true, "place_center_x,place_center_z",function(s)
+		if s.after_place then
+			s.after_place(s.pos,s.def,s.pr)
+		end
+	end,s.pr)
+	minetest.after(0.5,process_queue)
+end
+
+
+function mcl_structures.place_structure(pos, def, pr, blockseed)
 	if not def then	return end
 	if not rot then rot = "random" end
 	local log_enabled = logging and not def.terrain_feature
@@ -244,13 +262,31 @@ function mcl_structures.place_structure(pos, def, pr, blockseed,rot)
 		local r = pr:next(1,#def.filenames)
 		local file = def.filenames[r]
 		if file then
+			local rot = rotations[pr:next(1,#rotations)]
 			local ap = function(pos,def,pr,blockseed) end
-			if def.after_place then ap = def.after_place  end
 
-			mcl_structures.place_schematic(pp, file, rot, def.replacements, true, "place_center_x,place_center_z",function(p1, p2, size, rotation)
-				if def.loot then generate_loot(pp,def,pr,blockseed) end
-				if def.construct_nodes then construct_nodes(pp,def,pr,blockseed) end
-				return ap(pp,def,pr,blockseed,p1,p2,size,rotation)
+			if def.daughters then
+				for fn,p in pairs(def.daughters) do
+					local p = vector.add(pp,p)
+					ap = function(pos,def,pr,blockseed)
+						mcl_structures.place_schematic(pos, fn, rot, nil, true, "place_center_x,place_center_z",function()
+							if def.loot then generate_loot(pp,def,pr,blockseed) end
+							if def.construct_nodes then construct_nodes(pp,def,pr,blockseed) end
+							if def.after_place then
+								def.after_place(pos,def,pr)
+							end
+							--ap(pos,def,pr,blockseed)
+						end,pr)
+					end
+				end
+			elseif def.after_place then ap = def.after_place
+			end
+			mcl_structures.place_schematic(pp, file, rot,  def.replacements, true, "place_center_x,place_center_z",function(p1, p2, size, rotation)
+				if not def.daughters then
+					if def.loot then generate_loot(pp,def,pr,blockseed) end
+					if def.construct_nodes then construct_nodes(pp,def,pr,blockseed) end
+					return ap(pp,def,pr,blockseed,p1,p2,size,rotation)
+				end
 			end,pr)
 			if log_enabled then
 				minetest.log("action","[mcl_structures] "..def.name.." placed at "..minetest.pos_to_string(pp))
