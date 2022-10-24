@@ -16,26 +16,17 @@ local stronghold_rings = {
 }
 
 local strongholds = {}
-local stronghold_positions = {}
-local strongholds_inited = false
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
+local seed = tonumber(minetest.get_mapgen_setting("seed"))
 
--- Determine the stronghold positions and store them into the strongholds table.
--- The stronghold positions are based on the world seed.
--- The actual position might be offset by a few blocks because it might be shifted
--- to make sure the end portal room is completely within the boundaries of a mapchunk.
 local function init_strongholds()
-	if strongholds_inited then
-		return
-	end
+	local stronghold_positions = {}
 	-- Don't generate strongholds in singlenode
 	if mg_name == "singlenode" then
-		strongholds_inited = true
-		return
+		return {}
 	end
-	local seed = tonumber(minetest.get_mapgen_setting("seed"))
 	local pr = PseudoRandom(seed)
 	for s=1, #stronghold_rings do
 		local ring = stronghold_rings[s]
@@ -54,7 +45,6 @@ local function init_strongholds()
 			end
 			local pos = { x = math.cos(angle) * dist, y = y, z = math.sin(angle) * dist }
 			pos = vector.round(pos)
-			table.insert(strongholds, { pos = pos, generated = false })
 			table.insert(stronghold_positions, pos)
 
 			-- Rotate angle by (360 / amount) degrees.
@@ -62,10 +52,7 @@ local function init_strongholds()
 			angle = math.fmod(angle + ((math.pi*2) / ring.amount), math.pi*2)
 		end
 	end
-
-	mcl_structures.register_structure_data("stronghold", table.copy(strongholds))
-
-	strongholds_inited = true
+	return stronghold_positions
 end
 
 -- Stronghold generation for register_on_generated.
@@ -103,10 +90,8 @@ local function generate_strongholds(minp, maxp, blockseed)
 	end
 end
 
-init_strongholds()
-
 mcl_structures.register_structure("end_shrine",{
-	static_pos = stronghold_positions,
+	static_pos = init_strongholds(),
 	filenames = {
 		minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_portal_room_simple.mts"
 	},

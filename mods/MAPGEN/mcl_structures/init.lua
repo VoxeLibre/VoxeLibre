@@ -3,7 +3,6 @@ local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
 mcl_structures = {}
-local structure_data = {}
 
 local rotations = {
 	"0",
@@ -84,22 +83,6 @@ local function dir_to_rotation(dir)
 	end
 	return "0"
 end
-
---this is only used by end shrines - find a better way eventually ...
-function mcl_structures.get_structure_data(structure_type)
-	if structure_data[structure_type] then
-		return table.copy(structure_data[structure_type])
-	else
-		return {}
-	end
-end
-
--- Register a structures table for the given type. The table format is the same as for
--- mcl_structures.get_structure_data.
-function mcl_structures.register_structure_data(structure_type, structures)
-	structure_data[structure_type] = structures
-end
-
 
 dofile(modpath.."/api.lua")
 dofile(modpath.."/shipwrecks.lua")
