@@ -1,5 +1,6 @@
 mcl_events = {}
 mcl_events.registered_events = {}
+local DBG = minetest.settings:get_bool("mcl_logging_event_api",false)
 local active_events = {}
 
 local tpl_eventdef = {
@@ -17,6 +18,13 @@ local tpl_eventdef = {
 	cond_progress = function(event) end, --return next stage
 	cond_complete = function(event) end, --return success
 }
+
+local function mcl_log(m,l)
+	if DBG then
+		if not l then l = "action" end
+		minetest.log(l,"[mcl_events] "..m)
+	end
+end
 
 function mcl_events.register_event(name,def)
 	mcl_events.registered_events[name] = {}
@@ -41,7 +49,7 @@ local function update_bars(self)
 end
 
 local function start_event(p,e)
-	minetest.log("event started: "..e.name.." at "..minetest.pos_to_string(p))
+	mcl_log("event started: "..e.name.." at "..minetest.pos_to_string(vector.round(p)))
 	local idx = #active_events + 1
 	active_events[idx] = table.copy(e)
 	setmetatable(active_events[idx],e)
@@ -55,7 +63,7 @@ local function start_event(p,e)
 end
 
 local function finish_event(self,idx)
-	minetest.log("event finished: "..self.name.." at "..minetest.pos_to_string(self.pos))
+	mcl_log("Finished: "..self.name.." at "..minetest.pos_to_string(vector.round(self.pos)))
 	if self.on_complete then self:on_complete() end
 	for _,b in pairs(self.bars) do
 		mcl_bossbars.remove_bar(b)
@@ -159,7 +167,7 @@ mcl_events.register_event("infestation",{
 		return self.stage >= self.max_stage and #m < 1
 	end,
 	on_complete = function(self)
-		minetest.log("INFESTATION complete")
+		mcl_log("INFESTATION complete")
 	end,
 })
 
