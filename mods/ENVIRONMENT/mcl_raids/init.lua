@@ -48,12 +48,19 @@ function mcl_raids.spawn_raid(event)
 	local i = math.random(1, n)
 	local raid_pos = vector.offset(pos,r * math.cos(((i-1)/n) * (2*math.pi)),0,  r * math.sin(((i-1)/n) * (2*math.pi)))
 	local sn = minetest.find_nodes_in_area_under_air(vector.offset(raid_pos,-5,-50,-5), vector.offset(raid_pos,5,50,5), {"group:grass_block", "group:grass_block_snow", "group:snow_cover", "group:sand"})
+	mcl_bells.ring_once(pos)
 	if sn and #sn > 0 then
 		local spawn_pos = sn[math.random(#sn)]
 		if spawn_pos then
 			minetest.log("action", "[mcl_raids] Raid Spawn Position chosen at " .. minetest.pos_to_string(spawn_pos) .. ".")
 			event.health_max = 0
-			for m,c in pairs(waves[event.stage]) do
+			local w
+			if event.stage <= #waves then
+				w= waves[event.stage]
+			else
+				w = extra_wave
+			end
+			for m,c in pairs(w) do
 				for i=1,c do
 					local mob = mcl_mobs.spawn(spawn_pos,m)
 					local l = mob:get_luaentity()
@@ -101,29 +108,18 @@ function mcl_raids.find_village(pos)
 	end
 end
 
-minetest.register_chatcommand("spawn_raid", {
-	privs = {
-		debug = true,
-	},
-	func = function(name)
-		local m = minetest.get_player_by_name(name):get_meta()
-		m:set_string("_has_bad_omen","yes")
-	end
-})
-
 mcl_events.register_event("raid",{
 	max_stage = 5,
 	health = 1,
 	health_max = 1,
+	exclusive_to_area = 128,
 	cond_start  = function(self)
 		local r = {}
 		for _,p in pairs(minetest.get_connected_players()) do
-			local m=p:get_meta()
-			if m:get_string("_has_bad_omen") == "yes" then
+			if mcl_potions.player_has_effect(p,"bad_omen") then
 				local raid_pos = mcl_raids.find_village(p:get_pos())
 				if raid_pos then
-					m:set_string("_has_bad_omen","")
-					table.insert(r,raid_pos)
+					table.insert(r,{ player = p:get_player_name(), pos = raid_pos })
 				end
 			end
 		end
@@ -133,6 +129,8 @@ mcl_events.register_event("raid",{
 		self.mobs = {}
 		self.health_max = 1
 		self.health = 0
+		local lv = mcl_potions.player_get_effect(minetest.get_player_by_name(self.player), "bad_omen").factor
+		if lv and lv > 1 then self.max_stage = 6 end
 	end,
 	cond_progress = function(self)
 		local m = {}
@@ -163,5 +161,6 @@ mcl_events.register_event("raid",{
 	end,
 	on_complete = function(self)
 		--minetest.log("RAID complete")
+		--TODO: Award hero of the village
 	end,
 })

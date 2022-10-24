@@ -49,16 +49,16 @@ local function update_bars(self)
 end
 
 local function start_event(p,e)
-	mcl_log("event started: "..e.name.." at "..minetest.pos_to_string(vector.round(p)))
+	mcl_log("event started: "..e.name.." at "..minetest.pos_to_string(vector.round(p.pos)))
 	local idx = #active_events + 1
 	active_events[idx] = table.copy(e)
 	setmetatable(active_events[idx],e)
+	for k,v in pairs(p) do active_events[idx][k] = v end
 	active_events[idx].stage = 0
 	active_events[idx].percent = 100
 	active_events[idx].bars = {}
-	active_events[idx].pos = vector.copy(p)
 	active_events[idx].time_start = os.time()
-	active_events[idx]:on_start(p)
+	active_events[idx]:on_start(p.pos)
 	addbars(active_events[idx])
 end
 
@@ -102,7 +102,17 @@ function check_events(dtime)
 		local pp = e.cond_start()
 		if pp then
 			for _,p in pairs(pp) do
-				start_event(p,e)
+				local start = true
+				if e.exclusive_to_area then
+					for _,ae in pairs(active_events) do
+						if e.name == ae.name and vector.distance(p.pos,ae.pos) < e.exclusive_to_area then start = false end
+					end
+				end
+				if start then
+					start_event(p,e)
+				elseif DBG then
+					mcl_log("event "..e.name.." already active at "..minetest.pos_to_string(vector.round(p.pos)))
+				end
 			end
 		end
 	end
