@@ -91,36 +91,13 @@ function mcl_raids.find_villager(pos)
 end
 
 function mcl_raids.find_bed(pos)
-	local beds = minetest.find_nodes_in_area(vector.offset(pos, -8, -8, -8), vector.offset(pos, 8, 8, 8), "mcl_beds:bed_red_bottom")
-	if beds[1] then
-		minetest.log("action", "[mcl_raids] Bed Found.")
-		return true
-	else
-		minetest.log("action", "[mcl_raids] No Bed Found.")
-		return false
-	end
+	return minetest.find_node_near(pos,128,{"mcl_beds:bed_red_bottom"})
 end
 
 function mcl_raids.find_village(pos)
 	local bed = mcl_raids.find_bed(pos)
-	local villager = mcl_raids.find_villager(pos)
-	local raid_started = false
-
-	if (bed and villager) and raid_started == false then
-		local raid = mcl_raids.spawn_raid(pos, 1)
-		if raid then
-			minetest.log("action", "[mcl_raids] Village found, starting raid.")
-			raid_started = true
-		else
-			minetest.log("action", "[mcl_raids] Village found.")
-		end
-		return true
-	elseif raid_started == true then
-		minetest.log("action", "[mcl_raids] Raid already started.")
-		return
-	else
-		minetest.log("action", "[mcl_raids] Village not found, raid is not starting.")
-		return false
+	if bed and mcl_raids.find_villager(bed) then
+		return bed
 	end
 end
 
@@ -143,8 +120,11 @@ mcl_events.register_event("raid",{
 		for _,p in pairs(minetest.get_connected_players()) do
 			local m=p:get_meta()
 			if m:get_string("_has_bad_omen") == "yes" then
-				m:set_string("_has_bad_omen","")
-				table.insert(r,p:get_pos())
+				local raid_pos = mcl_raids.find_village(p:get_pos())
+				if raid_pos then
+					m:set_string("_has_bad_omen","")
+					table.insert(r,raid_pos)
+				end
 			end
 		end
 		if #r > 0 then return r end
