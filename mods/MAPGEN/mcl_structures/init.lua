@@ -3,17 +3,13 @@ local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
 mcl_structures = {}
+local structure_data = {}
 
 local rotations = {
 	"0",
 	"90",
 	"180",
 	"270"
-}
-
-local replacement = {
-	["mcl_farming:pumpkintige_linked_t"] = "mcl_farming:pumpkintige_unconnect",
-	["mcl_farming:melontige_linked_t"] = "mcl_farming:melontige_unconnect"
 }
 
 local function ecb_place(blockpos, action, calls_remaining, param)
@@ -42,7 +38,7 @@ function mcl_structures.place_schematic(pos, schematic, rotation, replacements, 
 		local p1 = {x=pos.x    , y=pos.y           , z=pos.z    }
 		local p2 = {x=pos.x+x-1, y=pos.y+s.size.y-1, z=pos.z+z-1}
 		minetest.log("verbose", "[mcl_structures] size=" ..minetest.pos_to_string(s.size) .. ", rotation=" .. tostring(rotation) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
-		local param = {pos=vector.new(pos), schematic=s, rotation=rotation, replacements=replacement, force_placement=force_placement, flags=flags, p1=p1, p2=p2, after_placement_callback = after_placement_callback, size=vector.new(s.size), pr=pr, callback_param=callback_param}
+		local param = {pos=vector.new(pos), schematic=s, rotation=rotation, replacements=replacements, force_placement=force_placement, flags=flags, p1=p1, p2=p2, after_placement_callback = after_placement_callback, size=vector.new(s.size), pr=pr, callback_param=callback_param}
 		minetest.emerge_area(p1, p2, ecb_place, param)
 		return true
 	end
@@ -75,117 +71,21 @@ local function init_node_construct(pos)
 end
 mcl_structures.init_node_construct = init_node_construct
 
--- The call of Struct
-function mcl_structures.call_struct(pos, struct_style, rotation, pr)
-	minetest.log("action","[mcl_structures] call_struct " .. struct_style.." at "..minetest.pos_to_string(pos))
-	if not rotation then
-		rotation = "random"
+local function dir_to_rotation(dir)
+	local ax, az = math.abs(dir.x), math.abs(dir.z)
+	if ax > az then
+		if dir.x < 0 then
+			return "270"
+		end
+		return "90"
 	end
-	if struct_style == "end_portal_shrine" then
-		return mcl_structures.generate_end_portal_shrine(pos, rotation, pr)
+	if dir.z < 0 then
+		return "180"
 	end
+	return "0"
 end
 
-local function shrine_placement_callback(p1, p2, size, rotation, pr)
-	-- Find and setup spawner with silverfish
-	local spawners = minetest.find_nodes_in_area(p1, p2, "mcl_mobspawners:spawner")
-	for s=1, #spawners do
-		--local meta = minetest.get_meta(spawners[s])
-		mcl_mobspawners.setup_spawner(spawners[s], "mobs_mc:silverfish")
-	end
-
-	-- Shuffle stone brick types
-	local bricks = minetest.find_nodes_in_area(p1, p2, "mcl_core:stonebrick")
-	for b=1, #bricks do
-		local r_bricktype = pr:next(1, 100)
-		local r_infested = pr:next(1, 100)
-		local bricktype
-		if r_infested <= 5 then
-			if r_bricktype <= 30 then -- 30%
-				bricktype = "mcl_monster_eggs:monster_egg_stonebrickmossy"
-			elseif r_bricktype <= 50 then -- 20%
-				bricktype = "mcl_monster_eggs:monster_egg_stonebrickcracked"
-			else -- 50%
-				bricktype = "mcl_monster_eggs:monster_egg_stonebrick"
-			end
-		else
-			if r_bricktype <= 30 then -- 30%
-				bricktype = "mcl_core:stonebrickmossy"
-			elseif r_bricktype <= 50 then -- 20%
-				bricktype = "mcl_core:stonebrickcracked"
-			end
-			-- 50% stonebrick (no change necessary)
-		end
-		if bricktype then
-			minetest.set_node(bricks[b], { name = bricktype })
-		end
-	end
-
-	-- Also replace stairs
-	local stairs = minetest.find_nodes_in_area(p1, p2, {"mcl_stairs:stair_stonebrick", "mcl_stairs:stair_stonebrick_outer", "mcl_stairs:stair_stonebrick_inner"})
-	for s=1, #stairs do
-		local stair = minetest.get_node(stairs[s])
-		local r_type = pr:next(1, 100)
-		if r_type <= 30 then -- 30% mossy
-			if stair.name == "mcl_stairs:stair_stonebrick" then
-				stair.name = "mcl_stairs:stair_stonebrickmossy"
-			elseif stair.name == "mcl_stairs:stair_stonebrick_outer" then
-				stair.name = "mcl_stairs:stair_stonebrickmossy_outer"
-			elseif stair.name == "mcl_stairs:stair_stonebrick_inner" then
-				stair.name = "mcl_stairs:stair_stonebrickmossy_inner"
-			end
-			minetest.set_node(stairs[s], stair)
-		elseif r_type <= 50 then -- 20% cracky
-			if stair.name == "mcl_stairs:stair_stonebrick" then
-				stair.name = "mcl_stairs:stair_stonebrickcracked"
-			elseif stair.name == "mcl_stairs:stair_stonebrick_outer" then
-				stair.name = "mcl_stairs:stair_stonebrickcracked_outer"
-			elseif stair.name == "mcl_stairs:stair_stonebrick_inner" then
-				stair.name = "mcl_stairs:stair_stonebrickcracked_inner"
-			end
-			minetest.set_node(stairs[s], stair)
-		end
-		-- 50% no change
-	end
-
-	-- Randomly add ender eyes into end portal frames, but never fill the entire frame
-	local frames = minetest.find_nodes_in_area(p1, p2, "mcl_portals:end_portal_frame")
-	local eyes = 0
-	for f=1, #frames do
-		local r_eye = pr:next(1, 10)
-		if r_eye == 1 then
-			eyes = eyes + 1
-			if eyes < #frames then
-				local frame_node = minetest.get_node(frames[f])
-				frame_node.name = "mcl_portals:end_portal_frame_eye"
-				minetest.set_node(frames[f], frame_node)
-			end
-		end
-	end
-end
-
-function mcl_structures.generate_end_portal_shrine(pos, rotation, pr)
-	local offset = {x=6, y=4, z=6}
-	--local size = {x=13, y=8, z=13}
-	local newpos = { x = pos.x - offset.x, y = pos.y, z = pos.z - offset.z }
-
-	local path = modpath.."/schematics/mcl_structures_end_portal_room_simple.mts"
-	mcl_structures.place_schematic(newpos, path, rotation or "0", nil, true, nil, shrine_placement_callback, pr)
-end
-
-local structure_data = {}
-
---[[ Returns a table of structure of the specified type.
-Currently the only valid parameter is "stronghold".
-Format of return value:
-{
-	{ pos = <position>, generated=<true/false> }, -- first structure
-	{ pos = <position>, generated=<true/false> }, -- second structure
-	-- and so on
-}
-
-TODO: Implement this function for all other structure types as well.
-]]
+--this is only used by end shrines - find a better way eventually ...
 function mcl_structures.get_structure_data(structure_type)
 	if structure_data[structure_type] then
 		return table.copy(structure_data[structure_type])
@@ -200,19 +100,6 @@ function mcl_structures.register_structure_data(structure_type, structures)
 	structure_data[structure_type] = structures
 end
 
-local function dir_to_rotation(dir)
-	local ax, az = math.abs(dir.x), math.abs(dir.z)
-	if ax > az then
-		if dir.x < 0 then
-			return "270"
-		end
-		return "90"
-	end
-	if dir.z < 0 then
-		return "180"
-	end
-	return "0"
-end
 
 dofile(modpath.."/api.lua")
 dofile(modpath.."/shipwrecks.lua")
@@ -290,7 +177,7 @@ mcl_structures.register_structure("ice_spike_large",{
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "end_portal_shrine | dungeon",
+	params = "dungeon",
 	description = S("Generate a pre-defined structure near your position."),
 	privs = {debug = true},
 	func = function(name, param)
@@ -304,9 +191,7 @@ minetest.register_chatcommand("spawnstruct", {
 		local pr = PseudoRandom(pos.x+pos.y+pos.z)
 		local errord = false
 		local message = S("Structure placed.")
-		if param == "end_portal_shrine" then
-			mcl_structures.generate_end_portal_shrine(pos, rot, pr)
-		elseif param == "dungeon" and mcl_dungeons and mcl_dungeons.spawn_dungeon then
+		if param == "dungeon" and mcl_dungeons and mcl_dungeons.spawn_dungeon then
 			mcl_dungeons.spawn_dungeon(pos, rot, pr)
 		elseif param == "" then
 			message = S("Error: No structure type given. Please use “/spawnstruct <type>”.")
