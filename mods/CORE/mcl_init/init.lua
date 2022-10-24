@@ -234,9 +234,10 @@ end
 
 ---"Trivial" (actually NOT) function to just read the node and some stuff to not just return "ignore", like mt 5.4 does.
 ---@param pos Vector Position, if it's wrong, `{name="error"}` node will return.
----@param force boolean Optional (default: `false`), Do the maximum to still read the node within us_timeout.
----@param us_timeout number Optional (default: `244 = 0.000244 s = 1/80/80/80`), set it at least to `3000000` to let mapgen to finish its job
+---@param force? boolean Optional (default: `false`), Do the maximum to still read the node within us_timeout.
+---@param us_timeout? number Optional (default: `244 = 0.000244 s = 1/80/80/80`), set it at least to `3000000` to let mapgen to finish its job
 ---@return node # Node definition, eg. `{name="air"}`. Unfortunately still can return `{name="ignore"}`.
+---@nodiscard
 function mcl_vars.get_node(pos, force, us_timeout)
 	-- check initial circumstances
 	if not pos or not pos.x or not pos.y or not pos.z then return { name = "error" } end
