@@ -19,7 +19,7 @@ for i=0, 3 do
 		},
 		inventory_image = texture,
 		wield_image = texture,
-		groups = {dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1},
+		groups = {dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, flammable=3, fire_encouragement=60, fire_flammability=20},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0,
 	})
