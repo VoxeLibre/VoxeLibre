@@ -46,3 +46,28 @@ minetest.register_alias("mcl_sweet_berry:sweet_berry", "mcl_farming:sweet_berry"
 
 -- TODO: Find proper interval and chance values for sweet berry bushes. Current interval and chance values are copied from mcl_farming:beetroot which has similar growth stages.
 mcl_farming:add_plant("plant_sweet_berry_bush", "mcl_farming:sweet_berry_bush_3", {"mcl_farming:sweet_berry_bush_0", "mcl_farming:sweet_berry_bush_1", "mcl_farming:sweet_berry_bush_2"}, 68, 3)
+
+local function berry_damage_check(obj)
+	local p = obj:get_pos()
+	if not p then return end
+	if not minetest.find_node_near(p,0.4,{"group:sweet_berry"},true) then return end
+	local v = obj:get_velocity()
+	if v.x < 0.1 and v.y < 0.1 and v.z < 0.1 then return end
+
+	mcl_util.deal_damage(obj, 0.5, {type = "sweet_berry"})
+end
+
+local etime = 0
+minetest.register_globalstep(function(dtime)
+	etime = dtime + etime
+	if etime < 0.5 then return end
+	etime = 0
+	for _,pl in pairs(minetest.get_connected_players()) do
+		berry_damage_check(pl)
+	end
+	for _,ent in pairs(minetest.luaentities) do
+		if ent.is_mob then
+			berry_damage_check(ent.object)
+		end
+	end
+end)
