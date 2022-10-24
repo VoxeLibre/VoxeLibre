@@ -2865,7 +2865,7 @@ local function register_decorations()
 			lacunarity = 1.0,
 			flags = "absvalue"
 		},
-		biomes = {"Taiga","Forest"},
+		biomes = {"Taiga","ColdTaiga","MegaTaiga","MegaSpruceTaiga", "Forest"},
 		y_max = mcl_vars.mg_overworld_max,
 		y_min = 2,
 		decoration = "mcl_sweet_berry:sweet_berry_bush_3"

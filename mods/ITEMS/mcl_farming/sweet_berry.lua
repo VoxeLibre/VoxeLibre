@@ -42,8 +42,7 @@ end
 minetest.register_craftitem("mcl_farming:sweet_berry", {
 	description = S("Sweet Berry"),
 	inventory_image = "mcl_farming_sweet_berry.png",
-	_mcl_saturation = 0.2,
-	stack_max = 64,
+	_mcl_saturation = 0.4,
 	groups = { food = 2, eatable = 1, compostability=30 },
 	on_secondary_use = minetest.item_eat(1),
 	on_place = function(itemstack, placer, pointed_thing)
