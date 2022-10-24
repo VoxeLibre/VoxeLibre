@@ -1,5 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local planton = {"mcl_core:dirt_with_grass","mcl_core:dirt","mcl_core:podzol","mcl_core:coarse_dirt","mcl_farming:soil","mcl_moss:moss"}
+
 for i=0, 3 do
 	local texture = "mcl_farming_sweet_berry_bush_" .. i .. ".png"
 	local node_name = "mcl_farming:sweet_berry_bush_" .. i
@@ -40,12 +42,14 @@ minetest.register_craftitem("mcl_farming:sweet_berry", {
 	groups = { food = 2, eatable = 1, compostability=30 },
 	on_secondary_use = minetest.item_eat(1),
 	on_place = function(itemstack, placer, pointed_thing)
-		local new = mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_sweet_berry:sweet_berry_bush_0")
-		if new then
-			return new
-		else
-			return minetest.do_item_eat(1, nil, itemstack, placer, pointed_thing)
+		if pointed_thing.type == "node" and table.indexof(planton,minetest.get_node(pointed_thing.under).name) ~= -1 and minetest.get_node(pointed_thing.above).name == "air" then
+			minetest.set_node(pointed_thing.above,{name="mcl_farming:sweet_berry_bush_0"})
+			if not minetest.is_creative_enabled(placer:get_player_name()) then
+				itemstack:take_item()
+			end
+			return itemstack
 		end
+		return minetest.do_item_eat(1, nil, itemstack, placer, pointed_thing)
 	end,
 })
 minetest.register_alias("mcl_sweet_berry:sweet_berry", "mcl_farming:sweet_berry")

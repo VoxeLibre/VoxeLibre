@@ -59,18 +59,18 @@ for _, campfire in pairs(campfires) do
 		drawtype = "mesh",
 		mesh = "mcl_campfires_campfire_lit.obj",
 		tiles = {{
-			name="mcl_campfires_" .. campfire.techname .. "_fire.png", 
+			name="mcl_campfires_" .. campfire.techname .. "_fire.png",
 			animation={
-				type="vertical_frames", 
-				aspect_w=16, 
-				aspect_h=16, 
+				type="vertical_frames",
+				aspect_w=16,
+				aspect_h=16,
 				length=2.0
 			}},
-			{name="mcl_campfires_" .. campfire.techname .. "_log_lit.png", 
+			{name="mcl_campfires_" .. campfire.techname .. "_log_lit.png",
 			animation={
-				type="vertical_frames", 
-				aspect_w=16, 
-				aspect_h=16, 
+				type="vertical_frames",
+				aspect_w=16,
+				aspect_h=16,
 				length=2.0
 			}}
 		},
