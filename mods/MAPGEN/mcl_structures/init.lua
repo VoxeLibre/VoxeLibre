@@ -4,86 +4,6 @@ local modpath = minetest.get_modpath(modname)
 
 mcl_structures = {}
 
-local rotations = {
-	"0",
-	"90",
-	"180",
-	"270"
-}
-
-local function ecb_place(blockpos, action, calls_remaining, param)
-	if calls_remaining >= 1 then return end
-	minetest.place_schematic(param.pos, param.schematic, param.rotation, param.replacements, param.force_placement, param.flags)
-	if param.after_placement_callback and param.p1 and param.p2 then
-		param.after_placement_callback(param.p1, param.p2, param.size, param.rotation, param.pr, param.callback_param)
-	end
-end
-
-function mcl_structures.place_schematic(pos, schematic, rotation, replacements, force_placement, flags, after_placement_callback, pr, callback_param)
-	local s = loadstring(minetest.serialize_schematic(schematic, "lua", {lua_use_comments = false, lua_num_indent_spaces = 0}) .. " return schematic")()
-	if s and s.size then
-		local x, z = s.size.x, s.size.z
-		if rotation then
-			if rotation == "random" and pr then
-				rotation = rotations[pr:next(1,#rotations)]
-			end
-			if rotation == "random" then
-				x = math.max(x, z)
-				z = x
-			elseif rotation == "90" or rotation == "270" then
-				x, z = z, x
-			end
-		end
-		local p1 = {x=pos.x    , y=pos.y           , z=pos.z    }
-		local p2 = {x=pos.x+x-1, y=pos.y+s.size.y-1, z=pos.z+z-1}
-		minetest.log("verbose", "[mcl_structures] size=" ..minetest.pos_to_string(s.size) .. ", rotation=" .. tostring(rotation) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
-		local param = {pos=vector.new(pos), schematic=s, rotation=rotation, replacements=replacements, force_placement=force_placement, flags=flags, p1=p1, p2=p2, after_placement_callback = after_placement_callback, size=vector.new(s.size), pr=pr, callback_param=callback_param}
-		minetest.emerge_area(p1, p2, ecb_place, param)
-		return true
-	end
-end
-
-function mcl_structures.get_struct(file)
-	local localfile = modpath.."/schematics/"..file
-	local file, errorload = io.open(localfile, "rb")
-	if errorload then
-		minetest.log("error", "[mcl_structures] Could not open this struct: "..localfile)
-		return nil
-	end
-
-	local allnode = file:read("*a")
-	file:close()
-
-	return allnode
-end
-
--- Call on_construct on pos.
--- Useful to init chests from formspec.
-local function init_node_construct(pos)
-	local node = minetest.get_node(pos)
-	local def = minetest.registered_nodes[node.name]
-	if def and def.on_construct then
-		def.on_construct(pos)
-		return true
-	end
-	return false
-end
-mcl_structures.init_node_construct = init_node_construct
-
-local function dir_to_rotation(dir)
-	local ax, az = math.abs(dir.x), math.abs(dir.z)
-	if ax > az then
-		if dir.x < 0 then
-			return "270"
-		end
-		return "90"
-	end
-	if dir.z < 0 then
-		return "180"
-	end
-	return "0"
-end
-
 dofile(modpath.."/api.lua")
 dofile(modpath.."/shipwrecks.lua")
 dofile(modpath.."/desert_temple.lua")
@@ -146,19 +66,30 @@ mcl_structures.register_structure("boulder",{
 		-- small boulder 3x as likely
 	},
 },true) --is spawned as a normal decoration. this is just for /spawnstruct
+
 mcl_structures.register_structure("ice_spike_small",{
-	filenames = {
-		modpath.."/schematics/mcl_structures_ice_spike_small.mts"
-	},
+	filenames = { modpath.."/schematics/mcl_structures_ice_spike_small.mts"	},
 },true) --is spawned as a normal decoration. this is just for /spawnstruct
 mcl_structures.register_structure("ice_spike_large",{
 	sidelen = 6,
-	filenames = {
-		modpath.."/schematics/mcl_structures_ice_spike_large.mts"
-	},
+	filenames = { modpath.."/schematics/mcl_structures_ice_spike_large.mts"	},
 },true) --is spawned as a normal decoration. this is just for /spawnstruct
 
 -- Debug command
+local function dir_to_rotation(dir)
+	local ax, az = math.abs(dir.x), math.abs(dir.z)
+	if ax > az then
+		if dir.x < 0 then
+			return "270"
+		end
+		return "90"
+	end
+	if dir.z < 0 then
+		return "180"
+	end
+	return "0"
+end
+
 minetest.register_chatcommand("spawnstruct", {
 	params = "dungeon",
 	description = S("Generate a pre-defined structure near your position."),
@@ -182,7 +113,7 @@ minetest.register_chatcommand("spawnstruct", {
 		else
 			for n,d in pairs(mcl_structures.registered_structures) do
 				if n == param then
-					mcl_structures.place_structure(pos,d,pr,math.random())
+					mcl_structures.place_structure(pos,d,pr,math.random(),rot)
 					return true,message
 				end
 			end
