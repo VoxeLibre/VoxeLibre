@@ -6,7 +6,7 @@
 
 --local logging = minetest.settings:get_bool("mcl_logging_mcl_signs",true)
 
-local DEBUG = minetest.settings:get_bool("mcl_logging_mcl_signs", true) -- special debug setting.
+local DEBUG = minetest.settings:get_bool("mcl_logging_mcl_signs", false) -- special debug setting.
 local table = table -- copied from the original signs init file.
 
 if DEBUG then
