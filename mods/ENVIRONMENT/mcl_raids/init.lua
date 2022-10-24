@@ -161,6 +161,6 @@ mcl_events.register_event("raid",{
 	end,
 	on_complete = function(self)
 		--minetest.log("RAID complete")
-		--TODO: Award hero of the village
+		awards.unlock(self.player,"mcl:hero_of_the_village")
 	end,
 })

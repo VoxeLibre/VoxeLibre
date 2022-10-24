@@ -529,3 +529,11 @@ awards.register_achievement("mcl:obsidian", {
 	type = "Advancement",
 	group = "Overworld",
 })
+
+awards.register_achievement("mcl:hero_of_the_village", {
+	title = S("Hero of the village"),
+	description = S("Successfully defend a village from a raid"),
+	icon = "mcl_raids_hero_of_the_village_icon.png",
+	type = "Advancement",
+	group = "Overworld",
+})
