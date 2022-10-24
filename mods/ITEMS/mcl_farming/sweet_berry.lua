@@ -5,6 +5,10 @@ local planton = {"mcl_core:dirt_with_grass","mcl_core:dirt","mcl_core:podzol","m
 for i=0, 3 do
 	local texture = "mcl_farming_sweet_berry_bush_" .. i .. ".png"
 	local node_name = "mcl_farming:sweet_berry_bush_" .. i
+	local groups = {sweet_berry=1, dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, flammable=3, fire_encouragement=60, fire_flammability=20, compostability=30}
+	if i > 0 then
+		groups.sweet_berry_thorny = 1
+	end
 	minetest.register_node(node_name, {
 		drawtype = "plantlike",
 		tiles = {texture},
@@ -27,9 +31,10 @@ for i=0, 3 do
 		},
 		inventory_image = texture,
 		wield_image = texture,
-		groups = {sweet_berry=1, dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, flammable=3, fire_encouragement=60, fire_flammability=20},
+		groups = groups,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0,
+		_mcl_hardness = 0,
 	})
 	minetest.register_alias("mcl_sweet_berry:sweet_berry_bush_" .. i, node_name)
 end
@@ -60,7 +65,7 @@ mcl_farming:add_plant("plant_sweet_berry_bush", "mcl_farming:sweet_berry_bush_3"
 local function berry_damage_check(obj)
 	local p = obj:get_pos()
 	if not p then return end
-	if not minetest.find_node_near(p,0.4,{"group:sweet_berry"},true) then return end
+	if not minetest.find_node_near(p,0.4,{"group:sweet_berry_thorny"},true) then return end
 	local v = obj:get_velocity()
 	if v.x < 0.1 and v.y < 0.1 and v.z < 0.1 then return end
 
