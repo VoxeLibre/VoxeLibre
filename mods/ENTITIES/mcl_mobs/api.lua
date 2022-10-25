@@ -1448,7 +1448,7 @@ local do_jump = function(self)
 	}, "air")
 
 	-- we don't attempt to jump if there's a stack of blocks blocking
-	if minetest.registered_nodes[nodTop.name].walkable == true then
+	if minetest.registered_nodes[nodTop.name].walkable == true and not (self.attack and self.state == "attack") then
 		return false
 	end
 
