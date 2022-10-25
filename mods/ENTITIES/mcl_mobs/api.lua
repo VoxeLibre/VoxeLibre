@@ -1429,8 +1429,8 @@ local do_jump = function(self)
 	end
 
 	-- where is front
-	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+.4
-	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+.4
+	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
 
 	-- what is in front of mob?
 	nod = node_ok({
