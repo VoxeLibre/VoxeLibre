@@ -4102,9 +4102,9 @@ local mob_step = function(self, dtime)
 				local mob_yaw = math.deg(-(-(self_rot.y)-(-minetest.dir_to_yaw(direction_player))))+self.head_yaw_offset
 				local mob_pitch = math.deg(-dir_to_pitch(direction_player))*self.head_pitch_multiplier
 
-				if (mob_yaw < -60 or mob_yaw > 60) and not (self.attack and self.state == "attack") then
+				if (mob_yaw < -60 or mob_yaw > 60) and not (self.attack and self.state == "attack" and not self.runaway) then
 					final_rotation = vector.multiply(oldr, 0.9)
-				elseif self.attack and self.state == "attack" then
+				elseif self.attack and self.state == "attack" and not self.runaway then
 					if self.head_yaw == "y" then
 						final_rotation = vector.new(mob_pitch, mob_yaw, 0)
 					elseif self.head_yaw == "z" then
