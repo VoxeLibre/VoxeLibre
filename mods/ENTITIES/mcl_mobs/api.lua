@@ -1073,17 +1073,87 @@ local function within_limits(pos, radius)
 	return true
 end
 
+-- get node but use fallback for nil or unknown
+local node_ok = function(pos, fallback)
+
+	fallback = fallback or mcl_mobs.fallback_node
+
+	local node = minetest.get_node_or_nil(pos)
+
+	if node and minetest.registered_nodes[node.name] then
+		return node
+	end
+
+	return minetest.registered_nodes[fallback]
+end
+
+
+local can_jump_cliff = function(self)
+	local yaw = self.object:get_yaw()
+	local pos = self.object:get_pos()
+	local v = self.object:get_velocity()
+
+	local v2 = abs(v.x)+abs(v.z)*.833
+	local jump_c_multiplier = 1
+	if v2/self.walk_velocity/2>1 then
+		jump_c_multiplier = v2/self.walk_velocity/2
+	end
+
+	-- where is front
+	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+
+	--is there nothing under the block in front? if so jump the gap.
+	local nodLow = node_ok({
+		x = pos.x + dir_x-0.6,
+		y = pos.y - 0.5,
+		z = pos.z + dir_z-0.6
+	}, "air")
+
+	local nodFar = node_ok({
+		x = pos.x + dir_x*2,
+		y = pos.y - 0.5,
+		z = pos.z + dir_z*2
+	}, "air")
+
+	local nodFar2 = node_ok({
+		x = pos.x + dir_x*2.5,
+		y = pos.y - 0.5,
+		z = pos.z + dir_z*2.5
+	}, "air")
+
+
+	if minetest.registered_nodes[nodLow.name]
+	and minetest.registered_nodes[nodLow.name].walkable ~= true
+
+
+	and (minetest.registered_nodes[nodFar.name]
+	and minetest.registered_nodes[nodFar.name].walkable == true
+
+	or minetest.registered_nodes[nodFar2.name]
+	and minetest.registered_nodes[nodFar2.name].walkable == true)
+
+	then
+		--disable fear heigh while we make our jump
+		self._jumping_cliff = true
+		minetest.after(1, function()
+			if self and self.object then
+				self._jumping_cliff = false
+			end
+		end)
+		return true
+	else
+		return false
+	end
+end
 
 -- is mob facing a cliff or danger
 local is_at_cliff_or_danger = function(self)
 
-	if self.fear_height == 0 then -- 0 for no falling protection!
+	if self.fear_height == 0 or can_jump_cliff(self) or self._jumping_cliff or not self.object:get_luaentity() then -- 0 for no falling protection!
 		return false
 	end
 
-	if not self.object:get_luaentity() then
-		return false
-	end
 	local yaw = self.object:get_yaw()
 	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
 	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)
@@ -1116,7 +1186,7 @@ end
 local is_at_water_danger = function(self)
 
 
-	if not self.object:get_luaentity() then
+	if not self.object:get_luaentity() or can_jump_cliff(self) or self._jumping_cliff then
 		return false
 	end
 	local yaw = self.object:get_yaw()
@@ -1149,20 +1219,6 @@ local is_at_water_danger = function(self)
 	return false
 end
 
-
--- get node but use fallback for nil or unknown
-local node_ok = function(pos, fallback)
-
-	fallback = fallback or mcl_mobs.fallback_node
-
-	local node = minetest.get_node_or_nil(pos)
-
-	if node and minetest.registered_nodes[node.name] then
-		return node
-	end
-
-	return minetest.registered_nodes[fallback]
-end
 
 -- environmental damage (water, lava, fire, light etc.)
 local do_env_damage = function(self)
@@ -1447,6 +1503,7 @@ local do_jump = function(self)
 		z = pos.z + dir_z
 	}, "air")
 
+
 	-- we don't attempt to jump if there's a stack of blocks blocking
 	if minetest.registered_nodes[nodTop.name].walkable == true and not (self.attack and self.state == "attack") then
 		return false
@@ -1458,7 +1515,7 @@ local do_jump = function(self)
 	end
 
 	local ndef = minetest.registered_nodes[nod.name]
-	if self.walk_chance == 0 or ndef and ndef.walkable then
+	if self.walk_chance == 0 or ndef and ndef.walkable or can_jump_cliff(self) then
 
 		if minetest.get_item_group(nod.name, "fence") == 0
 		and minetest.get_item_group(nod.name, "fence_gate") == 0
@@ -1467,6 +1524,10 @@ local do_jump = function(self)
 			local v = self.object:get_velocity()
 
 			v.y = self.jump_height + 0.1 * 3
+
+			if can_jump_cliff(self) then
+				v=vector.multiply(v, vector.new(2.8,1,2.8))
+			end
 
 			set_animation(self, "jump") -- only when defined
 
@@ -4080,8 +4141,8 @@ local mob_step = function(self, dtime)
 			end
 		end
 
-		if self.attack then
-			self._locked_object = self.attack
+		if self.attack or self.following then
+			self._locked_object = self.attack or self.following
 		end
 
 		if self._locked_object and (self._locked_object:is_player() or self._locked_object:get_luaentity()) and self._locked_object:get_hp() > 0 then
