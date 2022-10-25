@@ -579,9 +579,9 @@ function get_activity(tod)
 
 
 	local lunch_start = 12000
-	local lunch_end = 12500
-	local work_start = 6500
-	local work_end = 18000
+	local lunch_end = 13500
+	local work_start = 8500
+	local work_end = 16500
 
 
 	local activity = nil

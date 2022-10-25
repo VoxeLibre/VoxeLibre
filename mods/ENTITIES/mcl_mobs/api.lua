@@ -3201,7 +3201,6 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 		local d = minetest.find_node_near(target,16,{"group:door"})
 		if d then
 			--mcl_log("Found a door near")
-			local up_one = vector.new(0,1,0)
 			for _,v in pairs(plane_adjacents) do
 				local pos = vector.add(d,v)
 
@@ -3212,8 +3211,6 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 						mcl_log("Found a path to next to door".. minetest.pos_to_string(pos))
 						local other_side_of_door = vector.add(d,-v)
 						mcl_log("Opposite is: ".. minetest.pos_to_string(other_side_of_door))
-						--other_side_of_door = vector.add(other_side_of_door, up_one)
-						--mcl_log("Opposite 2 is: ".. minetest.pos_to_string(other_side_of_door))
 						table.insert(wp, other_side_of_door)
 						break
 
