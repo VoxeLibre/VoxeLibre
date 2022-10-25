@@ -3131,7 +3131,7 @@ local do_states = function(self, dtime)
 
 			if self.shoot_interval
 			and self.timer > self.shoot_interval
-			and not minetest.raycast(p, self.attack:get_pos(), false, false):next()
+			and not minetest.raycast(vector.add(p, vector.new(0,self.shoot_offset,0)), vector.add(self.attack:get_pos(), vector.new(0,1.5,0)), false, false):next()
 			and random(1, 100) <= 60 then
 
 				self.timer = 0
