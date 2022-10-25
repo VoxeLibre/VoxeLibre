@@ -13,6 +13,8 @@ local FLOP_HOR_SPEED = 1.5
 local ENTITY_CRAMMING_MAX = 24
 local CRAMMING_DAMAGE = 3
 
+local PATHFINDING = "gowp"
+
 -- Localize
 local S = minetest.get_translator("mcl_mobs")
 
@@ -2484,7 +2486,7 @@ local function check_doors(self)
 		if n.name:find("_b_") then
 			local def = minetest.registered_nodes[n.name]
 			local closed = n.name:find("_b_1")
-			if self.state == "gowp" then
+			if self.state == PATHFINDING then
 				if closed and def.on_rightclick then def.on_rightclick(d,n,self) end
 				--if not closed and def.on_rightclick then def.on_rightclick(d,n,self) end
 			else
@@ -2661,7 +2663,7 @@ local do_states = function(self, dtime)
 			end
 		end
 
-	elseif self.state == "gowp" then
+	elseif self.state == PATHFINDING then
 		check_gowp(self,dtime)
 
 	elseif self.state == "walk" then
@@ -3178,7 +3180,7 @@ local plane_adjacents = {
 
 local gopath_last = os.time()
 function mcl_mobs:gopath(self,target,callback_arrived)
-	if self.state == "gowp" then mcl_log("Already set as gowp, don't set another path until done.") return end
+	if self.state == PATHFINDING then mcl_log("Already set as gowp, don't set another path until done.") return end
 
 	if os.time() - gopath_last < 15 then
 		mcl_log("Not ready to path yet")
@@ -3232,7 +3234,7 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 		self.callback_arrived = callback_arrived
 		table.remove(wp,1)
 		self.waypoints = wp
-		self.state = "gowp"
+		self.state = PATHFINDING
 		return true
 	else
 	self.state = "walk"
@@ -4193,7 +4195,7 @@ local mob_step = function(self, dtime)
 	-- attack timer
 	self.timer = self.timer + dtime
 
-	if self.state ~= "attack" and self.state ~= "gowp" then
+	if self.state ~= "attack" and self.state ~= PATHFINDING then
 		if self.timer < 1 then
 			return
 		end
