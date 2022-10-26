@@ -2851,6 +2851,25 @@ local function register_decorations()
 		flags = "place_center_x,place_center_z, force_placement",
 	})
 
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass","mcl_core:podzol"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0,
+			scale = 0.012,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 354,
+			octaves = 1,
+			persist = 0.5,
+			lacunarity = 1.0,
+			flags = "absvalue"
+		},
+		biomes = {"Taiga","ColdTaiga","MegaTaiga","MegaSpruceTaiga", "Forest"},
+		y_max = mcl_vars.mg_overworld_max,
+		y_min = 2,
+		decoration = "mcl_sweet_berry:sweet_berry_bush_3"
+	})
 
 	-- Large ice spike
 	minetest.register_decoration({

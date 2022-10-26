@@ -12,6 +12,7 @@ mcl_damage = {
 		drown = {bypasses_armor = true},
 		starve = {bypasses_armor = true, bypasses_magic = true},
 		cactus = {},
+		sweet_berry = {},
 		fall = {bypasses_armor = true},
 		fly_into_wall = {bypasses_armor = true}, -- unused
 		out_of_world = {bypasses_armor = true, bypasses_magic = true, bypasses_invulnerability = true, bypasses_totem = true},
