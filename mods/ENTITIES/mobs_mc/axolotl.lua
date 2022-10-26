@@ -67,7 +67,7 @@ random = "mobs_mc_axolotl",
     fly = true,
     fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
 	breathes_in_water = true,
-	jump = true,
+	jump = false,
 	view_range = 16,
 	runaway = true,
 	fear_height = 4,
@@ -98,7 +98,7 @@ random = "mobs_mc_axolotl",
 		if clicker:get_wielded_item():get_name() == "mcl_buckets:bucket_water" then
 			self.object:remove()
 			clicker:set_wielded_item("mcl_buckets:bucket_axolotl")
-			awards.unlock(clicker:get_player_name(), "mcl:tacticalFishing")
+			awards.unlock(clicker:get_player_name(), "mcl:cutestPredator")
 		end
 	end
 }
