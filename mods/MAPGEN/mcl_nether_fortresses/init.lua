@@ -36,8 +36,15 @@ mcl_structures.register_structure("nether_bulwark",{
 	filenames = {
 		modpath.."/schematics/mcl_nether_fortresses_nether_bulwark.mts"
 	},
-	daughters = {
-		[modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_interior_1.mts"] = vector.new(5,0,5),
+	daughters = {{
+			files = {
+				modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_interior_1.mts",
+				modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_interior_2.mts",
+				modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_interior_3.mts",
+				modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_interior_4.mts",
+			},
+			pos = vector.new(5,0,5),
+		},
 	},
 	y_offset = 0,
 	construct_nodes = {"group:wall"},
