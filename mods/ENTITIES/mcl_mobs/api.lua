@@ -406,27 +406,25 @@ end
 
 -- set and return valid yaw
 
-
 local set_yaw = function(self, yaw, delay, dtime)
 
 
 	if self.noyaw then return end
 
-	if self._kb_turn then
-		self._turn_to = yaw
-	end
+	self._turn_to = yaw
+
 	--clamp our yaw to a 360 range
 	if math.deg(self.object:get_yaw()) > 360 then
-		self.object:set_yaw(math.rad(10))
+		self.object:set_yaw(math.rad(1))
 	elseif math.deg(self.object:get_yaw()) < 0 then
-		self.object:set_yaw(math.rad(350))
+		self.object:set_yaw(math.rad(359))
 	end
 
 	--calculate the shortest way to turn to find our target
 	local target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), yaw, true)
 
 	--turn in the shortest path possible toward our target. if we are attacking, don't dance.
-	if math.abs(target_shortest_path) > 100 and (self.attack and self.attack:get_pos() or self.following and self.following:get_pos()) then
+	if (math.abs(target_shortest_path) > 50 and not self._kb_turn) and (self.attack and self.attack:get_pos() or self.following and self.following:get_pos()) then
 		if self.following then
 			target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.following:get_pos())), true)
 		else
@@ -3629,7 +3627,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			elseif luaentity and luaentity._knockback then
 				kb = kb + luaentity._knockback
 			end
-			--self._kb_turn = false
+			self._kb_turn = true
 			self._turn_to=self.object:get_yaw()-1.57
 			self.frame_speed_multiplier=2.3
 			if self.animation.run_end then
@@ -3640,7 +3638,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			minetest.after(0.2, function()
 				if self and self.object then
 					self.frame_speed_multiplier=1
-					self._kb_turn = true
+					self._kb_turn = false
 				end
 			end)
 			self.object:add_velocity({
