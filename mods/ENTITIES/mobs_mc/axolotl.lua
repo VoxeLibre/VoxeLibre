@@ -45,13 +45,13 @@ local axolotl = {
 	tilt_swim = true,
 	collisionbox = {-0.3, 0.0, -0.3, 0.3, 0.79, 0.3},
 	visual = "mesh",
-	mesh = "extra_mobs_axolotl.b3d",
+	mesh = "mobs_mc_axolotl.b3d",
 	textures = {
-		{"extra_mobs_axolotl_brown.png"},{"extra_mobs_axolotl_yellow.png"},{"extra_mobs_axolotl_green.png"},{"extra_mobs_axolotl_pink.png"},{"extra_mobs_axolotl_black.png"},{"extra_mobs_axolotl_purple.png"},{"extra_mobs_axolotl_white.png"}
+		{"mobs_mc_axolotl_brown.png"},{"mobs_mc_axolotl_yellow.png"},{"mobs_mc_axolotl_green.png"},{"mobs_mc_axolotl_pink.png"},{"mobs_mc_axolotl_black.png"},{"mobs_mc_axolotl_purple.png"},{"mobs_mc_axolotl_white.png"}
 	},
     sounds = {
-random = "extra_mobs_axolotl",
-		damage = "extra_mobs_axolotl_hurt",
+random = "mobs_mc_axolotl",
+		damage = "mobs_mc_axolotl_hurt",
 		distance = 16,
     },
 	animation = {
@@ -264,4 +264,4 @@ water-16,
 water+1)
 
 --spawn egg
-mcl_mobs:register_egg("mobs_mc:axolotl", S("Axolotl"), "extra_mobs_spawn_icon_axolotl.png", 0)
+mcl_mobs:register_egg("mobs_mc:axolotl", S("Axolotl"), "mobs_mc_spawn_icon_axolotl.png", 0)
