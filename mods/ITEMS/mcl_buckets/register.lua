@@ -139,8 +139,8 @@ for _, fish in pairs(fish_names) do
 		inventory_image = fish.techname .. "_bucket.png",
 		name = S("Bucket of @1", S(fish.name)),
 		longdesc = S("This bucket is filled with water and @1.", S(fish.name)),
-		usagehelp = S("Place it to empty the bucket and place a @1. Obtain by right clicking on a @2 fish with a bucket of water.", S(fish.name), S(fish.name)),
-		tt_help = S("Places a water source and a @1 fish.", S(fish.name)),
+		usagehelp = S("Place it to empty the bucket and place a @1. Obtain by right clicking on a @2 with a bucket of water.", S(fish.name), S(fish.name)),
+		tt_help = S("Places a water source and a @1.", S(fish.name)),
 		extra_check = function(pos, placer)
 			local dim = mcl_worlds.pos_to_dimension(pos)
 			if dim == "nether" then
