@@ -5018,6 +5018,7 @@ local function register_dimension_decorations()
 		},
 		biomes = {"BasaltDelta"},
 		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_deco_max - 50,
 		flags = "all_floors, all ceilings",
 	})
 	minetest.register_decoration({
@@ -5038,6 +5039,7 @@ local function register_dimension_decorations()
 		},
 		biomes = {"BasaltDelta"},
 		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_deco_max - 15,
 		flags = "all_floors, all ceilings",
 	})
 	minetest.register_decoration({
