@@ -59,6 +59,7 @@ local zombie = {
 	curiosity = 7,
 	head_pitch_multiplier=-1,
 	breath_max = -1,
+	wears_armor = 1,
 	armor = {undead = 90, fleshy = 90},
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.8, 0.3},
 	visual = "mesh",
