@@ -327,6 +327,17 @@ minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
 	_mcl_toollike_wield = true,
 })
 
+minetest.register_tool("mcl_mobitems:warped_fungus_on_a_stick", {
+	description = S("Warped fungus on a Stick"),
+	_tt_help = S("Lets you ride a strider"),
+	_doc_items_longdesc = S("A warped fungus on a stick can be used on saddled striders to ride them."),
+	_doc_items_usagehelp = S("Place it on a saddled strider to mount it. You can now ride the strider like a horse. Striders will also walk towards you when you just wield the carrot on a stick."),
+	wield_image = "mcl_mobitems_warped_fungus_on_a_stick.png^[transformFY^[transformR90",
+	inventory_image = "mcl_mobitems_warped_fungus_on_a_stick.png",
+	groups = { transport = 1 },
+	_mcl_toollike_wield = true,
+})
+
 minetest.register_craftitem("mcl_mobitems:nautilus_shell", {
 	description = S("Nautilus Shell"),
 	_tt_help = S("Used to craft a conduit"),
@@ -447,6 +458,22 @@ minetest.register_craft({
 	recipe = {
 		{ "", "mcl_fishing:fishing_rod", },
 		{ "mcl_farming:carrot_item", "" },
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_mobitems:warped_fungus_on_a_stick",
+	recipe = {
+		{ "mcl_fishing:fishing_rod", "", },
+		{ "", "mcl_crimson:warped_fungus" },
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_mobitems:warped_fungus_on_a_stick",
+	recipe = {
+		{ "","mcl_fishing:fishing_rod", },
+		{ "mcl_crimson:warped_fungus", "" },
 	},
 })
 
