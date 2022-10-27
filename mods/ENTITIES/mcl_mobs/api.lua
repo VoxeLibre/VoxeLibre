@@ -2614,8 +2614,7 @@ local function check_gowp(self,dtime)
 	elseif self.current_target then
 		-- No waypoints left, but have current target. Potentially last waypoint to go to.
 
-		mcl_log("self.current_target: ".. minetest.pos_to_string(self.current_target))
-		mcl_log("pos: ".. minetest.pos_to_string(p))
+		mcl_log("pos: ".. minetest.pos_to_string(p) .. "self.current_target: ".. minetest.pos_to_string(self.current_target))
 		go_to_pos(self,self.current_target)
 		-- Do i just delete current_target, and return so we can find final path.
 	else
@@ -2644,10 +2643,10 @@ local function check_gowp(self,dtime)
 
 		-- 1.6 is good. is 1.9 better? It could fail less, but will it path to door when it isn't after door
 		if distance_to_cur_targ > 1.9 then
-			mcl_log("no LOS to target: ".. minetest.pos_to_string(self.current_target))
+			mcl_log("not close to current target: ".. minetest.pos_to_string(self.current_target))
 			go_to_pos(self,self._current_target)
 		else
-			mcl_log("Let's go to target: ".. minetest.pos_to_string(self.current_target))
+			mcl_log("close to current target: ".. minetest.pos_to_string(self.current_target))
 			self.current_target = nil
 			--go_to_pos(self,self._target)
 			self.waypoints=minetest.find_path(updated_p,self._target,150,1,4)

@@ -952,7 +952,7 @@ local function validate_jobsite(self)
 end
 
 local function do_work (self)
-	debug_trades(self)
+	--debug_trades(self)
 	if self.child or self.order == WORK then
 		mcl_log("A child or already working so don't send to work")
 		return
@@ -1057,7 +1057,11 @@ local function do_activity (self)
 	end
 
 	-- Only check in day or during thunderstorm but wandered_too_far code won't work
-	local wandered_too_far = ( self.state ~= PATHFINDING ) and (vector.distance(self.object:get_pos(),self._bed) > 50 )
+	local wandered_too_far = false
+	if check_bed (self) then
+		wandered_too_far = ( self.state ~= PATHFINDING ) and (vector.distance(self.object:get_pos(),self._bed) > 50 )
+	end
+
 
 	if wandered_too_far  then
 		--mcl_log("Wandered too far! Return home ")
