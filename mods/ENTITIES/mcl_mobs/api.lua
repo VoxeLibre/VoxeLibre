@@ -3327,6 +3327,8 @@ local function check_item_pickup(self)
 					end
 					if not self.armor_list then
 						self.armor_list={helmet="",chestplate="",boots="",leggings=""}
+					elseif self.armor_list[armor_type] and self.armor_list[armor_type] ~= "" then
+						return
 					end
 					self.armor_list[armor_type]=ItemStack(l.itemstring):get_name()
 					o:remove()
