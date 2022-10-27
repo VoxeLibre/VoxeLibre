@@ -2984,7 +2984,7 @@ local do_states = function(self, dtime)
 			end
 
 		elseif self.attack_type == "dogfight"
-		or (self.attack_type == "dogshoot" and dogswitch(self, dtime) == 2) and (dist >= 9 or not self.shooter_avoid_enemy)
+		or (self.attack_type == "dogshoot" and dogswitch(self, dtime) == 2) and (dist >= self.avoid_distance or not self.shooter_avoid_enemy)
 		or (self.attack_type == "dogshoot" and dist <= self.reach and dogswitch(self) == 0) then
 
 			if self.fly
@@ -3161,7 +3161,7 @@ local do_states = function(self, dtime)
 
 		elseif self.attack_type == "shoot"
 		or (self.attack_type == "dogshoot" and dogswitch(self, dtime) == 1)
-		or (self.attack_type == "dogshoot" and (dist > self.reach or dist < 9 and self.shooter_avoid_enemy) and dogswitch(self) == 0) then
+		or (self.attack_type == "dogshoot" and (dist > self.reach or dist < self.avoid_distance and self.shooter_avoid_enemy) and dogswitch(self) == 0) then
 
 			p.y = p.y - .5
 			s.y = s.y + .5
@@ -3184,7 +3184,7 @@ local do_states = function(self, dtime)
 			--strafe back and fourth
 
 			--stay away from player so as to shoot them
-			if dist < 9 and self.shooter_avoid_enemy then
+			if dist < self.avoid_distance and self.shooter_avoid_enemy then
 				set_animation(self, "shoot")
 				stay_away_from_player=vector.multiply(vector.direction(p, s), 0.33)
 			end
@@ -4692,6 +4692,7 @@ minetest.register_entity(name, {
 	-- MCL2 extensions
 	shooter_avoid_enemy = def.shooter_avoid_enemy,
 	strafes = def.strafes,
+	avoid_distance = def.avoid_distance or 9,
 	teleport = teleport,
 	do_teleport = def.do_teleport,
 	spawn_class = def.spawn_class,
