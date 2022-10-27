@@ -55,13 +55,18 @@ random = "mobs_mc_axolotl",
 		distance = 16,
     },
 	animation = {
-		stand_start = 1,
-		stand_end = 20,
-		walk_start = 1,
-		walk_end = 20,
-		run_start = 1,
-		run_end = 20,
+		stand_start = 40,
+		stand_end = 80,
+		walk_start = 140,
+		walk_end = 190,
+		run_start = 140,
+		run_end = 190,
 	},
+
+	follow = {
+		"mcl_fishing:clownfish_raw"
+	},
+
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = false,
     fly = true,
