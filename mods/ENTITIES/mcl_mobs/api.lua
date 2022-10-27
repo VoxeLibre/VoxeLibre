@@ -414,21 +414,20 @@ local set_yaw = function(self, yaw, delay, dtime)
 
 	if self.noyaw then return end
 
-	if self._kb_turn then
-		self._turn_to = yaw
-	end
+	self._turn_to = yaw
+
 	--clamp our yaw to a 360 range
 	if math.deg(self.object:get_yaw()) > 360 then
-		self.object:set_yaw(math.rad(10))
+		self.object:set_yaw(math.rad(1))
 	elseif math.deg(self.object:get_yaw()) < 0 then
-		self.object:set_yaw(math.rad(350))
+		self.object:set_yaw(math.rad(359))
 	end
 
 	--calculate the shortest way to turn to find our target
 	local target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), yaw, true)
 
 	--turn in the shortest path possible toward our target. if we are attacking, don't dance.
-	if math.abs(target_shortest_path) > 100 and (self.attack and self.attack:get_pos() or self.following and self.following:get_pos()) then
+	if (math.abs(target_shortest_path) > 50 and not self._kb_turn) and (self.attack and self.attack:get_pos() or self.following and self.following:get_pos()) then
 		if self.following then
 			target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.following:get_pos())), true)
 		else
@@ -1075,17 +1074,87 @@ local function within_limits(pos, radius)
 	return true
 end
 
+-- get node but use fallback for nil or unknown
+local node_ok = function(pos, fallback)
+
+	fallback = fallback or mcl_mobs.fallback_node
+
+	local node = minetest.get_node_or_nil(pos)
+
+	if node and minetest.registered_nodes[node.name] then
+		return node
+	end
+
+	return minetest.registered_nodes[fallback]
+end
+
+
+local can_jump_cliff = function(self)
+	local yaw = self.object:get_yaw()
+	local pos = self.object:get_pos()
+	local v = self.object:get_velocity()
+
+	local v2 = abs(v.x)+abs(v.z)*.833
+	local jump_c_multiplier = 1
+	if v2/self.walk_velocity/2>1 then
+		jump_c_multiplier = v2/self.walk_velocity/2
+	end
+
+	-- where is front
+	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+
+	--is there nothing under the block in front? if so jump the gap.
+	local nodLow = node_ok({
+		x = pos.x + dir_x-0.6,
+		y = pos.y - 0.5,
+		z = pos.z + dir_z-0.6
+	}, "air")
+
+	local nodFar = node_ok({
+		x = pos.x + dir_x*2,
+		y = pos.y - 0.5,
+		z = pos.z + dir_z*2
+	}, "air")
+
+	local nodFar2 = node_ok({
+		x = pos.x + dir_x*2.5,
+		y = pos.y - 0.5,
+		z = pos.z + dir_z*2.5
+	}, "air")
+
+
+	if minetest.registered_nodes[nodLow.name]
+	and minetest.registered_nodes[nodLow.name].walkable ~= true
+
+
+	and (minetest.registered_nodes[nodFar.name]
+	and minetest.registered_nodes[nodFar.name].walkable == true
+
+	or minetest.registered_nodes[nodFar2.name]
+	and minetest.registered_nodes[nodFar2.name].walkable == true)
+
+	then
+		--disable fear heigh while we make our jump
+		self._jumping_cliff = true
+		minetest.after(1, function()
+			if self and self.object then
+				self._jumping_cliff = false
+			end
+		end)
+		return true
+	else
+		return false
+	end
+end
 
 -- is mob facing a cliff or danger
 local is_at_cliff_or_danger = function(self)
 
-	if self.fear_height == 0 then -- 0 for no falling protection!
+	if self.fear_height == 0 or can_jump_cliff(self) or self._jumping_cliff or not self.object:get_luaentity() then -- 0 for no falling protection!
 		return false
 	end
 
-	if not self.object:get_luaentity() then
-		return false
-	end
 	local yaw = self.object:get_yaw()
 	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
 	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)
@@ -1118,7 +1187,7 @@ end
 local is_at_water_danger = function(self)
 
 
-	if not self.object:get_luaentity() then
+	if not self.object:get_luaentity() or can_jump_cliff(self) or self._jumping_cliff then
 		return false
 	end
 	local yaw = self.object:get_yaw()
@@ -1151,20 +1220,6 @@ local is_at_water_danger = function(self)
 	return false
 end
 
-
--- get node but use fallback for nil or unknown
-local node_ok = function(pos, fallback)
-
-	fallback = fallback or mcl_mobs.fallback_node
-
-	local node = minetest.get_node_or_nil(pos)
-
-	if node and minetest.registered_nodes[node.name] then
-		return node
-	end
-
-	return minetest.registered_nodes[fallback]
-end
 
 -- environmental damage (water, lava, fire, light etc.)
 local do_env_damage = function(self)
@@ -1221,11 +1276,13 @@ local do_env_damage = function(self)
 	end
 	local _, dim = mcl_worlds.y_to_layer(pos.y)
 	if (self.sunlight_damage ~= 0 or self.ignited_by_sunlight) and (sunlight or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
-		if self.ignited_by_sunlight then
-			mcl_burning.set_on_fire(self.object, 10)
-		else
-			deal_light_damage(self, pos, self.sunlight_damage)
-			return true
+		if self.armor_list and not self.armor_list.helmet or not self.armor_list or self.armor_list and self.armor_list.helmet and self.armor_list.helmet == "" then
+			if self.ignited_by_sunlight then
+				mcl_burning.set_on_fire(self.object, 10)
+			else
+				deal_light_damage(self, pos, self.sunlight_damage)
+				return true
+			end
 		end
 	end
 
@@ -1431,8 +1488,8 @@ local do_jump = function(self)
 	end
 
 	-- where is front
-	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+.4
-	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+.4
+	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
 
 	-- what is in front of mob?
 	nod = node_ok({
@@ -1449,8 +1506,9 @@ local do_jump = function(self)
 		z = pos.z + dir_z
 	}, "air")
 
+
 	-- we don't attempt to jump if there's a stack of blocks blocking
-	if minetest.registered_nodes[nodTop.name].walkable == true then
+	if minetest.registered_nodes[nodTop.name].walkable == true and not (self.attack and self.state == "attack") then
 		return false
 	end
 
@@ -1460,7 +1518,7 @@ local do_jump = function(self)
 	end
 
 	local ndef = minetest.registered_nodes[nod.name]
-	if self.walk_chance == 0 or ndef and ndef.walkable then
+	if self.walk_chance == 0 or ndef and ndef.walkable or can_jump_cliff(self) then
 
 		if minetest.get_item_group(nod.name, "fence") == 0
 		and minetest.get_item_group(nod.name, "fence_gate") == 0
@@ -1469,6 +1527,10 @@ local do_jump = function(self)
 			local v = self.object:get_velocity()
 
 			v.y = self.jump_height + 0.1 * 3
+
+			if can_jump_cliff(self) then
+				v=vector.multiply(v, vector.new(2.8,1,2.8))
+			end
 
 			set_animation(self, "jump") -- only when defined
 
@@ -2472,7 +2534,7 @@ local function go_to_pos(entity,b)
 	local v = { x = b.x - s.x, z = b.z - s.z }
 	local yaw = (atann(v.z / v.x) + pi / 2) - entity.rotate
 	if b.x > s.x then yaw = yaw + pi end
-	entity.object:set_yaw(yaw)
+	--entity.object:set_yaw(yaw)
 	set_velocity(entity,entity.follow_velocity)
 	mcl_mobs:set_animation(entity, "walk")
 end
@@ -3118,7 +3180,7 @@ local do_states = function(self, dtime)
 
 			if self.shoot_interval
 			and self.timer > self.shoot_interval
-			and not minetest.raycast(p, self.attack:get_pos(), false, false):next()
+			and not minetest.raycast(vector.add(p, vector.new(0,self.shoot_offset,0)), vector.add(self.attack:get_pos(), vector.new(0,1.5,0)), false, false):next()
 			and random(1, 100) <= 60 then
 
 				self.timer = 0
@@ -3247,19 +3309,91 @@ local function player_near(pos)
 	end
 end
 
+local function get_armor_texture(armor_name)
+	if armor_name == "" then
+		return ""
+	end
+	if armor_name=="blank.png" then
+		return "blank.png"
+	end
+	local seperator = string.find(armor_name, ":")
+	return "mcl_armor_"..string.sub(armor_name, seperator+1, -1)..".png^"
+end
+
+local function set_armor_texture(self)
+	if self.armor_list then
+		local chestplate=minetest.registered_items[self.armor_list.chestplate] or {name=""}
+		local boots=minetest.registered_items[self.armor_list.boots] or {name=""}
+		local leggings=minetest.registered_items[self.armor_list.leggings] or {name=""}
+		local helmet=minetest.registered_items[self.armor_list.helmet] or {name=""}
+
+		if helmet.name=="" and chestplate.name=="" and leggings.name=="" and boots.name=="" then
+			helmet={name="blank.png"}
+		end
+		local texture = get_armor_texture(chestplate.name)..get_armor_texture(helmet.name)..get_armor_texture(boots.name)..get_armor_texture(leggings.name)
+		if string.sub(texture, -1,-1) == "^" then
+			texture=string.sub(texture,1,-2)
+		end
+		if self.textures[self.wears_armor] then
+			self.textures[self.wears_armor]=texture
+		end
+		self.object:set_properties({textures=self.textures})
+
+		local armor_
+		if type(self.armor) == "table" then
+			armor_ = table.copy(self.armor)
+			armor_.immortal = 1
+		else
+			armor_ = {immortal=1, fleshy = self.armor}
+		end
+
+		for _,item in pairs(self.armor_list) do
+			if not item then return end
+			if type(minetest.get_item_group(item, "mcl_armor_points")) == "number" then
+				armor_.fleshy=armor_.fleshy-(minetest.get_item_group(item, "mcl_armor_points")*3.5)
+			end
+		end
+		self.object:set_armor_groups(armor_)
+	end
+end
+
 local function check_item_pickup(self)
-	if self.pick_up and #self.pick_up > 0 then
+	if self.pick_up and #self.pick_up > 0 or self.wears_armor then
 		local p = self.object:get_pos()
 		for _,o in pairs(minetest.get_objects_inside_radius(p,2)) do
 			local l=o:get_luaentity()
 			if l and l.name == "__builtin:item" then
-				for k,v in pairs(self.pick_up) do
-					if not player_near(p) and self.on_pick_up and l.itemstring:find(v) then
-						local r =  self.on_pick_up(self,l)
-						if  r and r.is_empty and not r:is_empty() then
-							l.itemstring = r:to_string()
-						elseif r and r.is_empty and r:is_empty() then
-							o:remove()
+				if not player_near(p) and l.itemstring:find("mcl_armor") and self.wears_armor then
+					local armor_type
+					if l.itemstring:find("chestplate") then
+						armor_type = "chestplate"
+					elseif l.itemstring:find("boots") then
+						armor_type = "boots"
+					elseif l.itemstring:find("leggings") then
+						armor_type = "leggings"
+					elseif l.itemstring:find("helmet") then
+						armor_type = "helmet"
+					end
+					if not armor_type then
+						return
+					end
+					if not self.armor_list then
+						self.armor_list={helmet="",chestplate="",boots="",leggings=""}
+					elseif self.armor_list[armor_type] and self.armor_list[armor_type] ~= "" then
+						return
+					end
+					self.armor_list[armor_type]=ItemStack(l.itemstring):get_name()
+					o:remove()
+				end
+				if self.pick_up then
+					for k,v in pairs(self.pick_up) do
+						if not player_near(p) and self.on_pick_up and l.itemstring:find(v) then
+							local r =  self.on_pick_up(self,l)
+							if  r and r.is_empty and not r:is_empty() then
+								l.itemstring = r:to_string()
+							elseif r and r.is_empty and r:is_empty() then
+								o:remove()
+							end
 						end
 					end
 				end
@@ -3620,7 +3754,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			elseif luaentity and luaentity._knockback then
 				kb = kb + luaentity._knockback
 			end
-			--self._kb_turn = false
+			self._kb_turn = true
 			self._turn_to=self.object:get_yaw()-1.57
 			self.frame_speed_multiplier=2.3
 			if self.animation.run_end then
@@ -3631,7 +3765,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			minetest.after(0.2, function()
 				if self and self.object then
 					self.frame_speed_multiplier=1
-					self._kb_turn = true
+					self._kb_turn = false
 				end
 			end)
 			self.object:add_velocity({
@@ -3936,9 +4070,16 @@ local mob_activate = function(self, staticdata, def, dtime)
 			self.on_spawn_run = true --  if true, set flag to run once only
 		end
 	end
+	if not self._run_armor_init then
+		self.armor_list={helmet="",chestplate="",boots="",leggings=""}
+		set_armor_texture(self)
+		self._run_armor_init = true
+	end
+
 
 	-- run after_activate
 	if def.after_activate then
+
 		def.after_activate(self, staticdata, def, dtime)
 	end
 end
@@ -4053,7 +4194,11 @@ local mob_step = function(self, dtime)
 			if not self.animation.walk_speed then
 				self.animation.walk_speed = 25
 			end
-			self.object:set_animation_frame_speed((v2/math.max(1,self.run_velocity))*self.animation.walk_speed*self.frame_speed_multiplier)
+			if abs(v.x)+abs(v.z) > 0.5 then
+				self.object:set_animation_frame_speed((v2/math.max(1,self.run_velocity))*self.animation.walk_speed*self.frame_speed_multiplier)
+			else
+				self.object:set_animation_frame_speed(25)
+			end
 		end
 
 		--set_speed
@@ -4111,12 +4256,13 @@ local mob_step = function(self, dtime)
 	-- end rotation
 
 	if self.head_swivel and type(self.head_swivel) == "string" then
+		local final_rotation = vector.new(0,0,0)
 		local oldp,oldr = self.object:get_bone_position(self.head_swivel)
 
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 10)) do
 			if obj:is_player() and not self.attack or obj:get_luaentity() and obj:get_luaentity().name == self.name and self ~= obj:get_luaentity() then
 				if not self._locked_object then
-					if math.random(5000/self.curiosity) == 1 then
+					if math.random(5000/self.curiosity) == 1 or vector.distance(pos,obj:get_pos())<4 and obj:is_player() then
 						self._locked_object = obj
 					end
 				else
@@ -4127,8 +4273,8 @@ local mob_step = function(self, dtime)
 			end
 		end
 
-		if self.attack then
-			self._locked_object = self.attack
+		if self.attack or self.following then
+			self._locked_object = self.attack or self.following
 		end
 
 		if self._locked_object and (self._locked_object:is_player() or self._locked_object:get_luaentity()) and self._locked_object:get_hp() > 0 then
@@ -4148,29 +4294,35 @@ local mob_step = function(self, dtime)
 				local direction_player = vector.direction(vector.add(self.object:get_pos(), vector.new(0, self.head_eye_height*.7, 0)), vector.add(player_pos, vector.new(0, _locked_object_eye_height, 0)))
 				local mob_yaw = math.deg(-(-(self_rot.y)-(-minetest.dir_to_yaw(direction_player))))+self.head_yaw_offset
 				local mob_pitch = math.deg(-dir_to_pitch(direction_player))*self.head_pitch_multiplier
-				if (mob_yaw < -60 or mob_yaw > 60) and not (self.attack and self.type == "monster") then
-					mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.multiply(oldr, 0.9))
-				elseif self.attack and self.type == "monster" then
+
+				if (mob_yaw < -60 or mob_yaw > 60) and not (self.attack and self.state == "attack" and not self.runaway) then
+					final_rotation = vector.multiply(oldr, 0.9)
+				elseif self.attack and self.state == "attack" and not self.runaway then
 					if self.head_yaw == "y" then
-						mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, mob_yaw, 0))
+						final_rotation = vector.new(mob_pitch, mob_yaw, 0)
 					elseif self.head_yaw == "z" then
-						mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, 0, -mob_yaw))
+						final_rotation = vector.new(mob_pitch, 0, -mob_yaw)
 					end
+
 				else
+
 					if self.head_yaw == "y" then
-						mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, ((mob_yaw-oldr.y)*.3)+oldr.y, 0))
+						final_rotation = vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, ((mob_yaw-oldr.y)*.3)+oldr.y, 0)
 					elseif self.head_yaw == "z" then
-						mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, 0, -(((mob_yaw-oldr.y)*.3)+oldr.y)*3))
+						final_rotation = vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, 0, -(((mob_yaw-oldr.y)*.3)+oldr.y)*3)
 					end
 				end
 			end
 		elseif not self._locked_object and math.abs(oldr.y) > 3 and math.abs(oldr.x) < 3 then
-			mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.multiply(oldr, 0.9))
+			final_rotation = vector.multiply(oldr, 0.9)
 		else
-			mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(0,0,0))
+			final_rotation = vector.new(0,0,0)
 		end
 
+		mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), final_rotation)
+
 	end
+
 
 	-- run custom function (defined in mob lua file)
 	if self.do_custom then
@@ -4242,6 +4394,8 @@ local mob_step = function(self, dtime)
 	end
 
 	do_jump(self)
+
+	set_armor_texture(self)
 
 	runaway_from(self)
 
@@ -4399,6 +4553,7 @@ minetest.register_entity(name, {
 	curiosity = def.curiosity or 1, -- how often mob will look at player on idle
 	head_yaw = def.head_yaw or "y", -- axis to rotate head on
 	horrizonatal_head_height = def.horrizonatal_head_height or 0,
+	wears_armor = def.wears_armor, -- a number value used to index texture slot for armor
 	stepheight = def.stepheight or 0.6,
 	name = name,
 	description = def.description,
@@ -4452,6 +4607,7 @@ minetest.register_entity(name, {
 	nofollow = def.nofollow,
 	can_open_doors = def.can_open_doors,
 	jump = def.jump ~= false,
+	automatic_face_movement_max_rotation_per_sec = 300,
 	walk_chance = def.walk_chance or 50,
 	attacks_monsters = def.attacks_monsters or false,
 	group_attack = def.group_attack or false,
@@ -4561,6 +4717,7 @@ minetest.register_entity(name, {
 		self.object:set_properties({
 			collide_with_objects = false,
 		})
+
 		return mob_activate(self, staticdata, def, dtime)
 	end,
 
