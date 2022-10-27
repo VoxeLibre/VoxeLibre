@@ -1552,6 +1552,7 @@ local function register_dimension_biomes()
 		name = "Nether",
 		node_filler = "mcl_nether:netherrack",
 		node_stone = "mcl_nether:netherrack",
+		node_top = "mcl_nether:netherrack",
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
@@ -1566,7 +1567,7 @@ local function register_dimension_biomes()
 
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_nether:netherrack","mcl_nether:glowstone","mcl_blackstone:nether_gold","mcl_nether:quartz_ore","mcl_core:gravel","mcl_nether:soul_sand"},
+		place_on = {"mcl_nether:netherrack","mcl_nether:glowstone","mcl_blackstone:nether_gold","mcl_nether:quartz_ore","mcl_core:gravel","mcl_nether:soul_sand","mcl_nether:glowstone","mcl_nether:magma"},
 		sidelen = 16,
 		fill_ratio = 10,
 		biomes = { "Nether" },
