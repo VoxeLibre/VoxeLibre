@@ -3137,7 +3137,7 @@ local do_states = function(self, dtime)
 
 			--stay away from player so as to shoot them
 			if dist < 9 and self.shooter_avoid_enemy then
-				set_animation(self, "walk")
+				set_animation(self, "shoot")
 				stay_away_from_player=vector.multiply(vector.direction(p, s), 0.33)
 			end
 
