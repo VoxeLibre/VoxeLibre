@@ -281,6 +281,13 @@ local function apply_bone_meal(pointed_thing)
 		if math.random(1, 100) <= 75 then
 			return mcl_farming:grow_plant("plant_beetroot", pos, n, 1, true)
 		end
+	elseif string.find(n.name, "mcl_farming:sweet_berry_bush_") then
+		mcl_dye.add_bone_meal_particle(pos)
+		if n.name == "mcl_farming:sweet_berry_bush_3" then
+			return minetest.add_item(vector.offset(pos,math.random()-0.5,math.random()-0.5,math.random()-0.5),"mcl_farming:sweet_berry")
+		else
+			return mcl_farming:grow_plant("plant_sweet_berry_bush", pos, n, 1, true)
+		end
 	elseif n.name == "mcl_cocoas:cocoa_1" or n.name == "mcl_cocoas:cocoa_2" then
 		mcl_dye.add_bone_meal_particle(pos)
 		-- Cocoa: Advance by 1 stage

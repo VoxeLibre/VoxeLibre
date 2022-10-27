@@ -30,6 +30,8 @@ local DEFAULT_WALK_CHANCE = 33 -- chance to walk in percent, if no player nearby
 local PLAYER_SCAN_INTERVAL = 5 -- every X seconds, villager looks for players nearby
 local PLAYER_SCAN_RADIUS = 4 -- scan radius for looking for nearby players
 
+local PATHFINDING = "gowp"
+
 --[=======[ TRADING ]=======]
 
 -- LIST OF VILLAGER PROFESSIONS AND TRADES
@@ -564,7 +566,7 @@ end
 
 local function set_textures(self)
 	local badge_textures = get_badge_textures(self)
-	mcl_log("Setting textures: " .. tostring(badge_textures))
+	--mcl_log("Setting textures: " .. tostring(badge_textures))
 	self.object:set_properties({textures=badge_textures})
 end
 
@@ -579,7 +581,7 @@ function get_activity(tod)
 	local lunch_start = 12000
 	local lunch_end = 13500
 	local work_start = 8500
-	local work_end = 16300
+	local work_end = 16500
 
 
 	local activity = nil
@@ -671,7 +673,7 @@ local function take_bed (entity)
 	for _,n in pairs(nn) do
 		local m=minetest.get_meta(n)
 		--mcl_log("Bed owner: ".. m:get_string("villager"))
-		if m:get_string("villager") == "" and not (entity.state == "gowp") then
+		if m:get_string("villager") == "" and not (entity.state == PATHFINDING) then
 			mcl_log("Can we path to bed: "..minetest.pos_to_string(n) )
 			local gp = mcl_mobs:gopath(entity,n,function(self)
 				if self then
@@ -817,7 +819,7 @@ local function look_for_job(self, requested_jobsites)
 
 	local looking_for_type = jobsites
 	if requested_jobsites then
-		mcl_log("Looking for jobs of my type: " .. tostring(requested_jobsites))
+		--mcl_log("Looking for jobs of my type: " .. tostring(requested_jobsites))
 		looking_for_type = requested_jobsites
 	else
 		mcl_log("Looking for any job type")
@@ -863,7 +865,7 @@ local function get_a_job(self)
 
 	local requested_jobsites = jobsites
 	if has_traded (self) then
-		--mcl_log("Has traded")
+		mcl_log("Has traded so look for job of my type")
 		requested_jobsites = populate_jobsites(self._profession)
 		-- Only pass in my jobsite to two functions here
 	else
@@ -884,7 +886,7 @@ local function get_a_job(self)
 
 	if n and employ(self,n) then return true end
 
-	if self.state ~= "gowp" then
+	if self.state ~= PATHFINDING then
 		mcl_log("Nothing near. Need to look for a job")
 		look_for_job(self, requested_jobsites)
 	end
@@ -938,7 +940,7 @@ local function do_work (self)
 
 	-- Don't try if looking_for_work, or gowp possibly
 	if validate_jobsite(self) then
-		mcl_log("My jobsite is valid. Do i need to travel?")
+		--mcl_log("My jobsite is valid. Do i need to travel?")
 
 		local jobsite2 = retrieve_my_jobsite (self)
 		local jobsite = self._jobsite
@@ -947,9 +949,9 @@ local function do_work (self)
 
 			--mcl_log("Villager: ".. minetest.pos_to_string(self.object:get_pos()) ..  ", jobsite: " .. minetest.pos_to_string(self._jobsite))
 			if vector.distance(self.object:get_pos(),self._jobsite) < 2 then
-				mcl_log("Made it to work ok!")
+				--mcl_log("Made it to work ok!")
 
-				if not (self.state == "gowp") then
+				if not (self.state == PATHFINDING) then
 					--mcl_log("Setting order to work.")
 					self.order = WORK
 				else
@@ -1461,6 +1463,7 @@ local trade_inventory = {
 			-- END OF SPECIAL HANDLING FOR COMPASS
 			local trader = player_trading_with[name]
 			local tradenum = player_tradenum[name]
+
 			local trades
 			trader._traded = true
 			if trader and trader._trades then
@@ -1643,23 +1646,31 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 		return it
 	end,
 	on_rightclick = function(self, clicker)
+		if self.child or self._profession == "unemployed" or self._profession == "nitwit" then
+			self.order = nil
+			return
+		end
+
+		if self.state == PATHFINDING then
+			self.state = "stand"
+		end
+		-- Can we remove now we possibly have fixed root cause
 		if self.state == "attack" then
-			mcl_log("Somehow villager got into an invalid attack state. Removed.")
+			mcl_log("Somehow villager got into an invalid attack state. Removed attack state.")
 			-- Need to stop villager getting in attack state. This is a workaround to allow players to fix broken villager.
 			self.state = "stand"
 			self.attack = nil
 		end
+		-- Don't do at night. Go to bed? Maybe do_activity needs it's own method
 		if validate_jobsite(self) then
 			mcl_mobs:gopath(self,self._jobsite,function()
 				--minetest.log("arrived at jobsite")
 			end)
 		else
 			self.state = "stand" -- cancel gowp in case it has messed up
+			self.order = nil -- cancel work if working
 		end
 
-		if self.child or self._profession == "unemployed" or self._profession == "nitwit" then
-			return
-		end
 		-- Initiate trading
 		init_trader_vars(self)
 		local name = clicker:get_player_name()
@@ -1733,9 +1744,10 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 				take_bed (self)
 			end
 
+			-- Only check in day or during thunderstorm but wandered_too_far code won't work
 			if check_bed (self) then
 				--self.state ~= "go_home"
-				local wandered_too_far = ( self.state ~= "gowp" ) and (vector.distance(self.object:get_pos(),self._bed) > 50 )
+				local wandered_too_far = ( self.state ~= PATHFINDING ) and (vector.distance(self.object:get_pos(),self._bed) > 50 )
 
 				--if wandered_too_far then minetest.log("Wandered too far! Return home ") end
 				if wandered_too_far  then
