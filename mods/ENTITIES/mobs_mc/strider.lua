@@ -62,7 +62,7 @@ local strider = {
 	floats = 0,
 	do_custom = function(self, dtime)
 
-		if minetest.find_node_near(self.object:get_pos(), 2, "mcl_core:lava_source") ~= nil or minetest.find_node_near(self.object:get_pos(), 2, "mcl_core:lava_flowing") ~= nil or minetest.find_node_near(self.object:get_pos(), 2, "mcl_nether:nether_lava_source") ~= nil or minetest.find_node_near(self.object:get_pos(), 2, "mcl_nether:nether_lava_flowing") ~= nil then
+		if minetest.find_node_near(self.object:get_pos(), 2, {"mcl_core:lava_source","mcl_core:lava_flowing","mcl_nether:nether_lava_source","mcl_nether:nether_lava_flowing"}) then
 			self.walk_velocity = 2
 			self.run_velocity = 4
 			self.base_texture[1] = "extra_mobs_strider.png"
@@ -91,7 +91,7 @@ local strider = {
 		-- if driver present allow control of horse
 		if self.driver then
 
-			mobs.drive(self, "walk", "stand", false, dtime)
+			mcl_mobs.drive(self, "walk", "stand", false, dtime)
 
 			return false -- skip rest of mob functions
 		end
@@ -104,7 +104,7 @@ local strider = {
 		-- drop saddle when horse is killed while riding
 		-- also detach from horse properly
 		if self.driver then
-			mobs.detach(self.driver, {x = 1, y = 0, z = 1})
+			mcl_mobs.detach(self.driver, {x = 1, y = 0, z = 1})
 		end
 	end,
 
@@ -115,13 +115,7 @@ local strider = {
 
 		local wielditem = clicker:get_wielded_item()
 
-		local controlitem = ""
-		if minetest.get_modpath("mcl_mobitems") then
-            controlitem = "mcl_mobitems_warped_fungus_stick:warped_fungus_stick"
-        else
-            controlitem = mobs_mc.items.carrot_on_a_stick
-        end
-		if wielditem:get_name() ~= controlitem then
+		if wielditem:get_name() ~= "mcl_crimson:warped_fungus" then
 			if mcl_mobs:feed_tame(self, clicker, 1, true, true) then return end
 		end
 
@@ -151,10 +145,8 @@ local strider = {
 				max = 1,},
 			}
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
-				local inv = clicker:get_inventory()
-				local stack = inv:get_stack("main", clicker:get_wield_index())
-				stack:take_item()
-				inv:set_stack("main", clicker:get_wield_index(), stack)
+				wielditem:take_item(1)
+				clicker:get_inventory():set_stack("main", clicker:get_wield_index(), wielditem)
 			end
 			minetest.sound_play({name = "mcl_armor_equip_leather"}, {gain=0.5, max_hear_distance=8, pos=self.object:get_pos()}, true)
 			return
@@ -164,13 +156,13 @@ local strider = {
 		local name = clicker:get_player_name()
 		if self.driver and clicker == self.driver then
 			-- Detach if already attached
-			mobs.detach(clicker, {x=1, y=0, z=0})
+			mcl_mobs.detach(clicker, {x=1, y=0, z=0})
 			return
 
-		elseif not self.driver and self.saddle == "yes" and wielditem:get_name() == controlitem then
+		elseif not self.driver and self.saddle == "yes" and wielditem:get_name() == "mcl_mobitems:warped_fungus_on_a_stick" then
 			-- Ride pig if it has a saddle and player uses a carrot on a stick
 
-			mobs.attach(self, clicker)
+			mcl_mobs.attach(self, clicker)
 
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 
@@ -224,9 +216,6 @@ mcl_mobs:spawn_setup({
 	min_height = mcl_vars.mg_nether_min,
 	max_height = mcl_vars.mg_nether_max,
 	chance = 2000,
-	check_position = function(pos)
-		return minetest.get_node({x = pos.x, y = pos.y - 1, z = pos.z}).name:find("lava")
-	end
 })
 
 mcl_mobs:spawn_setup({
@@ -239,9 +228,6 @@ mcl_mobs:spawn_setup({
 	min_height = mcl_vars.mg_nether_min,
 	max_height = mcl_vars.mg_nether_max,
 	chance = 100,
-	check_position = function(pos)
-		return minetest.get_node({x = pos.x, y = pos.y - 1, z = pos.z}).name:find("lava")
-	end
 })
 
 -- spawn eggs
