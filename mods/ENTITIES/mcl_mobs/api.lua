@@ -13,8 +13,6 @@ local FLOP_HOR_SPEED = 1.5
 local ENTITY_CRAMMING_MAX = 24
 local CRAMMING_DAMAGE = 3
 
-local PATHFINDING = "gowp"
-
 -- Localize
 local S = minetest.get_translator("mcl_mobs")
 
@@ -319,6 +317,10 @@ local collision = function(self)
 
 		local ent = object:get_luaentity()
 		if object:is_player() or (ent and ent.is_mob and object ~= self.object) then
+
+			if object:is_player() and mcl_burning.is_burning(self.object) then
+				mcl_burning.set_on_fire(object, 4)
+			end
 
 			local pos2 = object:get_pos()
 			local vec  = {x = pos.x - pos2.x, z = pos.z - pos2.z}
@@ -1345,6 +1347,7 @@ local do_env_damage = function(self)
 			self.health = self.health - self.lava_damage
 
 			effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
+			mcl_burning.set_on_fire(self.object, 10)
 
 			if check_for_death(self, "lava", {type = "environment",
 					pos = pos, node = self.standing_in}) then
@@ -1361,6 +1364,7 @@ local do_env_damage = function(self)
 			self.health = self.health - self.fire_damage
 
 			effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
+			mcl_burning.set_on_fire(self.object, 5)
 
 			if check_for_death(self, "fire", {type = "environment",
 					pos = pos, node = self.standing_in}) then
@@ -2548,11 +2552,10 @@ local function check_doors(self)
 		if n.name:find("_b_") then
 			local def = minetest.registered_nodes[n.name]
 			local closed = n.name:find("_b_1")
-			if self.state == PATHFINDING then
-				if closed and def.on_rightclick then def.on_rightclick(d,n,self) end
-				--if not closed and def.on_rightclick then def.on_rightclick(d,n,self) end
+			if t < 0.3 or t > 0.8 then
+				if not closed and def.on_rightclick then def.on_rightclick(d,n,self) end
 			else
-
+				if closed and def.on_rightclick then def.on_rightclick(d,n,self) end
 			end
 
 		end
@@ -2563,7 +2566,7 @@ local gowp_etime = 0
 
 local function check_gowp(self,dtime)
 	gowp_etime = gowp_etime + dtime
-	if gowp_etime < 0.1 then return end
+	if gowp_etime < 0.2 then return end
 	gowp_etime = 0
 	local p = self.object:get_pos()
 
@@ -2574,7 +2577,7 @@ local function check_gowp(self,dtime)
 		return
 	end
 
-	-- arrived at location, finish gowp
+	-- arrived at location
 	local distance_to_targ = vector.distance(p,self._target)
 	mcl_log("Distance to targ: ".. tostring(distance_to_targ))
 	if distance_to_targ < 2 then
@@ -2590,79 +2593,34 @@ local function check_gowp(self,dtime)
 		return true
 	end
 
-	-- More pathing to be done
-	if self.waypoints and #self.waypoints > 0 and ( not self.current_target or vector.distance(p,self.current_target) < 2 ) then
-		-- We have waypoints, and no current target, or we're at it. We need a new current_target.
-
+	if self.waypoints and ( not self.current_target or vector.distance(p,self.current_target) < 2 ) then
 		if not self.current_target then
 			for i, j in pairs (self.waypoints) do
+				mcl_log("Way: ".. tostring(i))
 				mcl_log("Val: ".. tostring(j))
 			end
+			--mcl_log("nextwp:".. tostring(self.waypoints) )
 		end
 
 		self.current_target = table.remove(self.waypoints, 1)
-		mcl_log("current target:".. minetest.pos_to_string(self.current_target) )
+		mcl_log("current target:".. tostring(self.current_target) )
 		--mcl_log("type:".. type(self.current_target) )
 		go_to_pos(self,self.current_target)
 		return
 	elseif self.current_target then
-		-- No waypoints left, but have current target. Potentially last waypoint to go to.
-
-		mcl_log("self.current_target: ".. minetest.pos_to_string(self.current_target))
-		mcl_log("pos: ".. minetest.pos_to_string(p))
 		go_to_pos(self,self.current_target)
-		-- Do i just delete current_target, and return so we can find final path.
-	else
-		-- Not at target, no current waypoints or current_target. Through the door and should be able to path to target.
-		-- Is a little sensitive and could take 1 - 7 times. A 10 fail count might be a good exit condition.
-
-		mcl_log("We don't have waypoints or a current target. Let's try to path to target")
-		local final_wp = minetest.find_path(p,self._target,150,1,4)
-		if final_wp then
-			mcl_log("We might be able to get to target here.")
-			self.waypoints = final_wp
-			--go_to_pos(self,self._target)
-		else
-			mcl_log("Cannot plot final route to target")
-		end
 	end
 
-	--if self.current_target and not minetest.line_of_sight(self.object:get_pos(),self.current_target) then
-	if self.current_target and (self.waypoints and #self.waypoints == 0) then
-		local updated_p = self.object:get_pos()
-		local distance_to_cur_targ = vector.distance(updated_p,self.current_target)
-
-		mcl_log("Distance to current target: ".. tostring(distance_to_cur_targ))
-		mcl_log("Current p: ".. minetest.pos_to_string(updated_p))
-		--if not minetest.line_of_sight(self.object:get_pos(),self._target) then
-
-		-- 1.6 is good. is 1.9 better? It could fail less, but will it path to door when it isn't after door
-		if distance_to_cur_targ > 1.9 then
-			mcl_log("no LOS to target: ".. minetest.pos_to_string(self.current_target))
-			go_to_pos(self,self._current_target)
-		else
-			mcl_log("Let's go to target: ".. minetest.pos_to_string(self.current_target))
-			self.current_target = nil
-			--go_to_pos(self,self._target)
-			self.waypoints=minetest.find_path(updated_p,self._target,150,1,4)
-			--if not self.waypoints then
-			--mcl_log("Give up ")
-			--self.state = "walk"
-			--end --give up
-		end
-
-		--self.waypoints=minetest.find_path(p,self._target,150,1,4)
-		--if not self.waypoints then
-			--mcl_log("Give up ")
-			--self.state = "walk"
-		--end --give up
-		--self.current_target = nil
+	if self.current_target and not minetest.line_of_sight(self.object:get_pos(),self.current_target) then
+		self.waypoints=minetest.find_path(p,self._target,150,1,4)
+		if not self.waypoints then self.state = "walk" end --give up
+		self.current_target = nil
 		return
 	end
-	--if not self.current_target then
-		--mcl_log("no path. Give up")
-		--self.state = "walk"
-	--end
+	if not self.current_target then
+		--mcl_log("no path")
+		self.state = "walk"
+	end
 end
 
 -- execute current state (stand, walk, run, attacks)
@@ -2711,7 +2669,7 @@ local do_states = function(self, dtime)
 		end
 
 		-- npc's ordered to stand stay standing
-		if self.order == "stand" or self.order == "sleep" or self.order == "work" then
+		if self.type == "npc" or (self.order == "stand" or self.order == "sleep" or self.order == "work") then
 
 		else
 			if self.walk_chance ~= 0
@@ -2725,7 +2683,7 @@ local do_states = function(self, dtime)
 			end
 		end
 
-	elseif self.state == PATHFINDING then
+	elseif self.state == "gowp" then
 		check_gowp(self,dtime)
 
 	elseif self.state == "walk" then
@@ -2978,7 +2936,7 @@ local do_states = function(self, dtime)
 			end
 
 		elseif self.attack_type == "dogfight"
-		or (self.attack_type == "dogshoot" and dogswitch(self, dtime) == 2)
+		or (self.attack_type == "dogshoot" and dogswitch(self, dtime) == 2) and (dist >= 9 or not self.shooter_avoid_enemy)
 		or (self.attack_type == "dogshoot" and dist <= self.reach and dogswitch(self) == 0) then
 
 			if self.fly
@@ -3155,7 +3113,7 @@ local do_states = function(self, dtime)
 
 		elseif self.attack_type == "shoot"
 		or (self.attack_type == "dogshoot" and dogswitch(self, dtime) == 1)
-		or (self.attack_type == "dogshoot" and dist > self.reach and dogswitch(self) == 0) then
+		or (self.attack_type == "dogshoot" and (dist > self.reach or dist < 9 and self.shooter_avoid_enemy) and dogswitch(self) == 0) then
 
 			p.y = p.y - .5
 			s.y = s.y + .5
@@ -3173,7 +3131,27 @@ local do_states = function(self, dtime)
 
 			yaw = set_yaw(self, yaw, 0, dtime)
 
-			set_velocity(self, 0)
+			local stay_away_from_player = vector.new(0,0,0)
+
+			--strafe back and fourth
+
+			--stay away from player so as to shoot them
+			if dist < 9 and self.shooter_avoid_enemy then
+				set_animation(self, "walk")
+				stay_away_from_player=vector.multiply(vector.direction(p, s), 0.33)
+			end
+
+			if self.strafes then
+				if not self.strafe_direction then
+					self.strafe_direction = 1.57
+				end
+				if math.random(40) == 1 then
+					self.strafe_direction = self.strafe_direction*-1
+				end
+				self.acc = vector.add(vector.multiply(vector.rotate_around_axis(vector.direction(s, p), vector.new(0,1,0), self.strafe_direction), 0.3*self.walk_velocity), stay_away_from_player)
+			else
+				set_velocity(self, 0)
+			end
 
 			local p = self.object:get_pos()
 			p.y = p.y + (self.collisionbox[2] + self.collisionbox[5]) / 2
@@ -3242,7 +3220,7 @@ local plane_adjacents = {
 
 local gopath_last = os.time()
 function mcl_mobs:gopath(self,target,callback_arrived)
-	if self.state == PATHFINDING then mcl_log("Already set as gowp, don't set another path until done.") return end
+	if self.state == "gowp" then mcl_log("Already set as gowp, don't set another path until done.") return end
 
 	if os.time() - gopath_last < 15 then
 		mcl_log("Not ready to path yet")
@@ -3265,15 +3243,11 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 			--mcl_log("Found a door near")
 			for _,v in pairs(plane_adjacents) do
 				local pos = vector.add(d,v)
-
 				local n = minetest.get_node(pos)
 				if n.name == "air" then
 					wp = minetest.find_path(p,pos,150,1,4)
 					if wp then
-						mcl_log("Found a path to next to door".. minetest.pos_to_string(pos))
-						local other_side_of_door = vector.add(d,-v)
-						mcl_log("Opposite is: ".. minetest.pos_to_string(other_side_of_door))
-						table.insert(wp, other_side_of_door)
+						--mcl_log("Found a path to next to door".. minetest.pos_to_string(pos))
 						break
 
 					else
@@ -3293,7 +3267,7 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 		self.callback_arrived = callback_arrived
 		table.remove(wp,1)
 		self.waypoints = wp
-		self.state = PATHFINDING
+		self.state = "gowp"
 		return true
 	else
 	self.state = "walk"
@@ -4344,7 +4318,7 @@ local mob_step = function(self, dtime)
 	-- attack timer
 	self.timer = self.timer + dtime
 
-	if self.state ~= "attack" and self.state ~= PATHFINDING then
+	if self.state ~= "attack" and self.state ~= "gowp" then
 		if self.timer < 1 then
 			return
 		end
@@ -4664,6 +4638,8 @@ minetest.register_entity(name, {
 
 
 	-- MCL2 extensions
+	shooter_avoid_enemy = def.shooter_avoid_enemy,
+	strafes = def.strafes,
 	teleport = teleport,
 	do_teleport = def.do_teleport,
 	spawn_class = def.spawn_class,
