@@ -32,6 +32,9 @@ local function ecb_place(blockpos, action, calls_remaining, param)
 end
 
 function mcl_structures.place_schematic(pos, schematic, rotation, replacements, force_placement, flags, after_placement_callback, pr, callback_param)
+	if not mcl_util.file_exists(schematic) then
+		minetest.log("warning","[mcl_structures] schematic file "..schematic.." does not exist.")
+		return end
 	local s = loadstring(minetest.serialize_schematic(schematic, "lua", {lua_use_comments = false, lua_num_indent_spaces = 0}) .. " return schematic")()
 	if s and s.size then
 		local x, z = s.size.x, s.size.z

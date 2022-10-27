@@ -1537,7 +1537,6 @@ local function register_dimension_biomes()
 		place_on = {"mcl_core:bedrock"},
 		sidelen = 16,
 		fill_ratio = 10,
-		biomes = { "Nether" },
 		y_min = mcl_vars.mg_lava_nether_max,
 		y_max = mcl_vars.mg_nether_max + 15,
 		height = 6,
