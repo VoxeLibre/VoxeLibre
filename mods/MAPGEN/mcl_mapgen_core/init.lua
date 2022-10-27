@@ -325,8 +325,11 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 			lvm_used = set_layers(data, area, c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, minp, maxp, lvm_used, pr)
 		end
 	end
-
-	return lvm_used, lvm_used
+	local deco = false
+	if minp.y >  mcl_vars.mg_nether_deco_max - 64 and maxp.y <  mcl_vars.mg_nether_max + 128 then
+		deco = {min=mcl_vars.mg_nether_deco_max,max=mcl_vars.mg_nether_max}
+	end
+	return lvm_used, lvm_used, deco
 end
 
 local function block_fixes(vm, data, data2, emin, emax, area, minp, maxp, blockseed)

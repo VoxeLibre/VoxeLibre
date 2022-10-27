@@ -1531,6 +1531,23 @@ local function register_dimension_biomes()
 	--[[ REALMS ]]
 
 	--[[ THE NETHER ]]
+	-- the following decoration is a hack to cover exposed bedrock in netherrack - be careful not to put any ceiling decorations in a way that would apply to this (they would get generated regardless of biome)
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:bedrock"},
+		sidelen = 16,
+		fill_ratio = 10,
+		biomes = { "Nether" },
+		y_min = mcl_vars.mg_lava_nether_max,
+		y_max = mcl_vars.mg_nether_max + 15,
+		height = 6,
+		max_height = 10,
+		decoration = "mcl_nether:netherrack",
+		flags = "all_ceilings",
+		param2 = 0,
+	})
+
+
 	minetest.register_biome({
 		name = "Nether",
 		node_filler = "mcl_nether:netherrack",
@@ -1554,7 +1571,7 @@ local function register_dimension_biomes()
 		fill_ratio = 10,
 		biomes = { "Nether" },
 		y_min = -31000,
-		y_max = mcl_vars.mg_nether_max,
+		y_max = mcl_vars.mg_nether_deco_max,
 		decoration = "mcl_nether:netherrack",
 		flags = "all_floors",
 		param2 = 0,
@@ -1583,7 +1600,7 @@ local function register_dimension_biomes()
 		fill_ratio = 10,
 		biomes = { "SoulsandValley" },
 		y_min = -31000,
-		y_max = mcl_vars.mg_nether_max,
+		y_max = mcl_vars.mg_nether_deco_max,
 		decoration = "mcl_blackstone:soul_soil",
 		flags = "all_floors, all_ceilings",
 		param2 = 0,
@@ -1598,7 +1615,7 @@ local function register_dimension_biomes()
 		clust_size     = 15,
 		biomes = { "SoulsandValley" },
 		y_min = mcl_vars.mg_nether_min,
-		y_max = mcl_vars.mg_nether_max + 80,
+		y_max = mcl_vars.mg_nether_deco_max,
 		noise_params = {
 			offset  = 0,
 			scale   = 1,
@@ -1633,7 +1650,7 @@ local function register_dimension_biomes()
 		fill_ratio = 10,
 		biomes = { "CrimsonForest" },
 		y_min = -31000,
-		y_max = mcl_vars.mg_nether_max,
+		y_max = mcl_vars.mg_nether_deco_max,
 		decoration = "mcl_crimson:crimson_nylium",
 		flags = "all_floors",
 		param2 = 0,
@@ -1660,7 +1677,7 @@ local function register_dimension_biomes()
 		fill_ratio = 10,
 		biomes = { "WarpedForest" },
 		y_min = -31000,
-		y_max = mcl_vars.mg_nether_max,
+		y_max = mcl_vars.mg_nether_deco_max,
 		decoration = "mcl_crimson:warped_nylium",
 		flags = "all_floors",
 		param2 = 0,
@@ -1688,7 +1705,7 @@ local function register_dimension_biomes()
 		fill_ratio = 10,
 		biomes = { "BasaltDelta" },
 		y_min = -31000,
-		y_max = mcl_vars.mg_nether_max,
+		y_max = mcl_vars.mg_nether_deco_max,
 		decoration = "mcl_blackstone:basalt",
 		flags = "all_floors",
 		param2 = 0,
@@ -1703,7 +1720,7 @@ local function register_dimension_biomes()
 	clust_size     = 20,
 	biomes = { "BasaltDelta" },
 	y_min = mcl_vars.mg_nether_min,
-	y_max = mcl_vars.mg_nether_max + 80,
+	y_max = mcl_vars.mg_nether_deco_max,
 	noise_params = {
 		offset  = 0,
 		scale   = 1,
@@ -4903,7 +4920,7 @@ local function register_dimension_decorations()
 		fill_ratio = 0.063,
 		biomes = {"CrimsonForest"},
 		y_min = mcl_vars.mg_lava_nether_max + 1,
-		y_max = mcl_vars.mg_nether_max -5,
+		y_max = mcl_vars.mg_nether_deco_max,
 		flags = "all_ceilings",
 		height = 2,
 		height_max = 8,
