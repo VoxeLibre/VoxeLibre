@@ -181,6 +181,13 @@ local horse = {
 	on_spawn = update_textures,
 	do_custom = function(self, dtime)
 
+		if not self._horse_speed then
+			self._horse_speed = math.random(486, 1457)/100
+		else
+			minetest.chat_send_all(self._horse_speed)
+			self.run_velocity = self._horse_speed
+		end
+
 		-- set needed values if not already present
 		if not self._regentimer then
 			self._regentimer = 0
