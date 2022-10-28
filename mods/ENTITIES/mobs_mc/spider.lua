@@ -12,6 +12,7 @@ local S = minetest.get_translator("mobs_mc")
 
 -- Spider by AspireMint (fishyWET (CC-BY-SA 3.0 license for texture)
 minetest.register_entity("mobs_mc:spider_eyes", {
+	pointable = false,
 	visual = "mesh",
 	mesh = "mobs_mc_spider.b3d",
 	visual_size = {x=1.01/3, y=1.01/3},
@@ -121,8 +122,21 @@ cave_spider.textures = { {"mobs_mc_cave_spider.png^(mobs_mc_spider_eyes.png^[mak
 cave_spider.damage = 3 -- damage increased to undo non-existing poison
 cave_spider.hp_min = 1
 cave_spider.hp_max = 12
-cave_spider.collisionbox = {-0.35, -0.01, -0.35, 0.35, 0.49, 0.35}
-cave_spider.visual_size = {x=1.66666, y=1.5}
+cave_spider.collisionbox = {-0.35, -0.01, -0.35, 0.35, 0.46, 0.35}
+cave_spider.visual_size = {x=0.55,y=0.5}
+cave_spider.on_spawn = function(self)
+	self.object:set_properties({visual_size={x=0.55,y=0.5}})
+	local spider_eyes=false
+	for n = 1, #self.object:get_children() do
+		local obj = self.object:get_children()[n]
+		if obj:get_luaentity() and self.object:get_luaentity().name == "mobs_mc:spider_eyes" then
+			spider_eyes = true
+		end
+	end
+	if not spider_eyes then
+		minetest.add_entity(self.object:get_pos(), "mobs_mc:spider_eyes"):set_attach(self.object, "body.head", vector.new(0,-0.98,2), vector.new(90,180,180))
+	end
+end
 cave_spider.walk_velocity = 1.3
 cave_spider.run_velocity = 3.2
 cave_spider.sounds = table.copy(spider.sounds)

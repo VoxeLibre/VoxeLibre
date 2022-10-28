@@ -13,8 +13,18 @@ local FLOP_HOR_SPEED = 1.5
 local ENTITY_CRAMMING_MAX = 24
 local CRAMMING_DAMAGE = 3
 
+local PATHFINDING = "gowp"
+
 -- Localize
 local S = minetest.get_translator("mcl_mobs")
+
+local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager",false)
+local LOG_MODULE = "[Mobs]"
+local function mcl_log (message)
+	if LOGGING_ON and message then
+		minetest.log(LOG_MODULE .. " " .. message)
+	end
+end
 
 local function shortest_term_of_yaw_rotatoin(self, rot_origin, rot_target, nums)
 
@@ -404,21 +414,20 @@ local set_yaw = function(self, yaw, delay, dtime)
 
 	if self.noyaw then return end
 
-	if self._kb_turn then
-		self._turn_to = yaw
-	end
+	self._turn_to = yaw
+
 	--clamp our yaw to a 360 range
 	if math.deg(self.object:get_yaw()) > 360 then
-		self.object:set_yaw(math.rad(10))
+		self.object:set_yaw(math.rad(1))
 	elseif math.deg(self.object:get_yaw()) < 0 then
-		self.object:set_yaw(math.rad(350))
+		self.object:set_yaw(math.rad(359))
 	end
 
 	--calculate the shortest way to turn to find our target
 	local target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), yaw, true)
 
 	--turn in the shortest path possible toward our target. if we are attacking, don't dance.
-	if math.abs(target_shortest_path) > 100 and (self.attack and self.attack:get_pos() or self.following and self.following:get_pos()) then
+	if (math.abs(target_shortest_path) > 50 and not self._kb_turn) and (self.attack and self.attack:get_pos() or self.following and self.following:get_pos()) then
 		if self.following then
 			target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.following:get_pos())), true)
 		else
@@ -435,8 +444,14 @@ local set_yaw = function(self, yaw, delay, dtime)
 	if math.abs(target_shortest_path) > 280*ddtime then
 		if target_shortest_path > 0 then
 			self.object:set_yaw(self.object:get_yaw()+3.6*ddtime)
+			if self.acc then
+				self.acc=vector.rotate_around_axis(self.acc,vector.new(0,1,0), 3.6*ddtime)
+			end
 		else
 			self.object:set_yaw(self.object:get_yaw()-3.6*ddtime)
+			if self.acc then
+				self.acc=vector.rotate_around_axis(self.acc,vector.new(0,1,0), -3.6*ddtime)
+			end
 		end
 	end
 
@@ -1059,17 +1074,87 @@ local function within_limits(pos, radius)
 	return true
 end
 
+-- get node but use fallback for nil or unknown
+local node_ok = function(pos, fallback)
+
+	fallback = fallback or mcl_mobs.fallback_node
+
+	local node = minetest.get_node_or_nil(pos)
+
+	if node and minetest.registered_nodes[node.name] then
+		return node
+	end
+
+	return minetest.registered_nodes[fallback]
+end
+
+
+local can_jump_cliff = function(self)
+	local yaw = self.object:get_yaw()
+	local pos = self.object:get_pos()
+	local v = self.object:get_velocity()
+
+	local v2 = abs(v.x)+abs(v.z)*.833
+	local jump_c_multiplier = 1
+	if v2/self.walk_velocity/2>1 then
+		jump_c_multiplier = v2/self.walk_velocity/2
+	end
+
+	-- where is front
+	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+
+	--is there nothing under the block in front? if so jump the gap.
+	local nodLow = node_ok({
+		x = pos.x + dir_x-0.6,
+		y = pos.y - 0.5,
+		z = pos.z + dir_z-0.6
+	}, "air")
+
+	local nodFar = node_ok({
+		x = pos.x + dir_x*2,
+		y = pos.y - 0.5,
+		z = pos.z + dir_z*2
+	}, "air")
+
+	local nodFar2 = node_ok({
+		x = pos.x + dir_x*2.5,
+		y = pos.y - 0.5,
+		z = pos.z + dir_z*2.5
+	}, "air")
+
+
+	if minetest.registered_nodes[nodLow.name]
+	and minetest.registered_nodes[nodLow.name].walkable ~= true
+
+
+	and (minetest.registered_nodes[nodFar.name]
+	and minetest.registered_nodes[nodFar.name].walkable == true
+
+	or minetest.registered_nodes[nodFar2.name]
+	and minetest.registered_nodes[nodFar2.name].walkable == true)
+
+	then
+		--disable fear heigh while we make our jump
+		self._jumping_cliff = true
+		minetest.after(1, function()
+			if self and self.object then
+				self._jumping_cliff = false
+			end
+		end)
+		return true
+	else
+		return false
+	end
+end
 
 -- is mob facing a cliff or danger
 local is_at_cliff_or_danger = function(self)
 
-	if self.fear_height == 0 then -- 0 for no falling protection!
+	if self.fear_height == 0 or can_jump_cliff(self) or self._jumping_cliff or not self.object:get_luaentity() then -- 0 for no falling protection!
 		return false
 	end
 
-	if not self.object:get_luaentity() then
-		return false
-	end
 	local yaw = self.object:get_yaw()
 	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
 	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)
@@ -1102,7 +1187,7 @@ end
 local is_at_water_danger = function(self)
 
 
-	if not self.object:get_luaentity() then
+	if not self.object:get_luaentity() or can_jump_cliff(self) or self._jumping_cliff then
 		return false
 	end
 	local yaw = self.object:get_yaw()
@@ -1135,20 +1220,6 @@ local is_at_water_danger = function(self)
 	return false
 end
 
-
--- get node but use fallback for nil or unknown
-local node_ok = function(pos, fallback)
-
-	fallback = fallback or mcl_mobs.fallback_node
-
-	local node = minetest.get_node_or_nil(pos)
-
-	if node and minetest.registered_nodes[node.name] then
-		return node
-	end
-
-	return minetest.registered_nodes[fallback]
-end
 
 -- environmental damage (water, lava, fire, light etc.)
 local do_env_damage = function(self)
@@ -1205,11 +1276,13 @@ local do_env_damage = function(self)
 	end
 	local _, dim = mcl_worlds.y_to_layer(pos.y)
 	if (self.sunlight_damage ~= 0 or self.ignited_by_sunlight) and (sunlight or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
-		if self.ignited_by_sunlight then
-			mcl_burning.set_on_fire(self.object, 10)
-		else
-			deal_light_damage(self, pos, self.sunlight_damage)
-			return true
+		if self.armor_list and not self.armor_list.helmet or not self.armor_list or self.armor_list and self.armor_list.helmet and self.armor_list.helmet == "" then
+			if self.ignited_by_sunlight then
+				mcl_burning.set_on_fire(self.object, 10)
+			else
+				deal_light_damage(self, pos, self.sunlight_damage)
+				return true
+			end
 		end
 	end
 
@@ -1415,8 +1488,8 @@ local do_jump = function(self)
 	end
 
 	-- where is front
-	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+.4
-	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+.4
+	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
 
 	-- what is in front of mob?
 	nod = node_ok({
@@ -1433,8 +1506,9 @@ local do_jump = function(self)
 		z = pos.z + dir_z
 	}, "air")
 
+
 	-- we don't attempt to jump if there's a stack of blocks blocking
-	if minetest.registered_nodes[nodTop.name].walkable == true then
+	if minetest.registered_nodes[nodTop.name].walkable == true and not (self.attack and self.state == "attack") then
 		return false
 	end
 
@@ -1444,7 +1518,7 @@ local do_jump = function(self)
 	end
 
 	local ndef = minetest.registered_nodes[nod.name]
-	if self.walk_chance == 0 or ndef and ndef.walkable then
+	if self.walk_chance == 0 or ndef and ndef.walkable or can_jump_cliff(self) then
 
 		if minetest.get_item_group(nod.name, "fence") == 0
 		and minetest.get_item_group(nod.name, "fence_gate") == 0
@@ -1453,6 +1527,10 @@ local do_jump = function(self)
 			local v = self.object:get_velocity()
 
 			v.y = self.jump_height + 0.1 * 3
+
+			if can_jump_cliff(self) then
+				v=vector.multiply(v, vector.new(2.8,1,2.8))
+			end
 
 			set_animation(self, "jump") -- only when defined
 
@@ -1562,6 +1640,7 @@ end
 -- find two animals of same type and breed if nearby and horny
 local breed = function(self)
 
+	--mcl_log("In breed function")
 	-- child takes a long time before growing into adult
 	if self.child == true then
 
@@ -1619,6 +1698,8 @@ local breed = function(self)
 	if self.horny == true
 	and self.hornytimer <= HORNY_TIME then
 
+		mcl_log("In breed function. All good. Do the magic.")
+
 		local pos = self.object:get_pos()
 
 		effect({x = pos.x, y = pos.y + 1, z = pos.z}, 8, "heart.png", 3, 4, 1, 0.1)
@@ -1653,6 +1734,8 @@ local breed = function(self)
 				end
 			end
 
+			if canmate then mcl_log("In breed function. Can mate.") end
+
 			if ent
 			and canmate == true
 			and ent.horny == true
@@ -1667,6 +1750,8 @@ local breed = function(self)
 				ent.hornytimer = HORNY_TIME + 1
 
 				-- spawn baby
+
+
 				minetest.after(5, function(parent1, parent2, pos)
 					if not parent1.object:get_luaentity() then
 						return
@@ -2449,7 +2534,7 @@ local function go_to_pos(entity,b)
 	local v = { x = b.x - s.x, z = b.z - s.z }
 	local yaw = (atann(v.z / v.x) + pi / 2) - entity.rotate
 	if b.x > s.x then yaw = yaw + pi end
-	entity.object:set_yaw(yaw)
+	--entity.object:set_yaw(yaw)
 	set_velocity(entity,entity.follow_velocity)
 	mcl_mobs:set_animation(entity, "walk")
 end
@@ -2463,10 +2548,11 @@ local function check_doors(self)
 		if n.name:find("_b_") then
 			local def = minetest.registered_nodes[n.name]
 			local closed = n.name:find("_b_1")
-			if t < 0.3 or t > 0.8 then
-				if not closed and def.on_rightclick then def.on_rightclick(d,n,self) end
-			else
+			if self.state == PATHFINDING then
 				if closed and def.on_rightclick then def.on_rightclick(d,n,self) end
+				--if not closed and def.on_rightclick then def.on_rightclick(d,n,self) end
+			else
+
 			end
 
 		end
@@ -2477,37 +2563,106 @@ local gowp_etime = 0
 
 local function check_gowp(self,dtime)
 	gowp_etime = gowp_etime + dtime
-	if gowp_etime < 0.2 then return end
+	if gowp_etime < 0.1 then return end
 	gowp_etime = 0
 	local p = self.object:get_pos()
-	if not p or not self._target then return end
-	if vector.distance(p,self._target) < 1 then
+
+	-- no destination
+	if not p or not self._target then
+		mcl_log("p: ".. tostring(p))
+		mcl_log("self._target: ".. tostring(self._target))
+		return
+	end
+
+	-- arrived at location, finish gowp
+	local distance_to_targ = vector.distance(p,self._target)
+	mcl_log("Distance to targ: ".. tostring(distance_to_targ))
+	if distance_to_targ < 2 then
+		mcl_log("Arrived at _target")
 		self.waypoints = nil
 		self._target = nil
 		self.current_target = nil
 		self.state = "stand"
+		self.order = "stand"
+		self.object:set_velocity({x = 0, y = 0, z = 0})
+		self.object:set_acceleration({x = 0, y = 0, z = 0})
 		if self.callback_arrived then return self.callback_arrived(self) end
 		return true
 	end
-	if self.waypoints and ( not self.current_target or vector.distance(p,self.current_target) < 2 ) then
+
+	-- More pathing to be done
+	if self.waypoints and #self.waypoints > 0 and ( not self.current_target or vector.distance(p,self.current_target) < 2 ) then
+		-- We have waypoints, and no current target, or we're at it. We need a new current_target.
+
+		if not self.current_target then
+			for i, j in pairs (self.waypoints) do
+				mcl_log("Val: ".. tostring(j))
+			end
+		end
+
 		self.current_target = table.remove(self.waypoints, 1)
-		--minetest.log("nextwp:".. tostring(self.current_target) )
+		mcl_log("current target:".. minetest.pos_to_string(self.current_target) )
+		--mcl_log("type:".. type(self.current_target) )
 		go_to_pos(self,self.current_target)
 		return
 	elseif self.current_target then
+		-- No waypoints left, but have current target. Potentially last waypoint to go to.
+
+		mcl_log("self.current_target: ".. minetest.pos_to_string(self.current_target))
+		mcl_log("pos: ".. minetest.pos_to_string(p))
 		go_to_pos(self,self.current_target)
+		-- Do i just delete current_target, and return so we can find final path.
+	else
+		-- Not at target, no current waypoints or current_target. Through the door and should be able to path to target.
+		-- Is a little sensitive and could take 1 - 7 times. A 10 fail count might be a good exit condition.
+
+		mcl_log("We don't have waypoints or a current target. Let's try to path to target")
+		local final_wp = minetest.find_path(p,self._target,150,1,4)
+		if final_wp then
+			mcl_log("We might be able to get to target here.")
+			self.waypoints = final_wp
+			--go_to_pos(self,self._target)
+		else
+			mcl_log("Cannot plot final route to target")
+		end
 	end
 
-	if self.current_target and not minetest.line_of_sight(self.object:get_pos(),self.current_target) then
-		self.waypoints=minetest.find_path(p,self._target,150,1,4)
-		if not self.waypoints then self.state = "walk" end --give up
-		self.current_target = nil
+	--if self.current_target and not minetest.line_of_sight(self.object:get_pos(),self.current_target) then
+	if self.current_target and (self.waypoints and #self.waypoints == 0) then
+		local updated_p = self.object:get_pos()
+		local distance_to_cur_targ = vector.distance(updated_p,self.current_target)
+
+		mcl_log("Distance to current target: ".. tostring(distance_to_cur_targ))
+		mcl_log("Current p: ".. minetest.pos_to_string(updated_p))
+		--if not minetest.line_of_sight(self.object:get_pos(),self._target) then
+
+		-- 1.6 is good. is 1.9 better? It could fail less, but will it path to door when it isn't after door
+		if distance_to_cur_targ > 1.9 then
+			mcl_log("no LOS to target: ".. minetest.pos_to_string(self.current_target))
+			go_to_pos(self,self._current_target)
+		else
+			mcl_log("Let's go to target: ".. minetest.pos_to_string(self.current_target))
+			self.current_target = nil
+			--go_to_pos(self,self._target)
+			self.waypoints=minetest.find_path(updated_p,self._target,150,1,4)
+			--if not self.waypoints then
+			--mcl_log("Give up ")
+			--self.state = "walk"
+			--end --give up
+		end
+
+		--self.waypoints=minetest.find_path(p,self._target,150,1,4)
+		--if not self.waypoints then
+			--mcl_log("Give up ")
+			--self.state = "walk"
+		--end --give up
+		--self.current_target = nil
 		return
 	end
-	if not self.current_target then
-		--minetest.log("no path")
-		self.state = "walk"
-	end
+	--if not self.current_target then
+		--mcl_log("no path. Give up")
+		--self.state = "walk"
+	--end
 end
 
 -- execute current state (stand, walk, run, attacks)
@@ -2556,9 +2711,9 @@ local do_states = function(self, dtime)
 		end
 
 		-- npc's ordered to stand stay standing
-		if self.type ~= "npc"
-		or self.order ~= "stand" then
+		if self.order == "stand" or self.order == "sleep" or self.order == "work" then
 
+		else
 			if self.walk_chance ~= 0
 			and self.facing_fence ~= true
 			and random(1, 100) <= self.walk_chance
@@ -2570,7 +2725,7 @@ local do_states = function(self, dtime)
 			end
 		end
 
-	elseif self.state == "gowp" then
+	elseif self.state == PATHFINDING then
 		check_gowp(self,dtime)
 
 	elseif self.state == "walk" then
@@ -3025,7 +3180,7 @@ local do_states = function(self, dtime)
 
 			if self.shoot_interval
 			and self.timer > self.shoot_interval
-			and not minetest.raycast(p, self.attack:get_pos(), false, false):next()
+			and not minetest.raycast(vector.add(p, vector.new(0,self.shoot_offset,0)), vector.add(self.attack:get_pos(), vector.new(0,1.5,0)), false, false):next()
 			and random(1, 100) <= 60 then
 
 				self.timer = 0
@@ -3071,6 +3226,8 @@ local do_states = function(self, dtime)
 					end
 				end
 			end
+		else
+
 		end
 	end
 end
@@ -3085,23 +3242,50 @@ local plane_adjacents = {
 
 local gopath_last = os.time()
 function mcl_mobs:gopath(self,target,callback_arrived)
-	if os.time() - gopath_last < 15 then return end
+	if self.state == PATHFINDING then mcl_log("Already set as gowp, don't set another path until done.") return end
+
+	if os.time() - gopath_last < 15 then
+		mcl_log("Not ready to path yet")
+		return
+	end
 	gopath_last = os.time()
-	--minetest.log("gowp")
+
+	self.order = nil
+
+	mcl_log("gowp target: " .. minetest.pos_to_string(target))
 	local p = self.object:get_pos()
 	local t = vector.offset(target,0,1,0)
 	local wp = minetest.find_path(p,t,150,1,4)
+
+	--Path to door first
 	if not wp then
+		--mcl_log("gowp. no wp. Look for door")
 		local d = minetest.find_node_near(target,16,{"group:door"})
 		if d then
+			--mcl_log("Found a door near")
 			for _,v in pairs(plane_adjacents) do
 				local pos = vector.add(d,v)
+
 				local n = minetest.get_node(pos)
 				if n.name == "air" then
 					wp = minetest.find_path(p,pos,150,1,4)
-					if wp then break end
+					if wp then
+						mcl_log("Found a path to next to door".. minetest.pos_to_string(pos))
+						local other_side_of_door = vector.add(d,-v)
+						mcl_log("Opposite is: ".. minetest.pos_to_string(other_side_of_door))
+						table.insert(wp, other_side_of_door)
+						break
+
+					else
+						--mcl_log("This block next to door doesn't work.")
+					end
+				else
+					--mcl_log("Block is not air, it is: ".. n.name)
 				end
+
 			end
+		else
+			mcl_log("No door found")
 		end
 	end
 	if wp and #wp > 0 then
@@ -3109,7 +3293,7 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 		self.callback_arrived = callback_arrived
 		table.remove(wp,1)
 		self.waypoints = wp
-		self.state = "gowp"
+		self.state = PATHFINDING
 		return true
 	else
 	self.state = "walk"
@@ -3125,19 +3309,91 @@ local function player_near(pos)
 	end
 end
 
+local function get_armor_texture(armor_name)
+	if armor_name == "" then
+		return ""
+	end
+	if armor_name=="blank.png" then
+		return "blank.png"
+	end
+	local seperator = string.find(armor_name, ":")
+	return "mcl_armor_"..string.sub(armor_name, seperator+1, -1)..".png^"
+end
+
+local function set_armor_texture(self)
+	if self.armor_list then
+		local chestplate=minetest.registered_items[self.armor_list.chestplate] or {name=""}
+		local boots=minetest.registered_items[self.armor_list.boots] or {name=""}
+		local leggings=minetest.registered_items[self.armor_list.leggings] or {name=""}
+		local helmet=minetest.registered_items[self.armor_list.helmet] or {name=""}
+
+		if helmet.name=="" and chestplate.name=="" and leggings.name=="" and boots.name=="" then
+			helmet={name="blank.png"}
+		end
+		local texture = get_armor_texture(chestplate.name)..get_armor_texture(helmet.name)..get_armor_texture(boots.name)..get_armor_texture(leggings.name)
+		if string.sub(texture, -1,-1) == "^" then
+			texture=string.sub(texture,1,-2)
+		end
+		if self.textures[self.wears_armor] then
+			self.textures[self.wears_armor]=texture
+		end
+		self.object:set_properties({textures=self.textures})
+
+		local armor_
+		if type(self.armor) == "table" then
+			armor_ = table.copy(self.armor)
+			armor_.immortal = 1
+		else
+			armor_ = {immortal=1, fleshy = self.armor}
+		end
+
+		for _,item in pairs(self.armor_list) do
+			if not item then return end
+			if type(minetest.get_item_group(item, "mcl_armor_points")) == "number" then
+				armor_.fleshy=armor_.fleshy-(minetest.get_item_group(item, "mcl_armor_points")*3.5)
+			end
+		end
+		self.object:set_armor_groups(armor_)
+	end
+end
+
 local function check_item_pickup(self)
-	if self.pick_up and #self.pick_up > 0 then
+	if self.pick_up and #self.pick_up > 0 or self.wears_armor then
 		local p = self.object:get_pos()
 		for _,o in pairs(minetest.get_objects_inside_radius(p,2)) do
 			local l=o:get_luaentity()
 			if l and l.name == "__builtin:item" then
-				for k,v in pairs(self.pick_up) do
-					if not player_near(p) and self.on_pick_up and l.itemstring:find(v) then
-						local r =  self.on_pick_up(self,l)
-						if  r and r:get_count() > 0 then
-							l.itemstring = r:to_string()
-						else
-							o:remove()
+				if not player_near(p) and l.itemstring:find("mcl_armor") and self.wears_armor then
+					local armor_type
+					if l.itemstring:find("chestplate") then
+						armor_type = "chestplate"
+					elseif l.itemstring:find("boots") then
+						armor_type = "boots"
+					elseif l.itemstring:find("leggings") then
+						armor_type = "leggings"
+					elseif l.itemstring:find("helmet") then
+						armor_type = "helmet"
+					end
+					if not armor_type then
+						return
+					end
+					if not self.armor_list then
+						self.armor_list={helmet="",chestplate="",boots="",leggings=""}
+					elseif self.armor_list[armor_type] and self.armor_list[armor_type] ~= "" then
+						return
+					end
+					self.armor_list[armor_type]=ItemStack(l.itemstring):get_name()
+					o:remove()
+				end
+				if self.pick_up then
+					for k,v in pairs(self.pick_up) do
+						if not player_near(p) and self.on_pick_up and l.itemstring:find(v) then
+							local r =  self.on_pick_up(self,l)
+							if  r and r.is_empty and not r:is_empty() then
+								l.itemstring = r:to_string()
+							elseif r and r.is_empty and r:is_empty() then
+								o:remove()
+							end
 						end
 					end
 				end
@@ -3498,7 +3754,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			elseif luaentity and luaentity._knockback then
 				kb = kb + luaentity._knockback
 			end
-			--self._kb_turn = false
+			self._kb_turn = true
 			self._turn_to=self.object:get_yaw()-1.57
 			self.frame_speed_multiplier=2.3
 			if self.animation.run_end then
@@ -3509,7 +3765,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			minetest.after(0.2, function()
 				if self and self.object then
 					self.frame_speed_multiplier=1
-					self._kb_turn = true
+					self._kb_turn = false
 				end
 			end)
 			self.object:add_velocity({
@@ -3525,7 +3781,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	-- if skittish then run away
 	if hitter and is_player and hitter:get_pos() and not die and self.runaway == true and self.state ~= "flop" then
 
-		yaw = set_yaw(self, minetest.dir_to_yaw(vector.direction(hitter:get_pos(), self.object:get_pos())))
+		local yaw = set_yaw(self, minetest.dir_to_yaw(vector.direction(hitter:get_pos(), self.object:get_pos())))
 		minetest.after(0.2,function()
 			if self and self.object and self.object:get_pos() and hitter and is_player and hitter:get_pos() then
 				yaw = set_yaw(self, minetest.dir_to_yaw(vector.direction(hitter:get_pos(), self.object:get_pos())))
@@ -3814,9 +4070,16 @@ local mob_activate = function(self, staticdata, def, dtime)
 			self.on_spawn_run = true --  if true, set flag to run once only
 		end
 	end
+	if not self._run_armor_init then
+		self.armor_list={helmet="",chestplate="",boots="",leggings=""}
+		set_armor_texture(self)
+		self._run_armor_init = true
+	end
+
 
 	-- run after_activate
 	if def.after_activate then
+
 		def.after_activate(self, staticdata, def, dtime)
 	end
 end
@@ -3931,7 +4194,11 @@ local mob_step = function(self, dtime)
 			if not self.animation.walk_speed then
 				self.animation.walk_speed = 25
 			end
-			self.object:set_animation_frame_speed((v2/math.max(1,self.run_velocity))*self.animation.walk_speed*self.frame_speed_multiplier)
+			if abs(v.x)+abs(v.z) > 0.5 then
+				self.object:set_animation_frame_speed((v2/math.max(1,self.run_velocity))*self.animation.walk_speed*self.frame_speed_multiplier)
+			else
+				self.object:set_animation_frame_speed(25)
+			end
 		end
 
 		--set_speed
@@ -3989,12 +4256,13 @@ local mob_step = function(self, dtime)
 	-- end rotation
 
 	if self.head_swivel and type(self.head_swivel) == "string" then
+		local final_rotation = vector.new(0,0,0)
 		local oldp,oldr = self.object:get_bone_position(self.head_swivel)
 
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 10)) do
 			if obj:is_player() and not self.attack or obj:get_luaentity() and obj:get_luaentity().name == self.name and self ~= obj:get_luaentity() then
 				if not self._locked_object then
-					if math.random(5000/self.curiosity) == 1 then
+					if math.random(5000/self.curiosity) == 1 or vector.distance(pos,obj:get_pos())<4 and obj:is_player() then
 						self._locked_object = obj
 					end
 				else
@@ -4005,8 +4273,8 @@ local mob_step = function(self, dtime)
 			end
 		end
 
-		if self.attack then
-			self._locked_object = self.attack
+		if self.attack or self.following then
+			self._locked_object = self.attack or self.following
 		end
 
 		if self._locked_object and (self._locked_object:is_player() or self._locked_object:get_luaentity()) and self._locked_object:get_hp() > 0 then
@@ -4026,29 +4294,35 @@ local mob_step = function(self, dtime)
 				local direction_player = vector.direction(vector.add(self.object:get_pos(), vector.new(0, self.head_eye_height*.7, 0)), vector.add(player_pos, vector.new(0, _locked_object_eye_height, 0)))
 				local mob_yaw = math.deg(-(-(self_rot.y)-(-minetest.dir_to_yaw(direction_player))))+self.head_yaw_offset
 				local mob_pitch = math.deg(-dir_to_pitch(direction_player))*self.head_pitch_multiplier
-				if (mob_yaw < -60 or mob_yaw > 60) and not (self.attack and self.type == "monster") then
-					mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.multiply(oldr, 0.9))
-				elseif self.attack and self.type == "monster" then
+
+				if (mob_yaw < -60 or mob_yaw > 60) and not (self.attack and self.state == "attack" and not self.runaway) then
+					final_rotation = vector.multiply(oldr, 0.9)
+				elseif self.attack and self.state == "attack" and not self.runaway then
 					if self.head_yaw == "y" then
-						mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, mob_yaw, 0))
+						final_rotation = vector.new(mob_pitch, mob_yaw, 0)
 					elseif self.head_yaw == "z" then
-						mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(mob_pitch, 0, -mob_yaw))
+						final_rotation = vector.new(mob_pitch, 0, -mob_yaw)
 					end
+
 				else
+
 					if self.head_yaw == "y" then
-						mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, ((mob_yaw-oldr.y)*.3)+oldr.y, 0))
+						final_rotation = vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, ((mob_yaw-oldr.y)*.3)+oldr.y, 0)
 					elseif self.head_yaw == "z" then
-						mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, 0, -(((mob_yaw-oldr.y)*.3)+oldr.y)*3))
+						final_rotation = vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, 0, -(((mob_yaw-oldr.y)*.3)+oldr.y)*3)
 					end
 				end
 			end
 		elseif not self._locked_object and math.abs(oldr.y) > 3 and math.abs(oldr.x) < 3 then
-			mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.multiply(oldr, 0.9))
+			final_rotation = vector.multiply(oldr, 0.9)
 		else
-			mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), vector.new(0,0,0))
+			final_rotation = vector.new(0,0,0)
 		end
 
+		mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), final_rotation)
+
 	end
+
 
 	-- run custom function (defined in mob lua file)
 	if self.do_custom then
@@ -4070,7 +4344,7 @@ local mob_step = function(self, dtime)
 	-- attack timer
 	self.timer = self.timer + dtime
 
-	if self.state ~= "attack" and self.state ~= "gowp" then
+	if self.state ~= "attack" and self.state ~= PATHFINDING then
 		if self.timer < 1 then
 			return
 		end
@@ -4120,6 +4394,8 @@ local mob_step = function(self, dtime)
 	end
 
 	do_jump(self)
+
+	set_armor_texture(self)
 
 	runaway_from(self)
 
@@ -4277,6 +4553,7 @@ minetest.register_entity(name, {
 	curiosity = def.curiosity or 1, -- how often mob will look at player on idle
 	head_yaw = def.head_yaw or "y", -- axis to rotate head on
 	horrizonatal_head_height = def.horrizonatal_head_height or 0,
+	wears_armor = def.wears_armor, -- a number value used to index texture slot for armor
 	stepheight = def.stepheight or 0.6,
 	name = name,
 	description = def.description,
@@ -4330,6 +4607,7 @@ minetest.register_entity(name, {
 	nofollow = def.nofollow,
 	can_open_doors = def.can_open_doors,
 	jump = def.jump ~= false,
+	automatic_face_movement_max_rotation_per_sec = 300,
 	walk_chance = def.walk_chance or 50,
 	attacks_monsters = def.attacks_monsters or false,
 	group_attack = def.group_attack or false,
@@ -4439,6 +4717,7 @@ minetest.register_entity(name, {
 		self.object:set_properties({
 			collide_with_objects = false,
 		})
+
 		return mob_activate(self, staticdata, def, dtime)
 	end,
 

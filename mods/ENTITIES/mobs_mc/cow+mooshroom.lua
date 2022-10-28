@@ -6,6 +6,7 @@ local cow_def = {
 	description = S("Cow"),
 	type = "animal",
 	spawn_class = "passive",
+	passive = true,
 	hp_min = 10,
 	hp_max = 10,
 	xp_min = 1,

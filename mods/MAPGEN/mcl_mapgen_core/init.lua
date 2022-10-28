@@ -251,6 +251,7 @@ end
 
 local function set_palette(minp,maxp,data2,area,biomemap,nodes)
 	-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
+	if not biomemap then return end
 	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
 	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
 	for n=1, #nodes do
@@ -353,7 +354,7 @@ mcl_mapgen_core.register_generator("end_fixes", end_basic, function(minp,maxp)
 	if maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max then return end
 end, 9999, true)
 
-if mg_name ~= "v6" then
+if mg_name ~= "v6" and mg_name ~= "singlenode" then
 	mcl_mapgen_core.register_generator("block_fixes", block_fixes, nil, 9999, true)
 end
 

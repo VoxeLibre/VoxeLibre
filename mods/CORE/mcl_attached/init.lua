@@ -5,6 +5,8 @@
 -- Nodes in group "supported_node" can be placed on any node that does not
 -- have the "airlike" drawtype.  Carpets are an example of this type.
 
+local pairs = pairs
+local math = math
 local vector = vector
 
 local facedir_to_dir = minetest.facedir_to_dir
@@ -22,15 +24,17 @@ local add_item = minetest.add_item
 -- We need this to do the exact same dropping node handling in our override
 -- minetest.check_single_for_falling() function as in the builtin function.
 --
+---@param p Vector
 local function drop_attached_node(p)
 	local n = get_node(p)
 	local drops = get_node_drops(n, "")
 	local def = registered_nodes[n.name]
+
 	if def and def.preserve_metadata then
 		local oldmeta = get_meta(p):to_table().fields
 		-- Copy pos and node because the callback can modify them.
-		local pos_copy = vector.new(p)
-		local node_copy = {name=n.name, param1=n.param1, param2=n.param2}
+		local pos_copy = vector.copy(p)
+		local node_copy = { name = n.name, param1 = n.param1, param2 = n.param2 }
 		local drop_stacks = {}
 		for k, v in pairs(drops) do
 			drop_stacks[k] = ItemStack(v)
@@ -38,16 +42,18 @@ local function drop_attached_node(p)
 		drops = drop_stacks
 		def.preserve_metadata(pos_copy, node_copy, oldmeta, drops)
 	end
+
 	if def and def.sounds and def.sounds.fall then
-		core.sound_play(def.sounds.fall, {pos = p}, true)
+		minetest.sound_play(def.sounds.fall, { pos = p }, true)
 	end
+
 	remove_node(p)
 	for _, item in pairs(drops) do
-		local pos = {
-			x = p.x + math.random()/2 - 0.25,
-			y = p.y + math.random()/2 - 0.25,
-			z = p.z + math.random()/2 - 0.25,
-		}
+		local pos = vector.offset(p,
+			math.random() / 2 - 0.25,
+			math.random() / 2 - 0.25,
+			math.random() / 2 - 0.25
+		)
 		add_item(pos, item)
 	end
 end
@@ -90,4 +96,3 @@ function minetest.check_single_for_falling(pos)
 
 	return false
 end
-
