@@ -51,6 +51,9 @@ mcl_structures.register_structure_spawn({
 	name = "mobs_mc:witherskeleton",
 	y_min = mcl_vars.mg_lava_nether_max,
 	y_max = mcl_vars.mg_lava_nether_max + 32,
+	chance = 15,
+	interval = 60,
+	limit = 4,
 	spawnon = { "mcl_blackstone:blackstone_chiseled_polished" },
 })
 
@@ -129,4 +132,24 @@ mcl_structures.register_structure("nether_bulwark",{
 			}
 		}}
 	},
+})
+
+mcl_structures.register_structure_spawn({
+	name = "mobs_mc:piglin",
+	y_min = mcl_vars.mg_nether_min,
+	y_max = mcl_vars.mg_nether_max,
+	chance = 10,
+	interval = 60,
+	limit = 9,
+	spawnon = {"mcl_blackstone:blackstone_brick_polished","mcl_stairs:slab_blackstone_polished"},
+})
+
+mcl_structures.register_structure_spawn({
+	name = "mobs_mc:piglin_brute",
+	y_min = mcl_vars.mg_nether_min,
+	y_max = mcl_vars.mg_nether_max,
+	chance = 20,
+	interval = 60,
+	limit = 4,
+	spawnon = {"mcl_blackstone:blackstone_brick_polished","mcl_stairs:slab_blackstone_polished"},
 })
