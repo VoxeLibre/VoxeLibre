@@ -10,7 +10,7 @@ to play. And that's it!
 `mcl_jukebox_track_2.ogg`: “The Energetic Rat (Jordach's Mix)” by SoundHelix (CC0)
 `mcl_jukebox_track_3.ogg`: “Eastern Feeling” by Jordach (CC0)
 `mcl_jukebox_track_4.ogg`: “Minetest” by Jordach (CC0)
-`mcl_jukebox_track_5.ogg`: “Credit Roll (Jordach's HD Mix)” by Junichi Masuda (CC0)
+`mcl_jukebox_track_5.ogg`: "Soaring over the sea" by mactonite http://ccmixter.org/files/mactonite/65379 (CC-BY)
 `mcl_jukebox_track_6.ogg`: “Winter Feeling" by Tom Peter (CC BY-SA 3.0)
 `mcl_jukebox_track_7.ogg`: “Synthgroove (Jordach's Mix)” by HeroOfTheWinds (CC0)
 `mcl_jukebox_track_8.ogg`: “The Clueless Frog (Jordach's Mix)” by SoundHelix (CC0)
