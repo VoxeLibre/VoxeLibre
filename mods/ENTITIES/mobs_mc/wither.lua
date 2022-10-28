@@ -42,7 +42,7 @@ mcl_mobs:register_mob("mobs_mc:wither", {
 	fly = true,
 	makes_footstep_sound = false,
 	dogshoot_switch = 1,
-	dogshoot_count_max =1,
+	dogshoot_count_max = 1,
 	attack_animals = true,
 	can_despawn = false,
 	drops = {
@@ -79,9 +79,11 @@ mcl_mobs:register_mob("mobs_mc:wither", {
 	on_spawn = function(self)
 		minetest.sound_play("mobs_mc_wither_spawn", {object=self.object, gain=1.0, max_hear_distance=64})
 	end,
+
 })
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+local wither_rose_soil = { "group:grass_block", "mcl_core:dirt", "mcl_core:coarse_dirt", "mcl_nether:netherrack", "group:soul_block", "mcl_mud:mud", "mcl_moss:moss" }
 
 mcl_mobs:register_arrow("mobs_mc:wither_skull", {
 	visual = "sprite",
@@ -105,6 +107,18 @@ mcl_mobs:register_arrow("mobs_mc:wither_skull", {
 			damage_groups = {fleshy = 8},
 		}, nil)
 		mcl_mobs:boom(self, self.object:get_pos(), 1)
+		local l = mob:get_luaentity()
+		if l and l.health - 8 <= 0 then
+			local n = minetest.find_node_near(mob:get_pos(),2,wither_rose_soil)
+			if n then
+				local p = vector.offset(n,0,1,0)
+				if minetest.get_node(p).name == "air" then
+					if not ( mobs_griefing and minetest.place_node(p,{name="mcl_flowers:wither_rose"}) ) then
+						minetest.add_item(p,"mcl_flowers:wither_rose")
+					end
+				end
+			end
+		end
 	end,
 
 	-- node hit, explode
