@@ -953,8 +953,8 @@ end
 
 local function do_work (self)
 	--debug_trades(self)
-	if self.child or self.order == WORK then
-		mcl_log("A child or already working so don't send to work")
+	if self.child then
+		mcl_log("A child so don't send to work")
 		return
 	end
 	--mcl_log("Time for work")
@@ -971,7 +971,7 @@ local function do_work (self)
 			--mcl_log("Villager: ".. minetest.pos_to_string(self.object:get_pos()) ..  ", jobsite: " .. minetest.pos_to_string(self._jobsite) .. ", distance to jobsite: ".. distance_to_jobsite)
 
 			if distance_to_jobsite < 2 then
-				if not (self.state == PATHFINDING) then
+				if self.state ~= PATHFINDING and  self.order ~= WORK then
 					mcl_log("Setting order to work.")
 					self.order = WORK
 					unlock_trades(self)
@@ -1752,10 +1752,10 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 			self.attack = nil
 		end
 		-- Don't do at night. Go to bed? Maybe do_activity needs it's own method
-		if validate_jobsite(self) then
-		--	mcl_mobs:gopath(self,self._jobsite,function()
-				--minetest.log("arrived at jobsite")
-		--	end)
+		if validate_jobsite(self) and not self.order == WORK then
+			--mcl_mobs:gopath(self,self._jobsite,function()
+			--	minetest.log("sent to jobsite")
+			--end)
 		else
 			self.state = "stand" -- cancel gowp in case it has messed up
 			self.order = nil -- cancel work if working
@@ -1766,11 +1766,13 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 		local name = clicker:get_player_name()
 		self._trading_players[name] = true
 
-		if self._trades == nil then
+		if self._trades == nil or self._trades == false then
+			minetest.log("Trades is nil so init")
 			init_trades(self)
 		end
 		update_max_tradenum(self)
 		if self._trades == false then
+			minetest.log("Trades is false. no right click op")
 			-- Villager has no trades, rightclick is a no-op
 			return
 		end
