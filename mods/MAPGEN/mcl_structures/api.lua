@@ -6,8 +6,11 @@ if disabled_structures then	disabled_structures = disabled_structures:split(",")
 else disabled_structures = {} end
 
 local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
+local mob_cap_player = tonumber(minetest.settings:get("mcl_mob_cap_player")) or 75
 
 local logging = minetest.settings:get_bool("mcl_logging_structures",true)
+
+local mg_name = minetest.get_mapgen_setting("mg_name")
 
 local rotations = {
 	"0",
@@ -191,7 +194,7 @@ local function foundation(ground_p1,ground_p2,pos,sidelen)
 	local node_top = "mcl_core:dirt_with_grass" or minetest.get_node(ground_p1).name
 	local node_dust = nil
 
-	if minetest.get_mapgen_setting("mg_name") ~= "v6" then
+	if mg_name ~= "v6" then
 		local b = minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(pos).biome)]
 		--minetest.log(dump(b.node_top))
 		if b then
@@ -238,7 +241,7 @@ function mcl_structures.spawn_mobs(mob,spawnon,p1,p2,pr,n)
 	end
 end
 
-function mcl_structures.place_structure(pos, def, pr, blockseed)
+function mcl_structures.place_structure(pos, def, pr, blockseed, rot)
 	if not def then	return end
 	if not rot then rot = "random" end
 	local log_enabled = logging and not def.terrain_feature
@@ -365,17 +368,19 @@ end
 
 local structure_spawns = {}
 function mcl_structures.register_structure_spawn(def)
-	--name,y_min,y_max,spawnon,biomes
+	--name,y_min,y_max,spawnon,biomes,chance,interval,limit
 	minetest.register_abm({
 		label = "Spawn "..def.name,
 		nodenames = def.spawnon,
 		min_y = def.y_min or -31000,
 		max_y = def.y_max or 31000,
-		interval = 15,
-		chance = 3,
+		interval = def.interval or 60,
+		chance = def.chance or 5,
 		action = function(pos, node, active_object_count, active_object_count_wider)
+			local limit = def.limit or 7
+			if active_object_count > limit then return end
+			if active_object_count_wider > mob_cap_player then return end
 			local p = vector.offset(pos,0,1,0)
-			if active_object_count > 7 then return end
 			if minetest.get_node(p).name ~= "air" then return end
 			if minetest.get_meta(pos):get_string("spawnblock") == "" then return end
 			if mg_name ~= "v6" and mg_name ~= "singlenode" and def.biomes then
