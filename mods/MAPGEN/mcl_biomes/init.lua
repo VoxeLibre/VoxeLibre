@@ -4760,17 +4760,6 @@ local function register_dimension_decorations()
 		flags = "all_floors",
 		decoration = "mcl_mushrooms:mushroom_red",
 	})
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_nether:soul_sand"},
-		sidelen = 16,
-		fill_ratio = 0.0032,
-		biomes = {"Nether","SoulsandValley"},
-		y_min = mcl_vars.mg_lava_nether_max + 1,
-		y_max = mcl_vars.mg_nether_max  - 1,
-		flags = "all_floors",
-		decoration = "mcl_nether:nether_wart",
-	})
 
 	-- WARPED FOREST
 	minetest.register_decoration({
