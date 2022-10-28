@@ -2582,7 +2582,7 @@ local function check_gowp(self,dtime)
 
 	-- arrived at location, finish gowp
 	local distance_to_targ = vector.distance(p,self._target)
-	mcl_log("Distance to targ: ".. tostring(distance_to_targ))
+	--mcl_log("Distance to targ: ".. tostring(distance_to_targ))
 	if distance_to_targ < 2 then
 		mcl_log("Arrived at _target")
 		self.waypoints = nil
@@ -2597,24 +2597,26 @@ local function check_gowp(self,dtime)
 	end
 
 	-- More pathing to be done
-	if self.waypoints and #self.waypoints > 0 and ( not self.current_target or vector.distance(p,self.current_target) < 2 ) then
+
+	local distance_to_current_target = 50
+	if self.current_target then
+		distance_to_current_target = vector.distance(p,self.current_target)
+		--mcl_log("current target:".. minetest.pos_to_string(self.current_target) .. ", Current target distance: ".. tostring(distance_to_current_target))
+	end
+
+	-- 1.6 is good but fails more than it should. Maybe 1.7
+	if self.waypoints and #self.waypoints > 0 and ( not self.current_target or distance_to_current_target < 1.7 ) then
 		-- We have waypoints, and no current target, or we're at it. We need a new current_target.
 
-		if not self.current_target then
-			for i, j in pairs (self.waypoints) do
-				mcl_log("Val: ".. tostring(j))
-			end
-		end
-
 		self.current_target = table.remove(self.waypoints, 1)
-		mcl_log("current target:".. minetest.pos_to_string(self.current_target) )
+		mcl_log("There. current target:".. minetest.pos_to_string(self.current_target) .. ". Distance: " ..  distance_to_current_target)
 		--mcl_log("type:".. type(self.current_target) )
 		go_to_pos(self,self.current_target)
 		return
 	elseif self.current_target then
 		-- No waypoints left, but have current target. Potentially last waypoint to go to.
 
-		mcl_log("pos: ".. minetest.pos_to_string(p) .. "self.current_target: ".. minetest.pos_to_string(self.current_target))
+		mcl_log("Not there... pos: ".. minetest.pos_to_string(p) .. "self.current_target: ".. minetest.pos_to_string(self.current_target) .. ". Distance: ".. distance_to_current_target)
 		go_to_pos(self,self.current_target)
 		-- Do i just delete current_target, and return so we can find final path.
 	else
@@ -2625,9 +2627,10 @@ local function check_gowp(self,dtime)
 		local final_wp = minetest.find_path(p,self._target,150,1,4)
 		if final_wp then
 			mcl_log("We might be able to get to target here.")
-			self.waypoints = final_wp
+		--	self.waypoints = final_wp
 			--go_to_pos(self,self._target)
 		else
+			-- Abandon route?
 			mcl_log("Cannot plot final route to target")
 		end
 	end
@@ -2649,7 +2652,9 @@ local function check_gowp(self,dtime)
 			mcl_log("close to current target: ".. minetest.pos_to_string(self.current_target))
 			self.current_target = nil
 			--go_to_pos(self,self._target)
-			self.waypoints=minetest.find_path(updated_p,self._target,150,1,4)
+
+			--self.waypoints=minetest.find_path(updated_p,self._target,150,1,4)
+
 			--if not self.waypoints then
 			--mcl_log("Give up ")
 			--self.state = "walk"
@@ -3257,6 +3262,28 @@ local do_states = function(self, dtime)
 	end
 end
 
+function output_table (wp)
+	if not wp then return end
+	mcl_log("wp items: ".. tostring(#wp))
+	for a,b in pairs(wp) do
+		mcl_log(a.. ": ".. tostring(b))
+	end
+end
+
+function append_paths (wp1, wp2)
+	mcl_log("Start append")
+	if not wp1 or not wp2 then
+		mcl_log("Cannot append wp's")
+		return
+	end
+	output_table(wp1)
+	output_table(wp2)
+	for _,a in pairs (wp2) do
+		table.insert(wp1, a)
+	end
+	mcl_log("End append")
+end
+
 local plane_adjacents = {
 	vector.new(1,0,0),
 	vector.new(-1,0,0),
@@ -3264,41 +3291,45 @@ local plane_adjacents = {
 	vector.new(0,0,-1),
 }
 
+-- This function is used to see if we can path. We could use to check a route, rather than making people move.
+local function calculate_path_through_door (p, t, target)
+	-- target is the same as t, just 1 square difference. Maybe we don't need target
 
-local gopath_last = os.time()
-function mcl_mobs:gopath(self,target,callback_arrived)
-	if self.state == PATHFINDING then mcl_log("Already set as gowp, don't set another path until done.") return end
+	mcl_log("Plot route from mob: " .. minetest.pos_to_string(p) .. ", to target: " .. minetest.pos_to_string(t))
 
-	if os.time() - gopath_last < 15 then
-		mcl_log("Not ready to path yet")
-		return
-	end
-	gopath_last = os.time()
-
-	self.order = nil
-
-	mcl_log("gowp target: " .. minetest.pos_to_string(target))
-	local p = self.object:get_pos()
-	local t = vector.offset(target,0,1,0)
 	local wp = minetest.find_path(p,t,150,1,4)
 
 	--Path to door first
 	if not wp then
 		--mcl_log("gowp. no wp. Look for door")
-		local d = minetest.find_node_near(target,16,{"group:door"})
-		if d then
+
+		local cur_door_pos = minetest.find_node_near(target,16,{"group:door"})
+		if cur_door_pos then
+
 			--mcl_log("Found a door near")
 			for _,v in pairs(plane_adjacents) do
-				local pos = vector.add(d,v)
+				local pos = vector.add(cur_door_pos,v)
 
 				local n = minetest.get_node(pos)
 				if n.name == "air" then
 					wp = minetest.find_path(p,pos,150,1,4)
 					if wp then
 						mcl_log("Found a path to next to door".. minetest.pos_to_string(pos))
-						local other_side_of_door = vector.add(d,-v)
+						local other_side_of_door = vector.add(cur_door_pos,-v)
 						mcl_log("Opposite is: ".. minetest.pos_to_string(other_side_of_door))
-						table.insert(wp, other_side_of_door)
+						--table.insert(wp, other_side_of_door)
+
+
+
+						local wp_otherside_door_to_target = minetest.find_path(other_side_of_door,t,150,1,4)
+						if wp_otherside_door_to_target and #wp_otherside_door_to_target > 0 then
+							table.insert(wp, cur_door_pos)
+							append_paths (wp, wp_otherside_door_to_target)
+							mcl_log("We have a path from outside door to target")
+							return wp
+						else
+							mcl_log("We cannot path from outside door to target")
+						end
 						break
 
 					else
@@ -3312,11 +3343,40 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 		else
 			mcl_log("No door found")
 		end
+	else
+		mcl_log("We have a direct route")
+		return wp
 	end
+end
+
+local gopath_last = os.time()
+function mcl_mobs:gopath(self,target,callback_arrived)
+	if self.state == PATHFINDING then mcl_log("Already set as gowp, don't set another path until done.") return end
+
+	if os.time() - gopath_last < 5 then
+		mcl_log("Not ready to path yet")
+		return
+	end
+	gopath_last = os.time()
+
+	self.order = nil
+
+	--mcl_log("gowp target: " .. minetest.pos_to_string(target))
+	local p = self.object:get_pos()
+	local t = vector.offset(target,0,1,0)
+
+	local wp = calculate_path_through_door(p, t, target)
+	if not wp then
+		mcl_log("WP empty")
+	end
+	output_table(wp)
+
 	if wp and #wp > 0 then
 		self._target = t
 		self.callback_arrived = callback_arrived
-		table.remove(wp,1)
+		local current_location = table.remove(wp,1)
+		mcl_log("Removing first co-ord? " .. tostring(current_locaion))
+		--self.current_target
 		self.waypoints = wp
 		self.state = PATHFINDING
 		return true
