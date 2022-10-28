@@ -39,18 +39,22 @@ mcl_structures.register_structure("nether_outpost",{
 })
 
 mcl_structures.register_structure("nether_bridge",{
-	place_on = {"mcl_nether:nether_lava_source"},
+	place_on = {"mcl_nether:nether_lava_source","mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand","mcl_core:bedrock"},
 	fill_ratio = 0.01,
 	chunk_probability = 100,
-	flags = "all_floors liquid_surface",
-	--biomes = {"Nether","SoulsandValley","WarpedForest","CrimsonForest","BasaltDelta"},
+	flags = "all_floors",
 	sidelen = 38,
 	solid_ground = false,
 	make_foundation = false,
-	y_min = mcl_vars.mg_lava_nether_max - 5,
-	y_max = mcl_vars.mg_lava_nether_max + 5,
-	filenames = { modpath.."/schematics/mcl_nether_fortresses_nether_bridge_1.mts" },
-	y_offset = 0,
+	y_min = mcl_vars.mg_nether_min - 4,
+	y_max = mcl_vars.mg_lava_nether_max - 20,
+	filenames = {
+		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_1.mts",
+		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_2.mts",
+		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_3.mts",
+		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_4.mts",
+	},
+	y_offset = function(pr) return pr:next(15,20) end,
 	after_place = function(pos,def,pr)
 		local p1 = vector.offset(pos,-14,0,-14)
 		local p2 = vector.offset(pos,14,24,14)
@@ -61,7 +65,7 @@ mcl_structures.register_structure("nether_bridge",{
 mcl_structures.register_structure("nether_bulwark",{
 	place_on = {"mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand"},
 	fill_ratio = 0.01,
-	chunk_probability = 600,
+	chunk_probability = 900,
 	flags = "all_floors",
 	biomes = {"Nether","SoulsandValley","WarpedForest","CrimsonForest"},
 	sidelen = 36,
