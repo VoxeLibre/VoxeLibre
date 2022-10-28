@@ -1,14 +1,11 @@
 mcl_structures.registered_structures = {}
-local rotations = {
-	"0",
-	"90",
-	"180",
-	"270"
-}
+
 local place_queue = {}
 local disabled_structures = minetest.settings:get("mcl_disabled_structures")
 if disabled_structures then	disabled_structures = disabled_structures:split(",")
 else disabled_structures = {} end
+
+local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
 local logging = minetest.settings:get_bool("mcl_logging_structures",true)
 
@@ -226,6 +223,20 @@ local function process_queue()
 	minetest.after(0.5,process_queue)
 end
 
+function mcl_structures.spawn_mobs(mob,spawnon,p1,p2,pr,n)
+	n = n or 1
+	local sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
+	table.shuffle(sp)
+	for i,node in pairs(sp) do
+		if not peaceful and i < n then
+			local pos = vector.offset(node,0,1,0)
+			if pos then
+				minetest.add_entity(pos,mob)
+			end
+		end
+		minetest.get_meta(node):set_string("spawnblock","yes")
+	end
+end
 
 function mcl_structures.place_structure(pos, def, pr, blockseed)
 	if not def then	return end
@@ -350,6 +361,33 @@ function mcl_structures.register_structure(name,def,nospawn) --nospawn means it 
 		end
 	end
 	mcl_structures.registered_structures[name] = def
+end
+
+local structure_spawns = {}
+function mcl_structures.register_structure_spawn(def)
+	--name,y_min,y_max,spawnon,biomes
+	minetest.register_abm({
+		label = "Spawn "..def.name,
+		nodenames = def.spawnon,
+		min_y = def.y_min or -31000,
+		max_y = def.y_max or 31000,
+		interval = 15,
+		chance = 3,
+		action = function(pos, node, active_object_count, active_object_count_wider)
+			local p = vector.offset(pos,0,1,0)
+			if active_object_count > 7 then return end
+			if minetest.get_node(p).name ~= "air" then return end
+			if minetest.get_meta(pos):get_string("spawnblock") == "" then return end
+			if mg_name ~= "v6" and mg_name ~= "singlenode" and def.biomes then
+				if table.indexof(def.biomes,minetest.get_biome_name(minetest.get_biome_data(p).biome)) == -1 then
+					return
+				end
+			end
+			local mobdef = minetest.registered_entities[def.name]
+			if mobdef.can_spawn and not mobdef.can_spawn(p) then return end
+			minetest.add_entity(p,def.name)
+		end,
+	})
 end
 
 --lbm for secondary structures (structblock included in base structure)

@@ -3,21 +3,6 @@ local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
-
-local function spawn_mobs(mob,spawnon,p1,p2,pr,n)
-	if peaceful then return end
-	n = n or 1
-	local sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
-	if sp and #sp > 0 then
-		for i=1,n do
-			local pos = vector.offset(sp[pr:next(1,#sp)],0,1,0)
-			if pos then
-				minetest.add_entity(pos,mob)
-			end
-		end
-	end
-end
-
 mcl_structures.register_structure("nether_outpost",{
 	place_on = {"mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand"},
 	fill_ratio = 0.01,
@@ -58,8 +43,15 @@ mcl_structures.register_structure("nether_bridge",{
 	after_place = function(pos,def,pr)
 		local p1 = vector.offset(pos,-14,0,-14)
 		local p2 = vector.offset(pos,14,24,14)
-		spawn_mobs("mobs_mc:witherskeleton",{"mcl_blackstone:blackstone_chiseled_polished"},p1,p2,pr,5)
+		mcl_structures.spawn_mobs("mobs_mc:witherskeleton",{"mcl_blackstone:blackstone_chiseled_polished"},p1,p2,pr,5)
 	end
+})
+
+mcl_structures.register_structure_spawn({
+	name = "mobs_mc:witherskeleton",
+	y_min = mcl_vars.mg_lava_nether_max,
+	y_max = mcl_vars.mg_lava_nether_max + 32,
+	spawnon = { "mcl_blackstone:blackstone_chiseled_polished" },
 })
 
 mcl_structures.register_structure("nether_bulwark",{
@@ -91,9 +83,9 @@ mcl_structures.register_structure("nether_bulwark",{
 	after_place = function(pos,def,pr)
 		local p1 = vector.offset(pos,-14,0,-14)
 		local p2 = vector.offset(pos,14,24,14)
-		spawn_mobs("mobs_mc:piglin",{"mcl_blackstone:blackstone_brick_polished","mcl_stairs:slab_blackstone_polished"},p1,p2,pr,5)
-		spawn_mobs("mobs_mc:piglin_brute",{"mcl_blackstone:blackstone_brick_polished","mcl_stairs:slab_blackstone_polished"},p1,p2,pr)
-		spawn_mobs("mobs_mc:hoglin",{"mcl_blackstone:nether_gold"},p1,p2,pr,4)
+		mcl_structures.spawn_mobs("mobs_mc:piglin",{"mcl_blackstone:blackstone_brick_polished","mcl_stairs:slab_blackstone_polished"},p1,p2,pr,5)
+		mcl_structures.spawn_mobs("mobs_mc:piglin_brute",{"mcl_blackstone:blackstone_brick_polished","mcl_stairs:slab_blackstone_polished"},p1,p2,pr)
+		mcl_structures.spawn_mobs("mobs_mc:hoglin",{"mcl_blackstone:nether_gold"},p1,p2,pr,4)
 	end,
 	loot = {
 		["mcl_chests:chest_small" ] ={
