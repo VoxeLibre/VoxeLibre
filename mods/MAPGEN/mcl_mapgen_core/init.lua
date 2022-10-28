@@ -106,15 +106,22 @@ end
 
 if mg_name == "v7" then
 	minetest.set_mapgen_setting("mgv7_cavern_threshold", "0.20", true)
+	mg_flags.caverns = true
 elseif mg_name == "valleys" then
 	minetest.set_mapgen_setting("mgvalleys_cavern_threshold", "0.20", true)
+	mg_flags.caverns = true
 elseif mg_name == "carpathian" then
 	minetest.set_mapgen_setting("mgcarpathian_cavern_threshold", "0.20", true)
+	mg_flags.caverns = true
 elseif mg_name == "v5" then
 	minetest.set_mapgen_setting("mgv5_cavern_threshold", "0.20", true)
+	mg_flags.caverns = true
 elseif mg_name == "fractal" then
 	minetest.set_mapgen_setting("mgfractal_cavern_threshold", "0.20", true)
+	mg_flags.caverns = true
 end
+
+
 
 local mg_flags_str = ""
 for k,v in pairs(mg_flags) do
