@@ -183,8 +183,7 @@ local horse = {
 
 		if not self._horse_speed then
 			self._horse_speed = math.random(486, 1457)/100
-		else
-			minetest.chat_send_all(self._horse_speed)
+		elseif self.run_velocity ~= self._horse_speed then
 			self.run_velocity = self._horse_speed
 		end
 
