@@ -232,7 +232,7 @@ function mcl_structures.spawn_mobs(mob,spawnon,p1,p2,pr,n)
 	local sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
 	table.shuffle(sp)
 	for i,node in pairs(sp) do
-		if not peaceful and i < n then
+		if not peaceful and i <= n then
 			local pos = vector.offset(node,0,1,0)
 			if pos then
 				minetest.add_entity(pos,mob)
