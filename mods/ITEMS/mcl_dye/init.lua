@@ -156,7 +156,7 @@ function mcl_dye.register_on_bone_meal_apply(func)
 	table.insert(mcl_dye.bone_meal_callbacks, func)
 end
 
-local function apply_bone_meal(pointed_thing)
+local function apply_bone_meal(pointed_thing,user)
 	-- Bone meal currently spawns all flowers found in the plains.
 	local flowers_table_plains = {
 		"mcl_flowers:dandelion",
