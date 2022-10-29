@@ -2370,7 +2370,7 @@ local function register_dimension_ores()
 		clust_scarcity  = 26 * 26 * 26,
 		clust_size      = 5,
 		y_min           = mcl_vars.mg_lava_nether_max + 10,
-		y_max           = mcl_vars.mg_nether_max,
+		y_max           = mcl_vars.mg_nether_max - 13,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
