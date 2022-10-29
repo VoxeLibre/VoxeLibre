@@ -2433,11 +2433,24 @@ local function register_dimension_ores()
 		ore_type       = "scatter",
 		ore            = "mcl_nether:nether_lava_source",
 		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
+		clust_scarcity = 13500, --rare
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min           = mcl_vars.mg_lava_nether_max,
+		y_max           = mcl_vars.mg_nether_max - 13,
+	})
+
+	local lava_biomes = {"BasaltDelta","Nether"}
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_nether:nether_lava_source",
+		wherein        = {"mcl_nether:netherrack", "mcl_core:stone"},
 		clust_scarcity = 500,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		y_min           = mcl_vars.mg_nether_min,
-		y_max           = mcl_vars.mg_lava_nether_max + 1,
+		biomes         = lava_biomes,
+		y_min          = mcl_vars.mg_nether_min,
+		y_max          = mcl_vars.mg_lava_nether_max + 1,
 	})
 
 	minetest.register_ore({
@@ -2447,6 +2460,7 @@ local function register_dimension_ores()
 		clust_scarcity = 1000,
 		clust_num_ores = 1,
 		clust_size     = 1,
+		biomes         = lava_biomes,
 		y_min           = mcl_vars.mg_lava_nether_max + 2,
 		y_max           = mcl_vars.mg_lava_nether_max + 12,
 	})
@@ -2458,6 +2472,7 @@ local function register_dimension_ores()
 		clust_scarcity = 2000,
 		clust_num_ores = 1,
 		clust_size     = 1,
+		biomes         = lava_biomes,
 		y_min           = mcl_vars.mg_lava_nether_max + 13,
 		y_max           = mcl_vars.mg_lava_nether_max + 48,
 	})
@@ -2468,8 +2483,9 @@ local function register_dimension_ores()
 		clust_scarcity = 3500,
 		clust_num_ores = 1,
 		clust_size     = 1,
+		biomes         = lava_biomes,
 		y_min           = mcl_vars.mg_lava_nether_max + 49,
-		y_max           = mcl_vars.mg_nether_max,
+		y_max           = mcl_vars.mg_nether_max - 13,
 	})
 
 	--[[ THE END ]]
