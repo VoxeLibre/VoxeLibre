@@ -320,6 +320,10 @@ local collision = function(self)
 		local ent = object:get_luaentity()
 		if object:is_player() or (ent and ent.is_mob and object ~= self.object) then
 
+			if object:is_player() and mcl_burning.is_burning(self.object) then
+				mcl_burning.set_on_fire(object, 4)
+			end
+
 			local pos2 = object:get_pos()
 			local vec  = {x = pos.x - pos2.x, z = pos.z - pos2.z}
 			local force = (width + 0.5) - vector.distance(
@@ -1345,6 +1349,7 @@ local do_env_damage = function(self)
 			self.health = self.health - self.lava_damage
 
 			effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
+			mcl_burning.set_on_fire(self.object, 10)
 
 			if check_for_death(self, "lava", {type = "environment",
 					pos = pos, node = self.standing_in}) then
@@ -1361,6 +1366,7 @@ local do_env_damage = function(self)
 			self.health = self.health - self.fire_damage
 
 			effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
+			mcl_burning.set_on_fire(self.object, 5)
 
 			if check_for_death(self, "fire", {type = "environment",
 					pos = pos, node = self.standing_in}) then
@@ -2978,7 +2984,7 @@ local do_states = function(self, dtime)
 			end
 
 		elseif self.attack_type == "dogfight"
-		or (self.attack_type == "dogshoot" and dogswitch(self, dtime) == 2)
+		or (self.attack_type == "dogshoot" and dogswitch(self, dtime) == 2) and (dist >= self.avoid_distance or not self.shooter_avoid_enemy)
 		or (self.attack_type == "dogshoot" and dist <= self.reach and dogswitch(self) == 0) then
 
 			if self.fly
@@ -3155,7 +3161,7 @@ local do_states = function(self, dtime)
 
 		elseif self.attack_type == "shoot"
 		or (self.attack_type == "dogshoot" and dogswitch(self, dtime) == 1)
-		or (self.attack_type == "dogshoot" and dist > self.reach and dogswitch(self) == 0) then
+		or (self.attack_type == "dogshoot" and (dist > self.reach or dist < self.avoid_distance and self.shooter_avoid_enemy) and dogswitch(self) == 0) then
 
 			p.y = p.y - .5
 			s.y = s.y + .5
@@ -3173,7 +3179,27 @@ local do_states = function(self, dtime)
 
 			yaw = set_yaw(self, yaw, 0, dtime)
 
-			set_velocity(self, 0)
+			local stay_away_from_player = vector.new(0,0,0)
+
+			--strafe back and fourth
+
+			--stay away from player so as to shoot them
+			if dist < self.avoid_distance and self.shooter_avoid_enemy then
+				set_animation(self, "shoot")
+				stay_away_from_player=vector.multiply(vector.direction(p, s), 0.33)
+			end
+
+			if self.strafes then
+				if not self.strafe_direction then
+					self.strafe_direction = 1.57
+				end
+				if math.random(40) == 1 then
+					self.strafe_direction = self.strafe_direction*-1
+				end
+				self.acc = vector.add(vector.multiply(vector.rotate_around_axis(vector.direction(s, p), vector.new(0,1,0), self.strafe_direction), 0.3*self.walk_velocity), stay_away_from_player)
+			else
+				set_velocity(self, 0)
+			end
 
 			local p = self.object:get_pos()
 			p.y = p.y + (self.collisionbox[2] + self.collisionbox[5]) / 2
@@ -4664,6 +4690,9 @@ minetest.register_entity(name, {
 
 
 	-- MCL2 extensions
+	shooter_avoid_enemy = def.shooter_avoid_enemy,
+	strafes = def.strafes,
+	avoid_distance = def.avoid_distance or 9,
 	teleport = teleport,
 	do_teleport = def.do_teleport,
 	spawn_class = def.spawn_class,

@@ -206,7 +206,7 @@ function mcl_mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 		-- move forwards
 		if ctrl.up then
 
-			entity.v = entity.v + entity.accel / 10
+			entity.v = entity.v + entity.accel / 10 * entity.run_velocity / 2.6
 
 		-- move backwards
 		elseif ctrl.down then
