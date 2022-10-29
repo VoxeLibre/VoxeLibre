@@ -100,7 +100,7 @@ dofile(path .. "/axolotl.lua") -- Mesh and animation by JoeEnderman, Textures by
 dofile(path .. "/bat.lua") -- Mesh and animation by toby109tt  / https://github.com/22i
 dofile(path .. "/rabbit.lua") -- Mesh and animation byExeterDad
 dofile(path .. "/chicken.lua") -- Mesh and animation by Pavel_S
-dofile(path .. "/cow+mooshroom.lua") -- Mesh by Morn76 AnimatPavel_Savel_S
+dofile(path .. "/cow+mooshroom.lua") -- Mesh by Morn76 Animation by Pavel_Savel_S
 dofile(path .. "/horse.lua") -- KrupnoPavel; Mesh and animation by toby109tt  / https://github.com/22i
 dofile(path .. "/llama.lua") --  Mesh and animation by toby109tt  / https://github.com/22i
 dofile(path .. "/ocelot.lua") --  Mesh and animation by toby109tt  / https://github.com/22i
