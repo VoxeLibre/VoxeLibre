@@ -26,7 +26,7 @@ mcl_structures.register_structure("nether_outpost",{
 mcl_structures.register_structure("nether_bridge",{
 	place_on = {"mcl_nether:nether_lava_source","mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand","mcl_core:bedrock"},
 	fill_ratio = 0.01,
-	chunk_probability = 100,
+	chunk_probability = 500,
 	flags = "all_floors",
 	sidelen = 38,
 	solid_ground = false,
@@ -69,7 +69,10 @@ mcl_structures.register_structure("nether_bulwark",{
 	y_min = mcl_vars.mg_lava_nether_max - 1,
 	y_max = mcl_vars.mg_nether_max - 30,
 	filenames = {
-		modpath.."/schematics/mcl_nether_fortresses_nether_bulwark.mts"
+		modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_1.mts",
+		modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_2.mts",
+		modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_3.mts",
+		modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_4.mts",
 	},
 	daughters = {{
 			files = {
