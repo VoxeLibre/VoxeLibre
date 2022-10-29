@@ -716,9 +716,7 @@ if mobs_spawn then
 			-- ignore void and unloaded area
 			if dimension ~= "void" and dimension ~= "default" then
 				local y_min, y_max = decypher_limits(pos.y)
-				for i = 1, math_random(1, 4) do
-					spawn_a_mob(pos, dimension, y_min, y_max)
-				end
+				spawn_a_mob(pos, dimension, y_min, y_max)
 			end
 		end
 	end)
