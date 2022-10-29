@@ -1545,6 +1545,19 @@ local function register_dimension_biomes()
 		flags = "all_ceilings",
 		param2 = 0,
 	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:bedrock"},
+		sidelen = 16,
+		fill_ratio = 10,
+		y_min = mcl_vars.mg_nether_min - 10,
+		y_max = mcl_vars.mg_lava_nether_max,
+		height = 7,
+		max_height = 14,
+		decoration = "mcl_nether:netherrack",
+		flags = "all_floors,force_placement",
+		param2 = 0,
+	})
 
 
 	minetest.register_biome({
@@ -1570,7 +1583,7 @@ local function register_dimension_biomes()
 		sidelen = 16,
 		fill_ratio = 10,
 		biomes = { "Nether" },
-		y_min = -31000,
+		y_min = mcl_vars.mg_lava_nether_max,
 		y_max = mcl_vars.mg_nether_deco_max,
 		decoration = "mcl_nether:netherrack",
 		flags = "all_floors",
@@ -1586,7 +1599,6 @@ local function register_dimension_biomes()
 		node_river_water = "air",
 		node_cave_liquid = "air",
 		y_min = mcl_vars.mg_nether_min,
-
 		y_max = mcl_vars.mg_nether_max + 80,
 		heat_point = 77,
 		humidity_point = 33,
@@ -1599,7 +1611,7 @@ local function register_dimension_biomes()
 		sidelen = 16,
 		fill_ratio = 10,
 		biomes = { "SoulsandValley" },
-		y_min = -31000,
+		y_min = mcl_vars.mg_lava_nether_max,
 		y_max = mcl_vars.mg_nether_deco_max,
 		decoration = "mcl_blackstone:soul_soil",
 		flags = "all_floors, all_ceilings",
@@ -1614,7 +1626,7 @@ local function register_dimension_biomes()
 		clust_num_ores = 225,
 		clust_size     = 15,
 		biomes = { "SoulsandValley" },
-		y_min = mcl_vars.mg_nether_min,
+		y_min = mcl_vars.mg_lava_nether_max,
 		y_max = mcl_vars.mg_nether_deco_max,
 		noise_params = {
 			offset  = 0,
@@ -1636,7 +1648,6 @@ local function register_dimension_biomes()
 		node_river_water = "air",
 		node_cave_liquid = "air",
 		y_min = mcl_vars.mg_nether_min,
-
 		y_max = mcl_vars.mg_nether_max + 80,
 		heat_point = 60,
 		humidity_point = 47,
@@ -1649,7 +1660,7 @@ local function register_dimension_biomes()
 		sidelen = 16,
 		fill_ratio = 10,
 		biomes = { "CrimsonForest" },
-		y_min = -31000,
+		y_min = mcl_vars.mg_lava_nether_max,
 		y_max = mcl_vars.mg_nether_deco_max,
 		decoration = "mcl_crimson:crimson_nylium",
 		flags = "all_floors",
@@ -1676,7 +1687,7 @@ local function register_dimension_biomes()
 		sidelen = 16,
 		fill_ratio = 10,
 		biomes = { "WarpedForest" },
-		y_min = -31000,
+		y_min = mcl_vars.mg_lava_nether_max,
 		y_max = mcl_vars.mg_nether_deco_max,
 		decoration = "mcl_crimson:warped_nylium",
 		flags = "all_floors",
@@ -1704,7 +1715,7 @@ local function register_dimension_biomes()
 		sidelen = 16,
 		fill_ratio = 10,
 		biomes = { "BasaltDelta" },
-		y_min = -31000,
+		y_min = mcl_vars.mg_lava_nether_max,
 		y_max = mcl_vars.mg_nether_deco_max,
 		decoration = "mcl_blackstone:basalt",
 		flags = "all_floors",
@@ -1714,12 +1725,12 @@ local function register_dimension_biomes()
 	minetest.register_ore({
 	ore_type       = "blob",
 	ore            = "mcl_blackstone:blackstone",
-	wherein        =  {"mcl_nether:netherrack","mcl_nether:glowstone","mcl_core:gravel","mcl_nether:soul_sand"},
+	wherein        =  {"mcl_nether:netherrack","mcl_nether:glowstone","mcl_core:gravel"},
 	clust_scarcity = 100,
 	clust_num_ores = 400,
 	clust_size     = 20,
 	biomes = { "BasaltDelta" },
-	y_min = mcl_vars.mg_nether_min,
+	y_min = mcl_vars.mg_lava_nether_max,
 	y_max = mcl_vars.mg_nether_deco_max,
 	noise_params = {
 		offset  = 0,

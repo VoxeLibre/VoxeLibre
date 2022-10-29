@@ -333,10 +333,15 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 		end
 	end
 	local deco = false
+	local ores = false
 	if minp.y >  mcl_vars.mg_nether_deco_max - 64 and maxp.y <  mcl_vars.mg_nether_max + 128 then
 		deco = {min=mcl_vars.mg_nether_deco_max,max=mcl_vars.mg_nether_max}
 	end
-	return lvm_used, lvm_used, deco
+	if minp.y <  mcl_vars.mg_nether_min + 10 or maxp.y <  mcl_vars.mg_nether_min + 60 then
+		deco = {min=mcl_vars.mg_nether_min - 10,max=mcl_vars.mg_nether_min + 20}
+		ores = {min=mcl_vars.mg_nether_min - 10,max=mcl_vars.mg_nether_min + 20}
+	end
+	return lvm_used, lvm_used, deco, ores
 end
 
 local function block_fixes(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
