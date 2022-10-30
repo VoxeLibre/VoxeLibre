@@ -211,7 +211,11 @@ mcl_mobs:spawn_setup({
 	type_of_spawning = "lava",
 	dimension = "nether",
 	biomes = {
-		"Nether"
+		"Nether",
+		"BasaltDelta",
+		"WarpedForest",
+		"CrimsonForest",
+		"SoulsandValley"
 	},
 	min_height = mcl_vars.mg_nether_min,
 	max_height = mcl_vars.mg_nether_max,
@@ -223,7 +227,11 @@ mcl_mobs:spawn_setup({
 	type_of_spawning = "lava",
 	dimension = "nether",
 	biomes = {
-		"Nether"
+		"Nether",
+		"BasaltDelta",
+		"WarpedForest",
+		"CrimsonForest",
+		"SoulsandValley"
 	},
 	min_height = mcl_vars.mg_nether_min,
 	max_height = mcl_vars.mg_nether_max,
