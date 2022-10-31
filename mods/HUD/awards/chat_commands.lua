@@ -20,6 +20,11 @@ minetest.register_chatcommand("awards", {
 	params = S("[c|clear|disable|enable]"),
 	description = S("Show, clear, disable or enable your advancements."),
 	func = function(name, param)
+		if param == "enable" then
+			awards.enable(name)
+			minetest.chat_send_player(name, S("You have enabled your advancements."))
+		end
+
 		if awards.player(name).disabled then
 			minetest.chat_send_player(name, S("Awards are disabled, enable them first by using /awards enable!"))
 			return
@@ -32,13 +37,8 @@ minetest.register_chatcommand("awards", {
 		elseif param == "disable" then
 			awards.disable(name)
 			minetest.chat_send_player(name, S("You have disabled your advancements."))
-		elseif param == "enable" then
-			awards.enable(name)
-			minetest.chat_send_player(name, S("You have enabled your advancements."))
-		elseif param == "c" then
+		else param == "c" then
 			awards.show_to(name, name, nil, true)
-		else
-			awards.show_to(name, name, nil, false)
 		end
 	end
 })
