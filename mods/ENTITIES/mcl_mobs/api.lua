@@ -531,7 +531,7 @@ local flight_check = function(self)
 	end
 
 	for _,checknode in pairs(fly_in) do
-		if nod == checknode then
+		if nod == checknode or nod == "ignore" then
 			return true
 		end
 	end
@@ -2468,7 +2468,7 @@ local follow_flop = function(self)
 	-- swimmers flop when out of their element, and swim again when back in
 	if self.fly then
 		local s = self.object:get_pos()
-		if not flight_check(self, s) then
+		if flight_check(self, s) == false then
 
 			self.state = "flop"
 			self.object:set_acceleration({x = 0, y = DEFAULT_FALL_SPEED, z = 0})
