@@ -107,7 +107,7 @@ local professions = {
 			},
 
 			{
-			{ { "mcl_farming:pumpkin", 8, 13 }, E1 },
+			{ { "mcl_farming:pumpkin", 6, 7 }, E1 },
 			{ E1, { "mcl_farming:pumpkin_pie", 2, 3} },
 			{ E1, { "mcl_core:apple", 2, 3} },
 			},
@@ -797,10 +797,10 @@ local function unlock_trades (self)
 	if trades and type(trades) == "table" then
 		for trader, trade in pairs(trades) do
 			local trade_tier_too_high = trade.tier > self._max_trade_tier
-			mcl_log("Max trade tier of villager: ".. tostring(self._max_trade_tier))
-			mcl_log("current trade.tier: ".. tostring(trade.tier))
+			--mcl_log("Max trade tier of villager: ".. tostring(self._max_trade_tier))
+			--mcl_log("current trade.tier: ".. tostring(trade.tier))
 			mcl_log("trade tier too high: ".. tostring(trade_tier_too_high))
-			mcl_log("locked: ".. tostring(trade["locked"]))
+			--mcl_log("locked: ".. tostring(trade["locked"]))
 			if not trade_tier_too_high then
 				if trade["locked"] == true then
 					trade.locked = false
