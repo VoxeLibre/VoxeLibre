@@ -23,6 +23,7 @@ minetest.register_chatcommand("awards", {
 		if param == "enable" then
 			awards.enable(name)
 			minetest.chat_send_player(name, S("You have enabled your advancements."))
+			return
 		end
 
 		if awards.player(name).disabled then
@@ -37,8 +38,8 @@ minetest.register_chatcommand("awards", {
 		elseif param == "disable" then
 			awards.disable(name)
 			minetest.chat_send_player(name, S("You have disabled your advancements."))
-		else param == "c" then
-			awards.show_to(name, name, nil, true)
+		else
+			awards.show_to(name, name, nil, false)
 		end
 	end
 })
