@@ -2540,7 +2540,7 @@ local function go_to_pos(entity,b)
 	local v = { x = b.x - s.x, z = b.z - s.z }
 	local yaw = (atann(v.z / v.x) + pi / 2) - entity.rotate
 	if b.x > s.x then yaw = yaw + pi end
-	--entity.object:set_yaw(yaw)
+	entity.object:set_yaw(yaw)
 	set_velocity(entity,entity.follow_velocity)
 	mcl_mobs:set_animation(entity, "walk")
 end
