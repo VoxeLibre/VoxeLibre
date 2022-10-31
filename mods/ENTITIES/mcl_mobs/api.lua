@@ -2545,22 +2545,50 @@ local function go_to_pos(entity,b)
 	mcl_mobs:set_animation(entity, "walk")
 end
 
-local function check_doors(self)
+local function interact_with_door(self, action, target)
 	local p = self.object:get_pos()
-	local t = minetest.get_timeofday()
-	local dd = minetest.find_nodes_in_area(vector.offset(p,-1,-1,-1),vector.offset(p,1,1,1),{"group:door"})
-	for _,d in pairs(dd) do
-		local n = minetest.get_node(d)
-		if n.name:find("_b_") then
+	--local t = minetest.get_timeofday()
+	--local dd = minetest.find_nodes_in_area(vector.offset(p,-1,-1,-1),vector.offset(p,1,1,1),{"group:door"})
+	--for _,d in pairs(dd) do
+	if target then
+		mcl_log("Door target is: ".. minetest.pos_to_string(target))
+
+		local n = minetest.get_node(target)
+		if n.name:find("_b_") or n.name:find("_t_") then
+			mcl_log("Door")
 			local def = minetest.registered_nodes[n.name]
-			local closed = n.name:find("_b_1")
-			if self.state == PATHFINDING then
-				if closed and def.on_rightclick then def.on_rightclick(d,n,self) end
-				--if not closed and def.on_rightclick then def.on_rightclick(d,n,self) end
-			else
+			local closed = n.name:find("_b_1") or n.name:find("_t_1")
+			--if self.state == PATHFINDING then
+				if closed and action == "open" and def.on_rightclick then
+					mcl_log("Open door")
+					def.on_rightclick(target,n,self)
+				end
+				if not closed and action == "close" and def.on_rightclick then
+					mcl_log("Close door")
+					def.on_rightclick(target,n,self)
+				end
+			--else
+		else
+			mcl_log("Not door")
+		end
+	else
+		mcl_log("no target. cannot try and open or close door")
+	end
+	--end
+end
 
-			end
-
+local function do_pathfind_action (self, action)
+	if action then
+		mcl_log("Action present")
+		local type = action["type"]
+		local action_val = action["action"]
+		local target = action["target"]
+		if target then
+			mcl_log("Target: ".. minetest.pos_to_string(target))
+		end
+		if type and type == "door" then
+			mcl_log("Type is door")
+			interact_with_door(self, action_val, target)
 		end
 	end
 end
@@ -2569,7 +2597,11 @@ local gowp_etime = 0
 
 local function check_gowp(self,dtime)
 	gowp_etime = gowp_etime + dtime
-	if gowp_etime < 0.1 then return end
+
+	-- 0.1 is optimal.
+	--less frequently = villager will get sent back after passing a point.
+	--more frequently = villager will fail points they shouldn't they just didn't get there yet
+	if gowp_etime < 0.125 then return end
 	gowp_etime = 0
 	local p = self.object:get_pos()
 
@@ -2597,27 +2629,41 @@ local function check_gowp(self,dtime)
 	end
 
 	-- More pathing to be done
-
 	local distance_to_current_target = 50
-	if self.current_target then
-		distance_to_current_target = vector.distance(p,self.current_target)
-		--mcl_log("current target:".. minetest.pos_to_string(self.current_target) .. ", Current target distance: ".. tostring(distance_to_current_target))
+	if self.current_target and self.current_target["pos"] then
+		distance_to_current_target = vector.distance(p,self.current_target["pos"])
 	end
 
-	-- 1.6 is good but fails more than it should. Maybe 1.7
-	if self.waypoints and #self.waypoints > 0 and ( not self.current_target or distance_to_current_target < 1.7 ) then
+	-- 0.6 is working but too sensitive. sends villager back too frequently. 0.7 is quite good, but not with heights
+	-- 0.8 is optimal for 0.025 frequency checks and also 1... Actually. 0.8 is winning
+	-- 0.9 and 1.0 is also good. Stick with unless door open or closing issues
+	if self.waypoints and #self.waypoints > 0 and ( not self.current_target or not self.current_target["pos"] or distance_to_current_target < 1 ) then
 		-- We have waypoints, and no current target, or we're at it. We need a new current_target.
+		do_pathfind_action (self, self.current_target["action"])
+
+		local failed_attempts = self.current_target["failed_attempts"]
+		mcl_log("There after " .. failed_attempts .. " failed attempts. current target:".. minetest.pos_to_string(self.current_target["pos"]) .. ". Distance: " ..  distance_to_current_target)
 
 		self.current_target = table.remove(self.waypoints, 1)
-		mcl_log("There. current target:".. minetest.pos_to_string(self.current_target) .. ". Distance: " ..  distance_to_current_target)
-		--mcl_log("type:".. type(self.current_target) )
-		go_to_pos(self,self.current_target)
+		go_to_pos(self, self.current_target["pos"])
 		return
-	elseif self.current_target then
+	elseif self.current_target and self.current_target["pos"] then
 		-- No waypoints left, but have current target. Potentially last waypoint to go to.
+		self.current_target["failed_attempts"] = self.current_target["failed_attempts"] + 1
+		local failed_attempts = self.current_target["failed_attempts"]
+		if failed_attempts >= 20 then
+			mcl_log("Failed to reach position too many times. Abandon route. Times tried: " .. failed_attempts)
+			self.state = "stand"
+			self.current_target = nil
+			self.waypoints = nil
+			self._target = nil
+			self.object:set_velocity({x = 0, y = 0, z = 0})
+			self.object:set_acceleration({x = 0, y = 0, z = 0})
+			return
+		end
 
-		mcl_log("Not there... pos: ".. minetest.pos_to_string(p) .. "self.current_target: ".. minetest.pos_to_string(self.current_target) .. ". Distance: ".. distance_to_current_target)
-		go_to_pos(self,self.current_target)
+		mcl_log("Not at pos with failed attempts ".. failed_attempts ..": ".. minetest.pos_to_string(p) .. "self.current_target: ".. minetest.pos_to_string(self.current_target["pos"]) .. ". Distance: ".. distance_to_current_target)
+		go_to_pos(self, self.current_target["pos"])
 		-- Do i just delete current_target, and return so we can find final path.
 	else
 		-- Not at target, no current waypoints or current_target. Through the door and should be able to path to target.
@@ -2635,50 +2681,32 @@ local function check_gowp(self,dtime)
 		end
 	end
 
-	--if self.current_target and not minetest.line_of_sight(self.object:get_pos(),self.current_target) then
-	if self.current_target and (self.waypoints and #self.waypoints == 0) then
+	-- I don't think we need the following anymore, but test first.
+	-- Maybe just need something to path to target if no waypoints left
+	if self.current_target and self.current_target["pos"] and (self.waypoints and #self.waypoints == 0) then
 		local updated_p = self.object:get_pos()
-		local distance_to_cur_targ = vector.distance(updated_p,self.current_target)
+		local distance_to_cur_targ = vector.distance(updated_p,self.current_target["pos"])
 
 		mcl_log("Distance to current target: ".. tostring(distance_to_cur_targ))
 		mcl_log("Current p: ".. minetest.pos_to_string(updated_p))
-		--if not minetest.line_of_sight(self.object:get_pos(),self._target) then
 
 		-- 1.6 is good. is 1.9 better? It could fail less, but will it path to door when it isn't after door
 		if distance_to_cur_targ > 1.9 then
-			mcl_log("not close to current target: ".. minetest.pos_to_string(self.current_target))
+			mcl_log("not close to current target: ".. minetest.pos_to_string(self.current_target["pos"]))
 			go_to_pos(self,self._current_target)
 		else
-			mcl_log("close to current target: ".. minetest.pos_to_string(self.current_target))
+			mcl_log("close to current target: ".. minetest.pos_to_string(self.current_target["pos"]))
 			self.current_target = nil
-			--go_to_pos(self,self._target)
-
-			--self.waypoints=minetest.find_path(updated_p,self._target,150,1,4)
-
-			--if not self.waypoints then
-			--mcl_log("Give up ")
-			--self.state = "walk"
-			--end --give up
 		end
 
-		--self.waypoints=minetest.find_path(p,self._target,150,1,4)
-		--if not self.waypoints then
-			--mcl_log("Give up ")
-			--self.state = "walk"
-		--end --give up
-		--self.current_target = nil
 		return
 	end
-	--if not self.current_target then
-		--mcl_log("no path. Give up")
-		--self.state = "walk"
-	--end
 end
 
 -- execute current state (stand, walk, run, attacks)
 -- returns true if mob has died
 local do_states = function(self, dtime)
-	if self.can_open_doors then check_doors(self) end
+	--if self.can_open_doors then check_doors(self) end
 
 	local yaw = self.object:get_yaw() or 0
 
@@ -3284,6 +3312,73 @@ function append_paths (wp1, wp2)
 	mcl_log("End append")
 end
 
+local function output_enriched (wp_out)
+	mcl_log("Output enriched path")
+	local i = 0
+	for _,outy in pairs (wp_out) do
+		i = i + 1
+		mcl_log("Pos ".. i ..":" .. minetest.pos_to_string(outy["pos"]))
+
+		local action =  outy["action"]
+		if action then
+			mcl_log("type: " .. action["type"])
+			mcl_log("action: " .. action["action"])
+			mcl_log("target: " .. minetest.pos_to_string(action["target"]))
+		end
+		mcl_log("failed attempts: " .. outy["failed_attempts"])
+	end
+end
+
+-- This function will take a list of paths, and enrich it with:
+-- a var for failed attempts
+-- an action, such as to open or close a door where we know that pos requires that action
+local function generate_enriched_path(wp_in, door_open_pos, door_close_pos, cur_door_pos)
+	local wp_out = {}
+	for i, cur_pos in pairs(wp_in) do
+		local action = nil
+
+		local one_down = vector.new(0,-1,0)
+		local cur_pos_to_add = vector.add(cur_pos, one_down)
+		if door_open_pos and vector.equals (cur_pos, door_open_pos) then
+			mcl_log ("Door open match")
+			--action = {type = "door", action = "open"}
+			action = {}
+			action["type"] = "door"
+			action["action"] = "open"
+			action["target"] = cur_door_pos
+			cur_pos_to_add = vector.add(cur_pos, one_down)
+		elseif door_close_pos and vector.equals(cur_pos, door_close_pos) then
+			mcl_log ("Door close match")
+			--action = {type = "door", action = "closed"}
+			action = {}
+			action["type"] = "door"
+			action["action"] = "close"
+			action["target"] = cur_door_pos
+			cur_pos_to_add = vector.add(cur_pos, one_down)
+		elseif cur_door_pos and vector.equals(cur_pos, cur_door_pos) then
+			mcl_log("Current door pos")
+			cur_pos_to_add = vector.add(cur_pos, one_down)
+			action = {}
+			action["type"] = "door"
+			action["action"] = "open"
+			action["target"] = cur_door_pos
+		else
+			cur_pos_to_add = cur_pos
+			mcl_log ("Pos doesn't match")
+		end
+
+		wp_out[i] = {}
+		wp_out[i]["pos"] = cur_pos_to_add
+		wp_out[i]["failed_attempts"] = 0
+		wp_out[i]["action"] = action
+
+		--wp_out[i] = {"pos" = cur_pos, "failed_attempts" = 0, "action" = action}
+		--output_pos(cur_pos, i)
+	end
+	output_enriched(wp_out)
+	return wp_out
+end
+
 local plane_adjacents = {
 	vector.new(1,0,0),
 	vector.new(-1,0,0),
@@ -3294,49 +3389,48 @@ local plane_adjacents = {
 -- This function is used to see if we can path. We could use to check a route, rather than making people move.
 local function calculate_path_through_door (p, t, target)
 	-- target is the same as t, just 1 square difference. Maybe we don't need target
-
 	mcl_log("Plot route from mob: " .. minetest.pos_to_string(p) .. ", to target: " .. minetest.pos_to_string(t))
 
-	local wp = minetest.find_path(p,t,150,1,4)
+	local enriched_path = nil
+
+	local cur_door_pos = nil
+	local pos_closest_to_door = nil
+	local other_side_of_door = nil
 
 	--Path to door first
+	local wp = minetest.find_path(p,t,150,1,4)
 	if not wp then
-		--mcl_log("gowp. no wp. Look for door")
+		mcl_log("No direct path. Path through door")
 
 		local cur_door_pos = minetest.find_node_near(target,16,{"group:door"})
 		if cur_door_pos then
-
-			--mcl_log("Found a door near")
+			mcl_log("Found a door near: " .. minetest.pos_to_string(cur_door_pos))
 			for _,v in pairs(plane_adjacents) do
-				local pos = vector.add(cur_door_pos,v)
+				pos_closest_to_door = vector.add(cur_door_pos,v)
 
-				local n = minetest.get_node(pos)
+				local n = minetest.get_node(pos_closest_to_door)
 				if n.name == "air" then
-					wp = minetest.find_path(p,pos,150,1,4)
+					wp = minetest.find_path(p,pos_closest_to_door,150,1,4)
 					if wp then
-						mcl_log("Found a path to next to door".. minetest.pos_to_string(pos))
-						local other_side_of_door = vector.add(cur_door_pos,-v)
+						mcl_log("Found a path to next to door".. minetest.pos_to_string(pos_closest_to_door))
+						other_side_of_door = vector.add(cur_door_pos,-v)
 						mcl_log("Opposite is: ".. minetest.pos_to_string(other_side_of_door))
-						--table.insert(wp, other_side_of_door)
-
-
 
 						local wp_otherside_door_to_target = minetest.find_path(other_side_of_door,t,150,1,4)
 						if wp_otherside_door_to_target and #wp_otherside_door_to_target > 0 then
 							table.insert(wp, cur_door_pos)
 							append_paths (wp, wp_otherside_door_to_target)
+							enriched_path = generate_enriched_path(wp, pos_closest_to_door, other_side_of_door, cur_door_pos)
 							mcl_log("We have a path from outside door to target")
-							return wp
 						else
 							mcl_log("We cannot path from outside door to target")
 						end
 						break
-
 					else
-						--mcl_log("This block next to door doesn't work.")
+						mcl_log("This block next to door doesn't work.")
 					end
 				else
-					--mcl_log("Block is not air, it is: ".. n.name)
+					mcl_log("Block is not air, it is: ".. n.name)
 				end
 
 			end
@@ -3345,13 +3439,17 @@ local function calculate_path_through_door (p, t, target)
 		end
 	else
 		mcl_log("We have a direct route")
-		return wp
 	end
+
+	if wp and not enriched_path then
+		enriched_path = generate_enriched_path(wp)
+	end
+	return enriched_path
 end
 
 local gopath_last = os.time()
 function mcl_mobs:gopath(self,target,callback_arrived)
-	if self.state == PATHFINDING then mcl_log("Already set as gowp, don't set another path until done.") return end
+	if self.state == PATHFINDING then mcl_log("Already pathfinding, don't set another until done.") return end
 
 	if os.time() - gopath_last < 5 then
 		mcl_log("Not ready to path yet")
@@ -3367,16 +3465,26 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 
 	local wp = calculate_path_through_door(p, t, target)
 	if not wp then
-		mcl_log("WP empty")
+		mcl_log("Could not calculate path")
 	end
-	output_table(wp)
+	--output_table(wp)
 
 	if wp and #wp > 0 then
 		self._target = t
 		self.callback_arrived = callback_arrived
 		local current_location = table.remove(wp,1)
-		mcl_log("Removing first co-ord? " .. tostring(current_locaion))
-		--self.current_target
+		if current_location and current_location["pos"] then
+			mcl_log("Removing first co-ord? " .. tostring(current_location["pos"]))
+		else
+			mcl_log("Nil pos")
+		end
+		--current_location = table.remove(wp,1)
+		--if current_location and current_location["pos"] then
+		--	mcl_log("Removing first co-ord? " .. tostring(current_location["pos"]))
+		--else
+		--	mcl_log("Nil pos")
+		--end
+		self.current_target = current_location
 		self.waypoints = wp
 		self.state = PATHFINDING
 		return true
