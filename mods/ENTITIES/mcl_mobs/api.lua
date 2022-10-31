@@ -4096,7 +4096,7 @@ local mob_activate = function(self, staticdata, def, dtime)
 			self.on_spawn_run = true --  if true, set flag to run once only
 		end
 	end
-	if not self._run_armor_init then
+	if not self._run_armor_init and self.wears_armor then
 		self.armor_list={helmet="",chestplate="",boots="",leggings=""}
 		set_armor_texture(self)
 		self._run_armor_init = true
