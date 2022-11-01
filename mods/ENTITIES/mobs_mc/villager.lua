@@ -804,6 +804,7 @@ local function unlock_trades (self)
 			if not trade_tier_too_high then
 				if trade["locked"] == true then
 					trade.locked = false
+					trade.trade_counter = 0
 					has_unlocked = true
 					mcl_log("Villager has a locked trade. Unlocking")
 				end
@@ -1593,6 +1594,7 @@ local trade_inventory = {
 					trader.health = math.min(trader.hp_max, trader.health + 4)
 				end
 				trade.trade_counter = trade.trade_counter + 1
+				mcl_log("Trade counter is: ".. trade.trade_counter)
 				-- Semi-randomly lock trade for repeated trade (not if there's only 1 trade)
 				if trader._max_tradenum > 1 then
 					if trade.trade_counter >= 12 then
