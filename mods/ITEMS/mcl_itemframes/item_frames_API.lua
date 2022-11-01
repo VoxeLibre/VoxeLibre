@@ -28,6 +28,8 @@ facedir[3] = { x = -1, y = 0, z = 0 }
 local pi = math.pi
 
 local glow_amount = 6 -- LIGHT_MAX is 15, but the items aren't supposed to be a light source.
+local frame_item_base = {}
+local map_item_base = {}
 
 local remove_item_entity = function(pos, node)
     if node.name == "mcl_itemframes:item_frame" or node.name == "mcl_itemframes:glow_item_frame" then
@@ -55,66 +57,6 @@ local remove_item_entity = function(pos, node)
     end
 end
 
-mcl_itemframes.update_item_glow_entity = function(pos, node, param2)
-
-    if 1 == 1 then
-        minetest.log("action", "[mcl_itemframes] Update_Glow_Item:\nPosition: " .. dump(pos) .. "\nNode: " .. dump(node))
-    end
-
-    remove_item_entity(pos, node)
-    local meta = minetest.get_meta(pos)
-    local inv = meta:get_inventory()
-    local item = inv:get_stack("main", 1)
-    if not item:is_empty() then
-        if not param2 then
-            param2 = node.param2
-        end
-        if node.name == "mcl_itemframes:glow_item_frame" then
-            local posad = facedir[param2]
-            pos.x = pos.x + posad.x * 6.5 / 16
-            pos.y = pos.y + posad.y * 6.5 / 16
-            pos.z = pos.z + posad.z * 6.5 / 16
-        end
-        local yaw = pi * 2 - param2 * pi / 2
-        local map_id = item:get_meta():get_string("mcl_maps:id")
-        local map_id_entity = {}
-        local map_id_lua = {}
-
-        if map_id == "" then
-            map_id_entity = minetest.add_entity(pos, "mcl_itemframes:glow_item")
-            map_id_lua = map_id_entity:get_luaentity()
-            map_id_lua._nodename = node.name
-            if 1 == 1 then
-                minetest.log("action", "[mcl_itemframes] Update_Glow_Item: Adding entity: " .. map_id_lua.name)
-            end
-
-            local itemname = item:get_name()
-            if itemname == "" or itemname == nil then
-                map_id_lua._texture = "blank.png"
-                map_id_lua._scale = 1
-                map_id_lua.glow = glow_amount
-            else
-                map_id_lua._texture = itemname
-                local def = minetest.registered_items[itemname]
-                map_id_lua._scale = def and def.wield_scale and def.wield_scale.x or 1
-            end
-            if 1 == 1 then
-                minetest.log("action", "[mcl_itemframes] Update_Glow_Item: item's name: " .. itemname)
-            end
-            map_id_lua:_update_texture()
-            if node.name == "mcl_itemframes:glow_item_frame" then
-                map_id_entity:set_yaw(yaw)
-            end
-        else
-            map_id_entity = minetest.add_entity(pos, "mcl_itemframes:glow_map", map_id)
-            map_id_entity:set_yaw(yaw)
-            if 1 == 1 then
-                minetest.log("action", "[mcl_itemframes] Placing map in a glow frame.")
-            end
-        end
-    end
-end
-
 mcl_itemframes.update_item_entity = function(pos, node, param2)
     if 1 == 1 then
         minetest.log("action", "[mcl_itemframes] Update_Item_Entity:\nPosition: " .. dump(pos) .. "\nNode: " .. dump(node))
@@ -127,27 +69,26 @@ mcl_itemframes.update_item_entity = function(pos, node, param2)
         if not param2 then
             param2 = node.param2
         end
-        if node.name == "mcl_itemframes:item_frame" then
+
+        if node.name == "mcl_itemframes:item_frame" or node.name == "mcl_itemframes:glow_item_frame" then
             local posad = facedir[param2]
             pos.x = pos.x + posad.x * 6.5 / 16
             pos.y = pos.y + posad.y * 6.5 / 16
             pos.z = pos.z + posad.z * 6.5 / 16
         end
+
         local yaw = pi * 2 - param2 * pi / 2
         local map_id = item:get_meta():get_string("mcl_maps:id")
         local map_id_entity = {}
         local map_id_lua = {}
 
         if map_id == "" then
-            map_id_entity = minetest.add_entity(pos, "mcl_itemframes:item")
-
-            map_id_lua = map_id_entity:get_luaentity()
-
-            if DEBUG then
-                minetest.log("[mcl_itemframes] Map_ID_Entity: \n" .. dump(map_id_entity))
-                minetest.log("[mcl_itemframes] Map_ID_LUA: \n" .. dump(map_id_lua))
+            if node.name == "mcl_itemframes:item_frame" then
+                map_id_entity = minetest.add_entity(pos, "mcl_itemframes:item")
+            elseif node.name == "mcl_itemframes:glow_item_frame" then
+                map_id_entity = minetest.add_entity(pos, "mcl_itemframes:glow_item")
             end
-
+            map_id_lua = map_id_entity:get_luaentity()
             map_id_lua._nodename = node.name
             local itemname = item:get_name()
             if itemname == "" or itemname == nil then
@@ -159,12 +100,109 @@ mcl_itemframes.update_item_entity = function(pos, node, param2)
                 map_id_lua._scale = def and def.wield_scale and def.wield_scale.x or 1
             end
             map_id_lua:_update_texture()
-            if node.name == "mcl_itemframes:item_frame" then
+            if node.name == "mcl_itemframes:item_frame" or node.name == "mcl_itemframes:glow_item_frame" then
                 map_id_entity:set_yaw(yaw)
             end
         else
-            map_id_entity = minetest.add_entity(pos, "mcl_itemframes:map", map_id)
+            if node.name == "mcl_itemframes:item_frame" then
+                map_id_entity = minetest.add_entity(pos, "mcl_itemframes:map", map_id)
+            elseif node.name == "mcl_itemframes:glow_item_frame" then
+                map_id_entity = minetest.add_entity(pos, "mcl_itemframes:glow_map", map_id)
+            end
             map_id_entity:set_yaw(yaw)
+        end
+    end
+end
+
+mcl_itemframes.update_generic_item_entity = function(pos, node, param2)
+
+    if 1 == 1 then
+        minetest.log("action", "[mcl_itemframes] Update_Generic_Item:\nPosition: " .. dump(pos) .. "\nNode: " .. dump(node))
+    end
+
+    remove_item_entity(pos, node)
+    local meta = minetest.get_meta(pos)
+    local inv = meta:get_inventory()
+    local item = inv:get_stack("main", 1)
+    if not item:is_empty() then
+        -- update existing items placed.
+        if not param2 then
+            param2 = node.param2
+        end
+
+        local name_found = false
+        local found_name_to_use = ""
+        local has_glow = false
+
+        for gl = 1, #mcl_itemframes.frames_registered.glowing do
+            if node.name == mcl_itemframes.frames_registered.glowing[gl] then
+                name_found = true
+                has_glow = true
+                found_name_to_use = mcl_itemframes.frames_registered.glowing[gl]
+                break
+            end
+        end
+
+        -- try to cut down on excess looping, if possible.
+        if name_found == false then
+            for ngl = 1, #mcl_itemframes.frames_registered.standard do
+                if node.name == mcl_itemframes.frames_registered.glowing[ngl] then
+                    name_found = true
+                    has_glow = false
+                    found_name_to_use = mcl_itemframes.frames_registered.glowing[ngl]
+                    break
+                end
+            end
+        end
+
+        if node.name == found_name_to_use then
+            local pos_adj = facedir[param2]
+            pos.x = pos.x + pos_adj.x * 6.5 / 16
+            pos.y = pos.y + pos_adj.y * 6.5 / 16
+            pos.z = pos.z + pos_adj.z * 6.5 / 16
+        end
+        local yaw = pi * 2 - param2 * pi / 2
+        local map_id = item:get_meta():get_string("mcl_maps:id")
+        local map_id_entity = {}
+        local map_id_lua = {}
+
+        if map_id == "" then
+            -- handle regular items placed into custom frame.
+            if 1 == 1 then
+                minetest.log("action", "[mcl_itemframes] Update_Generic_Item:\nAdding entity: " .. node.name .. "_item")
+            end
+            map_id_entity = minetest.add_entity(pos, node.name .. "_item")
+            map_id_lua = map_id_entity:get_luaentity()
+
+            map_id_lua._nodename = node.name
+            if 1 == 1 then
+                minetest.log("action", "[mcl_itemframes] Update_Generic_Item: Adding entity: " .. map_id_lua.name)
+            end
+
+            local itemname = item:get_name()
+            if itemname == "" or itemname == nil then
+                map_id_lua._texture = "blank.png"
+                map_id_lua._scale = 1
+                if has_glow then
+                    map_id_lua.glow = glow_amount
+                end
+            else
+                map_id_lua._texture = itemname
+                local def = minetest.registered_items[itemname]
+                map_id_lua._scale = def and def.wield_scale and def.wield_scale.x or 1
+            end
+            if 1 == 1 then
+                minetest.log("action", "[mcl_itemframes] Update_Generic_Item: item's name: " .. itemname)
+            end
+            map_id_lua:_update_texture()
+            map_id_entity:set_yaw(yaw)
+        else
+            -- handle map items placed into custom frame.
+            map_id_entity = minetest.add_entity(pos, found_name_to_use .. "_map", map_id)
+            map_id_entity:set_yaw(yaw)
+            if 1 == 1 then
+                minetest.log("action", "[mcl_itemframes] Placing map in a " .. found_name_to_use .. " frame.")
+            end
         end
     end
 end
@@ -187,6 +225,49 @@ local drop_item = function(pos, node, meta, clicker)
     meta:set_string("infotext", "")
     remove_item_entity(pos, node)
 end
+
+function mcl_itemframes.drop_generic_item(pos, node, meta, clicker)
+    local name_found = false
+    local found_name_to_use = ""
+
+    for gl = 1, #mcl_itemframes.frames_registered.glowing do
+        if node.name == mcl_itemframes.frames_registered.glowing[gl] then
+            name_found = true
+            found_name_to_use = mcl_itemframes.frames_registered.glowing[gl]
+            break
+        end
+    end
+
+    -- try to cut down on excess looping, if possible.
+    if name_found == false then
+        for ngl = 1, #mcl_itemframes.frames_registered.standard do
+            if node.name == mcl_itemframes.frames_registered.glowing[ngl] then
+                name_found = true
+                found_name_to_use = mcl_itemframes.frames_registered.glowing[ngl]
+                break
+            end
+        end
+    end
+
+    local cname = ""
+    if clicker and clicker:is_player() then
+        cname = clicker:get_player_name()
+    end
+    if not minetest.is_creative_enabled(cname) then
+        if (node.name == found_name_to_use) then
+            local inv = meta:get_inventory()
+            local item = inv:get_stack("main", 1)
+            if not item:is_empty() then
+                minetest.add_item(pos, item)
+            end
+        end
+    end
+
+    meta:set_string("infotext", "")
+    remove_item_entity(pos, node)
+
+end
+
 mcl_itemframes.item_frame_base = {
     description = S("Item Frame"),
     _tt_help = S("Can hold an item"),
@@ -207,6 +288,7 @@ mcl_itemframes.item_frame_base = {
     groups = { dig_immediate = 3, deco_block = 1, dig_by_piston = 1, container = 7, attached_node_facedir = 1 },
     sounds = mcl_sounds.node_sound_defaults(),
     node_placement_prediction = "",
+
     on_timer = function(pos)
         local inv = minetest.get_meta(pos):get_inventory()
         local stack = inv:get_stack("main", 1)
@@ -217,11 +299,17 @@ mcl_itemframes.item_frame_base = {
                 stack:set_name(new_name)
                 inv:set_stack("main", 1, stack)
                 local node = minetest.get_node(pos)
-                mcl_itemframes.update_item_entity(pos, node, node.param2)
+                if node.name == "mcl_itemframes:item_frame" or node.name == "mcl_itemframes:glow_item_frame" then
+                    mcl_itemframes.update_item_entity(pos, node, node.param2)
+                else
+                    mcl_itemframes.update_generic_item_entity(pos, node, node.param2)
+                end
+
             end
             minetest.get_node_timer(pos):start(1.0)
         end
     end,
+
     on_place = function(itemstack, placer, pointed_thing)
         if pointed_thing.type ~= "node" then
             return itemstack
@@ -237,11 +325,13 @@ mcl_itemframes.item_frame_base = {
 
         return minetest.item_place(itemstack, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
     end,
+
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("main", 1)
     end,
+
     on_rightclick = function(pos, node, clicker, itemstack)
         if not itemstack then
             return
@@ -252,7 +342,13 @@ mcl_itemframes.item_frame_base = {
             return
         end
         local meta = minetest.get_meta(pos)
-        drop_item(pos, node, meta, clicker)
+
+        if node.name == "mcl_itemframes:item_frame" or node.name == "mcl_itemframes:glow_item_frame" then
+            drop_item(pos, node, meta, clicker)
+        else
+            mcl_itemframes.drop_generic_item(pos, node, meta, clicker)
+        end
+
         local inv = meta:get_inventory()
         if itemstack:is_empty() then
             remove_item_entity(pos, node)
@@ -269,11 +365,12 @@ mcl_itemframes.item_frame_base = {
         if minetest.get_item_group(itemname, "clock") > 0 then
             minetest.get_node_timer(pos):start(1.0)
         end
+
         inv:set_stack("main", 1, put_itemstack)
-        if node.name == "mcl_itemframes:item_frame" then
+        if node.name == "mcl_itemframes:item_frame" or node.name == "mcl_itemframes:glow_item_frame" then
             mcl_itemframes.update_item_entity(pos, node)
-        elseif node.name == "mcl_itemframes:glow_item_frame" then
-            mcl_itemframes.update_item_glow_entity(pos, node)
+        else
+            mcl_itemframes.update_generic_item_entity(pos, node)
         end
 
         -- Add node infotext when item has been named
@@ -288,6 +385,7 @@ mcl_itemframes.item_frame_base = {
         end
         return itemstack
     end,
+
     allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
         local name = player:get_player_name()
         if minetest.is_protected(pos, name) then
@@ -297,6 +395,7 @@ mcl_itemframes.item_frame_base = {
             return count
         end
     end,
+
     allow_metadata_inventory_take = function(pos, listname, index, stack, player)
         local name = player:get_player_name()
         if minetest.is_protected(pos, name) then
@@ -306,6 +405,7 @@ mcl_itemframes.item_frame_base = {
             return stack:get_count()
         end
     end,
+
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
         local name = player:get_player_name()
         if minetest.is_protected(pos, name) then
@@ -315,11 +415,18 @@ mcl_itemframes.item_frame_base = {
             return stack:get_count()
         end
     end,
+
     on_destruct = function(pos)
         local meta = minetest.get_meta(pos)
         local node = minetest.get_node(pos)
-        drop_item(pos, node, meta)
+
+        if node.name == "mcl_itemframes:item_frame" or node.name == "mcl_itemframes:glow_item_frame" then
+            drop_item(pos, node, meta) -- originally had ", clicker" too. Except, clicker doesn't exist in the context.
+        else
+            mcl_itemframes.drop_generic_item(pos, node, meta)
+        end
     end,
+
     on_rotate = function(pos, node, user, mode, param2)
         if mode == screwdriver.ROTATE_FACE then
             -- Rotate face
@@ -327,18 +434,40 @@ mcl_itemframes.item_frame_base = {
             local node = minetest.get_node(pos)
 
             local objs = nil
-            if node.name == "mcl_itemframes:item_frame" or node.name == "mcl_itemframes:glow_item_frame" then
+
+            local name_found = false
+            local found_name_to_use = ""
+
+            for gl = 1, #mcl_itemframes.frames_registered.glowing do
+                if node.name == mcl_itemframes.frames_registered.glowing[gl] then
+                    name_found = true
+                    found_name_to_use = mcl_itemframes.frames_registered.glowing[gl]
+                    break
+                end
+            end
+
+            -- try to cut down on excess looping, if possible.
+            if name_found == false then
+                for ngl = 1, #mcl_itemframes.frames_registered.standard do
+                    if node.name == mcl_itemframes.frames_registered.glowing[ngl] then
+                        name_found = true
+                        found_name_to_use = mcl_itemframes.frames_registered.glowing[ngl]
+                        break
+                    end
+                end
+            end
+            if node.name == found_name_to_use then
                 objs = minetest.get_objects_inside_radius(pos, 0.5)
             end
             if objs then
                 for _, obj in ipairs(objs) do
                     if obj and obj:get_luaentity() then
-                        if obj:get_luaentity().name == "mcl_itemframes:item" then
+                        local obj_name = obj:get_luaentity().name
+                        if obj_name == "mcl_itemframes:item" or obj_name == "mcl_itemframes:glow_item" then
                             mcl_itemframes.update_item_entity(pos, node, (node.param2 + 1) % 4)
                             break
-                        end
-                        if obj:get_luaentity().name == "mcl_itemframes:glow_item_frame" then
-                            mcl_itemframes.update_item_glow_entity(pos, node, (node.param2 + 1) % 4)
+                        elseif obj_name == found_name_to_use .. "_item" then
+                            mcl_itemframes.update_generic_item_entity(pos, node, (node.param2 + 1) % 4)
                             break
                         end
                     end
@@ -351,13 +480,32 @@ mcl_itemframes.item_frame_base = {
     end,
 }
 
-function mcl_itemframes.create_item_entity()
+local function update_map_texture (self, staticdata)
+    self.id = staticdata
+    local result = true
+    result = mcl_maps.load_map(self.id, function(texture)
+        -- will not crash even if self.object is invalid by now
+        -- update... quite possibly will screw up with each version of Minetest. >.<
+        if not texture then
+            minetest.log("error", "Failed to load the map texture using mcl_maps.")
+        end
+
+        self.object:set_properties({ textures = { texture } })
+    end)
+    if result ~= nil and result == false then
+        mintest.log("error", "[mcl_itemframes] Error setting up Map Item.")
+    end
+
+end
+
+--- reworked to set up the base item definitions, and to register them for item and glow_item.
+function mcl_itemframes.create_base_item_entity()
     if 1 == 1 then
         minetest.log("action", "[mcl_itemframes] create_item_entity.")
     end
 
     --"mcl_itemframes:item",
-    local frame_item = {
+    frame_item_base = {
         hp_max = 1,
         visual = "wielditem",
         visual_size = { x = VISUAL_SIZE, y = VISUAL_SIZE },
@@ -408,7 +556,7 @@ function mcl_itemframes.create_item_entity()
         end,
     }
     -- "mcl_itemframes:map",
-    local map_item = {
+    map_item_base = {
         initial_properties = {
             visual = "upright_sprite",
             visual_size = { x = 1, y = 1 },
@@ -418,31 +566,53 @@ function mcl_itemframes.create_item_entity()
             textures = { "blank.png" },
         },
         on_activate = function(self, staticdata)
-            self.id = staticdata
-            mcl_maps.load_map(self.id, function(texture)
-                -- will not crash even if self.object is invalid by now
-                self.object:set_properties({ textures = { texture } })
-            end)
+            if 1 == 1 then
+                minetest.log("action", "[mcl_itemframes] map_item:on_activate.")
+
+            end
+            update_map_texture(self, staticdata)
         end,
+
         get_staticdata = function(self)
             return self.id
         end,
     }
 
-    local glow_frame_item = table.copy(frame_item)
+    local glow_frame_item = table.copy(frame_item_base)
     glow_frame_item.glow = glow_amount
-    glow_frame_item.name = "mcl_itemframes:glow_item"
-    local glow_frame_map_item = table.copy(map_item)
-    glow_frame_map_item.glow = glow_amount
+    local glow_frame_map_item = table.copy(map_item_base)
     glow_frame_map_item.name = "mcl_itemframes:glow_map"
 
     minetest.register_entity("mcl_itemframes:glow_item", glow_frame_item)
     minetest.register_entity("mcl_itemframes:glow_map", glow_frame_map_item)
-    minetest.register_entity("mcl_itemframes:item", frame_item)
-    minetest.register_entity("mcl_itemframes:map", map_item)
+    minetest.register_entity("mcl_itemframes:item", frame_item_base)
+    minetest.register_entity("mcl_itemframes:map", map_item_base)
 
 end
-mcl_itemframes.create_item_entity()
+
+function mcl_itemframes.create_custom_items(name, has_glow)
+
+    if has_glow then
+        local glow_frame_item = table.copy(frame_item_base)
+        local glow_frame_map_item = table.copy(map_item_base)
+        glow_frame_map_item.glow = glow_amount
+        glow_frame_item.glow = glow_amount
+
+        minetest.register_entity(name .. "_item", glow_frame_item)
+        minetest.register_entity(name .. "_map", glow_frame_map_item)
+        if 1 == 1 then
+            minetest.log("action", "\n[mcl_itemframes] create_custom_item_entity: glow name: " .. name .. "_item")
+            minetest.log("action", "[mcl_itemframes] create_custom_item_entity: glow name: " .. name .. "_map\n")
+        end
+    else
+        minetest.register_entity(name .. "_item", frame_item_base)
+        minetest.register_entity(name .. "_map", map_item_base)
+        if 1 == 1 then
+            minetest.log("action", "\n[mcl_itemframes] create_custom_item_entity: name: " .. name .. "_item")
+            minetest.log("action", "[mcl_itemframes] create_custom_item_entity: name: " .. name .. "_map\n")
+        end
+    end
+end
 
 function mcl_itemframes.update_frame_registry(modname, name, has_glow)
     local mod_name_pass = false
@@ -455,10 +625,7 @@ function mcl_itemframes.update_frame_registry(modname, name, has_glow)
         end
     end
 
-    mcl_itemframes.frames_registered.glowing = {}
-    mcl_itemframes.frames_registered.standard = {}
-
-    local frame = "mcl_itemframes:" .. name
+    local frame = name -- should only be called within the create_frames functions.
     if has_glow == true then
         table.insert(mcl_itemframes.frames_registered.glowing, frame)
     else
@@ -467,6 +634,8 @@ function mcl_itemframes.update_frame_registry(modname, name, has_glow)
 
 end
 
+--- name: The name used to distinguish the item frame. Prepends "mcl_itemframes:" to the name. Example usage:
+--- "glow_item_frame" creates a node named "mcl_itemframes:glow_item_frame".
 function mcl_itemframes.create_custom_frame(modname, name, has_glow, tiles, color, ttframe, description)
     local mod_name_pass = false
     if modname ~= "" and modname ~= "false" then
@@ -490,6 +659,16 @@ function mcl_itemframes.create_custom_frame(modname, name, has_glow, tiles, colo
         return
     end
 
+    local working_name = "mcl_itemframes:" .. name
+
+    if 1 == 1 then
+        minetest.log("action", "[mcl_itemframes] create_custom_frame: " .. working_name)
+        minetest.log("action", "[mcl_itemframes] create_custom_frame - calling create_custom_items " .. working_name)
+    end
+
+    -- make any special frame items.
+    mcl_itemframes.create_custom_items(working_name, has_glow)
+
     local custom_itemframe_definition = {}
 
     if has_glow == false then
@@ -500,9 +679,44 @@ function mcl_itemframes.create_custom_frame(modname, name, has_glow, tiles, colo
 
     custom_itemframe_definition.tiles = { "(" .. tiles .. "^[multiply:" .. color .. ")" }
     custom_itemframe_definition._tt_help = ttframe
-    custom_itemframe_definition.description=description
-    mcl_itemframes.update_frame_registry(modname, name, has_glow)
-    mcl_itemframes.create_register_lbm(name, has_glow)
+    custom_itemframe_definition.description = description
+
+    minetest.register_node(working_name, custom_itemframe_definition)
+
+    mcl_itemframes.update_frame_registry(modname, working_name, has_glow)
+    mcl_itemframes.custom_register_lbm(working_name)
+
+end
+
+-- the local version is for the base glow & base frame.
+local function create_register_lbm(name)
+
+    -- FIXME: Item entities can get destroyed by /clearobjects
+    -- glow frame
+    minetest.register_lbm({
+        label = "Respawn item frame item entities",
+        name = "mcl_itemframes:respawn_entities",
+        nodenames = { name },
+        run_at_every_load = true,
+        action = function(pos, node)
+            mcl_itemframes.update_item_entity(pos, node)
+        end,
+    })
+
+end
+function mcl_itemframes.custom_register_lbm(name)
+
+    -- FIXME: Item entities can get destroyed by /clearobjects
+    -- glow frame
+    minetest.register_lbm({
+        label = "Respawn item frame item entities",
+        name = "mcl_itemframes:respawn_entities",
+        nodenames = { name },
+        run_at_every_load = true,
+        action = function(pos, node)
+            mcl_itemframes.update_generic_item_entity(pos, node)
+        end,
+    })
 
 end
 
@@ -510,6 +724,9 @@ function mcl_itemframes.create_base_frames()
     if 1 == 1 then
         minetest.log("action", "[mcl_itemframes] create_frames.")
     end
+
+    -- make the base items for the base frames.
+    mcl_itemframes.create_base_item_entity()
 
     minetest.register_node("mcl_itemframes:item_frame", mcl_itemframes.item_frame_base)
 
@@ -534,7 +751,7 @@ function mcl_itemframes.create_base_frames()
                 stack:set_name(new_name)
                 inv:set_stack("main", 1, stack)
                 local node = minetest.get_node(pos)
-                mcl_itemframes.update_item_glow_entity(pos, node, node.param2)
+                mcl_itemframes.update_item_entity(pos, node, node.param2)
             end
             minetest.get_node_timer(pos):start(1.0)
         end
@@ -542,29 +759,9 @@ function mcl_itemframes.create_base_frames()
 
     minetest.register_node("mcl_itemframes:glow_item_frame", mcl_itemframes.glow_frame_base)
 
-    mcl_itemframes.update_frame_registry("false", "item_frame", false)
-    mcl_itemframes.update_frame_registry("false", "glow_item_frame", true)
-    mcl_itemframes.create_register_lbm("item_frame", false)
-    mcl_itemframes.create_register_lbm("glow_item_frame", true)
-end
-
-function mcl_itemframes.create_register_lbm(name, has_glow)
-
-    -- FIXME: Item entities can get destroyed by /clearobjects
-    -- glow frame
-    minetest.register_lbm({
-        label = "Respawn item frame item entities",
-        name = "mcl_itemframes:respawn_entities",
-        nodenames = { "mcl_itemframes:" .. name },
-        run_at_every_load = true,
-        action = function(pos, node)
-            if has_glow == true then
-                mcl_itemframes.update_item_glow_entity(pos, node)
-            else
-                mcl_itemframes.update_item_entity(pos, node)
-            end
-        end,
-    })
-
+    mcl_itemframes.update_frame_registry("false", "mcl_itemframes:item_frame", false)
+    mcl_itemframes.update_frame_registry("false", "mcl_itemframes:glow_item_frame", true)
+    create_register_lbm("mcl_itemframes:item_frame")
+    create_register_lbm("mcl_itemframes:glow_item_frame")
 end
 
