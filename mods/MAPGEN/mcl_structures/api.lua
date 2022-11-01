@@ -284,10 +284,11 @@ function mcl_structures.place_structure(pos, def, pr, blockseed, rot)
 			local ap = function(pos,def,pr,blockseed) end
 
 			if def.daughters then
-				for _,d in pairs(def.daughters) do
-					local p = vector.add(pp,d.pos)
-					ap = function(pos,def,pr,blockseed)
-						mcl_structures.place_schematic(pos, d.files[pr:next(1,#d.files)], rot, nil, true, "place_center_x,place_center_z",function()
+				ap = function(pos,def,pr,blockseed)
+					for _,d in pairs(def.daughters) do
+						local p = vector.add(pos,d.pos)
+						local rot = d.rot or 0
+						mcl_structures.place_schematic(p, d.files[pr:next(1,#d.files)], rot, nil, true, "place_center_x,place_center_z",function()
 							if def.loot then generate_loot(pp,def,pr,blockseed) end
 							if def.construct_nodes then construct_nodes(pp,def,pr,blockseed) end
 							if def.after_place then

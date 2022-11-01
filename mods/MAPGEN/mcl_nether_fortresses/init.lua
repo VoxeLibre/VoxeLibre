@@ -22,7 +22,12 @@ mcl_structures.register_structure("nether_outpost",{
 		mcl_mobspawners.setup_spawner(sp[1], "mobs_mc:blaze", 0, minetest.LIGHT_MAX+1, 10, 8, 0)
 	end
 })
-
+local nbridges = {
+		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_1.mts",
+		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_2.mts",
+		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_3.mts",
+		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_4.mts",
+}
 mcl_structures.register_structure("nether_bridge",{
 	place_on = {"mcl_nether:nether_lava_source","mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand","mcl_core:bedrock"},
 	fill_ratio = 0.01,
@@ -33,12 +38,7 @@ mcl_structures.register_structure("nether_bridge",{
 	make_foundation = false,
 	y_min = mcl_vars.mg_nether_min - 4,
 	y_max = mcl_vars.mg_lava_nether_max - 20,
-	filenames = {
-		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_1.mts",
-		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_2.mts",
-		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_3.mts",
-		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_4.mts",
-	},
+	filenames = nbridges,
 	y_offset = function(pr) return pr:next(15,20) end,
 	after_place = function(pos,def,pr)
 		local p1 = vector.offset(pos,-14,0,-14)
@@ -46,6 +46,46 @@ mcl_structures.register_structure("nether_bridge",{
 		mcl_structures.spawn_mobs("mobs_mc:witherskeleton",{"mcl_blackstone:blackstone_chiseled_polished"},p1,p2,pr,5)
 	end
 })
+
+mcl_structures.register_structure("nether_outpost_with_bridges",{
+	place_on = {"mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand","mcl_nether:nether_lava_source"},
+	fill_ratio = 0.01,
+	chunk_probability = 1300,
+	flags = "all_floors",
+	biomes = {"Nether","SoulsandValley","WarpedForest","CrimsonForest","BasaltDelta"},
+	sidelen = 24,
+	solid_ground = true,
+	make_foundation = true,
+	y_min = mcl_vars.mg_lava_nether_max - 1,
+	y_max = mcl_vars.mg_nether_max - 30,
+	filenames = { modpath.."/schematics/mcl_nether_fortresses_nether_outpost.mts" },
+	daughters = {{
+		files = { nbridges[1] },
+			pos = vector.new(0,-2,-24),
+			rot = 180,
+		},
+		{
+		files = { nbridges[1] },
+			pos = vector.new(0,-2,24),
+			rot = 0,
+		},
+		{
+		files = { nbridges[1] },
+			pos = vector.new(-24,-2,0),
+			rot = 270,
+		},
+		{
+		files = { nbridges[1] },
+			pos = vector.new(24,-2,0),
+			rot = 90,
+		},
+	},
+	after_place = function(pos,def,pr)
+		local sp = minetest.find_nodes_in_area(pos,vector.offset(pos,0,20,0),{"mcl_mobspawners:spawner"})
+		if not sp[1] then return end
+		mcl_mobspawners.setup_spawner(sp[1], "mobs_mc:blaze", 0, minetest.LIGHT_MAX+1, 10, 8, 0)
+	end
+},true) --just for experimental purposes for now
 
 mcl_structures.register_structure_spawn({
 	name = "mobs_mc:witherskeleton",
@@ -81,7 +121,7 @@ mcl_structures.register_structure("nether_bulwark",{
 				modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_interior_3.mts",
 				modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_interior_4.mts",
 			},
-			pos = vector.new(5,0,5),
+			pos = vector.new(0,0,0),
 		},
 	},
 	y_offset = 0,
