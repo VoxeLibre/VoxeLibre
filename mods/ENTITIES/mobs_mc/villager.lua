@@ -1760,7 +1760,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 			--end)
 		else
 			self.state = "stand" -- cancel gowp in case it has messed up
-			self.order = nil -- cancel work if working
+			--self.order = nil -- cancel work if working
 		end
 
 		-- Initiate trading
