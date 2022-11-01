@@ -799,7 +799,7 @@ local function unlock_trades (self)
 			local trade_tier_too_high = trade.tier > self._max_trade_tier
 			--mcl_log("Max trade tier of villager: ".. tostring(self._max_trade_tier))
 			--mcl_log("current trade.tier: ".. tostring(trade.tier))
-			mcl_log("trade tier too high: ".. tostring(trade_tier_too_high))
+			--mcl_log("trade tier too high: ".. tostring(trade_tier_too_high))
 			--mcl_log("locked: ".. tostring(trade["locked"]))
 			if not trade_tier_too_high then
 				if trade["locked"] == true then
