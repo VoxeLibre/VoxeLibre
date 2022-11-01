@@ -2637,7 +2637,7 @@ local function check_gowp(self,dtime)
 	-- 0.6 is working but too sensitive. sends villager back too frequently. 0.7 is quite good, but not with heights
 	-- 0.8 is optimal for 0.025 frequency checks and also 1... Actually. 0.8 is winning
 	-- 0.9 and 1.0 is also good. Stick with unless door open or closing issues
-	if self.waypoints and #self.waypoints > 0 and ( not self.current_target or not self.current_target["pos"] or distance_to_current_target < 1 ) then
+	if self.waypoints and #self.waypoints > 0 and ( not self.current_target or not self.current_target["pos"] or distance_to_current_target < 0.9 ) then
 		-- We have waypoints, and no current target, or we're at it. We need a new current_target.
 		do_pathfind_action (self, self.current_target["action"])
 
