@@ -5059,6 +5059,18 @@ local function register_dimension_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
+		decoration = "mcl_blackstone:basalt",
+		place_on = {"mcl_blackstone:basalt","mcl_nether:netherrack","mcl_blackstone:blackstone"},
+		sidelen = 80,
+		height_max = 3,
+		fill_ratio = 0.4,
+		biomes = {"BasaltDelta"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_deco_max - 15,
+		flags = "all_floors, all ceilings",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
 		decoration = "mcl_nether:magma",
 		place_on = {"mcl_blackstone:basalt","mcl_nether:netherrack","mcl_blackstone:blackstone"},
 		sidelen = 80,
