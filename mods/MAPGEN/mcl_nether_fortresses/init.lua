@@ -84,13 +84,27 @@ mcl_structures.register_structure("nether_outpost_with_bridges",{
 		local sp = minetest.find_nodes_in_area(pos,vector.offset(pos,0,20,0),{"mcl_mobspawners:spawner"})
 		if not sp[1] then return end
 		mcl_mobspawners.setup_spawner(sp[1], "mobs_mc:blaze", 0, minetest.LIGHT_MAX+1, 10, 8, 0)
+
+		local legs = minetest.find_nodes_in_area(vector.offset(pos,-45,-2,-45),vector.offset(pos,45,0,45), "mcl_nether:nether_brick")
+		local bricks = {}
+		for _,leg in pairs(legs) do
+			while minetest.get_item_group(mcl_vars.get_node(vector.offset(leg,0,-1,0), true, 333333).name, "solid") == 0 do
+				leg = vector.offset(leg,0,-1,0)
+				table.insert(bricks,leg)
+			end
+		end
+		minetest.bulk_set_node(bricks, {name = "mcl_nether:nether_brick", param2 = 2})
+
+		local p1 = vector.offset(pos,-45,13,-45)
+		local p2 = vector.offset(pos,45,13,45)
+		mcl_structures.spawn_mobs("mobs_mc:witherskeleton",{"mcl_blackstone:blackstone_chiseled_polished"},p1,p2,pr,5)
 	end
-},true) --just for experimental purposes for now
+},true)
 
 mcl_structures.register_structure_spawn({
 	name = "mobs_mc:witherskeleton",
 	y_min = mcl_vars.mg_lava_nether_max,
-	y_max = mcl_vars.mg_lava_nether_max + 32,
+	y_max = mcl_vars.mg_nether_max,
 	chance = 15,
 	interval = 60,
 	limit = 4,
