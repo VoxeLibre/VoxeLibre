@@ -414,11 +414,14 @@ end
 
 
 local set_yaw = function(self, yaw, delay, dtime)
-
-
 	if self.noyaw then return end
 
-	self._turn_to = yaw
+	if self.state ~= PATHFINDING then
+		self._turn_to = yaw
+	end
+
+	--mcl_log("Yaw is: \t\t" .. tostring(math.deg(yaw)))
+	--mcl_log("self.object:get_yaw() is: \t" .. tostring(math.deg(self.object:get_yaw())))
 
 	--clamp our yaw to a 360 range
 	if math.deg(self.object:get_yaw()) > 360 then
@@ -2601,7 +2604,7 @@ local function check_gowp(self,dtime)
 	-- 0.1 is optimal.
 	--less frequently = villager will get sent back after passing a point.
 	--more frequently = villager will fail points they shouldn't they just didn't get there yet
-	if gowp_etime < 0.125 then return end
+	if gowp_etime < 0.1 then return end
 	gowp_etime = 0
 	local p = self.object:get_pos()
 
@@ -2651,8 +2654,8 @@ local function check_gowp(self,dtime)
 		-- No waypoints left, but have current target. Potentially last waypoint to go to.
 		self.current_target["failed_attempts"] = self.current_target["failed_attempts"] + 1
 		local failed_attempts = self.current_target["failed_attempts"]
-		if failed_attempts >= 20 then
-			mcl_log("Failed to reach position too many times. Abandon route. Times tried: " .. failed_attempts)
+		if failed_attempts >= 50 then
+			mcl_log("Failed to reach position (" .. minetest.pos_to_string(self.current_target["pos"]) .. ") too many times. Abandon route. Times tried: " .. failed_attempts)
 			self.state = "stand"
 			self.current_target = nil
 			self.waypoints = nil
@@ -2662,7 +2665,7 @@ local function check_gowp(self,dtime)
 			return
 		end
 
-		mcl_log("Not at pos with failed attempts ".. failed_attempts ..": ".. minetest.pos_to_string(p) .. "self.current_target: ".. minetest.pos_to_string(self.current_target["pos"]) .. ". Distance: ".. distance_to_current_target)
+		--mcl_log("Not at pos with failed attempts ".. failed_attempts ..": ".. minetest.pos_to_string(p) .. "self.current_target: ".. minetest.pos_to_string(self.current_target["pos"]) .. ". Distance: ".. distance_to_current_target)
 		go_to_pos(self, self.current_target["pos"])
 		-- Do i just delete current_target, and return so we can find final path.
 	else
@@ -3364,7 +3367,7 @@ local function generate_enriched_path(wp_in, door_open_pos, door_close_pos, cur_
 			action["target"] = cur_door_pos
 		else
 			cur_pos_to_add = cur_pos
-			mcl_log ("Pos doesn't match")
+			--mcl_log ("Pos doesn't match")
 		end
 
 		wp_out[i] = {}
