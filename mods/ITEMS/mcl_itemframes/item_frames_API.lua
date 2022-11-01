@@ -15,6 +15,8 @@ local S = minetest.get_translator(minetest.get_current_modname())
 local table = table
 local DEBUG = false
 
+local pairs = pairs
+
 if 1 == 1 then
     minetest.log("action", "[mcl_itemframes] API initialized.")
 end
@@ -32,23 +34,43 @@ local frame_item_base = {}
 local map_item_base = {}
 
 local remove_item_entity = function(pos, node)
-    if node.name == "mcl_itemframes:item_frame" or node.name == "mcl_itemframes:glow_item_frame" then
+
+    local name_found = false
+    local found_name_to_use = ""
+
+    for k,v in pairs(mcl_itemframes.frames_registered.glowing) do
+        if node.name == v then
+            name_found = true
+            found_name_to_use = v
+            break
+        end
+    end
+
+    -- try to cut down on excess looping, if possible.
+    if name_found == false then
+        for k,v in pairs(mcl_itemframes.frames_registered.standard) do
+            if node.name == v then
+                name_found = true
+                found_name_to_use = v
+                break
+            end
+        end
+    end
+
+    if 1==1 then
+        minetest.log("action","mcl_itemframes] remove_item_entity: " .. found_name_to_use .. "'s displayed item." )
+    end
+
+    if node.name == "mcl_itemframes:item_frame" or node.name == "mcl_itemframes:glow_item_frame" or node.name == found_name_to_use then
         for _, obj in pairs(minetest.get_objects_inside_radius(pos, 0.5)) do
             local entity = obj:get_luaentity()
-
-            if 1 == 1 then
-                if entity then
-                    minetest.log("action", "[mcl_itemframes] Remove_Entity: Attempting to remove Entity Named: " .. entity.name)
-                else
-                    minetest.log("action", "[mcl_itemframes] Remove_Entity: Attempting to remove Entity Named: entity not found.\n can be a false positive.")
-                end
-            end
-
             if entity then
                 if entity.name == "mcl_itemframes:item" or entity.name == "mcl_itemframes:map" or
                         entity.name == "mcl_itemframes:glow_item" or entity.name == "mcl_itemframes:glow_map" then
-                    if 1 == 1 then
-                        minetest.log("action", "[mcl_itemframes] Remove_Entity: Removing Entity Named: " .. entity.name)
+                    obj:remove()
+                elseif entity.name == found_name_to_use .. "_item" or entity.name == found_name_to_use .. "_map" then
+                    if 1==1 then
+                        minetest.log("action","mcl_itemframes] remove_item_entity: " .. entity.name .. "-- the item." )
                     end
                     obj:remove()
                 end
@@ -124,42 +146,53 @@ mcl_itemframes.update_generic_item_entity = function(pos, node, param2)
     local meta = minetest.get_meta(pos)
     local inv = meta:get_inventory()
     local item = inv:get_stack("main", 1)
+
+    local name_found = false
+    local found_name_to_use = ""
+    local has_glow = false
+
+    for k,v in pairs(mcl_itemframes.frames_registered.glowing) do
+        if node.name == v then
+            name_found = true
+            has_glow = true
+            found_name_to_use = v
+            break
+        end
+    end
+
+    -- try to cut down on excess looping, if possible.
+    if name_found == false then
+        for k,v in pairs(mcl_itemframes.frames_registered.standard) do
+            if node.name == v then
+                name_found = true
+                has_glow = false
+                found_name_to_use = v
+                break
+            end
+        end
+    end
+
+    if name_found == false then
+        minetest.log("error","[mcl_itemframes] Update_Generic_Item:\nFailed to find registered node:\nNode name - " .. node.name)
+        minetest.log("error","[mcl_itemframes] Update_Generic_Item:\nRegistry definition:" .. dump(mcl_itemframes.frames_registered))
+        return
+    end
+
     if not item:is_empty() then
         -- update existing items placed.
         if not param2 then
             param2 = node.param2
         end
-
-        local name_found = false
-        local found_name_to_use = ""
-        local has_glow = false
-
-        for gl = 1, #mcl_itemframes.frames_registered.glowing do
-            if node.name == mcl_itemframes.frames_registered.glowing[gl] then
-                name_found = true
-                has_glow = true
-                found_name_to_use = mcl_itemframes.frames_registered.glowing[gl]
-                break
-            end
-        end
-
-        -- try to cut down on excess looping, if possible.
-        if name_found == false then
-            for ngl = 1, #mcl_itemframes.frames_registered.standard do
-                if node.name == mcl_itemframes.frames_registered.glowing[ngl] then
-                    name_found = true
-                    has_glow = false
-                    found_name_to_use = mcl_itemframes.frames_registered.glowing[ngl]
-                    break
-                end
-            end
-        end
+        local pos_adj = facedir[param2]
 
         if node.name == found_name_to_use then
-            local pos_adj = facedir[param2]
             pos.x = pos.x + pos_adj.x * 6.5 / 16
             pos.y = pos.y + pos_adj.y * 6.5 / 16
             pos.z = pos.z + pos_adj.z * 6.5 / 16
+
+            if 1 == 1 then
+                minetest.log("[mcl_itemframes] Update_Generic_Item:\nFound Name in Registry: " .. found_name_to_use)
+            end
         end
         local yaw = pi * 2 - param2 * pi / 2
         local map_id = item:get_meta():get_string("mcl_maps:id")
@@ -171,13 +204,17 @@ mcl_itemframes.update_generic_item_entity = function(pos, node, param2)
             if 1 == 1 then
                 minetest.log("action", "[mcl_itemframes] Update_Generic_Item:\nAdding entity: " .. node.name .. "_item")
             end
-            map_id_entity = minetest.add_entity(pos, node.name .. "_item")
-            map_id_lua = map_id_entity:get_luaentity()
+            if node.name == found_name_to_use then
+                map_id_entity = minetest.add_entity(pos, node.name .. "_item")
+            else
+                local debugs_string = "[mcl_itemframes] Update_Generic_Item:\nCouldn't find node name in registry: "
+                minetest.log("error", debugs_string .. found_name_to_use "\nregistry: " .. dump(mcl_itemframes.frames_registered))
 
-            map_id_lua._nodename = node.name
-            if 1 == 1 then
-                minetest.log("action", "[mcl_itemframes] Update_Generic_Item: Adding entity: " .. map_id_lua.name)
+                return
             end
+
+            map_id_lua = map_id_entity:get_luaentity()
+            map_id_lua._nodename = node.name
 
             local itemname = item:get_name()
             if itemname == "" or itemname == nil then
@@ -195,13 +232,22 @@ mcl_itemframes.update_generic_item_entity = function(pos, node, param2)
                 minetest.log("action", "[mcl_itemframes] Update_Generic_Item: item's name: " .. itemname)
             end
             map_id_lua:_update_texture()
-            map_id_entity:set_yaw(yaw)
+            if node.name == found_name_to_use then
+                map_id_entity:set_yaw(yaw)
+            else
+                minetest.log("error", "[mcl_itemframes] Update_Generic_Item: Failed to set Display Item's yaw. " .. node.name)
+            end
         else
             -- handle map items placed into custom frame.
-            map_id_entity = minetest.add_entity(pos, found_name_to_use .. "_map", map_id)
-            map_id_entity:set_yaw(yaw)
             if 1 == 1 then
-                minetest.log("action", "[mcl_itemframes] Placing map in a " .. found_name_to_use .. " frame.")
+                minetest.log("action", "[mcl_itemframes] Update_Generic_Item: Placing map in a " .. found_name_to_use .. " frame.")
+            end
+
+            if node.name == found_name_to_use then
+                map_id_entity = minetest.add_entity(pos, found_name_to_use .. "_map", map_id)
+                map_id_entity:set_yaw(yaw)
+            else
+                minetest.log("error", "[mcl_itemframes] Update_Generic_Item: Failed to set Map Item in " .. found_name_to_use .. "'s frame.")
             end
         end
     end
@@ -230,20 +276,20 @@ function mcl_itemframes.drop_generic_item(pos, node, meta, clicker)
     local name_found = false
     local found_name_to_use = ""
 
-    for gl = 1, #mcl_itemframes.frames_registered.glowing do
-        if node.name == mcl_itemframes.frames_registered.glowing[gl] then
+    for k,v in pairs(mcl_itemframes.frames_registered.glowing) do
+        if node.name == v then
             name_found = true
-            found_name_to_use = mcl_itemframes.frames_registered.glowing[gl]
+            found_name_to_use = v
             break
         end
     end
 
     -- try to cut down on excess looping, if possible.
     if name_found == false then
-        for ngl = 1, #mcl_itemframes.frames_registered.standard do
-            if node.name == mcl_itemframes.frames_registered.glowing[ngl] then
+        for k,v in pairs(mcl_itemframes.frames_registered.standard) do
+            if node.name == v then
                 name_found = true
-                found_name_to_use = mcl_itemframes.frames_registered.glowing[ngl]
+                found_name_to_use = v
                 break
             end
         end
@@ -438,24 +484,25 @@ mcl_itemframes.item_frame_base = {
             local name_found = false
             local found_name_to_use = ""
 
-            for gl = 1, #mcl_itemframes.frames_registered.glowing do
-                if node.name == mcl_itemframes.frames_registered.glowing[gl] then
+            for k,v in pairs(mcl_itemframes.frames_registered.glowing) do
+                if node.name == v then
                     name_found = true
-                    found_name_to_use = mcl_itemframes.frames_registered.glowing[gl]
+                    found_name_to_use = v
                     break
                 end
             end
 
             -- try to cut down on excess looping, if possible.
             if name_found == false then
-                for ngl = 1, #mcl_itemframes.frames_registered.standard do
-                    if node.name == mcl_itemframes.frames_registered.glowing[ngl] then
+                for k,v in pairs(mcl_itemframes.frames_registered.standard) do
+                    if node.name == v then
                         name_found = true
-                        found_name_to_use = mcl_itemframes.frames_registered.glowing[ngl]
+                        found_name_to_use = v
                         break
                     end
                 end
             end
+
             if node.name == found_name_to_use then
                 objs = minetest.get_objects_inside_radius(pos, 0.5)
             end
