@@ -60,6 +60,10 @@ local strider = {
 	fire_resistant = true,
 	floats_on_lava = 1,
 	floats = 0,
+	can_spawn = function(pos)
+		local l = minetest.find_node_near(pos,2,{"mcl_nether:nether_lava_source","mcl_nether:nether_lava_flowing"})
+		return l ~= nil
+	end,
 	do_custom = function(self, dtime)
 
 		if minetest.find_node_near(self.object:get_pos(), 2, {"mcl_core:lava_source","mcl_core:lava_flowing","mcl_nether:nether_lava_source","mcl_nether:nether_lava_flowing"}) then
