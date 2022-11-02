@@ -84,7 +84,7 @@ local axolotl = {
 	fly = true,
 	fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
 	breathes_in_water = true,
-	jump = false,
+	jump = true,
 	view_range = 16,
 	runaway = true,
 	fear_height = 4,
@@ -105,7 +105,7 @@ local axolotl = {
 				y = lp.y - s.y,
 				z = lp.z - s.z
 			}
-			if object and not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "mobs_mc:axolotl" then
+			if object and not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "extra_mobs_tropical_fish" then
 				self.state = "runaway"
 				self.object:set_rotation({x=0,y=(atan(vec.z / vec.x) + 3 * pi / 2) - self.rotate,z=0})
 			end
