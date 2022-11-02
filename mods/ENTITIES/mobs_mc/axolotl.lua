@@ -47,10 +47,16 @@ local axolotl = {
 	visual = "mesh",
 	mesh = "mobs_mc_axolotl.b3d",
 	textures = {
-		{"mobs_mc_axolotl_brown.png"},{"mobs_mc_axolotl_yellow.png"},{"mobs_mc_axolotl_green.png"},{"mobs_mc_axolotl_pink.png"},{"mobs_mc_axolotl_black.png"},{"mobs_mc_axolotl_purple.png"},{"mobs_mc_axolotl_white.png"}
+		{"mobs_mc_axolotl_brown.png"},
+		{"mobs_mc_axolotl_yellow.png"},
+		{"mobs_mc_axolotl_green.png"},
+		{"mobs_mc_axolotl_pink.png"},
+		{"mobs_mc_axolotl_black.png"},
+		{"mobs_mc_axolotl_purple.png"},
+		{"mobs_mc_axolotl_white.png"}		
 	},
     sounds = {
-random = "mobs_mc_axolotl",
+		random = "mobs_mc_axolotl",
 		damage = "mobs_mc_axolotl_hurt",
 		distance = 16,
     },
@@ -69,8 +75,8 @@ random = "mobs_mc_axolotl",
 
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = false,
-    fly = true,
-    fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
+	fly = true,
+	fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
 	breathes_in_water = true,
 	jump = false,
 	view_range = 16,
