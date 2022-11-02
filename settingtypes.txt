@@ -127,6 +127,11 @@ mcl_mob_cap_ambient (Mob cap ambient mobs) int 15 0 1024
 #Display mob icons in inventory instead of mc-like spawn eggs
 mcl_old_spawn_icons (Old spawn icons instead of eggs) bool false
 
+# How far from players should mobs stop moving
+# Larger values will have a larger performance impact (default:48)
+mcl_mob_active_range (Active mob range) int 48 0 256
+
+
 [Audio]
 # Enable flame sound.
 flame_sound (Flame sound) bool true
