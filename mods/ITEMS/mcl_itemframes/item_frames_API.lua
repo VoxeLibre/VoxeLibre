@@ -33,12 +33,105 @@ local glow_amount = 6 -- LIGHT_MAX is 15, but the items aren't supposed to be a 
 local frame_item_base = {}
 local map_item_base = {}
 
+-- Time to Fleckenstein! (it just sounds cool lol)
+
+--- self: the object to roll.
+local function update_roll(self, pos)
+
+    -- get the entity's metadata.
+    local meta = minetest.get_meta(pos)
+
+    -- using an integer, as it's the number of 45 degree turns. ie, 0 to 7
+    local current_roll = meta:get_int("roll", 0)
+    local new_roll = current_roll + 1
+
+    if new_roll == 8 then
+        new_roll = 0
+    end
+    meta:set_int("roll", new_roll)
+
+    local new_roll_deg = new_roll * 45
+
+    -- * `get_rotation()`: returns the rotation, a vector (radians)
+    local rot = self:get_rotation()
+    local Radians = 0
+
+    -- Radians = Degrees * (pi / 180) degrees to radian formula
+    -- Radian quick chart
+    -- One full revolution is equal to 2π rad (or) 360°.
+    -- 1° = 0.017453 radians and 1 rad = 57.2958°.
+    -- To convert an angle from degrees to radians, we multiply it by π/180°.
+    -- To convert an angle from radians to degrees, we multiply it by 180°/π.
+
+    Radians = new_roll_deg * (pi / 180)
+    rot.z = Radians
+
+    self:set_rotation(rot)
+
+end
+
+--- self: the object to roll.
+--- faceDeg: 0-7, inclusive.
+local function set_roll(self, faceDeg)
+    -- get the entity's metadata.
+    local meta = minetest.get_meta(self:get_pos())
+
+    -- using an integer, as it's the number of 45 degree turns. ie, 0 to 7
+    local new_roll = faceDeg
+
+    if new_roll >= 8 then
+        new_roll = 7
+    end
+    if new_roll <= 0 then
+        new_roll = 0
+    end
+
+    meta:set_int("roll", new_roll)
+
+    local new_roll_deg = new_roll * 45
+
+    -- * `get_rotation()`: returns the rotation, a vector (radians)
+    local rot = self:get_rotation()
+    local Radians = 0
+
+    -- Radians = Degrees * (pi / 180) degrees to radian formula
+    -- Radian quick chart
+    -- One full revolution is equal to 2π rad (or) 360°.
+    -- 1° = 0.017453 radians and 1 rad = 57.2958°.
+    -- To convert an angle from degrees to radians, we multiply it by π/180°.
+    -- To convert an angle from radians to degrees, we multiply it by 180°/π.
+
+    Radians = new_roll_deg * (pi / 180)
+
+    rot.z = Radians
+
+    self:set_rotation(rot)
+end
+
+local function update_map_texture (self, staticdata)
+    self.id = staticdata
+    local result = true
+    result = mcl_maps.load_map(self.id, function(texture)
+        -- will not crash even if self.object is invalid by now
+        -- update... quite possibly will screw up with each version of Minetest. >.<
+        if not texture then
+            minetest.log("error", "Failed to load the map texture using mcl_maps.")
+        end
+
+        self.object:set_properties({ textures = { texture } })
+    end)
+    if result ~= nil and result == false then
+        mintest.log("error", "[mcl_itemframes] Error setting up Map Item.")
+    end
+
+end
+
 local remove_item_entity = function(pos, node)
 
     local name_found = false
     local found_name_to_use = ""
 
-    for k,v in pairs(mcl_itemframes.frames_registered.glowing) do
+    for k, v in pairs(mcl_itemframes.frames_registered.glowing) do
         if node.name == v then
             name_found = true
             found_name_to_use = v
@@ -48,7 +141,7 @@ local remove_item_entity = function(pos, node)
 
     -- try to cut down on excess looping, if possible.
     if name_found == false then
-        for k,v in pairs(mcl_itemframes.frames_registered.standard) do
+        for k, v in pairs(mcl_itemframes.frames_registered.standard) do
             if node.name == v then
                 name_found = true
                 found_name_to_use = v
@@ -57,8 +150,8 @@ local remove_item_entity = function(pos, node)
         end
     end
 
-    if 1==1 then
-        minetest.log("action","mcl_itemframes] remove_item_entity: " .. found_name_to_use .. "'s displayed item." )
+    if 1 == 1 then
+        minetest.log("action", "mcl_itemframes] remove_item_entity: " .. found_name_to_use .. "'s displayed item.")
     end
 
     if node.name == "mcl_itemframes:item_frame" or node.name == "mcl_itemframes:glow_item_frame" or node.name == found_name_to_use then
@@ -69,8 +162,8 @@ local remove_item_entity = function(pos, node)
                         entity.name == "mcl_itemframes:glow_item" or entity.name == "mcl_itemframes:glow_map" then
                     obj:remove()
                 elseif entity.name == found_name_to_use .. "_item" or entity.name == found_name_to_use .. "_map" then
-                    if 1==1 then
-                        minetest.log("action","mcl_itemframes] remove_item_entity: " .. entity.name .. "-- the item." )
+                    if 1 == 1 then
+                        minetest.log("action", "mcl_itemframes] remove_item_entity: " .. entity.name .. "-- the item.")
                     end
                     obj:remove()
                 end
@@ -133,6 +226,11 @@ mcl_itemframes.update_item_entity = function(pos, node, param2)
             end
             map_id_entity:set_yaw(yaw)
         end
+
+        -- finally, set the rotation (roll) of the displayed object.
+        local roll = meta:get_int("roll", 0)
+        set_roll(map_id_entity, roll)
+
     end
 end
 
@@ -151,7 +249,7 @@ mcl_itemframes.update_generic_item_entity = function(pos, node, param2)
     local found_name_to_use = ""
     local has_glow = false
 
-    for k,v in pairs(mcl_itemframes.frames_registered.glowing) do
+    for k, v in pairs(mcl_itemframes.frames_registered.glowing) do
         if node.name == v then
             name_found = true
             has_glow = true
@@ -162,7 +260,7 @@ mcl_itemframes.update_generic_item_entity = function(pos, node, param2)
 
     -- try to cut down on excess looping, if possible.
     if name_found == false then
-        for k,v in pairs(mcl_itemframes.frames_registered.standard) do
+        for k, v in pairs(mcl_itemframes.frames_registered.standard) do
             if node.name == v then
                 name_found = true
                 has_glow = false
@@ -173,8 +271,8 @@ mcl_itemframes.update_generic_item_entity = function(pos, node, param2)
     end
 
     if name_found == false then
-        minetest.log("error","[mcl_itemframes] Update_Generic_Item:\nFailed to find registered node:\nNode name - " .. node.name)
-        minetest.log("error","[mcl_itemframes] Update_Generic_Item:\nRegistry definition:" .. dump(mcl_itemframes.frames_registered))
+        minetest.log("error", "[mcl_itemframes] Update_Generic_Item:\nFailed to find registered node:\nNode name - " .. node.name)
+        minetest.log("error", "[mcl_itemframes] Update_Generic_Item:\nRegistry definition:" .. dump(mcl_itemframes.frames_registered))
         return
     end
 
@@ -250,6 +348,10 @@ mcl_itemframes.update_generic_item_entity = function(pos, node, param2)
                 minetest.log("error", "[mcl_itemframes] Update_Generic_Item: Failed to set Map Item in " .. found_name_to_use .. "'s frame.")
             end
         end
+
+        -- finally, set the rotation (roll) of the displayed object.
+        local roll = meta:get_int("roll", 0)
+        set_roll(map_id_entity, roll)
     end
 end
 
@@ -269,6 +371,7 @@ local drop_item = function(pos, node, meta, clicker)
     end
 
     meta:set_string("infotext", "")
+    meta:set_int("roll", 0)
     remove_item_entity(pos, node)
 end
 
@@ -276,7 +379,7 @@ function mcl_itemframes.drop_generic_item(pos, node, meta, clicker)
     local name_found = false
     local found_name_to_use = ""
 
-    for k,v in pairs(mcl_itemframes.frames_registered.glowing) do
+    for k, v in pairs(mcl_itemframes.frames_registered.glowing) do
         if node.name == v then
             name_found = true
             found_name_to_use = v
@@ -286,7 +389,7 @@ function mcl_itemframes.drop_generic_item(pos, node, meta, clicker)
 
     -- try to cut down on excess looping, if possible.
     if name_found == false then
-        for k,v in pairs(mcl_itemframes.frames_registered.standard) do
+        for k, v in pairs(mcl_itemframes.frames_registered.standard) do
             if node.name == v then
                 name_found = true
                 found_name_to_use = v
@@ -474,76 +577,63 @@ mcl_itemframes.item_frame_base = {
     end,
 
     on_rotate = function(pos, node, user, mode, param2)
-        if mode == screwdriver.ROTATE_FACE then
-            -- Rotate face
-            --local meta = minetest.get_meta(pos)
-            local node = minetest.get_node(pos)
+        --local meta = minetest.get_meta(pos)
+        local node = minetest.get_node(pos)
 
-            local objs = nil
+        local objs = nil
+        local name_found = false
+        local found_name_to_use = ""
+        name_found = false
+        found_name_to_use = ""
 
-            local name_found = false
-            local found_name_to_use = ""
+        for k, v in pairs(mcl_itemframes.frames_registered.glowing) do
+            if node.name == v then
+                name_found = true
+                found_name_to_use = v
+                break
+            end
+        end
 
-            for k,v in pairs(mcl_itemframes.frames_registered.glowing) do
+        -- try to cut down on excess looping, if possible.
+        if name_found == false then
+            for k, v in pairs(mcl_itemframes.frames_registered.standard) do
                 if node.name == v then
                     name_found = true
                     found_name_to_use = v
                     break
                 end
             end
+        end
 
-            -- try to cut down on excess looping, if possible.
-            if name_found == false then
-                for k,v in pairs(mcl_itemframes.frames_registered.standard) do
-                    if node.name == v then
-                        name_found = true
-                        found_name_to_use = v
-                        break
-                    end
-                end
-            end
+        if node.name == found_name_to_use then
+            objs = minetest.get_objects_inside_radius(pos, 0.5)
+        else
+            return -- short circuit if it's somehow not the right thing.
+        end
 
-            if node.name == found_name_to_use then
-                objs = minetest.get_objects_inside_radius(pos, 0.5)
-            end
-            if objs then
+        if objs then
+            if mode == screwdriver.ROTATE_FACE or mode == screwdriver.ROTATE_AXIS then
                 for _, obj in ipairs(objs) do
                     if obj and obj:get_luaentity() then
                         local obj_name = obj:get_luaentity().name
                         if obj_name == "mcl_itemframes:item" or obj_name == "mcl_itemframes:glow_item" then
-                            mcl_itemframes.update_item_entity(pos, node, (node.param2 + 1) % 4)
+                            if mode == screwdriver.ROTATE_AXIS then
+                                update_roll(obj, pos)
+                            end
                             break
                         elseif obj_name == found_name_to_use .. "_item" then
-                            mcl_itemframes.update_generic_item_entity(pos, node, (node.param2 + 1) % 4)
+                            if mode == screwdriver.ROTATE_AXIS then
+                                update_roll(obj, pos)
+                            end
                             break
                         end
                     end
                 end
+                return false
             end
-            return
-        elseif mode == screwdriver.ROTATE_AXIS then
-            return false
         end
     end,
 }
-
-local function update_map_texture (self, staticdata)
-    self.id = staticdata
-    local result = true
-    result = mcl_maps.load_map(self.id, function(texture)
-        -- will not crash even if self.object is invalid by now
-        -- update... quite possibly will screw up with each version of Minetest. >.<
-        if not texture then
-            minetest.log("error", "Failed to load the map texture using mcl_maps.")
-        end
-
-        self.object:set_properties({ textures = { texture } })
-    end)
-    if result ~= nil and result == false then
-        mintest.log("error", "[mcl_itemframes] Error setting up Map Item.")
-    end
-
-end
 
 --- reworked to set up the base item definitions, and to register them for item and glow_item.
 function mcl_itemframes.create_base_item_entity()
@@ -615,7 +705,6 @@ function mcl_itemframes.create_base_item_entity()
         on_activate = function(self, staticdata)
             if 1 == 1 then
                 minetest.log("action", "[mcl_itemframes] map_item:on_activate.")
-
             end
             update_map_texture(self, staticdata)
         end,
@@ -787,23 +876,6 @@ function mcl_itemframes.create_base_frames()
     mcl_itemframes.glow_frame_base.wield_image = "mcl_itemframes_glow_item_frame.png"
     mcl_itemframes.glow_frame_base.mesh = "mcl_itemframes_glow_item_frame.obj"
 
-    --mcl_itemframes.glow_frame_base.light_source = minetest.LIGHT_MAX -- add in glow (a hack at best, but it's a node) TODO: make actual glow.
-    mcl_itemframes.glow_frame_base.on_timer = function(pos)
-        local inv = minetest.get_meta(pos):get_inventory()
-        local stack = inv:get_stack("main", 1)
-        local itemname = stack:get_name()
-        if minetest.get_item_group(itemname, "clock") > 0 then
-            local new_name = "mcl_clock:clock_" .. (mcl_worlds.clock_works(pos) and mcl_clock.old_time or mcl_clock.random_frame)
-            if itemname ~= new_name then
-                stack:set_name(new_name)
-                inv:set_stack("main", 1, stack)
-                local node = minetest.get_node(pos)
-                mcl_itemframes.update_item_entity(pos, node, node.param2)
-            end
-            minetest.get_node_timer(pos):start(1.0)
-        end
-    end
-
     minetest.register_node("mcl_itemframes:glow_item_frame", mcl_itemframes.glow_frame_base)
 
     mcl_itemframes.update_frame_registry("false", "mcl_itemframes:item_frame", false)
@@ -811,4 +883,3 @@ function mcl_itemframes.create_base_frames()
     create_register_lbm("mcl_itemframes:item_frame")
     create_register_lbm("mcl_itemframes:glow_item_frame")
 end
-
