@@ -847,6 +847,7 @@ end
 local function look_for_job(self, requested_jobsites)
 	mcl_log("Looking for jobs")
 
+	-- This logic is done twice. Remove this.
 	local looking_for_type = jobsites
 	if requested_jobsites then
 		--mcl_log("Looking for jobs of my type: " .. tostring(requested_jobsites))
@@ -858,32 +859,49 @@ local function look_for_job(self, requested_jobsites)
 	local p = self.object:get_pos()
 	local nn = minetest.find_nodes_in_area(vector.offset(p,-48,-48,-48),vector.offset(p,48,48,48), looking_for_type)
 
+	local distance_to_closest_block = nil
+	local closest_block = nil
+
 	--Ideally should check for closest available. It'll make pathing easier.
-	for _,n in pairs(nn) do
+	for i,n in pairs(nn) do
 		local m = minetest.get_meta(n)
-		--mcl_log("Job owner: ".. m:get_string("villager"))
+		mcl_log("Block: " .. minetest.pos_to_string(n).. "Job owner: ".. m:get_string("villager"))
 
 		if m:get_string("villager") == "" then
-			mcl_log("It's a free job for me (".. minetest.pos_to_string(p) .. ")! I might be interested: "..minetest.pos_to_string(n) )
+			-- Distance check
+			local distance_to_block = vector.distance(self.object:get_pos(), n)
+			mcl_log("Distance to block ".. i .. ": ".. distance_to_block)
 
-			local gp = mcl_mobs:gopath(self,n,function(self)
-				mcl_log("Arrived at block callback")
-				if self and self.state == "stand" then
-					self.order = WORK
-				else
-					mcl_log("no self. passing param to callback failed")
-				end
-
-			end)
-			if gp then
-				if n then
-					mcl_log("We can path to this block.. " .. tostring(n))
-				end
-				return n
-			else
-				mcl_log("We could not path to block or it's not ready to path yet.")
+			if not distance_to_closest_block or distance_to_closest_block > distance_to_block then
+				mcl_log("This block is closer than the last.")
+				closest_block = n
+				distance_to_closest_block = distance_to_block
 			end
 		end
+	end
+
+	if closest_block then
+		mcl_log("It's a free job for me (" .. minetest.pos_to_string(p) .. ")! I might be interested: ".. minetest.pos_to_string(closest_block) )
+
+		local gp = mcl_mobs:gopath(self, closest_block,function(self)
+			mcl_log("Arrived at block callback")
+			if self and self.state == "stand" then
+				self.order = WORK
+			else
+				mcl_log("no self. passing param to callback failed")
+			end
+		end)
+
+		if gp then
+			if closest_block then
+				mcl_log("We can path to this block.. " .. tostring(closest_block))
+			end
+			return closest_block
+		else
+			mcl_log("We could not path to block or it's not ready to path yet.")
+		end
+	else
+		mcl_log("We don't have a job block to path to")
 	end
 
 	return nil
