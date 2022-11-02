@@ -69,10 +69,16 @@ local axolotl = {
 		run_end = 190,
 	},
 
+	--	Somewhere in here is where hostility toward aquatic creatures should go.
+	--	There is no flag for that yet though.
+
+	--	Placeholder until someone fixes breeding.
 	follow = {
 		"mcl_fishing:clownfish_raw"
 	},
 
+--	Yes, the axolotl is huge. Blame Mojang, not me.
+--	Due to a quirk, axolotls can fly in air as well as water. But they still die to it.
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = false,
 	fly = true,
@@ -117,7 +123,7 @@ local axolotl = {
 mcl_mobs:register_mob("mobs_mc:axolotl", axolotl)
 
 
---spawning TODO: in schools
+--spawning TODO: in schools of 1-5
 
 local water = 0
 
