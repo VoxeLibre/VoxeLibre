@@ -104,6 +104,25 @@ if superflat then
 	minetest.set_mapgen_setting("mgflat_spflags", "nolakes,nohills", true)
 end
 
+if mg_name == "v7" then
+	minetest.set_mapgen_setting("mgv7_cavern_threshold", "0.20", true)
+	mg_flags.caverns = true
+elseif mg_name == "valleys" then
+	minetest.set_mapgen_setting("mgvalleys_cavern_threshold", "0.20", true)
+	mg_flags.caverns = true
+elseif mg_name == "carpathian" then
+	minetest.set_mapgen_setting("mgcarpathian_cavern_threshold", "0.20", true)
+	mg_flags.caverns = true
+elseif mg_name == "v5" then
+	minetest.set_mapgen_setting("mgv5_cavern_threshold", "0.20", true)
+	mg_flags.caverns = true
+elseif mg_name == "fractal" then
+	minetest.set_mapgen_setting("mgfractal_cavern_threshold", "0.20", true)
+	mg_flags.caverns = true
+end
+
+
+
 local mg_flags_str = ""
 for k,v in pairs(mg_flags) do
 	if v == false then
@@ -313,8 +332,16 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 			lvm_used = set_layers(data, area, c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, minp, maxp, lvm_used, pr)
 		end
 	end
-
-	return lvm_used, lvm_used
+	local deco = false
+	local ores = false
+	if minp.y >  mcl_vars.mg_nether_deco_max - 64 and maxp.y <  mcl_vars.mg_nether_max + 128 then
+		deco = {min=mcl_vars.mg_nether_deco_max,max=mcl_vars.mg_nether_max}
+	end
+	if minp.y <  mcl_vars.mg_nether_min + 10 or maxp.y <  mcl_vars.mg_nether_min + 60 then
+		deco = {min=mcl_vars.mg_nether_min - 10,max=mcl_vars.mg_nether_min + 20}
+		ores = {min=mcl_vars.mg_nether_min - 10,max=mcl_vars.mg_nether_min + 20}
+	end
+	return lvm_used, lvm_used, deco, ores
 end
 
 local function block_fixes(vm, data, data2, emin, emax, area, minp, maxp, blockseed)

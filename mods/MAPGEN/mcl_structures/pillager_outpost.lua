@@ -3,6 +3,8 @@ local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
+local spawnon = {"mcl_core:stripped_oak"}
+
 mcl_structures.register_structure("pillager_outpost",{
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass","group:sand"},
 	fill_ratio = 0.01,
@@ -58,27 +60,28 @@ mcl_structures.register_structure("pillager_outpost",{
 	after_place = function(p,def,pr)
 		local p1 = vector.offset(p,-7,0,-7)
 		local p2 = vector.offset(p,7,14,7)
-		local spawnon = {"mcl_core:stripped_oak"}
-		local sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
-		for _,n in pairs(minetest.find_nodes_in_area(p1,p2,{"group:wall"})) do
-			local def = minetest.registered_nodes[minetest.get_node(n).name:gsub("_%d+$","")]
-			if def and def.on_construct then
-				def.on_construct(n)
-			end
-		end
-		if not peaceful then
-			if sp and #sp > 0 then
-				for i=1,5 do
-					local pos = vector.offset(sp[pr:next(1,#sp)],0,1,0)
-					if pos then
-						minetest.add_entity(pos,"mobs_mc:pillager")
-					end
-				end
-				local pos = vector.offset(sp[pr:next(1,#sp)],0,1,0)
-				if pos then
-					minetest.add_entity(pos,"mobs_mc:evoker")
-				end
-			end
-		end
+		mcl_structures.spawn_mobs("mobs_mc:evoker",spawnon,p1,p2,pr,1)
+		mcl_structures.spawn_mobs("mobs_mc:pillager",spawnon,p1,p2,pr,5)
+		mcl_structures.construct_nodes(p1,p2,{"group:wall"})
 	end
+})
+
+mcl_structures.register_structure_spawn({
+	name = "mobs_mc:pillager",
+	y_min = mcl_vars.mg_overworld_min,
+	y_max = mcl_vars.mg_overworld_max,
+	chance = 10,
+	interval = 60,
+	limit = 9,
+	spawnon = spawnon,
+})
+
+mcl_structures.register_structure_spawn({
+	name = "mobs_mc:evoker",
+	y_min = mcl_vars.mg_overworld_min,
+	y_max = mcl_vars.mg_overworld_max,
+	chance = 100,
+	interval = 60,
+	limit = 4,
+	spawnon = spawnon,
 })

@@ -14,6 +14,24 @@ function mcl_structures.generate_igloo_top(pos, pr)
 	end), rotation
 end
 
+local function spawn_mobs(p1,p2,vi,zv)
+	local mc = minetest.find_nodes_in_area_under_air(p1,p2,{"mcl_core:stonebrickmossy"})
+	if #mc == 2 then
+		local vp = mc[1]
+		local zp = mc[2]
+		if not vi and zv and zv:get_pos() and vector.distance(mc[1],zv:get_pos()) < 2 then
+			vp = mc[2]
+		elseif not zv and vi and vi:get_pos() and vector.distance(mc[2],vi:get_pos()) < 2 then
+			zp = mc[1]
+		elseif zv and vi then
+			return
+		end
+		vi = minetest.add_entity(vector.offset(mc[1],0,1,0),"mobs_mc:villager")
+		zv = minetest.add_entity(vector.offset(mc[2],0,1,0),"mobs_mc:villager_zombie")
+		minetest.after(1,spawn_mobs,p1,p2,vi,zv)
+	end
+end
+
 function mcl_structures.generate_igloo_basement(pos, orientation, loot, pr)
 	-- TODO: Add monster eggs
 	local path = modpath.."/schematics/mcl_structures_igloo_basement.mts"
@@ -22,12 +40,7 @@ function mcl_structures.generate_igloo_basement(pos, orientation, loot, pr)
 		local p2 = vector.offset(pos,5,5,5)
 		mcl_structures.fill_chests(p1,p2,loot,pr)
 		mcl_structures.construct_nodes(p1,p2,{"mcl_brewing:stand_000","mcl_books:bookshelf"})
-		local mc = minetest.find_nodes_in_area_under_air(p1,p2,{"mcl_core:stonebrickmossy"})
-		if #mc == 2 then
-			table.shuffle(mc)
-			minetest.add_entity(vector.offset(mc[1],0,1,0),"mobs_mc:villager")
-			minetest.add_entity(vector.offset(mc[2],0,1,0),"mobs_mc:villager_zombie")
-		end
+		spawn_mobs(p1,p2)
 	end, pr)
 end
 

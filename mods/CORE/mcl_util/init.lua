@@ -23,6 +23,7 @@ function table.update_nil(t, ...)
 end
 
 function mcl_util.file_exists(name)
+	if type(name) ~= "string" then return end
 	local f = io.open(name)
 	if not f then
 		return false

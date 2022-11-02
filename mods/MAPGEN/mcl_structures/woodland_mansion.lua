@@ -3,6 +3,8 @@ local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
+local spawnon = {"mcl_deepslate:deepslate","mcl_core:birchwood","mcl_wool:red_carpet","mcl_wool:brown_carpet"}
+
 mcl_structures.register_structure("woodland_cabin",{
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass"},
 	fill_ratio = 0.01,
@@ -20,28 +22,11 @@ mcl_structures.register_structure("woodland_cabin",{
 	},
 	construct_nodes = {"mcl_barrels:barrel_closed"},
 	after_place = function(p,def,pr)
-		local spawnon = {"mcl_deepslate:deepslate","mcl_core:birchwood","mcl_wool:red_carpet","mcl_wool:brown_carpet"}
 		local p1=vector.offset(p,-def.sidelen,-1,-def.sidelen)
 		local p2=vector.offset(p,def.sidelen,def.sidelen,def.sidelen)
-		local sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
-		if not peaceful then
-			if sp and #sp > 0 then
-				for i=1,5 do
-					local pos = sp[pr:next(1,#sp)]
-					if pos then
-						minetest.add_entity(pos,"mobs_mc:vindicator")
-					end
-				end
-				local pos = sp[pr:next(1,#sp)]
-				if pos then
-					minetest.add_entity(pos,"mobs_mc:evoker")
-				end
-			end
-		end
-		local parrot = minetest.find_node_near(p,25,{"mcl_heads:wither_skeleton"})
-		if parrot then
-			minetest.add_entity(parrot,"mobs_mc:parrot")
-		end
+		mcl_structures.spawn_mobs("mobs_mc:vindicator",spawnon,p1,p2,pr,5)
+		mcl_structures.spawn_mobs("mobs_mc:evoker",spawnon,p1,p2,pr,1)
+		mcl_structures.spawn_mobs("mobs_mc:parrot",{"mcl_heads:wither_skeleton"},p1,p2,pr,1)
 	end,
 	loot = {
 		["mcl_chests:chest_small" ] ={{
@@ -81,4 +66,24 @@ mcl_structures.register_structure("woodland_cabin",{
 			}
 		}}
 	}
+})
+
+mcl_structures.register_structure_spawn({
+	name = "mobs_mc:vindicator",
+	y_min = mcl_vars.mg_overworld_min,
+	y_max = mcl_vars.mg_overworld_max,
+	chance = 10,
+	interval = 60,
+	limit = 6,
+	spawnon = spawnon,
+})
+
+mcl_structures.register_structure_spawn({
+	name = "mobs_mc:evoker",
+	y_min = mcl_vars.mg_overworld_min,
+	y_max = mcl_vars.mg_overworld_max,
+	chance = 50,
+	interval = 60,
+	limit = 6,
+	spawnon = spawnon,
 })

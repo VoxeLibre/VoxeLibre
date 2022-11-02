@@ -1,10 +1,17 @@
 mcl_structures.registered_structures = {}
 
+local place_queue = {}
 local disabled_structures = minetest.settings:get("mcl_disabled_structures")
 if disabled_structures then	disabled_structures = disabled_structures:split(",")
 else disabled_structures = {} end
 
+local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
+local mob_cap_player = tonumber(minetest.settings:get("mcl_mob_cap_player")) or 75
+local mob_cap_animal = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 10
+
 local logging = minetest.settings:get_bool("mcl_logging_structures",true)
+
+local mg_name = minetest.get_mapgen_setting("mg_name")
 
 local rotations = {
 	"0",
@@ -26,6 +33,9 @@ local function ecb_place(blockpos, action, calls_remaining, param)
 end
 
 function mcl_structures.place_schematic(pos, schematic, rotation, replacements, force_placement, flags, after_placement_callback, pr, callback_param)
+	if type(schematic) ~= "table" and not mcl_util.file_exists(schematic) then
+		minetest.log("warning","[mcl_structures] schematic file "..tostring(schematic).." does not exist.")
+		return end
 	local s = loadstring(minetest.serialize_schematic(schematic, "lua", {lua_use_comments = false, lua_num_indent_spaces = 0}) .. " return schematic")()
 	if s and s.size then
 		local x, z = s.size.x, s.size.z
@@ -185,7 +195,7 @@ local function foundation(ground_p1,ground_p2,pos,sidelen)
 	local node_top = "mcl_core:dirt_with_grass" or minetest.get_node(ground_p1).name
 	local node_dust = nil
 
-	if minetest.get_mapgen_setting("mg_name") ~= "v6" then
+	if mg_name ~= "v6" then
 		local b = minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(pos).biome)]
 		--minetest.log(dump(b.node_top))
 		if b then
@@ -206,7 +216,33 @@ local function foundation(ground_p1,ground_p2,pos,sidelen)
 	minetest.bulk_set_node(stone,{name=node_stone})
 end
 
-function mcl_structures.place_structure(pos, def, pr, blockseed,rot)
+local function process_queue()
+	if #place_queue < 1 then return end
+	local s = table.remove(place_queue)
+	mcl_structures.place_schematic(s.pos, s.file, s.rot, nil, true, "place_center_x,place_center_z",function(s)
+		if s.after_place then
+			s.after_place(s.pos,s.def,s.pr)
+		end
+	end,s.pr)
+	minetest.after(0.5,process_queue)
+end
+
+function mcl_structures.spawn_mobs(mob,spawnon,p1,p2,pr,n)
+	n = n or 1
+	local sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
+	table.shuffle(sp)
+	for i,node in pairs(sp) do
+		if not peaceful and i <= n then
+			local pos = vector.offset(node,0,1,0)
+			if pos then
+				minetest.add_entity(pos,mob)
+			end
+		end
+		minetest.get_meta(node):set_string("spawnblock","yes")
+	end
+end
+
+function mcl_structures.place_structure(pos, def, pr, blockseed, rot)
 	if not def then	return end
 	if not rot then rot = "random" end
 	local log_enabled = logging and not def.terrain_feature
@@ -244,12 +280,31 @@ function mcl_structures.place_structure(pos, def, pr, blockseed,rot)
 		local r = pr:next(1,#def.filenames)
 		local file = def.filenames[r]
 		if file then
+			local rot = rotations[pr:next(1,#rotations)]
 			local ap = function(pos,def,pr,blockseed) end
-			if def.after_place then ap = def.after_place  end
 
-			mcl_structures.place_schematic(pp, file, rot, def.replacements, true, "place_center_x,place_center_z",function(p1, p2, size, rotation)
-				if def.loot then generate_loot(pp,def,pr,blockseed) end
-				if def.construct_nodes then construct_nodes(pp,def,pr,blockseed) end
+			if def.daughters then
+				ap = function(pos,def,pr,blockseed)
+					for _,d in pairs(def.daughters) do
+						local p = vector.add(pos,d.pos)
+						local rot = d.rot or 0
+						mcl_structures.place_schematic(p, d.files[pr:next(1,#d.files)], rot, nil, true, "place_center_x,place_center_z",function()
+							if def.loot then generate_loot(pp,def,pr,blockseed) end
+							if def.construct_nodes then construct_nodes(pp,def,pr,blockseed) end
+							if def.after_place then
+								def.after_place(pos,def,pr)
+							end
+						end,pr)
+					end
+				end
+			elseif def.after_place then
+				ap = def.after_place
+			end
+			mcl_structures.place_schematic(pp, file, rot,  def.replacements, true, "place_center_x,place_center_z",function(p1, p2, size, rotation)
+				if not def.daughters then
+					if def.loot then generate_loot(pp,def,pr,blockseed) end
+					if def.construct_nodes then construct_nodes(pp,def,pr,blockseed) end
+				end
 				return ap(pp,def,pr,blockseed,p1,p2,size,rotation)
 			end,pr)
 			if log_enabled then
@@ -311,6 +366,35 @@ function mcl_structures.register_structure(name,def,nospawn) --nospawn means it 
 		end
 	end
 	mcl_structures.registered_structures[name] = def
+end
+
+local structure_spawns = {}
+function mcl_structures.register_structure_spawn(def)
+	--name,y_min,y_max,spawnon,biomes,chance,interval,limit
+	minetest.register_abm({
+		label = "Spawn "..def.name,
+		nodenames = def.spawnon,
+		min_y = def.y_min or -31000,
+		max_y = def.y_max or 31000,
+		interval = def.interval or 60,
+		chance = def.chance or 5,
+		action = function(pos, node, active_object_count, active_object_count_wider)
+			local limit = def.limit or 7
+			if active_object_count_wider > limit + mob_cap_animal then return end
+			if active_object_count_wider > mob_cap_player then return end
+			local p = vector.offset(pos,0,1,0)
+			if minetest.get_node(p).name ~= "air" then return end
+			if minetest.get_meta(pos):get_string("spawnblock") == "" then return end
+			if mg_name ~= "v6" and mg_name ~= "singlenode" and def.biomes then
+				if table.indexof(def.biomes,minetest.get_biome_name(minetest.get_biome_data(p).biome)) == -1 then
+					return
+				end
+			end
+			local mobdef = minetest.registered_entities[def.name]
+			if mobdef.can_spawn and not mobdef.can_spawn(p) then return end
+			minetest.add_entity(p,def.name)
+		end,
+	})
 end
 
 --lbm for secondary structures (structblock included in base structure)

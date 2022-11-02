@@ -138,6 +138,7 @@ mcl_vars.mg_nether_min = -29067 -- Carefully chosen to be at a mapchunk border
 mcl_vars.mg_nether_max = mcl_vars.mg_nether_min + 128
 mcl_vars.mg_bedrock_nether_bottom_min = mcl_vars.mg_nether_min
 mcl_vars.mg_bedrock_nether_top_max = mcl_vars.mg_nether_max
+mcl_vars.mg_nether_deco_max = mcl_vars.mg_nether_max -11 -- this is so ceiling decorations don't spill into other biomes as bedrock generation calls minetest.generate_decorations to put netherrack under the bedrock
 if not superflat then
 	mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min + 4
 	mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max - 4
