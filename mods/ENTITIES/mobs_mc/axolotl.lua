@@ -39,7 +39,6 @@ local axolotl = {
 	xp_min = 1,
 	xp_max = 7,
 	armor = 100,
-	rotate = 180,
 	spawn_in_group_min = 3,
 	spawn_in_group = 5,
 	tilt_swim = true,
@@ -60,13 +59,10 @@ local axolotl = {
 		damage = "mobs_mc_axolotl_hurt",
 		distance = 16,
     },
-	animation = {
-		stand_start = 40,
-		stand_end = 80,
-		walk_start = 140,
-		walk_end = 190,
-		run_start = 140,
-		run_end = 190,
+	animation = {-- Stand: 1-20; Walk: 20-60; Swim: 61-81
+		stand_start = 61, stand_end = 81, stand_speed = 15,
+		walk_start = 61, walk_end = 81, walk_speed = 15,
+		run_start = 61, run_end = 81, run_speed = 20,
 	},
 
 	--	Somewhere in here is where hostility toward aquatic creatures should go.
@@ -79,7 +75,6 @@ local axolotl = {
 
 --	Yes, the axolotl is huge. Blame Mojang, not me.
 --	Due to a quirk, axolotls can fly in air as well as water. But they still die to it.
-	visual_size = {x=3, y=3},
 	makes_footstep_sound = false,
 	fly = true,
 	fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
