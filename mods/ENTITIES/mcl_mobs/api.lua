@@ -2663,6 +2663,7 @@ local function check_gowp(self,dtime)
 			self.current_target = nil
 			self.waypoints = nil
 			self._target = nil
+			self._pf_last_failed = os.time()
 			self.object:set_velocity({x = 0, y = 0, z = 0})
 			self.object:set_acceleration({x = 0, y = 0, z = 0})
 			return
@@ -3463,9 +3464,15 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 	end
 	gopath_last = os.time()
 
+	if self._pf_last_failed and (os.time() - self._pf_last_failed) < 60 then
+		mcl_log("We are not ready to path as last fail is less than threshold: " .. (os.time() - self._pf_last_failed))
+		return
+	else
+		mcl_log("We are ready to pathfind, no previous fail or we are past threshold")
+	end
+
 	self.order = nil
 
-	--mcl_log("gowp target: " .. minetest.pos_to_string(target))
 	local p = self.object:get_pos()
 	local t = vector.offset(target,0,1,0)
 
@@ -3484,21 +3491,15 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 		else
 			mcl_log("Nil pos")
 		end
-		--current_location = table.remove(wp,1)
-		--if current_location and current_location["pos"] then
-		--	mcl_log("Removing first co-ord? " .. tostring(current_location["pos"]))
-		--else
-		--	mcl_log("Nil pos")
-		--end
 		self.current_target = current_location
 		self.waypoints = wp
 		self.state = PATHFINDING
 		return true
 	else
-	self.state = "walk"
-	self.waypoints = nil
-	self.current_target = nil
-	--	minetest.log("no path found")
+		self.state = "walk"
+		self.waypoints = nil
+		self.current_target = nil
+		--	minetest.log("no path found")
 	end
 end
 
