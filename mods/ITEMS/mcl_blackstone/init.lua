@@ -196,12 +196,14 @@ mcl_stairs.register_stair_and_slab_simple("blackstone_brick_polished", "mcl_blac
 mcl_walls.register_wall("mcl_blackstone:wall", S("Blackstone Wall"), "mcl_blackstone:blackstone")
 
 --lavacooling
+
 minetest.register_abm({
 	label = "Lava cooling (basalt)",
 	nodenames = {"group:lava"},
 	neighbors = {"mcl_core:ice"},
 	interval = 1,
 	chance = 1,
+	min_y = mcl_vars.mg_end_min,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local water = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+1, z=pos.z+1}, "mcl_core:ice")
 		local lavatype = minetest.registered_nodes[node.name].liquidtype
@@ -225,6 +227,7 @@ minetest.register_abm({
 	neighbors = {"mcl_core:packed_ice"},
 	interval = 1,
 	chance = 1,
+	min_y = mcl_vars.mg_end_min,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local water = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+1, z=pos.z+1}, "mcl_core:packed_ice")
 		local lavatype = minetest.registered_nodes[node.name].liquidtype

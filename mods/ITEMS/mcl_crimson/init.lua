@@ -236,7 +236,7 @@ minetest.register_node("mcl_crimson:warped_wart_block", {
 minetest.register_node("mcl_crimson:shroomlight", {
 	description = S("Shroomlight"),
 	tiles = {"shroomlight.png"},
-	groups = {handy = 1, hoe = 7, swordy = 1, leafdecay = 5, leaves = 1, deco_block = 1},
+	groups = {handy = 1, hoe = 7, swordy = 1, deco_block = 1},
 	light_source = minetest.LIGHT_MAX,
 	_mcl_hardness = 2,
 })
