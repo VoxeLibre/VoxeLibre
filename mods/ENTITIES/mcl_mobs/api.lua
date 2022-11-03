@@ -18,7 +18,10 @@ local PATHFINDING = "gowp"
 -- Localize
 local S = minetest.get_translator("mcl_mobs")
 
+local mob_active_range = tonumber(minetest.settings:get("mcl_mob_active_range")) or 48
+
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager",false)
+
 local LOG_MODULE = "[Mobs]"
 local function mcl_log (message)
 	if LOGGING_ON and message then
@@ -216,7 +219,7 @@ end
 
 local function player_in_active_range(self)
 	for _,p in pairs(minetest.get_connected_players()) do
-		if vector.distance(self.object:get_pos(),p:get_pos()) <= 38 then return true end
+		if vector.distance(self.object:get_pos(),p:get_pos()) <= mob_active_range then return true end
 		-- slightly larger than the mc 32 since mobs spawn on that circle and easily stand still immediately right after spawning.
 	end
 end
