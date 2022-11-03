@@ -2607,7 +2607,7 @@ local function check_gowp(self,dtime)
 	-- 0.1 is optimal.
 	--less frequently = villager will get sent back after passing a point.
 	--more frequently = villager will fail points they shouldn't they just didn't get there yet
-	
+
 	--if gowp_etime < 0.05 then return end
 	--gowp_etime = 0
 	local p = self.object:get_pos()
@@ -3460,7 +3460,7 @@ local gopath_last = os.time()
 function mcl_mobs:gopath(self,target,callback_arrived)
 	if self.state == PATHFINDING then mcl_log("Already pathfinding, don't set another until done.") return end
 
-	if self._pf_last_failed and (os.time() - self._pf_last_failed) < 60 then
+	if self._pf_last_failed and (os.time() - self._pf_last_failed) < 30 then
 		mcl_log("We are not ready to path as last fail is less than threshold: " .. (os.time() - self._pf_last_failed))
 		return
 	else
