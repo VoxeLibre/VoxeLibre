@@ -3409,6 +3409,7 @@ local function calculate_path_through_door (p, t, target)
 	if not wp then
 		mcl_log("No direct path. Path through door")
 
+		-- This could improve. There could be multiple doors. Check you can path from door to target first.
 		local cur_door_pos = minetest.find_node_near(target,16,{"group:door"})
 		if cur_door_pos then
 			mcl_log("Found a door near: " .. minetest.pos_to_string(cur_door_pos))
@@ -3479,6 +3480,8 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 	local wp = calculate_path_through_door(p, t, target)
 	if not wp then
 		mcl_log("Could not calculate path")
+		self._pf_last_failed = os.time()
+		-- Cover for a flaw in pathfind where it chooses the wrong door and gets stuck. Take a break, allow others.
 	end
 	--output_table(wp)
 

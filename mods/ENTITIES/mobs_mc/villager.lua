@@ -609,9 +609,10 @@ local function find_closest_unclaimed_block (p, requested_block_types)
 
 	for i,n in pairs(nn) do
 		local m = minetest.get_meta(n)
-		mcl_log("Block: " .. minetest.pos_to_string(n).. ", owner: ".. m:get_string("villager"))
 
 		if m:get_string("villager") == "" then
+			mcl_log("Block: " .. minetest.pos_to_string(n).. ", owner: ".. m:get_string("villager"))
+
 			local distance_to_block = vector.distance(p, n)
 			mcl_log("Distance to block ".. i .. ": ".. distance_to_block)
 
