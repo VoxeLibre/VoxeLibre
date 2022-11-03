@@ -73,6 +73,7 @@ end
 
 local etime = 0
 function check_events(dtime)
+	--process active events
 	for idx,ae in pairs(active_events) do
 		if ae.cond_complete and ae:cond_complete() then
 			ae.finished = true
@@ -95,6 +96,7 @@ function check_events(dtime)
 		addbars(ae)
 		--update_bars(ae)
 	end
+	-- check if a new event should be started
 	etime = etime - dtime
 	if etime > 0 then return end
 	etime = 10
@@ -120,71 +122,12 @@ end
 
 minetest.register_globalstep(check_events)
 
-mcl_events.register_event("infestation",{
-	max_stage = 5,
-	health = 1,
-	health_max = 1,
-	cond_start  = function(self)
-		local r = {}
-		for _,p in pairs(minetest.get_connected_players()) do
-			if p:get_meta():get_string("infestation-omen") == "yes" then
-				p:get_meta():set_string("infestation-omen","")
-				table.insert(r,p:get_pos())
-			end
-		end
-		if #r > 0 then return r end
-	end,
-	on_start = function(self)
-		self.mobs = {}
-		self.health_max = 1
-		self.health = 0
-	end,
-	cond_progress = function(self)
-		local m = {}
-		local h = 0
-		for k,o in pairs(self.mobs) do
-			if o and o:get_pos() then
-				local l = o:get_luaentity()
-				h = h + l.health
-				table.insert(m,o)
-			end
-		end
-		self.mobs = m
-		self.health = h
-		self.percent = math.max(0,(self.health / self.health_max ) * 100)
-		if #m < 1 then
-			return true end
-	end,
-	on_stage_begin = function(self)
-		self.health_max = 0
-		for i=1,15 * self.stage do
-			local m = mcl_mobs.spawn(vector.add(self.pos,vector.new(math.random(20)-10,0,math.random(20)-10)),"mobs_mc:silverfish")
-			local l = m:get_luaentity()
-			if l then
-				self.health_max = self.health_max + l.health
-				table.insert(self.mobs,m)
-			end
-		end
-	end,
-	cond_complete = function(self)
-		local m = {}
-		for k,o in pairs(self.mobs) do
-			if o and o:get_pos() then
-				local l = o:get_luaentity()
-				table.insert(m,o)
-			end
-		end
-		return self.stage >= self.max_stage and #m < 1
-	end,
-	on_complete = function(self)
-		mcl_log("INFESTATION complete")
-	end,
-})
-
-minetest.register_chatcommand("infest",{
+minetest.register_chatcommand("event_start",{
 	privs = {debug = true},
-	func = function(n,param)
-		local p = minetest.get_player_by_name(n)
-		p:get_meta():set_string("infestation-omen","yes")
+	func = function(pname,param)
+		local p = minetest.get_player_by_name(pname)
+		local evdef = mcl_events.registered_events[param]
+		if not evdef then return end
+		start_event({pos=p:get_pos(),player=pname,factor=1},evdef)
 	end,
 })
