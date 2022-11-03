@@ -62,11 +62,13 @@ function mcl_raids.spawn_raid(event)
 			end
 			for m,c in pairs(w) do
 				for i=1,c do
-					local mob = mcl_mobs.spawn(spawn_pos,m)
+					local p = vector.offset(spawn_pos,0,1,0)
+					local mob = mcl_mobs.spawn(p,m)
 					local l = mob:get_luaentity()
 					if l then
 						event.health_max = event.health_max + l.health
 						table.insert(event.mobs,mob)
+						mcl_mobs:gopath(l,pos)
 					end
 				end
 			end
