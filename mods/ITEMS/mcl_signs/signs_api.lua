@@ -70,6 +70,8 @@ end
 
 local pi = 3.1415926 -- enough accuracy, to build an engine for a car.
 
+local math = math
+
 -- locally cached copy of the official colors; this way, it updates as mcl_colors updates.
 local mcl_colors_official = mcl_colors
 if DEBUG then
@@ -662,6 +664,18 @@ function mcl_signs.register_sign (modname, color, _name, ttsign)
     new_sign_standing.wield_image = "(default_sign.png^[multiply:" .. color .. ")"
     new_sign_standing.tiles = { "(mcl_signs_sign.png^[multiply:" .. color .. ")" }
     new_sign_standing.inventory_image = "(default_sign.png^[multiply:" .. color .. ")"
+
+    new_sign_standing.on_rotate = function(pos, node, user, mode)
+        if mode == screwdriver.ROTATE_FACE then
+            node.name = "mcl_signs:standing_sign22_5" .. _name
+            minetest.swap_node(pos, node)
+        elseif mode == screwdriver.ROTATE_AXIS then
+            return false
+        end
+        mcl_signs:update_sign(pos, nil, nil, true)
+        return true
+    end,
+
     minetest.register_node("mcl_signs:standing_sign" .. _name, new_sign_standing)
     update_sign_registry("standing", "mcl_signs:standing_sign" .. _name)
     -- debug step
@@ -879,6 +893,16 @@ function mcl_signs.register_sign_custom (modname, _name, tiles, color, inventory
     new_sign_standing.wield_image ="("..wield_image.."^[multiply:" .. color .. ")"
     new_sign_standing.tiles = { "("..tiles.."^[multiply:" .. color .. ")" }
     new_sign_standing.inventory_image = "("..inventory_image.."^[multiply:" .. color .. ")"
+    new_sign_standing.on_rotate = function(pos, node, user, mode)
+        if mode == screwdriver.ROTATE_FACE then
+            node.name = "mcl_signs:standing_sign22_5" .. _name
+            minetest.swap_node(pos, node)
+        elseif mode == screwdriver.ROTATE_AXIS then
+            return false
+        end
+        mcl_signs:update_sign(pos, nil, nil, true)
+        return true
+    end,
     minetest.register_node("mcl_signs:standing_sign" .. _name, new_sign_standing)
     update_sign_registry("standing", "mcl_signs:standing_sign" .. _name)
 
@@ -1098,6 +1122,16 @@ function mcl_signs.reregister_sign (modname, color, _name, ttsign)
     new_sign_standing.wield_image = "(default_sign.png^[multiply:" .. color .. ")"
     new_sign_standing.tiles = { "(mcl_signs_sign.png^[multiply:" .. color .. ")" }
     new_sign_standing.inventory_image = "(default_sign.png^[multiply:" .. color .. ")"
+    new_sign_standing.on_rotate = function(pos, node, user, mode)
+        if mode == screwdriver.ROTATE_FACE then
+            node.name = "mcl_signs:standing_sign22_5" .. _name
+            minetest.swap_node(pos, node)
+        elseif mode == screwdriver.ROTATE_AXIS then
+            return false
+        end
+        mcl_signs:update_sign(pos, nil, nil, true)
+        return true
+    end,
     minetest.override_item("mcl_signs:standing_sign" .. _name, new_sign_standing)
     update_sign_registry("standing", "mcl_signs:standing_sign" .. _name)
     -- debug step
@@ -1315,6 +1349,16 @@ function mcl_signs.reregister_sign_custom (modname, _name, tiles, color, invento
     new_sign_standing.wield_image ="("..wield_image.."^[multiply:" .. color .. ")"
     new_sign_standing.tiles = { "("..tiles.."^[multiply:" .. color .. ")" }
     new_sign_standing.inventory_image = "("..inventory_image.."^[multiply:" .. color .. ")"
+    new_sign_standing.on_rotate = function(pos, node, user, mode)
+        if mode == screwdriver.ROTATE_FACE then
+            node.name = "mcl_signs:standing_sign22_5" .. _name
+            minetest.swap_node(pos, node)
+        elseif mode == screwdriver.ROTATE_AXIS then
+            return false
+        end
+        mcl_signs:update_sign(pos, nil, nil, true)
+        return true
+    end,
     minetest.override_item("mcl_signs:standing_sign" .. _name, new_sign_standing)
     update_sign_registry("standing", "mcl_signs:standing_sign" .. _name)
 
