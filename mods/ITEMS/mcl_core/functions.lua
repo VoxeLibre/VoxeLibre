@@ -22,6 +22,7 @@ minetest.register_abm({
 	neighbors = {"group:water"},
 	interval = 1,
 	chance = 1,
+	min_y = mcl_vars.mg_end_min,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local water = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+1, z=pos.z+1}, "group:water")
 
@@ -174,7 +175,7 @@ minetest.register_abm({
 	nodenames = {"group:destroy_by_lava_flow"},
 	neighbors = {"group:lava"},
 	interval = 1,
-	chance = 1,
+	chance = 5,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		liquid_flow_action(pos, "lava", function(pos)
 			minetest.remove_node(pos)
