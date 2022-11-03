@@ -3458,18 +3458,18 @@ local gopath_last = os.time()
 function mcl_mobs:gopath(self,target,callback_arrived)
 	if self.state == PATHFINDING then mcl_log("Already pathfinding, don't set another until done.") return end
 
-	if os.time() - gopath_last < 5 then
-		mcl_log("Not ready to path yet")
-		return
-	end
-	gopath_last = os.time()
-
 	if self._pf_last_failed and (os.time() - self._pf_last_failed) < 60 then
 		mcl_log("We are not ready to path as last fail is less than threshold: " .. (os.time() - self._pf_last_failed))
 		return
 	else
 		mcl_log("We are ready to pathfind, no previous fail or we are past threshold")
 	end
+
+	if os.time() - gopath_last < 5 then
+		mcl_log("Not ready to path yet")
+		return
+	end
+	gopath_last = os.time()
 
 	self.order = nil
 
