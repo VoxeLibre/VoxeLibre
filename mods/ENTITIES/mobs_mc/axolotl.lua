@@ -208,5 +208,5 @@ minetest.LIGHT_MAX+1,
 water-16,
 water+1)
 
---spawn egg
-mcl_mobs:register_egg("mobs_mc:axolotl", S("Axolotl"), "mobs_mc_spawn_icon_axolotl.png", 0)
+-- spawn eggs
+mcl_mobs:register_egg("mobs_mc:axolotl", S("Axolotl"), "#e890bf", "#b83D7e", 0)
