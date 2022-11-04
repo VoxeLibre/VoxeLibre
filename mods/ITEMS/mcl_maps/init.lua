@@ -22,9 +22,6 @@ local map_textures_path = worldpath .. "/mcl_maps/"
 
 minetest.mkdir(map_textures_path)
 
--- overwrite the builtin tga_encoder
-dofile(modpath .. "/tga_encoder_init.lua")
-
 local function load_json_file(name)
 	local file = assert(io.open(modpath .. "/" .. name .. ".json", "r"))
 	local data = minetest.parse_json(file:read())
