@@ -153,6 +153,16 @@ mooshroom_def.on_rightclick = function(self, clicker)
 	end
 	mcl_mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 end
+
+mooshroom_def.on_lightning_strike = function(self, pos, pos2, objects)
+	if self.base_texture[1] == "mobs_mc_mooshroom_brown.png" then
+		self.base_texture = { "mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png" }
+	else
+		self.base_texture = { "mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" }
+	end
+	self.object:set_properties({ textures = self.base_texture })
+	return true
+end
 mcl_mobs:register_mob("mobs_mc:mooshroom", mooshroom_def)
 
 
