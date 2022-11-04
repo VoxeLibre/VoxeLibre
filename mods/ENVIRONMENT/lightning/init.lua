@@ -135,26 +135,10 @@ function lightning.strike_func(pos, pos2, objects)
 	-- damage nearby objects, transform mobs
 	for _, obj in pairs(objects) do
 		local lua = obj:get_luaentity()
-		if lua and lua._on_strike then
-			lua._on_strike(lua, pos, pos2, objects)
-		end
-		-- remove this when mob API is done
-		if lua and lua.name == "mobs_mc:pig" then
-			mcl_util.replace_mob(obj, "mobs_mc:pigman")
-		elseif lua and lua.name == "mobs_mc:mooshroom" then
-			if lua.base_texture[1] == "mobs_mc_mooshroom.png" then
-				lua.base_texture = { "mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" }
-			else
-				lua.base_texture = { "mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png" }
+		if lua and lua.is_mob then
+			if not lua.on_lightning_strike or ( lua.on_lightning_strike and lua.on_lightning_strike(lua, pos, pos2, objects) ) ~= true then
+				mcl_util.deal_damage(obj, 5, { type = "lightning_bolt" })
 			end
-			obj:set_properties({ textures = lua.base_texture })
-		elseif lua and lua.name == "mobs_mc:villager" then
-			mcl_util.replace_mob(obj, "mobs_mc:witch")
-		elseif lua and lua.name == "mobs_mc:creeper" then
-			mcl_util.replace_mob(obj, "mobs_mc:creeper_charged")
-		else
-			-- WARNING: unsafe entity handling. object may be removed immediately
-			mcl_util.deal_damage(obj, 5, { type = "lightning_bolt" })
 		end
 	end
 

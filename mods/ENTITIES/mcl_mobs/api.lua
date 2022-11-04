@@ -4939,6 +4939,7 @@ minetest.register_entity(name, {
 
 	harmed_by_heal = def.harmed_by_heal,
 
+	on_lightning_strike = def.on_lightning_strike
 })
 
 if minetest.get_modpath("doc_identifier") ~= nil then
