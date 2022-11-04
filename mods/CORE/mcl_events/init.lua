@@ -34,22 +34,24 @@ function mcl_events.register_event(name,def)
 end
 
 local function addbars(self)
+	if not self.enable_bossbar then return end
 	for _,player in pairs(minetest.get_connected_players()) do
 		if vector.distance(self.pos,player:get_pos()) < 75 then
-			local bar = mcl_bossbars.add_bar(player, {color = "red", text = self.name .. " stage "..self.stage.." / "..self.max_stage, percentage = self.percent }, true,1)
+			local bar = mcl_bossbars.add_bar(player, {color = "red", text = self.readable_name .. ": Wave "..self.stage.." / "..self.max_stage, percentage = self.percent }, true,1)
 			table.insert(self.bars,bar)
 		end
 	end
 end
 
 local function update_bars(self)
+	if not self.enable_bossbar then return end
 	for _,b in pairs(self.bars) do
-		mcl_bossbars.update_bar(b,{text = self.name .. " stage "..self.stage,percentage=self.percent})
+		mcl_bossbars.update_bar(b,{text = self.readable_name .. ": Wave "..self.stage,percentage=self.percent})
 	end
 end
 
 local function start_event(p,e)
-	mcl_log("event started: "..e.name.." at "..minetest.pos_to_string(vector.round(p.pos)))
+	mcl_log("[mcl_events] Event started: "..e.readable_name.." at "..minetest.pos_to_string(vector.round(p.pos)))
 	local idx = #active_events + 1
 	active_events[idx] = table.copy(e)
 	setmetatable(active_events[idx],e)
@@ -63,7 +65,7 @@ local function start_event(p,e)
 end
 
 local function finish_event(self,idx)
-	mcl_log("Finished: "..self.name.." at "..minetest.pos_to_string(vector.round(self.pos)))
+	mcl_log("[mcl_events] Finished: "..self.readable_name.." at "..minetest.pos_to_string(vector.round(self.pos)))
 	if self.on_complete then self:on_complete() end
 	for _,b in pairs(self.bars) do
 		mcl_bossbars.remove_bar(b)
@@ -113,7 +115,7 @@ function check_events(dtime)
 				if start then
 					start_event(p,e)
 				elseif DBG then
-					mcl_log("event "..e.name.." already active at "..minetest.pos_to_string(vector.round(p.pos)))
+					mcl_log("[mcl_events] Event "..e.readable_name.." already active at "..minetest.pos_to_string(vector.round(p.pos)))
 				end
 			end
 		end

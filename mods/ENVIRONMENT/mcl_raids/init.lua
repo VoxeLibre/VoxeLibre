@@ -111,10 +111,12 @@ function mcl_raids.find_village(pos)
 end
 
 mcl_events.register_event("raid",{
+	readable_name = "Raid",
 	max_stage = 5,
 	health = 1,
 	health_max = 1,
 	exclusive_to_area = 128,
+	enable_bossbar = true,
 	cond_start  = function(self)
 		local r = {}
 		for _,p in pairs(minetest.get_connected_players()) do
