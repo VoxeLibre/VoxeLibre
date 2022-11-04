@@ -181,7 +181,7 @@ mcl_structures.register_structure("ocean_temple",{
 	num_spawn_by = 4,
 	noise_params = {
 		offset = 0,
-		scale = 0.00022,
+		scale = 0.0000122,
 		spread = {x = 250, y = 250, z = 250},
 		seed = 32345,
 		octaves = 3,
