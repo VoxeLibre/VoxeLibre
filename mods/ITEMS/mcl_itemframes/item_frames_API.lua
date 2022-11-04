@@ -445,8 +445,8 @@ function mcl_itemframes.create_custom_items(name, has_glow)
 			minetest.log("action", "[mcl_itemframes] create_custom_item_entity: name: " .. name .. "_map\n")
 		end
 	end
-	minetest.register_entity(name .. "_item", custom_frame_item)
-	minetest.register_entity(name .. "_map", custom_frame_map_item)
+	minetest.register_entity(":" .. name .. "_item", custom_frame_item)
+	minetest.register_entity(":" .. name .. "_map", custom_frame_map_item)
 end
 
 function mcl_itemframes.update_frame_registry(modname, name, has_glow)
@@ -470,8 +470,8 @@ function mcl_itemframes.update_frame_registry(modname, name, has_glow)
 end
 
 --- name: The name used to distinguish the item frame. Prepends "mcl_itemframes:" to the name. Example usage:
---- "glow_item_frame" creates a node named "mcl_itemframes:glow_item_frame".
-function mcl_itemframes.create_custom_frame(modname, name, has_glow, tiles, color, ttframe, description)
+--- "glow_item_frame" creates a node named ":mcl_itemframes:glow_item_frame".
+function mcl_itemframes.create_custom_frame(modname, name, has_glow, tiles, color, ttframe, description, inv_wield_image)
 	local mod_name_pass = false
 	if modname ~= "" and modname ~= "false" then
 		if minetest.get_modpath(modname) then
@@ -517,11 +517,16 @@ function mcl_itemframes.create_custom_frame(modname, name, has_glow, tiles, colo
 		custom_itemframe_definition = table.copy(mcl_itemframes.glow_frame_base)
 	end
 
+	if inv_wield_image ~= nil and inv_wield_image ~= "" then
+		custom_itemframe_definition.glow_frame_base.inventory_image = { "(" .. inv_wield_image .. "^[multiply:" .. color .. ")" }
+		custom_itemframe_definition.glow_frame_base.wield_image = { "(" .. inv_wield_image .. "^[multiply:" .. color .. ")" }
+	end
+
 	custom_itemframe_definition.tiles = { "(" .. tiles .. "^[multiply:" .. color .. ")" }
 	custom_itemframe_definition._tt_help = ttframe
 	custom_itemframe_definition.description = description
 
-	minetest.register_node(working_name, custom_itemframe_definition)
+	minetest.register_node(":" .. working_name, custom_itemframe_definition)
 
 	mcl_itemframes.update_frame_registry(modname, working_name, has_glow)
 	mcl_itemframes.custom_register_lbm(working_name)
@@ -802,7 +807,7 @@ function mcl_itemframes.backwards_compatibility ()
 	})
 	minetest.register_alias("itemframes:frame", "mcl_itemframes:item_frame")
 
-	-- To be installed when complete; adds backwards compatibility
+	-- adds backwards compatibility
 	minetest.register_alias("mcl_itemframes:item", "mcl_itemframes:item_frame_item")
 	minetest.register_alias("mcl_itemframes:map", "mcl_itemframes:item_frame_map")
 	minetest.register_alias("mcl_itemframes:glow_item", "mcl_itemframes:glow_item_frame_item")

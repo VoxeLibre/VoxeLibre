@@ -12,13 +12,13 @@ mcl_itemframes.create_base_definitions()
 -- necessary to maintain compatibility amongst older versions.
 mcl_itemframes.backwards_compatibility()
 
--- test for the create custom frame
+-- Define the standard frames.
 mcl_itemframes.create_custom_frame("false", "item_frame", false,
 		"mcl_itemframes_item_frame.png", mcl_colors.WHITE, "Item Frame",
-		"Can hold an item.")
+		"Can hold an item.","")
 mcl_itemframes.create_custom_frame("false", "glow_item_frame", true,
 		"mcl_itemframes_glow_item_frame.png", mcl_colors.WHITE, "Glowing Item Frame",
-		"Can hold an item and glows.")
+		"Can hold an item and glows.","")
 
 -- Register the base frame's recipes.
 -- was going to make it a specialized function, but minetest refuses to play nice.
