@@ -61,10 +61,12 @@ mcl_structures.register_structure("pillager_outpost",{
 		}}
 	},
 	after_place = function(p,def,pr)
-		local p1 = vector.offset(p,-7,0,-7)
-		local p2 = vector.offset(p,7,14,7)
+		local p1 = vector.offset(p,-9,0,-9)
+		local p2 = vector.offset(p,9,32,9)
 		mcl_structures.spawn_mobs("mobs_mc:evoker",spawnon,p1,p2,pr,1)
 		mcl_structures.spawn_mobs("mobs_mc:pillager",spawnon,p1,p2,pr,5)
+		mcl_structures.spawn_mobs("mobs_mc:parrot",{"mesecons_pressureplates:pressure_plate_stone_off"},p1,p2,pr,3)
+		mcl_structures.spawn_mobs("mobs_mc:iron_golem",{"mesecons_button:button_stone_off"},p1,p2,pr,1)
 		mcl_structures.construct_nodes(p1,p2,{"group:wall"})
 	end
 })
