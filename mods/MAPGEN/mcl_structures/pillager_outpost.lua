@@ -3,7 +3,7 @@ local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
-local spawnon = {"mcl_core:stripped_oak"}
+local spawnon = {"mcl_core:stripped_oak","mcl_stairs:slab_birchwood_top"}
 
 mcl_structures.register_structure("pillager_outpost",{
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass","group:sand"},
@@ -11,13 +11,16 @@ mcl_structures.register_structure("pillager_outpost",{
 	flags = "place_center_x, place_center_z",
 	solid_ground = true,
 	make_foundation = true,
-	sidelen = 23,
+	sidelen = 32,
 	y_offset = 0,
 	chunk_probability = 600,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "Desert", "Plains", "Savanna", "IcePlains", "Taiga" },
-	filenames = { modpath.."/schematics/mcl_structures_pillager_outpost.mts" },
+	filenames = {
+		modpath.."/schematics/mcl_structures_pillager_outpost.mts",
+		modpath.."/schematics/mcl_structures_pillager_outpost_2.mts"
+	},
 	loot = {
 		["mcl_chests:chest_small" ] ={
 		{
