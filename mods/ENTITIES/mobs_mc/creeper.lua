@@ -219,6 +219,10 @@ mcl_mobs:register_mob("mobs_mc:creeper_charged", {
 			end
 		end
 	end,
+	on_lightning_strike = function(self, pos, pos2, objects)
+		 mcl_util.replace_mob(self.object, "mobs_mc:creeper_charged")
+		 return true
+	end,
 	maxdrops = 2,
 	drops = {
 		{name = "mcl_mobitems:gunpowder",
