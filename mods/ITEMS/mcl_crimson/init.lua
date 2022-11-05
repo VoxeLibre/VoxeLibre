@@ -549,3 +549,78 @@ mcl_dye.register_on_bone_meal_apply(function(pt,user)
 		spread_nether_plants(pt.under,node)
 	end
 end)
+
+mcl_doors:register_door("mcl_crimson:crimson_door", {
+	description = S("Crimson Door"),
+	_doc_items_longdesc = S("Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal."),
+	_doc_items_usagehelp = S("To open or close a wooden door, rightclick it or supply its lower half with a redstone signal."),
+	inventory_image = "mcl_crimson_crimson_door.png",
+	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
+	_mcl_hardness = 3,
+	_mcl_blast_resistance = 3,
+	tiles_bottom = {"mcl_crimson_crimson_door_bottom.png", "crimson_hyphae_wood.png"},
+	tiles_top = {"mcl_crimson_crimson_door_top.png", "crimson_hyphae_wood.png"},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+})
+
+mcl_doors:register_trapdoor("mcl_crimson:crimson_trapdoor", {
+	description = S("Crimson Trapdoor"),
+	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
+	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
+	tile_front = "mcl_crimson_crimson_trapdoor.png",
+	tile_side = "crimson_hyphae_wood.png",
+	wield_image = "mcl_crimson_crimson_trapdoor.png",
+	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
+	_mcl_hardness = 3,
+	_mcl_blast_resistance = 3,
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+})
+
+mcl_fences.register_fence_and_fence_gate(
+	"crimson_fence",
+	S("Crimson Fence"),
+	S("Crimson Fence Gate"),
+	"mcl_crimson_crimson_fence.png",
+	{handy=1,axey=1, flammable=2,fence_wood=1, fire_encouragement=5, fire_flammability=20},
+	minetest.registered_nodes["mcl_crimson:crimson_hyphae"]._mcl_hardness,
+	minetest.registered_nodes["mcl_crimson:crimson_hyphae"]._mcl_blast_resistance,
+	{"group:fence_wood"},
+	mcl_sounds.node_sound_wood_defaults())
+
+
+mcl_doors:register_door("mcl_crimson:warped_door", {
+	description = S("Warped Door"),
+	_doc_items_longdesc = S("Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal."),
+	_doc_items_usagehelp = S("To open or close a wooden door, rightclick it or supply its lower half with a redstone signal."),
+	inventory_image = "mcl_crimson_warped_door.png",
+	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
+	_mcl_hardness = 3,
+	_mcl_blast_resistance = 3,
+	tiles_bottom = {"mcl_crimson_warped_door_bottom.png", "warped_hyphae_wood.png"},
+	tiles_top = {"mcl_crimson_warped_door_top.png", "warped_hyphae_wood.png"},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+})
+
+mcl_doors:register_trapdoor("mcl_crimson:warped_trapdoor", {
+	description = S("Warped Trapdoor"),
+	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
+	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
+	tile_front = "mcl_crimson_warped_trapdoor.png",
+	tile_side = "warped_hyphae_wood.png",
+	wield_image = "mcl_crimson_warped_trapdoor.png",
+	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
+	_mcl_hardness = 3,
+	_mcl_blast_resistance = 3,
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+})
+
+mcl_fences.register_fence_and_fence_gate(
+	"warped_fence",
+	S("Warped Fence"),
+	S("Warped Fence Gate"),
+	"mcl_crimson_warped_fence.png",
+	{handy=1,axey=1, flammable=2,fence_wood=1, fire_encouragement=5, fire_flammability=20},
+	minetest.registered_nodes["mcl_crimson:warped_hyphae"]._mcl_hardness,
+	minetest.registered_nodes["mcl_crimson:warped_hyphae"]._mcl_blast_resistance,
+	{"group:fence_wood"},
+	mcl_sounds.node_sound_wood_defaults())
