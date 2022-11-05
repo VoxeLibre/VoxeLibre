@@ -3,7 +3,7 @@ local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
-local spawnon = {"mcl_core:stripped_oak"}
+local spawnon = {"mcl_core:stripped_oak","mcl_stairs:slab_birchwood_top"}
 
 mcl_structures.register_structure("pillager_outpost",{
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass","group:sand"},
@@ -11,13 +11,16 @@ mcl_structures.register_structure("pillager_outpost",{
 	flags = "place_center_x, place_center_z",
 	solid_ground = true,
 	make_foundation = true,
-	sidelen = 23,
+	sidelen = 32,
 	y_offset = 0,
 	chunk_probability = 600,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "Desert", "Plains", "Savanna", "IcePlains", "Taiga" },
-	filenames = { modpath.."/schematics/mcl_structures_pillager_outpost.mts" },
+	filenames = {
+		modpath.."/schematics/mcl_structures_pillager_outpost.mts",
+		modpath.."/schematics/mcl_structures_pillager_outpost_2.mts"
+	},
 	loot = {
 		["mcl_chests:chest_small" ] ={
 		{
@@ -58,10 +61,12 @@ mcl_structures.register_structure("pillager_outpost",{
 		}}
 	},
 	after_place = function(p,def,pr)
-		local p1 = vector.offset(p,-7,0,-7)
-		local p2 = vector.offset(p,7,14,7)
+		local p1 = vector.offset(p,-9,0,-9)
+		local p2 = vector.offset(p,9,32,9)
 		mcl_structures.spawn_mobs("mobs_mc:evoker",spawnon,p1,p2,pr,1)
 		mcl_structures.spawn_mobs("mobs_mc:pillager",spawnon,p1,p2,pr,5)
+		mcl_structures.spawn_mobs("mobs_mc:parrot",{"mesecons_pressureplates:pressure_plate_stone_off"},p1,p2,pr,3)
+		mcl_structures.spawn_mobs("mobs_mc:iron_golem",{"mesecons_button:button_stone_off"},p1,p2,pr,1)
 		mcl_structures.construct_nodes(p1,p2,{"group:wall"})
 	end
 })
