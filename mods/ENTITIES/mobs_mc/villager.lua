@@ -1776,12 +1776,12 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 		self._trading_players[name] = true
 
 		if self._trades == nil or self._trades == false then
-			minetest.log("Trades is nil so init")
+			--minetest.log("Trades is nil so init")
 			init_trades(self)
 		end
 		update_max_tradenum(self)
 		if self._trades == false then
-			minetest.log("Trades is false. no right click op")
+			--minetest.log("Trades is false. no right click op")
 			-- Villager has no trades, rightclick is a no-op
 			return
 		end
