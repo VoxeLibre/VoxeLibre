@@ -37,10 +37,19 @@ local axolotl = {
 	hp_min = 14,
 	hp_max = 14,
 	xp_min = 1,
-	xp_max = 7,
+    xp_max = 7,
+
+    --  Random look at player works, but it looks away instead of towards.
+    head_swivel = "head.control",
+    bone_eye_height = -1,
+    head_eye_height = -0.5,
+    horrizonatal_head_height = 0,
+    curiosity = 10,
+    head_yaw="z",
+
 	armor = 100,
-	spawn_in_group_min = 3,
-	spawn_in_group = 5,
+	spawn_in_group_min = 1,
+	spawn_in_group = 4,
 	tilt_swim = true,
 	collisionbox = {-0.3, 0.0, -0.3, 0.3, 0.79, 0.3},
 	visual = "mesh",
@@ -68,21 +77,27 @@ local axolotl = {
 	--	Somewhere in here is where hostility toward aquatic creatures should go.
 	--	There is no flag for that yet though.
 
-	--	Placeholder until someone fixes breeding.
+	--	This should should make axolotls breedable, but it doesn't.'
 	follow = {
 		"mcl_fishing:clownfish_raw"
 	},
 
---	Yes, the axolotl is huge. Blame Mojang, not me.
+	view_range = 16,
+	fear_height = 4,
+
+	on_rightclick = function(self, clicker)
+		if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
+		if mcl_mobs:protect(self, clicker) then return end
+		if mcl_mobs:capture_mob(self, clicker, 0, 60, 5, false, nil) then return end
+	end,
+
 --	Due to a quirk, axolotls can fly in air as well as water. But they still die to it.
 	makes_footstep_sound = false,
 	fly = true,
 	fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
 	breathes_in_water = true,
 	jump = true,
-	view_range = 16,
 	runaway = true,
-	fear_height = 4,
 	do_custom = function(self)
 		--[[ this is supposed to make them jump out the water but doesn't appear to work very well
 		self.object:set_bone_position("body", vector.new(0,1,0), vector.new(degrees(dir_to_pitch(self.object:get_velocity())) * -1 + 90,0,0))
@@ -117,8 +132,6 @@ local axolotl = {
 
 mcl_mobs:register_mob("mobs_mc:axolotl", axolotl)
 
-
---spawning TODO: in schools of 1-5
 
 local water = 0
 
