@@ -62,7 +62,7 @@ function mcl_maps.create_map(pos)
 		local emin, emax = vm:read_from_map(minp, maxp)
 		local data = vm:get_data()
 		local param2data = vm:get_param2_data()
-		local area = VoxelArea:new({MinEdge = emin, MaxEdge = emax})
+		local area = VoxelArea:new({ MinEdge = emin, MaxEdge = emax })
 		local pixels = {}
 		local last_heightmap
 		for x = 1, 128 do
@@ -94,7 +94,7 @@ function mcl_maps.create_map(pos)
 								end
 								if def.palette then
 									local palette = palettes[texture]
-									color = palette and {palette = palette}
+									color = palette and { palette = palette }
 								else
 									color = texture_colors[texture]
 								end
@@ -129,7 +129,7 @@ function mcl_maps.create_map(pos)
 				end
 				heightmap[z] = height or minp.y
 				pixels[z] = pixels[z] or {}
-				pixels[z][x] = color or {0, 0, 0}
+				pixels[z][x] = color or { 0, 0, 0 }
 			end
 			last_heightmap = heightmap
 		end
@@ -141,30 +141,43 @@ end
 
 function mcl_maps.load_map(id, callback)
 	if id == "" or creating_maps[id] then
-		return
+		return false
 	end
 
 	local texture = "mcl_maps_map_texture_" .. id .. ".tga"
+
+	local result = true
 
 	if not loaded_maps[id] then
 		if not minetest.features.dynamic_add_media_table then
 			-- minetest.dynamic_add_media() blocks in
 			-- Minetest 5.3 and 5.4 until media loads
 			loaded_maps[id] = true
-			dynamic_add_media(map_textures_path .. texture, function() end)
-			if callback then callback(texture) end
+			result = dynamic_add_media(map_textures_path .. texture, function()
+			end)
+			if callback then
+				callback(texture)
+			end
 		else
 			-- minetest.dynamic_add_media() never blocks
 			-- in Minetest 5.5, callback runs after load
-			dynamic_add_media(map_textures_path .. texture, function()
+			result = dynamic_add_media(map_textures_path .. texture, function()
 				loaded_maps[id] = true
-				if callback then callback(texture) end
+				if callback then
+					callback(texture)
+				end
 			end)
 		end
 	end
 
+	if result == false then
+		return false
+	end
+
 	if loaded_maps[id] then
-		if callback then callback(texture) end
+		if callback then
+			callback(texture)
+		end
 		return texture
 	end
 end
@@ -213,7 +226,7 @@ local filled_def = {
 	_doc_items_usagehelp = S("Hold the map in your hand. This will display a map on your screen."),
 	inventory_image = "mcl_maps_map_filled.png^(mcl_maps_map_filled_markings.png^[colorize:#000000)",
 	stack_max = 64,
-	groups = {not_in_creative_inventory = 1, filled_map = 1, tool = 1},
+	groups = { not_in_creative_inventory = 1, filled_map = 1, tool = 1 },
 }
 
 minetest.register_craftitem("mcl_maps:filled_map", filled_def)
@@ -221,7 +234,7 @@ minetest.register_craftitem("mcl_maps:filled_map", filled_def)
 local filled_wield_def = table.copy(filled_def)
 filled_wield_def.use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false
 filled_wield_def.visual_scale = 1
-filled_wield_def.wield_scale = {x = 1, y = 1, z = 1}
+filled_wield_def.wield_scale = { x = 1, y = 1, z = 1 }
 filled_wield_def.paramtype = "light"
 filled_wield_def.drawtype = "mesh"
 filled_wield_def.node_placement_prediction = ""
@@ -239,20 +252,20 @@ if mcl_skins_enabled then
 			local female = table.copy(filled_wield_def)
 			female._mcl_hand_id = skin.id
 			female.mesh = "mcl_meshhand_female.b3d"
-			female.tiles = {skin.texture}
+			female.tiles = { skin.texture }
 			minetest.register_node("mcl_maps:filled_map_" .. skin.id, female)
 		else
 			local male = table.copy(filled_wield_def)
 			male._mcl_hand_id = skin.id
 			male.mesh = "mcl_meshhand.b3d"
-			male.tiles = {skin.texture}
+			male.tiles = { skin.texture }
 			minetest.register_node("mcl_maps:filled_map_" .. skin.id, male)
 		end
 	end
 else
 	filled_wield_def._mcl_hand_id = "hand"
 	filled_wield_def.mesh = "mcl_meshhand.b3d"
-	filled_wield_def.tiles = {"character.png"}
+	filled_wield_def.tiles = { "character.png" }
 	minetest.register_node("mcl_maps:filled_map_hand", filled_wield_def)
 end
 
@@ -286,7 +299,7 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_maps:filled_map 2",
-	recipe = {"group:filled_map", "mcl_maps:empty_map"},
+	recipe = { "group:filled_map", "mcl_maps:empty_map" },
 })
 
 local function on_craft(itemstack, player, old_craft_grid, craft_inv)
@@ -310,13 +323,13 @@ minetest.register_on_joinplayer(function(player)
 	local map_def = {
 		hud_elem_type = "image",
 		text = "blank.png",
-		position = {x = 0.75, y = 0.8},
-		alignment = {x = 0, y = -1},
-		offset = {x = 0, y = 0},
-		scale = {x = 2, y = 2},
+		position = { x = 0.75, y = 0.8 },
+		alignment = { x = 0, y = -1 },
+		offset = { x = 0, y = 0 },
+		scale = { x = 2, y = 2 },
 	}
 	local marker_def = table.copy(map_def)
-	marker_def.alignment = {x = 0, y = 0}
+	marker_def.alignment = { x = 0, y = 0 }
 	huds[player] = {
 		map = player:hud_add(map_def),
 		marker = player:hud_add(marker_def),
@@ -376,7 +389,7 @@ minetest.register_globalstep(function(dtime)
 			end
 
 			player:hud_change(hud.marker, "text", marker)
-			player:hud_change(hud.marker, "offset", {x = (6 - 140 / 2 + pos.x - minp.x) * 2, y = (6 - 140 + maxp.z - pos.z) * 2})
+			player:hud_change(hud.marker, "offset", { x = (6 - 140 / 2 + pos.x - minp.x) * 2, y = (6 - 140 + maxp.z - pos.z) * 2 })
 		elseif maps[player] then
 			player:hud_change(hud.map, "text", "blank.png")
 			player:hud_change(hud.marker, "text", "blank.png")
