@@ -578,10 +578,9 @@ function get_activity(tod)
 	end
 	tod = ( tod * 24000 ) % 24000
 
-
-	local lunch_start = 12000
+	local lunch_start = 11000
 	local lunch_end = 13500
-	local work_start = 8500
+	local work_start = 7000
 	local work_end = 16500
 
 	local activity = nil
@@ -600,6 +599,31 @@ function get_activity(tod)
 	mcl_log("Time is " .. tod ..". Activity is: ".. activity)
 	return activity
 
+end
+
+local function find_closest_unclaimed_block (p, requested_block_types)
+	local nn = minetest.find_nodes_in_area(vector.offset(p,-48,-48,-48),vector.offset(p,48,48,48), requested_block_types)
+
+	local distance_to_closest_block = nil
+	local closest_block = nil
+
+	for i,n in pairs(nn) do
+		local m = minetest.get_meta(n)
+
+		if m:get_string("villager") == "" then
+			mcl_log("Block: " .. minetest.pos_to_string(n).. ", owner: ".. m:get_string("villager"))
+
+			local distance_to_block = vector.distance(p, n)
+			mcl_log("Distance to block ".. i .. ": ".. distance_to_block)
+
+			if not distance_to_closest_block or distance_to_closest_block > distance_to_block then
+				mcl_log("This block is closer than the last.")
+				closest_block = n
+				distance_to_closest_block = distance_to_block
+			end
+		end
+	end
+	return closest_block
 end
 
 local function check_bed (entity)
@@ -677,33 +701,29 @@ local function take_bed (entity)
 	if not entity then return end
 
 	local p = entity.object:get_pos()
-	local nn = minetest.find_nodes_in_area(vector.offset(p,-48,-48,-48), vector.offset(p,48,48,48), spawnable_bed)
 
-	for _,n in pairs(nn) do
-		local m=minetest.get_meta(n)
-		--mcl_log("Bed owner: ".. m:get_string("villager"))
-		if m:get_string("villager") == "" and not (entity.state == PATHFINDING) then
-			mcl_log("Can we path to bed: "..minetest.pos_to_string(n) )
-			local gp = mcl_mobs:gopath(entity,n,function(self)
-				if self then
-					self.order = "sleep"
-					mcl_log("Sleepy time" )
-				else
-					mcl_log("Can't sleep, no self in the callback" )
-				end
-			end)
-			if gp then
-				mcl_log("Nice bed. I'll defintely take it as I can path")
-				m:set_string("villager", entity._id)
-				entity._bed = n
-				break
+	local closest_block = find_closest_unclaimed_block (p, spawnable_bed)
+
+	if closest_block then
+		local m = minetest.get_meta(closest_block)
+		mcl_log("Can we path to bed: "..minetest.pos_to_string(closest_block) )
+		local gp = mcl_mobs:gopath(entity, closest_block,function(self)
+			if self then
+				self.order = SLEEP
+				mcl_log("Sleepy time" )
 			else
-				mcl_log("Awww. I can't find my bed.")
+				mcl_log("Can't sleep, no self in the callback" )
 			end
+		end)
+		if gp then
+			mcl_log("Nice bed. I'll defintely take it as I can path")
+			m:set_string("villager", entity._id)
+			entity._bed = closest_block
 		else
-			mcl_log("Currently gowp, or it's taken: ".. m:get_string("villager"))
+			mcl_log("Awww. I can't find my bed.")
 		end
 	end
+
 end
 
 local function has_golem(pos)
@@ -847,43 +867,32 @@ end
 local function look_for_job(self, requested_jobsites)
 	mcl_log("Looking for jobs")
 
-	local looking_for_type = jobsites
-	if requested_jobsites then
-		--mcl_log("Looking for jobs of my type: " .. tostring(requested_jobsites))
-		looking_for_type = requested_jobsites
-	else
-		mcl_log("Looking for any job type")
-	end
-
 	local p = self.object:get_pos()
-	local nn = minetest.find_nodes_in_area(vector.offset(p,-48,-48,-48),vector.offset(p,48,48,48), looking_for_type)
 
-	--Ideally should check for closest available. It'll make pathing easier.
-	for _,n in pairs(nn) do
-		local m = minetest.get_meta(n)
-		--mcl_log("Job owner: ".. m:get_string("villager"))
+	local closest_block = find_closest_unclaimed_block(p, requested_jobsites)
 
-		if m:get_string("villager") == "" then
-			mcl_log("It's a free job for me (".. minetest.pos_to_string(p) .. ")! I might be interested: "..minetest.pos_to_string(n) )
+	if closest_block then
+		mcl_log("It's a free job for me (" .. minetest.pos_to_string(p) .. ")! I might be interested: ".. minetest.pos_to_string(closest_block) )
 
-			local gp = mcl_mobs:gopath(self,n,function(self)
-				mcl_log("Arrived at block callback")
-				if self and self.state == "stand" then
-					self.order = WORK
-				else
-					mcl_log("no self. passing param to callback failed")
-				end
-
-			end)
-			if gp then
-				if n then
-					mcl_log("We can path to this block.. " .. tostring(n))
-				end
-				return n
+		local gp = mcl_mobs:gopath(self, closest_block,function(self)
+			mcl_log("Arrived at block callback")
+			if self and self.state == "stand" then
+				self.order = WORK
 			else
-				mcl_log("We could not path to block or it's not ready to path yet.")
+				mcl_log("no self. passing param to callback failed")
 			end
+		end)
+
+		if gp then
+			if closest_block then
+				mcl_log("We can path to this block.. " .. tostring(closest_block))
+			end
+			return closest_block
+		else
+			mcl_log("We could not path to block or it's not ready to path yet.")
 		end
+	else
+		mcl_log("We don't have a job block to path to")
 	end
 
 	return nil
@@ -1052,7 +1061,7 @@ end
 local function do_activity (self)
 	-- Maybe just check we're pathfinding first?
 
-	if not self._bed then
+	if not self._bed and self.state ~= PATHFINDING then
 		--mcl_log("Villager has no bed. Currently at location: "..minetest.pos_to_string(self.object:get_pos()))
 		take_bed (self)
 	end
@@ -1062,7 +1071,6 @@ local function do_activity (self)
 	if check_bed (self) then
 		wandered_too_far = ( self.state ~= PATHFINDING ) and (vector.distance(self.object:get_pos(),self._bed) > 50 )
 	end
-
 
 	if wandered_too_far  then
 		--mcl_log("Wandered too far! Return home ")
@@ -1074,7 +1082,6 @@ local function do_activity (self)
 	elseif get_activity() == GATHERING then
 		go_to_town_bell(self)
 	else
-		-- gossip at town bell or stroll around
 		mcl_log("No order, so remove it.")
 		self.order = nil
 	end
@@ -1769,12 +1776,12 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 		self._trading_players[name] = true
 
 		if self._trades == nil or self._trades == false then
-			minetest.log("Trades is nil so init")
+			--minetest.log("Trades is nil so init")
 			init_trades(self)
 		end
 		update_max_tradenum(self)
 		if self._trades == false then
-			minetest.log("Trades is false. no right click op")
+			--minetest.log("Trades is false. no right click op")
 			-- Villager has no trades, rightclick is a no-op
 			return
 		end

@@ -2607,8 +2607,9 @@ local function check_gowp(self,dtime)
 	-- 0.1 is optimal.
 	--less frequently = villager will get sent back after passing a point.
 	--more frequently = villager will fail points they shouldn't they just didn't get there yet
-	if gowp_etime < 0.1 then return end
-	gowp_etime = 0
+
+	--if gowp_etime < 0.05 then return end
+	--gowp_etime = 0
 	local p = self.object:get_pos()
 
 	-- no destination
@@ -2663,6 +2664,7 @@ local function check_gowp(self,dtime)
 			self.current_target = nil
 			self.waypoints = nil
 			self._target = nil
+			self._pf_last_failed = os.time()
 			self.object:set_velocity({x = 0, y = 0, z = 0})
 			self.object:set_acceleration({x = 0, y = 0, z = 0})
 			return
@@ -3408,6 +3410,7 @@ local function calculate_path_through_door (p, t, target)
 	if not wp then
 		mcl_log("No direct path. Path through door")
 
+		-- This could improve. There could be multiple doors. Check you can path from door to target first.
 		local cur_door_pos = minetest.find_node_near(target,16,{"group:door"})
 		if cur_door_pos then
 			mcl_log("Found a door near: " .. minetest.pos_to_string(cur_door_pos))
@@ -3457,21 +3460,29 @@ local gopath_last = os.time()
 function mcl_mobs:gopath(self,target,callback_arrived)
 	if self.state == PATHFINDING then mcl_log("Already pathfinding, don't set another until done.") return end
 
-	if os.time() - gopath_last < 5 then
-		mcl_log("Not ready to path yet")
+	if self._pf_last_failed and (os.time() - self._pf_last_failed) < 30 then
+		mcl_log("We are not ready to path as last fail is less than threshold: " .. (os.time() - self._pf_last_failed))
 		return
+	else
+		mcl_log("We are ready to pathfind, no previous fail or we are past threshold")
 	end
-	gopath_last = os.time()
+
+	--if os.time() - gopath_last < 5 then
+	--	mcl_log("Not ready to path yet")
+	--	return
+	--end
+	--gopath_last = os.time()
 
 	self.order = nil
 
-	--mcl_log("gowp target: " .. minetest.pos_to_string(target))
 	local p = self.object:get_pos()
 	local t = vector.offset(target,0,1,0)
 
 	local wp = calculate_path_through_door(p, t, target)
 	if not wp then
 		mcl_log("Could not calculate path")
+		self._pf_last_failed = os.time()
+		-- Cover for a flaw in pathfind where it chooses the wrong door and gets stuck. Take a break, allow others.
 	end
 	--output_table(wp)
 
@@ -3484,21 +3495,15 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 		else
 			mcl_log("Nil pos")
 		end
-		--current_location = table.remove(wp,1)
-		--if current_location and current_location["pos"] then
-		--	mcl_log("Removing first co-ord? " .. tostring(current_location["pos"]))
-		--else
-		--	mcl_log("Nil pos")
-		--end
 		self.current_target = current_location
 		self.waypoints = wp
 		self.state = PATHFINDING
 		return true
 	else
-	self.state = "walk"
-	self.waypoints = nil
-	self.current_target = nil
-	--	minetest.log("no path found")
+		self.state = "walk"
+		self.waypoints = nil
+		self.current_target = nil
+		--	minetest.log("no path found")
 	end
 end
 
