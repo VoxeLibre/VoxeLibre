@@ -624,3 +624,73 @@ mcl_fences.register_fence_and_fence_gate(
 	minetest.registered_nodes["mcl_crimson:warped_hyphae"]._mcl_blast_resistance,
 	{"group:fence_wood"},
 	mcl_sounds.node_sound_wood_defaults())
+
+-- Door, Trapdoor, and Fence/Gate Crafting
+local crimson_wood = "mcl_crimson:crimson_hyphae_wood"
+local warped_wood = "mcl_crimson:warped_hyphae_wood"
+
+minetest.register_craft({
+	output = "mcl_crimson:crimson_door 3",
+	recipe = {
+		{crimson_wood, crimson_wood},
+		{crimson_wood, crimson_wood},
+		{crimson_wood, crimson_wood}
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:warped_door 3",
+	recipe = {
+		{warped_wood, warped_wood},
+		{warped_wood, warped_wood},
+		{warped_wood, warped_wood}
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:crimson_trapdoor 2",
+	recipe = {
+		{crimson_wood, crimson_wood, crimson_wood},
+		{crimson_wood, crimson_wood, crimson_wood},
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:warped_trapdoor 2",
+	recipe = {
+		{warped_wood, warped_wood, warped_wood},
+		{warped_wood, warped_wood, warped_wood},
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:crimson_fence 3",
+	recipe = {
+		{crimson_wood, "mcl_core:stick", crimson_wood},
+		{crimson_wood, "mcl_core:stick", crimson_wood},
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:warped_fence 3",
+	recipe = {
+		{warped_wood, "mcl_core:stick", warped_wood},
+		{warped_wood, "mcl_core:stick", warped_wood},
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:crimson_fence_gate",
+	recipe = {
+		{"mcl_core:stick", crimson_wood, "mcl_core:stick"},
+		{"mcl_core:stick", crimson_wood, "mcl_core:stick"},
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:warped_fence_gate",
+	recipe = {
+		{"mcl_core:stick", warped_wood, "mcl_core:stick"},
+		{"mcl_core:stick", warped_wood, "mcl_core:stick"},
+	}
+})
