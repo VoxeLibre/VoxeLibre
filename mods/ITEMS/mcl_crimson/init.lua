@@ -306,7 +306,7 @@ minetest.register_craft({
 })
 
 minetest.register_node("mcl_crimson:stripped_warped_hyphae", {
-	description = S("Stripped warped hyphae"),
+	description = S("Stripped Warped Hyphae"),
 	_doc_items_longdesc = S("The stripped hyphae of a warped fungus"),
 	_doc_items_hidden = false,
 	tiles = {"warped_stem_stripped_top.png", "warped_stem_stripped_top.png", "warped_stem_stripped_side.png"},
@@ -319,9 +319,9 @@ minetest.register_node("mcl_crimson:stripped_warped_hyphae", {
 })
 
 minetest.register_node("mcl_crimson:stripped_warped_hyphae_bark", {
-	description = S("Stripped warped hyphae bark"),
+	description = S("Stripped Warped Hyphae Bark"),
 	_doc_items_longdesc = S("The stripped hyphae bark of a warped fungus"),
-	tiles = {"crimson_stem_stripped_side.png"},
+	tiles = {"warped_stem_stripped_side.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, bark = 1, building_block = 1, material_wood = 1},
