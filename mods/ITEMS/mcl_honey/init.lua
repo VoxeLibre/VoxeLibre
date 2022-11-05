@@ -66,6 +66,12 @@ minetest.register_craft({
 		{ "mcl_honey:honey_bottle", "mcl_honey:honey_bottle" },
 		{ "mcl_honey:honey_bottle", "mcl_honey:honey_bottle" },
 	},
+	replacements = {
+		{ "mcl_honey:honey_bottle", "mcl_potions:glass_bottle" },
+		{ "mcl_honey:honey_bottle", "mcl_potions:glass_bottle" },
+		{ "mcl_honey:honey_bottle", "mcl_potions:glass_bottle" },
+		{ "mcl_honey:honey_bottle", "mcl_potions:glass_bottle" },
+	},
 })
 
 minetest.register_craft({
@@ -80,4 +86,7 @@ minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_core:sugar 3",
 	recipe = { "mcl_honey:honey_bottle" },
+	replacements = {
+		{ "mcl_honey:honey_bottle", "mcl_potions:glass_bottle" },
+	},
 })
