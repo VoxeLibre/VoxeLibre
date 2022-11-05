@@ -47,6 +47,7 @@ minetest.register_node("mcl_honey:honey_block", {
 		"mcl_honey_block_side.png", "mcl_honey_block_side.png",
 	},
 	groups = { handy = 1, deco_block = 1 },
+	paramtype2 = "facedir",
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
