@@ -1885,6 +1885,10 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 			mcl_log("Died, so bye bye jobsite")
 		end
 	end,
+	on_lightning_strike = function(self, pos, pos2, objects)
+		 mcl_util.replace_mob(self.object, "mobs_mc:witch")
+		 return true
+	end,
 })
 
 
