@@ -4,7 +4,7 @@ local function check_spawn_pos(pos)
 end
 
 local function spawn_zombies(self)
-	local nn = minetest.find_nodes_in_area_under_air(vector.offset(self.pos,-32,-32,-32),vector.offset(self.pos,32,32,32),{"group:solid"})
+	local nn = minetest.find_nodes_in_area_under_air(vector.offset(self.pos,-16,-16,-16),vector.offset(self.pos,16,16,16),{"group:solid"})
 	table.shuffle(nn)
 	for i=1,20 do
 		local p = vector.offset(nn[i%#nn],0,1,0)
