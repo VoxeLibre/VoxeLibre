@@ -89,10 +89,10 @@ function mcl_raids.find_villager(pos)
 			if object.name ~= "mobs_mc:villager" then
 				return
 			elseif object.name == "mobs_mc:villager" then
-				minetest.log("action", "[mcl_raids] Villager Found.")
+				--minetest.log("action", "[mcl_raids] Villager Found.")
 				return true
 			else
-				minetest.log("action", "[mcl_raids] No Villager Found.")
+				--minetest.log("action", "[mcl_raids] No Villager Found.")
 				return false
 			end
 		end
