@@ -14,11 +14,11 @@ mcl_itemframes.backwards_compatibility()
 
 -- Define the standard frames.
 mcl_itemframes.create_custom_frame("false", "item_frame", false,
-		"mcl_itemframes_item_frame.png", mcl_colors.WHITE, "Item Frame",
-		"Can hold an item.","")
+		"mcl_itemframes_item_frame.png", mcl_colors.WHITE, "Can hold an item.",
+		"Item Frame", "")
 mcl_itemframes.create_custom_frame("false", "glow_item_frame", true,
-		"mcl_itemframes_glow_item_frame.png", mcl_colors.WHITE, "Glowing Item Frame",
-		"Can hold an item and glows.","")
+		"mcl_itemframes_glow_item_frame.png", mcl_colors.WHITE, "Can hold an item and glows.",
+		"Glowing Item Frame", "")
 
 -- Register the base frame's recipes.
 -- was going to make it a specialized function, but minetest refuses to play nice.
@@ -37,26 +37,4 @@ minetest.register_craft({
 	recipe = { 'mcl_mobitems:glow_ink_sac', 'mcl_itemframes:item_frame' },
 })
 
---[[ green frames just for testing
-mcl_itemframes.create_custom_frame("false", "my_regular_frame", false,
-		"mcl_itemframes_item_frame.png", mcl_colors.DARK_GREEN, "A Green frame",
-		"My Green Frame")
-mcl_itemframes.create_custom_frame("false", "my_glowing_frame", true,
-		"mcl_itemframes_glow_item_frame.png", mcl_colors.DARK_GREEN, "A Green glowing frame",
-		"My Green glowing Frame")
-
-minetest.register_craft({
-	output = "mcl_itemframes:my_regular_frame",
-	recipe = {
-		{ "", "mcl_core:stick", "" },
-		{ "mcl_core:stick", "", "mcl_core:stick" },
-		{ "", "mcl_core:stick", "" },
-	}
-})
-
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_itemframes:my_glowing_frame",
-	recipe = { "mcl_mobitems:glow_ink_sac", "mcl_itemframes:my_regular_frame" },
-})
---]]
+mcl_itemframes.custom_register_lbm()
