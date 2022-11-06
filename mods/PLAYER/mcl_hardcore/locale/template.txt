@@ -1,0 +1,5 @@
+# textdomain: mcl_hardcore
+You died in hardcore mode; spectator mode not disabled.=
+You died in hardcore mode; rejoining as a spectator.=
+You died in hardcore mode; respawning as a spectator.=
+Gamemode last login was Spectator; rejoining as a spectator.=

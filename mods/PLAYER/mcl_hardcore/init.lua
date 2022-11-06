@@ -14,6 +14,7 @@ of the license, or (at your option) any later version.
 --
 --
 
+local S = minetest.get_translator(minetest.get_current_modname())
 mcl_hardcore = {}
 
 -- Write Hardcore mode state to world.
@@ -34,6 +35,7 @@ function mcl_hardcore.spectator_mode(player)
 
 	meta:set_int("mcl_privs:interact_revoked", 1)
 	player:set_armor_groups({immortal=1})
+	player:set_properties({pointable = false})
 	minetest.set_player_privs(player_name, {fly=true,fast=true,noclip=true,interact=nil})
 
 	-- Have to wait since mcl_potions clears old effects on startup.
@@ -43,6 +45,8 @@ function mcl_hardcore.spectator_mode(player)
 		hb.hide_hudbar(player, "hunger")
 		hb.change_hudbar(player, "health", nil, nil,  "blank.png", nil, "hudbars_bar_health.png")
 		mcl_experience.remove_hud(player)
+		player:hud_set_hotbar_image("blank.png")
+		player:hud_set_hotbar_selected_image("blank.png")
 	end, player)
 	if meta:get_string("gamemode") ~= "spectator" then
 		meta:set_string("gamemode","spectator")
@@ -57,15 +61,18 @@ function mcl_hardcore.spectator_mode_disabled(player)
 
 	if meta:get_int("dead") == 1 and hardcore_world==true then
 		meta:set_string("gamemode","spectator")
-		minetest.chat_send_player(player_name, "You died in hardcore mode; spectator mode not disabled.")
+		minetest.chat_send_player(player_name, S("You died in hardcore mode; spectator mode not disabled."))
 		return
 	else
 		minetest.after(3, function(player) -- Fix startup crash conflict by waiting slightly.
 			mcl_potions._reset_player_effects(player)
 			mcl_potions.invisiblility_func(player, null, 0)
 			hb.unhide_hudbar(player, "hunger")
+			player:hud_set_hotbar_image("mcl_inventory_hotbar.png")
+			player:hud_set_hotbar_selected_image("mcl_inventory_hotbar_selected.png")
 			meta:set_int("mcl_privs:interact_revoked", 0)
-			player:set_armor_groups({immortal=0})
+			player:set_properties({pointable = true})
+			player:set_armor_groups({fleshy=100})
 
 			-- Try to preserve privs somewhat
 			if meta:get_string("gamemode") == "spectator" then
@@ -90,7 +97,7 @@ function mcl_hardcore.hardcore_mode(player)
 	local player_name = player:get_player_name()
 	if meta:get_int("dead") == 1 then
 		mcl_hardcore.spectator_mode(player)
-		minetest.chat_send_player(player_name, "You died in hardcore mode; rejoining as a spectator.")
+		minetest.chat_send_player(player_name, S("You died in hardcore mode; rejoining as a spectator."))
 	end
 
 	minetest.register_on_dieplayer(function(player, reason)
@@ -105,7 +112,7 @@ function mcl_hardcore.hardcore_mode(player)
 		local player_name = player:get_player_name()
 		if meta:get_int("dead") == 1 then
 			mcl_hardcore.spectator_mode(player)
-			minetest.chat_send_player(player_name, "You died in hardcore mode; respawning as a spectator.")
+			minetest.chat_send_player(player_name, S("You died in hardcore mode; respawning as a spectator."))
 		end
 	end)
 end
@@ -124,6 +131,13 @@ minetest.register_on_joinplayer(function(player)
 	end
 	if hardcore_world then
 		mcl_hardcore.hardcore_mode(player)
+	else
+		local meta = player:get_meta()
+		local player_name = player:get_player_name()
+		if meta:get_string("gamemode") == "spectator" then
+			minetest.chat_send_player(player_name, S("Gamemode last login was Spectator; rejoining as a spectator."))
+			mcl_hardcore.spectator_mode(player)
+		end
 	end
 
 end)
