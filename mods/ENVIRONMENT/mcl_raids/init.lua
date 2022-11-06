@@ -38,6 +38,27 @@ local extra_wave = {
 	--["mobs_mc:ravager"] = 2,
 }
 
+local oban_def = minetest.registered_entities["mcl_banners:standing_banner"]
+oban_def.visual_size = { x=1, y=1 }
+minetest.register_entity(":mcl_raids:ominous_banner",oban_def)
+
+function mcl_raids.spawn_raidcaptain(pos)
+	local c = minetest.add_entity(pos,"mobs_mc:pillager")
+	local b = minetest.add_entity(pos,"mcl_raids:ominous_banner")
+	--TODO: add actual banner pattern
+	--b:set_properties({textures = {mcl_banners.make_banner_texture(self._base_color, self._layers)}})
+	b:get_luaentity()
+	b:set_attach(c,"",vector.new(-1.75,5.5,-0.5),vector.new(0,0,0),true)
+end
+
+minetest.register_chatcommand("raidcap",{
+	privs = {debug = true},
+	func = function(pname,param)
+		mcl_raids.spawn_raidcaptain(minetest.get_player_by_name(pname):get_pos())
+	end,
+})
+
+
 function mcl_raids.spawn_raid(event)
 	local pos = event.pos
 	local wave = event.stage
