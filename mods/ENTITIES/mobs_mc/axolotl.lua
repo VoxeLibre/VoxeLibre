@@ -96,6 +96,13 @@ local axolotl = {
 	fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
 	breathes_in_water = true,
 	jump = true,
+	attack_animals = true,
+	specific_attack = { "extra_mobs_cod",
+"mobs_mc:sheep",
+"extra_mobs_glow_squid",
+"extra_mobs_salmon",
+"extra_mobs_tropical_fish",
+"mobs_mc_squid" },
 	runaway = true,
 	do_custom = function(self)
 		--[[ this is supposed to make them jump out the water but doesn't appear to work very well
