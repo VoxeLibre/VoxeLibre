@@ -40,12 +40,12 @@ local axolotl = {
     xp_max = 7,
 
     --  Random look at player works, but it looks away instead of towards.
-    head_swivel = "head.control",
-    bone_eye_height = -1,
-    head_eye_height = -0.5,
-    horrizonatal_head_height = 0,
-    curiosity = 10,
-    head_yaw="z",
+	head_swivel = "head.control",
+	bone_eye_height = -1,
+	head_eye_height = -0.5,
+	horrizonatal_head_height = 0,
+	curiosity = 10,
+	head_yaw="z",
 
 	armor = 100,
 	spawn_in_group_min = 1,
@@ -74,9 +74,6 @@ local axolotl = {
 		run_start = 61, run_end = 81, run_speed = 20,
 	},
 
-	--	Somewhere in here is where hostility toward aquatic creatures should go.
-	--	There is no flag for that yet though.
-
 	--	This should should make axolotls breedable, but it doesn't.
 	follow = {
 		"mcl_fishing:clownfish_raw"
@@ -97,12 +94,14 @@ local axolotl = {
 	breathes_in_water = true,
 	jump = true,
 	attack_animals = true,
-	specific_attack = { "extra_mobs_cod",
-"mobs_mc:sheep",
-"extra_mobs_glow_squid",
-"extra_mobs_salmon",
-"extra_mobs_tropical_fish",
-"mobs_mc_squid" },
+	specific_attack = {	
+		"extra_mobs_cod",
+		"mobs_mc:sheep",
+		"extra_mobs_glow_squid",
+		"extra_mobs_salmon",
+		"extra_mobs_tropical_fish",
+		"mobs_mc_squid"
+		 },
 	runaway = true,
 	do_custom = function(self)
 		--[[ this is supposed to make them jump out the water but doesn't appear to work very well
