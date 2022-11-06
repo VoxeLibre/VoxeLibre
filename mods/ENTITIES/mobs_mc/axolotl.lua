@@ -51,7 +51,7 @@ local axolotl = {
 	spawn_in_group_min = 1,
 	spawn_in_group = 4,
 	tilt_swim = true,
-	collisionbox = {-0.3, 0.0, -0.3, 0.3, 0.79, 0.3},
+	collisionbox = {-0.5, 0.0, -0.5, 0.5, 0.8, 0.5},
 	visual = "mesh",
 	mesh = "mobs_mc_axolotl.b3d",
 	textures = {
@@ -77,7 +77,7 @@ local axolotl = {
 	--	Somewhere in here is where hostility toward aquatic creatures should go.
 	--	There is no flag for that yet though.
 
-	--	This should should make axolotls breedable, but it doesn't.'
+	--	This should should make axolotls breedable, but it doesn't.
 	follow = {
 		"mcl_fishing:clownfish_raw"
 	},
@@ -91,7 +91,6 @@ local axolotl = {
 		if mcl_mobs:capture_mob(self, clicker, 0, 60, 5, false, nil) then return end
 	end,
 
---	Due to a quirk, axolotls can fly in air as well as water. But they still die to it.
 	makes_footstep_sound = false,
 	fly = true,
 	fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
