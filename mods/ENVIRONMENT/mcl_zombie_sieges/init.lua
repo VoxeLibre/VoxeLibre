@@ -26,11 +26,13 @@ mcl_events.register_event("zombie_siege",{
 	exclusive_to_area = 128,
 	enable_bossbar = false,
 	cond_start  = function(self)
+		local pr = PseudoRandom(minetest.get_day_count())
+		local rnd = pr:next(1,10)
 		local t = minetest.get_timeofday()
 		local r = {}
 		for _,p in pairs(minetest.get_connected_players()) do
 			local village = mcl_raids.find_village(p:get_pos())
-			if t < 0.1 and village then
+			if t < 0.04 and village and rnd == 1 then
 				table.insert(r,{ player = p:get_player_name(), pos = village})
 			end
 		end
