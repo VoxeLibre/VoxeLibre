@@ -25,7 +25,12 @@ if file ~= nil then
 end
 
 local function potions_set_hudbar(player)
-	if hardcore_world then
+	local meta = player:get_meta()
+
+	if hardcore_world and meta:get_int("dead") == 1 then
+
+		hb.change_hudbar(player, "health", nil, nil,  "blank.png", nil, "hudbars_bar_health.png")
+	elseif hardcore_world then
 
 		if EF.poisoned[player] and EF.regenerating[player] then
 			hb.change_hudbar(player, "health", nil, nil, "hbhunger_icon_regen_poison_hardcore.png", nil, "hudbars_bar_health.png")
