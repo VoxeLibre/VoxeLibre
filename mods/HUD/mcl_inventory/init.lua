@@ -199,7 +199,8 @@ end
 
 local gamemodes = {
 	"survival",
-	"creative"
+	"creative",
+	"spectator"
 }
 
 function mcl_inventory.player_set_gamemode(p,g)
@@ -208,8 +209,12 @@ function mcl_inventory.player_set_gamemode(p,g)
 	if g == "survival" then
 		 mcl_experience.setup_hud(p)
 		 mcl_experience.update(p)
+		 mcl_hardcore.spectator_mode_disabled(p)
 	elseif g == "creative" then
 		 mcl_experience.remove_hud(p)
+		 mcl_hardcore.spectator_mode_disabled(p)
+	elseif g == "spectator" then
+		 mcl_hardcore.spectator_mode(p)
 	end
 	mcl_meshhand.update_player(p)
 	set_inventory(p)

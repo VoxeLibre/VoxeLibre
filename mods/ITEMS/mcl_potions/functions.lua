@@ -18,18 +18,36 @@ end
 
 local icon_ids = {}
 
+-- Hardcore mode Healthbar change
+local file = io.open(minetest.get_worldpath().."/hardcore_mode.txt", "r")
+if file ~= nil then
+	hardcore_world = true
+end
+
 local function potions_set_hudbar(player)
+	if hardcore_world then
 
-	if EF.poisoned[player] and EF.regenerating[player] then
-		hb.change_hudbar(player, "health", nil, nil, "hbhunger_icon_regen_poison.png", nil, "hudbars_bar_health.png")
-	elseif EF.poisoned[player] then
-		hb.change_hudbar(player, "health", nil, nil, "hbhunger_icon_health_poison.png", nil, "hudbars_bar_health.png")
-	elseif EF.regenerating[player] then
-		hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_regenerate.png", nil, "hudbars_bar_health.png")
+		if EF.poisoned[player] and EF.regenerating[player] then
+			hb.change_hudbar(player, "health", nil, nil, "hbhunger_icon_regen_poison_hardcore.png", nil, "hudbars_bar_health.png")
+		elseif EF.poisoned[player] then
+			hb.change_hudbar(player, "health", nil, nil, "hbhunger_icon_health_poison_hardcore.png", nil, "hudbars_bar_health.png")
+		elseif EF.regenerating[player] then
+			hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_regenerate_hardcore.png", nil, "hudbars_bar_health.png")
+		else
+			hb.change_hudbar(player, "health", nil, nil,  "hudbars_icon_health_hardcore.png", nil, "hudbars_bar_health.png")
+		end
 	else
-		hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_health.png", nil, "hudbars_bar_health.png")
-	end
 
+		if EF.poisoned[player] and EF.regenerating[player] then
+			hb.change_hudbar(player, "health", nil, nil, "hbhunger_icon_regen_poison.png", nil, "hudbars_bar_health.png")
+		elseif EF.poisoned[player] then
+			hb.change_hudbar(player, "health", nil, nil, "hbhunger_icon_health_poison.png", nil, "hudbars_bar_health.png")
+		elseif EF.regenerating[player] then
+			hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_regenerate.png", nil, "hudbars_bar_health.png")
+		else
+			hb.change_hudbar(player, "health", nil, nil,  "hudbars_icon_health.png", nil, "hudbars_bar_health.png")
+		end
+	end
 end
 
 local function potions_init_icons(player)

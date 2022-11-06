@@ -45,6 +45,16 @@ mcl_disabled_structures (Disabled structures) string
 # Comma separated list of disabled event names
 mcl_disabled_events (Disabled events) string
 
+# If enabled, newly created worlds will be in Hardcore Mode.
+#
+# In this mode; you will only have 1 life to use.
+# After death you will be dropped into spectator mode, and will be unable to interact with the world.
+#
+# Extra Note:
+# After creating your HC world; you may set this back to disabled to create non-HC worlds.
+# As Hardcore Mode is saved to the world, and will persist across any settings change.
+enable_hardcore_mode (Enable Hardcore mode) bool false
+
 [Players]
 # If enabled, players respawn at the bed they last lay on instead of normal
 # spawn.
