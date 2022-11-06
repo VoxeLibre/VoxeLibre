@@ -93,6 +93,9 @@ local axolotl = {
 	fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
 	breathes_in_water = true,
 	jump = true,
+	damage = 2,
+	reach = 2,
+	attack_type = "dogfight",
 	attack_animals = true,
 	specific_attack = {	
 		"extra_mobs_cod",
