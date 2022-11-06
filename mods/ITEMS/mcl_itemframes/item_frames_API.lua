@@ -535,12 +535,11 @@ end
 
 function mcl_itemframes.custom_register_lbm(name)
 
-	-- FIXME: Item entities can get destroyed by /clearobjects
-	-- glow frame
+	-- Item entities can get destroyed by /clearobjects; LBM regenerates them.
 	minetest.register_lbm({
 		label = "Respawn item frame item entities",
 		name = "mcl_itemframes:respawn_entities",
-		nodenames = { name },
+		nodenames = {"mcl_itemframes:item_frame","mcl_itemframes:glow_item_frame"},
 		run_at_every_load = true,
 		action = function(pos, node)
 			mcl_itemframes.update_item_entity(pos, node)
