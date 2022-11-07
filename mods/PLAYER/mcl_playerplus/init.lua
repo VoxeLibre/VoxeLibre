@@ -306,7 +306,7 @@ minetest.register_globalstep(function(dtime)
 		elseif string.find(wielded:get_name(), "mcl_bows:crossbow") then
 			set_bone_pos(player, "Wield_Item", vector.new(0, 5.2, 1.2), vector.new(0, 180, 45))
 		elseif wielded_def.inventory_image == "" then
-			set_bone_pos(player,"Wield_Item", vector.new(0,6,2), vector.new(180,-45,0))
+			set_bone_pos(player,"Wield_Item", vector.new(0, 6, 2), vector.new(180, -45, 0))
 		else
 			set_bone_pos(player, "Wield_Item", vector.new(0, 5.3, 2), vector.new(90, 0, 0))
 		end
@@ -644,6 +644,7 @@ minetest.register_on_joinplayer(function(player)
 	-- Workaround: call set_bone_position() one time first.
 	player:set_bone_position("Head_Control", vector.new(0, 6.75, 0))
 	player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3, 5.785, 0))
+	player:set_bone_position("Arm_Left_Pitch_Control", vector.new(3, 5.785, 0))
 	player:set_bone_position("Body_Control", vector.new(0, 6.75, 0))
 end)
 
