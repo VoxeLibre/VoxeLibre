@@ -529,18 +529,30 @@ function mcl_itemframes.create_custom_frame(modname, name, has_glow, tiles, colo
 	minetest.register_node(":" .. working_name, custom_itemframe_definition)
 
 	mcl_itemframes.update_frame_registry(modname, working_name, has_glow)
-	mcl_itemframes.custom_register_lbm(working_name)
+
+	-- register Doc entry
+	if minetest.get_modpath("doc") then
+		doc.add_entry_alias("nodes", "mcl_itemframes:item_frame", "nodes", working_name)
+	end
 
 end
 
-function mcl_itemframes.custom_register_lbm(name)
+function mcl_itemframes.custom_register_lbm()
 
-	-- FIXME: Item entities can get destroyed by /clearobjects
-	-- glow frame
+	local registered_frame_nodenames = {}
+
+	for i = 0, #mcl_itemframes.frames_registered.glowing do
+		table.insert(registered_frame_nodenames, mcl_itemframes.frames_registered.glowing[i])
+	end
+
+	for i = 0, #mcl_itemframes.frames_registered.standard do
+		table.insert(registered_frame_nodenames, mcl_itemframes.frames_registered.standard[i])
+	end
+
 	minetest.register_lbm({
 		label = "Respawn item frame item entities",
 		name = "mcl_itemframes:respawn_entities",
-		nodenames = { name },
+		nodenames = registered_frame_nodenames,
 		run_at_every_load = true,
 		action = function(pos, node)
 			mcl_itemframes.update_item_entity(pos, node)
@@ -562,6 +574,7 @@ function mcl_itemframes.create_base_definitions()
 
 	mcl_itemframes.item_frame_base = {
 		description = S("Item Frame"),
+		name = "mcl_itemframes:item_frame",
 		_tt_help = S("Can hold an item"),
 		_doc_items_longdesc = S("Item frames are decorative blocks in which items can be placed."),
 		_doc_items_usagehelp = S("Just place any item on the item frame. Use the item frame again to retrieve the item."),
