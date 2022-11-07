@@ -648,6 +648,71 @@ function get_activity(tod)
 
 end
 
+local function find_closest_bed (self)
+	local p = self.object:get_pos()
+
+	--local nn = minetest.find_nodes_in_area(vector.offset(p,-48,-48,-48),vector.offset(p,48,48,48), spawnable_bed)
+	--if nn then
+	--	mcl_log("Red beds: " .. #nn)
+	--end
+
+	local unclaimed_beds = {}
+	local nn2 = minetest.find_nodes_in_area(vector.offset(p,-48,-48,-48),vector.offset(p,48,48,48), {"group:bed"})
+	if nn2 then
+		mcl_log("All bed parts: " .. #nn2)
+
+		for a,b in pairs(nn2) do
+			mcl_log("b: " .. minetest.pos_to_string(b))
+
+			local bed_node = minetest.get_node(b)
+			local bed_meta = minetest.get_meta(b)
+
+			local bed_name = bed_node.name
+			--mcl_log("bed_node name: " .. bed_name)
+
+			local is_bed_bottom = string.find(bed_name,"_bottom")
+			local owned_by = bed_meta:get_string("villager")
+
+			if owned_by and owned_by == self._id then
+				mcl_log("Weird. I own this, but don't know it.")
+				bed_meta:set_string("villager", nil)
+			end
+
+			if is_bed_bottom and owned_by == "" then
+				table.insert(unclaimed_beds, b)
+				mcl_log("is an unowned bed bottom")
+			else
+				mcl_log("Not bottom or is claimed, remove. Owned: ".. owned_by)
+			end
+		end
+	end
+
+	local distance_to_closest_block = nil
+	local closest_block = nil
+
+	if unclaimed_beds then
+		mcl_log("All unclaimed bed bottoms: " .. #unclaimed_beds)
+
+		for i,b in pairs(unclaimed_beds) do
+			mcl_log("b: " .. minetest.pos_to_string(b))
+			local distance_to_block = vector.distance(p, b)
+			mcl_log("Distance to block ".. i .. ": ".. distance_to_block)
+
+			if not distance_to_closest_block or distance_to_closest_block > distance_to_block then
+				mcl_log("This block is closer than the last.")
+				closest_block = b
+				distance_to_closest_block = distance_to_block
+			end
+
+			local bed_node = minetest.get_node(b)
+			local bed_name = bed_node.name
+			mcl_log("bed_node name: " .. bed_name)
+		end
+	end
+
+	return closest_block
+end
+
 local function find_closest_unclaimed_block (p, requested_block_types)
 	local nn = minetest.find_nodes_in_area(vector.offset(p,-48,-48,-48),vector.offset(p,48,48,48), requested_block_types)
 
@@ -681,7 +746,10 @@ local function check_bed (entity)
 	end
 
 	local n = minetest.get_node(b)
-	if n and n.name ~= "mcl_beds:bed_red_bottom" then
+
+	local is_bed_bottom = string.find(n.name,"_bottom")
+	mcl_log("" .. tostring(is_bed_bottom))
+	if n and not is_bed_bottom then
 		mcl_log("Where did my bed go?!")
 		entity._bed = nil --the stormtroopers have killed uncle owen
 		return false
@@ -749,28 +817,32 @@ local function take_bed (entity)
 
 	local p = entity.object:get_pos()
 
-	local closest_block = find_closest_unclaimed_block (p, spawnable_bed)
+	--local closest_block = find_closest_unclaimed_block (p, spawnable_bed)
+	local closest_block = find_closest_bed (entity)
 
 	if closest_block then
-		local m = minetest.get_meta(closest_block)
 		mcl_log("Can we path to bed: "..minetest.pos_to_string(closest_block) )
-		local gp = mcl_mobs:gopath(entity, closest_block,function(self)
-			if self then
-				self.order = SLEEP
+		local distance_to_block = vector.distance(p, closest_block)
+		mcl_log("Distance: " .. distance_to_block)
+		if distance_to_block < 2 then
+			if entity.order ~= SLEEP then
 				mcl_log("Sleepy time" )
+				entity.order = SLEEP
+				local m = minetest.get_meta(closest_block)
+				m:set_string("villager", entity._id)
+				entity._bed = closest_block
 			else
-				mcl_log("Can't sleep, no self in the callback" )
+				mcl_log("Set as sleep already..." )
 			end
-		end)
-		if gp then
-			mcl_log("Nice bed. I'll defintely take it as I can path")
-			m:set_string("villager", entity._id)
-			entity._bed = closest_block
 		else
-			mcl_log("Awww. I can't find my bed.")
+			local gp = mcl_mobs:gopath(entity, closest_block,function(self) end)
+			if gp then
+				mcl_log("Nice bed. I'll defintely take it as I can path")
+			else
+				mcl_log("Awww. I can't find my bed.")
+			end
 		end
 	end
-
 end
 
 local function has_golem(pos)
@@ -1879,7 +1951,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 				end
 			end
 			if has_player then
-				minetest.log("verbose", "[mobs_mc] Player near villager found!")
+				--minetest.log("verbose", "[mobs_mc] Player near villager found!")
 				stand_still(self)
 			else
 				--minetest.log("verbose", "[mobs_mc] No player near villager found!")
