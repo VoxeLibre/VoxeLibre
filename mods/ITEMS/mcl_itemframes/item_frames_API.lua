@@ -552,7 +552,7 @@ function mcl_itemframes.custom_register_lbm()
 	minetest.register_lbm({
 		label = "Respawn item frame item entities",
 		name = "mcl_itemframes:respawn_entities",
-		nodenames = { registered_frame_nodenames },
+		nodenames = registered_frame_nodenames,
 		run_at_every_load = true,
 		action = function(pos, node)
 			mcl_itemframes.update_item_entity(pos, node)
