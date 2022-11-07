@@ -1,5 +1,6 @@
 -- mcl_raids
 mcl_raids = {}
+local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Define the amount of illagers to spawn each wave.
 local waves = {
@@ -38,26 +39,71 @@ local extra_wave = {
 	--["mobs_mc:ravager"] = 2,
 }
 
-local oban_def = minetest.registered_entities["mcl_banners:standing_banner"]
+local oban_layers = {
+	{
+		pattern = "rhombus",
+		color = "unicolor_cyan"
+	},
+	{
+		color = "unicolor_grey",
+		pattern = "stripe_bottom"
+	},
+	{
+		pattern = "stripe_center",
+		color = "unicolor_darkgrey"
+	},
+	{
+		color = "unicolor_black",
+		pattern = "stripe_middle"
+	},
+	{
+		pattern = "half_horizontal",
+		color = "unicolor_grey"
+	},
+	{
+		color = "unicolor_grey",
+		pattern = "circle"
+	},
+	{
+		pattern = "border",
+		color = "unicolor_black"
+	}
+}
+
+
+local oban_def = table.copy(minetest.registered_entities["mcl_banners:standing_banner"])
 oban_def.visual_size = { x=1, y=1 }
+oban_def.on_rightclick = function(self)
+	minetest.log(dump(self._base_color))
+	minetest.log(dump(self._layers))
+end
 minetest.register_entity(":mcl_raids:ominous_banner",oban_def)
+
+function mcl_raids.drop_obanner(pos)
+	local it = ItemStack("mcl_banners:banner_item_white")
+	it:get_meta():set_string("layers",minetest.serialize(oban_layers))
+	it:get_meta():set_string("name",S("Ominous Banner"))
+	minetest.add_item(pos,it)
+end
 
 function mcl_raids.spawn_raidcaptain(pos)
 	local c = minetest.add_entity(pos,"mobs_mc:pillager")
+	local l = c:get_luaentity()
 	local b = minetest.add_entity(pos,"mcl_raids:ominous_banner")
-	--TODO: add actual banner pattern
-	--b:set_properties({textures = {mcl_banners.make_banner_texture(self._base_color, self._layers)}})
-	b:get_luaentity()
-	b:set_attach(c,"",vector.new(-1.75,5.5,-0.5),vector.new(0,0,0),true)
+	b:set_properties({textures = {mcl_banners.make_banner_texture("unicolor_white", oban_layers)}})
+	b:set_attach(c,"",vector.new(-1,5,-0.8),vector.new(0,0,0),true)
+	l._raidcaptain = true
+	l._banner = b
+	local old_ondie = l.on_die
+	l.on_die = function(self, pos, cmi_cause)
+		if l._banner and l._banner:get_pos() then
+			l._banner:remove()
+			l._banner = nil
+			mcl_raids.drop_obanner(pos)
+		end
+		if old_ondie then return old_ondie(self,pos,cmi_cause) end
+	end
 end
-
-minetest.register_chatcommand("raidcap",{
-	privs = {debug = true},
-	func = function(pname,param)
-		mcl_raids.spawn_raidcaptain(minetest.get_player_by_name(pname):get_pos())
-	end,
-})
-
 
 function mcl_raids.spawn_raid(event)
 	local pos = event.pos
@@ -188,4 +234,26 @@ mcl_events.register_event("raid",{
 		--minetest.log("RAID complete")
 		awards.unlock(self.player,"mcl:hero_of_the_village")
 	end,
+})
+
+minetest.register_chatcommand("raidcap",{
+	privs = {debug = true},
+	func = function(pname,param)
+		mcl_raids.spawn_raidcaptain(minetest.get_player_by_name(pname):get_pos())
+	end,
+})
+
+minetest.register_chatcommand("dump_banner_layers",{
+	privs = {debug = true},
+	func = function(pname,param)
+		local p = minetest.get_player_by_name(pname)
+		mcl_raids.drop_obanner(vector.offset(p:get_pos(),1,1,1))
+		for k,v in pairs(minetest.get_objects_inside_radius(p:get_pos(),5)) do
+			local l = v:get_luaentity()
+			if l and l.name == "mcl_banners:standing_banner" then
+				minetest.log(dump(l._base_color))
+				minetest.log(dump(l._layers))
+			end
+		end
+	end
 })
