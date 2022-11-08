@@ -34,6 +34,8 @@ local glow_amount = 6 -- LIGHT_MAX is 15, but the items aren't supposed to be a 
 local frame_item_base = {}
 local map_item_base = {}
 
+local TIMER_INTERVAL = 40.0
+
 -- Time to Fleckenstein! (it just sounds cool lol)
 
 --- self: the object to roll.
@@ -247,6 +249,7 @@ mcl_itemframes.update_item_entity = function(pos, node, param2)
 		local map_id_entity = {}
 		local map_id_lua = {}
 
+		local timer = minetest.get_node_timer(pos)
 		if map_id == "" then
 			-- handle regular items placed into custom frame.
 			if mcl_itemframes.DEBUG then
@@ -268,13 +271,32 @@ mcl_itemframes.update_item_entity = function(pos, node, param2)
 			if itemname == "" or itemname == nil then
 				map_id_lua._texture = "blank.png"
 				map_id_lua._scale = 1
+
+				-- set up glow, as this is the default/initial clause on placement.
 				if has_glow then
 					map_id_lua.glow = glow_amount
+				end
+
+				-- if there's nothing to display, then kill the timer.
+				if timer:is_started() == true then
+					timer:stop()
 				end
 			else
 				map_id_lua._texture = itemname
 				local def = minetest.registered_items[itemname]
 				map_id_lua._scale = def and def.wield_scale and def.wield_scale.x or 1
+
+				-- fix for /ClearObjects
+				if minetest.get_item_group(itemname, "clock") == 0 then
+					-- Do timer related stuff - but only if there is something to display... and it's not a clock.
+					if timer:is_started() == false then
+						timer:start(TIMER_INTERVAL)
+					else
+						timer:stop()
+						timer:start(TIMER_INTERVAL)
+					end
+				end
+
 			end
 			if mcl_itemframes.DEBUG then
 				minetest.log("action", "[mcl_itemframes] Update_Generic_Item: item's name: " .. itemname)
@@ -297,6 +319,15 @@ mcl_itemframes.update_item_entity = function(pos, node, param2)
 			else
 				minetest.log("error", "[mcl_itemframes] Update_Generic_Item: Failed to set Map Item in " .. found_name_to_use .. "'s frame.")
 			end
+
+			-- give maps a refresh timer.
+			if timer:is_started() == false then
+				timer:start(TIMER_INTERVAL)
+			else
+				timer:stop()
+				timer:start(TIMER_INTERVAL)
+			end
+
 		end
 
 		-- finally, set the rotation (roll) of the displayed object.
@@ -609,10 +640,8 @@ function mcl_itemframes.create_base_definitions()
 				end
 				minetest.get_node_timer(pos):start(1.0)
 			else
-				-- fix for /ClearObjects
 				node = minetest.get_node(pos)
 				mcl_itemframes.update_item_entity(pos, node, node.param2)
-				minetest.get_node_timer(pos):start(40.0)
 			end
 		end,
 
@@ -665,8 +694,6 @@ function mcl_itemframes.create_base_definitions()
 			end
 			if minetest.get_item_group(itemname, "clock") > 0 then
 				minetest.get_node_timer(pos):start(1.0)
-			else
-				minetest.get_node_timer(pos):start(40.0)
 			end
 
 			inv:set_stack("main", 1, put_itemstack)
@@ -792,14 +819,6 @@ function mcl_itemframes.create_base_definitions()
 	mcl_itemframes.glow_frame_base.wield_image = "mcl_itemframes_glow_item_frame.png"
 	mcl_itemframes.glow_frame_base.mesh = "mcl_itemframes_glow_item_frame.obj"
 
-	--[[
-	minetest.register_node("mcl_itemframes:glow_item_frame", mcl_itemframes.glow_frame_base)
-
-	mcl_itemframes.update_frame_registry("false", "mcl_itemframes:item_frame", false)
-	mcl_itemframes.update_frame_registry("false", "mcl_itemframes:glow_item_frame", true)
-	create_register_lbm("mcl_itemframes:item_frame")
-	create_register_lbm("mcl_itemframes:glow_item_frame")
-	--]]
 end
 
 -- for compatibility:
