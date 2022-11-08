@@ -843,14 +843,24 @@ local function take_bed (entity)
 		mcl_log("Can we path to bed: "..minetest.pos_to_string(closest_block) )
 		local distance_to_block = vector.distance(p, closest_block)
 		mcl_log("Distance: " .. distance_to_block)
+
 		if distance_to_block < 2 then
+			local m = minetest.get_meta(closest_block)
+			local owner = m:get_string("villager")
+			mcl_log("owner: ".. owner)
+			if owner and owner ~= "" and owner ~= entity._id then
+				mcl_log("Already taken")
+				if entity.order == "stand" then entity.order = nil end
+				return
+			end
+
 			if entity.order ~= SLEEP then
 				mcl_log("Sleepy time" )
 				entity.order = SLEEP
-				local m = minetest.get_meta(closest_block)
 				m:set_string("villager", entity._id)
 				entity._bed = closest_block
 			else
+				--entity.order = nil
 				mcl_log("Set as sleep already..." )
 			end
 		else
@@ -861,6 +871,9 @@ local function take_bed (entity)
 				mcl_log("Awww. I can't find my bed.")
 			end
 		end
+	else
+		mcl_log("Cannot find a bed to claim.")
+		if entity.order == "stand" then entity.order = nil end
 	end
 end
 
