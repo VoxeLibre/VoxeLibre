@@ -12,7 +12,11 @@ local cbox = {
 local text_top = "[combine:16x16:6,6=mcl_lightning_rods_rod.png"
 local text_side = "[combine:16x16:7,0=mcl_lightning_rods_rod.png:-6,0=mcl_lightning_rods_rod.png\\^[transformR270"
 
-minetest.register_node("mcl_lightning_rods:rod", {
+local text_top_active = "[combine:16x16:6,6=mcl_lightning_rods_rod.png\\^[brighten"
+local text_side_active = "[combine:16x16:7,0=mcl_lightning_rods_rod.png\\^[brighten:-6,0=mcl_lightning_rods_rod.png\\^[transformR270\\^[brighten"
+
+---@type node_definition
+local rod_def = {
 	description = S("Lightning Rod"),
 	_doc_items_longdesc = S("A block that attracts lightning"),
 	tiles = {
@@ -34,6 +38,12 @@ minetest.register_node("mcl_lightning_rods:rod", {
 	selection_box = cbox,
 	collision_box = cbox,
 	node_placement_prediction = "",
+	mesecons = {
+		receptor = {
+			state = mesecon.state.off,
+			rules = mesecon.rules.alldirs,
+		},
+	},
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type ~= "node" then
 			return itemstack
@@ -64,10 +74,57 @@ minetest.register_node("mcl_lightning_rods:rod", {
 	end,
 
 	_mcl_blast_resistance = 0,
-})
+}
+
+minetest.register_node("mcl_lightning_rods:rod", rod_def)
+
+local rod_def_a = table.copy(rod_def)
+
+rod_def_a.tiles = {
+	text_top_active,
+	text_top_active,
+	text_side_active,
+	text_side_active,
+	text_side_active,
+	text_side_active,
+}
+
+rod_def_a.groups.not_in_creative_inventory = 1
+
+rod_def_a.mesecons = {
+	receptor = {
+		state = mesecon.state.on,
+		rules = mesecon.rules.alldirs,
+	},
+}
+
+rod_def_a.on_timer = function(pos, elapsed)
+	local node = minetest.get_node(pos)
+
+	if node.name == "mcl_lightning_rods:rod_powered" then --has not been dug
+		minetest.set_node(pos, { name = "mcl_lightning_rods:rod" })
+		mesecon.receptor_off(pos, mesecon.rules.alldirs)
+	end
+
+	return false
+end
+
+minetest.register_node("mcl_lightning_rods:rod_powered", rod_def_a)
+
 
 lightning.register_on_strike(function(pos, pos2, objects)
 	local lr = minetest.find_node_near(pos, 128, { "group:attracts_lightning" }, true)
+
+	if lr then
+		local node = minetest.get_node(lr)
+
+		if node.name == "mcl_lightning_rods:rod" then
+			minetest.set_node(lr, { name = "mcl_lightning_rods:rod_powered" })
+			mesecon.receptor_on(lr, mesecon.rules.alldirs)
+			minetest.get_node_timer(lr):start(0.5)
+		end
+	end
+
 	return lr, nil
 end)
 
