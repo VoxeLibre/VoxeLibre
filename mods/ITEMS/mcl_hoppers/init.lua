@@ -512,6 +512,22 @@ minetest.register_abm({
             		local hslot = mcl_util.get_first_occupied_inventory_slot(minetest.get_inventory({type="node", pos = pos}), "main")
             		if hslot == nil then return	end
           		local compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
+          		if compchance == 0 then
+              		hslot = hslot+1
+  		      		compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
+  		      		if compchance == 0 then
+  		      		    	hslot = hslot+1
+      		     		compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
+   	  		      		if compchance == 0 then
+      		      		    	hslot = hslot+1
+          		     		compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
+       		    		   		if compchance == 0 then
+          		      		    	hslot = hslot+1
+              		     		compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
+          		      		end
+      		      		end
+  		      		end
+              	end	
                 -- TODO: make it go to next hslot if item isn't compostable
                 if compchance > 0 then
                       itemcomp[hslot]:take_item()
