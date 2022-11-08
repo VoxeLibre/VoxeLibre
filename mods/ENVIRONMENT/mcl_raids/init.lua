@@ -86,14 +86,14 @@ function mcl_raids.drop_obanner(pos)
 	minetest.add_item(pos,it)
 end
 
-function mcl_raids.spawn_raidcaptain(pos)
-	local c = minetest.add_entity(pos,"mobs_mc:pillager")
+function mcl_raids.promote_to_raidcaptain(c) -- object
+	if not c or not c:get_pos() then return end
+	local pos = c:get_pos()
 	local l = c:get_luaentity()
-	local b = minetest.add_entity(pos,"mcl_raids:ominous_banner")
-	b:set_properties({textures = {mcl_banners.make_banner_texture("unicolor_white", oban_layers)}})
-	b:set_attach(c,"",vector.new(-1,5,-0.8),vector.new(0,0,0),true)
+	l._banner = minetest.add_entity(pos,"mcl_raids:ominous_banner")
+	l._banner:set_properties({textures = {mcl_banners.make_banner_texture("unicolor_white", oban_layers)}})
+	l._banner:set_attach(c,"",vector.new(-1,5.5,0),vector.new(0,0,0),true)
 	l._raidcaptain = true
-	l._banner = b
 	local old_ondie = l.on_die
 	l.on_die = function(self, pos, cmi_cause)
 		if l._banner and l._banner:get_pos() then
@@ -138,6 +138,10 @@ function mcl_raids.spawn_raid(event)
 						mcl_mobs:gopath(l,pos)
 					end
 				end
+			end
+			if event.stage == 1 then
+				table.shuffle(event.mobs)
+				mcl_raids.promote_to_raidcaptain(event.mobs[1])
 			end
 			minetest.log("action", "[mcl_raids] Raid Spawned. Illager Count: " .. #event.mobs .. ".")
 		else
@@ -239,7 +243,8 @@ mcl_events.register_event("raid",{
 minetest.register_chatcommand("raidcap",{
 	privs = {debug = true},
 	func = function(pname,param)
-		mcl_raids.spawn_raidcaptain(minetest.get_player_by_name(pname):get_pos())
+		local c = minetest.add_entity(minetest.get_player_by_name(pname):get_pos(),"mobs_mc:pillager")
+		mcl_raids.promote_to_raidcaptain(c)
 	end,
 })
 
