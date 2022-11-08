@@ -120,6 +120,18 @@ function check_events(dtime)
 			end
 		end
 	end
+	for idx,ae in pairs(active_events) do
+		local player_near = false
+		for _,pl in pairs(minetest.get_connected_players()) do
+			if ae.pos and vector.distance(pl:get_pos(),ae.pos) < 256 then player_near = true end
+		end
+		if ae.pos and not player_near then
+			if ae.fail and ae:fail() ~= true then
+				mcl_log("[mcl_events] Event "..e.readable_name.." at "..minetest.pos_to_string(vector.round(p.pos)).." aborted - no players near." )
+				active_events[idx] = nil
+			end
+		end
+	end
 end
 
 minetest.register_globalstep(check_events)
