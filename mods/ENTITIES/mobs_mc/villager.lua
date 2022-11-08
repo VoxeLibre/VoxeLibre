@@ -45,10 +45,9 @@ local PATHFINDING = "gowp"
 -- will be much easier.
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager",false)
-local LOG_MODULE = "[Mobs - Villager]"
 local function mcl_log (message)
-	if LOGGING_ON and message then
-		minetest.log(LOG_MODULE .. " " .. message)
+	if LOGGING_ON then
+		mcl_util.mcl_log (message, "[Mobs - Villager]", true)
 	end
 end
 
@@ -578,9 +577,6 @@ end
 
 jobsites = populate_jobsites()
 
-local spawnable_bed={}
-table.insert(spawnable_bed, "mcl_beds:bed_red_bottom")
-
 local function stand_still(self)
 	self.walk_chance = 0
 	self.jump = false
@@ -651,6 +647,8 @@ end
 local function find_closest_bed (self)
 	local p = self.object:get_pos()
 
+	--local spawnable_bed={}
+	--table.insert(spawnable_bed, "mcl_beds:bed_red_bottom")
 	--local nn = minetest.find_nodes_in_area(vector.offset(p,-48,-48,-48),vector.offset(p,48,48,48), spawnable_bed)
 	--if nn then
 	--	mcl_log("Red beds: " .. #nn)
@@ -659,30 +657,52 @@ local function find_closest_bed (self)
 	local unclaimed_beds = {}
 	local nn2 = minetest.find_nodes_in_area(vector.offset(p,-48,-48,-48),vector.offset(p,48,48,48), {"group:bed"})
 	if nn2 then
-		mcl_log("All bed parts: " .. #nn2)
+		--mcl_log("All bed parts: " .. #nn2)
 
 		for a,b in pairs(nn2) do
 			mcl_log("b: " .. minetest.pos_to_string(b))
 
 			local bed_node = minetest.get_node(b)
-			local bed_meta = minetest.get_meta(b)
-
 			local bed_name = bed_node.name
-			--mcl_log("bed_node name: " .. bed_name)
-
 			local is_bed_bottom = string.find(bed_name,"_bottom")
-			local owned_by = bed_meta:get_string("villager")
 
-			if owned_by and owned_by == self._id then
-				mcl_log("Weird. I own this, but don't know it.")
+			local bed_meta = minetest.get_meta(b)
+			local owned_by = bed_meta:get_string("villager")
+			--mcl_log("Owned by villager: ".. tostring(owned_by))
+
+			if (owned_by and owned_by == self._id) then
+				mcl_log("Clear as already owned by me.")
 				bed_meta:set_string("villager", nil)
+				owned_by = nil
 			end
 
-			if is_bed_bottom and owned_by == "" then
-				table.insert(unclaimed_beds, b)
-				mcl_log("is an unowned bed bottom")
+			if is_bed_bottom then
+				local bed_top = mcl_beds.get_bed_top (b)
+				mcl_log("bed_top: " .. tostring(bed_top))
+
+				local bed_top_node = minetest.get_node(bed_top)
+				if bed_top_node then
+					mcl_log("There is a block here for bed top: ".. bed_top_node.name)
+				else
+					mcl_log("There is no block here for bed top")
+				end
+
+				local bed_top_meta = minetest.get_meta(bed_top)
+				local owned_by_player = bed_top_meta:get_string("player")
+				if bed_top_meta then
+					mcl_log("Player: " .. tostring(owned_by_player))
+				else
+					mcl_log("No bed top meta")
+				end
+
+				if owned_by == "" and (not owned_by_player or owned_by_player == "") then
+					table.insert(unclaimed_beds, b)
+					mcl_log("is an unowned bed bottom")
+				else
+
+				end
 			else
-				mcl_log("Not bottom or is claimed, remove. Owned: ".. owned_by)
+				--mcl_log("bed_node name: " .. bed_name)
 			end
 		end
 	end
@@ -817,7 +837,6 @@ local function take_bed (entity)
 
 	local p = entity.object:get_pos()
 
-	--local closest_block = find_closest_unclaimed_block (p, spawnable_bed)
 	local closest_block = find_closest_bed (entity)
 
 	if closest_block then
@@ -1177,11 +1196,46 @@ local function go_to_town_bell(self)
 	return nil
 end
 
+local function validate_bed(self)
+	if not self or not self._bed then
+		return false
+	end
+	local n = mcl_vars.get_node(self._bed)
+	if not n then
+		self._bed = nil
+		return false
+	end
+
+	local bed_valid = true
+
+	local m = minetest.get_meta(self._bed)
+	local owned_by_player = m:get_string("player")
+	mcl_log("Player owner: " .. owned_by_player)
+	if owned_by_player ~= "" then
+		mcl_log("Player owns this. Villager won't take this.")
+		m:set_string("villager", nil)
+		self._bed = nil
+		bed_valid = false
+		return
+	end
+
+	if m:get_string("villager") ~= self._id then
+		mcl_log("This bed is owned by another player. I'll unclaim.")
+		self._bed = nil
+		return false
+	else
+		mcl_log("Bed is valid")
+		return true
+	end
+
+end
+
 local function do_activity (self)
 	-- Maybe just check we're pathfinding first?
 
-	if not self._bed and self.state ~= PATHFINDING then
-		--mcl_log("Villager has no bed. Currently at location: "..minetest.pos_to_string(self.object:get_pos()))
+	if not validate_bed(self) and self.state ~= PATHFINDING then
+		if self.order == SLEEP then self.order = nil end
+		mcl_log("Villager has no bed. Currently at location: "..minetest.pos_to_string(self.object:get_pos()))
 		take_bed (self)
 	end
 
