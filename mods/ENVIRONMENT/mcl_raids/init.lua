@@ -93,13 +93,24 @@ function mcl_raids.promote_to_raidcaptain(c) -- object
 	l._banner = minetest.add_entity(pos,"mcl_raids:ominous_banner")
 	l._banner:set_properties({textures = {mcl_banners.make_banner_texture("unicolor_white", oban_layers)}})
 	l._banner:set_attach(c,"",vector.new(-1,5.5,0),vector.new(0,0,0),true)
+	local bl = l._banner:get_luaentity()
+	bl.parent = c
+	bl.on_step = function(self,dtime)
+		if not self.parent or not self.parent:get_pos() then return self.object:remove() end
+	end
 	l._raidcaptain = true
 	local old_ondie = l.on_die
 	l.on_die = function(self, pos, cmi_cause)
-		if l._banner and l._banner:get_pos() then
+		if l._banner then
 			l._banner:remove()
 			l._banner = nil
 			mcl_raids.drop_obanner(pos)
+			if cmi_cause.type == "punch" and cmi_cause.puncher:is_player() then
+				local lv = mcl_potions.player_get_effect(cmi_cause.puncher, "bad_omen").factor
+				if not lv then lv = 0 end
+				lv = math.max(5,lv + 1)
+				mcl_potions.bad_omen_func(cmi_cause.puncher,lv,6000)
+			end
 		end
 		if old_ondie then return old_ondie(self,pos,cmi_cause) end
 	end
