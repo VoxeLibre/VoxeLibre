@@ -28,6 +28,7 @@ local NUMBER_OF_LINES = 4
 
 local LINE_HEIGHT = 14
 local CHAR_WIDTH = 5
+local TIMER_INTERVAL = 40.0
 -- -----------------------
 -- CACHE LOCAL COPIES
 local table = table
@@ -166,17 +167,13 @@ mcl_signs.wall_standard = {
 	on_timer = function(pos)
 		-- fix for /ClearObjects
 		mcl_signs:update_sign(pos)
-		minetest.get_node_timer(pos):start(40.0)
+		-- note: update_sign decides to keep the timer running based on if there is text.
+		--		This prevents every sign from having a timer, when not needed.
 	end,
 
 	on_place = function(itemstack, placer, pointed_thing)
 		local above = pointed_thing.above
 		local under = pointed_thing.under
-
-		local timer = minetest.get_node_timer(pos)
-		if timer:is_started() == false then
-			timer:start(40.0)
-		end
 
 		-- Use pointed node's on_rightclick function first, if present
 		local node_under = minetest.get_node(under)
@@ -285,10 +282,6 @@ mcl_signs.wall_standard = {
 	-- Not Useless Code. force updates the sign.
 	on_punch = function(pos, node, puncher)
 		mcl_signs:update_sign(pos)
-		local timer = minetest.get_node_timer(pos)
-		if timer:is_started() == false then
-			timer:start(40.0)
-		end
 	end,
 	on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_FACE then
@@ -309,11 +302,6 @@ mcl_signs.wall_standard = {
 		-- make sure player is clicking
 		if not clicker or not clicker:is_player() then
 			return
-		end
-
-		local timer = minetest.get_node_timer(pos)
-		if timer:is_started() == false then
-			timer:start(40.0)
 		end
 
 		local item = clicker:get_wielded_item()
@@ -400,10 +388,6 @@ mcl_signs.standing_standard = {
 	-- Not Useless Code. this force updates the sign.
 	on_punch = function(pos, node, puncher)
 		mcl_signs:update_sign(pos)
-		local timer = minetest.get_node_timer(pos)
-		if timer:is_started() == false then
-			timer:start(40.0)
-		end
 	end,
 	on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_FACE then
@@ -425,11 +409,6 @@ mcl_signs.standing_standard = {
 		-- make sure player is clicking
 		if not clicker or not clicker:is_player() then
 			return
-		end
-
-		local timer = minetest.get_node_timer(pos)
-		if timer:is_started() == false then
-			timer:start(40.0)
 		end
 
 		local item = clicker:get_wielded_item()
@@ -588,11 +567,6 @@ function mcl_signs.register_sign (modname, color, _name, ttsign)
 			if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
 				return minetest.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
 			end
-		end
-
-		local timer = minetest.get_node_timer(pos)
-		if timer:is_started() == false then
-			timer:start(40.0)
 		end
 
 		local dir = vector.subtract(under, above)
@@ -840,11 +814,6 @@ function mcl_signs.register_sign_custom (modname, _name, tiles, color, inventory
 			end
 		end
 
-		local timer = minetest.get_node_timer(pos)
-		if timer:is_started() == false then
-			timer:start(40.0)
-		end
-
 		local dir = vector.subtract(under, above)
 
 		-- Only build when it's legal
@@ -1061,11 +1030,6 @@ function mcl_signs.reregister_sign (modname, color, _name, ttsign)
 			if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
 				return minetest.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
 			end
-		end
-
-		local timer = minetest.get_node_timer(pos)
-		if timer:is_started() == false then
-			timer:start(40.0)
 		end
 
 		local dir = vector.subtract(under, above)
@@ -1304,11 +1268,6 @@ function mcl_signs.reregister_sign_custom (modname, _name, tiles, color, invento
 			if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
 				return minetest.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
 			end
-		end
-
-		local timer = minetest.get_node_timer(pos)
-		if timer:is_started() == false then
-			timer:start(40.0)
 		end
 
 		local dir = vector.subtract(under, above)
@@ -1860,7 +1819,7 @@ function mcl_signs:update_sign(pos, fields, sender, force_remove, text_color)
 	if not meta then
 		return false
 	end
-	local text = meta:get_string("text")
+	local text = meta:get_string("text", "")
 	if fields and (text == "" and fields.text) then
 		meta:set_string("text", fields.text)
 		text = fields.text
@@ -1941,19 +1900,8 @@ function mcl_signs:update_sign(pos, fields, sender, force_remove, text_color)
 		return false
 	end
 
-	local objects = minetest.get_objects_inside_radius(pos, 0.5)
 	local text_entity
-	for _, v in ipairs(objects) do
-		local ent = v:get_luaentity()
-		if ent and ent.name == "mcl_signs:text" then
-			if force_remove then
-				v:remove()
-			else
-				text_entity = v
-				break
-			end
-		end
-	end
+	text_entity = mcl_signs:get_text_entity(pos,force_remove)
 
 	if not text_entity then
 		if DEBUG then
@@ -2002,6 +1950,24 @@ function mcl_signs:update_sign(pos, fields, sender, force_remove, text_color)
 
 	-- save sign metadata.
 	meta:set_string("mcl_signs:text_color", text_color)
+
+	-- Moved timer stuff to here, to make sure that it's called and only has one set of code.
+	local timer = minetest.get_node_timer(pos)
+	if text_entity and text ~= "" then
+		-- Do timer related stuff - but only if there is text to display.
+		-- Also, prevent excessive use with punching. (see node def.)
+		if timer:is_started() == false then
+			timer:start(TIMER_INTERVAL)
+		else
+			timer:stop()
+			timer:start(TIMER_INTERVAL)
+		end
+	else
+		if timer:is_started() == true then
+			timer:stop()
+		end
+	end
+
 	-- debug step
 	if DEBUG then
 		minetest.log("action", "[mcl_signs] Update_Sign: Post-Sign Update: " .. meta:get_string("mcl_signs:text_color") .. " " .. meta:get_string("mcl_signs:glowing_sign") .. ".\n" .. dump(pos))
@@ -2017,4 +1983,21 @@ function mcl_signs:show_formspec(player, pos)
 			"mcl_signs:set_text_" .. pos.x .. "_" .. pos.y .. "_" .. pos.z,
 			"size[6,3]textarea[0.25,0.25;6,1.5;text;" .. F(S("Enter sign text:")) .. ";]label[0,1.5;" .. F(S("Maximum line length: 15")) .. "\n" .. F(S("Maximum lines: 4")) .. "]button_exit[0,2.5;6,1;submit;" .. F(S("Done")) .. "]"
 	)
+end
+
+function mcl_signs:get_text_entity (pos, force_remove)
+	local objects = minetest.get_objects_inside_radius(pos, 0.5)
+	local text_entity = false -- just to have a check for failure.
+	for _, v in ipairs(objects) do
+		local ent = v:get_luaentity()
+		if ent and ent.name == "mcl_signs:text" then
+			if force_remove ~= nil and force_remove == true then
+				v:remove()
+			else
+				text_entity = v
+				break
+			end
+		end
+	end
+	return text_entity
 end
