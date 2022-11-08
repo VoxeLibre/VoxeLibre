@@ -24,12 +24,12 @@ end
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_default",false)
 local LOG_MODULE = "[MCL2]"
-function mcl_util.mcl_log (message, module)
+function mcl_util.mcl_log (message, module, bypass_default_logger)
 	local selected_module = LOG_MODULE
 	if module then
 		selected_module = module
 	end
-	if LOGGING_ON and message then
+	if (bypass_default_logger or LOGGING_ON) and message then
 		minetest.log(selected_module .. " " .. message)
 	end
 end
