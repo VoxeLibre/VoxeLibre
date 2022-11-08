@@ -106,8 +106,9 @@ function mcl_raids.promote_to_raidcaptain(c) -- object
 			l._banner = nil
 			mcl_raids.drop_obanner(pos)
 			if cmi_cause.type == "punch" and cmi_cause.puncher:is_player() then
-				local lv = mcl_potions.player_get_effect(cmi_cause.puncher, "bad_omen").factor
-				if not lv then lv = 0 end
+				local lv = mcl_potions.player_get_effect(cmi_cause.puncher, "bad_omen")
+				if not lv then lv = 0
+				else lv = lv.factor end
 				lv = math.max(5,lv + 1)
 				mcl_potions.bad_omen_func(cmi_cause.puncher,lv,6000)
 			end
@@ -281,6 +282,7 @@ mcl_events.register_event("raid",{
 	on_complete = function(self)
 		--minetest.log("RAID complete")
 		awards.unlock(self.player,"mcl:hero_of_the_village")
+		mcl_potions.player_clear_effect(minetest.get_player_by_name(self.player),"bad_omen")
 	end,
 })
 

@@ -524,6 +524,11 @@ function mcl_potions.player_get_effect(player, effect_name)
 	return EF[effect_name][player]
 end
 
+function mcl_potions.player_clear_effect(player,effect)
+	EF[effect][player] = nil
+	potions_set_icons(player)
+end
+
 minetest.register_on_leaveplayer( function(player)
 	mcl_potions._save_player_effects(player)
 	mcl_potions._clear_cached_player_data(player) -- clearout the buffer to prevent looking for a player not there
