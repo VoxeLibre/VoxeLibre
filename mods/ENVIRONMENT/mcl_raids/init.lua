@@ -114,6 +114,18 @@ end
 
 function mcl_raids.register_possible_raidcaptain(mob)
 	local old_on_spawn = minetest.registered_entities[mob].on_spawn
+	local old_on_pick_up = minetest.registered_entities[mob].on_pick_up
+	if not minetest.registered_entities[mob].pick_up then  minetest.registered_entities[mob].pick_up = {} end
+	table.insert(minetest.registered_entities[mob].pick_up,"mcl_banners:banner_item_white")
+	minetest.registered_entities[mob].on_pick_up = function(self,e)
+		local stack = ItemStack(e.itemstring)
+		if not self._raidcaptain and stack:get_meta():get_string("name"):find("Ominous Banner") then
+			stack:take_item(1)
+			mcl_raids.promote_to_raidcaptain(self.object)
+			return stack
+		end
+		if old_on_pick_up then return old_on_pick_up(self,e) end
+	end
 	minetest.registered_entities[mob].on_spawn = function(self)
 		if not mcl_raids.is_raidcaptain_near(self.object:get_pos()) then
 			mcl_raids.promote_to_raidcaptain(self.object)
