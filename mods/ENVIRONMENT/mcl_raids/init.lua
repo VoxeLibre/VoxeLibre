@@ -105,6 +105,27 @@ function mcl_raids.promote_to_raidcaptain(c) -- object
 	end
 end
 
+function mcl_raids.is_raidcaptain_near(pos)
+	for k,v in pairs(minetest.get_objects_inside_radius(pos,128)) do
+		local l = v:get_luaentity()
+		if l and l._raidcaptain then return true end
+	end
+end
+
+function mcl_raids.register_possible_raidcaptain(mob)
+	local old_on_spawn = minetest.registered_entities[mob].on_spawn
+	minetest.registered_entities[mob].on_spawn = function(self)
+		if not mcl_raids.is_raidcaptain_near(self.object:get_pos()) then
+			mcl_raids.promote_to_raidcaptain(self.object)
+		end
+		if old_on_spawn then return old_on_spawn(self) end
+	end
+end
+
+mcl_raids.register_possible_raidcaptain("mobs_mc:pillager")
+mcl_raids.register_possible_raidcaptain("mobs_mc:vindicator")
+mcl_raids.register_possible_raidcaptain("mobs_mc:evoker")
+
 function mcl_raids.spawn_raid(event)
 	local pos = event.pos
 	local wave = event.stage
