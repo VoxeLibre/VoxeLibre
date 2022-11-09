@@ -192,31 +192,6 @@ minetest.register_on_leaveplayer(function(player)
 	active_particlespawners[pn] = nil
 end)
 
------For Water Flowing:
-local enable_physics = function(object, luaentity, ignore_check)
-	if luaentity.physical_state == false or ignore_check == true then
-		luaentity.physical_state = true
-		object:set_properties({
-			physical = true
-		})
-		object:set_velocity({x=0,y=0,z=0})
-		object:set_acceleration({x=0,y=DEFAULT_FALL_SPEED,z=0})
-	end
-end
-
-local disable_physics = function(object, luaentity, ignore_check, reset_movement)
-	if luaentity.physical_state == true or ignore_check == true then
-		luaentity.physical_state = false
-		object:set_properties({
-			physical = false
-		})
-		if reset_movement ~= false then
-			object:set_velocity({x=0,y=0,z=0})
-			object:set_acceleration({x=0,y=0,z=0})
-		end
-	end
-end
-
 function mob_class:player_in_active_range()
 	for _,p in pairs(minetest.get_connected_players()) do
 		if vector.distance(self.object:get_pos(),p:get_pos()) <= mob_active_range then return true end
@@ -4659,7 +4634,6 @@ local mob_step = function(self, dtime)
 		elseif self._flowing == true then
 			-- Disable flowing physics if not on/in flowing liquid
 			self._flowing = false
-			enable_physics(self.object, self, true)
 			return
 		end
 
