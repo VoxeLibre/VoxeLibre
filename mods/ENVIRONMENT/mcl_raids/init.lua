@@ -103,6 +103,7 @@ function mcl_raids.promote_to_raidcaptain(c) -- object
 			l._banner = nil
 			mcl_raids.drop_obanner(pos)
 			if cmi_cause.type == "punch" and cmi_cause.puncher:is_player() then
+				awards.unlock(cmi_cause.puncher:get_player_name(), "mcl:voluntary_exile")
 				local lv = mcl_potions.player_get_effect(cmi_cause.puncher, "bad_omen")
 				if not lv then lv = 0
 				else lv = lv.factor end
