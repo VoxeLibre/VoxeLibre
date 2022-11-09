@@ -89,7 +89,7 @@ mcl_mobs.register_mob("mobs_mc:iron_golem", {
 		etime = etime + dtime
 		if etime > 10 then
 			if self._home and vector.distance(self._home,self.object:get_pos()) > 50 then
-				mcl_mobs:gopath(self,self._home)
+				self:gopath(self._home)
 			end
 		end
 	end,

@@ -809,7 +809,7 @@ local function go_home(entity, sleep)
 			return
 		end
 
-		mcl_mobs:gopath(entity,b,function(entity,b)
+		entity:gopath(b,function(entity,b)
 			local b = entity._bed
 
 			if not b then
@@ -845,7 +845,6 @@ local function take_bed (entity)
 		mcl_log("Can we path to bed: "..minetest.pos_to_string(closest_block) )
 		local distance_to_block = vector.distance(p, closest_block)
 		mcl_log("Distance: " .. distance_to_block)
-
 		if distance_to_block < 2 then
 			local m = minetest.get_meta(closest_block)
 			local owner = m:get_string("villager")
@@ -866,7 +865,7 @@ local function take_bed (entity)
 				mcl_log("Set as sleep already..." )
 			end
 		else
-			local gp = mcl_mobs:gopath(entity, closest_block,function(self) end)
+			local gp = entity:gopath(closest_block,function(self) end)
 			if gp then
 				mcl_log("Nice bed. I'll defintely take it as I can path")
 			else
@@ -1035,7 +1034,7 @@ local function look_for_job(self, requested_jobsites)
 	if closest_block then
 		mcl_log("It's a free job for me (" .. minetest.pos_to_string(p) .. ")! I might be interested: ".. minetest.pos_to_string(closest_block) )
 
-		local gp = mcl_mobs:gopath(self, closest_block,function(self)
+		local gp = self:gopath(closest_block,function(self)
 			mcl_log("Arrived at block callback")
 			if self and self.state == "stand" then
 				self.order = WORK
@@ -1168,7 +1167,7 @@ local function do_work (self)
 					self.order = nil
 					return
 				end
-				mcl_mobs:gopath(self, jobsite, function(self,jobsite)
+				self:gopath(jobsite, function(self,jobsite)
 					if not self then
 						--mcl_log("missing self. not good")
 						return false
@@ -1210,7 +1209,7 @@ local function go_to_town_bell(self)
 	for _,n in pairs(nn) do
 		mcl_log("Found bell")
 
-		local gp = mcl_mobs:gopath(self,n,function(self)
+		local gp = self:gopath(n,function(self)
 			if self then
 				self.order = GATHERING
 				mcl_log("Callback has a self")
@@ -1986,7 +1985,7 @@ mcl_mobs.register_mob("mobs_mc:villager", {
 		end
 		-- Don't do at night. Go to bed? Maybe do_activity needs it's own method
 		if validate_jobsite(self) and not self.order == WORK then
-			--mcl_mobs:gopath(self,self._jobsite,function()
+			--self:gopath(self._jobsite,function()
 			--	minetest.log("sent to jobsite")
 			--end)
 		else

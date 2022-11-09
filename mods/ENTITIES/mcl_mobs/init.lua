@@ -1,24 +1,19 @@
 mcl_mobs = {}
 mcl_mobs.mob_class = {}
 mcl_mobs.mob_class_meta = {__index = mcl_mobs.mob_class}
+
 local path = minetest.get_modpath(minetest.get_current_modname())
 
+--api and helpers
 dofile(path .. "/effects.lua")
 dofile(path .. "/physics.lua")
 dofile(path .. "/items.lua")
-
--- Mob API
+dofile(path .. "/pathfinding.lua")
 dofile(path .. "/api.lua")
 
+--utility functions
 dofile(path .. "/breeding.lua")
-
--- Spawning Algorithm
 dofile(path .. "/spawning.lua")
-
--- Rideable Mobs
 dofile(path .. "/mount.lua")
-
--- Mob Items
 dofile(path .. "/crafts.lua")
-
 dofile(path .. "/compat.lua")
