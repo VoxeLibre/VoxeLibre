@@ -167,7 +167,7 @@ end
 dog.on_rightclick = function(self, clicker)
 	local item = clicker:get_wielded_item()
 
-	if mcl_mobs:feed_tame(self, clicker, 1, true, false) then
+	if self:feed_tame(clicker, 1, true, false) then
 		return
 	elseif mcl_mobs:protect(self, clicker) then
 		return

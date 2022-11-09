@@ -156,7 +156,7 @@ mcl_mobs.register_mob("mobs_mc:llama", {
 		local item = clicker:get_wielded_item()
 		if item:get_name() == "mcl_farming:hay_block" then
 			-- Breed with hay bale
-			if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
+			if self:feed_tame(clicker, 1, true, false) then return end
 		elseif not self._has_chest and item:get_name() == "mcl_chests:chest" then
 			item:take_item()
 			clicker:set_wielded_item(item)
@@ -173,7 +173,7 @@ mcl_mobs.register_mob("mobs_mc:llama", {
 			return
 		else
 			-- Feed with anything else
-			if mcl_mobs:feed_tame(self, clicker, 1, false, true) then return end
+			if self:feed_tame(clicker, 1, false, true) then return end
 		end
 		if mcl_mobs:protect(self, clicker) then return end
 

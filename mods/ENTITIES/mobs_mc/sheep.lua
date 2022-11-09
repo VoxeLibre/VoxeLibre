@@ -205,7 +205,7 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 	on_rightclick = function(self, clicker)
 		local item = clicker:get_wielded_item()
 
-		if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
+		if self:feed_tame(clicker, 1, true, false) then return end
 		if mcl_mobs:protect(self, clicker) then return end
 
 		if item:get_name() == "mcl_tools:shears" and not self.gotten and not self.child then

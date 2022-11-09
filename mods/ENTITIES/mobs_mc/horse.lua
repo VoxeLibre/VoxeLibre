@@ -337,7 +337,7 @@ local horse = {
 			elseif (iname == "mcl_farming:carrot_item_gold") then
 				heal = 4
 			end
-			if heal > 0 and mcl_mobs:feed_tame(self, clicker, heal, true, false) then
+			if heal > 0 and self:feed_tame(clicker, heal, true, false) then
 				return
 			end
 		end
@@ -352,7 +352,7 @@ local horse = {
 		elseif (iname == "mcl_farming:hay_block") then
 			heal = 20
 		end
-		if heal > 0 and mcl_mobs:feed_tame(self, clicker, heal, false, false) then
+		if heal > 0 and self:feed_tame(clicker, heal, false, false) then
 			return
 		end
 

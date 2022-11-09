@@ -123,7 +123,7 @@ local strider = {
 		local wielditem = clicker:get_wielded_item()
 
 		if wielditem:get_name() ~= "mcl_crimson:warped_fungus" then
-			if mcl_mobs:feed_tame(self, clicker, 1, true, true) then return end
+			if self:feed_tame(clicker, 1, true, true) then return end
 		end
 
 		if self.child then

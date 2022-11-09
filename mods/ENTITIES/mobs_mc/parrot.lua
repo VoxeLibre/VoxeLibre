@@ -207,7 +207,7 @@ mcl_mobs.register_mob("mobs_mc:parrot", {
 			return
 		end
 		-- Feed to tame, but not breed
-		if mcl_mobs:feed_tame(self, clicker, 1, false, true) then return end
+		if self:feed_tame(clicker, 1, false, true) then return end
 		perch(self,clicker)
 	end,
 	do_custom = function(self,dtime)

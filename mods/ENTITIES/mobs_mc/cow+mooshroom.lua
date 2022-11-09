@@ -59,7 +59,7 @@ local cow_def = {
 		run_start = 41, run_end = 81, run_speed = 60,
 	},
 	on_rightclick = function(self, clicker)
-		if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
+		if self:feed_tame(clicker, 1, true, false) then return end
 		if mcl_mobs:protect(self, clicker) then return end
 
 		if self.child then
@@ -97,7 +97,7 @@ mooshroom_def.spawn_in_group_min = 4
 mooshroom_def.spawn_in_group = 8
 mooshroom_def.textures = { {"mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png"}, {"mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" } }
 mooshroom_def.on_rightclick = function(self, clicker)
-	if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
+	if self:feed_tame(clicker, 1, true, false) then return end
 	if mcl_mobs:protect(self, clicker) then return end
 
 	if self.child then

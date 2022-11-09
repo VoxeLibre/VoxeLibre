@@ -83,7 +83,7 @@ local rabbit = {
 	},
 	on_rightclick = function(self, clicker)
 		-- Feed, tame protect or capture
-		if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
+		if self:feed_tame(clicker, 1, true, false) then return end
 		if mcl_mobs:protect(self, clicker) then return end
 		if mcl_mobs:capture_mob(self, clicker, 0, 50, 80, false, nil) then return end
 	end,

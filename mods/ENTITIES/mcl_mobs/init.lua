@@ -9,6 +9,8 @@ dofile(path .. "/physics.lua")
 -- Mob API
 dofile(path .. "/api.lua")
 
+dofile(path .. "/breeding.lua")
+
 -- Spawning Algorithm
 dofile(path .. "/spawning.lua")
 
