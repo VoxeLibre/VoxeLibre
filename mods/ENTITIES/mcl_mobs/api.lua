@@ -72,9 +72,6 @@ if minetest.settings:get_bool("only_peaceful_mobs", false) then
 	end)
 end
 
-local active_particlespawners = {}
-
-
 local function dir_to_pitch(dir)
 	--local dir2 = vector.normalize(dir)
 	local xz = math.abs(dir.x) + math.abs(dir.z)
@@ -111,48 +108,6 @@ minetest.register_chatcommand("clearmobs",{
 		end
 end})
 
-local function remove_particlespawners(pn,self)
-	if not active_particlespawners[pn] then return end
-	if not active_particlespawners[pn][self.object] then return end
-	for k,v in pairs(active_particlespawners[pn][self.object]) do
-		minetest.delete_particlespawner(v)
-	end
-end
-
-local function add_particlespawners(pn,self)
-	if not active_particlespawners[pn] then active_particlespawners[pn] = {} end
-	if not active_particlespawners[pn][self.object] then active_particlespawners[pn][self.object] = {} end
-	for _,ps in pairs(self.particlespawners) do
-		ps.attached = self.object
-		ps.playername = pn
-		table.insert(active_particlespawners[pn][self.object],minetest.add_particlespawner(ps))
-	end
-end
-
-local function particlespawner_check(self,dtime)
-	if not self.particlespawners then return end
-	--minetest.log(dump(active_particlespawners))
-	if self._particle_timer and self._particle_timer >= 1 then
-		self._particle_timer = 0
-		local players = {}
-		for _,player in pairs(minetest.get_connected_players()) do
-			local pn = player:get_player_name()
-			table.insert(players,pn)
-			if not active_particlespawners[pn] then
-				active_particlespawners[pn] = {} end
-
-			local dst = vector.distance(player:get_pos(),self.object:get_pos())
-			if dst < player_transfer_distance and not active_particlespawners[pn][self.object] then
-				add_particlespawners(pn,self)
-			elseif dst >= player_transfer_distance and active_particlespawners[pn][self.object] then
-				remove_particlespawners(pn,self)
-			end
-		end
-	elseif not self._particle_timer then
-		self._particle_timer = 0
-	end
-	self._particle_timer = self._particle_timer + dtime
-end
 
 minetest.register_on_leaveplayer(function(player)
 	local pn = player:get_player_name()
@@ -240,85 +195,6 @@ local do_attack = function(self, player)
 		--self:mob_sound("war_cry", true)
 	--end
 end
-
-local add_texture_mod = function(self, mod)
-	local full_mod = ""
-	local already_added = false
-	for i=1, #self.texture_mods do
-		if mod == self.texture_mods[i] then
-			already_added = true
-		end
-		full_mod = full_mod .. self.texture_mods[i]
-	end
-	if not already_added then
-		full_mod = full_mod .. mod
-		table.insert(self.texture_mods, mod)
-	end
-	self.object:set_texture_mod(full_mod)
-end
-local remove_texture_mod = function(self, mod)
-	local full_mod = ""
-	local remove = {}
-	for i=1, #self.texture_mods do
-		if self.texture_mods[i] ~= mod then
-			full_mod = full_mod .. self.texture_mods[i]
-		else
-			table.insert(remove, i)
-		end
-	end
-	for i=#remove, 1 do
-		table.remove(self.texture_mods, remove[i])
-	end
-	self.object:set_texture_mod(full_mod)
-end
-
--- set defined animation
-local set_animation = function(self, anim, fixed_frame)
-	if not self.animation or not anim then
-		return
-	end
-	if self.state == "die" and anim ~= "die" and anim ~= "stand" then
-		return
-	end
-
-	if self.jockey then
-		anim = "jockey"
-	end
-
-
-	if self:flight_check() and self.fly and anim == "walk" then anim = "fly" end
-
-	self._current_animation = self._current_animation or ""
-
-	if (anim == self._current_animation
-	or not self.animation[anim .. "_start"]
-	or not self.animation[anim .. "_end"]) and self.state ~= "die" then
-		return
-	end
-
-	self._current_animation = anim
-
-	local a_start = self.animation[anim .. "_start"]
-	local a_end
-	if fixed_frame then
-		a_end = a_start
-	else
-		a_end = self.animation[anim .. "_end"]
-	end
-	if a_start and a_end then
-		self.object:set_animation({
-			x = a_start,
-			y = a_end},
-			self.animation[anim .. "_speed"] or self.animation.speed_normal or 15,
-			0, self.animation[anim .. "_loop"] ~= false)
-		end
-end
-
--- above function exported for mount.lua
-function mcl_mobs:set_animation(self, anim)
-	set_animation(self, anim)
-end
-
 -- Returns true is node can deal damage to self
 local is_node_dangerous = function(self, nodename)
 	local nn = nodename
@@ -427,184 +303,6 @@ local line_of_sight = function(self, pos1, pos2, stepsize)
 	end
 
 	return false
-end
-
--- custom particle effects
-local effect = function(pos, amount, texture, min_size, max_size, radius, gravity, glow, go_down)
-
-	radius = radius or 2
-	min_size = min_size or 0.5
-	max_size = max_size or 1
-	gravity = gravity or DEFAULT_FALL_SPEED
-	glow = glow or 0
-	go_down = go_down or false
-
-	local ym
-	if go_down then
-		ym = 0
-	else
-		ym = -radius
-	end
-
-	minetest.add_particlespawner({
-		amount = amount,
-		time = 0.25,
-		minpos = pos,
-		maxpos = pos,
-		minvel = {x = -radius, y = ym, z = -radius},
-		maxvel = {x = radius, y = radius, z = radius},
-		minacc = {x = 0, y = gravity, z = 0},
-		maxacc = {x = 0, y = gravity, z = 0},
-		minexptime = 0.1,
-		maxexptime = 1,
-		minsize = min_size,
-		maxsize = max_size,
-		texture = texture,
-		glow = glow,
-	})
-end
-
-local damage_effect = function(self, damage)
-	-- damage particles
-	if (not disable_blood) and damage > 0 then
-
-		local amount_large = floor(damage / 2)
-		local amount_small = damage % 2
-
-		local pos = self.object:get_pos()
-
-		pos.y = pos.y + (self.collisionbox[5] - self.collisionbox[2]) * .5
-
-		local texture = "mobs_blood.png"
-		-- full heart damage (one particle for each 2 HP damage)
-		if amount_large > 0 then
-			effect(pos, amount_large, texture, 2, 2, 1.75, 0, nil, true)
-		end
-		-- half heart damage (one additional particle if damage is an odd number)
-		if amount_small > 0 then
-			-- TODO: Use "half heart"
-			effect(pos, amount_small, texture, 1, 1, 1.75, 0, nil, true)
-		end
-	end
-end
-
-mcl_mobs.death_effect = function(pos, yaw, collisionbox, rotate)
-	local min, max
-	if collisionbox then
-		min = {x=collisionbox[1], y=collisionbox[2], z=collisionbox[3]}
-		max = {x=collisionbox[4], y=collisionbox[5], z=collisionbox[6]}
-	else
-		min = { x = -0.5, y = 0, z = -0.5 }
-		max = { x = 0.5, y = 0.5, z = 0.5 }
-	end
-	if rotate then
-		min = vector.rotate(min, {x=0, y=yaw, z=pi/2})
-		max = vector.rotate(max, {x=0, y=yaw, z=pi/2})
-		min, max = vector.sort(min, max)
-		min = vector.multiply(min, 0.5)
-		max = vector.multiply(max, 0.5)
-	end
-
-	minetest.add_particlespawner({
-		amount = 50,
-		time = 0.001,
-		minpos = vector.add(pos, min),
-		maxpos = vector.add(pos, max),
-		minvel = vector.new(-5,-5,-5),
-		maxvel = vector.new(5,5,5),
-		minexptime = 1.1,
-		maxexptime = 1.5,
-		minsize = 1,
-		maxsize = 2,
-		collisiondetection = false,
-		vertical = false,
-		texture = "mcl_particles_mob_death.png^[colorize:#000000:255",
-	})
-
-	minetest.sound_play("mcl_mobs_mob_poof", {
-		pos = pos,
-		gain = 1.0,
-		max_hear_distance = 8,
-	}, true)
-end
-
--- drop items
-local item_drop = function(self, cooked, looting_level)
-
-	-- no drops if disabled by setting
-	if not mobs_drop_items then return end
-
-	looting_level = looting_level or 0
-
-	-- no drops for child mobs (except monster)
-	if (self.child and self.type ~= "monster") then
-		return
-	end
-
-	local obj, item, num
-	local pos = self.object:get_pos()
-
-	self.drops = self.drops or {} -- nil check
-
-	for n = 1, #self.drops do
-		local dropdef = self.drops[n]
-		local chance = 1 / dropdef.chance
-		local looting_type = dropdef.looting
-
-		if looting_level > 0 then
-			local chance_function = dropdef.looting_chance_function
-			if chance_function then
-				chance = chance_function(looting_level)
-			elseif looting_type == "rare" then
-				chance = chance + (dropdef.looting_factor or 0.01) * looting_level
-			end
-		end
-
-		local num = 0
-		local do_common_looting = (looting_level > 0 and looting_type == "common")
-		if random() < chance then
-			num = random(dropdef.min or 1, dropdef.max or 1)
-		elseif not dropdef.looting_ignore_chance then
-			do_common_looting = false
-		end
-
-		if do_common_looting then
-			num = num + floor(random(0, looting_level) + 0.5)
-		end
-
-		if num > 0 then
-			item = dropdef.name
-
-			-- cook items when true
-			if cooked then
-
-				local output = minetest.get_craft_result({
-					method = "cooking", width = 1, items = {item}})
-
-				if output and output.item and not output.item:is_empty() then
-					item = output.item:get_name()
-				end
-			end
-
-			-- add item if it exists
-			for x = 1, num do
-				obj = minetest.add_item(pos, ItemStack(item .. " " .. 1))
-			end
-
-			if obj and obj:get_luaentity() then
-
-				obj:set_velocity({
-					x = random(-10, 10) / 9,
-					y = 6,
-					z = random(-10, 10) / 9,
-				})
-			elseif obj then
-				obj:remove() -- item does not exist
-			end
-		end
-	end
-
-	self.drops = {}
 end
 
 -- check if within physical map limits (-30911 to 30927)
@@ -854,7 +552,7 @@ local do_jump = function(self)
 				v=vector.multiply(v, vector.new(2.8,1,2.8))
 			end
 
-			set_animation(self, "jump") -- only when defined
+			self:set_animation( "jump") -- only when defined
 
 			self.object:set_velocity(v)
 
@@ -969,7 +667,7 @@ local breed = function(self)
 			self.animation = nil
 			local anim = self._current_animation
 			self._current_animation = nil -- Mobs Redo does nothing otherwise
-			mcl_mobs.set_animation(self, anim)
+			mcl_mobs.self:set_animation( anim)
 		end
 
 		return
@@ -996,7 +694,7 @@ local breed = function(self)
 
 		local pos = self.object:get_pos()
 
-		effect({x = pos.x, y = pos.y + 1, z = pos.z}, 8, "heart.png", 3, 4, 1, 0.1)
+		mcl_mobs.effect({x = pos.x, y = pos.y + 1, z = pos.z}, 8, "heart.png", 3, 4, 1, 0.1)
 
 		local objs = minetest.get_objects_inside_radius(pos, 3)
 		local num = 0
@@ -1741,11 +1439,11 @@ local follow_flop = function(self)
  					self:set_velocity(self.follow_velocity)
 
 					if self.walk_chance ~= 0 then
-						set_animation(self, "run")
+						self:set_animation( "run")
 					end
 				else
 					self:set_velocity(0)
-					set_animation(self, "stand")
+					self:set_animation( "stand")
 				end
 
 				return
@@ -1775,7 +1473,7 @@ local follow_flop = function(self)
 				end
 			end
 
-			set_animation(self, "stand", true)
+			self:set_animation( "stand", true)
 
 			return
 		elseif self.state == "flop" then
@@ -2031,10 +1729,10 @@ local do_states = function(self, dtime)
 			yaw = self:set_yaw( yaw, 8)
 		end
 		if self.order == "sit" then
-			set_animation(self, "sit")
+			self:set_animation( "sit")
 			self:set_velocity(0)
 		else
-			set_animation(self, "stand")
+			self:set_animation( "stand")
 			self:set_velocity(0)
 		end
 
@@ -2049,7 +1747,7 @@ local do_states = function(self, dtime)
 
 				self:set_velocity(self.walk_velocity)
 				self.state = "walk"
-				set_animation(self, "walk")
+				self:set_animation( "walk")
 			end
 		end
 
@@ -2148,7 +1846,7 @@ local do_states = function(self, dtime)
 
 			self:set_velocity(0)
 			self.state = "stand"
-			set_animation(self, "stand")
+			self:set_animation( "stand")
 			local yaw = self.object:get_yaw() or 0
 			yaw = self:set_yaw( yaw + 0.78, 8)
 		else
@@ -2159,9 +1857,9 @@ local do_states = function(self, dtime)
 			and self.animation
 			and self.animation.fly_start
 			and self.animation.fly_end then
-				set_animation(self, "fly")
+				self:set_animation( "fly")
 			else
-				set_animation(self, "walk")
+				self:set_animation( "walk")
 			end
 		end
 
@@ -2176,12 +1874,12 @@ local do_states = function(self, dtime)
 			self.runaway_timer = 0
 			self:set_velocity(0)
 			self.state = "stand"
-			set_animation(self, "stand")
+			self:set_animation( "stand")
 			local yaw = self.object:get_yaw() or 0
 			yaw = self:set_yaw( yaw + 0.78, 8)
 		else
 			self:set_velocity( self.run_velocity)
-			set_animation(self, "run")
+			self:set_animation( "run")
 		end
 
 	-- attack routines (explode, dogfight, shoot, dogshoot)
@@ -2199,7 +1897,7 @@ local do_states = function(self, dtime)
 
 			self.state = "stand"
 			self:set_velocity( 0)
-			set_animation(self, "stand")
+			self:set_animation( "stand")
 			self.attack = nil
 			self.v_start = false
 			self.timer = 0
@@ -2248,7 +1946,7 @@ local do_states = function(self, dtime)
 				self.timer = 0
 				self.blinktimer = 0
 				self.blinkstatus = false
-				remove_texture_mod(self, "^[brighten")
+				self:remove_texture_mod("^[brighten")
 			end
 
 			-- walk right up to player unless the timer is active
@@ -2259,9 +1957,9 @@ local do_states = function(self, dtime)
 			end
 
 			if self.animation and self.animation.run_start then
-				set_animation(self, "run")
+				self:set_animation( "run")
 			else
-				set_animation(self, "walk")
+				self:set_animation( "walk")
 			end
 
 			if self.v_start then
@@ -2274,9 +1972,9 @@ local do_states = function(self, dtime)
 					self.blinktimer = 0
 
 					if self.blinkstatus then
-						remove_texture_mod(self, "^[brighten")
+						self:remove_texture_mod("^[brighten")
 					else
-						add_texture_mod(self, "^[brighten")
+						self:add_texture_mod("^[brighten")
 					end
 
 					self.blinkstatus = not self.blinkstatus
@@ -2296,7 +1994,7 @@ local do_states = function(self, dtime)
 						}, true)
 
 						entity_physics(pos, entity_damage_radius)
-						effect(pos, 32, "mcl_particles_smoke.png", nil, nil, node_break_radius, 1, 0)
+						mcl_mobs.effect(pos, 32, "mcl_particles_smoke.png", nil, nil, node_break_radius, 1, 0)
 					end
 					mcl_burning.extinguish(self.object)
 					self.object:remove()
@@ -2409,7 +2107,7 @@ local do_states = function(self, dtime)
 				if is_at_cliff_or_danger(self) then
 
 					self:set_velocity( 0)
-					set_animation(self, "stand")
+					self:set_animation( "stand")
 					local yaw = self.object:get_yaw() or 0
 					yaw = self:set_yaw( yaw + 0.78, 8)
 				else
@@ -2421,9 +2119,9 @@ local do_states = function(self, dtime)
 					end
 
 					if self.animation and self.animation.run_start then
-						set_animation(self, "run")
+						self:set_animation( "run")
 					else
-						set_animation(self, "walk")
+						self:set_animation( "walk")
 					end
 				end
 
@@ -2443,9 +2141,9 @@ local do_states = function(self, dtime)
 
 						if self.double_melee_attack
 						and random(1, 2) == 1 then
-							set_animation(self, "punch2")
+							self:set_animation( "punch2")
 						else
-							set_animation(self, "punch")
+							self:set_animation( "punch")
 						end
 
 						local p2 = p
@@ -2507,7 +2205,7 @@ local do_states = function(self, dtime)
 
 			--stay away from player so as to shoot them
 			if dist < self.avoid_distance and self.shooter_avoid_enemy then
-				set_animation(self, "shoot")
+				self:set_animation( "shoot")
 				stay_away_from_player=vector.multiply(vector.direction(p, s), 0.33)
 			end
 
@@ -2532,7 +2230,7 @@ local do_states = function(self, dtime)
 			and random(1, 100) <= 60 then
 
 				self.timer = 0
-				set_animation(self, "shoot")
+				self:set_animation( "shoot")
 
 				-- play shoot attack sound
 				self:mob_sound("shoot_attack")
@@ -3060,7 +2758,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 				}, true)
 			end
 
-			damage_effect(self, damage)
+			self:damage_effect(damage)
 
 			-- do damage
 			self.health = self.health - damage
@@ -3115,9 +2813,9 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			self._turn_to=self.object:get_yaw()-1.57
 			self.frame_speed_multiplier=2.3
 			if self.animation.run_end then
-				set_animation(self, "run")
+				self:set_animation( "run")
 			elseif self.animation.walk_end then
-				set_animation(self, "walk")
+				self:set_animation( "walk")
 			end
 			minetest.after(0.2, function()
 				if self and self.object then
@@ -3217,7 +2915,7 @@ end
 local mob_staticdata = function(self)
 
 	for _,p in pairs(minetest.get_connected_players()) do
-		remove_particlespawners(p:get_player_name(),self)
+		self:remove_particlespawners(p:get_player_name())
 	end
 	-- remove mob when out of range unless tamed
 	if remove_far
@@ -3419,7 +3117,7 @@ local mob_activate = function(self, staticdata, def, dtime)
 	self:set_yaw( (random(0, 360) - 180) / 180 * pi, 6)
 	self:update_tag()
 	self._current_animation = nil
-	set_animation(self, "stand")
+	self:set_animation( "stand")
 
 	-- run on_spawn function if found
 	if self.on_spawn and not self.on_spawn_run then
@@ -3497,7 +3195,7 @@ local mob_step = function(self, dtime)
 	end
 
 	if not self:player_in_active_range() then
-		set_animation(self, "stand", true)
+		self:set_animation( "stand", true)
 		local node_under = node_ok(vector.offset(pos,0,-1,0)).name
 		local acc = self.object:get_acceleration()
 		if acc.y > 0 or node_under ~= "air" then
@@ -3517,7 +3215,7 @@ local mob_step = function(self, dtime)
 
 	check_item_pickup(self)
 	check_aggro(self,dtime)
-	particlespawner_check(self,dtime)
+	self:check_particlespawners(dtime)
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
 		-- mcl_burning.tick may remove object immediately
@@ -3767,7 +3465,7 @@ local mob_step = function(self, dtime)
 		if random(1, 10) <= 6 then
 			self:set_velocity(0)
 			self.state = "stand"
-			set_animation(self, "stand")
+			self:set_animation( "stand")
 			yaw = yaw + random(-0.5, 0.5)
 			yaw = self:set_yaw( yaw, 8)
 		end
@@ -3818,7 +3516,7 @@ local mob_step = function(self, dtime)
 	if is_at_cliff_or_danger(self) then
 			self:set_velocity(0)
 			self.state = "stand"
-			set_animation(self, "stand")
+			self:set_animation( "stand")
 			local yaw = self.object:get_yaw() or 0
 			yaw = self:set_yaw( yaw + 0.78, 8)
 	end
@@ -4241,7 +3939,7 @@ function mcl_mobs:safe_boom(self, pos, strength)
 	}, true)
 	local radius = strength
 	entity_physics(pos, radius)
-	effect(pos, 32, "mcl_particles_smoke.png", radius * 3, radius * 5, radius, 1, 0)
+	mcl_mobs.effect(pos, 32, "mcl_particles_smoke.png", radius * 3, radius * 5, radius, 1, 0)
 end
 
 
@@ -4467,7 +4165,7 @@ function mcl_mobs:spawn_child(pos, mob_type)
 	end
 
 	local ent = child:get_luaentity()
-	effect(pos, 15, "mcl_particles_smoke.png", 1, 2, 2, 15, 5)
+	mcl_mobs.effect(pos, 15, "mcl_particles_smoke.png", 1, 2, 2, 15, 5)
 
 	ent.child = true
 

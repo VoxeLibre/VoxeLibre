@@ -3,7 +3,12 @@ local mob_class = mcl_mobs.mob_class
 
 local ENTITY_CRAMMING_MAX = 24
 local CRAMMING_DAMAGE = 3
+local DEATH_DELAY = 0.5
 local DEFAULT_FALL_SPEED = -9.81*1.5
+local FLOP_HEIGHT = 6
+local FLOP_HOR_SPEED = 1.5
+local PATHFINDING = "gowp"
+local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
 
 
 -- get node but use fallback for nil or unknown
@@ -36,6 +41,85 @@ local function within_limits(pos, radius)
 		if v < wmin or v > wmax then return false end
 	end
 	return true
+end
+
+-- drop items
+local item_drop = function(self, cooked, looting_level)
+
+	-- no drops if disabled by setting
+	if not mobs_drop_items then return end
+
+	looting_level = looting_level or 0
+
+	-- no drops for child mobs (except monster)
+	if (self.child and self.type ~= "monster") then
+		return
+	end
+
+	local obj, item, num
+	local pos = self.object:get_pos()
+
+	self.drops = self.drops or {} -- nil check
+
+	for n = 1, #self.drops do
+		local dropdef = self.drops[n]
+		local chance = 1 / dropdef.chance
+		local looting_type = dropdef.looting
+
+		if looting_level > 0 then
+			local chance_function = dropdef.looting_chance_function
+			if chance_function then
+				chance = chance_function(looting_level)
+			elseif looting_type == "rare" then
+				chance = chance + (dropdef.looting_factor or 0.01) * looting_level
+			end
+		end
+
+		local num = 0
+		local do_common_looting = (looting_level > 0 and looting_type == "common")
+		if random() < chance then
+			num = random(dropdef.min or 1, dropdef.max or 1)
+		elseif not dropdef.looting_ignore_chance then
+			do_common_looting = false
+		end
+
+		if do_common_looting then
+			num = num + floor(random(0, looting_level) + 0.5)
+		end
+
+		if num > 0 then
+			item = dropdef.name
+
+			-- cook items when true
+			if cooked then
+
+				local output = minetest.get_craft_result({
+					method = "cooking", width = 1, items = {item}})
+
+				if output and output.item and not output.item:is_empty() then
+					item = output.item:get_name()
+				end
+			end
+
+			-- add item if it exists
+			for x = 1, num do
+				obj = minetest.add_item(pos, ItemStack(item .. " " .. 1))
+			end
+
+			if obj and obj:get_luaentity() then
+
+				obj:set_velocity({
+					x = random(-10, 10) / 9,
+					y = 6,
+					z = random(-10, 10) / 9,
+				})
+			elseif obj then
+				obj:remove() -- item does not exist
+			end
+		end
+	end
+
+	self.drops = {}
 end
 
 -- collision function borrowed amended from jordan4ibanez open_ai mod
@@ -240,7 +324,7 @@ function mob_class:set_yaw(yaw, delay, dtime)
 
 	if delay == 0 then
 		if self.shaking and dtime then
-			yaw = yaw + (random() * 2 - 1) * 5 * dtime
+			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
 		end
 		self:update_roll()
 		return yaw
@@ -308,10 +392,10 @@ function mob_class:check_for_death(cause, cmi_cause)
 
 		-- play damage sound if health was reduced and make mob flash red.
 		if damaged then
-			add_texture_mod(self, "^[colorize:#d42222:175")
+			self:add_texture_mod("^[colorize:#d42222:175")
 			minetest.after(1, function(self)
 				if self and self.object then
-					remove_texture_mod(self, "^[colorize:#d42222:175")
+					self:remove_texture_mod("^[colorize:#d42222:175")
 				end
 			end, self)
 			self:mob_sound("damage")
@@ -352,8 +436,8 @@ function mob_class:check_for_death(cause, cmi_cause)
 			local looting = mcl_enchanting.get_enchantment(wielditem, "looting")
 			item_drop(self, cooked, looting)
 
-			if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= 5000000) then
-				mcl_experience.throw_xp(self.object:get_pos(), random(self.xp_min, self.xp_max))
+			if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= math.huge) then
+				mcl_experience.throw_xp(self.object:get_pos(), math.random(self.xp_min, self.xp_max))
 			end
 		end
 	end
@@ -386,8 +470,8 @@ function mob_class:check_for_death(cause, cmi_cause)
 	self.fall_speed = DEFAULT_FALL_SPEED
 	self.timer = 0
 	self.blinktimer = 0
-	remove_texture_mod(self, "^[colorize:#FF000040")
-	remove_texture_mod(self, "^[brighten")
+	self:remove_texture_mod("^[colorize:#FF000040")
+	self:remove_texture_mod("^[brighten")
 	self.passive = true
 
 	self.object:set_properties({
@@ -395,7 +479,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 		collide_with_objects = false,
 	})
 
-	set_velocity(self, 0)
+	self:set_velocity(0)
 	local acc = self.object:get_acceleration()
 	acc.x, acc.y, acc.z = 0, DEFAULT_FALL_SPEED, 0
 	self.object:set_acceleration(acc)
@@ -411,10 +495,10 @@ function mob_class:check_for_death(cause, cmi_cause)
 		local frames = self.animation.die_end - self.animation.die_start
 		local speed = self.animation.die_speed or 15
 		length = math.max(frames / speed, 0) + DEATH_DELAY
-		set_animation(self, "die")
+		self:set_animation( "die")
 	else
 		length = 1 + DEATH_DELAY
-		set_animation(self, "stand", true)
+		self:set_animation( "stand", true)
 	end
 
 
@@ -474,7 +558,7 @@ function mob_class:do_env_damage()
 		if not ((mcl_weather.rain.raining or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos)) then
 			self.health = self.health - damage
 
-			effect(pos, 5, "mcl_particles_smoke.png")
+			mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png")
 
 			if self:check_for_death("light", {type = "light"}) then
 				return true
@@ -547,7 +631,7 @@ function mob_class:do_env_damage()
 
 			self.health = self.health - self.water_damage
 
-			effect(pos, 5, "mcl_particles_smoke.png", nil, nil, 1, nil)
+			mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png", nil, nil, 1, nil)
 
 			if self:check_for_death("water", {type = "environment",
 					pos = pos, node = self.standing_in}) then
@@ -563,7 +647,7 @@ function mob_class:do_env_damage()
 
 			self.health = self.health - self.lava_damage
 
-			effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
+			mcl_mobs.effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
 			mcl_burning.set_on_fire(self.object, 10)
 
 			if self:check_for_death("lava", {type = "environment",
@@ -580,7 +664,7 @@ function mob_class:do_env_damage()
 
 			self.health = self.health - self.fire_damage
 
-			effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
+			mcl_mobs.effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
 			mcl_burning.set_on_fire(self.object, 5)
 
 			if self:check_for_death("fire", {type = "environment",
@@ -594,7 +678,7 @@ function mob_class:do_env_damage()
 
 		self.health = self.health - nodef.damage_per_second
 
-		effect(pos, 5, "mcl_particles_smoke.png")
+		mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png")
 
 		if self:check_for_death("dps", {type = "environment",
 				pos = pos, node = self.standing_in}) then
@@ -616,7 +700,7 @@ function mob_class:do_env_damage()
 
 			self.breath = math.max(0, self.breath - 1)
 
-			effect(pos, 2, "bubble.png", nil, nil, 1, nil)
+			mcl_mobs.effect(pos, 2, "bubble.png", nil, nil, 1, nil)
 			if self.breath <= 0 then
 				local dmg
 				if nodef.drowning > 0 then
@@ -624,7 +708,7 @@ function mob_class:do_env_damage()
 				else
 					dmg = 4
 				end
-				damage_effect(self, dmg)
+				self:damage_effect(dmg)
 				self.health = self.health - dmg
 			end
 			if self:check_for_death("drowning", {type = "environment",
@@ -671,11 +755,11 @@ end
 
 function mob_class:damage_mob(reason,damage)
 	if not self.health then return end
-	damage = floor(damage)
+	damage = math.floor(damage)
 	if damage > 0 then
 		self.health = self.health - damage
 
-		effect(self.object:get_pos(), 5, "mcl_particles_smoke.png", 1, 2, 2, nil)
+		mcl_mobs.effect(self.object:get_pos(), 5, "mcl_particles_smoke.png", 1, 2, 2, nil)
 
 		if self:check_for_death(reason, {type = reason}) then
 			return true
