@@ -1898,7 +1898,7 @@ end)
 
 local pick_up = { "mcl_farming:bread", "mcl_farming:carrot_item", "mcl_farming:beetroot_item" , "mcl_farming:potato_item" }
 
-mcl_mobs:register_mob("mobs_mc:villager", {
+mcl_mobs.register_mob("mobs_mc:villager", {
 	description = S("Villager"),
 	type = "npc",
 	spawn_class = "passive",
@@ -2157,4 +2157,4 @@ mobs_mc.water_level+1,
 mcl_vars.mg_overworld_max)
 --]]
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:villager", S("Villager"), "#563d33", "#bc8b72", 0)
+mcl_mobs.register_egg("mobs_mc:villager", S("Villager"), "#563d33", "#bc8b72", 0)

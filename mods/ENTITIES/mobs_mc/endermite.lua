@@ -4,7 +4,7 @@
 
 local S = minetest.get_translator("mobs_mc")
 
-mcl_mobs:register_mob("mobs_mc:endermite", {
+mcl_mobs.register_mob("mobs_mc:endermite", {
 	description = S("Endermite"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -38,4 +38,4 @@ mcl_mobs:register_mob("mobs_mc:endermite", {
 	reach = 1,
 })
 
-mcl_mobs:register_egg("mobs_mc:endermite", S("Endermite"), "#161616", "#6d6d6d", 0)
+mcl_mobs.register_egg("mobs_mc:endermite", S("Endermite"), "#161616", "#6d6d6d", 0)

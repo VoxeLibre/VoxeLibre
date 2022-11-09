@@ -490,7 +490,7 @@ local horse = {
 	end,
 }
 
-mcl_mobs:register_mob("mobs_mc:horse", horse)
+mcl_mobs.register_mob("mobs_mc:horse", horse)
 
 -- Skeleton horse
 local skeleton_horse = table.copy(horse)
@@ -513,7 +513,7 @@ skeleton_horse.sounds = {
 	distance = 16,
 }
 skeleton_horse.harmed_by_heal = true
-mcl_mobs:register_mob("mobs_mc:skeleton_horse", skeleton_horse)
+mcl_mobs.register_mob("mobs_mc:skeleton_horse", skeleton_horse)
 
 -- Zombie horse
 local zombie_horse = table.copy(horse)
@@ -537,7 +537,7 @@ zombie_horse.sounds = {
 	distance = 16,
 }
 zombie_horse.harmed_by_heal = true
-mcl_mobs:register_mob("mobs_mc:zombie_horse", zombie_horse)
+mcl_mobs.register_mob("mobs_mc:zombie_horse", zombie_horse)
 
 -- Donkey
 local d = 0.86 -- donkey scale
@@ -571,7 +571,7 @@ donkey.jump = true
 donkey.jump_height = 3.75 -- can clear 1 block height
 
 
-mcl_mobs:register_mob("mobs_mc:donkey", donkey)
+mcl_mobs.register_mob("mobs_mc:donkey", donkey)
 mcl_entity_invs.register_inv("mobs_mc:donkey","Donkey",15,true)
 -- Mule
 local m = 0.94
@@ -589,7 +589,7 @@ mule.collisionbox = {
 	horse.collisionbox[5] * m,
 	horse.collisionbox[6] * m,
 }
-mcl_mobs:register_mob("mobs_mc:mule", mule)
+mcl_mobs.register_mob("mobs_mc:mule", mule)
 mcl_entity_invs.register_inv("mobs_mc:mule","Mule",15,true)
 
 --===========================
@@ -641,8 +641,8 @@ mobs_mc.water_level+3,
 mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:horse", S("Horse"), "#c09e7d", "#eee500", 0)
-mcl_mobs:register_egg("mobs_mc:skeleton_horse", S("Skeleton Horse"), "#68684f", "#e5e5d8", 0)
+mcl_mobs.register_egg("mobs_mc:horse", S("Horse"), "#c09e7d", "#eee500", 0)
+mcl_mobs.register_egg("mobs_mc:skeleton_horse", S("Skeleton Horse"), "#68684f", "#e5e5d8", 0)
 --mobs:register_egg("mobs_mc:zombie_horse", S("Zombie Horse"), "#2a5a37", "#84d080", 0)
-mcl_mobs:register_egg("mobs_mc:donkey", S("Donkey"), "#534539", "#867566", 0)
-mcl_mobs:register_egg("mobs_mc:mule", S("Mule"), "#1b0200", "#51331d", 0)
+mcl_mobs.register_egg("mobs_mc:donkey", S("Donkey"), "#534539", "#867566", 0)
+mcl_mobs.register_egg("mobs_mc:mule", S("Mule"), "#1b0200", "#51331d", 0)

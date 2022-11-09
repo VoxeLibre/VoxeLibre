@@ -111,7 +111,7 @@ local spider = {
 		run_end = 20,
 	},
 }
-mcl_mobs:register_mob("mobs_mc:spider", spider)
+mcl_mobs.register_mob("mobs_mc:spider", spider)
 
 -- Cave spider
 local cave_spider = table.copy(spider)
@@ -141,7 +141,7 @@ cave_spider.walk_velocity = 1.3
 cave_spider.run_velocity = 3.2
 cave_spider.sounds = table.copy(spider.sounds)
 cave_spider.sounds.base_pitch = 1.25
-mcl_mobs:register_mob("mobs_mc:cave_spider", cave_spider)
+mcl_mobs.register_mob("mobs_mc:cave_spider", cave_spider)
 
 
 mcl_mobs:spawn_specific(
@@ -293,5 +293,5 @@ mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:spider", S("Spider"), "#342d26", "#a80e0e", 0)
-mcl_mobs:register_egg("mobs_mc:cave_spider", S("Cave Spider"), "#0c424e", "#a80e0e", 0)
+mcl_mobs.register_egg("mobs_mc:spider", S("Spider"), "#342d26", "#a80e0e", 0)
+mcl_mobs.register_egg("mobs_mc:cave_spider", S("Cave Spider"), "#0c424e", "#a80e0e", 0)

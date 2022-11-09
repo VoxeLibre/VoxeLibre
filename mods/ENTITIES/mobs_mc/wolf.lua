@@ -100,7 +100,7 @@ local wolf = {
 	specific_attack = { "player", "mobs_mc:sheep" },
 }
 
-mcl_mobs:register_mob("mobs_mc:wolf", wolf)
+mcl_mobs.register_mob("mobs_mc:wolf", wolf)
 
 -- Tamed wolf
 
@@ -232,7 +232,7 @@ dog.on_rightclick = function(self, clicker)
 	end
 end
 
-mcl_mobs:register_mob("mobs_mc:dog", dog)
+mcl_mobs.register_mob("mobs_mc:dog", dog)
 -- Spawn
 mcl_mobs:spawn_specific(
 "mobs_mc:wolf",
@@ -258,4 +258,4 @@ minetest.LIGHT_MAX+1,
 mobs_mc.water_level+3,
 mcl_vars.mg_overworld_max)
 
-mcl_mobs:register_egg("mobs_mc:wolf", S("Wolf"), "#d7d3d3", "#ceaf96", 0)
+mcl_mobs.register_egg("mobs_mc:wolf", S("Wolf"), "#d7d3d3", "#ceaf96", 0)

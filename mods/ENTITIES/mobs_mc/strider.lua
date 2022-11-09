@@ -192,7 +192,7 @@ local strider = {
 	end,
 }
 
-mcl_mobs:register_mob("mobs_mc:strider", strider)
+mcl_mobs.register_mob("mobs_mc:strider", strider)
 
 -- Baby strider.
 
@@ -208,7 +208,7 @@ baby_strider.walk_velocity = 1.2
 baby_strider.run_velocity = 2.4
 baby_strider.child = 1
 
-mcl_mobs:register_mob("mobs_mc:baby_strider", baby_strider)
+mcl_mobs.register_mob("mobs_mc:baby_strider", baby_strider)
 
 -- Regular spawning in the Nether
 
@@ -245,4 +245,4 @@ mcl_mobs:spawn_setup({
 })
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:strider", S("Strider"), "#000000", "#FF0000", 0)
+mcl_mobs.register_egg("mobs_mc:strider", S("Strider"), "#000000", "#FF0000", 0)

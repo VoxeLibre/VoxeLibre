@@ -47,7 +47,7 @@ local function get_drops(self)
 	end
 end
 
-mcl_mobs:register_mob("mobs_mc:llama", {
+mcl_mobs.register_mob("mobs_mc:llama", {
 	description = S("Llama"),
 	type = "animal",
 	spawn_class = "passive",
@@ -254,7 +254,7 @@ mcl_mobs:register_mob("mobs_mc:llama", {
 mcl_entity_invs.register_inv("mobs_mc:llama","Llama",nil,true)
 
 -- spit arrow (weapon)
-mcl_mobs:register_arrow("mobs_mc:llamaspit", {
+mcl_mobs.register_arrow("mobs_mc:llamaspit", {
 	visual = "sprite",
 	visual_size = {x = 0.10, y = 0.10},
 	textures = {"mobs_mc_llama_spit.png"},
@@ -297,4 +297,4 @@ mobs_mc.water_level+15,
 mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:llama", S("Llama"), "#c09e7d", "#995f40", 0)
+mcl_mobs.register_egg("mobs_mc:llama", S("Llama"), "#c09e7d", "#995f40", 0)

@@ -8,7 +8,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 
-mcl_mobs:register_mob("mobs_mc:chicken", {
+mcl_mobs.register_mob("mobs_mc:chicken", {
 	description = S("Chicken"),
 	type = "animal",
 	spawn_class = "passive",
@@ -163,4 +163,4 @@ mobs_mc.water_level,
 mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:chicken", S("Chicken"), "#a1a1a1", "#ff0000", 0)
+mcl_mobs.register_egg("mobs_mc:chicken", S("Chicken"), "#a1a1a1", "#ff0000", 0)

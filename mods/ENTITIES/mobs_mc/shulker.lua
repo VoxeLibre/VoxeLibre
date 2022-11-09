@@ -30,7 +30,7 @@ local function check_spot(pos)
 end
 local pr = PseudoRandom(os.time()*(-334))
 -- animation 45-80 is transition between passive and attack stance
-mcl_mobs:register_mob("mobs_mc:shulker", {
+mcl_mobs.register_mob("mobs_mc:shulker", {
 	description = S("Shulker"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -152,7 +152,7 @@ mcl_mobs:register_mob("mobs_mc:shulker", {
 })
 
 -- bullet arrow (weapon)
-mcl_mobs:register_arrow("mobs_mc:shulkerbullet", {
+mcl_mobs.register_arrow("mobs_mc:shulkerbullet", {
 	visual = "sprite",
 	visual_size = {x = 0.25, y = 0.25},
 	textures = {"mobs_mc_shulkerbullet.png"},
@@ -177,7 +177,7 @@ mcl_mobs:register_arrow("mobs_mc:shulkerbullet", {
 })
 
 
-mcl_mobs:register_egg("mobs_mc:shulker", S("Shulker"), "#946694", "#4d3852", 0)
+mcl_mobs.register_egg("mobs_mc:shulker", S("Shulker"), "#946694", "#4d3852", 0)
 
 --[[
 mcl_mobs:spawn_specific(

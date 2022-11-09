@@ -29,18 +29,9 @@ end
 mcl_mobs.invis = {}
 
 -- localize math functions
-local pi = math.pi
-local sin = math.sin
-local cos = math.cos
-local abs = math.abs
-local min = math.min
-local max = math.max
 local atann = math.atan
-local random = math.random
-local floor = math.floor
-local ceil = math.ceil
 
-local atan = function(x)
+local function atan(x)
 	if not x or x ~= x then
 		return 0
 	else
@@ -143,7 +134,7 @@ local function entity_physics(pos,radius)
 		dist = vector.distance(pos, obj_pos)
 		if dist < 1 then dist = 1 end
 
-		local damage = floor((4 / dist) * radius)
+		local damage = math.floor((4 / dist) * radius)
 		local ent = objs[n]:get_luaentity()
 
 		-- punches work on entities AND players
@@ -343,15 +334,15 @@ local can_jump_cliff = function(self)
 	local pos = self.object:get_pos()
 	local v = self.object:get_velocity()
 
-	local v2 = abs(v.x)+abs(v.z)*.833
+	local v2 = math.abs(v.x)+math.abs(v.z)*.833
 	local jump_c_multiplier = 1
 	if v2/self.walk_velocity/2>1 then
 		jump_c_multiplier = v2/self.walk_velocity/2
 	end
 
 	-- where is front
-	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
-	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
 
 	--is there nothing under the block in front? if so jump the gap.
 	local nodLow = node_ok({
@@ -405,8 +396,8 @@ local is_at_cliff_or_danger = function(self)
 	end
 
 	local yaw = self.object:get_yaw()
-	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
-	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)
+	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)
+	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)
 	local pos = self.object:get_pos()
 	local ypos = pos.y + self.collisionbox[2] -- just above floor
 
@@ -440,8 +431,8 @@ local is_at_water_danger = function(self)
 		return false
 	end
 	local yaw = self.object:get_yaw()
-	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
-	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)
+	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)
+	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)
 	local pos = self.object:get_pos()
 	local ypos = pos.y + self.collisionbox[2] -- just above floor
 
@@ -501,15 +492,15 @@ local do_jump = function(self)
 	end
 
 	local v = self.object:get_velocity()
-	local v2 = abs(v.x)+abs(v.z)*.833
+	local v2 = math.abs(v.x)+math.abs(v.z)*.833
 	local jump_c_multiplier = 1
 	if v2/self.walk_velocity/2>1 then
 		jump_c_multiplier = v2/self.walk_velocity/2
 	end
 
 	-- where is front
-	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
-	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
 
 	-- what is in front of mob?
 	nod = node_ok({
@@ -752,7 +743,7 @@ local breed = function(self)
 						return
 					end
 
-					mcl_experience.throw_xp(pos, random(1, 7))
+					mcl_experience.throw_xp(pos, math.random(1, 7))
 
 					-- custom breed function
 					if parent1.on_breed then
@@ -768,7 +759,7 @@ local breed = function(self)
 
 
 					-- Use texture of one of the parents
-					local p = random(1, 2)
+					local p = math.random(1, 2)
 					if p == 1 then
 						ent_c.base_texture = parent1.base_texture
 					else
@@ -799,7 +790,7 @@ local replace = function(self, pos)
 	or not self.replace_what
 	or self.child == true
 	or self.object:get_velocity().y ~= 0
-	or random(1, self.replace_rate) > 1 then
+	or math.random(1, self.replace_rate) > 1 then
 		return
 	end
 
@@ -807,7 +798,7 @@ local replace = function(self, pos)
 
 	if type(self.replace_what[1]) == "table" then
 
-		local num = random(#self.replace_what)
+		local num = math.random(#self.replace_what)
 
 		what = self.replace_what[num][1] or ""
 		with = self.replace_what[num][2] or ""
@@ -869,7 +860,7 @@ local smart_mobs = function(self, s, p, dist, dtime)
 	local target_pos = self.attack:get_pos()
 
 	-- is it becoming stuck?
-	if abs(s1.x - s.x) + abs(s1.z - s.z) < .5 then
+	if math.abs(s1.x - s.x) + math.abs(s1.z - s.z) < .5 then
 		self.path.stuck_timer = self.path.stuck_timer + dtime
 	else
 		self.path.stuck_timer = 0
@@ -930,7 +921,7 @@ local smart_mobs = function(self, s, p, dist, dtime)
 		end, self)
 	end
 
-	if abs(vector.subtract(s,target_pos).y) > self.stepheight then
+	if math.abs(vector.subtract(s,target_pos).y) > self.stepheight then
 
 		if height_switcher then
 			use_pathfind = true
@@ -950,8 +941,8 @@ local smart_mobs = function(self, s, p, dist, dtime)
 
 		-- round position to center of node to avoid stuck in walls
 		-- also adjust height for player models!
-		s.x = floor(s.x + 0.5)
-		s.z = floor(s.z + 0.5)
+		s.x = math.floor(s.x + 0.5)
+		s.z = math.floor(s.z + 0.5)
 
 		local ssight, sground = minetest.line_of_sight(s, {
 			x = s.x, y = s.y - 4, z = s.z}, 1)
@@ -963,15 +954,15 @@ local smart_mobs = function(self, s, p, dist, dtime)
 
 		local p1 = self.attack:get_pos()
 
-		p1.x = floor(p1.x + 0.5)
-		p1.y = floor(p1.y + 0.5)
-		p1.z = floor(p1.z + 0.5)
+		p1.x = math.floor(p1.x + 0.5)
+		p1.y = math.floor(p1.y + 0.5)
+		p1.z = math.floor(p1.z + 0.5)
 
 		local dropheight = 12
 		if self.fear_height ~= 0 then dropheight = self.fear_height end
 		local jumpheight = 0
 		if self.jump and self.jump_height >= 4 then
-			jumpheight = min(ceil(self.jump_height / 4), 4)
+			jumpheight = math.min(math.ceil(self.jump_height / 4), 4)
 		elseif self.stepheight > 0.5 then
 			jumpheight = 1
 		end
@@ -1002,7 +993,7 @@ local smart_mobs = function(self, s, p, dist, dtime)
 						end
 					end
 
-					local sheight = ceil(self.collisionbox[5]) + 1
+					local sheight = math.ceil(self.collisionbox[5]) + 1
 
 					-- assume mob is 2 blocks high so it digs above its head
 					s.y = s.y + sheight
@@ -1031,11 +1022,11 @@ local smart_mobs = function(self, s, p, dist, dtime)
 
 				else -- dig 2 blocks to make door toward player direction
 
-					local yaw1 = self.object:get_yaw() + pi / 2
+					local yaw1 = self.object:get_yaw() + math.pi / 2
 					local p1 = {
-						x = s.x + cos(yaw1),
+						x = s.x + math.cos(yaw1),
 						y = s.y,
-						z = s.z + sin(yaw1)
+						z = s.z + math.sin(yaw1)
 					}
 
 					if not minetest.is_protected(p1, "") then
@@ -1334,7 +1325,7 @@ local runaway_from = function(self)
 			z = lp.z - s.z
 		}
 
-		local yaw = (atan(vec.z / vec.x) + 3 * pi / 2) - self.rotate
+		local yaw = (atan(vec.z / vec.x) + 3 *math.pi/ 2) - self.rotate
 
 		if lp.x > s.x then
 			yaw = yaw + pi
@@ -1426,9 +1417,9 @@ local follow_flop = function(self)
 					z = p.z - s.z
 				}
 
-				local yaw = (atan(vec.z / vec.x) + pi / 2) - self.rotate
+				local yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
 
-				if p.x > s.x then yaw = yaw + pi end
+				if p.x > s.x then yaw = yaw +math.pi end
 
 				self:set_yaw( yaw, 2.35)
 
@@ -1466,9 +1457,9 @@ local follow_flop = function(self)
 				if self.object:get_velocity().y < 0.1 then
 					self:mob_sound("flop")
 					self.object:set_velocity({
-						x = random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
+						x = math.random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
 						y = FLOP_HEIGHT,
-						z = random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
+						z = math.random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
 					})
 				end
 			end
@@ -1524,11 +1515,11 @@ local function go_to_pos(entity,b)
 		return true
 	end
 	local v = { x = b.x - s.x, z = b.z - s.z }
-	local yaw = (atann(v.z / v.x) + pi / 2) - entity.rotate
-	if b.x > s.x then yaw = yaw + pi end
+	local yaw = (atann(v.z / v.x) +math.pi/ 2) - entity.rotate
+	if b.x > s.x then yaw = yaw +math.pi end
 	entity.object:set_yaw(yaw)
 	entity:set_velocity(entity.follow_velocity)
-	mcl_mobs:set_animation(entity, "walk")
+	entity:set_animation("walk")
 end
 
 local function interact_with_door(self, action, target)
@@ -1699,7 +1690,7 @@ local do_states = function(self, dtime)
 	local yaw = self.object:get_yaw() or 0
 
 	if self.state == "stand" then
-		if random(1, 4) == 1 then
+		if math.random(1, 4) == 1 then
 
 			local s = self.object:get_pos()
 			local objs = minetest.get_objects_inside_radius(s, 3)
@@ -1719,11 +1710,11 @@ local do_states = function(self, dtime)
 					z = lp.z - s.z
 				}
 
-				yaw = (atan(vec.z / vec.x) + pi / 2) - self.rotate
+				yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
 
-				if lp.x > s.x then yaw = yaw + pi end
+				if lp.x > s.x then yaw = yaw +math.pi end
 			else
-				yaw = yaw + random(-0.5, 0.5)
+				yaw = yaw + math.random(-0.5, 0.5)
 			end
 
 			yaw = self:set_yaw( yaw, 8)
@@ -1742,7 +1733,7 @@ local do_states = function(self, dtime)
 		else
 			if self.walk_chance ~= 0
 			and self.facing_fence ~= true
-			and random(1, 100) <= self.walk_chance
+			and math.random(1, 100) <= self.walk_chance
 			and is_at_cliff_or_danger(self) == false then
 
 				self:set_velocity(self.walk_velocity)
@@ -1794,7 +1785,7 @@ local do_states = function(self, dtime)
 							{x = s.x + 5, y = s.y + 1, z = s.z + 5},
 							{"group:solid"})
 
-						lp = #lp > 0 and lp[random(#lp)]
+						lp = #lp > 0 and lp[math.random(#lp)]
 
 						-- did we find land?
 						if lp then
@@ -1804,10 +1795,10 @@ local do_states = function(self, dtime)
 								z = lp.z - s.z
 							}
 
-							yaw = (atan(vec.z / vec.x) + pi / 2) - self.rotate
+							yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
 
 
-							if lp.x > s.x  then yaw = yaw + pi end
+							if lp.x > s.x  then yaw = yaw +math.pi end
 
 							-- look towards land and move in that direction
 							yaw = self:set_yaw( yaw, 6)
@@ -1820,8 +1811,8 @@ local do_states = function(self, dtime)
 			else
 
 				-- Randomly turn
-				if random(1, 100) <= 30 then
-					yaw = yaw + random(-0.5, 0.5)
+				if math.random(1, 100) <= 30 then
+					yaw = yaw + math.random(-0.5, 0.5)
 					yaw = self:set_yaw( yaw, 8)
 				end
 			end
@@ -1829,9 +1820,8 @@ local do_states = function(self, dtime)
 			yaw = self:set_yaw( yaw, 8)
 
 		-- otherwise randomly turn
-		elseif random(1, 100) <= 30 then
-
-			yaw = yaw + random(-0.5, 0.5)
+		elseif math.random(1, 100) <= 30 then
+			yaw = yaw + math.random(-0.5, 0.5)
 			yaw = self:set_yaw( yaw, 8)
 		end
 
@@ -1842,7 +1832,7 @@ local do_states = function(self, dtime)
 		end
 		if self.facing_fence == true
 		or cliff_or_danger
-		or random(1, 100) <= 30 then
+		or math.random(1, 100) <= 30 then
 
 			self:set_velocity(0)
 			self.state = "stand"
@@ -1917,9 +1907,9 @@ local do_states = function(self, dtime)
 				z = p.z - s.z
 			}
 
-			yaw = (atan(vec.z / vec.x) + pi / 2) - self.rotate
+			yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
 
-			if p.x > s.x then yaw = yaw + pi end
+			if p.x > s.x then yaw = yaw +math.pi end
 
 			yaw = self:set_yaw( yaw, 0, dtime)
 
@@ -2011,9 +2001,9 @@ local do_states = function(self, dtime)
 			and dist > self.reach then
 
 				local p1 = s
-				local me_y = floor(p1.y)
+				local me_y = math.floor(p1.y)
 				local p2 = p
-				local p_y = floor(p2.y + 1)
+				local p_y = math.floor(p2.y + 1)
 				local v = self.object:get_velocity()
 
 				if self:flight_check( s) then
@@ -2074,7 +2064,7 @@ local do_states = function(self, dtime)
 					return
 				end
 
-				if abs(p1.x-s.x) + abs(p1.z - s.z) < 0.6 then
+				if math.abs(p1.x-s.x) + math.abs(p1.z - s.z) < 0.6 then
 					-- reached waypoint, remove it from queue
 					table.remove(self.path.way, 1)
 				end
@@ -2088,9 +2078,9 @@ local do_states = function(self, dtime)
 				z = p.z - s.z
 			}
 
-			yaw = (atan(vec.z / vec.x) + pi / 2) - self.rotate
+			yaw = (atan(vec.z / vec.x) + math.pi / 2) - self.rotate
 
-			if p.x > s.x then yaw = yaw + pi end
+			if p.x > s.x then yaw = yaw + math.pi end
 
 			yaw = self:set_yaw( yaw, 0, dtime)
 
@@ -2140,7 +2130,7 @@ local do_states = function(self, dtime)
 						self.timer = 0
 
 						if self.double_melee_attack
-						and random(1, 2) == 1 then
+						and math.random(1, 2) == 1 then
 							self:set_animation( "punch2")
 						else
 							self:set_animation( "punch")
@@ -2193,9 +2183,9 @@ local do_states = function(self, dtime)
 				z = p.z - s.z
 			}
 
-			yaw = (atan(vec.z / vec.x) + pi / 2) - self.rotate
+			yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
 
-			if p.x > s.x then yaw = yaw + pi end
+			if p.x > s.x then yaw = yaw +math.pi end
 
 			yaw = self:set_yaw( yaw, 0, dtime)
 
@@ -2227,7 +2217,7 @@ local do_states = function(self, dtime)
 			if self.shoot_interval
 			and self.timer > self.shoot_interval
 			and not minetest.raycast(vector.add(p, vector.new(0,self.shoot_offset,0)), vector.add(self.attack:get_pos(), vector.new(0,1.5,0)), false, false):next()
-			and random(1, 100) <= 60 then
+			and math.random(1, 100) <= 60 then
 
 				self.timer = 0
 				self:set_animation( "shoot")
@@ -2708,7 +2698,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 	-- healing
 	if damage <= -1 then
-		self.health = self.health - floor(damage)
+		self.health = self.health - math.floor(damage)
 		return
 	end
 
@@ -2728,7 +2718,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 				local weapon = hitter:get_wielded_item(player)
 				local def = weapon:get_definition()
 				if def.tool_capabilities and def.tool_capabilities.punch_attack_uses then
-					local wear = floor(65535/tool_capabilities.punch_attack_uses)
+					local wear = math.floor(65535/tool_capabilities.punch_attack_uses)
 					weapon:add_wear(wear)
 					hitter:set_wielded_item(weapon)
 				end
@@ -2745,7 +2735,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			-- weapon sounds
 			if weapon:get_definition().sounds ~= nil then
 
-				local s = random(0, #weapon:get_definition().sounds)
+				local s = math.random(0, #weapon:get_definition().sounds)
 
 				minetest.sound_play(weapon:get_definition().sounds[s], {
 					object = self.object, --hitter,
@@ -2776,8 +2766,8 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 			local v = self.object:get_velocity()
 			if not v then return end
-			local r = 1.4 - min(punch_interval, 1.4)
-			local kb = r * (abs(v.x)+abs(v.z))
+			local r = 1.4 - math.min(punch_interval, 1.4)
+			local kb = r * (math.abs(v.x)+math.abs(v.z))
 			local up = 2
 
 			if die==true then
@@ -2785,7 +2775,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			end
 
 			-- if already in air then dont go up anymore when hit
-			if abs(v.y) > 0.1
+			if math.abs(v.y) > 0.1
 			or self.fly then
 				up = 0
 			end
@@ -2988,7 +2978,7 @@ local mob_activate = function(self, staticdata, def, dtime)
 		local c = 1
 		if #def.textures > c then c = #def.textures end
 
-		self.base_texture = def.textures[random(c)]
+		self.base_texture = def.textures[math.random(c)]
 		self.base_mesh = def.mesh
 		self.base_size = self.visual_size
 		self.base_colbox = self.collisionbox
@@ -3050,7 +3040,7 @@ local mob_activate = function(self, staticdata, def, dtime)
 	end
 
 	if self.health == 0 then
-		self.health = random (self.hp_min, self.hp_max)
+		self.health = math.random (self.hp_min, self.hp_max)
 	end
 	if self.breath == nil then
 		self.breath = self.breath_max
@@ -3114,7 +3104,7 @@ local mob_activate = function(self, staticdata, def, dtime)
 
 	-- set anything changed above
 	self.object:set_properties(self)
-	self:set_yaw( (random(0, 360) - 180) / 180 * pi, 6)
+	self:set_yaw( (math.random(0, 360) - 180) / 180 * math.pi, 6)
 	self:update_tag()
 	self._current_animation = nil
 	self:set_animation( "stand")
@@ -3176,7 +3166,7 @@ local mob_step = function(self, dtime)
 			self.object:remove()
 			return
 		elseif self.lifetimer <= 10 then
-			if random(10) < 4 then
+			if math.random(10) < 4 then
 				self.despawn_immediately = true
 			else
 				self.lifetimer = 20
@@ -3190,7 +3180,7 @@ local mob_step = function(self, dtime)
 	if (self.state and self.state=="die" or self:check_for_death()) and not self.animation.die_end then
 		d = 0.92
 		local rot = self.object:get_rotation()
-		rot.z = ((pi/2-rot.z)*.2)+rot.z
+		rot.z = ((math.pi/2-rot.z)*.2)+rot.z
 		self.object:set_rotation(rot)
 	end
 
@@ -3250,11 +3240,11 @@ local mob_step = function(self, dtime)
 	local v = self.object:get_velocity()
 	if v then
 		if self.frame_speed_multiplier then
-			local v2 = abs(v.x)+abs(v.z)*.833
+			local v2 = math.abs(v.x)+math.abs(v.z)*.833
 			if not self.animation.walk_speed then
 				self.animation.walk_speed = 25
 			end
-			if abs(v.x)+abs(v.z) > 0.5 then
+			if math.abs(v.x)+math.abs(v.z) > 0.5 then
 				self.object:set_animation_frame_speed((v2/math.max(1,self.run_velocity))*self.animation.walk_speed*self.frame_speed_multiplier)
 			else
 				self.object:set_animation_frame_speed(25)
@@ -3280,12 +3270,12 @@ local mob_step = function(self, dtime)
 		if self.delay == 1 then
 			yaw = self.target_yaw
 		else
-			local dif = abs(yaw - self.target_yaw)
+			local dif = math.abs(yaw - self.target_yaw)
 
 			if yaw > self.target_yaw then
 
-				if dif > pi then
-					dif = 2 * pi - dif -- need to add
+				if dif > math.pi then
+					dif = 2 * math.pi - dif -- need to add
 					yaw = yaw + dif / self.delay
 				else
 					yaw = yaw - dif / self.delay -- need to subtract
@@ -3293,21 +3283,21 @@ local mob_step = function(self, dtime)
 
 			elseif yaw < self.target_yaw then
 
-				if dif > pi then
-					dif = 2 * pi - dif
+				if dif >math.pi then
+					dif = 2 * math.pi - dif
 					yaw = yaw - dif / self.delay -- need to subtract
 				else
 					yaw = yaw + dif / self.delay -- need to add
 				end
 			end
 
-			if yaw > (pi * 2) then yaw = yaw - (pi * 2) end
-			if yaw < 0 then yaw = yaw + (pi * 2) end
+			if yaw > (math.pi * 2) then yaw = yaw - (math.pi * 2) end
+			if yaw < 0 then yaw = yaw + (math.pi * 2) end
 		end
 
 		self.delay = self.delay - 1
 		if self.shaking then
-			yaw = yaw + (random() * 2 - 1) * 5 * dtime
+			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
 		end
 		self.object:set_yaw(yaw)
 		self:update_roll()
@@ -3420,7 +3410,7 @@ local mob_step = function(self, dtime)
 	end
 
 	-- mob plays random sound at times
-	if random(1, 70) == 1 then
+	if math.random(1, 70) == 1 then
 		self:mob_sound("random", true)
 	end
 
@@ -3462,11 +3452,11 @@ local mob_step = function(self, dtime)
 	runaway_from(self)
 
 	if is_at_water_danger(self) and self.state ~= "attack" then
-		if random(1, 10) <= 6 then
+		if math.random(1, 10) <= 6 then
 			self:set_velocity(0)
 			self.state = "stand"
 			self:set_animation( "stand")
-			yaw = yaw + random(-0.5, 0.5)
+			yaw = yaw + math.random(-0.5, 0.5)
 			yaw = self:set_yaw( yaw, 8)
 		end
 	else
@@ -3574,7 +3564,7 @@ local create_mob_on_rightclick = function(on_rightclick)
 end
 
 -- register mob entity
-function mcl_mobs:register_mob(name, def)
+function mcl_mobs.register_mob(name, def)
 
 	mcl_mobs.spawning_mobs[name] = true
 
@@ -3591,7 +3581,7 @@ local function scale_difficulty(value, default, min, special)
 	if (not value) or (value == default) or (value == special) then
 		return default
 	else
-		return max(min, value * difficulty)
+		return math.max(min, value * difficulty)
 	end
 end
 
@@ -3798,11 +3788,11 @@ if minetest.get_modpath("doc_identifier") ~= nil then
 	doc.sub.identifier.register_object(name, "basics", "mobs")
 end
 
-end -- END mcl_mobs:register_mob function
+end -- END mcl_mobs.register_mob function
 
 
 -- register arrow for shoot attack
-function mcl_mobs:register_arrow(name, def)
+function mcl_mobs.register_arrow(name, def)
 
 	if not name or not def then return end -- errorcheck
 
@@ -3829,7 +3819,7 @@ function mcl_mobs:register_arrow(name, def)
 		end,
 		collisionbox = def.collisionbox or {0, 0, 0, 0, 0, 0},
 		automatic_face_movement_dir = def.rotate
-			and (def.rotate - (pi / 180)) or false,
+			and (def.rotate - (math.pi / 180)) or false,
 
 		on_activate = def.on_activate,
 
@@ -3961,7 +3951,7 @@ end
 -- Note: This also introduces the “spawn_egg” group:
 -- * spawn_egg=1: Spawn egg (generic mob, no metadata)
 -- * spawn_egg=2: Spawn egg (captured/tamed mob, metadata)
-function mcl_mobs:register_egg(mob, desc, background_color, overlay_color, addegg, no_creative)
+function mcl_mobs.register_egg(mob, desc, background_color, overlay_color, addegg, no_creative)
 
 	local grp = {spawn_egg = 1}
 
@@ -4109,7 +4099,7 @@ function mcl_mobs:feed_tame(self, clicker, feed_count, breed, tame, notake)
 
 		if self.health < self.hp_max and not consume_food then
 			consume_food = true
-			self.health = min(self.health + 4, self.hp_max)
+			self.health = math.min(self.health + 4, self.hp_max)
 
 			if self.htimer < 1 then
 				self.htimer = 5
@@ -4216,7 +4206,7 @@ minetest.register_globalstep(function(dtime)
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 47)) do
 			local lua = obj:get_luaentity()
 			if lua and lua.is_mob then
-				lua.lifetimer = max(20, lua.lifetimer)
+				lua.lifetimer = math.max(20, lua.lifetimer)
 				lua.despawn_immediately = false
 			end
 		end

@@ -10,7 +10,7 @@ local S = minetest.get_translator("mobs_mc")
 --###################
 
 
-mcl_mobs:register_mob("mobs_mc:ghast", {
+mcl_mobs.register_mob("mobs_mc:ghast", {
 	description = S("Ghast"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -103,7 +103,7 @@ mcl_vars.mg_nether_min,
 mcl_vars.mg_nether_max)
 
 -- fireball (projectile)
-mcl_mobs:register_arrow("mobs_mc:fireball", {
+mcl_mobs.register_arrow("mobs_mc:fireball", {
 	visual = "sprite",
 	visual_size = {x = 1, y = 1},
 	textures = {"mcl_fire_fire_charge.png"},
@@ -141,4 +141,4 @@ mcl_mobs:register_arrow("mobs_mc:fireball", {
 
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:ghast", S("Ghast"), "#f9f9f9", "#bcbcbc", 0)
+mcl_mobs.register_egg("mobs_mc:ghast", S("Ghast"), "#f9f9f9", "#bcbcbc", 0)

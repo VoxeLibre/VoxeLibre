@@ -12,7 +12,7 @@ local S = minetest.get_translator("mobs_mc")
 
 
 
-mcl_mobs:register_mob("mobs_mc:witch", {
+mcl_mobs.register_mob("mobs_mc:witch", {
 	description = S("Witch"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -73,7 +73,7 @@ mcl_mobs:register_mob("mobs_mc:witch", {
 })
 
 -- potion projectile (EXPERIMENTAL)
-mcl_mobs:register_arrow("mobs_mc:potion_arrow", {
+mcl_mobs.register_arrow("mobs_mc:potion_arrow", {
 	visual = "sprite",
 	visual_size = {x = 0.5, y = 0.5},
 	--textures = {"vessels_glass_bottle.png"},  --TODO fix to else if default
@@ -105,6 +105,6 @@ mcl_mobs:register_arrow("mobs_mc:potion_arrow", {
 --mcl_mobs:spawn_specific("mobs_mc:witch", { "mcl_core:jungletree", "mcl_core:jungleleaves", "mcl_flowers:fern", "mcl_core:vine" }, {"air"}, 0, minetest.LIGHT_MAX-6, 12, 20000, 2, mobs_mc.water_level-6, mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:witch", S("Witch"), "#340000", "#51a03e", 0, true)
+mcl_mobs.register_egg("mobs_mc:witch", S("Witch"), "#340000", "#51a03e", 0, true)
 
 mcl_wip.register_wip_item("mobs_mc:witch")

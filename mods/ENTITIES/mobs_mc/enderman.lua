@@ -255,7 +255,7 @@ local psdefs = {{
 	texture = "mcl_portals_particle"..math.random(1, 5)..".png",
 }}
 
-mcl_mobs:register_mob("mobs_mc:enderman", {
+mcl_mobs.register_mob("mobs_mc:enderman", {
 	description = S("Enderman"),
 	type = "monster",
 	spawn_class = "passive",
@@ -832,4 +832,4 @@ mcl_vars.mg_nether_min,
 mcl_vars.mg_nether_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:enderman", S("Enderman"), "#252525", "#151515", 0)
+mcl_mobs.register_egg("mobs_mc:enderman", S("Enderman"), "#252525", "#151515", 0)

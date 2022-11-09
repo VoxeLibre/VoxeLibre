@@ -88,7 +88,7 @@ local cow_def = {
 	fear_height = 4,
 }
 
-mcl_mobs:register_mob("mobs_mc:cow", cow_def)
+mcl_mobs.register_mob("mobs_mc:cow", cow_def)
 
 -- Mooshroom
 local mooshroom_def = table.copy(cow_def)
@@ -163,7 +163,7 @@ mooshroom_def.on_lightning_strike = function(self, pos, pos2, objects)
 	self.object:set_properties({ textures = self.base_texture })
 	return true
 end
-mcl_mobs:register_mob("mobs_mc:mooshroom", mooshroom_def)
+mcl_mobs.register_mob("mobs_mc:mooshroom", mooshroom_def)
 
 
 -- Spawning
@@ -231,5 +231,5 @@ mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)
 
 -- spawn egg
-mcl_mobs:register_egg("mobs_mc:cow", S("Cow"), "#443626", "#a1a1a1", 0)
-mcl_mobs:register_egg("mobs_mc:mooshroom", S("Mooshroom"), "#a00f10", "#b7b7b7", 0)
+mcl_mobs.register_egg("mobs_mc:cow", S("Cow"), "#443626", "#a1a1a1", 0)
+mcl_mobs.register_egg("mobs_mc:mooshroom", S("Mooshroom"), "#a00f10", "#b7b7b7", 0)

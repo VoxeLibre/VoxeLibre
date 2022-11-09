@@ -125,7 +125,7 @@ local function check_perch(self,dtime)
 	end
 end
 
-mcl_mobs:register_mob("mobs_mc:parrot", {
+mcl_mobs.register_mob("mobs_mc:parrot", {
 	description = S("Parrot"),
 	type = "animal",
 	spawn_class = "passive",
@@ -241,4 +241,4 @@ mobs_mc.water_level+7,
 mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:parrot", S("Parrot"), "#0da70a", "#ff0000", 0)
+mcl_mobs.register_egg("mobs_mc:parrot", S("Parrot"), "#0da70a", "#ff0000", 0)

@@ -52,7 +52,7 @@ end
 local gotten_texture = { "blank.png", "mobs_mc_sheep.png" }
 
 --mcsheep
-mcl_mobs:register_mob("mobs_mc:sheep", {
+mcl_mobs.register_mob("mobs_mc:sheep", {
 	description = S("Sheep"),
 	type = "animal",
 	spawn_class = "passive",
@@ -365,4 +365,4 @@ mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:sheep", S("Sheep"), "#e7e7e7", "#ffb5b5", 0)
+mcl_mobs.register_egg("mobs_mc:sheep", S("Sheep"), "#e7e7e7", "#ffb5b5", 0)
