@@ -73,10 +73,12 @@ local oban_layers = {
 
 local oban_def = table.copy(minetest.registered_entities["mcl_banners:standing_banner"])
 oban_def.visual_size = { x=1, y=1 }
-oban_def.on_rightclick = function(self)
-	minetest.log(dump(self._base_color))
-	minetest.log(dump(self._layers))
+local old_step = oban_def.on_step
+oban_def.on_step = function(self,dtime)
+	if not self.object:get_attach() then return self.object:remove() end
+	if old_step then return old_step(self.dtime) end
 end
+
 minetest.register_entity(":mcl_raids:ominous_banner",oban_def)
 
 function mcl_raids.drop_obanner(pos)
@@ -93,11 +95,6 @@ function mcl_raids.promote_to_raidcaptain(c) -- object
 	l._banner = minetest.add_entity(pos,"mcl_raids:ominous_banner")
 	l._banner:set_properties({textures = {mcl_banners.make_banner_texture("unicolor_white", oban_layers)}})
 	l._banner:set_attach(c,"",vector.new(-1,5.5,0),vector.new(0,0,0),true)
-	local bl = l._banner:get_luaentity()
-	bl.parent = c
-	bl.on_step = function(self,dtime)
-		if not self.parent or not self.parent:get_pos() then return self.object:remove() end
-	end
 	l._raidcaptain = true
 	local old_ondie = l.on_die
 	l.on_die = function(self, pos, cmi_cause)
