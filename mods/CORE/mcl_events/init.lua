@@ -1,5 +1,8 @@
 mcl_events = {}
 mcl_events.registered_events = {}
+local disabled_events = minetest.settings:get("mcl_disabled_events")
+if disabled_events then	disabled_events = disabled_events:split(",")
+else disabled_events = {} end
 local DBG = minetest.settings:get_bool("mcl_logging_event_api",false)
 local active_events = {}
 
@@ -27,6 +30,7 @@ local function mcl_log(m,l)
 end
 
 function mcl_events.register_event(name,def)
+	if table.indexof(disabled_events,name) ~= -1 then return end
 	mcl_events.registered_events[name] = {}
 	--setmetatable(mcl_events.registered_events[name],tpl_eventdef)
 	mcl_events.registered_events[name] = def
