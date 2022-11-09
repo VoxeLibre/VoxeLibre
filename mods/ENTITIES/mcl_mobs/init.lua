@@ -1,5 +1,10 @@
-
+mcl_mobs = {}
+mcl_mobs.mob_class = {}
+mcl_mobs.mob_class_meta = {__index = mcl_mobs.mob_class}
 local path = minetest.get_modpath(minetest.get_current_modname())
+
+dofile(path .. "/effects.lua")
+dofile(path .. "/physics.lua")
 
 -- Mob API
 dofile(path .. "/api.lua")
