@@ -26,6 +26,8 @@ local function mcl_log (message)
 		mcl_util.mcl_log (message, "[Mobs]", true)
 	end
 end
+local mob_class = {}
+local mob_class_meta = {__index = mob_class}
 
 local function shortest_term_of_yaw_rotatoin(self, rot_origin, rot_target, nums)
 
@@ -190,7 +192,7 @@ minetest.register_on_leaveplayer(function(player)
 	active_particlespawners[pn] = nil
 end)
 
-----For Water Flowing:
+-----For Water Flowing:
 local enable_physics = function(object, luaentity, ignore_check)
 	if luaentity.physical_state == false or ignore_check == true then
 		luaentity.physical_state = true
@@ -215,7 +217,7 @@ local disable_physics = function(object, luaentity, ignore_check, reset_movement
 	end
 end
 
-local function player_in_active_range(self)
+function mob_class:player_in_active_range()
 	for _,p in pairs(minetest.get_connected_players()) do
 		if vector.distance(self.object:get_pos(),p:get_pos()) <= mob_active_range then return true end
 		-- slightly larger than the mc 32 since mobs spawn on that circle and easily stand still immediately right after spawning.
@@ -4341,7 +4343,7 @@ local mob_step = function(self, dtime)
 		self.object:set_rotation(rot)
 	end
 
-	if not player_in_active_range(self) then
+	if not self:player_in_active_range() then
 		set_animation(self, "stand", true)
 		local node_under = node_ok(vector.offset(pos,0,-1,0)).name
 		local acc = self.object:get_acceleration()
@@ -4751,7 +4753,7 @@ if collisionbox[5] < 0.79 then
 	collisionbox[5] = 0.79
 end
 
-minetest.register_entity(name, {
+minetest.register_entity(name, setmetatable({
 
 	use_texture_alpha = def.use_texture_alpha,
 	head_swivel = def.head_swivel or nil, -- bool to activate this function
@@ -4940,7 +4942,7 @@ minetest.register_entity(name, {
 	harmed_by_heal = def.harmed_by_heal,
 
 	on_lightning_strike = def.on_lightning_strike
-})
+},mob_class_meta))
 
 if minetest.get_modpath("doc_identifier") ~= nil then
 	doc.sub.identifier.register_object(name, "basics", "mobs")
