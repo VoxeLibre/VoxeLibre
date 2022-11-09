@@ -12,7 +12,7 @@ end
 local function reset_animation(self, animation)
 	if not self.object:get_pos() or self._current_animation ~= animation then return end
 	self._current_animation = "stand_reload" -- Mobs Redo won't set the animation unless we do this
-	mcl_mobs:set_animation(self, animation)
+	self:set_animation(animation)
 end
 
 pillager = {
@@ -96,25 +96,25 @@ pillager = {
 		self.object:set_properties(props)
 		local old_anim = self._current_animation
 		if old_anim == "run" or old_anim == "walk" then
-			mcl_mobs:set_animation(self, "reload_run")
+			self:set_animation("reload_run")
 		end
 		if old_anim == "stand" then
-			mcl_mobs:set_animation(self, "reload_stand")
+			self:set_animation("reload_stand")
 		end
 		self._current_animation = old_anim -- Mobs Redo will imediately reset the animation otherwise
 		minetest.after(1, reload, self)
 		minetest.after(2, reset_animation, self, old_anim)
-		
+
 		-- 2-4 damage per arrow
 		local dmg = math.max(4, math.random(2, 8))
 		mcl_bows_s.shoot_arrow_crossbow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
-		
+
 		-- While we are at it, change the sounds since there is no way to do this in Mobs Redo
 		if self.sounds and self.sounds.random then
 			self.sounds = table.copy(self.sounds)
 			self.sounds.random = "mobs_mc_pillager_grunt" .. math.random(2)
 		end
-		
+
 		-- Randomize reload time
 		self.shoot_interval = math.random(3, 4)
 	end,

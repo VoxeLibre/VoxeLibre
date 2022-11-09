@@ -497,7 +497,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 						self.base_texture = create_enderman_textures(block_type, self._taken_node)
 						self.object:set_properties({ textures = self.base_texture })
 						self.animation = select_enderman_animation("block")
-						mcl_mobs:set_animation(self, self.animation.current)
+						self:set_animation(self.animation.current)
 						if def.sounds and def.sounds.dug then
 							minetest.sound_play(def.sounds.dug, {pos = take_pos, max_hear_distance = 16}, true)
 						end
@@ -520,7 +520,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 					local def = minetest.registered_nodes[self._taken_node]
 					-- Update animation accordingly (removes visible block)
 					self.animation = select_enderman_animation("normal")
-					mcl_mobs:set_animation(self, self.animation.current)
+					self:set_animation(self.animation.current)
 					if def.sounds and def.sounds.place then
 						minetest.sound_play(def.sounds.place, {pos = place_pos, max_hear_distance = 16}, true)
 					end

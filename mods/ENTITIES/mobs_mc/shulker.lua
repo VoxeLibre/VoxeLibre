@@ -83,10 +83,10 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 		end
 		if self.state == "walk" or self.state == "stand" then
 			self.state = "stand"
-			mcl_mobs:set_animation(self, "stand")
+			self:set_animation("stand")
 		end
 		if self.state == "attack" then
-			mcl_mobs:set_animation(self, "punch")
+			self:set_animation("punch")
 		end
 		self.path.way = false
 		self.look_at_players = false
@@ -134,7 +134,7 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 						for n=1, math.min(8, #nodes) do
 							local r = pr:next(1, #nodes)
 							local nodepos = nodes[r]
-							local tg = vector.offset(nodepos,0,1,0)
+							local tg = vector.offset(nodepos,0,0.5,0)
 							if check_spot(tg) then
 								self.object:set_pos(tg)
 								node_ok = true

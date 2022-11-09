@@ -71,7 +71,7 @@ local wolf = {
 				ent = dog:get_luaentity()
 				ent.owner = clicker:get_player_name()
 				ent.tamed = true
-				mcl_mobs:set_animation(ent, "sit")
+				ent:set_animation("sit")
 				ent.walk_chance = 0
 				ent.jump = false
 				ent.health = self.health
@@ -209,7 +209,7 @@ dog.on_rightclick = function(self, clicker)
 			self.state = "stand"
 			self.walk_chance = default_walk_chance
 			self.jump = true
-			mcl_mobs:set_animation(self, "stand")
+			self:set_animation("stand")
 			-- TODO: Add sitting model
 		else
 			particle = "mobs_mc_wolf_icon_sit.png"
@@ -217,7 +217,7 @@ dog.on_rightclick = function(self, clicker)
 			self.state = "stand"
 			self.walk_chance = 0
 			self.jump = false
-			mcl_mobs:set_animation(self, "sit")
+			self:set_animation("sit")
 		end
 		-- Display icon to show current order (sit or roam)
 		minetest.add_particle({

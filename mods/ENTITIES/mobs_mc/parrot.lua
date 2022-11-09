@@ -87,7 +87,7 @@ local function perch(self,player)
 		local shoulder = get_shoulder(player)
 		if not shoulder then return true end
 		self.object:set_attach(player,"",shoulder,vector.new(0,0,0),true)
-		mcl_mobs:set_animation(self, "stand")
+		self:set_animation("stand")
 	end
 end
 

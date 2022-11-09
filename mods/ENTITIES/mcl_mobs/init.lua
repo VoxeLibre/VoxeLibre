@@ -19,3 +19,5 @@ dofile(path .. "/mount.lua")
 
 -- Mob Items
 dofile(path .. "/crafts.lua")
+
+dofile(path .. "/compat.lua")

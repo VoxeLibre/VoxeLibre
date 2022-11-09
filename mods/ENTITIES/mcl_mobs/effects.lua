@@ -2,6 +2,10 @@ local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 local active_particlespawners = {}
 local DEFAULT_FALL_SPEED = -9.81*1.5
+
+local player_transfer_distance = tonumber(minetest.settings:get("player_transfer_distance")) or 128
+if player_transfer_distance == 0 then player_transfer_distance = math.huge end
+
 -- play sound
 function mob_class:mob_sound(soundname, is_opinion, fixed_pitch)
 
@@ -264,5 +268,5 @@ end
 
 -- above function exported for mount.lua
 function mcl_mobs:set_animation(self, anim)
-	set_animation(self, anim)
+	self:set_animation(anim)
 end
