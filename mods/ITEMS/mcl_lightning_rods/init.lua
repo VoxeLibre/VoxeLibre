@@ -121,7 +121,7 @@ lightning.register_on_strike(function(pos, pos2, objects)
 		if node.name == "mcl_lightning_rods:rod" then
 			minetest.set_node(lr, { name = "mcl_lightning_rods:rod_powered" })
 			mesecon.receptor_on(lr, mesecon.rules.alldirs)
-			minetest.get_node_timer(lr):start(0.5)
+			minetest.get_node_timer(lr):start(0.4)
 		end
 	end
 
