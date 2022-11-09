@@ -5,6 +5,7 @@ local path = minetest.get_modpath(minetest.get_current_modname())
 
 dofile(path .. "/effects.lua")
 dofile(path .. "/physics.lua")
+dofile(path .. "/items.lua")
 
 -- Mob API
 dofile(path .. "/api.lua")

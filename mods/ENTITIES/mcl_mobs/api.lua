@@ -144,9 +144,8 @@ local function entity_physics(pos,radius)
 	end
 end
 
-
 -- Return true if object is in view_range
-local function object_in_range(self, object)
+function mob_class:object_in_range(object)
 	if not object then
 		return false
 	end
@@ -619,169 +618,6 @@ local follow_holding = function(self, clicker)
 end
 
 
--- find two animals of same type and breed if nearby and horny
-local breed = function(self)
-
-	--mcl_log("In breed function")
-	-- child takes a long time before growing into adult
-	if self.child == true then
-
-		-- When a child, hornytimer is used to count age until adulthood
-		self.hornytimer = self.hornytimer + 1
-
-		if self.hornytimer >= CHILD_GROW_TIME then
-
-			self.child = false
-			self.hornytimer = 0
-
-			self.object:set_properties({
-				textures = self.base_texture,
-				mesh = self.base_mesh,
-				visual_size = self.base_size,
-				collisionbox = self.base_colbox,
-				selectionbox = self.base_selbox,
-			})
-
-			-- custom function when child grows up
-			if self.on_grown then
-				self.on_grown(self)
-			else
-				-- jump when fully grown so as not to fall into ground
-				self.object:set_velocity({
-					x = 0,
-					y = self.jump_height*3,
-					z = 0
-				})
-			end
-
-			self.animation = nil
-			local anim = self._current_animation
-			self._current_animation = nil -- Mobs Redo does nothing otherwise
-			self:set_animation(anim)
-		end
-
-		return
-	end
-
-	-- horny animal can mate for HORNY_TIME seconds,
-	-- afterwards horny animal cannot mate again for HORNY_AGAIN_TIME seconds
-	if self.horny == true
-	and self.hornytimer < HORNY_TIME + HORNY_AGAIN_TIME then
-
-		self.hornytimer = self.hornytimer + 1
-
-		if self.hornytimer >= HORNY_TIME + HORNY_AGAIN_TIME then
-			self.hornytimer = 0
-			self.horny = false
-		end
-	end
-
-	-- find another same animal who is also horny and mate if nearby
-	if self.horny == true
-	and self.hornytimer <= HORNY_TIME then
-
-		mcl_log("In breed function. All good. Do the magic.")
-
-		local pos = self.object:get_pos()
-
-		mcl_mobs.effect({x = pos.x, y = pos.y + 1, z = pos.z}, 8, "heart.png", 3, 4, 1, 0.1)
-
-		local objs = minetest.get_objects_inside_radius(pos, 3)
-		local num = 0
-		local ent = nil
-
-		for n = 1, #objs do
-
-			ent = objs[n]:get_luaentity()
-
-			-- check for same animal with different colour
-			local canmate = false
-
-			if ent then
-
-				if ent.name == self.name then
-					canmate = true
-				else
-					local entname = string.split(ent.name,":")
-					local selfname = string.split(self.name,":")
-
-					if entname[1] == selfname[1] then
-						entname = string.split(entname[2],"_")
-						selfname = string.split(selfname[2],"_")
-
-						if entname[1] == selfname[1] then
-							canmate = true
-						end
-					end
-				end
-			end
-
-			if canmate then mcl_log("In breed function. Can mate.") end
-
-			if ent
-			and canmate == true
-			and ent.horny == true
-			and ent.hornytimer <= HORNY_TIME then
-				num = num + 1
-			end
-
-			-- found your mate? then have a baby
-			if num > 1 then
-
-				self.hornytimer = HORNY_TIME + 1
-				ent.hornytimer = HORNY_TIME + 1
-
-				-- spawn baby
-
-
-				minetest.after(5, function(parent1, parent2, pos)
-					if not parent1.object:get_luaentity() then
-						return
-					end
-					if not parent2.object:get_luaentity() then
-						return
-					end
-
-					mcl_experience.throw_xp(pos, math.random(1, 7))
-
-					-- custom breed function
-					if parent1.on_breed then
-						-- when false, skip going any further
-						if parent1.on_breed(parent1, parent2) == false then
-							return
-						end
-					end
-
-					local child = mcl_mobs.spawn_child(pos, parent1.name)
-
-					local ent_c = child:get_luaentity()
-
-
-					-- Use texture of one of the parents
-					local p = math.random(1, 2)
-					if p == 1 then
-						ent_c.base_texture = parent1.base_texture
-					else
-						ent_c.base_texture = parent2.base_texture
-					end
-					child:set_properties({
-						textures = ent_c.base_texture
-					})
-
-					-- tamed and owned by parents' owner
-					ent_c.tamed = true
-					ent_c.owner = parent1.owner
-				end, self, ent, pos)
-
-				num = 0
-
-				break
-			end
-		end
-	end
-end
-
-
 -- find and replace what mob is looking for (grass, wheat etc.)
 local replace = function(self, pos)
 
@@ -1135,7 +971,7 @@ local monster_attack = function(self)
 
 
 		if objs[n]:is_player() then
-			if mcl_mobs.invis[ objs[n]:get_player_name() ] or (not object_in_range(self, objs[n])) then
+			if mcl_mobs.invis[ objs[n]:get_player_name() ] or (not self:object_in_range(objs[n])) then
 				type = ""
 			elseif (self.type == "monster" or self._aggro) then
 				player = objs[n]
@@ -1275,7 +1111,7 @@ local runaway_from = function(self)
 
 			if mcl_mobs.invis[ objs[n]:get_player_name() ]
 			or self.owner == objs[n]:get_player_name()
-			or (not object_in_range(self, objs[n])) then
+			or (not self:object_in_range(objs[n])) then
 				type = ""
 			else
 				player = objs[n]
@@ -1354,7 +1190,7 @@ local follow_flop = function(self)
 
 		for n = 1, #players do
 
-			if (object_in_range(self, players[n]))
+			if (self:object_in_range(players[n]))
 			and not mcl_mobs.invis[ players[n]:get_player_name() ] then
 
 				self.following = players[n]
@@ -1408,7 +1244,7 @@ local follow_flop = function(self)
 			local dist = vector.distance(p, s)
 
 			-- dont follow if out of range
-			if (not object_in_range(self, self.following)) then
+			if (not self:object_in_range(self.following)) then
 				self.following = nil
 			else
 				local vec = {
@@ -1880,7 +1716,7 @@ local do_states = function(self, dtime)
 		-- stop attacking if player invisible or out of range
 		if not self.attack
 		or not self.attack:get_pos()
-		or not object_in_range(self, self.attack)
+		or not self:object_in_range(self.attack)
 		or self.attack:get_hp() <= 0
 		or (self.attack:is_player() and mcl_mobs.invis[ self.attack:get_player_name() ]) then
 
@@ -2476,104 +2312,6 @@ function mcl_mobs:gopath(self,target,callback_arrived)
 	end
 end
 
-local function player_near(pos)
-	for _,o in pairs(minetest.get_objects_inside_radius(pos,2)) do
-		if o:is_player() then return true end
-	end
-end
-
-local function get_armor_texture(armor_name)
-	if armor_name == "" then
-		return ""
-	end
-	if armor_name=="blank.png" then
-		return "blank.png"
-	end
-	local seperator = string.find(armor_name, ":")
-	return "mcl_armor_"..string.sub(armor_name, seperator+1, -1)..".png^"
-end
-
-local function set_armor_texture(self)
-	if self.armor_list then
-		local chestplate=minetest.registered_items[self.armor_list.chestplate] or {name=""}
-		local boots=minetest.registered_items[self.armor_list.boots] or {name=""}
-		local leggings=minetest.registered_items[self.armor_list.leggings] or {name=""}
-		local helmet=minetest.registered_items[self.armor_list.helmet] or {name=""}
-
-		if helmet.name=="" and chestplate.name=="" and leggings.name=="" and boots.name=="" then
-			helmet={name="blank.png"}
-		end
-		local texture = get_armor_texture(chestplate.name)..get_armor_texture(helmet.name)..get_armor_texture(boots.name)..get_armor_texture(leggings.name)
-		if string.sub(texture, -1,-1) == "^" then
-			texture=string.sub(texture,1,-2)
-		end
-		if self.textures[self.wears_armor] then
-			self.textures[self.wears_armor]=texture
-		end
-		self.object:set_properties({textures=self.textures})
-
-		local armor_
-		if type(self.armor) == "table" then
-			armor_ = table.copy(self.armor)
-			armor_.immortal = 1
-		else
-			armor_ = {immortal=1, fleshy = self.armor}
-		end
-
-		for _,item in pairs(self.armor_list) do
-			if not item then return end
-			if type(minetest.get_item_group(item, "mcl_armor_points")) == "number" then
-				armor_.fleshy=armor_.fleshy-(minetest.get_item_group(item, "mcl_armor_points")*3.5)
-			end
-		end
-		self.object:set_armor_groups(armor_)
-	end
-end
-
-local function check_item_pickup(self)
-	if self.pick_up and #self.pick_up > 0 or self.wears_armor then
-		local p = self.object:get_pos()
-		for _,o in pairs(minetest.get_objects_inside_radius(p,2)) do
-			local l=o:get_luaentity()
-			if l and l.name == "__builtin:item" then
-				if not player_near(p) and l.itemstring:find("mcl_armor") and self.wears_armor then
-					local armor_type
-					if l.itemstring:find("chestplate") then
-						armor_type = "chestplate"
-					elseif l.itemstring:find("boots") then
-						armor_type = "boots"
-					elseif l.itemstring:find("leggings") then
-						armor_type = "leggings"
-					elseif l.itemstring:find("helmet") then
-						armor_type = "helmet"
-					end
-					if not armor_type then
-						return
-					end
-					if not self.armor_list then
-						self.armor_list={helmet="",chestplate="",boots="",leggings=""}
-					elseif self.armor_list[armor_type] and self.armor_list[armor_type] ~= "" then
-						return
-					end
-					self.armor_list[armor_type]=ItemStack(l.itemstring):get_name()
-					o:remove()
-				end
-				if self.pick_up then
-					for k,v in pairs(self.pick_up) do
-						if not player_near(p) and self.on_pick_up and l.itemstring:find(v) then
-							local r =  self.on_pick_up(self,l)
-							if  r and r.is_empty and not r:is_empty() then
-								l.itemstring = r:to_string()
-							elseif r and r.is_empty and r:is_empty() then
-								o:remove()
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-end
 
 local check_herd_timer = 0
 local function check_herd(self,dtime)
@@ -3121,7 +2859,7 @@ local mob_activate = function(self, staticdata, def, dtime)
 
 	if not self._run_armor_init and self.wears_armor then
 		self.armor_list={helmet="",chestplate="",boots="",leggings=""}
-		set_armor_texture(self)
+		self:set_armor_texture()
 		self._run_armor_init = true
 	end
 
@@ -3202,8 +2940,9 @@ local mob_step = function(self, dtime)
 		self.object:set_velocity({x = v.x*d, y = v.y, z = v.z*d})
 	end
 
-	check_item_pickup(self)
 	check_aggro(self,dtime)
+	self:check_item_pickup()
+
 	self:check_particlespawners(dtime)
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
@@ -3434,7 +3173,7 @@ local mob_step = function(self, dtime)
 
 	npc_attack(self)
 
-	breed(self)
+	self:check_breeding()
 
 	if do_states(self, dtime) then
 		return
@@ -3446,7 +3185,7 @@ local mob_step = function(self, dtime)
 
 	do_jump(self)
 
-	set_armor_texture(self)
+	self:set_armor_texture()
 
 	runaway_from(self)
 
