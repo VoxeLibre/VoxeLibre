@@ -81,7 +81,7 @@ mcl_mobs.register_mob("mobs_mc:creeper", {
 		if self._forced_explosion_countdown_timer ~= nil then
 			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
 			if self._forced_explosion_countdown_timer <= 0 then
-				mcl_mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)
+				self:boom(mcl_util.get_object_center(self.object), self.explosion_strength)
 			end
 		end
 	end,
@@ -203,7 +203,7 @@ mcl_mobs.register_mob("mobs_mc:creeper_charged", {
 		if self._forced_explosion_countdown_timer ~= nil then
 			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
 			if self._forced_explosion_countdown_timer <= 0 then
-				mcl_mobs:boom(self, mcl_util.get_object_center(self.object), self.explosion_strength)
+				self:boom(mcl_util.get_object_center(self.object), self.explosion_strength)
 			end
 		end
 	end,

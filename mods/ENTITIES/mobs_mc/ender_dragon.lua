@@ -166,7 +166,7 @@ mcl_mobs.register_arrow("mobs_mc:dragon_fireball", {
 
 	-- node hit, explode
 	hit_node = function(self, pos, node)
-		mcl_mobs:boom(self, pos, 2)
+		mcl_mobs.mob_class.boom(self,pos, 2)
 	end
 })
 

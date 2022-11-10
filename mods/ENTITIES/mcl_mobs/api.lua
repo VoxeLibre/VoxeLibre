@@ -68,11 +68,6 @@ local function dir_to_pitch(dir)
 	return -math.atan2(-dir.y, xz)
 end
 
--- pathfinding settings
-local enable_pathfinding = true
-local stuck_timeout = 3 -- how long before mob gets stuck in place and starts searching
-local stuck_path_timeout = 10 -- how long will mob follow path before giving up
-
 -- default nodes
 local node_ice = "mcl_core:ice"
 local node_snowblock = "mcl_core:snowblock"
@@ -118,32 +113,6 @@ function mob_class:player_in_active_range()
 end
 
 
--- blast damage to entities nearby
-local function entity_physics(pos,radius)
-
-	radius = radius * 2
-
-	local objs = minetest.get_objects_inside_radius(pos, radius)
-	local obj_pos, dist
-
-	for n = 1, #objs do
-
-		obj_pos = objs[n]:get_pos()
-
-		dist = vector.distance(pos, obj_pos)
-		if dist < 1 then dist = 1 end
-
-		local damage = math.floor((4 / dist) * radius)
-		local ent = objs[n]:get_luaentity()
-
-		-- punches work on entities AND players
-		objs[n]:punch(objs[n], 1.0, {
-			full_punch_interval = 1.0,
-			damage_groups = {fleshy = damage},
-		}, pos)
-	end
-end
-
 -- Return true if object is in view_range
 function mob_class:object_in_range(object)
 	if not object then
@@ -169,21 +138,6 @@ function mob_class:object_in_range(object)
 	return p1 and p2 and (vector.distance(p1, p2) <= dist)
 end
 
--- attack player/mob
-local do_attack = function(self, player)
-
-	if self.state == "attack" or self.state == "die" then
-		return
-	end
-
-	self.attack = player
-	self.state = "attack"
-
-	-- TODO: Implement war_cry sound without being annoying
-	--if random(0, 100) < 90 then
-		--self:mob_sound("war_cry", true)
-	--end
-end
 -- Returns true is node can deal damage to self
 local is_node_dangerous = function(self, nodename)
 	local nn = nodename
@@ -221,76 +175,6 @@ local is_node_waterhazard = function(self, nodename)
 			end
 		end
 	end
-	return false
-end
-
-
--- check line of sight (BrunoMine)
-local line_of_sight = function(self, pos1, pos2, stepsize)
-
-	stepsize = stepsize or 1
-
-	local s, pos = minetest.line_of_sight(pos1, pos2, stepsize)
-
-	-- normal walking and flying mobs can see you through air
-	if s == true then
-		return true
-	end
-
-	-- New pos1 to be analyzed
-	local npos1 = {x = pos1.x, y = pos1.y, z = pos1.z}
-
-	local r, pos = minetest.line_of_sight(npos1, pos2, stepsize)
-
-	-- Checks the return
-	if r == true then return true end
-
-	-- Nodename found
-	local nn = minetest.get_node(pos).name
-
-	-- Target Distance (td) to travel
-	local td = vector.distance(pos1, pos2)
-
-	-- Actual Distance (ad) traveled
-	local ad = 0
-
-	-- It continues to advance in the line of sight in search of a real
-	-- obstruction which counts as 'normal' nodebox.
-	while minetest.registered_nodes[nn]
-	and minetest.registered_nodes[nn].walkable == false do
-
-		-- Check if you can still move forward
-		if td < ad + stepsize then
-			return true -- Reached the target
-		end
-
-		-- Moves the analyzed pos
-		local d = vector.distance(pos1, pos2)
-
-		npos1.x = ((pos2.x - pos1.x) / d * stepsize) + pos1.x
-		npos1.y = ((pos2.y - pos1.y) / d * stepsize) + pos1.y
-		npos1.z = ((pos2.z - pos1.z) / d * stepsize) + pos1.z
-
-		-- NaN checks
-		if d == 0
-		or npos1.x ~= npos1.x
-		or npos1.y ~= npos1.y
-		or npos1.z ~= npos1.z then
-			return false
-		end
-
-		ad = ad + stepsize
-
-		-- scan again
-		r, pos = minetest.line_of_sight(npos1, pos2, stepsize)
-
-		if r == true then return true end
-
-		-- New Nodename found
-		nn = minetest.get_node(pos).name
-
-	end
-
 	return false
 end
 
@@ -684,392 +568,6 @@ local day_docile = function(self)
 end
 
 
-local los_switcher = false
-local height_switcher = false
-
--- path finding and smart mob routine by rnd, line_of_sight and other edits by Elkien3
-local smart_mobs = function(self, s, p, dist, dtime)
-
-	local s1 = self.path.lastpos
-
-	local target_pos = self.attack:get_pos()
-
-	-- is it becoming stuck?
-	if math.abs(s1.x - s.x) + math.abs(s1.z - s.z) < .5 then
-		self.path.stuck_timer = self.path.stuck_timer + dtime
-	else
-		self.path.stuck_timer = 0
-	end
-
-	self.path.lastpos = {x = s.x, y = s.y, z = s.z}
-
-	local use_pathfind = false
-	local has_lineofsight = minetest.line_of_sight(
-		{x = s.x, y = (s.y) + .5, z = s.z},
-		{x = target_pos.x, y = (target_pos.y) + 1.5, z = target_pos.z}, .2)
-
-	-- im stuck, search for path
-	if not has_lineofsight then
-
-		if los_switcher == true then
-			use_pathfind = true
-			los_switcher = false
-		end -- cannot see target!
-	else
-		if los_switcher == false then
-
-			los_switcher = true
-			use_pathfind = false
-
-			minetest.after(1, function(self)
-				if not self.object:get_luaentity() then
-					return
-				end
-				if has_lineofsight then self.path.following = false end
-			end, self)
-		end -- can see target!
-	end
-
-	if (self.path.stuck_timer > stuck_timeout and not self.path.following) then
-
-		use_pathfind = true
-		self.path.stuck_timer = 0
-
-		minetest.after(1, function(self)
-			if not self.object:get_luaentity() then
-				return
-			end
-			if has_lineofsight then self.path.following = false end
-		end, self)
-	end
-
-	if (self.path.stuck_timer > stuck_path_timeout and self.path.following) then
-
-		use_pathfind = true
-		self.path.stuck_timer = 0
-
-		minetest.after(1, function(self)
-			if not self.object:get_luaentity() then
-				return
-			end
-			if has_lineofsight then self.path.following = false end
-		end, self)
-	end
-
-	if math.abs(vector.subtract(s,target_pos).y) > self.stepheight then
-
-		if height_switcher then
-			use_pathfind = true
-			height_switcher = false
-		end
-	else
-		if not height_switcher then
-			use_pathfind = false
-			height_switcher = true
-		end
-	end
-
-	if use_pathfind then
-		-- lets try find a path, first take care of positions
-		-- since pathfinder is very sensitive
-		local sheight = self.collisionbox[5] - self.collisionbox[2]
-
-		-- round position to center of node to avoid stuck in walls
-		-- also adjust height for player models!
-		s.x = math.floor(s.x + 0.5)
-		s.z = math.floor(s.z + 0.5)
-
-		local ssight, sground = minetest.line_of_sight(s, {
-			x = s.x, y = s.y - 4, z = s.z}, 1)
-
-		-- determine node above ground
-		if not ssight then
-			s.y = sground.y + 1
-		end
-
-		local p1 = self.attack:get_pos()
-
-		p1.x = math.floor(p1.x + 0.5)
-		p1.y = math.floor(p1.y + 0.5)
-		p1.z = math.floor(p1.z + 0.5)
-
-		local dropheight = 12
-		if self.fear_height ~= 0 then dropheight = self.fear_height end
-		local jumpheight = 0
-		if self.jump and self.jump_height >= 4 then
-			jumpheight = math.min(math.ceil(self.jump_height / 4), 4)
-		elseif self.stepheight > 0.5 then
-			jumpheight = 1
-		end
-		self.path.way = minetest.find_path(s, p1, 16, jumpheight, dropheight, "A*_noprefetch")
-
-		self.state = ""
-		do_attack(self, self.attack)
-
-		-- no path found, try something else
-		if not self.path.way then
-
-			self.path.following = false
-
-			 -- lets make way by digging/building if not accessible
-			if self.pathfinding == 2 and mobs_griefing then
-
-				-- is player higher than mob?
-				if s.y < p1.y then
-
-					-- build upwards
-					if not minetest.is_protected(s, "") then
-
-						local ndef1 = minetest.registered_nodes[self.standing_in]
-
-						if ndef1 and (ndef1.buildable_to or ndef1.groups.liquid) then
-
-								minetest.set_node(s, {name = mcl_mobs.fallback_node})
-						end
-					end
-
-					local sheight = math.ceil(self.collisionbox[5]) + 1
-
-					-- assume mob is 2 blocks high so it digs above its head
-					s.y = s.y + sheight
-
-					-- remove one block above to make room to jump
-					if not minetest.is_protected(s, "") then
-
-						local node1 = node_ok(s, "air").name
-						local ndef1 = minetest.registered_nodes[node1]
-
-						if node1 ~= "air"
-						and node1 ~= "ignore"
-						and ndef1
-						and not ndef1.groups.level
-						and not ndef1.groups.unbreakable
-						and not ndef1.groups.liquid then
-
-							minetest.set_node(s, {name = "air"})
-							minetest.add_item(s, ItemStack(node1))
-
-						end
-					end
-
-					s.y = s.y - sheight
-					self.object:set_pos({x = s.x, y = s.y + 2, z = s.z})
-
-				else -- dig 2 blocks to make door toward player direction
-
-					local yaw1 = self.object:get_yaw() + math.pi / 2
-					local p1 = {
-						x = s.x + math.cos(yaw1),
-						y = s.y,
-						z = s.z + math.sin(yaw1)
-					}
-
-					if not minetest.is_protected(p1, "") then
-
-						local node1 = node_ok(p1, "air").name
-						local ndef1 = minetest.registered_nodes[node1]
-
-						if node1 ~= "air"
-							and node1 ~= "ignore"
-							and ndef1
-							and not ndef1.groups.level
-							and not ndef1.groups.unbreakable
-							and not ndef1.groups.liquid then
-
-							minetest.add_item(p1, ItemStack(node1))
-							minetest.set_node(p1, {name = "air"})
-						end
-
-						p1.y = p1.y + 1
-						node1 = node_ok(p1, "air").name
-						ndef1 = minetest.registered_nodes[node1]
-
-						if node1 ~= "air"
-						and node1 ~= "ignore"
-						and ndef1
-						and not ndef1.groups.level
-						and not ndef1.groups.unbreakable
-						and not ndef1.groups.liquid then
-
-							minetest.add_item(p1, ItemStack(node1))
-							minetest.set_node(p1, {name = "air"})
-						end
-
-					end
-				end
-			end
-
-			-- will try again in 2 seconds
-			self.path.stuck_timer = stuck_timeout - 2
-		elseif s.y < p1.y and (not self.fly) then
-			do_jump(self) --add jump to pathfinding
-			self.path.following = true
-			-- Yay, I found path!
-			-- TODO: Implement war_cry sound without being annoying
-			--self:mob_sound("war_cry", true)
-		else
-			self:set_velocity(self.walk_velocity)
-
-			-- follow path now that it has it
-			self.path.following = true
-		end
-	end
-end
-
-
--- specific attacks
-local specific_attack = function(list, what)
-
-	-- no list so attack default (player, animals etc.)
-	if list == nil then
-		return true
-	end
-
-	-- found entity on list to attack?
-	for no = 1, #list do
-
-		if list[no] == what then
-			return true
-		end
-	end
-
-	return false
-end
-
--- find someone to attack
-local monster_attack = function(self)
-	if not damage_enabled
-	or self.passive ~= false
-	or self.state == "attack"
-	or day_docile(self) then
-		return
-	end
-
-	local s = self.object:get_pos()
-	local p, sp, dist
-	local player, obj, min_player
-	local type, name = "", ""
-	local min_dist = self.view_range + 1
-	local objs = minetest.get_objects_inside_radius(s, self.view_range)
-	local blacklist_attack = {}
-
-	for n = 1, #objs do
-		if not objs[n]:is_player() then
-			obj = objs[n]:get_luaentity()
-
-			if obj then
-				player = obj.object
-				name = obj.name or ""
-			end
-			if obj and obj.type == self.type and obj.passive == false and obj.state == "attack" and obj.attack then
-				table.insert(blacklist_attack, obj.attack)
-			end
-		end
-	end
-
-	for n = 1, #objs do
-
-
-		if objs[n]:is_player() then
-			if mcl_mobs.invis[ objs[n]:get_player_name() ] or (not self:object_in_range(objs[n])) then
-				type = ""
-			elseif (self.type == "monster" or self._aggro) then
-				player = objs[n]
-				type = "player"
-				name = "player"
-			end
-		else
-			obj = objs[n]:get_luaentity()
-
-			if obj then
-				player = obj.object
-				type = obj.type
-				name = obj.name or ""
-			end
-
-		end
-
-		-- find specific mob to attack, failing that attack player/npc/animal
-		if specific_attack(self.specific_attack, name)
-		and (type == "player" or ( type == "npc" and self.attack_npcs )
-			or (type == "animal" and self.attack_animals == true)) then
-
-			p = player:get_pos()
-			sp = s
-
-			dist = vector.distance(p, s)
-
-			-- aim higher to make looking up hills more realistic
-			p.y = p.y + 1
-			sp.y = sp.y + 1
-
-			local attacked_p = false
-			for c=1, #blacklist_attack do
-				if blacklist_attack[c] == player then
-					attacked_p = true
-				end
-			end
-			-- choose closest player to attack
-			if dist < min_dist
-			and not attacked_p
-			and line_of_sight(self, sp, p, 2) == true then
-				min_dist = dist
-				min_player = player
-			end
-		end
-	end
-	if not min_player and #blacklist_attack > 0 then
-		min_player=blacklist_attack[math.random(#blacklist_attack)]
-	end
-	-- attack player
-	if min_player then
-		do_attack(self, min_player)
-	end
-end
-
-
--- npc, find closest monster to attack
-local npc_attack = function(self)
-
-	if self.type ~= "npc"
-	or not self.attacks_monsters
-	or self.state == "attack" then
-		return
-	end
-
-	local p, sp, obj, min_player
-	local s = self.object:get_pos()
-	local min_dist = self.view_range + 1
-	local objs = minetest.get_objects_inside_radius(s, self.view_range)
-
-	for n = 1, #objs do
-
-		obj = objs[n]:get_luaentity()
-
-		if obj and obj.type == "monster" then
-
-			p = obj.object:get_pos()
-			sp = s
-
-			local dist = vector.distance(p, s)
-
-			-- aim higher to make looking up hills more realistic
-			p.y = p.y + 1
-			sp.y = sp.y + 1
-
-			if dist < min_dist
-			and line_of_sight(self, sp, p, 2) == true then
-				min_dist = dist
-				min_player = obj.object
-			end
-		end
-	end
-
-	if min_player then
-		do_attack(self, min_player)
-	end
-end
-
 
 -- specific runaway
 local specific_runaway = function(list, what)
@@ -1144,7 +642,7 @@ local runaway_from = function(self)
 
 			-- choose closest player/mpb to runaway from
 			if dist < min_dist
-			and line_of_sight(self, sp, p, 2) == true then
+			and self:line_of_sight(sp, p, 2) == true then
 				min_dist = dist
 				min_player = player
 			end
@@ -1308,35 +806,6 @@ local follow_flop = function(self)
 			self:set_velocity(0)
 		end
 	end
-end
-
-
--- dogshoot attack switch and counter function
-local dogswitch = function(self, dtime)
-
-	-- switch mode not activated
-	if not self.dogshoot_switch
-	or not dtime then
-		return 0
-	end
-
-	self.dogshoot_count = self.dogshoot_count + dtime
-
-	if (self.dogshoot_switch == 1
-	and self.dogshoot_count > self.dogshoot_count_max)
-	or (self.dogshoot_switch == 2
-	and self.dogshoot_count > self.dogshoot_count2_max) then
-
-		self.dogshoot_count = 0
-
-		if self.dogshoot_switch == 1 then
-			self.dogshoot_switch = 2
-		else
-			self.dogshoot_switch = 1
-		end
-	end
-
-	return self.dogshoot_switch
 end
 
 local function go_to_pos(entity,b)
@@ -1643,7 +1112,7 @@ local do_states = function(self, dtime)
 			-- start timer when in reach and line of sight
 			if not self.v_start
 			and dist <= self.reach
-			and line_of_sight(self, s, p, 2) then
+			and self:line_of_sight( s, p, 2) then
 
 				self.v_start = true
 				self.timer = 0
@@ -1654,7 +1123,7 @@ local do_states = function(self, dtime)
 			elseif self.allow_fuse_reset
 			and self.v_start
 			and (dist >= self.explosiontimer_reset_radius
-					or not line_of_sight(self, s, p, 2)) then
+					or not self:line_of_sight( s, p, 2)) then
 				self.v_start = false
 				self.timer = 0
 				self.blinktimer = 0
@@ -1705,8 +1174,7 @@ local do_states = function(self, dtime)
 							gain = 1.0,
 							max_hear_distance = self.sounds.distance or 32
 						}, true)
-
-						entity_physics(pos, entity_damage_radius)
+						self:entity_physics(pos,entity_damage_radius)
 						mcl_mobs.effect(pos, 32, "mcl_particles_smoke.png", nil, nil, node_break_radius, 1, 0)
 					end
 					mcl_burning.extinguish(self.object)
@@ -1717,8 +1185,8 @@ local do_states = function(self, dtime)
 			end
 
 		elseif self.attack_type == "dogfight"
-		or (self.attack_type == "dogshoot" and dogswitch(self, dtime) == 2) and (dist >= self.avoid_distance or not self.shooter_avoid_enemy)
-		or (self.attack_type == "dogshoot" and dist <= self.reach and dogswitch(self) == 0) then
+		or (self.attack_type == "dogshoot" and self:dogswitch(dtime) == 2) and (dist >= self.avoid_distance or not self.shooter_avoid_enemy)
+		or (self.attack_type == "dogshoot" and dist <= self.reach and self:dogswitch() == 0) then
 
 			if self.fly
 			and dist > self.reach then
@@ -1814,7 +1282,7 @@ local do_states = function(self, dtime)
 				if self.pathfinding -- only if mob has pathfinding enabled
 				and enable_pathfinding then
 
-					smart_mobs(self, s, p, dist, dtime)
+					self:smart_mobs(s, p, dist, dtime)
 				end
 
 				if is_at_cliff_or_danger(self) then
@@ -1865,7 +1333,7 @@ local do_states = function(self, dtime)
 						p2.y = p2.y + .5
 						s2.y = s2.y + .5
 
-						if line_of_sight(self, p2, s2) == true then
+						if self:line_of_sight( p2, s2) == true then
 
 							-- play attack sound
 							self:mob_sound("attack")
@@ -1893,8 +1361,8 @@ local do_states = function(self, dtime)
 			end
 
 		elseif self.attack_type == "shoot"
-		or (self.attack_type == "dogshoot" and dogswitch(self, dtime) == 1)
-		or (self.attack_type == "dogshoot" and (dist > self.reach or dist < self.avoid_distance and self.shooter_avoid_enemy) and dogswitch(self) == 0) then
+		or (self.attack_type == "dogshoot" and self:dogswitch(dtime) == 1)
+		or (self.attack_type == "dogshoot" and (dist > self.reach or dist < self.avoid_distance and self.shooter_avoid_enemy) and self:dogswitch() == 0) then
 
 			p.y = p.y - .5
 			s.y = s.y + .5
@@ -2266,7 +1734,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		if not die then
 			-- attack whoever punched mob
 			self.state = ""
-			do_attack(self, hitter)
+			self:do_attack(hitter)
 			self._aggro= true
 		end
 
@@ -2284,12 +1752,12 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 				and obj.state ~= "attack"
 				and obj.owner ~= name then
 					if obj.name == self.name then
-						do_attack(obj, hitter)
+						obj:do_attack(hitter)
 					elseif type(obj.group_attack) == "table" then
 						for i=1, #obj.group_attack do
 							if obj.name == obj.group_attack[i] then
 								obj._aggro = true
-								do_attack(obj, hitter)
+								obj:do_attack(hitter)
 								break
 							end
 						end
@@ -2298,7 +1766,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 				-- have owned mobs attack player threat
 				if obj.owner == name and obj.owner_loyal then
-					do_attack(obj, self.object)
+					obj:do_attack(self.object)
 				end
 			end
 		end
@@ -2849,9 +2317,9 @@ local mob_step = function(self, dtime)
 		replace(self, pos)
 	end
 
-	monster_attack(self)
+	self:monster_attack()
 
-	npc_attack(self)
+	self:npc_attack()
 
 	self:check_breeding()
 
@@ -3214,7 +2682,7 @@ function mcl_mobs.register_arrow(name, def)
 
 	if not name or not def then return end -- errorcheck
 
-	minetest.register_entity(name, {
+	minetest.register_entity(name, setmetatable({
 
 		physical = false,
 		visual = def.visual,
@@ -3334,35 +2802,8 @@ function mcl_mobs.register_arrow(name, def)
 
 			self.lastpos = pos
 		end
-	})
+	},mob_class))
 end
-
-
--- no damage to nodes explosion
-function mcl_mobs:safe_boom(self, pos, strength)
-	minetest.sound_play(self.sounds and self.sounds.explode or "tnt_explode", {
-		pos = pos,
-		gain = 1.0,
-		max_hear_distance = self.sounds and self.sounds.distance or 32
-	}, true)
-	local radius = strength
-	entity_physics(pos, radius)
-	mcl_mobs.effect(pos, 32, "mcl_particles_smoke.png", radius * 3, radius * 5, radius, 1, 0)
-end
-
-
--- make explosion with protection and tnt mod check
-function mcl_mobs:boom(self, pos, strength, fire)
-	if mobs_griefing and not minetest.is_protected(pos, "") then
-		mcl_explosions.explode(pos, strength, { drop_chance = 1.0, fire = fire }, self.object)
-	else
-		mcl_mobs:safe_boom(self, pos, strength)
-	end
-
-	-- delete the object after it punched the player to avoid nil entities in e.g. mcl_shields!!
-	self.object:remove()
-end
-
 
 -- Register spawn eggs
 

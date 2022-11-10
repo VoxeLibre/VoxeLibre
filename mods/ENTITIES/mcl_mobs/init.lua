@@ -7,8 +7,10 @@ local path = minetest.get_modpath(minetest.get_current_modname())
 --api and helpers
 dofile(path .. "/effects.lua")
 dofile(path .. "/physics.lua")
+dofile(path .. "/movement.lua")
 dofile(path .. "/items.lua")
 dofile(path .. "/pathfinding.lua")
+dofile(path .. "/combat.lua")
 dofile(path .. "/api.lua")
 
 --utility functions

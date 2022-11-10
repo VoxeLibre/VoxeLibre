@@ -98,7 +98,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 			full_punch_interval = 0.5,
 			damage_groups = {fleshy = 8},
 		}, nil)
-		mcl_mobs:boom(self, self.object:get_pos(), 1)
+		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1)
 	end,
 
 	hit_mob = function(self, mob)
@@ -106,7 +106,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 			full_punch_interval = 0.5,
 			damage_groups = {fleshy = 8},
 		}, nil)
-		mcl_mobs:boom(self, self.object:get_pos(), 1)
+		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1)
 		local l = mob:get_luaentity()
 		if l and l.health - 8 <= 0 then
 			local n = minetest.find_node_near(mob:get_pos(),2,wither_rose_soil)
@@ -123,7 +123,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 
 	-- node hit, explode
 	hit_node = function(self, pos, node)
-		mcl_mobs:boom(self, pos, 1)
+		mcl_mobs.mob_class.boom(self,pos, 1)
 	end
 })
 -- TODO: Add blue wither skull
