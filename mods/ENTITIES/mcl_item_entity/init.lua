@@ -22,10 +22,9 @@ minetest.register_on_leaveplayer(function(player)
 	pool[player:get_player_name()] = nil
 end)
 
-
 local has_awards = minetest.get_modpath("awards")
 
-local mcl_item_entity = {}
+mcl_item_entity = {}
 
 --basic settings
 local item_drop_settings                 = {} --settings table
@@ -46,19 +45,23 @@ local function get_gravity()
 	return tonumber(minetest.settings:get("movement_gravity")) or 9.81
 end
 
-local registered_pickup_achievement = {}
+mcl_item_entity.registered_pickup_achievement = {}
 
---TODO: remove limitation of 1 award per itemname
+---Register an achievement that will be unlocked on pickup.
+---
+---TODO: remove limitation of 1 award per itemname
+---@param itemname string
+---@param award string
 function mcl_item_entity.register_pickup_achievement(itemname, award)
 	if not has_awards then
 		minetest.log("warning",
 			"[mcl_item_entity] Trying to register pickup achievement [" .. award .. "] for [" ..
 			itemname .. "] while awards missing")
-	elseif registered_pickup_achievement[itemname] then
+	elseif mcl_item_entity.registered_pickup_achievement[itemname] then
 		minetest.log("error",
 			"[mcl_item_entity] Trying to register already existing pickup achievement [" .. award .. "] for [" .. itemname .. "]")
 	else
-		registered_pickup_achievement[itemname] = award
+		mcl_item_entity.registered_pickup_achievement[itemname] = award
 	end
 end
 
@@ -77,7 +80,7 @@ local function check_pickup_achievements(object, player)
 	if has_awards then
 		local itemname = ItemStack(object:get_luaentity().itemstring):get_name()
 		local playername = player:get_player_name()
-		for name, award in pairs(registered_pickup_achievement) do
+		for name, award in pairs(mcl_item_entity.registered_pickup_achievement) do
 			if itemname == name or minetest.get_item_group(itemname, name) ~= 0 then
 				awards.unlock(playername, award)
 			end
