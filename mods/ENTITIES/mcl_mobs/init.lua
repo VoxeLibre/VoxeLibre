@@ -270,7 +270,6 @@ minetest.register_entity(name, setmetatable({
 	on_spawn = def.on_spawn,
 	on_blast = def.on_blast or do_tnt,
 	do_punch = def.do_punch,
-	on_punch = mob_punch,
 	on_breed = def.on_breed,
 	on_grown = def.on_grown,
 	on_pick_up = def.on_pick_up,

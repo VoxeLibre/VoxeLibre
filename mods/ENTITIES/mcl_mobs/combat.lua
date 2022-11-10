@@ -502,6 +502,283 @@ function mob_class:boom(pos, strength, fire)
 	self.object:remove()
 end
 
+-- deal damage and effects when mob punched
+function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
+
+	-- custom punch function
+	if self.do_punch then
+
+		-- when false skip going any further
+		if self.do_punch(self, hitter, tflp, tool_capabilities, dir) == false then
+			return
+		end
+	end
+
+	-- error checking when mod profiling is enabled
+	if not tool_capabilities then
+		minetest.log("warning", "[mobs] Mod profiling enabled, damage not enabled")
+		return
+	end
+
+	local is_player = hitter:is_player()
+
+	if is_player then
+		-- is mob protected?
+		if self.protected and minetest.is_protected(self.object:get_pos(), hitter:get_player_name()) then
+			return
+		end
+
+		if minetest.is_creative_enabled(hitter:get_player_name()) then
+			self.health = 0
+		end
+
+		-- set/update 'drop xp' timestamp if hitted by player
+		self.xp_timestamp = minetest.get_us_time()
+	end
+
+
+	-- punch interval
+	local weapon = hitter:get_wielded_item()
+	local punch_interval = 1.4
+
+	-- exhaust attacker
+	if is_player then
+		mcl_hunger.exhaust(hitter:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
+	end
+
+	-- calculate mob damage
+	local damage = 0
+	local armor = self.object:get_armor_groups() or {}
+	local tmp
+
+	-- quick error check incase it ends up 0 (serialize.h check test)
+	if tflp == 0 then
+		tflp = 0.2
+	end
+
+
+	for group,_ in pairs( (tool_capabilities.damage_groups or {}) ) do
+
+		tmp = tflp / (tool_capabilities.full_punch_interval or 1.4)
+
+		if tmp < 0 then
+			tmp = 0.0
+		elseif tmp > 1 then
+			tmp = 1.0
+		end
+
+		damage = damage + (tool_capabilities.damage_groups[group] or 0)
+			* tmp * ((armor[group] or 0) / 100.0)
+	end
+
+	if weapon then
+		local fire_aspect_level = mcl_enchanting.get_enchantment(weapon, "fire_aspect")
+		if fire_aspect_level > 0 then
+			mcl_burning.set_on_fire(self.object, fire_aspect_level * 4)
+		end
+	end
+
+	-- check for tool immunity or special damage
+	for n = 1, #self.immune_to do
+
+		if self.immune_to[n][1] == weapon:get_name() then
+
+			damage = self.immune_to[n][2] or 0
+			break
+		end
+	end
+
+	-- healing
+	if damage <= -1 then
+		self.health = self.health - math.floor(damage)
+		return
+	end
+
+	if tool_capabilities then
+		punch_interval = tool_capabilities.full_punch_interval or 1.4
+	end
+
+	-- add weapon wear manually
+	-- Required because we have custom health handling ("health" property)
+	if minetest.is_creative_enabled("") ~= true
+	and tool_capabilities then
+		if tool_capabilities.punch_attack_uses then
+			-- Without this delay, the wear does not work. Quite hacky ...
+			minetest.after(0, function(name)
+				local player = minetest.get_player_by_name(name)
+				if not player then return end
+				local weapon = hitter:get_wielded_item(player)
+				local def = weapon:get_definition()
+				if def.tool_capabilities and def.tool_capabilities.punch_attack_uses then
+					local wear = math.floor(65535/tool_capabilities.punch_attack_uses)
+					weapon:add_wear(wear)
+					hitter:set_wielded_item(weapon)
+				end
+			end, hitter:get_player_name())
+		end
+	end
+
+	local die = false
+
+
+	if damage >= 0 then
+		-- only play hit sound and show blood effects if damage is 1 or over; lower to 0.1 to ensure armor works appropriately.
+		if damage >= 0.1 then
+			-- weapon sounds
+			if weapon:get_definition().sounds ~= nil then
+
+				local s = math.random(0, #weapon:get_definition().sounds)
+
+				minetest.sound_play(weapon:get_definition().sounds[s], {
+					object = self.object, --hitter,
+					max_hear_distance = 8
+				}, true)
+			else
+				minetest.sound_play("default_punch", {
+					object = self.object,
+					max_hear_distance = 5
+				}, true)
+			end
+
+			self:damage_effect(damage)
+
+			-- do damage
+			self.health = self.health - damage
+
+			-- skip future functions if dead, except alerting others
+			if self:check_for_death( "hit", {type = "punch", puncher = hitter}) then
+				die = true
+			end
+		end
+		-- knock back effect (only on full punch)
+		if self.knock_back
+		and tflp >= punch_interval then
+			-- direction error check
+			dir = dir or {x = 0, y = 0, z = 0}
+
+			local v = self.object:get_velocity()
+			if not v then return end
+			local r = 1.4 - math.min(punch_interval, 1.4)
+			local kb = r * (math.abs(v.x)+math.abs(v.z))
+			local up = 2
+
+			if die==true then
+				kb=kb*2
+			end
+
+			-- if already in air then dont go up anymore when hit
+			if math.abs(v.y) > 0.1
+			or self.fly then
+				up = 0
+			end
+
+
+			-- check if tool already has specific knockback value
+			if tool_capabilities.damage_groups["knockback"] then
+				kb = tool_capabilities.damage_groups["knockback"]
+			else
+				kb = kb * 1.5
+			end
+
+
+			local luaentity
+			if hitter then
+				luaentity = hitter:get_luaentity()
+			end
+			if hitter and is_player then
+				local wielditem = hitter:get_wielded_item()
+				kb = kb + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
+			elseif luaentity and luaentity._knockback then
+				kb = kb + luaentity._knockback
+			end
+			self._kb_turn = true
+			self._turn_to=self.object:get_yaw()-1.57
+			self.frame_speed_multiplier=2.3
+			if self.animation.run_end then
+				self:set_animation( "run")
+			elseif self.animation.walk_end then
+				self:set_animation( "walk")
+			end
+			minetest.after(0.2, function()
+				if self and self.object then
+					self.frame_speed_multiplier=1
+					self._kb_turn = false
+				end
+			end)
+			self.object:add_velocity({
+				x = dir.x * kb,
+				y = up*2,
+				z = dir.z * kb
+			})
+
+			self.pause_timer = 0.25
+		end
+	end -- END if damage
+
+	-- if skittish then run away
+	if hitter and is_player and hitter:get_pos() and not die and self.runaway == true and self.state ~= "flop" then
+
+		local yaw = self:set_yaw( minetest.dir_to_yaw(vector.direction(hitter:get_pos(), self.object:get_pos())))
+		minetest.after(0.2,function()
+			if self and self.object and self.object:get_pos() and hitter and is_player and hitter:get_pos() then
+				yaw = self:set_yaw( minetest.dir_to_yaw(vector.direction(hitter:get_pos(), self.object:get_pos())))
+				self:set_velocity( self.run_velocity)
+			end
+		end)
+		self.state = "runaway"
+		self.runaway_timer = 0
+		self.following = nil
+	end
+
+	local name = hitter:get_player_name() or ""
+
+	-- attack puncher and call other mobs for help
+	if self.passive == false
+	and self.state ~= "flop"
+	and (self.child == false or self.type == "monster")
+	and hitter:get_player_name() ~= self.owner
+	and not mcl_mobs.invis[ name ] then
+		if not die then
+			-- attack whoever punched mob
+			self.state = ""
+			self:do_attack(hitter)
+			self._aggro= true
+		end
+
+		-- alert others to the attack
+		local objs = minetest.get_objects_inside_radius(hitter:get_pos(), self.view_range)
+		local obj = nil
+
+		for n = 1, #objs do
+
+			obj = objs[n]:get_luaentity()
+
+			if obj then
+				-- only alert members of same mob or friends
+				if obj.group_attack
+				and obj.state ~= "attack"
+				and obj.owner ~= name then
+					if obj.name == self.name then
+						obj:do_attack(hitter)
+					elseif type(obj.group_attack) == "table" then
+						for i=1, #obj.group_attack do
+							if obj.name == obj.group_attack[i] then
+								obj._aggro = true
+								obj:do_attack(hitter)
+								break
+							end
+						end
+					end
+				end
+
+				-- have owned mobs attack player threat
+				if obj.owner == name and obj.owner_loyal then
+					obj:do_attack(self.object)
+				end
+			end
+		end
+	end
+end
 
 function mob_class:check_aggro(dtime)
 	if not self._aggro or not self.attack then return end
