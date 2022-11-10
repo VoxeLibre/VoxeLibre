@@ -6,6 +6,17 @@ local enable_pathfinding = true
 local stuck_timeout = 3 -- how long before mob gets stuck in place and starts searching
 local stuck_path_timeout = 10 -- how long will mob follow path before giving up
 
+-- check if daytime and also if mob is docile during daylight hours
+function mob_class:day_docile()
+	if self.docile_by_day == false then
+		return false
+	elseif self.docile_by_day == true
+	and self.time_of_day > 0.2
+	and self.time_of_day < 0.8 then
+		return true
+	end
+end
+
 -- attack player/mob
 function mob_class:do_attack(player)
 
@@ -307,7 +318,7 @@ function mob_class:monster_attack()
 	if not damage_enabled
 	or self.passive ~= false
 	or self.state == "attack"
-	or day_docile(self) then
+	or self:day_docile() then
 		return
 	end
 
@@ -489,4 +500,18 @@ function mob_class:boom(pos, strength, fire)
 
 	-- delete the object after it punched the player to avoid nil entities in e.g. mcl_shields!!
 	self.object:remove()
+end
+
+
+function mob_class:check_aggro(dtime)
+	if not self._aggro or not self.attack then return end
+	if not self._check_aggro_timer or self._check_aggro_timer > 5 then
+		self._check_aggro_timer = 0
+		if not self.attack:get_pos() or vector.distance(self.attack:get_pos(),self.object:get_pos()) > 128 then
+			self._aggro = nil
+			self.attack = nil
+			self.state = "stand"
+		end
+	end
+	self._check_aggro_timer = self._check_aggro_timer + dtime
 end
