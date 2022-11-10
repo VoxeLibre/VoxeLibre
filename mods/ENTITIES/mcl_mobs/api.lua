@@ -81,17 +81,6 @@ minetest.register_chatcommand("clearmobs",{
 end})
 
 
-minetest.register_on_leaveplayer(function(player)
-	local pn = player:get_player_name()
-	if not active_particlespawners[pn] then return end
-	for _,m in pairs(active_particlespawners[pn]) do
-		for k,v in pairs(m) do
-			minetest.delete_particlespawner(v)
-		end
-	end
-	active_particlespawners[pn] = nil
-end)
-
 function mob_class:player_in_active_range()
 	for _,p in pairs(minetest.get_connected_players()) do
 		if vector.distance(self.object:get_pos(),p:get_pos()) <= mob_active_range then return true end

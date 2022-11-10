@@ -7,6 +7,83 @@ local DEFAULT_FALL_SPEED = -9.81*1.5
 local player_transfer_distance = tonumber(minetest.settings:get("player_transfer_distance")) or 128
 if player_transfer_distance == 0 then player_transfer_distance = math.huge end
 
+
+-- custom particle effects
+function mcl_mobs.effect(pos, amount, texture, min_size, max_size, radius, gravity, glow, go_down)
+
+	radius = radius or 2
+	min_size = min_size or 0.5
+	max_size = max_size or 1
+	gravity = gravity or DEFAULT_FALL_SPEED
+	glow = glow or 0
+	go_down = go_down or false
+
+	local ym
+	if go_down then
+		ym = 0
+	else
+		ym = -radius
+	end
+
+	minetest.add_particlespawner({
+		amount = amount,
+		time = 0.25,
+		minpos = pos,
+		maxpos = pos,
+		minvel = {x = -radius, y = ym, z = -radius},
+		maxvel = {x = radius, y = radius, z = radius},
+		minacc = {x = 0, y = gravity, z = 0},
+		maxacc = {x = 0, y = gravity, z = 0},
+		minexptime = 0.1,
+		maxexptime = 1,
+		minsize = min_size,
+		maxsize = max_size,
+		texture = texture,
+		glow = glow,
+	})
+end
+
+function mcl_mobs.death_effect(pos, yaw, collisionbox, rotate)
+	local min, max
+	if collisionbox then
+		min = {x=collisionbox[1], y=collisionbox[2], z=collisionbox[3]}
+		max = {x=collisionbox[4], y=collisionbox[5], z=collisionbox[6]}
+	else
+		min = { x = -0.5, y = 0, z = -0.5 }
+		max = { x = 0.5, y = 0.5, z = 0.5 }
+	end
+	if rotate then
+		min = vector.rotate(min, {x=0, y=yaw, z=math.pi/2})
+		max = vector.rotate(max, {x=0, y=yaw, z=math.pi/2})
+		min, max = vector.sort(min, max)
+		min = vector.multiply(min, 0.5)
+		max = vector.multiply(max, 0.5)
+	end
+
+	minetest.add_particlespawner({
+		amount = 50,
+		time = 0.001,
+		minpos = vector.add(pos, min),
+		maxpos = vector.add(pos, max),
+		minvel = vector.new(-5,-5,-5),
+		maxvel = vector.new(5,5,5),
+		minexptime = 1.1,
+		maxexptime = 1.5,
+		minsize = 1,
+		maxsize = 2,
+		collisiondetection = false,
+		vertical = false,
+		texture = "mcl_particles_mob_death.png^[colorize:#000000:255",
+	})
+
+	minetest.sound_play("mcl_mobs_mob_poof", {
+		pos = pos,
+		gain = 1.0,
+		max_hear_distance = 8,
+	}, true)
+end
+
+
 -- play sound
 function mob_class:mob_sound(soundname, is_opinion, fixed_pitch)
 
@@ -81,41 +158,6 @@ function mob_class:remove_texture_mod(mod)
 	self.object:set_texture_mod(full_mod)
 end
 
--- custom particle effects
-function mcl_mobs.effect(pos, amount, texture, min_size, max_size, radius, gravity, glow, go_down)
-
-	radius = radius or 2
-	min_size = min_size or 0.5
-	max_size = max_size or 1
-	gravity = gravity or DEFAULT_FALL_SPEED
-	glow = glow or 0
-	go_down = go_down or false
-
-	local ym
-	if go_down then
-		ym = 0
-	else
-		ym = -radius
-	end
-
-	minetest.add_particlespawner({
-		amount = amount,
-		time = 0.25,
-		minpos = pos,
-		maxpos = pos,
-		minvel = {x = -radius, y = ym, z = -radius},
-		maxvel = {x = radius, y = radius, z = radius},
-		minacc = {x = 0, y = gravity, z = 0},
-		maxacc = {x = 0, y = gravity, z = 0},
-		minexptime = 0.1,
-		maxexptime = 1,
-		minsize = min_size,
-		maxsize = max_size,
-		texture = texture,
-		glow = glow,
-	})
-end
-
 function mob_class:damage_effect(damage)
 	-- damage particles
 	if (not disable_blood) and damage > 0 then
@@ -139,47 +181,6 @@ function mob_class:damage_effect(damage)
 		end
 	end
 end
-
-mcl_mobs.death_effect = function(pos, yaw, collisionbox, rotate)
-	local min, max
-	if collisionbox then
-		min = {x=collisionbox[1], y=collisionbox[2], z=collisionbox[3]}
-		max = {x=collisionbox[4], y=collisionbox[5], z=collisionbox[6]}
-	else
-		min = { x = -0.5, y = 0, z = -0.5 }
-		max = { x = 0.5, y = 0.5, z = 0.5 }
-	end
-	if rotate then
-		min = vector.rotate(min, {x=0, y=yaw, z=math.pi/2})
-		max = vector.rotate(max, {x=0, y=yaw, z=math.pi/2})
-		min, max = vector.sort(min, max)
-		min = vector.multiply(min, 0.5)
-		max = vector.multiply(max, 0.5)
-	end
-
-	minetest.add_particlespawner({
-		amount = 50,
-		time = 0.001,
-		minpos = vector.add(pos, min),
-		maxpos = vector.add(pos, max),
-		minvel = vector.new(-5,-5,-5),
-		maxvel = vector.new(5,5,5),
-		minexptime = 1.1,
-		maxexptime = 1.5,
-		minsize = 1,
-		maxsize = 2,
-		collisiondetection = false,
-		vertical = false,
-		texture = "mcl_particles_mob_death.png^[colorize:#000000:255",
-	})
-
-	minetest.sound_play("mcl_mobs_mob_poof", {
-		pos = pos,
-		gain = 1.0,
-		max_hear_distance = 8,
-	}, true)
-end
-
 
 function mob_class:remove_particlespawners(pn)
 	if not active_particlespawners[pn] then return end
@@ -271,3 +272,14 @@ end
 function mcl_mobs:set_animation(self, anim)
 	self:set_animation(anim)
 end
+
+minetest.register_on_leaveplayer(function(player)
+	local pn = player:get_player_name()
+	if not active_particlespawners[pn] then return end
+	for _,m in pairs(active_particlespawners[pn]) do
+		for k,v in pairs(m) do
+			minetest.delete_particlespawner(v)
+		end
+	end
+	active_particlespawners[pn] = nil
+end)
