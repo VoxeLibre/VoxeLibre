@@ -350,6 +350,27 @@ function mob_class:check_head_swivel()
 	end
 end
 
+function mob_class:set_animation_speed()
+	local v = self.object:get_velocity()
+	if v then
+		if self.frame_speed_multiplier then
+			local v2 = math.abs(v.x)+math.abs(v.z)*.833
+			if not self.animation.walk_speed then
+				self.animation.walk_speed = 25
+			end
+			if math.abs(v.x)+math.abs(v.z) > 0.5 then
+				self.object:set_animation_frame_speed((v2/math.max(1,self.run_velocity))*self.animation.walk_speed*self.frame_speed_multiplier)
+			else
+				self.object:set_animation_frame_speed(25)
+			end
+		end
+		--set_speed
+		if self.acc then
+			self.object:add_velocity(self.acc)
+		end
+	end
+end
+
 minetest.register_on_leaveplayer(function(player)
 	local pn = player:get_player_name()
 	if not active_particlespawners[pn] then return end
