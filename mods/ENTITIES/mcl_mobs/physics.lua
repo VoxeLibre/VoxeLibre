@@ -884,3 +884,43 @@ function mob_class:falling(pos)
 		end
 	end
 end
+
+function mob_class:check_water_flow()
+	-- Add water flowing for mobs from mcl_item_entity
+	local p, node, nn, def
+	p = self.object:get_pos()
+	node = minetest.get_node_or_nil(p)
+	if node then
+		nn = node.name
+		def = minetest.registered_nodes[nn]
+	end
+
+	-- Move item around on flowing liquids
+	if def and def.liquidtype == "flowing" then
+
+		--[[ Get flowing direction (function call from flowlib), if there's a liquid.
+		NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
+		Luckily, this is exactly what we need if we only care about water, which has this flowing distance. ]]
+		local vec = flowlib.quick_flow(p, node)
+		-- Just to make sure we don't manipulate the speed for no reason
+		if vec.x ~= 0 or vec.y ~= 0 or vec.z ~= 0 then
+			-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
+			local f = 1.39
+			-- Set new item moving speed into the direciton of the liquid
+			local newv = vector.multiply(vec, f)
+			self.object:set_acceleration({x = 0, y = 0, z = 0})
+			self.object:set_velocity({x = newv.x, y = -0.22, z = newv.z})
+
+			self.physical_state = true
+			self._flowing = true
+			self.object:set_properties({
+				physical = true
+			})
+			return
+		end
+	elseif self._flowing == true then
+		-- Disable flowing physics if not on/in flowing liquid
+		self._flowing = false
+		return
+	end
+end
