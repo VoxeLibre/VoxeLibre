@@ -767,6 +767,32 @@ function mob_class:do_pathfind_action(action)
 	end
 end
 
+
+local check_herd_timer = 0
+function mob_class:check_herd(dtime)
+	local pos = self.object:get_pos()
+	if not pos then return end
+	check_herd_timer = check_herd_timer + dtime
+	if check_herd_timer < 4 then return end
+	check_herd_timer = 0
+	for _,o in pairs(minetest.get_objects_inside_radius(pos,self.view_range)) do
+		local l = o:get_luaentity()
+		local p,y
+		if l and l.is_mob and l.name == self.name then
+			if self.horny and l.horny then
+				p = l.object:get_pos()
+			else
+				y = o:get_yaw()
+			end
+			if p then
+				go_to_pos(self,p)
+			elseif y then
+				self:set_yaw(y)
+			end
+		end
+	end
+end
+
 function mob_class:teleport(target)
 	if self.do_teleport then
 		if self.do_teleport(self, target) == false then

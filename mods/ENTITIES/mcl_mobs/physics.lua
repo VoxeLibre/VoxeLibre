@@ -806,6 +806,8 @@ function mob_class:falling(pos)
 		return
 	end
 
+	if not self.fall_speed then self.fall_speed = DEFAULT_FALL_SPEED end
+
 	if mcl_portals ~= nil then
 		if mcl_portals.nether_portal_cooloff(self.object) then
 			return false -- mob has teleported through Nether portal - it's 99% not falling
