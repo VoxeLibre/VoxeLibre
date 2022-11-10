@@ -4,6 +4,17 @@ local DEFAULT_FALL_SPEED = -9.81*1.5
 local FLOP_HEIGHT = 6
 local FLOP_HOR_SPEED = 1.5
 
+local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+
+local atann = math.atan
+local function atan(x)
+	if not x or x ~= x then
+		return 0
+	else
+		return atann(x)
+	end
+end
+
 -- get node but use fallback for nil or unknown
 local node_ok = function(pos, fallback)
 	fallback = fallback or mcl_mobs.fallback_node

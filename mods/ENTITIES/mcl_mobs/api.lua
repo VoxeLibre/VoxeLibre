@@ -3,13 +3,7 @@ local mob_class_meta = {__index = mcl_mobs.mob_class}
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 -- API for Mobs Redo: MineClone 2 Edition (MRM)
 local MAX_MOB_NAME_LENGTH = 30
-local HORNY_TIME = 30
-local HORNY_AGAIN_TIME = 300
-local CHILD_GROW_TIME = 60*20
-local DEATH_DELAY = 0.5
 local DEFAULT_FALL_SPEED = -9.81*1.5
-local FLOP_HEIGHT = 6
-local FLOP_HOR_SPEED = 1.5
 
 local PATHFINDING = "gowp"
 
@@ -41,12 +35,9 @@ local function atan(x)
 end
 
 -- Load settings
-local damage_enabled = minetest.settings:get_bool("enable_damage")
-local disable_blood = minetest.settings:get_bool("mobs_disable_blood")
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
 local remove_far = true
-local show_health = false
 -- Shows helpful debug info above each mob
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
 local spawn_logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",true)
@@ -69,7 +60,6 @@ end
 local node_ice = "mcl_core:ice"
 local node_snowblock = "mcl_core:snowblock"
 local node_snow = "mcl_core:snow"
-mcl_mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
 
 minetest.register_chatcommand("clearmobs",{
 	privs={maphack=true},
@@ -137,15 +127,11 @@ end
 
 -- get node but use fallback for nil or unknown
 local node_ok = function(pos, fallback)
-
 	fallback = fallback or mcl_mobs.fallback_node
-
 	local node = minetest.get_node_or_nil(pos)
-
 	if node and minetest.registered_nodes[node.name] then
 		return node
 	end
-
 	return minetest.registered_nodes[fallback]
 end
 

@@ -1,6 +1,7 @@
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 local active_particlespawners = {}
+local disable_blood = minetest.settings:get_bool("mobs_disable_blood")
 local DEFAULT_FALL_SPEED = -9.81*1.5
 
 local player_transfer_distance = tonumber(minetest.settings:get("player_transfer_distance")) or 128

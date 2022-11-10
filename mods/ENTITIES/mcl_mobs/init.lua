@@ -4,6 +4,7 @@ mcl_mobs.mob_class_meta = {__index = mcl_mobs.mob_class}
 local modname = minetest.get_current_modname()
 local path = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
+mcl_mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
 --api and helpers
 -- effects: sounds and particles mostly
 dofile(path .. "/effects.lua")
@@ -28,8 +29,21 @@ dofile(path .. "/mount.lua")
 dofile(path .. "/crafts.lua")
 dofile(path .. "/compat.lua")
 
+local DEFAULT_FALL_SPEED = -9.81*1.5
+local MAX_MOB_NAME_LENGTH = 30
+
 local old_spawn_icons = minetest.settings:get_bool("mcl_old_spawn_icons",false)
 local difficulty = tonumber(minetest.settings:get("mob_difficulty")) or 1.0
+
+-- get node but use fallback for nil or unknown
+local node_ok = function(pos, fallback)
+	fallback = fallback or mcl_mobs.fallback_node
+	local node = minetest.get_node_or_nil(pos)
+	if node and minetest.registered_nodes[node.name] then
+		return node
+	end
+	return minetest.registered_nodes[fallback]
+end
 
 --#### REGISTER FUNCS
 
@@ -301,7 +315,7 @@ function mcl_mobs.register_arrow(name, def)
 
 	if not name or not def then return end -- errorcheck
 
-	minetest.register_entity(name, setmetatable({
+	minetest.register_entity(name, {
 
 		physical = false,
 		visual = def.visual,
@@ -421,7 +435,7 @@ function mcl_mobs.register_arrow(name, def)
 
 			self.lastpos = pos
 		end
-	},mob_class))
+	})
 end
 
 -- Register spawn eggs

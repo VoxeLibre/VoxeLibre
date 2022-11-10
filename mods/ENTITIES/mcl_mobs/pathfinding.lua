@@ -2,6 +2,7 @@ local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager",false)
+local PATHFINDING = "gowp"
 
 local LOG_MODULE = "[Mobs]"
 local function mcl_log (message)

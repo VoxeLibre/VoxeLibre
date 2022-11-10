@@ -1,6 +1,10 @@
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 
+local damage_enabled = minetest.settings:get_bool("enable_damage")
+local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+
+local show_health = false
 -- pathfinding settings
 local enable_pathfinding = true
 local stuck_timeout = 3 -- how long before mob gets stuck in place and starts searching
