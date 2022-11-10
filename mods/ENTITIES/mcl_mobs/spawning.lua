@@ -1,5 +1,7 @@
 --lua locals
-local minetest,vector,math,table = minetest,vector,math,table
+local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
+local mob_class = mcl_mobs.mob_class
+
 local get_node                     = minetest.get_node
 local get_item_group               = minetest.get_item_group
 local get_node_light               = minetest.get_node_light
@@ -720,6 +722,30 @@ if mobs_spawn then
 			end
 		end
 	end)
+end
+
+function mob_class:check_despawn(pos)
+	-- Despawning: when lifetimer expires, remove mob
+	if remove_far
+	and self.can_despawn == true
+	and ((not self.nametag) or (self.nametag == ""))
+	and self.state ~= "attack"
+	and self.following == nil then
+		if self.despawn_immediately or self.lifetimer <= 0 then
+			if spawn_logging then
+				minetest.log("action", "[mcl_mobs] Mob "..self.name.." despawns at "..minetest.pos_to_string(pos, 1) .. " lifetimer ran out")
+			end
+			mcl_burning.extinguish(self.object)
+			self.object:remove()
+			return true
+		elseif self.lifetimer <= 10 then
+			if math.random(10) < 4 then
+				self.despawn_immediately = true
+			else
+				self.lifetimer = 20
+			end
+		end
+	end
 end
 
 minetest.register_chatcommand("mobstats",{
