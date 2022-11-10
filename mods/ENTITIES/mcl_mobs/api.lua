@@ -43,7 +43,6 @@ end
 -- Load settings
 local damage_enabled = minetest.settings:get_bool("enable_damage")
 local disable_blood = minetest.settings:get_bool("mobs_disable_blood")
-local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
 local remove_far = true

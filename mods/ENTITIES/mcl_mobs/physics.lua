@@ -9,6 +9,7 @@ local FLOP_HEIGHT = 6
 local FLOP_HOR_SPEED = 1.5
 local PATHFINDING = "gowp"
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
+local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false
 
 
 -- get node but use fallback for nil or unknown
@@ -44,7 +45,7 @@ local function within_limits(pos, radius)
 end
 
 -- drop items
-local item_drop = function(self, cooked, looting_level)
+function mob_class:item_drop(cooked, looting_level)
 
 	-- no drops if disabled by setting
 	if not mobs_drop_items then return end
@@ -77,14 +78,14 @@ local item_drop = function(self, cooked, looting_level)
 
 		local num = 0
 		local do_common_looting = (looting_level > 0 and looting_type == "common")
-		if random() < chance then
-			num = random(dropdef.min or 1, dropdef.max or 1)
+		if math.random() < chance then
+			num = math.random(dropdef.min or 1, dropdef.max or 1)
 		elseif not dropdef.looting_ignore_chance then
 			do_common_looting = false
 		end
 
 		if do_common_looting then
-			num = num + floor(random(0, looting_level) + 0.5)
+			num = num + math.floor(math.random(0, looting_level) + 0.5)
 		end
 
 		if num > 0 then
@@ -109,9 +110,9 @@ local item_drop = function(self, cooked, looting_level)
 			if obj and obj:get_luaentity() then
 
 				obj:set_velocity({
-					x = random(-10, 10) / 9,
+					x = math.random(-10, 10) / 9,
 					y = 6,
-					z = random(-10, 10) / 9,
+					z = math.random(-10, 10) / 9,
 				})
 			elseif obj then
 				obj:remove() -- item does not exist
@@ -423,7 +424,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 	local function death_handle(self)
 		-- dropped cooked item if mob died in fire or lava
 		if cause == "lava" or cause == "fire" then
-			item_drop(self, true, 0)
+			self:item_drop(true, 0)
 		else
 			local wielditem = ItemStack()
 			if cause == "hit" then
@@ -434,7 +435,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 			end
 			local cooked = mcl_burning.is_burning(self.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect")
 			local looting = mcl_enchanting.get_enchantment(wielditem, "looting")
-			item_drop(self, cooked, looting)
+			self:item_drop(cooked, looting)
 
 			if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= math.huge) then
 				mcl_experience.throw_xp(self.object:get_pos(), math.random(self.xp_min, self.xp_max))
