@@ -1348,3 +1348,51 @@ function mob_class:do_states(dtime)
 		end
 	end
 end
+
+function mob_class:check_smooth_rotation()
+	-- smooth rotation by ThomasMonroe314
+	if self._turn_to then
+		self:set_yaw( self._turn_to, .1)
+	end
+
+	if self.delay and self.delay > 0 then
+
+		local yaw = self.object:get_yaw() or 0
+
+		if self.delay == 1 then
+			yaw = self.target_yaw
+		else
+			local dif = math.abs(yaw - self.target_yaw)
+
+			if yaw > self.target_yaw then
+
+				if dif > math.pi then
+					dif = 2 * math.pi - dif -- need to add
+					yaw = yaw + dif / self.delay
+				else
+					yaw = yaw - dif / self.delay -- need to subtract
+				end
+
+			elseif yaw < self.target_yaw then
+
+				if dif >math.pi then
+					dif = 2 * math.pi - dif
+					yaw = yaw - dif / self.delay -- need to subtract
+				else
+					yaw = yaw + dif / self.delay -- need to add
+				end
+			end
+
+			if yaw > (math.pi * 2) then yaw = yaw - (math.pi * 2) end
+			if yaw < 0 then yaw = yaw + (math.pi * 2) end
+		end
+
+		self.delay = self.delay - 1
+		if self.shaking then
+			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
+		end
+		self.object:set_yaw(yaw)
+		self:update_roll()
+	end
+	-- end rotation
+end
