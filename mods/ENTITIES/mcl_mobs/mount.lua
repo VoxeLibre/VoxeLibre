@@ -1,4 +1,5 @@
-
+local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
+local mob_class = mcl_mobs.mob_class
 -- lib_mount by Blert2112 (edited by TenPlus1)
 
 local enable_crash = false
@@ -444,5 +445,16 @@ function mcl_mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_an
 	else
 		-- moving animation
 		mcl_mobs:set_animation(entity, moving_anim)
+	end
+end
+
+function mob_class:on_detach_child(child)
+	if self.detach_child then
+		if self.detach_child(self, child) then
+			return
+		end
+	end
+	if self.driver == child then
+		self.driver = nil
 	end
 end

@@ -117,20 +117,6 @@ local node_ok = function(pos, fallback)
 	return minetest.registered_nodes[fallback]
 end
 
-
-local mob_detach_child = function(self, child)
-
-	if self.detach_child then
-		if self.detach_child(self, child) then
-			return
-		end
-	end
-	if self.driver == child then
-		self.driver = nil
-	end
-
-end
-
 -- get entity staticdata
 function mob_class:get_staticdata()
 
