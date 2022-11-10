@@ -50,11 +50,6 @@ if minetest.settings:get_bool("only_peaceful_mobs", false) then
 	end)
 end
 
--- default nodes
-local node_ice = "mcl_core:ice"
-local node_snowblock = "mcl_core:snowblock"
-local node_snow = "mcl_core:snow"
-
 minetest.register_chatcommand("clearmobs",{
 	privs={maphack=true},
 	params = "<all>|<nametagged>|<range>",

@@ -31,6 +31,7 @@ local dbg_spawn_succ = 0
 local dbg_spawn_counts = {}
 -- range for mob count
 local aoc_range = 136
+local remove_far = true
 
 local mob_cap = {
 	monster = tonumber(minetest.settings:get("mcl_mob_cap_monster")) or 70,

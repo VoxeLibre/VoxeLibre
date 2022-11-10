@@ -3,6 +3,7 @@ local mob_class = mcl_mobs.mob_class
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager",false)
 local PATHFINDING = "gowp"
+local enable_pathfinding = true
 
 local LOG_MODULE = "[Mobs]"
 local function mcl_log (message)
