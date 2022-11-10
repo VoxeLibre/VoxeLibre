@@ -219,6 +219,54 @@ function mob_class:gopath(target,callback_arrived)
 	end
 end
 
+function mob_class:interact_with_door(action, target)
+	local p = self.object:get_pos()
+	--local t = minetest.get_timeofday()
+	--local dd = minetest.find_nodes_in_area(vector.offset(p,-1,-1,-1),vector.offset(p,1,1,1),{"group:door"})
+	--for _,d in pairs(dd) do
+	if target then
+		mcl_log("Door target is: ".. minetest.pos_to_string(target))
+
+		local n = minetest.get_node(target)
+		if n.name:find("_b_") or n.name:find("_t_") then
+			mcl_log("Door")
+			local def = minetest.registered_nodes[n.name]
+			local closed = n.name:find("_b_1") or n.name:find("_t_1")
+			--if self.state == PATHFINDING then
+				if closed and action == "open" and def.on_rightclick then
+					mcl_log("Open door")
+					def.on_rightclick(target,n,self)
+				end
+				if not closed and action == "close" and def.on_rightclick then
+					mcl_log("Close door")
+					def.on_rightclick(target,n,self)
+				end
+			--else
+		else
+			mcl_log("Not door")
+		end
+	else
+		mcl_log("no target. cannot try and open or close door")
+	end
+	--end
+end
+
+function mob_class:do_pathfind_action(action)
+	if action then
+		mcl_log("Action present")
+		local type = action["type"]
+		local action_val = action["action"]
+		local target = action["target"]
+		if target then
+			mcl_log("Target: ".. minetest.pos_to_string(target))
+		end
+		if type and type == "door" then
+			mcl_log("Type is door")
+			self:interact_with_door(action_val, target)
+		end
+	end
+end
+
 local gowp_etime = 0
 
 function mob_class:check_gowp(dtime)
