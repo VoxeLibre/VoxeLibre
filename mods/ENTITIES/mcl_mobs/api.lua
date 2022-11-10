@@ -520,15 +520,7 @@ function mob_class:on_step(dtime)
 end
 
 
--- default function when mobs are blown up with TNT
-local function do_tnt(self,damage)
-	self.object:punch(self.object, 1.0, {
-		full_punch_interval = 1.0,
-		damage_groups = {fleshy = damage},
-	}, nil)
 
-	return false, true, {}
-end
 
 local timer = 0
 minetest.register_globalstep(function(dtime)

@@ -280,9 +280,14 @@ minetest.register_entity(name, setmetatable({
 	noyaw = def.noyaw or false,
 	particlespawners = def.particlespawners,
 	-- End of MCL2 extensions
-
 	on_spawn = def.on_spawn,
-	on_blast = def.on_blast or do_tnt,
+	on_blast = def.on_blast or function(self,damage)
+		self.object:punch(self.object, 1.0, {
+			full_punch_interval = 1.0,
+			damage_groups = {fleshy = damage},
+		}, nil)
+		return false, true, {}
+	end,
 	do_punch = def.do_punch,
 	on_breed = def.on_breed,
 	on_grown = def.on_grown,
