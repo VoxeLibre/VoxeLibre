@@ -2212,7 +2212,7 @@ local monster_attack = function(self)
 			end
 		end
 	end
-	if not min_player then
+	if not min_player and #blacklist_attack > 0 then
 		min_player=blacklist_attack[math.random(#blacklist_attack)]
 	end
 	-- attack player
