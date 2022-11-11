@@ -389,6 +389,15 @@ awards.register_achievement("mcl:theEndAgain", {
 	group = "End",
 })
 
+-- Triggered in mcl_beehives
+awards.register_achievement("mcl:bee_our_guest", {
+	title = S("Bee Our Guest"),
+	description = S("Use a campfire to collect a bottle of honey from a beehive without aggrivating the bees inside."),
+	icon = "mcl_honey_honey_bottle.png",
+	type = "Advancement",
+	group = "Husbandry",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then

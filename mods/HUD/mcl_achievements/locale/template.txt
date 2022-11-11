@@ -87,3 +87,5 @@ Sky's The Limit=
 Find the elytra and prepare to fly above and beyond!=
 Free the End=
 Kill the ender dragon. Good Luck!=
+Bee Our Guest=
+Use a campfire to collect a bottle of honey from a beehive without aggrivating the bees inside.=
