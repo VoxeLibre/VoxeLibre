@@ -398,6 +398,14 @@ awards.register_achievement("mcl:bee_our_guest", {
 	group = "Husbandry",
 })
 
+awards.register_achievement("mcl:total_beelocation", {
+	title = S("Total Beelocation"),
+	description = S("Move a bee nest, with 3 bees inside, using a silk touch enchanted tool."),
+	icon = "mcl_beehives_bee_nest_front_honey.png",
+	type = "Advancement",
+	group = "Husbandry",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then
