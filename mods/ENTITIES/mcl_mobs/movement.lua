@@ -570,7 +570,7 @@ function mob_class:check_runaway_from()
 		local yaw = (atan(vec.z / vec.x) + 3 *math.pi/ 2) - self.rotate
 
 		if lp.x > s.x then
-			yaw = yaw + pi
+			yaw = yaw + math.pi
 		end
 
 		yaw = self:set_yaw( yaw, 4)

@@ -514,9 +514,6 @@ function mob_class:on_step(dtime)
 	end
 end
 
-
-
-
 local timer = 0
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
