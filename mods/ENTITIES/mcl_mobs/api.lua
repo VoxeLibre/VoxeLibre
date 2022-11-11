@@ -10,8 +10,6 @@ local PATHFINDING = "gowp"
 -- Localize
 local S = minetest.get_translator("mcl_mobs")
 
-local mob_active_range = tonumber(minetest.settings:get("mcl_mob_active_range")) or 48
-
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager",false)
 local function mcl_log (message)
 	if LOGGING_ON then
@@ -34,12 +32,10 @@ local function atan(x)
 	end
 end
 
--- Load settings
+local remove_far = true
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
-local remove_far = true
--- Shows helpful debug info above each mob
-local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
+local mobs_debug = minetest.settings:get_bool("mobs_debug", false) -- Shows helpful debug info above each mob
 local spawn_logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",true)
 
 -- Peaceful mode message so players will know there are no monsters
@@ -50,59 +46,6 @@ if minetest.settings:get_bool("only_peaceful_mobs", false) then
 	end)
 end
 
-minetest.register_chatcommand("clearmobs",{
-	privs={maphack=true},
-	params = "<all>|<nametagged>|<range>",
-	description=S("Removes all spawned mobs except nametagged and tamed ones. all removes all mobs, nametagged only nametagged ones and with the range paramter all mobs in a distance of the current player are removed."),
-	func=function(n,param)
-		local p = minetest.get_player_by_name(n)
-		local num=tonumber(param)
-		for _,o in pairs(minetest.luaentities) do
-			if o.is_mob then
-				if  param == "all" or
-				( param == "nametagged" and o.nametag ) or
-				( param == "" and ( not o.nametag or o.nametag == "" ) and not o.tamed ) or
-				( num and num > 0 and vector.distance(p:get_pos(),o.object:get_pos()) <= num ) then
-					o.object:remove()
-				end
-			end
-		end
-end})
-
-
-function mob_class:player_in_active_range()
-	for _,p in pairs(minetest.get_connected_players()) do
-		if vector.distance(self.object:get_pos(),p:get_pos()) <= mob_active_range then return true end
-		-- slightly larger than the mc 32 since mobs spawn on that circle and easily stand still immediately right after spawning.
-	end
-end
-
--- Return true if object is in view_range
-function mob_class:object_in_range(object)
-	if not object then
-		return false
-	end
-	local factor
-	-- Apply view range reduction for special player armor
-	if object:is_player() then
-		local factors = mcl_armor.player_view_range_factors[object]
-		factor = factors and factors[self.name]
-	end
-	-- Distance check
-	local dist
-	if factor and factor == 0 then
-		return false
-	elseif factor then
-		dist = self.view_range * factor
-	else
-		dist = self.view_range
-	end
-
-	local p1, p2 = self.object:get_pos(), object:get_pos()
-	return p1 and p2 and (vector.distance(p1, p2) <= dist)
-end
-
--- get node but use fallback for nil or unknown
 local node_ok = function(pos, fallback)
 	fallback = fallback or mcl_mobs.fallback_node
 	local node = minetest.get_node_or_nil(pos)
@@ -112,7 +55,6 @@ local node_ok = function(pos, fallback)
 	return minetest.registered_nodes[fallback]
 end
 
--- get entity staticdata
 function mob_class:get_staticdata()
 
 	for _,p in pairs(minetest.get_connected_players()) do
@@ -153,15 +95,12 @@ function mob_class:get_staticdata()
 	return minetest.serialize(tmp)
 end
 
-
--- activate mob and reload settings
 function mob_class:mob_activate(staticdata, def, dtime)
 	if not self.object:get_pos() or staticdata == "remove" then
 		mcl_burning.extinguish(self.object)
 		self.object:remove()
 		return
 	end
-	-- remove monsters in peaceful mode
 	if self.type == "monster"
 	and minetest.settings:get_bool("only_peaceful_mobs", false) then
 		mcl_burning.extinguish(self.object)
@@ -169,7 +108,6 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		return
 	end
 
-	-- load entity variables
 	local tmp = minetest.deserialize(staticdata)
 
 	if tmp then
@@ -178,7 +116,6 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		end
 	end
 
-	-- select random texture, set model and size
 	if not self.base_texture then
 
 		-- compatiblity with old simple mobs textures
@@ -196,31 +133,26 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		self.base_selbox = self.selectionbox
 	end
 
-	-- for current mobs that dont have this set
 	if not self.base_selbox then
 		self.base_selbox = self.selectionbox or self.base_colbox
 	end
 
-	-- set texture, model and size
 	local textures = self.base_texture
 	local mesh = self.base_mesh
 	local vis_size = self.base_size
 	local colbox = self.base_colbox
 	local selbox = self.base_selbox
 
-	-- specific texture if gotten
 	if self.gotten == true
 	and def.gotten_texture then
 		textures = def.gotten_texture
 	end
 
-	-- specific mesh if gotten
 	if self.gotten == true
 	and def.gotten_mesh then
 		mesh = def.gotten_mesh
 	end
 
-	-- set child objects to half size
 	if self.child == true then
 
 		vis_size = {
@@ -257,7 +189,6 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		self.breath = self.breath_max
 	end
 
-	-- pathfinding init
 	self.path = {}
 	self.path.way = {} -- path to follow, table of positions
 	self.path.lastpos = {x = 0, y = 0, z = 0}
@@ -297,12 +228,10 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	self.blinktimer = 0
 	self.blinkstatus = false
 
-	-- check existing nametag
 	if not self.nametag then
 		self.nametag = def.nametag
 	end
 	if not self.custom_visual_size then
-		-- Remove saved visual_size on old existing entites.
 		self.visual_size = nil
 		self.base_size = self.visual_size
 		if self.child then
@@ -313,17 +242,15 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		end
 	end
 
-	-- set anything changed above
 	self.object:set_properties(self)
 	self:set_yaw( (math.random(0, 360) - 180) / 180 * math.pi, 6)
 	self:update_tag()
 	self._current_animation = nil
 	self:set_animation( "stand")
 
-	-- run on_spawn function if found
 	if self.on_spawn and not self.on_spawn_run then
 		if self.on_spawn(self) then
-			self.on_spawn_run = true --  if true, set flag to run once only
+			self.on_spawn_run = true
 		end
 	end
 
@@ -337,8 +264,6 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		self._run_armor_init = true
 	end
 
-
-	-- run after_activate
 	if def.after_activate then
 		def.after_activate(self, staticdata, def, dtime)
 	end
@@ -350,64 +275,35 @@ function mob_class:on_step(dtime)
 	local pos = self.object:get_pos()
 	if self:check_despawn(pos) then return true end
 
-	local v = self.object:get_velocity()
 	local d = 0.85
+	if self:check_dying() then d = 0.92 end
 
-	if (self.state and self.state=="die" or self:check_for_death()) and not self.animation.die_end then
-		d = 0.92
-		local rot = self.object:get_rotation()
-		rot.z = ((math.pi/2-rot.z)*.2)+rot.z
-		self.object:set_rotation(rot)
-	end
-
-	if not self:player_in_active_range() then
-		self:set_animation( "stand", true)
-		local node_under = node_ok(vector.offset(pos,0,-1,0)).name
-		local acc = self.object:get_acceleration()
-		if acc.y > 0 or node_under ~= "air" then
-			self.object:set_acceleration(vector.new(0,0,0))
-			self.object:set_velocity(vector.new(0,0,0))
-		end
-		if acc.y == 0 and node_under == "air" then
-			self:falling(pos)
-		end
-		return
-	end
-
+	local v = self.object:get_velocity()
 	if v then
 		--diffuse object velocity
 		self.object:set_velocity({x = v.x*d, y = v.y, z = v.z*d})
 	end
 
-	self:check_aggro(dtime)
-	self:check_item_pickup()
+	if self:falling(pos) then return end
 
-	self:check_particlespawners(dtime)
+	self:check_suspend()
+	self:check_aggro(dtime)
+
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
 		-- mcl_burning.tick may remove object immediately
 		if not self.object:get_pos() then return end
 	end
 
-	local yaw = 0
+	if mobs_debug then self:update_tag() end
 
-	if mobs_debug then
-		self:update_tag()
-	end
-
-	if self.state == "die" then
-		return
-	end
+	if self.state == "die" then return end
 
 	if self.jump_sound_cooloff > 0 then
 		self.jump_sound_cooloff = self.jump_sound_cooloff - dtime
 	end
 	if self.opinion_sound_cooloff > 0 then
 		self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
-	end
-	if self:falling(pos) then
-		-- Return if mob died after falling
-		return
 	end
 
 	--Mob following code.
@@ -441,9 +337,10 @@ function mob_class:on_step(dtime)
 		if self.timer < 1 then
 			return
 		end
-
 		self.timer = 0
 	end
+	self:check_particlespawners(dtime)
+	self:check_item_pickup()
 
 	-- never go over 100
 	if self.timer > 100 then
@@ -485,11 +382,10 @@ function mob_class:on_step(dtime)
 	end
 
 	self:do_jump()
-
 	self:set_armor_texture()
-
 	self:check_runaway_from()
 
+	local yaw = 0
 	if self:is_at_water_danger() and self.state ~= "attack" then
 		if math.random(1, 10) <= 6 then
 			self:set_velocity(0)
@@ -530,3 +426,22 @@ minetest.register_globalstep(function(dtime)
 	end
 	timer = 0
 end)
+
+minetest.register_chatcommand("clearmobs",{
+	privs={maphack=true},
+	params = "<all>|<nametagged>|<range>",
+	description=S("Removes all spawned mobs except nametagged and tamed ones. all removes all mobs, nametagged only nametagged ones and with the range paramter all mobs in a distance of the current player are removed."),
+	func=function(n,param)
+		local p = minetest.get_player_by_name(n)
+		local num=tonumber(param)
+		for _,o in pairs(minetest.luaentities) do
+			if o.is_mob then
+				if  param == "all" or
+				( param == "nametagged" and o.nametag ) or
+				( param == "" and ( not o.nametag or o.nametag == "" ) and not o.tamed ) or
+				( num and num > 0 and vector.distance(p:get_pos(),o.object:get_pos()) <= num ) then
+					o.object:remove()
+				end
+			end
+		end
+end})

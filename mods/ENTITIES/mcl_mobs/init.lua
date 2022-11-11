@@ -33,6 +33,7 @@ local DEFAULT_FALL_SPEED = -9.81*1.5
 local MAX_MOB_NAME_LENGTH = 30
 
 local old_spawn_icons = minetest.settings:get_bool("mcl_old_spawn_icons",false)
+local extended_pet_control = minetest.settings:get_bool("mcl_extended_pet_control",true)
 local difficulty = tonumber(minetest.settings:get("mob_difficulty")) or 1.0
 
 -- get node but use fallback for nil or unknown
@@ -49,8 +50,11 @@ end
 
 -- Code to execute before custom on_rightclick handling
 local on_rightclick_prefix = function(self, clicker)
+	if not clicker:is_player() then return end
 	local item = clicker:get_wielded_item()
-
+	if extended_pet_control and self.tamed and self.owner == clicker:get_player_name() then
+		self:toggle_sit(clicker)
+	end
 	-- Name mob with nametag
 	if not self.ignores_nametag and item:get_name() == "mcl_mobs:nametag" then
 
@@ -71,7 +75,17 @@ local on_rightclick_prefix = function(self, clicker)
 		end
 
 	end
+
 	return false
+end
+
+local create_mob_on_rightclick = function(on_rightclick)
+	return function(self, clicker)
+		local stop = on_rightclick_prefix(self, clicker)
+		if (not stop) and (on_rightclick) then
+			on_rightclick(self, clicker)
+		end
+	end
 end
 
 -- check if within physical map limits (-30911 to 30927)
@@ -92,15 +106,6 @@ local function within_limits(pos, radius)
 	return true
 end
 
-
-local create_mob_on_rightclick = function(on_rightclick)
-	return function(self, clicker)
-		local stop = on_rightclick_prefix(self, clicker)
-		if (not stop) and (on_rightclick) then
-			on_rightclick(self, clicker)
-		end
-	end
-end
 mcl_mobs.spawning_mobs = {}
 -- register mob entity
 function mcl_mobs.register_mob(name, def)
@@ -148,7 +153,7 @@ minetest.register_entity(name, setmetatable({
 	description = def.description,
 	type = def.type,
 	attack_type = def.attack_type,
-	fly = def.fly,
+	fly = def.fly or false,
 	fly_in = def.fly_in or {"air", "__airlike"},
 	owner = def.owner or "",
 	order = def.order or "",

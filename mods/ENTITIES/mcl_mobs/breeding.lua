@@ -34,7 +34,7 @@ function mob_class:feed_tame(clicker, feed_count, breed, tame, notake)
 		return false
 	end
 	-- can eat/tame with item in hand
-	if self.nofollow or follow_holding(self, clicker) then
+	if self.nofollow or self:follow_holding(clicker) then
 		local consume_food = false
 
 		-- tame if not still a baby
@@ -309,4 +309,44 @@ function mob_class:check_breeding()
 			end
 		end
 	end
+end
+
+function mob_class:toggle_sit(clicker,p)
+	if not self.tamed or self.child  or self.owner ~= clicker:get_player_name() then
+		return
+	end
+	local pos = self.object:get_pos()
+	local particle
+	if not self.order or self.order == "" or self.order == "sit" then
+		particle = "mobs_mc_wolf_icon_roam.png"
+		self.order = "roam"
+		self.state = "stand"
+		self.walk_chance = default_walk_chance
+		self.jump = true
+		self:set_animation("stand")
+		-- TODO: Add sitting model
+	else
+		particle = "mobs_mc_wolf_icon_sit.png"
+		self.order = "sit"
+		self.state = "stand"
+		self.walk_chance = 0
+		self.jump = false
+		if self.animation.sit_start then
+			self:set_animation("sit")
+		else
+			self:set_animation("stand")
+		end
+	end
+	local pp = vector.new(0,1.4,0)
+	if p then pp = vector.offset(pp,0,p,0) end
+	-- Display icon to show current order (sit or roam)
+	minetest.add_particle({
+		pos = vector.add(pos, pp),
+		velocity = {x=0,y=0.2,z=0},
+		expirationtime = 1,
+		size = 4,
+		texture = particle,
+		playername = self.owner,
+		glow = minetest.LIGHT_MAX,
+	})
 end

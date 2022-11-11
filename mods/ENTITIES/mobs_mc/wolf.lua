@@ -194,41 +194,13 @@ dog.on_rightclick = function(self, clicker)
 			end
 		end
 	else
-		-- Toggle sitting order
-
 		if not self.owner or self.owner == "" then
-			-- Huh? This wolf has no owner? Let's fix this! This should never happen.
+		-- Huh? This dog has no owner? Let's fix this! This should never happen.
 			self.owner = clicker:get_player_name()
 		end
-
-		local pos = self.object:get_pos()
-		local particle
-		if not self.order or self.order == "" or self.order == "sit" then
-			particle = "mobs_mc_wolf_icon_roam.png"
-			self.order = "roam"
-			self.state = "stand"
-			self.walk_chance = default_walk_chance
-			self.jump = true
-			self:set_animation("stand")
-			-- TODO: Add sitting model
-		else
-			particle = "mobs_mc_wolf_icon_sit.png"
-			self.order = "sit"
-			self.state = "stand"
-			self.walk_chance = 0
-			self.jump = false
-			self:set_animation("sit")
+		if not minetest.settings:get_bool("mcl_extended_pet_control",true) then
+			self:toggle_sit(clicker,-0.4)
 		end
-		-- Display icon to show current order (sit or roam)
-		minetest.add_particle({
-			pos = vector.add(pos, {x=0,y=1,z=0}),
-			velocity = {x=0,y=0.2,z=0},
-			expirationtime = 1,
-			size = 4,
-			texture = particle,
-			playername = self.owner,
-			glow = minetest.LIGHT_MAX,
-		})
 	end
 end
 

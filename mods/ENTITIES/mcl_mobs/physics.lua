@@ -10,7 +10,7 @@ local FLOP_HOR_SPEED = 1.5
 local PATHFINDING = "gowp"
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
 local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false
-
+local mob_active_range = tonumber(minetest.settings:get("mcl_mob_active_range")) or 48
 
 -- get node but use fallback for nil or unknown
 local node_ok = function(pos, fallback)
@@ -44,15 +44,44 @@ local function within_limits(pos, radius)
 	return true
 end
 
--- drop items
+function mob_class:player_in_active_range()
+	for _,p in pairs(minetest.get_connected_players()) do
+		if vector.distance(self.object:get_pos(),p:get_pos()) <= mob_active_range then return true end
+		-- slightly larger than the mc 32 since mobs spawn on that circle and easily stand still immediately right after spawning.
+	end
+end
+
+-- Return true if object is in view_range
+function mob_class:object_in_range(object)
+	if not object then
+		return false
+	end
+	local factor
+	-- Apply view range reduction for special player armor
+	if object:is_player() then
+		local factors = mcl_armor.player_view_range_factors[object]
+		factor = factors and factors[self.name]
+	end
+	-- Distance check
+	local dist
+	if factor and factor == 0 then
+		return false
+	elseif factor then
+		dist = self.view_range * factor
+	else
+		dist = self.view_range
+	end
+
+	local p1, p2 = self.object:get_pos(), object:get_pos()
+	return p1 and p2 and (vector.distance(p1, p2) <= dist)
+end
+
 function mob_class:item_drop(cooked, looting_level)
 
-	-- no drops if disabled by setting
 	if not mobs_drop_items then return end
 
 	looting_level = looting_level or 0
 
-	-- no drops for child mobs (except monster)
 	if (self.child and self.type ~= "monster") then
 		return
 	end
@@ -60,7 +89,7 @@ function mob_class:item_drop(cooked, looting_level)
 	local obj, item, num
 	local pos = self.object:get_pos()
 
-	self.drops = self.drops or {} -- nil check
+	self.drops = self.drops or {}
 
 	for n = 1, #self.drops do
 		local dropdef = self.drops[n]
@@ -91,7 +120,6 @@ function mob_class:item_drop(cooked, looting_level)
 		if num > 0 then
 			item = dropdef.name
 
-			-- cook items when true
 			if cooked then
 
 				local output = minetest.get_craft_result({
@@ -102,7 +130,6 @@ function mob_class:item_drop(cooked, looting_level)
 				end
 			end
 
-			-- add item if it exists
 			for x = 1, num do
 				obj = minetest.add_item(pos, ItemStack(item .. " " .. 1))
 			end
@@ -155,8 +182,7 @@ function mob_class:collision()
 end
 
 -- move mob in facing direction
-function mob_class:set_velocity( v)
-
+function mob_class:set_velocity(v)
 	local c_x, c_y = 0, 0
 
 	-- can mob be pushed, if so calculate direction
@@ -183,7 +209,6 @@ end
 
 -- calculate mob velocity
 function mob_class:get_velocity()
-
 	local v = self.object:get_velocity()
 	if v then
 		return (v.x * v.x + v.z * v.z) ^ 0.5
@@ -245,8 +270,6 @@ function mob_class:update_tag()
 	self.object:set_properties({
 		nametag = tag,
 	})
-
-	self:update_roll()
 end
 
 local function shortest_term_of_yaw_rotation(self, rot_origin, rot_target, nums)
@@ -947,5 +970,31 @@ function mob_class:check_water_flow()
 		-- Disable flowing physics if not on/in flowing liquid
 		self._flowing = false
 		return
+	end
+end
+
+function mob_class:check_dying()
+	if ((self.state and self.state=="die") or self:check_for_death()) and not self.animation.die_end then
+		local rot = self.object:get_rotation()
+		rot.z = ((math.pi/2-rot.z)*.2)+rot.z
+		self.object:set_rotation(rot)
+		return true
+	end
+end
+
+function mob_class:check_suspend()
+	if not self:player_in_active_range() then
+		local pos = self.object:get_pos()
+		local node_under = node_ok(vector.offset(pos,0,-1,0)).name
+		local acc = self.object:get_acceleration()
+		self:set_animation( "stand", true)
+		if acc.y > 0 or node_under ~= "air" then
+			self.object:set_acceleration(vector.new(0,0,0))
+			self.object:set_velocity(vector.new(0,0,0))
+		end
+		if acc.y == 0 and node_under == "air" then
+			self:falling(pos)
+		end
+		return true
 	end
 end

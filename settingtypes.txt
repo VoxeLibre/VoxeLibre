@@ -222,6 +222,9 @@ mcl_bookshelf_inventories (Enable bookshelf inventories) bool true
 # Enable swiftness on enchanted golden apples
 mcl_enable_fapples (Enable swiftness on enchanted golden apples) bool true
 
+# All tameable mobs listen to the "sit" righclick like dogs
+mcl_extended_pet_control (Extended pet control) bool true
+
 [Debugging]
 # If enabled, this will show the itemstring of an item in the description.
 mcl_item_id_debug (Item ID Debug) bool false

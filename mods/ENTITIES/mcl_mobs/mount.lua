@@ -386,7 +386,6 @@ function mcl_mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 	entity.v2 = v
 end
 
-
 -- directional flying routine by D00Med (edited by TenPlus1)
 
 function mcl_mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_anim)
@@ -447,6 +446,10 @@ function mcl_mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_an
 		mcl_mobs:set_animation(entity, moving_anim)
 	end
 end
+
+mcl_mobs.mob_class.drive = mcl_mobs.drive
+mcl_mobs.mob_class.fly = mcl_mobs.fly
+mcl_mobs.mob_class.attach = mcl_mobs.attach
 
 function mob_class:on_detach_child(child)
 	if self.detach_child then
