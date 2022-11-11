@@ -281,7 +281,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 			-- will try again in 2 seconds
 			self.path.stuck_timer = stuck_timeout - 2
 		elseif s.y < p1.y and (not self.fly) then
-			do_jump(self) --add jump to pathfinding
+			self:do_jump() --add jump to pathfinding
 			self.path.following = true
 			-- Yay, I found path!
 			-- TODO: Implement war_cry sound without being annoying
