@@ -48,6 +48,7 @@ local axolotl = {
 	head_yaw="z",
 
 	armor = 100,
+	rotate = 180,
 	spawn_in_group_min = 1,
 	spawn_in_group = 4,
 	tilt_swim = true,
