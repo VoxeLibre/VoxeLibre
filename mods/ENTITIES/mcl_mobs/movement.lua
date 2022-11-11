@@ -4,6 +4,8 @@ local DEFAULT_FALL_SPEED = -9.81*1.5
 local FLOP_HEIGHT = 6
 local FLOP_HOR_SPEED = 1.5
 local PATHFINDING = "gowp"
+local enable_pathfinding = true
+
 local node_ice = "mcl_core:ice"
 local node_snowblock = "mcl_core:snowblock"
 local node_snow = "mcl_core:snow"

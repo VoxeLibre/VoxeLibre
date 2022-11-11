@@ -733,7 +733,7 @@ function mob_class:check_despawn(pos)
 	and self.state ~= "attack"
 	and self.following == nil then
 		if self.despawn_immediately or self.lifetimer <= 0 then
-			if spawn_logging then
+			if logging then
 				minetest.log("action", "[mcl_mobs] Mob "..self.name.." despawns at "..minetest.pos_to_string(pos, 1) .. " lifetimer ran out")
 			end
 			mcl_burning.extinguish(self.object)

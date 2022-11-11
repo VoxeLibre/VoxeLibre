@@ -11,6 +11,7 @@ local PATHFINDING = "gowp"
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
 local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false
 local mob_active_range = tonumber(minetest.settings:get("mcl_mob_active_range")) or 48
+local show_health = false
 
 -- get node but use fallback for nil or unknown
 local node_ok = function(pos, fallback)

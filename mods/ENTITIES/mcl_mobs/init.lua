@@ -297,7 +297,6 @@ minetest.register_entity(name, setmetatable({
 	on_breed = def.on_breed,
 	on_grown = def.on_grown,
 	on_pick_up = def.on_pick_up,
-	on_detach_child = mob_detach_child,
 	on_activate = function(self, staticdata, dtime)
 		--this is a temporary hack so mobs stop
 		--glitching and acting really weird with the
