@@ -297,6 +297,8 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	end
 end
 
+
+
 -- main mob function
 function mob_class:on_step(dtime)
 	self.lifetimer = self.lifetimer - dtime
@@ -315,7 +317,30 @@ function mob_class:on_step(dtime)
 	if self:falling(pos) then return end
 
 	self:check_suspend()
-	self:check_aggro(dtime)
+	self:check_water_flow()
+
+	local yaw = 0
+	if self:is_at_water_danger() and self.state ~= "attack" then
+		if math.random(1, 10) <= 6 then
+			self:set_velocity(0)
+			self.state = "stand"
+			self:set_animation( "stand")
+			yaw = yaw + math.random(-0.5, 0.5)
+			yaw = self:set_yaw( yaw, 8)
+		end
+	else
+		if self.move_in_group ~= false then
+			self:check_herd(dtime)
+		end
+	end
+
+	if self:is_at_cliff_or_danger() then
+			self:set_velocity(0)
+			self.state = "stand"
+			self:set_animation( "stand")
+			local yaw = self.object:get_yaw() or 0
+			yaw = self:set_yaw( yaw + 0.78, 8)
+	end
 
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
@@ -340,6 +365,15 @@ function mob_class:on_step(dtime)
 	self:set_animation_speed()
 	self:check_smooth_rotation()
 	self:check_head_swivel()
+
+	self:do_jump()
+	self:set_armor_texture()
+	self:check_runaway_from()
+
+	self:monster_attack()
+	self:npc_attack()
+	self:check_breeding()
+	self:check_aggro(dtime)
 
 	-- run custom function (defined in mob lua file)
 	if self.do_custom then
@@ -397,44 +431,12 @@ function mob_class:on_step(dtime)
 		self:replace(pos)
 	end
 
-	self:monster_attack()
-	self:npc_attack()
-	self:check_breeding()
-
 	if self:do_states(dtime) then
 		return
 	end
 
 	if not self.object:get_luaentity() then
 		return false
-	end
-
-	self:do_jump()
-	self:set_armor_texture()
-	self:check_runaway_from()
-
-	local yaw = 0
-	if self:is_at_water_danger() and self.state ~= "attack" then
-		if math.random(1, 10) <= 6 then
-			self:set_velocity(0)
-			self.state = "stand"
-			self:set_animation( "stand")
-			yaw = yaw + math.random(-0.5, 0.5)
-			yaw = self:set_yaw( yaw, 8)
-		end
-	else
-		if self.move_in_group ~= false then
-			self:check_herd(dtime)
-		end
-	end
-	self:check_water_flow()
-
-	if self:is_at_cliff_or_danger() then
-			self:set_velocity(0)
-			self.state = "stand"
-			self:set_animation( "stand")
-			local yaw = self.object:get_yaw() or 0
-			yaw = self:set_yaw( yaw + 0.78, 8)
 	end
 end
 

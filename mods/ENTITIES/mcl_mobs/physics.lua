@@ -552,9 +552,21 @@ function mob_class:check_for_death(cause, cmi_cause)
 	return true
 end
 
+-- Deal light damage to mob, returns true if mob died
+function mob_class:deal_light_damage(pos, damage)
+	if not ((mcl_weather.rain.raining or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos)) then
+		self.health = self.health - damage
+
+		mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png")
+
+		if self:check_for_death("light", {type = "light"}) then
+			return true
+		end
+	end
+end
+
 -- environmental damage (water, lava, fire, light etc.)
 function mob_class:do_env_damage()
-
 	-- feed/tame text timer (so mob 'full' messages dont spam chat)
 	if self.htimer > 0 then
 		self.htimer = self.htimer - 1
@@ -580,19 +592,6 @@ function mob_class:do_env_damage()
 		return true
 	end
 
-	-- Deal light damage to mob, returns true if mob died
-	local function deal_light_damage(self, pos, damage)
-		if not ((mcl_weather.rain.raining or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos)) then
-			self.health = self.health - damage
-
-			mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png")
-
-			if self:check_for_death("light", {type = "light"}) then
-				return true
-			end
-		end
-	end
-
 	local sunlight = 10
 	if within_limits(pos,0) then
 		sunlight = minetest.get_natural_light(pos, self.time_of_day)
@@ -600,7 +599,7 @@ function mob_class:do_env_damage()
 
 	-- bright light harms mob
 	if self.light_damage ~= 0 and (sunlight or 0) > 12 then
-		if deal_light_damage(self, pos, self.light_damage) then
+		if self:deal_light_damage(pos, self.light_damage) then
 			return true
 		end
 	end
@@ -610,7 +609,7 @@ function mob_class:do_env_damage()
 			if self.ignited_by_sunlight then
 				mcl_burning.set_on_fire(self.object, 10)
 			else
-				deal_light_damage(self, pos, self.sunlight_damage)
+				self:deal_light_damage(pos, self.sunlight_damage)
 				return true
 			end
 		end
