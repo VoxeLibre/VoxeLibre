@@ -249,7 +249,8 @@ function mob_class:update_tag()
 	self:update_roll()
 end
 
-local function shortest_term_of_yaw_rotatoin(self, rot_origin, rot_target, nums)
+local function shortest_term_of_yaw_rotation(self, rot_origin, rot_target, nums)
+
 	if not rot_origin or not rot_target then
 		return
 	end
@@ -257,16 +258,38 @@ local function shortest_term_of_yaw_rotatoin(self, rot_origin, rot_target, nums)
 	rot_origin = math.deg(rot_origin)
 	rot_target = math.deg(rot_target)
 
-	if math.abs(rot_target - rot_origin) < 180 then
-		return rot_target - rot_origin
-	else
-		if (rot_target - rot_origin) > 0 then
-			return 360-(rot_target - rot_origin)
+	if rot_origin < rot_target then
+		if math.abs(rot_origin-rot_target)<180 then
+			if nums then
+				return rot_target-rot_origin
+			else
+				return 1
+			end
 		else
-			return (rot_target - rot_origin)+360
+			if nums then
+				return -(rot_origin-(rot_target-360))
+			else
+				return -1
+			end
+		end
+	else
+		if math.abs(rot_origin-rot_target)<180 then
+			if nums then
+				return rot_target-rot_origin
+			else
+				return -1
+			end
+		else
+			if nums then
+				return (rot_target-(rot_origin-360))
+			else
+				return 1
+			end
 		end
 	end
+
 end
+
 
 
 -- set and return valid yaw
@@ -282,20 +305,29 @@ function mob_class:set_yaw(yaw, delay, dtime)
 
 	--clamp our yaw to a 360 range
 	if math.deg(self.object:get_yaw()) > 360 then
-		self.object:set_yaw(math.rad(1))
+		self.object:set_yaw(math.rad(0))
 	elseif math.deg(self.object:get_yaw()) < 0 then
-		self.object:set_yaw(math.rad(359))
+		self.object:set_yaw(math.rad(360))
+	end
+
+	if math.deg(yaw) > 360 then
+		yaw=yaw%360
+	elseif math.deg(yaw) < 0 then
+		yaw=((360*5)-yaw)%360
 	end
 
 	--calculate the shortest way to turn to find our target
-	local target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), yaw, true)
+	local target_shortest_path = shortest_term_of_yaw_rotation(self, self.object:get_yaw(), yaw, false)
+	local target_shortest_path_nums = shortest_term_of_yaw_rotation(self, self.object:get_yaw(), yaw, true)
 
 	--turn in the shortest path possible toward our target. if we are attacking, don't dance.
 	if (math.abs(target_shortest_path) > 50 and not self._kb_turn) and (self.attack and self.attack:get_pos() or self.following and self.following:get_pos()) then
 		if self.following then
-			target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.following:get_pos())), true)
+			target_shortest_path = shortest_term_of_yaw_rotation(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.following:get_pos())), true)
+			target_shortest_path_nums = shortest_term_of_yaw_rotation(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.following:get_pos())), false)
 		else
-			target_shortest_path = shortest_term_of_yaw_rotatoin(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.attack:get_pos())), true)
+			target_shortest_path = shortest_term_of_yaw_rotation(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.attack:get_pos())), true)
+			target_shortest_path_nums = shortest_term_of_yaw_rotation(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.attack:get_pos())), false)
 		end
 	end
 
@@ -305,17 +337,10 @@ function mob_class:set_yaw(yaw, delay, dtime)
 		ddtime = dtime
 	end
 
-	if math.abs(target_shortest_path) > 280*ddtime then
-		if target_shortest_path > 0 then
-			self.object:set_yaw(self.object:get_yaw()+3.6*ddtime)
-			if self.acc then
-				self.acc=vector.rotate_around_axis(self.acc,vector.new(0,1,0), 3.6*ddtime)
-			end
-		else
-			self.object:set_yaw(self.object:get_yaw()-3.6*ddtime)
-			if self.acc then
-				self.acc=vector.rotate_around_axis(self.acc,vector.new(0,1,0), -3.6*ddtime)
-			end
+	if math.abs(target_shortest_path_nums) > 5 then
+		self.object:set_yaw(self.object:get_yaw()+(target_shortest_path*(3.6*ddtime)))
+		if self.acc then
+			self.acc=vector.rotate_around_axis(self.acc,vector.new(0,1,0), target_shortest_path*(3.6*ddtime))
 		end
 	end
 
