@@ -58,7 +58,11 @@ end
 function mob_class:update_tag() --update nametag and/or the debug box
 	local tag
 	if mobs_debug then
-		tag = "nametag = '"..tostring(self.nametag).."'\n"..
+		local name = self.name
+		if self.nametag and self.nametag ~= "" then
+			name = self.nametag
+		end
+		tag = "name = '"..tostring(name).."'\n"..
 		"state = '"..tostring(self.state).."'\n"..
 		"order = '"..tostring(self.order).."'\n"..
 		"attack = "..tostring(self.attack).."\n"..
