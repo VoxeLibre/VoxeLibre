@@ -707,10 +707,11 @@ function mcl_util.set_properties(obj,props)
 	end
 end
 
-function mcl_util.set_bone_position(obj,b,p,r) --bone,position,rotation
-	local oldp,oldr=obj:get_bone_position(b)
-	if vector.equals(vector.round(oldp),vector.round(p)) and vector.equals(vector.round(oldr),vector.round(r)) then
-		return
+function mcl_util.set_bone_position(obj, bone, pos, rot)
+	local current_pos, current_rot = obj:get_bone_position(bone)
+	local pos_equal = not pos or vector.equals(vector.round(current_pos), vector.round(pos))
+	local rot_equal = not rot or vector.equals(vector.round(current_rot), vector.round(rot))
+	if not pos_equal or not rot_equal then
+		obj:set_bone_position(bone, pos or current_pos, rot or current_rot)
 	end
-	obj:set_bone_position(b,p,r)
 end
