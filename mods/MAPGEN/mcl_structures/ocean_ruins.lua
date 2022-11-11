@@ -1,5 +1,4 @@
 local modname = minetest.get_current_modname()
-local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
 local cold_oceans = {
@@ -71,8 +70,8 @@ local warm_oceans = {
 }
 
 local cold = {
-	place_on = {"group:sand","mcl_core:gravel","mcl_core:dirt","mcl_core:clay","group:material_stone"},
-	spawn_by = {"mcl_core:water_source"},
+	place_on = { "group:sand", "mcl_core:gravel", "mcl_core:dirt", "mcl_core:clay", "group:material_stone" },
+	spawn_by = { "mcl_core:water_source" },
 	num_spawn_by = 2,
 	fill_ratio = 0.01,
 	flags = "place_center_x, place_center_z, force_placement",
@@ -85,34 +84,34 @@ local cold = {
 	chunk_probability = 400,
 	sidelen = 20,
 	filenames = {
-		modpath.."/schematics/mcl_structures_ocean_ruins_cold_1.mts",
-		modpath.."/schematics/mcl_structures_ocean_ruins_cold_2.mts",
-		modpath.."/schematics/mcl_structures_ocean_ruins_cold_3.mts",
+		modpath .. "/schematics/mcl_structures_ocean_ruins_cold_1.mts",
+		modpath .. "/schematics/mcl_structures_ocean_ruins_cold_2.mts",
+		modpath .. "/schematics/mcl_structures_ocean_ruins_cold_3.mts",
 	},
 	loot = {
-		["mcl_chests:chest_small" ] = {
+		["mcl_chests:chest_small"] = {
 			{
-			stacks_min = 2,
-			stacks_max = 4,
-			items = {
-				{ itemstring = "mcl_core:coal_lump", weight = 25, amount_min = 1, amount_max=4 },
-				{ itemstring = "mcl_farming:wheat_item", weight = 25, amount_min = 2, amount_max=3 },
-				{ itemstring = "mcl_core:gold_nugget", weight = 25, amount_min = 1, amount_max=3 },
-				--{ itemstring = "mcl_maps:treasure_map", weight = 20, }, --FIXME Treasure map
+				stacks_min = 2,
+				stacks_max = 4,
+				items = {
+					{ itemstring = "mcl_core:coal_lump", weight = 25, amount_min = 1, amount_max = 4 },
+					{ itemstring = "mcl_farming:wheat_item", weight = 25, amount_min = 2, amount_max = 3 },
+					{ itemstring = "mcl_core:gold_nugget", weight = 25, amount_min = 1, amount_max = 3 },
+					--{ itemstring = "mcl_maps:treasure_map", weight = 20, }, --FIXME Treasure map
 
-				{ itemstring = "mcl_books:book", weight = 10, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
-				end },
-				{ itemstring = "mcl_fishing:fishing_rod_enchanted", weight = 20, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
-				end  },
-				{ itemstring = "mcl_core:emerald", weight = 15, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_armor:chestplate_leather", weight = 15, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_core:apple_gold", weight = 20, },
-				{ itemstring = "mcl_armor:helmet_gold", weight = 15, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_core:gold_ingot", weight = 15, amount_min = 2, amount_max = 7 },
-				{ itemstring = "mcl_core:iron_ingot", weight = 15, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2, },
+					{ itemstring = "mcl_books:book", weight = 10, func = function(stack, pr)
+						mcl_enchanting.enchant_uniform_randomly(stack, { "soul_speed" }, pr)
+					end },
+					{ itemstring = "mcl_fishing:fishing_rod_enchanted", weight = 20, func = function(stack, pr)
+						mcl_enchanting.enchant_uniform_randomly(stack, { "soul_speed" }, pr)
+					end },
+					{ itemstring = "mcl_core:emerald", weight = 15, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_armor:chestplate_leather", weight = 15, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_core:apple_gold", weight = 20, },
+					{ itemstring = "mcl_armor:helmet_gold", weight = 15, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_core:gold_ingot", weight = 15, amount_min = 2, amount_max = 7 },
+					{ itemstring = "mcl_core:iron_ingot", weight = 15, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2, },
 				}
 			}
 		}
@@ -122,11 +121,11 @@ local cold = {
 local warm = table.copy(cold)
 warm.biomes = warm_oceans
 warm.filenames = {
-	modpath.."/schematics/mcl_structures_ocean_ruins_warm_1.mts",
-	modpath.."/schematics/mcl_structures_ocean_ruins_warm_2.mts",
-	modpath.."/schematics/mcl_structures_ocean_ruins_warm_3.mts",
-	modpath.."/schematics/mcl_structures_ocean_ruins_warm_4.mts",
+	modpath .. "/schematics/mcl_structures_ocean_ruins_warm_1.mts",
+	modpath .. "/schematics/mcl_structures_ocean_ruins_warm_2.mts",
+	modpath .. "/schematics/mcl_structures_ocean_ruins_warm_3.mts",
+	modpath .. "/schematics/mcl_structures_ocean_ruins_warm_4.mts",
 }
 
-mcl_structures.register_structure("cold_ocean_ruins",cold)
-mcl_structures.register_structure("warm_ocean_ruins",warm)
+mcl_structures.register_structure("cold_ocean_ruins", cold)
+mcl_structures.register_structure("warm_ocean_ruins", warm)

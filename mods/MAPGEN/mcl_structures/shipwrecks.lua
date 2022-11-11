@@ -2,17 +2,17 @@ local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 --local S = minetest.get_translator(modname)
 
-local seed = minetest.get_mapgen_setting("seed")
+--local seed = minetest.get_mapgen_setting("seed")
 local water_level = minetest.get_mapgen_setting("water_level")
-local pr = PseudoRandom(seed)
+--local pr = PseudoRandom(seed)
 
 --schematics by chmodsayshello
 local schems = {
-	modpath.."/schematics/mcl_structures_shipwreck_full_damaged.mts",
-	modpath.."/schematics/mcl_structures_shipwreck_full_normal.mts",
-	modpath.."/schematics/mcl_structures_shipwreck_full_back_damaged.mts",
-	modpath.."/schematics/mcl_structures_shipwreck_half_front.mts",
-	modpath.."/schematics/mcl_structures_shipwreck_half_back.mts",
+	modpath .. "/schematics/mcl_structures_shipwreck_full_damaged.mts",
+	modpath .. "/schematics/mcl_structures_shipwreck_full_normal.mts",
+	modpath .. "/schematics/mcl_structures_shipwreck_full_back_damaged.mts",
+	modpath .. "/schematics/mcl_structures_shipwreck_half_front.mts",
+	modpath .. "/schematics/mcl_structures_shipwreck_half_back.mts",
 }
 
 local ocean_biomes = {
@@ -94,14 +94,14 @@ local beach_biomes = {
 	"Jungle_shore"
 }
 
-mcl_structures.register_structure("shipwreck",{
-	place_on = {"group:sand","mcl_core:gravel"},
-	spawn_by = {"group:water"},
+mcl_structures.register_structure("shipwreck", {
+	place_on = { "group:sand", "mcl_core:gravel" },
+	spawn_by = { "group:water" },
 	num_spawn_by = 4,
 	noise_params = {
 		offset = 0,
 		scale = 0.000022,
-		spread = {x = 250, y = 250, z = 250},
+		spread = { x = 250, y = 250, z = 250 },
 		seed = 3,
 		octaves = 3,
 		persist = 0.001,
@@ -110,10 +110,10 @@ mcl_structures.register_structure("shipwreck",{
 	sidelen = 16,
 	flags = "force_placement",
 	biomes = ocean_biomes,
-	y_max = water_level-4,
+	y_max = water_level - 4,
 	y_min = mcl_vars.mg_overworld_min,
 	filenames = schems,
-	y_offset = function(pr) return pr:next(-4,-2) end,
+	y_offset = function(pr) return pr:next(-4, -2) end,
 	loot = {
 		["mcl_chests:chest_small"] = {
 			stacks_min = 3,
@@ -130,42 +130,46 @@ mcl_structures.register_structure("shipwreck",{
 				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 5, amount_min = 5, amount_max = 24 },
 				{ itemstring = "mcl_farming:potato_item", weight = 3, amount_min = 1, amount_max = 5 },
 				{ itemstring = "mcl_armor:helmet_leather_enchanted", weight = 3, func = function(stack, pr)
-						mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
+					mcl_enchanting.enchant_uniform_randomly(stack, { "soul_speed" })
+				end },
 				{ itemstring = "mcl_armor:chestplate_leather_enchanted", weight = 3, func = function(stack, pr)
-						mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
+					mcl_enchanting.enchant_uniform_randomly(stack, { "soul_speed" })
+				end },
 				{ itemstring = "mcl_armor:leggings_leather_enchanted", weight = 3, func = function(stack, pr)
-						mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
+					mcl_enchanting.enchant_uniform_randomly(stack, { "soul_speed" })
+				end },
 				{ itemstring = "mcl_armor:boots_leather_enchanted", weight = 3, func = function(stack, pr)
-						mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
+					mcl_enchanting.enchant_uniform_randomly(stack, { "soul_speed" })
+				end },
 				--{ itemstring = "TODO:bamboo", weight = 2, amount_min = 1, amount_max = 3 },
 				{ itemstring = "mcl_farming:pumpkin", weight = 2, amount_min = 1, amount_max = 3 },
 				{ itemstring = "mcl_tnt:tnt", weight = 1, amount_min = 1, amount_max = 2 },
 
 			},
 			{
-			stacks_min = 2,
-			stacks_max = 6,
-			items = {
-				{ itemstring = "mcl_core:iron_ingot", weight = 90, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_core:iron_nugget", weight = 50, amount_min = 1, amount_max = 10 },
-				{ itemstring = "mcl_core:emerald", weight = 40, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_dye:blue", weight = 20, amount_min = 1, amount_max = 10 },
-				{ itemstring = "mcl_core:gold_ingot", weight = 10, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_core:gold_nugget", weight = 10, amount_min = 1, amount_max = 10 },
-				{ itemstring = "mcl_experience:bottle", weight = 5, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 1 },
+				stacks_min = 2,
+				stacks_max = 6,
+				items = {
+					{ itemstring = "mcl_core:iron_ingot", weight = 90, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_core:iron_nugget", weight = 50, amount_min = 1, amount_max = 10 },
+					{ itemstring = "mcl_core:emerald", weight = 40, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_dye:blue", weight = 20, amount_min = 1, amount_max = 10 },
+					{ itemstring = "mcl_core:gold_ingot", weight = 10, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_core:gold_nugget", weight = 10, amount_min = 1, amount_max = 10 },
+					{ itemstring = "mcl_experience:bottle", weight = 5, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 1 },
 				}
-			},{
-			stacks_min = 3,
-			stacks_max = 3,
-			items = {
-				--{ itemstring = "FIXME TREASURE MAP", weight = 8, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_core:paper", weight = 20, amount_min = 1, amount_max = 10 },
-				{ itemstring = "mcl_mobitems:feather", weight = 10, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_books:book", weight = 5, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_clock:clock", weight = 1, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_compass:compass", weight = 1, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_maps:empty_map", weight = 1, amount_min = 1, amount_max = 1 },
+			}, {
+				stacks_min = 3,
+				stacks_max = 3,
+				items = {
+					--{ itemstring = "FIXME TREASURE MAP", weight = 8, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_core:paper", weight = 20, amount_min = 1, amount_max = 10 },
+					{ itemstring = "mcl_mobitems:feather", weight = 10, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_books:book", weight = 5, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_clock:clock", weight = 1, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_compass:compass", weight = 1, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_maps:empty_map", weight = 1, amount_min = 1, amount_max = 1 },
 
 				}
 			},
