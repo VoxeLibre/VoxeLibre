@@ -514,21 +514,24 @@ minetest.register_abm({
           		local compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
           		if compchance == 0 then
               		hslot = hslot+1
+              		if hslot == 6 then return end
   		      		compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
   		      		if compchance == 0 then
   		      		    	hslot = hslot+1
+			         	if hslot == 6 then return end
       		     		compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
    	  		      		if compchance == 0 then
       		      		    	hslot = hslot+1
+      		      		    	if hslot == 6 then return end
           		     		compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
        		    		   		if compchance == 0 then
           		      		    	hslot = hslot+1
+          		      		    	if hslot == 6 then return end
               		     		compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
           		      		end
       		      		end
   		      		end
               	end	
-                -- TODO: make it go to next hslot if item isn't compostable
                 if compchance > 0 then
                       itemcomp[hslot]:take_item()
                       inv:set_list("main", itemcomp)                   
