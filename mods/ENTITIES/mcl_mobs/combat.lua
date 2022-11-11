@@ -183,7 +183,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 		self.path.way = minetest.find_path(s, p1, 16, jumpheight, dropheight, "A*_noprefetch")
 
 		self.state = ""
-		do_attack(self, self.attack)
+		self:do_attack(self.attack)
 
 		-- no path found, try something else
 		if not self.path.way then
