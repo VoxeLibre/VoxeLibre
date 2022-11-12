@@ -4,6 +4,10 @@ local S = minetest.get_translator(minetest.get_current_modname())
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local storage = minetest.get_mod_storage()
 
+local function mcl_log (message)
+	mcl_util.mcl_log (message, "[Spawn]")
+end
+
 -- Parameters
 -------------
 
@@ -429,6 +433,41 @@ function mcl_spawn.set_spawn_pos(player, pos, message)
 	else
 		local oldpos = minetest.string_to_pos(meta:get_string("mcl_beds:spawn"))
 		meta:set_string("mcl_beds:spawn", minetest.pos_to_string(pos))
+
+		-- Set player ownership on bed
+		local bed_node = minetest.get_node(pos)
+		local bed_meta = minetest.get_meta(pos)
+
+		local bed_bottom = mcl_beds.get_bed_bottom (pos)
+		local bed_bottom_meta = minetest.get_meta(bed_bottom)
+
+		if bed_meta then
+			if bed_node then
+				mcl_log("Bed name: " .. bed_node.name)
+			end
+
+			mcl_log("Setting bed meta: " .. player:get_player_name())
+			bed_meta:set_string("player", player:get_player_name())
+
+			-- Pass in villager as arg. Shouldn't know about villagers
+			if bed_bottom_meta then
+				mcl_log("Removing villager from bed bottom meta")
+				bed_bottom_meta:set_string("villager", nil)
+			else
+				mcl_log("Cannot remove villager from bed bottom meta")
+			end
+
+
+
+			local old_bed_meta = minetest.get_meta(oldpos)
+			if oldpos ~= pos and old_bed_meta then
+				mcl_log("Removing old bed meta")
+				old_bed_meta:set_string("player", "")
+			else
+				mcl_log("No old bed meta to remove or same as current")
+			end
+		end
+
 		if oldpos then
 			-- We don't bother sending a message if the new spawn pos is basically the same
 			spawn_changed = vector.distance(pos, oldpos) > 0.1

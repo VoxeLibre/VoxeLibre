@@ -10,6 +10,10 @@ local explosions_mod = minetest.get_modpath("mcl_explosions")
 local spawn_mod = minetest.get_modpath("mcl_spawn")
 local worlds_mod = minetest.get_modpath("mcl_worlds")
 
+local function mcl_log (message)
+	mcl_util.mcl_log (message, "[Beds]")
+end
+
 -- Helper functions
 
 local function get_look_yaw(pos)
@@ -300,6 +304,37 @@ function mcl_beds.skip_night()
 	minetest.set_timeofday(0.25) -- tod = 6000
 end
 
+function mcl_beds.get_bed_top (pos)
+	local node = minetest.get_node(pos)
+	local dir = minetest.facedir_to_dir(node.param2)
+	local bed_top_pos = vector.add(pos, dir)
+	local bed_top = minetest.get_node(bed_top_pos)
+
+	if bed_top then
+		mcl_log("Has a bed top")
+	else
+		mcl_log("No bed top")
+	end
+	return bed_top_pos
+end
+
+function mcl_beds.get_bed_bottom (pos)
+	local node = minetest.get_node(pos)
+	local dir = minetest.facedir_to_dir(node.param2)
+	mcl_log("Dir: " .. tostring(dir))
+	local bed_bottom = vector.add(pos, -dir)
+	mcl_log("bed_bottom: " .. tostring(bed_bottom))
+
+	local bed_bottom_node = minetest.get_node(bed_bottom)
+	if bed_bottom_node then
+		mcl_log("Bed bottom node name:" .. bed_bottom_node.name)
+	else
+		mcl_log("Didn't get bed bottom")
+	end
+
+	return bed_bottom
+end
+
 function mcl_beds.on_rightclick(pos, player, is_top)
 	-- Anti-Inception: Don't allow to sleep while you're sleeping
 	if player:get_meta():get_string("mcl_beds:sleeping") == "true" then
@@ -329,9 +364,7 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 		if is_top then
 			message = select(2, lay_down(player, ppos, pos))
 		else
-			local node = minetest.get_node(pos)
-			local dir = minetest.facedir_to_dir(node.param2)
-			local other = vector.add(pos, dir)
+			local other = mcl_beds.get_bed_top (pos)
 			message = select(2, lay_down(player, ppos, other))
 		end
 		if message then
