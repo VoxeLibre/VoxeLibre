@@ -107,8 +107,8 @@ mcl_structures.register_structure("end_spike",{
 	place_func = function(pos,def,pr)
 		local d = pr:next(6,12)
 		local h = d * pr:next(4,6)
-		local p1 = vector.add(pos,-d/2,0,-d/2)
-		local p2 = vector.add(pos,d/2,h+d,d/2)
+		local p1 = vector.offset(pos, -d / 2, 0, -d / 2)
+		local p2 = vector.offset(pos, d / 2, h + d, d / 2)
 		minetest.emerge_area(p1, p2, function(blockpos, action, calls_remaining, param)
 			if calls_remaining ~= 0 then return end
 			local s = make_endspike(pos,d,h)
