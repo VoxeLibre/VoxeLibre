@@ -114,7 +114,7 @@ function mcl_structures.construct_nodes(p1,p2,nodes)
 end
 
 local function construct_nodes(pos,def,pr)
-	return mcl_structures.construct_nodes(vector.offset(pos,-def.sidelen/2,0,-def.sidelen/2),vector.offset(pos,def.sidelen/2,def.sidelen,def.sidelen/2))
+	return mcl_structures.construct_nodes(vector.offset(pos,-def.sidelen/2,0,-def.sidelen/2),vector.offset(pos,def.sidelen/2,def.sidelen,def.sidelen/2),def.construct_nodes)
 end
 
 
