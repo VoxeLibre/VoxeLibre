@@ -213,8 +213,7 @@ minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
 	if pointed_thing.type ~= "node" then return end
 	local def = minetest.registered_nodes[node.name]
 	if def then
-		if def.on_destruct then def.on_destruct(pos) end
-		minetest.dig_node(pos)
+		minetest.node_dig(pos,node,puncher)
 		return true
 	end
 end)

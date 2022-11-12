@@ -21,11 +21,9 @@ local S = minetest.get_translator("mcl_mobs")
 local mob_active_range = tonumber(minetest.settings:get("mcl_mob_active_range")) or 48
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager",false)
-
-local LOG_MODULE = "[Mobs]"
 local function mcl_log (message)
-	if LOGGING_ON and message then
-		minetest.log(LOG_MODULE .. " " .. message)
+	if LOGGING_ON then
+		mcl_util.mcl_log (message, "[Mobs]", true)
 	end
 end
 
@@ -2212,7 +2210,7 @@ local monster_attack = function(self)
 			end
 		end
 	end
-	if not min_player then
+	if not min_player and #blacklist_attack > 0 then
 		min_player=blacklist_attack[math.random(#blacklist_attack)]
 	end
 	-- attack player
