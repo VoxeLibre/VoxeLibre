@@ -25,4 +25,10 @@ http://minetest.net/
             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
-  0. You just DO WHAT THE FUCK YOU WANT TO. 
+  0. You just DO WHAT THE FUCK YOU WANT TO.
+
+---------
+
+Alterations and contributions are released under GNU GPLv3 after 11/11/2022 and for contributors:
+
+AncientMariner/ancientmarinerdev

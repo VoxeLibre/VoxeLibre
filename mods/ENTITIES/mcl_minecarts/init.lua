@@ -770,8 +770,9 @@ register_minecart(
 	},
 	"mcl_minecarts_minecart_hopper.png",
 	{"mcl_minecarts:minecart", "mcl_hoppers:hopper"},
-	nil, nil, false
+	nil, nil, true
 )
+mcl_entity_invs.register_inv("mcl_minecarts:hopper_minecart", "Hopper Minecart", 5, false, true)
 
 -- Minecart with TNT
 register_minecart(
@@ -841,14 +842,14 @@ minetest.register_craft({
 
 -- TODO: Re-enable crafting of special minecarts when they have been implemented
 
---[[minetest.register_craft({
+minetest.register_craft({
 	output = "mcl_minecarts:hopper_minecart",
 	recipe = {
 		{"mcl_hoppers:hopper"},
 		{"mcl_minecarts:minecart"},
 	},
 })
---]]
+
 
 minetest.register_craft({
 	output = "mcl_minecarts:chest_minecart",

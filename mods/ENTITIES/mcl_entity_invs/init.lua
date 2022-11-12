@@ -2,6 +2,15 @@ mcl_entity_invs = {}
 
 local open_invs = {}
 
+local LOGGING_ON = minetest.settings:get_bool("mcl_logging_default",false)
+local LOG_MODULE = "[Entity Invs]"
+local function mcl_log (message)
+	if LOGGING_ON and message then
+		minetest.log(LOG_MODULE .. " " .. message)
+	end
+end
+
+
 local function check_distance(inv,player,count)
 	for _,o in pairs(minetest.get_objects_inside_radius(player:get_pos(),5)) do
 		local l = o:get_luaentity()
@@ -22,20 +31,25 @@ local inv_callbacks = {
 	end,
 }
 
-local function load_inv(ent,size)
+function mcl_entity_invs.load_inv(ent,size)
+	mcl_log("load_inv")
 	if not ent._inv_id then return end
+	mcl_log("load_inv 2")
 	local inv = minetest.get_inventory({type="detached", name=ent._inv_id})
 	if not inv then
+		mcl_log("load_inv 3")
 		inv =  minetest.create_detached_inventory(ent._inv_id, inv_callbacks)
 		inv:set_size("main", size)
 		if ent._items then
 			inv:set_list("main",ent._items)
 		end
+	else
+		mcl_log("load_inv 4")
 	end
 	return inv
 end
 
-local function save_inv(ent)
+function mcl_entity_invs.save_inv(ent)
 	if ent._inv then
 		ent._items = {}
 		for i,it in ipairs(ent._inv:get_list("main")) do
@@ -46,32 +60,60 @@ local function save_inv(ent)
 	end
 end
 
+local function load_default_formspec (ent, text)
+	text = text or ""
+
+	local invent_size = ent._inv_size
+	local div_by_two = invent_size % 2 == 0
+	local div_by_three =  invent_size % 3 == 0
+
+	--mcl_log("Div by 3: ".. tostring(div_by_three))
+	--mcl_log("Div by 2: ".. tostring(div_by_two))
+	--mcl_log("invent_size: ".. tostring(invent_size))
+	local rows = 3
+	if invent_size > 18 or (div_by_three == true and invent_size > 8) then
+		--mcl_log("Div by 3")
+		rows = 3
+	elseif (div_by_two == true and invent_size > 3) or invent_size > 9 then
+		--mcl_log("Div by 2")
+		rows = 2
+	else
+		--mcl_log("Not div by 2 or 3")
+		rows = 1
+	end
+
+	--local rows = 3
+	local cols = (math.ceil(ent._inv_size/rows))
+	local spacing = (9 - cols) / 2
+
+	local formspec = "size[9,8.75]"
+			.. "label[0,0;" .. minetest.formspec_escape(
+			minetest.colorize("#313131", ent._inv_title .. " ".. text)) .. "]"
+			.. "list[detached:"..ent._inv_id..";main;"..spacing..",0.5;"..cols..","..rows..";]"
+			.. mcl_formspec.get_itemslot_bg(spacing,0.5,cols,rows)
+			.. "label[0,4.0;" .. minetest.formspec_escape(
+			minetest.colorize("#313131", "Inventory")) .. "]"
+			.. "list[current_player;main;0,4.5;9,3;9]"
+			.. mcl_formspec.get_itemslot_bg(0,4.5,9,3)
+			.. "list[current_player;main;0,7.74;9,1;]"
+			.. mcl_formspec.get_itemslot_bg(0,7.74,9,1)
+			.. "listring[detached:"..ent._inv_id..";main]"
+			.. "listring[current_player;main]"
+	return formspec
+end
+
+
 function mcl_entity_invs.show_inv_form(ent,player,text)
 	if not ent._inv_id then return end
 	if not open_invs[ent] then
 		open_invs[ent] = 0
 	end
-	text = text or ""
-	ent._inv = load_inv(ent,ent._inv_size)
+	ent._inv = mcl_entity_invs.load_inv(ent,ent._inv_size)
 	open_invs[ent] = open_invs[ent] + 1
+
 	local playername = player:get_player_name()
-	local rows = 3
-	local cols = (math.ceil(ent._inv_size/rows))
-	local spacing = (9 - cols) / 2
-	local formspec = "size[9,8.75]"
-	.. "label[0,0;" .. minetest.formspec_escape(
-			minetest.colorize("#313131", ent._inv_title .. " ".. text)) .. "]"
-	.. "list[detached:"..ent._inv_id..";main;"..spacing..",0.5;"..cols..","..rows..";]"
-	.. mcl_formspec.get_itemslot_bg(spacing,0.5,cols,rows)
-	.. "label[0,4.0;" .. minetest.formspec_escape(
-			minetest.colorize("#313131", "Inventory")) .. "]"
-	.. "list[current_player;main;0,4.5;9,3;9]"
-	.. mcl_formspec.get_itemslot_bg(0,4.5,9,3)
-	.. "list[current_player;main;0,7.74;9,1;]"
-	.. mcl_formspec.get_itemslot_bg(0,7.74,9,1)
-	.. "listring[detached:"..ent._inv_id..";main]"
-	.. "listring[current_player;main]"
-	minetest.show_formspec(playername,ent._inv_id,formspec)
+
+	minetest.show_formspec(playername, ent._inv_id, load_default_formspec (ent, text))
 end
 
 local function drop_inv(ent)
@@ -85,9 +127,9 @@ local function drop_inv(ent)
 end
 
 local function on_remove(self,killer,oldf)
-		save_inv(self)
-		drop_inv(self)
-		if oldf then return oldf(self,killer) end
+	mcl_entity_invs.save_inv(self)
+	drop_inv(self)
+	if oldf then return oldf(self,killer) end
 end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
@@ -95,7 +137,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if formname == k._inv_id then
 			open_invs[k] = open_invs[k] - 1
 			if open_invs[k] < 1 then
-				save_inv(k)
+				mcl_entity_invs.save_inv(k)
 				open_invs[k] = nil
 			end
 		end
@@ -151,7 +193,7 @@ function mcl_entity_invs.register_inv(entity_name,show_name,size,no_on_righclick
 
 	local old_ode = minetest.registered_entities[entity_name].on_deactivate
 	minetest.registered_entities[entity_name].on_deactivate = function(self,removal)
-		save_inv(self)
+		mcl_entity_invs.save_inv(self)
 		if removal then
 			on_remove(self)
 		end
