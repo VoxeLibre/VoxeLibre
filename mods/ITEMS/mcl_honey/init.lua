@@ -4,6 +4,7 @@
 
 -- Variables
 local S = minetest.get_translator(minetest.get_current_modname())
+local alldirs = {{x=0,y=0,z=1}, {x=1,y=0,z=0}, {x=0,y=0,z=-1}, {x=-1,y=0,z=0}, {x=0,y=-1,z=0}, {x=0,y=1,z=0}}
 
 -- Honeycomb
 minetest.register_craftitem("mcl_honey:honeycomb", {
@@ -50,6 +51,40 @@ minetest.register_node("mcl_honey:honey_block", {
 	paramtype2 = "facedir",
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
+	mvps_sticky = function(pos, node, piston_pos)
+		local connected = {}
+		for n, v in ipairs(alldirs) do
+			local neighbor_pos = vector.add(pos, v)
+			local neighbor_node = minetest.get_node(neighbor_pos)
+			if neighbor_node then
+				if neighbor_node.name == "ignore" then
+					minetest.get_voxel_manip():read_from_map(neighbor_pos, neighbor_pos)
+					neighbor_node = minetest.get_node(neighbor_pos)
+				end
+				local name = neighbor_node.name
+				if name ~= "air" and name ~= "ignore" and not mesecon.mvps_unsticky[name] then
+					local piston, piston_side, piston_up, piston_down = false, false, false, false
+					if name == "mesecons_pistons:piston_sticky_off" or name == "mesecons_pistons:piston_normal_off" then
+						piston, piston_side = true, true
+					elseif name == "mesecons_pistons:piston_up_sticky_off" or name == "mesecons_pistons:piston_up_normal_off" then
+						piston, piston_up = true, true
+					elseif name == "mesecons_pistons:piston_down_sticky_off" or name == "mesecons_pistons:piston_down_normal_off" then
+						piston, piston_down = true, true
+					end
+					if not(   (piston_side and (n-1==neighbor_node.param2))  or  (piston_up and (n==5))  or  (piston_down and (n==6))   ) then
+						if piston and piston_pos then
+							if piston_pos.x == neighbor_pos.x and piston_pos.y == neighbor_pos.y and piston_pos.z == neighbor_pos.z then
+								-- Loopback to the same piston! Preventing unwanted behavior:
+								return {}, true
+							end
+						end
+						table.insert(connected, neighbor_pos)
+					end
+				end
+			end
+		end
+		return connected, false
+	end,
 })
 
 -- Crafting
