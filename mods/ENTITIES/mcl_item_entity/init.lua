@@ -401,15 +401,8 @@ local function hopper_take_item (self, pos)
 			if ent and ent.name == "mcl_minecarts:hopper_minecart" then
 				local taken_items = false
 
-				-- Do we still need this def stuff
-				local node_def = minetest.registered_nodes[ent.name]
-				if node_def then
-					mcl_log("stack max: ".. tostring(node_def.get_stack_max()))
-				end
-
 				mcl_log("ent.name: ".. tostring(ent.name))
 				mcl_log("ent pos: ".. tostring(ent.object:get_pos()))
-				mcl_log("Inv id: " .. ent._inv_id)
 
 				local inv = mcl_entity_invs.load_inv(ent,5)
 
@@ -436,16 +429,16 @@ local function hopper_take_item (self, pos)
 
 					-- This will take part of a floating item stack if no slot can hold the full amount
 					for i = 1, ent._inv_size,1 do
-						local stack1 = inv:get_stack("main", i)
+						local stack = inv:get_stack("main", i)
 
 						mcl_log("i: " .. tostring(i))
 						mcl_log("Items remaining: " .. items_remaining)
-						mcl_log("Name: " .. tostring(stack1:get_name()))
+						mcl_log("Name: " .. tostring(stack:get_name()))
 
-						if current_itemstack:get_name() == stack1:get_name() then
-							mcl_log("We have a match. Name: " .. tostring(stack1:get_name()))
+						if current_itemstack:get_name() == stack:get_name() then
+							mcl_log("We have a match. Name: " .. tostring(stack:get_name()))
 
-							local room_for = stack1:get_stack_max() - stack1:get_count()
+							local room_for = stack:get_stack_max() - stack:get_count()
 							mcl_log("Room for: " .. tostring(room_for))
 
 							if room_for == 0 then
@@ -453,29 +446,29 @@ local function hopper_take_item (self, pos)
 								mcl_log("No room")
 							elseif room_for < items_remaining then
 								mcl_log("We have more items remaining than space")
+
 								items_remaining = items_remaining - room_for
-								-- Set full stack
-								stack1:set_count(stack1:get_stack_max())
-								inv:set_stack("main", i, stack1)
+								stack:set_count(stack:get_stack_max())
+								inv:set_stack("main", i, stack)
 								taken_items = true
 							else
-								local new_stack_size = stack1:get_count() + items_remaining
+								local new_stack_size = stack:get_count() + items_remaining
+								stack:set_count(new_stack_size)
 								mcl_log("We have more than enough space. Now holds: " .. new_stack_size)
 
-								stack1:set_count(new_stack_size)
-								inv:set_stack("main", i, stack1)
+								inv:set_stack("main", i, stack)
 								items_remaining = 0
 
-								-- Delete as no longer needed
 								self.object:get_luaentity().itemstring = ""
 								self.object:remove()
+
 								taken_items = true
 								break
 							end
 
-							mcl_log("Count: " .. tostring(stack1:get_count()))
-							mcl_log("stack max: " .. tostring(stack1:get_stack_max()))
-							--mcl_log("Is it empty: " .. stack1:to_string())
+							mcl_log("Count: " .. tostring(stack:get_count()))
+							mcl_log("stack max: " .. tostring(stack:get_stack_max()))
+							--mcl_log("Is it empty: " .. stack:to_string())
 						end
 
 						if i == ent._inv_size and taken_items then
