@@ -7,11 +7,10 @@ local pool = {}
 local tick = false
 
 
-local LOGGING_ON = minetest.settings:get_bool("mcl_logging_default",false)
-local LOG_MODULE = "[Item entities]"
+local LOGGING_ON = minetest.settings:get_bool("mcl_logging_item_entities",false)
 local function mcl_log (message)
-	if LOGGING_ON and message then
-		minetest.log(LOG_MODULE .. " " .. message)
+	if LOGGING_ON then
+		mcl_util.mcl_log (message, "[Item Entities]", true)
 	end
 end
 
@@ -388,17 +387,7 @@ end
 
 local function hopper_take_item (self, pos)
 	--mcl_log("self.itemstring: ".. self.itemstring)
-
-	--local current_itemstack = nil
-	--if self.itemstring then
-	--	mcl_log("there is an itemstring")
-	--	current_itemstack = ItemStack(self.itemstring)
-	--else
-	--	mcl_log("no item string")
-	--end
-
 	--mcl_log("self.itemstring: ".. minetest.pos_to_string(pos))
-	--minetest.get_node(pos).name
 
 	local objs = minetest.get_objects_inside_radius(pos, 2)
 
@@ -445,7 +434,7 @@ local function hopper_take_item (self, pos)
 				if not taken_items then
 					local items_remaining = current_itemstack:get_count()
 
-					-- This will take pat of a floating item stack
+					-- This will take part of a floating item stack if no slot can hold the full amount
 					for i = 1, ent._inv_size,1 do
 						local stack1 = inv:get_stack("main", i)
 

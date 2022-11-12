@@ -2,14 +2,9 @@ mcl_entity_invs = {}
 
 local open_invs = {}
 
-local LOGGING_ON = minetest.settings:get_bool("mcl_logging_default",false)
-local LOG_MODULE = "[Entity Invs]"
 local function mcl_log (message)
-	if LOGGING_ON and message then
-		minetest.log(LOG_MODULE .. " " .. message)
-	end
+	mcl_util.mcl_log (message, "[Entity Invs]")
 end
-
 
 local function check_distance(inv,player,count)
 	for _,o in pairs(minetest.get_objects_inside_radius(player:get_pos(),5)) do
