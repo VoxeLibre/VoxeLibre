@@ -27,6 +27,7 @@ local mcl_hoppers_formspec = table.concat({
 
 -- Downwards hopper (base definition)
 
+---@type node_definition
 local def_hopper = {
 	inventory_image = "mcl_hoppers_item.png",
 	wield_image = "mcl_hoppers_item.png",
@@ -201,7 +202,8 @@ def_hopper_enabled.mesecons = {
 
 minetest.register_node("mcl_hoppers:hopper", def_hopper_enabled)
 
--- Disabled downwards hopper
+---Disabled downwards hopper
+---@type node_definition
 local def_hopper_disabled = table.copy(def_hopper)
 def_hopper_disabled.description = S("Disabled Hopper")
 def_hopper_disabled.inventory_image = nil
@@ -225,7 +227,8 @@ if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.rotate_simple
 end
 
--- Sidewars hopper (base definition)
+---Sidewars hopper (base definition)
+---@type node_definition
 local def_hopper_side = {
 	_doc_items_create_entry = false,
 	drop = "mcl_hoppers:hopper",
@@ -335,6 +338,7 @@ local def_hopper_side = {
 	_mcl_hardness = 3,
 }
 
+---@type node_definition
 local def_hopper_side_enabled = table.copy(def_hopper_side)
 def_hopper_side_enabled.description = S("Side Hopper")
 def_hopper_side_enabled.mesecons = {
@@ -346,6 +350,7 @@ def_hopper_side_enabled.mesecons = {
 }
 minetest.register_node("mcl_hoppers:hopper_side", def_hopper_side_enabled)
 
+---@type node_definition
 local def_hopper_side_disabled = table.copy(def_hopper_side)
 def_hopper_side_disabled.description = S("Disabled Side Hopper")
 def_hopper_side_disabled.mesecons = {
@@ -483,8 +488,14 @@ minetest.register_abm({
 	end,
 })
 
--- Returns true if itemstack is fuel, but not for lava bucket if destination already has one
-local is_transferrable_fuel = function(itemstack, src_inventory, src_list, dst_inventory, dst_list)
+---Returns true if itemstack is fuel, but not for lava bucket if destination already has one
+---@param itemstack ItemStack
+---@param src_inventory InvRef
+---@param src_list string
+---@param dst_inventory InvRef
+---@param dst_list string
+---@return boolean
+local function is_transferrable_fuel(itemstack, src_inventory, src_list, dst_inventory, dst_list)
 	if mcl_util.is_fuel(itemstack) then
 		if itemstack:get_name() == "mcl_buckets:bucket_lava" then
 			return dst_inventory:is_empty(dst_list)
@@ -495,8 +506,6 @@ local is_transferrable_fuel = function(itemstack, src_inventory, src_list, dst_i
 		return false
 	end
 end
-
-
 
 minetest.register_abm({
 	label = "Hopper/container item exchange",
@@ -694,7 +703,7 @@ minetest.register_craft({
 		{ "mcl_core:iron_ingot", "", "mcl_core:iron_ingot" },
 		{ "mcl_core:iron_ingot", "mcl_chests:chest", "mcl_core:iron_ingot" },
 		{ "", "mcl_core:iron_ingot", "" },
-	}
+	},
 })
 
 -- Add entry aliases for the Help
