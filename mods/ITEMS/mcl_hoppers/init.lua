@@ -1,4 +1,6 @@
 local S = minetest.get_translator(minetest.get_current_modname())
+local F = minetest.formspec_escape
+local C = minetest.colorize
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_hoppers", false)
 local function mcl_log(message)
@@ -9,17 +11,19 @@ end
 
 --[[ BEGIN OF NODE DEFINITIONS ]]
 
-local mcl_hoppers_formspec = "size[9,7]" ..
-	"label[2,0;" .. minetest.formspec_escape(minetest.colorize("#313131", S("Hopper"))) .. "]" ..
-	"list[context;main;2,0.5;5,1;]" ..
-	mcl_formspec.get_itemslot_bg(2, 0.5, 5, 1) ..
-	"label[0,2;" .. minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))) .. "]" ..
-	"list[current_player;main;0,2.5;9,3;9]" ..
-	mcl_formspec.get_itemslot_bg(0, 2.5, 9, 3) ..
-	"list[current_player;main;0,5.74;9,1;]" ..
-	mcl_formspec.get_itemslot_bg(0, 5.74, 9, 1) ..
-	"listring[context;main]" ..
-	"listring[current_player;main]"
+local mcl_hoppers_formspec = table.concat({
+	"size[9,7]",
+	"label[2,0;" .. F(C("#313131", S("Hopper"))) .. "]",
+	"list[context;main;2,0.5;5,1;]",
+	mcl_formspec.get_itemslot_bg(2, 0.5, 5, 1),
+	"label[0,2;" .. F(C("#313131", S("Inventory"))) .. "]",
+	"list[current_player;main;0,2.5;9,3;9]",
+	mcl_formspec.get_itemslot_bg(0, 2.5, 9, 3),
+	"list[current_player;main;0,5.74;9,1;]",
+	mcl_formspec.get_itemslot_bg(0, 5.74, 9, 1),
+	"listring[context;main]",
+	"listring[current_player;main]",
+})
 
 -- Downwards hopper (base definition)
 
