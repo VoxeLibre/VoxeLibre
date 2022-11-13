@@ -603,16 +603,52 @@ if minetest.get_modpath("mcl_composters") then
 		action = function(pos, node, active_object_count, active_object_count_wider)
 			local uppos = vector.offset(pos, 0, 1, 0)
 			--local downpos = vector.offset(pos, 0, -1, 0)
-			local meta = minetest.get_meta(pos)
-			local inv = meta:get_inventory()
+
 			-- Get bonemeal from composter above
 			local upnode = minetest.get_node(uppos)
 			if upnode.name == "mcl_composters:composter_ready" then
+				local meta = minetest.get_meta(pos)
+				local inv = meta:get_inventory()
+
 				minetest.swap_node(uppos, { name = "mcl_composters:composter" })
+
 				inv:add_item("main", "mcl_dye:white")
 			end
 		end,
 	})
+
+	---@param node node
+	---@return integer?
+	---@nodiscard
+	local function composter_level(node)
+		local nn = node.name
+		if nn == "mcl_composters:composter" then
+			return 0
+		elseif nn == "mcl_composters:composter_1" then
+			return 1
+		elseif nn == "mcl_composters:composter_2" then
+			return 2
+		elseif nn == "mcl_composters:composter_3" then
+			return 3
+		elseif nn == "mcl_composters:composter_4" then
+			return 4
+		elseif nn == "mcl_composters:composter_5" then
+			return 5
+		elseif nn == "mcl_composters:composter_6" then
+			return 6
+		elseif nn == "mcl_composters:composter_7" then
+			return 7
+		else
+			return nil
+		end
+	end
+
+	for i = 1, 7 do
+		assert(composter_level({ name = "mcl_composters:composter_" .. i }) == i)
+	end
+
+	assert(composter_level({ name = "mcl_composters:composter" }) == 0)
+	assert(composter_level({ name = "mcl_composters:some_other_node" }) == nil)
 
 	minetest.register_abm({
 		label = "Add compostable items on composter",
@@ -632,66 +668,35 @@ if minetest.get_modpath("mcl_composters") then
 		action = function(pos, node, active_object_count, active_object_count_wider)
 			--local uppos = vector.offset(pos, 0, 1, 0)
 			local downpos = vector.offset(pos, 0, -1, 0)
-			local meta = minetest.get_meta(pos)
-			local inv = meta:get_inventory()
-			--Consume compostable items and update composter below
+
 			local downnode = minetest.get_node(downpos)
-			if downnode.name == "mcl_composters:composter" or downnode.name == "mcl_composters:composter_1"
-				or downnode.name == "mcl_composters:composter_2" or downnode.name == "mcl_composters:composter_3"
-				or downnode.name == "mcl_composters:composter_4" or downnode.name == "mcl_composters:composter_5"
-				or downnode.name == "mcl_composters:composter_6" or downnode.name == "mcl_composters:composter_7" then
-				local itemcomp = inv:get_list("main")
-				local hslot = mcl_util.get_first_occupied_inventory_slot(minetest.get_inventory({ type = "node", pos = pos }), "main")
-				if hslot == nil then return end
-				local compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
-				if compchance == 0 then
-					hslot = hslot + 1
-					if hslot == 6 then return end
-					compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
-					if compchance == 0 then
-						hslot = hslot + 1
-						if hslot == 6 then return end
-						compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
-						if compchance == 0 then
-							hslot = hslot + 1
-							if hslot == 6 then return end
-							compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
-							if compchance == 0 then
-								hslot = hslot + 1
-								if hslot == 6 then return end
-								compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
+
+			---@type integer|string|nil
+			local level = composter_level(downnode)
+
+			--Consume compostable items and update composter below
+			if level then
+				local meta = minetest.get_meta(pos)
+				local inv = meta:get_inventory()
+
+				for i = 1, 5 do
+					local stack = inv:get_stack("main", i)
+					local compchance = minetest.get_item_group(stack:get_name(), "compostability")
+
+					if compchance > 0 then
+						stack:take_item()
+						inv:set_stack("main", i, stack)
+
+						if compchance >= math.random(0, 100) then
+							mcl_dye.add_bone_meal_particle(vector.offset(downpos, 0, level / 8, 0))
+							if level < 7 then
+								level = level + 1
+							else
+								level = "ready"
 							end
+							minetest.swap_node(downpos, { name = "mcl_composters:composter_" .. level })
 						end
-					end
-				end
-				if compchance > 0 then
-					itemcomp[hslot]:take_item()
-					inv:set_list("main", itemcomp)
-					local rand = math.random(0, 100)
-					if compchance >= rand then
-						local level = 0
-						if downnode.name == "mcl_composters:composter_1" then
-							level = 1
-						elseif downnode.name == "mcl_composters:composter_2" then
-							level = 2
-						elseif downnode.name == "mcl_composters:composter_3" then
-							level = 3
-						elseif downnode.name == "mcl_composters:composter_4" then
-							level = 4
-						elseif downnode.name == "mcl_composters:composter_5" then
-							level = 5
-						elseif downnode.name == "mcl_composters:composter_6" then
-							level = 6
-						elseif downnode.name == "mcl_composters:composter_7" then
-							level = 7
-						end
-						mcl_dye.add_bone_meal_particle(vector.offset(downpos, 0, level / 8, 0))
-						if level < 7 then
-							level = level + 1
-						else
-							level = "ready"
-						end
-						minetest.swap_node(downpos, { name = "mcl_composters:composter_" .. level })
+						break
 					end
 				end
 			end
