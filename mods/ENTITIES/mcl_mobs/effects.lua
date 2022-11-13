@@ -279,10 +279,10 @@ local function dir_to_pitch(dir)
 	return -math.atan2(-dir.y, xz)
 end
 
-function mob_class:check_head_swivel()
-	if self.head_swivel and type(self.head_swivel) == "string" then
+function mob_class:check_head_swivel(dtime)
+	if not self.head_swivel or type(self.head_swivel) ~= "string" then return end
 		local final_rotation = vector.new(0,0,0)
-		local oldp,oldr = self.object:get_bone_position(self.head_swivel)
+		local pos = self.object:get_pos()
 
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 10)) do
 			if obj:is_player() and not self.attack or obj:get_luaentity() and obj:get_luaentity().name == self.name and self ~= obj:get_luaentity() then

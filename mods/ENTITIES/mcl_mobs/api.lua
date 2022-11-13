@@ -303,6 +303,7 @@ end
 function mob_class:on_step(dtime)
 	self.lifetimer = self.lifetimer - dtime
 	local pos = self.object:get_pos()
+	if not pos then return end
 	if self:check_despawn(pos) then return true end
 
 	local d = 0.85
@@ -363,8 +364,8 @@ function mob_class:on_step(dtime)
 	self:follow_flop()
 	--set animation speed relitive to velocity
 	self:set_animation_speed()
-	self:check_smooth_rotation()
-	self:check_head_swivel()
+	self:check_smooth_rotation(dtime)
+	self:check_head_swivel(dtime)
 
 	self:do_jump()
 	self:set_armor_texture()

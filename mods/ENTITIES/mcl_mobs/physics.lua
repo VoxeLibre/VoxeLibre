@@ -39,6 +39,7 @@ local function within_limits(pos, radius)
 		wmin = wmin - radius
 		wmax = wmax + radius
 	end
+	if not pos then return true end
 	for _,v in pairs(pos) do
 		if v < wmin or v > wmax then return false end
 	end
@@ -582,6 +583,7 @@ function mob_class:do_env_damage()
 	end
 
 	local pos = self.object:get_pos()
+	if not pos then return end
 
 	self.time_of_day = minetest.get_timeofday()
 
@@ -592,10 +594,7 @@ function mob_class:do_env_damage()
 		return true
 	end
 
-	local sunlight = 10
-	if within_limits(pos,0) then
-		sunlight = minetest.get_natural_light(pos, self.time_of_day)
-	end
+	local sunlight = minetest.get_natural_light(pos, self.time_of_day)
 
 	-- bright light harms mob
 	if self.light_damage ~= 0 and (sunlight or 0) > 12 then

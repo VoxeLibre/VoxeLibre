@@ -1355,7 +1355,7 @@ function mob_class:do_states(dtime)
 	end
 end
 
-function mob_class:check_smooth_rotation()
+function mob_class:check_smooth_rotation(dtime)
 	-- smooth rotation by ThomasMonroe314
 	if self._turn_to then
 		self:set_yaw( self._turn_to, .1)
