@@ -79,7 +79,7 @@ local def_hopper = {
 		for i = 1, inv:get_size("main") do
 			local stack = inv:get_stack("main", i)
 			if not stack:is_empty() then
-				local p = { x = pos.x + math.random(0, 10) / 10 - 0.5, y = pos.y, z = pos.z + math.random(0, 10) / 10 - 0.5 }
+				local p = vector.offset(pos, math.random(0, 10) / 10 - 0.5, 0, math.random(0, 10) / 10 - 0.5)
 				minetest.add_item(p, stack)
 			end
 		end
@@ -273,7 +273,7 @@ local def_hopper_side = {
 		for i = 1, inv:get_size("main") do
 			local stack = inv:get_stack("main", i)
 			if not stack:is_empty() then
-				local p = { x = pos.x + math.random(0, 10) / 10 - 0.5, y = pos.y, z = pos.z + math.random(0, 10) / 10 - 0.5 }
+				local p = vector.offset(pos, math.random(0, 10) / 10 - 0.5, 0, math.random(0, 10) / 10 - 0.5)
 				minetest.add_item(p, stack)
 			end
 		end
@@ -444,7 +444,7 @@ minetest.register_abm({
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		local abovenode = minetest.get_node({ x = pos.x, y = pos.y + 1, z = pos.z })
+		local abovenode = minetest.get_node(vector.offset(pos, 0, 1, 0))
 		if not minetest.registered_items[abovenode.name] then return end
 		-- Don't bother checking item enties if node above is a container (should save some CPU)
 		if minetest.get_item_group(abovenode.name, "container") ~= 0 then
@@ -496,8 +496,8 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		-- Get node pos' for item transfer
-		local uppos = { x = pos.x, y = pos.y + 1, z = pos.z }
-		local downpos = { x = pos.x, y = pos.y - 1, z = pos.z }
+		local uppos   = vector.offset(pos, 0, 1, 0)
+		local downpos = vector.offset(pos, 0, -1, 0)
 
 		-- Suck an item from the container above into the hopper
 		local upnode = minetest.get_node(uppos)
@@ -531,15 +531,15 @@ minetest.register_abm({
 		local face = minetest.get_node(pos).param2
 		local front = {}
 		if face == 0 then
-			front = { x = pos.x - 1, y = pos.y, z = pos.z }
+			front = vector.offset(pos, -1, 0, 0)
 		elseif face == 1 then
-			front = { x = pos.x, y = pos.y, z = pos.z + 1 }
+			front = vector.offset(pos, 0, 0, 1)
 		elseif face == 2 then
-			front = { x = pos.x + 1, y = pos.y, z = pos.z }
+			front = vector.offset(pos, 1, 0, 0)
 		elseif face == 3 then
-			front = { x = pos.x, y = pos.y, z = pos.z - 1 }
+			front = vector.offset(pos, 0, 0, -1)
 		end
-		local above = { x = pos.x, y = pos.y + 1, z = pos.z }
+		local above = vector.offset(pos, 0, 1, 0)
 
 		local frontnode = minetest.get_node(front)
 		if not minetest.registered_nodes[frontnode.name] then return end
@@ -581,8 +581,8 @@ minetest.register_abm({
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		local uppos = { x = pos.x, y = pos.y + 1, z = pos.z }
-		local downpos = { x = pos.x, y = pos.y - 1, z = pos.z }
+		local uppos = vector.offset(pos, 0, 1, 0)
+		--local downpos = vector.offset(pos, 0, -1, 0)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		-- Get bonemeal from composter above
@@ -603,8 +603,8 @@ minetest.register_abm({
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		local uppos = { x = pos.x, y = pos.y + 1, z = pos.z }
-		local downpos = { x = pos.x, y = pos.y - 1, z = pos.z }
+		--local uppos = vector.offset(pos, 0, 1, 0)
+		local downpos = vector.offset(pos, 0, -1, 0)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		--Consume compostable items and update composter below
