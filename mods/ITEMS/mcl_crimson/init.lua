@@ -94,6 +94,12 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 	_mcl_blast_resistance = 0,
 })
 
+mcl_flowerpots.register_potted_flower("mcl_crimson:warped_fungus", {
+	name = "warped fungus",
+	desc = S("Warped Fungus Mushroom"),
+	image = "farming_warped_fungus.png",
+})
+
 minetest.register_node("mcl_crimson:twisting_vines", {
 	description = S("Twisting Vines"),
 	drawtype = "plantlike",
@@ -225,6 +231,13 @@ minetest.register_node("mcl_crimson:warped_roots", {
 	_mcl_silk_touch_drop = false,
 	_mcl_blast_resistance = 0,
 })
+
+mcl_flowerpots.register_potted_flower("mcl_crimson:warped_roots", {
+	name = "warped roots",
+	desc = S("Warped Roots"),
+	image = "warped_roots.png",
+})
+
 
 minetest.register_node("mcl_crimson:warped_wart_block", {
 	description = S("Warped Wart Block"),
@@ -395,6 +408,12 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 	_mcl_blast_resistance = 0,
 })
 
+mcl_flowerpots.register_potted_flower("mcl_crimson:crimson_fungus", {
+	name = "crimson fungus",
+	desc = S("Crimson Fungus Mushroom"),
+	image = "farming_crimson_fungus.png",
+})
+
 minetest.register_node("mcl_crimson:crimson_roots", {
 	description = S("Crimson Roots"),
 	drawtype = "plantlike",
@@ -412,6 +431,12 @@ minetest.register_node("mcl_crimson:crimson_roots", {
 	node_placement_prediction = "",
 	_mcl_silk_touch_drop = false,
 	_mcl_blast_resistance = 0,
+})
+
+mcl_flowerpots.register_potted_flower("mcl_crimson:crimson_roots", {
+	name = "crimson roots",
+	desc = S("Crimson Roots"),
+	image = "crimson_roots.png",
 })
 
 minetest.register_node("mcl_crimson:crimson_hyphae", {
