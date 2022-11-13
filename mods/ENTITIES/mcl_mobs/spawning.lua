@@ -664,34 +664,36 @@ if mobs_spawn then
 			end
 			local mob_def = mob_library_worker_table[mob_index]
 			--minetest.log(mob_def.name.." "..step_chance.. " "..mob_chance)
-			local spawn_in_group = minetest.registered_entities[mob_def.name].spawn_in_group or 4
-			local spawn_in_group_min = minetest.registered_entities[mob_def.name].spawn_in_group_min or 1
-			local mob_type = minetest.registered_entities[mob_def.name].type
-			if spawn_check(spawning_position,mob_def) then
-				if mob_def.type_of_spawning == "water" then
-					spawning_position = get_water_spawn(spawning_position)
-					if not spawning_position then
-						minetest.log("warning","[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..minetest.pos_to_string(vector.round(pos)))
+			if mob_def and mob_def.name and minetest.registered_entities[mob_def.name] then
+				local spawn_in_group = minetest.registered_entities[mob_def.name].spawn_in_group or 4
+				local spawn_in_group_min = minetest.registered_entities[mob_def.name].spawn_in_group_min or 1
+				local mob_type = minetest.registered_entities[mob_def.name].type
+				if spawn_check(spawning_position,mob_def) then
+					if mob_def.type_of_spawning == "water" then
+						spawning_position = get_water_spawn(spawning_position)
+						if not spawning_position then
+							minetest.log("warning","[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..minetest.pos_to_string(vector.round(pos)))
+							return
+						end
+					end
+					if minetest.registered_entities[mob_def.name].can_spawn and not minetest.registered_entities[mob_def.name].can_spawn(spawning_position) then
+						minetest.log("warning","[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(spawning_position)))
 						return
 					end
-				end
-				if minetest.registered_entities[mob_def.name].can_spawn and not minetest.registered_entities[mob_def.name].can_spawn(spawning_position) then
-					minetest.log("warning","[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(spawning_position)))
-					return
-				end
-				--everything is correct, spawn mob
-				local object
-				if spawn_in_group and ( mob_type ~= "monster" or math.random(5) == 1 ) then
-					if logging then
-						minetest.log("action", "[mcl_mobs] A group of mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at " .. minetest.pos_to_string(spawning_position, 1))
-					end
-					object = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name},spawn_in_group,spawn_in_group_min)
+					--everything is correct, spawn mob
+					local object
+					if spawn_in_group and ( mob_type ~= "monster" or math.random(5) == 1 ) then
+						if logging then
+							minetest.log("action", "[mcl_mobs] A group of mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at " .. minetest.pos_to_string(spawning_position, 1))
+						end
+						object = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name},spawn_in_group,spawn_in_group_min)
 
-				else
-					if logging then
-						minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at ".. minetest.pos_to_string(spawning_position, 1))
+					else
+						if logging then
+							minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at ".. minetest.pos_to_string(spawning_position, 1))
+						end
+						object = mcl_mobs.spawn(spawning_position, mob_def.name)
 					end
-					object = mcl_mobs.spawn(spawning_position, mob_def.name)
 				end
 			end
 			current_summary_chance = current_summary_chance - mob_chance
