@@ -34,9 +34,14 @@ local def_hopper = {
 	drawtype = "nodebox",
 	paramtype = "light",
 	-- FIXME: mcl_hoppers_hopper_inside.png is unused by hoppers.
-	tiles = { "mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png", "mcl_hoppers_hopper_outside.png",
-		"mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png",
-		"mcl_hoppers_hopper_outside.png" },
+	tiles = {
+		"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+	},
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -228,9 +233,14 @@ local def_hopper_side = {
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",
-	tiles = { "mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png", "mcl_hoppers_hopper_outside.png",
-		"mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png",
-		"mcl_hoppers_hopper_outside.png" },
+	tiles = {
+		"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+	},
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -597,9 +607,16 @@ minetest.register_abm({
 minetest.register_abm({
 	label = "Add compostable items on composter",
 	nodenames = { "mcl_hoppers:hopper" },
-	neighbors = { "mcl_composters:composter", "mcl_composters:composter_1", "mcl_composters:composter_2",
-		"mcl_composters:composter_3", "mcl_composters:composter_4", "mcl_composters:composter_5",
-		"mcl_composters:composter_6", "mcl_composters:composter_7", },
+	neighbors = {
+		"mcl_composters:composter",
+		"mcl_composters:composter_1",
+		"mcl_composters:composter_2",
+		"mcl_composters:composter_3",
+		"mcl_composters:composter_4",
+		"mcl_composters:composter_5",
+		"mcl_composters:composter_6",
+		"mcl_composters:composter_7",
+	},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
