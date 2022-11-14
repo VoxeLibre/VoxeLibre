@@ -195,6 +195,7 @@ mcl_structures.register_structure("ocean_temple",{
 	y_min = mcl_vars.mg_overworld_min,
 	filenames = {
 		modpath .. "/schematics/mcl_structures_ocean_temple.mts",
+		modpath .. "/schematics/mcl_structures_ocean_temple_2.mts",
 	},
 	y_offset = function(pr) return pr:next(-2,0) end,
 	after_place = function(p,def,pr)
