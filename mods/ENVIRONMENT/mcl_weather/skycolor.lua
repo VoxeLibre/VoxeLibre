@@ -1,6 +1,8 @@
 local mods_loaded = false
 local NIGHT_VISION_RATIO = 0.45
 
+water_color = "#0b4880"
+
 function mcl_weather.set_sky_box_clear(player)
 	player:set_sky({
 		type = "regular",
@@ -96,7 +98,19 @@ mcl_weather.skycolor = {
 			local pos = player:get_pos()
 			local dim = mcl_worlds.pos_to_dimension(pos)
 			local has_weather = (mcl_worlds.has_weather(pos) and (mcl_weather.state == "snow" or mcl_weather.state =="rain" or mcl_weather.state == "thunder") and mcl_weather.has_snow(pos)) or ((mcl_weather.state =="rain" or mcl_weather.state == "thunder") and mcl_weather.has_rain(pos))
-			if dim == "overworld" then
+			if minetest.get_item_group(minetest.get_node(vector.new(pos.x,pos.y+1.5,pos.z)).name, "water") ~= 0 then
+				player:set_sky({ type = "regular",
+					sky_color = {
+						day_sky = water_color,
+						day_horizon = water_color,
+						dawn_sky = water_color,
+						dawn_horizon = water_color,
+						night_sky = water_color,
+						night_horizon = water_color,
+					},
+					clouds = true,
+				})
+			elseif dim == "overworld" then
 				if (mcl_weather.state == "none") then
 					-- Clear weather
 					mcl_weather.set_sky_box_clear(player)
