@@ -1,5 +1,12 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local LOGGING_ON = minetest.settings:get_bool("mcl_logging_hoppers",false)
+local function mcl_log (message)
+	if LOGGING_ON then
+		mcl_util.mcl_log (message, "[Hoppers]", true)
+	end
+end
+
 --[[ BEGIN OF NODE DEFINITIONS ]]
 
 local mcl_hoppers_formspec =
@@ -331,7 +338,89 @@ minetest.register_node("mcl_hoppers:hopper_side_disabled", def_hopper_side_disab
 
 --[[ END OF NODE DEFINITIONS ]]
 
+local function hopper_pull_from_mc (mc_ent, dest_pos)
+	local inv = mcl_entity_invs.load_inv(mc_ent,5)
+	if not inv then
+		mcl_log("No inv")
+		return false
+	end
+
+	local dest_meta = minetest.get_meta(dest_pos)
+	local dest_inv = dest_meta:get_inventory()
+	if not dest_inv then
+		mcl_log("No dest inv")
+		return
+	end
+
+	mcl_log("inv. size: " .. mc_ent._inv_size)
+	for i = 1, mc_ent._inv_size,1 do
+		local stack = inv:get_stack("main", i)
+
+		mcl_log("i: " .. tostring(i))
+		mcl_log("Name: [" .. tostring(stack:get_name()) .. "]")
+		mcl_log("Count: " .. tostring(stack:get_count()))
+		mcl_log("stack max: " .. tostring(stack:get_stack_max()))
+
+		if not stack:get_name() or stack:get_name() ~= "" then
+			if dest_inv:room_for_item("main", stack:peek_item()) then
+				mcl_log("Room so unload")
+				dest_inv:add_item("main", stack:take_item())
+				inv:set_stack("main", i, stack)
+
+				-- Take one item and stop until next time
+				return
+			else
+				mcl_log("no Room")
+			end
+
+		else
+			mcl_log("nothing there")
+		end
+	end
+end
+
 --[[ BEGIN OF ABM DEFINITONS ]]
+
+minetest.register_abm({
+	label = "Hoppers pull from minecart hoppers",
+	nodenames = {"mcl_hoppers:hopper","mcl_hoppers:hopper_side"},
+	interval = 0.5,
+	chance = 1,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		mcl_log("ABM for: " .. minetest.pos_to_string(pos))
+		local objs = minetest.get_objects_inside_radius(pos, 3)
+
+		if objs and #objs > 0 then
+			for k,v in pairs(objs) do
+				local entity = v:get_luaentity()
+				if entity and entity.name then
+					--mcl_log("Name of object near: " .. tostring(entity.name))
+
+					if entity.name == "mcl_minecarts:hopper_minecart" then
+						local hm_pos = entity.object:get_pos()
+						mcl_log("We have a hopper minecart close: ".. minetest.pos_to_string(hm_pos))
+
+						--if hm_pos.y == pos.y + 1 then mcl_log("y is correct") end
+						--if (hm_pos.x >= pos.x - DIST_FROM_MC and hm_pos.x <= pos.x + DIST_FROM_MC) then mcl_log("x is within range") end
+						--if (hm_pos.z >= pos.z - DIST_FROM_MC and hm_pos.z <= pos.z + DIST_FROM_MC) then mcl_log("z is within range") end
+
+						local DIST_FROM_MC = 1.5
+						if (hm_pos.y == pos.y + 1)
+								and (hm_pos.x >= pos.x - DIST_FROM_MC and hm_pos.x <= pos.x + DIST_FROM_MC)
+								and (hm_pos.z >= pos.z - DIST_FROM_MC and hm_pos.z <= pos.z + DIST_FROM_MC) then
+							mcl_log("Minecart close enough")
+							hopper_pull_from_mc (entity, pos)
+						end
+					end
+				else
+					mcl_log("no entity")
+				end
+			end
+		else
+			mcl_log("objs missing")
+		end
+	end,
+})
 
 -- Make hoppers suck in dropped items
 minetest.register_abm({
