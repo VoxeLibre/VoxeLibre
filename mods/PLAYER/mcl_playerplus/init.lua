@@ -3,6 +3,8 @@ mcl_playerplus = {
 	is_pressing_jump = {},
 }
 
+local hud_water = {}
+
 local get_connected_players = minetest.get_connected_players
 local dir_to_yaw = minetest.dir_to_yaw
 local get_item_group = minetest.get_item_group
@@ -24,6 +26,26 @@ local mcl_playerplus_internal = {}
 
 local time = 0
 local look_pitch = 0
+
+
+local function calculate_water_depth(pos)
+	for i=1, 50 do
+		if get_item_group(minetest.get_node(vector.new(pos.x,pos.y+i,pos.z)).name, "water") == 0 then
+			return i
+		end
+	end
+	return 50
+end
+
+local function remove_water_hud(player)
+	if hud_water[player] then
+		mcl_weather.skycolor.update_sky_color()
+		for i=1, #hud_water[player] do
+			player:hud_remove(hud_water[player][i])
+		end
+		hud_water[player] = nil
+	end
+end
 
 local function player_collision(player)
 
@@ -349,16 +371,16 @@ minetest.register_globalstep(function(dtime)
 			-- set head pitch and yaw when flying
 			local head_rot = vector.new(pitch - degrees(dir_to_pitch(player_velocity)) + 50, player_vel_yaw - yaw, 0)
 			set_bone_pos(player,"Head_Control", nil, head_rot)
-			
+
 			-- sets eye height, and nametag color accordingly
 			set_properties(player, player_props_elytra)
-			
+
 			-- control body bone when flying
 			local body_rot = vector.new((75 - degrees(dir_to_pitch(player_velocity))), -player_vel_yaw + yaw, 0)
 			set_bone_pos(player, "Body_Control", nil, body_rot)
 		elseif parent then
 			set_properties(player, player_props_riding)
-			
+
 			local parent_yaw = degrees(parent:get_yaw())
 			local head_rot = vector.new(pitch, -limit_vel_yaw(yaw, parent_yaw) + parent_yaw, 0)
 			set_bone_pos(player, "Head_Control", nil, head_rot)
@@ -367,10 +389,10 @@ minetest.register_globalstep(function(dtime)
 			-- controls head pitch when sneaking
 			local head_rot = vector.new(pitch, player_vel_yaw - yaw, player_vel_yaw - yaw)
 			set_bone_pos(player, "Head_Control", nil, head_rot)
-			
+
 			-- sets eye height, and nametag color accordingly
 			set_properties(player, player_props_sneaking)
-			
+
 			-- sneaking body conrols
 			set_bone_pos(player, "Body_Control", nil, vector.new(0, -player_vel_yaw + yaw, 0))
 		elseif get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and is_sprinting(name) == true then
@@ -378,10 +400,10 @@ minetest.register_globalstep(function(dtime)
 			is_swimming = true
 			local head_rot = vector.new(pitch - degrees(dir_to_pitch(player_velocity)) + 20, player_vel_yaw - yaw, 0)
 			set_bone_pos(player, "Head_Control", nil, head_rot)
-			
+
 			-- sets eye height, and nametag color accordingly
 			set_properties(player, player_props_swimming)
-			
+
 			-- control body bone when swimming
 			local body_rot = vector.new((75 + degrees(dir_to_pitch(player_velocity))), player_vel_yaw - yaw, 180)
 			set_bone_pos(player,"Body_Control", nil, body_rot)
@@ -393,6 +415,25 @@ minetest.register_globalstep(function(dtime)
 
 			set_bone_pos(player,"Head_Control", nil, vector.new(pitch, player_vel_yaw - yaw, 0))
 			set_bone_pos(player,"Body_Control", nil, vector.new(0, -player_vel_yaw + yaw, 0))
+		end
+
+		if get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 then
+			if not hud_water[player] or hud_water[player] and calculate_water_depth(player:get_pos()) ~= #hud_water[player] then
+				remove_water_hud(player)
+				hud_water[player] = {}
+				for i=1, calculate_water_depth(player:get_pos()) do
+					table.insert(hud_water[player], player:hud_add({
+						hud_elem_type = "image",
+						text = "mcl_playerplus_water.png",
+						position = {x = 0.5, y = 0.5},
+						scale = {x = 8, y = 4},
+						offset = {x = 0, y = 0},
+						z_index = -1002,
+					}))
+				end
+			end
+		else
+			remove_water_hud(player)
 		end
 
 		elytra.last_yaw = player:get_look_horizontal()
@@ -639,7 +680,7 @@ minetest.register_on_joinplayer(function(player)
 		jump_cooldown = -1,	-- Cooldown timer for jumping, we need this to prevent the jump exhaustion to increase rapidly
 	}
 	mcl_playerplus.elytra[player] = {active = false, rocketing = 0, speed = 0}
-	
+
 	-- Minetest bug: get_bone_position() returns all zeros vectors.
 	-- Workaround: call set_bone_position() one time first.
 	player:set_bone_position("Head_Control", vector.new(0, 6.75, 0))
