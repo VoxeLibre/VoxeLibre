@@ -434,7 +434,7 @@ minetest.register_node("mcl_core:mycelium", {
 	tiles = {"mcl_core_mycelium_top.png", "default_dirt.png", {name="mcl_core_mycelium_side.png", tileable_vertical=false}},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = { handy = 1, shovely = 1, dirt = 2, spreading_dirt_type = 1, enderman_takable = 1,  building_block = 1, soil_sapling = 2, path_creation_possible=1},
+	groups = { handy = 1, shovely = 1, dirt = 2, spreading_dirt_type = 1, enderman_takable = 1,  building_block = 1, soil_sapling = 2, path_creation_possible=1, mycelium=1},
 	drop = "mcl_core:dirt",
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.1},
@@ -447,6 +447,44 @@ minetest.register_node("mcl_core:mycelium", {
 	_mcl_silk_touch_drop = true,
 })
 mcl_core.register_snowed_node("mcl_core:mycelium_snow", "mcl_core:mycelium", nil, nil, false, S("Mycelium with Snow"))
+
+local PARTICLE_ABM_DISTANCE = 16
+
+--if minetest.settings:get("mcl_node_particles") == "full" then
+minetest.register_abm({
+	label = "Townaura particles",
+	nodenames = {"group:mycelium"},
+	interval = 2,
+	chance = 30,
+	action = function(pos, node)
+		local player_near = false
+		for _,player in pairs(minetest.get_connected_players()) do
+			if vector.distance(player:get_pos(), pos) < PARTICLE_ABM_DISTANCE then
+				player_near = true
+			end
+		end
+		if player_near then
+			local apos = {x=pos.x-2, y=pos.y+0.51, z=pos.z-2}
+			local apos2 = {x=pos.x+2, y=pos.y+0.51, z=pos.z+2}
+			local acc = { x = 0, y = 0, z = 0 }
+			minetest.add_particlespawner({
+				time = 2,
+				amount = 5,
+				minpos = apos,
+				maxpos = apos2,
+				minvel = vector.new(-3/10, 0, -3/10),
+				maxvel = vector.new(3/10, 10/60, 3/10),
+				minacc = acc,
+				expirationtime = 4,
+				collisiondetection = true,
+				collision_removal = true,
+				size = 1,
+				texture = "mcl_core_mycelium_particle.png",
+			})
+		end
+	end,
+})
+--end
 
 minetest.register_node("mcl_core:podzol", {
 	description = S("Podzol"),
