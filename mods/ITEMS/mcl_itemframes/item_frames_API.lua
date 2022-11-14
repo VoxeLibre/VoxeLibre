@@ -395,7 +395,7 @@ function mcl_itemframes.create_base_item_entity()
 		textures = { "blank.png" },
 		_texture = "blank.png",
 		_scale = 1,
-
+		groups = { immortal =1,},
 		on_activate = function(self, staticdata)
 			if staticdata and staticdata ~= "" then
 				local data = staticdata:split(";")
@@ -592,6 +592,23 @@ function mcl_itemframes.custom_register_lbm()
 
 end
 
+local function register_frame_achievements()
+
+	awards.register_achievement("mcl_itemframes:glowframe", {
+		title = S("Glow and Behold!"),
+		description = S("Craft a glow item frame."),
+		icon = "mcl_itemframes_glow_item_frame.png",
+		trigger = {
+			type = "craft",
+			item = "mcl_itemframes:glow_item_frame",
+			target = 1
+		},
+		type = "Advancement",
+		group = "Overworld",
+	})
+
+end
+
 function mcl_itemframes.create_base_definitions()
 	if mcl_itemframes.DEBUG then
 		minetest.log("action", "[mcl_itemframes] create_base_definitions.")
@@ -621,7 +638,7 @@ function mcl_itemframes.create_base_definitions()
 		paramtype = "light",
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
-		groups = { dig_immediate = 3, deco_block = 1, dig_by_piston = 1, container = 7 }, --, attached_node_facedir = 1 }, -- allows for more placement options.
+		groups = { dig_immediate = 3, deco_block = 1, dig_by_piston = 1, container = 7,}, -- attached_node_facedir = 1 }, -- allows for more placement options.
 		sounds = mcl_sounds.node_sound_defaults(),
 		node_placement_prediction = "",
 
@@ -647,6 +664,14 @@ function mcl_itemframes.create_base_definitions()
 
 		on_place = function(itemstack, placer, pointed_thing)
 			if pointed_thing.type ~= "node" then
+				return itemstack
+			end
+
+			local dir = vector.subtract(pointed_thing.under, pointed_thing.above)
+			local wdir = minetest.dir_to_wallmounted(dir)
+
+			-- remove bottom and top of objects.
+			if wdir == 0 or wdir == 1 then
 				return itemstack
 			end
 
@@ -818,6 +843,10 @@ function mcl_itemframes.create_base_definitions()
 	mcl_itemframes.glow_frame_base.inventory_image = "mcl_itemframes_glow_item_frame_item.png"
 	mcl_itemframes.glow_frame_base.wield_image = "mcl_itemframes_glow_item_frame.png"
 	mcl_itemframes.glow_frame_base.mesh = "mcl_itemframes_glow_item_frame.obj"
+	mcl_itemframes.glow_frame_base.glow = 1 --make the glow frames have some glow at night, but not enough to be a light source.
+
+	-- set up the achievement for glow frames.
+	register_frame_achievements()
 
 end
 
@@ -858,3 +887,4 @@ function mcl_itemframes.backwards_compatibility ()
 	minetest.register_entity("mcl_itemframes:glow_map", map_item_base)
 
 end
+
