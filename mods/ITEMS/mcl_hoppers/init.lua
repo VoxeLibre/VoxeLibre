@@ -362,12 +362,12 @@ local function hopper_pull_from_mc (mc_ent, dest_pos)
 		mcl_log("stack max: " .. tostring(stack:get_stack_max()))
 
 		if not stack:get_name() or stack:get_name() ~= "" then
-			if dest_inv:room_for_item("main", stack) then
+			if dest_inv:room_for_item("main", stack:peek_item()) then
 				mcl_log("Room so unload")
-				dest_inv:add_item("main", stack)
-				inv:set_stack("main", i, ItemStack(""))
+				dest_inv:add_item("main", stack:take_item())
+				inv:set_stack("main", i, stack)
 
-				-- Take one stack and stop until next time
+				-- Take one item and stop until next time
 				return
 			else
 				mcl_log("no Room")
