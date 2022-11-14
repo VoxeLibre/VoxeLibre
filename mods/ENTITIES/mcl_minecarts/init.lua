@@ -840,8 +840,6 @@ minetest.register_craft({
 	},
 })
 
--- TODO: Re-enable crafting of special minecarts when they have been implemented
-
 minetest.register_craft({
 	output = "mcl_minecarts:hopper_minecart",
 	recipe = {
@@ -864,5 +862,4 @@ if has_mcl_wip then
 	mcl_wip.register_wip_item("mcl_minecarts:chest_minecart")
 	mcl_wip.register_wip_item("mcl_minecarts:furnace_minecart")
 	mcl_wip.register_wip_item("mcl_minecarts:command_block_minecart")
-	mcl_wip.register_wip_item("mcl_minecarts:hopper_minecart")
 end
