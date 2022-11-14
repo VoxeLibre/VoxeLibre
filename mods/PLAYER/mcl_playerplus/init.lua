@@ -426,7 +426,7 @@ minetest.register_globalstep(function(dtime)
 						hud_elem_type = "image",
 						text = "mcl_playerplus_water.png",
 						position = {x = 0.5, y = 0.5},
-						scale = {x = 8, y = 4},
+						scale = {x = 32, y = 16},
 						offset = {x = 0, y = 0},
 						z_index = -1002,
 					}))
