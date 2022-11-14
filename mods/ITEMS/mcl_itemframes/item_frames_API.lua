@@ -395,7 +395,7 @@ function mcl_itemframes.create_base_item_entity()
 		textures = { "blank.png" },
 		_texture = "blank.png",
 		_scale = 1,
-		groups = { immortal =1,},
+		groups = { immortal = 1, },
 		on_activate = function(self, staticdata)
 			if staticdata and staticdata ~= "" then
 				local data = staticdata:split(";")
@@ -426,7 +426,7 @@ function mcl_itemframes.create_base_item_entity()
 			end
 			return ""
 		end,
-
+		on_punch = function() return true end,
 		_update_texture = function(self)
 			if self._texture then
 				self.object:set_properties({
@@ -638,7 +638,7 @@ function mcl_itemframes.create_base_definitions()
 		paramtype = "light",
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
-		groups = { dig_immediate = 3, deco_block = 1, dig_by_piston = 1, container = 7,}, -- attached_node_facedir = 1 }, -- allows for more placement options.
+		groups = { dig_immediate = 3, deco_block = 1, dig_by_piston = 1, container = 7, }, -- attached_node_facedir = 1 }, -- allows for more placement options.
 		sounds = mcl_sounds.node_sound_defaults(),
 		node_placement_prediction = "",
 
@@ -887,4 +887,3 @@ function mcl_itemframes.backwards_compatibility ()
 	minetest.register_entity("mcl_itemframes:glow_map", map_item_base)
 
 end
-
