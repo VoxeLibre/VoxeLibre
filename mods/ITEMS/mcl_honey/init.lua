@@ -42,13 +42,21 @@ minetest.register_craftitem("mcl_honey:honey_bottle", {
 minetest.register_node("mcl_honey:honey_block", {
 	description = S("Honey Block"),
 	_doc_items_longdesc = S("Honey Block. Used as a decoration and in redstone. Is sticky on some sides."),
-	tiles = {
-		"mcl_honey_block_top.png", "mcl_honey_block_bottom.png",
-		"mcl_honey_block_side.png", "mcl_honey_block_side.png",
-		"mcl_honey_block_side.png", "mcl_honey_block_side.png",
+	tiles = {"mcl_honey_block_side.png"},
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "blend" or true,
+	groups = { handy = 1, deco_block = 1, fall_damage_add_percent = -80 },
+	paramtype = "light",
+	drawtype = "nodebox",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.4, -0.4, -0.4, 0.4, 0.4, 0.4},
+			{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
+		}
 	},
-	groups = { handy = 1, deco_block = 1 },
-	paramtype2 = "facedir",
+	selection_box = {
+		type = "regular",
+	},
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 	mvps_sticky = function(pos, node, piston_pos)
