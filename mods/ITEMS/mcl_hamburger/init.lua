@@ -4,6 +4,9 @@
 --- DateTime: 10/23/22 4:50 AM
 ---
 -- LOCALIZATION
+
+if not minetest.settings:get_bool("mcl_enable_hamburger",true) then return end
+
 local S = minetest.get_translator("hamburger_mod")
 
 local modname = minetest.get_current_modname()
