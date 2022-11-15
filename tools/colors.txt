@@ -1,3 +1,6 @@
+## Mcl2 colors.txt file for minetestmapper
+## by Ranko Saotome using the tools provided by minetestmapper
+
 # mcl_amethyst
 mcl_amethyst:amethyst_block 143 94 174
 mcl_amethyst:amethyst_cluster 165 121 193
@@ -2237,4 +2240,3 @@ xpanes:pane_white 255 255 255 64 16
 xpanes:pane_white_flat 255 255 255 64 16
 xpanes:pane_yellow 229 229 51 64 16
 xpanes:pane_yellow_flat 229 229 51 64 16
-
