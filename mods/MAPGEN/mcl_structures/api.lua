@@ -227,9 +227,19 @@ local function process_queue()
 	minetest.after(0.5,process_queue)
 end
 
-function mcl_structures.spawn_mobs(mob,spawnon,p1,p2,pr,n)
+function mcl_structures.spawn_mobs(mob,spawnon,p1,p2,pr,n,water)
 	n = n or 1
-	local sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
+	local sp = {}
+	if water then
+		local nn = minetest.find_nodes_in_area(p1,p2,spawnon)
+		for k,v in pairs(nn) do
+			if minetest.get_item_group(minetest.get_node(vector.offset(v,0,1,0)).name,"water") > 0 then
+				table.insert(sp,v)
+			end
+		end
+	else
+		sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
+	end
 	table.shuffle(sp)
 	for i,node in pairs(sp) do
 		if not peaceful and i <= n then
