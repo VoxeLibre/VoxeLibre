@@ -406,6 +406,23 @@ awards.register_achievement("mcl:total_beelocation", {
 	group = "Husbandry",
 })
 
+-- Triggered in mcl_copper
+awards.register_achievement("mcl:wax_on", {
+	title = S("Wax On"),
+	description = S("Apply honeycomb to a copper block to protect it from the elements."),
+	icon = "mcl_honey_honeycomb.png",
+	type = "Advancement",
+	group = "Husbandry",
+})
+
+awards.register_achievement("mcl:wax_off", {
+	title = S("Wax Off"),
+	description = S("Scrape wax off of a copper block."),
+	icon = "default_tool_stoneaxe.png",
+	type = "Advancement",
+	group = "Husbandry",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then
