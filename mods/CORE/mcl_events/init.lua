@@ -142,10 +142,12 @@ minetest.register_globalstep(check_events)
 
 minetest.register_chatcommand("event_start",{
 	privs = {debug = true},
+	description = "Debug command to start events",
 	func = function(pname,param)
 		local p = minetest.get_player_by_name(pname)
 		local evdef = mcl_events.registered_events[param]
-		if not evdef then return end
+		if not evdef then return false,"Event "..param.." doesn't exist.'" end
 		start_event({pos=p:get_pos(),player=pname,factor=1},evdef)
+		return true,"Started event "..param
 	end,
 })
