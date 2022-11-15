@@ -34,6 +34,8 @@
 * SumianVoice
 * MrRar
 * talamh
+* Faerraven
+* AncientMariner
 
 ## Contributors
 * Laurent Rocher
@@ -89,6 +91,9 @@
 * FossFanatic
 * Herbert West
 * GuyLiner
+* 3raven
+* anarquimico
+* TheOnlyJoeEnderman
 
 ## MineClone5
 * kay27

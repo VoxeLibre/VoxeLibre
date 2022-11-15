@@ -35,6 +35,8 @@ return {
 		"SumianVoice",
 		"MrRar",
 		"talamh",
+		"Faerraven",
+		"AncientMariner",
 	}},
 	{S("Contributors"), 0x52FF00, {
 		"Laurent Rocher",
@@ -90,6 +92,9 @@ return {
 		"FossFanatic",
 		"Herbert West",
 		"GuyLiner",
+		"3raven",
+		"anarquimico",
+		"TheOnlyJoeEnderman",
 	}},
 	{S("MineClone5"), 0xA60014, {
 		"kay27",
