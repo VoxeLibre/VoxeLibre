@@ -117,7 +117,7 @@ local function filter_item(name, description, lang, filter)
 	else
 		desc = string.lower(minetest.get_translated_string(lang, description))
 	end
-	return string.find(name, filter) or string.find(desc, filter)
+	return string.find(name, filter, nil, true) or string.find(desc, filter, nil, true)
 end
 
 local function set_inv_search(filter, player)
