@@ -516,10 +516,10 @@ function mcl_enchanting.show_enchanting_formspec(player)
 		mcl_formspec.get_itemslot_bg_v4(1, 3.25, 1, 1),
 		"list[current_player;enchanting_item;1,3.25;1,1]",
 		mcl_formspec.get_itemslot_bg_v4(2.25, 3.25, 1, 1),
+		"image[2.25,3.25;1,1;mcl_enchanting_lapis_background.png]",
 		"list[current_player;enchanting_lapis;2.25,3.25;1,1]",
-		"image[2.25,2.4;1,1;mcl_enchanting_lapis_background.png]",
 
-		"image[4.125,0.375;7.25,4.1;mcl_enchanting_button_background.png]",
+		"image[4.125,0.56;7.25,4.1;mcl_enchanting_button_background.png]",
 
 		"label[0.375,4.7;" .. F(C(mcl_formspec.label_color) .. S("Inventory")) .. "]",
 
@@ -574,7 +574,7 @@ function mcl_enchanting.show_enchanting_formspec(player)
 			ending ..
 			".png;bgimg_hovered=mcl_enchanting_button" ..
 			hover_ending .. ".png;bgimg_pressed=mcl_enchanting_button" .. hover_ending .. ".png]"
-			.. "button[0,0;7.5,1.3;button_" .. i .. ";]"
+			.. "button[0,0;7.25,1.3;button_" .. i .. ";]"
 			.. (slot and "image[0,0;1.3,1.3;mcl_enchanting_number_" .. i .. ending .. ".png]" or "")
 			.. (slot and "label[6.8,1;" .. C(can_enchant and "#80FF20" or "#407F10") .. slot.level_requirement .. "]" or "")
 			.. (slot and slot.glyphs or "")
