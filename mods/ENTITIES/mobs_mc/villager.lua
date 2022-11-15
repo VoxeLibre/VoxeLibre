@@ -887,11 +887,18 @@ local function has_golem(pos)
 	end
 end
 
+local function monsters_near(self)
+	for _,o in pairs(minetest.get_objects_inside_radius(self.object:get_pos(),10)) do
+		local l = o:get_luaentity()
+		if l and l.type =="monster" then return true end
+	end
+end
+
 local function has_summon_participants(self)
 	local r = 0
 	for _,o in pairs(minetest.get_objects_inside_radius(self.object:get_pos(),10)) do
 		local l = o:get_luaentity()
-		--TODO check for panicking or gossiping
+		--TODO check for gossiping
 		if l and l.name == "mobs_mc:villager" then r = r + 1 end
 	end
 	return r > 2
@@ -915,7 +922,8 @@ local function check_summon(self,dtime)
 	if self._summon_timer and self._summon_timer > 30 then
 		local pos = self.object:get_pos()
 		self._summon_timer = 0
-		if has_golem(pos) then return false end
+		if has_golem(pos) then return end
+		if not monsters_near(self) then return end
 		if not has_summon_participants(self) then return end
 		summon_golem(self)
 	elseif self._summon_timer == nil  then
