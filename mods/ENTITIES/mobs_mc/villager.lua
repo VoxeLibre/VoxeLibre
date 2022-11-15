@@ -2073,8 +2073,8 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 
 		if cmi_cause and cmi_cause.puncher then
 			local l = cmi_cause.puncher:get_luaentity()
-			if l and math.random(2) == 1 and( l.name == "mobs_mc:zombie" or l.name == "mobs_mc:baby_zombie" or l.name == "mobs_mc:zombie_villager") then
-				mcl_util.replace_mob(self.object,"mobs_mc:zombie")
+			if l and math.random(2) == 1 and( l.name == "mobs_mc:zombie" or l.name == "mobs_mc:baby_zombie" or l.name == "mobs_mc:villager_zombie" or l.name == "mobs_mc:husk") then
+				mcl_util.replace_mob(self.object,"mobs_mc:villager_zombie")
 				return true
 			end
 		end
