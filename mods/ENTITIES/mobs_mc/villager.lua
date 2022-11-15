@@ -2045,7 +2045,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 		self._id=minetest.sha1(minetest.get_gametime()..minetest.pos_to_string(self.object:get_pos())..tostring(math.random()))
 		set_textures(self)
 	end,
-	on_die = function(self, pos)
+	on_die = function(self, pos, cmi_cause)
 		-- Close open trade formspecs and give input back to players
 		local trading_players = self._trading_players
 		if trading_players then
@@ -2069,6 +2069,14 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 			local jobsite_meta = minetest.get_meta(jobsite)
 			jobsite_meta:set_string("villager", nil)
 			mcl_log("Died, so bye bye jobsite")
+		end
+
+		if cmi_cause and cmi_cause.puncher then
+			local l = cmi_cause.puncher:get_luaentity()
+			if l and math.random(2) == 1 and( l.name == "mobs_mc:zombie" or l.name == "mobs_mc:baby_zombie" or l.name == "mobs_mc:villager_zombie" or l.name == "mobs_mc:husk") then
+				mcl_util.replace_mob(self.object,"mobs_mc:villager_zombie")
+				return true
+			end
 		end
 	end,
 	on_lightning_strike = function(self, pos, pos2, objects)
