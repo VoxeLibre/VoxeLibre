@@ -30,6 +30,8 @@ local DEFAULT_WALK_CHANCE = 33 -- chance to walk in percent, if no player nearby
 local PLAYER_SCAN_INTERVAL = 5 -- every X seconds, villager looks for players nearby
 local PLAYER_SCAN_RADIUS = 4 -- scan radius for looking for nearby players
 
+local RESETTLE_DISTANCE = 100 -- If a mob is transported this far from home, it gives up bed and job and resettles
+
 local PATHFINDING = "gowp"
 
 --[=======[ TRADING ]=======]
@@ -1089,25 +1091,38 @@ local function retrieve_my_jobsite (self)
 	return
 end
 
+local function remove_job (self)
+	self._jobsite = nil
+	if not has_traded(self) then
+		mcl_log("Cannot retrieve my jobsite. I am now unemployed.")
+		self._profession = "unemployed"
+		self._trades = nil
+		set_textures(self)
+	else
+		mcl_log("Cannot retrieve my jobsite but I've traded so only remove jobsite.")
+	end
+end
+
 local function validate_jobsite(self)
 	if self._profession == "unemployed" then return false end
 
-	if not retrieve_my_jobsite (self) then
-		self._jobsite = nil
+	local job_block = retrieve_my_jobsite (self)
+	if not job_block then
 		if self.order == WORK then
 			self.order = nil
 		end
 
-		if not has_traded(self) then
-			mcl_log("Cannot retrieve my jobsite. I am now unemployed.")
-			self._profession = "unemployed"
-			self._trades = nil
-			set_textures(self)
-		else
-			mcl_log("Cannot retrieve my jobsite but I've traded so only remove jobsite.")
-		end
+		remove_job (self)
 		return false
 	else
+		local resettle = vector.distance(self.object:get_pos(),self._jobsite) > RESETTLE_DISTANCE
+		mcl_log("Jobsite far, so resettle: " .. tostring(resettle))
+		if resettle then
+			local m = minetest.get_meta(self._jobsite)
+			m:set_string("villager", nil)
+			remove_job (self)
+			return false
+		end
 		return true
 	end
 end
@@ -1222,6 +1237,17 @@ local function validate_bed(self)
 	local bed_valid = true
 
 	local m = minetest.get_meta(self._bed)
+
+	local resettle = vector.distance(self.object:get_pos(),self._bed) > RESETTLE_DISTANCE
+	mcl_log("Bed far, so resettle: " .. tostring(resettle))
+	if resettle then
+		mcl_log("Resettled. Ditch bed.")
+		m:set_string("villager", nil)
+		self._bed = nil
+		bed_valid = false
+		return false
+	end
+
 	local owned_by_player = m:get_string("player")
 	mcl_log("Player owner: " .. owned_by_player)
 	if owned_by_player ~= "" then
@@ -1229,7 +1255,7 @@ local function validate_bed(self)
 		m:set_string("villager", nil)
 		self._bed = nil
 		bed_valid = false
-		return
+		return false
 	end
 
 	if m:get_string("villager") ~= self._id then
@@ -1245,6 +1271,10 @@ end
 
 local function do_activity (self)
 	-- Maybe just check we're pathfinding first?
+	if self.following then
+		mcl_log("Following, so do not do activity.")
+		return
+	end
 
 	if not validate_bed(self) and self.state ~= PATHFINDING then
 		if self.order == SLEEP then self.order = nil end
