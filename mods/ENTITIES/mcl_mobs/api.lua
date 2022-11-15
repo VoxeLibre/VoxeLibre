@@ -4497,26 +4497,28 @@ local mob_step = function(self, dtime)
 				if self.object:get_attach() then
 					self_rot = self.object:get_attach():get_rotation()
 				end
-				local player_pos = self._locked_object:get_pos()
-				local direction_player = vector.direction(vector.add(self.object:get_pos(), vector.new(0, self.head_eye_height*.7, 0)), vector.add(player_pos, vector.new(0, _locked_object_eye_height, 0)))
-				local mob_yaw = math.deg(-(-(self_rot.y)-(-minetest.dir_to_yaw(direction_player))))+self.head_yaw_offset
-				local mob_pitch = math.deg(-dir_to_pitch(direction_player))*self.head_pitch_multiplier
+				if self.rot then
+					local player_pos = self._locked_object:get_pos()
+					local direction_player = vector.direction(vector.add(self.object:get_pos(), vector.new(0, self.head_eye_height*.7, 0)), vector.add(player_pos, vector.new(0, _locked_object_eye_height, 0)))
+					local mob_yaw = math.deg(-(-(self_rot.y)-(-minetest.dir_to_yaw(direction_player))))+self.head_yaw_offset
+					local mob_pitch = math.deg(-dir_to_pitch(direction_player))*self.head_pitch_multiplier
 
-				if (mob_yaw < -60 or mob_yaw > 60) and not (self.attack and self.state == "attack" and not self.runaway) then
-					final_rotation = vector.multiply(oldr, 0.9)
-				elseif self.attack and self.state == "attack" and not self.runaway then
-					if self.head_yaw == "y" then
-						final_rotation = vector.new(mob_pitch, mob_yaw, 0)
-					elseif self.head_yaw == "z" then
-						final_rotation = vector.new(mob_pitch, 0, -mob_yaw)
-					end
+					if (mob_yaw < -60 or mob_yaw > 60) and not (self.attack and self.state == "attack" and not self.runaway) then
+						final_rotation = vector.multiply(oldr, 0.9)
+					elseif self.attack and self.state == "attack" and not self.runaway then
+						if self.head_yaw == "y" then
+							final_rotation = vector.new(mob_pitch, mob_yaw, 0)
+						elseif self.head_yaw == "z" then
+							final_rotation = vector.new(mob_pitch, 0, -mob_yaw)
+						end
 
-				else
+					else
 
-					if self.head_yaw == "y" then
-						final_rotation = vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, ((mob_yaw-oldr.y)*.3)+oldr.y, 0)
-					elseif self.head_yaw == "z" then
-						final_rotation = vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, 0, -(((mob_yaw-oldr.y)*.3)+oldr.y)*3)
+						if self.head_yaw == "y" then
+							final_rotation = vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, ((mob_yaw-oldr.y)*.3)+oldr.y, 0)
+						elseif self.head_yaw == "z" then
+							final_rotation = vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, 0, -(((mob_yaw-oldr.y)*.3)+oldr.y)*3)
+						end
 					end
 				end
 			end
