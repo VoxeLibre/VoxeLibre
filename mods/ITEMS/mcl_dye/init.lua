@@ -379,6 +379,8 @@ local function apply_bone_meal(pointed_thing,user)
 	return false
 end
 
+mcl_dye.apply_bone_meal = apply_bone_meal
+
 minetest.register_craftitem("mcl_dye:white", {
 	inventory_image = "mcl_dye_white.png",
 	description = S("Bone Meal"),
