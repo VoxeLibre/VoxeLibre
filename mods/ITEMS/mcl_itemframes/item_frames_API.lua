@@ -426,7 +426,7 @@ function mcl_itemframes.create_base_item_entity()
 			end
 			return ""
 		end,
-		on_punch = function() return true end, -- to prevent KillAura from destroying the entities.
+		on_punch = function() return true end,
 		_update_texture = function(self)
 			if self._texture then
 				self.object:set_properties({
