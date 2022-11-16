@@ -36,6 +36,10 @@ for i=0, 3 do
 		_mcl_blast_resistance = 0,
 		_mcl_hardness = 0,
 		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+			if mcl_dye and clicker:get_wielded_item():get_name() == "mcl_dye:white" then
+				mcl_dye.apply_bone_meal({under=pos},clicker)
+				return
+			end
 			local stage
 			if node.name:find("_2") then
 				stage = 2
