@@ -37,9 +37,8 @@ local axolotl = {
 	hp_min = 14,
 	hp_max = 14,
 	xp_min = 1,
-    xp_max = 7,
-
-    --  Random look at player works, but it looks away instead of towards.
+	xp_max = 7,
+	
 	head_swivel = "head.control",
 	bone_eye_height = -1,
 	head_eye_height = -0.5,
@@ -64,7 +63,7 @@ local axolotl = {
 		{"mobs_mc_axolotl_purple.png"},
 		{"mobs_mc_axolotl_white.png"}		
 	},
-    sounds = {
+	sounds = {
 		random = "mobs_mc_axolotl",
 		damage = "mobs_mc_axolotl_hurt",
 		distance = 16,
