@@ -45,7 +45,7 @@ function mcl_hamburger.register_burger_craft(cooked_meat, use_alt)
         })
     end
 
-	local hamburger_def = {
+    local hamburger_def = {
         description = S("A Hamburger"),
         _doc_items_longdesc = S("A tasty hamburger that is sure to lure villagers around like a lead. Can be eaten."),
         _doc_items_usagehelp = S("wield this item to pull villagers to you."),
@@ -57,7 +57,7 @@ function mcl_hamburger.register_burger_craft(cooked_meat, use_alt)
         groups = { food = 2, eatable = 8 },
         _mcl_saturation = 12.8,
         stack_max = 64,
-	}
+    }
 
 	if use_alt == false then
 		minetest.register_craftitem("mcl_hamburger:hamburger", hamburger_def)
