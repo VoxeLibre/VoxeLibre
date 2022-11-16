@@ -46,10 +46,10 @@ function mcl_hamburger.register_burger_craft(cooked_meat, use_alt)
     end
 
 	local hamburger_def = {
-		description = S("A Hamburger"),
-		_doc_items_longdesc = S("A tasty hamburger that is sure to lure villagers around like a lead. Can be eaten."),
-		_doc_items_usagehelp = S("wield this item to pull villagers to you."),
-		_tt_help = S("A tasty hamburger that is sure to lure villagers.\n'I'll gladly pay you Tuesday, for a hamburger today.' - Wimpy."),
+        description = S("A Hamburger"),
+        _doc_items_longdesc = S("A tasty hamburger that is sure to lure villagers around like a lead. Can be eaten."),
+        _doc_items_usagehelp = S("wield this item to pull villagers to you."),
+        _tt_help = S("A tasty hamburger that is sure to lure villagers.\n'I'll gladly pay you Tuesday, for a hamburger today.' - Wimpy."),
         inventory_image = "hamburger.png",
         wield_image = "hamburger.png",
         on_place = minetest.item_eat(8),
