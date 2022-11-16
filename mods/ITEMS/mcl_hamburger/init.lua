@@ -73,7 +73,7 @@ function mcl_hamburger.register_burger_craft(cooked_meat, use_alt)
 minetest.registered_entities["mobs_mc:villager"].nofollow = false
 
 -- register the item and crafting recipe.
-mcl_hamburger.register_burger_craft( "", "mcl_mobitems:cooked_beef")
+mcl_hamburger.register_burger_craft("mcl_mobitems:cooked_beef")
 
 -- add it to the follow items.
 table.insert(minetest.registered_entities["mobs_mc:villager"].follow,"mcl_hamburger:hamburger")
