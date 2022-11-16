@@ -67,7 +67,7 @@ local axolotl = {
 		random = "mobs_mc_axolotl",
 		damage = "mobs_mc_axolotl_hurt",
 		distance = 16,
-    },
+		},
 	animation = {-- Stand: 1-20; Walk: 20-60; Swim: 61-81
 		stand_start = 61, stand_end = 81, stand_speed = 15,
 		walk_start = 61, walk_end = 81, walk_speed = 15,
