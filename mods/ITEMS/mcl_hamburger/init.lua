@@ -7,17 +7,18 @@
 
 if not minetest.settings:get_bool("mcl_enable_hamburger",true) then return end
 
-local S = minetest.get_translator("hamburger_mod")
+local S = minetest.get_translator("mcl_hamburger")
 
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
 local table = table
 local DEBUG = false
-hamburger_mod = {}
 
--- quick api for hamburgers. call to register your hamburger.
-function hamburger_mod.register_burger_craft( hamburger_item, cooked_meat, use_alt)
+mcl_hamburger = {}
+
+-- call to register your hamburger.
+function mcl_hamburger.register_burger_craft(cooked_meat, use_alt)
 
     if use_alt == nil or use_alt == "" then
         use_alt = false
@@ -25,63 +26,57 @@ function hamburger_mod.register_burger_craft( hamburger_item, cooked_meat, use_a
 
     minetest.register_craft({
         type = "fuel",
-        recipe = "hamburger_mod:hamburger" .. hamburger_item,
+        recipe = "mcl_hamburger:hamburger",
         burntime = 2,
     })
 
     -- register crafts (actual recipe)
     if minetest.get_modpath(modname) then
 
-        local itemstring = "hamburger_mod:hamburger"
+        local itemstring = "mcl_hamburger:hamburger"
 
         minetest.register_craft({
-            output = itemstring .. hamburger_item,
+            output = itemstring,
             recipe = {
                 { "mcl_farming:bread"},
-                { cooked_meat }, -- "mcl_mobitems:cooked_beef" for a reg hamburger. grind up clowns for a McDonald's hambeurger
+                { cooked_meat }, -- "mcl_mobitems:cooked_beef" for a reg hamburger. Grind up clowns for a Big Mac.
                 { "mcl_farming:bread" },
             },
         })
     end
 
-    if use_alt == false then
-        minetest.register_craftitem("hamburger_mod:hamburger" .. hamburger_item, {
-            description = S("Hamburger"),
-            _doc_items_longdesc = S("A tasty hamburger that is sure to lure villagers around like a LEASH. Can be eaten."),
-            _doc_items_usagehelp = S("wield this item to pull villagers to you."),
-            _tt_help = S("A tasty hamburger that is sure to lure villagers"),
-            inventory_image = "hamburger.png",
-            wield_image = "hamburger.png",
-            on_place = minetest.item_eat(8),
-            on_secondary_use = minetest.item_eat(8),
-            groups = { food = 2, eatable = 8 },
-            _mcl_saturation = 12.8,
-            stack_max = 64,
-        })
-    else
-        minetest.register_craftitem("hamburger_mod:hamburger" .. hamburger_item, {
-            description = S("Hamburger"),
-            _doc_items_longdesc = S("A tasty hamburger that is sure to lure villagers around like a LEASH. Can be eaten."),
-            _doc_items_usagehelp = S("wield this item to pull villagers to you."),
-            _tt_help = S("A tasty hamburger that is sure to lure villagers"),
-            inventory_image = "hamburger_alt.png",
-            wield_image = "hamburger_alt.png",
-            on_place = minetest.item_eat(8),
-            on_secondary_use = minetest.item_eat(8),
-            groups = { food = 2, eatable = 8 },
-            _mcl_saturation = 12.8,
-            stack_max = 64,
-        })
-    end
+	local hamburger_def = {
+		description = S("A Hamburger"),
+		_doc_items_longdesc = S("A tasty hamburger that is sure to lure villagers around like a lead. Can be eaten."),
+		_doc_items_usagehelp = S("wield this item to pull villagers to you."),
+		_tt_help = S("A tasty hamburger that is sure to lure villagers.\n'I'll gladly pay you Tuesday, for a hamburger today.' - Wimpy."),
+        inventory_image = "hamburger.png",
+        wield_image = "hamburger.png",
+        on_place = minetest.item_eat(8),
+        on_secondary_use = minetest.item_eat(8),
+        groups = { food = 2, eatable = 8 },
+        _mcl_saturation = 12.8,
+        stack_max = 64,
+	}
+
+	if use_alt == false then
+		minetest.register_craftitem("mcl_hamburger:hamburger", hamburger_def)
+	else
+		local hamburger_alt = table.copy(hamburger_def)
+		hamburger_alt.inventory_image = "mcl_hamburger_hamburger_alt.png"
+		hamburger_alt.wield_image = "mcl_hamburger_hamburger_alt.png"
+		minetest.register_craftitem("mcl_hamburger:hamburger", hamburger_alt)
+	end
 
 
-end
+-- make the villagers follow the item
+minetest.registered_entities["mobs_mc:villager"].nofollow = false
 
--- make the villagers follow the hamburger item
-minetest.registered_entities["mobs_mc:villager"].nofollow = nil
+-- register the item and crafting recipe.
+mcl_hamburger.register_burger_craft( "", "mcl_mobitems:cooked_beef")
 
-hamburger_mod.register_burger_craft( "", "mcl_mobitems:cooked_beef")
-table.insert(minetest.registered_entities["mobs_mc:villager"].follow,"hamburger_mod:hamburger")
+-- add it to the follow items.
+table.insert(minetest.registered_entities["mobs_mc:villager"].follow,"mcl_hamburger:hamburger")
 
 if DEBUG then
     minetest.log (dump(minetest.registered_entities["mobs_mc:villager"].follow))
