@@ -35,6 +35,20 @@ for i=0, 3 do
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0,
 		_mcl_hardness = 0,
+		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+			local stage
+			if node.name:find("_2") then
+				stage = 2
+			elseif node.name:find("_3") then
+				stage = 3
+			end
+			if stage then
+				for i=1,math.random(stage) do
+					minetest.add_item(pos,"mcl_farming:sweet_berry")
+				end
+				minetest.swap_node(pos,{name = "mcl_farming:sweet_berry_bush_" .. stage - 1 })
+			end
+		end,
 	})
 	minetest.register_alias("mcl_sweet_berry:sweet_berry_bush_" .. i, node_name)
 end
