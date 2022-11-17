@@ -1465,7 +1465,7 @@ function mcl_signs.register_sign_craft(modname, wood_item_string, _name)
 
 	minetest.register_craft({
 		type = "fuel",
-		recipe = ":mcl_signs:wall_sign" .. _name,
+		recipe = "mcl_signs:wall_sign" .. _name,
 		burntime = 10,
 	})
 
@@ -1477,7 +1477,7 @@ function mcl_signs.register_sign_craft(modname, wood_item_string, _name)
 	-- register crafts (actual recipe)
 	if minetest.get_modpath(modname) then
 
-		local itemstring = ":mcl_signs:wall_sign"
+		local itemstring = "mcl_signs:wall_sign"
 
 		minetest.register_craft({
 			output = itemstring .. _name .. " 3",
