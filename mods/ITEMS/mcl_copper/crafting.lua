@@ -47,6 +47,17 @@ minetest.register_craft({
 	},
 })
 
+local waxable_blocks = { "block", "block_cut", "block_exposed", "block_exposed_cut", "block_weathered", "block_weathered_cut", "block_oxidized", "block_oxidized_cut" }
+
+for _, w in ipairs(waxable_blocks) do
+	minetest.register_craft({
+		output = "mcl_copper:waxed_"..w,
+		recipe = {
+			{ "mcl_copper:"..w, "mcl_honey:honeycomb" },
+		},
+	})
+end
+
 minetest.register_craft({
 	output = "mcl_copper:copper_ingot 4",
 	recipe = {
@@ -73,4 +84,11 @@ minetest.register_craft({
 	output = "mcl_copper:copper_ingot",
 	recipe = "mcl_copper:stone_with_copper",
 	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "mcl_copper:block",
+	recipe = "mcl_copper:block_raw",
+	cooktime = 90,
 })

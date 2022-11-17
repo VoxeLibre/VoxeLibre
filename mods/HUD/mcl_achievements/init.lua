@@ -389,6 +389,40 @@ awards.register_achievement("mcl:theEndAgain", {
 	group = "End",
 })
 
+-- Triggered in mcl_beehives
+awards.register_achievement("mcl:bee_our_guest", {
+	title = S("Bee Our Guest"),
+	description = S("Use a campfire to collect a bottle of honey from a beehive without aggrivating the bees inside."),
+	icon = "mcl_honey_honey_bottle.png",
+	type = "Advancement",
+	group = "Husbandry",
+})
+
+awards.register_achievement("mcl:total_beelocation", {
+	title = S("Total Beelocation"),
+	description = S("Move a bee nest, with 3 bees inside, using a silk touch enchanted tool."),
+	icon = "mcl_beehives_bee_nest_front_honey.png",
+	type = "Advancement",
+	group = "Husbandry",
+})
+
+-- Triggered in mcl_copper
+awards.register_achievement("mcl:wax_on", {
+	title = S("Wax On"),
+	description = S("Apply honeycomb to a copper block to protect it from the elements."),
+	icon = "mcl_honey_honeycomb.png",
+	type = "Advancement",
+	group = "Husbandry",
+})
+
+awards.register_achievement("mcl:wax_off", {
+	title = S("Wax Off"),
+	description = S("Scrape wax off of a copper block."),
+	icon = "default_tool_stoneaxe.png",
+	type = "Advancement",
+	group = "Husbandry",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then

@@ -3160,7 +3160,48 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
-
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 16,
+		--[[noise_params = {
+			offset = 0.01,
+			scale = 0.00001,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.33
+		},]]--
+		fill_ratio = 0.0002,
+		biomes = {"FlowerForest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic_bee_nest.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+		spawn_by = "group:flower",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 16,
+		--[[noise_params = {
+			offset = 0.01,
+			scale = 0.00001,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.33
+		},]]--
+		fill_ratio = 0.00002,
+		biomes = {"Forest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core.."/schematics/mcl_core_oak_classic_bee_nest.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+		spawn_by = "group:flower",
+	})
 
 	-- Rare balloon oak
 	minetest.register_decoration({
@@ -3269,7 +3310,27 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z, force_placement",
 		rotation = "random",
 	})
-
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		--[[noise_params = {
+			offset = 0.01,
+			scale = 0.00001,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.33
+		},]]--
+		fill_ratio = 0.0005,
+		biomes = {"MangroveSwamp"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove.."/schematics/mcl_mangrove_bee_nest.mts",
+		flags = "place_center_x, place_center_z, force_placement",
+		rotation = "random",
+		spawn_by = "group:flower",
+	})
 	minetest.register_decoration({
 		deco_type = "simple",
 		place_on = {"mcl_mud:mud"},
@@ -3629,6 +3690,27 @@ local function register_decorations()
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = mod_mcl_core.."/schematics/mcl_core_birch.mts",
 		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 16,
+		--[[noise_params = {
+			offset = 0.01,
+			scale = 0.00001,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.33
+		},]]--
+		fill_ratio = 0.00002,
+		biomes = {"Forest", "BirchForest", "BirchForestM"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core.."/schematics/mcl_core_birch_bee_nest.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+		spawn_by = "group:flower",
 	})
 
 	-- Dark Oak
