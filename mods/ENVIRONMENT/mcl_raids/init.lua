@@ -157,7 +157,7 @@ function mcl_raids.spawn_raid(event)
 	local n = 12
 	local i = math.random(1, n)
 	local raid_pos = vector.offset(pos,r * math.cos(((i-1)/n) * (2*math.pi)),0,  r * math.sin(((i-1)/n) * (2*math.pi)))
-	local sn = minetest.find_nodes_in_area_under_air(vector.offset(raid_pos,-5,-50,-5), vector.offset(raid_pos,5,50,5), {"group:grass_block", "group:grass_block_snow", "group:snow_cover", "group:sand"})
+	local sn = minetest.find_nodes_in_area_under_air(vector.offset(raid_pos,-5,-50,-5), vector.offset(raid_pos,5,50,5), {"group:grass_block", "group:grass_block_snow", "group:snow_cover", "group:sand", "mcl_core:ice"})
 	mcl_bells.ring_once(pos)
 	if sn and #sn > 0 then
 		local spawn_pos = sn[math.random(#sn)]
@@ -268,6 +268,14 @@ mcl_events.register_event("raid",{
 	end,
 	on_stage_begin = mcl_raids.spawn_raid,
 	cond_complete = function(self)
+		local player_near = false
+		for _,pl in pairs(minetest.get_connected_players()) do
+			if self.pos and vector.distance(pl:get_pos(),self.pos) < 72 then player_near = true end
+		end
+		if not player_near then return false end
+		--let the event api handle cancel the event when no players are near
+		--without this check it would sort out the unloaded mob entities and
+		--think the raid is defeated.
 		local m = {}
 		for k,o in pairs(self.mobs) do
 			if o and o:get_pos() then
