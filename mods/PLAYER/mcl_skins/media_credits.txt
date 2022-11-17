@@ -20,6 +20,7 @@ mcl_skins_top_6.png
 mcl_skins_bottom_3.png
 mcl_skins_eye_7.png
 mcl_skins_mouth_7.png
+mcl_skins_hair_10.png
 Original work by MrRar
 License: CC BY-SA 4.0
 
@@ -99,7 +100,6 @@ Source: http://minetest.fensta.bplaced.net/#id=1258
 mcl_skins_bottom_4.png
 mcl_skins_top_9.png
 mcl_skins_top_10.png
-mcl_skins_hair_10.png
 mcl_skins_hair_11.png
 Name: Pixel Perfection Legacy 1.19
 Author: Nova_Wostra. Adapted for mcl_skins by MrRar.
