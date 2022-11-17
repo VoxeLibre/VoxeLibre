@@ -1761,6 +1761,21 @@ local function register_dimension_biomes()
 		_mcl_palette_index = 0,
 	})
 	minetest.register_biome({
+		name = "EndBarrens",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 1000,
+		humidity_point = 1000,
+		vertical_blend = 16,
+		_mcl_biome_type = "medium",
+		_mcl_palette_index = 0,
+	})
+	minetest.register_biome({
 		name = "EndMidlands",
 		node_stone = "air",
 		node_filler = "air",
