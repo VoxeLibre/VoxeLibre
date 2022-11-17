@@ -131,6 +131,13 @@ end
 
 minetest.register_globalstep(check_events)
 
+mcl_info.register_debug_field("Active Events",{
+	level = 4,
+	func = function(pl,pos)
+		return tostring(#active_events)
+	end
+})
+
 minetest.register_chatcommand("event_start",{
 	privs = {debug = true},
 	description = "Debug command to start events",
