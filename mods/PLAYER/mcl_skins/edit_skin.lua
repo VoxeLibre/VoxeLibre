@@ -25,21 +25,21 @@ mcl_skins = {
 	-- Base color is separate to keep the number of junk nodes registered in check
 	base_color = {0xffeeb592, 0xffb47a57, 0xff8d471d},
 	color = {
-		0xff613915, -- 1 Dark brown Steve hair, Alex bottom
+		0xff613915, -- 1 Dark brown
 		0xff97491b, -- 2 Medium brown
 		0xffb17050, -- 3 Light brown
 		0xffe2bc7b, -- 4 Beige
 		0xff706662, -- 5 Gray
 		0xff151515, -- 6 Black
 		0xffc21c1c, -- 7 Red
-		0xff178c32, -- 8 Green Alex top
+		0xff178c32, -- 8 Green
 		0xffae2ad3, -- 9 Plum
 		0xffebe8e4, -- 10 White
 		0xffe3dd26, -- 11 Yellow
-		0xff449acc, -- 12 Light blue Steve top
-		0xff124d87, -- 13 Dark blue Steve bottom
+		0xff449acc, -- 12 Light blue
+		0xff124d87, -- 13 Dark blue
 		0xfffc0eb3, -- 14 Pink
-		0xffd0672a, -- 15 Orange Alex hair
+		0xffd0672a, -- 15 Orange
 	},
 	footwear = {},
 	mouth = {},
@@ -574,16 +574,16 @@ local function init()
 	for _, item in pairs(json) do
 		mcl_skins.register_item(item)
 	end
-	mcl_skins.steve.base_color = mcl_skins.base_color[1]
-	mcl_skins.steve.hair_color = mcl_skins.color[1]
-	mcl_skins.steve.top_color = mcl_skins.color[12]
-	mcl_skins.steve.bottom_color = mcl_skins.color[13]
+	mcl_skins.steve.base_color = mcl_skins.base_color[2]
+	mcl_skins.steve.hair_color = 0xff5d473b
+	mcl_skins.steve.top_color = 0xff993535
+	mcl_skins.steve.bottom_color = 0xff644939
 	mcl_skins.steve.slim_arms = false
 	
 	mcl_skins.alex.base_color = mcl_skins.base_color[1]
-	mcl_skins.alex.hair_color = mcl_skins.color[15]
-	mcl_skins.alex.top_color = mcl_skins.color[8]
-	mcl_skins.alex.bottom_color = mcl_skins.color[1]
+	mcl_skins.alex.hair_color = 0xff715d57
+	mcl_skins.alex.top_color = 0xff346840
+	mcl_skins.alex.bottom_color = 0xff383532
 	mcl_skins.alex.slim_arms = true
 end
 
