@@ -187,12 +187,14 @@ function mcl_raids.spawn_raid(event)
 				mcl_raids.promote_to_raidcaptain(event.mobs[1])
 			end
 			minetest.log("action", "[mcl_raids] Raid Spawned. Illager Count: " .. #event.mobs .. ".")
+			return #event.mobs == 0
 		else
 			minetest.log("action", "[mcl_raids] Raid Spawn Postion not chosen.")
 		end
 	elseif not sn then
 		minetest.log("action", "[mcl_raids] Raid Spawn Position error, no appropriate site found.")
 	end
+	return true
 end
 
 function mcl_raids.find_villager(pos)

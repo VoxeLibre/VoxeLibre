@@ -91,7 +91,10 @@ function check_events(dtime)
 			local p = ae:cond_progress()
 			if p == true then
 				ae.stage = ae.stage + 1
-				ae:on_stage_begin()
+				if ae:on_stage_begin() == true then
+					mcl_log("[mcl_events] Event "..ae.readable_name.." at "..minetest.pos_to_string(vector.round(ae.pos)).." failed at stage_begin of stage "..ae.stage )
+					active_events[idx] = nil
+				end
 			elseif tonumber(p) then
 				ae.stage = tonumber(p) or ae.stage + 1
 				ae:on_stage_begin()
