@@ -288,7 +288,6 @@ mcl_events.register_event("raid",{
 		return self.stage >= self.max_stage and #m < 1
 	end,
 	on_complete = function(self)
-		--minetest.log("RAID complete")
 		awards.unlock(self.player,"mcl:hero_of_the_village")
 		mcl_potions.player_clear_effect(minetest.get_player_by_name(self.player),"bad_omen")
 	end,

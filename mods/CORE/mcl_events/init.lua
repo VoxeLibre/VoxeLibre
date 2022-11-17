@@ -31,8 +31,6 @@ end
 
 function mcl_events.register_event(name,def)
 	if table.indexof(disabled_events,name) ~= -1 then return end
-	mcl_events.registered_events[name] = {}
-	--setmetatable(mcl_events.registered_events[name],tpl_eventdef)
 	mcl_events.registered_events[name] = def
 	mcl_events.registered_events[name].name = name
 end
@@ -44,13 +42,6 @@ local function addbars(self)
 			local bar = mcl_bossbars.add_bar(player, {color = "red", text = self.readable_name .. ": Wave "..self.stage.." / "..self.max_stage, percentage = self.percent }, true,1)
 			table.insert(self.bars,bar)
 		end
-	end
-end
-
-local function update_bars(self)
-	if not self.enable_bossbar then return end
-	for _,b in pairs(self.bars) do
-		mcl_bossbars.update_bar(b,{text = self.readable_name .. ": Wave "..self.stage,percentage=self.percent})
 	end
 end
 
@@ -103,7 +94,6 @@ function check_events(dtime)
 			ae:on_step()
 		end
 		addbars(ae)
-		--update_bars(ae)
 	end
 	-- check if a new event should be started
 	etime = etime - dtime
