@@ -1,7 +1,11 @@
 local mods_loaded = false
 local NIGHT_VISION_RATIO = 0.45
 
+local water_color = "#0b4880"
+
 function mcl_weather.set_sky_box_clear(player)
+	local pos = player:get_pos()
+	if minetest.get_item_group(minetest.get_node(vector.new(pos.x,pos.y+1.5,pos.z)).name, "water") ~= 0 then return end
 	player:set_sky({
 		type = "regular",
 		sky_color = {
@@ -13,6 +17,16 @@ function mcl_weather.set_sky_box_clear(player)
 			night_horizon = "#4090FF",
 		},
 		clouds = true,
+	})
+end
+
+function mcl_weather.set_sky_color(player, def)
+	local pos = player:get_pos()
+	if minetest.get_item_group(minetest.get_node(vector.new(pos.x,pos.y+1.5,pos.z)).name, "water") ~= 0 then return end
+	player:set_sky({
+		type = def.type,
+		sky_color = def.sky_color,
+		clouds = def.clouds,
 	})
 end
 
@@ -96,6 +110,19 @@ mcl_weather.skycolor = {
 			local pos = player:get_pos()
 			local dim = mcl_worlds.pos_to_dimension(pos)
 			local has_weather = (mcl_worlds.has_weather(pos) and (mcl_weather.state == "snow" or mcl_weather.state =="rain" or mcl_weather.state == "thunder") and mcl_weather.has_snow(pos)) or ((mcl_weather.state =="rain" or mcl_weather.state == "thunder") and mcl_weather.has_rain(pos))
+			if minetest.get_item_group(minetest.get_node(vector.new(pos.x,pos.y+1.5,pos.z)).name, "water") ~= 0 then
+				player:set_sky({ type = "regular",
+					sky_color = {
+						day_sky = water_color,
+						day_horizon = water_color,
+						dawn_sky = water_color,
+						dawn_horizon = water_color,
+						night_sky = water_color,
+						night_horizon = water_color,
+					},
+					clouds = true,
+				})
+			end
 			if dim == "overworld" then
 				if (mcl_weather.state == "none") then
 					-- Clear weather
@@ -108,7 +135,8 @@ mcl_weather.skycolor = {
 					local day_color = mcl_weather.skycolor.get_sky_layer_color(0.15)
 					local dawn_color = mcl_weather.skycolor.get_sky_layer_color(0.27)
 					local night_color = mcl_weather.skycolor.get_sky_layer_color(0.1)
-					player:set_sky({ type = "regular",
+					mcl_weather.set_sky_color(player, {
+						type = "regular",
 						sky_color = {
 							day_sky = day_color,
 							day_horizon = day_color,
@@ -127,7 +155,8 @@ mcl_weather.skycolor = {
 					local day_color = mcl_weather.skycolor.get_sky_layer_color(0.5)
 					local dawn_color = mcl_weather.skycolor.get_sky_layer_color(0.75)
 					local night_color = mcl_weather.skycolor.get_sky_layer_color(0)
-					player:set_sky({ type = "regular",
+					mcl_weather.set_sky_color(player, {
+						type = "regular",
 						sky_color = {
 							day_sky = day_color,
 							day_horizon = day_color,
@@ -178,7 +207,7 @@ mcl_weather.skycolor = {
 				}
 				local biometint = nether_sky[minetest.get_biome_name(minetest.get_biome_data(player:get_pos()).biome)]
 
-				player:set_sky({
+				mcl_weather.set_sky_color(player, {
 					type = "regular",
 					sky_color = {
 						day_sky = "#300808",
