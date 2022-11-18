@@ -34,6 +34,8 @@ local glow_amount = 6 -- LIGHT_MAX is 15, but the items aren't supposed to be a 
 local frame_item_base = {}
 local map_item_base = {}
 
+local TIMER_INTERVAL = 40.0
+
 -- Time to Fleckenstein! (it just sounds cool lol)
 
 --- self: the object to roll.
@@ -247,6 +249,7 @@ mcl_itemframes.update_item_entity = function(pos, node, param2)
 		local map_id_entity = {}
 		local map_id_lua = {}
 
+		local timer = minetest.get_node_timer(pos)
 		if map_id == "" then
 			-- handle regular items placed into custom frame.
 			if mcl_itemframes.DEBUG then
@@ -268,13 +271,32 @@ mcl_itemframes.update_item_entity = function(pos, node, param2)
 			if itemname == "" or itemname == nil then
 				map_id_lua._texture = "blank.png"
 				map_id_lua._scale = 1
+
+				-- set up glow, as this is the default/initial clause on placement.
 				if has_glow then
 					map_id_lua.glow = glow_amount
+				end
+
+				-- if there's nothing to display, then kill the timer.
+				if timer:is_started() == true then
+					timer:stop()
 				end
 			else
 				map_id_lua._texture = itemname
 				local def = minetest.registered_items[itemname]
 				map_id_lua._scale = def and def.wield_scale and def.wield_scale.x or 1
+
+				-- fix for /ClearObjects
+				if minetest.get_item_group(itemname, "clock") == 0 then
+					-- Do timer related stuff - but only if there is something to display... and it's not a clock.
+					if timer:is_started() == false then
+						timer:start(TIMER_INTERVAL)
+					else
+						timer:stop()
+						timer:start(TIMER_INTERVAL)
+					end
+				end
+
 			end
 			if mcl_itemframes.DEBUG then
 				minetest.log("action", "[mcl_itemframes] Update_Generic_Item: item's name: " .. itemname)
@@ -297,6 +319,15 @@ mcl_itemframes.update_item_entity = function(pos, node, param2)
 			else
 				minetest.log("error", "[mcl_itemframes] Update_Generic_Item: Failed to set Map Item in " .. found_name_to_use .. "'s frame.")
 			end
+
+			-- give maps a refresh timer.
+			if timer:is_started() == false then
+				timer:start(TIMER_INTERVAL)
+			else
+				timer:stop()
+				timer:start(TIMER_INTERVAL)
+			end
+
 		end
 
 		-- finally, set the rotation (roll) of the displayed object.
@@ -364,7 +395,7 @@ function mcl_itemframes.create_base_item_entity()
 		textures = { "blank.png" },
 		_texture = "blank.png",
 		_scale = 1,
-
+		groups = { immortal = 1, },
 		on_activate = function(self, staticdata)
 			if staticdata and staticdata ~= "" then
 				local data = staticdata:split(";")
@@ -395,7 +426,7 @@ function mcl_itemframes.create_base_item_entity()
 			end
 			return ""
 		end,
-
+		on_punch = function() return true end,
 		_update_texture = function(self)
 			if self._texture then
 				self.object:set_properties({
@@ -561,6 +592,23 @@ function mcl_itemframes.custom_register_lbm()
 
 end
 
+local function register_frame_achievements()
+
+	awards.register_achievement("mcl_itemframes:glowframe", {
+		title = S("Glow and Behold!"),
+		description = S("Craft a glow item frame."),
+		icon = "mcl_itemframes_glow_item_frame.png",
+		trigger = {
+			type = "craft",
+			item = "mcl_itemframes:glow_item_frame",
+			target = 1
+		},
+		type = "Advancement",
+		group = "Overworld",
+	})
+
+end
+
 function mcl_itemframes.create_base_definitions()
 	if mcl_itemframes.DEBUG then
 		minetest.log("action", "[mcl_itemframes] create_base_definitions.")
@@ -590,7 +638,7 @@ function mcl_itemframes.create_base_definitions()
 		paramtype = "light",
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
-		groups = { dig_immediate = 3, deco_block = 1, dig_by_piston = 1, container = 7, attached_node_facedir = 1 },
+		groups = { dig_immediate = 3, deco_block = 1, dig_by_piston = 1, container = 7, }, -- attached_node_facedir = 1 }, -- allows for more placement options.
 		sounds = mcl_sounds.node_sound_defaults(),
 		node_placement_prediction = "",
 
@@ -598,21 +646,32 @@ function mcl_itemframes.create_base_definitions()
 			local inv = minetest.get_meta(pos):get_inventory()
 			local stack = inv:get_stack("main", 1)
 			local itemname = stack:get_name()
+			local node = {}
 			if minetest.get_item_group(itemname, "clock") > 0 then
 				local new_name = "mcl_clock:clock_" .. (mcl_worlds.clock_works(pos) and mcl_clock.old_time or mcl_clock.random_frame)
 				if itemname ~= new_name then
 					stack:set_name(new_name)
 					inv:set_stack("main", 1, stack)
-					local node = minetest.get_node(pos)
+					node = minetest.get_node(pos)
 					mcl_itemframes.update_item_entity(pos, node, node.param2)
-
 				end
 				minetest.get_node_timer(pos):start(1.0)
+			else
+				node = minetest.get_node(pos)
+				mcl_itemframes.update_item_entity(pos, node, node.param2)
 			end
 		end,
 
 		on_place = function(itemstack, placer, pointed_thing)
 			if pointed_thing.type ~= "node" then
+				return itemstack
+			end
+
+			local dir = vector.subtract(pointed_thing.under, pointed_thing.above)
+			local wdir = minetest.dir_to_wallmounted(dir)
+
+			-- remove bottom and top of objects.
+			if wdir == 0 or wdir == 1 then
 				return itemstack
 			end
 
@@ -784,15 +843,11 @@ function mcl_itemframes.create_base_definitions()
 	mcl_itemframes.glow_frame_base.inventory_image = "mcl_itemframes_glow_item_frame_item.png"
 	mcl_itemframes.glow_frame_base.wield_image = "mcl_itemframes_glow_item_frame.png"
 	mcl_itemframes.glow_frame_base.mesh = "mcl_itemframes_glow_item_frame.obj"
+	mcl_itemframes.glow_frame_base.glow = 1 --make the glow frames have some glow at night, but not enough to be a light source.
 
-	--[[
-	minetest.register_node("mcl_itemframes:glow_item_frame", mcl_itemframes.glow_frame_base)
+	-- set up the achievement for glow frames.
+	register_frame_achievements()
 
-	mcl_itemframes.update_frame_registry("false", "mcl_itemframes:item_frame", false)
-	mcl_itemframes.update_frame_registry("false", "mcl_itemframes:glow_item_frame", true)
-	create_register_lbm("mcl_itemframes:item_frame")
-	create_register_lbm("mcl_itemframes:glow_item_frame")
-	--]]
 end
 
 -- for compatibility:

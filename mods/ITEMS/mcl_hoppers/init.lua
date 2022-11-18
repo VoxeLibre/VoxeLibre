@@ -338,8 +338,8 @@ minetest.register_node("mcl_hoppers:hopper_side_disabled", def_hopper_side_disab
 
 --[[ END OF NODE DEFINITIONS ]]
 
-local function hopper_pull_from_mc (mc_ent, dest_pos)
-	local inv = mcl_entity_invs.load_inv(mc_ent,5)
+local function hopper_pull_from_mc (mc_ent, dest_pos, inv_size)
+	local inv = mcl_entity_invs.load_inv(mc_ent, inv_size)
 	if not inv then
 		mcl_log("No inv")
 		return false
@@ -382,7 +382,7 @@ end
 --[[ BEGIN OF ABM DEFINITONS ]]
 
 minetest.register_abm({
-	label = "Hoppers pull from minecart hoppers",
+	label = "Hoppers pull from minecart",
 	nodenames = {"mcl_hoppers:hopper","mcl_hoppers:hopper_side"},
 	interval = 0.5,
 	chance = 1,
@@ -396,9 +396,9 @@ minetest.register_abm({
 				if entity and entity.name then
 					--mcl_log("Name of object near: " .. tostring(entity.name))
 
-					if entity.name == "mcl_minecarts:hopper_minecart" then
+					if entity.name == "mcl_minecarts:hopper_minecart" or entity.name == "mcl_minecarts:chest_minecart"then
 						local hm_pos = entity.object:get_pos()
-						mcl_log("We have a hopper minecart close: ".. minetest.pos_to_string(hm_pos))
+						mcl_log("We have a minecart with inventory close: ".. minetest.pos_to_string(hm_pos))
 
 						--if hm_pos.y == pos.y + 1 then mcl_log("y is correct") end
 						--if (hm_pos.x >= pos.x - DIST_FROM_MC and hm_pos.x <= pos.x + DIST_FROM_MC) then mcl_log("x is within range") end
@@ -409,7 +409,11 @@ minetest.register_abm({
 								and (hm_pos.x >= pos.x - DIST_FROM_MC and hm_pos.x <= pos.x + DIST_FROM_MC)
 								and (hm_pos.z >= pos.z - DIST_FROM_MC and hm_pos.z <= pos.z + DIST_FROM_MC) then
 							mcl_log("Minecart close enough")
-							hopper_pull_from_mc (entity, pos)
+							if entity.name == "mcl_minecarts:hopper_minecart" then
+								hopper_pull_from_mc(entity, pos, 5)
+							elseif entity.name == "mcl_minecarts:chest_minecart" then
+								hopper_pull_from_mc(entity, pos, 27)
+							end
 						end
 					end
 				else
@@ -620,10 +624,10 @@ minetest.register_abm({
                             end
                         end
                     end
-                end	
+                end
                 if compchance > 0 then
                     itemcomp[hslot]:take_item()
-                    inv:set_list("main", itemcomp)                   
+                    inv:set_list("main", itemcomp)
                     local rand = math.random(0,100)
                     if compchance >= rand then
                         local level = 0
