@@ -11,6 +11,8 @@ local S = minetest.get_translator("mobs_mc")
 
 local pr = PseudoRandom(os.time()*666)
 
+local spawned_vexes = {} --this is stored locally so the mobs engine doesn't try to store it in staticdata
+
 mcl_mobs:register_mob("mobs_mc:evoker", {
 	description = S("Evoker"),
 	type = "monster",
@@ -42,16 +44,24 @@ mcl_mobs:register_mob("mobs_mc:evoker", {
 	attack_type = "dogfight",
 	-- Summon vexes
 	custom_attack = function(self, to_attack)
-		local r = pr:next(2,4)
+		if not spawned_vexes[self] then spawned_vexes[self] = {} end
+		if #spawned_vexes[self] >= 7 then return end
+		for k,v in pairs(spawned_vexes[self]) do
+			if not v or v.health <= 0 then table.remove(spawned_vexes[self],k) end
+		end
+		local r = pr:next(1,4)
 		local basepos = self.object:get_pos()
 		basepos.y = basepos.y + 1
 		for i=1, r do
 			local spawnpos = vector.add(basepos, minetest.yaw_to_dir(pr:next(0,360)))
 			local vex = minetest.add_entity(spawnpos, "mobs_mc:vex")
 			local ent = vex:get_luaentity()
+
 			-- Mark vexes as summoned and start their life clock (they take damage it reaches 0)
 			ent._summoned = true
 			ent._lifetimer = pr:next(33, 108)
+
+			table.insert(spawned_vexes[self],ent)
 		end
 	end,
 	shoot_interval = 15,
