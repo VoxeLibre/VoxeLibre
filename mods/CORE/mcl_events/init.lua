@@ -55,7 +55,9 @@ local function start_event(p,e)
 	active_events[idx].percent = 100
 	active_events[idx].bars = {}
 	active_events[idx].time_start = os.time()
-	active_events[idx]:on_start(p.pos)
+	if active_events[idx].on_start then
+		active_events[idx]:on_start(p.pos)
+	end
 	addbars(active_events[idx])
 end
 
@@ -91,7 +93,7 @@ function check_events(dtime)
 				ae:on_stage_begin()
 			end
 		elseif not ae.finished and ae.on_step then
-			ae:on_step()
+			ae:on_step(dtime)
 		end
 		addbars(ae)
 	end

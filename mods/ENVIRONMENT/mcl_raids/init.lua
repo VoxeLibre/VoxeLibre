@@ -226,6 +226,27 @@ function mcl_raids.find_village(pos)
 	end
 end
 
+local function get_point_on_circle(pos,r,n)
+	local rt = {}
+	for i=1, n do
+		table.insert(rt,vector.offset(pos,r * math.cos(((i-1)/n) * (2*math.pi)),0,  r* math.sin(((i-1)/n) * (2*math.pi)) ))
+	end
+	table.shuffle(rt)
+	return rt[1]
+end
+
+local function start_firework_rocket(pos)
+	local pp = get_point_on_circle(pos,math.random(32,64),32)
+	local o = minetest.add_entity(pp,"mcl_bows:rocket_entity")
+	o:set_acceleration(vector.new(math.random(0,2),math.random(30,50),math.random(0,2)))
+end
+
+local function make_firework(pos)
+	for i=1,math.random(25) do
+		minetest.after(math.random(i),start_firework_rocket,pos)
+	end
+end
+
 mcl_events.register_event("raid",{
 	readable_name = "Raid",
 	max_stage = 5,
@@ -290,6 +311,7 @@ mcl_events.register_event("raid",{
 	on_complete = function(self)
 		awards.unlock(self.player,"mcl:hero_of_the_village")
 		mcl_potions.player_clear_effect(minetest.get_player_by_name(self.player),"bad_omen")
+		make_firework(self.pos)
 	end,
 })
 
@@ -314,4 +336,40 @@ minetest.register_chatcommand("dump_banner_layers",{
 			end
 		end
 	end
+})
+
+local function is_new_years()
+	local d = os.date("*t")
+	return d.month == 1 and d.day == 1 and d.hour < 1
+end
+
+mcl_events.register_event("new_years",{
+	stage = 0,
+	max_stage = 1,
+	readable_name = "New Years",
+	pos = vector.new(0,0,0),
+	exclusive_to_area = 256,
+	cond_start = function(event)
+		if not is_new_years() then return false end
+		local r = {}
+		for _,p in pairs(minetest.get_connected_players()) do
+			table.insert(r,{ player = p:get_player_name(), pos = p:get_pos()})
+		end
+		return r
+	end,
+	on_start = function(self)
+		minetest.chat_send_player(self.player,"<cora> Happy new year <3")
+	end,
+	on_step = function(self,dtime)
+		if not self.timer or self.timer < 0 then
+			self.timer = math.random(1,5)
+			for i=1,math.random(8) do
+				minetest.after(math.random(i),start_firework_rocket,minetest.get_player_by_name(self.player):get_pos())
+			end
+		end
+		self.timer = self.timer - dtime
+	end,
+	cond_complete = function(event)
+		return not is_new_years()
+	end, --return success
 })
