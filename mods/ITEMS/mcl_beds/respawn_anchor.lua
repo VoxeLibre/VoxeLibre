@@ -67,7 +67,10 @@ for i=0,4 do
 		minetest.register_node("mcl_beds:respawn_anchor_charged_"..i,{
 			description=S("Respawn Anchor"),
 			tiles = {
-				"portal.png",
+			{
+				image="respawn_anchor_top_on.png",
+				animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
+			},
 				"respawn_anchor_bottom.png",
 				"respawn_anchor_side"..i ..".png"
 			},
