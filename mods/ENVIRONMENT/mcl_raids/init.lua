@@ -245,10 +245,12 @@ local function start_firework_rocket(pos)
 	o:set_acceleration(vector.new(math.random(0,2),math.random(30,50),math.random(0,2)))
 end
 
-local function make_firework(pos)
+local function make_firework(pos,stime)
+	if os.time() - stime > 60 then return end
 	for i=1,math.random(25) do
 		minetest.after(math.random(i),start_firework_rocket,pos)
 	end
+	minetest.after(10,make_firework,pos,stime)
 end
 
 mcl_events.register_event("raid",{
@@ -315,7 +317,7 @@ mcl_events.register_event("raid",{
 	on_complete = function(self)
 		awards.unlock(self.player,"mcl:hero_of_the_village")
 		mcl_potions.player_clear_effect(minetest.get_player_by_name(self.player),"bad_omen")
-		make_firework(self.pos)
+		make_firework(self.pos,os.time())
 	end,
 })
 
