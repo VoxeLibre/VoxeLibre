@@ -15,68 +15,63 @@ local modpath = minetest.get_modpath(modname)
 local table = table
 local DEBUG = false
 
+local enable_burger = minetest.settings:get_bool("mcl_enable_hamburger",true)
+local use_alt = minetest.settings:get_bool("mcl_hamburger_alt_texture",false)
+
 mcl_hamburger = {}
 
 -- call to register your hamburger.
 function mcl_hamburger.register_burger_craft(cooked_meat, use_alt)
-
-    if use_alt == nil or use_alt == "" then
-        use_alt = false
-    end
-
-    minetest.register_craft({
-        type = "fuel",
-        recipe = "mcl_hamburger:hamburger",
-        burntime = 2,
-    })
-
-    -- register crafts (actual recipe)
-    if minetest.get_modpath(modname) then
-
-        local itemstring = "mcl_hamburger:hamburger"
-
-        minetest.register_craft({
-            output = itemstring,
-            recipe = {
-                { "mcl_farming:bread"},
-                { cooked_meat }, -- "mcl_mobitems:cooked_beef" for a reg hamburger. Grind up clowns for a Big Mac.
-                { "mcl_farming:bread" },
-            },
-        })
-    end
-
-    local hamburger_def = {
-        description = S("A Hamburger"),
-        _doc_items_longdesc = S("A tasty hamburger that is sure to lure villagers around like a lead. Can be eaten."),
-        _doc_items_usagehelp = S("wield this item to pull villagers to you."),
-        _tt_help = S("A tasty hamburger that is sure to lure villagers.\n'I'll gladly pay you Tuesday, for a hamburger today.' - Wimpy."),
-        inventory_image = "hamburger.png",
-        wield_image = "hamburger.png",
-        on_place = minetest.item_eat(8),
-        on_secondary_use = minetest.item_eat(8),
-        groups = { food = 2, eatable = 8 },
-        _mcl_saturation = 12.8,
-        stack_max = 64,
-    }
-
-	if use_alt == false then
-		minetest.register_craftitem("mcl_hamburger:hamburger", hamburger_def)
-	else
-		local hamburger_alt = table.copy(hamburger_def)
-		hamburger_alt.inventory_image = "mcl_hamburger_hamburger_alt.png"
-		hamburger_alt.wield_image = "mcl_hamburger_hamburger_alt.png"
-		minetest.register_craftitem("mcl_hamburger:hamburger", hamburger_alt)
+	if use_alt == nil or use_alt == "" then
+		use_alt = false
 	end
 
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mcl_hamburger:hamburger",
+		burntime = 2,
+	})
+
+	local itemstring = "mcl_hamburger:hamburger"
+	minetest.register_craft({
+		output = itemstring,
+		recipe = {
+			{ "mcl_farming:bread"},
+			{ cooked_meat }, -- "mcl_mobitems:cooked_beef" for a reg hamburger. Grind up clowns for a Big Mac.
+			{ "mcl_farming:bread" },
+		},
+	})
+end
+
+local hamburger_def = {
+	description = S("A Hamburger"),
+	_doc_items_longdesc = S("A tasty hamburger that is sure to lure villagers around like a lead. Can be eaten."),
+	_doc_items_usagehelp = S("wield this item to pull villagers to you."),
+	_tt_help = S("A tasty hamburger that is sure to lure villagers.\n'I'll gladly pay you Tuesday, for a hamburger today.' - Wimpy."),
+	inventory_image = "mcl_hamburger.png",
+	wield_image = "mcl_hamburger.png",
+	on_place = minetest.item_eat(8),
+	on_secondary_use = minetest.item_eat(8),
+	groups = { food = 2, eatable = 8 },
+	_mcl_saturation = 12.8,
+}
+
+if use_alt == false then
+	minetest.register_craftitem("mcl_hamburger:hamburger", hamburger_def)
+else
+	local hamburger_alt = table.copy(hamburger_def)
+	hamburger_alt.inventory_image = "mcl_hamburger_alt.png"
+	hamburger_alt.wield_image = "mcl_hamburger_alt.png"
+	minetest.register_craftitem("mcl_hamburger:hamburger", hamburger_alt)
+end
 
 -- make the villagers follow the item
 minetest.registered_entities["mobs_mc:villager"].nofollow = false
+-- add it to the follow items.
+table.insert(minetest.registered_entities["mobs_mc:villager"].follow,"mcl_hamburger:hamburger")
 
 -- register the item and crafting recipe.
 mcl_hamburger.register_burger_craft("mcl_mobitems:cooked_beef")
-
--- add it to the follow items.
-table.insert(minetest.registered_entities["mobs_mc:villager"].follow,"mcl_hamburger:hamburger")
 
 if DEBUG then
     minetest.log (dump(minetest.registered_entities["mobs_mc:villager"].follow))
