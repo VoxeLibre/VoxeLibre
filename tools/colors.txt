@@ -416,8 +416,7 @@ mcl_core:stripped_spruce_bark 109 82 67
 mcl_core:tree 142 108 77
 mcl_core:tree_bark 99 78 59
 mcl_core:vine 21 62 22
-mcl_core:water_source 39 66 106 128 224
-mcl_core:water_source 39 66 106 128 224
+mcl_core:water_source 0 94 184 224
 mcl_core:wood 115 89 68
 
 # mcl_crafting_table
@@ -684,12 +683,12 @@ mcl_flowerpots:flower_pot_cactus 114 92 57
 # mcl_flowers
 mcl_flowers:allium 130 121 159
 mcl_flowers:azure_bluet 118 124 125
-mcl_flowers:blue_orchid 47 96 110
+mcl_flowers:blue_orchid 0 118 191
 mcl_flowers:dandelion 136 120 59
 mcl_flowers:double_fern 142 132 114
 mcl_flowers:double_fern_top 150 139 120
-mcl_flowers:double_grass 153 142 122
-mcl_flowers:double_grass_top 157 146 126
+mcl_flowers:double_grass 0 255 0
+mcl_flowers:double_grass_top 0 255 0
 mcl_flowers:fern 144 134 116
 mcl_flowers:lilac 198 161 207
 mcl_flowers:lilac_top 198 161 207
@@ -704,10 +703,8 @@ mcl_flowers:sunflower_top 247 247 73
 mcl_flowers:tulip_orange 132 87 55
 mcl_flowers:tulip_pink 242 172 185
 mcl_flowers:tulip_red 161 0 14
-mcl_flowers:tulip_white 133 137 121
+mcl_flowers:tulip_white 255 255 255
 mcl_flowers:waterlily 29 83 29
-mcl_flowers:double_grass
-mcl_flowers:double_grass_top 21 71 52
 mcl_flowers:tallgrass 21 71 52
 
 # mcl_furnaces
@@ -1095,49 +1092,49 @@ mcl_sculk:vein 6 17 24
 # mcl_signs
 mcl_signs:standing_sign 119 93 72
 mcl_signs:standing_sign22_5 119 93 72
-mcl_signs:standing_sign22_5_acaciawood 119 93 72
-mcl_signs:standing_sign22_5_birchwood 129 129 129
-mcl_signs:standing_sign22_5_crimson_hyphae_wood 129 129 129
-mcl_signs:standing_sign22_5_darkwood 129 129 129
-mcl_signs:standing_sign22_5_junglewood 119 93 72
-mcl_signs:standing_sign22_5_mangrove_wood 119 93 72
+mcl_signs:standing_sign22_5_acaciawood 234 116 121
+mcl_signs:standing_sign22_5_birchwood 255 219 167
+mcl_signs:standing_sign22_5_crimson_hyphae_wood 195 95 81
+mcl_signs:standing_sign22_5_darkwood 133 100 67
+mcl_signs:standing_sign22_5_junglewood 134 98 73
+mcl_signs:standing_sign22_5_mangrove_wood 184 105 61
 mcl_signs:standing_sign22_5_sprucewood 85 62 36
-mcl_signs:standing_sign22_5_warped_hyphae_wood 129 129 129
+mcl_signs:standing_sign22_5_warped_hyphae_wood 159 125 207
 mcl_signs:standing_sign45 119 93 72
-mcl_signs:standing_sign45_acaciawood 119 93 72
-mcl_signs:standing_sign45_birchwood 129 129 129
-mcl_signs:standing_sign45_crimson_hyphae_wood 129 129 129
-mcl_signs:standing_sign45_darkwood 129 129 129
-mcl_signs:standing_sign45_junglewood 119 93 72
-mcl_signs:standing_sign45_mangrove_wood 119 93 72
+mcl_signs:standing_sign45_acaciawood 234 116 121
+mcl_signs:standing_sign45_birchwood 255 219 167
+mcl_signs:standing_sign45_crimson_hyphae_wood 195 95 81
+mcl_signs:standing_sign45_darkwood 133 100 67
+mcl_signs:standing_sign45_junglewood 134 98 73
+mcl_signs:standing_sign45_mangrove_wood 134 105 61
 mcl_signs:standing_sign45_sprucewood 85 62 36
-mcl_signs:standing_sign45_warped_hyphae_wood 129 129 129
+mcl_signs:standing_sign45_warped_hyphae_wood 159 125 207
 mcl_signs:standing_sign67_5 119 93 72
-mcl_signs:standing_sign67_5_acaciawood 119 93 72
-mcl_signs:standing_sign67_5_birchwood 129 129 129
-mcl_signs:standing_sign67_5_crimson_hyphae_wood 129 129 129
-mcl_signs:standing_sign67_5_darkwood 129 129 129
-mcl_signs:standing_sign67_5_junglewood 119 93 72
-mcl_signs:standing_sign67_5_mangrove_wood 119 93 72
+mcl_signs:standing_sign67_5_acaciawood 234 116 121
+mcl_signs:standing_sign67_5_birchwood 255 219 167
+mcl_signs:standing_sign67_5_crimson_hyphae_wood 195 95 81
+mcl_signs:standing_sign67_5_darkwood 133 100 67
+mcl_signs:standing_sign67_5_junglewood 134 98 73
+mcl_signs:standing_sign67_5_mangrove_wood 184 105 61
 mcl_signs:standing_sign67_5_sprucewood 85 62 36
-mcl_signs:standing_sign67_5_warped_hyphae_wood 129 129 129
-mcl_signs:standing_sign_acaciawood 119 93 72
-mcl_signs:standing_sign_birchwood 129 129 129
-mcl_signs:standing_sign_crimson_hyphae_wood 129 129 129
-mcl_signs:standing_sign_darkwood 129 129 129
-mcl_signs:standing_sign_junglewood 119 93 72
+mcl_signs:standing_sign67_5_warped_hyphae_wood 159 125 207
+mcl_signs:standing_sign_acaciawood 234 116 121
+mcl_signs:standing_sign_birchwood 255 219 167
+mcl_signs:standing_sign_crimson_hyphae_wood 195 95 81
+mcl_signs:standing_sign_darkwood 133 100 67
+mcl_signs:standing_sign_junglewood 134 98 73
 mcl_signs:standing_sign_mangrove_wood 119 93 72
 mcl_signs:standing_sign_sprucewood 85 62 36
-mcl_signs:standing_sign_warped_hyphae_wood 129 129 129
+mcl_signs:standing_sign_warped_hyphae_wood 159 125 207
 mcl_signs:wall_sign 119 93 72
-mcl_signs:wall_sign_acaciawood 119 93 72
-mcl_signs:wall_sign_birchwood 129 129 129
-mcl_signs:wall_sign_crimson_hyphae_wood 129 129 129
-mcl_signs:wall_sign_darkwood 129 129 129
-mcl_signs:wall_sign_junglewood 119 93 72
-mcl_signs:wall_sign_mangrove_wood 119 93 72
+mcl_signs:wall_sign_acaciawood 234 116 121
+mcl_signs:wall_sign_birchwood 255 219 255
+mcl_signs:wall_sign_crimson_hyphae_wood 195 95 81
+mcl_signs:wall_sign_darkwood 133 100 67
+mcl_signs:wall_sign_junglewood 134 98 73
+mcl_signs:wall_sign_mangrove_wood 184 105 61
 mcl_signs:wall_sign_sprucewood 85 62 36
-mcl_signs:wall_sign_warped_hyphae_wood 129 129 129
+mcl_signs:wall_sign_warped_hyphae_wood 159 125 207
 
 # mcl_smithing_table
 mcl_smithing_table:table 51 48 45
@@ -2240,3 +2237,4 @@ xpanes:pane_white 255 255 255 64 16
 xpanes:pane_white_flat 255 255 255 64 16
 xpanes:pane_yellow 229 229 51 64 16
 xpanes:pane_yellow_flat 229 229 51 64 16
+
