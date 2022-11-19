@@ -5,8 +5,6 @@
 ---
 -- LOCALIZATION
 
-if not minetest.settings:get_bool("mcl_enable_hamburger",true) then return end
-
 local S = minetest.get_translator("mcl_hamburger")
 
 local modname = minetest.get_current_modname()
@@ -56,6 +54,10 @@ local hamburger_def = {
 	_mcl_saturation = 12.8,
 }
 
+if not enable_burger then
+	hamburger_def.groups.not_in_creative_inventory = 1
+end
+
 if use_alt == false then
 	minetest.register_craftitem("mcl_hamburger:hamburger", hamburger_def)
 else
@@ -65,14 +67,11 @@ else
 	minetest.register_craftitem("mcl_hamburger:hamburger", hamburger_alt)
 end
 
--- make the villagers follow the item
-minetest.registered_entities["mobs_mc:villager"].nofollow = false
--- add it to the follow items.
-table.insert(minetest.registered_entities["mobs_mc:villager"].follow,"mcl_hamburger:hamburger")
-
--- register the item and crafting recipe.
-mcl_hamburger.register_burger_craft("mcl_mobitems:cooked_beef")
-
-if DEBUG then
-    minetest.log (dump(minetest.registered_entities["mobs_mc:villager"].follow))
+if enable_burger then
+	-- make the villagers follow the item
+	minetest.registered_entities["mobs_mc:villager"].nofollow = false
+	-- add it to the follow items.
+	table.insert(minetest.registered_entities["mobs_mc:villager"].follow,"mcl_hamburger:hamburger")
+	-- register the item and crafting recipe.
+	mcl_hamburger.register_burger_craft("mcl_mobitems:cooked_beef")
 end
