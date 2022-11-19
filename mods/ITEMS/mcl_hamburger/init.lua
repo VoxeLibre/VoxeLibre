@@ -19,20 +19,15 @@ local use_alt = minetest.settings:get_bool("mcl_hamburger_alt_texture",false)
 mcl_hamburger = {}
 
 -- call to register your hamburger.
-function mcl_hamburger.register_burger_craft(cooked_meat, use_alt)
-	if use_alt == nil or use_alt == "" then
-		use_alt = false
-	end
-
+function mcl_hamburger.register_burger_craft(cooked_meat)
 	minetest.register_craft({
 		type = "fuel",
 		recipe = "mcl_hamburger:hamburger",
 		burntime = 2,
 	})
 
-	local itemstring = "mcl_hamburger:hamburger"
 	minetest.register_craft({
-		output = itemstring,
+		output = "mcl_hamburger:hamburger",
 		recipe = {
 			{ "mcl_farming:bread"},
 			{ cooked_meat }, -- "mcl_mobitems:cooked_beef" for a reg hamburger. Grind up clowns for a Big Mac.
@@ -45,7 +40,7 @@ local hamburger_def = {
 	description = S("A Hamburger"),
 	_doc_items_longdesc = S("A tasty hamburger that is sure to lure villagers around like a lead. Can be eaten."),
 	_doc_items_usagehelp = S("wield this item to pull villagers to you."),
-	_tt_help = S("A tasty hamburger that is sure to lure villagers.\n'I'll gladly pay you Tuesday, for a hamburger today.' - Wimpy."),
+	_tt_help = S("A tasty hamburger that is sure to lure villagers. 'I'll gladly pay you Tuesday, for a hamburger today.' - Wimpy."),
 	inventory_image = "mcl_hamburger.png",
 	wield_image = "mcl_hamburger.png",
 	on_place = minetest.item_eat(8),
