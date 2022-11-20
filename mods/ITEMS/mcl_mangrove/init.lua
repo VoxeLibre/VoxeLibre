@@ -308,7 +308,7 @@ local wlroots = {
 	},
 	sounds = mcl_sounds.node_sound_water_defaults(),
 	drawtype = "allfaces_optional",
-	use_texture_alpha = "clip",
+	use_texture_alpha = "blend",
 	is_ground_content = false,
 	paramtype = "light",
 	walkable = true,
@@ -317,8 +317,7 @@ local wlroots = {
 	buildable_to = false,
 	liquids_pointable = true,
 	drop = "mcl_mangrove:mangrove_roots",
-
-		groups = {
+	groups = {
 		handy = 1, hoey = 1, water=3, liquid=3, puts_out_fire=1, dig_by_piston = 1, deco_block = 1,  not_in_creative_inventory=1 },
 	_mcl_blast_resistance = 100,
 	_mcl_hardness = -1, -- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
