@@ -48,6 +48,7 @@ function settlements.terraform(settlement_info, pr)
 				for yi = 0,fheight *3 do
 					if yi == 0 then
 						local p = {x=pos.x+xi, y=pos.y, z=pos.z+zi}
+						-- Pass in biome info and make foundations of same material (seed: apple for desert)
 						settlements.ground(p, pr)
 					else
 						-- write ground
