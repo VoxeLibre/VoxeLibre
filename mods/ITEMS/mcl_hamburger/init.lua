@@ -17,12 +17,16 @@ local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
 local table = table
-local DEBUG = false
+local DEBUG = true
 
 local enable_burger = minetest.settings:get_bool("mcl_enable_hamburger",true)
 local use_alt = minetest.settings:get_bool("mcl_hamburger_alt_texture",false)
 
 mcl_hamburger = {}
+
+if DEBUG then
+	minetest.log("MCL_Hamburger::START.")
+end
 
 -- call to register your hamburger.
 function mcl_hamburger.register_burger_craft(cooked_meat)
@@ -40,6 +44,14 @@ function mcl_hamburger.register_burger_craft(cooked_meat)
 			{ "mcl_farming:bread" },
 		},
 	})
+	minetest.register_craft({
+		output = "mcl_hamburger:hamburger",
+		recipe = {
+			-- "mcl_mobitems:cooked_beef" for a reg hamburger. Grind up clowns for a Big Mac.
+			{ "mcl_farming:bread", cooked_meat, "mcl_farming:bread"},
+		},
+	})
+
 end
 
 local hamburger_def = {
@@ -73,7 +85,7 @@ local function register_achievements()
 	awards.register_achievement("mcl_hamburger:hamburger", {
 		title = S("Burger Time!"),
 		description = S("Craft a Hamburger."),
-		icon = "mcl_hamburger.png",
+		icon = "mcl_hamburger_alt.png",
 		trigger = {
 			type = "craft",
 			item = "mcl_hamburger:hamburger",
@@ -82,6 +94,15 @@ local function register_achievements()
 		type = "Advancement",
 		group = "Overworld",
 	})
+
+end
+
+local function register_doc_entry()
+
+	-- register Doc entry
+	if minetest.get_modpath("doc") then
+		doc.add_entry_alias("craftitems", "mcl_hamburger:hamburger", "craftitems", "mcl_hamburger:hamburger")
+	end
 
 end
 
@@ -94,5 +115,6 @@ if enable_burger then
 	mcl_hamburger.register_burger_craft("mcl_mobitems:cooked_beef")
 	-- add in the super cool achievement(s)!
 	register_achievements()
+	register_doc_entry()
 end
 
