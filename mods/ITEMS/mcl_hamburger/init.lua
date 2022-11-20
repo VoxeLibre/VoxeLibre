@@ -17,7 +17,7 @@ local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
 local table = table
-local DEBUG = true
+local DEBUG = false
 
 local enable_burger = minetest.settings:get_bool("mcl_enable_hamburger",true)
 local use_alt = minetest.settings:get_bool("mcl_hamburger_alt_texture",false)
@@ -57,7 +57,7 @@ end
 local hamburger_def = {
 	description = S("A Hamburger"),
 	_doc_items_longdesc = S("A tasty hamburger that is sure to lure villagers around like a lead. Can be eaten."),
-	_doc_items_usagehelp = S("wield this item to pull villagers to you."),
+	_doc_items_usagehelp = S("Wield this item to pull villagers to you."),
 	_tt_help = S("A tasty hamburger that is sure to lure villagers. 'I'll gladly pay you Tuesday, for a hamburger today.' - Wimpy."),
 	inventory_image = "mcl_hamburger.png",
 	wield_image = "mcl_hamburger.png",
