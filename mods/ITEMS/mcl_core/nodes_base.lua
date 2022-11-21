@@ -369,7 +369,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	_doc_items_longdesc = S("A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel. In light, the grass slowly spreads onto dirt nearby. Under an opaque block or a liquid, a grass block may turn back to dirt."),
 	_doc_items_hidden = false,
 	paramtype2 = "color",
-	tiles = {"mcl_core_grass_block_top.png", { name="default_dirt.png^mcl_dirt_grass_shadow.png", color="white" }},
+	tiles = {"mcl_core_grass_block_top.png", { name="default_dirt.png", color="white" }, { name="default_dirt.png^mcl_dirt_grass_shadow.png", color="white" }},
 	overlay_tiles = {"mcl_core_grass_block_top.png", "", {name="mcl_core_grass_block_side_overlay.png", tileable_vertical=false}},
 	palette = "mcl_core_palette_grass.png",
 	palette_index = 0,
