@@ -24,11 +24,11 @@ local ESC = M.formspec_escape
 local S = M.get_translator("mcl_craftguide")
 
 local maxn, sort, concat, insert, copy =
-	table.maxn, table.sort, table.concat, table.insert,
+table.maxn, table.sort, table.concat, table.insert,
 	table.copy
 
 local fmt, find, gmatch, match, sub, split, lower =
-	string.format, string.find, string.gmatch, string.match,
+string.format, string.find, string.gmatch, string.match,
 	string.sub, string.split, string.lower
 
 local min, max, floor, ceil = math.min, math.max, math.floor, math.ceil
@@ -42,38 +42,38 @@ local GRID_LIMIT = 5
 local POLL_FREQ  = 0.25
 
 local FMT = {
-	box     = "box[%f,%f;%f,%f;%s]",
-	label   = "label[%f,%f;%s]",
-	image   = "image[%f,%f;%f,%f;%s]",
-	button  = "button[%f,%f;%f,%f;%s;%s]",
-	tooltip = "tooltip[%s;%s]",
-	item_image = "item_image[%f,%f;%f,%f;%s]",
-	image_button = "image_button[%f,%f;%f,%f;%s;%s;%s]",
+	box               = "box[%f,%f;%f,%f;%s]",
+	label             = "label[%f,%f;%s]",
+	image             = "image[%f,%f;%f,%f;%s]",
+	button            = "button[%f,%f;%f,%f;%s;%s]",
+	tooltip           = "tooltip[%s;%s]",
+	item_image        = "item_image[%f,%f;%f,%f;%s]",
+	image_button      = "image_button[%f,%f;%f,%f;%s;%s;%s]",
 	item_image_button = "item_image_button[%f,%f;%f,%f;%s;%s;%s]",
 }
 
 local group_stereotypes = {
-	wood         = "mcl_core:wood",
-	stone        = "mcl_core:stone",
-	sand         = "mcl_core:sand",
-	wool	     = "mcl_wool:white",
-	carpet       = "mcl_wool:white_carpet",
-	dye	     = "mcl_dye:red",
-	water_bucket = "mcl_buckets:bucket_water",
-	flower	     = "mcl_flowers:dandelion",
-	mushroom     = "mcl_mushrooms:mushroom_brown",
-	wood_slab    = "mcl_stairs:slab_wood",
-	wood_stairs  = "mcl_stairs:stairs_wood",
-	coal         = "mcl_core:coal_lump",
-	shulker_box  = "mcl_chests:violet_shulker_box",
-	quartz_block = "mcl_nether:quartz_block",
-	banner       = "mcl_banners:banner_item_white",
+	wood                        = "mcl_core:wood",
+	stone                       = "mcl_core:stone",
+	sand                        = "mcl_core:sand",
+	wool                        = "mcl_wool:white",
+	carpet                      = "mcl_wool:white_carpet",
+	dye                         = "mcl_dye:red",
+	water_bucket                = "mcl_buckets:bucket_water",
+	flower                      = "mcl_flowers:dandelion",
+	mushroom                    = "mcl_mushrooms:mushroom_brown",
+	wood_slab                   = "mcl_stairs:slab_wood",
+	wood_stairs                 = "mcl_stairs:stairs_wood",
+	coal                        = "mcl_core:coal_lump",
+	shulker_box                 = "mcl_chests:violet_shulker_box",
+	quartz_block                = "mcl_nether:quartz_block",
+	banner                      = "mcl_banners:banner_item_white",
 	mesecon_conductor_craftable = "mesecons:wire_00000000_off",
-	purpur_block = "mcl_end:purpur_block",
-	normal_sandstone = "mcl_core:sandstone",
-	red_sandstone = "mcl_core:redsandstone",
-	compass      = mcl_compass.stereotype,
-	clock        = mcl_clock.sterotype,
+	purpur_block                = "mcl_end:purpur_block",
+	normal_sandstone            = "mcl_core:sandstone",
+	red_sandstone               = "mcl_core:redsandstone",
+	compass                     = mcl_compass.stereotype,
+	clock                       = mcl_clock.sterotype,
 }
 
 local group_names = {
@@ -217,7 +217,7 @@ function mcl_craftguide.set_recipe_filter(name, f)
 	assert(name, func .. "filter name missing")
 	assert(f and type(f) == "function", func .. "filter function missing")
 
-	recipe_filters = {[name] = f}
+	recipe_filters = { [name] = f }
 end
 
 function mcl_craftguide.get_recipe_filters()
@@ -314,23 +314,23 @@ local function get_item_usages(item)
 	local usages, c = {}, 0
 
 	for _, recipes in pairs(recipes_cache) do
-	for i = 1, #recipes do
-		local recipe = recipes[i]
-		if item_in_recipe(item, recipe) then
-			c = c + 1
-			usages[c] = recipe
-		else
-			recipe = groups_item_in_recipe(item, recipe)
-			if recipe then
+		for i = 1, #recipes do
+			local recipe = recipes[i]
+			if item_in_recipe(item, recipe) then
 				c = c + 1
 				usages[c] = recipe
+			else
+				recipe = groups_item_in_recipe(item, recipe)
+				if recipe then
+					c = c + 1
+					usages[c] = recipe
+				end
 			end
 		end
 	end
-	end
 
 	if fuel_cache[item] then
-		usages[#usages + 1] = {type = "fuel", width = 1, items = {item}}
+		usages[#usages + 1] = { type = "fuel", width = 1, items = { item } }
 	end
 
 	return usages
@@ -345,7 +345,7 @@ local function get_filtered_items(player)
 		local usages = usages_cache[item]
 
 		if recipes and #apply_recipe_filters(recipes, player) > 0 or
-		   usages and #apply_recipe_filters(usages, player) > 0 then
+			usages and #apply_recipe_filters(usages, player) > 0 then
 			c = c + 1
 			items[c] = item
 		end
@@ -398,7 +398,7 @@ local function get_recipes(item, data, player)
 end
 
 local function get_burntime(item)
-	return get_result({method = "fuel", width = 1, items = {item}}).time
+	return get_result({ method = "fuel", width = 1, items = { item } }).time
 end
 
 local function cache_fuel(item)
@@ -455,13 +455,13 @@ local function get_tooltip(item, groups, cooktime, burntime)
 			tooltip = groupstr
 		else
 
-			local groupstr, c = {}, 0
+			local grouptable, c = {}, 0
 			for i = 1, #groups do
 				c = c + 1
-				groupstr[c] = colorize(gcol, groups[i])
+				grouptable[c] = colorize(gcol, groups[i])
 			end
 
-			groupstr = concat(groupstr, ", ")
+			groupstr = concat(grouptable, ", ")
 			tooltip = S("Any item belonging to the groups: @1", groupstr)
 		end
 	else
@@ -500,7 +500,7 @@ local function get_recipe_fs(data, iY)
 	end
 
 	local rows = ceil(maxn(recipe.items) / width)
-	local rightest, btn_size, s_btn_size = 0, 1.1
+	local rightest, btn_size, s_btn_size = 0, 1.1, nil
 
 	local btn_lab = data.show_usages and
 		ESC(S("Usage @1 of @2", data.rnum, #data.recipes)) or
@@ -570,7 +570,7 @@ local function get_recipe_fs(data, iY)
 
 	if custom_recipe or shapeless or recipe.type == "cooking" then
 		local icon = custom_recipe and custom_recipe.icon or
-				 shapeless and "shapeless" or "furnace"
+			shapeless and "shapeless" or "furnace"
 
 		if recipe.type == "cooking" then
 			icon = "craftguide_furnace.png"
@@ -586,7 +586,7 @@ local function get_recipe_fs(data, iY)
 			icon)
 
 		local tooltip = custom_recipe and custom_recipe.description or
-				shapeless and S("Shapeless") or S("Cooking")
+			shapeless and S("Shapeless") or S("Cooking")
 
 		fs[#fs + 1] = fmt("tooltip[%f,%f;%f,%f;%s]",
 			rightest + 1.2,
@@ -767,7 +767,7 @@ mcl_craftguide.add_search_filter("groups", function(item, groups)
 	for i = 1, #groups do
 		local group = groups[i]
 		if not itemdef.groups[group] then
-			has_groups = nil
+			has_groups = false
 			break
 		end
 	end
@@ -879,8 +879,8 @@ local function get_init_items()
 	for name, def in pairs(reg_items) do
 		local is_fuel = cache_fuel(name)
 		if not (def.groups.not_in_craft_guide == 1) and
-				def.description and def.description ~= "" and
-				(cache_recipes(name) or is_fuel) then
+			def.description and def.description ~= "" and
+			(cache_recipes(name) or is_fuel) then
 			c = c + 1
 			init_items[c] = name
 		end
@@ -914,7 +914,7 @@ local function on_receive_fields(player, fields)
 		show_fs(player, name)
 
 	elseif (fields.key_enter_field == "filter" or fields.search) and
-			fields.filter ~= "" then
+		fields.filter ~= "" then
 		local fltr = lower(fields.filter)
 		if data.filter == fltr then
 			return
@@ -941,7 +941,7 @@ local function on_receive_fields(player, fields)
 		show_fs(player, name)
 
 	elseif (fields.size_inc and data.iX < MAX_LIMIT) or
-			(fields.size_dec and data.iX > MIN_LIMIT) then
+		(fields.size_dec and data.iX > MIN_LIMIT) then
 		data.pagenum = 1
 		data.iX = data.iX + (fields.size_inc and 1 or -1)
 		show_fs(player, name)
