@@ -11,7 +11,6 @@ local usages_cache  = {}
 local fuel_cache    = {}
 
 local progressive_mode = M.settings:get_bool("mcl_craftguide_progressive_mode", true)
-local sfinv_only = false
 
 local colorize = M.colorize
 local reg_items = M.registered_items
@@ -481,13 +480,7 @@ local function get_recipe_fs(data, iY)
 		ESC(S("Usage @1 of @2", data.rnum, #data.recipes)) or
 		ESC(S("Recipe @1 of @2", data.rnum, #data.recipes))
 
-	fs[#fs + 1] = fmt(FMT.button,
-		sfinv_only and 5.8 or data.iX - 2.6,
-		sfinv_only and 7.9 or iY + 3.3,
-		2.2,
-		1,
-		"alternate",
-		btn_lab)
+	fs[#fs + 1] = fmt(FMT.button, data.iX - 2.6, iY + 3.3, 2.2, 1, "alternate", btn_lab)
 
 	if width > GRID_LIMIT or rows > GRID_LIMIT then
 		fs[#fs + 1] = fmt(FMT.label,
@@ -499,8 +492,7 @@ local function get_recipe_fs(data, iY)
 	end
 
 	for i, item in pairs(recipe.items) do
-		local X = ceil((i - 1) % width + xoffset - width) -
-			(sfinv_only and 0 or 0.2)
+		local X = ceil((i - 1) % width + xoffset - width) - 0.2
 		local Y = ceil(i / width + (iY + 2) - min(2, rows))
 
 		if width > 3 or rows > 3 then
@@ -527,7 +519,7 @@ local function get_recipe_fs(data, iY)
 
 		fs[#fs + 1] = fmt(FMT.item_image_button,
 			X,
-			Y + (sfinv_only and 0.7 or 0.2),
+			Y + 0.2,
 			btn_size,
 			btn_size,
 			item,
@@ -555,7 +547,7 @@ local function get_recipe_fs(data, iY)
 
 		fs[#fs + 1] = fmt(FMT.image,
 			rightest + 1.2,
-			sfinv_only and 6.2 or iY + 1.7,
+			iY + 1.7,
 			0.5,
 			0.5,
 			icon)
@@ -565,7 +557,7 @@ local function get_recipe_fs(data, iY)
 
 		fs[#fs + 1] = fmt("tooltip[%f,%f;%f,%f;%s]",
 			rightest + 1.2,
-			sfinv_only and 6.2 or iY + 1.7,
+			iY + 1.7,
 			0.5,
 			0.5,
 			ESC(tooltip))
@@ -576,7 +568,7 @@ local function get_recipe_fs(data, iY)
 
 	fs[#fs + 1] = fmt(FMT.image,
 		arrow_X,
-		sfinv_only and 6.85 or iY + 2.35,
+		iY + 2.35,
 		0.9,
 		0.7,
 		"craftguide_arrow.png")
@@ -584,7 +576,7 @@ local function get_recipe_fs(data, iY)
 	if recipe.type == "fuel" then
 		fs[#fs + 1] = fmt(FMT.image,
 			output_X,
-			sfinv_only and 6.68 or iY + 2.18,
+			iY + 2.18,
 			1.1,
 			1.1,
 			"mcl_craftguide_fuel.png")
@@ -594,7 +586,7 @@ local function get_recipe_fs(data, iY)
 
 		fs[#fs + 1] = fmt(FMT.item_image_button,
 			output_X,
-			sfinv_only and 6.7 or iY + 2.2,
+			iY + 2.2,
 			1.1,
 			1.1,
 			recipe.output,
@@ -606,14 +598,14 @@ local function get_recipe_fs(data, iY)
 
 			fs[#fs + 1] = fmt(FMT.image,
 				output_X + 1,
-				sfinv_only and 6.83 or iY + 2.33,
+				iY + 2.33,
 				0.6,
 				0.4,
 				"craftguide_arrow.png")
 
 			fs[#fs + 1] = fmt(FMT.image,
 				output_X + 1.6,
-				sfinv_only and 6.68 or iY + 2.18,
+				iY + 2.18,
 				0.6,
 				0.6,
 				"mcl_craftguide_fuel.png")
@@ -625,29 +617,27 @@ end
 
 local function make_formspec(name)
 	local data = player_data[name]
-	local iY = sfinv_only and 4 or data.iX - 5
+	local iY = data.iX - 5
 	local ipp = data.iX * iY
 
 	data.pagemax = max(1, ceil(#data.items / ipp))
 
 	local fs = {}
 
-	if not sfinv_only then
-		fs[#fs + 1] = fmt("size[%f,%f;]", data.iX - 0.35, iY + 4)
+	fs[#fs + 1] = fmt("size[%f,%f;]", data.iX - 0.35, iY + 4)
 
-		fs[#fs + 1] = "background9[1,1;1,1;mcl_base_textures_background9.png;true;7]"
+	fs[#fs + 1] = "background9[1,1;1,1;mcl_base_textures_background9.png;true;7]"
 
-		fs[#fs + 1] = fmt([[ tooltip[size_inc;%s]
-					 tooltip[size_dec;%s] ]],
-			ESC(S("Increase window size")),
-			ESC(S("Decrease window size")))
+	fs[#fs + 1] = fmt([[ tooltip[size_inc;%s]
+					tooltip[size_dec;%s] ]],
+		ESC(S("Increase window size")),
+		ESC(S("Decrease window size")))
 
-		fs[#fs + 1] = fmt([[
-			image_button[%f,0.12;0.8,0.8;craftguide_zoomin_icon.png;size_inc;]
-			image_button[%f,0.12;0.8,0.8;craftguide_zoomout_icon.png;size_dec;] ]],
-			data.iX * 0.47,
-			data.iX * 0.47 + 0.6)
-	end
+	fs[#fs + 1] = fmt([[
+		image_button[%f,0.12;0.8,0.8;craftguide_zoomin_icon.png;size_inc;]
+		image_button[%f,0.12;0.8,0.8;craftguide_zoomout_icon.png;size_dec;] ]],
+		data.iX * 0.47,
+		data.iX * 0.47 + 0.6)
 
 	fs[#fs + 1] = [[
 		image_button[2.4,0.12;0.8,0.8;craftguide_search_icon.png;search;]
@@ -665,15 +655,15 @@ local function make_formspec(name)
 		ESC(S("Next page")))
 
 	fs[#fs + 1] = fmt("label[%f,%f;%s]",
-		sfinv_only and 6.3 or data.iX - 2.2,
+		data.iX - 2.2,
 		0.22,
 		ESC(colorize("#383838", fmt("%s / %u", data.pagenum, data.pagemax))))
 
 	fs[#fs + 1] = fmt([[
 		image_button[%f,0.12;0.8,0.8;craftguide_prev_icon.png;prev;]
 		image_button[%f,0.12;0.8,0.8;craftguide_next_icon.png;next;] ]],
-		sfinv_only and 5.5 or data.iX - 3.1,
-		sfinv_only and 7.3 or (data.iX - 1.2) - (data.iX >= 11 and 0.08 or 0))
+		data.iX - 3.1,
+		(data.iX - 1.2) - (data.iX >= 11 and 0.08 or 0))
 
 	fs[#fs + 1] = fmt("field[0.3,0.32;2.5,1;filter;;%s]", ESC(data.filter))
 
@@ -700,7 +690,7 @@ local function make_formspec(name)
 		local Y = (i % ipp - X) / data.iX + 1
 
 		fs[#fs + 1] = fmt("item_image_button[%f,%f;%f,%f;%s;%s_inv;]",
-			X - (sfinv_only and 0 or (X * 0.05)),
+			X - (X * 0.05),
 			Y,
 			1.1,
 			1.1,
@@ -727,11 +717,7 @@ local function make_formspec(name)
 end
 
 local function show_fs(player, name)
-	if sfinv_only then
-		sfinv.set_player_inventory_formspec(player)
-	else
-		show_formspec(name, "mcl_craftguide", make_formspec(name))
-	end
+	show_formspec(name, "mcl_craftguide", make_formspec(name))
 end
 
 mcl_craftguide.add_search_filter("groups", function(item, groups)
@@ -835,7 +821,7 @@ local function init_data(name)
 	player_data[name] = {
 		filter    = "",
 		pagenum   = 1,
-		iX        = sfinv_only and 8 or DEFAULT_SIZE,
+		iX        = DEFAULT_SIZE,
 		items     = init_items,
 		items_raw = init_items,
 	}
@@ -965,54 +951,26 @@ end
 
 M.register_on_mods_loaded(get_init_items)
 
--- TODO: Remove sfinv support
-if sfinv_only then
-	sfinv.register_page("craftguide:craftguide", {
-		title = "Craft Guide",
+M.register_on_player_receive_fields(function(player, formname, fields)
+	if formname == "mcl_craftguide" then
+		on_receive_fields(player, fields)
+	elseif fields.__mcl_craftguide then
+		mcl_craftguide.show(player:get_player_name())
+	end
+end)
 
-		get = function(self, player, context)
-			local name = player:get_player_name()
-			local formspec = make_formspec(name)
+--[[local function on_use(user)
+	local name = user:get_player_name()
 
-			return sfinv.make_formspec(player, context, formspec)
-		end,
+	if next(recipe_filters) then
+		local data = player_data[name]
+		data.items_raw = get_filtered_items(user)
+		search(data)
+	end
 
-		on_enter = function(self, player, context)
-			if next(recipe_filters) then
-				local name = player:get_player_name()
-				local data = player_data[name]
+	show_formspec(name, "mcl_craftguide", make_formspec(name))
+end]]
 
-				data.items_raw = get_filtered_items(player)
-				search(data)
-			end
-		end,
-
-		on_player_receive_fields = function(self, player, context, fields)
-			on_receive_fields(player, fields)
-		end,
-	})
-else
-	M.register_on_player_receive_fields(function(player, formname, fields)
-		if formname == "mcl_craftguide" then
-			on_receive_fields(player, fields)
-		elseif fields.__mcl_craftguide then
-			mcl_craftguide.show(player:get_player_name())
-		end
-	end)
-
-	--[[local function on_use(user)
-		local name = user:get_player_name()
-
-		if next(recipe_filters) then
-			local data = player_data[name]
-			data.items_raw = get_filtered_items(user)
-			search(data)
-		end
-
-		show_formspec(name, "mcl_craftguide", make_formspec(name))
-	end]]
-
-end
 
 if progressive_mode then
 	local function item_in_inv(item, inv_items)
