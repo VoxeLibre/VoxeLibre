@@ -6,13 +6,11 @@ else disabled_events = {} end
 local DBG = minetest.settings:get_bool("mcl_logging_event_api",false)
 local active_events = {}
 
-local tpl_eventdef = {
+local event_tpl = {
 	stage = 0,
 	max_stage = 1,
 	percent = 100,
 	bars = {},
-	--pos = vector.zero(),
-	--time_start = 0,
 	completed = false,
 	cond_start = function(event) end, --return table of positions
 	on_step = function(event) end,
@@ -49,7 +47,7 @@ local function start_event(p,e)
 	mcl_log("[mcl_events] Event started: "..e.readable_name.." at "..minetest.pos_to_string(vector.round(p.pos)))
 	local idx = #active_events + 1
 	active_events[idx] = table.copy(e)
-	setmetatable(active_events[idx],e)
+	setmetatable(active_events[idx],{__index = event_tpl})
 	for k,v in pairs(p) do active_events[idx][k] = v end
 	active_events[idx].stage = 0
 	active_events[idx].percent = 100
