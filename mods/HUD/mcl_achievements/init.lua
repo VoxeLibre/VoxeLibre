@@ -302,6 +302,14 @@ awards.register_achievement("mcl:tacticalFishing", {
 	group = "Husbandry",
 })
 
+awards.register_achievement("mcl:cutestPredator", {
+	title = S("The Cutest Predator"),
+	description = S("Catch an Axolotl with a bucket!"),
+	icon = "axolotl_bucket.png",
+	type = "Advancement",
+	group = "Husbandry",
+})
+
 awards.register_achievement("mcl:witheringHeights", {
 	title = S("Withering Heights"),
 	description = S("Summon the wither from the dead."),

@@ -65,6 +65,8 @@ What A Deal!=
 Successfully trade with a Villager.=
 Withering Heights=
 Summon the wither from the dead.=
+The Cutest Predator=
+Catch an Axolotl with a bucket!
 Fishy Business=
 Catch a fish.@nHint: Catch a fish, salmon, clownfish, or pufferfish.=
 Country Lode,@nTake Me Home=
