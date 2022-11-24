@@ -83,9 +83,13 @@ local axolotl = {
 	fear_height = 4,
 
 	on_rightclick = function(self, clicker)
+		if clicker:get_wielded_item():get_name() == "mcl_buckets:bucket_water" then
+			self.object:remove()
+			clicker:set_wielded_item("mcl_buckets:bucket_axolotl")
+			awards.unlock(clicker:get_player_name(), "mcl:cutestPredator")
+			return
+		end
 		if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
-		if mcl_mobs:protect(self, clicker) then return end
-		if mcl_mobs:capture_mob(self, clicker, 0, 60, 5, false, nil) then return end
 	end,
 
 	makes_footstep_sound = false,
@@ -127,13 +131,6 @@ local axolotl = {
 				self.state = "runaway"
 				self.object:set_rotation({x=0,y=(atan(vec.z / vec.x) + 3 * pi / 2) - self.rotate,z=0})
 			end
-		end
-	end,
-	on_rightclick = function(self, clicker)
-		if clicker:get_wielded_item():get_name() == "mcl_buckets:bucket_water" then
-			self.object:remove()
-			clicker:set_wielded_item("mcl_buckets:bucket_axolotl")
-			awards.unlock(clicker:get_player_name(), "mcl:cutestPredator")
 		end
 	end
 }
