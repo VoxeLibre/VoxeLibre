@@ -200,7 +200,6 @@ local baby_strider = table.copy(strider)
 baby_strider.collisionbox = {-.3, -0.01, -.3, .3, 0.94, .3}
 baby_strider.xp_min = 13
 baby_strider.xp_max = 13
-baby_strider.visual_size = {x=strider.visual_size.x/2, y=strider.visual_size.y/2}
 textures = { {
 	"extra_mobs_strider.png",
 	"extra_mobs_trans.png",
