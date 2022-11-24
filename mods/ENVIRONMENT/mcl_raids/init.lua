@@ -116,7 +116,7 @@ function mcl_raids.promote_to_raidcaptain(c) -- object
 end
 
 function mcl_raids.is_raidcaptain_near(pos)
-	for k,v in pairs(minetest.get_objects_inside_radius(pos,128)) do
+	for k,v in pairs(minetest.get_objects_inside_radius(pos,32)) do
 		local l = v:get_luaentity()
 		if l and l._raidcaptain then return true end
 	end
@@ -176,6 +176,7 @@ function mcl_raids.spawn_raid(event)
 					local mob = mcl_mobs.spawn(p,m)
 					local l = mob:get_luaentity()
 					if l then
+						l.raidmob = true
 						event.health_max = event.health_max + l.health
 						table.insert(event.mobs,mob)
 						mcl_mobs:gopath(l,pos)
@@ -253,6 +254,36 @@ local function make_firework(pos,stime)
 	minetest.after(10,make_firework,pos,stime)
 end
 
+local function is_player_near(self)
+	for _,pl in pairs(minetest.get_connected_players()) do
+		if self.pos and vector.distance(pl:get_pos(),self.pos) < 64 then return true end
+	end
+end
+
+local function check_mobs(self)
+	local m = {}
+	local h = 0
+	for k,o in pairs(self.mobs) do
+		if o and o:get_pos() then
+			local l = o:get_luaentity()
+			h = h + l.health
+			table.insert(m,o)
+		end
+	end
+	if #m == 0 then --if no valid mobs in table search if there are any (reloaded ones) in the area
+		for k,o in pairs(minetest.get_objects_inside_radius(self.pos,64)) do
+			local l = o:get_luaentity()
+			if l and l.raidmob then
+				local l = o:get_luaentity()
+				h = h + l.health
+				table.insert(m,o)
+			end
+		end
+	end
+	self.mobs = m
+	return h
+end
+
 mcl_events.register_event("raid",{
 	readable_name = "Raid",
 	max_stage = 5,
@@ -280,38 +311,19 @@ mcl_events.register_event("raid",{
 		if lv and lv.factor and lv.factor > 1 then self.max_stage = 6 end
 	end,
 	cond_progress = function(self)
-		local m = {}
-		local h = 0
-		for k,o in pairs(self.mobs) do
-			if o and o:get_pos() then
-				local l = o:get_luaentity()
-				h = h + l.health
-				table.insert(m,o)
-			end
-		end
-		self.mobs = m
-		self.health = h
+		if not is_player_near(self) then return false end
+		self.health = check_mobs(self)
 		self.percent = math.max(0,(self.health / self.health_max ) * 100)
-		if #m < 1 then
+		if #self.mobs < 1 then
 			return true end
 	end,
 	on_stage_begin = mcl_raids.spawn_raid,
 	cond_complete = function(self)
-		local player_near = false
-		for _,pl in pairs(minetest.get_connected_players()) do
-			if self.pos and vector.distance(pl:get_pos(),self.pos) < 72 then player_near = true end
-		end
-		if not player_near then return false end
+		if not is_player_near(self) then return false end
 		--let the event api handle cancel the event when no players are near
 		--without this check it would sort out the unloaded mob entities and
 		--think the raid is defeated.
-		local m = {}
-		for k,o in pairs(self.mobs) do
-			if o and o:get_pos() then
-				local l = o:get_luaentity()
-				table.insert(m,o)
-			end
-		end
+		check_mobs(self)
 		return self.stage >= self.max_stage and #m < 1
 	end,
 	on_complete = function(self)
