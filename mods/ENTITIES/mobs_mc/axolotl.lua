@@ -38,7 +38,7 @@ local axolotl = {
 	hp_max = 14,
 	xp_min = 1,
 	xp_max = 7,
-	
+
 	head_swivel = "head.control",
 	bone_eye_height = -1,
 	head_eye_height = -0.5,
@@ -61,7 +61,7 @@ local axolotl = {
 		{"mobs_mc_axolotl_pink.png"},
 		{"mobs_mc_axolotl_black.png"},
 		{"mobs_mc_axolotl_purple.png"},
-		{"mobs_mc_axolotl_white.png"}		
+		{"mobs_mc_axolotl_white.png"}
 	},
 	sounds = {
 		random = "mobs_mc_axolotl",
@@ -101,7 +101,7 @@ local axolotl = {
 	reach = 2,
 	attack_type = "dogfight",
 	attack_animals = true,
-	specific_attack = {	
+	specific_attack = {
 		"extra_mobs_cod",
 		"mobs_mc:sheep",
 		"extra_mobs_glow_squid",
