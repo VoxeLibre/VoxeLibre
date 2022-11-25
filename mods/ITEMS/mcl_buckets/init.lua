@@ -160,7 +160,7 @@ local function on_place_bucket(itemstack, user, pointed_thing)
 	if not pointed_thing or pointed_thing.type ~= "node" then
 		return
 	end
-	
+
 	-- Call on_rightclick if the pointed node defines it
 	local new_stack = mcl_util.call_on_rightclick(itemstack, user, pointed_thing)
 	if new_stack then
@@ -202,7 +202,7 @@ local function on_place_bucket_empty(itemstack, user, pointed_thing)
 	if not use_select_box then
 		pointed_thing = bucket_get_pointed_thing(user)
 	end
-	
+
 	-- Must be pointing to node
 	if not pointed_thing or pointed_thing.type ~= "node" then
 		return itemstack
