@@ -104,8 +104,13 @@ local tropical_fish = {
 	fear_height = 4,
 	on_rightclick = function(self, clicker)
 		if clicker:get_wielded_item():get_name() == "mcl_buckets:bucket_water" then
-			self.object:remove()
-			clicker:set_wielded_item("mcl_buckets:bucket_tropical_fish")
+			if clicker:set_wielded_item("mcl_buckets:bucket_tropical_fish") then
+				local it = clicker:get_wielded_item()
+				local m = it:get_meta()
+				m:set_string("properties",minetest.serialize(self.object:get_properties()))
+				clicker:set_wielded_item(it)
+				self.object:remove()
+			end
 			awards.unlock(clicker:get_player_name(), "mcl:tacticalFishing")
 		end
 	end,
