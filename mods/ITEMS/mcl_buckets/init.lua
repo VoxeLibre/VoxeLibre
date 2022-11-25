@@ -358,3 +358,4 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 })
 
 dofile(modpath.."/register.lua")
+dofile(modpath.."/fishbuckets.lua")
