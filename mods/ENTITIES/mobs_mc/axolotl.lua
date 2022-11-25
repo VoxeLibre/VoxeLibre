@@ -115,29 +115,6 @@ local axolotl = {
 		"mobs_mc_squid"
 		 },
 	runaway = true,
-	do_custom = function(self)
-		--[[ this is supposed to make them jump out the water but doesn't appear to work very well
-		self.object:set_bone_position("body", vector.new(0,1,0), vector.new(degrees(dir_to_pitch(self.object:get_velocity())) * -1 + 90,0,0))
-		if minetest.get_item_group(self.standing_in, "water") ~= 0 then
-			if self.object:get_velocity().y < 5 then
-				self.object:add_velocity({ x = 0 , y = math.random(-.007, .007), z = 0 })
-			end
-		end
---]]
-		for _,object in pairs(minetest.get_objects_inside_radius(self.object:get_pos(), 10)) do
-			local lp = object:get_pos()
-			local s = self.object:get_pos()
-			local vec = {
-				x = lp.x - s.x,
-				y = lp.y - s.y,
-				z = lp.z - s.z
-			}
-			if object and not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "extra_mobs_tropical_fish" then
-				self.state = "runaway"
-				self.object:set_rotation({x=0,y=(atan(vec.z / vec.x) + 3 * pi / 2) - self.rotate,z=0})
-			end
-		end
-	end,
 }
 
 mcl_mobs:register_mob("mobs_mc:axolotl", axolotl)
