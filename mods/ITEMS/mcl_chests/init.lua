@@ -54,6 +54,7 @@ local entity_animations = {
 minetest.register_entity("mcl_chests:chest", {
 	initial_properties = {
 		visual = "mesh",
+		visual_size = {x = 3, y = 3},
 		pointable = false,
 		physical = false,
 		static_save = false,
@@ -139,6 +140,7 @@ minetest.register_entity("mcl_chests:chest", {
 
 local function get_entity_pos(pos, dir, double)
 	pos = vector.new(pos)
+	pos.y = pos.y - 0.49
 	if double then
 		local add, mul, vec, cross = vector.add, vector.multiply, vector.new, vector.cross
 		pos = add(pos, mul(cross(dir, vec(0, 1, 0)), -0.5))
@@ -361,7 +363,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 		_doc_items_usagehelp = usagehelp,
 		_doc_items_hidden = hidden,
 		drawtype = "mesh",
-		mesh = "mcl_chests_chest.b3d",
+		mesh = "mcl_chests_chest.obj",
 		tiles = small_textures,
 		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 		paramtype = "light",
@@ -399,7 +401,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 			type = "fixed",
 			fixed = {-0.4375, -0.5, -0.4375, 0.4375, 0.375, 0.4375},
 		},
-		tiles = {"blank.png^[resize:16x16"},
+		tiles = {"mcl_chests_blank.png"},
 		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 		_chest_entity_textures = small_textures,
 		_chest_entity_sound = "default_chest",
@@ -525,7 +527,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 			type = "fixed",
 			fixed = {-0.4375, -0.5, -0.4375, 0.5, 0.375, 0.4375},
 		},
-		tiles = {"blank.png^[resize:16x16"},
+		tiles = {"mcl_chests_blank.png"},
 		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 		_chest_entity_textures = left_textures,
 		_chest_entity_sound = "default_chest",
@@ -682,7 +684,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 			type = "fixed",
 			fixed = {-0.5, -0.5, -0.4375, 0.4375, 0.375, 0.4375},
 		},
-		tiles = {"blank.png^[resize:16x16"},
+		tiles = {"mcl_chests_blank.png"},
 		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 		groups = {handy=1,axey=1, container=6,not_in_creative_inventory=1, material_wood=1,flammable=-1,double_chest=2},
 		drop = drop,
@@ -840,6 +842,15 @@ register_chest("chest",
 	{
 		small = tiles_chest_normal_small,
 		double = tiles_chest_normal_double,
+		inv = {"default_chest_top.png", "mcl_chests_chest_bottom.png",
+		"mcl_chests_chest_right.png", "mcl_chests_chest_left.png",
+		"mcl_chests_chest_back.png", "default_chest_front.png"},
+		--[[left = {"default_chest_top_big.png", "default_chest_top_big.png",
+		"mcl_chests_chest_right.png", "mcl_chests_chest_left.png",
+		"default_chest_side_big.png^[transformFX", "default_chest_front_big.png"},
+		right = {"default_chest_top_big.png^[transformFX", "default_chest_top_big.png^[transformFX",
+		"mcl_chests_chest_right.png", "mcl_chests_chest_left.png",
+		"default_chest_side_big.png", "default_chest_front_big.png^[transformFX"},]]--
 	},
 	false
 )
@@ -847,6 +858,15 @@ register_chest("chest",
 local traptiles = {
 	small = tiles_chest_trapped_small,
 	double = tiles_chest_trapped_double,
+	inv = {"mcl_chests_chest_trapped_top.png", "mcl_chests_chest_trapped_bottom.png",
+	"mcl_chests_chest_trapped_right.png", "mcl_chests_chest_trapped_left.png",
+	"mcl_chests_chest_trapped_back.png", "mcl_chests_chest_trapped_front.png"},
+	--[[left = {"mcl_chests_chest_trapped_top_big.png", "mcl_chests_chest_trapped_top_big.png",
+	"mcl_chests_chest_trapped_right.png", "mcl_chests_chest_trapped_left.png",
+	"mcl_chests_chest_trapped_side_big.png^[transformFX", "mcl_chests_chest_trapped_front_big.png"},
+	right = {"mcl_chests_chest_trapped_top_big.png^[transformFX", "mcl_chests_chest_trapped_top_big.png^[transformFX",
+	"mcl_chests_chest_trapped_right.png", "mcl_chests_chest_trapped_left.png",
+	"mcl_chests_chest_trapped_side_big.png", "mcl_chests_chest_trapped_front_big.png^[transformFX"},]]--
 }
 
 register_chest("trapped_chest",
@@ -972,7 +992,7 @@ minetest.register_node("mcl_chests:ender_chest", {
 	_doc_items_longdesc = S("Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chests. Each player will only see their own items, but not the items of other players."),
 	_doc_items_usagehelp = S("Rightclick the ender chest to access your personal interdimensional inventory."),
 	drawtype = "mesh",
-	mesh = "mcl_chests_chest.b3d",
+	mesh = "mcl_chests_chest.obj",
 	tiles = tiles_chest_ender_small,
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	paramtype = "light",
@@ -1014,8 +1034,11 @@ minetest.register_node("mcl_chests:ender_chest_small", {
 	_chest_entity_sound = "mcl_chests_enderchest",
 	_chest_entity_mesh = "mcl_chests_chest",
 	_chest_entity_animation_type = "chest",
-	tiles = {"blank.png^[resize:16x16"},
+	tiles = {"mcl_chests_blank.png"},
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+	--[[{"mcl_chests_ender_chest_top.png", "mcl_chests_ender_chest_bottom.png",
+		"mcl_chests_ender_chest_right.png", "mcl_chests_ender_chest_left.png",
+		"mcl_chests_ender_chest_back.png", "mcl_chests_ender_chest_front.png"},]]--
 	-- Note: The “container” group is missing here because the ender chest does not
 	-- have an inventory on its own
 	groups = {pickaxey=1, deco_block=1, material_stone=1, chest_entity=1, not_in_creative_inventory=1},
@@ -1165,7 +1188,13 @@ for color, desc in pairs(boxtypes) do
 		tiles = {mob_texture},
 		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 		drawtype = "mesh",
-		mesh = "mcl_chests_shulker.b3d",
+		mesh = "mcl_chests_shulker.obj",
+		--[["mcl_chests_"..color.."_shulker_box_top.png", -- top
+			"[combine:16x16:-32,-28="..mob_texture, -- bottom
+			"[combine:16x16:0,-36="..mob_texture..":0,-16="..mob_texture, -- side
+			"[combine:16x16:-32,-36="..mob_texture..":-32,-16="..mob_texture, -- side
+			"[combine:16x16:-16,-36="..mob_texture..":-16,-16="..mob_texture, -- side
+			"[combine:16x16:-48,-36="..mob_texture..":-48,-16="..mob_texture, -- side]]--
 		groups = {handy=1,pickaxey=1, container=3, deco_block=1, dig_by_piston=1, shulker_box=1, old_shulker_box_node=1},
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -1221,7 +1250,7 @@ for color, desc in pairs(boxtypes) do
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = usagehelp,
 		drawtype = "nodebox",
-		tiles = {"blank.png^[resize:16x16"},
+		tiles = {"mcl_chests_blank.png"},
 		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 		_chest_entity_textures = {mob_texture},
 		_chest_entity_sound = "mcl_chests_shulker",
