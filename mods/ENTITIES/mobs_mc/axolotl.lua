@@ -1,33 +1,4 @@
---MCmobs v0.4
---maikerumine
---made for MC like Survival game
---License for code WTFPL and otherwise stated in readmes
-
-local pi = math.pi
-local atann = math.atan
-local atan = function(x)
-	if not x or x ~= x then
-		return 0
-	else
-		return atann(x)
-	end
-end
-
-local dir_to_pitch = function(dir)
-	local dir2 = vector.normalize(dir)
-	local xz = math.abs(dir.x) + math.abs(dir.z)
-	return -math.atan2(-dir.y, xz)
-end
-
-local function degrees(rad)
-	return rad * 180.0 / math.pi
-end
-
 local S = minetest.get_translator(minetest.get_current_modname())
-
---###################
---################### axolotl
---###################
 
 local axolotl = {
 	type = "animal",
@@ -74,7 +45,6 @@ local axolotl = {
 		run_start = 61, run_end = 81, run_speed = 20,
 	},
 
-	--	This should should make axolotls breedable, but it doesn't.
 	follow = {
 		"mcl_fishing:clownfish_raw"
 	},
@@ -96,7 +66,6 @@ local axolotl = {
 		end
 		if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
 	end,
-
 	makes_footstep_sound = false,
 	fly = true,
 	fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
@@ -118,7 +87,6 @@ local axolotl = {
 }
 
 mcl_mobs:register_mob("mobs_mc:axolotl", axolotl)
-
 
 local water = 0
 
