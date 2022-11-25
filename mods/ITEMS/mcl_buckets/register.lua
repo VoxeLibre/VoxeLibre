@@ -131,12 +131,17 @@ local fish_names = {
 local fishbucket_prefix = "mcl_buckets:bucket_"
 
 local function on_place_fish(itemstack, placer, pointed_thing)
-	local pos = pointed_thing.above
+	local pos = pointed_thing.above or pointed_thing.under
+	if not pos then return end
 	local n = minetest.get_node_or_nil(pos)
-	if n and minetest.registered_nodes[n.name].buildable_to or n.name == "mcl_portals:portal" then
+	if n.name and minetest.registered_nodes[n.name].buildable_to or n.name == "mcl_portals:portal" then
 		local fish = itemstack:get_name():gsub(fishbucket_prefix,"")
 		if fish_names[fish] then
 			local o = minetest.add_entity(pos, "mobs_mc:" .. fish)
+			local props = itemstack:get_meta():get_string("properties")
+			if props ~= "" then
+				o:set_properties(minetest.deserialize(props))
+			end
 			minetest.set_node(pos,{name = "mcl_core:water_source"})
 			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				itemstack:set_name("mcl_buckets:bucket_empty")
