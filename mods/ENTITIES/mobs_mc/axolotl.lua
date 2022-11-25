@@ -53,7 +53,8 @@ local axolotl = {
 	fear_height = 4,
 
 	on_rightclick = function(self, clicker)
-		if clicker:get_wielded_item():get_name() == "mcl_buckets:bucket_water" then
+		local bn = clicker:get_wielded_item():get_name()
+		if bn == "mcl_buckets:bucket_water" or bn == "mcl_buckets:bucket_river_water" then
 			if clicker:set_wielded_item("mcl_buckets:bucket_axolotl") then
 				local it = clicker:get_wielded_item()
 				local m = it:get_meta()

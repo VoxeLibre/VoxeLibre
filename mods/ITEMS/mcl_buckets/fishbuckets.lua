@@ -23,7 +23,11 @@ local function on_place_fish(itemstack, placer, pointed_thing)
 			if props ~= "" then
 				o:set_properties(minetest.deserialize(props))
 			end
-			minetest.set_node(pos,{name = "mcl_core:water_source"})
+			local water = "mcl_core:water_source"
+			if n.name == "mclx_core:river_water_source" then
+				water = n.name
+			end
+			minetest.set_node(pos,{name = water})
 			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				itemstack:set_name("mcl_buckets:bucket_empty")
 			end

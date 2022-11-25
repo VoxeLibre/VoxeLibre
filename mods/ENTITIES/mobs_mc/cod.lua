@@ -102,7 +102,8 @@ local cod = {
 		end
 	end,
 	on_rightclick = function(self, clicker)
-		if clicker:get_wielded_item():get_name() == "mcl_buckets:bucket_water" then
+		local bn = clicker:get_wielded_item():get_name()
+		if bn == "mcl_buckets:bucket_water" or bn == "mcl_buckets:bucket_river_water" then
 			self.object:remove()
 			clicker:set_wielded_item("mcl_buckets:bucket_cod")
 			awards.unlock(clicker:get_player_name(), "mcl:tacticalFishing")
