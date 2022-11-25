@@ -1008,7 +1008,7 @@ minetest.register_node("mcl_chests:ender_chest_small", {
 	drawtype = "nodebox",
 	node_box = {
 		type = "fixed",
-		fixed = {-0.4375, -0.5, -0.4375, 0.4375, 0.375, 0.4375},
+		fixed = {-0.4375, -0.5, -0.4375, 0.5, 0.375, 0.4375},
 	},
 	_chest_entity_textures = {"mcl_chests_ender.png"},
 	_chest_entity_sound = "mcl_chests_enderchest",
@@ -1221,10 +1221,6 @@ for color, desc in pairs(boxtypes) do
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = usagehelp,
 		drawtype = "nodebox",
-		node_box = {
-			type = "fixed",
-			fixed = {-0.48, -0.5, -0.48, 0.48, 0.489, 0.48},
-		},
 		tiles = {"blank.png^[resize:16x16"},
 		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 		_chest_entity_textures = {mob_texture},
