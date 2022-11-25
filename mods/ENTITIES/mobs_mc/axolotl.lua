@@ -84,8 +84,13 @@ local axolotl = {
 
 	on_rightclick = function(self, clicker)
 		if clicker:get_wielded_item():get_name() == "mcl_buckets:bucket_water" then
-			self.object:remove()
-			clicker:set_wielded_item("mcl_buckets:bucket_axolotl")
+			if clicker:set_wielded_item("mcl_buckets:bucket_axolotl") then
+				local it = clicker:get_wielded_item()
+				local m = it:get_meta()
+				m:set_string("properties",minetest.serialize(self.object:get_properties()))
+				clicker:set_wielded_item(it)
+				self.object:remove()
+			end
 			awards.unlock(clicker:get_player_name(), "mcl:cutestPredator")
 			return
 		end
@@ -132,7 +137,7 @@ local axolotl = {
 				self.object:set_rotation({x=0,y=(atan(vec.z / vec.x) + 3 * pi / 2) - self.rotate,z=0})
 			end
 		end
-	end
+	end,
 }
 
 mcl_mobs:register_mob("mobs_mc:axolotl", axolotl)
