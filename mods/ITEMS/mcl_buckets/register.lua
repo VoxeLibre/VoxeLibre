@@ -120,37 +120,57 @@ minetest.register_craft({
 })
 
 -- Fish Buckets
-fish_names = {
-	{ techname = "cod", name = "Cod" },
-	{ techname = "salmon", name = "Salmon" },
-	{ techname = "axolotl", name = "Axolotl" },
-	--{ techname = "pufferfish", name = "Pufferfish" } FIXME: Uncomment when pufferfish mobs are added.
-	{ techname = "tropical_fish", name = "Tropical Fish" }
+local fish_names = {
+	["cod"] = "Cod",
+	["salmon"] = "Salmon",
+	["tropical_fish"] = "Tropical Fish",
+	["axolotl"] = "Axolotl",
+	--["pufferfish"] = "Pufferfish", --FIXME add pufferfish
 }
 
-for _, fish in pairs(fish_names) do
-	mcl_buckets.register_liquid({
-		bucketname = "mcl_buckets:bucket_" .. fish.techname,
-		source_place = function(pos)
-			minetest.add_entity(pos, "mobs_mc:" .. fish.techname)
-			return "mcl_core:water_source"
-		end,
-		source_take = {"mobs_mc:" .. fish.techname},
-		inventory_image = fish.techname .. "_bucket.png",
-		name = S("Bucket of @1", S(fish.name)),
-		longdesc = S("This bucket is filled with water and @1.", S(fish.name)),
-		usagehelp = S("Place it to empty the bucket and place a @1. Obtain by right clicking on a @2 with a bucket of water.", S(fish.name), S(fish.name)),
-		tt_help = S("Places a water source and a @1.", S(fish.name)),
-		extra_check = function(pos, placer)
-			local dim = mcl_worlds.pos_to_dimension(pos)
-			if dim == "nether" then
-				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
-				return false, true
-			else
-				return true, true
+local fishbucket_prefix = "mcl_buckets:bucket_"
+
+local function on_place_fish(itemstack, placer, pointed_thing)
+	local pos = pointed_thing.above
+	local n = minetest.get_node_or_nil(pos)
+	if n and minetest.registered_nodes[n.name].buildable_to or n.name == "mcl_portals:portal" then
+		local fish = itemstack:get_name():gsub(fishbucket_prefix,"")
+		if fish_names[fish] then
+			local o = minetest.add_entity(pos, "mobs_mc:" .. fish)
+			minetest.set_node(pos,{name = "mcl_core:water_source"})
+			if not minetest.is_creative_enabled(placer:get_player_name()) then
+				itemstack:set_name("mcl_buckets:bucket_empty")
 			end
-		end,
-	})
-	minetest.register_alias("mcl_fishing:bucket_" .. fish.techname, "mcl_buckets:bucket_" .. fish.techname)
+		end
+	end
+	return itemstack
 end
 
+for techname, fishname in pairs(fish_names) do
+	minetest.register_craftitem(fishbucket_prefix .. techname, {
+		description = S("Bucket of @1", S(fishname)),
+		_doc_items_longdesc = S("This bucket is filled with water and @1.", S(fishname)),
+		_doc_items_usagehelp = S("Place it to empty the bucket and place a @1. Obtain by right clicking on a @2 with a bucket of water.", S(fishname), S(fishname)),
+		_tt_help = S("Places a water source and a @1.", S(fishname)),
+		inventory_image = techname .. "_bucket.png",
+		stack_max = 1,
+		groups = {bucket = 1, fish_bucket = 1},
+		liquids_pointable = false,
+		on_place = on_place_fish,
+		on_secondary_use = on_place_fish,
+		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
+			local buildable = registered_nodes[dropnode.name].buildable_to or dropnode.name == "mcl_portals:portal"
+			if not buildable then return stack end
+			local result, take_bucket = get_extra_check(def.extra_check, droppos, nil)
+			if result then -- Fail placement of liquid if result is false
+				place_liquid(droppos, get_node_place(def.source_place, droppos))
+			end
+			if take_bucket then
+				stack:set_name("mcl_buckets:bucket_empty")
+			end
+			return stack
+		end,
+	})
+
+	minetest.register_alias("mcl_fishing:bucket_" .. techname, "mcl_buckets:bucket_" .. techname)
+end
