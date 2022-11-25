@@ -324,7 +324,7 @@ mcl_events.register_event("raid",{
 		--without this check it would sort out the unloaded mob entities and
 		--think the raid is defeated.
 		check_mobs(self)
-		return self.stage >= self.max_stage and #m < 1
+		return self.stage >= self.max_stage and #self.mobs < 1
 	end,
 	on_complete = function(self)
 		awards.unlock(self.player,"mcl:hero_of_the_village")
