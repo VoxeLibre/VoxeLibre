@@ -32,7 +32,7 @@ local function on_place_fish(itemstack, placer, pointed_thing)
 			if water then
 				minetest.set_node(pos,{name = water})
 			end
-			if not placer or minetest.is_creative_enabled(placer:get_player_name()) then
+			if not placer or not minetest.is_creative_enabled(placer:get_player_name()) then
 				itemstack:set_name("mcl_buckets:bucket_empty")
 			end
 		end
