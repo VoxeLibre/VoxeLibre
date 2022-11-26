@@ -356,7 +356,7 @@ minetest.register_node("mcl_crimson:warped_hyphae_wood", {
 	description = S("Warped Hyphae Wood"),
 	tiles = {"warped_hyphae_wood.png"},
 	groups = {handy = 5,axey = 1, flammable = 3, wood=1,building_block = 1, material_wood = 1, fire_encouragement = 5, fire_flammability = 20},
-	paramtype2 = "facedir",
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_hardness = 2,
 })
 
@@ -522,7 +522,7 @@ minetest.register_node("mcl_crimson:crimson_hyphae_wood", {
 	description = S("Crimson Hyphae Wood"),
 	tiles = {"crimson_hyphae_wood.png"},
 	groups = {handy = 5, axey = 1, wood = 1, building_block = 1, material_wood = 1},
-	paramtype2 = "facedir",
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_hardness = 2,
 })
 
