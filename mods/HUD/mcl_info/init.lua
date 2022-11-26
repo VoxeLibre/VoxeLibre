@@ -153,9 +153,28 @@ mcl_info.register_debug_field("Biome",{
 		return "No biome"
 	end
 })
-mcl_info.register_debug_field("Coords",{
-	level = 2,
-	func = function(pl,pos)
-		return format("x:%.1f y:%.1f z:%.1f", pos.x, pos.y, pos.z)
+
+mcl_info.register_debug_field("Coords", {
+	func = function(pl, pos)
+		local report_y = 0
+		-- overworld
+		if (pos.y >= mcl_vars.mg_overworld_min) and (pos.y <= mcl_vars.mg_overworld_max) then
+			return format("Overworld: x:%.1f y:%.1f z:%.1f", pos.x, pos.y, pos.z)
+		end
+
+		-- nether
+		if (pos.y >= mcl_vars.mg_nether_min) and (pos.y <= mcl_vars.mg_nether_max) then
+			report_y = pos.y - mcl_vars.mg_nether_min
+			return format("Nether: x:%.1f y:%.1f z:%.1f", pos.x, report_y, pos.z)
+		end
+
+		-- end
+		if (pos.y >= mcl_vars.mg_end_min) and (pos.y <= mcl_vars.mg_end_max) then
+			report_y = pos.y - mcl_vars.mg_end_min
+			return format("End: x:%.1f y:%.1f z:%.1f", pos.x, report_y, pos.z)
+		end
+
+		return format("Void: x:%.1f y:%.1f z:%.1f", pos.x, pos.y, pos.z)
+
 	end
 })
