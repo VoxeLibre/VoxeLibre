@@ -28,7 +28,7 @@ local function on_place_fish(itemstack, placer, pointed_thing)
 				water = n.name
 			end
 			minetest.set_node(pos,{name = water})
-			if not minetest.is_creative_enabled(placer:get_player_name()) then
+			if not placer or minetest.is_creative_enabled(placer:get_player_name()) then
 				itemstack:set_name("mcl_buckets:bucket_empty")
 			end
 		end
@@ -49,16 +49,9 @@ for techname, fishname in pairs(fish_names) do
 		on_place = on_place_fish,
 		on_secondary_use = on_place_fish,
 		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
-			local buildable = registered_nodes[dropnode.name].buildable_to or dropnode.name == "mcl_portals:portal"
+			local buildable = minetest.registered_nodes[dropnode.name].buildable_to or dropnode.name == "mcl_portals:portal"
 			if not buildable then return stack end
-			local result, take_bucket = get_extra_check(def.extra_check, droppos, nil)
-			if result then -- Fail placement of liquid if result is false
-				place_liquid(droppos, get_node_place(def.source_place, droppos))
-			end
-			if take_bucket then
-				stack:set_name("mcl_buckets:bucket_empty")
-			end
-			return stack
+			return on_place_fish(stack, nil, {above=droppos})
 		end,
 	})
 
