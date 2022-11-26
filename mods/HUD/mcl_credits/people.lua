@@ -95,6 +95,7 @@ return {
 		"3raven",
 		"anarquimico",
 		"TheOnlyJoeEnderman",
+		"Ranko Saotome",
 	}},
 	{S("MineClone5"), 0xA60014, {
 		"kay27",
