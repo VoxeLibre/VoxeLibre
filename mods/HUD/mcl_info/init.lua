@@ -7,6 +7,9 @@ local get_connected_players = minetest.get_connected_players
 local get_biome_name        = minetest.get_biome_name
 local get_biome_data        = minetest.get_biome_data
 local format                = string.format
+local pairs                 = pairs
+local ipairs                = ipairs
+local table                 = table
 
 local min1, min2, min3 = mcl_vars.mg_overworld_min, mcl_vars.mg_end_min, mcl_vars.mg_nether_min
 local max1, max2, max3 = mcl_vars.mg_overworld_max, mcl_vars.mg_end_max, mcl_vars.mg_nether_max + 128
@@ -63,11 +66,14 @@ local function get_text(player, bits)
 	local r = ""
 	for _,key in ipairs(fields_keyset) do
 		local def = mcl_info.registered_debug_fields[key]
-		if def.level == nil or def.level <= bits then
-			r = r ..key..": "..tostring(def.func(player,pos)).."\n"
+		if def then
+			if def.level == nil or def.level <= bits then
+				r = r ..key..": "..tostring(def.func(player,pos)).."\n"
+			end
+		else
+			r = r ..key..": <Unknown Field>\n"
 		end
 	end
-
 	return r
 end
 
@@ -115,7 +121,7 @@ minetest.register_on_leaveplayer(function(p)
 end)
 
 minetest.register_chatcommand("debug",{
-	description = S("Set debug bit mask: -1 = disable, 0 = player coords, 1 = biome name, 2 = coordinates, 3 = all"),
+	description = S("Set debug bit mask: 0 = disable, 1 = player coords, 2 = coordinates, 3 = biome name, 4 = all"),
 	params = S("<bitmask>"),
 	privs = { debug = true },
 	func = function(name, params)
@@ -127,6 +133,25 @@ minetest.register_chatcommand("debug",{
 			return false,"Current bitmask: "..player_setting(player)
 		end
 		return true, "Debug bit mask set to "..player_setting(player,dbg)
+	end
+})
+
+-- register normal user access to debug levels 1 and 0.
+minetest.register_chatcommand("whereami", {
+	description = S("Set location bit mask: 0 = disable, 1 = coordinates"),
+	params = S("<bitmask>"),
+	-- privs = { },
+	func = function(name, params)
+		local player = minetest.get_player_by_name(name)
+		if params == "" then
+			return true, "Location bitmask is " .. player_setting(player)
+		end
+		local loc_lev = math.floor(tonumber(params) or default_debug)
+		if loc_lev < 0 or loc_lev > 4 then
+			minetest.chat_send_player(name, S("Error! Possible values are integer numbers from @1 to @2", 0, 1))
+			return false, "Current bitmask: " .. player_setting(player)
+		end
+		return true, "Location bit mask set to " .. player_setting(player, loc_lev)
 	end
 })
 
@@ -155,6 +180,14 @@ mcl_info.register_debug_field("Biome",{
 })
 
 mcl_info.register_debug_field("Coords", {
+	level = 2,
+	func = function(pl, pos)
+		return format("x:%.1f y:%.1f z:%.1f", pos.x, pos.y, pos.z)
+	end
+})
+
+mcl_info.register_debug_field("Location", {
+	level = 1,
 	func = function(pl, pos)
 		local report_y = 0
 		-- overworld
@@ -174,6 +207,7 @@ mcl_info.register_debug_field("Coords", {
 			return format("End: x:%.1f y:%.1f z:%.1f", pos.x, report_y, pos.z)
 		end
 
+		-- outside of scoped bounds.
 		return format("Void: x:%.1f y:%.1f z:%.1f", pos.x, pos.y, pos.z)
 
 	end
