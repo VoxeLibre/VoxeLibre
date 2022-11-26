@@ -37,7 +37,7 @@ local function pp_on_timer(pos, elapsed)
 		end
 	end
 
-	local objs = minetest.get_objects_inside_radius(pos, 1)
+	local objs = minetest.get_objects_inside_radius(pos, .99)
 
 	if node.name == basename .. "_on" then
 		local disable
