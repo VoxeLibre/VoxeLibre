@@ -58,7 +58,7 @@ end
 local function get_text(player, bits)
 	local pos = vector.offset(player:get_pos(),0,0.5,0)
 	local bits = bits
-	if bits == 0 then return "" end
+	if bits == -1 then return "" end
 
 	local r = ""
 	for _,key in ipairs(fields_keyset) do
@@ -115,15 +115,15 @@ minetest.register_on_leaveplayer(function(p)
 end)
 
 minetest.register_chatcommand("debug",{
-	description = S("Set debug bit mask: 0 = disable, 1 = biome name, 2 = coordinates, 3 = all"),
+	description = S("Set debug bit mask: -1 = disable, 0 = player coords, 1 = biome name, 2 = coordinates, 3 = all"),
 	params = S("<bitmask>"),
 	privs = { debug = true },
 	func = function(name, params)
 		local player = minetest.get_player_by_name(name)
 		if params == "" then return true, "Debug bitmask is "..player_setting(player) end
 		local dbg = math.floor(tonumber(params) or default_debug)
-		if dbg < 0 or dbg > 4 then
-			minetest.chat_send_player(name, S("Error! Possible values are integer numbers from @1 to @2", 0, 4))
+		if dbg < -1 or dbg > 4 then
+			minetest.chat_send_player(name, S("Error! Possible values are integer numbers from @1 to @2", -1, 4))
 			return false,"Current bitmask: "..player_setting(player)
 		end
 		return true, "Debug bit mask set to "..player_setting(player,dbg)
