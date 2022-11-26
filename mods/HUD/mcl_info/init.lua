@@ -1,24 +1,14 @@
 mcl_info = {}
-local refresh_interval      = .63
-local huds                  = {}
-local default_debug         = 0
-local after                 = minetest.after
-local get_connected_players = minetest.get_connected_players
-local get_biome_name        = minetest.get_biome_name
-local get_biome_data        = minetest.get_biome_data
-local format                = string.format
-local pairs                 = pairs
-local ipairs                = ipairs
-local table                 = table
-
-local min1, min2, min3 = mcl_vars.mg_overworld_min, mcl_vars.mg_end_min, mcl_vars.mg_nether_min
-local max1, max2, max3 = mcl_vars.mg_overworld_max, mcl_vars.mg_end_max, mcl_vars.mg_nether_max + 128
+local format, pairs,ipairs,table,vector,minetest,mcl_info,tonumber,tostring = string.format,pairs,ipairs,table,vector,minetest,mcl_info,tonumber,tostring
 
 local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 local storage = minetest.get_mod_storage()
 local player_dbg = {}
+
+local refresh_interval      = .63
+local huds                  = {}
+local default_debug         = 0
 
 local function check_setting(s)
 	return s
@@ -78,7 +68,7 @@ local function get_text(player, bits)
 end
 
 local function info()
-	for _, player in pairs(get_connected_players()) do
+	for _, player in pairs(minetest.get_connected_players()) do
 		local name = player:get_player_name()
 		local s = player_setting(player)
 		local pos = player:get_pos()
@@ -110,7 +100,7 @@ local function info()
 			player:hud_change(huds[name][2], "text", text)
 		end
 	end
-	after(refresh_interval, info)
+	minetest.after(refresh_interval, info)
 end
 minetest.after(0,info)
 
@@ -170,8 +160,8 @@ mcl_info.register_debug_field("Node below",{
 mcl_info.register_debug_field("Biome",{
 	level = 3,
 	func = function(pl,pos)
-		local biome_data = get_biome_data(pos)
-		local biome = biome_data and get_biome_name(biome_data.biome) or "No biome"
+		local biome_data = minetest.get_biome_data(pos)
+		local biome = biome_data and minetest.get_biome_name(biome_data.biome) or "No biome"
 		if biome_data then
 			return format("%s (%s), Humidity: %.1f, Temperature: %.1f",biome, biome_data.biome, biome_data.humidity, biome_data.heat)
 		end
