@@ -26,8 +26,12 @@ local function on_place_fish(itemstack, placer, pointed_thing)
 			local water = "mcl_core:water_source"
 			if n.name == "mclx_core:river_water_source" then
 				water = n.name
+			elseif n.name == "mclx_core:river_water_flowing" then
+				water = nil
 			end
-			minetest.set_node(pos,{name = water})
+			if water then
+				minetest.set_node(pos,{name = water})
+			end
 			if not placer or minetest.is_creative_enabled(placer:get_player_name()) then
 				itemstack:set_name("mcl_buckets:bucket_empty")
 			end
