@@ -118,39 +118,3 @@ minetest.register_craft({
 	burntime = 1000,
 	replacements = {{"mcl_buckets:bucket_lava", "mcl_buckets:bucket_empty"}},
 })
-
--- Fish Buckets
-fish_names = {
-	{ techname = "cod", name = "Cod" },
-	{ techname = "salmon", name = "Salmon" },
-	{ techname = "axolotl", name = "Axolotl" },
-	--{ techname = "pufferfish", name = "Pufferfish" } FIXME: Uncomment when pufferfish mobs are added.
-	{ techname = "tropical_fish", name = "Tropical Fish" }
-}
-
-for _, fish in pairs(fish_names) do
-	mcl_buckets.register_liquid({
-		bucketname = "mcl_buckets:bucket_" .. fish.techname,
-		source_place = function(pos)
-			minetest.add_entity(pos, "mobs_mc:" .. fish.techname)
-			return "mcl_core:water_source"
-		end,
-		source_take = {"mobs_mc:" .. fish.techname},
-		inventory_image = fish.techname .. "_bucket.png",
-		name = S("Bucket of @1", S(fish.name)),
-		longdesc = S("This bucket is filled with water and @1.", S(fish.name)),
-		usagehelp = S("Place it to empty the bucket and place a @1. Obtain by right clicking on a @2 with a bucket of water.", S(fish.name), S(fish.name)),
-		tt_help = S("Places a water source and a @1.", S(fish.name)),
-		extra_check = function(pos, placer)
-			local dim = mcl_worlds.pos_to_dimension(pos)
-			if dim == "nether" then
-				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
-				return false, true
-			else
-				return true, true
-			end
-		end,
-	})
-	minetest.register_alias("mcl_fishing:bucket_" .. fish.techname, "mcl_buckets:bucket_" .. fish.techname)
-end
-
