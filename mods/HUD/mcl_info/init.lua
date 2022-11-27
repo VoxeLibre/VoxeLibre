@@ -1,21 +1,14 @@
 mcl_info = {}
-local refresh_interval      = .63
-local huds                  = {}
-local default_debug         = 0
-local after                 = minetest.after
-local get_connected_players = minetest.get_connected_players
-local get_biome_name        = minetest.get_biome_name
-local get_biome_data        = minetest.get_biome_data
-local format                = string.format
-
-local min1, min2, min3 = mcl_vars.mg_overworld_min, mcl_vars.mg_end_min, mcl_vars.mg_nether_min
-local max1, max2, max3 = mcl_vars.mg_overworld_max, mcl_vars.mg_end_max, mcl_vars.mg_nether_max + 128
+local format, pairs,ipairs,table,vector,minetest,mcl_info,tonumber,tostring = string.format,pairs,ipairs,table,vector,minetest,mcl_info,tonumber,tostring
 
 local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 local storage = minetest.get_mod_storage()
 local player_dbg = {}
+
+local refresh_interval      = .63
+local huds                  = {}
+local default_debug         = 0
 
 local function check_setting(s)
 	return s
@@ -58,21 +51,24 @@ end
 local function get_text(player, bits)
 	local pos = vector.offset(player:get_pos(),0,0.5,0)
 	local bits = bits
-	if bits == 0 then return "" end
+	if bits == -1 then return "" end
 
 	local r = ""
 	for _,key in ipairs(fields_keyset) do
 		local def = mcl_info.registered_debug_fields[key]
-		if def.level == nil or def.level <= bits then
-			r = r ..key..": "..tostring(def.func(player,pos)).."\n"
+		if def then
+			if def.level == nil or def.level <= bits then
+				r = r ..key..": "..tostring(def.func(player,pos)).."\n"
+			end
+		else
+			r = r ..key..": <Unknown Field>\n"
 		end
 	end
-
 	return r
 end
 
 local function info()
-	for _, player in pairs(get_connected_players()) do
+	for _, player in pairs(minetest.get_connected_players()) do
 		local name = player:get_player_name()
 		local s = player_setting(player)
 		local pos = player:get_pos()
@@ -104,7 +100,7 @@ local function info()
 			player:hud_change(huds[name][2], "text", text)
 		end
 	end
-	after(refresh_interval, info)
+	minetest.after(refresh_interval, info)
 end
 minetest.after(0,info)
 
@@ -115,18 +111,37 @@ minetest.register_on_leaveplayer(function(p)
 end)
 
 minetest.register_chatcommand("debug",{
-	description = S("Set debug bit mask: 0 = disable, 1 = biome name, 2 = coordinates, 3 = all"),
+	description = S("Set debug bit mask: 0 = disable, 1 = player coords, 2 = coordinates, 3 = biome name, 4 = all"),
 	params = S("<bitmask>"),
 	privs = { debug = true },
 	func = function(name, params)
 		local player = minetest.get_player_by_name(name)
 		if params == "" then return true, "Debug bitmask is "..player_setting(player) end
 		local dbg = math.floor(tonumber(params) or default_debug)
-		if dbg < 0 or dbg > 4 then
-			minetest.chat_send_player(name, S("Error! Possible values are integer numbers from @1 to @2", 0, 4))
+		if dbg < -1 or dbg > 4 then
+			minetest.chat_send_player(name, S("Error! Possible values are integer numbers from @1 to @2", -1, 4))
 			return false,"Current bitmask: "..player_setting(player)
 		end
 		return true, "Debug bit mask set to "..player_setting(player,dbg)
+	end
+})
+
+-- register normal user access to debug levels 1 and 0.
+minetest.register_chatcommand("whereami", {
+	description = S("Set location bit mask: 0 = disable, 1 = coordinates"),
+	params = S("<bitmask>"),
+	-- privs = { },
+	func = function(name, params)
+		local player = minetest.get_player_by_name(name)
+		if params == "" then
+			return true, "Location bitmask is " .. player_setting(player)
+		end
+		local loc_lev = math.floor(tonumber(params) or default_debug)
+		if loc_lev < 0 or loc_lev > 4 then
+			minetest.chat_send_player(name, S("Error! Possible values are integer numbers from @1 to @2", 0, 1))
+			return false, "Current bitmask: " .. player_setting(player)
+		end
+		return true, "Location bit mask set to " .. player_setting(player, loc_lev)
 	end
 })
 
@@ -145,17 +160,45 @@ mcl_info.register_debug_field("Node below",{
 mcl_info.register_debug_field("Biome",{
 	level = 3,
 	func = function(pl,pos)
-		local biome_data = get_biome_data(pos)
-		local biome = biome_data and get_biome_name(biome_data.biome) or "No biome"
+		local biome_data = minetest.get_biome_data(pos)
+		local biome = biome_data and minetest.get_biome_name(biome_data.biome) or "No biome"
 		if biome_data then
 			return format("%s (%s), Humidity: %.1f, Temperature: %.1f",biome, biome_data.biome, biome_data.humidity, biome_data.heat)
 		end
 		return "No biome"
 	end
 })
-mcl_info.register_debug_field("Coords",{
+
+mcl_info.register_debug_field("Coords", {
 	level = 2,
-	func = function(pl,pos)
+	func = function(pl, pos)
 		return format("x:%.1f y:%.1f z:%.1f", pos.x, pos.y, pos.z)
+	end
+})
+
+mcl_info.register_debug_field("Location", {
+	level = 1,
+	func = function(pl, pos)
+		local report_y = 0
+		-- overworld
+		if (pos.y >= mcl_vars.mg_overworld_min) and (pos.y <= mcl_vars.mg_overworld_max) then
+			return format("Overworld: x:%.1f y:%.1f z:%.1f", pos.x, pos.y, pos.z)
+		end
+
+		-- nether
+		if (pos.y >= mcl_vars.mg_nether_min) and (pos.y <= mcl_vars.mg_nether_max) then
+			report_y = pos.y - mcl_vars.mg_nether_min
+			return format("Nether: x:%.1f y:%.1f z:%.1f", pos.x, report_y, pos.z)
+		end
+
+		-- end
+		if (pos.y >= mcl_vars.mg_end_min) and (pos.y <= mcl_vars.mg_end_max) then
+			report_y = pos.y - mcl_vars.mg_end_min
+			return format("End: x:%.1f y:%.1f z:%.1f", pos.x, report_y, pos.z)
+		end
+
+		-- outside of scoped bounds.
+		return format("Void: x:%.1f y:%.1f z:%.1f", pos.x, pos.y, pos.z)
+
 	end
 })
