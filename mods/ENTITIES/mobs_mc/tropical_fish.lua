@@ -118,7 +118,7 @@ local tropical_fish = {
 	on_spawn = set_textures,
 }
 
-mcl_mobs:register_mob("mobs_mc:tropical_fish", tropical_fish)
+mcl_mobs.register_mob("mobs_mc:tropical_fish", tropical_fish)
 
 local water = 0
 mcl_mobs:spawn_specific(
@@ -189,4 +189,4 @@ water-16,
 water+1)
 
 --spawn egg
-mcl_mobs:register_egg("mobs_mc:tropical_fish", S("Tropical fish"), "#ef6915", "#fff9ef", 0)
+mcl_mobs.register_egg("mobs_mc:tropical_fish", S("Tropical fish"), "#ef6915", "#fff9ef", 0)

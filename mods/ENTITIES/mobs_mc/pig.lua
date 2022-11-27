@@ -2,7 +2,7 @@
 
 local S = minetest.get_translator("mobs_mc")
 
-mcl_mobs:register_mob("mobs_mc:pig", {
+mcl_mobs.register_mob("mobs_mc:pig", {
 	description = S("Pig"),
 	type = "animal",
 	spawn_class = "passive",
@@ -108,7 +108,7 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 		local wielditem = clicker:get_wielded_item()
 		-- Feed pig
 		if wielditem:get_name() ~= "mcl_mobitems:carrot_on_a_stick" then
-			if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
+			if self:feed_tame(clicker, 1, true, false) then return end
 		end
 		if mcl_mobs:protect(self, clicker) then return end
 
@@ -242,4 +242,4 @@ mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:pig", S("Pig"), "#f0a5a2", "#db635f", 0)
+mcl_mobs.register_egg("mobs_mc:pig", S("Pig"), "#f0a5a2", "#db635f", 0)

@@ -6,7 +6,7 @@
 
 local S = minetest.get_translator("mobs_mc")
 
-mcl_mobs:register_mob("mobs_mc:squid", {
+mcl_mobs.register_mob("mobs_mc:squid", {
 	description = S("Squid"),
     type = "animal",
     spawn_class = "water",
@@ -217,4 +217,4 @@ water-16,
 water+1)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:squid", S("Squid"), "#223b4d", "#708999", 0)
+mcl_mobs.register_egg("mobs_mc:squid", S("Squid"), "#223b4d", "#708999", 0)

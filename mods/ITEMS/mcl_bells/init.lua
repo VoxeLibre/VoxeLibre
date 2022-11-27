@@ -9,7 +9,7 @@ function mcl_bells.ring_once(pos)
 	local vv=minetest.get_objects_inside_radius(pos,150)
 	for _,o in pairs(vv) do
 		if o.type == "npc" then
-			mcl_mobs:gopath(o:get_luaentity(),pos,function() end)
+			o:get_luaentity():gopath(pos,function() end)
 		end
 	end
 end

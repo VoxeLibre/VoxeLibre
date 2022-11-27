@@ -109,7 +109,7 @@ local slime_big = {
 	on_die = spawn_children_on_die("mobs_mc:slime_small", 4, 1.0, 1.5),
 	use_texture_alpha = true,
 }
-mcl_mobs:register_mob("mobs_mc:slime_big", slime_big)
+mcl_mobs.register_mob("mobs_mc:slime_big", slime_big)
 
 local slime_small = table.copy(slime_big)
 slime_small.sounds.base_pitch = 1.15
@@ -126,7 +126,7 @@ slime_small.run_velocity = 1.3
 slime_small.jump_height = 4.3
 slime_small.spawn_small_alternative = "mobs_mc:slime_tiny"
 slime_small.on_die = spawn_children_on_die("mobs_mc:slime_tiny", 4, 0.6, 1.0)
-mcl_mobs:register_mob("mobs_mc:slime_small", slime_small)
+mcl_mobs.register_mob("mobs_mc:slime_small", slime_small)
 
 local slime_tiny = table.copy(slime_big)
 slime_tiny.sounds.base_pitch = 1.3
@@ -151,7 +151,7 @@ slime_tiny.jump_height = 3
 slime_tiny.spawn_small_alternative = nil
 slime_tiny.on_die = nil
 
-mcl_mobs:register_mob("mobs_mc:slime_tiny", slime_tiny)
+mcl_mobs.register_mob("mobs_mc:slime_tiny", slime_tiny)
 
 local smin = mcl_vars.mg_overworld_min
 local smax = mobs_mc.water_level - 23
@@ -348,7 +348,7 @@ local magma_cube_big = {
 	on_die = spawn_children_on_die("mobs_mc:magma_cube_small", 3, 0.8, 1.5),
 	fire_resistant = true,
 }
-mcl_mobs:register_mob("mobs_mc:magma_cube_big", magma_cube_big)
+mcl_mobs.register_mob("mobs_mc:magma_cube_big", magma_cube_big)
 
 local magma_cube_small = table.copy(magma_cube_big)
 magma_cube_small.sounds.jump = "mobs_mc_magma_cube_small"
@@ -369,7 +369,7 @@ magma_cube_small.reach = 2.75
 magma_cube_small.armor = 66
 magma_cube_small.spawn_small_alternative = "mobs_mc:magma_cube_tiny"
 magma_cube_small.on_die = spawn_children_on_die("mobs_mc:magma_cube_tiny", 4, 0.6, 1.0)
-mcl_mobs:register_mob("mobs_mc:magma_cube_small", magma_cube_small)
+mcl_mobs.register_mob("mobs_mc:magma_cube_small", magma_cube_small)
 
 local magma_cube_tiny = table.copy(magma_cube_big)
 magma_cube_tiny.sounds.jump = "mobs_mc_magma_cube_small"
@@ -391,7 +391,7 @@ magma_cube_tiny.drops = {}
 magma_cube_tiny.spawn_small_alternative = nil
 magma_cube_tiny.on_die = nil
 
-mcl_mobs:register_mob("mobs_mc:magma_cube_tiny", magma_cube_tiny)
+mcl_mobs.register_mob("mobs_mc:magma_cube_tiny", magma_cube_tiny)
 
 
 local mmin = mcl_vars.mg_nether_min
@@ -447,6 +447,6 @@ mmin,
 mmax)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "#350000", "#fcfc00")
+mcl_mobs.register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "#350000", "#fcfc00")
 
-mcl_mobs:register_egg("mobs_mc:slime_big", S("Slime"), "#52a03e", "#7ebf6d")
+mcl_mobs.register_egg("mobs_mc:slime_big", S("Slime"), "#52a03e", "#7ebf6d")

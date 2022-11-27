@@ -93,7 +93,7 @@ local pigman = {
 	fire_damage_resistant = true,
 }
 
-mcl_mobs:register_mob("mobs_mc:pigman", pigman)
+mcl_mobs.register_mob("mobs_mc:pigman", pigman)
 
 -- Baby pigman.
 -- A smaller and more dangerous variant of the pigman
@@ -113,7 +113,7 @@ baby_pigman.run_velocity = 2.4
 baby_pigman.light_damage = 0
 baby_pigman.child = 1
 
-mcl_mobs:register_mob("mobs_mc:baby_pigman", baby_pigman)
+mcl_mobs.register_mob("mobs_mc:baby_pigman", baby_pigman)
 
 -- Regular spawning in the Nether
 mcl_mobs:spawn_specific(
@@ -152,4 +152,4 @@ mcl_vars.mg_nether_max)
 --mobs:spawn_specific("mobs_mc:pigman", {"mcl_portals:portal"}, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 500, 4, mcl_vars.mg_overworld_min, mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:pigman", S("Zombie Pigman"), "#ea9393", "#4c7129", 0)
+mcl_mobs.register_egg("mobs_mc:pigman", S("Zombie Pigman"), "#ea9393", "#4c7129", 0)

@@ -87,7 +87,7 @@ local axolotl = {
 	runaway = true,
 }
 
-mcl_mobs:register_mob("mobs_mc:axolotl", axolotl)
+mcl_mobs.register_mob("mobs_mc:axolotl", axolotl)
 
 local water = 0
 
@@ -178,4 +178,4 @@ water-16,
 water+1)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:axolotl", S("Axolotl"), "#e890bf", "#b83D7e", 0)
+mcl_mobs.register_egg("mobs_mc:axolotl", S("Axolotl"), "#e890bf", "#b83D7e", 0)

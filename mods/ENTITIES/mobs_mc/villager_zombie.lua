@@ -25,7 +25,7 @@ local professions = {
 	nitwit = "mobs_mc_villager.png",
 }
 
-mcl_mobs:register_mob("mobs_mc:villager_zombie", {
+mcl_mobs.register_mob("mobs_mc:villager_zombie", {
 	description = S("Zombie Villager"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -231,4 +231,4 @@ mcl_vars.mg_overworld_max)
 --mcl_mobs:spawn_specific("mobs_mc:villager_zombie", "overworld", "ground", 0, 7, 30, 60000, 4, mcl_vars.mg_overworld_min, mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:villager_zombie", S("Zombie Villager"), "#563d33", "#799c66", 0)
+mcl_mobs.register_egg("mobs_mc:villager_zombie", S("Zombie Villager"), "#563d33", "#799c66", 0)

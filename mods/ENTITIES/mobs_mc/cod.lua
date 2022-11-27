@@ -111,7 +111,7 @@ local cod = {
 	end
 }
 
-mcl_mobs:register_mob("mobs_mc:cod", cod)
+mcl_mobs.register_mob("mobs_mc:cod", cod)
 
 
 --spawning TODO: in schools
@@ -272,4 +272,4 @@ water-16,
 water+1)
 
 --spawn egg
-mcl_mobs:register_egg("mobs_mc:cod", S("Cod"), "#c1a76a", "#e5c48b", 0)
+mcl_mobs.register_egg("mobs_mc:cod", S("Cod"), "#c1a76a", "#e5c48b", 0)
