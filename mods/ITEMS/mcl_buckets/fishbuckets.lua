@@ -12,6 +12,12 @@ local fish_names = {
 local fishbucket_prefix = "mcl_buckets:bucket_"
 
 local function on_place_fish(itemstack, placer, pointed_thing)
+
+	local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
+	if new_stack then
+		return new_stack
+	end
+
 	local pos = pointed_thing.above or pointed_thing.under
 	if not pos then return end
 	local n = minetest.get_node_or_nil(pos)
