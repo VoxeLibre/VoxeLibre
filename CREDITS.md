@@ -34,6 +34,8 @@
 * SumianVoice
 * MrRar
 * talamh
+* Faerraven
+* AncientMariner
 
 ## Contributors
 * Laurent Rocher
@@ -89,6 +91,10 @@
 * FossFanatic
 * Herbert West
 * GuyLiner
+* 3raven
+* anarquimico
+* TheOnlyJoeEnderman
+* Ranko Saotome
 
 ## MineClone5
 * kay27
@@ -158,6 +164,7 @@
 * MysticTempest
 * RandomLegoBrick
 * cora
+* Faerraven / Michieal
 
 ## Translations
 * Wuzzy
