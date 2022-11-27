@@ -221,7 +221,7 @@ mcl_mobs.register_mob("mobs_mc:llama", {
 		else
 			parent = parent2
 		end
-		child = mcl_mobs:spawn_child(pos, parent.name)
+		child = mcl_mobs.spawn_child(pos, parent.name)
 		if child then
 			local ent_c = child:get_luaentity()
 			ent_c.base_texture = table.copy(ent_c.base_texture)

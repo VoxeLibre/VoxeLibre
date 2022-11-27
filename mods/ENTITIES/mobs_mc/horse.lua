@@ -441,7 +441,7 @@ local horse = {
 
 	on_breed = function(parent1, parent2)
 		local pos = parent1.object:get_pos()
-		local child = mcl_mobs:spawn_child(pos, parent1.name)
+		local child = mcl_mobs.spawn_child(pos, parent1.name)
 		if child then
 			local ent_c = child:get_luaentity()
 			local p = math.random(1, 2)
