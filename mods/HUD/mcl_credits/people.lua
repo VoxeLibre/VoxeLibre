@@ -165,6 +165,7 @@ return {
 		"MysticTempest",
 		"RandomLegoBrick",
 		"cora",
+		"Faerraven / Michieal",
 	}},
 	{S("Translations"), 0x00FF60, {
 		"Wuzzy",

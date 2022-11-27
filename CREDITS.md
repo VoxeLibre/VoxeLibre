@@ -164,6 +164,7 @@
 * MysticTempest
 * RandomLegoBrick
 * cora
+* Faerraven / Michieal
 
 ## Translations
 * Wuzzy
