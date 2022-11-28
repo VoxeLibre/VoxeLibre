@@ -4,6 +4,9 @@
 --- DateTime: 11/28/22 4:38 PM
 ---
 
+local modname = minetest.get_current_modname()
+local S = minetest.get_translator(modname)
+
 -- register normal user access to debug levels 1 and 0.
 minetest.register_chatcommand("ver", {
 	description = S("Display Mineclone 2 game version."),
