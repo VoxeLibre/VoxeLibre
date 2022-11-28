@@ -21,7 +21,9 @@ function grow_vines(pos, moreontop ,vine, dir)
 		n = minetest.get_node(pos)
 		if n.name == "air" then
 			for i=0,math.max(moreontop,1) do
-				minetest.set_node(vector.offset(pos,0,i*dir,0),{name=vine})
+				if minetest.get_node(pos).name == "air" then
+					minetest.set_node(vector.offset(pos,0,i*dir,0),{name=vine})
+				end
 			end
 			break
 		end
