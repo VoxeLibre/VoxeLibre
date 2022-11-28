@@ -141,7 +141,7 @@ local function egg_on_step(self, dtime)
 			local r = math.random(1,8)
 
 			if r == 1 then
-				mcl_mobs:spawn_child(self._lastpos, "mobs_mc:chicken")
+				mcl_mobs.spawn_child(self._lastpos, "mobs_mc:chicken")
 
 				-- BONUS ROUND: 1/32 chance to spawn 3 additional chicks
 				local r = math.random(1,32)
@@ -153,7 +153,7 @@ local function egg_on_step(self, dtime)
 					}
 					for o=1, 3 do
 						local pos = vector.add(self._lastpos, offsets[o])
-						mcl_mobs:spawn_child(pos, "mobs_mc:chicken")
+						mcl_mobs.spawn_child(pos, "mobs_mc:chicken")
 					end
 				end
 			end

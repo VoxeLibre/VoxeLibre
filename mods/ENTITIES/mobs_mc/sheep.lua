@@ -267,7 +267,7 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 	on_breed = function(parent1, parent2)
 		-- Breed sheep and choose a fur color for the child.
 		local pos = parent1.object:get_pos()
-		local child = mcl_mobs:spawn_child(pos, parent1.name)
+		local child = mcl_mobs.spawn_child(pos, parent1.name)
 		if child then
 			local ent_c = child:get_luaentity()
 			local color1 = parent1.color

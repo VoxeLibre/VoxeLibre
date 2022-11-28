@@ -754,7 +754,7 @@ function mob_class:check_herd(dtime)
 				y = o:get_yaw()
 			end
 			if p then
-				go_to_pos(self,p)
+				self:go_to_pos(p)
 			elseif y then
 				self:set_yaw(y)
 			end
