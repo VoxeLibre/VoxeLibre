@@ -72,7 +72,7 @@ minetest.register_craftitem("mcl_farming:sweet_berry", {
 	on_secondary_use = minetest.item_eat(1),
 	on_place = function(itemstack, placer, pointed_thing)
 		local pn = placer:get_player_name()
-		if placer:is_player() and minetest.is_protected(pointed_thing.above, pn) then
+		if placer:is_player() and minetest.is_protected(pointed_thing.above, pn or "") then
 			minetest.record_protection_violation(pointed_thing.above, pn)
 			return itemstack
 		end
