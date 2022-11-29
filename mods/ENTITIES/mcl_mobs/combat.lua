@@ -61,7 +61,7 @@ local function entity_physics(pos,radius)
 	end
 end
 
-function mob_class:entity_physics(self,pos,radius) return entity_physics(pos,radius) end
+function mob_class:entity_physics(pos,radius) return entity_physics(pos,radius) end
 
 local los_switcher = false
 local height_switcher = false
