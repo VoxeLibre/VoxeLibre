@@ -116,14 +116,24 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
 	},
 	node_placement_prediction = "",
-	on_rightclick = function(pos, node, pointed_thing, itemstack)
-		if pointed_thing:get_wielded_item():get_name() == "mcl_crimson:twisting_vines" then
-			itemstack:take_item()
+	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+		local pn = clicker:get_player_name()
+		if clicker:is_player() and minetest.is_protected(vector.offset(pos,0,1,0), pn or "") then
+			minetest.record_protection_violation(vector.offset(pos,0,1,0), pn)
+			return itemstack
+		end
+		if clicker:get_wielded_item():get_name() == "mcl_crimson:twisting_vines" then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
+				itemstack:take_item()
+			end
 			grow_vines(pos, 1, "mcl_crimson:twisting_vines")
-		elseif pointed_thing:get_wielded_item():get_name() == "mcl_dye:white" then
-			itemstack:take_item()
+		elseif clicker:get_wielded_item():get_name() == "mcl_dye:white" then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
+				itemstack:take_item()
+			end
 			grow_vines(pos, math.random(1, 3),"mcl_crimson:twisting_vines")
 		end
+		return itemstack
 	end,
 	drop = {
 		max_items = 1,
@@ -162,14 +172,24 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
 	},
 	node_placement_prediction = "",
-	on_rightclick = function(pos, node, pointed_thing, itemstack)
-		if pointed_thing:get_wielded_item():get_name() == "mcl_crimson:weeping_vines" then
-			itemstack:take_item()
+	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+		local pn = clicker:get_player_name()
+		if clicker:is_player() and minetest.is_protected(vector.offset(pos,0,1,0), pn or "") then
+			minetest.record_protection_violation(vector.offset(pos,0,1,0), pn)
+			return itemstack
+		end
+		if clicker:get_wielded_item():get_name() == "mcl_crimson:weeping_vines" then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
+				itemstack:take_item()
+			end
 			grow_vines(pos, 1, "mcl_crimson:weeping_vines", -1)
-		elseif pointed_thing:get_wielded_item():get_name() == "mcl_dye:white" then
-			itemstack:take_item()
+		elseif clicker:get_wielded_item():get_name() == "mcl_dye:white" then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
+				itemstack:take_item()
+			end
 			grow_vines(pos, math.random(1, 3),"mcl_crimson:weeping_vines", -1)
 		end
+		return itemstack
 	end,
 	drop = {
 		max_items = 1,
