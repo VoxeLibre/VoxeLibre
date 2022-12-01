@@ -20,7 +20,7 @@ local compass_types = {
 	{
 		name = "compass_recovery",
 		desc = S("Recovery Compass"),
-		tt = S("Points to your last death Location"),
+		tt = S("Points to your last death location"),
 		longdesc = S("Recovery Compasses are compasses that point to your last death location"),
 		usagehelp = S("Recovery Compasses always point to the location of your last death, in case you haven't died yet, it will just randomly spin around"),
 	}
