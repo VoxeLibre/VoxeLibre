@@ -37,19 +37,54 @@ local function pp_on_timer(pos, elapsed)
 		end
 	end
 
-	local objs = minetest.get_objects_inside_radius(pos, .99)
+	local function obj_touching_plate_pos(obj_ref, plate_pos)
+		local obj_pos = obj_ref:get_pos()
+		local props = obj_ref:get_properties()
+		local parent = obj_ref:get_attach()
+		if props and obj_pos and not parent then
+			local collisionbox = props.collisionbox
+			local physical = props.physical
+			local is_player = obj_ref:is_player()
+			local luaentity = obj_ref:get_luaentity()
+			local is_item = luaentity and luaentity.name == "__builtin:item"
+			if collisionbox and physical or is_player or is_item then
+				local plate_x_min = plate_pos.x - 7 / 16
+				local plate_x_max = plate_pos.x + 7 / 16
+				local plate_z_min = plate_pos.z - 7 / 16
+				local plate_z_max = plate_pos.z + 7 / 16
+				local plate_y_max = plate_pos.y - 7 / 16
+
+				local obj_x_min = obj_pos.x + collisionbox[1]
+				local obj_x_max = obj_pos.x + collisionbox[4]
+				local obj_z_min = obj_pos.z + collisionbox[3]
+				local obj_z_max = obj_pos.z + collisionbox[6]
+				local obj_y_min = obj_pos.y + collisionbox[2]
+
+				if
+					obj_y_min <= plate_y_max and
+					not (obj_x_min >= plate_x_max) and
+					not (obj_x_max <= plate_x_min) and
+					not (obj_z_min >= plate_z_max) and
+					not (obj_z_max <= plate_z_min)
+				then
+					return true
+				end
+			end
+		end
+		return false
+	end
+
+	local objs = minetest.get_objects_inside_radius(pos, 1)
 
 	if node.name == basename .. "_on" then
-		local disable
-		if #objs == 0 then
-			disable = true
-		elseif not activated_by.any then
-			disable = true
-			for k, obj in pairs(objs) do
-				if obj_does_activate(obj, activated_by) then
-					disable = false
-					break
-				end
+		local disable = true
+		for k, obj in pairs(objs) do
+			if
+				obj_does_activate(obj, activated_by) and
+				obj_touching_plate_pos(obj, pos)
+			then
+				disable = false
+				break
 			end
 		end
 		if disable then
@@ -58,13 +93,13 @@ local function pp_on_timer(pos, elapsed)
 		end
 	elseif node.name == basename .. "_off" then
 		for k, obj in pairs(objs) do
-			local objpos = obj:get_pos()
-			if obj_does_activate(obj, activated_by) then
-				if objpos.y > pos.y-1 and objpos.y < pos.y then
-					minetest.set_node(pos, {name = basename .. "_on"})
-					mesecon.receptor_on(pos, mesecon.rules.pplate)
-					break
-				end
+			if
+				obj_does_activate(obj, activated_by) and
+				obj_touching_plate_pos(obj, pos)
+			then
+				minetest.set_node(pos, {name = basename .. "_on"})
+				mesecon.receptor_on(pos, mesecon.rules.pplate)
+				break
 			end
 		end
 	end
