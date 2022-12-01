@@ -3,9 +3,25 @@
 --- Created by Michieal.
 --- DateTime: 11/28/22 4:38 PM
 ---
-
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
+
+local function xpcall_ver (error)
+	minetest.log("error", error)
+end
+
+local function get_game_info ()
+	local game_info
+
+	if xpcall(minetest.get_game_info, xpcall_ver) then
+		game_info = minetest.get_game_info()
+	else
+		minetest.log( S("Sorry, but your version of Minetest doesn't support the latest API. Please upgrade your minetest."))
+		return false
+	end
+
+	return game_info
+end
 
 -- register normal user access to debug levels 1 and 0.
 minetest.register_chatcommand("ver", {
@@ -20,7 +36,11 @@ minetest.register_chatcommand("ver", {
 					path = string,
 				}
 		--]]
-		local game_info = minetest.get_game_info()
+		local game_info = get_game_info ()
+
+		if game_info == false then
+			return true
+		end
 
 		if game_info.title == nil or game_info.title == "" then
 			game_info.title = "Mineclone 2"
@@ -29,8 +49,8 @@ minetest.register_chatcommand("ver", {
 			game_info.id = "<unknown version> Please upgrade your version to the newest version for the /ver command to work."
 		end
 
-		minetest.chat_send_player(name, string.format("Version: %s - %s",game_info.title, game_info.id) )
+		minetest.chat_send_player(name, string.format("Version: %s - %s", game_info.title, game_info.id))
 		return true
-		end
+	end
 })
 
