@@ -202,7 +202,7 @@ minetest.register_globalstep(function(dtime)
 					end
 					inv:set_stack("main", j, stack)
 				end
-			else
+			elseif compass_nr ~= 0 then
 				local meta = player:get_meta()
 				local posstring =  meta:get_string("mcl_compass:recovery_pos")
 				if not posstring or posstring == "" then
