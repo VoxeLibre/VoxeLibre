@@ -49,7 +49,6 @@ minetest.register_node("mcl_core:slimeblock", {
 	},
 	tiles = {"mcl_core_slime.png"},
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "blend" or true,
-	stack_max = 64,
 	-- According to Minecraft Wiki, bouncing off a slime block from a height off 255 blocks should result in a bounce height of 50 blocks
 	-- bouncy=44 makes the player bounce up to 49.6. This value was chosen by experiment.
 	-- bouncy=80 was chosen because it is higher than 66 (bounciness of bed)
@@ -106,7 +105,6 @@ minetest.register_node("mcl_core:cobweb", {
 	drawtype = "plantlike",
 	paramtype2 = "degrotate",
 	visual_scale = 1.1,
-	stack_max = 64,
 	tiles = {"mcl_core_web.png"},
 	inventory_image = "mcl_core_web.png",
 	paramtype = "light",
@@ -140,7 +138,6 @@ minetest.register_node("mcl_core:deadbush", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,
-	stack_max = 64,
 	buildable_to = true,
 	groups = {handy = 1, shearsy = 1, flammable = 3, attached_node = 1, plant = 1, non_mycelium_plant = 1, dig_by_water = 1,
 		destroy_by_lava_flow = 1, deco_block = 1, fire_encouragement = 60, fire_flammability = 100},
@@ -176,7 +173,6 @@ minetest.register_node("mcl_core:barrier", {
 	inventory_image = "mcl_core_barrier.png",
 	wield_image = "mcl_core_barrier.png",
 	tiles = {"blank.png"},
-	stack_max = 64,
 	sunlight_propagates = true,
 	is_ground_content = false,
 	groups = {creative_breakable = 1, not_in_creative_inventory = 1, not_solid = 1},
@@ -233,7 +229,6 @@ minetest.register_node("mcl_core:realm_barrier", {
 	inventory_image = "mcl_core_barrier.png^[colorize:#FF00FF:127^[transformFX",
 	wield_image = "mcl_core_barrier.png^[colorize:#FF00FF:127^[transformFX",
 	tiles = {"blank.png"},
-	stack_max = 64,
 	-- To avoid players getting stuck forever between realms
 	damage_per_second = 8,
 	sunlight_propagates = true,
@@ -272,7 +267,6 @@ minetest.register_node("mcl_core:void", {
 	buildable_to = false,
 	inventory_image = "mcl_core_void.png",
 	wield_image = "mcl_core_void.png",
-	stack_max = 64,
 	sunlight_propagates = true,
 	is_ground_content = false,
 	groups = {not_in_creative_inventory = 1},
