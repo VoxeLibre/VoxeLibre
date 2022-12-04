@@ -53,7 +53,6 @@ mcl_mobs.register_mob("mobs_mc:silverfish", {
 	view_range = 16,
 	attack_type = "dogfight",
 	damage = 1,
-	reach = 1,
 })
 
 mcl_mobs.register_egg("mobs_mc:silverfish", S("Silverfish"), "#6d6d6d", "#313131", 0)
