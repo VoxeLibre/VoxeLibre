@@ -9,12 +9,12 @@ if mod_screwdriver then
 end
 
 local alldirs = {
-	{x = 0, y = 0, z = 1},
-	{x = 1, y = 0, z = 0},
-	{x = 0, y = 0, z = -1},
-	{x = -1, y = 0, z = 0},
-	{x = 0, y = -1, z = 0},
-	{x = 0, y = 1, z = 0},
+	vector.new(0, 0, 1),
+	vector.new(1, 0, 0),
+	vector.new(0, 0, -1),
+	vector.new(-1, 0, 0),
+	vector.new(0, -1, 0),
+	vector.new(0, 1, 0),
 }
 
 minetest.register_node("mcl_core:bone_block", {
