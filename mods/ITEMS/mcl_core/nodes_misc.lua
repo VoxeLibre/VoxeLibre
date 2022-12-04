@@ -246,9 +246,11 @@ minetest.register_node("mcl_core:realm_barrier", {
 	_mcl_hardness = -1,
 	-- Prevent placement to protect player from screwing up the world, because the node is not pointable and hard to get rid of.
 	node_placement_prediction = "",
-	on_place = function(pos, placer, itemstack, pointed_thing)
-		minetest.chat_send_player(placer:get_player_name(),
-			minetest.colorize(mcl_colors.RED, "You can't just place a realm barrier by hand!"))
+	on_place = function(_, placer, _)
+		if placer then
+			minetest.chat_send_player(placer:get_player_name(),
+				minetest.colorize(mcl_colors.RED, "You can't just place a realm barrier by hand!"))
+		end
 		return
 	end,
 })
@@ -277,9 +279,11 @@ minetest.register_node("mcl_core:void", {
 	on_blast = function() end,
 	-- Prevent placement to protect player from screwing up the world, because the node is not pointable and hard to get rid of.
 	node_placement_prediction = "",
-	on_place = function(pos, placer, itemstack, pointed_thing)
-		minetest.chat_send_player(placer:get_player_name(),
-			minetest.colorize(mcl_colors.RED, "You can't just place the void by hand!"))
+	on_place = function(_, placer, _)
+		if placer then
+			minetest.chat_send_player(placer:get_player_name(),
+				minetest.colorize(mcl_colors.RED, "You can't just place the void by hand!"))
+		end
 		return
 	end,
 	drop = "",
