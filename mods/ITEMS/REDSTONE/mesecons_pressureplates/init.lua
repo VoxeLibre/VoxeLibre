@@ -84,12 +84,23 @@ local function pp_on_timer(pos, elapsed)
 				obj_touching_plate_pos(obj, pos)
 			then
 				disable = false
+				minetest.get_meta(pos):set_string("deact_time", "")
 				break
 			end
 		end
 		if disable then
-			minetest.set_node(pos, {name = basename .. "_off"})
-			mesecon.receptor_off(pos, mesecon.rules.pplate)
+			local meta = minetest.get_meta(pos)
+			local deact_time = meta:get_float("deact_time")
+			local current_time = minetest.get_us_time()
+			if deact_time == 0 then
+				deact_time = current_time + 1 * 1000 * 1000
+				meta:set_float("deact_time", deact_time)
+			end
+			if deact_time <= current_time then
+				minetest.set_node(pos, { name = basename .. "_off" })
+				mesecon.receptor_off(pos, mesecon.rules.pplate)
+				meta:set_string("deact_time", "")
+			end
 		end
 	elseif node.name == basename .. "_off" then
 		for k, obj in pairs(objs) do
@@ -97,7 +108,7 @@ local function pp_on_timer(pos, elapsed)
 				obj_does_activate(obj, activated_by) and
 				obj_touching_plate_pos(obj, pos)
 			then
-				minetest.set_node(pos, {name = basename .. "_on"})
+				minetest.set_node(pos, { name = basename .. "_on" })
 				mesecon.receptor_on(pos, mesecon.rules.pplate)
 				break
 			end
