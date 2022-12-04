@@ -8,7 +8,14 @@ if mod_screwdriver then
 	on_rotate = screwdriver.rotate_3way
 end
 
-local alldirs = {{x=0,y=0,z=1}, {x=1,y=0,z=0}, {x=0,y=0,z=-1}, {x=-1,y=0,z=0}, {x=0,y=-1,z=0}, {x=0,y=1,z=0}}
+local alldirs = {
+	{x = 0, y = 0, z = 1},
+	{x = 1, y = 0, z = 0},
+	{x = 0, y = 0, z = -1},
+	{x = -1, y = 0, z = 0},
+	{x = 0, y = -1, z = 0},
+	{x = 0, y = 1, z = 0},
+}
 
 minetest.register_node("mcl_core:bone_block", {
 	description = S("Bone Block"),
@@ -17,7 +24,7 @@ minetest.register_node("mcl_core:bone_block", {
 	is_ground_content = false,
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
-	groups = {pickaxey=1, building_block=1, material_stone=1},
+	groups = {pickaxey = 1, building_block = 1, material_stone = 1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_rotate = on_rotate,
 	_mcl_blast_resistance = 2,
@@ -46,11 +53,11 @@ minetest.register_node("mcl_core:slimeblock", {
 	-- According to Minecraft Wiki, bouncing off a slime block from a height off 255 blocks should result in a bounce height of 50 blocks
 	-- bouncy=44 makes the player bounce up to 49.6. This value was chosen by experiment.
 	-- bouncy=80 was chosen because it is higher than 66 (bounciness of bed)
-	groups = {dig_immediate=3, bouncy=80,fall_damage_add_percent=-100,deco_block=1},
+	groups = {dig_immediate = 3, bouncy = 80, fall_damage_add_percent = -100, deco_block = 1},
 	sounds = {
-		dug = {name="slimenodes_dug", gain=0.6},
-		place = {name="slimenodes_place", gain=0.6},
-		footstep = {name="slimenodes_step", gain=0.3},
+		dug = {name = "slimenodes_dug", gain = 0.6},
+		place = {name = "slimenodes_place", gain = 0.6},
+		footstep = {name = "slimenodes_step", gain = 0.3},
 	},
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
@@ -74,7 +81,8 @@ minetest.register_node("mcl_core:slimeblock", {
 					elseif name == "mesecons_pistons:piston_down_sticky_off" or name == "mesecons_pistons:piston_down_normal_off" then
 						piston, piston_down = true, true
 					end
-					if not(   (piston_side and (n-1==neighbor_node.param2))  or  (piston_up and (n==5))  or  (piston_down and (n==6))   ) then
+					if not
+						((piston_side and (n - 1 == neighbor_node.param2)) or (piston_up and (n == 5)) or (piston_down and (n == 6))) then
 						if piston and piston_pos then
 							if piston_pos.x == neighbor_pos.x and piston_pos.y == neighbor_pos.y and piston_pos.z == neighbor_pos.z then
 								-- Loopback to the same piston! Preventing unwanted behavior:
@@ -109,7 +117,8 @@ minetest.register_node("mcl_core:cobweb", {
 	liquid_renewable = false,
 	liquid_range = 0,
 	walkable = false,
-	groups = {swordy_cobweb=1, shearsy_cobweb=1, fake_liquid=1, disable_jump=1, deco_block=1, dig_by_piston=1, dig_by_water=1,destroy_by_lava_flow=1,},
+	groups = {swordy_cobweb = 1, shearsy_cobweb = 1, fake_liquid = 1, disable_jump = 1, deco_block = 1, dig_by_piston = 1,
+		dig_by_water = 1, destroy_by_lava_flow = 1,},
 	drop = "mcl_mobitems:string",
 	_mcl_shears_drop = true,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
@@ -133,7 +142,8 @@ minetest.register_node("mcl_core:deadbush", {
 	walkable = false,
 	stack_max = 64,
 	buildable_to = true,
-	groups = {handy=1,shearsy=1, flammable=3,attached_node=1,plant=1,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1, fire_encouragement=60, fire_flammability=100},
+	groups = {handy = 1, shearsy = 1, flammable = 3, attached_node = 1, plant = 1, non_mycelium_plant = 1, dig_by_water = 1,
+		destroy_by_lava_flow = 1, deco_block = 1, fire_encouragement = 60, fire_flammability = 100},
 	drop = {
 		max_items = 1,
 		items = {
@@ -151,7 +161,7 @@ minetest.register_node("mcl_core:deadbush", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = {-5/16, -8/16, -5/16, 5/16, 1/16, 5/16},
+		fixed = {-5 / 16, -8 / 16, -5 / 16, 5 / 16, 1 / 16, 5 / 16},
 	},
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
@@ -165,11 +175,11 @@ minetest.register_node("mcl_core:barrier", {
 	paramtype = "light",
 	inventory_image = "mcl_core_barrier.png",
 	wield_image = "mcl_core_barrier.png",
-	tiles = { "blank.png" },
+	tiles = {"blank.png"},
 	stack_max = 64,
 	sunlight_propagates = true,
 	is_ground_content = false,
-	groups = {creative_breakable=1, not_in_creative_inventory = 1, not_solid = 1 },
+	groups = {creative_breakable = 1, not_in_creative_inventory = 1, not_solid = 1},
 	on_blast = function() end,
 	drop = "",
 	_mcl_blast_resistance = 36000008,
@@ -222,14 +232,14 @@ minetest.register_node("mcl_core:realm_barrier", {
 	paramtype = "light",
 	inventory_image = "mcl_core_barrier.png^[colorize:#FF00FF:127^[transformFX",
 	wield_image = "mcl_core_barrier.png^[colorize:#FF00FF:127^[transformFX",
-	tiles = { "blank.png" },
+	tiles = {"blank.png"},
 	stack_max = 64,
 	-- To avoid players getting stuck forever between realms
 	damage_per_second = 8,
 	sunlight_propagates = true,
 	is_ground_content = false,
 	pointable = false,
-	groups = {not_in_creative_inventory = 1, not_solid = 1 },
+	groups = {not_in_creative_inventory = 1, not_solid = 1},
 	on_blast = function() end,
 	drop = "",
 	_mcl_blast_resistance = 36000008,
@@ -237,7 +247,8 @@ minetest.register_node("mcl_core:realm_barrier", {
 	-- Prevent placement to protect player from screwing up the world, because the node is not pointable and hard to get rid of.
 	node_placement_prediction = "",
 	on_place = function(pos, placer, itemstack, pointed_thing)
-		minetest.chat_send_player(placer:get_player_name(), minetest.colorize(mcl_colors.RED, "You can't just place a realm barrier by hand!"))
+		minetest.chat_send_player(placer:get_player_name(),
+			minetest.colorize(mcl_colors.RED, "You can't just place a realm barrier by hand!"))
 		return
 	end,
 })
@@ -262,12 +273,13 @@ minetest.register_node("mcl_core:void", {
 	stack_max = 64,
 	sunlight_propagates = true,
 	is_ground_content = false,
-	groups = { not_in_creative_inventory = 1 },
+	groups = {not_in_creative_inventory = 1},
 	on_blast = function() end,
 	-- Prevent placement to protect player from screwing up the world, because the node is not pointable and hard to get rid of.
 	node_placement_prediction = "",
 	on_place = function(pos, placer, itemstack, pointed_thing)
-		minetest.chat_send_player(placer:get_player_name(), minetest.colorize(mcl_colors.RED, "You can't just place the void by hand!"))
+		minetest.chat_send_player(placer:get_player_name(),
+			minetest.colorize(mcl_colors.RED, "You can't just place the void by hand!"))
 		return
 	end,
 	drop = "",
