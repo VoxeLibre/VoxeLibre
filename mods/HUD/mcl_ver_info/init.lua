@@ -42,11 +42,20 @@ minetest.register_chatcommand("ver", {
 			return true
 		end
 
+		local conf = Settings(game_info.path .. "/game.conf")
+		local version = conf:get("version")
+
 		if game_info.title == nil or game_info.title == "" then
 			game_info.title = "Mineclone 2"
 		end
-		if game_info.id == nil or game_info.id == "" then
-			game_info.id = "<unknown version> Please upgrade your version to the newest version for the /ver command to work."
+		-- Notes: "game.conf doesn't support id currently, this is planned in the future" - rubenwardy from the github issue.
+		-- TODO: Remove workaround after minetest.get_game_info().id is implemented.
+		if version == "" or version == nil then -- workaround for id = not being implemented yet.
+			if game_info.id == nil or game_info.id == "" then
+				game_info.id = "<unknown version> Please upgrade your version to the newest version for the /ver command to work."
+			end
+			else
+			game_info.id = version
 		end
 
 		minetest.chat_send_player(name, string.format("Version: %s - %s", game_info.title, game_info.id))
