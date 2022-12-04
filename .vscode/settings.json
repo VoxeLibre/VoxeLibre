@@ -1,0 +1,5 @@
+{
+  "Lua.format.defaultConfig": {
+    "keep_one_space_between_table_and_bracket": "false"
+  }
+}

@@ -48,7 +48,7 @@ minetest.register_node("mcl_core:slimeblock", {
 		type = "regular",
 	},
 	tiles = {"mcl_core_slime.png"},
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "blend" or true,
+	use_texture_alpha = "blend",
 	-- According to Minecraft Wiki, bouncing off a slime block from a height off 255 blocks should result in a bounce height of 50 blocks
 	-- bouncy=44 makes the player bounce up to 49.6. This value was chosen by experiment.
 	-- bouncy=80 was chosen because it is higher than 66 (bounciness of bed)
