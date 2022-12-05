@@ -179,7 +179,8 @@ function mcl_raids.spawn_raid(event)
 						l.raidmob = true
 						event.health_max = event.health_max + l.health
 						table.insert(event.mobs,mob)
-						mcl_mobs:gopath(l,pos)
+						--minetest.log("action", "[mcl_raids] Here we go. Raid time")
+						l:gopath(pos)
 					end
 				end
 			end
