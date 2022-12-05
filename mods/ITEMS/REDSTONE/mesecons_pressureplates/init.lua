@@ -12,6 +12,16 @@ local pp_box_on = {
 	fixed = { -7/16, -8/16, -7/16, 7/16, -7.5/16, 7/16 },
 }
 
+local function pp_on_rightclick(pos, node)
+	local basename = minetest.registered_nodes[node.name].pressureplate_basename
+	if node.name == basename .. "_off" then
+		minetest.set_node(pos, { name = basename .. "_on" })
+		mesecon.receptor_on(pos, mesecon.rules.pplate)
+	else
+		minetest.get_meta(pos):set_string("deact_time", "")
+	end
+end
+
 local function pp_on_timer(pos, elapsed)
 	local node = minetest.get_node(pos)
 	local basename = minetest.registered_nodes[node.name].pressureplate_basename
@@ -164,6 +174,7 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 		walkable = false,
 		description = description,
 		on_timer = pp_on_timer,
+		on_rightclick = pp_on_rightclick,
 		on_construct = function(pos)
 			minetest.get_node_timer(pos):start(PRESSURE_PLATE_INTERVAL)
 		end,
