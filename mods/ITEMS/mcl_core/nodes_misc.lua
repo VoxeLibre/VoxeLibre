@@ -266,9 +266,22 @@ for i = 0, 14 do --minetest.LIGHT_MAX
 		is_ground_content = false,
 		groups = {creative_breakable = 1, not_solid = 1},
 		on_blast = function() end,
-		on_use = function(itemstack, user, pointed_thing)
+		on_use = function(itemstack, _, _)
 			itemstack:set_name("mcl_core:light_" .. ((i == 14) and 0 or i + 1))
 			return itemstack
+		end,
+		after_place_node = function(pos, placer, _, _)
+			if placer == nil then
+				return
+			end
+			minetest.add_particle({
+				pos = pos,
+				expirationtime = 1,
+				size = 8,
+				texture = "mcl_core_light_" .. i .. ".png",
+				glow = 14,
+				playername = placer:get_player_name()
+			})
 		end,
 		_mcl_blast_resistance = 36000008,
 		_mcl_hardness = -1,
