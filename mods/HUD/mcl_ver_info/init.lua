@@ -7,7 +7,7 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 
 local function xpcall_ver (error)
-	minetest.log("error", error)
+	minetest.log("info", "mcl_ver_info:: Gamepath not supported in this version of Minetest.")
 end
 
 local function get_game_info ()
@@ -50,7 +50,7 @@ minetest.register_chatcommand("ver", {
 		end
 		-- Notes: "game.conf doesn't support id currently, this is planned in the future" - rubenwardy from the github issue.
 		-- TODO: Remove workaround after minetest.get_game_info().id is implemented.
-		if version == "" or version == nil then -- workaround for id = not being implemented yet.
+		if version == nil or version == "" then -- workaround for id = not being implemented yet.
 			if game_info.id == nil or game_info.id == "" then
 				game_info.id = "<unknown version> Please upgrade your version to the newest version for the /ver command to work."
 			end
