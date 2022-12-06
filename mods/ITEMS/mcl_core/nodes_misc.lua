@@ -258,6 +258,7 @@ for i = 0, 14 do --minetest.LIGHT_MAX
 		_doc_items_usagehelp = S("When you hold a light in hand, you reveal all placed lights in a short distance around you."),
 		drawtype = "airlike",
 		paramtype = "light",
+		walkable = false,
 		light_source = i,
 		drop = "",
 		inventory_image = "mcl_core_light_" .. i .. ".png",
