@@ -249,6 +249,33 @@ minetest.register_node("mcl_core:realm_barrier", {
 })
 
 
+--- Light blocks
+
+for i = 0, 14 do --minetest.LIGHT_MAX
+	minetest.register_node("mcl_core:light_" .. i, {
+		description = S("Light"),
+		_doc_items_longdesc = S("Lights are invisble blocks. They are used to light up adventure maps and the like."),
+		_doc_items_usagehelp = S("When you hold a light in hand, you reveal all placed lights in a short distance around you."),
+		drawtype = "airlike",
+		paramtype = "light",
+		light_source = i,
+		drop = "",
+		inventory_image = "mcl_core_light_" .. i .. ".png",
+		wield_image = "mcl_core_light_" .. i .. ".png",
+		sunlight_propagates = true,
+		is_ground_content = false,
+		groups = {creative_breakable = 1, not_solid = 1},
+		on_blast = function() end,
+		on_use = function(itemstack, user, pointed_thing)
+			itemstack:set_name("mcl_core:light_" .. ((i == 14) and 0 or i + 1))
+			return itemstack
+		end,
+		_mcl_blast_resistance = 36000008,
+		_mcl_hardness = -1,
+	})
+end
+
+
 
 
 -- The void below the bedrock. Void damage is handled in mcl_playerplus.
