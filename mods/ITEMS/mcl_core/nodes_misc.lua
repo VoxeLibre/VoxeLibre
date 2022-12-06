@@ -250,6 +250,7 @@ minetest.register_node("mcl_core:realm_barrier", {
 
 
 --- Light blocks
+--- TODO: make node only pointable when wielding it
 
 for i = 0, 14 do --minetest.LIGHT_MAX
 	minetest.register_node("mcl_core:light_" .. i, {
@@ -265,7 +266,7 @@ for i = 0, 14 do --minetest.LIGHT_MAX
 		wield_image = "mcl_core_light_" .. i .. ".png",
 		sunlight_propagates = true,
 		is_ground_content = false,
-		groups = {creative_breakable = 1, not_solid = 1},
+		groups = {creative_breakable = 1, not_solid = 1, light_block = i + 1},
 		on_blast = function() end,
 		on_use = function(itemstack, _, _)
 			itemstack:set_name("mcl_core:light_" .. ((i == 14) and 0 or i + 1))
