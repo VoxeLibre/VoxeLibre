@@ -122,7 +122,7 @@ minetest.register_node("mcl_copper:waxed_block_oxidized", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
-	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_weather") end,
+	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_weathered") end,
 })
 
 minetest.register_node("mcl_copper:block_cut", {
