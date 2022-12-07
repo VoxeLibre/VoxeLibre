@@ -286,3 +286,6 @@ Stackable=
 Crying Obsidian=
 Crying obsidian is a luminous obsidian that can generate as part of ruined portals.=
 Enchanted Golden Apple=
+Light=
+Lights are invisible blocks. They are used to light up adventure maps and the like.=
+When you hold a light in hand, you reveal all placed lights in a short distance around you.=
