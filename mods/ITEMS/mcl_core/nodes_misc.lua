@@ -166,7 +166,7 @@ minetest.register_node("mcl_core:deadbush", {
 
 minetest.register_node("mcl_core:barrier", {
 	description = S("Barrier"),
-	_doc_items_longdesc = S("Barriers are invisble walkable blocks. They are used to create boundaries of adventure maps and the like. Monsters and animals won't appear on barriers, and fences do not connect to barriers. Other blocks can be built on barriers like on any other block."),
+	_doc_items_longdesc = S("Barriers are invisible walkable blocks. They are used to create boundaries of adventure maps and the like. Monsters and animals won't appear on barriers, and fences do not connect to barriers. Other blocks can be built on barriers like on any other block."),
 	_doc_items_usagehelp = S("When you hold a barrier in hand, you reveal all placed barriers in a short distance around you."),
 	drawtype = "airlike",
 	paramtype = "light",
@@ -255,7 +255,7 @@ minetest.register_node("mcl_core:realm_barrier", {
 for i = 0, 14 do --minetest.LIGHT_MAX
 	minetest.register_node("mcl_core:light_" .. i, {
 		description = S("Light"),
-		_doc_items_longdesc = S("Lights are invisble blocks. They are used to light up adventure maps and the like."),
+		_doc_items_longdesc = S("Lights are invisible blocks. They are used to light up adventure maps and the like."),
 		_doc_items_usagehelp = S("When you hold a light in hand, you reveal all placed lights in a short distance around you."),
 		drawtype = "airlike",
 		paramtype = "light",
