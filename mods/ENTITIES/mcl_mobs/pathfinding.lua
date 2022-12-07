@@ -35,19 +35,20 @@ function append_paths (wp1, wp2)
 end
 
 local function output_enriched (wp_out)
-	mcl_log("Output enriched path")
+	--mcl_log("Output enriched path")
 	local i = 0
 	for _,outy in pairs (wp_out) do
 		i = i + 1
-		mcl_log("Pos ".. i ..":" .. minetest.pos_to_string(outy["pos"]))
+		--mcl_log("Pos ".. i ..":" .. minetest.pos_to_string(outy["pos"]))
 
 		local action =  outy["action"]
 		if action then
+			mcl_log("Pos ".. i ..":" .. minetest.pos_to_string(outy["pos"]))
 			mcl_log("type: " .. action["type"])
 			mcl_log("action: " .. action["action"])
 			mcl_log("target: " .. minetest.pos_to_string(action["target"]))
 		end
-		mcl_log("failed attempts: " .. outy["failed_attempts"])
+		--mcl_log("failed attempts: " .. outy["failed_attempts"])
 	end
 end
 

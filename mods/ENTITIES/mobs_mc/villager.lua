@@ -1190,6 +1190,19 @@ local function do_work (self)
 	end
 end
 
+local below_vec = vector.new(0, -1, 0)
+
+local function get_ground_below_floating_object (float_pos)
+	local pos = float_pos
+	repeat
+		mcl_log("Current pos: " .. minetest.pos_to_string(pos))
+		pos = vector.add(pos, below_vec)
+		local node = minetest.get_node(pos)
+		mcl_log("First non air materials: ".. tostring(node.name))
+	until node.name ~= "air"
+	return pos
+end
+
 local function go_to_town_bell(self)
 	if self.order == GATHERING then
 		mcl_log("Already gathering")
@@ -1208,8 +1221,9 @@ local function go_to_town_bell(self)
 	--Ideally should check for closest available. It'll make pathing easier.
 	for _,n in pairs(nn) do
 		mcl_log("Found bell")
-
-		local gp = self:gopath(n,function(self)
+		local target_point = get_ground_below_floating_object(n)
+		
+		local gp = self:gopath(target_point,function(self)
 			if self then
 				self.order = GATHERING
 				mcl_log("Callback has a self")
