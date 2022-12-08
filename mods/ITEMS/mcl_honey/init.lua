@@ -22,6 +22,12 @@ minetest.register_node("mcl_honey:honeycomb_block", {
 		"mcl_honey_honeycomb_block.png"
 	},
 	groups = { handy = 1, deco_block = 1 },
+	sounds = {
+		dig = {name="slimenodes_dug", gain=0.6, pitch=1.2},
+		dug = {name="slimenodes_dug", gain=0.6},
+		place = {name="slimenodes_place", gain=0.6},
+		footstep = {name="slimenodes_step", gain=0.3},
+	},
 	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
 })
@@ -45,6 +51,11 @@ minetest.register_node("mcl_honey:honey_block", {
 	tiles = {"mcl_honey_block_side.png"},
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "blend" or true,
 	groups = { handy = 1, deco_block = 1, fall_damage_add_percent = -80 },
+	sounds = {
+		dug = {name="slimenodes_dug", gain=0.6},
+		place = {name="slimenodes_place", gain=0.6},
+		footstep = {name="slimenodes_step", gain=0.3},
+	},
 	paramtype = "light",
 	drawtype = "nodebox",
 	node_box = {
