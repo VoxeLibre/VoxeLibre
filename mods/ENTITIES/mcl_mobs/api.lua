@@ -471,7 +471,7 @@ local set_yaw = function(self, yaw, delay, dtime)
 		if self.shaking and dtime then
 			yaw = yaw + (random() * 2 - 1) * 5 * dtime
 		end
-		update_roll(self)
+		--update_roll(self)
 		return yaw
 	end
 
@@ -822,7 +822,7 @@ local update_tag = function(self)
 		nametag = tag,
 	})
 
-	update_roll(self)
+	--update_roll(self)
 end
 
 -- drop items
@@ -4457,7 +4457,7 @@ local mob_step = function(self, dtime)
 			yaw = yaw + (random() * 2 - 1) * 5 * dtime
 		end
 		self.object:set_yaw(yaw)
-		update_roll(self)
+		--update_roll(self)
 	end
 
 	-- end rotation
