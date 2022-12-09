@@ -26,15 +26,24 @@ mcl_events.register_event("zombie_siege",{
 	exclusive_to_area = 128,
 	enable_bossbar = false,
 	cond_start  = function(self)
+		--minetest.log("Cond start zs")
+		local r = {}
+
+		local t = minetest.get_timeofday()
 		local pr = PseudoRandom(minetest.get_day_count())
 		local rnd = pr:next(1,10)
-		local t = minetest.get_timeofday()
-		local r = {}
-		for _,p in pairs(minetest.get_connected_players()) do
-			local village = mcl_raids.find_village(p:get_pos())
-			if t < 0.04 and village and rnd == 1 then
-				table.insert(r,{ player = p:get_player_name(), pos = village})
+
+		if t < 0.04 and rnd == 1 then
+			--minetest.log("Well, it's siege time")
+			for _,p in pairs(minetest.get_connected_players()) do
+				local village = mcl_raids.find_village(p:get_pos())
+				if village then
+					--minetest.log("Found village")
+					table.insert(r,{ player = p:get_player_name(), pos = village})
+				end
 			end
+		else
+			--minetest.log("Not night for a siege, or not success")
 		end
 		if #r > 0 then return r end
 	end,
