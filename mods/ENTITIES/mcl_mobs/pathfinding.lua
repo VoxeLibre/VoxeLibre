@@ -120,22 +120,27 @@ local function calculate_path_through_door (p, t, target)
 	local pos_closest_to_door = nil
 	local other_side_of_door = nil
 
-	--Path to door first
+	--Check direct route
 	local wp = minetest.find_path(p,t,150,1,4)
+
+	--Path to door first
 	if not wp then
 		mcl_log("No direct path. Path through door")
 
 		-- This could improve. There could be multiple doors. Check you can path from door to target first.
+
+		-- target could be pos
 		local cur_door_pos = minetest.find_node_near(target,16,{"group:door"})
 		if cur_door_pos then
 			mcl_log("Found a door near: " .. minetest.pos_to_string(cur_door_pos))
 			for _,v in pairs(plane_adjacents) do
 				pos_closest_to_door = vector.add(cur_door_pos,v)
-
 				local n = minetest.get_node(pos_closest_to_door)
 				if n.name == "air" then
+
 					wp = minetest.find_path(p,pos_closest_to_door,150,1,4)
 					if wp then
+
 						mcl_log("Found a path to next to door".. minetest.pos_to_string(pos_closest_to_door))
 						other_side_of_door = vector.add(cur_door_pos,-v)
 						mcl_log("Opposite is: ".. minetest.pos_to_string(other_side_of_door))
@@ -154,7 +159,7 @@ local function calculate_path_through_door (p, t, target)
 						mcl_log("This block next to door doesn't work.")
 					end
 				else
-					mcl_log("Block is not air, it is: ".. n.name)
+					--mcl_log("Block is not air, it is: ".. n.name)
 				end
 
 			end
@@ -165,21 +170,33 @@ local function calculate_path_through_door (p, t, target)
 		mcl_log("We have a direct route")
 	end
 
+	-- If not, get door near pos
+	--path from pos to door, path from otherside to target
+
 	if wp and not enriched_path then
 		enriched_path = generate_enriched_path(wp)
 	end
 	return enriched_path
 end
 
-local gopath_last = os.time()
+--local gopath_last = os.time()
+
+function mob_class:ready_to_path()
+	mcl_log("Check ready to path")
+	if self._pf_last_failed and (os.time() - self._pf_last_failed) < 30 then
+		return false
+	else
+		mcl_log("We are ready to pathfind, no previous fail or we are past threshold")
+		return true
+	end
+end
+
 function mob_class:gopath(target,callback_arrived)
 	if self.state == PATHFINDING then mcl_log("Already pathfinding, don't set another until done.") return end
 
-	if self._pf_last_failed and (os.time() - self._pf_last_failed) < 30 then
+	if not self:ready_to_path() then
 		mcl_log("We are not ready to path as last fail is less than threshold: " .. (os.time() - self._pf_last_failed))
 		return
-	else
-		mcl_log("We are ready to pathfind, no previous fail or we are past threshold")
 	end
 
 	--if os.time() - gopath_last < 5 then

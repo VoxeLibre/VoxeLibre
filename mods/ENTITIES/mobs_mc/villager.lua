@@ -1205,11 +1205,17 @@ end
 
 local function go_to_town_bell(self)
 	if self.order == GATHERING then
-		mcl_log("Already gathering")
+		--mcl_log("Already gathering")
 		return
 	else
 		mcl_log("Current order" .. self.order)
 	end
+
+	if not self:ready_to_path() then
+		mcl_log("Negative response to go_path. Do not bother")
+		return
+	end
+
 	mcl_log("Go to town bell")
 
 	local looking_for_type={}
@@ -1222,7 +1228,7 @@ local function go_to_town_bell(self)
 	for _,n in pairs(nn) do
 		mcl_log("Found bell")
 		local target_point = get_ground_below_floating_object(n)
-		
+
 		local gp = self:gopath(target_point,function(self)
 			if self then
 				self.order = GATHERING
