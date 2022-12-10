@@ -31,7 +31,7 @@ local mcl_hoppers_formspec = table.concat({
 local def_hopper = {
 	inventory_image = "mcl_hoppers_item.png",
 	wield_image = "mcl_hoppers_item.png",
-	groups = { pickaxey = 1, container = 2, deco_block = 1, hopper = 1 },
+	groups = {pickaxey = 1, container = 2, deco_block = 1, hopper = 1},
 	drawtype = "nodebox",
 	paramtype = "light",
 	-- FIXME: mcl_hoppers_hopper_inside.png is unused by hoppers.
@@ -47,25 +47,25 @@ local def_hopper = {
 		type = "fixed",
 		fixed = {
 			--funnel walls
-			{ -0.5, 0.0, 0.4, 0.5, 0.5, 0.5 },
-			{ 0.4, 0.0, -0.5, 0.5, 0.5, 0.5 },
-			{ -0.5, 0.0, -0.5, -0.4, 0.5, 0.5 },
-			{ -0.5, 0.0, -0.5, 0.5, 0.5, -0.4 },
+			{-0.5, 0.0, 0.4, 0.5, 0.5, 0.5},
+			{0.4, 0.0, -0.5, 0.5, 0.5, 0.5},
+			{-0.5, 0.0, -0.5, -0.4, 0.5, 0.5},
+			{-0.5, 0.0, -0.5, 0.5, 0.5, -0.4},
 			--funnel base
-			{ -0.5, 0.0, -0.5, 0.5, 0.1, 0.5 },
+			{-0.5, 0.0, -0.5, 0.5, 0.1, 0.5},
 			--spout
-			{ -0.3, -0.3, -0.3, 0.3, 0.0, 0.3 },
-			{ -0.1, -0.3, -0.1, 0.1, -0.5, 0.1 },
+			{-0.3, -0.3, -0.3, 0.3, 0.0, 0.3},
+			{-0.1, -0.3, -0.1, 0.1, -0.5, 0.1},
 		},
 	},
 	selection_box = {
 		type = "fixed",
 		fixed = {
 			--funnel
-			{ -0.5, 0.0, -0.5, 0.5, 0.5, 0.5 },
+			{-0.5, 0.0, -0.5, 0.5, 0.5, 0.5},
 			--spout
-			{ -0.3, -0.3, -0.3, 0.3, 0.0, 0.3 },
-			{ -0.1, -0.3, -0.1, 0.1, -0.5, 0.1 },
+			{-0.3, -0.3, -0.3, 0.3, 0.0, 0.3},
+			{-0.1, -0.3, -0.1, 0.1, -0.5, 0.1},
 		},
 	},
 	is_ground_content = false,
@@ -195,7 +195,7 @@ end
 def_hopper_enabled.mesecons = {
 	effector = {
 		action_on = function(pos, node)
-			minetest.swap_node(pos, { name = "mcl_hoppers:hopper_disabled", param2 = node.param2 })
+			minetest.swap_node(pos, {name = "mcl_hoppers:hopper_disabled", param2 = node.param2})
 		end,
 	},
 }
@@ -213,7 +213,7 @@ def_hopper_disabled.drop = "mcl_hoppers:hopper"
 def_hopper_disabled.mesecons = {
 	effector = {
 		action_off = function(pos, node)
-			minetest.swap_node(pos, { name = "mcl_hoppers:hopper", param2 = node.param2 })
+			minetest.swap_node(pos, {name = "mcl_hoppers:hopper", param2 = node.param2})
 		end,
 	},
 }
@@ -232,7 +232,7 @@ end
 local def_hopper_side = {
 	_doc_items_create_entry = false,
 	drop = "mcl_hoppers:hopper",
-	groups = { pickaxey = 1, container = 2, not_in_creative_inventory = 1, hopper = 2 },
+	groups = {pickaxey = 1, container = 2, not_in_creative_inventory = 1, hopper = 2},
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",
@@ -248,25 +248,25 @@ local def_hopper_side = {
 		type = "fixed",
 		fixed = {
 			--funnel walls
-			{ -0.5, 0.0, 0.4, 0.5, 0.5, 0.5 },
-			{ 0.4, 0.0, -0.5, 0.5, 0.5, 0.5 },
-			{ -0.5, 0.0, -0.5, -0.4, 0.5, 0.5 },
-			{ -0.5, 0.0, -0.5, 0.5, 0.5, -0.4 },
+			{-0.5, 0.0, 0.4, 0.5, 0.5, 0.5},
+			{0.4, 0.0, -0.5, 0.5, 0.5, 0.5},
+			{-0.5, 0.0, -0.5, -0.4, 0.5, 0.5},
+			{-0.5, 0.0, -0.5, 0.5, 0.5, -0.4},
 			--funnel base
-			{ -0.5, 0.0, -0.5, 0.5, 0.1, 0.5 },
+			{-0.5, 0.0, -0.5, 0.5, 0.1, 0.5},
 			--spout
-			{ -0.3, -0.3, -0.3, 0.3, 0.0, 0.3 },
-			{ -0.5, -0.3, -0.1, 0.1, -0.1, 0.1 },
+			{-0.3, -0.3, -0.3, 0.3, 0.0, 0.3},
+			{-0.5, -0.3, -0.1, 0.1, -0.1, 0.1},
 		},
 	},
 	selection_box = {
 		type = "fixed",
 		fixed = {
 			--funnel
-			{ -0.5, 0.0, -0.5, 0.5, 0.5, 0.5 },
+			{-0.5, 0.0, -0.5, 0.5, 0.5, 0.5},
 			--spout
-			{ -0.3, -0.3, -0.3, 0.3, 0.0, 0.3 },
-			{ -0.5, -0.3, -0.1, 0.1, -0.1, 0.1 },
+			{-0.3, -0.3, -0.3, 0.3, 0.0, 0.3},
+			{-0.5, -0.3, -0.1, 0.1, -0.1, 0.1},
 		},
 	},
 	is_ground_content = false,
@@ -344,7 +344,7 @@ def_hopper_side_enabled.description = S("Side Hopper")
 def_hopper_side_enabled.mesecons = {
 	effector = {
 		action_on = function(pos, node)
-			minetest.swap_node(pos, { name = "mcl_hoppers:hopper_side_disabled", param2 = node.param2 })
+			minetest.swap_node(pos, {name = "mcl_hoppers:hopper_side_disabled", param2 = node.param2})
 		end,
 	},
 }
@@ -356,7 +356,7 @@ def_hopper_side_disabled.description = S("Disabled Side Hopper")
 def_hopper_side_disabled.mesecons = {
 	effector = {
 		action_off = function(pos, node)
-			minetest.swap_node(pos, { name = "mcl_hoppers:hopper_side", param2 = node.param2 })
+			minetest.swap_node(pos, {name = "mcl_hoppers:hopper_side", param2 = node.param2})
 		end,
 	},
 }
@@ -409,7 +409,7 @@ end
 
 minetest.register_abm({
 	label = "Hoppers pull from minecart hoppers",
-	nodenames = { "mcl_hoppers:hopper", "mcl_hoppers:hopper_side" },
+	nodenames = {"mcl_hoppers:hopper", "mcl_hoppers:hopper_side"},
 	interval = 0.5,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -455,7 +455,7 @@ minetest.register_abm({
 -- Make hoppers suck in dropped items
 minetest.register_abm({
 	label = "Hoppers suck in dropped items",
-	nodenames = { "mcl_hoppers:hopper", "mcl_hoppers:hopper_side" },
+	nodenames = {"mcl_hoppers:hopper", "mcl_hoppers:hopper_side"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -509,8 +509,8 @@ end
 
 minetest.register_abm({
 	label = "Hopper/container item exchange",
-	nodenames = { "mcl_hoppers:hopper" },
-	neighbors = { "group:container" },
+	nodenames = {"mcl_hoppers:hopper"},
+	neighbors = {"group:container"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -526,7 +526,7 @@ minetest.register_abm({
 
 		-- Also suck in non-fuel items from furnace fuel slot
 		if not sucked and g == 4 then
-			local finv = minetest.get_inventory({ type = "node", pos = uppos })
+			local finv = minetest.get_inventory({type = "node", pos = uppos})
 			if finv and not mcl_util.is_fuel(finv:get_stack("fuel", 1)) then
 				mcl_util.move_item_container(uppos, pos, "fuel")
 			end
@@ -541,8 +541,8 @@ minetest.register_abm({
 
 minetest.register_abm({
 	label = "Side-hopper/container item exchange",
-	nodenames = { "mcl_hoppers:hopper_side" },
-	neighbors = { "group:container" },
+	nodenames = {"mcl_hoppers:hopper_side"},
+	neighbors = {"group:container"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -571,7 +571,7 @@ minetest.register_abm({
 
 		-- Also suck in non-fuel items from furnace fuel slot
 		if not sucked and g == 4 then
-			local finv = minetest.get_inventory({ type = "node", pos = above })
+			local finv = minetest.get_inventory({type = "node", pos = above})
 			if finv and not mcl_util.is_fuel(finv:get_stack("fuel", 1)) then
 				mcl_util.move_item_container(above, pos, "fuel")
 			end
@@ -583,8 +583,8 @@ minetest.register_abm({
 			mcl_util.move_item_container(pos, front)
 		elseif g == 4 then
 			-- Put fuel into fuel slot
-			local sinv = minetest.get_inventory({ type = "node", pos = pos })
-			local dinv = minetest.get_inventory({ type = "node", pos = front })
+			local sinv = minetest.get_inventory({type = "node", pos = pos})
+			local dinv = minetest.get_inventory({type = "node", pos = front})
 			local slot_id, _ = mcl_util.get_eligible_transfer_item_slot(sinv, "main", dinv, "fuel", is_transferrable_fuel)
 			if slot_id then
 				mcl_util.move_item_container(pos, front, nil, slot_id, "fuel")
@@ -596,8 +596,8 @@ minetest.register_abm({
 if minetest.get_modpath("mcl_composters") then
 	minetest.register_abm({
 		label = "Bonemeal extraction from composter",
-		nodenames = { "mcl_hoppers:hopper", "mcl_hoppers:hopper_side" },
-		neighbors = { "mcl_composters:composter_ready" },
+		nodenames = {"mcl_hoppers:hopper", "mcl_hoppers:hopper_side"},
+		neighbors = {"mcl_composters:composter_ready"},
 		interval = 1.0,
 		chance = 1,
 		action = function(pos, node, active_object_count, active_object_count_wider)
@@ -610,7 +610,7 @@ if minetest.get_modpath("mcl_composters") then
 				local meta = minetest.get_meta(pos)
 				local inv = meta:get_inventory()
 
-				minetest.swap_node(uppos, { name = "mcl_composters:composter" })
+				minetest.swap_node(uppos, {name = "mcl_composters:composter"})
 
 				inv:add_item("main", "mcl_dye:white")
 			end
@@ -644,15 +644,15 @@ if minetest.get_modpath("mcl_composters") then
 	end
 
 	for i = 1, 7 do
-		assert(composter_level({ name = "mcl_composters:composter_" .. i }) == i)
+		assert(composter_level({name = "mcl_composters:composter_" .. i}) == i)
 	end
 
-	assert(composter_level({ name = "mcl_composters:composter" }) == 0)
-	assert(composter_level({ name = "mcl_composters:some_other_node" }) == nil)
+	assert(composter_level({name = "mcl_composters:composter"}) == 0)
+	assert(composter_level({name = "mcl_composters:some_other_node"}) == nil)
 
 	minetest.register_abm({
 		label = "Add compostable items on composter",
-		nodenames = { "mcl_hoppers:hopper" },
+		nodenames = {"mcl_hoppers:hopper"},
 		neighbors = {
 			"mcl_composters:composter",
 			"mcl_composters:composter_1",
@@ -694,7 +694,7 @@ if minetest.get_modpath("mcl_composters") then
 							else
 								level = "ready"
 							end
-							minetest.swap_node(downpos, { name = "mcl_composters:composter_" .. level })
+							minetest.swap_node(downpos, {name = "mcl_composters:composter_" .. level})
 						end
 						break
 					end
@@ -707,9 +707,9 @@ end
 minetest.register_craft({
 	output = "mcl_hoppers:hopper",
 	recipe = {
-		{ "mcl_core:iron_ingot", "", "mcl_core:iron_ingot" },
-		{ "mcl_core:iron_ingot", "mcl_chests:chest", "mcl_core:iron_ingot" },
-		{ "", "mcl_core:iron_ingot", "" },
+		{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
+		{"mcl_core:iron_ingot", "mcl_chests:chest", "mcl_core:iron_ingot"},
+		{"", "mcl_core:iron_ingot", ""},
 	},
 })
 
@@ -724,7 +724,7 @@ minetest.register_alias("mcl_hoppers:hopper_item", "mcl_hoppers:hopper")
 minetest.register_lbm({
 	label = "Update hopper formspecs (0.60.0",
 	name = "mcl_hoppers:update_formspec_0_60_0",
-	nodenames = { "group:hopper" },
+	nodenames = {"group:hopper"},
 	run_at_every_load = false,
 	action = function(pos, node)
 		local meta = minetest.get_meta(pos)
