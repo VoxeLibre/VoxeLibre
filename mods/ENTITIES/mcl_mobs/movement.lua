@@ -274,7 +274,6 @@ function mob_class:do_jump()
 	if not self.jump
 	or self.jump_height == 0
 	or self.fly
-	or (self.child and self.type ~= "monster")
 	or self.order == "stand" then
 		return false
 	end
