@@ -217,7 +217,7 @@ function mcl_raids.find_villager(pos)
 end
 
 function mcl_raids.find_bed(pos)
-	return minetest.find_node_near(pos,128,{"mcl_beds:bed_red_bottom"})
+	return minetest.find_node_near(pos,32,{"mcl_beds:bed_red_bottom"})
 end
 
 function mcl_raids.find_village(pos)
@@ -292,11 +292,13 @@ mcl_events.register_event("raid",{
 	exclusive_to_area = 128,
 	enable_bossbar = true,
 	cond_start  = function(self)
+		--minetest.log("Cond start raid")
 		local r = {}
 		for _,p in pairs(minetest.get_connected_players()) do
 			if mcl_potions.player_has_effect(p,"bad_omen") then
 				local raid_pos = mcl_raids.find_village(p:get_pos())
 				if raid_pos then
+					--minetest.log("We have a raid position. Start raid")
 					table.insert(r,{ player = p:get_player_name(), pos = raid_pos })
 				end
 			end
