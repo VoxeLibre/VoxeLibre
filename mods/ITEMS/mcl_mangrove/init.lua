@@ -98,7 +98,7 @@ local l_def = {
 	groups = {
 		handy = 1, hoey = 1, shearsy = 1, swordy = 1, dig_by_piston = 1,
 		flammable = 2, fire_encouragement = 30, fire_flammability = 60,
-		leaves = 1, deco_block = 1
+		leaves = 1, deco_block = 1, compostability = 30
 	},
 	drop = get_drops(0),
 	_mcl_shears_drop = true,
