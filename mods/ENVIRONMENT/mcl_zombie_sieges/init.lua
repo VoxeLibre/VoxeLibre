@@ -10,10 +10,14 @@ local function spawn_zombies(self)
 		local p = vector.offset(nn[i%#nn],0,1,0)
 		if check_spawn_pos(p) then
 			local m = mcl_mobs.spawn(p,"mobs_mc:zombie")
-			local l = m:get_luaentity()
-			mcl_mobs:gopath(m:get_luaentity(),self.pos)
-			table.insert(self.mobs,m)
-			self.health_max = self.health_max + l.health
+			if m then
+				local l = m:get_luaentity()
+				mcl_mobs:gopath(m:get_luaentity(), self.pos)
+				table.insert(self.mobs, m)
+				self.health_max = self.health_max + l.health
+			else
+				--minetest.log("Failed to spawn zombie at location: " .. minetest.pos_to_string(p))
+			end
 		end
 	end
 end
