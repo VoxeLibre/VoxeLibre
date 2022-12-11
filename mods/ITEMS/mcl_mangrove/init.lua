@@ -55,7 +55,6 @@ minetest.register_node("mcl_mangrove:mangrove_tree", {
 	after_destruct = mcl_core.update_leaves,
 	groups = {handy=1,axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	on_place = mcl_util.rotate_axis,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 	_mcl_stripped_variant = "mcl_mangrove:mangrove_stripped_trunk",
