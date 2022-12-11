@@ -163,11 +163,13 @@ minetest.register_node("mcl_mangrove:mangrove_roots", {
 	drawtype = "allfaces_optional",
 	groups = {
 		handy = 1, hoey = 1, shearsy = 1, axey = 1, swordy = 1, dig_by_piston = 0,
-		leaves = 1, deco_block = 1,flammable = 10, fire_encouragement = 30, fire_flammability = 60,	compostability = 30
+		flammable = 10, fire_encouragement = 30, fire_flammability = 60,
+		deco_block = 1, compostability = 30
 	},
 	drop = "mcl_mangrove:mangrove_roots",
 	_mcl_shears_drop = true,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),			_mcl_blast_resistance = 0.7,
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0.7,
 	_mcl_hardness = 0.7,
 	_mcl_silk_touch_drop = true,
 	_mcl_fortune_drop = { "mcl_mangrove:mangrove_roots 1", "mcl_mangrove:mangrove_roots 2", "mcl_mangrove:mangrove_roots 3", "mcl_mangrove:mangrove_roots 4" },
@@ -345,6 +347,9 @@ local wlroots = {
 	end,
 }
 local rwlroots = table.copy(wlroots)
+-- FIXME luacheck complains that this is a repeated definition of water_tex.
+-- Maybe the tiles definition below should be replaced with the animated tile
+-- definition as per above?
 water_tex = "default_river_water_source_animated.png^[verticalframe:16:0"
 rwlroots.tiles = {
 	"("..water_tex..")^mcl_mangrove_roots_top.png",
