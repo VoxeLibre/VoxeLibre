@@ -8,6 +8,40 @@ if mod_screwdriver then
 	on_rotate = screwdriver.rotate_3way
 end
 
+-- Check dug/destroyed tree trunks for orphaned leaves.
+--
+-- This function is meant to be called by the `after_destruct` handler of
+-- treetrunk nodes.
+--
+-- Whenever a trunk node is removed, all `group:leaves` nodes in a sphere
+-- with radius 6 are checked.  Every such node that does not have a trunk
+-- node within a distance of 6 blocks is converted into a orphan leaf node.
+-- An ABM will gradually decay these nodes.
+--
+-- If param2 of the node is set to a nonzero value, the node will always
+-- be preserved.  This is set automatically when leaves are placed manually.
+--
+-- @param pos the position of the removed trunk node.
+-- @param oldnode the node table of the removed trunk node.
+function mcl_core.update_leaves(pos, oldnode)
+	local pos1, pos2 = vector.offset(pos, -6, -6, -6), vector.offset(pos, 6, 6, 6)
+	local lnode
+	local leaves = minetest.find_nodes_in_area(pos1, pos2, "group:leaves")
+	for _, lpos in pairs(leaves) do
+		lnode = minetest.get_node(lpos)
+		-- skip already decaying leaf nodes
+		if minetest.get_item_group(lnode.name, "orphan_leaves") ~= 1 then
+			if not minetest.find_node_near(lpos, 6, "group:tree") then
+				-- manually placed leaf nodes have param2
+				-- set and will never decay automatically
+				if lnode.param2 == 0 then
+					minetest.swap_node(lpos, {name = lnode.name .. "_orphan"})
+				end
+			end
+		end
+	end
+end
+
 -- Register tree trunk (wood) and bark
 local function register_tree_trunk(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark, stripped_variant)
 	minetest.register_node("mcl_core:"..subname, {
@@ -17,6 +51,7 @@ local function register_tree_trunk(subname, description_trunk, description_bark,
 		tiles = {tile_inner, tile_inner, tile_bark},
 		paramtype2 = "facedir",
 		on_place = mcl_util.rotate_axis,
+		after_destruct = mcl_core.update_leaves,
 		stack_max = 64,
 		groups = {handy=1,axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
 		sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -141,7 +176,7 @@ local function register_leaves(subname, description, longdesc, tiles, sapling, d
 		return drop
 	end
 
-	minetest.register_node("mcl_core:"..subname, {
+	local l_def = {
 		description = description,
 		_doc_items_longdesc = longdesc,
 		_doc_items_hidden = false,
@@ -164,7 +199,19 @@ local function register_leaves(subname, description, longdesc, tiles, sapling, d
 		_mcl_hardness = 0.2,
 		_mcl_silk_touch_drop = true,
 		_mcl_fortune_drop = { get_drops(1), get_drops(2), get_drops(3), get_drops(4) },
-	})
+	}
+
+	minetest.register_node("mcl_core:" .. subname, l_def)
+
+	local o_def = table.copy(l_def)
+	o_def._doc_items_create_entry = false
+	o_def.place_param2 = nil
+	o_def.groups.not_in_creative_inventory = 1
+	o_def.groups.orphan_leaves = 1
+	o_def._mcl_shears_drop = {"mcl_core:" .. subname}
+	o_def._mcl_silk_touch_drop = {"mcl_core:" .. subname}
+
+	minetest.register_node("mcl_core:" .. subname .. "_orphan", o_def)
 end
 
 local function register_sapling(subname, description, longdesc, tt_help, texture, selbox)

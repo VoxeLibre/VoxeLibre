@@ -52,6 +52,7 @@ minetest.register_node("mcl_mangrove:mangrove_tree", {
 	tiles = {"mcl_mangrove_log_top.png", "mcl_mangrove_log_top.png", "mcl_mangrove_log.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
+	after_destruct = mcl_core.update_leaves,
 	groups = {handy=1,axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_place = mcl_util.rotate_axis,
@@ -86,7 +87,7 @@ minetest.register_node("mcl_mangrove:mangrove_wood", {
 	_mcl_hardness = 2,
 })
 
-minetest.register_node("mcl_mangrove:mangroveleaves", {
+local l_def = {
 	description = S("Mangrove Leaves"),
 	_doc_items_longdesc = S("mangrove leaves are grown from mangrove trees."),
 	_doc_items_hidden = false,
@@ -103,7 +104,19 @@ minetest.register_node("mcl_mangrove:mangroveleaves", {
 	_mcl_hardness = 0.2,
 	_mcl_silk_touch_drop = true,
 	_mcl_fortune_drop = { get_drops(1), get_drops(2), get_drops(3), get_drops(4) },
-})
+}
+
+minetest.register_node("mcl_mangrove:mangroveleaves", l_def)
+
+local o_def = table.copy(l_def)
+o_def._doc_items_create_entry = false
+o_def.place_param2 = nil
+o_def.groups.not_in_creative_inventory = 1
+o_def.groups.orphan_leaves = 1
+o_def._mcl_shears_drop = {"mcl_mangrove:mangroveleaves"}
+o_def._mcl_silk_touch_drop = {"mcl_mangrove:mangroveleaves"}
+
+minetest.register_node("mcl_mangrove:mangroveleaves_orphan", o_def)
 
 minetest.register_node("mcl_mangrove:mangrove_stripped_trunk", {
 	description = S("Stripped Mangrove Wood"),
