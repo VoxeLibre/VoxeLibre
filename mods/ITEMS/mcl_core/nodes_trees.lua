@@ -142,10 +142,7 @@ local function register_wooden_planks(subname, description, tiles)
 	})
 end
 
-local function register_leaves(subname, description, longdesc, tiles, sapling, drop_apples, sapling_chances, leafdecay_distance)
-	if leafdecay_distance == nil then
-		leafdecay_distance = 4
-	end
+local function register_leaves(subname, description, longdesc, tiles, sapling, drop_apples, sapling_chances)
 	local apple_chances = {200, 180, 160, 120, 40}
 	local stick_chances = {50, 45, 30, 35, 10}
 
@@ -188,9 +185,8 @@ local function register_leaves(subname, description, longdesc, tiles, sapling, d
 		stack_max = 64,
 		groups = {
 			handy = 1, hoey = 1, shearsy = 1, swordy = 1, dig_by_piston = 1,
-			leaves = 1, leafdecay = leafdecay_distance, deco_block = 1,
 			flammable = 2, fire_encouragement = 30, fire_flammability = 60,
-			compostability = 30
+			leaves = 1, deco_block = 1, compostability = 30
 		},
 		drop = get_drops(0),
 		_mcl_shears_drop = true,

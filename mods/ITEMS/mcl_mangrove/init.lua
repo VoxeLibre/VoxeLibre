@@ -96,7 +96,11 @@ local l_def = {
 	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	tiles = {"mcl_mangrove_leaves.png"},
 	paramtype = "light",
-	groups = {handy=1,shearsy=1,swordy=1, leafdecay=10, flammable=2, leaves=1, deco_block=1, dig_by_piston=1, fire_encouragement=30, fire_flammability=60},
+	groups = {
+		handy = 1, hoey = 1, shearsy = 1, swordy = 1, dig_by_piston = 1,
+		flammable = 2, fire_encouragement = 30, fire_flammability = 60,
+		leaves = 1, deco_block = 1
+	},
 	drop = get_drops(0),
 	_mcl_shears_drop = true,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
