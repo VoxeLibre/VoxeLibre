@@ -12,4 +12,8 @@ git add README.md
 # To uncomment when applicable
 #git add game.conf
 
-git commit -m "Pre-release update credits and set version"
+git commit -m "Pre-release update credits and set version 0.81.1"
+
+git tag 0.81.1
+
+git push origin 0.81.1
