@@ -102,6 +102,7 @@ function check_events(dtime)
 	for _,e in pairs(mcl_events.registered_events) do
 		local pp = e.cond_start()
 		if pp then
+			--minetest.log("It's gonna start the raid maybe")
 			for _,p in pairs(pp) do
 				local start = true
 				if e.exclusive_to_area then
@@ -110,11 +111,14 @@ function check_events(dtime)
 					end
 				end
 				if start then
+					--minetest.log("It's gonna start the raid definitely")
 					start_event(p,e)
 				elseif DBG then
 					mcl_log("[mcl_events] Event "..e.readable_name.." already active at "..minetest.pos_to_string(vector.round(p.pos)))
 				end
 			end
+		else
+			--minetest.log("Do not start this raid")
 		end
 	end
 	for idx,ae in pairs(active_events) do
