@@ -8,12 +8,13 @@
 
 
 ## Maintainers
+* AncientMariner
 * Nicu
-* cora
 
 ## Previous Maintainers
 * Fleckenstein
 * jordan4ibanez
+* cora
 
 ## Developers
 * bzoss
@@ -35,7 +36,6 @@
 * MrRar
 * talamh
 * Faerraven
-* AncientMariner
 
 ## Contributors
 * Laurent Rocher
