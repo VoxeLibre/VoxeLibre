@@ -28,7 +28,7 @@ local BROKEN_DOORS = true
 -- LOCAL FUNCTIONS
 local function create_nodes()
 
-	local bamboo_def= {
+	local bamboo_def = {
 		description = "Bamboo",
 		tiles = {"mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo.png"},
 		drawtype = "nodebox",
@@ -128,7 +128,7 @@ local function create_nodes()
 	}
 	minetest.register_node("mcl_bamboo:bamboo", bamboo_def)
 	local bamboo_top = table.copy(bamboo_def)
-	bamboo_top.groups = {not_in_creative_inventory=1, handy = 1, axey = 1, choppy = 1, flammable = 3}
+	bamboo_top.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, flammable = 3}
 
 	bamboo_top.on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type ~= "node" then
