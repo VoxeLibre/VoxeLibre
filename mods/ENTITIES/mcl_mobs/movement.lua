@@ -1397,7 +1397,7 @@ function mob_class:check_smooth_rotation(dtime)
 			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
 		end
 		self.object:set_yaw(yaw)
-		self:update_roll()
+		--self:update_roll()
 	end
 	-- end rotation
 end
