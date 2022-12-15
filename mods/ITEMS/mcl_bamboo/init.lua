@@ -8,12 +8,6 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local bamboo = "mcl_bamboo:bamboo"
-local adj_nodes = {
-	vector.new(0, 0, 1),
-	vector.new(0, 0, -1),
-	vector.new(1, 0, 0),
-	vector.new(-1, 0, 0),
-}
 local node_sound = mcl_sounds.node_sound_wood_defaults()
 
 -- CONSTS
@@ -558,46 +552,6 @@ local function create_nodes()
 
 	})
 
-	if SIDE_SCAFFOLDING then
-		--currently, disabled.
-		minetest.register_node("mcl_bamboo:scaffolding_horizontal", {
-			description = S("Scaffolding (horizontal)"),
-			doc_items_longdesc = S("Scaffolding block used to climb up or out across areas."),
-			doc_items_hidden = false,
-			tiles = {"mcl_bamboo_scaffolding_top.png", "mcl_bamboo_scaffolding_top.png", "mcl_bamboo_scaffolding_bottom.png"},
-			drawtype = "nodebox",
-			paramtype = "light",
-			use_texture_alpha = "clip",
-			node_box = {
-				type = "fixed",
-				fixed = {
-					{-0.5, 0.375, -0.5, 0.5, 0.5, 0.5},
-					{-0.5, -0.5, -0.5, -0.375, 0.5, -0.375},
-					{0.375, -0.5, -0.5, 0.5, 0.5, -0.375},
-					{0.375, -0.5, 0.375, 0.5, 0.5, 0.5},
-					{-0.5, -0.5, 0.375, -0.375, 0.5, 0.5},
-					{-0.5, -0.5, -0.5, 0.5, -0.375, 0.5},
-				}
-			},
-			selection_box = {
-				type = "fixed",
-				fixed = {
-					{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
-				},
-			},
-			groups = {handy = 1, axey = 1, flammable = 3, building_block = 1, material_wood = 1, fire_encouragement = 5, fire_flammability = 20, not_in_creative_inventory = 1, falling_node = 1},
-			_mcl_after_falling = function(pos)
-				if minetest.get_node(pos).name == "mcl_bamboo:scaffolding_horizontal" then
-					if minetest.get_node(vector.offset(pos, 0, 0, 0)).name ~= "mcl_bamboo:scaffolding" then
-						minetest.remove_node(pos)
-						minetest.add_item(pos, "mcl_bamboo:scaffolding")
-					else
-						minetest.set_node(vector.offset(pos, 0, 1, 0), {name = "mcl_bamboo:scaffolding"})
-					end
-				end
-			end
-		})
-	end
 end
 
 local function register_craftings()
@@ -701,6 +655,12 @@ register_craftings()
 -- MAPGEN
 dofile(minetest.get_modpath(modname) .. "/mapgen.lua")
 
+-- BAMBOO_TOO (Bamboo two)
+dofile(minetest.get_modpath(modname) .. "/bambootoo.lua")
+
+-- BAMBOO EXTRAS
+dofile(minetest.get_modpath(modname) .. "/extras.lua")
+
 --ABMs
 minetest.register_abm({
 	nodenames = {"mcl_bamboo:bamboo"},
@@ -753,6 +713,7 @@ minetest.register_alias("bamboo_block", "mcl_bamboo:bamboo_block")
 minetest.register_alias("bamboo_strippedblock", "mcl_bamboo:bamboo_block_stripped")
 minetest.register_alias("bamboo", "mcl_bamboo:bamboo")
 minetest.register_alias("bamboo_plank", "mcl_bamboo:bamboo_plank")
+minetest.register_alias("bamboo_mosaic", "mcl_bamboo:bamboo_mosaic")
 
 minetest.register_alias("mcl_stairs:stair_bamboo", "mcl_stairs:stair_bamboo_block")
 minetest.register_alias("bamboo:bamboo", "mcl_bamboo:bamboo")
@@ -760,7 +721,7 @@ minetest.register_alias("bamboo:bamboo", "mcl_bamboo:bamboo")
 --[[
 todo -- make scaffolds do side scaffold blocks, so that they jut out.
 todo -- Also, make those blocks collapse (break) when a nearby connected scaffold breaks.
-todo -- add in alternative bamboo styles to simulate random placement. (see commented out nde box definitions.
+todo -- add in alternative bamboo styles to simulate random placement. (see commented out node box definitions.
 todo -- make endcap node for bamboo, so that they can be 12-16 nodes high and stop growing.
 todo -- mash all of that together so that it drops as one item, and chooses what version to be, in on_place.
 todo -- Raft
