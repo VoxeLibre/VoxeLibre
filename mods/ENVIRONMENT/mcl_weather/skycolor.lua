@@ -13,8 +13,8 @@ function mcl_weather.set_sky_box_clear(player)
 			day_horizon = "#B4D0FF",
 			dawn_sky = "#B4BAFA",
 			dawn_horizon = "#BAC1F0",
-			night_sky = "#006AFF",
-			night_horizon = "#4090FF",
+			night_sky = "#010102",
+			night_horizon = "#090A12",
 		},
 		clouds = true,
 	})
