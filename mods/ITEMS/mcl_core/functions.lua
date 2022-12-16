@@ -1367,108 +1367,46 @@ function mcl_core.supports_vines(nodename)
 end
 
 -- Leaf Decay
-
--- To enable leaf decay for a node, add it to the "leafdecay" group.
 --
--- The rating of the group determines how far from a node in the group "tree"
--- the node can be without decaying.
+-- Whenever a tree trunk node is removed, all `group:leaves` nodes in a radius
+-- of 6 blocks are checked from the trunk node's `after_destruct` handler.
+-- Any such nodes within that radius that has no trunk node present within a
+-- distance of 6 blocks is replaced with a `group:orphan_leaves` node.
 --
--- If param2 of the node is ~= 0, the node will always be preserved. Thus, if
--- the player places a node of that kind, you will want to set param2=1 or so.
---
-
-mcl_core.leafdecay_trunk_cache = {}
-mcl_core.leafdecay_enable_cache = true
--- Spread the load of finding trunks
-mcl_core.leafdecay_trunk_find_allow_accumulator = 0
-
-minetest.register_globalstep(function(dtime)
-	--local finds_per_second = 5000
-	mcl_core.leafdecay_trunk_find_allow_accumulator = math.floor(dtime * 5000)
-end)
-
+-- The `group:orphan_leaves` nodes are gradually decayed in this ABM.
 minetest.register_abm({
 	label = "Leaf decay",
-	nodenames = {"group:leafdecay"},
-	neighbors = {"air", "group:liquid"},
-	-- A low interval and a high inverse chance spreads the load
-	interval = 2,
-	chance = 5,
+	nodenames = {"group:orphan_leaves"},
+	interval = 5,
+	chance = 10,
+		action = function(pos, node)
+		-- Spawn item entities for any of the leaf's drops
+		local itemstacks = minetest.get_node_drops(node.name)
+		for _, itemname in pairs(itemstacks) do
+			local p_drop = vector.offset(pos, math.random() - 0.5, math.random() - 0.5, math.random() - 0.5)
+			minetest.add_item(p_drop, itemname)
+		end
+		-- Remove the decayed node
+		minetest.remove_node(pos)
+		leafdecay_particles(pos, node)
+		minetest.check_for_falling(pos)
 
-	action = function(p0, node, _, _)
-		local do_preserve = false
-		local d = minetest.registered_nodes[node.name].groups.leafdecay
-		if not d or d == 0 then
-			return
-		end
-		local n0 = minetest.get_node(p0)
-		if n0.param2 ~= 0 then
-			-- Prevent leafdecay for player-placed leaves.
-			-- param2 is set to 1 after it was placed by the player
-			return
-		end
-		local p0_hash = nil
-		if mcl_core.leafdecay_enable_cache then
-			p0_hash = minetest.hash_node_position(p0)
-			local trunkp = mcl_core.leafdecay_trunk_cache[p0_hash]
-			if trunkp then
-				local n = minetest.get_node(trunkp)
-				local reg = minetest.registered_nodes[n.name]
-				-- Assume ignore is a trunk, to make the thing work at the border of the active area
-				if n.name == "ignore" or (reg and reg.groups.tree and reg.groups.tree ~= 0) then
-					return
-				end
-				-- Cache is invalid
-				table.remove(mcl_core.leafdecay_trunk_cache, p0_hash)
-			end
-		end
-		if mcl_core.leafdecay_trunk_find_allow_accumulator <= 0 then
-			return
-		end
-		mcl_core.leafdecay_trunk_find_allow_accumulator =
-				mcl_core.leafdecay_trunk_find_allow_accumulator - 1
-		-- Assume ignore is a trunk, to make the thing work at the border of the active area
-		local p1 = minetest.find_node_near(p0, d, {"ignore", "group:tree"})
-		if p1 then
-			do_preserve = true
-			if mcl_core.leafdecay_enable_cache then
-				-- Cache the trunk
-				mcl_core.leafdecay_trunk_cache[p0_hash] = p1
-			end
-		end
-		if not do_preserve then
-			-- Drop stuff other than the node itself
-			local itemstacks = minetest.get_node_drops(n0.name)
-			for _, itemname in pairs(itemstacks) do
-				local p_drop = {
-					x = p0.x - 0.5 + math.random(),
-					y = p0.y - 0.5 + math.random(),
-					z = p0.z - 0.5 + math.random(),
-				}
-				minetest.add_item(p_drop, itemname)
-			end
-			-- Remove node
-			minetest.remove_node(p0)
-			leafdecay_particles(p0, n0)
-			minetest.check_for_falling(p0)
-
-			-- Kill depending vines immediately to skip the vines decay delay
-			local surround = {
-				{ x = 0, y = 0, z = -1 },
-				{ x = 0, y = 0, z = 1 },
-				{ x = -1, y = 0, z = 0 },
-				{ x = 1, y = 0, z = 0 },
-				{ x = 0, y = -1, z = -1 },
-			}
-			for s=1, #surround do
-				local spos = vector.add(p0, surround[s])
-				local maybe_vine = minetest.get_node(spos)
-				--local surround_inverse = vector.multiply(surround[s], -1)
-				if maybe_vine.name == "mcl_core:vine" and (not mcl_core.check_vines_supported(spos, maybe_vine)) then
-					minetest.remove_node(spos)
-					vinedecay_particles(spos, maybe_vine)
-					minetest.check_for_falling(spos)
-				end
+		-- Kill depending vines immediately to skip the vines decay delay
+		local surround = {
+			{ x = 0, y = 0, z = -1 },
+			{ x = 0, y = 0, z = 1 },
+			{ x = -1, y = 0, z = 0 },
+			{ x = 1, y = 0, z = 0 },
+			{ x = 0, y = -1, z = -1 },
+		}
+		for s=1, #surround do
+			local spos = vector.add(pos, surround[s])
+			local maybe_vine = minetest.get_node(spos)
+			--local surround_inverse = vector.multiply(surround[s], -1)
+			if maybe_vine.name == "mcl_core:vine" and (not mcl_core.check_vines_supported(spos, maybe_vine)) then
+				minetest.remove_node(spos)
+				vinedecay_particles(spos, maybe_vine)
+				minetest.check_for_falling(spos)
 			end
 		end
 	end

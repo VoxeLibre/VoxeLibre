@@ -74,6 +74,8 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `coral_species=X`: Specifies the species of a coral; equal X means equal species
 * `set_on_fire=X`: Sets any (not fire-resistant) mob or player on fire for X seconds when touching
 * `compostability=X`: Item can be used on a composter block; X (1-100) is the % chance of adding a level of compost
+* `leaves=X`: Node will spotaneously decay if no tree trunk nodes remain within 6 blocks distance.
+* `leaves_orphan`: See above, these nodes are in the process of decayed.
 
 #### Footnotes
 

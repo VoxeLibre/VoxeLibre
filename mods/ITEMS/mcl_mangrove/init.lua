@@ -52,9 +52,9 @@ minetest.register_node("mcl_mangrove:mangrove_tree", {
 	tiles = {"mcl_mangrove_log_top.png", "mcl_mangrove_log_top.png", "mcl_mangrove_log.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
+	after_destruct = mcl_core.update_leaves,
 	groups = {handy=1,axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	on_place = mcl_util.rotate_axis,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 	_mcl_stripped_variant = "mcl_mangrove:mangrove_stripped_trunk",
@@ -86,7 +86,7 @@ minetest.register_node("mcl_mangrove:mangrove_wood", {
 	_mcl_hardness = 2,
 })
 
-minetest.register_node("mcl_mangrove:mangroveleaves", {
+local l_def = {
 	description = S("Mangrove Leaves"),
 	_doc_items_longdesc = S("mangrove leaves are grown from mangrove trees."),
 	_doc_items_hidden = false,
@@ -95,7 +95,11 @@ minetest.register_node("mcl_mangrove:mangroveleaves", {
 	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	tiles = {"mcl_mangrove_leaves.png"},
 	paramtype = "light",
-	groups = {handy=1,shearsy=1,swordy=1, leafdecay=10, flammable=2, leaves=1, deco_block=1, dig_by_piston=1, fire_encouragement=30, fire_flammability=60},
+	groups = {
+		handy = 1, hoey = 1, shearsy = 1, swordy = 1, dig_by_piston = 1,
+		flammable = 2, fire_encouragement = 30, fire_flammability = 60,
+		leaves = 1, deco_block = 1, compostability = 30
+	},
 	drop = get_drops(0),
 	_mcl_shears_drop = true,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
@@ -103,7 +107,19 @@ minetest.register_node("mcl_mangrove:mangroveleaves", {
 	_mcl_hardness = 0.2,
 	_mcl_silk_touch_drop = true,
 	_mcl_fortune_drop = { get_drops(1), get_drops(2), get_drops(3), get_drops(4) },
-})
+}
+
+minetest.register_node("mcl_mangrove:mangroveleaves", l_def)
+
+local o_def = table.copy(l_def)
+o_def._doc_items_create_entry = false
+o_def.place_param2 = nil
+o_def.groups.not_in_creative_inventory = 1
+o_def.groups.orphan_leaves = 1
+o_def._mcl_shears_drop = {"mcl_mangrove:mangroveleaves"}
+o_def._mcl_silk_touch_drop = {"mcl_mangrove:mangroveleaves"}
+
+minetest.register_node("mcl_mangrove:mangroveleaves_orphan", o_def)
 
 minetest.register_node("mcl_mangrove:mangrove_stripped_trunk", {
 	description = S("Stripped Mangrove Wood"),
@@ -147,11 +163,13 @@ minetest.register_node("mcl_mangrove:mangrove_roots", {
 	drawtype = "allfaces_optional",
 	groups = {
 		handy = 1, hoey = 1, shearsy = 1, axey = 1, swordy = 1, dig_by_piston = 0,
-		leaves = 1, deco_block = 1,flammable = 10, fire_encouragement = 30, fire_flammability = 60,	compostability = 30
+		flammable = 10, fire_encouragement = 30, fire_flammability = 60,
+		deco_block = 1, compostability = 30
 	},
 	drop = "mcl_mangrove:mangrove_roots",
 	_mcl_shears_drop = true,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),			_mcl_blast_resistance = 0.7,
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0.7,
 	_mcl_hardness = 0.7,
 	_mcl_silk_touch_drop = true,
 	_mcl_fortune_drop = { "mcl_mangrove:mangrove_roots 1", "mcl_mangrove:mangrove_roots 2", "mcl_mangrove:mangrove_roots 3", "mcl_mangrove:mangrove_roots 4" },
@@ -329,6 +347,9 @@ local wlroots = {
 	end,
 }
 local rwlroots = table.copy(wlroots)
+-- FIXME luacheck complains that this is a repeated definition of water_tex.
+-- Maybe the tiles definition below should be replaced with the animated tile
+-- definition as per above?
 water_tex = "default_river_water_source_animated.png^[verticalframe:16:0"
 rwlroots.tiles = {
 	"("..water_tex..")^mcl_mangrove_roots_top.png",
