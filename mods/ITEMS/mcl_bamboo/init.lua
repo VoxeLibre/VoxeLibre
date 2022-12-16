@@ -344,8 +344,7 @@ local function create_nodes()
 
 				-- let's add plank slabs to the wood_slab group.
 				local bamboo_plank_slab = "mcl_stairs:slab_bamboo_plank"
-				local node_def_plank_slab_def = minetest.registered_nodes[bamboo_plank_slab]
-				node_def_plank_slab_def.groups = {
+				local node_groups = {
 					wood_slab = 1,
 					building_block = 1,
 					slab = 1,
@@ -354,13 +353,7 @@ local function create_nodes()
 					stair = 1
 				}
 
-				if DEBUG then
-					minetest.log("Plank_Slab definition: \n" .. dump(node_def_plank_slab_def))
-				end
-
-				-- A necessary evil, to add a single group to an already registered node. (And yes, I did try override_item())
-				minetest.unregister_item(node_def_plank_slab_def.name)
-				minetest.register_node(":"..node_def_plank_slab_def.name, node_def_plank_slab_def)
+				minetest.override_item(bamboo_plank_slab, {groups = node_groups})
 			end
 		end
 	end
