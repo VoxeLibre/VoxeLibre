@@ -176,7 +176,7 @@ local function create_nodes()
 	local bamboo_block_def = {
 		description = "Bamboo Block",
 		tiles = {"mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo_block.png"},
-		groups = {handy = 1, building_block = 1, axey = 1, flammable = 2, material_wood = 1, fire_encouragement = 5, fire_flammability = 5},
+		groups = {handy = 1, building_block = 1, axey = 1, flammable = 2, material_wood = 1, bamboo_block = 1, fire_encouragement = 5, fire_flammability = 5},
 		sounds = node_sound,
 		paramtype2 = "facedir",
 		drops = "mcl_bamboo:bamboo_block",
@@ -210,7 +210,7 @@ local function create_nodes()
 	minetest.register_node("mcl_bamboo:bamboo_block", bamboo_block_def)
 	local bamboo_stripped_block = table.copy(bamboo_block_def)
 	bamboo_stripped_block.on_rightclick = nil
-	bamboo_stripped_block.description = "Bamboo Block"
+	bamboo_stripped_block.description = S("Stripped Bamboo Block")
 	bamboo_stripped_block.tiles = {"mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo_block_stripped.png"}
 	minetest.register_node("mcl_bamboo:bamboo_block_stripped", bamboo_stripped_block)
 	minetest.register_node("mcl_bamboo:bamboo_plank", {
@@ -341,6 +341,26 @@ local function create_nodes()
 						S("Bamboo Plank Slab"),
 						S("Double Bamboo Plank Slab")
 				)
+
+				-- let's add plank slabs to the wood_slab group.
+				local bamboo_plank_slab = "mcl_stairs:slab_bamboo_plank"
+				local node_def_plank_slab_def = minetest.registered_nodes[bamboo_plank_slab]
+				node_def_plank_slab_def.groups = {
+					wood_slab = 1,
+					building_block = 1,
+					slab = 1,
+					axey = 1,
+					handy = 1,
+					stair = 1
+				}
+
+				if DEBUG then
+					minetest.log("Plank_Slab definition: \n" .. dump(node_def_plank_slab_def))
+				end
+
+				-- A necessary evil, to add a single group to an already registered node. (And yes, I did try override_item())
+				minetest.unregister_item(node_def_plank_slab_def.name)
+				minetest.register_node(":"..node_def_plank_slab_def.name, node_def_plank_slab_def)
 			end
 		end
 	end
@@ -400,7 +420,7 @@ local function create_nodes()
 			-- Bamboo Signs...
 			mcl_signs.register_sign_custom("mcl_bamboo", "_bamboo", "mcl_signs_sign_greyscale.png",
 					"#f6dc91", "default_sign_greyscale.png", "default_sign_greyscale.png",
-					S("Bamboo Sign"))
+					"Bamboo Sign")
 			mcl_signs.register_sign_craft("mcl_bamboo", "mcl_bamboo:bamboo_plank", "_bamboo")
 			minetest.register_alias("bamboo_sign", "mcl_signs:wall_sign_bamboo")
 		end
@@ -620,12 +640,40 @@ local function register_craftings()
 	})
 
 	minetest.register_craft({
+		output = bamboo .. "_plank 2",
+		recipe = {
+			{bamboo .. "_block_stripped"},
+		}
+	})
+
+	minetest.register_craft({
 		output = "mcl_core:stick",
 		recipe = {
 			{bamboo},
 			{bamboo},
 		}
 	})
+
+	-- Barrel and composter recipes
+	if minetest.get_modpath("mcl_stairs") and 1 == 2 then
+		-- currently disabled.
+		if mcl_stairs ~= nil then
+			minetest.register_craft({
+				output = "mcl_barrels:barrel_closed",
+				recipe = {
+					{"group:wood", "group:wood_slab", "group:wood"},
+					{"group:wood", "", "group:wood"},
+					{"group:wood", "group:wood_slab", "group:wood"},
+				}
+			})
+
+			minetest.register_craft({
+				type = "fuel",
+				recipe = "mcl_barrels:barrel_closed",
+				burntime = 15,
+			})
+		end
+	end
 
 	minetest.register_craft({
 		output = "mcl_bamboo:scaffolding 6",
