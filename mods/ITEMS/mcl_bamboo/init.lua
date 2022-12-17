@@ -111,18 +111,16 @@ local function create_nodes()
 			local new_pos = vector.offset(pos, 0, 1, 0)
 			local node_above = minetest.get_node(new_pos)
 			if node_above and node_above.name == "mcl_bamboo:bamboo" then
-				if node_above and node_above.name == "mcl_bamboo:bamboo" then
-					local sound_params = {
-						pos = new_pos,
-						gain = 1.0, -- default
-						max_hear_distance = 10, -- default, uses a Euclidean metric
-					}
+				local sound_params = {
+					pos = new_pos,
+					gain = 1.0, -- default
+					max_hear_distance = 10, -- default, uses a Euclidean metric
+				}
 
-					minetest.remove_node(new_pos)
-					minetest.sound_play(node_sound.dug, sound_params, true)
-					local istack = ItemStack("mcl_bamboo:bamboo")
-					minetest.add_item(new_pos, istack)
-				end
+				minetest.remove_node(new_pos)
+				minetest.sound_play(node_sound.dug, sound_params, true)
+				local istack = ItemStack("mcl_bamboo:bamboo")
+				minetest.add_item(new_pos, istack)
 			end
 		end,
 	}
