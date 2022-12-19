@@ -348,7 +348,10 @@ local function create_nodes()
 					slab = 1,
 					axey = 1,
 					handy = 1,
-					stair = 1
+					stair = 1,
+					flammable = 1,
+					fire_encouragement = 5,
+					fire_flammability = 20
 				}
 
 				minetest.override_item(bamboo_plank_slab, {groups = node_groups})
@@ -552,18 +555,16 @@ local function create_nodes()
 			local new_pos = vector.offset(pos, 0, 1, 0)
 			local node_above = minetest.get_node(new_pos)
 			if node_above and node_above.name == "mcl_bamboo:scaffolding" then
-				if node_above and node_above.name == "mcl_bamboo:scaffolding" then
-					local sound_params = {
-						pos = new_pos,
-						gain = 1.0, -- default
-						max_hear_distance = 10, -- default, uses a Euclidean metric
-					}
+				local sound_params = {
+					pos = new_pos,
+					gain = 1.0, -- default
+					max_hear_distance = 10, -- default, uses a Euclidean metric
+				}
 
-					minetest.remove_node(new_pos)
-					minetest.sound_play(node_sound.dug, sound_params, true)
-					local istack = ItemStack("mcl_bamboo:scaffolding")
-					minetest.add_item(new_pos, istack)
-				end
+				minetest.remove_node(new_pos)
+				minetest.sound_play(node_sound.dug, sound_params, true)
+				local istack = ItemStack("mcl_bamboo:scaffolding")
+				minetest.add_item(new_pos, istack)
 			end
 		end,
 
@@ -645,27 +646,6 @@ local function register_craftings()
 		}
 	})
 
-	-- Barrel and composter recipes
-	if minetest.get_modpath("mcl_stairs") and 1 == 2 then
-		-- currently disabled.
-		if mcl_stairs ~= nil then
-			minetest.register_craft({
-				output = "mcl_barrels:barrel_closed",
-				recipe = {
-					{"group:wood", "group:wood_slab", "group:wood"},
-					{"group:wood", "", "group:wood"},
-					{"group:wood", "group:wood_slab", "group:wood"},
-				}
-			})
-
-			minetest.register_craft({
-				type = "fuel",
-				recipe = "mcl_barrels:barrel_closed",
-				burntime = 15,
-			})
-		end
-	end
-
 	minetest.register_craft({
 		output = "mcl_bamboo:scaffolding 6",
 		recipe = {{bamboo, "mcl_mobitems:string", bamboo},
@@ -732,6 +712,24 @@ local function register_craftings()
 		recipe = "mcl_bamboo:scaffolding",
 		burntime = 20
 	})
+
+	"mcl_stairs:slab_bamboo_plank"
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mcl_stairs:slab_bamboo_plank",
+		burntime = 7.5,
+	})
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mcl_stairs:slab_bamboo_block",
+		burntime = 7.5,
+	})
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mcl_stairs:slab_bamboo_stripped",
+		burntime = 7.5,
+	})
+
 end
 
 create_nodes()
@@ -739,6 +737,8 @@ register_craftings()
 
 -- MAPGEN
 dofile(minetest.get_modpath(modname) .. "/mapgen.lua")
+
+local BAMBOO_MAX_HEIGHT_CHECK = -16
 
 --ABMs
 minetest.register_abm({
@@ -751,7 +751,7 @@ minetest.register_abm({
 			return
 		end
 		local found_soil = false
-		for py = -1, -16, -1 do
+		for py = -1, BAMBOO_MAX_HEIGHT_CHECK, -1 do
 			local chk_pos = vector.offset(pos, 0, py, 0)
 			local name = minetest.get_node(chk_pos).name
 			if minetest.get_item_group(name, "soil") ~= 0 then
@@ -810,4 +810,28 @@ todo: Added a new "Mosaic" plank variant that is unique to Bamboo called Bamboo 
     You can craft Stair and Slab variants of Bamboo Mosaic
     Bamboo Mosaic blocks cannot be used as a crafting ingredient where other wooden blocks are used, but they can be
     used as fuel.
+
+todo -- add in fuel recipes for:
+	[-] bamboo slab + stripped bamboo slab
+	[-] bamboo stair + stripped bamboo stair + bamboo plank stair
+	[-] bamboo button
+--]]
+
+--[[
+Useful code snippit for dealing with updating groups on already defined objects, such as api created items.
+I think that this will be implemented, as time goes on, to deal with adding groups to slabs and the like.
+local function addgroups(name, ...)
+	local def = minetest.registered_items[name] or error(name .. " not found")
+	local groups = {}
+	for k, v in pairs(def.groups) do
+		groups[k] = v
+	end
+	local function addall(x, ...)
+		if not x then return end
+		groups[x] = 1
+		return addall(...)
+	end
+	addall(...)
+	return minetest.override_item(name, {groups = groups})
+end
 --]]
