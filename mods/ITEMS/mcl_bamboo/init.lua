@@ -729,23 +729,6 @@ local function register_craftings()
 		burntime = 7.5,
 	})
 
-
-	minetest.register_craft({
-		type = "fuel",
-		recipe = "mcl_stairs:slab_bamboo_plank",
-		burntime = 7.5,
-	})
-	minetest.register_craft({
-		type = "fuel",
-		recipe = "mcl_stairs:slab_bamboo_block",
-		burntime = 7.5,
-	})
-	minetest.register_craft({
-		type = "fuel",
-		recipe = "mcl_stairs:slab_bamboo_stripped",
-		burntime = 7.5,
-	})
-
 end
 
 create_nodes()
@@ -851,4 +834,3 @@ local function addgroups(name, ...)
 	return minetest.override_item(name, {groups = groups})
 end
 --]]
-
