@@ -746,7 +746,8 @@ local function register_craftings()
 		type = "fuel",
 		recipe = "mcl_stairs:slab_bamboo_stripped",
 		burntime = 7.5,
-	}) "mesecons_button:button_bamboo_off"
+	})
+
 	minetest.register_craft({
 		type = "fuel",
 		recipe = "mesecons_button:button_bamboo_off",
