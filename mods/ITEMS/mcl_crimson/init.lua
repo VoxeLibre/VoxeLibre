@@ -307,10 +307,10 @@ minetest.register_node("mcl_crimson:warped_nylium", {
 		"mcl_nether_netherrack.png^warped_nylium_side.png",
 		"mcl_nether_netherrack.png^warped_nylium_side.png",
 	},
-	paramtype2 = "facedir",
 	is_ground_content = true,
 	drop = "mcl_nether:netherrack",
 	groups = {pickaxey=1, building_block=1, material_stone=1},
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_hardness = 0.4,
 	_mcl_blast_resistance = 0.4,
 	_mcl_silk_touch_drop = true,
@@ -559,7 +559,7 @@ minetest.register_node("mcl_crimson:crimson_nylium", {
 		"mcl_nether_netherrack.png^crimson_nylium_side.png",
 	},
 	groups = {pickaxey = 1, building_block = 1, material_stone = 1},
-	paramtype2 = "facedir",
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = true,
 	drop = "mcl_nether:netherrack",
 	_mcl_hardness = 0.4,
@@ -741,4 +741,3 @@ minetest.register_craft({
 		{"mcl_core:stick", warped_wood, "mcl_core:stick"},
 	}
 })
-
