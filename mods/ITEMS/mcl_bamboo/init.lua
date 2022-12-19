@@ -26,6 +26,25 @@ local USE_END_CAPS = false
 local BROKEN_DOORS = true
 
 -- LOCAL FUNCTIONS
+
+-- Add Groups function, courtesy of Warr1024.
+function addgroups(name, ...)
+	local def = minetest.registered_items[name] or error(name .. " not found")
+	local groups = {}
+	for k, v in pairs(def.groups) do
+		groups[k] = v
+	end
+	local function addall(x, ...)
+		if not x then
+			return
+		end
+		groups[x] = 1
+		return addall(...)
+	end
+	addall(...)
+	return minetest.override_item(name, {groups = groups})
+end
+
 local function create_nodes()
 
 	local bamboo_def = {
@@ -467,7 +486,7 @@ local function create_nodes()
 					"mcl_bamboo_bamboo_plank.png",
 					"mcl_bamboo:bamboo_plank",
 					node_sound,
-					{material_wood = 1, handy = 1, pickaxey = 1},
+					{material_wood = 1, handy = 1, pickaxey = 1, flammable = 3, fire_flammability = 20, fire_encouragement = 5, },
 					1,
 					false,
 					S("A bamboo button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second."),
@@ -727,6 +746,11 @@ local function register_craftings()
 		type = "fuel",
 		recipe = "mcl_stairs:slab_bamboo_stripped",
 		burntime = 7.5,
+	}) "mesecons_button:button_bamboo_off"
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mesecons_button:button_bamboo_off",
+		burntime = 5,
 	})
 
 end
@@ -814,23 +838,4 @@ todo -- add in fuel recipes for:
 	[-] bamboo slab + stripped bamboo slab
 	[-] bamboo stair + stripped bamboo stair + bamboo plank stair
 	[-] bamboo button
---]]
-
---[[
-Useful code snippit for dealing with updating groups on already defined objects, such as api created items.
-I think that this will be implemented, as time goes on, to deal with adding groups to slabs and the like.
-local function addgroups(name, ...)
-	local def = minetest.registered_items[name] or error(name .. " not found")
-	local groups = {}
-	for k, v in pairs(def.groups) do
-		groups[k] = v
-	end
-	local function addall(x, ...)
-		if not x then return end
-		groups[x] = 1
-		return addall(...)
-	end
-	addall(...)
-	return minetest.override_item(name, {groups = groups})
-end
 --]]
