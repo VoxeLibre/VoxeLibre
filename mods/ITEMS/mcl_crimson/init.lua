@@ -283,10 +283,10 @@ minetest.register_node("mcl_crimson:warped_hyphae", {
 	tiles = {
 		"warped_hyphae.png",
 		"warped_hyphae.png",
-		"warped_hyphae_side.png",
-		"warped_hyphae_side.png",
-		"warped_hyphae_side.png",
-		"warped_hyphae_side.png",
+		{
+			image="warped_hyphae_side.png",
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
+		},
 	},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
@@ -321,7 +321,12 @@ minetest.register_node("mcl_crimson:warped_nylium", {
 minetest.register_node("mcl_crimson:warped_hyphae_bark", {
 	description = S("Warped Hyphae Bark"),
 	_doc_items_longdesc = S("This is a decorative block surrounded by the bark of an hyphae."),
-	tiles = {"warped_hyphae_side.png"},
+	tiles = {
+	{
+		image="warped_hyphae_side.png",
+		animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
+	},
+	},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, bark = 1, building_block = 1, material_wood = 1},
@@ -468,10 +473,10 @@ minetest.register_node("mcl_crimson:crimson_hyphae", {
 	tiles = {
 		"crimson_hyphae.png",
 		"crimson_hyphae.png",
-		"crimson_hyphae_side.png",
-		"crimson_hyphae_side.png",
-		"crimson_hyphae_side.png",
-		"crimson_hyphae_side.png",
+		{
+			image="crimson_hyphae_side.png",
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
+		},
 	},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
@@ -487,7 +492,12 @@ minetest.register_node("mcl_crimson:crimson_hyphae", {
 minetest.register_node("mcl_crimson:crimson_hyphae_bark", {
 	description = S("Crimson Hyphae Bark"),
 	_doc_items_longdesc = S("This is a decorative block surrounded by the bark of an hyphae."),
-	tiles = {"crimson_hyphae_side.png"},
+	tiles = {
+	{
+		image="crimson_hyphae_side.png",
+		animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
+	},
+	},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, bark = 1, building_block = 1, material_wood = 1},
