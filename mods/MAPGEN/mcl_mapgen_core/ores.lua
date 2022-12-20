@@ -395,7 +395,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_num_ores = 4,
 		clust_size     = 3,
 		y_min          = mcl_vars.mg_overworld_min,
-		y_max          = mcl_worlds.layer_to_y(-5),
+		y_max          = mcl_worlds.layer_to_y(12),
 	})
 	minetest.register_ore({
 		ore_type       = "scatter",
@@ -405,7 +405,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_num_ores = 2,
 		clust_size     = 2,
 		y_min          = mcl_vars.mg_overworld_min,
-		y_max          = mcl_worlds.layer_to_y(-15),
+		y_max          = mcl_worlds.layer_to_y(12),
 	})
 	minetest.register_ore({
 		ore_type       = "scatter",
@@ -692,9 +692,9 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 			{ "iron", 830, 5, 3, deepslate_min, deepslate_max },
 			{ "gold", 4775, 5, 3, deepslate_min, deepslate_max },
 			{ "gold", 6560, 7, 3, deepslate_min, deepslate_max },
-			{ "diamond", 10000, 4, 3, deepslate_min, mcl_worlds.layer_to_y(-12) },
-			{ "diamond", 5000, 2, 3, deepslate_min, mcl_worlds.layer_to_y(-12) },
-			{ "diamond", 10000, 8, 3, deepslate_min, mcl_worlds.layer_to_y(-5) },
+			{ "diamond", 10000, 4, 3, deepslate_min, mcl_worlds.layer_to_y(12) },
+			{ "diamond", 5000, 2, 3, deepslate_min, mcl_worlds.layer_to_y(12) },
+			{ "diamond", 10000, 8, 3, deepslate_min, mcl_worlds.layer_to_y(12) },
 			{ "diamond", 20000, 1, 1, mcl_worlds.layer_to_y(13), mcl_worlds.layer_to_y(15) },
 			{ "diamond", 20000, 2, 2, mcl_worlds.layer_to_y(13), mcl_worlds.layer_to_y(15) },
 			{ "redstone", 500, 4, 3, deepslate_min, mcl_worlds.layer_to_y(13) },
