@@ -17,6 +17,7 @@ mcl_structures.register_structure("pillager_outpost",{
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "Desert", "Plains", "Savanna", "IcePlains", "Taiga" },
+	construct_nodes = {"mcl_anvils:anvil_damage_2"},
 	filenames = {
 		modpath.."/schematics/mcl_structures_pillager_outpost.mts",
 		modpath.."/schematics/mcl_structures_pillager_outpost_2.mts"
@@ -67,7 +68,12 @@ mcl_structures.register_structure("pillager_outpost",{
 		mcl_structures.spawn_mobs("mobs_mc:pillager",spawnon,p1,p2,pr,5)
 		mcl_structures.spawn_mobs("mobs_mc:parrot",{"mesecons_pressureplates:pressure_plate_stone_off"},p1,p2,pr,3)
 		mcl_structures.spawn_mobs("mobs_mc:iron_golem",{"mesecons_button:button_stone_off"},p1,p2,pr,1)
-		mcl_structures.construct_nodes(p1,p2,{"group:wall"})
+		for _,n in pairs(minetest.find_nodes_in_area(p1,p2,{"group:wall"})) do
+			local def = minetest.registered_nodes[minetest.get_node(n).name:gsub("_%d+$","")]
+			if def and def.on_construct then
+				def.on_construct(n)
+			end
+		end
 	end
 })
 

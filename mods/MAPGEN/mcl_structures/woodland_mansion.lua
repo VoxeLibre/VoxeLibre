@@ -20,7 +20,7 @@ mcl_structures.register_structure("woodland_cabin",{
 		modpath.."/schematics/mcl_structures_woodland_cabin.mts",
 		modpath.."/schematics/mcl_structures_woodland_outpost.mts",
 	},
-	construct_nodes = {"mcl_barrels:barrel_closed"},
+	construct_nodes = {"mcl_barrels:barrel_closed","mcl_books:bookshelf"},
 	after_place = function(p,def,pr)
 		local p1=vector.offset(p,-def.sidelen,-1,-def.sidelen)
 		local p2=vector.offset(p,def.sidelen,def.sidelen,def.sidelen)

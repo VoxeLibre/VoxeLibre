@@ -1,16 +1,34 @@
+local function mcl_log (message)
+	mcl_util.mcl_log (message, "[Village - Foundation]")
+end
+
+local foundation_materials = {}
+
+foundation_materials["mcl_core:sand"] = "mcl_core:sandstone"
+--"mcl_core:sandstonecarved"
+
 -------------------------------------------------------------------------------
 -- function to fill empty space below baseplate when building on a hill
 -------------------------------------------------------------------------------
-function settlements.ground(pos, pr) -- role model: Wendelsteinkircherl, Brannenburg
+function settlements.ground(pos, pr, platform_material) -- role model: Wendelsteinkircherl, Brannenburg
 	local p2 = vector.new(pos)
 	local cnt = 0
+
 	local mat = "mcl_core:dirt"
+	if not platform_material then
+		mat = "mcl_core:dirt"
+	else
+		mat = platform_material
+	end
+
 	p2.y = p2.y-1
 	while true do
 		cnt = cnt+1
 		if cnt > 20 then break end
 		if cnt>pr:next(2,4) then
-			mat = "mcl_core:stone"
+			if not platform_material then
+				mat = "mcl_core:stone"
+			end
 		end
 		minetest.swap_node(p2, {name=mat})
 		p2.y = p2.y-1
@@ -40,6 +58,12 @@ function settlements.terraform(settlement_info, pr)
 		end
 		--fheight = schematic_data["hheight"] * 3  -- remove trees and leaves above
 		fheight = schematic_data["hheight"]  -- remove trees and leaves above
+
+		local surface_mat = settlement_info[i]["surface_mat"]
+		mcl_log("Surface material: " .. tostring(surface_mat))
+		local platform_mat = foundation_materials[surface_mat]
+		mcl_log("Foundation material: " .. tostring(platform_mat))
+
 		--
 		-- now that every info is available -> create platform and clear space above
 		--
@@ -48,7 +72,8 @@ function settlements.terraform(settlement_info, pr)
 				for yi = 0,fheight *3 do
 					if yi == 0 then
 						local p = {x=pos.x+xi, y=pos.y, z=pos.z+zi}
-						settlements.ground(p, pr)
+						-- Pass in biome info and make foundations of same material (seed: apple for desert)
+						settlements.ground(p, pr, platform_mat)
 					else
 						-- write ground
 --						local p = {x=pos.x+xi, y=pos.y+yi, z=pos.z+zi}

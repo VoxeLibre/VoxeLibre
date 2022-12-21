@@ -8,6 +8,12 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local bamboo = "mcl_bamboo:bamboo"
+local adj_nodes = {
+	vector.new(0, 0, 1),
+	vector.new(0, 0, -1),
+	vector.new(1, 0, 0),
+	vector.new(-1, 0, 0),
+}
 local node_sound = mcl_sounds.node_sound_wood_defaults()
 
 -- CONSTS
@@ -20,6 +26,25 @@ local USE_END_CAPS = false
 local BROKEN_DOORS = true
 
 -- LOCAL FUNCTIONS
+
+-- Add Groups function, courtesy of Warr1024.
+function addgroups(name, ...)
+	local def = minetest.registered_items[name] or error(name .. " not found")
+	local groups = {}
+	for k, v in pairs(def.groups) do
+		groups[k] = v
+	end
+	local function addall(x, ...)
+		if not x then
+			return
+		end
+		groups[x] = 1
+		return addall(...)
+	end
+	addall(...)
+	return minetest.override_item(name, {groups = groups})
+end
+
 local function create_nodes()
 
 	local bamboo_def = {
@@ -105,18 +130,16 @@ local function create_nodes()
 			local new_pos = vector.offset(pos, 0, 1, 0)
 			local node_above = minetest.get_node(new_pos)
 			if node_above and node_above.name == "mcl_bamboo:bamboo" then
-				if node_above and node_above.name == "mcl_bamboo:bamboo" then
-					local sound_params = {
-						pos = new_pos,
-						gain = 1.0, -- default
-						max_hear_distance = 10, -- default, uses a Euclidean metric
-					}
+				local sound_params = {
+					pos = new_pos,
+					gain = 1.0, -- default
+					max_hear_distance = 10, -- default, uses a Euclidean metric
+				}
 
-					minetest.remove_node(new_pos)
-					minetest.sound_play(node_sound.dug, sound_params, true)
-					local istack = ItemStack("mcl_bamboo:bamboo")
-					minetest.add_item(new_pos, istack)
-				end
+				minetest.remove_node(new_pos)
+				minetest.sound_play(node_sound.dug, sound_params, true)
+				local istack = ItemStack("mcl_bamboo:bamboo")
+				minetest.add_item(new_pos, istack)
 			end
 		end,
 	}
@@ -170,7 +193,7 @@ local function create_nodes()
 	local bamboo_block_def = {
 		description = "Bamboo Block",
 		tiles = {"mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo_block.png"},
-		groups = {handy = 1, building_block = 1, axey = 1, flammable = 2, material_wood = 1, fire_encouragement = 5, fire_flammability = 5},
+		groups = {handy = 1, building_block = 1, axey = 1, flammable = 2, material_wood = 1, bamboo_block = 1, fire_encouragement = 5, fire_flammability = 5},
 		sounds = node_sound,
 		paramtype2 = "facedir",
 		drops = "mcl_bamboo:bamboo_block",
@@ -204,7 +227,7 @@ local function create_nodes()
 	minetest.register_node("mcl_bamboo:bamboo_block", bamboo_block_def)
 	local bamboo_stripped_block = table.copy(bamboo_block_def)
 	bamboo_stripped_block.on_rightclick = nil
-	bamboo_stripped_block.description = "Bamboo Block"
+	bamboo_stripped_block.description = S("Stripped Bamboo Block")
 	bamboo_stripped_block.tiles = {"mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo_block_stripped.png"}
 	minetest.register_node("mcl_bamboo:bamboo_block_stripped", bamboo_stripped_block)
 	minetest.register_node("mcl_bamboo:bamboo_plank", {
@@ -335,6 +358,22 @@ local function create_nodes()
 						S("Bamboo Plank Slab"),
 						S("Double Bamboo Plank Slab")
 				)
+
+				-- let's add plank slabs to the wood_slab group.
+				local bamboo_plank_slab = "mcl_stairs:slab_bamboo_plank"
+				local node_groups = {
+					wood_slab = 1,
+					building_block = 1,
+					slab = 1,
+					axey = 1,
+					handy = 1,
+					stair = 1,
+					flammable = 1,
+					fire_encouragement = 5,
+					fire_flammability = 20
+				}
+
+				minetest.override_item(bamboo_plank_slab, {groups = node_groups})
 			end
 		end
 	end
@@ -394,7 +433,7 @@ local function create_nodes()
 			-- Bamboo Signs...
 			mcl_signs.register_sign_custom("mcl_bamboo", "_bamboo", "mcl_signs_sign_greyscale.png",
 					"#f6dc91", "default_sign_greyscale.png", "default_sign_greyscale.png",
-					S("Bamboo Sign"))
+					"Bamboo Sign")
 			mcl_signs.register_sign_craft("mcl_bamboo", "mcl_bamboo:bamboo_plank", "_bamboo")
 			minetest.register_alias("bamboo_sign", "mcl_signs:wall_sign_bamboo")
 		end
@@ -447,7 +486,7 @@ local function create_nodes()
 					"mcl_bamboo_bamboo_plank.png",
 					"mcl_bamboo:bamboo_plank",
 					node_sound,
-					{material_wood = 1, handy = 1, pickaxey = 1},
+					{material_wood = 1, handy = 1, pickaxey = 1, flammable = 3, fire_flammability = 20, fire_encouragement = 5, },
 					1,
 					false,
 					S("A bamboo button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second."),
@@ -535,18 +574,16 @@ local function create_nodes()
 			local new_pos = vector.offset(pos, 0, 1, 0)
 			local node_above = minetest.get_node(new_pos)
 			if node_above and node_above.name == "mcl_bamboo:scaffolding" then
-				if node_above and node_above.name == "mcl_bamboo:scaffolding" then
-					local sound_params = {
-						pos = new_pos,
-						gain = 1.0, -- default
-						max_hear_distance = 10, -- default, uses a Euclidean metric
-					}
+				local sound_params = {
+					pos = new_pos,
+					gain = 1.0, -- default
+					max_hear_distance = 10, -- default, uses a Euclidean metric
+				}
 
-					minetest.remove_node(new_pos)
-					minetest.sound_play(node_sound.dug, sound_params, true)
-					local istack = ItemStack("mcl_bamboo:scaffolding")
-					minetest.add_item(new_pos, istack)
-				end
+				minetest.remove_node(new_pos)
+				minetest.sound_play(node_sound.dug, sound_params, true)
+				local istack = ItemStack("mcl_bamboo:scaffolding")
+				minetest.add_item(new_pos, istack)
 			end
 		end,
 
@@ -570,6 +607,13 @@ local function register_craftings()
 		output = bamboo .. "_plank 2",
 		recipe = {
 			{bamboo .. "_block"},
+		}
+	})
+
+	minetest.register_craft({
+		output = bamboo .. "_plank 2",
+		recipe = {
+			{bamboo .. "_block_stripped"},
 		}
 	})
 
@@ -647,6 +691,29 @@ local function register_craftings()
 		recipe = "mcl_bamboo:scaffolding",
 		burntime = 20
 	})
+
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mcl_stairs:slab_bamboo_plank",
+		burntime = 7.5,
+	})
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mcl_stairs:slab_bamboo_block",
+		burntime = 7.5,
+	})
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mcl_stairs:slab_bamboo_stripped",
+		burntime = 7.5,
+	})
+
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mesecons_button:button_bamboo_off",
+		burntime = 5,
+	})
+
 end
 
 create_nodes()
@@ -661,6 +728,8 @@ dofile(minetest.get_modpath(modname) .. "/bambootoo.lua")
 -- BAMBOO EXTRAS
 dofile(minetest.get_modpath(modname) .. "/extras.lua")
 
+local BAMBOO_MAX_HEIGHT_CHECK = -16
+
 --ABMs
 minetest.register_abm({
 	nodenames = {"mcl_bamboo:bamboo"},
@@ -672,7 +741,7 @@ minetest.register_abm({
 			return
 		end
 		local found_soil = false
-		for py = -1, -16, -1 do
+		for py = -1, BAMBOO_MAX_HEIGHT_CHECK, -1 do
 			local chk_pos = vector.offset(pos, 0, py, 0)
 			local name = minetest.get_node(chk_pos).name
 			if minetest.get_item_group(name, "soil") ~= 0 then
@@ -732,4 +801,8 @@ todo: Added a new "Mosaic" plank variant that is unique to Bamboo called Bamboo 
     You can craft Stair and Slab variants of Bamboo Mosaic
     Bamboo Mosaic blocks cannot be used as a crafting ingredient where other wooden blocks are used, but they can be
     used as fuel.
+
+todo -- add in fuel recipes for:
+	[-] bamboo slab + stripped bamboo slab
+	[-] bamboo stair + stripped bamboo stair + bamboo plank stair
 --]]

@@ -9,12 +9,13 @@ return {
 		"Wuzzy",
 	}},
 	{S("Maintainers"), 0xFF51D5, {
+		"AncientMariner",
 		"Nicu",
-		"cora",
 	}},
 	{S("Previous Maintainers"), 0xFFFFFF, {
 		"Fleckenstein",
 		"jordan4ibanez",
+		"cora",
 	}},
 	{S("Developers"), 0xF84355, {
 		"bzoss",
@@ -36,7 +37,6 @@ return {
 		"MrRar",
 		"talamh",
 		"Faerraven",
-		"AncientMariner",
 	}},
 	{S("Contributors"), 0x52FF00, {
 		"Laurent Rocher",

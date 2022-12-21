@@ -6,27 +6,6 @@ local S = minetest.get_translator(minetest.get_current_modname())
 --local mod_doc = minetest.get_modpath("doc") -> maybe add documentation ?
 
 for i=0,4 do
-	local nodebox_uncharged = { --Reused the composter nodebox, since it is basicly the same
-	type = "fixed",
-	fixed = {
-		{-0.5,   -0.5, -0.5,  -0.375, 0.5,   0.5},   -- Left wall
-		{ 0.375, -0.5, -0.5,   0.5,   0.5,   0.5},   -- Right wall
-		{-0.375, -0.5,  0.375, 0.375, 0.5,   0.5},   -- Back wall
-		{-0.375, -0.5, -0.5,   0.375, 0.5,  -0.375}, -- Front wall
-		{-0.5,   -0.5, -0.5,   0.5,   -0.47, 0.5},   -- Bottom level, -0.47 because -0.5 is so low that you can see the texture of the block below through
-		}
-	}
-
-	local nodebox_charged = { --Reused the composter nodebox, since it is basicly the same
-	type = "fixed",
-	fixed = {
-		{-0.5,   -0.5, -0.5,  -0.375, 0.5,   0.5},   -- Left wall
-		{ 0.375, -0.5, -0.5,   0.5,   0.5,   0.5},   -- Right wall
-		{-0.375, -0.5,  0.375, 0.375, 0.5,   0.5},   -- Back wall
-		{-0.375, -0.5, -0.5,   0.375, 0.5,  -0.375}, -- Front wall
-		{-0.5,   -0.5, -0.5,   0.5,   0.5, 0.5},   -- Bottom level
-		}
-	}
 
 	local function rightclick(pos, node, player, itemstack)
 		if itemstack.get_name(itemstack) == "mcl_nether:glowstone" and i ~= 4 then
@@ -54,8 +33,6 @@ for i=0,4 do
 				"respawn_anchor_bottom.png",
 				"respawn_anchor_side0.png"
 			},
-			drawtype = "nodebox",
-			node_box = nodebox_uncharged,
 			on_rightclick = rightclick,
 			groups = {pickaxey=1, material_stone=1},
 			_mcl_hardness = 22.5,
@@ -68,14 +45,12 @@ for i=0,4 do
 			description=S("Respawn Anchor"),
 			tiles = {
 			{
-				image="respawn_anchor_top_on.png",
+				image="respawn_anchor_top_on.png^[noalpha",
 				animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
 			},
 				"respawn_anchor_bottom.png",
 				"respawn_anchor_side"..i ..".png"
 			},
-			drawtype = "nodebox",
-			node_box = nodebox_charged,
 			on_rightclick = rightclick,
 			groups = {pickaxey=1, material_stone=1, not_in_creative_inventory=1},
 			_mcl_hardness = 22.5,
