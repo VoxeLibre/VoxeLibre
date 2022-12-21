@@ -138,7 +138,6 @@ mcl_weather.skycolor = {
 					biomesky = minetest.registered_biomes[biome]._mcl_skycolor
 					biomefog = minetest.registered_biomes[biome]._mcl_fogcolor
 				end
-
 				if (mcl_weather.state == "none") then
 					-- Clear weather
 					mcl_weather.set_sky_box_clear(player,biomesky,biomefog)
