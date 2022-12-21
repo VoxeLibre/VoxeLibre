@@ -6,6 +6,8 @@ local water_color = "#0b4880"
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
 function mcl_weather.set_sky_box_clear(player,sky,fog)
+	local pos = player:get_pos()
+	if minetest.get_item_group(minetest.get_node(vector.new(pos.x,pos.y+1.5,pos.z)).name, "water") ~= 0 then return end
 	local sc = {
 			day_sky = "#0000FF", -- Pure blue to make debugging this stuff easier. Not visible during normal gameplay.
 			day_horizon = "#FF0000", -- Pure red to make debugging this stuff easier. Not visible during normal gameplay.
