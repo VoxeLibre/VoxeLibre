@@ -1,5 +1,5 @@
--- [bamboo] mod by Krock, modified by SmallJoker, Made for MineClone 2 by Michieal (as mcl_bamboo).
--- Parts of mcl_scaffolding were used. Mcl_scaffolding originally created by Cora; modified for mcl_bamboo by Michieal.
+-- [bamboo] mod by SmallJoker, Made for MineClone 2 by Michieal (as mcl_bamboo).
+-- Parts of mcl_scaffolding were used. Mcl_scaffolding originally created by Cora; heavily reworked for mcl_bamboo by Michieal.
 -- Creation date: 12-01-2022 (Dec 1st, 2022)
 -- License for everything: GPL3
 -- Bamboo max height: 12-16
@@ -21,6 +21,20 @@ local SIDE_SCAFFOLDING = false
 local MAKE_STAIRS = true
 local DEBUG = false
 local USE_END_CAPS = false
+
+--Bamboo can be planted on moss blocks, grass blocks, dirt, coarse dirt, rooted dirt, gravel, mycelium, podzol, sand, red sand, or mud
+local bamboo_dirt_nodes = {
+	"mcl_core:redsand",
+	"mcl_core:sand",
+	"mcl_core:dirt",
+"mcl_core:coarse_dirt",
+"mcl_core:dirt_with_grass",
+"mcl_core:podzol",
+"mcl_core:mycelium",
+"mcl_lush_caves:rooted_dirt",
+"mcl_lush_caves:moss",
+"mcl_mud:mud",
+}
 
 -- Due to door fix #2736, doors are displayed backwards. When this is fixed, set this variable to false.
 local BROKEN_DOORS = true
@@ -188,7 +202,7 @@ local function create_nodes()
 		return minetest.item_place(itemstack, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
 	end,
 
-	minetest.register_node("mcl_bamboo:bamboo_top", bamboo_top)
+	minetest.register_node("mcl_bamboo:bamboo_endcap", bamboo_top)
 
 	local bamboo_block_def = {
 		description = "Bamboo Block",
@@ -586,7 +600,6 @@ local function create_nodes()
 				minetest.add_item(new_pos, istack)
 			end
 		end,
-
 	})
 
 end
@@ -786,6 +799,8 @@ minetest.register_alias("bamboo_mosaic", "mcl_bamboo:bamboo_mosaic")
 
 minetest.register_alias("mcl_stairs:stair_bamboo", "mcl_stairs:stair_bamboo_block")
 minetest.register_alias("bamboo:bamboo", "mcl_bamboo:bamboo")
+minetest.register_alias("mcl_scaffolding:scaffolding", "mcl_bamboo:scaffolding")
+minetest.register_alias("mcl_scaffolding:scaffolding_horizontal", "mcl_bamboo:scaffolding")
 
 --[[
 todo -- make scaffolds do side scaffold blocks, so that they jut out.
@@ -805,4 +820,6 @@ todo: Added a new "Mosaic" plank variant that is unique to Bamboo called Bamboo 
 todo -- add in fuel recipes for:
 	[-] bamboo slab + stripped bamboo slab
 	[-] bamboo stair + stripped bamboo stair + bamboo plank stair
+
+todo -- fix scaffolding placing, instead of using on_rightclick first.
 --]]
