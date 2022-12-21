@@ -7,8 +7,8 @@ local mg_name = minetest.get_mapgen_setting("mg_name")
 
 function mcl_weather.set_sky_box_clear(player,sky,fog)
 	local sc = {
-			day_sky = "#0000FF", --Pure blue to make debugging this stuff easier. The biome's sky colours are supposed to overwrite this.
-			day_horizon = "#FF0000", --Pure red to make debugging this stuff easier. The biome's fog (horizon) colours are supposed to overwrite this.
+			day_sky = "#0000FF", -- Pure blue to make debugging this stuff easier. Not visible during normal gameplay.
+			day_horizon = "#FF0000", -- Pure red to make debugging this stuff easier. Not visible during normal gameplay.
 			dawn_sky = "#B4BAFA",
 			dawn_horizon = "#BAC1F0",
 			night_sky = "#000000",
