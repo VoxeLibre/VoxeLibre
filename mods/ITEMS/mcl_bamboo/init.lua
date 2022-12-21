@@ -738,9 +738,6 @@ dofile(minetest.get_modpath(modname) .. "/mapgen.lua")
 -- BAMBOO_TOO (Bamboo two)
 dofile(minetest.get_modpath(modname) .. "/bambootoo.lua")
 
--- BAMBOO EXTRAS
-dofile(minetest.get_modpath(modname) .. "/extras.lua")
-
 local BAMBOO_MAX_HEIGHT_CHECK = -16
 
 --ABMs
