@@ -42,7 +42,7 @@ local function register_classic_superflat_biome()
 		heat_point = 50,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 0,
-		_mcl_skycolor = beach_skycolor,
+		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
 end
