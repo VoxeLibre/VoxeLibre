@@ -112,7 +112,7 @@ function mesecon.register_button(basename, description, texture, recipeitem, sou
 	if push_by_arrow then
 		tt = tt .. "\n" .. S("Pushable by arrow")
 	end
-	minetest.register_node("mesecons_button:button_"..basename.."_off", {
+	minetest.register_node(":mesecons_button:button_"..basename.."_off", {
 		drawtype = "nodebox",
 		tiles = {texture},
 		wield_image = "mesecons_button_wield_mask.png^"..texture.."^mesecons_button_wield_mask.png^[makealpha:255,126,126",
@@ -147,7 +147,7 @@ function mesecon.register_button(basename, description, texture, recipeitem, sou
 		_mcl_hardness = 0.5,
 	})
 
-	minetest.register_node("mesecons_button:button_"..basename.."_on", {
+	minetest.register_node(":mesecons_button:button_"..basename.."_on", {
 		drawtype = "nodebox",
 		tiles = {texture},
 		wield_image = "mesecons_button_wield_mask.png^"..texture.."^mesecons_button_wield_mask.png^[makealpha:255,126,126",
