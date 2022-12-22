@@ -1,5 +1,12 @@
 --License for code WTFPL and otherwise stated in readmes
 
+-- FIXME: Slimes should spawn not only in underground caves, but also
+-- during the night in Swampland and MangroveSwamp biomes, with a spawn
+-- chance proportional to the phase of the moon
+
+-- FIXME: Slimes should spawn only in "slime chunks" which make up only
+-- 10% of the map.
+--
 local S = minetest.get_translator("mobs_mc")
 
 -- Returns a function that spawns children in a circle around pos.
@@ -44,10 +51,9 @@ local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 		-- If mother was murdered, children attack the killer after 1 second
 		if self.state == "attack" then
 			minetest.after(1.0, function(children, enemy)
-				local child, le
+				local le
 				for c = 1, #children do
-					child = children[c]
-					le = childdren[c]:get_luaentity()
+					le = children[c]:get_luaentity()
 					if le then
 						le.state = "attack"
 						le.attack = enemy
@@ -452,3 +458,5 @@ mmax)
 mcl_mobs.register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "#350000", "#fcfc00")
 
 mcl_mobs.register_egg("mobs_mc:slime_big", S("Slime"), "#52a03e", "#7ebf6d")
+
+-- FIXME: add spawn eggs for small and tiny slimes and magma cubes
