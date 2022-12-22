@@ -15,7 +15,6 @@ local node_sound = mcl_sounds.node_sound_wood_defaults()
 local SIDE_SCAFFOLDING = false
 local MAKE_STAIRS = true
 local DEBUG = false
-local USE_END_CAPS = false
 
 --Bamboo can be planted on moss blocks, grass blocks, dirt, coarse dirt, rooted dirt, gravel, mycelium, podzol, sand, red sand, or mud
 local bamboo_dirt_nodes = {
@@ -570,6 +569,7 @@ local function create_nodes()
 		_mcl_blast_resistance = 0,
 		_mcl_hardness = 0,
 		on_place = function(itemstack, placer, ptd)
+			local scaff_node_name = "mcl_bamboo:scaffolding"
 			if SIDE_SCAFFOLDING then
 				-- count param2 up when placing to the sides. Fall when > 6
 				local ctrl = placer:get_player_control()
@@ -586,29 +586,51 @@ local function create_nodes()
 					return itemstack
 				end
 			end
+			if DEBUG then
+				minetest.log("mcl_bamboo::Checking for protected placement of scaffolding.")
+			end
+			local node = minetest.get_node(ptd.under)
+			local pos = ptd.under
+			local pname = placer:get_player_name()
+			if minetest.is_protected(pos, pname) then
+				minetest.record_protection_violation(pos, pname)
+				return
+			end
+			if DEBUG then
+				minetest.log("mcl_bamboo::placement of scaffolding is not protected.")
+			end
 
 			--place on solid nodes
-			local node = minetest.get_node(ptd.under)
 			if itemstack:get_name() ~= node.name then
-				minetest.set_node(ptd.above, {name = "mcl_bamboo:scaffolding", param2 = 0})
-				itemstack:take_item(1)
+				minetest.set_node(ptd.above, {name = scaff_node_name, param2 = 0})
+				if not minetest.is_creative_enabled(placer:get_player_name()) then
+					itemstack:take_item(1)
+				end
 				return itemstack
 			end
 
 			--build up when placing on existing scaffold
 			local h = 0
-			local pos = ptd.under
 			repeat
 				pos.y = pos.y + 1
-				h = h + 1
 				local cn = minetest.get_node(pos)
+				local cnb = minetest.get_node(ptd.under)
+				local bn = minetest.get_node(vector.offset(ptd.under, 0, -1, 0))
 				if cn.name == "air" then
+					-- first step to making scaffolding work like Minecraft scaffolding.
+					if cnb.name == scaff_node_name and bn == scaff_node_name and SIDE_SCAFFOLDING == false then
+						return itemstack
+					end
+
 					minetest.set_node(pos, node)
-					itemstack:take_item(1)
+					if not minetest.is_creative_enabled(placer:get_player_name()) then
+						itemstack:take_item(1)
+					end
 					placer:set_wielded_item(itemstack)
 					return itemstack
 				end
-			until cn.name ~= node.name or h >= 32
+				h = h + 1
+			until cn.name ~= node.name or itemstack:get_count() == 0 or h >= 128
 		end,
 		on_destruct = function(pos)
 			-- Node destructor; called before removing node.
@@ -762,11 +784,13 @@ register_craftings()
 -- BAMBOO_TOO (Bamboo two)
 dofile(minetest.get_modpath(modname) .. "/bambootoo.lua")
 
-local BAMBOO_MAX_HEIGHT_CHECK = -16
+local BAMBOO_SOIL_DIST = -16
+local BAM_MAX_HEIGHT_STCHK = 11
+local BAM_MAX_HEIGHT_TOP = 15
 
 --ABMs
 minetest.register_abm({
-	nodenames = {"mcl_bamboo:bamboo"},
+	nodenames = {bamboo},
 	interval = 40,
 	chance = 40,
 	action = function(pos, _)
@@ -775,7 +799,7 @@ minetest.register_abm({
 			return
 		end
 		local found_soil = false
-		for py = -1, BAMBOO_MAX_HEIGHT_CHECK, -1 do
+		for py = -1, BAMBOO_SOIL_DIST, -1 do
 			local chk_pos = vector.offset(pos, 0, py, 0)
 			local name = minetest.get_node(chk_pos).name
 			if minetest.get_item_group(name, "soil") ~= 0 then
@@ -789,14 +813,16 @@ minetest.register_abm({
 		if not found_soil then
 			return
 		end
-		for py = 1, 14 do
+		for py = 1, 15 do
 			local npos = vector.offset(pos, 0, py, 0)
 			local name = minetest.get_node(npos).name
-			if vector.distance(soil_pos, npos) >= 15 then
+			local dist = vector.distance(soil_pos, npos)
+			if dist >= BAM_MAX_HEIGHT_STCHK then
 				-- stop growing check.
-				if USE_END_CAPS then
-					if name == "air" then
-						minetest.set_node(npos, {name = "mcl_bamboo:bamboo_top"})
+				if name == "air" then
+					local height = math.random(BAM_MAX_HEIGHT_STCHK, BAM_MAX_HEIGHT_TOP)
+					if height == dist then
+						minetest.set_node(npos, {name = "mcl_bamboo:bamboo_endcap"})
 					end
 				end
 				break
@@ -804,7 +830,7 @@ minetest.register_abm({
 			if name == "air" then
 				minetest.set_node(npos, {name = "mcl_bamboo:bamboo"})
 				break
-			elseif name ~= "mcl_bamboo:bamboo" then
+			elseif name ~= bamboo then
 				break
 			end
 		end
@@ -827,7 +853,7 @@ minetest.register_alias("mcl_scaffolding:scaffolding_horizontal", "mcl_bamboo:sc
 todo -- make scaffolds do side scaffold blocks, so that they jut out.
 todo -- Also, make those blocks collapse (break) when a nearby connected scaffold breaks.
 todo -- add in alternative bamboo styles to simulate random placement. (see commented out node box definitions.
-todo -- make endcap node for bamboo, so that they can be 12-16 nodes high and stop growing.
+todo -- Add Flourish to the endcap node for bamboo.
 todo -- mash all of that together so that it drops as one item, and chooses what version to be, in on_place.
 todo -- Raft
 todo -- Raft with Chest.
