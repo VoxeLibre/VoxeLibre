@@ -557,7 +557,7 @@ local S = minetest.get_translator("mcl_mobs")
 
 minetest.register_chatcommand("spawn_mob",{
 	privs = { debug = true },
-	description=S("spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolian, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: \n spawn_mob skeleton:var<passive=true>:\n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: \n spawn_mob skeleton:var<jump_height=NUM10>:\n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: \n spawn_mob skeleton:var<passive=true>::var<jump_height=NUM10>::var<fly_in=air>::var<fly=true>:\n etc."),
+	description=S("spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: \n spawn_mob skeleton:var<passive=true>:\n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: \n spawn_mob skeleton:var<jump_height=NUM10>:\n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: \n spawn_mob skeleton:var<passive=true>::var<jump_height=NUM10>::var<fly_in=air>::var<fly=true>:\n etc."),
 	func = function(n,param)
 		local pos = minetest.get_player_by_name(n):get_pos()
 
@@ -577,15 +577,14 @@ minetest.register_chatcommand("spawn_mob",{
 
 		local mob = mcl_mobs.spawn(pos,mobname)
 
-		for c=1, #modifiers do
-			modifs = modifiers[c]
+		if mob then
+			for c=1, #modifiers do
+				modifs = modifiers[c]
 
-			local mod1 = string.find(modifs, ":")
-			local mod_start = string.find(modifs, "<")
-			local mod_vals = string.find(modifs, "=")
-			local mod_end = string.find(modifs, ">")
-			local mod_end = string.find(modifs, ">")
-			if mob then
+				local mod1 = string.find(modifs, ":")
+				local mod_start = string.find(modifs, "<")
+				local mod_vals = string.find(modifs, "=")
+				local mod_end = string.find(modifs, ">")
 				local mob_entity = mob:get_luaentity()
 				if string.sub(modifs, mod1+1, mod1+3) == "var" then
 					if mod1 and mod_start and mod_vals and mod_end then
@@ -616,14 +615,12 @@ minetest.register_chatcommand("spawn_mob",{
 					minetest.log("warning", n.." couldn't modify "..mobname.." at "..minetest.pos_to_string(pos).. ", missing modification type")
 				end
 			end
-		end
 
-
-		if mob then
-			return true, mobname.." spawned at "..minetest.pos_to_string(pos),
 			minetest.log("action", n.." spawned "..mobname.." at "..minetest.pos_to_string(pos))
+			return true, mobname.." spawned at "..minetest.pos_to_string(pos)
+		else
+			return false, "Couldn't spawn "..mobname
 		end
-		return false, "Couldn't spawn "..mobname
 	end
 })
 
