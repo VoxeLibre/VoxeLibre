@@ -8,12 +8,7 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local bamboo = "mcl_bamboo:bamboo"
-local adj_nodes = {
-	vector.new(0, 0, 1),
-	vector.new(0, 0, -1),
-	vector.new(1, 0, 0),
-	vector.new(-1, 0, 0),
-}
+
 local node_sound = mcl_sounds.node_sound_wood_defaults()
 
 -- CONSTS
@@ -27,13 +22,13 @@ local bamboo_dirt_nodes = {
 	"mcl_core:redsand",
 	"mcl_core:sand",
 	"mcl_core:dirt",
-"mcl_core:coarse_dirt",
-"mcl_core:dirt_with_grass",
-"mcl_core:podzol",
-"mcl_core:mycelium",
-"mcl_lush_caves:rooted_dirt",
-"mcl_lush_caves:moss",
-"mcl_mud:mud",
+	"mcl_core:coarse_dirt",
+	"mcl_core:dirt_with_grass",
+	"mcl_core:podzol",
+	"mcl_core:mycelium",
+	"mcl_lush_caves:rooted_dirt",
+	"mcl_lush_caves:moss",
+	"mcl_mud:mud",
 }
 
 -- Due to door fix #2736, doors are displayed backwards. When this is fixed, set this variable to false.
@@ -126,7 +121,14 @@ local function create_nodes()
 
 			if node.name ~= "mcl_bamboo:bamboo" then
 				if node.name ~= "mcl_flowerpots:flower_pot" then
-					if minetest.get_item_group(node.name, "dirt") == 0 then
+					local found = false
+					for i = 1, #bamboo_dirt_nodes do
+						if node.name == bamboo_dirt_nodes[i] then
+							found = true
+							break
+						end
+					end
+					if not found then
 						return itemstack
 					end
 				end
@@ -143,13 +145,18 @@ local function create_nodes()
 			-- Node destructor; called before removing node.
 			local new_pos = vector.offset(pos, 0, 1, 0)
 			local node_above = minetest.get_node(new_pos)
-			if node_above and node_above.name == "mcl_bamboo:bamboo" then
+			if node_above and node_above.name == bamboo then
 				local sound_params = {
 					pos = new_pos,
 					gain = 1.0, -- default
 					max_hear_distance = 10, -- default, uses a Euclidean metric
 				}
+				minetest.remove_node(new_pos)
+				minetest.sound_play(node_sound.dug, sound_params, true)
+				local istack = ItemStack("mcl_bamboo:bamboo")
+				minetest.add_item(new_pos, istack)
 
+			elseif node_above and node_above.name == "mcl_bamboo:bamboo_endcap" then
 				minetest.remove_node(new_pos)
 				minetest.sound_play(node_sound.dug, sound_params, true)
 				local istack = ItemStack("mcl_bamboo:bamboo")
@@ -157,9 +164,10 @@ local function create_nodes()
 			end
 		end,
 	}
-	minetest.register_node("mcl_bamboo:bamboo", bamboo_def)
+	minetest.register_node(bamboo, bamboo_def)
 	local bamboo_top = table.copy(bamboo_def)
 	bamboo_top.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, flammable = 3}
+	bamboo_top.drops = bamboo
 
 	bamboo_top.on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type ~= "node" then
@@ -200,7 +208,26 @@ local function create_nodes()
 			minetest.log("mcl_bamboo::placing bamboo directly.")
 		end
 		return minetest.item_place(itemstack, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
-	end,
+	end
+	--[[
+		bamboo_top.on_destruct = function(pos)
+			-- Node destructor; called before removing node.
+			local node = minetest.get_node(pos)
+			if node and node.name == "mcl_bamboo:bamboo_endcap" then
+				local sound_params = {
+					pos = pos,
+					gain = 1.0, -- default
+					max_hear_distance = 10, -- default, uses a Euclidean metric
+				}
+
+				minetest.remove_node(pos)
+				minetest.sound_play(node_sound.dug, sound_params, true)
+				local istack = ItemStack("mcl_bamboo:bamboo")
+				minetest.add_item(pos, istack)
+			end
+
+		end
+	]]
 
 	minetest.register_node("mcl_bamboo:bamboo_endcap", bamboo_top)
 
@@ -732,9 +759,6 @@ end
 create_nodes()
 register_craftings()
 
--- MAPGEN
-dofile(minetest.get_modpath(modname) .. "/mapgen.lua")
-
 -- BAMBOO_TOO (Bamboo two)
 dofile(minetest.get_modpath(modname) .. "/bambootoo.lua")
 
@@ -745,8 +769,8 @@ minetest.register_abm({
 	nodenames = {"mcl_bamboo:bamboo"},
 	interval = 40,
 	chance = 40,
-	action = function(pos, node)
-		local soil_pos = nil
+	action = function(pos, _)
+		local soil_pos
 		if minetest.get_node_light(pos) < 8 then
 			return
 		end
