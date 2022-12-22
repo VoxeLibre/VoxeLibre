@@ -7,10 +7,9 @@ local S = minetest.get_translator("mobs_mc")
 -- self: mob reference
 -- pos: position of "mother" mob
 -- child_mod: Mob to spawn
--- children_count: Number of children to spawn
 -- spawn_distance: Spawn distance from "mother" mob
 -- eject_speed: Initial speed of child mob away from "mother" mob
-local spawn_children_on_die = function(child_mob, children_count, spawn_distance, eject_speed)
+local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 	return function(self, pos)
 		local angle, posadd, newpos, dir
 		if not eject_speed then
@@ -20,7 +19,8 @@ local spawn_children_on_die = function(child_mob, children_count, spawn_distance
 		local mother_stuck = mndef and mndef.walkable
 		angle = math.random(0, math.pi*2)
 		local children = {}
-		for i=1,children_count do
+		local spawn_count = math.random(2, 4)
+		for i = 1, spawn_count do
 			dir = {x=math.cos(angle),y=0,z=math.sin(angle)}
 			posadd = vector.multiply(vector.normalize(dir), spawn_distance)
 			newpos = vector.add(pos, posadd)
@@ -38,7 +38,7 @@ local spawn_children_on_die = function(child_mob, children_count, spawn_distance
 			end
 			mob:set_yaw(angle - math.pi/2)
 			table.insert(children, mob)
-			angle = angle + (math.pi*2)/children_count
+			angle = angle + (math.pi*2) / spawn_count
 		end
 		-- If mother was murdered, children attack the killer after 1 second
 		if self.state == "attack" then
@@ -106,7 +106,7 @@ local slime_big = {
 	jump_height = 5.2,
 	fear_height = 0,
 	spawn_small_alternative = "mobs_mc:slime_small",
-	on_die = spawn_children_on_die("mobs_mc:slime_small", 4, 1.0, 1.5),
+	on_die = spawn_children_on_die("mobs_mc:slime_small", 1.0, 1.5),
 	use_texture_alpha = true,
 }
 mcl_mobs.register_mob("mobs_mc:slime_big", slime_big)
@@ -125,7 +125,7 @@ slime_small.walk_velocity = 1.3
 slime_small.run_velocity = 1.3
 slime_small.jump_height = 4.3
 slime_small.spawn_small_alternative = "mobs_mc:slime_tiny"
-slime_small.on_die = spawn_children_on_die("mobs_mc:slime_tiny", 4, 0.6, 1.0)
+slime_small.on_die = spawn_children_on_die("mobs_mc:slime_tiny", 0.6, 1.0)
 mcl_mobs.register_mob("mobs_mc:slime_small", slime_small)
 
 local slime_tiny = table.copy(slime_big)
@@ -345,7 +345,7 @@ local magma_cube_big = {
 	walk_chance = 0,
 	fear_height = 0,
 	spawn_small_alternative = "mobs_mc:magma_cube_small",
-	on_die = spawn_children_on_die("mobs_mc:magma_cube_small", 3, 0.8, 1.5),
+	on_die = spawn_children_on_die("mobs_mc:magma_cube_small", 0.8, 1.5),
 	fire_resistant = true,
 }
 mcl_mobs.register_mob("mobs_mc:magma_cube_big", magma_cube_big)
@@ -368,7 +368,7 @@ magma_cube_small.damage = 4
 magma_cube_small.reach = 2.75
 magma_cube_small.armor = 66
 magma_cube_small.spawn_small_alternative = "mobs_mc:magma_cube_tiny"
-magma_cube_small.on_die = spawn_children_on_die("mobs_mc:magma_cube_tiny", 4, 0.6, 1.0)
+magma_cube_small.on_die = spawn_children_on_die("mobs_mc:magma_cube_tiny", 0.6, 1.0)
 mcl_mobs.register_mob("mobs_mc:magma_cube_small", magma_cube_small)
 
 local magma_cube_tiny = table.copy(magma_cube_big)
