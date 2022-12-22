@@ -161,143 +161,84 @@ slime_tiny.on_die = nil
 
 mcl_mobs.register_mob("mobs_mc:slime_tiny", slime_tiny)
 
-local smin = mcl_vars.mg_overworld_min
-local smax = mobs_mc.water_level - 23
+local water_level = mobs_mc.water_level
+
+local cave_biomes = {
+	"FlowerForest_underground",
+	"JungleEdge_underground",
+	"StoneBeach_underground",
+	"MesaBryce_underground",
+	"Mesa_underground",
+	"RoofedForest_underground",
+	"Jungle_underground",
+	"Swampland_underground",
+	"MushroomIsland_underground",
+	"BirchForest_underground",
+	"Plains_underground",
+	"MesaPlateauF_underground",
+	"ExtremeHills_underground",
+	"MegaSpruceTaiga_underground",
+	"BirchForestM_underground",
+	"SavannaM_underground",
+	"MesaPlateauFM_underground",
+	"Desert_underground",
+	"Savanna_underground",
+	"Forest_underground",
+	"SunflowerPlains_underground",
+	"ColdTaiga_underground",
+	"IcePlains_underground",
+	"IcePlainsSpikes_underground",
+	"MegaTaiga_underground",
+	"Taiga_underground",
+	"ExtremeHills+_underground",
+	"JungleM_underground",
+	"ExtremeHillsM_underground",
+	"JungleEdgeM_underground",
+	"MangroveSwamp_underground"
+}
+
+local cave_min = mcl_vars.mg_overworld_min
+local cave_max = water_level - 23
+
 
 mcl_mobs:spawn_specific(
 "mobs_mc:slime_tiny",
 "overworld",
 "ground",
-{
-"FlowerForest_underground",
-"JungleEdge_underground",
-"StoneBeach_underground",
-"MesaBryce_underground",
-"Mesa_underground",
-"RoofedForest_underground",
-"Jungle_underground",
-"Swampland_underground",
-"MushroomIsland_underground",
-"BirchForest_underground",
-"Plains_underground",
-"MesaPlateauF_underground",
-"ExtremeHills_underground",
-"MegaSpruceTaiga_underground",
-"BirchForestM_underground",
-"SavannaM_underground",
-"MesaPlateauFM_underground",
-"Desert_underground",
-"Savanna_underground",
-"Forest_underground",
-"SunflowerPlains_underground",
-"ColdTaiga_underground",
-"IcePlains_underground",
-"IcePlainsSpikes_underground",
-"MegaTaiga_underground",
-"Taiga_underground",
-"ExtremeHills+_underground",
-"JungleM_underground",
-"ExtremeHillsM_underground",
-"JungleEdgeM_underground",
-"MangroveSwamp_underground",
-},
+cave_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
 12000,
 4,
-smin,
-smax)
+cave_min,
+cave_max)
 
 mcl_mobs:spawn_specific(
 "mobs_mc:slime_small",
 "overworld",
 "ground",
-{
-"FlowerForest_underground",
-"JungleEdge_underground",
-"StoneBeach_underground",
-"MesaBryce_underground",
-"Mesa_underground",
-"RoofedForest_underground",
-"Jungle_underground",
-"Swampland_underground",
-"MushroomIsland_underground",
-"BirchForest_underground",
-"Plains_underground",
-"MesaPlateauF_underground",
-"ExtremeHills_underground",
-"MegaSpruceTaiga_underground",
-"BirchForestM_underground",
-"SavannaM_underground",
-"MesaPlateauFM_underground",
-"Desert_underground",
-"Savanna_underground",
-"Forest_underground",
-"SunflowerPlains_underground",
-"ColdTaiga_underground",
-"IcePlains_underground",
-"IcePlainsSpikes_underground",
-"MegaTaiga_underground",
-"Taiga_underground",
-"ExtremeHills+_underground",
-"JungleM_underground",
-"ExtremeHillsM_underground",
-"JungleEdgeM_underground",
-"MangroveSwamp_underground",
-},
+cave_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
 8500,
 4,
-smin,
-smax)
+cave_min,
+cave_max)
 
 mcl_mobs:spawn_specific(
 "mobs_mc:slime_big",
 "overworld",
 "ground",
-{
-"FlowerForest_underground",
-"JungleEdge_underground",
-"StoneBeach_underground",
-"MesaBryce_underground",
-"Mesa_underground",
-"RoofedForest_underground",
-"Jungle_underground",
-"Swampland_underground",
-"MushroomIsland_underground",
-"BirchForest_underground",
-"Plains_underground",
-"MesaPlateauF_underground",
-"ExtremeHills_underground",
-"MegaSpruceTaiga_underground",
-"BirchForestM_underground",
-"SavannaM_underground",
-"MesaPlateauFM_underground",
-"Desert_underground",
-"Savanna_underground",
-"Forest_underground",
-"SunflowerPlains_underground",
-"ColdTaiga_underground",
-"IcePlains_underground",
-"IcePlainsSpikes_underground",
-"MegaTaiga_underground",
-"Taiga_underground",
-"ExtremeHills+_underground",
-"JungleM_underground",
-"ExtremeHillsM_underground",
-"JungleEdgeM_underground",
-"MangroveSwamp_underground",
-},
+cave_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
 10000,
 4,
-smin,
-smax)
+cave_min,
+cave_max)
 
 -- Magma cube
 local magma_cube_big = {
@@ -405,57 +346,48 @@ magma_cube_tiny.on_die = nil
 mcl_mobs.register_mob("mobs_mc:magma_cube_tiny", magma_cube_tiny)
 
 
-local mmin = mcl_vars.mg_nether_min
-local mmax = mcl_vars.mg_nether_max
+local magma_cube_biomes = {"Nether", "BasaltDelta"}
+local nether_min = mcl_vars.mg_nether_min
+local nether_max = mcl_vars.mg_nether_max
 
 mcl_mobs:spawn_specific(
 "mobs_mc:magma_cube_tiny",
 "nether",
 "ground",
-{
-"Nether",
-"BasaltDelta",
-},
+magma_cube_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
 15000,
 4,
-mmin,
-mmax)
-
+nether_min,
+nether_max)
 
 mcl_mobs:spawn_specific(
 "mobs_mc:magma_cube_small",
 "nether",
 "ground",
-{
-"Nether",
-"BasaltDelta",
-},
+magma_cube_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
 15500,
 4,
-mmin,
-mmax)
+nether_min,
+nether_max)
 
 mcl_mobs:spawn_specific(
 "mobs_mc:magma_cube_big",
 "nether",
 "ground",
-{
-"Nether",
-"BasaltDelta",
-},
+magma_cube_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
 16000,
 4,
-mmin,
-mmax)
+nether_min,
+nether_max)
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "#350000", "#fcfc00")
