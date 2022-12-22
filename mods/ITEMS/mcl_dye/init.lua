@@ -78,7 +78,7 @@ dyelocal.dyes = {
 	{"dark_green", "dye_dark_green",    S("Cactus Green"),{dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_dark_green=1}},
 	{"green", "mcl_dye_lime",           S("Lime Dye"),     {dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_green=1}},
 	{"yellow", "dye_yellow",            S("Dandelion Yellow"),    {dye=1, craftitem=1, basecolor_yellow=1,  excolor_yellow=1,    unicolor_yellow=1}},
-	{"brown", "mcl_dye_brown",          S("Cocoa Beans"),     {dye=1, craftitem=1, basecolor_brown=1,  excolor_orange=1,    unicolor_dark_orange=1, compostability = 65}},
+	{"brown", "mcl_dye_brown",          S("Brown Dye"),     {dye=1, craftitem=1, basecolor_brown=1,  excolor_orange=1,    unicolor_dark_orange=1, compostability = 65}},
 	{"orange", "dye_orange",            S("Orange Dye"),    {dye=1, craftitem=1, basecolor_orange=1,  excolor_orange=1,    unicolor_orange=1}},
 	{"red", "dye_red",                  S("Rose Red"),       {dye=1, craftitem=1, basecolor_red=1,     excolor_red=1,       unicolor_red=1}},
 	{"magenta", "dye_magenta",          S("Magenta Dye"),   {dye=1, craftitem=1, basecolor_magenta=1, excolor_red_violet=1,unicolor_red_violet=1}},
@@ -109,8 +109,8 @@ end
 -- Define items
 for _, row in ipairs(dyelocal.dyes) do
 	local name = row[1]
-	-- White and brown dyes are defined explicitly below
-	if name ~= "white" and name ~= "brown" then
+	-- White dye is defined explicitly below
+	if name ~= "white" then
 		local img = row[2]
 		local description = row[3]
 		local groups = row[4]
@@ -421,19 +421,6 @@ minetest.register_craftitem("mcl_dye:white", {
 	_dispense_into_walkable = true
 })
 
-minetest.register_craftitem("mcl_dye:brown", {
-	inventory_image = "mcl_dye_brown.png",
-	_tt_help = S("Grows at the side of jungle trees"),
-	_doc_items_longdesc = S("Cocoa beans are a brown dye and can be used to plant cocoas."),
-	_doc_items_usagehelp = S("Rightclick a sheep to turn its wool brown. Rightclick on the side of a jungle tree trunk (Jungle Wood) to plant a young cocoa."),
-	description = S("Cocoa Beans"),
-	stack_max = 64,
-	groups = dyelocal.dyes[12][4],
-	on_place = function(itemstack, placer, pointed_thing)
-		return mcl_cocoas.place(itemstack, placer, pointed_thing, "mcl_cocoas:cocoa_1")
-	end,
-})
-
 -- Dye mixing
 minetest.register_craft({
 	type = "shapeless",
@@ -545,6 +532,10 @@ minetest.register_craft({
 	recipe = {{"mcl_flowers:tulip_orange"}},
 })
 minetest.register_craft({
+	output = "mcl_dye:brown",
+	recipe = {{"mcl_cocoas:cocoa_beans"}},
+})
+minetest.register_craft({
 	output = "mcl_dye:pink",
 	recipe = {{"mcl_flowers:tulip_pink"}},
 })
@@ -588,4 +579,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_core:lapis",
 	recipe = {{"mcl_dye:blue"}},
+})
+minetest.register_craft({
+	output = "mcl_cocoas:cocoa_beans",
+	recipe = {{"mcl_dye:brown"}},
 })
