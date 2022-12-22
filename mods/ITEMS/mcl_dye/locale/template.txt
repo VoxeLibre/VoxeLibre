@@ -2,7 +2,7 @@
 Bone Meal=
 Light Grey Dye=
 Grey Dye=
-Ink Sac=
+Black Dye=
 Purple Dye=
 Lapis Lazuli=
 Light Blue Dye=
