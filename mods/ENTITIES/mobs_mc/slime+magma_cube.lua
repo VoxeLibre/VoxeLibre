@@ -11,30 +11,31 @@ local S = minetest.get_translator("mobs_mc")
 -- eject_speed: Initial speed of child mob away from "mother" mob
 local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 	return function(self, pos)
-		local angle, posadd, newpos, dir
+		local posadd, newpos, dir
 		if not eject_speed then
 			eject_speed = 1
 		end
 		local mndef = minetest.registered_nodes[minetest.get_node(pos).name]
 		local mother_stuck = mndef and mndef.walkable
-		angle = math.random(0, math.pi*2)
+		local angle = math.random(0, math.pi*2)
 		local children = {}
 		local spawn_count = math.random(2, 4)
 		for i = 1, spawn_count do
-			dir = {x=math.cos(angle),y=0,z=math.sin(angle)}
-			posadd = vector.multiply(vector.normalize(dir), spawn_distance)
-			newpos = vector.add(pos, posadd)
+			dir = vector.new(math.cos(angle), 0, math.sin(angle))
+			posadd = vector.normalize(dir) * spawn_distance
+			newpos = pos + posadd
 			-- If child would end up in a wall, use position of the "mother", unless
 			-- the "mother" was stuck as well
-			local speed_penalty = 1
-			local cndef = minetest.registered_nodes[minetest.get_node(newpos).name]
-			if (not mother_stuck) and cndef and cndef.walkable then
-				newpos = pos
-				speed_penalty = 0.5
+			if not mother_stuck then
+				local cndef = minetest.registered_nodes[minetest.get_node(newpos).name]
+				if cndef and cndef.walkable then
+					newpos = pos
+					eject_speed = eject_speed * 0.5
+				end
 			end
 			local mob = minetest.add_entity(newpos, child_mob)
-			if (not mother_stuck) then
-				mob:set_velocity(vector.multiply(dir, eject_speed * speed_penalty))
+			if not mother_stuck then
+				mob:set_velocity(dir * eject_speed)
 			end
 			mob:set_yaw(angle - math.pi/2)
 			table.insert(children, mob)
@@ -43,10 +44,11 @@ local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 		-- If mother was murdered, children attack the killer after 1 second
 		if self.state == "attack" then
 			minetest.after(1.0, function(children, enemy)
-				for c=1, #children do
-					local child = children[c]
-					local le = child:get_luaentity()
-					if le ~= nil then
+				local child, le
+				for c = 1, #children do
+					child = children[c]
+					le = childdren[c]:get_luaentity()
+					if le then
 						le.state = "attack"
 						le.attack = enemy
 					end
