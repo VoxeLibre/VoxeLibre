@@ -1,9 +1,5 @@
 --License for code WTFPL and otherwise stated in readmes
 
--- FIXME: Slimes should spawn not only in underground caves, but also
--- during the night in Swampland and MangroveSwamp biomes, with a spawn
--- chance proportional to the phase of the moon
-
 -- FIXME: Slimes should spawn only in "slime chunks" which make up only
 -- 10% of the map.
 --
