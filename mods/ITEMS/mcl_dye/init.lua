@@ -72,7 +72,7 @@ dyelocal.dyes = {
 	{"dark_grey", "dye_dark_grey", 	    S("Grey Dye"), {dye=1, craftitem=1, basecolor_grey=1,    excolor_darkgrey=1,  unicolor_darkgrey=1}},
 	{"black", "mcl_dye_black",     	    S("Black Dye"),     {dye=1, craftitem=1, basecolor_black=1,   excolor_black=1,     unicolor_black=1}},
 	{"violet", "dye_violet",    	    S("Purple Dye"),    {dye=1, craftitem=1, basecolor_magenta=1, excolor_violet=1,    unicolor_violet=1}},
-	{"blue", "mcl_dye_blue",      	    S("Lapis Lazuli"),      {dye=1, craftitem=1, basecolor_blue=1,    excolor_blue=1,      unicolor_blue=1}},
+	{"blue", "mcl_dye_blue",      	    S("Blue Dye"),      {dye=1, craftitem=1, basecolor_blue=1,    excolor_blue=1,      unicolor_blue=1}},
 	{"lightblue", "mcl_dye_light_blue", S("Light Blue Dye"),      {dye=1, craftitem=1, basecolor_blue=1,    excolor_blue=1,   unicolor_light_blue=1}},
 	{"cyan", "dye_cyan",      	    S("Cyan Dye"),      {dye=1, craftitem=1, basecolor_cyan=1,    excolor_cyan=1,      unicolor_cyan=1}},
 	{"dark_green", "dye_dark_green",    S("Cactus Green"),{dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_dark_green=1}},
@@ -513,6 +513,10 @@ minetest.register_craft({
 	recipe = {{"mcl_flowers:sunflower"}},
 })
 minetest.register_craft({
+	output = "mcl_dye:blue",
+	recipe = {{"mcl_core:lapis"}},
+})
+minetest.register_craft({
 	output = "mcl_dye:lightblue",
 	recipe = {{"mcl_flowers:blue_orchid"}},
 })
@@ -580,4 +584,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_mobitems:ink_sac",
 	recipe = {{"mcl_dye:black"}},
+})
+minetest.register_craft({
+	output = "mcl_core:lapis",
+	recipe = {{"mcl_dye:blue"}},
 })
