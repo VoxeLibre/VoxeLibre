@@ -1,5 +1,5 @@
 # textdomain: mcl_dye
-Bone Meal=
+White Dye=
 Light Grey Dye=
 Grey Dye=
 Black Dye=

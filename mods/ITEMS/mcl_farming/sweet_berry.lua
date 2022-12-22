@@ -41,7 +41,7 @@ for i=0, 3 do
 				minetest.record_protection_violation(pos, pn)
 				return itemstack
 			end
-			if mcl_dye and clicker:get_wielded_item():get_name() == "mcl_dye:white" then
+			if mcl_dye and clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
 				mcl_dye.apply_bone_meal({under=pos},clicker)
 				itemstack:take_item()
 				return

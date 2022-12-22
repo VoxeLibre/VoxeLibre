@@ -612,7 +612,7 @@ if minetest.get_modpath("mcl_composters") then
 
 				minetest.swap_node(uppos, {name = "mcl_composters:composter"})
 
-				inv:add_item("main", "mcl_dye:white")
+				inv:add_item("main", "mcl_bone_meal:bone_meal")
 			end
 		end,
 	})
