@@ -24,15 +24,16 @@ local function bambootoo_create_nodes()
 	bamboo_mosaic.description = S("Bamboo Mosaic Plank")
 	bamboo_mosaic._doc_items_longdesc = S("Bamboo Mosaic Plank")
 	minetest.register_node("mcl_bamboo:bamboo_mosaic",bamboo_mosaic)
+
 	-- crafted by "mcl_stair:slab_bamboo_plank", "mcl_stair:slab_bamboo_block", "mcl_stair:slab_bamboo_stripped"
 	if minetest.get_modpath("mcl_stairs") then
 		if mcl_stairs ~= nil then
 			mcl_stairs.register_stair_and_slab_simple(
 					"bamboo_mosaic",
 					"mcl_bamboo:bamboo_mosaic",
-					S("Bamboo Stair"),
-					S("Bamboo Slab"),
-					S("Double Bamboo Slab")
+					S("Bamboo Mosaic Stair"),
+					S("Bamboo Mosaic Slab"),
+					S("Double Bamboo Mosaic Slab")
 			)
 		end
 	end
@@ -91,28 +92,22 @@ local function bambootoo_register_craftings()
 		}
 	})
 
-	minetest.register_craft({
-		output = bamboo .. "_mosaic",
-		recipe = {
-			{"mcl_stair:slab_bamboo_block"},
-			{"mcl_stair:slab_bamboo_block"},
-		}
-	})
-
-	minetest.register_craft({
-		output = bamboo .. "_mosaic",
-		recipe = {
-			{"mcl_stair:slab_bamboo_stripped"},
-			{"mcl_stair:slab_bamboo_stripped"},
-		}
-	})
-
 	-- Fuels...
 
 	minetest.register_craft({
 		type = "fuel",
 		recipe = bamboo .. "_mosaic",
 		burntime = 7.5,
+	})
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mcl_stairs:slab_bamboo_mosaic",
+		burntime = 7.5,
+	})
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mcl_stairs:stair_bamboo_mosaic",
+		burntime = 15,
 	})
 
 end

@@ -772,6 +772,22 @@ local function register_craftings()
 
 	minetest.register_craft({
 		type = "fuel",
+		recipe = "mcl_stairs:stair_bamboo_plank",
+		burntime = 15,
+	})
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mcl_stairs:stair_bamboo_block",
+		burntime = 15,
+	})
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mcl_stairs:stair_bamboo_stripped",
+		burntime = 15,
+	})
+
+	minetest.register_craft({
+		type = "fuel",
 		recipe = "mesecons_button:button_bamboo_off",
 		burntime = 5,
 	})
@@ -858,15 +874,11 @@ todo -- mash all of that together so that it drops as one item, and chooses what
 todo -- Raft
 todo -- Raft with Chest.
 todo -- Add in Extras.
-todo: Added a new "Mosaic" plank variant that is unique to Bamboo called Bamboo Mosaic
-    It can be crafted with 1x2 Bamboo Slabs in a vertical strip
+todo -- [X] Added a new "Mosaic" plank variant that is unique to Bamboo called Bamboo Mosaic
+    It can be crafted with 1x2 Bamboo (plank) Slabs in a vertical strip
     You can craft Stair and Slab variants of Bamboo Mosaic
     Bamboo Mosaic blocks cannot be used as a crafting ingredient where other wooden blocks are used, but they can be
-    used as fuel.
-
-todo -- add in fuel recipes for:
-	[-] bamboo slab + stripped bamboo slab
-	[-] bamboo stair + stripped bamboo stair + bamboo plank stair
+    used as fuel. [Done]
 
 todo -- fix scaffolding placing, instead of using on_rightclick first.
 --]]
