@@ -5,7 +5,7 @@ local water_color = "#0b4880"
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
-function mcl_weather.set_sky_box_clear(player,sky,fog)
+function mcl_weather.set_sky_box_clear(player, sky, fog)
 	local pos = player:get_pos()
 	if minetest.get_item_group(minetest.get_node(vector.new(pos.x,pos.y+1.5,pos.z)).name, "water") ~= 0 then return end
 	local sc = {
@@ -31,7 +31,7 @@ end
 
 function mcl_weather.set_sky_color(player, def)
 	local pos = player:get_pos()
-	if minetest.get_item_group(minetest.get_node(vector.new(pos.x,pos.y+1.5,pos.z)).name, "water") ~= 0 then return end
+	if minetest.get_item_group(minetest.get_node(vector.offset(pos, 0, 1.5, 0)).name, "water") ~= 0 then return end
 	player:set_sky({
 		type = def.type,
 		sky_color = def.sky_color,
