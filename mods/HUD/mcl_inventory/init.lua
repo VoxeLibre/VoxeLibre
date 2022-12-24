@@ -169,12 +169,6 @@ minetest.register_on_joinplayer(function(player)
 	player:hud_set_hotbar_image("mcl_inventory_hotbar.png")
 	player:hud_set_hotbar_selected_image("mcl_inventory_hotbar_selected.png")
 
-	local old_update_player = mcl_armor.update_player
-	function mcl_armor.update_player(player, info)
-		old_update_player(player, info)
-		set_inventory(player, true)
-	end
-
 	-- In Creative Mode, the initial inventory setup is handled in creative.lua
 	if not minetest.is_creative_enabled(player:get_player_name()) then
 		set_inventory(player)
