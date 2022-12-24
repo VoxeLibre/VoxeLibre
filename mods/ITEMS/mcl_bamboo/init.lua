@@ -15,6 +15,8 @@ local node_sound = mcl_sounds.node_sound_wood_defaults()
 local SIDE_SCAFFOLDING = false
 local MAKE_STAIRS = true
 local DEBUG = false
+local DOUBLE_DROP_CHANCE = 8
+
 
 --Bamboo can be planted on moss blocks, grass blocks, dirt, coarse dirt, rooted dirt, gravel, mycelium, podzol, sand, red sand, or mud
 local bamboo_dirt_nodes = {
@@ -62,17 +64,40 @@ local function create_nodes()
 		paramtype = "light",
 		groups = {handy = 1, axey = 1, choppy = 1, flammable = 3},
 		sounds = node_sound,
-		drops = "mcl_bamboo:bamboo",
+
+		drop = {
+			max_items = 1,
+			-- Maximum number of item lists to drop.
+			-- The entries in 'items' are processed in order. For each:
+			-- Item filtering is applied, chance of drop is applied, if both are
+			-- successful the entire item list is dropped.
+			-- Entry processing continues until the number of dropped item lists
+			-- equals 'max_items'.
+			-- Therefore, entries should progress from low to high drop chance.
+			items = {
+				-- Examples:
+				{
+					-- 1 in 100 chance of dropping.
+					-- Default rarity is '1'.
+					rarity = DOUBLE_DROP_CHANCE,
+					items = {bamboo .. " 2"},
+				},
+				{
+					-- 1 in 2 chance of dropping.
+					-- Default rarity is '1'.
+					rarity = 1,
+					items = {bamboo},
+				},
+			},
+		},
+
 		inventory_image = "mcl_bamboo_bamboo_shoot.png",
 		wield_image = "mcl_bamboo_bamboo_shoot.png",
 		_mcl_blast_resistance = 1,
-		_mcl_hardness = 2,
+		_mcl_hardness = 1.5,
 		node_box = {
 			type = "fixed",
 			fixed = {
-				--				{0.1875, -0.5, -0.125, 0.4125, 0.5, 0.0625},
-				--				{-0.125, -0.5, 0.125, -0.3125, 0.5, 0.3125},
-				--				{-0.25, -0.5, -0.3125, 0, 0.5, -0.125},
 				{-0.175, -0.5, -0.195, 0.05, 0.5, 0.030},
 			}
 		},
@@ -152,81 +177,36 @@ local function create_nodes()
 				}
 				minetest.remove_node(new_pos)
 				minetest.sound_play(node_sound.dug, sound_params, true)
-				local istack = ItemStack("mcl_bamboo:bamboo")
+				local istack = ItemStack(bamboo)
+				if math.random(1, DOUBLE_DROP_CHANCE) == 1 then
+					minetest.add_item(new_pos, istack)
+				end
 				minetest.add_item(new_pos, istack)
-
 			elseif node_above and node_above.name == "mcl_bamboo:bamboo_endcap" then
 				minetest.remove_node(new_pos)
 				minetest.sound_play(node_sound.dug, sound_params, true)
-				local istack = ItemStack("mcl_bamboo:bamboo")
+				local istack = ItemStack(bamboo)
 				minetest.add_item(new_pos, istack)
+				if math.random(1, DOUBLE_DROP_CHANCE) == 1 then
+					minetest.add_item(new_pos, istack)
+				end
 			end
 		end,
 	}
 	minetest.register_node(bamboo, bamboo_def)
 	local bamboo_top = table.copy(bamboo_def)
 	bamboo_top.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, flammable = 3}
-	bamboo_top.drops = bamboo
+	bamboo_top.tiles = {"mcl_bamboo_endcap.png"}
+	bamboo_top.drawtype = "plantlike"
+	bamboo_top.paramtype2 = "meshoptions"
+	bamboo_top.param2 = 34
+	bamboo_top.nodebox = nil
 
-	bamboo_top.on_place = function(itemstack, placer, pointed_thing)
-		if pointed_thing.type ~= "node" then
-			return itemstack
-		end
-		local node = minetest.get_node(pointed_thing.under)
-		local pos = pointed_thing.under
-		if DEBUG then
-			minetest.log("mcl_bamboo::Node placement data:")
-			minetest.log(dump(pointed_thing))
-			minetest.log(dump(node))
-		end
-
-		if DEBUG then
-			minetest.log("mcl_bamboo::Checking for protected placement of bamboo.")
-		end
-		local pname = placer:get_player_name()
-		if pname then
-			if minetest.is_protected(pos, pname) then
-				minetest.record_protection_violation(pos, pname)
-				return
-			end
-			--not for player use.
-			if minetest.is_creative_enabled(pname) == false then
-				itemstack:set_count(0)
-				return itemstack
-			end
-		end
-		if DEBUG then
-			minetest.log("mcl_bamboo::placement of bamboo is not protected.")
-		end
-
-		if node.name ~= "mcl_bamboo:bamboo" then
-			return itemstack
-		end
-
-		if DEBUG then
-			minetest.log("mcl_bamboo::placing bamboo directly.")
-		end
-		return minetest.item_place(itemstack, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
+	bamboo_top.on_place = function(itemstack, _, _)
+		-- Should never occur... but, if it does, then nix it.
+		itemstack:set_name(bamboo)
+		return itemstack
 	end
-	--[[
-		bamboo_top.on_destruct = function(pos)
-			-- Node destructor; called before removing node.
-			local node = minetest.get_node(pos)
-			if node and node.name == "mcl_bamboo:bamboo_endcap" then
-				local sound_params = {
-					pos = pos,
-					gain = 1.0, -- default
-					max_hear_distance = 10, -- default, uses a Euclidean metric
-				}
-
-				minetest.remove_node(pos)
-				minetest.sound_play(node_sound.dug, sound_params, true)
-				local istack = ItemStack("mcl_bamboo:bamboo")
-				minetest.add_item(pos, istack)
-			end
-
-		end
-	]]
 
 	minetest.register_node("mcl_bamboo:bamboo_endcap", bamboo_top)
 
@@ -328,25 +308,6 @@ local function create_nodes()
 				tiles_top = top_door_tiles,
 				sounds = mcl_sounds.node_sound_wood_defaults(),
 			}
-
-			--[[ Registers a door
-			--  name: The name of the door
-			--  def: a table with the folowing fields:
-			--    description
-			--    inventory_image
-			--    groups
-			--    tiles_bottom: the tiles of the bottom part of the door {front, side}
-			--    tiles_top: the tiles of the bottom part of the door {front, side}
-			--    If the following fields are not defined the default values are used
-			--    node_box_bottom
-			--    node_box_top
-			--    selection_box_bottom
-			--    selection_box_top
-			--    only_placer_can_open: if true only the player who placed the door can
-			--                          open it
-			--    only_redstone_can_open: if true, the door can only be opened by redstone,
-			--                            not by rightclicking it
-			--]]
 
 			mcl_doors:register_door(name, def)
 
@@ -871,14 +832,20 @@ todo -- Also, make those blocks collapse (break) when a nearby connected scaffol
 todo -- add in alternative bamboo styles to simulate random placement. (see commented out node box definitions.
 todo -- Add Flourish to the endcap node for bamboo.
 todo -- mash all of that together so that it drops as one item, and chooses what version to be, in on_place.
-todo -- Raft
-todo -- Raft with Chest.
 todo -- Add in Extras.
-todo -- [X] Added a new "Mosaic" plank variant that is unique to Bamboo called Bamboo Mosaic
-    It can be crafted with 1x2 Bamboo (plank) Slabs in a vertical strip
-    You can craft Stair and Slab variants of Bamboo Mosaic
-    Bamboo Mosaic blocks cannot be used as a crafting ingredient where other wooden blocks are used, but they can be
-    used as fuel. [Done]
-
 todo -- fix scaffolding placing, instead of using on_rightclick first.
+
+todo -- make graphic for top node of bamboo.
+
+waiting on specific things:
+todo -- Raft -- need model
+todo -- Raft with Chest. same.
+todo -- handle bonemeal...
+
+Notes:
+When bone meal is used on it, it grows by 1–2 blocks. Bamboo can grow up to 12–16 blocks tall.
+The top of a bamboo plant requires a light level of 9 or above to grow.
+
+Design Decision - to not make bamboo saplings, and not make them go through a ton of transformations.
+
 --]]
