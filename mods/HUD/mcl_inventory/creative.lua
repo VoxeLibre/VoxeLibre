@@ -699,6 +699,7 @@ minetest.register_on_joinplayer(function(player)
 		players[name].start_i = 0
 	end
 	init(player)
+	-- Setup initial creative inventory to the "nix" page.
 	mcl_inventory.set_creative_formspec(player, 0, 1, nil, false, "nix", "")
 end)
 
