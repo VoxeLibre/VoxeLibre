@@ -9,6 +9,9 @@ for i=0, 3 do
 	if i > 0 then
 		groups.sweet_berry_thorny = 1
 	end
+	local drop_berries = (i >= 2)
+	local berries_to_drop = drop_berries and {i - 1, i} or nil
+
 	minetest.register_node(node_name, {
 		drawtype = "plantlike",
 		tiles = {texture},
@@ -24,7 +27,14 @@ for i=0, 3 do
 		liquid_renewable = false,
 		liquid_range = 0,
 		walkable = false,
-		drop = (i>=2) and ("mcl_farming:sweet_berry" .. (i==3 and " 3" or "")) or "",
+		-- Dont even create a table if no berries are dropped.
+		drop = not drop_berries and "" or {
+			max_items = 1,
+			items = {
+				{ items = {"mcl_farming:sweet_berry " .. berries_to_drop[1] }, rarity = 2 },
+				{ items = {"mcl_farming:sweet_berry " .. berries_to_drop[2] } }
+			}
+		},
 		selection_box = {
 			type = "fixed",
 			fixed = {-6 / 16, -0.5, -6 / 16, 6 / 16, (-0.30 + (i*0.25)), 6 / 16},
@@ -46,17 +56,12 @@ for i=0, 3 do
 				itemstack:take_item()
 				return
 			end
-			local stage
-			if node.name:find("_2") then
-				stage = 2
-			elseif node.name:find("_3") then
-				stage = 3
-			end
-			if stage then
-				for i=1,math.random(stage) do
-					minetest.add_item(pos,"mcl_farming:sweet_berry")
+
+			if drop_berries then
+				for j=1, berries_to_drop[math.random(2)] do
+					minetest.add_item(pos, "mcl_farming:sweet_berry")
 				end
-				minetest.swap_node(pos,{name = "mcl_farming:sweet_berry_bush_" .. stage - 1 })
+				minetest.swap_node(pos, {name = "mcl_farming:sweet_berry_bush_" .. 1 })
 			end
 			return itemstack
 		end,
@@ -76,8 +81,11 @@ minetest.register_craftitem("mcl_farming:sweet_berry", {
 			minetest.record_protection_violation(pointed_thing.above, pn)
 			return itemstack
 		end
-		if pointed_thing.type == "node" and table.indexof(planton,minetest.get_node(pointed_thing.under).name) ~= -1 and minetest.get_node(pointed_thing.above).name == "air" then
-			minetest.set_node(pointed_thing.above,{name="mcl_farming:sweet_berry_bush_0"})
+		if pointed_thing.type == "node" and
+				table.indexof(planton, minetest.get_node(pointed_thing.under).name) ~= -1 and
+				pointed_thing.above.y > pointed_thing.under.y and
+				minetest.get_node(pointed_thing.above).name == "air" then
+			minetest.set_node(pointed_thing.above, {name="mcl_farming:sweet_berry_bush_0"})
 			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				itemstack:take_item()
 			end
