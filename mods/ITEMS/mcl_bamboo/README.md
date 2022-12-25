@@ -3,9 +3,9 @@ mcl_bamboo
 
 This mod adds minecraft-like bamboo nodes to your Mineclone 2 world.
 
-Code: Michieal. Original (basic) bamboo code by: Krock.
+Code: Michieal. Original (basic) bamboo code by: Small Joker.
 
-License for code: GPL3; images / textures: CC-BY-SA. 
+License for code / images / textures: CC-BY-SA. 
 Images Created by Michieal, except for: 
 Inventory / wield image: created by RandomLegoBrick#8692 and is CC0.
 
@@ -15,7 +15,7 @@ Optional Dependencies = mcl_flowerpots, mclx_stairs, mcl_doors, mcl_signs, mesec
 
 Special thanks to Nicu for help with the nodebox stalk design.
 
-Krock's bamboo forum topic:
+Small Joker's bamboo forum topic:
 Forum topic: https://forum.minetest.net/viewtopic.php?id=8289
 
 Scaffold inspiration: Cora, because she said that it couldn't be done.

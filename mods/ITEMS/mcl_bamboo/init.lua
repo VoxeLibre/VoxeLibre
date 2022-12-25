@@ -1,7 +1,8 @@
 -- [bamboo] mod by SmallJoker, Made for MineClone 2 by Michieal (as mcl_bamboo).
--- Parts of mcl_scaffolding were used. Mcl_scaffolding originally created by Cora; heavily reworked for mcl_bamboo by Michieal.
+-- Parts of mcl_scaffolding were used. Mcl_scaffolding originally created by Cora; Fixed and heavily reworked
+-- for mcl_bamboo by Michieal.
 -- Creation date: 12-01-2022 (Dec 1st, 2022)
--- License for everything: GPL3
+-- License for everything: CC-BY-SA 4.0
 -- Bamboo max height: 12-16
 
 -- LOCALS
@@ -13,10 +14,21 @@ local node_sound = mcl_sounds.node_sound_wood_defaults()
 
 -- CONSTS
 local SIDE_SCAFFOLDING = false
-local MAKE_STAIRS = true
 local DEBUG = false
 local DOUBLE_DROP_CHANCE = 8
 
+mcl_bamboo ={}
+
+--- pos: node position; placer: ObjectRef that is placing the item
+--- returns: true if protected, otherwise false.
+function mcl_bamboo.is_protected(pos, placer)
+	local name = placer:get_player_name()
+	if minetest.is_protected(pos, name) then
+		minetest.record_protection_violation(pos, name)
+		return true
+	end
+	return false
+end
 
 --Bamboo can be planted on moss blocks, grass blocks, dirt, coarse dirt, rooted dirt, gravel, mycelium, podzol, sand, red sand, or mud
 local bamboo_dirt_nodes = {
@@ -38,7 +50,7 @@ local BROKEN_DOORS = true
 -- LOCAL FUNCTIONS
 
 -- Add Groups function, courtesy of Warr1024.
-function addgroups(name, ...)
+function mcl_bamboo.addgroups(name, ...)
 	local def = minetest.registered_items[name] or error(name .. " not found")
 	local groups = {}
 	for k, v in pairs(def.groups) do
@@ -124,9 +136,7 @@ local function create_nodes()
 			if DEBUG then
 				minetest.log("mcl_bamboo::Checking for protected placement of bamboo.")
 			end
-			local pname = placer:get_player_name()
-			if minetest.is_protected(pos, pname) then
-				minetest.record_protection_violation(pos, pname)
+			if mcl_bamboo.is_protected(pos, placer) then
 				return
 			end
 			if DEBUG then
@@ -224,9 +234,7 @@ local function create_nodes()
 
 			local pos = pointed_thing.under
 
-			local pname = placer:get_player_name()
-			if minetest.is_protected(pos, pname) then
-				minetest.record_protection_violation(pos, pname)
+			if mcl_bamboo.is_protected(pos, placer) then
 				return
 			end
 
@@ -335,47 +343,45 @@ local function create_nodes()
 		end
 	end
 
-	if MAKE_STAIRS then
-		if minetest.get_modpath("mcl_stairs") then
-			if mcl_stairs ~= nil then
-				mcl_stairs.register_stair_and_slab_simple(
-						"bamboo_block",
-						"mcl_bamboo:bamboo_block",
-						S("Bamboo Stair"),
-						S("Bamboo Slab"),
-						S("Double Bamboo Slab")
-				)
-				mcl_stairs.register_stair_and_slab_simple(
-						"bamboo_stripped",
-						"mcl_bamboo:bamboo_block_stripped",
-						S("Stripped Bamboo Stair"),
-						S("Stripped Bamboo Slab"),
-						S("Double Stripped Bamboo Slab")
-				)
-				mcl_stairs.register_stair_and_slab_simple(
-						"bamboo_plank",
-						"mcl_bamboo:bamboo_plank",
-						S("Bamboo Plank Stair"),
-						S("Bamboo Plank Slab"),
-						S("Double Bamboo Plank Slab")
-				)
+	if minetest.get_modpath("mcl_stairs") then
+		if mcl_stairs ~= nil then
+			mcl_stairs.register_stair_and_slab_simple(
+					"bamboo_block",
+					"mcl_bamboo:bamboo_block",
+					S("Bamboo Stair"),
+					S("Bamboo Slab"),
+					S("Double Bamboo Slab")
+			)
+			mcl_stairs.register_stair_and_slab_simple(
+					"bamboo_stripped",
+					"mcl_bamboo:bamboo_block_stripped",
+					S("Stripped Bamboo Stair"),
+					S("Stripped Bamboo Slab"),
+					S("Double Stripped Bamboo Slab")
+			)
+			mcl_stairs.register_stair_and_slab_simple(
+					"bamboo_plank",
+					"mcl_bamboo:bamboo_plank",
+					S("Bamboo Plank Stair"),
+					S("Bamboo Plank Slab"),
+					S("Double Bamboo Plank Slab")
+			)
 
-				-- let's add plank slabs to the wood_slab group.
-				local bamboo_plank_slab = "mcl_stairs:slab_bamboo_plank"
-				local node_groups = {
-					wood_slab = 1,
-					building_block = 1,
-					slab = 1,
-					axey = 1,
-					handy = 1,
-					stair = 1,
-					flammable = 1,
-					fire_encouragement = 5,
-					fire_flammability = 20
-				}
+			-- let's add plank slabs to the wood_slab group.
+			local bamboo_plank_slab = "mcl_stairs:slab_bamboo_plank"
+			local node_groups = {
+				wood_slab = 1,
+				building_block = 1,
+				slab = 1,
+				axey = 1,
+				handy = 1,
+				stair = 1,
+				flammable = 1,
+				fire_encouragement = 5,
+				fire_flammability = 20
+			}
 
-				minetest.override_item(bamboo_plank_slab, {groups = node_groups})
-			end
+			minetest.override_item(bamboo_plank_slab, {groups = node_groups})
 		end
 	end
 
@@ -502,6 +508,8 @@ local function create_nodes()
 		tiles = {"mcl_bamboo_scaffolding_top.png", "mcl_bamboo_scaffolding_top.png", "mcl_bamboo_scaffolding_bottom.png"},
 		drawtype = "nodebox",
 		paramtype = "light",
+		paramtype2 = "4dir",
+		param2 = 0,
 		use_texture_alpha = "clip",
 		node_box = {
 			type = "fixed",
@@ -552,9 +560,7 @@ local function create_nodes()
 			end
 			local node = minetest.get_node(ptd.under)
 			local pos = ptd.under
-			local pname = placer:get_player_name()
-			if minetest.is_protected(pos, pname) then
-				minetest.record_protection_violation(pos, pname)
+			if mcl_bamboo.is_protected(pos, placer) then
 				return
 			end
 			if DEBUG then
@@ -715,37 +721,41 @@ local function register_craftings()
 		burntime = 20
 	})
 
-	minetest.register_craft({
-		type = "fuel",
-		recipe = "mcl_stairs:slab_bamboo_plank",
-		burntime = 7.5,
-	})
-	minetest.register_craft({
-		type = "fuel",
-		recipe = "mcl_stairs:slab_bamboo_block",
-		burntime = 7.5,
-	})
-	minetest.register_craft({
-		type = "fuel",
-		recipe = "mcl_stairs:slab_bamboo_stripped",
-		burntime = 7.5,
-	})
+	if minetest.get_modpath("mcl_stairs") then
+		if mcl_stairs ~= nil then
+			minetest.register_craft({
+				type = "fuel",
+				recipe = "mcl_stairs:slab_bamboo_plank",
+				burntime = 7.5,
+			})
+			minetest.register_craft({
+				type = "fuel",
+				recipe = "mcl_stairs:slab_bamboo_block",
+				burntime = 7.5,
+			})
+			minetest.register_craft({
+				type = "fuel",
+				recipe = "mcl_stairs:slab_bamboo_stripped",
+				burntime = 7.5,
+			})
 
-	minetest.register_craft({
-		type = "fuel",
-		recipe = "mcl_stairs:stair_bamboo_plank",
-		burntime = 15,
-	})
-	minetest.register_craft({
-		type = "fuel",
-		recipe = "mcl_stairs:stair_bamboo_block",
-		burntime = 15,
-	})
-	minetest.register_craft({
-		type = "fuel",
-		recipe = "mcl_stairs:stair_bamboo_stripped",
-		burntime = 15,
-	})
+			minetest.register_craft({
+				type = "fuel",
+				recipe = "mcl_stairs:stair_bamboo_plank",
+				burntime = 15,
+			})
+			minetest.register_craft({
+				type = "fuel",
+				recipe = "mcl_stairs:stair_bamboo_block",
+				burntime = 15,
+			})
+			minetest.register_craft({
+				type = "fuel",
+				recipe = "mcl_stairs:stair_bamboo_stripped",
+				burntime = 15,
+			})
+		end
+	end
 
 	minetest.register_craft({
 		type = "fuel",

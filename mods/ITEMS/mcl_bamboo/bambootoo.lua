@@ -14,7 +14,6 @@ local adj_nodes = {
 	vector.new(1, 0, 0),
 	vector.new(-1, 0, 0),
 }
-local SIDE_SCAFFOLDING = false
 
 local function bambootoo_create_nodes()
 	local bamboo_mosaic = minetest.registered_nodes[bamboo .. "_plank"]
@@ -24,7 +23,6 @@ local function bambootoo_create_nodes()
 	bamboo_mosaic._doc_items_longdesc = S("Bamboo Mosaic Plank")
 	minetest.register_node("mcl_bamboo:bamboo_mosaic", bamboo_mosaic)
 
-	-- crafted by "mcl_stair:slab_bamboo_plank", "mcl_stair:slab_bamboo_block", "mcl_stair:slab_bamboo_stripped"
 	if minetest.get_modpath("mcl_stairs") then
 		if mcl_stairs ~= nil then
 			mcl_stairs.register_stair_and_slab_simple(
@@ -37,47 +35,60 @@ local function bambootoo_create_nodes()
 		end
 	end
 
-	if SIDE_SCAFFOLDING then
-		--currently, disabled.
-		minetest.register_node("mcl_bamboo:scaffolding_horizontal", {
-			description = S("Scaffolding (horizontal)"),
-			doc_items_longdesc = S("Scaffolding block used to climb up or out across areas."),
-			doc_items_hidden = false,
-			tiles = {"mcl_bamboo_scaffolding_top.png", "mcl_bamboo_scaffolding_top.png", "mcl_bamboo_scaffolding_bottom.png"},
-			drawtype = "nodebox",
-			paramtype = "light",
-			use_texture_alpha = "clip",
-			node_box = {
-				type = "fixed",
-				fixed = {
-					{-0.5, 0.375, -0.5, 0.5, 0.5, 0.5},
-					{-0.5, -0.5, -0.5, -0.375, 0.5, -0.375},
-					{0.375, -0.5, -0.5, 0.5, 0.5, -0.375},
-					{0.375, -0.5, 0.375, 0.5, 0.5, 0.5},
-					{-0.5, -0.5, 0.375, -0.375, 0.5, 0.5},
-					{-0.5, -0.5, -0.5, 0.5, -0.375, 0.5},
-				}
+	minetest.register_node("mcl_bamboo:scaffolding_horizontal", {
+		description = S("Scaffolding (horizontal)"),
+		doc_items_longdesc = S("Scaffolding block used to climb up or out across areas."),
+		doc_items_hidden = false,
+		tiles = {"mcl_bamboo_scaffolding_top.png", "mcl_bamboo_scaffolding_top.png", "mcl_bamboo_scaffolding_bottom.png"},
+		drop = "mcl_bamboo:scaffolding",
+		drawtype = "nodebox",
+		paramtype = "light",
+		paramtype2 = "4dir",
+		param2 = 0,
+		use_texture_alpha = "clip",
+		node_box = {
+			type = "fixed",
+			fixed = {
+				{-0.5, 0.375, -0.5, 0.5, 0.5, 0.5},
+				{-0.5, -0.5, -0.5, -0.375, 0.5, -0.375},
+				{0.375, -0.5, -0.5, 0.5, 0.5, -0.375},
+				{0.375, -0.5, 0.375, 0.5, 0.5, 0.5},
+				{-0.5, -0.5, 0.375, -0.375, 0.5, 0.5},
+				{-0.5, -0.5, -0.5, 0.5, -0.375, 0.5},
+			}
+		},
+		selection_box = {
+			type = "fixed",
+			fixed = {
+				{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
 			},
-			selection_box = {
-				type = "fixed",
-				fixed = {
-					{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
-				},
-			},
-			groups = {handy = 1, axey = 1, flammable = 3, building_block = 1, material_wood = 1, fire_encouragement = 5, fire_flammability = 20, not_in_creative_inventory = 1, falling_node = 1},
-			_mcl_after_falling = function(pos)
-				if minetest.get_node(pos).name == "mcl_bamboo:scaffolding_horizontal" then
-					if minetest.get_node(vector.offset(pos, 0, 0, 0)).name ~= "mcl_bamboo:scaffolding" then
-						minetest.remove_node(pos)
-						minetest.add_item(pos, "mcl_bamboo:scaffolding")
-					else
-						minetest.set_node(vector.offset(pos, 0, 1, 0), {name = "mcl_bamboo:scaffolding"})
-					end
+		},
+		groups = {handy = 1, axey = 1, flammable = 3, building_block = 1, material_wood = 1, fire_encouragement = 5, fire_flammability = 20, not_in_creative_inventory = 1, falling_node = 1},
+		_mcl_after_falling = function(pos)
+			if minetest.get_node(pos).name == "mcl_bamboo:scaffolding_horizontal" then
+				if minetest.get_node(vector.offset(pos, 0, 0, 0)).name ~= "mcl_bamboo:scaffolding" then
+					minetest.remove_node(pos)
+					minetest.add_item(pos, "mcl_bamboo:scaffolding")
+				else
+					minetest.set_node(vector.offset(pos, 0, 1, 0), {name = "mcl_bamboo:scaffolding"})
 				end
 			end
-		})
-	end
+		end,
 
+		on_place = function(itemstack, placer, pointed_thing)
+			if pointed_thing.type ~= "node" then
+				return itemstack
+			end
+			local node = minetest.get_node(pointed_thing.under)
+			local pos = pointed_thing.under
+			if mcl_bamboo.is_protected(pos, placer) then
+				return
+			end
+
+		end
+
+
+	})
 
 end
 
