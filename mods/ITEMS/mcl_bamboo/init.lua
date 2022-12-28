@@ -772,7 +772,7 @@ register_craftings()
 dofile(minetest.get_modpath(modname) .. "/bambootoo.lua")
 
 local BAMBOO_SOIL_DIST = -16
-local BAM_MAX_HEIGHT_STCHK = 11
+local BAM_MAX_HEIGHT_STPCHK = 11
 local BAM_MAX_HEIGHT_TOP = 15
 
 --ABMs
@@ -780,49 +780,52 @@ minetest.register_abm({
 	nodenames = {bamboo},
 	interval = 40,
 	chance = 40,
-	action = function(pos, _)
-		local soil_pos
-		if minetest.get_node_light(pos) < 8 then
-			return
-		end
-		local found_soil = false
-		for py = -1, BAMBOO_SOIL_DIST, -1 do
-			local chk_pos = vector.offset(pos, 0, py, 0)
-			local name = minetest.get_node(chk_pos).name
-			if minetest.get_item_group(name, "soil") ~= 0 then
-				found_soil = true
-				soil_pos = chk_pos
-				break
-			elseif name ~= "mcl_bamboo:bamboo" then
-				break
-			end
-		end
-		if not found_soil then
-			return
-		end
-		for py = 1, 15 do
-			local npos = vector.offset(pos, 0, py, 0)
-			local name = minetest.get_node(npos).name
-			local dist = vector.distance(soil_pos, npos)
-			if dist >= BAM_MAX_HEIGHT_STCHK then
-				-- stop growing check.
-				if name == "air" then
-					local height = math.random(BAM_MAX_HEIGHT_STCHK, BAM_MAX_HEIGHT_TOP)
-					if height == dist then
-						minetest.set_node(npos, {name = "mcl_bamboo:bamboo_endcap"})
-					end
-				end
-				break
-			end
-			if name == "air" then
-				minetest.set_node(npos, {name = "mcl_bamboo:bamboo"})
-				break
-			elseif name ~= bamboo then
-				break
-			end
-		end
-	end,
+	action = mcl_bamboo.grow_bamboo(pos,_),
 })
+
+function mcl_bamboo.grow_bamboo(pos, _, force)
+	local soil_pos
+	if minetest.get_node_light(pos) < 8 then
+		return
+	end
+	local found_soil = false
+	for py = -1, BAMBOO_SOIL_DIST, -1 do
+		local chk_pos = vector.offset(pos, 0, py, 0)
+		local name = minetest.get_node(chk_pos).name
+		if minetest.get_item_group(name, "soil") ~= 0 then
+			found_soil = true
+			soil_pos = chk_pos
+			break
+		elseif name ~= bamboo then
+			break
+		end
+	end
+	if not found_soil then
+		return
+	end
+	for py = 1, 15 do
+		local npos = vector.offset(pos, 0, py, 0)
+		local name = minetest.get_node(npos).name
+		local dist = vector.distance(soil_pos, npos)
+		if dist >= BAM_MAX_HEIGHT_STPCHK then
+			-- stop growing check.
+			if name == "air" then
+				local height = math.random(BAM_MAX_HEIGHT_STPCHK, BAM_MAX_HEIGHT_TOP)
+				if height == dist then
+					minetest.set_node(npos, {name = "mcl_bamboo:bamboo_endcap"})
+				end
+			end
+			break
+		end
+		if name == "air" then
+			minetest.set_node(npos, {name = bamboo})
+			break
+		elseif name ~= bamboo then
+			break
+		end
+	end
+
+end
 
 -- Base Aliases.
 minetest.register_alias("bamboo_block", "mcl_bamboo:bamboo_block")
