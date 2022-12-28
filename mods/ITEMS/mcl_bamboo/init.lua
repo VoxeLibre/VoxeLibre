@@ -10,6 +10,8 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local bamboo = "mcl_bamboo:bamboo"
 
+mcl_bamboo = {}
+
 local node_sound = mcl_sounds.node_sound_wood_defaults()
 
 -- CONSTS
@@ -17,18 +19,12 @@ local SIDE_SCAFFOLDING = false
 local DEBUG = false
 local DOUBLE_DROP_CHANCE = 8
 
-mcl_bamboo ={}
+local BAMBOO_SOIL_DIST = -16
+local BAM_MAX_HEIGHT_STPCHK = 11
+local BAM_MAX_HEIGHT_TOP = 15
 
---- pos: node position; placer: ObjectRef that is placing the item
---- returns: true if protected, otherwise false.
-function mcl_bamboo.is_protected(pos, placer)
-	local name = placer:get_player_name()
-	if minetest.is_protected(pos, name) then
-		minetest.record_protection_violation(pos, name)
-		return true
-	end
-	return false
-end
+-- Due to door fix #2736, doors are displayed backwards. When this is fixed, set this variable to false.
+local BROKEN_DOORS = true
 
 --Bamboo can be planted on moss blocks, grass blocks, dirt, coarse dirt, rooted dirt, gravel, mycelium, podzol, sand, red sand, or mud
 local bamboo_dirt_nodes = {
@@ -44,10 +40,75 @@ local bamboo_dirt_nodes = {
 	"mcl_mud:mud",
 }
 
--- Due to door fix #2736, doors are displayed backwards. When this is fixed, set this variable to false.
-local BROKEN_DOORS = true
+--- pos: node position; placer: ObjectRef that is placing the item
+--- returns: true if protected, otherwise false.
+function mcl_bamboo.is_protected(pos, placer)
+	local name = placer:get_player_name()
+	if minetest.is_protected(pos, name) then
+		minetest.record_protection_violation(pos, name)
+		return true
+	end
+	return false
+end
 
--- LOCAL FUNCTIONS
+function mcl_bamboo.grow_bamboo(pos, _, force)
+	if not force or force == "" then
+		force = false
+	end
+	local chk_pos
+	local soil_pos
+	if minetest.get_node_light(pos) < 8 then
+		return
+	end
+	local found_soil = false
+	for py = -1, BAMBOO_SOIL_DIST, -1 do
+		chk_pos = vector.offset(pos, 0, py, 0)
+		local name = minetest.get_node(chk_pos).name
+		if minetest.get_item_group(name, "soil") ~= 0 then
+			found_soil = true
+			soil_pos = chk_pos
+			break
+		elseif name ~= bamboo then
+			break
+		end
+	end
+	-- requires knowing where the soil node is.
+	if not found_soil then
+		return
+	end
+	local grow_amount = math.random(1, 2)
+	-- Bonemeal: Grows the bamboo by 1-2 stems. (per the minecraft wiki.)
+
+	for py = 1, BAM_MAX_HEIGHT_TOP do
+		chk_pos = vector.offset(pos, 0, py, 0)
+		local name = minetest.get_node(chk_pos).name
+		local dist = vector.distance(soil_pos, chk_pos)
+		if dist >= BAM_MAX_HEIGHT_STPCHK then
+			-- stop growing check.
+			if name == "air" then
+				local height = math.random(BAM_MAX_HEIGHT_STPCHK, BAM_MAX_HEIGHT_TOP)
+				if height == dist then
+					minetest.set_node(chk_pos, {name = "mcl_bamboo:bamboo_endcap"})
+				end
+			end
+			break
+		end
+		if name == "air" then
+			minetest.set_node(chk_pos, {name = bamboo})
+			-- handle growing a second node.
+			if grow_amount == 2 then
+				chk_pos = vector.offset(chk_pos, 0, 1, 0)
+				if minetest.get_node(chk_pos).name == "air" then
+					minetest.set_node(chk_pos, {name = bamboo})
+				end
+			end
+			break
+		elseif name ~= bamboo and force == false then
+			break
+		end
+	end
+
+end
 
 -- Add Groups function, courtesy of Warr1024.
 function mcl_bamboo.addgroups(name, ...)
@@ -66,6 +127,8 @@ function mcl_bamboo.addgroups(name, ...)
 	addall(...)
 	return minetest.override_item(name, {groups = groups})
 end
+
+-- LOCAL FUNCTIONS
 
 local function create_nodes()
 
@@ -771,61 +834,13 @@ register_craftings()
 -- BAMBOO_TOO (Bamboo two)
 dofile(minetest.get_modpath(modname) .. "/bambootoo.lua")
 
-local BAMBOO_SOIL_DIST = -16
-local BAM_MAX_HEIGHT_STPCHK = 11
-local BAM_MAX_HEIGHT_TOP = 15
-
 --ABMs
 minetest.register_abm({
 	nodenames = {bamboo},
 	interval = 40,
 	chance = 40,
-	action = mcl_bamboo.grow_bamboo(pos,_),
+	action = mcl_bamboo.grow_bamboo,
 })
-
-function mcl_bamboo.grow_bamboo(pos, _, force)
-	local soil_pos
-	if minetest.get_node_light(pos) < 8 then
-		return
-	end
-	local found_soil = false
-	for py = -1, BAMBOO_SOIL_DIST, -1 do
-		local chk_pos = vector.offset(pos, 0, py, 0)
-		local name = minetest.get_node(chk_pos).name
-		if minetest.get_item_group(name, "soil") ~= 0 then
-			found_soil = true
-			soil_pos = chk_pos
-			break
-		elseif name ~= bamboo then
-			break
-		end
-	end
-	if not found_soil then
-		return
-	end
-	for py = 1, 15 do
-		local npos = vector.offset(pos, 0, py, 0)
-		local name = minetest.get_node(npos).name
-		local dist = vector.distance(soil_pos, npos)
-		if dist >= BAM_MAX_HEIGHT_STPCHK then
-			-- stop growing check.
-			if name == "air" then
-				local height = math.random(BAM_MAX_HEIGHT_STPCHK, BAM_MAX_HEIGHT_TOP)
-				if height == dist then
-					minetest.set_node(npos, {name = "mcl_bamboo:bamboo_endcap"})
-				end
-			end
-			break
-		end
-		if name == "air" then
-			minetest.set_node(npos, {name = bamboo})
-			break
-		elseif name ~= bamboo then
-			break
-		end
-	end
-
-end
 
 -- Base Aliases.
 minetest.register_alias("bamboo_block", "mcl_bamboo:bamboo_block")
@@ -849,6 +864,7 @@ todo -- Add in Extras.
 todo -- fix scaffolding placing, instead of using on_rightclick first.
 
 todo -- make graphic for top node of bamboo.
+todo -- add bamboo to junk items in fishing.
 
 waiting on specific things:
 todo -- Raft -- need model
