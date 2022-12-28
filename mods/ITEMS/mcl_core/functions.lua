@@ -809,7 +809,7 @@ function mcl_core.get_grass_palette_index(pos)
 		local biome_name = minetest.get_biome_name(biome)
 		local reg_biome = minetest.registered_biomes[biome_name]
 		if reg_biome then
-			index = reg_biome._mcl_palette_index
+			index = reg_biome._mcl_grass_palette_index
 		end
 	end
 	return index
@@ -939,7 +939,7 @@ minetest.register_lbm({
 				else
 					node.name = "mcl_core:dirt_with_grass"
 				end
-				node.param2 = reg_biome._mcl_palette_index
+				node.param2 = reg_biome._mcl_grass_palette_index
 				-- Fall back to savanna palette index
 				if not node.param2 then
 					node.param2 = SAVANNA_INDEX
