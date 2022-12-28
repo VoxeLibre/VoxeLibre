@@ -839,7 +839,9 @@ minetest.register_abm({
 	nodenames = {bamboo},
 	interval = 40,
 	chance = 40,
-	action = mcl_bamboo.grow_bamboo,
+	action = function(pos, node)
+		mcl_bamboo.grow_bamboo(pos, node)
+	end,
 })
 
 -- Base Aliases.
