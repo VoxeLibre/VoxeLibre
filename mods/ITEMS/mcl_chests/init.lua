@@ -32,8 +32,10 @@ end
 
 local tiles_chest_ender_small = {"mcl_chests_ender.png"}
 
+local ender_chest_texture = {"mcl_chests_ender.png"}
 if it_is_christmas then
 	tiles_chest_ender_small = {"mcl_chests_ender_present.png^mcl_chests_noise.png"}
+    ender_chest_texture = {"mcl_chests_ender_present.png"}
 end
 
 -- Chest Entity
@@ -1010,7 +1012,7 @@ minetest.register_node("mcl_chests:ender_chest_small", {
 		type = "fixed",
 		fixed = {-0.4375, -0.5, -0.4375, 0.4375, 0.375, 0.4375},
 	},
-	_chest_entity_textures = {"mcl_chests_ender.png"},
+	_chest_entity_textures = ender_chest_texture,
 	_chest_entity_sound = "mcl_chests_enderchest",
 	_chest_entity_mesh = "mcl_chests_chest",
 	_chest_entity_animation_type = "chest",
@@ -1026,7 +1028,7 @@ minetest.register_node("mcl_chests:ender_chest_small", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	drop = "mcl_core:obsidian 8",
 	on_construct = function(pos)
-		create_entity(pos, "mcl_chests:ender_chest_small", {"mcl_chests_ender.png"}, minetest.get_node(pos).param2, false, "mcl_chests_enderchest", "mcl_chests_chest", "chest")
+		create_entity(pos, "mcl_chests:ender_chest_small", ender_chest_texture, minetest.get_node(pos).param2, false, "mcl_chests_enderchest", "mcl_chests_chest", "chest")
 	end,
 	on_rightclick = function(pos, node, clicker)
 		if minetest.registered_nodes[minetest.get_node({x = pos.x, y = pos.y + 1, z = pos.z}).name].groups.opaque == 1 then
@@ -1034,7 +1036,7 @@ minetest.register_node("mcl_chests:ender_chest_small", {
 				return false
 		end
 		minetest.show_formspec(clicker:get_player_name(), "mcl_chests:ender_chest_"..clicker:get_player_name(), formspec_ender_chest)
-		player_chest_open(clicker, pos, "mcl_chests:ender_chest_small", {"mcl_chests_ender.png"}, node.param2, false, "mcl_chests_enderchest", "mcl_chests_chest")
+		player_chest_open(clicker, pos, "mcl_chests:ender_chest_small", ender_chest_texture, node.param2, false, "mcl_chests_enderchest", "mcl_chests_chest")
 	end,
 	on_receive_fields = function(pos, formname, fields, sender)
 		if fields.quit then

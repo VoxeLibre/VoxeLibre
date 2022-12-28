@@ -542,9 +542,7 @@ minetest.register_node("mcl_core:gravel", {
 			{items = {"mcl_core:gravel"}}
 		}
 	},
-	sounds = mcl_sounds.node_sound_dirt_defaults({
-		footstep = {name="default_gravel_footstep", gain=0.45},
-	}),
+	sounds = mcl_sounds.node_sound_gravel_defaults(),
 	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
 	_mcl_silk_touch_drop = true,
@@ -901,7 +899,7 @@ minetest.register_node("mcl_core:ice", {
 	stack_max = 64,
 	groups = {handy=1,pickaxey=1, slippery=3, building_block=1, ice=1},
 	drop = "",
-	sounds = mcl_sounds.node_sound_glass_defaults(),
+	sounds = mcl_sounds.node_sound_ice_defaults(),
 	node_dig_prediction = "mcl_core:water_source",
 	after_dig_node = function(pos, oldnode)
 		mcl_core.melt_ice(pos)
@@ -919,7 +917,7 @@ minetest.register_node("mcl_core:packed_ice", {
 	stack_max = 64,
 	groups = {handy=1,pickaxey=1, slippery=3, building_block=1, ice=1},
 	drop = "",
-	sounds = mcl_sounds.node_sound_glass_defaults(),
+	sounds = mcl_sounds.node_sound_ice_defaults(),
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	_mcl_silk_touch_drop = true,
@@ -967,7 +965,7 @@ for i=0,3 do
 		stack_max = 64,
 		groups = {handy=1, frosted_ice=1, slippery=3, not_in_creative_inventory=1, ice=1},
 		drop = "",
-		sounds = mcl_sounds.node_sound_glass_defaults(),
+		sounds = mcl_sounds.node_sound_ice_defaults(),
 		on_construct = function(pos)
 			local timer = minetest.get_node_timer(pos)
 			timer:start(1.5)
