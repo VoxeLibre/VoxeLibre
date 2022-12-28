@@ -1513,7 +1513,7 @@ local end_skycolor = "#000000"
 		humidity_point = 95,
 		heat_point = 94,
 		_mcl_biome_type = "hot",
-		_mcl_palette_index = 6,
+		_mcl_palette_index = 5,
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1530,7 +1530,7 @@ local end_skycolor = "#000000"
 		humidity_point = 95,
 		heat_point = 94,
 		_mcl_biome_type = "hot",
-		_mcl_palette_index = 6,
+		_mcl_palette_index = 5,
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1567,7 +1567,7 @@ local end_skycolor = "#000000"
 		humidity_point = 90,
 		heat_point = 50,
 		_mcl_biome_type = "medium",
-		_mcl_palette_index = 6,
+		_mcl_palette_index = 5,
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1584,7 +1584,7 @@ local end_skycolor = "#000000"
 		humidity_point = 90,
 		heat_point = 50,
 		_mcl_biome_type = "medium",
-		_mcl_palette_index = 6,
+		_mcl_palette_index = 5,
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
