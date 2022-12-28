@@ -281,7 +281,7 @@ local function set_palette(minp,maxp,data2,area,biomemap,nodes)
 		if bn then
 			local biome = minetest.registered_biomes[bn]
 			if biome and biome._mcl_biome_type then
-				data2[p_pos] = biome._mcl_palette_index
+				data2[p_pos] = biome._mcl_grass_palette_index
 				lvm_used = true
 			end
 		end
