@@ -350,7 +350,7 @@ local function block_fixes(vm, data, data2, emin, emax, area, minp, maxp, blocks
 	local pr = PseudoRandom(blockseed)
 	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
 		-- Set param2 (=color) of sugar cane and grass
-		lvm_used = set_palette(minp,maxp,data2,area,biomemap,{"mcl_core:reeds","mcl_core:dirt_with_grass"})
+		lvm_used = set_palette(minp,maxp,data2,area,biomemap,{"mcl_core:reeds","mcl_core:dirt_with_grass","mcl_core:dirt_with_grass_snow"})
 	end
 	return lvm_used
 end
