@@ -1559,7 +1559,7 @@ function mcl_core.register_snowed_node(itemstring_snowed, itemstring_clear, tile
 	end
 	if not sounds then
 		def.sounds = mcl_sounds.node_sound_dirt_defaults({
-			footstep = { name = "pedology_snow_soft_footstep", gain = 0.5 }
+			footstep = mcl_sounds.node_sound_snow_defaults().footstep,
 		})
 	else
 		def.sounds = sounds

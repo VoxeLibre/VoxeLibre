@@ -95,6 +95,7 @@
 * anarquimico
 * TheOnlyJoeEnderman
 * Ranko Saotome
+* Gregor Parzefall
 
 ## MineClone5
 * kay27

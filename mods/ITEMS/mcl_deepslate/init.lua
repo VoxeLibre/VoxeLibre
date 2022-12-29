@@ -89,11 +89,11 @@ end
 
 local lapis_drops = {
 	max_items = 1, items = {
-		{ items = { "mcl_dye:blue 8" }, rarity = 5 },
-		{ items = { "mcl_dye:blue 7" }, rarity = 5 },
-		{ items = { "mcl_dye:blue 6" }, rarity = 5 },
-		{ items = { "mcl_dye:blue 5" }, rarity = 5 },
-		{ items = { "mcl_dye:blue 4" } }
+		{ items = { "mcl_core:lapis 8" }, rarity = 5 },
+		{ items = { "mcl_core:lapis 7" }, rarity = 5 },
+		{ items = { "mcl_core:lapis 6" }, rarity = 5 },
+		{ items = { "mcl_core:lapis 5" }, rarity = 5 },
+		{ items = { "mcl_core:lapis 4" } }
 	}
 }
 
@@ -103,7 +103,7 @@ local deepslate_ores = {
 	{ "Gold", "mcl_raw_ores:raw_gold", "mcl_core:gold_ingot", 4, 0 },
 	{ "Emerald", "mcl_core:emerald", "mcl_core:emerald", 4, 6 },
 	{ "Diamond", "mcl_core:diamond", "mcl_core:diamond", 4, 4 },
-	{ "Lapis Lazuli", lapis_drops, "mcl_dye:blue", 3, 6 },
+	{ "Lapis Lazuli", lapis_drops, "mcl_core:lapis", 3, 6 },
 }
 
 for _, p in pairs(deepslate_ores) do
