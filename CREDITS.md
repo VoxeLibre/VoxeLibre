@@ -179,6 +179,7 @@
 * Emojigit
 * snowyu
 * 3raven
+* SakuraRiu
 
 ## Funders
 * 40W
