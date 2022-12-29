@@ -40,6 +40,10 @@ local bamboo_dirt_nodes = {
 	"mcl_mud:mud",
 }
 
+local strlen = string.len()
+local substr = string.sub()
+local rand = math.random()
+
 --- pos: node position; placer: ObjectRef that is placing the item
 --- returns: true if protected, otherwise false.
 function mcl_bamboo.is_protected(pos, placer)
@@ -51,7 +55,7 @@ function mcl_bamboo.is_protected(pos, placer)
 	return false
 end
 
-function mcl_bamboo.grow_bamboo(pos, _, force)
+function mcl_bamboo.grow_bamboo(pos, _)
 	if not force or force == "" then
 		force = false
 	end
@@ -60,50 +64,64 @@ function mcl_bamboo.grow_bamboo(pos, _, force)
 	if minetest.get_node_light(pos) < 8 then
 		return
 	end
-	local found_soil = false
+	local found = false -- used for the soil check
+	local mboo = ""
 	for py = -1, BAMBOO_SOIL_DIST, -1 do
 		chk_pos = vector.offset(pos, 0, py, 0)
 		local name = minetest.get_node(chk_pos).name
-		if minetest.get_item_group(name, "soil") ~= 0 then
-			found_soil = true
-			soil_pos = chk_pos
+		for i = 1, #bamboo_dirt_nodes do
+			if name == bamboo_dirt_nodes[i] then
+				found = true
+				soil_pos = chk_pos
+				break
+			end
+		end
+		if found then
 			break
-		elseif name ~= bamboo then
-			break
+		else
+			mboo = substr(name, strlen(name) - 3, strlen(name))
+			if mboo ~= "mboo" and mboo ~= "oo_1" and mboo ~= "oo_2" and mboo ~= "oo_3" then
+				break
+			end
 		end
 	end
 	-- requires knowing where the soil node is.
-	if not found_soil then
+	if not found then
 		return
 	end
-	local grow_amount = math.random(1, 2)
+	local grow_amount = rand(1, 32)
+	grow_amount = rand(1, 32)
+	grow_amount = rand(1, 32)
+	grow_amount = rand(1, 32) -- because yeah, not truly random, or even a good prng.
 	-- Bonemeal: Grows the bamboo by 1-2 stems. (per the minecraft wiki.)
 
 	for py = 1, BAM_MAX_HEIGHT_TOP do
 		chk_pos = vector.offset(pos, 0, py, 0)
+		local node_below = minetest.get_node(pos).name
 		local name = minetest.get_node(chk_pos).name
 		local dist = vector.distance(soil_pos, chk_pos)
 		if dist >= BAM_MAX_HEIGHT_STPCHK then
 			-- stop growing check.
 			if name == "air" then
-				local height = math.random(BAM_MAX_HEIGHT_STPCHK, BAM_MAX_HEIGHT_TOP)
+				local height = rand(BAM_MAX_HEIGHT_STPCHK, BAM_MAX_HEIGHT_TOP)
 				if height == dist then
 					minetest.set_node(chk_pos, {name = "mcl_bamboo:bamboo_endcap"})
 				end
 			end
 			break
 		end
+		mboo = substr(name, strlen(name) - 3, strlen(name))
 		if name == "air" then
-			minetest.set_node(chk_pos, {name = bamboo})
+			minetest.set_node(chk_pos, {name = node_below})
 			-- handle growing a second node.
 			if grow_amount == 2 then
 				chk_pos = vector.offset(chk_pos, 0, 1, 0)
 				if minetest.get_node(chk_pos).name == "air" then
-					minetest.set_node(chk_pos, {name = bamboo})
+					minetest.set_node(chk_pos, {name = node_below})
 				end
 			end
 			break
-		elseif name ~= bamboo and force == false then
+		elseif mboo ~= "mboo" and mboo ~= "oo_1" and mboo ~= "oo_2" and mboo ~= "oo_3" then
 			break
 		end
 	end
@@ -137,7 +155,7 @@ local function create_nodes()
 		tiles = {"mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo.png"},
 		drawtype = "nodebox",
 		paramtype = "light",
-		groups = {handy = 1, axey = 1, choppy = 1, flammable = 3},
+		groups = {handy = 1, swordy = 1, choppy = 1, flammable = 3},
 		sounds = node_sound,
 
 		drop = {
@@ -177,13 +195,6 @@ local function create_nodes()
 			}
 		},
 
-		--[[
-		Node Box definitions for alternative styles.
-		{-0.05, -0.5, 0.285, -0.275, 0.5, 0.06},
-		{0.25, -0.5, 0.325, 0.025, 0.5, 0.100},
-		{-0.125, -0.5, 0.125, -0.3125, 0.5, 0.3125},
-		--]]
-
 		on_place = function(itemstack, placer, pointed_thing)
 			if pointed_thing.type ~= "node" then
 				return itemstack
@@ -216,7 +227,10 @@ local function create_nodes()
 				end
 			end
 
-			if node.name ~= "mcl_bamboo:bamboo" then
+			local mboo = substr(node.name, strlen(node.name) - 3, strlen(node.name))
+
+			if mboo ~= "mboo" and mboo ~= "oo_1" and mboo ~= "oo_2" and mboo ~= "oo_3" then
+				-- not bamboo...
 				if node.name ~= "mcl_flowerpots:flower_pot" then
 					local found = false
 					for i = 1, #bamboo_dirt_nodes do
@@ -234,8 +248,44 @@ local function create_nodes()
 			if DEBUG then
 				minetest.log("mcl_bamboo::placing bamboo directly.")
 			end
-			return minetest.item_place(itemstack, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
 
+			local place_item = table.copy(itemstack) -- make a copy so that we don't indirectly mess with the original.
+
+			if mboo == "mboo" then
+				return minetest.item_place(itemstack, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
+			elseif mboo ~= "oo_1" then
+				place_item:set_name(bamboo .. "_1")
+				itemstack:set_count(itemstack:get_count() - 1)
+				minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
+				return itemstack, pointed_thing.under
+			elseif mboo ~= "oo_2" then
+				place_item:set_name(bamboo .. "_2")
+				itemstack:set_count(itemstack:get_count() - 1)
+				minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
+				return itemstack, pointed_thing.under
+			elseif mboo ~= "oo_3" then
+				place_item:set_name(bamboo .. "_3")
+				itemstack:set_count(itemstack:get_count() - 1)
+				minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
+				return itemstack, pointed_thing.under
+			else
+				local placed_type = rand(0, 3) -- randomly choose which one to place.
+				placed_type = rand(0, 3)
+				placed_type = rand(0, 3)
+				placed_type = rand(0, 3) -- Get the lua juices flowing. (Really, this is just to get it to give a real random number.)
+				if placed_type == 1 then
+					place_item:set_name(bamboo .. "_1")
+				end
+				if placed_type == 2 then
+					place_item:set_name(bamboo .. "_2")
+				end
+				if placed_type == 3 then
+					place_item:set_name(bamboo .. "_3")
+				end
+				itemstack:set_count(itemstack:get_count() - 1)
+				minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
+				return itemstack, pointed_thing.under
+			end
 		end,
 
 		on_destruct = function(pos)
@@ -836,7 +886,7 @@ dofile(minetest.get_modpath(modname) .. "/bambootoo.lua")
 
 --ABMs
 minetest.register_abm({
-	nodenames = {bamboo},
+	nodenames = {bamboo, bamboo .. "_1", bamboo .. "_2", bamboo .. "_3"},
 	interval = 40,
 	chance = 40,
 	action = function(pos, node)

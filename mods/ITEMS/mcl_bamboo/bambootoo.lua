@@ -16,6 +16,33 @@ local adj_nodes = {
 }
 
 local function bambootoo_create_nodes()
+	-- Bamboo alternative node types.
+	local def = minetest.registered_nodes [bamboo]
+	def.node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.05, -0.5, 0.285, -0.275, 0.5, 0.06},
+		}
+	}
+	minetest.register_node(bamboo.."_1", def)
+
+	def.node_box = {
+		type = "fixed",
+		fixed = {
+			{0.25, -0.5, 0.325, 0.025, 0.5, 0.100},
+		}
+	}
+	minetest.register_node(bamboo.."_2", def)
+
+
+	def.node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.125, -0.5, 0.125, -0.3125, 0.5, 0.3125},
+		}
+	}
+	minetest.register_node(bamboo.."_3", def)
+
 	local bamboo_mosaic = minetest.registered_nodes[bamboo .. "_plank"]
 	bamboo_mosaic.tiles = {"mcl_bamboo_bamboo_plank.png"}
 	bamboo_mosaic.groups = {handy = 1, axey = 1, flammable = 3, fire_encouragement = 5, fire_flammability = 20}
@@ -34,6 +61,7 @@ local function bambootoo_create_nodes()
 			)
 		end
 	end
+
 
 	minetest.register_node("mcl_bamboo:scaffolding_horizontal", {
 		description = S("Scaffolding (horizontal)"),
@@ -84,7 +112,7 @@ local function bambootoo_create_nodes()
 			if mcl_bamboo.is_protected(pos, placer) then
 				return
 			end
-
+			-- todo: finish this section.
 		end
 
 
