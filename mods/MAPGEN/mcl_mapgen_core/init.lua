@@ -349,8 +349,8 @@ local function block_fixes(vm, data, data2, emin, emax, area, minp, maxp, blocks
 	local lvm_used = false
 	local pr = PseudoRandom(blockseed)
 	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
-		-- Set param2 (=color) of sugar cane and grass
-		lvm_used = set_palette(minp,maxp,data2,area,biomemap,{"mcl_core:reeds","mcl_core:dirt_with_grass","mcl_core:dirt_with_grass_snow"})
+		-- Set param2 (=color) of nodes which use the grass colour palette.
+		lvm_used = set_palette(minp,maxp,data2,area,biomemap,{"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass", "mcl_flowers:double_grass", "mcl_flowers:double_grass_top", "mcl_flowers:fern", "mcl_flowers:double_fern", "mcl_flowers:double_fern_top", "mcl_core:reeds", "mcl_core:dirt_with_grass_snow"})
 	end
 	return lvm_used
 end
@@ -417,3 +417,31 @@ mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blocks
 	end
 	return false, false, false
 end, 100, true)
+
+local DEFAULT_INDEX = 0
+minetest.register_lbm({
+	label = "Fix grass palette indexes",
+	name = "mcl_mapgen_core:fix_grass_palette_indexes",
+	nodenames = {"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass", "mcl_flowers:double_grass", "mcl_flowers:double_grass_top", "mcl_flowers:fern", "mcl_flowers:double_fern", "mcl_flowers:double_fern_top", "mcl_core:reeds", "mcl_core:dirt_with_grass_snow"},
+	run_at_every_load = true,
+	action = function(pos, node)
+		local biome_data = minetest.get_biome_data(pos)
+		if biome_data then
+			local biome = biome_data.biome
+			local biome_name = minetest.get_biome_name(biome)
+			local reg_biome = minetest.registered_biomes[biome_name]
+			if reg_biome then
+				node.param2 = reg_biome._mcl_grass_palette_index
+				-- Fall back to default palette index
+				if not node.param2 then
+					node.param2 = DEFAULT_INDEX
+				end
+				minetest.set_node(pos, node)
+				return
+			end
+		end
+		node.param2 = DEFAULT_INDEX
+		minetest.set_node(pos, node)
+		return
+	end,
+})
