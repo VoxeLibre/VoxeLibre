@@ -181,6 +181,14 @@ minetest.register_craftitem("mcl_mobitems:bone", {
 	_mcl_toollike_wield = true,
 })
 
+minetest.register_craftitem("mcl_mobitems:ink_sac", {
+	description = S("Squid Ink Sac"),
+	_doc_items_longdesc = S("This item is dropped by dead squids. Squid ink can be used to as an ingredient to craft book and quill or black dye."),
+	inventory_image = "mcl_mobitems_ink_sac.png",
+	stack_max = 64,
+	groups = { craftitem = 1 },
+})
+
 minetest.register_craftitem("mcl_mobitems:string",{
 	description = S("String"),
 	_doc_items_longdesc = S("Strings are used in crafting."),

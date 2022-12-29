@@ -1,5 +1,8 @@
 --License for code WTFPL and otherwise stated in readmes
 
+-- FIXME: Slimes should spawn only in "slime chunks" which make up only
+-- 10% of the map.
+--
 local S = minetest.get_translator("mobs_mc")
 
 -- Returns a function that spawns children in a circle around pos.
@@ -7,46 +10,47 @@ local S = minetest.get_translator("mobs_mc")
 -- self: mob reference
 -- pos: position of "mother" mob
 -- child_mod: Mob to spawn
--- children_count: Number of children to spawn
 -- spawn_distance: Spawn distance from "mother" mob
 -- eject_speed: Initial speed of child mob away from "mother" mob
-local spawn_children_on_die = function(child_mob, children_count, spawn_distance, eject_speed)
+local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 	return function(self, pos)
-		local angle, posadd, newpos, dir
+		local posadd, newpos, dir
 		if not eject_speed then
 			eject_speed = 1
 		end
 		local mndef = minetest.registered_nodes[minetest.get_node(pos).name]
 		local mother_stuck = mndef and mndef.walkable
-		angle = math.random(0, math.pi*2)
+		local angle = math.random(0, math.pi*2)
 		local children = {}
-		for i=1,children_count do
-			dir = {x=math.cos(angle),y=0,z=math.sin(angle)}
-			posadd = vector.multiply(vector.normalize(dir), spawn_distance)
-			newpos = vector.add(pos, posadd)
+		local spawn_count = math.random(2, 4)
+		for i = 1, spawn_count do
+			dir = vector.new(math.cos(angle), 0, math.sin(angle))
+			posadd = vector.normalize(dir) * spawn_distance
+			newpos = pos + posadd
 			-- If child would end up in a wall, use position of the "mother", unless
 			-- the "mother" was stuck as well
-			local speed_penalty = 1
-			local cndef = minetest.registered_nodes[minetest.get_node(newpos).name]
-			if (not mother_stuck) and cndef and cndef.walkable then
-				newpos = pos
-				speed_penalty = 0.5
+			if not mother_stuck then
+				local cndef = minetest.registered_nodes[minetest.get_node(newpos).name]
+				if cndef and cndef.walkable then
+					newpos = pos
+					eject_speed = eject_speed * 0.5
+				end
 			end
 			local mob = minetest.add_entity(newpos, child_mob)
-			if (not mother_stuck) then
-				mob:set_velocity(vector.multiply(dir, eject_speed * speed_penalty))
+			if not mother_stuck then
+				mob:set_velocity(dir * eject_speed)
 			end
 			mob:set_yaw(angle - math.pi/2)
 			table.insert(children, mob)
-			angle = angle + (math.pi*2)/children_count
+			angle = angle + (math.pi*2) / spawn_count
 		end
 		-- If mother was murdered, children attack the killer after 1 second
 		if self.state == "attack" then
 			minetest.after(1.0, function(children, enemy)
-				for c=1, #children do
-					local child = children[c]
-					local le = child:get_luaentity()
-					if le ~= nil then
+				local le
+				for c = 1, #children do
+					le = children[c]:get_luaentity()
+					if le then
 						le.state = "attack"
 						le.attack = enemy
 					end
@@ -106,7 +110,7 @@ local slime_big = {
 	jump_height = 5.2,
 	fear_height = 0,
 	spawn_small_alternative = "mobs_mc:slime_small",
-	on_die = spawn_children_on_die("mobs_mc:slime_small", 4, 1.0, 1.5),
+	on_die = spawn_children_on_die("mobs_mc:slime_small", 1.0, 1.5),
 	use_texture_alpha = true,
 }
 mcl_mobs.register_mob("mobs_mc:slime_big", slime_big)
@@ -125,7 +129,7 @@ slime_small.walk_velocity = 1.3
 slime_small.run_velocity = 1.3
 slime_small.jump_height = 4.3
 slime_small.spawn_small_alternative = "mobs_mc:slime_tiny"
-slime_small.on_die = spawn_children_on_die("mobs_mc:slime_tiny", 4, 0.6, 1.0)
+slime_small.on_die = spawn_children_on_die("mobs_mc:slime_tiny", 0.6, 1.0)
 mcl_mobs.register_mob("mobs_mc:slime_small", slime_small)
 
 local slime_tiny = table.copy(slime_big)
@@ -153,140 +157,127 @@ slime_tiny.on_die = nil
 
 mcl_mobs.register_mob("mobs_mc:slime_tiny", slime_tiny)
 
-local smin = mcl_vars.mg_overworld_min
-local smax = mobs_mc.water_level - 23
+local water_level = mobs_mc.water_level
+
+local cave_biomes = {
+	"FlowerForest_underground",
+	"JungleEdge_underground",
+	"StoneBeach_underground",
+	"MesaBryce_underground",
+	"Mesa_underground",
+	"RoofedForest_underground",
+	"Jungle_underground",
+	"Swampland_underground",
+	"MushroomIsland_underground",
+	"BirchForest_underground",
+	"Plains_underground",
+	"MesaPlateauF_underground",
+	"ExtremeHills_underground",
+	"MegaSpruceTaiga_underground",
+	"BirchForestM_underground",
+	"SavannaM_underground",
+	"MesaPlateauFM_underground",
+	"Desert_underground",
+	"Savanna_underground",
+	"Forest_underground",
+	"SunflowerPlains_underground",
+	"ColdTaiga_underground",
+	"IcePlains_underground",
+	"IcePlainsSpikes_underground",
+	"MegaTaiga_underground",
+	"Taiga_underground",
+	"ExtremeHills+_underground",
+	"JungleM_underground",
+	"ExtremeHillsM_underground",
+	"JungleEdgeM_underground",
+	"MangroveSwamp_underground"
+}
+
+local cave_min = mcl_vars.mg_overworld_min
+local cave_max = water_level - 23
+
+local swampy_biomes = {"Swampland", "MangroveSwamp"}
+local swamp_light_max = 7
+local swamp_min = water_level
+local swamp_max = water_level + 27
 
 mcl_mobs:spawn_specific(
 "mobs_mc:slime_tiny",
 "overworld",
 "ground",
-{
-"FlowerForest_underground",
-"JungleEdge_underground",
-"StoneBeach_underground",
-"MesaBryce_underground",
-"Mesa_underground",
-"RoofedForest_underground",
-"Jungle_underground",
-"Swampland_underground",
-"MushroomIsland_underground",
-"BirchForest_underground",
-"Plains_underground",
-"MesaPlateauF_underground",
-"ExtremeHills_underground",
-"MegaSpruceTaiga_underground",
-"BirchForestM_underground",
-"SavannaM_underground",
-"MesaPlateauFM_underground",
-"Desert_underground",
-"Savanna_underground",
-"Forest_underground",
-"SunflowerPlains_underground",
-"ColdTaiga_underground",
-"IcePlains_underground",
-"IcePlainsSpikes_underground",
-"MegaTaiga_underground",
-"Taiga_underground",
-"ExtremeHills+_underground",
-"JungleM_underground",
-"ExtremeHillsM_underground",
-"JungleEdgeM_underground",
-},
+cave_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
 12000,
 4,
-smin,
-smax)
+cave_min,
+cave_max)
+
+mcl_mobs:spawn_specific(
+"mobs_mc:slime_tiny",
+"overworld",
+"ground",
+swampy_biomes,
+0,
+swamp_light_max,
+30,
+12000,
+4,
+swamp_min,
+swamp_max)
 
 mcl_mobs:spawn_specific(
 "mobs_mc:slime_small",
 "overworld",
 "ground",
-{
-"FlowerForest_underground",
-"JungleEdge_underground",
-"StoneBeach_underground",
-"MesaBryce_underground",
-"Mesa_underground",
-"RoofedForest_underground",
-"Jungle_underground",
-"Swampland_underground",
-"MushroomIsland_underground",
-"BirchForest_underground",
-"Plains_underground",
-"MesaPlateauF_underground",
-"ExtremeHills_underground",
-"MegaSpruceTaiga_underground",
-"BirchForestM_underground",
-"SavannaM_underground",
-"MesaPlateauFM_underground",
-"Desert_underground",
-"Savanna_underground",
-"Forest_underground",
-"SunflowerPlains_underground",
-"ColdTaiga_underground",
-"IcePlains_underground",
-"IcePlainsSpikes_underground",
-"MegaTaiga_underground",
-"Taiga_underground",
-"ExtremeHills+_underground",
-"JungleM_underground",
-"ExtremeHillsM_underground",
-"JungleEdgeM_underground",
-},
+cave_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
 8500,
 4,
-smin,
-smax)
+cave_min,
+cave_max)
+
+mcl_mobs:spawn_specific(
+"mobs_mc:slime_small",
+"overworld",
+"ground",
+swampy_biomes,
+0,
+swamp_light_max,
+30,
+8500,
+4,
+swamp_min,
+swamp_max)
 
 mcl_mobs:spawn_specific(
 "mobs_mc:slime_big",
 "overworld",
 "ground",
-{
-"FlowerForest_underground",
-"JungleEdge_underground",
-"StoneBeach_underground",
-"MesaBryce_underground",
-"Mesa_underground",
-"RoofedForest_underground",
-"Jungle_underground",
-"Swampland_underground",
-"MushroomIsland_underground",
-"BirchForest_underground",
-"Plains_underground",
-"MesaPlateauF_underground",
-"ExtremeHills_underground",
-"MegaSpruceTaiga_underground",
-"BirchForestM_underground",
-"SavannaM_underground",
-"MesaPlateauFM_underground",
-"Desert_underground",
-"Savanna_underground",
-"Forest_underground",
-"SunflowerPlains_underground",
-"ColdTaiga_underground",
-"IcePlains_underground",
-"IcePlainsSpikes_underground",
-"MegaTaiga_underground",
-"Taiga_underground",
-"ExtremeHills+_underground",
-"JungleM_underground",
-"ExtremeHillsM_underground",
-"JungleEdgeM_underground",
-},
+cave_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
 10000,
 4,
-smin,
-smax)
+cave_min,
+cave_max)
+
+mcl_mobs:spawn_specific(
+"mobs_mc:slime_big",
+"overworld",
+"ground",
+swampy_biomes,
+0,
+swamp_light_max,
+30,
+10000,
+4,
+swamp_min,
+swamp_max)
 
 -- Magma cube
 local magma_cube_big = {
@@ -345,7 +336,7 @@ local magma_cube_big = {
 	walk_chance = 0,
 	fear_height = 0,
 	spawn_small_alternative = "mobs_mc:magma_cube_small",
-	on_die = spawn_children_on_die("mobs_mc:magma_cube_small", 3, 0.8, 1.5),
+	on_die = spawn_children_on_die("mobs_mc:magma_cube_small", 0.8, 1.5),
 	fire_resistant = true,
 }
 mcl_mobs.register_mob("mobs_mc:magma_cube_big", magma_cube_big)
@@ -368,7 +359,7 @@ magma_cube_small.damage = 4
 magma_cube_small.reach = 2.75
 magma_cube_small.armor = 66
 magma_cube_small.spawn_small_alternative = "mobs_mc:magma_cube_tiny"
-magma_cube_small.on_die = spawn_children_on_die("mobs_mc:magma_cube_tiny", 4, 0.6, 1.0)
+magma_cube_small.on_die = spawn_children_on_die("mobs_mc:magma_cube_tiny", 0.6, 1.0)
 mcl_mobs.register_mob("mobs_mc:magma_cube_small", magma_cube_small)
 
 local magma_cube_tiny = table.copy(magma_cube_big)
@@ -394,59 +385,52 @@ magma_cube_tiny.on_die = nil
 mcl_mobs.register_mob("mobs_mc:magma_cube_tiny", magma_cube_tiny)
 
 
-local mmin = mcl_vars.mg_nether_min
-local mmax = mcl_vars.mg_nether_max
+local magma_cube_biomes = {"Nether", "BasaltDelta"}
+local nether_min = mcl_vars.mg_nether_min
+local nether_max = mcl_vars.mg_nether_max
 
 mcl_mobs:spawn_specific(
 "mobs_mc:magma_cube_tiny",
 "nether",
 "ground",
-{
-"Nether",
-"BasaltDelta",
-},
+magma_cube_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
 15000,
 4,
-mmin,
-mmax)
-
+nether_min,
+nether_max)
 
 mcl_mobs:spawn_specific(
 "mobs_mc:magma_cube_small",
 "nether",
 "ground",
-{
-"Nether",
-"BasaltDelta",
-},
+magma_cube_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
 15500,
 4,
-mmin,
-mmax)
+nether_min,
+nether_max)
 
 mcl_mobs:spawn_specific(
 "mobs_mc:magma_cube_big",
 "nether",
 "ground",
-{
-"Nether",
-"BasaltDelta",
-},
+magma_cube_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
 16000,
 4,
-mmin,
-mmax)
+nether_min,
+nether_max)
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "#350000", "#fcfc00")
 
 mcl_mobs.register_egg("mobs_mc:slime_big", S("Slime"), "#52a03e", "#7ebf6d")
+
+-- FIXME: add spawn eggs for small and tiny slimes and magma cubes

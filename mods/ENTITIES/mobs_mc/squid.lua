@@ -40,7 +40,7 @@ mcl_mobs.register_mob("mobs_mc:squid", {
 		run_end = 60,
 	},
     drops = {
-		{name = "mcl_dye:black",
+		{name = "mcl_mobitems:ink_sac",
 		chance = 1,
 		min = 1,
 		max = 3,
