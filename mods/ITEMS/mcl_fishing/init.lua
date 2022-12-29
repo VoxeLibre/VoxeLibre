@@ -91,6 +91,7 @@ local fish = function(itemstack, player, pointed_thing)
 										{ itemstring = "mcl_mobitems:bone", weight = 10 },
 										{ itemstring = "mcl_dye:black", weight = 1, amount_min = 10, amount_max = 10 },
 										{ itemstring = "mcl_mobitems:string", weight = 10 }, -- TODO: Tripwire Hook
+										{ itemstring = "mcl_bamboo:bamboo", weight = 10 },
 									},
 									stacks_min = 1,
 									stacks_max = 1,
