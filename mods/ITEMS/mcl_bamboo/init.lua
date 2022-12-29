@@ -321,7 +321,7 @@ local function create_nodes()
 	minetest.register_node(bamboo, bamboo_def)
 
 	local bamboo_top = table.copy(bamboo_def)
-	bamboo_top.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, flammable = 3}
+	bamboo_top.groups = {not_in_creative_inventory = 1, handy = 1, swordy = 1, choppy = 1, flammable = 3}
 	bamboo_top.tiles = {"mcl_bamboo_endcap.png"}
 	bamboo_top.drawtype = "plantlike"
 	bamboo_top.paramtype2 = "meshoptions"
