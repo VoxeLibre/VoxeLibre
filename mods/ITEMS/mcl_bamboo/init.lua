@@ -292,7 +292,9 @@ local function create_nodes()
 			-- Node destructor; called before removing node.
 			local new_pos = vector.offset(pos, 0, 1, 0)
 			local node_above = minetest.get_node(new_pos)
-			if node_above and node_above.name == bamboo then
+			local mboo = substr(node_above.name, strlen(node_above.name) - 3, strlen(node_above.name))
+
+			if node_above and (mboo == "mboo" or mboo == "oo_1" or mboo == "oo_2" or mboo == "oo_3") then
 				local sound_params = {
 					pos = new_pos,
 					gain = 1.0, -- default
@@ -301,7 +303,7 @@ local function create_nodes()
 				minetest.remove_node(new_pos)
 				minetest.sound_play(node_sound.dug, sound_params, true)
 				local istack = ItemStack(bamboo)
-				if math.random(1, DOUBLE_DROP_CHANCE) == 1 then
+				if rand(1, DOUBLE_DROP_CHANCE) == 1 then
 					minetest.add_item(new_pos, istack)
 				end
 				minetest.add_item(new_pos, istack)
@@ -310,13 +312,14 @@ local function create_nodes()
 				minetest.sound_play(node_sound.dug, sound_params, true)
 				local istack = ItemStack(bamboo)
 				minetest.add_item(new_pos, istack)
-				if math.random(1, DOUBLE_DROP_CHANCE) == 1 then
+				if rand(1, DOUBLE_DROP_CHANCE) == 1 then
 					minetest.add_item(new_pos, istack)
 				end
 			end
 		end,
 	}
 	minetest.register_node(bamboo, bamboo_def)
+
 	local bamboo_top = table.copy(bamboo_def)
 	bamboo_top.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, flammable = 3}
 	bamboo_top.tiles = {"mcl_bamboo_endcap.png"}
@@ -909,19 +912,17 @@ minetest.register_alias("mcl_scaffolding:scaffolding_horizontal", "mcl_bamboo:sc
 --[[
 todo -- make scaffolds do side scaffold blocks, so that they jut out.
 todo -- Also, make those blocks collapse (break) when a nearby connected scaffold breaks.
-todo -- add in alternative bamboo styles to simulate random placement. (see commented out node box definitions.
-todo -- Add Flourish to the endcap node for bamboo.
-todo -- mash all of that together so that it drops as one item, and chooses what version to be, in on_place.
-todo -- Add in Extras.
+todo -- Add Flourish to the endcap node for bamboo. Fix the flourish to not look odd or plain.
+todo -- mash all of that together so that it drops as one item.
 todo -- fix scaffolding placing, instead of using on_rightclick first.
-
-todo -- make graphic for top node of bamboo.
-todo -- add bamboo to junk items in fishing.
 
 waiting on specific things:
 todo -- Raft -- need model
 todo -- Raft with Chest. same.
 todo -- handle bonemeal...
+
+-----------------------------------------------------------
+todo -- Add in Extras. -- Moved to Official Mod Pack.
 
 Notes:
 When bone meal is used on it, it grows by 1–2 blocks. Bamboo can grow up to 12–16 blocks tall.
