@@ -1202,7 +1202,7 @@ local function get_ground_below_floating_object (float_pos)
 	until node.name ~= "air"
 
 	-- If pos is 1 below float_pos, then just return float_pos as there is no air below it
-	if pos.y == float_pos.y -1 then
+	if pos.y == float_pos.y - 1 then
 		--mcl_log("pos is only 1 lower than float pos so no air below")
 		return float_pos
 	else

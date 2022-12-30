@@ -3,7 +3,6 @@ local mob_class = mcl_mobs.mob_class
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager",false)
 local PATHFINDING = "gowp"
-local enable_pathfinding = true
 
 local LOG_MODULE = "[Mobs]"
 local function mcl_log (message)
@@ -64,26 +63,27 @@ local function generate_enriched_path(wp_in, door_open_pos, door_close_pos, cur_
 		local cur_pos_to_add = vector.add(cur_pos, one_down)
 		if door_open_pos and vector.equals (cur_pos, door_open_pos) then
 			mcl_log ("Door open match")
-			--action = {type = "door", action = "open"}
-			action = {}
-			action["type"] = "door"
-			action["action"] = "open"
+			action = {type = "door", action = "open"}
+			--action = {}
+			--action["type"] = "door"
+			--action["action"] = "open"
 			action["target"] = cur_door_pos
 			cur_pos_to_add = vector.add(cur_pos, one_down)
 		elseif door_close_pos and vector.equals(cur_pos, door_close_pos) then
 			mcl_log ("Door close match")
-			--action = {type = "door", action = "closed"}
-			action = {}
-			action["type"] = "door"
-			action["action"] = "close"
+			action = {type = "door", action = "close"}
+			--action = {}
+			--action["type"] = "door"
+			--action["action"] = "close"
 			action["target"] = cur_door_pos
 			cur_pos_to_add = vector.add(cur_pos, one_down)
 		elseif cur_door_pos and vector.equals(cur_pos, cur_door_pos) then
 			mcl_log("Current door pos")
 			cur_pos_to_add = vector.add(cur_pos, one_down)
-			action = {}
-			action["type"] = "door"
-			action["action"] = "open"
+			action = {type = "door", action = "open"}
+			--action = {}
+			--action["type"] = "door"
+			--action["action"] = "open"
 			action["target"] = cur_door_pos
 		else
 			cur_pos_to_add = cur_pos
@@ -132,7 +132,7 @@ local function calculate_path_through_door (p, t, cur_door_pos)
 	local pos_closest_to_door = nil
 	local other_side_of_door = nil
 
-	local wp
+	local wp, prospective_wp
 
 	if cur_door_pos then
 		mcl_log("Found a door near: " .. minetest.pos_to_string(cur_door_pos))
@@ -143,18 +143,19 @@ local function calculate_path_through_door (p, t, cur_door_pos)
 			if n.name == "air" then
 				mcl_log("We have air space next to door at: " .. minetest.pos_to_string(pos_closest_to_door))
 
-				wp = minetest.find_path(p,pos_closest_to_door,150,1,4)
+				prospective_wp = minetest.find_path(p,pos_closest_to_door,150,1,4)
 
-				if wp then
+				if prospective_wp then
 					mcl_log("Found a path to next to door".. minetest.pos_to_string(pos_closest_to_door))
 					other_side_of_door = vector.add(cur_door_pos,-v)
 					mcl_log("Opposite is: ".. minetest.pos_to_string(other_side_of_door))
 
 					local wp_otherside_door_to_target = minetest.find_path(other_side_of_door,t,150,1,4)
 					if wp_otherside_door_to_target and #wp_otherside_door_to_target > 0 then
-						table.insert(wp, cur_door_pos)
-						append_paths (wp, wp_otherside_door_to_target)
-						enriched_path = generate_enriched_path(wp, pos_closest_to_door, other_side_of_door, cur_door_pos)
+						table.insert(prospective_wp, cur_door_pos)
+						append_paths (prospective_wp, wp_otherside_door_to_target)
+						enriched_path = generate_enriched_path(prospective_wp, pos_closest_to_door, other_side_of_door, cur_door_pos)
+						wp = prospective_wp
 						mcl_log("We have a path from outside door to target")
 					else
 						mcl_log("We cannot path from outside door to target")
@@ -202,7 +203,6 @@ function mob_class:gopath(target,callback_arrived)
 
 	if not wp then
 		mcl_log("No direct path. Path through door")
-		-- target could be pos
 		local cur_door_pos = minetest.find_node_near(target, 16, {"group:door"})
 		wp = calculate_path_through_door(p, t, cur_door_pos)
 
@@ -218,15 +218,14 @@ function mob_class:gopath(target,callback_arrived)
 
 	--path from pos to door, path from otherside to target
 
-
 	if not wp then
 		mcl_log("Could not calculate path")
 		self._pf_last_failed = os.time()
-		-- Cover for a flaw in pathfind where it chooses the wrong door and gets stuck. Take a break, allow others.
+		-- If cannot path, don't immediately try again
 	end
-	--output_table(wp)
 
 	if wp and #wp > 0 then
+		--output_table(wp)
 		self._target = t
 		self.callback_arrived = callback_arrived
 		local current_location = table.remove(wp,1)
@@ -318,7 +317,7 @@ function mob_class:check_gowp(dtime)
 	-- arrived at location, finish gowp
 	local distance_to_targ = vector.distance(p,self._target)
 	--mcl_log("Distance to targ: ".. tostring(distance_to_targ))
-	if distance_to_targ < 2 then
+	if distance_to_targ < 1.5 then
 		mcl_log("Arrived at _target")
 		self.waypoints = nil
 		self._target = nil
@@ -400,6 +399,7 @@ function mob_class:check_gowp(dtime)
 			self:go_to_pos(self._current_target)
 		else
 			mcl_log("close to current target: ".. minetest.pos_to_string(self.current_target["pos"]))
+			mcl_log("target is: ".. minetest.pos_to_string(self._target))
 			self.current_target = nil
 		end
 
