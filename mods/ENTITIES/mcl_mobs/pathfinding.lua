@@ -35,11 +35,11 @@ function append_paths (wp1, wp2)
 end
 
 local function output_enriched (wp_out)
-	--mcl_log("Output enriched path")
+	mcl_log("Output enriched path")
 	local i = 0
 	for _,outy in pairs (wp_out) do
 		i = i + 1
-		--mcl_log("Pos ".. i ..":" .. minetest.pos_to_string(outy["pos"]))
+		mcl_log("Pos ".. i ..":" .. minetest.pos_to_string(outy["pos"]))
 
 		local action =  outy["action"]
 		if action then
@@ -109,76 +109,6 @@ local plane_adjacents = {
 	vector.new(0,0,-1),
 }
 
--- This function is used to see if we can path. We could use to check a route, rather than making people move.
-local function calculate_path_through_door (p, t, target)
-	-- target is the same as t, just 1 square difference. Maybe we don't need target
-	mcl_log("Plot route from mob: " .. minetest.pos_to_string(p) .. ", to target: " .. minetest.pos_to_string(t))
-
-	local enriched_path = nil
-
-	local cur_door_pos = nil
-	local pos_closest_to_door = nil
-	local other_side_of_door = nil
-
-	--Check direct route
-	local wp = minetest.find_path(p,t,150,1,4)
-
-	--Path to door first
-	if not wp then
-		mcl_log("No direct path. Path through door")
-
-		-- This could improve. There could be multiple doors. Check you can path from door to target first.
-
-		-- target could be pos
-		local cur_door_pos = minetest.find_node_near(target,16,{"group:door"})
-		if cur_door_pos then
-			mcl_log("Found a door near: " .. minetest.pos_to_string(cur_door_pos))
-			for _,v in pairs(plane_adjacents) do
-				pos_closest_to_door = vector.add(cur_door_pos,v)
-				local n = minetest.get_node(pos_closest_to_door)
-				if n.name == "air" then
-
-					wp = minetest.find_path(p,pos_closest_to_door,150,1,4)
-					if wp then
-
-						mcl_log("Found a path to next to door".. minetest.pos_to_string(pos_closest_to_door))
-						other_side_of_door = vector.add(cur_door_pos,-v)
-						mcl_log("Opposite is: ".. minetest.pos_to_string(other_side_of_door))
-
-						local wp_otherside_door_to_target = minetest.find_path(other_side_of_door,t,150,1,4)
-						if wp_otherside_door_to_target and #wp_otherside_door_to_target > 0 then
-							table.insert(wp, cur_door_pos)
-							append_paths (wp, wp_otherside_door_to_target)
-							enriched_path = generate_enriched_path(wp, pos_closest_to_door, other_side_of_door, cur_door_pos)
-							mcl_log("We have a path from outside door to target")
-						else
-							mcl_log("We cannot path from outside door to target")
-						end
-						break
-					else
-						mcl_log("This block next to door doesn't work.")
-					end
-				else
-					--mcl_log("Block is not air, it is: ".. n.name)
-				end
-
-			end
-		else
-			mcl_log("No door found")
-		end
-	else
-		mcl_log("We have a direct route")
-	end
-
-	-- If not, get door near pos
-	--path from pos to door, path from otherside to target
-
-	if wp and not enriched_path then
-		enriched_path = generate_enriched_path(wp)
-	end
-	return enriched_path
-end
-
 --local gopath_last = os.time()
 
 function mob_class:ready_to_path()
@@ -190,6 +120,63 @@ function mob_class:ready_to_path()
 		return true
 	end
 end
+
+-- This function is used to see if we can path. We could use to check a route, rather than making people move.
+local function calculate_path_through_door (p, t, cur_door_pos)
+	-- target is the same as t, just 1 square difference. Maybe we don't need target
+	mcl_log("Plot route from mob: " .. minetest.pos_to_string(p) .. ", to target: " .. minetest.pos_to_string(t))
+
+	local enriched_path = nil
+
+	--local cur_door_pos = nil
+	local pos_closest_to_door = nil
+	local other_side_of_door = nil
+
+	local wp
+
+	if cur_door_pos then
+		mcl_log("Found a door near: " .. minetest.pos_to_string(cur_door_pos))
+		for _,v in pairs(plane_adjacents) do
+			pos_closest_to_door = vector.add(cur_door_pos,v)
+			local n = minetest.get_node(pos_closest_to_door)
+
+			if n.name == "air" then
+				mcl_log("We have air space next to door at: " .. minetest.pos_to_string(pos_closest_to_door))
+
+				wp = minetest.find_path(p,pos_closest_to_door,150,1,4)
+
+				if wp then
+					mcl_log("Found a path to next to door".. minetest.pos_to_string(pos_closest_to_door))
+					other_side_of_door = vector.add(cur_door_pos,-v)
+					mcl_log("Opposite is: ".. minetest.pos_to_string(other_side_of_door))
+
+					local wp_otherside_door_to_target = minetest.find_path(other_side_of_door,t,150,1,4)
+					if wp_otherside_door_to_target and #wp_otherside_door_to_target > 0 then
+						table.insert(wp, cur_door_pos)
+						append_paths (wp, wp_otherside_door_to_target)
+						enriched_path = generate_enriched_path(wp, pos_closest_to_door, other_side_of_door, cur_door_pos)
+						mcl_log("We have a path from outside door to target")
+					else
+						mcl_log("We cannot path from outside door to target")
+					end
+					break
+				else
+					mcl_log("This block next to door doesn't work.")
+				end
+			end
+		end
+	else
+		mcl_log("No door found")
+	end
+
+	if wp and not enriched_path then
+		mcl_log("Wp but not enriched")
+		enriched_path = generate_enriched_path(wp)
+	end
+	return enriched_path
+end
+
+
 
 function mob_class:gopath(target,callback_arrived)
 	if self.state == PATHFINDING then mcl_log("Already pathfinding, don't set another until done.") return end
@@ -210,7 +197,28 @@ function mob_class:gopath(target,callback_arrived)
 	local p = self.object:get_pos()
 	local t = vector.offset(target,0,1,0)
 
-	local wp = calculate_path_through_door(p, t, target)
+	--Check direct route
+	local wp = minetest.find_path(p,t,150,1,4)
+
+	if not wp then
+		mcl_log("No direct path. Path through door")
+		-- target could be pos
+		local cur_door_pos = minetest.find_node_near(target, 16, {"group:door"})
+		wp = calculate_path_through_door(p, t, cur_door_pos)
+
+		if not wp then
+			mcl_log("No path though door closest to target. Try door closest to origin.")
+			cur_door_pos = minetest.find_node_near(p, 16, {"group:door"})
+			wp = calculate_path_through_door(p, t, cur_door_pos)
+		end
+	else
+		wp = generate_enriched_path(wp)
+		mcl_log("We have a direct route")
+	end
+
+	--path from pos to door, path from otherside to target
+
+
 	if not wp then
 		mcl_log("Could not calculate path")
 		self._pf_last_failed = os.time()
