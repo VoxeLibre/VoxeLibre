@@ -58,6 +58,7 @@ This mod adds mobs which closely resemble the mobs from the game Minecraft, vers
 
 ### Peaceful mobs
 
+* Axolotl
 * Chicken
 * Cow
 * Pig

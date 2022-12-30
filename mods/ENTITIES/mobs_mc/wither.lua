@@ -9,7 +9,7 @@ local S = minetest.get_translator("mobs_mc")
 --################### WITHER
 --###################
 
-mcl_mobs:register_mob("mobs_mc:wither", {
+mcl_mobs.register_mob("mobs_mc:wither", {
 	description = S("Wither"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -85,7 +85,7 @@ mcl_mobs:register_mob("mobs_mc:wither", {
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 local wither_rose_soil = { "group:grass_block", "mcl_core:dirt", "mcl_core:coarse_dirt", "mcl_nether:netherrack", "group:soul_block", "mcl_mud:mud", "mcl_moss:moss" }
 
-mcl_mobs:register_arrow("mobs_mc:wither_skull", {
+mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 	visual = "sprite",
 	visual_size = {x = 0.75, y = 0.75},
 	-- TODO: 3D projectile, replace tetxture
@@ -98,7 +98,7 @@ mcl_mobs:register_arrow("mobs_mc:wither_skull", {
 			full_punch_interval = 0.5,
 			damage_groups = {fleshy = 8},
 		}, nil)
-		mcl_mobs:boom(self, self.object:get_pos(), 1)
+		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1)
 	end,
 
 	hit_mob = function(self, mob)
@@ -106,7 +106,7 @@ mcl_mobs:register_arrow("mobs_mc:wither_skull", {
 			full_punch_interval = 0.5,
 			damage_groups = {fleshy = 8},
 		}, nil)
-		mcl_mobs:boom(self, self.object:get_pos(), 1)
+		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1)
 		local l = mob:get_luaentity()
 		if l and l.health - 8 <= 0 then
 			local n = minetest.find_node_near(mob:get_pos(),2,wither_rose_soil)
@@ -123,12 +123,12 @@ mcl_mobs:register_arrow("mobs_mc:wither_skull", {
 
 	-- node hit, explode
 	hit_node = function(self, pos, node)
-		mcl_mobs:boom(self, pos, 1)
+		mcl_mobs.mob_class.boom(self,pos, 1)
 	end
 })
 -- TODO: Add blue wither skull
 
 --Spawn egg
-mcl_mobs:register_egg("mobs_mc:wither", S("Wither"), "#4f4f4f", "#4f4f4f", 0, true)
+mcl_mobs.register_egg("mobs_mc:wither", S("Wither"), "#4f4f4f", "#4f4f4f", 0, true)
 
 mcl_wip.register_wip_item("mobs_mc:wither")

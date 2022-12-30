@@ -109,6 +109,7 @@ local function attach_object(self, obj)
 end
 
 local function detach_object(obj, change_pos)
+	if not obj or not obj:get_pos() then return end
 	obj:set_detach()
 	obj:set_properties({visual_size = get_visual_size(obj)})
 	if obj:is_player() then

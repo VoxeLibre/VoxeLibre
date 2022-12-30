@@ -459,10 +459,12 @@ function mcl_spawn.set_spawn_pos(player, pos, message)
 
 
 
-			local old_bed_meta = minetest.get_meta(oldpos)
-			if oldpos ~= pos and old_bed_meta then
-				mcl_log("Removing old bed meta")
-				old_bed_meta:set_string("player", "")
+			if oldpos and oldpos ~= pos then
+				local old_bed_meta = minetest.get_meta(oldpos)
+				if old_bed_meta then
+					mcl_log("Removing old bed meta")
+					old_bed_meta:set_string("player", "")
+				end
 			else
 				mcl_log("No old bed meta to remove or same as current")
 			end

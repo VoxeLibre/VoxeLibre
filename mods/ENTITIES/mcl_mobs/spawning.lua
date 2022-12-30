@@ -1,5 +1,7 @@
 --lua locals
-local minetest,vector,math,table = minetest,vector,math,table
+local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
+local mob_class = mcl_mobs.mob_class
+
 local get_node                     = minetest.get_node
 local get_item_group               = minetest.get_item_group
 local get_node_light               = minetest.get_node_light
@@ -29,6 +31,7 @@ local dbg_spawn_succ = 0
 local dbg_spawn_counts = {}
 -- range for mob count
 local aoc_range = 136
+local remove_far = true
 
 local mob_cap = {
 	monster = tonumber(minetest.settings:get("mcl_mob_cap_monster")) or 70,
@@ -399,11 +402,9 @@ local two_pi = 2 * math.pi
 local function get_next_mob_spawn_pos(pos)
 	local distance = math_random(25, 32)
 	local angle = math_random() * two_pi
-	return {
-		x = math_round(pos.x + distance * math_cos(angle)),
-		y = pos.y,
-		z = math_round(pos.z + distance * math_sin(angle))
-	}
+	local xoff = math_round(distance * math_cos(angle))
+	local yoff = math_round(distance * math_sin(angle))
+	return vector.offset(pos, xoff, 0, yoff)
 end
 
 local function decypher_limits(posy)
@@ -556,7 +557,7 @@ local S = minetest.get_translator("mcl_mobs")
 
 minetest.register_chatcommand("spawn_mob",{
 	privs = { debug = true },
-	description=S("spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolian, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: \n spawn_mob skeleton:var<passive=true>:\n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: \n spawn_mob skeleton:var<jump_height=NUM10>:\n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: \n spawn_mob skeleton:var<passive=true>::var<jump_height=NUM10>::var<fly_in=air>::var<fly=true>:\n etc."),
+	description=S("spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: \n spawn_mob skeleton:var<passive=true>:\n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: \n spawn_mob skeleton:var<jump_height=NUM10>:\n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: \n spawn_mob skeleton:var<passive=true>::var<jump_height=NUM10>::var<fly_in=air>::var<fly=true>:\n etc."),
 	func = function(n,param)
 		local pos = minetest.get_player_by_name(n):get_pos()
 
@@ -576,15 +577,14 @@ minetest.register_chatcommand("spawn_mob",{
 
 		local mob = mcl_mobs.spawn(pos,mobname)
 
-		for c=1, #modifiers do
-			modifs = modifiers[c]
+		if mob then
+			for c=1, #modifiers do
+				modifs = modifiers[c]
 
-			local mod1 = string.find(modifs, ":")
-			local mod_start = string.find(modifs, "<")
-			local mod_vals = string.find(modifs, "=")
-			local mod_end = string.find(modifs, ">")
-			local mod_end = string.find(modifs, ">")
-			if mob then
+				local mod1 = string.find(modifs, ":")
+				local mod_start = string.find(modifs, "<")
+				local mod_vals = string.find(modifs, "=")
+				local mod_end = string.find(modifs, ">")
 				local mob_entity = mob:get_luaentity()
 				if string.sub(modifs, mod1+1, mod1+3) == "var" then
 					if mod1 and mod_start and mod_vals and mod_end then
@@ -615,14 +615,12 @@ minetest.register_chatcommand("spawn_mob",{
 					minetest.log("warning", n.." couldn't modify "..mobname.." at "..minetest.pos_to_string(pos).. ", missing modification type")
 				end
 			end
-		end
 
-
-		if mob then
-			return true, mobname.." spawned at "..minetest.pos_to_string(pos),
 			minetest.log("action", n.." spawned "..mobname.." at "..minetest.pos_to_string(pos))
+			return true, mobname.." spawned at "..minetest.pos_to_string(pos)
+		else
+			return false, "Couldn't spawn "..mobname
 		end
-		return false, "Couldn't spawn "..mobname
 	end
 })
 
@@ -661,34 +659,36 @@ if mobs_spawn then
 			end
 			local mob_def = mob_library_worker_table[mob_index]
 			--minetest.log(mob_def.name.." "..step_chance.. " "..mob_chance)
-			local spawn_in_group = minetest.registered_entities[mob_def.name].spawn_in_group or 4
-			local spawn_in_group_min = minetest.registered_entities[mob_def.name].spawn_in_group_min or 1
-			local mob_type = minetest.registered_entities[mob_def.name].type
-			if spawn_check(spawning_position,mob_def) then
-				if mob_def.type_of_spawning == "water" then
-					spawning_position = get_water_spawn(spawning_position)
-					if not spawning_position then
-						minetest.log("warning","[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..minetest.pos_to_string(vector.round(pos)))
+			if mob_def and mob_def.name and minetest.registered_entities[mob_def.name] then
+				local spawn_in_group = minetest.registered_entities[mob_def.name].spawn_in_group or 4
+				local spawn_in_group_min = minetest.registered_entities[mob_def.name].spawn_in_group_min or 1
+				local mob_type = minetest.registered_entities[mob_def.name].type
+				if spawn_check(spawning_position,mob_def) then
+					if mob_def.type_of_spawning == "water" then
+						spawning_position = get_water_spawn(spawning_position)
+						if not spawning_position then
+							minetest.log("warning","[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..minetest.pos_to_string(vector.round(pos)))
+							return
+						end
+					end
+					if minetest.registered_entities[mob_def.name].can_spawn and not minetest.registered_entities[mob_def.name].can_spawn(spawning_position) then
+						minetest.log("warning","[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(spawning_position)))
 						return
 					end
-				end
-				if minetest.registered_entities[mob_def.name].can_spawn and not minetest.registered_entities[mob_def.name].can_spawn(spawning_position) then
-					minetest.log("warning","[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(spawning_position)))
-					return
-				end
-				--everything is correct, spawn mob
-				local object
-				if spawn_in_group and ( mob_type ~= "monster" or math.random(5) == 1 ) then
-					if logging then
-						minetest.log("action", "[mcl_mobs] A group of mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at " .. minetest.pos_to_string(spawning_position, 1))
-					end
-					object = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name},spawn_in_group,spawn_in_group_min)
+					--everything is correct, spawn mob
+					local object
+					if spawn_in_group and ( mob_type ~= "monster" or math.random(5) == 1 ) then
+						if logging then
+							minetest.log("action", "[mcl_mobs] A group of mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at " .. minetest.pos_to_string(spawning_position, 1))
+						end
+						object = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name},spawn_in_group,spawn_in_group_min)
 
-				else
-					if logging then
-						minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at ".. minetest.pos_to_string(spawning_position, 1))
+					else
+						if logging then
+							minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at ".. minetest.pos_to_string(spawning_position, 1))
+						end
+						object = mcl_mobs.spawn(spawning_position, mob_def.name)
 					end
-					object = mcl_mobs.spawn(spawning_position, mob_def.name)
 				end
 			end
 			current_summary_chance = current_summary_chance - mob_chance
@@ -720,6 +720,30 @@ if mobs_spawn then
 			end
 		end
 	end)
+end
+
+function mob_class:check_despawn(pos)
+	-- Despawning: when lifetimer expires, remove mob
+	if remove_far
+	and self.can_despawn == true
+	and ((not self.nametag) or (self.nametag == ""))
+	and self.state ~= "attack"
+	and self.following == nil then
+		if self.despawn_immediately or self.lifetimer <= 0 then
+			if logging then
+				minetest.log("action", "[mcl_mobs] Mob "..self.name.." despawns at "..minetest.pos_to_string(pos, 1) .. " lifetimer ran out")
+			end
+			mcl_burning.extinguish(self.object)
+			self.object:remove()
+			return true
+		elseif self.lifetimer <= 10 then
+			if math.random(10) < 4 then
+				self.despawn_immediately = true
+			else
+				self.lifetimer = 20
+			end
+		end
+	end
 end
 
 minetest.register_chatcommand("mobstats",{

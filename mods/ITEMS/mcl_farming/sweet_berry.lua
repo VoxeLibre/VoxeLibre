@@ -35,6 +35,31 @@ for i=0, 3 do
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0,
 		_mcl_hardness = 0,
+		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+			local pn = clicker:get_player_name()
+			if clicker:is_player() and minetest.is_protected(pos, pn) then
+				minetest.record_protection_violation(pos, pn)
+				return itemstack
+			end
+			if mcl_dye and clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
+				mcl_dye.apply_bone_meal({under=pos},clicker)
+				itemstack:take_item()
+				return
+			end
+			local stage
+			if node.name:find("_2") then
+				stage = 2
+			elseif node.name:find("_3") then
+				stage = 3
+			end
+			if stage then
+				for i=1,math.random(stage) do
+					minetest.add_item(pos,"mcl_farming:sweet_berry")
+				end
+				minetest.swap_node(pos,{name = "mcl_farming:sweet_berry_bush_" .. stage - 1 })
+			end
+			return itemstack
+		end,
 	})
 	minetest.register_alias("mcl_sweet_berry:sweet_berry_bush_" .. i, node_name)
 end
@@ -46,6 +71,11 @@ minetest.register_craftitem("mcl_farming:sweet_berry", {
 	groups = { food = 2, eatable = 1, compostability=30 },
 	on_secondary_use = minetest.item_eat(1),
 	on_place = function(itemstack, placer, pointed_thing)
+		local pn = placer:get_player_name()
+		if placer:is_player() and minetest.is_protected(pointed_thing.above, pn or "") then
+			minetest.record_protection_violation(pointed_thing.above, pn)
+			return itemstack
+		end
 		if pointed_thing.type == "node" and table.indexof(planton,minetest.get_node(pointed_thing.under).name) ~= -1 and minetest.get_node(pointed_thing.above).name == "air" then
 			minetest.set_node(pointed_thing.above,{name="mcl_farming:sweet_berry_bush_0"})
 			if not minetest.is_creative_enabled(placer:get_player_name()) then

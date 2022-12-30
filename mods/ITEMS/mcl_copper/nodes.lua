@@ -20,7 +20,7 @@ minetest.register_node("mcl_copper:block_raw", {
 	_doc_items_longdesc = S("A block used for compact raw copper storage."),
 	tiles = {"mcl_copper_block_raw.png"},
 	is_ground_content = false,
-	groups = {pickaxey = 2, building_block = 1},
+	groups = {pickaxey = 2, building_block = 1, blast_furnace_smeltable = 1 },
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
@@ -35,6 +35,19 @@ minetest.register_node("mcl_copper:block", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 3,
+	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block") end,
+})
+
+minetest.register_node("mcl_copper:waxed_block", {
+	description = S("Waxed Block of Copper"),
+	_doc_items_longdesc = S("A block of copper is mostly a decorative block."),
+	tiles = {"mcl_copper_block.png"},
+	is_ground_content = false,
+	groups = {pickaxey = 2, building_block = 1},
+	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 3,
+	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block") end,
 })
 
 minetest.register_node("mcl_copper:block_exposed", {
@@ -47,18 +60,19 @@ minetest.register_node("mcl_copper:block_exposed", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_anti_oxidation_varient = "mcl_copper:block",
+	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_exposed") end,
 })
 
-minetest.register_node("mcl_copper:block_oxidized", {
-	description = S("Oxidized Copper"),
-	_doc_items_longdesc = S("Oxidized copper is a decorative block."),
-	tiles = {"mcl_copper_oxidized.png"},
+minetest.register_node("mcl_copper:waxed_block_exposed", {
+	description = S("Waxed Exposed Copper"),
+	_doc_items_longdesc = S("Exposed copper is a decorative block."),
+	tiles = {"mcl_copper_exposed.png"},
 	is_ground_content = false,
 	groups = {pickaxey = 2, building_block = 1},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
-	_mcl_anti_oxidation_varient = "mcl_copper:block_weathered",
+	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block") end,
 })
 
 minetest.register_node("mcl_copper:block_weathered", {
@@ -71,6 +85,44 @@ minetest.register_node("mcl_copper:block_weathered", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_anti_oxidation_varient = "mcl_copper:block_exposed",
+	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_weathered") end,
+})
+
+minetest.register_node("mcl_copper:waxed_block_weathered", {
+	description = S("Waxed Weathered Copper"),
+	_doc_items_longdesc = S("Weathered copper is a decorative block."),
+	tiles = {"mcl_copper_weathered.png"},
+	is_ground_content = false,
+	groups = {pickaxey = 2, building_block = 1},
+	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 5,
+	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_exposed") end,
+})
+
+minetest.register_node("mcl_copper:block_oxidized", {
+	description = S("Oxidized Copper"),
+	_doc_items_longdesc = S("Oxidized copper is a decorative block."),
+	tiles = {"mcl_copper_oxidized.png"},
+	is_ground_content = false,
+	groups = {pickaxey = 2, building_block = 1},
+	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 5,
+	_mcl_anti_oxidation_varient = "mcl_copper:block_weathered",
+	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_oxidized") end,
+})
+
+minetest.register_node("mcl_copper:waxed_block_oxidized", {
+	description = S("Waxed Oxidized Copper"),
+	_doc_items_longdesc = S("Oxidized copper is a decorative block."),
+	tiles = {"mcl_copper_oxidized.png"},
+	is_ground_content = false,
+	groups = {pickaxey = 2, building_block = 1},
+	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 5,
+	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_weathered") end,
 })
 
 minetest.register_node("mcl_copper:block_cut", {
@@ -82,6 +134,19 @@ minetest.register_node("mcl_copper:block_cut", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
+	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_cut") end,
+})
+
+minetest.register_node("mcl_copper:waxed_block_cut", {
+	description = S("Waxed Cut Copper"),
+	_doc_items_longdesc = S("Cut copper is a decorative block."),
+	tiles = {"mcl_copper_block_cut.png"},
+	is_ground_content = false,
+	groups = {pickaxey = 2, building_block = 1},
+	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 5,
+	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_cut") end,
 })
 
 minetest.register_node("mcl_copper:block_exposed_cut", {
@@ -94,18 +159,19 @@ minetest.register_node("mcl_copper:block_exposed_cut", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_anti_oxidation_varient = "mcl_copper:block_cut",
+	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_exposed_cut") end,
 })
 
-minetest.register_node("mcl_copper:block_oxidized_cut", {
-	description = S("Oxidized Cut Copper"),
-	_doc_items_longdesc = S("Oxidized cut copper is a decorative block."),
-	tiles = {"mcl_copper_oxidized_cut.png"},
+minetest.register_node("mcl_copper:waxed_block_exposed_cut", {
+	description = S("Waxed Exposed Cut Copper"),
+	_doc_items_longdesc = S("Exposed cut copper is a decorative block."),
+	tiles = {"mcl_copper_exposed_cut.png"},
 	is_ground_content = false,
 	groups = {pickaxey = 2, building_block = 1},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
-	_mcl_anti_oxidation_varient = "mcl_copper:block_weathered_cut",
+	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_cut") end,
 })
 
 minetest.register_node("mcl_copper:block_weathered_cut", {
@@ -118,6 +184,44 @@ minetest.register_node("mcl_copper:block_weathered_cut", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_anti_oxidation_varient = "mcl_copper:block_exposed_cut",
+	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_weathered_cut") end,
+})
+
+minetest.register_node("mcl_copper:waxed_block_weathered_cut", {
+	description = S("Waxed Weathered Cut Copper"),
+	_doc_items_longdesc = S("Weathered cut copper is a decorative block."),
+	tiles = {"mcl_copper_weathered_cut.png"},
+	is_ground_content = false,
+	groups = {pickaxey = 2, building_block = 1},
+	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 5,
+	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_exposed_cut") end,
+})
+
+minetest.register_node("mcl_copper:block_oxidized_cut", {
+	description = S("Oxidized Cut Copper"),
+	_doc_items_longdesc = S("Oxidized cut copper is a decorative block."),
+	tiles = {"mcl_copper_oxidized_cut.png"},
+	is_ground_content = false,
+	groups = {pickaxey = 2, building_block = 1},
+	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 5,
+	_mcl_anti_oxidation_varient = "mcl_copper:block_weathered_cut",
+	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_oxidized_cut") end,
+})
+
+minetest.register_node("mcl_copper:waxed_block_oxidized_cut", {
+	description = S("Waxed Oxidized Cut Copper"),
+	_doc_items_longdesc = S("Oxidized cut copper is a decorative block."),
+	tiles = {"mcl_copper_oxidized_cut.png"},
+	is_ground_content = false,
+	groups = {pickaxey = 2, building_block = 1},
+	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 5,
+	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_weathered_cut") end,
 })
 
 mcl_stairs.register_slab("copper_cut", "mcl_copper:block_cut",
@@ -127,6 +231,13 @@ mcl_stairs.register_slab("copper_cut", "mcl_copper:block_cut",
 	nil, nil, nil,
 	S("Double Slab of Cut Copper"))
 
+mcl_stairs.register_slab("waxed_copper_cut", "mcl_copper:waxed_block_cut",
+	{pickaxey = 2},
+	{"mcl_copper_block_cut.png", "mcl_copper_block_cut.png", "mcl_copper_block_cut.png"},
+	S("Waxed Slab of Cut Copper"),
+	nil, nil, nil,
+	S("Waxed Double Slab of Cut Copper"))
+
 mcl_stairs.register_slab("copper_exposed_cut", "mcl_copper:block_exposed_cut",
 	{pickaxey = 2},
 	{"mcl_copper_exposed_cut.png", "mcl_copper_exposed_cut.png", "mcl_copper_exposed_cut.png"},
@@ -134,12 +245,12 @@ mcl_stairs.register_slab("copper_exposed_cut", "mcl_copper:block_exposed_cut",
 	nil, nil, nil,
 	S("Double Slab of Exposed Cut Copper"))
 
-mcl_stairs.register_slab("copper_oxidized_cut", "mcl_copper:block_oxidized_cut",
+mcl_stairs.register_slab("waxed_copper_exposed_cut", "mcl_copper:waxed_block_exposed_cut",
 	{pickaxey = 2},
-	{"mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png"},
-	S("Slab of Oxidized Cut Copper"),
+	{"mcl_copper_exposed_cut.png", "mcl_copper_exposed_cut.png", "mcl_copper_exposed_cut.png"},
+	S("Waxed Slab of Exposed Cut Copper"),
 	nil, nil, nil,
-	S("Double Slab of Oxidized Cut Copper"))
+	S("Waxed Double Slab of Exposed Cut Copper"))
 
 mcl_stairs.register_slab("copper_weathered_cut", "mcl_copper:block_weathered_cut",
 	{pickaxey = 2},
@@ -148,10 +259,38 @@ mcl_stairs.register_slab("copper_weathered_cut", "mcl_copper:block_weathered_cut
 	nil, nil, nil,
 	S("Double Slab of Weathered Cut Copper"))
 
+mcl_stairs.register_slab("waxed_copper_weathered_cut", "mcl_copper:waxed_block_weathered_cut",
+	{pickaxey = 2},
+	{"mcl_copper_weathered_cut.png", "mcl_copper_weathered_cut.png", "mcl_copper_weathered_cut.png"},
+	S("Waxed Slab of Weathered Cut Copper"),
+	nil, nil, nil,
+	S("Waxed Double Slab of Weathered Cut Copper"))
+
+mcl_stairs.register_slab("copper_oxidized_cut", "mcl_copper:block_oxidized_cut",
+	{pickaxey = 2},
+	{"mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png"},
+	S("Slab of Oxidized Cut Copper"),
+	nil, nil, nil,
+	S("Double Slab of Oxidized Cut Copper"))
+
+mcl_stairs.register_slab("waxed_copper_oxidized_cut", "mcl_copper:waxed_block_oxidized_cut",
+	{pickaxey = 2},
+	{"mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png"},
+	S("Waxed Slab of Oxidized Cut Copper"),
+	nil, nil, nil,
+	S("Waxed Double Slab of Oxidized Cut Copper"))
+
 mcl_stairs.register_stair("copper_cut", "mcl_copper:block_cut",
 	{pickaxey = 2},
 	{"mcl_copper_block_cut.png", "mcl_copper_block_cut.png", "mcl_copper_block_cut.png", "mcl_copper_block_cut.png", "mcl_copper_block_cut.png", "mcl_copper_block_cut.png"},
 	S("Stairs of Cut Copper"),
+	nil, 6, nil,
+	"woodlike")
+
+mcl_stairs.register_stair("waxed_copper_cut", "mcl_copper:waxed_block_cut",
+	{pickaxey = 2},
+	{"mcl_copper_block_cut.png", "mcl_copper_block_cut.png", "mcl_copper_block_cut.png", "mcl_copper_block_cut.png", "mcl_copper_block_cut.png", "mcl_copper_block_cut.png"},
+	S("Waxed Stairs of Cut Copper"),
 	nil, 6, nil,
 	"woodlike")
 
@@ -162,10 +301,10 @@ mcl_stairs.register_stair("copper_exposed_cut", "mcl_copper:block_exposed_cut",
 	nil, 6, nil,
 	"woodlike")
 
-mcl_stairs.register_stair("copper_oxidized_cut", "mcl_copper:block_oxidized_cut",
+mcl_stairs.register_stair("waxed_copper_exposed_cut", "mcl_copper:waxed_block_exposed_cut",
 	{pickaxey = 2},
-	{"mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png"},
-	S("Stairs of Oxidized Cut Copper"),
+	{"mcl_copper_exposed_cut.png", "mcl_copper_exposed_cut.png", "mcl_copper_exposed_cut.png", "mcl_copper_exposed_cut.png", "mcl_copper_exposed_cut.png", "mcl_copper_exposed_cut.png"},
+	S("Waxed Stairs of Exposed Cut Copper"),
 	nil, 6, nil,
 	"woodlike")
 
@@ -173,5 +312,26 @@ mcl_stairs.register_stair("copper_weathered_cut", "mcl_copper:block_weathered_cu
 	{pickaxey = 2},
 	{"mcl_copper_weathered_cut.png", "mcl_copper_weathered_cut.png", "mcl_copper_weathered_cut.png", "mcl_copper_weathered_cut.png", "mcl_copper_weathered_cut.png", "mcl_copper_weathered_cut.png"},
 	S("Stairs of Weathered Cut Copper"),
+	nil, 6, nil,
+	"woodlike")
+
+mcl_stairs.register_stair("waxed_copper_weathered_cut", "mcl_copper:waxed_block_weathered_cut",
+	{pickaxey = 2},
+	{"mcl_copper_weathered_cut.png", "mcl_copper_weathered_cut.png", "mcl_copper_weathered_cut.png", "mcl_copper_weathered_cut.png", "mcl_copper_weathered_cut.png", "mcl_copper_weathered_cut.png"},
+	S("Waxed Stairs of Weathered Cut Copper"),
+	nil, 6, nil,
+	"woodlike")
+
+mcl_stairs.register_stair("copper_oxidized_cut", "mcl_copper:block_oxidized_cut",
+	{pickaxey = 2},
+	{"mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png"},
+	S("Stairs of Oxidized Cut Copper"),
+	nil, 6, nil,
+	"woodlike")
+
+mcl_stairs.register_stair("waxed_copper_oxidized_cut", "mcl_copper:waxed_block_oxidized_cut",
+	{pickaxey = 2},
+	{"mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png"},
+	S("Waxed Stairs of Oxidized Cut Copper"),
 	nil, 6, nil,
 	"woodlike")

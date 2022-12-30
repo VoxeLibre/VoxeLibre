@@ -64,7 +64,7 @@ local cod = {
 		chance = 1,
 		min = 1,
 		max = 1,},
-		{name = "mcl_dye:white",
+		{name = "mcl_bone_meal:bone_meal",
 		chance = 20,
 		min = 1,
 		max = 1,},
@@ -102,7 +102,8 @@ local cod = {
 		end
 	end,
 	on_rightclick = function(self, clicker)
-		if clicker:get_wielded_item():get_name() == "mcl_buckets:bucket_water" then
+		local bn = clicker:get_wielded_item():get_name()
+		if bn == "mcl_buckets:bucket_water" or bn == "mcl_buckets:bucket_river_water" then
 			self.object:remove()
 			clicker:set_wielded_item("mcl_buckets:bucket_cod")
 			awards.unlock(clicker:get_player_name(), "mcl:tacticalFishing")
@@ -110,7 +111,7 @@ local cod = {
 	end
 }
 
-mcl_mobs:register_mob("mobs_mc:cod", cod)
+mcl_mobs.register_mob("mobs_mc:cod", cod)
 
 
 --spawning TODO: in schools
@@ -271,4 +272,4 @@ water-16,
 water+1)
 
 --spawn egg
-mcl_mobs:register_egg("mobs_mc:cod", S("Cod"), "#c1a76a", "#e5c48b", 0)
+mcl_mobs.register_egg("mobs_mc:cod", S("Cod"), "#c1a76a", "#e5c48b", 0)

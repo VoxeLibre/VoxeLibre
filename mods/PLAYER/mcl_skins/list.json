@@ -18,11 +18,13 @@
 	},
 	{
 		"type": "eye",
-		"texture": "mcl_skins_eye_1.png"
+		"texture": "mcl_skins_eye_1.png",
+		"alex": true
 	},
 	{
 		"type": "eye",
-		"texture": "mcl_skins_eye_2.png"
+		"texture": "mcl_skins_eye_2.png",
+		"steve": true
 	},
 	{
 		"type": "eye",
@@ -34,9 +36,7 @@
 	},
 	{
 		"type": "eye",
-		"texture": "mcl_skins_eye_5.png",
-		"steve": true,
-		"alex": true
+		"texture": "mcl_skins_eye_5.png"
 	},
 	{
 		"type": "eye",
@@ -73,21 +73,23 @@
 	},
 	{
 		"type": "mouth",
-		"texture": "mcl_skins_mouth_7.png",
-		"alex": true
+		"texture": "mcl_skins_mouth_7.png"
 	},
 	{
-		"type": "mouth"
+		"type": "mouth",
+		"alex": true
 	},
 	{
 		"type": "hair",
 		"texture": "mcl_skins_hair_1.png",
-		"mask": "mcl_skins_hair_1_mask.png"
+		"mask": "mcl_skins_hair_1_mask.png",
+		"alex": true
 	},
 	{
 		"type": "hair",
 		"texture": "mcl_skins_hair_2.png",
-		"mask": "mcl_skins_hair_2_mask.png"
+		"mask": "mcl_skins_hair_2_mask.png",
+		"steve": true
 	},
 	{
 		"type": "hair",
@@ -127,14 +129,12 @@
 	{
 		"type": "hair",
 		"texture": "mcl_skins_hair_10.png",
-		"mask": "mcl_skins_hair_10_mask.png",
-		"steve": true
+		"mask": "mcl_skins_hair_10_mask.png"
 	},
 	{
 		"type": "hair",
 		"texture": "mcl_skins_hair_11.png",
-		"mask": "mcl_skins_hair_11_mask.png",
-		"alex": true
+		"mask": "mcl_skins_hair_11_mask.png"
 	},
 	{
 		"type": "hair"
@@ -145,7 +145,8 @@
 	},
 	{
 		"type": "headwear",
-		"texture": "mcl_skins_headwear_2.png"
+		"texture": "mcl_skins_headwear_2.png",
+		"alex": true
 	},
 	{
 		"type": "headwear",
@@ -173,13 +174,14 @@
 	},
 	{
 		"type": "headwear",
-		"steve": true,
-		"alex": true
+		"steve": true
 	},
 	{
 		"type": "bottom",
 		"texture": "mcl_skins_bottom_1.png",
-		"mask": "mcl_skins_bottom_1_mask.png"
+		"mask": "mcl_skins_bottom_1_mask.png",
+		"steve": true,
+		"alex": true
 	},
 	{
 		"type": "bottom",
@@ -194,14 +196,14 @@
 	{
 		"type": "bottom",
 		"texture": "mcl_skins_bottom_4.png",
-		"mask": "mcl_skins_bottom_4_mask.png",
-		"steve": true,
-		"alex": true
+		"mask": "mcl_skins_bottom_4_mask.png"
 	},
 	{
 		"type": "top",
 		"texture": "mcl_skins_top_1.png",
-		"mask": "mcl_skins_top_1_mask.png"
+		"mask": "mcl_skins_top_1_mask.png",
+		"steve": true,
+		"alex": true
 	},
 	{
 		"type": "top",
@@ -241,14 +243,12 @@
 	{
 		"type": "top",
 		"texture": "mcl_skins_top_9.png",
-		"mask": "mcl_skins_top_9_mask.png",
-		"alex": true
+		"mask": "mcl_skins_top_9_mask.png"
 	},
 	{
 		"type": "top",
 		"texture": "mcl_skins_top_10.png",
-		"mask": "mcl_skins_top_10_mask.png",
-		"steve": true
+		"mask": "mcl_skins_top_10_mask.png"
 	},
 	{
 		"type": "base",

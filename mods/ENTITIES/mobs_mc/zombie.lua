@@ -102,7 +102,7 @@ local zombie = {
 	attack_npcs = true,
 }
 
-mcl_mobs:register_mob("mobs_mc:zombie", zombie)
+mcl_mobs.register_mob("mobs_mc:zombie", zombie)
 
 -- Baby zombie.
 -- A smaller and more dangerous variant of the zombie
@@ -123,7 +123,7 @@ baby_zombie.animation = {
 	punch_start = 109, punch_end = 119
 }
 
-mcl_mobs:register_mob("mobs_mc:baby_zombie", baby_zombie)
+mcl_mobs.register_mob("mobs_mc:baby_zombie", baby_zombie)
 
 -- Husk.
 -- Desert variant of the zombie
@@ -140,7 +140,7 @@ husk.sunlight_damage = 0
 husk.drops = drops_common
 -- TODO: Husks avoid water
 
-mcl_mobs:register_mob("mobs_mc:husk", husk)
+mcl_mobs.register_mob("mobs_mc:husk", husk)
 
 -- Baby husk.
 -- A smaller and more dangerous variant of the husk
@@ -154,7 +154,7 @@ baby_husk.ignited_by_sunlight = false
 baby_husk.sunlight_damage = 0
 baby_husk.drops = drops_common
 
-mcl_mobs:register_mob("mobs_mc:baby_husk", baby_husk)
+mcl_mobs.register_mob("mobs_mc:baby_husk", baby_husk)
 
 
 -- Spawning
@@ -368,5 +368,5 @@ mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)
 
 -- Spawn eggs
-mcl_mobs:register_egg("mobs_mc:husk", S("Husk"), "#777361", "#ded88f", 0)
-mcl_mobs:register_egg("mobs_mc:zombie", S("Zombie"), "#00afaf", "#799c66", 0)
+mcl_mobs.register_egg("mobs_mc:husk", S("Husk"), "#777361", "#ded88f", 0)
+mcl_mobs.register_egg("mobs_mc:zombie", S("Zombie"), "#00afaf", "#799c66", 0)

@@ -6,7 +6,7 @@
 
 local S = minetest.get_translator("mobs_mc")
 
-mcl_mobs:register_mob("mobs_mc:guardian_elder", {
+mcl_mobs.register_mob("mobs_mc:guardian_elder", {
 	description = S("Elder Guardian"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -112,6 +112,6 @@ mcl_mobs:register_mob("mobs_mc:guardian_elder", {
 -- mcl_mobs:spawn_specific("mobs_mc:guardian_elder", { "mcl_core:water_source", "mclx_core:river_water_source" }, { "mcl_core:water_source", "mclx_core:river_water_source" }, 0, minetest.LIGHT_MAX+1, 30, 40000, 2, mcl_vars.mg_overworld_min, mobs_mc.water_level-18)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:guardian_elder", S("Elder Guardian"), "#ceccba", "#747693", 0)
+mcl_mobs.register_egg("mobs_mc:guardian_elder", S("Elder Guardian"), "#ceccba", "#747693", 0)
 
 

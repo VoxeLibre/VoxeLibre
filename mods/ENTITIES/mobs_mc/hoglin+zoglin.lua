@@ -84,7 +84,7 @@ local hoglin = {
 	attack_animals = true,
 }
 
-mcl_mobs:register_mob("mobs_mc:hoglin", hoglin)
+mcl_mobs.register_mob("mobs_mc:hoglin", hoglin)
 
 local zoglin = table.copy(hoglin)
 zoglin.fire_resistant = 1
@@ -95,7 +95,7 @@ end
 zoglin.attacks_monsters = true
 zoglin.lava_damage = 0
 zoglin.fire_damage = 0
-mcl_mobs:register_mob("mobs_mc:zoglin", zoglin)
+mcl_mobs.register_mob("mobs_mc:zoglin", zoglin)
 
 -- Baby hoglin.
 
@@ -112,7 +112,7 @@ baby_hoglin.walk_velocity = 1.2
 baby_hoglin.run_velocity = 2.4
 baby_hoglin.child = 1
 
-mcl_mobs:register_mob("mobs_mc:baby_hoglin", baby_hoglin)
+mcl_mobs.register_mob("mobs_mc:baby_hoglin", baby_hoglin)
 
 -- Regular spawning in the Nether
 mcl_mobs:spawn_specific(
@@ -132,4 +132,4 @@ mcl_vars.mg_nether_min,
 mcl_vars.mg_nether_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:hoglin", S("Hoglin"), "#85682e", "#2b2140", 0)
+mcl_mobs.register_egg("mobs_mc:hoglin", S("Hoglin"), "#85682e", "#2b2140", 0)

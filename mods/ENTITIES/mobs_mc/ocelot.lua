@@ -107,7 +107,7 @@ local ocelot = {
 	end,
 }
 
-mcl_mobs:register_mob("mobs_mc:ocelot", ocelot)
+mcl_mobs.register_mob("mobs_mc:ocelot", ocelot)
 
 -- Cat
 local cat = table.copy(ocelot)
@@ -130,7 +130,7 @@ cat.sounds = {
 	distance = 16,
 }
 cat.on_rightclick = function(self, clicker)
-	if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
+	if self:feed_tame(clicker, 1, true, false) then return end
 	if mcl_mobs:capture_mob(self, clicker, 0, 60, 5, false, nil) then return end
 	if mcl_mobs:protect(self, clicker) then return end
 
@@ -167,7 +167,7 @@ cat.on_spawn  = function(self)
 	self.object:set_properties({textures = {self._texture}})
 end
 
-mcl_mobs:register_mob("mobs_mc:cat", cat)
+mcl_mobs.register_mob("mobs_mc:cat", cat)
 
 local base_spawn_chance = 5000
 
@@ -249,4 +249,4 @@ mobs:spawn({
 ]]--
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:ocelot", S("Ocelot"), "#efde7d", "#564434", 0)
+mcl_mobs.register_egg("mobs_mc:ocelot", S("Ocelot"), "#efde7d", "#564434", 0)

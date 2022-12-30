@@ -29,7 +29,7 @@ for i=1,4 do
 	table.insert(psdefs,p)
 end
 
-mcl_mobs:register_mob("mobs_mc:glow_squid", {
+mcl_mobs.register_mob("mobs_mc:glow_squid", {
 	type = "animal",
 	spawn_class = "water",
 	can_despawn = true,
@@ -243,4 +243,4 @@ mcl_mobs:spawn_specific(
 		water)
 
 -- spawn egg
-mcl_mobs:register_egg("mobs_mc:glow_squid", S("Glow Squid"), "#095757", "#87f6c0", 0)
+mcl_mobs.register_egg("mobs_mc:glow_squid", S("Glow Squid"), "#095757", "#87f6c0", 0)

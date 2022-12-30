@@ -302,6 +302,14 @@ awards.register_achievement("mcl:tacticalFishing", {
 	group = "Husbandry",
 })
 
+awards.register_achievement("mcl:cutestPredator", {
+	title = S("The Cutest Predator"),
+	description = S("Catch an Axolotl with a bucket!"),
+	icon = "axolotl_bucket.png",
+	type = "Advancement",
+	group = "Husbandry",
+})
+
 awards.register_achievement("mcl:witheringHeights", {
 	title = S("Withering Heights"),
 	description = S("Summon the wither from the dead."),
@@ -387,6 +395,40 @@ awards.register_achievement("mcl:theEndAgain", {
 	icon = "mcl_end_crystal_item.png",
 	type = "Goal",
 	group = "End",
+})
+
+-- Triggered in mcl_beehives
+awards.register_achievement("mcl:bee_our_guest", {
+	title = S("Bee Our Guest"),
+	description = S("Use a campfire to collect a bottle of honey from a beehive without aggrivating the bees inside."),
+	icon = "mcl_honey_honey_bottle.png",
+	type = "Advancement",
+	group = "Husbandry",
+})
+
+awards.register_achievement("mcl:total_beelocation", {
+	title = S("Total Beelocation"),
+	description = S("Move a bee nest, with 3 bees inside, using a silk touch enchanted tool."),
+	icon = "mcl_beehives_bee_nest_front_honey.png",
+	type = "Advancement",
+	group = "Husbandry",
+})
+
+-- Triggered in mcl_copper
+awards.register_achievement("mcl:wax_on", {
+	title = S("Wax On"),
+	description = S("Apply honeycomb to a copper block to protect it from the elements."),
+	icon = "mcl_honey_honeycomb.png",
+	type = "Advancement",
+	group = "Husbandry",
+})
+
+awards.register_achievement("mcl:wax_off", {
+	title = S("Wax Off"),
+	description = S("Scrape wax off of a copper block."),
+	icon = "default_tool_stoneaxe.png",
+	type = "Advancement",
+	group = "Husbandry",
 })
 
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
@@ -486,4 +528,22 @@ awards.register_achievement("mcl:obsidian", {
 	icon		= "default_obsidian.png",
 	type = "Advancement",
 	group = "Overworld",
+})
+
+awards.register_achievement("mcl:hero_of_the_village", {
+	title = S("Hero of the Village"),
+	description = S("Successfully defend a village from a raid"),
+	icon = "mcl_raids_hero_of_the_village_icon.png",
+	type = "Advancement",
+	group = "Adventure",
+	secret = true,
+})
+
+awards.register_achievement("mcl:voluntary_exile", {
+	title = S("Voluntary Exile"),
+	description = S("Kill a raid captain. Maybe consider staying away from the local villages for the time being..."),
+	icon = "mcl_potions_effect_bad_omen.png",
+	type = "Advancement",
+	group = "Adventure",
+	secret = true,
 })
