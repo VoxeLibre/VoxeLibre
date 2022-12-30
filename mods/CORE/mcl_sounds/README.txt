@@ -39,8 +39,8 @@ Metal sounds:
   default_place_node_metal.*.ogg - Ogrebane - CC0
   - http://opengameart.org/content/wood-and-metal-sound-effects-volume-2
 
-AGFX (CC BY 3.0):
-https://www.freesound.org/people/AGFX/packs/1253/
+original by anonymous (CC0 1.0), mastering by iliekprogrammar (CC0 1.0):
+https://freesound.org/people/deleted_user_2104797/sounds/166313/
   default_water_footstep.*.ogg
 
 blukotek (CC0 1.0):
