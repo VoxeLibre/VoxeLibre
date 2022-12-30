@@ -24,6 +24,7 @@ minetest.register_node("mcl_core:ladder", {
 	paramtype2 = "wallmounted",
 	walkable = true,
 	climbable = true,
+	move_resistance = 1,
 	node_box = {
 		type = "wallmounted",
 		wall_side = { -0.5, -0.5, -0.5, -7/16, 0.5, 0.5 },
@@ -32,8 +33,15 @@ minetest.register_node("mcl_core:ladder", {
 		type = "wallmounted",
 		wall_side = { -0.5, -0.5, -0.5, -7/16, 0.5, 0.5 },
 	},
+	collision_box = {
+		type = "wallmounted",
+		wall_side = { -0.5, -0.5, -0.5, -7/16, 0.5, 0.5 },
+	},
 	stack_max = 64,
-	groups = {handy=1,axey=1, attached_node=1, deco_block=1, dig_by_piston=1},
+	groups = {
+		handy=1, axey=1, attached_node=1, deco_block=1, dig_by_piston=1,
+		no_fall_damage=1
+	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	node_placement_prediction = "",
 	-- Restrict placement of ladders
@@ -99,6 +107,7 @@ minetest.register_node("mcl_core:vine", {
 	paramtype2 = "wallmounted",
 	walkable = false,
 	climbable = true,
+	move_resistance = 1,
 	buildable_to = true,
 	selection_box = {
 		type = "wallmounted",
@@ -107,7 +116,7 @@ minetest.register_node("mcl_core:vine", {
 	groups = {
 		handy = 1, axey = 1, shearsy = 1, swordy = 1, deco_block = 1,
 		dig_by_piston = 1, destroy_by_lava_flow = 1, compostability = 50,
-		flammable = 2, fire_encouragement = 15, fire_flammability = 100
+		flammable = 2, fire_encouragement = 15, fire_flammability = 100, no_fall_damage=1
 	},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = "",

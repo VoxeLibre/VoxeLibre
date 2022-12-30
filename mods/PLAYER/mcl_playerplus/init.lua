@@ -717,17 +717,12 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 				end
 				if minetest.get_item_group(node.name, "water") ~= 0 then
 					return 0
-				end
-				if node.name == "mcl_portals:portal_end" then
+				elseif minetest.get_item_group(node.name, "no_fall_damage") ~= 0 then
+					return 0
+				elseif node.name == "mcl_portals:portal_end" then
 					if mcl_portals and mcl_portals.end_teleport then
 						mcl_portals.end_teleport(obj)
 					end
-					return 0
-				end
-				if node.name == "mcl_core:cobweb" then
-					return 0
-				end
-				if node.name == "mcl_core:vine" then
 					return 0
 				end
 			end
