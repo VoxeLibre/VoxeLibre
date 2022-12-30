@@ -1,0 +1,2 @@
+# textdomain: mcl_ver_info
+Sorry, but your version of Minetest doesn't support the latest API. Please upgrade your minetest.=

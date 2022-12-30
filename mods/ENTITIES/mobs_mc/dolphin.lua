@@ -92,7 +92,7 @@ local dolphin = {
 	end,
 }
 
-mcl_mobs:register_mob("mobs_mc:dolphin", dolphin)
+mcl_mobs.register_mob("mobs_mc:dolphin", dolphin)
 
 
 --spawning TO DO: in schools
@@ -250,4 +250,4 @@ water-16,
 water+1)
 
 --spawn egg
-mcl_mobs:register_egg("mobs_mc:dolphin", S("Dolphin"), "#223b4d", "#f9f9f9", 0)
+mcl_mobs.register_egg("mobs_mc:dolphin", S("Dolphin"), "#223b4d", "#f9f9f9", 0)

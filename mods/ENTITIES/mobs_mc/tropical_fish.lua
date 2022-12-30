@@ -87,7 +87,7 @@ local tropical_fish = {
 		chance = 1,
 		min = 1,
 		max = 1,},
-		{name = "mcl_dye:white",
+		{name = "mcl_bone_meal:bone_meal",
 		chance = 20,
 		min = 1,
 		max = 1,},
@@ -103,16 +103,22 @@ local tropical_fish = {
 	runaway = true,
 	fear_height = 4,
 	on_rightclick = function(self, clicker)
-		if clicker:get_wielded_item():get_name() == "mcl_buckets:bucket_water" then
-			self.object:remove()
-			clicker:set_wielded_item("mcl_buckets:bucket_tropical_fish")
+		local bn = clicker:get_wielded_item():get_name()
+		if bn == "mcl_buckets:bucket_water" or bn == "mcl_buckets:bucket_river_water" then
+			if clicker:set_wielded_item("mcl_buckets:bucket_tropical_fish") then
+				local it = clicker:get_wielded_item()
+				local m = it:get_meta()
+				m:set_string("properties",minetest.serialize(self.object:get_properties()))
+				clicker:set_wielded_item(it)
+				self.object:remove()
+			end
 			awards.unlock(clicker:get_player_name(), "mcl:tacticalFishing")
 		end
 	end,
 	on_spawn = set_textures,
 }
 
-mcl_mobs:register_mob("mobs_mc:tropical_fish", tropical_fish)
+mcl_mobs.register_mob("mobs_mc:tropical_fish", tropical_fish)
 
 local water = 0
 mcl_mobs:spawn_specific(
@@ -183,4 +189,4 @@ water-16,
 water+1)
 
 --spawn egg
-mcl_mobs:register_egg("mobs_mc:tropical_fish", S("Tropical fish"), "#ef6915", "#fff9ef", 0)
+mcl_mobs.register_egg("mobs_mc:tropical_fish", S("Tropical fish"), "#ef6915", "#fff9ef", 0)

@@ -2,7 +2,7 @@
 
 local S = minetest.get_translator("mobs_mc")
 
-mcl_mobs:register_mob("mobs_mc:pig", {
+mcl_mobs.register_mob("mobs_mc:pig", {
 	description = S("Pig"),
 	type = "animal",
 	spawn_class = "passive",
@@ -60,6 +60,10 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 		"mcl_mobitems:carrot_on_a_stick"
 	},
 	view_range = 8,
+	on_lightning_strike = function(self, pos, pos2, objects)
+		 mcl_util.replace_mob(self.object, "mobs_mc:zombified_piglin")
+		 return true
+	end,
 	do_custom = function(self, dtime)
 
 		-- set needed values if not already present
@@ -104,7 +108,7 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 		local wielditem = clicker:get_wielded_item()
 		-- Feed pig
 		if wielditem:get_name() ~= "mcl_mobitems:carrot_on_a_stick" then
-			if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
+			if self:feed_tame(clicker, 1, true, false) then return end
 		end
 		if mcl_mobs:protect(self, clicker) then return end
 
@@ -182,7 +186,7 @@ mcl_mobs:register_mob("mobs_mc:pig", {
 
 	on_breed = function(parent1, parent2)
 		local pos = parent1.object:get_pos()
-		local child = mcl_mobs:spawn_child(pos, parent1.name)
+		local child = mcl_mobs.spawn_child(pos, parent1.name)
 		if child then
 			local ent_c = child:get_luaentity()
 			ent_c.tamed = true
@@ -238,4 +242,4 @@ mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:pig", S("Pig"), "#f0a5a2", "#db635f", 0)
+mcl_mobs.register_egg("mobs_mc:pig", S("Pig"), "#f0a5a2", "#db635f", 0)

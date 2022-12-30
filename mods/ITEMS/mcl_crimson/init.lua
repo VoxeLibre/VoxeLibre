@@ -21,7 +21,9 @@ function grow_vines(pos, moreontop ,vine, dir)
 		n = minetest.get_node(pos)
 		if n.name == "air" then
 			for i=0,math.max(moreontop,1) do
-				minetest.set_node(vector.offset(pos,0,i*dir,0),{name=vine})
+				if minetest.get_node(pos).name == "air" then
+					minetest.set_node(vector.offset(pos,0,i*dir,0),{name=vine})
+				end
 			end
 			break
 		end
@@ -80,7 +82,7 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 	},
 	node_placement_prediction = "",
 	on_rightclick = function(pos, node, pointed_thing, player, itemstack)
-		if pointed_thing:get_wielded_item():get_name() == "mcl_dye:white" then
+		if pointed_thing:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
 			local nodepos = minetest.get_node({x = pos.x, y = pos.y - 1, z = pos.z})
 			if nodepos.name == "mcl_crimson:warped_nylium" or nodepos.name == "mcl_nether:netherrack" then
 				local random = math.random(1, 5)
@@ -92,6 +94,12 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 		end
 	end,
 	_mcl_blast_resistance = 0,
+})
+
+mcl_flowerpots.register_potted_flower("mcl_crimson:warped_fungus", {
+	name = "warped fungus",
+	desc = S("Warped Fungus Mushroom"),
+	image = "farming_warped_fungus.png",
 })
 
 minetest.register_node("mcl_crimson:twisting_vines", {
@@ -110,14 +118,24 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
 	},
 	node_placement_prediction = "",
-	on_rightclick = function(pos, node, pointed_thing, itemstack)
-		if pointed_thing:get_wielded_item():get_name() == "mcl_crimson:twisting_vines" then
-			itemstack:take_item()
+	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+		local pn = clicker:get_player_name()
+		if clicker:is_player() and minetest.is_protected(vector.offset(pos,0,1,0), pn or "") then
+			minetest.record_protection_violation(vector.offset(pos,0,1,0), pn)
+			return itemstack
+		end
+		if clicker:get_wielded_item():get_name() == "mcl_crimson:twisting_vines" then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
+				itemstack:take_item()
+			end
 			grow_vines(pos, 1, "mcl_crimson:twisting_vines")
-		elseif pointed_thing:get_wielded_item():get_name() == "mcl_dye:white" then
-			itemstack:take_item()
+		elseif clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
+				itemstack:take_item()
+			end
 			grow_vines(pos, math.random(1, 3),"mcl_crimson:twisting_vines")
 		end
+		return itemstack
 	end,
 	drop = {
 		max_items = 1,
@@ -156,14 +174,24 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
 	},
 	node_placement_prediction = "",
-	on_rightclick = function(pos, node, pointed_thing, itemstack)
-		if pointed_thing:get_wielded_item():get_name() == "mcl_crimson:weeping_vines" then
-			itemstack:take_item()
+	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+		local pn = clicker:get_player_name()
+		if clicker:is_player() and minetest.is_protected(vector.offset(pos,0,1,0), pn or "") then
+			minetest.record_protection_violation(vector.offset(pos,0,1,0), pn)
+			return itemstack
+		end
+		if clicker:get_wielded_item():get_name() == "mcl_crimson:weeping_vines" then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
+				itemstack:take_item()
+			end
 			grow_vines(pos, 1, "mcl_crimson:weeping_vines", -1)
-		elseif pointed_thing:get_wielded_item():get_name() == "mcl_dye:white" then
-			itemstack:take_item()
+		elseif clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
+				itemstack:take_item()
+			end
 			grow_vines(pos, math.random(1, 3),"mcl_crimson:weeping_vines", -1)
 		end
+		return itemstack
 	end,
 	drop = {
 		max_items = 1,
@@ -226,6 +254,13 @@ minetest.register_node("mcl_crimson:warped_roots", {
 	_mcl_blast_resistance = 0,
 })
 
+mcl_flowerpots.register_potted_flower("mcl_crimson:warped_roots", {
+	name = "warped roots",
+	desc = S("Warped Roots"),
+	image = "warped_roots.png",
+})
+
+
 minetest.register_node("mcl_crimson:warped_wart_block", {
 	description = S("Warped Wart Block"),
 	tiles = {"warped_wart_block.png"},
@@ -236,7 +271,7 @@ minetest.register_node("mcl_crimson:warped_wart_block", {
 minetest.register_node("mcl_crimson:shroomlight", {
 	description = S("Shroomlight"),
 	tiles = {"shroomlight.png"},
-	groups = {handy = 1, hoe = 7, swordy = 1, leafdecay = 5, leaves = 1, deco_block = 1},
+	groups = {handy = 1, hoe = 7, swordy = 1, deco_block = 1},
 	light_source = minetest.LIGHT_MAX,
 	_mcl_hardness = 2,
 })
@@ -248,10 +283,10 @@ minetest.register_node("mcl_crimson:warped_hyphae", {
 	tiles = {
 		"warped_hyphae.png",
 		"warped_hyphae.png",
-		"warped_hyphae_side.png",
-		"warped_hyphae_side.png",
-		"warped_hyphae_side.png",
-		"warped_hyphae_side.png",
+		{
+			image="warped_hyphae_side.png",
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
+		},
 	},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
@@ -272,10 +307,10 @@ minetest.register_node("mcl_crimson:warped_nylium", {
 		"mcl_nether_netherrack.png^warped_nylium_side.png",
 		"mcl_nether_netherrack.png^warped_nylium_side.png",
 	},
-	paramtype2 = "facedir",
 	is_ground_content = true,
 	drop = "mcl_nether:netherrack",
 	groups = {pickaxey=1, building_block=1, material_stone=1},
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_hardness = 0.4,
 	_mcl_blast_resistance = 0.4,
 	_mcl_silk_touch_drop = true,
@@ -286,7 +321,12 @@ minetest.register_node("mcl_crimson:warped_nylium", {
 minetest.register_node("mcl_crimson:warped_hyphae_bark", {
 	description = S("Warped Hyphae Bark"),
 	_doc_items_longdesc = S("This is a decorative block surrounded by the bark of an hyphae."),
-	tiles = {"warped_hyphae_side.png"},
+	tiles = {
+	{
+		image="warped_hyphae_side.png",
+		animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
+	},
+	},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, bark = 1, building_block = 1, material_wood = 1},
@@ -306,7 +346,7 @@ minetest.register_craft({
 })
 
 minetest.register_node("mcl_crimson:stripped_warped_hyphae", {
-	description = S("Stripped warped hyphae"),
+	description = S("Stripped Warped Hyphae"),
 	_doc_items_longdesc = S("The stripped hyphae of a warped fungus"),
 	_doc_items_hidden = false,
 	tiles = {"warped_stem_stripped_top.png", "warped_stem_stripped_top.png", "warped_stem_stripped_side.png"},
@@ -319,9 +359,9 @@ minetest.register_node("mcl_crimson:stripped_warped_hyphae", {
 })
 
 minetest.register_node("mcl_crimson:stripped_warped_hyphae_bark", {
-	description = S("Stripped warped hyphae bark"),
+	description = S("Stripped Warped Hyphae Bark"),
 	_doc_items_longdesc = S("The stripped hyphae bark of a warped fungus"),
-	tiles = {"crimson_stem_stripped_side.png"},
+	tiles = {"warped_stem_stripped_side.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, bark = 1, building_block = 1, material_wood = 1},
@@ -343,7 +383,7 @@ minetest.register_node("mcl_crimson:warped_hyphae_wood", {
 	description = S("Warped Hyphae Wood"),
 	tiles = {"warped_hyphae_wood.png"},
 	groups = {handy = 5,axey = 1, flammable = 3, wood=1,building_block = 1, material_wood = 1, fire_encouragement = 5, fire_flammability = 20},
-	paramtype2 = "facedir",
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_hardness = 2,
 })
 
@@ -381,7 +421,7 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 	},
 	node_placement_prediction = "",
 	on_rightclick = function(pos, node, pointed_thing, player)
-		if pointed_thing:get_wielded_item():get_name() == "mcl_dye:white" then
+		if pointed_thing:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
 			local nodepos = minetest.get_node(vector.offset(pos, 0, -1, 0))
 			if nodepos.name == "mcl_crimson:crimson_nylium" or nodepos.name == "mcl_nether:netherrack" then
 				local random = math.random(1, 5)
@@ -393,6 +433,12 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 		end
 	end,
 	_mcl_blast_resistance = 0,
+})
+
+mcl_flowerpots.register_potted_flower("mcl_crimson:crimson_fungus", {
+	name = "crimson fungus",
+	desc = S("Crimson Fungus Mushroom"),
+	image = "farming_crimson_fungus.png",
 })
 
 minetest.register_node("mcl_crimson:crimson_roots", {
@@ -414,6 +460,12 @@ minetest.register_node("mcl_crimson:crimson_roots", {
 	_mcl_blast_resistance = 0,
 })
 
+mcl_flowerpots.register_potted_flower("mcl_crimson:crimson_roots", {
+	name = "crimson roots",
+	desc = S("Crimson Roots"),
+	image = "crimson_roots.png",
+})
+
 minetest.register_node("mcl_crimson:crimson_hyphae", {
 	description = S("Crimson Hyphae"),
 	_doc_items_longdesc = S("The stem of a crimson hyphae"),
@@ -421,10 +473,10 @@ minetest.register_node("mcl_crimson:crimson_hyphae", {
 	tiles = {
 		"crimson_hyphae.png",
 		"crimson_hyphae.png",
-		"crimson_hyphae_side.png",
-		"crimson_hyphae_side.png",
-		"crimson_hyphae_side.png",
-		"crimson_hyphae_side.png",
+		{
+			image="crimson_hyphae_side.png",
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
+		},
 	},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
@@ -440,7 +492,12 @@ minetest.register_node("mcl_crimson:crimson_hyphae", {
 minetest.register_node("mcl_crimson:crimson_hyphae_bark", {
 	description = S("Crimson Hyphae Bark"),
 	_doc_items_longdesc = S("This is a decorative block surrounded by the bark of an hyphae."),
-	tiles = {"crimson_hyphae_side.png"},
+	tiles = {
+	{
+		image="crimson_hyphae_side.png",
+		animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
+	},
+	},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, bark = 1, building_block = 1, material_wood = 1},
@@ -497,7 +554,7 @@ minetest.register_node("mcl_crimson:crimson_hyphae_wood", {
 	description = S("Crimson Hyphae Wood"),
 	tiles = {"crimson_hyphae_wood.png"},
 	groups = {handy = 5, axey = 1, wood = 1, building_block = 1, material_wood = 1},
-	paramtype2 = "facedir",
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_hardness = 2,
 })
 
@@ -512,7 +569,7 @@ minetest.register_node("mcl_crimson:crimson_nylium", {
 		"mcl_nether_netherrack.png^crimson_nylium_side.png",
 	},
 	groups = {pickaxey = 1, building_block = 1, material_stone = 1},
-	paramtype2 = "facedir",
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = true,
 	drop = "mcl_nether:netherrack",
 	_mcl_hardness = 0.4,
@@ -549,3 +606,148 @@ mcl_dye.register_on_bone_meal_apply(function(pt,user)
 		spread_nether_plants(pt.under,node)
 	end
 end)
+
+mcl_doors:register_door("mcl_crimson:crimson_door", {
+	description = S("Crimson Door"),
+	_doc_items_longdesc = S("Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal."),
+	_doc_items_usagehelp = S("To open or close a wooden door, rightclick it or supply its lower half with a redstone signal."),
+	inventory_image = "mcl_crimson_crimson_door.png",
+	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
+	_mcl_hardness = 3,
+	_mcl_blast_resistance = 3,
+	tiles_bottom = {"mcl_crimson_crimson_door_bottom.png", "mcl_doors_door_crimson_side_lower.png"},
+	tiles_top = {"mcl_crimson_crimson_door_top.png", "mcl_doors_door_crimson_side_upper.png"},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+})
+
+mcl_doors:register_trapdoor("mcl_crimson:crimson_trapdoor", {
+	description = S("Crimson Trapdoor"),
+	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
+	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
+	tile_front = "mcl_crimson_crimson_trapdoor.png",
+	tile_side = "crimson_hyphae_wood.png",
+	wield_image = "mcl_crimson_crimson_trapdoor.png",
+	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
+	_mcl_hardness = 3,
+	_mcl_blast_resistance = 3,
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+})
+
+mcl_fences.register_fence_and_fence_gate(
+	"crimson_fence",
+	S("Crimson Fence"),
+	S("Crimson Fence Gate"),
+	"mcl_crimson_crimson_fence.png",
+	{handy=1,axey=1, flammable=2,fence_wood=1, fire_encouragement=5, fire_flammability=20},
+	minetest.registered_nodes["mcl_crimson:crimson_hyphae"]._mcl_hardness,
+	minetest.registered_nodes["mcl_crimson:crimson_hyphae"]._mcl_blast_resistance,
+	{"group:fence_wood"},
+	mcl_sounds.node_sound_wood_defaults())
+
+
+mcl_doors:register_door("mcl_crimson:warped_door", {
+	description = S("Warped Door"),
+	_doc_items_longdesc = S("Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal."),
+	_doc_items_usagehelp = S("To open or close a wooden door, rightclick it or supply its lower half with a redstone signal."),
+	inventory_image = "mcl_crimson_warped_door.png",
+	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
+	_mcl_hardness = 3,
+	_mcl_blast_resistance = 3,
+	tiles_bottom = {"mcl_crimson_warped_door_bottom.png", "mcl_doors_door_warped_side_lower.png"},
+	tiles_top = {"mcl_crimson_warped_door_top.png", "mcl_doors_door_warped_side_upper.png"},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+})
+
+mcl_doors:register_trapdoor("mcl_crimson:warped_trapdoor", {
+	description = S("Warped Trapdoor"),
+	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
+	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
+	tile_front = "mcl_crimson_warped_trapdoor.png",
+	tile_side = "warped_hyphae_wood.png",
+	wield_image = "mcl_crimson_warped_trapdoor.png",
+	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
+	_mcl_hardness = 3,
+	_mcl_blast_resistance = 3,
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+})
+
+mcl_fences.register_fence_and_fence_gate(
+	"warped_fence",
+	S("Warped Fence"),
+	S("Warped Fence Gate"),
+	"mcl_crimson_warped_fence.png",
+	{handy=1,axey=1, flammable=2,fence_wood=1, fire_encouragement=5, fire_flammability=20},
+	minetest.registered_nodes["mcl_crimson:warped_hyphae"]._mcl_hardness,
+	minetest.registered_nodes["mcl_crimson:warped_hyphae"]._mcl_blast_resistance,
+	{"group:fence_wood"},
+	mcl_sounds.node_sound_wood_defaults())
+
+-- Door, Trapdoor, and Fence/Gate Crafting
+local crimson_wood = "mcl_crimson:crimson_hyphae_wood"
+local warped_wood = "mcl_crimson:warped_hyphae_wood"
+
+minetest.register_craft({
+	output = "mcl_crimson:crimson_door 3",
+	recipe = {
+		{crimson_wood, crimson_wood},
+		{crimson_wood, crimson_wood},
+		{crimson_wood, crimson_wood}
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:warped_door 3",
+	recipe = {
+		{warped_wood, warped_wood},
+		{warped_wood, warped_wood},
+		{warped_wood, warped_wood}
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:crimson_trapdoor 2",
+	recipe = {
+		{crimson_wood, crimson_wood, crimson_wood},
+		{crimson_wood, crimson_wood, crimson_wood},
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:warped_trapdoor 2",
+	recipe = {
+		{warped_wood, warped_wood, warped_wood},
+		{warped_wood, warped_wood, warped_wood},
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:crimson_fence 3",
+	recipe = {
+		{crimson_wood, "mcl_core:stick", crimson_wood},
+		{crimson_wood, "mcl_core:stick", crimson_wood},
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:warped_fence 3",
+	recipe = {
+		{warped_wood, "mcl_core:stick", warped_wood},
+		{warped_wood, "mcl_core:stick", warped_wood},
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:crimson_fence_gate",
+	recipe = {
+		{"mcl_core:stick", crimson_wood, "mcl_core:stick"},
+		{"mcl_core:stick", crimson_wood, "mcl_core:stick"},
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:warped_fence_gate",
+	recipe = {
+		{"mcl_core:stick", warped_wood, "mcl_core:stick"},
+		{"mcl_core:stick", warped_wood, "mcl_core:stick"},
+	}
+})

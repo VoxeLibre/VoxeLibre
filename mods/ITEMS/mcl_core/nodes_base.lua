@@ -187,11 +187,11 @@ minetest.register_node("mcl_core:stone_with_lapis", {
 	drop = {
 		max_items = 1,
 		items = {
-			{items = {"mcl_dye:blue 8"},rarity = 5},
-			{items = {"mcl_dye:blue 7"},rarity = 5},
-			{items = {"mcl_dye:blue 6"},rarity = 5},
-			{items = {"mcl_dye:blue 5"},rarity = 5},
-			{items = {"mcl_dye:blue 4"}},
+			{items = {"mcl_core:lapis 8"},rarity = 5},
+			{items = {"mcl_core:lapis 7"},rarity = 5},
+			{items = {"mcl_core:lapis 6"},rarity = 5},
+			{items = {"mcl_core:lapis 5"},rarity = 5},
+			{items = {"mcl_core:lapis 4"}},
 		}
 	},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -369,7 +369,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	_doc_items_longdesc = S("A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel. In light, the grass slowly spreads onto dirt nearby. Under an opaque block or a liquid, a grass block may turn back to dirt."),
 	_doc_items_hidden = false,
 	paramtype2 = "color",
-	tiles = {"mcl_core_grass_block_top.png", { name="default_dirt.png^mcl_dirt_grass_shadow.png", color="white" }},
+	tiles = {"mcl_core_grass_block_top.png", { name="default_dirt.png", color="white" }, { name="default_dirt.png^mcl_dirt_grass_shadow.png", color="white" }},
 	overlay_tiles = {"mcl_core_grass_block_top.png", "", {name="mcl_core_grass_block_side_overlay.png", tileable_vertical=false}},
 	palette = "mcl_core_palette_grass.png",
 	palette_index = 0,
@@ -434,7 +434,7 @@ minetest.register_node("mcl_core:mycelium", {
 	tiles = {"mcl_core_mycelium_top.png", "default_dirt.png", {name="mcl_core_mycelium_side.png", tileable_vertical=false}},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = { handy = 1, shovely = 1, dirt = 2, spreading_dirt_type = 1, enderman_takable = 1,  building_block = 1, soil_sapling = 2, path_creation_possible=1},
+	groups = { handy = 1, shovely = 1, dirt = 2, spreading_dirt_type = 1, enderman_takable = 1,  building_block = 1, soil_sapling = 2, path_creation_possible=1, mycelium=1},
 	drop = "mcl_core:dirt",
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.1},
@@ -447,6 +447,44 @@ minetest.register_node("mcl_core:mycelium", {
 	_mcl_silk_touch_drop = true,
 })
 mcl_core.register_snowed_node("mcl_core:mycelium_snow", "mcl_core:mycelium", nil, nil, false, S("Mycelium with Snow"))
+
+local PARTICLE_ABM_DISTANCE = 16
+
+--if minetest.settings:get("mcl_node_particles") == "full" then
+minetest.register_abm({
+	label = "Townaura particles",
+	nodenames = {"group:mycelium"},
+	interval = 2,
+	chance = 30,
+	action = function(pos, node)
+		local player_near = false
+		for _,player in pairs(minetest.get_connected_players()) do
+			if vector.distance(player:get_pos(), pos) < PARTICLE_ABM_DISTANCE then
+				player_near = true
+			end
+		end
+		if player_near then
+			local apos = {x=pos.x-2, y=pos.y+0.51, z=pos.z-2}
+			local apos2 = {x=pos.x+2, y=pos.y+0.51, z=pos.z+2}
+			local acc = { x = 0, y = 0, z = 0 }
+			minetest.add_particlespawner({
+				time = 2,
+				amount = 5,
+				minpos = apos,
+				maxpos = apos2,
+				minvel = vector.new(-3/10, 0, -3/10),
+				maxvel = vector.new(3/10, 10/60, 3/10),
+				minacc = acc,
+				expirationtime = 4,
+				collisiondetection = true,
+				collision_removal = true,
+				size = 1,
+				texture = "mcl_core_mycelium_particle.png",
+			})
+		end
+	end,
+})
+--end
 
 minetest.register_node("mcl_core:podzol", {
 	description = S("Podzol"),
@@ -504,9 +542,7 @@ minetest.register_node("mcl_core:gravel", {
 			{items = {"mcl_core:gravel"}}
 		}
 	},
-	sounds = mcl_sounds.node_sound_dirt_defaults({
-		footstep = {name="default_gravel_footstep", gain=0.45},
-	}),
+	sounds = mcl_sounds.node_sound_gravel_defaults(),
 	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
 	_mcl_silk_touch_drop = true,
@@ -863,7 +899,7 @@ minetest.register_node("mcl_core:ice", {
 	stack_max = 64,
 	groups = {handy=1,pickaxey=1, slippery=3, building_block=1, ice=1},
 	drop = "",
-	sounds = mcl_sounds.node_sound_glass_defaults(),
+	sounds = mcl_sounds.node_sound_ice_defaults(),
 	node_dig_prediction = "mcl_core:water_source",
 	after_dig_node = function(pos, oldnode)
 		mcl_core.melt_ice(pos)
@@ -881,7 +917,7 @@ minetest.register_node("mcl_core:packed_ice", {
 	stack_max = 64,
 	groups = {handy=1,pickaxey=1, slippery=3, building_block=1, ice=1},
 	drop = "",
-	sounds = mcl_sounds.node_sound_glass_defaults(),
+	sounds = mcl_sounds.node_sound_ice_defaults(),
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	_mcl_silk_touch_drop = true,
@@ -929,7 +965,7 @@ for i=0,3 do
 		stack_max = 64,
 		groups = {handy=1, frosted_ice=1, slippery=3, not_in_creative_inventory=1, ice=1},
 		drop = "",
-		sounds = mcl_sounds.node_sound_glass_defaults(),
+		sounds = mcl_sounds.node_sound_ice_defaults(),
 		on_construct = function(pos)
 			local timer = minetest.get_node_timer(pos)
 			timer:start(1.5)

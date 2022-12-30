@@ -181,6 +181,14 @@ minetest.register_craftitem("mcl_mobitems:bone", {
 	_mcl_toollike_wield = true,
 })
 
+minetest.register_craftitem("mcl_mobitems:ink_sac", {
+	description = S("Squid Ink Sac"),
+	_doc_items_longdesc = S("This item is dropped by dead squids. Squid ink can be used to as an ingredient to craft book and quill or black dye."),
+	inventory_image = "mcl_mobitems_ink_sac.png",
+	stack_max = 64,
+	groups = { craftitem = 1 },
+})
+
 minetest.register_craftitem("mcl_mobitems:string",{
 	description = S("String"),
 	_doc_items_longdesc = S("Strings are used in crafting."),
@@ -327,6 +335,17 @@ minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
 	_mcl_toollike_wield = true,
 })
 
+minetest.register_tool("mcl_mobitems:warped_fungus_on_a_stick", {
+	description = S("Warped fungus on a Stick"),
+	_tt_help = S("Lets you ride a strider"),
+	_doc_items_longdesc = S("A warped fungus on a stick can be used on saddled striders to ride them."),
+	_doc_items_usagehelp = S("Place it on a saddled strider to mount it. You can now ride the strider like a horse. Striders will also walk towards you when you just wield the carrot on a stick."),
+	wield_image = "mcl_mobitems_warped_fungus_on_a_stick.png^[transformFY^[transformR90",
+	inventory_image = "mcl_mobitems_warped_fungus_on_a_stick.png",
+	groups = { transport = 1 },
+	_mcl_toollike_wield = true,
+})
+
 minetest.register_craftitem("mcl_mobitems:nautilus_shell", {
 	description = S("Nautilus Shell"),
 	_tt_help = S("Used to craft a conduit"),
@@ -391,11 +410,11 @@ minetest.register_alias("mobs_mc:gold_horse_armor", "mcl_mobitems:gold_horse_arm
 minetest.register_alias("mobs_mc:diamond_horse_armor", "mcl_mobitems:diamond_horse_armor")
 
 minetest.register_craftitem("mcl_mobitems:glow_ink_sac", {
-    description = S("Glow Ink Sac"),
-    _doc_items_longdesc = S("Use it to craft the Glow Item Frame."),
-    _doc_items_usagehelp = S("Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame."),
-    inventory_image = "extra_mobs_glow_ink_sac.png",
-    groups = { craftitem = 1 },
+	description = S("Glow Ink Sac"),
+	_doc_items_longdesc = S("Use it to craft the Glow Item Frame."),
+	_doc_items_usagehelp = S("Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame."),
+	inventory_image = "extra_mobs_glow_ink_sac.png",
+	groups = { craftitem = 1 },
 })
 
 
@@ -447,6 +466,22 @@ minetest.register_craft({
 	recipe = {
 		{ "", "mcl_fishing:fishing_rod", },
 		{ "mcl_farming:carrot_item", "" },
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_mobitems:warped_fungus_on_a_stick",
+	recipe = {
+		{ "mcl_fishing:fishing_rod", "", },
+		{ "", "mcl_crimson:warped_fungus" },
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_mobitems:warped_fungus_on_a_stick",
+	recipe = {
+		{ "","mcl_fishing:fishing_rod", },
+		{ "mcl_crimson:warped_fungus", "" },
 	},
 })
 

@@ -9,7 +9,7 @@ end
 --Blocks
 minetest.register_node("mcl_blackstone:blackstone", {
 	description = S("Blackstone"),
-	tiles = {"mcl_blackstone.png"},
+	tiles = {"mcl_blackstone_top.png", "mcl_blackstone_top.png", "mcl_blackstone_side.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	groups = {cracky = 3, pickaxey=2, material_stone=1, cobble=1},
@@ -18,7 +18,7 @@ minetest.register_node("mcl_blackstone:blackstone", {
 })
 minetest.register_node("mcl_blackstone:blackstone_gilded", {
 	description = S("Gilded Blackstone"),
-	tiles = {"mcl_blackstone.png^mcl_blackstone_gilded_side.png"},
+	tiles = {"mcl_blackstone_gilded.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	groups = {cracky = 3, pickaxey=2, material_stone=1, xp=1},
@@ -40,7 +40,7 @@ minetest.register_node("mcl_blackstone:blackstone_gilded", {
 })
 minetest.register_node("mcl_blackstone:nether_gold", {
 	description = S("Nether Gold Ore"),
-	tiles = {"mcl_nether_netherrack.png^mcl_blackstone_gilded_side.png"},
+	tiles = {"mcl_nether_gold_ore.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	groups = {cracky = 3, pickaxey=2, material_stone=1, xp=1},
@@ -196,12 +196,14 @@ mcl_stairs.register_stair_and_slab_simple("blackstone_brick_polished", "mcl_blac
 mcl_walls.register_wall("mcl_blackstone:wall", S("Blackstone Wall"), "mcl_blackstone:blackstone")
 
 --lavacooling
+
 minetest.register_abm({
 	label = "Lava cooling (basalt)",
 	nodenames = {"group:lava"},
 	neighbors = {"mcl_core:ice"},
 	interval = 1,
 	chance = 1,
+	min_y = mcl_vars.mg_end_min,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local water = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+1, z=pos.z+1}, "mcl_core:ice")
 		local lavatype = minetest.registered_nodes[node.name].liquidtype
@@ -225,6 +227,7 @@ minetest.register_abm({
 	neighbors = {"mcl_core:packed_ice"},
 	interval = 1,
 	chance = 1,
+	min_y = mcl_vars.mg_end_min,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local water = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+1, z=pos.z+1}, "mcl_core:packed_ice")
 		local lavatype = minetest.registered_nodes[node.name].liquidtype

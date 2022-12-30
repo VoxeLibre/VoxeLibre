@@ -2,14 +2,13 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
+local spawnon = {"mcl_end:purpur_block"}
+
 local function spawn_shulkers(pos,def,pr)
-	local nn = minetest.find_nodes_in_area_under_air(vector.offset(pos,-def.sidelen/2,-1,-def.sidelen/2),vector.offset(pos,def.sidelen/2,def.sidelen,def.sidelen/2),{"mcl_end:purpur_block"})
-	if nn and #nn > 0 then
-		table.shuffle(nn)
-		for i = 1,pr:next(1,math.min(6,#nn)) do
-			minetest.add_entity(vector.offset(nn[i],0,0.5,0),"mobs_mc:shulker")
-		end
-	end
+	local p1 = vector.offset(pos,-def.sidelen/2,-1,-def.sidelen/2)
+	local p2 = vector.offset(pos,def.sidelen/2,def.sidelen,def.sidelen/2)
+	mcl_structures.spawn_mobs("mobs_mc:shulker",spawnon,p1,p2,pr,1)
+
 	local guard = minetest.find_node_near(pos,def.sidelen,{"mcl_itemframes:item_frame"})
 	if guard then
 		minetest.add_entity(vector.offset(guard,0,-1.5,0),"mobs_mc:shulker")
@@ -132,4 +131,14 @@ mcl_structures.register_structure("end_boat",{
 			}
 		}}
 	}
+})
+
+mcl_structures.register_structure_spawn({
+	name = "mobs_mc:shulker",
+	y_min = mcl_vars.mg_end_min,
+	y_max = mcl_vars.mg_end_max,
+	chance = 10,
+	interval = 60,
+	limit = 6,
+	spawnon = spawnon,
 })

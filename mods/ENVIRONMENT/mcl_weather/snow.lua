@@ -153,12 +153,17 @@ minetest.register_abm({
 	neighbors = {"air"},
 	interval = 27,
 	chance = 33,
+	min_y = mcl_vars.mg_overworld_min,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		if node.name == "mcl_core:snowblock" then return end
+		if (mcl_weather.state ~= "rain" and mcl_weather.state ~= "thunder" and mcl_weather.state ~= "snow")
+		or not mcl_weather.has_snow(pos)
+		or node.name == "mcl_core:snowblock" then
+			return end
+
 		local above = vector.offset(pos,0,1,0)
 		local above_node = minetest.get_node(above)
-		if above_node.name ~= "air" then return end
-		if (mcl_weather.state == "rain" or mcl_weather.state == "thunder" or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos) and mcl_weather.has_snow(pos) then
+
+		if above_node.name == "air" and mcl_weather.is_outdoor(pos) then
 			local nn = nil
 			if node.name:find("snow") then
 				local l = node.name:sub(-1)

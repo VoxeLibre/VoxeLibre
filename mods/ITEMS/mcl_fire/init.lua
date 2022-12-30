@@ -378,9 +378,9 @@ else -- Fire enabled
 	minetest.register_abm({
 		label = "Ignite fire by lava",
 		nodenames = {"mcl_core:lava_source","mcl_nether:nether_lava_source"},
-		neighbors = {"air","group:flammable"},
-		interval = 7,
-		chance = 3,
+		neighbors = {"group:flammable"},
+		interval = 15,
+		chance = 9,
 		catch_up = false,
 		action = function(pos)
 			local p=get_ignitable_by_lava(pos)

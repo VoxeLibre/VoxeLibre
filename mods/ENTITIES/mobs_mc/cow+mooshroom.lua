@@ -12,7 +12,7 @@ local cow_def = {
 	xp_min = 1,
 	xp_max = 3,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.39, 0.45},
-	spawn_in_group = 8,
+	spawn_in_group = 4,
 	spawn_in_group_min = 3,
 	visual = "mesh",
 	mesh = "mobs_mc_cow.b3d",
@@ -59,7 +59,7 @@ local cow_def = {
 		run_start = 41, run_end = 81, run_speed = 60,
 	},
 	on_rightclick = function(self, clicker)
-		if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
+		if self:feed_tame(clicker, 1, true, false) then return end
 		if mcl_mobs:protect(self, clicker) then return end
 
 		if self.child then
@@ -88,7 +88,7 @@ local cow_def = {
 	fear_height = 4,
 }
 
-mcl_mobs:register_mob("mobs_mc:cow", cow_def)
+mcl_mobs.register_mob("mobs_mc:cow", cow_def)
 
 -- Mooshroom
 local mooshroom_def = table.copy(cow_def)
@@ -97,7 +97,7 @@ mooshroom_def.spawn_in_group_min = 4
 mooshroom_def.spawn_in_group = 8
 mooshroom_def.textures = { {"mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png"}, {"mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" } }
 mooshroom_def.on_rightclick = function(self, clicker)
-	if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
+	if self:feed_tame(clicker, 1, true, false) then return end
 	if mcl_mobs:protect(self, clicker) then return end
 
 	if self.child then
@@ -153,7 +153,17 @@ mooshroom_def.on_rightclick = function(self, clicker)
 	end
 	mcl_mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 end
-mcl_mobs:register_mob("mobs_mc:mooshroom", mooshroom_def)
+
+mooshroom_def.on_lightning_strike = function(self, pos, pos2, objects)
+	if self.base_texture[1] == "mobs_mc_mooshroom_brown.png" then
+		self.base_texture = { "mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png" }
+	else
+		self.base_texture = { "mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" }
+	end
+	self.object:set_properties({ textures = self.base_texture })
+	return true
+end
+mcl_mobs.register_mob("mobs_mc:mooshroom", mooshroom_def)
 
 
 -- Spawning
@@ -221,5 +231,5 @@ mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)
 
 -- spawn egg
-mcl_mobs:register_egg("mobs_mc:cow", S("Cow"), "#443626", "#a1a1a1", 0)
-mcl_mobs:register_egg("mobs_mc:mooshroom", S("Mooshroom"), "#a00f10", "#b7b7b7", 0)
+mcl_mobs.register_egg("mobs_mc:cow", S("Cow"), "#443626", "#a1a1a1", 0)
+mcl_mobs.register_egg("mobs_mc:mooshroom", S("Mooshroom"), "#a00f10", "#b7b7b7", 0)

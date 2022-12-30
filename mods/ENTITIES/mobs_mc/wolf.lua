@@ -71,7 +71,7 @@ local wolf = {
 				ent = dog:get_luaentity()
 				ent.owner = clicker:get_player_name()
 				ent.tamed = true
-				mcl_mobs:set_animation(ent, "sit")
+				ent:set_animation("sit")
 				ent.walk_chance = 0
 				ent.jump = false
 				ent.health = self.health
@@ -100,7 +100,7 @@ local wolf = {
 	specific_attack = { "player", "mobs_mc:sheep" },
 }
 
-mcl_mobs:register_mob("mobs_mc:wolf", wolf)
+mcl_mobs.register_mob("mobs_mc:wolf", wolf)
 
 -- Tamed wolf
 
@@ -167,7 +167,7 @@ end
 dog.on_rightclick = function(self, clicker)
 	local item = clicker:get_wielded_item()
 
-	if mcl_mobs:feed_tame(self, clicker, 1, true, false) then
+	if self:feed_tame(clicker, 1, true, false) then
 		return
 	elseif mcl_mobs:protect(self, clicker) then
 		return
@@ -194,45 +194,17 @@ dog.on_rightclick = function(self, clicker)
 			end
 		end
 	else
-		-- Toggle sitting order
-
 		if not self.owner or self.owner == "" then
-			-- Huh? This wolf has no owner? Let's fix this! This should never happen.
+		-- Huh? This dog has no owner? Let's fix this! This should never happen.
 			self.owner = clicker:get_player_name()
 		end
-
-		local pos = self.object:get_pos()
-		local particle
-		if not self.order or self.order == "" or self.order == "sit" then
-			particle = "mobs_mc_wolf_icon_roam.png"
-			self.order = "roam"
-			self.state = "stand"
-			self.walk_chance = default_walk_chance
-			self.jump = true
-			mcl_mobs:set_animation(self, "stand")
-			-- TODO: Add sitting model
-		else
-			particle = "mobs_mc_wolf_icon_sit.png"
-			self.order = "sit"
-			self.state = "stand"
-			self.walk_chance = 0
-			self.jump = false
-			mcl_mobs:set_animation(self, "sit")
+		if not minetest.settings:get_bool("mcl_extended_pet_control",true) then
+			self:toggle_sit(clicker,-0.4)
 		end
-		-- Display icon to show current order (sit or roam)
-		minetest.add_particle({
-			pos = vector.add(pos, {x=0,y=1,z=0}),
-			velocity = {x=0,y=0.2,z=0},
-			expirationtime = 1,
-			size = 4,
-			texture = particle,
-			playername = self.owner,
-			glow = minetest.LIGHT_MAX,
-		})
 	end
 end
 
-mcl_mobs:register_mob("mobs_mc:dog", dog)
+mcl_mobs.register_mob("mobs_mc:dog", dog)
 -- Spawn
 mcl_mobs:spawn_specific(
 "mobs_mc:wolf",
@@ -258,4 +230,4 @@ minetest.LIGHT_MAX+1,
 mobs_mc.water_level+3,
 mcl_vars.mg_overworld_max)
 
-mcl_mobs:register_egg("mobs_mc:wolf", S("Wolf"), "#d7d3d3", "#ceaf96", 0)
+mcl_mobs.register_egg("mobs_mc:wolf", S("Wolf"), "#d7d3d3", "#ceaf96", 0)

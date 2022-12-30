@@ -1,0 +1,10 @@
+# textdomain: mcl_hamburger
+A Hamburger=
+
+A tasty hamburger that is sure to lure villagers around like a lead. Can be eaten.=
+
+A tasty hamburger that is sure to lure villagers. 'I'll gladly pay you Tuesday, for a hamburger today.' - Wimpy.=
+
+Burger Time!=
+Craft a Hamburger.=
+Wield this item to pull villagers to you.=

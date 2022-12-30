@@ -484,7 +484,7 @@ function awards.show_to(name, to, sid, text)
 		name = to
 	end
 	if name == to and awards.player(to).disabled then
-		minetest.chat_send_player(S("You've disabled awards. Type /awards enable to reenable."))
+		minetest.chat_send_player(name,S("You've disabled awards. Type /awards enable to reenable."))
 		return
 	end
 	if text then

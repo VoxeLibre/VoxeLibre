@@ -234,7 +234,7 @@ mcl_jukebox.register_record("The Evil Sister (Jordach's Mix)", "SoundHelix", "13
 mcl_jukebox.register_record("The Energetic Rat (Jordach's Mix)", "SoundHelix", "wait", "mcl_jukebox_record_wait.png", "mcl_jukebox_track_2")
 mcl_jukebox.register_record("Eastern Feeling", "Jordach", "blocks", "mcl_jukebox_record_blocks.png", "mcl_jukebox_track_3")
 mcl_jukebox.register_record("Minetest", "Jordach", "far", "mcl_jukebox_record_far.png", "mcl_jukebox_track_4")
-mcl_jukebox.register_record("Credit Roll (Jordach's HD Mix)", "Junichi Masuda", "chirp", "mcl_jukebox_record_chirp.png", "mcl_jukebox_track_5")
+mcl_jukebox.register_record("Soaring over the sea", "mactonite", "chirp", "mcl_jukebox_record_chirp.png", "mcl_jukebox_track_5")
 mcl_jukebox.register_record("Winter Feeling", "Tom Peter", "strad", "mcl_jukebox_record_strad.png", "mcl_jukebox_track_6")
 mcl_jukebox.register_record("Synthgroove (Jordach's Mix)", "HeroOfTheWinds", "mellohi", "mcl_jukebox_record_mellohi.png", "mcl_jukebox_track_7")
 mcl_jukebox.register_record("The Clueless Frog (Jordach's Mix)", "SoundHelix", "mall", "mcl_jukebox_record_mall.png", "mcl_jukebox_track_8")

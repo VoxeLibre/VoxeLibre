@@ -1,34 +1,36 @@
-local S = minetest.get_translator("mobs_mc")
+local S = minetest.get_translator("mcl_lightning_rods")
 
+---@type nodebox
 local cbox = {
 	type = "fixed",
 	fixed = {
-		{ 0/16, -8/16, 0/16,  2/16, 4/16,  2/16 },
-		{ 0/16, 4/16, 0/16,  3/16,  8/16,  3/16 },
-	}
+		{ -0.0625, -0.5, -0.0625, 0.0625, 0.25, 0.0625 },
+		{ -0.125, 0.25, -0.125, 0.125, 0.5, 0.125 },
+	},
 }
 
-minetest.register_node("mcl_lightning_rods:rod", {
+---@type node_definition
+local rod_def = {
 	description = S("Lightning Rod"),
 	_doc_items_longdesc = S("A block that attracts lightning"),
-	--inventory_image = "mcl_lightning_rods_rod_inv.png",
-	tiles = {
-		"mcl_lightning_rods_rod.png",
-		"mcl_lightning_rods_rod.png",
-		"mcl_lightning_rods_rod.png",
-		"mcl_lightning_rods_rod.png",
-		"mcl_lightning_rods_rod.png",
-		"mcl_lightning_rods_rod.png",
-	},
-	drawtype = "nodebox",
+	tiles = { "mcl_lightning_rods_rod.png" },
+	drawtype = "mesh",
+	mesh = "mcl_lightning_rods_rod.obj",
 	is_ground_content = false,
 	paramtype = "light",
 	paramtype2 = "facedir",
-	groups = {pickaxey=2,attracts_lightning=1},
+	use_texture_alpha = "opaque",
+	groups = { pickaxey = 2, attracts_lightning = 1 },
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	node_box = cbox,
 	selection_box = cbox,
 	collision_box = cbox,
+	node_placement_prediction = "",
+	mesecons = {
+		receptor = {
+			state = mesecon.state.off,
+			rules = mesecon.rules.alldirs,
+		},
+	},
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type ~= "node" then
 			return itemstack
@@ -40,12 +42,7 @@ minetest.register_node("mcl_lightning_rods:rod", {
 
 		local placer_pos = placer:get_pos()
 		if placer_pos then
-			local dir = {
-				x = p1.x - placer_pos.x,
-				y = p1.y - placer_pos.y,
-				z = p1.z - placer_pos.z
-			}
-			param2 = minetest.dir_to_facedir(dir)
+			param2 = minetest.dir_to_facedir(vector.subtract(p1, placer_pos))
 		end
 
 		if p0.y - 1 == p1.y then
@@ -63,20 +60,59 @@ minetest.register_node("mcl_lightning_rods:rod", {
 		return minetest.item_place(itemstack, placer, pointed_thing, param2)
 	end,
 
-	sounds = mcl_sounds.node_sound_glass_defaults(),
 	_mcl_blast_resistance = 0,
-})
+}
 
-lightning.register_on_strike(function(pos,pos2,objects)
-	local lr = minetest.find_node_near(pos,128,{"group:attracts_lightning"},true)
-	return lr,nil
+minetest.register_node("mcl_lightning_rods:rod", rod_def)
+
+local rod_def_a = table.copy(rod_def)
+
+rod_def_a.tiles = { "mcl_lightning_rods_rod.png^[brighten" }
+
+rod_def_a.groups.not_in_creative_inventory = 1
+
+rod_def_a.mesecons = {
+	receptor = {
+		state = mesecon.state.on,
+		rules = mesecon.rules.alldirs,
+	},
+}
+
+rod_def_a.on_timer = function(pos, elapsed)
+	local node = minetest.get_node(pos)
+
+	if node.name == "mcl_lightning_rods:rod_powered" then --has not been dug
+		minetest.set_node(pos, { name = "mcl_lightning_rods:rod" })
+		mesecon.receptor_off(pos, mesecon.rules.alldirs)
+	end
+
+	return false
+end
+
+minetest.register_node("mcl_lightning_rods:rod_powered", rod_def_a)
+
+
+lightning.register_on_strike(function(pos, pos2, objects)
+	local lr = minetest.find_node_near(pos, 128, { "group:attracts_lightning" }, true)
+
+	if lr then
+		local node = minetest.get_node(lr)
+
+		if node.name == "mcl_lightning_rods:rod" then
+			minetest.set_node(lr, { name = "mcl_lightning_rods:rod_powered" })
+			mesecon.receptor_on(lr, mesecon.rules.alldirs)
+			minetest.get_node_timer(lr):start(0.4)
+		end
+	end
+
+	return lr, nil
 end)
 
 minetest.register_craft({
 	output = "mcl_lightning_rods:rod",
 	recipe = {
-		{"", "mcl_copper:copper_ingot",""},
-		{"", "mcl_copper:copper_ingot",""},
-		{"", "mcl_copper:copper_ingot",""},
-	}
+		{ "", "mcl_copper:copper_ingot", "" },
+		{ "", "mcl_copper:copper_ingot", "" },
+		{ "", "mcl_copper:copper_ingot", "" },
+	},
 })

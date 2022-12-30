@@ -60,3 +60,9 @@ mcl_flowers.register_simple_flower("blue_orchid", {
 	selection_box = { -5/16, -0.5, -5/16, 5/16, 7/16, 5/16 },
 	potted = true,
 })
+mcl_flowers.register_simple_flower("wither_rose", {
+	desc = S("Wither Rose"),
+	image = "mcl_flowers_wither_rose.png",
+	selection_box = { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 },
+	potted = true,
+})

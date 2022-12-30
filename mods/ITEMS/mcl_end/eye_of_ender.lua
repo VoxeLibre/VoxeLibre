@@ -87,7 +87,7 @@ minetest.register_craftitem("mcl_end:ender_eye", {
 		end
 		local origin = user:get_pos()
 		origin.y = origin.y + 1.5
-		local strongholds = mcl_structures.get_structure_data("stronghold")
+		local strongholds = mcl_structures.registered_structures["end_shrine"].static_pos
 		local dim = mcl_worlds.pos_to_dimension(origin)
 		local is_creative = minetest.is_creative_enabled(user:get_player_name())
 
@@ -105,7 +105,7 @@ minetest.register_craftitem("mcl_end:ender_eye", {
 		local closest_stronghold
 		local lowest_dist
 		for s=1, #strongholds do
-			local h_pos = table.copy(strongholds[s].pos)
+			local h_pos = table.copy(strongholds[s])
 			local h_origin = table.copy(origin)
 			h_pos.y = 0
 			h_origin.y = 0
@@ -128,14 +128,14 @@ minetest.register_craftitem("mcl_end:ender_eye", {
 		if lowest_dist <= 25 then
 			local velocity = 4
 			-- Stronghold is close: Fly directly to stronghold and take Y into account.
-			dir = vector.normalize(vector.direction(origin, closest_stronghold.pos))
+			dir = vector.normalize(vector.direction(origin, closest_stronghold))
 			obj:set_velocity({x=dir.x*velocity, y=dir.y*velocity, z=dir.z*velocity})
 		else
 			local velocity = 12
 			-- Don't care about Y if stronghold is still far away.
 			-- Fly to direction of X/Z, and always upwards so it can be seen easily.
 			local o = {x=origin.x, y=0, z=origin.z}
-			local s = {x=closest_stronghold.pos.x, y=0, z=closest_stronghold.pos.z}
+			local s = {x=closest_stronghold.x, y=0, z=closest_stronghold.z}
 			dir = vector.normalize(vector.direction(o, s))
 			obj:set_acceleration({x=dir.x*-3, y=4, z=dir.z*-3})
 			obj:set_velocity({x=dir.x*velocity, y=3, z=dir.z*velocity})

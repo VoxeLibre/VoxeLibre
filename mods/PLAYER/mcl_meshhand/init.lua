@@ -10,7 +10,7 @@ local node_def = {
 	drawtype = "mesh",
 	node_placement_prediction = "",
 	on_construct = function(pos)
-		local name = get_node(pos).name
+		local name = minetest.get_node(pos).name
 		local message = "[mcl_meshhand] Trying to construct " .. name .. " at " .. minetest.pos_to_string(pos)
 		minetest.log("error", message)
 		minetest.remove_node(pos)

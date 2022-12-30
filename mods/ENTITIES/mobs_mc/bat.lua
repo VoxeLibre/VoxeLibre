@@ -2,7 +2,7 @@
 
 local S = minetest.get_translator("mobs_mc")
 
-mcl_mobs:register_mob("mobs_mc:bat", {
+mcl_mobs.register_mob("mobs_mc:bat", {
 	description = S("Bat"),
 	type = "animal",
 	spawn_class = "ambient",
@@ -144,4 +144,4 @@ mobs_mc.water_level-1)
 
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:bat", S("Bat"), "#4c3e30", "#0f0f0f", 0)
+mcl_mobs.register_egg("mobs_mc:bat", S("Bat"), "#4c3e30", "#0f0f0f", 0)

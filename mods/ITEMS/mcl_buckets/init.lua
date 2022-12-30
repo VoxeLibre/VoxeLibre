@@ -2,6 +2,7 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
+local use_select_box = minetest.settings:get_bool("mcl_buckets_use_select_box", false)
 
 -- Compatibility with old bucket mod
 minetest.register_alias("bucket:bucket_empty", "mcl_buckets:bucket_empty")
@@ -87,24 +88,6 @@ end
 
 local pointable_sources = {}
 
-local function bucket_raycast(user)
-	local pos = user:get_pos()
-	pos.y = pos.y + user:get_properties().eye_height
-	local look_dir = user:get_look_dir()
-	look_dir = vector.multiply(look_dir, 5)
-	local pos2 = vector.add(pos, look_dir)
-
-	local ray = raycast(pos, pos2, false, true)
-	if ray then
-		for pointed_thing in ray do
-			if pointed_thing and pointable_sources[get_node(pointed_thing.above).name] then
-				return {under=pointed_thing.under,above=pointed_thing.above}
-			end
-		end
-	end
-	return nil
-end
-
 local function get_node_place(source_place, place_pos)
 	local node_place
 	if type(source_place) == "function" then
@@ -152,71 +135,76 @@ local function get_bucket_drop(itemstack, user, take_bucket)
 	end
 end
 
-local function on_place_bucket(itemstack, user, pointed_thing, def)
-	-- Must be pointing to node
-	if pointed_thing.type ~= "node" then
-		return
-	end
-	-- Call on_rightclick if the pointed node defines it
-	local new_stack = mcl_util.call_on_rightclick(itemstack, user, pointed_thing)
-	if new_stack then
-		return new_stack
-	end
+local function bucket_get_pointed_thing(user)
+	local start = user:get_pos()
+	start.y = start.y + user:get_properties().eye_height
+	local look_dir = user:get_look_dir()
+	_end = vector.add(start, vector.multiply(look_dir, 5))
 
-	local undernode = get_node(pointed_thing.under)
-	local abovenode = get_node(pointed_thing.above)
-
-	if registered_nodes[undernode.name] and registered_nodes[undernode.name].buildable_to or get_item_group(undernode.name, "cauldron") == 1 then
-		local result, take_bucket = get_extra_check(def.extra_check, pointed_thing.under, user)
-		if result then
-			local node_place = get_node_place(def.source_place, pointed_thing.under)
-			local pns = user:get_player_name()
-
-			-- Check protection
-			if is_protected(pointed_thing.under, pns) then
-				record_protection_violation(pointed_thing.under, pns)
-				return itemstack
-			end
-
-			-- Place liquid
-			place_liquid(pointed_thing.under, node_place)
-
-			-- Update doc mod
-			if mod_doc and doc.entry_exists("nodes", node_place) then
-				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", node_place)
-			end
+	local ray = raycast(start, _end, false, true)
+	for pointed_thing in ray do
+		local name = get_node(pointed_thing.under).name
+		local def = registered_nodes[name]
+		if not def or def.drawtype ~= "flowingliquid" then
+			return pointed_thing
 		end
-		return get_bucket_drop(itemstack, user, take_bucket)
-	elseif registered_nodes[abovenode.name] and registered_nodes[abovenode.name].buildable_to or get_item_group(abovenode.name, "cauldron") == 1 then
-		local result, take_bucket = get_extra_check(def.extra_check, pointed_thing.above, user)
-		if result then
-			local node_place = get_node_place(def.source_place, pointed_thing.above)
-			local pns = user:get_player_name()
-
-			-- Check protection
-			if is_protected(pointed_thing.above, pns) then
-				record_protection_violation(pointed_thing.above, pns)
-				return itemstack
-			end
-
-			-- Place liquid
-			place_liquid(pointed_thing.above, node_place)
-
-			-- Update doc mod
-			if mod_doc and doc.entry_exists("nodes", node_place) then
-				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", node_place)
-			end
-		end
-		return get_bucket_drop(itemstack, user, take_bucket)
-	else
-		return itemstack
 	end
 end
 
+local function on_place_bucket(itemstack, user, pointed_thing)
+	if not use_select_box then
+		pointed_thing = bucket_get_pointed_thing(user)
+	end
+
+	-- Must be pointing to node
+	if not pointed_thing or pointed_thing.type ~= "node" then
+		return
+	end
+
+	-- Call on_rightclick if the pointed node defines it
+	local new_stack = mcl_util.call_on_rightclick(itemstack, user, pointed_thing)
+	if new_stack then
+		return new_stack
+	end
+
+	local bucket_def = mcl_buckets.buckets[itemstack:get_name()]
+	for _, pos in pairs({ pointed_thing.under, pointed_thing.above }) do
+		local node = get_node(pos)
+		local node_def = registered_nodes[node.name]
+
+		if node_def and node_def.buildable_to or get_item_group(node.name, "cauldron") == 1 then
+			local result, take_bucket = get_extra_check(bucket_def.extra_check, pos, user)
+			if result then
+				local node_place = get_node_place(bucket_def.source_place, pos)
+				local player_name = user:get_player_name()
+
+				-- Check protection
+				if is_protected(pos, player_name) then
+					record_protection_violation(pos, player_name)
+					return itemstack
+				end
+
+				-- Place liquid
+				place_liquid(pos, node_place)
+
+				-- Update doc mod
+				if mod_doc and doc.entry_exists("nodes", node_place) then
+					doc.mark_entry_as_revealed(user:get_player_name(), "nodes", node_place)
+				end
+			end
+			return get_bucket_drop(itemstack, user, take_bucket)
+		end
+	end
+	return itemstack
+end
 
 local function on_place_bucket_empty(itemstack, user, pointed_thing)
+	if not use_select_box then
+		pointed_thing = bucket_get_pointed_thing(user)
+	end
+
 	-- Must be pointing to node
-	if pointed_thing.type ~= "node" then
+	if not pointed_thing or pointed_thing.type ~= "node" then
 		return itemstack
 	end
 
@@ -226,64 +214,59 @@ local function on_place_bucket_empty(itemstack, user, pointed_thing)
 		return new_stack
 	end
 
-	local node = get_node(pointed_thing.under)
-	local nn = node.name
-
 	local new_bucket
-	local liquid_node = bucket_raycast(user)
-	if liquid_node then
-		if is_protected(liquid_node.above, user:get_player_name()) then
-			record_protection_violation(liquid_node.above, user:get_player_name())
+	local under = pointed_thing.under
+	local node_name = get_node(under).name
+	if pointable_sources[node_name] then
+		if is_protected(under, user:get_player_name()) then
+			record_protection_violation(under, user:get_player_name())
 		end
-		local liquid_name = get_node(liquid_node.above).name
-		if liquid_name then
-			local liquid_def = mcl_buckets.liquids[liquid_name]
-			if liquid_def then
-				-- Fill bucket, but not in Creative Mode
-				-- FIXME: remove this line
-				--if not is_creative_enabled(user:get_player_name()) then
-				if not false then
-					new_bucket = ItemStack({name = liquid_def.bucketname})
-					if liquid_def.on_take then
-						liquid_def.on_take(user)
-					end
+		local liquid_def = mcl_buckets.liquids[node_name]
+		if liquid_def then
+			-- Fill bucket, but not in Creative Mode
+			-- FIXME: remove this line
+			--if not is_creative_enabled(user:get_player_name()) then
+			if not false then
+				new_bucket = ItemStack({name = liquid_def.bucketname})
+				if liquid_def.on_take then
+					liquid_def.on_take(user)
 				end
-				add_node(liquid_node.above, {name="air"})
-				sound_take(nn, liquid_node.above)
-
-				if mod_doc and doc.entry_exists("nodes", liquid_name) then
-					doc.mark_entry_as_revealed(user:get_player_name(), "nodes", liquid_name)
-				end
-				if new_bucket then
-					return give_bucket(new_bucket, itemstack, user)
-				end
-			else
-				minetest.log("error", string.format("[mcl_buckets] Node [%s] has invalid group [_mcl_bucket_pointable]!", liquid_name))
 			end
+			add_node(under, {name="air"})
+			sound_take(node_name, under)
+
+			if mod_doc and doc.entry_exists("nodes", node_name) then
+				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", node_name)
+			end
+			if new_bucket then
+				return give_bucket(new_bucket, itemstack, user)
+			end
+		else
+			minetest.log("error", string.format("[mcl_buckets] Node [%s] has invalid group [_mcl_bucket_pointable]!", node_name))
 		end
 		return itemstack
 	else
 		-- FIXME: replace this ugly code by cauldrons API
-		if nn == "mcl_cauldrons:cauldron_3" then
+		if node_name == "mcl_cauldrons:cauldron_3" then
 			-- Take water out of full cauldron
-			set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+			set_node(under, {name="mcl_cauldrons:cauldron"})
 			if not is_creative_enabled(user:get_player_name()) then
 				new_bucket = ItemStack("mcl_buckets:bucket_water")
 			end
-			sound_take("mcl_core:water_source", pointed_thing.under)
-		elseif nn == "mcl_cauldrons:cauldron_3r" then
+			sound_take("mcl_core:water_source", under)
+		elseif node_name == "mcl_cauldrons:cauldron_3r" then
 			-- Take river water out of full cauldron
-			set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+			set_node(under, {name="mcl_cauldrons:cauldron"})
 			if not is_creative_enabled(user:get_player_name()) then
 				new_bucket = ItemStack("mcl_buckets:bucket_river_water")
 			end
-			sound_take("mclx_core:river_water_source", pointed_thing.under)
-		elseif nn == "mcl_cauldrons:cauldron_3_lava" then
-			set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+			sound_take("mclx_core:river_water_source", under)
+		elseif node_name == "mcl_cauldrons:cauldron_3_lava" then
+			set_node(under, {name="mcl_cauldrons:cauldron"})
 			if not is_creative_enabled(user:get_player_name()) then
 				new_bucket = ItemStack("mcl_buckets:bucket_lava")
 			end
-			sound_take("mcl_core:lava_source", pointed_thing.under)
+			sound_take("mcl_core:lava_source", under)
 		end
 		if new_bucket then
 			return give_bucket(new_bucket, itemstack, user)
@@ -291,34 +274,6 @@ local function on_place_bucket_empty(itemstack, user, pointed_thing)
 	end
 	return itemstack
 end
-
-controls.register_on_press(function(player, key)
-	if key ~= "RMB" then
-		return
-	end
-
-	local wielded_item = player:get_wielded_item()
-	local itemname = wielded_item:get_name()
-	local def = mcl_buckets.buckets[itemname]
-
-	if itemname == "mcl_buckets:bucket_empty" then
-		local pointed_thing = mcl_util.get_pointed_thing(player, true)
-
-		if not pointed_thing then
-			return
-		end
-		wielded_item = on_place_bucket_empty(wielded_item, player, pointed_thing)
-	elseif def then
-		local pointed_thing = mcl_util.get_pointed_thing(player, false)
-
-		if not pointed_thing then
-			return
-		end
-		wielded_item = on_place_bucket(wielded_item, player, pointed_thing, def)
-	end
-
-	player:set_wielded_item(wielded_item)
-end)
 
 function mcl_buckets.register_liquid(def)
 	for _,source in ipairs(def.source_take) do
@@ -348,6 +303,9 @@ function mcl_buckets.register_liquid(def)
 		inventory_image = def.inventory_image,
 		stack_max = 1,
 		groups = def.groups,
+		liquids_pointable = use_select_box,
+		on_place = on_place_bucket,
+		on_secondary_use = on_place_bucket,
 		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
 			local buildable = registered_nodes[dropnode.name].buildable_to or dropnode.name == "mcl_portals:portal"
 			if not buildable then return stack end
@@ -370,6 +328,9 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 	_tt_help = S("Collects liquids"),
 	inventory_image = "bucket.png",
 	stack_max = 16,
+	liquids_pointable = use_select_box,
+	on_place = on_place_bucket_empty,
+	on_secondary_use = on_place_bucket_empty,
 	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
 		-- Fill empty bucket with liquid or drop bucket if no liquid
 		local collect_liquid = false
@@ -397,3 +358,4 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 })
 
 dofile(modpath.."/register.lua")
+dofile(modpath.."/fishbuckets.lua")

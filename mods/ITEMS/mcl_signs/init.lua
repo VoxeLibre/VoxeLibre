@@ -125,9 +125,28 @@ mcl_signs.register_sign_craft("mcl_core", "mcl_core:junglewood", "_junglewood")
 mcl_signs.register_sign("mcl_core", "#ea7479", "_acaciawood", "Acacia Sign")
 mcl_signs.register_sign_craft("mcl_core", "mcl_core:acaciawood", "_acaciawood")
 
--- mangrove_wood Sign  "#c7545c"
-mcl_signs.register_sign("mcl_core", "#b8693d", "_mangrove_wood", "Mangrove Sign")
-mcl_signs.register_sign_craft("mcl_core", "mcl_core:mangrove_wood", "_mangrove_wood")
+if minetest.get_modpath("mcl_mangrove") then
+	-- mangrove_wood Sign  "#c7545c"
+	mcl_signs.register_sign("mcl_mangrove", "#b8693d", "_mangrove_wood", "Mangrove Sign")
+	mcl_signs.register_sign_craft("mcl_mangrove", "mcl_mangrove:mangrove_wood", "_mangrove_wood")
+end
+
+-- add in the nether wood signs
+if minetest.get_modpath("mcl_crimson") then
+
+    -- warped_hyphae_wood Sign
+    mcl_signs.register_sign_custom("mcl_crimson","_warped_hyphae_wood", "mcl_signs_sign_greyscale.png",
+            "#9f7dcf", "default_sign_greyscale.png", "default_sign_greyscale.png",
+            "Warped Hyphae Sign")
+    mcl_signs.register_sign_craft("mcl_crimson", "mcl_crimson:warped_hyphae_wood", "_warped_hyphae_wood")
+
+    -- crimson_hyphae_wood Sign
+    mcl_signs.register_sign_custom("mcl_crimson", "_crimson_hyphae_wood","mcl_signs_sign_greyscale.png",
+            "#c35f51","default_sign_greyscale.png", "default_sign_greyscale.png",
+            "Crimson Hyphae Sign")
+    mcl_signs.register_sign_craft("mcl_crimson", "mcl_crimson:crimson_hyphae_wood", "_crimson_hyphae_wood")
+
+end
 
 -- Register the LBMs for the created signs.
 mcl_signs.make_lbm()

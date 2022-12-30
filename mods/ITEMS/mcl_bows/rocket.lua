@@ -19,6 +19,7 @@ local function dir_to_pitch(dir)
 end
 
 local function damage_explosion(self, damagemulitplier)
+	if self._harmless then return end
 	local p = self.object:get_pos()
 	if not p then return end
 	mcl_explosions.explode(p, 3, {})

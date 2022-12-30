@@ -9,7 +9,7 @@ local S = minetest.get_translator("mobs_mc")
 --################### VEX
 --###################
 
-mcl_mobs:register_mob("mobs_mc:vex", {
+mcl_mobs.register_mob("mobs_mc:vex", {
 	description = S("Vex"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -94,4 +94,4 @@ mcl_mobs:register_mob("mobs_mc:vex", {
 
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:vex", S("Vex"), "#7a90a4", "#e8edf1", 0)
+mcl_mobs.register_egg("mobs_mc:vex", S("Vex"), "#7a90a4", "#e8edf1", 0)

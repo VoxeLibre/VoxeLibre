@@ -1,0 +1,36 @@
+The item frames use case is a very specific one, but... in the event that there is need for a new item frame then that
+is where this api will shine.
+
+As long as the api has been initialized (which it does in its own init.lua) then you really only need to call one
+function. That function being mcl_itemframes.create_custom_frame(modname, name, has_glow, tiles, color, ttframe,
+description, inv_wield_image). Note: unlike the Signs API, this API does not automatically create the recipe for you.
+
+Here's an explanation of create_custom_frame and an example of using it.
+
+This function is responsible for creating each frame, and handling the creation of its underlying entities.
+
+Parameters:
+* modname: Used to make sure that a specific module is installed before running the code contained within. Set to "" or
+    false, if there's not a mod to check for.
+* name: The name used to distinguish the item frame. Prepends "mcl_itemframes:" to the name. Example usage:
+    "glow_item_frame" creates a node named "mcl_itemframes:glow_item_frame".
+* has_glow: Does the frame cause the item within to glow? true / false.
+* tiles: The image files used for the item frame's object texturing.
+* color: Colorizes the frame / wield / inventory image to a specific color. Use White (#FFFFFF) to ignore.
+* ttframe: The tooltip to show for the frame.
+* description: The frame's description.
+* inv_wield_image: Optionally the image to use as the inventory and the wield image. Colorized. set to "" or nil to use
+    the default frame / glow frame images. Note: must be set if you want the inventory / wield image to be colored.
+
+example:
+-- Register the Glow Frame
+mcl_itemframes.create_custom_frame("false", "glow_item_frame", true,
+		"mcl_itemframes_glow_item_frame.png", mcl_colors.WHITE, "Glowing Item Frame",
+		"Can hold an item and glows.","")
+
+-- Register the Glow Frame's recipe
+minetest.register_craft({
+	type = "shapeless",
+	output = 'mcl_itemframes:glow_item_frame',
+	recipe = { 'mcl_mobitems:glow_ink_sac', 'mcl_itemframes:item_frame' },
+})

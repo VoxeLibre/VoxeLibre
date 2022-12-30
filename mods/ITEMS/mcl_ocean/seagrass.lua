@@ -82,8 +82,8 @@ minetest.register_craftitem("mcl_ocean:seagrass", {
 	description = S("Seagrass"),
 	_tt_help = S("Grows in water on dirt, sand, gravel"),
 	_doc_items_create_entry = false,
-	inventory_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
-	wield_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
+	inventory_image = "mcl_ocean_seagrass_item.png",
+	wield_image = "mcl_ocean_seagrass_item.png",
 	on_place = seagrass_on_place,
 	groups = {deco_block = 1, compostability = 30},
 })
@@ -106,7 +106,7 @@ for s=1, #surfaces do
 		doc_longdesc = S("Seagrass grows inside water on top of dirt, sand or gravel.")
 		desc = S("Seagrass")
 		doc_create = true
-		doc_img = "mcl_ocean_seagrass.png^[verticalframe:12:0"
+		doc_img = "mcl_ocean_seagrass_item.png"
 	else
 		doc_create = false
 	end
@@ -126,8 +126,8 @@ for s=1, #surfaces do
 			animation = {type="vertical_frames", aspect_w=16, aspect_h=16, length=1.0},
 			}
 		},
-		inventory_image = "("..def.tiles[1]..")^(mcl_ocean_seagrass.png^[verticalframe:12:0)",
-		wield_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
+		inventory_image = "mcl_ocean_seagrass_item.png",
+		wield_image = "mcl_ocean_seagrass_item.png",
 		selection_box = {
 			type = "fixed",
 			fixed = {

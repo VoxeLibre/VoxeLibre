@@ -169,12 +169,6 @@ minetest.register_on_joinplayer(function(player)
 	player:hud_set_hotbar_image("mcl_inventory_hotbar.png")
 	player:hud_set_hotbar_selected_image("mcl_inventory_hotbar_selected.png")
 
-	local old_update_player = mcl_armor.update_player
-	function mcl_armor.update_player(player, info)
-		old_update_player(player, info)
-		set_inventory(player, true)
-	end
-
 	-- In Creative Mode, the initial inventory setup is handled in creative.lua
 	if not minetest.is_creative_enabled(player:get_player_name()) then
 		set_inventory(player)
@@ -213,8 +207,7 @@ minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
 	if pointed_thing.type ~= "node" then return end
 	local def = minetest.registered_nodes[node.name]
 	if def then
-		if def.on_destruct then def.on_destruct(pos) end
-		minetest.dig_node(pos)
+		minetest.node_dig(pos,node,puncher)
 		return true
 	end
 end)

@@ -20,32 +20,26 @@ minetest.register_chatcommand("awards", {
 	params = S("[c|clear|disable|enable]"),
 	description = S("Show, clear, disable or enable your advancements."),
 	func = function(name, param)
+		if param == "enable" then
+			awards.enable(name)
+			minetest.chat_send_player(name, S("You have enabled your advancements."))
+			return
+		end
+
+		if awards.player(name).disabled then
+			minetest.chat_send_player(name, S("Awards are disabled, enable them first by using /awards enable!"))
+			return
+		end
+
 		if param == "clear" then
-			if awards.player(name).disabled ~= nil then
-				minetest.chat_send_player(name, S("Awards are disabled, enable them first by using /awards enable!"))
-			else
-				awards.clear_player(name)
-				minetest.chat_send_player(name,
-				S("All your awards and statistics have been cleared. You can now start again."))
-			end
+			awards.clear_player(name)
+			minetest.chat_send_player(name,
+			S("All your awards and statistics have been cleared. You can now start again."))
 		elseif param == "disable" then
 			awards.disable(name)
 			minetest.chat_send_player(name, S("You have disabled your advancements."))
-		elseif param == "enable" then
-			awards.enable(name)
-			minetest.chat_send_player(name, S("You have enabled your advancements."))
-		elseif param == "c" then
-			if awards.player(name).disabled ~= nil then
-				minetest.chat_send_player(name, S("Awards are disabled, enable them first by using /awards enable!"))
-			else
-				awards.show_to(name, name, nil, true)
-			end
 		else
-			if awards.player(name).disabled ~= nil then
-				minetest.chat_send_player(name, S("Awards are disabled, enable them first by using /awards enable!"))
-			else
-				awards.show_to(name, name, nil, false)
-			end
+			awards.show_to(name, name, nil, false)
 		end
 	end
 })

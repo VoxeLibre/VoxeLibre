@@ -87,7 +87,7 @@ local function perch(self,player)
 		local shoulder = get_shoulder(player)
 		if not shoulder then return true end
 		self.object:set_attach(player,"",shoulder,vector.new(0,0,0),true)
-		mcl_mobs:set_animation(self, "stand")
+		self:set_animation("stand")
 	end
 end
 
@@ -125,7 +125,7 @@ local function check_perch(self,dtime)
 	end
 end
 
-mcl_mobs:register_mob("mobs_mc:parrot", {
+mcl_mobs.register_mob("mobs_mc:parrot", {
 	description = S("Parrot"),
 	type = "animal",
 	spawn_class = "passive",
@@ -207,7 +207,7 @@ mcl_mobs:register_mob("mobs_mc:parrot", {
 			return
 		end
 		-- Feed to tame, but not breed
-		if mcl_mobs:feed_tame(self, clicker, 1, false, true) then return end
+		if self:feed_tame(clicker, 1, false, true) then return end
 		perch(self,clicker)
 	end,
 	do_custom = function(self,dtime)
@@ -241,4 +241,4 @@ mobs_mc.water_level+7,
 mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:parrot", S("Parrot"), "#0da70a", "#ff0000", 0)
+mcl_mobs.register_egg("mobs_mc:parrot", S("Parrot"), "#0da70a", "#ff0000", 0)

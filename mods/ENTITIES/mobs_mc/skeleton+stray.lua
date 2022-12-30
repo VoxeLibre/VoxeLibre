@@ -30,6 +30,8 @@ local skeleton = {
 	curiosity = 6,
 	visual = "mesh",
 	mesh = "mobs_mc_skeleton.b3d",
+	shooter_avoid_enemy = true,
+	strafes = true,
 	textures = { {
 		"mcl_bows_bow_0.png", -- bow
 		"mobs_mc_skeleton.png", -- skeleton
@@ -127,7 +129,7 @@ local skeleton = {
 	harmed_by_heal = true,
 }
 
-mcl_mobs:register_mob("mobs_mc:skeleton", skeleton)
+mcl_mobs.register_mob("mobs_mc:skeleton", skeleton)
 
 
 --###################
@@ -164,7 +166,7 @@ table.insert(stray.drops, {
 	end,
 })
 
-mcl_mobs:register_mob("mobs_mc:stray", stray)
+mcl_mobs.register_mob("mobs_mc:stray", stray)
 
 -- Overworld spawn
 mcl_mobs:spawn_specific(
@@ -354,6 +356,6 @@ mcl_vars.mg_overworld_max)
 
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:skeleton", S("Skeleton"), "#c1c1c1", "#494949", 0)
+mcl_mobs.register_egg("mobs_mc:skeleton", S("Skeleton"), "#c1c1c1", "#494949", 0)
 
-mcl_mobs:register_egg("mobs_mc:stray", S("Stray"), "#5f7476", "#dae8e7", 0)
+mcl_mobs.register_egg("mobs_mc:stray", S("Stray"), "#5f7476", "#dae8e7", 0)

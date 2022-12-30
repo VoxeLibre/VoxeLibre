@@ -3,6 +3,8 @@ mcl_playerplus = {
 	is_pressing_jump = {},
 }
 
+local hud_water = {}
+
 local get_connected_players = minetest.get_connected_players
 local dir_to_yaw = minetest.dir_to_yaw
 local get_item_group = minetest.get_item_group
@@ -24,6 +26,26 @@ local mcl_playerplus_internal = {}
 
 local time = 0
 local look_pitch = 0
+
+
+local function calculate_water_depth(pos)
+	for i=1, 50 do
+		if get_item_group(minetest.get_node(vector.new(pos.x,pos.y+i,pos.z)).name, "water") == 0 then
+			return i
+		end
+	end
+	return 50
+end
+
+local function remove_water_hud(player)
+	if hud_water[player] then
+		mcl_weather.skycolor.update_sky_color()
+		for i=1, #hud_water[player] do
+			player:hud_remove(hud_water[player][i])
+		end
+		hud_water[player] = nil
+	end
+end
 
 local function player_collision(player)
 
@@ -121,8 +143,8 @@ end
 local node_stand, node_stand_below, node_head, node_feet, node_head_top
 local is_swimming
 
-local set_bone_position_conditional = mcl_util.set_bone_position
-local set_properties_conditional = mcl_util.set_properties
+local set_bone_pos = mcl_util.set_bone_position
+local set_properties = mcl_util.set_properties
 
 local function get_overall_velocity(vector)
 	local v = math.sqrt(vector.x^2 + vector.y^2 + vector.z^2)
@@ -145,6 +167,31 @@ local elytra_vars = {
 	rocket_speed = 5.5,
 }
 
+local player_props_elytra = {
+	collisionbox = { -0.35, 0, -0.35, 0.35, 0.8, 0.35 },
+	eye_height = 0.5,
+	nametag_color = { r = 225, b = 225, a = 225, g = 225 }
+}
+local player_props_riding = {
+	collisionbox = { -0.312, 0, -0.312, 0.312, 1.8, 0.312 },
+	eye_height = 1.5,
+	nametag_color = { r = 225, b = 225, a = 225, g = 225 }
+}
+local player_props_sneaking = {
+	collisionbox = { -0.312, 0, -0.312, 0.312, 1.8, 0.312 },
+	eye_height = 1.35,
+	nametag_color = { r = 225, b = 225, a = 0, g = 225 }
+}
+local player_props_swimming = {
+	collisionbox = { -0.312, 0, -0.312, 0.312, 0.8, 0.312 },
+	eye_height = 0.5,
+	nametag_color = { r = 225, b = 225, a = 225, g = 225 }
+}
+local player_props_normal = {
+	collisionbox = { -0.312, 0, -0.312, 0.312, 1.8, 0.312 },
+	eye_height = 1.5,
+	nametag_color = { r = 225, b = 225, a = 225, g = 225 }
+}
 
 minetest.register_globalstep(function(dtime)
 
@@ -208,7 +255,7 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		elytra.active = player:get_inventory():get_stack("armor", 3):get_name() == "mcl_armor:elytra"
-			and not player:get_attach()
+			and not parent
 			and (elytra.active or (is_just_jumped and player_velocity.y < -0))
 			and ((not minetest.registered_nodes[fly_node].walkable) or fly_node == "ignore")
 
@@ -273,84 +320,120 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		if wielded_def and wielded_def._mcl_toollike_wield then
-			set_bone_position_conditional(player,"Wield_Item", vector.new(0,4.7,3.1), vector.new(-90,225,90))
+			set_bone_pos(player, "Wield_Item", vector.new(0, 4.7, 3.1), vector.new(-90, 225, 90))
 		elseif string.find(wielded:get_name(), "mcl_bows:bow") then
-			set_bone_position_conditional(player,"Wield_Item", vector.new(1,4,0), vector.new(90,130,115))
+			set_bone_pos(player, "Wield_Item", vector.new(1, 4, 0), vector.new(90, 130, 115))
 		elseif string.find(wielded:get_name(), "mcl_bows:crossbow_loaded") then
-			set_bone_position_conditional(player,"Wield_Item", vector.new(0,5.2,1.2), vector.new(0,180,73))
+			set_bone_pos(player, "Wield_Item", vector.new(0, 5.2, 1.2), vector.new(0, 180, 73))
 		elseif string.find(wielded:get_name(), "mcl_bows:crossbow") then
-			set_bone_position_conditional(player,"Wield_Item", vector.new(0,5.2,1.2), vector.new(0,180,45))
+			set_bone_pos(player, "Wield_Item", vector.new(0, 5.2, 1.2), vector.new(0, 180, 45))
 		elseif wielded_def.inventory_image == "" then
-			set_bone_position_conditional(player,"Wield_Item", vector.new(0,6,2), vector.new(180,-45,0))
+			set_bone_pos(player,"Wield_Item", vector.new(0, 6, 2), vector.new(180, -45, 0))
 		else
-			set_bone_position_conditional(player,"Wield_Item", vector.new(0,5.3,2), vector.new(90,0,0))
+			set_bone_pos(player, "Wield_Item", vector.new(0, 5.3, 2), vector.new(90, 0, 0))
 		end
 
 		-- controls right and left arms pitch when shooting a bow or blocking
 		if mcl_shields.is_blocking(player) == 2 then
-			set_bone_position_conditional(player, "Arm_Right_Pitch_Control", vector.new(-3, 5.785, 0), vector.new(20, -20, 0))
+			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector.new(20, -20, 0))
 		elseif mcl_shields.is_blocking(player) == 1 then
-			set_bone_position_conditional(player, "Arm_Left_Pitch_Control", vector.new(3, 5.785, 0), vector.new(20, 20, 0))
+			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, vector.new(20, 20, 0))
 		elseif string.find(wielded:get_name(), "mcl_bows:bow") and control.RMB then
-			set_bone_position_conditional(player,"Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch+90,-30,pitch * -1 * .35))
-			set_bone_position_conditional(player,"Arm_Left_Pitch_Control", vector.new(3.5,5.785,0), vector.new(pitch+90,43,pitch * .35))
+			local right_arm_rot = vector.new(pitch + 90, -30, pitch * -1 * .35)
+			local left_arm_rot = vector.new(pitch + 90, 43, pitch * .35)
+			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, right_arm_rot)
+			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, left_arm_rot)
 		-- controls right and left arms pitch when holing a loaded crossbow
 		elseif string.find(wielded:get_name(), "mcl_bows:crossbow_loaded") then
-			set_bone_position_conditional(player,"Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch+90,-30,pitch * -1 * .35))
-			set_bone_position_conditional(player,"Arm_Left_Pitch_Control", vector.new(3.5,5.785,0), vector.new(pitch+90,43,pitch * .35))
+			local right_arm_rot = vector.new(pitch + 90, -30, pitch * -1 * .35)
+			local left_arm_rot = vector.new(pitch + 90, 43, pitch * .35)
+			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, right_arm_rot)
+			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, left_arm_rot)
 		-- controls right and left arms pitch when loading a crossbow
 		elseif string.find(wielded:get_name(), "mcl_bows:crossbow_") then
-			set_bone_position_conditional(player,"Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(45,-20,25))
-			set_bone_position_conditional(player,"Arm_Left_Pitch_Control", vector.new(3,5.785,0), vector.new(55,20,-45))
+			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector.new(45, -20, 25))
+			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, vector.new(55, 20, -45))
 		-- when punching
 		elseif control.LMB and not parent then
-			set_bone_position_conditional(player,"Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(pitch,0,0))
-			set_bone_position_conditional(player,"Arm_Left_Pitch_Control", vector.new(3,5.785,0), vector.new(0,0,0))
+			set_bone_pos(player,"Arm_Right_Pitch_Control", nil, vector.new(pitch, 0, 0))
+			set_bone_pos(player,"Arm_Left_Pitch_Control", nil, vector.zero())
 		-- when holding an item.
 		elseif wielded:get_name() ~= "" then
-			set_bone_position_conditional(player,"Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(20,0,0))
-			set_bone_position_conditional(player,"Arm_Left_Pitch_Control", vector.new(3,5.785,0), vector.new(0,0,0))
+			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector.new(20, 0, 0))
+			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, vector.zero())
 		-- resets arms pitch
 		else
-			set_bone_position_conditional(player,"Arm_Left_Pitch_Control", vector.new(3,5.785,0), vector.new(0,0,0))
-			set_bone_position_conditional(player,"Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(0,0,0))
+			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, vector.zero())
+			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector.zero())
 		end
 
 		if elytra.active then
 			-- set head pitch and yaw when flying
-			set_bone_position_conditional(player,"Head_Control", vector.new(0,6.3,0), vector.new(pitch-degrees(dir_to_pitch(player_velocity))+50,player_vel_yaw - yaw,0))
+			local head_rot = vector.new(pitch - degrees(dir_to_pitch(player_velocity)) + 50, player_vel_yaw - yaw, 0)
+			set_bone_pos(player,"Head_Control", nil, head_rot)
+
 			-- sets eye height, and nametag color accordingly
-			set_properties_conditional(player,{collisionbox = {-0.35,0,-0.35,0.35,0.8,0.35}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
+			set_properties(player, player_props_elytra)
+
 			-- control body bone when flying
-			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new((75-degrees(dir_to_pitch(player_velocity))) , -player_vel_yaw + yaw, 0))
+			local body_rot = vector.new((75 - degrees(dir_to_pitch(player_velocity))), -player_vel_yaw + yaw, 0)
+			set_bone_pos(player, "Body_Control", nil, body_rot)
 		elseif parent then
+			set_properties(player, player_props_riding)
+
 			local parent_yaw = degrees(parent:get_yaw())
-			set_properties_conditional(player,{collisionbox = {-0.312,0,-0.312,0.312,1.8,0.312}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
-			set_bone_position_conditional(player,"Head_Control", vector.new(0,6.3,0), vector.new(pitch, -limit_vel_yaw(yaw, parent_yaw) + parent_yaw, 0))
-			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new(0,0,0))
+			local head_rot = vector.new(pitch, -limit_vel_yaw(yaw, parent_yaw) + parent_yaw, 0)
+			set_bone_pos(player, "Head_Control", nil, head_rot)
+			set_bone_pos(player,"Body_Control", nil, vector.zero())
 		elseif control.sneak then
 			-- controls head pitch when sneaking
-			set_bone_position_conditional(player,"Head_Control", vector.new(0,6.3,0), vector.new(pitch, player_vel_yaw - yaw, player_vel_yaw - yaw))
+			local head_rot = vector.new(pitch, player_vel_yaw - yaw, player_vel_yaw - yaw)
+			set_bone_pos(player, "Head_Control", nil, head_rot)
+
 			-- sets eye height, and nametag color accordingly
-			set_properties_conditional(player,{collisionbox = {-0.312,0,-0.312,0.312,1.8,0.312}, eye_height = 1.35, nametag_color = { r = 225, b = 225, a = 0, g = 225 }})
+			set_properties(player, player_props_sneaking)
+
 			-- sneaking body conrols
-			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new(0, -player_vel_yaw + yaw, 0))
+			set_bone_pos(player, "Body_Control", nil, vector.new(0, -player_vel_yaw + yaw, 0))
 		elseif get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and is_sprinting(name) == true then
 			-- set head pitch and yaw when swimming
 			is_swimming = true
-			set_bone_position_conditional(player,"Head_Control", vector.new(0,6.3,0), vector.new(pitch-degrees(dir_to_pitch(player_velocity))+20,player_vel_yaw - yaw,0))
+			local head_rot = vector.new(pitch - degrees(dir_to_pitch(player_velocity)) + 20, player_vel_yaw - yaw, 0)
+			set_bone_pos(player, "Head_Control", nil, head_rot)
+
 			-- sets eye height, and nametag color accordingly
-			set_properties_conditional(player,{collisionbox = {-0.312,0,-0.312,0.312,0.8,0.312}, eye_height = 0.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
+			set_properties(player, player_props_swimming)
+
 			-- control body bone when swimming
-			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new((75-degrees(dir_to_pitch(player_velocity))) , -player_vel_yaw + yaw, 0))
+			local body_rot = vector.new((75 + degrees(dir_to_pitch(player_velocity))), player_vel_yaw - yaw, 180)
+			set_bone_pos(player,"Body_Control", nil, body_rot)
 		elseif get_item_group(mcl_playerinfo[name].node_head, "solid") == 0
 		and get_item_group(mcl_playerinfo[name].node_head_top, "solid") == 0 then
 			-- sets eye height, and nametag color accordingly
 			is_swimming = false
-			set_properties_conditional(player,{collisionbox = {-0.312,0,-0.312,0.312,1.8,0.312}, eye_height = 1.5, nametag_color = { r = 225, b = 225, a = 225, g = 225 }})
+			set_properties(player, player_props_normal)
 
-			set_bone_position_conditional(player,"Head_Control", vector.new(0,6.3,0), vector.new(pitch, player_vel_yaw - yaw, 0))
-			set_bone_position_conditional(player,"Body_Control", vector.new(0,6.3,0), vector.new(0, -player_vel_yaw + yaw, 0))
+			set_bone_pos(player,"Head_Control", nil, vector.new(pitch, player_vel_yaw - yaw, 0))
+			set_bone_pos(player,"Body_Control", nil, vector.new(0, -player_vel_yaw + yaw, 0))
+		end
+
+		if get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 then
+			if not hud_water[player] or hud_water[player] and calculate_water_depth(player:get_pos()) ~= #hud_water[player] then
+				remove_water_hud(player)
+				hud_water[player] = {}
+				for i=1, calculate_water_depth(player:get_pos()) do
+					table.insert(hud_water[player], player:hud_add({
+						hud_elem_type = "image",
+						text = "mcl_playerplus_water.png",
+						position = {x = 0.5, y = 0.5},
+						scale = {x = 32, y = 16},
+						offset = {x = 0, y = 0},
+						z_index = -1002,
+					}))
+				end
+			end
+		else
+			remove_water_hud(player)
 		end
 
 		elytra.last_yaw = player:get_look_horizontal()
@@ -597,6 +680,13 @@ minetest.register_on_joinplayer(function(player)
 		jump_cooldown = -1,	-- Cooldown timer for jumping, we need this to prevent the jump exhaustion to increase rapidly
 	}
 	mcl_playerplus.elytra[player] = {active = false, rocketing = 0, speed = 0}
+
+	-- Minetest bug: get_bone_position() returns all zeros vectors.
+	-- Workaround: call set_bone_position() one time first.
+	player:set_bone_position("Head_Control", vector.new(0, 6.75, 0))
+	player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3, 5.785, 0))
+	player:set_bone_position("Arm_Left_Pitch_Control", vector.new(3, 5.785, 0))
+	player:set_bone_position("Body_Control", vector.new(0, 6.75, 0))
 end)
 
 -- clear when player leaves

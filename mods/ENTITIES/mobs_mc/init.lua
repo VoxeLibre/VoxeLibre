@@ -96,6 +96,7 @@ mobs_mc.water_level = tonumber(minetest.settings:get("water_level")) or 0
 
 -- Animals
 local path = minetest.get_modpath("mobs_mc")
+dofile(path .. "/axolotl.lua") -- Mesh and animation by JoeEnderman, Textures by Nova Wustra, modified by JoeEnderman
 dofile(path .. "/bat.lua") -- Mesh and animation by toby109tt  / https://github.com/22i
 dofile(path .. "/rabbit.lua") -- Mesh and animation byExeterDad
 dofile(path .. "/chicken.lua") -- Mesh and animation by Pavel_S
@@ -154,3 +155,5 @@ dofile(path .. "/glow_squid.lua")
 
 dofile(path .. "/piglin.lua")
 dofile(path .. "/hoglin+zoglin.lua")
+
+dofile(path .. "/strider.lua")
