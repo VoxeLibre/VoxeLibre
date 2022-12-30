@@ -6,7 +6,7 @@
 local S = minetest.get_translator("mobs_mc")
 local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
 
-mcl_mobs:register_mob("mobs_mc:illusioner", {
+mcl_mobs.register_mob("mobs_mc:illusioner", {
 	description = S("Illusioner"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -65,4 +65,4 @@ mcl_mobs:register_mob("mobs_mc:illusioner", {
 	fear_height = 4,
 })
 
-mcl_mobs:register_egg("mobs_mc:illusioner", S("Illusioner"), "#3f5cbb", "#8a8686", 0)
+mcl_mobs.register_egg("mobs_mc:illusioner", S("Illusioner"), "#3f5cbb", "#8a8686", 0)

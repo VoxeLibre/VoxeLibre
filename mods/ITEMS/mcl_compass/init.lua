@@ -16,6 +16,13 @@ local compass_types = {
 		tt = S("Points to a lodestone"),
 		longdesc = S("Lodestone compasses resemble regular compasses, but they point to a specific lodestone."),
 		usagehelp = S("A Lodestone compass can be made from an ordinary compass by using it on a lodestone.  After becoming a lodestone compass, it always points to its linked lodestone, provided that they are in the same dimension.  If not in the same dimension, the lodestone compass spins randomly, similarly to a regular compass when outside the overworld.  A lodestone compass can be relinked with another lodestone."),
+	},
+	{
+		name = "compass_recovery",
+		desc = S("Recovery Compass"),
+		tt = S("Points to your last death location"),
+		longdesc = S("Recovery Compasses are compasses that point to your last death location"),
+		usagehelp = S("Recovery Compasses always point to the location of your last death, in case you haven't died yet, it will just randomly spin around"),
 	}
 }
 
@@ -182,7 +189,7 @@ minetest.register_globalstep(function(dtime)
 		inv = player:get_inventory()
 		for j, stack in pairs(inv:get_list("main")) do
 			compass_nr = get_item_group(stack:get_name(), "compass")
-			if compass_nr ~= 0 then
+			if compass_nr ~= 0 and not string_find(stack:get_name(), "_recovery") then
 				-- check if current compass image still matches true orientation
 				compass_frame = get_compass_frame(pos, dir, stack)
 				if compass_nr - 1 ~= compass_frame then
@@ -195,6 +202,22 @@ minetest.register_globalstep(function(dtime)
 					end
 					inv:set_stack("main", j, stack)
 				end
+			elseif compass_nr ~= 0 then
+				local meta = player:get_meta()
+				local posstring =  meta:get_string("mcl_compass:recovery_pos")
+				if not posstring or posstring == "" then
+					stack:set_name("mcl_compass:"..random_frame .. "_recovery")
+				else
+					local targetpos = minetest.string_to_pos(posstring)
+					local _, target_dim = y_to_layer(targetpos.y)
+					local _, p_dim = y_to_layer(pos.y)
+					if p_dim ~= target_dim then
+						stack:set_name("mcl_compass:"..random_frame.."_recovery")
+					else
+						stack:set_name("mcl_compass:"..get_compass_angle(pos,targetpos,dir).."_recovery")
+					end
+				end
+				inv:set_stack("main",j,stack)
 			end
 		end
 	end
@@ -213,6 +236,9 @@ for _, item in pairs(compass_types) do
 	elseif item.name == "compass_lodestone" then
 		name_fmt = "mcl_compass:%d_lodestone"
 		img_fmt = "mcl_compass_compass_%02d.png^[colorize:purple:50"
+	elseif item.name == "compass_recovery" then
+		name_fmt = "mcl_compass:%d_recovery"
+		img_fmt = "mcl_compass_recovery_compass_%02d.png"
 	end
 	for i = 0, compass_frames - 1 do
 		local itemstring = string.format(name_fmt, i)
@@ -248,6 +274,16 @@ minetest.register_craft({
 		{"", "mcl_core:iron_ingot", ""},
 		{"mcl_core:iron_ingot", "mesecons:redstone", "mcl_core:iron_ingot"},
 		{"", "mcl_core:iron_ingot", ""}
+	}
+})
+
+minetest.register_craft({ --TODO: update once echo shards are a thing
+	output = "mcl_compass:" .. random_frame .. "_recovery",
+	recipe = {
+		{"","mcl_nether:netherite_ingot",""},
+		{"mcl_core:diamondblock","mcl_compass:" .. stereotype_frame ,"mcl_core:diamondblock"},
+		{"mcl_core:diamondblock","mcl_core:diamondblock","mcl_core:diamondblock"}
+
 	}
 })
 
@@ -289,3 +325,9 @@ minetest.register_craft({
 		{"mcl_core:stonebrickcarved", "mcl_core:stonebrickcarved", "mcl_core:stonebrickcarved"}
 	}
 })
+
+--set recovery meta
+minetest.register_on_dieplayer(function(player)
+	local meta = player:get_meta();
+	meta:set_string("mcl_compass:recovery_pos",minetest.pos_to_string(player:get_pos()))
+end)

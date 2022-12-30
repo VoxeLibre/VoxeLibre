@@ -1,0 +1,36 @@
+# textdomain: mcl_bamboo
+
+
+### init.lua ###
+
+A bamboo button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=
+
+A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=
+
+Bamboo=
+Bamboo Button=
+Bamboo Door.=
+Bamboo Fence=
+Bamboo Fence Gate=
+Bamboo Plank=
+Bamboo Plank Slab=
+Bamboo Plank Stair=
+Bamboo Pressure Plate=
+Bamboo Sign=
+Bamboo Slab=
+Bamboo Stair=
+Bamboo Trapdoor.=
+Double Bamboo Plank Slab=
+Double Bamboo Slab=
+Double Stripped Bamboo Slab=
+Nether Brick Fence=
+Scaffolding=
+Scaffolding (horizontal)=
+Scaffolding block used to climb up or out across areas.=
+Stripped Bamboo Slab=
+Stripped Bamboo Stair=
+
+To open or close the trapdoor, rightclick it or send a redstone signal to it.=
+
+Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=
+

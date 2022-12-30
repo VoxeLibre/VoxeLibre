@@ -117,7 +117,7 @@ local function filter_item(name, description, lang, filter)
 	else
 		desc = string.lower(minetest.get_translated_string(lang, description))
 	end
-	return string.find(name, filter) or string.find(desc, filter)
+	return string.find(name, filter, nil, true) or string.find(desc, filter, nil, true)
 end
 
 local function set_inv_search(filter, player)
@@ -699,6 +699,7 @@ minetest.register_on_joinplayer(function(player)
 		players[name].start_i = 0
 	end
 	init(player)
+	-- Setup initial creative inventory to the "nix" page.
 	mcl_inventory.set_creative_formspec(player, 0, 1, nil, false, "nix", "")
 end)
 

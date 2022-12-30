@@ -741,7 +741,7 @@ minetest.register_craftitem("mcl_ocean:kelp", {
 	inventory_image = "mcl_ocean_kelp_item.png",
 	wield_image = "mcl_ocean_kelp_item.png",
 	on_place = kelp.kelp_on_place,
-	groups = {deco_block = 1, compostability = 30},
+	groups = {deco_block = 1, compostability = 30, smoker_cookable = 1},
 })
 
 if mod_doc then

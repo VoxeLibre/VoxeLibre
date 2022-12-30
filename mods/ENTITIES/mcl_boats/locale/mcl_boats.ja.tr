@@ -1,0 +1,13 @@
+# textdomain: mcl_boats
+Acacia Boat=アカシアのボート
+Birch Boat=シラカバのボート
+Boat=ボート
+Boats are used to travel on the surface of water.=ボートは、水面を移動するために使われます。
+Dark Oak Boat=ダークオークのボート
+Jungle Boat=ジャングルのボート
+Oak Boat=オークのボート
+Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Use [Sneak] to leave the boat, punch the boat to make it drop as an item.=水源を右クリックすると、ボートが配置されます。ボートを右クリックすると、乗り込みます。[左][右]で舵取り、[前]で加速、[後]で減速または後退します。[スニーク]でボートから離れ、ボートをパンチするとアイテムとしてドロップします。
+Spruce Boat=トウヒのボート
+Water vehicle=水上用の乗物
+Sneak to dismount=スニークで降りる
+Obsidian Boat=黒曜石のボート

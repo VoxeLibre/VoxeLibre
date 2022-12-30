@@ -112,7 +112,7 @@ function mesecon.register_button(basename, description, texture, recipeitem, sou
 	if push_by_arrow then
 		tt = tt .. "\n" .. S("Pushable by arrow")
 	end
-	minetest.register_node("mesecons_button:button_"..basename.."_off", {
+	minetest.register_node(":mesecons_button:button_"..basename.."_off", {
 		drawtype = "nodebox",
 		tiles = {texture},
 		wield_image = "mesecons_button_wield_mask.png^"..texture.."^mesecons_button_wield_mask.png^[makealpha:255,126,126",
@@ -147,7 +147,7 @@ function mesecon.register_button(basename, description, texture, recipeitem, sou
 		_mcl_hardness = 0.5,
 	})
 
-	minetest.register_node("mesecons_button:button_"..basename.."_on", {
+	minetest.register_node(":mesecons_button:button_"..basename.."_on", {
 		drawtype = "nodebox",
 		tiles = {texture},
 		wield_image = "mesecons_button_wield_mask.png^"..texture.."^mesecons_button_wield_mask.png^[makealpha:255,126,126",
@@ -223,6 +223,10 @@ local woods = {
 	{ "darkwood", "mcl_core:darkwood", "mcl_core_planks_big_oak.png", S("Dark Oak Button") },
 	{ "sprucewood", "mcl_core:sprucewood", "mcl_core_planks_spruce.png", S("Spruce Button") },
 	{ "junglewood", "mcl_core:junglewood", "default_junglewood.png", S("Jungle Button") },
+
+	{ "mangrove_wood", "mcl_mangrove:mangrove_wood", "mcl_mangrove_planks.png", S("Mangrove Button") },
+	{ "crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", "crimson_hyphae_wood.png", S("Crimson Button") },
+	{ "warped_hyphae_wood", "mcl_crimson:warped_hyphae_wood", "warped_hyphae_wood.png", S("Warped Button") },
 }
 
 for w=1, #woods do

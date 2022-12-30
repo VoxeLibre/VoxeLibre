@@ -9,32 +9,19 @@ local cbox = {
 	},
 }
 
-local text_top = "[combine:16x16:6,6=mcl_lightning_rods_rod.png"
-local text_side = "[combine:16x16:7,0=mcl_lightning_rods_rod.png:-6,0=mcl_lightning_rods_rod.png\\^[transformR270"
-
-local text_top_active = "[combine:16x16:6,6=mcl_lightning_rods_rod.png\\^[brighten"
-local text_side_active = "[combine:16x16:7,0=mcl_lightning_rods_rod.png\\^[brighten:-6,0=mcl_lightning_rods_rod.png\\^[transformR270\\^[brighten"
-
 ---@type node_definition
 local rod_def = {
 	description = S("Lightning Rod"),
 	_doc_items_longdesc = S("A block that attracts lightning"),
-	tiles = {
-		text_top,
-		text_top,
-		text_side,
-		text_side,
-		text_side,
-		text_side,
-	},
-	drawtype = "nodebox",
+	tiles = { "mcl_lightning_rods_rod.png" },
+	drawtype = "mesh",
+	mesh = "mcl_lightning_rods_rod.obj",
 	is_ground_content = false,
 	paramtype = "light",
 	paramtype2 = "facedir",
 	use_texture_alpha = "opaque",
 	groups = { pickaxey = 2, attracts_lightning = 1 },
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	node_box = cbox,
 	selection_box = cbox,
 	collision_box = cbox,
 	node_placement_prediction = "",
@@ -80,14 +67,7 @@ minetest.register_node("mcl_lightning_rods:rod", rod_def)
 
 local rod_def_a = table.copy(rod_def)
 
-rod_def_a.tiles = {
-	text_top_active,
-	text_top_active,
-	text_side_active,
-	text_side_active,
-	text_side_active,
-	text_side_active,
-}
+rod_def_a.tiles = { "mcl_lightning_rods_rod.png^[brighten" }
 
 rod_def_a.groups.not_in_creative_inventory = 1
 

@@ -6,22 +6,25 @@ local pool = {}
 
 local tick = false
 
+
+local LOGGING_ON = minetest.settings:get_bool("mcl_logging_item_entities", false)
+local function mcl_log(message)
+	if LOGGING_ON then
+		mcl_util.mcl_log(message, "[Item Entities]", true)
+	end
+end
+
 minetest.register_on_joinplayer(function(player)
-	local name
-	name = player:get_player_name()
-	pool[name] = 0
+	pool[player:get_player_name()] = 0
 end)
 
 minetest.register_on_leaveplayer(function(player)
-	local name
-	name = player:get_player_name()
-	pool[name] = nil
+	pool[player:get_player_name()] = nil
 end)
-
 
 local has_awards = minetest.get_modpath("awards")
 
-local mcl_item_entity = {}
+mcl_item_entity = {}
 
 --basic settings
 local item_drop_settings                 = {} --settings table
@@ -36,22 +39,29 @@ item_drop_settings.random_item_velocity  = true --this sets random item velocity
 item_drop_settings.drop_single_item      = false --if true, the drop control drops 1 item instead of the entire stack, and sneak+drop drops the stack
 -- drop_single_item is disabled by default because it is annoying to throw away items from the intentory screen
 
-item_drop_settings.magnet_time           = 0.75 -- how many seconds an item follows the player before giving up
+item_drop_settings.magnet_time = 0.75 -- how many seconds an item follows the player before giving up
 
 local function get_gravity()
 	return tonumber(minetest.settings:get("movement_gravity")) or 9.81
 end
 
-local registered_pickup_achievement = {}
+mcl_item_entity.registered_pickup_achievement = {}
 
---TODO: remove limitation of 1 award per itemname
+---Register an achievement that will be unlocked on pickup.
+---
+---TODO: remove limitation of 1 award per itemname
+---@param itemname string
+---@param award string
 function mcl_item_entity.register_pickup_achievement(itemname, award)
 	if not has_awards then
-		minetest.log("warning", "[mcl_item_entity] Trying to register pickup achievement ["..award.."] for ["..itemname.."] while awards missing")
-	elseif registered_pickup_achievement[itemname] then
-		minetest.log("error", "[mcl_item_entity] Trying to register already existing pickup achievement ["..award.."] for ["..itemname.."]")
+		minetest.log("warning",
+			"[mcl_item_entity] Trying to register pickup achievement [" .. award .. "] for [" ..
+			itemname .. "] while awards missing")
+	elseif mcl_item_entity.registered_pickup_achievement[itemname] then
+		minetest.log("error",
+			"[mcl_item_entity] Trying to register already existing pickup achievement [" .. award .. "] for [" .. itemname .. "]")
 	else
-		registered_pickup_achievement[itemname] = award
+		mcl_item_entity.registered_pickup_achievement[itemname] = award
 	end
 end
 
@@ -64,11 +74,13 @@ mcl_item_entity.register_pickup_achievement("mcl_nether:ancient_debris", "mcl:hi
 mcl_item_entity.register_pickup_achievement("mcl_end:dragon_egg", "mcl:PickUpDragonEgg")
 mcl_item_entity.register_pickup_achievement("mcl_armor:elytra", "mcl:skysTheLimit")
 
+---@param object ObjectRef
+---@param player ObjectRef
 local function check_pickup_achievements(object, player)
 	if has_awards then
 		local itemname = ItemStack(object:get_luaentity().itemstring):get_name()
 		local playername = player:get_player_name()
-		for name,award in pairs(registered_pickup_achievement) do
+		for name, award in pairs(mcl_item_entity.registered_pickup_achievement) do
 			if itemname == name or minetest.get_item_group(itemname, name) ~= 0 then
 				awards.unlock(playername, award)
 			end
@@ -76,16 +88,23 @@ local function check_pickup_achievements(object, player)
 	end
 end
 
+---@param object ObjectRef
+---@param luaentity Luaentity
+---@param ignore_check? boolean
 local function enable_physics(object, luaentity, ignore_check)
 	if luaentity.physical_state == false or ignore_check == true then
 		luaentity.physical_state = true
 		object:set_properties({
 			physical = true
 		})
-		object:set_acceleration({x=0,y=-get_gravity(),z=0})
+		object:set_acceleration(vector.new(0, -get_gravity(), 0))
 	end
 end
 
+---@param object ObjectRef
+---@param luaentity Luaentity
+---@param ignore_check? boolean
+---@param reset_movement? boolean
 local function disable_physics(object, luaentity, ignore_check, reset_movement)
 	if luaentity.physical_state == true or ignore_check == true then
 		luaentity.physical_state = false
@@ -93,17 +112,16 @@ local function disable_physics(object, luaentity, ignore_check, reset_movement)
 			physical = false
 		})
 		if reset_movement ~= false then
-			object:set_velocity({x=0,y=0,z=0})
-			object:set_acceleration({x=0,y=0,z=0})
+			object:set_velocity(vector.zero())
+			object:set_acceleration(vector.zero())
 		end
 	end
 end
 
-
-minetest.register_globalstep(function(dtime)
+minetest.register_globalstep(function(_)
 	tick = not tick
 
-	for _,player in pairs(minetest.get_connected_players()) do
+	for _, player in pairs(minetest.get_connected_players()) do
 		if player:get_hp() > 0 or not minetest.settings:get_bool("enable_damage") then
 
 			local name = player:get_player_name()
@@ -115,7 +133,7 @@ minetest.register_globalstep(function(dtime)
 					pos = pos,
 					gain = 0.3,
 					max_hear_distance = 16,
-					pitch = math.random(70,110)/100
+					pitch = math.random(70, 110) / 100
 				})
 				if pool[name] > 6 then
 					pool[name] = 6
@@ -125,15 +143,18 @@ minetest.register_globalstep(function(dtime)
 			end
 
 
-
 			local inv = player:get_inventory()
-			local checkpos = {x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}
+			local checkpos = vector.offset(pos, 0, item_drop_settings.player_collect_height, 0)
 
 			--magnet and collection
-			for _,object in pairs(minetest.get_objects_inside_radius(checkpos, item_drop_settings.xp_radius_magnet)) do
-				if not object:is_player() and vector.distance(checkpos, object:get_pos()) < item_drop_settings.radius_magnet and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and object:get_luaentity()._magnet_timer and (object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
+			for _, object in pairs(minetest.get_objects_inside_radius(checkpos, item_drop_settings.xp_radius_magnet)) do
+				if not object:is_player() and vector.distance(checkpos, object:get_pos()) < item_drop_settings.radius_magnet and
+					object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and object:get_luaentity()._magnet_timer
+					and (object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
 
-					if object:get_luaentity()._magnet_timer >= 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time and inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
+					if object:get_luaentity()._magnet_timer >= 0 and
+						object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time and inv and
+						inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
 
 						-- Collection
 						if not object:get_luaentity()._removed then
@@ -148,8 +169,8 @@ minetest.register_globalstep(function(dtime)
 								object:get_luaentity().target = checkpos
 								object:get_luaentity()._removed = true
 
-								object:set_velocity({x=0,y=0,z=0})
-								object:set_acceleration({x=0,y=0,z=0})
+								object:set_velocity(vector.zero())
+								object:set_acceleration(vector.zero())
 
 								object:move_to(checkpos)
 
@@ -169,7 +190,6 @@ minetest.register_globalstep(function(dtime)
 					local entity = object:get_luaentity()
 					entity.collector = player:get_player_name()
 					entity.collected = true
-
 				end
 			end
 
@@ -184,6 +204,11 @@ end)
 
 local tmp_id = 0
 
+---@param drop string|drop_definition
+---@param toolname string
+---@param param2 integer
+---@param paramtype2 paramtype2
+---@return string[]
 local function get_drops(drop, toolname, param2, paramtype2)
 	tmp_id = tmp_id + 1
 	local tmp_node_name = "mcl_item_entity:" .. tmp_id
@@ -192,7 +217,7 @@ local function get_drops(drop, toolname, param2, paramtype2)
 		drop = drop,
 		paramtype2 = paramtype2
 	}
-	local drops = minetest.get_node_drops({name = tmp_node_name, param2 = param2}, toolname)
+	local drops = minetest.get_node_drops({ name = tmp_node_name, param2 = param2 }, toolname)
 	minetest.registered_nodes[tmp_node_name] = nil
 	return drops
 end
@@ -255,7 +280,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 	* table: Drop every itemstring in this table when dug by shears _mcl_silk_touch_drop
 	]]
 
-	local enchantments = tool and mcl_enchanting.get_enchantments(tool, "silk_touch")
+	local enchantments = tool and mcl_enchanting.get_enchantments(tool)
 
 	local silk_touch_drop = false
 	local nodedef = minetest.registered_nodes[dug_node.name]
@@ -284,7 +309,8 @@ function minetest.handle_node_drops(pos, drops, digger)
 			local max_count = fortune_drop.max_count + fortune_level * (fortune_drop.factor or 1)
 			local chance = fortune_drop.chance or fortune_drop.get_chance and fortune_drop.get_chance(fortune_level)
 			if not chance or math.random() < chance then
-				drops = discrete_uniform_distribution(fortune_drop.multiply and drops or fortune_drop.items, min_count, max_count, fortune_drop.cap)
+				drops = discrete_uniform_distribution(fortune_drop.multiply and drops or fortune_drop.items, min_count, max_count,
+					fortune_drop.cap)
 			elseif fortune_drop.override then
 				drops = {}
 			end
@@ -296,13 +322,13 @@ function minetest.handle_node_drops(pos, drops, digger)
 	end
 
 	if digger and mcl_experience.throw_xp and not silk_touch_drop then
-		local experience_amount = minetest.get_item_group(dug_node.name,"xp")
+		local experience_amount = minetest.get_item_group(dug_node.name, "xp")
 		if experience_amount > 0 then
 			mcl_experience.throw_xp(pos, experience_amount)
 		end
 	end
 
-	for _,item in ipairs(drops) do
+	for _, item in ipairs(drops) do
 		local count
 		if type(item) == "string" then
 			count = ItemStack(item):get_count()
@@ -311,7 +337,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 		end
 		local drop_item = ItemStack(item)
 		drop_item:set_count(1)
-		for i=1,count do
+		for i = 1, count do
 			local dpos = table.copy(pos)
 			-- Apply offset for plantlike_rooted nodes because of their special shape
 			if nodedef and nodedef.drawtype == "plantlike_rooted" and nodedef.walkable then
@@ -338,7 +364,7 @@ end
 function minetest.item_drop(itemstack, dropper, pos)
 	if dropper and dropper:is_player() then
 		local v = dropper:get_look_dir()
-		local p = {x=pos.x, y=pos.y+1.2, z=pos.z}
+		local p = vector.offset(pos, 0, 1.2, 0)
 		local cs = itemstack:get_count()
 		if dropper:get_player_control().sneak then
 			cs = 1
@@ -346,9 +372,9 @@ function minetest.item_drop(itemstack, dropper, pos)
 		local item = itemstack:take_item(cs)
 		local obj = minetest.add_item(p, item)
 		if obj then
-			v.x = v.x*4
-			v.y = v.y*4 + 2
-			v.z = v.z*4
+			v.x = v.x * 4
+			v.y = v.y * 4 + 2
+			v.z = v.z * 4
 			obj:set_velocity(v)
 			-- Force collection delay
 			obj:get_luaentity()._insta_collect = false
@@ -366,13 +392,123 @@ end
 
 local function cxcz(o, cw, one, zero)
 	if cw < 0 then
-		table.insert(o, { [one]=1, y=0, [zero]=0 })
-		table.insert(o, { [one]=-1, y=0, [zero]=0 })
+		table.insert(o, { [one] = 1, y = 0, [zero] = 0 })
+		table.insert(o, { [one] = -1, y = 0, [zero] = 0 })
 	else
-		table.insert(o, { [one]=-1, y=0, [zero]=0 })
-		table.insert(o, { [one]=1, y=0, [zero]=0 })
+		table.insert(o, { [one] = -1, y = 0, [zero] = 0 })
+		table.insert(o, { [one] = 1, y = 0, [zero] = 0 })
 	end
 	return o
+end
+
+local function hopper_take_item(self, pos)
+	--mcl_log("self.itemstring: ".. self.itemstring)
+	--mcl_log("self.itemstring: ".. minetest.pos_to_string(pos))
+
+	local objs = minetest.get_objects_inside_radius(pos, 2)
+
+	if objs and self.itemstring then
+		--mcl_log("there is an itemstring. Number of objs: ".. #objs)
+
+		for k, v in pairs(objs) do
+			local ent = v:get_luaentity()
+
+			-- Don't forget actual hoppers
+			if ent and ent.name == "mcl_minecarts:hopper_minecart" then
+				local taken_items = false
+
+				mcl_log("ent.name: " .. tostring(ent.name))
+				mcl_log("ent pos: " .. tostring(ent.object:get_pos()))
+
+				local inv = mcl_entity_invs.load_inv(ent, 5)
+
+				if not inv then
+					mcl_log("No inv")
+					return false
+				end
+
+				local current_itemstack = ItemStack(self.itemstring)
+
+				mcl_log("inv. size: " .. ent._inv_size)
+				if inv:room_for_item("main", current_itemstack) then
+					mcl_log("Room")
+					inv:add_item("main", current_itemstack)
+					self.object:get_luaentity().itemstring = ""
+					self.object:remove()
+					taken_items = true
+				else
+					mcl_log("no Room")
+				end
+
+				if not taken_items then
+					local items_remaining = current_itemstack:get_count()
+
+					-- This will take part of a floating item stack if no slot can hold the full amount
+					for i = 1, ent._inv_size, 1 do
+						local stack = inv:get_stack("main", i)
+
+						mcl_log("i: " .. tostring(i))
+						mcl_log("Items remaining: " .. items_remaining)
+						mcl_log("Name: " .. tostring(stack:get_name()))
+
+						if current_itemstack:get_name() == stack:get_name() then
+							mcl_log("We have a match. Name: " .. tostring(stack:get_name()))
+
+							local room_for = stack:get_stack_max() - stack:get_count()
+							mcl_log("Room for: " .. tostring(room_for))
+
+							if room_for == 0 then
+								-- Do nothing
+								mcl_log("No room")
+							elseif room_for < items_remaining then
+								mcl_log("We have more items remaining than space")
+
+								items_remaining = items_remaining - room_for
+								stack:set_count(stack:get_stack_max())
+								inv:set_stack("main", i, stack)
+								taken_items = true
+							else
+								local new_stack_size = stack:get_count() + items_remaining
+								stack:set_count(new_stack_size)
+								mcl_log("We have more than enough space. Now holds: " .. new_stack_size)
+
+								inv:set_stack("main", i, stack)
+								items_remaining = 0
+
+								self.object:get_luaentity().itemstring = ""
+								self.object:remove()
+
+								taken_items = true
+								break
+							end
+
+							mcl_log("Count: " .. tostring(stack:get_count()))
+							mcl_log("stack max: " .. tostring(stack:get_stack_max()))
+							--mcl_log("Is it empty: " .. stack:to_string())
+						end
+
+						if i == ent._inv_size and taken_items then
+							mcl_log("We are on last item and still have items left. Set final stack size: " .. items_remaining)
+							current_itemstack:set_count(items_remaining)
+							--mcl_log("Itemstack2: " .. current_itemstack:to_string())
+							self.itemstring = current_itemstack:to_string()
+						end
+					end
+				end
+
+				--Add in, and delete
+				if taken_items then
+					mcl_log("Saving")
+					mcl_entity_invs.save_inv(ent)
+					return taken_items
+				else
+					mcl_log("No need to save")
+				end
+			end
+		end
+	end
+
+	return false
 end
 
 minetest.register_entity(":__builtin:item", {
@@ -380,13 +516,13 @@ minetest.register_entity(":__builtin:item", {
 		hp_max = 1,
 		physical = true,
 		collide_with_objects = false,
-		collisionbox = {-0.3, -0.3, -0.3, 0.3, 0.3, 0.3},
+		collisionbox = { -0.3, -0.3, -0.3, 0.3, 0.3, 0.3 },
 		pointable = false,
 		visual = "wielditem",
-		visual_size = {x = 0.4, y = 0.4},
-		textures = {""},
-		spritediv = {x = 1, y = 1},
-		initial_sprite_basepos = {x = 0, y = 0},
+		visual_size = { x = 0.4, y = 0.4 },
+		textures = { "" },
+		spritediv = { x = 1, y = 1 },
+		initial_sprite_basepos = { x = 0, y = 0 },
 		is_visible = false,
 		infotext = "",
 	},
@@ -424,11 +560,11 @@ minetest.register_entity(":__builtin:item", {
 		if vel and vel.x == 0 and vel.z == 0 and self.random_velocity > 0 then
 			local v = self.random_velocity
 			local x = math.random(5, 10) / 10 * v
-			if math.random(0,10) < 5 then x = -x end
+			if math.random(0, 10) < 5 then x = -x end
 			local z = math.random(5, 10) / 10 * v
-			if math.random(0,10) < 5 then z = -z end
-			local y = math.random(2,4)
-			self.object:set_velocity({x=x, y=y, z=z})
+			if math.random(0, 10) < 5 then z = -z end
+			local y = math.random(2, 4)
+			self.object:set_velocity(vector.new(x, y, z))
 		end
 		self.random_velocity = 0
 	end,
@@ -456,7 +592,7 @@ minetest.register_entity(":__builtin:item", {
 		local max_count = stack:get_stack_max()
 		if count > max_count then
 			count = max_count
-			self.itemstring = stack:get_name().." "..max_count
+			self.itemstring = stack:get_name() .. " " .. max_count
 		end
 		local itemtable = stack:to_table()
 		local itemname = nil
@@ -477,9 +613,9 @@ minetest.register_entity(":__builtin:item", {
 		local prop = {
 			is_visible = true,
 			visual = "wielditem",
-			textures = {itemname},
-			visual_size = {x = s, y = s},
-			collisionbox = {-c, -c, -c, c, c, c},
+			textures = { itemname },
+			visual_size = { x = s, y = s },
+			collisionbox = { -c, -c, -c, c, c, c },
 			automatic_rotate = math.pi * 0.5,
 			infotext = description,
 			glow = glow,
@@ -575,9 +711,9 @@ minetest.register_entity(":__builtin:item", {
 		self._forcestart = nil
 		self._forcetimer = 0
 
-		self.object:set_armor_groups({immortal = 1})
-		-- self.object:set_velocity({x = 0, y = 2, z = 0})
-		self.object:set_acceleration({x = 0, y = -get_gravity(), z = 0})
+		self.object:set_armor_groups({ immortal = 1 })
+		-- self.object:set_velocity(vector.new(0, 2, 0))
+		self.object:set_acceleration(vector.new(0, -get_gravity(), 0))
 		self:set_item(self.itemstring)
 	end,
 
@@ -590,9 +726,9 @@ minetest.register_entity(":__builtin:item", {
 		local stack = ItemStack(entity.itemstring)
 		local name = stack:get_name()
 		if own_stack:get_name() ~= name or
-				own_stack:get_meta() ~= stack:get_meta() or
-				own_stack:get_wear() ~= stack:get_wear() or
-				own_stack:get_free_space() == 0 then
+			own_stack:get_meta() ~= stack:get_meta() or
+			own_stack:get_wear() ~= stack:get_wear() or
+			own_stack:get_free_space() == 0 then
 			-- Can not merge different or full stack
 			return false
 		end
@@ -625,8 +761,8 @@ minetest.register_entity(":__builtin:item", {
 			self.object:set_properties({
 				physical = false
 			})
-			self.object:set_velocity({x=0,y=0,z=0})
-			self.object:set_acceleration({x=0,y=0,z=0})
+			self.object:set_velocity(vector.zero())
+			self.object:set_acceleration(vector.zero())
 			return
 		end
 		self.age = self.age + dtime
@@ -641,15 +777,22 @@ minetest.register_entity(":__builtin:item", {
 		-- Delete corrupted item entities. The itemstring MUST be non-empty on its first step,
 		-- otherwise there might have some data corruption.
 		if self.itemstring == "" then
-			minetest.log("warning", "Item entity with empty itemstring found at "..minetest.pos_to_string(self.object:get_pos()).. "! Deleting it now.")
+			minetest.log("warning",
+				"Item entity with empty itemstring found at " .. minetest.pos_to_string(self.object:get_pos()) ..
+				"! Deleting it now.")
 			self._removed = true
 			self.object:remove()
 			return
 		end
 
 		local p = self.object:get_pos()
-		local node = minetest.get_node_or_nil(p)
-		local in_unloaded = (node == nil)
+		-- If hopper has taken item, it has gone, and no operations should be conducted on this item
+		if hopper_take_item(self, p) then
+			return
+		end
+
+		local node = minetest.get_node(p)
+		local in_unloaded = node.name == "ignore"
 
 		if in_unloaded then
 			-- Don't infinetly fall into unloaded map
@@ -659,27 +802,27 @@ minetest.register_entity(":__builtin:item", {
 
 		if self.is_clock then
 			self.object:set_properties({
-				textures = {"mcl_clock:clock_" .. (mcl_worlds.clock_works(p) and mcl_clock.old_time or mcl_clock.random_frame)}
+				textures = { "mcl_clock:clock_" .. (mcl_worlds.clock_works(p) and mcl_clock.old_time or mcl_clock.random_frame) }
 			})
 		end
 
 		local nn = node.name
 		local is_in_water = (minetest.get_item_group(nn, "liquid") ~= 0)
-		local nn_above = minetest.get_node({x=p.x, y=p.y+0.1, z=p.z}).name
+		local nn_above = minetest.get_node(vector.offset(p, 0, 0.1, 0)).name
 		--  make sure it's more or less stationary and is at water level
 		local sleep_threshold = 0.3
 		local is_floating = false
 		local is_stationary = math.abs(self.object:get_velocity().x) < sleep_threshold
-		and math.abs(self.object:get_velocity().y) < sleep_threshold
-		and math.abs(self.object:get_velocity().z) < sleep_threshold
+			and math.abs(self.object:get_velocity().y) < sleep_threshold
+			and math.abs(self.object:get_velocity().z) < sleep_threshold
 		if is_in_water and is_stationary then
 			is_floating = (is_in_water
 				and (minetest.get_item_group(nn_above, "liquid") == 0))
 		end
 
 		if is_floating and self.physical_state == true then
-			self.object:set_velocity({x = 0, y = 0, z = 0})
-			self.object:set_acceleration({x = 0, y = 0, z = 0})
+			self.object:set_velocity(vector.zero())
+			self.object:set_acceleration(vector.zero())
 			disable_physics(self.object, self)
 		end
 		-- If no collector was found for a long enough time, declare the magnet as disabled
@@ -699,7 +842,7 @@ minetest.register_entity(":__builtin:item", {
 			--Wait 2 seconds to allow mob drops to be cooked, & picked up instead of instantly destroyed.
 			if self.age > 2 and minetest.get_item_group(self.itemstring, "fire_immune") == 0 then
 				if dg ~= 2 then
-					minetest.sound_play("builtin_item_lava", {pos = self.object:get_pos(), gain = 0.5})
+					minetest.sound_play("builtin_item_lava", { pos = self.object:get_pos(), gain = 0.5 })
 				end
 				self._removed = true
 				self.object:remove()
@@ -739,7 +882,7 @@ minetest.register_entity(":__builtin:item", {
 			end
 
 			-- Check which one of the 4 sides is free
-			for o=1, #order do
+			for o = 1, #order do
 				local nn = minetest.get_node(vector.add(p, order[o])).name
 				local def = minetest.registered_nodes[nn]
 				if def and def.walkable == false and nn ~= "ignore" then
@@ -749,7 +892,7 @@ minetest.register_entity(":__builtin:item", {
 			end
 			-- If none of the 4 sides is free, shoot upwards
 			if shootdir == nil then
-				shootdir = { x=0, y=1, z=0 }
+				shootdir = vector.new(0, 1, 0)
 				local nn = minetest.get_node(vector.add(p, shootdir)).name
 				if nn == "ignore" then
 					-- Do not push into ignore
@@ -759,7 +902,7 @@ minetest.register_entity(":__builtin:item", {
 
 			-- Set new item moving speed accordingly
 			local newv = vector.multiply(shootdir, 3)
-			self.object:set_acceleration({x = 0, y = 0, z = 0})
+			self.object:set_acceleration(vector.zero())
 			self.object:set_velocity(newv)
 			disable_physics(self.object, self, false, false)
 
@@ -781,10 +924,10 @@ minetest.register_entity(":__builtin:item", {
 		if self._forcetimer > 0 then
 			local cbox = self.object:get_properties().collisionbox
 			local ok = false
-			if self._force.x > 0 and (p.x > (self._forcestart.x + 0.5 + (cbox[4] - cbox[1])/2)) then ok = true
-			elseif self._force.x < 0 and (p.x < (self._forcestart.x + 0.5 - (cbox[4] - cbox[1])/2)) then ok = true
-			elseif self._force.z > 0 and (p.z > (self._forcestart.z + 0.5 + (cbox[6] - cbox[3])/2)) then ok = true
-			elseif self._force.z < 0 and (p.z < (self._forcestart.z + 0.5 - (cbox[6] - cbox[3])/2)) then ok = true end
+			if self._force.x > 0 and (p.x > (self._forcestart.x + 0.5 + (cbox[4] - cbox[1]) / 2)) then ok = true
+			elseif self._force.x < 0 and (p.x < (self._forcestart.x + 0.5 - (cbox[4] - cbox[1]) / 2)) then ok = true
+			elseif self._force.z > 0 and (p.z > (self._forcestart.z + 0.5 + (cbox[6] - cbox[3]) / 2)) then ok = true
+			elseif self._force.z < 0 and (p.z < (self._forcestart.z + 0.5 - (cbox[6] - cbox[3]) / 2)) then ok = true end
 			-- Item was successfully forced out. No more pushing
 			if ok then
 				self._forcetimer = -1
@@ -815,7 +958,7 @@ minetest.register_entity(":__builtin:item", {
 				-- Set new item moving speed into the direciton of the liquid
 				local newv = vector.multiply(vec, f)
 				-- Swap to acceleration instead of a static speed to better mimic MC mechanics.
-				self.object:set_acceleration({x = newv.x, y = -0.22, z = newv.z})
+				self.object:set_acceleration(vector.new(newv.x, -0.22, newv.z))
 
 				self.physical_state = true
 				self._flowing = true
@@ -828,9 +971,10 @@ minetest.register_entity(":__builtin:item", {
 				local cur_vec = self.object:get_velocity()
 				-- apply some acceleration in the opposite direction so it doesn't slide forever
 				local vec = {
-					x = 0 -cur_vec.x*0.9,
-					y = 3 -cur_vec.y*0.9,
-					z = 0 -cur_vec.z*0.9}
+					x = 0 - cur_vec.x * 0.9,
+					y = 3 - cur_vec.y * 0.9,
+					z = 0 - cur_vec.z * 0.9
+				}
 				self.object:set_acceleration(vec)
 				-- slow down the item in water
 				local vel = self.object:get_velocity()
@@ -854,20 +998,20 @@ minetest.register_entity(":__builtin:item", {
 		end
 
 		-- If node is not registered or node is walkably solid and resting on nodebox
-		local nn = minetest.get_node({x=p.x, y=p.y-0.5, z=p.z}).name
+		local nn = minetest.get_node(vector.offset(p, 0, -0.5, 0)).name
 		local def = minetest.registered_nodes[nn]
 		local v = self.object:get_velocity()
 		local is_on_floor = def and (def.walkable
 			and not def.groups.slippery and v.y == 0)
 
 		if not minetest.registered_nodes[nn]
-		or is_floating or is_on_floor then
+			or is_floating or is_on_floor then
 			local own_stack = ItemStack(self.object:get_luaentity().itemstring)
 			-- Merge with close entities of the same item
 			for _, object in pairs(minetest.get_objects_inside_radius(p, 0.8)) do
 				local obj = object:get_luaentity()
 				if obj and obj.name == "__builtin:item"
-						and obj.physical_state == false then
+					and obj.physical_state == false then
 					if self:try_merge_with(own_stack, object, obj) then
 						return
 					end

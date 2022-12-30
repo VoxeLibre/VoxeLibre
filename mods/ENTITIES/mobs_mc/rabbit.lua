@@ -83,7 +83,7 @@ local rabbit = {
 	},
 	on_rightclick = function(self, clicker)
 		-- Feed, tame protect or capture
-		if mcl_mobs:feed_tame(self, clicker, 1, true, false) then return end
+		if self:feed_tame(clicker, 1, true, false) then return end
 		if mcl_mobs:protect(self, clicker) then return end
 		if mcl_mobs:capture_mob(self, clicker, 0, 50, 80, false, nil) then return end
 	end,
@@ -102,7 +102,7 @@ local rabbit = {
 	end,
 }
 
-mcl_mobs:register_mob("mobs_mc:rabbit", rabbit)
+mcl_mobs.register_mob("mobs_mc:rabbit", rabbit)
 
 -- The killer bunny (Only with spawn egg)
 local killer_bunny = table.copy(rabbit)
@@ -128,7 +128,7 @@ killer_bunny.do_custom = function(self)
 	end
 end
 
-mcl_mobs:register_mob("mobs_mc:killer_bunny", killer_bunny)
+mcl_mobs.register_mob("mobs_mc:killer_bunny", killer_bunny)
 
 -- Mob spawning rules.
 -- Different skins depending on spawn location <- we'll get to this when the spawning algorithm is fleshed out
@@ -213,7 +213,7 @@ mcl_mobs:spawn(spawn_grass)
 ]]--
 
 -- Spawn egg
-mcl_mobs:register_egg("mobs_mc:rabbit", S("Rabbit"), "#995f40", "#734831", 0)
+mcl_mobs.register_egg("mobs_mc:rabbit", S("Rabbit"), "#995f40", "#734831", 0)
 
 -- Note: This spawn egg does not exist in Minecraft
-mcl_mobs:register_egg("mobs_mc:killer_bunny", S("Killer Bunny"), "#f2f2f2", "#ff0000", 0)
+mcl_mobs.register_egg("mobs_mc:killer_bunny", S("Killer Bunny"), "#f2f2f2", "#ff0000", 0)

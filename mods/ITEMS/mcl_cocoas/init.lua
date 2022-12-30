@@ -62,36 +62,21 @@ function mcl_cocoas.grow(pos)
 	return false
 end
 
--- Note: cocoa beans are implemented as mcl_dye:brown
-
 -- Cocoa definition
 -- 1st stage
-
---[[ TODO: Use a mesh for cocoas for perfect texture compability. ]]
 local crop_def = {
 	description = S("Premature Cocoa Pod"),
 	_doc_items_create_entry = true,
 	_doc_items_longdesc = S("Cocoa pods grow on the side of jungle trees in 3 stages."),
-	drawtype = "nodebox",
-	tiles = {
-		"[combine:16x16:6,1=mcl_cocoas_cocoa_stage_0.png", "[combine:16x16:6,11=mcl_cocoas_cocoa_stage_0.png",
-		"mcl_cocoas_cocoa_stage_0.png", "mcl_cocoas_cocoa_stage_0.png^[transformFX",
-		"[combine:16x16:-5,0=mcl_cocoas_cocoa_stage_0.png", "[combine:16x16:-5,0=mcl_cocoas_cocoa_stage_0.png",
-	},
+	drawtype = "mesh",
+	mesh = "mcl_cocoas_cocoa_stage_0.obj",
+	tiles = {"mcl_cocoas_cocoa_stage_0.png"},
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 	paramtype = "light",
 	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	walkable = true,
-	drop = "mcl_dye:brown",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-0.125, -0.0625, 0.1875, 0.125, 0.25, 0.4375},  -- Pod
-			-- FIXME: This has a thickness of 0. Is this OK in Minetest?
-			{0, 0.25, 0.25, 0, 0.5, 0.5},	-- Stem
-		},
-	},
+	drop = "mcl_cocoas:cocoa_beans",
 	collision_box = {
 		type = "fixed",
 		fixed = {
@@ -119,18 +104,8 @@ minetest.register_node("mcl_cocoas:cocoa_1", table.copy(crop_def))
 crop_def.description = S("Medium Cocoa Pod")
 crop_def._doc_items_create_entry = false
 crop_def.groups.cocoa = 2
-crop_def.tiles = {
-	"[combine:16x16:5,1=mcl_cocoas_cocoa_stage_1.png", "[combine:16x16:5,9=mcl_cocoas_cocoa_stage_1.png",
-	"mcl_cocoas_cocoa_stage_1.png", "mcl_cocoas_cocoa_stage_1.png^[transformFX",
-	"[combine:16x16:-4,0=mcl_cocoas_cocoa_stage_1.png", "[combine:16x16:-4,0=mcl_cocoas_cocoa_stage_1.png",
-}
-crop_def.node_box = {
-	type = "fixed",
-	fixed = {
-		{-0.1875, -0.1875, 0.0625, 0.1875, 0.25, 0.4375},  -- Pod
-		{0, 0.25, 0.25, 0, 0.5, 0.5},	-- Stem
-	},
-}
+crop_def.mesh = "mcl_cocoas_cocoa_stage_1.obj"
+crop_def.tiles = {"mcl_cocoas_cocoa_stage_1.png"}
 crop_def.collision_box = {
 	type = "fixed",
 	fixed = {
@@ -151,20 +126,8 @@ crop_def.description = S("Mature Cocoa Pod")
 crop_def._doc_items_longdesc = S("A mature cocoa pod grew on a jungle tree to its full size and it is ready to be harvested for cocoa beans. It won't grow any further.")
 crop_def._doc_items_create_entry = true
 crop_def.groups.cocoa = 3
-crop_def.tiles = {
-	-- The following 2 textures were derived from the original because the size of the top/bottom is slightly different :-(
-	-- TODO: Find a way to *only* use the base texture
-	"mcl_cocoas_cocoa_top_stage_2.png", "mcl_cocoas_cocoa_top_stage_2.png^[transformFY",
-	"mcl_cocoas_cocoa_stage_2.png", "mcl_cocoas_cocoa_stage_2.png^[transformFX",
-	"[combine:16x16:-3,0=mcl_cocoas_cocoa_stage_2.png", "[combine:16x16:-3,0=mcl_cocoas_cocoa_stage_2.png",
-}
-crop_def.node_box = {
-	type = "fixed",
-	fixed = {
-		{-0.25, -0.3125, -0.0625, 0.25, 0.25, 0.4375},  -- Pod
-		{0, 0.25, 0.25, 0, 0.5, 0.5},	-- Stem
-	},
-}
+crop_def.mesh = "mcl_cocoas_cocoa_stage_2.obj"
+crop_def.tiles = {"mcl_cocoas_cocoa_stage_2.png"}
 crop_def.collision_box = {
 	type = "fixed",
 	fixed = {
@@ -177,9 +140,20 @@ crop_def.selection_box = {
 		{-0.25, -0.3125, -0.0625, 0.25, 0.5, 0.5},
 	},
 }
-crop_def.drop = "mcl_dye:brown 3"
+crop_def.drop = "mcl_cocoas:cocoa_beans 3"
 minetest.register_node("mcl_cocoas:cocoa_3", table.copy(crop_def))
 
+minetest.register_craftitem("mcl_cocoas:cocoa_beans", {
+	description = S("Cocoa Beans"),
+	_tt_help = S("Grows at the side of jungle trees"),
+	_doc_items_longdesc = S("Cocoa beans can be used to plant cocoa, bake cookies or craft brown dye."),
+	_doc_items_usagehelp = S("Right click on the side of a jungle tree trunk (Jungle Wood) to plant a young cocoa."),
+	inventory_image = "mcl_cocoas_cocoa_beans.png",
+	groups = {craftitem = 1, compostability = 65},
+	on_place = function(itemstack, placer, pointed_thing)
+		return cocoa_place(itemstack, placer, pointed_thing, "mcl_cocoas:cocoa_1")
+	end,
+})
 
 minetest.register_abm({
 		label = "Cocoa pod growth",
@@ -197,4 +171,3 @@ minetest.register_abm({
 if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_cocoas:cocoa_1", "nodes", "mcl_cocoas:cocoa_2")
 end
-

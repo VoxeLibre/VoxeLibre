@@ -12,6 +12,34 @@ local function register_oxidation_abm(abm_name, node_name, oxidized_variant)
 	})
 end
 
+function waxing_copper_block(pos, node, player, itemstack, convert_to)
+	if itemstack:get_name() == "mcl_honey:honeycomb" then
+		node.name = convert_to
+		minetest.set_node(pos, node)
+		awards.unlock(player:get_player_name(), "mcl:wax_on")
+		if not minetest.is_creative_enabled(player:get_player_name()) then
+			itemstack:take_item()
+		end
+	else
+		return true
+	end
+end
+
+function scraping_copper_block(pos, node, player, itemstack, convert_to)
+	if itemstack:get_name():find("axe") then
+		node.name = convert_to
+		minetest.set_node(pos, node)
+		awards.unlock(player:get_player_name(), "mcl:wax_off")
+		if not minetest.is_creative_enabled(player:get_player_name()) then
+			local tool = itemstack:get_name()
+			local wear = mcl_autogroup.get_wear(tool, "axey")
+			itemstack:add_wear(wear)
+		end
+	else
+		return true
+	end
+end
+
 --[[
 local stairs = {
 	{"stair", "exposed", "_inner", "cut_inner"},

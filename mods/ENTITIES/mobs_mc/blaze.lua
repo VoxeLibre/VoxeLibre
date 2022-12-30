@@ -12,7 +12,7 @@ local mod_target = minetest.get_modpath("mcl_target")
 --###################
 
 
-mcl_mobs:register_mob("mobs_mc:blaze", {
+mcl_mobs.register_mob("mobs_mc:blaze", {
 	description = S("Blaze"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -153,7 +153,7 @@ mcl_vars.mg_nether_min,
 mcl_vars.mg_nether_max)
 
 -- Blaze fireball
-mcl_mobs:register_arrow("mobs_mc:blaze_fireball", {
+mcl_mobs.register_arrow("mobs_mc:blaze_fireball", {
 	visual = "sprite",
 	visual_size = {x = 0.3, y = 0.3},
 	textures = {"mcl_fire_fire_charge.png"},
@@ -208,4 +208,4 @@ mcl_mobs:register_arrow("mobs_mc:blaze_fireball", {
 })
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:blaze", S("Blaze"), "#f6b201", "#fff87e", 0)
+mcl_mobs.register_egg("mobs_mc:blaze", S("Blaze"), "#f6b201", "#fff87e", 0)

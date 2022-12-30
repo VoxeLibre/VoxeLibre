@@ -9,7 +9,7 @@ end
 --Blocks
 minetest.register_node("mcl_blackstone:blackstone", {
 	description = S("Blackstone"),
-	tiles = {"mcl_blackstone.png"},
+	tiles = {"mcl_blackstone_top.png", "mcl_blackstone_top.png", "mcl_blackstone_side.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	groups = {cracky = 3, pickaxey=2, material_stone=1, cobble=1},
@@ -18,7 +18,7 @@ minetest.register_node("mcl_blackstone:blackstone", {
 })
 minetest.register_node("mcl_blackstone:blackstone_gilded", {
 	description = S("Gilded Blackstone"),
-	tiles = {"mcl_blackstone.png^mcl_blackstone_gilded_side.png"},
+	tiles = {"mcl_blackstone_gilded.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	groups = {cracky = 3, pickaxey=2, material_stone=1, xp=1},
@@ -40,7 +40,7 @@ minetest.register_node("mcl_blackstone:blackstone_gilded", {
 })
 minetest.register_node("mcl_blackstone:nether_gold", {
 	description = S("Nether Gold Ore"),
-	tiles = {"mcl_nether_netherrack.png^mcl_blackstone_gilded_side.png"},
+	tiles = {"mcl_nether_gold_ore.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	groups = {cracky = 3, pickaxey=2, material_stone=1, xp=1},

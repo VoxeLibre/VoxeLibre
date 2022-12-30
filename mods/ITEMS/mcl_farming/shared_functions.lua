@@ -69,7 +69,7 @@ function mcl_farming:add_plant(identifier, full_grown, names, interval, chance)
 		interval = interval,
 		chance = chance,
 		action = function(pos, node)
-			local low_speed = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name ~= "mcl_farming:soil_wet"
+			local low_speed = minetest.get_node({ x = pos.x, y = pos.y - 1, z = pos.z }).name ~= "mcl_farming:soil_wet"
 			mcl_farming:grow_plant(identifier, pos, node, false, false, low_speed)
 		end,
 	})
@@ -130,7 +130,7 @@ function mcl_farming:grow_plant(identifier, pos, node, stages, ignore_light, low
 		stages = 1
 	end
 	stages = stages + math.ceil(intervals_counter)
-	local new_node = {name = plant_info.names[step+stages]}
+	local new_node = { name = plant_info.names[step + stages] }
 	if new_node.name == nil then
 		new_node.name = plant_info.full_grown
 	end
@@ -157,14 +157,14 @@ function mcl_farming:place_seed(itemstack, placer, pointed_thing, plantname)
 		end
 	end
 
-	local pos = {x=pt.above.x, y=pt.above.y-1, z=pt.above.z}
+	local pos = { x = pt.above.x, y = pt.above.y - 1, z = pt.above.z }
 	local farmland = minetest.get_node(pos)
-	pos= {x=pt.above.x, y=pt.above.y, z=pt.above.z}
+	pos = { x = pt.above.x, y = pt.above.y, z = pt.above.z }
 	local place_s = minetest.get_node(pos)
 
-	if string.find(farmland.name, "mcl_farming:soil") and string.find(place_s.name, "air")  then
-		minetest.sound_play(minetest.registered_nodes[plantname].sounds.place, {pos = pos}, true)
-		minetest.add_node(pos, {name=plantname, param2 = minetest.registered_nodes[plantname].place_param2})
+	if string.find(farmland.name, "mcl_farming:soil") and string.find(place_s.name, "air") then
+		minetest.sound_play(minetest.registered_nodes[plantname].sounds.place, { pos = pos }, true)
+		minetest.add_node(pos, { name = plantname, param2 = minetest.registered_nodes[plantname].place_param2 })
 		--local intervals_counter = get_intervals_counter(pos, 1, 1)
 	else
 		return
@@ -179,7 +179,7 @@ end
 
 --[[ Helper function to create a gourd (e.g. melon, pumpkin), the connected stem nodes as
 
-- full_unconnected_stem: itemstring of the full-grown but unconnceted stem node. This node must already be done
+- full_unconnected_stem: itemstring of the full-grown but unconnected stem node. This node must already be done
 - connected_stem_basename: prefix of the itemstrings used for the 4 connected stem nodes to create
 - stem_itemstring: Desired itemstring of the fully-grown unconnected stem node
 - stem_def: Partial node definition of the fully-grown unconnected stem node. Many fields are already defined. You need to add `tiles` and `description` at minimum. Don't define on_construct without good reason
@@ -202,10 +202,10 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 	}
 
 	local neighbors = {
-		{ x=-1, y=0, z=0 },
-		{ x=1, y=0, z=0 },
-		{ x=0, y=0, z=-1 },
-		{ x=0, y=0, z=1 },
+		{ x = -1, y = 0, z = 0 },
+		{ x = 1, y = 0, z = 0 },
+		{ x = 0, y = 0, z = -1 },
+		{ x = 0, y = 0, z = 1 },
 	}
 
 	-- Connect the stem at stempos to the first neighboring gourd block.
@@ -215,19 +215,19 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		if stem.name ~= full_unconnected_stem then
 			return false
 		end
-		for n=1, #neighbors do
+		for n = 1, #neighbors do
 			local offset = neighbors[n]
 			local blockpos = vector.add(stempos, offset)
 			local block = minetest.get_node(blockpos)
 			if block.name == gourd_itemstring then
 				if offset.x == 1 then
-					minetest.set_node(stempos, {name=connected_stem_names[1]})
+					minetest.set_node(stempos, { name = connected_stem_names[1] })
 				elseif offset.x == -1 then
-					minetest.set_node(stempos, {name=connected_stem_names[2]})
+					minetest.set_node(stempos, { name = connected_stem_names[2] })
 				elseif offset.z == 1 then
-					minetest.set_node(stempos, {name=connected_stem_names[3]})
+					minetest.set_node(stempos, { name = connected_stem_names[3] })
 				elseif offset.z == -1 then
-					minetest.set_node(stempos, {name=connected_stem_names[4]})
+					minetest.set_node(stempos, { name = connected_stem_names[4] })
 				end
 				return true
 			end
@@ -238,13 +238,13 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 	if not gourd_def.after_destruct then
 		gourd_def.after_destruct = function(blockpos, oldnode)
 			-- Disconnect any connected stems, turning them back to normal stems
-			for n=1, #neighbors do
+			for n = 1, #neighbors do
 				local offset = neighbors[n]
 				local expected_stem = connected_stem_names[n]
 				local stempos = vector.add(blockpos, offset)
 				local stem = minetest.get_node(stempos)
 				if stem.name == expected_stem then
-					minetest.add_node(stempos, {name=full_unconnected_stem})
+					minetest.add_node(stempos, { name = full_unconnected_stem })
 					try_connect_stem(stempos)
 				end
 			end
@@ -253,7 +253,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 	if not gourd_def.on_construct then
 		function gourd_def.on_construct(blockpos)
 			-- Connect all unconnected stems at full size
-			for n=1, #neighbors do
+			for n = 1, #neighbors do
 				local stempos = vector.add(blockpos, neighbors[n])
 				try_connect_stem(stempos)
 			end
@@ -272,7 +272,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		stem_def.selection_box = {
 			type = "fixed",
 			fixed = {
-				{-0.15, -0.5, -0.15, 0.15, 0.5, 0.15}
+				{ -0.15, -0.5, -0.15, 0.15, 0.5, 0.15 }
 			},
 		}
 	end
@@ -292,7 +292,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		stem_def.drop = stem_drop
 	end
 	if stem_def.groups == nil then
-		stem_def.groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1,}
+		stem_def.groups = { dig_immediate = 3, not_in_creative_inventory = 1, plant = 1, attached_node = 1, dig_by_water = 1, destroy_by_lava_flow = 1, }
 	end
 	if stem_def.sounds == nil then
 		stem_def.sounds = mcl_sounds.node_sound_leaves_defaults()
@@ -310,48 +310,48 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 
 	local connected_stem_tiles = {
 		{ "blank.png", --top
-		"blank.png", -- bottom
-		"blank.png", -- right
-		"blank.png", -- left
-		connected_stem_texture, -- back
-		connected_stem_texture.."^[transformFX90" --front
+		  "blank.png", -- bottom
+		  "blank.png", -- right
+		  "blank.png", -- left
+		  connected_stem_texture, -- back
+		  connected_stem_texture .. "^[transformFX90" --front
 		},
 		{ "blank.png", --top
-		"blank.png", -- bottom
-		"blank.png", -- right
-		"blank.png", -- left
-		connected_stem_texture.."^[transformFX90", --back
-		connected_stem_texture, -- front
+		  "blank.png", -- bottom
+		  "blank.png", -- right
+		  "blank.png", -- left
+		  connected_stem_texture .. "^[transformFX90", --back
+		  connected_stem_texture, -- front
 		},
 		{ "blank.png", --top
-		"blank.png", -- bottom
-		connected_stem_texture.."^[transformFX90", -- right
-		connected_stem_texture, -- left
-		"blank.png", --back
-		"blank.png", -- front
+		  "blank.png", -- bottom
+		  connected_stem_texture .. "^[transformFX90", -- right
+		  connected_stem_texture, -- left
+		  "blank.png", --back
+		  "blank.png", -- front
 		},
 		{ "blank.png", --top
-		"blank.png", -- bottom
-		connected_stem_texture, -- right
-		connected_stem_texture.."^[transformFX90", -- left
-		"blank.png", --back
-		"blank.png", -- front
+		  "blank.png", -- bottom
+		  connected_stem_texture, -- right
+		  connected_stem_texture .. "^[transformFX90", -- left
+		  "blank.png", --back
+		  "blank.png", -- front
 		}
 	}
 	local connected_stem_nodebox = {
-		{-0.5, -0.5, 0, 0.5, 0.5, 0},
-		{-0.5, -0.5, 0, 0.5, 0.5, 0},
-		{0, -0.5, -0.5, 0, 0.5, 0.5},
-		{0, -0.5, -0.5, 0, 0.5, 0.5},
+		{ -0.5, -0.5, 0, 0.5, 0.5, 0 },
+		{ -0.5, -0.5, 0, 0.5, 0.5, 0 },
+		{ 0, -0.5, -0.5, 0, 0.5, 0.5 },
+		{ 0, -0.5, -0.5, 0, 0.5, 0.5 },
 	}
 	local connected_stem_selectionbox = {
-		{-0.1, -0.5, -0.1, 0.5, 0.2, 0.1},
-		{-0.5, -0.5, -0.1, 0.1, 0.2, 0.1},
-		{-0.1, -0.5, -0.1, 0.1, 0.2, 0.5},
-		{-0.1, -0.5, -0.5, 0.1, 0.2, 0.1},
+		{ -0.1, -0.5, -0.1, 0.5, 0.2, 0.1 },
+		{ -0.5, -0.5, -0.1, 0.1, 0.2, 0.1 },
+		{ -0.1, -0.5, -0.1, 0.1, 0.2, 0.5 },
+		{ -0.1, -0.5, -0.5, 0.1, 0.2, 0.1 },
 	}
 
-	for i=1, 4 do
+	for i = 1, 4 do
 		minetest.register_node(connected_stem_names[i], {
 			_doc_items_create_entry = false,
 			paramtype = "light",
@@ -369,7 +369,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 			},
 			tiles = connected_stem_tiles[i],
 			use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
-			groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1,},
+			groups = { dig_immediate = 3, not_in_creative_inventory = 1, plant = 1, attached_node = 1, dig_by_water = 1, destroy_by_lava_flow = 1, },
 			sounds = mcl_sounds.node_sound_leaves_defaults(),
 			_mcl_blast_resistance = 0,
 		})
@@ -380,9 +380,9 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 	end
 
 	minetest.register_abm({
-		label = "Grow gourd stem to gourd ("..full_unconnected_stem.." → "..gourd_itemstring..")",
-		nodenames = {full_unconnected_stem},
-		neighbors = {"air"},
+		label = "Grow gourd stem to gourd (" .. full_unconnected_stem .. " → " .. gourd_itemstring .. ")",
+		nodenames = { full_unconnected_stem },
+		neighbors = { "air" },
 		interval = grow_interval,
 		chance = grow_chance,
 		action = function(stempos)
@@ -390,20 +390,20 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 			if light and light > 10 then
 				-- Check the four neighbors and filter out neighbors where gourds can't grow
 				local neighbors = {
-					{ x=-1, y=0, z=0 },
-					{ x=1, y=0, z=0 },
-					{ x=0, y=0, z=-1 },
-					{ x=0, y=0, z=1 },
+					{ x = -1, y = 0, z = 0 },
+					{ x = 1, y = 0, z = 0 },
+					{ x = 0, y = 0, z = -1 },
+					{ x = 0, y = 0, z = 1 },
 				}
 				local floorpos, floor
-				for n=#neighbors, 1, -1 do
+				for n = #neighbors, 1, -1 do
 					local offset = neighbors[n]
 					local blockpos = vector.add(stempos, offset)
-					floorpos = { x=blockpos.x, y=blockpos.y-1, z=blockpos.z }
+					floorpos = vector.offset (blockpos, 0, -1,0) -- replaces { x = blockpos.x, y = blockpos.y - 1, z = blockpos.z }
 					floor = minetest.get_node(floorpos)
 					local block = minetest.get_node(blockpos)
 					local soilgroup = minetest.get_item_group(floor.name, "soil")
-					if not ((minetest.get_item_group(floor.name, "grass_block") == 1 or floor.name=="mcl_core:dirt" or soilgroup == 2 or soilgroup == 3) and block.name == "air") then
+					if not ((minetest.get_item_group(floor.name, "grass_block") == 1 or floor.name == "mcl_core:dirt" or soilgroup == 2 or soilgroup == 3) and block.name == "air") then
 						table.remove(neighbors, n)
 					end
 				end
@@ -416,27 +416,35 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 					local blockpos = vector.add(stempos, offset)
 					local p2
 					if offset.x == 1 then
-						minetest.set_node(stempos, {name=connected_stem_names[1]})
+						minetest.set_node(stempos, { name = connected_stem_names[1] })
 						p2 = 3
 					elseif offset.x == -1 then
-						minetest.set_node(stempos, {name=connected_stem_names[2]})
+						minetest.set_node(stempos, { name = connected_stem_names[2] })
 						p2 = 1
 					elseif offset.z == 1 then
-						minetest.set_node(stempos, {name=connected_stem_names[3]})
+						minetest.set_node(stempos, { name = connected_stem_names[3] })
 						p2 = 2
 					elseif offset.z == -1 then
-						minetest.set_node(stempos, {name=connected_stem_names[4]})
+						minetest.set_node(stempos, { name = connected_stem_names[4] })
 						p2 = 0
 					end
 					-- Place the gourd
 					if gourd_def.paramtype2 == "facedir" then
-						minetest.add_node(blockpos, {name=gourd_itemstring, param2=p2})
+						minetest.add_node(blockpos, { name = gourd_itemstring, param2 = p2 })
 					else
-						minetest.add_node(blockpos, {name=gourd_itemstring})
+						minetest.add_node(blockpos, { name = gourd_itemstring })
 					end
+
 					-- Reset farmland, etc. to dirt when the gourd grows on top
+
+					-- FIXED: The following 2 lines were missing, and wasn't being set (outside of the above loop that
+					-- finds the neighbors.)
+					-- FYI - don't factor this out thinking that the loop above is setting the positions correctly.
+					floorpos = vector.offset (blockpos, 0, -1,0) -- replaces { x = blockpos.x, y = blockpos.y - 1, z = blockpos.z }
+					floor = minetest.get_node(floorpos)
+					-- END OF FIX -------------------------------------
 					if minetest.get_item_group(floor.name, "dirtifies_below_solid") == 1 then
-						minetest.set_node(floorpos, {name = "mcl_core:dirt"})
+						minetest.set_node(floorpos, { name = "mcl_core:dirt" })
 					end
 				end
 			end
@@ -452,7 +460,7 @@ end
 function mcl_farming:stem_color(startcolor, endcolor, step, step_count)
 	local color = {}
 	local function get_component(startt, endd, step, step_count)
-		return math.floor(math.max(0, math.min(255, (startt + (((step-1)/step_count) * endd)))))
+		return math.floor(math.max(0, math.min(255, (startt + (((step - 1) / step_count) * endd)))))
 	end
 	color.r = get_component(startcolor.r, endcolor.r, step, step_count)
 	color.g = get_component(startcolor.g, endcolor.g, step, step_count)
@@ -464,14 +472,14 @@ end
 minetest.register_lbm({
 	label = "Add growth for unloaded farming plants",
 	name = "mcl_farming:growth",
-	nodenames = {"group:plant"},
+	nodenames = { "group:plant" },
 	run_at_every_load = true,
 	action = function(pos, node)
 		local identifier = plant_nodename_to_id_list[node.name]
 		if not identifier then
 			return
 		end
-		local low_speed = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name ~= "mcl_farming:soil_wet"
+		local low_speed = minetest.get_node({ x = pos.x, y = pos.y - 1, z = pos.z }).name ~= "mcl_farming:soil_wet"
 		mcl_farming:grow_plant(identifier, pos, node, false, false, low_speed)
 	end,
 })

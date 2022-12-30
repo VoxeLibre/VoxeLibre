@@ -1,30 +1,48 @@
 local S = minetest.get_translator(minetest.get_current_modname())
+local F = minetest.formspec_escape
+local C = minetest.colorize
+
+local LOGGING_ON = minetest.settings:get_bool("mcl_logging_hoppers", false)
+local function mcl_log(message)
+	if LOGGING_ON then
+		mcl_util.mcl_log(message, "[Hoppers]", true)
+	end
+end
 
 --[[ BEGIN OF NODE DEFINITIONS ]]
 
-local mcl_hoppers_formspec =
-	"size[9,7]"..
-	"label[2,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Hopper"))).."]"..
-	"list[context;main;2,0.5;5,1;]"..
-	mcl_formspec.get_itemslot_bg(2,0.5,5,1)..
-	"label[0,2;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
-	"list[current_player;main;0,2.5;9,3;9]"..
-	mcl_formspec.get_itemslot_bg(0,2.5,9,3)..
-	"list[current_player;main;0,5.74;9,1;]"..
-	mcl_formspec.get_itemslot_bg(0,5.74,9,1)..
-	"listring[context;main]"..
-	"listring[current_player;main]"
+local mcl_hoppers_formspec = table.concat({
+	"size[9,7]",
+	"label[2,0;" .. F(C("#313131", S("Hopper"))) .. "]",
+	"list[context;main;2,0.5;5,1;]",
+	mcl_formspec.get_itemslot_bg(2, 0.5, 5, 1),
+	"label[0,2;" .. F(C("#313131", S("Inventory"))) .. "]",
+	"list[current_player;main;0,2.5;9,3;9]",
+	mcl_formspec.get_itemslot_bg(0, 2.5, 9, 3),
+	"list[current_player;main;0,5.74;9,1;]",
+	mcl_formspec.get_itemslot_bg(0, 5.74, 9, 1),
+	"listring[context;main]",
+	"listring[current_player;main]",
+})
 
 -- Downwards hopper (base definition)
 
+---@type node_definition
 local def_hopper = {
 	inventory_image = "mcl_hoppers_item.png",
 	wield_image = "mcl_hoppers_item.png",
-	groups = {pickaxey=1, container=2,deco_block=1,hopper=1},
+	groups = {pickaxey = 1, container = 2, deco_block = 1, hopper = 1},
 	drawtype = "nodebox",
 	paramtype = "light",
 	-- FIXME: mcl_hoppers_hopper_inside.png is unused by hoppers.
-	tiles = {"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png"},
+	tiles = {
+		"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+	},
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -64,10 +82,10 @@ local def_hopper = {
 		local meta2 = meta:to_table()
 		meta:from_table(oldmetadata)
 		local inv = meta:get_inventory()
-		for i=1,inv:get_size("main") do
+		for i = 1, inv:get_size("main") do
 			local stack = inv:get_stack("main", i)
 			if not stack:is_empty() then
-				local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
+				local p = vector.offset(pos, math.random(0, 10) / 10 - 0.5, 0, math.random(0, 10) / 10 - 0.5)
 				minetest.add_item(p, stack)
 			end
 		end
@@ -101,16 +119,16 @@ local def_hopper = {
 		end
 	end,
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-		minetest.log("action", player:get_player_name()..
-				" moves stuff in mcl_hoppers at "..minetest.pos_to_string(pos))
+		minetest.log("action", player:get_player_name() ..
+			" moves stuff in mcl_hoppers at " .. minetest.pos_to_string(pos))
 	end,
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name()..
-				" moves stuff to mcl_hoppers at "..minetest.pos_to_string(pos))
+		minetest.log("action", player:get_player_name() ..
+			" moves stuff to mcl_hoppers at " .. minetest.pos_to_string(pos))
 	end,
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name()..
-				" takes stuff from mcl_hoppers at "..minetest.pos_to_string(pos))
+		minetest.log("action", player:get_player_name() ..
+			" takes stuff from mcl_hoppers at " .. minetest.pos_to_string(pos))
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 
@@ -124,18 +142,22 @@ local def_hopper = {
 -- Enabled downwards hopper
 local def_hopper_enabled = table.copy(def_hopper)
 def_hopper_enabled.description = S("Hopper")
-def_hopper_enabled._tt_help = S("5 inventory slots").."\n"..S("Collects items from above, moves items to container below").."\n"..S("Can be disabled with redstone power")
-def_hopper_enabled._doc_items_longdesc = S("Hoppers are containers with 5 inventory slots. They collect dropped items from above, take items from a container above and attempt to put its items it into an adjacent container. Hoppers can go either downwards or sideways. Hoppers interact with chests, droppers, dispensers, shulker boxes, furnaces and hoppers.").."\n\n"..
+def_hopper_enabled._tt_help = S("5 inventory slots") ..
+	"\n" .. S("Collects items from above, moves items to container below") .. "\n" ..
+	S("Can be disabled with redstone power")
+def_hopper_enabled._doc_items_longdesc = S("Hoppers are containers with 5 inventory slots. They collect dropped items from above, take items from a container above and attempt to put its items it into an adjacent container. Hoppers can go either downwards or sideways. Hoppers interact with chests, droppers, dispensers, shulker boxes, furnaces and hoppers.")
+	.. "\n\n" ..
 
-S("Hoppers interact with containers the following way:").."\n"..
-S("• Furnaces: Hoppers from above will put items into the source slot. Hoppers from below take items from the output slot. They also take items from the fuel slot when they can't be used as a fuel. Sideway hoppers that point to the furnace put items into the fuel slot").."\n"..
-S("• Ender chests: No interaction.").."\n"..
-S("• Other containers: Normal interaction.").."\n\n"..
+	S("Hoppers interact with containers the following way:") .. "\n" ..
+	S("• Furnaces: Hoppers from above will put items into the source slot. Hoppers from below take items from the output slot. They also take items from the fuel slot when they can't be used as a fuel. Sideway hoppers that point to the furnace put items into the fuel slot")
+	.. "\n" ..
+	S("• Ender chests: No interaction.") .. "\n" ..
+	S("• Other containers: Normal interaction.") .. "\n\n" ..
 
-S("Hoppers can be disabled when supplied with redstone power. Disabled hoppers don't move items.")
+	S("Hoppers can be disabled when supplied with redstone power. Disabled hoppers don't move items.")
 def_hopper_enabled._doc_items_usagehelp = S("To place a hopper vertically, place it on the floor or a ceiling. To place it sideways, place it at the side of a block. Use the hopper to access its inventory.")
 def_hopper_enabled.on_place = function(itemstack, placer, pointed_thing)
-	local upos  = pointed_thing.under
+	local upos = pointed_thing.under
 	local apos = pointed_thing.above
 
 	local uposnode = minetest.get_node(upos)
@@ -166,21 +188,22 @@ def_hopper_enabled.on_place = function(itemstack, placer, pointed_thing)
 		fake_itemstack:set_name("mcl_hoppers:hopper_side")
 		param2 = 1
 	end
-	local itemstack,_ = minetest.item_place_node(fake_itemstack, placer, pointed_thing, param2)
+	local itemstack, _ = minetest.item_place_node(fake_itemstack, placer, pointed_thing, param2)
 	itemstack:set_name("mcl_hoppers:hopper")
 	return itemstack
 end
 def_hopper_enabled.mesecons = {
 	effector = {
 		action_on = function(pos, node)
-			minetest.swap_node(pos, {name="mcl_hoppers:hopper_disabled", param2=node.param2})
+			minetest.swap_node(pos, {name = "mcl_hoppers:hopper_disabled", param2 = node.param2})
 		end,
 	},
 }
 
 minetest.register_node("mcl_hoppers:hopper", def_hopper_enabled)
 
--- Disabled downwards hopper
+---Disabled downwards hopper
+---@type node_definition
 local def_hopper_disabled = table.copy(def_hopper)
 def_hopper_disabled.description = S("Disabled Hopper")
 def_hopper_disabled.inventory_image = nil
@@ -190,7 +213,7 @@ def_hopper_disabled.drop = "mcl_hoppers:hopper"
 def_hopper_disabled.mesecons = {
 	effector = {
 		action_off = function(pos, node)
-			minetest.swap_node(pos, {name="mcl_hoppers:hopper", param2=node.param2})
+			minetest.swap_node(pos, {name = "mcl_hoppers:hopper", param2 = node.param2})
 		end,
 	},
 }
@@ -204,15 +227,23 @@ if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.rotate_simple
 end
 
--- Sidewars hopper (base definition)
+---Sidewars hopper (base definition)
+---@type node_definition
 local def_hopper_side = {
 	_doc_items_create_entry = false,
 	drop = "mcl_hoppers:hopper",
-	groups = {pickaxey=1, container=2,not_in_creative_inventory=1,hopper=2},
+	groups = {pickaxey = 1, container = 2, not_in_creative_inventory = 1, hopper = 2},
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",
-	tiles = {"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png"},
+	tiles = {
+		"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_outside.png",
+	},
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -252,10 +283,10 @@ local def_hopper_side = {
 		local meta2 = meta
 		meta:from_table(oldmetadata)
 		local inv = meta:get_inventory()
-		for i=1,inv:get_size("main") do
+		for i = 1, inv:get_size("main") do
 			local stack = inv:get_stack("main", i)
 			if not stack:is_empty() then
-				local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
+				local p = vector.offset(pos, math.random(0, 10) / 10 - 0.5, 0, math.random(0, 10) / 10 - 0.5)
 				minetest.add_item(p, stack)
 			end
 		end
@@ -289,16 +320,16 @@ local def_hopper_side = {
 		end
 	end,
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-		minetest.log("action", player:get_player_name()..
-				" moves stuff in mcl_hoppers at "..minetest.pos_to_string(pos))
+		minetest.log("action", player:get_player_name() ..
+			" moves stuff in mcl_hoppers at " .. minetest.pos_to_string(pos))
 	end,
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name()..
-				" moves stuff to mcl_hoppers at "..minetest.pos_to_string(pos))
+		minetest.log("action", player:get_player_name() ..
+			" moves stuff to mcl_hoppers at " .. minetest.pos_to_string(pos))
 	end,
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name()..
-				" takes stuff from mcl_hoppers at "..minetest.pos_to_string(pos))
+		minetest.log("action", player:get_player_name() ..
+			" takes stuff from mcl_hoppers at " .. minetest.pos_to_string(pos))
 	end,
 	on_rotate = on_rotate,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
@@ -307,23 +338,25 @@ local def_hopper_side = {
 	_mcl_hardness = 3,
 }
 
+---@type node_definition
 local def_hopper_side_enabled = table.copy(def_hopper_side)
 def_hopper_side_enabled.description = S("Side Hopper")
 def_hopper_side_enabled.mesecons = {
 	effector = {
 		action_on = function(pos, node)
-			minetest.swap_node(pos, {name="mcl_hoppers:hopper_side_disabled", param2=node.param2})
+			minetest.swap_node(pos, {name = "mcl_hoppers:hopper_side_disabled", param2 = node.param2})
 		end,
 	},
 }
 minetest.register_node("mcl_hoppers:hopper_side", def_hopper_side_enabled)
 
+---@type node_definition
 local def_hopper_side_disabled = table.copy(def_hopper_side)
 def_hopper_side_disabled.description = S("Disabled Side Hopper")
 def_hopper_side_disabled.mesecons = {
 	effector = {
 		action_off = function(pos, node)
-			minetest.swap_node(pos, {name="mcl_hoppers:hopper_side", param2=node.param2})
+			minetest.swap_node(pos, {name = "mcl_hoppers:hopper_side", param2 = node.param2})
 		end,
 	},
 }
@@ -331,16 +364,102 @@ minetest.register_node("mcl_hoppers:hopper_side_disabled", def_hopper_side_disab
 
 --[[ END OF NODE DEFINITIONS ]]
 
+local function hopper_pull_from_mc(mc_ent, dest_pos, inv_size)
+	local inv = mcl_entity_invs.load_inv(mc_ent, inv_size)
+	if not inv then
+		mcl_log("No inv")
+		return false
+	end
+
+	local dest_meta = minetest.get_meta(dest_pos)
+	local dest_inv = dest_meta:get_inventory()
+	if not dest_inv then
+		mcl_log("No dest inv")
+		return
+	end
+
+	mcl_log("inv. size: " .. mc_ent._inv_size)
+	for i = 1, mc_ent._inv_size, 1 do
+		local stack = inv:get_stack("main", i)
+
+		mcl_log("i: " .. tostring(i))
+		mcl_log("Name: [" .. tostring(stack:get_name()) .. "]")
+		mcl_log("Count: " .. tostring(stack:get_count()))
+		mcl_log("stack max: " .. tostring(stack:get_stack_max()))
+
+		if not stack:get_name() or stack:get_name() ~= "" then
+			if dest_inv:room_for_item("main", stack:peek_item()) then
+				mcl_log("Room so unload")
+				dest_inv:add_item("main", stack:take_item())
+				inv:set_stack("main", i, stack)
+
+				-- Take one item and stop until next time
+				return
+			else
+				mcl_log("no Room")
+			end
+
+		else
+			mcl_log("nothing there")
+		end
+	end
+end
+
 --[[ BEGIN OF ABM DEFINITONS ]]
+
+minetest.register_abm({
+	label = "Hoppers pull from minecart hoppers",
+	nodenames = {"mcl_hoppers:hopper", "mcl_hoppers:hopper_side"},
+	interval = 0.5,
+	chance = 1,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		mcl_log("ABM for: " .. minetest.pos_to_string(pos))
+		local objs = minetest.get_objects_inside_radius(pos, 3)
+
+		if objs and #objs > 0 then
+			for k, v in pairs(objs) do
+				local entity = v:get_luaentity()
+				if entity and entity.name then
+					--mcl_log("Name of object near: " .. tostring(entity.name))
+
+					if entity.name == "mcl_minecarts:hopper_minecart" or entity.name == "mcl_minecarts:chest_minecart" then
+						local hm_pos = entity.object:get_pos()
+						mcl_log("We have a minecart with inventory close: " .. minetest.pos_to_string(hm_pos))
+
+						--if hm_pos.y == pos.y + 1 then mcl_log("y is correct") end
+						--if (hm_pos.x >= pos.x - DIST_FROM_MC and hm_pos.x <= pos.x + DIST_FROM_MC) then mcl_log("x is within range") end
+						--if (hm_pos.z >= pos.z - DIST_FROM_MC and hm_pos.z <= pos.z + DIST_FROM_MC) then mcl_log("z is within range") end
+
+						local DIST_FROM_MC = 1.5
+						if (hm_pos.y == pos.y + 1)
+							and (hm_pos.x >= pos.x - DIST_FROM_MC and hm_pos.x <= pos.x + DIST_FROM_MC)
+							and (hm_pos.z >= pos.z - DIST_FROM_MC and hm_pos.z <= pos.z + DIST_FROM_MC) then
+							mcl_log("Minecart close enough")
+							if entity.name == "mcl_minecarts:hopper_minecart" then
+								hopper_pull_from_mc(entity, pos, 5)
+							elseif entity.name == "mcl_minecarts:chest_minecart" then
+								hopper_pull_from_mc(entity, pos, 27)
+							end
+						end
+					end
+				else
+					mcl_log("no entity")
+				end
+			end
+		else
+			mcl_log("objs missing")
+		end
+	end,
+})
 
 -- Make hoppers suck in dropped items
 minetest.register_abm({
 	label = "Hoppers suck in dropped items",
-	nodenames = {"mcl_hoppers:hopper","mcl_hoppers:hopper_side"},
+	nodenames = {"mcl_hoppers:hopper", "mcl_hoppers:hopper_side"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		local abovenode = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z})
+		local abovenode = minetest.get_node(vector.offset(pos, 0, 1, 0))
 		if not minetest.registered_items[abovenode.name] then return end
 		-- Don't bother checking item enties if node above is a container (should save some CPU)
 		if minetest.get_item_group(abovenode.name, "container") ~= 0 then
@@ -349,15 +468,16 @@ minetest.register_abm({
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 
-		for _,object in pairs(minetest.get_objects_inside_radius(pos, 2)) do
-			if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and not object:get_luaentity()._removed then
+		for _, object in pairs(minetest.get_objects_inside_radius(pos, 2)) do
+			if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and
+				not object:get_luaentity()._removed then
 				if inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
 					-- Item must get sucked in when the item just TOUCHES the block above the hopper
 					-- This is the reason for the Y calculation.
 					-- Test: Items on farmland and slabs get sucked, but items on full blocks don't
 					local posob = object:get_pos()
 					local posob_miny = posob.y + object:get_properties().collisionbox[2]
-					if math.abs(posob.x-pos.x) <= 0.5 and (posob_miny-pos.y < 1.5 and posob.y-pos.y >= 0.3) then
+					if math.abs(posob.x - pos.x) <= 0.5 and (posob_miny - pos.y < 1.5 and posob.y - pos.y >= 0.3) then
 						inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
 						object:get_luaentity().itemstring = ""
 						object:remove()
@@ -368,8 +488,14 @@ minetest.register_abm({
 	end,
 })
 
--- Returns true if itemstack is fuel, but not for lava bucket if destination already has one
-local is_transferrable_fuel = function(itemstack, src_inventory, src_list, dst_inventory, dst_list)
+---Returns true if itemstack is fuel, but not for lava bucket if destination already has one
+---@param itemstack ItemStack
+---@param src_inventory InvRef
+---@param src_list string
+---@param dst_inventory InvRef
+---@param dst_list string
+---@return boolean
+local function is_transferrable_fuel(itemstack, src_inventory, src_list, dst_inventory, dst_list)
 	if mcl_util.is_fuel(itemstack) then
 		if itemstack:get_name() == "mcl_buckets:bucket_lava" then
 			return dst_inventory:is_empty(dst_list)
@@ -381,8 +507,6 @@ local is_transferrable_fuel = function(itemstack, src_inventory, src_list, dst_i
 	end
 end
 
-
-
 minetest.register_abm({
 	label = "Hopper/container item exchange",
 	nodenames = {"mcl_hoppers:hopper"},
@@ -391,8 +515,8 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		-- Get node pos' for item transfer
-		local uppos = {x=pos.x,y=pos.y+1,z=pos.z}
-		local downpos = {x=pos.x,y=pos.y-1,z=pos.z}
+		local uppos   = vector.offset(pos, 0, 1, 0)
+		local downpos = vector.offset(pos, 0, -1, 0)
 
 		-- Suck an item from the container above into the hopper
 		local upnode = minetest.get_node(uppos)
@@ -402,7 +526,7 @@ minetest.register_abm({
 
 		-- Also suck in non-fuel items from furnace fuel slot
 		if not sucked and g == 4 then
-			local finv = minetest.get_inventory({type="node", pos=uppos})
+			local finv = minetest.get_inventory({type = "node", pos = uppos})
 			if finv and not mcl_util.is_fuel(finv:get_stack("fuel", 1)) then
 				mcl_util.move_item_container(uppos, pos, "fuel")
 			end
@@ -426,15 +550,15 @@ minetest.register_abm({
 		local face = minetest.get_node(pos).param2
 		local front = {}
 		if face == 0 then
-			front = {x=pos.x-1,y=pos.y,z=pos.z}
+			front = vector.offset(pos, -1, 0, 0)
 		elseif face == 1 then
-			front = {x=pos.x,y=pos.y,z=pos.z+1}
+			front = vector.offset(pos, 0, 0, 1)
 		elseif face == 2 then
-			front = {x=pos.x+1,y=pos.y,z=pos.z}
+			front = vector.offset(pos, 1, 0, 0)
 		elseif face == 3 then
-			front = {x=pos.x,y=pos.y,z=pos.z-1}
+			front = vector.offset(pos, 0, 0, -1)
 		end
-		local above = {x=pos.x,y=pos.y+1,z=pos.z}
+		local above = vector.offset(pos, 0, 1, 0)
 
 		local frontnode = minetest.get_node(front)
 		if not minetest.registered_nodes[frontnode.name] then return end
@@ -447,7 +571,7 @@ minetest.register_abm({
 
 		-- Also suck in non-fuel items from furnace fuel slot
 		if not sucked and g == 4 then
-			local finv = minetest.get_inventory({type="node", pos=above})
+			local finv = minetest.get_inventory({type = "node", pos = above})
 			if finv and not mcl_util.is_fuel(finv:get_stack("fuel", 1)) then
 				mcl_util.move_item_container(above, pos, "fuel")
 			end
@@ -459,9 +583,9 @@ minetest.register_abm({
 			mcl_util.move_item_container(pos, front)
 		elseif g == 4 then
 			-- Put fuel into fuel slot
-			local sinv = minetest.get_inventory({type="node", pos = pos})
-			local dinv = minetest.get_inventory({type="node", pos = front})
-			local slot_id,_ = mcl_util.get_eligible_transfer_item_slot(sinv, "main", dinv, "fuel", is_transferrable_fuel)
+			local sinv = minetest.get_inventory({type = "node", pos = pos})
+			local dinv = minetest.get_inventory({type = "node", pos = front})
+			local slot_id, _ = mcl_util.get_eligible_transfer_item_slot(sinv, "main", dinv, "fuel", is_transferrable_fuel)
 			if slot_id then
 				mcl_util.move_item_container(pos, front, nil, slot_id, "fuel")
 			end
@@ -469,110 +593,124 @@ minetest.register_abm({
 	end
 })
 
-minetest.register_abm({
-    label = "Bonemeal extraction from composter",
-    nodenames = {"mcl_hoppers:hopper", "mcl_hoppers:hopper_side"},
-    neighbors = {"mcl_composters:composter_ready"},
-    interval = 1.0,
-    chance = 1,
-    action = function(pos, node, active_object_count, active_object_count_wider)
-        		local uppos = {x=pos.x,y=pos.y+1,z=pos.z}
-        		local downpos = {x=pos.x,y=pos.y-1,z=pos.z}
-		    local meta = minetest.get_meta(pos)
-            local inv = meta:get_inventory()
-        		-- Get bonemeal from composter above
-        		local upnode = minetest.get_node(uppos)
-      		if upnode.name == "mcl_composters:composter_ready" then
-                minetest.swap_node(uppos, {name="mcl_composters:composter"})
-                inv:add_item("main", "mcl_dye:white")
-         	end
-        end,
-})
+if minetest.get_modpath("mcl_composters") then
+	minetest.register_abm({
+		label = "Bonemeal extraction from composter",
+		nodenames = {"mcl_hoppers:hopper", "mcl_hoppers:hopper_side"},
+		neighbors = {"mcl_composters:composter_ready"},
+		interval = 1.0,
+		chance = 1,
+		action = function(pos, node, active_object_count, active_object_count_wider)
+			local uppos = vector.offset(pos, 0, 1, 0)
+			--local downpos = vector.offset(pos, 0, -1, 0)
 
-minetest.register_abm({
-    label = "Add compostable items on composter",
-    nodenames = {"mcl_hoppers:hopper"},
-    neighbors = {"mcl_composters:composter", "mcl_composters:composter_1", "mcl_composters:composter_2",
-                "mcl_composters:composter_3", "mcl_composters:composter_4", "mcl_composters:composter_5",
-                "mcl_composters:composter_6", "mcl_composters:composter_7",},
-    interval = 1.0,
-    chance = 1,
-    action = function(pos, node, active_object_count, active_object_count_wider)
-            local uppos = {x=pos.x,y=pos.y+1,z=pos.z}
-            local downpos = {x=pos.x,y=pos.y-1,z=pos.z}
-            local meta = minetest.get_meta(pos)
-            local inv = meta:get_inventory()
-            --Consume compostable items and update composter below
-            local downnode = minetest.get_node(downpos)
-            if downnode.name == "mcl_composters:composter" or downnode.name == "mcl_composters:composter_1"
-            or downnode.name == "mcl_composters:composter_2" or downnode.name == "mcl_composters:composter_3"
-            or downnode.name == "mcl_composters:composter_4" or downnode.name == "mcl_composters:composter_5"
-            or downnode.name == "mcl_composters:composter_6" or downnode.name == "mcl_composters:composter_7" then
-                local itemcomp = inv:get_list("main")
-                local hslot = mcl_util.get_first_occupied_inventory_slot(minetest.get_inventory({type="node", pos = pos}), "main")
-                if hslot == nil then return	end
-                local compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
-                if compchance == 0 then
-                    hslot = hslot+1
-                    if hslot == 6 then return end
-                    compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
-                    if compchance == 0 then
-                        hslot = hslot+1
-                        if hslot == 6 then return end
-                        compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
-                        if compchance == 0 then
-                            hslot = hslot+1
-                            if hslot == 6 then return end
-                            compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
-       		    		   		if compchance == 0 then
-          		      		    	hslot = hslot+1
-                                if hslot == 6 then return end
-                                compchance = minetest.get_item_group(itemcomp[hslot]:get_name(), "compostability")
-                            end
-                        end
-                    end
-                end	
-                if compchance > 0 then
-                    itemcomp[hslot]:take_item()
-                    inv:set_list("main", itemcomp)                   
-                    local rand = math.random(0,100)
-                    if compchance >= rand then
-                        local level = 0
-                        if downnode.name == "mcl_composters:composter_1" then
-                            level = 1
-                        elseif downnode.name == "mcl_composters:composter_2" then
-                            level = 2
-                        elseif downnode.name == "mcl_composters:composter_3" then
-                            level = 3
-                        elseif downnode.name == "mcl_composters:composter_4" then
-                            level = 4
-                        elseif downnode.name == "mcl_composters:composter_5" then
-                            level = 5
-                        elseif downnode.name == "mcl_composters:composter_6" then
-                            level = 6
-                        elseif downnode.name == "mcl_composters:composter_7" then
-                            level = 7
-                        end
-                        mcl_dye.add_bone_meal_particle(vector.offset(downpos, 0, level/8, 0))
-                        if level < 7 then
-                            level = level + 1
-                        else
-                            level = "ready"
-                        end
-                        minetest.swap_node(downpos, {name="mcl_composters:composter_" .. level})
-                    end
-                end
-            end
-        end,
-})
+			-- Get bonemeal from composter above
+			local upnode = minetest.get_node(uppos)
+			if upnode.name == "mcl_composters:composter_ready" then
+				local meta = minetest.get_meta(pos)
+				local inv = meta:get_inventory()
+
+				minetest.swap_node(uppos, {name = "mcl_composters:composter"})
+
+				inv:add_item("main", "mcl_bone_meal:bone_meal")
+			end
+		end,
+	})
+
+	---@param node node
+	---@return integer?
+	---@nodiscard
+	local function composter_level(node)
+		local nn = node.name
+		if nn == "mcl_composters:composter" then
+			return 0
+		elseif nn == "mcl_composters:composter_1" then
+			return 1
+		elseif nn == "mcl_composters:composter_2" then
+			return 2
+		elseif nn == "mcl_composters:composter_3" then
+			return 3
+		elseif nn == "mcl_composters:composter_4" then
+			return 4
+		elseif nn == "mcl_composters:composter_5" then
+			return 5
+		elseif nn == "mcl_composters:composter_6" then
+			return 6
+		elseif nn == "mcl_composters:composter_7" then
+			return 7
+		else
+			return nil
+		end
+	end
+
+	for i = 1, 7 do
+		assert(composter_level({name = "mcl_composters:composter_" .. i}) == i)
+	end
+
+	assert(composter_level({name = "mcl_composters:composter"}) == 0)
+	assert(composter_level({name = "mcl_composters:some_other_node"}) == nil)
+
+	minetest.register_abm({
+		label = "Add compostable items on composter",
+		nodenames = {"mcl_hoppers:hopper"},
+		neighbors = {
+			"mcl_composters:composter",
+			"mcl_composters:composter_1",
+			"mcl_composters:composter_2",
+			"mcl_composters:composter_3",
+			"mcl_composters:composter_4",
+			"mcl_composters:composter_5",
+			"mcl_composters:composter_6",
+			"mcl_composters:composter_7",
+		},
+		interval = 1.0,
+		chance = 1,
+		action = function(pos, node, active_object_count, active_object_count_wider)
+			--local uppos = vector.offset(pos, 0, 1, 0)
+			local downpos = vector.offset(pos, 0, -1, 0)
+
+			local downnode = minetest.get_node(downpos)
+
+			---@type integer|string|nil
+			local level = composter_level(downnode)
+
+			--Consume compostable items and update composter below
+			if level then
+				local meta = minetest.get_meta(pos)
+				local inv = meta:get_inventory()
+
+				for i = 1, 5 do
+					local stack = inv:get_stack("main", i)
+					local compchance = minetest.get_item_group(stack:get_name(), "compostability")
+
+					if compchance > 0 then
+						stack:take_item()
+						inv:set_stack("main", i, stack)
+
+						if compchance >= math.random(0, 100) then
+							mcl_dye.add_bone_meal_particle(vector.offset(downpos, 0, level / 8, 0))
+							if level < 7 then
+								level = level + 1
+							else
+								level = "ready"
+							end
+							minetest.swap_node(downpos, {name = "mcl_composters:composter_" .. level})
+						end
+						break
+					end
+				end
+			end
+		end,
+	})
+end
 
 minetest.register_craft({
 	output = "mcl_hoppers:hopper",
 	recipe = {
-		{"mcl_core:iron_ingot","","mcl_core:iron_ingot"},
-		{"mcl_core:iron_ingot","mcl_chests:chest","mcl_core:iron_ingot"},
-		{"","mcl_core:iron_ingot",""},
-	}
+		{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
+		{"mcl_core:iron_ingot", "mcl_chests:chest", "mcl_core:iron_ingot"},
+		{"", "mcl_core:iron_ingot", ""},
+	},
 })
 
 -- Add entry aliases for the Help
@@ -586,7 +724,7 @@ minetest.register_alias("mcl_hoppers:hopper_item", "mcl_hoppers:hopper")
 minetest.register_lbm({
 	label = "Update hopper formspecs (0.60.0",
 	name = "mcl_hoppers:update_formspec_0_60_0",
-	nodenames = { "group:hopper" },
+	nodenames = {"group:hopper"},
 	run_at_every_load = false,
 	action = function(pos, node)
 		local meta = minetest.get_meta(pos)

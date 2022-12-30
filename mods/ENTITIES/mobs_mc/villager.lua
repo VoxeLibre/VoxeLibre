@@ -30,6 +30,8 @@ local DEFAULT_WALK_CHANCE = 33 -- chance to walk in percent, if no player nearby
 local PLAYER_SCAN_INTERVAL = 5 -- every X seconds, villager looks for players nearby
 local PLAYER_SCAN_RADIUS = 4 -- scan radius for looking for nearby players
 
+local RESETTLE_DISTANCE = 100 -- If a mob is transported this far from home, it gives up bed and job and resettles
+
 local PATHFINDING = "gowp"
 
 --[=======[ TRADING ]=======]
@@ -477,7 +479,7 @@ local professions = {
 			},
 			{
 			{ { "mcl_core:gold_ingot", 3, 3 }, E1 },
-			{ E1, { "mcl_dye:blue", 1, 1 } },
+			{ E1, { "mcl_core:lapis", 1, 1 } },
 			},
 			{
 			{ { "mcl_mobitems:rabbit_foot", 2, 2 }, E1 },
@@ -807,7 +809,7 @@ local function go_home(entity, sleep)
 			return
 		end
 
-		mcl_mobs:gopath(entity,b,function(entity,b)
+		entity:gopath(b,function(entity,b)
 			local b = entity._bed
 
 			if not b then
@@ -843,7 +845,6 @@ local function take_bed (entity)
 		mcl_log("Can we path to bed: "..minetest.pos_to_string(closest_block) )
 		local distance_to_block = vector.distance(p, closest_block)
 		mcl_log("Distance: " .. distance_to_block)
-
 		if distance_to_block < 2 then
 			local m = minetest.get_meta(closest_block)
 			local owner = m:get_string("villager")
@@ -864,7 +865,7 @@ local function take_bed (entity)
 				mcl_log("Set as sleep already..." )
 			end
 		else
-			local gp = mcl_mobs:gopath(entity, closest_block,function(self) end)
+			local gp = entity:gopath(closest_block,function(self) end)
 			if gp then
 				mcl_log("Nice bed. I'll defintely take it as I can path")
 			else
@@ -885,11 +886,18 @@ local function has_golem(pos)
 	end
 end
 
+local function monsters_near(self)
+	for _,o in pairs(minetest.get_objects_inside_radius(self.object:get_pos(),10)) do
+		local l = o:get_luaentity()
+		if l and l.type =="monster" then return true end
+	end
+end
+
 local function has_summon_participants(self)
 	local r = 0
 	for _,o in pairs(minetest.get_objects_inside_radius(self.object:get_pos(),10)) do
 		local l = o:get_luaentity()
-		--TODO check for panicking or gossiping
+		--TODO check for gossiping
 		if l and l.name == "mobs_mc:villager" then r = r + 1 end
 	end
 	return r > 2
@@ -913,7 +921,8 @@ local function check_summon(self,dtime)
 	if self._summon_timer and self._summon_timer > 30 then
 		local pos = self.object:get_pos()
 		self._summon_timer = 0
-		if has_golem(pos) then return false end
+		if has_golem(pos) then return end
+		if not monsters_near(self) then return end
 		if not has_summon_participants(self) then return end
 		summon_golem(self)
 	elseif self._summon_timer == nil  then
@@ -1025,7 +1034,7 @@ local function look_for_job(self, requested_jobsites)
 	if closest_block then
 		mcl_log("It's a free job for me (" .. minetest.pos_to_string(p) .. ")! I might be interested: ".. minetest.pos_to_string(closest_block) )
 
-		local gp = mcl_mobs:gopath(self, closest_block,function(self)
+		local gp = self:gopath(closest_block,function(self)
 			mcl_log("Arrived at block callback")
 			if self and self.state == "stand" then
 				self.order = WORK
@@ -1089,25 +1098,38 @@ local function retrieve_my_jobsite (self)
 	return
 end
 
+local function remove_job (self)
+	self._jobsite = nil
+	if not has_traded(self) then
+		mcl_log("Cannot retrieve my jobsite. I am now unemployed.")
+		self._profession = "unemployed"
+		self._trades = nil
+		set_textures(self)
+	else
+		mcl_log("Cannot retrieve my jobsite but I've traded so only remove jobsite.")
+	end
+end
+
 local function validate_jobsite(self)
 	if self._profession == "unemployed" then return false end
 
-	if not retrieve_my_jobsite (self) then
-		self._jobsite = nil
+	local job_block = retrieve_my_jobsite (self)
+	if not job_block then
 		if self.order == WORK then
 			self.order = nil
 		end
 
-		if not has_traded(self) then
-			mcl_log("Cannot retrieve my jobsite. I am now unemployed.")
-			self._profession = "unemployed"
-			self._trades = nil
-			set_textures(self)
-		else
-			mcl_log("Cannot retrieve my jobsite but I've traded so only remove jobsite.")
-		end
+		remove_job (self)
 		return false
 	else
+		local resettle = vector.distance(self.object:get_pos(),self._jobsite) > RESETTLE_DISTANCE
+		mcl_log("Jobsite far, so resettle: " .. tostring(resettle))
+		if resettle then
+			local m = minetest.get_meta(self._jobsite)
+			m:set_string("villager", nil)
+			remove_job (self)
+			return false
+		end
 		return true
 	end
 end
@@ -1145,7 +1167,7 @@ local function do_work (self)
 					self.order = nil
 					return
 				end
-				mcl_mobs:gopath(self, jobsite, function(self,jobsite)
+				self:gopath(jobsite, function(self,jobsite)
 					if not self then
 						--mcl_log("missing self. not good")
 						return false
@@ -1187,7 +1209,7 @@ local function go_to_town_bell(self)
 	for _,n in pairs(nn) do
 		mcl_log("Found bell")
 
-		local gp = mcl_mobs:gopath(self,n,function(self)
+		local gp = self:gopath(n,function(self)
 			if self then
 				self.order = GATHERING
 				mcl_log("Callback has a self")
@@ -1222,6 +1244,17 @@ local function validate_bed(self)
 	local bed_valid = true
 
 	local m = minetest.get_meta(self._bed)
+
+	local resettle = vector.distance(self.object:get_pos(),self._bed) > RESETTLE_DISTANCE
+	mcl_log("Bed far, so resettle: " .. tostring(resettle))
+	if resettle then
+		mcl_log("Resettled. Ditch bed.")
+		m:set_string("villager", nil)
+		self._bed = nil
+		bed_valid = false
+		return false
+	end
+
 	local owned_by_player = m:get_string("player")
 	mcl_log("Player owner: " .. owned_by_player)
 	if owned_by_player ~= "" then
@@ -1229,7 +1262,7 @@ local function validate_bed(self)
 		m:set_string("villager", nil)
 		self._bed = nil
 		bed_valid = false
-		return
+		return false
 	end
 
 	if m:get_string("villager") ~= self._id then
@@ -1245,6 +1278,10 @@ end
 
 local function do_activity (self)
 	-- Maybe just check we're pathfinding first?
+	if self.following then
+		mcl_log("Following, so do not do activity.")
+		return
+	end
 
 	if not validate_bed(self) and self.state ~= PATHFINDING then
 		if self.order == SLEEP then self.order = nil end
@@ -1860,7 +1897,7 @@ end)
 
 local pick_up = { "mcl_farming:bread", "mcl_farming:carrot_item", "mcl_farming:beetroot_item" , "mcl_farming:potato_item" }
 
-mcl_mobs:register_mob("mobs_mc:villager", {
+mcl_mobs.register_mob("mobs_mc:villager", {
 	description = S("Villager"),
 	type = "npc",
 	spawn_class = "passive",
@@ -1925,7 +1962,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 			end
 		end
 		if clicker and not self.horny then
-			mcl_mobs:feed_tame(self, clicker, 1, true, false, true)
+			self:feed_tame(clicker, 1, true, false, true)
 			it:take_item(1)
 		end
 		return it
@@ -1948,7 +1985,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 		end
 		-- Don't do at night. Go to bed? Maybe do_activity needs it's own method
 		if validate_jobsite(self) and not self.order == WORK then
-			--mcl_mobs:gopath(self,self._jobsite,function()
+			--self:gopath(self._jobsite,function()
 			--	minetest.log("sent to jobsite")
 			--end)
 		else
@@ -2045,7 +2082,7 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 		self._id=minetest.sha1(minetest.get_gametime()..minetest.pos_to_string(self.object:get_pos())..tostring(math.random()))
 		set_textures(self)
 	end,
-	on_die = function(self, pos)
+	on_die = function(self, pos, cmi_cause)
 		-- Close open trade formspecs and give input back to players
 		local trading_players = self._trading_players
 		if trading_players then
@@ -2069,6 +2106,14 @@ mcl_mobs:register_mob("mobs_mc:villager", {
 			local jobsite_meta = minetest.get_meta(jobsite)
 			jobsite_meta:set_string("villager", nil)
 			mcl_log("Died, so bye bye jobsite")
+		end
+
+		if cmi_cause and cmi_cause.puncher then
+			local l = cmi_cause.puncher:get_luaentity()
+			if l and math.random(2) == 1 and( l.name == "mobs_mc:zombie" or l.name == "mobs_mc:baby_zombie" or l.name == "mobs_mc:villager_zombie" or l.name == "mobs_mc:husk") then
+				mcl_util.replace_mob(self.object,"mobs_mc:villager_zombie")
+				return true
+			end
 		end
 	end,
 	on_lightning_strike = function(self, pos, pos2, objects)
@@ -2111,4 +2156,4 @@ mobs_mc.water_level+1,
 mcl_vars.mg_overworld_max)
 --]]
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:villager", S("Villager"), "#563d33", "#bc8b72", 0)
+mcl_mobs.register_egg("mobs_mc:villager", S("Villager"), "#563d33", "#bc8b72", 0)

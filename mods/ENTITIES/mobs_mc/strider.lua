@@ -123,7 +123,7 @@ local strider = {
 		local wielditem = clicker:get_wielded_item()
 
 		if wielditem:get_name() ~= "mcl_crimson:warped_fungus" then
-			if mcl_mobs:feed_tame(self, clicker, 1, true, true) then return end
+			if self:feed_tame(clicker, 1, true, true) then return end
 		end
 
 		if self.child then
@@ -192,7 +192,7 @@ local strider = {
 	end,
 }
 
-mcl_mobs:register_mob("mobs_mc:strider", strider)
+mcl_mobs.register_mob("mobs_mc:strider", strider)
 
 -- Baby strider.
 
@@ -200,7 +200,6 @@ local baby_strider = table.copy(strider)
 baby_strider.collisionbox = {-.3, -0.01, -.3, .3, 0.94, .3}
 baby_strider.xp_min = 13
 baby_strider.xp_max = 13
-baby_strider.visual_size = {x=strider.visual_size.x/2, y=strider.visual_size.y/2}
 textures = { {
 	"extra_mobs_strider.png",
 	"extra_mobs_trans.png",
@@ -209,7 +208,7 @@ baby_strider.walk_velocity = 1.2
 baby_strider.run_velocity = 2.4
 baby_strider.child = 1
 
-mcl_mobs:register_mob("mobs_mc:baby_strider", baby_strider)
+mcl_mobs.register_mob("mobs_mc:baby_strider", baby_strider)
 
 -- Regular spawning in the Nether
 
@@ -246,4 +245,4 @@ mcl_mobs:spawn_setup({
 })
 
 -- spawn eggs
-mcl_mobs:register_egg("mobs_mc:strider", S("Strider"), "#000000", "#FF0000", 0)
+mcl_mobs.register_egg("mobs_mc:strider", S("Strider"), "#000000", "#FF0000", 0)

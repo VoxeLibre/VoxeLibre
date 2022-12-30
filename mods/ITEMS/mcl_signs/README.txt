@@ -2,7 +2,7 @@
 ---
 # Mineclone2-Signs
 ---
-A reworking of MineClone 2's mcl_signs to be colorable and made to glow. Rquires Minetest and Mineclone2.
+A reworking of MineClone 2's mcl_signs to be colorable and made to glow. Requires Minetest and Mineclone2.
 ---
 
 Created by Michieal (FaerRaven) @ DateTime: 10/14/22 4:05 PM

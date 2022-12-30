@@ -1,15 +1,25 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 local tnt_griefing = minetest.settings:get_bool("mcl_tnt_griefing", true)
 
-local function spawn_tnt(pos, entname)
-	minetest.sound_play("tnt_ignite", {pos = pos,gain = 1.0,max_hear_distance = 15,}, true)
-	local tnt = minetest.add_entity(pos, entname)
-	tnt:set_armor_groups({immortal=1})
-	return tnt
-end
-
 tnt = {}
 
+tnt.BOOMTIMER = 4
+tnt.BLINKTIMER = 0.25
+
+---@param pos Vector
+---@param entname string
+---@return ObjectRef?
+local function spawn_tnt(pos, entname)
+	minetest.sound_play("tnt_ignite", { pos = pos, gain = 1.0, max_hear_distance = 15 }, true)
+	local ent = minetest.add_entity(pos, entname)
+	if ent then
+		ent:set_armor_groups({ immortal = 1 })
+	end
+	return ent
+end
+
+---@param pos Vector
+---@return ObjectRef?
 function tnt.ignite(pos)
 	minetest.remove_node(pos)
 	local e = spawn_tnt(pos, "mcl_tnt:tnt")
@@ -17,22 +27,21 @@ function tnt.ignite(pos)
 	return e
 end
 
--- Add smoke particle of entity at pos.
--- Intended to be called every step
+---Add smoke particle of entity at pos.
+---
+---Intended to be called every step.
+---@param pos Vector
 function tnt.smoke_step(pos)
 	minetest.add_particle({
-		pos = {x=pos.x,y=pos.y+0.5,z=pos.z},
-		velocity = vector.new(math.random() * 0.2 - 0.1, 1.0 + math.random(), math.random() * 0.2 - 0.1),
-		acceleration = vector.new(0, -0.1, 0),
-		expirationtime = 0.15 + math.random() * 0.25,
-		size = 1.0 + math.random(),
+		pos                = vector.offset(pos, 0, 0.5, 0),
+		velocity           = vector.new(math.random() * 0.2 - 0.1, 1.0 + math.random(), math.random() * 0.2 - 0.1),
+		acceleration       = vector.new(0, -0.1, 0),
+		expirationtime     = 0.15 + math.random() * 0.25,
+		size               = 1.0 + math.random(),
 		collisiondetection = false,
-		texture = "mcl_particles_smoke.png"
+		texture            = "mcl_particles_smoke.png"
 	})
 end
-
-tnt.BOOMTIMER = 4
-tnt.BLINKTIMER = 0.25
 
 local TNT_RANGE = 3
 
@@ -40,38 +49,51 @@ local sounds
 if minetest.get_modpath("mcl_sounds") then
 	sounds = mcl_sounds.node_sound_wood_defaults()
 end
+
 local tnt_mesecons
 if minetest.get_modpath("mesecons") then
-	tnt_mesecons = {effector = {
-		action_on = tnt.ignite,
-		rules = mesecon.rules.alldirs,
-	}}
+	tnt_mesecons = {
+		effector = {
+			action_on = tnt.ignite,
+			rules = mesecon.rules.alldirs,
+		},
+	}
 end
 
 local longdesc
 if tnt_griefing then
-	longdesc = S("An explosive device. When it explodes, it will hurt living beings and destroy blocks around it. TNT has an explosion radius of @1. With a small chance, blocks may drop as an item (as if being mined) rather than being destroyed. TNT can be ignited by tools, explosions, fire, lava and redstone signals.", TNT_RANGE)
+	longdesc = S("An explosive device. When it explodes, it will hurt living beings and destroy blocks around it. TNT has an explosion radius of @1. With a small chance, blocks may drop as an item (as if being mined) rather than being destroyed. TNT can be ignited by tools, explosions, fire, lava and redstone signals."
+		, TNT_RANGE)
 else
-	longdesc = S("An explosive device. When it explodes, it will hurt living beings. TNT has an explosion radius of @1. TNT can be ignited by tools, explosions, fire, lava and redstone signals.", TNT_RANGE)
+	longdesc = S("An explosive device. When it explodes, it will hurt living beings. TNT has an explosion radius of @1. TNT can be ignited by tools, explosions, fire, lava and redstone signals."
+		, TNT_RANGE)
 end
 
 minetest.register_node("mcl_tnt:tnt", {
-	tiles = {"default_tnt_top.png", "default_tnt_bottom.png",
-			"default_tnt_side.png", "default_tnt_side.png",
-			"default_tnt_side.png", "default_tnt_side.png"},
+	tiles = {
+		"default_tnt_top.png",
+		"default_tnt_bottom.png",
+		"default_tnt_side.png",
+		"default_tnt_side.png",
+		"default_tnt_side.png",
+		"default_tnt_side.png",
+	},
 	is_ground_content = false,
 	stack_max = 64,
 	description = S("TNT"),
 	paramtype = "light",
 	sunlight_propagates = true,
-	_tt_help = S("Ignited by tools, explosions, fire, lava, redstone power").."\n"..S("Explosion radius: @1", tostring(TNT_RANGE)),
+	_tt_help = S("Ignited by tools, explosions, fire, lava, redstone power") ..
+		"\n" .. S("Explosion radius: @1", tostring(TNT_RANGE)),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = S("Place the TNT and ignite it with one of the methods above. Quickly get in safe distance. The TNT will start to be affected by gravity and explodes in 4 seconds."),
-	groups = { dig_immediate = 3, tnt = 1, enderman_takable=1, flammable=-1 },
+	groups = { dig_immediate = 3, tnt = 1, enderman_takable = 1, flammable = -1 },
 	mesecons = tnt_mesecons,
-	on_blast = function(pos)
-	        local e = tnt.ignite(pos)
-		e:get_luaentity().timer = tnt.BOOMTIMER - (0.5 + math.random())
+	on_blast = function(pos, _)
+		local e = tnt.ignite(pos)
+		if e then
+			e:get_luaentity().timer = tnt.BOOMTIMER - (0.5 + math.random())
+		end
 	end,
 	_on_ignite = function(player, pointed_thing)
 		tnt.ignite(pointed_thing.under)
@@ -84,7 +106,7 @@ minetest.register_node("mcl_tnt:tnt", {
 	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
 		-- Place and ignite TNT
 		if minetest.registered_nodes[dropnode.name].buildable_to then
-			minetest.set_node(droppos, {name = stack:get_name()})
+			minetest.set_node(droppos, { name = stack:get_name() })
 			tnt.ignite(droppos)
 		end
 	end,
@@ -94,24 +116,30 @@ minetest.register_node("mcl_tnt:tnt", {
 local TNT = {
 	-- Static definition
 	physical = true, -- Collides with things
-	 --weight = -100,
-	collisionbox = {-0.5,-0.5,-0.5, 0.5,0.5,0.5},
+	--weight = -100,
+	collisionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
 	visual = "cube",
-	textures = {"default_tnt_top.png", "default_tnt_bottom.png",
-			"default_tnt_side.png", "default_tnt_side.png",
-			"default_tnt_side.png", "default_tnt_side.png"},
+	textures = {
+		"default_tnt_top.png",
+		"default_tnt_bottom.png",
+		"default_tnt_side.png",
+		"default_tnt_side.png",
+		"default_tnt_side.png",
+		"default_tnt_side.png",
+	},
 	-- Initial value for our timer
 	timer = 0,
 	blinktimer = 0,
 	tnt_knockback = true,
-	blinkstatus = true,}
+	blinkstatus = true,
+}
 
-function TNT:on_activate(staticdata)
-	local phi = math.random(0, 65535) / 65535 * 2*math.pi
+function TNT:on_activate(_, _)
+	local phi = math.random(0, 65535) / 65535 * 2 * math.pi
 	local hdir_x = math.cos(phi) * 0.02
 	local hdir_z = math.sin(phi) * 0.02
-	self.object:set_velocity({x=hdir_x, y=2, z=hdir_z})
-	self.object:set_acceleration({x=0, y=-10, z=0})
+	self.object:set_velocity(vector.new(hdir_x, 2, hdir_z))
+	self.object:set_acceleration(vector.new(0, -10, 0))
 	self.object:set_texture_mod("^mcl_tnt_blink.png")
 end
 
@@ -121,8 +149,8 @@ end
 		time = 0.5,
 		minpos = vector.subtract(pos, radius / 2),
 		maxpos = vector.add(pos, radius / 2),
-		minvel = {x = -10, y = -10, z = -10},
-		maxvel = {x = 10, y = 10, z = 10},
+		minvel = vector.new(-10, -10, -10),
+		maxvel = vector.new(10, 10, 10),
 		minacc = vector.new(),
 		maxacc = vector.new(),
 		minexptime = 1,
@@ -152,9 +180,9 @@ end
 		time = 0.1,
 		minpos = vector.subtract(pos, radius / 2),
 		maxpos = vector.add(pos, radius / 2),
-		minvel = {x = -3, y = 0, z = -3},
-		maxvel = {x = 3, y = 5,  z = 3},
-		minacc = {x = 0, y = -10, z = 0},
+		minvel = vector.new(-3, 0, -3),
+		maxvel = vector.new(3, 5, 3),
+		minacc = vector.new(0, -10, 0),
 		minexptime = 0.8,
 		maxexptime = 2.0,
 		minsize = radius * 0.66,
@@ -164,7 +192,7 @@ end
 	})
 end]]
 
-function TNT:on_step(dtime)
+function TNT:on_step(dtime, _)
 	local pos = self.object:get_pos()
 	tnt.smoke_step(pos)
 	self.timer = self.timer + dtime
@@ -190,10 +218,10 @@ if minetest.get_modpath("mcl_mobitems") then
 	minetest.register_craft({
 		output = "mcl_tnt:tnt",
 		recipe = {
-			{"mcl_mobitems:gunpowder", "group:sand", "mcl_mobitems:gunpowder"},
-			{"group:sand", "mcl_mobitems:gunpowder", "group:sand"},
-			{"mcl_mobitems:gunpowder", "group:sand", "mcl_mobitems:gunpowder"}
-		}
+			{ "mcl_mobitems:gunpowder", "group:sand", "mcl_mobitems:gunpowder" },
+			{ "group:sand", "mcl_mobitems:gunpowder", "group:sand" },
+			{ "mcl_mobitems:gunpowder", "group:sand", "mcl_mobitems:gunpowder" }
+		},
 	})
 end
 

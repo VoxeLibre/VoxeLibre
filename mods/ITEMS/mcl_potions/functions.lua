@@ -9,6 +9,7 @@ EF.leaping = {}
 EF.swift = {} -- for swiftness AND slowness
 EF.night_vision = {}
 EF.fire_proof = {}
+EF.bad_omen = {}
 
 local EFFECT_TYPES = 0
 for _,_ in pairs(EF) do
@@ -350,6 +351,26 @@ minetest.register_globalstep(function(dtime)
 
 	end
 
+		-- Check for Bad Omen
+	for player, vals in pairs(EF.bad_omen) do
+
+		is_player = player:is_player()
+
+		EF.bad_omen[player].timer = EF.bad_omen[player].timer + dtime
+
+		if player:get_pos() then mcl_potions._add_spawner(player, "#0b6138") end
+
+		if EF.bad_omen[player] and EF.bad_omen[player].timer >= EF.bad_omen[player].dur then
+			EF.bad_omen[player] = nil
+			if is_player then
+				meta = player:get_meta()
+				meta:set_string("_has_bad_omen", minetest.serialize(EF.bad_omen[player]))
+				potions_set_hud(player)
+			end
+		end
+
+	end
+
 end)
 
 -- Prevent damage to player with Fire Resistance enabled
@@ -386,7 +407,8 @@ function mcl_potions._clear_cached_player_data(player)
 	EF.swift[player] = nil
 	EF.night_vision[player] = nil
 	EF.fire_proof[player] = nil
-	
+	EF.bad_omen[player] = nil
+
 	meta = player:get_meta()
 	meta:set_int("night_vision", 0)
 end
@@ -400,9 +422,9 @@ function mcl_potions._reset_player_effects(player, set_hud)
 	mcl_potions.make_invisible(player, false)
 
 	playerphysics.remove_physics_factor(player, "jump", "mcl_potions:leaping")
-	
+
 	playerphysics.remove_physics_factor(player, "speed", "mcl_potions:swiftness")
-	
+
 	mcl_weather.skycolor.update_sky_color({player})
 
 	mcl_potions._clear_cached_player_data(player)
@@ -429,6 +451,7 @@ function mcl_potions._save_player_effects(player)
 	meta:set_string("_is_swift", minetest.serialize(EF.swift[player]))
 	meta:set_string("_is_cat", minetest.serialize(EF.night_vision[player]))
 	meta:set_string("_is_fire_proof", minetest.serialize(EF.fire_proof[player]))
+	meta:set_string("_has_bad_omen", minetest.serialize(EF.bad_omen[player]))
 
 end
 
@@ -480,6 +503,10 @@ function mcl_potions._load_player_effects(player)
 		EF.fire_proof[player] = minetest.deserialize(meta:get_string("_is_fire_proof"))
 	end
 
+	if minetest.deserialize(meta:get_string("_has_bad_omen")) then
+		EF.bad_omen[player] = minetest.deserialize(meta:get_string("_has_bad_omen"))
+	end
+
 end
 
 -- Returns true if player has given effect
@@ -488,6 +515,18 @@ function mcl_potions.player_has_effect(player, effect_name)
 		return false
 	end
 	return EF[effect_name][player] ~= nil
+end
+
+function mcl_potions.player_get_effect(player, effect_name)
+	if not EF[effect_name] or not EF[effect_name][player] then
+		return false
+	end
+	return EF[effect_name][player]
+end
+
+function mcl_potions.player_clear_effect(player,effect)
+	EF[effect][player] = nil
+	potions_set_icons(player)
 end
 
 minetest.register_on_leaveplayer( function(player)
@@ -965,4 +1004,19 @@ function mcl_potions._extinguish_nearby_fire(pos, radius)
 		end
 	end
 	return exting
+end
+
+function mcl_potions.bad_omen_func(player, factor, duration)
+	if not EF.bad_omen[player] then
+		EF.bad_omen[player] = {dur = duration, timer = 0, factor = factor}
+	else
+		local victim = EF.bad_omen[player]
+		victim.dur = math.max(duration, victim.dur - victim.timer)
+		victim.timer = 0
+		victim.factor = factor
+	end
+
+	if player:is_player() then
+		potions_set_icons(player)
+	end
 end

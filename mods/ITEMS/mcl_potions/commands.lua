@@ -19,6 +19,7 @@ get_chat_function["water_breathing"] = mcl_potions.water_breathing_func
 get_chat_function["leaping"] = mcl_potions.leaping_func
 get_chat_function["swiftness"] = mcl_potions.swiftness_func
 get_chat_function["heal"] = mcl_potions.healing_func
+get_chat_function["bad_omen"] = mcl_potions.bad_omen_func
 
 minetest.register_chatcommand("effect",{
 	params = S("<effect> <duration> [<factor>]"),

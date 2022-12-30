@@ -125,9 +125,11 @@ mcl_signs.register_sign_craft("mcl_core", "mcl_core:junglewood", "_junglewood")
 mcl_signs.register_sign("mcl_core", "#ea7479", "_acaciawood", "Acacia Sign")
 mcl_signs.register_sign_craft("mcl_core", "mcl_core:acaciawood", "_acaciawood")
 
--- mangrove_wood Sign  "#c7545c"
-mcl_signs.register_sign("mcl_core", "#b8693d", "_mangrove_wood", "Mangrove Sign")
-mcl_signs.register_sign_craft("mcl_core", "mcl_core:mangrove_wood", "_mangrove_wood")
+if minetest.get_modpath("mcl_mangrove") then
+	-- mangrove_wood Sign  "#c7545c"
+	mcl_signs.register_sign("mcl_mangrove", "#b8693d", "_mangrove_wood", "Mangrove Sign")
+	mcl_signs.register_sign_craft("mcl_mangrove", "mcl_mangrove:mangrove_wood", "_mangrove_wood")
+end
 
 -- add in the nether wood signs
 if minetest.get_modpath("mcl_crimson") then
