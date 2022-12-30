@@ -641,7 +641,7 @@ function get_activity(tod)
 	else
 		activity = "chill"
 	end
-	mcl_log("Time is " .. tod ..". Activity is: ".. activity)
+	--mcl_log("Time is " .. tod ..". Activity is: ".. activity)
 	return activity
 
 end
@@ -1200,6 +1200,16 @@ local function get_ground_below_floating_object (float_pos)
 		local node = minetest.get_node(pos)
 		mcl_log("First non air materials: ".. tostring(node.name))
 	until node.name ~= "air"
+
+	-- If pos is 1 below float_pos, then just return float_pos as there is no air below it
+	if pos.y == float_pos.y -1 then
+		--mcl_log("pos is only 1 lower than float pos so no air below")
+		return float_pos
+	else
+		--mcl_log("pos is more than 1 lower than float pos so air is below")
+		return pos
+	end
+
 	return pos
 end
 
