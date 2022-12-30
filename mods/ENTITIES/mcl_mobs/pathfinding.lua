@@ -63,28 +63,19 @@ local function generate_enriched_path(wp_in, door_open_pos, door_close_pos, cur_
 		local cur_pos_to_add = vector.add(cur_pos, one_down)
 		if door_open_pos and vector.equals (cur_pos, door_open_pos) then
 			mcl_log ("Door open match")
-			action = {type = "door", action = "open"}
-			--action = {}
-			--action["type"] = "door"
-			--action["action"] = "open"
-			action["target"] = cur_door_pos
+			action = {type = "door", action = "open", target = cur_door_pos}
+			--action["target"] = cur_door_pos
 			cur_pos_to_add = vector.add(cur_pos, one_down)
 		elseif door_close_pos and vector.equals(cur_pos, door_close_pos) then
 			mcl_log ("Door close match")
-			action = {type = "door", action = "close"}
-			--action = {}
-			--action["type"] = "door"
-			--action["action"] = "close"
-			action["target"] = cur_door_pos
+			action = {type = "door", action = "close", target = cur_door_pos}
+			--action["target"] = cur_door_pos
 			cur_pos_to_add = vector.add(cur_pos, one_down)
 		elseif cur_door_pos and vector.equals(cur_pos, cur_door_pos) then
 			mcl_log("Current door pos")
+			action = {type = "door", action = "open", target = cur_door_pos}
 			cur_pos_to_add = vector.add(cur_pos, one_down)
-			action = {type = "door", action = "open"}
-			--action = {}
-			--action["type"] = "door"
-			--action["action"] = "open"
-			action["target"] = cur_door_pos
+			--action["target"] = cur_door_pos
 		else
 			cur_pos_to_add = cur_pos
 			--mcl_log ("Pos doesn't match")
@@ -202,7 +193,7 @@ function mob_class:gopath(target,callback_arrived)
 	local wp = minetest.find_path(p,t,150,1,4)
 
 	if not wp then
-		mcl_log("No direct path. Path through door")
+		mcl_log("No direct path. Path through door closest to target.")
 		local cur_door_pos = minetest.find_node_near(target, 16, {"group:door"})
 		wp = calculate_path_through_door(p, t, cur_door_pos)
 
@@ -317,7 +308,7 @@ function mob_class:check_gowp(dtime)
 	-- arrived at location, finish gowp
 	local distance_to_targ = vector.distance(p,self._target)
 	--mcl_log("Distance to targ: ".. tostring(distance_to_targ))
-	if distance_to_targ < 1.5 then
+	if distance_to_targ < 1.8 then
 		mcl_log("Arrived at _target")
 		self.waypoints = nil
 		self._target = nil
@@ -328,6 +319,8 @@ function mob_class:check_gowp(dtime)
 		self.object:set_acceleration({x = 0, y = 0, z = 0})
 		if self.callback_arrived then return self.callback_arrived(self) end
 		return true
+	elseif not self.current_target then
+		mcl_log("Not close enough to targ: ".. tostring(distance_to_targ))
 	end
 
 	-- More pathing to be done
@@ -373,9 +366,19 @@ function mob_class:check_gowp(dtime)
 		-- Is a little sensitive and could take 1 - 7 times. A 10 fail count might be a good exit condition.
 
 		mcl_log("We don't have waypoints or a current target. Let's try to path to target")
+
+		if wp then
+			mcl_log("WP: " .. tostring(wp))
+			mcl_log("WP num: " .. tostring(#wp))
+		else
+			mcl_log("No wp set")
+		end
+
+		mcl_log("Current target: " .. tostring(self.current_target))
+
 		local final_wp = minetest.find_path(p,self._target,150,1,4)
 		if final_wp then
-			mcl_log("We might be able to get to target here.")
+			mcl_log("We can get to target here.")
 		--	self.waypoints = final_wp
 			self:go_to_pos(self._target)
 		else
