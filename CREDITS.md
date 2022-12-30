@@ -190,3 +190,4 @@
 * wsor for working tirelessly in the shadows for the good of all of us, particularly helping with solving contentDB and copyright issues.
 * The workaholics who spent way too much time writing for the Minecraft Wiki. It's an invaluable resource for creating this game
 * Notch and Jeb for being the major forces behind Minecraft
+* Dark Reaven Music (https://soundcloud.com/dark-reaven-music) for the main menu theme (Calmed Cube), which is licensed under https://creativecommons.org/licenses/by-sa/3.0/
