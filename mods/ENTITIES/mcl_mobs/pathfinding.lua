@@ -1,11 +1,22 @@
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 
-local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_pathfinding",false)
-local PATHFINDING = "gowp"
-
 local PATHFINDING_FAIL_THRESHOLD = 100 -- no. of ticks to fail before giving up. 20p/s. 5s helps them get through door
 local PATHFINDING_FAIL_WAIT = 30 -- how long to wait before trying to path again
+
+local PATHFINDING = "gowp"
+
+local one_down = vector.new(0,-1,0)
+local one_up = vector.new(0,1,0)
+
+local plane_adjacents = {
+	vector.new(1,0,0),
+	vector.new(-1,0,0),
+	vector.new(0,0,1),
+	vector.new(0,0,-1),
+}
+
+local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_pathfinding",false)
 
 local LOG_MODULE = "[Mobs Pathfinding]"
 local function mcl_log (message)
@@ -13,9 +24,6 @@ local function mcl_log (message)
 		minetest.log(LOG_MODULE .. " " .. message)
 	end
 end
-
-local one_down = vector.new(0,-1,0)
-local one_up = vector.new(0,1,0)
 
 function output_table (wp)
 	if not wp then return end
@@ -26,7 +34,7 @@ function output_table (wp)
 end
 
 function append_paths (wp1, wp2)
-	mcl_log("Start append")
+	--mcl_log("Start append")
 	if not wp1 or not wp2 then
 		mcl_log("Cannot append wp's")
 		return
@@ -36,7 +44,7 @@ function append_paths (wp1, wp2)
 	for _,a in pairs (wp2) do
 		table.insert(wp1, a)
 	end
-	mcl_log("End append")
+	--mcl_log("End append")
 end
 
 local function output_enriched (wp_out)
@@ -98,13 +106,6 @@ local function generate_enriched_path(wp_in, door_open_pos, door_close_pos, cur_
 	output_enriched(wp_out)
 	return wp_out
 end
-
-local plane_adjacents = {
-	vector.new(1,0,0),
-	vector.new(-1,0,0),
-	vector.new(0,0,1),
-	vector.new(0,0,-1),
-}
 
 function mob_class:ready_to_path()
 	mcl_log("Check ready to path")
@@ -189,17 +190,9 @@ local function calculate_path_through_door (p, cur_door_pos, t)
 	return enriched_path
 end
 
---local gopath_last = os.time()
-
 function mob_class:gopath(target,callback_arrived)
 	if self.state == PATHFINDING then mcl_log("Already pathfinding, don't set another until done.") return end
 	if not self:ready_to_path() then return end
-
-	--if os.time() - gopath_last < 5 then
-	--	mcl_log("Not ready to path yet")
-	--	return
-	--end
-	--gopath_last = os.time()
 
 	self.order = nil
 
@@ -332,17 +325,7 @@ function mob_class:do_pathfind_action(action)
 	end
 end
 
-local gowp_etime = 0
-
 function mob_class:check_gowp(dtime)
-	gowp_etime = gowp_etime + dtime
-
-	-- 0.1 is optimal.
-	--less frequently = villager will get sent back after passing a point.
-	--more frequently = villager will fail points they shouldn't they just didn't get there yet
-
-	--if gowp_etime < 0.05 then return end
-	--gowp_etime = 0
 	local p = self.object:get_pos()
 
 	-- no destination
@@ -380,7 +363,7 @@ function mob_class:check_gowp(dtime)
 	-- 0.8 is optimal for 0.025 frequency checks and also 1... Actually. 0.8 is winning
 	-- 0.9 and 1.0 is also good. Stick with unless door open or closing issues
 	if self.waypoints and #self.waypoints > 0 and ( not self.current_target or not self.current_target["pos"] or distance_to_current_target < 0.9 ) then
-		-- We have waypoints, and no current target, or we're at it. We need a new current_target.
+		-- We have waypoints, and are at current_target or have no current target. We need a new current_target.
 		self:do_pathfind_action (self.current_target["action"])
 
 		local failed_attempts = self.current_target["failed_attempts"]
@@ -390,7 +373,8 @@ function mob_class:check_gowp(dtime)
 		self:go_to_pos(self.current_target["pos"])
 		return
 	elseif self.current_target and self.current_target["pos"] then
-		-- No waypoints left, but have current target. Potentially last waypoint to go to.
+		-- No waypoints left, but have current target and not close enough. Potentially last waypoint to go to.
+
 		self.current_target["failed_attempts"] = self.current_target["failed_attempts"] + 1
 		local failed_attempts = self.current_target["failed_attempts"]
 		if failed_attempts >= PATHFINDING_FAIL_THRESHOLD then
@@ -420,13 +404,11 @@ function mob_class:check_gowp(dtime)
 		else
 			mcl_log("No wp set")
 		end
-
 		if self.current_target then
 			mcl_log("Current target: " .. tostring(self.current_target))
 		else
 			mcl_log("No current target")
 		end
-
 
 		local final_wp = minetest.find_path(p,self._target,150,1,4)
 		if final_wp then
@@ -457,7 +439,6 @@ function mob_class:check_gowp(dtime)
 			mcl_log("target is: ".. minetest.pos_to_string(self._target))
 			self.current_target = nil
 		end
-
 		return
 	end
 end
