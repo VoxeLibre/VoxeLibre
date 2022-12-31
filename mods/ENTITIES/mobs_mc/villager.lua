@@ -836,6 +836,7 @@ end
 
 local function take_bed (entity)
 	if not entity then return end
+	if not self:ready_to_path() then return end
 
 	local p = entity.object:get_pos()
 
@@ -1059,9 +1060,9 @@ local function look_for_job(self, requested_jobsites)
 end
 
 
-
 local function get_a_job(self)
 	if self.order == WORK then self.order = nil end
+	if not self:ready_to_path() then return end
 
 	mcl_log("I'm unemployed or lost my job block and have traded. Can I get a job?")
 
