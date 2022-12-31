@@ -82,7 +82,7 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 	},
 	node_placement_prediction = "",
 	on_rightclick = function(pos, node, pointed_thing, player, itemstack)
-		if pointed_thing:get_wielded_item():get_name() == "mcl_dye:white" then
+		if pointed_thing:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
 			local nodepos = minetest.get_node({x = pos.x, y = pos.y - 1, z = pos.z})
 			if nodepos.name == "mcl_crimson:warped_nylium" or nodepos.name == "mcl_nether:netherrack" then
 				local random = math.random(1, 5)
@@ -129,7 +129,7 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 				itemstack:take_item()
 			end
 			grow_vines(pos, 1, "mcl_crimson:twisting_vines")
-		elseif clicker:get_wielded_item():get_name() == "mcl_dye:white" then
+		elseif clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				itemstack:take_item()
 			end
@@ -185,7 +185,7 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 				itemstack:take_item()
 			end
 			grow_vines(pos, 1, "mcl_crimson:weeping_vines", -1)
-		elseif clicker:get_wielded_item():get_name() == "mcl_dye:white" then
+		elseif clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				itemstack:take_item()
 			end
@@ -283,10 +283,10 @@ minetest.register_node("mcl_crimson:warped_hyphae", {
 	tiles = {
 		"warped_hyphae.png",
 		"warped_hyphae.png",
-		"warped_hyphae_side.png",
-		"warped_hyphae_side.png",
-		"warped_hyphae_side.png",
-		"warped_hyphae_side.png",
+		{
+			image="warped_hyphae_side.png",
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
+		},
 	},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
@@ -307,10 +307,10 @@ minetest.register_node("mcl_crimson:warped_nylium", {
 		"mcl_nether_netherrack.png^warped_nylium_side.png",
 		"mcl_nether_netherrack.png^warped_nylium_side.png",
 	},
-	paramtype2 = "facedir",
 	is_ground_content = true,
 	drop = "mcl_nether:netherrack",
 	groups = {pickaxey=1, building_block=1, material_stone=1},
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_hardness = 0.4,
 	_mcl_blast_resistance = 0.4,
 	_mcl_silk_touch_drop = true,
@@ -321,7 +321,12 @@ minetest.register_node("mcl_crimson:warped_nylium", {
 minetest.register_node("mcl_crimson:warped_hyphae_bark", {
 	description = S("Warped Hyphae Bark"),
 	_doc_items_longdesc = S("This is a decorative block surrounded by the bark of an hyphae."),
-	tiles = {"warped_hyphae_side.png"},
+	tiles = {
+	{
+		image="warped_hyphae_side.png",
+		animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
+	},
+	},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, bark = 1, building_block = 1, material_wood = 1},
@@ -416,7 +421,7 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 	},
 	node_placement_prediction = "",
 	on_rightclick = function(pos, node, pointed_thing, player)
-		if pointed_thing:get_wielded_item():get_name() == "mcl_dye:white" then
+		if pointed_thing:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
 			local nodepos = minetest.get_node(vector.offset(pos, 0, -1, 0))
 			if nodepos.name == "mcl_crimson:crimson_nylium" or nodepos.name == "mcl_nether:netherrack" then
 				local random = math.random(1, 5)
@@ -468,10 +473,10 @@ minetest.register_node("mcl_crimson:crimson_hyphae", {
 	tiles = {
 		"crimson_hyphae.png",
 		"crimson_hyphae.png",
-		"crimson_hyphae_side.png",
-		"crimson_hyphae_side.png",
-		"crimson_hyphae_side.png",
-		"crimson_hyphae_side.png",
+		{
+			image="crimson_hyphae_side.png",
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
+		},
 	},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
@@ -487,7 +492,12 @@ minetest.register_node("mcl_crimson:crimson_hyphae", {
 minetest.register_node("mcl_crimson:crimson_hyphae_bark", {
 	description = S("Crimson Hyphae Bark"),
 	_doc_items_longdesc = S("This is a decorative block surrounded by the bark of an hyphae."),
-	tiles = {"crimson_hyphae_side.png"},
+	tiles = {
+	{
+		image="crimson_hyphae_side.png",
+		animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
+	},
+	},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, bark = 1, building_block = 1, material_wood = 1},
@@ -559,7 +569,7 @@ minetest.register_node("mcl_crimson:crimson_nylium", {
 		"mcl_nether_netherrack.png^crimson_nylium_side.png",
 	},
 	groups = {pickaxey = 1, building_block = 1, material_stone = 1},
-	paramtype2 = "facedir",
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = true,
 	drop = "mcl_nether:netherrack",
 	_mcl_hardness = 0.4,
@@ -605,8 +615,8 @@ mcl_doors:register_door("mcl_crimson:crimson_door", {
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
-	tiles_bottom = {"mcl_crimson_crimson_door_bottom.png", "crimson_hyphae_wood.png"},
-	tiles_top = {"mcl_crimson_crimson_door_top.png", "crimson_hyphae_wood.png"},
+	tiles_bottom = {"mcl_crimson_crimson_door_bottom.png", "mcl_doors_door_crimson_side_lower.png"},
+	tiles_top = {"mcl_crimson_crimson_door_top.png", "mcl_doors_door_crimson_side_upper.png"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -643,8 +653,8 @@ mcl_doors:register_door("mcl_crimson:warped_door", {
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
-	tiles_bottom = {"mcl_crimson_warped_door_bottom.png", "warped_hyphae_wood.png"},
-	tiles_top = {"mcl_crimson_warped_door_top.png", "warped_hyphae_wood.png"},
+	tiles_bottom = {"mcl_crimson_warped_door_bottom.png", "mcl_doors_door_warped_side_lower.png"},
+	tiles_top = {"mcl_crimson_warped_door_top.png", "mcl_doors_door_warped_side_upper.png"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 

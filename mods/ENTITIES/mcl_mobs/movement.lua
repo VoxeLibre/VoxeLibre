@@ -274,7 +274,6 @@ function mob_class:do_jump()
 	if not self.jump
 	or self.jump_height == 0
 	or self.fly
-	or (self.child and self.type ~= "monster")
 	or self.order == "stand" then
 		return false
 	end
@@ -1398,7 +1397,7 @@ function mob_class:check_smooth_rotation(dtime)
 			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
 		end
 		self.object:set_yaw(yaw)
-		self:update_roll()
+		--self:update_roll()
 	end
 	-- end rotation
 end

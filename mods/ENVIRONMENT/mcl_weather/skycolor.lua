@@ -3,26 +3,35 @@ local NIGHT_VISION_RATIO = 0.45
 
 local water_color = "#0b4880"
 
-function mcl_weather.set_sky_box_clear(player)
+local mg_name = minetest.get_mapgen_setting("mg_name")
+
+function mcl_weather.set_sky_box_clear(player, sky, fog)
 	local pos = player:get_pos()
 	if minetest.get_item_group(minetest.get_node(vector.new(pos.x,pos.y+1.5,pos.z)).name, "water") ~= 0 then return end
-	player:set_sky({
-		type = "regular",
-		sky_color = {
-			day_sky = "#92B9FF",
-			day_horizon = "#B4D0FF",
+	local sc = {
+			day_sky = "#7BA4FF",
+			day_horizon = "#C0D8FF",
 			dawn_sky = "#B4BAFA",
 			dawn_horizon = "#BAC1F0",
-			night_sky = "#006AFF",
-			night_horizon = "#4090FF",
-		},
+			night_sky = "#000000",
+			night_horizon = "#4A6790",
+		}
+	if sky then
+		sc.day_sky = sky
+	end
+	if fog then
+		sc.day_horizon = fog
+	end
+	player:set_sky({
+		type = "regular",
+		sky_color = sc,
 		clouds = true,
 	})
 end
 
 function mcl_weather.set_sky_color(player, def)
 	local pos = player:get_pos()
-	if minetest.get_item_group(minetest.get_node(vector.new(pos.x,pos.y+1.5,pos.z)).name, "water") ~= 0 then return end
+	if minetest.get_item_group(minetest.get_node(vector.offset(pos, 0, 1.5, 0)).name, "water") ~= 0 then return end
 	player:set_sky({
 		type = def.type,
 		sky_color = def.sky_color,
@@ -124,9 +133,16 @@ mcl_weather.skycolor = {
 				})
 			end
 			if dim == "overworld" then
+				local biomesky
+				local biomefog
+				if mg_name ~= "v6" and mg_name ~= "singlenode" then
+					local biome = minetest.get_biome_name(minetest.get_biome_data(player:get_pos()).biome)
+					biomesky = minetest.registered_biomes[biome]._mcl_skycolor
+					biomefog = minetest.registered_biomes[biome]._mcl_fogcolor
+				end
 				if (mcl_weather.state == "none") then
 					-- Clear weather
-					mcl_weather.set_sky_box_clear(player)
+					mcl_weather.set_sky_box_clear(player,biomesky,biomefog)
 					player:set_sun({visible = true, sunrise_visible = true})
 					player:set_moon({visible = true})
 					player:set_stars({visible = true})

@@ -149,7 +149,7 @@ mcl_structures.register_structure("shipwreck",{
 				{ itemstring = "mcl_core:iron_ingot", weight = 90, amount_min = 1, amount_max = 5 },
 				{ itemstring = "mcl_core:iron_nugget", weight = 50, amount_min = 1, amount_max = 10 },
 				{ itemstring = "mcl_core:emerald", weight = 40, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_dye:blue", weight = 20, amount_min = 1, amount_max = 10 },
+				{ itemstring = "mcl_core:lapis", weight = 20, amount_min = 1, amount_max = 10 },
 				{ itemstring = "mcl_core:gold_ingot", weight = 10, amount_min = 1, amount_max = 5 },
 				{ itemstring = "mcl_core:gold_nugget", weight = 10, amount_min = 1, amount_max = 10 },
 				{ itemstring = "mcl_experience:bottle", weight = 5, amount_min = 1, amount_max = 1 },

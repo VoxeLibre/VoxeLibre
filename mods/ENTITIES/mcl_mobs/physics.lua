@@ -354,7 +354,7 @@ function mob_class:set_yaw(yaw, delay, dtime)
 		if self.shaking and dtime then
 			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
 		end
-		self:update_roll()
+		--self:update_roll()
 		return yaw
 	end
 
