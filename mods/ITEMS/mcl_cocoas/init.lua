@@ -3,7 +3,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 mcl_cocoas = {}
 
 -- Place cocoa
-function mcl_cocoas.place(itemstack, placer, pt, plantname)
+local function cocoa_place(itemstack, placer, pt, plantname)
 	-- check if pointing at a node
 	if not pt or pt.type ~= "node" then
 		return
@@ -90,7 +90,11 @@ local crop_def = {
 		},
 	},
 	groups = {
-		handy=1,axey=1, cocoa=1, not_in_creative_inventory=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1,
+		handy = 1, axey = 1,
+		dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1,
+		attached_node_facedir=1,
+		not_in_creative_inventory=1,
+		cocoa=1
 	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_rotate = false,
