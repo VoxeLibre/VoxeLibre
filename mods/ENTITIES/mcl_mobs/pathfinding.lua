@@ -4,6 +4,9 @@ local mob_class = mcl_mobs.mob_class
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_pathfinding",false)
 local PATHFINDING = "gowp"
 
+local PATHFINDING_FAIL_THRESHOLD = 100 -- no. of ticks to fail before giving up. 20p/s. 5s helps them get through door
+local PATHFINDING_FAIL_WAIT = 30 -- how long to wait before trying to path again
+
 local LOG_MODULE = "[Mobs Pathfinding]"
 local function mcl_log (message)
 	if LOGGING_ON and message then
@@ -105,7 +108,7 @@ local plane_adjacents = {
 
 function mob_class:ready_to_path()
 	mcl_log("Check ready to path")
-	if self._pf_last_failed and (os.time() - self._pf_last_failed) < 30 then
+	if self._pf_last_failed and (os.time() - self._pf_last_failed) < PATHFINDING_FAIL_WAIT then
 		mcl_log("Not ready to path as last fail is less than threshold: " .. (os.time() - self._pf_last_failed))
 		return false
 	else
@@ -390,7 +393,7 @@ function mob_class:check_gowp(dtime)
 		-- No waypoints left, but have current target. Potentially last waypoint to go to.
 		self.current_target["failed_attempts"] = self.current_target["failed_attempts"] + 1
 		local failed_attempts = self.current_target["failed_attempts"]
-		if failed_attempts >= 50 then
+		if failed_attempts >= PATHFINDING_FAIL_THRESHOLD then
 			mcl_log("Failed to reach position (" .. minetest.pos_to_string(self.current_target["pos"]) .. ") too many times. Abandon route. Times tried: " .. failed_attempts)
 			self.state = "stand"
 			self.current_target = nil
