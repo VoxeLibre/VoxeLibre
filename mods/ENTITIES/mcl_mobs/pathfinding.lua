@@ -1,15 +1,18 @@
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 
-local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager",false)
+local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_pathfinding",false)
 local PATHFINDING = "gowp"
 
-local LOG_MODULE = "[Mobs]"
+local LOG_MODULE = "[Mobs Pathfinding]"
 local function mcl_log (message)
 	if LOGGING_ON and message then
 		minetest.log(LOG_MODULE .. " " .. message)
 	end
 end
+
+local one_down = vector.new(0,-1,0)
+local one_up = vector.new(0,1,0)
 
 function output_table (wp)
 	if not wp then return end
@@ -51,15 +54,13 @@ local function output_enriched (wp_out)
 	end
 end
 
-local one_down = vector.new(0,-1,0)
-local one_up = vector.new(0,1,0)
-
 -- This function will take a list of paths, and enrich it with:
 -- a var for failed attempts
 -- an action, such as to open or close a door where we know that pos requires that action
 local function generate_enriched_path(wp_in, door_open_pos, door_close_pos, cur_door_pos)
 	local wp_out = {}
 
+	-- TODO  Just pass in door position and the index before is open, the index after is close
 	local current_door_index = -1
 
 	for i, cur_pos in pairs(wp_in) do
@@ -105,6 +106,7 @@ local plane_adjacents = {
 function mob_class:ready_to_path()
 	mcl_log("Check ready to path")
 	if self._pf_last_failed and (os.time() - self._pf_last_failed) < 30 then
+		mcl_log("Not ready to path as last fail is less than threshold: " .. (os.time() - self._pf_last_failed))
 		return false
 	else
 		mcl_log("We are ready to pathfind, no previous fail or we are past threshold")
@@ -188,11 +190,7 @@ end
 
 function mob_class:gopath(target,callback_arrived)
 	if self.state == PATHFINDING then mcl_log("Already pathfinding, don't set another until done.") return end
-
-	if not self:ready_to_path() then
-		mcl_log("We are not ready to path as last fail is less than threshold: " .. (os.time() - self._pf_last_failed))
-		return
-	end
+	if not self:ready_to_path() then return end
 
 	--if os.time() - gopath_last < 5 then
 	--	mcl_log("Not ready to path yet")
@@ -243,27 +241,17 @@ function mob_class:gopath(target,callback_arrived)
 					else
 						mcl_log("No pos after door")
 					end
-
 				else
 					mcl_log("Path through closest door empty or null")
 				end
-				-- Path to and through door
-				-- Path from otherside of door through door to next target
 			else
 				mcl_log("ok, we have a path through 1 door")
 			end
-
 		end
-
-		-- Path through door closest to target (starting at square before door)
-		-- Path to that starting point directly
-			-- or path through door to that starting point
 	else
 		wp = generate_enriched_path(wp)
 		mcl_log("We have a direct route")
 	end
-
-	--path from pos to door, path from otherside to target
 
 	if not wp then
 		mcl_log("Could not calculate path")
