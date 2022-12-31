@@ -42,7 +42,7 @@ local function output_enriched (wp_out)
 
 		local action =  outy["action"]
 		if action then
-			mcl_log("Pos ".. i ..":" .. minetest.pos_to_string(outy["pos"]))
+			--mcl_log("Pos ".. i ..":" .. minetest.pos_to_string(outy["pos"]))
 			mcl_log("type: " .. action["type"])
 			mcl_log("action: " .. action["action"])
 			mcl_log("target: " .. minetest.pos_to_string(action["target"]))
@@ -51,31 +51,33 @@ local function output_enriched (wp_out)
 	end
 end
 
+local one_down = vector.new(0,-1,0)
+local one_up = vector.new(0,1,0)
+
 -- This function will take a list of paths, and enrich it with:
 -- a var for failed attempts
 -- an action, such as to open or close a door where we know that pos requires that action
 local function generate_enriched_path(wp_in, door_open_pos, door_close_pos, cur_door_pos)
 	local wp_out = {}
+
+	local current_door_index = -1
+
 	for i, cur_pos in pairs(wp_in) do
 		local action = nil
 
-		local one_down = vector.new(0,-1,0)
 		local cur_pos_to_add = vector.add(cur_pos, one_down)
 		if door_open_pos and vector.equals (cur_pos, door_open_pos) then
 			mcl_log ("Door open match")
 			action = {type = "door", action = "open", target = cur_door_pos}
-			--action["target"] = cur_door_pos
 			cur_pos_to_add = vector.add(cur_pos, one_down)
 		elseif door_close_pos and vector.equals(cur_pos, door_close_pos) then
 			mcl_log ("Door close match")
 			action = {type = "door", action = "close", target = cur_door_pos}
-			--action["target"] = cur_door_pos
 			cur_pos_to_add = vector.add(cur_pos, one_down)
 		elseif cur_door_pos and vector.equals(cur_pos, cur_door_pos) then
 			mcl_log("Current door pos")
 			action = {type = "door", action = "open", target = cur_door_pos}
 			cur_pos_to_add = vector.add(cur_pos, one_down)
-			--action["target"] = cur_door_pos
 		else
 			cur_pos_to_add = cur_pos
 			--mcl_log ("Pos doesn't match")
@@ -100,8 +102,6 @@ local plane_adjacents = {
 	vector.new(0,0,-1),
 }
 
---local gopath_last = os.time()
-
 function mob_class:ready_to_path()
 	mcl_log("Check ready to path")
 	if self._pf_last_failed and (os.time() - self._pf_last_failed) < 30 then
@@ -113,22 +113,26 @@ function mob_class:ready_to_path()
 end
 
 -- This function is used to see if we can path. We could use to check a route, rather than making people move.
-local function calculate_path_through_door (p, t, cur_door_pos)
-	-- target is the same as t, just 1 square difference. Maybe we don't need target
-	mcl_log("Plot route from mob: " .. minetest.pos_to_string(p) .. ", to target: " .. minetest.pos_to_string(t))
+local function calculate_path_through_door (p, cur_door_pos, t)
+	if t then
+		mcl_log("Plot route through door from pos: " .. minetest.pos_to_string(p) .. ", to target: " .. minetest.pos_to_string(t))
+	else
+		mcl_log("Plot route through door from pos: " .. minetest.pos_to_string(p))
+	end
 
 	local enriched_path = nil
+	local wp, prospective_wp
 
-	--local cur_door_pos = nil
 	local pos_closest_to_door = nil
 	local other_side_of_door = nil
 
-	local wp, prospective_wp
-
 	if cur_door_pos then
 		mcl_log("Found a door near: " .. minetest.pos_to_string(cur_door_pos))
+
 		for _,v in pairs(plane_adjacents) do
 			pos_closest_to_door = vector.add(cur_door_pos,v)
+			other_side_of_door = vector.add(cur_door_pos,-v)
+
 			local n = minetest.get_node(pos_closest_to_door)
 
 			if n.name == "air" then
@@ -138,22 +142,34 @@ local function calculate_path_through_door (p, t, cur_door_pos)
 
 				if prospective_wp then
 					mcl_log("Found a path to next to door".. minetest.pos_to_string(pos_closest_to_door))
-					other_side_of_door = vector.add(cur_door_pos,-v)
 					mcl_log("Opposite is: ".. minetest.pos_to_string(other_side_of_door))
 
-					local wp_otherside_door_to_target = minetest.find_path(other_side_of_door,t,150,1,4)
-					if wp_otherside_door_to_target and #wp_otherside_door_to_target > 0 then
-						table.insert(prospective_wp, cur_door_pos)
-						append_paths (prospective_wp, wp_otherside_door_to_target)
-						enriched_path = generate_enriched_path(prospective_wp, pos_closest_to_door, other_side_of_door, cur_door_pos)
-						wp = prospective_wp
-						mcl_log("We have a path from outside door to target")
+					table.insert(prospective_wp, cur_door_pos)
+
+					if t then
+						mcl_log("We have t, lets go from door to target")
+						local wp_otherside_door_to_target = minetest.find_path(other_side_of_door,t,150,1,4)
+
+						if wp_otherside_door_to_target and #wp_otherside_door_to_target > 0 then
+							append_paths (prospective_wp, wp_otherside_door_to_target)
+
+							wp = prospective_wp
+							mcl_log("We have a path from outside door to target")
+						else
+							mcl_log("We cannot path from outside door to target")
+						end
 					else
-						mcl_log("We cannot path from outside door to target")
+						mcl_log("No t, just add other side of door")
+						table.insert(prospective_wp, other_side_of_door)
+						wp = prospective_wp
 					end
-					break
+
+					if wp then
+						enriched_path = generate_enriched_path(wp, pos_closest_to_door, other_side_of_door, cur_door_pos)
+						break
+					end
 				else
-					mcl_log("This block next to door doesn't work.")
+					mcl_log("Cannot path to this air block next to door.")
 				end
 			end
 		end
@@ -168,7 +184,7 @@ local function calculate_path_through_door (p, t, cur_door_pos)
 	return enriched_path
 end
 
-
+--local gopath_last = os.time()
 
 function mob_class:gopath(target,callback_arrived)
 	if self.state == PATHFINDING then mcl_log("Already pathfinding, don't set another until done.") return end
@@ -193,15 +209,55 @@ function mob_class:gopath(target,callback_arrived)
 	local wp = minetest.find_path(p,t,150,1,4)
 
 	if not wp then
-		mcl_log("No direct path. Path through door closest to target.")
-		local cur_door_pos = minetest.find_node_near(target, 16, {"group:door"})
-		wp = calculate_path_through_door(p, t, cur_door_pos)
+		mcl_log("### No direct path. Path through door closest to target.")
+		local door_near_target = minetest.find_node_near(target, 16, {"group:door"})
+		wp = calculate_path_through_door(p, door_near_target, t)
 
 		if not wp then
-			mcl_log("No path though door closest to target. Try door closest to origin.")
-			cur_door_pos = minetest.find_node_near(p, 16, {"group:door"})
-			wp = calculate_path_through_door(p, t, cur_door_pos)
+			mcl_log("### No path though door closest to target. Try door closest to origin.")
+			local door_closest = minetest.find_node_near(p, 16, {"group:door"})
+			wp = calculate_path_through_door(p, door_closest, t)
+
+			-- Path through 2 doors
+			if not wp then
+				mcl_log("### Still not wp. Need to path through 2 doors.")
+				local path_through_closest_door = calculate_path_through_door(p, door_closest)
+
+				if path_through_closest_door and #path_through_closest_door > 0 then
+					mcl_log("We have path through first door")
+					mcl_log("Number of pos in path through door: " .. tostring(#path_through_closest_door))
+
+					local pos_after_door_entry = path_through_closest_door[#path_through_closest_door]
+					if pos_after_door_entry then
+						local pos_after_door = vector.add(pos_after_door_entry["pos"], one_up)
+						mcl_log("pos_after_door: " .. minetest.pos_to_string(pos_after_door))
+						local path_after_door = calculate_path_through_door(pos_after_door, door_near_target, t)
+						if path_after_door and #path_after_door > 1 then
+							mcl_log("We have path after first door")
+							table.remove(path_after_door, 1) -- Remove duplicate
+							wp = path_through_closest_door
+							append_paths (wp, path_after_door)
+						else
+							mcl_log("Path after door is not good")
+						end
+					else
+						mcl_log("No pos after door")
+					end
+
+				else
+					mcl_log("Path through closest door empty or null")
+				end
+				-- Path to and through door
+				-- Path from otherside of door through door to next target
+			else
+				mcl_log("ok, we have a path through 1 door")
+			end
+
 		end
+
+		-- Path through door closest to target (starting at square before door)
+		-- Path to that starting point directly
+			-- or path through door to that starting point
 	else
 		wp = generate_enriched_path(wp)
 		mcl_log("We have a direct route")
@@ -367,14 +423,19 @@ function mob_class:check_gowp(dtime)
 
 		mcl_log("We don't have waypoints or a current target. Let's try to path to target")
 
-		if wp then
-			mcl_log("WP: " .. tostring(wp))
-			mcl_log("WP num: " .. tostring(#wp))
+		if self.waypoints then
+			mcl_log("WP: " .. tostring(self.waypoints))
+			mcl_log("WP num: " .. tostring(#self.waypoints))
 		else
 			mcl_log("No wp set")
 		end
 
-		mcl_log("Current target: " .. tostring(self.current_target))
+		if self.current_target then
+			mcl_log("Current target: " .. tostring(self.current_target))
+		else
+			mcl_log("No current target")
+		end
+
 
 		local final_wp = minetest.find_path(p,self._target,150,1,4)
 		if final_wp then
