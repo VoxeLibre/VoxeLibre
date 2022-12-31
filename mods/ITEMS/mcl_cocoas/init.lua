@@ -3,7 +3,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 mcl_cocoas = {}
 
 -- Place cocoa
-function mcl_cocoas.place(itemstack, placer, pt, plantname)
+local function cocoa_place(itemstack, placer, pt, plantname)
 	-- check if pointing at a node
 	if not pt or pt.type ~= "node" then
 		return
