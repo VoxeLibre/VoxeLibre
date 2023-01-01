@@ -16,5 +16,5 @@ https://git.minetest.land/MineClone2/MineClone2/src/branch/master/CODE_OF_CONDUC
 
 Tell us about your pull request! Reference related issues, if necessary
 
-# Testing
+### Testing
 Tell us how to test your changes!

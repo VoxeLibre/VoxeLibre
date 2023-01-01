@@ -19,8 +19,8 @@ By submitting this issue, you agree to follow our Code of Conduct:
 https://git.minetest.land/MineClone2/MineClone2/src/branch/master/CODE_OF_CONDUCT.md
 -->
 
-# Feature
+### Feature
 Tell us about your requested feature not in Minecraft!
 
-# Why
+### Why
 Tell us why should we implement it!

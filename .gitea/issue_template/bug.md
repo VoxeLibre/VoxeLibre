@@ -26,11 +26,11 @@ https://git.minetest.land/MineClone2/MineClone2/tags
 -->
 MineClone2 version:
 
-# What happened?
+### What happened?
 Report about the bug! Please send large log snippets as an attachement file.
 
-# What should happen:
+### What should happen:
 Tell us what should happen!
 
-# Steps to reproduce
+### Steps to reproduce
 Tell us how we can reproduce the bug!

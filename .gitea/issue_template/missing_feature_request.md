@@ -18,8 +18,8 @@ By submitting this issue, you agree to follow our Code of Conduct:
 https://git.minetest.land/MineClone2/MineClone2/src/branch/master/CODE_OF_CONDUCT.md
 -->
 
-# Missing Feature
-Tell us about the requested missing feature in Minecraft but not in MineClone2!
+### Current feature in Minecraft
+Tell us about the feature currently in Minecraft!
 
-# Why
-Tell us why should we implement it!
+### Current feature in MineClone2
+Tell us about the feature currently in MineClone2!
