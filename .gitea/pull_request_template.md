@@ -4,8 +4,6 @@ name: "Pull request"
 about: "Submit a pull request"
 labels:
 
-- "Testing/Review needed"
-
 ---
 
 <!--
