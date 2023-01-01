@@ -836,7 +836,7 @@ end
 
 local function take_bed (entity)
 	if not entity then return end
-	if not self:ready_to_path() then return end
+	if not entity:ready_to_path() then return end
 
 	local p = entity.object:get_pos()
 
