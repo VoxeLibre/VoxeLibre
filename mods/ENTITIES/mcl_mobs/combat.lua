@@ -794,3 +794,397 @@ function mob_class:check_aggro(dtime)
 	end
 	self._check_aggro_timer = self._check_aggro_timer + dtime
 end
+
+function mob_class:do_state_attack (dtime)
+	local yaw = self.object:get_yaw() or 0
+
+	local s = self.object:get_pos()
+	local p = self.attack:get_pos() or s
+
+	-- stop attacking if player invisible or out of range
+	if not self.attack
+			or not self.attack:get_pos()
+			or not self:object_in_range(self.attack)
+			or self.attack:get_hp() <= 0
+			or (self.attack:is_player() and mcl_mobs.invis[ self.attack:get_player_name() ]) then
+
+		self.state = "stand"
+		self:set_velocity( 0)
+		self:set_animation( "stand")
+		self.attack = nil
+		self.v_start = false
+		self.timer = 0
+		self.blinktimer = 0
+		self.path.way = nil
+
+		return
+	end
+
+	-- calculate distance from mob and enemy
+	local dist = vector.distance(p, s)
+
+	if self.attack_type == "explode" then
+
+		local vec = {
+			x = p.x - s.x,
+			z = p.z - s.z
+		}
+
+		yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
+
+		if p.x > s.x then yaw = yaw +math.pi end
+
+		yaw = self:set_yaw( yaw, 0, dtime)
+
+		local node_break_radius = self.explosion_radius or 1
+		local entity_damage_radius = self.explosion_damage_radius
+				or (node_break_radius * 2)
+
+		-- start timer when in reach and line of sight
+		if not self.v_start
+				and dist <= self.reach
+				and self:line_of_sight( s, p, 2) then
+
+			self.v_start = true
+			self.timer = 0
+			self.blinktimer = 0
+			self:mob_sound("fuse", nil, false)
+
+			-- stop timer if out of reach or direct line of sight
+		elseif self.allow_fuse_reset
+				and self.v_start
+				and (dist >= self.explosiontimer_reset_radius
+				or not self:line_of_sight( s, p, 2)) then
+			self.v_start = false
+			self.timer = 0
+			self.blinktimer = 0
+			self.blinkstatus = false
+			self:remove_texture_mod("^[brighten")
+		end
+
+		-- walk right up to player unless the timer is active
+		if self.v_start and (self.stop_to_explode or dist < self.reach) then
+			self:set_velocity( 0)
+		else
+			self:set_velocity( self.run_velocity)
+		end
+
+		if self.animation and self.animation.run_start then
+			self:set_animation( "run")
+		else
+			self:set_animation( "walk")
+		end
+
+		if self.v_start then
+
+			self.timer = self.timer + dtime
+			self.blinktimer = (self.blinktimer or 0) + dtime
+
+			if self.blinktimer > 0.2 then
+
+				self.blinktimer = 0
+
+				if self.blinkstatus then
+					self:remove_texture_mod("^[brighten")
+				else
+					self:add_texture_mod("^[brighten")
+				end
+
+				self.blinkstatus = not self.blinkstatus
+			end
+
+			if self.timer > self.explosion_timer then
+
+				local pos = self.object:get_pos()
+
+				if mobs_griefing and not minetest.is_protected(pos, "") then
+					mcl_explosions.explode(mcl_util.get_object_center(self.object), self.explosion_strength, { drop_chance = 1.0 }, self.object)
+				else
+					minetest.sound_play(self.sounds.explode, {
+						pos = pos,
+						gain = 1.0,
+						max_hear_distance = self.sounds.distance or 32
+					}, true)
+					self:entity_physics(pos,entity_damage_radius)
+					mcl_mobs.effect(pos, 32, "mcl_particles_smoke.png", nil, nil, node_break_radius, 1, 0)
+				end
+				mcl_burning.extinguish(self.object)
+				self.object:remove()
+
+				return true
+			end
+		end
+
+	elseif self.attack_type == "dogfight"
+			or (self.attack_type == "dogshoot" and self:dogswitch(dtime) == 2) and (dist >= self.avoid_distance or not self.shooter_avoid_enemy)
+			or (self.attack_type == "dogshoot" and dist <= self.reach and self:dogswitch() == 0) then
+
+		if self.fly
+				and dist > self.reach then
+
+			local p1 = s
+			local me_y = math.floor(p1.y)
+			local p2 = p
+			local p_y = math.floor(p2.y + 1)
+			local v = self.object:get_velocity()
+
+			if self:flight_check( s) then
+
+				if me_y < p_y then
+
+					self.object:set_velocity({
+						x = v.x,
+						y = 1 * self.walk_velocity,
+						z = v.z
+					})
+
+				elseif me_y > p_y then
+
+					self.object:set_velocity({
+						x = v.x,
+						y = -1 * self.walk_velocity,
+						z = v.z
+					})
+				end
+			else
+				if me_y < p_y then
+
+					self.object:set_velocity({
+						x = v.x,
+						y = 0.01,
+						z = v.z
+					})
+
+				elseif me_y > p_y then
+
+					self.object:set_velocity({
+						x = v.x,
+						y = -0.01,
+						z = v.z
+					})
+				end
+			end
+
+		end
+
+		-- rnd: new movement direction
+		if self.path.following
+				and self.path.way
+				and self.attack_type ~= "dogshoot" then
+
+			-- no paths longer than 50
+			if #self.path.way > 50
+					or dist < self.reach then
+				self.path.following = false
+				return
+			end
+
+			local p1 = self.path.way[1]
+
+			if not p1 then
+				self.path.following = false
+				return
+			end
+
+			if math.abs(p1.x-s.x) + math.abs(p1.z - s.z) < 0.6 then
+				-- reached waypoint, remove it from queue
+				table.remove(self.path.way, 1)
+			end
+
+			-- set new temporary target
+			p = {x = p1.x, y = p1.y, z = p1.z}
+		end
+
+		local vec = {
+			x = p.x - s.x,
+			z = p.z - s.z
+		}
+
+		yaw = (atan(vec.z / vec.x) + math.pi / 2) - self.rotate
+
+		if p.x > s.x then yaw = yaw + math.pi end
+
+		yaw = self:set_yaw( yaw, 0, dtime)
+
+		-- move towards enemy if beyond mob reach
+		if dist > self.reach then
+
+			-- path finding by rnd
+			if self.pathfinding -- only if mob has pathfinding enabled
+					and enable_pathfinding then
+
+				self:smart_mobs(s, p, dist, dtime)
+			end
+
+			if self:is_at_cliff_or_danger() then
+
+				self:set_velocity( 0)
+				self:set_animation( "stand")
+				local yaw = self.object:get_yaw() or 0
+				yaw = self:set_yaw( yaw + 0.78, 8)
+			else
+
+				if self.path.stuck then
+					self:set_velocity( self.walk_velocity)
+				else
+					self:set_velocity( self.run_velocity)
+				end
+
+				if self.animation and self.animation.run_start then
+					self:set_animation( "run")
+				else
+					self:set_animation( "walk")
+				end
+			end
+
+		else -- rnd: if inside reach range
+
+			self.path.stuck = false
+			self.path.stuck_timer = 0
+			self.path.following = false -- not stuck anymore
+
+			self:set_velocity( 0)
+
+			if not self.custom_attack then
+
+				if self.timer > 1 then
+
+					self.timer = 0
+
+					if self.double_melee_attack
+							and math.random(1, 2) == 1 then
+						self:set_animation( "punch2")
+					else
+						self:set_animation( "punch")
+					end
+
+					local p2 = p
+					local s2 = s
+
+					p2.y = p2.y + .5
+					s2.y = s2.y + .5
+
+					if self:line_of_sight( p2, s2) == true then
+
+						-- play attack sound
+						self:mob_sound("attack")
+
+						-- punch player (or what player is attached to)
+						local attached = self.attack:get_attach()
+						if attached then
+							self.attack = attached
+						end
+						self.attack:punch(self.object, 1.0, {
+							full_punch_interval = 1.0,
+							damage_groups = {fleshy = self.damage}
+						}, nil)
+					end
+				end
+			else	-- call custom attack every second
+				if self.custom_attack
+						and self.timer > 1 then
+
+					self.timer = 0
+
+					self.custom_attack(self, p)
+				end
+			end
+		end
+
+	elseif self.attack_type == "shoot"
+			or (self.attack_type == "dogshoot" and self:dogswitch(dtime) == 1)
+			or (self.attack_type == "dogshoot" and (dist > self.reach or dist < self.avoid_distance and self.shooter_avoid_enemy) and self:dogswitch() == 0) then
+
+		p.y = p.y - .5
+		s.y = s.y + .5
+
+		local dist = vector.distance(p, s)
+		local vec = {
+			x = p.x - s.x,
+			y = p.y - s.y,
+			z = p.z - s.z
+		}
+
+		yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
+
+		if p.x > s.x then yaw = yaw +math.pi end
+
+		yaw = self:set_yaw( yaw, 0, dtime)
+
+		local stay_away_from_player = vector.new(0,0,0)
+
+		--strafe back and fourth
+
+		--stay away from player so as to shoot them
+		if dist < self.avoid_distance and self.shooter_avoid_enemy then
+			self:set_animation( "shoot")
+			stay_away_from_player=vector.multiply(vector.direction(p, s), 0.33)
+		end
+
+		if self.strafes then
+			if not self.strafe_direction then
+				self.strafe_direction = 1.57
+			end
+			if math.random(40) == 1 then
+				self.strafe_direction = self.strafe_direction*-1
+			end
+			self.acc = vector.add(vector.multiply(vector.rotate_around_axis(vector.direction(s, p), vector.new(0,1,0), self.strafe_direction), 0.3*self.walk_velocity), stay_away_from_player)
+		else
+			self:set_velocity( 0)
+		end
+
+		local p = self.object:get_pos()
+		p.y = p.y + (self.collisionbox[2] + self.collisionbox[5]) / 2
+
+		if self.shoot_interval
+				and self.timer > self.shoot_interval
+				and not minetest.raycast(vector.add(p, vector.new(0,self.shoot_offset,0)), vector.add(self.attack:get_pos(), vector.new(0,1.5,0)), false, false):next()
+				and math.random(1, 100) <= 60 then
+
+			self.timer = 0
+			self:set_animation( "shoot")
+
+			-- play shoot attack sound
+			self:mob_sound("shoot_attack")
+
+			-- Shoot arrow
+			if minetest.registered_entities[self.arrow] then
+
+				local arrow, ent
+				local v = 1
+				if not self.shoot_arrow then
+					self.firing = true
+					minetest.after(1, function()
+						self.firing = false
+					end)
+					arrow = minetest.add_entity(p, self.arrow)
+					ent = arrow:get_luaentity()
+					if ent.velocity then
+						v = ent.velocity
+					end
+					ent.switch = 1
+					ent.owner_id = tostring(self.object) -- add unique owner id to arrow
+
+					-- important for mcl_shields
+					ent._shooter = self.object
+					ent._saved_shooter_pos = self.object:get_pos()
+				end
+
+				local amount = (vec.x * vec.x + vec.y * vec.y + vec.z * vec.z) ^ 0.5
+				-- offset makes shoot aim accurate
+				vec.y = vec.y + self.shoot_offset
+				vec.x = vec.x * (v / amount)
+				vec.y = vec.y * (v / amount)
+				vec.z = vec.z * (v / amount)
+				if self.shoot_arrow then
+					vec = vector.normalize(vec)
+					self:shoot_arrow(p, vec)
+				else
+					arrow:set_velocity(vec)
+				end
+			end
+		end
+	else
+
+	end
+end
