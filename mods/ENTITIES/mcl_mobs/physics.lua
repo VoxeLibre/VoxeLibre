@@ -5,8 +5,7 @@ local ENTITY_CRAMMING_MAX = 24
 local CRAMMING_DAMAGE = 3
 local DEATH_DELAY = 0.5
 local DEFAULT_FALL_SPEED = -9.81*1.5
-local FLOP_HEIGHT = 6
-local FLOP_HOR_SPEED = 1.5
+
 local PATHFINDING = "gowp"
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
 local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false

@@ -2,8 +2,6 @@ local mob_class = mcl_mobs.mob_class
 local mob_class_meta = {__index = mcl_mobs.mob_class}
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 -- API for Mobs Redo: MineClone 2 Edition (MRM)
-local MAX_MOB_NAME_LENGTH = 30
-local DEFAULT_FALL_SPEED = -9.81*1.5
 
 local PATHFINDING = "gowp"
 
@@ -17,20 +15,8 @@ local function mcl_log (message)
 	end
 end
 
-
 -- Invisibility mod check
 mcl_mobs.invis = {}
-
--- localize math functions
-local atann = math.atan
-
-local function atan(x)
-	if not x or x ~= x then
-		return 0
-	else
-		return atann(x)
-	end
-end
 
 local remove_far = true
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false

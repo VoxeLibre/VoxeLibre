@@ -8,6 +8,18 @@ local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 local stuck_timeout = 3 -- how long before mob gets stuck in place and starts searching
 local stuck_path_timeout = 10 -- how long will mob follow path before giving up
 
+local enable_pathfinding = true
+
+local atann = math.atan
+local function atan(x)
+	if not x or x ~= x then
+		return 0
+	else
+		return atann(x)
+	end
+end
+
+
 -- check if daytime and also if mob is docile during daylight hours
 function mob_class:day_docile()
 	if self.docile_by_day == false then
