@@ -8,6 +8,9 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local bamboo = "mcl_bamboo:bamboo"
+local bamboo_one = bamboo .."_1"
+local bamboo_two = bamboo.."_2"
+local bamboo_three = bamboo.."_3"
 local node_sound = mcl_sounds.node_sound_wood_defaults()
 
 -- CONSTS
@@ -17,6 +20,11 @@ local DEBUG = false
 local strlen = string.len
 local substr = string.sub
 local pr = PseudoRandom(os.time() * 12 + 15766) -- switched from math.random() to PseudoRandom because the random wasn't very random.
+
+local on_rotate
+if minetest.get_modpath("screwdriver") then
+	on_rotate = screwdriver.disallow
+end
 
 -- basic bamboo nodes.
 local bamboo_def = {
@@ -76,12 +84,16 @@ local bamboo_def = {
 		}
 	},
 
+	on_rotate = on_rotate,
+
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type ~= "node" then
 			return itemstack
 		end
 		local node = minetest.get_node(pointed_thing.under)
 		local pos = pointed_thing.under
+		local nodename = node.name
+
 		if DEBUG then
 			minetest.log("mcl_bamboo::Node placement data:")
 			minetest.log(dump(pointed_thing))
@@ -108,14 +120,12 @@ local bamboo_def = {
 			end
 		end
 
-		local mboo = substr(node.name, strlen(node.name) - 3, strlen(node.name))
-
-		if mboo ~= "mboo" and mboo ~= "oo_1" and mboo ~= "oo_2" and mboo ~= "oo_3" then
+		if nodename ~= bamboo and nodename ~= bamboo_one and nodename ~= bamboo_two and nodename ~= bamboo_three then
 			-- not bamboo...
-			if node.name ~= "mcl_flowerpots:flower_pot" then
+			if nodename ~= "mcl_flowerpots:flower_pot" then
 				local found = false
 				for i = 1, #mcl_bamboo.bamboo_dirt_nodes do
-					if node.name == mcl_bamboo.bamboo_dirt_nodes[i] then
+					if nodename == mcl_bamboo.bamboo_dirt_nodes[i] then
 						found = true
 						break
 					end
@@ -132,32 +142,26 @@ local bamboo_def = {
 
 		local place_item = ItemStack(itemstack) -- make a copy so that we don't indirectly mess with the original.
 
-		node = minetest.get_node(pointed_thing.under)
-		mboo = substr(node.name, strlen(node.name) - 3, strlen(node.name))
-		if DEBUG then
-			minetest.log("mboo:\n" .. mboo)
-		end
-
-		if mboo == "mboo" then
+		if nodename == bamboo then
 			return minetest.item_place(itemstack, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
-		elseif mboo == "oo_1" then
-			place_item:set_name(bamboo .. "_1")
+		elseif nodename == bamboo_one then
+			place_item:set_name(bamboo_one)
 			itemstack:set_count(itemstack:get_count() - 1)
 			minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
 			if DEBUG then
 				minetest.log("Bamboo placeitem definition (current):\n" .. dump(place_item:to_table()))
 			end
 			return itemstack, pointed_thing.under
-		elseif mboo == "oo_2" then
-			place_item:set_name(bamboo .. "_2")
+		elseif nodename == bamboo_two then
+			place_item:set_name(bamboo_two)
 			itemstack:set_count(itemstack:get_count() - 1)
 			minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
 			if DEBUG then
 				minetest.log("Bamboo placeitem definition (current):\n" .. dump(place_item:to_table()))
 			end
 			return itemstack, pointed_thing.under
-		elseif mboo == "oo_3" then
-			place_item:set_name(bamboo .. "_3")
+		elseif nodename == bamboo_three then
+			place_item:set_name(bamboo_three)
 			itemstack:set_count(itemstack:get_count() - 1)
 			minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
 			if DEBUG then
@@ -165,26 +169,41 @@ local bamboo_def = {
 			end
 			return itemstack, pointed_thing.under
 		else
+			itemstack:set_count(itemstack:get_count() - 1)
 			local placed_type = pr:next(0, 3) -- randomly choose which one to place.
-			placed_type = pr:next(0, 3) -- Get the lua juices flowing. (Really, this is just to get it to give a real random number.)
 			if DEBUG then
 				minetest.log("MCL_BAMBOO::Place_Bamboo_Shoot--Type: " .. placed_type)
 			end
 			if placed_type == 0 then
 				place_item=ItemStack(bamboo)
+				if DEBUG then
+					minetest.log("Bamboo place_item definition (current):\n" .. dump(place_item:to_table()))
+				end
+				minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
+				return itemstack, pointed_thing.under
 			elseif placed_type == 1 then
 				place_item=ItemStack(bamboo .. "_1")
+				if DEBUG then
+					minetest.log("Bamboo place_item definition (current):\n" .. dump(place_item:to_table()))
+				end
+				minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
+				return itemstack, pointed_thing.under
 			elseif placed_type == 2 then
 				place_item=ItemStack(bamboo .. "_2")
+				if DEBUG then
+					minetest.log("Bamboo place_item definition (current):\n" .. dump(place_item:to_table()))
+				end
+				minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
+				return itemstack, pointed_thing.under
 			elseif placed_type == 3 then
 				place_item=ItemStack(bamboo .. "_3")
+				if DEBUG then
+					minetest.log("Bamboo place_item definition (current):\n" .. dump(place_item:to_table()))
+				end
+				minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
+				return itemstack, pointed_thing.under
 			end
-			if DEBUG then
-				minetest.log("Bamboo place_item definition (current):\n" .. dump(place_item:to_table()))
-			end
-			itemstack:set_count(itemstack:get_count() - 1)
-			minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
-			return itemstack, pointed_thing.under
+			return false
 		end
 	end,
 
@@ -287,70 +306,74 @@ minetest.register_node("mcl_bamboo:bamboo_plank", {
 })
 
 -- Bamboo Part 2 Base nodes.
--- Bamboo alternative node types.
-local def = table.copy(bamboo_def)
-def.node_box = {
+-- Bamboo alternative node types. Note that the table.copy's are very important! if you use a common node def and
+-- make changes, even after registering them, the changes overwrite the previous node definitions, and in this case,
+-- you will end up with 4 nodes all being type 3.
+local bamboo_one_def = table.copy(bamboo_def)
+bamboo_one_def.node_box = {
 	type = "fixed",
 	fixed = {
 		{-0.05, -0.5, 0.285, -0.275, 0.5, 0.06},
 	}
 }
-def.collision_box = {
+bamboo_one_def.collision_box = {
 	-- see [Node boxes] for possibilities
 	type = "fixed",
 	fixed = {
 		{-0.05, -0.5, 0.285, -0.275, 0.5, 0.06},
 	}
 }
-def.selection_box = {
+bamboo_one_def.selection_box = {
 	type = "fixed",
 	fixed = {
 		{-0.05, -0.5, 0.285, -0.275, 0.5, 0.06},
 	}
 }
-minetest.register_node(bamboo .. "_1", def)
+minetest.register_node(bamboo_one, bamboo_one_def)
+local bamboo_two_def = table.copy(bamboo_def)
 
-def.node_box = {
+bamboo_two_def.node_box = {
 	type = "fixed",
 	fixed = {
 		{0.25, -0.5, 0.325, 0.025, 0.5, 0.100},
 	}
 }
-def.collision_box = {
+bamboo_two_def.collision_box = {
 	-- see [Node boxes] for possibilities
 	type = "fixed",
 	fixed = {
 		{0.25, -0.5, 0.325, 0.025, 0.5, 0.100},
 	}
 }
-def.selection_box = {
+bamboo_two_def.selection_box = {
 	type = "fixed",
 	fixed = {
 		{0.25, -0.5, 0.325, 0.025, 0.5, 0.100},
 	}
 }
-minetest.register_node(bamboo .. "_2", def)
+minetest.register_node(bamboo_two, bamboo_two_def)
+local bamboo_three_def = table.copy(bamboo_def)
 
-def.node_box = {
+bamboo_three_def.node_box = {
 	type = "fixed",
 	fixed = {
 		{-0.125, -0.5, 0.125, -0.3125, 0.5, 0.3125},
 	}
 }
-def.collision_box = {
+bamboo_three_def.collision_box = {
 	-- see [Node boxes] for possibilities
 	type = "fixed",
 	fixed = {
 		{-0.125, -0.5, 0.125, -0.3125, 0.5, 0.3125},
 	}
 }
-def.selection_box = {
+bamboo_three_def.selection_box = {
 	type = "fixed",
 	fixed = {
 		{-0.125, -0.5, 0.125, -0.3125, 0.5, 0.3125},
 	}
 }
-minetest.register_node(bamboo .. "_3", def)
+minetest.register_node(bamboo_three, bamboo_three_def)
 
 -- Bamboo Mosaic
 local bamboo_mosaic = minetest.registered_nodes[bamboo .. "_plank"]
