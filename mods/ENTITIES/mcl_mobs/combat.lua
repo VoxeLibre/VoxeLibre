@@ -807,7 +807,7 @@ function mob_class:check_aggro(dtime)
 	self._check_aggro_timer = self._check_aggro_timer + dtime
 end
 
-function mob_class:do_state_attack (dtime)
+function mob_class:do_states_attack (dtime)
 	local yaw = self.object:get_yaw() or 0
 
 	local s = self.object:get_pos()

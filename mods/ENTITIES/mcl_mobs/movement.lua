@@ -793,7 +793,7 @@ function mob_class:teleport(target)
 	end
 end
 
-function mob_class:do_state_walk()
+function mob_class:do_states_walk()
 	local yaw = self.object:get_yaw() or 0
 
 	local s = self.object:get_pos()

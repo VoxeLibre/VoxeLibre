@@ -293,13 +293,13 @@ function mob_class:do_states(dtime)
 	elseif self.state == PATHFINDING then
 		self:check_gowp(dtime)
 	elseif self.state == "walk" then
-		self:do_state_walk()
+		self:do_states_walk()
 	elseif self.state == "runaway" then
 		-- runaway when punched
 		self:do_states_runaway()
 	elseif self.state == "attack" then
 		-- attack routines (explode, dogfight, shoot, dogshoot)
-		if self:do_state_attack(dtime) then
+		if self:do_states_attack(dtime) then
 			return true
 		end
 	end
