@@ -9,9 +9,9 @@ local S = minetest.get_translator(modname)
 local bamboo = "mcl_bamboo:bamboo"
 local DEBUG = false
 
-local strlen = string.len()
-local substr = string.sub()
-local rand = math.random()
+local strlen = string.len
+local substr = string.sub
+local rand = math.random
 
 --Bamboo can be planted on moss blocks, grass blocks, dirt, coarse dirt, rooted dirt, gravel, mycelium, podzol, sand, red sand, or mud
 mcl_bamboo.bamboo_dirt_nodes = {

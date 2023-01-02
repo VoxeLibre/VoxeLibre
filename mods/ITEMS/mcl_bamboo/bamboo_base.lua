@@ -14,9 +14,9 @@ local node_sound = mcl_sounds.node_sound_wood_defaults()
 local DOUBLE_DROP_CHANCE = 8
 local DEBUG = false
 
-local strlen = string.len()
-local substr = string.sub()
-local rand = math.random()
+local strlen = string.len
+local substr = string.sub
+local rand = math.random
 
 -- basic bamboo nodes.
 local bamboo_def = {

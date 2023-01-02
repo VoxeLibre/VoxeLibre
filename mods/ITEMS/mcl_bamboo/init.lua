@@ -7,7 +7,6 @@
 
 -- LOCALS
 local modname = minetest.get_current_modname()
-local S = minetest.get_translator(modname)
 local bamboo = "mcl_bamboo:bamboo"
 
 mcl_bamboo = {}
