@@ -13,6 +13,11 @@ local strlen = string.len
 local substr = string.sub
 local rand = math.random
 math.randomseed((os.time() + 31) * 31415) -- try to make a valid seed
+local BAMBOO_MAX_HEIGHT = 16 -- base height check.
+
+local BAMBOO_SOIL_DIST = BAMBOO_MAX_HEIGHT * -1
+local BAM_MAX_HEIGHT_STPCHK = BAMBOO_MAX_HEIGHT - 5
+local BAM_MAX_HEIGHT_TOP = BAMBOO_MAX_HEIGHT - 1
 
 --Bamboo can be planted on moss blocks, grass blocks, dirt, coarse dirt, rooted dirt, gravel, mycelium, podzol, sand, red sand, or mud
 mcl_bamboo.bamboo_dirt_nodes = {
@@ -40,9 +45,6 @@ function mcl_bamboo.is_protected(pos, placer)
 end
 
 function mcl_bamboo.grow_bamboo(pos, _)
-	local BAMBOO_SOIL_DIST = -16
-	local BAM_MAX_HEIGHT_STPCHK = 11
-	local BAM_MAX_HEIGHT_TOP = 15
 
 	local chk_pos
 	local soil_pos
@@ -129,4 +131,13 @@ function mcl_bamboo.add_groups(name, ...)
 	end
 	addall(...)
 	return minetest.override_item(name, {groups = groups})
+end
+
+function mcl_bamboo.mcl_log(m, l)
+	if DEBUG then
+		if not l then
+			minetest.log("[mcl_bamboo]: " .. m)
+		end
+		minetest.log(l, "[mcl_bamboo]: " .. m)
+	end
 end

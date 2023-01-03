@@ -47,8 +47,7 @@ minetest.register_alias("mcl_scaffolding:scaffolding_horizontal", "mcl_bamboo:sc
 --[[
 todo -- make scaffolds do side scaffold blocks, so that they jut out.
 todo -- Also, make those blocks collapse (break) when a nearby connected scaffold breaks.
-todo -- Add Flourish to the endcap node for bamboo. Fix the flourish to not look odd or plain.
-todo -- mash all of that together so that it drops as one item.
+todo -- fix the random height for bamboo. Use metadata for storing the height, on_place.
 todo -- fix scaffolding placing, instead of using on_rightclick first.
 
 waiting on specific things:

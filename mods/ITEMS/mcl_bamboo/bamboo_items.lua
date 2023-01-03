@@ -18,26 +18,12 @@ local adj_nodes = {
 -- Due to door fix #2736, doors are displayed backwards. When this is fixed, set this variable to false.
 local BROKEN_DOORS = true
 local SIDE_SCAFFOLDING = false
-local DEBUG = false
 
 local node_sound = mcl_sounds.node_sound_wood_defaults()
 
-
--- Bamboo Mosaic
-local bamboo_mosaic = table.copy(minetest.registered_nodes[bamboo .. "_plank"])
-bamboo_mosaic.tiles = {"mcl_bamboo_bamboo_plank.png"}
-bamboo_mosaic.groups = {handy = 1, axey = 1, flammable = 3, fire_encouragement = 5, fire_flammability = 20}
-bamboo_mosaic.description = S("Bamboo Mosaic Plank")
-bamboo_mosaic._doc_items_longdesc = S("Bamboo Mosaic Plank")
-minetest.register_node("mcl_bamboo:bamboo_mosaic", bamboo_mosaic)
-
-
-
 -- specific bamboo nodes (Items)... Pt. 1
 if minetest.get_modpath("mcl_flowerpots") then
-	if DEBUG then
-		minetest.log("mcl_bamboo::FlowerPot Section Entrance. Modpath exists.")
-	end
+	mcl_bamboo.mcl_log("FlowerPot Section Entrance. Modpath exists.")
 	if mcl_flowerpots ~= nil then
 		-- Flower-potted Bamboo...
 		local flwr_name = "mcl_bamboo:bamboo"
@@ -195,9 +181,7 @@ if minetest.get_modpath("mesecons_pressureplates") then
 end
 
 if minetest.get_modpath("mcl_signs") then
-	if DEBUG then
-		minetest.log("mcl_bamboo::Signs Section Entrance. Modpath exists.")
-	end
+	mcl_bamboo.mcl_log("Signs Section Entrance. Modpath exists.")
 	if mcl_signs ~= nil then
 		-- Bamboo Signs...
 		mcl_signs.register_sign_custom("mcl_bamboo", "_bamboo", "mcl_signs_sign_greyscale.png",
@@ -209,9 +193,8 @@ if minetest.get_modpath("mcl_signs") then
 end
 
 if minetest.get_modpath("mcl_fences") then
-	if DEBUG then
-		minetest.log("mcl_bamboo::Fences Section Entrance. Modpath exists.")
-	end
+	mcl_bamboo.mcl_log("Fences Section Entrance. Modpath exists.")
+
 	local id = "bamboo_fence"
 	local id_gate = "bamboo_fence_gate"
 	local wood_groups = {handy = 1, axey = 1, flammable = 2, fence_wood = 1, fire_encouragement = 5, fire_flammability = 20}
@@ -222,10 +205,8 @@ if minetest.get_modpath("mcl_fences") then
 	local gate_id = mcl_fences.register_fence_gate(id, S("Bamboo Fence Gate"), "mcl_bamboo_fence_gate_bamboo.png",
 			wood_groups, 2, 15, node_sound) -- note: about missing params.. will use defaults.
 
-	if DEBUG then
-		minetest.log(dump(fence_id))
-		minetest.log(dump(gate_id))
-	end
+	mcl_bamboo.mcl_log(dump(fence_id))
+	mcl_bamboo.mcl_log(dump(gate_id))
 
 	local craft_wood = "mcl_bamboo:bamboo_plank"
 	minetest.register_craft({
@@ -329,18 +310,13 @@ minetest.register_node("mcl_bamboo:scaffolding", {
 				return itemstack
 			end
 		end
-		if DEBUG then
-			minetest.log("mcl_bamboo::Checking for protected placement of scaffolding.")
-		end
+			mcl_bamboo.mcl_log("Checking for protected placement of scaffolding.")
 		local node = minetest.get_node(ptd.under)
 		local pos = ptd.under
 		if mcl_bamboo.is_protected(pos, placer) then
 			return
 		end
-		if DEBUG then
-			minetest.log("mcl_bamboo::placement of scaffolding is not protected.")
-		end
-
+		mcl_bamboo.mcl_log("placement of scaffolding is not protected.")
 		--place on solid nodes
 		if itemstack:get_name() ~= node.name then
 			minetest.set_node(ptd.above, {name = scaff_node_name, param2 = 0})
