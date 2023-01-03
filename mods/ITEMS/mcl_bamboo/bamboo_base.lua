@@ -139,37 +139,33 @@ local bamboo_def = {
 		if DEBUG then
 			minetest.log("mcl_bamboo::placing bamboo directly.")
 		end
-
+		local dir = vector.subtract(pointed_thing.under, pointed_thing.above)
+		local wdir = minetest.dir_to_wallmounted(dir)
+		local fdir = minetest.dir_to_facedir(dir)
+		if wdir ~= 1 then
+			return
+		end
 		local place_item = ItemStack(itemstack) -- make a copy so that we don't indirectly mess with the original.
 
+		itemstack:set_count(itemstack:get_count() - 1)
 		if nodename == bamboo then
+			-- return the missing item, so that we can lower the code
+			-- complexity and duplication.
+			itemstack:set_count(itemstack:get_count() + 1)
 			return minetest.item_place(itemstack, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
 		elseif nodename == bamboo_one then
 			place_item:set_name(bamboo_one)
-			itemstack:set_count(itemstack:get_count() - 1)
 			minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
-			if DEBUG then
-				minetest.log("Bamboo placeitem definition (current):\n" .. dump(place_item:to_table()))
-			end
 			return itemstack, pointed_thing.under
 		elseif nodename == bamboo_two then
 			place_item:set_name(bamboo_two)
-			itemstack:set_count(itemstack:get_count() - 1)
 			minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
-			if DEBUG then
-				minetest.log("Bamboo placeitem definition (current):\n" .. dump(place_item:to_table()))
-			end
 			return itemstack, pointed_thing.under
 		elseif nodename == bamboo_three then
 			place_item:set_name(bamboo_three)
-			itemstack:set_count(itemstack:get_count() - 1)
 			minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
-			if DEBUG then
-				minetest.log("Bamboo placeitem definition (current):\n" .. dump(place_item:to_table()))
-			end
 			return itemstack, pointed_thing.under
 		else
-			itemstack:set_count(itemstack:get_count() - 1)
 			local placed_type = pr:next(0, 3) -- randomly choose which one to place.
 			if DEBUG then
 				minetest.log("MCL_BAMBOO::Place_Bamboo_Shoot--Type: " .. placed_type)
@@ -182,21 +178,21 @@ local bamboo_def = {
 				minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
 				return itemstack, pointed_thing.under
 			elseif placed_type == 1 then
-				place_item=ItemStack(bamboo .. "_1")
+				place_item=ItemStack(bamboo_one)
 				if DEBUG then
 					minetest.log("Bamboo place_item definition (current):\n" .. dump(place_item:to_table()))
 				end
 				minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
 				return itemstack, pointed_thing.under
 			elseif placed_type == 2 then
-				place_item=ItemStack(bamboo .. "_2")
+				place_item=ItemStack(bamboo_two)
 				if DEBUG then
 					minetest.log("Bamboo place_item definition (current):\n" .. dump(place_item:to_table()))
 				end
 				minetest.item_place(place_item, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
 				return itemstack, pointed_thing.under
 			elseif placed_type == 3 then
-				place_item=ItemStack(bamboo .. "_3")
+				place_item=ItemStack(bamboo_three)
 				if DEBUG then
 					minetest.log("Bamboo place_item definition (current):\n" .. dump(place_item:to_table()))
 				end
@@ -240,7 +236,7 @@ minetest.register_node(bamboo, bamboo_def)
 
 local bamboo_top = table.copy(bamboo_def)
 bamboo_top.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, flammable = 3}
-bamboo_top.tiles = {"mcl_bamboo_endcap.png"}
+bamboo_top.tiles = {"mcl_bamboo_flower_pot.png"}
 bamboo_top.drawtype = "plantlike"
 bamboo_top.paramtype2 = "meshoptions"
 bamboo_top.param2 = 34
@@ -374,12 +370,3 @@ bamboo_three_def.selection_box = {
 	}
 }
 minetest.register_node(bamboo_three, bamboo_three_def)
-
--- Bamboo Mosaic
-local bamboo_mosaic = minetest.registered_nodes[bamboo .. "_plank"]
-bamboo_mosaic.tiles = {"mcl_bamboo_bamboo_plank.png"}
-bamboo_mosaic.groups = {handy = 1, axey = 1, flammable = 3, fire_encouragement = 5, fire_flammability = 20}
-bamboo_mosaic.description = S("Bamboo Mosaic Plank")
-bamboo_mosaic._doc_items_longdesc = S("Bamboo Mosaic Plank")
-minetest.register_node("mcl_bamboo:bamboo_mosaic", bamboo_mosaic)
-

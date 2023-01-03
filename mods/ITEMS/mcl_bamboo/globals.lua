@@ -12,6 +12,7 @@ local DEBUG = false
 local strlen = string.len
 local substr = string.sub
 local rand = math.random
+math.randomseed((os.time() + 31) * 31415) -- try to make a valid seed
 
 --Bamboo can be planted on moss blocks, grass blocks, dirt, coarse dirt, rooted dirt, gravel, mycelium, podzol, sand, red sand, or mud
 mcl_bamboo.bamboo_dirt_nodes = {
@@ -113,18 +114,18 @@ function mcl_bamboo.grow_bamboo(pos, _)
 end
 
 -- Add Groups function, courtesy of Warr1024.
-function mcl_bamboo.addgroups(name, ...)
+function mcl_bamboo.add_groups(name, ...)
 	local def = minetest.registered_items[name] or error(name .. " not found")
 	local groups = {}
 	for k, v in pairs(def.groups) do
 		groups[k] = v
 	end
-	local function addall(x, ...)
+	local function add_all(x, ...)
 		if not x then
 			return
 		end
 		groups[x] = 1
-		return addall(...)
+		return add_all(...)
 	end
 	addall(...)
 	return minetest.override_item(name, {groups = groups})

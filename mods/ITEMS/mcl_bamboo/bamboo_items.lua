@@ -22,6 +22,17 @@ local DEBUG = false
 
 local node_sound = mcl_sounds.node_sound_wood_defaults()
 
+
+-- Bamboo Mosaic
+local bamboo_mosaic = table.copy(minetest.registered_nodes[bamboo .. "_plank"])
+bamboo_mosaic.tiles = {"mcl_bamboo_bamboo_plank.png"}
+bamboo_mosaic.groups = {handy = 1, axey = 1, flammable = 3, fire_encouragement = 5, fire_flammability = 20}
+bamboo_mosaic.description = S("Bamboo Mosaic Plank")
+bamboo_mosaic._doc_items_longdesc = S("Bamboo Mosaic Plank")
+minetest.register_node("mcl_bamboo:bamboo_mosaic", bamboo_mosaic)
+
+
+
 -- specific bamboo nodes (Items)... Pt. 1
 if minetest.get_modpath("mcl_flowerpots") then
 	if DEBUG then
