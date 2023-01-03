@@ -1682,6 +1682,8 @@ local end_skycolor = "#000000"
 		heat_point = 95,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 24,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
 	})
 	minetest.register_biome({
 		name = "BambooJungle_shore",
@@ -1697,6 +1699,8 @@ local end_skycolor = "#000000"
 		heat_point = 95,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 24,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
 	})
 	minetest.register_biome({
 		name = "BambooJungle_ocean",
@@ -1713,6 +1717,8 @@ local end_skycolor = "#000000"
 		heat_point = 90,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 24,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
 	})
 
 	-- Bamboo Jungle M
@@ -1731,6 +1737,8 @@ local end_skycolor = "#000000"
 		heat_point = 95,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 25,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
 	})
 	minetest.register_biome({
 		name = "BambooJungleM_shore",
@@ -1746,6 +1754,8 @@ local end_skycolor = "#000000"
 		heat_point = 90,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 25,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
 	})
 	minetest.register_biome({
 		name = "BambooJungleM_ocean",
@@ -1762,6 +1772,8 @@ local end_skycolor = "#000000"
 		heat_point = 95,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 25,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
 	})
 
 	-- Bamboo Jungle Edge
@@ -1779,6 +1791,8 @@ local end_skycolor = "#000000"
 		heat_point = 90,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 26,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
 	})
 	minetest.register_biome({
 		name = "BambooJungleEdge_ocean",
@@ -1794,6 +1808,8 @@ local end_skycolor = "#000000"
 		heat_point = 88,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 26,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
 	})
 
 	-- Jungle Edge M (very rare).
@@ -1814,6 +1830,8 @@ local end_skycolor = "#000000"
 		heat_point = 95,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 27,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
 	})
 	minetest.register_biome({
 		name = "BambooJungleEdgeM_ocean",
@@ -1829,9 +1847,9 @@ local end_skycolor = "#000000"
 		heat_point = 90,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 27,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
 	})
-
-
 
 	-- Add deep ocean and underground biomes automatically.
 	for i = 1, #overworld_biomes do
