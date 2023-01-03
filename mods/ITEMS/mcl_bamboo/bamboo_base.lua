@@ -105,7 +105,6 @@ local bamboo_def = {
 		end
 		mcl_bamboo.mcl_log("placement of bamboo is not protected.")
 
-
 		-- Use pointed node's on_rightclick function first, if present
 		if placer and not placer:get_player_control().sneak then
 			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
@@ -138,8 +137,8 @@ local bamboo_def = {
 		if wdir ~= 1 then
 			return
 		end
-		local place_item = ItemStack(itemstack) -- make a copy so that we don't indirectly mess with the original.
 
+		local place_item = ItemStack(itemstack) -- make a copy so that we don't indirectly mess with the original.
 		itemstack:set_count(itemstack:get_count() - 1)
 		if nodename == bamboo then
 			-- return the missing item, so that we can lower the code
@@ -147,17 +146,11 @@ local bamboo_def = {
 			itemstack:set_count(itemstack:get_count() + 1)
 			return minetest.item_place(itemstack, placer, pointed_thing, fdir)
 		elseif nodename == bamboo_one then
-			place_item:set_name(bamboo_one)
-			minetest.item_place(place_item, placer, pointed_thing, fdir)
-			return itemstack, pointed_thing.under
+			place_item = ItemStack(bamboo_one)
 		elseif nodename == bamboo_two then
-			place_item:set_name(bamboo_two)
-			minetest.item_place(place_item, placer, pointed_thing, fdir)
-			return itemstack, pointed_thing.under
+			place_item = ItemStack(bamboo_two)
 		elseif nodename == bamboo_three then
-			place_item:set_name(bamboo_three)
-			minetest.item_place(place_item, placer, pointed_thing, fdir)
-			return itemstack, pointed_thing.under
+			place_item = ItemStack(bamboo_three)
 		else
 			local placed_type = pr:next(0, 3) -- randomly choose which one to place.
 			mcl_bamboo.mcl_log("Place_Bamboo_Shoot--Type: " .. placed_type)
@@ -170,9 +163,9 @@ local bamboo_def = {
 			elseif placed_type == 3 then
 				place_item = ItemStack(bamboo_three)
 			end
-			minetest.item_place(place_item, placer, pointed_thing, fdir)
-			return itemstack, pointed_thing.under
 		end
+		minetest.item_place(place_item, placer, pointed_thing, fdir)
+		return itemstack, pointed_thing.under
 	end,
 
 	on_destruct = function(pos)

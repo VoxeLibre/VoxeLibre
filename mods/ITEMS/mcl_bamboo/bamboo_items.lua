@@ -223,7 +223,6 @@ if minetest.get_modpath("mcl_fences") then
 			{"mcl_core:stick", craft_wood, "mcl_core:stick"},
 		}
 	})
-	-- mcl_fences.register_fence("nether_brick_fence", S("Nether Brick Fence"), "mcl_fences_fence_nether_brick.png", {pickaxey=1, deco_block=1, fence_nether_brick=1}, 2, 30, {"group:fence_nether_brick"}, mcl_sounds.node_sound_stone_defaults())
 	minetest.register_alias("bamboo_fence", "mcl_fences:" .. id)
 	minetest.register_alias("bamboo_fence_gate", "mcl_fences:" .. id_gate)
 end
@@ -294,60 +293,73 @@ minetest.register_node("mcl_bamboo:scaffolding", {
 	_mcl_hardness = 0,
 	on_place = function(itemstack, placer, ptd)
 		local scaff_node_name = "mcl_bamboo:scaffolding"
-		if SIDE_SCAFFOLDING then
-			-- count param2 up when placing to the sides. Fall when > 6
-			local ctrl = placer:get_player_control()
-			if ctrl and ctrl.sneak then
-				local pp2 = minetest.get_node(ptd.under).param2
-				local np2 = pp2 + 1
-				if minetest.get_node(vector.offset(ptd.above, 0, -1, 0)).name == "air" then
-					minetest.set_node(ptd.above, {name = "mcl_bamboo:scaffolding_horizontal", param2 = np2})
-					itemstack:take_item(1)
-				end
-				if np2 > 6 then
-					minetest.check_single_for_falling(ptd.above)
-				end
-				return itemstack
-			end
-		end
-			mcl_bamboo.mcl_log("Checking for protected placement of scaffolding.")
+		mcl_bamboo.mcl_log("Checking for protected placement of scaffolding.")
 		local node = minetest.get_node(ptd.under)
 		local pos = ptd.under
-		if mcl_bamboo.is_protected(pos, placer) then
-			return
-		end
-		mcl_bamboo.mcl_log("placement of scaffolding is not protected.")
-		--place on solid nodes
-		if itemstack:get_name() ~= node.name then
-			minetest.set_node(ptd.above, {name = scaff_node_name, param2 = 0})
-			if not minetest.is_creative_enabled(placer:get_player_name()) then
-				itemstack:take_item(1)
+		local dir = vector.subtract(pointed_thing.under, pointed_thing.above)
+		local wdir = minetest.dir_to_wallmounted(dir)
+		local fdir = minetest.dir_to_facedir(dir)
+		if wdir == 1 then
+			-- top placement. Prevents placing scaffolding along the sides of other nodes.
+
+			if mcl_bamboo.is_protected(pos, placer) then
+				return
 			end
-			return itemstack
-		end
-
-		--build up when placing on existing scaffold
-		local h = 0
-		repeat
-			pos.y = pos.y + 1
-			local cn = minetest.get_node(pos)
-			local cnb = minetest.get_node(ptd.under)
-			local bn = minetest.get_node(vector.offset(ptd.under, 0, -1, 0))
-			if cn.name == "air" then
-				-- first step to making scaffolding work like Minecraft scaffolding.
-				if cnb.name == scaff_node_name and bn == scaff_node_name and SIDE_SCAFFOLDING == false then
-					return itemstack
-				end
-
-				minetest.set_node(pos, node)
+			mcl_bamboo.mcl_log("placement of scaffolding is not protected.")
+			-- place on solid nodes
+			if node.name ~= scaff_node_name then
+				minetest.set_node(ptd.above, {name = scaff_node_name, param2 = 0})
 				if not minetest.is_creative_enabled(placer:get_player_name()) then
 					itemstack:take_item(1)
 				end
-				placer:set_wielded_item(itemstack)
 				return itemstack
 			end
-			h = h + 1
-		until cn.name ~= node.name or itemstack:get_count() == 0 or h >= 128
+			--build up when placing on existing scaffold
+			local h = 0
+			repeat
+				pos.y = pos.y + 1
+				local cn = minetest.get_node(pos)
+				local cnb = minetest.get_node(ptd.under)
+				local bn = minetest.get_node(vector.offset(ptd.under, 0, -1, 0))
+				if cn.name == "air" then
+					-- first step to making scaffolding work like Minecraft scaffolding.
+					if cnb.name == scaff_node_name and bn == scaff_node_name and SIDE_SCAFFOLDING == false then
+						return itemstack
+					end
+
+					if mcl_bamboo.is_protected(pos, placer) then
+						return
+					end
+
+					minetest.set_node(pos, node)
+					if not minetest.is_creative_enabled(placer:get_player_name()) then
+						itemstack:take_item(1)
+					end
+					placer:set_wielded_item(itemstack)
+					return itemstack
+				end
+				h = h + 1
+			until cn.name ~= node.name or itemstack:get_count() == 0 or h >= 128
+		else
+			-- Don't use. From cora, who failed to make something awesome.
+			if SIDE_SCAFFOLDING then
+				-- count param2 up when placing to the sides. Fall when > 6
+				local ctrl = placer:get_player_control()
+				if ctrl and ctrl.sneak then
+					local pp2 = minetest.get_node(ptd.under).param2
+					local np2 = pp2 + 1
+					if minetest.get_node(vector.offset(ptd.above, 0, -1, 0)).name == "air" then
+						minetest.set_node(ptd.above, {name = "mcl_bamboo:scaffolding_horizontal", param2 = np2})
+						itemstack:take_item(1)
+					end
+					if np2 > 6 then
+						minetest.check_single_for_falling(ptd.above)
+					end
+					return itemstack
+				end
+			end
+
+		end
 	end,
 	on_destruct = function(pos)
 		-- Node destructor; called before removing node.
@@ -369,7 +381,7 @@ minetest.register_node("mcl_bamboo:scaffolding", {
 })
 
 minetest.register_node("mcl_bamboo:scaffolding_horizontal", {
-	description = S("Scaffolding (horizontal)"),
+	description = S("Scaffolding"),
 	doc_items_longdesc = S("Scaffolding block used to climb up or out across areas."),
 	doc_items_hidden = false,
 	tiles = {"mcl_bamboo_scaffolding_top.png", "mcl_bamboo_scaffolding_top.png", "mcl_bamboo_scaffolding_bottom.png"},
