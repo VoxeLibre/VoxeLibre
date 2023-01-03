@@ -33,6 +33,21 @@ mcl_bamboo.bamboo_dirt_nodes = {
 	"mcl_mud:mud",
 }
 
+function mcl_bamboo.is_dirt(node_name)
+	return table.indexof(mcl_bamboo.bamboo_dirt_nodes, node_name) ~= -1
+end
+
+mcl_bamboo.bamboo_index = {
+	"mcl_bamboo:bamboo",
+	"mcl_bamboo:bamboo_1",
+	"mcl_bamboo:bamboo_2",
+	"mcl_bamboo:bamboo_3",
+}
+
+function mcl_bamboo.is_bamboo(node_name)
+	return table.indexof(mcl_bamboo.bamboo_index, node_name)
+end
+
 --- pos: node position; placer: ObjectRef that is placing the item
 --- returns: true if protected, otherwise false.
 function mcl_bamboo.is_protected(pos, placer)
@@ -56,12 +71,9 @@ function mcl_bamboo.grow_bamboo(pos, _)
 	for py = -1, BAMBOO_SOIL_DIST, -1 do
 		chk_pos = vector.offset(pos, 0, py, 0)
 		local name = minetest.get_node(chk_pos).name
-		for i = 1, #mcl_bamboo.bamboo_dirt_nodes do
-			if name == mcl_bamboo.bamboo_dirt_nodes[i] then
-				found = true
-				soil_pos = chk_pos
-				break
-			end
+		if mcl_bamboo.is_dirt(name) then
+			found = true
+			soil_pos = chk_pos
 		end
 		if found then
 			break
@@ -134,10 +146,15 @@ function mcl_bamboo.add_groups(name, ...)
 end
 
 function mcl_bamboo.mcl_log(m, l)
+	if not m then
+		minetest.log("error", "expected string, received: " .. m)
+		return
+	end
 	if DEBUG then
 		if not l then
 			minetest.log("[mcl_bamboo]: " .. m)
+		else
+			minetest.log(l, "[mcl_bamboo]: " .. m)
 		end
-		minetest.log(l, "[mcl_bamboo]: " .. m)
 	end
 end

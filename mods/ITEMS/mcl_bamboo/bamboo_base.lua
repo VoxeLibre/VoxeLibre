@@ -25,6 +25,7 @@ if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.disallow
 end
 
+
 -- basic bamboo nodes.
 local bamboo_def = {
 	description = "Bamboo",
@@ -92,6 +93,7 @@ local bamboo_def = {
 		local node = minetest.get_node(pointed_thing.under)
 		local pos = pointed_thing.under
 		local nodename = node.name
+		mcl_bamboo.mcl_log("node name: " .. nodename)
 		-- check the nodename to see if it is one of the bamboo's
 		local bamboo_node = substr(nodename, 1, strlen(bamboo))
 
@@ -116,14 +118,8 @@ local bamboo_def = {
 		if bamboo_node ~= bamboo and nodename ~= "mcl_bamboo:bamboo_endcap" then
 			-- not bamboo...
 			if nodename ~= "mcl_flowerpots:flower_pot" then
-				local found = false
-				for i = 1, #mcl_bamboo.bamboo_dirt_nodes do
-					if nodename == mcl_bamboo.bamboo_dirt_nodes[i] then
-						found = true
-						break
-					end
-				end
-				if not found then
+				if mcl_bamboo.is_dirt(nodename) == false then
+					mcl_bamboo.mcl_log("bamboo dirt node not found; node name: " .. nodename)
 					return
 				end
 			end
@@ -139,18 +135,14 @@ local bamboo_def = {
 		end
 
 		local place_item = ItemStack(itemstack) -- make a copy so that we don't indirectly mess with the original.
-		itemstack:set_count(itemstack:get_count() - 1)
-		if nodename == bamboo then
-			-- return the missing item, so that we can lower the code
-			-- complexity and duplication.
-			itemstack:set_count(itemstack:get_count() + 1)
-			return minetest.item_place(itemstack, placer, pointed_thing, fdir)
-		elseif nodename == bamboo_one then
-			place_item = ItemStack(bamboo_one)
-		elseif nodename == bamboo_two then
-			place_item = ItemStack(bamboo_two)
-		elseif nodename == bamboo_three then
-			place_item = ItemStack(bamboo_three)
+
+		mcl_bamboo.mcl_log("node name: " .. nodename)
+
+		local bamboo_node = mcl_bamboo.is_bamboo(nodename)
+		mcl_bamboo.mcl_log("bamboo_node: " .. bamboo_node)
+
+		if bamboo_node ~= -1 then
+			place_item = ItemStack(mcl_bamboo.bamboo_index[bamboo_node])
 		else
 			local placed_type = pr:next(0, 3) -- randomly choose which one to place.
 			mcl_bamboo.mcl_log("Place_Bamboo_Shoot--Type: " .. placed_type)
@@ -165,6 +157,7 @@ local bamboo_def = {
 			end
 		end
 		minetest.item_place(place_item, placer, pointed_thing, fdir)
+		itemstack:set_count(itemstack:get_count() - 1)
 		return itemstack, pointed_thing.under
 	end,
 
