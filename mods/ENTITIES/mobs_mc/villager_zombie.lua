@@ -109,6 +109,7 @@ mcl_mobs.register_mob("mobs_mc:villager_zombie", {
 				clicker:set_wielded_item(wielditem)
 				self._curing = math.random(3 * 60, 5 * 60)
 				self.shaking = true
+				self.can_despawn = false
 			end
 		end
 	end,
