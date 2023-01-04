@@ -158,7 +158,7 @@ The following features are incomplete:
 
 * Some monsters and animals
 * Redstone-related things
-* Special minecarts
+* Some special minecarts (hopper and chest minecarts work)
 * A couple of non-trivial blocks and items
 
 Bonus features (not found in Minecraft):

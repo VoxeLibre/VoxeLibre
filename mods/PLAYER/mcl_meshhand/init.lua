@@ -1,11 +1,9 @@
 local mcl_skins_enabled = minetest.global_exists("mcl_skins")
 
--- This is a fake node that should never be placed in the world
+---This is a fake node that should never be placed in the world
+---@type node_definition
 local node_def = {
-	description = "",
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
-	visual_scale = 1,
-	wield_scale = {x=1,y=1,z=1},
+	use_texture_alpha = "opaque",
 	paramtype = "light",
 	drawtype = "mesh",
 	node_placement_prediction = "",
@@ -16,7 +14,7 @@ local node_def = {
 		minetest.remove_node(pos)
 	end,
 	drop = "",
-	on_drop = function() return "" end,
+	on_drop = function(_, _, _) return ItemStack() end,
 	groups = { dig_immediate = 3, not_in_creative_inventory = 1 },
 	range = minetest.registered_items[""].range
 }
@@ -29,20 +27,20 @@ if mcl_skins_enabled then
 			local female = table.copy(node_def)
 			female._mcl_hand_id = skin.id
 			female.mesh = "mcl_meshhand_female.b3d"
-			female.tiles = {skin.texture}
+			female.tiles = { skin.texture }
 			minetest.register_node("mcl_meshhand:" .. skin.id, female)
 		else
 			local male = table.copy(node_def)
 			male._mcl_hand_id = skin.id
 			male.mesh = "mcl_meshhand.b3d"
-			male.tiles = {skin.texture}
+			male.tiles = { skin.texture }
 			minetest.register_node("mcl_meshhand:" .. skin.id, male)
 		end
 	end
 else
 	node_def._mcl_hand_id = "hand"
 	node_def.mesh = "mcl_meshhand.b3d"
-	node_def.tiles = {"character.png"}
+	node_def.tiles = { "character.png" }
 	minetest.register_node("mcl_meshhand:hand", node_def)
 end
 
@@ -54,6 +52,6 @@ if mcl_skins_enabled then
 	end)
 else
 	minetest.register_on_joinplayer(function(player)
-		player:get_inventory():set_stack("hand", 1, "mcl_meshhand:hand")
+		player:get_inventory():set_stack("hand", 1, ItemStack("mcl_meshhand:hand"))
 	end)
 end
