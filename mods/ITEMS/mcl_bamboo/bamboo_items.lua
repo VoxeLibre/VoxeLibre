@@ -255,15 +255,21 @@ if minetest.get_modpath("mcl_stairs") then
 	end
 end
 
-minetest.register_node("mcl_bamboo:scaffolding", {
+local scaffold_name = "mcl_bamboo:scaffolding"
+local side_scaffold_name = "mcl_bamboo:scaffolding_horizontal"
+
+local disallow_on_rotate
+if minetest.get_modpath("screwdriver") then
+	disallow_on_rotate = screwdriver.disallow
+end
+
+minetest.register_node(scaffold_name, {
 	description = S("Scaffolding"),
 	doc_items_longdesc = S("Scaffolding block used to climb up or out across areas."),
 	doc_items_hidden = false,
 	tiles = {"mcl_bamboo_scaffolding_top.png", "mcl_bamboo_scaffolding_top.png", "mcl_bamboo_scaffolding_bottom.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
-	paramtype2 = "4dir",
-	param2 = 0,
 	use_texture_alpha = "clip",
 	node_box = {
 		type = "fixed",
@@ -291,14 +297,16 @@ minetest.register_node("mcl_bamboo:scaffolding", {
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
-	on_place = function(itemstack, placer, ptd)
-		local scaff_node_name = "mcl_bamboo:scaffolding"
+
+	on_rotate = disallow_on_rotate,
+
+	on_place = function(itemstack, placer, pointed)
 		mcl_bamboo.mcl_log("Checking for protected placement of scaffolding.")
-		local node = minetest.get_node(ptd.under)
-		local pos = ptd.under
-		local dir = vector.subtract(pointed_thing.under, pointed_thing.above)
+		local node = minetest.get_node(pointed.under)
+		local pos = pointed.under
+		local dir = vector.subtract(pointed.under, pointed.above)
 		local wdir = minetest.dir_to_wallmounted(dir)
-		local fdir = minetest.dir_to_facedir(dir)
+		local h = 0
 		if wdir == 1 then
 			-- top placement. Prevents placing scaffolding along the sides of other nodes.
 
@@ -307,23 +315,22 @@ minetest.register_node("mcl_bamboo:scaffolding", {
 			end
 			mcl_bamboo.mcl_log("placement of scaffolding is not protected.")
 			-- place on solid nodes
-			if node.name ~= scaff_node_name then
-				minetest.set_node(ptd.above, {name = scaff_node_name, param2 = 0})
+			if node.name ~= scaffold_name then
+				minetest.set_node(pointed.above, {name = scaffold_name, param2 = 0})
 				if not minetest.is_creative_enabled(placer:get_player_name()) then
 					itemstack:take_item(1)
 				end
 				return itemstack
 			end
 			--build up when placing on existing scaffold
-			local h = 0
 			repeat
 				pos.y = pos.y + 1
 				local cn = minetest.get_node(pos)
-				local cnb = minetest.get_node(ptd.under)
-				local bn = minetest.get_node(vector.offset(ptd.under, 0, -1, 0))
+				local cnb = minetest.get_node(pointed.under)
+				local bn = minetest.get_node(vector.offset(pointed.under, 0, -1, 0))
 				if cn.name == "air" then
 					-- first step to making scaffolding work like Minecraft scaffolding.
-					if cnb.name == scaff_node_name and bn == scaff_node_name and SIDE_SCAFFOLDING == false then
+					if cnb.name == scaffold_name and bn == scaffold_name and SIDE_SCAFFOLDING == false then
 						return itemstack
 					end
 
@@ -342,22 +349,65 @@ minetest.register_node("mcl_bamboo:scaffolding", {
 			until cn.name ~= node.name or itemstack:get_count() == 0 or h >= 128
 		else
 			-- Don't use. From cora, who failed to make something awesome.
-			if SIDE_SCAFFOLDING then
-				-- count param2 up when placing to the sides. Fall when > 6
-				local ctrl = placer:get_player_control()
-				if ctrl and ctrl.sneak then
-					local pp2 = minetest.get_node(ptd.under).param2
-					local np2 = pp2 + 1
-					if minetest.get_node(vector.offset(ptd.above, 0, -1, 0)).name == "air" then
-						minetest.set_node(ptd.above, {name = "mcl_bamboo:scaffolding_horizontal", param2 = np2})
-						itemstack:take_item(1)
-					end
-					if np2 > 6 then
-						minetest.check_single_for_falling(ptd.above)
-					end
-					return itemstack
-				end
-			end
+			--[[
+						if SIDE_SCAFFOLDING then
+							-- count param2 up when placing to the sides. Fall when > 6
+							local ctrl = placer:get_player_control()
+							if ctrl and ctrl.sneak then
+								local pp2 = minetest.get_node(ptd.under).param2
+								local np2 = pp2 + 1
+								if minetest.get_node(vector.offset(ptd.above, 0, -1, 0)).name == "air" then
+									minetest.set_node(ptd.above, {name = side_scaffold_name, param2 = np2})
+									itemstack:take_item(1)
+								end
+								if np2 > 6 then
+									minetest.check_single_for_falling(ptd.above)
+								end
+								return itemstack
+							end
+						end
+			]]
+
+			--[[  Commenting out untested code, for commit.
+						local fdir = minetest.dir_to_facedir(dir) % 4
+
+						local meta = minetest.get_meta(pos)
+
+						if not meta then
+							return false
+						end
+						local count = meta:get_int("count", 0)
+
+						h = minetest.get_node(pointed.under).param2
+						--repeat
+						local ctrl = placer:get_player_control()
+						if ctrl and ctrl.sneak then
+							local pp2 = h
+
+							local np2 = pp2 + 1
+							fdir = fdir + 1 -- convert fdir to a base of one.
+							local new_pos = adj_nodes[fdir]
+
+							new_pos = vector.offset(pointed.above, new_pos.x, -1, new_pos.z)
+							if mcl_bamboo.is_protected(new_pos, placer) then
+								-- disallow placement in protected area
+								return
+							end
+
+							itemstack:take_item(1)
+							if minetest.get_node(new_pos).name == "air" then
+								minetest.set_node(new_pos, {name = side_scaffold_name, param2 = np2})
+								if np2 >= 6 then
+									np2 = 6
+									minetest.minetest.dig_node(new_pos)
+								end
+							end
+							return itemstack
+
+						end
+			]]
+			--	h = h + 1
+			--until h >= 7 or itemstack.get_count() <= 0
 
 		end
 	end,
@@ -365,7 +415,7 @@ minetest.register_node("mcl_bamboo:scaffolding", {
 		-- Node destructor; called before removing node.
 		local new_pos = vector.offset(pos, 0, 1, 0)
 		local node_above = minetest.get_node(new_pos)
-		if node_above and node_above.name == "mcl_bamboo:scaffolding" then
+		if node_above and node_above.name == scaffold_name then
 			local sound_params = {
 				pos = new_pos,
 				gain = 1.0, -- default
@@ -374,13 +424,13 @@ minetest.register_node("mcl_bamboo:scaffolding", {
 
 			minetest.remove_node(new_pos)
 			minetest.sound_play(node_sound.dug, sound_params, true)
-			local istack = ItemStack("mcl_bamboo:scaffolding")
+			local istack = ItemStack(scaffold_name)
 			minetest.add_item(new_pos, istack)
 		end
 	end,
 })
 
-minetest.register_node("mcl_bamboo:scaffolding_horizontal", {
+minetest.register_node(side_scaffold_name, {
 	description = S("Scaffolding"),
 	doc_items_longdesc = S("Scaffolding block used to climb up or out across areas."),
 	doc_items_hidden = false,
@@ -388,8 +438,6 @@ minetest.register_node("mcl_bamboo:scaffolding_horizontal", {
 	drop = "mcl_bamboo:scaffolding",
 	drawtype = "nodebox",
 	paramtype = "light",
-	paramtype2 = "4dir",
-	param2 = 0,
 	use_texture_alpha = "clip",
 	node_box = {
 		type = "fixed",
@@ -411,14 +459,21 @@ minetest.register_node("mcl_bamboo:scaffolding_horizontal", {
 	groups = {handy = 1, axey = 1, flammable = 3, building_block = 1, material_wood = 1, fire_encouragement = 5, fire_flammability = 20, not_in_creative_inventory = 1, falling_node = 1},
 	_mcl_after_falling = function(pos)
 		if minetest.get_node(pos).name == "mcl_bamboo:scaffolding_horizontal" then
-			if minetest.get_node(vector.offset(pos, 0, 0, 0)).name ~= "mcl_bamboo:scaffolding" then
+			if minetest.get_node(vector.offset(pos, 0, 0, 0)).name ~= scaffold_name then
 				minetest.remove_node(pos)
-				minetest.add_item(pos, "mcl_bamboo:scaffolding")
+				minetest.add_item(pos, scaffold_name)
 			else
-				minetest.set_node(vector.offset(pos, 0, 1, 0), {name = "mcl_bamboo:scaffolding"})
+				minetest.set_node(vector.offset(pos, 0, 1, 0), {name = side_scaffold_name})
 			end
 		end
 	end,
+	buildable_to = false,
+	is_ground_content = false,
+	walkable = false,
+	climbable = true,
+	physical = true,
+
+	on_rotate = disallow_on_rotate,
 
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type ~= "node" then

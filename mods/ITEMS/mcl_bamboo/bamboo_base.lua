@@ -8,9 +8,6 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local bamboo = "mcl_bamboo:bamboo"
-local bamboo_one = bamboo .. "_1"
-local bamboo_two = bamboo .. "_2"
-local bamboo_three = bamboo .. "_3"
 local node_sound = mcl_sounds.node_sound_wood_defaults()
 
 -- CONSTS
@@ -83,6 +80,7 @@ local bamboo_def = {
 			{-0.175, -0.5, -0.195, 0.05, 0.5, 0.030},
 		}
 	},
+	node_placement_prediction = "",
 
 	on_rotate = on_rotate,
 
@@ -146,18 +144,10 @@ local bamboo_def = {
 		else
 			local placed_type = pr:next(0, 3) -- randomly choose which one to place.
 			mcl_bamboo.mcl_log("Place_Bamboo_Shoot--Type: " .. placed_type)
-			if placed_type == 0 then
-				place_item = ItemStack(bamboo)
-			elseif placed_type == 1 then
-				place_item = ItemStack(bamboo_one)
-			elseif placed_type == 2 then
-				place_item = ItemStack(bamboo_two)
-			elseif placed_type == 3 then
-				place_item = ItemStack(bamboo_three)
-			end
+			place_item = mcl_bamboo.bamboo_index[placed_type + 1]
 		end
 		minetest.item_place(place_item, placer, pointed_thing, fdir)
-		itemstack:set_count(itemstack:get_count() - 1)
+		itemstack:take_item(1)
 		return itemstack, pointed_thing.under
 	end,
 
@@ -307,7 +297,7 @@ bamboo_one_def.selection_box = {
 		{-0.05, -0.5, 0.285, -0.275, 0.5, 0.06},
 	}
 }
-minetest.register_node(bamboo_one, bamboo_one_def)
+minetest.register_node(mcl_bamboo.bamboo_index[2], bamboo_one_def)
 local bamboo_two_def = table.copy(bamboo_def)
 
 bamboo_two_def.node_box = {
@@ -329,7 +319,7 @@ bamboo_two_def.selection_box = {
 		{0.25, -0.5, 0.325, 0.025, 0.5, 0.100},
 	}
 }
-minetest.register_node(bamboo_two, bamboo_two_def)
+minetest.register_node(mcl_bamboo.bamboo_index[3], bamboo_two_def)
 local bamboo_three_def = table.copy(bamboo_def)
 
 bamboo_three_def.node_box = {
@@ -351,4 +341,4 @@ bamboo_three_def.selection_box = {
 		{-0.125, -0.5, 0.125, -0.3125, 0.5, 0.3125},
 	}
 }
-minetest.register_node(bamboo_three, bamboo_three_def)
+minetest.register_node(mcl_bamboo.bamboo_index[4], bamboo_three_def)
