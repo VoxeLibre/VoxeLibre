@@ -41,6 +41,7 @@ minetest.register_alias("bamboo_mosaic", "mcl_bamboo:bamboo_mosaic")
 
 minetest.register_alias("mcl_stairs:stair_bamboo", "mcl_stairs:stair_bamboo_block")
 minetest.register_alias("bamboo:bamboo", "mcl_bamboo:bamboo")
+minetest.register_alias("scaffold", "mcl_bamboo:scaffolding")
 minetest.register_alias("mcl_scaffolding:scaffolding", "mcl_bamboo:scaffolding")
 minetest.register_alias("mcl_scaffolding:scaffolding_horizontal", "mcl_bamboo:scaffolding")
 
