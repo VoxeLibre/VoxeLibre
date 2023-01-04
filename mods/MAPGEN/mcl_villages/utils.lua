@@ -40,22 +40,32 @@ function settlements.find_surface(pos, wait)
 	-- go through nodes an find surface
 	while cnt < cnt_max do
 		-- Check Surface_node and Node above
-		--
-		if settlements.surface_mat[surface_node.name] then
+		if surface_node and settlements.surface_mat[surface_node.name] then
 			local surface_node_plus_1 = get_node({ x=p6.x, y=p6.y+1, z=p6.z})
-			if surface_node_plus_1 and surface_node and
-				(string.find(surface_node_plus_1.name,"air") or
-				string.find(surface_node_plus_1.name,"snow") or
-				string.find(surface_node_plus_1.name,"fern") or
-				string.find(surface_node_plus_1.name,"flower") or
-				string.find(surface_node_plus_1.name,"bush") or
-				string.find(surface_node_plus_1.name,"tree") or
-				string.find(surface_node_plus_1.name,"grass"))
+
+			if surface_node_plus_1 then
+
+				local surface_node_minus_1 = get_node({ x=p6.x, y=p6.y-1, z=p6.z})
+				local is_leaf_below  = minetest.get_item_group(surface_node_minus_1, "leaves") ~= 0 or
+						string.find(surface_node_minus_1.name,"leaves")
+
+				if not is_leaf_below and ((string.find(surface_node_plus_1.name,"air") or
+					string.find(surface_node_plus_1.name,"fern") or
+					string.find(surface_node_plus_1.name,"flower") or
+					string.find(surface_node_plus_1.name,"bush") or
+					string.find(surface_node_plus_1.name,"tree") or
+					string.find(surface_node_plus_1.name,"grass")) or
+					string.find(surface_node_plus_1.name,"snow"))
 				then
-					settlements.debug("find_surface7: " ..surface_node.name.. " " .. surface_node_plus_1.name)
+					settlements.debug("find_surface success: " ..surface_node.name.. " " .. surface_node_plus_1.name)
+					settlements.debug("node below: " .. tostring(surface_node_minus_1.name))
+					settlements.debug("node below leaves group: " .. tostring(minetest.get_item_group(surface_node_minus_1, "leaves")))
 					return p6, surface_node.name
+				else
+					settlements.debug("find_surface2: wrong surface+1")
+				end
 			else
-				settlements.debug("find_surface2: wrong surface+1")
+				settlements.debug("find_surface8: missing node or plus_1")
 			end
 		else
 			settlements.debug("find_surface3: wrong surface "..surface_node.name.." at pos "..minetest.pos_to_string(p6))

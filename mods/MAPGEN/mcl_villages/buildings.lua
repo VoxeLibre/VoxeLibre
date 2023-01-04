@@ -79,19 +79,27 @@ function settlements.create_site_plan(maxp, minp, pr)
 	local settlement_info = {}
 	local building_all_info
 	local possible_rotations = {"0", "90", "180", "270"}
+
 	-- find center of chunk
 	local center = {
 		x=math.floor((minp.x+maxp.x)/2),
 		y=maxp.y,
 		z=math.floor((minp.z+maxp.z)/2)
 	}
+
 	-- find center_surface of chunk
 	local center_surface , surface_material = settlements.find_surface(center, true)
 	local chunks = {}
 	chunks[mcl_vars.get_chunk_number(center)] = true
 
 	-- go build settlement around center
-	if not center_surface then return false end
+	if not center_surface then
+		minetest.log("action", "Cannot build village at: " .. minetest.pos_to_string(center))
+		return false
+	else
+		minetest.log("action", "Village built.")
+		--minetest.log("action", "Build village at: " .. minetest.pos_to_string(center) .. " with surface material: " .. surface_material)
+	end
 
 	-- initialize all settlement_info table
 	local count_buildings, number_of_buildings, number_built = settlements.initialize_settlement_info(pr)
@@ -190,6 +198,7 @@ local function construct_node(p1, p2, name)
 end
 
 local function spawn_iron_golem(pos)
+	--minetest.log("action", "Attempt to spawn iron golem.")
 	local p = minetest.find_node_near(pos,50,"mcl_core:grass_path")
 	if p then
 		local l=minetest.add_entity(p,"mobs_mc:iron_golem"):get_luaentity()
@@ -200,6 +209,7 @@ local function spawn_iron_golem(pos)
 end
 
 local function spawn_villagers(minp,maxp)
+	--minetest.log("action", "Attempt to spawn villagers.")
 	local beds=minetest.find_nodes_in_area(vector.offset(minp,-20,-20,-20),vector.offset(maxp,20,20,20),{"mcl_beds:bed_red_bottom"})
 	for _,bed in pairs(beds) do
 		local m = minetest.get_meta(bed)
@@ -235,23 +245,6 @@ end
 function settlements.place_schematics(settlement_info, pr)
 	local building_all_info
 
-	--attempt to place one belltower in the center of the village - this doesn't always work out great but it's a lot better than doing it first or last.
-	local belltower = table.remove(settlement_info,math.floor(#settlement_info/2))
-	if belltower then
-		mcl_structures.place_schematic(
-			vector.offset(belltower["pos"],0,0,0),
-			settlements.modpath.."/schematics/belltower.mts",
-			belltower["rotation"],
-			nil,
-			true,
-			nil,
-			function(p1, p2, size, rotation, pr)
-				spawn_iron_golem(p1)
-			end,
-			pr
-		)
-	end
-
 	for i, built_house in ipairs(settlement_info) do
 		local is_last = i == #settlement_info
 
@@ -261,6 +254,9 @@ function settlements.place_schematics(settlement_info, pr)
 				break
 			end
 		end
+
+
+
 
 		local pos = settlement_info[i]["pos"]
 		local rotation = settlement_info[i]["rotat"]
@@ -313,8 +309,11 @@ function settlements.place_schematics(settlement_info, pr)
 
 		-- format schematic string
 		local schematic = loadstring(schem_lua)()
+		
+		local is_belltower = building_all_info["name"] == "belltower"
+
 		-- build foundation for the building an make room above
-		-- place schematic
+
 		mcl_structures.place_schematic(
 			pos,
 			schematic,
@@ -323,8 +322,12 @@ function settlements.place_schematics(settlement_info, pr)
 			true,
 			nil,
 			function(p1, p2, size, rotation, pr)
-				init_nodes(p1, p2, size, rotation, pr)
-				spawn_villagers(p1,p2)
+				if is_belltower then
+					spawn_iron_golem(p1)
+				else
+					init_nodes(p1, p2, size, rotation, pr)
+					spawn_villagers(p1,p2)
+				end
 			end,
 			pr
 		)
