@@ -109,7 +109,7 @@ mcl_mobs.register_mob("mobs_mc:zombie", zombie)
 
 local baby_zombie = table.copy(zombie)
 baby_zombie.description = S("Baby Zombie")
-baby_zombie.collisionbox = {-0.25, -0.01, -0.25, 0.25, 1, 0.25}
+baby_zombie.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.98, 0.25}
 baby_zombie.xp_min = 12
 baby_zombie.xp_max = 12
 baby_zombie.walk_velocity = 1.2
