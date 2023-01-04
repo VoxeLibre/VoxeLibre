@@ -56,6 +56,7 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 	description = S("Sheep"),
 	type = "animal",
 	spawn_class = "passive",
+	passive = true,
 	hp_min = 8,
 	hp_max = 8,
 	xp_min = 1,

@@ -7,6 +7,7 @@ local cow_def = {
 	type = "animal",
 	spawn_class = "passive",
 	passive = true,
+	runaway = true,
 	hp_min = 10,
 	hp_max = 10,
 	xp_min = 1,
@@ -40,7 +41,6 @@ local cow_def = {
 		max = 2,
 		looting = "common",},
 	},
-	runaway = true,
 	sounds = {
 		random = "mobs_mc_cow",
 		damage = "mobs_mc_cow_hurt",
