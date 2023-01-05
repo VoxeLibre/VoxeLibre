@@ -1,0 +1,3 @@
+# textdomain: lightning
+Let lightning strike at the specified position or player. No parameter will strike yourself.=指定された位置またはプレイヤーに落雷させます。 どのパラメータも自身を攻撃しません。
+No position specified and unknown player=位置指定なし、プレイヤー不明

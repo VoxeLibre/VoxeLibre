@@ -18,10 +18,6 @@ local S = minetest.get_translator(minetest.get_current_modname())
 local math = math
 local string = string
 
--- Other mods can use these for looping through available colors
-mcl_dye.basecolors = {"white", "grey", "black", "red", "yellow", "green", "cyan", "blue", "magenta"}
-mcl_dye.excolors = {"white", "lightgrey", "grey", "darkgrey", "black", "red", "orange", "yellow", "lime", "green", "aqua", "cyan", "sky_blue", "blue", "violet", "magenta", "red_violet"}
-
 -- Base color groups:
 -- - basecolor_white
 -- - basecolor_grey
@@ -62,43 +58,43 @@ mcl_dye.excolors = {"white", "lightgrey", "grey", "darkgrey", "black", "red", "o
 -- - unicolor_medium_<excolor>_s50
 -- - unicolor_dark_<excolor>_s50
 
--- Local stuff
-local dyelocal = {}
-
 -- This collection of colors is partly a historic thing, partly something else.
-dyelocal.dyes = {
-	{"white", "mcl_dye_white", S("Bone Meal"), {dye = 1, craftitem = 1, basecolor_white = 1, excolor_white = 1, unicolor_white = 1}},
-	{"grey", "dye_grey", S("Light Grey Dye"), {dye = 1, craftitem = 1, basecolor_grey = 1, excolor_grey = 1, unicolor_grey = 1}},
-	{"dark_grey", "dye_dark_grey", S("Grey Dye"), {dye = 1, craftitem = 1, basecolor_grey = 1, excolor_darkgrey = 1, unicolor_darkgrey = 1}},
-	{"black", "mcl_dye_black", S("Ink Sac"), {dye = 1, craftitem = 1, basecolor_black = 1, excolor_black = 1, unicolor_black = 1}},
-	{"violet", "dye_violet", S("Purple Dye"), {dye = 1, craftitem = 1, basecolor_magenta = 1, excolor_violet = 1, unicolor_violet = 1}},
-	{"blue", "mcl_dye_blue", S("Lapis Lazuli"), {dye = 1, craftitem = 1, basecolor_blue = 1, excolor_blue = 1, unicolor_blue = 1}},
-	{"lightblue", "mcl_dye_light_blue", S("Light Blue Dye"), {dye = 1, craftitem = 1, basecolor_blue = 1, excolor_blue = 1, unicolor_light_blue = 1}},
-	{"cyan", "dye_cyan", S("Cyan Dye"), {dye = 1, craftitem = 1, basecolor_cyan = 1, excolor_cyan = 1, unicolor_cyan = 1}},
-	{"dark_green", "dye_dark_green", S("Cactus Green"), {dye = 1, craftitem = 1, basecolor_green = 1, excolor_green = 1, unicolor_dark_green = 1}},
-	{"green", "mcl_dye_lime", S("Lime Dye"), {dye = 1, craftitem = 1, basecolor_green = 1, excolor_green = 1, unicolor_green = 1}},
-	{"yellow", "dye_yellow", S("Dandelion Yellow"), {dye = 1, craftitem = 1, basecolor_yellow = 1, excolor_yellow = 1, unicolor_yellow = 1}},
-	{"brown", "mcl_dye_brown", S("Cocoa Beans"), {dye = 1, craftitem = 1, basecolor_brown = 1, excolor_orange = 1, unicolor_dark_orange = 1, compostability = 65}},
-	{"orange", "dye_orange", S("Orange Dye"), {dye = 1, craftitem = 1, basecolor_orange = 1, excolor_orange = 1, unicolor_orange = 1}},
-	{"red", "dye_red", S("Rose Red"), {dye = 1, craftitem = 1, basecolor_red = 1, excolor_red = 1, unicolor_red = 1}},
-	{"magenta", "dye_magenta", S("Magenta Dye"), {dye = 1, craftitem = 1, basecolor_magenta = 1, excolor_red_violet = 1, unicolor_red_violet = 1}},
-	{"pink", "dye_pink", S("Pink Dye"), {dye = 1, craftitem = 1, basecolor_red = 1, excolor_red = 1, unicolor_light_red = 1}},
+local dyes = {
+	{"white",	S("White Dye"),		{basecolor_white=1,   excolor_white=1,     unicolor_white=1}},
+	{"grey",	S("Light Grey Dye"),	{basecolor_grey=1,    excolor_grey=1,      unicolor_grey=1}},
+	{"dark_grey",	S("Grey Dye"),		{basecolor_grey=1,    excolor_darkgrey=1,  unicolor_darkgrey=1}},
+	{"black",	S("Black Dye"),		{basecolor_black=1,   excolor_black=1,     unicolor_black=1}},
+	{"violet",	S("Purple Dye"),	{basecolor_magenta=1, excolor_violet=1,    unicolor_violet=1}},
+	{"blue",	S("Blue Dye"),		{basecolor_blue=1,    excolor_blue=1,      unicolor_blue=1}},
+	{"lightblue",	S("Light Blue Dye"),	{basecolor_blue=1,    excolor_blue=1,      unicolor_light_blue=1}},
+	{"cyan",	S("Cyan Dye"),		{basecolor_cyan=1,    excolor_cyan=1,      unicolor_cyan=1}},
+	{"dark_green",	S("Cactus Green"),	{basecolor_green=1,   excolor_green=1,     unicolor_dark_green=1}},
+	{"green",	S("Lime Dye"),		{basecolor_green=1,   excolor_green=1,     unicolor_green=1}},
+	{"yellow",	S("Dandelion Yellow"),	{basecolor_yellow=1,  excolor_yellow=1,    unicolor_yellow=1}},
+	{"brown",	S("Brown Dye"),		{basecolor_brown=1,   excolor_orange=1,    unicolor_dark_orange=1}},
+	{"orange",	S("Orange Dye"),	{basecolor_orange=1,  excolor_orange=1,    unicolor_orange=1}},
+	{"red",		S("Rose Red"),		{basecolor_red=1,     excolor_red=1,       unicolor_red=1}},
+	{"magenta",	S("Magenta Dye"),	{basecolor_magenta=1, excolor_red_violet=1,unicolor_red_violet=1}},
+	{"pink",	S("Pink Dye"),		{basecolor_red=1,     excolor_red=1,       unicolor_light_red=1}},
 }
 
-local mg_name = minetest.get_mapgen_setting("mg_name")
+-- Other mods can use these for looping through available colors
+mcl_dye.basecolors = {"white", "grey", "black", "magenta", "blue", "cyan", "green", "yellow", "orange", "red", "brown"}
+mcl_dye.excolors = {"white", "grey", "darkgrey", "black", "violet", "blue", "cyan", "green", "yellow", "orange", "red", "red_violet"}
 
-dyelocal.unicolor_to_dye_id = {}
-for d = 1, #dyelocal.dyes do
-	for k, _ in pairs(dyelocal.dyes[d][4]) do
+local unicolor_to_dye_id = {}
+for d = 1, #dyes do
+	for k, _ in pairs(dyes[d][3]) do
 		if string.sub(k, 1, 9) == "unicolor_" then
-			dyelocal.unicolor_to_dye_id[k] = dyelocal.dyes[d][1]
+			unicolor_to_dye_id[k] = dyes[d][1]
 		end
 	end
 end
 
--- Takes an unicolor group name (e.g. “unicolor_white”) and returns a corresponding dye name (if it exists), nil otherwise.
+-- Takes an unicolor group name (e.g. “unicolor_white”) and returns a
+-- corresponding dye name (if it exists), nil otherwise.
 function mcl_dye.unicolor_to_dye(unicolor_group)
-	local color = dyelocal.unicolor_to_dye_id[unicolor_group]
+	local color = unicolor_to_dye_id[unicolor_group]
 	if color then
 		return "mcl_dye:" .. color
 	else
@@ -106,28 +102,21 @@ function mcl_dye.unicolor_to_dye(unicolor_group)
 	end
 end
 
--- Define items
-for _, row in ipairs(dyelocal.dyes) do
-	local name = row[1]
-	-- White and brown dyes are defined explicitly below
-	if name ~= "white" and name ~= "brown" then
-		local img = row[2]
-		local description = row[3]
-		local groups = row[4]
-		local item_name = "mcl_dye:" .. name
-		local item_image = img .. ".png"
-		minetest.register_craftitem(item_name, {
-			inventory_image = item_image,
-			description = description,
-			_doc_items_longdesc = S("This item is a dye which is used for dyeing and crafting."),
-			_doc_items_usagehelp = S("Rightclick on a sheep to dye its wool. Other things are dyed by crafting."),
-			groups = groups,
-			stack_max = 64,
-		})
-	end
+-- Define dye items.
+--
+for _, row in pairs(dyes) do
+	local name, desc, grps = unpack(row)
+	minetest.register_craftitem("mcl_dye:" .. name, {
+		inventory_image = "mcl_dye_" .. name .. ".png",
+		description = desc,
+		_doc_items_longdesc = S("This item is a dye which is used for dyeing and crafting."),
+		_doc_items_usagehelp = S("Rightclick on a sheep to dye its wool. Other things are dyed by crafting."),
+		groups = table.update({craftitem = 1, dye = 1}, grps)
+	})
 end
 
--- Bone Meal
+-- Bone meal code to be moved into its own mod.
+--
 function mcl_dye.add_bone_meal_particle(pos, def)
 	if not def then
 		def = {}
@@ -191,9 +180,7 @@ local function apply_bone_meal(pointed_thing, user)
 
 	local pos = pointed_thing.under
 	local n = minetest.get_node(pos)
-	if n.name == "" then
-		return false
-	end
+	if n.name == "" then return false end
 
 	for _, func in pairs(mcl_dye.bone_meal_callbacks) do
 		if func(pointed_thing, user) then
@@ -220,12 +207,12 @@ local function apply_bone_meal(pointed_thing, user)
 		-- Select schematic
 		local schematic, offset, height
 		if n.name == "mcl_mushrooms:mushroom_brown" then
-			schematic = minetest.get_modpath("mcl_mushrooms") .. "/schematics/mcl_mushrooms_huge_brown.mts"
-			offset = {x = -3, y = -1, z = -3}
+			schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_brown.mts"
+			offset = { x = -3, y = -1, z = -3 }
 			height = 8
 		elseif n.name == "mcl_mushrooms:mushroom_red" then
-			schematic = minetest.get_modpath("mcl_mushrooms") .. "/schematics/mcl_mushrooms_huge_red.mts"
-			offset = {x = -2, y = -1, z = -2}
+			schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_red.mts"
+			offset = { x = -2, y = -1, z = -2 }
 			height = 8
 		else
 			return false
@@ -233,16 +220,16 @@ local function apply_bone_meal(pointed_thing, user)
 		-- 40% chance
 		if math.random(1, 100) <= 40 then
 			-- Check space requirements
-			for i = 1, 3 do
-				local cpos = vector.add(pos, {x = 0, y = i, z = 0})
+			for i=1,3 do
+				local cpos = vector.add(pos, {x=0, y=i, z=0})
 				if minetest.get_node(cpos).name ~= "air" then
 					return false
 				end
 			end
 			local yoff = 3
-			local minp, maxp = {x = pos.x - 3, y = pos.y + yoff, z = pos.z - 3}, {x = pos.x + 3, y = pos.y + yoff + (height - 3), z = pos.z + 3}
+			local minp, maxp = {x=pos.x-3, y=pos.y+yoff, z=pos.z-3}, {x=pos.x+3, y=pos.y+yoff+(height-3), z=pos.z+3}
 			local diff = vector.subtract(maxp, minp)
-			diff = vector.add(diff, {x = 1, y = 1, z = 1})
+			diff = vector.add(diff, {x=1,y=1,z=1})
 			local totalnodes = diff.x * diff.y * diff.z
 			local goodnodes = minetest.find_nodes_in_area(minp, maxp, {"air", "group:leaves"})
 			if #goodnodes < totalnodes then
@@ -256,7 +243,7 @@ local function apply_bone_meal(pointed_thing, user)
 			return ok ~= nil
 		end
 		return false
-		-- Wheat, Potato, Carrot, Pumpkin Stem, Melon Stem: Advance by 2-5 stages
+	-- Wheat, Potato, Carrot, Pumpkin Stem, Melon Stem: Advance by 2-5 stages
 	elseif string.find(n.name, "mcl_farming:wheat_") then
 		mcl_dye.add_bone_meal_particle(pos)
 		local stages = math.random(2, 5)
@@ -286,7 +273,7 @@ local function apply_bone_meal(pointed_thing, user)
 	elseif string.find(n.name, "mcl_farming:sweet_berry_bush_") then
 		mcl_dye.add_bone_meal_particle(pos)
 		if n.name == "mcl_farming:sweet_berry_bush_3" then
-			return minetest.add_item(vector.offset(pos, math.random() - 0.5, math.random() - 0.5, math.random() - 0.5), "mcl_farming:sweet_berry")
+			return minetest.add_item(vector.offset(pos,math.random()-0.5,math.random()-0.5,math.random()-0.5),"mcl_farming:sweet_berry")
 		else
 			return mcl_farming:grow_plant("plant_sweet_berry_bush", pos, n, 1, true)
 		end
@@ -306,12 +293,12 @@ local function apply_bone_meal(pointed_thing, user)
 
 					if n.name ~= "" and n.name == "air" and (minetest.get_item_group(n2.name, "grass_block_no_snow") == 1) then
 						-- Randomly generate flowers, tall grass or nothing
-						if math.random(1, 100) <= 90 / ((math.abs(i) + math.abs(j)) / 2) then
+						if math.random(1, 100) <= 90 / ((math.abs(i) + math.abs(j)) / 2)then
 							-- 90% tall grass, 10% flower
 							mcl_dye.add_bone_meal_particle(pos, {amount = 4})
-							if math.random(1, 100) <= 90 then
+							if math.random(1,100) <= 90 then
 								local col = n2.param2
-								minetest.add_node(pos, {name = "mcl_flowers:tallgrass", param2 = col})
+								minetest.add_node(pos, {name="mcl_flowers:tallgrass", param2=col})
 							else
 								local flowers_table
 								if mg_name == "v6" then
@@ -328,7 +315,7 @@ local function apply_bone_meal(pointed_thing, user)
 										flowers_table = flowers_table_simple
 									end
 								end
-								minetest.add_node(pos, {name = flowers_table[math.random(1, #flowers_table)]})
+								minetest.add_node(pos, {name=flowers_table[math.random(1, #flowers_table)]})
 							end
 						end
 					end
@@ -337,7 +324,7 @@ local function apply_bone_meal(pointed_thing, user)
 		end
 		return true
 
-		-- Double flowers: Drop corresponding item
+	-- Double flowers: Drop corresponding item
 	elseif n.name == "mcl_flowers:rose_bush" or n.name == "mcl_flowers:rose_bush_top" then
 		mcl_dye.add_bone_meal_particle(pos)
 		minetest.add_item(pos, "mcl_flowers:rose_bush")
@@ -358,11 +345,11 @@ local function apply_bone_meal(pointed_thing, user)
 	elseif n.name == "mcl_flowers:tallgrass" then
 		mcl_dye.add_bone_meal_particle(pos)
 		-- Tall Grass: Grow into double tallgrass
-		local toppos = {x = pos.x, y = pos.y + 1, z = pos.z}
+		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
 		local topnode = minetest.get_node(toppos)
 		if minetest.registered_nodes[topnode.name].buildable_to then
-			minetest.set_node(pos, {name = "mcl_flowers:double_grass", param2 = n.param2})
-			minetest.set_node(toppos, {name = "mcl_flowers:double_grass_top", param2 = n.param2})
+			minetest.set_node(pos, { name = "mcl_flowers:double_grass", param2 = n.param2 })
+			minetest.set_node(toppos, { name = "mcl_flowers:double_grass_top", param2 = n.param2 })
 			return true
 		end
 
@@ -377,11 +364,11 @@ local function apply_bone_meal(pointed_thing, user)
 	elseif n.name == "mcl_flowers:fern" then
 		mcl_dye.add_bone_meal_particle(pos)
 		-- Fern: Grow into large fern
-		local toppos = {x = pos.x, y = pos.y + 1, z = pos.z}
+		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
 		local topnode = minetest.get_node(toppos)
 		if minetest.registered_nodes[topnode.name].buildable_to then
-			minetest.set_node(pos, {name = "mcl_flowers:double_fern", param2 = n.param2})
-			minetest.set_node(toppos, {name = "mcl_flowers:double_fern_top", param2 = n.param2})
+			minetest.set_node(pos, { name = "mcl_flowers:double_fern", param2 = n.param2 })
+			minetest.set_node(toppos, { name = "mcl_flowers:double_fern_top", param2 = n.param2 })
 			return true
 		end
 	end
@@ -391,14 +378,17 @@ end
 
 mcl_dye.apply_bone_meal = apply_bone_meal
 
-minetest.register_craftitem("mcl_dye:white", {
-	inventory_image = "mcl_dye_white.png",
+-- Bone meal item registration.
+--
+-- To be moved into its own mod.
+--
+minetest.register_craftitem(":mcl_bone_meal:bone_meal", {
+	inventory_image = "mcl_bone_meal_bone_meal.png",
 	description = S("Bone Meal"),
 	_tt_help = S("Speeds up plant growth"),
 	_doc_items_longdesc = S("Bone meal is a white dye and also useful as a fertilizer to speed up the growth of many plants."),
 	_doc_items_usagehelp = S("Rightclick a sheep to turn its wool white. Rightclick a plant to speed up its growth. Note that not all plants can be fertilized like this. When you rightclick a grass block, tall grass and flowers will grow all over the place."),
 	stack_max = 64,
-	groups = dyelocal.dyes[1][4],
 	on_place = function(itemstack, user, pointed_thing)
 		-- Use pointed node's on_rightclick function first, if present
 		local node = minetest.get_node(pointed_thing.under)
@@ -418,9 +408,9 @@ minetest.register_craftitem("mcl_dye:white", {
 		-- Apply bone meal, if possible
 		local pointed_thing
 		if dropnode.name == "air" then
-			pointed_thing = {above = droppos, under = {x = droppos.x, y = droppos.y - 1, z = droppos.z}}
+			pointed_thing = { above = droppos, under = { x=droppos.x, y=droppos.y-1, z=droppos.z } }
 		else
-			pointed_thing = {above = pos, under = droppos}
+			pointed_thing = { above = pos, under = droppos }
 		end
 		local success = apply_bone_meal(pointed_thing, nil)
 		if success then
@@ -431,55 +421,160 @@ minetest.register_craftitem("mcl_dye:white", {
 	_dispense_into_walkable = true
 })
 
-minetest.register_craftitem("mcl_dye:brown", {
-	inventory_image = "mcl_dye_brown.png",
-	_tt_help = S("Grows at the side of jungle trees"),
-	_doc_items_longdesc = S("Cocoa beans are a brown dye and can be used to plant cocoas."),
-	_doc_items_usagehelp = S("Rightclick a sheep to turn its wool brown. Rightclick on the side of a jungle tree trunk (Jungle Wood) to plant a young cocoa."),
-	description = S("Cocoa Beans"),
-	stack_max = 64,
-	groups = dyelocal.dyes[12][4],
-	on_place = function(itemstack, placer, pointed_thing)
-		return mcl_cocoas.place(itemstack, placer, pointed_thing, "mcl_cocoas:cocoa_1")
-	end,
+minetest.register_craft({
+	output = "mcl_bone_meal:bone_meal 3",
+	recipe = {{"mcl_mobitems:bone"}},
 })
 
--- Dye mixing
+
+-- Dye creation recipes.
+--
+minetest.register_craft({
+	output = "mcl_dye:white",
+	recipe = {{"mcl_bone_meal:bone_meal"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:black",
+	recipe = {{"mcl_mobitems:ink_sac"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:yellow",
+	recipe = {{"mcl_flowers:dandelion"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:yellow 2",
+	recipe = {{"mcl_flowers:sunflower"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:blue",
+	recipe = {{"mcl_core:lapis"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:lightblue",
+	recipe = {{"mcl_flowers:blue_orchid"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:grey",
+	recipe = {{"mcl_flowers:azure_bluet"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:grey",
+	recipe = {{"mcl_flowers:oxeye_daisy"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:grey",
+	recipe = {{"mcl_flowers:tulip_white"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:magenta",
+	recipe = {{"mcl_flowers:allium"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:magenta 2",
+	recipe = {{"mcl_flowers:lilac"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:orange",
+	recipe = {{"mcl_flowers:tulip_orange"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:brown",
+	recipe = {{"mcl_cocoas:cocoa_beans"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:pink",
+	recipe = {{"mcl_flowers:tulip_pink"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:pink 2",
+	recipe = {{"mcl_flowers:peony"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:red",
+	recipe = {{"mcl_farming:beetroot_item"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:red",
+	recipe = {{"mcl_flowers:poppy"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:red",
+	recipe = {{"mcl_flowers:tulip_red"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:red 2",
+	recipe = {{"mcl_flowers:rose_bush"}},
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "mcl_dye:dark_green",
+	recipe = "mcl_core:cactus",
+	cooktime = 10,
+})
+
+-- Dye mixing recipes.
+--
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:dark_grey 2",
 	recipe = {"mcl_dye:black", "mcl_dye:white"},
 })
+
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:lightblue 2",
 	recipe = {"mcl_dye:blue", "mcl_dye:white"},
 })
+
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:grey 3",
 	recipe = {"mcl_dye:black", "mcl_dye:white", "mcl_dye:white"},
 })
+
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:grey 2",
 	recipe = {"mcl_dye:dark_grey", "mcl_dye:white"},
 })
+
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:green 2",
 	recipe = {"mcl_dye:dark_green", "mcl_dye:white"},
 })
+
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:magenta 4",
 	recipe = {"mcl_dye:blue", "mcl_dye:white", "mcl_dye:red", "mcl_dye:red"},
 })
+
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:magenta 3",
 	recipe = {"mcl_dye:pink", "mcl_dye:red", "mcl_dye:blue"},
 })
+
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:magenta 2",
@@ -503,80 +598,34 @@ minetest.register_craft({
 	output = "mcl_dye:violet 2",
 	recipe = {"mcl_dye:blue", "mcl_dye:red"},
 })
+
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:orange 2",
 	recipe = {"mcl_dye:yellow", "mcl_dye:red"},
 })
 
--- Dye creation
+-- Legacy items grace conversion recipes.
+--
+-- These allow for retrieval of precious items that were converted into
+-- dye items after refactoring of the dyes.  Should be removed again in
+-- the near future.
 minetest.register_craft({
-	output = "mcl_dye:yellow",
-	recipe = {{"mcl_flowers:dandelion"}},
+	output = "mcl_bone_meal:bone_meal",
+	recipe = {{"mcl_dye:white"}},
 })
+
 minetest.register_craft({
-	output = "mcl_dye:yellow 2",
-	recipe = {{"mcl_flowers:sunflower"}},
+	output = "mcl_mobitems:ink_sac",
+	recipe = {{"mcl_dye:black"}},
 })
+
 minetest.register_craft({
-	output = "mcl_dye:lightblue",
-	recipe = {{"mcl_flowers:blue_orchid"}},
+	output = "mcl_core:lapis",
+	recipe = {{"mcl_dye:blue"}},
 })
+
 minetest.register_craft({
-	output = "mcl_dye:grey",
-	recipe = {{"mcl_flowers:azure_bluet"}},
-})
-minetest.register_craft({
-	output = "mcl_dye:grey",
-	recipe = {{"mcl_flowers:oxeye_daisy"}},
-})
-minetest.register_craft({
-	output = "mcl_dye:grey",
-	recipe = {{"mcl_flowers:tulip_white"}},
-})
-minetest.register_craft({
-	output = "mcl_dye:magenta",
-	recipe = {{"mcl_flowers:allium"}},
-})
-minetest.register_craft({
-	output = "mcl_dye:magenta 2",
-	recipe = {{"mcl_flowers:lilac"}},
-})
-minetest.register_craft({
-	output = "mcl_dye:orange",
-	recipe = {{"mcl_flowers:tulip_orange"}},
-})
-minetest.register_craft({
-	output = "mcl_dye:pink",
-	recipe = {{"mcl_flowers:tulip_pink"}},
-})
-minetest.register_craft({
-	output = "mcl_dye:pink 2",
-	recipe = {{"mcl_flowers:peony"}},
-})
-minetest.register_craft({
-	output = "mcl_dye:red",
-	recipe = {{"mcl_farming:beetroot_item"}},
-})
-minetest.register_craft({
-	output = "mcl_dye:red",
-	recipe = {{"mcl_flowers:poppy"}},
-})
-minetest.register_craft({
-	output = "mcl_dye:red",
-	recipe = {{"mcl_flowers:tulip_red"}},
-})
-minetest.register_craft({
-	output = "mcl_dye:red 2",
-	recipe = {{"mcl_flowers:rose_bush"}},
-})
-minetest.register_craft({
-	type = "cooking",
-	output = "mcl_dye:dark_green",
-	recipe = "mcl_core:cactus",
-	cooktime = 10,
-})
-minetest.register_craft({
-	output = "mcl_dye:white 3",
-	recipe = {{"mcl_mobitems:bone"}},
+	output = "mcl_cocoas:cocoa_beans",
+	recipe = {{"mcl_dye:brown"}},
 })

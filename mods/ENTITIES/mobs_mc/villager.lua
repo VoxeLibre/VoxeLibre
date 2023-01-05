@@ -479,7 +479,7 @@ local professions = {
 			},
 			{
 			{ { "mcl_core:gold_ingot", 3, 3 }, E1 },
-			{ E1, { "mcl_dye:blue", 1, 1 } },
+			{ E1, { "mcl_core:lapis", 1, 1 } },
 			},
 			{
 			{ { "mcl_mobitems:rabbit_foot", 2, 2 }, E1 },

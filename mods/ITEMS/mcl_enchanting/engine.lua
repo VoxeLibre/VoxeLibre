@@ -520,7 +520,7 @@ function mcl_enchanting.show_enchanting_formspec(player)
 	local table_slots = mcl_enchanting.get_table_slots(player, itemstack, num_bookshelves)
 	for i, slot in ipairs(table_slots) do
 		any_enchantment = any_enchantment or slot
-		local enough_lapis = inv:contains_item("enchanting_lapis", ItemStack({name = "mcl_dye:blue", count = i}))
+		local enough_lapis = inv:contains_item("enchanting_lapis", ItemStack({name = "mcl_core:lapis", count = i}))
 		local enough_levels = slot and slot.level_requirement <= player_levels
 		local can_enchant = (slot and enough_lapis and enough_levels)
 		local ending = (can_enchant and "" or "_off")
@@ -555,7 +555,7 @@ function mcl_enchanting.handle_formspec_fields(player, formname, fields)
 		local meta = player:get_meta()
 		local num_bookshelfes = meta:get_int("mcl_enchanting:num_bookshelves")
 		local itemstack = inv:get_stack("enchanting_item", 1)
-		local cost = ItemStack({name = "mcl_dye:blue", count = button_pressed})
+		local cost = ItemStack({name = "mcl_core:lapis", count = button_pressed})
 		if not inv:contains_item("enchanting_lapis", cost) then
 			return
 		end
@@ -608,7 +608,7 @@ function mcl_enchanting.allow_inventory_action(player, action, inventory, invent
 		if action == "move" then
 			local listname = inventory_info.to_list
 			local stack = inventory:get_stack(inventory_info.from_list, inventory_info.from_index)
-			if stack:get_name() == "mcl_dye:blue" and listname ~= "enchanting_item" then
+			if stack:get_name() == "mcl_core:lapis" and listname ~= "enchanting_item" then
 				local count = stack:get_count()
 				local old_stack = inventory:get_stack("enchanting_lapis", 1)
 				if old_stack:get_name() ~= "" then
@@ -631,7 +631,7 @@ function mcl_enchanting.on_inventory_action(player, action, inventory, inventory
 		if action == "move" and inventory_info.to_list == "enchanting" then
 			local stack = inventory:get_stack("enchanting", 1)
 			local result_list
-			if stack:get_name() == "mcl_dye:blue" then
+			if stack:get_name() == "mcl_core:lapis" then
 				result_list = "enchanting_lapis"
 				stack:add_item(inventory:get_stack("enchanting_lapis", 1))
 			else

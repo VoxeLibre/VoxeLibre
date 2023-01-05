@@ -52,6 +52,9 @@ Bones can be used to tame wolves so they will protect you. They are also useful 
 
 Wield the bone near wolves to attract them. Use the “Place” key on the wolf to give it a bone and tame it. You can then give commands to the tamed wolf by using the “Place” key on it.=
 
+Squid Ink Sac=
+This item is dropped by dead squids.  Squid ink can be used to as an ingredient to craft book and quill or black dye.=
+
 String=
 Strings are used in crafting.=
 Blaze Rod=

@@ -126,14 +126,14 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_core:bone_block",
 	recipe = {
-		{ "mcl_dye:white", "mcl_dye:white", "mcl_dye:white" },
-		{ "mcl_dye:white", "mcl_dye:white", "mcl_dye:white" },
-		{ "mcl_dye:white", "mcl_dye:white", "mcl_dye:white" },
+		{ "mcl_bone_meal:bone_meal", "mcl_bone_meal:bone_meal", "mcl_bone_meal:bone_meal" },
+		{ "mcl_bone_meal:bone_meal", "mcl_bone_meal:bone_meal", "mcl_bone_meal:bone_meal" },
+		{ "mcl_bone_meal:bone_meal", "mcl_bone_meal:bone_meal", "mcl_bone_meal:bone_meal" },
 	},
 })
 
 minetest.register_craft({
-	output = "mcl_dye:white 9",
+	output = "mcl_bone_meal:bone_meal 9",
 	recipe = {
 		{ "mcl_core:bone_block" },
 	},
@@ -298,14 +298,14 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_core:lapisblock",
 	recipe = {
-		{"mcl_dye:blue", "mcl_dye:blue", "mcl_dye:blue"},
-		{"mcl_dye:blue", "mcl_dye:blue", "mcl_dye:blue"},
-		{"mcl_dye:blue", "mcl_dye:blue", "mcl_dye:blue"},
+		{"mcl_core:lapis", "mcl_core:lapis", "mcl_core:lapis"},
+		{"mcl_core:lapis", "mcl_core:lapis", "mcl_core:lapis"},
+		{"mcl_core:lapis", "mcl_core:lapis", "mcl_core:lapis"},
 	}
 })
 
 minetest.register_craft({
-	output = "mcl_dye:blue 9",
+	output = "mcl_core:lapis 9",
 	recipe = {
 		{"mcl_core:lapisblock"},
 	}
@@ -482,7 +482,7 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "cooking",
-	output = "mcl_dye:blue",
+	output = "mcl_core:lapis",
 	recipe = "mcl_core:stone_with_lapis",
 	cooktime = 10,
 })

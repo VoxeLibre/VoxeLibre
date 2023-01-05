@@ -52,6 +52,7 @@ schem_path = settlements.modpath.."/schematics/"
 local basic_pseudobiome_villages = minetest.settings:get_bool("basic_pseudobiome_villages", true)
 
 settlements.schematic_table = {
+	{name = "belltower",	mts = schem_path.."belltower.mts",	hwidth = 5, hdepth = 5, hheight =  9, hsize = 14, max_num = 0 , rplc = basic_pseudobiome_villages },
 	{name = "large_house",	mts = schem_path.."large_house.mts",	hwidth = 12, hdepth = 12, hheight =  9, hsize = 14, max_num = 0.08 , rplc = basic_pseudobiome_villages },
 	{name = "blacksmith",	mts = schem_path.."blacksmith.mts",	hwidth = 8, hdepth = 11, hheight = 13, hsize = 13, max_num = 0.055, rplc = basic_pseudobiome_villages },
 	{name = "butcher",	mts = schem_path.."butcher.mts",	hwidth = 12, hdepth =  8, hheight = 10, hsize = 14, max_num = 0.03 , rplc = basic_pseudobiome_villages },

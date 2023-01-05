@@ -92,7 +92,7 @@ function tsm_railcorridors.get_treasures(pr)
 			{ itemstring = "mcl_farming:melon_seeds", weight = 10, amount_min = 2, amount_max = 4 },
 			{ itemstring = "mcl_farming:pumpkin_seeds", weight = 10, amount_min = 2, amount_max = 4 },
 			{ itemstring = "mcl_core:iron_ingot", weight = 10, amount_min = 1, amount_max = 5 },
-			{ itemstring = "mcl_dye:blue", weight = 5, amount_min = 4, amount_max = 9 },
+			{ itemstring = "mcl_core:lapis", weight = 5, amount_min = 4, amount_max = 9 },
 			{ itemstring = "mesecons:redstone", weight = 5, amount_min = 4, amount_max = 9 },
 			{ itemstring = "mcl_core:gold_ingot", weight = 5, amount_min = 1, amount_max = 3 },
 			{ itemstring = "mcl_core:diamond", weight = 3, amount_min = 1, amount_max = 2 },

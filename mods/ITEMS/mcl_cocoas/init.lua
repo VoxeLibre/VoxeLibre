@@ -3,7 +3,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 mcl_cocoas = {}
 
 -- Place cocoa
-function mcl_cocoas.place(itemstack, placer, pt, plantname)
+local function cocoa_place(itemstack, placer, pt, plantname)
 	-- check if pointing at a node
 	if not pt or pt.type ~= "node" then
 		return
@@ -62,8 +62,6 @@ function mcl_cocoas.grow(pos)
 	return false
 end
 
--- Note: cocoa beans are implemented as mcl_dye:brown
-
 -- Cocoa definition
 -- 1st stage
 local crop_def = {
@@ -78,7 +76,7 @@ local crop_def = {
 	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	walkable = true,
-	drop = "mcl_dye:brown",
+	drop = "mcl_cocoas:cocoa_beans",
 	collision_box = {
 		type = "fixed",
 		fixed = {
@@ -92,7 +90,11 @@ local crop_def = {
 		},
 	},
 	groups = {
-		handy=1,axey=1, cocoa=1, not_in_creative_inventory=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1,
+		handy = 1, axey = 1,
+		dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1,
+		attached_node_facedir=1,
+		not_in_creative_inventory=1,
+		cocoa=1
 	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_rotate = false,
@@ -142,9 +144,20 @@ crop_def.selection_box = {
 		{-0.25, -0.3125, -0.0625, 0.25, 0.5, 0.5},
 	},
 }
-crop_def.drop = "mcl_dye:brown 3"
+crop_def.drop = "mcl_cocoas:cocoa_beans 3"
 minetest.register_node("mcl_cocoas:cocoa_3", table.copy(crop_def))
 
+minetest.register_craftitem("mcl_cocoas:cocoa_beans", {
+	description = S("Cocoa Beans"),
+	_tt_help = S("Grows at the side of jungle trees"),
+	_doc_items_longdesc = S("Cocoa beans can be used to plant cocoa, bake cookies or craft brown dye."),
+	_doc_items_usagehelp = S("Right click on the side of a jungle tree trunk (Jungle Wood) to plant a young cocoa."),
+	inventory_image = "mcl_cocoas_cocoa_beans.png",
+	groups = {craftitem = 1, compostability = 65},
+	on_place = function(itemstack, placer, pointed_thing)
+		return cocoa_place(itemstack, placer, pointed_thing, "mcl_cocoas:cocoa_1")
+	end,
+})
 
 minetest.register_abm({
 		label = "Cocoa pod growth",

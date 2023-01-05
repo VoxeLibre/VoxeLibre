@@ -101,6 +101,14 @@ minetest.register_craftitem("mcl_core:emerald", {
 	groups = { craftitem=1 },
 })
 
+minetest.register_craftitem("mcl_core:lapis", {
+	description = S("Lapis Lazuli"),
+	_doc_items_longdesc = S("Lapis Lazuli are required for enchanting items on an enchanting table."),
+	inventory_image = "mcl_core_lapis.png",
+	stack_max = 64,
+	groups = { craftitem=1 },
+})
+
 minetest.register_craftitem("mcl_core:brick", {
 	description = S("Brick"),
 	_doc_items_longdesc = S("Bricks are used to craft brick blocks."),
