@@ -232,7 +232,7 @@ end)
 
 mcl_damage.register_on_damage(function(obj, damage, reason)
 	if obj:get_hp() - damage > 0 then
-		if reason.source then
+		if reason.source and (reason.source:is_player() or obj:get_luaentity()) then
 			-- To avoid timing issues we cancel the previous job before adding a new one.
 			if mcl_death_messages.assist[obj] then
 				mcl_death_messages.assist[obj].job:cancel()
