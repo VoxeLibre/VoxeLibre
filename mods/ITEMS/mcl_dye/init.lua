@@ -353,14 +353,16 @@ local function apply_bone_meal(pointed_thing, user)
 			return true
 		end
 
-		-- Handle applying bonemeal to bamboo.
+--[[
+	Here for when Bonemeal becomes an api, there's code if needed for handling applying to bamboo.
+	-- Handle applying bonemeal to bamboo.
 	elseif mcl_bamboo.is_bamboo(n.name) then
 		local success = mcl_bamboo.grow_bamboo(pos, true)
 		if success then
 			mcl_dye.add_bone_meal_particle(pos)
 		end
 		return success
-
+--]]
 	elseif n.name == "mcl_flowers:fern" then
 		mcl_dye.add_bone_meal_particle(pos)
 		-- Fern: Grow into large fern
