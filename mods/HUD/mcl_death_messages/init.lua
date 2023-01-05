@@ -231,18 +231,17 @@ mcl_damage.register_on_death(function(obj, reason)
 end)
 
 mcl_damage.register_on_damage(function(obj, damage, reason)
-	if obj:get_hp() - damage > 0 then
-		if reason.source and (reason.source:is_player() or obj:get_luaentity()) then
-			-- To avoid timing issues we cancel the previous job before adding a new one.
-			if mcl_death_messages.assist[obj] then
-				mcl_death_messages.assist[obj].job:cancel()
-			end
-
-			-- Add a new assist object with a timeout job.
-			local new_job = minetest.after(ASSIST_TIMEOUT_SEC, function()
-				mcl_death_messages.assist[obj] = nil
-			end)
-			mcl_death_messages.assist[obj] = {name = mcl_util.get_object_name(reason.source), job = new_job}
+	if (obj:get_hp() - damage > 0) and reason.source and
+			(reason.source:is_player() or obj:get_luaentity()) then
+		-- To avoid timing issues we cancel the previous job before adding a new one.
+		if mcl_death_messages.assist[obj] then
+			mcl_death_messages.assist[obj].job:cancel()
 		end
+
+		-- Add a new assist object with a timeout job.
+		local new_job = minetest.after(ASSIST_TIMEOUT_SEC, function()
+			mcl_death_messages.assist[obj] = nil
+		end)
+		mcl_death_messages.assist[obj] = {name = mcl_util.get_object_name(reason.source), job = new_job}
 	end
 end)
