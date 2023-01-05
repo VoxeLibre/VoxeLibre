@@ -1,5 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+ASSIST_TIMEOUT_SEC = 10
+
 mcl_death_messages = {
 	assist = {},
 	messages = {
@@ -181,8 +183,16 @@ local function get_killer_message(obj, messages, reason)
 end
 
 local function get_assist_message(obj, messages, reason)
-	if messages.assist and mcl_death_messages.assist[obj] then
-		return messages._translator(messages.assist, mcl_util.get_object_name(obj), mcl_death_messages.assist[obj].name)
+	-- Avoid a timing issue if the assist passes its timeout.
+	local assist_details = mcl_death_messages.assist[obj]
+	if messages.assist then
+		print("TODO message.assist exists!")--TODO make this 1 condition again
+		if assist_details then
+			print("TODO There is an assist message object!")--TODO
+			return messages._translator(messages.assist, mcl_util.get_object_name(obj), assist_details.name)
+		end
+	else--TODO remove this else
+		print("TODO There was no assist message!")
 	end
 end
 
@@ -224,6 +234,9 @@ mcl_damage.register_on_death(function(obj, reason)
 			get_fallback_message(obj, messages, reason)
 
 		if send_to == true then
+			if not message or message == "" then
+				message = "there was not message"
+			end
 			minetest.chat_send_all(message)
 		else
 			minetest.chat_send_player(send_to, message)
@@ -232,20 +245,22 @@ mcl_damage.register_on_death(function(obj, reason)
 end)
 
 mcl_damage.register_on_damage(function(obj, damage, reason)
+	print("TODO ", reason.type .. " caused damage ")
 	if obj:get_hp() - damage > 0 then
 		if reason.source then
-			mcl_death_messages.assist[obj] = {name = mcl_util.get_object_name(reason.source), timeout = 5}
-		else
-			mcl_death_messages.assist[obj] = nil
-		end
-	end
-end)
+			print("TODO reason had a source")
+			-- To avoid timing issues we cancel the previous job before adding a new one.
+			if mcl_death_messages.assist[obj] then
+				print("TODO job is being caceled")
+				mcl_death_messages.assist[obj].job:cancel()
+			end
 
-minetest.register_globalstep(function(dtime)
-	for obj, tbl in pairs(mcl_death_messages.assist) do
-		tbl.timeout = tbl.timeout - dtime
-		if not obj:is_player() and not obj:get_luaentity() or tbl.timeout > 0 then
-			mcl_death_messages.assist[obj] = nil
+			-- Add a new assist object with a timeout job.
+			local new_job = minetest.after(ASSIST_TIMEOUT_SEC, function()
+				print("TODO in job")
+				mcl_death_messages.assist[obj] = nil
+			end)
+			mcl_death_messages.assist[obj] = {name = mcl_util.get_object_name(reason.source), job = new_job}
 		end
 	end
 end)
