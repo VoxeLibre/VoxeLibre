@@ -9,8 +9,8 @@ local S = minetest.get_translator(modname)
 local bamboo = "mcl_bamboo:bamboo"
 local adj_nodes = {
 	vector.new(0, 0, 1),
-	vector.new(0, 0, -1),
 	vector.new(1, 0, 0),
+	vector.new(0, 0, -1),
 	vector.new(-1, 0, 0),
 }
 
@@ -307,8 +307,15 @@ minetest.register_node(scaffold_name, {
 		local dir = vector.subtract(pointed.under, pointed.above)
 		local wdir = minetest.dir_to_wallmounted(dir)
 		local h = 0
+		mcl_bamboo.mcl_log("WDIR: " .. wdir)
+		local fdir = minetest.dir_to_facedir(dir, true)
+		mcl_bamboo.mcl_log("FDIR: " .. fdir)
+
+		local down_two = minetest.get_node(vector.offset(pointed.under, 0, -1, 0))
+
 		if wdir == 1 then
-			-- top placement. Prevents placing scaffolding along the sides of other nodes.
+			-- standing placement.
+
 
 			if mcl_bamboo.is_protected(pos, placer) then
 				return
@@ -326,8 +333,8 @@ minetest.register_node(scaffold_name, {
 			repeat
 				pos.y = pos.y + 1
 				local cn = minetest.get_node(pos)
-				local cnb = minetest.get_node(pointed.under)
-				local bn = minetest.get_node(vector.offset(pointed.under, 0, -1, 0))
+				local cnb = node
+				local bn = down_two
 				if cn.name == "air" then
 					-- first step to making scaffolding work like Minecraft scaffolding.
 					if cnb.name == scaffold_name and bn == scaffold_name and SIDE_SCAFFOLDING == false then
@@ -347,7 +354,7 @@ minetest.register_node(scaffold_name, {
 				end
 				h = h + 1
 			until cn.name ~= node.name or itemstack:get_count() == 0 or h >= 128
-		else
+
 			-- Don't use. From cora, who failed to make something awesome.
 			--[[
 						if SIDE_SCAFFOLDING then
@@ -368,27 +375,28 @@ minetest.register_node(scaffold_name, {
 						end
 			]]
 
-			--[[  Commenting out untested code, for commit.
-						local fdir = minetest.dir_to_facedir(dir) % 4
+			--  Commenting out untested code, for commit.
+			if SIDE_SCAFFOLDING == true then
+				local meta = minetest.get_meta(pos)
 
-						local meta = minetest.get_meta(pos)
+				if not meta then
+					return false
+				end
+				-- 	local count = meta:get_int("count", 0)
 
-						if not meta then
-							return false
-						end
-						local count = meta:get_int("count", 0)
-
-						h = minetest.get_node(pointed.under).param2
-						--repeat
-						local ctrl = placer:get_player_control()
-						if ctrl and ctrl.sneak then
+				h = minetest.get_node(pointed.under).param2
+				local new_pos = pointed.under
+				repeat
+					local ctrl = placer:get_player_control()
+					if ctrl and ctrl.sneak then
+						if node.name == scaffold_name or node.name == side_scaffold_name then
 							local pp2 = h
 
 							local np2 = pp2 + 1
 							fdir = fdir + 1 -- convert fdir to a base of one.
-							local new_pos = adj_nodes[fdir]
+							local target_offset = adj_nodes[fdir]
 
-							new_pos = vector.offset(pointed.above, new_pos.x, -1, new_pos.z)
+							new_pos = vector.offset(new_pos, target_offset.x, 0, target_offset.z)
 							if mcl_bamboo.is_protected(new_pos, placer) then
 								-- disallow placement in protected area
 								return
@@ -405,10 +413,12 @@ minetest.register_node(scaffold_name, {
 							return itemstack
 
 						end
-			]]
-			--	h = h + 1
-			--until h >= 7 or itemstack.get_count() <= 0
 
+						h = h + 1
+
+					end
+				until h >= 7 or itemstack.get_count() <= 0
+			end
 		end
 	end,
 	on_destruct = function(pos)
@@ -476,15 +486,19 @@ minetest.register_node(side_scaffold_name, {
 	on_rotate = disallow_on_rotate,
 
 	on_place = function(itemstack, placer, pointed_thing)
-		if pointed_thing.type ~= "node" then
-			return itemstack
-		end
-		local node = minetest.get_node(pointed_thing.under)
-		local pos = pointed_thing.under
-		if mcl_bamboo.is_protected(pos, placer) then
-			return
-		end
-		-- todo: finish this section.
+		--[[
+				if pointed_thing.type ~= "node" then
+					return itemstack
+				end
+				local node = minetest.get_node(pointed_thing.under)
+				local pos = pointed_thing.under
+				if mcl_bamboo.is_protected(pos, placer) then
+					return
+				end
+				-- todo: finish this section.
+		]]
+		return false
+
 	end
 
 
