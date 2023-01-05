@@ -27,8 +27,8 @@ minetest.register_abm({
 	nodenames = {bamboo, bamboo .. "_1", bamboo .. "_2", bamboo .. "_3"},
 	interval = 40,
 	chance = 40,
-	action = function(pos, node)
-		mcl_bamboo.grow_bamboo(pos, node)
+	action = function(pos, _)
+		mcl_bamboo.grow_bamboo(pos, false)
 	end,
 })
 

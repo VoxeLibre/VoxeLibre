@@ -92,8 +92,6 @@ local bamboo_def = {
 		local pos = pointed_thing.under
 		local nodename = node.name
 		mcl_bamboo.mcl_log("node name: " .. nodename)
-		-- check the nodename to see if it is one of the bamboo's
-		local bamboo_node = substr(nodename, 1, strlen(bamboo))
 
 		mcl_bamboo.mcl_log("Node placement data:")
 		mcl_bamboo.mcl_log(dump(pointed_thing))
@@ -113,7 +111,7 @@ local bamboo_def = {
 			end
 		end
 
-		if bamboo_node ~= bamboo and nodename ~= "mcl_bamboo:bamboo_endcap" then
+		if mcl_bamboo.is_bamboo(nodename) == false and nodename ~= "mcl_bamboo:bamboo_endcap" then
 			-- not bamboo...
 			if nodename ~= "mcl_flowerpots:flower_pot" then
 				if mcl_bamboo.is_dirt(nodename) == false then
