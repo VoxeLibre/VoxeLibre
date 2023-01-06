@@ -1,6 +1,6 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
-ASSIST_TIMEOUT_SEC = 5
+local ASSIST_TIMEOUT_SEC = 5
 
 mcl_death_messages = {
 	assist = {},
