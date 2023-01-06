@@ -59,7 +59,7 @@ todo -- Also, make those blocks collapse (break) when a nearby connected scaffol
 waiting on specific things:
 todo -- Raft -- need model
 todo -- Raft with Chest. same.
-todo -- handle bonemeal... (shelved until after redoing the bonemeal api)...
+todo -- handle bonemeal... (shelved until after redoing the bonemeal api).
 
 -----------------------------------------------------------
 todo -- Add in Extras. -- Moved to Official Mod Pack.
