@@ -5,8 +5,7 @@ local ENTITY_CRAMMING_MAX = 24
 local CRAMMING_DAMAGE = 3
 local DEATH_DELAY = 0.5
 local DEFAULT_FALL_SPEED = -9.81*1.5
-local FLOP_HEIGHT = 6
-local FLOP_HOR_SPEED = 1.5
+
 local PATHFINDING = "gowp"
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
 local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false
@@ -181,6 +180,17 @@ function mob_class:collision()
 	end
 
 	return({x,z})
+end
+
+function mob_class:slow_mob()
+	local d = 0.85
+	if self:check_dying() then d = 0.92 end
+
+	local v = self.object:get_velocity()
+	if v then
+		--diffuse object velocity
+		self.object:set_velocity({x = v.x*d, y = v.y, z = v.z*d})
+	end
 end
 
 -- move mob in facing direction
@@ -776,6 +786,25 @@ function mob_class:do_env_damage()
 	end
 
 	return self:check_for_death("", {type = "unknown"})
+end
+
+function mob_class:env_damage (dtime, pos)
+	-- environmental damage timer (every 1 second)
+	self.env_damage_timer = self.env_damage_timer + dtime
+
+	if (self.state == "attack" and self.env_damage_timer > 1)
+			or self.state ~= "attack" then
+		self:check_entity_cramming()
+		self.env_damage_timer = 0
+
+		-- check for environmental damage (water, fire, lava etc.)
+		if self:do_env_damage() then
+			return true
+		end
+
+		-- node replace check (cow eats grass etc.)
+		self:replace(pos)
+	end
 end
 
 function mob_class:damage_mob(reason,damage)

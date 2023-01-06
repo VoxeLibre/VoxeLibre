@@ -1,7 +1,6 @@
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 
-local MAX_MOB_NAME_LENGTH = 30
 local HORNY_TIME = 30
 local HORNY_AGAIN_TIME = 300
 local CHILD_GROW_TIME = 60*20
