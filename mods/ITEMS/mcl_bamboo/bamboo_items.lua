@@ -305,7 +305,7 @@ minetest.register_node(SCAFFOLDING_NAME, {
 		-- Need to add in a check here... to prevent placing scaffolds against doors, chests, etc.
 		-- Added in a quick check. need to test it.
 		if node.name ~= SCAFFOLDING_NAME then
-			-- this is a temp fix... will NOT work in final scaffolding implementation.
+			-- Start temp fix: This is a temp fix... will NOT work in final scaffolding implementation.
 			-- Use pointed node's on_rightclick function first, if present
 			if placer and not placer:get_player_control().sneak then
 				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
@@ -313,7 +313,7 @@ minetest.register_node(SCAFFOLDING_NAME, {
 					return minetest.registered_nodes[node.name].on_rightclick(pointed.under, node, placer, itemstack) or itemstack
 				end
 			end
-			-- --------
+			-- End: Temp fix
 
 			-- A quick check, that may or may not work, to attempt to prevent placing things on the side of other nodes.
 			local dir = vector.subtract(pointed.under, pointed.above)
