@@ -310,6 +310,8 @@ minetest.register_node(scaffold_name, {
 		local cnb = node -- Current Base Node.
 		local bn = minetest.get_node(vector.offset(pos, 0, -1, 0)) -- current node below the cnb.
 
+		mcl_bamboo.mcl_log("Below Node: " .. bn.name)
+
 		-- check protected placement.
 		if mcl_bamboo.is_protected(pos, placer) then
 			return
@@ -324,7 +326,7 @@ minetest.register_node(scaffold_name, {
 			if placer and not placer:get_player_control().sneak then
 				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
 					mcl_bamboo.mcl_log("attempting placement of bamboo via targeted node's on_rightclick.")
-					return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+					return minetest.registered_nodes[node.name].on_rightclick(pointed.under, node, placer, itemstack) or itemstack
 				end
 			end
 			-- --------

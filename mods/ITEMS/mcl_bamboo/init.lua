@@ -25,7 +25,7 @@ dofile(minetest.get_modpath(modname) .. "/recipes.lua")
 --ABMs
 minetest.register_abm({
 	nodenames = {bamboo, bamboo .. "_1", bamboo .. "_2", bamboo .. "_3"},
-	interval = 40,
+	interval = 31.5,
 	chance = 40,
 	action = function(pos, _)
 		mcl_bamboo.grow_bamboo(pos, false)
@@ -48,8 +48,6 @@ minetest.register_alias("mcl_scaffolding:scaffolding_horizontal", "mcl_bamboo:sc
 --[[
 todo -- make scaffolds do side scaffold blocks, so that they jut out.
 todo -- Also, make those blocks collapse (break) when a nearby connected scaffold breaks.
-todo -- fix the random height for bamboo. Use metadata for storing the height, on_place.
-todo -- fix scaffolding placing, instead of using on_rightclick first.
 
 waiting on specific things:
 todo -- Raft -- need model

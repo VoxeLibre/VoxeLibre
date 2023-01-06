@@ -4,7 +4,7 @@
 --- DateTime: 12/29/22 12:34 PM -- Restructure Date
 ---
 
-local DEBUG = true
+local DEBUG = false
 
 local rand = math.random
 math.randomseed((os.time() + 31) * 31415) -- try to make a valid seed
@@ -58,6 +58,7 @@ end
 
 function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 	local node_above = minetest.get_node(vector.offset(pos, 0, 1, 0))
+	mcl_bamboo.mcl_log("Grow bamboo called; bonemeal: " .. tostring(bonemeal_applied))
 
 	if not bonemeal_applied and mcl_bamboo.is_bamboo(node_above.name) == true then
 		return false -- short circuit this function if we're trying to grow (std) the bamboo and it's not the top shoot.
@@ -75,6 +76,7 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 	local node_below
 	-- -------------------
 
+	mcl_bamboo.mcl_log("Grow bamboo; checking for soil: ")
 	-- the soil node below.
 	for py = -1, BAMBOO_SOIL_DIST, -1 do
 		chk_pos = vector.offset(pos, 0, py, 0)
@@ -93,11 +95,13 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 		return false -- returning false means don't use up the bonemeal.
 	end
 
+	mcl_bamboo.mcl_log("Grow bamboo; soil found: ")
 	local grow_amount = rand(1, GROW_DOUBLE_CHANCE)
 	grow_amount = rand(1, GROW_DOUBLE_CHANCE)
 	grow_amount = rand(1, GROW_DOUBLE_CHANCE) -- because yeah, not truly random, or even a good prng.
 	grow_amount = rand(1, GROW_DOUBLE_CHANCE)
-	local init_height = rand(BAM_MAX_HEIGHT_STPCHK, BAM_MAX_HEIGHT_TOP)
+	local init_height = rand(BAM_MAX_HEIGHT_STPCHK + 1, BAM_MAX_HEIGHT_TOP + 1)
+	mcl_bamboo.mcl_log("Grow bamboo; random height: " .. init_height)
 
 	node_name = ""
 
@@ -106,15 +110,20 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 	local meta = minetest.get_meta(first_shoot)
 	node_below = minetest.get_node(first_shoot).name
 
+	mcl_bamboo.mcl_log("Grow bamboo; checking height meta ")
 	-- check the meta data for the first node, to see how high to make the stalk.
 	if not meta then
 		-- if no metadata, set the metadata!!!
-		meta:get_int("height", init_height)
+		meta:set_int("height", init_height)
 	end
 	local height = meta:get_int("height", -1)
-	if height == -1 then
+	mcl_bamboo.mcl_log("Grow bamboo; meta-height: " .. height)
+	if height <= 10 then
 		height = init_height
+		meta:set_int("height", init_height)
 	end
+
+	mcl_bamboo.mcl_log("Grow bamboo; height: " .. height)
 
 	-- Bonemeal: Grows the bamboo by 1-2 stems. (per the minecraft wiki.)
 	if bonemeal_applied then
@@ -129,6 +138,8 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 			end
 		end
 
+		mcl_bamboo.mcl_log("Grow bamboo; dist: " .. dist)
+
 		if node_name == "mcl_bamboo:bamboo_endcap" then
 			-- prevent overgrowth
 			return false
@@ -139,6 +150,7 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 			if dist == height - 1 then
 				-- equals top of the stalk before the cap
 				if node_name == "air" then
+					mcl_bamboo.mcl_log("Grow bamboo; Placing endcap")
 					minetest.set_node(vector.offset(chk_pos, 0, 1, 0), {name = "mcl_bamboo:bamboo_endcap"})
 					return true -- returning true means use up the bonemeal.
 				else
@@ -155,11 +167,13 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 		if dist <= height - 2 then
 			if node_name == "air" then
 				-- here we can check to see if we can do up to 2 bamboo shoots onto the stalk
+				mcl_bamboo.mcl_log("Grow bamboo; Placing bamboo.")
 				minetest.set_node(chk_pos, {name = node_below})
 				-- handle growing a second node.
 				if grow_amount == 2 then
 					chk_pos = vector.offset(chk_pos, 0, 1, 0)
 					if minetest.get_node(chk_pos).name == "air" then
+						mcl_bamboo.mcl_log("Grow bamboo; OOOH! It's twofer day!")
 						minetest.set_node(chk_pos, {name = node_below})
 					end
 				end
@@ -180,6 +194,7 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 		if dist >= height - 1 then
 			if node_name == "air" then
 				if height - 1 == dist then
+					mcl_bamboo.mcl_log("Grow bamboo; Placing endcap")
 					minetest.set_node(chk_pos, {name = "mcl_bamboo:bamboo_endcap"})
 				end
 			end
@@ -190,11 +205,14 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 		-- find the air node above the top shoot. place a node. And then, if short enough,
 		-- check for second node placement.
 		if node_name == "air" then
+			mcl_bamboo.mcl_log("Grow bamboo; dist: " .. dist)
+			mcl_bamboo.mcl_log("Grow bamboo; Placing bamboo.")
 			minetest.set_node(chk_pos, {name = node_below})
 			-- handle growing a second node. (1 in 32 chance.)
 			if grow_amount == 2 and dist <= height - 2 then
 				chk_pos = vector.offset(chk_pos, 0, 1, 0)
 				if minetest.get_node(chk_pos).name == "air" then
+					mcl_bamboo.mcl_log("Grow bamboo; OOOH! It's twofer day!")
 					minetest.set_node(chk_pos, {name = node_below})
 				end
 			end
