@@ -10,6 +10,7 @@ local DOUBLE_DROP_CHANCE = 8
 -- "BAMBOO" goes here.
 local BAMBOO = "mcl_bamboo:bamboo"
 local BAMBOO_ENDCAP_NAME = "mcl_bamboo:bamboo_endcap"
+local BAMBOO_PLANK = BAMBOO .. "_plank"
 
 -- LOCALS
 local modname = minetest.get_current_modname()
@@ -33,7 +34,8 @@ local bamboo_def = {
 
 	drop = {
 		max_items = 1,
-		-- Maximum number of item lists to drop.
+		-- From the API:
+		-- max_items: Maximum number of item lists to drop.
 		-- The entries in 'items' are processed in order. For each:
 		-- Item filtering is applied, chance of drop is applied, if both are
 		-- successful the entire item list is dropped.
@@ -43,13 +45,13 @@ local bamboo_def = {
 		items = {
 			-- Examples:
 			{
-				-- 1 in 100 chance of dropping.
+				-- 1 in DOUBLE_DROP_CHANCE chance of dropping.
 				-- Default rarity is '1'.
 				rarity = DOUBLE_DROP_CHANCE,
 				items = {BAMBOO .. " 2"},
 			},
 			{
-				-- 1 in 2 chance of dropping.
+				-- 1 in 1 chance of dropping. (Note: this means that it will drop 100% of the time.)
 				-- Default rarity is '1'.
 				rarity = 1,
 				items = {BAMBOO},
@@ -244,7 +246,7 @@ minetest.register_node("mcl_bamboo:bamboo_plank", {
 
 --	Bamboo Part 2 Base nodes.
 -- 	Bamboo Mosaic
-local bamboo_mosaic = table.copy(minetest.registered_nodes[BAMBOO .. "_plank"])
+local bamboo_mosaic = table.copy(minetest.registered_nodes[BAMBOO_PLANK])
 bamboo_mosaic.tiles = {"mcl_bamboo_bamboo_plank.png"}
 bamboo_mosaic.groups = {handy = 1, axey = 1, flammable = 3, fire_encouragement = 5, fire_flammability = 20}
 bamboo_mosaic.description = S("Bamboo Mosaic Plank")

@@ -1,7 +1,7 @@
 mcl_bamboo
 =========
 
-This mod adds minecraft-like bamboo nodes to your Mineclone 2 world.
+This mod adds working, familiar bamboo nodes to your Mineclone 2 world.
 
 Code: Michieal. Original (basic) bamboo code by: Small Joker.
 
