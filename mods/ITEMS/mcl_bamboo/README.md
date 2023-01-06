@@ -5,7 +5,8 @@ This mod adds minecraft-like bamboo nodes to your Mineclone 2 world.
 
 Code: Michieal. Original (basic) bamboo code by: Small Joker.
 
-License for code / images / textures: CC-BY-SA. 
+License for code: GPLv3.
+License for images / textures: CC-BY-SA. 
 Images Created by Michieal, except for: 
 Inventory / wield image: created by RandomLegoBrick#8692 and is CC0.
 
