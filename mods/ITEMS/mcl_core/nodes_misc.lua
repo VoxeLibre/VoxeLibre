@@ -262,6 +262,8 @@ for i = 0, 14 do --minetest.LIGHT_MAX
 		walkable = false,
 		light_source = i,
 		drop = "",
+		buildable_to = true,
+		node_placement_prediction = "",
 		inventory_image = "mcl_core_light_" .. i .. ".png",
 		wield_image = "mcl_core_light_" .. i .. ".png",
 		sunlight_propagates = true,
@@ -272,6 +274,9 @@ for i = 0, 14 do --minetest.LIGHT_MAX
 			itemstack:set_name("mcl_core:light_" .. ((i == 14) and 0 or i + 1))
 			return itemstack
 		end,
+		on_place = mcl_util.bypass_buildable_to(function(node_name)
+			return string.match(node_name, "^mcl_core:light_(%d+)$")
+		end),
 		after_place_node = function(pos, placer, itemstack, pointed_thing)
 			if placer == nil then
 				return
