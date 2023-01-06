@@ -722,7 +722,9 @@ if mobs_spawn then
 	end)
 end
 
-function mob_class:check_despawn(pos)
+function mob_class:check_despawn(pos, dtime)
+	self.lifetimer = self.lifetimer - dtime
+
 	-- Despawning: when lifetimer expires, remove mob
 	if remove_far
 	and self.can_despawn == true
