@@ -728,3 +728,70 @@ function mcl_util.set_bone_position(obj, bone, pos, rot)
 		obj:set_bone_position(bone, pos or current_pos, rot or current_rot)
 	end
 end
+
+--[[Check for a protection violation on given nodes.
+--
+-- @param affected_nodes	Node to check for protection violation.
+-- @param player			The player performing the action.
+-- @param create_log		Default: False. Should a log message be created on violation detection.
+--
+-- @return	true on protection violation detection. false otherwise.
+]]
+function mcl_util.check_nodes_protection(affected_nodes, player, create_log)
+	create_log = create_log or false
+	local name = player and player:get_player_name() or ""
+
+	for _, position in ipairs(affected_nodes) do
+		if minetest.is_protected(position, name) then
+			if create_log then
+				minetest.log("action", name .. " tried violating protection at position "
+				.. minetest.pos_to_string(position))
+			end
+
+			minetest.record_protection_violation(position, name)
+			return true
+		end
+	end
+
+	return false
+end
+
+--[[Check protection violation for a planting action.
+--
+-- @param pointed_thing		The pointed_thing table for the object the action was pointed at.
+-- @param player			See mcl_util.check_nodes_protection.
+-- @param create_log		See mcl_util.check_nodes_protection.
+--
+-- @return	See mcl_util.check_nodes_protection.
+]]
+function mcl_util.check_planting_protection(pointed_thing, player, create_log)
+	-- We dont want to allow planting on top of protected nodes, even if the air is unprotected.
+	return mcl_util.check_nodes_protection({pointed_thing.above, pointed_thing.under}, player,
+		create_log)
+end
+
+--[[Check protection violation for a node placement action.
+--
+-- @param pointed_thing		The pointed_thing table for the object the action was pointed at.
+-- @param player			See mcl_util.check_nodes_protection.
+-- @param create_log		See mcl_util.check_nodes_protection.
+--
+-- @return	See mcl_util.check_nodes_protection.
+]]
+function mcl_util.check_placement_protection(pointed_thing, player, create_log)
+	return mcl_util.check_nodes_protection({pointed_thing.above}, player, create_log)
+end
+
+--[[Check protection violation for a node modification action.
+--
+-- Such as using a shovel or a hoe on dirt, destroying a block or using a chest.
+--
+-- @param pointed_thing		The pointed_thing table for the object the action was pointed at.
+-- @param player			See mcl_util.check_nodes_protection.
+-- @param create_log		See mcl_util.check_nodes_protection.
+--
+-- @return	See mcl_util.check_nodes_protection.
+]]
+function mcl_util.check_node_modification_protection(pointed_thing, player, create_log)
+	return mcl_util.check_nodes_protection({pointed_thing.under}, player, create_log)
+end
