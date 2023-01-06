@@ -469,6 +469,21 @@ function mcl_farming:stem_color(startcolor, endcolor, step, step_count)
 	return colorstring
 end
 
+--[[Get a callback that either eats the item or plants it.
+
+Used for on_place callbacks for craft items which are seeds that can also be consumed.
+]]
+function mcl_farming:get_seed_or_eat_callback(plantname, hp_change)
+	return function(itemstack, placer, pointed_thing)
+		local new = mcl_farming:place_seed(itemstack, placer, pointed_thing, plantname)
+		if new then
+			return new
+		else
+			return minetest.do_item_eat(hp_change, nil, itemstack, placer, pointed_thing)
+		end
+	end
+end
+
 minetest.register_lbm({
 	label = "Add growth for unloaded farming plants",
 	name = "mcl_farming:growth",
