@@ -176,7 +176,7 @@ minetest.register_node("mcl_core:barrier", {
 	sunlight_propagates = true,
 	is_ground_content = false,
 	groups = {creative_breakable = 1, not_in_creative_inventory = 1, not_solid = 1},
-	on_blast = function() end,
+	on_blast = function(pos, intensity) end,
 	drop = "",
 	_mcl_blast_resistance = 36000008,
 	_mcl_hardness = -1,
@@ -233,13 +233,13 @@ minetest.register_node("mcl_core:realm_barrier", {
 	is_ground_content = false,
 	pointable = false,
 	groups = {not_in_creative_inventory = 1, not_solid = 1},
-	on_blast = function() end,
+	on_blast = function(pos, intensity) end,
 	drop = "",
 	_mcl_blast_resistance = 36000008,
 	_mcl_hardness = -1,
 	-- Prevent placement to protect player from screwing up the world, because the node is not pointable and hard to get rid of.
 	node_placement_prediction = "",
-	on_place = function(_, placer, _)
+	on_place = function(itemstack, placer, pointed_thing)
 		if placer then
 			minetest.chat_send_player(placer:get_player_name(),
 				minetest.colorize(mcl_colors.RED, "You can't just place a realm barrier by hand!"))
@@ -267,12 +267,12 @@ for i = 0, 14 do --minetest.LIGHT_MAX
 		sunlight_propagates = true,
 		is_ground_content = false,
 		groups = {creative_breakable = 1, not_solid = 1, light_block = i + 1},
-		on_blast = function() end,
-		on_use = function(itemstack, _, _)
+		on_blast = function(pos, intensity) end,
+		on_use = function(itemstack, user, pointed_thing)
 			itemstack:set_name("mcl_core:light_" .. ((i == 14) and 0 or i + 1))
 			return itemstack
 		end,
-		after_place_node = function(pos, placer, _, _)
+		after_place_node = function(pos, placer, itemstack, pointed_thing)
 			if placer == nil then
 				return
 			end
@@ -310,10 +310,10 @@ minetest.register_node("mcl_core:void", {
 	sunlight_propagates = true,
 	is_ground_content = false,
 	groups = {not_in_creative_inventory = 1},
-	on_blast = function() end,
+	on_blast = function(pos, intensity) end,
 	-- Prevent placement to protect player from screwing up the world, because the node is not pointable and hard to get rid of.
 	node_placement_prediction = "",
-	on_place = function(_, placer, _)
+	on_place = function(itemstack, placer, pointed_thing)
 		if placer then
 			minetest.chat_send_player(placer:get_player_name(),
 				minetest.colorize(mcl_colors.RED, "You can't just place the void by hand!"))
