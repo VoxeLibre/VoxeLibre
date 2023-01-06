@@ -6,7 +6,6 @@
 -- LOCALS
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
-local bamboo = "mcl_bamboo:bamboo"
 local adj_nodes = {
 	vector.new(0, 0, 1),
 	vector.new(1, 0, 0),
@@ -17,7 +16,10 @@ local adj_nodes = {
 -- CONSTS
 -- Due to door fix #2736, doors are displayed backwards. When this is fixed, set this variable to false.
 local BROKEN_DOORS = true
+
+--	FUTURE USE VARIABLE. MUST REMAIN FALSE UNTIL IT HAS BEEN FULLY IMPLEMENTED. DO NOT ENABLE.
 local SIDE_SCAFFOLDING = false
+-- ---------------------------------------------------------------------------
 
 local node_sound = mcl_sounds.node_sound_wood_defaults()
 
@@ -304,6 +306,142 @@ minetest.register_node(scaffold_name, {
 		mcl_bamboo.mcl_log("Checking for protected placement of scaffolding.")
 		local node = minetest.get_node(pointed.under)
 		local pos = pointed.under
+		local h = 0
+		local cnb = node -- Current Base Node.
+		local bn = minetest.get_node(vector.offset(pos, 0, -1, 0)) -- current node below the cnb.
+
+		-- check protected placement.
+		if mcl_bamboo.is_protected(pos, placer) then
+			return
+		end
+		mcl_bamboo.mcl_log("placement of scaffolding is not protected.")
+		-- place on solid nodes
+		-- Need to add in a check here... to prevent placing scaffolds against doors, chests, etc.
+		-- Added in a quick check. need to test it.
+		if node.name ~= scaffold_name then
+			-- this is a temp fix... will NOT work in final scaffolding implementation.
+			-- Use pointed node's on_rightclick function first, if present
+			if placer and not placer:get_player_control().sneak then
+				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+					mcl_bamboo.mcl_log("attempting placement of bamboo via targeted node's on_rightclick.")
+					return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+				end
+			end
+			-- --------
+
+			-- A quick check, that may or may not work, to attempt to prevent placing things on the side of other nodes.
+			local dir = vector.subtract(pointed.under, pointed.above)
+			local wdir = minetest.dir_to_wallmounted(dir)
+			if wdir == 1 then
+				minetest.set_node(pointed.above, {name = scaffold_name, param2 = 0})
+				if not minetest.is_creative_enabled(placer:get_player_name()) then
+					itemstack:take_item(1)
+				end
+				return itemstack
+			else
+				return
+			end
+		end
+
+		--build up when placing on existing scaffold
+		--[[
+			Quick explanation. scaffolding should be placed at the ground level ONLY. To do this, we look at a few
+			different nodes. Current node (cn) is the top node being placed - make sure that it is air / unoccupied.
+			BN (below node) is the node below the bottom node; Used to check to see if we are up in the air putting
+			more scaffolds on the top.. CNB (Current Base Node) is the targeted node for placement; we can only place
+			scaffolding on this one, to stack them up in the air.
+		--]]
+		repeat -- loop through, allowing placement.
+			pos = vector.offset(pos, 0, 1, 0) -- cleaned up vector.
+			local cn = minetest.get_node(pos) -- current node.
+			if cn.name == "air" then
+				-- first step to making scaffolding work like Minecraft scaffolding.
+				-- Prevent running up, and putting down new scaffolding
+				if cnb.name == scaffold_name and bn == scaffold_name and SIDE_SCAFFOLDING == false then
+					return itemstack
+				end
+
+				-- Make sure that the uppermost scaffolding doesn't violate protected areas.
+				if mcl_bamboo.is_protected(pos, placer) then
+					return itemstack
+				end
+
+				-- okay, we're good. place the node and take the item unless we are in creative mode.
+				minetest.set_node(pos, node)
+				if not minetest.is_creative_enabled(placer:get_player_name()) then
+					itemstack:take_item(1)
+				end
+				-- set the wielded item to the correct itemstack. (possibly unneeded code. but, works.)
+				placer:set_wielded_item(itemstack)
+				return itemstack -- finally, return the itemstack to finish on_place.
+			end
+			h = h + 1
+		until cn.name ~= node.name or itemstack:get_count() == 0 or h >= 128 -- loop check.
+	end,
+	on_destruct = function(pos)
+		-- Node destructor; called before removing node.
+		local new_pos = vector.offset(pos, 0, 1, 0)
+		local node_above = minetest.get_node(new_pos)
+		if node_above and node_above.name == scaffold_name then
+			local sound_params = {
+				pos = new_pos,
+				gain = 1.0, -- default
+				max_hear_distance = 10, -- default, uses a Euclidean metric
+			}
+
+			minetest.remove_node(new_pos)
+			minetest.sound_play(node_sound.dug, sound_params, true)
+			local istack = ItemStack(scaffold_name)
+			minetest.add_item(new_pos, istack)
+		end
+	end,
+})
+
+--	FOR FUTURE USE. DO NOT ENABLE. DO NOT UNCOMMENT OUT. THIS WILL BREAK THE SCAFFOLDING, IF NOT FINISHED.
+--	YOU HAVE BEEN WARNED.
+--[[
+if SIDE_SCAFFOLDING then
+minetest.register_node(scaffold_name, {
+	description = S("Scaffolding"),
+	doc_items_longdesc = S("Scaffolding block used to climb up or out across areas."),
+	doc_items_hidden = false,
+	tiles = {"mcl_bamboo_scaffolding_top.png", "mcl_bamboo_scaffolding_top.png", "mcl_bamboo_scaffolding_bottom.png"},
+	drawtype = "nodebox",
+	paramtype = "light",
+	use_texture_alpha = "clip",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.5, 0.375, -0.5, 0.5, 0.5, 0.5},
+			{-0.5, -0.5, -0.5, -0.375, 0.5, -0.375},
+			{0.375, -0.5, -0.5, 0.5, 0.5, -0.375},
+			{0.375, -0.5, 0.375, 0.5, 0.5, 0.5},
+			{-0.5, -0.5, 0.375, -0.375, 0.5, 0.5},
+		}
+	},
+	selection_box = {
+		type = "fixed",
+		fixed = {
+			{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
+		},
+	},
+	buildable_to = false,
+	is_ground_content = false,
+	walkable = false,
+	climbable = true,
+	physical = true,
+	node_placement_prediction = "",
+	groups = {handy = 1, axey = 1, flammable = 3, building_block = 1, material_wood = 1, fire_encouragement = 5, fire_flammability = 20, falling_node = 1, stack_falling = 1},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 0,
+	_mcl_hardness = 0,
+
+	on_rotate = disallow_on_rotate,
+
+	on_place = function(itemstack, placer, pointed)
+		mcl_bamboo.mcl_log("Checking for protected placement of scaffolding.")
+		local node = minetest.get_node(pointed.under)
+		local pos = pointed.under
 		local dir = vector.subtract(pointed.under, pointed.above)
 		local wdir = minetest.dir_to_wallmounted(dir)
 		local h = 0
@@ -315,7 +453,6 @@ minetest.register_node(scaffold_name, {
 
 		if wdir == 1 then
 			-- standing placement.
-
 
 			if mcl_bamboo.is_protected(pos, placer) then
 				return
@@ -354,26 +491,6 @@ minetest.register_node(scaffold_name, {
 				end
 				h = h + 1
 			until cn.name ~= node.name or itemstack:get_count() == 0 or h >= 128
-
-			-- Don't use. From cora, who failed to make something awesome.
-			--[[
-						if SIDE_SCAFFOLDING then
-							-- count param2 up when placing to the sides. Fall when > 6
-							local ctrl = placer:get_player_control()
-							if ctrl and ctrl.sneak then
-								local pp2 = minetest.get_node(ptd.under).param2
-								local np2 = pp2 + 1
-								if minetest.get_node(vector.offset(ptd.above, 0, -1, 0)).name == "air" then
-									minetest.set_node(ptd.above, {name = side_scaffold_name, param2 = np2})
-									itemstack:take_item(1)
-								end
-								if np2 > 6 then
-									minetest.check_single_for_falling(ptd.above)
-								end
-								return itemstack
-							end
-						end
-			]]
 
 			--  Commenting out untested code, for commit.
 			if SIDE_SCAFFOLDING == true then
@@ -486,20 +603,12 @@ minetest.register_node(side_scaffold_name, {
 	on_rotate = disallow_on_rotate,
 
 	on_place = function(itemstack, placer, pointed_thing)
-		--[[
-				if pointed_thing.type ~= "node" then
-					return itemstack
-				end
-				local node = minetest.get_node(pointed_thing.under)
-				local pos = pointed_thing.under
-				if mcl_bamboo.is_protected(pos, placer) then
-					return
-				end
-				-- todo: finish this section.
-		]]
+		-- this function shouldn't be called, as this is never placed by the user.
+		-- it's placed only as a variant of regular scaffolding.
 		return false
-
 	end
 
 
 })
+end
+--]]

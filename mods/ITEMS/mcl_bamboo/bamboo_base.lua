@@ -22,7 +22,6 @@ if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.disallow
 end
 
-
 -- basic bamboo nodes.
 local bamboo_def = {
 	description = "Bamboo",
@@ -140,9 +139,9 @@ local bamboo_def = {
 		if bamboo_node ~= -1 then
 			place_item = ItemStack(mcl_bamboo.bamboo_index[bamboo_node])
 		else
-			local placed_type = pr:next(0, 3) -- randomly choose which one to place.
+			local placed_type = pr:next(1, 4) -- randomly choose which one to place.
 			mcl_bamboo.mcl_log("Place_Bamboo_Shoot--Type: " .. placed_type)
-			place_item = mcl_bamboo.bamboo_index[placed_type + 1]
+			place_item = mcl_bamboo.bamboo_index[placed_type]
 		end
 		minetest.item_place(place_item, placer, pointed_thing, fdir)
 		itemstack:take_item(1)
@@ -192,7 +191,7 @@ bamboo_top.nodebox = nil
 bamboo_top.selection_box = {
 	type = "fixed",
 	fixed = {
-		{-0.5, -0.5, -0.5, 0.05, 0.5, 0.5},
+		{-0.5, -0.5, -0.5, -0.05, 0.5, 0.5},
 	}
 }
 bamboo_top.collision_box = {
@@ -295,6 +294,7 @@ bamboo_one_def.selection_box = {
 		{-0.05, -0.5, 0.285, -0.275, 0.5, 0.06},
 	}
 }
+mcl_bamboo.mcl_log(dump(mcl_bamboo.bamboo_index))
 minetest.register_node(mcl_bamboo.bamboo_index[2], bamboo_one_def)
 local bamboo_two_def = table.copy(bamboo_def)
 
