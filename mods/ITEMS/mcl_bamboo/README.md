@@ -12,7 +12,8 @@ Inventory / wield image: created by RandomLegoBrick#8692 and is CC0.
 
 Dependencies: mcl_core, mcl_sounds, mcl_tools
 
-Optional Dependencies = mcl_flowerpots, mclx_stairs, mcl_doors, mcl_signs, mesecons_pressureplates, mcl_fences, mesecons_button, mcl_boats
+Optional Dependencies = mcl_flowerpots, mclx_stairs, mcl_doors, mcl_signs, mesecons_pressureplates, mcl_fences, mesecons_button.
+Note that "mcl_boats" may be used at a later date.
 
 Special thanks to Nicu for help with the nodebox stalk design.
 
