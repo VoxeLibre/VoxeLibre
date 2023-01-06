@@ -188,18 +188,8 @@ bamboo_top.drawtype = "plantlike_rooted" --"plantlike"
 
 bamboo_top.special_tiles = {{name = "mcl_bamboo_endcap.png"}}
 bamboo_top.nodebox = nil
-bamboo_top.selection_box = {
-	type = "fixed",
-	fixed = {
-		{-0.5, -0.5, -0.5, -0.05, 0.5, 0.5},
-	}
-}
-bamboo_top.collision_box = {
-	type = "fixed",
-	fixed = {
-		{-0.5, -0.5, -0.5, 0.05, 0.5, 0.5},
-	}
-}
+bamboo_top.selection_box = nil
+bamboo_top.collision_box = nil
 
 bamboo_top.on_place = function(itemstack, _, _)
 	-- Should never occur... but, if it does, then nix it.
