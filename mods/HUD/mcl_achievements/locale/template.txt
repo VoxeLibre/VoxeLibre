@@ -69,7 +69,7 @@ The Cutest Predator=
 Catch an Axolotl with a bucket!
 Fishy Business=
 Catch a fish.@nHint: Catch a fish, salmon, clownfish, or pufferfish.=
-Country Lode,@nTake Me Home=
+Country Lode, Take Me Home=
 Use a compass on a Lodestone.=
 Serious Dedication=
 Use a Netherite Ingot to upgrade a hoe, and then completely reevaluate your life choices.=

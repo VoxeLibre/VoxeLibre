@@ -305,7 +305,7 @@ function awards.unlock(name, award)
 		local one = player:hud_add({
 			hud_elem_type = "image",
 			name = "award_bg",
-			scale = {x = 1, y = 1},
+			scale = {x = 1.25, y = 1},
 			text = background,
 			position = {x = 0.5, y = 0},
 			offset = {x = 0, y = 138},
@@ -329,7 +329,7 @@ function awards.unlock(name, award)
 			scale = {x = 100, y = 20},
 			text = hud_announce,
 			position = {x = 0.5, y = 0},
-			offset = {x = 0, y = 40},
+			offset = {x = 30, y = 40},
 			alignment = {x = 0, y = -1},
 			z_index = 102,
 		})
@@ -340,7 +340,7 @@ function awards.unlock(name, award)
 			scale = {x = 100, y = 20},
 			text = title,
 			position = {x = 0.5, y = 0},
-			offset = {x = 30, y = 100},
+			offset = {x = 35, y = 100},
 			alignment = {x = 0, y = -1},
 			z_index = 102,
 		})
@@ -355,7 +355,7 @@ function awards.unlock(name, award)
 			number = 2,
 			text = icon,
 			position = {x = 0.5, y = 0},
-			offset = {x = -110, y = 62},
+			offset = {x = -138, y = 62},
 			alignment = {x = 0, y = 0},
 			direction = 0,
 			z_index = 102,
