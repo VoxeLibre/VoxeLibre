@@ -95,14 +95,7 @@ minetest.register_craftitem("mcl_farming:potato_item", {
 	_mcl_saturation = 0.6,
 	stack_max = 64,
 	on_secondary_use = minetest.item_eat(1),
-	on_place = function(itemstack, placer, pointed_thing)
-		local new = mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:potato_1")
-		if new then
-			return new
-		else
-			return minetest.do_item_eat(1, nil, itemstack, placer, pointed_thing)
-		end
-	end,
+	on_place = mcl_farming:get_seed_or_eat_callback("mcl_farming:potato_1", 1),
 })
 
 minetest.register_craftitem("mcl_farming:potato_item_baked", {
