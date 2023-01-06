@@ -136,9 +136,16 @@ mcl_weather.skycolor = {
 				local biomesky
 				local biomefog
 				if mg_name ~= "v6" and mg_name ~= "singlenode" then
-					local biome = minetest.get_biome_name(minetest.get_biome_data(player:get_pos()).biome)
-					biomesky = minetest.registered_biomes[biome]._mcl_skycolor
-					biomefog = minetest.registered_biomes[biome]._mcl_fogcolor
+					local biome_index = minetest.get_biome_data(player:get_pos()).biome
+					local biome_name = minetest.get_biome_name(biome_index)
+					local biome = minetest.registered_biomes[biome_name]
+					if biome then
+						--minetest.log("action", string.format("Biome found for number: %s in biome: %s", tostring(biome_index), biome_name))
+						biomesky = biome._mcl_skycolor
+						biomefog = biome._mcl_fogcolor
+					else
+						--minetest.log("action", string.format("No biome for number: %s in biome: %s", tostring(biome_index), biome_name))
+					end
 				end
 				if (mcl_weather.state == "none") then
 					-- Clear weather
