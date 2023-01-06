@@ -56,6 +56,8 @@ function mcl_bamboo.is_protected(pos, placer)
 	return false
 end
 
+local BAMBOO_ENDCAP_NAME = "mcl_bamboo:bamboo_endcap"
+
 function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 	local node_above = minetest.get_node(vector.offset(pos, 0, 1, 0))
 	mcl_bamboo.mcl_log("Grow bamboo called; bonemeal: " .. tostring(bonemeal_applied))
@@ -133,14 +135,14 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 			chk_pos = vector.offset(pos, 0, py, 0)
 			node_name = minetest.get_node(chk_pos).name
 			dist = vector.distance(soil_pos, chk_pos)
-			if mcl_bamboo.is_bamboo(node_name) == false or node_name == "mcl_bamboo:bamboo_endcap" then
+			if mcl_bamboo.is_bamboo(node_name) == false or node_name == BAMBOO_ENDCAP_NAME then
 				break
 			end
 		end
 
 		mcl_bamboo.mcl_log("Grow bamboo; dist: " .. dist)
 
-		if node_name == "mcl_bamboo:bamboo_endcap" then
+		if node_name == BAMBOO_ENDCAP_NAME then
 			-- prevent overgrowth
 			return false
 		end
@@ -151,7 +153,7 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 				-- equals top of the stalk before the cap
 				if node_name == "air" then
 					mcl_bamboo.mcl_log("Grow bamboo; Placing endcap")
-					minetest.set_node(vector.offset(chk_pos, 0, 1, 0), {name = "mcl_bamboo:bamboo_endcap"})
+					minetest.set_node(vector.offset(chk_pos, 0, 1, 0), {name = BAMBOO_ENDCAP_NAME})
 					return true -- returning true means use up the bonemeal.
 				else
 					return false
@@ -195,7 +197,7 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 			if node_name == "air" then
 				if height - 1 == dist then
 					mcl_bamboo.mcl_log("Grow bamboo; Placing endcap")
-					minetest.set_node(chk_pos, {name = "mcl_bamboo:bamboo_endcap"})
+					minetest.set_node(chk_pos, {name = BAMBOO_ENDCAP_NAME})
 				end
 			end
 			break

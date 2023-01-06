@@ -4,17 +4,17 @@
 --- DateTime: 12/29/22 12:33 PM -- Restructure Date
 ---
 
+-- CONSTS
+local DOUBLE_DROP_CHANCE = 8
+-- Used everywhere. Often this is just the name, but it makes sense to me as BAMBOO, because that's how I think of it...
+-- "BAMBOO" goes here.
+local BAMBOO = "mcl_bamboo:bamboo"
+local BAMBOO_ENDCAP_NAME = "mcl_bamboo:bamboo_endcap"
+
 -- LOCALS
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
-local bamboo = "mcl_bamboo:bamboo"
 local node_sound = mcl_sounds.node_sound_wood_defaults()
-
--- CONSTS
-local DOUBLE_DROP_CHANCE = 8
-
-local strlen = string.len
-local substr = string.sub
 local pr = PseudoRandom((os.time() + 15766) * 12) -- switched from math.random() to PseudoRandom because the random wasn't very random.
 
 local on_rotate
@@ -46,13 +46,13 @@ local bamboo_def = {
 				-- 1 in 100 chance of dropping.
 				-- Default rarity is '1'.
 				rarity = DOUBLE_DROP_CHANCE,
-				items = {bamboo .. " 2"},
+				items = {BAMBOO .. " 2"},
 			},
 			{
 				-- 1 in 2 chance of dropping.
 				-- Default rarity is '1'.
 				rarity = 1,
-				items = {bamboo},
+				items = {BAMBOO},
 			},
 		},
 	},
@@ -90,11 +90,10 @@ local bamboo_def = {
 		local node = minetest.get_node(pointed_thing.under)
 		local pos = pointed_thing.under
 		local nodename = node.name
-		mcl_bamboo.mcl_log("node name: " .. nodename)
 
 		mcl_bamboo.mcl_log("Node placement data:")
 		mcl_bamboo.mcl_log(dump(pointed_thing))
-		mcl_bamboo.mcl_log(node.name)
+		mcl_bamboo.mcl_log("node name: " .. nodename)
 
 		mcl_bamboo.mcl_log("Checking for protected placement of bamboo.")
 		if mcl_bamboo.is_protected(pos, placer) then
@@ -110,7 +109,7 @@ local bamboo_def = {
 			end
 		end
 
-		if mcl_bamboo.is_bamboo(nodename) == false and nodename ~= "mcl_bamboo:bamboo_endcap" then
+		if mcl_bamboo.is_bamboo(nodename) == false and nodename ~= BAMBOO_ENDCAP_NAME then
 			-- not bamboo...
 			if nodename ~= "mcl_flowerpots:flower_pot" then
 				if mcl_bamboo.is_dirt(nodename) == false then
@@ -131,10 +130,9 @@ local bamboo_def = {
 
 		local place_item = ItemStack(itemstack) -- make a copy so that we don't indirectly mess with the original.
 
-		mcl_bamboo.mcl_log("node name: " .. nodename)
-
 		local bamboo_node = mcl_bamboo.is_bamboo(nodename)
-		mcl_bamboo.mcl_log("bamboo_node: " .. bamboo_node)
+		mcl_bamboo.mcl_log("node name: " .. nodename .. "\nbamboo_node: " .. bamboo_node)
+		-- intentional use of nodename.
 
 		if bamboo_node ~= -1 then
 			place_item = ItemStack(mcl_bamboo.bamboo_index[bamboo_node])
@@ -152,32 +150,25 @@ local bamboo_def = {
 		-- Node destructor; called before removing node.
 		local new_pos = vector.offset(pos, 0, 1, 0)
 		local node_above = minetest.get_node(new_pos)
-		local bamboo_node = substr(node_above.name, 1, strlen(bamboo))
-		local istack = ItemStack(bamboo)
+		local bamboo_node = string.sub(node_above.name, 1, string.len(BAMBOO))
+		local istack = ItemStack(BAMBOO)
 		local sound_params = {
 			pos = new_pos,
 			gain = 1.0, -- default
 			max_hear_distance = 10, -- default, uses a Euclidean metric
 		}
 
-		if node_above and (bamboo_node == bamboo and node_above.name ~= "mcl_bamboo:bamboo_endcap") then
+		if node_above and (bamboo_node == BAMBOO or node_above.name == BAMBOO_ENDCAP_NAME) then
 			minetest.remove_node(new_pos)
 			minetest.sound_play(node_sound.dug, sound_params, true)
 			if pr:next(1, DOUBLE_DROP_CHANCE) == 1 then
 				minetest.add_item(new_pos, istack)
 			end
 			minetest.add_item(new_pos, istack)
-		elseif node_above and node_above.name == "mcl_bamboo:bamboo_endcap" then
-			minetest.remove_node(new_pos)
-			minetest.sound_play(node_sound.dug, sound_params, true)
-			minetest.add_item(new_pos, istack)
-			if pr:next(1, DOUBLE_DROP_CHANCE) == 1 then
-				minetest.add_item(new_pos, istack)
-			end
 		end
 	end,
 }
-minetest.register_node(bamboo, bamboo_def)
+minetest.register_node(BAMBOO, bamboo_def)
 
 local bamboo_top = table.copy(bamboo_def)
 bamboo_top.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, flammable = 3}
@@ -193,11 +184,11 @@ bamboo_top.collision_box = nil
 
 bamboo_top.on_place = function(itemstack, _, _)
 	-- Should never occur... but, if it does, then nix it.
-	itemstack:set_name(bamboo)
+	itemstack:set_name(BAMBOO)
 	return itemstack
 end
 
-minetest.register_node("mcl_bamboo:bamboo_endcap", bamboo_top)
+minetest.register_node(BAMBOO_ENDCAP_NAME, bamboo_top)
 
 local bamboo_block_def = {
 	description = "Bamboo Block",
@@ -253,7 +244,7 @@ minetest.register_node("mcl_bamboo:bamboo_plank", {
 
 --	Bamboo Part 2 Base nodes.
 -- 	Bamboo Mosaic
-local bamboo_mosaic = table.copy(minetest.registered_nodes[bamboo .. "_plank"])
+local bamboo_mosaic = table.copy(minetest.registered_nodes[BAMBOO .. "_plank"])
 bamboo_mosaic.tiles = {"mcl_bamboo_bamboo_plank.png"}
 bamboo_mosaic.groups = {handy = 1, axey = 1, flammable = 3, fire_encouragement = 5, fire_flammability = 20}
 bamboo_mosaic.description = S("Bamboo Mosaic Plank")

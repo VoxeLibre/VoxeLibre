@@ -3,6 +3,21 @@
 --- Created by michieal.
 --- DateTime: 12/29/22 12:38 PM -- Restructure Date
 ---
+
+-- CONSTS
+-- Due to door fix #2736, doors are displayed backwards. When this is fixed, set this variable to false.
+local BROKEN_DOORS = true
+
+--	FUTURE USE VARIABLE. MUST REMAIN FALSE UNTIL IT HAS BEEN FULLY IMPLEMENTED. DO NOT ENABLE.
+local SIDE_SCAFFOLDING = false
+local SIDE_SCAFFOLD_NAME = "mcl_bamboo:scaffolding_horizontal"
+-- ---------------------------------------------------------------------------
+local SCAFFOLDING_NAME = "mcl_bamboo:scaffolding"
+-- Used everywhere. Often this is just the name, but it makes sense to me as BAMBOO, because that's how I think of it...
+-- "BAMBOO" goes here.
+local BAMBOO = "mcl_bamboo:bamboo"
+local BAMBOO_PLANK = BAMBOO .. "_plank"
+
 -- LOCALS
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
@@ -12,15 +27,6 @@ local adj_nodes = {
 	vector.new(0, 0, -1),
 	vector.new(-1, 0, 0),
 }
-
--- CONSTS
--- Due to door fix #2736, doors are displayed backwards. When this is fixed, set this variable to false.
-local BROKEN_DOORS = true
-
---	FUTURE USE VARIABLE. MUST REMAIN FALSE UNTIL IT HAS BEEN FULLY IMPLEMENTED. DO NOT ENABLE.
-local SIDE_SCAFFOLDING = false
--- ---------------------------------------------------------------------------
-
 local node_sound = mcl_sounds.node_sound_wood_defaults()
 
 -- specific bamboo nodes (Items)... Pt. 1
@@ -28,15 +34,15 @@ if minetest.get_modpath("mcl_flowerpots") then
 	mcl_bamboo.mcl_log("FlowerPot Section Entrance. Modpath exists.")
 	if mcl_flowerpots ~= nil then
 		-- Flower-potted Bamboo...
-		local flwr_name = "mcl_bamboo:bamboo"
+		local flwr_name = BAMBOO
 		local flwr_def = {name = "bamboo_plant",
 						  desc = S("Bamboo"),
 						  image = "mcl_bamboo_bamboo_fpm.png", -- use with "register_potted_cube"
 			-- "mcl_bamboo_flower_pot.png", -- use with "register_potted_flower"
 		}
 
-		mcl_flowerpots.register_potted_cube(flwr_name, flwr_def)
-		--			mcl_flowerpots.register_potted_flower(flwr_name, flwr_def)
+		-- Chose cube over "potted_flower" as "potted flower" looks bad.
+		mcl_flowerpots.register_potted_cube(flwr_name, flwr_def)  --	mcl_flowerpots.register_potted_flower(flwr_name, flwr_def)
 		minetest.register_alias("bamboo_flower_pot", "mcl_flowerpots:flower_pot_bamboo_plant")
 	end
 end
@@ -111,7 +117,7 @@ if minetest.get_modpath("mcl_stairs") then
 		)
 		mcl_stairs.register_stair_and_slab_simple(
 				"bamboo_plank",
-				"mcl_bamboo:bamboo_plank",
+				BAMBOO_PLANK,
 				S("Bamboo Plank Stair"),
 				S("Bamboo Plank Slab"),
 				S("Double Bamboo Plank Slab")
@@ -166,7 +172,7 @@ if minetest.get_modpath("mesecons_pressureplates") then
 				{"mcl_bamboo_bamboo_plank.png"},
 				"mcl_bamboo_bamboo_plank.png",
 				nil,
-				{{"mcl_bamboo:bamboo_plank", "mcl_bamboo:bamboo_plank"}},
+				{{BAMBOO_PLANK, BAMBOO_PLANK}},
 				mcl_sounds.node_sound_wood_defaults(),
 				{axey = 1, material_wood = 1},
 				nil,
@@ -189,7 +195,7 @@ if minetest.get_modpath("mcl_signs") then
 		mcl_signs.register_sign_custom("mcl_bamboo", "_bamboo", "mcl_signs_sign_greyscale.png",
 				"#f6dc91", "default_sign_greyscale.png", "default_sign_greyscale.png",
 				"Bamboo Sign")
-		mcl_signs.register_sign_craft("mcl_bamboo", "mcl_bamboo:bamboo_plank", "_bamboo")
+		mcl_signs.register_sign_craft("mcl_bamboo", BAMBOO_PLANK, "_bamboo")
 		minetest.register_alias("bamboo_sign", "mcl_signs:wall_sign_bamboo")
 	end
 end
@@ -198,7 +204,6 @@ if minetest.get_modpath("mcl_fences") then
 	mcl_bamboo.mcl_log("Fences Section Entrance. Modpath exists.")
 
 	local id = "bamboo_fence"
-	local id_gate = "bamboo_fence_gate"
 	local wood_groups = {handy = 1, axey = 1, flammable = 2, fence_wood = 1, fire_encouragement = 5, fire_flammability = 20}
 	local wood_connect = {"group:fence_wood"}
 
@@ -209,24 +214,6 @@ if minetest.get_modpath("mcl_fences") then
 
 	mcl_bamboo.mcl_log(dump(fence_id))
 	mcl_bamboo.mcl_log(dump(gate_id))
-
-	local craft_wood = "mcl_bamboo:bamboo_plank"
-	minetest.register_craft({
-		output = "mcl_bamboo:" .. id .. " 3",
-		recipe = {
-			{craft_wood, "mcl_core:stick", craft_wood},
-			{craft_wood, "mcl_core:stick", craft_wood},
-		}
-	})
-	minetest.register_craft({
-		output = "mcl_bamboo:" .. id_gate,
-		recipe = {
-			{"mcl_core:stick", craft_wood, "mcl_core:stick"},
-			{"mcl_core:stick", craft_wood, "mcl_core:stick"},
-		}
-	})
-	minetest.register_alias("bamboo_fence", "mcl_fences:" .. id)
-	minetest.register_alias("bamboo_fence_gate", "mcl_fences:" .. id_gate)
 end
 
 if minetest.get_modpath("mesecons_button") then
@@ -235,7 +222,7 @@ if minetest.get_modpath("mesecons_button") then
 				"bamboo",
 				S("Bamboo Button"),
 				"mcl_bamboo_bamboo_plank.png",
-				"mcl_bamboo:bamboo_plank",
+				BAMBOO_PLANK,
 				node_sound,
 				{material_wood = 1, handy = 1, pickaxey = 1, flammable = 3, fire_flammability = 20, fire_encouragement = 5, },
 				1,
@@ -257,15 +244,12 @@ if minetest.get_modpath("mcl_stairs") then
 	end
 end
 
-local scaffold_name = "mcl_bamboo:scaffolding"
-local side_scaffold_name = "mcl_bamboo:scaffolding_horizontal"
-
 local disallow_on_rotate
 if minetest.get_modpath("screwdriver") then
 	disallow_on_rotate = screwdriver.disallow
 end
 
-minetest.register_node(scaffold_name, {
+minetest.register_node(SCAFFOLDING_NAME, {
 	description = S("Scaffolding"),
 	doc_items_longdesc = S("Scaffolding block used to climb up or out across areas."),
 	doc_items_hidden = false,
@@ -320,7 +304,7 @@ minetest.register_node(scaffold_name, {
 		-- place on solid nodes
 		-- Need to add in a check here... to prevent placing scaffolds against doors, chests, etc.
 		-- Added in a quick check. need to test it.
-		if node.name ~= scaffold_name then
+		if node.name ~= SCAFFOLDING_NAME then
 			-- this is a temp fix... will NOT work in final scaffolding implementation.
 			-- Use pointed node's on_rightclick function first, if present
 			if placer and not placer:get_player_control().sneak then
@@ -335,7 +319,7 @@ minetest.register_node(scaffold_name, {
 			local dir = vector.subtract(pointed.under, pointed.above)
 			local wdir = minetest.dir_to_wallmounted(dir)
 			if wdir == 1 then
-				minetest.set_node(pointed.above, {name = scaffold_name, param2 = 0})
+				minetest.set_node(pointed.above, {name = SCAFFOLDING_NAME, param2 = 0})
 				if not minetest.is_creative_enabled(placer:get_player_name()) then
 					itemstack:take_item(1)
 				end
@@ -357,9 +341,9 @@ minetest.register_node(scaffold_name, {
 			pos = vector.offset(pos, 0, 1, 0) -- cleaned up vector.
 			local cn = minetest.get_node(pos) -- current node.
 			if cn.name == "air" then
-				-- first step to making scaffolding work like Minecraft scaffolding.
+				-- first step to making scaffolding work like scaffolding should.
 				-- Prevent running up, and putting down new scaffolding
-				if cnb.name == scaffold_name and bn == scaffold_name and SIDE_SCAFFOLDING == false then
+				if cnb.name == SCAFFOLDING_NAME and bn == SCAFFOLDING_NAME and SIDE_SCAFFOLDING == false then
 					return itemstack
 				end
 
@@ -384,7 +368,7 @@ minetest.register_node(scaffold_name, {
 		-- Node destructor; called before removing node.
 		local new_pos = vector.offset(pos, 0, 1, 0)
 		local node_above = minetest.get_node(new_pos)
-		if node_above and node_above.name == scaffold_name then
+		if node_above and node_above.name == SCAFFOLDING_NAME then
 			local sound_params = {
 				pos = new_pos,
 				gain = 1.0, -- default
@@ -393,7 +377,7 @@ minetest.register_node(scaffold_name, {
 
 			minetest.remove_node(new_pos)
 			minetest.sound_play(node_sound.dug, sound_params, true)
-			local istack = ItemStack(scaffold_name)
+			local istack = ItemStack(SCAFFOLDING_NAME)
 			minetest.add_item(new_pos, istack)
 		end
 	end,
@@ -403,7 +387,7 @@ minetest.register_node(scaffold_name, {
 --	YOU HAVE BEEN WARNED.
 --[[
 if SIDE_SCAFFOLDING then
-minetest.register_node(scaffold_name, {
+minetest.register_node(SCAFFOLDING_NAME, {
 	description = S("Scaffolding"),
 	doc_items_longdesc = S("Scaffolding block used to climb up or out across areas."),
 	doc_items_hidden = false,
@@ -461,8 +445,8 @@ minetest.register_node(scaffold_name, {
 			end
 			mcl_bamboo.mcl_log("placement of scaffolding is not protected.")
 			-- place on solid nodes
-			if node.name ~= scaffold_name then
-				minetest.set_node(pointed.above, {name = scaffold_name, param2 = 0})
+			if node.name ~= SCAFFOLDING_NAME then
+				minetest.set_node(pointed.above, {name = SCAFFOLDING_NAME, param2 = 0})
 				if not minetest.is_creative_enabled(placer:get_player_name()) then
 					itemstack:take_item(1)
 				end
@@ -476,7 +460,7 @@ minetest.register_node(scaffold_name, {
 				local bn = down_two
 				if cn.name == "air" then
 					-- first step to making scaffolding work like Minecraft scaffolding.
-					if cnb.name == scaffold_name and bn == scaffold_name and SIDE_SCAFFOLDING == false then
+					if cnb.name == SCAFFOLDING_NAME and bn == SCAFFOLDING_NAME and SIDE_SCAFFOLDING == false then
 						return itemstack
 					end
 
@@ -508,7 +492,7 @@ minetest.register_node(scaffold_name, {
 				repeat
 					local ctrl = placer:get_player_control()
 					if ctrl and ctrl.sneak then
-						if node.name == scaffold_name or node.name == side_scaffold_name then
+						if node.name == SCAFFOLDING_NAME or node.name == SIDE_SCAFFOLD_NAME then
 							local pp2 = h
 
 							local np2 = pp2 + 1
@@ -523,7 +507,7 @@ minetest.register_node(scaffold_name, {
 
 							itemstack:take_item(1)
 							if minetest.get_node(new_pos).name == "air" then
-								minetest.set_node(new_pos, {name = side_scaffold_name, param2 = np2})
+								minetest.set_node(new_pos, {name = SIDE_SCAFFOLD_NAME, param2 = np2})
 								if np2 >= 6 then
 									np2 = 6
 									minetest.minetest.dig_node(new_pos)
@@ -544,7 +528,7 @@ minetest.register_node(scaffold_name, {
 		-- Node destructor; called before removing node.
 		local new_pos = vector.offset(pos, 0, 1, 0)
 		local node_above = minetest.get_node(new_pos)
-		if node_above and node_above.name == scaffold_name then
+		if node_above and node_above.name == SCAFFOLDING_NAME then
 			local sound_params = {
 				pos = new_pos,
 				gain = 1.0, -- default
@@ -553,13 +537,13 @@ minetest.register_node(scaffold_name, {
 
 			minetest.remove_node(new_pos)
 			minetest.sound_play(node_sound.dug, sound_params, true)
-			local istack = ItemStack(scaffold_name)
+			local istack = ItemStack(SCAFFOLDING_NAME)
 			minetest.add_item(new_pos, istack)
 		end
 	end,
 })
 
-minetest.register_node(side_scaffold_name, {
+minetest.register_node(SIDE_SCAFFOLD_NAME, {
 	description = S("Scaffolding"),
 	doc_items_longdesc = S("Scaffolding block used to climb up or out across areas."),
 	doc_items_hidden = false,
@@ -588,11 +572,11 @@ minetest.register_node(side_scaffold_name, {
 	groups = {handy = 1, axey = 1, flammable = 3, building_block = 1, material_wood = 1, fire_encouragement = 5, fire_flammability = 20, not_in_creative_inventory = 1, falling_node = 1},
 	_mcl_after_falling = function(pos)
 		if minetest.get_node(pos).name == "mcl_bamboo:scaffolding_horizontal" then
-			if minetest.get_node(vector.offset(pos, 0, 0, 0)).name ~= scaffold_name then
+			if minetest.get_node(vector.offset(pos, 0, 0, 0)).name ~= SCAFFOLDING_NAME then
 				minetest.remove_node(pos)
-				minetest.add_item(pos, scaffold_name)
+				minetest.add_item(pos, SCAFFOLDING_NAME)
 			else
-				minetest.set_node(vector.offset(pos, 0, 1, 0), {name = side_scaffold_name})
+				minetest.set_node(vector.offset(pos, 0, 1, 0), {name = SIDE_SCAFFOLD_NAME})
 			end
 		end
 	end,

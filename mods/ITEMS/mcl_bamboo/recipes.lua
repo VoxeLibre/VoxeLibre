@@ -4,43 +4,45 @@
 --- DateTime: 12/29/22 12:46 PM -- Restructure Date
 --- These are all of the fuel recipes and all of the crafting recipes, consolidated into one place.
 
-local bamboo = "mcl_bamboo:bamboo"
-local bamboo_plank = bamboo .. "_plank"
+-- Used everywhere. Often this is just the name, but it makes sense to me as BAMBOO, because that's how I think of it...
+-- "BAMBOO" goes here.
+local BAMBOO = "mcl_bamboo:bamboo"
+local BAMBOO_PLANK = BAMBOO .. "_plank"
 -- Craftings
 -- Basic Bamboo craftings
 minetest.register_craft({
 	output = "mcl_core:stick",
 	recipe = {
-		{bamboo},
-		{bamboo},
+		{BAMBOO},
+		{BAMBOO},
 	}
 })
 
 minetest.register_craft({
-	output = bamboo .. "_block",
+	output = BAMBOO .. "_block",
 	recipe = {
-		{bamboo, bamboo, bamboo},
-		{bamboo, bamboo, bamboo},
-		{bamboo, bamboo, bamboo},
+		{BAMBOO, BAMBOO, BAMBOO},
+		{BAMBOO, BAMBOO, BAMBOO},
+		{BAMBOO, BAMBOO, BAMBOO},
 	}
 })
 
 minetest.register_craft({
-	output = bamboo_plank .. " 2",
+	output = BAMBOO_PLANK .. " 2",
 	recipe = {
-		{bamboo .. "_block"},
+		{BAMBOO .. "_block"},
 	}
 })
 
 minetest.register_craft({
-	output = bamboo_plank .. " 2",
+	output = BAMBOO_PLANK .. " 2",
 	recipe = {
-		{bamboo .. "_block_stripped"},
+		{BAMBOO .. "_block_stripped"},
 	}
 })
 
 minetest.register_craft({
-	output = bamboo .. "_mosaic",
+	output = BAMBOO .. "_mosaic",
 	recipe = {
 		{"mcl_stair:slab_bamboo_plank"},
 		{"mcl_stair:slab_bamboo_plank"},
@@ -49,62 +51,76 @@ minetest.register_craft({
 
 -- Bamboo specific items
 
-if minetest.get_modpath("mcl_doors") then
-	if mcl_doors then
-		minetest.register_craft({
-			output = "mcl_bamboo:bamboo_door 3",
-			recipe = {
-				{bamboo_plank, bamboo_plank},
-				{bamboo_plank, bamboo_plank},
-				{bamboo_plank, bamboo_plank}
-			}
-		})
-		minetest.register_craft({
-			output = "mcl_bamboo:bamboo_trapdoor 2",
-			recipe = {
-				{bamboo_plank, bamboo_plank, bamboo_plank},
-				{bamboo_plank, bamboo_plank, bamboo_plank},
-			}
-		})
-	end
+if minetest.get_modpath("mcl_doors") and mcl_doors then
+	minetest.register_craft({
+		output = "mcl_bamboo:bamboo_door 3",
+		recipe = {
+			{BAMBOO_PLANK, BAMBOO_PLANK},
+			{BAMBOO_PLANK, BAMBOO_PLANK},
+			{BAMBOO_PLANK, BAMBOO_PLANK}
+		}
+	})
+	minetest.register_craft({
+		output = "mcl_bamboo:bamboo_trapdoor 2",
+		recipe = {
+			{BAMBOO_PLANK, BAMBOO_PLANK, BAMBOO_PLANK},
+			{BAMBOO_PLANK, BAMBOO_PLANK, BAMBOO_PLANK},
+		}
+	})
+end
+if minetest.get_modpath("mcl_fences") then
+	minetest.register_craft({
+		output = "mcl_bamboo:bamboo_fence 3",
+		recipe = {
+			{BAMBOO_PLANK, "mcl_core:stick", BAMBOO_PLANK},
+			{BAMBOO_PLANK, "mcl_core:stick", BAMBOO_PLANK},
+		}
+	})
+	minetest.register_craft({
+		output = "mcl_bamboo:bamboo_fence_gate",
+		recipe = {
+			{"mcl_core:stick", BAMBOO_PLANK, "mcl_core:stick"},
+			{"mcl_core:stick", BAMBOO_PLANK, "mcl_core:stick"},
+		}
+	})
 end
 
 minetest.register_craft({
 	output = "mcl_bamboo:scaffolding 6",
-	recipe = {{bamboo, "mcl_mobitems:string", bamboo},
-			  {bamboo, "", bamboo},
-			  {bamboo, "", bamboo}}
+	recipe = {{BAMBOO, "mcl_mobitems:string", BAMBOO},
+			  {BAMBOO, "", BAMBOO},
+			  {BAMBOO, "", BAMBOO}}
 })
 
 -- Fuels
 -- Basic Bamboo nodes
 minetest.register_craft({
 	type = "fuel",
-	recipe = bamboo,
+	recipe = BAMBOO,
 	burntime = 2.5, -- supposed to be 1/2 that of a stick, per minecraft wiki as of JE 1.19.3
 })
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = bamboo .. "_block",
+	recipe = BAMBOO .. "_block",
 	burntime = 15,
 })
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = bamboo .. "_block_stripped",
+	recipe = BAMBOO .. "_block_stripped",
 	burntime = 15,
 })
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = bamboo_plank,
+	recipe = BAMBOO_PLANK,
 	burntime = 7.5,
 })
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = bamboo .. "_mosaic",
+	recipe = BAMBOO .. "_mosaic",
 	burntime = 7.5,
 })
 
