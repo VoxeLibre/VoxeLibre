@@ -291,10 +291,10 @@ minetest.register_node(SCAFFOLDING_NAME, {
 		local node = minetest.get_node(pointed.under)
 		local pos = pointed.under
 		local h = 0
-		local cnb = node -- Current Base Node.
-		local bn = minetest.get_node(vector.offset(pos, 0, -1, 0)) -- current node below the cnb.
+		local current_base_node = node -- Current Base Node.
+		local below_node = minetest.get_node(vector.offset(pos, 0, -1, 0)) -- current node below the current_base_node.
 
-		mcl_bamboo.mcl_log("Below Node: " .. bn.name)
+		mcl_bamboo.mcl_log("Below Node: " .. below_node.name)
 
 		-- check protected placement.
 		if mcl_bamboo.is_protected(pos, placer) then
@@ -332,18 +332,18 @@ minetest.register_node(SCAFFOLDING_NAME, {
 		--build up when placing on existing scaffold
 		--[[
 			Quick explanation. scaffolding should be placed at the ground level ONLY. To do this, we look at a few
-			different nodes. Current node (cn) is the top node being placed - make sure that it is air / unoccupied.
-			BN (below node) is the node below the bottom node; Used to check to see if we are up in the air putting
-			more scaffolds on the top.. CNB (Current Base Node) is the targeted node for placement; we can only place
+			different nodes. Current node (current_node) is the top node being placed - make sure that it is air / unoccupied.
+			below_node (below node) is the node below the bottom node; Used to check to see if we are up in the air putting
+			more scaffolds on the top.. current_base_node (Current Base Node) is the targeted node for placement; we can only place
 			scaffolding on this one, to stack them up in the air.
 		--]]
 		repeat -- loop through, allowing placement.
 			pos = vector.offset(pos, 0, 1, 0) -- cleaned up vector.
-			local cn = minetest.get_node(pos) -- current node.
-			if cn.name == "air" then
+			local current_node = minetest.get_node(pos) -- current node.
+			if current_node.name == "air" then
 				-- first step to making scaffolding work like scaffolding should.
 				-- Prevent running up, and putting down new scaffolding
-				if cnb.name == SCAFFOLDING_NAME and bn == SCAFFOLDING_NAME and SIDE_SCAFFOLDING == false then
+				if current_base_node.name == SCAFFOLDING_NAME and below_node == SCAFFOLDING_NAME and SIDE_SCAFFOLDING == false then
 					return itemstack
 				end
 
@@ -362,7 +362,7 @@ minetest.register_node(SCAFFOLDING_NAME, {
 				return itemstack -- finally, return the itemstack to finish on_place.
 			end
 			h = h + 1
-		until cn.name ~= node.name or itemstack:get_count() == 0 or h >= 128 -- loop check.
+		until current_node.name ~= node.name or itemstack:get_count() == 0 or h >= 128 -- loop check.
 	end,
 	on_destruct = function(pos)
 		-- Node destructor; called before removing node.
@@ -455,12 +455,12 @@ minetest.register_node(SCAFFOLDING_NAME, {
 			--build up when placing on existing scaffold
 			repeat
 				pos.y = pos.y + 1
-				local cn = minetest.get_node(pos)
-				local cnb = node
-				local bn = down_two
-				if cn.name == "air" then
+				local current_node = minetest.get_node(pos)
+				local current_base_node = node
+				local below_node = down_two
+				if current_node.name == "air" then
 					-- first step to making scaffolding work like Minecraft scaffolding.
-					if cnb.name == SCAFFOLDING_NAME and bn == SCAFFOLDING_NAME and SIDE_SCAFFOLDING == false then
+					if current_base_node.name == SCAFFOLDING_NAME and below_node == SCAFFOLDING_NAME and SIDE_SCAFFOLDING == false then
 						return itemstack
 					end
 
@@ -476,7 +476,7 @@ minetest.register_node(SCAFFOLDING_NAME, {
 					return itemstack
 				end
 				h = h + 1
-			until cn.name ~= node.name or itemstack:get_count() == 0 or h >= 128
+			until current_node.name ~= node.name or itemstack:get_count() == 0 or h >= 128
 
 			--  Commenting out untested code, for commit.
 			if SIDE_SCAFFOLDING == true then
@@ -493,9 +493,9 @@ minetest.register_node(SCAFFOLDING_NAME, {
 					local ctrl = placer:get_player_control()
 					if ctrl and ctrl.sneak then
 						if node.name == SCAFFOLDING_NAME or node.name == SIDE_SCAFFOLD_NAME then
-							local pp2 = h
+							local param_2 = h
 
-							local np2 = pp2 + 1
+							local node_param2 = param_2 + 1
 							fdir = fdir + 1 -- convert fdir to a base of one.
 							local target_offset = adj_nodes[fdir]
 
@@ -507,9 +507,9 @@ minetest.register_node(SCAFFOLDING_NAME, {
 
 							itemstack:take_item(1)
 							if minetest.get_node(new_pos).name == "air" then
-								minetest.set_node(new_pos, {name = SIDE_SCAFFOLD_NAME, param2 = np2})
-								if np2 >= 6 then
-									np2 = 6
+								minetest.set_node(new_pos, {name = SIDE_SCAFFOLD_NAME, param2 = node_param2})
+								if node_param2 >= 6 then
+									node_param2 = 6
 									minetest.minetest.dig_node(new_pos)
 								end
 							end
