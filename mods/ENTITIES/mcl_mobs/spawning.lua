@@ -244,6 +244,24 @@ local function count_mobs_total(mob_type)
 	return num
 end
 
+local function count_mobs_all()
+	local mobs_found = {}
+	local num = 0
+	for _,entity in pairs(minetest.luaentities) do
+		if entity.is_mob then
+			local mob_type = entity.type -- animal / monster / npc
+			local mob_name = entity.name
+			if mobs_found[mob_name] then
+				mobs_found[mob_name] = mobs_found[mob_name] + 1
+			else
+				mobs_found[mob_name] = 1
+			end
+			num = num + 1
+		end
+	end
+	return mobs_found, num
+end
+
 local function count_mobs_total_cap(mob_type)
 	local num = 0
 	for _,l in pairs(minetest.luaentities) do
@@ -628,6 +646,9 @@ if mobs_spawn then
 
 	local perlin_noise
 
+	-- Get pos to spawn, x and z are randomised, y is range
+
+
 	local function spawn_a_mob(pos, dimension, y_min, y_max)
 		--create a disconnected clone of the spawn dictionary
 		--prevents memory leak
@@ -757,5 +778,18 @@ minetest.register_chatcommand("mobstats",{
 		minetest.chat_send_player(n,"total mobs:"..count_mobs_total())
 		minetest.chat_send_player(n,"spawning attempts since server start:"..dbg_spawn_attempts)
 		minetest.chat_send_player(n,"successful spawns since server start:"..dbg_spawn_succ)
+
+
+		local mob_counts, total_mobs = count_mobs_all()
+		if (total_mobs) then
+			minetest.log("action", "Total mobs found: " .. total_mobs)
+		end
+		if mob_counts then
+			for k, v1 in pairs(mob_counts) do
+				minetest.log("action", "k: " .. tostring(k))
+				minetest.log("action", "v1: " .. tostring(v1))
+			end
+		end
+
 	end
 })
