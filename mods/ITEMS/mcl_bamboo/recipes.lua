@@ -3,6 +3,7 @@
 --- Created by michieal.
 --- DateTime: 12/29/22 12:46 PM -- Restructure Date
 --- These are all of the fuel recipes and all of the crafting recipes, consolidated into one place.
+--- Copyright (C) 2022 - 2023, Michieal. See License.txt
 
 -- Used everywhere. Often this is just the name, but it makes sense to me as BAMBOO, because that's how I think of it...
 -- "BAMBOO" goes here.

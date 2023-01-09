@@ -3,6 +3,7 @@
 -- for mcl_bamboo by Michieal.
 -- Creation date: 12-01-2022 (Dec 1st, 2022)
 -- License for Media: CC-BY-SA 4.0; Code: GPLv3
+-- Copyright (C) 2022 - 2023, Michieal. See License.txt
 
 -- LOCALS
 local modname = minetest.get_current_modname()
