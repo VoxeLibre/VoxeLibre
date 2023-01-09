@@ -28,7 +28,7 @@ local lectern_def = {
 	groups = {handy = 1, axey = 1, flammable = 2, fire_encouragement = 5, fire_flammability = 5, solid = 1},
 	drops = "mcl_lectern:lectern",
 	sunlight_propagates = true,
-	walkable = false,
+	walkable = true,
 	is_ground_content = false,
 	node_placement_prediction = "",
 	_mcl_blast_resistance = 3,
