@@ -4458,8 +4458,8 @@ local function register_decorations()
 		end
 	end
 
-	register_double_fern(0.01, 0.03, {"Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "ColdTaiga", "MegaTaiga", "MegaSpruceTaiga", "BambooJungle", "BambooJungleM", "BambooJungleEdge", "BambooJungleEdgeM",})
-	register_double_fern(0.15, 0.1, {"JungleM"})
+	register_double_fern(0.01, 0.03, {"Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "ColdTaiga", "MegaTaiga", "MegaSpruceTaiga", "BambooJungle", "BambooJungleM", "BambooJungleEdge", "BambooJungleEdgeM", })
+	register_double_fern(0.15, 0.1, {"JungleM", "BambooJungleM"})
 
 	-- Large flowers
 	local function register_large_flower(name, biomes, seed, offset, flower_forest_offset)
@@ -4591,15 +4591,15 @@ local function register_decorations()
 	-- Bamboo
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"group:grass_block_no_snow", "mcl_core:dirt",},
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt", },
 		sidelen = 80,
 		fill_ratio = 0.0043,
 		biomes = {"Jungle", "JungleM", "JungleEdge", "JungleEdgeM"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_bamboo:bamboo",
-		height = 12,
-		max_height = 15,
+		height = 9,
+		max_height = 11,
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -4613,45 +4613,27 @@ local function register_decorations()
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_bamboo:bamboo",
-		height = 12,
-		max_height = 15,
+		height = 9,
+		max_height = 12,
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
-
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_bamboo:bamboo"},
-		sidelen = 80,
-		fill_ratio = 1,
-		biomes = {"BambooJungle", "BambooJungleM", "BambooJungleEdge", "BambooJungleEdgeM", "Jungle", "JungleM", "JungleEdge", "JungleEdgeM"},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		decoration = "mcl_bamboo:bamboo_endcap",
-		height = 1,
-		max_height = 4,
-		flags = "all_floors",
-	})
-
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"group:grass_block_no_snow"},
-		sidelen = 16,
-		noise_params = {
-			offset = 0,
-			scale = 0.012,
-			spread = {x = 100, y = 100, z = 100},
-			seed = 354,
-			octaves = 1,
-			persist = 0.5,
-			lacunarity = 1.0,
-			flags = "absvalue"
-		},
-		biomes = {"BambooJungle", "BambooJungleM"},
-		y_max = mcl_vars.mg_overworld_max,
-		y_min = 2,
-		decoration = "mcl_core:podzol"
-	})
+	--[[
+	-- commenting out this section because with the new grow code, bamboo creates its own height, and therefore places it's own top.
+		minetest.register_decoration({
+			deco_type = "simple",
+			place_on = {"mcl_bamboo:bamboo"},
+			sidelen = 80,
+			fill_ratio = 1,
+			biomes = {"BambooJungle", "BambooJungleM", "BambooJungleEdge", "BambooJungleEdgeM", "Jungle", "JungleM", "JungleEdge", "JungleEdgeM"},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			decoration = "mcl_bamboo:bamboo_endcap",
+			height = 1,
+			max_height = 4,
+			flags = "all_floors",
+		})
+	]]
 
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -4673,25 +4655,6 @@ local function register_decorations()
 		decoration = "mcl_flowers:tallgrass"
 	})
 
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"group:grass_block_no_snow"},
-		sidelen = 16,
-		noise_params = {
-			offset = 0,
-			scale = 0.012,
-			spread = {x = 100, y = 100, z = 100},
-			seed = 354,
-			octaves = 1,
-			persist = 0.5,
-			lacunarity = 1.0,
-			flags = "absvalue"
-		},
-		biomes = {"BambooJungle", "BambooJungleM", "BambooJungleEdge"},
-		y_max = mcl_vars.mg_overworld_max,
-		y_min = 2,
-		decoration = "mcl_mud:mud"
-	})
 	register_doubletall_grass(-0.0005, -0.3, {"BambooJungle", "BambooJungleM", "BambooJungleEdge"})
 	register_grass_decoration("tallgrass", -0.03, 1, {"BambooJungle", "BambooJungleM", "BambooJungleEdge"})
 
