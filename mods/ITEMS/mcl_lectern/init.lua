@@ -4,6 +4,7 @@
 -- Creation date: 01/07/2023 (07JAN2023)
 -- License for Code: GPL3
 -- License for Media: CC-BY-SA 4
+-- Copyright (C) 2023, Michieal. See: License.txt.
 
 -- LOCALS
 local modname = minetest.get_current_modname()
@@ -21,16 +22,36 @@ local lectern_def = {
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	paramtype2 = "facedir",
 	drawtype = "mesh",
+	-- visual_scale = 1.0, -- Default is 1.0.
 	mesh = "mcl_lectern_lectern.obj",
 	tiles = {"mcl_lectern_lectern.png", },
-	groups = {handy = 1, axey = 1, flammable = 2, fire_encouragement = 5, fire_flammability = 5},
+	groups = {handy = 1, axey = 1, flammable = 2, fire_encouragement = 5, fire_flammability = 5, solid = 1},
 	drops = "mcl_lectern:lectern",
 	sunlight_propagates = true,
 	walkable = false,
 	is_ground_content = false,
-	node_prediction = "",
+	node_placement_prediction = "",
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 2,
+	selection_box = {
+		type = "fixed",
+		fixed = {
+			--   L,    T,    Ba,    R,    Bo,    F.
+			{-0.32, 0.46, -0.32, 0.32, 0.175, 0.32},
+			{-0.18, 0.175, -0.055, 0.18, -0.37, 0.21},
+			{-0.32, -0.37, -0.32, 0.32, -0.5, 0.32},
+		}
+	},
+	collision_box = {
+		type = "fixed",
+		fixed = {
+			--   L,    T,    Ba,    R,    Bo,    F.
+			{-0.32, 0.46, -0.32, 0.32, 0.175, 0.32},
+			{-0.18, 0.175, -0.055, 0.18, -0.37, 0.21},
+			{-0.32, -0.37, -0.32, 0.32, -0.5, 0.32},
+		}
+	},
+
 	on_place = function(itemstack, placer, pointed_thing)
 		local above = pointed_thing.above
 		local under = pointed_thing.under
@@ -84,10 +105,18 @@ local lectern_def = {
 		end
 		return itemstack
 	end,
-
 }
+
 minetest.register_node("mcl_lectern:lectern", lectern_def)
 mcl_wip.register_wip_item("mcl_lectern:lectern")
+
+-- April Fools setup
+local date = os.date("*t")
+if (date.month == 4 and date.day == 1) then
+	minetest.override_item("mcl_lectern:lectern", {waving = 2})
+else
+	minetest.override_item("mcl_lectern:lectern", {waving = 0})
+end
 
 minetest.register_craft({
 	output = "mcl_lectern:lectern",
