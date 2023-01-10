@@ -143,6 +143,56 @@ local bamboo_def = {
 			mcl_bamboo.mcl_log("Place_Bamboo_Shoot--Type: " .. placed_type)
 			place_item = ItemStack(mcl_bamboo.bamboo_index[placed_type])
 		end
+
+		-- height check for placing bamboo nodes. because... lmfao bamboo stalk to the sky.
+		-- variables used in more than one spot.
+		local first_shoot
+		local chk_pos
+		local soil_pos
+		local node_name = ""
+		local dist = 0
+		local height = -1
+		local BAMBOO_MAX_HEIGHT = 16 -- base height check.
+
+		local BAMBOO_SOIL_DIST = BAMBOO_MAX_HEIGHT * -1
+		-- -------------------
+		for py = -1, BAMBOO_SOIL_DIST, -1 do
+			chk_pos = vector.offset(pos, 0, py, 0)
+			node_name = minetest.get_node(chk_pos).name
+			if mcl_bamboo.is_dirt(node_name) then
+				soil_pos = chk_pos
+				break
+			else
+				if mcl_bamboo.is_bamboo(node_name) == false then
+					break
+				end
+			end
+		end
+		-- requires knowing where the soil node is.
+		if soil_pos == nil then
+			return itemstack -- returning itemstack means don't place.
+		end
+
+		first_shoot = vector.offset(soil_pos, 0, 1, 0)
+		local meta = minetest.get_meta(first_shoot)
+
+		if meta then
+			height = meta:get_int("height", -1)
+		end
+
+		dist = vector.distance(soil_pos, chk_pos)
+
+		-- okay, so don't go beyond max height...
+		if dist > 15 and height == -1 then
+			-- height not found
+			return itemstack
+		end
+
+		if dist + 1 > height - 1 then
+			-- height found.
+			return itemstack
+		end
+
 		minetest.item_place(place_item, placer, pointed_thing, fdir)
 		itemstack:take_item(1)
 		return itemstack, pointed_thing.under
