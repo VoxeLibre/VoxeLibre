@@ -141,7 +141,7 @@ local bamboo_def = {
 		else
 			local placed_type = pr:next(1, 4) -- randomly choose which one to place.
 			mcl_bamboo.mcl_log("Place_Bamboo_Shoot--Type: " .. placed_type)
-			place_item = mcl_bamboo.bamboo_index[placed_type]
+			place_item = ItemStack(mcl_bamboo.bamboo_index[placed_type])
 		end
 		minetest.item_place(place_item, placer, pointed_thing, fdir)
 		itemstack:take_item(1)
@@ -247,7 +247,7 @@ minetest.register_node("mcl_bamboo:bamboo_plank", {
 --	Bamboo Part 2 Base nodes.
 -- 	Bamboo Mosaic
 local bamboo_mosaic = table.copy(minetest.registered_nodes[BAMBOO_PLANK])
-bamboo_mosaic.tiles = {"mcl_bamboo_bamboo_plank.png"}
+bamboo_mosaic.tiles = {"mcl_bamboo_bamboo_plank_mosaic.png"}
 bamboo_mosaic.groups = {handy = 1, axey = 1, flammable = 3, fire_encouragement = 5, fire_flammability = 20}
 bamboo_mosaic.description = S("Bamboo Mosaic Plank")
 bamboo_mosaic._doc_items_longdesc = S("Bamboo Mosaic Plank")
