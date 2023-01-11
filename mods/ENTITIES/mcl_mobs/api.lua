@@ -306,7 +306,7 @@ function mob_class:do_states(dtime)
 end
 
 local function update_timers (self, dtime)
-	-- knockback timer
+	-- knockback timer. set in on_punch
 	if self.pause_timer > 0 then
 		self.pause_timer = self.pause_timer - dtime
 		return true
@@ -330,17 +330,15 @@ end
 
 -- main mob function
 function mob_class:on_step(dtime)
-	self.lifetimer = self.lifetimer - dtime
-
 	local pos = self.object:get_pos()
 	if not pos then return end
 
-	if self:check_despawn(pos) then return true end
+	if self:check_despawn(pos, dtime) then return true end
 
 	self:slow_mob()
 	if self:falling(pos) then return end
-
 	self:check_suspend()
+
 	self:check_water_flow()
 
 	self:env_danger_movement_checks (dtime)
@@ -355,21 +353,17 @@ function mob_class:on_step(dtime)
 
 	if self.state == "die" then return end
 
-	if self.jump_sound_cooloff > 0 then
-		self.jump_sound_cooloff = self.jump_sound_cooloff - dtime
-	end
-	if self.opinion_sound_cooloff > 0 then
-		self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
-	end
+	self:follow_flop() -- Mob following code.
 
-	--Mob following code.
-	self:follow_flop()
-	--set animation speed relitive to velocity
-	self:set_animation_speed()
+	self:set_animation_speed() -- set animation speed relitive to velocity
 	self:check_smooth_rotation(dtime)
 	self:check_head_swivel(dtime)
 
+	if self.jump_sound_cooloff > 0 then
+		self.jump_sound_cooloff = self.jump_sound_cooloff - dtime
+	end
 	self:do_jump()
+
 	self:set_armor_texture()
 	self:check_runaway_from()
 
@@ -390,6 +384,9 @@ function mob_class:on_step(dtime)
 	self:check_particlespawners(dtime)
 	self:check_item_pickup()
 
+	if self.opinion_sound_cooloff > 0 then
+		self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
+	end
 	-- mob plays random sound at times. Should be 120. Zombie and mob farms are ridiculous
 	if math.random(1, 70) == 1 then
 		self:mob_sound("random", true)

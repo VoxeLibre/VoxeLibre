@@ -22,6 +22,8 @@ local DEBUG = false
 local enable_burger = minetest.settings:get_bool("mcl_enable_hamburger",true)
 local use_alt = minetest.settings:get_bool("mcl_hamburger_alt_texture",false)
 
+local HAMBURGER_NAME = "mcl_hamburger:hamburger"
+
 mcl_hamburger = {}
 
 if DEBUG then
@@ -32,12 +34,12 @@ end
 function mcl_hamburger.register_burger_craft(cooked_meat)
 	minetest.register_craft({
 		type = "fuel",
-		recipe = "mcl_hamburger:hamburger",
+		recipe = HAMBURGER_NAME,
 		burntime = 2,
 	})
 
 	minetest.register_craft({
-		output = "mcl_hamburger:hamburger",
+		output = HAMBURGER_NAME,
 		recipe = {
 			{ "mcl_farming:bread"},
 			{ cooked_meat }, -- "mcl_mobitems:cooked_beef" for a reg hamburger. Grind up clowns for a Big Mac.
@@ -45,7 +47,7 @@ function mcl_hamburger.register_burger_craft(cooked_meat)
 		},
 	})
 	minetest.register_craft({
-		output = "mcl_hamburger:hamburger",
+		output = HAMBURGER_NAME,
 		recipe = {
 			-- "mcl_mobitems:cooked_beef" for a reg hamburger. Grind up clowns for a Big Mac.
 			{ "mcl_farming:bread", cooked_meat, "mcl_farming:bread"},
@@ -72,23 +74,23 @@ if not enable_burger then
 end
 
 if use_alt == false then
-	minetest.register_craftitem("mcl_hamburger:hamburger", hamburger_def)
+	minetest.register_craftitem(HAMBURGER_NAME, hamburger_def)
 else
 	local hamburger_alt = table.copy(hamburger_def)
 	hamburger_alt.inventory_image = "mcl_hamburger_alt.png"
 	hamburger_alt.wield_image = "mcl_hamburger_alt.png"
-	minetest.register_craftitem("mcl_hamburger:hamburger", hamburger_alt)
+	minetest.register_craftitem(HAMBURGER_NAME, hamburger_alt)
 end
 
 local function register_achievements()
 
-	awards.register_achievement("mcl_hamburger:hamburger", {
+	awards.register_achievement(HAMBURGER_NAME, {
 		title = S("Burger Time!"),
 		description = S("Craft a Hamburger."),
 		icon = "mcl_hamburger_alt.png",
 		trigger = {
 			type = "craft",
-			item = "mcl_hamburger:hamburger",
+			item = HAMBURGER_NAME,
 			target = 1
 		},
 		type = "Advancement",
@@ -101,19 +103,47 @@ local function register_doc_entry()
 
 	-- register Doc entry
 	if minetest.get_modpath("doc") then
-		doc.add_entry_alias("craftitems", "mcl_hamburger:hamburger", "craftitems", "mcl_hamburger:hamburger")
+		doc.add_entry_alias("craftitems", HAMBURGER_NAME, "craftitems", HAMBURGER_NAME)
 	end
 
 end
 
 if enable_burger then
 	-- make the villagers follow the item
-	minetest.registered_entities["mobs_mc:villager"].nofollow = false
-	-- add it to the follow items.
-	table.insert(minetest.registered_entities["mobs_mc:villager"].follow,"mcl_hamburger:hamburger")
-	-- register the item and crafting recipe.
+	local villager = minetest.registered_entities["mobs_mc:villager"]
+
+	table.insert(villager.follow, HAMBURGER_NAME)
+
+	local original_rightclick = villager.on_rightclick
+
+	local new_on_rightclick = function(self, clicker)
+		--minetest.log("In wrapper function")
+
+		local item = clicker:get_wielded_item()
+		if item:get_name() == HAMBURGER_NAME then
+			if self.nofollow == true then
+				--minetest.log("Turn off nofollow")
+				self.nofollow = false
+			elseif self.nofollow == false then
+				--minetest.log("Turn on nofollow")
+				self.nofollow = true
+			end
+		else
+			--minetest.log("Not holding burger")
+			if self.nofollow == false then
+				--minetest.log("Turn on nofollow")
+				self.nofollow = true
+			end
+			original_rightclick(self, clicker)
+		end
+		--minetest.log("Finishing wrapper")
+	end
+
+	villager.on_rightclick = new_on_rightclick
+
 	mcl_hamburger.register_burger_craft("mcl_mobitems:cooked_beef")
-	-- add in the super cool achievement(s)!
+	minetest.register_alias("hamburger", HAMBURGER_NAME)
+
 	register_achievements()
 	register_doc_entry()
 end

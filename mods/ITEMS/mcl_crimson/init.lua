@@ -76,10 +76,10 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 	walkable = false,
 	groups = {dig_immediate=3,mushroom=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,enderman_takable=1,deco_block=1},
 	light_source = 1,
-	selection_box = {
+--[[	selection_box = {
 		type = "fixed",
 		fixed = { -3/16, -0.5, -3/16, 3/16, -2/16, 3/16 },
-	},
+	},]]
 	node_placement_prediction = "",
 	on_rightclick = function(pos, node, pointed_thing, player, itemstack)
 		if pointed_thing:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
