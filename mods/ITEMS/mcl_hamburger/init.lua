@@ -142,6 +142,7 @@ if enable_burger then
 	villager.on_rightclick = new_on_rightclick
 
 	mcl_hamburger.register_burger_craft("mcl_mobitems:cooked_beef")
+	minetest.register_alias("hamburger", HAMBURGER_NAME)
 
 	register_achievements()
 	register_doc_entry()
