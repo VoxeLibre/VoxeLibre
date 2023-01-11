@@ -13,7 +13,6 @@ local BAMBOO_MAX_HEIGHT = 16 -- base height check.
 local BAMBOO_SOIL_DIST = BAMBOO_MAX_HEIGHT * -1
 local BAM_MAX_HEIGHT_STPCHK = BAMBOO_MAX_HEIGHT - 5
 local BAM_MAX_HEIGHT_TOP = BAMBOO_MAX_HEIGHT - 1
-
 local GROW_DOUBLE_CHANCE = 32
 
 --Bamboo can be planted on moss blocks, grass blocks, dirt, coarse dirt, rooted dirt, gravel, mycelium, podzol, sand, red sand, or mud
@@ -31,7 +30,12 @@ mcl_bamboo.bamboo_dirt_nodes = {
 }
 
 function mcl_bamboo.is_dirt(node_name)
-	return table.indexof(mcl_bamboo.bamboo_dirt_nodes, node_name) ~= -1
+	local index = table.indexof(mcl_bamboo.bamboo_dirt_nodes, node_name)
+	if index == -1 then
+		return false
+	else
+		return true
+	end
 end
 
 mcl_bamboo.bamboo_index = {
@@ -42,7 +46,12 @@ mcl_bamboo.bamboo_index = {
 }
 
 function mcl_bamboo.is_bamboo(node_name)
-	return table.indexof(mcl_bamboo.bamboo_index, node_name)
+	local index = table.indexof(mcl_bamboo.bamboo_index, node_name)
+	if index == -1 then
+		return false
+	else
+		return index
+	end
 end
 
 --- pos: node position; placer: ObjectRef that is placing the item
@@ -62,7 +71,7 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 	local node_above = minetest.get_node(vector.offset(pos, 0, 1, 0))
 	mcl_bamboo.mcl_log("Grow bamboo called; bonemeal: " .. tostring(bonemeal_applied))
 
-	if not bonemeal_applied and mcl_bamboo.is_bamboo(node_above.name) == true then
+	if not bonemeal_applied and mcl_bamboo.is_bamboo(node_above.name) ~= false then
 		return false -- short circuit this function if we're trying to grow (std) the bamboo and it's not the top shoot.
 	end
 	if minetest.get_node_light(pos) < 8 then
@@ -79,17 +88,16 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 	-- -------------------
 
 	mcl_bamboo.mcl_log("Grow bamboo; checking for soil: ")
-	-- the soil node below.
+	-- the soil node below the bamboo.
 	for py = -1, BAMBOO_SOIL_DIST, -1 do
 		chk_pos = vector.offset(pos, 0, py, 0)
 		node_name = minetest.get_node(chk_pos).name
 		if mcl_bamboo.is_dirt(node_name) then
 			soil_pos = chk_pos
 			break
-		else
-			if mcl_bamboo.is_bamboo(node_name) == false then
-				break
-			end
+		end
+		if mcl_bamboo.is_bamboo(node_name) == false then
+			break
 		end
 	end
 	-- requires knowing where the soil node is.

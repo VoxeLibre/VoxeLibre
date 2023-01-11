@@ -91,7 +91,7 @@ local bamboo_def = {
 		end
 		local node = minetest.get_node(pointed_thing.under)
 		local pos = pointed_thing.under
-		local nodename = node.name
+		local nodename = node.name -- intentional use of nodename.
 
 		mcl_bamboo.mcl_log("Node placement data:")
 		mcl_bamboo.mcl_log(dump(pointed_thing))
@@ -106,13 +106,14 @@ local bamboo_def = {
 		-- Use pointed node's on_rightclick function first, if present
 		if placer and not placer:get_player_control().sneak then
 			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				mcl_bamboo.mcl_log("attempting placement of bamboo via targeted node's on_rightclick.")
+				mcl_bamboo.mcl_log("Attempting targeted node's on_rightclick.")
 				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
 			end
 		end
 
 		if mcl_bamboo.is_bamboo(nodename) == false and nodename ~= BAMBOO_ENDCAP_NAME then
 			-- not bamboo...
+			mcl_bamboo.mcl_log("not bamboo...")
 			if nodename ~= "mcl_flowerpots:flower_pot" then
 				if mcl_bamboo.is_dirt(nodename) == false then
 					mcl_bamboo.mcl_log("bamboo dirt node not found; node name: " .. nodename)
@@ -132,22 +133,20 @@ local bamboo_def = {
 
 		local place_item = ItemStack(itemstack) -- make a copy so that we don't indirectly mess with the original.
 
-		local bamboo_node = mcl_bamboo.is_bamboo(nodename)
+		local bamboo_node = mcl_bamboo.is_bamboo(nodename) or 0
 		mcl_bamboo.mcl_log("node name: " .. nodename .. "\nbamboo_node: " .. bamboo_node)
-		-- intentional use of nodename.
 
 		local rand_height
 		local BAMBOO_MAX_HEIGHT = 16 -- maximum height of 16, per wiki.
 		local first_shoot
 		local meta
 
-		if bamboo_node ~= -1 then
+		if bamboo_node and bamboo_node > 0 then
 			place_item = ItemStack(mcl_bamboo.bamboo_index[bamboo_node])
 
 			-- height check for placing bamboo nodes. because... lmfao bamboo stalk to the sky.
 			-- variables used in more than one spot.
 			local chk_pos
-			local soil_pos
 			local node_name = ""
 			local dist = 0
 			local height = -1
@@ -160,10 +159,9 @@ local bamboo_def = {
 				if mcl_bamboo.is_dirt(node_name) then
 					first_shoot = vector.offset(chk_pos, 0, 1, 0)
 					break
-				else
-					if mcl_bamboo.is_bamboo(node_name) == false then
-						break
-					end
+				end
+				if mcl_bamboo.is_bamboo(node_name) == false then
+					break
 				end
 			end
 			-- requires knowing where the soil node is.
@@ -205,9 +203,12 @@ local bamboo_def = {
 			itemstack:take_item(1)
 		end
 		if rand_height and rand_height > 1 then
-			meta = minetest.get_meta(position)
-			if meta then
-				meta:set_int("height", rand_height)
+			if position then
+				mcl_bamboo.mcl_log("Setting Height Data...")
+				meta = minetest.get_meta(position)
+				if meta then
+					meta:set_int("height", rand_height)
+				end
 			end
 		end
 		return itemstack, pointed_thing.under
@@ -243,7 +244,7 @@ bamboo_top.tiles = {"mcl_bamboo_endcap.png"}
 bamboo_top.drawtype = "plantlike_rooted" --"plantlike"
 --bamboo_top.paramtype2 = "meshoptions"
 --bamboo_top.param2 = 2
-bamboo_top.waving = 2
+-- bamboo_top.waving = 2
 bamboo_top.special_tiles = {{name = "mcl_bamboo_endcap.png"}}
 bamboo_top.nodebox = nil
 bamboo_top.selection_box = nil
