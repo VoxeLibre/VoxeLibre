@@ -259,6 +259,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 	description = S("Enderman"),
 	type = "monster",
 	spawn_class = "passive",
+	can_despawn = true,
 	passive = true,
 	pathfinding = 1,
 	hp_min = 40,
@@ -442,6 +443,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 				end
 			end
 		end
+
 		-- TAKE AND PLACE STUFF BEHAVIOUR BELOW.
 		if not mobs_griefing then
 			return
@@ -469,6 +471,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 					local dug = minetest.get_node_or_nil(take_pos)
 					if dug and dug.name == "air" then
 						self._taken_node = node.name
+						self.can_despawn = false
 						local def = minetest.registered_nodes[self._taken_node]
 						-- Update animation and texture accordingly (adds visibly carried block)
 						local block_type
@@ -519,6 +522,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 				if success then
 					local def = minetest.registered_nodes[self._taken_node]
 					-- Update animation accordingly (removes visible block)
+					self.can_despawn = true
 					self.animation = select_enderman_animation("normal")
 					self:set_animation(self.animation.current)
 					if def.sounds and def.sounds.place then

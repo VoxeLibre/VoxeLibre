@@ -1930,8 +1930,6 @@ end)
 
 --[=======[ MOB REGISTRATION AND SPAWNING ]=======]
 
-local pick_up = { "mcl_farming:bread", "mcl_farming:carrot_item", "mcl_farming:beetroot_item" , "mcl_farming:potato_item" }
-
 mcl_mobs.register_mob("mobs_mc:villager", {
 	description = S("Villager"),
 	type = "npc",
@@ -1976,7 +1974,7 @@ mcl_mobs.register_mob("mobs_mc:villager", {
 		head_shake_start = 131, head_shake_end = 141, head_shake_loop = false,
 		head_nod_start = 121, head_nod_end = 131, head_nod_loop = false,
 	},
-	follow = pick_up,
+	follow = { "mcl_farming:bread", "mcl_farming:carrot_item", "mcl_farming:beetroot_item" , "mcl_farming:potato_item" },
 	nofollow = true,
 	view_range = 16,
 	fear_height = 4,
@@ -1986,7 +1984,7 @@ mcl_mobs.register_mob("mobs_mc:villager", {
 	_id = nil,
 	_profession = "unemployed",
 	look_at_player = true,
-	pick_up = pick_up,
+	pick_up = { "mcl_farming:bread", "mcl_farming:carrot_item", "mcl_farming:beetroot_item" , "mcl_farming:potato_item" },
 	can_open_doors = true,
 	on_pick_up = function(self,itementity)
 		local clicker
@@ -2003,6 +2001,7 @@ mcl_mobs.register_mob("mobs_mc:villager", {
 		return it
 	end,
 	on_rightclick = function(self, clicker)
+		--minetest.log("In villager right click")
 		if self.child or self._profession == "unemployed" or self._profession == "nitwit" then
 			self.order = nil
 			return

@@ -280,30 +280,55 @@ local function dir_to_pitch(dir)
 	return -math.atan2(-dir.y, xz)
 end
 
-function mob_class:check_head_swivel(dtime)
-	if not self.head_swivel or type(self.head_swivel) ~= "string" then return end
-	local final_rotation = vector.new(0,0,0)
-	local oldp,oldr = self.object:get_bone_position(self.head_swivel)
-
+local function who_are_you_looking_at (self)
 	local pos = self.object:get_pos()
 
-	for _, obj in pairs(minetest.get_objects_inside_radius(pos, 10)) do
-		if obj:is_player() and not self.attack or obj:get_luaentity() and obj:get_luaentity().name == self.name and self ~= obj:get_luaentity() then
-			if not self._locked_object then
-				if math.random(5000/self.curiosity) == 1 or vector.distance(pos,obj:get_pos())<4 and obj:is_player() then
-					self._locked_object = obj
-				end
-			else
-				if math.random(10000/self.curiosity) == 1 then
-					self._locked_object = nil
-				end
-			end
-		end
-	end
+	local stop_look_at_player_chance = math.random(833/self.curiosity)
+	-- was 10000 - div by 12 for avg entities as outside loop
+
+	local stop_look_at_player = stop_look_at_player_chance == 1
 
 	if self.attack or self.following then
 		self._locked_object = self.attack or self.following
+	elseif self._locked_object then
+		if stop_look_at_player then
+			--minetest.log("Stop look: ".. self.name)
+			self._locked_object = nil
+		end
+	elseif not self._locked_object then
+		if math.random(1, 30) then
+			--minetest.log("Change look check: ".. self.name)
+			local look_at_player_chance = math.random(20/self.curiosity)
+			-- was 5000 but called in loop based on entities. so div by 12 as estimate avg of entities found,
+			-- then div by 20 as less freq lookup
+
+			local look_at_player = look_at_player_chance == 1
+
+			for _, obj in pairs(minetest.get_objects_inside_radius(pos, 8)) do
+				if obj:is_player() and vector.distance(pos,obj:get_pos()) < 4 then
+					--minetest.log("Change look to player: ".. self.name)
+					self._locked_object = obj
+					break
+				elseif obj:is_player() or (obj:get_luaentity() and obj:get_luaentity().name == self.name and self ~= obj:get_luaentity()) then
+					if look_at_player then
+						--minetest.log("Change look to mob: ".. self.name)
+						self._locked_object = obj
+						break
+					end
+				end
+			end
+		end
+
 	end
+end
+
+function mob_class:check_head_swivel(dtime)
+	if not self.head_swivel or type(self.head_swivel) ~= "string" then return end
+
+	who_are_you_looking_at (self)
+
+	local final_rotation = vector.new(0,0,0)
+	local oldp,oldr = self.object:get_bone_position(self.head_swivel)
 
 	if self._locked_object and (self._locked_object:is_player() or self._locked_object:get_luaentity()) and self._locked_object:get_hp() > 0 then
 		local _locked_object_eye_height = 1.5
@@ -318,6 +343,7 @@ function mob_class:check_head_swivel(dtime)
 			if self.object:get_attach() then
 				self_rot = self.object:get_attach():get_rotation()
 			end
+
 			if self.rot then
 				local player_pos = self._locked_object:get_pos()
 				local direction_player = vector.direction(vector.add(self.object:get_pos(), vector.new(0, self.head_eye_height*.7, 0)), vector.add(player_pos, vector.new(0, _locked_object_eye_height, 0)))
@@ -346,7 +372,7 @@ function mob_class:check_head_swivel(dtime)
 	elseif not self._locked_object and math.abs(oldr.y) > 3 and math.abs(oldr.x) < 3 then
 		final_rotation = vector.multiply(oldr, 0.9)
 	else
-		final_rotation = vector.new(0,0,0)
+		--final_rotation = vector.new(0,0,0)
 	end
 
 	mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), final_rotation)
