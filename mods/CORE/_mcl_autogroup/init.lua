@@ -204,7 +204,7 @@ end
 
 -- Checks if the given node would drop its useful drop if dug by a given tool.
 -- Returns true if it will yield its useful drop, false otherwise.
-function mcl_autogroup.can_harvest(nodename, toolname)
+function mcl_autogroup.can_harvest(nodename, toolname, player)
 	local ndef = minetest.registered_nodes[nodename]
 
 	if not ndef then
@@ -228,7 +228,9 @@ function mcl_autogroup.can_harvest(nodename, toolname)
 	end
 
 	-- Check if it can be dug by hand
-	local tdef = minetest.registered_tools[""]
+	if not player or not player:is_player() then return false end
+	local name = player:get_inventory():get_stack("hand", 1):get_name()
+	local tdef = minetest.registered_items[name]
 	if tdef then
 		for g, gdef in pairs(tdef._mcl_diggroups) do
 			if ndef.groups[g] then
@@ -260,7 +262,7 @@ local function get_tool_capabilities(tdef)
 
 	-- If the damage group and punch interval from hand is not included,
 	-- then the user will not be able to attack with the tool.
-	local hand_toolcaps = minetest.registered_tools[""].tool_capabilities
+	local hand_toolcaps = mcl_meshhand.survival_hand_tool_caps
 	return {
 		full_punch_interval = hand_toolcaps.full_punch_interval,
 		damage_groups = hand_toolcaps.damage_groups
@@ -280,7 +282,7 @@ end
 -- would have to add _mcl_autogroup as a dependency which would break the mod
 -- loading order.
 function mcl_autogroup.get_groupcaps(toolname, efficiency)
-	local tdef = minetest.registered_tools[toolname]
+	local tdef = minetest.registered_items[toolname]
 	local groupcaps = table.copy(get_tool_capabilities(tdef).groupcaps or {})
 	add_groupcaps(toolname, groupcaps, tdef._mcl_diggroups, efficiency)
 	return groupcaps
@@ -350,7 +352,7 @@ local function overwrite()
 		end
 	end
 
-	for tname, tdef in pairs(minetest.registered_tools) do
+	for tname, tdef in pairs(minetest.registered_items) do
 		-- Assign groupcaps for digging the registered digging groups
 		-- depending on the _mcl_diggroups in the tool definition
 		if tdef._mcl_diggroups then

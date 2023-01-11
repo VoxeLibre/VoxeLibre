@@ -46,14 +46,9 @@ function return_fields(player, name)
 	end
 end
 
-local function set_inventory(player, armor_change_only)
+local function set_inventory(player)
 	if minetest.is_creative_enabled(player:get_player_name()) then
-		if armor_change_only then
-			-- Stay on survival inventory plage if only the armor has been changed
-			mcl_inventory.set_creative_formspec(player, 0, 0, nil, nil, "inv")
-		else
-			mcl_inventory.set_creative_formspec(player, 0, 1)
-		end
+		mcl_inventory.set_creative_formspec(player)
 		return
 	end
 	local inv = player:get_inventory()
@@ -143,11 +138,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 
-if not minetest.is_creative_enabled("") then
-	function mcl_inventory.update_inventory_formspec(player)
-		set_inventory(player)
-	end
-end
+mcl_inventory.update_inventory_formspec = set_inventory
 
 -- Drop crafting grid items on leaving
 minetest.register_on_leaveplayer(function(player)
@@ -199,24 +190,6 @@ function minetest.is_creative_enabled(name)
 	return false
 end
 
---Insta "digging" nodes in gamemode-creative
-minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
-	if not puncher or not puncher:is_player() then return end
-	local name = puncher:get_player_name()
-	if not minetest.is_creative_enabled(name) then return end
-	if pointed_thing.type ~= "node" then return end
-	local def = minetest.registered_nodes[node.name]
-	if def then
-		minetest.node_dig(pos,node,puncher)
-		return true
-	end
-end)
-
---Don't subtract from inv when placing in gamemode-creative
-minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
-	if placer and placer:is_player() and minetest.is_creative_enabled(placer:get_player_name()) then return true end
-end)
-
 local function in_table(n,h)
 	for k,v in pairs(h) do
 		if v == n then return true end
@@ -238,6 +211,7 @@ function mcl_inventory.player_set_gamemode(p,g)
 	elseif g == "creative" then
 		 mcl_experience.remove_hud(p)
 	end
+	mcl_meshhand.update_player(p)
 	set_inventory(p)
 end
 
