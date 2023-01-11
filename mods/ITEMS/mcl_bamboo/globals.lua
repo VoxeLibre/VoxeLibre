@@ -194,7 +194,8 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 
 		-- stop growing check. ie, handle endcap placement.
 		if dist >= height - 1 then
-			if node_name == "air" then
+			local above_node_name = minetest.get_node(vector.offset(chk_pos, 0, 1, 0)).name
+			if node_name == "air" and above_node_name == "air" then
 				if height - 1 == dist then
 					mcl_bamboo.mcl_log("Grow bamboo; Placing endcap")
 					minetest.set_node(chk_pos, {name = BAMBOO_ENDCAP_NAME})
