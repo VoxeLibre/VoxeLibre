@@ -200,8 +200,8 @@ local bamboo_def = {
 
 		local node_above_name = minetest.get_node(pointed_thing.above).name
 		minetest.log("\n\n\nnode_above name: " .. node_above_name)
-		if node_above_name ~= "mcl_core:water_source" or node_above_name ~= "mcl_core:lava_source"
-				or node_above_name ~= "mcl_nether:nether_lava_source" then
+		if node_above_name ~= "mcl_core:water_source" and node_above_name ~= "mcl_core:lava_source"
+				and node_above_name ~= "mcl_nether:nether_lava_source" then
 			local _, position = minetest.item_place(place_item, placer, pointed_thing, fdir)
 			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				itemstack:take_item(1)
@@ -350,6 +350,7 @@ bamboo_one_def.selection_box = {
 		{-0.05, -0.5, 0.285, -0.275, 0.5, 0.06},
 	}
 }
+bamboo_one_def.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, flammable = 3}
 mcl_bamboo.mcl_log(dump(mcl_bamboo.bamboo_index))
 minetest.register_node(mcl_bamboo.bamboo_index[2], bamboo_one_def)
 local bamboo_two_def = table.copy(bamboo_def)
@@ -373,6 +374,7 @@ bamboo_two_def.selection_box = {
 		{0.25, -0.5, 0.325, 0.025, 0.5, 0.100},
 	}
 }
+bamboo_two_def.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, flammable = 3}
 minetest.register_node(mcl_bamboo.bamboo_index[3], bamboo_two_def)
 local bamboo_three_def = table.copy(bamboo_def)
 
@@ -395,4 +397,5 @@ bamboo_three_def.selection_box = {
 		{-0.125, -0.5, 0.125, -0.3125, 0.5, 0.3125},
 	}
 }
+bamboo_three_def.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, flammable = 3}
 minetest.register_node(mcl_bamboo.bamboo_index[4], bamboo_three_def)
