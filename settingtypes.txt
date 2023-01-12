@@ -139,6 +139,9 @@ mcl_mob_active_range (Active mob range) int 48 0 256
 # Enable flame sound.
 flame_sound (Flame sound) bool true
 
+# Disable the in game music.
+mcl_music_disable (Disable in game music) bool false
+
 [Graphics]
 # How many vertical animation frames the fire texture (fire_basic_flame_animated.png) has.
 # This may vary depending on the texture pack you use.
