@@ -39,13 +39,7 @@ local function seagrass_on_place(itemstack, placer, pointed_thing)
 		return itemstack
 	end
 
-	if minetest.is_protected(pos_under, player_name) or
-			minetest.is_protected(pos_above, player_name) then
-		minetest.log("action", player_name
-			.. " tried to place " .. itemstack:get_name()
-			.. " at protected position "
-			.. minetest.pos_to_string(pos_under))
-		minetest.record_protection_violation(pos_under, player_name)
+	if mcl_util.check_area_protection(pos_under, pos_above, placer) then
 		return itemstack
 	end
 
