@@ -2,7 +2,7 @@
 -- Parts of mcl_scaffolding were used. Mcl_scaffolding originally created by Cora; Fixed and heavily reworked
 -- for mcl_bamboo by Michieal.
 -- Creation date: 12-01-2022 (Dec 1st, 2022)
--- License for Media: CC-BY-SA 4.0; Code: GPLv3
+-- License for Media: CC-BY-SA 4.0 (except where noted); Code: GPLv3
 -- Copyright (C) 2022 - 2023, Michieal. See License.txt
 
 -- LOCALS
