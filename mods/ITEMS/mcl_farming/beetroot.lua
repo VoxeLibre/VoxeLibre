@@ -102,14 +102,26 @@ minetest.register_node("mcl_farming:beetroot", {
 		0 seeds: 42.18%
 		1 seed:  14.06%
 		2 seeds: 18.75%
-		3 seeds: 25% ]]
+		3 seeds: 25%
+
+		correction: should always drop at least 1 seed. (1-4 seeds, per the minecraft wiki)
+		--]]
 		max_items = 2,
 		items = {
-			{ items = {"mcl_farming:beetroot_item"}, rarity = 1 },
-			{ items = {"mcl_farming:beetroot_seeds 3"}, rarity = 4 },
-			{ items = {"mcl_farming:beetroot_seeds 2"}, rarity = 4 },
-			{ items = {"mcl_farming:beetroot_seeds 1"}, rarity = 4 },
+			{items = {"mcl_farming:beetroot_item"}},
+			{items = {"mcl_farming:beetroot_seeds 4"}, rarity = 6},
+			{items = {"mcl_farming:beetroot_seeds 3"}, rarity = 4},
+			{items = {"mcl_farming:beetroot_seeds 2"}, rarity = 3},
+			{items = {"mcl_farming:beetroot_seeds"}, rarity = 1},
 		},
+	},
+
+	_mcl_fortune_drop = {
+		discrete_uniform_distribution = true,
+		items = {"mcl_farming:beetroot_item", "mcl_farming:beetroot_seeds"},
+		min_count = 1,
+		max_count = 3,
+		cap = 5,
 	},
 	tiles = {"mcl_farming_beetroot_3.png"},
 	inventory_image = "mcl_farming_beetroot_3.png",
@@ -117,7 +129,7 @@ minetest.register_node("mcl_farming:beetroot", {
 	selection_box = {
 		type = "fixed",
 		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, 3/16, 0.5}
+			{-0.5, -0.5, -0.5, 0.5, 3 / 16, 0.5}
 		},
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,beetroot=4},
@@ -161,7 +173,10 @@ minetest.register_craft({
 mcl_farming:add_plant("plant_beetroot", "mcl_farming:beetroot", {"mcl_farming:beetroot_0", "mcl_farming:beetroot_1", "mcl_farming:beetroot_2"}, 68, 3)
 
 if minetest.get_modpath("doc") then
-	for i=1,2 do
-		doc.add_entry_alias("nodes", "mcl_farming:beetroot_0", "nodes", "mcl_farming:beetroot_"..i)
+	for i = 1, 2 do
+		doc.add_entry_alias("nodes", "mcl_farming:beetroot_0", "nodes", "mcl_farming:beetroot_" .. i)
 	end
 end
+
+minetest.register_alias("beetroot_seeds", "mcl_farming:beetroot_seeds")
+minetest.register_alias("beetroot", "mcl_farming:beetroot_item")

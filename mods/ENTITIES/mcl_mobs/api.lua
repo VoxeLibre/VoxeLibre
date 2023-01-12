@@ -2,8 +2,6 @@ local mob_class = mcl_mobs.mob_class
 local mob_class_meta = {__index = mcl_mobs.mob_class}
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 -- API for Mobs Redo: MineClone 2 Edition (MRM)
-local MAX_MOB_NAME_LENGTH = 30
-local DEFAULT_FALL_SPEED = -9.81*1.5
 
 local PATHFINDING = "gowp"
 
@@ -17,20 +15,8 @@ local function mcl_log (message)
 	end
 end
 
-
 -- Invisibility mod check
 mcl_mobs.invis = {}
-
--- localize math functions
-local atann = math.atan
-
-local function atan(x)
-	if not x or x ~= x then
-		return 0
-	else
-		return atann(x)
-	end
-end
 
 local remove_far = true
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
@@ -297,51 +283,65 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	end
 end
 
+-- execute current state (stand, walk, run, attacks)
+-- returns true if mob has died
+function mob_class:do_states(dtime)
+	--if self.can_open_doors then check_doors(self) end
 
+	if self.state == "stand" then
+		self:do_states_stand()
+	elseif self.state == PATHFINDING then
+		self:check_gowp(dtime)
+	elseif self.state == "walk" then
+		self:do_states_walk()
+	elseif self.state == "runaway" then
+		-- runaway when punched
+		self:do_states_runaway()
+	elseif self.state == "attack" then
+		-- attack routines (explode, dogfight, shoot, dogshoot)
+		if self:do_states_attack(dtime) then
+			return true
+		end
+	end
+end
+
+local function update_timers (self, dtime)
+	-- knockback timer. set in on_punch
+	if self.pause_timer > 0 then
+		self.pause_timer = self.pause_timer - dtime
+		return true
+	end
+
+	-- attack timer
+	self.timer = self.timer + dtime
+
+	if self.state ~= "attack" and self.state ~= PATHFINDING then
+		if self.timer < 1 then
+			return true
+		end
+		self.timer = 0
+	end
+
+	-- never go over 100
+	if self.timer > 100 then
+		self.timer = 1
+	end
+end
 
 -- main mob function
 function mob_class:on_step(dtime)
-	self.lifetimer = self.lifetimer - dtime
 	local pos = self.object:get_pos()
 	if not pos then return end
-	if self:check_despawn(pos) then return true end
 
-	local d = 0.85
-	if self:check_dying() then d = 0.92 end
+	if self:check_despawn(pos, dtime) then return true end
 
-	local v = self.object:get_velocity()
-	if v then
-		--diffuse object velocity
-		self.object:set_velocity({x = v.x*d, y = v.y, z = v.z*d})
-	end
-
+	self:slow_mob()
 	if self:falling(pos) then return end
-
 	self:check_suspend()
+
 	self:check_water_flow()
 
-	local yaw = 0
-	if self:is_at_water_danger() and self.state ~= "attack" then
-		if math.random(1, 10) <= 6 then
-			self:set_velocity(0)
-			self.state = "stand"
-			self:set_animation( "stand")
-			yaw = yaw + math.random(-0.5, 0.5)
-			yaw = self:set_yaw( yaw, 8)
-		end
-	else
-		if self.move_in_group ~= false then
-			self:check_herd(dtime)
-		end
-	end
-
-	if self:is_at_cliff_or_danger() then
-			self:set_velocity(0)
-			self.state = "stand"
-			self:set_animation( "stand")
-			local yaw = self.object:get_yaw() or 0
-			yaw = self:set_yaw( yaw + 0.78, 8)
-	end
+	self:env_danger_movement_checks (dtime)
 
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
@@ -353,21 +353,17 @@ function mob_class:on_step(dtime)
 
 	if self.state == "die" then return end
 
-	if self.jump_sound_cooloff > 0 then
-		self.jump_sound_cooloff = self.jump_sound_cooloff - dtime
-	end
-	if self.opinion_sound_cooloff > 0 then
-		self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
-	end
+	self:follow_flop() -- Mob following code.
 
-	--Mob following code.
-	self:follow_flop()
-	--set animation speed relitive to velocity
-	self:set_animation_speed()
+	self:set_animation_speed() -- set animation speed relitive to velocity
 	self:check_smooth_rotation(dtime)
 	self:check_head_swivel(dtime)
 
+	if self.jump_sound_cooloff > 0 then
+		self.jump_sound_cooloff = self.jump_sound_cooloff - dtime
+	end
 	self:do_jump()
+
 	self:set_armor_texture()
 	self:check_runaway_from()
 
@@ -378,63 +374,26 @@ function mob_class:on_step(dtime)
 
 	-- run custom function (defined in mob lua file)
 	if self.do_custom then
-
-		-- when false skip going any further
 		if self.do_custom(self, dtime) == false then
 			return
 		end
 	end
 
-	-- knockback timer
-	if self.pause_timer > 0 then
+	if update_timers(self, dtime) then return end
 
-		self.pause_timer = self.pause_timer - dtime
-
-		return
-	end
-
-	-- attack timer
-	self.timer = self.timer + dtime
-
-	if self.state ~= "attack" and self.state ~= PATHFINDING then
-		if self.timer < 1 then
-			return
-		end
-		self.timer = 0
-	end
 	self:check_particlespawners(dtime)
 	self:check_item_pickup()
 
-	-- never go over 100
-	if self.timer > 100 then
-		self.timer = 1
+	if self.opinion_sound_cooloff > 0 then
+		self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
 	end
-
-	-- mob plays random sound at times
+	-- mob plays random sound at times. Should be 120. Zombie and mob farms are ridiculous
 	if math.random(1, 70) == 1 then
 		self:mob_sound("random", true)
 	end
 
-	-- environmental damage timer (every 1 second)
-	self.env_damage_timer = self.env_damage_timer + dtime
-
-	if (self.state == "attack" and self.env_damage_timer > 1)
-	or self.state ~= "attack" then
-		self:check_entity_cramming()
-		self.env_damage_timer = 0
-
-		-- check for environmental damage (water, fire, lava etc.)
-		if self:do_env_damage() then
-			return
-		end
-
-		-- node replace check (cow eats grass etc.)
-		self:replace(pos)
-	end
-
-	if self:do_states(dtime) then
-		return
-	end
+	if self:env_damage (dtime, pos) then return end
+	if self:do_states(dtime) then return end
 
 	if not self.object:get_luaentity() then
 		return false

@@ -89,14 +89,7 @@ minetest.register_craftitem("mcl_farming:carrot_item", {
 	groups = {food = 2, eatable = 3, compostability = 65},
 	_mcl_saturation = 3.6,
 	on_secondary_use = minetest.item_eat(3),
-	on_place = function(itemstack, placer, pointed_thing)
-		local new = mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:carrot_1")
-		if new then
-			return new
-		else
-			return minetest.do_item_eat(3, nil, itemstack, placer, pointed_thing)
-		end
-	end,
+	on_place = mcl_farming:get_seed_or_eat_callback("mcl_farming:carrot_1", 3),
 })
 
 minetest.register_craftitem("mcl_farming:carrot_item_gold", {
