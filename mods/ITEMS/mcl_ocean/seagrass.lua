@@ -39,7 +39,7 @@ local function seagrass_on_place(itemstack, placer, pointed_thing)
 		return itemstack
 	end
 
-	if mcl_util.check_positions_protection({pos_under, pos_above}, placer, true) then
+	if mcl_util.check_area_protection(pos_under, pos_above, placer) then
 		return itemstack
 	end
 

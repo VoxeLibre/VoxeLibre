@@ -729,28 +729,28 @@ function mcl_util.set_bone_position(obj, bone, pos, rot)
 	end
 end
 
---[[Check for a protection violation on any of the given positions.
+--[[Check for a protection violation in a given area.
 --
--- @param positions     A table of position tables to check for protection violation.
+-- Applies is_protected() to a 3D lattice of points in the defined volume. The points are spaced
+-- evenly throughout the volume and have a spacing similar to, but no larger than, "interval".
+--
+-- @param pos1          A position table of the area volume's first edge.
+-- @param pos2          A position table of the area volume's second edge.
 -- @param player        The player performing the action.
--- @param create_log    Default: False. Should a log message be created on violation detection.
+-- @param interval	    Optional. Max spacing between checked points at the volume.
+--      Default: Same as minetest.is_area_protected.
 --
 -- @return	true on protection violation detection. false otherwise.
+--
+-- @notes   *All corners and edges of the defined volume are checked.
 ]]
-function mcl_util.check_positions_protection(positions, player, create_log)
-	create_log = create_log or false
+function mcl_util.check_area_protection(pos1, pos2, player, interval)
 	local name = player and player:get_player_name() or ""
 
-	for i = 1, #positions do
-		if minetest.is_protected(positions[i], name) then
-			if create_log then
-				minetest.log("action", name .. " tried violating protection at position "
-				.. minetest.pos_to_string(positions[i]))
-			end
-
-			minetest.record_protection_violation(positions[i], name)
-			return true
-		end
+	local protected_pos = minetest.is_area_protected(pos1, pos2, name, interval)
+	if protected_pos then
+		minetest.record_protection_violation(protected_pos, name)
+		return true
 	end
 
 	return false
@@ -759,21 +759,14 @@ end
 --[[Check for a protection violation on a single position.
 --
 -- @param position      A position table to check for protection violation.
--- @param player        See mcl_util.check_positions_protection.
--- @param create_log    See mcl_util.check_positions_protection.
+-- @param player        The player performing the action.
 --
--- @return	See check_positions_protection.
+-- @return	true on protection violation detection. false otherwise.
 ]]
-function mcl_util.check_position_protection(position, player, create_log)
-	create_log = create_log or false
+function mcl_util.check_position_protection(position, player)
 	local name = player and player:get_player_name() or ""
 
 	if minetest.is_protected(position, name) then
-		if create_log then
-			minetest.log("action", name .. " tried violating protection at position "
-			.. minetest.pos_to_string(position))
-		end
-
 		minetest.record_protection_violation(position, name)
 		return true
 	end
