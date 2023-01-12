@@ -193,7 +193,7 @@ if minetest.get_modpath("mcl_signs") then
 	if mcl_signs ~= nil then
 		-- Bamboo Signs...
 		mcl_signs.register_sign_custom("mcl_bamboo", "_bamboo", "mcl_signs_sign_greyscale.png",
-				"#f6dc91", "default_sign_greyscale.png", "default_sign_greyscale.png",
+				"#e2cdc1", "default_sign_greyscale.png", "default_sign_greyscale.png",
 				"Bamboo Sign")
 		mcl_signs.register_sign_craft("mcl_bamboo", BAMBOO_PLANK, "_bamboo")
 		minetest.register_alias("bamboo_sign", "mcl_signs:wall_sign_bamboo")
