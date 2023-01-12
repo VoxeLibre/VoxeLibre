@@ -198,27 +198,34 @@ local bamboo_def = {
 			rand_height = pr:next(BAMBOO_MAX_HEIGHT - 4, BAMBOO_MAX_HEIGHT)
 		end
 
-		local _, position = minetest.item_place(place_item, placer, pointed_thing, fdir)
-		if not minetest.is_creative_enabled(placer:get_player_name()) then
-			itemstack:take_item(1)
-		end
-		if rand_height and rand_height > 1 then
-			if position then
-				mcl_bamboo.mcl_log("Setting Height Data...")
-				meta = minetest.get_meta(position)
-				if meta then
-					meta:set_int("height", rand_height)
+		local node_above_name = minetest.get_node(pointed_thing.above).name
+		minetest.log("\n\n\nnode_above name: " .. node_above_name)
+		if node_above_name ~= "mcl_core:water_source" or node_above_name ~= "mcl_core:lava_source"
+				or node_above_name ~= "mcl_nether:nether_lava_source" then
+			local _, position = minetest.item_place(place_item, placer, pointed_thing, fdir)
+			if not minetest.is_creative_enabled(placer:get_player_name()) then
+				itemstack:take_item(1)
+			end
+			if rand_height and rand_height > 1 then
+				if position then
+					mcl_bamboo.mcl_log("Setting Height Data...")
+					meta = minetest.get_meta(position)
+					if meta then
+						meta:set_int("height", rand_height)
+					end
 				end
 			end
+			return itemstack, pointed_thing.under
+		else
+			return
 		end
-		return itemstack, pointed_thing.under
 	end,
 
 	on_destruct = function(pos)
 		-- Node destructor; called before removing node.
 		local new_pos = vector.offset(pos, 0, 1, 0)
 		local node_above = minetest.get_node(new_pos)
-		local bamboo_node = string.sub(node_above.name, 1, string.len(BAMBOO))
+		local bamboo_node = mcl_bamboo.is_bamboo(node_above.name) or 0
 		local istack = ItemStack(BAMBOO)
 		local sound_params = {
 			pos = new_pos,
@@ -226,7 +233,7 @@ local bamboo_def = {
 			max_hear_distance = 10, -- default, uses a Euclidean metric
 		}
 
-		if node_above and (bamboo_node == BAMBOO or node_above.name == BAMBOO_ENDCAP_NAME) then
+		if node_above and ((bamboo_node and bamboo_node > 0) or node_above.name == BAMBOO_ENDCAP_NAME) then
 			minetest.remove_node(new_pos)
 			minetest.sound_play(node_sound.dug, sound_params, true)
 			if pr:next(1, DOUBLE_DROP_CHANCE) == 1 then
