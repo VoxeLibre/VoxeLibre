@@ -107,7 +107,7 @@ local function berry_damage_check(obj)
 	if not p then return end
 	if not minetest.find_node_near(p,0.4,{"group:sweet_berry_thorny"},true) then return end
 	local v = obj:get_velocity()
-	if v.x < 0.1 and v.y < 0.1 and v.z < 0.1 then return end
+	if math.abs(v.x) < 0.1 and math.abs(v.y) < 0.1 and math.abs(v.z) < 0.1 then return end
 
 	mcl_util.deal_damage(obj, 0.5, {type = "sweet_berry"})
 end
