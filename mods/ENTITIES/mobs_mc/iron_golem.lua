@@ -42,7 +42,7 @@ mcl_mobs.register_mob("mobs_mc:iron_golem", {
 	damage = 14,
 	knock_back = false,
 	reach = 3,
-	group_attack = true,
+	group_attack = { "mobs_mc:villager" },
 	attacks_monsters = true,
 	attack_type = "dogfight",
 	_got_poppy = false,
