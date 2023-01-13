@@ -776,7 +776,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 						obj:do_attack(hitter)
 					elseif type(obj.group_attack) == "table" then
 						for i=1, #obj.group_attack do
-							if obj.name == obj.group_attack[i] then
+							if obj.group_attack[i] == self.name then
 								obj._aggro = true
 								obj:do_attack(hitter)
 								break
