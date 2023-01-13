@@ -728,3 +728,48 @@ function mcl_util.set_bone_position(obj, bone, pos, rot)
 		obj:set_bone_position(bone, pos or current_pos, rot or current_rot)
 	end
 end
+
+--[[Check for a protection violation in a given area.
+--
+-- Applies is_protected() to a 3D lattice of points in the defined volume. The points are spaced
+-- evenly throughout the volume and have a spacing similar to, but no larger than, "interval".
+--
+-- @param pos1          A position table of the area volume's first edge.
+-- @param pos2          A position table of the area volume's second edge.
+-- @param player        The player performing the action.
+-- @param interval	    Optional. Max spacing between checked points at the volume.
+--      Default: Same as minetest.is_area_protected.
+--
+-- @return	true on protection violation detection. false otherwise.
+--
+-- @notes   *All corners and edges of the defined volume are checked.
+]]
+function mcl_util.check_area_protection(pos1, pos2, player, interval)
+	local name = player and player:get_player_name() or ""
+
+	local protected_pos = minetest.is_area_protected(pos1, pos2, name, interval)
+	if protected_pos then
+		minetest.record_protection_violation(protected_pos, name)
+		return true
+	end
+
+	return false
+end
+
+--[[Check for a protection violation on a single position.
+--
+-- @param position      A position table to check for protection violation.
+-- @param player        The player performing the action.
+--
+-- @return	true on protection violation detection. false otherwise.
+]]
+function mcl_util.check_position_protection(position, player)
+	local name = player and player:get_player_name() or ""
+
+	if minetest.is_protected(position, name) then
+		minetest.record_protection_violation(position, name)
+		return true
+	end
+
+	return false
+end

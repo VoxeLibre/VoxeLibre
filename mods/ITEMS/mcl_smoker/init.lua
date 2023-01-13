@@ -88,11 +88,10 @@ end
 --
 
 local function allow_metadata_inventory_put(pos, listname, index, stack, player)
-	local name = player:get_player_name()
-	if minetest.is_protected(pos, name) then
-		minetest.record_protection_violation(pos, name)
+	if mcl_util.check_position_protection(pos, player) then
 		return 0
 	end
+
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	if listname == "fuel" then
