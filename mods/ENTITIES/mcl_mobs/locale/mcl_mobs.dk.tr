@@ -1,0 +1,11 @@
+# textdomain: mcl_mobs
+Peaceful mode active! No monsters will spawn.=Fredelig tilstand aktiveret! Ingen monstre vil spawne.
+This allows you to place a single mob.=Dette gør dig i stand til at placere et enkelt monster.
+Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Placér det blot der hvor du ønsker, at monsteret skal komme. Dyr vil spawne tamme, medmindre du holder snige-knappen nede mens du placerer dem. Hvis du placerer denne på et monsterspawn, ændrer du hvilket monster det spawner.
+You need the “maphack” privilege to change the mob spawner.=Du skal have "maphack" privilegier for at ændre monsterspawneren.
+Name Tag=Navneskilt
+A name tag is an item to name a mob.=Et navneskilt bruges til at navngive et monster.
+Before you use the name tag, you need to set a name at an anvil. Then you can use the name tag to name a mob. This uses up the name tag.=Før du bruger navneskiltet, skal du vælge navnet ved en ambolt. Derefter kan du bruge navneskiltet til at navngive et monster. Dette opbruger navneskiltet.
+Only peaceful mobs allowed!=Kun fredelige monstre er tilladt!
+Give names to mobs=Giv navne til monstre
+Set name at anvil=Vælg navn ved en ambolt.
