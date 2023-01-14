@@ -252,6 +252,9 @@ minetest.register_node("mcl_core:realm_barrier", {
 --- Light blocks
 --- TODO: make node only pointable when wielding it
 
+local light_block_pattern = "^mcl_core:light_(%d+)$"
+
+
 for i = 0, 14 do --minetest.LIGHT_MAX
 	minetest.register_node("mcl_core:light_" .. i, {
 		description = S("Light"),
@@ -271,11 +274,15 @@ for i = 0, 14 do --minetest.LIGHT_MAX
 		groups = {creative_breakable = 1, not_solid = 1, light_block = i + 1},
 		on_blast = function(pos, intensity) end,
 		on_use = function(itemstack, user, pointed_thing)
+			if pointed_thing.type == "node" and string.match(minetest.get_node(pointed_thing.under).name, light_block_pattern) and not user:get_player_control().sneak then
+				minetest.dig_node(pointed_thing.under)
+				return
+			end
 			itemstack:set_name("mcl_core:light_" .. ((i == 14) and 0 or i + 1))
 			return itemstack
 		end,
 		on_place = mcl_util.bypass_buildable_to(function(node_name)
-			return string.match(node_name, "^mcl_core:light_(%d+)$")
+			return string.match(node_name, light_block_pattern)
 		end),
 		after_place_node = function(pos, placer, itemstack, pointed_thing)
 			if placer == nil then
