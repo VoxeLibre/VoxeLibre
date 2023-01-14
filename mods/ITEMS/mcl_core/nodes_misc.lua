@@ -274,6 +274,7 @@ for i = 0, 14 do --minetest.LIGHT_MAX
 		groups = {creative_breakable = 1, not_solid = 1, light_block = i + 1},
 		on_blast = function(pos, intensity) end,
 		on_use = function(itemstack, user, pointed_thing)
+			-- user:get_player_control() returns {} for non players, so we don't need user:is_player()
 			if pointed_thing.type == "node" and string.match(minetest.get_node(pointed_thing.under).name, light_block_pattern) and not user:get_player_control().sneak then
 				minetest.dig_node(pointed_thing.under)
 				return
@@ -285,7 +286,7 @@ for i = 0, 14 do --minetest.LIGHT_MAX
 			return string.match(node_name, light_block_pattern)
 		end),
 		after_place_node = function(pos, placer, itemstack, pointed_thing)
-			if placer == nil then
+			if not placer then
 				return
 			end
 			minetest.add_particle({
