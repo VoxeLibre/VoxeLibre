@@ -102,7 +102,7 @@ local function play()
 end
 
 if music_enabled then
-	minetest.log("action", "[mcl_music] In game music is activated")
+	minetest.log("action", "[mcl_music] In-game music is activated")
 	minetest.after(15, play)
 
 	minetest.register_on_joinplayer(function(player, last_login)
@@ -115,5 +115,5 @@ if music_enabled then
 		stop_music_for_listener_name(player_name)
 	end)
 else
-	minetest.log("action", "[mcl_music] In game music is deactivated")
+	minetest.log("action", "[mcl_music] In-game music is deactivated")
 end
