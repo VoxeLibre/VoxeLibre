@@ -2,8 +2,8 @@ mcl_util = {}
 
 -- Updates all values in t using values from to*.
 function table.update(t, ...)
-	for _, to in ipairs{...} do
-		for k,v in pairs(to) do
+	for _, to in ipairs {...} do
+		for k, v in pairs(to) do
 			t[k] = v
 		end
 	end
@@ -12,8 +12,8 @@ end
 
 -- Updates nil values in t using values from to*.
 function table.update_nil(t, ...)
-	for _, to in ipairs{...} do
-		for k,v in pairs(to) do
+	for _, to in ipairs {...} do
+		for k, v in pairs(to) do
 			if t[k] == nil then
 				t[k] = v
 			end
@@ -22,9 +22,9 @@ function table.update_nil(t, ...)
 	return t
 end
 
-local LOGGING_ON = minetest.settings:get_bool("mcl_logging_default",false)
+local LOGGING_ON = minetest.settings:get_bool("mcl_logging_default", false)
 local LOG_MODULE = "[MCL2]"
-function mcl_util.mcl_log (message, module, bypass_default_logger)
+function mcl_util.mcl_log(message, module, bypass_default_logger)
 	local selected_module = LOG_MODULE
 	if module then
 		selected_module = module
@@ -33,7 +33,6 @@ function mcl_util.mcl_log (message, module, bypass_default_logger)
 		minetest.log(selected_module .. " " .. message)
 	end
 end
-
 
 function mcl_util.file_exists(name)
 	if type(name) ~= "string" then return end
@@ -69,7 +68,7 @@ function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infini
 	local undef = minetest.registered_nodes[unode.name]
 	if undef and undef.on_rightclick then
 		undef.on_rightclick(pointed_thing.under, unode, placer,
-				itemstack, pointed_thing)
+			itemstack, pointed_thing)
 		return
 	end
 	local fdir = minetest.dir_to_facedir(placer:get_look_dir())
@@ -151,23 +150,23 @@ end
 function mcl_util.get_double_container_neighbor_pos(pos, param2, side)
 	if side == "right" then
 		if param2 == 0 then
-			return {x=pos.x-1, y=pos.y, z=pos.z}
+			return {x = pos.x - 1, y = pos.y, z = pos.z}
 		elseif param2 == 1 then
-			return {x=pos.x, y=pos.y, z=pos.z+1}
+			return {x = pos.x, y = pos.y, z = pos.z + 1}
 		elseif param2 == 2 then
-			return {x=pos.x+1, y=pos.y, z=pos.z}
+			return {x = pos.x + 1, y = pos.y, z = pos.z}
 		elseif param2 == 3 then
-			return {x=pos.x, y=pos.y, z=pos.z-1}
+			return {x = pos.x, y = pos.y, z = pos.z - 1}
 		end
 	else
 		if param2 == 0 then
-			return {x=pos.x+1, y=pos.y, z=pos.z}
+			return {x = pos.x + 1, y = pos.y, z = pos.z}
 		elseif param2 == 1 then
-			return {x=pos.x, y=pos.y, z=pos.z-1}
+			return {x = pos.x, y = pos.y, z = pos.z - 1}
 		elseif param2 == 2 then
-			return {x=pos.x-1, y=pos.y, z=pos.z}
+			return {x = pos.x - 1, y = pos.y, z = pos.z}
 		elseif param2 == 3 then
-			return {x=pos.x, y=pos.y, z=pos.z+1}
+			return {x = pos.x, y = pos.y, z = pos.z + 1}
 		end
 	end
 end
@@ -185,7 +184,7 @@ end
 function mcl_util.get_eligible_transfer_item_slot(src_inventory, src_list, dst_inventory, dst_list, condition)
 	local size = src_inventory:get_size(src_list)
 	local stack
-	for i=1, size do
+	for i = 1, size do
 		stack = src_inventory:get_stack(src_list, i)
 		if not stack:is_empty() and (condition == nil or condition(stack, src_inventory, src_list, dst_inventory, dst_list)) then
 			return i
@@ -288,10 +287,10 @@ function mcl_util.move_item_container(source_pos, destination_pos, source_list, 
 		-- Main inventory for most container types
 		if sctype == 2 or sctype == 3 or sctype == 5 or sctype == 6 or sctype == 7 then
 			source_list = "main"
-		-- Furnace: output
+			-- Furnace: output
 		elseif sctype == 4 then
 			source_list = "dst"
-		-- Unknown source container type. Bail out
+			-- Unknown source container type. Bail out
 		else
 			return false
 		end
@@ -344,7 +343,7 @@ function mcl_util.move_item_container(source_pos, destination_pos, source_list, 
 			-- Main inventory for most container types
 			if dctype == 2 or dctype == 3 or dctype == 5 or dctype == 6 or dctype == 7 then
 				destination_list = "main"
-			-- Furnace source slot
+				-- Furnace source slot
 			elseif dctype == 4 then
 				destination_list = "src"
 			end
@@ -409,7 +408,7 @@ end
 -- Returns true if item (itemstring or ItemStack) can be used as a furnace fuel.
 -- Returns false otherwise
 function mcl_util.is_fuel(item)
-	return minetest.get_craft_result({method="fuel", width=1, items={item}}).time ~= 0
+	return minetest.get_craft_result({method = "fuel", width = 1, items = {item}}).time ~= 0
 end
 
 -- Returns a on_place function for plants
@@ -456,7 +455,7 @@ function mcl_util.generate_on_place_plant_function(condition)
 
 			if success then
 				if idef.sounds and idef.sounds.place then
-					minetest.sound_play(idef.sounds.place, {pos=pointed_thing.above, gain=1}, true)
+					minetest.sound_play(idef.sounds.place, {pos = pointed_thing.above, gain = 1}, true)
 				end
 			end
 			itemstack = new_itemstack
@@ -643,78 +642,80 @@ end
 
 local function roundN(n, d)
 	if type(n) ~= "number" then return n end
-    local m = 10^d
-    return math.floor(n * m + 0.5) / m
+	local m = 10 ^ d
+	return math.floor(n * m + 0.5) / m
 end
 
-local function close_enough(a,b)
-	local rt=true
+local function close_enough(a, b)
+	local rt = true
 	if type(a) == "table" and type(b) == "table" then
-		for k,v in pairs(a) do
-			if roundN(v,2) ~= roundN(b[k],2) then
-				rt=false
+		for k, v in pairs(a) do
+			if roundN(v, 2) ~= roundN(b[k], 2) then
+				rt = false
 				break
 			end
 		end
 	else
-		rt = roundN(a,2) == roundN(b,2)
+		rt = roundN(a, 2) == roundN(b, 2)
 	end
 	return rt
 end
 
-local function props_changed(props,oldprops)
-	local changed=false
-	local p={}
-	for k,v in pairs(props) do
-		if not close_enough(v,oldprops[k]) then
-			p[k]=v
-			changed=true
+local function props_changed(props, oldprops)
+	local changed = false
+	local p = {}
+	for k, v in pairs(props) do
+		if not close_enough(v, oldprops[k]) then
+			p[k] = v
+			changed = true
 		end
 	end
-	return changed,p
+	return changed, p
 end
 
 --tests for roundN
-local test_round1=15
-local test_round2=15.00199999999
-local test_round3=15.00111111
-local test_round4=15.00999999
+local test_round1 = 15
+local test_round2 = 15.00199999999
+local test_round3 = 15.00111111
+local test_round4 = 15.00999999
 
-assert(roundN(test_round1,2)==roundN(test_round1,2))
-assert(roundN(test_round1,2)==roundN(test_round2,2))
-assert(roundN(test_round1,2)==roundN(test_round3,2))
-assert(roundN(test_round1,2)~=roundN(test_round4,2))
+assert(roundN(test_round1, 2) == roundN(test_round1, 2))
+assert(roundN(test_round1, 2) == roundN(test_round2, 2))
+assert(roundN(test_round1, 2) == roundN(test_round3, 2))
+assert(roundN(test_round1, 2) ~= roundN(test_round4, 2))
 
 -- tests for close_enough
-local test_cb = {-0.35,0,-0.35,0.35,0.8,0.35} --collisionboxes
-local test_cb_close = {-0.351213,0,-0.35,0.35,0.8,0.351212}
-local test_cb_diff = {-0.35,0,-1.35,0.35,0.8,0.35}
+local test_cb = {-0.35, 0, -0.35, 0.35, 0.8, 0.35} --collisionboxes
+local test_cb_close = {-0.351213, 0, -0.35, 0.35, 0.8, 0.351212}
+local test_cb_diff = {-0.35, 0, -1.35, 0.35, 0.8, 0.35}
 
 local test_eh = 1.65 --eye height
 local test_eh_close = 1.65123123
 local test_eh_diff = 1.35
 
-local test_nt = { r = 225, b = 225, a = 225, g = 225 } --nametag
-local test_nt_diff = { r = 225, b = 225, a = 0, g = 225 }
+local test_nt = {r = 225, b = 225, a = 225, g = 225} --nametag
+local test_nt_diff = {r = 225, b = 225, a = 0, g = 225}
 
-assert(close_enough(test_cb,test_cb_close))
-assert(not close_enough(test_cb,test_cb_diff))
-assert(close_enough(test_eh,test_eh_close))
-assert(not close_enough(test_eh,test_eh_diff))
-assert(not close_enough(test_nt,test_nt_diff)) --no floats involved here
+assert(close_enough(test_cb, test_cb_close))
+assert(not close_enough(test_cb, test_cb_diff))
+assert(close_enough(test_eh, test_eh_close))
+assert(not close_enough(test_eh, test_eh_diff))
+assert(not close_enough(test_nt, test_nt_diff)) --no floats involved here
 
 --tests for properties_changed
-local test_properties_set1={collisionbox = {-0.35,0,-0.35,0.35,0.8,0.35}, eye_height = 0.65, nametag_color = { r = 225, b = 225, a = 225, g = 225 }}
-local test_properties_set2={collisionbox = {-0.35,0,-0.35,0.35,0.8,0.35}, eye_height = 1.35, nametag_color = { r = 225, b = 225, a = 225, g = 225 }}
+local test_properties_set1 = {collisionbox = {-0.35, 0, -0.35, 0.35, 0.8, 0.35}, eye_height = 0.65,
+	nametag_color = {r = 225, b = 225, a = 225, g = 225}}
+local test_properties_set2 = {collisionbox = {-0.35, 0, -0.35, 0.35, 0.8, 0.35}, eye_height = 1.35,
+	nametag_color = {r = 225, b = 225, a = 225, g = 225}}
 
-local test_p1,_=props_changed(test_properties_set1,test_properties_set1)
-local test_p2,_=props_changed(test_properties_set1,test_properties_set2)
+local test_p1, _ = props_changed(test_properties_set1, test_properties_set1)
+local test_p2, _ = props_changed(test_properties_set1, test_properties_set2)
 
 assert(not test_p1)
 assert(test_p2)
 
-function mcl_util.set_properties(obj,props)
-	local changed,p=props_changed(props,obj:get_properties())
+function mcl_util.set_properties(obj, props)
+	local changed, p = props_changed(props, obj:get_properties())
 	if changed then
 		obj:set_properties(p)
 	end
@@ -726,6 +727,243 @@ function mcl_util.set_bone_position(obj, bone, pos, rot)
 	local rot_equal = not rot or vector.equals(vector.round(current_rot), vector.round(rot))
 	if not pos_equal or not rot_equal then
 		obj:set_bone_position(bone, pos or current_pos, rot or current_rot)
+	end
+end
+
+---Return a function to use in `on_place`.
+---
+---Allow to bypass the `buildable_to` node field in a `on_place` callback.
+---
+---You have to make sure that the nodes you return true for have `buildable_to = true`.
+---@param func fun(node_name: string): boolean Return `true` if node must not replace the buildable_to node which have `node_name`
+---@return fun(itemstack: ItemStack, placer: ObjectRef, pointed_thing: pointed_thing, param2: integer): ItemStack?
+function mcl_util.bypass_buildable_to(func)
+	--------------------------
+	-- MINETEST CODE: UTILS --
+	--------------------------
+
+	local function copy_pointed_thing(pointed_thing)
+		return {
+			type  = pointed_thing.type,
+			above = pointed_thing.above and vector.copy(pointed_thing.above),
+			under = pointed_thing.under and vector.copy(pointed_thing.under),
+			ref   = pointed_thing.ref,
+		}
+	end
+
+	local function user_name(user)
+		return user and user:get_player_name() or ""
+	end
+
+	-- Returns a logging function. For empty names, does not log.
+	local function make_log(name)
+		return name ~= "" and minetest.log or function() end
+	end
+
+	local function check_attached_node(p, n, group_rating)
+		local def = core.registered_nodes[n.name]
+		local d = vector.zero()
+		if group_rating == 3 then
+			-- always attach to floor
+			d.y = -1
+		elseif group_rating == 4 then
+			-- always attach to ceiling
+			d.y = 1
+		elseif group_rating == 2 then
+			-- attach to facedir or 4dir direction
+			if (def.paramtype2 == "facedir" or
+				def.paramtype2 == "colorfacedir") then
+				-- Attach to whatever facedir is "mounted to".
+				-- For facedir, this is where tile no. 5 point at.
+
+				-- The fallback vector here is in case 'facedir to dir' is nil due
+				-- to voxelmanip placing a wallmounted node without resetting a
+				-- pre-existing param2 value that is out-of-range for facedir.
+				-- The fallback vector corresponds to param2 = 0.
+				d = core.facedir_to_dir(n.param2) or vector.new(0, 0, 1)
+			elseif (def.paramtype2 == "4dir" or
+				def.paramtype2 == "color4dir") then
+				-- Similar to facedir handling
+				d = core.fourdir_to_dir(n.param2) or vector.new(0, 0, 1)
+			end
+		elseif def.paramtype2 == "wallmounted" or
+			def.paramtype2 == "colorwallmounted" then
+			-- Attach to whatever this node is "mounted to".
+			-- This where tile no. 2 points at.
+
+			-- The fallback vector here is used for the same reason as
+			-- for facedir nodes.
+			d = core.wallmounted_to_dir(n.param2) or vector.new(0, 1, 0)
+		else
+			d.y = -1
+		end
+		local p2 = vector.add(p, d)
+		local nn = core.get_node(p2).name
+		local def2 = core.registered_nodes[nn]
+		if def2 and not def2.walkable then
+			return false
+		end
+		return true
+	end
+
+	return function(itemstack, placer, pointed_thing, param2)
+		-------------------
+		-- MINETEST CODE --
+		-------------------
+		local def = itemstack:get_definition()
+		if def.type ~= "node" or pointed_thing.type ~= "node" then
+			return itemstack
+		end
+
+		local under = pointed_thing.under
+		local oldnode_under = minetest.get_node_or_nil(under)
+		local above = pointed_thing.above
+		local oldnode_above = minetest.get_node_or_nil(above)
+		local playername = user_name(placer)
+		local log = make_log(playername)
+
+		if not oldnode_under or not oldnode_above then
+			log("info", playername .. " tried to place"
+				.. " node in unloaded position " .. minetest.pos_to_string(above))
+			return itemstack
+		end
+
+		local olddef_under = minetest.registered_nodes[oldnode_under.name]
+		olddef_under = olddef_under or minetest.nodedef_default
+		local olddef_above = minetest.registered_nodes[oldnode_above.name]
+		olddef_above = olddef_above or minetest.nodedef_default
+
+		if not olddef_above.buildable_to and not olddef_under.buildable_to then
+			log("info", playername .. " tried to place"
+				.. " node in invalid position " .. minetest.pos_to_string(above)
+				.. ", replacing " .. oldnode_above.name)
+			return itemstack
+		end
+
+		---------------------
+		-- CUSTOMIZED CODE --
+		---------------------
+
+		-- Place above pointed node
+		local place_to = vector.copy(above)
+
+		-- If node under is buildable_to, check for callback result and place into it instead
+		if olddef_under.buildable_to and not func(oldnode_under.name) then
+			log("info", "node under is buildable to")
+			place_to = vector.copy(under)
+		end
+
+		-------------------
+		-- MINETEST CODE --
+		-------------------
+
+		if minetest.is_protected(place_to, playername) then
+			log("action", playername
+				.. " tried to place " .. def.name
+				.. " at protected position "
+				.. minetest.pos_to_string(place_to))
+			minetest.record_protection_violation(place_to, playername)
+			return itemstack
+		end
+
+		local oldnode = minetest.get_node(place_to)
+		local newnode = {name = def.name, param1 = 0, param2 = param2 or 0}
+
+		-- Calculate direction for wall mounted stuff like torches and signs
+		if def.place_param2 ~= nil then
+			newnode.param2 = def.place_param2
+		elseif (def.paramtype2 == "wallmounted" or
+			def.paramtype2 == "colorwallmounted") and not param2 then
+			local dir = vector.subtract(under, above)
+			newnode.param2 = minetest.dir_to_wallmounted(dir)
+			-- Calculate the direction for furnaces and chests and stuff
+		elseif (def.paramtype2 == "facedir" or
+			def.paramtype2 == "colorfacedir" or
+			def.paramtype2 == "4dir" or
+			def.paramtype2 == "color4dir") and not param2 then
+			local placer_pos = placer and placer:get_pos()
+			if placer_pos then
+				local dir = vector.subtract(above, placer_pos)
+				newnode.param2 = minetest.dir_to_facedir(dir)
+				log("info", "facedir: " .. newnode.param2)
+			end
+		end
+
+		local metatable = itemstack:get_meta():to_table().fields
+
+		-- Transfer color information
+		if metatable.palette_index and not def.place_param2 then
+			local color_divisor = nil
+			if def.paramtype2 == "color" then
+				color_divisor = 1
+			elseif def.paramtype2 == "colorwallmounted" then
+				color_divisor = 8
+			elseif def.paramtype2 == "colorfacedir" then
+				color_divisor = 32
+			elseif def.paramtype2 == "color4dir" then
+				color_divisor = 4
+			elseif def.paramtype2 == "colordegrotate" then
+				color_divisor = 32
+			end
+			if color_divisor then
+				local color = math.floor(metatable.palette_index / color_divisor)
+				local other = newnode.param2 % color_divisor
+				newnode.param2 = color * color_divisor + other
+			end
+		end
+
+		-- Check if the node is attached and if it can be placed there
+		local an = minetest.get_item_group(def.name, "attached_node")
+		if an ~= 0 and
+			not check_attached_node(place_to, newnode, an) then
+			log("action", "attached node " .. def.name ..
+				" cannot be placed at " .. minetest.pos_to_string(place_to))
+			return itemstack
+		end
+
+		log("action", playername .. " places node "
+			.. def.name .. " at " .. minetest.pos_to_string(place_to))
+
+		-- Add node and update
+		minetest.add_node(place_to, newnode)
+
+		-- Play sound if it was done by a player
+		if playername ~= "" and def.sounds and def.sounds.place then
+			minetest.sound_play(def.sounds.place, {
+				pos = place_to,
+				exclude_player = playername,
+			}, true)
+		end
+
+		local take_item = true
+
+		-- Run callback
+		if def.after_place_node then
+			-- Deepcopy place_to and pointed_thing because callback can modify it
+			local place_to_copy = vector.copy(place_to)
+			local pointed_thing_copy = copy_pointed_thing(pointed_thing)
+			if def.after_place_node(place_to_copy, placer, itemstack,
+				pointed_thing_copy) then
+				take_item = false
+			end
+		end
+
+		-- Run script hook
+		for _, callback in ipairs(minetest.registered_on_placenodes) do
+			-- Deepcopy pos, node and pointed_thing because callback can modify them
+			local place_to_copy = vector.copy(place_to)
+			local newnode_copy = {name = newnode.name, param1 = newnode.param1, param2 = newnode.param2}
+			local oldnode_copy = {name = oldnode.name, param1 = oldnode.param1, param2 = oldnode.param2}
+			local pointed_thing_copy = copy_pointed_thing(pointed_thing)
+			if callback(place_to_copy, newnode_copy, placer, oldnode_copy, itemstack, pointed_thing_copy) then
+				take_item = false
+			end
+		end
+
+		if take_item then
+			itemstack:take_item()
+		end
+		return itemstack
 	end
 end
 

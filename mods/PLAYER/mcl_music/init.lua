@@ -1,6 +1,8 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
+local music_enabled = minetest.settings:get_bool("mcl_game_music", true)
+
 local pianowtune  = "diminixed-pianowtune01"
 local end_tune    = "diminixed-ambientwip"
 local nether_tune = "horizonchris96-traitor"
@@ -99,15 +101,19 @@ local function play()
 	minetest.after(7, play)
 end
 
-minetest.after(15, play)
+if music_enabled then
+	minetest.log("action", "[mcl_music] In-game music is activated")
+	minetest.after(15, play)
 
-minetest.register_on_joinplayer(function(player, last_login)
-	local player_name = player:get_player_name()
-	stop_music_for_listener_name(player_name)
-end)
+	minetest.register_on_joinplayer(function(player, last_login)
+		local player_name = player:get_player_name()
+		stop_music_for_listener_name(player_name)
+	end)
 
-minetest.register_on_respawnplayer(function(player)
-	local player_name = player:get_player_name()
-	stop_music_for_listener_name(player_name)
-end)
-
+	minetest.register_on_respawnplayer(function(player)
+		local player_name = player:get_player_name()
+		stop_music_for_listener_name(player_name)
+	end)
+else
+	minetest.log("action", "[mcl_music] In-game music is deactivated")
+end
