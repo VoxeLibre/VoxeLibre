@@ -178,7 +178,7 @@ function mob_class:check_breeding()
 				-- jump when fully grown so as not to fall into ground
 				self.object:set_velocity({
 					x = 0,
-					y = self.jump_height*3,
+					y = self.jump_height,
 					z = 0
 				})
 			end
