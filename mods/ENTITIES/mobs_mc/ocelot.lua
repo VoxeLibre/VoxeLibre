@@ -164,7 +164,7 @@ cat.on_spawn  = function(self)
 	if not self._texture then
 		self._texture = cat.textures[math.random(#cat.textures)]
 	end
-	self.object:set_properties({textures = {self._texture}})
+	self.object:set_properties({textures = self._texture})
 end
 
 mcl_mobs.register_mob("mobs_mc:cat", cat)
