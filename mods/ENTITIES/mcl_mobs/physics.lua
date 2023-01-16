@@ -186,10 +186,12 @@ function mob_class:slow_mob()
 	local d = 0.85
 	if self:check_dying() then d = 0.92 end
 
-	local v = self.object:get_velocity()
-	if v then
-		--diffuse object velocity
-		self.object:set_velocity({x = v.x*d, y = v.y, z = v.z*d})
+	if self.object then
+		local v = self.object:get_velocity()
+		if v then
+			--diffuse object velocity
+			self.object:set_velocity({x = v.x*d, y = v.y, z = v.z*d})
+		end
 	end
 end
 
@@ -518,9 +520,11 @@ function mob_class:check_for_death(cause, cmi_cause)
 	})
 
 	self:set_velocity(0)
-	local acc = self.object:get_acceleration()
-	acc.x, acc.y, acc.z = 0, DEFAULT_FALL_SPEED, 0
-	self.object:set_acceleration(acc)
+	if self.object then
+		local acc = self.object:get_acceleration()
+		acc.x, acc.y, acc.z = 0, DEFAULT_FALL_SPEED, 0
+		self.object:set_acceleration(acc)
+	end
 
 	local length
 	-- default death function and die animation (if defined)
@@ -980,9 +984,11 @@ end
 
 function mob_class:check_dying()
 	if ((self.state and self.state=="die") or self:check_for_death()) and not self.animation.die_end then
-		local rot = self.object:get_rotation()
-		rot.z = ((math.pi/2-rot.z)*.2)+rot.z
-		self.object:set_rotation(rot)
+		if self.object then
+			local rot = self.object:get_rotation()
+			rot.z = ((math.pi/2-rot.z)*.2)+rot.z
+			self.object:set_rotation(rot)
+		end
 		return true
 	end
 end
