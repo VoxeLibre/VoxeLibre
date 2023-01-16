@@ -3,9 +3,12 @@
 ---
 --- Copyright notice created for the license to be valid. (MIT 3)
 
-local stuff_string = minetest.settings:get("starting_inv_contents") or
-		"mcl_tools:pick_iron,mcl_tools:axe_iron,mcl_tools:shovel_iron," ..
-				"mcl_torches:torch 32,mcl_core:cobble 64"
+local give_inventory = minetest.settings:get("starting_inv_contents", false)
+
+local stuff_string
+if give_inventory then
+	stuff_string = "mcl_tools:pick_iron,mcl_tools:axe_iron,mcl_tools:shovel_iron,mcl_torches:torch 32,mcl_core:cobble 32"
+end
 
 mcl_starting_inventory = {
 	items = {}
