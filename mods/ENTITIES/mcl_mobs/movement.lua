@@ -279,6 +279,7 @@ function mob_class:env_danger_movement_checks(dtime)
 			yaw = self:set_yaw( yaw, 8)
 		end
 	else
+		-- This code should probably be moved to movement code
 		if self.move_in_group ~= false then
 			self:check_herd(dtime)
 		end

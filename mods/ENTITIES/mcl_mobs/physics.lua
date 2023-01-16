@@ -182,17 +182,17 @@ function mob_class:collision()
 	return({x,z})
 end
 
-function mob_class:slow_mob()
+function mob_class:check_death_and_slow_mob()
 	local d = 0.85
-	if self:check_dying() then d = 0.92 end
+	local dying = self:check_dying()
+	if dying then d = 0.92 end
 
-	if self.object then
-		local v = self.object:get_velocity()
-		if v then
-			--diffuse object velocity
-			self.object:set_velocity({x = v.x*d, y = v.y, z = v.z*d})
-		end
+	local v = self.object:get_velocity()
+	if v then
+		--diffuse object velocity
+		self.object:set_velocity({x = v.x*d, y = v.y, z = v.z*d})
 	end
+	return dying
 end
 
 -- move mob in facing direction
@@ -520,8 +520,8 @@ function mob_class:check_for_death(cause, cmi_cause)
 	})
 
 	self:set_velocity(0)
-	if self.object then
-		local acc = self.object:get_acceleration()
+	local acc = self.object:get_acceleration()
+	if acc then
 		acc.x, acc.y, acc.z = 0, DEFAULT_FALL_SPEED, 0
 		self.object:set_acceleration(acc)
 	end
@@ -530,10 +530,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 	-- default death function and die animation (if defined)
 	if self.instant_death then
 		length = 0
-	elseif self.animation
-	and self.animation.die_start
-	and self.animation.die_end then
-
+	elseif self.animation and self.animation.die_start and self.animation.die_end then
 		local frames = self.animation.die_end - self.animation.die_start
 		local speed = self.animation.die_speed or 15
 		length = math.max(frames / speed, 0) + DEATH_DELAY
@@ -549,7 +546,6 @@ function mob_class:check_for_death(cause, cmi_cause)
 		if not self.object:get_luaentity() then
 			return
 		end
-
 		death_handle(self)
 		local dpos = self.object:get_pos()
 		local cbox = self.collisionbox
@@ -558,6 +554,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 		self.object:remove()
 		mcl_mobs.death_effect(dpos, yaw, cbox, not self.instant_death)
 	end
+
 	if length <= 0 then
 		kill(self)
 	else
@@ -984,8 +981,8 @@ end
 
 function mob_class:check_dying()
 	if ((self.state and self.state=="die") or self:check_for_death()) and not self.animation.die_end then
-		if self.object then
-			local rot = self.object:get_rotation()
+		local rot = self.object:get_rotation()
+		if rot then
 			rot.z = ((math.pi/2-rot.z)*.2)+rot.z
 			self.object:set_rotation(rot)
 		end
