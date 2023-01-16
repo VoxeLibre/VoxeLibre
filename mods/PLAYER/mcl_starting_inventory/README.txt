@@ -1,4 +1,4 @@
-Adapted for Mineclone 2 by Michieal.
+Mcl_starting_inventory, adapted for Mineclone 2 by Michieal.
 
 Based on:
 Minetest Game mod: give_initial_stuff
