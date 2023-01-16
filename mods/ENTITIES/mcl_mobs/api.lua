@@ -336,7 +336,7 @@ function mob_class:on_step(dtime)
 	if self:check_despawn(pos, dtime) then return true end
 
 	if self:check_death_and_slow_mob() then
-		minetest.log("action", "Mob is dying: ".. tostring(self.name))
+		--minetest.log("action", "Mob is dying: ".. tostring(self.name))
 		-- Do we abandon out of here now?
 	end
 
