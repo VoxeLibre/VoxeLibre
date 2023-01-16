@@ -3,7 +3,7 @@
 ---
 --- Copyright notice created for the license to be valid. (MIT 3)
 
-local stuff_string = minetest.settings:get("starter_chest_contents") or
+local stuff_string = minetest.settings:get("starting_inv_contents") or
 		"mcl_tools:pick_iron,mcl_tools:axe_iron,mcl_tools:shovel_iron," ..
 				"mcl_torches:torch 32,mcl_core:cobble 64"
 
