@@ -145,7 +145,7 @@ function mcl_dye.register_on_bone_meal_apply(func)
 	table.insert(mcl_dye.bone_meal_callbacks, func)
 end
 
-local function apply_bone_meal(pointed_thing,user)
+local function apply_bone_meal(pointed_thing, user)
 	-- Bone meal currently spawns all flowers found in the plains.
 	local flowers_table_plains = {
 		"mcl_flowers:dandelion",
@@ -191,7 +191,7 @@ local function apply_bone_meal(pointed_thing,user)
 	if minetest.get_item_group(n.name, "sapling") >= 1 then
 		mcl_dye.add_bone_meal_particle(pos)
 		-- Saplings: 45% chance to advance growth stage
-		if math.random(1,100) <= 45 then
+		if math.random(1, 100) <= 45 then
 			return mcl_core.grow_sapling(pos, n)
 		end
 	elseif minetest.get_item_group(n.name, "mushroom") == 1 then
@@ -199,7 +199,7 @@ local function apply_bone_meal(pointed_thing,user)
 		-- Try to grow huge mushroom
 
 		-- Must be on a dirt-type block
-		local below = minetest.get_node({x=pos.x,y=pos.y-1,z=pos.z})
+		local below = minetest.get_node({x = pos.x, y = pos.y - 1, z = pos.z})
 		if below.name ~= "mcl_core:mycelium" and below.name ~= "mcl_core:dirt" and minetest.get_item_group(below.name, "grass_block") ~= 1 and below.name ~= "mcl_core:coarse_dirt" and below.name ~= "mcl_core:podzol" then
 			return false
 		end
@@ -353,6 +353,16 @@ local function apply_bone_meal(pointed_thing,user)
 			return true
 		end
 
+--[[
+	Here for when Bonemeal becomes an api, there's code if needed for handling applying to bamboo.
+	-- Handle applying bonemeal to bamboo.
+	elseif mcl_bamboo.is_bamboo(n.name) then
+		local success = mcl_bamboo.grow_bamboo(pos, true)
+		if success then
+			mcl_dye.add_bone_meal_particle(pos)
+		end
+		return success
+--]]
 	elseif n.name == "mcl_flowers:fern" then
 		mcl_dye.add_bone_meal_particle(pos)
 		-- Fern: Grow into large fern

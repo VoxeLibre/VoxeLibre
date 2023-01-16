@@ -36,7 +36,7 @@ return {
 		"SumianVoice",
 		"MrRar",
 		"talamh",
-		"Faerraven",
+		"Faerraven / Michieal",
 	}},
 	{S("Contributors"), 0x52FF00, {
 		"Laurent Rocher",
@@ -147,11 +147,13 @@ return {
 		"jordan4ibanez",
 		"paramat",
 		"cora",
+		"Faerraven / Michieal",
 	}},
 	{S("3D Models"), 0x0019FF, {
 		"22i",
 		"tobyplowy",
 		"epCode",
+		"Faerraven / Michieal",
 	}},
 	{S("Textures"), 0xFF9705, {
 		"XSSheep",

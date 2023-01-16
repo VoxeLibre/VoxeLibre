@@ -35,7 +35,7 @@
 * SumianVoice
 * MrRar
 * talamh
-* Faerraven
+* Faerraven / Michieal
 
 ## Contributors
 * Laurent Rocher
@@ -147,11 +147,13 @@
 * jordan4ibanez
 * paramat
 * cora
+* Faerraven / Michieal
 
 ## 3D Models
 * 22i
 * tobyplowy
 * epCode
+* Faerraven / Michieal
 
 ## Textures
 * XSSheep
@@ -166,6 +168,7 @@
 * RandomLegoBrick
 * cora
 * Faerraven / Michieal
+* Nicu
 
 ## Translations
 * Wuzzy

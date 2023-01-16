@@ -1,19 +1,29 @@
 mcl_bamboo
 =========
 
-This mod adds simple bamboo nodes to your Mineclone 2 world.
+This mod adds working, familiar bamboo nodes to your Mineclone 2 world.
 
-Code redo for Mineclone 2: Michieal. Original bamboo code by: Krock.
+Code: Michieal. Original (basic) bamboo code by: Small Joker.
 
-License for code: GPL3; images / textures: CC-BY-SA. 
-Images Created by Michieal, except for: 
-Inventory / wield image: created by RandomLegoBrick#8692 and is CC0.
+License for code: GPLv3.
+License for images / textures: CC-BY-SA except where noted.
+Images Created by Michieal, except for:
+
+* Inventory / wield image for Bamboo Stalk: created by RandomLegoBrick#8692 and is CC0.
+* The Bamboo door image, which is a variant of this image: https://www.flickr.com/photos/basheertome/5179849901/ which
+  is CC-BY 2.0,
+  Basheer Tome (2015).
 
 Dependencies: mcl_core, mcl_sounds, mcl_tools
 
-Optional Dependencies = mcl_flowerpots, mclx_stairs, mcl_doors, mcl_signs, mesecons_pressureplates, mcl_fences, mesecons_button
+Optional Dependencies = mcl_flowerpots, mclx_stairs, mcl_doors, mcl_signs, mesecons_pressureplates, mcl_fences,
+mesecons_button.
+Note that "mcl_boats" may be used at a later date.
 
-Special thanks to Nicu for help with the nodebox stalk design.
+Special thanks to Nicu for help with a ton of things from testing, to encouragement, to graphic design and nodebox work.
+Nicu - You Rock!
 
-Original code's forum topic:
+Small Joker's bamboo forum topic:
 Forum topic: https://forum.minetest.net/viewtopic.php?id=8289
+
+Scaffold inspiration: Cora, because she said that it couldn't be done.
