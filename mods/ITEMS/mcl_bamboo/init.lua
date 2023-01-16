@@ -27,8 +27,8 @@ dofile(minetest.get_modpath(modname) .. "/recipes.lua")
 --ABMs
 minetest.register_abm({
 	nodenames = mcl_bamboo.bamboo_index,
-	interval = 31.5,
-	chance = 40,
+	interval = 10,
+	chance = 20,
 	action = function(pos, _)
 		mcl_bamboo.grow_bamboo(pos, false)
 	end,
