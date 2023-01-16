@@ -199,7 +199,7 @@ local bamboo_def = {
 		end
 
 		local node_above_name = minetest.get_node(pointed_thing.above).name
-		minetest.log("\n\n\nnode_above name: " .. node_above_name)
+		mcl_bamboo.mcl_log("\n\n\nnode_above name: " .. node_above_name)
 		if node_above_name ~= "mcl_core:water_source" and node_above_name ~= "mcl_core:lava_source"
 				and node_above_name ~= "mcl_nether:nether_lava_source" then
 			local _, position = minetest.item_place(place_item, placer, pointed_thing, fdir)
