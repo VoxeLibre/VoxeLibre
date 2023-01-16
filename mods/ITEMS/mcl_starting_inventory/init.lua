@@ -13,7 +13,7 @@ end
 
 local give_inventory = minetest.settings:get("starting_inv_contents", false)
 
-local stuff_string
+local stuff_string = "mcl_tools:pick_iron,mcl_tools:axe_iron,mcl_tools:shovel_iron,mcl_torches:torch 32,mcl_core:cobble 32"
 
 mcl_starting_inventory = {
 	items = {}
@@ -55,20 +55,8 @@ function mcl_starting_inventory.get_list()
 end
 
 if give_inventory then
-	stuff_string = "mcl_tools:pick_iron,mcl_tools:axe_iron,mcl_tools:shovel_iron,mcl_torches:torch 32,mcl_core:cobble 32"
 	mcl_starting_inventory.add_from_csv(stuff_string)
 	mcl_log("Okay to give inventory:\n" .. dump(mcl_starting_inventory.get_list()))
 end
 
 minetest.register_on_newplayer(mcl_starting_inventory.give)
-
-minetest.register_chatcommand("give_starting_inventory", {
-	description = "Grant yourself the starting inventory.",
-	func = function(name, params)
-		stuff_string = "mcl_tools:pick_iron,mcl_tools:axe_iron,mcl_tools:shovel_iron,mcl_torches:torch 32,mcl_core:cobble 32"
-		mcl_log("Manually giving inventory:\n" .. dump(mcl_starting_inventory.get_list()))
-		mcl_starting_inventory.add_from_csv(stuff_string)
-		minetest.chat_send_player(name, "Granted Starting Inventory.")
-		return true
-	end
-})
