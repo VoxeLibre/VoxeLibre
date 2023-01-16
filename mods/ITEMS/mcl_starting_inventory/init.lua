@@ -3,7 +3,7 @@
 ---
 --- Copyright notice created for the license to be valid. (MIT 3)
 
-local DEBUG = true
+local DEBUG = false
 
 local function mcl_log(message)
 	if DEBUG then
@@ -66,9 +66,8 @@ minetest.register_chatcommand("give_starting_inventory", {
 	description = "Grant yourself the starting inventory.",
 	func = function(name, params)
 		stuff_string = "mcl_tools:pick_iron,mcl_tools:axe_iron,mcl_tools:shovel_iron,mcl_torches:torch 32,mcl_core:cobble 32"
-		mcl_log("manually giving inventory:\n" .. dump(mcl_starting_inventory.get_list()))
+		mcl_log("Manually giving inventory:\n" .. dump(mcl_starting_inventory.get_list()))
 		mcl_starting_inventory.add_from_csv(stuff_string)
-
 		minetest.chat_send_player(name, "Granted Starting Inventory.")
 		return true
 	end
