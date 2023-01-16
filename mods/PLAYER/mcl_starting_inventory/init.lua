@@ -3,20 +3,18 @@
 ---
 --- Copyright notice created for the license to be valid. (MIT 3)
 
+local DEBUG = true
+
 local give_inventory = minetest.settings:get("starting_inv_contents", false)
 
 local stuff_string
-if give_inventory then
-	stuff_string = "mcl_tools:pick_iron,mcl_tools:axe_iron,mcl_tools:shovel_iron,mcl_torches:torch 32,mcl_core:cobble 32"
-end
 
 mcl_starting_inventory = {
 	items = {}
 }
 
 function mcl_starting_inventory.give(player)
-	minetest.log("action",
-			"Giving initial stuff to player " .. player:get_player_name())
+	mcl_log("Giving initial stuff to player " .. player:get_player_name())
 	local inv = player:get_inventory()
 	for _, stack in ipairs(mcl_starting_inventory.items) do
 		inv:add_item("main", stack)
@@ -46,7 +44,17 @@ function mcl_starting_inventory.get_list()
 	return mcl_starting_inventory.items
 end
 
-mcl_starting_inventory.add_from_csv(stuff_string)
-if minetest.settings:get_bool("mcl_starting_inventory") then
-	minetest.register_on_newplayer(mcl_starting_inventory.give)
+local function mcl_log(message)
+	if DEBUG then
+		minetest.log(message)
+	end
+end
+
+if give_inventory then
+	stuff_string = "mcl_tools:pick_iron,mcl_tools:axe_iron,mcl_tools:shovel_iron,mcl_torches:torch 32,mcl_core:cobble 32"
+	mcl_starting_inventory.add_from_csv(stuff_string)
+	mcl_log("okay to give inventory: " .. stuff_string)
+	if minetest.settings:get_bool("mcl_starting_inventory") then
+		minetest.register_on_newplayer(mcl_starting_inventory.give)
+	end
 end
