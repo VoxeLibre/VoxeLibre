@@ -3545,7 +3545,7 @@ local function register_decorations()
 		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.004,
-		biomes = {"Jungle", "JungleM","BambooJungle", "BambooJungleM"},
+		biomes = {"Jungle", "JungleM"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
@@ -4459,7 +4459,7 @@ local function register_decorations()
 	end
 
 	register_double_fern(0.01, 0.03, {"Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "ColdTaiga", "MegaTaiga", "MegaSpruceTaiga", "BambooJungle", "BambooJungleM", "BambooJungleEdge", "BambooJungleEdgeM", })
-	register_double_fern(0.15, 0.1, {"JungleM", "BambooJungleM"})
+	register_double_fern(0.15, 0.1, {"JungleM", "BambooJungleM", "BambooJungle"})
 
 	-- Large flowers
 	local function register_large_flower(name, biomes, seed, offset, flower_forest_offset)
@@ -4545,7 +4545,7 @@ local function register_decorations()
 			octaves = 4,
 			persist = 0.6,
 		},
-		biomes = {"Jungle", "BambooJungle"},
+		biomes = {"Jungle", },
 		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_bush_oak_leaves_2.mts",
@@ -4581,7 +4581,7 @@ local function register_decorations()
 			octaves = 4,
 			persist = 0.6,
 		},
-		biomes = {"JungleEdge", "JungleEdgeM","BambooJungleEdge", "BambooJungleEdgeM"},
+		biomes = {"JungleEdge", "JungleEdgeM", "BambooJungleEdgeM"},
 		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_bush_oak_leaves.mts",
@@ -4614,26 +4614,10 @@ local function register_decorations()
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_bamboo:bamboo",
 		height = 9,
-		max_height = 12,
+		max_height = 10,
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
-	--[[
-	-- commenting out this section because with the new grow code, bamboo creates its own height, and therefore places it's own top.
-		minetest.register_decoration({
-			deco_type = "simple",
-			place_on = {"mcl_bamboo:bamboo"},
-			sidelen = 80,
-			fill_ratio = 1,
-			biomes = {"BambooJungle", "BambooJungleM", "BambooJungleEdge", "BambooJungleEdgeM", "Jungle", "JungleM", "JungleEdge", "JungleEdgeM"},
-			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
-			decoration = "mcl_bamboo:bamboo_endcap",
-			height = 1,
-			max_height = 4,
-			flags = "all_floors",
-		})
-	]]
 
 	minetest.register_decoration({
 		deco_type = "simple",
