@@ -7,7 +7,8 @@ local adjacents = {
 	vector.new(0,-1,0)
 }
 
-local function set_node_no_bedrock(pos,node)
+local function set_node_no_bedrock(pos, node)
+	if not pos then return end
 	local n = minetest.get_node(pos)
 	if n.name == "mcl_core:bedrock" then return end
 	return minetest.set_node(pos,node)
@@ -21,12 +22,18 @@ local function makegeode(pos,def,pr)
 		if calls_remaining ~= 0 then return end
 		local calcite = {}
 		local nn = minetest.find_nodes_in_area(p1,p2,{"group:material_stone","group:dirt","mcl_core:gravel"})
+
+		if not nn or #nn < 2 then
+			minetest.log("action", "Not enough valid space to generate geode at pos: " .. minetest.pos_to_string(pos))
+			return
+		end
+
 		table.sort(nn,function(a, b)
 			   return vector.distance(pos, a) < vector.distance(pos, b)
 		end)
-		if not nn[1] then return end
+		--if not nn[1] then return end
 
-		for i=1,pr:next(1,math.max(2,#nn - math.ceil(#nn/5) )) do
+		for i=1,pr:next(1, math.max(2, #nn - math.ceil(#nn/5) )) do
 			set_node_no_bedrock(nn[i],{name="mcl_amethyst:amethyst_block"})
 		end
 

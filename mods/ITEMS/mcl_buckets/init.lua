@@ -139,7 +139,7 @@ local function bucket_get_pointed_thing(user)
 	local start = user:get_pos()
 	start.y = start.y + user:get_properties().eye_height
 	local look_dir = user:get_look_dir()
-	_end = vector.add(start, vector.multiply(look_dir, 5))
+	local _end = vector.add(start, vector.multiply(look_dir, 5))
 
 	local ray = raycast(start, _end, false, true)
 	for pointed_thing in ray do
