@@ -1,8 +1,8 @@
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 
-local HORNY_TIME = 30
-local HORNY_AGAIN_TIME = 300
+local HORNY_TIME = 30*20
+local HORNY_AGAIN_TIME = 30*20 -- was 300 or 15*20
 local CHILD_GROW_TIME = 60*20
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager",false)
@@ -178,7 +178,7 @@ function mob_class:check_breeding()
 				-- jump when fully grown so as not to fall into ground
 				self.object:set_velocity({
 					x = 0,
-					y = self.jump_height*3,
+					y = self.jump_height,
 					z = 0
 				})
 			end
@@ -190,18 +190,16 @@ function mob_class:check_breeding()
 		end
 
 		return
-	end
+	else
+		-- horny animal can mate for HORNY_TIME seconds,
+		-- afterwards horny animal cannot mate again for HORNY_AGAIN_TIME seconds
+		if self.horny == true then
+			self.hornytimer = self.hornytimer + 1
 
-	-- horny animal can mate for HORNY_TIME seconds,
-	-- afterwards horny animal cannot mate again for HORNY_AGAIN_TIME seconds
-	if self.horny == true
-	and self.hornytimer < HORNY_TIME + HORNY_AGAIN_TIME then
-
-		self.hornytimer = self.hornytimer + 1
-
-		if self.hornytimer >= HORNY_TIME + HORNY_AGAIN_TIME then
-			self.hornytimer = 0
-			self.horny = false
+			if self.hornytimer >= HORNY_TIME + HORNY_AGAIN_TIME then
+				self.hornytimer = 0
+				self.horny = false
+			end
 		end
 	end
 

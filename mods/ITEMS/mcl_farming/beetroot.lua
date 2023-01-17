@@ -118,7 +118,7 @@ minetest.register_node("mcl_farming:beetroot", {
 
 	_mcl_fortune_drop = {
 		discrete_uniform_distribution = true,
-		items = {"mcl_farming:beetroot_item", "mcl_farming:beetroot_seeds"},
+		items = {"mcl_farming:beetroot_seeds"},
 		min_count = 1,
 		max_count = 3,
 		cap = 5,
