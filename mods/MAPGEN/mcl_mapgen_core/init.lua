@@ -423,7 +423,7 @@ minetest.register_lbm({
 	label = "Fix grass palette indexes",
 	name = "mcl_mapgen_core:fix_grass_palette_indexes",
 	nodenames = {"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass", "mcl_flowers:double_grass", "mcl_flowers:double_grass_top", "mcl_flowers:fern", "mcl_flowers:double_fern", "mcl_flowers:double_fern_top", "mcl_core:reeds", "mcl_core:dirt_with_grass_snow"},
-	run_at_every_load = false,
+	run_at_every_load = true,
 	action = function(pos, node)
 		local biome_data = minetest.get_biome_data(pos)
 		if biome_data then
