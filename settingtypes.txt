@@ -134,6 +134,8 @@ mcl_old_spawn_icons (Old spawn icons instead of eggs) bool false
 # Larger values will have a larger performance impact (default:48)
 mcl_mob_active_range (Active mob range) int 48 0 256
 
+# Zombie siege raid (default:false)
+mcl_raids_zombie_siege (Zombie siege raid) bool false
 
 [Audio]
 # Enable flame sound.
