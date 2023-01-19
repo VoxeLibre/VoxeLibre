@@ -301,7 +301,7 @@ minetest.register_node("mcl_bamboo:bamboo_block", bamboo_block_def)
 local bamboo_stripped_block = table.copy(bamboo_block_def)
 bamboo_stripped_block.on_rightclick = nil
 bamboo_stripped_block.description = S("Stripped Bamboo Block")
-bamboo_stripped_block.tiles = {"mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo_bottom.png",
+bamboo_stripped_block.tiles = {"mcl_bamboo_bamboo_bottom_stripped.png", "mcl_bamboo_bamboo_bottom_stripped.png",
 							   "mcl_bamboo_bamboo_block_stripped.png"}
 minetest.register_node("mcl_bamboo:bamboo_block_stripped", bamboo_stripped_block)
 minetest.register_node("mcl_bamboo:bamboo_plank", {
