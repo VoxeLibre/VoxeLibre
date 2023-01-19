@@ -36,6 +36,7 @@
 * MrRar
 * talamh
 * Faerraven / Michieal
+* FossFanatic
 
 ## Contributors
 * Laurent Rocher
@@ -96,6 +97,8 @@
 * TheOnlyJoeEnderman
 * Ranko Saotome
 * Gregor Parzefall
+* Wbjitscool
+* b3nderman
 
 ## MineClone5
 * kay27
@@ -186,6 +189,8 @@
 
 ## Funders
 * 40W
+* bauknecht
+* Cora
 
 ## Special thanks
 * celeron55 for creating Minetest
