@@ -3,16 +3,13 @@ mcl_bamboo
 
 This mod adds working, familiar bamboo nodes to your Mineclone 2 world.
 
-Code: Michieal. Original (basic) bamboo code by: Small Joker.
+Code: MineClone2 dev team. Original (basic) bamboo code by: Small Joker.
 
 License for code: GPLv3.
 License for images / textures: CC-BY-SA except where noted.
-Images Created by Michieal, except for:
+Images Created by Nicu, except for:
 
 * Inventory / wield image for Bamboo Stalk: created by RandomLegoBrick#8692 and is CC0.
-* The Bamboo door image, which is a variant of this image: https://www.flickr.com/photos/basheertome/5179849901/ which
-  is CC-BY 2.0,
-  Basheer Tome (2015).
 
 Dependencies: mcl_core, mcl_sounds, mcl_tools
 
