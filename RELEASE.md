@@ -16,3 +16,7 @@ git commit -m "Pre-release update credits and set version 0.82.0"
 git tag 0.82.0
 
 git push origin 0.82.0
+
+#Update version in game.conf to -SNAPSHOT
+
+git commit -m "Post-release set version 0.82.0-SNAPSHOT"
