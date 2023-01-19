@@ -45,6 +45,7 @@ local node_def = {
 -- This is for _mcl_autogroup to know about the survival hand tool capabilites
 mcl_meshhand.survival_hand_tool_caps = node_def.tool_capabilities
 
+local creative_dig_speed = tonumber(minetest.settings:get("mcl_creative_dig_speed")) or 0.2
 local creative_hand_range = tonumber(minetest.settings:get("mcl_hand_range_creative")) or 10
 if mcl_skins_enabled then
 	-- Generate a node for every skin
@@ -57,7 +58,7 @@ if mcl_skins_enabled then
 		if skin.creative then
 			node_def.range = creative_hand_range
 			node_def.groups.dig_speed_class = 7
-			node_def.tool_capabilities.groupcaps.creative_breakable = { times = { 0.1 }, uses = 0 }
+			node_def.tool_capabilities.groupcaps.creative_breakable = { times = { creative_dig_speed }, uses = 0 }
 		end
 		minetest.register_node("mcl_meshhand:" .. skin.id, node_def)
 	end
@@ -70,7 +71,7 @@ else
 	node_def = table.copy(node_def)
 	node_def.range = creative_hand_range
 	node_def.groups.dig_speed_class = 7
-	node_def.tool_capabilities.groupcaps.creative_breakable = { times = { 0.1 }, uses = 0 }
+	node_def.tool_capabilities.groupcaps.creative_breakable = { times = { creative_dig_speed }, uses = 0 }
 	minetest.register_node("mcl_meshhand:hand_crea", node_def)
 end
 
