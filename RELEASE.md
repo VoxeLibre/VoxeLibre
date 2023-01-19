@@ -8,12 +8,13 @@ lua tools/generate_ingame_credits.lua
 git add CREDITS.md
 git add mods/HUD/mcl_credits/people.lua
 
-git add README.md
-# To uncomment when applicable
-#git add game.conf
+#Should not be needed anymore as version is going to be kept in game.conf
+#git add README.md
+git add game.conf
+git add RELEASE.md
 
-git commit -m "Pre-release update credits and set version 0.81.1"
+git commit -m "Pre-release update credits and set version 0.82.0"
 
-git tag 0.81.1
+git tag 0.82.0
 
-git push origin 0.81.1
+git push origin 0.82.0
