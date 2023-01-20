@@ -155,7 +155,6 @@ end, true)
 minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
 	if not damage_enabled then return 0 end
 	if player:get_hp() > 0 then
-		mt_reason.approved = true
 		if hp_change < 0 then
 			mcl_damage.run_damage_callbacks(player, -hp_change, mcl_damage.from_mt(mt_reason))
 		end
@@ -163,9 +162,7 @@ minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
 end, false)
 
 minetest.register_on_dieplayer(function(player, mt_reason)
-	if mt_reason.approved then
-		mcl_damage.run_death_callbacks(player, mcl_damage.from_mt(mt_reason))
-	end
+	mcl_damage.run_death_callbacks(player, mcl_damage.from_mt(mt_reason))
 	minetest.log("action","Player "..player:get_player_name().." died at "..minetest.pos_to_string(vector.round(player:get_pos())))
 end)
 
