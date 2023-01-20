@@ -1,3 +1,12 @@
+local overworld_fogcolor = "#C0D8FF"
+local beach_skycolor = "#78A7FF" -- This is the case for all beach biomes except for the snowy ones! Those beaches will have their own colour instead of this one.
+local ocean_skycolor = "#7BA4FF" -- This is the case for all ocean biomes except for non-deep frozen oceans! Those oceans will have their own colour instead of this one.
+
+local nether_skycolor = "#6EB1FF" -- The Nether biomes seemingly don't use the sky colour, despite having this value according to the wiki. The fog colour is used for both sky and fog.
+
+local end_skycolor = "#000000"
+local end_fogcolor = "#A080A0" -- The End biomes seemingly don't use the fog colour, despite having this value according to the wiki. The sky colour is used for both sky and fog.
+
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local mg_seed = minetest.get_mapgen_setting("seed")
 
@@ -133,15 +142,6 @@ local function register_biomes()
 		"BambooJungleEdge",
 		"BambooJungleEdgeM",
 	}
-
-local beach_skycolor = "#78A7FF" -- This is the case for all beach biomes except for the snowy ones! Those beaches will have their own colour instead of this one.
-local ocean_skycolor = "#7BA4FF" -- This is the case for all ocean biomes except for non-deep frozen oceans! Those oceans will have their own colour instead of this one.
-local overworld_fogcolor = "#C0D8FF"
-
-local nether_skycolor = "#6EB1FF"
-
-local end_fogcolor = "#A080A0"
-local end_skycolor = "#000000"
 
 	-- Ice Plains Spikes (rare)
 	minetest.register_biome({
@@ -1940,8 +1940,8 @@ local function register_dimension_biomes()
 		humidity_point = 0,
 		_mcl_biome_type = "hot",
 		_mcl_palette_index = 17,
---		_mcl_skycolor = nether_skycolor,
---		_mcl_fogcolor = "#330808"
+		_mcl_skycolor = nether_skycolor,
+		_mcl_fogcolor = "#330808"
 	})
 
 	minetest.register_decoration({
@@ -1971,8 +1971,8 @@ local function register_dimension_biomes()
 		humidity_point = 33,
 		_mcl_biome_type = "hot",
 		_mcl_palette_index = 17,
---		_mcl_skycolor = nether_skycolor,
---		_mcl_fogcolor = "#1B4745"
+		_mcl_skycolor = nether_skycolor,
+		_mcl_fogcolor = "#1B4745"
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -2022,8 +2022,8 @@ local function register_dimension_biomes()
 		humidity_point = 47,
 		_mcl_biome_type = "hot",
 		_mcl_palette_index = 17,
---		_mcl_skycolor = nether_skycolor,
---		_mcl_fogcolor = "#330303"
+		_mcl_skycolor = nether_skycolor,
+		_mcl_fogcolor = "#330303"
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -2051,8 +2051,8 @@ local function register_dimension_biomes()
 		humidity_point = 70,
 		_mcl_biome_type = "hot",
 		_mcl_palette_index = 17,
---		_mcl_skycolor = nether_skycolor,
---		_mcl_fogcolor = "#1A051A"
+		_mcl_skycolor = nether_skycolor,
+		_mcl_fogcolor = "#1A051A"
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -2080,8 +2080,8 @@ local function register_dimension_biomes()
 		humidity_point = 80,
 		_mcl_biome_type = "hot",
 		_mcl_palette_index = 17,
---		_mcl_skycolor = nether_skycolor,
---		_mcl_fogcolor = "#685F70"
+		_mcl_skycolor = nether_skycolor,
+		_mcl_fogcolor = "#685F70"
 	})
 
 	minetest.register_decoration({
@@ -2134,8 +2134,8 @@ local function register_dimension_biomes()
 		vertical_blend = 16,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 0,
---		_mcl_skycolor = end_skycolor,
---		_mcl_fogcolor = end_fogcolor
+		_mcl_skycolor = end_skycolor,
+		_mcl_fogcolor = end_fogcolor
 	})
 	minetest.register_biome({
 		name = "EndBarrens",
@@ -2151,8 +2151,8 @@ local function register_dimension_biomes()
 		vertical_blend = 16,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 0,
---		_mcl_skycolor = end_skycolor,
---		_mcl_fogcolor = end_fogcolor
+		_mcl_skycolor = end_skycolor,
+		_mcl_fogcolor = end_fogcolor
 	})
 	minetest.register_biome({
 		name = "EndMidlands",
@@ -2168,8 +2168,8 @@ local function register_dimension_biomes()
 		vertical_blend = 16,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 0,
---		_mcl_skycolor = end_skycolor,
---		_mcl_fogcolor = end_fogcolor
+		_mcl_skycolor = end_skycolor,
+		_mcl_fogcolor = end_fogcolor
 	})
 	minetest.register_biome({
 		name = "EndHighlands",
@@ -2185,8 +2185,8 @@ local function register_dimension_biomes()
 		vertical_blend = 16,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 0,
---		_mcl_skycolor = end_skycolor,
---		_mcl_fogcolor = end_fogcolor
+		_mcl_skycolor = end_skycolor,
+		_mcl_fogcolor = end_fogcolor
 	})
 	minetest.register_biome({
 		name = "EndSmallIslands",
@@ -2202,8 +2202,8 @@ local function register_dimension_biomes()
 		vertical_blend = 16,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 0,
---		_mcl_skycolor = end_skycolor,
---		_mcl_fogcolor = end_fogcolor
+		_mcl_skycolor = end_skycolor,
+		_mcl_fogcolor = end_fogcolor
 	})
 
 	minetest.register_biome({
@@ -2222,8 +2222,8 @@ local function register_dimension_biomes()
 		min_pos = {x = -1250, y = mcl_vars.mg_end_min, z = -1250},
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 0,
---		_mcl_skycolor = end_skycolor,
---		_mcl_fogcolor = end_fogcolor
+		_mcl_skycolor = end_skycolor,
+		_mcl_fogcolor = end_fogcolor
 	})
 
 	minetest.register_biome({
@@ -2240,8 +2240,8 @@ local function register_dimension_biomes()
 		vertical_blend = 16,
 		_mcl_biome_type = "medium",
 		_mcl_palette_index = 0,
---		_mcl_skycolor = end_skycolor,
---		_mcl_fogcolor = end_fogcolor
+		_mcl_skycolor = end_skycolor,
+		_mcl_fogcolor = end_fogcolor
 	})
 
 end
