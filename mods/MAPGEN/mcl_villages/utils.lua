@@ -198,6 +198,9 @@ end
 -------------------------------------------------------------------------------
 function settlements.evaluate_heightmap()
 	local heightmap = minetest.get_mapgen_object("heightmap")
+
+	if not heightmap then return max_height_difference + 1 end
+
 	-- max height and min height, initialize with impossible values for easier first time setting
 	local max_y = -50000
 	local min_y = 50000
