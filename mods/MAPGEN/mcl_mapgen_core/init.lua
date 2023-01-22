@@ -418,7 +418,6 @@ mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blocks
 	return false, false, false
 end, 100, true)
 
-local DEFAULT_INDEX = 0
 minetest.register_lbm({
 	label = "Fix grass palette indexes",
 	name = "mcl_mapgen_core:fix_grass_palette_indexes",
@@ -426,22 +425,12 @@ minetest.register_lbm({
 	run_at_every_load = true,
 	action = function(pos, node)
 		local biome_data = minetest.get_biome_data(pos)
-		if biome_data then
-			local biome = biome_data.biome
-			local biome_name = minetest.get_biome_name(biome)
-			local reg_biome = minetest.registered_biomes[biome_name]
-			if reg_biome then
-				node.param2 = reg_biome._mcl_grass_palette_index
-				-- Fall back to default palette index
-				if not node.param2 then
-					node.param2 = DEFAULT_INDEX
-				end
-				minetest.set_node(pos, node)
-				return
-			end
+		local biome = biome_data.biome
+		local biome_name = minetest.get_biome_name(biome)
+		local reg_biome = minetest.registered_biomes[biome_name]
+		if node.param2 ~= reg_biome._mcl_grass_palette_index then
+			node.param2 = reg_biome._mcl_grass_palette_index
+			minetest.set_node(pos, node)
 		end
-		node.param2 = DEFAULT_INDEX
-		minetest.set_node(pos, node)
-		return
 	end,
 })
