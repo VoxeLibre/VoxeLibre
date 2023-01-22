@@ -1,435 +1,5806 @@
-mcl_mapgen_core = {}
-local registered_generators = {}
-
-local lvm, nodes, param2 = 0, 0, 0
-local lvm_used = false
-local lvm_buffer = {}
-
-local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
-
---
--- Aliases for map generator outputs
---
-
-minetest.register_alias("mapgen_air", "air")
-minetest.register_alias("mapgen_stone", "mcl_core:stone")
-minetest.register_alias("mapgen_tree", "mcl_core:tree")
-minetest.register_alias("mapgen_leaves", "mcl_core:leaves")
-minetest.register_alias("mapgen_jungletree", "mcl_core:jungletree")
-minetest.register_alias("mapgen_jungleleaves", "mcl_core:jungleleaves")
-minetest.register_alias("mapgen_pine_tree", "mcl_core:sprucetree")
-minetest.register_alias("mapgen_pine_needles", "mcl_core:spruceleaves")
-
-minetest.register_alias("mapgen_apple", "mcl_core:leaves")
-minetest.register_alias("mapgen_water_source", "mcl_core:water_source")
-minetest.register_alias("mapgen_dirt", "mcl_core:dirt")
-minetest.register_alias("mapgen_dirt_with_grass", "mcl_core:dirt_with_grass")
-minetest.register_alias("mapgen_dirt_with_snow", "mcl_core:dirt_with_grass_snow")
-minetest.register_alias("mapgen_sand", "mcl_core:sand")
-minetest.register_alias("mapgen_gravel", "mcl_core:gravel")
-minetest.register_alias("mapgen_clay", "mcl_core:clay")
-minetest.register_alias("mapgen_lava_source", "air") -- Built-in lava generator is too unpredictable, we generate lava on our own
-minetest.register_alias("mapgen_cobble", "mcl_core:cobble")
-minetest.register_alias("mapgen_mossycobble", "mcl_core:mossycobble")
-minetest.register_alias("mapgen_junglegrass", "mcl_flowers:fern")
-minetest.register_alias("mapgen_stone_with_coal", "mcl_core:stone_with_coal")
-minetest.register_alias("mapgen_stone_with_iron", "mcl_core:stone_with_iron")
-minetest.register_alias("mapgen_desert_sand", "mcl_core:sand")
-minetest.register_alias("mapgen_desert_stone", "mcl_core:sandstone")
-minetest.register_alias("mapgen_sandstone", "mcl_core:sandstone")
-if minetest.get_modpath("mclx_core") then
-	minetest.register_alias("mapgen_river_water_source", "mclx_core:river_water_source")
-else
-	minetest.register_alias("mapgen_river_water_source", "mcl_core:water_source")
-end
-minetest.register_alias("mapgen_snow", "mcl_core:snow")
-minetest.register_alias("mapgen_snowblock", "mcl_core:snowblock")
-minetest.register_alias("mapgen_ice", "mcl_core:ice")
-
-minetest.register_alias("mapgen_stair_cobble", "mcl_stairs:stair_cobble")
-minetest.register_alias("mapgen_sandstonebrick", "mcl_core:sandstonesmooth")
-minetest.register_alias("mapgen_stair_sandstonebrick", "mcl_stairs:stair_sandstone")
-minetest.register_alias("mapgen_stair_sandstone_block", "mcl_stairs:stair_sandstone")
-minetest.register_alias("mapgen_stair_desert_stone", "mcl_stairs:stair_sandstone")
-
-dofile(modpath.."/api.lua")
-dofile(modpath.."/ores.lua")
-
 local mg_name = minetest.get_mapgen_setting("mg_name")
+local mg_seed = minetest.get_mapgen_setting("seed")
+
+-- Some mapgen settings
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 
--- Content IDs
-local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
-local c_obsidian = minetest.get_content_id("mcl_core:obsidian")
-local c_stone = minetest.get_content_id("mcl_core:stone")
-local c_dirt = minetest.get_content_id("mcl_core:dirt")
-local c_dirt_with_grass = minetest.get_content_id("mcl_core:dirt_with_grass")
-local c_dirt_with_grass_snow = minetest.get_content_id("mcl_core:dirt_with_grass_snow")
-local c_reeds = minetest.get_content_id("mcl_core:reeds")
-local c_sand = minetest.get_content_id("mcl_core:sand")
---local c_sandstone = minetest.get_content_id("mcl_core:sandstone")
-local c_void = minetest.get_content_id("mcl_core:void")
-local c_lava = minetest.get_content_id("mcl_core:lava_source")
-local c_water = minetest.get_content_id("mcl_core:water_source")
-local c_soul_sand = minetest.get_content_id("mcl_nether:soul_sand")
-local c_netherrack = minetest.get_content_id("mcl_nether:netherrack")
-local c_nether_lava = minetest.get_content_id("mcl_nether:nether_lava_source")
---local c_end_stone = minetest.get_content_id("mcl_end:end_stone")
-local c_realm_barrier = minetest.get_content_id("mcl_core:realm_barrier")
-local c_top_snow = minetest.get_content_id("mcl_core:snow")
-local c_snow_block = minetest.get_content_id("mcl_core:snowblock")
-local c_clay = minetest.get_content_id("mcl_core:clay")
-local c_leaves = minetest.get_content_id("mcl_core:leaves")
-local c_jungleleaves = minetest.get_content_id("mcl_core:jungleleaves")
---local c_jungletree = minetest.get_content_id("mcl_core:jungletree")
-local c_cocoa_1 = minetest.get_content_id("mcl_cocoas:cocoa_1")
-local c_cocoa_2 = minetest.get_content_id("mcl_cocoas:cocoa_2")
-local c_cocoa_3 = minetest.get_content_id("mcl_cocoas:cocoa_3")
-local c_vine = minetest.get_content_id("mcl_core:vine")
-local c_air = minetest.CONTENT_AIR
+local generate_fallen_logs = minetest.settings:get_bool("mcl_generate_fallen_logs", false)
 
-local mg_flags = minetest.settings:get_flags("mg_flags")
+local mod_mcl_structures = minetest.get_modpath("mcl_structures")
+local mod_mcl_core = minetest.get_modpath("mcl_core")
+local mod_mcl_mushrooms = minetest.get_modpath("mcl_mushrooms")
+local mod_mcl_crimson = minetest.get_modpath("mcl_crimson")
+local mod_mcl_blackstone = minetest.get_modpath("mcl_blackstone")
+local mod_mcl_mangrove = minetest.get_modpath("mcl_mangrove")
 
--- Inform other mods of dungeon setting for MCL2-style dungeons
-mcl_vars.mg_dungeons = mg_flags.dungeons and not superflat
+local deco_id_chorus_plant
 
--- Disable builtin dungeons, we provide our own dungeons
-mg_flags.dungeons = false
+--
+-- Register biomes
+--
 
-if superflat then
-	-- Enforce superflat-like mapgen: no caves, decor, lakes and hills
-	mg_flags.caves = false
-	mg_flags.decorations = false
-	minetest.set_mapgen_setting("mgflat_spflags", "nolakes,nohills", true)
+local OCEAN_MIN = -15
+local DEEP_OCEAN_MAX = OCEAN_MIN - 1
+local DEEP_OCEAN_MIN = -31
+
+--[[ Special biome field: _mcl_biome_type:
+Rough categorization of biomes: One of "snowy", "cold", "medium" and "hot"
+Based off <https://minecraft.gamepedia.com/Biomes> ]]
+
+local function register_classic_superflat_biome()
+	-- Classic Superflat: bedrock (not part of biome), 2 dirt, 1 grass block
+	minetest.register_biome({
+		name = "flat",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_stone = "mcl_core:dirt",
+		y_min = mcl_vars.mg_overworld_min - 512,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 50,
+		heat_point = 50,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 0,
+		_mcl_skycolor = "#78A7FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
 end
 
-if mg_name == "v7" then
-	minetest.set_mapgen_setting("mgv7_cavern_threshold", "0.20", true)
-	mg_flags.caverns = true
-elseif mg_name == "valleys" then
-	minetest.set_mapgen_setting("mgvalleys_cavern_threshold", "0.20", true)
-	mg_flags.caverns = true
-elseif mg_name == "carpathian" then
-	minetest.set_mapgen_setting("mgcarpathian_cavern_threshold", "0.20", true)
-	mg_flags.caverns = true
-elseif mg_name == "v5" then
-	minetest.set_mapgen_setting("mgv5_cavern_threshold", "0.20", true)
-	mg_flags.caverns = true
-elseif mg_name == "fractal" then
-	minetest.set_mapgen_setting("mgfractal_cavern_threshold", "0.20", true)
-	mg_flags.caverns = true
-end
+-- All mapgens except mgv6, flat and singlenode
+local function register_biomes()
+	--[[ OVERWORLD ]]
+
+	--[[ These biomes try to resemble MC as good as possible. This means especially the floor cover and
+	the type of plants and structures (shapes might differ). The terrain itself will be of course different
+	and depends on the mapgen.
+	Important: MC also takes the terrain into account while MT biomes don't care about the terrain at all
+	(except height).
+	MC has many “M” and “Hills” variants, most of which only differ in terrain compared to their original
+	counterpart.
+	In MT, any biome can occour in any terrain, so these variants are implied and are therefore
+	not explicitly implmented in MCL2. “M” variants are only included if they have another unique feature,
+	such as a different land cover.
+	In MCL2, the MC Overworld biomes are split in multiple more parts (stacked by height):
+	* The main part, this represents the land. It begins at around sea level and usually goes all the way up
+	* _ocean: For the area covered by ocean water. The y_max may vary for various beach effects.
+	          Has sand or dirt as floor.
+	* _deep_ocean: Like _ocean, but deeper and has gravel as floor
+	* _underground:
+	* Other modifiers: Some complex biomes require more layers to improve the landscape.
+
+	The following naming conventions apply:
+	* The land biome name is equal to the MC biome name, as of Minecraft 1.11 (in camel case)
+	* Height modifiers and sub-biomes are appended with underscores and in lowercase. Example: “_ocean”
+	* Non-MC biomes are written in lowercase
+	* MC dimension biomes are named after their MC dimension
+
+	Intentionally missing biomes:
+	* River (generated by valleys and v7)
+	* Frozen River (generated by valleys and v7)
+	* Hills biomes (shape only)
+	* Plateau (shape only)
+	* Plateau M (shape only)
+	* Cold Taiga M (mountain only)
+	* Taiga M (mountain only)
+	* Roofed Forest M (mountain only)
+	* Swampland M (mountain only)
+	* Extreme Hills Edge (unused in MC)
+
+	TODO:
+	* Better beaches
+	* Improve Extreme Hills M
+	* Desert M
+
+	]]
+
+	-- List of Overworld biomes without modifiers.
+	-- IMPORTANT: Don't forget to add new Overworld biomes to this list!
+	local overworld_biomes = {
+		"IcePlains",
+		"IcePlainsSpikes",
+		"ColdTaiga",
+		"ExtremeHills",
+		"ExtremeHillsM",
+		"ExtremeHills+",
+		"Taiga",
+		"MegaTaiga",
+		"MegaSpruceTaiga",
+		"StoneBeach",
+		"Plains",
+		"SunflowerPlains",
+		"Forest",
+		"FlowerForest",
+		"BirchForest",
+		"BirchForestM",
+		"RoofedForest",
+		"Swampland",
+		"Jungle",
+		"JungleM",
+		"JungleEdge",
+		"JungleEdgeM",
+		"MushroomIsland",
+		"Desert",
+		"Savanna",
+		"SavannaM",
+		"Mesa",
+		"MesaBryce",
+		"MesaPlateauF",
+		"MesaPlateauFM",
+		"MangroveSwamp",
+		"BambooJungle",
+		"BambooJungleM",
+		"BambooJungleEdge",
+		"BambooJungleEdgeM",
+	}
+
+local beach_skycolor = "#78A7FF" -- This is the case for all beach biomes except for the snowy ones! Those beaches will have their own colour instead of this one.
+local ocean_skycolor = "#7BA4FF" -- This is the case for all ocean biomes except for non-deep frozen oceans! Those oceans will have their own colour instead of this one.
+local overworld_fogcolor = "#C0D8FF"
+
+local nether_skycolor = "#6EB1FF"
+
+local end_fogcolor = "#A080A0"
+local end_skycolor = "#000000"
+
+	-- Ice Plains Spikes (rare)
+	minetest.register_biome({
+		name = "IcePlainsSpikes",
+		node_top = "mcl_core:snowblock",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 2,
+		node_water_top = "mcl_core:ice",
+		depth_water_top = 1,
+		node_river_water = "mcl_core:ice",
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 24,
+		heat_point = -5,
+		_mcl_biome_type = "snowy",
+		_mcl_grass_palette_index = 2,
+		_mcl_skycolor = "#7FA1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "IcePlainsSpikes_ocean",
+		node_top = "mcl_core:gravel",
+		depth_top = 2,
+		node_filler = "mcl_core:gravel",
+		depth_filler = 3,
+		node_river_water = "mcl_core:ice",
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 24,
+		heat_point = -5,
+		_mcl_biome_type = "snowy",
+		_mcl_grass_palette_index = 2,
+		_mcl_skycolor = "#7FA1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Cold Taiga
+	minetest.register_biome({
+		name = "ColdTaiga",
+		node_dust = "mcl_core:snow",
+		node_top = "mcl_core:dirt_with_grass_snow",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 3,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 58,
+		heat_point = 8,
+		_mcl_biome_type = "snowy",
+		_mcl_grass_palette_index = 3,
+		_mcl_skycolor = "#839EFF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- A cold beach-like biome, implemented as low part of Cold Taiga
+	minetest.register_biome({
+		name = "ColdTaiga_beach",
+		node_dust = "mcl_core:snow",
+		node_top = "mcl_core:sand",
+		depth_top = 2,
+		node_water_top = "mcl_core:ice",
+		depth_water_top = 1,
+		node_filler = "mcl_core:sandstone",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = 2,
+		humidity_point = 58,
+		heat_point = 8,
+		_mcl_biome_type = "snowy",
+		_mcl_grass_palette_index = 3,
+		_mcl_skycolor = "#7FA1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	-- Water part of the beach. Added to prevent snow being on the ice.
+	minetest.register_biome({
+		name = "ColdTaiga_beach_water",
+		node_top = "mcl_core:sand",
+		depth_top = 2,
+		node_water_top = "mcl_core:ice",
+		depth_water_top = 1,
+		node_filler = "mcl_core:sandstone",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = -4,
+		y_max = 0,
+		humidity_point = 58,
+		heat_point = 8,
+		_mcl_biome_type = "snowy",
+		_mcl_grass_palette_index = 3,
+		_mcl_skycolor = "#7FA1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "ColdTaiga_ocean",
+		node_top = "mcl_core:gravel",
+		depth_top = 1,
+		node_filler = "mcl_core:gravel",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -5,
+		humidity_point = 58,
+		heat_point = 8,
+		vertical_blend = 1,
+		_mcl_biome_type = "snowy",
+		_mcl_grass_palette_index = 3,
+		_mcl_skycolor = "#7FA1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Mega Pine Taiga
+	minetest.register_biome({
+		name = "MegaTaiga",
+		node_top = "mcl_core:podzol",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 76,
+		heat_point = 10,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 4,
+		_mcl_skycolor = "#7CA3FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "MegaTaiga_ocean",
+		node_top = "mcl_core:gravel",
+		depth_top = 1,
+		node_filler = "mcl_core:gravel",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 76,
+		heat_point = 10,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 4,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Mega Spruce Taiga
+	minetest.register_biome({
+		name = "MegaSpruceTaiga",
+		node_top = "mcl_core:podzol",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 100,
+		heat_point = 8,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 5,
+		_mcl_skycolor = "#7DA3FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "MegaSpruceTaiga_ocean",
+		node_top = "mcl_core:gravel",
+		depth_top = 1,
+		node_filler = "mcl_core:gravel",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 100,
+		heat_point = 8,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 5,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Extreme Hills
+	-- Sparsely populated grasslands with little tallgras and trees.
+	minetest.register_biome({
+		name = "ExtremeHills",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 4,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 4,
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 10,
+		heat_point = 45,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 6,
+		_mcl_skycolor = "#7DA2FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "ExtremeHills_beach",
+		node_top = "mcl_core:sand",
+		depth_top = 2,
+		depth_water_top = 1,
+		node_filler = "mcl_core:sandstone",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 4,
+		y_min = -4,
+		y_max = 3,
+		humidity_point = 10,
+		heat_point = 45,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 6,
+		_mcl_skycolor = beach_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "ExtremeHills_ocean",
+		node_top = "mcl_core:gravel",
+		depth_top = 1,
+		node_filler = "mcl_core:gravel",
+		depth_filler = 4,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 4,
+		y_min = OCEAN_MIN,
+		y_max = -5,
+		vertical_blend = 1,
+		humidity_point = 10,
+		heat_point = 45,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 6,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Extreme Hills M
+	-- Just gravel.
+	minetest.register_biome({
+		name = "ExtremeHillsM",
+		node_top = "mcl_core:gravel",
+		depth_top = 1,
+		node_filler = "mcl_core:gravel",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:gravel",
+		depth_riverbed = 3,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 0,
+		heat_point = 25,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 7,
+		_mcl_skycolor = "#7DA2FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "ExtremeHillsM_ocean",
+		node_top = "mcl_core:gravel",
+		depth_top = 1,
+		node_filler = "mcl_core:gravel",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 3,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 0,
+		heat_point = 25,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 7,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Extreme Hills+
+	-- This biome is near-identical to Extreme Hills on the surface but has snow-covered mountains with spruce/oak
+	-- forests above a certain height.
+	minetest.register_biome({
+		name = "ExtremeHills+",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 4,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 4,
+		y_min = 1,
+		y_max = 41,
+		humidity_point = 24,
+		heat_point = 25,
+		vertical_blend = 6,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 8,
+		_mcl_skycolor = "#7DA2FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	---- Sub-biome for Extreme Hills+ for those snow forests
+	minetest.register_biome({
+		name = "ExtremeHills+_snowtop",
+		node_dust = "mcl_core:snow",
+		node_top = "mcl_core:dirt_with_grass_snow",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 4,
+		node_river_water = "mcl_core:ice",
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 4,
+		y_min = 42,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 24,
+		heat_point = 25,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 8,
+		_mcl_skycolor = "#7DA2FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "ExtremeHills+_ocean",
+		node_top = "mcl_core:gravel",
+		depth_top = 1,
+		node_filler = "mcl_core:gravel",
+		depth_filler = 4,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 4,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 24,
+		heat_point = 25,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 8,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Stone beach
+	-- Just stone.
+	-- Not neccessarily a beach at all, only named so according to MC
+	minetest.register_biome({
+		name = "StoneBeach",
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 1,
+		y_min = -7,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 0,
+		heat_point = 8,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 9,
+		_mcl_skycolor = "#7DA2FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	minetest.register_biome({
+		name = "StoneBeach_ocean",
+		node_top = "mcl_core:gravel",
+		depth_top = 1,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 1,
+		y_min = OCEAN_MIN,
+		y_max = -8,
+		vertical_blend = 2,
+		humidity_point = 0,
+		heat_point = 8,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 9,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Ice Plains
+	minetest.register_biome({
+		name = "IcePlains",
+		node_dust = "mcl_core:snow",
+		node_top = "mcl_core:dirt_with_grass_snow",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 2,
+		node_water_top = "mcl_core:ice",
+		depth_water_top = 2,
+		node_river_water = "mcl_core:ice",
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 24,
+		heat_point = 8,
+		_mcl_biome_type = "snowy",
+		_mcl_grass_palette_index = 10,
+		_mcl_skycolor = "#7FA1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "IcePlains_ocean",
+		node_top = "mcl_core:gravel",
+		depth_top = 1,
+		node_filler = "mcl_core:gravel",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 24,
+		heat_point = 8,
+		_mcl_biome_type = "snowy",
+		_mcl_grass_palette_index = 10,
+		_mcl_skycolor = "#7FA1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Plains
+	minetest.register_biome({
+		name = "Plains",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 3,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 39,
+		heat_point = 58,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 0,
+		_mcl_skycolor = "#78A7FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "Plains_beach",
+		node_top = "mcl_core:sand",
+		depth_top = 2,
+		node_filler = "mcl_core:sandstone",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 0,
+		y_max = 2,
+		humidity_point = 39,
+		heat_point = 58,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 0,
+		_mcl_skycolor = beach_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "Plains_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -1,
+		humidity_point = 39,
+		heat_point = 58,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 0,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Sunflower Plains
+	minetest.register_biome({
+		name = "SunflowerPlains",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 28,
+		heat_point = 45,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 11,
+		_mcl_skycolor = "#78A7FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "SunflowerPlains_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:dirt",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 28,
+		heat_point = 45,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 11,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Taiga
+	minetest.register_biome({
+		name = "Taiga",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 58,
+		heat_point = 22,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 12,
+		_mcl_skycolor = "#7DA3FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "Taiga_beach",
+		node_top = "mcl_core:sand",
+		depth_top = 2,
+		node_filler = "mcl_core:sandstone",
+		depth_filler = 1,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = 3,
+		humidity_point = 58,
+		heat_point = 22,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 12,
+		_mcl_skycolor = beach_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "Taiga_ocean",
+		node_top = "mcl_core:gravel",
+		depth_top = 1,
+		node_filler = "mcl_core:gravel",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 58,
+		heat_point = 22,
+		_mcl_biome_type = "cold",
+		_mcl_grass_palette_index = 12,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Forest
+	minetest.register_biome({
+		name = "Forest",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 61,
+		heat_point = 45,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 13,
+		_mcl_skycolor = "#79A6FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "Forest_beach",
+		node_top = "mcl_core:sand",
+		depth_top = 2,
+		node_filler = "mcl_core:sandstone",
+		depth_filler = 1,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = -1,
+		y_max = 0,
+		humidity_point = 61,
+		heat_point = 45,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 13,
+		_mcl_skycolor = beach_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "Forest_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -2,
+		humidity_point = 61,
+		heat_point = 45,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 13,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Flower Forest
+	minetest.register_biome({
+		name = "FlowerForest",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 3,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 44,
+		heat_point = 32,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 14,
+		_mcl_skycolor = "#79A6FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "FlowerForest_beach",
+		node_top = "mcl_core:sand",
+		depth_top = 2,
+		node_filler = "mcl_core:sandstone",
+		depth_filler = 1,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = -2,
+		y_max = 2,
+		humidity_point = 44,
+		heat_point = 32,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 14,
+		_mcl_skycolor = beach_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "FlowerForest_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -3,
+		humidity_point = 44,
+		heat_point = 32,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 14,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Birch Forest
+	minetest.register_biome({
+		name = "BirchForest",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 78,
+		heat_point = 31,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 15,
+		_mcl_skycolor = "#7AA5FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "BirchForest_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 78,
+		heat_point = 31,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 15,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Birch Forest M
+	minetest.register_biome({
+		name = "BirchForestM",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 77,
+		heat_point = 27,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 16,
+		_mcl_skycolor = "#7AA5FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "BirchForestM_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:gravel",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 77,
+		heat_point = 27,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 16,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Desert
+	minetest.register_biome({
+		name = "Desert",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		node_stone = "mcl_core:sandstone",
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 26,
+		heat_point = 94,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 17,
+		_mcl_skycolor = "#6EB1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "Desert_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 26,
+		heat_point = 94,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 17,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Roofed Forest
+	minetest.register_biome({
+		name = "RoofedForest",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 94,
+		heat_point = 27,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 18,
+		_mcl_skycolor = "#79A6FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "RoofedForest_ocean",
+		node_top = "mcl_core:gravel",
+		depth_top = 1,
+		node_filler = "mcl_core:gravel",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 94,
+		heat_point = 27,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 18,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Mesa: Starts with a couple of sand-covered layers (the "sandlevel"),
+	-- followed by terracotta with colorful (but imperfect) strata
+	minetest.register_biome({
+		name = "Mesa",
+		node_top = "mcl_colorblocks:hardened_clay",
+		depth_top = 1,
+		node_filler = "mcl_colorblocks:hardened_clay",
+		node_riverbed = "mcl_core:redsand",
+		depth_riverbed = 1,
+		node_stone = "mcl_colorblocks:hardened_clay",
+		y_min = 11,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 0,
+		heat_point = 100,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 19,
+		_mcl_skycolor = "#6EB1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	-- Helper biome for the red sand at the bottom of Mesas.
+	minetest.register_biome({
+		name = "Mesa_sandlevel",
+		node_top = "mcl_core:redsand",
+		depth_top = 1,
+		node_filler = "mcl_colorblocks:hardened_clay_orange",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:redsand",
+		depth_riverbed = 1,
+		node_stone = "mcl_colorblocks:hardened_clay_orange",
+		y_min = -4,
+		y_max = 10,
+		humidity_point = 0,
+		heat_point = 100,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 19,
+		_mcl_skycolor = "#6EB1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "Mesa_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 3,
+		node_filler = "mcl_core:sand",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -5,
+		vertical_blend = 1,
+		humidity_point = 0,
+		heat_point = 100,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 19,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Mesa Bryce: Variant of Mesa, but with perfect strata and a much smaller red sand desert
+	minetest.register_biome({
+		name = "MesaBryce",
+		node_top = "mcl_colorblocks:hardened_clay",
+		depth_top = 1,
+		node_filler = "mcl_colorblocks:hardened_clay",
+		node_riverbed = "mcl_colorblocks:hardened_clay",
+		depth_riverbed = 1,
+		node_stone = "mcl_colorblocks:hardened_clay",
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = -5,
+		heat_point = 100,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 20,
+		_mcl_skycolor = "#6EB1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "MesaBryce_sandlevel",
+		node_top = "mcl_core:redsand",
+		depth_top = 1,
+		node_filler = "mcl_colorblocks:hardened_clay_orange",
+		depth_filler = 3,
+		node_riverbed = "mcl_colorblocks:hardened_clay",
+		depth_riverbed = 1,
+		node_stone = "mcl_colorblocks:hardened_clay_orange",
+		y_min = -4,
+		y_max = 3,
+		humidity_point = -5,
+		heat_point = 100,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 20,
+		_mcl_skycolor = "#6EB1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "MesaBryce_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 3,
+		node_filler = "mcl_core:sand",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -5,
+		vertical_blend = 1,
+		humidity_point = -5,
+		heat_point = 100,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 20,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Mesa Plateau F
+	-- Identical to Mesa below Y=30. At Y=30 and above there is a "dry" oak forest
+	minetest.register_biome({
+		name = "MesaPlateauF",
+		node_top = "mcl_colorblocks:hardened_clay",
+		depth_top = 1,
+		node_filler = "mcl_colorblocks:hardened_clay",
+		node_riverbed = "mcl_core:redsand",
+		depth_riverbed = 1,
+		node_stone = "mcl_colorblocks:hardened_clay",
+		y_min = 11,
+		y_max = 29,
+		humidity_point = 0,
+		heat_point = 60,
+		vertical_blend = 0, -- we want a sharp transition
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 21,
+		_mcl_skycolor = "#6EB1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	-- The oak forest plateau of this biome.
+	-- This is a plateau for grass blocks, dry shrubs, tall grass, coarse dirt and oaks.
+	-- Strata don't generate here.
+	minetest.register_biome({
+		name = "MesaPlateauF_grasstop",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 1,
+		node_riverbed = "mcl_core:redsand",
+		depth_riverbed = 1,
+		node_stone = "mcl_colorblocks:hardened_clay",
+		y_min = 30,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 0,
+		heat_point = 60,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 21,
+		_mcl_skycolor = "#6EB1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "MesaPlateauF_sandlevel",
+		node_top = "mcl_core:redsand",
+		depth_top = 2,
+		node_filler = "mcl_colorblocks:hardened_clay_orange",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:redsand",
+		depth_riverbed = 1,
+		node_stone = "mcl_colorblocks:hardened_clay_orange",
+		y_min = -5,
+		y_max = 10,
+		humidity_point = 0,
+		heat_point = 60,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 21,
+		_mcl_skycolor = "#6EB1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "MesaPlateauF_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 3,
+		node_filler = "mcl_core:sand",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -6,
+		vertical_blend = 1,
+		humidity_point = 0,
+		heat_point = 60,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 21,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Mesa Plateau FM
+	-- Dryer and more "chaotic"/"weathered down" variant of MesaPlateauF:
+	-- oak forest is less dense, more coarse dirt, more erratic terrain, vertical blend, more red sand layers,
+	-- red sand as ores, red sandstone at sandlevel
+	minetest.register_biome({
+		name = "MesaPlateauFM",
+		node_top = "mcl_colorblocks:hardened_clay",
+		depth_top = 1,
+		node_filler = "mcl_colorblocks:hardened_clay",
+		node_riverbed = "mcl_core:redsand",
+		depth_riverbed = 2,
+		node_stone = "mcl_colorblocks:hardened_clay",
+		y_min = 12,
+		y_max = 29,
+		humidity_point = -5,
+		heat_point = 60,
+		vertical_blend = 5,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 22,
+		_mcl_skycolor = "#6EB1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	-- Grass plateau
+	minetest.register_biome({
+		name = "MesaPlateauFM_grasstop",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:coarse_dirt",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:redsand",
+		depth_riverbed = 1,
+		node_stone = "mcl_colorblocks:hardened_clay",
+		y_min = 30,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = -5,
+		heat_point = 60,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 22,
+		_mcl_skycolor = "#6EB1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "MesaPlateauFM_sandlevel",
+		node_top = "mcl_core:redsand",
+		depth_top = 3,
+		node_filler = "mcl_colorblocks:hardened_clay_orange",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:redsand",
+		depth_riverbed = 2,
+		node_stone = "mcl_colorblocks:hardened_clay",
+		-- red sand has wider reach than in other mesa biomes
+		y_min = -7,
+		y_max = 11,
+		humidity_point = -5,
+		heat_point = 60,
+		vertical_blend = 4,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 22,
+		_mcl_skycolor = "#6EB1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "MesaPlateauFM_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 3,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 3,
+		y_min = OCEAN_MIN,
+		y_max = -8,
+		vertical_blend = 2,
+		humidity_point = -5,
+		heat_point = 60,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 22,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
 
 
+	-- Savanna
+	minetest.register_biome({
+		name = "Savanna",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 36,
+		heat_point = 79,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 1,
+		_mcl_skycolor = "#6EB1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "Savanna_beach",
+		node_top = "mcl_core:sand",
+		depth_top = 3,
+		node_filler = "mcl_core:sandstone",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = -1,
+		y_max = 0,
+		humidity_point = 36,
+		heat_point = 79,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 1,
+		_mcl_skycolor = beach_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "Savanna_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -2,
+		humidity_point = 36,
+		heat_point = 79,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 1,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
 
-local mg_flags_str = ""
-for k,v in pairs(mg_flags) do
-	if v == false then
-		k = "no" .. k
+	-- Savanna M
+	-- Changes to Savanna: Coarse Dirt. No sand beach. No oaks.
+	-- Otherwise identical to Savanna
+	minetest.register_biome({
+		name = "SavannaM",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:coarse_dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 48,
+		heat_point = 100,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 23,
+		_mcl_skycolor = "#6EB1FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "SavannaM_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 48,
+		heat_point = 100,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 23,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Jungle
+	minetest.register_biome({
+		name = "Jungle",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 88,
+		heat_point = 81,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 24,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "Jungle_shore",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = -2,
+		y_max = 0,
+		humidity_point = 88,
+		heat_point = 81,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 24,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "Jungle_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -3,
+		vertical_blend = 1,
+		humidity_point = 88,
+		heat_point = 81,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 24,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Jungle M
+	-- Like Jungle but with even more dense vegetation
+	minetest.register_biome({
+		name = "JungleM",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 92,
+		heat_point = 81,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 25,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "JungleM_shore",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = -2,
+		y_max = 0,
+		humidity_point = 92,
+		heat_point = 81,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 25,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "JungleM_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -3,
+		vertical_blend = 1,
+		humidity_point = 92,
+		heat_point = 81,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 25,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Jungle Edge
+	minetest.register_biome({
+		name = "JungleEdge",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 88,
+		heat_point = 76,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 26,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "JungleEdge_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 88,
+		heat_point = 76,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 26,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Jungle Edge M (very rare).
+	-- Almost identical to Jungle Edge. Has deeper dirt. Melons spawn here a lot.
+	-- This biome occours directly between Jungle M and Jungle Edge but also has a small border to Jungle.
+	-- This biome is very small in general.
+	minetest.register_biome({
+		name = "JungleEdgeM",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 4,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 90,
+		heat_point = 79,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 27,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "JungleEdgeM_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 4,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 90,
+		heat_point = 79,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 27,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Mangrove swamp
+	minetest.register_biome({
+		name = "MangroveSwamp",
+		node_top = "mcl_mud:mud",
+		depth_top = 1,
+		node_filler = "mcl_mud:mud",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:dirt",
+		depth_riverbed = 2,
+		y_min = 1,
+		-- Note: Limited in height!
+		y_max = 27,
+		humidity_point = 95,
+		heat_point = 94,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 27,
+		_mcl_skycolor = "#78A7FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "MangroveSwamp_shore",
+		node_top = "mcl_mud:mud",
+		depth_top = 1,
+		node_filler = "mcl_mud:mud",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:dirt",
+		depth_riverbed = 2,
+		y_min = -5,
+		y_max = 0,
+		humidity_point = 95,
+		heat_point = 94,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 27,
+		_mcl_skycolor = "#78A7FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "MangroveSwamp_ocean",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:gravel",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -6,
+		vertical_blend = 1,
+		humidity_point = 95,
+		heat_point = 94,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 27,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	-- Swampland
+	minetest.register_biome({
+		name = "Swampland",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		-- Note: Limited in height!
+		y_max = 23,
+		humidity_point = 90,
+		heat_point = 50,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 28,
+		_mcl_skycolor = "#78A7FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "Swampland_shore",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = -5,
+		y_max = 0,
+		humidity_point = 90,
+		heat_point = 50,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 28,
+		_mcl_skycolor = "#78A7FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "Swampland_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -6,
+		vertical_blend = 1,
+		humidity_point = 90,
+		heat_point = 50,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 28,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Mushroom Island / Mushroom Island Shore (rare)
+	-- Not neccessarily an island at all, only named after Minecraft's biome
+	minetest.register_biome({
+		name = "MushroomIsland",
+		node_top = "mcl_core:mycelium",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 4,
+		-- Note: Limited in height!
+		y_max = 20,
+		vertical_blend = 1,
+		humidity_point = 106,
+		heat_point = 50,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 29,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	minetest.register_biome({
+		name = "MushroomIslandShore",
+		node_top = "mcl_core:mycelium",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = 3,
+		humidity_point = 106,
+		heat_point = 50,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 29,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "MushroomIsland_ocean",
+		node_top = "mcl_core:gravel",
+		depth_top = 1,
+		node_filler = "mcl_core:gravel",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 106,
+		heat_point = 50,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 29,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Bamboo Jungle areas are like the Jungle areas, but warmer and more humid.
+	-- Bamboo Jungle
+	minetest.register_biome({
+		name = "BambooJungle",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 90,
+		heat_point = 95,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 24,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "BambooJungle_shore",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = -2,
+		y_max = 0,
+		humidity_point = 90,
+		heat_point = 95,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 24,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "BambooJungle_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -3,
+		vertical_blend = 1,
+		humidity_point = 95,
+		heat_point = 90,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 24,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Bamboo Jungle M
+	-- Like Bamboo Jungle but with even more dense vegetation
+	minetest.register_biome({
+		name = "BambooJungleM",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 95,
+		heat_point = 95,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 25,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "BambooJungleM_shore",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = -2,
+		y_max = 0,
+		humidity_point = 95,
+		heat_point = 90,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 25,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "BambooJungleM_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -3,
+		vertical_blend = 1,
+		humidity_point = 95,
+		heat_point = 95,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 25,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Bamboo Jungle Edge
+	minetest.register_biome({
+		name = "BambooJungleEdge",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 92,
+		heat_point = 90,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 26,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "BambooJungleEdge_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 95,
+		heat_point = 88,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 26,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Jungle Edge M (very rare).
+	-- Almost identical to Jungle Edge. Has deeper dirt. Melons spawn here a lot.
+	-- This biome occours directly between Jungle M and Jungle Edge but also has a small border to Jungle.
+	-- This biome is very small in general.
+	minetest.register_biome({
+		name = "BambooJungleEdgeM",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 4,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = 95,
+		heat_point = 95,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 27,
+		_mcl_skycolor = "#77A8FF",
+		_mcl_fogcolor = overworld_fogcolor
+	})
+	minetest.register_biome({
+		name = "BambooJungleEdgeM_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 4,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
+		humidity_point = 97,
+		heat_point = 90,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 27,
+		_mcl_skycolor = ocean_skycolor,
+		_mcl_fogcolor = overworld_fogcolor
+	})
+
+	-- Add deep ocean and underground biomes automatically.
+	for i = 1, #overworld_biomes do
+		local biome = overworld_biomes[i]
+
+		-- Deep Ocean
+		minetest.register_biome({
+			name = biome .. "_deep_ocean",
+			heat_point = minetest.registered_biomes[biome].heat_point,
+			humidity_point = minetest.registered_biomes[biome].humidity_point,
+			y_min = DEEP_OCEAN_MIN,
+			y_max = DEEP_OCEAN_MAX,
+			node_top = minetest.registered_biomes[biome .. "_ocean"].node_top,
+			depth_top = 2,
+			node_filler = minetest.registered_biomes[biome .. "_ocean"].node_filler,
+			depth_filler = 3,
+			node_riverbed = minetest.registered_biomes[biome .. "_ocean"].node_riverbed,
+			depth_riverbed = 2,
+			vertical_blend = 5,
+			_mcl_biome_type = minetest.registered_biomes[biome]._mcl_biome_type,
+			_mcl_grass_palette_index = minetest.registered_biomes[biome]._mcl_grass_palette_index,
+			_mcl_skycolor = ocean_skycolor,
+			_mcl_fogcolor = overworld_fogcolor
+		})
+
+		-- Underground biomes are used to identify the underground and to prevent nodes from the surface
+		-- (sand, dirt) from leaking into the underground.
+		minetest.register_biome({
+			name = biome .. "_underground",
+			heat_point = minetest.registered_biomes[biome].heat_point,
+			humidity_point = minetest.registered_biomes[biome].humidity_point,
+			y_min = mcl_vars.mg_overworld_min,
+			y_max = DEEP_OCEAN_MIN - 1,
+			_mcl_biome_type = minetest.registered_biomes[biome]._mcl_biome_type,
+			_mcl_grass_palette_index = minetest.registered_biomes[biome]._mcl_grass_palette_index,
+			_mcl_skycolor = minetest.registered_biomes[biome]._mcl_skycolor,
+			_mcl_fogcolor = minetest.registered_biomes[biome]._mcl_fogcolor,
+		})
+
 	end
-	mg_flags_str = mg_flags_str .. k .. ","
-end
-if string.len(mg_flags_str) > 0 then
-	mg_flags_str = string.sub(mg_flags_str, 1, string.len(mg_flags_str)-1)
-end
-minetest.set_mapgen_setting("mg_flags", mg_flags_str, true)
-
-local function between(x, y, z) -- x is between y and z (inclusive)
-    return y <= x and x <= z
 end
 
-local function in_cube(tpos,wpos1,wpos2)
-	local xmax=wpos2.x
-	local xmin=wpos1.x
+-- Register biomes of non-Overworld biomes
+local function register_dimension_biomes()
+	--[[ REALMS ]]
 
-	local ymax=wpos2.y
-	local ymin=wpos1.y
+	--[[ THE NETHER ]]
+	-- the following decoration is a hack to cover exposed bedrock in netherrack - be careful not to put any ceiling decorations in a way that would apply to this (they would get generated regardless of biome)
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:bedrock"},
+		sidelen = 16,
+		fill_ratio = 10,
+		y_min = mcl_vars.mg_lava_nether_max,
+		y_max = mcl_vars.mg_nether_max + 15,
+		height = 6,
+		max_height = 10,
+		decoration = "mcl_nether:netherrack",
+		flags = "all_ceilings",
+		param2 = 0,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:bedrock"},
+		sidelen = 16,
+		fill_ratio = 10,
+		y_min = mcl_vars.mg_nether_min - 10,
+		y_max = mcl_vars.mg_lava_nether_max,
+		height = 7,
+		max_height = 14,
+		decoration = "mcl_nether:netherrack",
+		flags = "all_floors,force_placement",
+		param2 = 0,
+	})
 
-	local zmax=wpos2.z
-	local zmin=wpos1.z
-	if wpos1.x > wpos2.x then
-		xmax=wpos1.x
-		xmin=wpos2.x
+	minetest.register_biome({
+		name = "Nether",
+		node_filler = "mcl_nether:netherrack",
+		node_stone = "mcl_nether:netherrack",
+		node_top = "mcl_nether:netherrack",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_nether_min,
+
+		y_max = mcl_vars.mg_nether_max + 80,
+		heat_point = 100,
+		humidity_point = 0,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 17,
+--		_mcl_skycolor = nether_skycolor,
+--		_mcl_fogcolor = "#330808"
+	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack", "mcl_nether:glowstone", "mcl_blackstone:nether_gold", "mcl_nether:quartz_ore", "mcl_core:gravel", "mcl_nether:soul_sand", "mcl_nether:glowstone", "mcl_nether:magma"},
+		sidelen = 16,
+		fill_ratio = 10,
+		biomes = {"Nether"},
+		y_min = mcl_vars.mg_lava_nether_max,
+		y_max = mcl_vars.mg_nether_deco_max,
+		decoration = "mcl_nether:netherrack",
+		flags = "all_floors",
+		param2 = 0,
+	})
+
+	minetest.register_biome({
+		name = "SoulsandValley",
+		node_filler = "mcl_nether:netherrack",
+		node_stone = "mcl_nether:netherrack",
+		node_top = "mcl_blackstone:soul_soil",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_nether_min,
+		y_max = mcl_vars.mg_nether_max + 80,
+		heat_point = 77,
+		humidity_point = 33,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 17,
+--		_mcl_skycolor = nether_skycolor,
+--		_mcl_fogcolor = "#1B4745"
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack", "mcl_nether:glowstone", "mcl_nether:magma"},
+		sidelen = 16,
+		fill_ratio = 10,
+		biomes = {"SoulsandValley"},
+		y_min = mcl_vars.mg_lava_nether_max,
+		y_max = mcl_vars.mg_nether_deco_max,
+		decoration = "mcl_blackstone:soul_soil",
+		flags = "all_floors, all_ceilings",
+		param2 = 0,
+	})
+
+	minetest.register_ore({
+		ore_type = "blob",
+		ore = "mcl_nether:soul_sand",
+		wherein = {"mcl_nether:netherrack", "mcl_blackstone:soul_soil"},
+		clust_scarcity = 100,
+		clust_num_ores = 225,
+		clust_size = 15,
+		biomes = {"SoulsandValley"},
+		y_min = mcl_vars.mg_lava_nether_max,
+		y_max = mcl_vars.mg_nether_deco_max,
+		noise_params = {
+			offset = 0,
+			scale = 1,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		}
+	})
+	minetest.register_biome({
+		name = "CrimsonForest",
+		node_filler = "mcl_nether:netherrack",
+		node_stone = "mcl_nether:netherrack",
+		node_top = "mcl_crimson:crimson_nylium",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_nether_min,
+		y_max = mcl_vars.mg_nether_max + 80,
+		heat_point = 60,
+		humidity_point = 47,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 17,
+--		_mcl_skycolor = nether_skycolor,
+--		_mcl_fogcolor = "#330303"
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack", "mcl_nether:glowstone", "mcl_blackstone:nether_gold", "mcl_nether:quartz_ore", "mcl_core:gravel", "mcl_nether:soul_sand", "mcl_nether:magma", "mcl_blackstone:blackstone"},
+		sidelen = 16,
+		fill_ratio = 10,
+		biomes = {"CrimsonForest"},
+		y_min = mcl_vars.mg_lava_nether_max,
+		y_max = mcl_vars.mg_nether_deco_max,
+		decoration = "mcl_crimson:crimson_nylium",
+		flags = "all_floors",
+		param2 = 0,
+	})
+	minetest.register_biome({
+		name = "WarpedForest",
+		node_filler = "mcl_nether:netherrack",
+		node_stone = "mcl_nether:netherrack",
+		node_top = "mcl_crimson:warped_nylium",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_nether_min,
+		y_max = mcl_vars.mg_nether_max + 80,
+		heat_point = 37,
+		humidity_point = 70,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 17,
+--		_mcl_skycolor = nether_skycolor,
+--		_mcl_fogcolor = "#1A051A"
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack", "mcl_nether:glowstone", "mcl_blackstone:nether_gold", "mcl_nether:quartz_ore", "mcl_core:gravel", "mcl_nether:soul_sand", "mcl_nether:magma", "mcl_blackstone:blackstone"},
+		sidelen = 16,
+		fill_ratio = 10,
+		biomes = {"WarpedForest"},
+		y_min = mcl_vars.mg_lava_nether_max,
+		y_max = mcl_vars.mg_nether_deco_max,
+		decoration = "mcl_crimson:warped_nylium",
+		flags = "all_floors",
+		param2 = 0,
+	})
+	minetest.register_biome({
+		name = "BasaltDelta",
+		node_filler = "mcl_nether:netherrack",
+		node_stone = "mcl_nether:netherrack",
+		node_top = "mcl_blackstone:basalt",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_nether_min,
+		y_max = mcl_vars.mg_nether_max + 80,
+		heat_point = 27,
+		humidity_point = 80,
+		_mcl_biome_type = "hot",
+		_mcl_grass_palette_index = 17,
+--		_mcl_skycolor = nether_skycolor,
+--		_mcl_fogcolor = "#685F70"
+	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack", "mcl_nether:glowstone", "mcl_blackstone:nether_gold", "mcl_nether:quartz_ore", "mcl_core:gravel", "mcl_nether:soul_sand", "mcl_blackstone:blackstone", "mcl_nether:magma"},
+		sidelen = 16,
+		fill_ratio = 10,
+		biomes = {"BasaltDelta"},
+		y_min = mcl_vars.mg_lava_nether_max,
+		y_max = mcl_vars.mg_nether_deco_max,
+		decoration = "mcl_blackstone:basalt",
+		flags = "all_floors",
+		param2 = 0,
+	})
+
+	minetest.register_ore({
+		ore_type = "blob",
+		ore = "mcl_blackstone:blackstone",
+		wherein = {"mcl_nether:netherrack", "mcl_nether:glowstone", "mcl_core:gravel"},
+		clust_scarcity = 100,
+		clust_num_ores = 400,
+		clust_size = 20,
+		biomes = {"BasaltDelta"},
+		y_min = mcl_vars.mg_lava_nether_max,
+		y_max = mcl_vars.mg_nether_deco_max,
+		noise_params = {
+			offset = 0,
+			scale = 1,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		}
+	})
+
+	--[[ THE END ]]
+	minetest.register_biome({
+		name = "End",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 1000, --ridiculously high values so End Island always takes precedent
+		humidity_point = 1000,
+		vertical_blend = 16,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 0,
+--		_mcl_skycolor = end_skycolor,
+--		_mcl_fogcolor = end_fogcolor
+	})
+	minetest.register_biome({
+		name = "EndBarrens",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 1000,
+		humidity_point = 1000,
+		vertical_blend = 16,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 0,
+--		_mcl_skycolor = end_skycolor,
+--		_mcl_fogcolor = end_fogcolor
+	})
+	minetest.register_biome({
+		name = "EndMidlands",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 1000,
+		humidity_point = 1000,
+		vertical_blend = 16,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 0,
+--		_mcl_skycolor = end_skycolor,
+--		_mcl_fogcolor = end_fogcolor
+	})
+	minetest.register_biome({
+		name = "EndHighlands",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 1000,
+		humidity_point = 1000,
+		vertical_blend = 16,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 0,
+--		_mcl_skycolor = end_skycolor,
+--		_mcl_fogcolor = end_fogcolor
+	})
+	minetest.register_biome({
+		name = "EndSmallIslands",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 1000,
+		humidity_point = 1000,
+		vertical_blend = 16,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 0,
+--		_mcl_skycolor = end_skycolor,
+--		_mcl_fogcolor = end_fogcolor
+	})
+
+	minetest.register_biome({
+		name = "EndBorder",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max + 80,
+		heat_point = 500,
+		humidity_point = 500,
+		vertical_blend = 16,
+		max_pos = {x = 1250, y = mcl_vars.mg_end_min + 512, z = 1250},
+		min_pos = {x = -1250, y = mcl_vars.mg_end_min, z = -1250},
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 0,
+--		_mcl_skycolor = end_skycolor,
+--		_mcl_fogcolor = end_fogcolor
+	})
+
+	minetest.register_biome({
+		name = "EndIsland",
+		node_stone = "air",
+		node_filler = "air",
+		node_water = "air",
+		node_river_water = "air",
+		node_cave_liquid = "air",
+		max_pos = {x = 650, y = mcl_vars.mg_end_min + 512, z = 650},
+		min_pos = {x = -650, y = mcl_vars.mg_end_min, z = -650},
+		heat_point = 50,
+		humidity_point = 50,
+		vertical_blend = 16,
+		_mcl_biome_type = "medium",
+		_mcl_grass_palette_index = 0,
+--		_mcl_skycolor = end_skycolor,
+--		_mcl_fogcolor = end_fogcolor
+	})
+
+end
+
+-- Register ores which are limited by biomes. For all mapgens except flat and singlenode.
+local function register_biome_ores()
+	local stonelike = {"mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite"}
+
+	-- Emeralds
+	minetest.register_ore({
+		ore_type = "scatter",
+		ore = "mcl_core:stone_with_emerald",
+		wherein = stonelike,
+		clust_scarcity = 16384,
+		clust_num_ores = 1,
+		clust_size = 1,
+		y_min = mcl_worlds.layer_to_y(4),
+		y_max = mcl_worlds.layer_to_y(32),
+		biomes = {
+			"ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", "ExtremeHills_deep_ocean", "ExtremeHills_underground",
+			"ExtremeHills+", "ExtremeHills+_ocean", "ExtremeHills+_deep_ocean", "ExtremeHills+_underground",
+			"ExtremeHillsM", "ExtremeHillsM_ocean", "ExtremeHillsM_deep_ocean", "ExtremeHillsM_underground",
+		},
+	})
+
+	-- Rarely replace stone with stone monster eggs.
+	-- In v6 this can happen anywhere, in other mapgens only in Extreme Hills.
+	local monster_egg_scarcity
+	if mg_name == "v6" then
+		monster_egg_scarcity = 28 * 28 * 28
+	else
+		monster_egg_scarcity = 26 * 26 * 26
 	end
-	if wpos1.y > wpos2.y then
-		ymax=wpos1.y
-		ymin=wpos2.y
+	minetest.register_ore({
+		ore_type = "scatter",
+		ore = "mcl_monster_eggs:monster_egg_stone",
+		wherein = "mcl_core:stone",
+		clust_scarcity = monster_egg_scarcity,
+		clust_num_ores = 3,
+		clust_size = 2,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_worlds.layer_to_y(61),
+		biomes = {
+			"ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", "ExtremeHills_deep_ocean", "ExtremeHills_underground",
+			"ExtremeHills+", "ExtremeHills+_ocean", "ExtremeHills+_deep_ocean", "ExtremeHills+_underground",
+			"ExtremeHillsM", "ExtremeHillsM_ocean", "ExtremeHillsM_deep_ocean", "ExtremeHillsM_underground",
+		},
+	})
+
+	-- Bonus gold spawn in Mesa
+	if mg_name ~= "v6" then
+		minetest.register_ore({
+			ore_type = "scatter",
+			ore = "mcl_core:stone_with_gold",
+			wherein = stonelike,
+			clust_scarcity = 3333,
+			clust_num_ores = 5,
+			clust_size = 3,
+			y_min = mcl_worlds.layer_to_y(32),
+			y_max = mcl_worlds.layer_to_y(79),
+			biomes = {"Mesa", "Mesa_sandlevel", "Mesa_ocean",
+					  "MesaBryce", "MesaBryce_sandlevel", "MesaBryce_ocean",
+					  "MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlateauF_ocean",
+					  "MesaPlateauFM", "MesaPlateauFM_sandlevel", "MesaPlateauFM_ocean", },
+		})
 	end
-	if wpos1.z > wpos2.z then
-		zmax=wpos1.z
-		zmin=wpos2.z
+	--nether gold
+	if mg_name ~= "v6" then
+		minetest.register_ore({
+			ore_type = "scatter",
+			ore = "mcl_blackstone:blackstone_gilded",
+			wherein = "mcl_blackstone:blackstone",
+			clust_scarcity = 4775,
+			clust_num_ores = 2,
+			clust_size = 2,
+			y_min = mcl_vars.mg_nether_min,
+			y_max = mcl_vars.mg_nether_max,
+		})
+		minetest.register_ore({
+			ore_type = "scatter",
+			ore = "mcl_blackstone:nether_gold",
+			wherein = "mcl_nether:netherrack",
+			clust_scarcity = 830,
+			clust_num_ores = 5,
+			clust_size = 3,
+			y_min = mcl_vars.mg_nether_min,
+			y_max = mcl_vars.mg_nether_max,
+		})
+		minetest.register_ore({
+			ore_type = "scatter",
+			ore = "mcl_blackstone:nether_gold",
+			wherein = "mcl_nether:netherrack",
+			clust_scarcity = 1660,
+			clust_num_ores = 4,
+			clust_size = 2,
+			y_min = mcl_vars.mg_nether_min,
+			y_max = mcl_vars.mg_nether_max,
+		})
 	end
-	if between(tpos.x,xmin,xmax) and between(tpos.y,ymin,ymax) and between(tpos.z,zmin,zmax) then
-		return true
-	end
-	return false
 end
 
--- Helper function for converting a MC probability to MT, with
--- regards to MapBlocks.
--- Some MC generated structures are generated on per-chunk
--- probability.
--- The MC probability is 1/x per Minecraft chunk (16×16).
+-- Register “fake” ores directly related to the biomes. These are mostly low-level landscape alternations
+local function register_biomelike_ores()
 
--- x: The MC probability is 1/x.
--- minp, maxp: MapBlock limits
--- returns: Probability (1/return_value) for a single MT mapblock
-local function minecraft_chunk_probability(x, minp, maxp)
-	-- 256 is the MC chunk height
-	return x * (((maxp.x-minp.x+1)*(maxp.z-minp.z+1)) / 256)
-end
+	-- Random coarse dirt floor in Mega Taiga and Mesa Plateau F
+	minetest.register_ore({
+		ore_type = "sheet",
+		ore = "mcl_core:coarse_dirt",
+		wherein = {"mcl_core:podzol", "mcl_core:dirt"},
+		clust_scarcity = 1,
+		clust_num_ores = 12,
+		clust_size = 10,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		noise_threshold = 0.2,
+		noise_params = {offset = 0, scale = 15, spread = {x = 130, y = 130, z = 130}, seed = 24, octaves = 3, persist = 0.70},
+		biomes = {"MegaTaiga"},
+	})
 
--- Takes x and z coordinates and minp and maxp of a generated chunk
--- (in on_generated callback) and returns a biomemap index)
--- Inverse function of biomemap_to_xz
-local function xz_to_biomemap_index(x, z, minp, maxp)
-	local xwidth = maxp.x - minp.x + 1
-	local zwidth = maxp.z - minp.z + 1
-	local minix = x % xwidth
-	local miniz = z % zwidth
+	minetest.register_ore({
+		ore_type = "sheet",
+		ore = "mcl_core:coarse_dirt",
+		wherein = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		column_height_max = 1,
+		column_midpoint_factor = 0.0,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		noise_threshold = 0.0,
+		noise_params = {offset = 0, scale = 15, spread = {x = 250, y = 250, z = 250}, seed = 24, octaves = 3, persist = 0.70},
+		biomes = {"MesaPlateauF_grasstop"},
+	})
+	minetest.register_ore({
+		ore_type = "blob",
+		ore = "mcl_core:coarse_dirt",
+		wherein = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		clust_scarcity = 1500,
+		clust_num_ores = 25,
+		clust_size = 7,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		noise_params = {
+			offset = 0,
+			scale = 1,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		},
+		biomes = {"MesaPlateauF_grasstop"},
+	})
+	minetest.register_ore({
+		ore_type = "sheet",
+		ore = "mcl_core:coarse_dirt",
+		wherein = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		column_height_max = 1,
+		column_midpoint_factor = 0.0,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		noise_threshold = -2.5,
+		noise_params = {offset = 1, scale = 15, spread = {x = 250, y = 250, z = 250}, seed = 24, octaves = 3, persist = 0.80},
+		biomes = {"MesaPlateauFM_grasstop"},
+	})
+	minetest.register_ore({
+		ore_type = "blob",
+		ore = "mcl_core:coarse_dirt",
+		wherein = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		clust_scarcity = 1800,
+		clust_num_ores = 65,
+		clust_size = 15,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		noise_params = {
+			offset = 0,
+			scale = 1,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		},
+		biomes = {"MesaPlateauFM_grasstop"},
+	})
+	-- Occasionally dig out portions of MesaPlateauFM
+	minetest.register_ore({
+		ore_type = "blob",
+		ore = "air",
+		wherein = {"group:hardened_clay", "group:sand", "mcl_core:coarse_dirt"},
+		clust_scarcity = 4000,
+		clust_size = 5,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		noise_params = {
+			offset = 0,
+			scale = 1,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		},
+		biomes = {"MesaPlateauFM", "MesaPlateauFM_grasstop"},
+	})
+	minetest.register_ore({
+		ore_type = "blob",
+		ore = "mcl_core:redsandstone",
+		wherein = {"mcl_colorblocks:hardened_clay_orange"},
+		clust_scarcity = 300,
+		clust_size = 8,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		noise_params = {
+			offset = 0,
+			scale = 1,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		},
+		biomes = {"MesaPlateauFM_sandlevel"},
+	})
+	-- More red sand in MesaPlateauFM
+	minetest.register_ore({
+		ore_type = "sheet",
+		ore = "mcl_core:redsand",
+		wherein = {"group:hardened_clay"},
+		clust_scarcity = 1,
+		clust_num_ores = 12,
+		clust_size = 10,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		noise_threshold = 0.1,
+		noise_params = {offset = 0, scale = 15, spread = {x = 130, y = 130, z = 130}, seed = 95, octaves = 3, persist = 0.70},
+		biomes = {"MesaPlateauFM"},
+	})
+	minetest.register_ore({
+		ore_type = "blob",
+		ore = "mcl_core:redsand",
+		wherein = {"group:hardened_clay"},
+		clust_scarcity = 1500,
+		clust_size = 4,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		noise_params = {
+			offset = 0,
+			scale = 1,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		},
+		biomes = {"MesaPlateauFM", "MesaPlateauFM_grasstop", "MesaPlateauFM_sandlevel"},
+	})
 
-	return (minix + miniz * zwidth) + 1
-end
+	-- Small dirt patches in Extreme Hills M
+	minetest.register_ore({
+		ore_type = "blob",
+		-- TODO: Should be grass block. But generating this as ore means gras blocks will spawn undeground. :-(
+		ore = "mcl_core:dirt",
+		wherein = {"mcl_core:gravel"},
+		clust_scarcity = 5000,
+		clust_num_ores = 12,
+		clust_size = 4,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		noise_threshold = 0.2,
+		noise_params = {offset = 0, scale = 5, spread = {x = 250, y = 250, z = 250}, seed = 64, octaves = 3, persist = 0.60},
+		biomes = {"ExtremeHillsM"},
+	})
+	-- For a transition from stone to hardened clay in mesa biomes that is not perfectly flat
+	minetest.register_ore({
+		ore_type = "stratum",
+		ore = "mcl_core:stone",
+		wherein = {"group:hardened_clay"},
+		noise_params = {offset = -6, scale = 2, spread = {x = 25, y = 25, z = 25}, octaves = 1, persist = 0.60},
+		stratum_thickness = 8,
+		biomes = {
+			"Mesa_sandlevel", "Mesa_ocean",
+			"MesaBryce_sandlevel", "MesaBryce_ocean",
+			"MesaPlateauF_sandlevel", "MesaPlateauF_ocean",
+			"MesaPlateauFM_sandlevel", "MesaPlateauFM_ocean",
+		},
+		y_min = -4,
+		y_max = 0,
 
+	})
 
--- Generate basic layer-based nodes: void, bedrock, realm barrier, lava seas, etc.
--- Also perform some basic node replacements.
+	-- Mesa strata (registered as sheet ores)
 
-local bedrock_check
-if mcl_vars.mg_bedrock_is_rough then
-	function bedrock_check(pos, _, pr)
-		local y = pos.y
-		-- Bedrock layers with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
-		-- This code assumes a bedrock height of 5 layers.
-
-		local diff = mcl_vars.mg_bedrock_overworld_max - y -- Overworld bedrock
-		local ndiff1 = mcl_vars.mg_bedrock_nether_bottom_max - y -- Nether bedrock, bottom
-		local ndiff2 = mcl_vars.mg_bedrock_nether_top_max - y -- Nether bedrock, ceiling
-
-		local top
-		if diff == 0 or ndiff1 == 0 or ndiff2 == 4 then
-			-- 50% bedrock chance
-			top = 2
-		elseif diff == 1 or ndiff1 == 1 or ndiff2 == 3 then
-			-- 66.666...%
-			top = 3
-		elseif diff == 2 or ndiff1 == 2 or ndiff2 == 2 then
-			-- 75%
-			top = 4
-		elseif diff == 3 or ndiff1 == 3 or ndiff2 == 1 then
-			-- 90%
-			top = 10
-		elseif diff == 4 or ndiff1 == 4 or ndiff2 == 0 then
-			-- 100%
-			return true
+	-- Helper function to create strata.
+	local function stratum(y_min, height, color, seed, is_perfect)
+		if not height then
+			height = 1
+		end
+		if not seed then
+			seed = 39
+		end
+		local y_max = y_min + height - 1
+		local perfect_biomes
+		if is_perfect then
+			-- "perfect" means no erosion
+			perfect_biomes = {"MesaBryce", "Mesa", "MesaPlateauF", "MesaPlateauFM"}
 		else
-			-- Not in bedrock layer
-			return false
+			perfect_biomes = {"MesaBryce"}
+		end
+		-- Full, perfect stratum
+		minetest.register_ore({
+			ore_type = "stratum",
+			ore = "mcl_colorblocks:hardened_clay_" .. color,
+			-- Only paint uncolored so the biome can choose
+			-- a color in advance.
+			wherein = {"mcl_colorblocks:hardened_clay"},
+			y_min = y_min,
+			y_max = y_max,
+			biomes = perfect_biomes,
+		})
+		if not is_perfect then
+			-- Slightly eroded stratum, only minor imperfections
+			minetest.register_ore({
+				ore_type = "stratum",
+				ore = "mcl_colorblocks:hardened_clay_" .. color,
+				wherein = {"mcl_colorblocks:hardened_clay"},
+				y_min = y_min,
+				y_max = y_max,
+				biomes = {"Mesa", "MesaPlateauF"},
+				noise_params = {
+					offset = y_min + (y_max - y_min) / 2,
+					scale = 0,
+					spread = {x = 50, y = 50, z = 50},
+					seed = seed + 4,
+					octaves = 1,
+					persist = 1.0
+				},
+				np_stratum_thickness = {
+					offset = 1.28,
+					scale = 1,
+					spread = {x = 18, y = 18, z = 18},
+					seed = seed + 4,
+					octaves = 3,
+					persist = 0.8,
+				},
+			})
+			-- Very eroded stratum, most of the color is gone
+			minetest.register_ore({
+				ore_type = "stratum",
+				ore = "mcl_colorblocks:hardened_clay_" .. color,
+				wherein = {"mcl_colorblocks:hardened_clay"},
+				y_min = y_min,
+				y_max = y_max,
+				biomes = {"MesaPlateauFM"},
+				noise_params = {
+					offset = y_min + (y_max - y_min) / 2,
+					scale = 0,
+					spread = {x = 50, y = 50, z = 50},
+					seed = seed + 4,
+					octaves = 1,
+					persist = 1.0
+				},
+				np_stratum_thickness = {
+					offset = 0.1,
+					scale = 1,
+					spread = {x = 28, y = 28, z = 28},
+					seed = seed + 4,
+					octaves = 2,
+					persist = 0.6,
+				},
+			})
 		end
 
-		return pr:next(1, top) <= top-1
 	end
+
+	-- Hardcoded orange strata near sea level.
+
+	-- For MesaBryce, since it has no sand at these heights
+	stratum(4, 1, "orange", nil, true)
+	stratum(7, 2, "orange", nil, true)
+
+	-- 3-level stratum above the sandlevel (all mesa biomes)
+	stratum(11, 3, "orange", nil, true)
+
+	-- Create random strata for up to Y = 256.
+	-- These strata are calculated based on the world seed and are global.
+	-- They are thus different per-world.
+	local mesapr = PcgRandom(mg_seed)
+
+	--[[
+
+	------ DANGER ZONE! ------
+
+	The following code is sensitive to changes; changing any number may break
+	mapgen consistency when the mapgen generates new mapchunks in existing
+	worlds because the random generator will yield different results and the strata
+	suddenly don't match up anymore. ]]
+
+	-- Available Mesa colors:
+	local mesa_stratum_colors = {"silver", "brown", "orange", "red", "yellow", "white"}
+
+	-- Start level
+	local y = 17
+
+	-- Generate stratas
+	repeat
+		-- Each stratum has a color (duh!)
+		local colorid = mesapr:next(1, #mesa_stratum_colors)
+
+		-- … and a random thickness
+		local heightrandom = mesapr:next(1, 12)
+		local h
+		if heightrandom == 12 then
+			h = 4
+		elseif heightrandom >= 10 then
+			h = 3
+		elseif heightrandom >= 8 then
+			h = 2
+		else
+			h = 1
+		end
+		-- Small built-in bias: Only thin strata up to this Y level
+		if y < 45 then
+			h = math.min(h, 2)
+		end
+
+		-- Register stratum
+		stratum(y, h, mesa_stratum_colors[colorid])
+
+		-- Skip a random amount of layers (which won't get painted)
+		local skiprandom = mesapr:next(1, 12)
+		local skip
+		if skiprandom == 12 then
+			skip = 4
+		elseif skiprandom >= 10 then
+			skip = 3
+		elseif skiprandom >= 5 then
+			skip = 2
+		elseif skiprandom >= 2 then
+			skip = 1
+		else
+			-- If this happens, the next stratum will touch the previous one without gap
+			skip = 0
+		end
+
+		-- Get height of next stratum or finish
+		y = y + h + skip
+	until y > 256
+
+	--[[ END OF DANGER ZONE ]]
+end
+
+-- Non-Overworld ores
+local function register_dimension_ores()
+
+	--[[ NETHER GENERATION ]]
+
+	-- Soul sand
+	minetest.register_ore({
+		ore_type = "sheet",
+		ore = "mcl_nether:soul_sand",
+		-- Note: Stone is included only for v6 mapgen support. Netherrack is not generated naturally
+		-- in v6, but instead set with the on_generated function in mcl_mapgen_core.
+		wherein = {"mcl_nether:netherrack", "mcl_core:stone"},
+		clust_scarcity = 13 * 13 * 13,
+		clust_size = 5,
+		y_min = mcl_vars.mg_nether_min,
+		y_max = mcl_worlds.layer_to_y(64, "nether"),
+		noise_threshold = 0.0,
+		noise_params = {
+			offset = 0.5,
+			scale = 0.1,
+			spread = {x = 5, y = 5, z = 5},
+			seed = 2316,
+			octaves = 1,
+			persist = 0.0
+		},
+	})
+
+	-- Magma blocks
+	minetest.register_ore({
+		ore_type = "blob",
+		ore = "mcl_nether:magma",
+		wherein = {"mcl_nether:netherrack", "mcl_core:stone"},
+		clust_scarcity = 8 * 8 * 8,
+		clust_num_ores = 45,
+		clust_size = 6,
+		y_min = mcl_worlds.layer_to_y(23, "nether"),
+		y_max = mcl_worlds.layer_to_y(37, "nether"),
+		noise_params = {
+			offset = 0,
+			scale = 1,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		},
+	})
+	minetest.register_ore({
+		ore_type = "blob",
+		ore = "mcl_nether:magma",
+		wherein = {"mcl_nether:netherrack"},
+		clust_scarcity = 10 * 10 * 10,
+		clust_num_ores = 65,
+		clust_size = 8,
+		y_min = mcl_worlds.layer_to_y(23, "nether"),
+		y_max = mcl_worlds.layer_to_y(37, "nether"),
+		noise_params = {
+			offset = 0,
+			scale = 1,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		},
+	})
+
+	-- Glowstone
+	minetest.register_ore({
+		ore_type = "blob",
+		ore = "mcl_nether:glowstone",
+		wherein = {"mcl_nether:netherrack", "mcl_core:stone"},
+		clust_scarcity = 26 * 26 * 26,
+		clust_size = 5,
+		y_min = mcl_vars.mg_lava_nether_max + 10,
+		y_max = mcl_vars.mg_nether_max - 13,
+		noise_threshold = 0.0,
+		noise_params = {
+			offset = 0.5,
+			scale = 0.1,
+			spread = {x = 5, y = 5, z = 5},
+			seed = 17676,
+			octaves = 1,
+			persist = 0.0
+		},
+	})
+
+	-- Gravel (Nether)
+	minetest.register_ore({
+		ore_type = "sheet",
+		ore = "mcl_core:gravel",
+		wherein = {"mcl_nether:netherrack", "mcl_core:stone"},
+		column_height_min = 1,
+		column_height_max = 1,
+		column_midpoint_factor = 0,
+		y_min = mcl_worlds.layer_to_y(63, "nether"),
+		-- This should be 65, but for some reason with this setting, the sheet ore really stops at 65. o_O
+		y_max = mcl_worlds.layer_to_y(65 + 2, "nether"),
+		noise_threshold = 0.2,
+		noise_params = {
+			offset = 0.0,
+			scale = 0.5,
+			spread = {x = 20, y = 20, z = 20},
+			seed = 766,
+			octaves = 3,
+			persist = 0.6,
+		},
+	})
+
+	-- Nether quartz
+	if minetest.settings:get_bool("mcl_generate_ores", true) then
+		minetest.register_ore({
+			ore_type = "scatter",
+			ore = "mcl_nether:quartz_ore",
+			wherein = {"mcl_nether:netherrack", "mcl_core:stone"},
+			clust_scarcity = 850,
+			clust_num_ores = 4, -- MC cluster amount: 4-10
+			clust_size = 3,
+			y_min = mcl_vars.mg_nether_min,
+			y_max = mcl_vars.mg_nether_max,
+		})
+		minetest.register_ore({
+			ore_type = "scatter",
+			ore = "mcl_nether:quartz_ore",
+			wherein = {"mcl_nether:netherrack", "mcl_core:stone"},
+			clust_scarcity = 1650,
+			clust_num_ores = 8, -- MC cluster amount: 4-10
+			clust_size = 4,
+			y_min = mcl_vars.mg_nether_min,
+			y_max = mcl_vars.mg_nether_max,
+		})
+	end
+
+	-- Lava springs in the Nether
+	minetest.register_ore({
+		ore_type = "scatter",
+		ore = "mcl_nether:nether_lava_source",
+		wherein = {"mcl_nether:netherrack", "mcl_core:stone"},
+		clust_scarcity = 13500, --rare
+		clust_num_ores = 1,
+		clust_size = 1,
+		y_min = mcl_vars.mg_lava_nether_max,
+		y_max = mcl_vars.mg_nether_max - 13,
+	})
+
+	local lava_biomes = {"BasaltDelta", "Nether"}
+	minetest.register_ore({
+		ore_type = "scatter",
+		ore = "mcl_nether:nether_lava_source",
+		wherein = {"mcl_nether:netherrack", "mcl_core:stone"},
+		clust_scarcity = 500,
+		clust_num_ores = 1,
+		clust_size = 1,
+		biomes = lava_biomes,
+		y_min = mcl_vars.mg_nether_min,
+		y_max = mcl_vars.mg_lava_nether_max + 1,
+	})
+
+	minetest.register_ore({
+		ore_type = "scatter",
+		ore = "mcl_nether:nether_lava_source",
+		wherein = {"mcl_nether:netherrack", "mcl_core:stone"},
+		clust_scarcity = 1000,
+		clust_num_ores = 1,
+		clust_size = 1,
+		biomes = lava_biomes,
+		y_min = mcl_vars.mg_lava_nether_max + 2,
+		y_max = mcl_vars.mg_lava_nether_max + 12,
+	})
+
+	minetest.register_ore({
+		ore_type = "scatter",
+		ore = "mcl_nether:nether_lava_source",
+		wherein = {"mcl_nether:netherrack", "mcl_core:stone"},
+		clust_scarcity = 2000,
+		clust_num_ores = 1,
+		clust_size = 1,
+		biomes = lava_biomes,
+		y_min = mcl_vars.mg_lava_nether_max + 13,
+		y_max = mcl_vars.mg_lava_nether_max + 48,
+	})
+	minetest.register_ore({
+		ore_type = "scatter",
+		ore = "mcl_nether:nether_lava_source",
+		wherein = {"mcl_nether:netherrack", "mcl_core:stone"},
+		clust_scarcity = 3500,
+		clust_num_ores = 1,
+		clust_size = 1,
+		biomes = lava_biomes,
+		y_min = mcl_vars.mg_lava_nether_max + 49,
+		y_max = mcl_vars.mg_nether_max - 13,
+	})
+
+	--[[ THE END ]]
+
+	-- Generate fake End
+	-- TODO: Remove the "ores" when there's a better End generator
+	-- FIXME: Broken lighting in v6 mapgen
+
+	local end_wherein
+	if mg_name == "v6" then
+		end_wherein = {"air", "mcl_core:stone"}
+	else
+		end_wherein = {"air"}
+	end
+
+	local mult = 1.0
+
+	minetest.register_ore({
+		ore_type = "stratum",
+		ore = "mcl_end:end_stone",
+		wherein = end_wherein,
+		biomes = {"EndSmallIslands", "Endborder"},
+		y_min = mcl_vars.mg_end_min + 64,
+		y_max = mcl_vars.mg_end_min + 80,
+		clust_num_ores = 3375,
+		clust_size = 15,
+
+		noise_params = {
+			offset = mcl_vars.mg_end_min + 70,
+			scale = -1,
+			spread = {x = 84, y = 84, z = 84},
+			seed = 145,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			--flags = "defaults",
+		},
+
+		np_stratum_thickness = {
+			offset = 0,
+			scale = 15,
+			spread = {x = 84, y = 84, z = 84},
+			seed = 145,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			--flags = "defaults",
+		},
+		clust_scarcity = 1,
+	})
+
+	minetest.register_ore({
+		ore_type = "stratum",
+		ore = "mcl_end:end_stone",
+		wherein = end_wherein,
+		biomes = {"End", "EndMidlands", "EndHighlands", "EndBarrens"},
+		y_min = mcl_vars.mg_end_min + 64,
+		y_max = mcl_vars.mg_end_min + 80,
+
+		noise_params = {
+			offset = mcl_vars.mg_end_min + 70,
+			scale = -1,
+			spread = {x = 126, y = 126, z = 126},
+			seed = mg_seed + 9999,
+			octaves = 3,
+			persist = 0.5,
+		},
+
+		np_stratum_thickness = {
+			offset = -2,
+			scale = 10,
+			spread = {x = 126, y = 126, z = 126},
+			seed = mg_seed + 9999,
+			octaves = 3,
+			persist = 0.5,
+		},
+		clust_scarcity = 1,
+	})
+
+	minetest.register_ore({
+		ore_type = "stratum",
+		ore = "mcl_end:end_stone",
+		wherein = end_wherein,
+		biomes = {"End", "EndMidlands", "EndHighlands", "EndBarrens"},
+		y_min = mcl_vars.mg_end_min + 64,
+		y_max = mcl_vars.mg_end_min + 80,
+
+		noise_params = {
+			offset = mcl_vars.mg_end_min + 72,
+			scale = -3,
+			spread = {x = 84, y = 84, z = 84},
+			seed = mg_seed + 999,
+			octaves = 4,
+			persist = 0.8,
+		},
+
+		np_stratum_thickness = {
+			offset = -4,
+			scale = 10,
+			spread = {x = 84, y = 84, z = 84},
+			seed = mg_seed + 999,
+			octaves = 4,
+			persist = 0.8,
+		},
+		clust_scarcity = 1,
+	})
+	minetest.register_ore({
+		ore_type = "stratum",
+		ore = "mcl_end:end_stone",
+		wherein = end_wherein,
+		biomes = {"End", "EndMidlands", "EndHighlands", "EndBarrens"},
+		y_min = mcl_vars.mg_end_min + 64,
+		y_max = mcl_vars.mg_end_min + 80,
+
+		noise_params = {
+			offset = mcl_vars.mg_end_min + 70,
+			scale = -2,
+			spread = {x = 84, y = 84, z = 84},
+			seed = mg_seed + 99,
+			octaves = 4,
+			persist = 0.85,
+		},
+
+		np_stratum_thickness = {
+			offset = -3,
+			scale = 5,
+			spread = {x = 63, y = 63, z = 63},
+			seed = mg_seed + 50,
+			octaves = 4,
+			persist = 0.85,
+		},
+		clust_scarcity = 1,
+	})
+
 end
 
 
--- Helper function to set all nodes in the layers between min and max.
--- content_id: Node to set
--- check: optional.
---	If content_id, node will be set only if it is equal to check.
---	If function(pos_to_check, content_id_at_this_pos), will set node only if returns true.
--- min, max: Minimum and maximum Y levels of the layers to set
--- minp, maxp: minp, maxp of the on_generated
--- lvm_used: Set to true if any node in this on_generated has been set before.
+-- All mapgens except mgv6
+
+-- Template to register a grass or fern decoration
+local function register_grass_decoration(grasstype, offset, scale, biomes)
+	local place_on, seed, node
+	if grasstype == "fern" then
+		node = "mcl_flowers:fern"
+		place_on = {"group:grass_block_no_snow", "mcl_core:podzol", "mcl_mud:mud"}
+		seed = 333
+	elseif grasstype == "tallgrass" then
+		node = "mcl_flowers:tallgrass"
+		place_on = {"group:grass_block_no_snow", "mcl_mud:mud"}
+		seed = 420
+	end
+	local noise = {
+		offset = offset,
+		scale = scale,
+		spread = {x = 200, y = 200, z = 200},
+		seed = seed,
+		octaves = 3,
+		persist = 0.6
+	}
+	for b = 1, #biomes do
+		local param2 = minetest.registered_biomes[biomes[b]]._mcl_grass_palette_index
+		minetest.register_decoration({
+			deco_type = "simple",
+			place_on = place_on,
+			sidelen = 16,
+			noise_params = noise,
+			biomes = {biomes[b]},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			decoration = node,
+			param2 = param2,
+		})
+	end
+end
+
+local function register_seagrass_decoration(grasstype, offset, scale, biomes)
+	local seed, nodes, surfaces, param2, param2_max, y_max
+	if grasstype == "seagrass" then
+		seed = 16
+		surfaces = {"mcl_core:dirt", "mcl_core:sand", "mcl_core:gravel", "mcl_core:redsand"}
+		nodes = {"mcl_ocean:seagrass_dirt", "mcl_ocean:seagrass_sand", "mcl_ocean:seagrass_gravel", "mcl_ocean:seagrass_redsand"}
+		y_max = 0
+	elseif grasstype == "kelp" then
+		seed = 32
+		param2 = 16
+		param2_max = 96
+		surfaces = {"mcl_core:dirt", "mcl_core:sand", "mcl_core:gravel"}
+		nodes = {"mcl_ocean:kelp_dirt", "mcl_ocean:kelp_sand", "mcl_ocean:kelp_gravel"}
+		y_max = -6
+	end
+	local noise = {
+		offset = offset,
+		scale = scale,
+		spread = {x = 100, y = 100, z = 100},
+		seed = seed,
+		octaves = 3,
+		persist = 0.6,
+	}
+
+	for s = 1, #surfaces do
+		minetest.register_decoration({
+			deco_type = "simple",
+			place_on = {surfaces[s]},
+			sidelen = 16,
+			noise_params = noise,
+			biomes = biomes,
+			y_min = DEEP_OCEAN_MIN,
+			y_max = y_max,
+			decoration = nodes[s],
+			param2 = param2,
+			param2_max = param2_max,
+			place_offset_y = -1,
+			flags = "force_placement",
+		})
+	end
+end
+
+local coral_min = OCEAN_MIN
+local coral_max = -10
+local warm_oceans = {
+	"JungleEdgeM_ocean",
+	"Jungle_deep_ocean",
+	"Savanna_ocean",
+	"MesaPlateauF_ocean",
+	"Swampland_ocean",
+	"Mesa_ocean",
+	"Plains_ocean",
+	"MesaPlateauFM_ocean",
+	"MushroomIsland_ocean",
+	"SavannaM_ocean",
+	"JungleEdge_ocean",
+	"MesaBryce_ocean",
+	"Jungle_ocean",
+	"Desert_ocean",
+	"JungleM_ocean",
+	"MangroveSwamp_ocean"
+}
+local corals = {
+	"brain",
+	"horn",
+	"bubble",
+	"tube",
+	"fire"
+}
+
+local function register_coral_decos(ck)
+	local c = corals[ck]
+	local noise = {
+		offset = -0.0085,
+		scale = 0.002,
+		spread = {x = 25, y = 120, z = 25},
+		seed = 235,
+		octaves = 5,
+		persist = 1.8,
+		lacunarity = 3.5,
+		flags = "absvalue"
+	}
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:sand", "mcl_core:gravel", "mcl_mud:mud"},
+		sidelen = 80,
+		noise_params = noise,
+		biomes = warm_oceans,
+		y_min = coral_min,
+		y_max = coral_max,
+		schematic = mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_1.mts",
+		rotation = "random",
+		flags = "all_floors,force_placement",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:sand", "mcl_core:gravel", "mcl_mud:mud"},
+		noise_params = noise,
+		sidelen = 80,
+		biomes = warm_oceans,
+		y_min = coral_min,
+		y_max = coral_max,
+		schematic = mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_2.mts",
+		rotation = "random",
+		flags = "all_floors,force_placement",
+	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_ocean:" .. c .. "_coral_block"},
+		sidelen = 16,
+		fill_ratio = 3,
+		y_min = coral_min,
+		y_max = coral_max,
+		decoration = "mcl_ocean:" .. c .. "_coral",
+		biomes = warm_oceans,
+		flags = "force_placement, all_floors",
+		height = 1,
+		height_max = 1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_ocean:horn_coral_block"},
+		sidelen = 16,
+		fill_ratio = 7,
+		y_min = coral_min,
+		y_max = coral_max,
+		decoration = "mcl_ocean:" .. c .. "_coral_fan",
+		biomes = warm_oceans,
+		flags = "force_placement, all_floors",
+		height = 1,
+		height_max = 1,
+	})
+end
+
+local function register_decorations()
+	-- Coral Reefs
+	for k, _ in pairs(corals) do
+		register_coral_decos(k)
+	end
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:sand", "mcl_core:gravel", "mcl_mud:mud"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.0085,
+			scale = 0.002,
+			spread = {x = 25, y = 120, z = 25},
+			seed = 235,
+			octaves = 5,
+			persist = 1.8,
+			lacunarity = 3.5,
+			flags = "absvalue"
+		},
+		y_min = coral_min,
+		y_max = coral_max,
+		decoration = "mcl_ocean:dead_brain_coral_block",
+		biomes = warm_oceans,
+		flags = "force_placement",
+		height = 1,
+		height_max = 1,
+		place_offset_y = -1,
+	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_ocean:dead_brain_coral_block"},
+		sidelen = 16,
+		fill_ratio = 3,
+		y_min = coral_min,
+		y_max = coral_max,
+		decoration = "mcl_ocean:sea_pickle_1_dead_brain_coral_block",
+		biomes = warm_oceans,
+		flags = "force_placement, all_floors",
+		height = 1,
+		height_max = 1,
+		place_offset_y = -1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_ocean:dead_brain_coral_block"},
+		sidelen = 16,
+		fill_ratio = 3,
+		y_min = coral_min,
+		y_max = coral_max,
+		decoration = "mcl_ocean:sea_pickle_2_dead_brain_coral_block",
+		biomes = warm_oceans,
+		flags = "force_placement, all_floors",
+		height = 1,
+		height_max = 1,
+		place_offset_y = -1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_ocean:dead_brain_coral_block"},
+		sidelen = 16,
+		fill_ratio = 2,
+		y_min = coral_min,
+		y_max = coral_max,
+		decoration = "mcl_ocean:sea_pickle_3_dead_brain_coral_block",
+		biomes = warm_oceans,
+		flags = "force_placement, all_floors",
+		height = 1,
+		height_max = 1,
+		place_offset_y = -1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_ocean:dead_brain_coral_block"},
+		sidelen = 16,
+		fill_ratio = 2,
+		y_min = coral_min,
+		y_max = coral_max,
+		decoration = "mcl_ocean:sea_pickle_4_dead_brain_coral_block",
+		biomes = warm_oceans,
+		flags = "force_placement, all_floors",
+		height = 1,
+		height_max = 1,
+		place_offset_y = -1,
+	})
+	--rare CORAl
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:sand", "mcl_core:gravel"},
+		fill_ratio = 0.0001,
+		sidelen = 80,
+		biomes = warm_oceans,
+		y_min = coral_min,
+		y_max = coral_max,
+		schematic = mod_mcl_structures .. "/schematics/coral_cora.mts",
+		rotation = "random",
+		flags = "place_center_x,place_center_z, force_placement",
+	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:podzol"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0,
+			scale = 0.012,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 354,
+			octaves = 1,
+			persist = 0.5,
+			lacunarity = 1.0,
+			flags = "absvalue"
+		},
+		biomes = {"Taiga", "ColdTaiga", "MegaTaiga", "MegaSpruceTaiga", "Forest"},
+		y_max = mcl_vars.mg_overworld_max,
+		y_min = 2,
+		decoration = "mcl_sweet_berry:sweet_berry_bush_3"
+	})
+
+	-- Large ice spike
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:snowblock", "mcl_core:snow", "group:grass_block_snow"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.00040,
+			scale = 0.001,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 1133,
+			octaves = 4,
+			persist = 0.67,
+		},
+		biomes = {"IcePlainsSpikes"},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_structures .. "/schematics/mcl_structures_ice_spike_large.mts",
+		rotation = "random",
+		flags = "place_center_x, place_center_z",
+	})
+
+	-- Small ice spike
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:snowblock", "mcl_core:snow", "group:grass_block_snow"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.005,
+			scale = 0.001,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 1133,
+			octaves = 4,
+			persist = 0.67,
+		},
+		biomes = {"IcePlainsSpikes"},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_structures .. "/schematics/mcl_structures_ice_spike_small.mts",
+		rotation = "random",
+		flags = "place_center_x, place_center_z",
+	})
+
+	-- Oak
+	-- Large oaks
+	for i = 1, 4 do
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+			sidelen = 80,
+			noise_params = {
+				offset = 0.000545,
+				scale = 0.0011,
+				spread = {x = 250, y = 250, z = 250},
+				seed = 3 + 5 * i,
+				octaves = 3,
+				persist = 0.66
+			},
+			biomes = {"Forest"},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = mod_mcl_core .. "/schematics/mcl_core_oak_large_" .. i .. ".mts",
+			flags = "place_center_x, place_center_z",
+			rotation = "random",
+		})
+
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"group:grass_block", "mcl_core:dirt", },
+			sidelen = 80,
+			noise_params = {
+				offset = -0.0007,
+				scale = 0.001,
+				spread = {x = 250, y = 250, z = 250},
+				seed = 3,
+				octaves = 3,
+				persist = 0.6
+			},
+			biomes = {"ExtremeHills", "ExtremeHillsM", "ExtremeHills+", "ExtremeHills+_snowtop"},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = mod_mcl_core .. "/schematics/mcl_core_oak_large_" .. i .. ".mts",
+			flags = "place_center_x, place_center_z",
+			rotation = "random",
+		})
+	end
+	-- Small “classic” oak (many biomes)
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.025,
+			scale = 0.0022,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"Forest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.01,
+			scale = 0.0022,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"FlowerForest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block", "mcl_core:dirt", },
+		sidelen = 16,
+		noise_params = {
+			offset = 0.0,
+			scale = 0.002,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.7
+		},
+		biomes = {"ExtremeHills", "ExtremeHillsM", "ExtremeHills+", "ExtremeHills+_snowtop"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block", "mcl_core:dirt"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.006,
+			scale = 0.002,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.7
+		},
+		biomes = {"ExtremeHills+", "ExtremeHills+_snowtop"},
+		y_min = 50,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.015,
+			scale = 0.002,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.7
+		},
+		biomes = {"MesaPlateauF_grasstop"},
+		y_min = 30,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.008,
+			scale = 0.002,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.7
+		},
+		biomes = {"MesaPlateauFM_grasstop"},
+		y_min = 30,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block", "mcl_core:dirt", },
+		sidelen = 16,
+		noise_params = {
+			offset = 0.0,
+			scale = 0.0002,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.7
+		},
+		biomes = {"IcePlains"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.004,
+		biomes = {"Jungle", "JungleM","BambooJungle", "BambooJungleM"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.0004,
+		biomes = {"JungleEdge", "JungleEdgeM", "Savanna"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 16,
+		--[[noise_params = {
+			offset = 0.01,
+			scale = 0.00001,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.33
+		},]]--
+		fill_ratio = 0.0002,
+		biomes = {"FlowerForest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic_bee_nest.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+		spawn_by = "group:flower",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 16,
+		--[[noise_params = {
+			offset = 0.01,
+			scale = 0.00001,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.33
+		},]]--
+		fill_ratio = 0.00002,
+		biomes = {"Forest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic_bee_nest.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+		spawn_by = "group:flower",
+	})
+
+	-- Rare balloon oak
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.002083,
+			scale = 0.0022,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 3,
+			octaves = 3,
+			persist = 0.6,
+		},
+		biomes = {"Forest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_balloon.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	-- Swamp oak
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.0055,
+			scale = 0.0011,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 5005,
+			octaves = 5,
+			persist = 0.6,
+		},
+		biomes = {"Swampland", "Swampland_shore"},
+		y_min = 0,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_swamp.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_tree_1",
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.0065,
+		biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_1.mts",
+		flags = "place_center_x, place_center_z, force_placement",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_tree_2",
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.0045,
+		biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
+		y_min = -1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_2.mts",
+		flags = "place_center_x, place_center_z, force_placement",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_tree_3",
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.023,
+		biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
+		y_min = -1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_3.mts",
+		flags = "place_center_x, place_center_z, force_placement",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_tree_4",
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.023,
+		biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
+		y_min = -1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_4.mts",
+		flags = "place_center_x, place_center_z, force_placement",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_tree_4",
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.023,
+		biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
+		y_min = -1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_5.mts",
+		flags = "place_center_x, place_center_z, force_placement",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		--[[noise_params = {
+			offset = 0.01,
+			scale = 0.00001,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.33
+		},]]--
+		fill_ratio = 0.0005,
+		biomes = {"MangroveSwamp"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_bee_nest.mts",
+		flags = "place_center_x, place_center_z, force_placement",
+		rotation = "random",
+		spawn_by = "group:flower",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.045,
+		biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
+		y_min = 0,
+		y_max = 0,
+		decoration = "mcl_mangrove:water_logged_roots",
+		flags = "place_center_x, place_center_z, force_placement",
+	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_mangrove:mangrove_roots"},
+		spawn_by = {"group:water"},
+		num_spawn_by = 2,
+		sidelen = 80,
+		fill_ratio = 10,
+		biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
+		y_min = 0,
+		y_max = 0,
+		decoration = "mcl_mangrove:water_logged_roots",
+		flags = "place_center_x, place_center_z, force_placement, all_ceilings",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.045,
+		biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
+		place_offset_y = -1,
+		decoration = "mcl_mangrove:mangrove_mud_roots",
+		flags = "place_center_x, place_center_z, force_placement",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_mud:mud"},
+		sidelen = 80,
+		fill_ratio = 0.008,
+		biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
+		decoration = "mcl_core:deadbush",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:water_source"},
+		sidelen = 80,
+		fill_ratio = 0.035,
+		biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
+		decoration = "mcl_flowers:waterlily",
+		flags = "place_center_x, place_center_z, liquid_surface",
+	})
+
+	-- Jungle tree
+
+	-- Huge jungle tree (4 variants)
+	for i = 1, 4 do
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+			sidelen = 80,
+			fill_ratio = 0.0008,
+			biomes = {"Jungle"},
+			y_min = 4,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_huge_" .. i .. ".mts",
+			flags = "place_center_x, place_center_z",
+			rotation = "random",
+		})
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+			sidelen = 80,
+			fill_ratio = 0.003,
+			biomes = {"JungleM"},
+			y_min = 4,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_huge_" .. i .. ".mts",
+			flags = "place_center_x, place_center_z",
+			rotation = "random",
+		})
+	end
+
+	-- Common jungle tree
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.025,
+		biomes = {"Jungle"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.015,
+		biomes = {"Jungle"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_2.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.005,
+		biomes = {"Jungle"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_3.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.005,
+		biomes = {"Jungle"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_4.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.025,
+		biomes = {"Jungle","BambooJungle"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.0045,
+		biomes = {"JungleEdge", "JungleEdgeM", "BambooJungleEdge", "BambooJungleEdgeM"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.09,
+		biomes = {"JungleM", "BambooJungleM"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_2.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	-- Spruce
+	local function quick_spruce(seed, offset, sprucename, biomes, y)
+		if not y then
+			y = 1
+		end
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"group:grass_block", "mcl_core:dirt", "mcl_core:podzol"},
+			sidelen = 16,
+			noise_params = {
+				offset = offset,
+				scale = 0.0006,
+				spread = {x = 250, y = 250, z = 250},
+				seed = seed,
+				octaves = 3,
+				persist = 0.66
+			},
+			biomes = biomes,
+			y_min = y,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = mod_mcl_core .. "/schematics/" .. sprucename,
+			flags = "place_center_x, place_center_z",
+		})
+	end
+
+	-- Huge spruce
+	quick_spruce(3000, 0.0030, "mcl_core_spruce_huge_1.mts", {"MegaSpruceTaiga"})
+	quick_spruce(4000, 0.0036, "mcl_core_spruce_huge_2.mts", {"MegaSpruceTaiga"})
+	quick_spruce(6000, 0.0036, "mcl_core_spruce_huge_3.mts", {"MegaSpruceTaiga"})
+	quick_spruce(6600, 0.0036, "mcl_core_spruce_huge_4.mts", {"MegaSpruceTaiga"})
+
+	quick_spruce(3000, 0.0008, "mcl_core_spruce_huge_up_1.mts", {"MegaTaiga"})
+	quick_spruce(4000, 0.0008, "mcl_core_spruce_huge_up_2.mts", {"MegaTaiga"})
+	quick_spruce(6000, 0.0008, "mcl_core_spruce_huge_up_3.mts", {"MegaTaiga"})
+
+
+	-- Common spruce
+	quick_spruce(11000, 0.00150, "mcl_core_spruce_5.mts", {"Taiga", "ColdTaiga"})
+
+	quick_spruce(2500, 0.00325, "mcl_core_spruce_1.mts", {"MegaSpruceTaiga", "MegaTaiga", "Taiga", "ColdTaiga"})
+	quick_spruce(7000, 0.00425, "mcl_core_spruce_3.mts", {"MegaSpruceTaiga", "MegaTaiga", "Taiga", "ColdTaiga"})
+	quick_spruce(9000, 0.00325, "mcl_core_spruce_4.mts", {"MegaTaiga", "Taiga", "ColdTaiga"})
+
+	quick_spruce(9500, 0.00500, "mcl_core_spruce_tall.mts", {"MegaTaiga"})
+
+	quick_spruce(5000, 0.00250, "mcl_core_spruce_2.mts", {"MegaSpruceTaiga", "MegaTaiga"})
+
+	quick_spruce(11000, 0.000025, "mcl_core_spruce_5.mts", {"ExtremeHills", "ExtremeHillsM"})
+	quick_spruce(2500, 0.00005, "mcl_core_spruce_1.mts", {"ExtremeHills", "ExtremeHillsM"})
+	quick_spruce(7000, 0.00005, "mcl_core_spruce_3.mts", {"ExtremeHills", "ExtremeHillsM"})
+	quick_spruce(9000, 0.00005, "mcl_core_spruce_4.mts", {"ExtremeHills", "ExtremeHillsM"})
+
+	quick_spruce(11000, 0.001, "mcl_core_spruce_5.mts", {"ExtremeHills+", "ExtremeHills+_snowtop"}, 50)
+	quick_spruce(2500, 0.002, "mcl_core_spruce_1.mts", {"ExtremeHills+", "ExtremeHills+_snowtop"}, 50)
+	quick_spruce(7000, 0.003, "mcl_core_spruce_3.mts", {"ExtremeHills+", "ExtremeHills+_snowtop"}, 50)
+	quick_spruce(9000, 0.002, "mcl_core_spruce_4.mts", {"ExtremeHills+", "ExtremeHills+_snowtop"}, 50)
+
+
+	-- Small lollipop spruce
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block", "mcl_core:podzol"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.004,
+			scale = 0.0022,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2500,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"Taiga", "ColdTaiga"},
+		y_min = 2,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_lollipop.mts",
+		flags = "place_center_x, place_center_z",
+	})
+
+	-- Matchstick spruce: Very few leaves, tall trunk
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block", "mcl_core:podzol"},
+		sidelen = 80,
+		noise_params = {
+			offset = -0.025,
+			scale = 0.025,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2566,
+			octaves = 5,
+			persist = 0.60,
+		},
+		biomes = {"Taiga", "ColdTaiga"},
+		y_min = 3,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_matchstick.mts",
+		flags = "place_center_x, place_center_z",
+	})
+
+	-- Rare spruce in Ice Plains
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.00075,
+			scale = -0.0015,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 11,
+			octaves = 3,
+			persist = 0.7
+		},
+		biomes = {"IcePlains"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_5.mts",
+		flags = "place_center_x, place_center_z",
+	})
+
+	-- Acacia (many variants)
+	for a = 1, 7 do
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:coarse_dirt"},
+			sidelen = 16,
+			fill_ratio = 0.0002,
+			biomes = {"Savanna", "SavannaM"},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = mod_mcl_core .. "/schematics/mcl_core_acacia_" .. a .. ".mts",
+			flags = "place_center_x, place_center_z",
+			rotation = "random",
+		})
+	end
+
+	-- Birch
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.03,
+			scale = 0.0025,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 11,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"BirchForest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_birch.mts",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.03,
+			scale = 0.0025,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 11,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"BirchForestM"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_birch_tall.mts",
+		flags = "place_center_x, place_center_z",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.000333,
+			scale = -0.0015,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 11,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"Forest", "FlowerForest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_birch.mts",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 16,
+		--[[noise_params = {
+			offset = 0.01,
+			scale = 0.00001,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.33
+		},]]--
+		fill_ratio = 0.00002,
+		biomes = {"Forest", "BirchForest", "BirchForestM"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_birch_bee_nest.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+		spawn_by = "group:flower",
+	})
+
+	-- Dark Oak
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.05,
+			scale = 0.0015,
+			spread = {x = 125, y = 125, z = 125},
+			seed = 223,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"RoofedForest"},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_dark_oak.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	local ratio_mushroom = 0.0001
+	local ratio_mushroom_huge = ratio_mushroom * (11 / 12)
+	local ratio_mushroom_giant = ratio_mushroom * (1 / 12)
+	local ratio_mushroom_mycelium = 0.002
+	local ratio_mushroom_mycelium_huge = ratio_mushroom_mycelium * (11 / 12)
+	local ratio_mushroom_mycelium_giant = ratio_mushroom_mycelium * (1 / 12)
+
+	-- Huge Brown Mushroom
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = ratio_mushroom_huge,
+		biomes = {"RoofedForest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_huge_brown.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "0",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = ratio_mushroom_giant,
+		biomes = {"RoofedForest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_giant_brown.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "0",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:mycelium"},
+		sidelen = 80,
+		fill_ratio = ratio_mushroom_mycelium_huge,
+		biomes = {"MushroomIsland", "MushroomIslandShore"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_huge_brown.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "0",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:mycelium"},
+		sidelen = 80,
+		fill_ratio = ratio_mushroom_mycelium_giant,
+		biomes = {"MushroomIsland", "MushroomIslandShore"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_giant_brown.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "0",
+	})
+
+	-- Huge Red Mushroom
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = ratio_mushroom_huge,
+		biomes = {"RoofedForest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_huge_red.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "0",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = ratio_mushroom_giant,
+		biomes = {"RoofedForest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_giant_red.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "0",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:mycelium"},
+		sidelen = 80,
+		fill_ratio = ratio_mushroom_mycelium_huge,
+		biomes = {"MushroomIsland", "MushroomIslandShore"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_huge_red.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "0",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:mycelium"},
+		sidelen = 80,
+		fill_ratio = ratio_mushroom_mycelium_giant,
+		biomes = {"MushroomIsland", "MushroomIslandShore"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_giant_red.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "0",
+	})
+
+	--Snow on snowy dirt
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass_snow"},
+		sidelen = 80,
+		fill_ratio = 10,
+		flags = "all_floors",
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_core:snow",
+	})
+
+	--Mushrooms in caves
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:material_stone"},
+		sidelen = 80,
+		fill_ratio = 0.009,
+		noise_threshold = 2.0,
+		flags = "all_floors",
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_mushrooms:mushroom_red",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:material_stone"},
+		sidelen = 80,
+		fill_ratio = 0.009,
+		noise_threshold = 2.0,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_mushrooms:mushroom_brown",
+	})
+
+	-- Mossy cobblestone boulder (3×3)
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.00015,
+			scale = 0.001,
+			spread = {x = 300, y = 300, z = 300},
+			seed = 775703,
+			octaves = 4,
+			persist = 0.63,
+		},
+		biomes = {"MegaTaiga", "MegaSpruceTaiga"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_structures .. "/schematics/mcl_structures_boulder.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	-- Small mossy cobblestone boulder (2×2)
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.001,
+			scale = 0.001,
+			spread = {x = 300, y = 300, z = 300},
+			seed = 775703,
+			octaves = 4,
+			persist = 0.63,
+		},
+		biomes = {"MegaTaiga", "MegaSpruceTaiga"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_structures .. "/schematics/mcl_structures_boulder_small.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	-- Cacti
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:sand"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.012,
+			scale = 0.024,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 257,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_core:cactus",
+		biomes = {"Desert",
+				  "Mesa", "Mesa_sandlevel",
+				  "MesaPlateauF", "MesaPlateauF_sandlevel",
+				  "MesaPlateauFM", "MesaPlateauFM_sandlevel"},
+		height = 1,
+		height_max = 3,
+	})
+
+	-- Sugar canes
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block_no_snow", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.3,
+			scale = 0.7,
+			spread = {x = 200, y = 200, z = 200},
+			seed = 2,
+			octaves = 3,
+			persist = 0.7
+		},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_core:reeds",
+		height = 1,
+		height_max = 3,
+		spawn_by = {"mcl_core:water_source", "group:frosted_ice"},
+		num_spawn_by = 1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block_no_snow", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.0,
+			scale = 0.5,
+			spread = {x = 200, y = 200, z = 200},
+			seed = 2,
+			octaves = 3,
+			persist = 0.7,
+		},
+		biomes = {"Swampland", "Swampland_shore"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_core:reeds",
+		height = 1,
+		height_max = 3,
+		spawn_by = {"mcl_core:water_source", "group:frosted_ice"},
+		num_spawn_by = 1,
+	})
+
+	-- Doubletall grass
+	local function register_doubletall_grass(offset, scale, biomes)
+
+		for b = 1, #biomes do
+			local param2 = minetest.registered_biomes[biomes[b]]._mcl_grass_palette_index
+			minetest.register_decoration({
+				deco_type = "schematic",
+				schematic = {
+					size = {x = 1, y = 3, z = 1},
+					data = {
+						{name = "air", prob = 0},
+						{name = "mcl_flowers:double_grass", param1 = 255, param2 = param2},
+						{name = "mcl_flowers:double_grass_top", param1 = 255, param2 = param2},
+					},
+				},
+				place_on = {"group:grass_block_no_snow"},
+				sidelen = 16,
+				noise_params = {
+					offset = offset,
+					scale = scale,
+					spread = {x = 200, y = 200, z = 200},
+					seed = 420,
+					octaves = 3,
+					persist = 0.6,
+				},
+				y_min = 1,
+				y_max = mcl_vars.mg_overworld_max,
+				biomes = {biomes[b]},
+			})
+		end
+	end
+
+	register_doubletall_grass(-0.01, 0.03, {"Taiga", "Forest", "FlowerForest", "BirchForest", "BirchForestM", "RoofedForest"})
+	register_doubletall_grass(-0.002, 0.03, {"Plains", "SunflowerPlains"})
+	register_doubletall_grass(-0.0005, -0.03, {"Savanna", "SavannaM"})
+
+	-- Large ferns
+	local function register_double_fern(offset, scale, biomes)
+		for b = 1, #biomes do
+			local param2 = minetest.registered_biomes[biomes[b]]._mcl_grass_palette_index
+			minetest.register_decoration({
+				deco_type = "schematic",
+				schematic = {
+					size = {x = 1, y = 3, z = 1},
+					data = {
+						{name = "air", prob = 0},
+						{name = "mcl_flowers:double_fern", param1 = 255, param2 = param2},
+						{name = "mcl_flowers:double_fern_top", param1 = 255, param2 = param2},
+					},
+				},
+				place_on = {"group:grass_block_no_snow", "mcl_core:podzol"},
+				sidelen = 16,
+				noise_params = {
+					offset = offset,
+					scale = scale,
+					spread = {x = 250, y = 250, z = 250},
+					seed = 333,
+					octaves = 2,
+					persist = 0.66,
+				},
+				y_min = 1,
+				y_max = mcl_vars.mg_overworld_max,
+				biomes = biomes[b],
+			})
+		end
+	end
+
+	register_double_fern(0.01, 0.03, {"Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "ColdTaiga", "MegaTaiga", "MegaSpruceTaiga", "BambooJungle", "BambooJungleM", "BambooJungleEdge", "BambooJungleEdgeM", })
+	register_double_fern(0.15, 0.1, {"JungleM", "BambooJungleM"})
+
+	-- Large flowers
+	local function register_large_flower(name, biomes, seed, offset, flower_forest_offset)
+		local maxi
+		if flower_forest_offset then
+			maxi = 2
+		else
+			maxi = 1
+		end
+		for i = 1, maxi do
+			local o, b -- offset, biomes
+			if i == 1 then
+				o = offset
+				b = biomes
+			else
+				o = flower_forest_offset
+				b = {"FlowerForest"}
+			end
+
+			minetest.register_decoration({
+				deco_type = "schematic",
+				schematic = {
+					size = {x = 1, y = 3, z = 1},
+					data = {
+						{name = "air", prob = 0},
+						{name = "mcl_flowers:" .. name, param1 = 255, },
+						{name = "mcl_flowers:" .. name .. "_top", param1 = 255, },
+					},
+				},
+				place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+
+				sidelen = 16,
+				noise_params = {
+					offset = o,
+					scale = 0.01,
+					spread = {x = 300, y = 300, z = 300},
+					seed = seed,
+					octaves = 5,
+					persist = 0.62,
+				},
+				y_min = 1,
+				y_max = mcl_vars.mg_overworld_max,
+				flags = "",
+				biomes = b,
+			})
+		end
+	end
+
+	register_large_flower("rose_bush", {"Forest"}, 9350, -0.008, 0.003)
+	register_large_flower("peony", {"Forest"}, 10450, -0.008, 0.003)
+	register_large_flower("lilac", {"Forest"}, 10600, -0.007, 0.003)
+	register_large_flower("sunflower", {"SunflowerPlains"}, 2940, 0.01)
+
+	-- Jungle bush
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.0196,
+			scale = 0.015,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2930,
+			octaves = 4,
+			persist = 0.6,
+		},
+		biomes = {"Jungle"},
+		y_min = 3,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_bush_oak_leaves.mts",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.0196,
+			scale = 0.005,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2930,
+			octaves = 4,
+			persist = 0.6,
+		},
+		biomes = {"Jungle", "BambooJungle"},
+		y_min = 3,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_bush_oak_leaves_2.mts",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.05,
+			scale = 0.025,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2930,
+			octaves = 4,
+			persist = 0.6,
+		},
+		biomes = {"JungleM","BambooJungleM"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_bush_oak_leaves.mts",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.0085,
+			scale = 0.025,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2930,
+			octaves = 4,
+			persist = 0.6,
+		},
+		biomes = {"JungleEdge", "JungleEdgeM","BambooJungleEdge", "BambooJungleEdgeM"},
+		y_min = 3,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_bush_oak_leaves.mts",
+		flags = "place_center_x, place_center_z",
+	})
+
+	-- Bamboo
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt", },
+		sidelen = 80,
+		fill_ratio = 0.0043,
+		biomes = {"Jungle", "JungleM", "JungleEdge", "JungleEdgeM"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_bamboo:bamboo",
+		height = 9,
+		max_height = 11,
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt", "mcl_core:podzol"},
+		sidelen = 80,
+		fill_ratio = 0.095,
+		biomes = {"BambooJungle", "BambooJungleM", "BambooJungleEdge", "BambooJungleEdgeM"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_bamboo:bamboo",
+		height = 9,
+		max_height = 12,
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	--[[
+	-- commenting out this section because with the new grow code, bamboo creates its own height, and therefore places it's own top.
+		minetest.register_decoration({
+			deco_type = "simple",
+			place_on = {"mcl_bamboo:bamboo"},
+			sidelen = 80,
+			fill_ratio = 1,
+			biomes = {"BambooJungle", "BambooJungleM", "BambooJungleEdge", "BambooJungleEdgeM", "Jungle", "JungleM", "JungleEdge", "JungleEdgeM"},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			decoration = "mcl_bamboo:bamboo_endcap",
+			height = 1,
+			max_height = 4,
+			flags = "all_floors",
+		})
+	]]
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:grass_block_no_snow"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0,
+			scale = 0.012,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 354,
+			octaves = 1,
+			persist = 0.5,
+			lacunarity = 1.0,
+			flags = "absvalue"
+		},
+		biomes = {"BambooJungle", "BambooJungleEdge","BambooJungleM", "BambooJungleEdge"},
+		y_max = mcl_vars.mg_overworld_max,
+		y_min = 1,
+		decoration = "mcl_flowers:tallgrass"
+	})
+
+	register_doubletall_grass(-0.0005, -0.3, {"BambooJungle", "BambooJungleM", "BambooJungleEdge"})
+	register_grass_decoration("tallgrass", -0.03, 1, {"BambooJungle", "BambooJungleM", "BambooJungleEdge"})
+
+	-----------------
+	-- Fallen logs
+	-- These fallen logs are not really good yet. They must be longer and also have one upright block.
+	-- Note the decortion API does not like wide schematics, they are likely to overhang.
+	if generate_fallen_logs then
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"group:grass_block_no_snow", "mcl_core:podzol", "mcl_core:coarse_dirt"},
+			sidelen = 80,
+			noise_params = {
+				offset = 0.00018,
+				scale = 0.00011,
+				spread = {x = 250, y = 250, z = 250},
+				seed = 2,
+				octaves = 3,
+				persist = 0.66
+			},
+			biomes = {"MegaTaiga", "MegaSpruceTaiga", "Taiga"},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = {
+				size = {x = 3, y = 3, z = 1},
+				data = {
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "mcl_core:sprucetree", param2 = 12, prob = 127},
+					{name = "mcl_core:sprucetree", param2 = 12},
+					{name = "mcl_core:sprucetree", param2 = 12},
+					{name = "air", prob = 0},
+					{name = "mcl_mushrooms:mushroom_brown", prob = 160},
+					{name = "mcl_mushrooms:mushroom_red", prob = 160},
+				},
+			},
+			flags = "place_center_x",
+			rotation = "random",
+		})
+
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"group:grass_block", "mcl_core:podzol", "mcl_core:podzol_snow", "mcl_core:coarse_dirt"},
+			sidelen = 80,
+			noise_params = {
+				offset = 0.00018,
+				scale = 0.00011,
+				spread = {x = 250, y = 250, z = 250},
+				seed = 2,
+				octaves = 3,
+				persist = 0.66
+			},
+			biomes = {"ColdTaiga"},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = {
+				size = {x = 3, y = 3, z = 1},
+				data = {
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "mcl_core:sprucetree", param2 = 12, prob = 127},
+					{name = "mcl_core:sprucetree", param2 = 12},
+					{name = "mcl_core:sprucetree", param2 = 12},
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+				},
+			},
+			flags = "place_center_x",
+			rotation = "random",
+		})
+
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"group:grass_block_no_snow"},
+			sidelen = 16,
+			noise_params = {
+				offset = 0.0,
+				scale = -0.00008,
+				spread = {x = 250, y = 250, z = 250},
+				seed = 2,
+				octaves = 3,
+				persist = 0.66
+			},
+			biomes = {"BirchForest", "BirchForestM", },
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = {
+				size = {x = 3, y = 3, z = 1},
+				data = {
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "mcl_core:birchtree", param2 = 12},
+					{name = "mcl_core:birchtree", param2 = 12},
+					{name = "mcl_core:birchtree", param2 = 12, prob = 127},
+					{name = "mcl_mushrooms:mushroom_red", prob = 100},
+					{name = "mcl_mushrooms:mushroom_brown", prob = 10},
+					{name = "air", prob = 0},
+				},
+			},
+			flags = "place_center_x",
+			rotation = "random",
+		})
+
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+			sidelen = 80,
+			fill_ratio = 0.005,
+			biomes = {"Jungle", "JungleM"},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = {
+				size = {x = 3, y = 3, z = 1},
+				data = {
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "mcl_core:jungletree", param2 = 12},
+					{name = "mcl_core:jungletree", param2 = 12},
+					{name = "mcl_core:jungletree", param2 = 12, prob = 127},
+					{name = "air", prob = 0},
+					{name = "mcl_mushrooms:mushroom_brown", prob = 50},
+					{name = "air", prob = 0},
+				},
+			},
+			flags = "place_center_x",
+			rotation = "random",
+		})
+
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"group:grass_block_no_snow"},
+			sidelen = 16,
+			noise_params = {
+				offset = 0.00018,
+				scale = 0.00011,
+				spread = {x = 250, y = 250, z = 250},
+				seed = 2,
+				octaves = 3,
+				persist = 0.66
+			},
+			biomes = {"Forest"},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = {
+				size = {x = 3, y = 3, z = 1},
+				data = {
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "mcl_core:tree", param2 = 12, prob = 127},
+					{name = "mcl_core:tree", param2 = 12},
+					{name = "mcl_core:tree", param2 = 12},
+					{name = "air", prob = 0},
+					{name = "mcl_mushrooms:mushroom_brown", prob = 96},
+					{name = "mcl_mushrooms:mushroom_red", prob = 96},
+				},
+			},
+			flags = "place_center_x",
+			rotation = "random",
+		})
+	end
+
+	-- Lily pad
+
+	local lily_schem = {
+		{name = "mcl_core:water_source"},
+		{name = "mcl_flowers:waterlily"},
+	}
+
+	-- Spawn them in shallow water at ocean level in Swampland.
+	-- Tweak lilydepth to change the maximum water depth
+	local lilydepth = 2
+
+	for d = 1, lilydepth do
+		local height = d + 2
+		local y = 1 - d
+		table.insert(lily_schem, 1, {name = "air", prob = 0})
+
+		minetest.register_decoration({
+			deco_type = "schematic",
+			schematic = {
+				size = {x = 1, y = height, z = 1},
+				data = lily_schem,
+			},
+			place_on = "mcl_core:dirt",
+			sidelen = 16,
+			noise_params = {
+				offset = 0,
+				scale = 0.3,
+				spread = {x = 100, y = 100, z = 100},
+				seed = 503,
+				octaves = 6,
+				persist = 0.7,
+			},
+			y_min = y,
+			y_max = y,
+			biomes = {"Swampland_shore"},
+			rotation = "random",
+		})
+	end
+
+	-- Melon
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:grass_block_no_snow"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.01,
+			scale = 0.006,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 333,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_farming:melon",
+		biomes = {"Jungle"},
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:grass_block_no_snow"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.0,
+			scale = 0.006,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 333,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_farming:melon",
+		biomes = {"JungleM"},
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:grass_block_no_snow"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.005,
+			scale = 0.006,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 333,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_farming:melon",
+		biomes = {"JungleEdge", "JungleEdgeM"},
+	})
+
+	-- Lots of melons in Jungle Edge M
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:grass_block_no_snow"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.013,
+			scale = 0.006,
+			spread = {x = 125, y = 125, z = 125},
+			seed = 333,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_farming:melon",
+		biomes = {"JungleEdgeM"},
+	})
+
+	-- Pumpkin
+	minetest.register_decoration({
+		deco_type = "simple",
+		decoration = "mcl_farming:pumpkin",
+		param2 = 0,
+		param2_max = 3,
+		place_on = {"group:grass_block_no_snow"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.016,
+			scale = 0.01332,
+			spread = {x = 125, y = 125, z = 125},
+			seed = 666,
+			octaves = 6,
+			persist = 0.666
+		},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+	})
+
+	-- Grasses and ferns
+	local grass_forest = {"Plains", "Taiga", "Forest", "FlowerForest", "BirchForest", "BirchForestM", "RoofedForest", "Swampland", }
+	local grass_mpf = {"MesaPlateauF_grasstop"}
+	local grass_plains = {"Plains", "SunflowerPlains", "JungleEdge", "JungleEdgeM", "MangroveSwamp"}
+	local grass_savanna = {"Savanna", "SavannaM"}
+	local grass_sparse = {"ExtremeHills", "ExtremeHills+", "ExtremeHills+_snowtop", "ExtremeHillsM", "Jungle"}
+	local grass_mpfm = {"MesaPlateauFM_grasstop"}
+
+	register_grass_decoration("tallgrass", -0.03, 0.09, grass_forest)
+	register_grass_decoration("tallgrass", -0.015, 0.075, grass_forest)
+	register_grass_decoration("tallgrass", 0, 0.06, grass_forest)
+	register_grass_decoration("tallgrass", 0.015, 0.045, grass_forest)
+	register_grass_decoration("tallgrass", 0.03, 0.03, grass_forest)
+	register_grass_decoration("tallgrass", -0.03, 0.09, grass_mpf)
+	register_grass_decoration("tallgrass", -0.015, 0.075, grass_mpf)
+	register_grass_decoration("tallgrass", 0, 0.06, grass_mpf)
+	register_grass_decoration("tallgrass", 0.01, 0.045, grass_mpf)
+	register_grass_decoration("tallgrass", 0.01, 0.05, grass_forest)
+	register_grass_decoration("tallgrass", 0.03, 0.03, grass_plains)
+	register_grass_decoration("tallgrass", 0.05, 0.01, grass_plains)
+	register_grass_decoration("tallgrass", 0.07, -0.01, grass_plains)
+	register_grass_decoration("tallgrass", 0.09, -0.03, grass_plains)
+	register_grass_decoration("tallgrass", 0.18, -0.03, grass_savanna)
+	register_grass_decoration("tallgrass", 0.05, -0.03, grass_sparse)
+	register_grass_decoration("tallgrass", 0.05, 0.05, grass_mpfm)
+
+	local fern_minimal = {"Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "MegaTaiga", "MegaSpruceTaiga", "ColdTaiga", "MangroveSwamp"}
+	local fern_low = {"Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "MegaTaiga", "MegaSpruceTaiga"}
+	local fern_Jungle = {"Jungle", "JungleM", "JungleEdge", "JungleEdgeM"}
+	--local fern_JungleM = { "JungleM" },
+
+	register_grass_decoration("fern", -0.03, 0.09, fern_minimal)
+	register_grass_decoration("fern", -0.015, 0.075, fern_minimal)
+	register_grass_decoration("fern", 0, 0.06, fern_minimal)
+	register_grass_decoration("fern", 0.015, 0.045, fern_low)
+	register_grass_decoration("fern", 0.03, 0.03, fern_low)
+	register_grass_decoration("fern", 0.01, 0.05, fern_Jungle)
+	register_grass_decoration("fern", 0.03, 0.03, fern_Jungle)
+	register_grass_decoration("fern", 0.05, 0.01, fern_Jungle)
+	register_grass_decoration("fern", 0.07, -0.01, fern_Jungle)
+	register_grass_decoration("fern", 0.09, -0.03, fern_Jungle)
+	register_grass_decoration("fern", 0.12, -0.03, {"JungleM"})
+
+	local b_seagrass = {"ColdTaiga_ocean", "ExtremeHills_ocean", "ExtremeHillsM_ocean", "ExtremeHills+_ocean", "Taiga_ocean", "MegaTaiga_ocean", "MegaSpruceTaiga_ocean", "StoneBeach_ocean", "Plains_ocean", "SunflowerPlains_ocean", "Forest_ocean", "FlowerForest_ocean", "BirchForest_ocean", "BirchForestM_ocean", "RoofedForest_ocean", "Swampland_ocean", "Jungle_ocean", "JungleM_ocean", "JungleEdge_ocean", "JungleEdgeM_ocean", "MushroomIsland_ocean", "Desert_ocean", "Savanna_ocean", "SavannaM_ocean", "Mesa_ocean", "MesaBryce_ocean", "MesaPlateauF_ocean", "MesaPlateauFM_ocean",
+						"ColdTaiga_deep_ocean", "ExtremeHills_deep_ocean", "ExtremeHillsM_deep_ocean", "ExtremeHills+_deep_ocean", "Taiga_deep_ocean", "MegaTaiga_deep_ocean", "MegaSpruceTaiga_deep_ocean", "StoneBeach_deep_ocean", "Plains_deep_ocean", "SunflowerPlains_deep_ocean", "Forest_deep_ocean", "FlowerForest_deep_ocean", "BirchForest_deep_ocean", "BirchForestM_deep_ocean", "RoofedForest_deep_ocean", "Swampland_deep_ocean", "Jungle_deep_ocean", "JungleM_deep_ocean", "JungleEdge_deep_ocean", "JungleEdgeM_deep_ocean", "MushroomIsland_deep_ocean", "Desert_deep_ocean", "Savanna_deep_ocean", "SavannaM_deep_ocean", "Mesa_deep_ocean", "MesaBryce_deep_ocean", "MesaPlateauF_deep_ocean", "MesaPlateauFM_deep_ocean",
+						"Mesa_sandlevel", "MesaBryce_sandlevel", "MesaPlateauF_sandlevel", "MesaPlateauFM_sandlevel", "Swampland_shore", "Jungle_shore", "JungleM_shore", "Savanna_beach", "FlowerForest_beach", "ColdTaiga_beach_water", "ExtremeHills_beach"}
+	local b_kelp = {"ExtremeHillsM_ocean", "ExtremeHills+_ocean", "MegaTaiga_ocean", "MegaSpruceTaiga_ocean", "Plains_ocean", "SunflowerPlains_ocean", "Forest_ocean", "FlowerForest_ocean", "BirchForest_ocean", "BirchForestM_ocean", "RoofedForest_ocean", "Swampland_ocean", "Jungle_ocean", "JungleM_ocean", "JungleEdge_ocean", "JungleEdgeM_ocean", "MushroomIsland_ocean",
+					"ExtremeHillsM_deep_ocean", "ExtremeHills+_deep_ocean", "MegaTaiga_deep_ocean", "MegaSpruceTaiga_deep_ocean", "Plains_deep_ocean", "SunflowerPlains_deep_ocean", "Forest_deep_ocean", "FlowerForest_deep_ocean", "BirchForest_deep_ocean", "BirchForestM_deep_ocean", "RoofedForest_deep_ocean", "Swampland_deep_ocean", "Jungle_deep_ocean", "JungleM_deep_ocean", "JungleEdge_deep_ocean", "JungleEdgeM_deep_ocean", "MushroomIsland_deep_ocean"
+	}
+
+	register_seagrass_decoration("seagrass", 0, 0.5, b_seagrass)
+	register_seagrass_decoration("kelp", -0.5, 1, b_kelp)
+
+	local b_sponge = {"Plains_deep_ocean", "SunflowerPlains_deep_ocean", "Forest_deep_ocean", "FlowerForest_deep_ocean", "BirchForest_deep_ocean", "BirchForestM_deep_ocean", "RoofedForest_deep_ocean", "Jungle_deep_ocean", "JungleM_deep_ocean", "JungleEdge_deep_ocean", "JungleEdgeM_deep_ocean", "MushroomIsland_deep_ocean", "Desert_deep_ocean", "Savanna_deep_ocean", "SavannaM_deep_ocean", "Mesa_deep_ocean", "MesaBryce_deep_ocean", "MesaPlateauF_deep_ocean", "MesaPlateauFM_deep_ocean"}
+	-- Wet Sponge
+	-- TODO: Remove this when we got ocean monuments
+	minetest.register_decoration({
+		deco_type = "simple",
+		decoration = "mcl_sponges:sponge_wet",
+		biomes = b_sponge,
+		spawn_by = {"group:water"},
+		num_spawn_by = 1,
+		place_on = {"mcl_core:dirt", "mcl_core:sand", "mcl_core:gravel"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.00495,
+			scale = 0.006,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 999,
+			octaves = 3,
+			persist = 0.666
+		},
+		flags = "force_placement",
+		y_min = mcl_vars.mg_lava_overworld_max + 5,
+		y_max = -20,
+	})
+
+	-- Place tall grass on snow in Ice Plains and Extreme Hills+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.08,
+			scale = 0.09,
+			spread = {x = 15, y = 15, z = 15},
+			seed = 420,
+			octaves = 3,
+			persist = 0.6,
+		},
+		biomes = {"IcePlains"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = {
+			size = {x = 1, y = 2, z = 1},
+			data = {
+				{name = "mcl_core:dirt_with_grass", force_place = true, },
+				{name = "mcl_flowers:tallgrass", param2 = minetest.registered_biomes["IcePlains"]._mcl_grass_palette_index},
+			},
+		},
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.0,
+			scale = 0.09,
+			spread = {x = 15, y = 15, z = 15},
+			seed = 420,
+			octaves = 3,
+			persist = 0.6,
+		},
+		biomes = {"ExtremeHills+_snowtop"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = {
+			size = {x = 1, y = 2, z = 1},
+			data = {
+				{name = "mcl_core:dirt_with_grass", force_place = true, },
+				{name = "mcl_flowers:tallgrass", param2 = minetest.registered_biomes["ExtremeHills+_snowtop"]._mcl_grass_palette_index},
+			},
+		},
+	})
+
+
+	-- Dead bushes
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:sand", "mcl_core:podzol", "mcl_core:dirt", "mcl_core:dirt_with_grass", "mcl_core:coarse_dirt", "group:hardened_clay"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.0,
+			scale = 0.035,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 1972,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		biomes = {"Desert", "Mesa", "Mesa_sandlevel", "MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlateauF_grasstop", "MesaBryce", "Taiga", "MegaTaiga"},
+		decoration = "mcl_core:deadbush",
+		height = 1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:sand", "mcl_core:dirt", "mcl_core:dirt_with_grass", "mcl_core:coarse_dirt"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.1,
+			scale = 0.035,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 1972,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		biomes = {"MesaPlateauFM_grasstop"},
+		decoration = "mcl_core:deadbush",
+		height = 1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:sand"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.045,
+			scale = 0.055,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 1972,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		biomes = {"MesaPlateauFM", "MesaPlateauFM_sandlevel"},
+		decoration = "mcl_core:deadbush",
+		height = 1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:hardened_clay"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.010,
+			scale = 0.035,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 1972,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		biomes = {"MesaPlateauFM", "MesaPlateauFM_sandlevel", "MesaPlateauFM_grasstop"},
+		decoration = "mcl_core:deadbush",
+		height = 1,
+	})
+
+	-- Mushrooms in mushroom biome
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:mycelium"},
+		sidelen = 80,
+		fill_ratio = 0.009,
+		biomes = {"MushroomIsland", "MushroomIslandShore"},
+		noise_threshold = 2.0,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_mushrooms:mushroom_red",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:mycelium"},
+		sidelen = 80,
+		fill_ratio = 0.009,
+		biomes = {"MushroomIsland", "MushroomIslandShore"},
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_mushrooms:mushroom_brown",
+	})
+
+	-- Mushrooms in Taiga
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:podzol"},
+		sidelen = 80,
+		fill_ratio = 0.003,
+		biomes = {"Taiga", "MegaTaiga", "MegaSpruceTaiga"},
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_mushrooms:mushroom_red",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:podzol"},
+		sidelen = 80,
+		fill_ratio = 0.003,
+		biomes = {"Taiga", "MegaTaiga", "MegaSpruceTaiga"},
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_mushrooms:mushroom_brown",
+	})
+
+
+	-- Mushrooms next to trees
+	local mushrooms = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown"}
+	local mseeds = {7133, 8244}
+	for m = 1, #mushrooms do
+		-- Mushrooms next to trees
+		minetest.register_decoration({
+			deco_type = "simple",
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
+			sidelen = 16,
+			noise_params = {
+				offset = 0,
+				scale = 0.003,
+				spread = {x = 250, y = 250, z = 250},
+				seed = mseeds[m],
+				octaves = 3,
+				persist = 0.66,
+			},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			decoration = mushrooms[m],
+			spawn_by = {"mcl_core:tree", "mcl_core:sprucetree", "mcl_core:darktree", "mcl_core:birchtree"},
+			num_spawn_by = 1,
+		})
+
+		-- More mushrooms in Swampland
+		minetest.register_decoration({
+			deco_type = "simple",
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
+			sidelen = 16,
+			noise_params = {
+				offset = 0.05,
+				scale = 0.003,
+				spread = {x = 250, y = 250, z = 250},
+				seed = mseeds[m],
+				octaves = 3,
+				persist = 0.6,
+			},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			decoration = mushrooms[m],
+			biomes = {"Swampland"},
+			spawn_by = {"mcl_core:tree", "mcl_core:sprucetree", "mcl_core:darktree", "mcl_core:birchtree"},
+			num_spawn_by = 1,
+		})
+	end
+	local function register_flower(name, biomes, seed, is_in_flower_forest)
+		if is_in_flower_forest == nil then
+			is_in_flower_forest = true
+		end
+		if biomes then
+			minetest.register_decoration({
+				deco_type = "simple",
+				place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+				sidelen = 16,
+				noise_params = {
+					offset = 0.0008,
+					scale = 0.006,
+					spread = {x = 100, y = 100, z = 100},
+					seed = seed,
+					octaves = 3,
+					persist = 0.6
+				},
+				y_min = 1,
+				y_max = mcl_vars.mg_overworld_max,
+				biomes = biomes,
+				decoration = "mcl_flowers:" .. name,
+			})
+		end
+		if is_in_flower_forest then
+			minetest.register_decoration({
+				deco_type = "simple",
+				place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+				sidelen = 80,
+				noise_params = {
+					offset = 0.0008 * 40,
+					scale = 0.003,
+					spread = {x = 100, y = 100, z = 100},
+					seed = seed,
+					octaves = 3,
+					persist = 0.6,
+				},
+				y_min = 1,
+				y_max = mcl_vars.mg_overworld_max,
+				biomes = {"FlowerForest"},
+				decoration = "mcl_flowers:" .. name,
+			})
+		end
+	end
+
+	local flower_biomes1 = {"Plains", "SunflowerPlains", "RoofedForest", "Forest", "BirchForest", "BirchForestM", "Taiga", "ColdTaiga", "Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Savanna", "SavannaM", "ExtremeHills", "ExtremeHillsM", "ExtremeHills+", "ExtremeHills+_snowtop"}
+
+	register_flower("dandelion", flower_biomes1, 8)
+	register_flower("poppy", flower_biomes1, 9439)
+
+	local flower_biomes2 = {"Plains", "SunflowerPlains"}
+	register_flower("tulip_red", flower_biomes2, 436)
+	register_flower("tulip_orange", flower_biomes2, 536)
+	register_flower("tulip_pink", flower_biomes2, 636)
+	register_flower("tulip_white", flower_biomes2, 736)
+	register_flower("azure_bluet", flower_biomes2, 800)
+	register_flower("oxeye_daisy", flower_biomes2, 3490)
+
+	register_flower("allium", nil, 0) -- flower Forest only
+	register_flower("blue_orchid", {"Swampland"}, 64500, false)
+
+end
+
+-- Decorations in non-Overworld dimensions
+local function register_dimension_decorations()
+	--[[ NETHER ]]
+	--NETHER WASTES (Nether)
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack", "mcl_nether:magma"},
+		sidelen = 16,
+		fill_ratio = 0.04,
+		biomes = {"Nether"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max - 1,
+		flags = "all_floors",
+		decoration = "mcl_fire:eternal_fire",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack"},
+		sidelen = 16,
+		fill_ratio = 0.013,
+		biomes = {"Nether"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max - 1,
+		flags = "all_floors",
+		decoration = "mcl_mushrooms:mushroom_brown",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack"},
+		sidelen = 16,
+		fill_ratio = 0.012,
+		biomes = {"Nether"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max - 1,
+		flags = "all_floors",
+		decoration = "mcl_mushrooms:mushroom_red",
+	})
+
+	-- WARPED FOREST
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_crimson:warped_nylium"},
+		sidelen = 16,
+		fill_ratio = 0.02,
+		biomes = {"WarpedForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max - 10,
+		flags = "all_floors",
+		decoration = "mcl_crimson:warped_fungus",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		name = "mcl_biomes:warped_tree1",
+		place_on = {"mcl_crimson:warped_nylium"},
+		sidelen = 16,
+		fill_ratio = 0.007,
+		biomes = {"WarpedForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max - 15,
+		flags = "all_floors, place_center_x, place_center_z",
+		schematic = mod_mcl_crimson .. "/schematics/warped_fungus_1.mts",
+		size = {x = 5, y = 11, z = 5},
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		name = "mcl_biomes:warped_tree2",
+		place_on = {"mcl_crimson:warped_nylium"},
+		sidelen = 16,
+		fill_ratio = 0.005,
+		biomes = {"WarpedForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max - 10,
+		flags = "all_floors, place_center_x, place_center_z",
+		schematic = mod_mcl_crimson .. "/schematics/warped_fungus_2.mts",
+		size = {x = 5, y = 6, z = 5},
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		name = "mcl_biomes:warped_tree3",
+		place_on = {"mcl_crimson:warped_nylium"},
+		sidelen = 16,
+		fill_ratio = 0.003,
+		biomes = {"WarpedForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max - 14,
+		flags = "all_floors, place_center_x, place_center_z",
+		schematic = mod_mcl_crimson .. "/schematics/warped_fungus_3.mts",
+		size = {x = 5, y = 12, z = 5},
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_crimson:warped_nylium", "mcl_crimson:twisting_vines"},
+		sidelen = 16,
+		fill_ratio = 0.032,
+		biomes = {"WarpedForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors",
+		height = 2,
+		height_max = 8,
+		decoration = "mcl_crimson:twisting_vines",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_crimson:warped_nylium"},
+		sidelen = 16,
+		fill_ratio = 0.0812,
+		biomes = {"WarpedForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors",
+		max_height = 5,
+		decoration = "mcl_crimson:warped_roots",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_crimson:crimson_nylium"},
+		sidelen = 16,
+		fill_ratio = 0.052,
+		biomes = {"WarpedForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors",
+		decoration = "mcl_crimson:nether_sprouts",
+	})
+	-- CRIMSON FOREST
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_crimson:crimson_nylium"},
+		sidelen = 16,
+		fill_ratio = 0.02,
+		biomes = {"CrimsonForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max - 10,
+		flags = "all_floors",
+		decoration = "mcl_crimson:crimson_fungus",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		name = "mcl_biomes:crimson_tree",
+		place_on = {"mcl_crimson:crimson_nylium"},
+		sidelen = 16,
+		fill_ratio = 0.008,
+		biomes = {"CrimsonForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max - 10,
+		flags = "all_floors, place_center_x, place_center_z",
+		schematic = mod_mcl_crimson .. "/schematics/crimson_fungus_1.mts",
+		size = {x = 5, y = 8, z = 5},
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		name = "mcl_biomes:crimson_tree2",
+		place_on = {"mcl_crimson:crimson_nylium"},
+		sidelen = 16,
+		fill_ratio = 0.006,
+		biomes = {"CrimsonForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max - 15,
+		flags = "all_floors, place_center_x, place_center_z",
+		schematic = mod_mcl_crimson .. "/schematics/crimson_fungus_2.mts",
+		size = {x = 5, y = 12, z = 5},
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		name = "mcl_biomes:crimson_tree3",
+		place_on = {"mcl_crimson:crimson_nylium"},
+		sidelen = 16,
+		fill_ratio = 0.004,
+		biomes = {"CrimsonForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max - 20,
+		flags = "all_floors, place_center_x, place_center_z",
+		schematic = mod_mcl_crimson .. "/schematics/crimson_fungus_3.mts",
+		size = {x = 7, y = 13, z = 7},
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_crimson:warped_nylium", "mcl_crimson:weeping_vines", "mcl_nether:netherrack"},
+		sidelen = 16,
+		fill_ratio = 0.063,
+		biomes = {"CrimsonForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_deco_max,
+		flags = "all_ceilings",
+		height = 2,
+		height_max = 8,
+		decoration = "mcl_crimson:weeping_vines",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_crimson:crimson_nylium"},
+		sidelen = 16,
+		fill_ratio = 0.082,
+		biomes = {"CrimsonForest"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors",
+		max_height = 5,
+		decoration = "mcl_crimson:crimson_roots",
+	})
+
+	--SOULSAND VALLEY
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_blackstone:soul_soil", "mcl_nether:soul_sand"},
+		sidelen = 16,
+		fill_ratio = 0.062,
+		biomes = {"SoulsandValley"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors",
+		max_height = 5,
+		decoration = "mcl_blackstone:soul_fire",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_blackstone:soul_soil", "mcl_nether:soulsand"},
+		sidelen = 16,
+		fill_ratio = 0.000212,
+		biomes = {"SoulsandValley"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors, place_center_x, place_center_z",
+		schematic = mod_mcl_blackstone .. "/schematics/mcl_blackstone_nether_fossil_1.mts",
+		size = {x = 5, y = 8, z = 5},
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_blackstone:soul_soil", "mcl_nether:soulsand"},
+		sidelen = 16,
+		fill_ratio = 0.0002233,
+		biomes = {"SoulsandValley"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors, place_center_x, place_center_z",
+		schematic = mod_mcl_blackstone .. "/schematics/mcl_blackstone_nether_fossil_2.mts",
+		size = {x = 5, y = 8, z = 5},
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_blackstone:soul_soil", "mcl_nether:soulsand"},
+		sidelen = 16,
+		fill_ratio = 0.000225,
+		biomes = {"SoulsandValley"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors, place_center_x, place_center_z",
+		schematic = mod_mcl_blackstone .. "/schematics/mcl_blackstone_nether_fossil_3.mts",
+		size = {x = 5, y = 8, z = 5},
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_blackstone:soul_soil", "mcl_nether:soulsand"},
+		sidelen = 16,
+		fill_ratio = 0.00022323,
+		biomes = {"SoulsandValley"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors, place_center_x, place_center_z",
+		schematic = mod_mcl_blackstone .. "/schematics/mcl_blackstone_nether_fossil_4.mts",
+		size = {x = 5, y = 8, z = 5},
+		rotation = "random",
+	})
+	--BASALT DELTA
+	minetest.register_decoration({
+		deco_type = "simple",
+		decoration = "mcl_blackstone:basalt",
+		place_on = {"mcl_blackstone:basalt", "mcl_nether:netherrack", "mcl_blackstone:blackstone"},
+		sidelen = 80,
+		height_max = 55,
+		noise_params = {
+			offset = -0.0085,
+			scale = 0.002,
+			spread = {x = 25, y = 120, z = 25},
+			seed = 2325,
+			octaves = 5,
+			persist = 2,
+			lacunarity = 3.5,
+			flags = "absvalue"
+		},
+		biomes = {"BasaltDelta"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_deco_max - 50,
+		flags = "all_floors, all ceilings",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		decoration = "mcl_blackstone:basalt",
+		place_on = {"mcl_blackstone:basalt", "mcl_nether:netherrack", "mcl_blackstone:blackstone"},
+		sidelen = 80,
+		height_max = 15,
+		noise_params = {
+			offset = -0.0085,
+			scale = 0.004,
+			spread = {x = 25, y = 120, z = 25},
+			seed = 235,
+			octaves = 5,
+			persist = 2.5,
+			lacunarity = 3.5,
+			flags = "absvalue"
+		},
+		biomes = {"BasaltDelta"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_deco_max - 15,
+		flags = "all_floors, all ceilings",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		decoration = "mcl_blackstone:basalt",
+		place_on = {"mcl_blackstone:basalt", "mcl_nether:netherrack", "mcl_blackstone:blackstone"},
+		sidelen = 80,
+		height_max = 3,
+		fill_ratio = 0.4,
+		biomes = {"BasaltDelta"},
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_deco_max - 15,
+		flags = "all_floors, all ceilings",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		decoration = "mcl_nether:magma",
+		place_on = {"mcl_blackstone:basalt", "mcl_nether:netherrack", "mcl_blackstone:blackstone"},
+		sidelen = 80,
+		fill_ratio = 0.082323,
+		biomes = {"BasaltDelta"},
+		place_offset_y = -1,
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		flags = "all_floors, all ceilings",
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		decoration = "mcl_nether:nether_lava_source",
+		place_on = {"mcl_blackstone:basalt", "mcl_nether:netherrack", "mcl_blackstone:blackstone"},
+		spawn_by = {"mcl_blackstone:basalt", "mcl_blackstone:blackstone"},
+		num_spawn_by = 14,
+		sidelen = 80,
+		fill_ratio = 4,
+		biomes = {"BasaltDelta"},
+		place_offset_y = -1,
+		y_min = mcl_vars.mg_lava_nether_max + 1,
+		y_max = mcl_vars.mg_nether_max - 5,
+		flags = "all_floors, force_placement",
+	})
+
+	--[[ THE END ]]
+
+	-- Chorus plant
+	minetest.register_decoration({
+		name = "mcl_biomes:chorus",
+		deco_type = "simple",
+		place_on = {"mcl_end:end_stone"},
+		flags = "all_floors",
+		sidelen = 16,
+		noise_params = {
+			offset = -0.012,
+			scale = 0.024,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 257,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max,
+		decoration = "mcl_end:chorus_plant",
+		height = 1,
+		height_max = 8,
+		biomes = {"End", "EndMidlands", "EndHighlands", "EndBarrens", "EndSmallIslands"},
+	})
+	minetest.register_decoration({
+		name = "mcl_biomes:chorus_plant",
+		deco_type = "simple",
+		place_on = {"mcl_end:chorus_plant"},
+		flags = "all_floors",
+		sidelen = 16,
+		fill_ratio = 10,
+		--[[noise_params = {
+			offset = -0.012,
+			scale = 0.024,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 257,
+			octaves = 3,
+			persist = 0.6
+		},--]]
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max,
+		decoration = "mcl_end:chorus_flower",
+		height = 1,
+		biomes = {"End", "EndMidlands", "EndHighlands", "EndBarrens", "EndSmallIslands"},
+	})
+
+	deco_id_chorus_plant = minetest.get_decoration_id("mcl_biomes:chorus_plant")
+	minetest.set_gen_notify({decoration = true}, {deco_id_chorus_plant})
+
+	-- TODO: End cities
+
+end
+
+
+
 --
--- returns true if any node was set and lvm_used otherwise
-local function set_layers(data, area, content_id, check, min, max, minp, maxp, lvm_used, pr)
-	if (maxp.y >= min and minp.y <= max) then
-		for y = math.max(min, minp.y), math.min(max, maxp.y) do
-			for x = minp.x, maxp.x do
-				for z = minp.z, maxp.z do
-					local p_pos = area:index(x, y, z)
-					if check then
-						if type(check) == "function" and check({x=x,y=y,z=z}, data[p_pos], pr) then
-							data[p_pos] = content_id
-							lvm_used = true
-						elseif check == data[p_pos] then
-							data[p_pos] = content_id
-							lvm_used = true
+-- Detect mapgen to select functions
+--
+if mg_name ~= "singlenode" then
+	if not superflat then
+		if mg_name ~= "v6" then
+			register_biomes()
+			register_biomelike_ores()
+		end
+		register_biome_ores()
+		if mg_name ~= "v6" then
+			register_decorations()
+		end
+	else
+		-- Implementation of Minecraft's Superflat mapgen, classic style:
+		-- * Perfectly flat land, 1 grass biome, no decorations, no caves
+		-- * 4 layers, from top to bottom: grass block, dirt, dirt, bedrock
+		minetest.clear_registered_biomes()
+		minetest.clear_registered_decorations()
+		minetest.clear_registered_schematics()
+		register_classic_superflat_biome()
+	end
+
+	-- Non-overworld stuff is registered independently
+	register_dimension_biomes()
+	register_dimension_ores()
+	register_dimension_decorations()
+
+	-- Overworld decorations for v6 are handled in mcl_mapgen_core
+
+	local deco_ids_fungus = {
+		minetest.get_decoration_id("mcl_biomes:crimson_tree1"),
+		minetest.get_decoration_id("mcl_biomes:crimson_tree2"),
+		minetest.get_decoration_id("mcl_biomes:crimson_tree3"),
+		minetest.get_decoration_id("mcl_biomes:warped_tree1"),
+		minetest.get_decoration_id("mcl_biomes:warped_tree2"),
+		minetest.get_decoration_id("mcl_biomes:warped_tree3")
+	}
+	local deco_ids_trees = {
+		minetest.get_decoration_id("mcl_biomes:mangrove_tree_1"),
+		minetest.get_decoration_id("mcl_biomes:mangrove_tree_2"),
+		minetest.get_decoration_id("mcl_biomes:mangrove_tree_3"),
+	}
+	for _, f in pairs(deco_ids_fungus) do
+		minetest.set_gen_notify({decoration = true}, {f})
+	end
+	for _, f in pairs(deco_ids_trees) do
+		minetest.set_gen_notify({decoration = true}, {f})
+	end
+	if deco_id_chorus_plant or deco_ids_fungus or deco_ids_trees then
+		mcl_mapgen_core.register_generator("chorus_grow", nil, function(minp, maxp, blockseed)
+			local gennotify = minetest.get_mapgen_object("gennotify")
+			local pr = PseudoRandom(blockseed + 14)
+			for _, f in pairs(deco_ids_trees) do
+				for _, pos in ipairs(gennotify["decoration#" .. f] or {}) do
+					local nn = minetest.find_nodes_in_area(vector.offset(pos, -8, -1, -8), vector.offset(pos, 8, 0, 8), {"mcl_mangrove:mangrove_roots"})
+					for _, v in pairs(nn) do
+						local l = pr:next(2, 16)
+						local n = minetest.get_node(vector.offset(v, 0, -1, 0)).name
+						if minetest.get_item_group(n, "water") > 0 then
+							local wl = "mcl_mangrove:water_logged_roots"
+							if n:find("river") then
+								wl = "mcl_mangrove:river_water_logged_roots"
+							end
+							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v, 0, 0, 0), vector.offset(v, 0, -l, 0), {"group:water"}), {name = wl})
+						elseif n == "mcl_mud:mud" then
+							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v, 0, 0, 0), vector.offset(v, 0, -l, 0), {"mcl_mud:mud"}), {name = "mcl_mangrove:mangrove_mud_roots"})
+						elseif n == "air" then
+							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v, 0, 0, 0), vector.offset(v, 0, -l, 0), {"air"}), {name = "mcl_mangrove:mangrove_roots"})
 						end
-					else
-						data[p_pos] = content_id
-						lvm_used = true
 					end
 				end
 			end
-		end
-	end
-	return lvm_used
-end
-
-local function set_palette(minp,maxp,data2,area,biomemap,nodes)
-	-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
-	if not biomemap then return end
-	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
-	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
-	for n=1, #nodes do
-		local n = nodes[n]
-		local p_pos = area:index(n.x, n.y, n.z)
-		local b_pos = aream:index(n.x, 0, n.z)
-		local bn = minetest.get_biome_name(biomemap[b_pos])
-		if bn then
-			local biome = minetest.registered_biomes[bn]
-			if biome and biome._mcl_biome_type and biome._mcl_grass_palette_index then
-				data2[p_pos] = biome._mcl_grass_palette_index
-				lvm_used = true
+			if minp.y > -26900 then
+				return
 			end
-		end
-	end
-	return lvm_used
-end
-
--- Below the bedrock, generate air/void
-local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	local biomemap --ymin, ymax
-	local lvm_used = false
-	local pr = PseudoRandom(blockseed)
-
-	-- The Void below the Nether:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mapgen_edge_min                     , mcl_vars.mg_nether_min                     -1, minp, maxp, lvm_used, pr)
-
-	-- [[ THE NETHER:					mcl_vars.mg_nether_min			       mcl_vars.mg_nether_max							]]
-
-	-- The Air on the Nether roof, https://git.minetest.land/MineClone2/MineClone2/issues/1186
-	lvm_used = set_layers(data, area, c_air		 , nil, mcl_vars.mg_nether_max			   +1, mcl_vars.mg_nether_max + 128                 , minp, maxp, lvm_used, pr)
-	-- The Void above the Nether below the End:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_nether_max + 128               +1, mcl_vars.mg_end_min                        -1, minp, maxp, lvm_used, pr)
-
-	-- [[ THE END:						mcl_vars.mg_end_min			       mcl_vars.mg_end_max							]]
-
-	-- The Void above the End below the Realm barrier:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_end_max                        +1, mcl_vars.mg_realm_barrier_overworld_end_min-1, minp, maxp, lvm_used, pr)
-	-- Realm barrier between the Overworld void and the End
-	lvm_used = set_layers(data, area, c_realm_barrier, nil, mcl_vars.mg_realm_barrier_overworld_end_min  , mcl_vars.mg_realm_barrier_overworld_end_max  , minp, maxp, lvm_used, pr)
-	-- The Void above Realm barrier below the Overworld:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_realm_barrier_overworld_end_max+1, mcl_vars.mg_overworld_min                  -1, minp, maxp, lvm_used, pr)
-
-
-	if mg_name ~= "singlenode" then
-		-- Bedrock
-		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_overworld_min, mcl_vars.mg_bedrock_overworld_max, minp, maxp, lvm_used, pr)
-		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_bedrock_nether_bottom_max, minp, maxp, lvm_used, pr)
-		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_top_min, mcl_vars.mg_bedrock_nether_top_max, minp, maxp, lvm_used, pr)
-
-		-- Flat Nether
-		if mg_name == "flat" then
-			lvm_used = set_layers(data, area, c_air, nil, mcl_vars.mg_flat_nether_floor, mcl_vars.mg_flat_nether_ceiling, minp, maxp, lvm_used, pr)
-		end
-
-		-- Big lava seas by replacing air below a certain height
-		if mcl_vars.mg_lava then
-			lvm_used = set_layers(data, area, c_lava, c_air, mcl_vars.mg_overworld_min, mcl_vars.mg_lava_overworld_max, minp, maxp, lvm_used, pr)
-			lvm_used = set_layers(data, area, c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, minp, maxp, lvm_used, pr)
-		end
-	end
-	local deco = false
-	local ores = false
-	if minp.y >  mcl_vars.mg_nether_deco_max - 64 and maxp.y <  mcl_vars.mg_nether_max + 128 then
-		deco = {min=mcl_vars.mg_nether_deco_max,max=mcl_vars.mg_nether_max}
-	end
-	if minp.y <  mcl_vars.mg_nether_min + 10 or maxp.y <  mcl_vars.mg_nether_min + 60 then
-		deco = {min=mcl_vars.mg_nether_min - 10,max=mcl_vars.mg_nether_min + 20}
-		ores = {min=mcl_vars.mg_nether_min - 10,max=mcl_vars.mg_nether_min + 20}
-	end
-	return lvm_used, lvm_used, deco, ores
-end
-
-local function block_fixes(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	local biomemap = minetest.get_mapgen_object("biomemap")
-	local lvm_used = false
-	local pr = PseudoRandom(blockseed)
-	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
-		-- Set param2 (=color) of nodes which use the grass colour palette.
-		lvm_used = set_palette(minp,maxp,data2,area,biomemap,{"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass", "mcl_flowers:double_grass", "mcl_flowers:double_grass_top", "mcl_flowers:fern", "mcl_flowers:double_fern", "mcl_flowers:double_fern_top", "mcl_core:reeds", "mcl_core:dirt_with_grass_snow"})
-	end
-	return lvm_used
-end
-
-
--- End block fixes:
-local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	if maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max then return end
-	local biomemap --ymin, ymax
-	local lvm_used = false
-	local pr = PseudoRandom(blockseed)
-	local nodes
-	if mg_name ~= "v6" then
-		nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source"})
-		if #nodes > 0 then
-			lvm_used = true
-			for _,n in pairs(nodes) do
-				data[area:index(n.x, n.y, n.z)] = c_air
-			end
-		end
-	end
-	return true, false
-end
-
-
-mcl_mapgen_core.register_generator("world_structure", world_structure, nil, 1, true)
-mcl_mapgen_core.register_generator("end_fixes", end_basic, function(minp,maxp)
-	if maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max then return end
-end, 9999, true)
-
-if mg_name ~= "v6" and mg_name ~= "singlenode" then
-	mcl_mapgen_core.register_generator("block_fixes", block_fixes, nil, 9999, true)
-end
-
-if mg_name == "v6" then
-	dofile(modpath.."/v6.lua")
-end
-
--- This should be moved to mcl_structures eventually if the dependencies can be sorted out.
-mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blockseed)
-	local gennotify = minetest.get_mapgen_object("gennotify")
-	local has_struct = {}
-	local has = false
-	local poshash = minetest.hash_node_position(minp)
-	for _,struct in pairs(mcl_structures.registered_structures) do
-		local pr = PseudoRandom(blockseed + 42)
-		if struct.deco_id then
-			for _, pos in pairs(gennotify["decoration#"..struct.deco_id] or {}) do
-				local realpos = vector.offset(pos,0,1,0)
-				minetest.remove_node(realpos)
-				minetest.fix_light(vector.offset(pos,-1,-1,-1),vector.offset(pos,1,3,1))
-				if struct.chunk_probability == nil or (not has and pr:next(1,struct.chunk_probability) == 1 ) then
-					mcl_structures.place_structure(realpos,struct,pr,blockseed)
-					has=true
+			for _, pos in ipairs(gennotify["decoration#" .. deco_id_chorus_plant] or {}) do
+				local x, y, z = pos.x, pos.y, pos.z
+				if x < -10 or x > 10 or z < -10 or z > 10 then
+					local realpos = {x = x, y = y + 1, z = z}
+					local node = minetest.get_node(realpos)
+					if node and node.name == "mcl_end:chorus_flower" then
+						mcl_end.grow_chorus_plant(realpos, node, pr)
+					end
 				end
 			end
-		elseif struct.static_pos then
-			for _,p in pairs(struct.static_pos) do
-				if in_cube(p,minp,maxp) then
-					mcl_structures.place_structure(p,struct,pr,blockseed)
+			if minp.y > mcl_vars.mg_nether_max then
+				return
+			end
+			for _, f in pairs(deco_ids_fungus) do
+				for _, pos in ipairs(gennotify["decoration#" .. f] or {}) do
+					minetest.fix_light(vector.offset(pos, -8, -8, -8), vector.offset(pos, 8, 8, 8))
 				end
 			end
-		end
+		end)
 	end
-	return false, false, false
-end, 100, true)
 
-minetest.register_lbm({
-	label = "Fix grass palette indexes",
-	name = "mcl_mapgen_core:fix_grass_palette_indexes",
-	nodenames = {"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass", "mcl_flowers:double_grass", "mcl_flowers:double_grass_top", "mcl_flowers:fern", "mcl_flowers:double_fern", "mcl_flowers:double_fern_top", "mcl_core:reeds", "mcl_core:dirt_with_grass_snow"},
-	run_at_every_load = true,
-	action = function(pos, node)
-		local biome_data = minetest.get_biome_data(pos)
-		local biome = biome_data.biome
-		local biome_name = minetest.get_biome_name(biome)
-		local reg_biome = minetest.registered_biomes[biome_name]
-		if node.param2 ~= reg_biome._mcl_grass_palette_index then
-			minetest.set_node(pos, node)
-		end
-	end,
-})
+end
