@@ -429,7 +429,6 @@ minetest.register_lbm({
 		local biome_name = minetest.get_biome_name(biome)
 		local reg_biome = minetest.registered_biomes[biome_name]
 		if node.param2 ~= reg_biome._mcl_grass_palette_index then
-			node.param2 = reg_biome._mcl_grass_palette_index
 			minetest.set_node(pos, node)
 		end
 	end,
