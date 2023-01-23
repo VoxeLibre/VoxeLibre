@@ -987,17 +987,22 @@ function mob_class:check_dying()
 end
 
 function mob_class:check_suspend()
-	if not self:player_in_active_range() then
-		local pos = self.object:get_pos()
+	local pos = self.object:get_pos()
+
+	if pos and not self:player_in_active_range() then
 		local node_under = node_ok(vector.offset(pos,0,-1,0)).name
-		local acc = self.object:get_acceleration()
+
 		self:set_animation( "stand", true)
-		if acc.y > 0 or node_under ~= "air" then
-			self.object:set_acceleration(vector.new(0,0,0))
-			self.object:set_velocity(vector.new(0,0,0))
-		end
-		if acc.y == 0 and node_under == "air" then
-			self:falling(pos)
+
+		local acc = self.object:get_acceleration()
+		if acc then
+			if acc.y > 0 or node_under ~= "air" then
+				self.object:set_acceleration(vector.new(0,0,0))
+				self.object:set_velocity(vector.new(0,0,0))
+			end
+			if acc.y == 0 and node_under == "air" then
+				self:falling(pos)
+			end
 		end
 		return true
 	end
