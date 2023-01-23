@@ -113,6 +113,7 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 	climbable = true,
 	buildable_to = true,
 	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1, shearsy = 1},
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
@@ -169,6 +170,7 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 	climbable = true,
 	buildable_to = true,
 	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1, shearsy = 1},
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
@@ -265,7 +267,12 @@ minetest.register_node("mcl_crimson:warped_wart_block", {
 	description = S("Warped Wart Block"),
 	tiles = {"warped_wart_block.png"},
 	groups = {handy = 1, hoey = 7, swordy = 1, deco_block = 1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(
+{
+			footstep={name="default_dirt_footstep", gain=0.7},
+			dug={name="default_dirt_footstep", gain=1.5},
+		}
+),
 	_mcl_hardness = 2,
 })
 
@@ -274,7 +281,12 @@ minetest.register_node("mcl_crimson:shroomlight", {
 	tiles = {"shroomlight.png"},
 	groups = {handy = 1, hoey = 7, swordy = 1, deco_block = 1},
 	light_source = minetest.LIGHT_MAX,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
+    sounds = mcl_sounds.node_sound_leaves_defaults(
+{
+			footstep={name="default_dirt_footstep", gain=0.7},
+			dug={name="default_dirt_footstep", gain=1.5},
+		}
+),
 	_mcl_hardness = 2,
 })
 
