@@ -129,7 +129,17 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				itemstack:take_item()
 			end
+--placement checks sucess, put twisting vine
 			grow_vines(pos, 1, "mcl_crimson:twisting_vines")
+--add sound to vine placement
+          local idef = itemstack:get_definition()
+          local itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing)
+           if success then
+			if idef.sounds and idef.sounds.place then
+				minetest.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
+			end
+		end
+
 		elseif clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				itemstack:take_item()
@@ -186,7 +196,17 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				itemstack:take_item()
 			end
+--placement check sucess, grow weeping vine
 			grow_vines(pos, 1, "mcl_crimson:weeping_vines", -1)
+--add sound to placement
+          local idef = itemstack:get_definition()
+          local itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing)
+           if success then
+			if idef.sounds and idef.sounds.place then
+				minetest.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
+			end
+		end
+
 		elseif clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				itemstack:take_item()
