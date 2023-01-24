@@ -335,13 +335,13 @@ function mob_class:on_step(dtime)
 
 	if self:check_despawn(pos, dtime) then return true end
 
-	self:slow_mob()
+	if self:check_death_and_slow_mob() then
+		--minetest.log("action", "Mob is dying: ".. tostring(self.name))
+		-- Do we abandon out of here now?
+	end
+
 	if self:falling(pos) then return end
 	self:check_suspend()
-
-	self:check_water_flow()
-
-	self:env_danger_movement_checks (dtime)
 
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
@@ -349,9 +349,12 @@ function mob_class:on_step(dtime)
 		if not self.object:get_pos() then return end
 	end
 
-	if mobs_debug then self:update_tag() end
-
 	if self.state == "die" then return end
+
+	self:check_water_flow()
+	self:env_danger_movement_checks (dtime)
+
+	if mobs_debug then self:update_tag() end
 
 	self:follow_flop() -- Mob following code.
 

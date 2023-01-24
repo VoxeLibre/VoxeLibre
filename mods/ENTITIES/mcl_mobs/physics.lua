@@ -47,7 +47,8 @@ end
 
 function mob_class:player_in_active_range()
 	for _,p in pairs(minetest.get_connected_players()) do
-		if vector.distance(self.object:get_pos(),p:get_pos()) <= mob_active_range then return true end
+		local pos = self.object:get_pos()
+		if pos and vector.distance(pos, p:get_pos()) <= mob_active_range then return true end
 		-- slightly larger than the mc 32 since mobs spawn on that circle and easily stand still immediately right after spawning.
 	end
 end
@@ -182,15 +183,17 @@ function mob_class:collision()
 	return({x,z})
 end
 
-function mob_class:slow_mob()
+function mob_class:check_death_and_slow_mob()
 	local d = 0.85
-	if self:check_dying() then d = 0.92 end
+	local dying = self:check_dying()
+	if dying then d = 0.92 end
 
 	local v = self.object:get_velocity()
 	if v then
 		--diffuse object velocity
 		self.object:set_velocity({x = v.x*d, y = v.y, z = v.z*d})
 	end
+	return dying
 end
 
 -- move mob in facing direction
@@ -519,17 +522,16 @@ function mob_class:check_for_death(cause, cmi_cause)
 
 	self:set_velocity(0)
 	local acc = self.object:get_acceleration()
-	acc.x, acc.y, acc.z = 0, DEFAULT_FALL_SPEED, 0
-	self.object:set_acceleration(acc)
+	if acc then
+		acc.x, acc.y, acc.z = 0, DEFAULT_FALL_SPEED, 0
+		self.object:set_acceleration(acc)
+	end
 
 	local length
 	-- default death function and die animation (if defined)
 	if self.instant_death then
 		length = 0
-	elseif self.animation
-	and self.animation.die_start
-	and self.animation.die_end then
-
+	elseif self.animation and self.animation.die_start and self.animation.die_end then
 		local frames = self.animation.die_end - self.animation.die_start
 		local speed = self.animation.die_speed or 15
 		length = math.max(frames / speed, 0) + DEATH_DELAY
@@ -545,7 +547,6 @@ function mob_class:check_for_death(cause, cmi_cause)
 		if not self.object:get_luaentity() then
 			return
 		end
-
 		death_handle(self)
 		local dpos = self.object:get_pos()
 		local cbox = self.collisionbox
@@ -554,6 +555,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 		self.object:remove()
 		mcl_mobs.death_effect(dpos, yaw, cbox, not self.instant_death)
 	end
+
 	if length <= 0 then
 		kill(self)
 	else
@@ -870,33 +872,32 @@ function mob_class:falling(pos)
 
 	-- floating in water (or falling)
 	local v = self.object:get_velocity()
+	if v then
+		if v.y > 0 then
+			-- apply gravity when moving up
+			self.object:set_acceleration({
+				x = 0,
+				y = DEFAULT_FALL_SPEED,
+				z = 0
+			})
 
-	if v.y > 0 then
-
-		-- apply gravity when moving up
-		self.object:set_acceleration({
-			x = 0,
-			y = DEFAULT_FALL_SPEED,
-			z = 0
-		})
-
-	elseif v.y <= 0 and v.y > self.fall_speed then
-
-		-- fall downwards at set speed
-		self.object:set_acceleration({
-			x = 0,
-			y = self.fall_speed,
-			z = 0
-		})
-	else
-		-- stop accelerating once max fall speed hit
-		self.object:set_acceleration({x = 0, y = 0, z = 0})
+		elseif v.y <= 0 and v.y > self.fall_speed then
+			-- fall downwards at set speed
+			self.object:set_acceleration({
+				x = 0,
+				y = self.fall_speed,
+				z = 0
+			})
+		else
+			-- stop accelerating once max fall speed hit
+			self.object:set_acceleration({x = 0, y = 0, z = 0})
+		end
 	end
 
+	local acc = self.object:get_acceleration()
+
 	if minetest.registered_nodes[node_ok(pos).name].groups.lava then
-
-		if self.floats_on_lava == 1 then
-
+		if acc and self.floats_on_lava == 1 then
 			self.object:set_acceleration({
 				x = 0,
 				y = -self.fall_speed / (math.max(1, v.y) ^ 2),
@@ -907,9 +908,7 @@ function mob_class:falling(pos)
 
 	-- in water then float up
 	if minetest.registered_nodes[node_ok(pos).name].groups.water then
-
-		if self.floats == 1 then
-
+		if acc and self.floats == 1 then
 			self.object:set_acceleration({
 				x = 0,
 				y = -self.fall_speed / (math.max(1, v.y) ^ 2),
@@ -917,10 +916,8 @@ function mob_class:falling(pos)
 			})
 		end
 	else
-
 		-- fall damage onto solid ground
-		if self.fall_damage == 1
-		and self.object:get_velocity().y == 0 then
+		if self.fall_damage == 1 and self.object:get_velocity().y == 0 then
 			local n = node_ok(vector.offset(pos,0,-1,0)).name
 			local d = (self.old_y or 0) - self.object:get_pos().y
 
@@ -981,24 +978,31 @@ end
 function mob_class:check_dying()
 	if ((self.state and self.state=="die") or self:check_for_death()) and not self.animation.die_end then
 		local rot = self.object:get_rotation()
-		rot.z = ((math.pi/2-rot.z)*.2)+rot.z
-		self.object:set_rotation(rot)
+		if rot then
+			rot.z = ((math.pi/2-rot.z)*.2)+rot.z
+			self.object:set_rotation(rot)
+		end
 		return true
 	end
 end
 
 function mob_class:check_suspend()
-	if not self:player_in_active_range() then
-		local pos = self.object:get_pos()
+	local pos = self.object:get_pos()
+
+	if pos and not self:player_in_active_range() then
 		local node_under = node_ok(vector.offset(pos,0,-1,0)).name
-		local acc = self.object:get_acceleration()
+
 		self:set_animation( "stand", true)
-		if acc.y > 0 or node_under ~= "air" then
-			self.object:set_acceleration(vector.new(0,0,0))
-			self.object:set_velocity(vector.new(0,0,0))
-		end
-		if acc.y == 0 and node_under == "air" then
-			self:falling(pos)
+
+		local acc = self.object:get_acceleration()
+		if acc then
+			if acc.y > 0 or node_under ~= "air" then
+				self.object:set_acceleration(vector.new(0,0,0))
+				self.object:set_velocity(vector.new(0,0,0))
+			end
+			if acc.y == 0 and node_under == "air" then
+				self:falling(pos)
+			end
 		end
 		return true
 	end
