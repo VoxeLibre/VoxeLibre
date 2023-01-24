@@ -149,6 +149,16 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		end
 		return itemstack
 	end,
+--breaking twisting vines breaks the vines above logic
+	on_dig = function(pos, node, digger)
+		local above = {x=pos.x, y=pos.y+1, z=pos.z}
+		local abovenode = minetest.get_node(above)
+		minetest.node_dig(pos, node, digger)
+		if abovenode.name == node.name and (not mcl_core.check_vines_supported(above, abovenode)) then
+			minetest.registered_nodes[node.name].on_dig(above, node, digger)
+		end
+	end,	
+	
 	drop = {
 		max_items = 1,
 		items = {
@@ -216,6 +226,17 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		end
 		return itemstack
 	end,
+--breaking weeping vines breaks the vines below logic
+	on_dig = function(pos, node, digger)
+		local below = {x=pos.x, y=pos.y-1, z=pos.z}
+		local belownode = minetest.get_node(below)
+		minetest.node_dig(pos, node, digger)
+		if belownode.name == node.name and (not mcl_core.check_vines_supported(below, belownode)) then
+			minetest.registered_nodes[node.name].on_dig(below, node, digger)
+		end
+	end,
+	
+	
 	drop = {
 		max_items = 1,
 		items = {
