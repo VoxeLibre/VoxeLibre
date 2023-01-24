@@ -280,8 +280,8 @@ local function set_palette(minp,maxp,data2,area,biomemap,nodes)
 		local bn = minetest.get_biome_name(biomemap[b_pos])
 		if bn then
 			local biome = minetest.registered_biomes[bn]
-			if biome and biome._mcl_biome_type then
-				data2[p_pos] = biome._mcl_palette_index
+			if biome and biome._mcl_biome_type and biome._mcl_grass_palette_index then
+				data2[p_pos] = biome._mcl_grass_palette_index
 				lvm_used = true
 			end
 		end
@@ -349,8 +349,8 @@ local function block_fixes(vm, data, data2, emin, emax, area, minp, maxp, blocks
 	local lvm_used = false
 	local pr = PseudoRandom(blockseed)
 	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
-		-- Set param2 (=color) of sugar cane and grass
-		lvm_used = set_palette(minp,maxp,data2,area,biomemap,{"mcl_core:reeds","mcl_core:dirt_with_grass"})
+		-- Set param2 (=color) of nodes which use the grass colour palette.
+		lvm_used = set_palette(minp,maxp,data2,area,biomemap,{"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass", "mcl_flowers:double_grass", "mcl_flowers:double_grass_top", "mcl_flowers:fern", "mcl_flowers:double_fern", "mcl_flowers:double_fern_top", "mcl_core:reeds", "mcl_core:dirt_with_grass_snow"})
 	end
 	return lvm_used
 end
@@ -417,3 +417,20 @@ mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blocks
 	end
 	return false, false, false
 end, 100, true)
+
+minetest.register_lbm({
+	label = "Fix grass palette indexes",
+	name = "mcl_mapgen_core:fix_grass_palette_indexes",
+	nodenames = {"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass", "mcl_flowers:double_grass", "mcl_flowers:double_grass_top", "mcl_flowers:fern", "mcl_flowers:double_fern", "mcl_flowers:double_fern_top", "mcl_core:reeds", "mcl_core:dirt_with_grass_snow"},
+	run_at_every_load = true,
+	action = function(pos, node)
+		local biome_data = minetest.get_biome_data(pos)
+		local biome = biome_data.biome
+		local biome_name = minetest.get_biome_name(biome)
+		local reg_biome = minetest.registered_biomes[biome_name]
+		if node.param2 ~= reg_biome._mcl_grass_palette_index then
+			node.param2 = reg_biome._mcl_grass_palette_index
+			minetest.set_node(pos, node)
+		end
+	end,
+})
