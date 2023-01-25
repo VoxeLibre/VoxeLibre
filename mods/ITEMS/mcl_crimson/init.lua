@@ -317,7 +317,7 @@ minetest.register_node("mcl_crimson:warped_wart_block", {
 			dug={name="default_dirt_footstep", gain=1.5},
 		}
 ),
-	_mcl_hardness = 2,
+	_mcl_hardness = 1,
 })
 
 minetest.register_node("mcl_crimson:shroomlight", {
@@ -331,7 +331,7 @@ minetest.register_node("mcl_crimson:shroomlight", {
 			dug={name="default_dirt_footstep", gain=1.5},
 		}
 ),
-	_mcl_hardness = 2,
+	_mcl_hardness = 1,
 })
 
 minetest.register_node("mcl_crimson:warped_hyphae", {
