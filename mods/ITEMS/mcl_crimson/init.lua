@@ -113,7 +113,8 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 	walkable = false,
 	climbable = true,
 	buildable_to = true,
-	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1, shearsy = 1},
+	groups = {handy=1, axey=1, shearsy=1, swordy=1, vines=1, 
+	           dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -177,7 +178,8 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		"mcl_crimson:twisting_vines",
 		"mcl_crimson:twisting_vines",
 	},
-	_mcl_blast_resistance = 0,
+	_mcl_blast_resistance = 0.2,
+	_mcl_hardness = 0.2,
 })
 
 minetest.register_node("mcl_crimson:weeping_vines", {
@@ -190,7 +192,8 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 	walkable = false,
 	climbable = true,
 	buildable_to = true,
-	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1, shearsy = 1},
+	groups = {handy=1, axey=1, shearsy=1, swordy=1, vines=1, dig_by_water=1,
+				 destroy_by_lava_flow=1, dig_by_piston=1, deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -255,7 +258,8 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		"mcl_crimson:weeping_vines",
 		"mcl_crimson:weeping_vines",
 	},
-	_mcl_blast_resistance = 0,
+	_mcl_blast_resistance = 0.2,
+	_mcl_hardness = 0.2,
 })
 
 minetest.register_node("mcl_crimson:nether_sprouts", {
