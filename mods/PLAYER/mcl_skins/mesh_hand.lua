@@ -37,6 +37,7 @@ function mcl_skins.get_skin_list()
 				texture = skin.texture,
 				slim_arms = skin.slim_arms,
 				id = skin.texture:gsub(".png$", "") .. (skin.slim_arms and "_female" or "_male") .. game_mode,
+				creative = game_mode == "_crea"
 			})
 		end
 	end
@@ -45,10 +46,13 @@ end
 
 function mcl_skins.get_node_id_by_player(player)
 	local skin = mcl_skins.players[player]
+	local simple_skin = skin.simple_skins_id
+	if simple_skin then
+		skin = mcl_skins.simple_skins[skin.simple_skins_id]
+	end
 	local creative = minetest.is_creative_enabled(player:get_player_name())
 	local append = (skin.slim_arms and "_female" or "_male") .. (creative and "_crea" or "_surv")
-	if skin.simple_skins_id then
-		local skin = mcl_skins.simple_skins[skin.simple_skins_id]
+	if simple_skin then
 		return skin.texture:gsub(".png$", "") .. append
 	else
 		return skin.base:gsub(".png$", "") ..
