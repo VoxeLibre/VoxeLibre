@@ -25,7 +25,8 @@ local mobs_debug = minetest.settings:get_bool("mobs_debug", false) -- Shows help
 local spawn_logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",true)
 
 local MAPGEN_LIMIT = mcl_util.get_mapgen_limit()
-local MAPGEN_MOB_LIMIT = mcl_util.get_mapgen_limit() - 50
+local MAPGEN_MOB_LIMIT = mcl_util.get_mapgen_limit() - 100
+-- 30927 seems to be the edge of the world, so could be closer, but this is safer
 
 
 -- Peaceful mode message so players will know there are no monsters
@@ -339,13 +340,16 @@ function mob_class:outside_limits()
 		local posy = math.abs(pos.y)
 		local posz = math.abs(pos.z)
 		if posx > MAPGEN_MOB_LIMIT or posy > MAPGEN_MOB_LIMIT or posz > MAPGEN_MOB_LIMIT then
+			minetest.log("action", "Getting close to limits of worldgen: " .. minetest.pos_to_string(pos))
 			if posx > MAPGEN_LIMIT or posy > MAPGEN_LIMIT or posz > MAPGEN_LIMIT then
 				minetest.log("action", "Warning mob past limits of worldgen: " .. minetest.pos_to_string(pos))
 			else
 				minetest.log("action", "Warning mob close to limits of worldgen: " .. minetest.pos_to_string(pos))
-				self:set_velocity(0)
 				self.state = "stand"
 				self:set_animation( "stand")
+
+				self.object:set_acceleration(vector.zero())
+				self.object:set_velocity(vector.zero())
 			end
 			return true
 		end

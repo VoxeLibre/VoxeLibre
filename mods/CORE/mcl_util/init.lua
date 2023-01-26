@@ -1,6 +1,6 @@
 mcl_util = {}
 
-local MAPGEN_LIMIT = 32000
+local MAPGEN_LIMIT = 31000
 
 function mcl_util.get_mapgen_limit()
 	return MAPGEN_LIMIT
