@@ -26,6 +26,7 @@ local table_copy     = table.copy
 local table_remove   = table.remove
 local pairs = pairs
 
+-- TODO Set logger to false as default
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_spawning", true)
 local function mcl_log (message)
 	if LOGGING_ON then
@@ -841,7 +842,6 @@ if mobs_spawn then
 
 				local cap_space_wide, cap_space_close = mob_cap_space (pos, mob_type, mob_counts_close, mob_counts_wide)
 
-				--TODO cap check before or after spawn check - cap_space > 0 and
 				if cap_space_close > 0 and cap_space_wide > 0 and spawn_check(spawning_position,mob_def) then
 
 					if mob_def.type_of_spawning == "water" then
@@ -857,10 +857,8 @@ if mobs_spawn then
 					end
 
 					--everything is correct, spawn mob
-					--TODO If spawning, need to recheck total, or add to total mobs...
-					local object --TODO is not used. remove or use?
-					--TODO ensure animal spawns are more gradual, remove mob_type ~= "monster" or
-					if spawn_in_group and (mob_type ~= "monster" or math.random(5) == 1) then
+					local spawned
+					if spawn_in_group and (math.random(5) == 1) then
 
 						local group_min = spawn_in_group_min
 						if not group_min then group_min = 1 end
@@ -877,12 +875,16 @@ if mobs_spawn then
 							minetest.log("action", "[mcl_mobs] A group of " ..amount_to_spawn .. " " .. mob_def.name .. " mob spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at " .. minetest.pos_to_string(spawning_position, 1))
 						end
 
-						object = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name}, amount_to_spawn)
+						spawned = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name}, amount_to_spawn)
 					else
 						if logging then
 							minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at ".. minetest.pos_to_string(spawning_position, 1))
 						end
-						object = mcl_mobs.spawn(spawning_position, mob_def.name)
+						spawned = mcl_mobs.spawn(spawning_position, mob_def.name)
+					end
+					if spawned then
+						mcl_log("We have spawned")
+						mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("type", pos)
 					end
 				end
 
