@@ -340,16 +340,17 @@ function mob_class:outside_limits()
 		local posy = math.abs(pos.y)
 		local posz = math.abs(pos.z)
 		if posx > MAPGEN_MOB_LIMIT or posy > MAPGEN_MOB_LIMIT or posz > MAPGEN_MOB_LIMIT then
-			minetest.log("action", "Getting close to limits of worldgen: " .. minetest.pos_to_string(pos))
+			--minetest.log("action", "Getting close to limits of worldgen: " .. minetest.pos_to_string(pos))
 			if posx > MAPGEN_LIMIT or posy > MAPGEN_LIMIT or posz > MAPGEN_LIMIT then
 				minetest.log("action", "Warning mob past limits of worldgen: " .. minetest.pos_to_string(pos))
 			else
-				minetest.log("action", "Warning mob close to limits of worldgen: " .. minetest.pos_to_string(pos))
-				self.state = "stand"
-				self:set_animation( "stand")
-
-				self.object:set_acceleration(vector.zero())
-				self.object:set_velocity(vector.zero())
+				if self.state ~= "stand" then
+					minetest.log("action", "Warning mob close to limits of worldgen: " .. minetest.pos_to_string(pos))
+					self.state = "stand"
+					self:set_animation("stand")
+					self.object:set_acceleration(vector.zero())
+					self.object:set_velocity(vector.zero())
+				end
 			end
 			return true
 		end
