@@ -955,10 +955,7 @@ minetest.register_chatcommand("mobstats",{
 		minetest.chat_send_player(n,"spawning attempts since server start:"..dbg_spawn_attempts)
 		minetest.chat_send_player(n,"successful spawns since server start:"..dbg_spawn_succ)
 
-
-		--local mob_counts, total_mobs = count_mobs_all("name") -- name
-		local mob_counts, total_mobs = count_mobs_all("type")
-		output_mob_stats(mob_counts, total_mobs)
-
+		local mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("name") -- Can use "type"
+		output_mob_stats(mob_counts_wide, total_mobs)
 	end
 })
