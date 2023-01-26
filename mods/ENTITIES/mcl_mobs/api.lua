@@ -24,6 +24,10 @@ local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= fa
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false) -- Shows helpful debug info above each mob
 local spawn_logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",true)
 
+local MAPGEN_LIMIT = mcl_util.get_mapgen_limit()
+local MAPGEN_MOB_LIMIT = mcl_util.get_mapgen_limit() - 50
+
+
 -- Peaceful mode message so players will know there are no monsters
 if minetest.settings:get_bool("only_peaceful_mobs", false) then
 	minetest.register_on_joinplayer(function(player)
@@ -328,12 +332,36 @@ local function update_timers (self, dtime)
 	end
 end
 
+function mob_class:outside_limits()
+	local pos = self.object:get_pos()
+	if pos then
+		local posx = math.abs(pos.x)
+		local posy = math.abs(pos.y)
+		local posz = math.abs(pos.z)
+		if posx > MAPGEN_MOB_LIMIT or posy > MAPGEN_MOB_LIMIT or posz > MAPGEN_MOB_LIMIT then
+			if posx > MAPGEN_LIMIT or posy > MAPGEN_LIMIT or posz > MAPGEN_LIMIT then
+				minetest.log("action", "Warning mob past limits of worldgen: " .. minetest.pos_to_string(pos))
+			else
+				minetest.log("action", "Warning mob close to limits of worldgen: " .. minetest.pos_to_string(pos))
+				self:set_velocity(0)
+				self.state = "stand"
+				self:set_animation( "stand")
+			end
+			return true
+		end
+	end
+end
+
 -- main mob function
 function mob_class:on_step(dtime)
 	local pos = self.object:get_pos()
 	if not pos then return end
 
 	if self:check_despawn(pos, dtime) then return true end
+
+	if self:outside_limits() then
+		return
+	end
 
 	if self:check_death_and_slow_mob() then
 		--minetest.log("action", "Mob is dying: ".. tostring(self.name))
