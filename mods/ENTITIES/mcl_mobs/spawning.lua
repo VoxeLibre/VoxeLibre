@@ -39,6 +39,8 @@ local dbg_spawn_attempts = 0
 local dbg_spawn_succ = 0
 local dbg_spawn_counts = {}
 
+local remove_far = true
+
 local WAIT_FOR_SPAWN_ATTEMPT = 10
 
 local MOB_SPAWN_ZONE_INNER = 24
@@ -48,8 +50,8 @@ local MOB_SPAWN_ZONE_OUTER = 128 --TODO not used yet. Should replace aoc
 -- range for mob count
 local MOB_CAP_INNER_RADIUS = 32
 local aoc_range = 136
-local remove_far = true
 
+local MISSING_CAP_DEFAULT = 15
 local MOBS_CAP_CLOSE = 5
 
 local mob_cap = {
@@ -716,6 +718,7 @@ if mobs_spawn then
 
 	-- Get pos to spawn, x and z are randomised, y is range
 
+
 	local function mob_cap_space (pos, mob_type, mob_counts_close, mob_counts_wide)
 
 		--type = "monster",
@@ -729,7 +732,7 @@ if mobs_spawn then
 		--mcl_log("spawn_class: " .. spawn_class)
 		mcl_log("mob_type: " .. mob_type)
 
-		local type_cap = mob_cap[mob_type] or 15
+		local type_cap = mob_cap[mob_type] or MISSING_CAP_DEFAULT
 		local close_zone_cap = MOBS_CAP_CLOSE
 
 		mcl_log("type_cap: " .. type_cap)
@@ -768,29 +771,31 @@ if mobs_spawn then
 
 
 		mcl_log("mob_total_wide: " .. mob_total_wide)
-		local mob_count_wide = count_mobs(pos,aoc_range,mob_type)
-
-
-		mcl_log("old mob_count_wide: " .. mob_count_wide)
-		if mob_total_wide ~= mob_count_wide then
-			mcl_log("A difference in wide mob count")
-		else
-			mcl_log("No difference in wide mob count")
-		end
-
 		mcl_log("mob_total_close: " .. mob_total_close)
-		local mob_count_close = count_mobs(pos,MOB_CAP_INNER_RADIUS,mob_type)
 
-		mcl_log("old mob_count_close: " .. mob_count_close)
-		if mob_total_close ~= mob_count_close then
-			mcl_log("A difference in close mob count")
-		else
-			mcl_log("No difference in close mob count")
+
+		--TODO Remove old checks
+		local compare_to_old_checks = true
+
+		if compare_to_old_checks then
+			local mob_count_wide = count_mobs(pos,aoc_range,mob_type)
+			local mob_count_close = count_mobs(pos,MOB_CAP_INNER_RADIUS,mob_type)
+
+			mcl_log("old mob_count_wide: " .. mob_count_wide)
+			if mob_total_wide ~= mob_count_wide then
+				mcl_log("A difference in wide mob count")
+			else
+				mcl_log("No difference in wide mob count")
+			end
+
+			mcl_log("old mob_count_close: " .. mob_count_close)
+			if mob_total_close ~= mob_count_close then
+				mcl_log("A difference in close mob count")
+			else
+				mcl_log("No difference in close mob count")
+			end
 		end
 
-
-		--and ( mob_count_wide < (mob_cap[mob_type] or 15) )
-		--and ( mob_count < 5 )
 		return cap_space_wide, cap_space_close
 	end
 
