@@ -1,10 +1,11 @@
 # mcl_autogroup
 This mod emulate digging times from mc.
 
-## mcl_autogroup.can_harvest(nodename, toolname)
-Return true if <nodename> can be dig with <toolname>.
+## mcl_autogroup.can_harvest(nodename, toolname, player)
+Return true if <nodename> can be dig with <toolname> by <player>.
 * nodename: string, valid nodename
 * toolname: (optional) string, valid toolname
+* player: (optinal) ObjectRef, valid player
 
 ## mcl_autogroup.get_groupcaps(toolname, efficiency)
 This function is used to calculate diggroups for tools.

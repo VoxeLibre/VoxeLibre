@@ -76,9 +76,12 @@ mcl_enable_skin_customization (Enable player skin customization) bool true
 # Default:4.5
 mcl_hand_range (Hand range) float 4.5 1 128
 
-# How far the player hand can reach in creative mode (not gamemode-creative)
+# How far the player hand can reach in creative mode
 # Default:10
 mcl_hand_range_creative (Creative mode hand range) float 10 1 128
+
+# Creative mode dig speed in seconds
+mcl_creative_dig_speed (Creative mode dig speed) float 0.2
 
 # If enabled the hunger mechanic will be active
 mcl_enable_hunger (Hunger mechanic) bool true
