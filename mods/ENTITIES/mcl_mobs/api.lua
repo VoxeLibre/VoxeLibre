@@ -363,10 +363,7 @@ function mob_class:on_step(dtime)
 	if not pos then return end
 
 	if self:check_despawn(pos, dtime) then return true end
-
-	if self:outside_limits() then
-		return
-	end
+	if self:outside_limits() then return end
 
 	if self:check_death_and_slow_mob() then
 		--minetest.log("action", "Mob is dying: ".. tostring(self.name))
