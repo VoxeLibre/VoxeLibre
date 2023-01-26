@@ -40,7 +40,12 @@ local dbg_spawn_counts = {}
 
 local WAIT_FOR_SPAWN_ATTEMPT = 10
 
+local MOB_SPAWN_ZONE_INNER = 24
+local MOB_SPAWN_ZONE_MIDDLE = 32
+local MOB_SPAWN_ZONE_OUTER = 128 --TODO not used yet. Should replace aoc
+
 -- range for mob count
+local MOB_CAP_INNER_RADIUS = 32
 local aoc_range = 136
 local remove_far = true
 
@@ -470,9 +475,10 @@ function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_
 	summary_chance = summary_chance + chance
 end
 
+
 local two_pi = 2 * math.pi
 local function get_next_mob_spawn_pos(pos)
-	local distance = math_random(25, 32)
+	local distance = math_random(MOB_SPAWN_ZONE_INNER + 1, MOB_SPAWN_ZONE_MIDDLE)
 	local angle = math_random() * two_pi
 	local xoff = math_round(distance * math_cos(angle))
 	local yoff = math_round(distance * math_sin(angle))
@@ -481,7 +487,7 @@ end
 
 local function decypher_limits(posy)
 	posy = math_floor(posy)
-	return posy - 32, posy + 32
+	return posy - MOB_SPAWN_ZONE_MIDDLE, posy + MOB_SPAWN_ZONE_MIDDLE
 end
 
 --a simple helper function for mob_spawn
@@ -532,6 +538,8 @@ local function has_room(self,pos)
 	return true
 end
 
+
+
 local function spawn_check(pos,spawn_def,ignore_caps)
 	if not spawn_def then return end
 	dbg_spawn_attempts = dbg_spawn_attempts + 1
@@ -558,7 +566,7 @@ local function spawn_check(pos,spawn_def,ignore_caps)
 	local mob_count_wide = 0
 	local mob_count = 0
 	if not ignore_caps then
-		mob_count = count_mobs(pos,32,mob_type)
+		mob_count = count_mobs(pos,MOB_CAP_INNER_RADIUS,mob_type)
 		mob_count_wide = count_mobs(pos,aoc_range,mob_type)
 	end
 
@@ -733,7 +741,7 @@ if mobs_spawn then
 
 		mcl_log("mob_count_from_total: " .. mob_count_from_total)
 
-		--local mob_count = count_mobs(pos,32,mob_type)
+		--local mob_count = count_mobs(pos,MOB_CAP_INNER_RADIUS,mob_type)
 		local mob_count_wide = count_mobs(pos,aoc_range,mob_type)
 
 		mcl_log("mob_count_wide: " .. mob_count_wide)
@@ -802,7 +810,7 @@ if mobs_spawn then
 
 				local cap_space = mob_cap_space (pos, mob_type, mob_counts)
 
-				--TODO cap_space > 0 and
+				--TODO cap check before or after spawn check - cap_space > 0 and
 				if spawn_check(spawning_position,mob_def) then
 					if mob_def.type_of_spawning == "water" then
 						spawning_position = get_water_spawn(spawning_position)
@@ -818,15 +826,15 @@ if mobs_spawn then
 
 					--everything is correct, spawn mob
 					--TODO If spawning, need to recheck total, or add to total mobs...
-					local object
-					--remove mob_type ~= "monster" or
+					local object --TODO is not used. remove or use?
+					--TODO ensure animal spawns are more gradual, remove mob_type ~= "monster" or
 					if spawn_in_group and (mob_type ~= "monster" or math.random(5) == 1) then
 
 						local group_min = spawn_in_group_min
 						if not group_min then group_min = 1 end
 
 						local amount_to_spawn = math.random(group_min,spawn_in_group)
-						minetest.log("action", "Spawning quantity: " .. amount_to_spawn)
+						mcl_log("action", "Spawning quantity: " .. amount_to_spawn)
 
 						if amount_to_spawn > cap_space then
 							mcl_log("Throttle amount to cap space: " .. cap_space)
@@ -910,7 +918,7 @@ minetest.register_chatcommand("mobstats",{
 	func = function(n,param)
 		minetest.chat_send_player(n,dump(dbg_spawn_counts))
 		local pos = minetest.get_player_by_name(n):get_pos()
-		minetest.chat_send_player(n,"mobs within 32 radius of player:"..count_mobs(pos,32))
+		minetest.chat_send_player(n,"mobs within 32 radius of player:"..count_mobs(pos,MOB_CAP_INNER_RADIUS))
 		minetest.chat_send_player(n,"total mobs:"..count_mobs_total())
 		minetest.chat_send_player(n,"spawning attempts since server start:"..dbg_spawn_attempts)
 		minetest.chat_send_player(n,"successful spawns since server start:"..dbg_spawn_succ)
