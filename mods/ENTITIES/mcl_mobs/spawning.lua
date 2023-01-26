@@ -49,6 +49,8 @@ local MOB_CAP_INNER_RADIUS = 32
 local aoc_range = 136
 local remove_far = true
 
+local MOBS_CAP_CLOSE = 5
+
 local mob_cap = {
 	monster = tonumber(minetest.settings:get("mcl_mob_cap_monster")) or 70,
 	animal = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 10,
@@ -266,46 +268,58 @@ local function count_mobs_total(mob_type)
 	return num
 end
 
-local function count_mobs_all(categorise_by, pos, max_distance)
-	local mobs_found = {}
+local function count_mobs_add_entry (mobs_list, mob_cat)
+	if mobs_list[mob_cat] then
+		mobs_list[mob_cat] = mobs_list[mob_cat] + 1
+	else
+		mobs_list[mob_cat] = 1
+	end
+end
+
+--categorise_by can be name or type
+local function count_mobs_all(categorise_by, pos)
+	local mobs_found_wide = {}
+	local mobs_found_close = {}
+
 	local num = 0
 	for _,entity in pairs(minetest.luaentities) do
 		if entity and entity.is_mob then
 
 			local add_entry = false
+			--local mob_type = entity.type -- animal / monster / npc
+			local mob_cat = entity[categorise_by]
 
-			if pos and max_distance then
+			if pos then
 				local mob_pos = entity.object:get_pos()
 				if mob_pos then
 					local distance = vector.distance(pos, mob_pos)
-
-					if distance <= max_distance then
-						--mcl_log("distance is good")
+					mcl_log("distance: ".. distance)
+					if distance <= MOB_SPAWN_ZONE_MIDDLE then
+						mcl_log("distance is close")
+						count_mobs_add_entry (mobs_found_close, mob_cat)
+						count_mobs_add_entry (mobs_found_wide, mob_cat)
+						add_entry = true
+					elseif distance <= MOB_SPAWN_ZONE_OUTER then
+						mcl_log("distance is wide")
+						count_mobs_add_entry (mobs_found_wide, mob_cat)
 						add_entry = true
 					else
-						mcl_log("mob_pos: " .. minetest.pos_to_string(mob_pos))
-						mcl_log("distance: ".. distance)
+						--mcl_log("mob_pos: " .. minetest.pos_to_string(mob_pos))
 					end
 				end
-
 			else
+				count_mobs_add_entry (mobs_found_wide, mob_cat)
 				add_entry = true
 			end
 
-			--local mob_type = entity.type -- animal / monster / npc
+
 			if add_entry then
-				local mob_cat = entity[categorise_by]
-				if mobs_found[mob_cat] then
-					mobs_found[mob_cat] = mobs_found[mob_cat] + 1
-				else
-					mobs_found[mob_cat] = 1
-				end
 				num = num + 1
 			end
 		end
 	end
 	mcl_log("num: ".. num)
-	return mobs_found, num
+	return mobs_found_close, mobs_found_wide, num
 end
 
 local function count_mobs_total_cap(mob_type)
@@ -540,7 +554,7 @@ end
 
 
 
-local function spawn_check(pos,spawn_def,ignore_caps)
+local function spawn_check(pos, spawn_def)
 	if not spawn_def then return end
 	dbg_spawn_attempts = dbg_spawn_attempts + 1
 	local dimension = mcl_worlds.pos_to_dimension(pos)
@@ -563,16 +577,8 @@ local function spawn_check(pos,spawn_def,ignore_caps)
 	local is_leaf  = get_item_group(gotten_node, "leaves") ~= 0
 	local is_bedrock  = gotten_node == "mcl_core:bedrock"
 	local is_grass = minetest.get_item_group(gotten_node,"grass_block") ~= 0
-	local mob_count_wide = 0
-	local mob_count = 0
-	if not ignore_caps then
-		mob_count = count_mobs(pos,MOB_CAP_INNER_RADIUS,mob_type)
-		mob_count_wide = count_mobs(pos,aoc_range,mob_type)
-	end
 
 	if pos and spawn_def
-	and ( mob_count_wide < (mob_cap[mob_type] or 15) )
-	and ( mob_count < 5 )
 	and pos.y >= spawn_def.min_height
 	and pos.y <= spawn_def.max_height
 	and spawn_def.dimension == dimension
@@ -619,7 +625,7 @@ local function spawn_group(p,mob,spawn_on,amount_to_spawn)
 
 	for i = 1, amount_to_spawn do
 		local sp = vector.offset(nn[math.random(#nn)],0,1,0)
-		if spawn_check(nn[math.random(#nn)],mob,true) then
+		if spawn_check(nn[math.random(#nn)],mob) then
 			if mob.type_of_spawning == "water" then
 				sp = get_water_spawn(sp)
 			end
@@ -709,21 +715,7 @@ if mobs_spawn then
 
 	-- Get pos to spawn, x and z are randomised, y is range
 
-	local function mob_cap_space (pos, mob_type, mob_counts)
-		local type_cap = mob_cap[mob_type] or 15
-
-
-		local mob_count_from_total = mob_counts[mob_type]
-		if not mob_count_from_total then
-			mcl_log("none of type found. set as 0")
-			mob_count_from_total = 0
-		end
-
-		local cap_space = type_cap - mob_count_from_total
-		if cap_space < 1 then
-			cap_space = 0
-		end
-
+	local function mob_cap_space (pos, mob_type, mob_counts_close, mob_counts_wide)
 
 		--type = "monster",
 		--spawn_class = "hostile",
@@ -733,34 +725,72 @@ if mobs_spawn then
 		--	type = "animal",
 		--	spawn_class = "water",
 
-
 		--mcl_log("spawn_class: " .. spawn_class)
 		mcl_log("mob_type: " .. mob_type)
+
+		local type_cap = mob_cap[mob_type] or 15
+		local close_zone_cap = MOBS_CAP_CLOSE
+
 		mcl_log("type_cap: " .. type_cap)
-		--if mob_type == "animal" then
 
-		mcl_log("mob_count_from_total: " .. mob_count_from_total)
 
-		--local mob_count = count_mobs(pos,MOB_CAP_INNER_RADIUS,mob_type)
-		local mob_count_wide = count_mobs(pos,aoc_range,mob_type)
+		local mob_total_wide = mob_counts_wide[mob_type]
+		if not mob_total_wide then
+			mcl_log("none of type found. set as 0")
+			mob_total_wide = 0
+		end
 
-		mcl_log("mob_count_wide: " .. mob_count_wide)
-		if mob_count_from_total ~= mob_count_wide then
-			mcl_log("A difference in mob count")
-		else
-			mcl_log("No difference in mob count")
+		local cap_space_wide = type_cap - mob_total_wide
+		if cap_space_wide < 1 then
+			cap_space_wide = 0
 		end
 
 
-		--mcl_log("mob_count: " .. mob_count)
+		mcl_log("cap_space_wide: " .. cap_space_wide)
 
-		mcl_log("Cap space available: " .. cap_space)
+		local mob_total_close = mob_counts_close[mob_type]
+		if not mob_total_close then
+			mcl_log("none of type found. set as 0")
+			mob_total_close = 0
+		end
+
+		local cap_space_close = close_zone_cap - mob_total_close
+		if cap_space_close < 1 then
+			cap_space_close = 0
+		end
+
+
+		mcl_log("cap_space_close: " .. cap_space_close)
+
+		--if mob_type == "animal" then
 		--end
+
+
+		mcl_log("mob_total_wide: " .. mob_total_wide)
+		local mob_count_wide = count_mobs(pos,aoc_range,mob_type)
+
+
+		mcl_log("old mob_count_wide: " .. mob_count_wide)
+		if mob_total_wide ~= mob_count_wide then
+			mcl_log("A difference in wide mob count")
+		else
+			mcl_log("No difference in wide mob count")
+		end
+
+		mcl_log("mob_total_close: " .. mob_total_close)
+		local mob_count_close = count_mobs(pos,MOB_CAP_INNER_RADIUS,mob_type)
+
+		mcl_log("old mob_count_close: " .. mob_count_close)
+		if mob_total_close ~= mob_count_close then
+			mcl_log("A difference in close mob count")
+		else
+			mcl_log("No difference in close mob count")
+		end
 
 
 		--and ( mob_count_wide < (mob_cap[mob_type] or 15) )
 		--and ( mob_count < 5 )
-		return cap_space
+		return cap_space_wide, cap_space_close
 	end
 
 	local function spawn_a_mob(pos, dimension, y_min, y_max)
@@ -784,8 +814,9 @@ if mobs_spawn then
 		table.shuffle(mob_library_worker_table)
 
 		--
-		local mob_counts, total_mobs = count_mobs_all("type", pos, aoc_range)
-		output_mob_stats(mob_counts, total_mobs)
+		local mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("type", pos)
+		output_mob_stats(mob_counts_close, total_mobs)
+		output_mob_stats(mob_counts_wide, total_mobs)
 
 		while #mob_library_worker_table > 0 do
 			local mob_chance_offset = (math_round(noise * current_summary_chance + 12345) % current_summary_chance) + 1
@@ -808,10 +839,11 @@ if mobs_spawn then
 				--local spawn_class = minetest.registered_entities[mob_def.name].spawn_class
 				--spawn_class = "water"
 
-				local cap_space = mob_cap_space (pos, mob_type, mob_counts)
+				local cap_space_wide, cap_space_close = mob_cap_space (pos, mob_type, mob_counts_close, mob_counts_wide)
 
 				--TODO cap check before or after spawn check - cap_space > 0 and
-				if spawn_check(spawning_position,mob_def) then
+				if cap_space_close > 0 and cap_space_wide > 0 and spawn_check(spawning_position,mob_def) then
+
 					if mob_def.type_of_spawning == "water" then
 						spawning_position = get_water_spawn(spawning_position)
 						if not spawning_position then
@@ -834,11 +866,11 @@ if mobs_spawn then
 						if not group_min then group_min = 1 end
 
 						local amount_to_spawn = math.random(group_min,spawn_in_group)
-						mcl_log("action", "Spawning quantity: " .. amount_to_spawn)
+						mcl_log("Spawning quantity: " .. amount_to_spawn)
 
-						if amount_to_spawn > cap_space then
-							mcl_log("Throttle amount to cap space: " .. cap_space)
-							amount_to_spawn = cap_space
+						if amount_to_spawn > cap_space_wide then
+							mcl_log("Throttle amount to cap space: " .. cap_space_wide)
+							amount_to_spawn = cap_space_wide
 						end
 
 						if logging then
