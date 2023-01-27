@@ -729,6 +729,9 @@ if mobs_spawn then
 		--	type = "animal",
 		--	spawn_class = "water",
 
+		--if mob_type == "animal" then
+		--end
+
 		--mcl_log("spawn_class: " .. spawn_class)
 		mcl_log("mob_type: " .. mob_type)
 
@@ -766,14 +769,6 @@ if mobs_spawn then
 		mcl_log("mob_total_close: " .. mob_total_close)
 		mcl_log("cap_space_close: " .. cap_space_close)
 
-		--if mob_type == "animal" then
-		--end
-
-
-
-
-
-
 		--TODO Remove old checks
 		local compare_to_old_checks = true
 
@@ -799,30 +794,45 @@ if mobs_spawn then
 		return cap_space_wide, cap_space_close
 	end
 
-	local function spawn_a_mob(pos, dimension, y_min, y_max)
-		--create a disconnected clone of the spawn dictionary
-		--prevents memory leak
-		local mob_library_worker_table = table_copy(spawn_dictionary)
+	local function find_spawning_position(pos)
 		local goal_pos = get_next_mob_spawn_pos(pos)
+		local y_min, y_max = decypher_limits(pos.y)
+		local spawning_position_list = find_nodes_in_area_under_air(
+				{x = goal_pos.x, y = y_min, z = goal_pos.z},
+				{x = goal_pos.x, y = y_max, z = goal_pos.z},
+				{"group:solid", "group:water", "group:lava"}
+		)
+		if #spawning_position_list <= 0 then
+			mcl_log("Spawning position isn't good. Do not spawn: " .. minetest.pos_to_string(goal_pos))
+			return
+		end
+		local spawning_position = spawning_position_list[math_random(1, #spawning_position_list)]
+		return spawning_position
+	end
+
+	local function spawn_a_mob(pos)
+		--create a disconnected clone of the spawn dictionary, prevents memory leak
+		local mob_library_worker_table = table_copy(spawn_dictionary)
+
+		local spawning_position = find_spawning_position(pos)
+		if not spawning_position then
+			return
+		end
+
+		-- TODO shouldn't this be based on spawning position?
+		local mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("type", pos)
+		-- TODO remove output
+		output_mob_stats(mob_counts_close, total_mobs)
+		output_mob_stats(mob_counts_wide, total_mobs)
+
 		--grab mob that fits into the spawning location
 		--randomly grab a mob, don't exclude any possibilities
-		local spawning_position_list = find_nodes_in_area_under_air(
-			{x = goal_pos.x, y = y_min, z = goal_pos.z},
-			{x = goal_pos.x, y = y_max, z = goal_pos.z},
-			{"group:solid", "group:water", "group:lava"}
-		)
-		if #spawning_position_list <= 0 then return end
-		local spawning_position = spawning_position_list[math_random(1, #spawning_position_list)]
 
 		perlin_noise = perlin_noise or minetest_get_perlin(noise_params)
 		local noise = perlin_noise:get_3d(spawning_position)
 		local current_summary_chance = summary_chance
-		table.shuffle(mob_library_worker_table)
 
-		--
-		local mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("type", pos)
-		output_mob_stats(mob_counts_close, total_mobs)
-		output_mob_stats(mob_counts_wide, total_mobs)
+		table.shuffle(mob_library_worker_table)
 
 		while #mob_library_worker_table > 0 do
 			local mob_chance_offset = (math_round(noise * current_summary_chance + 12345) % current_summary_chance) + 1
@@ -834,15 +844,16 @@ if mobs_spawn then
 				mob_chance = mob_library_worker_table[mob_index].chance
 				step_chance = step_chance + mob_chance
 			end
-			local mob_def = mob_library_worker_table[mob_index]
 			--minetest.log(mob_def.name.." "..step_chance.. " "..mob_chance)
+
+			local mob_def = mob_library_worker_table[mob_index]
 			if mob_def and mob_def.name and minetest.registered_entities[mob_def.name] then
-				local spawn_in_group = minetest.registered_entities[mob_def.name].spawn_in_group or 4
-				local spawn_in_group_min = minetest.registered_entities[mob_def.name].spawn_in_group_min or 1
-				local mob_type = minetest.registered_entities[mob_def.name].type
+
+				local mob_def_ent = minetest.registered_entities[mob_def.name]
+				local mob_type = mob_def_ent.type
 
 				-- TODO use spawn class for caps
-				--local spawn_class = minetest.registered_entities[mob_def.name].spawn_class
+				--local spawn_class = mob_def_ent.spawn_class
 				--spawn_class = "water"
 
 				local cap_space_wide, cap_space_close = mob_cap_space (pos, mob_type, mob_counts_close, mob_counts_wide)
@@ -856,22 +867,24 @@ if mobs_spawn then
 							return
 						end
 					end
-					if minetest.registered_entities[mob_def.name].can_spawn and not minetest.registered_entities[mob_def.name].can_spawn(spawning_position) then
+					if mob_def_ent.can_spawn and not mob_def_ent.can_spawn(spawning_position) then
 						minetest.log("warning","[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(spawning_position)))
 						return
 					end
 
 					--everything is correct, spawn mob
+
+					local spawn_in_group = mob_def_ent.spawn_in_group or 4
+
 					local spawned
 					if spawn_in_group and (math.random(5) == 1) then
-
-						local group_min = spawn_in_group_min
+						local group_min = mob_def_ent.spawn_in_group_min or 1
 						if not group_min then group_min = 1 end
 
 						local amount_to_spawn = math.random(group_min,spawn_in_group)
-						mcl_log("Spawning quantity: " .. amount_to_spawn)
 
 						if amount_to_spawn > cap_space_wide then
+							mcl_log("Spawning quantity: " .. amount_to_spawn)
 							mcl_log("Throttle amount to cap space: " .. cap_space_wide)
 							amount_to_spawn = cap_space_wide
 						end
@@ -879,7 +892,6 @@ if mobs_spawn then
 						if logging then
 							minetest.log("action", "[mcl_mobs] A group of " ..amount_to_spawn .. " " .. mob_def.name .. " mob spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at " .. minetest.pos_to_string(spawning_position, 1))
 						end
-
 						spawned = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name}, amount_to_spawn)
 					else
 						if logging then
@@ -887,8 +899,9 @@ if mobs_spawn then
 						end
 						spawned = mcl_mobs.spawn(spawning_position, mob_def.name)
 					end
+
 					if spawned then
-						mcl_log("We have spawned")
+						--mcl_log("We have spawned")
 						mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("type", pos)
 					end
 				end
@@ -904,22 +917,24 @@ if mobs_spawn then
 
 	local timer = 0
 	minetest.register_globalstep(function(dtime)
+
 		timer = timer + dtime
 		if timer < WAIT_FOR_SPAWN_ATTEMPT then return end
 		timer = 0
+
 		local players = get_connected_players()
 		local total_mobs = count_mobs_total_cap()
 		if total_mobs > mob_cap.total or total_mobs > #players * mob_cap.player then
 			minetest.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
 			return
 		end --mob cap per player
+
 		for _, player in pairs(players) do
 			local pos = player:get_pos()
 			local dimension = mcl_worlds.pos_to_dimension(pos)
 			-- ignore void and unloaded area
 			if dimension ~= "void" and dimension ~= "default" then
-				local y_min, y_max = decypher_limits(pos.y)
-				spawn_a_mob(pos, dimension, y_min, y_max)
+				spawn_a_mob(pos)
 			end
 		end
 	end)
