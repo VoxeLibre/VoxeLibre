@@ -395,8 +395,13 @@ minetest.register_globalstep(function(dtime)
 			set_bone_pos(player,"Body_Control", nil, vector.new(0, -player_vel_yaw + yaw, 0))
 		end
 
-		if get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 or get_item_group(mcl_playerinfo[name].node_head, "water") ~= 1 then
+		local underwater
+		if get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and underwater ~= true then
 			mcl_weather.skycolor.update_sky_color()
+			local underwater = true
+		elseif get_item_group(mcl_playerinfo[name].node_head, "water") == 0 and underwater == true then
+			mcl_weather.skycolor.update_sky_color()
+			local underwater = false
 		end
 
 		elytra.last_yaw = player:get_look_horizontal()
