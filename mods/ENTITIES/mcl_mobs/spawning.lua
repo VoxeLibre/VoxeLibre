@@ -740,7 +740,7 @@ if mobs_spawn then
 
 		local mob_total_wide = mob_counts_wide[mob_type]
 		if not mob_total_wide then
-			mcl_log("none of type found. set as 0")
+			--mcl_log("none of type found. set as 0")
 			mob_total_wide = 0
 		end
 
@@ -749,12 +749,12 @@ if mobs_spawn then
 			cap_space_wide = 0
 		end
 
-
+		mcl_log("mob_total_wide: " .. mob_total_wide)
 		mcl_log("cap_space_wide: " .. cap_space_wide)
 
 		local mob_total_close = mob_counts_close[mob_type]
 		if not mob_total_close then
-			mcl_log("none of type found. set as 0")
+			--mcl_log("none of type found. set as 0")
 			mob_total_close = 0
 		end
 
@@ -763,36 +763,36 @@ if mobs_spawn then
 			cap_space_close = 0
 		end
 
-
+		mcl_log("mob_total_close: " .. mob_total_close)
 		mcl_log("cap_space_close: " .. cap_space_close)
 
 		--if mob_type == "animal" then
 		--end
 
 
-		mcl_log("mob_total_wide: " .. mob_total_wide)
-		mcl_log("mob_total_close: " .. mob_total_close)
+
+
 
 
 		--TODO Remove old checks
 		local compare_to_old_checks = true
 
 		if compare_to_old_checks then
-			local mob_count_wide = count_mobs(pos,aoc_range,mob_type)
+			local mob_count_wide = count_mobs(pos,MOB_SPAWN_ZONE_OUTER,mob_type)
 			local mob_count_close = count_mobs(pos,MOB_CAP_INNER_RADIUS,mob_type)
 
-			mcl_log("old mob_count_wide: " .. mob_count_wide)
 			if mob_total_wide ~= mob_count_wide then
+				mcl_log("old mob_count_wide: " .. mob_count_wide)
 				mcl_log("A difference in wide mob count")
 			else
-				mcl_log("No difference in wide mob count")
+				--mcl_log("No difference in wide mob count")
 			end
 
-			mcl_log("old mob_count_close: " .. mob_count_close)
 			if mob_total_close ~= mob_count_close then
+				mcl_log("old mob_count_close: " .. mob_count_close)
 				mcl_log("A difference in close mob count")
 			else
-				mcl_log("No difference in close mob count")
+				--mcl_log("No difference in close mob count")
 			end
 		end
 
