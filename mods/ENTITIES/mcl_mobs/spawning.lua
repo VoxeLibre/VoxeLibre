@@ -816,6 +816,8 @@ if mobs_spawn then
 
 		local spawning_position = find_spawning_position(pos)
 		if not spawning_position then
+			-- TODO do we log to user, or try again. How many times do we try again.
+			--mcl_log("abandon this")
 			return
 		end
 
@@ -903,6 +905,13 @@ if mobs_spawn then
 					if spawned then
 						--mcl_log("We have spawned")
 						mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("type", pos)
+						local new_spawning_position = find_spawning_position(pos)
+						if new_spawning_position then
+							mcl_log("Setting new spawning position")
+							spawning_position = new_spawning_position
+						else
+							mcl_log("Cannot set new spawning position")
+						end
 					end
 				end
 
