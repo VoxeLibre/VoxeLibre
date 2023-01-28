@@ -42,6 +42,7 @@ local dbg_spawn_counts = {}
 local remove_far = true
 
 local WAIT_FOR_SPAWN_ATTEMPT = 10
+local FIND_SPAWN_POS_RETRIES = 10
 
 local MOB_SPAWN_ZONE_INNER = 24
 local MOB_SPAWN_ZONE_MIDDLE = 32
@@ -794,19 +795,33 @@ if mobs_spawn then
 		return cap_space_wide, cap_space_close
 	end
 
-	local function find_spawning_position(pos)
-		local goal_pos = get_next_mob_spawn_pos(pos)
-		local y_min, y_max = decypher_limits(pos.y)
-		local spawning_position_list = find_nodes_in_area_under_air(
-				{x = goal_pos.x, y = y_min, z = goal_pos.z},
-				{x = goal_pos.x, y = y_max, z = goal_pos.z},
-				{"group:solid", "group:water", "group:lava"}
-		)
-		if #spawning_position_list <= 0 then
-			mcl_log("Spawning position isn't good. Do not spawn: " .. minetest.pos_to_string(goal_pos))
-			return
-		end
-		local spawning_position = spawning_position_list[math_random(1, #spawning_position_list)]
+	local function find_spawning_position(pos, max_times)
+		local spawning_position
+
+		local max_loops = 1
+		if max_times then max_loops = max_times end
+
+		local i = 0
+		repeat
+			local goal_pos = get_next_mob_spawn_pos(pos)
+			local y_min, y_max = decypher_limits(pos.y)
+			local spawning_position_list = find_nodes_in_area_under_air(
+					{x = goal_pos.x, y = y_min, z = goal_pos.z},
+					{x = goal_pos.x, y = y_max, z = goal_pos.z},
+					{"group:solid", "group:water", "group:lava"}
+			)
+			if #spawning_position_list > 0 then
+				mcl_log("Spawning positions available: " .. minetest.pos_to_string(goal_pos))
+				spawning_position = spawning_position_list[math_random(1, #spawning_position_list)]
+			else
+				mcl_log("Spawning position isn't good. Do not spawn: " .. minetest.pos_to_string(goal_pos))
+			end
+			i = i + 1
+			if i >= max_loops then
+				mcl_log("Cancel finding spawn positions at: " .. max_loops)
+				break
+			end
+		until spawning_position
 		return spawning_position
 	end
 
@@ -814,22 +829,20 @@ if mobs_spawn then
 		--create a disconnected clone of the spawn dictionary, prevents memory leak
 		local mob_library_worker_table = table_copy(spawn_dictionary)
 
-		local spawning_position = find_spawning_position(pos)
+		local spawning_position = find_spawning_position(pos, FIND_SPAWN_POS_RETRIES)
 		if not spawning_position then
-			-- TODO do we log to user, or try again. How many times do we try again.
+			-- TODO do we log to user
 			--mcl_log("abandon this")
 			return
 		end
 
-		-- TODO shouldn't this be based on spawning position?
-		local mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("type", pos)
+		local mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("type", spawning_position)
 		-- TODO remove output
 		output_mob_stats(mob_counts_close, total_mobs)
 		output_mob_stats(mob_counts_wide, total_mobs)
 
 		--grab mob that fits into the spawning location
 		--randomly grab a mob, don't exclude any possibilities
-
 		perlin_noise = perlin_noise or minetest_get_perlin(noise_params)
 		local noise = perlin_noise:get_3d(spawning_position)
 		local current_summary_chance = summary_chance
@@ -858,7 +871,7 @@ if mobs_spawn then
 				--local spawn_class = mob_def_ent.spawn_class
 				--spawn_class = "water"
 
-				local cap_space_wide, cap_space_close = mob_cap_space (pos, mob_type, mob_counts_close, mob_counts_wide)
+				local cap_space_wide, cap_space_close = mob_cap_space (spawning_position, mob_type, mob_counts_close, mob_counts_wide)
 
 				if cap_space_close > 0 and cap_space_wide > 0 and spawn_check(spawning_position,mob_def) then
 
@@ -875,7 +888,6 @@ if mobs_spawn then
 					end
 
 					--everything is correct, spawn mob
-
 					local spawn_in_group = mob_def_ent.spawn_in_group or 4
 
 					local spawned
