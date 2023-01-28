@@ -56,10 +56,10 @@ local MISSING_CAP_DEFAULT = 15
 local MOBS_CAP_CLOSE = 5
 
 local mob_cap = {
-	monster = tonumber(minetest.settings:get("mcl_mob_cap_monster")) or 70,
-	animal = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 10,
+	hostile = tonumber(minetest.settings:get("mcl_mob_cap_monster")) or 70,
+	passive = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 10,
 	ambient = tonumber(minetest.settings:get("mcl_mob_cap_ambient")) or 15,
-	water = tonumber(minetest.settings:get("mcl_mob_cap_water")) or 5, --currently unused
+	water = tonumber(minetest.settings:get("mcl_mob_cap_water")) or 5,
 	water_ambient = tonumber(minetest.settings:get("mcl_mob_cap_water_ambient")) or 20, --currently unused
 	player = tonumber(minetest.settings:get("mcl_mob_cap_player")) or 75,
 	total = tonumber(minetest.settings:get("mcl_mob_cap_total")) or 500,
@@ -280,7 +280,7 @@ local function count_mobs_add_entry (mobs_list, mob_cat)
 	end
 end
 
---categorise_by can be name or type
+--categorise_by can be name or type or spawn_class
 local function count_mobs_all(categorise_by, pos)
 	local mobs_found_wide = {}
 	local mobs_found_close = {}
@@ -736,13 +736,10 @@ if mobs_spawn then
 		--end
 
 		--mcl_log("spawn_class: " .. spawn_class)
-		mcl_log("mob_type: " .. mob_type)
+
 
 		local type_cap = mob_cap[mob_type] or MISSING_CAP_DEFAULT
 		local close_zone_cap = MOBS_CAP_CLOSE
-
-
-
 
 		local mob_total_wide = mob_counts_wide[mob_type]
 		if not mob_total_wide then
@@ -754,10 +751,6 @@ if mobs_spawn then
 		if cap_space_wide < 1 then
 			cap_space_wide = 0
 		end
-		mcl_log("wide: " .. mob_total_wide .. "/" .. type_cap)
-
-		--mcl_log("mob_total_wide: " .. mob_total_wide)
-		mcl_log("cap_space_wide: " .. cap_space_wide)
 
 		local mob_total_close = mob_counts_close[mob_type]
 		if not mob_total_close then
@@ -770,9 +763,14 @@ if mobs_spawn then
 			cap_space_close = 0
 		end
 
+		if mob_type == "water" then
+			mcl_log("mob_type: " .. mob_type .. " and pos: " .. minetest.pos_to_string(pos))
+			mcl_log("wide: " .. mob_total_wide .. "/" .. type_cap)
+			mcl_log("cap_space_wide: " .. cap_space_wide)
+			mcl_log("close: " .. mob_total_close .. "/" .. close_zone_cap)
+			mcl_log("cap_space_close: " .. cap_space_close)
+		end
 
-		mcl_log("close: " .. mob_total_close .. "/" .. close_zone_cap)
-		mcl_log("cap_space_close: " .. cap_space_close)
 
 		--TODO Remove old checks
 		local compare_to_old_checks = false
@@ -840,7 +838,7 @@ if mobs_spawn then
 			return
 		end
 
-		local mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("type", spawning_position)
+		local mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("spawn_class", spawning_position)
 		-- TODO remove output
 		output_mob_stats(mob_counts_close, total_mobs)
 		output_mob_stats(mob_counts_wide, total_mobs)
@@ -869,66 +867,71 @@ if mobs_spawn then
 			if mob_def and mob_def.name and minetest.registered_entities[mob_def.name] then
 
 				local mob_def_ent = minetest.registered_entities[mob_def.name]
-				local mob_type = mob_def_ent.type
+				--local mob_type = mob_def_ent.type
+				local mob_spawn_class = mob_def_ent.spawn_class
+				--mcl_log("mob_spawn_class: " .. mob_spawn_class)
 
-				-- TODO use spawn class for caps
-				--local spawn_class = mob_def_ent.spawn_class
-				--spawn_class = "water"
+				local cap_space_wide, cap_space_close = mob_cap_space (spawning_position, mob_spawn_class, mob_counts_close, mob_counts_wide)
 
-				local cap_space_wide, cap_space_close = mob_cap_space (spawning_position, mob_type, mob_counts_close, mob_counts_wide)
+				if cap_space_close > 0 and cap_space_wide > 0 then
+					mcl_log("Cap space available")
 
-				if cap_space_close > 0 and cap_space_wide > 0 and spawn_check(spawning_position,mob_def) then
-
-					if mob_def.type_of_spawning == "water" then
-						spawning_position = get_water_spawn(spawning_position)
-						if not spawning_position then
-							minetest.log("warning","[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..minetest.pos_to_string(vector.round(pos)))
+					if spawn_check(spawning_position,mob_def) then
+						if mob_def.type_of_spawning == "water" then
+							spawning_position = get_water_spawn(spawning_position)
+							if not spawning_position then
+								minetest.log("warning","[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..minetest.pos_to_string(vector.round(pos)))
+								return
+							end
+						end
+						if mob_def_ent.can_spawn and not mob_def_ent.can_spawn(spawning_position) then
+							minetest.log("warning","[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(spawning_position)))
 							return
 						end
-					end
-					if mob_def_ent.can_spawn and not mob_def_ent.can_spawn(spawning_position) then
-						minetest.log("warning","[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(spawning_position)))
-						return
-					end
 
-					--everything is correct, spawn mob
-					local spawn_in_group = mob_def_ent.spawn_in_group or 4
+						--everything is correct, spawn mob
+						local spawn_in_group = mob_def_ent.spawn_in_group or 4
 
-					local spawned
-					if spawn_in_group and (math.random(5) == 1) then
-						local group_min = mob_def_ent.spawn_in_group_min or 1
-						if not group_min then group_min = 1 end
+						local spawned
+						if spawn_in_group and (math.random(5) == 1) then
+							local group_min = mob_def_ent.spawn_in_group_min or 1
+							if not group_min then group_min = 1 end
 
-						local amount_to_spawn = math.random(group_min,spawn_in_group)
+							local amount_to_spawn = math.random(group_min,spawn_in_group)
 
-						if amount_to_spawn > cap_space_wide then
-							mcl_log("Spawning quantity: " .. amount_to_spawn)
-							mcl_log("Throttle amount to cap space: " .. cap_space_wide)
-							amount_to_spawn = cap_space_wide
-						end
+							if amount_to_spawn > cap_space_wide then
+								mcl_log("Spawning quantity: " .. amount_to_spawn)
+								mcl_log("Throttle amount to cap space: " .. cap_space_wide)
+								amount_to_spawn = cap_space_wide
+							end
 
-						if logging then
-							minetest.log("action", "[mcl_mobs] A group of " ..amount_to_spawn .. " " .. mob_def.name .. " mob spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at " .. minetest.pos_to_string(spawning_position, 1))
-						end
-						spawned = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name}, amount_to_spawn)
-					else
-						if logging then
-							minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at ".. minetest.pos_to_string(spawning_position, 1))
-						end
-						spawned = mcl_mobs.spawn(spawning_position, mob_def.name)
-					end
-
-					if spawned then
-						--mcl_log("We have spawned")
-						mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("type", pos)
-						local new_spawning_position = find_spawning_position(pos)
-						if new_spawning_position then
-							mcl_log("Setting new spawning position")
-							spawning_position = new_spawning_position
+							if logging then
+								minetest.log("action", "[mcl_mobs] A group of " ..amount_to_spawn .. " " .. mob_def.name .. " mob spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at " .. minetest.pos_to_string(spawning_position, 1))
+							end
+							spawned = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name}, amount_to_spawn)
 						else
-							mcl_log("Cannot set new spawning position")
+							if logging then
+								minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at ".. minetest.pos_to_string(spawning_position, 1))
+							end
+							spawned = mcl_mobs.spawn(spawning_position, mob_def.name)
 						end
+
+						if spawned then
+							--mcl_log("We have spawned")
+							mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("type", pos)
+							local new_spawning_position = find_spawning_position(pos, 3)
+							if new_spawning_position then
+								mcl_log("Setting new spawning position")
+								spawning_position = new_spawning_position
+							else
+								mcl_log("Cannot set new spawning position")
+							end
+						end
+					else
+						mcl_log("Spawn check failed")
 					end
+				else
+					mcl_log("Cap space full")
 				end
 
 			end
