@@ -496,6 +496,8 @@ end
 
 local two_pi = 2 * math.pi
 local function get_next_mob_spawn_pos(pos)
+	-- TODO We should consider spawning something a little further away sporadically.
+	-- It would be good for sky farms and variance, rather than all being on the 24 - 32 block away radius
 	local distance = math_random(MOB_SPAWN_ZONE_INNER + 1, MOB_SPAWN_ZONE_MIDDLE)
 	local angle = math_random() * two_pi
 	local xoff = math_round(distance * math_cos(angle))
