@@ -27,7 +27,7 @@ local table_remove   = table.remove
 local pairs = pairs
 
 -- TODO Set logger to false as default
-local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_spawning", true)
+local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_spawning", false)
 local function mcl_log (message)
 	if LOGGING_ON then
 		mcl_util.mcl_log (message, "[Mobs spawn]", true)
@@ -741,7 +741,7 @@ if mobs_spawn then
 		local type_cap = mob_cap[mob_type] or MISSING_CAP_DEFAULT
 		local close_zone_cap = MOBS_CAP_CLOSE
 
-		mcl_log("type_cap: " .. type_cap)
+
 
 
 		local mob_total_wide = mob_counts_wide[mob_type]
@@ -754,8 +754,9 @@ if mobs_spawn then
 		if cap_space_wide < 1 then
 			cap_space_wide = 0
 		end
+		mcl_log("wide: " .. mob_total_wide .. "/" .. type_cap)
 
-		mcl_log("mob_total_wide: " .. mob_total_wide)
+		--mcl_log("mob_total_wide: " .. mob_total_wide)
 		mcl_log("cap_space_wide: " .. cap_space_wide)
 
 		local mob_total_close = mob_counts_close[mob_type]
@@ -769,11 +770,12 @@ if mobs_spawn then
 			cap_space_close = 0
 		end
 
-		mcl_log("mob_total_close: " .. mob_total_close)
+
+		mcl_log("close: " .. mob_total_close .. "/" .. close_zone_cap)
 		mcl_log("cap_space_close: " .. cap_space_close)
 
 		--TODO Remove old checks
-		local compare_to_old_checks = true
+		local compare_to_old_checks = false
 
 		if compare_to_old_checks then
 			local mob_count_wide = count_mobs(pos,MOB_SPAWN_ZONE_OUTER,mob_type)
