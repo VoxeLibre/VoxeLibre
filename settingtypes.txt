@@ -236,8 +236,8 @@ mcl_extended_pet_control (Extended pet control) bool true
 # Enable hamburgers for villagers to follow
 mcl_enable_hamburger (Enable Hamburger) bool true
 
-# Starting Inventory contents (given directly to the new player) type: string
-starting_inv_contents (Player Starter Pack) bool false
+# Starting Inventory contents (given directly to the new player) type: bool
+give_starting_inv (Player Starter Pack) bool false
 
 [Debugging]
 # If enabled, this will show the itemstring of an item in the description.
