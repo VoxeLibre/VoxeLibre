@@ -1,5 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local ASSIST_TIMEOUT_SEC = 5
+
 mcl_death_messages = {
 	assist = {},
 	messages = {
@@ -181,8 +183,10 @@ local function get_killer_message(obj, messages, reason)
 end
 
 local function get_assist_message(obj, messages, reason)
-	if messages.assist and mcl_death_messages.assist[obj] then
-		return messages._translator(messages.assist, mcl_util.get_object_name(obj), mcl_death_messages.assist[obj].name)
+	-- Avoid a timing issue if the assist passes its timeout.
+	local assist_details = mcl_death_messages.assist[obj]
+	if messages.assist and assist_details then
+		return messages._translator(messages.assist, mcl_util.get_object_name(obj), assist_details.name)
 	end
 end
 
@@ -232,20 +236,17 @@ mcl_damage.register_on_death(function(obj, reason)
 end)
 
 mcl_damage.register_on_damage(function(obj, damage, reason)
-	if obj:get_hp() - damage > 0 then
-		if reason.source then
-			mcl_death_messages.assist[obj] = {name = mcl_util.get_object_name(reason.source), timeout = 5}
-		else
-			mcl_death_messages.assist[obj] = nil
+	if (obj:get_hp() - damage > 0) and reason.source and
+			(reason.source:is_player() or obj:get_luaentity()) then
+		-- To avoid timing issues we cancel the previous job before adding a new one.
+		if mcl_death_messages.assist[obj] then
+			mcl_death_messages.assist[obj].job:cancel()
 		end
-	end
-end)
 
-minetest.register_globalstep(function(dtime)
-	for obj, tbl in pairs(mcl_death_messages.assist) do
-		tbl.timeout = tbl.timeout - dtime
-		if not obj:is_player() and not obj:get_luaentity() or tbl.timeout > 0 then
+		-- Add a new assist object with a timeout job.
+		local new_job = minetest.after(ASSIST_TIMEOUT_SEC, function()
 			mcl_death_messages.assist[obj] = nil
-		end
+		end)
+		mcl_death_messages.assist[obj] = {name = mcl_util.get_object_name(reason.source), job = new_job}
 	end
 end)

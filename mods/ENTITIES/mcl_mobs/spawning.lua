@@ -169,6 +169,8 @@ local list_of_all_biomes = {
 	"MushroomIslandShore",
 	"JungleM_shore",
 	"Jungle_shore",
+	"BambooJungleM_shore",
+	"BambooJungle_shore",
 	"MangroveSwamp_shore",
 
 	-- dimension biome:
@@ -216,6 +218,10 @@ local list_of_all_biomes = {
 	"JungleEdge",
 	"SavannaM",
 	"MangroveSwamp",
+	"BambooJungle",
+	"BambooJungleEdge",
+	"BambooJungleEdgeM",
+	"BambooJungleM",
 }
 
 -- count how many mobs are in an area

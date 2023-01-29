@@ -156,6 +156,7 @@ local function set_inv_page(page, player)
 		creative_list = inventory_lists[page]
 	end
 	inv:set_size("main", #creative_list)
+	players[playername].inv_size = #creative_list
 	inv:set_list("main", creative_list)
 end
 
@@ -304,36 +305,20 @@ minetest.register_on_joinplayer(function (player)
 	end
 end)
 
-function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size, show, page, filter)
-	--reset_menu_item_bg()
-	pagenum = math.floor(pagenum) or 1
-
+function mcl_inventory.set_creative_formspec(player)
 	local playername = player:get_player_name()
+	if not players[playername] then return end
 
-	if not inv_size then
-		if page == "nix" then
-			local inv = minetest.get_inventory({type="detached", name="creative_"..playername})
-			inv_size = inv:get_size("main")
-		elseif page and page ~= "inv" then
-			inv_size = #(inventory_lists[page])
-		else
-			inv_size = 0
-		end
-	end
+	local start_i = players[playername].start_i
+	local pagenum = start_i / (9*5) + 1
+	local name = players[playername].page
+	local inv_size = players[playername].inv_size
+	local filter = players[playername].filter
 	local pagemax = math.max(1, math.floor((inv_size-1) / (9*5) + 1))
-	local name = "nix"
 	local main_list
 	local listrings = "listring[detached:creative_"..playername..";main]"..
 		"listring[current_player;main]"..
 		"listring[detached:trash;main]"
-
-	if page then
-		name = page
-		if players[playername] then
-			players[playername].page = page
-		end
-	end
-	--bg[name] = "crafting_creative_bg.png"
 
 	local inv_bg = "crafting_inventory_creative.png"
 	if name == "inv" then
@@ -493,9 +478,6 @@ function mcl_inventory.set_creative_formspec(player, start_i, pagenum, inv_size,
 		listrings
 
 	if name == "nix" then
-		if filter == nil then
-			filter = ""
-		end
 		formspec = formspec .. "field[5.3,1.34;4,0.75;search;;"..minetest.formspec_escape(filter).."]"
 		formspec = formspec .. "field_close_on_enter[search;false]"
 	end
@@ -582,16 +564,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	if page then
 		players[name].page = page
-	end
-	if players[name].page then
+	else
 		page = players[name].page
 	end
 
-	-- Figure out current scroll bar from formspec
-	--local formspec = player:get_inventory_formspec()
-
 	local start_i = players[name].start_i
-
 	if fields.creative_prev then
 		start_i = start_i - 9*5
 	elseif fields.creative_next then
@@ -613,6 +590,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	else
 		inv_size = 0
 	end
+	players[name].inv_size = inv_size
 
 	if start_i >= inv_size then
 		start_i = start_i - 9*5
@@ -622,72 +600,19 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 	players[name].start_i = start_i
 
-	local filter = ""
-	if not fields.nix and fields.search and fields.search ~= "" then
-		filter = fields.search
-		players[name].filter = filter
+	if not fields.nix and fields.search then
+		players[name].filter = fields.search
+	else
+		players[name].filter = ""
 	end
 
-	mcl_inventory.set_creative_formspec(player, start_i, start_i / (9*5) + 1, inv_size, false, page, filter)
+	mcl_inventory.set_creative_formspec(player)
 end)
 
 
-if minetest.is_creative_enabled("") then
-	minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack)
-		-- Place infinite nodes, except for shulker boxes
-		local group = minetest.get_item_group(itemstack:get_name(), "shulker_box")
-		return group == 0 or group == nil
-	end)
-
-	function minetest.handle_node_drops(pos, drops, digger)
-		if not digger or not digger:is_player() then
-			for _,item in ipairs(drops) do
-				minetest.add_item(pos, item)
-			end
-		end
-		local inv = digger:get_inventory()
-		if inv then
-			for _,item in ipairs(drops) do
-				if not inv:contains_item("main", item, true) then
-					inv:add_item("main", item)
-				end
-			end
-		end
-	end
-
-	mcl_inventory.update_inventory_formspec = function(player)
-		local page
-
-		local name = player:get_player_name()
-
-		if players[name].page then
-			page = players[name].page
-		else
-			page = "nix"
-		end
-
-		-- Figure out current scroll bar from formspec
-		--local formspec = player:get_inventory_formspec()
-		local start_i = players[name].start_i
-
-		local inv_size
-		if page == "nix" then
-			local inv = minetest.get_inventory({type="detached", name="creative_"..name})
-			inv_size = inv:get_size("main")
-		elseif page and page ~= "inv" then
-			inv_size = #(inventory_lists[page])
-		else
-			inv_size = 0
-		end
-
-		local filter = players[name].filter
-		if filter == nil then
-			filter = ""
-		end
-
-		mcl_inventory.set_creative_formspec(player, start_i, start_i / (9*5) + 1, inv_size, false, page, filter)
-	end
-end
+minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack)
+	return placer and placer:is_player() and minetest.is_creative_enabled(placer:get_player_name())
+end)
 
 minetest.register_on_joinplayer(function(player)
 	-- Initialize variables and inventory
@@ -700,7 +625,7 @@ minetest.register_on_joinplayer(function(player)
 	end
 	init(player)
 	-- Setup initial creative inventory to the "nix" page.
-	mcl_inventory.set_creative_formspec(player, 0, 1, nil, false, "nix", "")
+	mcl_inventory.set_creative_formspec(player)
 end)
 
 minetest.register_on_player_inventory_action(function(player, action, inventory, inventory_info)

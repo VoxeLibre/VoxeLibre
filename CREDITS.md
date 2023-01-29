@@ -35,7 +35,8 @@
 * SumianVoice
 * MrRar
 * talamh
-* Faerraven
+* Faerraven / Michieal
+* FossFanatic
 
 ## Contributors
 * Laurent Rocher
@@ -96,6 +97,8 @@
 * TheOnlyJoeEnderman
 * Ranko Saotome
 * Gregor Parzefall
+* Wbjitscool
+* b3nderman
 
 ## MineClone5
 * kay27
@@ -147,11 +150,13 @@
 * jordan4ibanez
 * paramat
 * cora
+* Faerraven / Michieal
 
 ## 3D Models
 * 22i
 * tobyplowy
 * epCode
+* Faerraven / Michieal
 
 ## Textures
 * XSSheep
@@ -166,6 +171,7 @@
 * RandomLegoBrick
 * cora
 * Faerraven / Michieal
+* Nicu
 
 ## Translations
 * Wuzzy
@@ -183,6 +189,8 @@
 
 ## Funders
 * 40W
+* bauknecht
+* Cora
 
 ## Special thanks
 * celeron55 for creating Minetest

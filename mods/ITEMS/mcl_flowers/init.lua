@@ -19,7 +19,7 @@ local get_palette_color_from_pos = function(pos)
 		local biome_name = minetest.get_biome_name(biome)
 		local reg_biome = minetest.registered_biomes[biome_name]
 		if reg_biome then
-			index = reg_biome._mcl_palette_index
+			index = reg_biome._mcl_grass_palette_index
 		end
 	end
 	return index

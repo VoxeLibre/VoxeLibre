@@ -252,10 +252,17 @@ function minetest.handle_node_drops(pos, drops, digger)
 	-- NOTE: This function override allows digger to be nil.
 	-- This means there is no digger. This is a special case which allows this function to be called
 	-- by hand. Creative Mode is intentionally ignored in this case.
-
-	if (digger and digger:is_player() and minetest.is_creative_enabled(digger:get_player_name())) or doTileDrops == false then
+	if digger and digger:is_player() and minetest.is_creative_enabled(digger:get_player_name()) then
+		local inv = digger:get_inventory()
+		if inv then
+			for _, item in ipairs(drops) do
+				if not inv:contains_item("main", item, true) then
+					inv:add_item("main", item)
+				end
+			end
+		end
 		return
-	end
+	elseif not doTileDrops then return end
 
 	-- Check if node will yield its useful drop by the digger's tool
 	local dug_node = minetest.get_node(pos)
@@ -263,9 +270,9 @@ function minetest.handle_node_drops(pos, drops, digger)
 	local tool
 	if digger then
 		tool = digger:get_wielded_item()
-		tooldef = minetest.registered_tools[tool:get_name()]
+		tooldef = minetest.registered_items[tool:get_name()]
 
-		if not mcl_autogroup.can_harvest(dug_node.name, tool:get_name()) then
+		if not mcl_autogroup.can_harvest(dug_node.name, tool:get_name(), digger) then
 			return
 		end
 	end

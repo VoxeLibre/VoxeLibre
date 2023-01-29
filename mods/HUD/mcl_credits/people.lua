@@ -36,7 +36,8 @@ return {
 		"SumianVoice",
 		"MrRar",
 		"talamh",
-		"Faerraven",
+		"Faerraven / Michieal",
+		"FossFanatic",
 	}},
 	{S("Contributors"), 0x52FF00, {
 		"Laurent Rocher",
@@ -96,6 +97,9 @@ return {
 		"anarquimico",
 		"TheOnlyJoeEnderman",
 		"Ranko Saotome",
+		"Gregor Parzefall",
+		"Wbjitscool",
+		"b3nderman",
 	}},
 	{S("MineClone5"), 0xA60014, {
 		"kay27",
@@ -147,11 +151,13 @@ return {
 		"jordan4ibanez",
 		"paramat",
 		"cora",
+		"Faerraven / Michieal",
 	}},
 	{S("3D Models"), 0x0019FF, {
 		"22i",
 		"tobyplowy",
 		"epCode",
+		"Faerraven / Michieal",
 	}},
 	{S("Textures"), 0xFF9705, {
 		"XSSheep",
@@ -166,6 +172,7 @@ return {
 		"RandomLegoBrick",
 		"cora",
 		"Faerraven / Michieal",
+		"Nicu",
 	}},
 	{S("Translations"), 0x00FF60, {
 		"Wuzzy",
@@ -179,9 +186,12 @@ return {
 		"Emojigit",
 		"snowyu",
 		"3raven",
+		"SakuraRiu",
 	}},
 	{S("Funders"), 0xF7FF00, {
 		"40W",
+		"bauknecht",
+		"Cora",
 	}},
 	{S("Special thanks"), 0x00E9FF, {
 		"celeron55 for creating Minetest",
@@ -189,5 +199,6 @@ return {
 		"wsor for working tirelessly in the shadows for the good of all of us, particularly helping with solving contentDB and copyright issues.",
 		"The workaholics who spent way too much time writing for the Minecraft Wiki. It's an invaluable resource for creating this game",
 		"Notch and Jeb for being the major forces behind Minecraft",
+		"Dark Reaven Music (https://soundcloud.com/dark-reaven-music) for the main menu theme (Calmed Cube), which is licensed under https://creativecommons.org/licenses/by-sa/3.0/",
 	}},
 }

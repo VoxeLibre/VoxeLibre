@@ -90,7 +90,7 @@ function mcl_lanterns.register_lantern(name, def)
 
 	local sounds = mcl_sounds.node_sound_metal_defaults()
 
-	minetest.register_node(itemstring_floor, {
+	minetest.register_node(":"..itemstring_floor, {
 		description = def.description,
 		_doc_items_longdesc = def.longdesc,
 		drawtype = "mesh",
@@ -166,7 +166,7 @@ function mcl_lanterns.register_lantern(name, def)
 		_mcl_blast_resistance = 3.5,
 	})
 
-	minetest.register_node(itemstring_ceiling, {
+	minetest.register_node(":"..itemstring_ceiling, {
 		description = def.description,
 		_doc_items_create_entry = false,
 		drawtype = "mesh",
