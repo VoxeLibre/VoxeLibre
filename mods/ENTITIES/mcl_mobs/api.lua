@@ -24,8 +24,8 @@ local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= fa
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false) -- Shows helpful debug info above each mob
 local spawn_logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",true)
 
-local MAPGEN_LIMIT = mcl_util.get_mapgen_limit()
-local MAPGEN_MOB_LIMIT = mcl_util.get_mapgen_limit() - 100
+local MAPGEN_LIMIT = mcl_vars.mapgen_limit
+local MAPGEN_MOB_LIMIT = MAPGEN_LIMIT - 90
 -- 30927 seems to be the edge of the world, so could be closer, but this is safer
 
 

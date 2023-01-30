@@ -1,11 +1,5 @@
 mcl_util = {}
 
-local MAPGEN_LIMIT = 31000
-
-function mcl_util.get_mapgen_limit()
-	return MAPGEN_LIMIT
-end
-
 -- Updates all values in t using values from to*.
 function table.update(t, ...)
 	for _, to in ipairs {...} do
