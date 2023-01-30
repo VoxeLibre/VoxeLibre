@@ -1,33 +1,84 @@
 --local deepslate_mod = minetest.get_modpath("mcl_deepslate")
 
+-- a basic on_place()
+function mcl_copper.on_place (itemstack, placer, pointed_thing)
+	if pointed_thing.type ~= "node" then
+		return itemstack
+	end
+	local node = minetest.get_node(pointed_thing.under)
+	local pos = pointed_thing.under
+	local node_name = node.name
+
+	if mcl_util.check_position_protection(pos, placer) then
+		return itemstack
+	end
+
+	-- Use pointed node's on_rightclick function first, if present
+	local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
+	if new_stack then
+		return new_stack
+	end
+
+	local placed = ItemStack(itemstack:get_name())
+	if not minetest.is_creative_enabled(placer:get_player_name()) then
+		itemstack:take_item()
+	end
+	minetest.item_place(placed, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
+
+	return itemstack
+
+end
+
 local function register_oxidation_abm(abm_name, node_name, oxidized_variant)
 	minetest.register_abm({
 		label = abm_name,
-		nodenames = {node_name},
+		nodenames = { node_name },
 		interval = 500,
 		chance = 3,
 		action = function(pos, node)
-			minetest.swap_node(pos, {name = oxidized_variant, param2 = node.param2})
+			minetest.swap_node(pos, { name = oxidized_variant, param2 = node.param2 })
 		end,
 	})
 end
 
 function waxing_copper_block(pos, node, player, itemstack, convert_to)
 	if itemstack:get_name() == "mcl_honey:honeycomb" then
-		node.name = convert_to
+		-- prevent modification of protected nodes.
+		if mcl_util.check_position_protection(pos, player) then
+			return
+		end
+
+		local def = minetest.registered_nodes(node.name)
+
+		if def and def._mcl_copper_waxed_variant then
+			node.name = def._mcl_copper_waxed_variant
+		end
+
 		minetest.set_node(pos, node)
 		awards.unlock(player:get_player_name(), "mcl:wax_on")
 		if not minetest.is_creative_enabled(player:get_player_name()) then
 			itemstack:take_item()
 		end
+		return itemstack
+
 	else
-		return true
+		return -- changed to work with mcl_util.call_on_rightclick()
 	end
 end
 
 function scraping_copper_block(pos, node, player, itemstack, convert_to)
 	if itemstack:get_name():find("axe") then
-		node.name = convert_to
+		-- prevent modification of protected nodes.
+		if mcl_util.check_position_protection(pos, player) then
+			return
+		end
+
+		local def = minetest.registered_nodes(node.name)
+
+		if def and def._mcl_copper_unwaxed_variant then
+			node.name = def._mcl_copper_unwaxed_variant
+		end
+
 		minetest.set_node(pos, node)
 		awards.unlock(player:get_player_name(), "mcl:wax_off")
 		if not minetest.is_creative_enabled(player:get_player_name()) then
@@ -36,7 +87,7 @@ function scraping_copper_block(pos, node, player, itemstack, convert_to)
 			itemstack:add_wear(wear)
 		end
 	else
-		return true
+		return
 	end
 end
 
@@ -164,41 +215,41 @@ if not deepslate_mod then
 end
 --]]
 local block_oxidation = {
-	{"", "_exposed"},
-	{"_cut", "_exposed_cut"},
-	{"_exposed", "_weathered"},
-	{"_exposed_cut", "_weathered_cut"},
-	{"_weathered", "_oxidized"},
-	{"_weathered_cut", "_oxidized_cut"}
+	{ "", "_exposed" },
+	{ "_cut", "_exposed_cut" },
+	{ "_exposed", "_weathered" },
+	{ "_exposed_cut", "_weathered_cut" },
+	{ "_weathered", "_oxidized" },
+	{ "_weathered_cut", "_oxidized_cut" }
 }
 
 local stair_oxidation = {
-	{"slab", "cut", "exposed_cut"},
-	{"slab", "exposed_cut", "weathered_cut"},
-	{"slab", "weathered_cut", "oxidized_cut"},
-	{"slab", "cut_top", "exposed_cut_top"},
-	{"slab", "exposed_cut_top", "weathered_cut_top"},
-	{"slab", "weathered_cut_top", "oxidized_cut_double"},
-	{"slab", "cut_double", "exposed_cut_double"},
-	{"slab", "exposed_cut_double", "weathered_cut_double"},
-	{"slab", "weathered_cut_double", "oxidized_cut_double"},
-	{"stair", "cut", "exposed_cut"},
-	{"stair", "exposed_cut", "weathered_cut"},
-	{"stair", "weathered_cut", "oxidized_cut"},
-	{"stair", "cut_inner", "exposed_cut_inner"},
-	{"stair", "exposed_cut_inner", "weathered_cut_inner"},
-	{"stair", "weathered_cut_inner", "oxidized_cut_inner"},
-	{"stair", "cut_outer", "exposed_cut_outer"},
-	{"stair", "exposed_cut_outer", "weathered_cut_outer"},
-	{"stair", "weathered_cut_outer", "oxidized_cut_outer"}
+	{ "slab", "cut", "exposed_cut" },
+	{ "slab", "exposed_cut", "weathered_cut" },
+	{ "slab", "weathered_cut", "oxidized_cut" },
+	{ "slab", "cut_top", "exposed_cut_top" },
+	{ "slab", "exposed_cut_top", "weathered_cut_top" },
+	{ "slab", "weathered_cut_top", "oxidized_cut_double" },
+	{ "slab", "cut_double", "exposed_cut_double" },
+	{ "slab", "exposed_cut_double", "weathered_cut_double" },
+	{ "slab", "weathered_cut_double", "oxidized_cut_double" },
+	{ "stair", "cut", "exposed_cut" },
+	{ "stair", "exposed_cut", "weathered_cut" },
+	{ "stair", "weathered_cut", "oxidized_cut" },
+	{ "stair", "cut_inner", "exposed_cut_inner" },
+	{ "stair", "exposed_cut_inner", "weathered_cut_inner" },
+	{ "stair", "weathered_cut_inner", "oxidized_cut_inner" },
+	{ "stair", "cut_outer", "exposed_cut_outer" },
+	{ "stair", "exposed_cut_outer", "weathered_cut_outer" },
+	{ "stair", "weathered_cut_outer", "oxidized_cut_outer" }
 }
 
 for _, b in pairs(block_oxidation) do
-	register_oxidation_abm("Copper oxidation", "mcl_copper:block"..b[1], "mcl_copper:block"..b[2])
+	register_oxidation_abm("Copper oxidation", "mcl_copper:block" .. b[1], "mcl_copper:block" .. b[2])
 end
 
 for _, s in pairs(stair_oxidation) do
-	register_oxidation_abm("Copper oxidation", "mcl_stairs:"..s[1].."_copper_"..s[2], "mcl_stairs:"..s[1].."_copper_"..s[3])
+	register_oxidation_abm("Copper oxidation", "mcl_stairs:" .. s[1] .. "_copper_" .. s[2], "mcl_stairs:" .. s[1] .. "_copper_" .. s[3])
 end
 
 --local axes = {"wood", "stone", "iron", "gold", "diamond"}
