@@ -57,7 +57,7 @@ minetest.register_node("mcl_nether:ancient_debris", {
 	stack_max = 64,
 	tiles = {"mcl_nether_ancient_debris_top.png", "mcl_nether_ancient_debris_side.png"},
 	is_ground_content = true,
-	groups = {pickaxey=4, building_block=1, material_stone=1, xp=0},
+	groups = {pickaxey=4, building_block=1, material_stone=1, xp=0, blast_furnace_smeltable = 1},
 	drop = "mcl_nether:ancient_debris",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 1200,
