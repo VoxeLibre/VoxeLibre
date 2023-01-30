@@ -389,12 +389,12 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+		type = "shapeless",
 	output = "mcl_nether:netherite_ingot",
 	recipe = {
-		{"mcl_nether:netherite_scrap", "mcl_nether:netherite_scrap", "mcl_nether:netherite_scrap"},
-		{"mcl_nether:netherite_scrap", "mcl_core:gold_ingot", "mcl_core:gold_ingot"},
-		{"mcl_core:gold_ingot", "mcl_core:gold_ingot", ""},
-	}
+		"mcl_nether:netherite_scrap", "mcl_nether:netherite_scrap", "mcl_nether:netherite_scrap",
+		"mcl_nether:netherite_scrap", "mcl_core:gold_ingot", "mcl_core:gold_ingot",
+		"mcl_core:gold_ingot", "mcl_core:gold_ingot", },
 })
 
 minetest.register_craft({
