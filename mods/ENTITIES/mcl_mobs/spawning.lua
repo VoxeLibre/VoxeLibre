@@ -59,11 +59,19 @@ local mob_cap = {
 	hostile = tonumber(minetest.settings:get("mcl_mob_cap_monster")) or 70,
 	passive = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 10,
 	ambient = tonumber(minetest.settings:get("mcl_mob_cap_ambient")) or 15,
-	water = tonumber(minetest.settings:get("mcl_mob_cap_water")) or 5,
+	water = tonumber(minetest.settings:get("mcl_mob_cap_water")) or 10,
 	water_ambient = tonumber(minetest.settings:get("mcl_mob_cap_water_ambient")) or 20, --currently unused
 	player = tonumber(minetest.settings:get("mcl_mob_cap_player")) or 75,
 	total = tonumber(minetest.settings:get("mcl_mob_cap_total")) or 500,
 }
+
+local peaceful_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_peaceful_percentage_spawned")) or 30
+
+mcl_log("Mob cap hostile: " .. mob_cap.hostile)
+mcl_log("Mob cap water: " .. mob_cap.water)
+mcl_log("Mob cap passive: " .. mob_cap.passive)
+
+mcl_log("Percentage of peacefuls spawned: " .. peaceful_percentage_spawned)
 
 --do mobs spawn?
 local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
@@ -869,14 +877,23 @@ if mobs_spawn then
 				local mob_def_ent = minetest.registered_entities[mob_def.name]
 				--local mob_type = mob_def_ent.type
 				local mob_spawn_class = mob_def_ent.spawn_class
-				--mcl_log("mob_spawn_class: " .. mob_spawn_class)
+				mcl_log("mob_spawn_class: " .. mob_spawn_class)
 
 				local cap_space_wide, cap_space_close = mob_cap_space (spawning_position, mob_spawn_class, mob_counts_close, mob_counts_wide)
+
 
 				if cap_space_close > 0 and cap_space_wide > 0 then
 					mcl_log("Cap space available")
 
-					if spawn_check(spawning_position,mob_def) then
+					-- Spawn caps for animals and water creatures fill up rapidly. Need to throttle this somewhat
+					-- for performance and for early game challenge. We don't want to reduce hostiles though.
+					local spawn_hostile = (mob_spawn_class == "hostile")
+					local spawn_passive = (mob_spawn_class == "passive" or mob_spawn_class == "water") and math.random(100) < peaceful_percentage_spawned
+					-- or not hostile
+					mcl_log("Spawn_passive: " .. tostring(spawn_passive))
+					mcl_log("Spawn_hostile: " .. tostring(spawn_hostile))
+
+					if (spawn_hostile or spawn_passive) and spawn_check(spawning_position,mob_def) then
 						if mob_def.type_of_spawning == "water" then
 							spawning_position = get_water_spawn(spawning_position)
 							if not spawning_position then
