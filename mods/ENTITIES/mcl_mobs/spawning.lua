@@ -55,6 +55,8 @@ local aoc_range = 136
 local MISSING_CAP_DEFAULT = 15
 local MOBS_CAP_CLOSE = 5
 
+local SPAWN_MAPGEN_LIMIT  = mcl_vars.mapgen_limit - 150
+
 local mob_cap = {
 	hostile = tonumber(minetest.settings:get("mcl_mob_cap_monster")) or 70,
 	passive = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 10,
@@ -771,7 +773,7 @@ if mobs_spawn then
 			cap_space_close = 0
 		end
 
-		if mob_type == "water" then
+		if false and mob_type == "water" then
 			mcl_log("mob_type: " .. mob_type .. " and pos: " .. minetest.pos_to_string(pos))
 			mcl_log("wide: " .. mob_total_wide .. "/" .. type_cap)
 			mcl_log("cap_space_wide: " .. cap_space_wide)
@@ -811,21 +813,31 @@ if mobs_spawn then
 		local max_loops = 1
 		if max_times then max_loops = max_times end
 
+		local y_min, y_max = decypher_limits(pos.y)
+
+		mcl_log("mapgen_limit: " .. SPAWN_MAPGEN_LIMIT)
 		local i = 0
 		repeat
 			local goal_pos = get_next_mob_spawn_pos(pos)
-			local y_min, y_max = decypher_limits(pos.y)
-			local spawning_position_list = find_nodes_in_area_under_air(
-					{x = goal_pos.x, y = y_min, z = goal_pos.z},
-					{x = goal_pos.x, y = y_max, z = goal_pos.z},
-					{"group:solid", "group:water", "group:lava"}
-			)
-			if #spawning_position_list > 0 then
-				mcl_log("Spawning positions available: " .. minetest.pos_to_string(goal_pos))
-				spawning_position = spawning_position_list[math_random(1, #spawning_position_list)]
+
+			if math.abs(goal_pos.x) <= SPAWN_MAPGEN_LIMIT and math.abs(goal_pos.z) <= SPAWN_MAPGEN_LIMIT then
+				local spawning_position_list = find_nodes_in_area_under_air(
+						{x = goal_pos.x, y = y_min, z = goal_pos.z},
+						{x = goal_pos.x, y = y_max, z = goal_pos.z},
+						{"group:solid", "group:water", "group:lava"}
+				)
+				if #spawning_position_list > 0 then
+					mcl_log("Spawning positions available: " .. minetest.pos_to_string(goal_pos))
+					spawning_position = spawning_position_list[math_random(1, #spawning_position_list)]
+				else
+					mcl_log("Spawning position isn't good. Do not spawn: " .. minetest.pos_to_string(goal_pos))
+				end
+
 			else
-				mcl_log("Spawning position isn't good. Do not spawn: " .. minetest.pos_to_string(goal_pos))
+				mcl_log("Pos outside mapgen limits: " .. minetest.pos_to_string(goal_pos))
 			end
+
+
 			i = i + 1
 			if i >= max_loops then
 				mcl_log("Cancel finding spawn positions at: " .. max_loops)
@@ -877,21 +889,22 @@ if mobs_spawn then
 				local mob_def_ent = minetest.registered_entities[mob_def.name]
 				--local mob_type = mob_def_ent.type
 				local mob_spawn_class = mob_def_ent.spawn_class
-				mcl_log("mob_spawn_class: " .. mob_spawn_class)
+
+				--mcl_log("mob_spawn_class: " .. mob_spawn_class)
 
 				local cap_space_wide, cap_space_close = mob_cap_space (spawning_position, mob_spawn_class, mob_counts_close, mob_counts_wide)
 
 
 				if cap_space_close > 0 and cap_space_wide > 0 then
-					mcl_log("Cap space available")
+					--mcl_log("Cap space available")
 
 					-- Spawn caps for animals and water creatures fill up rapidly. Need to throttle this somewhat
 					-- for performance and for early game challenge. We don't want to reduce hostiles though.
 					local spawn_hostile = (mob_spawn_class == "hostile")
 					local spawn_passive = (mob_spawn_class == "passive" or mob_spawn_class == "water") and math.random(100) < peaceful_percentage_spawned
 					-- or not hostile
-					mcl_log("Spawn_passive: " .. tostring(spawn_passive))
-					mcl_log("Spawn_hostile: " .. tostring(spawn_hostile))
+					--mcl_log("Spawn_passive: " .. tostring(spawn_passive))
+					--mcl_log("Spawn_hostile: " .. tostring(spawn_hostile))
 
 					if (spawn_hostile or spawn_passive) and spawn_check(spawning_position,mob_def) then
 						if mob_def.type_of_spawning == "water" then
