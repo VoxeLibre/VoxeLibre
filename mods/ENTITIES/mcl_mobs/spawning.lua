@@ -26,14 +26,12 @@ local table_copy     = table.copy
 local table_remove   = table.remove
 local pairs = pairs
 
--- TODO Set logger to false as default
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_spawning", false)
 local function mcl_log (message)
 	if LOGGING_ON then
 		mcl_util.mcl_log (message, "[Mobs spawn]", true)
 	end
 end
-
 
 local dbg_spawn_attempts = 0
 local dbg_spawn_succ = 0
@@ -59,15 +57,15 @@ local SPAWN_MAPGEN_LIMIT  = mcl_vars.mapgen_limit - 150
 
 local mob_cap = {
 	hostile = tonumber(minetest.settings:get("mcl_mob_cap_monster")) or 70,
-	passive = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 10,
+	passive = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 13,
 	ambient = tonumber(minetest.settings:get("mcl_mob_cap_ambient")) or 15,
-	water = tonumber(minetest.settings:get("mcl_mob_cap_water")) or 10,
+	water = tonumber(minetest.settings:get("mcl_mob_cap_water")) or 8,
 	water_ambient = tonumber(minetest.settings:get("mcl_mob_cap_water_ambient")) or 20, --currently unused
 	player = tonumber(minetest.settings:get("mcl_mob_cap_player")) or 75,
 	total = tonumber(minetest.settings:get("mcl_mob_cap_total")) or 500,
 }
 
-local peaceful_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_peaceful_percentage_spawned")) or 30
+local peaceful_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_peaceful_percentage_spawned")) or 35
 local peaceful_group_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_peaceful_group_percentage_spawned")) or 15
 local hostile_group_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_hostile_group_percentage_spawned")) or 20
 
@@ -850,8 +848,7 @@ if mobs_spawn then
 
 		local spawning_position = find_spawning_position(pos, FIND_SPAWN_POS_RETRIES)
 		if not spawning_position then
-			-- TODO do we log to user
-			--mcl_log("abandon this")
+			minetest.log("action", "[Mobs spawn] Cannot find a valid spawn position after retries: " .. FIND_SPAWN_POS_RETRIES)
 			return
 		end
 
@@ -898,7 +895,7 @@ if mobs_spawn then
 					-- Spawn caps for animals and water creatures fill up rapidly. Need to throttle this somewhat
 					-- for performance and for early game challenge. We don't want to reduce hostiles though.
 					local spawn_hostile = (mob_spawn_class == "hostile")
-					local spawn_passive = (mob_spawn_class == "passive" or mob_spawn_class == "water") and math.random(100) < peaceful_percentage_spawned
+					local spawn_passive = (mob_spawn_class ~= "hostile") and math.random(100) < peaceful_percentage_spawned
 					-- or not hostile
 					--mcl_log("Spawn_passive: " .. tostring(spawn_passive))
 					--mcl_log("Spawn_hostile: " .. tostring(spawn_hostile))
