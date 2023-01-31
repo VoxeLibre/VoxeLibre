@@ -46,7 +46,7 @@ local FIND_SPAWN_POS_RETRIES = 10
 
 local MOB_SPAWN_ZONE_INNER = 24
 local MOB_SPAWN_ZONE_MIDDLE = 32
-local MOB_SPAWN_ZONE_OUTER = 128 --TODO not used yet. Should replace aoc
+local MOB_SPAWN_ZONE_OUTER = 128
 
 -- range for mob count
 local MOB_CAP_INNER_RADIUS = 32
@@ -68,12 +68,16 @@ local mob_cap = {
 }
 
 local peaceful_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_peaceful_percentage_spawned")) or 30
+local peaceful_group_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_peaceful_group_percentage_spawned")) or 15
+local hostile_group_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_hostile_group_percentage_spawned")) or 20
 
 mcl_log("Mob cap hostile: " .. mob_cap.hostile)
 mcl_log("Mob cap water: " .. mob_cap.water)
 mcl_log("Mob cap passive: " .. mob_cap.passive)
 
 mcl_log("Percentage of peacefuls spawned: " .. peaceful_percentage_spawned)
+mcl_log("Percentage of peaceful spawns are group: " .. peaceful_group_percentage_spawned)
+mcl_log("Percentage of hostile spawns are group: " .. hostile_group_percentage_spawned)
 
 --do mobs spawn?
 local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
@@ -734,19 +738,10 @@ if mobs_spawn then
 
 	local function mob_cap_space (pos, mob_type, mob_counts_close, mob_counts_wide)
 
-		--type = "monster",
-		--spawn_class = "hostile",
-		--type = "animal",
-		--spawn_class = "passive",
-		--local cod = {
-		--	type = "animal",
-		--	spawn_class = "water",
-
-		--if mob_type == "animal" then
-		--end
-
-		--mcl_log("spawn_class: " .. spawn_class)
-
+		-- Some mob examples
+		--type = "monster", spawn_class = "hostile",
+		--type = "animal", spawn_class = "passive",
+		--local cod = { type = "animal", spawn_class = "water",
 
 		local type_cap = mob_cap[mob_type] or MISSING_CAP_DEFAULT
 		local close_zone_cap = MOBS_CAP_CLOSE
@@ -772,6 +767,8 @@ if mobs_spawn then
 		if cap_space_close < 1 then
 			cap_space_close = 0
 		end
+
+		--mcl_log("spawn_class: " .. spawn_class)
 
 		if false and mob_type == "water" then
 			mcl_log("mob_type: " .. mob_type .. " and pos: " .. minetest.pos_to_string(pos))
@@ -922,8 +919,14 @@ if mobs_spawn then
 						--everything is correct, spawn mob
 						local spawn_in_group = mob_def_ent.spawn_in_group or 4
 
+						local spawn_group_hostile = (mob_spawn_class == "hostile") and (math.random(100) < hostile_group_percentage_spawned)
+						local spawn_group_passive = (mob_spawn_class ~= "hostile") and (math.random(100) < peaceful_group_percentage_spawned)
+
+						mcl_log("spawn_group_hostile: " .. tostring(spawn_group_hostile))
+						mcl_log("spawn_group_passive: " .. tostring(spawn_group_passive))
+
 						local spawned
-						if spawn_in_group and (math.random(5) == 1) then
+						if spawn_in_group and (spawn_group_hostile or spawn_group_passive) then
 							local group_min = mob_def_ent.spawn_in_group_min or 1
 							if not group_min then group_min = 1 end
 

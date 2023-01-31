@@ -118,6 +118,12 @@ mobs_disable_blood (Disable mob damage particles) bool false
 #Percentage of peaceful spawn attempts that succeed (default:30)
 mcl_mob_peaceful_percentage_spawned (Peaceful percentage success) int 30 0 100
 
+#Percentage of peaceful spawn attempts that are group spawns (default:15)
+mcl_mob_peaceful_group_percentage_spawned (Peaceful group percentage) int 15 0 100
+
+#Percentage of hostile spawn attempts that are group spawns (default:20)
+mcl_mob_hostile_group_percentage_spawned (Hostile group percentage) int 20 0 100
+
 #Maximum amount mobs (default:500)
 mcl_mob_cap_total (Global mob cap) int 500 0 2048
 
