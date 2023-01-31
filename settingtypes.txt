@@ -115,7 +115,7 @@ mobs_griefing (Mobs change blocks) bool true
 # If enabled, mobs won't damage particles when they got hurt.
 mobs_disable_blood (Disable mob damage particles) bool false
 
-#Percentage of peaceful spawn attempts that succeed (default:40)
+#Percentage of peaceful spawn attempts that succeed (default:35)
 mcl_mob_peaceful_percentage_spawned (Peaceful percentage success) int 35 0 100
 
 #Percentage of peaceful spawn attempts that are group spawns (default:15)
