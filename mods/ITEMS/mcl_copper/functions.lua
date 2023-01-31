@@ -48,7 +48,7 @@ function waxing_copper_block(pos, node, player, itemstack, convert_to)
 			return
 		end
 
-		local def = minetest.registered_nodes(node.name)
+		local def = minetest.registered_nodes[node.name]
 
 		if def and def._mcl_copper_waxed_variant then
 			node.name = def._mcl_copper_waxed_variant
@@ -73,7 +73,7 @@ function scraping_copper_block(pos, node, player, itemstack, convert_to)
 			return
 		end
 
-		local def = minetest.registered_nodes(node.name)
+		local def = minetest.registered_nodes[node.name]
 
 		if def and def._mcl_copper_unwaxed_variant then
 			node.name = def._mcl_copper_unwaxed_variant
