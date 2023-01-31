@@ -172,7 +172,7 @@ local professions = {
 			{ { "mcl_mobitems:string", 15, 20 }, E1 },
 			{ E1, { "mcl_bows:arrow", 8, 12 } },
 			{ { "mcl_core:gravel", 10, 10, "mcl_core:emerald", 1, 1 }, { "mcl_core:flint", 6, 10 } },
-			{ { "mcl_core:stick", 32, 32}, E1 }
+			{ { "mcl_core:stick", 32, 32 }, E1 },
 			},
 			{
 			{ { "mcl_core:flint", 26, 26 }, E1 },
