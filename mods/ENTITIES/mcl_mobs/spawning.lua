@@ -815,7 +815,7 @@ if mobs_spawn then
 		repeat
 			local goal_pos = get_next_mob_spawn_pos(pos)
 
-			if math.abs(goal_pos.x) <= SPAWN_MAPGEN_LIMIT and math.abs(goal_pos.z) <= SPAWN_MAPGEN_LIMIT then
+			if math.abs(goal_pos.x) <= SPAWN_MAPGEN_LIMIT and math.abs(pos.y) <= SPAWN_MAPGEN_LIMIT and math.abs(goal_pos.z) <= SPAWN_MAPGEN_LIMIT then
 				local spawning_position_list = find_nodes_in_area_under_air(
 						{x = goal_pos.x, y = y_min, z = goal_pos.z},
 						{x = goal_pos.x, y = y_max, z = goal_pos.z},
