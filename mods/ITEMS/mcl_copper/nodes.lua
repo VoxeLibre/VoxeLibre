@@ -35,7 +35,10 @@ minetest.register_node("mcl_copper:block", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 3,
 	_mcl_copper_waxed_variant = "mcl_copper:waxed_block",
-	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack)
+		return waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block")
+	end,
 })
 
 minetest.register_node("mcl_copper:waxed_block", {
@@ -48,7 +51,8 @@ minetest.register_node("mcl_copper:waxed_block", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 3,
 	_mcl_copper_unwaxed_variant = "mcl_copper:block",
-	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack) return scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block") end,
 })
 
 minetest.register_node("mcl_copper:block_exposed", {
@@ -62,7 +66,8 @@ minetest.register_node("mcl_copper:block_exposed", {
 	_mcl_hardness = 5,
 	_mcl_anti_oxidation_variant = "mcl_copper:block",
 	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_exposed",
-	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_exposed") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack) return waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_exposed") end,
 })
 
 minetest.register_node("mcl_copper:waxed_block_exposed", {
@@ -75,7 +80,8 @@ minetest.register_node("mcl_copper:waxed_block_exposed", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_copper_unwaxed_variant = "mcl_copper:block",
-	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack) return scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block") end,
 })
 
 minetest.register_node("mcl_copper:block_weathered", {
@@ -89,7 +95,8 @@ minetest.register_node("mcl_copper:block_weathered", {
 	_mcl_hardness = 5,
 	_mcl_anti_oxidation_variant = "mcl_copper:block_exposed",
 	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_weathered",
-	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_weathered") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack) return waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_weathered") end,
 })
 
 minetest.register_node("mcl_copper:waxed_block_weathered", {
@@ -102,7 +109,8 @@ minetest.register_node("mcl_copper:waxed_block_weathered", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_copper_unwaxed_variant = "mcl_copper:block_exposed",
-	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_exposed") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack) return scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_exposed") end,
 })
 
 minetest.register_node("mcl_copper:block_oxidized", {
@@ -116,7 +124,8 @@ minetest.register_node("mcl_copper:block_oxidized", {
 	_mcl_hardness = 5,
 	_mcl_anti_oxidation_variant = "mcl_copper:block_weathered",
 	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_oxidized",
-	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_oxidized") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack) return waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_oxidized") end,
 })
 
 minetest.register_node("mcl_copper:waxed_block_oxidized", {
@@ -129,7 +138,8 @@ minetest.register_node("mcl_copper:waxed_block_oxidized", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_copper_unwaxed_variant = "mcl_copper:block_weathered",
-	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_weathered") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack) return scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_weathered") end,
 })
 
 minetest.register_node("mcl_copper:block_cut", {
@@ -142,7 +152,8 @@ minetest.register_node("mcl_copper:block_cut", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_cut",
-	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_cut") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack) return waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_cut") end,
 })
 
 minetest.register_node("mcl_copper:waxed_block_cut", {
@@ -155,7 +166,8 @@ minetest.register_node("mcl_copper:waxed_block_cut", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_copper_unwaxed_variant = "mcl_copper:block_cut",
-	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_cut") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack) return scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_cut") end,
 })
 
 minetest.register_node("mcl_copper:block_exposed_cut", {
@@ -169,7 +181,8 @@ minetest.register_node("mcl_copper:block_exposed_cut", {
 	_mcl_hardness = 5,
 	_mcl_anti_oxidation_variant = "mcl_copper:block_cut",
 	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_exposed_cut",
-	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_exposed_cut") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack) return waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_exposed_cut") end,
 })
 
 minetest.register_node("mcl_copper:waxed_block_exposed_cut", {
@@ -182,7 +195,8 @@ minetest.register_node("mcl_copper:waxed_block_exposed_cut", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_copper_unwaxed_variant = "mcl_copper:block_cut",
-	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_cut") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack) return scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_cut") end,
 })
 
 minetest.register_node("mcl_copper:block_weathered_cut", {
@@ -196,7 +210,8 @@ minetest.register_node("mcl_copper:block_weathered_cut", {
 	_mcl_hardness = 5,
 	_mcl_anti_oxidation_variant = "mcl_copper:block_exposed_cut",
 	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_weathered_cut",
-	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_weathered_cut") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack) return waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_weathered_cut") end,
 })
 
 minetest.register_node("mcl_copper:waxed_block_weathered_cut", {
@@ -209,7 +224,8 @@ minetest.register_node("mcl_copper:waxed_block_weathered_cut", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_copper_unwaxed_variant = "mcl_copper:block_exposed_cut",
-	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_exposed_cut") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack) return scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_exposed_cut") end,
 })
 
 minetest.register_node("mcl_copper:block_oxidized_cut", {
@@ -223,7 +239,8 @@ minetest.register_node("mcl_copper:block_oxidized_cut", {
 	_mcl_hardness = 5,
 	_mcl_anti_oxidation_variant = "mcl_copper:block_weathered_cut",
 	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_oxidized_cut",
-	on_rightclick = function(pos, node, player, itemstack) waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_oxidized_cut") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack) return waxing_copper_block(pos, node, player, itemstack, "mcl_copper:waxed_block_oxidized_cut") end,
 })
 
 minetest.register_node("mcl_copper:waxed_block_oxidized_cut", {
@@ -236,7 +253,8 @@ minetest.register_node("mcl_copper:waxed_block_oxidized_cut", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_copper_unwaxed_variant = "mcl_copper:block_weathered_cut",
-	on_rightclick = function(pos, node, player, itemstack) scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_weathered_cut") end,
+	on_place = mcl_copper.on_place,
+	on_rightclick = function(pos, node, player, itemstack) return scraping_copper_block(pos, node, player, itemstack, "mcl_copper:block_weathered_cut") end,
 })
 
 mcl_stairs.register_slab("copper_cut", "mcl_copper:block_cut",
