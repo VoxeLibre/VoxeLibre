@@ -13,6 +13,20 @@ function mcl_copper.on_place (itemstack, placer, pointed_thing)
 		return itemstack
 	end
 
+	-- Apply scraping with an axe. (string.find returns nil if the string is not found.)
+	local wield_item = placer:get_wielded_item()
+	if string.find (wield_item:get_name(), "tools:axe" ) ~= nil then
+		if string.find(node_name, "mcl_copper") ~= nil then
+			if string.find(node_name, "waxed") ~= nil then
+				local item = mcl_copper.scraping_copper_block(pos, node, placer, wield_item)
+				if item and item:get_name() ~= "" then
+					placer:set_wielded_item(item) -- add wear to the axe.
+					return
+				end
+			end
+		end
+	end
+
 	-- Use pointed node's on_rightclick function first, if present
 	local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
 	if new_stack then
@@ -26,7 +40,6 @@ function mcl_copper.on_place (itemstack, placer, pointed_thing)
 	minetest.item_place(placed, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
 
 	return itemstack
-
 end
 
 local function register_oxidation_abm(abm_name, node_name, oxidized_variant)
@@ -41,7 +54,7 @@ local function register_oxidation_abm(abm_name, node_name, oxidized_variant)
 	})
 end
 
-function waxing_copper_block(pos, node, player, itemstack, convert_to)
+function mcl_copper.waxing_copper_block(pos, node, player, itemstack)
 	if itemstack:get_name() == "mcl_honey:honeycomb" then
 		-- prevent modification of protected nodes.
 		if mcl_util.check_position_protection(pos, player) then
@@ -60,13 +73,12 @@ function waxing_copper_block(pos, node, player, itemstack, convert_to)
 			itemstack:take_item()
 		end
 		return itemstack
-
 	else
 		return -- changed to work with mcl_util.call_on_rightclick()
 	end
 end
 
-function scraping_copper_block(pos, node, player, itemstack, convert_to)
+function mcl_copper.scraping_copper_block(pos, node, player, itemstack)
 	if itemstack:get_name():find("axe") then
 		-- prevent modification of protected nodes.
 		if mcl_util.check_position_protection(pos, player) then
@@ -85,6 +97,7 @@ function scraping_copper_block(pos, node, player, itemstack, convert_to)
 			local tool = itemstack:get_name()
 			local wear = mcl_autogroup.get_wear(tool, "axey")
 			itemstack:add_wear(wear)
+			return itemstack
 		end
 	else
 		return

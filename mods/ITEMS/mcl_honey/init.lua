@@ -13,6 +13,23 @@ minetest.register_craftitem("mcl_honey:honeycomb", {
 	_doc_items_usagehelp = S("Use on copper blocks to prevent further oxidation."),
 	inventory_image = "mcl_honey_honeycomb.png",
 	groups = { craftitem = 1 },
+	on_place = function(itemstack, placer, pointed_thing)
+		if pointed_thing.type ~= "node" then
+			return itemstack
+		end
+		local node = minetest.get_node(pointed_thing.under)
+		local pos = pointed_thing.under
+		local node_name = node.name
+
+		if minetest.get_modpath("mcl_copper") and mcl_copper then
+			if string.find(node_name,"mcl_copper") ~= nil then
+				if string.find(node_name,"waxed") == nil then
+					-- wax the copper block.
+					return mcl_copper.waxing_copper_block(pos, node, placer, itemstack)
+				end
+			end
+		end
+	end,
 })
 
 minetest.register_node("mcl_honey:honeycomb_block", {
