@@ -350,5 +350,3 @@ mcl_stairs.register_stair("waxed_copper_oxidized_cut", "mcl_copper:waxed_block_o
 	S("Waxed Stairs of Oxidized Cut Copper"),
 	nil, 6, nil,
 	"woodlike")
-
--- TODO: Make stairs and slabs be waxable / scrapable.
