@@ -298,7 +298,14 @@ local function who_are_you_looking_at (self)
 	elseif not self._locked_object then
 		if math.random(1, 30) then
 			--minetest.log("Change look check: ".. self.name)
-			local look_at_player_chance = math.random(20/self.curiosity)
+
+			-- For the wither this was 20/60=0.33, so probably need to rebalance and divide rates.
+			-- but frequency of check isn't good as it is costly. Making others too infrequent requires testing
+			local chance = 20/self.curiosity
+
+			if chance < 1 then chance = 1 end
+			local look_at_player_chance = math.random(chance)
+
 			-- was 5000 but called in loop based on entities. so div by 12 as estimate avg of entities found,
 			-- then div by 20 as less freq lookup
 
