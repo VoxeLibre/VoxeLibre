@@ -36,17 +36,19 @@ local all_directions = {
 
 minetest.register_abm({
 	label = "Spawn Amethyst Bud",
-	nodenames = {"mcl_amethyst:budding_amethyst_block"},
-	neighbors = {"air", "group:water"},
-	interval = 20,
+	nodenames = { "mcl_amethyst:budding_amethyst_block" },
+	neighbors = { "air", "group:water" },
+	interval = 34.135, -- 34.135 is 1/2 of 68.27, which is the average time for one bud to grow 1 stage.
 	chance = 2,
 	action = function(pos)
 		local check_pos = vector.add(all_directions[math.random(1, #all_directions)], pos)
 		local check_node = minetest.get_node(check_pos)
 		local check_node_name = check_node.name
-		if check_node_name ~= "air" and minetest.get_item_group(check_node_name, "water") == 0 then return end
+		if check_node_name ~= "air" and minetest.get_item_group(check_node_name, "water") == 0 then
+			return
+		end
 		local param2 = minetest.dir_to_wallmounted(vector.subtract(pos, check_pos))
-		local new_node = {name = "mcl_amethyst:small_amethyst_bud", param2 = param2}
+		local new_node = { name = "mcl_amethyst:small_amethyst_bud", param2 = param2 }
 		minetest.swap_node(check_pos, new_node)
 	end,
 })
