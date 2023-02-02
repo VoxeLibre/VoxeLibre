@@ -13,20 +13,6 @@ function mcl_copper.on_place (itemstack, placer, pointed_thing)
 		return itemstack
 	end
 
-	-- Apply scraping with an axe. (string.find returns nil if the string is not found.)
-	local wield_item = placer:get_wielded_item()
-	if string.find (wield_item:get_name(), "tools:axe" ) ~= nil then
-		if string.find(node_name, "mcl_copper") ~= nil then
-			if string.find(node_name, "waxed") ~= nil then
-				local item = mcl_copper.scraping_copper_block(pos, node, placer, wield_item)
-				if item and item:get_name() ~= "" then
-					placer:set_wielded_item(item) -- add wear to the axe.
-					return
-				end
-			end
-		end
-	end
-
 	-- Use pointed node's on_rightclick function first, if present
 	local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
 	if new_stack then
@@ -75,32 +61,6 @@ function mcl_copper.waxing_copper_block(pos, node, player, itemstack)
 		return itemstack
 	else
 		return -- changed to work with mcl_util.call_on_rightclick()
-	end
-end
-
-function mcl_copper.scraping_copper_block(pos, node, player, itemstack)
-	if itemstack:get_name():find("axe") then
-		-- prevent modification of protected nodes.
-		if mcl_util.check_position_protection(pos, player) then
-			return
-		end
-
-		local def = minetest.registered_nodes[node.name]
-
-		if def and def._mcl_copper_unwaxed_variant then
-			node.name = def._mcl_copper_unwaxed_variant
-		end
-
-		minetest.set_node(pos, node)
-		awards.unlock(player:get_player_name(), "mcl:wax_off")
-		if not minetest.is_creative_enabled(player:get_player_name()) then
-			local tool = itemstack:get_name()
-			local wear = mcl_autogroup.get_wear(tool, "axey")
-			itemstack:add_wear(wear)
-			return itemstack
-		end
-	else
-		return
 	end
 end
 
