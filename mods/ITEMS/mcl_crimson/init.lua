@@ -76,7 +76,7 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 	walkable = false,
 	groups = {dig_immediate=3,mushroom=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,enderman_takable=1,deco_block=1},
 	light_source = 1,
-    sounds = mcl_sounds.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 --[[    selection_box = {
 		type = "fixed",
 		fixed = { -3/16, -0.5, -3/16, 3/16, -2/16, 3/16 },
@@ -130,12 +130,11 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				itemstack:take_item()
 			end
-
 			grow_vines(pos, 1, "mcl_crimson:twisting_vines")
           local idef = itemstack:get_definition()
           local itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing)
-           if success then
-			if idef.sounds and idef.sounds.place then
+			if success then
+				if idef.sounds and idef.sounds.place then
 				minetest.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
 			end
 		end
@@ -209,8 +208,8 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 			grow_vines(pos, 1, "mcl_crimson:weeping_vines", -1)
           local idef = itemstack:get_definition()
           local itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing)
-           if success then
-			if idef.sounds and idef.sounds.place then
+			if success then
+				if idef.sounds and idef.sounds.place then
 				minetest.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
 			end
 		end
@@ -231,9 +230,7 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		if belownode.name == node.name and (not mcl_core.check_vines_supported(below, belownode)) then
 			minetest.registered_nodes[node.name].on_dig(below, node, digger)
 		end
-	end,
-	
-	
+	end,		
 	drop = {
 		max_items = 1,
 		items = {
@@ -323,7 +320,7 @@ minetest.register_node("mcl_crimson:shroomlight", {
 	tiles = {"shroomlight.png"},
 	groups = {handy = 1, hoey = 7, swordy = 1, deco_block = 1},
 	light_source = minetest.LIGHT_MAX,
-    sounds = mcl_sounds.node_sound_leaves_defaults(
+	sounds = mcl_sounds.node_sound_leaves_defaults(
 {
 			footstep={name="default_dirt_footstep", gain=0.7},
 			dug={name="default_dirt_footstep", gain=1.5},
