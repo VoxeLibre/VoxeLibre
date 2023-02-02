@@ -424,13 +424,15 @@ minetest.register_lbm({
 	nodenames = {"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass", "mcl_flowers:double_grass", "mcl_flowers:double_grass_top", "mcl_flowers:fern", "mcl_flowers:double_fern", "mcl_flowers:double_fern_top", "mcl_core:reeds", "mcl_core:dirt_with_grass_snow"},
 	run_at_every_load = true,
 	action = function(pos, node)
-		local biome_data = minetest.get_biome_data(pos)
-		local biome = biome_data.biome
-		local biome_name = minetest.get_biome_name(biome)
-		local reg_biome = minetest.registered_biomes[biome_name]
-		if node.param2 ~= reg_biome._mcl_grass_palette_index then
-			node.param2 = reg_biome._mcl_grass_palette_index
-			minetest.set_node(pos, node)
+		if mg_name ~= "v6" and mg_name ~= "singlenode" then
+			local biome_data = minetest.get_biome_data(pos)
+			local biome = biome_data.biome
+			local biome_name = minetest.get_biome_name(biome)
+			local reg_biome = minetest.registered_biomes[biome_name]
+			if node.param2 ~= reg_biome._mcl_grass_palette_index then
+				node.param2 = reg_biome._mcl_grass_palette_index
+				minetest.set_node(pos, node)
+			end
 		end
 	end,
 })

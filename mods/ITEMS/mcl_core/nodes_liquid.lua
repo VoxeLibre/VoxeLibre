@@ -50,7 +50,7 @@ minetest.register_node("mcl_core:water_flowing", {
 	liquid_viscosity = WATER_VISC,
 	liquid_range = 7,
 	waving = 3,
-	post_effect_color = {a=20, r=0x03, g=0x3C, b=0x5C},
+	post_effect_color = {a=60, r=0x03, g=0x3C, b=0x5C},
 	groups = { water=3, liquid=3, puts_out_fire=1, not_in_creative_inventory=1, freezes=1, melt_around=1, dig_by_piston=1},
 	_mcl_blast_resistance = 100,
 	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode

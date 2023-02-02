@@ -238,7 +238,6 @@ filled_wield_def.wield_scale = { x = 1, y = 1, z = 1 }
 filled_wield_def.paramtype = "light"
 filled_wield_def.drawtype = "mesh"
 filled_wield_def.node_placement_prediction = ""
-filled_wield_def.range = minetest.registered_items[""].range
 filled_wield_def.on_place = mcl_util.call_on_rightclick
 filled_wield_def._mcl_wieldview_item = "mcl_maps:filled_map"
 
