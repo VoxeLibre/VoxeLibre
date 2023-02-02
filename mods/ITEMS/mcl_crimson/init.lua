@@ -310,7 +310,7 @@ minetest.register_node("mcl_crimson:warped_wart_block", {
 	sounds = mcl_sounds.node_sound_leaves_defaults({
 			footstep={name="default_dirt_footstep", gain=0.7},
 			dug={name="default_dirt_footstep", gain=1.5},
-		}),
+	}),
 
 })
 
@@ -323,7 +323,7 @@ minetest.register_node("mcl_crimson:shroomlight", {
 	sounds = mcl_sounds.node_sound_leaves_defaults({
 			footstep={name="default_dirt_footstep", gain=0.7},
 			dug={name="default_dirt_footstep", gain=1.5},
-		}),
+	}),
 })
 
 minetest.register_node("mcl_crimson:warped_hyphae", {
