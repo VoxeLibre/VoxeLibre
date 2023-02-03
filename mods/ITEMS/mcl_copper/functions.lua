@@ -1,6 +1,6 @@
 --local deepslate_mod = minetest.get_modpath("mcl_deepslate")
 
--- a basic on_place()
+--[[ a basic on_place()
 function mcl_copper.on_place (itemstack, placer, pointed_thing)
 	if pointed_thing.type ~= "node" then
 		return itemstack
@@ -27,6 +27,7 @@ function mcl_copper.on_place (itemstack, placer, pointed_thing)
 
 	return itemstack
 end
+--]]
 
 local function register_oxidation_abm(abm_name, node_name, oxidized_variant)
 	minetest.register_abm({
@@ -41,27 +42,23 @@ local function register_oxidation_abm(abm_name, node_name, oxidized_variant)
 end
 
 function mcl_copper.waxing_copper_block(pos, node, player, itemstack)
-	if itemstack:get_name() == "mcl_honey:honeycomb" then
-		-- prevent modification of protected nodes.
-		if mcl_util.check_position_protection(pos, player) then
-			return
-		end
-
-		local def = minetest.registered_nodes[node.name]
-
-		if def and def._mcl_copper_waxed_variant then
-			node.name = def._mcl_copper_waxed_variant
-		end
-
-		minetest.set_node(pos, node)
-		awards.unlock(player:get_player_name(), "mcl:wax_on")
-		if not minetest.is_creative_enabled(player:get_player_name()) then
-			itemstack:take_item()
-		end
-		return itemstack
-	else
-		return -- changed to work with mcl_util.call_on_rightclick()
+	-- prevent modification of protected nodes.
+	if mcl_util.check_position_protection(pos, player) then
+		return
 	end
+
+	local def = minetest.registered_nodes[node.name]
+
+	if def and def._mcl_copper_waxed_variant then
+		node.name = def._mcl_copper_waxed_variant
+	end
+
+	minetest.set_node(pos, node)
+	awards.unlock(player:get_player_name(), "mcl:wax_on")
+	if not minetest.is_creative_enabled(player:get_player_name()) then
+		itemstack:take_item()
+	end
+	return itemstack
 end
 
 --[[
