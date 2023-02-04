@@ -57,7 +57,7 @@ minetest.register_node("mcl_nether:ancient_debris", {
 	stack_max = 64,
 	tiles = {"mcl_nether_ancient_debris_top.png", "mcl_nether_ancient_debris_side.png"},
 	is_ground_content = true,
-	groups = {pickaxey=4, building_block=1, material_stone=1, xp=0},
+	groups = {pickaxey=4, building_block=1, material_stone=1, xp=0, blast_furnace_smeltable = 1},
 	drop = "mcl_nether:ancient_debris",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 1200,
@@ -202,7 +202,7 @@ minetest.register_node("mcl_nether:nether_wart_block", {
 	stack_max = 64,
 	tiles = {"mcl_nether_nether_wart_block.png"},
 	is_ground_content = false,
-	groups = {handy=1, hoey=1, building_block=1, compostability = 85},
+	groups = {handy=1, hoey=7, swordy=1, building_block=1, compostability = 85},
 	sounds = mcl_sounds.node_sound_leaves_defaults(
 		{
 			footstep={name="default_dirt_footstep", gain=0.7},
@@ -389,12 +389,12 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	type = "shapeless",
 	output = "mcl_nether:netherite_ingot",
 	recipe = {
-		{"mcl_nether:netherite_scrap", "mcl_nether:netherite_scrap", "mcl_nether:netherite_scrap"},
-		{"mcl_nether:netherite_scrap", "mcl_core:gold_ingot", "mcl_core:gold_ingot"},
-		{"mcl_core:gold_ingot", "mcl_core:gold_ingot", ""},
-	}
+		"mcl_nether:netherite_scrap", "mcl_nether:netherite_scrap", "mcl_nether:netherite_scrap",
+		"mcl_nether:netherite_scrap", "mcl_core:gold_ingot", "mcl_core:gold_ingot",
+		"mcl_core:gold_ingot", "mcl_core:gold_ingot", },
 })
 
 minetest.register_craft({

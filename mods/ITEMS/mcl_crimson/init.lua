@@ -76,10 +76,7 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 	walkable = false,
 	groups = {dig_immediate=3,mushroom=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,enderman_takable=1,deco_block=1},
 	light_source = 1,
---[[	selection_box = {
-		type = "fixed",
-		fixed = { -3/16, -0.5, -3/16, 3/16, -2/16, 3/16 },
-	},]]
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_placement_prediction = "",
 	on_rightclick = function(pos, node, pointed_thing, player, itemstack)
 		if pointed_thing:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
@@ -112,7 +109,8 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 	walkable = false,
 	climbable = true,
 	buildable_to = true,
-	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1, shearsy = 1},
+	groups = {dig_immediate=3, shearsy=1, vines=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, deco_block=1},
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
@@ -129,6 +127,14 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 				itemstack:take_item()
 			end
 			grow_vines(pos, 1, "mcl_crimson:twisting_vines")
+			local idef = itemstack:get_definition()
+			local itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing)
+			if success then
+				if idef.sounds and idef.sounds.place then
+				minetest.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
+			end
+		end
+
 		elseif clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				itemstack:take_item()
@@ -137,6 +143,15 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		end
 		return itemstack
 	end,
+	on_dig = function(pos, node, digger)
+		local above = vector.offset(pos,0,1,0)
+		local abovenode = minetest.get_node(above)
+		minetest.node_dig(pos, node, digger)
+		if abovenode.name == node.name and (not mcl_core.check_vines_supported(above, abovenode)) then
+			minetest.registered_nodes[node.name].on_dig(above, node, digger)
+		end
+	end,	
+	
 	drop = {
 		max_items = 1,
 		items = {
@@ -155,7 +170,8 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		"mcl_crimson:twisting_vines",
 		"mcl_crimson:twisting_vines",
 	},
-	_mcl_blast_resistance = 0,
+	_mcl_blast_resistance = 0.2,
+	_mcl_hardness = 0.2,
 })
 
 minetest.register_node("mcl_crimson:weeping_vines", {
@@ -168,7 +184,8 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 	walkable = false,
 	climbable = true,
 	buildable_to = true,
-	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1, shearsy = 1},
+	groups = {dig_immediate=3, shearsy=1, vines=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, deco_block=1},
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
@@ -185,6 +202,14 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 				itemstack:take_item()
 			end
 			grow_vines(pos, 1, "mcl_crimson:weeping_vines", -1)
+			local idef = itemstack:get_definition()
+			local itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing)
+			if success then
+				if idef.sounds and idef.sounds.place then
+				minetest.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
+			end
+		end
+
 		elseif clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				itemstack:take_item()
@@ -193,6 +218,15 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		end
 		return itemstack
 	end,
+	
+	on_dig = function(pos, node, digger)
+		local below = vector.offset(pos,0,-1,0)
+		local belownode = minetest.get_node(below)
+		minetest.node_dig(pos, node, digger)
+		if belownode.name == node.name and (not mcl_core.check_vines_supported(below, belownode)) then
+			minetest.registered_nodes[node.name].on_dig(below, node, digger)
+		end
+	end,		
 	drop = {
 		max_items = 1,
 		items = {
@@ -211,7 +245,8 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		"mcl_crimson:weeping_vines",
 		"mcl_crimson:weeping_vines",
 	},
-	_mcl_blast_resistance = 0,
+	_mcl_blast_resistance = 0.2,
+	_mcl_hardness = 0.2,
 })
 
 minetest.register_node("mcl_crimson:nether_sprouts", {
@@ -224,6 +259,7 @@ minetest.register_node("mcl_crimson:nether_sprouts", {
 	walkable = false,
 	buildable_to = true,
 	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1, shearsy = 1},
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -4/16, -0.5, -4/16, 4/16, 0, 4/16 },
@@ -245,6 +281,7 @@ minetest.register_node("mcl_crimson:warped_roots", {
 	walkable = false,
 	buildable_to = true,
 	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1, shearsy = 1},
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -6/16, -0.5, -6/16, 6/16, -4/16, 6/16 },
@@ -264,16 +301,24 @@ mcl_flowerpots.register_potted_flower("mcl_crimson:warped_roots", {
 minetest.register_node("mcl_crimson:warped_wart_block", {
 	description = S("Warped Wart Block"),
 	tiles = {"warped_wart_block.png"},
-	groups = {handy = 1, hoe = 7, swordy = 1, deco_block = 1},
-	_mcl_hardness = 2,
+	groups = {handy = 1, hoey = 7, swordy = 1, deco_block = 1},
+	_mcl_hardness = 1,
+	sounds = mcl_sounds.node_sound_leaves_defaults({
+			footstep={name="default_dirt_footstep", gain=0.7},
+			dug={name="default_dirt_footstep", gain=1.5},
+	}),
 })
 
 minetest.register_node("mcl_crimson:shroomlight", {
 	description = S("Shroomlight"),
 	tiles = {"shroomlight.png"},
-	groups = {handy = 1, hoe = 7, swordy = 1, deco_block = 1},
+	groups = {handy = 1, hoey = 7, swordy = 1, deco_block = 1},
 	light_source = minetest.LIGHT_MAX,
-	_mcl_hardness = 2,
+	_mcl_hardness = 1,
+	sounds = mcl_sounds.node_sound_leaves_defaults({
+			footstep={name="default_dirt_footstep", gain=0.7},
+			dug={name="default_dirt_footstep", gain=1.5},
+	}),
 })
 
 minetest.register_node("mcl_crimson:warped_hyphae", {
@@ -415,6 +460,7 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 	walkable = false,
 	groups = {dig_immediate=3,mushroom=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,enderman_takable=1,deco_block=1},
 	light_source = 1,
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -3/16, -0.5, -3/16, 3/16, -2/16, 3/16 },
@@ -451,6 +497,7 @@ minetest.register_node("mcl_crimson:crimson_roots", {
 	walkable = false,
 	buildable_to = true,
 	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1, shearsy = 1},
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -6/16, -0.5, -6/16, 6/16, -4/16, 6/16 },
