@@ -1,10 +1,32 @@
 ---------------
 ---- Honey ----
 ---------------
+mcl_honey = {}
 
 -- Variables
 local S = minetest.get_translator(minetest.get_current_modname())
 local alldirs = { { x = 0, y = 0, z = 1 }, { x = 1, y = 0, z = 0 }, { x = 0, y = 0, z = -1 }, { x = -1, y = 0, z = 0 }, { x = 0, y = -1, z = 0 }, { x = 0, y = 1, z = 0 } }
+
+-- Waxing Function
+function mcl_honey.wax_block(pos, node, player, itemstack)
+	-- prevent modification of protected nodes.
+	if mcl_util.check_position_protection(pos, player) then
+		return
+	end
+
+	local def = minetest.registered_nodes[node.name]
+
+	if def and def._mcl_copper_waxed_variant then
+		node.name = def._mcl_copper_waxed_variant
+	end
+
+	minetest.set_node(pos, node)
+	awards.unlock(player:get_player_name(), "mcl:wax_on")
+	if not minetest.is_creative_enabled(player:get_player_name()) then
+		itemstack:take_item()
+	end
+	return itemstack
+end
 
 -- Honeycomb
 minetest.register_craftitem("mcl_honey:honeycomb", {
@@ -21,14 +43,12 @@ minetest.register_craftitem("mcl_honey:honeycomb", {
 		local pos = pointed_thing.under
 		local node_name = node.name
 
-		if minetest.get_modpath("mcl_copper") and mcl_copper then
 			local def = minetest.registered_nodes[node_name]
 
 			if def and def._mcl_copper_waxed_variant then
 				-- wax the copper block.
-				return mcl_copper.waxing_copper_block(pos, node, placer, itemstack)
+				return mcl_honey.wax_block(pos, node, placer, itemstack)
 			end
-		end
 	end,
 })
 
