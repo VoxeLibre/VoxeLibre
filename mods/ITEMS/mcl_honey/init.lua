@@ -41,14 +41,9 @@ minetest.register_craftitem("mcl_honey:honeycomb", {
 		end
 		local node = minetest.get_node(pointed_thing.under)
 		local pos = pointed_thing.under
-		local node_name = node.name
 
-			local def = minetest.registered_nodes[node_name]
-
-			if def and def._mcl_copper_waxed_variant then
-				-- wax the copper block.
-				return mcl_honey.wax_block(pos, node, placer, itemstack)
-			end
+		-- wax the block. This is the only viable usage of honeycomb's on_place. If it "fails" to wax, then nothing is changed.
+		return mcl_honey.wax_block(pos, node, placer, itemstack)
 	end,
 })
 
