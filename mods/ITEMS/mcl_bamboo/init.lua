@@ -26,12 +26,40 @@ dofile(minetest.get_modpath(modname) .. "/recipes.lua")
 
 --ABMs
 minetest.register_abm({
+	label = "Bamboo Grow",
 	nodenames = mcl_bamboo.bamboo_index,
 	interval = 10,
 	chance = 20,
 	action = function(pos, _)
-		mcl_bamboo.break_orphaned(pos)
 		mcl_bamboo.grow_bamboo(pos, false)
+	end,
+})
+minetest.register_abm({
+	label = "Break Orphaned Bamboo",
+	nodenames = mcl_bamboo.bamboo_index,
+	interval = 1.5,
+	chance = 1,
+	action = function(pos, _)
+		local node_below = minetest.get_node(vector.offset(pos, 0, -1, 0))
+		local node_name = node_below.name
+
+		-- short circuit checks.
+		if mcl_bamboo.is_dirt(node_name) or mcl_bamboo.is_bamboo(node_name) or mcl_bamboo.is_bamboo(minetest.get_node(pos).name) == false then
+			return
+		end
+
+		-- dig the node.
+		minetest.remove_node(pos)    -- if that fails, remove the node
+		local istack = ItemStack("mcl_bamboo:bamboo")
+		local sound_params = {
+			pos = pos,
+			gain = 1.0, -- default
+			max_hear_distance = 10, -- default, uses a Euclidean metric
+		}
+
+		minetest.remove_node(pos)
+		minetest.sound_play(mcl_sounds.node_sound_wood_defaults().dug, sound_params, true)
+		minetest.add_item(pos, istack)
 	end,
 })
 
