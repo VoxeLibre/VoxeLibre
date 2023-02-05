@@ -293,7 +293,6 @@ local bamboo_block_def = {
 
 		return minetest.item_place(itemstack, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
 	end,
-
 }
 
 minetest.register_node("mcl_bamboo:bamboo_block", bamboo_block_def)

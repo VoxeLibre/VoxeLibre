@@ -67,6 +67,35 @@ end
 
 local BAMBOO_ENDCAP_NAME = "mcl_bamboo:bamboo_endcap"
 
+function mcl_bamboo.break_orphaned(pos)
+	local node_below = minetest.get_node(vector.offset(pos, 0, -1, 0))
+	local node_name = node_below.name
+
+	-- prevent accidental calling on non-bamboo nodes.
+	if mcl_bamboo.is_bamboo(minetest.get_node(pos).name) == false then
+		return
+	end
+
+	if mcl_bamboo.is_dirt(node_name) == false and mcl_bamboo.is_bamboo(node_name) == false then
+		-- dig the node.
+		if not minetest.dig_node(pos) then
+			-- If dig_node fails, to prevent the bamboo from hanging in the air, manually remove it.
+			minetest.remove_node(pos)    -- if that fails, remove the node
+			local istack = ItemStack("mcl_bamboo:bamboo")
+			local sound_params = {
+				pos = pos,
+				gain = 1.0, -- default
+				max_hear_distance = 10, -- default, uses a Euclidean metric
+			}
+
+			minetest.remove_node(pos)
+			minetest.sound_play(mcl_sounds.node_sound_wood_defaults().dug, sound_params, true)
+			minetest.add_item(pos, istack)
+		end
+	end
+
+end
+
 function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 	local node_above = minetest.get_node(vector.offset(pos, 0, 1, 0))
 	mcl_bamboo.mcl_log("Grow bamboo called; bonemeal: " .. tostring(bonemeal_applied))
@@ -161,7 +190,7 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 				-- equals top of the stalk before the cap
 				if node_name == "air" then
 					mcl_bamboo.mcl_log("Grow bamboo; Placing endcap")
-					minetest.set_node(vector.offset(chk_pos, 0, 1, 0), {name = BAMBOO_ENDCAP_NAME})
+					minetest.set_node(vector.offset(chk_pos, 0, 1, 0), { name = BAMBOO_ENDCAP_NAME })
 					return true -- returning true means use up the bonemeal.
 				else
 					return false
@@ -178,13 +207,13 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 			if node_name == "air" then
 				-- here we can check to see if we can do up to 2 bamboo shoots onto the stalk
 				mcl_bamboo.mcl_log("Grow bamboo; Placing bamboo.")
-				minetest.set_node(chk_pos, {name = node_below})
+				minetest.set_node(chk_pos, { name = node_below })
 				-- handle growing a second node.
 				if grow_amount == 2 then
 					chk_pos = vector.offset(chk_pos, 0, 1, 0)
 					if minetest.get_node(chk_pos).name == "air" then
 						mcl_bamboo.mcl_log("Grow bamboo; OOOH! It's twofer day!")
-						minetest.set_node(chk_pos, {name = node_below})
+						minetest.set_node(chk_pos, { name = node_below })
 					end
 				end
 				return true -- exit out with a success. We've added 1-2 nodes, per the wiki.
@@ -210,7 +239,7 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 			if node_name == "air" and above_node_name == "air" then
 				if height - 1 == dist then
 					mcl_bamboo.mcl_log("Grow bamboo; Placing endcap")
-					minetest.set_node(chk_pos, {name = BAMBOO_ENDCAP_NAME})
+					minetest.set_node(chk_pos, { name = BAMBOO_ENDCAP_NAME })
 				end
 			end
 			break
@@ -222,13 +251,13 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 		if node_name == "air" then
 			mcl_bamboo.mcl_log("Grow bamboo; dist: " .. dist)
 			mcl_bamboo.mcl_log("Grow bamboo; Placing bamboo.")
-			minetest.set_node(chk_pos, {name = node_below})
+			minetest.set_node(chk_pos, { name = node_below })
 			-- handle growing a second node. (1 in 32 chance.)
 			if grow_amount == 2 and dist <= height - 2 then
 				chk_pos = vector.offset(chk_pos, 0, 1, 0)
 				if minetest.get_node(chk_pos).name == "air" then
 					mcl_bamboo.mcl_log("Grow bamboo; OOOH! It's twofer day!")
-					minetest.set_node(chk_pos, {name = node_below})
+					minetest.set_node(chk_pos, { name = node_below })
 				end
 			end
 			break
@@ -251,7 +280,7 @@ function mcl_bamboo.add_groups(name, ...)
 		return add_all(...)
 	end
 	addall(...)
-	return minetest.override_item(name, {groups = groups})
+	return minetest.override_item(name, { groups = groups })
 end
 
 function mcl_bamboo.mcl_log(m, l)

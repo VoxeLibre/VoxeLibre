@@ -30,6 +30,7 @@ minetest.register_abm({
 	interval = 10,
 	chance = 20,
 	action = function(pos, _)
+		mcl_bamboo.break_orphaned(pos)
 		mcl_bamboo.grow_bamboo(pos, false)
 	end,
 })
