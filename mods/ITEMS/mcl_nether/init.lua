@@ -130,7 +130,7 @@ minetest.register_node("mcl_nether:magma", {
 	is_ground_content = true,
 	light_source = 3,
 	sunlight_propagates = false,
-	groups = {pickaxey=1, building_block=1, material_stone=1},
+	groups = {pickaxey=1, building_block=1, material_stone=1, fire=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	-- From walkover mod
 	on_walk_over = function(loc, nodeiamon, player)
