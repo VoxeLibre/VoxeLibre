@@ -311,6 +311,8 @@ end
 function mob_class:set_yaw(yaw, delay, dtime)
 	if self.noyaw then return end
 
+	if not self.object:get_yaw() or not self.object:get_pos() then return end
+
 	if self.state ~= PATHFINDING then
 		self._turn_to = yaw
 	end
