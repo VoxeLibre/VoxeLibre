@@ -67,33 +67,28 @@ end
 
 local BAMBOO_ENDCAP_NAME = "mcl_bamboo:bamboo_endcap"
 
---[[ For when I learn more about the pistons...
+-- For when I learn more about the pistons...
 function mcl_bamboo.break_orphaned(pos)
-	local node_below = minetest.get_node(vector.offset(pos, 0, -1, 0))
-	local node_name = node_below.name
+		local node_below = minetest.get_node(vector.offset(pos, 0, -1, 0))
+		local node_name = node_below.name
 
-	-- prevent accidental calling on non-bamboo nodes.
-	if mcl_bamboo.is_bamboo(minetest.get_node(pos).name) == false then
-		return
-	end
-
-	if mcl_bamboo.is_dirt(node_name) == false and mcl_bamboo.is_bamboo(node_name) == false then
-		-- dig the node.
-		if not minetest.dig_node(pos) then
-			-- If dig_node fails, to prevent the bamboo from hanging in the air, manually remove it.
-			minetest.remove_node(pos)    -- if that fails, remove the node
-			local istack = ItemStack("mcl_bamboo:bamboo")
-			local sound_params = {
-				pos = pos,
-				gain = 1.0, -- default
-				max_hear_distance = 10, -- default, uses a Euclidean metric
-			}
-
-			minetest.remove_node(pos)
-			minetest.sound_play(mcl_sounds.node_sound_wood_defaults().dug, sound_params, true)
-			minetest.add_item(pos, istack)
+		-- short circuit checks.
+		if mcl_bamboo.is_dirt(node_name) or mcl_bamboo.is_bamboo(node_name) or mcl_bamboo.is_bamboo(minetest.get_node(pos).name) == false then
+			return
 		end
-	end
+
+		-- dig the node.
+		minetest.remove_node(pos)    -- if that fails, remove the node
+		local istack = ItemStack("mcl_bamboo:bamboo")
+		local sound_params = {
+			pos = pos,
+			gain = 1.0, -- default
+			max_hear_distance = 10, -- default, uses a Euclidean metric
+		}
+
+		minetest.remove_node(pos)
+		minetest.sound_play(mcl_sounds.node_sound_wood_defaults().dug, sound_params, true)
+		minetest.add_item(pos, istack)
 end
 --]]
 
