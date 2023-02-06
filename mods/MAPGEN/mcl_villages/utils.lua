@@ -198,6 +198,14 @@ end
 -------------------------------------------------------------------------------
 function settlements.evaluate_heightmap()
 	local heightmap = minetest.get_mapgen_object("heightmap")
+
+	if not heightmap then
+		minetest.log("action", "No heightmap. That should not happen")
+		return max_height_difference + 1
+	end
+
+	--minetest.log("action", "heightmap size: " .. tostring(#heightmap))
+
 	-- max height and min height, initialize with impossible values for easier first time setting
 	local max_y = -50000
 	local min_y = 50000
@@ -205,16 +213,32 @@ function settlements.evaluate_heightmap()
 	local square_start = 1621
 	local square_end = 1661
 	for j = 1 , 40, 1 do
+		if square_start >= #heightmap then
+			--minetest.log("action", "Heightmap size reached. Go no further outside")
+			break
+		end
 		for i = square_start, square_end, 1 do
-			-- skip buggy heightmaps, return high value
-			if heightmap[i] == -31000 or heightmap[i] == 31000 then
-				return max_height_difference + 1
+			--minetest.log("action", "current hm index: " .. tostring(i) .. "current hm entry: " .. tostring(heightmap[i]))
+
+			if i >= #heightmap then
+				--minetest.log("action", "Heightmap size reached. Go no further")
+				break
 			end
-			if heightmap[i] < min_y then
-				min_y = heightmap[i]
-			end
-			if heightmap[i] > max_y then
-				max_y = heightmap[i]
+			local current_hm_entry = heightmap[i]
+			if current_hm_entry then
+				-- skip buggy heightmaps, return high value. Converted mcl5 maps can be -31007
+				if current_hm_entry == -31000 or heightmap[i] == 31000 then
+					--minetest.log("action", "incorrect heighmap values. abandon")
+					return max_height_difference + 1
+				end
+				if current_hm_entry < min_y then
+					min_y = current_hm_entry
+				end
+				if current_hm_entry > max_y then
+					max_y = current_hm_entry
+				end
+			else
+				--minetest.log("action", "Failed to get hm index: " .. tostring(i) .. "and ... " .. tostring(#heightmap))
 			end
 		end
 		-- set next line
@@ -223,10 +247,14 @@ function settlements.evaluate_heightmap()
 	end
 	-- return the difference between highest and lowest pos in chunk
 	local height_diff = max_y - min_y
+
+	--minetest.log("action", "height_diff = " .. tostring(height_diff))
+
 	-- filter buggy heightmaps
 	if height_diff <= 1 then
 		return max_height_difference + 1
 	end
+	--minetest.log("action", "return heigh diff = " .. tostring(height_diff))
 	-- debug info
 	settlements.debug("heightdiff ".. height_diff)
 	return height_diff

@@ -644,6 +644,7 @@ function mob_class:do_env_damage()
 	end
 
 	local nodef = minetest.registered_nodes[self.standing_in]
+	local nodef2 = minetest.registered_nodes[self.standing_on]
 
 	-- rain
 	if self.rain_damage > 0 then
@@ -675,7 +676,19 @@ function mob_class:do_env_damage()
 				return true
 			end
 		end
+	-- magma damage
+	elseif self.fire_damage > 0
+	and (nodef2.groups.fire) then
 
+		if self.fire_damage ~= 0 then
+
+			self.health = self.health - self.fire_damage
+
+			if self:check_for_death("fire", {type = "environment",
+					pos = pos, node = self.standing_in}) then
+				return true
+			end
+		end	
 	-- lava damage
 	elseif self.lava_damage > 0
 	and (nodef.groups.lava) then
