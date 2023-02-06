@@ -80,20 +80,29 @@ end
 local mg_name = minetest.get_mapgen_setting("mg_name")
 if mg_name ~= "singlenode" then
 	mcl_mapgen_core.register_generator("villages", nil, function(minp, maxp, blockseed)
-		-- don't build settlement underground
 		if maxp.y < 0 then return end
+
 		-- randomly try to build settlements
 		if blockseed % 77 ~= 17 then return end
+		--minetest.log("Rng good. Generate attempt")
+
 		-- needed for manual and automated settlement building
 		-- don't build settlements on (too) uneven terrain
 		local n=minetest.get_node_or_nil(minp)
 		if n and n.name == "mcl_villages:structblock" then return end
+		--minetest.log("No existing village attempt here")
+
 		if villagegen[minetest.pos_to_string(minp)] ~= nil then return end
+
+		--minetest.log("Not in village gen. Put down placeholder: " .. minetest.pos_to_string(minp) .. " || " .. minetest.pos_to_string(maxp))
 		minetest.set_node(minp,{name="mcl_villages:structblock"})
 
 		local height_difference = settlements.evaluate_heightmap()
-		if height_difference > max_height_difference then return end
-
+		if not height_difference or height_difference > max_height_difference then
+			minetest.log("action", "Do not spawn village here as heightmap not good")
+			return
+		end
+		--minetest.log("Build me a village: " .. minetest.pos_to_string(minp) .. " || " .. minetest.pos_to_string(maxp))
 		villagegen[minetest.pos_to_string(minp)]={minp=vector.new(minp), maxp=vector.new(maxp), blockseed=blockseed}
 	end)
 end
