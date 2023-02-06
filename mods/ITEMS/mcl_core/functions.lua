@@ -927,6 +927,7 @@ minetest.register_lbm({
 	label = "Replace legacy dry grass",
 	name = "mcl_core:replace_legacy_dry_grass_0_65_0",
 	nodenames = {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt_with_dry_grass_snow"},
+	run_at_every_load = true,
 	action = function(pos, node)
 		if node.name == "mcl_core:dirt_with_dry_grass_snow" then
 			node.name = "mcl_core:dirt_with_grass_snow"
