@@ -301,7 +301,7 @@ mcl_flowerpots.register_potted_flower("mcl_crimson:warped_roots", {
 minetest.register_node("mcl_crimson:warped_wart_block", {
 	description = S("Warped Wart Block"),
 	tiles = {"warped_wart_block.png"},
-	groups = {handy = 1, hoey = 7, swordy = 1, deco_block = 1},
+	groups = {handy = 1, hoey = 7, swordy = 1, deco_block = 1, compostability = 85},
 	_mcl_hardness = 1,
 	sounds = mcl_sounds.node_sound_leaves_defaults({
 			footstep={name="default_dirt_footstep", gain=0.7},
@@ -312,7 +312,7 @@ minetest.register_node("mcl_crimson:warped_wart_block", {
 minetest.register_node("mcl_crimson:shroomlight", {
 	description = S("Shroomlight"),
 	tiles = {"shroomlight.png"},
-	groups = {handy = 1, hoey = 7, swordy = 1, deco_block = 1},
+	groups = {handy = 1, hoey = 7, swordy = 1, deco_block = 1, compostability = 65},
 	light_source = minetest.LIGHT_MAX,
 	_mcl_hardness = 1,
 	sounds = mcl_sounds.node_sound_leaves_defaults({
