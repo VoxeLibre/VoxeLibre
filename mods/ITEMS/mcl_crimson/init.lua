@@ -67,6 +67,8 @@ end
 
 minetest.register_node("mcl_crimson:warped_fungus", {
 	description = S("Warped Fungus"),
+	_tt_help = S("Warped fungus is a mushroom found in the nether's warped forest."),
+	_doc_items_longdesc = S("Warped fungus is a mushroom found in the nether's warped forest."),
 	drawtype = "plantlike",
 	tiles = { "farming_warped_fungus.png" },
 	inventory_image = "farming_warped_fungus.png",
@@ -451,6 +453,8 @@ minetest.register_craft({
 
 minetest.register_node("mcl_crimson:crimson_fungus", {
 	description = S("Crimson Fungus"),
+	_tt_help = S("Crimson fungus is a mushroom found in the nether's crimson forest."),
+	_doc_items_longdesc = S("Crimson fungus is a mushroom found in the nether's crimson forest."),
 	drawtype = "plantlike",
 	tiles = { "farming_crimson_fungus.png" },
 	inventory_image = "farming_crimson_fungus.png",
