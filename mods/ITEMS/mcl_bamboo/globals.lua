@@ -67,6 +67,7 @@ end
 
 local BAMBOO_ENDCAP_NAME = "mcl_bamboo:bamboo_endcap"
 
+--[[ For when I learn more about the pistons...
 function mcl_bamboo.break_orphaned(pos)
 	local node_below = minetest.get_node(vector.offset(pos, 0, -1, 0))
 	local node_name = node_below.name
@@ -93,8 +94,8 @@ function mcl_bamboo.break_orphaned(pos)
 			minetest.add_item(pos, istack)
 		end
 	end
-
 end
+--]]
 
 function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 	local node_above = minetest.get_node(vector.offset(pos, 0, 1, 0))
