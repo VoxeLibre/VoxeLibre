@@ -99,6 +99,10 @@
 * Gregor Parzefall
 * Wbjitscool
 * b3nderman
+* CyberMango
+* gldrk
+* SmokeyDope
+* atomdmac
 
 ## MineClone5
 * kay27
@@ -186,6 +190,7 @@
 * snowyu
 * 3raven
 * SakuraRiu
+* anarquimico
 
 ## Funders
 * 40W

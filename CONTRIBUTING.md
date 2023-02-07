@@ -2,8 +2,8 @@
 So you want to contribute to MineClone2?
 Wow, thank you! :-)
 
-MineClone2 is maintained by Nicu and Cora. If you have any
-problems or questions, contact us (See Links section below).
+MineClone2 is maintained by AncientMariner and Nicu. If you have any 
+problems or questions, contact us on Discord/Matrix (See Links section below).
 
 You can help with MineClone2's development in many different ways,
 whether you're a programmer or not.
@@ -240,7 +240,7 @@ work causes problems, we ask you fix the issues as soon as possible.
 
 ### Changing Gameplay
 Pull Requests that change gameplay have to be properly researched and
-need to state their sources. These PRs also need Fleckenstein's approval
+need to state their sources. These PRs also need the maintainer's approval
 before they are merged.
 You can use these sources:
 
@@ -375,7 +375,7 @@ merged.
 - Resolving conflicts and problems within the community
 
 #### Current maintainers
-* Cora - responsible for gameplay review, publishing releases,
+* AncientMariner - responsible for gameplay review, publishing releases,
 technical guidelines
 * Nicu - responsible for community related issues
 
