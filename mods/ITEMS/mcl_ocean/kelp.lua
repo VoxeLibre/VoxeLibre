@@ -25,7 +25,6 @@ local mt_get_node = minetest.get_node
 local mt_get_node_level = minetest.get_node_level
 local mt_get_node_max_level = minetest.get_node_max_level
 local mt_get_node_or_nil = minetest.get_node_or_nil
-local mt_get_node_timer = minetest.get_node_timer
 local mt_get_meta = minetest.get_meta
 local mt_hash_node_position = minetest.hash_node_position
 local mt_set_node = minetest.set_node
@@ -52,18 +51,11 @@ local table = table
 local kelp = {}
 mcl_ocean.kelp = kelp
 
--- Kelp minimum and maximum age. Once reached the maximum, kelp no longer grows.
+-- Once reach the maximum, kelp no longer grows.
 kelp.MIN_AGE = 0
 kelp.MAX_AGE = 25
 
--- Tick interval (in seconds) for updating kelp.
-kelp.TICK = 0.2
-
--- Tick interval (in seconds) to store kelp meta.
-kelp.META_TICK = 2
-
--- Max age queue length
-kelp.MAX_AGE_QUEUE = 20
+kelp.TICK = 0.2 -- Tick interval (in seconds) for updating kelp.
 
 -- The average amount of growth for kelp in a day is 2.16 (https://youtu.be/5Bp4lAjAk3I)
 -- Normally, a day lasts 20 minutes, meaning kelp.next_grow() is executed
@@ -80,19 +72,6 @@ kelp.ROLL_GROWTH_DENOMINATOR = 1 -- 100 * 1200
 
 -- Sounds used to dig and place kelp.
 kelp.leaf_sounds = mcl_sounds.node_sound_leaves_defaults()
-
--- Pool storing nodetimers
-kelp.timers_pool = {}
-
--- Pool storing age, indexed by pos_hash.
-kelp.age_pool = {}
-
--- Queue(List) of hashed positions to save their ages.
--- Invalid ones may still persist in this queue.
-kelp.age_queue = {}
--- Stores only valid positions of each hashed postiions.
-kelp.age_queue_pos = {}
-
 
 -- is age in the growable range?
 function kelp.is_age_growable(age)
@@ -242,46 +221,6 @@ local function retrieve_age (pos)
 	return meta:get_int("mcl_ocean:kelp_age")
 end
 
--- Stores age from kelp.age_queue* into their respective meta
-function kelp.store_meta()
-	local count = 0
-	for _ in pairs(kelp.age_queue_pos) do
-		count = count + 1
-	end
-	-- chatlog(string.format("Storing age metadata: %d in queue", #kelp.age_queue))
-	-- chatlog(string.format("Storing age metadata: %d valid in queue", count))
-	for i=1,#kelp.age_queue do
-		local pos_hash = kelp.age_queue[i]
-		local pos = kelp.age_queue_pos[pos_hash]
-
-		local age = kelp.age_pool[pos_hash]
-
-		-- queued hashes may no longer point to a valid pos, e.g. kelp is destroyed.
-		store_age(pos, age)
-	end
-	kelp.age_queue = {}
-	kelp.age_queue_pos = {}
-end
-
-
--- Store and queue a kelp's age to be saved into meta later.
-function kelp.store_age(age, pos, pos_hash)
-	-- Watched params: pos
-	-- Optional params: pos_hash
-	local pos_hash = pos_hash or mt_hash_node_position(pos)
-
-	-- TODO really needed? Store on meta...
-	kelp.age_pool[pos_hash] = age
-	if not kelp.age_queue_pos[pos_hash] then
-		table.insert(kelp.age_queue, pos_hash)
-		kelp.age_queue_pos[pos_hash] = pos
-		return true, pos_hash
-	end
-
-	return false, pos_hash
-end
-
-
 -- Initialise a kelp's age.
 function kelp.init_age(pos, age, pos_hash, meta)
 	-- Watched params: pos
@@ -306,25 +245,6 @@ function kelp.init_age(pos, age, pos_hash, meta)
 
 	return age, pos_hash, meta
 end
-
--- TODO remove
--- Initialise kelp nodetimer.
-function kelp.init_timer(pos, pos_hash)
-	-- Optional params: pos_hash
-	local pos_hash = pos_hash or mt_hash_node_position(pos)
-
-	local timer = kelp.timers_pool[pos_hash]
-	if not timer then
-		timer = mt_get_node_timer(pos)
-		kelp.timers_pool[pos_hash] = timer
-	end
-	if not timer:is_started() then
-		timer:start(kelp.TICK)
-	end
-
-	return pos_hash
-end
-
 
 -- Apply next kelp height. The surface is swapped. so on_construct is skipped.
 function kelp.next_height(pos, node, pos_tip, node_tip, submerged, downward_flowing)
@@ -441,39 +361,48 @@ function kelp.surface_after_dig_node(pos, node)
 	return mt_set_node(pos, {name=minetest.registered_nodes[node.name].node_dig_prediction})
 end
 
+-- NOTE: Old ABM implementation.
+-- TODO have node already
+-- local function surface_unsubmerged_abm(pos, node)
+-- 	local dig_pos = find_unsubmerged(pos, node)
+-- 	if dig_pos then
+-- 		detach_dig(dig_pos, pos, node, true)
+-- 	end
+-- 	return true
+-- end
 
-function kelp.surface_on_timer(pos)
-	--minetest.log("action", "Timer")
+local function detach_unsubmerged(pos)
 	local node = mt_get_node(pos)
-	local pos_hash
 
-
-
-	-- Update detahed kelps
 	local dig_pos,_, height = kelp.find_unsubmerged(pos, node)
 	if dig_pos then
-		pos_hash = mt_hash_node_position(pos)
 		mt_sound_play(mt_registered_nodes[node.name].sounds.dug, { gain = 0.5, pos = dig_pos }, true)
 		kelp.detach_dig(dig_pos, pos, true, node, height)
 		local new_age = kelp.roll_init_age()
 		store_age(pos, new_age)
-		--kelp.store_age(new_age, pos, pos_hash)
 	end
+end
 
-	-- Grow kelp on chance
+local function grow_kelp (pos)
+	local node = mt_get_node(pos)
+
 	if kelp.roll_growth() then
-		pos_hash = pos_hash or mt_hash_node_position(pos)
-		--local age = kelp.age_pool[pos_hash]
-
 		local age = retrieve_age(pos)
+
 		if kelp.is_age_growable(age) then
-			minetest.log("age growable: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
-			kelp.next_grow(age+1, pos, node, pos_hash)
+			--minetest.log("age growable: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
+			kelp.next_grow(age+1, pos, node)
 		else
-			minetest.log("age not: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
+			--minetest.log("age not: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
 		end
 	end
+end
 
+function kelp.surface_on_timer(pos)
+	--minetest.log("action", "Timer")
+	detach_unsubmerged(pos)
+
+	grow_kelp (pos)
 	return true
 end
 
@@ -484,15 +413,12 @@ end
 
 function kelp.surface_on_destruct(pos)
 	local node = mt_get_node(pos)
-	--local pos_hash = mt_hash_node_position(pos)
 
 	-- on_falling callback. Activated by pistons for falling nodes too.
+	-- I'm not sure this works. I think piston digs water and the unsubmerged nature drops kelp.
 	if kelp.is_falling(pos, node) then
 		kelp.detach_drop(pos, kelp.get_height(node.param2))
 	end
-
-	-- Removes position from queue
-	--kelp.age_queue_pos[pos_hash] = nil
 end
 
 
@@ -502,16 +428,6 @@ function kelp.surface_on_mvps_move(pos, node, oldpos, nodemeta)
 	minetest.log("kelp.surface_on_mvps_move: " .. mt_pos_to_string(pos))
 	kelp.detach_dig(pos, pos, mt_get_item_group(node.name, "falling_node") ~= 1, node)
 end
-
-
--- NOTE: Old ABM implementation.
--- local function surface_unsubmerged_abm(pos, node)
--- 	local dig_pos = find_unsubmerged(pos, node)
--- 	if dig_pos then
--- 		detach_dig(dig_pos, pos, node, true)
--- 	end
--- 	return true
--- end
 
 
 function kelp.kelp_on_place(itemstack, placer, pointed_thing)
@@ -601,21 +517,18 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 	end
 
 	-- Initialize age and timer when it's planted on a new surface.
-	--local pos_hash = mt_hash_node_position(pos_under)
 	local init_age = kelp.roll_init_age()
 
 	if new_surface then
 		kelp.init_age(pos_under, init_age)
-		--kelp.init_timer(pos_under, pos_hash)
 	else
-		-- TODO needed?
 		store_age(pos_under, init_age)
-		--kelp.store_age(kelp.roll_init_age(), pos_under, pos_hash)
 	end
 
 	return itemstack
 end
 
+-- TODO ensure freshmap kelp has age. maybe set if it doesn't already have on grow
 -- At load
 function kelp.lbm_register_nodetimer(pos, node)
 	local pos_hash = mt_hash_node_position(pos)
@@ -623,30 +536,6 @@ function kelp.lbm_register_nodetimer(pos, node)
 	--kelp.init_timer(pos, pos_hash)
 end
 
-
-local gstep_time = 0
-function kelp.globalstep(dtime)
-	if #kelp.age_queue > kelp.MAX_AGE_QUEUE then
-		kelp.store_meta()
-	end
-
-	gstep_time = gstep_time + dtime
-	if gstep_time < kelp.META_TICK then
-		return
-	end
-	gstep_time = 0
-
-	if #kelp.age_queue > 0 then
-		kelp.store_meta()
-	end
-end
-
-
-function kelp.on_shutdown()
-	if #kelp.age_queue > 0 then
-		kelp.store_meta()
-	end
-end
 
 --------------------------------------------------------------------------------
 -- Kelp registration API
@@ -840,31 +729,15 @@ minetest.register_craft({
 	burntime = 200,
 })
 
--- Global registration ------------------------------------------------------------------------
---[[
-minetest.register_lbm({
-	label = "Kelp initialise",
-	name = "mcl_ocean:kelp_init",
-	nodenames = { "group:kelp" },
-	run_at_every_load = true, -- so old kelps are also initialised
-	action = kelp.lbm_register_nodetimer,
-})--]]
-
-
---minetest.register_globalstep(kelp.globalstep)
---minetest.register_on_shutdown(kelp.on_shutdown)
-
--- NOTE: Old ABM implementation.
---[[
 minetest.register_abm({
 	label = "Kelp drops",
 	nodenames = { "group:kelp" },
 	interval = 1.0,
 	chance = 1,
 	catch_up = false,
-	action = surface_unsubmerged_abm,
+	action = detach_unsubmerged, --surface_unsubmerged_abm,
 })
---]]
+
 
 -- 50% growth over a minute https://minecraft.fandom.com/wiki/Tutorials/Kelp_farming
 -- 14% chance every random tick
@@ -879,5 +752,5 @@ minetest.register_abm({
 	interval = 17, --17
 	chance = 28,
 	catch_up = false,
-	action = kelp.surface_on_timer,
+	action = grow_kelp,
 })
