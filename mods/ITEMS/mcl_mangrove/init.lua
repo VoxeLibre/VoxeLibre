@@ -86,19 +86,21 @@ minetest.register_node("mcl_mangrove:mangrove_wood", {
 	_mcl_hardness = 2,
 })
 
-local l_def = {
+local pl_def = {
 	description = S("Mangrove Leaves"),
 	_doc_items_longdesc = S("mangrove leaves are grown from mangrove trees."),
 	_doc_items_hidden = false,
 	drawtype = "allfaces_optional",
 	waving = 2,
-	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	tiles = {"mcl_mangrove_leaves.png"},
+	color = "#48B518",
 	paramtype = "light",
+	paramtype2 = "color",
+	palette = "mcl_core_palette_foliage.png",
 	groups = {
 		handy = 1, hoey = 1, shearsy = 1, swordy = 1, dig_by_piston = 1,
 		flammable = 2, fire_encouragement = 30, fire_flammability = 60,
-		leaves = 1, deco_block = 1, compostability = 30
+		leaves = 1, deco_block = 1, compostability = 30, foliage_palette = 1, player_leaves = 1, not_in_creative_inventory = 0,
 	},
 	drop = get_drops(0),
 	_mcl_shears_drop = true,
@@ -107,17 +109,33 @@ local l_def = {
 	_mcl_hardness = 0.2,
 	_mcl_silk_touch_drop = true,
 	_mcl_fortune_drop = { get_drops(1), get_drops(2), get_drops(3), get_drops(4) },
+	on_construct = function(pos)
+		local node = minetest.get_node(pos)
+		if node.param2 == 0 then
+			local new_node = mcl_core.get_foliage_block_type(pos)
+			if new_node.param2 ~= 0 then
+				minetest.swap_node(pos, new_node)
+			end
+		end
+	end,
 }
+
+minetest.register_node("mcl_mangrove:playermangroveleaves", pl_def)
+
+local l_def = table.copy(pl_def)
+l_def.groups.player_leaves = nil
+l_def.groups.not_in_creative_inventory = 1
+l_def._mcl_shears_drop = {"mcl_mangrove:playermangroveleaves"}
+l_def._mcl_silk_touch_drop = {"mcl_mangrove:playermangroveleaves"}
 
 minetest.register_node("mcl_mangrove:mangroveleaves", l_def)
 
 local o_def = table.copy(l_def)
 o_def._doc_items_create_entry = false
-o_def.place_param2 = nil
 o_def.groups.not_in_creative_inventory = 1
 o_def.groups.orphan_leaves = 1
-o_def._mcl_shears_drop = {"mcl_mangrove:mangroveleaves"}
-o_def._mcl_silk_touch_drop = {"mcl_mangrove:mangroveleaves"}
+o_def._mcl_shears_drop = {"mcl_mangrove:playermangroveleaves"}
+o_def._mcl_silk_touch_drop = {"mcl_mangrove:playermangroveleaves"}
 
 minetest.register_node("mcl_mangrove:mangroveleaves_orphan", o_def)
 
