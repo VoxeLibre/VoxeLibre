@@ -25,7 +25,7 @@ local salmon = {
 	visual = "mesh",
 	mesh = "extra_mobs_salmon.b3d",
 	textures = {
-		{"extra_mobs_salmon.png"}
+		{"mobs_mc_salmon.png"}
 	},
 	sounds = {
 	},

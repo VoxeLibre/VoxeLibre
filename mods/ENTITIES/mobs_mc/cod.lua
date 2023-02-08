@@ -47,7 +47,7 @@ local cod = {
 	visual = "mesh",
 	mesh = "extra_mobs_cod.b3d",
 	textures = {
-		{"extra_mobs_cod.png"}
+		{"mobs_mc_cod.png"}
 	},
 	sounds = {
 	},
