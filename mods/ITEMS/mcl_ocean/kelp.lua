@@ -26,7 +26,6 @@ local mt_get_node_level = minetest.get_node_level
 local mt_get_node_max_level = minetest.get_node_max_level
 local mt_get_node_or_nil = minetest.get_node_or_nil
 local mt_get_meta = minetest.get_meta
-local mt_hash_node_position = minetest.hash_node_position
 local mt_set_node = minetest.set_node
 local mt_swap_node = minetest.swap_node
 local mt_pos_to_string = minetest.pos_to_string
@@ -68,7 +67,7 @@ kelp.TICK = 0.2 -- Tick interval (in seconds) for updating kelp.
 -- kelp.ROLL_GROWTH_DENOMINATOR = 100 * 1200 * kelp.ROLL_GROWTH_PRECISION
 kelp.ROLL_GROWTH_PRECISION = 1
 kelp.ROLL_GROWTH_NUMERATOR = 216 * kelp.TICK
-kelp.ROLL_GROWTH_DENOMINATOR = 1 -- 100 * 1200
+kelp.ROLL_GROWTH_DENOMINATOR = 100 * 1200
 
 -- Sounds used to dig and place kelp.
 kelp.leaf_sounds = mcl_sounds.node_sound_leaves_defaults()
@@ -156,7 +155,8 @@ end
 -- Roll whether to grow kelp or not.
 function kelp.roll_growth(numerator, denominator)
 	-- Optional params: numerator, denominator
-	return math.random(denominator or kelp.ROLL_GROWTH_DENOMINATOR) <= (numerator or kelp.ROLL_GROWTH_NUMERATOR)
+	--return math.random(denominator or kelp.ROLL_GROWTH_DENOMINATOR) <= (numerator or kelp.ROLL_GROWTH_NUMERATOR)
+	return true -- probability done by ABM
 end
 
 
@@ -211,39 +211,46 @@ end
 
 local function store_age (pos, age)
 	if pos then
-		minetest.log("age: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
+		--minetest.log("age: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
 		mt_get_meta(pos):set_int("mcl_ocean:kelp_age", age)
 	end
 end
 
-local function retrieve_age (pos)
+local function retrieve_age (pos, include_nil)
 	local meta = mt_get_meta(pos)
+
+	if include_nil then
+		local age_set = meta:contains("mcl_ocean:kelp_age")
+		if not age_set then
+			return nil
+		end
+	end
 	return meta:get_int("mcl_ocean:kelp_age")
 end
 
 -- Initialise a kelp's age.
-function kelp.init_age(pos, age, pos_hash, meta)
+function kelp.init_age(pos, age, from_lbm)
 	-- Watched params: pos
-	-- Optional params: age, pos_hash, meta
-	--local pos_hash = pos_hash or mt_hash_node_position(pos)
-	local meta = meta or mt_get_meta(pos)
+	-- Optional params: age, from_lbm
 
-	local age = age
+	local new_age
 
-	local stored_age = retrieve_age(pos)
-	minetest.log("age: " .. tostring(age))
-	minetest.log("stored_age: " .. tostring(stored_age))
+	local stored_age = retrieve_age(pos, from_lbm)
 
 	if age then
+		--minetest.log("age: " .. tostring(age))
 		store_age(pos, age)
+		new_age = age
 	elseif not stored_age then
-		age = kelp.roll_init_age()
-		store_age(pos, age)
+		new_age = kelp.roll_init_age()
+		--minetest.log("no kelp age set so init with: " .. tostring(new_age))
+		store_age(pos, new_age)
 	else
-		age = stored_age
+		--minetest.log("stored_age: " .. tostring(stored_age))
+		new_age = stored_age
 	end
 
-	return age, pos_hash, meta
+	return new_age
 end
 
 -- Apply next kelp height. The surface is swapped. so on_construct is skipped.
@@ -277,12 +284,11 @@ end
 
 
 -- Grow next kelp.
-function kelp.next_grow(age, pos, node, pos_hash, pos_tip, node_tip, submerged, downward_flowing)
+function kelp.next_grow(age, pos, node, pos_tip, node_tip, submerged, downward_flowing)
 	-- Watched params: pos
 	-- Modified params: node
-	-- Optional params: node, pos_hash, pos_tip, node_tip, submerged, downward_flowing
+	-- Optional params: node, pos_tip, node_tip, submerged, downward_flowing
 	local node = node or mt_get_node(pos)
-	local pos_hash = pos_hash or mt_hash_node_position(pos)
 	local pos_tip = pos_tip
 	local node_tip = node_tip or (pos_tip and mt_get_node(pos_tip))
 	if not pos_tip then
@@ -296,9 +302,8 @@ function kelp.next_grow(age, pos, node, pos_hash, pos_tip, node_tip, submerged, 
 	end
 
 	kelp.next_height(pos, node, pos_tip, node_tip, submerged, downward_flowing)
-	--kelp.store_age(age, pos, pos_hash)
 	store_age(pos, age)
-	return true, pos_hash, node, pos_hash, pos_tip, node_tip, submerged, downward_flowing
+	return true, node, pos_tip, node_tip, submerged, downward_flowing
 end
 
 
@@ -356,20 +361,10 @@ function kelp.surface_on_dig(pos, node, digger)
 	kelp.detach_dig(pos, pos, true, node)
 end
 
-
 function kelp.surface_after_dig_node(pos, node)
 	return mt_set_node(pos, {name=minetest.registered_nodes[node.name].node_dig_prediction})
 end
 
--- NOTE: Old ABM implementation.
--- TODO have node already
--- local function surface_unsubmerged_abm(pos, node)
--- 	local dig_pos = find_unsubmerged(pos, node)
--- 	if dig_pos then
--- 		detach_dig(dig_pos, pos, node, true)
--- 	end
--- 	return true
--- end
 
 local function detach_unsubmerged(pos)
 	local node = mt_get_node(pos)
@@ -389,6 +384,11 @@ local function grow_kelp (pos)
 	if kelp.roll_growth() then
 		local age = retrieve_age(pos)
 
+		if not age then
+			--minetest.log("init a new age as not set: " .. mt_pos_to_string(pos))
+			kelp.init_age(pos, nil)
+		end
+
 		if kelp.is_age_growable(age) then
 			--minetest.log("age growable: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
 			kelp.next_grow(age+1, pos, node)
@@ -398,15 +398,8 @@ local function grow_kelp (pos)
 	end
 end
 
-function kelp.surface_on_timer(pos)
-	--minetest.log("action", "Timer")
-	detach_unsubmerged(pos)
-
-	grow_kelp (pos)
-	return true
-end
-
 function kelp.surface_on_construct(pos)
+	--minetest.log("on construct kelp called")
 	kelp.init_age(pos, nil)
 end
 
@@ -425,7 +418,7 @@ end
 
 function kelp.surface_on_mvps_move(pos, node, oldpos, nodemeta)
 	-- Pistons moving falling nodes will have already activated on_falling callback.
-	minetest.log("kelp.surface_on_mvps_move: " .. mt_pos_to_string(pos))
+	--minetest.log("kelp.surface_on_mvps_move: " .. mt_pos_to_string(pos))
 	kelp.detach_dig(pos, pos, mt_get_item_group(node.name, "falling_node") ~= 1, node)
 end
 
@@ -528,13 +521,17 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 	return itemstack
 end
 
--- TODO ensure freshmap kelp has age. maybe set if it doesn't already have on grow
--- At load
-function kelp.lbm_register_nodetimer(pos, node)
-	local pos_hash = mt_hash_node_position(pos)
-	kelp.init_age(pos, nil, pos_hash)
-	--kelp.init_timer(pos, pos_hash)
+function kelp.lbm_register(pos)
+	kelp.init_age(pos, nil, true)
 end
+
+minetest.register_lbm({
+	label = "Kelp initialise",
+	name = "mcl_ocean:kelp_init",
+	nodenames = { "group:kelp" },
+	run_at_every_load = true, -- so old kelps are also initialised
+	action = kelp.lbm_register,
+})
 
 
 --------------------------------------------------------------------------------
@@ -582,7 +579,6 @@ kelp.surface_deftemplate = {
 	on_destruct = kelp.surface_on_destruct,
 	on_dig = kelp.surface_on_dig,
 	after_dig_node = kelp.surface_after_dig_node,
-	--on_timer = kelp.surface_on_timer,
 	mesecon = { on_mvps_move = kelp.surface_on_mvps_move, },
 	drop = "", -- drops are handled in on_dig
 	--_mcl_falling_node_alternative = is_falling and nodename or nil,
