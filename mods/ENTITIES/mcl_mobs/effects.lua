@@ -1,4 +1,4 @@
-local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
+local math, tonumber, vector, minetest, mcl_mobs = math, tonumber, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 local active_particlespawners = {}
 local disable_blood = minetest.settings:get_bool("mobs_disable_blood")
@@ -7,6 +7,15 @@ local DEFAULT_FALL_SPEED = -9.81*1.5
 local player_transfer_distance = tonumber(minetest.settings:get("player_transfer_distance")) or 128
 if player_transfer_distance == 0 then player_transfer_distance = math.huge end
 
+
+local function validate_vector (vect)
+	if vect then
+		if tonumber(vect.x) and tonumber(vect.y) and tonumber(vect.z) then
+			return true
+		end
+	end
+	return false
+end
 
 -- custom particle effects
 function mcl_mobs.effect(pos, amount, texture, min_size, max_size, radius, gravity, glow, go_down)
@@ -385,6 +394,8 @@ function mob_class:check_head_swivel(dtime)
 	mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), final_rotation)
 end
 
+
+
 function mob_class:set_animation_speed()
 	local v = self.object:get_velocity()
 	if v then
@@ -400,7 +411,7 @@ function mob_class:set_animation_speed()
 			end
 		end
 		--set_speed
-		if self.acc then
+		if validate_vector(self.acc) then
 			self.object:add_velocity(self.acc)
 		end
 	end
