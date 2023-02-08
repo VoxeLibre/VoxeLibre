@@ -467,7 +467,10 @@ function kelp.surface_on_timer(pos)
 
 		local age = retrieve_age(pos)
 		if kelp.is_age_growable(age) then
+			minetest.log("age growable: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
 			kelp.next_grow(age+1, pos, node, pos_hash)
+		else
+			minetest.log("age not: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
 		end
 	end
 
@@ -599,12 +602,14 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 
 	-- Initialize age and timer when it's planted on a new surface.
 	--local pos_hash = mt_hash_node_position(pos_under)
+	local init_age = kelp.roll_init_age()
+
 	if new_surface then
-		kelp.init_age(pos_under, nil)
+		kelp.init_age(pos_under, init_age)
 		--kelp.init_timer(pos_under, pos_hash)
 	else
 		-- TODO needed?
-		store_age(pos_under, kelp.roll_init_age())
+		store_age(pos_under, init_age)
 		--kelp.store_age(kelp.roll_init_age(), pos_under, pos_hash)
 	end
 
@@ -871,8 +876,8 @@ minetest.register_abm({
 minetest.register_abm({
 	label = "Kelp growth",
 	nodenames = { "group:kelp" },
-	interval = 17, --17 target was 45
-	chance = 28, -- 3 target was 12
+	interval = 17, --17
+	chance = 28,
 	catch_up = false,
 	action = kelp.surface_on_timer,
 })
