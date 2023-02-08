@@ -820,6 +820,30 @@ function mcl_core.get_grass_block_type(pos)
 	return {name = "mcl_core:dirt_with_grass", param2 = mcl_core.get_grass_palette_index(pos)}
 end
 
+function mcl_core.get_foliage_name(pos)
+	local nodename = minetest.get_node(pos).name
+	return nodename
+end
+
+function mcl_core.get_foliage_palette_index(pos)
+	local biome_data = minetest.get_biome_data(pos)
+	local index = 0
+	if biome_data then
+		local biome = biome_data.biome
+		local biome_name = minetest.get_biome_name(biome)
+		local reg_biome = minetest.registered_biomes[biome_name]
+		if reg_biome then
+			index = reg_biome._mcl_foliage_palette_index
+		end
+	end
+	return index
+end
+
+-- Return appropriate foliage block node for pos
+function mcl_core.get_foliage_block_type(pos)
+	return {name = mcl_core.get_foliage_name(pos), param2 = mcl_core.get_foliage_palette_index(pos)}
+end
+
 ------------------------------
 -- Spread grass blocks and mycelium on neighbor dirt
 ------------------------------
