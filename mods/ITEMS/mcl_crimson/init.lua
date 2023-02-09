@@ -277,7 +277,7 @@ minetest.register_node("mcl_crimson:warped_roots", {
 	description = S("Warped Roots"),
 	drawtype = "plantlike",
 	tiles = { "mcl_crimson_warped_roots.png" },
-	inventory_image = "mcl_crimson_mcl_crimson_warped_roots.png",
+	inventory_image = "mcl_crimson_warped_roots.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -296,13 +296,13 @@ minetest.register_node("mcl_crimson:warped_roots", {
 mcl_flowerpots.register_potted_flower("mcl_crimson:warped_roots", {
 	name = "warped roots",
 	desc = S("Warped Roots"),
-	image = "mcl_crimson_mcl_crimson_warped_roots.png",
+	image = "mcl_crimson_warped_roots.png",
 })
 
 
 minetest.register_node("mcl_crimson:warped_wart_block", {
 	description = S("Warped Wart Block"),
-	tiles = {"mcl_crimson_mcl_crimson_warped_stem_stripped_side.png"},
+	tiles = {"mcl_crimson_warped_stem_stripped_side.png"},
 	groups = {handy = 1, hoey = 7, swordy = 1, deco_block = 1, compostability = 85},
 	_mcl_hardness = 1,
 	sounds = mcl_sounds.node_sound_leaves_defaults({
@@ -714,7 +714,7 @@ mcl_doors:register_trapdoor("mcl_crimson:warped_trapdoor", {
 	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
 	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
 	tile_front = "mcl_crimson_warped_trapdoor.png",
-	tile_side = "mcl_crimson_mcl_crimson_warped_hyphae_wood.png",
+	tile_side = "mcl_crimson_warped_hyphae_wood.png",
 	wield_image = "mcl_crimson_warped_trapdoor.png",
 	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
