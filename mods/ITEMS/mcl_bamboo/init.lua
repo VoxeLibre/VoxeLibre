@@ -34,34 +34,43 @@ minetest.register_abm({
 		mcl_bamboo.grow_bamboo(pos, false)
 	end,
 })
-minetest.register_abm({
-	label = "Break Orphaned Bamboo",
-	nodenames = mcl_bamboo.bamboo_index,
-	interval = 1.5,
-	chance = 1,
-	action = function(pos, _)
-		local node_below = minetest.get_node(vector.offset(pos, 0, -1, 0))
-		local node_name = node_below.name
 
-		-- short circuit checks.
-		if mcl_bamboo.is_dirt(node_name) or mcl_bamboo.is_bamboo(node_name) or mcl_bamboo.is_bamboo(minetest.get_node(pos).name) == false then
-			return
+if minetest.get_modpath("mesecons_mvps") then
+	if mesecons_mvps then
+		for x = 1, #mcl_bamboo.bamboo_index do
+			mesecon.register_mvps_dropper(mcl_bamboo.bamboo_index[x], mcl_bamboo.break_orphaned)
 		end
+	end
+else
+	minetest.register_abm({
+		label = "Break Orphaned Bamboo",
+		nodenames = mcl_bamboo.bamboo_index,
+		interval = 1.5,
+		chance = 1,
+		action = function(pos, _)
+			local node_below = minetest.get_node(vector.offset(pos, 0, -1, 0))
+			local node_name = node_below.name
 
-		-- dig the node.
-		minetest.remove_node(pos)    -- if that fails, remove the node
-		local istack = ItemStack("mcl_bamboo:bamboo")
-		local sound_params = {
-			pos = pos,
-			gain = 1.0, -- default
-			max_hear_distance = 10, -- default, uses a Euclidean metric
-		}
+			-- short circuit checks.
+			if mcl_bamboo.is_dirt(node_name) or mcl_bamboo.is_bamboo(node_name) or mcl_bamboo.is_bamboo(minetest.get_node(pos).name) == false then
+				return
+			end
 
-		minetest.remove_node(pos)
-		minetest.sound_play(mcl_sounds.node_sound_wood_defaults().dug, sound_params, true)
-		minetest.add_item(pos, istack)
-	end,
-})
+			-- dig the node.
+			minetest.remove_node(pos)    -- if that fails, remove the node
+			local istack = ItemStack("mcl_bamboo:bamboo")
+			local sound_params = {
+				pos = pos,
+				gain = 1.0, -- default
+				max_hear_distance = 10, -- default, uses a Euclidean metric
+			}
+
+			minetest.remove_node(pos)
+			minetest.sound_play(mcl_sounds.node_sound_wood_defaults().dug, sound_params, true)
+			minetest.add_item(pos, istack)
+		end,
+	})
+end
 
 -- Base Aliases.
 local SCAFFOLDING_NAME = "mcl_bamboo:scaffolding"
