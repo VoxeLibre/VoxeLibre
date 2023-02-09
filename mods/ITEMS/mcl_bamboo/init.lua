@@ -26,6 +26,7 @@ dofile(minetest.get_modpath(modname) .. "/recipes.lua")
 
 --ABMs
 minetest.register_abm({
+	label = "Bamboo Grow",
 	nodenames = mcl_bamboo.bamboo_index,
 	interval = 10,
 	chance = 20,
@@ -33,6 +34,24 @@ minetest.register_abm({
 		mcl_bamboo.grow_bamboo(pos, false)
 	end,
 })
+
+if minetest.get_modpath("mesecons_mvps") then
+	if mesecons_mvps then
+		for x = 1, #mcl_bamboo.bamboo_index do
+			mesecon.register_mvps_dropper(mcl_bamboo.bamboo_index[x], mcl_bamboo.break_orphaned)
+		end
+	end
+else
+	minetest.register_abm({
+		label = "Break Orphaned Bamboo",
+		nodenames = mcl_bamboo.bamboo_index,
+		interval = 1.5,
+		chance = 1,
+		action = function(pos, _)
+			mcl_bamboo.break_orphaned(pos)
+		end,
+	})
+end
 
 -- Base Aliases.
 local SCAFFOLDING_NAME = "mcl_bamboo:scaffolding"

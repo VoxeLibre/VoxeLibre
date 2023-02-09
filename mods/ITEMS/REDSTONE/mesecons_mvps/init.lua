@@ -477,6 +477,19 @@ mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_black")
 mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_brown")
 mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_light_blue")
 mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_pink")
+-- Bamboo
+mesecon.register_mvps_unsticky("mcl_bamboo:bamboo")
+mesecon.register_mvps_unsticky("mcl_bamboo:bamboo_endcap")
+
+mesecon.register_mvps_unsticky("mcl_bamboo:bamboo_1")
+mesecon.register_mvps_unsticky("mcl_bamboo:bamboo_2")
+mesecon.register_mvps_unsticky("mcl_bamboo:bamboo_3")
+
+mesecon.register_mvps_unsticky("mcl_bamboo:bamboo_door")
+mesecon.register_mvps_unsticky("mcl_bamboo:bamboo_trapdoor")
+mesecon.register_mvps_unsticky("mcl_signs:wall_sign_bamboo")
+mesecon.register_mvps_unsticky("mcl_bamboo:scaffolding")
+
 -- Beds
 mesecon.register_mvps_unsticky("mcl_beds:bed_black_top")
 mesecon.register_mvps_unsticky("mcl_beds:bed_black_bottom")
