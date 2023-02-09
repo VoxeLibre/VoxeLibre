@@ -365,6 +365,8 @@ function mob_class:on_step(dtime)
 	if self:check_despawn(pos, dtime) then return true end
 	if self:outside_limits() then return end
 
+	-- Start: Death/damage processing
+	-- All damage needs to be undertaken at the start. We need to exit processing if the mob dies.
 	if self:check_death_and_slow_mob() then
 		--minetest.log("action", "Mob is dying: ".. tostring(self.name))
 		-- Do we abandon out of here now?
@@ -375,47 +377,50 @@ function mob_class:on_step(dtime)
 
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
-		-- mcl_burning.tick may remove object immediately
-		if not self.object:get_pos() then return end
+		if not self.object:get_pos() then return end -- mcl_burning.tick may remove object immediately
+
+		if self:check_for_death("fire", {type = "fire"}) then
+			return true
+		end
 	end
 
+	if self:env_damage (dtime, pos) then return end
+
 	if self.state == "die" then return end
+	-- End: Death/damage processing
 
 	self:check_water_flow()
 	self:env_danger_movement_checks (dtime)
 
-	if mobs_debug then self:update_tag() end
 
 	self:follow_flop() -- Mob following code.
 
-	self:set_animation_speed() -- set animation speed relitive to velocity
+	self:set_animation_speed() -- set animation speed relative to velocity
+
 	self:check_smooth_rotation(dtime)
 	self:check_head_swivel(dtime)
 
-	if self.jump_sound_cooloff > 0 then
-		self.jump_sound_cooloff = self.jump_sound_cooloff - dtime
-	end
+	if self.jump_sound_cooloff > 0 then self.jump_sound_cooloff = self.jump_sound_cooloff - dtime end
 	self:do_jump()
 
-	self:set_armor_texture()
 	self:check_runaway_from()
-
 	self:monster_attack()
 	self:npc_attack()
-	self:check_breeding()
 	self:check_aggro(dtime)
 
-	-- run custom function (defined in mob lua file)
-	if self.do_custom then
-		if self.do_custom(self, dtime) == false then
-			return
-		end
-	end
+	self:check_breeding()
+
+	self:check_item_pickup()
+	self:set_armor_texture()
+
+	if self.do_custom and self.do_custom(self, dtime) == false then return end
 
 	if update_timers(self, dtime) then return end
 
 	self:check_particlespawners(dtime)
-	self:check_item_pickup()
+
+	if self:env_damage (dtime, pos) then return end
+	if self:do_states(dtime) then return end
 
 	if self.opinion_sound_cooloff > 0 then
 		self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
@@ -425,8 +430,9 @@ function mob_class:on_step(dtime)
 		self:mob_sound("random", true)
 	end
 
-	if self:env_damage (dtime, pos) then return end
 	if self:do_states(dtime) then return end
+
+	if mobs_debug then self:update_tag() end
 
 	if not self.object:get_luaentity() then
 		return false

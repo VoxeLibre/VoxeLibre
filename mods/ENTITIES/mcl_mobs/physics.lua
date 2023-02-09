@@ -311,6 +311,8 @@ end
 function mob_class:set_yaw(yaw, delay, dtime)
 	if self.noyaw then return end
 
+	if not self.object:get_yaw() or not self.object:get_pos() then return end
+
 	if self.state ~= PATHFINDING then
 		self._turn_to = yaw
 	end
@@ -462,6 +464,14 @@ function mob_class:check_for_death(cause, cmi_cause)
 	self:mob_sound("death")
 
 	local function death_handle(self)
+		if cmi_cause and cmi_cause["type"] then
+			--minetest.log("cmi_cause: " .. tostring(cmi_cause["type"]))
+		end
+		--minetest.log("cause: " .. tostring(cause))
+
+		-- TODO other env damage shouldn't drop xp
+		-- "rain", "water", "drowning", "suffocation"
+
 		-- dropped cooked item if mob died in fire or lava
 		if cause == "lava" or cause == "fire" then
 			self:item_drop(true, 0)
@@ -800,7 +810,7 @@ function mob_class:do_env_damage()
 		self.suffocation_timer = 0
 	end
 
-	return self:check_for_death("", {type = "unknown"})
+	return self:check_for_death("unknown", {type = "unknown"})
 end
 
 function mob_class:env_damage (dtime, pos)
