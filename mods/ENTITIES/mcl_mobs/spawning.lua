@@ -40,7 +40,8 @@ local dbg_spawn_counts = {}
 local remove_far = true
 
 local WAIT_FOR_SPAWN_ATTEMPT = 10
-local FIND_SPAWN_POS_RETRIES = 10
+local FIND_SPAWN_POS_RETRIES = 16
+local FIND_SPAWN_POS_RETRIES_SUCCESS_RESPIN = 8
 
 local MOB_SPAWN_ZONE_INNER = 24
 local MOB_SPAWN_ZONE_MIDDLE = 32
@@ -309,14 +310,14 @@ local function count_mobs_all(categorise_by, pos)
 				local mob_pos = entity.object:get_pos()
 				if mob_pos then
 					local distance = vector.distance(pos, mob_pos)
-					mcl_log("distance: ".. distance)
+					--mcl_log("distance: ".. distance)
 					if distance <= MOB_SPAWN_ZONE_MIDDLE then
-						mcl_log("distance is close")
+						--mcl_log("distance is close")
 						count_mobs_add_entry (mobs_found_close, mob_cat)
 						count_mobs_add_entry (mobs_found_wide, mob_cat)
 						add_entry = true
 					elseif distance <= MOB_SPAWN_ZONE_OUTER then
-						mcl_log("distance is wide")
+						--mcl_log("distance is wide")
 						count_mobs_add_entry (mobs_found_wide, mob_cat)
 						add_entry = true
 					else
@@ -334,7 +335,7 @@ local function count_mobs_all(categorise_by, pos)
 			end
 		end
 	end
-	mcl_log("num: ".. num)
+	--mcl_log("num: ".. num)
 	return mobs_found_close, mobs_found_wide, num
 end
 
@@ -350,14 +351,27 @@ local function count_mobs_total_cap(mob_type)
 	return num
 end
 
-local function output_mob_stats(mob_counts, total_mobs)
+local function output_mob_stats(mob_counts, total_mobs, chat_display)
 	if (total_mobs) then
-		minetest.log("action", "Total mobs found: " .. total_mobs)
+		local total_output = "Total mobs found: " .. total_mobs
+		if chat_display then
+			minetest.log(total_output)
+		else
+			minetest.log("action", total_output)
+		end
+
 	end
+	local detailed = ""
 	if mob_counts then
 		for k, v1 in pairs(mob_counts) do
-			minetest.log("action", "k: " .. tostring(k))
-			minetest.log("action", "v1: " .. tostring(v1))
+			detailed = detailed .. tostring(k) ..  ": " .. tostring(v1) ..  "; "
+		end
+	end
+	if detailed and detailed ~= "" then
+		if chat_display then
+			minetest.log(detailed)
+		else
+			minetest.log("action", detailed)
 		end
 	end
 end
@@ -510,11 +524,13 @@ local two_pi = 2 * math.pi
 local function get_next_mob_spawn_pos(pos)
 	-- TODO We should consider spawning something a little further away sporadically.
 	-- It would be good for sky farms and variance, rather than all being on the 24 - 32 block away radius
-	local distance = math_random(MOB_SPAWN_ZONE_INNER + 1, MOB_SPAWN_ZONE_MIDDLE)
+	local distance = math_random(MOB_SPAWN_ZONE_INNER, MOB_SPAWN_ZONE_MIDDLE)
 	local angle = math_random() * two_pi
+
+	-- TODO Floor xoff and zoff and add 0.5 so it tries to spawn in the middle of the square. Less failed attempts.
 	local xoff = math_round(distance * math_cos(angle))
-	local yoff = math_round(distance * math_sin(angle))
-	return vector.offset(pos, xoff, 0, yoff)
+	local zoff = math_round(distance * math_sin(angle))
+	return vector.offset(pos, xoff, 0, zoff)
 end
 
 local function decypher_limits(posy)
@@ -776,29 +792,6 @@ if mobs_spawn then
 			mcl_log("cap_space_close: " .. cap_space_close)
 		end
 
-
-		--TODO Remove old checks
-		local compare_to_old_checks = false
-
-		if compare_to_old_checks then
-			local mob_count_wide = count_mobs(pos,MOB_SPAWN_ZONE_OUTER,mob_type)
-			local mob_count_close = count_mobs(pos,MOB_CAP_INNER_RADIUS,mob_type)
-
-			if mob_total_wide ~= mob_count_wide then
-				mcl_log("old mob_count_wide: " .. mob_count_wide)
-				mcl_log("A difference in wide mob count")
-			else
-				--mcl_log("No difference in wide mob count")
-			end
-
-			if mob_total_close ~= mob_count_close then
-				mcl_log("old mob_count_close: " .. mob_count_close)
-				mcl_log("A difference in close mob count")
-			else
-				--mcl_log("No difference in close mob count")
-			end
-		end
-
 		return cap_space_wide, cap_space_close
 	end
 
@@ -853,9 +846,8 @@ if mobs_spawn then
 		end
 
 		local mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("spawn_class", spawning_position)
-		-- TODO remove output
-		output_mob_stats(mob_counts_close, total_mobs)
-		output_mob_stats(mob_counts_wide, total_mobs)
+		--output_mob_stats(mob_counts_close, total_mobs)
+		--output_mob_stats(mob_counts_wide)
 
 		--grab mob that fits into the spawning location
 		--randomly grab a mob, don't exclude any possibilities
@@ -949,7 +941,7 @@ if mobs_spawn then
 						if spawned then
 							--mcl_log("We have spawned")
 							mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("type", pos)
-							local new_spawning_position = find_spawning_position(pos, 3)
+							local new_spawning_position = find_spawning_position(pos, FIND_SPAWN_POS_RETRIES_SUCCESS_RESPIN)
 							if new_spawning_position then
 								mcl_log("Setting new spawning position")
 								spawning_position = new_spawning_position
@@ -1028,14 +1020,12 @@ end
 minetest.register_chatcommand("mobstats",{
 	privs = { debug = true },
 	func = function(n,param)
-		minetest.chat_send_player(n,dump(dbg_spawn_counts))
+		--minetest.chat_send_player(n,dump(dbg_spawn_counts))
 		local pos = minetest.get_player_by_name(n):get_pos()
-		minetest.chat_send_player(n,"mobs within 32 radius of player:"..count_mobs(pos,MOB_CAP_INNER_RADIUS))
-		minetest.chat_send_player(n,"total mobs:"..count_mobs_total())
-		minetest.chat_send_player(n,"spawning attempts since server start:"..dbg_spawn_attempts)
-		minetest.chat_send_player(n,"successful spawns since server start:"..dbg_spawn_succ)
+		minetest.chat_send_player(n,"mobs: within 32 radius of player/total loaded :"..count_mobs(pos,MOB_CAP_INNER_RADIUS) .. "/" .. count_mobs_total())
+		minetest.chat_send_player(n,"spawning attempts since server start:" .. dbg_spawn_succ .. "/" .. dbg_spawn_attempts)
 
 		local mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("name") -- Can use "type"
-		output_mob_stats(mob_counts_wide, total_mobs)
+		output_mob_stats(mob_counts_wide, total_mobs, true)
 	end
 })
