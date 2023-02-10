@@ -118,15 +118,18 @@ local pl_def = {
 			end
 		end
 	end,
-}
+	after_place_node = function(pos)
+	mcl_core.make_player_leaves(pos) -- Leaves placed by the player should always be player leaves.
+	end,
+	}
 
-minetest.register_node("mcl_mangrove:playermangroveleaves", pl_def)
+minetest.register_node("mcl_mangrove:mangroveleaves_player", pl_def)
 
 local l_def = table.copy(pl_def)
 l_def.groups.player_leaves = nil
 l_def.groups.not_in_creative_inventory = 1
-l_def._mcl_shears_drop = {"mcl_mangrove:playermangroveleaves"}
-l_def._mcl_silk_touch_drop = {"mcl_mangrove:playermangroveleaves"}
+l_def._mcl_shears_drop = {"mcl_mangrove:mangroveleaves_player"}
+l_def._mcl_silk_touch_drop = {"mcl_mangrove:mangroveleaves_player"}
 
 minetest.register_node("mcl_mangrove:mangroveleaves", l_def)
 
@@ -134,8 +137,8 @@ local o_def = table.copy(l_def)
 o_def._doc_items_create_entry = false
 o_def.groups.not_in_creative_inventory = 1
 o_def.groups.orphan_leaves = 1
-o_def._mcl_shears_drop = {"mcl_mangrove:playermangroveleaves"}
-o_def._mcl_silk_touch_drop = {"mcl_mangrove:playermangroveleaves"}
+o_def._mcl_shears_drop = {"mcl_mangrove:mangroveleaves_player"}
+o_def._mcl_silk_touch_drop = {"mcl_mangrove:mangroveleaves_player"}
 
 minetest.register_node("mcl_mangrove:mangroveleaves_orphan", o_def)
 
