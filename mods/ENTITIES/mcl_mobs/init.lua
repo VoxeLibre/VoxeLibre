@@ -489,7 +489,7 @@ function mcl_mobs.register_egg(mob, desc, background_color, overlay_color, addeg
 		on_place = function(itemstack, placer, pointed_thing)
 
 			local pos = pointed_thing.above
-
+			
 			-- am I clicking on something with existing on_rightclick function?
 			local under = minetest.get_node(pointed_thing.under)
 			local def = minetest.registered_nodes[under.name]
@@ -503,6 +503,9 @@ function mcl_mobs.register_egg(mob, desc, background_color, overlay_color, addeg
 
 				local name = placer:get_player_name()
 				local privs = minetest.get_player_privs(name)
+				local dim = mcl_worlds.pos_to_dimension(placer:get_pos())
+				local mob_light_lvl = mcl_mobs:mob_light_lvl(itemstack:get_name(),dim)
+
 				if under.name == "mcl_mobspawners:spawner" then
 					if minetest.is_protected(pointed_thing.under, name) then
 						minetest.record_protection_violation(pointed_thing.under, name)
@@ -512,7 +515,8 @@ function mcl_mobs.register_egg(mob, desc, background_color, overlay_color, addeg
 						minetest.chat_send_player(name, S("You need the “maphack” privilege to change the mob spawner."))
 						return itemstack
 					end
-					mcl_mobspawners.setup_spawner(pointed_thing.under, itemstack:get_name())
+					mcl_mobs:mob_light_lvl(itemstack:get_name(),dim)
+					mcl_mobspawners.setup_spawner(pointed_thing.under, itemstack:get_name(), mob_light_lvl.min_light, mob_light_lvl.max_light)
 					if not minetest.is_creative_enabled(name) then
 						itemstack:take_item()
 					end
