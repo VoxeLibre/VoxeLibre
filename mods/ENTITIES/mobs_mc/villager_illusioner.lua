@@ -66,3 +66,4 @@ mcl_mobs.register_mob("mobs_mc:illusioner", {
 })
 
 mcl_mobs.register_egg("mobs_mc:illusioner", S("Illusioner"), "#3f5cbb", "#8a8686", 0)
+mcl_mobs:non_spawn_specific("mobs_mc:illusioner","overworld",0,7)

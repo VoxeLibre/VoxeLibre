@@ -430,7 +430,7 @@ nether_max)
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "#350000", "#fcfc00")
-
+mcl_mobs:non_spawn_specific("mobs_mc:magma_cube_big","overworld",0, minetest.LIGHT_MAX+1)
 mcl_mobs.register_egg("mobs_mc:slime_big", S("Slime"), "#52a03e", "#7ebf6d")
 
 -- FIXME: add spawn eggs for small and tiny slimes and magma cubes

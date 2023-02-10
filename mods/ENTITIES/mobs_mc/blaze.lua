@@ -207,5 +207,6 @@ mcl_mobs.register_arrow("mobs_mc:blaze_fireball", {
 	end
 })
 
--- spawn eggs
+mcl_mobs:non_spawn_specific("mobs_mc:blaze", "overworld", 0, 11)
+-- spawn eggs.
 mcl_mobs.register_egg("mobs_mc:blaze", S("Blaze"), "#f6b201", "#fff87e", 0)

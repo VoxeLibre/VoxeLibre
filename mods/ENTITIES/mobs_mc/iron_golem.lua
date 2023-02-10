@@ -206,3 +206,4 @@ function mobs_mc.check_iron_golem_summon(pos)
 		end
 	end
 end
+mcl_mobs:non_spawn_specific("mobs_mc:iron_golem","overworld",0,minetest.LIGHT_MAX+1)
