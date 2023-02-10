@@ -1108,6 +1108,16 @@ local grow_acacia = sapling_grow_action(ACACIA_TREE_ID, 2, true, false)
 local grow_spruce = sapling_grow_action(SPRUCE_TREE_ID, 1, true, true, "mcl_core:sprucesapling")
 local grow_birch = sapling_grow_action(BIRCH_TREE_ID, 1, true, false)
 
+function mcl_core.update_sapling_foliage_colors(pos)
+	local pos1, pos2 = vector.offset(pos, -6, 0, -6), vector.offset(pos, 6, 128, 6)
+	local lnode
+	local leaves = minetest.find_nodes_in_area(pos1, pos2, {"group:foliage_palette", "group:foliage_palette_wallmounted"})
+	for _, lpos in pairs(leaves) do
+		lnode = minetest.get_node(lpos)
+		minetest.set_node(lpos, lnode)
+	end
+end
+
 -- Attempts to grow the sapling at the specified position
 -- pos: Position
 -- node: Node table of the node at this position, from minetest.get_node
@@ -1129,6 +1139,7 @@ function mcl_core.grow_sapling(pos, node)
 	end
 	if grow then
 		grow(pos)
+		mcl_core.update_sapling_foliage_colors(pos)
 		return true
 	else
 		return false
