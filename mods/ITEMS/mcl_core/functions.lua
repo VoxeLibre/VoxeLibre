@@ -1110,11 +1110,11 @@ local grow_birch = sapling_grow_action(BIRCH_TREE_ID, 1, true, false)
 
 function mcl_core.update_sapling_foliage_colors(pos)
 	local pos1, pos2 = vector.offset(pos, -6, 0, -6), vector.offset(pos, 6, 128, 6)
-	local lnode
-	local leaves = minetest.find_nodes_in_area(pos1, pos2, {"group:foliage_palette", "group:foliage_palette_wallmounted"})
-	for _, lpos in pairs(leaves) do
-		lnode = minetest.get_node(lpos)
-		minetest.set_node(lpos, lnode)
+	local fnode
+	local foliage = minetest.find_nodes_in_area(pos1, pos2, {"group:foliage_palette", "group:foliage_palette_wallmounted"})
+	for _, fpos in pairs(foliage) do
+		fnode = minetest.get_node(fpos)
+		minetest.set_node(fpos, fnode)
 	end
 end
 
