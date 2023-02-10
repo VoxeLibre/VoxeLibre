@@ -44,6 +44,14 @@ function mcl_core.update_leaves(pos, oldnode)
 	end
 end
 
+function mcl_core.make_player_leaves(pos)
+	local node = minetest.get_node(pos)
+		if minetest.get_item_group(node.name, "player_leaves") ~= 1 then
+			local playerleafname = node.name .. "_player"
+			minetest.set_node(pos, {name = playerleafname})
+	end
+end
+
 -- Register tree trunk (wood) and bark
 local function register_tree_trunk(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark, stripped_variant)
 	minetest.register_node("mcl_core:"..subname, {
@@ -208,9 +216,12 @@ local function register_leaves(subname, description, longdesc, tiles, color, par
 			end
 		end
 	end,
+		after_place_node = function(pos)
+		mcl_core.make_player_leaves(pos) -- Leaves placed by the player should always be player leaves.
+	end,
 	}
 
-	minetest.register_node("mcl_core:player" .. subname, pl_def)
+	minetest.register_node("mcl_core:" .. subname .. "_player", pl_def)
 
 	local l_def = table.copy(pl_def)
 	l_def.groups.player_leaves = nil
