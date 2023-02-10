@@ -274,7 +274,11 @@ function mcl_beds.sleep()
 			end
 			-- Always clear weather
 			mcl_weather.change_weather("none")
-		elseif mcl_beds.is_night() then
+		elseif mcl_beds.is_night() and weather_mod then
+			mcl_beds.skip_night()
+			mcl_beds.kick_players()
+			mcl_weather.change_weather("none")
+		elseif mcl_beds.is_night() and not weather_mod then
 			mcl_beds.skip_night()
 			mcl_beds.kick_players()
 		end
