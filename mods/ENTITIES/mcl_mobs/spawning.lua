@@ -413,6 +413,8 @@ WARNING: BIOME INTEGRATION NEEDED -> How to get biome through lua??
 
 --this is where all of the spawning information is kept
 local spawn_dictionary = {}
+--this is where all of the spawning information  is kept for mobs that don't naturally spawn
+local non_spawn_dictionary = {}
 local summary_chance = 0
 
 function mcl_mobs:spawn_setup(def)
@@ -476,6 +478,64 @@ function mcl_mobs:spawn_setup(def)
 		on_spawn         = on_spawn,
 	}
 	summary_chance = summary_chance + chance
+end
+
+function mcl_mobs:mob_light_lvl(mob_name, dimension)
+	local mob_light_table = {}
+	--see if the mob exists in the nonspawn dictionary, if so then return light values
+	if non_spawn_dictionary[mob_name] ~= nil then
+		if non_spawn_dictionary[mob_name][dimension] ~= nil then
+			mob_light_table = {
+				["min_light"] = non_spawn_dictionary[mob_name][dimension].min_light, 
+				["max_light"] = non_spawn_dictionary[mob_name][dimension].max_light
+			}
+			return mob_light_table
+		else
+			mob_light_table = {
+				["min_light"] = non_spawn_dictionary[mob_name]["overworld"].min_light,
+				["max_light"] = non_spawn_dictionary[mob_name]["overworld"].max_light
+			}
+			return mob_light_table
+		end
+
+	--if the mob doesn't exist in non_spawn, check spawn_dictonary
+	else
+		for i,v in pairs(spawn_dictionary) do
+			local big_slime_search = string.find(spawn_dictionary[i].name,".*slime.*")
+			if spawn_dictionary[i].name == mob_name and spawn_dictionary[i].dimension == dimension and not big_slime_search then
+				mob_light_table = {
+					["min_light"] = spawn_dictionary[i].min_light,
+					["max_light"] = spawn_dictionary[i].max_light
+				}
+				return mob_light_table
+
+			elseif spawn_dictionary[i].name == mob_name and spawn_dictionary[i].dimension == "overworld" and not big_slime_search then
+				mob_light_table = {
+					["min_light"] = spawn_dictionary[i].min_light,
+					["max_light"] = spawn_dictionary[i].max_light
+				}
+				return mob_light_table
+			elseif big_slime_search then
+				--custom spawners with slimes are broken in minecraft (they don't spawn unless in slime chunk) so we'll make sure they're broken in mcl2 as well :)
+				--if slimes chunks get added in the future, change this.
+				--Mobs will also have their light levels set to this for custom spawners if they don't appear in spawn_dictionary or non_spawn_dictionary
+				mob_light_table = {
+					["min_light"] = -1,
+					["max_light"] = -1
+				}
+				return mob_light_table
+			end 
+		end	
+	end
+end
+
+function mcl_mobs:non_spawn_specific(mob_name,dimension,min_light,max_light)
+	table.insert(non_spawn_dictionary, mob_name)
+	non_spawn_dictionary[mob_name] = { 
+		[dimension] = { 
+			min_light = min_light , max_light = max_light
+		}
+	}
 end
 
 function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_light, max_light, interval, chance, aoc, min_height, max_height, day_toggle, on_spawn)
