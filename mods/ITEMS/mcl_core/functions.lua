@@ -820,11 +820,6 @@ function mcl_core.get_grass_block_type(pos)
 	return {name = "mcl_core:dirt_with_grass", param2 = mcl_core.get_grass_palette_index(pos)}
 end
 
-function mcl_core.get_foliage_name(pos)
-	local nodename = minetest.get_node(pos).name
-	return nodename
-end
-
 function mcl_core.get_foliage_palette_index(pos)
 	local biome_data = minetest.get_biome_data(pos)
 	local index = 0
@@ -841,7 +836,7 @@ end
 
 -- Return appropriate foliage block node for pos
 function mcl_core.get_foliage_block_type(pos)
-	return {name = mcl_core.get_foliage_name(pos), param2 = mcl_core.get_foliage_palette_index(pos)}
+	return {name = minetest.get_node(pos).name, param2 = mcl_core.get_foliage_palette_index(pos)}
 end
 
 ------------------------------
