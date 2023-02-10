@@ -119,7 +119,7 @@ local pl_def = {
 		end
 	end,
 	after_place_node = function(pos)
-	mcl_core.make_player_leaves(pos) -- Leaves placed by the player should always be player leaves.
+		mcl_core.make_player_leaves(pos) -- Leaves placed by the player should always be player leaves.
 	end,
 	}
 
@@ -571,8 +571,8 @@ minetest.register_abm({
 			if #nn >= h then
 				minetest.place_schematic(pos, path, "random", function()
 				mcl_core.update_sapling_foliage_colors(pos)
-					local nnv = minetest.find_nodes_in_area(vector.offset(pos,-5,-1,-5),vector.offset(pos,5,h/2,5),{"mcl_core:vine"})
-					minetest.bulk_set_node(nnv,{"air"})
+				local nnv = minetest.find_nodes_in_area(vector.offset(pos,-5,-1,-5),vector.offset(pos,5,h/2,5),{"mcl_core:vine"})
+				minetest.bulk_set_node(nnv,{"air"})
 				end, true, "place_center_x, place_center_z")
 			end
 			return
@@ -582,5 +582,5 @@ minetest.register_abm({
 			minetest.place_schematic(pos, path, "random", nil, true, "place_center_x, place_center_z")
 			mcl_core.update_sapling_foliage_colors(pos)
 		end
-end
+	end,
 })
