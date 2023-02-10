@@ -111,7 +111,7 @@ local pl_def = {
 	_mcl_fortune_drop = { get_drops(1), get_drops(2), get_drops(3), get_drops(4) },
 	on_construct = function(pos)
 		local node = minetest.get_node(pos)
-		if node.param2 == 0 then
+		if node.param2 == 0 or node.param2 == 1 then -- Check if param2 is 1 as well, since the schematics accidentally have the param2 of mangrove leaves be 1.
 			local new_node = mcl_core.get_foliage_block_type(pos)
 			if new_node.param2 ~= 0 then
 				minetest.swap_node(pos, new_node)
@@ -570,6 +570,7 @@ minetest.register_abm({
 			local nn = minetest.find_nodes_in_area(vector.offset(pos,0,-1,0),vector.offset(pos,0,h,0),{"group:water","air"})
 			if #nn >= h then
 				minetest.place_schematic(pos, path, "random", function()
+				mcl_core.update_sapling_foliage_colors(pos)
 					local nnv = minetest.find_nodes_in_area(vector.offset(pos,-5,-1,-5),vector.offset(pos,5,h/2,5),{"mcl_core:vine"})
 					minetest.bulk_set_node(nnv,{"air"})
 				end, true, "place_center_x, place_center_z")
@@ -579,6 +580,7 @@ minetest.register_abm({
 		if r > 3 then h = 18 end
 		if mcl_core.check_growth_width(pos,w,h) then
 			minetest.place_schematic(pos, path, "random", nil, true, "place_center_x, place_center_z")
+			mcl_core.update_sapling_foliage_colors(pos)
 		end
 end
 })
