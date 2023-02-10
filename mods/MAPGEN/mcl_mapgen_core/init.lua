@@ -491,8 +491,8 @@ minetest.register_lbm({
 				if node.param2 ~= final_param2 and rotation_param2 < 6 then
 					node.param2 = final_param2
 					minetest.set_node(pos, node)
+				end
 			end
 		end
-	end
-end,
+	end,
 })
