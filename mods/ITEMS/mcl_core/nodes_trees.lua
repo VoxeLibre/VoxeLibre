@@ -46,9 +46,9 @@ end
 
 function mcl_core.make_player_leaves(pos)
 	local node = minetest.get_node(pos)
-		if minetest.get_item_group(node.name, "player_leaves") ~= 1 then
-			local playerleafname = node.name .. "_player"
-			minetest.set_node(pos, {name = playerleafname})
+	if minetest.get_item_group(node.name, "player_leaves") ~= 1 then
+		local playerleafname = node.name .. "_player"
+		minetest.set_node(pos, {name = playerleafname})
 	end
 end
 
@@ -208,26 +208,26 @@ local function register_leaves(subname, description, longdesc, tiles, color, par
 		_mcl_silk_touch_drop = true,
 		_mcl_fortune_drop = { get_drops(1), get_drops(2), get_drops(3), get_drops(4) },
 		on_construct = function(pos)
-		local node = minetest.get_node(pos)
-		if node.param2 == 0 then
-			local new_node = mcl_core.get_foliage_block_type(pos)
-			if new_node.param2 ~= 0 then
-				minetest.swap_node(pos, new_node)
+			local node = minetest.get_node(pos)
+			if node.param2 == 0 then
+				local new_node = mcl_core.get_foliage_block_type(pos)
+				if new_node.param2 ~= 0 then
+					minetest.swap_node(pos, new_node)
+				end
 			end
-		end
-	end,
+		end,
 		after_place_node = function(pos)
-		mcl_core.make_player_leaves(pos) -- Leaves placed by the player should always be player leaves.
-	end,
-	}
+			mcl_core.make_player_leaves(pos) -- Leaves placed by the player should always be player leaves.
+		end,
+		}
 
 	minetest.register_node("mcl_core:" .. subname .. "_player", pl_def)
 
 	local l_def = table.copy(pl_def)
 	l_def.groups.player_leaves = nil
 	l_def.groups.not_in_creative_inventory = 1
-	l_def._mcl_shears_drop = {"mcl_core:player" .. subname}
-	l_def._mcl_silk_touch_drop = {"mcl_core:player" .. subname}
+	l_def._mcl_shears_drop = {"mcl_core:" .. subname .. "_player"}
+	l_def._mcl_silk_touch_drop = {"mcl_core:" .. subname .. "_player"}
 
 	minetest.register_node("mcl_core:" .. subname, l_def)
 
@@ -235,8 +235,8 @@ local function register_leaves(subname, description, longdesc, tiles, color, par
 	o_def._doc_items_create_entry = false
 	o_def.groups.not_in_creative_inventory = 1
 	o_def.groups.orphan_leaves = 1
-	o_def._mcl_shears_drop = {"mcl_core:player" .. subname}
-	o_def._mcl_silk_touch_drop = {"mcl_core:player" .. subname}
+	o_def._mcl_shears_drop = {"mcl_core:" .. subname .. "_player"}
+	o_def._mcl_silk_touch_drop = {"mcl_core:" .. subname .. "_player"}
 
 	minetest.register_node("mcl_core:" .. subname .. "_orphan", o_def)
 end
