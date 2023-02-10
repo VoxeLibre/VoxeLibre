@@ -1052,6 +1052,7 @@ local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two,
 					minetest.remove_node(p3)
 					minetest.remove_node(p4)
 					mcl_core.generate_tree(pos, tree_id, { two_by_two = true })
+					mcl_core.update_sapling_foliage_colors(pos)
 					return
 				elseif s3 and s5 and s6 and check_tree_growth(p6, tree_id, { two_by_two = true }) then
 					minetest.remove_node(pos)
@@ -1059,6 +1060,7 @@ local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two,
 					minetest.remove_node(p5)
 					minetest.remove_node(p6)
 					mcl_core.generate_tree(p6, tree_id, { two_by_two = true })
+					mcl_core.update_sapling_foliage_colors(pos)
 					return
 				elseif s6 and s7 and s8 and check_tree_growth(p7, tree_id, { two_by_two = true }) then
 					minetest.remove_node(pos)
@@ -1066,6 +1068,7 @@ local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two,
 					minetest.remove_node(p7)
 					minetest.remove_node(p8)
 					mcl_core.generate_tree(p7, tree_id, { two_by_two = true })
+					mcl_core.update_sapling_foliage_colors(pos)
 					return
 				elseif s2 and s8 and s9 and check_tree_growth(p8, tree_id, { two_by_two = true }) then
 					minetest.remove_node(pos)
@@ -1073,6 +1076,7 @@ local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two,
 					minetest.remove_node(p8)
 					minetest.remove_node(p9)
 					mcl_core.generate_tree(p8, tree_id, { two_by_two = true })
+					mcl_core.update_sapling_foliage_colors(pos)
 					return
 				end
 			end
@@ -1083,6 +1087,7 @@ local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two,
 					if check_tree_growth(pos, tree_id, { balloon = true }) then
 						minetest.set_node(pos, {name="air"})
 						mcl_core.generate_tree(pos, tree_id, { balloon = true })
+						mcl_core.update_sapling_foliage_colors(pos)
 						return
 					end
 				end
@@ -1093,6 +1098,7 @@ local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two,
 				minetest.set_node(pos, {name="air"})
 				--local r = math.random(1, 12)
 				mcl_core.generate_tree(pos, tree_id)
+				mcl_core.update_sapling_foliage_colors(pos)
 				return
 			end
 		else
