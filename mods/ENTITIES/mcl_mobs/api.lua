@@ -135,8 +135,7 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		end
 	end
 
-	-- Added from PR comments
-	--if not self.base_texture then
+	--If textures in definition change, reload textures
 	if not self.base_texture or (def.textures and table.indexof(def.textures, self.base_texture) == -1) then
 		-- compatiblity with old simple mobs textures
 		if type(def.textures[1]) == "string" then
@@ -152,7 +151,6 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		self.base_colbox = self.collisionbox
 		self.base_selbox = self.selectionbox
 	end
-	-- End Added PR Comment Code.
 
 	if not self.base_selbox then
 		self.base_selbox = self.selectionbox or self.base_colbox
