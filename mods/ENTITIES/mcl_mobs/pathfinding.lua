@@ -3,6 +3,9 @@ local mob_class = mcl_mobs.mob_class
 
 local PATHFINDING_FAIL_THRESHOLD = 100 -- no. of ticks to fail before giving up. 20p/s. 5s helps them get through door
 local PATHFINDING_FAIL_WAIT = 30 -- how long to wait before trying to path again
+local PATHING_START_DELAY = 4 -- When doing non-prioritised pathing, how long to wait until last mob pathed
+
+local PATHFINDING_SEARCH_DISTANCE = 50 -- How big the square is that pathfinding will look
 
 local PATHFINDING = "gowp"
 
@@ -107,14 +110,20 @@ local function generate_enriched_path(wp_in, door_open_pos, door_close_pos, cur_
 	return wp_out
 end
 
-function mob_class:ready_to_path()
+local last_pathing_time = os.time()
+
+function mob_class:ready_to_path(prioritised)
 	mcl_log("Check ready to path")
 	if self._pf_last_failed and (os.time() - self._pf_last_failed) < PATHFINDING_FAIL_WAIT then
 		mcl_log("Not ready to path as last fail is less than threshold: " .. (os.time() - self._pf_last_failed))
 		return false
 	else
-		mcl_log("We are ready to pathfind, no previous fail or we are past threshold")
-		return true
+		local time_since_path_start = os.time() - last_pathing_time
+		mcl_log("time_since_path_start: " .. tostring(time_since_path_start))
+		if prioritised or (time_since_path_start) > PATHING_START_DELAY then
+			mcl_log("We are ready to pathfind, no previous fail or we are past threshold")
+			return true
+		end
 	end
 end
 
@@ -144,7 +153,7 @@ local function calculate_path_through_door (p, cur_door_pos, t)
 			if n.name == "air" then
 				mcl_log("We have air space next to door at: " .. minetest.pos_to_string(pos_closest_to_door))
 
-				prospective_wp = minetest.find_path(p,pos_closest_to_door,150,1,4)
+				prospective_wp = minetest.find_path(p, pos_closest_to_door, PATHFINDING_SEARCH_DISTANCE, 1, 4)
 
 				if prospective_wp then
 					mcl_log("Found a path to next to door".. minetest.pos_to_string(pos_closest_to_door))
@@ -154,7 +163,7 @@ local function calculate_path_through_door (p, cur_door_pos, t)
 
 					if t then
 						mcl_log("We have t, lets go from door to target")
-						local wp_otherside_door_to_target = minetest.find_path(other_side_of_door,t,150,1,4)
+						local wp_otherside_door_to_target = minetest.find_path(other_side_of_door, t, PATHFINDING_SEARCH_DISTANCE, 1, 4)
 
 						if wp_otherside_door_to_target and #wp_otherside_door_to_target > 0 then
 							append_paths (prospective_wp, wp_otherside_door_to_target)
@@ -190,9 +199,13 @@ local function calculate_path_through_door (p, cur_door_pos, t)
 	return enriched_path
 end
 
-function mob_class:gopath(target,callback_arrived)
+
+
+function mob_class:gopath(target, callback_arrived, prioritised)
 	if self.state == PATHFINDING then mcl_log("Already pathfinding, don't set another until done.") return end
-	if not self:ready_to_path() then return end
+	if not self:ready_to_path(prioritised) then return end
+
+	last_pathing_time = os.time()
 
 	self.order = nil
 
@@ -200,7 +213,7 @@ function mob_class:gopath(target,callback_arrived)
 	local t = vector.offset(target,0,1,0)
 
 	--Check direct route
-	local wp = minetest.find_path(p,t,150,1,4)
+	local wp = minetest.find_path(p, t, PATHFINDING_SEARCH_DISTANCE, 1, 4)
 
 	if not wp then
 		mcl_log("### No direct path. Path through door closest to target.")
@@ -410,7 +423,7 @@ function mob_class:check_gowp(dtime)
 			mcl_log("No current target")
 		end
 
-		local final_wp = minetest.find_path(p,self._target,150,1,4)
+		local final_wp = minetest.find_path(p, self._target, PATHFINDING_SEARCH_DISTANCE, 1, 4)
 		if final_wp then
 			mcl_log("We can get to target here.")
 		--	self.waypoints = final_wp

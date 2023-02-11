@@ -617,6 +617,13 @@ local function set_textures(self)
 	self.object:set_properties({textures=badge_textures})
 end
 
+-- TODO Pass in self and if nitwit, go to bed later.
+local function is_night()
+	local tod = minetest.get_timeofday()
+	tod = ( tod * 24000 ) % 24000
+	return  tod > 17500 or tod < 6500
+end
+
 function get_activity(tod)
 	-- night hours = tod > 18541 or tod < 5458
 	if not tod then
@@ -626,8 +633,8 @@ function get_activity(tod)
 
 	local lunch_start = 11000
 	local lunch_end = 13500
-	local work_start = 7000
-	local work_end = 16500
+	local work_start = 7500
+	local work_end = 16000
 
 	local activity = nil
 	if weather_mod and mcl_weather.get_weather() == "thunder" then
@@ -635,7 +642,7 @@ function get_activity(tod)
 		activity = SLEEP
 	elseif (tod > work_start and tod < lunch_start) or  (tod > lunch_end and tod < work_end) then
 		activity = WORK
-	elseif mcl_beds.is_night() then
+	elseif is_night() then
 		activity = SLEEP
 	elseif tod > lunch_start and tod < lunch_end then
 		activity = GATHERING
@@ -829,7 +836,7 @@ local function go_home(entity, sleep)
 			else
 				--minetest.log("Need to walk to home")
 			end
-		end)
+		end, true)
 	end
 end
 
@@ -1166,6 +1173,7 @@ local function do_work (self)
 				self.order = nil
 				return
 			end
+
 			self:gopath(jobsite, function(self, jobsite)
 				if not self then
 					--mcl_log("missing self. not good")
@@ -1309,7 +1317,7 @@ local function do_activity (self)
 
 	local jobsite_valid = false
 
-	if not mcl_beds.is_night() then
+	if not is_night() then
 		if self.order == SLEEP then self.order = nil end
 
 		if not validate_jobsite(self) then
