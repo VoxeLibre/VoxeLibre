@@ -457,15 +457,10 @@ minetest.register_lbm({
 	nodenames = {"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass", "mcl_flowers:double_grass", "mcl_flowers:double_grass_top", "mcl_flowers:fern", "mcl_flowers:double_fern", "mcl_flowers:double_fern_top", "mcl_core:reeds", "mcl_core:dirt_with_grass_snow"},
 	run_at_every_load = true,
 	action = function(pos, node)
-		if mg_name ~= "v6" and mg_name ~= "singlenode" then
-			local biome_data = minetest.get_biome_data(pos)
-			local biome = biome_data.biome
-			local biome_name = minetest.get_biome_name(biome)
-			local reg_biome = minetest.registered_biomes[biome_name]
-			if node.param2 ~= reg_biome._mcl_grass_palette_index then
-				node.param2 = reg_biome._mcl_grass_palette_index
-				minetest.set_node(pos, node)
-			end
+		local reg_biome = mcl_util.get_registered_biome_from_pos(pos)
+		if node.param2 ~= reg_biome._mcl_grass_palette_index then
+			node.param2 = reg_biome._mcl_grass_palette_index
+			minetest.set_node(pos, node)
 		end
 	end,
 })
@@ -476,22 +471,17 @@ minetest.register_lbm({
 	nodenames = {"group:foliage_palette", "group:foliage_palette_wallmounted"},
 	run_at_every_load = true,
 	action = function(pos, node)
-		if mg_name ~= "v6" and mg_name ~= "singlenode" then
-			local biome_data = minetest.get_biome_data(pos)
-			local biome = biome_data.biome
-			local biome_name = minetest.get_biome_name(biome)
-			local reg_biome = minetest.registered_biomes[biome_name]
-			if node.param2 ~= reg_biome._mcl_foliage_palette_index and node.name ~= "mcl_core:vine" then
-				node.param2 = reg_biome._mcl_foliage_palette_index
+		local reg_biome = mcl_util.get_registered_biome_from_pos(pos)
+		if node.param2 ~= reg_biome._mcl_foliage_palette_index and node.name ~= "mcl_core:vine" then
+			node.param2 = reg_biome._mcl_foliage_palette_index
+			minetest.set_node(pos, node)
+		elseif node.name == "mcl_core:vine" then
+			local biome_param2 = reg_biome._mcl_foliage_palette_index
+			local rotation_param2 = node.param2
+			local final_param2 = (biome_param2 * 8) + rotation_param2
+			if node.param2 ~= final_param2 and rotation_param2 < 6 then
+				node.param2 = final_param2
 				minetest.set_node(pos, node)
-			elseif node.name == "mcl_core:vine" then
-				local biome_param2 = reg_biome._mcl_foliage_palette_index
-				local rotation_param2 = node.param2
-				local final_param2 = (biome_param2 * 8) + rotation_param2
-				if node.param2 ~= final_param2 and rotation_param2 < 6 then
-					node.param2 = final_param2
-					minetest.set_node(pos, node)
-				end
 			end
 		end
 	end,
