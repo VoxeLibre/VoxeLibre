@@ -41,6 +41,7 @@ A lot of things are possible by using one of the APIs in the mods. Note that not
 * Beds: `ITEMS/mcl_beds`
 * Buckets: `ITEMS/mcl_buckets`
 * Dispenser support: `ITEMS/REDSTONE/mcl_dispensers`
+* Campfires: `ITEMS/mcl_campfires`
 
 ### Mobs
 * Mobs: `ENTITIES/mcl_mobs`
