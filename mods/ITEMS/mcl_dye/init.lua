@@ -533,6 +533,13 @@ minetest.register_craft({
 	cooktime = 10,
 })
 
+minetest.register_craft({
+	type = "cooking",
+	output = "mcl_dye:green",
+	recipe = "group:sea_pickle",
+	cooktime = 10,
+})
+
 -- Dye mixing recipes.
 --
 minetest.register_craft({
