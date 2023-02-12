@@ -1011,3 +1011,13 @@ function mcl_util.check_position_protection(position, player)
 
 	return false
 end
+
+function mcl_util.get_registered_biome_from_pos(pos)
+	if mg_name ~= "v6" and mg_name ~= "singlenode" then
+		local biome_data = minetest.get_biome_data(pos)
+		local biome = biome_data.biome
+		local biome_name = minetest.get_biome_name(biome)
+		local reg_biome = minetest.registered_biomes[biome_name]
+	return reg_biome
+	end
+end
