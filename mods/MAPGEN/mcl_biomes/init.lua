@@ -5289,6 +5289,7 @@ local function register_decorations()
 	register_flower("blue_orchid", {"Swampland"}, 64500, false)
 
 	register_flower("lily_of_the_valley", nil, 436)
+	register_flower("cornflower", {"Plains", "SunflowerPlains"}, 536)
 end
 
 -- Decorations in non-Overworld dimensions

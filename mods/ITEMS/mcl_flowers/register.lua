@@ -72,3 +72,9 @@ mcl_flowers.register_simple_flower("lily_of_the_valley", {
 	selection_box = { -5/16, -0.5, -5/16, 4/16, 5/16, 5/16 },
 	potted = true,
 })
+mcl_flowers.register_simple_flower("cornflower", {
+	desc = S("Cornflower"),
+	image = "mcl_flowers_cornflower.png",
+	selection_box = { -4/16, -0.5, -4/16, 4/16, 3/16, 4/16 },
+	potted = true,
+})

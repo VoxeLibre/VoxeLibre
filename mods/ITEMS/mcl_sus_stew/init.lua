@@ -9,7 +9,7 @@ local flower_effect = {
 	[ "mcl_flowers:lily_of_the_valley" ] = "poison",
 	[ "mcl_flowers:blue_orchid" ] = "hunger",
 	[ "mcl_flowers:dandelion" ] = "hunger",
-	[ "mcl_flowers:peony" ] = "jump",
+	[ "mcl_flowers:cornflower" ] = "jump",
 	[ "mcl_flowers:oxeye_daisy" ] = "regeneration",
 	[ "mcl_flowers:poppy" ] = "night_vision"	
 }
@@ -126,7 +126,7 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_sus_stew:stew",
-	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:peony"},
+	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:cornflower"},
 })
 
 minetest.register_craft({
