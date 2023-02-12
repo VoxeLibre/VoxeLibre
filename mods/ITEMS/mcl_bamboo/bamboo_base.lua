@@ -29,7 +29,7 @@ local bamboo_def = {
 	tiles = {"mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
-	groups = {handy = 1, axey = 1, choppy = 1, flammable = 3},
+	groups = {handy = 1, axey = 1, choppy = 1, dig_by_piston = 1, plant = 1, non_mycelium_plant = 1, flammable = 3},
 	sounds = node_sound,
 
 	drop = {
@@ -293,7 +293,6 @@ local bamboo_block_def = {
 
 		return minetest.item_place(itemstack, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
 	end,
-
 }
 
 minetest.register_node("mcl_bamboo:bamboo_block", bamboo_block_def)

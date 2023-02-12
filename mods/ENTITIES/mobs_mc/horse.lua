@@ -125,7 +125,7 @@ local horse = {
 	type = "animal",
 	spawn_class = "passive",
 	spawn_in_group_min = 2,
-	spawn_in_group = 6,
+	spawn_in_group = 4, -- was 6. nerfed until group size is a cap rather than per spawn cycle
 	visual = "mesh",
 	mesh = "mobs_mc_horse.b3d",
 	visual_size = {x=3.0, y=3.0},

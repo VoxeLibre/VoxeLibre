@@ -45,8 +45,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = BAMBOO .. "_mosaic",
 	recipe = {
-		{"mcl_stair:slab_bamboo_plank"},
-		{"mcl_stair:slab_bamboo_plank"},
+		{"mcl_stairs:slab_bamboo_plank"},
+		{"mcl_stairs:slab_bamboo_plank"},
 	}
 })
 

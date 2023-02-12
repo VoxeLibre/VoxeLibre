@@ -56,8 +56,8 @@ mcl_mobs.register_mob("mobs_mc:llama", {
 	shoot_interval = 5.5,
 	arrow = "mobs_mc:llamaspit",
 	shoot_offset = 1, --3.5 *would* be a good value visually but it somehow messes with the projectiles trajectory
-	spawn_in_group_min = 4,
-	spawn_in_group = 6,
+	spawn_in_group_min = 2, -- was 4
+	spawn_in_group = 4, -- was 6 nerfed until we can cap them properly locally. this is a group size, not a per spawn attempt
 
 	head_swivel = "head.control",
 	bone_eye_height = 11,

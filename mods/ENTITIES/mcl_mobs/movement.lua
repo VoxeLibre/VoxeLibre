@@ -460,7 +460,7 @@ end
 
 
 -- find and replace what mob is looking for (grass, wheat etc.)
-function mob_class:replace(pos)
+function mob_class:replace_node(pos)
 
 	if not self.replace_rate
 	or not self.replace_what

@@ -1,9 +1,9 @@
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 
-local HORNY_TIME = 30*20
-local HORNY_AGAIN_TIME = 30*20 -- was 300 or 15*20
-local CHILD_GROW_TIME = 60*20
+local HORNY_TIME = 30
+local HORNY_AGAIN_TIME = 30 -- was 300 or 15*20
+local CHILD_GROW_TIME = 60
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager",false)
 

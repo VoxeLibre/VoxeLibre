@@ -14,7 +14,7 @@ local cow_def = {
 	xp_max = 3,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.39, 0.45},
 	spawn_in_group = 4,
-	spawn_in_group_min = 3,
+	spawn_in_group_min = 2,
 	visual = "mesh",
 	mesh = "mobs_mc_cow.b3d",
 	textures = { {
@@ -93,8 +93,8 @@ mcl_mobs.register_mob("mobs_mc:cow", cow_def)
 -- Mooshroom
 local mooshroom_def = table.copy(cow_def)
 mooshroom_def.description = S("Mooshroom")
-mooshroom_def.spawn_in_group_min = 4
-mooshroom_def.spawn_in_group = 8
+mooshroom_def.spawn_in_group_min = 2
+mooshroom_def.spawn_in_group = 4
 mooshroom_def.textures = { {"mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png"}, {"mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" } }
 mooshroom_def.on_rightclick = function(self, clicker)
 	if self:feed_tame(clicker, 1, true, false) then return end

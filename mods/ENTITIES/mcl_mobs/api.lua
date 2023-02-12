@@ -317,7 +317,7 @@ local function update_timers (self, dtime)
 		return true
 	end
 
-	-- attack timer
+	-- attack timer. Not anymore, it seems. Used for also occassionally processing mob step too!
 	self.timer = self.timer + dtime
 
 	if self.state ~= "attack" and self.state ~= PATHFINDING then
@@ -392,7 +392,6 @@ function mob_class:on_step(dtime)
 	self:check_water_flow()
 	self:env_danger_movement_checks (dtime)
 
-
 	self:follow_flop() -- Mob following code.
 
 	self:set_animation_speed() -- set animation speed relative to velocity
@@ -408,29 +407,37 @@ function mob_class:on_step(dtime)
 	self:npc_attack()
 	self:check_aggro(dtime)
 
-	self:check_breeding()
-
-	self:check_item_pickup()
-	self:set_armor_texture()
-
 	if self.do_custom and self.do_custom(self, dtime) == false then return end
 
-	if update_timers(self, dtime) then return end
 
-	self:check_particlespawners(dtime)
-
-	if self:env_damage (dtime, pos) then return end
-	if self:do_states(dtime) then return end
-
-	if self.opinion_sound_cooloff > 0 then
-		self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
-	end
-	-- mob plays random sound at times. Should be 120. Zombie and mob farms are ridiculous
-	if math.random(1, 70) == 1 then
-		self:mob_sound("random", true)
+	-- In certain circumstances, we abandon processing of certain functionality
+	local skip_processing = false
+	if update_timers(self, dtime) then
+		skip_processing = true
 	end
 
-	if self:do_states(dtime) then return end
+
+
+	if not skip_processing then
+		self:check_breeding()
+
+		self:check_item_pickup()
+		self:set_armor_texture()
+
+		self:check_particlespawners(dtime)
+
+		if self.opinion_sound_cooloff > 0 then
+			self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
+		end
+		-- mob plays random sound at times. Should be 120. Zombie and mob farms are ridiculous
+		if math.random(1, 70) == 1 then
+			self:mob_sound("random", true)
+		end
+
+		if self:do_states(dtime) then return end
+	end
+
+
 
 	if mobs_debug then self:update_tag() end
 
