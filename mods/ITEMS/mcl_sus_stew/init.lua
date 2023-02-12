@@ -6,7 +6,7 @@ local eat = minetest.item_eat(6, "mcl_core:bowl") --6 hunger points, player rece
 
 local flower_effect = {
 	[ "mcl_flowers:allium" ] = "fire_resistance",
-	[ "mcl_flowers:tulip_white" ] = "poison",
+	[ "mcl_flowers:lily_of_the_valley" ] = "poison",
 	[ "mcl_flowers:blue_orchid" ] = "hunger",
 	[ "mcl_flowers:dandelion" ] = "hunger",
 	[ "mcl_flowers:peony" ] = "jump",
@@ -108,7 +108,7 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_sus_stew:stew",
-	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:tulip_white"},
+	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:lily_of_the_valley"},
 })
 
 minetest.register_craft({

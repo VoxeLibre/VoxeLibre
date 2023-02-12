@@ -66,3 +66,9 @@ mcl_flowers.register_simple_flower("wither_rose", {
 	selection_box = { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 },
 	potted = true,
 })
+mcl_flowers.register_simple_flower("lily_of_the_valley", {
+	desc = S("Lily of the Valley"),
+	image = "mcl_flowers_lily_of_the_valley.png",
+	selection_box = { -5/16, -0.5, -5/16, 4/16, 5/16, 5/16 },
+	potted = true,
+})
