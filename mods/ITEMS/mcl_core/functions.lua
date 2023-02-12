@@ -405,6 +405,7 @@ function mcl_core.generate_tree(pos, tree_type, options)
 	elseif tree_type == BIRCH_TREE_ID then
 		mcl_core.generate_birch_tree(pos)
 	end
+	mcl_core.update_sapling_foliage_colors(pos)
 end
 
 -- Classic oak in v6 style
@@ -821,16 +822,8 @@ function mcl_core.get_grass_block_type(pos)
 end
 
 function mcl_core.get_foliage_palette_index(pos)
-	local biome_data = minetest.get_biome_data(pos)
-	local index = 0
-	if biome_data then
-		local biome = biome_data.biome
-		local biome_name = minetest.get_biome_name(biome)
-		local reg_biome = minetest.registered_biomes[biome_name]
-		if reg_biome then
-			index = reg_biome._mcl_foliage_palette_index
-		end
-	end
+		local reg_biome = mcl_util.get_registered_biome_from_pos(pos)
+		local index = reg_biome._mcl_foliage_palette_index
 	return index
 end
 
@@ -1047,7 +1040,6 @@ local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two,
 					minetest.remove_node(p3)
 					minetest.remove_node(p4)
 					mcl_core.generate_tree(pos, tree_id, { two_by_two = true })
-					mcl_core.update_sapling_foliage_colors(pos)
 					return
 				elseif s3 and s5 and s6 and check_tree_growth(p6, tree_id, { two_by_two = true }) then
 					minetest.remove_node(pos)
@@ -1055,7 +1047,6 @@ local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two,
 					minetest.remove_node(p5)
 					minetest.remove_node(p6)
 					mcl_core.generate_tree(p6, tree_id, { two_by_two = true })
-					mcl_core.update_sapling_foliage_colors(pos)
 					return
 				elseif s6 and s7 and s8 and check_tree_growth(p7, tree_id, { two_by_two = true }) then
 					minetest.remove_node(pos)
@@ -1063,7 +1054,6 @@ local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two,
 					minetest.remove_node(p7)
 					minetest.remove_node(p8)
 					mcl_core.generate_tree(p7, tree_id, { two_by_two = true })
-					mcl_core.update_sapling_foliage_colors(pos)
 					return
 				elseif s2 and s8 and s9 and check_tree_growth(p8, tree_id, { two_by_two = true }) then
 					minetest.remove_node(pos)
@@ -1071,7 +1061,6 @@ local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two,
 					minetest.remove_node(p8)
 					minetest.remove_node(p9)
 					mcl_core.generate_tree(p8, tree_id, { two_by_two = true })
-					mcl_core.update_sapling_foliage_colors(pos)
 					return
 				end
 			end
@@ -1082,7 +1071,6 @@ local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two,
 					if check_tree_growth(pos, tree_id, { balloon = true }) then
 						minetest.set_node(pos, {name="air"})
 						mcl_core.generate_tree(pos, tree_id, { balloon = true })
-						mcl_core.update_sapling_foliage_colors(pos)
 						return
 					end
 				end
@@ -1093,7 +1081,6 @@ local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two,
 				minetest.set_node(pos, {name="air"})
 				--local r = math.random(1, 12)
 				mcl_core.generate_tree(pos, tree_id)
-				mcl_core.update_sapling_foliage_colors(pos)
 				return
 			end
 		else
@@ -1140,7 +1127,6 @@ function mcl_core.grow_sapling(pos, node)
 	end
 	if grow then
 		grow(pos)
-		mcl_core.update_sapling_foliage_colors(pos)
 		return true
 	else
 		return false
