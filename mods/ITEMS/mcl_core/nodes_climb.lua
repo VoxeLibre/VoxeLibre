@@ -158,20 +158,15 @@ minetest.register_node("mcl_core:vine", {
 	end,
 
 	on_construct = function(pos)
-		if mg_name ~= "v6" and mg_name ~= "singlenode" then
-			local node = minetest.get_node(pos)
-			local biome_data = minetest.get_biome_data(pos)
-			local biome = biome_data.biome
-			local biome_name = minetest.get_biome_name(biome)
-			local reg_biome = minetest.registered_biomes[biome_name]
-			if node.name == "mcl_core:vine" then
-				local biome_param2 = reg_biome._mcl_foliage_palette_index
-				local rotation_param2 = node.param2
-				local final_param2 = (biome_param2 * 8) + rotation_param2
-				if node.param2 ~= final_param2 and rotation_param2 < 6 then
-					node.param2 = final_param2
-					minetest.swap_node(pos, node)
-			end
+		local node = minetest.get_node(pos)
+		local reg_biome = mcl_util.get_registered_biome_from_pos(pos)
+		if node.name == "mcl_core:vine" then
+			local biome_param2 = reg_biome._mcl_foliage_palette_index
+			local rotation_param2 = node.param2
+			local final_param2 = (biome_param2 * 8) + rotation_param2
+			if node.param2 ~= final_param2 and rotation_param2 < 6 then
+				node.param2 = final_param2
+				minetest.swap_node(pos, node)
 		end
 	end
 end,
