@@ -460,7 +460,7 @@ minetest.register_lbm({
 	run_at_every_load = true,
 	action = function(pos, node)
 		local reg_biome = mcl_util.get_registered_biome_from_pos(pos)
-		if node.param2 ~= reg_biome._mcl_grass_palette_index then
+		if reg_biome and reg_biome._mcl_grass_palette_index and node.param2 ~= reg_biome._mcl_grass_palette_index then
 			node.param2 = reg_biome._mcl_grass_palette_index
 			minetest.set_node(pos, node)
 		end
@@ -474,7 +474,7 @@ minetest.register_lbm({
 	run_at_every_load = true,
 	action = function(pos, node)
 		local reg_biome = mcl_util.get_registered_biome_from_pos(pos)
-		if node.param2 ~= reg_biome._mcl_foliage_palette_index and node.name ~= "mcl_core:vine" then
+		if reg_biome and reg_biome._mcl_foliage_palette_index and node.param2 ~= reg_biome._mcl_foliage_palette_index and node.name ~= "mcl_core:vine" then
 			node.param2 = reg_biome._mcl_foliage_palette_index
 			minetest.set_node(pos, node)
 		elseif node.name == "mcl_core:vine" then
