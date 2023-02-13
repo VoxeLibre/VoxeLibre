@@ -365,13 +365,15 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 	return lvm_used, lvm_used, deco, ores
 end
 
+local affected_grass_blocks = {"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass", "mcl_flowers:double_grass", "mcl_flowers:double_grass_top", "mcl_flowers:fern", "mcl_flowers:double_fern", "mcl_flowers:double_fern_top", "mcl_core:reeds", "mcl_core:dirt_with_grass_snow"}
+
 local function block_fixes_grass(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	local biomemap = minetest.get_mapgen_object("biomemap")
 	local lvm_used = false
 	local pr = PseudoRandom(blockseed)
 	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
 		-- Set param2 (=color) of nodes which use the grass colour palette.
-		lvm_used = set_grass_palette(minp,maxp,data2,area,biomemap,{"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass", "mcl_flowers:double_grass", "mcl_flowers:double_grass_top", "mcl_flowers:fern", "mcl_flowers:double_fern", "mcl_flowers:double_fern_top", "mcl_core:reeds", "mcl_core:dirt_with_grass_snow"})
+		lvm_used = set_grass_palette(minp,maxp,data2,area,biomemap,affected_grass_blocks)
 	end
 	return lvm_used
 end
@@ -454,7 +456,7 @@ end, 100, true)
 minetest.register_lbm({
 	label = "Fix grass palette indexes", -- This LBM fixes any incorrect grass palette indexes.
 	name = "mcl_mapgen_core:fix_grass_palette_indexes",
-	nodenames = {"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass", "mcl_flowers:double_grass", "mcl_flowers:double_grass_top", "mcl_flowers:fern", "mcl_flowers:double_fern", "mcl_flowers:double_fern_top", "mcl_core:reeds", "mcl_core:dirt_with_grass_snow"},
+	nodenames = affected_grass_blocks,
 	run_at_every_load = true,
 	action = function(pos, node)
 		local reg_biome = mcl_util.get_registered_biome_from_pos(pos)
