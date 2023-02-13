@@ -806,8 +806,6 @@ function mcl_core.get_grass_palette_index(pos)
 	local reg_biome = mcl_util.get_registered_biome_from_pos(pos)
 	if reg_biome and reg_biome._mcl_grass_palette_index then
 		return reg_biome._mcl_grass_palette_index
-	else
-		return index
 	end
 end
 
@@ -820,8 +818,6 @@ function mcl_core.get_foliage_palette_index(pos)
 	local reg_biome = mcl_util.get_registered_biome_from_pos(pos)
 	if reg_biome and reg_biome._mcl_foliage_palette_index then
 		return reg_biome._mcl_foliage_palette_index
-	else
-		return index
 	end
 end
 
