@@ -28,8 +28,8 @@ function mcl_core.update_leaves(pos, oldnode)
 	local leaves = minetest.find_nodes_in_area(pos1, pos2, "group:leaves")
 	for _, lpos in pairs(leaves) do
 		lnode = minetest.get_node(lpos)
-		-- skip already decaying leaf nodes and player leaves
-		if minetest.get_item_group(lnode.name, "orphan_leaves") ~= 1 and minetest.get_item_group(lnode.name, "player_leaves") ~= 1 then
+		-- skip already decaying leaf nodes
+		if minetest.get_item_group(lnode.name, "orphan_leaves") ~= 1 then
 			if not minetest.find_node_near(lpos, 6, "group:tree") then
 				local orphan_name = lnode.name .. "_orphan"
 				local def = minetest.registered_nodes[orphan_name]
