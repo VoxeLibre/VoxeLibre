@@ -289,27 +289,6 @@ local function set_grass_palette(minp,maxp,data2,area,biomemap,nodes)
 	return lvm_used
 end
 
-local function set_foliage_palette(minp,maxp,data2,area,biomemap,nodes)
-	-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
-	if not biomemap then return end
-	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
-	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
-	for n=1, #nodes do
-		local n = nodes[n]
-		local p_pos = area:index(n.x, n.y, n.z)
-		local b_pos = aream:index(n.x, 0, n.z)
-		local bn = minetest.get_biome_name(biomemap[b_pos])
-		if bn then
-			local biome = minetest.registered_biomes[bn]
-			if biome and biome._mcl_biome_type and biome._mcl_foliage_palette_index then
-				data2[p_pos] = biome._mcl_foliage_palette_index
-				lvm_used = true
-			end
-		end
-	end
-	return lvm_used
-end
-
 -- Below the bedrock, generate air/void
 local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	local biomemap --ymin, ymax
@@ -378,17 +357,6 @@ local function block_fixes_grass(vm, data, data2, emin, emax, area, minp, maxp, 
 	return lvm_used
 end
 
-local function block_fixes_foliage(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	local biomemap = minetest.get_mapgen_object("biomemap")
-	local lvm_used = false
-	local pr = PseudoRandom(blockseed)
-	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
-		-- Set param2 (=color) of nodes which use the foliage colour palette.
-		lvm_used = set_foliage_palette(minp,maxp,data2,area,biomemap,{"group:foliage_palette"})
-	end
-	return lvm_used
-end
-
 
 -- End block fixes:
 local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
@@ -417,7 +385,6 @@ end, 9999, true)
 
 if mg_name ~= "v6" and mg_name ~= "singlenode" then
 	mcl_mapgen_core.register_generator("block_fixes_grass", block_fixes_grass, nil, 9999, true)
-	mcl_mapgen_core.register_generator("block_fixes_foliage", block_fixes_foliage, nil, 9999, true)
 end
 
 if mg_name == "v6" then
@@ -457,7 +424,7 @@ minetest.register_lbm({
 	label = "Fix grass palette indexes", -- This LBM fixes any incorrect grass palette indexes.
 	name = "mcl_mapgen_core:fix_grass_palette_indexes",
 	nodenames = affected_grass_blocks,
-	run_at_every_load = true,
+	run_at_every_load = false,
 	action = function(pos, node)
 		local reg_biome = mcl_util.get_registered_biome_from_pos(pos)
 		if reg_biome and reg_biome._mcl_grass_palette_index and node.param2 ~= reg_biome._mcl_grass_palette_index then
@@ -471,7 +438,7 @@ minetest.register_lbm({
 	label = "Fix foliage palette indexes", -- This LBM fixes any incorrect foliage palette indexes
 	name = "mcl_mapgen_core:fix_foliage_palette_indexes",
 	nodenames = {"group:foliage_palette", "group:foliage_palette_wallmounted"},
-	run_at_every_load = true,
+	run_at_every_load = false,
 	action = function(pos, node)
 		local reg_biome = mcl_util.get_registered_biome_from_pos(pos)
 		if reg_biome and reg_biome._mcl_foliage_palette_index and node.param2 ~= reg_biome._mcl_foliage_palette_index and node.name ~= "mcl_core:vine" then
@@ -488,3 +455,26 @@ minetest.register_lbm({
 		end
 	end,
 })
+
+minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of foliage in brand new mapblocks.
+	local pos1, pos2 = vector.offset(minp, -16, -16, -16), vector.offset(maxp, 16, 16, 16)
+	local fnode
+	local foliage = minetest.find_nodes_in_area(pos1, pos2, {"group:foliage_palette", "group:foliage_palette_wallmounted"})
+	for _, fpos in pairs(foliage) do
+		fnode = minetest.get_node(fpos)
+		reg_biome = mcl_util.get_registered_biome_from_pos(fpos)
+		if reg_biome and reg_biome._mcl_foliage_palette_index and fnode.param2 ~= reg_biome._mcl_foliage_palette_index and fnode.name ~= "mcl_core:vine" then
+			fnode.param2 = reg_biome._mcl_foliage_palette_index
+			minetest.set_node(fpos, fnode)
+		elseif fnode.name == "mcl_core:vine" then
+			local biome_param2 = reg_biome._mcl_foliage_palette_index
+			local rotation_param2 = fnode.param2
+			local final_param2 = (biome_param2 * 8) + rotation_param2
+			if fnode.param2 ~= final_param2 and rotation_param2 < 6 then
+				fnode.param2 = final_param2
+				minetest.set_node(fpos, fnode)
+			end
+		end
+	end
+end
+)
