@@ -413,7 +413,7 @@ minetest.register_craftitem("mcl_mobitems:glow_ink_sac", {
 	description = S("Glow Ink Sac"),
 	_doc_items_longdesc = S("Use it to craft the Glow Item Frame."),
 	_doc_items_usagehelp = S("Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame."),
-	inventory_image = "extra_mobs_glow_ink_sac.png",
+	inventory_image = "mcl_mobitems_glow_ink_sac.png",
 	groups = { craftitem = 1 },
 })
 

@@ -5395,6 +5395,8 @@ local function register_decorations()
 	register_flower("allium", nil, 0) -- flower Forest only
 	register_flower("blue_orchid", {"Swampland"}, 64500, false)
 
+	register_flower("lily_of_the_valley", nil, 325)
+	register_flower("cornflower", flower_biomes2, 486)
 end
 
 -- Decorations in non-Overworld dimensions

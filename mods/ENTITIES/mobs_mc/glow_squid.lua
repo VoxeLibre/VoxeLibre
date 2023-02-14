@@ -25,7 +25,7 @@ local base_psdef = {
 local psdefs = {}
 for i=1,4 do
 	local p = table.copy(base_psdef)
-	p.texture = "extra_mobs_glow_squid_glint"..i..".png"
+	p.texture = "mobs_mc_glow_squid_glint"..i..".png"
 	table.insert(psdefs,p)
 end
 
@@ -47,7 +47,7 @@ mcl_mobs.register_mob("mobs_mc:glow_squid", {
 	visual = "mesh",
 	mesh = "extra_mobs_glow_squid.b3d",
 	textures = {
-		{ "extra_mobs_glow_squid.png" }
+		{ "mobs_mc_glow_squid.png" }
 	},
 	sounds = {
 		damage = { name = "mobs_mc_squid_hurt", gain = 0.3 },
