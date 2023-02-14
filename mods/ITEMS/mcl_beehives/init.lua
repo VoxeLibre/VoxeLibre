@@ -50,10 +50,12 @@ local dig_hive = function(pos, node, oldmetadata, digger)
 	local is_creative = minetest.is_creative_enabled(digger:get_player_name())
 
 	if beehive then
-		minetest.add_item(pos, "mcl_beehives:beehive")
-		if not silk_touch and not is_creative then mcl_util.deal_damage(digger, 10) end
+		if not silk_touch and not is_creative then
+			mcl_util.deal_damage(digger, 10)
+			minetest.add_item(pos, "mcl_beehives:beehive")
+		end
 	elseif beenest then
-		if silk_touch or is_creative then
+		if silk_touch and not is_creative then
 			minetest.add_item(pos, "mcl_beehives:bee_nest")
 			awards.unlock(digger:get_player_name(), "mcl:total_beelocation")
 		else
