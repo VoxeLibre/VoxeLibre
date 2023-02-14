@@ -453,9 +453,11 @@ local on_step_error_handler = function ()
 
 	local current_time = os.time()
 	local time_since_warning = current_time - last_crash_warn_time
+
 	--minetest.log("previous_crash_time: " .. current_time)
 	--minetest.log("last_crash_time: " .. last_crash_warn_time)
 	--minetest.log("time_since_warning: " .. time_since_warning)
+
 	if time_since_warning > CRASH_WARN_FREQUENCY then
 		last_crash_warn_time = current_time
 		minetest.log("A game crashing bug was prevented. Please provide debug.log information to MineClone2 dev team for investigation. (Search for: --- Bug report start)")
@@ -464,19 +466,14 @@ local on_step_error_handler = function ()
 	minetest.log("action", "Stack trace: ".. tostring(debug.traceback()))
 	minetest.log("action", "Bug info: ".. dump(info))
 	minetest.log("action", "--- Bug report end ---")
-	--debug.traceback
 end
+
 -- main mob function
 function mob_class:on_step(dtime)
 	local status, retVal = xpcall(on_step_work, on_step_error_handler, self, dtime)
 	if status then
-		--minetest.log("success. retVal: ".. tostring(retVal))
 		return retVal
-	else
-		--minetest.log("failed. error: ".. tostring(retVal))
-		--minetest.log("failed. status: ".. tostring(status))
 	end
-	--return on_step_work(self, dtime)
 end
 
 local timer = 0
