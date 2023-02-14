@@ -70,9 +70,9 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 	_tt_help = S("Warped fungus is a mushroom found in the nether's warped forest."),
 	_doc_items_longdesc = S("Warped fungus is a mushroom found in the nether's warped forest."),
 	drawtype = "plantlike",
-	tiles = { "mcl_crimson_farming_warped_fungus.png" },
-	inventory_image = "mcl_crimson_farming_warped_fungus.png",
-	wield_image = "mcl_crimson_farming_warped_fungus.png",
+	tiles = { "mcl_crimson_warped_fungus.png" },
+	inventory_image = "mcl_crimson_warped_fungus.png",
+	wield_image = "mcl_crimson_warped_fungus.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -98,7 +98,7 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 mcl_flowerpots.register_potted_flower("mcl_crimson:warped_fungus", {
 	name = "warped fungus",
 	desc = S("Warped Fungus"),
-	image = "mcl_crimson_farming_warped_fungus.png",
+	image = "mcl_crimson_warped_fungus.png",
 })
 
 minetest.register_node("mcl_crimson:twisting_vines", {
@@ -456,9 +456,9 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 	_tt_help = S("Crimson fungus is a mushroom found in the nether's crimson forest."),
 	_doc_items_longdesc = S("Crimson fungus is a mushroom found in the nether's crimson forest."),
 	drawtype = "plantlike",
-	tiles = { "mcl_crimson_farming_crimson_fungus.png" },
-	inventory_image = "mcl_crimson_farming_crimson_fungus.png",
-	wield_image = "mcl_crimson_farming_crimson_fungus.png",
+	tiles = { "mcl_crimson_crimson_fungus.png" },
+	inventory_image = "mcl_crimson_crimson_fungus.png",
+	wield_image = "mcl_crimson_crimson_fungus.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -488,7 +488,7 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 mcl_flowerpots.register_potted_flower("mcl_crimson:crimson_fungus", {
 	name = "crimson fungus",
 	desc = S("Crimson Fungus"),
-	image = "mcl_crimson_farming_crimson_fungus.png",
+	image = "mcl_crimson_crimson_fungus.png",
 })
 
 minetest.register_node("mcl_crimson:crimson_roots", {
