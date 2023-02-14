@@ -494,8 +494,8 @@ mcl_flowerpots.register_potted_flower("mcl_crimson:crimson_fungus", {
 minetest.register_node("mcl_crimson:crimson_roots", {
 	description = S("Crimson Roots"),
 	drawtype = "plantlike",
-	tiles = { "crimson_roots.png" },
-	inventory_image = "crimson_roots.png",
+	tiles = { "mcl_crimson_crimson_roots.png" },
+	inventory_image = "mcl_crimson_crimson_roots.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -514,7 +514,7 @@ minetest.register_node("mcl_crimson:crimson_roots", {
 mcl_flowerpots.register_potted_flower("mcl_crimson:crimson_roots", {
 	name = "crimson roots",
 	desc = S("Crimson Roots"),
-	image = "crimson_roots.png",
+	image = "mcl_crimson_crimson_roots.png",
 })
 
 minetest.register_node("mcl_crimson:crimson_hyphae", {
