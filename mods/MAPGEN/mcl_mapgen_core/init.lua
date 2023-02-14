@@ -458,11 +458,10 @@ minetest.register_lbm({
 
 minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of foliage in brand new mapblocks.
 	local pos1, pos2 = vector.offset(minp, -16, -16, -16), vector.offset(maxp, 16, 16, 16)
-	local fnode
 	local foliage = minetest.find_nodes_in_area(pos1, pos2, {"group:foliage_palette", "group:foliage_palette_wallmounted"})
 	for _, fpos in pairs(foliage) do
-		fnode = minetest.get_node(fpos)
-		reg_biome = mcl_util.get_registered_biome_from_pos(fpos)
+		local fnode = minetest.get_node(fpos)
+		local reg_biome = mcl_util.get_registered_biome_from_pos(fpos)
 		if reg_biome and reg_biome._mcl_foliage_palette_index and fnode.param2 ~= reg_biome._mcl_foliage_palette_index and fnode.name ~= "mcl_core:vine" then
 			fnode.param2 = reg_biome._mcl_foliage_palette_index
 			minetest.set_node(fpos, fnode)
