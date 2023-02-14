@@ -357,8 +357,7 @@ function mob_class:outside_limits()
 	end
 end
 
--- main mob function
-function mob_class:on_step(dtime)
+local function on_step_work (self, dtime)
 	local pos = self.object:get_pos()
 	if not pos then return end
 
@@ -444,6 +443,31 @@ function mob_class:on_step(dtime)
 	if not self.object:get_luaentity() then
 		return false
 	end
+end
+
+local on_step_error_handler = function ()
+	--lua_Debug ar;
+	--local L = lua_getfield(L, LUA_GLOBALSINDEX, "f");
+	--lua_getinfo(L, ">S", &ar);
+	local info = debug.getinfo(1, "SnlufL")
+
+	minetest.log("In the error handler")
+	minetest.log("debug.traceback: ".. tostring(debug.traceback()))
+	minetest.log("debug.short_src: ".. dump(debug.source))
+	minetest.log("debug.short_src: ".. dump(info))
+	--debug.traceback
+end
+-- main mob function
+function mob_class:on_step(dtime)
+	local status, retVal = xpcall(on_step_work, on_step_error_handler, self, dtime)
+	if status then
+		--minetest.log("success. retVal: ".. tostring(retVal))
+		return retVal
+	else
+		minetest.log("failed. error: ".. tostring(retVal))
+		minetest.log("failed. status: ".. tostring(status))
+	end
+	--return on_step_work(self, dtime)
 end
 
 local timer = 0
