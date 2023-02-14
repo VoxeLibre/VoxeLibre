@@ -435,13 +435,18 @@ minetest.register_lbm({
 })
 
 minetest.register_lbm({
-	label = "Fix foliage palette indexes", -- This LBM fixes any incorrect foliage palette indexes
+	label = "Fix foliage palette indexes", -- Set correct palette indexes of foliage in old mapblocks.
 	name = "mcl_mapgen_core:fix_foliage_palette_indexes",
 	nodenames = {"group:foliage_palette", "group:foliage_palette_wallmounted"},
 	run_at_every_load = false,
 	action = function(pos, node)
 		local reg_biome = mcl_util.get_registered_biome_from_pos(pos)
-		if reg_biome and reg_biome._mcl_foliage_palette_index and node.param2 ~= reg_biome._mcl_foliage_palette_index and node.name ~= "mcl_core:vine" then
+		local noplconvert = {"mcl_mangrove:mangroveleaves", "mcl_core:vine"} -- These do not convert into player leaves.
+		if reg_biome and reg_biome._mcl_foliage_palette_index and node.param2 == 1 and node.name ~= noplconvert then -- Convert old player leaves into the new versions.
+			node.param2 = reg_biome._mcl_foliage_palette_index
+			minetest.remove_node(pos) -- Required, since otherwise this conversion won't work.
+			minetest.place_node(vector.offset(pos, 0, 1, 0), node) -- Offset required, since otherwise the leaves sink one node for some reason.
+		elseif reg_biome and reg_biome._mcl_foliage_palette_index and node.param2 ~= reg_biome._mcl_foliage_palette_index and node.name ~= "mcl_core:vine" then
 			node.param2 = reg_biome._mcl_foliage_palette_index
 			minetest.set_node(pos, node)
 		elseif node.name == "mcl_core:vine" then
@@ -456,7 +461,7 @@ minetest.register_lbm({
 	end,
 })
 
-minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of foliage in brand new mapblocks.
+minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of foliage in new mapblocks.
 	local pos1, pos2 = vector.offset(minp, -16, -16, -16), vector.offset(maxp, 16, 16, 16)
 	local foliage = minetest.find_nodes_in_area(pos1, pos2, {"group:foliage_palette", "group:foliage_palette_wallmounted"})
 	for _, fpos in pairs(foliage) do
