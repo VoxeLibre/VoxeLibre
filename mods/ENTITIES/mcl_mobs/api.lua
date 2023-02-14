@@ -135,8 +135,8 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		end
 	end
 
-	if not self.base_texture then
-
+	--If textures in definition change, reload textures
+	if not self.base_texture or (def.textures and table.indexof(def.textures, self.base_texture) == -1) then
 		-- compatiblity with old simple mobs textures
 		if type(def.textures[1]) == "string" then
 			def.textures = {def.textures}

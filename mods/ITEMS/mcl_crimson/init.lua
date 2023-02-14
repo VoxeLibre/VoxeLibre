@@ -70,9 +70,9 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 	_tt_help = S("Warped fungus is a mushroom found in the nether's warped forest."),
 	_doc_items_longdesc = S("Warped fungus is a mushroom found in the nether's warped forest."),
 	drawtype = "plantlike",
-	tiles = { "farming_warped_fungus.png" },
-	inventory_image = "farming_warped_fungus.png",
-	wield_image = "farming_warped_fungus.png",
+	tiles = { "mcl_crimson_warped_fungus.png" },
+	inventory_image = "mcl_crimson_warped_fungus.png",
+	wield_image = "mcl_crimson_warped_fungus.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -98,14 +98,14 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 mcl_flowerpots.register_potted_flower("mcl_crimson:warped_fungus", {
 	name = "warped fungus",
 	desc = S("Warped Fungus"),
-	image = "farming_warped_fungus.png",
+	image = "mcl_crimson_warped_fungus.png",
 })
 
 minetest.register_node("mcl_crimson:twisting_vines", {
 	description = S("Twisting Vines"),
 	drawtype = "plantlike",
-	tiles = { "twisting_vines_plant.png" },
-	inventory_image = "twisting_vines.png",
+	tiles = { "mcl_crimson_twisting_vines_plant.png" },
+	inventory_image = "mcl_crimson_twisting_vines.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -152,8 +152,8 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		if abovenode.name == node.name and (not mcl_core.check_vines_supported(above, abovenode)) then
 			minetest.registered_nodes[node.name].on_dig(above, node, digger)
 		end
-	end,	
-	
+	end,
+
 	drop = {
 		max_items = 1,
 		items = {
@@ -220,7 +220,7 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		end
 		return itemstack
 	end,
-	
+
 	on_dig = function(pos, node, digger)
 		local below = vector.offset(pos,0,-1,0)
 		local belownode = minetest.get_node(below)
@@ -228,7 +228,7 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		if belownode.name == node.name and (not mcl_core.check_vines_supported(below, belownode)) then
 			minetest.registered_nodes[node.name].on_dig(below, node, digger)
 		end
-	end,		
+	end,
 	drop = {
 		max_items = 1,
 		items = {
@@ -254,8 +254,8 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 minetest.register_node("mcl_crimson:nether_sprouts", {
 	description = S("Nether Sprouts"),
 	drawtype = "plantlike",
-	tiles = { "nether_sprouts.png" },
-	inventory_image = "nether_sprouts.png",
+	tiles = { "mcl_crimson_nether_sprouts.png" },
+	inventory_image = "mcl_crimson_nether_sprouts.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -276,8 +276,8 @@ minetest.register_node("mcl_crimson:nether_sprouts", {
 minetest.register_node("mcl_crimson:warped_roots", {
 	description = S("Warped Roots"),
 	drawtype = "plantlike",
-	tiles = { "warped_roots.png" },
-	inventory_image = "warped_roots.png",
+	tiles = { "mcl_crimson_warped_roots.png" },
+	inventory_image = "mcl_crimson_warped_roots.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -296,13 +296,13 @@ minetest.register_node("mcl_crimson:warped_roots", {
 mcl_flowerpots.register_potted_flower("mcl_crimson:warped_roots", {
 	name = "warped roots",
 	desc = S("Warped Roots"),
-	image = "warped_roots.png",
+	image = "mcl_crimson_warped_roots.png",
 })
 
 
 minetest.register_node("mcl_crimson:warped_wart_block", {
 	description = S("Warped Wart Block"),
-	tiles = {"warped_wart_block.png"},
+	tiles = {"mcl_crimson_warped_stem_stripped_side.png"},
 	groups = {handy = 1, hoey = 7, swordy = 1, deco_block = 1, compostability = 85},
 	_mcl_hardness = 1,
 	sounds = mcl_sounds.node_sound_leaves_defaults({
@@ -313,7 +313,7 @@ minetest.register_node("mcl_crimson:warped_wart_block", {
 
 minetest.register_node("mcl_crimson:shroomlight", {
 	description = S("Shroomlight"),
-	tiles = {"shroomlight.png"},
+	tiles = {"mcl_crimson_shroomlight.png"},
 	groups = {handy = 1, hoey = 7, swordy = 1, deco_block = 1, compostability = 65},
 	light_source = minetest.LIGHT_MAX,
 	_mcl_hardness = 1,
@@ -328,10 +328,10 @@ minetest.register_node("mcl_crimson:warped_hyphae", {
 	_doc_items_longdesc = S("The stem of a warped hyphae"),
 	_doc_items_hidden = false,
 	tiles = {
-		"warped_hyphae.png",
-		"warped_hyphae.png",
+		"mcl_crimson_warped_hyphae.png",
+		"mcl_crimson_warped_hyphae.png",
 		{
-			image="warped_hyphae_side.png",
+			image="mcl_crimson_warped_hyphae_side.png",
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
 		},
 	},
@@ -347,12 +347,12 @@ minetest.register_node("mcl_crimson:warped_hyphae", {
 minetest.register_node("mcl_crimson:warped_nylium", {
 	description = S("Warped Nylium"),
 	tiles = {
-		"warped_nylium.png",
+		"mcl_crimson_warped_nylium.png",
 		"mcl_nether_netherrack.png",
-		"mcl_nether_netherrack.png^warped_nylium_side.png",
-		"mcl_nether_netherrack.png^warped_nylium_side.png",
-		"mcl_nether_netherrack.png^warped_nylium_side.png",
-		"mcl_nether_netherrack.png^warped_nylium_side.png",
+		"mcl_nether_netherrack.png^mcl_crimson_warped_nylium_side.png",
+		"mcl_nether_netherrack.png^mcl_crimson_warped_nylium_side.png",
+		"mcl_nether_netherrack.png^mcl_crimson_warped_nylium_side.png",
+		"mcl_nether_netherrack.png^mcl_crimson_warped_nylium_side.png",
 	},
 	is_ground_content = true,
 	drop = "mcl_nether:netherrack",
@@ -370,7 +370,7 @@ minetest.register_node("mcl_crimson:warped_hyphae_bark", {
 	_doc_items_longdesc = S("This is a decorative block surrounded by the bark of an hyphae."),
 	tiles = {
 	{
-		image="warped_hyphae_side.png",
+		image="mcl_crimson_warped_hyphae_side.png",
 		animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
 	},
 	},
@@ -396,7 +396,7 @@ minetest.register_node("mcl_crimson:stripped_warped_hyphae", {
 	description = S("Stripped Warped Hyphae"),
 	_doc_items_longdesc = S("The stripped hyphae of a warped fungus"),
 	_doc_items_hidden = false,
-	tiles = {"warped_stem_stripped_top.png", "warped_stem_stripped_top.png", "warped_stem_stripped_side.png"},
+	tiles = {"mcl_crimson_warped_stem_stripped_top.png", "mcl_crimson_warped_stem_stripped_top.png", "mcl_crimson_warped_stem_stripped_side.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, tree = 1, building_block = 1, material_wood = 1},
@@ -408,7 +408,7 @@ minetest.register_node("mcl_crimson:stripped_warped_hyphae", {
 minetest.register_node("mcl_crimson:stripped_warped_hyphae_bark", {
 	description = S("Stripped Warped Hyphae Bark"),
 	_doc_items_longdesc = S("The stripped hyphae bark of a warped fungus"),
-	tiles = {"warped_stem_stripped_side.png"},
+	tiles = {"mcl_crimson_warped_stem_stripped_side.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, bark = 1, building_block = 1, material_wood = 1},
@@ -428,7 +428,7 @@ minetest.register_craft({
 
 minetest.register_node("mcl_crimson:warped_hyphae_wood", {
 	description = S("Warped Hyphae Wood"),
-	tiles = {"warped_hyphae_wood.png"},
+	tiles = {"mcl_crimson_warped_hyphae_wood.png"},
 	groups = {handy = 5,axey = 1, flammable = 3, wood=1,building_block = 1, material_wood = 1, fire_encouragement = 5, fire_flammability = 20},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_hardness = 2,
@@ -456,9 +456,9 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 	_tt_help = S("Crimson fungus is a mushroom found in the nether's crimson forest."),
 	_doc_items_longdesc = S("Crimson fungus is a mushroom found in the nether's crimson forest."),
 	drawtype = "plantlike",
-	tiles = { "farming_crimson_fungus.png" },
-	inventory_image = "farming_crimson_fungus.png",
-	wield_image = "farming_crimson_fungus.png",
+	tiles = { "mcl_crimson_crimson_fungus.png" },
+	inventory_image = "mcl_crimson_crimson_fungus.png",
+	wield_image = "mcl_crimson_crimson_fungus.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -488,14 +488,14 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 mcl_flowerpots.register_potted_flower("mcl_crimson:crimson_fungus", {
 	name = "crimson fungus",
 	desc = S("Crimson Fungus"),
-	image = "farming_crimson_fungus.png",
+	image = "mcl_crimson_crimson_fungus.png",
 })
 
 minetest.register_node("mcl_crimson:crimson_roots", {
 	description = S("Crimson Roots"),
 	drawtype = "plantlike",
-	tiles = { "crimson_roots.png" },
-	inventory_image = "crimson_roots.png",
+	tiles = { "mcl_crimson_crimson_roots.png" },
+	inventory_image = "mcl_crimson_crimson_roots.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -514,7 +514,7 @@ minetest.register_node("mcl_crimson:crimson_roots", {
 mcl_flowerpots.register_potted_flower("mcl_crimson:crimson_roots", {
 	name = "crimson roots",
 	desc = S("Crimson Roots"),
-	image = "crimson_roots.png",
+	image = "mcl_crimson_crimson_roots.png",
 })
 
 minetest.register_node("mcl_crimson:crimson_hyphae", {
@@ -522,10 +522,10 @@ minetest.register_node("mcl_crimson:crimson_hyphae", {
 	_doc_items_longdesc = S("The stem of a crimson hyphae"),
 	_doc_items_hidden = false,
 	tiles = {
-		"crimson_hyphae.png",
-		"crimson_hyphae.png",
+		"mcl_crimson_hyphae.png",
+		"mcl_crimson_hyphae.png",
 		{
-			image="crimson_hyphae_side.png",
+			image="mcl_crimson_hyphae_side.png",
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
 		},
 	},
@@ -545,7 +545,7 @@ minetest.register_node("mcl_crimson:crimson_hyphae_bark", {
 	_doc_items_longdesc = S("This is a decorative block surrounded by the bark of an hyphae."),
 	tiles = {
 	{
-		image="crimson_hyphae_side.png",
+		image="mcl_crimson_hyphae_side.png",
 		animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
 	},
 	},
@@ -571,7 +571,7 @@ minetest.register_node("mcl_crimson:stripped_crimson_hyphae", {
 	description = S("Stripped Crimson Hyphae"),
 	_doc_items_longdesc = S("The stripped stem of a crimson hyphae"),
 	_doc_items_hidden = false,
-	tiles = {"crimson_stem_stripped_top.png", "crimson_stem_stripped_top.png", "crimson_stem_stripped_side.png"},
+	tiles = {"mcl_crimson_crimson_stem_stripped_top.png", "mcl_crimson_crimson_stem_stripped_top.png", "mcl_crimson_crimson_stem_stripped_side.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, tree = 1, building_block = 1, material_wood = 1},
@@ -583,7 +583,7 @@ minetest.register_node("mcl_crimson:stripped_crimson_hyphae", {
 minetest.register_node("mcl_crimson:stripped_crimson_hyphae_bark", {
 	description =	S("Stripped Crimson Hyphae Bark"),
 	_doc_items_longdesc = S("The stripped wood of a crimson hyphae"),
-	tiles = {"crimson_stem_stripped_side.png"},
+	tiles = {"mcl_crimson_crimson_stem_stripped_side.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
 	groups = {handy = 1, axey = 1, bark = 1, building_block = 1, material_wood = 1},
@@ -603,7 +603,7 @@ minetest.register_craft({
 
 minetest.register_node("mcl_crimson:crimson_hyphae_wood", {
 	description = S("Crimson Hyphae Wood"),
-	tiles = {"crimson_hyphae_wood.png"},
+	tiles = {"mcl_crimson_hyphae_wood.png"},
 	groups = {handy = 5, axey = 1, wood = 1, building_block = 1, material_wood = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_hardness = 2,
@@ -612,12 +612,12 @@ minetest.register_node("mcl_crimson:crimson_hyphae_wood", {
 minetest.register_node("mcl_crimson:crimson_nylium", {
 	description = S("Crimson Nylium"),
 	tiles = {
-		"crimson_nylium.png",
+		"mcl_crimson_nylium.png",
 		"mcl_nether_netherrack.png",
-		"mcl_nether_netherrack.png^crimson_nylium_side.png",
-		"mcl_nether_netherrack.png^crimson_nylium_side.png",
-		"mcl_nether_netherrack.png^crimson_nylium_side.png",
-		"mcl_nether_netherrack.png^crimson_nylium_side.png",
+		"mcl_nether_netherrack.png^mcl_crimson_nylium_side.png",
+		"mcl_nether_netherrack.png^mcl_crimson_nylium_side.png",
+		"mcl_nether_netherrack.png^mcl_crimson_nylium_side.png",
+		"mcl_nether_netherrack.png^mcl_crimson_nylium_side.png",
 	},
 	groups = {pickaxey = 1, building_block = 1, material_stone = 1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -676,7 +676,7 @@ mcl_doors:register_trapdoor("mcl_crimson:crimson_trapdoor", {
 	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
 	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
 	tile_front = "mcl_crimson_crimson_trapdoor.png",
-	tile_side = "crimson_hyphae_wood.png",
+	tile_side = "mcl_crimson_hyphae_wood.png",
 	wield_image = "mcl_crimson_crimson_trapdoor.png",
 	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
@@ -714,7 +714,7 @@ mcl_doors:register_trapdoor("mcl_crimson:warped_trapdoor", {
 	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
 	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
 	tile_front = "mcl_crimson_warped_trapdoor.png",
-	tile_side = "warped_hyphae_wood.png",
+	tile_side = "mcl_crimson_warped_hyphae_wood.png",
 	wield_image = "mcl_crimson_warped_trapdoor.png",
 	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
