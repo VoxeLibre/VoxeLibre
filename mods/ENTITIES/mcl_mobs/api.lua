@@ -4,6 +4,7 @@ local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 -- API for Mobs Redo: MineClone 2 Edition (MRM)
 
 local PATHFINDING = "gowp"
+local CRASH_WARN_FREQUENCY = 60
 
 -- Localize
 local S = minetest.get_translator("mcl_mobs")
@@ -445,16 +446,24 @@ local function on_step_work (self, dtime)
 	end
 end
 
+local last_crash_warn_time = 0
+
 local on_step_error_handler = function ()
-	--lua_Debug ar;
-	--local L = lua_getfield(L, LUA_GLOBALSINDEX, "f");
-	--lua_getinfo(L, ">S", &ar);
 	local info = debug.getinfo(1, "SnlufL")
 
-	minetest.log("In the error handler")
-	minetest.log("debug.traceback: ".. tostring(debug.traceback()))
-	minetest.log("debug.short_src: ".. dump(debug.source))
-	minetest.log("debug.short_src: ".. dump(info))
+	local current_time = os.time()
+	local time_since_warning = current_time - last_crash_warn_time
+	--minetest.log("previous_crash_time: " .. current_time)
+	--minetest.log("last_crash_time: " .. last_crash_warn_time)
+	--minetest.log("time_since_warning: " .. time_since_warning)
+	if time_since_warning > CRASH_WARN_FREQUENCY then
+		last_crash_warn_time = current_time
+		minetest.log("A game crashing bug was prevented. Please provide debug.log information to MineClone2 dev team for investigation. (Search for: --- Bug report start)")
+	end
+	minetest.log("action", "--- Bug report start (please provide a few lines before this also for context) ---")
+	minetest.log("action", "Stack trace: ".. tostring(debug.traceback()))
+	minetest.log("action", "Bug info: ".. dump(info))
+	minetest.log("action", "--- Bug report end ---")
 	--debug.traceback
 end
 -- main mob function
@@ -464,8 +473,8 @@ function mob_class:on_step(dtime)
 		--minetest.log("success. retVal: ".. tostring(retVal))
 		return retVal
 	else
-		minetest.log("failed. error: ".. tostring(retVal))
-		minetest.log("failed. status: ".. tostring(status))
+		--minetest.log("failed. error: ".. tostring(retVal))
+		--minetest.log("failed. status: ".. tostring(status))
 	end
 	--return on_step_work(self, dtime)
 end
