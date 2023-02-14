@@ -159,9 +159,9 @@ minetest.register_node("mcl_core:vine", {
 
 	on_construct = function(pos)
 		local node = minetest.get_node(pos)
-		local reg_biome = mcl_util.get_registered_biome_from_pos(pos)
-		if node.name == "mcl_core:vine" and reg_biome and reg_biome._mcl_foliage_palette_index then
-			local biome_param2 = reg_biome._mcl_foliage_palette_index
+		local foliage_palette_index = mcl_util.get_palette_indexes_from_pos(pos).foliage_palette_index
+		if node.name == "mcl_core:vine" then
+			local biome_param2 = foliage_palette_index
 			local rotation_param2 = node.param2
 			local final_param2 = (biome_param2 * 8) + rotation_param2
 			if node.param2 ~= final_param2 and rotation_param2 < 6 then
