@@ -426,9 +426,9 @@ minetest.register_lbm({
 	nodenames = affected_grass_blocks,
 	run_at_every_load = false,
 	action = function(pos, node)
-		local reg_biome = mcl_util.get_registered_biome_from_pos(pos)
-		if reg_biome and reg_biome._mcl_grass_palette_index and node.param2 ~= reg_biome._mcl_grass_palette_index then
-			node.param2 = reg_biome._mcl_grass_palette_index
+		local grass_palette_index = mcl_util.get_palette_indexes_from_pos(pos).grass_palette_index
+		if node.param2 ~= grass_palette_index then
+			node.param2 = grass_palette_index
 			minetest.set_node(pos, node)
 		end
 	end,
@@ -440,17 +440,17 @@ minetest.register_lbm({
 	nodenames = {"group:foliage_palette", "group:foliage_palette_wallmounted"},
 	run_at_every_load = false,
 	action = function(pos, node)
-		local reg_biome = mcl_util.get_registered_biome_from_pos(pos)
+		local foliage_palette_index = mcl_util.get_palette_indexes_from_pos(pos).foliage_palette_index
 		local noplconvert = {"mcl_mangrove:mangroveleaves", "mcl_core:vine"} -- These do not convert into player leaves.
-		if reg_biome and reg_biome._mcl_foliage_palette_index and node.param2 == 1 and node.name ~= noplconvert then -- Convert old player leaves into the new versions.
-			node.param2 = reg_biome._mcl_foliage_palette_index
+		if node.param2 == 1 and node.name ~= noplconvert then -- Convert old player leaves into the new versions.
+			node.param2 = foliage_palette_index
 			minetest.remove_node(pos) -- Required, since otherwise this conversion won't work.
 			minetest.place_node(vector.offset(pos, 0, 1, 0), node) -- Offset required, since otherwise the leaves sink one node for some reason.
-		elseif reg_biome and reg_biome._mcl_foliage_palette_index and node.param2 ~= reg_biome._mcl_foliage_palette_index and node.name ~= "mcl_core:vine" then
-			node.param2 = reg_biome._mcl_foliage_palette_index
+		elseif node.param2 ~= foliage_palette_index and node.name ~= "mcl_core:vine" then
+			node.param2 = foliage_palette_index
 			minetest.set_node(pos, node)
-		elseif node.name == "mcl_core:vine" then
-			local biome_param2 = reg_biome._mcl_foliage_palette_index
+		elseif node.param2 ~= foliage_palette_index and node.name == "mcl_core:vine" then
+			local biome_param2 = foliage_palette_index
 			local rotation_param2 = node.param2
 			local final_param2 = (biome_param2 * 8) + rotation_param2
 			if node.param2 ~= final_param2 and rotation_param2 < 6 then
@@ -466,12 +466,12 @@ minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct pa
 	local foliage = minetest.find_nodes_in_area(pos1, pos2, {"group:foliage_palette", "group:foliage_palette_wallmounted"})
 	for _, fpos in pairs(foliage) do
 		local fnode = minetest.get_node(fpos)
-		local reg_biome = mcl_util.get_registered_biome_from_pos(fpos)
-		if reg_biome and reg_biome._mcl_foliage_palette_index and fnode.param2 ~= reg_biome._mcl_foliage_palette_index and fnode.name ~= "mcl_core:vine" then
-			fnode.param2 = reg_biome._mcl_foliage_palette_index
+		local foliage_palette_index = mcl_util.get_palette_indexes_from_pos(fpos).foliage_palette_index
+		if fnode.param2 ~= foliage_palette_index and fnode.name ~= "mcl_core:vine" then
+			fnode.param2 = foliage_palette_index
 			minetest.set_node(fpos, fnode)
-		elseif fnode.name == "mcl_core:vine" then
-			local biome_param2 = reg_biome._mcl_foliage_palette_index
+		elseif fnode.param2 ~= foliage_palette_index and fnode.name == "mcl_core:vine" then
+			local biome_param2 = foliage_palette_index
 			local rotation_param2 = fnode.param2
 			local final_param2 = (biome_param2 * 8) + rotation_param2
 			if fnode.param2 ~= final_param2 and rotation_param2 < 6 then
