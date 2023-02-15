@@ -431,7 +431,7 @@ minetest.register_lbm({
 			node.param2 = grass_palette_index
 			minetest.set_node(pos, node)
 		end
-	end,
+	end
 })
 
 minetest.register_lbm({
@@ -449,7 +449,7 @@ minetest.register_lbm({
 		elseif node.param2 ~= foliage_palette_index and node.name ~= "mcl_core:vine" then
 			node.param2 = foliage_palette_index
 			minetest.set_node(pos, node)
-		elseif node.param2 ~= foliage_palette_index and node.name == "mcl_core:vine" then
+		elseif node.name == "mcl_core:vine" then
 			local biome_param2 = foliage_palette_index
 			local rotation_param2 = node.param2
 			local final_param2 = (biome_param2 * 8) + rotation_param2
@@ -470,7 +470,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct pa
 		if fnode.param2 ~= foliage_palette_index and fnode.name ~= "mcl_core:vine" then
 			fnode.param2 = foliage_palette_index
 			minetest.set_node(fpos, fnode)
-		elseif fnode.param2 ~= foliage_palette_index and fnode.name == "mcl_core:vine" then
+		elseif fnode.name == "mcl_core:vine" then
 			local biome_param2 = foliage_palette_index
 			local rotation_param2 = fnode.param2
 			local final_param2 = (biome_param2 * 8) + rotation_param2
