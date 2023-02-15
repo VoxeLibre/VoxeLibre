@@ -1,27 +1,3 @@
---local deepslate_mod = minetest.get_modpath("mcl_deepslate")
-
---[[
-local stairs = {
-	{"stair", "exposed", "_inner", "cut_inner"},
-	{"stair", "weathered", "_inner", "exposed_cut_inner"},
-	{"stair", "exposed", "_outer", "cut_outer"},
-	{"stair", "weathered", "_outer", "exposed_cut_outer"},
-	{"stair", "oxidized", "_outer", "weathered_cut_outer"},
-	{"stair", "oxidized", "_inner", "weathered_cut_inner"},
-	{"slab", "exposed", "","cut"},
-	{"slab", "oxidized", "","weathered_cut"},
-	{"slab", "weathered", "","exposed_cut"},
-	{"slab", "exposed", "_top","cut_top"},
-	{"slab", "oxidized", "_top", "weathered_cut_top"},
-	{"slab", "weathered", "_top","exposed_cut_top"},
-	{"slab", "exposed", "_double","cut_double"},
-	{"slab", "oxidized", "_double","weathered_cut_double"},
-	{"slab", "weathered", "_double","exposed_cut_double"},
-	{"stair", "exposed", "","cut"},
-	{"stair", "oxidized", "", "weathered_cut"},
-	{"stair", "weathered", "", "exposed_cut"},
-}]]
-
 local block_oxidation = {
 	{ "", "_exposed" },
 	{ "_cut", "_exposed_cut" },
@@ -62,10 +38,19 @@ end
 local def
 local def_variant_oxidized
 local def_variant_waxed
--- local def_variant_scraped
+local def_variant_scraped
 
+-- register abm, then set up oxidized and waxed variants.
 for _, s in pairs(stair_oxidation) do
-	register_oxidation_abm("Copper oxidation", "mcl_stairs:" .. s[1] .. "_copper_" .. s[2])
+	register_oxidation_abm("mcl_stairs:" .. s[1] .. "_copper_" .. s[2])
+	register_oxidation_abm("mcl_stairs:" .. s[1] .. "_copper_" .. s[2])
+
+	def = "mcl_stairs:" .. s[1] .. "_copper_" .. s[2]
+	def_variant_oxidized = "mcl_stairs:" .. s[1] .. "_copper_" .. s[3]
+	minetest.override_item(def, { _mcl_oxidized_variant = def_variant_oxidized })
+
+	def_variant_waxed = "mcl_stairs:" .. s[1] .. "_copper_" .. s[2] .. "_waxed"
+	minetest.override_item(def, { _mcl_copper_waxed_variant = def_variant_waxed })
 	def = "mcl_stairs:" .. s[1] .. "_copper_" .. s[2]
 	def_variant_oxidized = "mcl_stairs:" .. s[1] .. "_copper_" .. s[3]
 	minetest.override_item(def, { _mcl_oxidized_variant = def_variant_oxidized })
@@ -73,14 +58,24 @@ for _, s in pairs(stair_oxidation) do
 	def_variant_waxed = "mcl_stairs:" .. s[1] .. "_copper_" .. s[2] .. "_waxed"
 	minetest.override_item(def, { _mcl_copper_waxed_variant = def_variant_waxed })
 end
-for _, s in pairs(slab_oxidization) do
-	register_oxidation_abm("Copper oxidation", "mcl_stairs:" .. s[1] .. "_copper_" .. s[2])
-	def = "mcl_stairs:" .. s[1] .. "_copper_" .. s[2]
-	def_variant_oxidized = "mcl_stairs:" .. s[1] .. "_copper_" .. s[3]
-	minetest.override_item(def, { _mcl_oxidized_variant = def_variant_oxidized })
 
-	def_variant_waxed = "mcl_stairs:" .. s[1] .. "_copper_" .. s[2] .. "_waxed"
-	minetest.override_item(def, { _mcl_copper_waxed_variant = def_variant_waxed })
+-- Set up scraped variants.
+for i=1, #stair_oxidation do
+	if i > 3 then
+		def = "mcl_stairs:" .. stair_oxidation[i][1] .. "_copper_" .. stair_oxidation[i][2]
+		def_variant_scraped="mcl_stairs:" .. stair_oxidation[i-3][1] .. "_copper_" .. stair_oxidation[i-3][2]
+		minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+		def = "mcl_stairs:" .. slab_oxidization[i][1] .. "_copper_" .. slab_oxidization[i][2]
+		def_variant_scraped="mcl_stairs:" .. slab_oxidization[i-3][1] .. "_copper_" .. slab_oxidization[i-3][2]
+		minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+	end
+	if i>6 then
+		def = "mcl_stairs:" .. stair_oxidation[i][1] .. "_copper_" .. stair_oxidation[i][3]
+		def_variant_scraped="mcl_stairs:" .. stair_oxidation[i][1] .. "_copper_" .. stair_oxidation[i][2]
+		minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+		def = "mcl_stairs:" .. slab_oxidization[i][1] .. "_copper_" .. slab_oxidization[i][3]
+		def_variant_scraped="mcl_stairs:" .. slab_oxidization[i][1] .. "_copper_" .. slab_oxidization[i][2]
+		minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+	end
 end
--- TODO: Do Scraped (mcl_stripped_variant) for stairs and slabs.
 
