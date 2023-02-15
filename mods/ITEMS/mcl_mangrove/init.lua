@@ -86,7 +86,7 @@ minetest.register_node("mcl_mangrove:mangrove_wood", {
 	_mcl_hardness = 2,
 })
 
-local pl_def = {
+local l_def = {
 	description = S("Mangrove Leaves"),
 	_doc_items_longdesc = S("mangrove leaves are grown from mangrove trees."),
 	_doc_items_hidden = false,
@@ -100,7 +100,7 @@ local pl_def = {
 	groups = {
 		handy = 1, hoey = 1, shearsy = 1, swordy = 1, dig_by_piston = 1,
 		flammable = 2, fire_encouragement = 30, fire_flammability = 60,
-		leaves = 1, deco_block = 1, compostability = 30, foliage_palette = 1, player_leaves = 1, not_in_creative_inventory = 0,
+		leaves = 1, deco_block = 1, compostability = 30, foliage_palette = 1
 	},
 	drop = get_drops(0),
 	_mcl_shears_drop = true,
@@ -123,22 +123,14 @@ local pl_def = {
 	end,
 	}
 
-minetest.register_node("mcl_mangrove:mangroveleaves_player", pl_def)
-
-local l_def = table.copy(pl_def)
-l_def.groups.player_leaves = nil
-l_def.groups.not_in_creative_inventory = 1
-l_def._mcl_shears_drop = {"mcl_mangrove:mangroveleaves_player"}
-l_def._mcl_silk_touch_drop = {"mcl_mangrove:mangroveleaves_player"}
-
 minetest.register_node("mcl_mangrove:mangroveleaves", l_def)
 
 local o_def = table.copy(l_def)
 o_def._doc_items_create_entry = false
 o_def.groups.not_in_creative_inventory = 1
 o_def.groups.orphan_leaves = 1
-o_def._mcl_shears_drop = {"mcl_mangrove:mangroveleaves_player"}
-o_def._mcl_silk_touch_drop = {"mcl_mangrove:mangroveleaves_player"}
+o_def._mcl_shears_drop = {"mcl_mangrove:mangroveleaves"}
+o_def._mcl_silk_touch_drop = {"mcl_mangrove:mangroveleaves"}
 
 minetest.register_node("mcl_mangrove:mangroveleaves_orphan", o_def)
 
