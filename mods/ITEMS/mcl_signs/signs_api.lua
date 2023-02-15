@@ -147,10 +147,10 @@ mcl_signs.wall_standard = {
 	_tt_help = S("Can be written"),
 	_doc_items_longdesc = S("Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them."),
 	_doc_items_usagehelp = S("After placing the sign, you can write something on it. You have 4 lines of text with up to 15 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can not be changed once it has been written; you have to break and place the sign again. Can be colored and made to glow."),
-	inventory_image = "default_sign.png",
+	inventory_image = "mcl_signs_default_sign.png",
 	walkable = false,
 	is_ground_content = false,
-	wield_image = "default_sign.png",
+	wield_image = "mcl_signs_default_sign.png",
 	node_placement_prediction = "",
 	paramtype = "light",
 	sunlight_propagates = true,
@@ -552,9 +552,9 @@ function mcl_signs.register_sign (modname, color, _name, ttsign)
 	new_sign = table.copy(mcl_signs.wall_standard)
 	new_sign.description = S(ttsign)
 
-	new_sign.wield_image = "(default_sign.png^[multiply:" .. color .. ")"
+	new_sign.wield_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
 	new_sign.tiles = { "(mcl_signs_sign.png^[multiply:" .. color .. ")" }
-	new_sign.inventory_image = "(default_sign.png^[multiply:" .. color .. ")"
+	new_sign.inventory_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
 
 	-- currently have to do this, because of how the base node placement works.
 	new_sign.on_place = function(itemstack, placer, pointed_thing)
@@ -676,9 +676,9 @@ function mcl_signs.register_sign (modname, color, _name, ttsign)
 	local new_sign_standing = {}
 	new_sign_standing = table.copy(mcl_signs.standing_standard)
 	new_sign_standing.drop = "mcl_signs:wall_sign" .. _name
-	new_sign_standing.wield_image = "(default_sign.png^[multiply:" .. color .. ")"
+	new_sign_standing.wield_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
 	new_sign_standing.tiles = { "(mcl_signs_sign.png^[multiply:" .. color .. ")" }
-	new_sign_standing.inventory_image = "(default_sign.png^[multiply:" .. color .. ")"
+	new_sign_standing.inventory_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
 
 	new_sign_standing.on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_FACE then
@@ -763,7 +763,7 @@ function mcl_signs.register_sign (modname, color, _name, ttsign)
 end
 
 --- The same as register_sign, except caller defines the textures. Note, there is a greyscale version of the sign,
---- called "default_sign_greyscale.png" and "mcl_signs_sign_greyscale.png" for optional use in the textures directory.
+--- called "mcl_signs_default_sign_greyscale.png" and "mcl_signs_sign_greyscale.png" for optional use in the textures directory.
 ---
 --- modname: optional (pass "" or "false" to ignore), for use with other mods to
 --- allow the creation of a sign from the mod's wood (if installed).
@@ -1015,9 +1015,9 @@ function mcl_signs.reregister_sign (modname, color, _name, ttsign)
 	new_sign = table.copy(mcl_signs.wall_standard)
 	new_sign.description = S(ttsign)
 
-	new_sign.wield_image = "(default_sign.png^[multiply:" .. color .. ")"
+	new_sign.wield_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
 	new_sign.tiles = { "(mcl_signs_sign.png^[multiply:" .. color .. ")" }
-	new_sign.inventory_image = "(default_sign.png^[multiply:" .. color .. ")"
+	new_sign.inventory_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
 
 	-- currently have to do this, because of how the base node placement works.
 	new_sign.on_place = function(itemstack, placer, pointed_thing)
@@ -1134,9 +1134,9 @@ function mcl_signs.reregister_sign (modname, color, _name, ttsign)
 	local new_sign_standing = {}
 	new_sign_standing = table.copy(mcl_signs.standing_standard)
 	new_sign_standing.drop = "mcl_signs:wall_sign" .. _name
-	new_sign_standing.wield_image = "(default_sign.png^[multiply:" .. color .. ")"
+	new_sign_standing.wield_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
 	new_sign_standing.tiles = { "(mcl_signs_sign.png^[multiply:" .. color .. ")" }
-	new_sign_standing.inventory_image = "(default_sign.png^[multiply:" .. color .. ")"
+	new_sign_standing.inventory_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
 	new_sign_standing.on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_FACE then
 			node.name = "mcl_signs:standing_sign22_5" .. _name
@@ -1219,7 +1219,7 @@ function mcl_signs.reregister_sign (modname, color, _name, ttsign)
 end
 
 --- The same as reregister_sign, except caller defines the textures. Note, there is a greyscale version of the sign,
---- called "default_sign_greyscale.png" and "mcl_signs_sign_greyscale.png" for optional use in the textures directory.
+--- called "mcl_signs_default_sign_greyscale.png" and "mcl_signs_sign_greyscale.png" for optional use in the textures directory.
 ---
 --- modname: optional (pass "" or "false" to ignore), for use with other mods to
 --- allow the creation of a sign from the mod's wood (if installed).

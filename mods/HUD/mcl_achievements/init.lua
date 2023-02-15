@@ -297,7 +297,7 @@ awards.register_achievement("mcl:whatAdeal", {
 awards.register_achievement("mcl:tacticalFishing", {
 	title = S("Tactical Fishing"),
 	description = S("Catch a fish... without a fishing rod!"),
-	icon = "pufferfish_bucket.png",
+	icon = "mcl_buckets_pufferfish_bucket.png",
 	type = "Advancement",
 	group = "Husbandry",
 })
@@ -305,7 +305,7 @@ awards.register_achievement("mcl:tacticalFishing", {
 awards.register_achievement("mcl:cutestPredator", {
 	title = S("The Cutest Predator"),
 	description = S("Catch an Axolotl with a bucket!"),
-	icon = "mcl_achievements_axolotl_bucket.png",
+	icon = "mcl_buckets_axolotl_bucket.png",
 	type = "Advancement",
 	group = "Husbandry",
 })

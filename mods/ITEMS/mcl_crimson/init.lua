@@ -522,10 +522,10 @@ minetest.register_node("mcl_crimson:crimson_hyphae", {
 	_doc_items_longdesc = S("The stem of a crimson hyphae"),
 	_doc_items_hidden = false,
 	tiles = {
-		"mcl_crimson_hyphae.png",
-		"mcl_crimson_hyphae.png",
+		"mcl_crimson_crimson_hyphae.png",
+		"mcl_crimson_crimson_hyphae.png",
 		{
-			image="mcl_crimson_hyphae_side.png",
+			image="mcl_crimson_crimson_hyphae_side.png",
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
 		},
 	},
@@ -545,7 +545,7 @@ minetest.register_node("mcl_crimson:crimson_hyphae_bark", {
 	_doc_items_longdesc = S("This is a decorative block surrounded by the bark of an hyphae."),
 	tiles = {
 	{
-		image="mcl_crimson_hyphae_side.png",
+		image="mcl_crimson_crimson_hyphae_side.png",
 		animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
 	},
 	},
@@ -603,7 +603,7 @@ minetest.register_craft({
 
 minetest.register_node("mcl_crimson:crimson_hyphae_wood", {
 	description = S("Crimson Hyphae Wood"),
-	tiles = {"mcl_crimson_hyphae_wood.png"},
+	tiles = {"mcl_crimson_crimson_hyphae_wood.png"},
 	groups = {handy = 5, axey = 1, wood = 1, building_block = 1, material_wood = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_hardness = 2,
@@ -612,12 +612,12 @@ minetest.register_node("mcl_crimson:crimson_hyphae_wood", {
 minetest.register_node("mcl_crimson:crimson_nylium", {
 	description = S("Crimson Nylium"),
 	tiles = {
-		"mcl_crimson_nylium.png",
+		"mcl_crimson_crimson_nylium.png",
 		"mcl_nether_netherrack.png",
-		"mcl_nether_netherrack.png^mcl_crimson_nylium_side.png",
-		"mcl_nether_netherrack.png^mcl_crimson_nylium_side.png",
-		"mcl_nether_netherrack.png^mcl_crimson_nylium_side.png",
-		"mcl_nether_netherrack.png^mcl_crimson_nylium_side.png",
+		"mcl_nether_netherrack.png^mcl_crimson_crimson_nylium_side.png",
+		"mcl_nether_netherrack.png^mcl_crimson_crimson_nylium_side.png",
+		"mcl_nether_netherrack.png^mcl_crimson_crimson_nylium_side.png",
+		"mcl_nether_netherrack.png^mcl_crimson_crimson_nylium_side.png",
 	},
 	groups = {pickaxey = 1, building_block = 1, material_stone = 1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -676,7 +676,7 @@ mcl_doors:register_trapdoor("mcl_crimson:crimson_trapdoor", {
 	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
 	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
 	tile_front = "mcl_crimson_crimson_trapdoor.png",
-	tile_side = "mcl_crimson_hyphae_wood.png",
+	tile_side = "mcl_crimson_crimson_hyphae_wood.png",
 	wield_image = "mcl_crimson_crimson_trapdoor.png",
 	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,

@@ -98,22 +98,22 @@ mcl_signs.register_sign_craft("mcl_core", "mcl_core:wood", "")
 
 -- birchwood Sign "#d5cb8d" / "#ffdba7"
 mcl_signs.register_sign_custom("mcl_core", "_birchwood",
-        "mcl_signs_sign_greyscale.png","#ffdba7", "default_sign_greyscale.png",
-        "default_sign_greyscale.png", "Birch Sign"
+        "mcl_signs_sign_greyscale.png","#ffdba7", "mcl_signs_default_sign_greyscale.png",
+        "mcl_signs_default_sign_greyscale.png", "Birch Sign"
 )
 mcl_signs.register_sign_craft("mcl_core", "mcl_core:birchwood", "_birchwood")
 
 -- sprucewood Sign
 mcl_signs.register_sign_custom("mcl_core", "_sprucewood",
-        "mcl_signs_sign_dark.png","#ffffff", "default_sign_dark.png",
-        "default_sign_dark.png", "Spruce Sign"
+        "mcl_signs_sign_dark.png","#ffffff", "mcl_signs_default_sign_dark.png",
+        "mcl_signs_default_sign_dark.png", "Spruce Sign"
 )
 mcl_signs.register_sign_craft("mcl_core", "mcl_core:sprucewood", "_sprucewood")
 
 -- darkwood Sign "#291f1a" / "#856443"
 mcl_signs.register_sign_custom("mcl_core", "_darkwood",
-        "mcl_signs_sign_greyscale.png","#856443", "default_sign_greyscale.png",
-        "default_sign_greyscale.png", "Dark Oak Sign"
+        "mcl_signs_sign_greyscale.png","#856443", "mcl_signs_default_sign_greyscale.png",
+        "mcl_signs_default_sign_greyscale.png", "Dark Oak Sign"
 )
 mcl_signs.register_sign_craft("mcl_core", "mcl_core:darkwood", "_darkwood")
 
@@ -136,13 +136,13 @@ if minetest.get_modpath("mcl_crimson") then
 
     -- warped_hyphae_wood Sign
     mcl_signs.register_sign_custom("mcl_crimson","_warped_hyphae_wood", "mcl_signs_sign_greyscale.png",
-            "#9f7dcf", "default_sign_greyscale.png", "default_sign_greyscale.png",
+            "#9f7dcf", "mcl_signs_default_sign_greyscale.png", "mcl_signs_default_sign_greyscale.png",
             "Warped Hyphae Sign")
     mcl_signs.register_sign_craft("mcl_crimson", "mcl_crimson:warped_hyphae_wood", "_warped_hyphae_wood")
 
     -- crimson_hyphae_wood Sign
     mcl_signs.register_sign_custom("mcl_crimson", "_crimson_hyphae_wood","mcl_signs_sign_greyscale.png",
-            "#c35f51","default_sign_greyscale.png", "default_sign_greyscale.png",
+            "#c35f51","mcl_signs_default_sign_greyscale.png", "mcl_signs_default_sign_greyscale.png",
             "Crimson Hyphae Sign")
     mcl_signs.register_sign_craft("mcl_crimson", "mcl_crimson:crimson_hyphae_wood", "_crimson_hyphae_wood")
 
