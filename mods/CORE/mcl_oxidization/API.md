@@ -1,13 +1,11 @@
 # Mineclone Oxidization API
 This document explains the API of this mod.
 
-### `register_oxidation_abm(abm_name, node_name)`
+### `register_oxidation_abm(node_name)`
 Registers the ABM for the oxidization of nodes. It expects that the variable
 `_mcl_oxidized_variant` be set with the node name of the oxidized version. 
 
 #### Parameters:
-`abm_name`: A unique name for the abm to register.
-
 `node_name`: the name of the node to check, and to oxidize. 
 
 #### Usage:
@@ -30,7 +28,7 @@ local block_oxidation = {
 }
 
 for _, b in pairs(block_oxidation) do
-    register_oxidation_abm("Copper oxidation", "mcl_copper:block" .. b[1], "mcl_copper:block" .. b[2])
+    register_oxidation_abm("mcl_copper:block" .. b[1], "mcl_copper:block" .. b[2])
 end
 ```
 
