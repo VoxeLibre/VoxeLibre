@@ -4,9 +4,9 @@
 --- DateTime: 2/15/23 1:11 AM
 ---
 
-function register_oxidation_abm(abm_name, node_name, oxidized_variant)
+function register_oxidation_abm(node_name)
 	minetest.register_abm({
-		label = abm_name,
+		label = node_name .. "_oxidization_abm",
 		nodenames = { node_name },
 		interval = 500,
 		chance = 3,
