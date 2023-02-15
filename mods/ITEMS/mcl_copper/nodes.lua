@@ -34,6 +34,7 @@ minetest.register_node("mcl_copper:block", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 3,
+	_mcl_oxidized_variant = "mcl_copper:block_exposed",
 	_mcl_copper_waxed_variant = "mcl_copper:waxed_block",
 })
 
@@ -58,6 +59,7 @@ minetest.register_node("mcl_copper:block_exposed", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
+	_mcl_oxidized_variant = "mcl_copper:block_weathered",
 	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_exposed",
 	_mcl_stripped_variant = "mcl_copper:block",
 })
@@ -83,6 +85,7 @@ minetest.register_node("mcl_copper:block_weathered", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
+	_mcl_oxidized_variant = "mcl_copper:block_oxidized",
 	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_weathered",
 	_mcl_stripped_variant = "mcl_copper:block_exposed",
 })
@@ -133,6 +136,7 @@ minetest.register_node("mcl_copper:block_cut", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
+	_mcl_oxidized_variant = "mcl_copper:block_cut_exposed",
 	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_cut",
 })
 
@@ -158,6 +162,7 @@ minetest.register_node("mcl_copper:block_exposed_cut", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_exposed_cut",
+	_mcl_oxidized_variant = "mcl_copper:block_cut_weathered",
 	_mcl_stripped_variant = "mcl_copper:block_cut",
 })
 
@@ -183,6 +188,7 @@ minetest.register_node("mcl_copper:block_weathered_cut", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_stripped_variant = "mcl_copper:block_exposed_cut",
+	_mcl_oxidized_variant = "mcl_copper:block_cut_oxidized",
 	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_weathered_cut",
 })
 
