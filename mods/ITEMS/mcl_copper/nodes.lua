@@ -35,7 +35,7 @@ minetest.register_node("mcl_copper:block", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 3,
 	_mcl_oxidized_variant = "mcl_copper:block_exposed",
-	_mcl_copper_waxed_variant = "mcl_copper:waxed_block",
+	_mcl_waxed_variant = "mcl_copper:waxed_block",
 })
 
 minetest.register_node("mcl_copper:waxed_block", {
@@ -60,7 +60,7 @@ minetest.register_node("mcl_copper:block_exposed", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_oxidized_variant = "mcl_copper:block_weathered",
-	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_exposed",
+	_mcl_waxed_variant = "mcl_copper:waxed_block_exposed",
 	_mcl_stripped_variant = "mcl_copper:block",
 })
 
@@ -86,7 +86,7 @@ minetest.register_node("mcl_copper:block_weathered", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_oxidized_variant = "mcl_copper:block_oxidized",
-	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_weathered",
+	_mcl_waxed_variant = "mcl_copper:waxed_block_weathered",
 	_mcl_stripped_variant = "mcl_copper:block_exposed",
 })
 
@@ -107,11 +107,11 @@ minetest.register_node("mcl_copper:block_oxidized", {
 	_doc_items_longdesc = S("Oxidized copper is a decorative block."),
 	tiles = {"mcl_copper_oxidized.png"},
 	is_ground_content = false,
-	groups = {pickaxey = 2, building_block = 1, oxidizable = 1},
+	groups = {pickaxey = 2, building_block = 1},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
-	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_oxidized",
+	_mcl_waxed_variant = "mcl_copper:waxed_block_oxidized",
 	_mcl_stripped_variant = "mcl_copper:block_weathered",
 })
 
@@ -137,7 +137,7 @@ minetest.register_node("mcl_copper:block_cut", {
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_oxidized_variant = "mcl_copper:block_cut_exposed",
-	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_cut",
+	_mcl_waxed_variant = "mcl_copper:waxed_block_cut",
 })
 
 minetest.register_node("mcl_copper:waxed_block_cut", {
@@ -161,7 +161,7 @@ minetest.register_node("mcl_copper:block_exposed_cut", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
-	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_exposed_cut",
+	_mcl_waxed_variant = "mcl_copper:waxed_block_exposed_cut",
 	_mcl_oxidized_variant = "mcl_copper:block_cut_weathered",
 	_mcl_stripped_variant = "mcl_copper:block_cut",
 })
@@ -189,7 +189,7 @@ minetest.register_node("mcl_copper:block_weathered_cut", {
 	_mcl_hardness = 5,
 	_mcl_stripped_variant = "mcl_copper:block_exposed_cut",
 	_mcl_oxidized_variant = "mcl_copper:block_cut_oxidized",
-	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_weathered_cut",
+	_mcl_waxed_variant = "mcl_copper:waxed_block_weathered_cut",
 })
 
 minetest.register_node("mcl_copper:waxed_block_weathered_cut", {
@@ -209,12 +209,12 @@ minetest.register_node("mcl_copper:block_oxidized_cut", {
 	_doc_items_longdesc = S("Oxidized cut copper is a decorative block."),
 	tiles = {"mcl_copper_oxidized_cut.png"},
 	is_ground_content = false,
-	groups = {pickaxey = 2, building_block = 1, oxidizable = 1},
+	groups = {pickaxey = 2, building_block = 1},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 	_mcl_stripped_variant = "mcl_copper:block_weathered_cut",
-	_mcl_copper_waxed_variant = "mcl_copper:waxed_block_oxidized_cut",
+	_mcl_waxed_variant = "mcl_copper:waxed_block_oxidized_cut",
 })
 
 minetest.register_node("mcl_copper:waxed_block_oxidized_cut", {
@@ -272,7 +272,7 @@ mcl_stairs.register_slab("waxed_copper_weathered_cut", "mcl_copper:waxed_block_w
 	S("Waxed Double Slab of Weathered Cut Copper"))
 
 mcl_stairs.register_slab("copper_oxidized_cut", "mcl_copper:block_oxidized_cut",
-	{pickaxey = 2, oxidizable = 1},
+	{pickaxey = 2},
 	{"mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png"},
 	S("Slab of Oxidized Cut Copper"),
 	nil, nil, nil,
@@ -328,7 +328,7 @@ mcl_stairs.register_stair("waxed_copper_weathered_cut", "mcl_copper:waxed_block_
 	"woodlike")
 
 mcl_stairs.register_stair("copper_oxidized_cut", "mcl_copper:block_oxidized_cut",
-	{pickaxey = 2, oxidizable = 1},
+	{pickaxey = 2},
 	{"mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png", "mcl_copper_oxidized_cut.png"},
 	S("Stairs of Oxidized Cut Copper"),
 	nil, 6, nil,
