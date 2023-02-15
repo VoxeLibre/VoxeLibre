@@ -28,8 +28,9 @@ function mcl_core.update_leaves(pos, oldnode)
 	local leaves = minetest.find_nodes_in_area(pos1, pos2, "group:leaves")
 	for _, lpos in pairs(leaves) do
 		lnode = minetest.get_node(lpos)
+		lmeta = minetest.get_meta(lpos)
 		-- skip already decaying leaf nodes and player leaves
-		if minetest.get_item_group(lnode.name, "orphan_leaves") ~= 1 and minetest.get_item_group(lnode.name, "player_leaves") ~= 1 then
+		if minetest.get_item_group(lnode.name, "orphan_leaves") ~= 1 and lmeta:get_int("player_leaves") ~= 1 then
 			if not minetest.find_node_near(lpos, 6, "group:tree") then
 				local orphan_name = lnode.name .. "_orphan"
 				local def = minetest.registered_nodes[orphan_name]
@@ -45,11 +46,8 @@ function mcl_core.update_leaves(pos, oldnode)
 end
 
 function mcl_core.make_player_leaves(pos)
-	local node = minetest.get_node(pos)
-	if minetest.get_item_group(node.name, "player_leaves") ~= 1 then
-		local playerleafname = node.name .. "_player"
-		minetest.set_node(pos, {name = playerleafname})
-	end
+	local meta = minetest.get_meta(pos)
+	meta:set_int("player_leaves", 1)
 end
 
 -- Register tree trunk (wood) and bark
@@ -183,7 +181,7 @@ local function register_leaves(subname, description, longdesc, tiles, color, par
 		return drop
 	end
 
-	local pl_def = {
+	local l_def = {
 		description = description,
 		_doc_items_longdesc = longdesc,
 		_doc_items_hidden = false,
@@ -198,7 +196,7 @@ local function register_leaves(subname, description, longdesc, tiles, color, par
 		groups = {
 			handy = 1, hoey = 1, shearsy = 1, swordy = 1, dig_by_piston = 1,
 			flammable = 2, fire_encouragement = 30, fire_flammability = 60,
-			leaves = 1, deco_block = 1, compostability = 30, foliage_palette = foliage_palette, player_leaves = 1, not_in_creative_inventory = 0,
+			leaves = 1, deco_block = 1, compostability = 30, foliage_palette = foliage_palette
 		},
 		drop = get_drops(0),
 		_mcl_shears_drop = true,
@@ -221,22 +219,14 @@ local function register_leaves(subname, description, longdesc, tiles, color, par
 		end,
 		}
 
-	minetest.register_node("mcl_core:" .. subname .. "_player", pl_def)
-
-	local l_def = table.copy(pl_def)
-	l_def.groups.player_leaves = nil
-	l_def.groups.not_in_creative_inventory = 1
-	l_def._mcl_shears_drop = {"mcl_core:" .. subname .. "_player"}
-	l_def._mcl_silk_touch_drop = {"mcl_core:" .. subname .. "_player"}
-
 	minetest.register_node("mcl_core:" .. subname, l_def)
 
 	local o_def = table.copy(l_def)
 	o_def._doc_items_create_entry = false
 	o_def.groups.not_in_creative_inventory = 1
 	o_def.groups.orphan_leaves = 1
-	o_def._mcl_shears_drop = {"mcl_core:" .. subname .. "_player"}
-	o_def._mcl_silk_touch_drop = {"mcl_core:" .. subname .. "_player"}
+	o_def._mcl_shears_drop = {"mcl_core:" .. subname}
+	o_def._mcl_silk_touch_drop = {"mcl_core:" .. subname}
 
 	minetest.register_node("mcl_core:" .. subname .. "_orphan", o_def)
 end
