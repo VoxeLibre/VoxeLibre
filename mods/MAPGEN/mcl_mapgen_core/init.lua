@@ -458,7 +458,7 @@ minetest.register_lbm({
 				minetest.set_node(pos, node)
 			end
 		end
-	end,
+	end
 })
 
 minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of foliage in new mapblocks.
