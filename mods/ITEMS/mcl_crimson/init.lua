@@ -603,7 +603,7 @@ minetest.register_craft({
 
 minetest.register_node("mcl_crimson:crimson_hyphae_wood", {
 	description = S("Crimson Hyphae Wood"),
-	tiles = {"mcl_crimson_crimson_crimson_hyphae_wood.png"},
+	tiles = {"mcl_crimson_crimson_hyphae_wood.png"},
 	groups = {handy = 5, axey = 1, wood = 1, building_block = 1, material_wood = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_hardness = 2,
@@ -676,7 +676,7 @@ mcl_doors:register_trapdoor("mcl_crimson:crimson_trapdoor", {
 	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
 	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
 	tile_front = "mcl_crimson_crimson_trapdoor.png",
-	tile_side = "mcl_crimson_crimson_crimson_hyphae_wood.png",
+	tile_side = "mcl_crimson_crimson_hyphae_wood.png",
 	wield_image = "mcl_crimson_crimson_trapdoor.png",
 	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
