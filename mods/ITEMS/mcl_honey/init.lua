@@ -16,8 +16,8 @@ function mcl_honey.wax_block(pos, node, player, itemstack)
 
 	local def = minetest.registered_nodes[node.name]
 
-	if def and def._mcl_copper_waxed_variant then
-		node.name = def._mcl_copper_waxed_variant
+	if def and def._mcl_waxed_variant then
+		node.name = def._mcl_waxed_variant
 	end
 
 	minetest.set_node(pos, node)
