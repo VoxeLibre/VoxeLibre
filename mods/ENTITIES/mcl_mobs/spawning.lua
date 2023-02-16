@@ -481,51 +481,34 @@ function mcl_mobs:spawn_setup(def)
 end
 
 function mcl_mobs:mob_light_lvl(mob_name, dimension)
-	local mob_light_table = {}
+	local spawn_dictionary_consolidated = {}
 	--see if the mob exists in the nonspawn dictionary, if so then return light values
 	if non_spawn_dictionary[mob_name] ~= nil then
-		if non_spawn_dictionary[mob_name][dimension] ~= nil then
-			mob_light_table = {
-				["min_light"] = non_spawn_dictionary[mob_name][dimension].min_light, 
-				["max_light"] = non_spawn_dictionary[mob_name][dimension].max_light
-			}
-			return mob_light_table
+		local mob_dimension = non_spawn_dictionary[mob_name][dimension]
+		if mob_name ~= nil then
+			return mob_dimension.min_light,mob_dimension.max_light
 		else
-			mob_light_table = {
-				["min_light"] = non_spawn_dictionary[mob_name]["overworld"].min_light,
-				["max_light"] = non_spawn_dictionary[mob_name]["overworld"].max_light
-			}
-			return mob_light_table
+			return non_spawn_dictionary[mob_name]["overworld"].min_light, non_spawn_dictionary[mob_name]["overworld"].max_light
 		end
 
 	--if the mob doesn't exist in non_spawn, check spawn_dictonary
 	else
 		for i,v in pairs(spawn_dictionary) do
-			local big_slime_search = string.find(spawn_dictionary[i].name,".*slime.*")
-			if spawn_dictionary[i].name == mob_name and spawn_dictionary[i].dimension == dimension and not big_slime_search then
-				mob_light_table = {
-					["min_light"] = spawn_dictionary[i].min_light,
-					["max_light"] = spawn_dictionary[i].max_light
-				}
-				return mob_light_table
-
-			elseif spawn_dictionary[i].name == mob_name and spawn_dictionary[i].dimension == "overworld" and not big_slime_search then
-				mob_light_table = {
-					["min_light"] = spawn_dictionary[i].min_light,
-					["max_light"] = spawn_dictionary[i].max_light
-				}
-				return mob_light_table
-			elseif big_slime_search then
-				--custom spawners with slimes are broken in minecraft (they don't spawn unless in slime chunk) so we'll make sure they're broken in mcl2 as well :)
-				--if slimes chunks get added in the future, change this.
-				--Mobs will also have their light levels set to this for custom spawners if they don't appear in spawn_dictionary or non_spawn_dictionary
-				mob_light_table = {
-					["min_light"] = -1,
-					["max_light"] = -1
-				}
-				return mob_light_table
-			end 
+			if spawn_dictionary[spawn_dictionary[i].name] == nil then
+				spawn_dictionary_consolidated[spawn_dictionary[i].name] = {}
+			end
+			spawn_dictionary_consolidated[spawn_dictionary[i].name][dimension] = {
+				["min_light"] = spawn_dictionary[i].min_light,
+				["max_light"] = spawn_dictionary[i].max_light
+			}
 		end	
+		mob_dimension = spawn_dictionary_consolidated[mob_name][dimension]
+		mob_dimension_default = spawn_dictionary_consolidated[mob_name]["overworld"]
+		if spawn_dictionary_consolidated[mob_name] == mob_name and mob_dimension ~= nil then
+			return mob_dimension.min_light, mob_dimension.max_light
+		else
+			return mob_dimension_default.min_light, mob_dimension_default.max_light
+		end 
 	end
 end
 
