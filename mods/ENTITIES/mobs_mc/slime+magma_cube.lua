@@ -278,7 +278,6 @@ swamp_light_max,
 4,
 swamp_min,
 swamp_max)
-
 -- Magma cube
 local magma_cube_big = {
 	description = S("Magma Cube"),
@@ -430,6 +429,11 @@ nether_max)
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "#350000", "#fcfc00")
+
+-- non_spawn_specific is typically for mobs who don't spawn in the overworld, or mobs that don't spawn
+-- naturally. However, slimes are a particular case where they spawn under different conditions in the same
+-- dimension.
+mcl_mobs:non_spawn_specific("mobs_mc:slime_big","overworld",0,minetest.LIGHT_MAX+1)
 mcl_mobs:non_spawn_specific("mobs_mc:magma_cube_big","overworld",0, minetest.LIGHT_MAX+1)
 mcl_mobs.register_egg("mobs_mc:slime_big", S("Slime"), "#52a03e", "#7ebf6d")
 
