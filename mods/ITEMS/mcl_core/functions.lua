@@ -802,24 +802,14 @@ end
 
 local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_setting("seed"))
 
-function mcl_core.get_grass_palette_index(pos)
-	local grass_palette_index = mcl_util.get_palette_indexes_from_pos(pos).grass_palette_index
-	return grass_palette_index
-end
-
 -- Return appropriate grass block node for pos
 function mcl_core.get_grass_block_type(pos)
-	return {name = "mcl_core:dirt_with_grass", param2 = mcl_core.get_grass_palette_index(pos)}
-end
-
-function mcl_core.get_foliage_palette_index(pos)
-	local foliage_palette_index = mcl_util.get_palette_indexes_from_pos(pos).foliage_palette_index
-	return foliage_palette_index
+	return {name = minetest.get_node(pos).name, param2 = mcl_util.get_palette_indexes_from_pos(pos).grass_palette_index}
 end
 
 -- Return appropriate foliage block node for pos
 function mcl_core.get_foliage_block_type(pos)
-	return {name = minetest.get_node(pos).name, param2 = mcl_core.get_foliage_palette_index(pos)}
+	return {name = minetest.get_node(pos).name, param2 = mcl_util.get_palette_indexes_from_pos(pos).foliage_palette_index}
 end
 
 ------------------------------
