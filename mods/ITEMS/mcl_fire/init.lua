@@ -448,18 +448,28 @@ function mcl_fire.set_fire(pointed_thing, player, allow_on_fire)
 	else
 		pname = player:get_player_name()
 	end
-	local n = get_node(pointed_thing.above)
-	local nu = get_node(pointed_thing.under)
-	if allow_on_fire == false and get_item_group(nu.name, "fire") ~= 0 then
-		return
-	end
+
 	if minetest.is_protected(pointed_thing.above, pname) then
 		minetest.record_protection_violation(pointed_thing.above, pname)
 		return
 	end
-	if n.name == "air" then
-		add_node(pointed_thing.above, {name="mcl_fire:fire"})
+
+	local n_pointed = minetest.get_node(pointed_thing.under)
+	if allow_on_fire == false and get_item_group(n_pointed.name, "fire") ~= 0 then
+		return
 	end
+
+	local n_fire_pos = minetest.get_node(pointed_thing.above)
+	if n_fire_pos.name ~= "air" then
+		return
+	end
+
+	local n_below = minetest.get_node(vector.offset(pointed_thing.above, 0, -1, 0))
+	if minetest.get_item_group(n_below.name, "water") ~= 0 then
+		return
+	end
+
+	add_node(pointed_thing.above, {name="mcl_fire:fire"})
 end
 
 minetest.register_lbm({

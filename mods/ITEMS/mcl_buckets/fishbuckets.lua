@@ -56,7 +56,7 @@ for techname, fishname in pairs(fish_names) do
 		_doc_items_longdesc = S("This bucket is filled with water and @1.", S(fishname)),
 		_doc_items_usagehelp = S("Place it to empty the bucket and place a @1. Obtain by right clicking on a @2 with a bucket of water.", S(fishname), S(fishname)),
 		_tt_help = S("Places a water source and a @1.", S(fishname)),
-		inventory_image = techname .. "_bucket.png",
+		inventory_image = "mcl_buckets_" .. techname .. "_bucket.png",
 		stack_max = 1,
 		groups = {bucket = 1, fish_bucket = 1},
 		liquids_pointable = false,
