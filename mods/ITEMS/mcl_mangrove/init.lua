@@ -121,7 +121,7 @@ local l_def = {
 	after_place_node = function(pos)
 		mcl_core.make_player_leaves(pos) -- Leaves placed by the player should always be player leaves.
 	end,
-	}
+}
 
 minetest.register_node("mcl_mangrove:mangroveleaves", l_def)
 
