@@ -405,6 +405,7 @@ function mcl_core.generate_tree(pos, tree_type, options)
 	elseif tree_type == BIRCH_TREE_ID then
 		mcl_core.generate_birch_tree(pos)
 	end
+	mcl_core.update_sapling_foliage_colors(pos)
 end
 
 -- Classic oak in v6 style
@@ -801,23 +802,14 @@ end
 
 local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_setting("seed"))
 
-function mcl_core.get_grass_palette_index(pos)
-	local biome_data = minetest.get_biome_data(pos)
-	local index = 0
-	if biome_data then
-		local biome = biome_data.biome
-		local biome_name = minetest.get_biome_name(biome)
-		local reg_biome = minetest.registered_biomes[biome_name]
-		if reg_biome then
-			index = reg_biome._mcl_grass_palette_index
-		end
-	end
-	return index
-end
-
 -- Return appropriate grass block node for pos
 function mcl_core.get_grass_block_type(pos)
-	return {name = "mcl_core:dirt_with_grass", param2 = mcl_core.get_grass_palette_index(pos)}
+	return {name = minetest.get_node(pos).name, param2 = mcl_util.get_palette_indexes_from_pos(pos).grass_palette_index}
+end
+
+-- Return appropriate foliage block node for pos
+function mcl_core.get_foliage_block_type(pos)
+	return {name = minetest.get_node(pos).name, param2 = mcl_util.get_palette_indexes_from_pos(pos).foliage_palette_index}
 end
 
 ------------------------------
@@ -1072,6 +1064,16 @@ local grow_jungle_tree = sapling_grow_action(JUNGLE_TREE_ID, 1, true, true, "mcl
 local grow_acacia = sapling_grow_action(ACACIA_TREE_ID, 2, true, false)
 local grow_spruce = sapling_grow_action(SPRUCE_TREE_ID, 1, true, true, "mcl_core:sprucesapling")
 local grow_birch = sapling_grow_action(BIRCH_TREE_ID, 1, true, false)
+
+function mcl_core.update_sapling_foliage_colors(pos)
+	local pos1, pos2 = vector.offset(pos, -8, 0, -8), vector.offset(pos, 8, 30, 8)
+	local fnode
+	local foliage = minetest.find_nodes_in_area(pos1, pos2, {"group:foliage_palette", "group:foliage_palette_wallmounted"})
+	for _, fpos in pairs(foliage) do
+		fnode = minetest.get_node(fpos)
+		minetest.set_node(fpos, fnode)
+	end
+end
 
 -- Attempts to grow the sapling at the specified position
 -- pos: Position

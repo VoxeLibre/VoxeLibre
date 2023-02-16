@@ -127,7 +127,7 @@ minetest.register_node("mcl_core:reeds", {
 	on_construct = function(pos)
 		local node = minetest.get_node(pos)
 		if node.param2 == 0 then
-			node.param2 = mcl_core.get_grass_palette_index(pos)
+			node.param2 = mcl_util.get_palette_indexes_from_pos(pos).grass_palette_index
 			if node.param2 ~= 0 then
 				minetest.set_node(pos, node)
 			end

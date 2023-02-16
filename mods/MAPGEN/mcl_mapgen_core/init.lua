@@ -268,7 +268,7 @@ local function set_layers(data, area, content_id, check, min, max, minp, maxp, l
 	return lvm_used
 end
 
-local function set_palette(minp,maxp,data2,area,biomemap,nodes)
+local function set_grass_palette(minp,maxp,data2,area,biomemap,nodes)
 	-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
 	if not biomemap then return end
 	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
@@ -344,13 +344,15 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 	return lvm_used, lvm_used, deco, ores
 end
 
-local function block_fixes(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
+local affected_grass_blocks = {"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass", "mcl_flowers:double_grass", "mcl_flowers:double_grass_top", "mcl_flowers:fern", "mcl_flowers:double_fern", "mcl_flowers:double_fern_top", "mcl_core:reeds", "mcl_core:dirt_with_grass_snow"}
+
+local function block_fixes_grass(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	local biomemap = minetest.get_mapgen_object("biomemap")
 	local lvm_used = false
 	local pr = PseudoRandom(blockseed)
 	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
 		-- Set param2 (=color) of nodes which use the grass colour palette.
-		lvm_used = set_palette(minp,maxp,data2,area,biomemap,{"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass", "mcl_flowers:double_grass", "mcl_flowers:double_grass_top", "mcl_flowers:fern", "mcl_flowers:double_fern", "mcl_flowers:double_fern_top", "mcl_core:reeds", "mcl_core:dirt_with_grass_snow"})
+		lvm_used = set_grass_palette(minp,maxp,data2,area,biomemap,affected_grass_blocks)
 	end
 	return lvm_used
 end
@@ -382,7 +384,7 @@ mcl_mapgen_core.register_generator("end_fixes", end_basic, function(minp,maxp)
 end, 9999, true)
 
 if mg_name ~= "v6" and mg_name ~= "singlenode" then
-	mcl_mapgen_core.register_generator("block_fixes", block_fixes, nil, 9999, true)
+	mcl_mapgen_core.register_generator("block_fixes_grass", block_fixes_grass, nil, 9999, true)
 end
 
 if mg_name == "v6" then
@@ -419,20 +421,64 @@ mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blocks
 end, 100, true)
 
 minetest.register_lbm({
-	label = "Fix grass palette indexes",
+	label = "Fix grass palette indexes", -- This LBM fixes any incorrect grass palette indexes.
 	name = "mcl_mapgen_core:fix_grass_palette_indexes",
-	nodenames = {"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass", "mcl_flowers:double_grass", "mcl_flowers:double_grass_top", "mcl_flowers:fern", "mcl_flowers:double_fern", "mcl_flowers:double_fern_top", "mcl_core:reeds", "mcl_core:dirt_with_grass_snow"},
-	run_at_every_load = true,
+	nodenames = affected_grass_blocks,
+	run_at_every_load = false,
 	action = function(pos, node)
-		if mg_name ~= "v6" and mg_name ~= "singlenode" then
-			local biome_data = minetest.get_biome_data(pos)
-			local biome = biome_data.biome
-			local biome_name = minetest.get_biome_name(biome)
-			local reg_biome = minetest.registered_biomes[biome_name]
-			if node.param2 ~= reg_biome._mcl_grass_palette_index then
-				node.param2 = reg_biome._mcl_grass_palette_index
+		local grass_palette_index = mcl_util.get_palette_indexes_from_pos(pos).grass_palette_index
+		if node.param2 ~= grass_palette_index then
+			node.param2 = grass_palette_index
+			minetest.set_node(pos, node)
+		end
+	end
+})
+
+minetest.register_lbm({
+	label = "Fix foliage palette indexes", -- Set correct palette indexes of foliage in old mapblocks.
+	name = "mcl_mapgen_core:fix_foliage_palette_indexes",
+	nodenames = {"group:foliage_palette", "group:foliage_palette_wallmounted"},
+	run_at_every_load = false,
+	action = function(pos, node)
+		local foliage_palette_index = mcl_util.get_palette_indexes_from_pos(pos).foliage_palette_index
+		local noplconvert = {"mcl_mangrove:mangroveleaves", "mcl_core:vine"} -- These do not convert into player leaves.
+		if node.param2 == 1 and node.name ~= noplconvert then -- Convert old player leaves into the new versions.
+			node.param2 = foliage_palette_index
+			minetest.remove_node(pos) -- Required, since otherwise this conversion won't work.
+			minetest.place_node(vector.offset(pos, 0, 1, 0), node) -- Offset required, since otherwise the leaves sink one node for some reason.
+		elseif node.param2 ~= foliage_palette_index and node.name ~= "mcl_core:vine" then
+			node.param2 = foliage_palette_index
+			minetest.set_node(pos, node)
+		elseif node.name == "mcl_core:vine" then
+			local biome_param2 = foliage_palette_index
+			local rotation_param2 = node.param2
+			local final_param2 = (biome_param2 * 8) + rotation_param2
+			if node.param2 ~= final_param2 and rotation_param2 < 6 then
+				node.param2 = final_param2
 				minetest.set_node(pos, node)
 			end
 		end
-	end,
+	end
 })
+
+minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of foliage in new mapblocks.
+	local pos1, pos2 = vector.offset(minp, -16, -16, -16), vector.offset(maxp, 16, 16, 16)
+	local foliage = minetest.find_nodes_in_area(pos1, pos2, {"group:foliage_palette", "group:foliage_palette_wallmounted"})
+	for _, fpos in pairs(foliage) do
+		local fnode = minetest.get_node(fpos)
+		local foliage_palette_index = mcl_util.get_palette_indexes_from_pos(fpos).foliage_palette_index
+		if fnode.param2 ~= foliage_palette_index and fnode.name ~= "mcl_core:vine" then
+			fnode.param2 = foliage_palette_index
+			minetest.set_node(fpos, fnode)
+		elseif fnode.name == "mcl_core:vine" then
+			local biome_param2 = foliage_palette_index
+			local rotation_param2 = fnode.param2
+			local final_param2 = (biome_param2 * 8) + rotation_param2
+			if fnode.param2 ~= final_param2 and rotation_param2 < 6 then
+				fnode.param2 = final_param2
+				minetest.set_node(fpos, fnode)
+			end
+		end
+	end
+end
+)

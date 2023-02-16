@@ -92,11 +92,13 @@ minetest.register_node("mcl_core:vine", {
 	_doc_items_longdesc = S("Vines are climbable blocks which can be placed on the sides of solid full-cube blocks. Vines slowly grow and spread."),
 	drawtype = "signlike",
 	tiles = {"mcl_core_vine.png"},
+	color = "#48B518",
 	inventory_image = "mcl_core_vine.png",
 	wield_image = "mcl_core_vine.png",
 	paramtype = "light",
 	sunlight_propagates = true,
-	paramtype2 = "wallmounted",
+	paramtype2 = "colorwallmounted",
+	palette = "[combine:16x2:0,0=mcl_core_palette_foliage.png",
 	walkable = false,
 	climbable = true,
 	buildable_to = true,
@@ -107,7 +109,7 @@ minetest.register_node("mcl_core:vine", {
 	groups = {
 		handy = 1, axey = 1, shearsy = 1, swordy = 1, deco_block = 1,
 		dig_by_piston = 1, destroy_by_lava_flow = 1, compostability = 50,
-		flammable = 2, fire_encouragement = 15, fire_flammability = 100
+		flammable = 2, fire_encouragement = 15, fire_flammability = 100, foliage_palette_wallmounted = 1
 	},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = "",
@@ -153,6 +155,20 @@ minetest.register_node("mcl_core:vine", {
 			end
 		end
 		return itemstack
+	end,
+
+	on_construct = function(pos)
+		local node = minetest.get_node(pos)
+		local foliage_palette_index = mcl_util.get_palette_indexes_from_pos(pos).foliage_palette_index
+		if node.name == "mcl_core:vine" then
+			local biome_param2 = foliage_palette_index
+			local rotation_param2 = node.param2
+			local final_param2 = (biome_param2 * 8) + rotation_param2
+			if node.param2 ~= final_param2 and rotation_param2 < 6 then
+				node.param2 = final_param2
+				minetest.swap_node(pos, node)
+			end
+		end
 	end,
 
 	-- If dug, also dig a “dependant” vine below it.

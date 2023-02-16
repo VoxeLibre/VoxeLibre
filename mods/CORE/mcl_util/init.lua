@@ -1016,3 +1016,19 @@ function mcl_util.check_position_protection(position, player)
 
 	return false
 end
+
+local palette_indexes = {grass_palette_index = 0, foliage_palette_index = 0}
+function mcl_util.get_palette_indexes_from_pos(pos)
+	local biome_data = minetest.get_biome_data(pos)
+	local biome = biome_data.biome
+	local biome_name = minetest.get_biome_name(biome)
+	local reg_biome = minetest.registered_biomes[biome_name]
+	if reg_biome and reg_biome._mcl_grass_palette_index and reg_biome._mcl_foliage_palette_index then
+		local gpi = reg_biome._mcl_grass_palette_index
+		local fpi = reg_biome._mcl_foliage_palette_index
+		local palette_indexes = {grass_palette_index = gpi, foliage_palette_index = fpi}
+		return palette_indexes
+	else
+		return palette_indexes
+	end
+end
