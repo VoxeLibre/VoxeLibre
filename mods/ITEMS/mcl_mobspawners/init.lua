@@ -317,8 +317,6 @@ minetest.register_node("mcl_mobspawners:spawner", {
 		if obj then
 			obj:remove()
 		end
-		--Make sure the player is not in creative mode before
-		--giving them xp
 		if not minetest.is_creative_enabled(name) then
 			mcl_experience.throw_xp(pos, math.random(15, 43))
 		end
