@@ -132,3 +132,4 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 mcl_mobs.register_egg("mobs_mc:wither", S("Wither"), "#4f4f4f", "#4f4f4f", 0, true)
 
 mcl_wip.register_wip_item("mobs_mc:wither")
+mcl_mobs:non_spawn_specific("mobs_mc:wither","overworld",0,minetest.LIGHT_MAX+1)

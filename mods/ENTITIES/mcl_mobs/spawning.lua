@@ -413,6 +413,8 @@ WARNING: BIOME INTEGRATION NEEDED -> How to get biome through lua??
 
 --this is where all of the spawning information is kept
 local spawn_dictionary = {}
+--this is where all of the spawning information  is kept for mobs that don't naturally spawn
+local non_spawn_dictionary = {}
 local summary_chance = 0
 
 function mcl_mobs:spawn_setup(def)
@@ -476,6 +478,47 @@ function mcl_mobs:spawn_setup(def)
 		on_spawn         = on_spawn,
 	}
 	summary_chance = summary_chance + chance
+end
+
+function mcl_mobs:mob_light_lvl(mob_name, dimension)
+	local spawn_dictionary_consolidated = {}
+	--see if the mob exists in the nonspawn dictionary, if so then return light values
+	if non_spawn_dictionary[mob_name] ~= nil then
+		local mob_dimension = non_spawn_dictionary[mob_name][dimension]
+		if mob_name ~= nil then
+			return mob_dimension.min_light,mob_dimension.max_light
+		else
+			return non_spawn_dictionary[mob_name]["overworld"].min_light, non_spawn_dictionary[mob_name]["overworld"].max_light
+		end
+
+	--if the mob doesn't exist in non_spawn, check spawn_dictonary
+	else
+		for i,v in pairs(spawn_dictionary) do
+			if spawn_dictionary[spawn_dictionary[i].name] == nil then
+				spawn_dictionary_consolidated[spawn_dictionary[i].name] = {}
+			end
+			spawn_dictionary_consolidated[spawn_dictionary[i].name][dimension] = {
+				["min_light"] = spawn_dictionary[i].min_light,
+				["max_light"] = spawn_dictionary[i].max_light
+			}
+		end	
+		mob_dimension = spawn_dictionary_consolidated[mob_name][dimension]
+		mob_dimension_default = spawn_dictionary_consolidated[mob_name]["overworld"]
+		if spawn_dictionary_consolidated[mob_name] == mob_name and mob_dimension ~= nil then
+			return mob_dimension.min_light, mob_dimension.max_light
+		else
+			return mob_dimension_default.min_light, mob_dimension_default.max_light
+		end 
+	end
+end
+
+function mcl_mobs:non_spawn_specific(mob_name,dimension,min_light,max_light)
+	table.insert(non_spawn_dictionary, mob_name)
+	non_spawn_dictionary[mob_name] = { 
+		[dimension] = { 
+			min_light = min_light , max_light = max_light
+		}
+	}
 end
 
 function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_light, max_light, interval, chance, aoc, min_height, max_height, day_toggle, on_spawn)

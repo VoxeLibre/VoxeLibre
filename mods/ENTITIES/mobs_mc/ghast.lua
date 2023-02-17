@@ -139,6 +139,6 @@ mcl_mobs.register_arrow("mobs_mc:fireball", {
 
 
 
-
+mcl_mobs:non_spawn_specific("mobs_mc:ghast","overworld","0","7")
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:ghast", S("Ghast"), "#f9f9f9", "#bcbcbc", 0)

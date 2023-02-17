@@ -118,3 +118,4 @@ mcl_vars.mg_nether_max)
 --]]
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:witherskeleton", S("Wither Skeleton"), "#141414", "#474d4d", 0)
+mcl_mobs:non_spawn_specific("mobs_mc:witherskeleton","overworld",0,7)

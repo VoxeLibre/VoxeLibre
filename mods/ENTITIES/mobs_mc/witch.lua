@@ -106,5 +106,5 @@ mcl_mobs.register_arrow("mobs_mc:potion_arrow", {
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:witch", S("Witch"), "#340000", "#51a03e", 0, true)
-
+mcl_mobs:non_spawn_specific("mobs_mc:witch","overworld",0,7)
 mcl_wip.register_wip_item("mobs_mc:witch")

@@ -246,3 +246,4 @@ mcl_mobs:spawn_setup({
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:strider", S("Strider"), "#000000", "#FF0000", 0)
+mcl_mobs:non_spawn_specific("mobs_mc:strider","nether",0,minetest.LIGHT_MAX+1)

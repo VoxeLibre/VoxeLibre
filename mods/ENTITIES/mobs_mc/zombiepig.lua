@@ -153,3 +153,4 @@ mcl_vars.mg_nether_max)
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:pigman", S("Zombie Pigman"), "#ea9393", "#4c7129", 0)
+mcl_mobs:non_spawn_specific("mobs_mc:pigman","overworld",0,minetest.LIGHT_MAX+1)

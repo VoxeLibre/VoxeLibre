@@ -90,3 +90,4 @@ mcl_mobs.register_mob("mobs_mc:evoker", {
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:evoker", S("Evoker"), "#959b9b", "#1e1c1a", 0)
+mcl_mobs:non_spawn_specific("mobs_mc:evoker","overworld",0,7)

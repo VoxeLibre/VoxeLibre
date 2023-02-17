@@ -197,3 +197,4 @@ end
 
 -- Spawn egg
 mcl_mobs.register_egg("mobs_mc:snowman", S("Snow Golem"), "#f2f2f2", "#fd8f47", 0)
+mcl_mobs:non_spawn_specific("mobs_mc:snowman","overworld",0,minetest.LIGHT_MAX+1)

@@ -95,3 +95,4 @@ mcl_mobs.register_mob("mobs_mc:vex", {
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:vex", S("Vex"), "#7a90a4", "#e8edf1", 0)
+mcl_mobs:non_spawn_specific("mobs_mc:vex","overworld",0,7)

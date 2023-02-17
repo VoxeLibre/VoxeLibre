@@ -178,7 +178,7 @@ mcl_mobs.register_arrow("mobs_mc:shulkerbullet", {
 
 
 mcl_mobs.register_egg("mobs_mc:shulker", S("Shulker"), "#946694", "#4d3852", 0)
-
+mcl_mobs:non_spawn_specific("mobs_mc:shulker","overworld",0,minetest.LIGHT_MAX+1)
 --[[
 mcl_mobs:spawn_specific(
 "mobs_mc:shulker",

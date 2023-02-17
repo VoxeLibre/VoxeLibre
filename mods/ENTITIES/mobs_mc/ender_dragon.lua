@@ -174,3 +174,4 @@ mcl_mobs.register_egg("mobs_mc:enderdragon", S("Ender Dragon"), "#252525", "#b31
 
 
 mcl_wip.register_wip_item("mobs_mc:enderdragon")
+mcl_mobs:non_spawn_specific("mobs_mc:enderdragon","overworld",0,minetest.LIGHT_MAX+1)

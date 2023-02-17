@@ -283,6 +283,7 @@ piglin_brute.group_attack = { "mobs_mc:piglin", "mobs_mc:piglin_brute" }
 mcl_mobs.register_mob("mobs_mc:piglin_brute", piglin_brute)
 
 
+mcl_mobs:non_spawn_specific("mobs_mc:piglin","overworld",0,7)
 -- Regular spawning in the Nether
 mcl_mobs:spawn_specific(
 "mobs_mc:piglin",
@@ -299,7 +300,7 @@ minetest.LIGHT_MAX+1,
 3,
 mcl_vars.mg_lava_nether_max,
 mcl_vars.mg_nether_max)
-
+mcl_mobs:non_spawn_specific("mobs_mc:sword_piglin","overworld",0,7)
 mcl_mobs:spawn_specific(
 "mobs_mc:sword_piglin",
 "nether",

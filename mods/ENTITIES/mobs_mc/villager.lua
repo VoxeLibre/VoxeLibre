@@ -2199,4 +2199,5 @@ mobs_mc.water_level+1,
 mcl_vars.mg_overworld_max)
 --]]
 -- spawn eggs
+mcl_mobs:non_spawn_specific("mobs_mc:villager","overworld", 0, minetest.LIGHT_MAX+1)
 mcl_mobs.register_egg("mobs_mc:villager", S("Villager"), "#563d33", "#bc8b72", 0)

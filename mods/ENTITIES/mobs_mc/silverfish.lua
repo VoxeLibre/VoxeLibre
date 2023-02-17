@@ -56,3 +56,4 @@ mcl_mobs.register_mob("mobs_mc:silverfish", {
 })
 
 mcl_mobs.register_egg("mobs_mc:silverfish", S("Silverfish"), "#6d6d6d", "#313131", 0)
+mcl_mobs:non_spawn_specific("mobs_mc:silverfish","overworld",0,11)

@@ -131,5 +131,7 @@ minetest.LIGHT_MAX+1,
 mcl_vars.mg_nether_min,
 mcl_vars.mg_nether_max)
 
+mcl_mobs:non_spawn_specific("mobs_mc:hoglin","overworld",0,7)
+
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:hoglin", S("Hoglin"), "#85682e", "#2b2140", 0)
