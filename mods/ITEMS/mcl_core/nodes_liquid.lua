@@ -25,14 +25,15 @@ minetest.register_node("mcl_core:water_flowing", {
 		{
 			image="default_water_flowing_animated.png",
 			backface_culling=false,
-			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=4.0}
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=1.5}
 		},
 		{
 			image="default_water_flowing_animated.png",
 			backface_culling=false,
-			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=4.0}
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=1.5}
 		},
 	},
+	color = "#3F76E4",
 	sounds = mcl_sounds.node_sound_water_defaults(),
 	is_ground_content = false,
 	use_texture_alpha = USE_TEXTURE_ALPHA,
@@ -50,7 +51,7 @@ minetest.register_node("mcl_core:water_flowing", {
 	liquid_viscosity = WATER_VISC,
 	liquid_range = 7,
 	waving = 3,
-	post_effect_color = {a=60, r=0x03, g=0x3C, b=0x5C},
+	post_effect_color = {a=60, r=24.7, g=46.3, b=89.4},
 	groups = { water=3, liquid=3, puts_out_fire=1, not_in_creative_inventory=1, freezes=1, melt_around=1, dig_by_piston=1},
 	_mcl_blast_resistance = 100,
 	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
@@ -70,20 +71,23 @@ S("• When water is directly below lava, the water turns into stone."),
 	drawtype = "liquid",
 	waving = 3,
 	tiles = {
-		{name="default_water_source_animated.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=5.0}}
+		{name="default_water_source_animated.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=3.0}}
 	},
 	special_tiles = {
 		-- New-style water source material (mostly unused)
 		{
 			name="default_water_source_animated.png",
-			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=5.0},
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=3.0},
 			backface_culling = false,
 		}
 	},
+	color = "#3F76E4",
 	sounds = mcl_sounds.node_sound_water_defaults(),
 	is_ground_content = false,
 	use_texture_alpha = USE_TEXTURE_ALPHA,
 	paramtype = "light",
+	paramtype2 = "color",
+	palette = "mcl_core_palette_water.png",
 	walkable = false,
 	pointable = false,
 	diggable = false,
@@ -95,12 +99,21 @@ S("• When water is directly below lava, the water turns into stone."),
 	liquid_alternative_source = "mcl_core:water_source",
 	liquid_viscosity = WATER_VISC,
 	liquid_range = 7,
-	post_effect_color = {a=60, r=0x03, g=0x3C, b=0x5C},
+	post_effect_color = {a=60, r=24.7, g=46.3, b=89.4},
 	stack_max = 64,
-	groups = { water=3, liquid=3, puts_out_fire=1, freezes=1, not_in_creative_inventory=1, dig_by_piston=1},
+	groups = { water=3, liquid=3, puts_out_fire=1, freezes=1, not_in_creative_inventory=1, dig_by_piston=1, water_palette=1},
 	_mcl_blast_resistance = 100,
 	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
 	_mcl_hardness = -1,
+	on_construct = function(pos)
+		local node = minetest.get_node(pos)
+		if node.param2 == 0 then
+			local new_node = mcl_core.get_water_block_type(pos)
+			if new_node.param2 ~= 0 then
+				minetest.swap_node(pos, new_node)
+			end
+		end
+	end,
 })
 
 minetest.register_node("mcl_core:lava_flowing", {
@@ -245,3 +258,22 @@ if minetest.settings:get("mcl_node_particles") == "full" then
 		end,
 	})
 end
+
+minetest.register_on_liquid_transformed(function(pos_list, node_list)
+	for _, fwpos in pairs(pos_list) do
+		local fwnode = minetest.get_node(fwpos)
+		if minetest.get_item_group(fwnode, "palette_index") ~= 1 then
+			local pos1, pos2 = vector.offset(fwpos, -1, -1, -1), vector.offset(fwpos, 1, 1, 1)
+			local water = minetest.find_nodes_in_area(pos1, pos2, {"group:water_palette"})
+			for _, wpos in pairs(water) do
+				local wnode = minetest.get_node(wpos)
+				local water_palette_index = mcl_util.get_palette_indexes_from_pos(wpos).water_palette_index
+				if wnode.param2 ~= water_palette_index then
+					wnode.param2 = water_palette_index
+					minetest.set_node(wpos, wnode)
+				end
+			end
+		end
+	end
+end
+)
