@@ -224,6 +224,14 @@ local function spawn_villagers(minp,maxp)
 	end
 end
 
+local function fix_village_water(minp,maxp)
+	local palettenodes = minetest.find_nodes_in_area(vector.offset(minp,-20,-20,-20),vector.offset(maxp,20,20,20), "group:water_palette")
+	for _, palettenodepos in pairs(palettenodes) do
+		local palettenode = minetest.get_node(palettenodepos)
+		minetest.set_node(palettenodepos, {name = palettenode.name})
+	end
+end
+
 local function init_nodes(p1, p2, size, rotation, pr)
 	construct_node(p1, p2, "mcl_itemframes:item_frame")
 	construct_node(p1, p2, "mcl_furnaces:furnace")
@@ -309,7 +317,7 @@ function settlements.place_schematics(settlement_info, pr)
 
 		-- format schematic string
 		local schematic = loadstring(schem_lua)()
-		
+
 		local is_belltower = building_all_info["name"] == "belltower"
 
 		-- build foundation for the building an make room above
@@ -327,6 +335,7 @@ function settlements.place_schematics(settlement_info, pr)
 				else
 					init_nodes(p1, p2, size, rotation, pr)
 					spawn_villagers(p1,p2)
+					fix_village_water(p1,p2)
 				end
 			end,
 			pr
