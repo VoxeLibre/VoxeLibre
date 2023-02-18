@@ -7,6 +7,12 @@ local nether_skycolor = "#6EB1FF" -- The Nether biomes seemingly don't use the s
 local end_skycolor = "#000000"
 local end_fogcolor = "#A080A0" -- The End biomes seemingly don't use the fog colour, despite having this value according to the wiki. The sky colour is used for both sky and fog.
 
+local default_waterfogcolor = "#3F76E4"
+local lukewarm_waterfogcolor = "#45ADF2"
+local warm_waterfogcolor = "#43D5EE"
+local cold_waterfogcolor = "#3D57D6"
+local frozen_waterfogcolor = "#3938C9"
+
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local mg_seed = minetest.get_mapgen_setting("seed")
 
@@ -52,6 +58,8 @@ local function register_classic_superflat_biome()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 0,
 		_mcl_foliage_palette_index = 1,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -163,6 +171,8 @@ local function register_biomes()
 		_mcl_biome_type = "snowy",
 		_mcl_grass_palette_index = 2,
 		_mcl_foliage_palette_index = 2,
+		_mcl_water_palette_index = 5,
+		_mcl_waterfogcolor = frozen_waterfogcolor,
 		_mcl_skycolor = "#7FA1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -182,6 +192,8 @@ local function register_biomes()
 		_mcl_biome_type = "snowy",
 		_mcl_grass_palette_index = 2,
 		_mcl_foliage_palette_index = 2,
+		_mcl_water_palette_index = 5,
+		_mcl_waterfogcolor = frozen_waterfogcolor,
 		_mcl_skycolor = "#7FA1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -203,6 +215,8 @@ local function register_biomes()
 		_mcl_biome_type = "snowy",
 		_mcl_grass_palette_index = 3,
 		_mcl_foliage_palette_index = 2,
+		_mcl_water_palette_index = 5,
+		_mcl_waterfogcolor = frozen_waterfogcolor,
 		_mcl_skycolor = "#839EFF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -226,6 +240,8 @@ local function register_biomes()
 		_mcl_biome_type = "snowy",
 		_mcl_grass_palette_index = 3,
 		_mcl_foliage_palette_index = 16,
+		_mcl_water_palette_index = 5,
+		_mcl_waterfogcolor = frozen_waterfogcolor,
 		_mcl_skycolor = "#7FA1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -247,6 +263,8 @@ local function register_biomes()
 		_mcl_biome_type = "snowy",
 		_mcl_grass_palette_index = 3,
 		_mcl_foliage_palette_index = 16,
+		_mcl_water_palette_index = 5,
+		_mcl_waterfogcolor = frozen_waterfogcolor,
 		_mcl_skycolor = "#7FA1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -266,6 +284,8 @@ local function register_biomes()
 		_mcl_biome_type = "snowy",
 		_mcl_grass_palette_index = 3,
 		_mcl_foliage_palette_index = 2,
+		_mcl_water_palette_index = 5,
+		_mcl_waterfogcolor = frozen_waterfogcolor,
 		_mcl_skycolor = "#7FA1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -286,6 +306,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 4,
 		_mcl_foliage_palette_index = 9,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = "#7CA3FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -304,6 +326,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 4,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -324,6 +348,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 5,
 		_mcl_foliage_palette_index = 10,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = "#7DA3FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -342,6 +368,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 5,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -363,6 +391,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 6,
 		_mcl_foliage_palette_index = 11,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = "#7DA2FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -382,6 +412,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 6,
 		_mcl_foliage_palette_index = 1,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -401,6 +433,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 6,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -422,6 +456,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 7,
 		_mcl_foliage_palette_index = 11,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = "#7DA2FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -440,6 +476,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 7,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -463,6 +501,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 8,
 		_mcl_foliage_palette_index = 11,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = "#7DA2FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -484,6 +524,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 8,
 		_mcl_foliage_palette_index = 11,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = "#7DA2FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -502,6 +544,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 8,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -520,6 +564,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 9,
 		_mcl_foliage_palette_index = 11,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = "#7DA2FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -538,6 +584,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 9,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -562,6 +610,8 @@ local function register_biomes()
 		_mcl_biome_type = "snowy",
 		_mcl_grass_palette_index = 10,
 		_mcl_foliage_palette_index = 2,
+		_mcl_water_palette_index = 5,
+		_mcl_waterfogcolor = frozen_waterfogcolor,
 		_mcl_skycolor = "#7FA1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -580,6 +630,8 @@ local function register_biomes()
 		_mcl_biome_type = "snowy",
 		_mcl_grass_palette_index = 10,
 		_mcl_foliage_palette_index = 2,
+		_mcl_water_palette_index = 5,
+		_mcl_waterfogcolor = frozen_waterfogcolor,
 		_mcl_skycolor = "#7FA1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -600,6 +652,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 0,
 		_mcl_foliage_palette_index = 1,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -618,6 +672,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 0,
 		_mcl_foliage_palette_index = 1,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -636,6 +692,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 0,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -656,6 +714,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 11,
 		_mcl_foliage_palette_index = 1,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -674,6 +734,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 11,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -694,6 +756,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 12,
 		_mcl_foliage_palette_index = 10,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = "#7DA3FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -712,6 +776,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 12,
 		_mcl_foliage_palette_index = 1,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -730,6 +796,8 @@ local function register_biomes()
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 12,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 4,
+		_mcl_waterfogcolor = cold_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -750,6 +818,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 13,
 		_mcl_foliage_palette_index = 7,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = "#79A6FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -768,6 +838,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 13,
 		_mcl_foliage_palette_index = 1,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -786,6 +858,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 13,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -806,6 +880,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 14,
 		_mcl_foliage_palette_index = 7,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = "#79A6FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -824,6 +900,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 14,
 		_mcl_foliage_palette_index = 1,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -842,6 +920,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 14,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -862,6 +942,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 15,
 		_mcl_foliage_palette_index = 8,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = "#7AA5FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -880,6 +962,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 15,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -900,6 +984,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 16,
 		_mcl_foliage_palette_index = 8,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = "#7AA5FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -918,6 +1004,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 16,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -939,6 +1027,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 17,
 		_mcl_foliage_palette_index = 3,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -957,6 +1047,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 17,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -977,6 +1069,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 18,
 		_mcl_foliage_palette_index = 7,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = "#79A6FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -995,6 +1089,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 18,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1016,6 +1112,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 19,
 		_mcl_foliage_palette_index = 4,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1036,6 +1134,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 19,
 		_mcl_foliage_palette_index = 4,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1055,6 +1155,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 19,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1075,6 +1177,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 20,
 		_mcl_foliage_palette_index = 4,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1094,6 +1198,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 20,
 		_mcl_foliage_palette_index = 4,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1113,6 +1219,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 20,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1135,6 +1243,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 21,
 		_mcl_foliage_palette_index = 4,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1157,6 +1267,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 21,
 		_mcl_foliage_palette_index = 4,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1176,6 +1288,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 21,
 		_mcl_foliage_palette_index = 4,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1195,6 +1309,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 21,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1219,6 +1335,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 22,
 		_mcl_foliage_palette_index = 4,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1239,6 +1357,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 22,
 		_mcl_foliage_palette_index = 4,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1260,6 +1380,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 22,
 		_mcl_foliage_palette_index = 4,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1279,6 +1401,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 22,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 3,
+		_mcl_waterfogcolor = warm_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1300,6 +1424,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 1,
 		_mcl_foliage_palette_index = 3,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1318,6 +1444,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 1,
 		_mcl_foliage_palette_index = 1,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1336,6 +1464,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 1,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1358,6 +1488,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 23,
 		_mcl_foliage_palette_index = 3,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1376,6 +1508,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 23,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1396,6 +1530,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 24,
 		_mcl_foliage_palette_index = 12,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1414,6 +1550,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 24,
 		_mcl_foliage_palette_index = 12,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1433,6 +1571,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 24,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1454,6 +1594,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 25,
 		_mcl_foliage_palette_index = 12,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1472,6 +1614,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 25,
 		_mcl_foliage_palette_index = 12,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1491,6 +1635,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 25,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1511,6 +1657,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 26,
 		_mcl_foliage_palette_index = 13,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1529,6 +1677,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 26,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1552,6 +1702,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 27,
 		_mcl_foliage_palette_index = 13,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1570,6 +1722,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 27,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1591,6 +1745,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 27,
 		_mcl_foliage_palette_index = 6,
+		_mcl_water_palette_index = 7,
+		_mcl_waterfogcolor = "#3A7A6A",
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1609,6 +1765,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 27,
 		_mcl_foliage_palette_index = 6,
+		_mcl_water_palette_index = 7,
+		_mcl_waterfogcolor = "#3A7A6A",
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1628,6 +1786,8 @@ local function register_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 27,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 7,
+		_mcl_waterfogcolor = "#3A7A6A",
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1648,6 +1808,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 28,
 		_mcl_foliage_palette_index = 5,
+		_mcl_water_palette_index = 1,
+		_mcl_waterfogcolor = "#617B64",
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1666,6 +1828,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 28,
 		_mcl_foliage_palette_index = 5,
+		_mcl_water_palette_index = 1,
+		_mcl_waterfogcolor = "#617B64",
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1685,6 +1849,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 28,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 1,
+		_mcl_waterfogcolor = "#617B64",
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1708,6 +1874,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 29,
 		_mcl_foliage_palette_index = 17,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1727,6 +1895,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 29,
 		_mcl_foliage_palette_index = 17,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1745,6 +1915,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 29,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1766,6 +1938,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 24,
 		_mcl_foliage_palette_index = 12,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1784,6 +1958,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 24,
 		_mcl_foliage_palette_index = 12,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1803,6 +1979,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 24,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1824,6 +2002,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 25,
 		_mcl_foliage_palette_index = 12,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1842,6 +2022,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 25,
 		_mcl_foliage_palette_index = 12,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1861,6 +2043,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 25,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1881,6 +2065,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 26,
 		_mcl_foliage_palette_index = 13,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1899,6 +2085,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 26,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1922,6 +2110,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 27,
 		_mcl_foliage_palette_index = 13,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1940,6 +2130,8 @@ local function register_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 27,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 2,
+		_mcl_waterfogcolor = lukewarm_waterfogcolor,
 		_mcl_skycolor = ocean_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
@@ -1965,6 +2157,7 @@ local function register_biomes()
 			_mcl_biome_type = minetest.registered_biomes[biome]._mcl_biome_type,
 			_mcl_grass_palette_index = minetest.registered_biomes[biome]._mcl_grass_palette_index,
 			_mcl_foliage_palette_index = 0,
+			_mcl_water_palette_index = minetest.registered_biomes[biome]._mcl_water_palette_index,
 			_mcl_skycolor = ocean_skycolor,
 			_mcl_fogcolor = overworld_fogcolor
 		})
@@ -1980,6 +2173,7 @@ local function register_biomes()
 			_mcl_biome_type = minetest.registered_biomes[biome]._mcl_biome_type,
 			_mcl_grass_palette_index = minetest.registered_biomes[biome]._mcl_grass_palette_index,
 			_mcl_foliage_palette_index = minetest.registered_biomes[biome]._mcl_foliage_palette_index,
+			_mcl_water_palette_index = minetest.registered_biomes[biome]._mcl_water_palette_index,
 			_mcl_skycolor = minetest.registered_biomes[biome]._mcl_skycolor,
 			_mcl_fogcolor = minetest.registered_biomes[biome]._mcl_fogcolor,
 		})
@@ -2036,6 +2230,8 @@ local function register_dimension_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 17,
 		_mcl_foliage_palette_index = 3,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = nether_skycolor,
 		_mcl_fogcolor = "#330808"
 	})
@@ -2068,6 +2264,8 @@ local function register_dimension_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 17,
 		_mcl_foliage_palette_index = 3,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = nether_skycolor,
 		_mcl_fogcolor = "#1B4745"
 	})
@@ -2120,6 +2318,8 @@ local function register_dimension_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 17,
 		_mcl_foliage_palette_index = 3,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = nether_skycolor,
 		_mcl_fogcolor = "#330303"
 	})
@@ -2150,6 +2350,8 @@ local function register_dimension_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 17,
 		_mcl_foliage_palette_index = 3,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = nether_skycolor,
 		_mcl_fogcolor = "#1A051A"
 	})
@@ -2180,6 +2382,8 @@ local function register_dimension_biomes()
 		_mcl_biome_type = "hot",
 		_mcl_grass_palette_index = 17,
 		_mcl_foliage_palette_index = 3,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = nether_skycolor,
 		_mcl_fogcolor = "#685F70"
 	})
@@ -2235,6 +2439,8 @@ local function register_dimension_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 0,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
@@ -2253,6 +2459,8 @@ local function register_dimension_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 0,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
@@ -2271,6 +2479,8 @@ local function register_dimension_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 0,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
@@ -2289,6 +2499,8 @@ local function register_dimension_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 0,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
@@ -2307,6 +2519,8 @@ local function register_dimension_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 0,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
@@ -2328,6 +2542,8 @@ local function register_dimension_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 0,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
@@ -2347,6 +2563,8 @@ local function register_dimension_biomes()
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 0,
 		_mcl_foliage_palette_index = 0,
+		_mcl_water_palette_index = 0,
+		_mcl_waterfogcolor = default_waterfogcolor,
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
