@@ -26,7 +26,6 @@ flowing.color = "#0084FF"
 flowing.liquid_alternative_flowing = "mclx_core:river_water_flowing"
 flowing.liquid_alternative_source = "mclx_core:river_water_source"
 flowing.liquid_renewable = false
-flowing.tiles = {"default_river_water_flowing_animated.png^[verticalframe:64:0"}
 flowing.post_effect_color = {a=60, r=0, g=132, b=255}
 
 minetest.register_node("mclx_core:river_water_source", source)
