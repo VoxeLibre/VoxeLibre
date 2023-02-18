@@ -812,6 +812,11 @@ function mcl_core.get_foliage_block_type(pos)
 	return {name = minetest.get_node(pos).name, param2 = mcl_util.get_palette_indexes_from_pos(pos).foliage_palette_index}
 end
 
+-- Return appropriate water block node for pos
+function mcl_core.get_water_block_type(pos)
+	return {name = minetest.get_node(pos).name, param2 = mcl_util.get_palette_indexes_from_pos(pos).water_palette_index}
+end
+
 ------------------------------
 -- Spread grass blocks and mycelium on neighbor dirt
 ------------------------------
