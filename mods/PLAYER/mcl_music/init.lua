@@ -8,14 +8,28 @@ local end_tune    = "diminixed-ambientwip"
 local nether_tune = "horizonchris96-traitor"
 
 local dimension_to_base_track = {
-	["overworld"] = pianowtune,
-	["nether"]    = nether_tune,
-	["end"]       = end_tune,
+	["overworld"] = {pianowtune},
+	["nether"]    = {nether_tune},
+	["end"]       = {end_tune},
 }
 
 local listeners = {}
 
 local weather_state
+
+local function pick_track(dimension, below_ground)
+	if dimension == "overworld" and below_ground then
+		-- Play mining track
+	else
+		-- Pick random dimension song
+	end
+	-- Maybe just change the key to lookup and it's explicit what songs are for what context
+
+	local dimension_tracks = dimension_to_base_track[dimension]
+	local chosen_track = dimension_tracks[math.random(1, #dimension_tracks)]
+	return chosen_track
+end
+
 
 local function stop_music_for_listener_name(listener_name)
 	if not listener_name then return end
@@ -27,11 +41,34 @@ local function stop_music_for_listener_name(listener_name)
 	listeners[listener_name].handle = nil
 end
 
-local function stop()
+local function stop_music_for_all()
 	for _, player in pairs(minetest.get_connected_players()) do
 		local player_name = player:get_player_name()
 		stop_music_for_listener_name(player_name)
 	end
+end
+
+local function play_song(track, player_name, hp, dimension, day_count)
+	local spec = {
+		name  = track,
+		gain  = 0.3,
+		pitch = 1.0,
+	}
+	local parameters = {
+		to_player = player_name,
+		gain      = 1.0,
+		fade      = 0.0,
+		pitch     = 1.0,
+	}
+	local handle = minetest.sound_play(spec, parameters, false)
+	listeners[player_name] = {
+		spec       = spec,
+		parameters = parameters,
+		handle     = handle,
+		hp         = hp,
+		dimension  = dimension,
+		day_count  = day_count,
+	}
 end
 
 local function play()
@@ -42,7 +79,7 @@ local function play()
 	local is_weather_changed = weather_state ~= new_weather_state
 	local time = minetest.get_timeofday()
 	if time < 0.25 or time >= 0.75 then
-		stop()
+		stop_music_for_all()
 		minetest.after(10, play)
 		return
 	end
@@ -51,23 +88,28 @@ local function play()
 		local player_name = player:get_player_name()
 		local hp          = player:get_hp()
 		local pos         = player:get_pos()
+
+		local below_ground = pos and pos.y < 0
+
 		local dimension   = mcl_worlds.pos_to_dimension(pos)
 
 		local listener      = listeners[player_name]
+
+		local handle = listener and listener.handle
+
 		local old_hp        = listener and listener.hp
 		local old_dimension = listener and listener.dimension
 
 		local is_dimension_changed = old_dimension and (old_dimension ~= dimension) or false
 		local is_hp_changed = old_hp and (math.abs(old_hp - hp) > 0.00001) or false
-		local handle = listener and listener.handle
 
-		local track = dimension_to_base_track[dimension]
 
-		if is_hp_changed
-			or is_dimension_changed
-			or (dimension == "overworld" and (is_weather_changed or not is_good_weather))
-			or not track
-			then
+		-- TODO if y is less than 1, then pick mining track or not morning music
+		local track = pick_track(dimension, below_ground)
+
+		if is_hp_changed or is_dimension_changed
+				or (dimension == "overworld" and (is_weather_changed or not is_good_weather))
+				or not track then
 			stop_music_for_listener_name(player_name)
 			if not listeners[player_name] then
 				listeners[player_name] = {}
@@ -75,26 +117,7 @@ local function play()
 			listeners[player_name].hp = hp
 			listeners[player_name].dimension = dimension
 		elseif not handle and (not listener or (listener.day_count ~= day_count)) then
-			local spec = {
-				name  = track,
-				gain  = 0.3,
-				pitch = 1.0,
-			}
-			local parameters = {
-				to_player = player_name,
-				gain      = 1.0,
-				fade      = 0.0,
-				pitch     = 1.0,
-			}
-			handle = minetest.sound_play(spec, parameters, false)
-			listeners[player_name] = {
-				spec       = spec,
-				parameters = parameters,
-				handle     = handle,
-				hp         = hp,
-				dimension  = dimension,
-				day_count  = day_count,
-			}
+			play_song(track, player_name, hp, dimension, day_count)
 		end
 	end
 
