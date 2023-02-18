@@ -1,7 +1,7 @@
 local mods_loaded = false
 local NIGHT_VISION_RATIO = 0.45
 
-local water_color = "#0b4880"
+local water_color = "#3F76E4"
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
@@ -125,7 +125,14 @@ mcl_weather.skycolor = {
 			local pos = player:get_pos()
 			local dim = mcl_worlds.pos_to_dimension(pos)
 			local has_weather = (mcl_worlds.has_weather(pos) and (mcl_weather.state == "snow" or mcl_weather.state =="rain" or mcl_weather.state == "thunder") and mcl_weather.has_snow(pos)) or ((mcl_weather.state =="rain" or mcl_weather.state == "thunder") and mcl_weather.has_rain(pos))
-			if minetest.get_item_group(minetest.get_node(vector.new(pos.x,pos.y+1.5,pos.z)).name, "water") ~= 0 then
+			local checkname = minetest.get_node(vector.new(pos.x,pos.y+1.5,pos.z)).name
+			if minetest.get_item_group(checkname, "water") ~= 0 then
+				local biome_index = minetest.get_biome_data(player:get_pos()).biome
+				local biome_name = minetest.get_biome_name(biome_index)
+				local biome = minetest.registered_biomes[biome_name]
+				if biome then water_color = biome._mcl_waterfogcolor end
+				if not biome then water_color = "#3F76E4" end
+				if checkname == "mclx_core:river_water_source" or checkname == "mclx_core:river_water_flowing" then water_color = "#0084FF" end
 				player:set_sky({ type = "regular",
 					sky_color = {
 						day_sky = water_color,
