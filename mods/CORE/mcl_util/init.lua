@@ -1023,7 +1023,7 @@ function mcl_util.get_palette_indexes_from_pos(pos)
 	local biome = biome_data.biome
 	local biome_name = minetest.get_biome_name(biome)
 	local reg_biome = minetest.registered_biomes[biome_name]
-	if reg_biome and reg_biome._mcl_grass_palette_index and reg_biome._mcl_foliage_palette_index then
+	if reg_biome and reg_biome._mcl_grass_palette_index and reg_biome._mcl_foliage_palette_index and reg_biome._mcl_water_palette_index then
 		local gpi = reg_biome._mcl_grass_palette_index
 		local fpi = reg_biome._mcl_foliage_palette_index
 		local wpi = reg_biome._mcl_water_palette_index
