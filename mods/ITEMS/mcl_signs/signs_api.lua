@@ -147,10 +147,10 @@ mcl_signs.wall_standard = {
 	_tt_help = S("Can be written"),
 	_doc_items_longdesc = S("Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them."),
 	_doc_items_usagehelp = S("After placing the sign, you can write something on it. You have 4 lines of text with up to 15 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can not be changed once it has been written; you have to break and place the sign again. Can be colored and made to glow."),
-	inventory_image = "mcl_signs_default_sign.png",
+	inventory_image = "mcl_signs_oak_sign_inv.png",
 	walkable = false,
 	is_ground_content = false,
-	wield_image = "mcl_signs_default_sign.png",
+	wield_image = "mcl_signs_oak_sign_inv.png",
 	node_placement_prediction = "",
 	paramtype = "light",
 	sunlight_propagates = true,
@@ -158,7 +158,7 @@ mcl_signs.wall_standard = {
 	drawtype = "mesh",
 	mesh = "mcl_signs_signonwallmount.obj",
 	selection_box = { type = "wallmounted", wall_side = { -0.5, -7 / 28, -0.5, -23 / 56, 7 / 28, 0.5 } },
-	tiles = { "mcl_signs_sign.png" },
+	tiles = { "mcl_signs_oak_sign.png" },
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	groups = mcl_signs.sign_groups,
 	stack_max = 16,
@@ -369,7 +369,7 @@ mcl_signs.standing_standard = {
 	drawtype = "mesh",
 	mesh = "mcl_signs_sign.obj",
 	selection_box = { type = "fixed", fixed = { -0.2, -0.5, -0.2, 0.2, 0.5, 0.2 } },
-	tiles = { "mcl_signs_sign.png" },
+	tiles = { "mcl_signs_oak_sign.png" },
 	groups = mcl_signs.sign_groups,
 	drop = "mcl_signs:wall_sign",
 	stack_max = 16,
@@ -527,13 +527,11 @@ end
 --- modname: optional (pass "" or "false" to ignore), for use with other mods to
 --- allow the creation of a sign from the mod's wood (if installed).
 ---
---- color: the color code to color the base sign textures. must be a valid html color code.
----
 --- _name: the sign's name suffix, such as "_dark" or "_red", etc., appended to "wall_sign" or "standing_sign"
 ---
 --- ttsign: the tool tip of the sign that gets translated. Shown when the mouse hovers the inventory sign.
 --- For example: the basic, default oak (wood) sign is just "Sign"; and a spruce sign would be "Spruce Sign"
-function mcl_signs.register_sign (modname, color, _name, ttsign)
+function mcl_signs.register_sign (modname, node_texture, item_texture, _name, ttsign)
 	local mod_name_pass = false
 	if modname ~= "" and modname ~= "false" then
 		if minetest.get_modpath(modname) then
@@ -545,16 +543,12 @@ function mcl_signs.register_sign (modname, color, _name, ttsign)
 	end
 	local new_sign = {}
 
-	if color == nil or color == "" then
-		color = "#FFFFFF"
-	end
-
 	new_sign = table.copy(mcl_signs.wall_standard)
 	new_sign.description = S(ttsign)
 
-	new_sign.wield_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
-	new_sign.tiles = { "(mcl_signs_sign.png^[multiply:" .. color .. ")" }
-	new_sign.inventory_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
+	new_sign.wield_image = item_texture
+	new_sign.tiles = node_texture
+	new_sign.inventory_image = item_texture
 
 	-- currently have to do this, because of how the base node placement works.
 	new_sign.on_place = function(itemstack, placer, pointed_thing)
@@ -676,9 +670,9 @@ function mcl_signs.register_sign (modname, color, _name, ttsign)
 	local new_sign_standing = {}
 	new_sign_standing = table.copy(mcl_signs.standing_standard)
 	new_sign_standing.drop = "mcl_signs:wall_sign" .. _name
-	new_sign_standing.wield_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
-	new_sign_standing.tiles = { "(mcl_signs_sign.png^[multiply:" .. color .. ")" }
-	new_sign_standing.inventory_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
+	new_sign_standing.wield_image = item_texture
+	new_sign_standing.tiles = node_texture
+	new_sign_standing.inventory_image = item_texture
 
 	new_sign_standing.on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_FACE then
@@ -762,28 +756,15 @@ function mcl_signs.register_sign (modname, color, _name, ttsign)
 	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign67_5" .. _name, 3 })
 end
 
---- The same as register_sign, except caller defines the textures. Note, there is a greyscale version of the sign,
---- called "mcl_signs_default_sign_greyscale.png" and "mcl_signs_sign_greyscale.png" for optional use in the textures directory.
----
+--- Override an existing sign, and give it an unique node name. Creates both wall and standing signs.
 --- modname: optional (pass "" or "false" to ignore), for use with other mods to
 --- allow the creation of a sign from the mod's wood (if installed).
 ---
 --- _name: the sign's name suffix, such as "_dark" or "_red", etc., appended to "wall_sign" or "standing_sign"
 ---
---- tiles: the texture file to use for the sign.
----
---- color: color the texture file to use with this color. Use white (#FFFFFF) to negate the color,
---- and just use the texture as is
----
---- inventory_image: the texture file to use for the sign's display in inventory.
----
---- wield_image: the texture file to use for the sign's weilded (in hand) object.
----
---- inventory_image: the image used for in-inventory and in hand.
----
 --- ttsign: the tool tip of the sign that gets translated. Shown when the mouse hovers the inventory sign.
 --- For example: the basic, default oak (wood) sign is just "Sign"; and a spruce sign would be "Spruce Sign"
-function mcl_signs.register_sign_custom (modname, _name, tiles, color, inventory_image, wield_image, ttsign)
+function mcl_signs.reregister_sign (modname, node_texture, item_texture, _name, ttsign)
 	local mod_name_pass = false
 	if modname ~= "" and modname ~= "false" then
 		if minetest.get_modpath(modname) then
@@ -796,228 +777,11 @@ function mcl_signs.register_sign_custom (modname, _name, tiles, color, inventory
 	local new_sign = {}
 
 	new_sign = table.copy(mcl_signs.wall_standard)
-
-	new_sign.wield_image = "(" .. wield_image .. "^[multiply:" .. color .. ")"
-	new_sign.tiles = { "(" .. tiles .. "^[multiply:" .. color .. ")" }
-	new_sign.inventory_image = "(" .. inventory_image .. "^[multiply:" .. color .. ")"
-	new_sign.description = S(ttsign)
-	-- currently have to do this, because of how the base node placement works.
-	new_sign.on_place = function(itemstack, placer, pointed_thing)
-		local above = pointed_thing.above
-		local under = pointed_thing.under
-
-		-- Use pointed node's on_rightclick function first, if present
-		local node_under = minetest.get_node(under)
-		if placer and not placer:get_player_control().sneak then
-			if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
-				return minetest.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
-			end
-		end
-
-		local dir = vector.subtract(under, above)
-
-		-- Only build when it's legal
-		local abovenodedef = minetest.registered_nodes[minetest.get_node(above).name]
-		if not abovenodedef or abovenodedef.buildable_to == false then
-			return itemstack
-		end
-
-		local wdir = minetest.dir_to_wallmounted(dir)
-		local fdir = minetest.dir_to_facedir(dir)
-
-		local sign_info
-		local nodeitem = ItemStack(itemstack)
-		-- Ceiling
-		if wdir == 0 then
-			--how would you add sign to ceiling?
-			return itemstack
-			-- Floor
-		elseif wdir == 1 then
-			-- Standing sign
-
-			-- Determine the sign rotation based on player's yaw
-			local yaw = pi * 2 - placer:get_look_horizontal()
-
-			-- Select one of 16 possible rotations (0-15)
-			local rotation_level = mcl_signs:round((yaw / (pi * 2)) * 16)
-
-			if rotation_level > 15 then
-				rotation_level = 0
-			elseif rotation_level < 0 then
-				rotation_level = 15
-			end
-
-			-- The actual rotation is a combination of predefined mesh and facedir (see node definition)
-			if rotation_level % 4 == 0 then
-				nodeitem:set_name("mcl_signs:standing_sign" .. _name)
-			elseif rotation_level % 4 == 1 then
-				nodeitem:set_name("mcl_signs:standing_sign22_5" .. _name)
-			elseif rotation_level % 4 == 2 then
-				nodeitem:set_name("mcl_signs:standing_sign45" .. _name)
-			elseif rotation_level % 4 == 3 then
-				nodeitem:set_name("mcl_signs:standing_sign67_5" .. _name)
-			end
-			fdir = math.floor(rotation_level / 4)
-
-			-- Place the node!
-			local _, success = minetest.item_place_node(nodeitem, placer, pointed_thing, fdir)
-			if not success then
-				return itemstack
-			end
-			if not minetest.is_creative_enabled(placer:get_player_name()) then
-				itemstack:take_item()
-			end
-			sign_info = mcl_signs.signtext_info_standing[rotation_level + 1]
-			-- Side
-		else
-			-- Wall sign
-			local _, success = minetest.item_place_node(itemstack, placer, pointed_thing, wdir)
-			if not success then
-				return itemstack
-			end
-			sign_info = mcl_signs.signtext_info_wall[fdir + 1]
-		end
-
-		-- Determine spawn position of entity
-		local place_pos
-		if minetest.registered_nodes[node_under.name].buildable_to then
-			place_pos = under
-		else
-			place_pos = above
-		end
-
-		local text_entity = minetest.add_entity({
-			x = place_pos.x + sign_info.delta.x,
-			y = place_pos.y + sign_info.delta.y,
-			z = place_pos.z + sign_info.delta.z }, "mcl_signs:text")
-		text_entity:set_yaw(sign_info.yaw)
-		text_entity:get_luaentity()._signnodename = nodeitem:get_name()
-
-		minetest.sound_play({ name = "default_place_node_hard", gain = 1.0 }, { pos = place_pos }, true)
-
-		mcl_signs:show_formspec(placer, place_pos)
-		return itemstack
-	end
-	minetest.register_node(":mcl_signs:wall_sign" .. _name, new_sign)
-	update_sign_registry("wall", "mcl_signs:wall_sign" .. _name)
-
-	-- standing sign base.
-	local new_sign_standing = {}
-	new_sign_standing = table.copy(mcl_signs.standing_standard)
-	new_sign_standing.drop = "mcl_signs:wall_sign" .. _name
-	new_sign_standing.wield_image = "(" .. wield_image .. "^[multiply:" .. color .. ")"
-	new_sign_standing.tiles = { "(" .. tiles .. "^[multiply:" .. color .. ")" }
-	new_sign_standing.inventory_image = "(" .. inventory_image .. "^[multiply:" .. color .. ")"
-	new_sign_standing.on_rotate = function(pos, node, user, mode)
-		if mode == screwdriver.ROTATE_FACE then
-			node.name = "mcl_signs:standing_sign22_5" .. _name
-			minetest.swap_node(pos, node)
-		elseif mode == screwdriver.ROTATE_AXIS then
-			return false
-		end
-		mcl_signs:update_sign(pos, nil, nil, true)
-		return true
-	end,
-	minetest.register_node(":mcl_signs:standing_sign" .. _name, new_sign_standing)
-	update_sign_registry("standing", "mcl_signs:standing_sign" .. _name)
-
-	-- 22.5°
-	local ssign22_5d = table.copy(new_sign_standing)
-	ssign22_5d.mesh = "mcl_signs_sign22.5.obj"
-	ssign22_5d.on_rotate = function(pos, node, user, mode)
-		if mode == screwdriver.ROTATE_FACE then
-			node.name = "mcl_signs:standing_sign45" .. _name
-			minetest.swap_node(pos, node)
-		elseif mode == screwdriver.ROTATE_AXIS then
-			return false
-		end
-		mcl_signs:update_sign(pos, nil, nil, true)
-		return true
-	end
-	minetest.register_node(":mcl_signs:standing_sign22_5" .. _name, ssign22_5d)
-	update_sign_registry("standing", "mcl_signs:standing_sign22_5" .. _name)
-
-	-- 45°
-	local ssign45d = table.copy(new_sign_standing)
-	ssign45d.mesh = "mcl_signs_sign45.obj"
-	ssign45d.on_rotate = function(pos, node, user, mode)
-		if mode == screwdriver.ROTATE_FACE then
-			node.name = "mcl_signs:standing_sign67_5" .. _name
-			minetest.swap_node(pos, node)
-		elseif mode == screwdriver.ROTATE_AXIS then
-			return false
-		end
-		mcl_signs:update_sign(pos, nil, nil, true)
-		return true
-	end
-	minetest.register_node(":mcl_signs:standing_sign45" .. _name, ssign45d)
-	update_sign_registry("standing", "mcl_signs:standing_sign45" .. _name)
-
-	-- 67.5°
-	local ssign67_5d = table.copy(new_sign_standing)
-	ssign67_5d.mesh = "mcl_signs_sign67.5.obj"
-	ssign67_5d.on_rotate = function(pos, node, user, mode)
-		if mode == screwdriver.ROTATE_FACE then
-			node.name = "mcl_signs:standing_sign" .. _name
-			node.param2 = (node.param2 + 1) % 4
-			minetest.swap_node(pos, node)
-		elseif mode == screwdriver.ROTATE_AXIS then
-			return false
-		end
-		mcl_signs:update_sign(pos, nil, nil, true)
-		return true
-	end
-	minetest.register_node(":mcl_signs:standing_sign67_5" .. _name, ssign67_5d)
-	update_sign_registry("standing", "mcl_signs:standing_sign67_5" .. _name)
-
-	-- register Doc entry
-	if minetest.get_modpath("doc") then
-		doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:wall_sign" .. _name)
-		doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign" .. _name)
-		doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign22_5" .. _name)
-		doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign45" .. _name)
-		doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign67_5" .. _name)
-	end
-
-	--register standing sign's rotation_levels
-	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign22_5" .. _name, 1 })
-	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign45" .. _name, 2 })
-	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign67_5" .. _name, 3 })
-
-end
-
---- Override an existing sign, tint the textures, and gives it an unique node name. Creates both wall and standing signs.
---- modname: optional (pass "" or "false" to ignore), for use with other mods to
---- allow the creation of a sign from the mod's wood (if installed).
----
---- color: the color code to color the base sign textures. must be a valid html color code.
----
---- _name: the sign's name suffix, such as "_dark" or "_red", etc., appended to "wall_sign" or "standing_sign"
----
---- ttsign: the tool tip of the sign that gets translated. Shown when the mouse hovers the inventory sign.
---- For example: the basic, default oak (wood) sign is just "Sign"; and a spruce sign would be "Spruce Sign"
-function mcl_signs.reregister_sign (modname, color, _name, ttsign)
-	local mod_name_pass = false
-	if modname ~= "" and modname ~= "false" then
-		if minetest.get_modpath(modname) then
-			mod_name_pass = true
-		end
-		if mod_name_pass == false then
-			return
-		end
-	end
-	local new_sign = {}
-
-	if color == nil or color == "" then
-		color = "#FFFFFF"
-	end
-
-	new_sign = table.copy(mcl_signs.wall_standard)
 	new_sign.description = S(ttsign)
 
-	new_sign.wield_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
-	new_sign.tiles = { "(mcl_signs_sign.png^[multiply:" .. color .. ")" }
-	new_sign.inventory_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
+	new_sign.wield_image = item_texture
+	new_sign.tiles = node_texture
+	new_sign.inventory_image = item_texture
 
 	-- currently have to do this, because of how the base node placement works.
 	new_sign.on_place = function(itemstack, placer, pointed_thing)
@@ -1045,16 +809,21 @@ function mcl_signs.reregister_sign (modname, color, _name, ttsign)
 
 		local sign_info
 		local nodeitem = ItemStack(itemstack)
+
+		local yaw = 0
+
 		-- Ceiling
 		if wdir == 0 then
-			--how would you add sign to ceiling?
+			--how would you add sign to ceiling? simple - hanging sign.
+			-- add code for placement underneath a node.
+
 			return itemstack
 			-- Floor
 		elseif wdir == 1 then
 			-- Standing sign
 
 			-- Determine the sign rotation based on player's yaw
-			local yaw = pi * 2 - placer:get_look_horizontal()
+			yaw = pi * 2 - placer:get_look_horizontal()
 
 			-- Select one of 16 possible rotations (0-15)
 			local rotation_level = mcl_signs:round((yaw / (pi * 2)) * 16)
@@ -1121,7 +890,7 @@ function mcl_signs.reregister_sign (modname, color, _name, ttsign)
 		return itemstack
 	end
 
-	minetest.override_item("mcl_signs:wall_sign" .. _name, new_sign)
+	minetest.register_node(":mcl_signs:wall_sign" .. _name, new_sign)
 	update_sign_registry("wall", "mcl_signs:wall_sign" .. _name)
 
 	-- debug step
@@ -1134,9 +903,10 @@ function mcl_signs.reregister_sign (modname, color, _name, ttsign)
 	local new_sign_standing = {}
 	new_sign_standing = table.copy(mcl_signs.standing_standard)
 	new_sign_standing.drop = "mcl_signs:wall_sign" .. _name
-	new_sign_standing.wield_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
-	new_sign_standing.tiles = { "(mcl_signs_sign.png^[multiply:" .. color .. ")" }
-	new_sign_standing.inventory_image = "(mcl_signs_default_sign.png^[multiply:" .. color .. ")"
+	new_sign_standing.wield_image = item_texture
+	new_sign_standing.tiles = node_texture
+	new_sign_standing.inventory_image = item_texture
+
 	new_sign_standing.on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_FACE then
 			node.name = "mcl_signs:standing_sign22_5" .. _name
@@ -1147,7 +917,8 @@ function mcl_signs.reregister_sign (modname, color, _name, ttsign)
 		mcl_signs:update_sign(pos, nil, nil, true)
 		return true
 	end,
-	minetest.override_item("mcl_signs:standing_sign" .. _name, new_sign_standing)
+
+	minetest.register_node(":mcl_signs:standing_sign" .. _name, new_sign_standing)
 	update_sign_registry("standing", "mcl_signs:standing_sign" .. _name)
 	-- debug step
 	if DEBUG then
@@ -1167,7 +938,7 @@ function mcl_signs.reregister_sign (modname, color, _name, ttsign)
 		mcl_signs:update_sign(pos, nil, nil, true)
 		return true
 	end
-	minetest.override_item("mcl_signs:standing_sign22_5" .. _name, ssign22_5d)
+	minetest.register_node(":mcl_signs:standing_sign22_5" .. _name, ssign22_5d)
 	update_sign_registry("standing", "mcl_signs:standing_sign22_5" .. _name)
 
 	-- 45°
@@ -1183,7 +954,7 @@ function mcl_signs.reregister_sign (modname, color, _name, ttsign)
 		mcl_signs:update_sign(pos, nil, nil, true)
 		return true
 	end
-	minetest.override_item("mcl_signs:standing_sign45" .. _name, ssign45d)
+	minetest.register_node(":mcl_signs:standing_sign45" .. _name, ssign45d)
 	update_sign_registry("standing", "mcl_signs:standing_sign45" .. _name)
 
 	-- 67.5°
@@ -1200,7 +971,7 @@ function mcl_signs.reregister_sign (modname, color, _name, ttsign)
 		mcl_signs:update_sign(pos, nil, nil, true)
 		return true
 	end
-	minetest.override_item("mcl_signs:standing_sign67_5" .. _name, ssign67_5d)
+	minetest.register_node(":mcl_signs:standing_sign67_5" .. _name, ssign67_5d)
 	update_sign_registry("standing", "mcl_signs:standing_sign67_5" .. _name)
 
 	-- register Doc entry
@@ -1216,230 +987,6 @@ function mcl_signs.reregister_sign (modname, color, _name, ttsign)
 	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign22_5" .. _name, 1 })
 	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign45" .. _name, 2 })
 	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign67_5" .. _name, 3 })
-end
-
---- The same as reregister_sign, except caller defines the textures. Note, there is a greyscale version of the sign,
---- called "mcl_signs_default_sign_greyscale.png" and "mcl_signs_sign_greyscale.png" for optional use in the textures directory.
----
---- modname: optional (pass "" or "false" to ignore), for use with other mods to
---- allow the creation of a sign from the mod's wood (if installed).
----
---- _name: the sign's name suffix, such as "_dark" or "_red", etc., appended to "wall_sign" or "standing_sign"
----
---- tiles: the texture file to use for the sign.
----
---- color: color the texture file to use with this color. Use white (#FFFFFF) to negate the color,
---- and just use the texture as is
----
---- inventory_image: the texture file to use for the sign's display in inventory.
----
---- wield_image: the texture file to use for the sign's weilded (in hand) object.
----
---- inventory_image: the image used for in-inventory and in hand.
----
---- ttsign: the tool tip of the sign that gets translated. Shown when the mouse hovers the inventory sign.
---- For example: the basic, default oak (wood) sign is just "Sign"; and a spruce sign would be "Spruce Sign"
-function mcl_signs.reregister_sign_custom (modname, _name, tiles, color, inventory_image, wield_image, ttsign)
-	local mod_name_pass = false
-	if modname ~= "" and modname ~= "false" then
-		if minetest.get_modpath(modname) then
-			mod_name_pass = true
-		end
-		if mod_name_pass == false then
-			return
-		end
-	end
-	local new_sign = {}
-
-	new_sign = table.copy(mcl_signs.wall_standard)
-
-	new_sign.wield_image = "(" .. wield_image .. "^[multiply:" .. color .. ")"
-	new_sign.tiles = { "(" .. tiles .. "^[multiply:" .. color .. ")" }
-	new_sign.inventory_image = "(" .. inventory_image .. "^[multiply:" .. color .. ")"
-	new_sign.description = S(ttsign)
-	-- currently have to do this, because of how the base node placement works.
-	new_sign.on_place = function(itemstack, placer, pointed_thing)
-		local above = pointed_thing.above
-		local under = pointed_thing.under
-
-		-- Use pointed node's on_rightclick function first, if present
-		local node_under = minetest.get_node(under)
-		if placer and not placer:get_player_control().sneak then
-			if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
-				return minetest.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
-			end
-		end
-
-		local dir = vector.subtract(under, above)
-
-		-- Only build when it's legal
-		local abovenodedef = minetest.registered_nodes[minetest.get_node(above).name]
-		if not abovenodedef or abovenodedef.buildable_to == false then
-			return itemstack
-		end
-
-		local wdir = minetest.dir_to_wallmounted(dir)
-		local fdir = minetest.dir_to_facedir(dir)
-
-		local sign_info
-		local nodeitem = ItemStack(itemstack)
-		-- Ceiling
-		if wdir == 0 then
-			--how would you add sign to ceiling?
-			return itemstack
-			-- Floor
-		elseif wdir == 1 then
-			-- Standing sign
-
-			-- Determine the sign rotation based on player's yaw
-			local yaw = pi * 2 - placer:get_look_horizontal()
-
-			-- Select one of 16 possible rotations (0-15)
-			local rotation_level = mcl_signs:round((yaw / (pi * 2)) * 16)
-
-			if rotation_level > 15 then
-				rotation_level = 0
-			elseif rotation_level < 0 then
-				rotation_level = 15
-			end
-
-			-- The actual rotation is a combination of predefined mesh and facedir (see node definition)
-			if rotation_level % 4 == 0 then
-				nodeitem:set_name("mcl_signs:standing_sign" .. _name)
-			elseif rotation_level % 4 == 1 then
-				nodeitem:set_name("mcl_signs:standing_sign22_5" .. _name)
-			elseif rotation_level % 4 == 2 then
-				nodeitem:set_name("mcl_signs:standing_sign45" .. _name)
-			elseif rotation_level % 4 == 3 then
-				nodeitem:set_name("mcl_signs:standing_sign67_5" .. _name)
-			end
-			fdir = math.floor(rotation_level / 4)
-
-			-- Place the node!
-			local _, success = minetest.item_place_node(nodeitem, placer, pointed_thing, fdir)
-			if not success then
-				return itemstack
-			end
-			if not minetest.is_creative_enabled(placer:get_player_name()) then
-				itemstack:take_item()
-			end
-			sign_info = mcl_signs.signtext_info_standing[rotation_level + 1]
-			-- Side
-		else
-			-- Wall sign
-			local _, success = minetest.item_place_node(itemstack, placer, pointed_thing, wdir)
-			if not success then
-				return itemstack
-			end
-			sign_info = mcl_signs.signtext_info_wall[fdir + 1]
-		end
-
-		-- Determine spawn position of entity
-		local place_pos
-		if minetest.registered_nodes[node_under.name].buildable_to then
-			place_pos = under
-		else
-			place_pos = above
-		end
-
-		local text_entity = minetest.add_entity({
-			x = place_pos.x + sign_info.delta.x,
-			y = place_pos.y + sign_info.delta.y,
-			z = place_pos.z + sign_info.delta.z }, "mcl_signs:text")
-		text_entity:set_yaw(sign_info.yaw)
-		text_entity:get_luaentity()._signnodename = nodeitem:get_name()
-
-		minetest.sound_play({ name = "default_place_node_hard", gain = 1.0 }, { pos = place_pos }, true)
-
-		mcl_signs:show_formspec(placer, place_pos)
-		return itemstack
-	end
-	minetest.override_item("mcl_signs:wall_sign" .. _name, new_sign)
-	update_sign_registry("wall", "mcl_signs:wall_sign" .. _name)
-
-	-- standing sign base.
-	local new_sign_standing = {}
-	new_sign_standing = table.copy(mcl_signs.standing_standard)
-	new_sign_standing.drop = "mcl_signs:wall_sign" .. _name
-	new_sign_standing.wield_image = "(" .. wield_image .. "^[multiply:" .. color .. ")"
-	new_sign_standing.tiles = { "(" .. tiles .. "^[multiply:" .. color .. ")" }
-	new_sign_standing.inventory_image = "(" .. inventory_image .. "^[multiply:" .. color .. ")"
-	new_sign_standing.on_rotate = function(pos, node, user, mode)
-		if mode == screwdriver.ROTATE_FACE then
-			node.name = "mcl_signs:standing_sign22_5" .. _name
-			minetest.swap_node(pos, node)
-		elseif mode == screwdriver.ROTATE_AXIS then
-			return false
-		end
-		mcl_signs:update_sign(pos, nil, nil, true)
-		return true
-	end,
-	minetest.override_item("mcl_signs:standing_sign" .. _name, new_sign_standing)
-	update_sign_registry("standing", "mcl_signs:standing_sign" .. _name)
-
-	-- 22.5°
-	local ssign22_5d = table.copy(new_sign_standing)
-	ssign22_5d.mesh = "mcl_signs_sign22.5.obj"
-	ssign22_5d.on_rotate = function(pos, node, user, mode)
-		if mode == screwdriver.ROTATE_FACE then
-			node.name = "mcl_signs:standing_sign45" .. _name
-			minetest.swap_node(pos, node)
-		elseif mode == screwdriver.ROTATE_AXIS then
-			return false
-		end
-		mcl_signs:update_sign(pos, nil, nil, true)
-		return true
-	end
-	minetest.override_item("mcl_signs:standing_sign22_5" .. _name, ssign22_5d)
-	update_sign_registry("standing", "mcl_signs:standing_sign22_5" .. _name)
-
-	-- 45°
-	local ssign45d = table.copy(new_sign_standing)
-	ssign45d.mesh = "mcl_signs_sign45.obj"
-	ssign45d.on_rotate = function(pos, node, user, mode)
-		if mode == screwdriver.ROTATE_FACE then
-			node.name = "mcl_signs:standing_sign67_5" .. _name
-			minetest.swap_node(pos, node)
-		elseif mode == screwdriver.ROTATE_AXIS then
-			return false
-		end
-		mcl_signs:update_sign(pos, nil, nil, true)
-		return true
-	end
-	minetest.override_item("mcl_signs:standing_sign45" .. _name, ssign45d)
-	update_sign_registry("standing", "mcl_signs:standing_sign45" .. _name)
-
-	-- 67.5°
-	local ssign67_5d = table.copy(new_sign_standing)
-	ssign67_5d.mesh = "mcl_signs_sign67.5.obj"
-	ssign67_5d.on_rotate = function(pos, node, user, mode)
-		if mode == screwdriver.ROTATE_FACE then
-			node.name = "mcl_signs:standing_sign" .. _name
-			node.param2 = (node.param2 + 1) % 4
-			minetest.swap_node(pos, node)
-		elseif mode == screwdriver.ROTATE_AXIS then
-			return false
-		end
-		mcl_signs:update_sign(pos, nil, nil, true)
-		return true
-	end
-	minetest.override_item("mcl_signs:standing_sign67_5" .. _name, ssign67_5d)
-	update_sign_registry("standing", "mcl_signs:standing_sign67_5" .. _name)
-
-	-- register Doc entry
-	if minetest.get_modpath("doc") then
-		doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:wall_sign" .. _name)
-		doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign" .. _name)
-		doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign22_5" .. _name)
-		doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign45" .. _name)
-		doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign67_5" .. _name)
-	end
-
-	--register standing sign's rotation_levels
-	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign22_5" .. _name, 1 })
-	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign45" .. _name, 2 })
-	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign67_5" .. _name, 3 })
-
 end
 
 --- Usage: Call this with the mod's name, the wood's item string (for the planks), and with the sign's suffix.

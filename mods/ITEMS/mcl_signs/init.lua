@@ -93,57 +93,44 @@ mcl_signs.build_signs_info()
 -- ---------------------------- --
 
 -- Standard (original) Sign
-mcl_signs.register_sign("mcl_core", "#ffffff", "", "Sign")
+mcl_signs.register_sign("mcl_core", {"mcl_signs_oak_sign.png"}, "mcl_signs_oak_sign_inv.png", "_oak", "Oak Sign")
 mcl_signs.register_sign_craft("mcl_core", "mcl_core:wood", "")
 
--- birchwood Sign "#d5cb8d" / "#ffdba7"
-mcl_signs.register_sign_custom("mcl_core", "_birchwood",
-        "mcl_signs_sign_greyscale.png","#ffdba7", "mcl_signs_default_sign_greyscale.png",
-        "mcl_signs_default_sign_greyscale.png", "Birch Sign"
-)
+-- Birch Sign
+mcl_signs.register_sign("mcl_core", {"mcl_signs_birch_sign.png"}, "mcl_signs_birch_sign_inv.png", "_birch", "Birch Sign")
 mcl_signs.register_sign_craft("mcl_core", "mcl_core:birchwood", "_birchwood")
 
--- sprucewood Sign
-mcl_signs.register_sign_custom("mcl_core", "_sprucewood",
-        "mcl_signs_sign_dark.png","#ffffff", "mcl_signs_default_sign_dark.png",
-        "mcl_signs_default_sign_dark.png", "Spruce Sign"
-)
+-- Spruce Sign
+mcl_signs.register_sign("mcl_core", {"mcl_signs_spruce_sign.png"}, "mcl_signs_spruce_sign_inv.png", "_spruce", "Spruce Sign")
 mcl_signs.register_sign_craft("mcl_core", "mcl_core:sprucewood", "_sprucewood")
 
--- darkwood Sign "#291f1a" / "#856443"
-mcl_signs.register_sign_custom("mcl_core", "_darkwood",
-        "mcl_signs_sign_greyscale.png","#856443", "mcl_signs_default_sign_greyscale.png",
-        "mcl_signs_default_sign_greyscale.png", "Dark Oak Sign"
-)
+-- Dark Oak Sign
+mcl_signs.register_sign("mcl_core", {"mcl_signs_dark_oak_sign.png"}, "mcl_signs_dark_oak_sign_inv.png", "_dark_oak", "Dark Oak Sign")
 mcl_signs.register_sign_craft("mcl_core", "mcl_core:darkwood", "_darkwood")
 
--- junglewood Sign
-mcl_signs.register_sign("mcl_core", "#866249", "_junglewood", "Jungle Sign")
+-- Jungle Sign
+mcl_signs.register_sign("mcl_core", {"mcl_signs_jungle_sign.png"}, "mcl_signs_jungle_sign_inv.png", "_jungle", "Jungle Sign")
 mcl_signs.register_sign_craft("mcl_core", "mcl_core:junglewood", "_junglewood")
 
--- acaciawood Sign "b8693d"
-mcl_signs.register_sign("mcl_core", "#ea7479", "_acaciawood", "Acacia Sign")
+-- Acacia Sign
+mcl_signs.register_sign("mcl_core", {"mcl_signs_acacia_sign.png"}, "mcl_signs_acacia_sign_inv.png", "_acacia", "Acacia Sign")
 mcl_signs.register_sign_craft("mcl_core", "mcl_core:acaciawood", "_acaciawood")
 
 if minetest.get_modpath("mcl_mangrove") then
-	-- mangrove_wood Sign  "#c7545c"
-	mcl_signs.register_sign("mcl_mangrove", "#b8693d", "_mangrove_wood", "Mangrove Sign")
+	-- Mangrove Sign
+	mcl_signs.register_sign("mcl_mangrove", {"mcl_mangrove_mangrove_sign.png"}, "mcl_mangrove_mangrove_sign_inv.png", "_mangrove", "Mangrove Sign")
 	mcl_signs.register_sign_craft("mcl_mangrove", "mcl_mangrove:mangrove_wood", "_mangrove_wood")
 end
 
--- add in the nether wood signs
+-- Nether Wood Signs
 if minetest.get_modpath("mcl_crimson") then
 
-    -- warped_hyphae_wood Sign
-    mcl_signs.register_sign_custom("mcl_crimson","_warped_hyphae_wood", "mcl_signs_sign_greyscale.png",
-            "#9f7dcf", "mcl_signs_default_sign_greyscale.png", "mcl_signs_default_sign_greyscale.png",
-            "Warped Hyphae Sign")
+    -- Warped Sign
+	mcl_signs.register_sign("mcl_crimson", {"mcl_crimson_warped_sign.png"}, "mcl_crimson_warped_sign_inv.png", "_warped", "Warped Sign")
     mcl_signs.register_sign_craft("mcl_crimson", "mcl_crimson:warped_hyphae_wood", "_warped_hyphae_wood")
 
-    -- crimson_hyphae_wood Sign
-    mcl_signs.register_sign_custom("mcl_crimson", "_crimson_hyphae_wood","mcl_signs_sign_greyscale.png",
-            "#c35f51","mcl_signs_default_sign_greyscale.png", "mcl_signs_default_sign_greyscale.png",
-            "Crimson Hyphae Sign")
+    -- Crimson Sign
+	mcl_signs.register_sign("mcl_crimson", {"mcl_crimson_crimson_sign.png"}, "mcl_crimson_crimson_sign_inv.png", "_crimson", "Crimson Sign")
     mcl_signs.register_sign_craft("mcl_crimson", "mcl_crimson:crimson_hyphae_wood", "_crimson_hyphae_wood")
 
 end
