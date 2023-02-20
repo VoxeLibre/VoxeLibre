@@ -32,8 +32,6 @@ local function pick_track(dimension, underground)
 		track_key = dimension
 	end
 
-	minetest.log("track_key: " .. track_key)
-
 	local dimension_tracks = dimension_to_base_track[track_key]
 
 	if dimension_tracks and #dimension_tracks >= 1 then
@@ -43,10 +41,12 @@ local function pick_track(dimension, underground)
 		end
 		local chosen_track = dimension_tracks[index]
 		--minetest.log("chosen_track: " .. chosen_track)
+		minetest.log("action", "[mcl_music] Playing track: " .. chosen_track .. ", for context: " .. track_key)
 		return chosen_track
 	else
 		--?
 	end
+
 	return nil
 end
 
@@ -70,7 +70,6 @@ local function stop_music_for_all()
 end
 
 local function play_song(track, player_name, hp, dimension, day_count, underground)
-	minetest.log("action", "[mcl_music] Playing track: " .. track)
 	local spec = {
 		name  = track,
 		gain  = 0.3,
