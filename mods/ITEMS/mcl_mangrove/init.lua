@@ -311,7 +311,7 @@ mcl_flowerpots.register_potted_flower("mcl_mangrove:propagule", {
 	image = "mcl_mangrove_propagule.png",
 })
 
-local water_tex = "default_water_source_animated.png^[verticalframe:16:0"
+local water_tex = "default_water_source_animated.png^[verticalframe:16:0^[multiply:#3F76E4"
 
 local wlroots = {
 	description = S("water logged mangrove roots"),
@@ -363,7 +363,7 @@ local rwlroots = table.copy(wlroots)
 -- FIXME luacheck complains that this is a repeated definition of water_tex.
 -- Maybe the tiles definition below should be replaced with the animated tile
 -- definition as per above?
-water_tex = "default_river_water_source_animated.png^[verticalframe:16:0"
+water_tex = "default_water_source_animated.png^[verticalframe:16:0^[multiply:#0084FF"
 rwlroots.tiles = {
 	"("..water_tex..")^mcl_mangrove_roots_top.png",
 	"("..water_tex..")^mcl_mangrove_roots_side.png",

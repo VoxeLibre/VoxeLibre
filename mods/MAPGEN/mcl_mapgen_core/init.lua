@@ -57,6 +57,7 @@ dofile(modpath.."/api.lua")
 dofile(modpath.."/ores.lua")
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
+local sea_level = tonumber(minetest.get_mapgen_setting("water_level"))
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 
 -- Content IDs
@@ -478,6 +479,34 @@ minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct pa
 				fnode.param2 = final_param2
 				minetest.set_node(fpos, fnode)
 			end
+		end
+	end
+end
+)
+
+minetest.register_lbm({
+	label = "Fix water palette indexes",  -- Set correct palette indexes of water in old mapblocks.
+	name = "mcl_mapgen_core:fix_water_palette_indexes",
+	nodenames = {"group:water_palette"},
+	run_at_every_load = false,
+	action = function(pos, node)
+		local water_palette_index = mcl_util.get_palette_indexes_from_pos(pos).water_palette_index
+		if node.param2 ~= water_palette_index then
+			node.param2 = water_palette_index
+			minetest.set_node(pos, node)
+		end
+	end
+})
+
+minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of water in new mapblocks.
+	local pos1, pos2 = vector.offset(minp, -16, -16, -16), vector.offset(maxp, 16, 16, 16)
+	local water = minetest.find_nodes_in_area(pos1, pos2, {"group:water_palette"})
+	for _, wpos in pairs(water) do
+		local wnode = minetest.get_node(wpos)
+		local water_palette_index = mcl_util.get_palette_indexes_from_pos(wpos).water_palette_index
+		if wnode.param2 ~= water_palette_index then
+			wnode.param2 = water_palette_index
+			minetest.set_node(wpos, wnode)
 		end
 	end
 end

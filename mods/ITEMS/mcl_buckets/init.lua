@@ -61,9 +61,8 @@ local function sound_take(itemname, pos)
 end
 
 local function place_liquid(pos, itemstring)
-	local fullness = registered_nodes[itemstring].liquid_range
 	sound_place(itemstring, pos)
-	add_node(pos, {name=itemstring, param2=fullness})
+	set_node(pos, {name=itemstring})
 end
 
 local function give_bucket(new_bucket, itemstack, user)
