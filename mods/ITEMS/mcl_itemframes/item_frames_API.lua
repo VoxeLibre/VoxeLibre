@@ -124,7 +124,7 @@ local function update_map_texture (self, staticdata)
 		self.object:set_properties({ textures = { texture } })
 	end)
 	if result ~= nil and result == false then
-		mintest.log("error", "[mcl_itemframes] Error setting up Map Item.")
+		minetest.log("error", "[mcl_itemframes] Error setting up Map Item.")
 	end
 
 end
