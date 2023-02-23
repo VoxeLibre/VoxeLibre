@@ -54,17 +54,19 @@ local dig_hive = function(pos, node, oldmetadata, digger)
 		if not is_creative then
 			minetest.add_item(pos, "mcl_beehives:beehive")
 			if not silk_touch then mcl_util.deal_damage(digger, 10) end
-		elseif is_creative and inv:room_for_item("main", "mcl_beehives:beehive") then
+		elseif is_creative and inv:room_for_item("main", "mcl_beehives:beehive") and not inv:contains_item("main", "mcl_beehives:beehive") then
 			inv:add_item("main", "mcl_beehives:beehive")
 		end
 	elseif beenest then
-		if silk_touch and not is_creative then
-			minetest.add_item(pos, "mcl_beehives:bee_nest")
-			awards.unlock(digger:get_player_name(), "mcl:total_beelocation")
-		elseif is_creative and inv:room_for_item("main", "mcl_beehives:bee_nest") then
+		if not is_creative then
+			if silk_touch then
+				minetest.add_item(pos, "mcl_beehives:bee_nest")
+				awards.unlock(digger:get_player_name(), "mcl:total_beelocation")
+			else
+				mcl_util.deal_damage(digger, 10)
+			end
+		elseif is_creative and inv:room_for_item("main", "mcl_beehives:bee_nest") and not inv:contains_item("main", "mcl_beehives:bee_nest") then
 			inv:add_item("main", "mcl_beehives:bee_nest")
-		else
-			mcl_util.deal_damage(digger, 10)
 		end
 	end
 end
