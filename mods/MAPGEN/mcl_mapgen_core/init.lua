@@ -452,9 +452,9 @@ minetest.register_lbm({
 			minetest.set_node(pos, node)
 		elseif node.name == "mcl_core:vine" then
 			local biome_param2 = foliage_palette_index
-			local rotation_param2 = node.param2
+			local rotation_param2 = mcl_util.get_colorwallmounted_rotation(pos)
 			local final_param2 = (biome_param2 * 8) + rotation_param2
-			if node.param2 ~= final_param2 and rotation_param2 < 6 then
+			if node.param2 ~= final_param2 then
 				node.param2 = final_param2
 				minetest.set_node(pos, node)
 			end
@@ -473,9 +473,9 @@ minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct pa
 			minetest.set_node(fpos, fnode)
 		elseif fnode.name == "mcl_core:vine" then
 			local biome_param2 = foliage_palette_index
-			local rotation_param2 = fnode.param2
+			local rotation_param2 = mcl_util.get_colorwallmounted_rotation(fpos)
 			local final_param2 = (biome_param2 * 8) + rotation_param2
-			if fnode.param2 ~= final_param2 and rotation_param2 < 6 then
+			if fnode.param2 ~= final_param2 then
 				fnode.param2 = final_param2
 				minetest.set_node(fpos, fnode)
 			end
