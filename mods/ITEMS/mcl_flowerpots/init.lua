@@ -70,7 +70,7 @@ function mcl_flowerpots.register_potted_flower(name, def)
 		drawtype = "mesh",
 		mesh = "flowerpot.obj",
 		tiles = {
-			"[combine:32x32:0,0=mcl_flowerpots_flowerpot.png:0,0=" .. def.image .. ":0,0=mcl_flowerpots_flowerpot.png",
+			"[combine:32x32:0,0=mcl_flowerpots_flowerpot.png:0,0=" .. def.image,
 		},
 		use_texture_alpha = "clip",
 		visual_scale = 0.5,
