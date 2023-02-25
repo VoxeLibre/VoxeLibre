@@ -405,6 +405,47 @@ local function hopper_pull_from_mc(mc_ent, dest_pos, inv_size)
 	end
 end
 
+local function hopper_push_to_mc(mc_ent, dest_pos, inv_size)
+	local dest_inv = mcl_entity_invs.load_inv(mc_ent, inv_size)
+	if not dest_inv then
+		mcl_log("No inv")
+		return false
+	end
+
+	local meta = minetest.get_meta(dest_pos)
+	local inv = meta:get_inventory()
+	if not inv then
+		mcl_log("No dest inv")
+		return
+	end
+
+	mcl_log("inv. size: " .. mc_ent._inv_size)
+	for i = 1, mc_ent._inv_size, 1 do
+		local stack = inv:get_stack("main", i)
+
+		mcl_log("i: " .. tostring(i))
+		mcl_log("Name: [" .. tostring(stack:get_name()) .. "]")
+		mcl_log("Count: " .. tostring(stack:get_count()))
+		mcl_log("stack max: " .. tostring(stack:get_stack_max()))
+
+		if not stack:get_name() or stack:get_name() ~= "" then
+			if dest_inv:room_for_item("main", stack:peek_item()) then
+				mcl_log("Room so unload")
+				dest_inv:add_item("main", stack:take_item())
+				inv:set_stack("main", i, stack)
+
+				-- Take one item and stop until next time
+				return
+			else
+				mcl_log("no Room")
+			end
+
+		else
+			mcl_log("nothing there")
+		end
+	end
+end
+
 --[[ BEGIN OF ABM DEFINITONS ]]
 
 minetest.register_abm({
@@ -439,6 +480,15 @@ minetest.register_abm({
 								hopper_pull_from_mc(entity, pos, 5)
 							elseif entity.name == "mcl_minecarts:chest_minecart" then
 								hopper_pull_from_mc(entity, pos, 27)
+							end
+						elseif (hm_pos.y == pos.y - 1)
+							and (hm_pos.x >= pos.x - DIST_FROM_MC and hm_pos.x <= pos.x + DIST_FROM_MC)
+							and (hm_pos.z >= pos.z - DIST_FROM_MC and hm_pos.z <= pos.z + DIST_FROM_MC) then
+							mcl_log("Minecart close enough")
+							if entity.name == "mcl_minecarts:hopper_minecart" then
+								hopper_push_to_mc(entity, pos, 5)
+							elseif entity.name == "mcl_minecarts:chest_minecart" then
+								hopper_push_to_mc(entity, pos, 27)
 							end
 						end
 					end
