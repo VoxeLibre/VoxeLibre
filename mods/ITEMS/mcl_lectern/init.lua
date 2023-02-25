@@ -96,6 +96,15 @@ local lectern_def = {
 			local lectern_node = ItemStack(itemstack)
 			-- Place the node!
 			local _, success = minetest.item_place_node(lectern_node, placer, pointed_thing, fdir)
+
+			-- Add placement sound.
+			local idef = lectern_node:get_definition()
+			if success then
+				if idef.sounds and idef.sounds.place then
+					minetest.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
+				end
+			end
+			
 			if not success then
 				return itemstack
 			end
