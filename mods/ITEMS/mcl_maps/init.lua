@@ -30,7 +30,9 @@ local function load_json_file(name)
 end
 
 local texture_colors = load_json_file("colors")
-local palettes = load_json_file("palettes")
+local palettes_grass = load_json_file("palettes_grass")
+local palettes_foliage = load_json_file("palettes_foliage")
+local palettes_water = load_json_file("palettes_water")
 
 local color_cache = {}
 
@@ -92,8 +94,14 @@ function mcl_maps.create_map(pos)
 								if texture then
 									texture = texture:match("([^=^%^]-([^.]+))$"):split("^")[1]
 								end
-								if def.palette then
-									local palette = palettes[texture]
+								if def.palette == "mcl_core_palette_grass.png" then
+									local palette = palettes_grass[texture]
+									color = palette and { palette = palette }
+								elseif def.palette == "mcl_core_palette_foliage.png" then
+									local palette = palettes_foliage[texture]
+									color = palette and { palette = palette }
+								elseif def.palette == "mcl_core_palette_water.png" then
+									local palette = palettes_water[texture]
 									color = palette and { palette = palette }
 								else
 									color = texture_colors[texture]
