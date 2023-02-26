@@ -12,6 +12,7 @@ minetest.register_node("mcl_loom:loom", {
 	},
 	paramtype2 = "facedir",
 	groups = { axey = 2, handy = 1, deco_block = 1, material_wood = 1, flammable = 1 },
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5
 })
