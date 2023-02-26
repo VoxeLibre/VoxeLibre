@@ -840,7 +840,7 @@ function mcl_itemframes.create_base_definitions()
 	mcl_itemframes.glow_frame_base._tt_help = S("Can hold an item and glows.")
 	mcl_itemframes.glow_frame_base.longdesc = S("Glowing item frames are decorative blocks in which items can be placed and made to glow.")
 	mcl_itemframes.glow_frame_base.tiles = { "mcl_itemframes_glow_item_frame.png" }
-	mcl_itemframes.glow_frame_base.inventory_image = "mcl_itemframes_glow_item_frame_item.png"
+	mcl_itemframes.glow_frame_base.inventory_image = "mcl_itemframes_glow_item_frame.png"
 	mcl_itemframes.glow_frame_base.wield_image = "mcl_itemframes_glow_item_frame.png"
 	mcl_itemframes.glow_frame_base.mesh = "mcl_itemframes_glow_item_frame.obj"
 	mcl_itemframes.glow_frame_base.glow = 1 --make the glow frames have some glow at night, but not enough to be a light source.
