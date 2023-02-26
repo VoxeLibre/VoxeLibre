@@ -646,3 +646,5 @@ mcl_mobs.register_egg("mobs_mc:skeleton_horse", S("Skeleton Horse"), "#68684f", 
 --mobs:register_egg("mobs_mc:zombie_horse", S("Zombie Horse"), "#2a5a37", "#84d080", 0)
 mcl_mobs.register_egg("mobs_mc:donkey", S("Donkey"), "#534539", "#867566", 0)
 mcl_mobs.register_egg("mobs_mc:mule", S("Mule"), "#1b0200", "#51331d", 0)
+mcl_mobs:non_spawn_specific("mobs_mc:mule","overworld",9,minetest.LIGHT_MAX+1)
+mcl_mobs:non_spawn_specific("mobs_mc:skeleton_horse","overworld",9,minetest.LIGHT_MAX+1)

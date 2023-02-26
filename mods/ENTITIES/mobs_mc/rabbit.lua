@@ -217,3 +217,4 @@ mcl_mobs.register_egg("mobs_mc:rabbit", S("Rabbit"), "#995f40", "#734831", 0)
 
 -- Note: This spawn egg does not exist in Minecraft
 mcl_mobs.register_egg("mobs_mc:killer_bunny", S("Killer Bunny"), "#f2f2f2", "#ff0000", 0)
+mcl_mobs:non_spawn_specific("mobs_mc:killer_bunny","overworld",9,minetest.LIGHT_MAX+1)

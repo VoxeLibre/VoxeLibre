@@ -113,5 +113,4 @@ mcl_mobs.register_mob("mobs_mc:guardian_elder", {
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:guardian_elder", S("Elder Guardian"), "#ceccba", "#747693", 0)
-
-
+mcl_mobs:non_spawn_specific("mobs_mc:guardian_elder","overworld",0,minetest.LIGHT_MAX+1)
