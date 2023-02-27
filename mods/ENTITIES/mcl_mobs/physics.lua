@@ -510,6 +510,12 @@ function mob_class:check_for_death(cause, cmi_cause)
 		end
 	end
 
+	if self.jockey or self.riden_by_jock then
+		self.riden_by_jock = nil
+		self.jockey = nil
+	end
+
+
 	local collisionbox
 	if self.collisionbox then
 		collisionbox = table.copy(self.collisionbox)
