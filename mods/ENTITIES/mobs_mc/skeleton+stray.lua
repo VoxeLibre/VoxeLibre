@@ -91,7 +91,7 @@ local skeleton = {
 	},
 	on_spawn = function(self)
 		if math.random(100) == 1 then
-			self:jock_to("mobs_mc:spider", reletive_pos, rot)
+			self:jock_to("mobs_mc:spider", vector.new(0,0,0), vector.new(0,0,0))
 		end
 		return true
 	end,
