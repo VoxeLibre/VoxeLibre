@@ -62,9 +62,6 @@ local spider = {
 			self.object:get_children()[1]:set_detach()
 		end
 	end,
-	detach_child=function(self, child)
-		child:get_luaentity().jockey = false
-	end,
 	head_swivel = "Head_Control",
 	bone_eye_height = 1,
 	curiosity = 10,

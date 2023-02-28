@@ -75,6 +75,15 @@ function mob_class:update_tag() --update nametag and/or the debug box
 	})
 end
 
+function mob_class:jock_to(mob, reletive_pos, rot)
+	self.jockey = mob
+	local jock = minetest.add_entity(self.object:get_pos(), mob)
+	if not jock then return end
+	jock:get_luaentity().docile_by_day = false
+	jock:get_luaentity().riden_by_jock = true
+	self.object:set_attach(jock, "", reletive_pos, rot)
+end
+
 function mob_class:get_staticdata()
 
 	for _,p in pairs(minetest.get_connected_players()) do
@@ -268,6 +277,13 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	self._current_animation = nil
 	self:set_animation( "stand")
 
+
+	if self.riden_by_jock then --- Keep this function before self.on_spawn() is run.
+		self.object:remove()
+		return
+	end
+
+
 	if self.on_spawn and not self.on_spawn_run then
 		if self.on_spawn(self) then
 			self.on_spawn_run = true
@@ -283,6 +299,9 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		self:set_armor_texture()
 		self._run_armor_init = true
 	end
+
+
+
 
 	if def.after_activate then
 		def.after_activate(self, staticdata, def, dtime)
