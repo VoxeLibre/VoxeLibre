@@ -65,6 +65,11 @@ if mod_mcl_core then
 				end
 				sound_place("mcl_core:water_source", pos)
 				return false, true
+			-- Put water into mangrove roots
+			elseif minetest.get_node(pos).name == "mcl_mangrove:mangrove_roots" then
+				minetest.set_node(pos, {name="mcl_mangrove:water_logged_roots"})
+				sound_place("mcl_core:water_source", pos)
+				return false, true
 			-- Evaporate water if used in Nether (except on cauldron)
 			else
 				local dim = mcl_worlds.pos_to_dimension(pos)
