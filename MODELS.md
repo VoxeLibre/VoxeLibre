@@ -39,9 +39,9 @@ Note: Do not use .b3d and .x files for static meshes at the moment, Minetest cur
 
 * .jpg
 
-* .bmp
+* .bmp (depreciated, please use .png or .jpg)
 
-* .tga
+* .tga (depreciated, please use .png or .jpg)
 
 Note: Any formats not mentioned above but known to work in the past were removed in 5.5.0 and aren't supported anymore.
 
