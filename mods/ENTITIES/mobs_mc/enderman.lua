@@ -297,7 +297,6 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 	run_velocity = 3.4,
 	damage = 7,
 	reach = 2,
-	-- specific_attack = "mobs_mc:endermite",
 	particlespawners = psdefs,
 	drops = {
 		{name = "mcl_throwing:ender_pearl",
