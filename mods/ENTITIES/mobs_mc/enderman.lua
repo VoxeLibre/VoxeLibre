@@ -297,6 +297,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 	run_velocity = 3.4,
 	damage = 7,
 	reach = 2,
+	-- specific_attack = "mobs_mc:endermite",
 	particlespawners = psdefs,
 	drops = {
 		{name = "mcl_throwing:ender_pearl",
@@ -387,6 +388,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 				end
 			end
 		end
+
 		-- PROVOKED BEHAVIOUR HERE.
 		local enderpos = self.object:get_pos()
 		if self.provoked == "broke_contact" then
@@ -440,6 +442,20 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 						end
 
 					end
+				end
+			end
+		end
+
+		-- ATTACK ENDERMITE
+		local enderpos = self.object:get_pos()
+		local mobsnear = minetest.get_objects_inside_radius(enderpos, 64)
+		for n=1, #mobsnear do
+			local mob = mobsnear[n]
+			if mob then
+				local entity = mob:get_luaentity()
+				if entity and entity.name == "mobs_mc:endermite" then
+					self.state = 'attack'
+					self.attack = mob
 				end
 			end
 		end
