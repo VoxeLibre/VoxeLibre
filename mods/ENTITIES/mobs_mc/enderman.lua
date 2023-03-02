@@ -447,7 +447,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 
 		-- ATTACK ENDERMITE
 		local enderpos = self.object:get_pos()
-		if math.random(1,20) == 1 then
+		if math.random(1,140) == 1 then
 			local mobsnear = minetest.get_objects_inside_radius(enderpos, 64)
 			for n=1, #mobsnear do
 				local mob = mobsnear[n]
