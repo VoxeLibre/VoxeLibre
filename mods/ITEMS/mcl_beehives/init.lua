@@ -48,16 +48,25 @@ local dig_hive = function(pos, node, oldmetadata, digger)
 	local beenest = string.find(node.name, "mcl_beehives:bee_nest")
 	local silk_touch = mcl_enchanting.has_enchantment(wield_item, "silk_touch")
 	local is_creative = minetest.is_creative_enabled(digger:get_player_name())
+	local inv = digger:get_inventory()
 
 	if beehive then
-		minetest.add_item(pos, "mcl_beehives:beehive")
-		if not silk_touch and not is_creative then mcl_util.deal_damage(digger, 10) end
+		if not is_creative then
+			minetest.add_item(pos, "mcl_beehives:beehive")
+			if not silk_touch then mcl_util.deal_damage(digger, 10) end
+		elseif is_creative and inv:room_for_item("main", "mcl_beehives:beehive") and not inv:contains_item("main", "mcl_beehives:beehive") then
+			inv:add_item("main", "mcl_beehives:beehive")
+		end
 	elseif beenest then
-		if silk_touch or is_creative then
-			minetest.add_item(pos, "mcl_beehives:bee_nest")
-			awards.unlock(digger:get_player_name(), "mcl:total_beelocation")
-		else
-			mcl_util.deal_damage(digger, 10)
+		if not is_creative then
+			if silk_touch then
+				minetest.add_item(pos, "mcl_beehives:bee_nest")
+				awards.unlock(digger:get_player_name(), "mcl:total_beelocation")
+			else
+				mcl_util.deal_damage(digger, 10)
+			end
+		elseif is_creative and inv:room_for_item("main", "mcl_beehives:bee_nest") and not inv:contains_item("main", "mcl_beehives:bee_nest") then
+			inv:add_item("main", "mcl_beehives:bee_nest")
 		end
 	end
 end
