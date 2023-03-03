@@ -314,7 +314,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 		-- RAIN DAMAGE / EVASIVE WARP BEHAVIOUR HERE.
 		local enderpos = self.object:get_pos()
 		local dim = mcl_worlds.pos_to_dimension(enderpos)
-		if dim then
+		if dim == "overworld" then
 			if mcl_weather.state == "rain" or mcl_weather.state == "lightning" then
 				local damage = true
 				local enderpos = self.object:get_pos()
@@ -345,7 +345,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 					self:teleport(nil)
 				end
 			end
-		else return end
+		end
 		-- AGRESSIVELY WARP/CHASE PLAYER BEHAVIOUR HERE.
 		if self.state == "attack" then
 			if self.attack then
