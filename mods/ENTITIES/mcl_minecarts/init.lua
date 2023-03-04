@@ -66,6 +66,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		on_rightclick = on_rightclick,
 
 		_driver = nil, -- player who sits in and controls the minecart (only for minecart!)
+		_passenger = nil, -- for mobs
 		_punched = false, -- used to re-send _velocity and position
 		_velocity = {x=0, y=0, z=0}, -- only used on punch
 		_start_pos = nil, -- Used to calculate distance for “On A Rail” achievement
@@ -209,6 +210,34 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 				end
 				self.object:remove()
 				return
+			end
+		end
+
+		-- Grab mob
+		if not self._passenger then
+			if self.name == "mcl_minecarts:minecart" then
+				local mobsnear = minetest.get_objects_inside_radius(self.object:get_pos(), 1.3)
+				for n=1, #mobsnear do
+					local mob = mobsnear[n]
+					if mob then
+						local entity = mob:get_luaentity()
+						if entity and entity.is_mob then
+							self._passenger = entity.name
+							mob:set_attach(self.object, "", {x=0, y=-1.75, z=0}, {x=0, y=0, z=0})
+							break
+						end
+					end
+				end
+			end
+		-- Make room in the minecart after the mob dies
+		elseif self._passenger then
+			local mobinside = minetest.get_objects_inside_radius(self.object:get_pos(), 1)
+			for n=1, #mobinside do
+				local mob = mobinside[n]:get_luaentity()
+				if not mob or mob.is_mob == false then
+					self._passenger = nil
+					break
+				end
 			end
 		end
 
