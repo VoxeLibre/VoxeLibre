@@ -497,14 +497,11 @@ function mcl_mobs.register_egg(mob, desc, background_color, overlay_color, addeg
 				return def.on_rightclick(pointed_thing.under, under, placer, itemstack)
 			end
 
-			if pos
-			and within_limits(pos, 0)
-			and not minetest.is_protected(pos, placer:get_player_name()) then
-
+			if pos and within_limits(pos, 0)  and not minetest.is_protected(pos, placer:get_player_name()) then
 				local name = placer:get_player_name()
 				local privs = minetest.get_player_privs(name)
-				local dim = mcl_worlds.pos_to_dimension(placer:get_pos())
-				local mob_light_lvl = {mcl_mobs:mob_light_lvl(itemstack:get_name(),dim)}
+
+
 				if under.name == "mcl_mobspawners:spawner" then
 					if minetest.is_protected(pointed_thing.under, name) then
 						minetest.record_protection_violation(pointed_thing.under, name)
@@ -514,6 +511,13 @@ function mcl_mobs.register_egg(mob, desc, background_color, overlay_color, addeg
 						minetest.chat_send_player(name, S("You need the “maphack” privilege to change the mob spawner."))
 						return itemstack
 					end
+
+					local dim = mcl_worlds.pos_to_dimension(placer:get_pos())
+					local mob_light_lvl = {mcl_mobs:mob_light_lvl(itemstack:get_name(),dim)}
+
+					--minetest.log("min light: " .. mob_light_lvl[1])
+					--minetest.log("max light: " .. mob_light_lvl[2])
+
 					mcl_mobspawners.setup_spawner(pointed_thing.under, itemstack:get_name(), mob_light_lvl[1], mob_light_lvl[2])
 					if not minetest.is_creative_enabled(name) then
 						itemstack:take_item()
