@@ -482,41 +482,56 @@ end
 
 function mcl_mobs:mob_light_lvl(mob_name, dimension)
 	local spawn_dictionary_consolidated = {}
-	--see if the mob exists in the nonspawn dictionary, if so then return light values
-	if non_spawn_dictionary[mob_name] ~= nil then
+
+	if non_spawn_dictionary[mob_name] then
 		local mob_dimension = non_spawn_dictionary[mob_name][dimension]
-		if mob_name ~= nil then
-			return mob_dimension.min_light,mob_dimension.max_light
+		if mob_dimension then
+			--minetest.log("Found in non spawn dictionary for dimension")
+			return mob_dimension.min_light, mob_dimension.max_light
 		else
-			return non_spawn_dictionary[mob_name]["overworld"].min_light, non_spawn_dictionary[mob_name]["overworld"].max_light
+			--minetest.log("Found in non spawn dictionary but not for dimension")
+			local overworld_non_spawn_def = non_spawn_dictionary[mob_name]["overworld"]
+			if overworld_non_spawn_def then
+				return overworld_non_spawn_def.min_light, overworld_non_spawn_def.max_light
+			end
+		end
+	else
+		--minetest.log("must be in spawning dictionary")
+		for i,v in pairs(spawn_dictionary) do
+			local current_mob_name = spawn_dictionary[i].name
+			local current_mob_dim = spawn_dictionary[i].dimension
+			if mob_name == current_mob_name then
+				if not spawn_dictionary_consolidated[current_mob_name] then
+					spawn_dictionary_consolidated[current_mob_name] = {}
+				end
+				-- Should this really be the requested dimenion?
+				spawn_dictionary_consolidated[current_mob_name][current_mob_dim] = {
+					["min_light"] = spawn_dictionary[i].min_light,
+					["max_light"] = spawn_dictionary[i].max_light
+				}
+			end
 		end
 
-	--if the mob doesn't exist in non_spawn, check spawn_dictonary
-	else
-		for i,v in pairs(spawn_dictionary) do
-			if spawn_dictionary[spawn_dictionary[i].name] == nil then
-				spawn_dictionary_consolidated[spawn_dictionary[i].name] = {}
-			end
-			spawn_dictionary_consolidated[spawn_dictionary[i].name][dimension] = {
-				["min_light"] = spawn_dictionary[i].min_light,
-				["max_light"] = spawn_dictionary[i].max_light
-			}
-		end	
-		if spawn_dictionary_consolidated[mob_name] ~= nil then
-			mob_dimension = spawn_dictionary_consolidated[mob_name][dimension]
-			mob_dimension_default = spawn_dictionary_consolidated[mob_name]["overworld"]
-			if spawn_dictionary_consolidated[mob_name] == mob_name and mob_dimension ~= nil then
+		if spawn_dictionary_consolidated[mob_name] then
+			--minetest.log("is in consolidated")
+			local mob_dimension = spawn_dictionary_consolidated[mob_name][dimension]
+			if mob_dimension then
+				--minetest.log("found for dimension")
 				return mob_dimension.min_light, mob_dimension.max_light
 			else
-				return mob_dimension_default.min_light, mob_dimension_default.max_light
-			end 
-		else 
-			minetest.log("error", "There are no light levels for this mob")
-			--default light values if mob's light values don't exist in either dictionary
-			return 0, minetest.LIGHT_MAX+1
+				--minetest.log("not found for dimension, use overworld def")
+				local mob_dimension_default = spawn_dictionary_consolidated[mob_name]["overworld"]
+				if mob_dimension_default then
+					return mob_dimension_default.min_light, mob_dimension_default.max_light
+				end
+			end
+		else
+			--minetest.log("not in consolidated")
 		end
-
 	end
+
+	minetest.log("action", "There are no light levels for mob (" .. tostring(mob_name) .. ") in dimension (" .. tostring(dimension) .. "). Return defaults")
+	return 0, minetest.LIGHT_MAX+1
 end
 
 function mcl_mobs:non_spawn_specific(mob_name,dimension,min_light,max_light)
