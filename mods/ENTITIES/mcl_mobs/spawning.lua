@@ -504,7 +504,6 @@ function mcl_mobs:mob_light_lvl(mob_name, dimension)
 				if not spawn_dictionary_consolidated[current_mob_name] then
 					spawn_dictionary_consolidated[current_mob_name] = {}
 				end
-				-- Should this really be the requested dimenion?
 				spawn_dictionary_consolidated[current_mob_name][current_mob_dim] = {
 					["min_light"] = spawn_dictionary[i].min_light,
 					["max_light"] = spawn_dictionary[i].max_light
