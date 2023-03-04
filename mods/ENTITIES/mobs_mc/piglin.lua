@@ -319,3 +319,4 @@ mcl_vars.mg_nether_max)
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:piglin", S("Piglin"), "#7b4a17","#d5c381", 0)
 mcl_mobs.register_egg("mobs_mc:piglin_brute", S("Piglin Brute"), "#562b0c","#ddc89d", 0)
+mcl_mobs:non_spawn_specific("mobs_mc:piglin_brute","overworld",0,7)

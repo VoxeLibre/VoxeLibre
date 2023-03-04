@@ -502,13 +502,20 @@ function mcl_mobs:mob_light_lvl(mob_name, dimension)
 				["max_light"] = spawn_dictionary[i].max_light
 			}
 		end	
-		mob_dimension = spawn_dictionary_consolidated[mob_name][dimension]
-		mob_dimension_default = spawn_dictionary_consolidated[mob_name]["overworld"]
-		if spawn_dictionary_consolidated[mob_name] == mob_name and mob_dimension ~= nil then
-			return mob_dimension.min_light, mob_dimension.max_light
-		else
-			return mob_dimension_default.min_light, mob_dimension_default.max_light
-		end 
+		if spawn_dictionary_consolidated[mob_name] ~= nil then
+			mob_dimension = spawn_dictionary_consolidated[mob_name][dimension]
+			mob_dimension_default = spawn_dictionary_consolidated[mob_name]["overworld"]
+			if spawn_dictionary_consolidated[mob_name] == mob_name and mob_dimension ~= nil then
+				return mob_dimension.min_light, mob_dimension.max_light
+			else
+				return mob_dimension_default.min_light, mob_dimension_default.max_light
+			end 
+		else 
+			minetest.log("error", "There are no light levels for this mob")
+			--default light values if mob's light values don't exist in either dictionary
+			return 0, minetest.LIGHT_MAX+1
+		end
+
 	end
 end
 
