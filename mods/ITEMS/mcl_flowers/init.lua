@@ -156,7 +156,7 @@ local def_tallgrass = {
 		handy = 1, shearsy = 1, attached_node = 1, deco_block = 1,
 		plant = 1, place_flowerlike = 2, non_mycelium_plant = 1,
 		flammable = 3, fire_encouragement = 60, fire_flammability = 100,
-		dig_by_water = 1, destroy_by_lava_flow = 1, compostability = 30
+		dig_by_water = 1, destroy_by_lava_flow = 1, compostability = 30, grass_palette = 1
 	},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = wheat_seed_drop,
@@ -190,6 +190,7 @@ if has_mcl_flowerpots then
 		name = "fern",
 		desc = S("Fern"),
 		image = "mcl_flowers_fern_inv.png",
+		grass_palette_group = 1
 	})
 end
 
@@ -206,7 +207,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		attached_node = 1, deco_block = 1,
 		dig_by_water = 1, destroy_by_lava_flow = 1, dig_by_piston = 1,
 		flammable = 2, fire_encouragement = 60, fire_flammability = 100,
-		plant = 1, double_plant = 1, non_mycelium_plant = 1, compostability = 65
+		plant = 1, double_plant = 1, non_mycelium_plant = 1, compostability = 65, grass_palette = nil
 	}
 	if name == "double_grass" then
 		bottom_groups.compostability = 50
@@ -223,6 +224,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 	if grass_color then
 		paramtype2 = "color"
 		palette = "mcl_core_palette_grass.png"
+		bottom_groups.grass_palette = 1
 	end
 	if longdesc == nil then
 		bottom_groups.not_in_creative_inventory = 1

@@ -1511,7 +1511,7 @@ end
 --
 -- The snowable nodes also MUST have _mcl_snowed defined to contain the name
 -- of the snowed node.
-function mcl_core.register_snowed_node(itemstring_snowed, itemstring_clear, tiles, sounds, clear_colorization, desc)
+function mcl_core.register_snowed_node(itemstring_snowed, itemstring_clear, tiles, sounds, clear_colorization, desc, grass_palette)
 	local def = table.copy(minetest.registered_nodes[itemstring_clear])
 	local create_doc_alias
 	if def.description then
@@ -1525,6 +1525,7 @@ function mcl_core.register_snowed_node(itemstring_snowed, itemstring_clear, tile
 	def._doc_items_usagehelp = nil
 	def._doc_items_create_entry = false
 	def.groups.not_in_creative_inventory = 1
+	def.groups.grass_palette = grass_palette
 	if def.groups.grass_block == 1 then
 		def.groups.grass_block_no_snow = nil
 		def.groups.grass_block_snow = 1

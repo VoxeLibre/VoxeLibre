@@ -380,7 +380,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 		handy = 1, shovely = 1, dirt = 2, grass_block = 1, grass_block_no_snow = 1,
 		soil = 1, soil_sapling = 2, soil_sugarcane = 1, cultivatable = 2,
 		spreading_dirt_type = 1, enderman_takable = 1, building_block = 1,
-		compostability = 30, path_creation_possible=1
+		compostability = 30, path_creation_possible = 1, grass_palette = 1
 	},
 	drop = "mcl_core:dirt",
 	sounds = mcl_sounds.node_sound_dirt_defaults({
@@ -401,7 +401,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	_mcl_hardness = 0.6,
 	_mcl_silk_touch_drop = true,
 })
-mcl_core.register_snowed_node("mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", nil, nil, true, S("Dirt with Snow"))
+mcl_core.register_snowed_node("mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", nil, nil, true, S("Dirt with Snow"), 1)
 
 minetest.register_node("mcl_core:grass_path", {
 	tiles = {"mcl_core_grass_path_top.png", "default_dirt.png", "mcl_core_grass_path_side.png"},

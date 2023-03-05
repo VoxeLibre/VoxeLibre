@@ -75,11 +75,13 @@ function mcl_flowerpots.register_potted_flower(name, def)
 		use_texture_alpha = "clip",
 		visual_scale = 0.5,
 		paramtype = "light",
+		paramtype2 = def.paramtype2,
+		palette = def.palette,
 		sunlight_propagates = true,
 		selection_box = pot_box,
 		collision_box = pot_box,
 		is_ground_content = false,
-		groups = { dig_immediate = 3, attached_node = 1, dig_by_piston = 1, not_in_creative_inventory = 1, flower_pot = 2 },
+		groups = { dig_immediate = 3, attached_node = 1, dig_by_piston = 1, not_in_creative_inventory = 1, flower_pot = 2, grass_palette = def.grass_palette_group },
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 		on_rightclick = function(pos, item, clicker)
 			local player_name = clicker:get_player_name()
