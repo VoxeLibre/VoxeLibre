@@ -13,6 +13,7 @@ under the LGPLv2.1 license.
 mcl_explosions = {}
 
 local mod_fire = minetest.get_modpath("mcl_fire")
+local tnt_griefing = minetest.settings:get_bool("mcl_tnt_griefing", true)
 --local CONTENT_FIRE = minetest.get_content_id("mcl_fire:fire")
 
 local math = math
@@ -359,7 +360,11 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 	for hash, idx in pairs(destroy) do
 		local do_drop = math.random() <= drop_chance
 		local on_blast = node_on_blast[data[idx]]
-		local remove = true
+		if (not tnt_griefing) and info.is_tnt ~= false then
+			local remove = false
+		else
+			local remove = true
+		end
 
 		if do_drop or on_blast then
 			local npos = get_position_from_hash(hash)
