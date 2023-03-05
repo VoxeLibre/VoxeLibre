@@ -14,7 +14,7 @@ local lonely_blossom = "exhale_and_tim_unwin-lonely_blossom"
 local valley_of_ghosts = "exhale_and_tim_unwin-valley_of_ghosts"
 
 local dimension_to_base_track = {
-	["overworld"]	= {pianowtune, flock_of_one, gift, hailing_forest, lonely_blossom, valley_of_ghosts},
+	["overworld"]	= {pianowtune, flock_of_one, gift, hailing_forest, lonely_blossom},
 	["nether"]		= {nether_tune, valley_of_ghosts},
 	["end"]			= {end_tune},
 	["mining"]		= {odd_block},
@@ -59,7 +59,7 @@ local function stop_music_for_listener_name(listener_name)
 	if not listener then return end
 	local handle = listener.handle
 	if not handle then return end
-	
+
 	minetest.log("action", "[mcl_music] Stopping music")
 	minetest.sound_stop(handle)
 	listeners[listener_name].handle = nil
