@@ -10,10 +10,12 @@ local odd_block = "Jester-0dd-BL0ck"
 local flock_of_one = "Jester-Flock-of-One"
 local gift = "Jester-Gift"
 local hailing_forest = "Jester-Hailing_Forest"
+local lonely_blossom = "exhale_and_tim_unwin-lonely_blossom"
+local valley_of_ghosts = "exhale_and_tim_unwin-valley_of_ghosts"
 
 local dimension_to_base_track = {
-	["overworld"]	= {pianowtune, flock_of_one, gift, hailing_forest},
-	["nether"]		= {nether_tune},
+	["overworld"]	= {pianowtune, flock_of_one, gift, hailing_forest, lonely_blossom, valley_of_ghosts},
+	["nether"]		= {nether_tune, valley_of_ghosts},
 	["end"]			= {end_tune},
 	["mining"]		= {odd_block},
 }
@@ -57,7 +59,8 @@ local function stop_music_for_listener_name(listener_name)
 	if not listener then return end
 	local handle = listener.handle
 	if not handle then return end
-
+	
+	minetest.log("action", "[mcl_music] Stopping music")
 	minetest.sound_stop(handle)
 	listeners[listener_name].handle = nil
 end
@@ -130,7 +133,6 @@ local function play()
 		--minetest.log("handle: " .. dump (handle))
 		if is_hp_changed or is_dimension_changed or underground_changed
 				or (dimension == "overworld" and (is_weather_changed or not is_good_weather)) then
-			minetest.log("action", "[mcl_music] Stopping music")
 			stop_music_for_listener_name(player_name)
 			if not listeners[player_name] then
 				listeners[player_name] = {}
