@@ -205,3 +205,4 @@
 * Notch and Jeb for being the major forces behind Minecraft
 * Dark Reaven Music (https://soundcloud.com/dark-reaven-music) for the main menu theme (Calmed Cube), which is licensed under https://creativecommons.org/licenses/by-sa/3.0/
 * Jester for helping to finely tune MineClone2 (https://www.youtube.com/@Jester-8-bit). Songs: Hailing Forest, Gift, 0dd BL0ck, Flock of One (License CC BY-SA 4.0)
+* Exhale & Tim Unwin for some new wonderful MineClone2 tracks (https://www.youtube.com/channel/UClFo_JDWoG4NGrPQY0JPD_g). Songs: Valley of Ghosts, Lonely Blossom (License CC BY-SA 4.0)
