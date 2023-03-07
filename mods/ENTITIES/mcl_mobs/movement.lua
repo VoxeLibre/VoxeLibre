@@ -289,18 +289,13 @@ function mob_class:env_danger_movement_checks(dtime)
 	local yaw = 0
 
 	local can_jump_cliff = self:can_jump_cliff()
-	if self:is_at_water_danger(can_jump_cliff) and self.state ~= "attack" then
+	if self.state ~= "attack" and self:is_at_water_danger(can_jump_cliff) then
 		if math.random(1, 10) <= 6 then
 			self:set_velocity(0)
 			self.state = "stand"
 			self:set_animation( "stand")
 			yaw = yaw + math.random(-0.5, 0.5)
 			yaw = self:set_yaw( yaw, 8)
-		end
-	else
-		-- This code should probably be moved to movement code
-		if self.move_in_group ~= false then
-			self:check_herd(dtime)
 		end
 	end
 
@@ -754,7 +749,10 @@ end
 local check_herd_timer = 0
 function mob_class:check_herd(dtime)
 	local pos = self.object:get_pos()
-	if not pos then return end
+	if not pos or self.state == "attack" then return end
+	-- Does any mob not move in group. Weird check for something not set?
+	if self.move_in_group == false then return end
+
 	check_herd_timer = check_herd_timer + dtime
 	if check_herd_timer < 4 then return end
 	check_herd_timer = 0

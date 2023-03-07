@@ -424,6 +424,8 @@ local function on_step_work (self, dtime)
 		self:check_runaway_from()
 		self:monster_attack()
 		self:npc_attack()
+
+		self:check_herd(dtime)
 	end
 
 	self:check_aggro(dtime)
