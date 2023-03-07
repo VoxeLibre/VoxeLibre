@@ -40,15 +40,6 @@ if minetest.settings:get_bool("only_peaceful_mobs", false) then
 	end)
 end
 
-local node_ok = function(pos, fallback)
-	fallback = fallback or mcl_mobs.fallback_node
-	local node = minetest.get_node_or_nil(pos)
-	if node and minetest.registered_nodes[node.name] then
-		return node
-	end
-	return minetest.registered_nodes[fallback]
-end
-
 function mob_class:update_tag() --update nametag and/or the debug box
 	local tag
 	if mobs_debug then

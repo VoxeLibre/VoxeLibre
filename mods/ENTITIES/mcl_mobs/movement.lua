@@ -3,10 +3,7 @@ local mob_class = mcl_mobs.mob_class
 local DEFAULT_FALL_SPEED = -9.81*1.5
 local FLOP_HEIGHT = 6
 local FLOP_HOR_SPEED = 1.5
-local PATHFINDING = "gowp"
 
-local node_ice = "mcl_core:ice"
-local node_snowblock = "mcl_core:snowblock"
 local node_snow = "mcl_core:snow"
 
 
@@ -21,14 +18,19 @@ local function atan(x)
 	end
 end
 
+local registered_fallback_node = minetest.registered_nodes[mcl_mobs.fallback_node]
+
 -- get node but use fallback for nil or unknown
 local node_ok = function(pos, fallback)
-	fallback = fallback or mcl_mobs.fallback_node
 	local node = minetest.get_node_or_nil(pos)
 	if node and minetest.registered_nodes[node.name] then
 		return node
 	end
-	return minetest.registered_nodes[fallback]
+	if fallback then
+		return minetest.registered_nodes[fallback]
+	else
+		return registered_fallback_node
+	end
 end
 
 -- Returns true is node can deal damage to self
@@ -200,14 +202,19 @@ function mob_class:can_jump_cliff()
 end
 
 -- is mob facing a cliff or danger
-function mob_class:is_at_cliff_or_danger()
-	if self.fear_height == 0 or self:can_jump_cliff() or self._jumping_cliff or not self.object:get_luaentity() then -- 0 for no falling protection!
+function mob_class:is_at_cliff_or_danger(can_jump_cliff)
+	if can_jump_cliff == nil then
+		can_jump_cliff = self:can_jump_cliff()
+	end
+
+	if self.fear_height == 0 or can_jump_cliff or self._jumping_cliff or not self.object:get_luaentity() then -- 0 for no falling protection!
 		return false
 	end
 
 	local yaw = self.object:get_yaw()
 	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)
 	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)
+
 	local pos = self.object:get_pos()
 	local ypos = pos.y + self.collisionbox[2] -- just above floor
 
@@ -234,8 +241,12 @@ end
 
 
 -- copy the 'mob facing cliff_or_danger check' from above, and rework to avoid water
-function mob_class:is_at_water_danger()
-	if not self.object:get_luaentity() or self:can_jump_cliff() or self._jumping_cliff then
+function mob_class:is_at_water_danger(can_jump_cliff)
+	if can_jump_cliff == nil then
+		can_jump_cliff = self:can_jump_cliff()
+	end
+
+	if not self.object:get_luaentity() or can_jump_cliff or self._jumping_cliff then
 		return false
 	end
 	local yaw = self.object:get_yaw()
@@ -276,7 +287,9 @@ end
 
 function mob_class:env_danger_movement_checks(dtime)
 	local yaw = 0
-	if self:is_at_water_danger() and self.state ~= "attack" then
+
+	local can_jump_cliff = self:can_jump_cliff()
+	if self:is_at_water_danger(can_jump_cliff) and self.state ~= "attack" then
 		if math.random(1, 10) <= 6 then
 			self:set_velocity(0)
 			self.state = "stand"
@@ -291,7 +304,7 @@ function mob_class:env_danger_movement_checks(dtime)
 		end
 	end
 
-	if self:is_at_cliff_or_danger() then
+	if self:is_at_cliff_or_danger(can_jump_cliff) then
 		self:set_velocity(0)
 		self.state = "stand"
 		self:set_animation( "stand")
