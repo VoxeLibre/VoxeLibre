@@ -614,7 +614,7 @@ end
 
 
 -- follow player if owner or holding item, if fish outta water then flop
-function mob_class:follow()
+function mob_class:check_follow()
 	-- find player to follow
 	if (self.follow ~= "" or self.order == "follow") and not self.following
 	and self.state ~= "attack"

@@ -9,6 +9,8 @@ local CRASH_WARN_FREQUENCY = 60
 -- Localize
 local S = minetest.get_translator("mcl_mobs")
 
+local DEVELOPMENT = minetest.settings:get_bool("mcl_development",false)
+
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager",false)
 local function mcl_log (message)
 	if LOGGING_ON then
@@ -415,7 +417,7 @@ local function on_step_work (self, dtime)
 	self:env_danger_movement_checks (dtime)
 
 	-- Follow code is heavy and probably shouldn't run when not in range, but we need to extract the cancel follow stuff
-	self:follow()
+	self:check_follow()
 	self:flop()
 
 	self:check_smooth_rotation(dtime)
@@ -493,12 +495,19 @@ local on_step_error_handler = function ()
 	minetest.log("action", "--- Bug report end ---")
 end
 
+
+
 -- main mob function
 function mob_class:on_step(dtime)
-	local status, retVal = xpcall(on_step_work, on_step_error_handler, self, dtime)
-	if status then
-		return retVal
+	if not DEVELOPMENT then
+		local status, retVal = xpcall(on_step_work, on_step_error_handler, self, dtime)
+		if status then
+			return retVal
+		end
+	else
+		return on_step_work (self, dtime)
 	end
+
 end
 
 local timer = 0
