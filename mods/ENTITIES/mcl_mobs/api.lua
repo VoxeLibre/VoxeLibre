@@ -420,7 +420,7 @@ local function on_step_work (self, dtime)
 
 	self:check_smooth_rotation(dtime)
 
-	if not player_in_active_range then
+	if player_in_active_range then
 		self:set_animation_speed() -- set animation speed relative to velocity
 
 		self:check_head_swivel(dtime)
@@ -446,7 +446,7 @@ local function on_step_work (self, dtime)
 	if not skip_processing then
 		self:check_breeding()
 
-		if not player_in_active_range then
+		if player_in_active_range then
 			self:check_item_pickup()
 			self:set_armor_texture()
 
