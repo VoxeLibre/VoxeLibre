@@ -803,8 +803,10 @@ end
 local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_setting("seed"))
 
 -- Return appropriate grass block node for pos
-function mcl_core.get_grass_block_type(pos)
-	return {name = minetest.get_node(pos).name, param2 = mcl_util.get_palette_indexes_from_pos(pos).grass_palette_index}
+function mcl_core.get_grass_block_type(pos, requested_grass_block_name)
+	local grass_palette_index = mcl_util.get_palette_indexes_from_pos(pos).grass_palette_index
+	local grass_block_name = requested_grass_block_name or minetest.get_node(pos).name
+	return {name = grass_block_name, param2 = grass_palette_index}
 end
 
 -- Return appropriate foliage block node for pos
@@ -828,17 +830,18 @@ minetest.register_abm({
 	chance = 20,
 	catch_up = false,
 	action = function(pos)
-		if pos == nil then
-			return
-		end
+		if pos == nil then return end
+
 		local above = {x=pos.x, y=pos.y+1, z=pos.z}
 		local abovenode = minetest.get_node(above)
 		if minetest.get_item_group(abovenode.name, "liquid") ~= 0 or minetest.get_item_group(abovenode.name, "opaque") == 1 then
 			-- Never grow directly below liquids or opaque blocks
 			return
 		end
+
 		local light_self = minetest.get_node_light(above)
 		if not light_self then return end
+
 		--[[ Try to find a spreading dirt-type block (e.g. grass block or mycelium)
 		within a 3×5×3 area, with the source block being on the 2nd-topmost layer. ]]
 		local nodes = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+3, z=pos.z+1}, "group:spreading_dirt_type")
@@ -857,9 +860,10 @@ minetest.register_abm({
 
 		if light_self >= 4 and light_source >= 9 then
 			-- All checks passed! Let's spread the grass/mycelium!
+
 			local n2 = minetest.get_node(p2)
 			if minetest.get_item_group(n2.name, "grass_block") ~= 0 then
-				n2 = mcl_core.get_grass_block_type(pos)
+				n2 = mcl_core.get_grass_block_type(pos, "mcl_core:dirt_with_grass")
 			end
 			minetest.set_node(pos, {name=n2.name})
 
