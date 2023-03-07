@@ -995,10 +995,10 @@ function mob_class:check_dying()
 	end
 end
 
-function mob_class:check_suspend()
+function mob_class:check_suspend(player_in_active_range)
 	local pos = self.object:get_pos()
 
-	if pos and not self:player_in_active_range() then
+	if pos and not player_in_active_range then
 		local node_under = node_ok(vector.offset(pos,0,-1,0)).name
 
 		self:set_animation( "stand", true)

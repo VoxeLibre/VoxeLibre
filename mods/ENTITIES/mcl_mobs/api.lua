@@ -392,7 +392,10 @@ local function on_step_work (self, dtime)
 	end
 
 	if self:falling(pos) then return end
-	self:check_suspend()
+
+	local player_in_active_range = self:player_in_active_range()
+
+	self:check_suspend(player_in_active_range)
 
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
@@ -411,23 +414,28 @@ local function on_step_work (self, dtime)
 	self:check_water_flow()
 	self:env_danger_movement_checks (dtime)
 
-	self:follow_flop() -- Mob following code.
-
-	self:set_animation_speed() -- set animation speed relative to velocity
+	-- Follow code is heavy and probably shouldn't run when not in range, but we need to extract the cancel follow stuff
+	self:follow()
+	self:flop()
 
 	self:check_smooth_rotation(dtime)
-	self:check_head_swivel(dtime)
 
-	if self.jump_sound_cooloff > 0 then self.jump_sound_cooloff = self.jump_sound_cooloff - dtime end
-	self:do_jump()
+	if not player_in_active_range then
+		self:set_animation_speed() -- set animation speed relative to velocity
 
-	self:check_runaway_from()
-	self:monster_attack()
-	self:npc_attack()
+		self:check_head_swivel(dtime)
+
+		if self.jump_sound_cooloff > 0 then self.jump_sound_cooloff = self.jump_sound_cooloff - dtime end
+		self:do_jump()
+
+		self:check_runaway_from()
+		self:monster_attack()
+		self:npc_attack()
+	end
+
 	self:check_aggro(dtime)
 
 	if self.do_custom and self.do_custom(self, dtime) == false then return end
-
 
 	-- In certain circumstances, we abandon processing of certain functionality
 	local skip_processing = false
@@ -435,28 +443,26 @@ local function on_step_work (self, dtime)
 		skip_processing = true
 	end
 
-
-
 	if not skip_processing then
 		self:check_breeding()
 
-		self:check_item_pickup()
-		self:set_armor_texture()
+		if not player_in_active_range then
+			self:check_item_pickup()
+			self:set_armor_texture()
+
+			if self.opinion_sound_cooloff > 0 then
+				self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
+			end
+			-- mob plays random sound at times. Should be 120. Zombie and mob farms are ridiculous
+			if math.random(1, 70) == 1 then
+				self:mob_sound("random", true)
+			end
+		end
 
 		self:check_particlespawners(dtime)
 
-		if self.opinion_sound_cooloff > 0 then
-			self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
-		end
-		-- mob plays random sound at times. Should be 120. Zombie and mob farms are ridiculous
-		if math.random(1, 70) == 1 then
-			self:mob_sound("random", true)
-		end
-
 		if self:do_states(dtime) then return end
 	end
-
-
 
 	if mobs_debug then self:update_tag() end
 

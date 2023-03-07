@@ -614,75 +614,51 @@ end
 
 
 -- follow player if owner or holding item, if fish outta water then flop
-function mob_class:follow_flop()
-
+function mob_class:follow()
 	-- find player to follow
-	if (self.follow ~= ""
-	or self.order == "follow")
-	and not self.following
+	if (self.follow ~= "" or self.order == "follow") and not self.following
 	and self.state ~= "attack"
 	and self.order ~= "sit"
 	and self.state ~= "runaway" then
-
 		local s = self.object:get_pos()
 		local players = minetest.get_connected_players()
-
 		for n = 1, #players do
-
-			if (self:object_in_range(players[n]))
-			and not mcl_mobs.invis[ players[n]:get_player_name() ] then
-
+			if (self:object_in_range(players[n])) and not mcl_mobs.invis[ players[n]:get_player_name() ] then
 				self.following = players[n]
-
 				break
 			end
 		end
 	end
 
-	if self.type == "npc"
-	and self.order == "follow"
-	and self.state ~= "attack"
-	and self.order ~= "sit"
-	and self.owner ~= "" then
+	if self.type == "npc" and self.order == "follow"
+			and self.state ~= "attack" and self.order ~= "sit" and self.owner ~= "" then
 
-		-- npc stop following player if not owner
-		if self.following
-		and self.owner
-		and self.owner ~= self.following:get_player_name() then
+		if self.following and self.owner and self.owner ~= self.following:get_player_name() then
 			self.following = nil
 		end
 	else
 		-- stop following player if not holding specific item,
 		-- mob is horny, fleeing or attacking
-		if self.following
-		and self.following:is_player()
-		and (self:follow_holding(self.following) == false or
-		self.horny or self.state == "runaway") then
+		if self.following and self.following:is_player()
+				and (self:follow_holding(self.following) == false or self.horny or self.state == "runaway") then
 			self.following = nil
 		end
-
 	end
 
 	-- follow that thing
 	if self.following then
-
 		local s = self.object:get_pos()
+
 		local p
-
 		if self.following:is_player() then
-
 			p = self.following:get_pos()
-
 		elseif self.following.object then
-
 			p = self.following.object:get_pos()
 		end
 
 		if p then
-
 			local dist = vector.distance(p, s)
 
-			-- dont follow if out of range
 			if (not self:object_in_range(self.following)) then
 				self.following = nil
 			else
@@ -692,17 +668,12 @@ function mob_class:follow_flop()
 				}
 
 				local yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
-
 				if p.x > s.x then yaw = yaw +math.pi end
-
 				self:set_yaw( yaw, 2.35)
 
 				-- anyone but standing npc's can move along
-				if dist > 3
-				and self.order ~= "stand" then
-
+				if dist > 3 and self.order ~= "stand" then
  					self:set_velocity(self.follow_velocity)
-
 					if self.walk_chance ~= 0 then
 						self:set_animation( "run")
 					end
@@ -710,17 +681,18 @@ function mob_class:follow_flop()
 					self:set_velocity(0)
 					self:set_animation( "stand")
 				end
-
 				return
 			end
 		end
 	end
+end
 
+function mob_class:flop()
 	-- swimmers flop when out of their element, and swim again when back in
 	if self.fly then
 		local s = self.object:get_pos()
-		if self:flight_check( s) == false then
 
+		if self:flight_check(s) == false then
 			self.state = "flop"
 			self.object:set_acceleration({x = 0, y = DEFAULT_FALL_SPEED, z = 0})
 
@@ -739,7 +711,6 @@ function mob_class:follow_flop()
 			end
 
 			self:set_animation( "stand", true)
-
 			return
 		elseif self.state == "flop" then
 			self.state = "stand"
