@@ -1006,8 +1006,8 @@ function mob_class:check_suspend(player_in_active_range)
 		local acc = self.object:get_acceleration()
 		if acc then
 			if acc.y > 0 or node_under ~= "air" then
-				self.object:set_acceleration(vector.new(0,0,0))
-				self.object:set_velocity(vector.new(0,0,0))
+				self.object:set_acceleration(vector.zero())
+				self.object:set_velocity(vector.zero())
 			end
 			if acc.y == 0 and node_under == "air" then
 				self:falling(pos)
