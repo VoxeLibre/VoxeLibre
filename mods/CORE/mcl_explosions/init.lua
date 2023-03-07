@@ -192,7 +192,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 	local grief_protected = info.grief_protected
 
 	-- Trace rays for environment destruction
-	if info.griefing then
+	if info.griefing and tnt_griefing then
 		for i = 1, #raydirs do
 			local rpos_x = pos.x
 			local rpos_y = pos.y
@@ -360,11 +360,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 	for hash, idx in pairs(destroy) do
 		local do_drop = math.random() <= drop_chance
 		local on_blast = node_on_blast[data[idx]]
-		if (not tnt_griefing) and info.is_tnt ~= false then
-			local remove = false
-		else
-			local remove = true
-		end
+		local remove = true
 
 		if do_drop or on_blast then
 			local npos = get_position_from_hash(hash)
