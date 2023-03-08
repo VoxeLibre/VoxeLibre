@@ -345,7 +345,8 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 					self:teleport(nil)
 				end
 			end
-		else return end
+		end
+
 		-- AGRESSIVELY WARP/CHASE PLAYER BEHAVIOUR HERE.
 		if self.state == "attack" then
 			if self.attack then
@@ -358,9 +359,11 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 				end
 			end
 		else --if not attacking try to tp to the dark
-			local light = minetest.get_node_light(enderpos)
-			if light and light > minetest.LIGHT_MAX then
-				self:teleport(nil)
+			if dim == 'overworld' then
+				local light = minetest.get_node_light(enderpos)
+				if light and light > minetest.LIGHT_MAX then
+					self:teleport(nil)
+				end
 			end
 		end
 		-- ARROW / DAYTIME PEOPLE AVOIDANCE BEHAVIOUR HERE.
@@ -387,6 +390,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 				end
 			end
 		end
+
 		-- PROVOKED BEHAVIOUR HERE.
 		local enderpos = self.object:get_pos()
 		if self.provoked == "broke_contact" then
@@ -439,6 +443,22 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 							end
 						end
 
+					end
+				end
+			end
+		end
+
+		-- ATTACK ENDERMITE
+		local enderpos = self.object:get_pos()
+		if math.random(1,140) == 1 then
+			local mobsnear = minetest.get_objects_inside_radius(enderpos, 64)
+			for n=1, #mobsnear do
+				local mob = mobsnear[n]
+				if mob then
+					local entity = mob:get_luaentity()
+					if entity and entity.name == "mobs_mc:endermite" then
+						self.attack = mob
+						self.state = 'attack'
 					end
 				end
 			end
