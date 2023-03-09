@@ -153,6 +153,11 @@ function mcl_burning.extinguish(obj)
 end
 
 function mcl_burning.tick(obj, dtime, storage)
+	if not storage then
+		minetest.log("warning", "No storage for burning tick. Should not happen: " .. dump(obj))
+		return
+	end
+
 	if storage.burn_time then
 		storage.burn_time = storage.burn_time - dtime
 
