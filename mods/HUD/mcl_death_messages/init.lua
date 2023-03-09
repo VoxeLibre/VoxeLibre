@@ -149,7 +149,7 @@ mcl_death_messages = {
 		fireworks = {
 			_translator = S,
 			plain = "@1 went off with a bang",
-			item = "@1 went off with a bang due to a firework fired from @3 by @2", -- order is intentional
+			item = "@1 went off with a bang due to a firework fired by @2 from @3",
 		},
 		sweet_berry = {
 			_translator = S,
