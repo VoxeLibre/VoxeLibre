@@ -36,8 +36,8 @@ mcl_weather_dust_particles (Nether dust particles) int 150 0
 # Note that blocks never have drops when in Creative Mode.
 mcl_doTileDrops (Blocks have drops) bool true
 
-# If enabled, TNT explosions destroy blocks.
-mcl_tnt_griefing (TNT destroys blocks) bool true
+# If enabled, explosions destroy blocks.
+mcl_explosions_griefing (Explosions destroy blocks) bool true
 
 # Comma separated list of disabled structure names
 mcl_disabled_structures (Disabled structures) string
