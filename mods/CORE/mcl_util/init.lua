@@ -545,26 +545,19 @@ function mcl_util.deal_damage(target, damage, mcl_reason)
 	if luaentity then
 		if luaentity.deal_damage then
 			luaentity:deal_damage(damage, mcl_reason or {type = "generic"})
-			return
-		elseif luaentity.is_mob then
-			-- local puncher = mcl_reason and mcl_reason.direct or target
-			-- target:punch(puncher, 1.0, {full_punch_interval = 1.0, damage_groups = {fleshy = damage}}, vector.direction(puncher:get_pos(), target:get_pos()), damage)
-			if luaentity.health > 0 then
-				luaentity.health = luaentity.health - damage
-			end
-			return
+		else
+			local puncher = mcl_reason and mcl_reason.direct or target
+			local puncher_pos = puncher:get_pos()
+			local target_pos = target:get_pos()
+			if not puncher_pos or not target_pos then return end
+			target:punch(puncher, 1.0, {full_punch_interval = 1.0, damage_groups = {fleshy = damage}}, vector.direction(puncher_pos, target_pos), damage)
 		end
-	end
+	else -- Player
+		local hp = target:get_hp()
 
-	local is_immortal = target:get_armor_groups().immortal or 0
-	if is_immortal>0 then
-		return
-	end
-
-	local hp = target:get_hp()
-
-	if hp > 0 then
-		target:set_hp(hp - damage, {_mcl_reason = mcl_reason})
+		if hp > 0 then
+			target:set_hp(hp - damage, {_mcl_reason = mcl_reason})
+		end
 	end
 end
 
