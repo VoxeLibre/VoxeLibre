@@ -13,6 +13,7 @@ under the LGPLv2.1 license.
 mcl_explosions = {}
 
 local mod_fire = minetest.get_modpath("mcl_fire")
+local explosions_griefing = minetest.settings:get_bool("mcl_explosions_griefing", true)
 --local CONTENT_FIRE = minetest.get_content_id("mcl_fire:fire")
 
 local math = math
@@ -191,7 +192,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 	local grief_protected = info.grief_protected
 
 	-- Trace rays for environment destruction
-	if info.griefing then
+	if info.griefing and explosions_griefing then
 		for i = 1, #raydirs do
 			local rpos_x = pos.x
 			local rpos_y = pos.y
