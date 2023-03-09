@@ -1,5 +1,5 @@
 local S = minetest.get_translator(minetest.get_current_modname())
-local tnt_griefing = minetest.settings:get_bool("mcl_tnt_griefing", true)
+local explosions_griefing = minetest.settings:get_bool("mcl_explosions_griefing", true)
 
 tnt = {}
 
@@ -61,7 +61,7 @@ if minetest.get_modpath("mesecons") then
 end
 
 local longdesc
-if tnt_griefing then
+if explosions_griefing then
 	longdesc = S("An explosive device. When it explodes, it will hurt living beings and destroy blocks around it. TNT has an explosion radius of @1. With a small chance, blocks may drop as an item (as if being mined) rather than being destroyed. TNT can be ignited by tools, explosions, fire, lava and redstone signals."
 		, TNT_RANGE)
 else
