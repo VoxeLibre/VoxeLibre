@@ -534,20 +534,112 @@ minetest.register_globalstep(function(dtime)
 	timer = 0
 end)
 
+
 minetest.register_chatcommand("clearmobs",{
 	privs={maphack=true},
-	params = "<all>|<nametagged>|<range>",
-	description=S("Removes all spawned mobs except nametagged and tamed ones. all removes all mobs, nametagged only nametagged ones and with the range paramter all mobs in a distance of the current player are removed."),
+	params = "<all>|<hostile/passive>|<name> <nametagged>|<range>",
+	description=S("Removes specified spawned mobs except nametagged and tamed ones. For param2, use nametagged to remove those with a nametag, or range for all mobs in a distance of the current player to be removed."),
 	func=function(n,param)
+		if not param or param == "" then
+			minetest.log("Incorrect usage. For more information please type: /help clearmobs")
+			return
+		else
+			minetest.log("param: " .. dump(param))
+		end
+
+		local mob, unsafe = param:match("^([%w]+)[ ]?([%w%d]*)$")
+
+		local all = false
+		local nametagged = false
+
+		local mob_name, mob_type, range
+
+		if mob and mob ~= "" then
+			if mob == "all" then
+				all = true
+			elseif mob == "passive" or mob == "monster" then
+				mob_type = mob
+			elseif mob then
+				mob_name = mob
+			end
+			minetest.log ("mob: [" .. mob .. "]")
+		else
+			minetest.log("No valid second param")
+			return
+		end
+
+		if unsafe and unsafe ~= "" then
+			minetest.log ("unsafe: [" .. unsafe .. "]")
+			if unsafe == "nametagged" then
+				nametagged = true
+			end
+
+			local num = tonumber(unsafe)
+			if num then
+				minetest.log("valid number")
+				range = num
+			else
+				minetest.log("not a number")
+			end
+		end
+
 		local p = minetest.get_player_by_name(n)
-		local num=tonumber(param)
+
+		minetest.log("Range: ".. tostring(range))
+
 		for _,o in pairs(minetest.luaentities) do
-			if o.is_mob then
-				if  param == "all" or
-				( param == "nametagged" and o.nametag ) or
-				( param == "" and ( not o.nametag or o.nametag == "" ) and not o.tamed ) or
-				( num and num > 0 and vector.distance(p:get_pos(),o.object:get_pos()) <= num ) then
-					o.object:remove()
+			if o and o.is_mob then
+				local mob_match = false
+
+				if all then
+					minetest.log("Match - All mobs specified")
+					mob_match = true
+				elseif mob_type then
+
+					minetest.log("Match - o.type: ".. tostring(o.type))
+					minetest.log("mob_type: ".. tostring(mob_type))
+					if mob_type == "monster" and o.type == mob_type then
+						minetest.log("Match - monster")
+						mob_match = true
+					elseif mob_type == "passive" and o.type ~= "monster" and o.type ~= "npc" then
+						minetest.log("Match - passive")
+						mob_match = true
+					else
+						minetest.log("No match for type.")
+					end
+
+				elseif mob_name and (o.name == mob_name or string.find(o.name, mob_name)) then
+					minetest.log("Match - mob_name = ".. tostring(o.name))
+					mob_match = true
+				else
+					--minetest.log("No match - o.type = ".. tostring(o.type))
+					--minetest.log("No match - mob_name = ".. tostring(o.name))
+					--minetest.log("No match - mob_type = ".. tostring(mob_name))
+				end
+
+				if mob_match then
+					local in_range = true
+					if (not range or range <= 0 ) then
+						in_range = true
+					else
+						if ( vector.distance(p:get_pos(),o.object:get_pos()) <= range ) then
+							in_range = true
+						else
+							minetest.log("Out of range")
+							in_range = false
+						end
+					end
+
+					minetest.log("o.nametag: ".. tostring(o.nametag))
+					if in_range and ( (not o.nametag or o.nametag == "" ) and not o.tamed ) then
+						minetest.log("No nametag or tamed. Kill it")
+						--o.object:remove()
+					elseif nametagged and o.nametag then
+						minetest.log("Namedtagged and it has a name tag. Kill it")
+						--o.object:remove()
+					else
+						minetest.log("Tamed or out of range, do not kill")
+					end
 				end
 			end
 		end
