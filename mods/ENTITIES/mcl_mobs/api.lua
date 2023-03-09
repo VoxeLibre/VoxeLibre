@@ -543,10 +543,7 @@ minetest.register_chatcommand("clearmobs",{
 		if not param or param == "" then
 			minetest.log("Incorrect usage. For more information please type: /help clearmobs")
 			return
-		else
-			minetest.log("param: " .. dump(param))
 		end
-
 		local mob, unsafe = param:match("^([%w]+)[ ]?([%w%d]*)$")
 
 		local all = false
@@ -554,6 +551,7 @@ minetest.register_chatcommand("clearmobs",{
 
 		local mob_name, mob_type, range
 
+		-- Param 1 resolve
 		if mob and mob ~= "" then
 			if mob == "all" then
 				all = true
@@ -562,12 +560,13 @@ minetest.register_chatcommand("clearmobs",{
 			elseif mob then
 				mob_name = mob
 			end
-			minetest.log ("mob: [" .. mob .. "]")
+			--minetest.log ("mob: [" .. mob .. "]")
 		else
-			minetest.log("No valid second param")
+			--minetest.log("No valid second param")
 			return
 		end
 
+		-- Param 2 resolve
 		if unsafe and unsafe ~= "" then
 			minetest.log ("unsafe: [" .. unsafe .. "]")
 			if unsafe == "nametagged" then
@@ -575,37 +574,30 @@ minetest.register_chatcommand("clearmobs",{
 			end
 
 			local num = tonumber(unsafe)
-			if num then
-				minetest.log("valid number")
-				range = num
-			else
-				minetest.log("not a number")
-			end
+			if num then range = num end
 		end
 
 		local p = minetest.get_player_by_name(n)
-
-		minetest.log("Range: ".. tostring(range))
 
 		for _,o in pairs(minetest.luaentities) do
 			if o and o.is_mob then
 				local mob_match = false
 
 				if all then
-					minetest.log("Match - All mobs specified")
+					--minetest.log("Match - All mobs specified")
 					mob_match = true
 				elseif mob_type then
 
-					minetest.log("Match - o.type: ".. tostring(o.type))
-					minetest.log("mob_type: ".. tostring(mob_type))
+					--minetest.log("Match - o.type: ".. tostring(o.type))
+					--minetest.log("mob_type: ".. tostring(mob_type))
 					if mob_type == "monster" and o.type == mob_type then
-						minetest.log("Match - monster")
+						--minetest.log("Match - monster")
 						mob_match = true
 					elseif mob_type == "passive" and o.type ~= "monster" and o.type ~= "npc" then
-						minetest.log("Match - passive")
+						--minetest.log("Match - passive")
 						mob_match = true
 					else
-						minetest.log("No match for type.")
+						--minetest.log("No match for type.")
 					end
 
 				elseif mob_name and (o.name == mob_name or string.find(o.name, mob_name)) then
@@ -625,20 +617,20 @@ minetest.register_chatcommand("clearmobs",{
 						if ( vector.distance(p:get_pos(),o.object:get_pos()) <= range ) then
 							in_range = true
 						else
-							minetest.log("Out of range")
+							--minetest.log("Out of range")
 							in_range = false
 						end
 					end
 
 					minetest.log("o.nametag: ".. tostring(o.nametag))
 					if in_range and ( (not o.nametag or o.nametag == "" ) and not o.tamed ) then
-						minetest.log("No nametag or tamed. Kill it")
-						--o.object:remove()
+						--minetest.log("No nametag or tamed. Kill it")
+						o.object:remove()
 					elseif nametagged and o.nametag then
-						minetest.log("Namedtagged and it has a name tag. Kill it")
-						--o.object:remove()
+						--minetest.log("Namedtagged and it has a name tag. Kill it")
+						o.object:remove()
 					else
-						minetest.log("Tamed or out of range, do not kill")
+						--minetest.log("Tamed or out of range, do not kill")
 					end
 				end
 			end
