@@ -568,7 +568,7 @@ minetest.register_chatcommand("clearmobs",{
 
 		-- Param 2 resolve
 		if unsafe and unsafe ~= "" then
-			minetest.log ("unsafe: [" .. unsafe .. "]")
+			--minetest.log ("unsafe: [" .. unsafe .. "]")
 			if unsafe == "nametagged" then
 				nametagged = true
 			end
@@ -601,7 +601,7 @@ minetest.register_chatcommand("clearmobs",{
 					end
 
 				elseif mob_name and (o.name == mob_name or string.find(o.name, mob_name)) then
-					minetest.log("Match - mob_name = ".. tostring(o.name))
+					--minetest.log("Match - mob_name = ".. tostring(o.name))
 					mob_match = true
 				else
 					--minetest.log("No match - o.type = ".. tostring(o.type))
@@ -622,7 +622,7 @@ minetest.register_chatcommand("clearmobs",{
 						end
 					end
 
-					minetest.log("o.nametag: ".. tostring(o.nametag))
+					--minetest.log("o.nametag: ".. tostring(o.nametag))
 					if in_range and ( (not o.nametag or o.nametag == "" ) and not o.tamed ) then
 						--minetest.log("No nametag or tamed. Kill it")
 						o.object:remove()
