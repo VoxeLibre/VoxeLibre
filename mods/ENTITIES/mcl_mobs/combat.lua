@@ -329,10 +329,7 @@ end
 
 -- find someone to attack
 function mob_class:monster_attack()
-	if not damage_enabled
-	or self.passive ~= false
-	or self.state == "attack"
-	or self:day_docile() then
+	if not damage_enabled or self.passive ~= false or self.state == "attack" or self:day_docile() then
 		return
 	end
 
@@ -341,8 +338,10 @@ function mob_class:monster_attack()
 	local player, obj, min_player
 	local type, name = "", ""
 	local min_dist = self.view_range + 1
-	local objs = minetest.get_objects_inside_radius(s, self.view_range)
+
 	local blacklist_attack = {}
+
+	local objs = minetest.get_objects_inside_radius(s, self.view_range)
 
 	for n = 1, #objs do
 		if not objs[n]:is_player() then
@@ -359,32 +358,29 @@ function mob_class:monster_attack()
 	end
 
 	for n = 1, #objs do
-
-
 		if objs[n]:is_player() then
 			if mcl_mobs.invis[ objs[n]:get_player_name() ] or (not self:object_in_range(objs[n])) then
 				type = ""
 			elseif (self.type == "monster" or self._aggro) then
+				-- self.aggro made player be attacked by npc again if out of range then back in again
+				-- Does it serve a purpose other than that?
 				player = objs[n]
 				type = "player"
 				name = "player"
 			end
 		else
 			obj = objs[n]:get_luaentity()
-
 			if obj then
 				player = obj.object
 				type = obj.type
 				name = obj.name or ""
 			end
-
 		end
 
 		-- find specific mob to attack, failing that attack player/npc/animal
 		if specific_attack(self.specific_attack, name)
-		and (type == "player" or ( type == "npc" and self.attack_npcs )
-			or (type == "animal" and self.attack_animals == true)) then
-
+				and (type == "player" or ( type == "npc" and self.attack_npcs )
+				or (type == "animal" and self.attack_animals == true)) then
 			p = player:get_pos()
 			sp = s
 
@@ -400,10 +396,9 @@ function mob_class:monster_attack()
 					attacked_p = true
 				end
 			end
+
 			-- choose closest player to attack
-			if dist < min_dist
-			and not attacked_p
-			and self:line_of_sight( sp, p, 2) == true then
+			if dist < min_dist and not attacked_p and self:line_of_sight( sp, p, 2) == true then
 				min_dist = dist
 				min_player = player
 			end
@@ -434,11 +429,9 @@ function mob_class:npc_attack()
 	local objs = minetest.get_objects_inside_radius(s, self.view_range)
 
 	for n = 1, #objs do
-
 		obj = objs[n]:get_luaentity()
 
 		if obj and obj.type == "monster" then
-
 			p = obj.object:get_pos()
 			sp = s
 
@@ -448,8 +441,7 @@ function mob_class:npc_attack()
 			p.y = p.y + 1
 			sp.y = sp.y + 1
 
-			if dist < min_dist
-			and self:line_of_sight( sp, p, 2) == true then
+			if dist < min_dist and self:line_of_sight( sp, p, 2) == true then
 				min_dist = dist
 				min_player = obj.object
 			end
@@ -796,12 +788,23 @@ end
 
 function mob_class:check_aggro(dtime)
 	if not self._aggro or not self.attack then return end
-	if not self._check_aggro_timer or self._check_aggro_timer > 5 then
+
+	if not self._check_aggro_timer then
 		self._check_aggro_timer = 0
-		if not self.attack:get_pos() or vector.distance(self.attack:get_pos(),self.object:get_pos()) > 128 then
-			self._aggro = nil
-			self.attack = nil
-			self.state = "stand"
+	end
+
+	if self._check_aggro_timer > 5 then
+		self._check_aggro_timer = 0
+
+		if self.attack then
+			-- TODO consider removing this in favour of what is done in do_states_attack
+			-- Attack is dropped in do_states_attack if out of range, so won't even trigger here
+			-- I do not think this code does anything. Are mobs still loaded in at 128?
+			if not self.attack:get_pos() or vector.distance(self.attack:get_pos(),self.object:get_pos()) > 128 then
+				self._aggro = nil
+				self.attack = nil
+				self.state = "stand"
+			end
 		end
 	end
 	self._check_aggro_timer = self._check_aggro_timer + dtime
@@ -823,7 +826,10 @@ function mob_class:do_states_attack (dtime)
 		self.state = "stand"
 		self:set_velocity( 0)
 		self:set_animation( "stand")
+
 		self.attack = nil
+		self._aggro = nil
+
 		self.v_start = false
 		self.timer = 0
 		self.blinktimer = 0
