@@ -191,6 +191,7 @@
 * 3raven
 * SakuraRiu
 * anarquimico
+* syl
 
 ## Funders
 * 40W
