@@ -70,7 +70,7 @@ local function stop_music_for_all()
 	end
 end
 
-local function play_song(track, player_name, hp, dimension, day_count)
+local function play_song(track, player_name, dimension, day_count)
 	local spec = {
 		name  = track,
 		gain  = 0.3,
@@ -85,7 +85,6 @@ local function play_song(track, player_name, hp, dimension, day_count)
 	local handle = minetest.sound_play(spec, parameters, false)
 	listeners[player_name] = {
 		handle     = handle,
-		hp         = hp,
 		dimension  = dimension,
 		day_count  = day_count,
 	}
@@ -104,20 +103,19 @@ local function play()
 		local player_name = player:get_player_name()
 		local hp          = player:get_hp()
 		local pos         = player:get_pos()
-
 		local dimension   = mcl_worlds.pos_to_dimension(pos)
 
 		local listener      = listeners[player_name]
 		local handle = listener and listener.handle
 
-		local old_hp			= listener and listener.hp
-		local old_dimension		= listener and listener.dimension
+		--local old_hp			= listener and listener.hp
+		--local is_hp_changed = old_hp and (math.abs(old_hp - hp) > 0.00001) or false
 
+		local old_dimension		= listener and listener.dimension
 		local is_dimension_changed = old_dimension and (old_dimension ~= dimension) or false
-		local is_hp_changed = old_hp and (math.abs(old_hp - hp) > 0.00001) or false
 
 		--minetest.log("handle: " .. dump (handle))
-		if is_hp_changed or is_dimension_changed then
+		if is_dimension_changed then
 			stop_music_for_listener_name(player_name)
 			if not listeners[player_name] then
 				listeners[player_name] = {}
@@ -128,7 +126,7 @@ local function play()
 			local underground = dimension == "overworld" and pos and pos.y < 0
 			local track = pick_track(dimension, underground)
 			if track then
-				play_song(track, player_name, hp, dimension, day_count)
+				play_song(track, player_name, dimension, day_count)
 			else
 				--minetest.log("no track found. weird")
 			end
