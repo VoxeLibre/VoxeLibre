@@ -537,12 +537,14 @@ end)
 
 minetest.register_chatcommand("clearmobs",{
 	privs={maphack=true},
-	params = "<all>|<hostile/passive>|<name> <nametagged>|<range>",
+	params = "[<all>|<hostile/passive>|<name>] [<nametagged>|<range>]",
 	description=S("Removes specified spawned mobs except nametagged and tamed ones. For param2, use nametagged to remove those with a nametag, or range for all mobs in a distance of the current player to be removed."),
-	func=function(n,param)
+	func=function(player, param)
+		local default = false
 		if not param or param == "" then
-			minetest.log("Incorrect usage. For more information please type: /help clearmobs")
-			return
+			default = true
+			minetest.chat_send_player(player,
+					S("Default usage. Clearing hostile mobs. For more options please type: /help clearmobs"))
 		end
 		local mob, unsafe = param:match("^([%w]+)[ ]?([%w%d]*)$")
 
@@ -562,8 +564,12 @@ minetest.register_chatcommand("clearmobs",{
 			end
 			--minetest.log ("mob: [" .. mob .. "]")
 		else
-			--minetest.log("No valid second param")
-			return
+			--minetest.log("No valid first param")
+			if default then
+				--minetest.log("Use default")
+				mob_type = "monster"
+			end
+			--return
 		end
 
 		-- Param 2 resolve
@@ -577,7 +583,7 @@ minetest.register_chatcommand("clearmobs",{
 			if num then range = num end
 		end
 
-		local p = minetest.get_player_by_name(n)
+		local p = minetest.get_player_by_name(player)
 
 		for _,o in pairs(minetest.luaentities) do
 			if o and o.is_mob then
