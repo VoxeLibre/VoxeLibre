@@ -150,7 +150,7 @@ local function register_wooden_planks(subname, description, tiles)
 	})
 end
 
-local function register_leaves(subname, description, longdesc, tiles, color, paramtype2, sapling, drop_apples, sapling_chances, foliage_palette)
+local function register_leaves(subname, description, longdesc, tiles, color, paramtype2, palette, sapling, drop_apples, sapling_chances, foliage_palette)
 	local apple_chances = {200, 180, 160, 120, 40}
 	local stick_chances = {50, 45, 30, 35, 10}
 
@@ -191,7 +191,7 @@ local function register_leaves(subname, description, longdesc, tiles, color, par
 		color = color,
 		paramtype = "light",
 		paramtype2 = paramtype2,
-		palette = "mcl_core_palette_foliage.png",
+		palette = palette,
 		stack_max = 64,
 		groups = {
 			handy = 1, hoey = 1, shearsy = 1, swordy = 1, dig_by_piston = 1,
@@ -324,12 +324,12 @@ register_sapling("birchsapling", S("Birch Sapling"),
 	"mcl_core_sapling_birch.png", {-4/16, -0.5, -4/16, 4/16, 0.5, 4/16})
 
 
-register_leaves("leaves", S("Oak Leaves"), S("Oak leaves are grown from oak trees."), {"default_leaves.png"}, "#48B518", "color", "mcl_core:sapling", true, {20, 16, 12, 10}, 1)
-register_leaves("darkleaves", S("Dark Oak Leaves"), S("Dark oak leaves are grown from dark oak trees."), {"mcl_core_leaves_big_oak.png"}, "#48B518", "color", "mcl_core:darksapling", true, {20, 16, 12, 10}, 1)
-register_leaves("jungleleaves", S("Jungle Leaves"), S("Jungle leaves are grown from jungle trees."), {"default_jungleleaves.png"}, "#48B518", "color", "mcl_core:junglesapling", false, {40, 26, 32, 24, 10}, 1)
-register_leaves("acacialeaves", S("Acacia Leaves"), S("Acacia leaves are grown from acacia trees."), {"default_acacia_leaves.png"}, "#48B518", "color", "mcl_core:acaciasapling", false, {20, 16, 12, 10}, 1)
-register_leaves("spruceleaves", S("Spruce Leaves"), S("Spruce leaves are grown from spruce trees."), {"mcl_core_leaves_spruce.png"}, "#619961", "none", "mcl_core:sprucesapling", false, {20, 16, 12, 10}, 0)
-register_leaves("birchleaves", S("Birch Leaves"), S("Birch leaves are grown from birch trees."), {"mcl_core_leaves_birch.png"}, "#80A755", "none", "mcl_core:birchsapling", false, {20, 16, 12, 10}, 0)
+register_leaves("leaves", S("Oak Leaves"), S("Oak leaves are grown from oak trees."), {"default_leaves.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:sapling", true, {20, 16, 12, 10}, 1)
+register_leaves("darkleaves", S("Dark Oak Leaves"), S("Dark oak leaves are grown from dark oak trees."), {"mcl_core_leaves_big_oak.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:darksapling", true, {20, 16, 12, 10}, 1)
+register_leaves("jungleleaves", S("Jungle Leaves"), S("Jungle leaves are grown from jungle trees."), {"default_jungleleaves.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:junglesapling", false, {40, 26, 32, 24, 10}, 1)
+register_leaves("acacialeaves", S("Acacia Leaves"), S("Acacia leaves are grown from acacia trees."), {"default_acacia_leaves.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:acaciasapling", false, {20, 16, 12, 10}, 1)
+register_leaves("spruceleaves", S("Spruce Leaves"), S("Spruce leaves are grown from spruce trees."), {"mcl_core_leaves_spruce.png"}, "#619961", "none", nil, "mcl_core:sprucesapling", false, {20, 16, 12, 10}, 0)
+register_leaves("birchleaves", S("Birch Leaves"), S("Birch leaves are grown from birch trees."), {"mcl_core_leaves_birch.png"}, "#80A755", "none", nil, "mcl_core:birchsapling", false, {20, 16, 12, 10}, 0)
 
 
 
