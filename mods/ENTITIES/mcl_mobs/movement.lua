@@ -3,10 +3,7 @@ local mob_class = mcl_mobs.mob_class
 local DEFAULT_FALL_SPEED = -9.81*1.5
 local FLOP_HEIGHT = 6
 local FLOP_HOR_SPEED = 1.5
-local PATHFINDING = "gowp"
 
-local node_ice = "mcl_core:ice"
-local node_snowblock = "mcl_core:snowblock"
 local node_snow = "mcl_core:snow"
 
 
@@ -21,14 +18,19 @@ local function atan(x)
 	end
 end
 
+local registered_fallback_node = minetest.registered_nodes[mcl_mobs.fallback_node]
+
 -- get node but use fallback for nil or unknown
 local node_ok = function(pos, fallback)
-	fallback = fallback or mcl_mobs.fallback_node
 	local node = minetest.get_node_or_nil(pos)
 	if node and minetest.registered_nodes[node.name] then
 		return node
 	end
-	return minetest.registered_nodes[fallback]
+	if fallback then
+		return minetest.registered_nodes[fallback]
+	else
+		return registered_fallback_node
+	end
 end
 
 -- Returns true is node can deal damage to self
@@ -200,14 +202,19 @@ function mob_class:can_jump_cliff()
 end
 
 -- is mob facing a cliff or danger
-function mob_class:is_at_cliff_or_danger()
-	if self.fear_height == 0 or self:can_jump_cliff() or self._jumping_cliff or not self.object:get_luaentity() then -- 0 for no falling protection!
+function mob_class:is_at_cliff_or_danger(can_jump_cliff)
+	if can_jump_cliff == nil then
+		can_jump_cliff = self:can_jump_cliff()
+	end
+
+	if self.fear_height == 0 or can_jump_cliff or self._jumping_cliff or not self.object:get_luaentity() then -- 0 for no falling protection!
 		return false
 	end
 
 	local yaw = self.object:get_yaw()
 	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)
 	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)
+
 	local pos = self.object:get_pos()
 	local ypos = pos.y + self.collisionbox[2] -- just above floor
 
@@ -234,8 +241,12 @@ end
 
 
 -- copy the 'mob facing cliff_or_danger check' from above, and rework to avoid water
-function mob_class:is_at_water_danger()
-	if not self.object:get_luaentity() or self:can_jump_cliff() or self._jumping_cliff then
+function mob_class:is_at_water_danger(can_jump_cliff)
+	if can_jump_cliff == nil then
+		can_jump_cliff = self:can_jump_cliff()
+	end
+
+	if not self.object:get_luaentity() or can_jump_cliff or self._jumping_cliff then
 		return false
 	end
 	local yaw = self.object:get_yaw()
@@ -276,7 +287,9 @@ end
 
 function mob_class:env_danger_movement_checks(dtime)
 	local yaw = 0
-	if self:is_at_water_danger() and self.state ~= "attack" then
+
+	local can_jump_cliff = self:can_jump_cliff()
+	if self.state ~= "attack" and self:is_at_water_danger(can_jump_cliff) then
 		if math.random(1, 10) <= 6 then
 			self:set_velocity(0)
 			self.state = "stand"
@@ -284,14 +297,9 @@ function mob_class:env_danger_movement_checks(dtime)
 			yaw = yaw + math.random(-0.5, 0.5)
 			yaw = self:set_yaw( yaw, 8)
 		end
-	else
-		-- This code should probably be moved to movement code
-		if self.move_in_group ~= false then
-			self:check_herd(dtime)
-		end
 	end
 
-	if self:is_at_cliff_or_danger() then
+	if self:is_at_cliff_or_danger(can_jump_cliff) then
 		self:set_velocity(0)
 		self.state = "stand"
 		self:set_animation( "stand")
@@ -614,75 +622,51 @@ end
 
 
 -- follow player if owner or holding item, if fish outta water then flop
-function mob_class:follow_flop()
-
+function mob_class:check_follow()
 	-- find player to follow
-	if (self.follow ~= ""
-	or self.order == "follow")
-	and not self.following
+	if (self.follow ~= "" or self.order == "follow") and not self.following
 	and self.state ~= "attack"
 	and self.order ~= "sit"
 	and self.state ~= "runaway" then
-
 		local s = self.object:get_pos()
 		local players = minetest.get_connected_players()
-
 		for n = 1, #players do
-
-			if (self:object_in_range(players[n]))
-			and not mcl_mobs.invis[ players[n]:get_player_name() ] then
-
+			if (self:object_in_range(players[n])) and not mcl_mobs.invis[ players[n]:get_player_name() ] then
 				self.following = players[n]
-
 				break
 			end
 		end
 	end
 
-	if self.type == "npc"
-	and self.order == "follow"
-	and self.state ~= "attack"
-	and self.order ~= "sit"
-	and self.owner ~= "" then
+	if self.type == "npc" and self.order == "follow"
+			and self.state ~= "attack" and self.order ~= "sit" and self.owner ~= "" then
 
-		-- npc stop following player if not owner
-		if self.following
-		and self.owner
-		and self.owner ~= self.following:get_player_name() then
+		if self.following and self.owner and self.owner ~= self.following:get_player_name() then
 			self.following = nil
 		end
 	else
 		-- stop following player if not holding specific item,
 		-- mob is horny, fleeing or attacking
-		if self.following
-		and self.following:is_player()
-		and (self:follow_holding(self.following) == false or
-		self.horny or self.state == "runaway") then
+		if self.following and self.following:is_player()
+				and (self:follow_holding(self.following) == false or self.horny or self.state == "runaway") then
 			self.following = nil
 		end
-
 	end
 
 	-- follow that thing
 	if self.following then
-
 		local s = self.object:get_pos()
+
 		local p
-
 		if self.following:is_player() then
-
 			p = self.following:get_pos()
-
 		elseif self.following.object then
-
 			p = self.following.object:get_pos()
 		end
 
 		if p then
-
 			local dist = vector.distance(p, s)
 
-			-- dont follow if out of range
 			if (not self:object_in_range(self.following)) then
 				self.following = nil
 			else
@@ -692,17 +676,12 @@ function mob_class:follow_flop()
 				}
 
 				local yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
-
 				if p.x > s.x then yaw = yaw +math.pi end
-
 				self:set_yaw( yaw, 2.35)
 
 				-- anyone but standing npc's can move along
-				if dist > 3
-				and self.order ~= "stand" then
-
+				if dist > 3 and self.order ~= "stand" then
  					self:set_velocity(self.follow_velocity)
-
 					if self.walk_chance ~= 0 then
 						self:set_animation( "run")
 					end
@@ -710,17 +689,18 @@ function mob_class:follow_flop()
 					self:set_velocity(0)
 					self:set_animation( "stand")
 				end
-
 				return
 			end
 		end
 	end
+end
 
+function mob_class:flop()
 	-- swimmers flop when out of their element, and swim again when back in
 	if self.fly then
 		local s = self.object:get_pos()
-		if self:flight_check( s) == false then
 
+		if self:flight_check(s) == false then
 			self.state = "flop"
 			self.object:set_acceleration({x = 0, y = DEFAULT_FALL_SPEED, z = 0})
 
@@ -739,7 +719,6 @@ function mob_class:follow_flop()
 			end
 
 			self:set_animation( "stand", true)
-
 			return
 		elseif self.state == "flop" then
 			self.state = "stand"
@@ -770,7 +749,10 @@ end
 local check_herd_timer = 0
 function mob_class:check_herd(dtime)
 	local pos = self.object:get_pos()
-	if not pos then return end
+	if not pos or self.state == "attack" then return end
+	-- Does any mob not move in group. Weird check for something not set?
+	if self.move_in_group == false then return end
+
 	check_herd_timer = check_herd_timer + dtime
 	if check_herd_timer < 4 then return end
 	check_herd_timer = 0
