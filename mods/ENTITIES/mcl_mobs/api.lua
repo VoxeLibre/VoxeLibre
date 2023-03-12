@@ -468,9 +468,17 @@ end
 
 local last_crash_warn_time = 0
 
-local on_step_error_handler = function ()
-	local info = debug.getinfo(1, "SnlufL")
+local function log_error (stack_trace, info, info2)
+	minetest.log("action", "--- Bug report start (please provide a few lines before this also for context) ---")
+	minetest.log("action", "Error: " .. stack_trace)
+	minetest.log("action", "Bug info: " .. info)
+	if info2 then
+		minetest.log("action", "Bug info additional: " .. info2)
+	end
+	minetest.log("action", "--- Bug report end ---")
+end
 
+local function warn_user_error ()
 	local current_time = os.time()
 	local time_since_warning = current_time - last_crash_warn_time
 
@@ -482,10 +490,12 @@ local on_step_error_handler = function ()
 		last_crash_warn_time = current_time
 		minetest.log("A game crashing bug was prevented. Please provide debug.log information to MineClone2 dev team for investigation. (Search for: --- Bug report start)")
 	end
-	minetest.log("action", "--- Bug report start (please provide a few lines before this also for context) ---")
-	minetest.log("action", "Stack trace: ".. tostring(debug.traceback()))
-	minetest.log("action", "Bug info: ".. dump(info))
-	minetest.log("action", "--- Bug report end ---")
+end
+
+local on_step_error_handler = function ()
+	warn_user_error ()
+	local info = debug.getinfo(1, "SnlufL")
+	log_error(tostring(debug.traceback()), dump(info))
 end
 
 
@@ -493,14 +503,18 @@ end
 -- main mob function
 function mob_class:on_step(dtime)
 	if not DEVELOPMENT then
-		local status, retVal = xpcall(on_step_work, on_step_error_handler, self, dtime)
+		--local status, retVal = xpcall(on_step_work, on_step_error_handler, self, dtime)
+		local status, retVal = pcall(on_step_work, self, dtime)
 		if status then
 			return retVal
+		else
+			warn_user_error ()
+			local pos = self.object:get_pos()
+			log_error (dump(retVal), dump(pos), dump(self))
 		end
 	else
 		return on_step_work (self, dtime)
 	end
-
 end
 
 local timer = 0
