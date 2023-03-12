@@ -132,7 +132,7 @@ mcl_death_messages = {
 		thorns = {
 			_translator = S,
 			killer = "@1 was killed trying to hurt @2",
-			item = "@1 was killed by @3 trying to hurt @2", -- yes, the order is intentional: @1 @3 @2
+			item = "@1 tried to hurt @2 and died by @3",
 		},
 		explosion = {
 			_translator = S,
@@ -149,7 +149,7 @@ mcl_death_messages = {
 		fireworks = {
 			_translator = S,
 			plain = "@1 went off with a bang",
-			item = "@1 went off with a bang due to a firework fired from @3 by @2", -- order is intentional
+			item = "@1 went off with a bang due to a firework fired by @2 from @3",
 		},
 		sweet_berry = {
 			_translator = S,

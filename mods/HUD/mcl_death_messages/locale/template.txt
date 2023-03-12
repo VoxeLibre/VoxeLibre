@@ -45,11 +45,11 @@
 @1 was fireballed by @2=
 @1 was fireballed by @2 using @3=
 @1 was killed trying to hurt @2=
-@1 was killed by @3 trying to hurt @2=
+@1 tried to hurt @2 and died by @3=
 @1 blew up=
 @1 was blown up by @2=
 @1 was blown up by @2 using @3=
 @1 was squished too much=
 @1 was squashed by @2=
 @1 went off with a bang=
-@1 went off with a bang due to a firework fired from @3 by @2=
+@1 went off with a bang due to a firework fired by @2 from @3=

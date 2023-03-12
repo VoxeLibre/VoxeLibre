@@ -48,12 +48,12 @@
 @1 was fireballed by @2=@1 została zabita kulą ognia przez @2
 @1 was fireballed by @2 using @3=@1 została zabita kulą ognia przez @2 przy użyciu @3
 @1 was killed trying to hurt @2=@1 została zabita gdy próbowała skrzywdzić @2
-@1 was killed by @3 trying to hurt @2=@1 została zabita przez @3 gdy próbowała skrzywdzić @2
+@1 tried to hurt @2 and died by @3=@1 próbował skrzywdzić @2 i zginął przed @3
 @1 blew up=@1 wybuchła
 @1 was blown up by @2=@1 została wysadzona przez @2
 @1 was blown up by @2 using @3=@1 została wysadzona przez @2 przy użyciu @3
 @1 was squished too much=@1 została zbyt mocno ściśnięta
 @1 was squashed by @2=@1 została ściśnięta przez @2
 @1 went off with a bang=@1 odeszła z hukiem
-@1 went off with a bang due to a firework fired from @3 by @2=@1 odeszła z hukiem przez fajerwerki wystrzelone z @3 przez @2
+@1 went off with a bang due to a firework fired by @2 from @3=@1 wybuchł z hukiem z powodu fajerwerków wystrzelonych przez @2 z @3
 
