@@ -622,23 +622,29 @@ function mob_class:do_env_damage()
 		return true
 	end
 
-	local sunlight = minetest.get_natural_light(pos, self.time_of_day)
+	local node = minetest.get_node(pos)
+	if node then
+		if node.name ~= "ignore" then
+			local sunlight = minetest.get_natural_light(pos, self.time_of_day)
 
-	-- bright light harms mob
-	if self.light_damage ~= 0 and (sunlight or 0) > 12 then
-		if self:deal_light_damage(pos, self.light_damage) then
-			return true
-		end
-	end
-	local _, dim = mcl_worlds.y_to_layer(pos.y)
-	if (self.sunlight_damage ~= 0 or self.ignited_by_sunlight) and (sunlight or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
-		if self.armor_list and not self.armor_list.helmet or not self.armor_list or self.armor_list and self.armor_list.helmet and self.armor_list.helmet == "" then
-			if self.ignited_by_sunlight then
-				mcl_burning.set_on_fire(self.object, 10)
-			else
-				self:deal_light_damage(pos, self.sunlight_damage)
-				return true
+			if self.light_damage ~= 0 and (sunlight or 0) > 12 then
+				if self:deal_light_damage(pos, self.light_damage) then
+					return true
+				end
 			end
+			local _, dim = mcl_worlds.y_to_layer(pos.y)
+			if (self.sunlight_damage ~= 0 or self.ignited_by_sunlight) and (sunlight or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
+				if self.armor_list and not self.armor_list.helmet or not self.armor_list or self.armor_list and self.armor_list.helmet and self.armor_list.helmet == "" then
+					if self.ignited_by_sunlight then
+						mcl_burning.set_on_fire(self.object, 10)
+					else
+						self:deal_light_damage(pos, self.sunlight_damage)
+						return true
+					end
+				end
+			end
+		else
+			minetest.log("warning", "Pos is ignored: " .. dump(pos))
 		end
 	end
 
