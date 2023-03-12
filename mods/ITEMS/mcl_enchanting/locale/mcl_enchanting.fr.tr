@@ -68,7 +68,7 @@ Trident launches player with itself when thrown. Works only in water or rain.=Le
 
 Trident returns after being thrown. Higher levels reduce return time.=Le trident revient après avoir été jeté. Des niveaux plus élevés réduisent le temps de retour.
 
-Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=Transforme l'eau sous le joueur en glace givrée et empêche les dommages causés par les blocs de magma.
+Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=Transforme l'eau sous le joueur en glace givrée et empêche les dégâts causés par les blocs de magma.
 
 Unbreaking=Solidité
 
@@ -77,7 +77,7 @@ Unbreaking=Solidité
 @1 Enchantment Levels=@1 Niveaux d'enchantement
 @1 Lapis Lazuli=@1 Lapis Lazuli
 Inventory=Inventaire
-Level requirement: @1=Niveau requis: @1
+Level requirement: @1=Niveau requis : @1
 
 ### init.lua ###
 
@@ -137,7 +137,7 @@ Reduces fall damage.=Reduit les dégats de chute.
 Fire Protection=Protection contre le feu
 Reduces fire damage.=Reduit les dégats de feu.
 Projectile Protection=Protection contre les projectiles
-Reduces projectile damage.=Réduit les dommages causés par les projectiles.
+Reduces projectile damage.=Réduit les dégâts causés par les projectiles.
 Protection=Protection
 Reduces most types of damage by 4% for each level.=éduit la plupart des types de dégâts de 4% pour chaque niveau.
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflète une partie des dégâts subis lors de la frappe, au prix d'une réduction de la durabilité à chaque déclenchement.

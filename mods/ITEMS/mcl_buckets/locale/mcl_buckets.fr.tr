@@ -1,14 +1,14 @@
 # textdomain: mcl_buckets
-Empty Bucket=Seau Vide
+Empty Bucket=Seau vide
 A bucket can be used to collect and release liquids.=Un seau peut être utilisé pour recueillir et libérer les liquides.
 Punch a liquid source to collect it. You can then use the filled bucket to place the liquid somewhere else.=Frappez une source de liquide pour la collecter. Vous pouvez ensuite utiliser le seau rempli pour placer le liquide ailleurs.
 Lava Bucket=Seau de Lave
 A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution.=Un seau peut être utilisé pour recueillir et libérer les liquides. Celui-ci est rempli de lave chaude, contenue en toute sécurité à l'intérieur. À utiliser avec précaution.
-Get in a safe distance and place the bucket to empty it and create a lava source at this spot. Don't burn yourself!=Eloignez-vous et placez le seau pour le vider et créez une source de lave à cet endroit. Ne vous brûlez pas!
-Water Bucket=Seau d'Eau
+Get in a safe distance and place the bucket to empty it and create a lava source at this spot. Don't burn yourself!=Éloignez-vous et placez le seau pour le vider et créez une source de lave à cet endroit. Ne vous brûlez pas !
+Water Bucket=Seau d'eau
 A bucket can be used to collect and release liquids. This one is filled with water.=Un seau peut être utilisé pour recueillir et libérer les liquides. Celui-ci est rempli d'eau.
 Place it to empty the bucket and create a water source.=Placez-le pour vider le seau et créer une source d'eau.
-River Water Bucket=Seau d'Eau de Rivière
+River Water Bucket=Seau d'eau de rivière
 A bucket can be used to collect and release liquids. This one is filled with river water.=Un seau peut être utilisé pour recueillir et libérer les liquides. Celui-ci est rempli d'eau de rivière.
 Place it to empty the bucket and create a river water source.=Placez-le pour vider le seau et créer une source d'eau de rivière.
 Collects liquids=Collecte des liquides
@@ -17,7 +17,7 @@ Places a water source=Place une source d'eau
 Places a river water source=Place une source d'eau de rivière
 Cod=Morue
 Salmon=Saumon
-Tropical Fish=Poisson Tropical
+Tropical Fish=Poisson tropical
 Bucket of @1=Seau de @1
 This bucket is filled with water and @1.=Ce seau est rempli d'eau et de @1.
 Place it to empty the bucket and place a @1. Obtain by right clicking on a @2 fish with a bucket of water.=Le placer pour vider le seau et placer un @1.
