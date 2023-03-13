@@ -628,7 +628,7 @@ function mob_class:do_env_damage()
 			-- put below code in this block if we can prove that unloaded maps are causing crash.
 			-- it should warn then error
 		else
-			minetest.log("warning", "Pos is ignored: " .. dump(pos))
+			--minetest.log("warning", "Pos is ignored: " .. dump(pos))
 		end
 
 		local sunlight = minetest.get_natural_light(pos, self.time_of_day)
