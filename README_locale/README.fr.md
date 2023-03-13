@@ -63,7 +63,7 @@ Le dépôt de MineClone2 est hébergé sur Mesehub. Pour contribuer ou signaler 
 
 * Mesehub : <https://git.minetest.land/MineClone2/MineClone2>
 * Discord : <https://discord.gg/xE4z8EEpDC>
-* YouTube <https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A>
+* YouTube : <https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A>
 * IRC : <https://web.libera.chat/#mineclone2>
 * Matrix : <https://app.element.io/#/room/#mc2:matrix.org>
 * Reddit : <https://www.reddit.com/r/MineClone2/>
