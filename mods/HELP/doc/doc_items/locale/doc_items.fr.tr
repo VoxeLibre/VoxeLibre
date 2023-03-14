@@ -2,7 +2,7 @@
 Using it as fuel turns it into: @1.=L'utiliser comme combustible le transforme en : @1.
 @1 seconds=@1 secondes
 # Item count times item name
-@1×@2=@1×@
+@1×@2=@1×@2
 # Itemname (25%)
 @1 (@2%)=@1 (@2%)
 # Itemname (<0.5%)
@@ -96,7 +96,7 @@ This block will drop the following when mined: @1.=Ce bloc donnera les objets su
 This block will drop the following when mined: @1.=Ce bloc donnera les objets suivant lorsque miné : @1.
 This block will make you bounce off with an elasticity of @1%.=Ce bloc vous fera rebondir avec une élasticité de @1%.
 This block will randomly drop one of the following when mined: @1.=Ce bloc laissera tomber de manière aléatoire un des éléments suivants lorsque miné : @1.
-This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Ce bloc laissera tomber de manière aléatoire jusqu'à @1 des éléments suivants lorque miné :
+This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Ce bloc laissera tomber de manière aléatoire jusqu'à @1 des éléments suivants lorque miné : @2.
 This block won't drop anything when mined.=Ce bloc ne donnera rien lorsque miné.
 This is a decorational block.=C'est un bloc de décoration.
 This is a melee weapon which deals damage by punching.=C'est une arme de mêlée qui inflige des dégâts en frappant.
