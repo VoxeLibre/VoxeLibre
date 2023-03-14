@@ -119,7 +119,7 @@ local function retrieve_close_spreadable_nodes (p)
 	return nn
 end
 
-local function sculk_stuff (p, xp_amount)
+local function spread_sculk (p, xp_amount)
 	local c = minetest.find_node_near(p,SPREAD_RANGE,{"mcl_sculk:catalyst"})
 	if c then
 		local nn = retrieve_close_spreadable_nodes (p)
@@ -141,9 +141,8 @@ local function sculk_stuff (p, xp_amount)
 
 
 				local r = math.min(math.random(#nn), xp_amount)
-
-
-				minetest.log("r: ".. r)
+				--minetest.log("r: ".. r)
+				
 				for i=1,r do
 					minetest.set_node(nn[i],{name = "mcl_sculk:sculk" })
 					set_node_xp(nn[i],math.floor(xp_amount / r))
@@ -164,15 +163,9 @@ local function sculk_stuff (p, xp_amount)
 end
 
 function mcl_sculk.handle_death(pos, xp_amount)
+	if not pos or not xp_amount then return end
 	--local nu = minetest.get_node(vector.offset(p,0,-1,0))
-	local c = minetest.find_node_near(pos ,SPREAD_RANGE,{"mcl_sculk:catalyst"})
-	if c then
-		local nn = retrieve_close_spreadable_nodes (pos)
-		if nn and #nn > 0 then
-			return sculk_stuff (pos, xp_amount)
-		end
-
-	end
+	return spread_sculk (pos, xp_amount)
 end
 
 minetest.register_on_dieplayer(function(player)
