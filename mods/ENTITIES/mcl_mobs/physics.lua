@@ -488,9 +488,19 @@ function mob_class:check_for_death(cause, cmi_cause)
 			self:item_drop(cooked, looting)
 
 			if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= math.huge) then
-				mcl_experience.throw_xp(self.object:get_pos(), math.random(self.xp_min, self.xp_max))
+				local pos = self.object:get_pos()
+				local xp_amount = math.random(self.xp_min, self.xp_max)
+
+				if not mcl_sculk.handle_death(pos, xp_amount) then
+					--minetest.log("Xp not thrown")
+					mcl_experience.throw_xp(pos, xp_amount)
+				else
+					--minetest.log("xp thrown")
+				end
 			end
 		end
+
+
 	end
 
 	-- execute custom death function
