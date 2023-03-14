@@ -142,7 +142,7 @@ local function spread_sculk (p, xp_amount)
 
 				local r = math.min(math.random(#nn), xp_amount)
 				--minetest.log("r: ".. r)
-				
+
 				for i=1,r do
 					minetest.set_node(nn[i],{name = "mcl_sculk:sculk" })
 					set_node_xp(nn[i],math.floor(xp_amount / r))
@@ -170,9 +170,9 @@ end
 
 minetest.register_on_dieplayer(function(player)
 	if mcl_sculk.handle_death(player:get_pos(), 5) then
-		minetest.log("Player is dead. Sculk")
+		--minetest.log("Player is dead. Sculk")
 	else
-		minetest.log("Player is dead. not Sculk")
+		--minetest.log("Player is dead. not Sculk")
 	end
 end)
 
