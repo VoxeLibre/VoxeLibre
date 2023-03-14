@@ -510,9 +510,11 @@ function mob_class:on_step(dtime)
 		else
 			warn_user_error ()
 			local pos = self.object:get_pos()
-			local node = minetest.get_node(pos)
-			if node and node.name == "ignore" then
-				minetest.log("warning", "Pos is ignored: " .. dump(pos))
+			if pos then
+				local node = minetest.get_node(pos)
+				if node and node.name == "ignore" then
+					minetest.log("warning", "Pos is ignored: " .. dump(pos))
+				end
 			end
 			log_error (dump(retVal), dump(pos), dump(self))
 		end
