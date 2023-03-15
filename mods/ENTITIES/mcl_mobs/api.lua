@@ -538,7 +538,7 @@ end)
 minetest.register_chatcommand("clearmobs", {
 	privs = { maphack = true },
 	params = "[all|monster|passive|<mob name> [<range>|nametagged|tamed]]",
-	description = S("Removes specified mobs except nametagged and tamed ones. For the second parameter, use nametagged/tamed to include tamed or nametagged mobs, or a range to specify a maximum distance from the player."),
+	description = S("Removes specified mobs except nametagged and tamed ones. For the second parameter, use nametagged/tamed to select only nametagged/tamed mobs, or a range to specify a maximum distance from the player."),
 	func = function(player, param)
 		local default = false
 		if not param or param == "" then
@@ -633,17 +633,17 @@ minetest.register_chatcommand("clearmobs", {
 
 					--minetest.log("o.nametag: ".. tostring(o.nametag))
 
-					if nametagged and o.nametag then
-						--minetest.log("Namedtagged and it has a name tag. Kill it")
-						o.object:remove()
-					end
-					
-					if tamed and o.tamed then
-						--minetest.log("Tamed. Kill it")
-						o.object:remove()
-					end
-
-					if in_range and (not o.nametag or o.nametag == "") and not o.tamed then
+					if nametagged then
+						if o.nametag then
+							--minetest.log("Namedtagged and it has a name tag. Kill it")
+							o.object:remove()
+						end
+					elseif tamed then
+						if o.tamed then
+							--minetest.log("Tamed. Kill it")
+							o.object:remove()
+						end
+					elseif in_range and (not o.nametag or o.nametag == "") and not o.tamed then
 						--minetest.log("No nametag or tamed. Kill it")
 						o.object:remove()
 					end
