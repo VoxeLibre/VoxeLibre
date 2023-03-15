@@ -362,12 +362,6 @@ local function overwrite()
 			minetest.override_item(tname, {
 				tool_capabilities = toolcaps
 			})
-		else
-			-- This is needed to deal damage when punching mobs
-			-- with random items in hand in survival mode
-			minetest.override_item(tname, {
-				tool_capabilities = mcl_meshhand.survival_hand_tool_caps
-			})
 		end
 	end
 end
