@@ -75,7 +75,8 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 	local chance = get_item_group(itemname, "compostability")
 	if chance > 0 then
 		if not is_creative_enabled(player:get_player_name()) then
-			itemstack:take_item()
+			itemstack:take_item() 
+			minetest.sound_play({name="default_gravel_dug", pos=above, gain=1}, true)
 		end
 		-- calculate leveling up chance
 		local rand = math.random(0,100)
@@ -84,7 +85,6 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 			local level = registered_nodes[node.name]["_mcl_compost_level"]
 			-- spawn green particles above new layer
 			mcl_dye.add_bone_meal_particle(vector_offset(pos, 0, level/8, 0))
-			-- TODO: play some sounds
 			-- update composter block
 			if level < 7 then
 				level = level + 1
@@ -94,6 +94,8 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 			swap_node(pos, {name = "mcl_composters:composter_" .. level})
 			-- a full composter becomes ready for harvest after one second
 			-- the block will get updated by the node timer callback set in node reg def
+				minetest.sound_play({name="default_grass_footstep", pos=above, gain=1}, true)
+
 			if level == 7 then
 				local timer = get_node_timer(pos)
 				timer:start(1)
@@ -114,7 +116,7 @@ end
 local function composter_ready(pos)
 	swap_node(pos, {name = "mcl_composters:composter_ready"})
 	-- maybe spawn particles again?
-	-- TODO: play some sounds
+				minetest.sound_play({name="default_dig_snappy", pos=above, gain=1}, true)
 	return false
 end
 
