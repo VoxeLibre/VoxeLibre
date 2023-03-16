@@ -115,7 +115,7 @@ end
 local function composter_ready(pos)
 	swap_node(pos, {name = "mcl_composters:composter_ready"})
 	-- maybe spawn particles again?
-				minetest.sound_play({name="default_dig_snappy", pos=above, gain=1}, true)
+	minetest.sound_play({name="default_dig_snappy", pos=above, gain=1}, true)
 	return false
 end
 
