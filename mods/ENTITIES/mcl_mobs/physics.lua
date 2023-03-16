@@ -493,7 +493,9 @@ function mob_class:check_for_death(cause, cmi_cause)
 
 				if not mcl_sculk.handle_death(pos, xp_amount) then
 					--minetest.log("Xp not thrown")
-					mcl_experience.throw_xp(pos, xp_amount)
+					if minetest.is_creative_enabled("") ~= true then
+						mcl_experience.throw_xp(pos, xp_amount)
+					end
 				else
 					--minetest.log("xp thrown")
 				end
