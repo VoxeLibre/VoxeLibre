@@ -535,11 +535,11 @@ minetest.register_globalstep(function(dtime)
 end)
 
 
-minetest.register_chatcommand("clearmobs",{
-	privs={maphack=true},
-	params = "[<all>|<hostile/passive>|<name>] [<nametagged>|<range>]",
-	description=S("Removes specified spawned mobs except nametagged and tamed ones. For param2, use nametagged to remove those with a nametag, or range for all mobs in a distance of the current player to be removed."),
-	func=function(player, param)
+minetest.register_chatcommand("clearmobs", {
+	privs = { maphack = true },
+	params = "[all|monster|passive|<mob name> [<range>|nametagged|tamed]]",
+	description = S("Removes specified mobs except nametagged and tamed ones. For the second parameter, use nametagged/tamed to select only nametagged/tamed mobs, or a range to specify a maximum distance from the player."),
+	func = function(player, param)
 		local default = false
 		if not param or param == "" then
 			default = true
@@ -550,6 +550,7 @@ minetest.register_chatcommand("clearmobs",{
 
 		local all = false
 		local nametagged = false
+		local tamed = false
 
 		local mob_name, mob_type, range
 
@@ -577,6 +578,8 @@ minetest.register_chatcommand("clearmobs",{
 			--minetest.log ("unsafe: [" .. unsafe .. "]")
 			if unsafe == "nametagged" then
 				nametagged = true
+			elseif unsafe == "tamed" then
+				tamed = true
 			end
 
 			local num = tonumber(unsafe)
@@ -629,14 +632,20 @@ minetest.register_chatcommand("clearmobs",{
 					end
 
 					--minetest.log("o.nametag: ".. tostring(o.nametag))
-					if in_range and ( (not o.nametag or o.nametag == "" ) and not o.tamed ) then
+
+					if nametagged then
+						if o.nametag then
+							--minetest.log("Namedtagged and it has a name tag. Kill it")
+							o.object:remove()
+						end
+					elseif tamed then
+						if o.tamed then
+							--minetest.log("Tamed. Kill it")
+							o.object:remove()
+						end
+					elseif in_range and (not o.nametag or o.nametag == "") and not o.tamed then
 						--minetest.log("No nametag or tamed. Kill it")
 						o.object:remove()
-					elseif nametagged and o.nametag then
-						--minetest.log("Namedtagged and it has a name tag. Kill it")
-						o.object:remove()
-					else
-						--minetest.log("Tamed or out of range, do not kill")
 					end
 				end
 			end
