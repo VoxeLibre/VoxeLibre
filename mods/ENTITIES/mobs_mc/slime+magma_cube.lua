@@ -1,9 +1,110 @@
 --License for code WTFPL and otherwise stated in readmes
-
--- FIXME: Slimes should spawn only in "slime chunks" which make up only
--- 10% of the map.
---
 local S = minetest.get_translator("mobs_mc")
+
+local MAPBLOCK_SIZE = 16
+
+local seed = minetest.get_mapgen_setting("seed")
+
+local slime_chunk_match
+local x_modifier
+local z_modifier
+
+local function split_by_char (inputstr, sep, limit)
+	if sep == nil then
+		sep = "%d"
+	end
+	local t = {}
+
+	local i = 0
+	for str in string.gmatch(inputstr, "(["..sep.."])") do
+		i = i --+ 1
+		table.insert(t, tonumber(str))
+		if limit and i >= limit then
+			break
+		end
+	end
+	return t
+end
+
+--Seed: "16002933932875202103" == random seed
+--Seed: "1807191622654296300" == cheese
+--Seed: "1" = 1
+local function process_seed (seed)
+	--minetest.log("seed: " .. seed)
+
+	local split_chars = split_by_char(tostring(seed), nil, 10)
+
+	slime_chunk_match = split_chars[1]
+	x_modifier = split_chars[2]
+	z_modifier = split_chars[3]
+
+	--minetest.log("x_modifier: " .. tostring(x_modifier))
+	--minetest.log("z_modifier: " .. tostring(z_modifier))
+	--minetest.log("slime_chunk_match: " .. tostring(slime_chunk_match))
+end
+
+local processed = process_seed (seed)
+
+
+local function convert_to_chunk_value (co_ord, modifier)
+	local converted = math.floor(math.abs(co_ord) / MAPBLOCK_SIZE)
+
+	if modifier then
+		converted = (converted + modifier)
+	end
+	converted = converted % 10
+
+	--minetest.log("co_ord: " .. co_ord)
+	--minetest.log("converted: " .. converted)
+	return converted
+end
+
+assert(convert_to_chunk_value(-16) == 1, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(-15) == 0, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(-1) == 0, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(0) == 0, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(1) == 0, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(15) == 0, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(16) == 1, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(31) == 1, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(32) == 2, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(1599) == 9, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(1600) == 0, "Incorrect convert_to_chunk_value result")
+
+assert(convert_to_chunk_value(0,9) == 9, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(16,5) == 6, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(1599,4) == 3, "Incorrect convert_to_chunk_value result")
+
+local function calculate_chunk_value (pos, x_mod, z_mod)
+	local chunk_val = math.abs(convert_to_chunk_value(pos.x, x_mod) - convert_to_chunk_value(pos.z, z_mod)) % 10
+	return chunk_val
+end
+
+assert(calculate_chunk_value(vector.new(0,0,0)) == 0, "calculate_chunk_value failed")
+assert(calculate_chunk_value(vector.new(0,0,0), 1, 1) == 0, "calculate_chunk_value failed")
+assert(calculate_chunk_value(vector.new(0,0,0), 2, 1) == 1, "calculate_chunk_value failed")
+assert(calculate_chunk_value(vector.new(64,0,16)) == (4-1), "calculate_chunk_value failed")
+assert(calculate_chunk_value(vector.new(16,0,64)) == (3), "calculate_chunk_value failed")
+assert(calculate_chunk_value(vector.new(-160,0,-160)) == 0, "calculate_chunk_value failed")
+
+local function is_slime_chunk(pos)
+	if not pos then return end
+
+	local chunk_val = calculate_chunk_value (pos, x_modifier, z_modifier)
+	local slime_chunk = chunk_val == slime_chunk_match
+
+	--minetest.log("x: " ..pos.x ..  ", z:" .. pos.z)
+
+	--minetest.log("seed slime_chunk_match: " .. tostring(slime_chunk_match))
+	--minetest.log("chunk_val: " .. tostring(chunk_val))
+	--minetest.log("Is slime chunk: " .. tostring(slime_chunk))
+	return slime_chunk
+end
+
+local check_position = function (pos)
+	return is_slime_chunk(pos)
+end
+
 
 -- Returns a function that spawns children in a circle around pos.
 -- To be used as on_die callback.
@@ -60,146 +161,6 @@ local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 	end
 end
 
-local function split_by_char (inputstr, sep, limit)
-	if sep == nil then
-		sep = "%d"
-	end
-	local t = {}
-
-	local i = 0
-	for str in string.gmatch(inputstr, "(["..sep.."])") do
-		i = i --+ 1
-		table.insert(t, tonumber(str))
-		if limit and i >= limit then
-			break
-		end
-	end
-	return t
-end
-
-
-local seed = minetest.get_mapgen_setting("seed")
---local chunk_size = minetest.get_mapgen_setting("chunksize")
-
-local MAPBLOCK_SIZE = 16
---local MAPBLOCK_SIZE = 3 * chunk_size
-
-local slime_chunk_match
-local x_modifier
-local z_modifier
-
---Seed: "16002933932875202103" == random seed
---Seed: "1807191622654296300" == cheese
---Seed: "1" = 1
-local function process_seed (seed)
-	--minetest.log("chunk_size: " .. chunk_size)
-	--minetest.log("seed: " .. seed)
-
-	local split_chars = split_by_char(tostring(seed), nil, 10)
-	--minetest.log("Number of chars: " .. tostring(#split_chars))
-
-	slime_chunk_match = split_chars[1]
-	x_modifier = split_chars[2]
-	z_modifier = split_chars[3]
-
-	--minetest.log("x_modifier: " .. tostring(x_modifier))
-	--minetest.log("z_modifier: " .. tostring(z_modifier))
-	--minetest.log("slime_chunk_match: " .. tostring(slime_chunk_match))
-end
-
-local processed = process_seed (seed)
-
-local function convert_to_chunk_value (co_ord, modifier)
-	local converted = math.floor(math.abs(co_ord) / MAPBLOCK_SIZE)
-	--minetest.log("co_ord: " .. co_ord)
-
-	if modifier then
-		converted = (converted + modifier) % 10
-		--minetest.log("with modifier: " .. converted)
-	else
-		--minetest.log("converted: " .. converted)
-	end
-
-	converted = converted % 10
-	--minetest.log("converted: " .. converted)
-	return converted
-end
-
---assert(convert_to_chunk_value(-17) == 2, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(-16) == 1, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(-15) == 0, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(-1) == 0, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(0) == 0, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(1) == 0, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(15) == 0, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(16) == 1, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(31) == 1, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(32) == 2, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(1599) == 9, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(1600) == 0, "Incorrect convert_to_chunk_value result")
-
-assert(convert_to_chunk_value(0,9) == 9, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(16,5) == 6, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(1599,4) == 3, "Incorrect convert_to_chunk_value result")
-
---[[
-convert_to_chunk_value(1500,9)
-convert_to_chunk_value(1501,9)
-convert_to_chunk_value(1516,9)
-convert_to_chunk_value(1531,9)
-convert_to_chunk_value(1649,9)
-]]--
-
-
-local function calculate_chunk_value (pos, x_mod, z_mod)
-	local chunk_val = math.abs(convert_to_chunk_value(pos.x, x_mod) - convert_to_chunk_value(pos.z, z_mod)) % 10
-	return chunk_val
-end
-
-assert(calculate_chunk_value(vector.new(0,0,0)) == 0, "calculate_chunk_value failed")
-assert(calculate_chunk_value(vector.new(0,0,0), 1, 1) == 0, "calculate_chunk_value failed")
-assert(calculate_chunk_value(vector.new(0,0,0), 2, 1) == 1, "calculate_chunk_value failed")
-assert(calculate_chunk_value(vector.new(64,0,16)) == (4-1), "calculate_chunk_value failed")
-assert(calculate_chunk_value(vector.new(16,0,64)) == (3), "calculate_chunk_value failed")
-assert(calculate_chunk_value(vector.new(-160,0,-160)) == 0, "calculate_chunk_value failed")
---calculate_chunk_value(vector.new(0,0,16))
---calculate_chunk_value(vector.new(15,0,31))
---calculate_chunk_value(vector.new(32,0,32))
---calculate_chunk_value(vector.new(15,0,15))
-
-
-local function is_slime_chunk(pos)
-	if not pos then return end
-
-	--minetest.log("x: " ..pos.x ..  ", z:" .. pos.z)
-
-	local chunk_val = calculate_chunk_value (pos, x_modifier, z_modifier)
-	local slime_chunk = chunk_val == slime_chunk_match
-
-	--minetest.log("seed slime_chunk_match: " .. tostring(slime_chunk_match))
-	--minetest.log("chunk_val: " .. tostring(chunk_val))
-	--minetest.log("Is slime chunk: " .. tostring(slime_chunk))
-	return slime_chunk
-end
-
---is_slime_chunk(vector.new(64,0,16))
---is_slime_chunk(vector.new(16,0,64))
---is_slime_chunk(vector.new(0,0,16))
---is_slime_chunk(vector.new(15,0,31))
---is_slime_chunk(vector.new(32,0,32))
---is_slime_chunk(vector.new(15,0,15))
---is_slime_chunk(vector.new(0,0,0))
---is_slime_chunk(vector.new(-150,0,-150))
-
-local check_position = function (pos)
-	--minetest.log("Trying to spawn slime at pos: " .. dump(pos))
-
-	local slime_chunk = is_slime_chunk(pos)
-	--minetest.log("Slime spawn_position check: " .. dump(slime_chunk))
-
-	return slime_chunk
-end
-
 -- Slime
 local slime_big = {
 	description = S("Slime"),
@@ -252,7 +213,6 @@ local slime_big = {
 	spawn_small_alternative = "mobs_mc:slime_small",
 	on_die = spawn_children_on_die("mobs_mc:slime_small", 1.0, 1.5),
 	use_texture_alpha = true,
-	check_position = check_position,
 }
 mcl_mobs.register_mob("mobs_mc:slime_big", slime_big)
 
