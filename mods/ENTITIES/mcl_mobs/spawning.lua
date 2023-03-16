@@ -662,7 +662,9 @@ local function spawn_check(pos, spawn_def)
 	local mob_type = mob_def.type
 	local gotten_node = get_node(pos).name
 	local gotten_biome = minetest.get_biome_data(pos)
+
 	if not gotten_node or not gotten_biome then return end
+
 	gotten_biome = get_biome_name(gotten_biome.biome) --makes it easier to work with
 
 	local is_ground = minetest.get_item_group(gotten_node,"solid") ~= 0
@@ -683,27 +685,32 @@ local function spawn_check(pos, spawn_def)
 			and spawn_def.dimension == dimension
 			and biome_check(spawn_def.biomes, gotten_biome) then
 
-		--minetest.log("Level 1 spawn check passed")
+		--mcl_log("Level 1 spawn check passed")
+		--minetest.log("Mob: " .. mob_def.name)
 
-		minetest.log("Mob: " .. mob_def.name)
 		if  (is_ground or spawn_def.type_of_spawning ~= "ground")
 				and (spawn_def.type_of_spawning ~= "ground" or not is_leaf)
-				and has_room(mob_def,pos)
-				and (spawn_def.check_position and spawn_def.check_position(pos) or spawn_def.check_position == nil)
 				and (not is_farm_animal(spawn_def.name) or is_grass)
 				and (spawn_def.type_of_spawning ~= "water" or is_water)
-				and ( not spawn_protected or not minetest.is_protected(pos, "") )
-				and not is_bedrock then
+				and not is_bedrock
+				and has_room(mob_def,pos)
+				and (spawn_def.check_position and spawn_def.check_position(pos) or spawn_def.check_position == nil)
+				and ( not spawn_protected or not minetest.is_protected(pos, "") ) then
 
-			minetest.log("Level 2 spawn check passed")
+			--mcl_log("Level 2 spawn check passed")
 
-			--only need to poll for node light if everything else worked
 			local gotten_light = get_node_light(pos)
 			if gotten_light >= spawn_def.min_light and gotten_light <= spawn_def.max_light then
-				minetest.log("Level 3 spawn check passed")
+				--mcl_log("Level 3 spawn check passed")
 				return true
+			else
+				mcl_log("Spawn check level 3 failed")
 			end
+		else
+			mcl_log("Spawn check level 2 failed")
 		end
+	else
+		mcl_log("Spawn check level 1 failed")
 	end
 	return false
 end
@@ -1024,7 +1031,7 @@ if mobs_spawn then
 							end
 						end
 					else
-						mcl_log("Spawn check failed")
+						--mcl_log("Spawn check failed")
 					end
 				else
 					mcl_log("Cap space full")
