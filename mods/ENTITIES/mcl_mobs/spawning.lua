@@ -535,14 +535,14 @@ end
 
 function mcl_mobs:non_spawn_specific(mob_name,dimension,min_light,max_light)
 	table.insert(non_spawn_dictionary, mob_name)
-	non_spawn_dictionary[mob_name] = { 
-		[dimension] = { 
+	non_spawn_dictionary[mob_name] = {
+		[dimension] = {
 			min_light = min_light , max_light = max_light
 		}
 	}
 end
 
-function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_light, max_light, interval, chance, aoc, min_height, max_height, day_toggle, on_spawn)
+function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_light, max_light, interval, chance, aoc, min_height, max_height, day_toggle, on_spawn, check_position)
 
 	-- Do mobs spawn at all?
 	if not mobs_spawn then
@@ -579,6 +579,7 @@ function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_
 	spawn_dictionary[key]["min_height"] = min_height
 	spawn_dictionary[key]["max_height"] = max_height
 	spawn_dictionary[key]["day_toggle"] = day_toggle
+	spawn_dictionary[key]["check_position"] = check_position
 
 	summary_chance = summary_chance + chance
 end
@@ -653,7 +654,8 @@ end
 
 
 local function spawn_check(pos, spawn_def)
-	if not spawn_def then return end
+	if not spawn_def or not pos then return end
+
 	dbg_spawn_attempts = dbg_spawn_attempts + 1
 	local dimension = mcl_worlds.pos_to_dimension(pos)
 	local mob_def = minetest.registered_entities[spawn_def.name]
@@ -676,23 +678,31 @@ local function spawn_check(pos, spawn_def)
 	local is_bedrock  = gotten_node == "mcl_core:bedrock"
 	local is_grass = minetest.get_item_group(gotten_node,"grass_block") ~= 0
 
-	if pos and spawn_def
-	and pos.y >= spawn_def.min_height
-	and pos.y <= spawn_def.max_height
-	and spawn_def.dimension == dimension
-	and biome_check(spawn_def.biomes, gotten_biome)
-	and (is_ground or spawn_def.type_of_spawning ~= "ground")
-	and (spawn_def.type_of_spawning ~= "ground" or not is_leaf)
-	and has_room(mob_def,pos)
-	and (spawn_def.check_position and spawn_def.check_position(pos) or true)
-	and (not is_farm_animal(spawn_def.name) or is_grass)
-	and (spawn_def.type_of_spawning ~= "water" or is_water)
-	and ( not spawn_protected or not minetest.is_protected(pos, "") )
-	and not is_bedrock then
-		--only need to poll for node light if everything else worked
-		local gotten_light = get_node_light(pos)
-		if gotten_light >= spawn_def.min_light and gotten_light <= spawn_def.max_light then
-			return true
+	if pos.y >= spawn_def.min_height
+			and pos.y <= spawn_def.max_height
+			and spawn_def.dimension == dimension
+			and biome_check(spawn_def.biomes, gotten_biome) then
+
+		--minetest.log("Level 1 spawn check passed")
+
+		minetest.log("Mob: " .. mob_def.name)
+		if  (is_ground or spawn_def.type_of_spawning ~= "ground")
+				and (spawn_def.type_of_spawning ~= "ground" or not is_leaf)
+				and has_room(mob_def,pos)
+				and (spawn_def.check_position and spawn_def.check_position(pos) or spawn_def.check_position == nil)
+				and (not is_farm_animal(spawn_def.name) or is_grass)
+				and (spawn_def.type_of_spawning ~= "water" or is_water)
+				and ( not spawn_protected or not minetest.is_protected(pos, "") )
+				and not is_bedrock then
+
+			minetest.log("Level 2 spawn check passed")
+
+			--only need to poll for node light if everything else worked
+			local gotten_light = get_node_light(pos)
+			if gotten_light >= spawn_def.min_light and gotten_light <= spawn_def.max_light then
+				minetest.log("Level 3 spawn check passed")
+				return true
+			end
 		end
 	end
 	return false
