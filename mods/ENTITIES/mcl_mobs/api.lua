@@ -5,25 +5,18 @@ local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 
 local PATHFINDING = "gowp"
 local CRASH_WARN_FREQUENCY = 60
+local LIFETIMER_DISTANCE = 47
 
 -- Localize
 local S = minetest.get_translator("mcl_mobs")
 
 local DEVELOPMENT = minetest.settings:get_bool("mcl_development",false)
 
-local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager",false)
-local function mcl_log (message)
-	if LOGGING_ON then
-		mcl_util.mcl_log (message, "[Mobs]", true)
-	end
-end
-
 -- Invisibility mod check
 mcl_mobs.invis = {}
 
 local remove_far = true
-local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
-local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
+
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false) -- Shows helpful debug info above each mob
 local spawn_logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",true)
 
@@ -503,6 +496,7 @@ end
 -- main mob function
 function mob_class:on_step(dtime)
 	if not DEVELOPMENT then
+		-- Removed as bundled Lua (5.1 doesn't support xpcall)
 		--local status, retVal = xpcall(on_step_work, on_step_error_handler, self, dtime)
 		local status, retVal = pcall(on_step_work, self, dtime)
 		if status then
@@ -510,6 +504,12 @@ function mob_class:on_step(dtime)
 		else
 			warn_user_error ()
 			local pos = self.object:get_pos()
+			if pos then
+				local node = minetest.get_node(pos)
+				if node and node.name == "ignore" then
+					minetest.log("warning", "Pos is ignored: " .. dump(pos))
+				end
+			end
 			log_error (dump(retVal), dump(pos), dump(self))
 		end
 	else
@@ -518,12 +518,13 @@ function mob_class:on_step(dtime)
 end
 
 local timer = 0
-minetest.register_globalstep(function(dtime)
+
+local function update_lifetimer(dtime)
 	timer = timer + dtime
 	if timer < 1 then return end
 	for _, player in pairs(minetest.get_connected_players()) do
 		local pos = player:get_pos()
-		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 47)) do
+		for _, obj in pairs(minetest.get_objects_inside_radius(pos, LIFETIMER_DISTANCE)) do
 			local lua = obj:get_luaentity()
 			if lua and lua.is_mob then
 				lua.lifetimer = math.max(20, lua.lifetimer)
@@ -532,6 +533,10 @@ minetest.register_globalstep(function(dtime)
 		end
 	end
 	timer = 0
+end
+
+minetest.register_globalstep(function(dtime)
+	update_lifetimer(dtime)
 end)
 
 
