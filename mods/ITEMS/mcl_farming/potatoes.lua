@@ -12,7 +12,7 @@ for i=1, 7 do
 		selbox = { -0.5, -0.5, -0.5, 0.5, -2/16, 0.5 }
 	else
 		texture = "mcl_farming_potatoes_stage_2.png"
-		selbox = { -0.5, -0.5, -0.5, 0.5, 2/16, 0.5 }
+		selbox = { -0.5, -0.5, -0.5, 0.5, -2/16, 0.5 }
 	end
 
 	local create, name, longdesc
