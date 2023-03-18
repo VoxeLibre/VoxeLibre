@@ -6,10 +6,10 @@ for i=1, 7 do
 		sel_height = -5/16
 		texture = "farming_carrot_1.png"
 	elseif i < 5 then
-		sel_height = -3/16
+		sel_height = -4/16
 		texture = "farming_carrot_2.png"
 	else
-		sel_height = 2/16
+		sel_height = -3/16
 		texture = "farming_carrot_3.png"
 	end
 
@@ -72,7 +72,7 @@ minetest.register_node("mcl_farming:carrot", {
 	selection_box = {
 		type = "fixed",
 		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, 4/16, 0.5}
+			{-0.5, -0.5, -0.5, 0.5, 0/16, 0.5}
 		},
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1},
