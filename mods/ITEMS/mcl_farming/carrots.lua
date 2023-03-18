@@ -72,7 +72,7 @@ minetest.register_node("mcl_farming:carrot", {
 	selection_box = {
 		type = "fixed",
 		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, 0/16, 0.5}
+			{-0.5, -0.5, -0.5, 0.5, -1/16, 0.5}
 		},
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1},
