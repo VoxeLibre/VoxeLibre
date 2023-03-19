@@ -214,7 +214,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		end
 
 		-- Grab mob
-		if not self._passenger then
+		if math.random(1,20) > 15 and not self._passenger then
 			if self.name == "mcl_minecarts:minecart" then
 				local mobsnear = minetest.get_objects_inside_radius(self.object:get_pos(), 1.3)
 				for n=1, #mobsnear do
@@ -222,7 +222,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 					if mob then
 						local entity = mob:get_luaentity()
 						if entity and entity.is_mob then
-							self._passenger = entity.name
+							self._passenger = entity
 							mob:set_attach(self.object, "", {x=0, y=-1.75, z=0}, {x=0, y=0, z=0})
 							break
 						end
@@ -231,13 +231,9 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			end
 		-- Make room in the minecart after the mob dies
 		elseif self._passenger then
-			local mobinside = minetest.get_objects_inside_radius(self.object:get_pos(), 1)
-			for n=1, #mobinside do
-				local mob = mobinside[n]:get_luaentity()
-				if not mob or mob.is_mob == false then
-					self._passenger = nil
-					break
-				end
+			dead = self._passenger:check_for_death()
+			if dead == true then
+				self._passenger = nil
 			end
 		end
 
