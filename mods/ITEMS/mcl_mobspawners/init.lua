@@ -317,7 +317,7 @@ minetest.register_node("mcl_mobspawners:spawner", {
 		if obj then
 			obj:remove()
 		end
-		if not minetest.is_creative_enabled(name) then
+		if not minetest.is_creative_enabled("") then
 			mcl_experience.throw_xp(pos, math.random(15, 43))
 		end
 	end,
