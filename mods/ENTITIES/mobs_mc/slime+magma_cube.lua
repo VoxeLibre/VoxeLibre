@@ -1,9 +1,110 @@
 --License for code WTFPL and otherwise stated in readmes
-
--- FIXME: Slimes should spawn only in "slime chunks" which make up only
--- 10% of the map.
---
 local S = minetest.get_translator("mobs_mc")
+
+local MAPBLOCK_SIZE = 16
+
+local seed = minetest.get_mapgen_setting("seed")
+
+local slime_chunk_match
+local x_modifier
+local z_modifier
+
+local function split_by_char (inputstr, sep, limit)
+	if sep == nil then
+		sep = "%d"
+	end
+	local t = {}
+
+	local i = 0
+	for str in string.gmatch(inputstr, "(["..sep.."])") do
+		i = i --+ 1
+		table.insert(t, tonumber(str))
+		if limit and i >= limit then
+			break
+		end
+	end
+	return t
+end
+
+--Seed: "16002933932875202103" == random seed
+--Seed: "1807191622654296300" == cheese
+--Seed: "1" = 1
+local function process_seed (seed)
+	--minetest.log("seed: " .. seed)
+
+	local split_chars = split_by_char(tostring(seed), nil, 10)
+
+	slime_chunk_match = split_chars[1]
+	x_modifier = split_chars[2]
+	z_modifier = split_chars[3]
+
+	--minetest.log("x_modifier: " .. tostring(x_modifier))
+	--minetest.log("z_modifier: " .. tostring(z_modifier))
+	--minetest.log("slime_chunk_match: " .. tostring(slime_chunk_match))
+end
+
+local processed = process_seed (seed)
+
+
+local function convert_to_chunk_value (co_ord, modifier)
+	local converted = math.floor(math.abs(co_ord) / MAPBLOCK_SIZE)
+
+	if modifier then
+		converted = (converted + modifier)
+	end
+	converted = converted % 10
+
+	--minetest.log("co_ord: " .. co_ord)
+	--minetest.log("converted: " .. converted)
+	return converted
+end
+
+assert(convert_to_chunk_value(-16) == 1, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(-15) == 0, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(-1) == 0, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(0) == 0, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(1) == 0, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(15) == 0, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(16) == 1, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(31) == 1, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(32) == 2, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(1599) == 9, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(1600) == 0, "Incorrect convert_to_chunk_value result")
+
+assert(convert_to_chunk_value(0,9) == 9, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(16,5) == 6, "Incorrect convert_to_chunk_value result")
+assert(convert_to_chunk_value(1599,4) == 3, "Incorrect convert_to_chunk_value result")
+
+local function calculate_chunk_value (pos, x_mod, z_mod)
+	local chunk_val = math.abs(convert_to_chunk_value(pos.x, x_mod) - convert_to_chunk_value(pos.z, z_mod)) % 10
+	return chunk_val
+end
+
+assert(calculate_chunk_value(vector.new(0,0,0)) == 0, "calculate_chunk_value failed")
+assert(calculate_chunk_value(vector.new(0,0,0), 1, 1) == 0, "calculate_chunk_value failed")
+assert(calculate_chunk_value(vector.new(0,0,0), 2, 1) == 1, "calculate_chunk_value failed")
+assert(calculate_chunk_value(vector.new(64,0,16)) == (4-1), "calculate_chunk_value failed")
+assert(calculate_chunk_value(vector.new(16,0,64)) == (3), "calculate_chunk_value failed")
+assert(calculate_chunk_value(vector.new(-160,0,-160)) == 0, "calculate_chunk_value failed")
+
+local function is_slime_chunk(pos)
+	if not pos then return end
+
+	local chunk_val = calculate_chunk_value (pos, x_modifier, z_modifier)
+	local slime_chunk = chunk_val == slime_chunk_match
+
+	--minetest.log("x: " ..pos.x ..  ", z:" .. pos.z)
+
+	--minetest.log("seed slime_chunk_match: " .. tostring(slime_chunk_match))
+	--minetest.log("chunk_val: " .. tostring(chunk_val))
+	--minetest.log("Is slime chunk: " .. tostring(slime_chunk))
+	return slime_chunk
+end
+
+local check_position = function (pos)
+	return is_slime_chunk(pos)
+end
+
 
 -- Returns a function that spawns children in a circle around pos.
 -- To be used as on_die callback.
@@ -212,7 +313,8 @@ minetest.LIGHT_MAX+1,
 12000,
 4,
 cave_min,
-cave_max)
+cave_max,
+nil, nil, check_position)
 
 mcl_mobs:spawn_specific(
 "mobs_mc:slime_tiny",
@@ -238,7 +340,8 @@ minetest.LIGHT_MAX+1,
 8500,
 4,
 cave_min,
-cave_max)
+cave_max,
+nil, nil, check_position)
 
 mcl_mobs:spawn_specific(
 "mobs_mc:slime_small",
@@ -264,7 +367,8 @@ minetest.LIGHT_MAX+1,
 10000,
 4,
 cave_min,
-cave_max)
+cave_max,
+nil, nil, check_position)
 
 mcl_mobs:spawn_specific(
 "mobs_mc:slime_big",
@@ -278,6 +382,7 @@ swamp_light_max,
 4,
 swamp_min,
 swamp_max)
+
 -- Magma cube
 local magma_cube_big = {
 	description = S("Magma Cube"),
