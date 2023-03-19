@@ -79,7 +79,7 @@ local zombie = {
 		distance = 16,
 	},
 	walk_velocity = .8,
-	run_velocity = 1.6,
+	run_velocity = 1.8,
 	damage = 3,
 	reach = 2,
 	fear_height = 4,
