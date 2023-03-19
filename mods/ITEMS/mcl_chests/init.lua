@@ -72,9 +72,7 @@ minetest.register_entity("mcl_chests:chest", {
 		self.players[playername] = true
 		if not self.is_open then
 			self:set_animation("open")
-			minetest.sound_play(self.sound_prefix .. "_open", {
-				pos = self.node_pos,
-			})
+			minetest.sound_play(self.sound_prefix .. "_open", {pos=self.node_pos, gain=0.5, max_hear_distance = 16}, true)
 			self.is_open = true
 		end
 	end,
@@ -87,9 +85,7 @@ minetest.register_entity("mcl_chests:chest", {
 				return
 			end
 			self:set_animation("close")
-			minetest.sound_play(self.sound_prefix .. "_close", {
-				pos = self.node_pos,
-			})
+			minetest.sound_play(self.sound_prefix .. "_close", {pos=self.node_pos, gain=0.3, max_hear_distance = 16}, true)
 			self.is_open = false
 		end
 	end,
