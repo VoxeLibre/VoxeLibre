@@ -234,7 +234,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			end
 		-- Make room in the minecart after the mob dies
 		elseif self._passenger then
-			if math.random(1,20) > 1 then
+			if math.random(1,20) == 1 then
 				local dead = self._passenger:check_for_death()
 				if dead == true then
 					self._passenger = nil
