@@ -43,7 +43,7 @@ mcl_mobs.register_mob("mobs_mc:witherskeleton", {
 		distance = 16,
 	},
 	walk_velocity = 1.2,
-	run_velocity = 2.4,
+	run_velocity = 2.0,
 	damage = 7,
 	reach = 2,
 	drops = {
