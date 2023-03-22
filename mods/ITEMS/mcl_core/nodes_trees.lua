@@ -24,7 +24,7 @@ end
 -- @param oldnode the node table of the removed trunk node.
 function mcl_core.update_leaves(pos, oldnode)
 	local pos1, pos2 = vector.offset(pos, -6, -6, -6), vector.offset(pos, 6, 6, 6)
-	local lnode
+	local lnode, lmeta
 	local leaves = minetest.find_nodes_in_area(pos1, pos2, "group:leaves")
 	for _, lpos in pairs(leaves) do
 		lnode = minetest.get_node(lpos)
