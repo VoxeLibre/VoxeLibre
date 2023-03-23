@@ -83,7 +83,7 @@ local spider = {
 		distance = 16,
 	},
 	walk_velocity = 1.3,
-	run_velocity = 2.8,
+	run_velocity = 2.4,
 	jump = true,
 	jump_height = 4,
 	view_range = 16,

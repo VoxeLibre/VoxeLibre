@@ -55,7 +55,7 @@ mcl_mobs.register_mob("mobs_mc:villager_zombie", {
 	damage = 3,
 	reach = 2,
 	walk_velocity = 1.2,
-	run_velocity = 2.4,
+	run_velocity = 1.8,
 	attack_type = "dogfight",
 	group_attack = true,
 	drops = {
