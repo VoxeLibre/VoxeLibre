@@ -21,6 +21,10 @@ local allowed_non_solid_nodes_floor = {
 	"mcl_portals:end_portal_frame_eye",
 	"mcl_lanterns:chain"
 }
+-- The function below allows nodes that call it to be included in the 'allowed floor placement' list above. This lets lanterns be placed on top of said nodes. Most useful for modded in nodes.
+function mcl_lanterns.add_allowed_non_solid_nodes_floor (node_name)
+	table.insert (allowed_non_solid_nodes_floor, node_name) 
+end
 
 local allowed_non_solid_groups_floor = {"anvil", "wall", "glass", "fence", "fence_gate", "pane"}
 
@@ -35,6 +39,10 @@ local allowed_non_solid_nodes_ceiling = {
 	"mcl_core:grass_path",
 	"mcl_lanterns:chain"
 }
+-- The function below allows nodes that call it to be included in the 'allowed ceiling placement' list above. This lets lanterns be placed below said nodes. Most useful for modded in nodes. 
+function mcl_lanterns.add_allowed_non_solid_nodes_ceiling (node_name)
+	table.insert (allowed_non_solid_nodes_ceiling, node_name) 
+end
 
 local allowed_non_solid_groups_ceiling = {"anvil", "wall", "glass", "fence", "fence_gate", "soil", "pane", "end_portal_frame"}
 
