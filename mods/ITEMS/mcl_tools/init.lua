@@ -366,7 +366,14 @@ local function make_stripped_trunk(itemstack, placer, pointed_thing)
     if pointed_thing.type ~= "node" then return end
 
     local node = minetest.get_node(pointed_thing.under)
-    local noddef = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
+    local node_name = minetest.get_node(pointed_thing.under).name
+
+    local noddef = minetest.registered_nodes[node_name]
+
+    if not noddef then
+        minetest.log("warning", "Trying to right click with an axe the unregistered node: " .. tostring(node_name))
+        return
+    end
 
     if not placer:get_player_control().sneak and noddef.on_rightclick then
         return minetest.item_place(itemstack, placer, pointed_thing)
