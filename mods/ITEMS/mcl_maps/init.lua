@@ -278,6 +278,10 @@ end
 
 local old_add_item = minetest.add_item
 function minetest.add_item(pos, stack)
+	if not pos then
+		minetest.log("warning", "Trying to add item with missing pos: " .. tostring(stack))
+		return
+	end
 	stack = ItemStack(stack)
 	if get_item_group(stack:get_name(), "filled_map") > 0 then
 		stack:set_name("mcl_maps:filled_map")
