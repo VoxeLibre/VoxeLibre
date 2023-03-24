@@ -331,7 +331,7 @@ minetest.register_node("mcl_crimson:warped_hyphae", {
 		"mcl_crimson_warped_hyphae.png",
 		"mcl_crimson_warped_hyphae.png",
 		{
-			image="mcl_crimson_warped_hyphae_side.png",
+			name = "mcl_crimson_warped_hyphae_side.png",
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
 		},
 	},
@@ -370,7 +370,7 @@ minetest.register_node("mcl_crimson:warped_hyphae_bark", {
 	_doc_items_longdesc = S("This is a decorative block surrounded by the bark of an hyphae."),
 	tiles = {
 	{
-		image="mcl_crimson_warped_hyphae_side.png",
+		name = "mcl_crimson_warped_hyphae_side.png",
 		animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
 	},
 	},
@@ -525,7 +525,7 @@ minetest.register_node("mcl_crimson:crimson_hyphae", {
 		"mcl_crimson_crimson_hyphae.png",
 		"mcl_crimson_crimson_hyphae.png",
 		{
-			image="mcl_crimson_crimson_hyphae_side.png",
+			name = "mcl_crimson_crimson_hyphae_side.png",
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
 		},
 	},
@@ -545,7 +545,7 @@ minetest.register_node("mcl_crimson:crimson_hyphae_bark", {
 	_doc_items_longdesc = S("This is a decorative block surrounded by the bark of an hyphae."),
 	tiles = {
 	{
-		image="mcl_crimson_crimson_hyphae_side.png",
+		name = "mcl_crimson_crimson_hyphae_side.png",
 		animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
 	},
 	},
