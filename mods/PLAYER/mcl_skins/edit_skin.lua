@@ -139,6 +139,10 @@ minetest.register_on_joinplayer(function(player)
 		skin = minetest.deserialize(skin)
 	end
 	if skin then
+		-- If the player moves a slider and then quickly exits the game, form_send_job gets saved.
+		-- This should never have been put in with the skin data in the first place.
+		skin.form_send_job = nil
+
 		mcl_skins.players[player] = skin
 	else
 		if math.random() > 0.5 then
@@ -424,6 +428,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	-- Cancel formspec resend after scrollbar move
 	if mcl_skins.players[player].form_send_job then
 		mcl_skins.players[player].form_send_job:cancel()
+		mcl_skins.players[player].form_send_job = nil
 	end
 	
 	if fields.quit then
