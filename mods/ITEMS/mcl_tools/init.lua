@@ -183,7 +183,9 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 				-- Add wear (as if digging a shovely node)
 				local toolname = itemstack:get_name()
 				local wear = mcl_autogroup.get_wear(toolname, "shovely")
-				itemstack:add_wear(wear)
+				if wear then
+					itemstack:add_wear(wear)
+				end
 			end
 			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above}, true)
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:grass_path"})
@@ -212,7 +214,10 @@ if minetest.get_modpath("mcl_farming") then
 				-- Add wear (as if digging a shearsy node)
 				local toolname = itemstack:get_name()
 				local wear = mcl_autogroup.get_wear(toolname, "shearsy")
-				itemstack:add_wear(wear)
+				if wear then
+					itemstack:add_wear(wear)
+				end
+
 			end
 			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = pointed_thing.above}, true)
 			local dir = vector.subtract(pointed_thing.under, pointed_thing.above)
@@ -379,7 +384,9 @@ local function make_stripped_trunk(itemstack, placer, pointed_thing)
 			-- Add wear (as if digging a axey node)
 			local toolname = itemstack:get_name()
 			local wear = mcl_autogroup.get_wear(toolname, "axey")
-			itemstack:add_wear(wear)
+			if wear then
+				itemstack:add_wear(wear)
+			end
 		end
 	end
     return itemstack

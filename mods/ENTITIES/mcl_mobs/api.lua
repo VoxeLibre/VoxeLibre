@@ -62,8 +62,11 @@ function mob_class:update_tag() --update nametag and/or the debug box
 end
 
 function mob_class:jock_to(mob, reletive_pos, rot)
+	local pos = self.object:get_pos()
+	if not pos then return end
+
 	self.jockey = mob
-	local jock = minetest.add_entity(self.object:get_pos(), mob)
+	local jock = minetest.add_entity(pos, mob)
 	if not jock then return end
 	jock:get_luaentity().docile_by_day = false
 	jock:get_luaentity().riden_by_jock = true

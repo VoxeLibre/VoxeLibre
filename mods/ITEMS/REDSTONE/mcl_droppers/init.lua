@@ -99,6 +99,7 @@ local dropperdef = {
 	mesecons = {effector = {
 		-- Drop random item when triggered
 		action_on = function(pos, node)
+			if not pos then return end
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
 			local droppos
