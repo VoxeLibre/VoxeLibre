@@ -45,7 +45,7 @@ Once you have finished up a texture and are ready to export it, navigate to the 
 
 After clicking 'Export', a menu will appear with a bunch of options checked. Make sure to uncheck all of these options!!! This will drastically reduce the file size from multiple kilobytes to a couple of hundred bytes. Finally click 'Export' one more time.
 
-###Further optimization with OptiPNG
+### Further optimization with OptiPNG
 For those running a GNU/linux distribution, you most likely have the 'optipng' command available to you. If it does not come with your system by default, the software homepage can be found [here](https://optipng.sourceforge.net/) where you can download and install from source.
 
 First, Open up the terminal in the directory where your exported texture is located (or navigate to the directory with the 'cd your/directory/path/to/textures'), then run this command
