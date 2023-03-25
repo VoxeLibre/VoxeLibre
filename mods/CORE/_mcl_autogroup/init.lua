@@ -300,6 +300,10 @@ end
 -- loading order.
 function mcl_autogroup.get_wear(toolname, diggroup)
 	local tdef = minetest.registered_tools[toolname]
+	if not tdef then
+		minetest.log("warning", "Adding wear for tool: " .. tostring(toolname) .. " failed with diggroup: " .. tostring(diggroup))
+		return nil
+	end
 	local uses = tdef._mcl_diggroups[diggroup].uses
 	return math.ceil(65535 / uses)
 end
