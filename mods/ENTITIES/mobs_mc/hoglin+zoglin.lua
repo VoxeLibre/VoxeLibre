@@ -120,7 +120,6 @@ mcl_mobs:spawn_specific(
 "nether",
 "ground",
 {
-"Nether",
 "CrimsonForest"
 },
 0,
