@@ -62,8 +62,8 @@ local piglin = {
 	},
 	jump = true,
 	makes_footstep_sound = true,
-	walk_velocity = 4.317,
-	run_velocity = 5.6121,
+	walk_velocity = 1.4,
+	run_velocity = 2.8,
 	drops = {
 		{name = "mcl_bows:crossbow",
 		chance = 10,

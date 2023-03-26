@@ -36,7 +36,7 @@ local hoglin = {
 	jump = true,
 	makes_footstep_sound = true,
 	walk_velocity = 1,
-	run_velocity = 4,
+	run_velocity = 2.8,
 	drops = {
 		{name = "mobs_mcitems:leather",
 		chance = 1,
@@ -120,7 +120,6 @@ mcl_mobs:spawn_specific(
 "nether",
 "ground",
 {
-"Nether",
 "CrimsonForest"
 },
 0,
