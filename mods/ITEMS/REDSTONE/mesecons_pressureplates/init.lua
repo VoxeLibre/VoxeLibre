@@ -262,4 +262,17 @@ mesecon.register_pressure_plate(
 	{ player = true, mob = true },
 	S("A stone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else."))
 
+mesecon.register_pressure_plate(
+	"mesecons_pressureplates:pressure_plate_polished_blackstone",
+	S("Polished Blackstone Pressure Plate"),
+	{"mcl_blackstone_polished.png"},
+	{"mcl_blackstone_polished.png"},
+	"mcl_blackstone_polished.png",
+	nil,
+	{{"mcl_blackstone:blackstone_polished", "mcl_blackstone:blackstone_polished"}},
+	mcl_sounds.node_sound_stone_defaults(),
+	{pickaxey=1, material_stone=1},
+	{ player = true, mob = true },
+	S("A polished blackstone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else."))
+
 
