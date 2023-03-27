@@ -49,8 +49,8 @@ local def = {
 	end,
 	loot = {
 		["mcl_chests:chest_small" ] ={{
-			stacks_min = 2,
-			stacks_max = 6,
+			stacks_min = 4,
+			stacks_max = 8,
 			items = {
 				{ itemstring = "mcl_core:iron_nugget", weight = 40, amount_min = 9, amount_max = 18 },
 				{ itemstring = "mcl_core:flint", weight = 40, amount_min = 1, amount_max=4 },
@@ -60,19 +60,44 @@ local def = {
 				{ itemstring = "mcl_core:gold_nugget", weight = 15, amount_min = 4, amount_max = 24 },
 				{ itemstring = "mcl_core:apple_gold", weight = 15, },
 
-				{ itemstring = "mcl_books:book", weight = 1, func = function(stack, pr)
+				{ itemstring = "mcl_tools:axe_gold", weight = 15, func = function(stack, pr)
 					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
 				end },
-				--{ itemstring = "mcl_bamboo:bamboo", weight = 15, amount_min = 1, amount_max=3 }, --FIXME BAMBOO
+				{ itemstring = "mcl_farming:hoe_gold", weight = 15, func = function(stack, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+				end },
+				{ itemstring = "mcl_tools:pick_gold", weight = 15, func = function(stack, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+				end },
+				{ itemstring = "mcl_tools:shovel_gold", weight = 15, func = function(stack, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+				end },
+				{ itemstring = "mcl_tools:sword_gold", weight = 15, func = function(stack, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+				end },
 
-				{ itemstring = "mcl_core:diamond", weight = 3, amount_min = 1, amount_max = 3 },
-				{ itemstring = "mcl_mobitems:saddle", weight = 3, },
-				{ itemstring = "mcl_core:emerald", weight = 2, amount_min = 1, amount_max = 3 },
+				{ itemstring = "mcl_armor:helmet_gold", weight = 15, func = function(stack, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+				end },
+				{ itemstring = "mcl_armor:chestplate_gold", weight = 15, func = function(stack, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+				end },
+				{ itemstring = "mcl_armor:leggings_gold", weight = 15, func = function(stack, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+				end },
+				{ itemstring = "mcl_armor:boots_gold", weight = 15, func = function(stack, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+				end },
 
-				{ itemstring = "mcl_mobitems:iron_horse_armor", weight = 1, },
+				{ itemstring = "mcl_potions:speckled_melon", weight = 5, amount_min = 4, amount_max = 12 },
+				{ itemstring = "mcl_farming:carrot_item_gold", weight = 5, amount_min = 4, amount_max = 12 },
+
+				{ itemstring = "mcl_core:gold_ingot", weight = 5, amount_min = 2, amount_max = 8 },
+				{ itemstring = "mcl_clock:clock", weight = 5, },
 				{ itemstring = "mcl_mobitems:gold_horse_armor", weight = 1, },
-				{ itemstring = "mcl_mobitems:diamond_horse_armor", weight = 1, },
-				{ itemstring = "mcl_core:apple_gold", weight = 15, },
+				{ itemstring = "mcl_core:goldblock", weight = 1, amount_min = 1, amount_max = 2 },
+				{ itemstring = "mcl_bells:bell", weight = 1, },
+				{ itemstring = "mcl_core:apple_gold_enchanted", weight = 1, },
 			}
 		}}
 	}
