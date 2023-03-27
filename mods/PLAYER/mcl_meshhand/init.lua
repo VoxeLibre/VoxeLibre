@@ -91,6 +91,10 @@ else
 	minetest.register_on_joinplayer(mcl_meshhand.update_player)
 end
 
+minetest.register_on_joinplayer(function(player)
+	player:get_inventory():set_size("hand", 1)
+end)
+
 -- This is needed to deal damage when punching mobs
 -- with random items in hand in survival mode
 minetest.override_item("", {
