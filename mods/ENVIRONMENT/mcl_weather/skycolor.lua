@@ -211,17 +211,39 @@ mcl_weather.skycolor = {
 					player:set_moon({visible = false})
 					player:set_stars({visible = false})
 
-					local lf = mcl_weather.get_current_light_factor()
+					local light_factor = mcl_weather.get_current_light_factor()
 					if mcl_weather.skycolor.current_layer_name() == "lightning" then
 						mcl_weather.skycolor.override_day_night_ratio(player, 1)
-					elseif lf then
-						local w = minetest.get_timeofday()
-						local light = (w * (lf*2))
-						if light > 1 then
-							light = 1 - (light - 1)
+					elseif light_factor then
+						local time = minetest.get_timeofday()
+						-- 0.5 = 1
+						-- 0 = 0
+						-- 0.99 = 0
+
+						-- greater than 0.5, is
+
+						-- less than 0.5 = time / 0.5
+
+						-- 0.6 = 0.8
+						-- 0.9 = 0.2
+
+						-- 0.6 = 0.4
+						-- 0.9 = 0.1
+						-- 2 * (1 - time)
+
+						local light_multiplier =  time * 2
+						if time > 0.5 then
+							light_multiplier = 2 * (1 - time)
+						else
+							light_multiplier = time / 0.5
 						end
-						light = (light * lf) + 0.15
-						mcl_weather.skycolor.override_day_night_ratio(player, light)
+						local minimum_light_level = 0.10
+
+						minetest.log("New light_multiplier: " .. tostring(light_multiplier))
+						local new_light = (light_factor * (light_multiplier * (1-minimum_light_level))) + minimum_light_level
+						minetest.log("new_light: " .. tostring(new_light))
+
+						mcl_weather.skycolor.override_day_night_ratio(player, new_light)
 					else
 						mcl_weather.skycolor.override_day_night_ratio(player, nil)
 					end
