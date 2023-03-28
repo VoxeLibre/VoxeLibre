@@ -7,12 +7,7 @@ local pool = {}
 local tick = false
 
 
-local LOGGING_ON = minetest.settings:get_bool("mcl_logging_item_entities", false)
-local function mcl_log(message)
-	if LOGGING_ON then
-		mcl_util.mcl_log(message, "[Item Entities]", true)
-	end
-end
+
 
 minetest.register_on_joinplayer(function(player)
 	pool[player:get_player_name()] = 0
@@ -408,115 +403,7 @@ local function cxcz(o, cw, one, zero)
 	return o
 end
 
-local function hopper_take_item(self, pos)
-	--mcl_log("self.itemstring: ".. self.itemstring)
-	--mcl_log("self.itemstring: ".. minetest.pos_to_string(pos))
 
-	local objs = minetest.get_objects_inside_radius(pos, 2)
-
-	if objs and self.itemstring then
-		--mcl_log("there is an itemstring. Number of objs: ".. #objs)
-
-		for k, v in pairs(objs) do
-			local ent = v:get_luaentity()
-
-			-- Don't forget actual hoppers
-			if ent and ent.name == "mcl_minecarts:hopper_minecart" then
-				local taken_items = false
-
-				mcl_log("ent.name: " .. tostring(ent.name))
-				mcl_log("ent pos: " .. tostring(ent.object:get_pos()))
-
-				local inv = mcl_entity_invs.load_inv(ent, 5)
-
-				if not inv then
-					mcl_log("No inv")
-					return false
-				end
-
-				local current_itemstack = ItemStack(self.itemstring)
-
-				mcl_log("inv. size: " .. ent._inv_size)
-				if inv:room_for_item("main", current_itemstack) then
-					mcl_log("Room")
-					inv:add_item("main", current_itemstack)
-					self.object:get_luaentity().itemstring = ""
-					self.object:remove()
-					taken_items = true
-				else
-					mcl_log("no Room")
-				end
-
-				if not taken_items then
-					local items_remaining = current_itemstack:get_count()
-
-					-- This will take part of a floating item stack if no slot can hold the full amount
-					for i = 1, ent._inv_size, 1 do
-						local stack = inv:get_stack("main", i)
-
-						mcl_log("i: " .. tostring(i))
-						mcl_log("Items remaining: " .. items_remaining)
-						mcl_log("Name: " .. tostring(stack:get_name()))
-
-						if current_itemstack:get_name() == stack:get_name() then
-							mcl_log("We have a match. Name: " .. tostring(stack:get_name()))
-
-							local room_for = stack:get_stack_max() - stack:get_count()
-							mcl_log("Room for: " .. tostring(room_for))
-
-							if room_for == 0 then
-								-- Do nothing
-								mcl_log("No room")
-							elseif room_for < items_remaining then
-								mcl_log("We have more items remaining than space")
-
-								items_remaining = items_remaining - room_for
-								stack:set_count(stack:get_stack_max())
-								inv:set_stack("main", i, stack)
-								taken_items = true
-							else
-								local new_stack_size = stack:get_count() + items_remaining
-								stack:set_count(new_stack_size)
-								mcl_log("We have more than enough space. Now holds: " .. new_stack_size)
-
-								inv:set_stack("main", i, stack)
-								items_remaining = 0
-
-								self.object:get_luaentity().itemstring = ""
-								self.object:remove()
-
-								taken_items = true
-								break
-							end
-
-							mcl_log("Count: " .. tostring(stack:get_count()))
-							mcl_log("stack max: " .. tostring(stack:get_stack_max()))
-							--mcl_log("Is it empty: " .. stack:to_string())
-						end
-
-						if i == ent._inv_size and taken_items then
-							mcl_log("We are on last item and still have items left. Set final stack size: " .. items_remaining)
-							current_itemstack:set_count(items_remaining)
-							--mcl_log("Itemstack2: " .. current_itemstack:to_string())
-							self.itemstring = current_itemstack:to_string()
-						end
-					end
-				end
-
-				--Add in, and delete
-				if taken_items then
-					mcl_log("Saving")
-					mcl_entity_invs.save_inv(ent)
-					return taken_items
-				else
-					mcl_log("No need to save")
-				end
-			end
-		end
-	end
-
-	return false
-end
 
 minetest.register_entity(":__builtin:item", {
 	initial_properties = {
@@ -793,11 +680,6 @@ minetest.register_entity(":__builtin:item", {
 		end
 
 		local p = self.object:get_pos()
-		-- If hopper has taken item, it has gone, and no operations should be conducted on this item
-		if hopper_take_item(self, p) then
-			return
-		end
-
 		local node = minetest.get_node(p)
 		local in_unloaded = node.name == "ignore"
 

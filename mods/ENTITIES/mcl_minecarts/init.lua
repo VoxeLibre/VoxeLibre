@@ -11,6 +11,14 @@ mcl_minecarts.check_float_time = 15
 dofile(mcl_minecarts.modpath.."/functions.lua")
 dofile(mcl_minecarts.modpath.."/rails.lua")
 
+local LOGGING_ON = minetest.settings:get_bool("mcl_logging_minecarts", false)
+local function mcl_log(message)
+	if LOGGING_ON then
+		mcl_util.mcl_log(message, "[Minecarts]", true)
+	end
+end
+
+
 local function detach_driver(self)
 	if not self._driver then
 		return
@@ -50,6 +58,134 @@ local function activate_tnt_minecart(self, timer)
 end
 
 local activate_normal_minecart = detach_driver
+
+local function hopper_take_item(self, dtime)
+	local pos = self.object:get_pos()
+	if not pos then return end
+
+	if not self or self.name ~= "mcl_minecarts:hopper_minecart" then return end
+
+	if mcl_util.check_dtime_timer(self, dtime, "hoppermc_take", 0.15) then
+		--minetest.log("The check timer was triggered: " .. dump(pos) .. ", name:" .. self.name)
+	else
+		--minetest.log("The check timer was not triggered")
+		return
+	end
+
+	--mcl_log("self.itemstring: ".. self.itemstring)
+
+	local above_pos = vector.offset(pos, 0, 0.9, 0)
+	--mcl_log("self.itemstring: ".. minetest.pos_to_string(above_pos))
+	local objs = minetest.get_objects_inside_radius(above_pos, 1.25)
+
+	if objs then
+
+		mcl_log("there is an itemstring. Number of objs: ".. #objs)
+
+		for k, v in pairs(objs) do
+			local ent = v:get_luaentity()
+
+			if ent._removed or not ent.itemstring or ent.itemstring == "" then
+				--minetest.log("Ignore this item")
+				break
+			end
+
+			-- Don't forget actual hoppers
+
+			local taken_items = false
+
+			mcl_log("ent.name: " .. tostring(ent.name))
+			mcl_log("ent pos: " .. tostring(ent.object:get_pos()))
+
+			local inv = mcl_entity_invs.load_inv(self, 5)
+
+			if not inv then
+				mcl_log("No inv")
+				return false
+			end
+
+			local current_itemstack = ItemStack(ent.itemstring)
+
+			mcl_log("inv. size: " .. self._inv_size)
+			if inv:room_for_item("main", current_itemstack) then
+				mcl_log("Room")
+				inv:add_item("main", current_itemstack)
+				ent.object:get_luaentity().itemstring = ""
+				ent.object:remove()
+				taken_items = true
+			else
+				mcl_log("no Room")
+			end
+
+			if not taken_items then
+				local items_remaining = current_itemstack:get_count()
+
+				-- This will take part of a floating item stack if no slot can hold the full amount
+				for i = 1, self._inv_size, 1 do
+					local stack = inv:get_stack("main", i)
+
+					mcl_log("i: " .. tostring(i))
+					mcl_log("Items remaining: " .. items_remaining)
+					mcl_log("Name: " .. tostring(stack:get_name()))
+
+					if current_itemstack:get_name() == stack:get_name() then
+						mcl_log("We have a match. Name: " .. tostring(stack:get_name()))
+
+						local room_for = stack:get_stack_max() - stack:get_count()
+						mcl_log("Room for: " .. tostring(room_for))
+
+						if room_for == 0 then
+							-- Do nothing
+							mcl_log("No room")
+						elseif room_for < items_remaining then
+							mcl_log("We have more items remaining than space")
+
+							items_remaining = items_remaining - room_for
+							stack:set_count(stack:get_stack_max())
+							inv:set_stack("main", i, stack)
+							taken_items = true
+						else
+							local new_stack_size = stack:get_count() + items_remaining
+							stack:set_count(new_stack_size)
+							mcl_log("We have more than enough space. Now holds: " .. new_stack_size)
+
+							inv:set_stack("main", i, stack)
+							items_remaining = 0
+
+							ent.object:get_luaentity().itemstring = ""
+							ent.object:remove()
+
+							taken_items = true
+							break
+						end
+
+						mcl_log("Count: " .. tostring(stack:get_count()))
+						mcl_log("stack max: " .. tostring(stack:get_stack_max()))
+						--mcl_log("Is it empty: " .. stack:to_string())
+					end
+
+					if i == self._inv_size and taken_items then
+						mcl_log("We are on last item and still have items left. Set final stack size: " .. items_remaining)
+						current_itemstack:set_count(items_remaining)
+						--mcl_log("Itemstack2: " .. current_itemstack:to_string())
+						ent.itemstring = current_itemstack:to_string()
+					end
+				end
+			end
+
+			--Add in, and delete
+			if taken_items then
+				mcl_log("Saving")
+				mcl_entity_invs.save_inv(ent)
+				return taken_items
+			else
+				mcl_log("No need to save")
+			end
+		end
+	end
+
+	return false
+end
 
 -- Table for item-to-entity mapping. Keys: itemstring, Values: Corresponding entity ID
 local entity_mapping = {}
@@ -182,6 +318,8 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 	local passenger_attach_position = vector.new(0, -1.75, 0)
 
 	function cart:on_step(dtime)
+		hopper_take_item(self, dtime)
+
 		local ctrl, player = nil, nil
 		if self._driver then
 			player = minetest.get_player_by_name(self._driver)
@@ -266,19 +404,8 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 					return
 				end
 
-				-- Drop items and remove cart entity
-				local pname = ""
-				if player then
-					pname = player:get_player_name()
-				end
-				if not minetest.is_creative_enabled(pname) then
-					for d=1, #drop do
-						minetest.add_item(self.object:get_pos(), drop[d])
-					end
-				end
-
-				self.object:remove()
-				return
+				-- Do not drop minecart. It goes off the rails too frequently, and anyone using them for farms won't
+				-- notice and lose their iron and not bother. Not cool until fixed.
 			end
 			self._last_float_check = 0
 		end
