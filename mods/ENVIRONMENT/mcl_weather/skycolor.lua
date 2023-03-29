@@ -1,6 +1,8 @@
 local mods_loaded = false
 local NIGHT_VISION_RATIO = 0.45
 
+local MINIMUM_LIGHT_LEVEL = 0.2
+
 local water_color = "#3F76E4"
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
@@ -43,6 +45,24 @@ function mcl_weather.set_sky_color(player, def)
 		sky_color = def.sky_color,
 		clouds = def.clouds,
 	})
+end
+
+-- Function to work out light modifier at different times
+-- Noon is brightest, midnight is darkest, 0600 and 18000 is in the middle of this
+local function get_light_modifier(time)
+	-- 0.1 = 0.2
+	-- 0.4 = 0.8
+	-- 0.5 = 1
+	-- 0.6 = 0.8
+	-- 0.9 = 0.2
+
+	local light_multiplier =  time * 2
+	if time > 0.5 then
+		light_multiplier = 2 * (1 - time)
+	else
+		light_multiplier = time / 0.5
+	end
+	return light_multiplier
 end
 
 mcl_weather.skycolor = {
@@ -211,17 +231,14 @@ mcl_weather.skycolor = {
 					player:set_moon({visible = false})
 					player:set_stars({visible = false})
 
-					local lf = mcl_weather.get_current_light_factor()
+					local light_factor = mcl_weather.get_current_light_factor()
 					if mcl_weather.skycolor.current_layer_name() == "lightning" then
 						mcl_weather.skycolor.override_day_night_ratio(player, 1)
-					elseif lf then
-						local w = minetest.get_timeofday()
-						local light = (w * (lf*2))
-						if light > 1 then
-							light = 1 - (light - 1)
-						end
-						light = (light * lf) + 0.15
-						mcl_weather.skycolor.override_day_night_ratio(player, light)
+					elseif light_factor then
+						local time = minetest.get_timeofday()
+						local light_multiplier = get_light_modifier(time)
+						local new_light = math.max(light_factor * light_multiplier, MINIMUM_LIGHT_LEVEL)
+						mcl_weather.skycolor.override_day_night_ratio(player, new_light)
 					else
 						mcl_weather.skycolor.override_day_night_ratio(player, nil)
 					end
