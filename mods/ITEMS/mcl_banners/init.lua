@@ -137,9 +137,9 @@ local function on_destruct_banner(pos, hanging)
 			local meta = minetest.get_meta(pos)
 			local item = meta:get_inventory():get_stack("banner", 1)
 			if not item:is_empty() then
-				minetest.handle_node_drops(pos, {item:to_string()}, digger)
+				minetest.handle_node_drops(pos, {item:to_string()})
 			else
-				minetest.handle_node_drops(pos, {"mcl_banners:banner_item_white"}, digger)
+				minetest.handle_node_drops(pos, {"mcl_banners:banner_item_white"})
 			end
 		end
 	end
