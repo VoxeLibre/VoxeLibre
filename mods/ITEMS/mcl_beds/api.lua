@@ -4,7 +4,6 @@ local minetest_get_node = minetest.get_node
 local minetest_get_node_or_nil = minetest.get_node_or_nil
 local minetest_remove_node = minetest.remove_node
 local minetest_facedir_to_dir = minetest.facedir_to_dir
-local minetest_add_item = minetest.add_item
 local vector_add = vector.add
 local vector_subtract = vector.subtract
 
@@ -85,7 +84,6 @@ local function destruct_bed(pos, oldnode)
 	local pos2, node2, bottom = get_bed_next_node(pos, oldnode)
 
 	if bottom then
-		minetest_add_item(pos, node.name)
 		if node2 and string.sub(node2.name, -4) == "_top" then
 			minetest_remove_node(pos2)
 		end
@@ -158,7 +156,7 @@ function mcl_beds.register_bed(name, def)
 		sounds = def.sounds or default_sounds,
 		selection_box = common_box,
 		collision_box = common_box,
-		drop = "",
+		drop = def.recipe and name or "",
 		node_placement_prediction = "",
 		
 		on_place = function(itemstack, placer, pointed_thing)
@@ -241,7 +239,7 @@ function mcl_beds.register_bed(name, def)
 		_mcl_hardness = 0.2,
 		_mcl_blast_resistance = 1,
 		sounds = def.sounds or default_sounds,
-		drop = "",
+		drop = def.recipe and name or "",
 		selection_box = common_box,
 		collision_box = common_box,
 		
