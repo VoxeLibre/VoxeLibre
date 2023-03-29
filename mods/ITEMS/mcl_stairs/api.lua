@@ -71,8 +71,6 @@ end
 -- Node will be called mcl_stairs:stair_<subname>
 
 function mcl_stairs.register_stair(subname, recipeitem, groups, images, description, sounds, blast_resistance, hardness, corner_stair_texture_override)
-	groups.stair = 1
-	groups.building_block = 1
 
 	if recipeitem then
 		if not images then
@@ -91,6 +89,9 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 			blast_resistance = minetest.registered_items[recipeitem]._mcl_blast_resistance
 		end
 	end
+
+	groups.stair = 1
+	groups.building_block = 1
 
 	minetest.register_node(":mcl_stairs:stair_" .. subname, {
 		description = description,
