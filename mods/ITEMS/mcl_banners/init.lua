@@ -133,15 +133,15 @@ local function on_destruct_banner(pos, hanging)
 		local ent = v:get_luaentity()
 		if ent and ent.name == nodename then
 			v:remove()
-			-- Drop item
-			local meta = minetest.get_meta(pos)
-			local item = meta:get_inventory():get_stack("banner", 1)
-			if not item:is_empty() then
-				minetest.handle_node_drops(pos, {item:to_string()})
-			else
-				minetest.handle_node_drops(pos, {"mcl_banners:banner_item_white"})
-			end
 		end
+	end
+	-- Drop item
+	local meta = minetest.get_meta(pos)
+	local item = meta:get_inventory():get_stack("banner", 1)
+	if not item:is_empty() then
+		minetest.handle_node_drops(pos, {item:to_string()})
+	else
+		minetest.handle_node_drops(pos, {"mcl_banners:banner_item_white"})
 	end
 end
 
