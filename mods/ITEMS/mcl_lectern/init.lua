@@ -130,9 +130,9 @@ end
 minetest.register_craft({
 	output = "mcl_lectern:lectern",
 	recipe = {
-		{"group:slab", "group:slab", "group:slab"},
+		{"group:wood_slab", "group:wood_slab", "group:wood_slab"},
 		{"", "mcl_books:bookshelf", ""},
-		{"", "group:slab", ""},
+		{"", "group:wood_slab", ""},
 	}
 })
 
