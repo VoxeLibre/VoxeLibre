@@ -362,7 +362,7 @@ minetest.register_tool("mcl_tools:shovel_netherite", {
 })
 
 -- Axes
-local function make_stripped_trunk(itemstack, placer, pointed_thing)
+function mcl_tools.make_stripped_trunk(itemstack, placer, pointed_thing)
     if pointed_thing.type ~= "node" then return end
 
     local node = minetest.get_node(pointed_thing.under)
@@ -412,7 +412,7 @@ minetest.register_tool("mcl_tools:axe_wood", {
 		damage_groups = {fleshy=7},
 		punch_attack_uses = 30,
 	},
-	on_place = make_stripped_trunk,
+	on_place = mcl_tools.make_stripped_trunk,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:wood",
 	_mcl_toollike_wield = true,
@@ -432,7 +432,7 @@ minetest.register_tool("mcl_tools:axe_stone", {
 		damage_groups = {fleshy=9},
 		punch_attack_uses = 66,
 	},
-	on_place = make_stripped_trunk,
+	on_place = mcl_tools.make_stripped_trunk,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:cobble",
 	_mcl_toollike_wield = true,
@@ -453,7 +453,7 @@ minetest.register_tool("mcl_tools:axe_iron", {
 		damage_groups = {fleshy=9},
 		punch_attack_uses = 126,
 	},
-	on_place = make_stripped_trunk,
+	on_place = mcl_tools.make_stripped_trunk,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:iron_ingot",
 	_mcl_toollike_wield = true,
@@ -473,7 +473,7 @@ minetest.register_tool("mcl_tools:axe_gold", {
 		damage_groups = {fleshy=7},
 		punch_attack_uses = 17,
 	},
-	on_place = make_stripped_trunk,
+	on_place = mcl_tools.make_stripped_trunk,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:gold_ingot",
 	_mcl_toollike_wield = true,
@@ -493,7 +493,7 @@ minetest.register_tool("mcl_tools:axe_diamond", {
 		damage_groups = {fleshy=9},
 		punch_attack_uses = 781,
 	},
-	on_place = make_stripped_trunk,
+	on_place = mcl_tools.make_stripped_trunk,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:diamond",
 	_mcl_toollike_wield = true,
@@ -516,7 +516,7 @@ minetest.register_tool("mcl_tools:axe_netherite", {
 		damage_groups = {fleshy=10},
 		punch_attack_uses = 1016,
 	},
-	on_place = make_stripped_trunk,
+	on_place = mcl_tools.make_stripped_trunk,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_nether:netherite_ingot",
 	_mcl_toollike_wield = true,
