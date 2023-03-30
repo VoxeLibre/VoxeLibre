@@ -525,15 +525,6 @@ function kelp.lbm_register(pos)
 	kelp.init_age(pos, nil, true)
 end
 
-minetest.register_lbm({
-	label = "Kelp initialise",
-	name = "mcl_ocean:kelp_init",
-	nodenames = { "group:kelp" },
-	run_at_every_load = true, -- so old kelps are also initialised
-	action = kelp.lbm_register,
-})
-
-
 --------------------------------------------------------------------------------
 -- Kelp registration API
 --------------------------------------------------------------------------------
@@ -723,6 +714,19 @@ minetest.register_craft({
 	type = "fuel",
 	recipe = "mcl_ocean:dried_kelp_block",
 	burntime = 200,
+})
+
+--------------------------------------------------------------------------------
+-- Kelp ABM + LBM's
+--------------------------------------------------------------------------------
+
+
+minetest.register_lbm({
+	label = "Kelp initialise",
+	name = "mcl_ocean:kelp_init_83",
+	nodenames = { "group:kelp" },
+	run_at_every_load = false, -- so old kelps are also initialised
+	action = kelp.lbm_register,
 })
 
 minetest.register_abm({
