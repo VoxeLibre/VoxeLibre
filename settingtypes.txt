@@ -61,6 +61,12 @@ mcl_playersSleepingPercentage (Players Sleeping Percentage) int 100
 # setting, so players always keep their inventory on death.
 mcl_keepInventory (Keep inventory on death) bool false
 
+# Elytra maximum speed cap
+mcl_elytra_max_speed (Elytra maximum speed cap) float 4.0 2.5 6.0
+
+# Elytra rocket speed cap
+mcl_elytra_rocket_speed (Elytra rocket speed cap) float 3.5 2.0 5.5
+
 # If enabled, chat messages are shown to everyone when a player dies.
 mcl_showDeathMessages (Show death messages) bool true
 
