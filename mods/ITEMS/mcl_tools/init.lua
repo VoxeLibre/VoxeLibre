@@ -1,7 +1,7 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
-
+mcl_tools = {}
 -- mods/default/tools.lua
 
 --
@@ -156,7 +156,7 @@ minetest.register_tool("mcl_tools:pick_netherite", {
 	},
 })
 
-local make_grass_path = function(itemstack, placer, pointed_thing)
+mcl_tools.make_grass_path = function(itemstack, placer, pointed_thing)
 	-- Use pointed node's on_rightclick function first, if present
 	local node = minetest.get_node(pointed_thing.under)
 	if placer and not placer:get_player_control().sneak then
@@ -244,7 +244,7 @@ minetest.register_tool("mcl_tools:shovel_wood", {
 		damage_groups = {fleshy=2},
 		punch_attack_uses = 30,
 	},
-	on_place = make_grass_path,
+	on_place = mcl_tools.make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:wood",
 	_mcl_toollike_wield = true,
@@ -265,7 +265,7 @@ minetest.register_tool("mcl_tools:shovel_stone", {
 		damage_groups = {fleshy=3},
 		punch_attack_uses = 66,
 	},
-	on_place = make_grass_path,
+	on_place = mcl_tools.make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:cobble",
 	_mcl_toollike_wield = true,
@@ -286,7 +286,7 @@ minetest.register_tool("mcl_tools:shovel_iron", {
 		damage_groups = {fleshy=4},
 		punch_attack_uses = 126,
 	},
-	on_place = make_grass_path,
+	on_place = mcl_tools.make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:iron_ingot",
 	_mcl_toollike_wield = true,
@@ -307,7 +307,7 @@ minetest.register_tool("mcl_tools:shovel_gold", {
 		damage_groups = {fleshy=2},
 		punch_attack_uses = 17,
 	},
-	on_place = make_grass_path,
+	on_place = mcl_tools.make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:gold_ingot",
 	_mcl_toollike_wield = true,
@@ -328,7 +328,7 @@ minetest.register_tool("mcl_tools:shovel_diamond", {
 		damage_groups = {fleshy=5},
 		punch_attack_uses = 781,
 	},
-	on_place = make_grass_path,
+	on_place = mcl_tools.make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:diamond",
 	_mcl_toollike_wield = true,
@@ -352,7 +352,7 @@ minetest.register_tool("mcl_tools:shovel_netherite", {
 		damage_groups = {fleshy=5},
 		punch_attack_uses = 1016,
 	},
-	on_place = make_grass_path,
+	on_place = mcl_tools.make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_nether:netherite_ingot",
 	_mcl_toollike_wield = true,
