@@ -346,14 +346,21 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 end
 
 local function block_fixes_grass(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	local biomemap = minetest.get_mapgen_object("biomemap")
-	local lvm_used = false
-	local pr = PseudoRandom(blockseed)
-	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
-		-- Set param2 (=color) of nodes which use the grass colour palette.
-		lvm_used = set_grass_palette(minp,maxp,data2,area,biomemap,{"group:grass_palette"})
-	end
-	return lvm_used
+    if maxp.y < mcl_vars.mg_overworld_min then
+        --minetest.log("Exit grass fix")
+        return
+    else
+        --minetest.log("Grass fixes")
+    end
+
+    local biomemap = minetest.get_mapgen_object("biomemap")
+    local lvm_used = false
+
+    if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
+        -- Set param2 (=color) of nodes which use the grass colour palette.
+        lvm_used = set_grass_palette(minp,maxp,data2,area,biomemap,{"group:grass_palette"})
+    end
+    return lvm_used
 end
 
 
