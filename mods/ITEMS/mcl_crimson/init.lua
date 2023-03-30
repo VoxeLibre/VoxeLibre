@@ -5,6 +5,9 @@ local modpath = minetest.get_modpath(modname)
 -- by debiankaios
 -- adapted for mcl2 by cora
 
+local wood_slab_groups = {handy = 1, axey = 1, flammable = 3, material_wood = 1, fire_encouragement = 5, fire_flammability = 20, wood_slab = 1}
+local wood_stair_groups = {handy = 1, axey = 1, flammable = 3, material_wood = 1, fire_encouragement = 5, fire_flammability = 20, wood_stairs = 1}
+
 local function generate_warped_tree(pos)
 	minetest.place_schematic(pos,modpath.."/schematics/warped_fungus_1.mts","random",nil,false,"place_center_x,place_center_z")
 end
@@ -434,7 +437,8 @@ minetest.register_node("mcl_crimson:warped_hyphae_wood", {
 	_mcl_hardness = 2,
 })
 
-mcl_stairs.register_stair_and_slab_simple("warped_hyphae_wood", "mcl_crimson:warped_hyphae_wood", S("Warped Stair"), S("Warped Slab"), S("Double Warped Slab"))
+mcl_stairs.register_stair("warped_hyphae_wood", "mcl_crimson:warped_hyphae_wood", wood_stair_groups, false, S("Warped Stair"))
+mcl_stairs.register_slab("warped_hyphae_wood", "mcl_crimson:warped_hyphae_wood", wood_slab_groups, false, S("Warped Slab"))
 
 minetest.register_craft({
 	output = "mcl_crimson:warped_hyphae_wood 4",
@@ -643,7 +647,8 @@ minetest.register_craft({
 	},
 })
 
-mcl_stairs.register_stair_and_slab_simple("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", S("Crimson Stair"), S("Crimson Slab"), S("Double Crimson Slab"))
+mcl_stairs.register_stair("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", wood_stair_groups, false, S("Crimson Stair"))
+mcl_stairs.register_slab("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", wood_slab_groups, false, S("Crimson Slab"))
 
 mcl_dye.register_on_bone_meal_apply(function(pt,user)
 	if not pt.type == "node" then return end
