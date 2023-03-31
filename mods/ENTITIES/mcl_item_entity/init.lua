@@ -7,12 +7,7 @@ local pool = {}
 local tick = false
 
 
-local LOGGING_ON = minetest.settings:get_bool("mcl_logging_item_entities", false)
-local function mcl_log(message)
-	if LOGGING_ON then
-		mcl_util.mcl_log(message, "[Item Entities]", true)
-	end
-end
+
 
 minetest.register_on_joinplayer(function(player)
 	pool[player:get_player_name()] = 0
@@ -408,114 +403,173 @@ local function cxcz(o, cw, one, zero)
 	return o
 end
 
-local function hopper_take_item(self, pos)
-	--mcl_log("self.itemstring: ".. self.itemstring)
-	--mcl_log("self.itemstring: ".. minetest.pos_to_string(pos))
+local function nodes_destroy_items (self, moveresult, def, nn)
+	local lg = minetest.get_item_group(nn, "lava")
+	local fg = minetest.get_item_group(nn, "fire")
+	local dg = minetest.get_item_group(nn, "destroys_items")
 
-	local objs = minetest.get_objects_inside_radius(pos, 2)
-
-	if objs and self.itemstring then
-		--mcl_log("there is an itemstring. Number of objs: ".. #objs)
-
-		for k, v in pairs(objs) do
-			local ent = v:get_luaentity()
-
-			-- Don't forget actual hoppers
-			if ent and ent.name == "mcl_minecarts:hopper_minecart" then
-				local taken_items = false
-
-				mcl_log("ent.name: " .. tostring(ent.name))
-				mcl_log("ent pos: " .. tostring(ent.object:get_pos()))
-
-				local inv = mcl_entity_invs.load_inv(ent, 5)
-
-				if not inv then
-					mcl_log("No inv")
-					return false
-				end
-
-				local current_itemstack = ItemStack(self.itemstring)
-
-				mcl_log("inv. size: " .. ent._inv_size)
-				if inv:room_for_item("main", current_itemstack) then
-					mcl_log("Room")
-					inv:add_item("main", current_itemstack)
-					self.object:get_luaentity().itemstring = ""
-					self.object:remove()
-					taken_items = true
-				else
-					mcl_log("no Room")
-				end
-
-				if not taken_items then
-					local items_remaining = current_itemstack:get_count()
-
-					-- This will take part of a floating item stack if no slot can hold the full amount
-					for i = 1, ent._inv_size, 1 do
-						local stack = inv:get_stack("main", i)
-
-						mcl_log("i: " .. tostring(i))
-						mcl_log("Items remaining: " .. items_remaining)
-						mcl_log("Name: " .. tostring(stack:get_name()))
-
-						if current_itemstack:get_name() == stack:get_name() then
-							mcl_log("We have a match. Name: " .. tostring(stack:get_name()))
-
-							local room_for = stack:get_stack_max() - stack:get_count()
-							mcl_log("Room for: " .. tostring(room_for))
-
-							if room_for == 0 then
-								-- Do nothing
-								mcl_log("No room")
-							elseif room_for < items_remaining then
-								mcl_log("We have more items remaining than space")
-
-								items_remaining = items_remaining - room_for
-								stack:set_count(stack:get_stack_max())
-								inv:set_stack("main", i, stack)
-								taken_items = true
-							else
-								local new_stack_size = stack:get_count() + items_remaining
-								stack:set_count(new_stack_size)
-								mcl_log("We have more than enough space. Now holds: " .. new_stack_size)
-
-								inv:set_stack("main", i, stack)
-								items_remaining = 0
-
-								self.object:get_luaentity().itemstring = ""
-								self.object:remove()
-
-								taken_items = true
-								break
-							end
-
-							mcl_log("Count: " .. tostring(stack:get_count()))
-							mcl_log("stack max: " .. tostring(stack:get_stack_max()))
-							--mcl_log("Is it empty: " .. stack:to_string())
-						end
-
-						if i == ent._inv_size and taken_items then
-							mcl_log("We are on last item and still have items left. Set final stack size: " .. items_remaining)
-							current_itemstack:set_count(items_remaining)
-							--mcl_log("Itemstack2: " .. current_itemstack:to_string())
-							self.itemstring = current_itemstack:to_string()
-						end
-					end
-				end
-
-				--Add in, and delete
-				if taken_items then
-					mcl_log("Saving")
-					mcl_entity_invs.save_inv(ent)
-					return taken_items
-				else
-					mcl_log("No need to save")
-				end
+	if (def and (lg ~= 0 or fg ~= 0 or dg == 1)) then
+		--Wait 2 seconds to allow mob drops to be cooked, & picked up instead of instantly destroyed.
+		if self.age > 2 and minetest.get_item_group(self.itemstring, "fire_immune") == 0 then
+			if dg ~= 2 then
+				minetest.sound_play("builtin_item_lava", { pos = self.object:get_pos(), gain = 0.5 })
 			end
+			self._removed = true
+			self.object:remove()
+			return true
 		end
 	end
 
-	return false
+	-- Destroy item when it collides with a cactus
+	if moveresult and moveresult.collides then
+		for _, collision in pairs(moveresult.collisions) do
+			local pos = collision.node_pos
+			if collision.type == "node" and minetest.get_node(pos).name == "mcl_core:cactus" then
+				-- TODO We need to play a sound when it gets destroyed
+				self._removed = true
+				self.object:remove()
+				return true
+			end
+		end
+	end
+end
+
+local function push_out_item_stuck_in_solid(self, dtime, p, def, is_in_water)
+	if not is_in_water and def and def.walkable and def.groups and def.groups.opaque == 1 then
+		local shootdir
+		local cx = (p.x % 1) - 0.5
+		local cz = (p.z % 1) - 0.5
+		local order = {}
+
+		-- First prepare the order in which the 4 sides are to be checked.
+		-- 1st: closest
+		-- 2nd: other direction
+		-- 3rd and 4th: other axis
+		if math.abs(cx) < math.abs(cz) then
+			order = cxcz(order, cx, "x", "z")
+			order = cxcz(order, cz, "z", "x")
+		else
+			order = cxcz(order, cz, "z", "x")
+			order = cxcz(order, cx, "x", "z")
+		end
+
+		-- Check which one of the 4 sides is free
+		for o = 1, #order do
+			local nn = minetest.get_node(vector.add(p, order[o])).name
+			local def = minetest.registered_nodes[nn]
+			if def and def.walkable == false and nn ~= "ignore" then
+				shootdir = order[o]
+				break
+			end
+		end
+		-- If none of the 4 sides is free, shoot upwards
+		if shootdir == nil then
+			shootdir = vector.new(0, 1, 0)
+			local nn = minetest.get_node(vector.add(p, shootdir)).name
+			if nn == "ignore" then
+				-- Do not push into ignore
+				return true
+			end
+		end
+
+		-- Set new item moving speed accordingly
+		local newv = vector.multiply(shootdir, 3)
+		self.object:set_acceleration(vector.zero())
+		self.object:set_velocity(newv)
+		disable_physics(self.object, self, false, false)
+
+
+		if shootdir.y == 0 then
+			self._force = newv
+			p.x = math.floor(p.x)
+			p.y = math.floor(p.y)
+			p.z = math.floor(p.z)
+			self._forcestart = p
+			self._forcetimer = 1
+		end
+		return true
+	end
+
+	-- This code is run after the entity got a push from above “push away” code.
+	-- It is responsible for making sure the entity is entirely outside the solid node
+	-- (with its full collision box), not just its center.
+	if self._forcetimer > 0 then
+		local cbox = self.object:get_properties().collisionbox
+		local ok = false
+		if self._force.x > 0 and (p.x > (self._forcestart.x + 0.5 + (cbox[4] - cbox[1]) / 2)) then ok = true
+		elseif self._force.x < 0 and (p.x < (self._forcestart.x + 0.5 - (cbox[4] - cbox[1]) / 2)) then ok = true
+		elseif self._force.z > 0 and (p.z > (self._forcestart.z + 0.5 + (cbox[6] - cbox[3]) / 2)) then ok = true
+		elseif self._force.z < 0 and (p.z < (self._forcestart.z + 0.5 - (cbox[6] - cbox[3]) / 2)) then ok = true end
+		-- Item was successfully forced out. No more pushing
+		if ok then
+			self._forcetimer = -1
+			self._force = nil
+			enable_physics(self.object, self)
+		else
+			self._forcetimer = self._forcetimer - dtime
+		end
+		return true
+	elseif self._force then
+		self._force = nil
+		enable_physics(self.object, self)
+		return true
+	end
+end
+
+local function move_items_in_water (self, p, def, node, is_floating, is_in_water)
+	-- Move item around on flowing liquids; add 'source' check to allow items to continue flowing a bit in the source block of flowing water.
+	if def and not is_floating and (def.liquidtype == "flowing" or def.liquidtype == "source") then
+		self._flowing = true
+
+		--[[ Get flowing direction (function call from flowlib), if there's a liquid.
+        NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
+        Luckily, this is exactly what we need if we only care about water, which has this flowing distance. ]]
+		local vec = flowlib.quick_flow(p, node)
+		-- Just to make sure we don't manipulate the speed for no reason
+		if vec.x ~= 0 or vec.y ~= 0 or vec.z ~= 0 then
+			-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
+			local f = 1.2
+			-- Set new item moving speed into the direciton of the liquid
+			local newv = vector.multiply(vec, f)
+			-- Swap to acceleration instead of a static speed to better mimic MC mechanics.
+			self.object:set_acceleration(vector.new(newv.x, -0.22, newv.z))
+
+			self.physical_state = true
+			self._flowing = true
+			self.object:set_properties({
+				physical = true
+			})
+			return true
+		end
+		if is_in_water and def.liquidtype == "source" then
+			local cur_vec = self.object:get_velocity()
+			-- apply some acceleration in the opposite direction so it doesn't slide forever
+			local vec = {
+				x = 0 - cur_vec.x * 0.9,
+				y = 3 - cur_vec.y * 0.9,
+				z = 0 - cur_vec.z * 0.9
+			}
+			self.object:set_acceleration(vec)
+			-- slow down the item in water
+			local vel = self.object:get_velocity()
+			if vel.y < 0 then
+				vel.y = vel.y * 0.9
+			end
+			self.object:set_velocity(vel)
+			if self.physical_state ~= false or self._flowing ~= true then
+				self.physical_state = true
+				self._flowing = true
+				self.object:set_properties({
+					physical = true
+				})
+			end
+		end
+	elseif self._flowing == true and not is_in_water and not is_floating then
+		-- Disable flowing physics if not on/in flowing liquid
+		self._flowing = false
+		enable_physics(self.object, self, true)
+		return true
+	end
 end
 
 minetest.register_entity(":__builtin:item", {
@@ -785,19 +839,13 @@ minetest.register_entity(":__builtin:item", {
 		-- otherwise there might have some data corruption.
 		if self.itemstring == "" then
 			minetest.log("warning",
-				"Item entity with empty itemstring found at " .. minetest.pos_to_string(self.object:get_pos()) ..
-				"! Deleting it now.")
+				"Item entity with empty itemstring found and being deleted at: " .. minetest.pos_to_string(self.object:get_pos()))
 			self._removed = true
 			self.object:remove()
 			return
 		end
 
 		local p = self.object:get_pos()
-		-- If hopper has taken item, it has gone, and no operations should be conducted on this item
-		if hopper_take_item(self, p) then
-			return
-		end
-
 		local node = minetest.get_node(p)
 		local in_unloaded = node.name == "ignore"
 
@@ -842,167 +890,12 @@ minetest.register_entity(":__builtin:item", {
 		-- Destroy item in lava, fire or special nodes
 
 		local def = minetest.registered_nodes[nn]
-		local lg = minetest.get_item_group(nn, "lava")
-		local fg = minetest.get_item_group(nn, "fire")
-		local dg = minetest.get_item_group(nn, "destroys_items")
-		if (def and (lg ~= 0 or fg ~= 0 or dg == 1)) then
-			--Wait 2 seconds to allow mob drops to be cooked, & picked up instead of instantly destroyed.
-			if self.age > 2 and minetest.get_item_group(self.itemstring, "fire_immune") == 0 then
-				if dg ~= 2 then
-					minetest.sound_play("builtin_item_lava", { pos = self.object:get_pos(), gain = 0.5 })
-				end
-				self._removed = true
-				self.object:remove()
-				return
-			end
-		end
 
-		-- Destroy item when it collides with a cactus
-		if moveresult and moveresult.collides then
-			for _, collision in pairs(moveresult.collisions) do
-				local pos = collision.node_pos
-				if collision.type == "node" and minetest.get_node(pos).name == "mcl_core:cactus" then
-					self._removed = true
-					self.object:remove()
-					return
-				end
-			end
-		end
+		if nodes_destroy_items(self, moveresult, def, nn) then return end
 
-		-- Push item out when stuck inside solid opaque node
-		if not is_in_water and def and def.walkable and def.groups and def.groups.opaque == 1 then
-			local shootdir
-			local cx = (p.x % 1) - 0.5
-			local cz = (p.z % 1) - 0.5
-			local order = {}
+		if push_out_item_stuck_in_solid(self, dtime, p, def, is_in_water) then return end
 
-			-- First prepare the order in which the 4 sides are to be checked.
-			-- 1st: closest
-			-- 2nd: other direction
-			-- 3rd and 4th: other axis
-			if math.abs(cx) < math.abs(cz) then
-				order = cxcz(order, cx, "x", "z")
-				order = cxcz(order, cz, "z", "x")
-			else
-				order = cxcz(order, cz, "z", "x")
-				order = cxcz(order, cx, "x", "z")
-			end
-
-			-- Check which one of the 4 sides is free
-			for o = 1, #order do
-				local nn = minetest.get_node(vector.add(p, order[o])).name
-				local def = minetest.registered_nodes[nn]
-				if def and def.walkable == false and nn ~= "ignore" then
-					shootdir = order[o]
-					break
-				end
-			end
-			-- If none of the 4 sides is free, shoot upwards
-			if shootdir == nil then
-				shootdir = vector.new(0, 1, 0)
-				local nn = minetest.get_node(vector.add(p, shootdir)).name
-				if nn == "ignore" then
-					-- Do not push into ignore
-					return
-				end
-			end
-
-			-- Set new item moving speed accordingly
-			local newv = vector.multiply(shootdir, 3)
-			self.object:set_acceleration(vector.zero())
-			self.object:set_velocity(newv)
-			disable_physics(self.object, self, false, false)
-
-
-			if shootdir.y == 0 then
-				self._force = newv
-				p.x = math.floor(p.x)
-				p.y = math.floor(p.y)
-				p.z = math.floor(p.z)
-				self._forcestart = p
-				self._forcetimer = 1
-			end
-			return
-		end
-
-		-- This code is run after the entity got a push from above “push away” code.
-		-- It is responsible for making sure the entity is entirely outside the solid node
-		-- (with its full collision box), not just its center.
-		if self._forcetimer > 0 then
-			local cbox = self.object:get_properties().collisionbox
-			local ok = false
-			if self._force.x > 0 and (p.x > (self._forcestart.x + 0.5 + (cbox[4] - cbox[1]) / 2)) then ok = true
-			elseif self._force.x < 0 and (p.x < (self._forcestart.x + 0.5 - (cbox[4] - cbox[1]) / 2)) then ok = true
-			elseif self._force.z > 0 and (p.z > (self._forcestart.z + 0.5 + (cbox[6] - cbox[3]) / 2)) then ok = true
-			elseif self._force.z < 0 and (p.z < (self._forcestart.z + 0.5 - (cbox[6] - cbox[3]) / 2)) then ok = true end
-			-- Item was successfully forced out. No more pushing
-			if ok then
-				self._forcetimer = -1
-				self._force = nil
-				enable_physics(self.object, self)
-			else
-				self._forcetimer = self._forcetimer - dtime
-			end
-			return
-		elseif self._force then
-			self._force = nil
-			enable_physics(self.object, self)
-			return
-		end
-
-		-- Move item around on flowing liquids; add 'source' check to allow items to continue flowing a bit in the source block of flowing water.
-		if def and not is_floating and (def.liquidtype == "flowing" or def.liquidtype == "source") then
-			self._flowing = true
-
-			--[[ Get flowing direction (function call from flowlib), if there's a liquid.
-			NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
-			Luckily, this is exactly what we need if we only care about water, which has this flowing distance. ]]
-			local vec = flowlib.quick_flow(p, node)
-			-- Just to make sure we don't manipulate the speed for no reason
-			if vec.x ~= 0 or vec.y ~= 0 or vec.z ~= 0 then
-				-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
-				local f = 1.2
-				-- Set new item moving speed into the direciton of the liquid
-				local newv = vector.multiply(vec, f)
-				-- Swap to acceleration instead of a static speed to better mimic MC mechanics.
-				self.object:set_acceleration(vector.new(newv.x, -0.22, newv.z))
-
-				self.physical_state = true
-				self._flowing = true
-				self.object:set_properties({
-					physical = true
-				})
-				return
-			end
-			if is_in_water and def.liquidtype == "source" then
-				local cur_vec = self.object:get_velocity()
-				-- apply some acceleration in the opposite direction so it doesn't slide forever
-				local vec = {
-					x = 0 - cur_vec.x * 0.9,
-					y = 3 - cur_vec.y * 0.9,
-					z = 0 - cur_vec.z * 0.9
-				}
-				self.object:set_acceleration(vec)
-				-- slow down the item in water
-				local vel = self.object:get_velocity()
-				if vel.y < 0 then
-					vel.y = vel.y * 0.9
-				end
-				self.object:set_velocity(vel)
-				if self.physical_state ~= false or self._flowing ~= true then
-					self.physical_state = true
-					self._flowing = true
-					self.object:set_properties({
-						physical = true
-					})
-				end
-			end
-		elseif self._flowing == true and not is_in_water and not is_floating then
-			-- Disable flowing physics if not on/in flowing liquid
-			self._flowing = false
-			enable_physics(self.object, self, true)
-			return
-		end
+		if move_items_in_water (self, p, def, node, is_floating, is_in_water) then return end
 
 		-- If node is not registered or node is walkably solid and resting on nodebox
 		local nn = minetest.get_node(vector.offset(p, 0, -0.5, 0)).name

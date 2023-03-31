@@ -34,6 +34,36 @@ function mcl_util.mcl_log(message, module, bypass_default_logger)
 	end
 end
 
+-- This is a dtime timer than can be used in on_step functions so it works every x seconds
+-- self - Object you want to store timer data on. E.g. mob or a minecart
+-- dtime - The time since last run of on_step, should be passed in to function
+-- timer_name - This is the name of the timer and also the key to store the data. No spaces + lowercase.
+-- threshold - The time before it returns successful. 0.2 if you want to run it 5 times a second.
+function mcl_util.check_dtime_timer(self, dtime, timer_name, threshold)
+	if not self or not threshold or not dtime then return end
+	if not timer_name or timer_name == "" then return end
+
+	if not self._timers then
+		self._timers = {}
+	end
+
+	if not self._timers[timer_name] then
+		self._timers[timer_name] = 0
+	else
+		self._timers[timer_name] = self._timers[timer_name] + dtime
+		--minetest.log("dtime: " .. tostring(self._timers[timer_name]))
+	end
+
+	if self._timers[timer_name] > threshold then
+		--minetest.log("Over threshold")
+		self._timers[timer_name] = 0
+		return true
+		--else
+		--minetest.log("Not over threshold")
+	end
+	return false
+end
+
 function mcl_util.file_exists(name)
 	if type(name) ~= "string" then return end
 	local f = io.open(name)
