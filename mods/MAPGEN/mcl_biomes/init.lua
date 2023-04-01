@@ -6066,50 +6066,82 @@ if mg_name ~= "singlenode" then
 	for _, f in pairs(deco_ids_trees) do
 		minetest.set_gen_notify({decoration = true}, {f})
 	end
+
+	local function mangrove_roots_gen(gennotify, pr)
+		for _, f in pairs(deco_ids_trees) do
+			for _, pos in ipairs(gennotify["decoration#" .. f] or {}) do
+				local nn = minetest.find_nodes_in_area(vector.offset(pos, -8, -1, -8), vector.offset(pos, 8, 0, 8), {"mcl_mangrove:mangrove_roots"})
+				for _, v in pairs(nn) do
+					local l = pr:next(2, 16)
+					local n = minetest.get_node(vector.offset(v, 0, -1, 0)).name
+					if minetest.get_item_group(n, "water") > 0 then
+						local wl = "mcl_mangrove:water_logged_roots"
+						if n:find("river") then
+							wl = "mcl_mangrove:river_water_logged_roots"
+						end
+						minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v, 0, 0, 0), vector.offset(v, 0, -l, 0), {"group:water"}), {name = wl})
+					elseif n == "mcl_mud:mud" then
+						minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v, 0, 0, 0), vector.offset(v, 0, -l, 0), {"mcl_mud:mud"}), {name = "mcl_mangrove:mangrove_mud_roots"})
+					elseif n == "air" then
+						minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v, 0, 0, 0), vector.offset(v, 0, -l, 0), {"air"}), {name = "mcl_mangrove:mangrove_roots"})
+					end
+				end
+			end
+		end
+	end
+
+	local function chorus_gen (gennotify, pr)
+		for _, pos in ipairs(gennotify["decoration#" .. deco_id_chorus_plant] or {}) do
+			local x, y, z = pos.x, pos.y, pos.z
+			if x < -10 or x > 10 or z < -10 or z > 10 then
+				local realpos = {x = x, y = y + 1, z = z}
+				local node = minetest.get_node(realpos)
+				if node and node.name == "mcl_end:chorus_flower" then
+					mcl_end.grow_chorus_plant(realpos, node, pr)
+				end
+			end
+		end
+	end
+
+	local function crimson_warped_gen(gennotify)
+		for _, f in pairs(deco_ids_fungus) do
+			for _, pos in ipairs(gennotify["decoration#" .. f] or {}) do
+				minetest.fix_light(vector.offset(pos, -8, -8, -8), vector.offset(pos, 8, 8, 8))
+			end
+		end
+	end
+
 	if deco_id_chorus_plant or deco_ids_fungus or deco_ids_trees then
 		mcl_mapgen_core.register_generator("chorus_grow", nil, function(minp, maxp, blockseed)
 			local gennotify = minetest.get_mapgen_object("gennotify")
 			local pr = PseudoRandom(blockseed + 14)
-			for _, f in pairs(deco_ids_trees) do
-				for _, pos in ipairs(gennotify["decoration#" .. f] or {}) do
-					local nn = minetest.find_nodes_in_area(vector.offset(pos, -8, -1, -8), vector.offset(pos, 8, 0, 8), {"mcl_mangrove:mangrove_roots"})
-					for _, v in pairs(nn) do
-						local l = pr:next(2, 16)
-						local n = minetest.get_node(vector.offset(v, 0, -1, 0)).name
-						if minetest.get_item_group(n, "water") > 0 then
-							local wl = "mcl_mangrove:water_logged_roots"
-							if n:find("river") then
-								wl = "mcl_mangrove:river_water_logged_roots"
-							end
-							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v, 0, 0, 0), vector.offset(v, 0, -l, 0), {"group:water"}), {name = wl})
-						elseif n == "mcl_mud:mud" then
-							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v, 0, 0, 0), vector.offset(v, 0, -l, 0), {"mcl_mud:mud"}), {name = "mcl_mangrove:mangrove_mud_roots"})
-						elseif n == "air" then
-							minetest.bulk_set_node(minetest.find_nodes_in_area(vector.offset(v, 0, 0, 0), vector.offset(v, 0, -l, 0), {"air"}), {name = "mcl_mangrove:mangrove_roots"})
-						end
-					end
+
+			if not (maxp.y < mcl_vars.mg_overworld_min or minp.y > mcl_vars.mg_overworld_max) then
+				local biomemap = minetest.get_mapgen_object("biomemap")
+				--minetest.log("mangrove stuff: " .. dump(biomemap))
+				local swamp_biome_id = minetest.get_biome_id("MangroveSwamp")
+				local swamp_shore_id = minetest.get_biome_id("MangroveSwamp_shore")
+				local is_swamp = table.indexof(biomemap, swamp_biome_id) ~= -1
+				local is_swamp_shore = table.indexof(biomemap, swamp_shore_id) ~= -1
+
+				if is_swamp or is_swamp_shore then
+					--minetest.log("Mangrove swamp biomes...")
+					--minetest.log("is_swamp: " .. dump(is_swamp))
+					--minetest.log("is_swamp_shore: " .. dump(is_swamp_shore))
+					mangrove_roots_gen(gennotify, pr)
+				else
+					--minetest.log("is not mangrove swamp biomes...")
 				end
 			end
-			if minp.y > -26900 then
-				return
+
+			if not (maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max) then
+				--minetest.log("chorus stuff")
+				chorus_gen(gennotify, pr)
 			end
-			for _, pos in ipairs(gennotify["decoration#" .. deco_id_chorus_plant] or {}) do
-				local x, y, z = pos.x, pos.y, pos.z
-				if x < -10 or x > 10 or z < -10 or z > 10 then
-					local realpos = {x = x, y = y + 1, z = z}
-					local node = minetest.get_node(realpos)
-					if node and node.name == "mcl_end:chorus_flower" then
-						mcl_end.grow_chorus_plant(realpos, node, pr)
-					end
-				end
-			end
-			if minp.y > mcl_vars.mg_nether_max then
-				return
-			end
-			for _, f in pairs(deco_ids_fungus) do
-				for _, pos in ipairs(gennotify["decoration#" .. f] or {}) do
-					minetest.fix_light(vector.offset(pos, -8, -8, -8), vector.offset(pos, 8, 8, 8))
-				end
+
+			if not (maxp.y < mcl_vars.mg_nether_min or minp.y > mcl_vars.mg_nether_max) then
+				--minetest.log("nether stuff")
+				crimson_warped_gen(gennotify)
 			end
 		end)
 	end
