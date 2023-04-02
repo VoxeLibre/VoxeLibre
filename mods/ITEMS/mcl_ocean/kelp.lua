@@ -216,41 +216,34 @@ local function store_age (pos, age)
 	end
 end
 
-local function retrieve_age (pos, include_nil)
+local function retrieve_age (pos)
 	local meta = mt_get_meta(pos)
-
-	if include_nil then
-		local age_set = meta:contains("mcl_ocean:kelp_age")
-		if not age_set then
-			return nil
-		end
+	local age_set = meta:contains("mcl_ocean:kelp_age")
+	if not age_set then
+		return nil
 	end
-	return meta:get_int("mcl_ocean:kelp_age")
+
+	local age = meta:get_int("mcl_ocean:kelp_age")
+	--minetest.log("age: " .. tostring(age))
+	return age
 end
 
 -- Initialise a kelp's age.
-function kelp.init_age(pos, age, from_lbm)
+function kelp.init_age(pos)
 	-- Watched params: pos
 	-- Optional params: age, from_lbm
 
-	local new_age
+	local age = retrieve_age(pos)
 
-	local stored_age = retrieve_age(pos, from_lbm)
-
-	if age then
-		--minetest.log("age: " .. tostring(age))
-		store_age(pos, age)
-		new_age = age
-	elseif not stored_age then
-		new_age = kelp.roll_init_age()
+	if not age then
+		age = kelp.roll_init_age()
 		--minetest.log("no kelp age set so init with: " .. tostring(new_age))
-		store_age(pos, new_age)
+		store_age(pos, age)
 	else
-		--minetest.log("stored_age: " .. tostring(stored_age))
-		new_age = stored_age
+		--minetest.log("stored_age: " .. tostring(age))
 	end
 
-	return new_age
+	return age
 end
 
 -- Apply next kelp height. The surface is swapped. so on_construct is skipped.
@@ -380,27 +373,24 @@ end
 
 local function grow_kelp (pos)
 	local node = mt_get_node(pos)
+	local age = retrieve_age(pos)
 
-	if kelp.roll_growth() then
-		local age = retrieve_age(pos)
+	if not age then
+		--minetest.log("init a new age as not set: " .. mt_pos_to_string(pos))
+		age = kelp.init_age(pos)
+	end
 
-		if not age then
-			--minetest.log("init a new age as not set: " .. mt_pos_to_string(pos))
-			kelp.init_age(pos, nil)
-		end
-
-		if kelp.is_age_growable(age) then
-			--minetest.log("age growable: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
-			kelp.next_grow(age+1, pos, node)
-		else
-			--minetest.log("age not: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
-		end
+	if kelp.is_age_growable(age) then
+		--minetest.log("age growable: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
+		kelp.next_grow(age+1, pos, node)
+	else
+		--minetest.log("age not: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
 	end
 end
 
 function kelp.surface_on_construct(pos)
 	--minetest.log("on construct kelp called")
-	kelp.init_age(pos, nil)
+	kelp.init_age(pos)
 end
 
 
@@ -509,30 +499,14 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 		itemstack:take_item()
 	end
 
-	-- Initialize age and timer when it's planted on a new surface.
-	local init_age = kelp.roll_init_age()
-
-	if new_surface then
-		kelp.init_age(pos_under, init_age)
-	else
-		store_age(pos_under, init_age)
-	end
+	kelp.init_age(pos_under)
 
 	return itemstack
 end
 
 function kelp.lbm_register(pos)
-	kelp.init_age(pos, nil, true)
+	kelp.init_age(pos)
 end
-
-minetest.register_lbm({
-	label = "Kelp initialise",
-	name = "mcl_ocean:kelp_init",
-	nodenames = { "group:kelp" },
-	run_at_every_load = true, -- so old kelps are also initialised
-	action = kelp.lbm_register,
-})
-
 
 --------------------------------------------------------------------------------
 -- Kelp registration API
@@ -725,6 +699,19 @@ minetest.register_craft({
 	burntime = 200,
 })
 
+--------------------------------------------------------------------------------
+-- Kelp ABM + LBM's
+--------------------------------------------------------------------------------
+
+
+minetest.register_lbm({
+	label = "Kelp initialise",
+	name = "mcl_ocean:kelp_init_83",
+	nodenames = { "group:kelp" },
+	run_at_every_load = false, -- so old kelps are also initialised
+	action = kelp.lbm_register,
+})
+
 minetest.register_abm({
 	label = "Kelp drops",
 	nodenames = { "group:kelp" },
@@ -745,7 +732,7 @@ minetest.register_abm({
 minetest.register_abm({
 	label = "Kelp growth",
 	nodenames = { "group:kelp" },
-	interval = 17, --17
+	interval = 17,
 	chance = 28,
 	catch_up = false,
 	action = grow_kelp,
