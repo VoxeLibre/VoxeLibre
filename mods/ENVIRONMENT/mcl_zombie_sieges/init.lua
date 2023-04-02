@@ -1,7 +1,7 @@
 local zombie_siege_enabled = minetest.settings:get_bool("mcl_raids_zombie_siege", false)
 
 local function check_spawn_pos(pos)
-	return minetest.get_natural_light(pos) < 7
+	return mcl_util.get_natural_light(pos) < 7
 end
 
 local function spawn_zombies(self)

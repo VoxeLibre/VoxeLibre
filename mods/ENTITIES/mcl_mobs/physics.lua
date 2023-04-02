@@ -643,7 +643,7 @@ function mob_class:do_env_damage()
 			--minetest.log("warning", "Pos is ignored: " .. dump(pos))
 		end
 
-		local sunlight = minetest.get_natural_light(pos, self.time_of_day)
+		local sunlight = mcl_util.get_natural_light(pos, self.time_of_day)
 
 		if self.light_damage ~= 0 and (sunlight or 0) > 12 then
 			if self:deal_light_damage(pos, self.light_damage) then

@@ -64,6 +64,24 @@ function mcl_util.check_dtime_timer(self, dtime, timer_name, threshold)
 	return false
 end
 
+-- Minetest 5.3.0 or less can only measure the light level. This came in at 5.4
+-- This function has been known to fail in multiple places so the error handling is added increase safety and improve
+-- debugging. See:
+-- https://git.minetest.land/MineClone2/MineClone2/issues/1392
+function mcl_util.get_natural_light (pos, time)
+	local status, retVal = pcall(minetest.get_natural_light, pos, time)
+	if status then
+		return retVal
+	else
+		minetest.log("warning", "Failed to get natural light at pos: " .. dump(pos) .. ", time: " .. dump(time))
+		if (pos) then
+			local node = minetest.get_node(pos)
+			minetest.log("warning", "Node at pos: " .. dump(node.name))
+		end
+	end
+	return 0
+end
+
 function mcl_util.file_exists(name)
 	if type(name) ~= "string" then return end
 	local f = io.open(name)
