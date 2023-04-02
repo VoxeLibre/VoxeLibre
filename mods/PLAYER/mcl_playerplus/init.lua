@@ -22,6 +22,20 @@ local math = math
 -- Internal player state
 local mcl_playerplus_internal = {}
 
+-- Could occassionally hit about 4.6 but servers and high power machines struggle to keep up with this.
+-- Until mapgen can keep up, it's best to limit for server performance etc.
+local elytra_vars = {
+	slowdown_mult = 0.0, -- amount of vel to take per sec
+	fall_speed = 0.2, -- amount of vel to fall down per sec
+	speedup_mult = 2, -- amount of speed to add based on look dir
+	max_speed = tonumber(minetest.settings:get("mcl_elytra_max_speed")) or 4.0, -- was 6 max amount to multiply against look direction when flying
+	pitch_penalty = 1.3, -- if pitching up, slow down at this rate as a multiplier
+	rocket_speed = tonumber(minetest.settings:get("mcl_elytra_rocket_speed")) or 3.5, --was 5.5
+}
+
+--minetest.log("action", "elytra_vars.max_speed: " .. dump(elytra_vars.max_speed))
+--minetest.log("action", "elytra_vars.rocket_speed: " .. dump(elytra_vars.rocket_speed))
+
 local time = 0
 local look_pitch = 0
 
@@ -136,14 +150,7 @@ local function clamp(num, min, max)
 	return math.min(max, math.max(num, min))
 end
 
-local elytra_vars = {
-	slowdown_mult = 0.0, -- amount of vel to take per sec
-	fall_speed = 0.2, -- amount of vel to fall down per sec
-	speedup_mult = 2, -- amount of speed to add based on look dir
-	max_speed = 6, -- max amount to multiply against look direction when flying
-	pitch_penalty = 1.3, -- if pitching up, slow down at this rate as a multiplier
-	rocket_speed = 5.5,
-}
+
 
 local player_props_elytra = {
 	collisionbox = { -0.35, 0, -0.35, 0.35, 0.8, 0.35 },
