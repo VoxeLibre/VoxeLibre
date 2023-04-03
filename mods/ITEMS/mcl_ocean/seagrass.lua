@@ -149,28 +149,3 @@ end
 if mod_doc then
 	doc.add_entry_alias("nodes", "mcl_ocean:seagrass_dirt", "craftitems", "mcl_ocean:seagrass")
 end
-
-minetest.register_lbm({
-	label = "Fix incorrect seagrass",
-	name = "mcl_ocean:fix_incorrect_seagrass",
-	nodenames = {"group:seagrass"},
-	run_at_every_load = false,
-	action = function(pos, node)
-		if node.param2 ~= 3 then
-			node.param2 = 3
-			minetest.set_node(pos, node)
-		end
-	end
-})
-
-minetest.register_on_generated(function(minp, maxp, blockseed)
-	local seagrass = minetest.find_nodes_in_area(minp, maxp, {"group:seagrass"})
-	for _, sgpos in pairs(seagrass) do
-		local sgnode = minetest.get_node(sgpos)
-		if sgnode.param2 ~= 3 then
-			sgnode.param2 = 3
-			minetest.set_node(sgpos, sgnode)
-		end
-	end
-end
-)
