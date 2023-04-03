@@ -1,6 +1,6 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
-local PRESSURE_PLATE_INTERVAL = 0.04
+local PRESSURE_PLATE_INTERVAL = 0.25
 
 local pp_box_off = {
 	type = "fixed",
