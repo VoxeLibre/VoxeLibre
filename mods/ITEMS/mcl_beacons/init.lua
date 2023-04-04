@@ -179,9 +179,7 @@ local function beacon_blockcheck(pos)
 end
 
 local function is_obstructed(pos) --also removes beacon beam if true
-
 	for y=pos.y+1, pos.y+100 do
-
 		local nodename = minetest.get_node({x=pos.x,y=y, z = pos.z}).name
 		if nodename ~= "mcl_core:bedrock" and nodename ~= "air" and nodename ~= "mcl_core:void" and nodename ~= "ignore" then --ignore means not loaded, let's just assume that's air
 			if nodename ~="mcl_beacons:beacon_beam" then
@@ -359,10 +357,6 @@ function register_beaconfuel(itemstring)
 	table.insert(beacon_fuellist, itemstring)
 end
 
-local timer = 0
-
-
-
 minetest.register_abm{
 	label="update beacon beam",
 	nodenames = {"mcl_beacons:beacon_beam"},
@@ -385,7 +379,6 @@ minetest.register_abm{
 		end
 	end,
 }
-
 
 minetest.register_abm{
 	label="apply beacon effects to players",
