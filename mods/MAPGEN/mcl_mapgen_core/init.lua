@@ -302,8 +302,11 @@ local function set_foliage_palette(minp,maxp,data2,area,biomemap,nodes)
 		local bn = minetest.get_biome_name(biomemap[b_pos])
 		if bn then
 			local biome = minetest.registered_biomes[bn]
-			if biome and biome._mcl_biome_type and biome._mcl_foliage_palette_index then
+			if biome and biome._mcl_biome_type and biome._mcl_foliage_palette_index and data2[p_pos] == 0 then
 				data2[p_pos] = biome._mcl_foliage_palette_index
+				lvm_used = true
+			elseif biome and biome._mcl_biome_type and biome._mcl_foliage_palette_index and data2[p_pos] ~= 0 then
+				data2[p_pos] = (biome._mcl_foliage_palette_index * 8) + data2[p_pos]
 				lvm_used = true
 			end
 		end
@@ -416,7 +419,7 @@ local function block_fixes_foliage(vm, data, data2, emin, emax, area, minp, maxp
 	local pr = PseudoRandom(blockseed)
 	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
 		-- Set param2 (=color) of nodes which use the foliage colour palette.
-		lvm_used = set_foliage_palette(minp,maxp,data2,area,biomemap,{"group:foliage_palette"})
+		lvm_used = set_foliage_palette(minp,maxp,data2,area,biomemap,{"group:foliage_palette", "group:foliage_palette_wallmounted"})
 	end
 	return lvm_used
 end
