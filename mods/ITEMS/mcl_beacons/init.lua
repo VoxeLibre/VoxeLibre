@@ -178,6 +178,24 @@ local function beacon_blockcheck(pos)
 	end
 end
 
+local function is_obstructed(pos) --also removes beacon beam if true
+
+	for y=pos.y+1, pos.y+100 do
+
+		local nodename = minetest.get_node({x=pos.x,y=y, z = pos.z}).name
+		if nodename ~= "mcl_core:bedrock" and nodename ~= "air" and nodename ~= "mcl_core:void" and nodename ~= "ignore" then --ignore means not loaded, let's just assume that's air
+			if nodename ~="mcl_beacons:beacon_beam" then
+				if minetest.get_item_group(nodename,"glass") == 0 and minetest.get_item_group(nodename,"material_glass") == 0  then
+					remove_beacon_beam(pos)
+					return true
+				end
+			end
+		end
+	end
+
+	return false
+end
+
 local function effect_player(effect,pos,power_level, effect_level,player)
 	local distance =  vector.distance(player:get_pos(), pos)
 	if distance > (power_level+1)*10 then return end
@@ -192,6 +210,7 @@ local function effect_player(effect,pos,power_level, effect_level,player)
 	end
 end
 
+--[[
 local function globalstep_function(pos,player)
 	local meta = minetest.get_meta(pos) 
 	local power_level = beacon_blockcheck(pos)
@@ -217,6 +236,25 @@ local function globalstep_function(pos,player)
 			return
 		end
 		effect_player(effect_string,pos,power_level,meta:get_int("effect_level"),player)
+	end
+end
+--]]
+
+local function abm_func(pos)
+	local meta = minetest.get_meta(pos)
+	local power_level = beacon_blockcheck(pos)
+	local effect_string = meta:get_string("effect")
+
+	if meta:get_int("effect_level") == 2 and power_level < 4 then --no need to run loops when beacon is in an invalid setup :Pi
+		return
+	end
+
+	for _, obj in ipairs(minetest.get_objects_inside_radius(pos, (power_level+1)*10)) do
+		if obj:is_player() then
+			if not is_obstructed(pos) then
+				effect_player(effect_string,pos,power_level,meta:get_int("effect_level"),obj)
+			end
+		end	
 	end
 end
 
@@ -330,7 +368,8 @@ minetest.register_node("mcl_beacons:beacon", {
 						minetest.set_node({x=pos.x,y=y,z=pos.z},{name="mcl_beacons:beacon_beam",param2=beam_palette_index})
 					end
 				end
-				globalstep_function(pos,sender)--call it once outside the globalstep so the player gets the effect right after selecting it
+				abm_func(pos) --call it once outside the globalstep so the player gets the effect right after selecting it
+				--globalstep_function(pos,sender)--call it once outside the globalstep so the player gets the effect right after selecting it
 			end
 		end
 	end,
@@ -354,6 +393,7 @@ end
 
 local timer = 0
 
+--[[
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
 	if timer >= 3  then
@@ -367,6 +407,7 @@ minetest.register_globalstep(function(dtime)
 		timer = 0
 	end
 end)
+--]]
 
 
 minetest.register_abm{
@@ -389,6 +430,17 @@ minetest.register_abm{
 		elseif minetest.get_item_group(node_above.name, "glass") ~= 0 or minetest.get_item_group(node_above.name,"material_glass") ~= 0 then
 			minetest.set_node({x=pos.x,y=pos.y+2,z=pos.z},{name="mcl_beacons:beacon_beam",param2=get_beacon_beam(node_above.name)})
 		end
+	end,
+}
+
+
+minetest.register_abm{
+	label="apply beacon effects to players",
+	nodenames = {"mcl_beacons:beacon"},
+	interval = 3,
+	chance = 1,
+	action = function(pos)
+		abm_func(pos) -- for some FUC**** reason I can't just say abm_func directly, so this is a dirty workaround
 	end,
 }
 
