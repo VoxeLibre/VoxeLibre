@@ -210,36 +210,6 @@ local function effect_player(effect,pos,power_level, effect_level,player)
 	end
 end
 
---[[
-local function globalstep_function(pos,player)
-	local meta = minetest.get_meta(pos) 
-	local power_level = beacon_blockcheck(pos)
-	local effect_string =  meta:get_string("effect") 
-	if meta:get_int("effect_level") == 2 and power_level < 4 then
-		return
-	else
-		local obstructed = false
-		for y=pos.y+1, pos.y+100 do
-
-			local nodename = minetest.get_node({x=pos.x,y=y, z = pos.z}).name
-			if nodename ~= "mcl_core:bedrock" and nodename ~= "air" and nodename ~= "mcl_core:void" and nodename ~= "ignore" then --ignore means not loaded, let's just assume that's air
-				if nodename ~="mcl_beacons:beacon_beam" then
-					if minetest.get_item_group(nodename,"glass") == 0 and minetest.get_item_group(nodename,"material_glass") == 0  then
-						obstructed = true
-						remove_beacon_beam(pos)
-						return
-					end
-				end
-			end
-		end
-		if obstructed then
-			return
-		end
-		effect_player(effect_string,pos,power_level,meta:get_int("effect_level"),player)
-	end
-end
---]]
-
 local function abm_func(pos)
 	local meta = minetest.get_meta(pos)
 	local power_level = beacon_blockcheck(pos)
@@ -368,9 +338,7 @@ minetest.register_node("mcl_beacons:beacon", {
 						minetest.set_node({x=pos.x,y=y,z=pos.z},{name="mcl_beacons:beacon_beam",param2=beam_palette_index})
 					end
 				end
-				abm_func(pos) --call it once outside the globalstep so the player gets the effect right after selecting it
-				--globalstep_function(pos,sender)--call it once outside the globalstep so the player gets the effect right after selecting it
-			end
+				abm_func(pos) --call it once outside the globalstep so the player gets the effect right after selecting it			end
 		end
 	end,
 	light_source = 14,
@@ -393,21 +361,6 @@ end
 
 local timer = 0
 
---[[
-minetest.register_globalstep(function(dtime)
-	timer = timer + dtime
-	if timer >= 3  then
-		for _, player in ipairs(minetest.get_connected_players()) do
-			local player_pos = player:get_pos()
-			local pos_list = minetest.find_nodes_in_area({x=player_pos.x-50, y=player_pos.y-50, z=player_pos.z-50}, {x=player_pos.x+50, y=player_pos.y+50, z=player_pos.z+50},"mcl_beacons:beacon")
-			for _, pos in ipairs(pos_list) do
-				globalstep_function(pos,player)
-			end
-		end
-		timer = 0
-	end
-end)
---]]
 
 
 minetest.register_abm{
