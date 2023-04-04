@@ -337,6 +337,7 @@ minetest.register_node("mcl_beacons:beacon", {
 					end
 				end
 				abm_func(pos) --call it once outside the globalstep so the player gets the effect right after selecting it			end
+			end
 		end
 	end,
 	light_source = 14,
