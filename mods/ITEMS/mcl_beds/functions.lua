@@ -202,7 +202,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 	return true
 end
 
-local function update_formspecs(finished, ges, singlular_player) --singlular_player isn't a boolean, just a player thats allowed to be nil here
+local function update_formspecs(finished, ges)
 	local ges = ges or #minetest.get_connected_players()
 	local form_n = "size[12,5;true]"
 	local all_in_bed = players_in_bed_setting() <= (player_in_bed * 100) / ges
@@ -211,17 +211,12 @@ local function update_formspecs(finished, ges, singlular_player) --singlular_pla
 	local button_abort = "button_exit[4,3;4,0.75;leave;"..F(S("Abort sleep")).."]"
 	local bg_presleep = "bgcolor[#00000080;true]"
 	local bg_sleep = "bgcolor[#000000FF;true]"
-	local chatbox = "field[5,2;1,1;chatmessage;"..F(S("Chat:"))..";]"
-	local chatsubmit  = "button[5,4;1,2;chatsubmit;"..F(S("send!")).."]"
+	local chatbox = "field[1,4.5;9,1;chatmessage;"..F(S("Chat:"))..";]"
+	local chatsubmit  = "button[10,3.75;1,2;chatsubmit;"..F(S("send!")).."]"
 
 	form_n = form_n .. chatbox .. chatsubmit --because these should be in the formspec in ANY case, they might as well be added here already
 
 	if finished then
-		if singlular_player ~= nil then
-			minetest.close_formspec(singlular_player:get_player_name(),"mcl_beds_form")
-			return
-		end
-
 		for name,_ in pairs(mcl_beds.player) do
 			minetest.close_formspec(name, "mcl_beds_form")
 		end
@@ -260,11 +255,6 @@ local function update_formspecs(finished, ges, singlular_player) --singlular_pla
 			form_n = form_n .. button_leave
 		end
 		form_n = form_n .. "label[0.5,1;"..F(text).."]"
-	end
-
-	if singlular_player ~= nil then
-		minetest.show_formspec(singlular_player:get_player_name(),"mcl_beds_form",form_n)
-		return
 	end
 
 	for name,_ in pairs(mcl_beds.player) do
@@ -446,8 +436,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	if fields.chatsubmit and fields.chatmessage ~= "" then
 		minetest.chat_send_all(minetest.format_chat_message(player:get_player_name(), fields.chatmessage))
-		update_formspecs(false,nil,player)
-		return --no need to check other conditions anymore
 	end	
 
 	if fields.quit or fields.leave then
