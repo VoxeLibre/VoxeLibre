@@ -240,7 +240,7 @@ end
 local function start_firework_rocket(pos)
 	local p = get_point_on_circle(pos,math.random(32,64),32)
 	local n = minetest.get_node(p)
-	local l = minetest.get_natural_light(pos,0.5)
+	local l = mcl_util.get_natural_light(pos,0.5)
 	if n.name ~= "air" or l <= minetest.LIGHT_MAX then return end
 	local o = minetest.add_entity(p,"mcl_bows:rocket_entity")
 	o:get_luaentity()._harmless = true
