@@ -305,7 +305,7 @@ local function set_foliage_palette(minp,maxp,data2,area,biomemap,nodes)
 			if biome and biome._mcl_biome_type and biome._mcl_foliage_palette_index and data2[p_pos] == 0 then
 				data2[p_pos] = biome._mcl_foliage_palette_index
 				lvm_used = true
-			elseif biome and biome._mcl_biome_type and biome._mcl_foliage_palette_index and data2[p_pos] ~= 0 then
+			elseif biome and biome._mcl_biome_type and biome._mcl_foliage_palette_index and data2[p_pos] > 1 then
 				data2[p_pos] = (biome._mcl_foliage_palette_index * 8) + data2[p_pos]
 				lvm_used = true
 			end
