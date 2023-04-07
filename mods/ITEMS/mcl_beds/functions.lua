@@ -437,6 +437,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.chatsubmit and fields.chatmessage ~= "" then
 		if not minetest.check_player_privs(player,"shout") then
 			minetest.chat_send_player(player:get_player_name(),S("You are missing the 'shout' privilege! It's required in order to talk in chat..."))
+			return
+		end
 		minetest.chat_send_all(minetest.format_chat_message(player:get_player_name(), fields.chatmessage))
 	end	
 
