@@ -43,3 +43,4 @@ Allows you to sleep=
 Respawn Anchor=
 Chat:=
 send!=
+You are missing the 'shout' privilege! It's required in order to talk in chat...=
