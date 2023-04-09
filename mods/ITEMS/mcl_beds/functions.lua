@@ -446,6 +446,17 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
+local function exceeded_rate_limit(playername) --Note: will also take care of increasing value
+	if playermessagecounter[playername] == nil then
+		playermessagecounter[playername] = 0
+	end
+	if playermessagecounter[playername] >= message_rate_limit then -- == should do as well
+		return true
+	end
+	playermessagecounter[playername] = playermessagecounter[playername] + 1
+	return false
+end	
+
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= "mcl_beds_form" then
 		return
@@ -457,16 +468,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			return
 		end
 
-		if playermessagecounter[player:get_player_name()] == nil then
-			playermessagecounter[player:get_player_name()] = 0
-		end
-
-		if playermessagecounter[player:get_player_name()] >= message_rate_limit then -- == should do as well
+		if exceeded_rate_limit(player:get_player_name()) then 
 			minetest.chat_send_player(player:get_player_name(),S("You exceeded the maximum number of messages per 10 seconds!") .. " (" .. tostring(message_rate_limit) .. ")")
 			return
 		end
 
-		playermessagecounter[player:get_player_name()] = playermessagecounter[player:get_player_name()] + 1
 		minetest.chat_send_all(minetest.format_chat_message(player:get_player_name(), fields.chatmessage))
 	end	
 
