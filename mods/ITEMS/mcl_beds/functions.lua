@@ -462,7 +462,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		end
 
 		if playermessagecounter[player:get_player_name()] >= message_rate_limit then -- == should do as well
-			minetest.chat_send_player(player:get_player_name(),S("You exceeded the maximum number of messages per 10 seconds! " .. "(" .. tostring(message_rate_limit) .. ")"))
+			minetest.chat_send_player(player:get_player_name(),S("You exceeded the maximum number of messages per 10 seconds! ") .. "(" .. tostring(message_rate_limit) .. ")")
 			return
 		end
 
