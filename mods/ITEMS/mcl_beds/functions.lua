@@ -443,7 +443,6 @@ minetest.register_globalstep(function(dtime)
 	if globalstep_timer >= 10 then
 		globalstep_timer = 0
 		playermessagecounter = {}
-		minetest.log("reset counter")
 	end
 end)
 
