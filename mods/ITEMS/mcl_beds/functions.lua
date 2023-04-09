@@ -429,6 +429,24 @@ minetest.register_on_leaveplayer(function(player)
 	update_formspecs(false, #players)
 end)
 
+
+local message_rate_limit = tonumber(minetest.settings:get("chat_message_limit_per_10sec")) or 8 --NEVER change this! if this was java, i would've declared it as final
+local playermessagecounter = {}
+--[[
+	This table stores how many messages a player XY has sent (only while being in a bed) within 10 secs
+	It gets reset after 10 secs using a globalstep
+]]
+
+local globalstep_timer = 0
+minetest.register_globalstep(function(dtime)
+	globalstep_timer = globalstep_timer + dtime
+	if globalstep_timer >= 10 then
+		globalstep_timer = 0
+		playermessagecounter = {}
+		minetest.log("reset counter")
+	end
+end)
+
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= "mcl_beds_form" then
 		return
@@ -439,6 +457,17 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			minetest.chat_send_player(player:get_player_name(),S("You are missing the 'shout' privilege! It's required in order to talk in chat..."))
 			return
 		end
+
+		if playermessagecounter[player:get_player_name()] == nil then
+			playermessagecounter[player:get_player_name()] = 0
+		end
+
+		if playermessagecounter[player:get_player_name()] >= message_rate_limit then -- == should do as well
+			minetest.chat_send_player(player:get_player_name(),S("You exceeded the maximum number of messages per 10 seconds! " .. "(" .. tostring(message_rate_limit) .. ")"))
+			return
+		end
+
+		playermessagecounter[player:get_player_name()] = playermessagecounter[player:get_player_name()] + 1
 		minetest.chat_send_all(minetest.format_chat_message(player:get_player_name(), fields.chatmessage))
 	end	
 
