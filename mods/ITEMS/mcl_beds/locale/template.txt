@@ -45,4 +45,4 @@ Chat:=
 send!=
 You are missing the 'shout' privilege! It's required in order to talk in chat...=
 You exceeded the maximum number of messages per 10 seconds!=
-Hey! Would you guys mind sleeping?
+Hey! Would you guys mind sleeping?=
