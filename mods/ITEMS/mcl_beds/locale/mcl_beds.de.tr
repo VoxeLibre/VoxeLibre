@@ -44,3 +44,4 @@ Respawn Anchor=Seelenanker
 Chat:=Chat:
 send!=senden!
 You are missing the 'shout' privilege! It's required in order to talk in chat...=Ihnen fehlt das 'shout' Privileg! Es wird benötigt, um im Chat reden zu können...
+You exceeded the maximum number of messages per 10 seconds!=Sie haben die maximale Anzahl an Chatnachrichten pro 10 Sekunden überschritten!
