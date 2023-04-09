@@ -435,7 +435,7 @@ local playermessagecounter = {}
 --[[
 	This table stores how many messages a player XY has sent (only while being in a bed) within 10 secs
 	It gets reset after 10 secs using a globalstep
-]]
+--]]
 
 local globalstep_timer = 0
 minetest.register_globalstep(function(dtime)
