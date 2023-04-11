@@ -211,6 +211,11 @@ local function update_formspecs(finished, ges)
 	local button_abort = "button_exit[4,3;4,0.75;leave;"..F(S("Abort sleep")).."]"
 	local bg_presleep = "bgcolor[#00000080;true]"
 	local bg_sleep = "bgcolor[#000000FF;true]"
+	local chatbox = "field[0.2,4.5;9,1;chatmessage;"..F(S("Chat:"))..";]"
+	local chatsubmit  = "button[9.2,3.75;1,2;chatsubmit;"..F(S("send!")).."]"
+	local defaultmessagebutton = "button[10.2,3.75;1,2;defaultmessage;zzZzzZ]"
+
+	form_n = form_n .. chatbox .. chatsubmit --because these should be in the formspec in ANY case, they might as well be added here already
 
 	if finished then
 		for name,_ in pairs(mcl_beds.player) do
@@ -237,6 +242,7 @@ local function update_formspecs(finished, ges)
 			text = text .. "\n" .. comment
 			form_n = form_n .. bg_presleep
 			form_n = form_n .. button_leave
+			form_n = form_n .. defaultmessagebutton --Players should only be able to see that button when: -Skipping the night is possible  -There aren't enoght players sleeping yet
 		end
 		form_n = form_n .. "label[0.5,1;"..F(text).."]"
 	else
@@ -425,10 +431,61 @@ minetest.register_on_leaveplayer(function(player)
 	update_formspecs(false, #players)
 end)
 
+local message_rate_limit = tonumber(minetest.settings:get("chat_message_limit_per_10sec")) or 8 --NEVER change this! if this was java, i would've declared it as final
+local playermessagecounter = {}
+--[[
+	This table stores how many messages a player XY has sent (only while being in a bed) within 10 secs
+	It gets reset after 10 secs using a globalstep
+--]]
+
+local globalstep_timer = 0
+minetest.register_globalstep(function(dtime)
+	globalstep_timer = globalstep_timer + dtime
+	if globalstep_timer >= 10 then
+		globalstep_timer = 0
+		playermessagecounter = {}
+	end
+end)
+
+local function exceeded_rate_limit(playername) --Note: will also take care of increasing value and sending feedback message if needed
+	if playermessagecounter[playername] == nil then
+		playermessagecounter[playername] = 0
+	end
+	if playermessagecounter[playername] >= message_rate_limit then -- == should do as well
+		minetest.chat_send_player(playername,S("You exceeded the maximum number of messages per 10 seconds!") .. " (" .. tostring(message_rate_limit) .. ")")
+		return true
+	end
+	playermessagecounter[playername] = playermessagecounter[playername] + 1
+	return false
+end
+
+local function shout_priv_check(player)
+	if not minetest.check_player_privs(player,"shout") then
+		minetest.chat_send_player(player:get_player_name(),S("You are missing the 'shout' privilege! It's required in order to talk in chat..."))
+		return false
+	end
+	return true
+end
+
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= "mcl_beds_form" then
 		return
 	end
+
+	if fields.chatsubmit and fields.chatmessage ~= "" then
+		if (not exceeded_rate_limit(player:get_player_name())) and shout_priv_check(player) then 
+			minetest.chat_send_all(minetest.format_chat_message(player:get_player_name(), fields.chatmessage))
+		end
+		return
+	end
+
+	if fields.defaultmessage then
+		if (not exceeded_rate_limit(player:get_player_name())) and shout_priv_check(player) then
+			minetest.chat_send_all(minetest.format_chat_message(player:get_player_name(), S("Hey! Would you guys mind sleeping?")))
+		end
+		return
+	end
+
 	if fields.quit or fields.leave then
 		lay_down(player, nil, nil, false)
 		update_formspecs(false)
