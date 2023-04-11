@@ -164,7 +164,7 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 			mcl_inventory.update_inventory_formspec(obj)
 		end
 	end
-	minetest.sound_play({name = "mcl_block"})
+	minetest.sound_play({name = "mcl_block"}, {pos = obj:get_pos(), max_hear_distance = 16})
 	return 0
 end)
 
