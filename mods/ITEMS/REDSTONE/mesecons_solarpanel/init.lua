@@ -1,55 +1,8 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
-local function path_to_sunlight_exists(position, light_level)
-	local neighbours = {
-		{ x = 0, y = 0, z =-1 },
-		{ x = 0, y = 0, z = 1 },
-		{ x = 0, y =-1, z = 0 },
-		{ x = 0, y = 1, z = 0 },
-		{ x =-1, y = 0, z = 0 },
-		{ x = 1, y = 0, z = 0 },
-	}
-	for i=1, #neighbours do
-		local offset = neighbours[i]
-		local position_new = vector.add(
-			position,
-			offset
-		)
-		local light_level_new = minetest.get_node_light(
-			position_new,
-			nil
-		)
-		if 15 == light_level_new then
-			-- found the sunlight
-			return true
-		elseif light_level_new > light_level then
-			-- search where light is brighter
-			if path_to_sunlight_exists(
-				position_new,
-				light_level_new
-			) then
-				return true
-			end
-		end
-	end
-end
-
 local function sunlight_visible(position)
-	local light_level = mcl_util.get_natural_light (position)
-	if light_level >= 12 then
-		--minetest.log("Light is greater than 12")
-		return true
-	else
-		local time = minetest.get_timeofday() * 24000
-		-- only check light level during day
-		if time > 6000 and time < 18000 then
-			light_level = minetest.get_node_light(position,	nil)
-			if light_level >= 12 then
-				return path_to_sunlight_exists(position, 12)
-			end
-		end
-	end
-	return false
+	local light_level = mcl_util.get_natural_light(position)
+	return light_level ~= nil and light_level >= 12
 end
 
 local boxes = { -8/16, -8/16, -8/16,  8/16, -2/16, 8/16 }
