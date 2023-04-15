@@ -76,7 +76,7 @@ in singleplayer, post a screenshot of the message that Minetest showed
 when the crash happened (or copy the message into your issue). If you
 are a server admin, you can find error messages in the log file of the
 server.
-* Tell us which MineClone2 and Minetest versions you are using.
+* Tell us which MineClone2 and Minetest versions you are using (from Minetest 5.7 type /ver, for previous versions, check the game.conf or README.md file).
 * Tell us how to reproduce the problem: What you were doing to trigger
 the bug, e.g. before the crash happened or what causes the faulty
 behavior.
