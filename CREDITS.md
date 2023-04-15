@@ -36,7 +36,8 @@
 * MrRar
 * talamh
 * Faerraven / Michieal
-* FossFanatic
+* FossFanatic 
+* SmokeyDope
 
 ## Contributors
 * Laurent Rocher
@@ -81,15 +82,12 @@
 * aldum
 * Dieter44
 * Pepebotella
-* MrRar
 * Lazerbeak12345
 * mrminer
 * Thunder1035
 * opfromthestart
 * snowyu
 * FaceDeer
-* Faerraven / Michieal
-* FossFanatic
 * Herbert West
 * GuyLiner
 * 3raven
@@ -101,8 +99,8 @@
 * b3nderman
 * CyberMango
 * gldrk
-* SmokeyDope
 * atomdmac
+* emptyshore
 
 ## MineClone5
 * kay27
