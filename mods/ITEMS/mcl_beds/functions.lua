@@ -438,12 +438,14 @@ local playermessagecounter = {}
 	It gets reset after 10 secs using a globalstep
 --]]
 
+local chatbuttonused = false
 local globalstep_timer = 0
 minetest.register_globalstep(function(dtime)
 	globalstep_timer = globalstep_timer + dtime
 	if globalstep_timer >= 10 then
 		globalstep_timer = 0
 		playermessagecounter = {}
+		chatbuttonused = false
 	end
 end)
 
@@ -480,7 +482,13 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 
 	if fields.defaultmessage then
+		if chatbuttonused then
+			minetest.chat_send_player(player:get_player_name(),S("Sorry, but you have to wait @1 seconds until you may use this button again!",tostring(math.ceil(10-globalstep_timer))))
+			return
+		end
+
 		if (not exceeded_rate_limit(player:get_player_name())) and shout_priv_check(player) then
+			chatbuttonused = true
 			minetest.chat_send_all(minetest.format_chat_message(player:get_player_name(), S("Hey! Would you guys mind sleeping?")))
 		end
 		return
