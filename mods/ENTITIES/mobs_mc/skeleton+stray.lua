@@ -21,6 +21,7 @@ local skeleton = {
 	xp_min = 6,
 	xp_max = 6,
 	breath_max = -1,
+	wears_armor = 1,
 	armor = {undead = 100, fleshy = 100},
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.98, 0.3},
 	pathfinding = 1,
