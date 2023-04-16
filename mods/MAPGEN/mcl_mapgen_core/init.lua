@@ -290,6 +290,63 @@ local function set_grass_palette(minp,maxp,data2,area,biomemap,nodes)
 	return lvm_used
 end
 
+local function set_foliage_palette(minp,maxp,data2,area,biomemap,nodes)
+	-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
+	if not biomemap then return end
+	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
+	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
+	for n=1, #nodes do
+		local n = nodes[n]
+		local p_pos = area:index(n.x, n.y, n.z)
+		local b_pos = aream:index(n.x, 0, n.z)
+		local bn = minetest.get_biome_name(biomemap[b_pos])
+		if bn then
+			local biome = minetest.registered_biomes[bn]
+			if biome and biome._mcl_biome_type and biome._mcl_foliage_palette_index and data2[p_pos] <= 1 then
+				data2[p_pos] = biome._mcl_foliage_palette_index
+				lvm_used = true
+			elseif biome and biome._mcl_biome_type and biome._mcl_foliage_palette_index and data2[p_pos] > 1 then
+				data2[p_pos] = (biome._mcl_foliage_palette_index * 8) + data2[p_pos]
+				lvm_used = true
+			end
+		end
+	end
+	return lvm_used
+end
+
+local function set_water_palette(minp,maxp,data2,area,biomemap,nodes)
+	-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
+	if not biomemap then return end
+	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
+	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
+	for n=1, #nodes do
+		local n = nodes[n]
+		local p_pos = area:index(n.x, n.y, n.z)
+		local b_pos = aream:index(n.x, 0, n.z)
+		local bn = minetest.get_biome_name(biomemap[b_pos])
+		if bn then
+			local biome = minetest.registered_biomes[bn]
+			if biome and biome._mcl_biome_type and biome._mcl_water_palette_index then
+				data2[p_pos] = biome._mcl_water_palette_index
+				lvm_used = true
+			end
+		end
+	end
+	return lvm_used
+end
+
+local function set_seagrass_param2(minp,maxp,data2,area,biomemap,nodes)
+	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
+	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
+	for n=1, #nodes do
+		local n = nodes[n]
+		local p_pos = area:index(n.x, n.y, n.z)
+		data2[p_pos] = 3
+		lvm_used = true
+	end
+	return lvm_used
+end
+
 -- Below the bedrock, generate air/void
 local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	local biomemap --ymin, ymax
@@ -346,23 +403,47 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 end
 
 local function block_fixes_grass(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-    if maxp.y < mcl_vars.mg_overworld_min then
-        --minetest.log("Exit grass fix")
-        return
-    else
-        --minetest.log("Grass fixes")
-    end
-
-    local biomemap = minetest.get_mapgen_object("biomemap")
-    local lvm_used = false
-
-    if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
-        -- Set param2 (=color) of nodes which use the grass colour palette.
-        lvm_used = set_grass_palette(minp,maxp,data2,area,biomemap,{"group:grass_palette"})
-    end
-    return lvm_used
+	local biomemap = minetest.get_mapgen_object("biomemap")
+	local lvm_used = false
+	local pr = PseudoRandom(blockseed)
+	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
+		-- Set param2 (=color) of nodes which use the grass colour palette.
+		lvm_used = set_grass_palette(minp,maxp,data2,area,biomemap,{"group:grass_palette"})
+	end
+	return lvm_used
 end
 
+local function block_fixes_foliage(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
+	local biomemap = minetest.get_mapgen_object("biomemap")
+	local lvm_used = false
+	local pr = PseudoRandom(blockseed)
+	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
+		-- Set param2 (=color) of nodes which use the foliage colour palette.
+		lvm_used = set_foliage_palette(minp,maxp,data2,area,biomemap,{"group:foliage_palette", "group:foliage_palette_wallmounted"})
+	end
+	return lvm_used
+end
+
+local function block_fixes_water(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
+	local biomemap = minetest.get_mapgen_object("biomemap")
+	local lvm_used = false
+	local pr = PseudoRandom(blockseed)
+	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
+		-- Set param2 (=color) of nodes which use the water colour palette.
+		lvm_used = set_water_palette(minp,maxp,data2,area,biomemap,{"group:water_palette"})
+	end
+	return lvm_used
+end
+
+local function block_fixes_seagrass(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
+	local lvm_used = false
+	local pr = PseudoRandom(blockseed)
+	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
+		-- Set param2 of seagrass to 3.
+		lvm_used = set_seagrass_param2(minp,maxp,data2,area,biomemap,{"group:seagrass"})
+	end
+	return lvm_used
+end
 
 -- End block fixes:
 local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
@@ -391,6 +472,9 @@ end, 9999, true)
 
 if mg_name ~= "v6" and mg_name ~= "singlenode" then
 	mcl_mapgen_core.register_generator("block_fixes_grass", block_fixes_grass, nil, 9999, true)
+	mcl_mapgen_core.register_generator("block_fixes_foliage", block_fixes_foliage, nil, 9999, true)
+	mcl_mapgen_core.register_generator("block_fixes_water", block_fixes_water, nil, 9999, true)
+	mcl_mapgen_core.register_generator("block_fixes_seagrass", block_fixes_seagrass, nil, 9999, true)
 end
 
 if mg_name == "v6" then
@@ -467,8 +551,38 @@ minetest.register_lbm({
 	end
 })
 
-minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of foliage in new mapblocks.
-	local pos1, pos2 = vector.offset(minp, -16, -16, -16), vector.offset(maxp, 16, 16, 16)
+minetest.register_lbm({
+	label = "Fix water palette indexes",  -- Set correct palette indexes of water in old mapblocks.
+	name = "mcl_mapgen_core:fix_water_palette_indexes",
+	nodenames = {"group:water_palette"},
+	run_at_every_load = false,
+	action = function(pos, node)
+		local water_palette_index = mcl_util.get_palette_indexes_from_pos(pos).water_palette_index
+		if node.param2 ~= water_palette_index then
+			node.param2 = water_palette_index
+			minetest.set_node(pos, node)
+		end
+	end
+})
+
+minetest.register_lbm({
+	label = "Fix incorrect seagrass", -- Set correct param2 of seagrass in old mapblocks.
+	name = "mcl_mapgen_core:fix_incorrect_seagrass",
+	nodenames = {"group:seagrass"},
+	run_at_every_load = false,
+	action = function(pos, node)
+		if node.param2 ~= 3 then
+			node.param2 = 3
+			minetest.set_node(pos, node)
+		end
+	end
+})
+
+-- We go outside x and y for where trees are placed next to a biome that has already been generated.
+-- We go above maxp.y because trees can often get placed close to the top of a generated area and folliage may not
+-- be coloured correctly.
+local function fix_folliage_missed (minp, maxp)
+	local pos1, pos2 = vector.offset(minp, -6, 0, -6), vector.offset(maxp, 6, 14, 6)
 	local foliage = minetest.find_nodes_in_area(pos1, pos2, {"group:foliage_palette", "group:foliage_palette_wallmounted"})
 	for _, fpos in pairs(foliage) do
 		local fnode = minetest.get_node(fpos)
@@ -487,32 +601,10 @@ minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct pa
 		end
 	end
 end
-)
 
-minetest.register_lbm({
-	label = "Fix water palette indexes",  -- Set correct palette indexes of water in old mapblocks.
-	name = "mcl_mapgen_core:fix_water_palette_indexes",
-	nodenames = {"group:water_palette"},
-	run_at_every_load = false,
-	action = function(pos, node)
-		local water_palette_index = mcl_util.get_palette_indexes_from_pos(pos).water_palette_index
-		if node.param2 ~= water_palette_index then
-			node.param2 = water_palette_index
-			minetest.set_node(pos, node)
-		end
+minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of missed foliage.
+	if maxp.y < 0 then
+		return
 	end
-})
-
-minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of water in new mapblocks.
-	local pos1, pos2 = vector.offset(minp, -16, -16, -16), vector.offset(maxp, 16, 16, 16)
-	local water = minetest.find_nodes_in_area(pos1, pos2, {"group:water_palette"})
-	for _, wpos in pairs(water) do
-		local wnode = minetest.get_node(wpos)
-		local water_palette_index = mcl_util.get_palette_indexes_from_pos(wpos).water_palette_index
-		if wnode.param2 ~= water_palette_index then
-			wnode.param2 = water_palette_index
-			minetest.set_node(wpos, wnode)
-		end
-	end
-end
-)
+	fix_folliage_missed (minp, maxp)
+end)
