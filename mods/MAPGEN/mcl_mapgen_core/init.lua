@@ -122,7 +122,10 @@ elseif mg_name == "fractal" then
 	mg_flags.caverns = true
 end
 
-
+if mg_name ~= "v6" and mg_name ~= "singlenode" then
+	minetest.set_mapgen_setting("mg_biome_np_heat_blend", "0, 1.5, (32, 32, 32), 13, 2, 1, 2, eased", true)
+	minetest.set_mapgen_setting("mg_biome_np_humidity_blend", "0, 1.5, (32, 32, 32), 90003, 2, 1, 2, eased", true)
+end
 
 local mg_flags_str = ""
 for k,v in pairs(mg_flags) do
