@@ -582,7 +582,7 @@ minetest.register_lbm({
 -- We go above maxp.y because trees can often get placed close to the top of a generated area and folliage may not
 -- be coloured correctly.
 local function fix_folliage_missed (minp, maxp)
-	local pos1, pos2 = vector.offset(minp, -4, 0, -4), vector.offset(maxp, 4, 10, 4)
+	local pos1, pos2 = vector.offset(minp, -6, 0, -6), vector.offset(maxp, 6, 14, 6)
 	local foliage = minetest.find_nodes_in_area(pos1, pos2, {"group:foliage_palette", "group:foliage_palette_wallmounted"})
 	for _, fpos in pairs(foliage) do
 		local fnode = minetest.get_node(fpos)
