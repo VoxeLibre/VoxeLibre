@@ -18,6 +18,7 @@ mcl_mobs.register_mob("mobs_mc:witherskeleton", {
 	xp_min = 6,
 	xp_max = 6,
 	breath_max = -1,
+	wears_armor = 1,
 	armor = {undead = 100, fleshy = 100},
 	pathfinding = 1,
 	group_attack = true,
