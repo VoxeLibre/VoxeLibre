@@ -578,8 +578,11 @@ minetest.register_lbm({
 	end
 })
 
-minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of missed foliage.
-	local pos1, pos2 = vector.offset(minp, -16, -16, -16), vector.offset(maxp, 16, 16, 16)
+-- We go outside x and y for where trees are placed next to a biome that has already been generated.
+-- We go above maxp.y because trees can often get placed close to the top of a generated area and folliage may not
+-- be coloured correctly.
+local function fix_folliage_missed (minp, maxp)
+	local pos1, pos2 = vector.offset(minp, -4, 0, -4), vector.offset(maxp, 4, 10, 4)
 	local foliage = minetest.find_nodes_in_area(pos1, pos2, {"group:foliage_palette", "group:foliage_palette_wallmounted"})
 	for _, fpos in pairs(foliage) do
 		local fnode = minetest.get_node(fpos)
@@ -598,4 +601,10 @@ minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct pa
 		end
 	end
 end
-)
+
+minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of missed foliage.
+	if maxp.y < 0 then
+		return
+	end
+	fix_folliage_missed (minp, maxp)
+end)
