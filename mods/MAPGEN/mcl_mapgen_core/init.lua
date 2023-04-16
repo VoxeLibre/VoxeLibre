@@ -577,3 +577,25 @@ minetest.register_lbm({
 		end
 	end
 })
+
+minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of missed foliage.
+	local pos1, pos2 = vector.offset(minp, -16, -16, -16), vector.offset(maxp, 16, 16, 16)
+	local foliage = minetest.find_nodes_in_area(pos1, pos2, {"group:foliage_palette", "group:foliage_palette_wallmounted"})
+	for _, fpos in pairs(foliage) do
+		local fnode = minetest.get_node(fpos)
+		local foliage_palette_index = mcl_util.get_palette_indexes_from_pos(fpos).foliage_palette_index
+		if fnode.param2 ~= foliage_palette_index and fnode.name ~= "mcl_core:vine" then
+			fnode.param2 = foliage_palette_index
+			minetest.set_node(fpos, fnode)
+		elseif fnode.name == "mcl_core:vine" then
+			local biome_param2 = foliage_palette_index
+			local rotation_param2 = mcl_util.get_colorwallmounted_rotation(fpos)
+			local final_param2 = (biome_param2 * 8) + rotation_param2
+			if fnode.param2 ~= final_param2 then
+				fnode.param2 = final_param2
+				minetest.set_node(fpos, fnode)
+			end
+		end
+	end
+end
+)
