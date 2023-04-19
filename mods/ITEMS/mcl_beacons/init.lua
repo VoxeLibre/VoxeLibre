@@ -213,16 +213,15 @@ local function abm_func(pos)
 	local power_level = beacon_blockcheck(pos)
 	local effect_string = meta:get_string("effect")
 
-	if meta:get_int("effect_level") == 2 and power_level < 4 then --no need to run loops when beacon is in an invalid setup :Pi
+	if meta:get_int("effect_level") == 2 and power_level < 4 then --no need to run loops when beacon is in an invalid setup :P
 		return
 	end
 
-	for _, obj in ipairs(minetest.get_objects_inside_radius(pos, (power_level+1)*10)) do
-		if obj:is_player() then
-			if not is_obstructed(pos) then
-				effect_player(effect_string,pos,power_level,meta:get_int("effect_level"),obj)
-			end
-		end	
+	for _, obj in pairs(minetest.get_connected_players()) do
+		if vector.distance(pos,obj:get_pos()) > (power_level+1)*10 then return end --I used Pythagoras at first, and ignored this method lol
+		if not is_obstructed(pos) then
+			effect_player(effect_string,pos,power_level,meta:get_int("effect_level"),obj)
+		end
 	end
 end
 
