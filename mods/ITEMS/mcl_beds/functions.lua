@@ -474,22 +474,22 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		return
 	end
 
+	local custom_sleep_message
 	if fields.chatsubmit and fields.chatmessage ~= "" then
-		if (not exceeded_rate_limit(player:get_player_name())) and shout_priv_check(player) then 
-			minetest.chat_send_all(minetest.format_chat_message(player:get_player_name(), fields.chatmessage))
-		end
-		return
+		custom_sleep_message = fields.chatmessage
 	end
 
-	if fields.defaultmessage then
+	if custom_sleep_message or fields.defaultmessage then
 		if chatbuttonused then
-			minetest.chat_send_player(player:get_player_name(),S("Sorry, but you have to wait @1 seconds until you may use this button again!",tostring(math.ceil(10-globalstep_timer))))
+			local time_to_wait = math.ceil(10-globalstep_timer)
+			minetest.chat_send_player(player:get_player_name(),S("Sorry, but you have to wait @1 seconds until you may use this button again!", tostring(time_to_wait)))
 			return
 		end
 
 		if (not exceeded_rate_limit(player:get_player_name())) and shout_priv_check(player) then
 			chatbuttonused = true
-			minetest.chat_send_all(minetest.format_chat_message(player:get_player_name(), S("Hey! Would you guys mind sleeping?")))
+			local message = custom_sleep_message or S("Hey! Would you guys mind sleeping?")
+			minetest.chat_send_all(minetest.format_chat_message(player:get_player_name(), message))
 		end
 		return
 	end
