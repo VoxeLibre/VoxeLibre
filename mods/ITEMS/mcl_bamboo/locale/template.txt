@@ -14,7 +14,7 @@ A wooden pressure plate is a redstone component which supplies its surrounding b
 
 Bamboo=
 Bamboo Button=
-Bamboo Door.=
+Bamboo Door=
 Bamboo Fence=
 Bamboo Fence Gate=
 Bamboo Mosaic Slab=
@@ -24,7 +24,7 @@ Bamboo Plank Stair=
 Bamboo Pressure Plate=
 Bamboo Slab=
 Bamboo Stair=
-Bamboo Trapdoor.=
+Bamboo Trapdoor=
 Double Bamboo Mosaic Slab=
 Double Bamboo Plank Slab=
 Double Bamboo Slab=
