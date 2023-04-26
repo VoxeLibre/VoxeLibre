@@ -818,6 +818,8 @@ minetest.register_entity(":__builtin:item", {
 		local z_diff = (self_pos.z - pos.z) / 2
 
 		local new_pos = vector.offset(pos, x_diff, 0, z_diff)
+		new_pos.y = math.max(self_pos.y, pos.y) + 0.1
+
 		self.object:move_to(new_pos)
 
 		self.age = 0 -- Handle as new entity
