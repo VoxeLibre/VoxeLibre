@@ -808,11 +808,17 @@ minetest.register_entity(":__builtin:item", {
 		if total_count > max_count then
 			return false
 		end
-		-- Merge the remote stack into this one
 
-		-- local pos = object:get_pos()
-		-- pos.y = pos.y + ((total_count - count) / max_count) * 0.15
-		-- self.object:move_to(pos)
+		-- Merge the remote stack into this one
+		local self_pos = self.object:get_pos()
+		local pos = object:get_pos()
+
+		--local y = pos.y + ((total_count - count) / max_count) * 0.15
+		local x_diff = (self_pos.x - pos.x) / 2
+		local z_diff = (self_pos.z - pos.z) / 2
+
+		local new_pos = vector.offset(pos, x_diff, 0, z_diff)
+		self.object:move_to(new_pos)
 
 		self.age = 0 -- Handle as new entity
 		own_stack:set_count(total_count)
@@ -833,6 +839,7 @@ minetest.register_entity(":__builtin:item", {
 			self.object:set_acceleration(vector.zero())
 			return
 		end
+
 		self.age = self.age + dtime
 		if self._collector_timer then
 			self._collector_timer = self._collector_timer + dtime
@@ -861,6 +868,9 @@ minetest.register_entity(":__builtin:item", {
 			disable_physics(self.object, self)
 			return
 		end
+
+
+
 
 		if self.is_clock then
 			self.object:set_properties({
@@ -911,14 +921,13 @@ minetest.register_entity(":__builtin:item", {
 		local is_on_floor = def and (def.walkable
 			and not def.groups.slippery and v.y == 0)
 
-		if not minetest.registered_nodes[nn]
-			or is_floating or is_on_floor then
+		if not minetest.registered_nodes[nn] or is_floating or is_on_floor then
+
 			local own_stack = ItemStack(self.object:get_luaentity().itemstring)
 			-- Merge with close entities of the same item
 			for _, object in pairs(minetest.get_objects_inside_radius(p, 0.8)) do
 				local obj = object:get_luaentity()
-				if obj and obj.name == "__builtin:item"
-					and obj.physical_state == false then
+				if obj and obj.name == "__builtin:item" and obj.physical_state == false then
 					if self:try_merge_with(own_stack, object, obj) then
 						return
 					end
