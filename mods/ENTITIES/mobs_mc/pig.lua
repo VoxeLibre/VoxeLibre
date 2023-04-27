@@ -82,7 +82,7 @@ mcl_mobs.register_mob("mobs_mc:pig", {
 		end
 
 		-- if driver present allow control of horse
-		if self.driver then
+		if self.driver and self.driver:get_wielded_item():get_name() == "mcl_mobitems:carrot_on_a_stick" then
 
 			mcl_mobs.drive(self, "walk", "stand", false, dtime)
 
@@ -149,18 +149,14 @@ mcl_mobs.register_mob("mobs_mc:pig", {
 			return
 		end
 
-		-- Mount or detach player
-		local name = clicker:get_player_name()
-		if self.driver and clicker == self.driver then
-			-- Detach if already attached
-			mcl_mobs.detach(clicker, {x=1, y=0, z=0})
-			return
-
-		elseif not self.driver and self.saddle == "yes" and wielditem:get_name() == "mcl_mobitems:carrot_on_a_stick" then
-			-- Ride pig if it has a saddle and player uses a carrot on a stick
-
-			mcl_mobs.attach(self, clicker)
-
+			-- Should make pig go faster when right clicked with carrot on a stick.
+			-- FIXME: needs work on the going faster part.
+		--[[if self.driver and clicker == self.driver and self.driver:get_wielded_item():get_name() == "mcl_mobitems:carrot_on_a_stick" then
+			if not self.v3 then
+				self.v3 = 0
+				self.max_speed_forward = 100
+				self.accel = 10
+			end
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 
 				local inv = self.driver:get_inventory()
@@ -177,6 +173,19 @@ mcl_mobs.register_mob("mobs_mc:pig", {
 				end
 				inv:set_stack("main",self.driver:get_wield_index(), wielditem)
 			end
+		end]]
+
+		-- Mount or detach player
+		local name = clicker:get_player_name()
+		if self.driver and clicker == self.driver then -- and self.driver:get_wielded_item():get_name() ~= "mcl_mobitems:carrot_on_a_stick" then -- Note: This is for when the ability to make the pig go faster is implemented
+			-- Detach if already attached
+			mcl_mobs.detach(clicker, {x=1, y=0, z=0})
+			return
+
+		elseif not self.driver and self.saddle == "yes" then
+			-- Ride pig if it has a saddle
+
+			mcl_mobs.attach(self, clicker)
 			return
 
 		-- Capture pig
@@ -193,6 +202,18 @@ mcl_mobs.register_mob("mobs_mc:pig", {
 			ent_c.tamed = true
 			ent_c.owner = parent1.owner
 			return false
+		end
+	end,
+
+	after_activate = function(self, staticdata, def, dtime)
+		if self.saddle == "yes" then -- Make saddle load upon rejoin
+			self.base_texture = {
+				"mobs_mc_pig.png", -- base
+				"mobs_mc_pig_saddle.png", -- saddle
+			}
+			self.object:set_properties({
+				textures = self.base_texture
+			})
 		end
 	end,
 })
