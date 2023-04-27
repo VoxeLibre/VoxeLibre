@@ -178,6 +178,22 @@ local function beacon_blockcheck(pos)
 	end
 end
 
+local function clear_obstructed_beam(pos)
+	for y=pos.y+1, pos.y+100 do
+		local nodename = minetest.get_node({x=pos.x,y=y, z = pos.z}).name
+		if nodename ~= "mcl_core:bedrock" and nodename ~= "air" and nodename ~= "mcl_core:void" and nodename ~= "ignore" then --ignore means not loaded, let's just assume that's air
+			if nodename ~="mcl_beacons:beacon_beam" then
+				if minetest.get_item_group(nodename,"glass") == 0 and minetest.get_item_group(nodename,"material_glass") == 0  then
+					remove_beacon_beam(pos)
+					return true
+				end
+			end
+		end
+	end
+
+	return false
+end
+
 local function effect_player(effect,pos,power_level, effect_level,player)
 	local distance =  vector.distance(player:get_pos(), pos)
 	if distance > (power_level+1)*10 then return end
@@ -192,31 +208,25 @@ local function effect_player(effect,pos,power_level, effect_level,player)
 	end
 end
 
-local function globalstep_function(pos,player)
-	local meta = minetest.get_meta(pos) 
-	local power_level = beacon_blockcheck(pos)
-	local effect_string =  meta:get_string("effect") 
-	if meta:get_int("effect_level") == 2 and power_level < 4 then
-		return
-	else
-		local obstructed = false
-		for y=pos.y+1, pos.y+100 do
+local function apply_effects_to_all_players(pos)
+    local meta = minetest.get_meta(pos)
+	local effect_string = meta:get_string("effect")
+    local effect_level = meta:get_int("effect_level")
 
-			local nodename = minetest.get_node({x=pos.x,y=y, z = pos.z}).name
-			if nodename ~= "mcl_core:bedrock" and nodename ~= "air" and nodename ~= "mcl_core:void" and nodename ~= "ignore" then --ignore means not loaded, let's just assume that's air
-				if nodename ~="mcl_beacons:beacon_beam" then
-					if minetest.get_item_group(nodename,"glass") == 0 and minetest.get_item_group(nodename,"material_glass") == 0  then
-						obstructed = true
-						remove_beacon_beam(pos)
-						return
-					end
-				end
-			end
-		end
-		if obstructed then
-			return
-		end
-		effect_player(effect_string,pos,power_level,meta:get_int("effect_level"),player)
+    local power_level = beacon_blockcheck(pos)
+
+	if effect_level == 2 and power_level < 4 then --no need to run loops when beacon is in an invalid setup :P
+		return
+	end
+
+    local beacon_distance = (power_level + 1) * 10
+
+	for _, player in pairs(minetest.get_connected_players()) do
+        if vector.distance(pos, player:get_pos()) <= beacon_distance then
+            if not clear_obstructed_beam(pos) then
+                effect_player(effect_string, pos, power_level, effect_level, player)
+            end
+        end
 	end
 end
 
@@ -330,7 +340,7 @@ minetest.register_node("mcl_beacons:beacon", {
 						minetest.set_node({x=pos.x,y=y,z=pos.z},{name="mcl_beacons:beacon_beam",param2=beam_palette_index})
 					end
 				end
-				globalstep_function(pos,sender)--call it once outside the globalstep so the player gets the effect right after selecting it
+                apply_effects_to_all_players(pos) --call it once outside the globalstep so the player gets the effect right after selecting it
 			end
 		end
 	end,
@@ -352,23 +362,6 @@ function register_beaconfuel(itemstring)
 	table.insert(beacon_fuellist, itemstring)
 end
 
-local timer = 0
-
-minetest.register_globalstep(function(dtime)
-	timer = timer + dtime
-	if timer >= 3  then
-		for _, player in ipairs(minetest.get_connected_players()) do
-			local player_pos = player:get_pos()
-			local pos_list = minetest.find_nodes_in_area({x=player_pos.x-50, y=player_pos.y-50, z=player_pos.z-50}, {x=player_pos.x+50, y=player_pos.y+50, z=player_pos.z+50},"mcl_beacons:beacon")
-			for _, pos in ipairs(pos_list) do
-				globalstep_function(pos,player)
-			end
-		end
-		timer = 0
-	end
-end)
-
-
 minetest.register_abm{
 	label="update beacon beam",
 	nodenames = {"mcl_beacons:beacon_beam"},
@@ -389,6 +382,16 @@ minetest.register_abm{
 		elseif minetest.get_item_group(node_above.name, "glass") ~= 0 or minetest.get_item_group(node_above.name,"material_glass") ~= 0 then
 			minetest.set_node({x=pos.x,y=pos.y+2,z=pos.z},{name="mcl_beacons:beacon_beam",param2=get_beacon_beam(node_above.name)})
 		end
+	end,
+}
+
+minetest.register_abm{
+	label="apply beacon effects to players",
+	nodenames = {"mcl_beacons:beacon"},
+	interval = 3,
+	chance = 1,
+	action = function(pos)
+        apply_effects_to_all_players(pos)
 	end,
 }
 
