@@ -239,7 +239,7 @@ minetest.register_globalstep(function(dtime)
 			elytra.speed = 1 - (direction.y/2 + 0.5)
 		end
 
-		elytra.active = player:get_inventory():get_stack("armor", 3):get_name():find("mcl_armor:elytra")
+		elytra.active = minetest.get_item_group(player:get_inventory():get_stack("armor", 3):get_name(), "elytra") ~= 0
 			and not parent
 			and (elytra.active or (is_just_jumped and player_velocity.y < -0))
 			and ((not minetest.registered_nodes[fly_node].walkable) or fly_node == "ignore")
