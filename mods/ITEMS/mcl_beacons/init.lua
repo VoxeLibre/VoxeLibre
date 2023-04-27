@@ -178,7 +178,7 @@ local function beacon_blockcheck(pos)
 	end
 end
 
-local function is_obstructed(pos) --also removes beacon beam if true
+local function clear_obstructed_beam(pos)
 	for y=pos.y+1, pos.y+100 do
 		local nodename = minetest.get_node({x=pos.x,y=y, z = pos.z}).name
 		if nodename ~= "mcl_core:bedrock" and nodename ~= "air" and nodename ~= "mcl_core:void" and nodename ~= "ignore" then --ignore means not loaded, let's just assume that's air
@@ -208,20 +208,25 @@ local function effect_player(effect,pos,power_level, effect_level,player)
 	end
 end
 
-local function abm_func(pos)
-	local meta = minetest.get_meta(pos)
-	local power_level = beacon_blockcheck(pos)
+local function apply_effects_to_all_players(pos)
+    local meta = minetest.get_meta(pos)
 	local effect_string = meta:get_string("effect")
+    local effect_level = meta:get_int("effect_level")
 
-	if meta:get_int("effect_level") == 2 and power_level < 4 then --no need to run loops when beacon is in an invalid setup :P
+    local power_level = beacon_blockcheck(pos)
+
+	if effect_level == 2 and power_level < 4 then --no need to run loops when beacon is in an invalid setup :P
 		return
 	end
 
-	for _, obj in pairs(minetest.get_connected_players()) do
-		if vector.distance(pos,obj:get_pos()) > (power_level+1)*10 then return end --I used Pythagoras at first, and ignored this method lol
-		if not is_obstructed(pos) then
-			effect_player(effect_string,pos,power_level,meta:get_int("effect_level"),obj)
-		end
+    local beacon_distance = (power_level + 1) * 10
+
+	for _, player in pairs(minetest.get_connected_players()) do
+        if vector.distance(pos, player:get_pos()) <= beacon_distance then
+            if not clear_obstructed_beam(pos) then
+                effect_player(effect_string, pos, power_level, effect_level, player)
+            end
+        end
 	end
 end
 
@@ -335,7 +340,7 @@ minetest.register_node("mcl_beacons:beacon", {
 						minetest.set_node({x=pos.x,y=y,z=pos.z},{name="mcl_beacons:beacon_beam",param2=beam_palette_index})
 					end
 				end
-				abm_func(pos) --call it once outside the globalstep so the player gets the effect right after selecting it			end
+                apply_effects_to_all_players(pos) --call it once outside the globalstep so the player gets the effect right after selecting it
 			end
 		end
 	end,
@@ -386,7 +391,7 @@ minetest.register_abm{
 	interval = 3,
 	chance = 1,
 	action = function(pos)
-		abm_func(pos) -- for some FUC**** reason I can't just say abm_func directly, so this is a dirty workaround
+        apply_effects_to_all_players(pos)
 	end,
 }
 
