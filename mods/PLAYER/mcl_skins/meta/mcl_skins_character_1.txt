@@ -1,3 +1,0 @@
-name = "Alex",
-author = "%TEXTURE_PACK_AUTHOR%",
-gender = "female",

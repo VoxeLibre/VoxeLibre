@@ -3,7 +3,8 @@
 		"type": "footwear",
 		"texture": "mcl_skins_footwear_1.png",
 		"steve": true,
-		"alex": true
+		"alex": true,
+		"rank": 55
 	},
 	{
 		"type": "footwear",
@@ -197,6 +198,12 @@
 		"type": "bottom",
 		"texture": "mcl_skins_bottom_4.png",
 		"mask": "mcl_skins_bottom_4_mask.png"
+	},
+	{
+		"type": "bottom",
+		"texture": "mcl_skins_bottom_5.png",
+		"mask": "mcl_skins_bottom_5_mask.png",
+		"rank": 65
 	},
 	{
 		"type": "top",

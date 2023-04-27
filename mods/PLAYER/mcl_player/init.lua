@@ -28,28 +28,6 @@ function mcl_player.player_register_model(name, def)
 	models[name] = def
 end
 
--- Default player appearance
-mcl_player.player_register_model("character.b3d", {
-	animation_speed = 30,
-	textures = {"character.png", },
-	animations = {
-		-- Standard animations.
-		stand		= {x=  0, y= 79},
-		lay		= {x=162, y=166},
-		walk		= {x=168, y=187},
-		mine		= {x=189, y=198},
-		walk_mine	= {x=200, y=219},
-		sit		= {x= 81, y=160},
-		sneak_stand	= {x=222, y=302},
-		sneak_mine	= {x=346, y=366},
-		sneak_walk	= {x=304, y=323},
-		sneak_walk_mine	= {x=325, y=344},
-		run_walk	= {x=440, y=460},
-		run_walk_mine	= {x=461, y=481},
-		sit_mount	= {x=484, y=484},
-	},
-})
-
 -- Player stats and animations
 local player_model = {}
 local player_textures = {}
@@ -112,6 +90,7 @@ function mcl_player.player_set_model(player, model_name)
 		if player_model[name] == model_name then
 			return
 		end
+		player_model[name] = model_name
 		player:set_properties({
 			mesh = model_name,
 			visual = "mesh",
@@ -120,13 +99,7 @@ function mcl_player.player_set_model(player, model_name)
 		})
 		update_player_textures(player)
 		mcl_player.player_set_animation(player, "stand")
-	else
-		player:set_properties({
-			textures = { "player.png", "player_back.png", },
-			visual = "upright_sprite",
-		})
 	end
-	player_model[name] = model_name
 end
 
 function mcl_player.player_set_visibility(player, visible)
@@ -180,7 +153,6 @@ minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	mcl_player.player_attached[name] = false
 	player_visible[name] = true
-	mcl_player.player_set_model(player, "character.b3d")
 	player_textures[name] = {"character.png", "blank.png", "blank.png"}
 	--player:set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, 30)
 	player:set_fov(86.1) -- see <https://minecraft.gamepedia.com/Options#Video_settings>>>>

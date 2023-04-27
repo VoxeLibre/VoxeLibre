@@ -21,6 +21,9 @@ mcl_skins_bottom_3.png
 mcl_skins_eye_7.png
 mcl_skins_mouth_7.png
 mcl_skins_hair_10.png
+mcl_skins_hair_6.png
+mcl_skins_eye_6.png
+mcl_skins_bottom_5.png
 Original work by MrRar
 License: CC BY-SA 4.0
 
@@ -65,13 +68,6 @@ Name: Oliver_MV
 Author: hansuke123. Adapted for mcl_skins by MrRar.
 License: CC BY-SA 3.0
 Source: http://minetest.fensta.bplaced.net/#!page:1,filtertype:Id,filter:291
-
-mcl_skins_hair_6.png
-mcl_skins_eye_6.png
-Name: Mumbo Jumbo
-Author: ZestyZachary
-License: CC 0 (1.0) 
-Source: http://minetest.fensta.bplaced.net/#!page:1,filtertype:Id,filter:2100
 
 mcl_skins_eye_4.png
 Name: lisa

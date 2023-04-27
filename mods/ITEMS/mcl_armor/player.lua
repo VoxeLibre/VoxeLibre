@@ -158,8 +158,10 @@ minetest.register_on_player_inventory_action(function(player, action, inventory,
 end)
 
 minetest.register_on_joinplayer(function(player)
-	mcl_player.player_set_model(player, "mcl_armor_character.b3d")
 	player:get_inventory():set_size("armor", 5)
+	if not minetest.global_exists("mcl_skins") then
+		mcl_player.player_set_model(player, "mcl_armor_character.b3d")
+	end
 
 	minetest.after(1, function()
 		if player:is_player() then
