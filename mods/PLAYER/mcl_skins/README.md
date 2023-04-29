@@ -3,9 +3,11 @@
 This mod allows advanced skin customization.
 Use the /skin command to open the skin configuration screen.
 
+To include custom skins in MineClone2, please download [mcl_custom_skins](https://git.minetest.land/mineclone2/mcl_custom_skins)
+
 ## License
 Code under MIT license
-Author: TenPlus1, Zeg9, MrRar
+Author: MrRar
 
 See image_credits.txt for image licensing.
 
