@@ -797,10 +797,18 @@ function mcl_signs.register_sign_custom (modname, _name, tiles, color, inventory
 
 	new_sign = table.copy(mcl_signs.wall_standard)
 
-	new_sign.wield_image = "(" .. wield_image .. "^[multiply:" .. color .. ")"
-	new_sign.tiles = { "(" .. tiles .. "^[multiply:" .. color .. ")" }
-	new_sign.inventory_image = "(" .. inventory_image .. "^[multiply:" .. color .. ")"
+	if not color or color == nil then
+		new_sign.wield_image = wield_image
+		new_sign.tiles = { tiles }
+		new_sign.inventory_image = inventory_image
+	else
+		new_sign.wield_image = "(" .. wield_image .. "^[multiply:" .. color .. ")"
+		new_sign.tiles = { "(" .. tiles .. "^[multiply:" .. color .. ")" }
+		new_sign.inventory_image = "(" .. inventory_image .. "^[multiply:" .. color .. ")"
+	end
+
 	new_sign.description = S(ttsign)
+
 	-- currently have to do this, because of how the base node placement works.
 	new_sign.on_place = function(itemstack, placer, pointed_thing)
 		local above = pointed_thing.above
@@ -905,9 +913,15 @@ function mcl_signs.register_sign_custom (modname, _name, tiles, color, inventory
 	local new_sign_standing = {}
 	new_sign_standing = table.copy(mcl_signs.standing_standard)
 	new_sign_standing.drop = "mcl_signs:wall_sign" .. _name
-	new_sign_standing.wield_image = "(" .. wield_image .. "^[multiply:" .. color .. ")"
-	new_sign_standing.tiles = { "(" .. tiles .. "^[multiply:" .. color .. ")" }
-	new_sign_standing.inventory_image = "(" .. inventory_image .. "^[multiply:" .. color .. ")"
+	if not color or color == nil then
+		new_sign_standing.wield_image = wield_image
+		new_sign_standing.tiles = { tiles }
+		new_sign_standing.inventory_image = inventory_image
+	else
+		new_sign_standing.wield_image = "(" .. wield_image .. "^[multiply:" .. color .. ")"
+		new_sign_standing.tiles = { "(" .. tiles .. "^[multiply:" .. color .. ")" }
+		new_sign_standing.inventory_image = "(" .. inventory_image .. "^[multiply:" .. color .. ")"
+	end
 	new_sign_standing.on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_FACE then
 			node.name = "mcl_signs:standing_sign22_5" .. _name
@@ -1253,9 +1267,15 @@ function mcl_signs.reregister_sign_custom (modname, _name, tiles, color, invento
 
 	new_sign = table.copy(mcl_signs.wall_standard)
 
-	new_sign.wield_image = "(" .. wield_image .. "^[multiply:" .. color .. ")"
-	new_sign.tiles = { "(" .. tiles .. "^[multiply:" .. color .. ")" }
-	new_sign.inventory_image = "(" .. inventory_image .. "^[multiply:" .. color .. ")"
+	if not color or color == nil then
+		new_sign.wield_image = wield_image
+		new_sign.tiles = { tiles }
+		new_sign.inventory_image = inventory_image
+	else
+		new_sign.wield_image = "(" .. wield_image .. "^[multiply:" .. color .. ")"
+		new_sign.tiles = { "(" .. tiles .. "^[multiply:" .. color .. ")" }
+		new_sign.inventory_image = "(" .. inventory_image .. "^[multiply:" .. color .. ")"
+	end
 	new_sign.description = S(ttsign)
 	-- currently have to do this, because of how the base node placement works.
 	new_sign.on_place = function(itemstack, placer, pointed_thing)
@@ -1360,10 +1380,15 @@ function mcl_signs.reregister_sign_custom (modname, _name, tiles, color, invento
 	-- standing sign base.
 	local new_sign_standing = {}
 	new_sign_standing = table.copy(mcl_signs.standing_standard)
-	new_sign_standing.drop = "mcl_signs:wall_sign" .. _name
-	new_sign_standing.wield_image = "(" .. wield_image .. "^[multiply:" .. color .. ")"
-	new_sign_standing.tiles = { "(" .. tiles .. "^[multiply:" .. color .. ")" }
-	new_sign_standing.inventory_image = "(" .. inventory_image .. "^[multiply:" .. color .. ")"
+	if not color or color == nil then
+		new_sign_standing.wield_image = wield_image
+		new_sign_standing.tiles = { tiles }
+		new_sign_standing.inventory_image = inventory_image
+	else
+		new_sign_standing.wield_image = "(" .. wield_image .. "^[multiply:" .. color .. ")"
+		new_sign_standing.tiles = { "(" .. tiles .. "^[multiply:" .. color .. ")" }
+		new_sign_standing.inventory_image = "(" .. inventory_image .. "^[multiply:" .. color .. ")"
+	end
 	new_sign_standing.on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_FACE then
 			node.name = "mcl_signs:standing_sign22_5" .. _name
