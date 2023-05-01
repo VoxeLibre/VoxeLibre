@@ -26,3 +26,31 @@ minetest.register_abm({
 		mcl_cherry_blossom.generate_cherry_tree(pos)
 	end,
 })
+
+local cherry_particle = {
+	velocity = vector.new(0,0,0),
+	size = math.random(1.3,2.5),
+	texture = "mcl_cherry_blossom_particle.png",
+	collision_removal = false,
+}
+
+
+minetest.register_abm({
+	label = "Cherry Blossom Particles",
+	nodenames = {"mcl_cherry_blossom:cherryleaves"},
+	interval = 5,
+	chance = 10,
+	action = function(pos, node)
+		minetest.after(math.random(0.1,1.5),function()
+			local pt = table.copy(cherry_particle)
+			pt.acceleration = vector.new(0,0,0)
+			pt.collisiondetection = false
+			pt.pos = vector.offset(pos,math.random(-0.5,0.5),-0.51,math.random(-0.5,0.5))
+			minetest.add_particle(pt)
+				pt.acceleration = vector.new(0,-1,0)
+				pt.collisiondetection = true
+				pt.expirationtime = math.random(1.2,4.5)
+				minetest.add_particle(pt)
+		end)
+	end
+})
