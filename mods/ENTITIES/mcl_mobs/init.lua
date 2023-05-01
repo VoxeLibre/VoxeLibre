@@ -556,7 +556,7 @@ function mcl_mobs.register_egg(mob, desc, background_color, overlay_color, addeg
 						nametag = string.sub(nametag, 1, MAX_MOB_NAME_LENGTH)
 					end
 					ent.nametag = nametag
-					update_tag(ent)
+					ent:update_tag()
 				end
 
 				-- if not in creative then take item
