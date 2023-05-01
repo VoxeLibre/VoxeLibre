@@ -229,7 +229,7 @@ mcl_stairs.register_slab("cherrywood", "mcl_cherry_blossom:cherrywood",
 
 -- Signs
 mcl_signs.register_sign_custom("mcl_cherry_blossom", "cherrywood",
-		"mcl_cherry_blossom_sign.png", "#000000",
+		"mcl_cherry_blossom_sign.png", nil,
 		"mcl_cherry_blossom_sign_inv.png", "mcl_cherry_blossom_sign_inv.png", "Cherry Sign")
 
 -- Fences & Gates
