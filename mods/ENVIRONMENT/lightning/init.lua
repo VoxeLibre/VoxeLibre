@@ -174,7 +174,9 @@ function lightning.strike_func(pos, pos2, objects)
 		if get_node(pos2).name == "air" then
 			-- Low chance for a lightning to spawn skeleton horse + skeletons
 			if skeleton_lightning then
-				add_entity(pos2, "mobs_mc:skeleton_horse")
+				if add_entity(pos2, "mobs_mc:skeleton_horse") then
+					skeleton_lightning = false
+				end
 
 				local angle, posadd
 				angle = math.random(0, math.pi*2)
