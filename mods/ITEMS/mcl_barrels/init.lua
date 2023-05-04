@@ -63,6 +63,7 @@ local function barrel_open(pos, node, clicker)
 
 	minetest.swap_node(pos,	{ name = "mcl_barrels:barrel_open", param2 = node.param2 })
 	open_barrels[playername] = pos
+	minetest.sound_play({name="mcl_barrels_default_barrel_open", pos=node_pos, gain=0.5, max_hear_distance=16}, true)
 end
 
 local function close_forms(pos)
@@ -80,6 +81,7 @@ local function update_after_close(pos)
 	if not node then return end
 	if node.name == "mcl_barrels:barrel_open" then
 		minetest.swap_node(pos, {name = "mcl_barrels:barrel_closed", param2 = node.param2})
+		minetest.sound_play({name="mcl_barrels_default_barrel_close", pos=node_pos, gain=0.5, max_hear_distance=16}, true)
 	end
 end
 
