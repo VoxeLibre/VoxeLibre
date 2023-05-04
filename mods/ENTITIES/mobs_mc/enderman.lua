@@ -24,6 +24,12 @@
 -- added rain damage.
 -- fixed the grass_with_dirt issue.
 
+-- How freqeuntly to take and place blocks, in seconds
+local take_frequency_min = 235
+local take_frequency_max = 245
+local place_frequency_min = 235
+local place_frequency_max = 245
+
 minetest.register_entity("mobs_mc:ender_eyes", {
 	visual = "mesh",
 	mesh = "mobs_mc_spider.b3d",
@@ -59,13 +65,6 @@ end
 --###################
 
 local pr = PseudoRandom(os.time()*(-334))
-
--- How freqeuntly to take and place blocks, in seconds
-local take_frequency_min = 235
-local take_frequency_max = 245
-local place_frequency_min = 235
-local place_frequency_max = 245
-
 
 -- Texuture overrides for enderman block. Required for cactus because it's original is a nodebox
 -- and the textures have tranparent pixels.
@@ -491,7 +490,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 					local dug = minetest.get_node_or_nil(take_pos)
 					if dug and dug.name == "air" then
 						self._taken_node = node.name
-						self.can_despawn = false
+						self.persistent = true
 						local def = minetest.registered_nodes[self._taken_node]
 						-- Update animation and texture accordingly (adds visibly carried block)
 						local block_type
@@ -542,7 +541,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 				if success then
 					local def = minetest.registered_nodes[self._taken_node]
 					-- Update animation accordingly (removes visible block)
-					self.can_despawn = true
+					self.persistent = false
 					self.animation = select_enderman_animation("normal")
 					self:set_animation(self.animation.current)
 					if def.sounds and def.sounds.place then

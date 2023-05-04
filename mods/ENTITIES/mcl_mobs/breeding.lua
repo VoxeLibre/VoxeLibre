@@ -74,6 +74,7 @@ function mob_class:feed_tame(clicker, feed_count, breed, tame, notake)
 			if self.food >= feed_count then
 				self.food = 0
 				self.horny = true
+				self.persistent = true
 			end
 		end
 
