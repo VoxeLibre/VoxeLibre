@@ -10,6 +10,8 @@ local stuck_path_timeout = 10 -- how long will mob follow path before giving up
 
 local enable_pathfinding = true
 
+local TIME_TO_FORGET_TARGET = 15
+
 local atann = math.atan
 local function atan(x)
 	if not x or x ~= x then
@@ -398,7 +400,8 @@ function mob_class:monster_attack()
 			end
 
 			-- choose closest player to attack
-			if dist < min_dist and not attacked_p and self:line_of_sight( sp, p, 2) == true then
+			local line_of_sight = self:line_of_sight( sp, p, 2) == true
+			if dist < min_dist and not attacked_p and line_of_sight then
 				min_dist = dist
 				min_player = player
 			end
@@ -810,6 +813,22 @@ function mob_class:check_aggro(dtime)
 	self._check_aggro_timer = self._check_aggro_timer + dtime
 end
 
+
+
+local function clear_aggro(self)
+	self.state = "stand"
+	self:set_velocity( 0)
+	self:set_animation( "stand")
+
+	self.attack = nil
+	self._aggro = nil
+
+	self.v_start = false
+	self.timer = 0
+	self.blinktimer = 0
+	self.path.way = nil
+end
+
 function mob_class:do_states_attack (dtime)
 	local yaw = self.object:get_yaw() or 0
 
@@ -823,35 +842,33 @@ function mob_class:do_states_attack (dtime)
 			or self.attack:get_hp() <= 0
 			or (self.attack:is_player() and mcl_mobs.invis[ self.attack:get_player_name() ]) then
 
-		self.state = "stand"
-		self:set_velocity( 0)
-		self:set_animation( "stand")
-
-		self.attack = nil
-		self._aggro = nil
-
-		self.v_start = false
-		self.timer = 0
-		self.blinktimer = 0
-		self.path.way = nil
-
+		clear_aggro(self)
 		return
+	end
+
+	local target_line_of_sight = self:line_of_sight(s, p, 2)
+	if not target_line_of_sight then
+		if self.target_time_lost then
+			local time_since_seen = os.time() - self.target_time_lost
+			if time_since_seen > TIME_TO_FORGET_TARGET then
+				self.target_time_lost = nil
+				clear_aggro(self)
+				return
+			end
+		else
+			self.target_time_lost = os.time()
+		end
+	else
+		self.target_time_lost = nil
 	end
 
 	-- calculate distance from mob and enemy
 	local dist = vector.distance(p, s)
 
 	if self.attack_type == "explode" then
-
-		local vec = {
-			x = p.x - s.x,
-			z = p.z - s.z
-		}
-
+		local vec = { x = p.x - s.x, z = p.z - s.z }
 		yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
-
 		if p.x > s.x then yaw = yaw +math.pi end
-
 		yaw = self:set_yaw( yaw, 0, dtime)
 
 		local node_break_radius = self.explosion_radius or 1
@@ -859,20 +876,15 @@ function mob_class:do_states_attack (dtime)
 				or (node_break_radius * 2)
 
 		-- start timer when in reach and line of sight
-		if not self.v_start
-				and dist <= self.reach
-				and self:line_of_sight( s, p, 2) then
-
+		if not self.v_start and dist <= self.reach and target_line_of_sight then
 			self.v_start = true
 			self.timer = 0
 			self.blinktimer = 0
 			self:mob_sound("fuse", nil, false)
 
 			-- stop timer if out of reach or direct line of sight
-		elseif self.allow_fuse_reset
-				and self.v_start
-				and (dist >= self.explosiontimer_reset_radius
-				or not self:line_of_sight( s, p, 2)) then
+		elseif self.allow_fuse_reset and self.v_start
+				and (dist >= self.explosiontimer_reset_radius or not target_line_of_sight) then
 			self.v_start = false
 			self.timer = 0
 			self.blinktimer = 0
@@ -894,25 +906,20 @@ function mob_class:do_states_attack (dtime)
 		end
 
 		if self.v_start then
-
 			self.timer = self.timer + dtime
 			self.blinktimer = (self.blinktimer or 0) + dtime
 
 			if self.blinktimer > 0.2 then
-
 				self.blinktimer = 0
-
 				if self.blinkstatus then
 					self:remove_texture_mod("^[brighten")
 				else
 					self:add_texture_mod("^[brighten")
 				end
-
 				self.blinkstatus = not self.blinkstatus
 			end
 
 			if self.timer > self.explosion_timer then
-
 				local pos = self.object:get_pos()
 
 				if mobs_griefing and not minetest.is_protected(pos, "") then
