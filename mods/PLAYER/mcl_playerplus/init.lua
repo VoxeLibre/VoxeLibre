@@ -272,17 +272,21 @@ minetest.register_globalstep(function(dtime)
 				if vector.length(player_velocity) < 40 then
 					-- player:add_velocity(vector.multiply(player:get_look_dir(), 4))
 					speed_mult = elytra_vars.rocket_speed
-					add_particle({
-						pos = fly_pos,
-						velocity = {x = 0, y = 0, z = 0},
-						acceleration = {x = 0, y = 0, z = 0},
-						expirationtime = math.random(0.3, 0.5),
-						size = math.random(1, 2),
-						collisiondetection = false,
-						vertical = false,
-						texture = "mcl_particles_bonemeal.png^[colorize:#bc7a57:127",
-						glow = 5,
-					})
+
+					if mcl_util.check_dtime_timer(name, dtime, "ely_rocket_particle_spawn", 0.3) then
+						minetest.log("pspawn")
+						add_particle({
+							pos = fly_pos,
+							velocity = vector.zero(),
+							acceleration = vector.zero(),
+							expirationtime = math.random(0.3, 0.5),
+							size = math.random(1, 2),
+							collisiondetection = false,
+							vertical = false,
+							texture = "mcl_particles_bonemeal.png^[colorize:#bc7a57:127",
+							glow = 5,
+						})
+					end
 				end
 			end
 
