@@ -830,15 +830,17 @@ local function clear_aggro(self)
 end
 
 function mob_class:do_states_attack (dtime)
-	local yaw = self.object:get_yaw() or 0
-
-	local s = self.object:get_pos()
-	local p = self.attack:get_pos() or s
-
 	self.timer = self.timer + dtime
 	if self.timer > 100 then
 		self.timer = 1
 	end
+
+	local s = self.object:get_pos()
+	if not s then return end
+
+	local p = self.attack:get_pos() or s
+
+	local yaw = self.object:get_yaw() or 0
 
 	-- stop attacking if player invisible or out of range
 	if not self.attack
@@ -1141,7 +1143,13 @@ function mob_class:do_states_attack (dtime)
 			if math.random(40) == 1 then
 				self.strafe_direction = self.strafe_direction*-1
 			end
-			self.acc = vector.add(vector.multiply(vector.rotate_around_axis(vector.direction(s, p), vector.new(0,1,0), self.strafe_direction), 0.3*self.walk_velocity), stay_away_from_player)
+
+			local dir = vector.rotate_around_axis(vector.direction(s, p), vector.new(0,1,0), self.strafe_direction)
+			local dir2 = vector.multiply(dir, 0.3 * self.walk_velocity)
+
+			if dir2 and stay_away_from_player then
+				self.acc = vector.add(dir2, stay_away_from_player)
+			end
 		else
 			self:set_velocity( 0)
 		end
