@@ -5,7 +5,12 @@ function mcl_burning.get_storage(obj)
 end
 
 function mcl_burning.is_burning(obj)
-	return mcl_burning.get_storage(obj).burn_time
+	local storage = mcl_burning.get_storage(obj)
+	if storage then
+		return mcl_burning.get_storage(obj).burn_time
+	else
+		return false
+	end
 end
 
 function mcl_burning.is_affected_by_rain(obj)
