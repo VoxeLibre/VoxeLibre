@@ -325,14 +325,6 @@ function mob_class:do_states(dtime)
 	end
 end
 
-local function update_timers (self, dtime)
-	-- knockback timer. set in on_punch
-	if self.pause_timer > 0 then
-		self.pause_timer = self.pause_timer - dtime
-		return true
-	end
-end
-
 function mob_class:outside_limits()
 	local pos = self.object:get_pos()
 	if pos then
