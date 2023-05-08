@@ -19,6 +19,7 @@ local hoglin = {
 	xp_max = 9,
 	armor = {fleshy = 90},
 	attack_type = "dogfight",
+	attack_frequency = 3;
 	damage = 4,
 	reach = 3,
 	collisionbox = {-.6, -0.01, -.6, .6, 1.4, .6},

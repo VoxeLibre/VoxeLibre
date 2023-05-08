@@ -154,6 +154,7 @@ function mcl_mobs.register_mob(name, def)
 		description = def.description,
 		type = def.type,
 		attack_type = def.attack_type,
+		attack_frequency = def.attack_frequency,
 		fly = def.fly or false,
 		fly_in = def.fly_in or {"air", "__airlike"},
 		owner = def.owner or "",

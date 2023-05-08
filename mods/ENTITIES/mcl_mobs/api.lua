@@ -300,19 +300,27 @@ end
 function mob_class:do_states(dtime)
 	--if self.can_open_doors then check_doors(self) end
 
-	if self.state == "stand" then
-		self:do_states_stand()
-	elseif self.state == PATHFINDING then
+	-- knockback timer. set in on_punch
+	if self.pause_timer > 0 then
+		self.pause_timer = self.pause_timer - dtime
+		return
+	end
+
+	if self.state == PATHFINDING then
 		self:check_gowp(dtime)
-	elseif self.state == "walk" then
-		self:do_states_walk()
-	elseif self.state == "runaway" then
-		-- runaway when punched
-		self:do_states_runaway()
 	elseif self.state == "attack" then
-		-- attack routines (explode, dogfight, shoot, dogshoot)
 		if self:do_states_attack(dtime) then
 			return true
+		end
+	else
+		if mcl_util.check_dtime_timer(self, dtime, "onstep_dostates", 1) then
+			if self.state == "stand" then
+				self:do_states_stand()
+			elseif self.state == "walk" then
+				self:do_states_walk()
+			elseif self.state == "runaway" then
+				self:do_states_runaway()
+			end
 		end
 	end
 end
@@ -322,21 +330,6 @@ local function update_timers (self, dtime)
 	if self.pause_timer > 0 then
 		self.pause_timer = self.pause_timer - dtime
 		return true
-	end
-
-	-- attack timer. Not anymore, it seems. Used for also occassionally processing mob step too!
-	self.timer = self.timer + dtime
-
-	if self.state ~= "attack" and self.state ~= PATHFINDING then
-		if self.timer < 1 then
-			return true
-		end
-		self.timer = 0
-	end
-
-	-- never go over 100
-	if self.timer > 100 then
-		self.timer = 1
 	end
 end
 
@@ -363,6 +356,8 @@ function mob_class:outside_limits()
 		end
 	end
 end
+
+
 
 local function on_step_work (self, dtime)
 	local pos = self.object:get_pos()
@@ -424,34 +419,21 @@ local function on_step_work (self, dtime)
 
 	self:check_aggro(dtime)
 
+	self:check_particlespawners(dtime)
+
 	if self.do_custom and self.do_custom(self, dtime) == false then return end
 
-	-- In certain circumstances, we abandon processing of certain functionality
-	local skip_processing = false
-	if update_timers(self, dtime) then
-		skip_processing = true
-	end
-
-	if not skip_processing then
+	if mcl_util.check_dtime_timer(self, dtime, "onstep_occassional", 1) then
 		self:check_breeding()
 
 		if player_in_active_range then
 			self:check_item_pickup()
 			self:set_armor_texture()
-
-			if self.opinion_sound_cooloff > 0 then
-				self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
-			end
-			-- mob plays random sound at times. Should be 120. Zombie and mob farms are ridiculous
-			if math.random(1, 70) == 1 then
-				self:mob_sound("random", true)
-			end
+			self:step_opinion_sound(dtime)
 		end
-
-		self:check_particlespawners(dtime)
-
-		if self:do_states(dtime) then return end
 	end
+
+	if self:do_states(dtime) then return end
 
 	if mobs_debug then self:update_tag() end
 

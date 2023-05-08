@@ -835,6 +835,11 @@ function mob_class:do_states_attack (dtime)
 	local s = self.object:get_pos()
 	local p = self.attack:get_pos() or s
 
+	self.timer = self.timer + dtime
+	if self.timer > 100 then
+		self.timer = 1
+	end
+
 	-- stop attacking if player invisible or out of range
 	if not self.attack
 			or not self.attack:get_pos()
@@ -1033,54 +1038,45 @@ function mob_class:do_states_attack (dtime)
 
 		-- move towards enemy if beyond mob reach
 		if dist > self.reach then
-
 			-- path finding by rnd
-			if self.pathfinding -- only if mob has pathfinding enabled
-					and enable_pathfinding then
-
+			if enable_pathfinding and self.pathfinding then
 				self:smart_mobs(s, p, dist, dtime)
 			end
 
 			if self:is_at_cliff_or_danger() then
-
 				self:set_velocity( 0)
 				self:set_animation( "stand")
 				local yaw = self.object:get_yaw() or 0
 				yaw = self:set_yaw( yaw + 0.78, 8)
 			else
-
 				if self.path.stuck then
-					self:set_velocity( self.walk_velocity)
+					self:set_velocity(self.walk_velocity)
 				else
-					self:set_velocity( self.run_velocity)
+					self:set_velocity(self.run_velocity)
 				end
-
 				if self.animation and self.animation.run_start then
-					self:set_animation( "run")
+					self:set_animation("run")
 				else
-					self:set_animation( "walk")
+					self:set_animation("walk")
 				end
 			end
-
 		else -- rnd: if inside reach range
-
 			self.path.stuck = false
 			self.path.stuck_timer = 0
 			self.path.following = false -- not stuck anymore
 
 			self:set_velocity( 0)
 
-			if not self.custom_attack then
+			local attack_frequency = self.attack_frequency or 1
 
-				if self.timer > 1 then
+			if self.timer > attack_frequency then
+				self.timer = 0
 
-					self.timer = 0
-
-					if self.double_melee_attack
-							and math.random(1, 2) == 1 then
-						self:set_animation( "punch2")
+				if not self.custom_attack then
+					if self.double_melee_attack and math.random(1, 2) == 1 then
+						self:set_animation("punch2")
 					else
-						self:set_animation( "punch")
+						self:set_animation("punch")
 					end
 
 					local p2 = p
@@ -1090,8 +1086,6 @@ function mob_class:do_states_attack (dtime)
 					s2.y = s2.y + .5
 
 					if self:line_of_sight( p2, s2) == true then
-
-						-- play attack sound
 						self:mob_sound("attack")
 
 						-- punch player (or what player is attached to)
@@ -1104,13 +1098,7 @@ function mob_class:do_states_attack (dtime)
 							damage_groups = {fleshy = self.damage}
 						}, nil)
 					end
-				end
-			else	-- call custom attack every second
-				if self.custom_attack
-						and self.timer > 1 then
-
-					self.timer = 0
-
+				else
 					self.custom_attack(self, p)
 				end
 			end
@@ -1136,7 +1124,7 @@ function mob_class:do_states_attack (dtime)
 
 		yaw = self:set_yaw( yaw, 0, dtime)
 
-		local stay_away_from_player = vector.new(0,0,0)
+		local stay_away_from_player = vector.zero()
 
 		--strafe back and fourth
 

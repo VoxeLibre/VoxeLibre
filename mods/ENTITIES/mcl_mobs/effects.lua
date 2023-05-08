@@ -4,6 +4,8 @@ local active_particlespawners = {}
 local disable_blood = minetest.settings:get_bool("mobs_disable_blood")
 local DEFAULT_FALL_SPEED = -9.81*1.5
 
+local PATHFINDING = "gowp"
+
 local player_transfer_distance = tonumber(minetest.settings:get("player_transfer_distance")) or 128
 if player_transfer_distance == 0 then player_transfer_distance = math.huge end
 
@@ -133,6 +135,19 @@ function mob_class:mob_sound(soundname, is_opinion, fixed_pitch)
 			pitch = pitch,
 		}, true)
 		self.opinion_sound_cooloff = 1
+	end
+end
+
+function mob_class:step_opinion_sound(dtime)
+	if self.state ~= "attack" and self.state ~= PATHFINDING then
+
+		if self.opinion_sound_cooloff > 0 then
+			self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
+		end
+		-- mob plays random sound at times. Should be 120. Zombie and mob farms are ridiculous
+		if math.random(1, 70) == 1 then
+			self:mob_sound("random", true)
+		end
 	end
 end
 

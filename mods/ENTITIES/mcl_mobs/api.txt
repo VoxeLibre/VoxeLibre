@@ -262,6 +262,7 @@ functions needed for the mob to work properly which contains the following:
 	'custom_visual_size' will not reset visual_size from the base class on reload
 	'noyaw'				If true this mob will not automatically change yaw
 	'particlespawners'	Table of particlespawners attached to the mob. This is implemented in a coord safe manner i.e. spawners are only sent to players within the player_transfer_distance (and automatically removed). This enables infinitely lived particlespawners.
+    'attack_frequency'  Attack frequency in seconds. If unset, this defaults to 1. Implemented for melee only atm.
 
 	mobs:gopath(self,target,callback_arrived)		pathfind a way to target and run callback on arrival
 
