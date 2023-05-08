@@ -274,7 +274,6 @@ minetest.register_globalstep(function(dtime)
 					speed_mult = elytra_vars.rocket_speed
 
 					if mcl_util.check_dtime_timer(name, dtime, "ely_rocket_particle_spawn", 0.3) then
-						minetest.log("pspawn")
 						add_particle({
 							pos = fly_pos,
 							velocity = vector.zero(),
