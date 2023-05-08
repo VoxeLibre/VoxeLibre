@@ -262,8 +262,9 @@ function mob_class:is_at_water_danger(can_jump_cliff)
 	local ypos = pos.y + self.collisionbox[2] -- just above floor
 
 	local free_fall, blocker = minetest.line_of_sight(
-		{x = pos.x + dir_x, y = ypos, z = pos.z + dir_z},
-		{x = pos.x + dir_x, y = ypos - 3, z = pos.z + dir_z})
+		vector.new(pos.x + dir_x, ypos, pos.z + dir_z),
+		vector.new(pos.x + dir_x, ypos - 3, pos.z + dir_z))
+
 	if free_fall then
 		return true
 	else
