@@ -78,11 +78,10 @@ function mob_class:get_staticdata()
 	for _,p in pairs(minetest.get_connected_players()) do
 		self:remove_particlespawners(p:get_player_name())
 	end
+
 	-- remove mob when out of range unless tamed
 	if remove_far
-	and self.can_despawn
-	and self.remove_ok
-	and ((not self.nametag) or (self.nametag == ""))
+	and self:despawn_allowed()
 	and self.lifetimer <= 20 then
 		if spawn_logging then
 			minetest.log("action", "[mcl_mobs] Mob "..tostring(self.name).." despawns at "..minetest.pos_to_string(vector.round(self.object:get_pos())) .. " - out of range")
@@ -91,7 +90,6 @@ function mob_class:get_staticdata()
 		return "remove"-- nil
 	end
 
-	self.remove_ok = true
 	self.attack = nil
 	self.following = nil
 	self.state = "stand"

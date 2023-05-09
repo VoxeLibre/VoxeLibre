@@ -1071,15 +1071,43 @@ if mobs_spawn then
 	end)
 end
 
+local function despawn_allowed(self)
+	local nametag = self.nametag and self.nametag ~= ""
+	local not_busy = self.state ~= "attack" and self.following == nil
+	if self.can_despawn == true then
+		if not nametag and not_busy and not self.tamed == true and not self.persistent == true then
+			return true
+		end
+	end
+	return false
+end
+
+function mob_class:despawn_allowed()
+	despawn_allowed(self)
+end
+
+
+assert(despawn_allowed({can_despawn=false}) == false, "despawn_allowed - can_despawn false failed")
+assert(despawn_allowed({can_despawn=true}) == true, "despawn_allowed - can_despawn true failed")
+
+assert(despawn_allowed({can_despawn=true, nametag=""}) == true, "despawn_allowed - blank nametag failed")
+assert(despawn_allowed({can_despawn=true, nametag=nil}) == true, "despawn_allowed - nil nametag failed")
+assert(despawn_allowed({can_despawn=true, nametag="bob"}) == false, "despawn_allowed - nametag failed")
+
+assert(despawn_allowed({can_despawn=true, state="attack"}) == false, "despawn_allowed - attack state failed")
+assert(despawn_allowed({can_despawn=true, following="blah"}) == false, "despawn_allowed - following state failed")
+
+assert(despawn_allowed({can_despawn=true, tamed=false}) == true, "despawn_allowed - not tamed")
+assert(despawn_allowed({can_despawn=true, tamed=true}) == false, "despawn_allowed - tamed")
+
+assert(despawn_allowed({can_despawn=true, persistent=true}) == false, "despawn_allowed - persistent")
+assert(despawn_allowed({can_despawn=true, persistent=false}) == true, "despawn_allowed - not persistent")
+
 function mob_class:check_despawn(pos, dtime)
 	self.lifetimer = self.lifetimer - dtime
 
 	-- Despawning: when lifetimer expires, remove mob
-	if remove_far
-	and self.can_despawn == true
-	and ((not self.nametag) or (self.nametag == ""))
-	and self.state ~= "attack"
-	and self.following == nil then
+	if remove_far and despawn_allowed(self) then
 		if self.despawn_immediately or self.lifetimer <= 0 then
 			if logging then
 				minetest.log("action", "[mcl_mobs] Mob "..self.name.." despawns at "..minetest.pos_to_string(pos, 1) .. " lifetimer ran out")
