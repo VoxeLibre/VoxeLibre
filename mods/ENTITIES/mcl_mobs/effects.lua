@@ -348,7 +348,7 @@ function mob_class:check_head_swivel(dtime)
 
 	who_are_you_looking_at (self)
 
-	local final_rotation = vector.new(0,0,0)
+	local final_rotation = vector.zero()
 	local oldp,oldr = self.object:get_bone_position(self.head_swivel)
 
 	if self._locked_object and (self._locked_object:is_player() or self._locked_object:get_luaentity()) and self._locked_object:get_hp() > 0 then
@@ -360,8 +360,11 @@ function mob_class:check_head_swivel(dtime)
 			_locked_object_eye_height = self._locked_object:get_properties().eye_height
 		end
 		if _locked_object_eye_height then
+
 			local self_rot = self.object:get_rotation()
-			if self.object:get_attach() then
+			-- If a mob is attached, should we really be messing with what they are looking at?
+			-- Should this be excluded?
+			if self.object:get_attach() and self.object:get_attach():get_rotation() then
 				self_rot = self.object:get_attach():get_rotation()
 			end
 
