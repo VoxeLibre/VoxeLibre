@@ -269,7 +269,6 @@ local cave_biomes = {
 	"RoofedForest_underground",
 	"Jungle_underground",
 	"Swampland_underground",
-	"MushroomIsland_underground",
 	"BirchForest_underground",
 	"Plains_underground",
 	"MesaPlateauF_underground",
