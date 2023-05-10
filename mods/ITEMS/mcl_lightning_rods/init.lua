@@ -82,7 +82,7 @@ rod_def_a.on_timer = function(pos, elapsed)
 	local node = minetest.get_node(pos)
 
 	if node.name == "mcl_lightning_rods:rod_powered" then --has not been dug
-		minetest.set_node(pos, { name = "mcl_lightning_rods:rod" })
+		minetest.set_node(pos, { name = "mcl_lightning_rods:rod", param2 = node.param2 })
 		mesecon.receptor_off(pos, mesecon.rules.alldirs)
 	end
 
@@ -99,7 +99,7 @@ lightning.register_on_strike(function(pos, pos2, objects)
 		local node = minetest.get_node(lr)
 
 		if node.name == "mcl_lightning_rods:rod" then
-			minetest.set_node(lr, { name = "mcl_lightning_rods:rod_powered" })
+			minetest.set_node(lr, { name = "mcl_lightning_rods:rod_powered", param2 = node.param2 })
 			mesecon.receptor_on(lr, mesecon.rules.alldirs)
 			minetest.get_node_timer(lr):start(0.4)
 		end
