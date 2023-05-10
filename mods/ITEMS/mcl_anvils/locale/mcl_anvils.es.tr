@@ -13,3 +13,4 @@ Armor counts as a tool. It is possible to repair and rename a tool in a single s
 The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. Anvils also have a chance of being damaged when they fall by more than 1 block. If a very damaged anvil is damaged again, it is destroyed.=El yunque tiene una durabilidad limitada y 3 niveles de daño: sin daños, ligeramente dañado y muy dañado. Cada vez que reparas o cambias el nombre de algo, hay un 12% de posibilidades de que el yunque se dañe. Los yunques también tienen la posibilidad de dañarse cuando caen en más de 1 bloque. Si un yunque muy dañado se daña nuevamente, se destruye.
 Slightly Damaged Anvil=Yunque dañado
 Very Damaged Anvil=Yunque muy dañado
+Repair and rename items=Reparar y renombrar objetos

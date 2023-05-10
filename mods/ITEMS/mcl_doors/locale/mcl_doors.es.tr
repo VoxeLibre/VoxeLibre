@@ -20,3 +20,5 @@ Wooden trapdoors are horizontal barriers which can be opened and closed by hand 
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Para abrir o cerrar la trampilla, haga clic derecho o envíele una señal de redstone.
 Iron Trapdoor=Trampilla de hierro
 Iron trapdoors are horizontal barriers which can only be opened and closed by redstone signals, but not by hand. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Las trampillas de hierro son barreras horizontales que solo pueden abrirse y cerrarse mediante señales de redstone, no a mano. Ocupan la parte superior o inferior de un bloque, dependiendo de cómo se hayan colocado. Cuando están abiertos, se pueden subir como una escalera.
+Openable by players and redstone power=Puede ser abierta por jugadores y señales de redstone
+Openable by redstone power=Puede ser abierta por señales de redstone

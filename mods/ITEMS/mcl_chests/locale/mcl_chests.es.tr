@@ -28,3 +28,9 @@ To access the inventory of a shulker box, place and right-click it. To take a sh
 Shulker Box=Caja de shulker
 Large Chest=Arcón
 Inventory=Inventario
+27 inventory slots=27 ranuras de inventario
+Can be carried around with its contents=Puede llevarse con sus contenidos
+Can be combined to a large chest=Se puede combinar para convertirse en un cofre grande
+27 interdimensional inventory slots=27 ranuras de inventario interdimensionales
+Put items inside, retrieve them from any ender chest=Pon objetos dentro, recupéralos desde cualquier cofre de ender
+Emits a redstone signal when opened=Emite una señal de redstone al abrirse

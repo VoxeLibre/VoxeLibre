@@ -6,3 +6,5 @@ A waterlogged sponge can be dried in the furnace to turn it into (dry) sponge. W
 Riverwaterlogged Sponge=Esponja mojada con agua de rio
 This is a sponge soaking wet with river water. It can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of the furnace, the river water will pour into the bucket.=Esta es una esponja mojada con agua de río. Se puede secar en el horno para convertirlo en una esponja (seca). Cuando hay un balde vacío en la ranura de combustible del horno, el agua del río se vierte en el balde.
 A sponge becomes riverwaterlogged (instead of waterlogged) if it sucks up more river water than (normal) water.=Una esponja se inunda de río (en lugar de inundarse) si absorbe más agua de río que el agua (normal).
+Removes water on contact=Remueve agua al contacto
+Can be dried in furnace=Puede secarse en un horno
