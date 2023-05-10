@@ -521,6 +521,7 @@ end
 -- outputnode (receptor or conductor) at position `output` and has an output in direction `rule`
 function mesecon.rules_link_rule_all(output, rule)
 	local input = vector.add(output, rule)
+	if not input then return {} end
 	local inputnode = get_node_force(input)
 	local inputrules = mesecon.get_any_inputrules(inputnode)
 	if not inputrules then
