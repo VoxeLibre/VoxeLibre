@@ -23,9 +23,9 @@ Frost Walker=Semelles givrantes
 Impaling=Empalement
 Increases arrow damage.=Augmente les dégâts des flèches.
 Increases arrow knockback.=Augmente le recul de la flèche.
-Increases certain block drops.=Multiplie les items droppés
+Increases certain block drops.=Multiplie les objets droppés
 
-Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Augmente les dégâts et applique la lenteur IV aux mobs arthropodes (araignées, araignées des cavernes, lépismes argentés et endermites).
+Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Augmente les dégâts et applique la lenteur IV aux mobs arthropodes (araignées, araignées des cavernes, poissons d'argent et endermites).
 
 Increases damage to undead mobs.=Augmente les dégâts infligés aux monstres morts-vivants.
 Increases damage.=Augmente les dégâts.
@@ -95,7 +95,7 @@ Enchant an item=Enchanter un objet
 Enchanted Book=Livre enchanté
 Enchanting Table=Table d'enchantement
 
-Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=La table d'enchantement vous permet d'enchanter des armueres, des outils, des armes et des livres avec diverses propriétés. Mais cela coûte de l'expérience et des lapis-lazuli.
+Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=La table d'enchantement vous permet d'enchanter des armures, des outils, des armes et des livres avec diverses propriétés. Mais cela coûte de l'expérience et des lapis-lazuli.
 
 Enchanting succeded.=L'enchantement a réussi.
 Forcefully enchant an item=Enchantement forcé d'un objet
@@ -113,14 +113,14 @@ The number you have entered (@1) is too small, it must be at least @2.=Le nombre
 The selected enchantment can't be added to the target item.=L'enchantement sélectionné ne peut pas être ajouté à la cible.
 The target doesn't hold an item.=La cible ne contient aucun élément.
 The target item is not enchantable.=L'objet cible n'est pas enchantable.
-There is no such enchantment '@1'.=Il n'y a pas un tel enchantement '@1'.
+There is no such enchantment '@1'.=L'enchantement '@1' n'existe pas.
 
 These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Ces options sont aléatoires et dépendent du niveau d'expérience ; mais la force d'enchantement peut être augmentée.
 
 To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Pour augmenter la force d'enchantement, placer des bibliothèques autour de la table d'enchantement. Cependant, vous devrez garder au moins un bloc d'air entre la table et les bibliothèques pour alimenter la table d'enchantement.
 
 Usage: /enchant <player> <enchantment> [<level>]=Usage: /enchant <joueur> <enchantement> [<niveau>]
-Usage: /forceenchant <player> <enchantment> [<level>]=Usage: /forceenchant <joueur> <enchantrment> [<niveau>]
+Usage: /forceenchant <player> <enchantment> [<level>]=Usage: /forceenchant <joueur> <enchantement> [<niveau>]
 
 
 ##### not used anymore #####

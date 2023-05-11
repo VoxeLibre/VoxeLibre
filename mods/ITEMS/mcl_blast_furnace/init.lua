@@ -415,14 +415,12 @@ end
 minetest.register_node("mcl_blast_furnace:blast_furnace", {
 	description = S("Blast Furnace"),
 	_tt_help = S("Smelts ores faster than furnace"),
-	_doc_items_longdesc = S("Blast Furnaces smelt several items, mainly ores and armor, using a furnace fuel, into something else."),
+	_doc_items_longdesc = S("Blast Furnaces smelt several items, mainly ores and armor, using a furnace fuel, but twice as fast as a normal furnace."),
 	_doc_items_usagehelp =
-			S([[
-				Use the furnace to open the furnace menu.
-				Place a furnace fuel in the lower slot and the source material in the upper slot.
-				The furnace will slowly use its fuel to smelt the item.
-				The result will be placed into the output slot at the right side.
-			]]).."\n"..
+			S("Use the blast furnace to open the furnace menu.").."\n"..
+            S("Place a furnace fuel in the lower slot and the source material in the upper slot.").."\n"..
+			S("The blast furnace will slowly use its fuel to smelt the item.").."\n"..
+			S("The result will be placed into the output slot at the right side.").."\n"..
 			S("Use the recipe book to see what ores you can smelt, what you can use as fuel and how long it will burn."),
 	_doc_items_hidden = false,
 	tiles = {

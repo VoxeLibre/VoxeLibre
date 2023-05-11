@@ -1,3 +1,4 @@
+# textdomain: mcl_honey
 Honeycomb=
 Used to craft beehives and protect copper blocks from further oxidation.=
 Use on copper blocks to prevent further oxidation.=

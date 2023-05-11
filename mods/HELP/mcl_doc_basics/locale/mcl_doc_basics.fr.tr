@@ -435,7 +435,7 @@ Note that “transparency” here only means that the block is able to carry bri
 Coordinates=Coordonnées
 The world is a large cube. And because of this, a position in the world can be easily expressed with Cartesian coordinates. That is, for each position in the world, there are 3 values X, Y and Z.=Le monde est un grand cube. Et pour cette raison, une position dans le monde peut être facilement exprimée avec des coordonnées cartésiennes. Autrement dit, pour chaque position dans le monde, il existe 3 valeurs X, Y et Z.
 Like this: (5, 45, -12)=Comme ceci : (5, 45, -12)
-This refers to the position where X@=5, Y@=45 and Z@=-12. The 3 letters are called “axes” : Y is for the height. X and Z are for the horizontal position.=Cela fait référence à la position où X@=5, Y@=45 et Z@=-12. Les 3 lettres sont appelées "axes" : Y est pour la hauteur. X et Z sont pour la position horizontale.
+This refers to the position where X@=5, Y@=45 and Z@=-12. The 3 letters are called “axes”: Y is for the height. X and Z are for the horizontal position.=Cela fait référence à la position où X@=5, Y@=45 et Z@=-12. Les 3 lettres sont appelées “axes” : Y est pour la hauteur. X et Z sont pour la position horizontale.
 The values for X, Y and Z work like this:=Les valeurs pour X, Y et Z fonctionnent comme ceci:
 • If you go up, Y increases=• Si vous montez, Y augmente
 • If you go down, Y decreases=• Si vous descendez, Y diminue

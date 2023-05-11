@@ -50,7 +50,7 @@ local function throw_xp_bottle(pos, dir, velocity)
 end
 
 minetest.register_craftitem("mcl_experience:bottle", {
-	description = "Bottle o' Enchanting",
+	description = S("Bottle o' Enchanting"),
 	inventory_image = "mcl_experience_bottle.png",
 	wield_image = "mcl_experience_bottle.png",
 	stack_max = 64,

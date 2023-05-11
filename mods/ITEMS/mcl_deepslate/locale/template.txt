@@ -28,7 +28,7 @@ Deepslate iron ore is a variant of iron ore that can generate in deepslate and t
 Deepslate Iron Ore=
 Deepslate is a stone type found deep underground in the Overworld that functions similar to regular stone but is harder than the stone.=
 Deepslate Lapis Lazuli Ore=
-Deepslate lapis ore is a variant of lapis ore that can generate in deepslate and tuff blobs.=
+Deepslate lapis lazuli ore is a variant of lapis lazuli ore that can generate in deepslate and tuff blobs.=
 Deepslate redstone ore is a variant of redstone ore that can generate in deepslate and tuff blobs.=
 Deepslate Redstone Ore=
 Deepslate tiles are a decorative variant of deepslate.=
@@ -50,4 +50,4 @@ Polished Deepslate Stairs=
 Polished Deepslate Wall=
 Polished Deepslate=
 Tuff=
-Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y=16.=
+Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y@=16.=

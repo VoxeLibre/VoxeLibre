@@ -1,2 +1,4 @@
 # textdomain: mcl_smithing_table
+Inventory=
+Upgrade Gear=
 Smithing table=

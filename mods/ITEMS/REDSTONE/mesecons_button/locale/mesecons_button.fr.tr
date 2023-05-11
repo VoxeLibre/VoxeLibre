@@ -2,12 +2,17 @@
 Use the button to push it.=Utilisez le bouton pour le pousser.
 Stone Button=Bouton de pierre
 A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Un bouton en pierre est un composant Redstone en pierre qui peut être poussé pour fournir de la puissance Redstone. Lorsqu'il est poussé, il alimente les composants Redstone adjacents pendant 1 seconde.
+Polished Blackstone Button=Bouton de pierre noire
+A polished blackstone button is a redstone component made out of polished blackstone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Un bouton en pierre noire est un composant Redstone en pierre noire qui peut être poussé pour fournir de la puissance Redstone. Lorsqu'il est poussé, il alimente les composants Redstone adjacents pendant 1 seconde.
 Oak Button=Bouton en chêne
 Acacia Button=Bouton en acacia
 Birch Button=Bouton en bouleau
 Dark Oak Button=Bouton en chêne noir
 Spruce Button=Bouton en sapin
 Jungle Button=Bouton en acajou
+Mangrove Button=Bouton en palétuvier
+Crimson Button=Bouton écarlate
+Warped Button=Bouton tordu
 A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. Wooden buttons may also be pushed by arrows.=Un bouton en bois est un composant de redstone en bois qui peut être poussé pour fournir une puissance de redstone. Lorsqu'il est poussé, il alimente les composants Redstone adjacents pendant 1,5 seconde. Les boutons en bois peuvent également être poussés par des flèches.
 Provides redstone power when pushed=Fournit une puissance de redstone lorsqu'il est poussé
 Push duration: @1s=Durée de poussée : @1s

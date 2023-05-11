@@ -68,3 +68,6 @@ Salmon=
 Dolphin=
 Pillager=
 Tropical fish=
+Hoglin=
+Strider=
+Glow Squid=

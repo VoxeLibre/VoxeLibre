@@ -19,3 +19,4 @@ Survival Inventory=
 Crafting=
 Inventory=
 @1/@2=
+Switch stack size=

@@ -41,5 +41,6 @@ Reduces walking speed=
 Netherite Scrap=
 Netherite Ingot=
 Ancient Debris=
+Ancient debris can be found in the nether and is very very rare.=
 Netherite Block=
 Netherite block is very hard and can be made of 9 netherite ingots.=

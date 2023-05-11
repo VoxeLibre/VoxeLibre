@@ -9,3 +9,5 @@ Before you use the name tag, you need to set a name at an anvil. Then you can us
 Only peaceful mobs allowed!=Seuls les mobs pacifiques sont autorisées!
 Give names to mobs=Donne des noms aux mobs
 Set name at anvil=Définir le nom sur l'enclume
+Removes specified mobs except nametagged and tamed ones. For the second parameter, use nametagged/tamed to select only nametagged/tamed mobs, or a range to specify a maximum distance from the player.=Enlève les mobs spécifiés sauf ceux qui sont nommés et apprivoisés. Pour le deuxième paramètre, utiliser nametagged/tamed pour ne sélectionner que les mobs nommés/apprivoisés, ou une distance pour spécifier la distance maximale par rapport au joueur.
+Default usage. Clearing hostile mobs. For more options please type: /help clearmobs=Usage par défaut. Enlève les mobs hostiles. Pour plus d'options saisir : /help clearmobs

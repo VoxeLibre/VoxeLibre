@@ -96,6 +96,11 @@ A carrot on a stick can be used on saddled pigs to ride them.=
 
 Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick.=
 
+Warped fungus on a Stick=
+Lets you ride a strider=
+A warped fungus on a stick can be used on saddled striders to ride them.=
+Place it on a saddled strider to mount it. You can now ride the strider like a horse. Striders will also walk towards you when you just wield the fungus on a stick.=
+
 Nautilus Shell=
 Used to craft a conduit=
 The Nautilus Shell is used to craft a conduit. They can be obtained by fishing or killing a drowned that is wielding a shell.=
@@ -109,3 +114,7 @@ Golden horse armor can be worn by horses to increase their protection from harm.
 Diamond Horse Armor=
 Diamond horse armor can be worn by horses to greatly increase their protection from harm.=
 Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.=
+
+Glow Ink Sac=
+Use it to craft the Glow Item Frame.=
+Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.=

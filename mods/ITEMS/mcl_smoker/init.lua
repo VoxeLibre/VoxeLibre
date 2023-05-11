@@ -415,14 +415,12 @@ end
 minetest.register_node("mcl_smoker:smoker", {
 	description = S("Smoker"),
 	_tt_help = S("Cooks food faster than furnace"),
-	_doc_items_longdesc = S("Smokers cook several items, using a furnace fuel, into something else, but twice as fast as a normal furnace"),
+	_doc_items_longdesc = S("Smokers cook several items, mainly raw foods, into cooked foods, but twice as fast as a normal furnace."),
 	_doc_items_usagehelp =
-			S([[
-				Use the smoker to open the furnace menu.
-				Place a furnace fuel in the lower slot and the source material in the upper slot.
-				The smoker will slowly use its fuel to smelt the item.
-				The result will be placed into the output slot at the right side.
-			]]).."\n"..
+			S("Use the smoker to open the furnace menu.").."\n"..
+            S("Place a furnace fuel in the lower slot and the source material in the upper slot.").."\n"..
+            S("The smoker will slowly use its fuel to smelt the item.").."\n"..
+            S("The result will be placed into the output slot at the right side.").."\n"..
 			S("Use the recipe book to see what foods you can smelt, what you can use as fuel and how long it will burn."),
 	_doc_items_hidden = false,
 	tiles = {

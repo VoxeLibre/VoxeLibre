@@ -53,7 +53,7 @@ Bones can be used to tame wolves so they will protect you. They are also useful 
 Wield the bone near wolves to attract them. Use the “Place” key on the wolf to give it a bone and tame it. You can then give commands to the tamed wolf by using the “Place” key on it.=Maniez l'os près des loups pour les attirer. Utilisez la touche «Placer» sur le loup pour lui donner un os et l'apprivoiser. Vous pouvez ensuite donner des commandes au loup apprivoisé en utilisant la touche "Placer" sur celui-ci.
 
 Squid Ink Sac=Poche d'encre
-This item is dropped by dead squids.  Squid ink can be used to as an ingredient to craft book and quill or black dye.=
+This item is dropped by dead squids.  Squid ink can be used to as an ingredient to craft book and quill or black dye.=Cet objet est lâché par des poulpes morts. L'encre de poulpe peut être utilisée comme ingrédient pour fabriquer des livres et plume ou de l'encre noire.
 
 String=Ficelle
 Strings are used in crafting.=Les ficelles sont utilisées dans l'artisanat.
@@ -96,16 +96,25 @@ A carrot on a stick can be used on saddled pigs to ride them.=Une carotte sur un
 
 Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick.=Placez-le sur un cochon sellé pour le monter. Vous pouvez maintenant monter le cochon comme un cheval. Les porcs marcheront également vers vous lorsque vous brandirez la carotte sur un bâton.
 
+Warped fungus on a Stick=Champignon tordu sur un bâton
+Lets you ride a strider=Vous permet de monter un arpenteur
+A warped fungus on a stick can be used on saddled striders to ride them.=Un champignon tordu sur un bâton peut être utilisé sur les arpenteurs sellés pour les monter.
+Place it on a saddled strider to mount it. You can now ride the strider like a horse. Striders will also walk towards you when you just wield the fungus on a stick.=Placez-le sur un arpenteur sellé pour le monter. Vous pouvez maintenant monter l'arpenteur comme un cheval. Les arpenteurs marcheront également vers vous lorsque vous brandirez le champignon sur un bâton.
+
 Nautilus Shell=Coquille de nautile
 Used to craft a conduit=Utilisé pour fabriquer un conduit.
 The Nautilus Shell is used to craft a conduit. They can be obtained by fishing or killing a drowned that is wielding a shell.=La Coquille de nautile est utilisée pour fabriquer un conduit. Elles peuvent être obtenues en pêchant ou en tuant un noyé qui tient une coquille.
 Heart of the Sea=Coeur de la Mer
-The Heart of the Sea is used to craft a conduit. They can be obtained by finding them in a buried treasure chest.=Le Coeur de la Mer est utilisé pour fabriquer un conduit. Il peut être obtenu dans un coffre au trésor enterré.
+The Heart of the Sea is used to craft a conduit. They can be obtained by finding them in a buried treasure chest.=Le Cœur de la Mer est utilisé pour fabriquer un conduit. Il peut être obtenu dans un coffre au trésor enterré.
 
 Iron Horse Armor=Armure de cheval en fer
 Iron horse armor can be worn by horses to increase their protection from harm a bit.=L'armure de cheval en fer peut être portée par les chevaux pour augmenter un peu leur protection contre les dégâts.
 Golden Horse Armor=Armure de cheval en or
 Golden horse armor can be worn by horses to increase their protection from harm.=Une armure de cheval en or peut être portée par les chevaux pour augmenter leur protection contre les dégâts.
 Diamond Horse Armor=Armure de cheval en diamant
-Diamond horse armor can be worn by horses to greatly increase their protection from harm.=Une armure de cheval en diament peut être portée par les chevaux pour augmenter fortement leur protection contre les dégâts.
+Diamond horse armor can be worn by horses to greatly increase their protection from harm.=Une armure de cheval en diamant peut être portée par les chevaux pour augmenter fortement leur protection contre les dégâts.
 Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.=Placez-la sur un cheval pour mettre l'armure de cheval. Les ânes et les mules ne peuvent pas porter d'armure de cheval.
+
+Glow Ink Sac=Poche d'encre brillante
+Use it to craft the Glow Item Frame.=Utilisez la pour fabriquer un Cadre d'objet brillant.
+Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.=Utilisez la Poche d'encre brillante et le Cadre d'objet normal pour fabriquer le Cadre d'objet brillant.

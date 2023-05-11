@@ -339,7 +339,7 @@ minetest.register_tool("mcl_mobitems:warped_fungus_on_a_stick", {
 	description = S("Warped fungus on a Stick"),
 	_tt_help = S("Lets you ride a strider"),
 	_doc_items_longdesc = S("A warped fungus on a stick can be used on saddled striders to ride them."),
-	_doc_items_usagehelp = S("Place it on a saddled strider to mount it. You can now ride the strider like a horse. Striders will also walk towards you when you just wield the carrot on a stick."),
+	_doc_items_usagehelp = S("Place it on a saddled strider to mount it. You can now ride the strider like a horse. Striders will also walk towards you when you just wield the fungus on a stick."),
 	wield_image = "mcl_mobitems_warped_fungus_on_a_stick.png^[transformFY^[transformR90",
 	inventory_image = "mcl_mobitems_warped_fungus_on_a_stick.png",
 	groups = { transport = 1 },

@@ -25,7 +25,7 @@ end
 
 -- basic bamboo nodes.
 local bamboo_def = {
-	description = "Bamboo",
+	description = S("Bamboo"),
 	tiles = {"mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
@@ -266,7 +266,7 @@ end
 minetest.register_node(BAMBOO_ENDCAP_NAME, bamboo_top)
 
 local bamboo_block_def = {
-	description = "Bamboo Block",
+	description = S("Bamboo Block"),
 	tiles = {"mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo_bottom.png", "mcl_bamboo_bamboo_block.png"},
 	groups = {handy = 1, building_block = 1, axey = 1, flammable = 2, material_wood = 1, bamboo_block = 1, fire_encouragement = 5, fire_flammability = 5},
 	sounds = node_sound,

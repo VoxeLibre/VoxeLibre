@@ -14,3 +14,6 @@ Dark Oak Sign=
 Jungle Sign=
 Acacia Sign=
 Mangrove Sign=
+Warped Hyphae Sign=
+Crimson Hyphae Sign=
+Bamboo Sign=

@@ -623,7 +623,7 @@ function mcl_itemframes.create_base_definitions()
 	mcl_itemframes.item_frame_base = {
 		description = S("Item Frame"),
 		name = "mcl_itemframes:item_frame",
-		_tt_help = S("Can hold an item"),
+		_tt_help = S("Can hold an item."),
 		_doc_items_longdesc = S("Item frames are decorative blocks in which items can be placed."),
 		_doc_items_usagehelp = S("Just place any item on the item frame. Use the item frame again to retrieve the item."),
 		drawtype = "mesh",

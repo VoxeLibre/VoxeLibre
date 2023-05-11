@@ -5,10 +5,8 @@ minetest.register_craftitem("mcl_farming:wheat_seeds", {
 	description = S("Wheat Seeds"),
 	_tt_help = S("Grows on farmland"),
 	_doc_items_longdesc = S("Grows into a wheat plant. Chickens like wheat seeds."),
-	_doc_items_usagehelp = S([[
-		Place the wheat seeds on farmland (which can be created with a hoe) to plant a wheat plant.
-		They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it wheat seeds.
-	]]),
+	_doc_items_usagehelp = S("Place the wheat seeds on farmland (which can be created with a hoe) to plant a wheat plant.").."\n"..
+		                   S("They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it wheat seeds."),
 	groups = {craftitem = 1, compostability = 30},
 	inventory_image = "mcl_farming_wheat_seeds.png",
 	on_place = function(itemstack, placer, pointed_thing)
@@ -31,10 +29,8 @@ for i=1,7 do
 	if i == 1 then
 		create = true
 		name = S("Premature Wheat Plant")
-		longdesc = S([[
-			Premature wheat plants grow on farmland under sunlight in 8 stages.
-			On hydrated farmland, they grow faster. They can be harvested at any time but will only yield a profit when mature.
-		]])
+		longdesc = S("Premature wheat plants grow on farmland under sunlight in 8 stages.").."\n"..
+		           S("On hydrated farmland, they grow faster. They can be harvested at any time but will only yield a profit when mature.")
 	else
 		create = false
 	end
@@ -69,10 +65,8 @@ end
 
 minetest.register_node("mcl_farming:wheat", {
 	description = S("Mature Wheat Plant"),
-	_doc_items_longdesc = S([[
-		Mature wheat plants are ready to be harvested for wheat and wheat seeds.
-		They won't grow any further.
-	]]),
+	_doc_items_longdesc = S("Mature wheat plants are ready to be harvested for wheat and wheat seeds.").."\n"..
+		                  S("They won't grow any further."),
 	sunlight_propagates = true,
 	paramtype = "light",
 	paramtype2 = "meshoptions",

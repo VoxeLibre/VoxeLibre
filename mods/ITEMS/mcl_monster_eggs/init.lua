@@ -23,10 +23,7 @@ local function register_block(subname, description, tiles, is_ground_content)
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 		after_dig_node = spawn_silverfish,
 		_tt_help = S("Hides a silverfish"),
-		_doc_items_longdesc = S([[
-			An infested block is a block from which a silverfish will pop out when it is broken.
-			It looks identical to its normal counterpart.
-		]]),
+		_doc_items_longdesc = S("An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart."),
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0.5,
 	})

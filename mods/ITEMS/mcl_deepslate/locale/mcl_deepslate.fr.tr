@@ -28,7 +28,7 @@ Deepslate iron ore is a variant of iron ore that can generate in deepslate and t
 Deepslate Iron Ore=Minerai de fer de l'ardoise des abîmes
 Deepslate is a stone type found deep underground in the Overworld that functions similar to regular stone but is harder than the stone.=L'ardoise des abîmes est un type de roche présente dans les profondeurs de l'Overworld qui fonctionne de manière similaire à la roche classique mais en plus dur.
 Deepslate Lapis Lazuli Ore=Minerai de lapis-lazuli de l'ardoise des abîmes
-Deepslate lapis ore is a variant of lapis ore that can generate in deepslate and tuff blobs.=Le minerai de lapis de l'ardoise des abîmes est une variante de minerai de lapis-lazuli qui apparaît dans l'ardoise des abîmes et les filons de tuf.
+Deepslate lapis lazuli ore is a variant of lapis lazuli ore that can generate in deepslate and tuff blobs.=Le minerai de lapis-lazuli de l'ardoise des abîmes est une variante de minerai de lapis-lazuli qui apparaît dans l'ardoise des abîmes et les filons de tuf.
 Deepslate redstone ore is a variant of redstone ore that can generate in deepslate and tuff blobs.=Le minerai de redstone de l'ardoise des abîmes est une variante de minerai de redstone qui apparaît dans l'ardoise des abîmes et les filons de tuf.
 Deepslate Redstone Ore=Minerai de Redstone de l'ardoise des abîmes
 Deepslate tiles are a decorative variant of deepslate.=L'ardoise des abîmes carrelée est une variante décorative de l'ardoise des abîmes.
@@ -50,4 +50,4 @@ Polished Deepslate Stairs=Escalier d'ardoise des abîmes
 Polished Deepslate Wall=Muret d'ardoise des abîmes
 Polished Deepslate=Ardoise des abîmes polie
 Tuff=Tuf
-Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y=16.=Le tuf est une roche ornementale formée de roche volcanique, apparraissant dans des blobs souterrains sous Y=16.
+Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y@=16.=Le tuf est une roche ornementale formée de roche volcanique, apparaissant dans des blobs souterrains sous Y@=16.
