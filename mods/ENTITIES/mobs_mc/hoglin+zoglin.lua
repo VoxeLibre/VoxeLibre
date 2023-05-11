@@ -10,6 +10,7 @@ local S = minetest.get_translator("mobs_mc")
 --###################
 
 local hoglin = {
+	description = S("Hoglin"),
 	type = "monster",
 	passive = false,
 	spawn_class = "hostile",
@@ -88,6 +89,7 @@ local hoglin = {
 mcl_mobs.register_mob("mobs_mc:hoglin", hoglin)
 
 local zoglin = table.copy(hoglin)
+zoglin.description = S("Zoglin")
 zoglin.fire_resistant = 1
 zoglin.textures = {"extra_mobs_zoglin.png"}
 zoglin.do_custom = function()
@@ -101,6 +103,7 @@ mcl_mobs.register_mob("mobs_mc:zoglin", zoglin)
 -- Baby hoglin.
 
 local baby_hoglin = table.copy(hoglin)
+baby_hoglin.description = S("Baby hoglin")
 baby_hoglin.collisionbox = {-.3, -0.01, -.3, .3, 0.94, .3}
 baby_hoglin.xp_min = 20
 baby_hoglin.xp_max = 20
