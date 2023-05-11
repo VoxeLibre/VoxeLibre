@@ -198,6 +198,8 @@ end
 
 -- move mob in facing direction
 function mob_class:set_velocity(v)
+	if not v then return end
+
 	local c_x, c_y = 0, 0
 
 	-- can mob be pushed, if so calculate direction
@@ -207,18 +209,15 @@ function mob_class:set_velocity(v)
 
 	-- halt mob if it has been ordered to stay
 	if self.order == "stand" or self.order == "sit" then
-	  self.acc=vector.new(0,0,0)
-	  return
+		self.acc = vector.zero()
+		return
 	end
 
 	local yaw = (self.object:get_yaw() or 0) + self.rotate
 	local vv = self.object:get_velocity()
-	if vv then
-		self.acc={
-		  x = ((math.sin(yaw) * -v) + c_x)*.27,
-		  y = 0,
-		  z = ((math.cos(yaw) * v) + c_y)*.27,
-		}
+
+	if vv and yaw then
+		self.acc = vector.new(((math.sin(yaw) * -v) + c_x) * .27, 0, ((math.cos(yaw) * v) + c_y) * .27)
 	end
 end
 
