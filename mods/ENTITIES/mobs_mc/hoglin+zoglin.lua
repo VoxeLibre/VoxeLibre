@@ -19,8 +19,9 @@ local hoglin = {
 	xp_max = 9,
 	armor = {fleshy = 90},
 	attack_type = "dogfight",
+	attack_frequency = 3;
 	damage = 4,
-	reach = 3,
+	reach = 1.9,
 	collisionbox = {-.6, -0.01, -.6, .6, 1.4, .6},
 	visual = "mesh",
 	mesh = "extra_mobs_hoglin.b3d",
@@ -63,7 +64,7 @@ local hoglin = {
 		punch_end = 32,
 	},
 	fear_height = 4,
-	view_range = 32,
+	view_range = 16,
 	floats = 0,
 	custom_attack = function(self)
 		if self.state == "attack" and self.reach > vector.distance(self.object:get_pos(), self.attack:get_pos()) then
