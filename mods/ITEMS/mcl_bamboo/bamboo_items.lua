@@ -65,6 +65,8 @@ if minetest.get_modpath("mcl_doors") then
 			description = S("Bamboo Door"),
 			inventory_image = "mcl_bamboo_door_wield.png",
 			wield_image = "mcl_bamboo_door_wield.png",
+			_doc_items_longdesc = S("Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal."),
+			_doc_items_usagehelp = S("To open or close a wooden door, rightclick it or supply its lower half with a redstone signal."),
 			groups = { handy = 1, axey = 1, material_wood = 1, flammable = -1 },
 			_mcl_hardness = 3,
 			_mcl_blast_resistance = 3,
