@@ -352,6 +352,23 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 				end
 			end
 		end
+
+		-- Punch End Crystals to make them explode
+		if ent and ent.name == "mcl_end:crystal" then
+			if direct then
+				local puncher = direct:get_luaentity()
+				if puncher and puncher.name == "mcl_end:crystal" then
+					ent.object:punch(direct, 1.0, { -- End Crystal nearby, trigger it.
+						full_punch_interval = 1.0,
+							damage_groups = {fleshy = 1},
+						}, nil, nil)
+				else
+					ent.object:remove() -- Direct Exists, but it is not an end crystal, remove crystal.
+				end
+			else
+				ent.object:remove() -- Node exploded the end crystal, remove it.
+			end
+		end
 	end
 
 	local airs, fires = {}, {}
