@@ -84,7 +84,9 @@ minetest.register_entity(":mcl_raids:ominous_banner",oban_def)
 function mcl_raids.drop_obanner(pos)
 	local it = ItemStack("mcl_banners:banner_item_white")
 	it:get_meta():set_string("layers",minetest.serialize(oban_layers))
-	it:get_meta():set_string("name",S("Ominous Banner"))
+	local banner_description = string.gsub(it:get_definition().description, "White Banner", "Ominous Banner")
+	local description = mcl_banners.make_advanced_banner_description(banner_description, oban_layers)
+	it:get_meta():set_string("description", description)
 	minetest.add_item(pos,it)
 end
 
@@ -94,7 +96,7 @@ function mcl_raids.promote_to_raidcaptain(c) -- object
 	local l = c:get_luaentity()
 	l._banner = minetest.add_entity(pos,"mcl_raids:ominous_banner")
 	l._banner:set_properties({textures = {mcl_banners.make_banner_texture("unicolor_white", oban_layers)}})
-	l._banner:set_attach(c,"",vector.new(-1,5.5,0),vector.new(0,0,0),true)
+	l._banner:set_attach(c,"",vector.new(0,5.5,0),vector.new(0,0,0),true)
 	l._raidcaptain = true
 	local old_ondie = l.on_die
 	l.on_die = function(self, pos, cmi_cause)
@@ -129,7 +131,7 @@ function mcl_raids.register_possible_raidcaptain(mob)
 	table.insert(minetest.registered_entities[mob].pick_up,"mcl_banners:banner_item_white")
 	minetest.registered_entities[mob].on_pick_up = function(self,e)
 		local stack = ItemStack(e.itemstring)
-		if not self._raidcaptain and stack:get_meta():get_string("name"):find("Ominous Banner") then
+		if not self._raidcaptain and stack:get_meta():get_string("description"):find("Ominous Banner") then
 			stack:take_item(1)
 			mcl_raids.promote_to_raidcaptain(self.object)
 			return stack
