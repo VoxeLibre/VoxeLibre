@@ -39,7 +39,7 @@ This mod adds mobs which closely resemble the mobs from the game Minecraft, vers
 * Cave Spider
 * Enderman
 * Zombie Villager
-* Zombie Pigman
+* Zombie Piglin
 * Wither Skeleton
 * Magma Cube
 * Blaze

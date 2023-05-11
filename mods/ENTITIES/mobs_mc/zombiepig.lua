@@ -5,13 +5,14 @@
 
 local S = minetest.get_translator("mobs_mc")
 
---###################
---################### ZOMBIE PIGMAN
---###################
 
+-- TODO Alias needs to be created
+-- TODO DELETE THIS FILE. No longer needed.
+-- Spawning removed
+-- Mob copied to piglin.lua
 
 local pigman = {
-	description = S("Zombie Pigman"),
+	description = S("Zombie Piglin"),
 	-- type="animal", passive=false: This combination is needed for a neutral mob which becomes hostile, if attacked
 	type = "animal",
 	passive = false,
@@ -93,13 +94,12 @@ local pigman = {
 	fire_damage_resistant = true,
 }
 
-mcl_mobs.register_mob("mobs_mc:pigman", pigman)
 
 -- Baby pigman.
 -- A smaller and more dangerous variant of the pigman
 
 local baby_pigman = table.copy(pigman)
-baby_pigman.description = S("Baby Zombie Pigman")
+baby_pigman.description = S("Baby Zombie Piglin")
 baby_pigman.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
 baby_pigman.xp_min = 13
 baby_pigman.xp_max = 13
@@ -113,44 +113,4 @@ baby_pigman.run_velocity = 2.4
 baby_pigman.light_damage = 0
 baby_pigman.child = 1
 
-mcl_mobs.register_mob("mobs_mc:baby_pigman", baby_pigman)
 
--- Regular spawning in the Nether
-mcl_mobs:spawn_specific(
-"mobs_mc:pigman",
-"nether",
-"ground",
-{
-"Nether",
-"CrimsonForest",
-},
-0,
-minetest.LIGHT_MAX+1,
-30,
-6000,
-3,
-mcl_vars.mg_nether_min,
-mcl_vars.mg_nether_max)
--- Baby zombie is 20 times less likely than regular zombies
-mcl_mobs:spawn_specific(
-"mobs_mc:baby_pigman",
-"nether",
-"ground",
-{
-"Nether",
-"CrimsonForest",
-},
-0,
-minetest.LIGHT_MAX+1,
-30,
-100000,
-4,
-mcl_vars.mg_nether_min,
-mcl_vars.mg_nether_max)
-
--- Spawning in Nether portals in the Overworld
---mobs:spawn_specific("mobs_mc:pigman", {"mcl_portals:portal"}, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 500, 4, mcl_vars.mg_overworld_min, mcl_vars.mg_overworld_max)
-
--- spawn eggs
-mcl_mobs.register_egg("mobs_mc:pigman", S("Zombie Pigman"), "#ea9393", "#4c7129", 0)
-mcl_mobs:non_spawn_specific("mobs_mc:pigman","overworld",0,minetest.LIGHT_MAX+1)
