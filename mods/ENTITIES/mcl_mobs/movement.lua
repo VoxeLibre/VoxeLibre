@@ -623,7 +623,7 @@ function mob_class:check_runaway_from()
 end
 
 
--- follow player if owner or holding item, if fish outta water then flop
+-- follow player if owner or holding item
 function mob_class:check_follow()
 	-- find player to follow
 	if (self.follow ~= "" or self.order == "follow") and not self.following

@@ -407,8 +407,11 @@ local function on_step_work (self, dtime)
 	self:check_water_flow()
 	self:env_danger_movement_checks (dtime)
 
-	-- Follow code is heavy and probably shouldn't run when not in range, but we need to extract the cancel follow stuff
-	self:check_follow()
+	if player_in_active_range then
+		if mcl_util.check_dtime_timer(self, dtime, "onstep_follow", 0.2) then
+			self:check_follow()
+		end
+	end
 	self:flop()
 
 	self:check_smooth_rotation(dtime)
