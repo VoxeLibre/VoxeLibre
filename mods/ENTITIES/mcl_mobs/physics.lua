@@ -903,47 +903,36 @@ function mob_class:falling(pos)
 	-- floating in water (or falling)
 	local v = self.object:get_velocity()
 	if v then
+		local new_acceleration
+
 		if v.y > 0 then
 			-- apply gravity when moving up
-			self.object:set_acceleration({
-				x = 0,
-				y = DEFAULT_FALL_SPEED,
-				z = 0
-			})
-
+			new_acceleration = vector.new(0, DEFAULT_FALL_SPEED, 0)
 		elseif v.y <= 0 and v.y > self.fall_speed then
 			-- fall downwards at set speed
-			self.object:set_acceleration({
-				x = 0,
-				y = self.fall_speed,
-				z = 0
-			})
+			new_acceleration = vector.new(0, self.fall_speed, 0)
 		else
 			-- stop accelerating once max fall speed hit
-			self.object:set_acceleration({x = 0, y = 0, z = 0})
+			new_acceleration =vector.zero()
 		end
+
+		self.object:set_acceleration(new_acceleration)
 	end
 
 	local acc = self.object:get_acceleration()
 
-	if minetest.registered_nodes[node_ok(pos).name].groups.lava then
+	local registered_node = minetest.registered_nodes[node_ok(pos).name]
+
+	if registered_node.groups.lava then
 		if acc and self.floats_on_lava == 1 then
-			self.object:set_acceleration({
-				x = 0,
-				y = -self.fall_speed / (math.max(1, v.y) ^ 2),
-				z = 0
-			})
+			self.object:set_acceleration(vector.new(0, -self.fall_speed / (math.max(1, v.y) ^ 2), 0))
 		end
 	end
 
 	-- in water then float up
-	if minetest.registered_nodes[node_ok(pos).name].groups.water then
+	if registered_node.groups.water then
 		if acc and self.floats == 1 then
-			self.object:set_acceleration({
-				x = 0,
-				y = -self.fall_speed / (math.max(1, v.y) ^ 2),
-				z = 0
-			})
+			self.object:set_acceleration(vector.new(0, -self.fall_speed / (math.max(1, v.y) ^ 2), 0))
 		end
 	else
 		-- fall damage onto solid ground
