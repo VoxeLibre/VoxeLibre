@@ -436,21 +436,22 @@ local function on_step_work (self, dtime)
 		self:do_jump()
 	end
 
-	self:check_aggro(dtime)
-
-	self:check_particlespawners(dtime)
-
-	if self.do_custom and self.do_custom(self, dtime) == false then return end
-
 	if mcl_util.check_dtime_timer(self, dtime, "onstep_occassional", 1) then
-		self:check_breeding()
 
 		if player_in_active_range then
 			self:check_item_pickup()
 			self:set_armor_texture()
 			self:step_opinion_sound(dtime)
 		end
+
+		self:check_breeding()
 	end
+
+	self:check_aggro(dtime)
+
+	self:check_particlespawners(dtime)
+
+	if self.do_custom and self.do_custom(self, dtime) == false then return end
 
 	if self:do_states(dtime, player_in_active_range) then return end
 
