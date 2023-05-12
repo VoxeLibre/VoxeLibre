@@ -370,6 +370,12 @@ piglin_brute.animation = {
 }
 piglin_brute.can_despawn = false
 
+piglin_brute.drops = {
+	{name = "mcl_tools:axe_gold",
+	chance = 8.5,
+	min = 1,
+	max = 1,},
+}
 mcl_mobs.register_mob("mobs_mc:piglin_brute", piglin_brute)
 
 
