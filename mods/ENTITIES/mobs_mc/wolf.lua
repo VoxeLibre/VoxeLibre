@@ -216,7 +216,6 @@ mcl_mobs:spawn_specific(
 	"MegaTaiga",
 	"Forest",
 	"ColdTaiga",
-	"FlowerForest_beach",
 	"Forest_beach",
 	"ColdTaiga_beach_water",
 	"Taiga_beach",
