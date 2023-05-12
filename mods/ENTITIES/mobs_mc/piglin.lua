@@ -42,6 +42,7 @@ local piglin = {
 	type = "monster",
 	passive = false,
 	spawn_class = "hostile",
+	group_attack = {"mobs_mc:piglin", "mobs_mc:sword_piglin", "mobs_mc:piglin_brute"},
 	hp_min = 16,
 	hp_max = 16,
 	xp_min = 9,
@@ -368,7 +369,6 @@ piglin_brute.animation = {
 	punch_end = 198,
 }
 piglin_brute.can_despawn = false
-piglin_brute.group_attack = { "mobs_mc:piglin", "mobs_mc:piglin_brute" }
 
 mcl_mobs.register_mob("mobs_mc:piglin_brute", piglin_brute)
 
