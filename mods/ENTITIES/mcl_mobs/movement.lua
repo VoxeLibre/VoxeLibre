@@ -4,8 +4,9 @@ local DEFAULT_FALL_SPEED = -9.81*1.5
 local FLOP_HEIGHT = 6
 local FLOP_HOR_SPEED = 1.5
 
-local node_snow = "mcl_core:snow"
+local CHECK_HERD_FREQUENCY = 4
 
+local node_snow = "mcl_core:snow"
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 
@@ -202,12 +203,8 @@ function mob_class:can_jump_cliff()
 end
 
 -- is mob facing a cliff or danger
-function mob_class:is_at_cliff_or_danger(can_jump_cliff)
-	if can_jump_cliff == nil then
-		can_jump_cliff = self:can_jump_cliff()
-	end
-
-	if self.fear_height == 0 or can_jump_cliff or self._jumping_cliff or not self.object:get_luaentity() then -- 0 for no falling protection!
+function mob_class:is_at_cliff_or_danger()
+	if self.fear_height == 0 or self._jumping_cliff or self._can_jump_cliff or not self.object:get_luaentity() then -- 0 for no falling protection!
 		return false
 	end
 
@@ -242,12 +239,16 @@ end
 
 
 -- copy the 'mob facing cliff_or_danger check' from above, and rework to avoid water
-function mob_class:is_at_water_danger(can_jump_cliff)
-	if can_jump_cliff == nil then
-		can_jump_cliff = self:can_jump_cliff()
+function mob_class:is_at_water_danger()
+	if self.water_damage == 0 and self.breath_max == -1 then
+		--minetest.log("Do not need a water check for: " .. self.name)
+		return
 	end
 
-	if not self.object:get_luaentity() or can_jump_cliff or self._jumping_cliff then
+	local in_water_danger = self:is_node_waterhazard(self.standing_in) or self:is_node_waterhazard(self.standing_on)
+	if in_water_danger then return false end -- If you're in trouble, do not stop
+
+	if not self.object:get_luaentity() or self._jumping_cliff or self._can_jump_cliff then
 		return false
 	end
 	local yaw = self.object:get_yaw()
@@ -262,25 +263,16 @@ function mob_class:is_at_water_danger(can_jump_cliff)
 
 	local ypos = pos.y + self.collisionbox[2] -- just above floor
 
-	local free_fall, blocker = minetest.line_of_sight(
+	local los, blocker = minetest.line_of_sight(
 		vector.new(pos.x + dir_x, ypos, pos.z + dir_z),
 		vector.new(pos.x + dir_x, ypos - 3, pos.z + dir_z))
 
-	if free_fall then
-		return true
-	else
+	if not los then
 		local bnode = minetest.get_node(blocker)
 		local waterdanger = self:is_node_waterhazard(bnode.name)
-		if
-			waterdanger and (self:is_node_waterhazard(self.standing_in) or self:is_node_waterhazard( self.standing_on)) then
-			return false
-		elseif waterdanger and (self:is_node_waterhazard(self.standing_in) or self:is_node_waterhazard(self.standing_on)) == false then
+
+		if waterdanger and not in_water_danger then
 			return true
-		else
-			local def = minetest.registered_nodes[bnode.name]
-			if def and def.walkable then
-				return false
-			end
 		end
 	end
 
@@ -290,24 +282,29 @@ end
 function mob_class:env_danger_movement_checks(dtime)
 	local yaw = 0
 
-	local can_jump_cliff = self:can_jump_cliff()
-	if self.state ~= "attack" and self:is_at_water_danger(can_jump_cliff) then
-		if math.random(1, 10) <= 6 then
-			self:set_velocity(0)
-			self.state = "stand"
-			self:set_animation( "stand")
+	if self.state ~= "attack" and self:is_at_water_danger() then
+		--minetest.log("At water danger for mob, stop?: " .. self.name)
+		if math.random(1, 10) <= 7 then
+			if self.state ~= "stand" then
+				self:set_velocity(0)
+				self.state = "stand"
+				self:set_animation( "stand")
+			end
 			yaw = yaw + math.random(-0.5, 0.5)
 			yaw = self:set_yaw( yaw, 8)
+			return
 		end
 	end
 
-	if self:is_at_cliff_or_danger(can_jump_cliff) then
-		self:set_velocity(0)
-		self.state = "stand"
-		self:set_animation( "stand")
+	--[[if self:is_at_cliff_or_danger(can_jump_cliff) then
+		if self.state ~= "stand" then
+			self:set_velocity(0)
+			self.state = "stand"
+			self:set_animation( "stand")
+		end
 		local yaw = self.object:get_yaw() or 0
 		yaw = self:set_yaw( yaw + 0.78, 8)
-	end
+	end--]]
 end
 
 -- jump if facing a solid node (not fences or gates)
@@ -378,7 +375,7 @@ function mob_class:do_jump()
 	end
 
 	local ndef = minetest.registered_nodes[nod.name]
-	if self.walk_chance == 0 or ndef and ndef.walkable or self:can_jump_cliff() then
+	if self.walk_chance == 0 or ndef and ndef.walkable or self._can_jump_cliff then
 
 		if minetest.get_item_group(nod.name, "fence") == 0
 		and minetest.get_item_group(nod.name, "fence_gate") == 0
@@ -388,7 +385,7 @@ function mob_class:do_jump()
 
 			v.y = self.jump_height + 0.1 * 3
 
-			if self:can_jump_cliff() then
+			if self._can_jump_cliff then
 				v=vector.multiply(v, vector.new(2.8,1,2.8))
 			end
 
@@ -724,7 +721,7 @@ function mob_class:flop()
 			return
 		elseif self.state == "flop" then
 			self.state = "stand"
-			self.object:set_acceleration({x = 0, y = 0, z = 0})
+			self.object:set_acceleration(vector.zero())
 			self:set_velocity(0)
 		end
 	end
@@ -756,7 +753,7 @@ function mob_class:check_herd(dtime)
 	if self.move_in_group == false then return end
 
 	check_herd_timer = check_herd_timer + dtime
-	if check_herd_timer < 4 then return end
+	if check_herd_timer < CHECK_HERD_FREQUENCY then return end
 	check_herd_timer = 0
 	for _,o in pairs(minetest.get_objects_inside_radius(pos,self.view_range)) do
 		local l = o:get_luaentity()

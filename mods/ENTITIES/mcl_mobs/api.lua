@@ -325,6 +325,8 @@ function mob_class:do_states(dtime)
 		return
 	end
 
+	self:env_danger_movement_checks (dtime)
+
 	if self.state == PATHFINDING then
 		self:check_gowp(dtime)
 	elseif self.state == "attack" then
@@ -405,13 +407,13 @@ local function on_step_work (self, dtime)
 	-- End: Death/damage processing
 
 	self:check_water_flow()
-	self:env_danger_movement_checks (dtime)
 
-	if player_in_active_range then
-		if mcl_util.check_dtime_timer(self, dtime, "onstep_follow", 0.2) then
-			self:check_follow()
-		end
+	if not self._jumping_cliff then
+		self._can_jump_cliff = self:can_jump_cliff()
+	else
+		self._can_jump_cliff = false
 	end
+
 	self:flop()
 
 	self:check_smooth_rotation(dtime)
@@ -421,14 +423,17 @@ local function on_step_work (self, dtime)
 
 		self:check_head_swivel(dtime)
 
-		if self.jump_sound_cooloff > 0 then self.jump_sound_cooloff = self.jump_sound_cooloff - dtime end
-		self:do_jump()
-
-		self:check_runaway_from()
-		self:monster_attack()
-		self:npc_attack()
+		if mcl_util.check_dtime_timer(self, dtime, "onstep_engage", 0.2) then
+			self:check_follow()
+			self:check_runaway_from()
+			self:monster_attack()
+			self:npc_attack()
+		end
 
 		self:check_herd(dtime)
+
+		if self.jump_sound_cooloff > 0 then self.jump_sound_cooloff = self.jump_sound_cooloff - dtime end
+		self:do_jump()
 	end
 
 	self:check_aggro(dtime)
