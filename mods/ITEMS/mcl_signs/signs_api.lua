@@ -307,7 +307,9 @@ mcl_signs.wall_standard = {
 		local item = clicker:get_wielded_item()
 		local iname = item:get_name()
 
-		if node then
+		local protected = mcl_util.check_position_protection(pos, clicker)
+
+		if node and not protected then
 			if DEBUG then
 				minetest.log("verbose", "[mcl_signs] Wall_Sign Right Click event on valid node.")
 			end
@@ -414,7 +416,9 @@ mcl_signs.standing_standard = {
 		local item = clicker:get_wielded_item()
 		local iname = item:get_name()
 
-		if node then
+		local protected = mcl_util.check_position_protection(pos, clicker)
+
+		if node and not protected then
 			-- handle glow from glow_ink_sac *first*
 			if DEBUG then
 				minetest.log("verbose", "[mcl_signs] Standing_Sign Right Click event on valid node.")
