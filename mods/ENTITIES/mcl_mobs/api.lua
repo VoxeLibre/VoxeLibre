@@ -316,7 +316,7 @@ end
 
 -- execute current state (stand, walk, run, attacks)
 -- returns true if mob has died
-function mob_class:do_states(dtime)
+function mob_class:do_states(dtime, player_in_active_range)
 	--if self.can_open_doors then check_doors(self) end
 
 	-- knockback timer. set in on_punch
@@ -325,7 +325,7 @@ function mob_class:do_states(dtime)
 		return
 	end
 
-	self:env_danger_movement_checks (dtime)
+	self:env_danger_movement_checks(player_in_active_range)
 
 	if self.state == PATHFINDING then
 		self:check_gowp(dtime)
@@ -336,7 +336,7 @@ function mob_class:do_states(dtime)
 	else
 		if mcl_util.check_dtime_timer(self, dtime, "onstep_dostates", 1) then
 			if self.state == "stand" then
-				self:do_states_stand()
+				self:do_states_stand(player_in_active_range)
 			elseif self.state == "walk" then
 				self:do_states_walk()
 			elseif self.state == "runaway" then
@@ -452,7 +452,7 @@ local function on_step_work (self, dtime)
 		end
 	end
 
-	if self:do_states(dtime) then return end
+	if self:do_states(dtime, player_in_active_range) then return end
 
 	if mobs_debug then self:update_tag() end
 

@@ -6,6 +6,8 @@ local FLOP_HOR_SPEED = 1.5
 
 local CHECK_HERD_FREQUENCY = 4
 
+local PATHFINDING = "gowp"
+
 local node_snow = "mcl_core:snow"
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
@@ -279,10 +281,19 @@ function mob_class:is_at_water_danger()
 	return false
 end
 
-function mob_class:env_danger_movement_checks(dtime)
+function mob_class:env_danger_movement_checks(player_in_active_range)
 	local yaw = 0
 
-	if self.state ~= "attack" and self:is_at_water_danger() then
+	if not player_in_active_range then return end
+
+	if self.state == PATHFINDING
+			or self.state == "attack"
+			or self.state == "stand"
+			or self.state == "runaway" then
+		return
+	end
+
+	if self:is_at_water_danger() then
 		--minetest.log("At water danger for mob, stop?: " .. self.name)
 		if math.random(1, 10) <= 7 then
 			if self.state ~= "stand" then
@@ -884,7 +895,7 @@ function mob_class:do_states_walk()
 	end
 end
 
-function mob_class:do_states_stand()
+function mob_class:do_states_stand(player_in_active_range)
 	local yaw = self.object:get_yaw() or 0
 
 	if math.random(1, 4) == 1 then
@@ -928,14 +939,16 @@ function mob_class:do_states_stand()
 	if self.order == "stand" or self.order == "sleep" or self.order == "work" then
 
 	else
-		if self.walk_chance ~= 0
-				and self.facing_fence ~= true
-				and math.random(1, 100) <= self.walk_chance
-				and self:is_at_cliff_or_danger() == false then
+		if player_in_active_range then
+			if self.walk_chance ~= 0
+					and self.facing_fence ~= true
+					and math.random(1, 100) <= self.walk_chance
+					and self:is_at_cliff_or_danger() == false then
 
-			self:set_velocity(self.walk_velocity)
-			self.state = "walk"
-			self:set_animation( "walk")
+				self:set_velocity(self.walk_velocity)
+				self.state = "walk"
+				self:set_animation( "walk")
+			end
 		end
 	end
 end
