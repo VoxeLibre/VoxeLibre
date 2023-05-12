@@ -25,7 +25,10 @@ function mobs_mc.player_wears_gold(player)
 	for i=1, 6 do
 		local stack = player:get_inventory():get_stack("armor", i)
 		local item = stack:get_name()
-		if item == "mcl_armor:chestplate_gold" or item == "mcl_armor:leggings_gold" or item == "mcl_armor:helmet_gold" or item == "mcl_armor:boots_gold" then
+		if string.find(item, "mcl_armor:chestplate_gold")
+				or string.find(item, "mcl_armor:leggings_gold")
+				or string.find(item, "mcl_armor:helmet_gold")
+				or string.find(item, "mcl_armor:boots_gold") then
 			return true
 		end
 	end
