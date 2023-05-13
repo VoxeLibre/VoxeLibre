@@ -387,24 +387,13 @@ local function on_step_work (self, dtime)
 	end
 
 	if self:falling(pos) then return end
-
-	local player_in_active_range = self:player_in_active_range()
-
-	self:check_suspend(player_in_active_range)
-
-	if not self.fire_resistant then
-		mcl_burning.tick(self.object, dtime, self)
-		if not self.object:get_pos() then return end -- mcl_burning.tick may remove object immediately
-
-		if self:check_for_death("fire", {type = "fire"}) then
-			return true
-		end
-	end
-
-	if self:env_damage (dtime, pos) then return end
+	if self:step_damage (dtime, pos) then return end
 
 	if self.state == "die" then return end
 	-- End: Death/damage processing
+
+	local player_in_active_range = self:player_in_active_range()
+	self:check_suspend(player_in_active_range)
 
 	self:check_water_flow()
 

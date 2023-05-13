@@ -820,10 +820,18 @@ function mob_class:do_env_damage()
 	return self:check_for_death("unknown", {type = "unknown"})
 end
 
-function mob_class:env_damage (dtime, pos)
+function mob_class:step_damage (dtime, pos)
+	if not self.fire_resistant then
+		mcl_burning.tick(self.object, dtime, self)
+		if not self.object:get_pos() then return end -- mcl_burning.tick may remove object immediately
+
+		if self:check_for_death("fire", {type = "fire"}) then
+			return true
+		end
+	end
+
 	-- environmental damage timer (every 1 second)
 	self.env_damage_timer = self.env_damage_timer + dtime
-
 
 	if self.env_damage_timer > 1 then
 		self.env_damage_timer = 0
@@ -1018,9 +1026,6 @@ function mob_class:check_suspend(player_in_active_range)
 			if acc.y > 0 or node_under ~= "air" then
 				self.object:set_acceleration(vector.zero())
 				self.object:set_velocity(vector.zero())
-			end
-			if acc.y == 0 and node_under == "air" then
-				self:falling(pos)
 			end
 		end
 		return true
