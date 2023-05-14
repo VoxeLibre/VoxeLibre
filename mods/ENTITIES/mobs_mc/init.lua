@@ -139,7 +139,6 @@ dofile(path .. "/silverfish.lua") -- maikerumine Mesh and animation by toby109tt
 dofile(path .. "/skeleton+stray.lua") -- Mesh by Morn76 Animation by Pavel_S
 dofile(path .. "/skeleton_wither.lua") -- Mesh by Morn76 Animation by Pavel_S
 dofile(path .. "/zombie.lua") -- Mesh by Morn76 Animation by Pavel_S
-dofile(path .. "/zombiepig.lua") -- Mesh by Morn76 Animation by Pavel_S
 dofile(path .. "/slime+magma_cube.lua") -- Wuzzy
 dofile(path .. "/spider.lua") -- Spider by AspireMint (fishyWET (CC-BY-SA 3.0 license for texture)
 dofile(path .. "/vex.lua") -- KrupnoPavel
@@ -153,7 +152,7 @@ dofile(path .. "/dolphin.lua")
 
 dofile(path .. "/glow_squid.lua")
 
-dofile(path .. "/piglin.lua")
+dofile(path .. "/piglin.lua") -- "mobs_mc_zombie_pigman.b3d" Mesh by Morn76 Animation by Pavel_S
 dofile(path .. "/hoglin+zoglin.lua")
 
 dofile(path .. "/strider.lua")

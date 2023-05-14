@@ -38,9 +38,11 @@ end
 --################### piglin
 --###################
 local piglin = {
+	description = S("Piglin"),
 	type = "monster",
 	passive = false,
 	spawn_class = "hostile",
+	group_attack = {"mobs_mc:piglin", "mobs_mc:sword_piglin", "mobs_mc:piglin_brute"},
 	hp_min = 16,
 	hp_max = 16,
 	xp_min = 9,
@@ -181,6 +183,7 @@ mcl_mobs.register_mob("mobs_mc:piglin", piglin)
 
 
 local sword_piglin = table.copy(piglin)
+sword_piglin.description = S("Sword Piglin")
 sword_piglin.mesh = "extra_mobs_sword_piglin.b3d"
 sword_piglin.textures = {"extra_mobs_piglin.png", "default_tool_goldsword.png"}
 sword_piglin.on_spawn = function(self)
@@ -209,43 +212,127 @@ sword_piglin.animation = {
 	punch_start = 189,
 	punch_end = 198,
 }
+
 mcl_mobs.register_mob("mobs_mc:sword_piglin", sword_piglin)
 
-local zombified_piglin = table.copy(piglin)
-zombified_piglin.fire_resistant = 1
-zombified_piglin.do_custom = function()
-	return
-end
-zombified_piglin.on_spawn = function()
-	return
-end
-zombified_piglin.on_rightclick = function()
-	return
-end
-zombified_piglin.lava_damage = 0
-zombified_piglin.fire_damage = 0
-zombified_piglin.attack_animals = true
-zombified_piglin.mesh = "extra_mobs_sword_piglin.b3d"
-zombified_piglin.textures = {"extra_mobs_zombified_piglin.png", "default_tool_goldsword.png", "extra_mobs_trans.png"}
-zombified_piglin.attack_type = "dogfight"
-zombified_piglin.animation = {
-	stand_speed = 30,
-	walk_speed = 30,
-	punch_speed = 45,
-	run_speed = 30,
-	stand_start = 0,
-	stand_end = 79,
-	walk_start = 168,
-	walk_end = 187,
-	run_start = 440,
-	run_end = 459,
-	punch_start = 189,
-	punch_end = 198,
+
+-- Zombified Piglin --
+
+
+local zombified_piglin = {
+	description = S("Zombie Piglin"),
+	-- type="animal", passive=false: This combination is needed for a neutral mob which becomes hostile, if attacked
+	type = "animal",
+	passive = false,
+	spawn_class = "passive",
+	hp_min = 20,
+	hp_max = 20,
+	xp_min = 6,
+	xp_max = 6,
+	armor = {undead = 90, fleshy = 90},
+	attack_type = "dogfight",
+	group_attack = {"mobs_mc:zombified_piglin", "mobs_mc:baby_zombified_piglin"},
+	damage = 9,
+	reach = 2,
+	head_swivel = "head.control",
+	bone_eye_height = 2.4,
+	head_eye_height = 1.4,
+	curiosity = 15,
+	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3}, -- same
+	visual = "mesh",
+	mesh = "mobs_mc_zombie_pigman.b3d",
+	textures = { {
+					 "blank.png", --baby
+					 "default_tool_goldsword.png", --sword
+					 "mobs_mc_zombie_pigman.png", --pigman
+				 } },
+	visual_size = {x=3, y=3},
+	sounds = {
+		random = "mobs_mc_zombiepig_random",
+		war_cry = "mobs_mc_zombiepig_war_cry",
+		death = "mobs_mc_zombiepig_death",
+		damage = "mobs_mc_zombiepig_hurt",
+		distance = 16,
+	},
+	jump = true,
+	makes_footstep_sound = true,
+	walk_velocity = .8,
+	run_velocity = 2.6,
+	pathfinding = 1,
+	drops = {
+		{name = "mcl_mobitems:rotten_flesh",
+		 chance = 1,
+		 min = 1,
+		 max = 1,
+		 looting = "common"},
+		{name = "mcl_core:gold_nugget",
+		 chance = 1,
+		 min = 0,
+		 max = 1,
+		 looting = "common"},
+		{name = "mcl_core:gold_ingot",
+		 chance = 40, -- 2.5%
+		 min = 1,
+		 max = 1,
+		 looting = "rare"},
+		{name = "mcl_tools:sword_gold",
+		 chance = 100 / 8.5,
+		 min = 1,
+		 max = 1,
+		 looting = "rare"},
+	},
+	animation = {
+		stand_speed = 25,
+		walk_speed = 25,
+		run_speed = 50,
+		stand_start = 40,
+		stand_end = 80,
+		walk_start = 0,
+		walk_end = 40,
+		run_start = 0,
+		run_end = 40,
+		punch_start = 90,
+		punch_end = 130,
+	},
+	lava_damage = 0,
+	fire_damage = 0,
+	fear_height = 4,
+	view_range = 16,
+	harmed_by_heal = true,
+	fire_damage_resistant = true,
 }
+
 mcl_mobs.register_mob("mobs_mc:zombified_piglin", zombified_piglin)
 
+local baby_zombified_piglin = table.copy(zombified_piglin)
+baby_zombified_piglin.description = S("Baby Zombie Piglin")
+baby_zombified_piglin.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
+baby_zombified_piglin.xp_min = 13
+baby_zombified_piglin.xp_max = 13
+baby_zombified_piglin.textures = {
+	{
+	 "mobs_mc_zombie_pigman.png", --baby
+	 "default_tool_goldsword.png", --sword
+	 "mobs_mc_zombie_pigman.png", --pigman
+	}
+}
+baby_zombified_piglin.walk_velocity = 1.2
+baby_zombified_piglin.run_velocity = 2.4
+baby_zombified_piglin.light_damage = 0
+baby_zombified_piglin.child = 1
+
+mcl_mobs.register_mob("mobs_mc:baby_zombified_piglin", baby_zombified_piglin)
+
+-- Compatibility code. These were removed, and now are called zombie piglins. They don't spawn.
+-- This is only to catch old cases. Maybe could be an alias?
+mcl_mobs.register_mob("mobs_mc:pigman", zombified_piglin)
+mcl_mobs.register_mob("mobs_mc:baby_pigman", baby_zombified_piglin)
+
+
+-- Piglin Brute --
 
 local piglin_brute = table.copy(piglin)
+piglin_brute.description = S("Piglin Brute")
 piglin_brute.xp_min = 20
 piglin_brute.xp_max = 20
 piglin_brute.hp_min = 50
@@ -282,11 +369,11 @@ piglin_brute.animation = {
 	punch_end = 198,
 }
 piglin_brute.can_despawn = false
-piglin_brute.group_attack = { "mobs_mc:piglin", "mobs_mc:piglin_brute" }
+
 mcl_mobs.register_mob("mobs_mc:piglin_brute", piglin_brute)
 
 
-mcl_mobs:non_spawn_specific("mobs_mc:piglin","overworld",0,7)
+
 -- Regular spawning in the Nether
 mcl_mobs:spawn_specific(
 "mobs_mc:piglin",
@@ -303,15 +390,15 @@ minetest.LIGHT_MAX+1,
 3,
 mcl_vars.mg_lava_nether_max,
 mcl_vars.mg_nether_max)
-mcl_mobs:non_spawn_specific("mobs_mc:sword_piglin","overworld",0,7)
+
 mcl_mobs:spawn_specific(
 "mobs_mc:sword_piglin",
 "nether",
 "ground",
 {
-"Nether",
-"CrimsonForest"
-},
+			"Nether",
+			"CrimsonForest"
+		},
 0,
 minetest.LIGHT_MAX+1,
 30,
@@ -319,7 +406,45 @@ minetest.LIGHT_MAX+1,
 3,
 mcl_vars.mg_lava_nether_max,
 mcl_vars.mg_nether_max)
--- spawn eggs
+
+mcl_mobs:spawn_specific(
+		"mobs_mc:zombified_piglin",
+		"nether",
+		"ground",
+		{
+			"Nether",
+			"CrimsonForest",
+		},
+		0,
+		minetest.LIGHT_MAX+1,
+		30,
+		6000,
+		3,
+		mcl_vars.mg_nether_min,
+		mcl_vars.mg_nether_max)
+
+-- Baby zombie is 20 times less likely than regular zombies
+mcl_mobs:spawn_specific(
+		"mobs_mc:baby_zombified_piglin",
+		"nether",
+		"ground",
+		{
+			"Nether",
+			"CrimsonForest",
+		},
+		0,
+		minetest.LIGHT_MAX+1,
+		30,
+		100000,
+		4,
+		mcl_vars.mg_nether_min,
+		mcl_vars.mg_nether_max)
+
+mcl_mobs:non_spawn_specific("mobs_mc:piglin","overworld",0,7)
+mcl_mobs:non_spawn_specific("mobs_mc:sword_piglin","overworld",0,7)
+mcl_mobs:non_spawn_specific("mobs_mc:piglin_brute","overworld",0,7)
+mcl_mobs:non_spawn_specific("mobs_mc:zombified_piglin","overworld",0,minetest.LIGHT_MAX+1)
+
 mcl_mobs.register_egg("mobs_mc:piglin", S("Piglin"), "#7b4a17","#d5c381", 0)
 mcl_mobs.register_egg("mobs_mc:piglin_brute", S("Piglin Brute"), "#562b0c","#ddc89d", 0)
-mcl_mobs:non_spawn_specific("mobs_mc:piglin_brute","overworld",0,7)
+mcl_mobs.register_egg("mobs_mc:zombified_piglin", S("Zombie Piglin"), "#ea9393", "#4c7129", 0)
