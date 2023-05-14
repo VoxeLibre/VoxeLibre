@@ -325,7 +325,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 	_doc_items_longdesc = S("A bucket can be used to collect and release liquids."),
 	_doc_items_usagehelp = S("Punch a liquid source to collect it. You can then use the filled bucket to place the liquid somewhere else."),
 	_tt_help = S("Collects liquids"),
-	inventory_image = "bucket.png",
+	inventory_image = "mcl_buckets_bucket.png",
 	stack_max = 16,
 	liquids_pointable = use_select_box,
 	on_place = on_place_bucket_empty,
