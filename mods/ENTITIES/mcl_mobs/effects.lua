@@ -269,7 +269,7 @@ function mob_class:set_animation(anim, fixed_frame)
 
 
 
-	if self:flight_check() and self.fly and anim == "walk" then anim = "fly" end
+	if self.fly and self:flight_check() and anim == "walk" then anim = "fly" end
 
 	self._current_animation = self._current_animation or ""
 
@@ -324,12 +324,12 @@ local function who_are_you_looking_at (self)
 			self._locked_object = nil
 		end
 	elseif not self._locked_object then
-		if math.random(1, 30) then
+		if mcl_util.check_dtime_timer(self, dtime, "step_look_for_someone", 0.2) then
 			--minetest.log("Change look check: ".. self.name)
 
 			-- For the wither this was 20/60=0.33, so probably need to rebalance and divide rates.
 			-- but frequency of check isn't good as it is costly. Making others too infrequent requires testing
-			local chance = 20/self.curiosity
+			local chance = 150/self.curiosity
 
 			if chance < 1 then chance = 1 end
 			local look_at_player_chance = math.random(chance)

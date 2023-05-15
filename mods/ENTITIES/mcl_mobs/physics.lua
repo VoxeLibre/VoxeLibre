@@ -820,10 +820,18 @@ function mob_class:do_env_damage()
 	return self:check_for_death("unknown", {type = "unknown"})
 end
 
-function mob_class:env_damage (dtime, pos)
+function mob_class:step_damage (dtime, pos)
+	if not self.fire_resistant then
+		mcl_burning.tick(self.object, dtime, self)
+		if not self.object:get_pos() then return end -- mcl_burning.tick may remove object immediately
+
+		if self:check_for_death("fire", {type = "fire"}) then
+			return true
+		end
+	end
+
 	-- environmental damage timer (every 1 second)
 	self.env_damage_timer = self.env_damage_timer + dtime
-
 
 	if self.env_damage_timer > 1 then
 		self.env_damage_timer = 0
@@ -903,47 +911,36 @@ function mob_class:falling(pos)
 	-- floating in water (or falling)
 	local v = self.object:get_velocity()
 	if v then
+		local new_acceleration
+
 		if v.y > 0 then
 			-- apply gravity when moving up
-			self.object:set_acceleration({
-				x = 0,
-				y = DEFAULT_FALL_SPEED,
-				z = 0
-			})
-
+			new_acceleration = vector.new(0, DEFAULT_FALL_SPEED, 0)
 		elseif v.y <= 0 and v.y > self.fall_speed then
 			-- fall downwards at set speed
-			self.object:set_acceleration({
-				x = 0,
-				y = self.fall_speed,
-				z = 0
-			})
+			new_acceleration = vector.new(0, self.fall_speed, 0)
 		else
 			-- stop accelerating once max fall speed hit
-			self.object:set_acceleration({x = 0, y = 0, z = 0})
+			new_acceleration =vector.zero()
 		end
+
+		self.object:set_acceleration(new_acceleration)
 	end
 
 	local acc = self.object:get_acceleration()
 
-	if minetest.registered_nodes[node_ok(pos).name].groups.lava then
+	local registered_node = minetest.registered_nodes[node_ok(pos).name]
+
+	if registered_node.groups.lava then
 		if acc and self.floats_on_lava == 1 then
-			self.object:set_acceleration({
-				x = 0,
-				y = -self.fall_speed / (math.max(1, v.y) ^ 2),
-				z = 0
-			})
+			self.object:set_acceleration(vector.new(0, -self.fall_speed / (math.max(1, v.y) ^ 2), 0))
 		end
 	end
 
 	-- in water then float up
-	if minetest.registered_nodes[node_ok(pos).name].groups.water then
+	if registered_node.groups.water then
 		if acc and self.floats == 1 then
-			self.object:set_acceleration({
-				x = 0,
-				y = -self.fall_speed / (math.max(1, v.y) ^ 2),
-				z = 0
-			})
+			self.object:set_acceleration(vector.new(0, -self.fall_speed / (math.max(1, v.y) ^ 2), 0))
 		end
 	else
 		-- fall damage onto solid ground
@@ -1029,9 +1026,6 @@ function mob_class:check_suspend(player_in_active_range)
 			if acc.y > 0 or node_under ~= "air" then
 				self.object:set_acceleration(vector.zero())
 				self.object:set_velocity(vector.zero())
-			end
-			if acc.y == 0 and node_under == "air" then
-				self:falling(pos)
 			end
 		end
 		return true

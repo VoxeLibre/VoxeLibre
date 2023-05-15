@@ -111,6 +111,21 @@ function mob_class:get_staticdata()
 	return minetest.serialize(tmp)
 end
 
+local function valid_texture(self, def_textures)
+	if not self.base_texture then
+		return false
+	end
+
+	if self.texture_selected then
+		if #def_textures < self.texture_selected then
+			self.texture_selected = nil
+		else
+			return true
+		end
+	end
+	return false
+end
+
 function mob_class:mob_activate(staticdata, def, dtime)
 	if not self.object:get_pos() or staticdata == "remove" then
 		mcl_burning.extinguish(self.object)
@@ -133,16 +148,20 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	end
 
 	--If textures in definition change, reload textures
-	if not self.base_texture or (def.textures and table.indexof(def.textures, self.base_texture) == -1) then
+	if not valid_texture(self, def.textures) then
+
 		-- compatiblity with old simple mobs textures
 		if type(def.textures[1]) == "string" then
 			def.textures = {def.textures}
 		end
 
-		local c = 1
-		if #def.textures > c then c = #def.textures end
+		if not self.texture_selected then
+			local c = 1
+			if #def.textures > c then c = #def.textures end
+			self.texture_selected = math.random(c)
+		end
 
-		self.base_texture = def.textures[math.random(c)]
+		self.base_texture = def.textures[self.texture_selected]
 		self.base_mesh = def.mesh
 		self.base_size = self.visual_size
 		self.base_colbox = self.collisionbox
@@ -297,7 +316,7 @@ end
 
 -- execute current state (stand, walk, run, attacks)
 -- returns true if mob has died
-function mob_class:do_states(dtime)
+function mob_class:do_states(dtime, player_in_active_range)
 	--if self.can_open_doors then check_doors(self) end
 
 	-- knockback timer. set in on_punch
@@ -305,6 +324,8 @@ function mob_class:do_states(dtime)
 		self.pause_timer = self.pause_timer - dtime
 		return
 	end
+
+	self:env_danger_movement_checks(player_in_active_range)
 
 	if self.state == PATHFINDING then
 		self:check_gowp(dtime)
@@ -315,7 +336,7 @@ function mob_class:do_states(dtime)
 	else
 		if mcl_util.check_dtime_timer(self, dtime, "onstep_dostates", 1) then
 			if self.state == "stand" then
-				self:do_states_stand()
+				self:do_states_stand(player_in_active_range)
 			elseif self.state == "walk" then
 				self:do_states_walk()
 			elseif self.state == "runaway" then
@@ -366,30 +387,22 @@ local function on_step_work (self, dtime)
 	end
 
 	if self:falling(pos) then return end
-
-	local player_in_active_range = self:player_in_active_range()
-
-	self:check_suspend(player_in_active_range)
-
-	if not self.fire_resistant then
-		mcl_burning.tick(self.object, dtime, self)
-		if not self.object:get_pos() then return end -- mcl_burning.tick may remove object immediately
-
-		if self:check_for_death("fire", {type = "fire"}) then
-			return true
-		end
-	end
-
-	if self:env_damage (dtime, pos) then return end
+	if self:step_damage (dtime, pos) then return end
 
 	if self.state == "die" then return end
 	-- End: Death/damage processing
 
-	self:check_water_flow()
-	self:env_danger_movement_checks (dtime)
+	local player_in_active_range = self:player_in_active_range()
+	self:check_suspend(player_in_active_range)
 
-	-- Follow code is heavy and probably shouldn't run when not in range, but we need to extract the cancel follow stuff
-	self:check_follow()
+	self:check_water_flow()
+
+	if not self._jumping_cliff then
+		self._can_jump_cliff = self:can_jump_cliff()
+	else
+		self._can_jump_cliff = false
+	end
+
 	self:flop()
 
 	self:check_smooth_rotation(dtime)
@@ -399,14 +412,28 @@ local function on_step_work (self, dtime)
 
 		self:check_head_swivel(dtime)
 
-		if self.jump_sound_cooloff > 0 then self.jump_sound_cooloff = self.jump_sound_cooloff - dtime end
-		self:do_jump()
-
-		self:check_runaway_from()
-		self:monster_attack()
-		self:npc_attack()
+		if mcl_util.check_dtime_timer(self, dtime, "onstep_engage", 0.2) then
+			self:check_follow()
+			self:check_runaway_from()
+			self:monster_attack()
+			self:npc_attack()
+		end
 
 		self:check_herd(dtime)
+
+		if self.jump_sound_cooloff > 0 then self.jump_sound_cooloff = self.jump_sound_cooloff - dtime end
+		self:do_jump()
+	end
+
+	if mcl_util.check_dtime_timer(self, dtime, "onstep_occassional", 1) then
+
+		if player_in_active_range then
+			self:check_item_pickup()
+			self:set_armor_texture()
+			self:step_opinion_sound(dtime)
+		end
+
+		self:check_breeding()
 	end
 
 	self:check_aggro(dtime)
@@ -415,17 +442,7 @@ local function on_step_work (self, dtime)
 
 	if self.do_custom and self.do_custom(self, dtime) == false then return end
 
-	if mcl_util.check_dtime_timer(self, dtime, "onstep_occassional", 1) then
-		self:check_breeding()
-
-		if player_in_active_range then
-			self:check_item_pickup()
-			self:set_armor_texture()
-			self:step_opinion_sound(dtime)
-		end
-	end
-
-	if self:do_states(dtime) then return end
+	if self:do_states(dtime, player_in_active_range) then return end
 
 	if mobs_debug then self:update_tag() end
 
