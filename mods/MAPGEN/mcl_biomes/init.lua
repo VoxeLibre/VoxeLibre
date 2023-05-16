@@ -5391,11 +5391,11 @@ local function register_decorations()
 	-- Dead bushes
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"group:sand", "mcl_core:podzol", "mcl_core:dirt", "mcl_core:dirt_with_grass", "mcl_core:coarse_dirt", "group:hardened_clay"},
+		place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:dirt_with_grass", "mcl_core:coarse_dirt", "group:hardened_clay"},
 		sidelen = 16,
 		noise_params = {
-			offset = 0.0,
-			scale = 0.035,
+			offset = 0.01,
+			scale = 0.003,
 			spread = {x = 100, y = 100, z = 100},
 			seed = 1972,
 			octaves = 3,
@@ -5403,7 +5403,43 @@ local function register_decorations()
 		},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"Desert", "Mesa", "Mesa_sandlevel", "MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlateauF_grasstop", "MesaBryce", "Taiga", "MegaTaiga"},
+		biomes = {"MegaSpruceTaiga", "MegaTaiga"},
+		decoration = "mcl_core:deadbush",
+		height = 1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:sand", "group:hardened_clay"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.01,
+			scale = 0.006,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 1972,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		biomes = {"Desert"},
+		decoration = "mcl_core:deadbush",
+		height = 1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:sand", "mcl_core:podzol", "mcl_core:dirt", "mcl_core:dirt_with_grass", "mcl_core:coarse_dirt", "group:hardened_clay"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.01,
+			scale = 0.06,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 1972,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		biomes = {"Mesa", "Mesa_sandlevel", "MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlateauF_grasstop", "MesaBryce"},
 		decoration = "mcl_core:deadbush",
 		height = 1,
 	})
@@ -5412,8 +5448,8 @@ local function register_decorations()
 		place_on = {"group:sand", "mcl_core:dirt", "mcl_core:dirt_with_grass", "mcl_core:coarse_dirt"},
 		sidelen = 16,
 		noise_params = {
-			offset = 0.1,
-			scale = 0.035,
+			offset = 0.01,
+			scale = 0.06,
 			spread = {x = 100, y = 100, z = 100},
 			seed = 1972,
 			octaves = 3,
@@ -5430,8 +5466,8 @@ local function register_decorations()
 		place_on = {"group:sand"},
 		sidelen = 16,
 		noise_params = {
-			offset = 0.045,
-			scale = 0.055,
+			offset = 0.01,
+			scale = 0.06,
 			spread = {x = 100, y = 100, z = 100},
 			seed = 1972,
 			octaves = 3,
@@ -5448,8 +5484,8 @@ local function register_decorations()
 		place_on = {"group:hardened_clay"},
 		sidelen = 16,
 		noise_params = {
-			offset = 0.010,
-			scale = 0.035,
+			offset = 0.01,
+			scale = 0.06,
 			spread = {x = 100, y = 100, z = 100},
 			seed = 1972,
 			octaves = 3,
