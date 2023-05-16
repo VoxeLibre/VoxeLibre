@@ -57,6 +57,7 @@ if mod_mcl_core then
 		tt_help = S("Places a water source"),
 		extra_check = function(pos, placer)
 			local nn = minetest.get_node(pos).name
+			local dim = mcl_worlds.pos_to_dimension(pos)
 			-- Pour water into cauldron
 			if minetest.get_item_group(nn, "cauldron") ~= 0 then
 				-- Put water into cauldron
@@ -66,17 +67,14 @@ if mod_mcl_core then
 				sound_place("mcl_core:water_source", pos)
 				return false, true
 			-- Put water into mangrove roots
-			elseif minetest.get_node(pos).name == "mcl_mangrove:mangrove_roots" then
+			elseif minetest.get_node(pos).name == "mcl_mangrove:mangrove_roots" and dim ~= "nether" then
 				minetest.set_node(pos, {name="mcl_mangrove:water_logged_roots"})
 				sound_place("mcl_core:water_source", pos)
 				return false, true
 			-- Evaporate water if used in Nether (except on cauldron)
-			else
-				local dim = mcl_worlds.pos_to_dimension(pos)
-				if dim == "nether" then
-					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
-					return false, true
-				end
+			elseif dim == "nether" then
+				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
+				return false, true
 			end
 		end,
 		groups = { water_bucket = 1 },
@@ -96,6 +94,7 @@ if mod_mclx_core then
 		tt_help = S("Places a river water source"),
 		extra_check = function(pos, placer)
 			local nn = minetest.get_node(pos).name
+			local dim = mcl_worlds.pos_to_dimension(pos)
 			-- Pour into cauldron
 			if minetest.get_item_group(nn, "cauldron") ~= 0 then
 				-- Put water into cauldron
@@ -105,17 +104,14 @@ if mod_mclx_core then
 				sound_place("mcl_core:water_source", pos)
 				return false, true
 			-- Put river water into mangrove roots
-			elseif minetest.get_node(pos).name == "mcl_mangrove:mangrove_roots" then
+			elseif minetest.get_node(pos).name == "mcl_mangrove:mangrove_roots" and dim ~= "nether" then
 				minetest.set_node(pos, {name="mcl_mangrove:river_water_logged_roots"})
 				sound_place("mcl_core:water_source", pos)
 				return false, true
-			else
-				-- Evaporate water if used in Nether (except on cauldron)
-				local dim = mcl_worlds.pos_to_dimension(pos)
-				if dim == "nether" then
-					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
-					return false, true
-				end
+			-- Evaporate water if used in Nether (except on cauldron)
+			elseif dim == "nether" then
+				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
+				return false, true
 			end
 		end,
 		groups = { water_bucket = 1 },
