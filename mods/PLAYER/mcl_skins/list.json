@@ -2,8 +2,8 @@
 	{
 		"type": "footwear",
 		"texture": "mcl_skins_footwear_1.png",
-		"steve": true,
-		"alex": true,
+		"template1": true,
+		"template2": true,
 		"rank": 55
 	},
 	{
@@ -20,12 +20,12 @@
 	{
 		"type": "eye",
 		"texture": "mcl_skins_eye_1.png",
-		"alex": true
+		"template2": true
 	},
 	{
 		"type": "eye",
 		"texture": "mcl_skins_eye_2.png",
-		"steve": true
+		"template1": true
 	},
 	{
 		"type": "eye",
@@ -50,7 +50,7 @@
 	{
 		"type": "mouth",
 		"texture": "mcl_skins_mouth_1.png",
-		"steve": true
+		"template1": true
 	},
 	{
 		"type": "mouth",
@@ -78,19 +78,19 @@
 	},
 	{
 		"type": "mouth",
-		"alex": true
+		"template1": true
 	},
 	{
 		"type": "hair",
 		"texture": "mcl_skins_hair_1.png",
 		"mask": "mcl_skins_hair_1_mask.png",
-		"alex": true
+		"template2": true
 	},
 	{
 		"type": "hair",
 		"texture": "mcl_skins_hair_2.png",
 		"mask": "mcl_skins_hair_2_mask.png",
-		"steve": true
+		"template1": true
 	},
 	{
 		"type": "hair",
@@ -147,7 +147,7 @@
 	{
 		"type": "headwear",
 		"texture": "mcl_skins_headwear_2.png",
-		"alex": true
+		"template2": true
 	},
 	{
 		"type": "headwear",
@@ -175,14 +175,14 @@
 	},
 	{
 		"type": "headwear",
-		"steve": true
+		"template1": true
 	},
 	{
 		"type": "bottom",
 		"texture": "mcl_skins_bottom_1.png",
 		"mask": "mcl_skins_bottom_1_mask.png",
-		"steve": true,
-		"alex": true
+		"template1": true,
+		"template2": true
 	},
 	{
 		"type": "bottom",
@@ -209,8 +209,8 @@
 		"type": "top",
 		"texture": "mcl_skins_top_1.png",
 		"mask": "mcl_skins_top_1_mask.png",
-		"steve": true,
-		"alex": true
+		"template1": true,
+		"template2": true
 	},
 	{
 		"type": "top",
@@ -261,7 +261,7 @@
 		"type": "base",
 		"texture": "mcl_skins_base_1.png",
 		"mask": "mcl_skins_base_1_mask.png",
-		"steve": true,
-		"alex": true
+		"template1": true,
+		"template2": true
 	}
 ]

@@ -31,11 +31,11 @@ Coloring only works for "base", "bottom, "top", and "hair".
 `preview_rotation`
 A table containing properties x and y. x and y represent the x and y rotation of the item preview.
 
-`alex`
-If set to true the item will be default for female character.
+`template2`
+If set to true the item will be default for female template.
 
-`steve`
-If set to true the item will be default for male character.
+`template1`
+If set to true the item will be default for male template.
 
 `rank`
 This property is used to change the application order of the skin item when applied to a player.
@@ -60,9 +60,16 @@ headwear: 80
 Lower ranks are applied to the player first and can thus be covered by higher rank items.
 
 
-### `mcl_skins.show_formspec(player)`
+### `mcl_skins.show_formspec(player, active_tab, page_num)`
 Show the skin configuration screen.
+
 `player` is a player ObjectRef.
+
+`active_tab` is the tab that will be displayed. This parameter is optional.
+Can be one of: "arm", "base", "footwear", "eye", "mouth", "bottom", "top", "hair", "headwear"
+
+`page_num` The page number to display of there are multiple pages of items.
+This parameter is optional. Must be a number. If it is not a valid page number the closest page number will be shown.
 
 ### `mcl_skins.get_skin_list()`
 This function is used by mods that want a list of skins to register nodes that use the player skin as a texture.

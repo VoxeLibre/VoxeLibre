@@ -98,7 +98,19 @@ function mcl_player.player_set_model(player, model_name)
 			damage_texture_modifier = "^[colorize:red:130",
 		})
 		update_player_textures(player)
-		mcl_player.player_set_animation(player, "stand")
+
+		local new_anim = "stand"
+		local model_animations = models[model_name].animations
+		local old_anim = player_anim[name]
+		if model_animations and old_anim and model_animations[old_anim] then
+			new_anim = old_anim
+		end
+		mcl_player.player_set_animation(player, new_anim)
+	else
+		player:set_properties({
+			textures = { "player.png", "player_back.png", },
+			visual = "upright_sprite",
+		})
 	end
 end
 
