@@ -823,7 +823,7 @@ end
 function mob_class:step_damage (dtime, pos)
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
-		if not self.object:get_pos() then return end -- mcl_burning.tick may remove object immediately
+		if not self.object:get_pos() then return true end -- mcl_burning.tick may remove object immediately
 
 		if self:check_for_death("fire", {type = "fire"}) then
 			return true

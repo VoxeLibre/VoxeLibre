@@ -335,7 +335,7 @@ local function set_water_palette(minp,maxp,data2,area,biomemap,nodes)
 	return lvm_used
 end
 
-local function set_seagrass_param2(minp,maxp,data2,area,biomemap,nodes)
+local function set_seagrass_param2(minp,maxp,data2,area,nodes)
 	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
 	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
 	for n=1, #nodes do
@@ -440,7 +440,7 @@ local function block_fixes_seagrass(vm, data, data2, emin, emax, area, minp, max
 	local pr = PseudoRandom(blockseed)
 	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
 		-- Set param2 of seagrass to 3.
-		lvm_used = set_seagrass_param2(minp,maxp,data2,area,biomemap,{"group:seagrass"})
+		lvm_used = set_seagrass_param2(minp, maxp, data2, area, {"group:seagrass"})
 	end
 	return lvm_used
 end
