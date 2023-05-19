@@ -174,6 +174,7 @@
 * cora
 * Faerraven / Michieal
 * Nicu
+* Exhale
 
 ## Translations
 * Wuzzy
