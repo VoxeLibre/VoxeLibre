@@ -175,6 +175,7 @@ return {
 		"cora",
 		"Faerraven / Michieal",
 		"Nicu",
+		"Exhale",
 	}},
 	{S("Translations"), 0x00FF60, {
 		"Wuzzy",
