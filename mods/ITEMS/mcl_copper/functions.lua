@@ -1,17 +1,5 @@
 --local deepslate_mod = minetest.get_modpath("mcl_deepslate")
 
-local function register_oxidation_abm(abm_name, node_name, oxidized_variant)
-	minetest.register_abm({
-		label = abm_name,
-		nodenames = { node_name },
-		interval = 500,
-		chance = 3,
-		action = function(pos, node)
-			minetest.swap_node(pos, { name = oxidized_variant, param2 = node.param2 })
-		end,
-	})
-end
-
 --[[
 local stairs = {
 	{"stair", "exposed", "_inner", "cut_inner"},
