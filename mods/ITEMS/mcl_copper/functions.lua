@@ -34,7 +34,7 @@ for i = 1, #stair_oxidization do
 	def_variant_oxidized = "mcl_stairs:stair_copper_" .. stair_oxidization[i][2]
 	minetest.override_item(def, { _mcl_oxidized_variant = def_variant_oxidized })
 
-	def_variant_waxed = "mcl_stairs:stair_waxed_copper_" .. stair_oxidization[i][2]
+	def_variant_waxed = "mcl_stairs:stair_waxed_copper_" .. stair_oxidization[i][1]
 	minetest.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
 
 	-- slabs

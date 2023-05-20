@@ -4,9 +4,9 @@ minetest.register_abm({
 	interval = 500,
 	chance = 3,
 	action = function(pos, node)
-		local def = minetest.registered_nodes[node]
+		local def = minetest.registered_nodes[node.name]
 		if def and def._mcl_oxidized_variant then
-			minetest.swap_node(pos, { name = def._mcl_oxidized_varient, param2 = node.param2 })
+			minetest.set_node(pos, { name = def._mcl_oxidized_variant, param2 = node.param2 })
 		end
 	end,
 })

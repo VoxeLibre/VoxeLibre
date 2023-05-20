@@ -22,7 +22,7 @@ function mcl_honey.wax_block(pos, node, player, itemstack)
 		return
 	end
 
-	node.name = def._mcl_copper_waxed_variant
+	node.name = def._mcl_waxed_variant
 	minetest.set_node(pos, node)
 	awards.unlock(player:get_player_name(), "mcl:wax_on")
 	if not minetest.is_creative_enabled(player:get_player_name()) then
