@@ -18,7 +18,7 @@ local slab_oxidization = {
 	{ "exposed_cut_top", "weathered_cut_top" },
 	{ "exposed_cut_double", "weathered_cut_double" },
 	{ "weathered_cut", "oxidized_cut" },
-	{ "weathered_cut_top", "oxidized_cut_double" },
+	{ "weathered_cut_top", "oxidized_cut_top" },
 	{ "weathered_cut_double", "oxidized_cut_double" },
 }
 
@@ -106,3 +106,27 @@ for i = 1, #waxed_variants do
 
 end
 
+-- Waxed Oxidized Slabs and Stairs
+local oxidized_slabs = {
+	"oxidized_cut",
+	"oxidized_cut_double",
+	"oxidized_cut_top"
+}
+
+for i = 1, #oxidized_slabs do
+	def = "mcl_stairs:slab_copper_" .. oxidized_slabs[i]
+	def_variant_waxed = "mcl_stairs:slab_waxed_copper_" .. oxidized_slabs[i]
+	minetest.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
+end
+
+local oxidized_stairs = {
+	"oxidized_cut",
+	"oxidized_cut_inner",
+	"oxidized_cut_outer"
+}
+
+for i = 1, #oxidized_stairs do
+	def = "mcl_stairs:stair_copper_" .. oxidized_stairs[i]
+	def_variant_waxed = "mcl_stairs:stair_waxed_copper_" .. oxidized_stairs[i]
+	minetest.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
+end
