@@ -493,6 +493,16 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 				end
 			end
 
+			-- Update old pre 0.84.0 Ominous Banners with correct description.
+			local stackmeta = itemstack:get_meta()
+			if stackmeta:get_string("name"):find("Ominous Banner") then
+				local oban_layers = minetest.deserialize(stackmeta:get_string("layers"))
+				local banner_description = string.gsub(itemstack:get_definition().description, "White Banner", "Ominous Banner")
+				local description = mcl_banners.make_advanced_banner_description(banner_description, oban_layers)
+				stackmeta:set_string("description", description)
+				stackmeta:set_string("name", nil)
+			end
+
 			-- Place the node!
 			local hanging = false
 
