@@ -1,5 +1,5 @@
 local function init_simple_skins()
-	local id, f, data, skin = 0
+	local id, f, data, skin = 2
 	local mod_path = minetest.get_modpath("mcl_skins")
 	while true do
 
@@ -35,17 +35,12 @@ local function init_simple_skins()
 		end
 
 		-- add metadata to list
-		mcl_skins.simple_skins[id] = {
+		mcl_skins.register_simple_skin({
+			index = id,
 			texture = skin,
 			slim_arms = data and data.gender == "female",
-		}
+		})
 		id = id + 1
-	end
-	
-	if #mcl_skins.simple_skins > 0 then
-		table.insert(mcl_skins.tab_names, 1, "skin")
-	else
-		mcl_skins.simple_skins = {}
 	end
 end
 
