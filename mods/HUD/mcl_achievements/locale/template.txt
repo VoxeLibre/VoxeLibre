@@ -1,5 +1,5 @@
 # textdomain:mcl_achievements
-Aquire Hardware=
+Acquire Hardware=
 Bake Bread=
 Benchmarking=
 Cow Tipper=
