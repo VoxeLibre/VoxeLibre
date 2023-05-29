@@ -64,7 +64,7 @@ local mob_cap = {
 	passive = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 13,
 	ambient = tonumber(minetest.settings:get("mcl_mob_cap_ambient")) or 15,
 	water = tonumber(minetest.settings:get("mcl_mob_cap_water")) or 8,
-	water_ambient = tonumber(minetest.settings:get("mcl_mob_cap_water_ambient")) or 20, --currently unused
+	water_ambient = tonumber(minetest.settings:get("mcl_mob_cap_water_ambient")) or 20,
 	player = tonumber(minetest.settings:get("mcl_mob_cap_player")) or 75,
 	global_hostile = tonumber(minetest.settings:get("mcl_mob_cap_hostile")) or 300,
 	global_non_hostile = tonumber(minetest.settings:get("mcl_mob_cap_non_hostile")) or 300,
@@ -361,7 +361,7 @@ local function count_mobs_total_cap(mob_type)
 				end
 				num = num + 1
 			else
-				mcl_log("l.nametag", l.name)
+				mcl_log("l.name", l.name)
 				mcl_log("l.nametag", l.nametag)
 
 			end
@@ -871,6 +871,9 @@ if mobs_spawn then
 
 		local cap_space_wide = math.max(type_cap - mob_total_wide, 0)
 
+		mcl_log("mob_type", mob_type)
+		mcl_log("cap_space_wide", cap_space_wide)
+
 		local cap_space_available = 0
 		if mob_type == "hostile" then
 			mcl_log("cap_space_global", cap_space_hostile)
@@ -879,10 +882,6 @@ if mobs_spawn then
 			mcl_log("cap_space_global", cap_space_non_hostile)
 			cap_space_available = math.min(cap_space_non_hostile, cap_space_wide)
 		end
-		mcl_log("mob_type", mob_type)
-		mcl_log("cap_space_wide", cap_space_wide)
-		--mcl_log("cap_space_available", cap_space_available)
-
 
 		local mob_total_close = mob_counts_close[mob_type]
 		if not mob_total_close then
@@ -891,11 +890,10 @@ if mobs_spawn then
 		end
 
 		local cap_space_close = math.max(close_zone_cap - mob_total_close, 0)
-		mcl_log("cap_space_close", cap_space_close)
-
 		cap_space_available = math.min(cap_space_available, cap_space_close)
-		mcl_log("cap_space_available", cap_space_available)
 
+		mcl_log("cap_space_close", cap_space_close)
+		mcl_log("cap_space_available", cap_space_available)
 
 		if false and mob_type == "water" then
 			mcl_log("mob_type: " .. mob_type .. " and pos: " .. minetest.pos_to_string(pos))
@@ -986,9 +984,7 @@ if mobs_spawn then
 			if mob_def and mob_def.name and minetest.registered_entities[mob_def.name] then
 
 				local mob_def_ent = minetest.registered_entities[mob_def.name]
-
 				local mob_spawn_class = mob_def_ent.spawn_class
-				--mcl_log("mob_spawn_class: " .. mob_spawn_class)
 
 				local cap_space_available = mob_cap_space (spawning_position, mob_spawn_class, mob_counts_close, mob_counts_wide, cap_space_hostile, cap_space_non_hostile)
 
