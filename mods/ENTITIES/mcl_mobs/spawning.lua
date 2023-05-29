@@ -61,7 +61,7 @@ local SPAWN_MAPGEN_LIMIT  = mcl_vars.mapgen_limit - 150
 
 local mob_cap = {
 	hostile = tonumber(minetest.settings:get("mcl_mob_cap_monster")) or 70,
-	passive = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 13,
+	passive = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 10,
 	ambient = tonumber(minetest.settings:get("mcl_mob_cap_ambient")) or 15,
 	water = tonumber(minetest.settings:get("mcl_mob_cap_water")) or 8,
 	water_ambient = tonumber(minetest.settings:get("mcl_mob_cap_water_ambient")) or 20,
@@ -73,7 +73,7 @@ local mob_cap = {
 	total = tonumber(minetest.settings:get("mcl_mob_cap_total")) or 500,
 }
 
-local peaceful_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_peaceful_percentage_spawned")) or 35
+local peaceful_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_peaceful_percentage_spawned")) or 30
 local peaceful_group_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_peaceful_group_percentage_spawned")) or 15
 local hostile_group_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_hostile_group_percentage_spawned")) or 20
 
