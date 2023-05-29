@@ -151,6 +151,15 @@ mcl_mob_cap_animal (Mob cap animals) int 13 0 1024
 #Maximum amount of water mobs that will spawn near a player (default:8)
 mcl_mob_cap_water (Mob cap water) int 8 0 1024
 
+#Maximum amount of ambient water mobs that will spawn near a player (default:20)
+mcl_mob_cap_water_ambient (Mob cap ambient water) int 20 0 1024
+
+#Maximum amount of underground water mobs that will spawn near a player (default:5)
+mcl_mob_cap_water_underground (Mob cap underground water) int 5 0 1024
+
+#Maximum amount of axolotl mobs that will spawn near a player (default:5)
+mcl_mob_cap_axolotl (Mob cap axolotl) int 5 0 1024
+
 #Maximum amount of ambient mobs that will spawn near a player (default:15)
 mcl_mob_cap_ambient (Mob cap ambient mobs) int 15 0 1024
 
