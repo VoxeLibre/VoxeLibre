@@ -59,7 +59,7 @@ end
 
 local tropical_fish = {
 	type = "animal",
-	spawn_class = "water",
+	spawn_class = "water_ambient",
 	can_despawn = true,
 	passive = true,
 	hp_min = 3,

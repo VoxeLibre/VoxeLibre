@@ -11,7 +11,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 local salmon = {
 	type = "animal",
-	spawn_class = "water",
+	spawn_class = "water_ambient",
 	can_despawn = true,
 	passive = true,
 	hp_min = 3,
