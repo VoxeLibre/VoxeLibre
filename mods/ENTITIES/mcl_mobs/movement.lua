@@ -524,7 +524,18 @@ function mob_class:replace_node(pos)
 			if mobs_griefing then
 				self.state = "eat"
 				self:set_animation("eat")
-				minetest.set_node(pos, newnode)
+				self:set_velocity(0)
+				minetest.after(0.5, function()
+					if self and self.object and not self.dead then
+						self.object:set_velocity(vector.new(0,0,0))
+						minetest.set_node(pos, newnode)
+					end
+				end)
+				minetest.after(2.5, function()
+					if self and self.object and self.state == 'eat' and not self.dead then
+						self.state = "walk"
+					end
+				end)
 			end
 
 		end
