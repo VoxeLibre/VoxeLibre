@@ -1,6 +1,72 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 mcl_campfires = {}
 
+local drop_items = mcl_util.drop_items_from_meta_container("main")
+
+local function on_blast(pos)
+	local node = minetest.get_node(pos)
+	drop_items(pos, node)
+	minetest.remove_node(pos)
+end
+
+-- on_rightclick function to take items that are cookable in a campfire, and put them in the campfire inventory
+function mcl_campfires.take_item(pos, node, player, itemstack)
+	local is_creative = minetest.is_creative_enabled(player:get_player_name())
+	local inv = player:get_inventory()
+	local campfire_meta = minetest.get_meta(pos)
+	local campfire_inv = campfire_meta:get_inventory()
+	local timer = minetest.get_node_timer(pos)
+	local stack = itemstack:peek_item(1)
+	if minetest.get_item_group(itemstack:get_name(), "campfire_cookable") ~= 0 then
+		local cookable = minetest.get_craft_result({method = "cooking", width = 1, items = {itemstack}})
+		if cookable then
+			for space = 1, 4 do -- Cycle through spots
+				local spot = campfire_inv:get_stack("main", space)
+				if not spot or spot == (ItemStack("") or ItemStack("nil")) then -- Check if the spot is empty or not
+					if not is_creative then itemstack:take_item(1) end -- Take the item if in creative
+					campfire_inv:set_stack("main", space, stack) -- Set the inventory itemstack at the empty spot
+					campfire_meta:set_int("cooktime_"..tostring(space), 30) -- Set the cook time meta
+					break
+				end
+			end
+		end
+		timer:start(1) -- Start cook timer
+	end
+end
+
+-- on_timer function to run the cook timer and cook items.
+function mcl_campfires.cook_item(pos, elapsed)
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+	local continue = 0
+	-- Cycle through slots to cook them.
+	for i = 1, 4 do
+		local time_r = meta:get_int("cooktime_"..tostring(i))
+		local item = inv:get_stack("main", i)
+		if item ~= (ItemStack("") or ItemStack("nil")) then
+			-- Item hasn't been cooked completely, continue cook timer countdown.
+			if time_r and time_r ~= 0 and time_r > 0 then
+				meta:set_int("cooktime_"..tostring(i), time_r - 1)
+			-- Item cook timer is up, finish cooking process and drop cooked item.
+			elseif time_r <= 0 then
+				local cooked = minetest.get_craft_result({method = "cooking", width = 1, items = {item}})
+				if cooked then
+					minetest.add_item(pos, cooked.item) -- Drop Cooked Item
+					inv:set_stack("main", i, "") -- Clear Inventory
+					continue  = continue + 1 -- Indicate that the slot is clear.
+				end
+			end
+		end
+	end
+	-- Not all slots are empty, continue timer.
+	if continue ~= 4 then
+		return true
+	-- Slots are empty, stop node timer.
+	else
+		return false
+	end
+end
+
 function mcl_campfires.register_campfire(name, def)
 	-- Define Campfire
 	minetest.register_node(name, {
@@ -66,13 +132,20 @@ function mcl_campfires.register_campfire(name, def)
 		groups = { handy=1, axey=1, material_wood=1, campfire=1, lit_campfire=1 },
 		paramtype = "light",
 		paramtype2 = "facedir",
+		on_construct = function(pos)
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			inv:set_size("main", 4)
+		end,
 		on_rightclick = function (pos, node, player, itemstack, pointed_thing)
 			if player:get_wielded_item():get_name():find("shovel") then
 				node.name = name
 				minetest.set_node(pos, node)
 				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 			end
+			mcl_campfires.take_item(pos, node, player, itemstack)
 		end,
+		on_timer = mcl_campfires.cook_item,
 		drop = def.drops,
 		_mcl_silk_touch_drop = {name.."_lit"},
 		light_source = def.lightlevel,
@@ -88,6 +161,8 @@ function mcl_campfires.register_campfire(name, def)
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
 		damage_per_second = def.damage,
+		on_blast = on_blast,
+		after_dig_node = drop_items,
 	})
 end
 
