@@ -1,16 +1,16 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 mcl_campfires = {}
 
-local drop_items = mcl_util.drop_items_from_meta_container("main")
-
-local function on_blast(pos)
-	local node = minetest.get_node(pos)
-	drop_items(pos, node)
-	minetest.remove_node(pos)
-end
+local function say(msg) minetest.chat_send_all(msg) end
 
 -- on_rightclick function to take items that are cookable in a campfire, and put them in the campfire inventory
 function mcl_campfires.take_item(pos, node, player, itemstack)
+	local campfire_spots = {
+		{x = -0.25, y = -0.04, z = -0.25},
+		{x =  0.25, y = -0.04, z = -0.25},
+		{x =  0.25, y = -0.04, z =  0.25},
+		{x = -0.25, y = -0.04, z =  0.25},
+	}
 	local is_creative = minetest.is_creative_enabled(player:get_player_name())
 	local inv = player:get_inventory()
 	local campfire_meta = minetest.get_meta(pos)
@@ -20,12 +20,13 @@ function mcl_campfires.take_item(pos, node, player, itemstack)
 	if minetest.get_item_group(itemstack:get_name(), "campfire_cookable") ~= 0 then
 		local cookable = minetest.get_craft_result({method = "cooking", width = 1, items = {itemstack}})
 		if cookable then
-			for space = 1, 4 do -- Cycle through spots
+			for space = 1, 4 do
 				local spot = campfire_inv:get_stack("main", space)
 				if not spot or spot == (ItemStack("") or ItemStack("nil")) then -- Check if the spot is empty or not
-					if not is_creative then itemstack:take_item(1) end -- Take the item if in creative
-					campfire_inv:set_stack("main", space, stack) -- Set the inventory itemstack at the empty spot
-					campfire_meta:set_int("cooktime_"..tostring(space), 30) -- Set the cook time meta
+					if not is_creative then itemstack:take_item(1) end
+					campfire_inv:set_stack("main", space, stack)
+					campfire_meta:set_int("cooktime_"..tostring(space), 30)
+					minetest.add_entity(pos + campfire_spots[space], player:get_wielded_item():get_name().."_entity")
 					break
 				end
 			end
@@ -51,9 +52,9 @@ function mcl_campfires.cook_item(pos, elapsed)
 			elseif time_r <= 0 then
 				local cooked = minetest.get_craft_result({method = "cooking", width = 1, items = {item}})
 				if cooked then
-					minetest.add_item(pos, cooked.item) -- Drop Cooked Item
-					inv:set_stack("main", i, "") -- Clear Inventory
-					continue  = continue + 1 -- Indicate that the slot is clear.
+					minetest.add_item(pos, cooked.item)
+					inv:set_stack("main", i, "")
+					continue  = continue + 1
 				end
 			end
 		end
@@ -161,8 +162,6 @@ function mcl_campfires.register_campfire(name, def)
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
 		damage_per_second = def.damage,
-		on_blast = on_blast,
-		after_dig_node = drop_items,
 	})
 end
 
