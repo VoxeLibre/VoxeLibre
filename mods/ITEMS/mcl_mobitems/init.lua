@@ -37,6 +37,28 @@ minetest.register_craftitem("mcl_mobitems:cooked_mutton", {
 	stack_max = 64,
 })
 
+minetest.register_entity("mcl_mobitems:mutton_entity", {
+	initial_properties = {
+		physical = false,
+		visual = "wielditem",
+		wield_item = "mcl_mobitems:mutton",
+		wield_image = "mcl_mobitems_mutton_raw.png",
+		visual_size = {x=0.25, y=0.25},
+		collisionbox = {0,0,0,0,0,0},
+		pointable = false,
+	},
+	on_activate = function(self, staticdata)
+		self.timer = 0
+		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
+	end,
+	on_step = function(self, dtime)
+		self.timer = self.timer + dtime
+		if self.timer > 31 then
+			self.object:remove()
+		end
+	end,
+})
+
 minetest.register_craftitem("mcl_mobitems:beef", {
 	description = S("Raw Beef"),
 	_doc_items_longdesc = S("Raw beef is the flesh from cows and can be eaten safely. Cooking it will greatly increase its nutritional value."),
@@ -59,6 +81,28 @@ minetest.register_craftitem("mcl_mobitems:cooked_beef", {
 	groups = { food = 2, eatable = 8 },
 	_mcl_saturation = 12.8,
 	stack_max = 64,
+})
+
+minetest.register_entity("mcl_mobitems:beef_entity", {
+	initial_properties = {
+		physical = false,
+		visual = "wielditem",
+		wield_item = "mcl_mobitems:beef",
+		wield_image = "mcl_mobitems_beef_raw.png",
+		visual_size = {x=0.25, y=0.25},
+		collisionbox = {0,0,0,0,0,0},
+		pointable = false,
+	},
+	on_activate = function(self, staticdata)
+		self.timer = 0
+		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
+	end,
+	on_step = function(self, dtime)
+		self.timer = self.timer + dtime
+		if self.timer > 31 then
+			self.object:remove()
+		end
+	end,
 })
 
 minetest.register_craftitem("mcl_mobitems:chicken", {
@@ -86,6 +130,28 @@ minetest.register_craftitem("mcl_mobitems:cooked_chicken", {
 	stack_max = 64,
 })
 
+minetest.register_entity("mcl_mobitems:chicken_entity", {
+	initial_properties = {
+		physical = false,
+		visual = "wielditem",
+		wield_item = "mcl_mobitems:chicken",
+		wield_image = "mcl_mobitems_chicken_raw.png",
+		visual_size = {x=0.25, y=0.25},
+		collisionbox = {0,0,0,0,0,0},
+		pointable = false,
+	},
+	on_activate = function(self, staticdata)
+		self.timer = 0
+		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
+	end,
+	on_step = function(self, dtime)
+		self.timer = self.timer + dtime
+		if self.timer > 31 then
+			self.object:remove()
+		end
+	end,
+})
+
 minetest.register_craftitem("mcl_mobitems:porkchop", {
 	description = S("Raw Porkchop"),
 	_doc_items_longdesc = S("A raw porkchop is the flesh from a pig and can be eaten safely. Cooking it will greatly increase its nutritional value."),
@@ -110,6 +176,28 @@ minetest.register_craftitem("mcl_mobitems:cooked_porkchop", {
 	stack_max = 64,
 })
 
+minetest.register_entity("mcl_mobitems:porkchop_entity", {
+	initial_properties = {
+		physical = false,
+		visual = "wielditem",
+		wield_item = "mcl_mobitems:porkchop",
+		wield_image = "mcl_mobitems_porkchop_raw.png",
+		visual_size = {x=0.25, y=0.25},
+		collisionbox = {0,0,0,0,0,0},
+		pointable = false,
+	},
+	on_activate = function(self, staticdata)
+		self.timer = 0
+		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
+	end,
+	on_step = function(self, dtime)
+		self.timer = self.timer + dtime
+		if self.timer > 31 then
+			self.object:remove()
+		end
+	end,
+})
+
 minetest.register_craftitem("mcl_mobitems:rabbit", {
 	description = S("Raw Rabbit"),
 	_doc_items_longdesc = S("Raw rabbit is a food item from a dead rabbit. It can be eaten safely. Cooking it will increase its nutritional value."),
@@ -132,6 +220,28 @@ minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 	groups = { food = 2, eatable = 5 },
 	_mcl_saturation = 6.0,
 	stack_max = 64,
+})
+
+minetest.register_entity("mcl_mobitems:rabbit_entity", {
+	initial_properties = {
+		physical = false,
+		visual = "wielditem",
+		wield_item = "mcl_mobitems:rabbit",
+		wield_image = "mcl_mobitems_rabbit_raw.png",
+		visual_size = {x=0.25, y=0.25},
+		collisionbox = {0,0,0,0,0,0},
+		pointable = false,
+	},
+	on_activate = function(self, staticdata)
+		self.timer = 0
+		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
+	end,
+	on_step = function(self, dtime)
+		self.timer = self.timer + dtime
+		if self.timer > 31 then
+			self.object:remove()
+		end
+	end,
 })
 
 -- Reset food poisoning and status effects

@@ -457,6 +457,28 @@ minetest.register_craft({
 	cooktime = 10,
 })
 
+minetest.register_entity("mcl_fishing:fish_entity", {
+	initial_properties = {
+		physical = false,
+		visual = "wielditem",
+		wield_item = "mcl_fishing:fish_raw",
+		wield_image = "mcl_fishing_fish_raw.png",
+		visual_size = {x=0.25, y=0.25},
+		collisionbox = {0,0,0,0,0,0},
+		pointable = false,
+	},
+	on_activate = function(self, staticdata)
+		self.timer = 0
+		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
+	end,
+	on_step = function(self, dtime)
+		self.timer = self.timer + dtime
+		if self.timer > 31 then
+			self.object:remove()
+		end
+	end,
+})
+
 -- Salmon
 minetest.register_craftitem("mcl_fishing:salmon_raw", {
 	description = S("Raw Salmon"),
@@ -485,6 +507,28 @@ minetest.register_craft({
 	output = "mcl_fishing:salmon_cooked",
 	recipe = "mcl_fishing:salmon_raw",
 	cooktime = 10,
+})
+
+minetest.register_entity("mcl_fishing:salmon_entity", {
+	initial_properties = {
+		physical = false,
+		visual = "wielditem",
+		wield_item = "mcl_fishing:salmon_raw",
+		wield_image = "mcl_fishing_salmon_raw.png",
+		visual_size = {x=0.25, y=0.25},
+		collisionbox = {0,0,0,0,0,0},
+		pointable = false,
+	},
+	on_activate = function(self, staticdata)
+		self.timer = 0
+		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
+	end,
+	on_step = function(self, dtime)
+		self.timer = self.timer + dtime
+		if self.timer > 31 then
+			self.object:remove()
+		end
+	end,
 })
 
 -- Clownfish

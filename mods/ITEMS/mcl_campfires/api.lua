@@ -11,6 +11,12 @@ end
 
 -- on_rightclick function to take items that are cookable in a campfire, and put them in the campfire inventory
 function mcl_campfires.take_item(pos, node, player, itemstack)
+	local campfire_spots = {
+		{x = -0.25, y = -0.04, z = -0.25},
+		{x =  0.25, y = -0.04, z = -0.25},
+		{x =  0.25, y = -0.04, z =  0.25},
+		{x = -0.25, y = -0.04, z =  0.25},
+	}
 	local is_creative = minetest.is_creative_enabled(player:get_player_name())
 	local inv = player:get_inventory()
 	local campfire_meta = minetest.get_meta(pos)
@@ -26,6 +32,7 @@ function mcl_campfires.take_item(pos, node, player, itemstack)
 					if not is_creative then itemstack:take_item(1) end -- Take the item if in creative
 					campfire_inv:set_stack("main", space, stack) -- Set the inventory itemstack at the empty spot
 					campfire_meta:set_int("cooktime_"..tostring(space), 30) -- Set the cook time meta
+					minetest.add_entity(pos + campfire_spots[space], player:get_wielded_item():get_name().."_entity") -- Spawn food item on the campfire
 					break
 				end
 			end
