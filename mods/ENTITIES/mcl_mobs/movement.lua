@@ -355,9 +355,11 @@ function mob_class:do_jump()
 		jump_c_multiplier = v2/self.walk_velocity/2
 	end
 
+	local yaw_dir = minetest.yaw_to_dir(self.object:get_yaw())
+
 	-- where is front
-	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
-	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+yaw_dir.x
+	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+yaw_dir.z
 
 	-- what is in front of mob?
 	nod = node_ok({

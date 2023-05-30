@@ -184,7 +184,7 @@ function mob_class:collision()
 end
 
 function mob_class:check_death_and_slow_mob()
-	local d = 0.85
+	local d = 0.7
 	local dying = self:check_dying()
 	if dying then d = 0.92 end
 
@@ -217,7 +217,7 @@ function mob_class:set_velocity(v)
 	local vv = self.object:get_velocity()
 
 	if vv and yaw then
-		self.acc = vector.new(((math.sin(yaw) * -v) + c_x) * .27, 0, ((math.cos(yaw) * v) + c_y) * .27)
+		self.acc = vector.new(((math.sin(yaw) * -v) + c_x) * .4, 0, ((math.cos(yaw) * v) + c_y) * .4)
 	end
 end
 
@@ -327,9 +327,9 @@ function mob_class:set_yaw(yaw, delay, dtime)
 	end
 
 	if math.deg(yaw) > 360 then
-		yaw=yaw%360
+		yaw=math.rad(math.deg(yaw)%360)
 	elseif math.deg(yaw) < 0 then
-		yaw=((360*5)-yaw)%360
+		yaw=math.rad(((360*5)-math.deg(yaw))%360)
 	end
 
 	--calculate the shortest way to turn to find our target
@@ -353,7 +353,7 @@ function mob_class:set_yaw(yaw, delay, dtime)
 		ddtime = dtime
 	end
 
-	if math.abs(target_shortest_path_nums) > 5 then
+	if math.abs(target_shortest_path_nums) > 10 then
 		self.object:set_yaw(self.object:get_yaw()+(target_shortest_path*(3.6*ddtime)))
 		if self.acc then
 			self.acc=vector.rotate_around_axis(self.acc,vector.new(0,1,0), target_shortest_path*(3.6*ddtime))
