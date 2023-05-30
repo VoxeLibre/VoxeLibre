@@ -525,7 +525,7 @@ function mob_class:replace_node(pos)
 				self.state = "eat"
 				self:set_animation("eat")
 				self:set_velocity(0)
-				minetest.after(1.5, function()
+				minetest.after(1.3, function()
 					if self and self.object and not self.dead then
 						self.object:set_velocity(vector.new(0,0,0))
 						minetest.set_node(pos, newnode)
