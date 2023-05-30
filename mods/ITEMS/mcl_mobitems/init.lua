@@ -25,28 +25,6 @@ minetest.register_craftitem("mcl_mobitems:mutton", {
 	stack_max = 64,
 })
 
-minetest.register_entity("mcl_mobitems:mutton_entity", {
-	initial_properties = {
-		physical = false,
-		visual = "wielditem",
-		wield_item = "mcl_mobitems:mutton",
-		wield_image = "mcl_mobitems_mutton_raw.png",
-		visual_size = {x=0.25, y=0.25},
-		collisionbox = {0,0,0,0,0,0},
-		pointable = false,
-	},
-	on_activate = function(self, staticdata)
-		self.timer = 0
-		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
-	end,
-	on_step = function(self, dtime)
-		self.timer = self.timer + dtime
-		if self.timer > 31 then
-			self.object:remove()
-		end
-	end,
-})
-
 minetest.register_craftitem("mcl_mobitems:cooked_mutton", {
 	description = S("Cooked Mutton"),
 	_doc_items_longdesc = S("Cooked mutton is the cooked flesh from a sheep and is used as food."),
@@ -69,28 +47,6 @@ minetest.register_craftitem("mcl_mobitems:beef", {
 	groups = { food = 2, eatable = 3, smoker_cookable = 1, campfire_cookable = 1 },
 	_mcl_saturation = 1.8,
 	stack_max = 64,
-})
-
-minetest.register_entity("mcl_mobitems:beef_entity", {
-	initial_properties = {
-		physical = false,
-		visual = "wielditem",
-		wield_item = "mcl_mobitems:beef",
-		wield_image = "mcl_mobitems_beef_raw.png",
-		visual_size = {x=0.25, y=0.25},
-		collisionbox = {0,0,0,0,0,0},
-		pointable = false,
-	},
-	on_activate = function(self, staticdata)
-		self.timer = 0
-		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
-	end,
-	on_step = function(self, dtime)
-		self.timer = self.timer + dtime
-		if self.timer > 31 then
-			self.object:remove()
-		end
-	end,
 })
 
 minetest.register_craftitem("mcl_mobitems:cooked_beef", {
@@ -118,28 +74,6 @@ minetest.register_craftitem("mcl_mobitems:chicken", {
 	stack_max = 64,
 })
 
-minetest.register_entity("mcl_mobitems:chicken_entity", {
-	initial_properties = {
-		physical = false,
-		visual = "wielditem",
-		wield_item = "mcl_mobitems:chicken",
-		wield_image = "mcl_mobitems_chicken_raw.png",
-		visual_size = {x=0.25, y=0.25},
-		collisionbox = {0,0,0,0,0,0},
-		pointable = false,
-	},
-	on_activate = function(self, staticdata)
-		self.timer = 0
-		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
-	end,
-	on_step = function(self, dtime)
-		self.timer = self.timer + dtime
-		if self.timer > 31 then
-			self.object:remove()
-		end
-	end,
-})
-
 minetest.register_craftitem("mcl_mobitems:cooked_chicken", {
 	description = S("Cooked Chicken"),
 	_doc_items_longdesc = S("A cooked chicken is a healthy food item which can be eaten."),
@@ -164,28 +98,6 @@ minetest.register_craftitem("mcl_mobitems:porkchop", {
 	stack_max = 64,
 })
 
-minetest.register_entity("mcl_mobitems:porkchop_entity", {
-	initial_properties = {
-		physical = false,
-		visual = "wielditem",
-		wield_item = "mcl_mobitems:porkchop",
-		wield_image = "mcl_mobitems_porkchop_raw.png",
-		visual_size = {x=0.25, y=0.25},
-		collisionbox = {0,0,0,0,0,0},
-		pointable = false,
-	},
-	on_activate = function(self, staticdata)
-		self.timer = 0
-		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
-	end,
-	on_step = function(self, dtime)
-		self.timer = self.timer + dtime
-		if self.timer > 31 then
-			self.object:remove()
-		end
-	end,
-})
-
 minetest.register_craftitem("mcl_mobitems:cooked_porkchop", {
 	description = S("Cooked Porkchop"),
 	_doc_items_longdesc = S("Cooked porkchop is the cooked flesh of a pig and is used as food."),
@@ -208,28 +120,6 @@ minetest.register_craftitem("mcl_mobitems:rabbit", {
 	groups = { food = 2, eatable = 3, smoker_cookable = 1, campfire_cookable = 1 },
 	_mcl_saturation = 1.8,
 	stack_max = 64,
-})
-
-minetest.register_entity("mcl_mobitems:rabbit_entity", {
-	initial_properties = {
-		physical = false,
-		visual = "wielditem",
-		wield_item = "mcl_mobitems:rabbit",
-		wield_image = "mcl_mobitems_rabbit_raw.png",
-		visual_size = {x=0.25, y=0.25},
-		collisionbox = {0,0,0,0,0,0},
-		pointable = false,
-	},
-	on_activate = function(self, staticdata)
-		self.timer = 0
-		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
-	end,
-	on_step = function(self, dtime)
-		self.timer = self.timer + dtime
-		if self.timer > 31 then
-			self.object:remove()
-		end
-	end,
 })
 
 minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
@@ -449,7 +339,7 @@ minetest.register_tool("mcl_mobitems:warped_fungus_on_a_stick", {
 	description = S("Warped fungus on a Stick"),
 	_tt_help = S("Lets you ride a strider"),
 	_doc_items_longdesc = S("A warped fungus on a stick can be used on saddled striders to ride them."),
-	_doc_items_usagehelp = S("Place it on a saddled strider to mount it. You can now ride the strider like a horse. Striders will also walk towards you when you just wield the carrot on a stick."),
+	_doc_items_usagehelp = S("Place it on a saddled strider to mount it. You can now ride the strider like a horse. Striders will also walk towards you when you just wield the fungus on a stick."),
 	wield_image = "mcl_mobitems_warped_fungus_on_a_stick.png^[transformFY^[transformR90",
 	inventory_image = "mcl_mobitems_warped_fungus_on_a_stick.png",
 	groups = { transport = 1 },
