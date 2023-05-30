@@ -32,7 +32,7 @@ function mcl_campfires.take_item(pos, node, player, itemstack)
 					if not is_creative then itemstack:take_item(1) end -- Take the item if in creative
 					campfire_inv:set_stack("main", space, stack) -- Set the inventory itemstack at the empty spot
 					campfire_meta:set_int("cooktime_"..tostring(space), 30) -- Set the cook time meta
-					minetest.add_entity(pos + campfire_spots[space], player:get_wielded_item():get_name().."_entity") -- Spawn food item on the campfire
+					minetest.add_entity(pos + campfire_spots[space], stack:get_name().."_entity") -- Spawn food item on the campfire
 					break
 				end
 			end
