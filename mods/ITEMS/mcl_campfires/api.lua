@@ -190,3 +190,38 @@ minetest.register_globalstep(function(dtime)
 		end
 	end
 end)
+
+function mcl_campfires.generate_smoke(pos, haybale)
+	local smoke_timer
+
+	if haybale then
+		smoke_timer = 8
+	else
+		smoke_timer = 4.75
+	end
+
+	minetest.add_particle({
+		pos = pos,
+		velocity = vector.new(0, 1, 0),
+		texture = "mcl_particles_smoke.png",
+		size = 10,
+		acceleration = vector.new(0, 0.5, 0),
+		collisiondetection = true,
+		expirationtime = smoke_timer,
+	})
+end
+
+minetest.register_abm({
+	label = "Campfire Smoke",
+	nodenames = {"group:lit_campfire"},
+	interval = 2,
+	chance = 2,
+	action = function(pos, node)
+		local node_below = vector.offset(pos, 0, -1, 0)
+		local haybale = false
+		if minetest.get_node(node_below).name == "mcl_farming:hay_block" then
+			haybale = true
+		end
+		mcl_campfires.generate_smoke(pos, haybale)
+	end,
+})
