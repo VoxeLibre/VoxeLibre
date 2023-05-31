@@ -76,7 +76,10 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 	if chance > 0 then
 		if not is_creative_enabled(player:get_player_name()) then
 			itemstack:take_item()
-			minetest.sound_play({name="default_gravel_dug", pos=pos, gain=1}, true)
+			minetest.sound_play({name="default_gravel_dug", gain=1}, {
+				pos = pos,
+				max_hear_distance = 16,
+			}, true)
 		end
 		-- calculate leveling up chance
 		local rand = math.random(0,100)
@@ -92,7 +95,11 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 				level = "ready"
 			end
 			swap_node(pos, {name = "mcl_composters:composter_" .. level})
-			minetest.sound_play({name="default_grass_footstep", pos=pos, gain=0.4}, true)
+			minetest.sound_play({name="default_grass_footstep", gain=0.4}, {
+				pos = pos,
+				gain= 0.4,
+				max_hear_distance = 16,
+			}, true)
 			-- a full composter becomes ready for harvest after one second
 			-- the block will get updated by the node timer callback set in node reg def
 			if level == 7 then
@@ -115,7 +122,10 @@ end
 local function composter_ready(pos)
 	swap_node(pos, {name = "mcl_composters:composter_ready"})
 	-- maybe spawn particles again?
-	minetest.sound_play({name="default_dig_snappy", pos=above, gain=1}, true)
+	minetest.sound_play({name="default_dig_snappy", gain=1}, {
+		pos = pos,
+		max_hear_distance = 16,
+	}, true)
 	return false
 end
 
