@@ -2,11 +2,17 @@ local S = minetest.get_translator(minetest.get_current_modname())
 mcl_campfires = {}
 
 local drop_items = mcl_util.drop_items_from_meta_container("main")
+local food_entity = {nil, nil, nil, nil}
 
 local function on_blast(pos)
 	local node = minetest.get_node(pos)
 	drop_items(pos, node)
 	minetest.remove_node(pos)
+	for i = 1, 4 do
+		if food_entity[i] then
+			food_entity[i]:remove()
+		end
+	end
 end
 
 -- on_rightclick function to take items that are cookable in a campfire, and put them in the campfire inventory
@@ -32,7 +38,7 @@ function mcl_campfires.take_item(pos, node, player, itemstack)
 					if not is_creative then itemstack:take_item(1) end -- Take the item if in creative
 					campfire_inv:set_stack("main", space, stack) -- Set the inventory itemstack at the empty spot
 					campfire_meta:set_int("cooktime_"..tostring(space), 30) -- Set the cook time meta
-					minetest.add_entity(pos + campfire_spots[space], stack:get_name().."_entity") -- Spawn food item on the campfire
+					food_entity[space] = minetest.add_entity(pos + campfire_spots[space], stack:get_name().."_entity") -- Spawn food item on the campfire
 					break
 				end
 			end
@@ -58,6 +64,7 @@ function mcl_campfires.cook_item(pos, elapsed)
 			elseif time_r <= 0 then
 				local cooked = minetest.get_craft_result({method = "cooking", width = 1, items = {item}})
 				if cooked then
+					food_entity[i]:remove() -- Remove visual food entity
 					minetest.add_item(pos, cooked.item) -- Drop Cooked Item
 					inv:set_stack("main", i, "") -- Clear Inventory
 					continue  = continue + 1 -- Indicate that the slot is clear.
@@ -169,7 +176,7 @@ function mcl_campfires.register_campfire(name, def)
 		_mcl_hardness = 2,
 		damage_per_second = def.damage,
 		on_blast = on_blast,
-		after_dig_node = drop_items,
+		after_dig_node = on_blast,
 	})
 end
 

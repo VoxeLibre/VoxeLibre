@@ -468,14 +468,7 @@ minetest.register_entity("mcl_fishing:fish_raw_entity", {
 		pointable = false,
 	},
 	on_activate = function(self, staticdata)
-		self.timer = 0
 		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
-	end,
-	on_step = function(self, dtime)
-		self.timer = self.timer + dtime
-		if self.timer > 31 then
-			self.object:remove()
-		end
 	end,
 })
 
@@ -520,14 +513,7 @@ minetest.register_entity("mcl_fishing:salmon_raw_entity", {
 		pointable = false,
 	},
 	on_activate = function(self, staticdata)
-		self.timer = 0
 		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
-	end,
-	on_step = function(self, dtime)
-		self.timer = self.timer + dtime
-		if self.timer > 31 then
-			self.object:remove()
-		end
 	end,
 })
 
