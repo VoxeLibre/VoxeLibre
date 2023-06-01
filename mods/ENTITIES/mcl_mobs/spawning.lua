@@ -27,8 +27,11 @@ local table_remove   = table.remove
 local pairs = pairs
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_spawning", false)
-local function mcl_log (message)
+local function mcl_log (message, property)
 	if LOGGING_ON then
+		if property then
+			message = message .. ": " .. dump(property)
+		end
 		mcl_util.mcl_log (message, "[Mobs spawn]", true)
 	end
 end
@@ -52,21 +55,25 @@ local MOB_CAP_INNER_RADIUS = 32
 local aoc_range = 136
 
 local MISSING_CAP_DEFAULT = 15
-local MOBS_CAP_CLOSE = 5
+local MOBS_CAP_CLOSE = 10
 
 local SPAWN_MAPGEN_LIMIT  = mcl_vars.mapgen_limit - 150
 
 local mob_cap = {
 	hostile = tonumber(minetest.settings:get("mcl_mob_cap_monster")) or 70,
-	passive = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 13,
+	passive = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 10,
 	ambient = tonumber(minetest.settings:get("mcl_mob_cap_ambient")) or 15,
 	water = tonumber(minetest.settings:get("mcl_mob_cap_water")) or 8,
-	water_ambient = tonumber(minetest.settings:get("mcl_mob_cap_water_ambient")) or 20, --currently unused
+	water_ambient = tonumber(minetest.settings:get("mcl_mob_cap_water_ambient")) or 20,
+	water_underground = tonumber(minetest.settings:get("mcl_mob_cap_water_underground")) or 5,
+	axolotl = tonumber(minetest.settings:get("mcl_mob_cap_axolotl")) or 2, -- TODO should be 5 when lush caves added
 	player = tonumber(minetest.settings:get("mcl_mob_cap_player")) or 75,
+	global_hostile = tonumber(minetest.settings:get("mcl_mob_cap_hostile")) or 300,
+	global_non_hostile = tonumber(minetest.settings:get("mcl_mob_cap_non_hostile")) or 300,
 	total = tonumber(minetest.settings:get("mcl_mob_cap_total")) or 500,
 }
 
-local peaceful_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_peaceful_percentage_spawned")) or 35
+local peaceful_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_peaceful_percentage_spawned")) or 30
 local peaceful_group_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_peaceful_group_percentage_spawned")) or 15
 local hostile_group_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_hostile_group_percentage_spawned")) or 20
 
@@ -340,15 +347,32 @@ local function count_mobs_all(categorise_by, pos)
 end
 
 local function count_mobs_total_cap(mob_type)
+	local total = 0
 	local num = 0
+	local hostile = 0
+	local non_hostile = 0
 	for _,l in pairs(minetest.luaentities) do
 		if l.is_mob then
-			if ( mob_type == nil or l.type == mob_type ) and l.can_despawn and not l.nametag then
+			total = total + 1
+			local nametagged = l.nametag and l.nametag ~= ""
+			if ( mob_type == nil or l.type == mob_type ) and not nametagged then
+				if l.spawn_class == "hostile" then
+					hostile = hostile + 1
+				else
+					non_hostile = non_hostile + 1
+				end
 				num = num + 1
+			else
+				mcl_log("l.name", l.name)
+				mcl_log("l.nametag", l.nametag)
+
 			end
 		end
 	end
-	return num
+	mcl_log("Total mobs", total)
+	mcl_log("hostile", hostile)
+	mcl_log("non_hostile", non_hostile)
+	return num, non_hostile, hostile
 end
 
 local function output_mob_stats(mob_counts, total_mobs, chat_display)
@@ -704,13 +728,13 @@ local function spawn_check(pos, spawn_def)
 				--mcl_log("Level 3 spawn check passed")
 				return true
 			else
-				mcl_log("Spawn check level 3 failed")
+				--mcl_log("Spawn check level 3 failed")
 			end
 		else
-			mcl_log("Spawn check level 2 failed")
+			--mcl_log("Spawn check level 2 failed")
 		end
 	else
-		mcl_log("Spawn check level 1 failed")
+		--mcl_log("Spawn check level 1 failed")
 	end
 	return false
 end
@@ -831,7 +855,7 @@ if mobs_spawn then
 	-- Get pos to spawn, x and z are randomised, y is range
 
 
-	local function mob_cap_space (pos, mob_type, mob_counts_close, mob_counts_wide)
+	local function mob_cap_space (pos, mob_type, mob_counts_close, mob_counts_wide, cap_space_hostile, cap_space_non_hostile)
 
 		-- Some mob examples
 		--type = "monster", spawn_class = "hostile",
@@ -847,9 +871,18 @@ if mobs_spawn then
 			mob_total_wide = 0
 		end
 
-		local cap_space_wide = type_cap - mob_total_wide
-		if cap_space_wide < 1 then
-			cap_space_wide = 0
+		local cap_space_wide = math.max(type_cap - mob_total_wide, 0)
+
+		mcl_log("mob_type", mob_type)
+		mcl_log("cap_space_wide", cap_space_wide)
+
+		local cap_space_available = 0
+		if mob_type == "hostile" then
+			mcl_log("cap_space_global", cap_space_hostile)
+			cap_space_available = math.min(cap_space_hostile, cap_space_wide)
+		else
+			mcl_log("cap_space_global", cap_space_non_hostile)
+			cap_space_available = math.min(cap_space_non_hostile, cap_space_wide)
 		end
 
 		local mob_total_close = mob_counts_close[mob_type]
@@ -858,12 +891,11 @@ if mobs_spawn then
 			mob_total_close = 0
 		end
 
-		local cap_space_close = close_zone_cap - mob_total_close
-		if cap_space_close < 1 then
-			cap_space_close = 0
-		end
+		local cap_space_close = math.max(close_zone_cap - mob_total_close, 0)
+		cap_space_available = math.min(cap_space_available, cap_space_close)
 
-		--mcl_log("spawn_class: " .. spawn_class)
+		mcl_log("cap_space_close", cap_space_close)
+		mcl_log("cap_space_available", cap_space_available)
 
 		if false and mob_type == "water" then
 			mcl_log("mob_type: " .. mob_type .. " and pos: " .. minetest.pos_to_string(pos))
@@ -873,7 +905,7 @@ if mobs_spawn then
 			mcl_log("cap_space_close: " .. cap_space_close)
 		end
 
-		return cap_space_wide, cap_space_close
+		return cap_space_available
 	end
 
 	local function find_spawning_position(pos, max_times)
@@ -884,7 +916,7 @@ if mobs_spawn then
 
 		local y_min, y_max = decypher_limits(pos.y)
 
-		mcl_log("mapgen_limit: " .. SPAWN_MAPGEN_LIMIT)
+		--mcl_log("mapgen_limit: " .. SPAWN_MAPGEN_LIMIT)
 		local i = 0
 		repeat
 			local goal_pos = get_next_mob_spawn_pos(pos)
@@ -916,7 +948,7 @@ if mobs_spawn then
 		return spawning_position
 	end
 
-	local function spawn_a_mob(pos)
+	local function spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
 		--create a disconnected clone of the spawn dictionary, prevents memory leak
 		local mob_library_worker_table = table_copy(spawn_dictionary)
 
@@ -954,22 +986,18 @@ if mobs_spawn then
 			if mob_def and mob_def.name and minetest.registered_entities[mob_def.name] then
 
 				local mob_def_ent = minetest.registered_entities[mob_def.name]
-				--local mob_type = mob_def_ent.type
 				local mob_spawn_class = mob_def_ent.spawn_class
 
-				--mcl_log("mob_spawn_class: " .. mob_spawn_class)
+				local cap_space_available = mob_cap_space (spawning_position, mob_spawn_class, mob_counts_close, mob_counts_wide, cap_space_hostile, cap_space_non_hostile)
 
-				local cap_space_wide, cap_space_close = mob_cap_space (spawning_position, mob_spawn_class, mob_counts_close, mob_counts_wide)
-
-
-				if cap_space_close > 0 and cap_space_wide > 0 then
+				if cap_space_available > 0 then
 					--mcl_log("Cap space available")
 
 					-- Spawn caps for animals and water creatures fill up rapidly. Need to throttle this somewhat
 					-- for performance and for early game challenge. We don't want to reduce hostiles though.
 					local spawn_hostile = (mob_spawn_class == "hostile")
 					local spawn_passive = (mob_spawn_class ~= "hostile") and math.random(100) < peaceful_percentage_spawned
-					-- or not hostile
+
 					--mcl_log("Spawn_passive: " .. tostring(spawn_passive))
 					--mcl_log("Spawn_hostile: " .. tostring(spawn_hostile))
 
@@ -1000,13 +1028,10 @@ if mobs_spawn then
 							local group_min = mob_def_ent.spawn_in_group_min or 1
 							if not group_min then group_min = 1 end
 
-							local amount_to_spawn = math.random(group_min,spawn_in_group)
-
-							if amount_to_spawn > cap_space_wide then
-								mcl_log("Spawning quantity: " .. amount_to_spawn)
-								mcl_log("Throttle amount to cap space: " .. cap_space_wide)
-								amount_to_spawn = cap_space_wide
-							end
+							local amount_to_spawn = math.random(group_min, spawn_in_group)
+							mcl_log("Spawning quantity: " .. amount_to_spawn)
+							amount_to_spawn = math.min(amount_to_spawn, cap_space_available)
+							mcl_log("throttled spawning quantity: " .. amount_to_spawn)
 
 							if logging then
 								minetest.log("action", "[mcl_mobs] A group of " ..amount_to_spawn .. " " .. mob_def.name .. " mob spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at " .. minetest.pos_to_string(spawning_position, 1))
@@ -1021,7 +1046,7 @@ if mobs_spawn then
 
 						if spawned then
 							--mcl_log("We have spawned")
-							mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("type", pos)
+							mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("spawn_class", pos)
 							local new_spawning_position = find_spawning_position(pos, FIND_SPAWN_POS_RETRIES_SUCCESS_RESPIN)
 							if new_spawning_position then
 								mcl_log("Setting new spawning position")
@@ -1034,7 +1059,7 @@ if mobs_spawn then
 						--mcl_log("Spawn check failed")
 					end
 				else
-					mcl_log("Cap space full")
+					--mcl_log("Cap space full")
 				end
 
 			end
@@ -1054,7 +1079,13 @@ if mobs_spawn then
 		timer = 0
 
 		local players = get_connected_players()
-		local total_mobs = count_mobs_total_cap()
+		local total_mobs, total_non_hostile, total_hostile = count_mobs_total_cap()
+
+		local cap_space_hostile = math.max(mob_cap.global_hostile - total_hostile, 0)
+		local cap_space_non_hostile =  math.max(mob_cap.global_non_hostile - total_non_hostile, 0)
+		mcl_log("global cap_space_hostile", cap_space_hostile)
+		mcl_log("global cap_space_non_hostile", cap_space_non_hostile)
+
 		if total_mobs > mob_cap.total or total_mobs > #players * mob_cap.player then
 			minetest.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
 			return
@@ -1065,7 +1096,7 @@ if mobs_spawn then
 			local dimension = mcl_worlds.pos_to_dimension(pos)
 			-- ignore void and unloaded area
 			if dimension ~= "void" and dimension ~= "default" then
-				spawn_a_mob(pos)
+				spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
 			end
 		end
 	end)

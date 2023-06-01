@@ -121,8 +121,8 @@ mobs_griefing (Mobs change blocks) bool true
 # If enabled, mobs won't damage particles when they got hurt.
 mobs_disable_blood (Disable mob damage particles) bool false
 
-#Percentage of peaceful spawn attempts that succeed (default:35)
-mcl_mob_peaceful_percentage_spawned (Peaceful percentage success) int 35 0 100
+#Percentage of peaceful spawn attempts that succeed (default:30)
+mcl_mob_peaceful_percentage_spawned (Peaceful percentage success) int 30 0 100
 
 #Percentage of peaceful spawn attempts that are group spawns (default:15)
 mcl_mob_peaceful_group_percentage_spawned (Peaceful group percentage) int 15 0 100
@@ -130,8 +130,14 @@ mcl_mob_peaceful_group_percentage_spawned (Peaceful group percentage) int 15 0 1
 #Percentage of hostile spawn attempts that are group spawns (default:20)
 mcl_mob_hostile_group_percentage_spawned (Hostile group percentage) int 20 0 100
 
-#Maximum amount mobs (default:500)
+#Maximum amount of mobs (default:500)
 mcl_mob_cap_total (Global mob cap) int 500 0 2048
+
+#Maximum amount of hostile mobs (default:300)
+mcl_mob_cap_hostile (Global hostile mob cap) int 300 0 2048
+
+#Maximum amount of non-hostile mobs (default:300)
+mcl_mob_cap_non_hostile (Global non-hostile mob cap) int 300 0 2048
 
 #Maximum amount of mobs per player (default:75)
 mcl_mob_cap_player (Mob cap per player) int 75 0 2048
@@ -139,11 +145,20 @@ mcl_mob_cap_player (Mob cap per player) int 75 0 2048
 #Maximum amount of monsters that will spawn near a player (default:70)
 mcl_mob_cap_monster (Mob cap monsters) int 70 0 2048
 
-#Maximum amount of animals that will spawn near a player (default:13)
-mcl_mob_cap_animal (Mob cap animals) int 13 0 1024
+#Maximum amount of animals that will spawn near a player (default:10)
+mcl_mob_cap_animal (Mob cap animals) int 10 0 1024
 
 #Maximum amount of water mobs that will spawn near a player (default:8)
 mcl_mob_cap_water (Mob cap water) int 8 0 1024
+
+#Maximum amount of ambient water mobs that will spawn near a player (default:20)
+mcl_mob_cap_water_ambient (Mob cap ambient water) int 20 0 1024
+
+#Maximum amount of underground water mobs that will spawn near a player (default:5)
+mcl_mob_cap_water_underground (Mob cap underground water) int 5 0 1024
+
+#Maximum amount of axolotl mobs that will spawn near a player (default:5)
+mcl_mob_cap_axolotl (Mob cap axolotl) int 5 0 1024
 
 #Maximum amount of ambient mobs that will spawn near a player (default:15)
 mcl_mob_cap_ambient (Mob cap ambient mobs) int 15 0 1024

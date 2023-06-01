@@ -31,7 +31,7 @@ end
 
 mcl_mobs.register_mob("mobs_mc:glow_squid", {
 	type = "animal",
-	spawn_class = "water",
+	spawn_class = "water_underground",
 	can_despawn = true,
 	passive = true,
 	hp_min = 10,

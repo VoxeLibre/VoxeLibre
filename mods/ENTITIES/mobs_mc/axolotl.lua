@@ -2,7 +2,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 local axolotl = {
 	type = "animal",
-	spawn_class = "water",
+	spawn_class = "axolotl",
 	can_despawn = true,
 	passive = false,
 	hp_min = 14,
