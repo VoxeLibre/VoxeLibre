@@ -73,7 +73,7 @@ minetest.register_node("mcl_copper:waxed_block_exposed", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
-	_mcl_stripped_variant = "mcl_copper:block",
+	_mcl_stripped_variant = "mcl_copper:block_exposed",
 })
 
 minetest.register_node("mcl_copper:block_weathered", {
@@ -99,7 +99,7 @@ minetest.register_node("mcl_copper:waxed_block_weathered", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
-	_mcl_stripped_variant = "mcl_copper:block_exposed",
+	_mcl_stripped_variant = "mcl_copper:block_weathered",
 })
 
 minetest.register_node("mcl_copper:block_oxidized", {
@@ -124,7 +124,7 @@ minetest.register_node("mcl_copper:waxed_block_oxidized", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
-	_mcl_stripped_variant = "mcl_copper:block_weathered",
+	_mcl_stripped_variant = "mcl_copper:block_oxidized",
 })
 
 minetest.register_node("mcl_copper:block_cut", {
@@ -175,7 +175,7 @@ minetest.register_node("mcl_copper:waxed_block_exposed_cut", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
-	_mcl_stripped_variant = "mcl_copper:block_cut",
+	_mcl_stripped_variant = "mcl_copper:block_exposed_cut",
 })
 
 minetest.register_node("mcl_copper:block_weathered_cut", {
@@ -201,7 +201,7 @@ minetest.register_node("mcl_copper:waxed_block_weathered_cut", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
-	_mcl_stripped_variant = "mcl_copper:block_exposed_cut",
+	_mcl_stripped_variant = "mcl_copper:block_weathered_cut",
 })
 
 minetest.register_node("mcl_copper:block_oxidized_cut", {
@@ -226,7 +226,7 @@ minetest.register_node("mcl_copper:waxed_block_oxidized_cut", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
-	_mcl_stripped_variant = "mcl_copper:block_weathered_cut",
+	_mcl_stripped_variant = "mcl_copper:block_oxidized_cut",
 })
 
 mcl_stairs.register_slab("copper_cut", "mcl_copper:block_cut",
