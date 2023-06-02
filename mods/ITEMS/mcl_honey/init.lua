@@ -16,11 +16,13 @@ function mcl_honey.wax_block(pos, node, player, itemstack)
 
 	local def = minetest.registered_nodes[node.name]
 
-	if not def or not def._mcl_copper_waxed_variant then
+	if def and def._mcl_waxed_variant then
+		node.name = def._mcl_waxed_variant
+	else
 		return
 	end
 
-	node.name = def._mcl_copper_waxed_variant
+	node.name = def._mcl_waxed_variant
 	minetest.set_node(pos, node)
 	awards.unlock(player:get_player_name(), "mcl:wax_on")
 	if not minetest.is_creative_enabled(player:get_player_name()) then
