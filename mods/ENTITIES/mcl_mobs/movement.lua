@@ -513,27 +513,18 @@ function mob_class:replace_node(pos)
 
 		local oldnode = {name = what, param2 = node.param2}
 		local newnode = {name = with, param2 = node.param2}
-		local on_replace_return = true
+		local on_replace_return = false
+		if self.on_replace then
+			on_replace_return = self.on_replace(self, pos, oldnode, newnode)
+		end
 
 
 		if on_replace_return ~= false then
 
 			if mobs_griefing then
-				self.state = "eat"
-				self:set_animation("eat")
-				self:set_velocity(0)
-				minetest.after(1.3, function()
-					if self and self.object and not self.dead then
-						self.object:set_velocity(vector.new(0,0,0))
+				minetest.after(self.replace_delay, function()
+					if self and self.object and self.object:get_velocity() and self.health > 0 then
 						minetest.set_node(pos, newnode)
-						if self.on_replace then
-							on_replace_return = self.on_replace(self, pos, oldnode, newnode)
-						end
-					end
-				end)
-				minetest.after(2.5, function()
-					if self and self.object and self.state == 'eat' and not self.dead then
-						self.state = "walk"
 					end
 				end)
 			end

@@ -113,29 +113,43 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 	view_range = 12,
 
 	-- Eat grass
-	replace_rate = 40,
+	replace_rate = 1,
+	replace_delay = 1.3,
 	replace_what = {
 		{ "mcl_core:dirt_with_grass", "mcl_core:dirt", -1 },
 		{ "mcl_flowers:tallgrass", "air", 0 },
 	},
 	-- Properly regrow wool after eating grass
 	on_replace = function(self, pos, oldnode, newnode)
-		if not self.color or not colors[self.color] then
-			self.color = "unicolor_white"
-		end
-		self.gotten = false
-		self.base_texture = sheep_texture(self.color)
-		self.object:set_properties({ textures = self.base_texture })
-		self.drops = {
-			{name = "mcl_mobitems:mutton",
-			chance = 1,
-			min = 1,
-			max = 2,},
-			{name = colors[self.color][1],
-			chance = 1,
-			min = 1,
-			max = 1,},
-		}
+		self.state = "eat"
+		self:set_animation("eat")
+		self:set_velocity(0)
+		minetest.after(self.replace_delay, function()
+			self.object:set_velocity(vector.zero())
+			if self and self.object and not self.object:get_velocity() and self.health > 0 then
+				if not self.color or not colors[self.color] then
+					self.color = "unicolor_white"
+				end
+				self.gotten = false
+				self.base_texture = sheep_texture(self.color)
+				self.object:set_properties({ textures = self.base_texture })
+				self.drops = {
+					{name = "mcl_mobitems:mutton",
+					chance = 1,
+					min = 1,
+					max = 2,},
+					{name = colors[self.color][1],
+					chance = 1,
+					min = 1,
+					max = 1,},
+				}
+			end
+		end)
+		minetest.after(2.5, function()
+			if self and self.object and self.state == 'eat' and self.health > 0 and self.object:get_velocity()  then
+				self.state = "walk"
+			end
+		end)
 	end,
 
 	-- Set random color on spawn
