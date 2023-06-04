@@ -113,7 +113,7 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 	view_range = 12,
 
 	-- Eat grass
-	replace_rate = 1,
+	replace_rate = 80,
 	replace_delay = 1.3,
 	replace_what = {
 		{ "mcl_core:dirt_with_grass", "mcl_core:dirt", -1 },
