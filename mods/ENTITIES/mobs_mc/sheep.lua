@@ -133,16 +133,6 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 				self.gotten = false
 				self.base_texture = sheep_texture(self.color)
 				self.object:set_properties({ textures = self.base_texture })
-				self.drops = {
-					{name = "mcl_mobitems:mutton",
-					chance = 1,
-					min = 1,
-					max = 2,},
-					{name = colors[self.color][1],
-					chance = 1,
-					min = 1,
-					max = 1,},
-				}
 			end
 		end)
 		minetest.after(2.5, function()
@@ -242,12 +232,6 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 				item:add_wear(mobs_mc.shears_wear)
 				clicker:get_inventory():set_stack("main", clicker:get_wield_index(), item)
 			end
-			self.drops = {
-				{name = "mcl_mobitems:mutton",
-				chance = 1,
-				min = 1,
-				max = 2,},
-			}
 			return
 		end
 		-- Dye sheep
