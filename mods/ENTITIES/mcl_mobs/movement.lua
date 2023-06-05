@@ -525,7 +525,6 @@ function mob_class:replace_node(pos)
 				minetest.after(self.replace_delay, function()
 					if self and self.object and self.object:get_velocity() and self.health > 0 then
 						minetest.set_node(pos, newnode)
-						minetest.punch_node(pos)
 					end
 				end)
 			end
