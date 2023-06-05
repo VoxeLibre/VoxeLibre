@@ -101,39 +101,45 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 		stand_start = 0, stand_end = 0,
 		walk_start = 0, walk_end = 40, walk_speed = 30,
 		run_start = 0, run_end = 40, run_speed = 40,
+		eat_start = 40, eat_end = 80, eat_loop = false,
 	},
 	child_animations = {
 		stand_start = 81, stand_end = 81,
 		walk_start = 81, walk_end = 121, walk_speed = 45,
 		run_start = 81, run_end = 121, run_speed = 60,
+		eat_start = 121, eat_start = 161, eat_loop = false,
 	},
 	follow = { "mcl_farming:wheat_item" },
 	view_range = 12,
 
 	-- Eat grass
-	replace_rate = 20,
+	replace_rate = 80,
+	replace_delay = 1.3,
 	replace_what = {
 		{ "mcl_core:dirt_with_grass", "mcl_core:dirt", -1 },
 		{ "mcl_flowers:tallgrass", "air", 0 },
 	},
 	-- Properly regrow wool after eating grass
 	on_replace = function(self, pos, oldnode, newnode)
-		if not self.color or not colors[self.color] then
-			self.color = "unicolor_white"
-		end
-		self.gotten = false
-		self.base_texture = sheep_texture(self.color)
-		self.object:set_properties({ textures = self.base_texture })
-		self.drops = {
-			{name = "mcl_mobitems:mutton",
-			chance = 1,
-			min = 1,
-			max = 2,},
-			{name = colors[self.color][1],
-			chance = 1,
-			min = 1,
-			max = 1,},
-		}
+		self.state = "eat"
+		self:set_animation("eat")
+		self:set_velocity(0)
+		minetest.after(self.replace_delay, function()
+			if self and self.object and self.object:get_velocity() and self.health > 0 then
+				self.object:set_velocity(vector.zero())
+				if not self.color or not colors[self.color] then
+					self.color = "unicolor_white"
+				end
+				self.gotten = false
+				self.base_texture = sheep_texture(self.color)
+				self.object:set_properties({ textures = self.base_texture })
+			end
+		end)
+		minetest.after(2.5, function()
+			if self and self.object and self.state == 'eat' and self.health > 0 and self.object:get_velocity()  then
+				self.state = "walk"
+			end
+		end)
 	end,
 
 	-- Set random color on spawn
@@ -226,12 +232,6 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 				item:add_wear(mobs_mc.shears_wear)
 				clicker:get_inventory():set_stack("main", clicker:get_wield_index(), item)
 			end
-			self.drops = {
-				{name = "mcl_mobitems:mutton",
-				chance = 1,
-				min = 1,
-				max = 2,},
-			}
 			return
 		end
 		-- Dye sheep

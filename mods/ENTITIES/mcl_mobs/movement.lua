@@ -355,9 +355,11 @@ function mob_class:do_jump()
 		jump_c_multiplier = v2/self.walk_velocity/2
 	end
 
+	local yaw_dir = minetest.yaw_to_dir(self.object:get_yaw())
+
 	-- where is front
-	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
-	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+yaw_dir.x
+	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+yaw_dir.z
 
 	-- what is in front of mob?
 	nod = node_ok({
@@ -480,6 +482,7 @@ end
 -- find and replace what mob is looking for (grass, wheat etc.)
 function mob_class:replace_node(pos)
 
+
 	if not self.replace_rate
 	or not self.replace_what
 	or self.child == true
@@ -510,18 +513,21 @@ function mob_class:replace_node(pos)
 
 		local oldnode = {name = what, param2 = node.param2}
 		local newnode = {name = with, param2 = node.param2}
-		local on_replace_return
-
+		local on_replace_return = false
 		if self.on_replace then
 			on_replace_return = self.on_replace(self, pos, oldnode, newnode)
 		end
 
+
 		if on_replace_return ~= false then
 
 			if mobs_griefing then
-				minetest.set_node(pos, newnode)
+				minetest.after(self.replace_delay, function()
+					if self and self.object and self.object:get_velocity() and self.health > 0 then
+						minetest.set_node(pos, newnode)
+					end
+				end)
 			end
-
 		end
 	end
 end
