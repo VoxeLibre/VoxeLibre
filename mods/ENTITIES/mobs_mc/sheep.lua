@@ -125,8 +125,8 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 		self:set_animation("eat")
 		self:set_velocity(0)
 		minetest.after(self.replace_delay, function()
-			self.object:set_velocity(vector.zero())
 			if self and self.object and self.object:get_velocity() and self.health > 0 then
+				self.object:set_velocity(vector.zero())
 				if not self.color or not colors[self.color] then
 					self.color = "unicolor_white"
 				end
