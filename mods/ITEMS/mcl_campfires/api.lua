@@ -8,30 +8,21 @@ local drop_inventory = mcl_util.drop_items_from_meta_container("main")
 local function drop_items(pos, node, oldmeta)
 	local meta = minetest.get_meta(pos)
 	drop_inventory(pos, node, oldmeta)
-	for i = 1, 4 do
-		local food_entity = nil
-		local food_x = tonumber(meta:get_string("food_x_"..tostring(i)))
-		local food_y = tonumber(meta:get_string("food_y_"..tostring(i)))
-		local food_z = tonumber(meta:get_string("food_z_"..tostring(i)))
-		if food_x and food_y and food_z then
-			local entites = minetest.get_objects_inside_radius({x = food_x, y = food_y, z = food_z}, 1)
-			minetest.chat_send_all("found entity")
-			if entites then
-				for _, food_entity in ipairs(entites) do
-					if food_entity then
-						if food_entity:get_luaentity().name == "mcl_campfires:food_entity" then
-							food_entity = entity
-						end
+	local entites = minetest.get_objects_inside_radius(pos, 0.5)
+	minetest.chat_send_all("found entity")
+	if entites then
+		for _, food_entity in ipairs(entites) do
+			if food_entity then
+				if food_entity:get_luaentity().name == "mcl_campfires:food_entity" then
+					minetest.chat_send_all("removed entity")
+					food_entity:remove()
+					for i = 1, 4 do
+						meta:set_string("food_x_"..tostring(i), nil)
+						meta:set_string("food_y_"..tostring(i), nil)
+						meta:set_string("food_z_"..tostring(i), nil)
 					end
 				end
 			end
-		end
-		if food_entity then
-			minetest.chat_send_all("removed entity")
-			food_entity:remove()
-			meta:set_string("food_x_"..tostring(i), nil)
-			meta:set_string("food_y_"..tostring(i), nil)
-			meta:set_string("food_z_"..tostring(i), nil)
 		end
 	end
 end
@@ -56,7 +47,6 @@ function mcl_campfires.take_item(pos, node, player, itemstack)
 		vector.new( 0.25, -0.04,  0.25),
 		vector.new(-0.25, -0.04,  0.25),
 	}
-	minetest.chat_send_all("food added: pos = "..tostring(pos))
 	local food_entity = {nil,nil,nil,nil}
 	local is_creative = minetest.is_creative_enabled(player:get_player_name())
 	local inv = player:get_inventory()

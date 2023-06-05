@@ -53,6 +53,6 @@ minetest.register_entity("mcl_campfires:food_entity", {
 		pointable = false,
 	},
 	on_activate = function(self, staticdata)
-		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
+		self.object:set_rotation({x = math.pi / -2, y = 0, z = 0})
 	end,
 })
