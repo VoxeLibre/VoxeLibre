@@ -108,8 +108,12 @@ function mcl_campfires.cook_item(pos, elapsed)
 			if entites then
 				for _, entity in ipairs(entites) do
 					if entity then
-						if entity:get_luaentity().name == "mcl_campfires:food_entity" then
-							food_entity = entity
+						luaentity = entity:get_luaentity()
+						if luaentity then
+							name = luaentity.name
+							if name == "mcl_campfires:food_entity" then
+								food_entity = entity
+							end
 						end
 					end
 				end
