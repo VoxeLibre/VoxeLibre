@@ -9,12 +9,10 @@ local function drop_items(pos, node, oldmeta)
 	local meta = minetest.get_meta(pos)
 	drop_inventory(pos, node, oldmeta)
 	local entites = minetest.get_objects_inside_radius(pos, 0.5)
-	minetest.chat_send_all("found entity")
 	if entites then
 		for _, food_entity in ipairs(entites) do
 			if food_entity then
 				if food_entity:get_luaentity().name == "mcl_campfires:food_entity" then
-					minetest.chat_send_all("removed entity")
 					food_entity:remove()
 					for i = 1, 4 do
 						meta:set_string("food_x_"..tostring(i), nil)
@@ -93,8 +91,7 @@ function mcl_campfires.cook_item(pos, elapsed)
 		local food_y = tonumber(meta:get_string("food_y_"..tostring(i)))
 		local food_z = tonumber(meta:get_string("food_z_"..tostring(i)))
 		if food_x and food_y and food_z then
-			minetest.chat_send_all("X: "..food_x.." Y: "..food_y.." Z: "..food_z)
-			local entites = minetest.get_objects_inside_radius({x = food_x, y = food_y, z = food_z}, 1)
+			local entites = minetest.get_objects_inside_radius({x = food_x, y = food_y, z = food_z}, 0)
 			if entites then
 				for _, entity in ipairs(entites) do
 					if entity then
@@ -103,6 +100,9 @@ function mcl_campfires.cook_item(pos, elapsed)
 							name = luaentity.name
 							if name == "mcl_campfires:food_entity" then
 								food_entity = entity
+								luaentity.wield_item = inv:get_stack("main", i):get_name()
+								luaentity.wield_image = "mcl_mobitems_"..string.sub(inv:get_stack("main", i):get_name(), 14).."_raw.png"
+								food_entity:set_properties(luaentity)
 							end
 						end
 					end
