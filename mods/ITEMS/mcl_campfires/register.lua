@@ -40,3 +40,19 @@ minetest.register_craft({
 		{ "group:tree", "group:tree", "group:tree" },
 	}
 })
+
+-- Register Visual Food Entity
+minetest.register_entity("mcl_campfires:food_entity", {
+	initial_properties = {
+		physical = false,
+		visual = "wielditem",
+		wield_item = "mcl_mobitems:mutton",
+		wield_image = "mcl_mobitems_mutton_raw.png",
+		visual_size = {x=0.25, y=0.25},
+		collisionbox = {0,0,0,0,0,0},
+		pointable = false,
+	},
+	on_activate = function(self, staticdata)
+		self.object:set_rotation({x = math.pi / 2, y = 0, z = 0})
+	end,
+})
