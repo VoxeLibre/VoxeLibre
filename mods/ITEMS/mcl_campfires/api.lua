@@ -1,18 +1,29 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 mcl_campfires = {}
 
-local drop_items = mcl_util.drop_items_from_meta_container("main")
 local food_entity = {nil, nil, nil, nil}
 
-local function on_blast(pos)
-	local node = minetest.get_node(pos)
-	drop_items(pos, node)
-	minetest.remove_node(pos)
+local drop_inventory = mcl_util.drop_items_from_meta_container("main")
+
+local function drop_items(pos, node, oldmeta)
+	drop_inventory(pos, node, oldmeta)
 	for i = 1, 4 do
 		if food_entity[i] then
 			food_entity[i]:remove()
 		end
 	end
+end
+
+local function on_blast(pos)
+	local node = minetest.get_node(pos)
+	drop_items(pos, node)
+	minetest.remove_node(pos)
+end
+
+function mcl_campfires.light_campfire(pos)
+	local campfire = minetest.get_node(pos)
+	local name = campfire.name .. "_lit"
+	minetest.set_node(pos, {name = name, param2 = campfire.param2})
 end
 
 -- on_rightclick function to take items that are cookable in a campfire, and put them in the campfire inventory
@@ -96,15 +107,13 @@ function mcl_campfires.register_campfire(name, def)
 		groups = { handy=1, axey=1, material_wood=1, not_in_creative_inventory=1, campfire=1, },
 		paramtype = "light",
 		paramtype2 = "facedir",
-		on_rightclick = function (pos, node, player, itemstack, pointed_thing)
-			if player:get_wielded_item():get_name() == "mcl_fire:flint_and_steel" then
-				node.name = name.."_lit"
-				minetest.set_node(pos, node)
-			end
+		_on_ignite = function(player, node)
+			mcl_campfires.light_campfire(node.under)
+			return true
 		end,
 		drop = def.drops,
 		_mcl_silk_touch_drop = {name},
-		mcl_sounds.node_sound_wood_defaults(),
+		sounds = mcl_sounds.node_sound_wood_defaults(),
 		selection_box = {
 			type = 'fixed',
 			fixed = {-.5, -.5, -.5, .5, -.05, .5}, --left, bottom, front, right, top
@@ -143,7 +152,7 @@ function mcl_campfires.register_campfire(name, def)
 			}}
 		},
 		use_texture_alpha = "clip",
-		groups = { handy=1, axey=1, material_wood=1, campfire=1, lit_campfire=1 },
+		groups = { handy=1, axey=1, material_wood=1, lit_campfire=1 },
 		paramtype = "light",
 		paramtype2 = "facedir",
 		on_construct = function(pos)
@@ -152,10 +161,21 @@ function mcl_campfires.register_campfire(name, def)
 			inv:set_size("main", 4)
 		end,
 		on_rightclick = function (pos, node, player, itemstack, pointed_thing)
-			if player:get_wielded_item():get_name():find("shovel") then
-				node.name = name
-				minetest.set_node(pos, node)
-				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
+			if minetest.get_item_group(itemstack:get_name(), "shovel") ~= 0 then
+				local protected = mcl_util.check_position_protection(pos, player)
+				if not protected then
+					if not minetest.is_creative_enabled(player:get_player_name()) then
+						-- Add wear (as if digging a shovely node)
+						local toolname = itemstack:get_name()
+						local wear = mcl_autogroup.get_wear(toolname, "shovely")
+						if wear then
+							itemstack:add_wear(wear)
+						end
+					end
+					node.name = name
+					minetest.set_node(pos, node)
+					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
+				end
 			end
 			mcl_campfires.take_item(pos, node, player, itemstack)
 		end,
@@ -163,7 +183,7 @@ function mcl_campfires.register_campfire(name, def)
 		drop = def.drops,
 		_mcl_silk_touch_drop = {name.."_lit"},
 		light_source = def.lightlevel,
-		mcl_sounds.node_sound_wood_defaults(),
+		sounds = mcl_sounds.node_sound_wood_defaults(),
 		selection_box = {
 			type = "fixed",
 			fixed = {-.5, -.5, -.5, .5, -.05, .5}, --left, bottom, front, right, top
@@ -176,7 +196,7 @@ function mcl_campfires.register_campfire(name, def)
 		_mcl_hardness = 2,
 		damage_per_second = def.damage,
 		on_blast = on_blast,
-		after_dig_node = on_blast,
+		after_dig_node = drop_items,
 	})
 end
 
