@@ -63,6 +63,7 @@ mcl_structures.register_structure("woodland_cabin",{
 				{ itemstring = "mcl_armor:chestplate_chain", weight = 1, },
 				{ itemstring = "mcl_armor:chestplate_diamond", weight = 1, },
 				{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2, },
+				{ itemstring = "mcl_armor_trims:vex", amount_max = 1, },
 			}
 		}}
 	}

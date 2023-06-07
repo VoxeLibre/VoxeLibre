@@ -188,6 +188,7 @@ mcl_structures.register_structure("nether_bulwark",{
 			stacks_max = 1,
 			items = {
 				{ itemstring = "mcl_compass:lodestone" },
+				{ itemstring = "mcl_armor_trims:rib" },
 			}
 		}}
 	},

@@ -38,6 +38,7 @@ mcl_structures.register_structure("jungle_temple",{
 				{ itemstring = "mcl_mobitems:gold_horse_armor", weight = 1, },
 				{ itemstring = "mcl_mobitems:diamond_horse_armor", weight = 1, },
 				{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2, },
+				{ itemstring = "mcl_armor_trims:wild", amount_min = 1, amount_max = 1, },
 			}
 		}}
 	}

@@ -54,3 +54,4 @@ local function define_items()
 end
 
 minetest.register_on_mods_loaded(define_items)
+dofile(minetest.get_modpath(minetest.get_current_modname()).."/templates.lua")
