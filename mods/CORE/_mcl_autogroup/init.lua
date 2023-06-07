@@ -215,6 +215,10 @@ function mcl_autogroup.can_harvest(nodename, toolname, player)
 		return true
 	end
 
+	if minetest.get_item_group(nodename, "dig_immediate_piston") >= 1 then
+		return true
+	end
+
 	-- Check if it can be dug by tool
 	local tdef = minetest.registered_tools[toolname]
 	if tdef and tdef._mcl_diggroups then

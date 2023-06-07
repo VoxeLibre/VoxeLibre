@@ -92,6 +92,7 @@ function mesecon.register_button(basename, description, texture, recipeitem, sou
 	groups_off.dig_by_water=1
 	groups_off.destroy_by_lava_flow=1
 	groups_off.dig_by_piston=1
+	groups_off.dig_immediate_piston=1
 	groups_off.button=1 -- button (off)
 
 	local groups_on = table.copy(groups_off)
