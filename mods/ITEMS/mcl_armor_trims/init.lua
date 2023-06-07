@@ -29,12 +29,12 @@ local function define_items()
                         piece_overlay = piece_overlay .. "_boots"
                     end
 
-                    invOverlay = invOverlay .. "^[colorize:" .. color .. ")"
+                    invOverlay = invOverlay .. "^[colorize:" .. color .. ":150)"
                     piece_overlay = piece_overlay .. ".png"
 
-                    new_def.groups.not_in_creative_inventory = 0 --set this to 1 later!
+                    new_def.groups.not_in_creative_inventory = 1
                     new_def.groups.not_in_craft_guide = 1
-                    new_def._mcl_armor_texture = new_def._mcl_armor_texture .. "^(" .. piece_overlay .. "^[colorize:" .. color .. ")"
+                    new_def._mcl_armor_texture = new_def._mcl_armor_texture .. "^(" .. piece_overlay .. "^[colorize:" .. color .. ":150)"
                     new_def.inventory_image = itemdef.inventory_image .. invOverlay
 
                     if string.find(itemname, "_enchanted") then
@@ -42,7 +42,6 @@ local function define_items()
                     else
                         new_def._mcl_enchanting_enchanted_tool = itemname .. "_enchanted_trimmed_" .. overlay .. "_" .. mineral
                     end
-                    
                     register_list[":" .. new_name] = new_def
                 end
             end
