@@ -19,6 +19,7 @@ local function define_items()
                     invOverlay = "^helmet_trim.png"
                 elseif string.find(itemname,"chestplate") then
                     invOverlay = "^chestplate_trim.png"
+                    piece_overlay = piece_overlay .. "_chestplate"
                 elseif string.find(itemname,"leggings") then
                     invOverlay = "^leggings_trim.png"
                     piece_overlay = piece_overlay .. "_leggings"
