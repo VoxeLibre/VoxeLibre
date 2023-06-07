@@ -223,8 +223,11 @@ function mcl_campfires.register_campfire(name, def)
 					minetest.set_node(pos, node)
 					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 				end
+			elseif minetest.get_item_group(itemstack:get_name(), "campfire_cookable") ~= 0 then
+				mcl_campfires.take_item(pos, node, player, itemstack)
+			else
+				minetest.item_place_node(itemstack, player, pointed_thing)
 			end
-			mcl_campfires.take_item(pos, node, player, itemstack)
 		end,
 		on_timer = mcl_campfires.cook_item,
 		drop = def.drops,
@@ -244,6 +247,7 @@ function mcl_campfires.register_campfire(name, def)
 		damage_per_second = def.damage,
 		on_blast = on_blast,
 		after_dig_node = drop_items,
+		_mcl_campfires_smothered_form = name,
 	})
 end
 
