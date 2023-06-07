@@ -17,7 +17,7 @@ local function define_items()
 
                 new_def.groups.not_in_creative_inventory = 0 --set this to 1 later!
                 new_def.groups.not_in_craft_guide = 1
-                new_def._mcl_armor_texture = new_def._mcl_armor_texture .. "^" .. overlay .. ".png"
+                new_def._mcl_armor_texture = new_def._mcl_armor_texture .. "^" .. overlay .. ".png" .. "^[colorize:purple:50"
 
                 new_def._mcl_armor_trims_trim = new_name
 
@@ -27,7 +27,7 @@ local function define_items()
     end
 
     for new_name, new_def in pairs(register_list) do
-        minetest.register_craftitem(new_name, new_def)
+        minetest.register_tool(new_name, new_def)
     end
 end
 
