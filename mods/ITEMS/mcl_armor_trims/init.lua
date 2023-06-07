@@ -11,7 +11,6 @@ local function define_items()
             for _, overlay in pairs(mcl_armor_trims.overlays) do
                 for mineral, color in pairs(mcl_armor_trims.colors) do
                     local new_name = itemname .. "_trimmed_" .. overlay .. "_" .. mineral
-                    minetest.override_item(itemname, {_mcl_armor_trims_trim = new_name})
                     local new_def = table.copy(itemdef)
 
                     local piece_overlay = overlay
@@ -36,10 +35,14 @@ local function define_items()
                     new_def.groups.not_in_creative_inventory = 0 --set this to 1 later!
                     new_def.groups.not_in_craft_guide = 1
                     new_def._mcl_armor_texture = new_def._mcl_armor_texture .. "^(" .. piece_overlay .. "^[colorize:" .. color .. ")"
-
                     new_def.inventory_image = itemdef.inventory_image .. invOverlay
-                    new_def._mcl_armor_trims_trim = new_name
 
+                    if string.find(itemname, "_enchanted") then
+                        new_def._mcl_enchanting_enchanted_tool = new_name
+                    else
+                        new_def._mcl_enchanting_enchanted_tool = itemname .. "_enchanted_trimmed_" .. overlay .. "_" .. mineral
+                    end
+                    
                     register_list[":" .. new_name] = new_def
                 end
             end
