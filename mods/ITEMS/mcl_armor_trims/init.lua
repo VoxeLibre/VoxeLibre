@@ -13,6 +13,7 @@ local function define_items()
                 minetest.override_item(itemname, {_mcl_armor_trims_trim = new_name})
                 local new_def = table.copy(itemdef)
 
+                local piece_overlay = overlay
                 local invOverlay = ""
                 if string.find(itemname,"helmet") then
                     invOverlay = "^helmet_trim.png"
@@ -20,16 +21,18 @@ local function define_items()
                     invOverlay = "^chestplate_trim.png"
                 elseif string.find(itemname,"leggings") then
                     invOverlay = "^leggings_trim.png"
+                    piece_overlay = piece_overlay .. "_leggings"
                 elseif string.find(itemname,"boots") then
                     invOverlay = "^boots_trim.png"
                 end
 
+                piece_overlay = piece_overlay .. ".png"
+
                 new_def.groups.not_in_creative_inventory = 0 --set this to 1 later!
                 new_def.groups.not_in_craft_guide = 1
-                new_def._mcl_armor_texture = new_def._mcl_armor_texture .. "^" .. overlay .. ".png" .. "^[colorize:purple:50"
+                new_def._mcl_armor_texture = new_def._mcl_armor_texture .. "^(" .. piece_overlay .. "^[colorize:purple)"
 
                 new_def.inventory_image = itemdef.inventory_image .. invOverlay
-
                 new_def._mcl_armor_trims_trim = new_name
 
                 register_list[":" .. new_name] = new_def
