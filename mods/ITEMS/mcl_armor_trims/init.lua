@@ -6,7 +6,7 @@ mcl_armor_trims = {
 
 local function define_items()
     local register_list = {}
-    for itemname, itemdef in pairs(minetest.registered_items) do
+    for itemname, itemdef in pairs(minetest.registered_tools) do
         if itemdef._mcl_armor_texture and type(itemdef._mcl_armor_texture) == "string" and not mcl_armor_trims.blacklisted[itemname] then
             for _, overlay in pairs(mcl_armor_trims.overlays) do
                 local new_name = itemname .. "_trimmed_" .. overlay
