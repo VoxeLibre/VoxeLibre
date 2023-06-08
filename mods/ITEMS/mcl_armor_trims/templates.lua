@@ -17,7 +17,7 @@ for _, template_name in pairs(mcl_armor_trims.overlays) do
     })
 end
 
---temp craft recipies
+--temp craft recipies, missing structures
 minetest.register_craft({
     output = modname .. ":eye",
     recipe = {
