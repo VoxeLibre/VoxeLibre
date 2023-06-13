@@ -671,8 +671,8 @@ mcl_doors:register_door("mcl_crimson:crimson_door", {
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
-	tiles_bottom = {"mcl_crimson_crimson_door_bottom.png", "mcl_doors_door_crimson_side_lower.png"},
-	tiles_top = {"mcl_crimson_crimson_door_top.png", "mcl_doors_door_crimson_side_upper.png"},
+	tiles_bottom = "mcl_crimson_crimson_door_bottom.png",
+	tiles_top = "mcl_crimson_crimson_door_top.png",
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -709,8 +709,8 @@ mcl_doors:register_door("mcl_crimson:warped_door", {
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
-	tiles_bottom = {"mcl_crimson_warped_door_bottom.png", "mcl_doors_door_warped_side_lower.png"},
-	tiles_top = {"mcl_crimson_warped_door_top.png", "mcl_doors_door_warped_side_upper.png"},
+	tiles_bottom = "mcl_crimson_warped_door_bottom.png",
+	tiles_top = "mcl_crimson_warped_door_top.png",
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 

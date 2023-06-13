@@ -4,10 +4,6 @@
 --- DateTime: 12/29/22 12:38 PM -- Restructure Date
 --- Copyright (C) 2022 - 2023, Michieal. See License.txt
 
--- CONSTS
--- Due to door fix #2736, doors are displayed backwards. When this is fixed, set this variable to false.
-local BROKEN_DOORS = true
-
 --	FUTURE USE VARIABLE. MUST REMAIN FALSE UNTIL IT HAS BEEN FULLY IMPLEMENTED. DO NOT ENABLE.
 local SIDE_SCAFFOLDING = false
 local SIDE_SCAFFOLD_NAME = "mcl_bamboo:scaffolding_horizontal"
@@ -49,17 +45,6 @@ end
 
 if minetest.get_modpath("mcl_doors") then
 	if mcl_doors then
-		local top_door_tiles = {}
-		local bot_door_tiles = {}
-
-		if BROKEN_DOORS then
-			top_door_tiles = { "mcl_bamboo_door_top_alt.png", "mcl_bamboo_door_top.png" }
-			bot_door_tiles = { "mcl_bamboo_door_bottom_alt.png", "mcl_bamboo_door_bottom.png" }
-		else
-			top_door_tiles = { "mcl_bamboo_door_top.png", "mcl_bamboo_door_top.png" }
-			bot_door_tiles = { "mcl_bamboo_door_bottom.png", "mcl_bamboo_door_bottom.png" }
-		end
-
 		local name = "mcl_bamboo:bamboo_door"
 		local def = {
 			description = S("Bamboo Door"),
@@ -70,8 +55,8 @@ if minetest.get_modpath("mcl_doors") then
 			groups = { handy = 1, axey = 1, material_wood = 1, flammable = -1 },
 			_mcl_hardness = 3,
 			_mcl_blast_resistance = 3,
-			tiles_bottom = bot_door_tiles,
-			tiles_top = top_door_tiles,
+			tiles_bottom = "mcl_bamboo_door_bottom.png",
+			tiles_top = "mcl_bamboo_door_top.png",
 			sounds = mcl_sounds.node_sound_wood_defaults(),
 		}
 
