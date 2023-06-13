@@ -10,7 +10,7 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/items,bucket_empty.png,/mods/ITEMS/mcl_buckets/textures,bucket.png,,,,,,,
 /assets/minecraft/textures/items,bucket_water.png,/mods/ITEMS/mcl_buckets/textures,bucket_water.png,,,,,,,
 /assets/minecraft/textures/items,bucket_water.png,/mods/ITEMS/mcl_buckets/textures,bucket_river_water.png,,,,,,,
-/assets/minecraft/textures/items,bucket_lava.png,/mods/ITEMS/mcl_buckets/textures,bucket_lava.png,,,,,,,
+/assets/minecraft/textures/items,bucket_lava.png,/mods/ITEMS/mcl_buckets/textures,mcl_buckets_lava_bucket.png,,,,,,,
 /assets/minecraft/textures/items,item_frame.png,/mods/ITEMS/mcl_itemframes/textures,mcl_itemframes_item_frame.png,,,,,,,
 /assets/minecraft/textures/blocks,anvil_base.png,/mods/ITEMS/mcl_anvils/textures,mcl_anvils_anvil_base.png,,,,,,,
 /assets/minecraft/textures/blocks,anvil_top_damaged_0.png,/mods/ITEMS/mcl_anvils/textures,mcl_anvils_anvil_top_damaged_0.png,,,,,,,
