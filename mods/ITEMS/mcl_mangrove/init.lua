@@ -18,148 +18,20 @@ local propagule_allowed_nodes = {
 local propagule_water_nodes = {"mcl_mud:mud","mcl_core:dirt","mcl_core:coarse_dirt","mcl_core:clay"}
  --"mcl_lush_caves:moss","mcl_lush_caves:rooted_dirt
 
-local function get_drops(fortune_level)
-	local apple_chances = {200, 180, 160, 120, 40}
-	local stick_chances = {50, 45, 30, 35, 10}
-	local sapling_chances = {20, 16, 12, 10}
-	return {
-		max_items = 1,
-		items = {
-			{
-				items = {"mcl_mangrove:propagule"},
-				rarity = sapling_chances[fortune_level + 1] or sapling_chances[fortune_level]
-			},
-			{
-				items = {"mcl_core:stick 1"},
-				rarity = stick_chances[fortune_level + 1]
-			},
-			{
-				items = {"mcl_core:stick 2"},
-				rarity = stick_chances[fortune_level + 1]
-			},
-			{
-				items = {"mcl_core:apple"},
-				rarity = apple_chances[fortune_level + 1]
-			}
-		}
-	}
-end
+mcl_core.register_tree_trunk("mangrove_tree", S("Mangrove Wood"), S("Mangrove Bark"),
+	S("The trunk of a Mangrove tree."),
+	"mcl_mangrove_log_top.png", "mcl_mangrove_log.png", "mcl_mangrove:mangrove_stripped")
 
-minetest.register_node("mcl_mangrove:mangrove_tree", {
-	description = S("Mangrove Wood"),
-	_doc_items_longdesc = S("The trunk of a Mangrove tree."),
-	_doc_items_hidden = false,
-	tiles = {"mcl_mangrove_log_top.png", "mcl_mangrove_log_top.png", "mcl_mangrove_log.png"},
-	paramtype2 = "facedir",
-	on_place = mcl_util.rotate_axis,
-	after_destruct = mcl_core.update_leaves,
-	groups = {handy=1,axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
-	_mcl_stripped_variant = "mcl_mangrove:mangrove_stripped_trunk",
-})
-minetest.register_node("mcl_mangrove:mangrove_tree_bark", {
-	description = S("Mangrove Bark"),
-	_doc_items_longdesc = S("The bark of a Mangrove tree."),
-	_doc_items_hidden = false,
-	tiles = {"mcl_mangrove_log.png", "mcl_mangrove_log.png", "mcl_mangrove_log.png"},
-	paramtype2 = "facedir",
-	groups = {handy=1,axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	on_place = mcl_util.rotate_axis,
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
-	_mcl_stripped_variant = "mcl_mangrove:mangrove_stripped_bark",
-})
+mcl_core.register_wooden_planks("mangrove_wood", S("Mangrove Wood Planks"), {"mcl_mangrove_planks.png"})
 
-minetest.register_node("mcl_mangrove:mangrove_wood", {
-	description = S("Mangrove Wood Planks"),
-	_doc_items_longdesc = doc.sub.items.temp.build,
-	_doc_items_hidden = false,
-	tiles = {"mcl_mangrove_planks.png"},
+mcl_core.register_leaves("mangroveleaves", S("Mangrove Leaves"), S("Mangrove leaves are grown from mangrove trees."),
+	{"mcl_mangrove_leaves.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_mangrove:propagule", true, {20, 16, 12, 10}, 1)
 
-	is_ground_content = false,
-	groups = {handy=1,axey=1, flammable=3,wood=1,building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	_mcl_blast_resistance = 3,
-	_mcl_hardness = 2,
-})
+mcl_core.register_stripped_trunk("mangrove_stripped", S("Stripped Mangrove Log"), S("Stripped Mangrove Wood"),
+	S("The stripped wood of a Mangrove tree"), S("The stripped bark of a Mangrove tree"),
+	"mcl_stripped_mangrove_log_top.png", "mcl_stripped_mangrove_log_side.png")
 
-local l_def = {
-	description = S("Mangrove Leaves"),
-	_doc_items_longdesc = S("mangrove leaves are grown from mangrove trees."),
-	_doc_items_hidden = false,
-	drawtype = "allfaces_optional",
-	waving = 2,
-	tiles = {"mcl_mangrove_leaves.png"},
-	color = "#48B518",
-	paramtype = "light",
-	paramtype2 = "color",
-	palette = "mcl_core_palette_foliage.png",
-	groups = {
-		handy = 1, hoey = 1, shearsy = 1, swordy = 1, dig_by_piston = 1,
-		flammable = 2, fire_encouragement = 30, fire_flammability = 60,
-		leaves = 1, deco_block = 1, compostability = 30, foliage_palette = 1
-	},
-	drop = get_drops(0),
-	_mcl_shears_drop = true,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0.2,
-	_mcl_hardness = 0.2,
-	_mcl_silk_touch_drop = true,
-	_mcl_fortune_drop = { get_drops(1), get_drops(2), get_drops(3), get_drops(4) },
-	on_construct = function(pos)
-		local node = minetest.get_node(pos)
-		if node.param2 == 0 or node.param2 == 1 then -- Check if param2 is 1 as well, since the schematics accidentally have the param2 of mangrove leaves be 1.
-			local new_node = mcl_core.get_foliage_block_type(pos)
-			if new_node.param2 ~= 0 then
-				minetest.swap_node(pos, new_node)
-			end
-		end
-	end,
-	after_place_node = function(pos)
-		mcl_core.make_player_leaves(pos) -- Leaves placed by the player should always be player leaves.
-	end,
-}
-
-minetest.register_node("mcl_mangrove:mangroveleaves", l_def)
-
-local o_def = table.copy(l_def)
-o_def._doc_items_create_entry = false
-o_def.groups.not_in_creative_inventory = 1
-o_def.groups.orphan_leaves = 1
-o_def._mcl_shears_drop = {"mcl_mangrove:mangroveleaves"}
-o_def._mcl_silk_touch_drop = {"mcl_mangrove:mangroveleaves"}
-
-minetest.register_node("mcl_mangrove:mangroveleaves_orphan", o_def)
-
-minetest.register_node("mcl_mangrove:mangrove_stripped_trunk", {
-	description = S("Stripped Mangrove Wood"),
-	_doc_items_longdesc = S("The stripped wood of a Mangrove tree"),
-	_doc_items_hidden = false,
-	tiles ={"mcl_stripped_mangrove_log_top.png","mcl_stripped_mangrove_log_side.png",},
-	paramtype2 = "facedir",
-	on_place = mcl_util.rotate_axis,
-	groups = {handy=1, axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	on_rotate = mcl_util.rotate_axis_and_place,
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
-})
-minetest.register_node("mcl_mangrove:mangrove_stripped_bark", {
-	description = S("Stripped Mangrove Bark"),
-	_doc_items_longdesc = S("The stripped bark of a Mangrove tree"),
-	_doc_items_hidden = false,
-	tiles ={"mcl_stripped_mangrove_log_side.png","mcl_stripped_mangrove_log_side.png",},
-	paramtype2 = "facedir",
-	on_place = mcl_util.rotate_axis,
-	groups = {handy=1, axey=1, tree=1, flammable=2, building_block=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	on_rotate = mcl_util.rotate_axis_and_place,
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
-})
+minetest.register_alias("mcl_mangrove:mangrove_stripped_trunk", "mcl_mangrove:mangrove_stripped")
 
 minetest.register_node("mcl_mangrove:mangrove_roots", {
 	description = S("Mangrove Roots"),
