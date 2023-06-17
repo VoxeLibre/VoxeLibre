@@ -153,7 +153,11 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 	groups_on.not_in_creative_inventory = 1
 	groups_on.pressure_plate = 2
 	if not longdesc then
-		longdesc = S("A pressure plate is a redstone component which supplies its surrounding blocks with redstone power while someone or something rests on top of it.")
+		if groups_off.material_wood ~= 0 then
+			longdesc = S("A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.")
+		else
+			longdesc = S("A pressure plate is a redstone component which supplies its surrounding blocks with redstone power while someone or something rests on top of it.")
+		end
 	end
 	local tt = S("Provides redstone power when pushed")
 	if not activated_by then
@@ -238,8 +242,7 @@ for w=1, #woods do
 		{{woods[w][2], woods[w][2]}},
 		mcl_sounds.node_sound_wood_defaults(),
 		{axey=1, material_wood=1},
-		nil,
-		S("A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it."))
+		nil)
 
 	minetest.register_craft({
 		type = "fuel",

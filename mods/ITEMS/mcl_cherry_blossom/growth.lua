@@ -8,11 +8,11 @@ function mcl_cherry_blossom.generate_cherry_tree(pos)
 	if mcl_core.check_growth_width(pos,7,8) then
 		minetest.set_node(pos, {name = "air"})
 		if r == 1 then
-			minetest.place_schematic({x = pos.x-2, y = pos.y, z = pos.z-2}, path, "random", nil, false)
+			minetest.place_schematic(vector.offset(pos, -2, 0, -2), path, "random", nil, false)
 		elseif r == 2 then
-			minetest.place_schematic({x = pos.x-2, y = pos.y, z = pos.z-2}, path, nil, nil, false)
+			minetest.place_schematic(vector.offset(pos, -2, 0, -2), path, nil, nil, false)
 		elseif r == 3 then
-			minetest.place_schematic({x = pos.x-3, y = pos.y, z = pos.z-3}, path, nil, nil, false)
+			minetest.place_schematic(vector.offset(pos, -3, 0, -3), path, nil, nil, false)
 		end
 	end
 end
@@ -28,10 +28,12 @@ minetest.register_abm({
 })
 
 local cherry_particle = {
-	velocity = vector.new(0,0,0),
+	velocity = vector.zero(),
+	acceleration = vector.new(0,-1,0),
 	size = math.random(1.3,2.5),
 	texture = "mcl_cherry_blossom_particle.png",
 	collision_removal = false,
+	collisiondetection = false,
 }
 
 
@@ -43,14 +45,9 @@ minetest.register_abm({
 	action = function(pos, node)
 		minetest.after(math.random(0.1,1.5),function()
 			local pt = table.copy(cherry_particle)
-			pt.acceleration = vector.new(0,0,0)
-			pt.collisiondetection = false
 			pt.pos = vector.offset(pos,math.random(-0.5,0.5),-0.51,math.random(-0.5,0.5))
+			pt.expirationtime = math.random(1.2,4.5)
 			minetest.add_particle(pt)
-				pt.acceleration = vector.new(0,-1,0)
-				pt.collisiondetection = true
-				pt.expirationtime = math.random(1.2,4.5)
-				minetest.add_particle(pt)
 		end)
 	end
 })

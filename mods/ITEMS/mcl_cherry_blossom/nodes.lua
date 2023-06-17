@@ -146,7 +146,7 @@ minetest.register_node("mcl_cherry_blossom:cherryleaves" .. "_orphan", o_def)
 minetest.register_node("mcl_cherry_blossom:cherrysapling", {
 	description = S("Cherry Sapling"),
 	_tt_help = tt_help,
-	_doc_items_longdesc = S("Cherry blossom sapling can be planted to grow cherry trees"),
+	_doc_items_longdesc = S("Cherry blossom sapling can be planted to grow cherry trees."),
 	_doc_items_hidden = false,
 	drawtype = "plantlike",
 	waving = 1,
@@ -189,21 +189,17 @@ minetest.register_node("mcl_cherry_blossom:cherrysapling", {
 -- Door and Trapdoor
 mcl_doors:register_door("mcl_cherry_blossom:cherrydoor", {
 	description = S("Cherry Door"),
-	_doc_items_longdesc = S("Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal."),
-	_doc_items_usagehelp = S("To open or close a wooden door, rightclick it or supply its lower half with a redstone signal."),
 	inventory_image = "mcl_cherry_blossom_door_inv.png",
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
-	tiles_bottom = {"mcl_cherry_blossom_door_bottom.png", "mcl_cherry_blossom_door_side_bottom.png"},
-	tiles_top = {"mcl_cherry_blossom_door_top.png", "mcl_cherry_blossom_door_side_top.png"},
+	tiles_bottom = "mcl_cherry_blossom_door_bottom.png",
+	tiles_top = "mcl_cherry_blossom_door_top.png",
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
 mcl_doors:register_trapdoor("mcl_cherry_blossom:cherrytrapdoor", {
 	description = S("Cherry Trapdoor"),
-	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
-	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
 	tile_front = "mcl_cherry_blossom_trapdoor.png",
 	tile_side = "mcl_cherry_blossom_trapdoor_side.png",
 	wield_image = "mcl_cherry_blossom_trapdoor.png",
@@ -230,7 +226,7 @@ mcl_stairs.register_slab("cherrywood", "mcl_cherry_blossom:cherrywood",
 -- Signs
 mcl_signs.register_sign_custom("mcl_cherry_blossom", "cherrywood",
 		"mcl_cherry_blossom_sign.png", nil,
-		"mcl_cherry_blossom_sign_inv.png", "mcl_cherry_blossom_sign_inv.png", "Cherry Sign")
+		"mcl_cherry_blossom_sign_inv.png", "mcl_cherry_blossom_sign_inv.png", S("Cherry Sign"))
 
 -- Fences & Gates
 mcl_fences.register_fence_and_fence_gate("cherry_fence", S("Cherry Fence"), S("Cherry Gate"),
@@ -248,8 +244,7 @@ mesecon.register_pressure_plate(
 	{{"mcl_cherry_blossom:cherrywood", "mcl_cherry_blossom:cherrywood"}},
 	mcl_sounds.node_sound_wood_defaults(),
 	{axey=1, material_wood=1},
-	nil,
-	S("A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it."))
+	nil)
 
 mesecon.register_button(
 	"cherrywood",
@@ -260,5 +255,5 @@ mesecon.register_button(
 	{material_wood=1,handy=1,axey=1},
 	1.5,
 	true,
-	S("A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. Wooden buttons may also be pushed by arrows."),
+	nil,
 	"mesecons_button_push_wood")

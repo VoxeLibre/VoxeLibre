@@ -66,9 +66,9 @@ function mcl_doors:register_door(name, def)
 	longdesc = def._doc_items_longdesc
 	if not longdesc then
 		if def.only_redstone_can_open then
-			longdesc = S("This door is a 2-block high barrier which can be opened or closed by hand or by redstone power.")
-		else
 			longdesc = S("This door is a 2-block high barrier which can only be opened by redstone power, not by hand.")
+		else
+			longdesc = S("This door is a 2-block high barrier which can be opened or closed by hand or by redstone power.")
 		end
 	end
 	usagehelp = def._doc_items_usagehelp
