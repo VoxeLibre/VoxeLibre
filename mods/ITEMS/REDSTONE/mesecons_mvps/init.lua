@@ -117,7 +117,7 @@ local function is_available(pos)
 		return false, n
 	end
 	if minetest.registered_nodes[name] then
-		return minetest.registered_nodes[name].buildable_to, n or false, n
+		return minetest.registered_nodes[name].buildable_to or minetest.get_item_group(name, "dig_by_piston") == 1, n or false, n
 	end
 	return false, n
 end
@@ -126,6 +126,7 @@ end
 function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos)
 	-- determine the number of nodes to be pushed
 	local nodes = {}
+	local dig_nodes = {}
 	local frontiers = {pos}
 
 	while #frontiers > 0 do
@@ -141,8 +142,13 @@ function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos)
 		end
 
 		if not node_replaceable(nn.name) then
-			if #nodes >= maximum then return nil, false end
-			table.insert(nodes, {node = nn, pos = {x=np.x, y=np.y, z=np.z}})
+			if minetest.get_item_group(nn.name, "dig_by_piston") == 1 then
+				-- if we want the node to drop, e.g. sugar cane, do not count towards push limit
+				table.insert(dig_nodes, {node = nn, pos = {x=np.x, y=np.y, z=np.z}})
+			else
+				table.insert(nodes, {node = nn, pos = {x=np.x, y=np.y, z=np.z}})
+				if #nodes > maximum then return nil, nil, false, true end
+			end
 
 			-- add connected nodes to frontiers, connected is a vector list
 			-- the vectors must be absolute positions
@@ -152,10 +158,9 @@ function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos)
 			and minetest.registered_nodes[nn.name].mvps_sticky then
 				connected, has_loop = minetest.registered_nodes[nn.name].mvps_sticky(np, nn, piston_pos)
 				if has_loop then
-					return {}, true
+					return {}, {}, true, false
 				end
 			end
-
 			table.insert(connected, vector.add(np, dir))
 
 			-- Make sure there are no duplicates in frontiers / nodes before
@@ -172,7 +177,7 @@ function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos)
 						duplicate = true
 					end
 				end
-				if not duplicate and not mesecon.is_mvps_stopper(minetest.get_node(cp)) then
+				if not duplicate and not mesecon.is_mvps_stopper(minetest.get_node(cp)) and minetest.get_item_group(nn.name, "dig_by_piston") == 0 then
 					table.insert(frontiers, cp)
 				end
 			end
@@ -180,7 +185,7 @@ function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos)
 		table.remove(frontiers, 1)
 	end
 
-	return nodes, false
+	return nodes, dig_nodes, false, false
 end
 
 function mesecon.mvps_set_owner(pos, placer)
@@ -222,14 +227,14 @@ end
 -- movedir: direction of actual movement
 -- maximum: maximum nodes to be pushed
 function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name, piston_pos)
-	local nodes, has_loop = mesecon.mvps_get_stack(pos, movedir, maximum, piston_pos)
+	local nodes, dig_nodes, has_loop, too_many = mesecon.mvps_get_stack(pos, movedir, maximum, piston_pos)
 
-	if has_loop then
+	if has_loop or too_many then
 		return false
 	end
 
 	if not nodes then return end
-
+	
 	local newpos={}
 	-- check node availability to push/pull into, and fill newpos[i]
 	for i in ipairs(nodes) do
@@ -253,18 +258,36 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 		end
 	end
 
-	if are_protected(nodes, player_name) then
+	local all_nodes = nodes
+	if dig_nodes and #dig_nodes > 0 then all_nodes = mesecon.mergetable(dig_nodes, nodes) end
+	if are_protected(all_nodes, player_name) then
 		return
 	end
 
 	local first_dropper = nil
 	-- remove all nodes
-	for id, n in ipairs(nodes) do
+	for id, n in ipairs(all_nodes) do
 		n.meta = minetest.get_meta(n.pos):to_table()
-		local is_dropper = mesecon.is_mvps_dropper(n.node, movedir, nodes, id)
+		local is_dropper = mesecon.is_mvps_dropper(n.node, movedir, all_nodes, id)
 		if is_dropper then
-			--local drops = minetest.get_node_drops(n.node.name, "")
-			minetest.dig_node(n.pos)
+			-- minetest.dig_node has been shown to be buggy (https://git.minetest.land/MineClone2/MineClone2/issues/3547)
+			if minetest.get_item_group(n.node.name, "dig_immediate") == 3 then
+				-- should dig as normal
+				minetest.dig_node(n.pos)
+			else
+				-- simulate dig_node because nothing drops otherwise
+				local drops = minetest.get_node_drops(n.node.name, "")
+				minetest.remove_node(n.pos)
+				for _, callback in pairs(minetest.registered_on_dignodes) do
+					callback(n.pos, n)
+				end
+				for _, item in ipairs(drops) do
+					if type(item) ~= "string" then
+						item = item:get_name() .. item:get_count()
+					end
+					minetest.add_item(n.pos, item)
+				end
+			end
 		else
 			minetest.remove_node(n.pos)
 			local node_timer = minetest.get_node_timer(n.pos)
@@ -273,13 +296,13 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 			end
 		end
 		if is_dropper then
-			first_dropper = id
-			break
+			-- get id of the first dropper, but we still let everything else drop, so don't break here
+			if not first_dropper then first_dropper = id end
 		end
 	end
 
 	-- update mesecons for removed nodes ( has to be done after all nodes have been removed )
-	for id, n in ipairs(nodes) do
+	for id, n in ipairs(all_nodes) do
 		if first_dropper and id >= first_dropper then
 			break
 		end
@@ -287,7 +310,7 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 	end
 
 	-- add nodes
-	for id, n in ipairs(nodes) do
+	for id, n in ipairs(all_nodes) do
 		if first_dropper and id >= first_dropper then
 			break
 		end
