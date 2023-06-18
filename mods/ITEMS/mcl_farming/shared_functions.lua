@@ -314,18 +314,18 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		  "blank.png", -- right
 		  "blank.png", -- left
 		  connected_stem_texture, -- back
-		  connected_stem_texture .. "^[transformFX90" --front
+		  connected_stem_texture .. "^[transformFX" --front
 		},
 		{ "blank.png", --top
 		  "blank.png", -- bottom
 		  "blank.png", -- right
 		  "blank.png", -- left
-		  connected_stem_texture .. "^[transformFX90", --back
+		  connected_stem_texture .. "^[transformFX", --back
 		  connected_stem_texture, -- front
 		},
 		{ "blank.png", --top
 		  "blank.png", -- bottom
-		  connected_stem_texture .. "^[transformFX90", -- right
+		  connected_stem_texture .. "^[transformFX", -- right
 		  connected_stem_texture, -- left
 		  "blank.png", --back
 		  "blank.png", -- front
@@ -333,7 +333,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		{ "blank.png", --top
 		  "blank.png", -- bottom
 		  connected_stem_texture, -- right
-		  connected_stem_texture .. "^[transformFX90", -- left
+		  connected_stem_texture .. "^[transformFX", -- left
 		  "blank.png", --back
 		  "blank.png", -- front
 		}

@@ -89,7 +89,7 @@ local function get_beacon_beam(glass_nodename)
 end
 
 minetest.register_node("mcl_beacons:beacon_beam", {
-	tiles = {"^[colorize:#b8bab9"},
+	tiles = {"blank.png^[noalpha^[colorize:#b8bab9"},
 	drawtype = "nodebox",
 	node_box = {
 		type = "fixed",
