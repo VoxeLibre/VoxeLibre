@@ -27,7 +27,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_chery_blossom:cherrydoor 3",
+	output = "mcl_cherry_blossom:cherry_door 3",
 	recipe = {
 		{planks, planks},
 		{planks, planks},
@@ -36,7 +36,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_cherry_blossom:cherrytrapdoor 2",
+	output = "mcl_cherry_blossom:cherry_trapdoor 2",
 	recipe = {
 		{planks, planks, planks},
 		{planks, planks, planks},
@@ -44,14 +44,14 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_fences:cherry_fence 3",
+	output = "mcl_cherry_blossom:cherry_fence 3",
 	recipe = {
 		{planks, "mcl_core:stick", planks},
 		{planks, "mcl_core:stick", planks},
 	}
 })
 minetest.register_craft({
-	output = "mcl_fences:cherry_fence_gate",
+	output = "mcl_cherry_blossom:cherry_fence_gate",
 	recipe = {
 		{"mcl_core:stick", planks, "mcl_core:stick"},
 		{"mcl_core:stick", planks, "mcl_core:stick"},
@@ -63,13 +63,13 @@ mcl_signs.register_sign_craft("mcl_cherry_blossom", "mcl_cherry_blossom:cherrywo
 -- Smelting
 minetest.register_craft({
 	type = "fuel",
-	recipe = "mcl_cherry_blossom:cherrydoor",
+	recipe = "mcl_cherry_blossom:cherry_door",
 	burntime = 10,
 })
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "mcl_cherry_blossom:cherrytrapdoor",
+	recipe = "mcl_cherry_blossom:cherry_trapdoor",
 	burntime = 15,
 })
 

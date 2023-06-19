@@ -16,7 +16,7 @@ mcl_core.register_wooden_planks("cherrywood", S("Cherry Wood Planks"), {"mcl_che
 -- Leaves
 mcl_core.register_leaves("cherryleaves", S("Cherry Leaves"), 
 	S("Cherry blossom leaves are grown from cherry blossom trees."), {"mcl_cherry_blossom_leaves.png"},
-	nil, "none", nil, "mcl_cherry_blossom:cherrysapling", false, {50, 45, 30, 35, 10})
+	nil, "none", nil, "mcl_cherry_blossom:cherrysapling", false, {20, 16, 12, 10})
 
 -- Sapling
 mcl_core.register_sapling("cherrysapling", S("Cherry Sapling"),
@@ -24,7 +24,7 @@ mcl_core.register_sapling("cherrysapling", S("Cherry Sapling"),
 	"mcl_cherry_blossom_sapling.png", {-4/16, -0.5, -4/16, 4/16, 0.25, 4/16})
 
 -- Door and Trapdoor
-mcl_doors:register_door("mcl_cherry_blossom:cherrydoor", {
+mcl_doors:register_door("mcl_cherry_blossom:cherry_door", {
 	description = S("Cherry Door"),
 	inventory_image = "mcl_cherry_blossom_door_inv.png",
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
@@ -35,7 +35,7 @@ mcl_doors:register_door("mcl_cherry_blossom:cherrydoor", {
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
-mcl_doors:register_trapdoor("mcl_cherry_blossom:cherrytrapdoor", {
+mcl_doors:register_trapdoor("mcl_cherry_blossom:cherry_trapdoor", {
 	description = S("Cherry Trapdoor"),
 	tile_front = "mcl_cherry_blossom_trapdoor.png",
 	tile_side = "mcl_cherry_blossom_trapdoor_side.png",
