@@ -1,0 +1,8 @@
+# textdomain: mcl_smoker
+Inventory=Инвентарь
+Smoker=Коптильня
+Cooks food faster than furnace=Приготовление еды быстрее, чем в печи
+Use the recipe book to see what you can smelt, what you can use as fuel and how long it will burn.=Используйте книгу рецептов, чтобы узнать, что вы можете выпекать, что можно использовать в качестве топлива и как долго оно будет гореть.
+Use the furnace to open the furnace menu.\nPlace a furnace fuel in the lower slot and the source material in the upper slot.\nThe furnace will slowly use its fuel to smelt the item.\nThe result will be placed into the output slot at the right side.=Используйте печь, чтобы открыть окно взаимодействия с печью.\nПоместите топливо в нижнюю ячейку, а исходное сырьё в верхнюю ячейку.\nПечь будет медленно использовать топливо для выплавки изделия.\nВыходник будет помещён в выходную ячейку с правой стороны.
+Smokers cook several items, mainly raw foods, into cooked foods, but twice as fast as a normal furnace.=Коптильни готовят несколько предметов, в основном сырых, в виде готовых блюд, но в два раза быстрее, чем в обычной печи.
+Burning Smoker=Зажжённая печь

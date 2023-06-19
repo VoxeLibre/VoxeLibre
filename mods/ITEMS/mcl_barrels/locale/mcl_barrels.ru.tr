@@ -1,5 +1,5 @@
 # textdomain: mcl_barrels
-Barrel=
-Barrels are containers which provide 27 inventory slots.=
-To access its inventory, rightclick it. When broken, the items will drop out.=
-27 inventory slots=
+Barrel=Бочка
+Barrels are containers which provide 27 inventory slots.=Бочки — это хранилища, у которых 27 ячеек хранения.
+To access its inventory, rightclick it. When broken, the items will drop out.=Чтобы получить доступ к хранилищу, нажмите по нему правой кнопкой мыши. Если его сломать, тогда выпадут предметы.
+27 inventory slots=27 ячеек хранения
