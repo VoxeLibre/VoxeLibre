@@ -257,7 +257,8 @@ minetest.register_globalstep(function(dtime)
 
 			local speed_mult = elytra.speed
 			local block_below = minetest.get_node(vector.offset(fly_pos, 0, -0.9, 0)).name
-			if (not minetest.registered_nodes[block_below].walkable) and (player_vel.y ~= 0) then
+			local reg_node_below = minetest.registered_nodes[block_below]
+			if (reg_node_below and not reg_node_below.walkable) and (player_vel.y ~= 0) then
 				speed_mult = speed_mult + direction_mult * elytra_vars.speedup_mult * dtime
 			end
 			speed_mult = speed_mult - elytra_vars.slowdown_mult * clamp(dtime, 0.09, 0.2) -- slow down but don't overdo it
