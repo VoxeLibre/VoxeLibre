@@ -316,8 +316,14 @@ local function who_are_you_looking_at (self, dtime)
 
 	local stop_look_at_player = stop_look_at_player_chance == 1
 
-	if self.attack or self.following then
-		self._locked_object = self.attack or self.following
+	if self.attack then
+		if not self.target_time_lost then
+			self._locked_object = self.attack
+		else
+			self._locked_object = nil
+		end
+	elseif self.following then
+		self._locked_object = self.following
 	elseif self._locked_object then
 		if stop_look_at_player then
 			--minetest.log("Stop look: ".. self.name)

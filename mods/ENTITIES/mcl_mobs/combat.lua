@@ -873,10 +873,13 @@ function mob_class:do_states_attack (dtime)
 	local dist = vector.distance(p, s)
 
 	if self.attack_type == "explode" then
-		local vec = { x = p.x - s.x, z = p.z - s.z }
-		yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
-		if p.x > s.x then yaw = yaw +math.pi end
-		yaw = self:set_yaw( yaw, 0, dtime)
+
+		if target_line_of_sight then
+			local vec = { x = p.x - s.x, z = p.z - s.z }
+			yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
+			if p.x > s.x then yaw = yaw +math.pi end
+			yaw = self:set_yaw( yaw, 0, dtime)
+		end
 
 		local node_break_radius = self.explosion_radius or 1
 		local entity_damage_radius = self.explosion_damage_radius
@@ -900,10 +903,10 @@ function mob_class:do_states_attack (dtime)
 		end
 
 		-- walk right up to player unless the timer is active
-		if self.v_start and (self.stop_to_explode or dist < self.reach) then
-			self:set_velocity( 0)
+		if self.v_start and (self.stop_to_explode or dist < self.reach) or not target_line_of_sight then
+			self:set_velocity(0)
 		else
-			self:set_velocity( self.run_velocity)
+			self:set_velocity(self.run_velocity)
 		end
 
 		if self.animation and self.animation.run_start then
