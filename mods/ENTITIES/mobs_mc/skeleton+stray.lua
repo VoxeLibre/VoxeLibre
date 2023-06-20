@@ -105,8 +105,7 @@ local skeleton = {
 			if self.attack then
 				self.object:set_yaw(minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.attack:get_pos())))
 			end
-			-- 2-4 damage per arrow
-			local dmg = math.max(4, math.random(2, 8))
+			local dmg = math.random(2, 4)
 			mcl_bows.shoot_arrow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
 		end
 	end,
