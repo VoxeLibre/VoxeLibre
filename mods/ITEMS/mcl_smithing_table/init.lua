@@ -135,6 +135,7 @@ minetest.register_node("mcl_smithing_table:table", {
 		if 			
 					listname == "upgrade_item"  
 			and	 	string.find(stack:get_name(),"mcl_armor:") -- allow any armor piece to go in (in case the player wants to trim them)
+			and not mcl_armor_trims.blacklisted[stack:get_name()]
 
 			or		listname == "mineral" 
 			and		mcl_smithing_table.is_smithing_mineral(stack:get_name())
