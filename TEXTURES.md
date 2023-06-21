@@ -50,7 +50,7 @@ For those running a GNU/linux distribution, you most likely have the 'optipng' c
 
 First, Open up the terminal in the directory where your exported texture is located (or navigate to the directory with the 'cd your/directory/path/to/textures'), then run this command
 ```
-optipng -o7 -zm1-9 -nc -clobber *.png
+optipng -o7 -zm1-9 -nc -clobber -strip all *.png
 ```
 This will further optimize all the textures in the directory.
 
