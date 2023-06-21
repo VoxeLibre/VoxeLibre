@@ -53,20 +53,25 @@ local formspec = "size[9,9]" ..
 		"listring[context;input]"..
 		"listring[current_player;main]"
 
+local smithing_materials = {
+	["mcl_nether:netherite_ingot"]	= "netherite",
+	["mcl_core:diamond"]			= "diamond",
+	["mcl_core:lapis"]				= "lapis",
+	["mcl_amethyst:amethyst_shard"]	= "amethyst",
+	["mesecons:wire_00000000_off"]	= "redstone",
+	["mcl_core:iron_ingot"]			= "iron",
+	["mcl_core:gold_ingot"]			= "gold",
+	["mcl_copper:copper_ingot"]		= "copper",
+	["mcl_core:emerald"]			= "emerald",
+	["mcl_nether:quartz"]			= "quartz"
+
+}	
+
 local function upgrade_trimmed(itemstack, color_mineral, template)
 	--get information required
 	local material_name = color_mineral:get_name()
-	if(string.find(material_name,"mesecons:")) then
-		material_name = "redstone"
-	else
-		material_name = material_name:gsub("_ingot","")
-		material_name = material_name:gsub("mcl_core:","")		
-		material_name = material_name:gsub("mcl_nether:","")
-		material_name = material_name:gsub("mcl_amethyst:","")
-		material_name = material_name:gsub("_shard","")
-		material_name = material_name:gsub("mcl_copper:","")
-	end
-	
+	material_name = smithing_materials[material_name]
+
 	local overlay = template:get_name():gsub("mcl_armor_trims:","")
 
 	--trimming process
@@ -76,22 +81,8 @@ local function upgrade_trimmed(itemstack, color_mineral, template)
 	return itemstack
 end
 
-local function is_smithing_mineral(itemname) 
-	if itemname == "mcl_nether:netherite_ingot"
-		or itemname == "mcl_core:diamond"
-		or itemname == "mcl_core:lapis"
-		or itemname == "mcl_amethyst:amethyst_shard"
-		or itemname == "mesecons:wire_00000000_off"
-		or itemname == "mcl_core:iron_ingot"
-		or itemname == "mcl_core:gold_ingot" 
-		or itemname == "mcl_copper:copper_ingot"
-		or itemname == "mcl_core:emerald"
-		or itemname == "mcl_nether:quartz"
-	then
-		return true
-	end		
-
-	return false
+function mcl_smithing_table.is_smithing_mineral(itemname) 
+	return smithing_materials[itemname] ~= nil
 end
 
 local function reset_upgraded_item(pos)
@@ -104,7 +95,7 @@ local function reset_upgraded_item(pos)
 
 	if inv:get_stack("mineral", 1):get_name() == "mcl_nether:netherite_ingot" and not template_present then
 		upgraded_item = mcl_smithing_table.upgrade_item_netherite(inv:get_stack("upgrade_item", 1))
-	elseif template_present and is_armor and not is_trimmed and is_smithing_mineral(inv:get_stack("mineral", 1):get_name()) then
+	elseif template_present and is_armor and not is_trimmed and mcl_smithing_table.is_smithing_mineral(inv:get_stack("mineral", 1):get_name()) then
 		upgraded_item = upgrade_trimmed(inv:get_stack("upgrade_item", 1),inv:get_stack("mineral", 1),inv:get_stack("template", 1))
 	end
 
@@ -142,7 +133,17 @@ minetest.register_node("mcl_smithing_table:table", {
 	end,
 
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-		if listname == "upgrade_item"  and (mcl_smithing_table.upgrade_item_netherite(stack) or string.find(stack:get_name(),"mcl_armor:")) or listname == "mineral" and is_smithing_mineral(stack:get_name()) or listname == "template" and string.find(stack:get_name(),"mcl_armor_trims") then
+		if 			
+					listname == "upgrade_item"  
+			and	 	string.find(stack:get_name(),"mcl_armor:") -- allow any armor piece to go in (in case the player wants to trim them)
+
+			or		listname == "mineral" 
+			and		mcl_smithing_table.is_smithing_mineral(stack:get_name())
+
+			or 		listname == "template"
+			and 	string.find(stack:get_name(),"mcl_armor_trims") 
+			
+		then
 			return stack:get_count()
 		end
 

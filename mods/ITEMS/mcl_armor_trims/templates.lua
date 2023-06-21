@@ -10,7 +10,7 @@ for _, template_name in pairs(mcl_armor_trims.overlays) do
     minetest.register_craft({
         output = mod_registername .. template_name .. " 2",
         recipe = {
-            {"mcl_core:diamond",modname .. ":" .. template_name,"mcl_core:diamond"},
+            {"mcl_core:diamond",mod_registername .. template_name,"mcl_core:diamond"},
             {"mcl_core:diamond","mcl_core:cobble","mcl_core:diamond"},
             {"mcl_core:diamond","mcl_core:diamond","mcl_core:diamond"},
         }
