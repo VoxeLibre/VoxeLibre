@@ -64,10 +64,9 @@ local smithing_materials = {
 	["mcl_copper:copper_ingot"]		= "copper",
 	["mcl_core:emerald"]			= "emerald",
 	["mcl_nether:quartz"]			= "quartz"
-
 }	
 
-local function upgrade_trimmed(itemstack, color_mineral, template)
+function mcl_smithing_table.upgrade_trimmed(itemstack, color_mineral, template)
 	--get information required
 	local material_name = color_mineral:get_name()
 	material_name = smithing_materials[material_name]
@@ -96,7 +95,7 @@ local function reset_upgraded_item(pos)
 	if inv:get_stack("mineral", 1):get_name() == "mcl_nether:netherite_ingot" and not template_present then
 		upgraded_item = mcl_smithing_table.upgrade_item_netherite(inv:get_stack("upgrade_item", 1))
 	elseif template_present and is_armor and not is_trimmed and mcl_smithing_table.is_smithing_mineral(inv:get_stack("mineral", 1):get_name()) then
-		upgraded_item = upgrade_trimmed(inv:get_stack("upgrade_item", 1),inv:get_stack("mineral", 1),inv:get_stack("template", 1))
+		upgraded_item = mcl_smithing_table.upgrade_trimmed(inv:get_stack("upgrade_item", 1),inv:get_stack("mineral", 1),inv:get_stack("template", 1))
 	end
 
 	inv:set_stack("upgraded_item", 1, upgraded_item)
@@ -141,8 +140,7 @@ minetest.register_node("mcl_smithing_table:table", {
 			and		mcl_smithing_table.is_smithing_mineral(stack:get_name())
 
 			or 		listname == "template"
-			and 	string.find(stack:get_name(),"mcl_armor_trims") 
-			
+			and		string.find(stack:get_name(),"mcl_armor_trims") 
 		then
 			return stack:get_count()
 		end
