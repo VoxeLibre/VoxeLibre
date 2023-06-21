@@ -91,7 +91,7 @@ function mcl_campfires.cook_item(pos, elapsed)
 		local food_y = tonumber(meta:get_string("food_y_"..tostring(i)))
 		local food_z = tonumber(meta:get_string("food_z_"..tostring(i)))
 		if food_x and food_y and food_z then
-			local entites = minetest.get_objects_inside_radius({x = food_x, y = food_y, z = food_z}, 0)
+			local entites = minetest.get_objects_inside_radius(vector.new(food_x, food_y, food_z), 0)
 			if entites then
 				for _, entity in ipairs(entites) do
 					if entity then
@@ -100,9 +100,7 @@ function mcl_campfires.cook_item(pos, elapsed)
 							name = luaentity.name
 							if name == "mcl_campfires:food_entity" then
 								food_entity = entity
-								luaentity.wield_item = inv:get_stack("main", i):get_name()
-								luaentity.wield_image = "mcl_mobitems_"..string.sub(inv:get_stack("main", i):get_name(), 14).."_raw.png"
-								food_entity:set_properties(luaentity)
+								food_entity:set_properties({wield_item = inv:get_stack("main", i):get_name()})
 							end
 						end
 					end
