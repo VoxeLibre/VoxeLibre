@@ -194,3 +194,8 @@ minetest.register_craft({
 		{"group:wood", "group:wood", ""}
 	}
 })
+
+-- this is the exact same as mcl_smithing_table.upgrade_item_netherite , in case something relies on the old function
+function mcl_smithing_table.upgrade_item(itemstack)
+	return mcl_smithing_table.upgrade_item_netherite(itemstack)
+end
