@@ -178,7 +178,9 @@ local dispenserdef = {
 								local pos = obj:get_pos()
 								local used, texture = false
 								if entname == "mobs_mc:sheep" then
-									minetest.add_item(pos, entity.drops[2].name .. " " .. math.random(1, 3))
+									if entity.drops[2] then
+										minetest.add_item(pos, entity.drops[2].name .. " " .. math.random(1, 3))
+									end
 									if not entity.color then
 										entity.color = "unicolor_white"
 									end

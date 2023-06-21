@@ -239,10 +239,11 @@ minetest.register_globalstep(function(dtime)
 			elytra.speed = 1 - (direction.y/2 + 0.5)
 		end
 
+		local fly_node_walkable = minetest.registered_nodes[fly_node] and minetest.registered_nodes[fly_node].walkable
 		elytra.active = minetest.get_item_group(player:get_inventory():get_stack("armor", 3):get_name(), "elytra") ~= 0
 			and not parent
 			and (elytra.active or (is_just_jumped and player_velocity.y < -0))
-			and ((not minetest.registered_nodes[fly_node].walkable) or fly_node == "ignore")
+			and ((not fly_node_walkable) or fly_node == "ignore")
 
 		if elytra.active then
 			if is_just_jumped then -- move the player up when they start flying to give some clearance
@@ -257,7 +258,8 @@ minetest.register_globalstep(function(dtime)
 
 			local speed_mult = elytra.speed
 			local block_below = minetest.get_node(vector.offset(fly_pos, 0, -0.9, 0)).name
-			if (not minetest.registered_nodes[block_below].walkable) and (player_vel.y ~= 0) then
+			local reg_node_below = minetest.registered_nodes[block_below]
+			if (reg_node_below and not reg_node_below.walkable) and (player_vel.y ~= 0) then
 				speed_mult = speed_mult + direction_mult * elytra_vars.speedup_mult * dtime
 			end
 			speed_mult = speed_mult - elytra_vars.slowdown_mult * clamp(dtime, 0.09, 0.2) -- slow down but don't overdo it
