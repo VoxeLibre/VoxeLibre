@@ -259,7 +259,7 @@ function mcl_campfires.register_campfire(name, def)
 		},
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
-		damage_per_second = def.damage,
+		damage_per_second = def.damage, -- FIXME: Once entity burning is fixed, this needs to be removed.
 		on_blast = on_blast,
 		after_dig_node = function(pos, node, oldmeta, digger)
 			drop_items(pos, node, oldmeta)
@@ -285,11 +285,15 @@ minetest.register_globalstep(function(dtime)
 	if etime < 0.5 then return end
 	etime = 0
 	for _,pl in pairs(minetest.get_connected_players()) do
+		local armor_feet = pl:get_inventory():get_stack("armor", 5)
+		if pl and pl:get_player_control().sneak or (minetest.global_exists("mcl_enchanting") and mcl_enchanting.has_enchantment(armor_feet, "frost_walker")) or (minetest.global_exists("mcl_potions") and mcl_potions.player_has_effect(pl, "fire_proof")) then
+			return
+		end
 		burn_in_campfire(pl)
 	end
 	for _,ent in pairs(minetest.luaentities) do
 		if ent.is_mob then
-			burn_in_campfire(ent.object)
+			burn_in_campfire(ent.object) -- FIXME: Mobs don't seem to burn properly anymore.
 		end
 	end
 end)
