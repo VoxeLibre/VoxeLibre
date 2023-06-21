@@ -5,6 +5,22 @@ local food_entity = {nil, nil, nil, nil}
 
 local drop_inventory = mcl_util.drop_items_from_meta_container("main")
 
+local function campfire_drops(pos, digger, drops, nodename)
+	local wield_item = digger:get_wielded_item()
+	local silk_touch = mcl_enchanting.has_enchantment(wield_item, "silk_touch")
+	local is_creative = minetest.is_creative_enabled(digger:get_player_name())
+	local inv = digger:get_inventory()
+	if not is_creative then
+		if silk_touch then
+			minetest.add_item(pos, nodename)
+		else
+			minetest.add_item(pos, drops)
+		end
+	elseif is_creative and inv:room_for_item("main", nodename) and not inv:contains_item("main", nodename) then
+		inv:add_item("main", nodename)
+	end
+end
+
 local function drop_items(pos, node, oldmeta)
 	local meta = minetest.get_meta(pos)
 	drop_inventory(pos, node, oldmeta)
@@ -66,9 +82,9 @@ function mcl_campfires.take_item(pos, node, player, itemstack)
 					food_luaentity.wield_item = campfire_inv:get_stack("main", space):get_name() -- Set the wielditem of the food item to the food on the campfire
 					food_luaentity.wield_image = "mcl_mobitems_"..string.sub(campfire_inv:get_stack("main", space):get_name(), 14).."_raw.png" -- Set the wield_image to the food item on the campfire
 					food_entity[space]:set_properties(food_luaentity) -- Apply changes to the food entity
-					campfire_meta:set_string("food_x_"..tostring(space), tostring(food_entity[space]:getpos().x))
-					campfire_meta:set_string("food_y_"..tostring(space), tostring(food_entity[space]:getpos().y))
-					campfire_meta:set_string("food_z_"..tostring(space), tostring(food_entity[space]:getpos().z))
+					campfire_meta:set_string("food_x_"..tostring(space), tostring(food_entity[space]:get_pos().x))
+					campfire_meta:set_string("food_y_"..tostring(space), tostring(food_entity[space]:get_pos().y))
+					campfire_meta:set_string("food_z_"..tostring(space), tostring(food_entity[space]:get_pos().z))
 					break
 				end
 			end
@@ -95,9 +111,9 @@ function mcl_campfires.cook_item(pos, elapsed)
 			if entites then
 				for _, entity in ipairs(entites) do
 					if entity then
-						luaentity = entity:get_luaentity()
+						local luaentity = entity:get_luaentity()
 						if luaentity then
-							name = luaentity.name
+							local name = luaentity.name
 							if name == "mcl_campfires:food_entity" then
 								food_entity = entity
 								food_entity:set_properties({wield_item = inv:get_stack("main", i):get_name()})
@@ -151,13 +167,12 @@ function mcl_campfires.register_campfire(name, def)
 		use_texture_alpha = "clip",
 		groups = { handy=1, axey=1, material_wood=1, not_in_creative_inventory=1, campfire=1, },
 		paramtype = "light",
-		paramtype2 = "facedir",
+		paramtype2 = "4dir",
 		_on_ignite = function(player, node)
 			mcl_campfires.light_campfire(node.under)
 			return true
 		end,
-		drop = def.drops,
-		_mcl_silk_touch_drop = {name},
+		drop = "",
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		selection_box = {
 			type = 'fixed',
@@ -169,6 +184,9 @@ function mcl_campfires.register_campfire(name, def)
 		},
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
+		after_dig_node = function(pos, node, oldmeta, digger)
+			campfire_drops(pos, digger, def.drops, name.."_lit")
+		end,
 	})
 
 	--Define Lit Campfire
@@ -199,7 +217,7 @@ function mcl_campfires.register_campfire(name, def)
 		use_texture_alpha = "clip",
 		groups = { handy=1, axey=1, material_wood=1, lit_campfire=1 },
 		paramtype = "light",
-		paramtype2 = "facedir",
+		paramtype2 = "4dir",
 		on_construct = function(pos)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
@@ -228,8 +246,7 @@ function mcl_campfires.register_campfire(name, def)
 			end
 		end,
 		on_timer = mcl_campfires.cook_item,
-		drop = def.drops,
-		_mcl_silk_touch_drop = {name.."_lit"},
+		drop = "",
 		light_source = def.lightlevel,
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		selection_box = {
@@ -244,7 +261,10 @@ function mcl_campfires.register_campfire(name, def)
 		_mcl_hardness = 2,
 		damage_per_second = def.damage,
 		on_blast = on_blast,
-		after_dig_node = drop_items,
+		after_dig_node = function(pos, node, oldmeta, digger)
+			drop_items(pos, node, oldmeta)
+			campfire_drops(pos, digger, def.drops, name.."_lit")
+		end,
 		_mcl_campfires_smothered_form = name,
 	})
 end
