@@ -236,7 +236,13 @@ function mcl_core.register_leaves(subname, description, longdesc, tiles, color, 
 end
 
 function mcl_core.register_sapling(subname, description, longdesc, tt_help, texture, selbox)
+
 	local mod = minetest.get_current_modname()
+
+	if not tt_help then
+		tt_help = S("Needs soil and light to grow")
+	end
+
 	minetest.register_node(mod..":"..subname, {
 		description = description,
 		_tt_help = tt_help,
@@ -302,31 +308,26 @@ mcl_core.register_wooden_planks("sprucewood", S("Spruce Wood Planks"), {"mcl_cor
 mcl_core.register_wooden_planks("acaciawood", S("Acacia Wood Planks"), {"default_acacia_wood.png"})
 mcl_core.register_wooden_planks("birchwood", S("Birch Wood Planks"), {"mcl_core_planks_birch.png"})
 
+local tt_help_sapling_large = S("Needs soil and light to grow") .. "\n" .. S("2×2 saplings = large tree")
 
 mcl_core.register_sapling("sapling", S("Oak Sapling"),
 	S("When placed on soil (such as dirt) and exposed to light, an oak sapling will grow into an oak after some time."),
-	S("Needs soil and light to grow"),
-	"default_sapling.png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
+	nil, "default_sapling.png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
 mcl_core.register_sapling("darksapling", S("Dark Oak Sapling"),
 	S("Dark oak saplings can grow into dark oaks, but only in groups. A lonely dark oak sapling won't grow. A group of four dark oak saplings grows into a dark oak after some time when they are placed on soil (such as dirt) in a 2×2 square and exposed to light."),
-	S("Needs soil and light to grow") .. "\n" .. S("2×2 saplings required"),
-	"mcl_core_sapling_big_oak.png", {-5/16, -0.5, -5/16, 5/16, 7/16, 5/16})
+	tt_help_sapling_large, "mcl_core_sapling_big_oak.png", {-5/16, -0.5, -5/16, 5/16, 7/16, 5/16})
 mcl_core.register_sapling("junglesapling", S("Jungle Sapling"),
 	S("When placed on soil (such as dirt) and exposed to light, a jungle sapling will grow into a jungle tree after some time. When there are 4 jungle saplings in a 2×2 square, they will grow to a huge jungle tree."),
-	S("Needs soil and light to grow") .. "\n" .. S("2×2 saplings = large tree"),
-	"default_junglesapling.png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
+	tt_help_sapling_large, "default_junglesapling.png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
 mcl_core.register_sapling("acaciasapling", S("Acacia Sapling"),
 	S("When placed on soil (such as dirt) and exposed to light, an acacia sapling will grow into an acacia after some time."),
-	S("Needs soil and light to grow"),
-	"default_acacia_sapling.png", {-5/16, -0.5, -5/16, 5/16, 4/16, 5/16})
+	nil, "default_acacia_sapling.png", {-5/16, -0.5, -5/16, 5/16, 4/16, 5/16})
 mcl_core.register_sapling("sprucesapling", S("Spruce Sapling"),
 	S("When placed on soil (such as dirt) and exposed to light, a spruce sapling will grow into a spruce after some time. When there are 4 spruce saplings in a 2×2 square, they will grow to a huge spruce."),
-	S("Needs soil and light to grow") .. "\n" .. S("2×2 saplings = large tree"),
-	"mcl_core_sapling_spruce.png", {-4/16, -0.5, -4/16, 4/16, 0.5, 4/16})
+	tt_help_sapling_large, "mcl_core_sapling_spruce.png", {-4/16, -0.5, -4/16, 4/16, 0.5, 4/16})
 mcl_core.register_sapling("birchsapling", S("Birch Sapling"),
 	S("When placed on soil (such as dirt) and exposed to light, a birch sapling will grow into a birch after some time."),
-	S("Needs soil and light to grow"),
-	"mcl_core_sapling_birch.png", {-4/16, -0.5, -4/16, 4/16, 0.5, 4/16})
+	nil, "mcl_core_sapling_birch.png", {-4/16, -0.5, -4/16, 4/16, 0.5, 4/16})
 
 
 mcl_core.register_leaves("leaves", S("Oak Leaves"), S("Oak leaves are grown from oak trees."), {"default_leaves.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:sapling", true, {20, 16, 12, 10}, 1)

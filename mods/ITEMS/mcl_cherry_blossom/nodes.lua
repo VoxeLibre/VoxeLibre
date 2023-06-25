@@ -20,7 +20,7 @@ mcl_core.register_leaves("cherryleaves", S("Cherry Leaves"),
 
 -- Sapling
 mcl_core.register_sapling("cherrysapling", S("Cherry Sapling"),
-	S("Cherry blossom sapling can be planted to grow cherry trees."), tt_help,
+	S("Cherry blossom sapling can be planted to grow cherry trees."), nil,
 	"mcl_cherry_blossom_sapling.png", {-4/16, -0.5, -4/16, 4/16, 0.25, 4/16})
 
 -- Door and Trapdoor
