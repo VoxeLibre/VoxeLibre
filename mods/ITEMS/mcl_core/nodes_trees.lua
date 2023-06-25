@@ -315,7 +315,8 @@ mcl_core.register_sapling("sapling", S("Oak Sapling"),
 	nil, "default_sapling.png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
 mcl_core.register_sapling("darksapling", S("Dark Oak Sapling"),
 	S("Dark oak saplings can grow into dark oaks, but only in groups. A lonely dark oak sapling won't grow. A group of four dark oak saplings grows into a dark oak after some time when they are placed on soil (such as dirt) in a 2×2 square and exposed to light."),
-	tt_help_sapling_large, "mcl_core_sapling_big_oak.png", {-5/16, -0.5, -5/16, 5/16, 7/16, 5/16})
+	S("Needs soil and light to grow") .. "\n" .. S("2×2 saplings required"),
+	"mcl_core_sapling_big_oak.png", {-5/16, -0.5, -5/16, 5/16, 7/16, 5/16})
 mcl_core.register_sapling("junglesapling", S("Jungle Sapling"),
 	S("When placed on soil (such as dirt) and exposed to light, a jungle sapling will grow into a jungle tree after some time. When there are 4 jungle saplings in a 2×2 square, they will grow to a huge jungle tree."),
 	tt_help_sapling_large, "default_junglesapling.png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
