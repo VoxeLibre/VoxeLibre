@@ -58,7 +58,7 @@ minetest.register_craft({
 	}
 })
 
-mcl_signs.register_sign_craft("mcl_cherry_blossom", "mcl_cherry_blossom:cherrywood", "cherrywood")
+mcl_signs.register_sign_craft("mcl_cherry_blossom", "mcl_cherry_blossom:cherrywood", "_cherrywood")
 
 -- Smelting
 minetest.register_craft({

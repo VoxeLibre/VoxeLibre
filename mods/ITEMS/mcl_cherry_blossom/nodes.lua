@@ -61,7 +61,7 @@ mcl_stairs.register_slab("cherrywood", "mcl_cherry_blossom:cherrywood",
 		S("Double Cherry Slab"))
 
 -- Signs
-mcl_signs.register_sign_custom("mcl_cherry_blossom", "cherrywood",
+mcl_signs.register_sign_custom("mcl_cherry_blossom", "_cherrywood",
 		"mcl_cherry_blossom_sign.png", nil,
 		"mcl_cherry_blossom_sign_inv.png", "mcl_cherry_blossom_sign_inv.png", S("Cherry Sign"))
 
