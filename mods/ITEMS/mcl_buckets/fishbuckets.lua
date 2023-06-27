@@ -1,4 +1,5 @@
 local S = minetest.get_translator(minetest.get_current_modname())
+local MAX_MOB_NAME_LENGTH = 30
 
 -- Fish Buckets
 local fish_names = {
@@ -29,6 +30,18 @@ local function on_place_fish(itemstack, placer, pointed_thing)
 			if props ~= "" then
 				o:set_properties(minetest.deserialize(props))
 			end
+
+			local ent = o:get_luaentity()
+			-- set nametag
+			local nametag = itemstack:get_meta():get_string("name")
+			if nametag ~= "" then
+				if string.len(nametag) > MAX_MOB_NAME_LENGTH then
+					nametag = string.sub(nametag, 1, MAX_MOB_NAME_LENGTH)
+				end
+				ent.nametag = nametag
+				ent:update_tag()
+			end
+
 			local water = "mcl_core:water_source"
 			if n.name == "mclx_core:river_water_source" then
 				water = n.name
