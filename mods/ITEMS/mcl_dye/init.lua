@@ -192,7 +192,11 @@ local function apply_bone_meal(pointed_thing, user)
 		mcl_dye.add_bone_meal_particle(pos)
 		-- Saplings: 45% chance to advance growth stage
 		if math.random(1, 100) <= 45 then
-			return mcl_core.grow_sapling(pos, n)
+			if n.name == "mcl_cherry_blossom:cherrysapling" then
+				return mcl_cherry_blossom.generate_cherry_tree(pos) -- If cherry blossom sapling, run that callback instead.
+			else
+				return mcl_core.grow_sapling(pos, n)
+			end
 		end
 	elseif minetest.get_item_group(n.name, "mushroom") == 1 then
 		mcl_dye.add_bone_meal_particle(pos)

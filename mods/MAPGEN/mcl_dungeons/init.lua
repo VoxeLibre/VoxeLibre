@@ -89,6 +89,7 @@ local loottable =
 		items = {
 			{ itemstring = "mcl_farming:wheat_item", weight = 20, amount_min = 1, amount_max = 4 },
 			{ itemstring = "mcl_farming:bread", weight = 20 },
+			{ itemstring = "mcl_cherry_blossom:cherrysapling", weight = 15, amount_min = 1, amount_max = 4 }, -- FIXME: Remove when cherry blossom map generation is implemented.
 			{ itemstring = "mcl_core:coal_lump", weight = 15, amount_min = 1, amount_max = 4 },
 			{ itemstring = "mesecons:redstone", weight = 15, amount_min = 1, amount_max = 4 },
 			{ itemstring = "mcl_farming:beetroot_seeds", weight = 10, amount_min = 2, amount_max = 4 },
