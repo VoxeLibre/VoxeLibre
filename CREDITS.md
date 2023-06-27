@@ -101,6 +101,10 @@
 * gldrk
 * atomdmac
 * emptyshore
+* FlamingRCCars
+* uqers
+* Niterux
+* appgurueu
 
 ## MineClone5
 * kay27
@@ -153,6 +157,7 @@
 * paramat
 * cora
 * Faerraven / Michieal
+* PrairieWind
 
 ## 3D Models
 * 22i
@@ -175,6 +180,8 @@
 * Faerraven / Michieal
 * Nicu
 * Exhale
+* Wbjitscool
+* SmokeyDope
 
 ## Translations
 * Wuzzy
@@ -191,6 +198,8 @@
 * SakuraRiu
 * anarquimico
 * syl
+* Temak
+* megustanlosfrijoles
 
 ## Funders
 * 40W

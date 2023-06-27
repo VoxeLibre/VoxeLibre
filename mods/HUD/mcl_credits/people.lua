@@ -102,6 +102,10 @@ return {
 		"gldrk",
 		"atomdmac",
 		"emptyshore",
+		"FlamingRCCars",
+		"uqers",
+		"Niterux",
+		"appgurueu",
 	}},
 	{S("MineClone5"), 0xA60014, {
 		"kay27",
@@ -154,6 +158,7 @@ return {
 		"paramat",
 		"cora",
 		"Faerraven / Michieal",
+		"PrairieWind",
 	}},
 	{S("3D Models"), 0x0019FF, {
 		"22i",
@@ -176,6 +181,8 @@ return {
 		"Faerraven / Michieal",
 		"Nicu",
 		"Exhale",
+		"Wbjitscool",
+		"SmokeyDope",
 	}},
 	{S("Translations"), 0x00FF60, {
 		"Wuzzy",
@@ -192,6 +199,8 @@ return {
 		"SakuraRiu",
 		"anarquimico",
 		"syl",
+		"Temak",
+		"megustanlosfrijoles",
 	}},
 	{S("Funders"), 0xF7FF00, {
 		"40W",
