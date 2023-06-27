@@ -411,6 +411,10 @@ mesecon.register_mvps_stopper("mesecons_solarpanel:solar_panel_inverted_on")
 mesecon.register_mvps_stopper("mesecons_solarpanel:solar_panel_inverted_off")
 mesecon.register_mvps_stopper("mcl_banners:hanging_banner")
 mesecon.register_mvps_stopper("mcl_banners:standing_banner")
+mesecon.register_mvps_stopper("mcl_campfires:campfire")
+mesecon.register_mvps_stopper("mcl_campfires:campfire_lit")
+mesecon.register_mvps_stopper("mcl_campfires:soul_campfire")
+mesecon.register_mvps_stopper("mcl_campfires:soul_campfire_lit")
 
 -- Unmovable by technical restrictions.
 -- Open formspec would screw up if node is destroyed (minor problem)
@@ -935,6 +939,11 @@ mesecon.register_mvps_unsticky("mcl_farming:wheat_4")
 mesecon.register_mvps_unsticky("mcl_farming:wheat_5")
 mesecon.register_mvps_unsticky("mcl_farming:wheat_6")
 mesecon.register_mvps_unsticky("mcl_farming:wheat_7")
+-- Campfires
+mesecon.register_mvps_unsticky("mcl_campfires:campfire")
+mesecon.register_mvps_unsticky("mcl_campfires:campfire_lit")
+mesecon.register_mvps_unsticky("mcl_campfires:soul_campfire")
+mesecon.register_mvps_unsticky("mcl_campfires:soul_campfire_lit")
 
 -- Includes node heat when moving them
 mesecon.register_on_mvps_move(mesecon.move_hot_nodes)
