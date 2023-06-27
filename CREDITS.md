@@ -70,7 +70,7 @@
 * E
 * n_to
 * kay27
-* Debiankaios
+* debiankaios
 * Gustavo6046 / wallabra
 * CableGuy67
 * Benjamin Schötz
@@ -148,6 +148,8 @@
 * 4Evergreen4
 * jordan4ibanez
 * paramat
+* debian044 / debian44
+* chmodsayshello
 * cora
 * Faerraven / Michieal
 * PrairieWind
