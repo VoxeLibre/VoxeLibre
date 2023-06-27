@@ -85,7 +85,7 @@ local function hopper_take_item(self, dtime)
 		for k, v in pairs(objs) do
 			local ent = v:get_luaentity()
 
-			if ent._removed or not ent.itemstring or ent.itemstring == "" then
+			if not ent or (ent and ent._removed) or not ent.itemstring or ent.itemstring == "" then
 				--minetest.log("Ignore this item")
 				break
 			end
