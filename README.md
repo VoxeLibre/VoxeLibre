@@ -87,26 +87,22 @@ The MineClone2 repository is hosted at Mesehub. To contribute or report issues, 
 * OpenCollective: <https://opencollective.com/mineclone2>
 
 ## Target
-- Crucially, create a stable, moddable, free/libre clone of Minecraft
-based on the Minetest engine with polished features, usable in both
+- Create a stable, moddable, free/libre game based on Minecraft
+on the Minetest engine with polished features, usable in both
 singleplayer and multiplayer. Currently, a lot of **Minecraft Java
 Edition** features are already implemented and polishing existing
 features are prioritized over new feature requests.
-- With lessened priority yet strictly, implement features targetting
+- Mmplement features targetting
 **Current Minecraft versions + OptiFine** (OptiFine only as far as supported
-by the Minetest Engine). This means features in parity with the listed
-Minecraft experiences are prioritized over those that don't fulfill this
-scope.
-- Optionally, create a performant experience that will run relatively
-well on really low spec computers. Unfortunately, due to Minecraft's
-mechanisms and Minetest engine's limitations along with a very small
-playerbase on low spec computers, optimizations are hard to investigate.
+by the Minetest Engine).
+- Create a performant experience that will run relatively
+well on really low spec computers.
 
 ## Completion status
 This game is currently in **beta** stage.
 It is playable, but not yet feature-complete.
 Backwards-compability is not entirely guaranteed, updating your world might cause small bugs.
-If you want to use the development version of MineClone2 in production, the master branch is usually relatively stable. The testing branch often features some experimental PRs and should be considered less stable.
+If you want to use the development version of MineClone2 in production, the master branch is usually relatively stable.
 
 The following main features are available:
 

@@ -5,7 +5,7 @@ Copying is an act of love. Please copy and share! <3
 Here's the detailed legalese for those who need it:
 
 ## License of source code
-MineClone 2 (by kay27, EliasFleckenstein, Wuzzy, davedevils and countless others)
+MineClone 2 (by Lizzy Fleckenstein, Wuzzy, davedevils and countless others)
 is an imitation of Minecraft.
 
 MineClone 2 is free software: you can redistribute it and/or modify
