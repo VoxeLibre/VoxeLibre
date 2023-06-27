@@ -138,6 +138,10 @@ function mcl_campfires.cook_item(pos, elapsed)
 						meta:set_string("food_z_"..tostring(i), nil)
 					end
 					minetest.add_item(pos, cooked.item) -- Drop Cooked Item
+					-- Throw some Experience Points because why not?
+					-- Food is cooked, xp is deserved for using this unique cooking method. Take that Minecraft ;)
+					local dir = vector.divide(minetest.facedir_to_dir(minetest.get_node(pos).param2),-1.95)
+					mcl_experience.throw_xp(vector.add(pos, dir), 1)
 					inv:set_stack("main", i, "") -- Clear Inventory
 					continue  = continue + 1 -- Indicate that the slot is clear.
 				end
