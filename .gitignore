@@ -5,3 +5,4 @@
 *.blend3
 /.idea/
 *.xcf
+.Rproj.user
