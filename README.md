@@ -92,7 +92,7 @@ on the Minetest engine with polished features, usable in both
 singleplayer and multiplayer. Currently, a lot of **Minecraft Java
 Edition** features are already implemented and polishing existing
 features are prioritized over new feature requests.
-- Mmplement features targetting
+- Implement features targetting
 **Current Minecraft versions + OptiFine** (OptiFine only as far as supported
 by the Minetest Engine).
 - Create a performant experience that will run relatively
