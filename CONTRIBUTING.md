@@ -222,10 +222,12 @@ they have made their donation Incognito).
 * Create a pull request to get your changes merged into master
 * It is important that conflicts are resolved prior to merging the pull
 request.
-* We update our branches via rebasing. Please avoid unless it's the only
-way you can resolve a conflict. We can rebase branches from the GUI if
-the user has not merged master into the branch.
-* After the pull request got merged, you can delete the branch
+* We update our branches via rebasing. Please avoid merging master into 
+your branch unless it's the only way you can resolve a conflict. We can
+rebase branches from the GUI if the user has not merged master into the 
+branch.
+* After the pull request got merged, you can delete the branch if the 
+merger hasn't done this already.
 
 ### Discuss first
 If you feel like a problem needs to fixed or you want to make a new

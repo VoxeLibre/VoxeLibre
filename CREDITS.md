@@ -159,6 +159,7 @@
 * tobyplowy
 * epCode
 * Faerraven / Michieal
+* SumianVoice
 
 ## Textures
 * XSSheep
