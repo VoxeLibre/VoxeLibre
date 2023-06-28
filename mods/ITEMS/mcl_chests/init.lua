@@ -65,7 +65,6 @@ local entity_animations = {
 minetest.register_entity("mcl_chests:chest", {
 	initial_properties = {
 		visual = "mesh",
-		visual_size = { x = 3, y = 3 },
 		pointable = false,
 		physical = false,
 		static_save = false,
@@ -150,7 +149,6 @@ minetest.register_entity("mcl_chests:chest", {
 
 local function get_entity_pos(pos, dir, double)
 	pos = vector.copy(pos)
-	pos.y = pos.y - 0.49
 	if double then
 		local add, mul, vec, cross = vector.add, vector.multiply, vector.new, vector.cross
 		pos = add(pos, mul(cross(dir, vec(0, 1, 0)), -0.5))
