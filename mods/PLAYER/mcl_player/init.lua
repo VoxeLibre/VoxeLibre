@@ -135,7 +135,7 @@ function mcl_player.player_set_armor(player, texture)
 	update_player_textures(player)
 end
 
----@param player ObjectRef
+---@param player mt.PlayerObjectRef
 ---@param x number
 ---@param y number
 ---@param w number
