@@ -859,9 +859,9 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 
 		on_rightclick = function(pos, node, clicker)
 			local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
-			if minetest.registered_nodes[minetest.get_node({ x = pos.x, y = pos.y + 1, z = pos.z }).name].groups.opaque == 1
+			if minetest.registered_nodes[minetest.get_node(vector.offset(pos, 0, 1, 0)).name].groups.opaque == 1
 				or
-				minetest.registered_nodes[minetest.get_node({ x = pos_other.x, y = pos_other.y + 1, z = pos_other.z }).name].groups.opaque
+				minetest.registered_nodes[minetest.get_node(vector.offset(pos_other, 0, 1, 0)).name].groups.opaque
 				== 1 then
 				-- won't open if there is no space from the top
 				return false
