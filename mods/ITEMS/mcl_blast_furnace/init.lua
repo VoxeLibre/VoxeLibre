@@ -183,17 +183,17 @@ local function spawn_flames(pos, param2)
 	local minrelpos, maxrelpos
 	local dir = minetest.facedir_to_dir(param2)
 	if dir.x > 0 then
-		minrelpos = { x = -0.6, y = -0.05, z = -0.25 }
-		maxrelpos = { x = -0.55, y = -0.45, z = 0.25 }
+		minrelpos = vector.new(-0.6, -0.05, -0.25)
+		maxrelpos = vector.new(-0.55, -0.45, 0.25)
 	elseif dir.x < 0 then
-		minrelpos = { x = 0.55, y = -0.05, z = -0.25 }
-		maxrelpos = { x = 0.6, y = -0.45, z = 0.25 }
+		minrelpos = vector.new(0.55, -0.05, -0.25)
+		maxrelpos = vector.new(0.6, -0.45, 0.25)
 	elseif dir.z > 0 then
-		minrelpos = { x = -0.25, y = -0.05, z = -0.6 }
-		maxrelpos = { x = 0.25, y = -0.45, z = -0.55 }
+		minrelpos = vector.new(-0.25, -0.05, -0.6)
+		maxrelpos = vector.new(0.25, 0.45, -0.55)
 	elseif dir.z < 0 then
-		minrelpos = { x = -0.25, y = -0.05, z = 0.55 }
-		maxrelpos = { x = 0.25, y = -0.45, z = 0.6 }
+		minrelpos = vector.new(-0.25, -0.05, 0.55)
+		maxrelpos = vector.new(0.25, -0.45, 0.6)
 	else
 		return
 	end
@@ -202,8 +202,8 @@ local function spawn_flames(pos, param2)
 		time = 0,
 		minpos = vector.add(pos, minrelpos),
 		maxpos = vector.add(pos, maxrelpos),
-		minvel = { x = -0.01, y = 0, z = -0.01 },
-		maxvel = { x = 0.01, y = 0.1, z = 0.01 },
+		minvel = vector.new(-0.01, 0, -0.01),
+		maxvel = vector.new(0.01, 0.1, 0.01),
 		minexptime = 0.3,
 		maxexptime = 0.6,
 		minsize = 0.4,
@@ -549,11 +549,11 @@ minetest.register_node("mcl_blast_furnace:blast_furnace_active", {
 		for _, listname in ipairs({ "src", "dst", "fuel" }) do
 			local stack = inv:get_stack(listname, 1)
 			if not stack:is_empty() then
-				local p = {
-					x = pos.x + math.random(0, 10) / 10 - 0.5,
-					y = pos.y,
-					z = pos.z + math.random(0, 10) / 10 - 0.5
-				}
+				local p = vector.new(
+					pos.x + math.random(0, 10) / 10 - 0.5,
+					pos.y,
+					pos.z + math.random(0, 10) / 10 - 0.5
+				)
 				minetest.add_item(p, stack)
 			end
 		end
