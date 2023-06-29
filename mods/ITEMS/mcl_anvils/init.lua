@@ -568,9 +568,9 @@ end
 local anvildef0 = table.copy(anvildef)
 anvildef0.description = S("Anvil")
 anvildef0._doc_items_longdesc =
-S("The anvil allows you to repair tools and armor, and to give names to items. It has a limited durability, however. Don't let it fall on your head, it could be quite painful!")
+	S("The anvil allows you to repair tools and armor, and to give names to items. It has a limited durability, however. Don't let it fall on your head, it could be quite painful!")
 anvildef0._doc_items_usagehelp =
-S("To use an anvil, rightclick it. An anvil has 2 input slots (on the left) and one output slot.") .. "\n" ..
+	S("To use an anvil, rightclick it. An anvil has 2 input slots (on the left) and one output slot.") .. "\n" ..
 	S("To rename items, put an item stack in one of the item slots while keeping the other input slot empty. Type in a name, hit enter or “Set Name”, then take the renamed item from the output slot.")
 	.. "\n" ..
 	S("There are two possibilities to repair tools (and armor):") .. "\n" ..
