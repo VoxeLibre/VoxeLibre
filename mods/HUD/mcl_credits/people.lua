@@ -26,6 +26,7 @@ return {
 		"SmokeyDope",
 	}},
 	{S("Past Developers"), 0xF84355, {
+		"jordan4ibanez",
 		"iliekprogrammar",
 		"kabou",
 		"Faerraven / Michieal",
@@ -161,6 +162,7 @@ return {
 		"tobyplowy",
 		"epCode",
 		"Faerraven / Michieal",
+		"SumianVoice",
 	}},
 	{S("Textures"), 0xFF9705, {
 		"XSSheep",

@@ -24,6 +24,7 @@
 * SmokeyDope
 
 ## Past Developers
+* jordan4ibanez
 * iliekprogrammar
 * kabou
 * Faerraven / Michieal
