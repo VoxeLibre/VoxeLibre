@@ -12,13 +12,13 @@ GIMP Tutorials has an excellent guide to making pixel art in GIMP. If you would 
 
 ### GIMP
 
-GIMP (Gnu Image Manipulation Program) is a very popular and free image editing software supported on Windows, MacOS, and most Linux distributions. It is recommended to use GIMP to create and modify textures within the minetest engine. 
+GIMP (GNU Image Manipulation Program) is a very popular and free image editing software supported on Windows, MacOS, and most Linux distributions. It is recommended to use GIMP to create and modify textures within the minetest engine. 
 
 Download GIMP [here](http://gimp.org/)
 
 # Getting Started
 ## Creating a new file
-the first thing to do is open GIMP and create a new file to work in by opening the File menu and choosing New.
+the first thing to do is open GIMP and create a new file to work in by opening the File menu and choosing "New".
 
 Choose width of 16 and height of 16 for the image size. While higher resolution textures are possible, The default size is 16x16. It is recommended you use this size as well, as it is universally supported on all systems.
 
