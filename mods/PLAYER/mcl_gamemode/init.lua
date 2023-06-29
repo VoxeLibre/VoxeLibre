@@ -1,5 +1,3 @@
----@diagnostic disable lowercase-global
-
 local S = minetest.get_translator("mcl_gamemode")
 
 mcl_gamemode = {}
@@ -19,15 +17,15 @@ local function in_table(n, h)
 	return false
 end
 
----@type fun(player: ObjectRef, old_gamemode: '"survival"'|'"creative"', new_gamemode: '"survival"'|'"creative"')[]
+---@type fun(player: mt.PlayerObjectRef, old_gamemode: '"survival"'|'"creative"', new_gamemode: '"survival"'|'"creative"')[]
 mcl_gamemode.registered_on_gamemode_change = {}
 
----@param func fun(player: ObjectRef, old_gamemode: '"survival"'|'"creative"', new_gamemode: '"survival"'|'"creative"')
+---@param func fun(player: mt.PlayerObjectRef, old_gamemode: '"survival"'|'"creative"', new_gamemode: '"survival"'|'"creative"')
 function mcl_gamemode.register_on_gamemode_change(func)
 	table.insert(mcl_gamemode.registered_on_gamemode_change, func)
 end
 
----@param player ObjectRef
+---@param player mt.PlayerObjectRef
 ---@param gamemode '"survival"'|'"creative"'
 function mcl_gamemode.set_gamemode(player, gamemode)
 	local meta = player:get_meta()
@@ -40,7 +38,7 @@ end
 
 local mt_is_creative_enabled = minetest.is_creative_enabled
 
----@param player ObjectRef
+---@param player mt.PlayerObjectRef
 ---@return '"survival"'|'"creative"'
 function mcl_gamemode.get_gamemode(player)
 	if mt_is_creative_enabled(player:get_player_name()) then

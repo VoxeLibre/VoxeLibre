@@ -1,9 +1,3 @@
-local S = minetest.get_translator(minetest.get_current_modname())
-local F = minetest.formspec_escape
-
----get_inventory can return nil if object isn't a player, but we are sure sometimes this is one :)
----@diagnostic disable need-check-nil
-
 mcl_inventory = {}
 
 dofile(minetest.get_modpath(minetest.get_current_modname()) .. "/creative.lua")
@@ -13,10 +7,10 @@ dofile(minetest.get_modpath(minetest.get_current_modname()) .. "/survival.lua")
 --local mod_craftguide = minetest.get_modpath("mcl_craftguide")
 
 ---Returns a single itemstack in the given inventory to the main inventory, or drop it when there's no space left.
----@param itemstack ItemStack
----@param dropper ObjectRef
----@param pos Vector
----@param inv InvRef
+---@param itemstack mt.ItemStack
+---@param dropper mt.ObjectRef
+---@param pos mt.Vector
+---@param inv mt.InvRef
 local function return_item(itemstack, dropper, pos, inv)
 	if dropper:is_player() then
 		-- Return to main inventory
@@ -45,7 +39,7 @@ local function return_item(itemstack, dropper, pos, inv)
 end
 
 ---Return items in the given inventory list (name) to the main inventory, or drop them if there is no space left.
----@param player ObjectRef
+---@param player mt.PlayerObjectRef
 ---@param name string
 local function return_fields(player, name)
 	local inv = player:get_inventory()
@@ -59,7 +53,7 @@ local function return_fields(player, name)
 	end
 end
 
----@param player ObjectRef
+---@param player mt.PlayerObjectRef
 ---@param armor_change_only? boolean
 local function set_inventory(player, armor_change_only)
 	if minetest.is_creative_enabled(player:get_player_name()) then
@@ -133,17 +127,11 @@ minetest.register_on_joinplayer(function(player)
 	return_fields(player, "enchanting_lapis")
 end)
 
----@param player ObjectRef
----@param armor_change_only? boolean
-function mcl_inventory.update_inventory(player, armor_change_only)
+---@param player mt.PlayerObjectRef
+function mcl_inventory.update_inventory(player)
 	local player_gamemode = mcl_gamemode.get_gamemode(player)
 	if player_gamemode == "creative" then
-		if armor_change_only then
-			-- Stay on survival inventory page if only the armor has been changed
-			mcl_inventory.set_creative_formspec(player, 0, 0, nil, nil, "inv")
-		else
-			mcl_inventory.set_creative_formspec(player, 0, 1)
-		end
+		mcl_inventory.set_creative_formspec(player)
 	elseif player_gamemode == "survival" then
 		player:set_inventory_formspec(mcl_inventory.build_survival_formspec(player))
 	end
