@@ -9,10 +9,9 @@ You can help with MineClone2's development in many different ways,
 whether you're a programmer or not.
 
 ## MineClone2's development target is to...
-- Crucially, create a stable, moddable, free/libre clone of Minecraft
-based on the Minetest engine with polished features, usable in both
-singleplayer and multiplayer. Currently, a lot of Minecraft features
-are already implemented.
+- Create a stable, peformant, moddable, free/libre game based on Minecraft
+using the Minetest engine, usable in both singleplayer and multiplayer. 
+- Currently, a lot of features are already implemented.
 Polishing existing features is always welcome.
 
 ## Links
@@ -120,11 +119,11 @@ It's also a good idea to join the Discord server
 (or alternatively IRC or Matrix).
 
 #### Textures
-For textures we use the Pixel Perfection texture pack. For older Minecraft
-features that is mostly enough but a lot of the newer textures in it are
-copies or slight modifications of the original MC textures so great caution
-needs to be taken when using any textures coming from Minecraft texture
-packs.
+For textures we prefer original art, but in the absence of that will accept 
+Pixel Perfection texture pack contributions. Be warned many of the newer 
+textures in it are copies or slight modifications of the original MC textures 
+so great caution needs to be taken when using any textures coming from 
+Minecraft texture packs.
 If you want to make such contributions, join our Discord server. Demands
 for textures will be communicated there.
 
@@ -135,7 +134,10 @@ resource pack or minetest_game. Unfortunately, MineClone2 does not play
 a sound in every situation you would get one in Minecraft. Any help with
 sounds is greatly appreciated, however if you add new sounds you should
 probably work together with a programmer, to write the code to actually
-play these sounds in game.
+play these sounds in game. All sounds should be released under an open
+source license with clear information on the source, licencing and any
+changes made by the contributor. Use the README files in the mod to
+communicate this information.
 
 #### 3D Models
 Most of the 3D Models in MineClone2 come from
@@ -145,9 +147,9 @@ Blender on demand. Many of the models have to be patched, some new
 animations have to be added etc.
 
 #### Crediting
-Asset contributions will be credited in their own respective sections in
-CREDITS.md. If you have commited the results yourself, you will also be
-credited in the Contributors section.
+Asset contributions will be credited in their mods and their own respective 
+sections in CREDITS.md. If you have commited the results yourself, you will 
+also be credited in the Contributors section.
 
 ### Contributing Translations
 
@@ -182,7 +184,12 @@ information about the game's performance and let us know places to
 investigate optimization issues. This way we can make the game faster.
 
 #### Using Minetest's profiler
-Minetest has a built in profiler. Simply set `profiler.load = true` in
+We frequently will use profiling to optimise our code. We recommend use of
+the JIT profiler (RIP Jude) to fully understand performance impact:
+
+https://content.minetest.net/packages/jwmhjwmh/jitprofiler/
+
+Minetest also has a built in profiler. Simply set `profiler.load = true` in
 your configuration file and restart the server. After running the server
 for some time, just run `/profiler save` in chat - then you will find a
 file in the world directory containing the results. Open a new issue and
@@ -213,10 +220,14 @@ they have made their donation Incognito).
 * Fork the repository (in case you have not already)
 * Do your change in a new branch
 * Create a pull request to get your changes merged into master
-* Keep your pull request up to date by regularly merging upstream. It is
-imperative that conflicts are resolved prior to merging the pull
+* It is important that conflicts are resolved prior to merging the pull
 request.
-* After the pull request got merged, you can delete the branch
+* We update our branches via rebasing. Please avoid merging master into 
+your branch unless it's the only way you can resolve a conflict. We can
+rebase branches from the GUI if the user has not merged master into the 
+branch.
+* After the pull request got merged, you can delete the branch if the 
+merger hasn't done this already.
 
 ### Discuss first
 If you feel like a problem needs to fixed or you want to make a new
@@ -262,9 +273,7 @@ excessive git bureaucracy commits in master)
 * Submodules should only be used if a) upstream is highly reliable and
 b) it is 100% certain that no mcl2 specific changes to the code will  be
 needed (this has never been the case before, hence mcl2 is submodule free so far)
-* Commit messages should be descriptive and never contain mcl2 specific
-issueids - there are other projects who might use commits from mcl2 and
-it will confuse their issue trackers.
+* Commit messages should be descriptive
 * Try to group your submissions best as you can:
 * Try to keep your PRs small: In some cases things reasonably be can't
 split up but in general multiple small PRs are better than a big one.
@@ -348,18 +357,24 @@ end
 
 ### Developer status
 Active and trusted contributors are often granted write access to the
-MineClone2 repository.
+MineClone2 repository as a contributor. Those that have demonstrated the right
+technical skills and behaviours may be granted developer access. These are the 
+most trusted contributors who will contribute to ensure coding standards and 
+processes are followed.
 
 #### Developer responsibilities
-- If you have developer privileges you can just open a new branch in the
-mcl2 repository (which is preferred). From that you create a pull request.
+- If you have developer/contributor privileges you can just open a new branch
+in the mcl2 repository (which is preferred). From that you create a pull request.
 This way other people can review your changes and make sure they work
 before they get merged.
 - If you do not (yet) have developer privs you do your work on a branch
 on your private repository e.g. using the "fork" function on mesehub.
-- Any developer is welcome to review, test and merge PRs. A PR needs
-at least one approval (by someone else than the author) but the maintainers
-are usually relatively quick to react to new submissions.
+- Any developer is welcome to review, test and approve PRs. A maintainer may prefer
+to merge the PR especially if it is in a similar area to what has been worked on
+and could result in merge conflicts for a larger older branch, or needs 
+art/licencing reviewing. A PR needs at least one approval (by someone else other
+than the author).
+- The maintainers are usually relatively quick to react to new submissions.
 
 ### Maintainer status
 Maintainers carry the main responsibility for the project.
