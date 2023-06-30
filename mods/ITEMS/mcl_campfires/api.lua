@@ -1,7 +1,15 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 mcl_campfires = {}
 
+local COOK_TIME = 30 -- Time it takes to cook food on a campfire.
+
 local food_entity = {nil, nil, nil, nil}
+local campfire_spots = {
+	vector.new(-0.25, -0.04, -0.25),
+	vector.new( 0.25, -0.04, -0.25),
+	vector.new( 0.25, -0.04,  0.25),
+	vector.new(-0.25, -0.04,  0.25),
+}
 
 local drop_inventory = mcl_util.drop_items_from_meta_container("main")
 
@@ -55,12 +63,6 @@ end
 
 -- on_rightclick function to take items that are cookable in a campfire, and put them in the campfire inventory
 function mcl_campfires.take_item(pos, node, player, itemstack)
-	local campfire_spots = {
-		vector.new(-0.25, -0.04, -0.25),
-		vector.new( 0.25, -0.04, -0.25),
-		vector.new( 0.25, -0.04,  0.25),
-		vector.new(-0.25, -0.04,  0.25),
-	}
 	local food_entity = {nil,nil,nil,nil}
 	local is_creative = minetest.is_creative_enabled(player:get_player_name())
 	local inv = player:get_inventory()
@@ -76,7 +78,7 @@ function mcl_campfires.take_item(pos, node, player, itemstack)
 				if not spot or spot == (ItemStack("") or ItemStack("nil")) then -- Check if the spot is empty or not
 					if not is_creative then itemstack:take_item(1) end -- Take the item if in creative
 					campfire_inv:set_stack("main", space, stack) -- Set the inventory itemstack at the empty spot
-					campfire_meta:set_int("cooktime_"..tostring(space), 30) -- Set the cook time meta
+					campfire_meta:set_int("cooktime_"..tostring(space), COOK_TIME) -- Set the cook time meta
 					food_entity[space] = minetest.add_entity(pos + campfire_spots[space], "mcl_campfires:food_entity") -- Spawn food item on the campfire
 					local food_luaentity = food_entity[space]:get_luaentity()
 					food_luaentity.wield_item = campfire_inv:get_stack("main", space):get_name() -- Set the wielditem of the food item to the food on the campfire
@@ -125,7 +127,7 @@ function mcl_campfires.cook_item(pos, elapsed)
 		end
 		if item ~= (ItemStack("") or ItemStack("nil")) then
 			-- Item hasn't been cooked completely, continue cook timer countdown.
-			if time_r and time_r ~= 0 and time_r > 0 then
+			if time_r > 0 then
 				meta:set_int("cooktime_"..tostring(i), time_r - 1)
 			-- Item cook timer is up, finish cooking process and drop cooked item.
 			elseif time_r <= 0 then
@@ -136,16 +138,18 @@ function mcl_campfires.cook_item(pos, elapsed)
 						meta:set_string("food_x_"..tostring(i), nil)
 						meta:set_string("food_y_"..tostring(i), nil)
 						meta:set_string("food_z_"..tostring(i), nil)
+						minetest.add_item(pos, cooked.item) -- Drop Cooked Item
+						-- Throw some Experience Points because why not?
+						-- Food is cooked, xp is deserved for using this unique cooking method. Take that Minecraft ;)
+						local dir = vector.divide(minetest.facedir_to_dir(minetest.get_node(pos).param2),-1.95)
+						mcl_experience.throw_xp(vector.add(pos, dir), 1)
+						inv:set_stack("main", i, "") -- Clear Inventory
+						continue  = continue + 1 -- Indicate that the slot is clear.
 					end
-					minetest.add_item(pos, cooked.item) -- Drop Cooked Item
-					-- Throw some Experience Points because why not?
-					-- Food is cooked, xp is deserved for using this unique cooking method. Take that Minecraft ;)
-					local dir = vector.divide(minetest.facedir_to_dir(minetest.get_node(pos).param2),-1.95)
-					mcl_experience.throw_xp(vector.add(pos, dir), 1)
-					inv:set_stack("main", i, "") -- Clear Inventory
-					continue  = continue + 1 -- Indicate that the slot is clear.
 				end
 			end
+		else
+			continue = continue + 1
 		end
 	end
 	-- Not all slots are empty, continue timer.
@@ -228,6 +232,10 @@ function mcl_campfires.register_campfire(name, def)
 			inv:set_size("main", 4)
 		end,
 		on_rightclick = function (pos, node, player, itemstack, pointed_thing)
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			if not inv then inv:set_size("main", 4) end
+
 			if minetest.get_item_group(itemstack:get_name(), "shovel") ~= 0 then
 				local protected = mcl_util.check_position_protection(pos, player)
 				if not protected then
