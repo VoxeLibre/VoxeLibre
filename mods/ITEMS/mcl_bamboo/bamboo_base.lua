@@ -203,11 +203,11 @@ local bamboo_def = {
 		if node_above_name ~= "mcl_core:water_source" and node_above_name ~= "mcl_core:lava_source"
 				and node_above_name ~= "mcl_nether:nether_lava_source" then
 			local _, position = minetest.item_place(place_item, placer, pointed_thing, fdir)
-			if not minetest.is_creative_enabled(placer:get_player_name()) then
-				itemstack:take_item(1)
-			end
-			if rand_height and rand_height > 1 then
-				if position then
+			if position then
+				if not minetest.is_creative_enabled(placer:get_player_name()) then
+					itemstack:take_item(1)
+				end
+				if rand_height and rand_height > 1 then
 					mcl_bamboo.mcl_log("Setting Height Data...")
 					meta = minetest.get_meta(position)
 					if meta then
