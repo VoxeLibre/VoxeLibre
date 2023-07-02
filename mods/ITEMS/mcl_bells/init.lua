@@ -33,7 +33,7 @@ minetest.register_node("mcl_bells:bell", {
 		"mcl_bells_bell_side.png",
 	},
 	is_ground_content = false,
-	groups = {pickaxey=2, deco_block=1 },
+	groups = {pickaxey=2, deco_block=1, dig_by_piston=1 },
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 5,
 	_mcl_hardness = 5,
