@@ -234,7 +234,7 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 	end
 
 	if not nodes then return end
-	
+
 	local newpos={}
 	-- check node availability to push/pull into, and fill newpos[i]
 	for i in ipairs(nodes) do
@@ -259,7 +259,7 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 	end
 
 	local all_nodes = nodes
-	if dig_nodes and #dig_nodes > 0 then all_nodes = mesecon.mergetable(dig_nodes, nodes) end
+	if dig_nodes and #dig_nodes > 0 then all_nodes = mesecon.join_table(dig_nodes, nodes) end
 	if are_protected(all_nodes, player_name) then
 		return
 	end
@@ -270,13 +270,11 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 		n.meta = minetest.get_meta(n.pos):to_table()
 		local is_dropper = mesecon.is_mvps_dropper(n.node, movedir, all_nodes, id)
 		if is_dropper then
-			-- minetest.dig_node has been shown to be buggy (https://git.minetest.land/MineClone2/MineClone2/issues/3547)
-			if minetest.get_item_group(n.node.name, "dig_immediate") == 3 then
-				-- should dig as normal
-				minetest.dig_node(n.pos)
-			else
-				-- simulate dig_node because nothing drops otherwise
+			-- if current node has already been destroyed (e.g. chain reaction of sugar cane breaking), skip it
+			if minetest.get_node(n.pos).name == n.node.name then
+				-- simulate dig_node using handle_node_drops
 				local drops = minetest.get_node_drops(n.node.name, "")
+				local counted_drops = {}
 				minetest.remove_node(n.pos)
 				for _, callback in pairs(minetest.registered_on_dignodes) do
 					callback(n.pos, n)
@@ -285,8 +283,9 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 					if type(item) ~= "string" then
 						item = item:get_name() .. item:get_count()
 					end
-					minetest.add_item(n.pos, item)
+					table.insert(counted_drops, item)
 				end
+				minetest.handle_node_drops(n.pos, counted_drops)
 			end
 		else
 			minetest.remove_node(n.pos)
