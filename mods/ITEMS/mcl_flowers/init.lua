@@ -252,7 +252,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		paramtype2 = paramtype2,
 		palette = palette,
 		walkable = false,
-		buildable_to = true,
+		buildable_to = false,
 		drop = drop_bottom,
 		_mcl_shears_drop = shears_drop,
 		_mcl_fortune_drop = fortune_drop,
@@ -354,7 +354,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		paramtype2 = paramtype2,
 		palette = palette,
 		walkable = false,
-		buildable_to = true,
+		buildable_to = false,
 		selection_box = {
 			type = "fixed",
 			fixed = { -selbox_radius, -0.5, -selbox_radius, selbox_radius, selbox_top_height, selbox_radius },
