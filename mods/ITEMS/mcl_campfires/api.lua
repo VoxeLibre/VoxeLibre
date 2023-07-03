@@ -205,22 +205,24 @@ function mcl_campfires.register_campfire(name, def)
 		inventory_image = def.inv_texture,
 		wield_image = def.inv_texture,
 		drawtype = "mesh",
-		mesh = "mcl_campfires_campfire_lit.obj",
-		tiles = {{
-			name=def.fire_texture,
+		mesh = "mcl_campfires_campfire.obj",
+		tiles = {
+			{name=def.fire_texture,
 			animation={
 				type="vertical_frames",
-				aspect_w=16,
-				aspect_h=16,
-				length=2.0
-			}},
-			{name=def.lit_logs_texture,
-			animation={
-				type="vertical_frames",
-				aspect_w=16,
+				aspect_w=32,
 				aspect_h=16,
 				length=2.0
 			}}
+		},
+		overlay_tiles = {{
+			name=def.lit_logs_texture,
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 32,
+				aspect_h = 16,
+				length = 2.0,
+			}},
 		},
 		use_texture_alpha = "clip",
 		groups = { handy=1, axey=1, material_wood=1, lit_campfire=1 },
