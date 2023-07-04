@@ -141,44 +141,43 @@ function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos)
 			return
 		end
 
-		if not node_replaceable(nn.name) then
-			if minetest.get_item_group(nn.name, "dig_by_piston") == 1 then
-				-- if we want the node to drop, e.g. sugar cane, do not count towards push limit
-				table.insert(dig_nodes, {node = nn, pos = {x=np.x, y=np.y, z=np.z}})
-			else
+		if minetest.get_item_group(nn.name, "dig_by_piston") == 1 then
+			-- if we want the node to drop, e.g. sugar cane, do not count towards push limit
+			table.insert(dig_nodes, {node = nn, pos = {x=np.x, y=np.y, z=np.z}})
+		else
+			if not node_replaceable(nn.name) then
 				table.insert(nodes, {node = nn, pos = {x=np.x, y=np.y, z=np.z}})
 				if #nodes > maximum then return nil, nil, false, true end
-			end
-
-			-- add connected nodes to frontiers, connected is a vector list
-			-- the vectors must be absolute positions
-			local connected = {}
-            local has_loop
-			if minetest.registered_nodes[nn.name]
-			and minetest.registered_nodes[nn.name].mvps_sticky then
-				connected, has_loop = minetest.registered_nodes[nn.name].mvps_sticky(np, nn, piston_pos)
-				if has_loop then
-					return {}, {}, true, false
-				end
-			end
-			table.insert(connected, vector.add(np, dir))
-
-			-- Make sure there are no duplicates in frontiers / nodes before
-			-- adding nodes in "connected" to frontiers
-			for _, cp in ipairs(connected) do
-				local duplicate = false
-				for _, rp in ipairs(nodes) do
-					if vector.equals(cp, rp.pos) then
-						duplicate = true
+				
+				-- add connected nodes to frontiers, connected is a vector list
+				-- the vectors must be absolute positions
+				local connected = {}
+				local has_loop
+				if minetest.registered_nodes[nn.name] and minetest.registered_nodes[nn.name].mvps_sticky then
+					connected, has_loop = minetest.registered_nodes[nn.name].mvps_sticky(np, nn, piston_pos)
+					if has_loop then
+						return {}, {}, true, false
 					end
 				end
-				for _, fp in ipairs(frontiers) do
-					if vector.equals(cp, fp) then
-						duplicate = true
+				table.insert(connected, vector.add(np, dir))
+				
+				-- Make sure there are no duplicates in frontiers / nodes before
+				-- adding nodes in "connected" to frontiers
+				for _, cp in ipairs(connected) do
+					local duplicate = false
+					for _, rp in ipairs(nodes) do
+						if vector.equals(cp, rp.pos) then
+							duplicate = true
+						end
 					end
-				end
-				if not duplicate and not mesecon.is_mvps_stopper(minetest.get_node(cp)) and minetest.get_item_group(nn.name, "dig_by_piston") == 0 then
-					table.insert(frontiers, cp)
+					for _, fp in ipairs(frontiers) do
+						if vector.equals(cp, fp) then
+							duplicate = true
+						end
+					end
+					if not duplicate and not mesecon.is_mvps_stopper(minetest.get_node(cp)) and minetest.get_item_group(nn.name, "dig_by_piston") == 0 then
+						table.insert(frontiers, cp)
+					end
 				end
 			end
 		end
