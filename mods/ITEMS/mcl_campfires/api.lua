@@ -324,7 +324,7 @@ function mcl_campfires.generate_smoke(pos, haybale)
 	minetest.add_particle({
 		pos = vector.offset(pos, math.random(-0.5, 0.5), 0, math.random(-0.5, 0.5)),
 		velocity = vector.new(0, 1, 0),
-		texture = "mcl_particles_smoke.png",
+		texture = "mcl_campfires_particle_" .. math.random(1, 12) .. ".png",
 		size = 10,
 		acceleration = vector.new(0, 0.5, 0),
 		collisiondetection = true,
