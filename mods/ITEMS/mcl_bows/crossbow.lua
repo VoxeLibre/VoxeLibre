@@ -103,7 +103,7 @@ local function player_shoot_arrow(wielditem, player, power, damage, is_critical)
 	local playerpos = player:get_pos()
 	local dir = player:get_look_dir()
 	local yaw = player:get_look_horizontal()
-	
+
 	if has_multishot_enchantment then
 		-- calculate rotation by 10 degrees 'left' and 'right' of facing direction
 		local pitch = player:get_look_vertical()
