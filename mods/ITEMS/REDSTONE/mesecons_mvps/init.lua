@@ -207,6 +207,11 @@ local function are_protected(nodes, player_name)
 end
 
 function mesecon.mvps_push(pos, dir, maximum, player_name, piston_pos)
+	-- check if the node in front of the piston is protected against player_name (to prevent replacing air)
+	if minetest.is_protected(pos, player_name) then
+		return false
+	end
+
 	return mesecon.mvps_push_or_pull(pos, dir, dir, maximum, player_name, piston_pos)
 end
 
@@ -239,6 +244,9 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 	for i in ipairs(nodes) do
 		newpos[i] = vector.add(nodes[i].pos, movedir)
 		if (newpos[i].x == piston_pos.x) and (newpos[i].y == piston_pos.y) and (newpos[i].z == piston_pos.z) then
+			return
+		end
+		if minetest.is_protected(newpos[i], player_name) then
 			return
 		end
 		if not is_available(newpos[i]) then
