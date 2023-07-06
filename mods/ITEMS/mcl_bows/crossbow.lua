@@ -103,10 +103,22 @@ local function player_shoot_arrow(wielditem, player, power, damage, is_critical)
 	local playerpos = player:get_pos()
 	local dir = player:get_look_dir()
 	local yaw = player:get_look_horizontal()
-
+	
 	if has_multishot_enchantment then
-		mcl_bows_s.shoot_arrow_crossbow(arrow_itemstring, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, {x=dir.x, y=dir.y, z=dir.z + .2}, yaw, player, power, damage, is_critical, player:get_wielded_item(), false)
-		mcl_bows_s.shoot_arrow_crossbow(arrow_itemstring, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, {x=dir.x, y=dir.y, z=dir.z - .2}, yaw, player, power, damage, is_critical, player:get_wielded_item(), false)
+		-- calculate rotation by 10 degrees 'left' and 'right' of facing direction
+		local pitch = player:get_look_vertical()
+		local pitch_c = math.cos(pitch)
+		local pitch_s = math.sin(pitch)
+		local yaw_c = math.cos(yaw + math.pi / 2)
+		local yaw_s = math.sin(yaw + math.pi / 2)
+
+		local rot_left =  {x =   yaw_c * pitch_s * math.pi / 18, y =   pitch_c * math.pi / 18, z =   yaw_s * pitch_s * math.pi / 18}
+		local rot_right = {x = - yaw_c * pitch_s * math.pi / 18, y = - pitch_c * math.pi / 18, z = - yaw_s * pitch_s * math.pi / 18}
+		local dir_left = vector.rotate(dir, rot_left)
+		local dir_right = vector.rotate(dir, rot_right)
+
+		mcl_bows_s.shoot_arrow_crossbow(arrow_itemstring, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, {x=dir_left.x, y=dir_left.y, z=dir_left.z}, yaw, player, power, damage, is_critical, player:get_wielded_item(), false)
+		mcl_bows_s.shoot_arrow_crossbow(arrow_itemstring, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, {x=dir_right.x, y=dir_right.y, z=dir_right.z}, yaw, player, power, damage, is_critical, player:get_wielded_item(), false)
 		mcl_bows_s.shoot_arrow_crossbow(arrow_itemstring, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, dir, yaw, player, power, damage, is_critical, player:get_wielded_item(), true)
 	else
 		mcl_bows_s.shoot_arrow_crossbow(arrow_itemstring, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, dir, yaw, player, power, damage, is_critical, player:get_wielded_item(), true)
