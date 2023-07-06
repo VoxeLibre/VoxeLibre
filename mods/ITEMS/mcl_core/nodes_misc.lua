@@ -139,8 +139,8 @@ minetest.register_node("mcl_core:deadbush", {
 	sunlight_propagates = true,
 	walkable = false,
 	buildable_to = true,
-	groups = {handy = 1, shearsy = 1, flammable = 3, attached_node = 1, plant = 1, non_mycelium_plant = 1, dig_by_water = 1,
-		destroy_by_lava_flow = 1, deco_block = 1, fire_encouragement = 60, fire_flammability = 100},
+	groups = {handy = 1, shearsy = 1, flammable = 3, attached_node = 1, plant = 1, non_mycelium_plant = 1, dig_by_piston = 1,
+	    dig_by_water = 1, destroy_by_lava_flow = 1, deco_block = 1, fire_encouragement = 60, fire_flammability = 100},
 	drop = {
 		max_items = 1,
 		items = {
