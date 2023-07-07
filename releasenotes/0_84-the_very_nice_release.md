@@ -1,4 +1,4 @@
-### 0.83 - The Very Nice release
+### 0.84 - The Very Nice release
 
 ### Contributors
 #### New contributors
@@ -77,7 +77,7 @@ mcl_mob_cap_axolotl (Mob cap axolotl) int 5 0 1024
 
 ### Visual Improvements
 
-* Incorperate sheep eating animation. - epCode
+* Incorporate sheep eating animation. - epCode
 * New textures for warped for Crimson Fungus, Crimson Fungus planks, Warped Hyphae planks - Exhale
 * New sweet berry textures - SmokeyDope
 * Add Piglin and Creeper description names to death message - AncientMariner
