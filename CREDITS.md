@@ -111,6 +111,7 @@
 * uqers
 * Niterux
 * appgurueu
+* seventeenthShulker
 
 ## Music
 * Jordach for the jukebox music compilation from Big Freaking Dig
