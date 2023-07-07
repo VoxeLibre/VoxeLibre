@@ -71,5 +71,13 @@ Note: If you have to do more than 1 hotfix release, can do it on the same releas
 
 ##### Inform people
 
-* Add a comment to the forum post with the release number and what is involved, and maintainer will update main post.
-* Add a comment in Discord announcement
+* Upload video to YouTube
+* Add a comment to the forum post with the release number and change log. Maintainer will update main post with code link.
+* Add a Discord announcement post and @everyone with link to video, forum post and release notes.
+* Share the news on reddit + Lemmy. Good subs to share with:
+  * r/linux_gaming 
+  * r/opensourcegames
+  * r/opensource
+  * r/freesoftware
+  * r/linuxmasterrace
+  * r/MineClone2
