@@ -403,8 +403,7 @@ function mcl_enchanting.generate_random_enchantments(itemstack, enchantment_leve
 	return enchantments, description
 end
 
-function mcl_enchanting.generate_random_enchantments_reliable(itemstack, enchantment_level, treasure,
-															  no_reduced_bonus_chance, ignore_already_enchanted, pr)
+function mcl_enchanting.generate_random_enchantments_reliable(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted, pr)
 	local enchantments
 
 	repeat
@@ -417,8 +416,7 @@ end
 
 function mcl_enchanting.enchant_randomly(itemstack, enchantment_level, treasure, no_reduced_bonus_chance,
 										 ignore_already_enchanted, pr)
-	local enchantments = mcl_enchanting.generate_random_enchantments_reliable(itemstack, enchantment_level, treasure,
-		no_reduced_bonus_chance, ignore_already_enchanted, pr)
+	local enchantments = mcl_enchanting.generate_random_enchantments_reliable(itemstack, enchantment_level, treasure, no_reduced_bonus_chance, ignore_already_enchanted, pr)
 
 	mcl_enchanting.set_enchanted_itemstring(itemstack)
 	mcl_enchanting.set_enchantments(itemstack, enchantments)
