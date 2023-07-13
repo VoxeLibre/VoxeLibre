@@ -140,3 +140,5 @@ end
 mcl_gamemode.register_on_gamemode_change(function(player, old_gamemode, new_gamemode)
 	set_inventory(player)
 end)
+
+mcl_player.register_on_visual_change(mcl_inventory.update_inventory_formspec)
