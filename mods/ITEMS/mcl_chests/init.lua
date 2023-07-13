@@ -927,9 +927,7 @@ local chestusage = S("To access its inventory, rightclick it. When broken, the i
 
 register_chest("chest",
 	S("Chest"),
-	S(
-		"Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other.")
-	,
+	S("Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other."),
 	chestusage,
 	S("27 inventory slots") .. "\n" .. S("Can be combined to a large chest"),
 	{
@@ -955,9 +953,7 @@ local traptiles = {
 
 register_chest("trapped_chest",
 	S("Trapped Chest"),
-	S(
-		"A trapped chest is a container which provides 27 inventory slots. When it is opened, it sends a redstone signal to its adjacent blocks as long it stays open. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other.")
-	,
+	S("A trapped chest is a container which provides 27 inventory slots. When it is opened, it sends a redstone signal to its adjacent blocks as long it stays open. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other."),
 	chestusage,
 	S("27 inventory slots") ..
 	"\n" .. S("Can be combined to a large chest") .. "\n" .. S("Emits a redstone signal when opened"),
