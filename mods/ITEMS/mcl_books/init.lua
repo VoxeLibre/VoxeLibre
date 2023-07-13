@@ -85,7 +85,8 @@ local function write(itemstack, user, pointed_thing)
 		local node = minetest.get_node(pointed_thing.under)
 		if user and not user:get_player_control().sneak then
 			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or
+					itemstack
 			end
 		end
 	end
@@ -106,7 +107,8 @@ local function read(itemstack, user, pointed_thing)
 		local node = minetest.get_node(pointed_thing.under)
 		if user and not user:get_player_control().sneak then
 			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or
+					itemstack
 			end
 		end
 	end
@@ -125,7 +127,8 @@ minetest.register_craftitem("mcl_books:writable_book", {
 	description = S("Book and Quill"),
 	_tt_help = S("Write down some notes"),
 	_doc_items_longdesc = S("This item can be used to write down some notes."),
-	_doc_items_usagehelp = S("Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which you can stack, but it can't be edited anymore.")
+	_doc_items_usagehelp = S(
+			"Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which you can stack, but it can't be edited anymore.")
 		.. "\n" ..
 		S("A book can hold up to 4500 characters. The title length is limited to 64 characters."),
 	inventory_image = "mcl_books_book_writable.png",
@@ -154,7 +157,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 					"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]" ..
 					"field[0.75,1;7.25,1;title;" ..
 					minetest.formspec_escape(minetest.colorize("#000000", S("Enter book title:"))) .. ";]" ..
-					"label[0.75,1.5;" .. minetest.formspec_escape(minetest.colorize("#404040", S("by @1", name))) .. "]" ..
+					"label[0.75,1.5;" ..
+					minetest.formspec_escape(minetest.colorize("#404040", S("by @1", name))) .. "]" ..
 					"button_exit[0.75,7.95;3,1;sign;" .. minetest.formspec_escape(S("Sign and Close")) .. "]" ..
 					"tooltip[sign;" ..
 					minetest.formspec_escape(S("Note: The book will no longer be editable after signing")) .. "]" ..
@@ -226,9 +230,9 @@ minetest.register_craftitem("mcl_books:written_book", {
 local baq = "mcl_books:writable_book"
 local wb = "mcl_books:written_book"
 local recipes = {
-	{ wb, baq },
+	{ wb,  baq },
 	{ baq, baq, wb },
-	{ baq, baq, wb, baq },
+	{ baq, baq, wb,  baq },
 	{ baq, baq, baq, baq, wb },
 	{ baq, baq, baq, baq, wb, baq },
 	{ baq, baq, baq, baq, wb, baq, baq },
@@ -394,19 +398,15 @@ local function bookshelf_gui(pos, node, clicker)
 			"size[11.75,10.425]",
 
 			"label[0.375,0.375;" .. F(C(mcl_formspec.label_color, name)) .. "]",
-
 			mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
 			mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3, 0, "mcl_book_book_empty_slot.png"),
 			"list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0.375,0.75;9,3;]",
-
 			"label[0.375,4.7;" .. F(C(mcl_formspec.label_color, S("Inventory"))) .. "]",
-
 			mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
 			"list[current_player;main;0.375,5.1;9,3;9]",
 
 			mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
 			"list[current_player;main;0.375,9.05;9,1;]",
-
 			"listring[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main]",
 			"listring[current_player;main]",
 		})
@@ -431,8 +431,14 @@ minetest.register_node("mcl_books:bookshelf", {
 	stack_max = 64,
 	is_ground_content = false,
 	groups = {
-		handy = 1, axey = 1, deco_block = 1, material_wood = 1,
-		flammable = 3, fire_encouragement = 30, fire_flammability = 20, container = 1
+		handy = 1,
+		axey = 1,
+		deco_block = 1,
+		material_wood = 1,
+		flammable = 3,
+		fire_encouragement = 30,
+		fire_flammability = 20,
+		container = 1
 	},
 	drop = "mcl_books:book 3",
 	sounds = wood_sound,
@@ -471,9 +477,9 @@ minetest.register_node("mcl_books:bookshelf", {
 minetest.register_craft({
 	output = "mcl_books:bookshelf",
 	recipe = {
-		{ "group:wood", "group:wood", "group:wood" },
+		{ "group:wood",     "group:wood",     "group:wood" },
 		{ "mcl_books:book", "mcl_books:book", "mcl_books:book" },
-		{ "group:wood", "group:wood", "group:wood" },
+		{ "group:wood",     "group:wood",     "group:wood" },
 	}
 })
 
