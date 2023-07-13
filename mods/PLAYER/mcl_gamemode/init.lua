@@ -57,11 +57,6 @@ function minetest.is_creative_enabled(name)
 	return false
 end
 
--- Don't subtract from inv when placing in gamemode-creative
-minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
-	if placer and placer:is_player() and minetest.is_creative_enabled(placer:get_player_name()) then return true end
-end)
-
 minetest.register_chatcommand("gamemode", {
 	params = S("[<gamemode>] [<player>]"),
 	description = S("Change gamemode (survival/creative) for yourself or player"),
