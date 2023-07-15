@@ -492,7 +492,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 		if (not exceeded_rate_limit(player:get_player_name())) and shout_priv_check(player) then
 			chatbuttonused = true
-			local message = custom_sleep_message or S("Hey! Would you guys mind sleeping?")
+			local message = custom_sleep_message or S("Hey! Would you folks mind sleeping?")
 			minetest.chat_send_all(minetest.format_chat_message(player:get_player_name(), message))
 		end
 		return
