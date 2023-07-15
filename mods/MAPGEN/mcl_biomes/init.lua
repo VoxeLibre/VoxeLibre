@@ -5186,7 +5186,7 @@ local function register_decorations()
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_farming:melon",
-		biomes = {"Jungle"},
+		biomes = {"Jungle", "BambooJungle"},
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -5203,7 +5203,7 @@ local function register_decorations()
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_farming:melon",
-		biomes = {"JungleM"},
+		biomes = {"JungleM", "BambooJungleM"},
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -5220,7 +5220,7 @@ local function register_decorations()
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_farming:melon",
-		biomes = {"JungleEdge", "JungleEdgeM"},
+		biomes = {"JungleEdge", "JungleEdgeM", "BambooJungleEdge", "BambooJungleEdgeM"},
 	})
 
 	-- Lots of melons in Jungle Edge M
@@ -5260,6 +5260,7 @@ local function register_decorations()
 		},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
+		biomes = {"ExtremeHills", "ExtremeHillsM", "ExtremeHills+", "Taiga", "MegaTaiga", "MegaSpruceTaiga", "Plains", "SunflowerPlains", "Swampland", "MangroveSwamp"},
 	})
 
 	-- Grasses and ferns
