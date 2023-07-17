@@ -187,6 +187,15 @@ function mcl_sounds.node_sound_lava_defaults(table)
 	return table
 end
 
+function mcl_sounds.node_sound_decorated_pot_defaults(table)
+	table = table or {}
+	-- TODO: Footstep and dug sounds
+	table.place = table.place or
+			{name = "archaeology_decorated_pot_place", gain = 1.0}
+	mcl_sounds.node_sound_defaults(table)
+	return table
+end
+
 -- Player death sound
 minetest.register_on_dieplayer(function(player)
 	-- TODO: Add separate death sound

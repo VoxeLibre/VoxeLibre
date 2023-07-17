@@ -6,3 +6,6 @@
 /.idea/
 *.xcf
 .Rproj.user
+
+# Windows Thumbnail Cache
+Thumbs.db

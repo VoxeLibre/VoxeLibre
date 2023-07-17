@@ -114,7 +114,7 @@ minetest.register_craftitem("mcl_core:brick", {
 	_doc_items_longdesc = S("Bricks are used to craft brick blocks."),
 	inventory_image = "default_clay_brick.png",
 	stack_max = 64,
-	groups = { craftitem=1 },
+	groups = { craftitem=1, pottery=1 },
 })
 
 minetest.register_craftitem("mcl_core:flint", {
