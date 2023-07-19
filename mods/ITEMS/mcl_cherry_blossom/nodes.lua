@@ -14,7 +14,7 @@ mcl_core.register_stripped_trunk("stripped_cherrytree", S("Stripped Cherry Log")
 mcl_core.register_wooden_planks("cherrywood", S("Cherry Wood Planks"), {"mcl_cherry_blossom_planks.png"})
 
 -- Leaves
-mcl_core.register_leaves("cherryleaves", S("Cherry Leaves"), 
+mcl_core.register_leaves("cherryleaves", S("Cherry Leaves"),
 	S("Cherry blossom leaves are grown from cherry blossom trees."), {"mcl_cherry_blossom_leaves.png"},
 	nil, "none", nil, "mcl_cherry_blossom:cherrysapling", false, {20, 16, 12, 10})
 
@@ -101,3 +101,38 @@ mesecon.register_button(
 	true,
 	nil,
 	"mesecons_button_push_wood")
+
+
+-- petals
+minetest.register_node("mcl_cherry_blossom:pink_petals",{
+	description = S("Pink Petals"),
+	doc_items_longdesc = S("Pink Petals are ground decoration of cherry grove biomes"),
+	doc_items_hidden = false,
+	paramtype = "light",
+	paramtype2 = "facedir",
+	walkable = false,
+	sunlight_propagates = true,
+	buildable_to = true,
+	floodable = true,
+	pointable = true,
+	drawtype = "nodebox",
+	node_box = {type = "fixed", fixed = {-1/2, -1/2, -1/2, 1/2, -7.9/16, 1/2}},
+	collision_box = {type = "fixed", fixed = {-1/2, -1/2, -1/2, 1/2, -7.9/16, 1/2}},
+	groups = {
+		shearsy=1,
+		handy=1,
+		flammable=3,
+		attached_node=1,
+		dig_by_piston=1,
+		--not_in_creative_inventory=1,
+	},
+	use_texture_alpha = "clip",
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	tiles = {
+		"mcl_cherry_blossom_pink_petals.png",
+		"mcl_cherry_blossom_pink_petals.png^[transformFY", -- mirror
+		"blank.png" -- empty
+	},
+	_mcl_hardness = 0,
+	_mcl_blast_resistance = 0,
+})
