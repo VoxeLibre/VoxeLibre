@@ -27,6 +27,7 @@
 * jordan4ibanez
 * iliekprogrammar
 * kabou
+* kay27
 * Faerraven / Michieal
 * MysticTempest
 * NO11
@@ -70,7 +71,6 @@
 * erlehmann
 * E
 * n_to
-* kay27
 * debiankaios
 * Gustavo6046 / wallabra
 * CableGuy67
