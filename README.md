@@ -79,12 +79,14 @@ The MineClone2 repository is hosted at Mesehub. To contribute or report issues, 
 * Mesehub: <https://git.minetest.land/MineClone2/MineClone2>
 * Discord: <https://discord.gg/xE4z8EEpDC>
 * YouTube: <https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A>
-* IRC: <https://web.libera.chat/#mineclone2>
-* Matrix: <https://app.element.io/#/room/#mc2:matrix.org>
-* Reddit: <https://www.reddit.com/r/MineClone2/>
-* Minetest forums: <https://forum.minetest.net/viewtopic.php?f=50&t=16407>
 * ContentDB: <https://content.minetest.net/packages/wuzzy/mineclone2/>
 * OpenCollective: <https://opencollective.com/mineclone2>
+* Mastodon: <https://fosstodon.org/@MineClone2>
+* Lemmy: <https://lemmy.world/c/mineclone2>
+* Matrix space: <https://app.element.io/#/room/#mcl2:matrix.org>
+* Minetest forums: <https://forum.minetest.net/viewtopic.php?f=50&t=16407>
+* Reddit: <https://www.reddit.com/r/MineClone2/>
+* IRC (barely used): <https://web.libera.chat/#mineclone2>
 
 ## Target
 - Create a stable, moddable, free/libre game based on Minecraft
