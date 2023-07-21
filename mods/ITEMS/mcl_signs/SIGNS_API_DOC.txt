@@ -9,13 +9,13 @@ SIGNS API
 --- How to Use:
 
 The simplest way to create a new sign is to use mcl_signs.register_sign [mcl_signs.register_sign (modname, color, _name,
-ttsign)]. It's an all-in-one sign creator. It makes use of the standard textures for the signs, and colors them based on
+description)]. It's an all-in-one sign creator. It makes use of the standard textures for the signs, and colors them based on
 the color code that you give it, and names it "mcl_signs:wall_sign" + _name. So, using the spruce sign to illustrate, it
 would be named "mcl_signs:wall_sign_sprucewood", as we made _name equal to "_sprucewood" after the name of the
 registered wood.
 
 To create a sign with specific textures: use the mcl_signs.register_sign_custom [mcl_signs.register_sign_custom
-(modname, _name, tiles, color, inventory_image, wield_image, ttsign)]. Like the register_sign() function, this is also an
+(modname, _name, tiles, color, inventory_image, wield_image, description)]. Like the register_sign() function, this is also an
 all-in-one sign creation function. With this function you can designate what textures to use, and give them a specified
 color. This function follows the same naming conventions.
 
@@ -41,8 +41,7 @@ texture as is.
 
 * _name: the sign's name suffix, such as "_dark" or "_sprucewood", etc., appended to "wall_sign" or "standing_sign"
 
-* ttsign: the tool tip of the sign that gets translated. Shown when the mouse hovers the inventory sign. ttsign stands
-for translated tooltip sign.
+* description: the tool tip of the sign. Shown when the mouse hovers the inventory sign.
 
 * wood_item_string: example: "mcl_core:wood", "mcl_core:sprucewood" or "mymod:mywood". This is used when defining the
 recipe for the sign.
@@ -115,7 +114,7 @@ they get your sign (x3).
 automatically exist as part of the signs' package. You won't have to change any of your code, it'll just be more
 functional. :)
 
-* if you have suggestions, comments, etc., please contact me on VoxeLibre's Discord server.
+* if you have suggestions, comments, etc., please contact me on MineClone 2's Discord server.
 
 And that... is all there is to it!
 
