@@ -298,7 +298,7 @@ mcl_doors:register_trapdoor("mcl_mangrove:mangrove_trapdoor", {
 	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
 	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
 	tile_front = "mcl_mangrove_trapdoor.png",
-	tile_side = "mcl_mangrove_planks.png",
+	tile_side = "mcl_mangrove_trapdoor_side.png",
 	wield_image = "mcl_mangrove_trapdoor.png",
 	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
