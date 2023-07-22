@@ -1,0 +1,45 @@
+# textdomain: mcl_bamboo
+
+### bamboo_base.lua ###
+
+Bamboo=Бамбук
+Bamboo Mosaic Plank=Бамбуковая мозаика
+Bamboo Plank=Бамбуковые доски
+Stripped Bamboo Block=Блок обтёсанного бамбука
+Bamboo Block=Блок бамбука
+
+### bamboo_items.lua ###
+
+A bamboo button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Бамбуковая кнопка - это компонент красного камня, который изготовлен из краснокаменной руды. Ее можно нажать, чтобы обеспечить питание красному камню. При нажатии он приводит в действие соседние компоненты красного камня на 1 секунду.
+
+A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=Деревянная нажимная пластина - это компонент красного камня, который снабжает окружающие блоки энергией красного камня, в то время как любой подвижный объект (включая выпавшие предметы, игроков и мобов) стоит на ней.
+
+Bamboo=Бамбук
+Bamboo Button=Бамбуковая кнопка
+Bamboo Door=Бамбуковая дверь
+Bamboo Fence=Бамбуковый забор
+Bamboo Fence Gate=Бамбуковая калитка
+Bamboo Mosaic Slab=Плита из бамбуковой мозаики
+Bamboo Mosaic Stair=Ступеньки из бамбуковой мозаики
+Bamboo Plank Slab=Бамбуковая плита из досок
+Bamboo Plank Stair=Бамбуковые ступеньки из досок
+Bamboo Pressure Plate=Бамбуковая нажимная плита
+Bamboo Slab=Бамбуковая плита
+Bamboo Stair=Бамбуковые ступеньки
+Bamboo Trapdoor=Бамбуковый люк
+Double Bamboo Mosaic Slab=Двойная бамбуковая мозаичная плита
+Double Bamboo Plank Slab=Двойная бамбуковая дощатая плита
+Double Bamboo Slab=Двойная бамбуковая плита
+Double Stripped Bamboo Slab=Двойная обтесанная бамбуковая плита
+Scaffolding=Строительные леса
+Scaffolding (horizontal)=Строительные леса (горизонтальный)
+Scaffolding block used to climb up or out across areas.=Блок строительных лесов, используемый для подъема вверх или перемещения по другим участкам.
+Stripped Bamboo Slab=Обтесанная бамбуковая плита
+Stripped Bamboo Stair=Обтесанные бамбуковые ступеньки
+
+To open or close the trapdoor, rightclick it or send a redstone signal to it.=Чтобы открыть или закрыть люк, щелкните по нему правой кнопкой мыши или отправьте на него сигнал redstone.
+
+Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Деревянные люки - это горизонтальные барьеры, которые можно открывать и закрывать вручную или по сигналу красного камня. Они занимают верхнюю или нижнюю часть блока, в зависимости от того, как они были размещены. Когда они открыты, по ним можно подниматься, как по лестнице.
+
+Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Деревянные двери представляют собой барьеры высотой в 2 блока, которые можно открывать или закрывать вручную и по сигналу redstone.
+To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Чтобы открыть или закрыть деревянную дверь, щелкните по ней правой кнопкой мыши или снабдите ее нижнюю половину сигналом красного камня.
