@@ -4490,7 +4490,7 @@ local function register_decorations()
 			place_on = {"mcl_core:dirt_with_grass"},
 			sidelen = 80,
 			noise_params = {
-				offset = -0.0007,
+				offset = 0.007,
 				scale = 0.01,
 				spread = {x = 250, y = 250, z = 250},
 				seed = 13+i,
@@ -4509,7 +4509,7 @@ local function register_decorations()
 			place_on = {"mcl_core:dirt_with_grass"},
 			sidelen = 80,
 			noise_params = {
-				offset = -0.0007,
+				offset = 0.007,
 				scale = 0.006,
 				spread = {x = 250, y = 250, z = 250},
 				seed = 32+i,
