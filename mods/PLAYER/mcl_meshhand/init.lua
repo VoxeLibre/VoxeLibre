@@ -89,6 +89,10 @@ minetest.register_on_joinplayer(function(player)
 	player:get_inventory():set_size("hand", 1)
 end)
 
+mcl_gamemode.register_on_gamemode_change(function(player)
+	mcl_meshhand.update_player(player)
+end)
+
 if mcl_skins_enabled then
 	mcl_player.register_on_visual_change(mcl_meshhand.update_player)
 else

@@ -129,7 +129,6 @@ function mcl_inventory.update_inventory(player)
 	elseif player_gamemode == "survival" then
 		player:set_inventory_formspec(mcl_inventory.build_survival_formspec(player))
 	end
-	mcl_meshhand.update_player(player)
 end
 
 mcl_gamemode.register_on_gamemode_change(function(player, old_gamemode, new_gamemode)
