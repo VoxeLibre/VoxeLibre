@@ -503,10 +503,23 @@ function mcl_inventory.set_creative_formspec(player)
 			"listring[detached:" .. playername .. "_armor;armor]" ..
 			"listring[current_player;main]"
 	else
+
+		--local nb_lines = math.ceil(inv_size / 9)
 		-- Creative inventory slots
 		main_list = table.concat({
 			mcl_formspec.get_itemslot_bg_v4(0.375, 0.875, 9, 5),
+
+			-- Basic code to replace buttons by scrollbar
+			-- Require Minetest 5.8
+			--
+			--"scroll_container[0.375,0.875;11.575,6;scroll;vertical;1.25]",
+			--"list[detached:creative_" .. playername .. ";main;0,0;9," .. nb_lines .. ";]",
+			--"scroll_container_end[]",
+			--"scrollbaroptions[min=0;max=" .. math.max(nb_lines - 5, 0) .. ";smallstep=1;largesteps=1;arrows=hide]",
+			--"scrollbar[11.75,0.825;0.75,6.1;vertical;scroll;0]",
+
 			"list[detached:creative_" .. playername .. ";main;0.375,0.875;9,5;" .. tostring(start_i) .. "]",
+
 			-- Page buttons
 			"label[11.65,5.6;" .. F(S("@1 / @2", pagenum, pagemax)) .. "]",
 			"image_button[11.575,5.83;0.55,1.1;crafting_creative_prev.png;creative_prev;]",
