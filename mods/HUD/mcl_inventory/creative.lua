@@ -521,9 +521,9 @@ function mcl_inventory.set_creative_formspec(player)
 			"list[detached:creative_" .. playername .. ";main;0.375,0.875;9,5;" .. tostring(start_i) .. "]",
 
 			-- Page buttons
-			"label[11.65,5.6;" .. F(S("@1 / @2", pagenum, pagemax)) .. "]",
-			"image_button[11.575,5.83;0.55,1.1;crafting_creative_prev.png;creative_prev;]",
-			"image_button[12.075,5.83;0.55,1.1;crafting_creative_next.png;creative_next;]",
+			"label[11.65,4.33;" .. F(S("@1 / @2", pagenum, pagemax)) .. "]",
+			"image_button[11.575,4.58;1.1,1.1;crafting_creative_prev.png^[transformR270;creative_prev;]",
+			"image_button[11.575,5.83;1.1,1.1;crafting_creative_next.png^[transformR270;creative_next;]",
 		})
 	end
 
