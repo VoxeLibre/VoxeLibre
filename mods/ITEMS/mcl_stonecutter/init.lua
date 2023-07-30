@@ -5,7 +5,7 @@
 -- TO-DO:
 -- * Add GUI
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = minetest.get_translator("mcl_stonecutter")
 
 local recipes = {
 	{"mcl_core:cobble", "mcl_stairs:slab_cobble", "mcl_walls:cobble", "mcl_stairs:stair_cobble"},
@@ -16,12 +16,10 @@ local recipes = {
 
 local FMT = {
 	item_image_button = "item_image_button[%f,%f;%f,%f;%s;%s;%s]",
-	item_image = "item_image[%f,%f;%f,%f;%s]",
 }
 
 local function show_stonecutter_formspec(items, input)
 	local cut_items = {}
-
 	local x_len = 0
 	local y_len = 0.5
 
@@ -32,7 +30,7 @@ local function show_stonecutter_formspec(items, input)
 				y_len = y_len + 1
 				x_len = 1
 			end
-			local test = string.format(FMT.item_image_button,x_len+1,y_len,1,1, value, value, "")
+			local test = string.format(FMT.item_image_button,x_len+1,y_len,1,1, value, "item_button", value)
 			cut_items[index] = test
 		end
 	end
@@ -64,10 +62,14 @@ local function update_stonecutter_slots(meta)
 	local name = input:get_name()
 
 	local new_output
-	for index, value in pairs(recipes) do
-		if name == value[1] then
-			meta:set_string("formspec", show_stonecutter_formspec(recipes[index]))
+	if not input:is_empty() then
+		for index, value in pairs(recipes) do
+			if name == value[1] then
+				meta:set_string("formspec", show_stonecutter_formspec(recipes[index]))
+			end
 		end
+	else
+		meta:set_string("formspec", show_stonecutter_formspec(nil))
 	end
 end
 
@@ -150,7 +152,12 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 		local meta = minetest.get_meta(pos)
 		update_stonecutter_slots(meta)
 	end,
-
+	on_metadata_inventory_take = function(pos, listname, index, stack, player)
+		local meta = minetest.get_meta(pos)
+		if listname == "input" then
+			update_stonecutter_slots(meta)
+		end
+	end,
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
@@ -159,7 +166,6 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 		local form = show_stonecutter_formspec()
 		meta:set_string("formspec", form)
 	end,
-
 	on_rightclick = function(pos, node, player, itemstack)
 		local name = player:get_player_name()
 		if not player:get_player_control().sneak then
@@ -167,6 +173,16 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 			--show_stonecutter_formspec(name, "main", player)
 			update_stonecutter_slots(meta)
 			--meta:set_string("formspec", show_stonecutter_formspec(items[1]))
+		end
+	end,
+	on_receive_fields = function(pos, formname, fields, sender)
+		local sender_name = sender:get_player_name()
+		if minetest.is_protected(pos, sender_name) then
+			minetest.record_protection_violation(pos, sender_name)
+			return
+		end
+		if fields.item_button then
+			print(fields.item_button)
 		end
 	end,
 })
