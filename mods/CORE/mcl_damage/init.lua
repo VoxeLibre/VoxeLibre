@@ -96,8 +96,8 @@ function mcl_damage.finish_reason(mcl_reason)
 end
 
 function mcl_damage.from_mt(mt_reason)
-	if mt_reason._mcl_chached_reason then
-		return mt_reason._mcl_chached_reason
+	if mt_reason._mcl_cached_reason then
+		return mt_reason._mcl_cached_reason
 	end
 
 	local mcl_reason
