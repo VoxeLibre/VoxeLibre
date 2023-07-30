@@ -13,7 +13,6 @@ local recipes = {
 	{"mcl_core:diorite", "mcl_stairs:slab_diorite", "mcl_walls:diorite", "mcl_stairs:stair_diorite", "mcl_core:diorite_smooth", "mcl_stairs:stair_diorite_smooth", "mcl_stairs:slab_diorite_smooth"},
 }
 
-
 local FMT = {
 	item_image_button = "item_image_button[%f,%f;%f,%f;%s;%s;%s]",
 }
@@ -61,7 +60,7 @@ local function update_stonecutter_slots(meta)
 	local input = inv:get_stack("input", 1)
 	local name = input:get_name()
 
-	local new_output
+	local new_output = ItemStack(meta:get_string("cut_stone"))
 	if not input:is_empty() then
 		for index, value in pairs(recipes) do
 			if name == value[1] then
@@ -71,8 +70,12 @@ local function update_stonecutter_slots(meta)
 	else
 		meta:set_string("formspec", show_stonecutter_formspec(nil))
 	end
-end
 
+	if new_output then
+		new_output:set_count(2)
+		inv:set_stack("output", 1, new_output)
+	end
+end
 
 minetest.register_node("mcl_stonecutter:stonecutter", {
 	description = S("Stone Cutter"),
@@ -154,9 +157,14 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 	end,
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
-		if listname == "input" then
-			update_stonecutter_slots(meta)
+		if listname == "output" then
+			local inv = meta:get_inventory()
+			local input = inv:get_stack("input", 1)
+			input:take_item()
+			inv:set_stack("input", 1, input)
+			meta:set_string("cut_stone", nil)
 		end
+		update_stonecutter_slots(meta)
 	end,
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -170,9 +178,7 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 		local name = player:get_player_name()
 		if not player:get_player_control().sneak then
 			local meta = minetest.get_meta(pos)
-			--show_stonecutter_formspec(name, "main", player)
 			update_stonecutter_slots(meta)
-			--meta:set_string("formspec", show_stonecutter_formspec(items[1]))
 		end
 	end,
 	on_receive_fields = function(pos, formname, fields, sender)
@@ -182,7 +188,9 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 			return
 		end
 		if fields.item_button then
-			print(fields.item_button)
+			local meta = minetest.get_meta(pos)
+			meta:set_string("cut_stone", fields.item_button)
+			update_stonecutter_slots(meta)
 		end
 	end,
 })
