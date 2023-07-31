@@ -13,6 +13,31 @@ local recipes = {
 	{"mcl_core:diorite", "mcl_stairs:slab_diorite", "mcl_walls:diorite", "mcl_stairs:stair_diorite", "mcl_core:diorite_smooth", "mcl_stairs:stair_diorite_smooth", "mcl_stairs:slab_diorite_smooth"},
 }
 
+local compaitble_items = {
+	"mcl_core:cobble",
+	"mcl_core:mossycobble",
+	"mcl_core:stone",
+	"mcl_core:stone_smooth",
+	"mcl_core:granite",
+	"mcl_core:granite_smooth",
+	"mcl_core:diorite",
+	"mcl_core:diorite_smooth",
+	"mcl_core:andesite",
+	"mcl_core:andesite_smooth",
+	"mcl_core:stonebrick",
+	"mcl_core:stonebrickmossy",
+	"mcl_core:sandstone",
+	"mcl_core:redsandstone",
+	"mcl_ocean:prismarine",
+	"mcl_ocean:prismarine_brick",
+	"mcl_ocean:prismarine_dark",
+	"mcl_mud:mud_bricks",
+	"mcl_nether:quartzblock",
+	"mcl_nether:quartz_smooth",
+	"mcl_end:purpur_block",
+	"mcl_end:end_bricks",
+}
+
 local FMT = {
 	item_image_button = "item_image_button[%f,%f;%f,%f;%s;%s;%s]",
 }
@@ -55,10 +80,30 @@ local function show_stonecutter_formspec(items, input)
 	return formspec
 end
 
+local function get_item_string_name(input)
+	local colonIndex = string.find(input, ":")
+	if colonIndex then
+        input = string.sub(input, colonIndex + 1)
+    else
+		return input
+	end
+	local whitespaceIndex = string.find(input, "%s")
+	if whitespaceIndex then
+        return string.sub(input, 1, whitespaceIndex - 1)
+    else
+        return input
+    end
+end
+
 local function update_stonecutter_slots(meta)
 	local inv = meta:get_inventory()
 	local input = inv:get_stack("input", 1)
 	local name = input:get_name()
+	local name_stripped = get_item_string_name(input:to_string())
+	if name_stripped ~= "" then
+		local itemdef = minetest.registered_items["mcl_stairs:stair_"..name_stripped]
+		print(itemdef)
+	end
 
 	local new_output = ItemStack(meta:get_string("cut_stone"))
 	if not input:is_empty() then
@@ -162,8 +207,8 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 			local input = inv:get_stack("input", 1)
 			input:take_item()
 			inv:set_stack("input", 1, input)
-			meta:set_string("cut_stone", nil)
 		end
+		meta:set_string("cut_stone", nil)
 		update_stonecutter_slots(meta)
 	end,
 	on_construct = function(pos)
