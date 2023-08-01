@@ -2,8 +2,6 @@
 --||||| STONECUTTER |||||
 --|||||||||||||||||||||||
 
--- TO-DO:
--- * Add GUI
 
 local S = minetest.get_translator("mcl_stonecutter")
 
@@ -163,6 +161,8 @@ local function update_stonecutter_slots(meta)
 			cut_item:set_count(1)
 		end
 		inv:set_stack("output", 1, cut_item)
+	else
+		inv:set_stack("output", 1, "")
 	end
 end
 
