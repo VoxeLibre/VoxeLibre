@@ -109,10 +109,8 @@ local function update_stonecutter_slots(meta)
 	local name = input:get_name()
 	local name_stripped = get_item_string_name(input:to_string())
 	local cuttable_recipes = {}
-	local new_output = ItemStack(meta:get_string("cut_stone"))
+	local new_output = meta:get_string("cut_stone")
 
-
-	print(name)
 	if is_input_in_table(name) then
 		if name_stripped ~= "" then
 			local stair = "mcl_stairs:stair_"..name_stripped
@@ -145,10 +143,14 @@ local function update_stonecutter_slots(meta)
 	else
 		meta:set_string("formspec", show_stonecutter_formspec(nil))
 	end
-
-	if new_output then
-		new_output:set_count(2)
-		inv:set_stack("output", 1, new_output)
+	if new_output = '' then
+		cut_item = ItemStack(new_output)
+		if string.find(new_output, "mcl_stairs:slab_") then
+			cut_item:set_count(2)
+		else
+			cut_item:set_count(1)
+		end
+		inv:set_stack("output", 1, cut_item)
 	end
 end
 
