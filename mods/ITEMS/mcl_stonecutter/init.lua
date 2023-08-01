@@ -289,8 +289,12 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 			local input = inv:get_stack("input", 1)
 			input:take_item()
 			inv:set_stack("input", 1, input)
+			if input:get_count() == 0 then
+				meta:set_string("cut_stone", nil)
+			end
+		else
+			meta:set_string("cut_stone", nil)
 		end
-		meta:set_string("cut_stone", nil)
 		update_stonecutter_slots(meta)
 	end,
 	on_construct = function(pos)
