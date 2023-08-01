@@ -7,6 +7,7 @@
 
 local S = minetest.get_translator("mcl_stonecutter")
 
+-- compatible items for the stonecutter
 local compaitble_items = {
 	"mcl_core:cobble",
 	"mcl_core:mossycobble",
@@ -41,11 +42,13 @@ local FMT = {
 	item_image_button = "item_image_button[%f,%f;%f,%f;%s;%s;%s]",
 }
 
+-- formspecs
 local function show_stonecutter_formspec(items, input)
 	local cut_items = {}
 	local x_len = 0
 	local y_len = 0.5
 
+	-- This loops through all the items that can be made and inserted into the formspec
 	if items ~= nil then
 		for index, value in pairs(items) do
 			x_len = x_len + 1
@@ -79,6 +82,7 @@ local function show_stonecutter_formspec(items, input)
 	return formspec
 end
 
+-- Strips the start of the item like "mcl_core:" and removes any numbers or whitespaces after it
 local function get_item_string_name(input)
 	local colonIndex = string.find(input, ":")
 	if colonIndex then
@@ -94,6 +98,7 @@ local function get_item_string_name(input)
     end
 end
 
+-- Simply checks if the item is compaitble with the stonecutter
 local function is_input_in_table(element)
 	for _, value in ipairs(compaitble_items) do
 		if value == element then
@@ -103,20 +108,25 @@ local function is_input_in_table(element)
 	return false
 end
 
+-- Updates the formspec
 local function update_stonecutter_slots(meta)
 	local inv = meta:get_inventory()
 	local input = inv:get_stack("input", 1)
 	local name = input:get_name()
-	local name_stripped = get_item_string_name(input:to_string())
-	local cuttable_recipes = {}
 	local new_output = meta:get_string("cut_stone")
 
+	-- Checks if input is in the array
 	if is_input_in_table(name) then
+		local cuttable_recipes = {}
+		local name_stripped = get_item_string_name(input:to_string())
 		if name_stripped ~= "" then
+			-- Strings for the possible items it can craft into
 			local stair = "mcl_stairs:stair_"..name_stripped
 			local slab = "mcl_stairs:slab_"..name_stripped
 			local wall = "mcl_walls:"..name_stripped
 			local smooth = "mcl_core:"..name_stripped.."_smooth"
+
+			-- Goes through and checks if the item exists and inserts it into the table
 			if minetest.registered_items[slab] ~= nil then
 				table.insert(cuttable_recipes, slab)
 			end
@@ -143,7 +153,9 @@ local function update_stonecutter_slots(meta)
 	else
 		meta:set_string("formspec", show_stonecutter_formspec(nil))
 	end
-	if new_output = '' then
+
+	-- Checks if the chosen item is a slab or not, if it's a slab set the output to be a stack of 2
+	if new_output ~= '' then
 		cut_item = ItemStack(new_output)
 		if string.find(new_output, "mcl_stairs:slab_") then
 			cut_item:set_count(2)
@@ -151,6 +163,18 @@ local function update_stonecutter_slots(meta)
 			cut_item:set_count(1)
 		end
 		inv:set_stack("output", 1, cut_item)
+	end
+end
+
+-- Only drop the items that were in the input slot
+local function drop_stonecutter_items(pos, meta)
+	local inv = meta:get_inventory()
+	for i=1, inv:get_size("input") do
+		local stack = inv:get_stack("input", i)
+		if not stack:is_empty() then
+			local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
+			minetest.add_item(p, stack)
+		end
 	end
 end
 
@@ -194,6 +218,13 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 	_mcl_hardness = 3.5,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		local meta = minetest.get_meta(pos)
+		local meta2 = meta:to_table()
+		meta:from_table(oldmetadata)
+		drop_stonecutter_items(pos, meta)
+		meta:from_table(meta2)
+	end,
 	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
 		local name = player:get_player_name()
 		if minetest.is_protected(pos, name) then
@@ -201,6 +232,25 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 			return 0
 		else
 			return stack:get_count()
+		end
+	end,
+	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		elseif to_list == "output" then
+			return 0
+		elseif from_list == "output" and to_list == "input" then
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			if inv:get_stack(to_list, to_index):is_empty() then
+				return count
+			else
+				return 0
+			end
+		else
+			return count
 		end
 	end,
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
