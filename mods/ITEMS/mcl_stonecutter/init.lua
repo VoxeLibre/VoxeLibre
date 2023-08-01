@@ -7,12 +7,6 @@
 
 local S = minetest.get_translator("mcl_stonecutter")
 
-local recipes = {
-	{"mcl_core:cobble", "mcl_stairs:slab_cobble", "mcl_walls:cobble", "mcl_stairs:stair_cobble"},
-	{"mcl_core:granite", "mcl_stairs:slab_granite", "mcl_walls:granite", "mcl_stairs:stair_granite", "mcl_core:granite_smooth", "mcl_stairs:stair_granite_smooth", "mcl_stairs:slab_granite_smooth"},
-	{"mcl_core:diorite", "mcl_stairs:slab_diorite", "mcl_walls:diorite", "mcl_stairs:stair_diorite", "mcl_core:diorite_smooth", "mcl_stairs:stair_diorite_smooth", "mcl_stairs:slab_diorite_smooth"},
-}
-
 local compaitble_items = {
 	"mcl_core:cobble",
 	"mcl_core:mossycobble",
@@ -28,14 +22,19 @@ local compaitble_items = {
 	"mcl_core:stonebrickmossy",
 	"mcl_core:sandstone",
 	"mcl_core:redsandstone",
+	"mcl_core:brick_block",
 	"mcl_ocean:prismarine",
 	"mcl_ocean:prismarine_brick",
 	"mcl_ocean:prismarine_dark",
 	"mcl_mud:mud_bricks",
 	"mcl_nether:quartzblock",
 	"mcl_nether:quartz_smooth",
+	"mcl_nether:red_nether_brick",
+	"mcl_nether:nether_brick",
 	"mcl_end:purpur_block",
 	"mcl_end:end_bricks",
+	"mcl_blackstone:blackstone",
+	"mcl_blackstone:blackstone_polished"
 }
 
 local FMT = {
@@ -95,23 +94,54 @@ local function get_item_string_name(input)
     end
 end
 
+local function is_input_in_table(element)
+	for _, value in ipairs(compaitble_items) do
+		if value == element then
+			return true
+		end
+	end
+	return false
+end
+
 local function update_stonecutter_slots(meta)
 	local inv = meta:get_inventory()
 	local input = inv:get_stack("input", 1)
 	local name = input:get_name()
 	local name_stripped = get_item_string_name(input:to_string())
-	if name_stripped ~= "" then
-		local itemdef = minetest.registered_items["mcl_stairs:stair_"..name_stripped]
-		print(itemdef)
-	end
-
+	local cuttable_recipes = {}
 	local new_output = ItemStack(meta:get_string("cut_stone"))
-	if not input:is_empty() then
-		for index, value in pairs(recipes) do
-			if name == value[1] then
-				meta:set_string("formspec", show_stonecutter_formspec(recipes[index]))
+
+
+	print(name)
+	if is_input_in_table(name) then
+		if name_stripped ~= "" then
+			local stair = "mcl_stairs:stair_"..name_stripped
+			local slab = "mcl_stairs:slab_"..name_stripped
+			local wall = "mcl_walls:"..name_stripped
+			local smooth = "mcl_core:"..name_stripped.."_smooth"
+			if minetest.registered_items[slab] ~= nil then
+				table.insert(cuttable_recipes, slab)
+			end
+			if minetest.registered_items[stair] ~= nil then
+				table.insert(cuttable_recipes, stair)
+			end
+			if minetest.registered_items[wall] ~= nil then
+				table.insert(cuttable_recipes, wall)
+			end
+			if minetest.registered_items[smooth] ~= nil then
+				local smooth_stair = "mcl_stairs:stair_"..name_stripped.."_smooth"
+				local smooth_slab = "mcl_stairs:slab_"..name_stripped.."_smooth"
+
+				table.insert(cuttable_recipes, smooth)
+				if minetest.registered_items[smooth_slab] ~= nil then
+					table.insert(cuttable_recipes, smooth_slab)
+				end
+				if minetest.registered_items[smooth_stair] ~= nil then
+					table.insert(cuttable_recipes, smooth_stair)
+				end
 			end
 		end
+		meta:set_string("formspec", show_stonecutter_formspec(cuttable_recipes))
 	else
 		meta:set_string("formspec", show_stonecutter_formspec(nil))
 	end
