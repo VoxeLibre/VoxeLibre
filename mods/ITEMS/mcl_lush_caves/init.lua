@@ -21,9 +21,9 @@ dofile(modpath.."/nodes.lua")
 dofile(modpath.."/dripleaf.lua")
 
 function mcl_lush_caves.makelake(pos,def,pr)
-	local p1 = vector.offset(pos,-5,-2,-5)
-	local p2 = vector.offset(pos,5,1,5)
-	local nn = minetest.find_nodes_in_area_under_air(p1,p2,{"group:material_stone","mcl_core:clay","mcl_lush_caves:moss"})
+	local p1 = vector.offset(pos,-8,-4,-8)
+	local p2 = vector.offset(pos,8,4,8)
+	local nn = minetest.find_nodes_in_area_under_air(p1,p2,{"group:solid"})
 	table.sort(nn,function(a, b)
 		   return vector_distance_xz(pos, a) < vector_distance_xz(pos, b)
 	end)
@@ -35,7 +35,7 @@ function mcl_lush_caves.makelake(pos,def,pr)
 			table.insert(dripleaves,nn[i])
 		end
 	end
-	local nnn = minetest.find_nodes_in_area_under_air(p1,p2,{"mcl_core:water_source","group:water"})
+	local nnn = minetest.find_nodes_in_area(p1,p2,{"mcl_core:water_source"})
 	for k,v in pairs(nnn) do
 		for kk,vv in pairs(adjacents) do
 			local pp = vector.add(v,vv)
@@ -123,15 +123,7 @@ mcl_structures.register_structure("clay_pool",{
 	place_on = {"group:material_stone","mcl_core:gravel","mcl_lush_caves:moss","mcl_core:clay"},
 	spawn_by = {"air"},
 	num_spawn_by = 1,
-	noise_params = {
-		offset = 0,
-		scale = 0.01,
-		spread = {x = 250, y = 250, z = 250},
-		seed = 78375213,
-		octaves = 5,
-		persist = 0.1,
-		flags = "absvalue",
-	},
+	fill_ratio = 0.01,
 	flags = "all_floors",
 	y_max = -10,
 	biomes = lushcaves,
