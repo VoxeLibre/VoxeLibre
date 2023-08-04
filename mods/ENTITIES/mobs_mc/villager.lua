@@ -1007,9 +1007,16 @@ end
 
 ----- JOBSITE LOGIC
 local function get_profession_by_jobsite(js)
-	local is_cauldron = string.find(js, "mcl_cauldrons:cauldron")
 	for k,v in pairs(professions) do
-		if v.jobsite == js or (is_cauldron and v.jobsite == "group:cauldron") then return k end
+		if v.jobsite == js then
+			return k
+		-- Catch Nitwit doesn't have a jobsite
+		elseif v.jobsite and v.jobsite:find("^group:") then
+			local group = v.jobsite:gsub("^group:", "")
+			if minetest.get_item_group(js, group) > 0 then
+				return k
+			end
+		end
 	end
 end
 
