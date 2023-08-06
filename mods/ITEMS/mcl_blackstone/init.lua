@@ -12,7 +12,7 @@ minetest.register_node("mcl_blackstone:blackstone", {
 	tiles = {"mcl_blackstone_top.png", "mcl_blackstone_top.png", "mcl_blackstone_side.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1, cobble=1, stonecuttable=1, stonecuttable=1},
+	groups = {cracky = 3, pickaxey=1, material_stone=1, cobble=1, stonecuttable=21},
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
@@ -73,7 +73,7 @@ minetest.register_node("mcl_blackstone:basalt_polished", {
 	on_place = mcl_util.rotate_axis,
 	on_rotate = on_rotate,
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1},
+	groups = {cracky = 3, pickaxey=1, material_stone=1, stonecutter_output=19},
 	_mcl_blast_resistance = 4.2,
 	_mcl_hardness = 1.25,
 })
@@ -85,7 +85,7 @@ minetest.register_node("mcl_blackstone:basalt", {
 	on_place = mcl_util.rotate_axis,
 	on_rotate = on_rotate,
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1},
+	groups = {cracky = 3, pickaxey=1, material_stone=1, stonecuttable=19},
 	_mcl_blast_resistance = 4.2,
 	_mcl_hardness = 1.25,
 })
@@ -103,7 +103,7 @@ minetest.register_node("mcl_blackstone:blackstone_polished", {
 	tiles = {"mcl_blackstone_polished.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1, stonecuttable=1},
+	groups = {cracky = 3, pickaxey=1, material_stone=1, stonecuttable=21, stonecutter_output=21},
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 2,
 })
@@ -112,7 +112,7 @@ minetest.register_node("mcl_blackstone:blackstone_chiseled_polished", {
 	tiles = {"mcl_blackstone_chiseled_polished.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1},
+	groups = {cracky = 3, pickaxey=1, material_stone=1, stonecutter_output=21},
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
@@ -121,7 +121,7 @@ minetest.register_node("mcl_blackstone:blackstone_brick_polished", {
 	tiles = {"mcl_blackstone_polished_bricks.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1},
+	groups = {cracky = 3, pickaxey=1, material_stone=1, stonecutter_output=21},
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
@@ -131,7 +131,7 @@ minetest.register_node("mcl_blackstone:quartz_brick", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	groups = {cracky = 3, pickaxey=1, material_stone=1},
+	groups = {cracky = 3, pickaxey=1, material_stone=1, stonecutter_output=14},
 	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,
 })
@@ -193,16 +193,50 @@ minetest.registered_nodes["mcl_fire:fire"].on_construct=function(pos)
 end
 
 --slabs/stairs
-mcl_stairs.register_stair_and_slab_simple("blackstone", "mcl_blackstone:blackstone", S("Blackstone Stair"), S("Blackstone Slab"), S("Double Blackstone Slab"))
-mcl_stairs.register_stair_and_slab_simple("blackstone_polished", "mcl_blackstone:blackstone_polished", S("Polished Blackstone Stair"), S("Polished Blackstone Slab"), S("Polished Double Blackstone Slab"))
-mcl_stairs.register_stair_and_slab_simple("blackstone_chiseled_polished", "mcl_blackstone:blackstone_chiseled_polished", S("Chiseled Polished Blackstone Stair"), S("Chiseled Polished Blackstone Slab"), S("Double Chiseled Polished Blackstone Slab"))
-mcl_stairs.register_stair_and_slab_simple("blackstone_brick_polished", "mcl_blackstone:blackstone_brick_polished", S("Polished Blackstone Brick Stair"), S("Polished Blackstone Brick Slab"), S("Double Polished Blackstone Brick Slab"))
+mcl_stairs.register_stair_and_slab("blackstone", "mcl_blackstone:blackstone",
+		{cracky=3, pickaxey=1, material_stone=1, stonecutter_output=21},
+		{"mcl_blackstone_top.png", "mcl_blackstone_top.png", "mcl_blackstone_side.png"},
+		S("Blackstone Stairs"),
+		S("Blackstone Slab"),
+		mcl_sounds.node_sound_stone_defaults(), 6, 2,
+		S("Double Blackstone Slab"), nil)
+
+mcl_stairs.register_stair_and_slab("blackstone_polished", "mcl_blackstone:blackstone_polished",
+		{cracky=3, pickaxey=1, material_stone=1, stonecutter_output=21},
+		{"mcl_blackstone_polished.png"},
+		S("Polished Blackstone Stairs"),
+		S("Polished Blackstone Slab"),
+		mcl_sounds.node_sound_stone_defaults(), 6, 2,
+		S("Double Polished Blackstone Slab"), nil)
+
+mcl_stairs.register_stair_and_slab("blackstone_chiseled_polished", "mcl_blackstone:blackstone_chiseled_polished",
+		{cracky=3, pickaxey=1, material_stone=1, stonecutter_output=21},
+		{"mcl_blackstone_chiseled_polished.png"},
+		S("Chiseled Polished Blackstone Stairs"),
+		S("Chiseled Polished Blackstone Slab"),
+		mcl_sounds.node_sound_stone_defaults(), 6, 2,
+		S("Double Chiseled Polished Blackstone Slab"), nil)
+
+mcl_stairs.register_stair_and_slab("blackstone_brick_polished", "mcl_blackstone:blackstone_brick_polished",
+		{cracky=3, pickaxey=1, material_stone=1, stonecutter_output=21},
+		{"mcl_blackstone_polished_bricks.png"},
+		S("Polished Blackstone Brick Stair Stairs"),
+		S("Polished Blackstone Brick Stair Slab"),
+		mcl_sounds.node_sound_stone_defaults(), 6, 2,
+		S("Double Polished Blackstone Brick Stair Slab"), nil)
 
 --Wall
 mcl_walls.register_wall(
 	"mcl_blackstone:wall",
 	S("Blackstone Wall"),
-	"mcl_blackstone:blackstone"
+	"mcl_blackstone:blackstone",
+	{
+		"mcl_blackstone_top.png",
+		"mcl_blackstone_top.png",
+		"mcl_blackstone_side.png"
+	},
+	"",
+	{ cracky=3, pickaxey=1, material_stone=1, stonecutter_output=21 }
 )
 
 --lavacooling

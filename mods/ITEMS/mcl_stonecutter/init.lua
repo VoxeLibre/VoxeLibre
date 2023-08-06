@@ -45,21 +45,25 @@ local function show_stonecutter_formspec(items, input)
 	return formspec
 end
 
--- Strips the start of the item like "mcl_core:" and removes any numbers or whitespaces after it
-local function get_item_string_name(input)
-	local colonIndex = string.find(input, ":")
-	if colonIndex then
-        input = string.sub(input, colonIndex + 1)
-    else
-		return input
+local function check(item_name)
+	if string.match(item_name, "mcl_walls") then
+		if string.match(item_name, "%d") then
+			return true
+		end
+		return false
 	end
-	local whitespaceIndex = string.find(input, "%s")
-	if whitespaceIndex then
-        return string.sub(input, 1, whitespaceIndex - 1)
-    else
-        return input
-    end
+	if string.match(item_name, "_outer") then
+		return true
+	elseif string.match(item_name, "_inner") then
+		return true
+	elseif string.match(item_name, "_top") then
+		return true
+	elseif string.match(item_name, "_double") then
+		return true
+	end
+	return false
 end
+
 
 -- Updates the formspec
 local function update_stonecutter_slots(meta)
@@ -67,38 +71,15 @@ local function update_stonecutter_slots(meta)
 	local input = inv:get_stack("input", 1)
 	local name = input:get_name()
 	local new_output = meta:get_string("cut_stone")
+	local compat_item = minetest.get_item_group(name, "stonecuttable")
 
-	-- Checks if input is in the array
-	if minetest.get_item_group(name, "stonecuttable") > 0 then
+	-- Checks if input is in the group
+	if compat_item > 0 then
 		local cuttable_recipes = {}
-		local name_stripped = get_item_string_name(input:to_string())
-		if name_stripped ~= "" then
-			-- Strings for the possible items it can craft into
-			local stair = "mcl_stairs:stair_"..name_stripped
-			local slab = "mcl_stairs:slab_"..name_stripped
-			local wall = "mcl_walls:"..name_stripped
-			local smooth = "mcl_core:"..name_stripped.."_smooth"
-
-			-- Goes through and checks if the item exists and inserts it into the table
-			if minetest.registered_items[slab] ~= nil then
-				table.insert(cuttable_recipes, slab)
-			end
-			if minetest.registered_items[stair] ~= nil then
-				table.insert(cuttable_recipes, stair)
-			end
-			if minetest.registered_items[wall] ~= nil then
-				table.insert(cuttable_recipes, wall)
-			end
-			if minetest.registered_items[smooth] ~= nil then
-				local smooth_stair = "mcl_stairs:stair_"..name_stripped.."_smooth"
-				local smooth_slab = "mcl_stairs:slab_"..name_stripped.."_smooth"
-
-				table.insert(cuttable_recipes, smooth)
-				if minetest.registered_items[smooth_slab] ~= nil then
-					table.insert(cuttable_recipes, smooth_slab)
-				end
-				if minetest.registered_items[smooth_stair] ~= nil then
-					table.insert(cuttable_recipes, smooth_stair)
+		for item_name, item_def in pairs(minetest.registered_items) do
+			if item_def.groups and item_def.groups["stonecutter_output"] == compat_item then
+				if check(item_name) == false then
+					table.insert(cuttable_recipes, item_name)
 				end
 			end
 		end
