@@ -5,14 +5,6 @@
 
 local S = minetest.get_translator("mcl_stonecutter")
 
--- compatible items for the stonecutter
-local compaitble_items = {
-}
-
-local FMT = {
-	item_image_button = "item_image_button[%f,%f;%f,%f;%s;%s;%s]",
-}
-
 -- formspecs
 local function show_stonecutter_formspec(items, input)
 	local cut_items = {}
@@ -27,7 +19,7 @@ local function show_stonecutter_formspec(items, input)
 				y_len = y_len + 1
 				x_len = 1
 			end
-			local test = string.format(FMT.item_image_button,x_len+1,y_len,1,1, value, "item_button", value)
+			local test = string.format("item_image_button[%f,%f;%f,%f;%s;%s;%s]",x_len+1,y_len,1,1, value, "item_button", value)
 			cut_items[index] = test
 		end
 	end
