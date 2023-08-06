@@ -26,7 +26,7 @@ local function show_stonecutter_formspec(items, input)
 
 	local formspec = "size[9,8.75]"..
 	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
-	"label[1,0.1;"..minetest.formspec_escape(minetest.colorize("#313131", S("Stonecutter"))).."]"..
+	"label[1,0.1;"..minetest.formspec_escape(minetest.colorize("#313131", S("Stone Cutter"))).."]"..
 	"list[context;main;0,0;8,4;]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
@@ -175,10 +175,8 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
-		local meta2 = meta:to_table()
 		meta:from_table(oldmetadata)
 		drop_stonecutter_items(pos, meta)
-		meta:from_table(meta2)
 	end,
 	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
 		local name = player:get_player_name()
