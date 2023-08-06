@@ -38,7 +38,7 @@ minetest.register_node("mcl_mud:mud_bricks", {
 	_doc_items_longdesc = S("Decorative block crafted from packed mud."),
 	_doc_items_hidden = false,
 	tiles = {"mcl_mud_bricks.png"},
-	groups = {handy=1, pickaxey=1, building_block=1},
+	groups = {handy=1, pickaxey=1, building_block=1, stonecuttable=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 1.5,

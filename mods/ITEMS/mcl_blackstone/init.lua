@@ -12,7 +12,7 @@ minetest.register_node("mcl_blackstone:blackstone", {
 	tiles = {"mcl_blackstone_top.png", "mcl_blackstone_top.png", "mcl_blackstone_side.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1, cobble=1},
+	groups = {cracky = 3, pickaxey=1, material_stone=1, cobble=1, stonecuttable=1, stonecuttable=1},
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
@@ -103,7 +103,7 @@ minetest.register_node("mcl_blackstone:blackstone_polished", {
 	tiles = {"mcl_blackstone_polished.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1},
+	groups = {cracky = 3, pickaxey=1, material_stone=1, stonecuttable=1},
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 2,
 })
