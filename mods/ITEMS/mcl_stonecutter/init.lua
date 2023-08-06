@@ -44,6 +44,8 @@ local function show_stonecutter_formspec(items, input)
 	return formspec
 end
 
+
+--Checks for the string for the different stair and wall positions that shouldn't be craftable
 local function check(item_name)
 	if string.match(item_name, "mcl_walls") then
 		if string.match(item_name, "%d") then
@@ -77,7 +79,7 @@ local function update_stonecutter_slots(pos,str)
 		local cuttable_recipes = {}
 		for item_name, item_def in pairs(minetest.registered_items) do
 			if item_def.groups and item_def.groups["stonecutter_output"] == compat_item then
-				if check(item_name) == false then
+				if check(item_name) == false and name ~= item_name then
 					table.insert(cuttable_recipes, item_name)
 				end
 			end
