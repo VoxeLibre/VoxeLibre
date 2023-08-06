@@ -19,8 +19,7 @@ local function show_stonecutter_formspec(items, input)
 				y_len = y_len + 1
 				x_len = 1
 			end
-			local test = string.format("item_image_button[%f,%f;%f,%f;%s;%s;%s]",x_len+1,y_len,1,1, value, "item_button", value)
-			cut_items[index] = test
+			table.insert(cut_items,string.format("item_image_button[%f,%f;%f,%f;%s;%s;%s]",x_len+1,y_len,1,1, value, value, ""))
 		end
 	end
 
@@ -66,11 +65,11 @@ end
 
 
 -- Updates the formspec
-local function update_stonecutter_slots(meta)
+local function update_stonecutter_slots(pos,str)
+	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	local input = inv:get_stack("input", 1)
 	local name = input:get_name()
-	local new_output = meta:get_string("cut_stone")
 	local compat_item = minetest.get_item_group(name, "stonecuttable")
 
 	-- Checks if input is in the group
@@ -89,9 +88,9 @@ local function update_stonecutter_slots(meta)
 	end
 
 	-- Checks if the chosen item is a slab or not, if it's a slab set the output to be a stack of 2
-	if new_output ~= '' then
-		local cut_item = ItemStack(new_output)
-		if string.find(new_output, "mcl_stairs:slab_") then
+	if minetest.get_item_group(str, "stonecutter_output") > 0 then
+		local cut_item = ItemStack(str)
+		if string.match(str, "mcl_stairs:slab_") then
 			cut_item:set_count(2)
 		else
 			cut_item:set_count(1)
@@ -112,6 +111,7 @@ local function drop_stonecutter_items(pos, meta)
 			minetest.add_item(p, stack)
 		end
 	end
+	minetest.set_node(pos,{name="air"}) 
 end
 
 minetest.register_node("mcl_stonecutter:stonecutter", {
@@ -199,7 +199,7 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 				end
 			end
 		end
-		update_stonecutter_slots(meta)
+		update_stonecutter_slots(pos)
 	end,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 		local name = player:get_player_name()
@@ -213,8 +213,7 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 		end
 	end,
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
-		local meta = minetest.get_meta(pos)
-		update_stonecutter_slots(meta)
+		update_stonecutter_slots(pos)
 	end,
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
@@ -229,7 +228,7 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 		else
 			meta:set_string("cut_stone", nil)
 		end
-		update_stonecutter_slots(meta)
+		update_stonecutter_slots(pos)
 	end,
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -241,8 +240,7 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 	end,
 	on_rightclick = function(pos, node, player, itemstack)
 		if not player:get_player_control().sneak then
-			local meta = minetest.get_meta(pos)
-			update_stonecutter_slots(meta)
+			update_stonecutter_slots(pos)
 		end
 	end,
 	on_receive_fields = function(pos, formname, fields, sender)
@@ -251,10 +249,13 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 			minetest.record_protection_violation(pos, sender_name)
 			return
 		end
-		if fields.item_button then
-			local meta = minetest.get_meta(pos)
-			meta:set_string("cut_stone", fields.item_button)
-			update_stonecutter_slots(meta)
+		if fields then
+			for field_name, value in pairs(fields) do
+				local item_name = tostring(field_name)
+				if item_name then
+					update_stonecutter_slots(pos, item_name)
+				end
+			end
 		end
 	end,
 })
