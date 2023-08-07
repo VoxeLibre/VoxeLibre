@@ -3610,7 +3610,7 @@ local function register_decorations()
 		place_on = {"mcl_lush_caves:moss"},
 		spawn_by = {"air"},
 		num_spawn_by = 4,
-		fill_ratio = 0.1,
+		fill_ratio = 0.8,
 		param2 = 4,
 		flags = "all_ceilings",
 		biomes = lushcaves_underground,

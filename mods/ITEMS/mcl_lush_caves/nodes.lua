@@ -241,7 +241,7 @@ minetest.register_node("mcl_lush_caves:spore_blossom", {
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = {{ -3/16, -8/16, -3/16, 3/16, 1/16, 3/16 }},
+		fixed = {{ -3/16, -2/16, -3/16, 3/16, 8/16, 3/16 }},
 	},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
