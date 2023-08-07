@@ -51,10 +51,7 @@ minetest.register_node("mcl_lush_caves:dripleaf_big_waterroot", {
 		inventory_image = "mcl_lush_caves_big_dripleaf_stem.png",
 		selection_box = {
 			type = "fixed",
-			fixed = {
-				{ -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
-				{ -0.5, 0.5, -0.5, 0.5, 1.0, 0.5 },
-			}
+			fixed = {{ -3/16, -8/16, -3/16, 3/16, 8/16, 3/16 }},
 		},
 		groups = { handy = 1, dig_immediate = 3, not_in_creative_inventory = 1 },
 		drop = "",
@@ -81,9 +78,7 @@ minetest.register_node("mcl_lush_caves:dripleaf_big_stem", {
 	wield_image = "mcl_lush_caves_big_dripleaf_stem.png",
 	selection_box = {
 		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}
-		},
+		fixed = {{ -3/16, -8/16, -3/16, 3/16, 8/16, 3/16 }},
 	},
 	drop = "",
 	groups = { shearsy = 1, handy = 1, plant=1, supported_node=0, destroy_by_lava_flow=1, dig_by_piston=1 },
