@@ -227,23 +227,35 @@ minetest.register_node("mcl_lush_caves:azalea_leaves_flowering", {
 	_mcl_silk_touch_drop = true,
 })
 
---[[
+
 minetest.register_node("mcl_lush_caves:spore_blossom", {
 	description = S("Spore blossom"),
 	_doc_items_longdesc = S("Spore blossom"),
 	_doc_items_hidden = false,
 	tiles = {"mcl_lush_caves_spore_blossom.png"},
 	drawtype = "plantlike",
-	param2type = "light",
+	param2type = "meshoptions",
+	place_param2 = 4,
 	is_ground_content = true,
-	stack_max = 64,
 	groups = {handy = 1, plant = 1},
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
+	selection_box = {
+		type = "fixed",
+		fixed = {{ -3/16, -8/16, -3/16, 3/16, 1/16, 3/16 }},
+	},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
+	on_place = mcl_util.generate_on_place_plant_function(function(place_pos, place_node,stack)
+		local above = vector.offset(place_pos,0,1,0)
+		local snn = minetest.get_node_or_nil(above).name
+		if not snn then return false end
+		if minetest.get_item_group(snn,"soil_sapling") > 0 then
+			return true
+		end
+	end)
 })
 
-
+--[[
 minetest.register_node("mcl_lush_caves:azalea", {
 	description = S("Azalea"),
 	inventory_image = "mcl_lush_caves_azalea_plant.png",
