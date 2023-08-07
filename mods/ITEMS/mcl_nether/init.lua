@@ -257,7 +257,7 @@ minetest.register_node("mcl_nether:quartz_smooth", {
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {"mcl_nether_quartz_block_bottom.png"},
-	groups = {pickaxey=1, quartz_block=1,building_block=1, material_stone=1, stonecuttable=14, stonecutter_output=14},
+	groups = {pickaxey=1, quartz_block=1,building_block=1, material_stone=1, stonecuttable=31, stonecutter_output=31},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,

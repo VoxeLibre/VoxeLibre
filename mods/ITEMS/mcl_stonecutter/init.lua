@@ -26,7 +26,6 @@ local function show_stonecutter_formspec(items, input)
 	local formspec = "size[9,8.75]"..
 	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"label[1,0.1;"..minetest.formspec_escape(minetest.colorize("#313131", S("Stone Cutter"))).."]"..
-	"list[context;main;0,0;8,4;]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 	"list[current_player;main;0,7.74;9,1;]"..
@@ -46,12 +45,12 @@ end
 
 
 --Checks for the string for the different stair and wall positions that shouldn't be craftable
-local function check(item_name)
+local function check(item_name, input_name)
+	print(item_name)
 	if string.match(item_name, "mcl_walls") then
 		if string.match(item_name, "%d") then
 			return true
 		end
-		return false
 	end
 	if string.match(item_name, "_outer") then
 		return true
@@ -60,6 +59,9 @@ local function check(item_name)
 	elseif string.match(item_name, "_top") then
 		return true
 	elseif string.match(item_name, "_double") then
+		return true
+	end
+	if minetest.get_item_group(item_name, "stonecutter_stage") == 0 and minetest.get_item_group(input_name, "stonecutter_stage") > 0 then
 		return true
 	end
 	return false
@@ -79,7 +81,7 @@ local function update_stonecutter_slots(pos,str)
 		local cuttable_recipes = {}
 		for item_name, item_def in pairs(minetest.registered_items) do
 			if item_def.groups and item_def.groups["stonecutter_output"] == compat_item then
-				if check(item_name) == false and name ~= item_name then
+				if check(item_name, name) == false and name ~= item_name then
 					table.insert(cuttable_recipes, item_name)
 				end
 			end
