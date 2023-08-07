@@ -144,12 +144,13 @@ local dripleaf = {
 		mcl_lush_caves.dripleaf_grow(vector.offset(pos,0,-1,0),{name = "mcl_lush_caves:dripleaf_big_stem" })
 	end
 }
-local dripleaf_tipped = table.copy(dripleaf)
-dripleaf_tipped.walkable = false
-dripleaf_tipped.tiles = {"mcl_lush_caves_big_dripleaf_tip.png"}
-dripleaf_tipped.on_timer = function(p,e)
-	minetest.swap_node(p,{name="mcl_lush_caves:dripleaf_big"})
-end
+local dripleaf_tipped = table.merge(dripleaf, {
+	walkable = false,
+	tiles = {"mcl_lush_caves_big_dripleaf_tip.png"},
+	on_timer = function(p,e)
+		minetest.swap_node(p,{name="mcl_lush_caves:dripleaf_big"})
+	end,
+})
 
 dripleaf.mesecons = {effector = {
 	action_on = function(pos, node)
@@ -162,24 +163,6 @@ dripleaf.mesecons = {effector = {
 	end,
 	rules = mesecon.rules.alldirs,
 }}
-local player_dripleaf = {}
-minetest.register_globalstep(function(dtime)
-	for _,p in pairs(minetest.get_connected_players()) do
-		local pos = p:get_pos()
-		local n = minetest.get_node(pos)
-		if n.name == "mcl_lush_caves:dripleaf_big" and n.param2 == 0 then
-			if not player_dripleaf[p] then player_dripleaf[p] = 0 end
-			player_dripleaf[p] = player_dripleaf[p] + dtime
-			if player_dripleaf[p] > 1 then
-				minetest.swap_node(pos,{name = "mcl_lush_caves:dripleaf_big_tipped"})
-				player_dripleaf[p] = nil
-				local t = minetest.get_node_timer(pos)
-				t:start(3)
-			end
-		end
-	end
-end)
-
 
 minetest.register_node("mcl_lush_caves:dripleaf_big",dripleaf)
 minetest.register_node("mcl_lush_caves:dripleaf_big_tipped",dripleaf_tipped)

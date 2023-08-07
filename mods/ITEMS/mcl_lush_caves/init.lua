@@ -124,6 +124,7 @@ mcl_structures.register_structure("clay_pool",{
 	spawn_by = {"air"},
 	num_spawn_by = 1,
 	fill_ratio = 0.01,
+	terrain_feature = true,
 	flags = "all_floors",
 	y_max = -10,
 	biomes = lushcaves,
