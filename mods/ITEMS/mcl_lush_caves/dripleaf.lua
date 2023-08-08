@@ -8,14 +8,6 @@ local plane_adjacents = {
 	vector.new(0,0,-1)
 }
 
-local function find_top(pos,node)
-	local p = pos
-	repeat
-		p = vector.offset(p,0,1,0)
-	until minetest.get_node(p).name ~= node.name
-	return p
-end
-
 local function get_height(pos,node)
 	local p = pos
 	local i = 0
@@ -27,13 +19,14 @@ local function get_height(pos,node)
 end
 
 function mcl_lush_caves.dripleaf_grow(pos, node)
-	local t = find_top(pos,node)
+	local t =  mcl_util.traverse_tower(pos,1) -- find_top(pos,node)
 	local h = get_height(t,node)
 	local target = vector.offset(t,0,1,0)
 	if minetest.get_node(target).name ~= "air" then return end
 	if h >= 5 then return end
 	minetest.set_node(t,node)
 	minetest.set_node(target,{name = "mcl_lush_caves:dripleaf_big"})
+	return true
 end
 
 minetest.register_node("mcl_lush_caves:dripleaf_big_waterroot", {
@@ -60,6 +53,7 @@ minetest.register_node("mcl_lush_caves:dripleaf_big_waterroot", {
 		_mcl_blast_resistance = 0,
 		_mcl_silk_touch_drop = true,
 		_on_bone_meal = function(itemstack,placer, pointed_thing, pos, node)
+			if not pos then return end
 			return mcl_lush_caves.dripleaf_grow(pos,node)
 		end
 })
@@ -102,10 +96,8 @@ minetest.register_node("mcl_lush_caves:dripleaf_big_stem", {
 		minetest.set_node(p,{name = "mcl_lush_caves:dripleaf_big"})
 		minetest.set_node(vector.offset(pos,0,-1,0),{ name = "mcl_lush_caves:dripleaf_big_waterroot", param2 = l * 16})
 	end,
-	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
-		if itemstack:get_name() ~= "mcl_dye:white" then return itemstack end
-		itemstack:take_item(1)
-		mcl_lush_caves.dripleaf_grow(pos,node)
+	_on_bone_meal = function(itemstack, clicker, pointed_thing, pos, node)
+		return mcl_lush_caves.dripleaf_grow(pos,node)
 	end
 })
 local dripleaf = {
