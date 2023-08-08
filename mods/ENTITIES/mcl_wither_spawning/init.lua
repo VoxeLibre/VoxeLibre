@@ -16,8 +16,13 @@ for _, d in pairs(dim) do
 end
 
 local function check_schem(pos, schem)
+	local cn_name
 	for _, n in pairs(schem) do
-		if minetest.get_node(vector.add(pos, n)).name ~= n.name then
+		cn_name = minetest.get_node(vector.add(pos, n)).name
+		if string.find(cn_name, "mcl_heads:wither_skeleton") then
+			cn_name = "mcl_heads:wither_skeleton"
+		end
+		if cn_name ~= n.name then
 			return false
 		end
 	end

@@ -312,6 +312,8 @@ function mcl_mobs.register_mob(name, def)
 			return self:mob_activate(staticdata, def, dtime)
 		end,
 		harmed_by_heal = def.harmed_by_heal,
+		is_boss = def.is_boss,
+		dealt_effect = def.dealt_effect,
 		on_lightning_strike = def.on_lightning_strike
 	}
 	minetest.register_entity(name, setmetatable(final_def,mcl_mobs.mob_class_meta))

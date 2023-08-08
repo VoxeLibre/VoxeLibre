@@ -67,12 +67,14 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 		run_start = 0,		run_end = 20,
 	},
 	harmed_by_heal = true,
+	is_boss = true,
 	do_custom = function(self)
 		if self.health < (self.hp_max / 2) then
 			self.base_texture = "mobs_mc_wither_half_health.png"
 			self.fly = false
 			self.object:set_properties({textures={self.base_texture}})
 			self.armor = {undead = 80, fleshy = 80}
+			self.arrow = "mobs_mc:wither_skull_strong"
 		end
 		mcl_bossbars.update_boss(self.object, "Wither", "dark_purple")
 	end,
@@ -86,11 +88,18 @@ local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 local wither_rose_soil = { "group:grass_block", "mcl_core:dirt", "mcl_core:coarse_dirt", "mcl_nether:netherrack", "group:soul_block", "mcl_mud:mud", "mcl_moss:moss" }
 
 mcl_mobs.register_arrow("mobs_mc:wither_skull", {
-	visual = "sprite",
+	visual = "cube",
 	visual_size = {x = 0.75, y = 0.75},
-	-- TODO: 3D projectile, replace tetxture
-	textures = {"mobs_mc_TEMP_wither_projectile.png"},
+	textures = {
+		"mobs_mc_wither_projectile.png^[verticalframe:6:0", -- top
+		"mobs_mc_wither_projectile.png^[verticalframe:6:1", -- bottom
+		"mobs_mc_wither_projectile.png^[verticalframe:6:2", -- left
+		"mobs_mc_wither_projectile.png^[verticalframe:6:3", -- right
+		"mobs_mc_wither_projectile.png^[verticalframe:6:4", -- back
+		"mobs_mc_wither_projectile.png^[verticalframe:6:5", -- front
+	},
 	velocity = 6,
+	rotate = 90,
 
 	-- direct hit
 	hit_player = function(self, player)
@@ -98,6 +107,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 			full_punch_interval = 0.5,
 			damage_groups = {fleshy = 8},
 		}, nil)
+		mcl_mobs.effect_functions["withering"](player, 0.5, 10)
 		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1)
 	end,
 
@@ -106,6 +116,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 			full_punch_interval = 0.5,
 			damage_groups = {fleshy = 8},
 		}, nil)
+		mcl_mobs.effect_functions["withering"](mob, 0.5, 10)
 		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1)
 		local l = mob:get_luaentity()
 		if l and l.health - 8 <= 0 then
@@ -126,7 +137,70 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 		mcl_mobs.mob_class.boom(self,pos, 1)
 	end
 })
--- TODO: Add blue wither skull
+mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
+	visual = "cube",
+	visual_size = {x = 0.75, y = 0.75},
+	textures = {
+		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:0", -- top
+		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:1", -- bottom
+		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:2", -- left
+		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:3", -- right
+		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:4", -- back
+		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:5", -- front
+	},
+	velocity = 3,
+	rotate = 90,
+
+	-- direct hit
+	hit_player = function(self, player)
+		player:punch(self.object, 1.0, {
+			full_punch_interval = 0.5,
+			damage_groups = {fleshy = 12},
+		}, nil)
+		mcl_mobs.effect_functions["withering"](player, 0.5, 10)
+		local pos = self.object:get_pos()
+		if mobs_griefing and not minetest.is_protected(pos, "") then
+			mcl_explosions.explode(pos, 1, { drop_chance = 1.0, max_blast_resistance = 0, }, self.object)
+		else
+			mcl_mobs.mob_class.safe_boom(self, pos, 1) --need to call it this way bc self is the "arrow" object here
+		end
+	end,
+
+	hit_mob = function(self, mob)
+		mob:punch(self.object, 1.0, {
+			full_punch_interval = 0.5,
+			damage_groups = {fleshy = 12},
+		}, nil)
+		mcl_mobs.effect_functions["withering"](mob, 0.5, 10)
+		local pos = self.object:get_pos()
+		if mobs_griefing and not minetest.is_protected(pos, "") then
+			mcl_explosions.explode(pos, 1, { drop_chance = 1.0, max_blast_resistance = 0, }, self.object)
+		else
+			mcl_mobs.mob_class.safe_boom(self, pos, 1) --need to call it this way bc self is the "arrow" object here
+		end
+		local l = mob:get_luaentity()
+		if l and l.health - 8 <= 0 then
+			local n = minetest.find_node_near(mob:get_pos(),2,wither_rose_soil)
+			if n then
+				local p = vector.offset(n,0,1,0)
+				if minetest.get_node(p).name == "air" then
+					if not ( mobs_griefing and minetest.place_node(p,{name="mcl_flowers:wither_rose"}) ) then
+						minetest.add_item(p,"mcl_flowers:wither_rose")
+					end
+				end
+			end
+		end
+	end,
+
+	-- node hit, explode
+	hit_node = function(self, pos, node)
+		if mobs_griefing and not minetest.is_protected(pos, "") then
+			mcl_explosions.explode(pos, 1, { drop_chance = 1.0, max_blast_resistance = 0, }, self.object)
+		else
+			mcl_mobs.mob_class.safe_boom(self, pos, 1) --need to call it this way bc self is the "arrow" object here
+		end
+	end
+})
 
 --Spawn egg
 mcl_mobs.register_egg("mobs_mc:wither", S("Wither"), "#4f4f4f", "#4f4f4f", 0, true)

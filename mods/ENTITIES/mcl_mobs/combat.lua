@@ -21,6 +21,8 @@ local function atan(x)
 	end
 end
 
+mcl_mobs.effect_functions = {}
+
 
 -- check if daytime and also if mob is docile during daylight hours
 function mob_class:day_docile()
@@ -1103,6 +1105,11 @@ function mob_class:do_states_attack (dtime)
 							full_punch_interval = 1.0,
 							damage_groups = {fleshy = self.damage}
 						}, nil)
+						if self.dealt_effect then
+							mcl_mobs.effect_functions[self.dealt_effect.name](
+								self.attack, self.dealt_effect.factor, self.dealt_effect.dur
+							)
+						end
 					end
 				else
 					self.custom_attack(self, p)

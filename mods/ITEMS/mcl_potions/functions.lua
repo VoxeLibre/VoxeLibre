@@ -10,6 +10,7 @@ EF.swift = {} -- for swiftness AND slowness
 EF.night_vision = {}
 EF.fire_proof = {}
 EF.bad_omen = {}
+EF.withering = {}
 
 local EFFECT_TYPES = 0
 for _,_ in pairs(EF) do
@@ -19,8 +20,11 @@ end
 local icon_ids = {}
 
 local function potions_set_hudbar(player)
-
-	if EF.poisoned[player] and EF.regenerating[player] then
+	if EF.withering[player] and EF.regenerating[player] then
+		hb.change_hudbar(player, "health", nil, nil, "mcl_potions_icon_regen_wither.png", nil, "hudbars_bar_health.png")
+	elseif EF.withering[player] then
+		hb.change_hudbar(player, "health", nil, nil, "mcl_potions_icon_wither.png", nil, "hudbars_bar_health.png")
+	elseif EF.poisoned[player] and EF.regenerating[player] then
 		hb.change_hudbar(player, "health", nil, nil, "hbhunger_icon_regen_poison.png", nil, "hudbars_bar_health.png")
 	elseif EF.poisoned[player] then
 		hb.change_hudbar(player, "health", nil, nil, "hbhunger_icon_health_poison.png", nil, "hudbars_bar_health.png")
@@ -123,6 +127,33 @@ minetest.register_globalstep(function(dtime)
 
 	end
 
+	-- Check for withering players
+	for player, vals in pairs(EF.withering) do
+
+		is_player = player:is_player()
+		entity = player:get_luaentity()
+
+		EF.withering[player].timer = EF.withering[player].timer + dtime
+		EF.withering[player].hit_timer = (EF.withering[player].hit_timer or 0) + dtime
+
+		if player:get_pos() then mcl_potions._add_spawner(player, "#000000") end
+
+		if EF.withering[player].hit_timer >= EF.withering[player].step then
+			if is_player or entity then mcl_util.deal_damage(player, 1, {type = "magic"}) end
+			if EF.withering[player] then EF.withering[player].hit_timer = 0 end
+		end
+
+		if EF.withering[player] and EF.withering[player].timer >= EF.withering[player].dur then
+			EF.withering[player] = nil
+			if is_player then
+				meta = player:get_meta()
+				meta:set_string("_is_withering", minetest.serialize(EF.withering[player]))
+				potions_set_hud(player)
+			end
+		end
+
+	end
+
 	-- Check for poisoned players
 	for player, vals in pairs(EF.poisoned) do
 
@@ -152,7 +183,7 @@ minetest.register_globalstep(function(dtime)
 
 	end
 
-	-- Check for regnerating players
+	-- Check for regenerating players
 	for player, vals in pairs(EF.regenerating) do
 
 		is_player = player:is_player()
@@ -408,6 +439,7 @@ function mcl_potions._clear_cached_player_data(player)
 	EF.night_vision[player] = nil
 	EF.fire_proof[player] = nil
 	EF.bad_omen[player] = nil
+	EF.withering[player] = nil
 
 	meta = player:get_meta()
 	meta:set_int("night_vision", 0)
@@ -452,6 +484,7 @@ function mcl_potions._save_player_effects(player)
 	meta:set_string("_is_cat", minetest.serialize(EF.night_vision[player]))
 	meta:set_string("_is_fire_proof", minetest.serialize(EF.fire_proof[player]))
 	meta:set_string("_has_bad_omen", minetest.serialize(EF.bad_omen[player]))
+	meta:set_string("_is_withering", minetest.serialize(EF.withering[player]))
 
 end
 
@@ -505,6 +538,10 @@ function mcl_potions._load_player_effects(player)
 
 	if minetest.deserialize(meta:get_string("_has_bad_omen")) then
 		EF.bad_omen[player] = minetest.deserialize(meta:get_string("_has_bad_omen"))
+	end
+
+	if minetest.deserialize(meta:get_string("_is_withering")) then
+		EF.withering[player] = minetest:deserialize(meta:get_string("_is_withering"))
 	end
 
 end
@@ -725,6 +762,9 @@ end
 
 function mcl_potions.swiftness_func(player, factor, duration)
 
+	local entity = player:get_luaentity()
+	if entity and entity.is_boss then return false end
+
 	if not player:get_meta() then
 		return false
 	end
@@ -752,6 +792,9 @@ function mcl_potions.swiftness_func(player, factor, duration)
 end
 
 function mcl_potions.leaping_func(player, factor, duration)
+
+	local entity = player:get_luaentity()
+	if entity and entity.is_boss then return false end
 
 	if not player:get_meta() then
 		return false
@@ -781,6 +824,9 @@ end
 
 function mcl_potions.weakness_func(player, factor, duration)
 
+	local entity = player:get_luaentity()
+	if entity and entity.is_boss then return false end
+
 	if not EF.weak[player] then
 
 		EF.weak[player] = {dur = duration, timer = 0, factor = factor}
@@ -804,6 +850,9 @@ end
 
 function mcl_potions.strength_func(player, factor, duration)
 
+	local entity = player:get_luaentity()
+	if entity and entity.is_boss then return false end
+
 	if not EF.strong[player] then
 
 		EF.strong[player] = {dur = duration, timer = 0, factor = factor}
@@ -825,7 +874,36 @@ function mcl_potions.strength_func(player, factor, duration)
 end
 
 
+function mcl_potions.withering_func(player, factor, duration)
+
+	local entity = player:get_luaentity()
+	if entity and (entity.is_boss or string.find(entity.name, "wither")) then return false end
+
+	if not EF.withering[player] then
+
+		EF.withering[player] = {step = factor, dur = duration, timer = 0}
+
+	else
+
+		local victim = EF.withering[player]
+
+		victim.step = math.min(victim.step, factor)
+		victim.dur = math.max(duration, victim.dur - victim.timer)
+		victim.timer = 0
+
+	end
+
+	if player:is_player() then
+		potions_set_hud(player)
+	end
+
+end
+
+
 function mcl_potions.poison_func(player, factor, duration)
+
+	local entity = player:get_luaentity()
+	if entity and (entity.is_boss or entity.harmed_by_heal or string.find(entity.name, "spider")) then return false end
 
 	if not EF.poisoned[player] then
 
@@ -850,6 +928,9 @@ end
 
 function mcl_potions.regeneration_func(player, factor, duration)
 
+	local entity = player:get_luaentity()
+	if entity and (entity.is_boss or entity.harmed_by_heal) then return false end
+
 	if not EF.regenerating[player] then
 
 		EF.regenerating[player] = {step = factor, dur = duration, timer = 0}
@@ -873,6 +954,9 @@ end
 
 function mcl_potions.invisiblility_func(player, null, duration)
 
+	local entity = player:get_luaentity()
+	if entity and entity.is_boss then return false end
+
 	if not EF.invisible[player] then
 
 		EF.invisible[player] = {dur = duration, timer = 0}
@@ -894,6 +978,9 @@ function mcl_potions.invisiblility_func(player, null, duration)
 end
 
 function mcl_potions.water_breathing_func(player, null, duration)
+
+	local entity = player:get_luaentity()
+	if entity and entity.is_boss then return false end
 
 	if not EF.water_breathing[player] then
 
@@ -917,6 +1004,9 @@ end
 
 function mcl_potions.fire_resistance_func(player, null, duration)
 
+	local entity = player:get_luaentity()
+	if entity and entity.is_boss then return false end
+
 	if not EF.fire_proof[player] then
 
 		EF.fire_proof[player] = {dur = duration, timer = 0}
@@ -937,6 +1027,9 @@ end
 
 
 function mcl_potions.night_vision_func(player, null, duration)
+
+	local entity = player:get_luaentity()
+	if entity and entity.is_boss then return false end
 
 	meta = player:get_meta()
 	if not EF.night_vision[player] then

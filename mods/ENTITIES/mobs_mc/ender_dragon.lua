@@ -127,7 +127,7 @@ mcl_mobs.register_mob("mobs_mc:enderdragon", {
 				minetest.set_node(vector.add(self._portal_pos, vector.new(0, 5, 0)), {name = "mcl_end:dragon_egg"})
 			end
 		end
-		
+
 		-- Free The End Advancement
 		for _,players in pairs(minetest.get_objects_inside_radius(pos,64)) do
 			if players:is_player() then
@@ -136,6 +136,7 @@ mcl_mobs.register_mob("mobs_mc:enderdragon", {
 		end
 	end,
 	fire_resistant = true,
+	is_boss = true,
 })
 
 

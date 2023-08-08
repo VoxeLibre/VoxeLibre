@@ -138,6 +138,11 @@ cave_spider.walk_velocity = 1.3
 cave_spider.run_velocity = 3.2
 cave_spider.sounds = table.copy(spider.sounds)
 cave_spider.sounds.base_pitch = 1.25
+cave_spider.dealt_effect = {
+	name = "poison",
+	factor = 2.5,
+	dur = 7,
+}
 mcl_mobs.register_mob("mobs_mc:cave_spider", cave_spider)
 
 

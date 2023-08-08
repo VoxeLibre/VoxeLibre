@@ -190,7 +190,7 @@ local function set_node_empty_bottle(itemstack, placer, pointed_thing, newitemst
 	-- play sound
 	minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
 
-	-- 
+	--
 	if minetest.is_creative_enabled(placer:get_player_name()) then
 		return itemstack
 	else
@@ -356,6 +356,7 @@ local awkward_table = {
 	["mcl_fishing:pufferfish_raw"] = "mcl_potions:water_breathing",
 	["mcl_mobitems:ghast_tear"] = "mcl_potions:regeneration",
 	["mcl_mobitems:spider_eye"] = "mcl_potions:poison",
+	["mcl_flowers:wither_rose"] = "mcl_potions:withering",
 	["mcl_mobitems:rabbit_foot"] = "mcl_potions:leaping",
 }
 
@@ -373,7 +374,7 @@ local potions = {}
 for i, potion in ipairs({"healing","harming","swiftness","slowness",
 	 "leaping","poison","regeneration","invisibility","fire_resistance",
 	 -- "weakness","strength",
-	 "water_breathing","night_vision"}) do
+	 "water_breathing","night_vision", "withering"}) do
 
 	table.insert(potions, potion)
 
@@ -460,6 +461,18 @@ function mcl_potions.get_alchemy(ingr, pot)
 
 	return false
 end
+
+mcl_mobs.effect_functions["poison"] = mcl_potions.poison_func
+mcl_mobs.effect_functions["regeneration"] = mcl_potions.regeneration_func
+mcl_mobs.effect_functions["invisibility"] = mcl_potions.invisiblility_func
+mcl_mobs.effect_functions["fire_resistance"] = mcl_potions.fire_resistance_func
+mcl_mobs.effect_functions["night_vision"] = mcl_potions.night_vision_func
+mcl_mobs.effect_functions["water_breathing"] = mcl_potions.water_breathing_func
+mcl_mobs.effect_functions["leaping"] = mcl_potions.leaping_func
+mcl_mobs.effect_functions["swiftness"] = mcl_potions.swiftness_func
+mcl_mobs.effect_functions["heal"] = mcl_potions.healing_func
+mcl_mobs.effect_functions["bad_omen"] = mcl_potions.bad_omen_func
+mcl_mobs.effect_functions["withering"] = mcl_potions.withering_func
 
 mcl_wip.register_wip_item("mcl_potions:night_vision")
 mcl_wip.register_wip_item("mcl_potions:night_vision_plus")
