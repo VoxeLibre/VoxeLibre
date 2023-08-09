@@ -35,14 +35,16 @@ local function remove_schem(pos, schem)
 	end
 end
 
-local function wither_spawn(pos)
+local function wither_spawn(pos, player)
 	for _, d in pairs(dim) do
 		for i = 0, 2 do
 			local p = vector.add(pos, {x = 0, y = -2, z = 0, [d] = -i})
 			local schem = wither_spawn_schems[d]
 			if check_schem(p, schem) then
 				remove_schem(p, schem)
-				minetest.add_entity(vector.add(p, {x = 0, y = 1, z = 0, [d] = 1}), "mobs_mc:wither")
+				local wither = minetest.add_entity(vector.add(p, {x = 0, y = 1, z = 0, [d] = 1}), "mobs_mc:wither")
+				local witherer = wither:get_luaentity()
+				witherer._spawner = player
 				local objects = minetest.get_objects_inside_radius(pos, 20)
 				for _, players in ipairs(objects) do
 					if players:is_player() then
@@ -59,7 +61,7 @@ local old_on_place = wither_head.on_place
 function wither_head.on_place(itemstack, placer, pointed)
 	local n = minetest.get_node(vector.offset(pointed.above,0,-1,0))
 	if n and n.name  == "mcl_nether:soul_sand" then
-		minetest.after(0, wither_spawn, pointed.above)
+		minetest.after(0, wither_spawn, pointed.above, placer)
 	end
 	return old_on_place(itemstack, placer, pointed)
 end

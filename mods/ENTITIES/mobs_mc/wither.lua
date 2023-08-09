@@ -59,7 +59,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 	arrow = "mobs_mc:wither_skull",
 	reach = 5,
 	shoot_interval = 0.5,
-	shoot_offset = -1,
+	shoot_offset = -0.5,
 	animation = {
 		walk_speed = 12, run_speed = 12, stand_speed = 12,
 		stand_start = 0,		stand_end = 20,
@@ -69,14 +69,40 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 	harmed_by_heal = true,
 	is_boss = true,
 	do_custom = function(self)
+		local rand_factor
+		if self._spawner then
+			local pos = self.object:get_pos()
+			local spw = self._spawner:get_pos()
+			local dist = vector.distance(pos, spw)
+			if dist > 60 then -- teleport to the player who spawned the wither
+				local R = 10
+				pos.x = spw.x + math.random(-r, r)
+				pos.y = spw.y + math.random(-r, r)
+				pos.z = spw.z + math.random(-r, r)
+				self.object:set_pos(pos)
+			end
+		else
+			-- TODO implement a death timer here?
+		end
 		if self.health < (self.hp_max / 2) then
 			self.base_texture = "mobs_mc_wither_half_health.png"
 			self.fly = false
-			self.object:set_properties({textures={self.base_texture}})
-			self.armor = {undead = 80, fleshy = 80}
-			self.arrow = "mobs_mc:wither_skull_strong"
+			self.armor = {undead = 80, fleshy = 80} -- TODO replace with changed arrow resistance
+			rand_factor = 3
+		else
+			self.base_texture = "mobs_mc_wither.png"
+			self.fly = true
+			self.armor = {undead = 80, fleshy = 100} -- TODO replace with changed arrow resistance
+			rand_factor = 10
 		end
+		self.object:set_properties({textures={self.base_texture}})
 		mcl_bossbars.update_boss(self.object, "Wither", "dark_purple")
+		if math.random(1, rand_factor) < 2 then
+			self.arrow = "mobs_mc:wither_skull_strong"
+		else
+			self.arrow = "mobs_mc:wither_skull"
+		end
+		-- TODO implement regeneration at rate 1 HP per second
 	end,
 	on_spawn = function(self)
 		minetest.sound_play("mobs_mc_wither_spawn", {object=self.object, gain=1.0, max_hear_distance=64})
@@ -89,7 +115,7 @@ local wither_rose_soil = { "group:grass_block", "mcl_core:dirt", "mcl_core:coars
 
 mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 	visual = "cube",
-	visual_size = {x = 0.75, y = 0.75},
+	visual_size = {x = 0.3, y = 0.3},
 	textures = {
 		"mobs_mc_wither_projectile.png^[verticalframe:6:0", -- top
 		"mobs_mc_wither_projectile.png^[verticalframe:6:1", -- bottom
@@ -109,6 +135,9 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 		}, nil)
 		mcl_mobs.effect_functions["withering"](player, 0.5, 10)
 		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1)
+		if player:get_hp() <= 0 then
+			self._shooter:get_luaentity().health = self._shooter:get_luaentity().health + 5
+		end
 	end,
 
 	hit_mob = function(self, mob)
@@ -120,6 +149,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1)
 		local l = mob:get_luaentity()
 		if l and l.health - 8 <= 0 then
+			self._shooter:get_luaentity().health = self._shooter:get_luaentity().health + 5
 			local n = minetest.find_node_near(mob:get_pos(),2,wither_rose_soil)
 			if n then
 				local p = vector.offset(n,0,1,0)
@@ -139,7 +169,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 })
 mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
 	visual = "cube",
-	visual_size = {x = 0.75, y = 0.75},
+	visual_size = {x = 0.35, y = 0.35},
 	textures = {
 		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:0", -- top
 		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:1", -- bottom
@@ -148,7 +178,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
 		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:4", -- back
 		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:5", -- front
 	},
-	velocity = 3,
+	velocity = 4,
 	rotate = 90,
 
 	-- direct hit
@@ -163,6 +193,9 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
 			mcl_explosions.explode(pos, 1, { drop_chance = 1.0, max_blast_resistance = 0, }, self.object)
 		else
 			mcl_mobs.mob_class.safe_boom(self, pos, 1) --need to call it this way bc self is the "arrow" object here
+		end
+		if player:get_hp() <= 0 then
+			self._shooter:get_luaentity().health = self._shooter:get_luaentity().health + 5
 		end
 	end,
 
@@ -180,6 +213,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
 		end
 		local l = mob:get_luaentity()
 		if l and l.health - 8 <= 0 then
+			self._shooter:get_luaentity().health = self._shooter:get_luaentity().health + 5
 			local n = minetest.find_node_near(mob:get_pos(),2,wither_rose_soil)
 			if n then
 				local p = vector.offset(n,0,1,0)

@@ -474,6 +474,24 @@ mcl_mobs.effect_functions["heal"] = mcl_potions.healing_func
 mcl_mobs.effect_functions["bad_omen"] = mcl_potions.bad_omen_func
 mcl_mobs.effect_functions["withering"] = mcl_potions.withering_func
 
+-- give withering when standing in wither rose
+local etime = 0
+minetest.register_globalstep(function(dtime)
+	etime = dtime + etime
+	if etime < 0.5 then return end
+	etime = 0
+	for _,pl in pairs(minetest.get_connected_players()) do
+		local n = minetest.find_node_near(pl:get_pos(),0.4,"mcl_flowers:wither_rose",true)
+		if n then mcl_potions.withering_func(pl, 1, 2) end
+	end
+	for _,ent in pairs(minetest.luaentities) do
+		if ent.object:get_pos() and ent.is_mob then
+			local n = minetest.find_node_near(ent.object:get_pos(),0.4,"mcl_flowers:wither_rose",true)
+			if n then mcl_potions.withering_func(ent.object, 1, 2) end
+		end
+	end
+end)
+
 mcl_wip.register_wip_item("mcl_potions:night_vision")
 mcl_wip.register_wip_item("mcl_potions:night_vision_plus")
 mcl_wip.register_wip_item("mcl_potions:night_vision_splash")
