@@ -9,6 +9,14 @@ local function load_schem(filename)
 	return data
 end
 
+local wboss_overworld = 0
+local wboss_nether = 0
+local wboss_end = 0
+
+local LIM_OVERWORLD = tonumber(minetest.settings:get("wither_cap_overworld")) or 3
+local LIM_NETHER = tonumber(minetest.settings:get("wither_cap_nether")) or 10
+local LIM_END = tonumber(minetest.settings:get("wither_cap_end")) or 5
+
 local wither_spawn_schems = {}
 
 for _, d in pairs(dim) do
@@ -35,16 +43,33 @@ local function remove_schem(pos, schem)
 	end
 end
 
+local function check_limit(pos)
+	local dim = mcl_worlds.pos_to_dimension(pos)
+	if dim == "overworld" and wboss_overworld >= LIM_OVERWORLD then return false
+	elseif dim == "end" and wboss_end >= LIM_END then return false
+	elseif wboss_nether >= LIM_NETHER then return false
+	else return true end
+end
+
 local function wither_spawn(pos, player)
 	for _, d in pairs(dim) do
 		for i = 0, 2 do
 			local p = vector.add(pos, {x = 0, y = -2, z = 0, [d] = -i})
 			local schem = wither_spawn_schems[d]
-			if check_schem(p, schem) then
+			if check_schem(p, schem) and check_limit(pos) then
 				remove_schem(p, schem)
 				local wither = minetest.add_entity(vector.add(p, {x = 0, y = 1, z = 0, [d] = 1}), "mobs_mc:wither")
 				local witherer = wither:get_luaentity()
-				witherer._spawner = player
+				witherer._spawner = player:get_player_name()
+				witherer._custom_timer = 0.0
+				witherer._death_timer = 0.0
+				witherer._health_old = witherer.hp_max
+				local dim = mcl_worlds.pos_to_dimension(pos)
+				if dim == "overworld" then
+					wboss_overworld = wboss_overworld + 1
+				elseif dim == "end" then
+					wboss_end = wboss_end + 1
+				else wboss_nether = wboss_nether + 1 end
 				local objects = minetest.get_objects_inside_radius(pos, 20)
 				for _, players in ipairs(objects) do
 					if players:is_player() then
@@ -65,3 +90,13 @@ function wither_head.on_place(itemstack, placer, pointed)
 	end
 	return old_on_place(itemstack, placer, pointed)
 end
+
+-- pull wither counts per dimension
+minetest.register_globalstep(function(dtime)
+	wboss_overworld = mobs_mc.wither_count_overworld
+	wboss_nether = mobs_mc.wither_count_nether
+	wboss_end = mobs_mc.wither_count_end
+	mobs_mc.wither_count_overworld = 0
+	mobs_mc.wither_count_nether = 0
+	mobs_mc.wither_count_end = 0
+end)

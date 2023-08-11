@@ -297,6 +297,7 @@ function mcl_mobs.register_mob(name, def)
 			return false, true, {}
 		end,
 		do_punch = def.do_punch,
+		deal_damage = def.deal_damage,
 		on_breed = def.on_breed,
 		on_grown = def.on_grown,
 		on_pick_up = def.on_pick_up,
@@ -314,7 +315,9 @@ function mcl_mobs.register_mob(name, def)
 		harmed_by_heal = def.harmed_by_heal,
 		is_boss = def.is_boss,
 		dealt_effect = def.dealt_effect,
-		on_lightning_strike = def.on_lightning_strike
+		on_lightning_strike = def.on_lightning_strike,
+
+		_spawner = def._spawner,
 	}
 	minetest.register_entity(name, setmetatable(final_def,mcl_mobs.mob_class_meta))
 

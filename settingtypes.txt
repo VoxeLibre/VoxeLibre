@@ -166,6 +166,15 @@ mcl_mob_cap_axolotl (Mob cap axolotl) int 5 0 1024
 #Maximum amount of ambient mobs that will spawn near a player (default:15)
 mcl_mob_cap_ambient (Mob cap ambient mobs) int 15 0 1024
 
+#Maximum amount of wither bosses on the loaded mapchunks in the overworld that allows spawning withers in the overworld (default:3)
+wither_cap_overworld (Wither cap overworld) int 3 0 2048
+
+#Maximum amount of wither bosses on the loaded mapchunks in the nether that allows spawning withers in the nether (default:10)
+wither_cap_nether (Wither cap nether) int 10 0 2048
+
+#Maximum amount of wither bosses on the loaded mapchunks in the end that allows spawning withers in the end (default:5)
+wither_cap_end (Wither cap end) int 5 0 2048
+
 #Display mob icons in inventory instead of mc-like spawn eggs
 mcl_old_spawn_icons (Old spawn icons instead of eggs) bool false
 

@@ -612,7 +612,7 @@ function mcl_util.deal_damage(target, damage, mcl_reason)
 			end
 			return
 		end
-	end
+	elseif not target:is_player() then return end
 
 	local is_immortal = target:get_armor_groups().immortal or 0
 	if is_immortal>0 then

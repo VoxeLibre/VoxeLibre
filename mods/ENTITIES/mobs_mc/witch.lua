@@ -70,6 +70,11 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 	},
 	view_range = 16,
 	fear_height = 4,
+	deal_damage = function(self, damage, mcl_reason)
+		local factor = 1
+		if mcl_reason.type == "magic" then factor = 0.15 end
+		self.health = self.health - factor*damage
+	end,
 })
 
 -- potion projectile (EXPERIMENTAL)
