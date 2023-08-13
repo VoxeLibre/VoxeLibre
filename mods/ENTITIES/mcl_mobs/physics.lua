@@ -943,7 +943,7 @@ function mob_class:falling(pos)
 
 	-- in water then float up
 	if registered_node.groups.water then
-		if acc and minetest.registered_nodes[node_ok(vector.offset(pos,0,self.collisionbox[5] -0.25,0)).name].groups.water then
+		if acc and self.floats == 1 minetest.registered_nodes[node_ok(vector.offset(pos,0,self.collisionbox[5] -0.25,0)).name].groups.water then
 			self.object:set_acceleration(vector.new(0, -self.fall_speed / (math.max(1, v.y) ^ 2), 0))
 		end
 	else
