@@ -114,7 +114,7 @@ mcl_mobs.register_mob("mobs_mc:snowman", {
 	-- Remove pumpkin if using shears
 	on_rightclick = function(self, clicker)
 		local item = clicker:get_wielded_item()
-		if self.gotten ~= true and item:get_name() == "mcl_tools:shears" then
+		if self.gotten ~= true and inetest.get_item_group(item:get_name(), "shears") > 0 then
 			-- Remove pumpkin
 			self.gotten = true
 			self.object:set_properties({
