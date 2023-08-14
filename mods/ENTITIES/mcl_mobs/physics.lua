@@ -675,7 +675,7 @@ function mob_class:do_env_damage()
 	self.standing_in = node_ok(pos, "air").name
 	self.standing_on = node_ok(pos2, "air").name
 
-	local pos3 = {x=pos.x, y=pos.y+1, z=pos.z}
+	local pos3 = vector.offset(pos, 0, 1, 0)
 	self.standing_under = node_ok(pos3, "air").name
 
 	-- don't fall when on ignore, just stand still
@@ -943,7 +943,7 @@ function mob_class:falling(pos)
 
 	-- in water then float up
 	if registered_node.groups.water then
-		if acc and self.floats == 1 minetest.registered_nodes[node_ok(vector.offset(pos,0,self.collisionbox[5] -0.25,0)).name].groups.water then
+		if acc and self.floats == 1 and minetest.registered_nodes[node_ok(vector.offset(pos,0,self.collisionbox[5] -0.25,0)).name].groups.water then
 			self.object:set_acceleration(vector.new(0, -self.fall_speed / (math.max(1, v.y) ^ 2), 0))
 		end
 	else
