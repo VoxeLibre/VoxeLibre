@@ -10,8 +10,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_copper:block",
 	recipe = {
-		{ "mcl_copper:copper_ingot", "mcl_copper:copper_ingot" },
-		{ "mcl_copper:copper_ingot", "mcl_copper:copper_ingot" },
+		{ "mcl_copper:copper_ingot", "mcl_copper:copper_ingot", "mcl_copper:copper_ingot" },
+		{ "mcl_copper:copper_ingot", "mcl_copper:copper_ingot", "mcl_copper:copper_ingot" },
+		{ "mcl_copper:copper_ingot", "mcl_copper:copper_ingot", "mcl_copper:copper_ingot" },
 	},
 })
 
@@ -59,7 +60,7 @@ for _, w in ipairs(waxable_blocks) do
 end
 
 minetest.register_craft({
-	output = "mcl_copper:copper_ingot 4",
+	output = "mcl_copper:copper_ingot 9",
 	recipe = {
 		{ "mcl_copper:block" },
 	},
