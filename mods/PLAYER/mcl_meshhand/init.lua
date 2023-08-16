@@ -85,15 +85,15 @@ function mcl_meshhand.update_player(player)
 	end
 end
 
+minetest.register_on_joinplayer(function(player)
+	player:get_inventory():set_size("hand", 1)
+end)
+
 if mcl_skins_enabled then
 	mcl_player.register_on_visual_change(mcl_meshhand.update_player)
 else
 	minetest.register_on_joinplayer(mcl_meshhand.update_player)
 end
-
-minetest.register_on_joinplayer(function(player)
-	player:get_inventory():set_size("hand", 1)
-end)
 
 -- This is needed to deal damage when punching mobs
 -- with random items in hand in survival mode
