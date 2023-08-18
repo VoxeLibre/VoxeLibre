@@ -175,6 +175,7 @@
 * Faerraven / Michieal
 * Nicu
 * Exhale
+* Aeonix_Aeon
 
 ## Translations
 * Wuzzy
