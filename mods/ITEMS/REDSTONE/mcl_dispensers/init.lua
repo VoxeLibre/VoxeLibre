@@ -101,8 +101,7 @@ local dispenserdef = {
 		for i = 1, inv:get_size("main") do
 			local stack = inv:get_stack("main", i)
 			if not stack:is_empty() then
-				local p = { x = pos.x + math.random(0, 10) / 10 - 0.5, y = pos.y, z = pos.z + math.random(0, 10) / 10 - 0.5 }
-				minetest.add_item(p, stack)
+				minetest.add_item(vector.offset(pos, math.random(0, 10) / 10 - 0.5, 0, math.random(0, 10) / 10 - 0.5), stack)
 			end
 		end
 		meta:from_table(meta2)
@@ -120,11 +119,11 @@ local dispenserdef = {
 					dropdir = vector.multiply(minetest.facedir_to_dir(node.param2), -1)
 					droppos = vector.add(pos, dropdir)
 				elseif node.name == "mcl_dispensers:dispenser_up" then
-					dropdir = { x = 0, y = 1, z = 0 }
-					droppos = { x = pos.x, y = pos.y + 1, z = pos.z }
+					dropdir = vector.new(0, 1, 0)
+					droppos = vector.offset(pos, 0, 1, 0)
 				elseif node.name == "mcl_dispensers:dispenser_down" then
-					dropdir = { x = 0, y = -1, z = 0 }
-					droppos = { x = pos.x, y = pos.y - 1, z = pos.z }
+					dropdir = vector.new(0, -1, 0)
+					droppos = vector.offset(pos, 0, -1, 0)
 				end
 				local dropnode = minetest.get_node(droppos)
 				local dropnodedef = minetest.registered_nodes[dropnode.name]
@@ -156,7 +155,7 @@ local dispenserdef = {
 
 					-- Armor, mob heads and pumpkins
 					if igroups.armor then
-						local droppos_below = { x = droppos.x, y = droppos.y - 1, z = droppos.z }
+						local droppos_below = vector.offset(droppos, 0, -1, 0)
 
 						for _, objs in ipairs({ minetest.get_objects_inside_radius(droppos, 1),
 							minetest.get_objects_inside_radius(droppos_below, 1) }) do

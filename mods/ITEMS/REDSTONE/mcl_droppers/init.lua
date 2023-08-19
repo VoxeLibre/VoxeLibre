@@ -74,8 +74,7 @@ local dropperdef = {
 		for i = 1, inv:get_size("main") do
 			local stack = inv:get_stack("main", i)
 			if not stack:is_empty() then
-				local p = { x = pos.x + math.random(0, 10) / 10 - 0.5, y = pos.y, z = pos.z + math.random(0, 10) / 10 - 0.5 }
-				minetest.add_item(p, stack)
+				minetest.add_item(vector.offset(pos, math.random(0, 10) / 10 - 0.5, 0, math.random(0, 10) / 10 - 0.5), stack)
 			end
 		end
 		meta:from_table(meta2)
@@ -119,9 +118,9 @@ local dropperdef = {
 			if node.name == "mcl_droppers:dropper" then
 				droppos = vector.subtract(pos, minetest.facedir_to_dir(node.param2))
 			elseif node.name == "mcl_droppers:dropper_up" then
-				droppos = { x = pos.x, y = pos.y + 1, z = pos.z }
+				droppos = vector.offset(pos, 0, 1, 0)
 			elseif node.name == "mcl_droppers:dropper_down" then
-				droppos = { x = pos.x, y = pos.y - 1, z = pos.z }
+				droppos = vector.offset(pos, 0, -1, 0)
 			end
 			local dropnode = minetest.get_node(droppos)
 			-- Do not drop into solid nodes, unless they are containers
@@ -149,11 +148,11 @@ local dropperdef = {
 				if not dropped and not dropnodedef.groups.container then
 					-- Drop item normally
 					local pos_variation = 100
-					droppos = {
-						x = droppos.x + math.random(-pos_variation, pos_variation) / 1000,
-						y = droppos.y + math.random(-pos_variation, pos_variation) / 1000,
-						z = droppos.z + math.random(-pos_variation, pos_variation) / 1000,
-					}
+					droppos = vector.offset(droppos,
+						math.random(-pos_variation, pos_variation) / 1000,
+						math.random(-pos_variation, pos_variation) / 1000,
+						math.random(-pos_variation, pos_variation) / 1000
+					)
 					local item_entity = minetest.add_item(droppos, dropitem)
 					local drop_vel = vector.subtract(droppos, pos)
 					local speed = 3

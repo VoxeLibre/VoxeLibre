@@ -466,12 +466,7 @@ minetest.register_node("mcl_blast_furnace:blast_furnace", {
 		for _, listname in ipairs({ "src", "dst", "fuel" }) do
 			local stack = inv:get_stack(listname, 1)
 			if not stack:is_empty() then
-				local p = {
-					x = pos.x + math.random(0, 10) / 10 - 0.5,
-					y = pos.y,
-					z = pos.z + math.random(0, 10) / 10 - 0.5
-				}
-				minetest.add_item(p, stack)
+				minetest.add_item(vector.offset(pos, math.random(0, 10) / 10 - 0.5, 0, math.random(0, 10) / 10 - 0.5), stack)
 			end
 		end
 		meta:from_table(meta2)
