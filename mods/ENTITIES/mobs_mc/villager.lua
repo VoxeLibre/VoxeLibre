@@ -163,7 +163,7 @@ local professions = {
 			{
 			{ { "mcl_fishing:pufferfish_raw", 4, 4 }, E1 },
 
-            --Boat cherry?
+			--Boat cherry?
 			{ { "mcl_boats:boat", 1, 1 }, E1 },
 			{ { "mcl_boats:boat_acacia", 1, 1 }, E1 },
 			{ { "mcl_boats:boat_spruce", 1, 1 }, E1 },
@@ -234,7 +234,7 @@ local professions = {
 			{ { "mcl_dye:green", 12, 12 }, E1 },
 			{ { "mcl_dye:lightblue", 12, 12 }, E1 },
 			{ { "mcl_dye:white", 12, 12 }, E1 },
-			
+
 			{ E1, { "mcl_wool:white", 1, 1 } },
 			{ E1, { "mcl_wool:grey", 1, 1 } },
 			{ E1, { "mcl_wool:silver", 1, 1 } },
@@ -276,7 +276,7 @@ local professions = {
 			{ { "mcl_dye:pink", 12, 12 }, E1 },
 			{ { "mcl_dye:yellow", 12, 12 }, E1 },
 			{ { "mcl_dye:orange", 12, 12 }, E1 },
-			
+
 			{ { "mcl_core:emerald", 3, 3 }, { "mcl_beds:bed_red_bottom", 1, 1 } },
 			{ { "mcl_core:emerald", 3, 3 }, { "mcl_beds:bed_blue_bottom", 1, 1 } },
 			{ { "mcl_core:emerald", 3, 3 }, { "mcl_beds:bed_cyan_bottom", 1, 1 } },
@@ -612,73 +612,71 @@ local professions = {
 		},
 	},
 	mason =	{
-	       name = N("Mason"),
-	       texture = "mobs_mc_villager_mason.png",
-               jobsite = "mcl_stonecutter:stonecutter",
-	       trades =  {
-		        {
-		        { { "mcl_core:clay_lump", 10, 10 }, E1  },
-		        { E1, { "mcl_core:brick", 10, 10 } },
-		        },
+		name = N("Mason"),
+		texture = "mobs_mc_villager_mason.png",
+		jobsite = "mcl_stonecutter:stonecutter",
+		trades =  {
+			{
+			{ { "mcl_core:clay_lump", 10, 10 }, E1  },
+			{ E1, { "mcl_core:brick", 10, 10 } },
+			},
 
-			    {
-		        { { "mcl_core:stone", 20, 20 }, E1 },
-		        { E1, { "mcl_core:stonebrickcarved", 4, 4 } },
-		        },
+			{
+			{ { "mcl_core:stone", 20, 20 }, E1 },
+			{ E1, { "mcl_core:stonebrickcarved", 4, 4 } },
+			},
 
-		        {
-		        { { "mcl_core:granite", 16, 16 }, E1 },
-		        { { "mcl_core:andesite", 16, 16 }, E1 },
-		        { { "mcl_core:diorite", 16, 16 }, E1 },
-		        { E1, { "mcl_core:andesite_smooth", 4, 4 } },
-		        { E1, { "mcl_core:granite_smooth", 4, 4 } },
-		        { E1, { "mcl_core:diorite_smooth", 4, 4 } },
-		        --FIXME: { E1, { "Dripstone Block", 4, 4 } },
-		        },
+			{
+			{ { "mcl_core:granite", 16, 16 }, E1 },
+			{ { "mcl_core:andesite", 16, 16 }, E1 },
+			{ { "mcl_core:diorite", 16, 16 }, E1 },
+			{ E1, { "mcl_core:andesite_smooth", 4, 4 } },
+			{ E1, { "mcl_core:granite_smooth", 4, 4 } },
+			{ E1, { "mcl_core:diorite_smooth", 4, 4 } },
+			--FIXME: { E1, { "Dripstone Block", 4, 4 } },
+			},
 
-		        {
-		        { { "mcl_nether:quartz", 12, 12 }, E1 },
-		        --Only  Colored Terracotta?
-		        { E1, { "mcl_colorblocks:hardened_clay", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_white", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_grey", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_silver", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_black", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_red", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_yellow", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_green", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_cyan", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_blue", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_magenta", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_orange", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_brown", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_pink", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_light_blue", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_lime", 1, 1 } },
-                { E1, { "mcl_colorblocks:hardened_clay_purple", 1, 1 } },
+			{
+			{ { "mcl_nether:quartz", 12, 12 }, E1 },
+			{ E1, { "mcl_colorblocks:hardened_clay_white", 1, 1 } },
+			{ E1, { "mcl_colorblocks:hardened_clay_grey", 1, 1 } },
+			{ E1, { "mcl_colorblocks:hardened_clay_silver", 1, 1 } },
+			{ E1, { "mcl_colorblocks:hardened_clay_black", 1, 1 } },
+			{ E1, { "mcl_colorblocks:hardened_clay_red", 1, 1 } },
+			{ E1, { "mcl_colorblocks:hardened_clay_yellow", 1, 1 } },
+			{ E1, { "mcl_colorblocks:hardened_clay_green", 1, 1 } },
+			{ E1, { "mcl_colorblocks:hardened_clay_cyan", 1, 1 } },
+			{ E1, { "mcl_colorblocks:hardened_clay_blue", 1, 1 } },
+			{ E1, { "mcl_colorblocks:hardened_clay_magenta", 1, 1 } },
+			{ E1, { "mcl_colorblocks:hardened_clay_orange", 1, 1 } },
+			{ E1, { "mcl_colorblocks:hardened_clay_brown", 1, 1 } },
+			{ E1, { "mcl_colorblocks:hardened_clay_pink", 1, 1 } },
+			{ E1, { "mcl_colorblocks:hardened_clay_light_blue", 1, 1 } },
+			{ E1, { "mcl_colorblocks:hardened_clay_lime", 1, 1 } },
+			{ E1, { "mcl_colorblocks:hardened_clay_purple", 1, 1 } },
 
-                { E1, { "mcl_colorblocks:glazed_terracotta_white", 1, 1 } },
-                { E1, { "mcl_colorblocks:glazed_terracotta_grey", 1, 1 } },
-                { E1, { "mcl_colorblocks:glazed_terracotta_silver", 1, 1 } },
-                { E1, { "mcl_colorblocks:glazed_terracotta_black", 1, 1 } },
-                { E1, { "mcl_colorblocks:glazed_terracotta_red", 1, 1 } },
-                { E1, { "mcl_colorblocks:glazed_terracotta_yellow", 1, 1 } },
-                { E1, { "mcl_colorblocks:glazed_terracotta_green", 1, 1 } },
-                { E1, { "mcl_colorblocks:glazed_terracotta_cyan", 1, 1 } },
-                { E1, { "mcl_colorblocks:glazed_terracotta_blue", 1, 1 } },
-                { E1, { "mcl_colorblocks:glazed_terracotta_magenta", 1, 1 } },
-                { E1, { "mcl_colorblocks:glazed_terracotta_orange", 1, 1 } },
-                { E1, { "mcl_colorblocks:glazed_terracotta_brown", 1, 1 } },
-                { E1, { "mcl_colorblocks:glazed_terracotta_pink", 1, 1 } },
-                { E1, { "mcl_colorblocks:glazed_terracotta_light_blue", 1, 1 } },
-                { E1, { "mcl_colorblocks:glazed_terracotta_lime", 1, 1 } },
-                { E1, { "mcl_colorblocks:glazed_terracotta_purple", 1, 1 } },
-	  	        },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_white", 1, 1 } },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_grey", 1, 1 } },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_silver", 1, 1 } },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_black", 1, 1 } },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_red", 1, 1 } },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_yellow", 1, 1 } },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_green", 1, 1 } },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_cyan", 1, 1 } },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_blue", 1, 1 } },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_magenta", 1, 1 } },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_orange", 1, 1 } },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_brown", 1, 1 } },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_pink", 1, 1 } },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_light_blue", 1, 1 } },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_lime", 1, 1 } },
+			{ E1, { "mcl_colorblocks:glazed_terracotta_purple", 1, 1 } },
+			},
 
-	 	        {
-		        { E1, { "mcl_nether:quartz_pillar", 1, 1 } },
-                { E1, { "mcl_nether:quartz_block", 1, 1 } },
-		        },
+			{
+			{ E1, { "mcl_nether:quartz_pillar", 1, 1 } },
+			{ E1, { "mcl_nether:quartz_block", 1, 1 } },
+			},
 		},
 	},
 	nitwit = {
