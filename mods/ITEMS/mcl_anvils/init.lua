@@ -79,18 +79,6 @@ local function get_consumed_materials(tool, material)
 	return materials_used
 end
 
----@param table table
----@param value any
----@return boolean
-local function contains(table, value)
-	for _, i in pairs(table) do
-		if i == value then
-			return true
-		end
-	end
-	return false
-end
-
 -- Given 2 input stacks, tells you which is the tool and which is the material.
 -- Returns ("tool", input1, input2) if input1 is tool and input2 is material.
 -- Returns ("material", input2, input1) if input1 is material and input2 is tool.
@@ -102,9 +90,9 @@ local function distinguish_tool_and_material(input1, input2)
 	local def2 = input2:get_definition()
 	local r1 = def1._repair_material
 	local r2 = def2._repair_material
-	if def1.type == "tool" and r1 and type(r1) == "table" and contains(r1, input2) then
+	if def1.type == "tool" and r1 and type(r1) == "table" and table.indexof(r1, input2) ~= -1 then
 		return "tool", input1, input2
-	elseif def2.type == "tool" and r2 and type(r2) == "table" and contains(r2, input1) then
+	elseif def2.type == "tool" and r2 and type(r2) == "table" and table.indexof(r1, input1) ~= -1 then
 		return "material", input2, input1
 	elseif def1.type == "tool" and r1 then
 		return "tool", input1, input2
@@ -192,7 +180,7 @@ local function update_anvil_slots(meta)
 						has_correct_material = true
 					end
 				else
-					if contains(repair, material_name) then
+					if table.indexof(repair, material_name) ~= -1 then
 						has_correct_material = true
 					else
 						for _, r in pairs(repair) do
