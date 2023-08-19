@@ -1,6 +1,6 @@
 # MineClone2 Formspec Guide
 
-**_This guide will learn you rules about creation of formspecs for the MineClone2 game._**
+**_This guide will teach you the rules for creating formspecs for the MineClone2 game._**
 
 Formspecs are an important part of game and mod development.
 
@@ -8,7 +8,7 @@ First of all, MineClone2 aims to support ONLY last formspec version. Many utilit
 
 The typical width of an 9 slots width inventory formspec is `0.375 + 9 + ((9-1) * 0.25) + 0.375 = 11.75`
 
-Margins is 0.375.
+Margins are 0.375.
 
 The labels color is `mcl_formspec.label_color`
 
