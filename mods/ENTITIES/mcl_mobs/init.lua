@@ -312,6 +312,7 @@ function mcl_mobs.register_mob(name, def)
 
 			return self:mob_activate(staticdata, def, dtime)
 		end,
+		attack_state = def.attack_state,
 		harmed_by_heal = def.harmed_by_heal,
 		is_boss = def.is_boss,
 		dealt_effect = def.dealt_effect,
@@ -348,6 +349,7 @@ function mcl_mobs.register_arrow(name, def)
 		collisionbox = {0, 0, 0, 0, 0, 0}, -- remove box around arrows
 		timer = 0,
 		switch = 0,
+		_lifetime = def._lifetime or 150,
 		owner_id = def.owner_id,
 		rotate = def.rotate,
 		on_punch = function(self)
@@ -367,7 +369,7 @@ function mcl_mobs.register_arrow(name, def)
 			local pos = self.object:get_pos()
 
 			if self.switch == 0
-			or self.timer > 150
+			or self.timer > self._lifetime
 			or not within_limits(pos, 0) then
 				mcl_burning.extinguish(self.object)
 				self.object:remove();

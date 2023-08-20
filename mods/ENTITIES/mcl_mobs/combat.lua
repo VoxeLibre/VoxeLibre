@@ -1216,6 +1216,9 @@ function mob_class:do_states_attack (dtime)
 				end
 			end
 		end
+
+	elseif self.attack_type == "custom" and self.attack_state then
+		self.attack_state(self, dtime)
 	else
 
 	end

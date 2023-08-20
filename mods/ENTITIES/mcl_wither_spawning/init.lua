@@ -59,11 +59,8 @@ local function wither_spawn(pos, player)
 			if check_schem(p, schem) and check_limit(pos) then
 				remove_schem(p, schem)
 				local wither = minetest.add_entity(vector.add(p, {x = 0, y = 1, z = 0, [d] = 1}), "mobs_mc:wither")
-				local witherer = wither:get_luaentity()
-				witherer._spawner = player:get_player_name()
-				witherer._custom_timer = 0.0
-				witherer._death_timer = 0.0
-				witherer._health_old = witherer.hp_max
+				local wither_ent = wither:get_luaentity()
+				wither_ent._spawner = player:get_player_name()
 				local dim = mcl_worlds.pos_to_dimension(pos)
 				if dim == "overworld" then
 					wboss_overworld = wboss_overworld + 1
