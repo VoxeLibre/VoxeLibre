@@ -1,6 +1,6 @@
 # textdomain: mcl_commands
 Players can't be killed right now, damage has been disabled.=Игроки не могут быть убиты прямо сейчас, урон отключён.
-Player @1 does not exist.=Игрок @1 не существует.
+Player @1 does not exist.=Игрока @1 не существует.
 You are already dead=Вы уже мертвы
 @1 is already dead=@1 уже мертв(а)
 @1 committed suicide.=@1 совершил(а) самоубийство.
@@ -17,7 +17,7 @@ Invalid node=Неправильный блок
 @1 spawned.=@1 возродился(ась).
 Invalid parameters (see /help setblock)=Недопустимые параметры (см. /help setblock)
 List bans=Список банов
-Ban list: @1=Бан-лист: @1
-Show who is logged on=Показывает, кто подключён
-Displays the world seed=Показывает значение зерна мира
+Ban list: @1=Список банов: @1
+Show who is logged on=Показывает игроков в сети
+Displays the world seed=Показать значение зерна мира
 Only peaceful mobs allowed!=Разрешены только мирные сущности!

@@ -10,7 +10,7 @@ Bamboo Block=
 
 ### bamboo_items.lua ###
 
-A bamboo button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=
+A bamboo button is a redstone component made out of bamboo which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=
 
 A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=
 
@@ -24,6 +24,7 @@ Bamboo Mosaic Stair=
 Bamboo Plank Slab=
 Bamboo Plank Stair=
 Bamboo Pressure Plate=
+Bamboo Sign=
 Bamboo Slab=
 Bamboo Stair=
 Bamboo Trapdoor=

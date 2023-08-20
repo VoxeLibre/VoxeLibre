@@ -1,3 +1,4 @@
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --                                          ____________________________
 --_________________________________________/    Variables & Functions    \_________ 
@@ -78,7 +79,7 @@ end)
 --										  ________________________
 --_________________________________________/	Item Regestration	\_________________
 minetest.register_craftitem("mcl_sus_stew:stew",{
-	description = "Suspicious Stew",
+	description = S("Suspicious Stew"),
 	inventory_image = "sus_stew.png",
 	stack_max = 1,
 	on_place = eat_stew,

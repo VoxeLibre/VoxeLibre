@@ -179,7 +179,7 @@ if minetest.get_modpath("mcl_signs") then
 		-- Bamboo Signs...
 		mcl_signs.register_sign_custom("mcl_bamboo", "_bamboo", "mcl_bamboo_bamboo_sign.png",
 				"#ffffff", "mcl_bamboo_bamboo_sign_wield.png", "mcl_bamboo_bamboo_sign_wield.png",
-				"Bamboo Sign")
+				S("Bamboo Sign"))
 		mcl_signs.register_sign_craft("mcl_bamboo", BAMBOO_PLANK, "_bamboo")
 		minetest.register_alias("bamboo_sign", "mcl_signs:wall_sign_bamboo")
 	end
@@ -212,7 +212,7 @@ if minetest.get_modpath("mesecons_button") then
 				{ material_wood = 1, handy = 1, pickaxey = 1, flammable = 3, fire_flammability = 20, fire_encouragement = 5, },
 				1,
 				false,
-				S("A bamboo button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second."),
+				S("A bamboo button is a redstone component made out of bamboo which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second."),
 				"mesecons_button_push")
 	end
 end

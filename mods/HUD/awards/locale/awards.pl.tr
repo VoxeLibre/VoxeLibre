@@ -8,7 +8,7 @@
 @1 (got)=@1 (zdobyto)
 @1: @2=@1: @2
 @1’s awards:=Nagrody @1:
-(Secret Award)=(Sekretna nagroda)
+(Secret Advancement)=(Sekretna nagroda)
 <achievement ID>=<id osiągnięcia>
 <name>=<nazwa>
 Achievement gotten!=Zdobyto osiągnięcie!

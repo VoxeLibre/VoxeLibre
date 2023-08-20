@@ -2,7 +2,6 @@
 Water can flow into this block and cause it to drop as an item.=
 This block can be turned into dirt with a hoe.=
 This block can be turned into farmland with a hoe.=
-This block can be turned into grass path with a shovel.=
 This block acts as a soil for all saplings.=
 This block acts as a soil for some saplings.=
 Sugar canes will grow on this block.=

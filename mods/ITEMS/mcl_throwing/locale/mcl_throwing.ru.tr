@@ -1,12 +1,12 @@
 # textdomain: mcl_throwing
-@1 used the ender pearl too often.=@1 использовал(а) жемчужину Предела слишком часто.
-Use the punch key to throw.=Используй клавишу удара для броска.
+@1 used the ender pearl too often.=@1 использовал(а) жемчуг Края слишком часто.
+Use the punch key to throw.=Используйте клавишу удара для броска.
 Snowball=Снежок
-Snowballs can be thrown or launched from a dispenser for fun. Hitting something with a snowball does nothing.=Снежки можно бросать или запускать из диспенсера для веселья. Попадание снежком в кого-либо ни к чему не приводит.
+Snowballs can be thrown or launched from a dispenser for fun. Hitting something with a snowball does nothing.=Снежки можно бросать или запускать из раздатчика для веселья. Попадание снежком в кого-либо ничего не делает.
 Egg=Яйцо
-Eggs can be thrown or launched from a dispenser and breaks on impact. There is a small chance that 1 or even 4 chicks will pop out of the egg.=Яйца можно бросать или запускать из диспенсера, они ломаются при ударе. Есть небольшой шанс вылупления 1 или даже 4 цыплят из яйца.
-Ender Pearl=Жемчужина Предела
-An ender pearl is an item which can be used for teleportation at the cost of health. It can be thrown and teleport the thrower to its impact location when it hits a solid block or a plant. Each teleportation hurts the user by 5 hit points.=Жемчужина Предела это предмет, который можно использовать для телепортации за счёт единиц вашего здоровья. Его можно бросить, и это телепортирует бросившего в место удара, когда он попадает в сплошной блок или растение. Каждая телепортация ранит пользователя на 5 очков здоровья (HP).
+Eggs can be thrown or launched from a dispenser and breaks on impact. There is a small chance that 1 or even 4 chicks will pop out of the egg.=Яйца можно бросать или запускать из раздатчика, они ломаются при столкновении. Есть небольшой шанс вылупления 1 или даже 4 цыплят из яйца.
+Ender Pearl=Жемчуг Края
+An ender pearl is an item which can be used for teleportation at the cost of health. It can be thrown and teleport the thrower to its impact location when it hits a solid block or a plant. Each teleportation hurts the user by 5 hit points.=Жемчуг Края это предмет, который можно использовать для телепортации за счёт единиц вашего здоровья. Его можно бросить, и это телепортирует бросившего в то место, куда упадает жемчуг. Каждая телепортация ранит игрока на 5 очков здоровья.
 Throwable=Можно бросать
 Chance to hatch chicks when broken=Шанс вылупления цыплят при разбитии
-Teleports you on impact for cost of 5 HP=Телепортирует вас при ударе за счёт 5 HP
+Teleports you on impact for cost of 5 HP=Телепортирует вас; урон 5 HP от столкновения

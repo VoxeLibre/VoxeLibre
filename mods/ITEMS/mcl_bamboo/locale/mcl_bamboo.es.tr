@@ -8,7 +8,7 @@ Stripped Bamboo Block=Bloque de bambú sin corteza
 
 ### bamboo_items.lua ###
 
-A bamboo button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Un botón de bambú es un componente de redstone hecho de piedra que se puede presionar para proporcionar energía de redstone. Cuando se empuja, alimenta los componentes adyacentes de redstone durante 1 segundo.
+A bamboo button is a redstone component made out of bamboo which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Un botón de bambú es un componente de redstone hecho de piedra que se puede presionar para proporcionar energía de redstone. Cuando se empuja, alimenta los componentes adyacentes de redstone durante 1 segundo.
 
 A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=Una placa de presión de madera es un componente de redstone que proporciona energía de redstone a sus bloques adyacentes mientras cualquier objeto movible (incluyendo objetos en el suelo, jugadores y mobs) descanse encima suya.
 

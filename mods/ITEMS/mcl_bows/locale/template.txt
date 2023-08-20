@@ -15,4 +15,4 @@ Damage from dispenser: 3=
 Launches arrows=
 Crossbow=
 Crossbows are ranged weapons to shoot arrows at your foes.=
-To use the crossbow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Hold down the right mouse button to charge, release to shoot.=
+To use the crossbow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Hold down the right mouse button to charge, release to load an arrow into the chamber, then to shoot press left mouse.=

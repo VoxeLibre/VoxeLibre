@@ -8,7 +8,7 @@
 @1 (got)=
 @1: @2=
 @1’s awards:=
-(Secret Award)=
+(Secret Advancement)=
 <achievement ID>=
 <name>=
 Advancement Made!=
