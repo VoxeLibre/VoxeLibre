@@ -541,7 +541,7 @@ function mcl_potions._load_player_effects(player)
 	end
 
 	if minetest.deserialize(meta:get_string("_is_withering")) then
-		EF.withering[player] = minetest:deserialize(meta:get_string("_is_withering"))
+		EF.withering[player] = minetest.deserialize(meta:get_string("_is_withering"))
 	end
 
 end

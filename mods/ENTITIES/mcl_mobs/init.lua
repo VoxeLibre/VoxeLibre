@@ -317,6 +317,8 @@ function mcl_mobs.register_mob(name, def)
 		is_boss = def.is_boss,
 		dealt_effect = def.dealt_effect,
 		on_lightning_strike = def.on_lightning_strike,
+		extra_hostile = def.extra_hostile,
+		attack_exception = def.attack_exception or function(p) return false end,
 
 		_spawner = def._spawner,
 	}
@@ -352,7 +354,7 @@ function mcl_mobs.register_arrow(name, def)
 		_lifetime = def._lifetime or 150,
 		owner_id = def.owner_id,
 		rotate = def.rotate,
-		on_punch = function(self)
+		on_punch = def.on_punch or function(self)
 			local vel = self.object:get_velocity()
 			self.object:set_velocity({x=vel.x * -1, y=vel.y * -1, z=vel.z * -1})
 		end,

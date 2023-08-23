@@ -175,6 +175,15 @@ wither_cap_nether (Wither cap nether) int 10 0 2048
 #Maximum amount of wither bosses on the loaded mapchunks in the end that allows spawning withers in the end (default:5)
 wither_cap_end (Wither cap end) int 5 0 2048
 
+#Should wither follow the player who spawned him around
+wither_follow_spawner (Wither following his spawner) bool false
+
+#Should wither strafe while in combat
+wither_strafes (Wither strafes) bool true
+
+#Wither anti-troll measures (escaping when stuck in a block, despawning when spawner goes offline, teleporting after the spawner). When this is OFF, wither_follow_spawner has no effect.
+wither_anti_troll_measures (Wither anti-troll measures) bool true
+
 #Display mob icons in inventory instead of mc-like spawn eggs
 mcl_old_spawn_icons (Old spawn icons instead of eggs) bool false
 

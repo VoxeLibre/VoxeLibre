@@ -384,7 +384,8 @@ function mob_class:monster_attack()
 		-- find specific mob to attack, failing that attack player/npc/animal
 		if specific_attack(self.specific_attack, name)
 				and (type == "player" or ( type == "npc" and self.attack_npcs )
-				or (type == "animal" and self.attack_animals == true)) then
+				or (type == "animal" and self.attack_animals == true)
+				or (self.extra_hostile and not self.attack_exception(player))) then
 			p = player:get_pos()
 			sp = s
 
