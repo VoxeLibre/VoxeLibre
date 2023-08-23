@@ -725,6 +725,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	mcl_inventory.set_creative_formspec(player)
 end)
 
+minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack)
+	return placer and placer:is_player() and minetest.is_creative_enabled(placer:get_player_name())
+end)
 
 if minetest.is_creative_enabled("") then
 	minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack)
