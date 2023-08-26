@@ -8,6 +8,7 @@ local open_barrels = {}
 
 local drop_content = mcl_util.drop_items_from_meta_container("main")
 
+---@param pos Vector
 local function on_blast(pos)
 	local node = minetest.get_node(pos)
 	drop_content(pos, node)
@@ -45,30 +46,34 @@ local function barrel_open(pos, node, clicker)
 	local playername = clicker:get_player_name()
 
 	minetest.show_formspec(playername,
-		"mcl_barrels:barrel_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"mcl_barrels:barrel_" .. pos.x .. "_" .. pos.y .. "_" .. pos.z,
 		table.concat({
-			"size[9,8.75]",
-			"label[0,0;"..F(C("#313131", name)).."]",
-			"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]",
-			mcl_formspec.get_itemslot_bg(0, 0.5, 9, 3),
-			"label[0,4.0;"..F(C("#313131", S("Inventory"))).."]",
-			"list[current_player;main;0,4.5;9,3;9]",
-			mcl_formspec.get_itemslot_bg(0, 4.5, 9, 3),
-			"list[current_player;main;0,7.74;9,1;]",
-			mcl_formspec.get_itemslot_bg(0, 7.74, 9, 1),
-			"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]",
+			"formspec_version[4]",
+			"size[11.75,10.425]",
+
+			"label[0.375,0.375;" .. F(C(mcl_formspec.label_color, name)) .. "]",
+			mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
+			"list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0.375,0.75;9,3;]",
+			"label[0.375,4.7;" .. F(C(mcl_formspec.label_color, S("Inventory"))) .. "]",
+			mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
+			"list[current_player;main;0.375,5.1;9,3;9]",
+
+			mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
+			"list[current_player;main;0.375,9.05;9,1;]",
+			"listring[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main]",
 			"listring[current_player;main]",
 		})
 	)
 
-	minetest.swap_node(pos,	{ name = "mcl_barrels:barrel_open", param2 = node.param2 })
+	minetest.swap_node(pos, { name = "mcl_barrels:barrel_open", param2 = node.param2 })
 	open_barrels[playername] = pos
-	minetest.sound_play({name="mcl_barrels_default_barrel_open", pos=pos, gain=0.5, max_hear_distance=16}, true)
+	minetest.sound_play({ name = "mcl_barrels_default_barrel_open", pos = pos, gain = 0.5, max_hear_distance = 16 }, true)
 end
 
+---@param pos Vector
 local function close_forms(pos)
 	local players = minetest.get_connected_players()
-	local formname = "mcl_barrels:barrel_"..pos.x.."_"..pos.y.."_"..pos.z
+	local formname = "mcl_barrels:barrel_" .. pos.x .. "_" .. pos.y .. "_" .. pos.z
 	for p = 1, #players do
 		if vector.distance(players[p]:get_pos(), pos) <= 30 then
 			minetest.close_formspec(players[p]:get_player_name(), formname)
@@ -76,15 +81,18 @@ local function close_forms(pos)
 	end
 end
 
+---@param pos Vector
 local function update_after_close(pos)
 	local node = minetest.get_node_or_nil(pos)
 	if not node then return end
 	if node.name == "mcl_barrels:barrel_open" then
-		minetest.swap_node(pos, {name = "mcl_barrels:barrel_closed", param2 = node.param2})
-		minetest.sound_play({name="mcl_barrels_default_barrel_close", pos=pos, gain=0.5, max_hear_distance=16}, true)
+		minetest.swap_node(pos, { name = "mcl_barrels:barrel_closed", param2 = node.param2 })
+		minetest.sound_play({ name = "mcl_barrels_default_barrel_close", pos = pos, gain = 0.5, max_hear_distance = 16 },
+			true)
 	end
 end
 
+---@param player ObjectRef
 local function close_barrel(player)
 	local name = player:get_player_name()
 	local open = open_barrels[name]
@@ -102,20 +110,22 @@ minetest.register_node("mcl_barrels:barrel_closed", {
 	_tt_help = S("27 inventory slots"),
 	_doc_items_longdesc = S("Barrels are containers which provide 27 inventory slots."),
 	_doc_items_usagehelp = S("To access its inventory, rightclick it. When broken, the items will drop out."),
-	tiles = {"mcl_barrels_barrel_top.png^[transformR270", "mcl_barrels_barrel_bottom.png", "mcl_barrels_barrel_side.png"},
+	tiles = { "mcl_barrels_barrel_top.png^[transformR270", "mcl_barrels_barrel_bottom.png", "mcl_barrels_barrel_side.png" },
 	paramtype = "light",
 	paramtype2 = "facedir",
 	on_place = function(itemstack, placer, pointed_thing)
-		minetest.rotate_and_place(itemstack, placer, pointed_thing, minetest.is_creative_enabled(placer:get_player_name()), {}, false)
+		minetest.rotate_and_place(itemstack, placer, pointed_thing,
+			minetest.is_creative_enabled(placer:get_player_name()), {}
+			, false)
 		return itemstack
 	end,
 	stack_max = 64,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	groups = {handy = 1, axey = 1, container = 2, material_wood = 1, flammable = -1, deco_block = 1},
+	groups = { handy = 1, axey = 1, container = 2, material_wood = 1, flammable = -1, deco_block = 1 },
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
-		inv:set_size("main", 9*3)
+		inv:set_size("main", 9 * 3)
 	end,
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
 		minetest.get_meta(pos):set_string("name", itemstack:get_meta():get_string("name"))
@@ -124,16 +134,16 @@ minetest.register_node("mcl_barrels:barrel_closed", {
 	allow_metadata_inventory_take = protection_check_put_take,
 	allow_metadata_inventory_put = protection_check_put_take,
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-		minetest.log("action", player:get_player_name()..
-			" moves stuff in barrel at "..minetest.pos_to_string(pos))
+		minetest.log("action", player:get_player_name() ..
+			" moves stuff in barrel at " .. minetest.pos_to_string(pos))
 	end,
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name()..
-			" moves stuff to barrel at "..minetest.pos_to_string(pos))
+		minetest.log("action", player:get_player_name() ..
+			" moves stuff to barrel at " .. minetest.pos_to_string(pos))
 	end,
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name()..
-			" takes stuff from barrel at "..minetest.pos_to_string(pos))
+		minetest.log("action", player:get_player_name() ..
+			" takes stuff from barrel at " .. minetest.pos_to_string(pos))
 	end,
 	after_dig_node = drop_content,
 	on_blast = on_blast,
@@ -149,27 +159,35 @@ minetest.register_node("mcl_barrels:barrel_open", {
 	_doc_items_longdesc = S("Barrels are containers which provide 27 inventory slots."),
 	_doc_items_usagehelp = S("To access its inventory, rightclick it. When broken, the items will drop out."),
 	_doc_items_create_entry = false,
-	tiles = {"mcl_barrels_barrel_top_open.png", "mcl_barrels_barrel_bottom.png", "mcl_barrels_barrel_side.png"},
+	tiles = { "mcl_barrels_barrel_top_open.png", "mcl_barrels_barrel_bottom.png", "mcl_barrels_barrel_side.png" },
 	paramtype = "light",
 	paramtype2 = "facedir",
 	drop = "mcl_barrels:barrel_closed",
 	stack_max = 64,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	groups = {handy = 1, axey = 1, container = 2, material_wood = 1, flammable = -1, deco_block = 1, not_in_creative_inventory = 1},
+	groups = {
+		handy = 1,
+		axey = 1,
+		container = 2,
+		material_wood = 1,
+		flammable = -1,
+		deco_block = 1,
+		not_in_creative_inventory = 1
+	},
 	allow_metadata_inventory_move = protection_check_move,
 	allow_metadata_inventory_take = protection_check_put_take,
 	allow_metadata_inventory_put = protection_check_put_take,
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-		minetest.log("action", player:get_player_name()..
-			" moves stuff in barrel at "..minetest.pos_to_string(pos))
+		minetest.log("action", player:get_player_name() ..
+			" moves stuff in barrel at " .. minetest.pos_to_string(pos))
 	end,
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name()..
-			" moves stuff to barrel at "..minetest.pos_to_string(pos))
+		minetest.log("action", player:get_player_name() ..
+			" moves stuff to barrel at " .. minetest.pos_to_string(pos))
 	end,
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name()..
-			" takes stuff from barrel at "..minetest.pos_to_string(pos))
+		minetest.log("action", player:get_player_name() ..
+			" takes stuff from barrel at " .. minetest.pos_to_string(pos))
 	end,
 	after_dig_node = drop_content,
 	on_blast = on_blast,
@@ -193,10 +211,10 @@ end)
 minetest.register_craft({
 	output = "mcl_barrels:barrel_closed",
 	recipe = {
-		{"group:wood", "group:wood_slab", "group:wood"},
-		{"group:wood", "",                "group:wood"},
-		{"group:wood", "group:wood_slab", "group:wood"},
-	}
+		{ "group:wood", "group:wood_slab", "group:wood" },
+		{ "group:wood", "",                "group:wood" },
+		{ "group:wood", "group:wood_slab", "group:wood" },
+	},
 })
 
 minetest.register_craft({

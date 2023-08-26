@@ -5,7 +5,7 @@ local C = minetest.colorize
 local max_text_length = 4500 -- TODO: Increase to 12800 when scroll bar was added to written book
 local max_title_length = 64
 
-local bookshelf_inv = minetest.settings:get_bool("mcl_bookshelf_inventories",true)
+local bookshelf_inv = minetest.settings:get_bool("mcl_bookshelf_inventories", true)
 
 local header = ""
 if minetest.get_modpath("mcl_init") then
@@ -19,7 +19,7 @@ minetest.register_craftitem("mcl_books:book", {
 	_doc_items_longdesc = S("Books are used to make bookshelves and book and quills."),
 	inventory_image = "default_book.png",
 	stack_max = 64,
-	groups = { book=1, craftitem = 1, enchantability = 1 },
+	groups = { book = 1, craftitem = 1, enchantability = 1 },
 	_mcl_enchanting_enchanted_tool = "mcl_enchanting:book_enchanted",
 })
 
@@ -85,18 +85,19 @@ local function write(itemstack, user, pointed_thing)
 		local node = minetest.get_node(pointed_thing.under)
 		if user and not user:get_player_control().sneak then
 			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or
+					itemstack
 			end
 		end
 	end
 
 	local text = get_text(itemstack)
-	local formspec = "size[8,9]"..
-		header..
-		"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
-		"textarea[0.75,0.1;7.25,9;text;;"..minetest.formspec_escape(text).."]"..
-		"button[0.75,7.95;3,1;sign;"..minetest.formspec_escape(S("Sign")).."]"..
-		"button_exit[4.25,7.95;3,1;ok;"..minetest.formspec_escape(S("Done")).."]"
+	local formspec = "size[8,9]" ..
+		header ..
+		"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]" ..
+		"textarea[0.75,0.1;7.25,9;text;;" .. minetest.formspec_escape(text) .. "]" ..
+		"button[0.75,7.95;3,1;sign;" .. minetest.formspec_escape(S("Sign")) .. "]" ..
+		"button_exit[4.25,7.95;3,1;ok;" .. minetest.formspec_escape(S("Done")) .. "]"
 	minetest.show_formspec(user:get_player_name(), "mcl_books:writable_book", formspec)
 end
 
@@ -106,17 +107,18 @@ local function read(itemstack, user, pointed_thing)
 		local node = minetest.get_node(pointed_thing.under)
 		if user and not user:get_player_control().sneak then
 			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or
+					itemstack
 			end
 		end
 	end
 
 	local text = get_text(itemstack)
-	local formspec = "size[8,9]"..
-		header..
-		"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
-		"textarea[0.75,0.1;7.25,9;;"..minetest.formspec_escape(text)..";]"..
-		"button_exit[2.25,7.95;3,1;ok;"..minetest.formspec_escape(S("Done")).."]"
+	local formspec = "size[8,9]" ..
+		header ..
+		"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]" ..
+		"textarea[0.75,0.1;7.25,9;;" .. minetest.formspec_escape(text) .. ";]" ..
+		"button_exit[2.25,7.95;3,1;ok;" .. minetest.formspec_escape(S("Done")) .. "]"
 	minetest.show_formspec(user:get_player_name(), "mcl_books:written_book", formspec)
 end
 
@@ -125,16 +127,18 @@ minetest.register_craftitem("mcl_books:writable_book", {
 	description = S("Book and Quill"),
 	_tt_help = S("Write down some notes"),
 	_doc_items_longdesc = S("This item can be used to write down some notes."),
-	_doc_items_usagehelp = S("Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which you can stack, but it can't be edited anymore.").."\n"..
-	S("A book can hold up to 4500 characters. The title length is limited to 64 characters."),
+	_doc_items_usagehelp = S(
+			"Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which you can stack, but it can't be edited anymore.")
+		.. "\n" ..
+		S("A book can hold up to 4500 characters. The title length is limited to 64 characters."),
 	inventory_image = "mcl_books_book_writable.png",
-	groups = { book=1 },
+	groups = { book = 1 },
 	stack_max = 1,
 	on_place = write,
 	on_secondary_use = write,
 })
 
-minetest.register_on_player_receive_fields(function ( player, formname, fields )
+minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if ((formname == "mcl_books:writable_book") and fields and fields.text) then
 		local stack = player:get_wielded_item()
 		if (stack:get_name() and (stack:get_name() == "mcl_books:writable_book")) then
@@ -148,14 +152,17 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 				player:set_wielded_item(stack)
 
 				local name = player:get_player_name()
-				local formspec = "size[8,9]"..
-					header..
-					"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
-					"field[0.75,1;7.25,1;title;"..minetest.formspec_escape(minetest.colorize("#000000", S("Enter book title:")))..";]"..
-					"label[0.75,1.5;"..minetest.formspec_escape(minetest.colorize("#404040", S("by @1", name))).."]"..
-					"button_exit[0.75,7.95;3,1;sign;"..minetest.formspec_escape(S("Sign and Close")).."]"..
-					"tooltip[sign;"..minetest.formspec_escape(S("Note: The book will no longer be editable after signing")).."]"..
-					"button[4.25,7.95;3,1;cancel;"..minetest.formspec_escape(S("Cancel")).."]"
+				local formspec = "size[8,9]" ..
+					header ..
+					"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]" ..
+					"field[0.75,1;7.25,1;title;" ..
+					minetest.formspec_escape(minetest.colorize("#000000", S("Enter book title:"))) .. ";]" ..
+					"label[0.75,1.5;" ..
+					minetest.formspec_escape(minetest.colorize("#404040", S("by @1", name))) .. "]" ..
+					"button_exit[0.75,7.95;3,1;sign;" .. minetest.formspec_escape(S("Sign and Close")) .. "]" ..
+					"tooltip[sign;" ..
+					minetest.formspec_escape(S("Note: The book will no longer be editable after signing")) .. "]" ..
+					"button[4.25,7.95;3,1;cancel;" .. minetest.formspec_escape(S("Cancel")) .. "]"
 				minetest.show_formspec(player:get_player_name(), "mcl_books:signing", formspec)
 			end
 		end
@@ -181,7 +188,7 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 
 			player:set_wielded_item(newbook)
 		else
-			minetest.log("error", "[mcl_books] "..name.." failed to sign a book!")
+			minetest.log("error", "[mcl_books] " .. name .. " failed to sign a book!")
 		end
 	elseif ((formname == "mcl_books:signing") and fields and fields.cancel) then
 		local book = player:get_wielded_item()
@@ -202,12 +209,16 @@ end
 -- Written Book
 minetest.register_craftitem("mcl_books:written_book", {
 	description = S("Written Book"),
-	_doc_items_longdesc = S("Written books contain some text written by someone. They can be read and copied, but not edited."),
-	_doc_items_usagehelp = S("Hold it in your hand, then rightclick to read the book.").."\n\n"..
-
-S("To copy the text of the written book, place it into the crafting grid together with a book and quill (or multiple of those) and craft. The written book will not be consumed. Copies of copies can not be copied."),
+	_doc_items_longdesc = S(
+		"Written books contain some text written by someone. They can be read and copied, but not edited."
+	),
+	_doc_items_usagehelp = S("Hold it in your hand, then rightclick to read the book.") ..
+		"\n\n" ..
+		S(
+			"To copy the text of the written book, place it into the crafting grid together with a book and quill (or multiple of those) and craft. The written book will not be consumed. Copies of copies can not be copied."
+		),
 	inventory_image = "mcl_books_book_written.png",
-	groups = { not_in_creative_inventory=1, book=1, no_rename=1 },
+	groups = { not_in_creative_inventory = 1, book = 1, no_rename = 1 },
 	stack_max = 16,
 	on_place = read,
 	on_secondary_use = read
@@ -219,19 +230,19 @@ S("To copy the text of the written book, place it into the crafting grid togethe
 local baq = "mcl_books:writable_book"
 local wb = "mcl_books:written_book"
 local recipes = {
-	{wb, baq},
-	{baq, baq, wb},
-	{baq, baq, wb, baq},
-	{baq, baq, baq, baq, wb},
-	{baq, baq, baq, baq, wb, baq},
-	{baq, baq, baq, baq, wb, baq, baq},
-	{baq, baq, baq, baq, wb, baq, baq, baq},
-	{baq, baq, baq, baq, wb, baq, baq, baq, baq},
+	{ wb,  baq },
+	{ baq, baq, wb },
+	{ baq, baq, wb,  baq },
+	{ baq, baq, baq, baq, wb },
+	{ baq, baq, baq, baq, wb, baq },
+	{ baq, baq, baq, baq, wb, baq, baq },
+	{ baq, baq, baq, baq, wb, baq, baq, baq },
+	{ baq, baq, baq, baq, wb, baq, baq, baq, baq },
 }
-for r=#recipes, 1, -1 do
+for r = #recipes, 1, -1 do
 	minetest.register_craft({
 		type = "shapeless",
-		output = "mcl_books:written_book "..r,
+		output = "mcl_books:written_book " .. r,
 		recipe = recipes[r],
 	})
 end
@@ -367,6 +378,9 @@ local function protection_check_put_take(pos, listname, index, stack, player)
 	end
 end
 
+---@param pos Vector
+---@param node node
+---@param clicker ObjectRef
 local function bookshelf_gui(pos, node, clicker)
 	if not bookshelf_inv then return end
 	local name = minetest.get_meta(pos):get_string("name")
@@ -378,18 +392,22 @@ local function bookshelf_gui(pos, node, clicker)
 	local playername = clicker:get_player_name()
 
 	minetest.show_formspec(playername,
-		"mcl_books:bookshelf_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"mcl_books:bookshelf_" .. pos.x .. "_" .. pos.y .. "_" .. pos.z,
 		table.concat({
-			"size[9,8.75]",
-			"label[0,0;"..F(C("#313131", name)).."]",
-			"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]",
-			mcl_formspec.get_itemslot_bg(0, 0.5, 9, 3),
-			"label[0,4.0;"..F(C("#313131", S("Inventory"))).."]",
-			"list[current_player;main;0,4.5;9,3;9]",
-			mcl_formspec.get_itemslot_bg(0, 4.5, 9, 3),
-			"list[current_player;main;0,7.74;9,1;]",
-			mcl_formspec.get_itemslot_bg(0, 7.74, 9, 1),
-			"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]",
+			"formspec_version[4]",
+			"size[11.75,10.425]",
+
+			"label[0.375,0.375;" .. F(C(mcl_formspec.label_color, name)) .. "]",
+			mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
+			mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3, 0, "mcl_book_book_empty_slot.png"),
+			"list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0.375,0.75;9,3;]",
+			"label[0.375,4.7;" .. F(C(mcl_formspec.label_color, S("Inventory"))) .. "]",
+			mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
+			"list[current_player;main;0.375,5.1;9,3;9]",
+
+			mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
+			"list[current_player;main;0.375,9.05;9,1;]",
+			"listring[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main]",
 			"listring[current_player;main]",
 		})
 	)
@@ -397,7 +415,7 @@ end
 
 local function close_forms(pos)
 	local players = minetest.get_connected_players()
-	local formname = "mcl_books:bookshelf_"..pos.x.."_"..pos.y.."_"..pos.z
+	local formname = "mcl_books:bookshelf_" .. pos.x .. "_" .. pos.y .. "_" .. pos.z
 	for p = 1, #players do
 		if vector.distance(players[p]:get_pos(), pos) <= 30 then
 			minetest.close_formspec(players[p]:get_player_name(), formname)
@@ -409,12 +427,18 @@ end
 minetest.register_node("mcl_books:bookshelf", {
 	description = S("Bookshelf"),
 	_doc_items_longdesc = S("Bookshelves are used for decoration."),
-	tiles = {"mcl_books_bookshelf_top.png", "mcl_books_bookshelf_top.png", "default_bookshelf.png"},
+	tiles = { "mcl_books_bookshelf_top.png", "mcl_books_bookshelf_top.png", "default_bookshelf.png" },
 	stack_max = 64,
 	is_ground_content = false,
 	groups = {
-		handy=1, axey=1, deco_block=1, material_wood=1,
-		flammable=3, fire_encouragement=30, fire_flammability=20, container=1
+		handy = 1,
+		axey = 1,
+		deco_block = 1,
+		material_wood = 1,
+		flammable = 3,
+		fire_encouragement = 30,
+		fire_flammability = 20,
+		container = 1
 	},
 	drop = "mcl_books:book 3",
 	sounds = wood_sound,
@@ -424,7 +448,7 @@ minetest.register_node("mcl_books:bookshelf", {
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
-		inv:set_size("main", 9*3)
+		inv:set_size("main", 9 * 3)
 	end,
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
 		minetest.get_meta(pos):set_string("name", itemstack:get_meta():get_string("name"))
@@ -433,16 +457,16 @@ minetest.register_node("mcl_books:bookshelf", {
 	allow_metadata_inventory_take = protection_check_put_take,
 	allow_metadata_inventory_put = protection_check_put_take,
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-		minetest.log("action", player:get_player_name()..
-			" moves stuff in bookshelf at "..minetest.pos_to_string(pos))
+		minetest.log("action", player:get_player_name() ..
+			" moves stuff in bookshelf at " .. minetest.pos_to_string(pos))
 	end,
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name()..
-			" moves stuff to bookshelf at "..minetest.pos_to_string(pos))
+		minetest.log("action", player:get_player_name() ..
+			" moves stuff to bookshelf at " .. minetest.pos_to_string(pos))
 	end,
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name()..
-			" takes stuff from bookshelf at "..minetest.pos_to_string(pos))
+		minetest.log("action", player:get_player_name() ..
+			" takes stuff from bookshelf at " .. minetest.pos_to_string(pos))
 	end,
 	after_dig_node = drop_content,
 	on_blast = on_blast,
@@ -453,9 +477,9 @@ minetest.register_node("mcl_books:bookshelf", {
 minetest.register_craft({
 	output = "mcl_books:bookshelf",
 	recipe = {
-		{"group:wood", "group:wood", "group:wood"},
-		{"mcl_books:book", "mcl_books:book", "mcl_books:book"},
-		{"group:wood", "group:wood", "group:wood"},
+		{ "group:wood",     "group:wood",     "group:wood" },
+		{ "mcl_books:book", "mcl_books:book", "mcl_books:book" },
+		{ "group:wood",     "group:wood",     "group:wood" },
 	}
 })
 
@@ -464,4 +488,3 @@ minetest.register_craft({
 	recipe = "mcl_books:bookshelf",
 	burntime = 15,
 })
-
