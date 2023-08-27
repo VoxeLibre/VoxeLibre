@@ -20,6 +20,7 @@ function mcl_smithing_table.upgrade_item_netherite(itemstack)
 	end
 
 	itemstack:set_name(upgrade_item)
+	mcl_armor_trims.reload_inv_image(itemstack)
 
 	-- Reload the ToolTips of the tool
 
@@ -74,7 +75,8 @@ function mcl_smithing_table.upgrade_trimmed(itemstack, color_mineral, template)
 	local overlay = template:get_name():gsub("mcl_armor_trims:","")
 
 	--trimming process
-	itemstack:set_name(itemstack:get_name() .. "_trimmed_" .. overlay .. "_" .. material_name)
+	mcl_armor_trims.trim(itemstack, overlay, material_name)
+	--itemstack:set_name(itemstack:get_name() .. "_trimmed_" .. overlay .. "_" .. material_name)
 	tt.reload_itemstack_description(itemstack)
 
 	return itemstack
