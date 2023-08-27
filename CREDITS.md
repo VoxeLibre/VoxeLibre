@@ -175,7 +175,7 @@
 * Faerraven / Michieal
 * Nicu
 * Exhale
-* Aeonix_Aeon
+* Aeonix_Aeon (armor trim models) https://www.curseforge.com/minecraft/texture-packs/ozocraft-remix (CC BY 4.0)
 
 ## Translations
 * Wuzzy
