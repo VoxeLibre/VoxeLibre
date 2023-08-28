@@ -1,5 +1,5 @@
 # textdomain: mcl_maps
 Empty Map=Пустая карта
 Empty maps are not useful as maps, but they can be stacked and turned to maps which can be used.=Пустые карты не могут использоваться в качестве карт, но могут складываться в стопки, а также могут быть превращены в полноценные карты.
-Rightclick to start using the map (which can't be stacked anymore).=Кликните правой, чтобы начать использовать карту (её больше нельзя будет уложить в стопку).
+Rightclick to start using the map (which can't be stacked anymore).=Нажмите правую кнопку мыши, чтобы начать использовать карту (её больше нельзя будет уложить в стопку).
 Map=Карта

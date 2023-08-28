@@ -1,5 +1,6 @@
-
 local S = minetest.get_translator(minetest.get_current_modname())
+local C = minetest.colorize
+local F = minetest.formspec_escape
 
 local LIGHT_ACTIVE_FURNACE = 13
 
@@ -8,60 +9,82 @@ local LIGHT_ACTIVE_FURNACE = 13
 --
 
 local function active_formspec(fuel_percent, item_percent)
-	return "size[9,8.75]"..
-	"label[0,4;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
-	"list[current_player;main;0,4.5;9,3;9]"..
-	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
-	"list[current_player;main;0,7.74;9,1;]"..
-	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Furnace"))).."]"..
-	"list[context;src;2.75,0.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
-	"list[context;fuel;2.75,2.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(2.75,2.5,1,1)..
-	"list[context;dst;5.75,1.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(5.75,1.5,1,1)..
-	"image[2.75,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
-	(100-fuel_percent)..":default_furnace_fire_fg.png]"..
-	"image[4.1,1.5;1.5,1;gui_furnace_arrow_bg.png^[lowpart:"..
-	(item_percent)..":gui_furnace_arrow_fg.png^[transformR270]"..
-	-- Craft guide button temporarily removed due to Minetest bug.
-	-- TODO: Add it back when the Minetest bug is fixed.
-	--"image_button[8,0;1,1;craftguide_book.png;craftguide;]"..
-	--"tooltip[craftguide;"..minetest.formspec_escape(S("Recipe book")).."]"..
-	"listring[context;dst]"..
-	"listring[current_player;main]"..
-	"listring[context;src]"..
-	"listring[current_player;main]"..
-	"listring[context;fuel]"..
-	"listring[current_player;main]"
+	return table.concat({
+		"formspec_version[4]",
+		"size[11.75,10.425]",
+		"label[0.375,0.375;" .. F(C(mcl_formspec.label_color, S("Furnace"))) .. "]",
+		mcl_formspec.get_itemslot_bg_v4(3.5, 0.75, 1, 1),
+		"list[context;src;3.5,0.75;1,1;]",
+
+		"image[3.5,2;1,1;default_furnace_fire_bg.png^[lowpart:" ..
+		(100 - fuel_percent) .. ":default_furnace_fire_fg.png]",
+
+		mcl_formspec.get_itemslot_bg_v4(3.5, 3.25, 1, 1),
+		"list[context;fuel;3.5,3.25;1,1;]",
+
+		"image[5.25,2;1.5,1;gui_furnace_arrow_bg.png^[lowpart:" ..
+		(item_percent) .. ":gui_furnace_arrow_fg.png^[transformR270]",
+		mcl_formspec.get_itemslot_bg_v4(7.875, 2, 1, 1, 0.2),
+		"list[context;dst;7.875,2;1,1;]",
+
+		"label[0.375,4.7;" .. F(C(mcl_formspec.label_color, S("Inventory"))) .. "]",
+		mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
+		"list[current_player;main;0.375,5.1;9,3;9]",
+
+		mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
+		"list[current_player;main;0.375,9.05;9,1;]",
+
+		-- Craft guide button temporarily removed due to Minetest bug.
+		-- TODO: Add it back when the Minetest bug is fixed.
+		--"image_button[8,0;1,1;craftguide_book.png;craftguide;]"..
+		--"tooltip[craftguide;"..minetest.formspec_escape(S("Recipe book")).."]"..
+
+		"listring[context;dst]",
+		"listring[current_player;main]",
+		"listring[context;src]",
+		"listring[current_player;main]",
+		"listring[context;fuel]",
+		"listring[current_player;main]",
+	})
 end
 
-local inactive_formspec = "size[9,8.75]"..
-	"label[0,4;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
-	"list[current_player;main;0,4.5;9,3;9]"..
-	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
-	"list[current_player;main;0,7.74;9,1;]"..
-	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-	"label[2.75,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Furnace"))).."]"..
-	"list[context;src;2.75,0.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
-	"list[context;fuel;2.75,2.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(2.75,2.5,1,1)..
-	"list[context;dst;5.75,1.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(5.75,1.5,1,1)..
-	"image[2.75,1.5;1,1;default_furnace_fire_bg.png]"..
-	"image[4.1,1.5;1.5,1;gui_furnace_arrow_bg.png^[transformR270]"..
+local inactive_formspec = table.concat({
+	"formspec_version[4]",
+	"size[11.75,10.425]",
+	"label[0.375,0.375;" .. F(C(mcl_formspec.label_color, S("Furnace"))) .. "]",
+	mcl_formspec.get_itemslot_bg_v4(3.5, 0.75, 1, 1),
+	"list[context;src;3.5,0.75;1,1;]",
+
+	"image[3.5,2;1,1;default_furnace_fire_bg.png]",
+
+	mcl_formspec.get_itemslot_bg_v4(3.5, 3.25, 1, 1),
+	"list[context;fuel;3.5,3.25;1,1;]",
+
+	"image[5.25,2;1.5,1;gui_furnace_arrow_bg.png^[transformR270]",
+
+	mcl_formspec.get_itemslot_bg_v4(7.875, 2, 1, 1, 0.2),
+	"list[context;dst;7.875,2;1,1;]",
+
+	"label[0.375,4.7;" .. F(C(mcl_formspec.label_color, S("Inventory"))) .. "]",
+	mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
+	"list[current_player;main;0.375,5.1;9,3;9]",
+
+	mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
+	"list[current_player;main;0.375,9.05;9,1;]",
+
 	-- Craft guide button temporarily removed due to Minetest bug.
 	-- TODO: Add it back when the Minetest bug is fixed.
 	--"image_button[8,0;1,1;craftguide_book.png;craftguide;]"..
 	--"tooltip[craftguide;"..minetest.formspec_escape(S("Recipe book")).."]"..
-	"listring[context;dst]"..
-	"listring[current_player;main]"..
-	"listring[context;src]"..
-	"listring[current_player;main]"..
-	"listring[context;fuel]"..
-	"listring[current_player;main]"
+
+	"listring[context;dst]",
+	"listring[current_player;main]",
+	"listring[context;src]",
+	"listring[current_player;main]",
+	"listring[context;fuel]",
+	"listring[current_player;main]",
+})
+
 
 local receive_fields = function(pos, formname, fields, sender)
 	if fields.craftguide then
@@ -71,7 +94,7 @@ end
 
 local function give_xp(pos, player)
 	local meta = minetest.get_meta(pos)
-	local dir = vector.divide(minetest.facedir_to_dir(minetest.get_node(pos).param2),-1.95)
+	local dir = vector.divide(minetest.facedir_to_dir(minetest.get_node(pos).param2), -1.95)
 	local xp = meta:get_int("xp")
 	if xp > 0 then
 		if player then
@@ -108,7 +131,7 @@ local function allow_metadata_inventory_put(pos, listname, index, stack, player)
 		-- Test stack with size 1 because we burn one fuel at a time
 		local teststack = ItemStack(stack)
 		teststack:set_count(1)
-		local output, decremented_input = minetest.get_craft_result({method="fuel", width=1, items={teststack}})
+		local output, decremented_input = minetest.get_craft_result({ method = "fuel", width = 1, items = { teststack } })
 		if output.time ~= 0 then
 			-- Only allow to place 1 item if fuel get replaced by recipe.
 			-- This is the case for lava buckets.
@@ -303,7 +326,7 @@ local function furnace_node_timer(pos, elapsed)
 
 		-- Check if we have cookable content: cookable
 		local aftercooked
-		cooked, aftercooked = minetest.get_craft_result({method = "cooking", width = 1, items = srclist})
+		cooked, aftercooked = minetest.get_craft_result({ method = "cooking", width = 1, items = srclist })
 		cookable = cooked.time ~= 0
 		if cookable then
 			-- Successful cooking requires space in dst slot and time
@@ -321,7 +344,7 @@ local function furnace_node_timer(pos, elapsed)
 		if cookable and not active then
 			-- We need to get new fuel
 			local afterfuel
-			fuel, afterfuel = minetest.get_craft_result({method = "fuel", width = 1, items = fuellist})
+			fuel, afterfuel = minetest.get_craft_result({ method = "fuel", width = 1, items = fuellist })
 
 			if fuel.time == 0 then
 				-- No valid fuel in fuel list -- stop
@@ -356,7 +379,7 @@ local function furnace_node_timer(pos, elapsed)
 					if srclist[1]:get_name() == "mcl_sponges:sponge_wet" then
 						inv:set_stack("fuel", 1, "mcl_buckets:bucket_water")
 						fuellist = inv:get_list("fuel")
-					-- Also for river water
+						-- Also for river water
 					elseif srclist[1]:get_name() == "mcl_sponges:sponge_wet_river_water" then
 						inv:set_stack("fuel", 1, "mcl_buckets:bucket_river_water")
 						fuellist = inv:get_list("fuel")
@@ -366,7 +389,7 @@ local function furnace_node_timer(pos, elapsed)
 				srclist = inv:get_list("src")
 				src_time = 0
 
-				meta:set_int("xp", meta:get_int("xp") + 1)		-- ToDo give each recipe an idividial XP count
+				meta:set_int("xp", meta:get_int("xp") + 1) -- ToDo give each recipe an idividial XP count
 			end
 		end
 
@@ -413,9 +436,9 @@ local function furnace_node_timer(pos, elapsed)
 	meta:set_float("fuel_time", fuel_time)
 	meta:set_float("src_time", src_time)
 	if srclist then
-		 meta:set_string("src_item", src_item)
+		meta:set_string("src_item", src_item)
 	else
-		 meta:set_string("src_item", "")
+		meta:set_string("src_item", "")
 	end
 	meta:set_string("formspec", formspec)
 
@@ -440,11 +463,11 @@ minetest.register_node("mcl_furnaces:furnace", {
 	_tt_help = S("Uses fuel to smelt or cook items"),
 	_doc_items_longdesc = S("Furnaces cook or smelt several items, using a furnace fuel, into something else."),
 	_doc_items_usagehelp =
-			S("Use the furnace to open the furnace menu.").."\n"..
-			S("Place a furnace fuel in the lower slot and the source material in the upper slot.").."\n"..
-			S("The furnace will slowly use its fuel to smelt the item.").."\n"..
-			S("The result will be placed into the output slot at the right side.").."\n"..
-			S("Use the recipe book to see what you can smelt, what you can use as fuel and how long it will burn."),
+		S("Use the furnace to open the furnace menu.") .. "\n" ..
+		S("Place a furnace fuel in the lower slot and the source material in the upper slot.") .. "\n" ..
+		S("The furnace will slowly use its fuel to smelt the item.") .. "\n" ..
+		S("The result will be placed into the output slot at the right side.") .. "\n" ..
+		S("Use the recipe book to see what you can smelt, what you can use as fuel and how long it will burn."),
 	_doc_items_hidden = false,
 	tiles = {
 		"default_furnace_top.png", "default_furnace_bottom.png",
@@ -452,7 +475,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 		"default_furnace_side.png", "default_furnace_front.png"
 	},
 	paramtype2 = "facedir",
-	groups = {pickaxey=1, container=4, deco_block=1, material_stone=1},
+	groups = { pickaxey = 1, container = 4, deco_block = 1, material_stone = 1 },
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 
@@ -462,10 +485,11 @@ minetest.register_node("mcl_furnaces:furnace", {
 		local meta2 = meta:to_table()
 		meta:from_table(oldmetadata)
 		local inv = meta:get_inventory()
-		for _, listname in ipairs({"src", "dst", "fuel"}) do
+		for _, listname in ipairs({ "src", "dst", "fuel" }) do
 			local stack = inv:get_stack(listname, 1)
 			if not stack:is_empty() then
-				local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
+				local p = { x = pos.x + math.random(0, 10) / 10 - 0.5, y = pos.y,
+					z = pos.z + math.random(0, 10) / 10 - 0.5 }
 				minetest.add_item(p, stack)
 			end
 		end
@@ -528,7 +552,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	paramtype = "light",
 	light_source = LIGHT_ACTIVE_FURNACE,
 	drop = "mcl_furnaces:furnace",
-	groups = {pickaxey=1, container=4, deco_block=1, not_in_creative_inventory=1, material_stone=1},
+	groups = { pickaxey = 1, container = 4, deco_block = 1, not_in_creative_inventory = 1, material_stone = 1 },
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_timer = furnace_node_timer,
@@ -538,10 +562,11 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 		local meta2 = meta
 		meta:from_table(oldmetadata)
 		local inv = meta:get_inventory()
-		for _, listname in ipairs({"src", "dst", "fuel"}) do
+		for _, listname in ipairs({ "src", "dst", "fuel" }) do
 			local stack = inv:get_stack(listname, 1)
 			if not stack:is_empty() then
-				local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
+				local p = { x = pos.x + math.random(0, 10) / 10 - 0.5, y = pos.y,
+					z = pos.z + math.random(0, 10) / 10 - 0.5 }
 				minetest.add_item(p, stack)
 			end
 		end
@@ -573,7 +598,7 @@ minetest.register_craft({
 	output = "mcl_furnaces:furnace",
 	recipe = {
 		{ "group:cobble", "group:cobble", "group:cobble" },
-		{ "group:cobble", "", "group:cobble" },
+		{ "group:cobble", "",             "group:cobble" },
 		{ "group:cobble", "group:cobble", "group:cobble" },
 	}
 })
@@ -586,7 +611,7 @@ end
 minetest.register_lbm({
 	label = "Active furnace flame particles",
 	name = "mcl_furnaces:flames",
-	nodenames = {"mcl_furnaces:furnace_active"},
+	nodenames = { "mcl_furnaces:furnace_active" },
 	run_at_every_load = true,
 	action = function(pos, node)
 		spawn_flames(pos, node.param2)

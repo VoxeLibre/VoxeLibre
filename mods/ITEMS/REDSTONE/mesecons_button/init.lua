@@ -92,6 +92,7 @@ function mesecon.register_button(basename, description, texture, recipeitem, sou
 	groups_off.dig_by_water=1
 	groups_off.destroy_by_lava_flow=1
 	groups_off.dig_by_piston=1
+	groups_off.dig_immediate_piston=1
 	groups_off.button=1 -- button (off)
 
 	local groups_on = table.copy(groups_off)
@@ -102,6 +103,14 @@ function mesecon.register_button(basename, description, texture, recipeitem, sou
 		button_sound = "mesecons_button_push"
 	end
 	button_sounds["mesecons_button:button_"..basename.."_off"] = button_sound
+
+	if not longdesc then
+		if groups_off.material_wood ~= 0 then
+			longdesc = S("A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. Wooden buttons may also be pushed by arrows.")
+		else
+			longdesc = S("A button is a redstone compent which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for @1 seconds.", button_timer)
+		end
+	end
 
 	if push_by_arrow then
 		groups_off.button_push_by_arrow = 1
@@ -251,7 +260,7 @@ for w=1, #woods do
 		{material_wood=1,handy=1,axey=1},
 		1.5,
 		true,
-		S("A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. Wooden buttons may also be pushed by arrows."),
+		nil,
 		"mesecons_button_push_wood")
 
 	minetest.register_craft({

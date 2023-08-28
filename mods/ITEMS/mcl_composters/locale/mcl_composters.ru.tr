@@ -1,0 +1,7 @@
+# textdomain: mcl_composters
+Composter=Перегнойница
+Composters can convert various organic items into bonemeal.=Перегнойницы могут превращать многочисленные растительные предметы в костную муку.
+Use organic items on the composter to fill it with layers of compost. Every time an item is put in the composter, there is a chance that the composter adds another layer of compost.  Some items have a bigger chance of adding an extra layer than other items.  After filling up with 7 layers of compost, the composter is full. After a delay of approximately one second the composter becomes ready and bone meal can be retrieved from it. Right-clicking the composter takes out the bone meal empties the composter."=Используйте растительные предметы на перегнойнице, чтобы заполнить её слоями перегноя. Каждый раз, когда какой-либо предмет помещается в перегнойницу, существует вероятность возникновения добавочного слоя перегноя. Некоторые предметы могут чаще, чем другие приводит к появлению добавочного слоя перегноя. После заполнения на семь слоёв перегноя, перегнойница будет полна. После задержки примерно в одну секунду из перегнойницы можно будет извлечь костную муку. Нажатие правой кнопки мыши по перегнойнице извлекает костную муку и опорожняет её.
+filled=заполнена
+ready for harvest=готов к жатве
+Converts organic items into bonemeal=Превращает растительные предметы в костную муку

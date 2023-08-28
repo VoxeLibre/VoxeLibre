@@ -8,7 +8,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 -- Function to allow harvesting honey and honeycomb from the beehive and bee nest.
 local honey_harvest = function(pos, node, player, itemstack, pointed_thing)
 	local inv = player:get_inventory()
-	local shears = player:get_wielded_item():get_name() == "mcl_tools:shears"
+	local shears = minetest.get_item_group(player:get_wielded_item():get_name(), "shears") > 0
 	local bottle = player:get_wielded_item():get_name() == "mcl_potions:glass_bottle"
 	local beehive = "mcl_beehives:beehive"
 	local is_creative = minetest.is_creative_enabled(player:get_player_name())

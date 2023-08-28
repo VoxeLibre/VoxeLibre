@@ -105,7 +105,7 @@ mooshroom_def.on_rightclick = function(self, clicker)
 	end
 	local item = clicker:get_wielded_item()
 	-- Use shears to get mushrooms and turn mooshroom into cow
-	if item:get_name() == "mcl_tools:shears" then
+	if minetest.get_item_group(item:get_name(), "shears") > 0 then
 		local pos = self.object:get_pos()
 		minetest.sound_play("mcl_tools_shears_cut", {pos = pos}, true)
 

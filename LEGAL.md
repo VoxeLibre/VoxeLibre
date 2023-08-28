@@ -5,7 +5,7 @@ Copying is an act of love. Please copy and share! <3
 Here's the detailed legalese for those who need it:
 
 ## License of source code
-MineClone 2 (by kay27, EliasFleckenstein, Wuzzy, davedevils and countless others)
+MineClone 2 (by Lizzy Fleckenstein, Wuzzy, davedevils and countless others)
 is an imitation of Minecraft.
 
 MineClone 2 is free software: you can redistribute it and/or modify
@@ -38,11 +38,11 @@ No non-free licenses are used anywhere.
 The textures, unless otherwise noted, are based on the Pixel Perfection resource pack for Minecraft 1.11,
 authored by XSSheep. Most textures are verbatim copies, while some textures have been changed or redone
 from scratch.
-The glazed terracotta textures have been created by (MysticTempest)[https://github.com/MysticTempest].
+The glazed terracotta textures have been created by [MysticTempest](https://github.com/MysticTempest).
 Source: <https://www.planetminecraft.com/texture_pack/131pixel-perfection/>
 License: [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/)
 
-The main menu images are release under: [CC0](https://creativecommons.org/publicdomain/zero/1.0/)
+The main menu images are released under: [CC0](https://creativecommons.org/publicdomain/zero/1.0/)
 
 All other files, unless mentioned otherwise, fall under:
 Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)

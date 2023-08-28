@@ -134,7 +134,7 @@ local fish = function(itemstack, player, pointed_thing)
 								minetest.add_item(pos, item)
 							end
 							if mcl_experience.throw_xp then
-								mcl_experience.throw_xp(pos, math.random(1,6))
+								minetest.after(0.7, mcl_experience.throw_xp, pos, math.random(1,6))
 							end
 
 							if not minetest.is_creative_enabled(player:get_player_name()) then
@@ -161,6 +161,7 @@ local fish = function(itemstack, player, pointed_thing)
 						end
 						--Destroy bobber.
 						ent.object:remove()
+						minetest.sound_play("reel", {object=player, gain=0.1, max_hear_distance=16}, true)
 						return itemstack
 					end
 				end
@@ -242,6 +243,7 @@ local bobber_on_step = function(self, dtime)
 		if self._oldy == nil then
 			self.object:set_pos({x=self.object:get_pos().x,y=math.floor(self.object:get_pos().y)+.5,z=self.object:get_pos().z})
 			self._oldy = self.object:get_pos().y
+			minetest.sound_play("watersplash", {pos=epos, gain=0.25}, true)
 		end
 		-- reset to original position after dive.
 		if self.object:get_pos().y > self._oldy then
@@ -280,6 +282,7 @@ local bobber_on_step = function(self, dtime)
 				self._time = self._time + dtime
 			else
 				-- wait time is over time to dive.
+				minetest.sound_play("bloop", {pos=epos, gain=0.4}, true)
 				self._dive = true
 				self.object:set_velocity({x=0,y=-2,z=0})
 				self.object:set_acceleration({x=0,y=5,z=0})

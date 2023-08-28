@@ -36,7 +36,13 @@ minetest.register_node("mcl_blackstone:blackstone_gilded", {
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 	_mcl_silk_touch_drop = true,
-	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
+	_mcl_fortune_drop = {
+		discrete_uniform_distribution = true,
+		items = {"mcl_core:gold_nugget"},
+		min_count = 2,
+		max_count = 5,
+		cap = 5,
+	},
 })
 minetest.register_node("mcl_blackstone:nether_gold", {
 	description = S("Nether Gold Ore"),

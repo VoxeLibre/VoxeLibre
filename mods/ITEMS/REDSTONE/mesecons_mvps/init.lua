@@ -415,8 +415,13 @@ mesecon.register_mvps_stopper("mcl_banners:standing_banner")
 -- Unmovable by technical restrictions.
 -- Open formspec would screw up if node is destroyed (minor problem)
 -- Would screw up on/off state of trapped chest (big problem)
+-- Would duplicate xp when moved
 mesecon.register_mvps_stopper("mcl_furnaces:furnace")
 mesecon.register_mvps_stopper("mcl_furnaces:furnace_active")
+mesecon.register_mvps_stopper("mcl_blast_furnace:blast_furnace")
+mesecon.register_mvps_stopper("mcl_blast_furnace:blast_furnace_active")
+mesecon.register_mvps_stopper("mcl_smoker:smoker")
+mesecon.register_mvps_stopper("mcl_smoker:smoker_active")
 mesecon.register_mvps_stopper("mcl_hoppers:hopper")
 mesecon.register_mvps_stopper("mcl_hoppers:hopper_side")
 mesecon.register_mvps_stopper("mcl_droppers:dropper")

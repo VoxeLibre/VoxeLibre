@@ -14,8 +14,8 @@ mcl_doors:register_door("mcl_doors:wooden_door", {
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
-	tiles_bottom = {"mcl_doors_door_wood_lower.png", "mcl_doors_door_wood_side_lower.png"},
-	tiles_top = {"mcl_doors_door_wood_upper.png", "mcl_doors_door_wood_side_upper.png"},
+	tiles_bottom = "mcl_doors_door_wood_lower.png",
+	tiles_top = "mcl_doors_door_wood_upper.png",
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -37,8 +37,8 @@ mcl_doors:register_door("mcl_doors:acacia_door", {
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
-	tiles_bottom = {"mcl_doors_door_acacia_lower.png", "mcl_doors_door_acacia_side_lower.png"},
-	tiles_top = {"mcl_doors_door_acacia_upper.png", "mcl_doors_door_acacia_side_upper.png"},
+	tiles_bottom = "mcl_doors_door_acacia_lower.png",
+	tiles_top = "mcl_doors_door_acacia_upper.png",
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -60,8 +60,8 @@ mcl_doors:register_door("mcl_doors:birch_door", {
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
-	tiles_bottom = {"mcl_doors_door_birch_lower.png", "mcl_doors_door_birch_side_lower.png"},
-	tiles_top = {"mcl_doors_door_birch_upper.png", "mcl_doors_door_birch_side_upper.png"},
+	tiles_bottom = "mcl_doors_door_birch_lower.png",
+	tiles_top = "mcl_doors_door_birch_upper.png",
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -83,8 +83,8 @@ mcl_doors:register_door("mcl_doors:dark_oak_door", {
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
-	tiles_bottom = {"mcl_doors_door_dark_oak_lower.png", "mcl_doors_door_dark_oak_side_lower.png"},
-	tiles_top = {"mcl_doors_door_dark_oak_upper.png", "mcl_doors_door_dark_oak_side_upper.png"},
+	tiles_bottom = "mcl_doors_door_dark_oak_lower.png",
+	tiles_top = "mcl_doors_door_dark_oak_upper.png",
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -106,8 +106,8 @@ mcl_doors:register_door("mcl_doors:jungle_door", {
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
-	tiles_bottom = {"mcl_doors_door_jungle_lower.png", "mcl_doors_door_jungle_side_lower.png"},
-	tiles_top = {"mcl_doors_door_jungle_upper.png", "mcl_doors_door_jungle_side_upper.png"},
+	tiles_bottom = "mcl_doors_door_jungle_lower.png",
+	tiles_top = "mcl_doors_door_jungle_upper.png",
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -129,8 +129,8 @@ mcl_doors:register_door("mcl_doors:spruce_door", {
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
-	tiles_bottom = {"mcl_doors_door_spruce_lower.png", "mcl_doors_door_spruce_side_lower.png"},
-	tiles_top = {"mcl_doors_door_spruce_upper.png", "mcl_doors_door_spruce_side_upper.png"},
+	tiles_bottom = "mcl_doors_door_spruce_lower.png",
+	tiles_top = "mcl_doors_door_spruce_upper.png",
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -183,8 +183,8 @@ mcl_doors:register_door("mcl_doors:iron_door", {
 	groups = {pickaxey=1, mesecon_effector_on=1},
 	_mcl_hardness = 5,
 	_mcl_blast_resistance = 5,
-	tiles_bottom = {"mcl_doors_door_iron_lower.png^[transformFX", "mcl_doors_door_iron_side_lower.png"},
-	tiles_top = {"mcl_doors_door_iron_upper.png^[transformFX", "mcl_doors_door_iron_side_upper.png"},
+	tiles_bottom = "mcl_doors_door_iron_lower.png",
+	tiles_top = "mcl_doors_door_iron_upper.png",
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	sound_open = "doors_steel_door_open",
 	sound_close = "doors_steel_door_close",

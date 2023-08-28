@@ -1,0 +1,22 @@
+{
+  "runtime.version": "LuaJIT",
+  "diagnostics": { "disable": ["lowercase-global"] },
+  "diagnostics.globals": [
+    "minetest",
+    "dump",
+    "dump2",
+    "Raycast",
+    "Settings",
+    "PseudoRandom",
+    "PerlinNoise",
+    "VoxelManip",
+    "SecureRandom",
+    "VoxelArea",
+    "PerlinNoiseMap",
+    "PcgRandom",
+    "ItemStack",
+    "AreaStore",
+    "vector"
+  ],
+  "workspace.ignoreDir": [".luacheckrc"]
+}

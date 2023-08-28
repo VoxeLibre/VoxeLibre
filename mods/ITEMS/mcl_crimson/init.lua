@@ -671,8 +671,8 @@ mcl_doors:register_door("mcl_crimson:crimson_door", {
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
-	tiles_bottom = {"mcl_crimson_crimson_door_bottom.png", "mcl_doors_door_crimson_side_lower.png"},
-	tiles_top = {"mcl_crimson_crimson_door_top.png", "mcl_doors_door_crimson_side_upper.png"},
+	tiles_bottom = "mcl_crimson_crimson_door_bottom.png",
+	tiles_top = "mcl_crimson_crimson_door_top.png",
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -681,7 +681,7 @@ mcl_doors:register_trapdoor("mcl_crimson:crimson_trapdoor", {
 	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
 	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
 	tile_front = "mcl_crimson_crimson_trapdoor.png",
-	tile_side = "mcl_crimson_crimson_hyphae_wood.png",
+	tile_side = "mcl_crimson_crimson_trapdoor_side.png",
 	wield_image = "mcl_crimson_crimson_trapdoor.png",
 	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
@@ -709,8 +709,8 @@ mcl_doors:register_door("mcl_crimson:warped_door", {
 	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
-	tiles_bottom = {"mcl_crimson_warped_door_bottom.png", "mcl_doors_door_warped_side_lower.png"},
-	tiles_top = {"mcl_crimson_warped_door_top.png", "mcl_doors_door_warped_side_upper.png"},
+	tiles_bottom = "mcl_crimson_warped_door_bottom.png",
+	tiles_top = "mcl_crimson_warped_door_top.png",
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -719,7 +719,7 @@ mcl_doors:register_trapdoor("mcl_crimson:warped_trapdoor", {
 	_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
 	_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
 	tile_front = "mcl_crimson_warped_trapdoor.png",
-	tile_side = "mcl_crimson_warped_hyphae_wood.png",
+	tile_side = "mcl_crimson_warped_trapdoor_side.png",
 	wield_image = "mcl_crimson_warped_trapdoor.png",
 	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
 	_mcl_hardness = 3,

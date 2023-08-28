@@ -209,3 +209,9 @@ mcl_flowerpots.register_potted_flower("mcl_core:deadbush", {
 	desc = S("Dead Bush"),
 	image = "default_dry_shrub.png",
 })
+
+mcl_flowerpots.register_potted_flower("mcl_cherry_blossom:cherrysapling", {
+	name = "cherrysapling",
+	desc = S("Cherry Sapling"),
+	image = "mcl_cherry_blossom_sapling.png",
+})

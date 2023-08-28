@@ -213,7 +213,6 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 	-- Automatically generate double slab description
 	if not double_description then
 		double_description = S("Double @1", description)
-		minetest.log("warning", "[stairs] No explicit description for double slab '"..double_slab.."' added. Using auto-generated description.")
 	end
 
 	groups.slab = 1

@@ -1,3 +1,4 @@
+local string = string
 local sf = string.format
 
 -- Minetest 0.4 mod: player
@@ -11,15 +12,16 @@ local animation_blend = 0
 local function get_mouse_button(player)
 	local controls = player:get_player_control()
 	local get_wielded_item_name = player:get_wielded_item():get_name()
-	if controls.RMB and not string.find(get_wielded_item_name, "mcl_bows:bow") and not string.find(get_wielded_item_name, "mcl_bows:crossbow") and
-	not mcl_shields.wielding_shield(player, 1) and not mcl_shields.wielding_shield(player, 2) or controls.LMB then
+	if controls.RMB and not string.find(get_wielded_item_name, "mcl_bows:bow") and
+		not string.find(get_wielded_item_name, "mcl_bows:crossbow") and
+		not mcl_shields.wielding_shield(player, 1) and not mcl_shields.wielding_shield(player, 2) or controls.LMB then
 		return true
 	else
 		return false
 	end
 end
 
-mcl_player.registered_player_models = { }
+mcl_player.registered_player_models = {}
 
 -- Local for speed.
 local models = mcl_player.registered_player_models
@@ -49,7 +51,7 @@ function mcl_player.player_get_animation(player)
 		model = player_model[name],
 		textures = textures,
 		animation = player_anim[name],
-		visibility = player_visibility[name]
+		visibility = player_visible[name]
 	}
 end
 
@@ -94,7 +96,7 @@ function mcl_player.player_set_model(player, model_name)
 		player:set_properties({
 			mesh = model_name,
 			visual = "mesh",
-			visual_size = model.visual_size or {x=1, y=1},
+			visual_size = model.visual_size or { x = 1, y = 1 },
 			damage_texture_modifier = "^[colorize:red:130",
 		})
 		update_player_textures(player)
@@ -133,6 +135,13 @@ function mcl_player.player_set_armor(player, texture)
 	update_player_textures(player)
 end
 
+---@param player mt.PlayerObjectRef
+---@param x number
+---@param y number
+---@param w number
+---@param h number
+---@param fsname string
+---@return string
 function mcl_player.get_player_formspec_model(player, x, y, w, h, fsname)
 	local name = player:get_player_name()
 	local model = player_model[name]
@@ -165,7 +174,8 @@ minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	mcl_player.player_attached[name] = false
 	player_visible[name] = true
-	player_textures[name] = {"character.png", "blank.png", "blank.png"}
+	player_textures[name] = { "character.png", "blank.png", "blank.png" }
+
 	--player:set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, 30)
 	player:set_fov(86.1) -- see <https://minecraft.gamepedia.com/Options#Video_settings>>>>
 end)
@@ -221,11 +231,13 @@ minetest.register_globalstep(function(dtime)
 			elseif mcl_playerplus.elytra[player] and mcl_playerplus.elytra[player].active then
 				player_set_animation(player, "stand")
 			elseif walking and velocity.x > 0.35
-			or walking and velocity.x < -0.35
-			or walking and velocity.z > 0.35
-			or walking and velocity.z < -0.35 then
+				or walking and velocity.x < -0.35
+				or walking and velocity.z > 0.35
+				or walking and velocity.z < -0.35 then
 				local wielded_itemname = player:get_wielded_item():get_name()
-				local no_arm_moving = string.find(wielded_itemname, "mcl_bows:bow") or mcl_shields.wielding_shield(player, 1) or mcl_shields.wielding_shield(player, 2)
+				local no_arm_moving = string.find(wielded_itemname, "mcl_bows:bow") or
+					mcl_shields.wielding_shield(player, 1) or
+					mcl_shields.wielding_shield(player, 2)
 				if player_sneak[name] ~= controls.sneak then
 					player_anim[name] = nil
 					player_sneak[name] = controls.sneak
@@ -234,7 +246,8 @@ minetest.register_globalstep(function(dtime)
 					player_set_animation(player, "swim_walk_mine", animation_speed_mod)
 				elseif not controls.sneak and head_in_water and is_sprinting == true then
 					player_set_animation(player, "swim_walk", animation_speed_mod)
-				elseif no_arm_moving and controls.RMB and controls.sneak or string.find(wielded_itemname, "mcl_bows:crossbow_") and controls.sneak then
+				elseif no_arm_moving and controls.RMB and controls.sneak or
+					string.find(wielded_itemname, "mcl_bows:crossbow_") and controls.sneak then
 					player_set_animation(player, "bow_sneak", animation_speed_mod)
 				elseif no_arm_moving and controls.RMB or string.find(wielded_itemname, "mcl_bows:crossbow_") then
 					player_set_animation(player, "bow_walk", animation_speed_mod)

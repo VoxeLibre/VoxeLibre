@@ -518,7 +518,7 @@ awards.register_achievement("mcl:stoneAge", {
 awards.register_achievement("mcl:hotStuff", {
 	title		= S("Hot Stuff"),
 	description	= S("Put lava in a bucket."),
-	icon		= "bucket_lava.png",
+	icon		= "mcl_buckets_lava_bucket.png",
 	type = "Advancement",
 	group = "Overworld",
 })

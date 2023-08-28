@@ -177,7 +177,7 @@ end
 
 function mesecon.effector_get_rules(node)
 	local effector = mesecon.get_effector(node.name)
-	if effector then
+	if effector and effector.rules then
 		local rules = effector.rules
 		if type(rules) == "function" then
 			return rules(node)

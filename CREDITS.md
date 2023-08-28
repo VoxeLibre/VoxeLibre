@@ -6,40 +6,42 @@
 ## Creator of MineClone2
 * Wuzzy
 
-
 ## Maintainers
 * AncientMariner
 * Nicu
 
 ## Previous Maintainers
 * Fleckenstein
-* jordan4ibanez
 * cora
 
 ## Developers
-* bzoss
 * AFCMS
 * epCode
-* ryvnf
-* iliekprogrammar
-* MysticTempest
-* Rootyjr
-* aligator
-* Code-Sploit
-* NO11
-* kabou
-* rudzik8
 * chmodsayshello
 * PrairieWind
-* RandomLegoBrick
-* SumianVoice
 * MrRar
-* talamh
-* Faerraven / Michieal
 * FossFanatic 
 * SmokeyDope
 
+## Past Developers
+* jordan4ibanez
+* iliekprogrammar
+* kabou
+* kay27
+* Faerraven / Michieal
+* MysticTempest
+* NO11
+* SumianVoice
+
 ## Contributors
+* RandomLegoBrick
+* rudzik8
+* Code-Sploit
+* aligator
+* Rootyjr
+* ryvnf
+* bzoss
+* talamh
 * Laurent Rocher
 * HimbeerserverDE
 * TechDudie
@@ -68,6 +70,10 @@
 * Marcin Serwin
 * erlehmann
 * E
+* n_to
+* debiankaios
+* Gustavo6046 / wallabra
+* CableGuy67
 * Benjamin Schötz
 * Doloment
 * Sydney Gems
@@ -101,25 +107,18 @@
 * gldrk
 * atomdmac
 * emptyshore
+* FlamingRCCars
+* uqers
+* Niterux
+* appgurueu
+* seventeenthShulker
 
-## MineClone5
-* kay27
-* Debiankaios
-* epCode
-* NO11
-* j45
-* chmodsayshello
-* 3raven
-* PrairieWind
-* Gustavo6046 / wallabra
-* CableGuy67
-* MrRar
-
-## Mineclonia
-* erlehmann
-* Li0n
-* E
-* n_to
+## Music
+* Jordach for the jukebox music compilation from Big Freaking Dig
+* Dark Reaven Music (https://soundcloud.com/dark-reaven-music) for the main menu theme (Calmed Cube) and Traitor (horizonchris96), which is licensed under https://creativecommons.org/licenses/by-sa/3.0/
+* Jester for helping to finely tune MineClone2 (https://www.youtube.com/@Jester-8-bit). Songs: Hailing Forest, Gift, 0dd BL0ck, Flock of One (License CC BY-SA 4.0)
+* Exhale & Tim Unwin for some wonderful MineClone2 tracks (https://www.youtube.com/channel/UClFo_JDWoG4NGrPQY0JPD_g). Songs: Valley of Ghosts, Lonely Blossom, Farmer (License CC BY-SA 4.0)
+* Diminixed for 3 fantastic tracks and remastering and leveling volumes. Songs: Afternoon Lullaby (pianowtune02), Spooled (ambientwip02), Never Grow Up (License CC BY-SA 4.0)
 
 ## Original Mod Authors
 * Wuzzy
@@ -151,14 +150,18 @@
 * 4Evergreen4
 * jordan4ibanez
 * paramat
+* debian044 / debian44
+* chmodsayshello
 * cora
 * Faerraven / Michieal
+* PrairieWind
 
 ## 3D Models
 * 22i
 * tobyplowy
 * epCode
 * Faerraven / Michieal
+* SumianVoice
 
 ## Textures
 * XSSheep
@@ -176,6 +179,8 @@
 * Nicu
 * Exhale
 * Aeonix_Aeon (armor trim models) https://www.curseforge.com/minecraft/texture-packs/ozocraft-remix (CC BY 4.0)
+* Wbjitscool
+* SmokeyDope
 
 ## Translations
 * Wuzzy
@@ -192,6 +197,9 @@
 * SakuraRiu
 * anarquimico
 * syl
+* Temak
+* megustanlosfrijoles
+* kbundg
 
 ## Funders
 * 40W
@@ -199,12 +207,6 @@
 * Cora
 
 ## Special thanks
-* celeron55 for creating Minetest
-* Jordach for the jukebox music compilation from Big Freaking Dig
-* wsor for working tirelessly in the shadows for the good of all of us, particularly helping with solving contentDB and copyright issues.
+* The Minetest team for making and supporting an engine, and distribution infrastructure that makes this all possible
 * The workaholics who spent way too much time writing for the Minecraft Wiki. It's an invaluable resource for creating this game
 * Notch and Jeb for being the major forces behind Minecraft
-* Dark Reaven Music (https://soundcloud.com/dark-reaven-music) for the main menu theme (Calmed Cube) and Traitor (horizonchris96), which is licensed under https://creativecommons.org/licenses/by-sa/3.0/
-* Jester for helping to finely tune MineClone2 (https://www.youtube.com/@Jester-8-bit). Songs: Hailing Forest, Gift, 0dd BL0ck, Flock of One (License CC BY-SA 4.0)
-* Exhale & Tim Unwin for some wonderful MineClone2 tracks (https://www.youtube.com/channel/UClFo_JDWoG4NGrPQY0JPD_g). Songs: Valley of Ghosts, Lonely Blossom, Farmer (License CC BY-SA 4.0)
-* Diminixed for 3 fantastic tracks and remastering and leveling volumes. Songs: Afternoon Lullaby (pianowtune02), Spooled (ambientwip02), Never Grow Up (License CC BY-SA 4.0)
