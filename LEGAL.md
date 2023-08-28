@@ -42,6 +42,10 @@ The glazed terracotta textures have been created by [MysticTempest](https://gith
 Source: <https://www.planetminecraft.com/texture_pack/131pixel-perfection/>
 License: [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/)
 
+Armor trim models were created by Aeonix_Aeon
+Source: <https://www.curseforge.com/minecraft/texture-packs/ozocraft-remix>
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
 The main menu images are released under: [CC0](https://creativecommons.org/publicdomain/zero/1.0/)
 
 All other files, unless mentioned otherwise, fall under:
