@@ -85,6 +85,22 @@ function mcl_armor.equip_on_use(itemstack, player, pointed_thing)
 	return mcl_armor.equip(itemstack, player)
 end
 
+local function get_armor_texture(textures, name, modname, itemname, itemstring)
+	local core_texture = textures[name] or modname .. "_" .. itemname .. ".png"
+	if type(core_texture) == "function" then return core_texture end
+	mcl_armor.trims.core_textures[itemstring] = core_texture
+	local func = function(obj, itemstack)
+		local overlay = itemstack:get_meta():get_string("mcl_armor:trim_overlay")
+		local core_armor_texture = mcl_armor.trims.core_textures[itemstack:get_name()]
+
+		if overlay == "" then return core_armor_texture end -- key not present; armor not trimmed
+
+		return core_armor_texture .. overlay
+	end
+	
+	return func
+end
+
 function mcl_armor.register_set(def)
 	local modname = minetest.get_current_modname()
 	local S = minetest.get_translator(modname)
@@ -136,7 +152,7 @@ function mcl_armor.register_set(def)
 			_on_unequip = on_unequip_callbacks[name] or def.on_unequip,
 			_on_break = on_break_callbacks[name] or def.on_break,
 			_mcl_armor_element = name,
-			_mcl_armor_texture = textures[name] or modname .. "_" .. itemname .. ".png",
+			_mcl_armor_texture = get_armor_texture(textures, name, modname, itemname, itemstring),
 			_mcl_upgradable = def._mcl_upgradable,
 			_mcl_upgrade_item = upgrade_item
 		})
@@ -257,3 +273,43 @@ function mcl_armor.update(obj)
 	end
 end
 
+function mcl_armor.trim(itemstack, overlay, color_string)
+    local def = itemstack:get_definition()
+    if not def._mcl_armor_texture and not mcl_armor.trims.blacklisted[itemstack:get_name()] then return end
+    local meta = itemstack:get_meta()
+
+    local piece_overlay = overlay
+    local inv_overlay = ""
+    local piece_type = def._mcl_armor_element
+
+    if piece_type == "head" then --helmet
+        inv_overlay = "^(helmet_trim.png"
+        piece_overlay = piece_overlay .. "_helmet"
+    elseif piece_type == "torso" then --chestplate
+        inv_overlay = "^(chestplate_trim.png"
+        piece_overlay = piece_overlay .. "_chestplate"
+    elseif piece_type == "legs" then --leggings
+        inv_overlay = "^(leggings_trim.png"
+        piece_overlay = piece_overlay .. "_leggings"
+    elseif piece_type == "feet" then --boots
+        inv_overlay = "^(boots_trim.png"
+        piece_overlay = piece_overlay .. "_boots"
+    end
+    local color = mcl_armor.trims.colors[color_string]
+    inv_overlay = inv_overlay .. "^[colorize:" .. color .. ":150)"
+    piece_overlay = piece_overlay .. ".png"
+
+    piece_overlay = "^(" .. piece_overlay .. "^[colorize:" .. color .. ":150)"
+
+    meta:set_string("mcl_armor:trim_overlay" , piece_overlay) -- set textures to render on the player, will work for clients below 5.8 as well
+    meta:set_string("mcl_armor:inv", inv_overlay) -- make 5.8+ clients display the fancy inv image, older ones will see no change in the *inventory* image
+    meta:set_string("inventory_image", def.inventory_image .. inv_overlay) -- dont use reload_inv_image as it's a one liner in this enviorment
+end
+
+function mcl_armor.reload_trim_inv_image(itemstack)
+    local meta = itemstack:get_meta()
+    local inv_overlay = meta:get_string("mcl_armor:inv")
+    local def = itemstack:get_definition()
+    if inv_overlay == "" then return end
+    meta:set_string("inventory_image", def.inventory_image .. inv_overlay)
+end

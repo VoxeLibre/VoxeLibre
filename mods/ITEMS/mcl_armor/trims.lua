@@ -1,7 +1,7 @@
 local mod_registername      = minetest.get_current_modname() .. ":"
 local S                     = minetest.get_translator(modname)
 
-for _, template_name in pairs(mcl_armor_trims.overlays) do
+for _, template_name in pairs(mcl_armor.trims.overlays) do
     minetest.register_craftitem(mod_registername .. template_name, {
         description      = S("Smithing Template '@1'", template_name),
         inventory_image  = template_name .. "_armor_trim_smithing_template.png",

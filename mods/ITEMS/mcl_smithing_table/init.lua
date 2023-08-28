@@ -20,7 +20,7 @@ function mcl_smithing_table.upgrade_item_netherite(itemstack)
 	end
 
 	itemstack:set_name(upgrade_item)
-	mcl_armor_trims.reload_inv_image(itemstack)
+	mcl_armor.reload_trim_inv_image(itemstack)
 
 	-- Reload the ToolTips of the tool
 
@@ -72,10 +72,10 @@ function mcl_smithing_table.upgrade_trimmed(itemstack, color_mineral, template)
 	local material_name = color_mineral:get_name()
 	material_name = smithing_materials[material_name]
 
-	local overlay = template:get_name():gsub("mcl_armor_trims:","")
+	local overlay = template:get_name():gsub("mcl_armor:","")
 
 	--trimming process
-	mcl_armor_trims.trim(itemstack, overlay, material_name)
+	mcl_armor.trim(itemstack, overlay, material_name)
 	--itemstack:set_name(itemstack:get_name() .. "_trimmed_" .. overlay .. "_" .. material_name)
 	tt.reload_itemstack_description(itemstack)
 
@@ -137,13 +137,13 @@ minetest.register_node("mcl_smithing_table:table", {
 		if 			
 					listname == "upgrade_item"  
 			and	 	string.find(stack:get_name(),"mcl_armor:") -- allow any armor piece to go in (in case the player wants to trim them)
-			and not mcl_armor_trims.blacklisted[stack:get_name()]
+			and not mcl_armor.trims.blacklisted[stack:get_name()]
 
 			or		listname == "mineral" 
 			and		mcl_smithing_table.is_smithing_mineral(stack:get_name())
 
 			or 		listname == "template"
-			and		string.find(stack:get_name(),"mcl_armor_trims") 
+			and		string.find(stack:get_name(),"mcl_armor") 
 		then
 			return stack:get_count()
 		end
