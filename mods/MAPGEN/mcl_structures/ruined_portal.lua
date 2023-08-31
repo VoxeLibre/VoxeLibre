@@ -12,7 +12,7 @@ end
 
 local def = {
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass","group:grass_block","group:sand","group:grass_block_snow","mcl_core:snow"},
-	fill_ratio = 0.01,
+	fill_ratio = 0.006,
 	flags = "place_center_x, place_center_z, all_floors",
 	solid_ground = true,
 	make_foundation = true,
