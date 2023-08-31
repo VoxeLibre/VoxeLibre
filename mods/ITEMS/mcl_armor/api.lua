@@ -91,7 +91,13 @@ local function get_armor_texture(textures, name, modname, itemname, itemstring)
 	mcl_armor.trims.core_textures[itemstring] = core_texture
 	local func = function(obj, itemstack)
 		local overlay = itemstack:get_meta():get_string("mcl_armor:trim_overlay")
-		local core_armor_texture = mcl_armor.trims.core_textures[itemstack:get_name()]
+		local core_armor_texture
+		local stack_name = mcl_grindstone.remove_enchant_name(itemstack) -- gets original itemstring if enchanted, no need to store (nearly) identical values
+		local core_armor_texture = mcl_armor.trims.core_textures[stack_name]
+
+		if mcl_enchanting.is_enchanted(itemstack:get_name()) then -- working with the original stack to know wether to apply enchanting overlay or not
+			core_armor_texture = core_armor_texture .. mcl_enchanting.overlay
+		end
 
 		if overlay == "" then return core_armor_texture end -- key not present; armor not trimmed
 

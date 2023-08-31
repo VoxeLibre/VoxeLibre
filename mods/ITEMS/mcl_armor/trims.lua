@@ -1,5 +1,5 @@
 local mod_registername      = minetest.get_current_modname() .. ":"
-local S                     = minetest.get_translator(modname)
+local S                     = minetest.get_translator(minetest.get_current_modname())
 
 for _, template_name in pairs(mcl_armor.trims.overlays) do
     minetest.register_craftitem(mod_registername .. template_name, {
