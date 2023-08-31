@@ -166,7 +166,7 @@ mcl_structures.register_structure("shipwreck",{
 				{ itemstring = "mcl_clock:clock", weight = 1, amount_min = 1, amount_max = 1 },
 				{ itemstring = "mcl_compass:compass", weight = 1, amount_min = 1, amount_max = 1 },
 				{ itemstring = "mcl_maps:empty_map", weight = 1, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_armor_trims:coast", weight = 20, amount_min = 2, amount_max = 2},
+				{ itemstring = "mcl_armor:coast", weight = 20, amount_min = 2, amount_max = 2},
 				}
 			},
 		}

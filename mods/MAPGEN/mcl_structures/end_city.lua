@@ -58,7 +58,7 @@ mcl_structures.register_structure("end_shipwreck",{
 				{ itemstring = "mcl_core:diamond", weight = 3, amount_min = 2, amount_max = 7 },
 				{ itemstring = "mcl_mobitems:saddle", weight = 3, },
 				{ itemstring = "mcl_core:emerald", weight = 2, amount_min = 1, amount_max = 3 },
-				{ itemstring = "mcl_armor_trims:spire", amount_min = 1, amount_max = 1 },
+				{ itemstring = "mcl_armor:spire", amount_min = 1, amount_max = 1 },
 				{ itemstring = "mcl_books:book", weight = 1, func = function(stack, pr)
 					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
 				end },

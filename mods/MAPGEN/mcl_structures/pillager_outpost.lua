@@ -44,7 +44,7 @@ mcl_structures.register_structure("pillager_outpost",{
 				{ itemstring = "mcl_books:book", weight = 1, func = function(stack, pr)
 					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
 				end },
-				{ itemstring = "mcl_armor_trims:sentry"},
+				{ itemstring = "mcl_armor:sentry"},
 			}
 		},
 		{
