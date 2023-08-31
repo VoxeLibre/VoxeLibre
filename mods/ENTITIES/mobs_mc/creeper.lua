@@ -24,6 +24,7 @@ mcl_mobs.register_mob("mobs_mc:creeper", {
 	mesh = "mobs_mc_creeper.b3d",
 	head_swivel = "Head_Control",
 	bone_eye_height = 2.35,
+	head_eye_height = 1.8;
 	curiosity = 2,
 	textures = {
 		{"mobs_mc_creeper.png",

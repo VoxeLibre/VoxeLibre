@@ -853,7 +853,8 @@ function mob_class:do_states_attack (dtime)
 		return
 	end
 
-	local target_line_of_sight = self:line_of_sight(s, p, 2)
+	local target_line_of_sight = self:target_visible(s)
+
 	if not target_line_of_sight then
 		if self.target_time_lost then
 			local time_since_seen = os.time() - self.target_time_lost
