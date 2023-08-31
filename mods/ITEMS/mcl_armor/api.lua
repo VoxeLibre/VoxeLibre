@@ -96,6 +96,9 @@ local function get_armor_texture(textures, name, modname, itemname, itemstring)
 		local core_armor_texture = mcl_armor.trims.core_textures[stack_name]
 
 		if mcl_enchanting.is_enchanted(itemstack:get_name()) then -- working with the original stack to know wether to apply enchanting overlay or not
+			--[[Far, Far in the future we may no longer _enchanted itemstrings...
+				To fix this code, simply put the unmodified itemstring in stack_name's place
+				DO NOT REMOVE THIS if UNLESS YOU KNOW WHAT YOU'RE TRYING TO ACHIEVE!--]]
 			core_armor_texture = core_armor_texture .. mcl_enchanting.overlay
 		end
 

@@ -98,7 +98,6 @@ function mcl_smithing_table.upgrade_trimmed(itemstack, color_mineral, template)
 
 	--trimming process
 	mcl_armor.trim(itemstack, overlay, material_name)
-	--itemstack:set_name(itemstack:get_name() .. "_trimmed_" .. overlay .. "_" .. material_name)
 	tt.reload_itemstack_description(itemstack)
 
 	return itemstack
