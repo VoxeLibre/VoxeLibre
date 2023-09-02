@@ -187,7 +187,7 @@ local function create_smoke_partspawner (pos, constructor)
 	if haybale then
 		smoke_timer = 8
 	else
-		smoke_timer = 4.75
+		smoke_timer = 3
 	end
 
 	local spawner_id = minetest.add_particlespawner({
@@ -209,18 +209,18 @@ local function create_smoke_partspawner (pos, constructor)
 		texpool = {
 			"mcl_campfires_particle_1.png";
 			{ name = "mcl_campfires_particle_1.png", fade = "out" },
-			{ name = "mcl_campfires_particle_2.png" },
-			{ name = "mcl_campfires_particle_3.png" },
-			{ name = "mcl_campfires_particle_4.png" },
-			{ name = "mcl_campfires_particle_5.png" },
-			{ name = "mcl_campfires_particle_6.png" },
-			{ name = "mcl_campfires_particle_7.png" },
-			{ name = "mcl_campfires_particle_8.png" },
-			{ name = "mcl_campfires_particle_9.png" },
-			{ name = "mcl_campfires_particle_10.png" },
-			{ name = "mcl_campfires_particle_11.png" },
-			{ name = "mcl_campfires_particle_11.png" },
-			{ name = "mcl_campfires_particle_12.png" },
+			{ name = "mcl_campfires_particle_2.png", fade = "out" },
+			{ name = "mcl_campfires_particle_3.png", fade = "out" },
+			{ name = "mcl_campfires_particle_4.png", fade = "out" },
+			{ name = "mcl_campfires_particle_5.png", fade = "out" },
+			{ name = "mcl_campfires_particle_6.png", fade = "out" },
+			{ name = "mcl_campfires_particle_7.png", fade = "out" },
+			{ name = "mcl_campfires_particle_8.png", fade = "out" },
+			{ name = "mcl_campfires_particle_9.png", fade = "out" },
+			{ name = "mcl_campfires_particle_10.png", fade = "out" },
+			{ name = "mcl_campfires_particle_11.png", fade = "out" },
+			{ name = "mcl_campfires_particle_11.png", fade = "out" },
+			{ name = "mcl_campfires_particle_12.png", fade = "out" },
 		}
 	})
 
