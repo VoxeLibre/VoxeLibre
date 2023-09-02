@@ -191,9 +191,10 @@ Origin of those models:
 * [Spennnyyy](https://freesound.org/people/Spennnyyy/) (CC0)
     * `mcl_totems_totem.ogg`
         * Source: <https://freesound.org/people/Spennnyyy/sounds/323502/>
-* [Baŝto](https://opengameart.org/users/ba%C5%9Dto)
+* [Baŝto](https://opengameart.org/users/ba%C5%9Dto) (remixer) and [kantouth](https://freesound.org/people/kantouth/) (original author)
     * `mobs_mc_skeleton_random.*.ogg` (CC BY 3.0)
         * Source: <https://opengameart.org/content/walking-skeleton>
+            * Based on:  <https://freesound.org/people/kantouth/sounds/115113/>
 * [spookymodem](https://freesound.org/people/spookymodem/)
     * `mobs_mc_skeleton_death.ogg` (CC0)
         * <https://freesound.org/people/spookymodem/sounds/202091/>
@@ -307,4 +308,4 @@ Origin of those models:
 
 Note: Many of these sounds have been more or less modified to fit the game.
 
-Sounds not mentioned hre are licensed under CC0.
+Sounds not mentioned here are licensed under CC0.

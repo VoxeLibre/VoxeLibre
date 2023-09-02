@@ -22,22 +22,22 @@ mcl_banners = {}
 mcl_banners.colors = {
 	-- Format:
 	-- [ID] = { banner description, wool, unified dyes color group, overlay color, dye, color name for emblazonings }
-	["unicolor_white"] =      {"white",      S("White Banner"),      "mcl_wool:white", "#FFFFFF", "mcl_dye:white", N("White") },
+	["unicolor_white"] =      {"white",      S("White Banner"),      "mcl_wool:white", "#C8C8C8", "mcl_dye:white", N("White") },
 	["unicolor_darkgrey"] =   {"grey",       S("Grey Banner"),       "mcl_wool:grey", "#303030", "mcl_dye:dark_grey", N("Grey") },
 	["unicolor_grey"] =       {"silver",     S("Light Grey Banner"), "mcl_wool:silver", "#5B5B5B", "mcl_dye:grey", N("Light Grey") },
 	["unicolor_black"] =      {"black",      S("Black Banner"),      "mcl_wool:black", "#000000", "mcl_dye:black", N("Black") },
-	["unicolor_red"] =        {"red",        S("Red Banner"),        "mcl_wool:red", "#BC0000", "mcl_dye:red", N("Red") },
-	["unicolor_yellow"] =     {"yellow",     S("Yellow Banner"),     "mcl_wool:yellow", "#E6CD00", "mcl_dye:yellow", N("Yellow") },
-	["unicolor_dark_green"] = {"green",      S("Green Banner"),      "mcl_wool:green", "#006000", "mcl_dye:dark_green", N("Green") },
-	["unicolor_cyan"] =       {"cyan",       S("Cyan Banner"),       "mcl_wool:cyan", "#00ACAC", "mcl_dye:cyan", N("Cyan") },
-	["unicolor_blue"] =       {"blue",       S("Blue Banner"),       "mcl_wool:blue", "#0000AC", "mcl_dye:blue", N("Blue") },
-	["unicolor_red_violet"] = {"magenta",    S("Magenta Banner"),    "mcl_wool:magenta", "#AC007C", "mcl_dye:magenta", N("Magenta")},
-	["unicolor_orange"] =     {"orange",     S("Orange Banner"),     "mcl_wool:orange", "#E67300", "mcl_dye:orange", N("Orange") },
-	["unicolor_violet"] =     {"purple",     S("Purple Banner"),     "mcl_wool:purple", "#6400AC", "mcl_dye:violet", N("Violet") },
-	["unicolor_brown"] =      {"brown",      S("Brown Banner"),      "mcl_wool:brown", "#603000", "mcl_dye:brown", N("Brown") },
-	["unicolor_pink"] =       {"pink",       S("Pink Banner"),       "mcl_wool:pink", "#DE557C", "mcl_dye:pink", N("Pink") },
-	["unicolor_lime"] =       {"lime",       S("Lime Banner"),       "mcl_wool:lime", "#30AC00", "mcl_dye:green", N("Lime") },
-	["unicolor_light_blue"] = {"light_blue", S("Light Blue Banner"), "mcl_wool:light_blue", "#4040CF", "mcl_dye:lightblue", N("Light Blue") },
+	["unicolor_red"] =        {"red",        S("Red Banner"),        "mcl_wool:red", "#760F15", "mcl_dye:red", N("Red") },
+	["unicolor_yellow"] =     {"yellow",     S("Yellow Banner"),     "mcl_wool:yellow", "#E2b43E", "mcl_dye:yellow", N("Yellow") },
+	["unicolor_dark_green"] = {"green",      S("Green Banner"),      "mcl_wool:green", "#385833", "mcl_dye:dark_green", N("Green") },
+	["unicolor_cyan"] =       {"cyan",       S("Cyan Banner"),       "mcl_wool:cyan", "#114C56", "mcl_dye:cyan", N("Cyan") },
+	["unicolor_blue"] =       {"blue",       S("Blue Banner"),       "mcl_wool:blue", "#20336B", "mcl_dye:blue", N("Blue") },
+	["unicolor_red_violet"] = {"magenta",    S("Magenta Banner"),    "mcl_wool:magenta", "#B36897", "mcl_dye:magenta", N("Magenta")},
+	["unicolor_orange"] =     {"orange",     S("Orange Banner"),     "mcl_wool:orange", "#B35E2E", "mcl_dye:orange", N("Orange") },
+	["unicolor_violet"] =     {"purple",     S("Purple Banner"),     "mcl_wool:purple", "#764F91", "mcl_dye:violet", N("Violet") },
+	["unicolor_brown"] =      {"brown",      S("Brown Banner"),      "mcl_wool:brown", "#46251A", "mcl_dye:brown", N("Brown") },
+	["unicolor_pink"] =       {"pink",       S("Pink Banner"),       "mcl_wool:pink", "#C98196", "mcl_dye:pink", N("Pink") },
+	["unicolor_lime"] =       {"lime",       S("Lime Banner"),       "mcl_wool:lime", "#7DA553", "mcl_dye:green", N("Lime") },
+	["unicolor_light_blue"] = {"light_blue", S("Light Blue Banner"), "mcl_wool:light_blue", "#5176B2", "mcl_dye:lightblue", N("Light Blue") },
 }
 
 
@@ -96,8 +96,8 @@ end
 dofile(modpath.."/patterncraft.lua")
 
 -- Overlay ratios (0-255)
-local base_color_ratio = 224
-local layer_ratio = 255
+local base_color_ratio = 225
+local layer_ratio = 225
 
 local standing_banner_entity_offset = { x=0, y=-0.499, z=0 }
 local hanging_banner_entity_offset = { x=0, y=-1.7, z=0 }
@@ -181,7 +181,7 @@ function mcl_banners.make_banner_texture(base_color, layers)
 				local color = mcl_banners.colors[layerinfo.color][4]
 
 				-- Generate layer texture
-				local layer = "(("..pattern.."^[colorize:"..color..":"..layer_ratio..")^[mask:"..pattern..")"
+				local layer = "((mcl_banners_banner_base.png^[colorize:"..color..":"..layer_ratio..")^[mask:"..pattern..")"
 
 				finished_banner = finished_banner .. "^" .. layer
 			end

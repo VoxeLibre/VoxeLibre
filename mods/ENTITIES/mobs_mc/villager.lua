@@ -451,7 +451,7 @@ local professions = {
 	leatherworker = {
 		name = N("Leatherworker"),
 		texture = "mobs_mc_villager_leatherworker.png",
-		jobsite = "mcl_cauldrons:cauldron",
+		jobsite = "group:cauldron",
 		trades = {
 			{
 			{ { "mcl_mobitems:leather", 6, 6 }, E1 },
@@ -1142,7 +1142,15 @@ end
 ----- JOBSITE LOGIC
 local function get_profession_by_jobsite(js)
 	for k,v in pairs(professions) do
-		if v.jobsite == js then return k end
+		if v.jobsite == js then
+			return k
+		-- Catch Nitwit doesn't have a jobsite
+		elseif v.jobsite and v.jobsite:find("^group:") then
+			local group = v.jobsite:gsub("^group:", "")
+			if minetest.get_item_group(js, group) > 0 then
+				return k
+			end
+		end
 	end
 end
 

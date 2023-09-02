@@ -234,7 +234,7 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 		if self:feed_tame(clicker, 1, true, false) then return end
 		if mcl_mobs:protect(self, clicker) then return end
 
-		if item:get_name() == "mcl_tools:shears" and not self.gotten and not self.child then
+		if minetest.get_item_group(item:get_name(), "shears") > 0 and not self.gotten and not self.child then
 			self.gotten = true
 			local pos = self.object:get_pos()
 			minetest.sound_play("mcl_tools_shears_cut", {pos = pos}, true)

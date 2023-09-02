@@ -1,10 +1,12 @@
+---@diagnostic disable
+
 unused_args = false
 allow_defined_top = true
 max_line_length = false
 redefined = false
 
 globals = {
-    "minetest", "core",
+	"minetest", "core",
 }
 
 read_globals = {
@@ -40,16 +42,16 @@ read_globals = {
 			"factorial"
 		}
 	},
-    ------
-    --MODS
-    ------
+	------
+	--MODS
+	------
 
-    --GENERAL
-    "default",
+	--GENERAL
+	"default",
 
-    --ENTITIES
-    "cmi",
+	--ENTITIES
+	"cmi",
 
-    --HUD
-    "sfinv", "sfinv_buttons", "unified_inventory", "cmsg", "inventory_plus",
+	--HUD
+	"sfinv", "sfinv_buttons", "unified_inventory", "cmsg", "inventory_plus",
 }
