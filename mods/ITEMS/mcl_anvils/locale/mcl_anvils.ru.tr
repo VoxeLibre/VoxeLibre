@@ -1,6 +1,6 @@
 # textdomain: mcl_anvils
 Set Name=Дать имя
-Repair and Name=Починить и переименовать
+Repair and Name=Починить и дать имя
 Inventory=Инвентарь
 Anvil=Наковальня
 The anvil allows you to repair tools and armor, and to give names to items. It has a limited durability, however. Don't let it fall on your head, it could be quite painful!=Наковальня позволяет ремонтировать инструменты и броню, а также давать имена предметам. Но она имеет ограниченную прочность. Не дайте ей упасть вам на голову, это может быть больно!

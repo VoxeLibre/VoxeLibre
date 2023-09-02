@@ -1,5 +1,5 @@
 # textdomain: mcl_monster_eggs
-An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=Заражённый блок это блок, после добычи которого из него появляется чешуйница. Блок выглядит идентично своему нормальному варианту.
+An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=Заражённый блок это блок, после добычи которого спаунится чешуйница. Блок выглядит идентично своему нормальному варианту.
 Infested Stone=Заражённый камень
 Infested Cobblestone=Заражённый булыжник
 Infested Stone Bricks=Заражённые каменные кирпичи

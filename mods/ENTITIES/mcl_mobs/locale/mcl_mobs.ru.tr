@@ -1,13 +1,13 @@
 # textdomain: mcl_mobs
-Peaceful mode active! No monsters will spawn.=Мирный режим включён! Монстры не будут спавниться.
-This allows you to place a single mob.=Позволяет вам создать одного моба.
-Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Используйте предмет там, где вы хотите, чтобы появился моб. Животные будут появляться уже прирученные, если только вы не удерживаете клавишу [Красться] при размещении. Если использовать на спаунере мобов, изменится создаваемый им моб.
+Peaceful mode active! No monsters will spawn.=Мирный режим включён! Монстры не будут спауниться.
+This allows you to place a single mob.=Позволяет вам заспаунить одного моба.
+Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Используйте предмет там, где вы хотите, чтобы заспаунился моб. Животные будут спауниться уже прирученные, если только вы не удерживаете клавишу [Красться] при размещении. Если использовать на спаунере мобов, изменится создаваемый им моб.
 You need the “maphack” privilege to change the mob spawner.=Вам нужна привилегия “maphack”, чтобы изменить спаунер мобов.
 Name Tag=Бирка
 A name tag is an item to name a mob.=Бирка это предмет, дающий мобу имя.
 Before you use the name tag, you need to set a name at an anvil. Then you can use the name tag to name a mob. This uses up the name tag.=Прежде чем использовать бирку, нужно задать ей имя на наковальне. Тогда вы сможете использовать бирку, чтобы дать имя мобу.
 Only peaceful mobs allowed!=Разрешены только мирные мобы!
 Give names to mobs=Даёт имена мобам
-Set name at anvil=Переименуйте на наковальне
+Set name at anvil=Задайте имя на наковальне
 Removes specified mobs except nametagged and tamed ones. For the second parameter, use nametagged/tamed to select only nametagged/tamed mobs, or a range to specify a maximum distance from the player.=Удаляет указанных мобов кроме именованных и прирученных. Для второго параметра используйте nametagged/tamed, чтобы выбрать именованных/прирученных мобов или радиус указывающий максимальную дистанцию от игрока.
-Default usage. Clearing hostile mobs. For more options please type: /help clearmobs=Параметры по умолчанию. Удаляем враждебных мобов. Для больших опций введите: /help clearmobs
+Default usage. Clearing hostile mobs. For more options please type: /help clearmobs=Параметры по умолчанию. Удаляем враждебных мобов. Для дополнительных опций введите: /help clearmobs
