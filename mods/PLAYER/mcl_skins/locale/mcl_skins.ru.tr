@@ -1,6 +1,6 @@
 # textdomain: mcl_skins
-Skins=Облики
-Templates=Образцы
+Skins=Скины
+Templates=Шаблоны
 Arm size=Толщина рук
 Bases=Цвета кожи
 Footwears=Обувь
@@ -10,5 +10,5 @@ Bottoms=Ноги
 Tops=Туловища
 Hairs=Причёски
 Headwears=Головные уборы
-Open skin configuration screen.=Открыть экран настройки облика.
+Open skin configuration screen.=Открыть настройки скина.
 Select=Выбрать

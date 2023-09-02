@@ -22,3 +22,5 @@ Iron Trapdoor=
 Iron trapdoors are horizontal barriers which can only be opened and closed by redstone signals, but not by hand. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=
 Openable by players and redstone power=
 Openable by redstone power=
+This door is a 2-block high barrier which can only be opened by redstone power, not by hand.=
+This door is a 2-block high barrier which can be opened or closed by hand or by redstone power.=
