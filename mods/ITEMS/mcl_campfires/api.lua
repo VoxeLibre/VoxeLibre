@@ -185,9 +185,9 @@ local function create_smoke_partspawner (pos, constructor)
 	local smoke_timer
 
 	if haybale then
-		smoke_timer = 8
+		smoke_timer = 4
 	else
-		smoke_timer = 3
+		smoke_timer = 2.4
 	end
 
 	local spawner_id = minetest.add_particlespawner({
