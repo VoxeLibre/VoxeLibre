@@ -76,6 +76,67 @@ function mob_class:is_node_waterhazard(nodename)
 	return false
 end
 
+
+local function raycast_line_of_sight (origin, target)
+	local raycast = minetest.raycast(origin, target, false, true)
+
+	local los_blocked = false
+
+	for hitpoint in raycast do
+		if hitpoint.type == "node" then
+			--TODO type object could block vision, for example chests
+			local node = minetest.get_node(minetest.get_pointed_thing_position(hitpoint))
+
+			if node.name ~= "air" then
+				local nodef = minetest.registered_nodes[node.name]
+				if nodef and nodef.walkable then
+					los_blocked = true
+					break
+				end
+			end
+		end
+	end
+	return not los_blocked
+end
+
+function mob_class:target_visible(origin)
+	if not origin then return end
+
+	if not self.attack then return end
+	local target_pos = self.attack:get_pos()
+
+	if not target_pos then return end
+
+	local origin_eye_pos = vector.offset(origin, 0, self.head_eye_height, 0)
+
+	--minetest.log("origin: " .. dump(origin))
+	--minetest.log("origin_eye_pos: " .. dump(origin_eye_pos))
+
+	local targ_head_height, targ_feet_height
+	if self.attack:is_player() then
+		local cbox = self.object:get_properties().collisionbox
+		targ_head_height = vector.offset(target_pos, 0, cbox[5], 0)
+		targ_feet_height = target_pos -- Cbox would put feet under ground which interferes with ray
+	else
+		targ_head_height = vector.offset(target_pos, 0, self.collisionbox[5], 0)
+		targ_feet_height = vector.offset(target_pos, 0, self.collisionbox[2], 0)
+	end
+
+	--minetest.log("start targ_head_height: " .. dump(targ_head_height))
+	if raycast_line_of_sight (origin_eye_pos, targ_head_height) then
+		return true
+	end
+
+	--minetest.log("Start targ_feet_height: " .. dump(targ_feet_height))
+	if raycast_line_of_sight (origin_eye_pos, targ_feet_height) then
+		return true
+	end
+
+	-- TODO mid way between feet and head
+
+	return false
+end
+
 -- check line of sight (BrunoMine)
 function mob_class:line_of_sight(pos1, pos2, stepsize)
 
