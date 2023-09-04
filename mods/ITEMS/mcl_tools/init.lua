@@ -187,7 +187,7 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 					itemstack:add_wear(wear)
 				end
 			end
-			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above}, true)
+			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above, max_hear_distance = 16}, true)
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:grass_path"})
 		end
 	end

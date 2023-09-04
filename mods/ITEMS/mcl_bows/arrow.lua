@@ -1,6 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 local mod_target = minetest.get_modpath("mcl_target")
+local mod_campfire = minetest.get_modpath("mcl_campfires")
 local enable_pvp = minetest.settings:get_bool("enable_pvp")
 
 local math = math
@@ -393,6 +394,11 @@ function ARROW_ENTITY.on_step(self, dtime)
 
 				if mcl_burning.is_burning(self.object) and snode.name == "mcl_tnt:tnt" then
 					tnt.ignite(self._stuckin)
+				end
+
+				-- Ignite Campfires
+				if mod_campfire and mcl_burning.is_burning(self.object) and minetest.get_item_group(snode.name, "campfire") ~= 0 then
+					mcl_campfires.light_campfire(self._stuckin)
 				end
 
 				-- Activate target

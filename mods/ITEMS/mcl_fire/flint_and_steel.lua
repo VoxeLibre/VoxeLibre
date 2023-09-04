@@ -66,6 +66,12 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 			if not minetest.is_creative_enabled("") then
 				stack:add_wear(65535/65) -- 65 uses
 			end
+		-- Ignite Campfire
+		elseif minetest.get_item_group(dropnode.name, "campfire") ~= 0 then
+			add_node(droppos, {name=dropnode.name.."_lit"})
+			if not minetest.is_creative_enabled("") then
+				stack:add_wear(65535/65) -- 65 uses
+			end
 		end
 		return stack
 	end,
