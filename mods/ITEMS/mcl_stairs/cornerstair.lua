@@ -232,6 +232,8 @@ function mcl_stairs.cornerstair.add(name, stairtiles)
 		outer_tiles = stairtiles[1]
 		inner_tiles = stairtiles[2]
 	end
+	if inner_tiles == nil then inner_tiles = node_def.tiles end
+	if outer_tiles == nil then outer_tiles = node_def.tiles end
 	local outer_groups = table.copy(node_def.groups)
 	outer_groups.not_in_creative_inventory = 1
 	local inner_groups = table.copy(outer_groups)
