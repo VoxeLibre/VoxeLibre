@@ -257,7 +257,7 @@ function sign_tpl.on_rightclick(pos, node, clicker, itemstack, pointed_thing)
 	return itemstack
 end
 
-function sign_tpl.after_dig_node(pos)
+function sign_tpl.on_destruct(pos)
 	mcl_signs.get_text_entity (pos, true)
 end
 
