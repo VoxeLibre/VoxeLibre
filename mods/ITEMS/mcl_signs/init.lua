@@ -326,12 +326,13 @@ end
 function mcl_signs.update_sign(pos)
 	local data = get_signdata(pos)
 
-	if not data then
-		return false
-	end
-
 	local text_entity = mcl_signs.get_text_entity(pos)
-	if not text_entity then
+	if text_entity and not data then
+		text_entity:remove()
+		return false
+	elseif not data then
+		return false
+	elseif not text_entity then
 		text_entity = minetest.add_entity(data.text_pos, "mcl_signs:text")
 		if not text_entity or not text_entity:get_pos() then return end
 	end
