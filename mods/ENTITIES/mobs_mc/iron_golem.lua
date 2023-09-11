@@ -91,7 +91,7 @@ mcl_mobs.register_mob("mobs_mc:iron_golem", {
 
 		if self.home_timer > 10 then
 			self.home_timer = 0
-			if self._home then
+			if self._home and self.state ~= "attack" then
 				local dist = vector.distance(self._home,self.object:get_pos())
 				if dist >= tele_dist then
 					self.object:set_pos(self._home)
