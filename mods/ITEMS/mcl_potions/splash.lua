@@ -110,7 +110,7 @@ function mcl_potions.register_splash(name, descr, color, def)
 				for _,obj in pairs(minetest.get_objects_inside_radius(pos, 4)) do
 
 					local entity = obj:get_luaentity()
-					if obj:is_player() or entity.is_mob then
+					if obj:is_player() or entity and entity.is_mob then
 
 						local pos2 = obj:get_pos()
 						local rad = math.floor(math.sqrt((pos2.x-pos.x)^2 + (pos2.y-pos.y)^2 + (pos2.z-pos.z)^2))

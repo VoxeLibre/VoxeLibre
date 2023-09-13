@@ -21,6 +21,35 @@ end
 --################### WITHER
 --###################
 
+local function wither_unstuck(self)
+	local pos = self.object:get_pos()
+	if mobs_griefing then
+		local col = self.collisionbox
+		local pos1 = vector.offset(pos, col[1], col[2], col[3])
+		local pos2 = vector.offset(pos, col[4], col[5], col[6])
+		for z = pos1.z, pos2.z do for y = pos1.y, pos2.y do for x = pos1.x, pos2.x do
+			local npos = vector.new(x,y,z)
+			local name = minetest.get_node(npos).name
+			if name ~= "air" then
+				local ndef = minetest.registered_nodes[name]
+				if ndef and ndef._mcl_hardness and ndef._mcl_hardness >= 0 then
+					local drops = minetest.get_node_drops(name, "")
+					if minetest.dig_node(npos) then
+						for _, item in ipairs(drops) do
+							if type(item) ~= "string" then
+								item = item:get_name() .. item:get_count()
+							end
+							minetest.add_item(npos, item)
+						end
+					end
+				end
+			end
+		end end end
+	else
+		mcl_mobs.mob_class.safe_boom(self, pos, 2)
+	end
+end
+
 mobs_mc.wither_count_overworld = 0
 mobs_mc.wither_count_nether = 0
 mobs_mc.wither_count_end = 0
@@ -137,12 +166,12 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 
 		if anti_troll and self._spawner then
 			local spawner = minetest.get_player_by_name(self._spawner)
-			if spawner then
+			if follow_spawner and spawner then
 				self._death_timer = 0
 				local pos = self.object:get_pos()
 				local spw = spawner:get_pos()
 				local dist = vector.distance(pos, spw)
-				if dist > 60 and follow_spawner then -- teleport to the player who spawned the wither
+				if dist > 60 then -- teleport to the player who spawned the wither
 					local R = 10
 					pos.x = spw.x + math.random(-R, R)
 					pos.y = spw.y + math.random(-R, R)
@@ -164,26 +193,6 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 		if dim == "overworld" then mobs_mc.wither_count_overworld = mobs_mc.wither_count_overworld + 1
 		elseif dim == "nether" then mobs_mc.wither_count_nether = mobs_mc.wither_count_nether + 1
 		elseif dim == "end" then mobs_mc.wither_count_end = mobs_mc.wither_count_end + 1 end
-
-		if anti_troll then
-			local INDESTRUCT_BLASTRES = 1000000
-			local head_pos = vector.offset(self.object:get_pos(),0,self.collisionbox[5],0)
-			local subh_pos = vector.offset(head_pos,0,-1,0)
-			local head_node = minetest.get_node(head_pos).name
-			local subh_node = minetest.get_node(subh_pos).name
-			local hnodef = minetest.registered_nodes[head_node]
-			local subhnodef = minetest.registered_nodes[subh_node]
-			if hnodef and subhnodef and (hnodef.walkable or subhnodef.walkable) and not self._xplded_lately then
-				if mobs_griefing and not minetest.is_protected(head_pos, "") and hnodef._mcl_blast_resistance < INDESTRUCT_BLASTRES then
-					local hp = self.health
-					mcl_explosions.explode(head_pos, 5, { drop_chance = 1.0, max_blast_resistance = 0, }, self.object)
-					self._xplded_lately = true
-					self.health = hp
-				else
-					self.object:set_pos(vector.offset(head_pos,0,10,0))
-				end
-			end
-		end
 
 		local rand_factor
 		if self.health < (self.hp_max / 2) then
@@ -337,14 +346,16 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 	end,
 
 	do_punch = function(self, hitter, tflp, tool_capabilities, dir)
-		if self._spawning then return false end
+		if self._spawning or hitter == self.object then return false end
 		local ent = hitter:get_luaentity()
 		if ent and self._arrow_resistant and (string.find(ent.name, "arrow") or string.find(ent.name, "rocket")) then return false end
+		wither_unstuck(self)
 		return true
 	end,
 	deal_damage = function(self, damage, mcl_reason)
 		if self._spawning then return end
 		if self._arrow_resistant and mcl_reason.type == "magic" then return end
+		wither_unstuck(self)
 		self.health = self.health - damage
 	end,
 
@@ -390,7 +401,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 
 	-- direct hit
 	hit_player = function(self, player)
-		local pos = self.object:get_pos()
+		local pos = vector.new(self.object:get_pos())
 		mcl_mobs.effect_functions["withering"](player, 0.5, 10)
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 0.5,
@@ -405,7 +416,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 	end,
 
 	hit_mob = function(self, mob)
-		local pos = self.object:get_pos()
+		local pos = vector.new(self.object:get_pos())
 		mcl_mobs.effect_functions["withering"](mob, 0.5, 10)
 		mob:punch(self.object, 1.0, {
 			full_punch_interval = 0.5,
@@ -443,7 +454,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
 
 	-- direct hit
 	hit_player = function(self, player)
-		local pos = self.object:get_pos()
+		local pos = vector.new(self.object:get_pos())
 		mcl_mobs.effect_functions["withering"](player, 0.5, 10)
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 0.5,
@@ -462,7 +473,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
 	end,
 
 	hit_mob = function(self, mob)
-		local pos = self.object:get_pos()
+		local pos = vector.new(self.object:get_pos())
 		mcl_mobs.effect_functions["withering"](mob, 0.5, 10)
 		mob:punch(self.object, 1.0, {
 			full_punch_interval = 0.5,
@@ -496,3 +507,4 @@ mcl_mobs.register_egg("mobs_mc:wither", S("Wither"), "#4f4f4f", "#4f4f4f", 0, tr
 
 mcl_wip.register_wip_item("mobs_mc:wither")
 mcl_mobs:non_spawn_specific("mobs_mc:wither","overworld",0,minetest.LIGHT_MAX+1)
+
