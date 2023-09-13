@@ -4,6 +4,7 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
+local allow_nav_hacks = minetest.settings:get_bool("mcl_mob_allow_nav_hacks ",false)
 
 --###################
 --################### IRON GOLEM
@@ -93,7 +94,7 @@ mcl_mobs.register_mob("mobs_mc:iron_golem", {
 			self.home_timer = 0
 			if self._home and self.state ~= "attack" then
 				local dist = vector.distance(self._home,self.object:get_pos())
-				if dist >= tele_dist then
+				if allow_nav_hacks and dist >= tele_dist then
 					self.object:set_pos(self._home)
 					self.state = "stand"
 					self.order = "follow"

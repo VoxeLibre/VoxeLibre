@@ -207,6 +207,10 @@ mcl_mobs_overworld_threshold (Artificial light threshold to stop monster spawns 
 mcl_mobs_overworld_sky_threshold (Skylight threshold to stop monster spawns in the Overworld) int 7 0 14
 mcl_mobs_overworld_passive_threshold  (Combined light threshold to stop animal and npc spawns in the Overworld) int 7 0 14
 
+# Enable workarounds for faulty mob navigation.
+# Hack 1: teleport golems home if they are very far from home
+mcl_mob_allow_nav_hacks (Mob navigation hacks) bool false
+
 [Audio]
 # Enable flame sound.
 flame_sound (Flame sound) bool true
