@@ -72,7 +72,21 @@ function mcl_doors:register_trapdoor(name, def)
 		-- Open
 		else
 			minetest.sound_play(def.sound_open, {pos = pos, gain = 0.3, max_hear_distance = 16}, true)
-			tmp_node = {name=name.."_open", param1=me.param1, param2=me.param2}
+
+			local bottom_node = minetest.get_node_or_nil(vector.subtract(pos, { x = 0, y = 1, z = 0 }))
+			local name_end = "_open"
+
+			-- Checking if there is something underneath the trapdoor
+			if bottom_node then
+				local bottom_def = minetest.registered_nodes[bottom_node.name]
+				local trapdoor = minetest.get_item_group(bottom_node.name, "trapdoor")
+
+				-- Changing trapdoor into a ladder if bottom node is climbable and not a trapdoor
+				if trapdoor ~= 2 and bottom_def.climbable then
+					name_end = "_ladder"
+				end
+			end
+			tmp_node = {name=name..name_end, param1=me.param1, param2=me.param2}
 		end
 		minetest.set_node(pos, tmp_node)
 	end
@@ -193,6 +207,7 @@ function mcl_doors:register_trapdoor(name, def)
 
 	groups_open.trapdoor = 2
 	groups_open.not_in_creative_inventory = 1
+	-- Non-climbable opened
 	minetest.register_node(name.."_open", {
 		drawtype = "nodebox",
 		tiles = tiles_open,
@@ -200,9 +215,35 @@ function mcl_doors:register_trapdoor(name, def)
 		is_ground_content = false,
 		paramtype = "light",
 		paramtype2 = "facedir",
-		-- TODO: Implement Minecraft behaviour: Climbable if directly above
-		-- ladder w/ matching orientation.
-		-- Current behavour: Always climbable
+		sunlight_propagates = true,
+		pointable = true,
+		groups = groups_open,
+		_mcl_hardness = def._mcl_hardness,
+		_mcl_blast_resistance = def._mcl_blast_resistance,
+		sounds = def.sounds,
+		drop = name,
+		node_box = {
+			type = "fixed",
+			fixed = {-0.5, -0.5, 5/16, 0.5, 0.5, 0.5}
+		},
+		on_rightclick = on_rightclick,
+		mesecons = {effector = {
+			action_off = (function(pos, node)
+				punch(pos)
+			end),
+		}},
+		on_rotate = on_rotate,
+		_other = name .. "_ladder"
+	})
+
+	-- Climbable opened
+	minetest.register_node(name.."_ladder", {
+		drawtype = "nodebox",
+		tiles = tiles_open,
+		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+		is_ground_content = false,
+		paramtype = "light",
+		paramtype2 = "facedir",
 		climbable = true,
 		sunlight_propagates = true,
 		pointable = true,
@@ -222,6 +263,7 @@ function mcl_doors:register_trapdoor(name, def)
 			end),
 		}},
 		on_rotate = on_rotate,
+		_other = name .. "_open"
 	})
 
 	if minetest.get_modpath("doc") then

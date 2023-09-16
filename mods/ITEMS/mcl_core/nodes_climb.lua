@@ -33,7 +33,14 @@ minetest.register_node("mcl_core:ladder", {
 		wall_side = { -0.5, -0.5, -0.5, -7/16, 0.5, 0.5 },
 	},
 	stack_max = 64,
-	groups = {handy=1,axey=1, attached_node=1, deco_block=1, dig_by_piston=1},
+	groups = {
+		handy = 1,
+		axey = 1,
+		attached_node = 1,
+		deco_block = 1,
+		dig_by_piston = 1,
+		ladder = 1
+	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	node_placement_prediction = "",
 	-- Restrict placement of ladders
@@ -80,7 +87,46 @@ minetest.register_node("mcl_core:ladder", {
 		end
 		return itemstack
 	end,
+	after_destruct = function(pos, oldnode)
+		local pos_above = vector.add(pos, {x = 0, y = 1, z = 0 })
+		local node_above = minetest.get_node_or_nil(pos_above)
 
+		if node_above then
+			local is_trapdoor = minetest.get_item_group(node_above.name, "trapdoor")
+
+			-- If node above is an opened trapdoor
+			if is_trapdoor == 2 then
+				local above_def = minetest.registered_nodes[node_above.name]
+				if above_def._other then
+					minetest.swap_node(pos_above, {
+										   name = above_def._other,
+										   param1 = node_above.param1,
+										   param2 = node_above.param2,
+					})
+				end
+			end
+		end
+	end,
+	after_place_node = function(pos, oldnode)
+		local pos_above = vector.add(pos, {x = 0, y = 1, z = 0 })
+		local node_above = minetest.get_node_or_nil(pos_above)
+
+		if node_above then
+			local is_trapdoor = minetest.get_item_group(node_above.name, "trapdoor")
+
+			-- If node above is an opened trapdoor
+			if is_trapdoor == 2 then
+				local above_def = minetest.registered_nodes[node_above.name]
+				if above_def._other then
+					minetest.swap_node(pos_above, {
+										   name = above_def._other,
+										   param1 = node_above.param1,
+										   param2 = node_above.param2,
+					})
+				end
+			end
+		end
+	end,
 	_mcl_blast_resistance = 0.4,
 	_mcl_hardness = 0.4,
 	on_rotate = rotate_climbable,
