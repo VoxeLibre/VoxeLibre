@@ -11,6 +11,59 @@ local function rotate_climbable(pos, node, user, mode)
 	return false
 end
 
+---Checks the direction (param2) of a ladder and a trapdoor and determine if they are
+---facing the same direction.
+---
+---@param ladder integer The param2 value of the ladder.
+---@param trapdoor integer The param2 value of the trapdoor.
+---@return boolean If the ladder and trapdoor are in the same direction.
+local function check_direction(ladder, trapdoor)
+	local convert_table = {};
+	convert_table[2] = { 1, 23 }
+	convert_table[3] = { 3, 21 }
+	convert_table[4] = { 0, 20 }
+	convert_table[5] = { 2, 22 }
+
+	local conversion = convert_table[ladder];
+	if conversion == nil then
+		return false
+	elseif conversion[1] == trapdoor or conversion[2] == trapdoor then
+		return true
+	end
+
+	return false
+end
+
+---Updates the trapdoor above (if any).
+---
+---@param pos mt.Vector The position of the ladder.
+---@param ladder integer The param2 value of the ladder.
+---@param event "place" | "destruct" The place or destruct event.
+local function update_trapdoor(pos, ladder, event)
+	local top_pos = vector.add(pos, { x = 0, y = 1, z = 0 })
+	local top_node = minetest.get_node_or_nil(top_pos)
+	if top_node then
+		local new_name = top_node.name
+		if event == "place" then
+			new_name = string.gsub(new_name, "open$", "ladder")
+		elseif event == "destruct" then
+			new_name = string.gsub(new_name, "ladder$", "open")
+		end
+
+		local is_trapdoor = minetest.get_item_group(top_node.name, "trapdoor")
+
+		-- If node above is an opened trapdoor
+		if is_trapdoor == 2 and check_direction(ladder, top_node.param2) then
+			minetest.swap_node(top_pos, {
+				name = new_name,
+				param1 = top_node.param1,
+				param2 = top_node.param2,
+			})
+		end
+	end
+end
+
+-- TODO: Move ladders into their own API.
 minetest.register_node("mcl_core:ladder", {
 	description = S("Ladder"),
 	_doc_items_longdesc = S("A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks and not on glass, leaves, ice, slabs, glowstone, nor sea lanterns."),
@@ -87,45 +140,12 @@ minetest.register_node("mcl_core:ladder", {
 		end
 		return itemstack
 	end,
-	after_destruct = function(pos, oldnode)
-		local pos_above = vector.add(pos, {x = 0, y = 1, z = 0 })
-		local node_above = minetest.get_node_or_nil(pos_above)
-
-		if node_above then
-			local is_trapdoor = minetest.get_item_group(node_above.name, "trapdoor")
-
-			-- If node above is an opened trapdoor
-			if is_trapdoor == 2 then
-				local above_def = minetest.registered_nodes[node_above.name]
-				if above_def._other then
-					minetest.swap_node(pos_above, {
-										   name = above_def._other,
-										   param1 = node_above.param1,
-										   param2 = node_above.param2,
-					})
-				end
-			end
-		end
+	after_destruct = function(pos, old)
+		update_trapdoor(pos, old.param2, "destruct")
 	end,
-	after_place_node = function(pos, oldnode)
-		local pos_above = vector.add(pos, {x = 0, y = 1, z = 0 })
-		local node_above = minetest.get_node_or_nil(pos_above)
-
-		if node_above then
-			local is_trapdoor = minetest.get_item_group(node_above.name, "trapdoor")
-
-			-- If node above is an opened trapdoor
-			if is_trapdoor == 2 then
-				local above_def = minetest.registered_nodes[node_above.name]
-				if above_def._other then
-					minetest.swap_node(pos_above, {
-										   name = above_def._other,
-										   param1 = node_above.param1,
-										   param2 = node_above.param2,
-					})
-				end
-			end
-		end
+	after_place_node = function(pos)
+		local me = minetest.get_node(pos)
+		update_trapdoor(pos, me.param2, "place")
 	end,
 	_mcl_blast_resistance = 0.4,
 	_mcl_hardness = 0.4,

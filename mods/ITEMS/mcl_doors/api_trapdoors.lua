@@ -48,6 +48,29 @@ if minetest.get_modpath("screwdriver") then
 	end
 end
 
+---Checks the direction (param2) of a ladder and a trapdoor and determine if they are
+---facing the same direction.
+---
+---@param ladder integer The param2 value of the ladder.
+---@param trapdoor integer The param2 value of the trapdoor.
+---@return boolean If the ladder and trapdoor are in the same direction.
+function check_direction(ladder, trapdoor)
+	local convert_table = {};
+	convert_table[2] = { 1, 23 }
+	convert_table[3] = { 3, 21 }
+	convert_table[4] = { 0, 20 }
+	convert_table[5] = { 2, 22 }
+
+	local conversion = convert_table[ladder];
+	if conversion == nil then
+		return false
+	elseif conversion[1] == trapdoor or conversion[2] == trapdoor then
+		return true
+	end
+
+	return false
+end
+
 function mcl_doors:register_trapdoor(name, def)
 	local groups = table.copy(def.groups)
 	if groups == nil then
@@ -67,26 +90,24 @@ function mcl_doors:register_trapdoor(name, def)
 		local tmp_node
 		-- Close
 		if minetest.get_item_group(me.name, "trapdoor") == 2 then
-			minetest.sound_play(def.sound_close, {pos = pos, gain = 0.3, max_hear_distance = 16}, true)
-			tmp_node = {name=name, param1=me.param1, param2=me.param2}
-		-- Open
+			minetest.sound_play(def.sound_close, { pos = pos, gain = 0.3, max_hear_distance = 16 }, true)
+			tmp_node = { name = name, param1 = me.param1, param2 = me.param2 }
+			-- Open
 		else
-			minetest.sound_play(def.sound_open, {pos = pos, gain = 0.3, max_hear_distance = 16}, true)
+			minetest.sound_play(def.sound_open, { pos = pos, gain = 0.3, max_hear_distance = 16 }, true)
 
 			local bottom_node = minetest.get_node_or_nil(vector.subtract(pos, { x = 0, y = 1, z = 0 }))
 			local name_end = "_open"
 
 			-- Checking if there is something underneath the trapdoor
 			if bottom_node then
-				local bottom_def = minetest.registered_nodes[bottom_node.name]
-				local trapdoor = minetest.get_item_group(bottom_node.name, "trapdoor")
-
-				-- Changing trapdoor into a ladder if bottom node is climbable and not a trapdoor
-				if trapdoor ~= 2 and bottom_def.climbable then
+				local is_ladder = minetest.get_item_group(bottom_node.name, "ladder")
+				local same_direction = check_direction(bottom_node.param2, me.param2)
+				if is_ladder > 0 and same_direction then
 					name_end = "_ladder"
 				end
 			end
-			tmp_node = {name=name..name_end, param1=me.param1, param2=me.param2}
+			tmp_node = { name = name .. name_end, param1 = me.param1, param2 = me.param2 }
 		end
 		minetest.set_node(pos, tmp_node)
 	end
