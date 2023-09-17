@@ -254,7 +254,6 @@ function mcl_doors:register_trapdoor(name, def)
 			end),
 		}},
 		on_rotate = on_rotate,
-		_other = name .. "_ladder"
 	})
 
 	-- Climbable opened
@@ -284,7 +283,6 @@ function mcl_doors:register_trapdoor(name, def)
 			end),
 		}},
 		on_rotate = on_rotate,
-		_other = name .. "_open"
 	})
 
 	if minetest.get_modpath("doc") then
