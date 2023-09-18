@@ -549,15 +549,6 @@ function image:encode_footer()
 end
 
 function image:encode(properties)
-	self.data = ""
-	self:encode_header(properties) -- header
-	-- no color map and image id data
-	self:encode_data(properties) -- encode data
-	-- no extension or developer area
-	self:encode_footer() -- footer
-end
-
-function image:save(filename, properties)
 	local properties = properties or {}
 	properties.colormap = properties.colormap or {}
 	properties.compression = properties.compression or "RAW"
@@ -584,6 +575,15 @@ function image:save(filename, properties)
 	end
 	assert( nil ~= properties.color_format )
 
+	self.data = ""
+	self:encode_header(properties) -- header
+	-- no color map and image id data
+	self:encode_data(properties) -- encode data
+	-- no extension or developer area
+	self:encode_footer() -- footer
+end
+
+function image:save(filename, properties)
 	self:encode(properties)
 
 	local f = assert(io.open(filename, "wb"))

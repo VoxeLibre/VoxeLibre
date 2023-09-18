@@ -14,6 +14,22 @@ local pixels = {
 }
 tga_encoder.image(pixels):save("bitmap_small.tga")
 
+-- test that image can be encoded
+local bitmap_small_0 = tga_encoder.image(pixels)
+bitmap_small_0:encode()
+assert(191 == #bitmap_small_0.data)
+
+-- test that imbage can be encoded with parameters
+local bitmap_small_1 = tga_encoder.image(pixels)
+bitmap_small_1:encode(
+	{
+		colormap = {},
+		color_format = "B8G8R8",
+		compression = "RAW",
+	}
+)
+assert(191 == #bitmap_small_1.data)
+
 -- change a single pixel, then rescale the bitmap
 local pixels_orig = pixels
 pixels_orig[4][4] = { 255, 255, 255 }
