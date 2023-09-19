@@ -173,6 +173,18 @@ mcl_mob_active_range (Active mob range) int 48 0 256
 # Zombie siege raid (default:false)
 mcl_raids_zombie_siege (Zombie siege raid) bool false
 
+# Use MC 1.18 light levels to control monster spawning.
+# Disable to use older mob specific light levels.
+mcl_mobs_modern_lighting (Use MC 1.18 light rules for spawning) bool true
+
+# These only take effect if mcl_mobs_modern_lighting is enabled
+# Light levels greater than these block monsters spawning
+# See https://minecraft.fandom.com/wiki/Light#Internal_light_level
+mcl_mobs_nether_threshold (Artificial light threshold to stop spawns in the Nether) int 11 0 14
+mcl_mobs_end_threshold (Artificial light threshold to stop spawns in the End) int 0 0 14
+mcl_mobs_overworld_threshold (Artificial light threshold to stop spawns in the Overworld) int 0 0 14
+mcl_mobs_overworld_sky_threshold (Skylight threshold to stop spawns in the Overworld) int 7 0 14
+
 [Audio]
 # Enable flame sound.
 flame_sound (Flame sound) bool true

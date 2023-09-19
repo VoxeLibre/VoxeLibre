@@ -2,6 +2,12 @@
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 
+local modern_lighting = minetest.settings:get_bool("mcl_mobs_modern_lighting", true)
+local nether_threshold = tonumber(minetest.settings:get("mcl_mobs_nether_threshold")) or 11
+local end_threshold = tonumber(minetest.settings:get("mcl_mobs_end_threshold")) or 0
+local overworld_threshold = tonumber(minetest.settings:get("mcl_mobs_overworld_threshold")) or 0
+local overworld_sky_threshold = tonumber(minetest.settings:get("mcl_mobs_overworld_sky_threshold")) or 7
+
 local get_node                     = minetest.get_node
 local get_item_group               = minetest.get_item_group
 local get_node_light               = minetest.get_node_light
@@ -709,9 +715,6 @@ local function spawn_check(pos, spawn_def)
 			and spawn_def.dimension == dimension
 			and biome_check(spawn_def.biomes, gotten_biome) then
 
-		--mcl_log("Level 1 spawn check passed")
-		--minetest.log("Mob: " .. mob_def.name)
-
 		if  (is_ground or spawn_def.type_of_spawning ~= "ground")
 				and (spawn_def.type_of_spawning ~= "ground" or not is_leaf)
 				and (not is_farm_animal(spawn_def.name) or is_grass)
@@ -721,20 +724,31 @@ local function spawn_check(pos, spawn_def)
 				and (spawn_def.check_position and spawn_def.check_position(pos) or spawn_def.check_position == nil)
 				and ( not spawn_protected or not minetest.is_protected(pos, "") ) then
 
-			--mcl_log("Level 2 spawn check passed")
+			if modern_lighting then
+				local my_node = get_node(pos)
+				local sky_light = minetest.get_natural_light(pos)
+				local art_light = minetest.get_artificial_light(my_node.param1)
 
-			local gotten_light = get_node_light(pos)
-			if gotten_light >= spawn_def.min_light and gotten_light <= spawn_def.max_light then
-				--mcl_log("Level 3 spawn check passed")
-				return true
+				if dimension == "nether" then
+					if art_light <= nether_threshold then
+						return true
+					end
+				elseif dimension == "end" then
+					if art_light <= end_threshold then
+						return true
+					end
+				elseif dimension == "overworld" then
+					if art_light <= overworld_threshold and sky_light <= overworld_sky_threshold then
+						return true
+					end
+				end
 			else
-				--mcl_log("Spawn check level 3 failed")
+				local gotten_light = get_node_light(pos)
+				if gotten_light >= spawn_def.min_light and gotten_light <= spawn_def.max_light then
+					return true
+				end
 			end
-		else
-			--mcl_log("Spawn check level 2 failed")
 		end
-	else
-		--mcl_log("Spawn check level 1 failed")
 	end
 	return false
 end
