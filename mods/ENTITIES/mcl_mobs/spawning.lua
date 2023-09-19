@@ -7,6 +7,7 @@ local nether_threshold = tonumber(minetest.settings:get("mcl_mobs_nether_thresho
 local end_threshold = tonumber(minetest.settings:get("mcl_mobs_end_threshold")) or 0
 local overworld_threshold = tonumber(minetest.settings:get("mcl_mobs_overworld_threshold")) or 0
 local overworld_sky_threshold = tonumber(minetest.settings:get("mcl_mobs_overworld_sky_threshold")) or 7
+local overworld_passive_threshold = tonumber(minetest.settings:get("mcl_mobs_overworld_passive_threshold")) or 7
 
 local get_node                     = minetest.get_node
 local get_item_group               = minetest.get_item_group
@@ -724,6 +725,8 @@ local function spawn_check(pos, spawn_def)
 				and (spawn_def.check_position and spawn_def.check_position(pos) or spawn_def.check_position == nil)
 				and ( not spawn_protected or not minetest.is_protected(pos, "") ) then
 
+			local gotten_light = get_node_light(pos)
+
 			if modern_lighting then
 				local my_node = get_node(pos)
 				local sky_light = minetest.get_natural_light(pos)
@@ -738,12 +741,17 @@ local function spawn_check(pos, spawn_def)
 						return true
 					end
 				elseif dimension == "overworld" then
-					if art_light <= overworld_threshold and sky_light <= overworld_sky_threshold then
-						return true
+					if mob_type == "monster" then
+						if art_light <= overworld_threshold and sky_light <= overworld_sky_threshold then
+							return true
+						end
+					else
+						if gotten_light > overworld_passive_threshold then
+							return true
+						end
 					end
 				end
 			else
-				local gotten_light = get_node_light(pos)
 				if gotten_light >= spawn_def.min_light and gotten_light <= spawn_def.max_light then
 					return true
 				end
