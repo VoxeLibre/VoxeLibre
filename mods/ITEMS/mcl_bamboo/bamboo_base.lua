@@ -86,7 +86,7 @@ local bamboo_def = {
 	on_rotate = on_rotate,
 
 	on_place = function(itemstack, placer, pointed_thing)
-		if pointed_thing.type ~= "node" then
+		if pointed_thing and pointed_thing.type ~= "node" then -- make sure that pointed_thing is not null and is pointing at a node.
 			return itemstack
 		end
 		local node = minetest.get_node(pointed_thing.under)
@@ -276,6 +276,10 @@ local bamboo_block_def = {
 	_mcl_hardness = 2,
 	_mcl_stripped_variant = "mcl_bamboo:bamboo_block_stripped", -- this allows us to use the built in Axe's strip block.
 	on_place = function(itemstack, placer, pointed_thing)
+
+		if not pointed_thing then -- make sure that pointed_thing is not null
+			return itemstack
+		end
 
 		local pos = pointed_thing.under
 
