@@ -173,9 +173,9 @@ mcl_mob_active_range (Active mob range) int 48 0 256
 # Zombie siege raid (default:false)
 mcl_raids_zombie_siege (Zombie siege raid) bool false
 
-# Use MC 1.18 light levels to control monster spawning.
+# Use MC 1.18+ light levels to control monster spawning.
 # Disable to use older mob specific light levels.
-mcl_mobs_modern_lighting (Use MC 1.18 light rules for spawning) bool true
+mcl_mobs_modern_lighting (Use MC 1.18+ light rules for spawning) bool true
 
 # These only take effect if mcl_mobs_modern_lighting is enabled
 # Light levels greater than these block mobs spawning
