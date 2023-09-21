@@ -219,6 +219,10 @@ mcl_mobs.register_mob("mobs_mc:sword_piglin", sword_piglin)
 -- Zombified Piglin --
 
 
+local function spawn_check(pos, environmental_light, artificial_light, sky_light)
+	return artificial_light <= 11
+end
+
 local zombified_piglin = {
 	description = S("Zombie Piglin"),
 	-- type="animal", passive=false: This combination is needed for a neutral mob which becomes hostile, if attacked
@@ -256,6 +260,7 @@ local zombified_piglin = {
 	},
 	jump = true,
 	makes_footstep_sound = true,
+	spawn_check = spawn_check,
 	walk_velocity = .8,
 	run_velocity = 2.6,
 	pathfinding = 1,
