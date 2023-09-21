@@ -2,6 +2,18 @@
 
 local S = minetest.get_translator("mobs_mc")
 
+local function spawn_check(pos, environmental_light, artificial_light, sky_light)
+	local date = os.date("*t")
+	local maxlight
+	if (date.month == 10 and date.day >= 20) or (date.month == 11 and date.day <= 3) then
+		maxlight = 6
+	else
+		maxlight = 3
+	end
+
+	return artificial_light <= maxlight
+end
+
 mcl_mobs.register_mob("mobs_mc:bat", {
 	description = S("Bat"),
 	type = "animal",
@@ -50,6 +62,7 @@ mcl_mobs.register_mob("mobs_mc:bat", {
 	jump = false,
 	fly = true,
 	makes_footstep_sound = false,
+	spawn_check = spawn_check,
 })
 
 

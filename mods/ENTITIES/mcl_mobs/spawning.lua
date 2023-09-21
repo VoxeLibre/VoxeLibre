@@ -742,11 +742,15 @@ local function spawn_check(pos, spawn_def)
 					end
 				elseif dimension == "overworld" then
 					if mob_type == "monster" then
-						if art_light <= overworld_threshold and sky_light <= overworld_sky_threshold then
+						if mob_def.spawn_check then
+							return mob_def.spawn_check(pos, gotten_light, art_light, sky_light)
+						elseif art_light <= overworld_threshold and sky_light <= overworld_sky_threshold then
 							return true
 						end
 					else
-						if gotten_light > overworld_passive_threshold then
+						if mob_def.spawn_check then
+							return mob_def.spawn_check(pos, gotten_light, art_light, sky_light)
+						elseif gotten_light > overworld_passive_threshold then
 							return true
 						end
 					end

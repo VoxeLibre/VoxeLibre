@@ -161,6 +161,16 @@ local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 	end
 end
 
+local function slime_spawn_check(pos, environmental_light, artificial_light, sky_light)
+	local maxlight = swamp_light_max
+
+	if is_slime_chunk(pos) then
+		maxlight = minetest.LIGHT_MAX + 1
+	end
+
+	return artificial_light <= maxlight
+end
+
 -- Slime
 local slime_big = {
 	description = S("Slime"),
@@ -213,6 +223,7 @@ local slime_big = {
 	spawn_small_alternative = "mobs_mc:slime_small",
 	on_die = spawn_children_on_die("mobs_mc:slime_small", 1.0, 1.5),
 	use_texture_alpha = true,
+	spawn_check = slime_spawn_check,
 }
 mcl_mobs.register_mob("mobs_mc:slime_big", slime_big)
 
