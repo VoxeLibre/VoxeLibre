@@ -164,3 +164,18 @@ local pixels = {
 	{ _, _, _, K, _, _, _ },
 }
 tga_encoder.image(pixels):save("colormapped_B8G8R8A8.tga", {colormap=colormap})
+
+-- encoding a colormapped image with illegal colormap indexes should error out
+local colormap = {
+	{   0,   0,   0,   0 },
+	{   0,   0,   0, 255 },
+}
+local status, message = pcall(
+	function ()
+		tga_encoder.image(pixels):encode({colormap=colormap})
+	end
+)
+assert(
+	false == status and
+	"init.lua:36: colormap index 2 not in colormap of size 2" == message
+)

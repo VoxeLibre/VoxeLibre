@@ -28,6 +28,18 @@ function image:encode_colormap_spec(properties)
 		colormap_pixel_depth = pixel_depth_by_color_format[
 			properties.color_format
 		]
+		-- ensure that each pixel references a legal colormap entry
+		for _, row in ipairs(self.pixels) do
+			for _, pixel in ipairs(row) do
+				local colormap_index = pixel[1]
+				if colormap_index >= #colormap then
+					error(
+						"colormap index " .. colormap_index ..
+						" not in colormap of size " .. #colormap
+					)
+				end
+			end
+		end
 	end
 	local colormap_spec =
 		string.char(0, 0) .. -- first entry index
