@@ -681,6 +681,9 @@ function mob_class:do_env_damage()
 	-- don't fall when on ignore, just stand still
 	if self.standing_in == "ignore" then
 		self.object:set_velocity({x = 0, y = 0, z = 0})
+	-- wither rose effect
+	elseif self.standing_in == "mcl_flowers:wither_rose" then
+		mcl_potions.withering_func(self.object, 1, 2)
 	end
 
 	local nodef = minetest.registered_nodes[self.standing_in]

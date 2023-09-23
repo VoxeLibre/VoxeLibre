@@ -161,7 +161,6 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 		if self._custom_timer > 1 then
 			self.health = math.min(self.health + 1, self.hp_max)
 			self._custom_timer = self._custom_timer - 1
-			self._xplded_lately = false
 		end
 
 		if anti_troll and self._spawner then
