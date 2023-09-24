@@ -361,12 +361,13 @@ minetest.register_lbm({
 })
 
 minetest.register_entity("mcl_signs:text", {
-	pointable = false,
-	visual = "upright_sprite",
-	textures = {},
-	physical = false,
-	collide_with_objects = false,
-
+	initial_properties = {
+		pointable = false,
+		visual = "upright_sprite",
+		textures = {},
+		physical = false,
+		collide_with_objects = false,
+	},
 	on_activate = function(self, staticdata)
 		local pos = self.object:get_pos()
 		mcl_signs.update_sign(pos)
