@@ -96,14 +96,14 @@ local function get_armor_texture(textures, name, modname, itemname, itemstring)
 		local core_armor_texture = mcl_armor.trims.core_textures[stack_name]
 
 		if mcl_enchanting.is_enchanted(itemstack:get_name()) then -- working with the original stack to know wether to apply enchanting overlay or not
-			--[[Far, Far in the future we may no longer _enchanted itemstrings...
-				To fix this code, simply put the unmodified itemstring in stack_name's place
-				DO NOT REMOVE THIS if UNLESS YOU KNOW WHAT YOU'RE TRYING TO ACHIEVE!--]]
+			--  Far, Far in the future we may no longer _enchanted itemstrings...
+			--  To fix this code, simply put the unmodified itemstring in stack_name's place
+			--  DO NOT REMOVE THIS if UNLESS YOU KNOW WHAT YOU'RE TRYING TO ACHIEVE!
 			core_armor_texture = core_armor_texture .. mcl_enchanting.overlay
 		end
 
 		if overlay == "" then return core_armor_texture end -- key not present; armor not trimmed
-
+				
 		return core_armor_texture .. overlay
 	end
 	
@@ -322,3 +322,15 @@ function mcl_armor.reload_trim_inv_image(itemstack)
     if inv_overlay == "" then return end
     meta:set_string("inventory_image", def.inventory_image .. inv_overlay)
 end
+
+tt.register_snippet(function(itemstring, toolcaps, stack)
+	if not stack then return nil end
+	local meta = stack:get_meta()
+	if meta:get_string("mcl_armor:trim_overlay") == "" then return nil end -- remember, get_string returns "" if the key doesn't exist
+	-- we need to get the part of the overlay image between the overlay begin ( and the trim name end _
+	-- we COULD easily store this info in meta, but that would bloat the meta storage, as the same few values would be stored over and over again on every trimmed item
+	-- this is fine here as this code gets only executed when you put armor and a trim in a smithing table
+	local full_overlay = meta:get_string("mcl_armor:trim_overlay")
+	local trim_name = full_overlay:match("%((.-)%_") 
+	return "Upgrade:\n " .. trim_name:gsub("^%l", string.upper) .. " Armor Trim"
+end)
