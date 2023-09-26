@@ -9,9 +9,10 @@ Authors:
 Gerold55 - Code Start + Models?
 PrairieWind - Improved and Cleaned Up Code, and added the soul campfire and crafting recipes.
 cora - Added burning damage.
-DinoNuggies4665 - Cooking logic implemented
-thunder1035 - Redesigned model and texture tweaks
-AncientMariner - Changed smoke to particle spawner and tweaked particle configuration.
+DinoNuggies4665 - Cooking logic implemented. 
+thunder1035 - Redesigned model and texture tweaks. 
+AncientMariner - Changed smoke to particle spawner and tweaked particle configuration. 
+Michieal - Fixed misc. errors. 
 
 License of media
 ----------------
