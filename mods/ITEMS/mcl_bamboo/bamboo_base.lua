@@ -86,7 +86,12 @@ local bamboo_def = {
 	on_rotate = on_rotate,
 
 	on_place = function(itemstack, placer, pointed_thing)
-		if pointed_thing and pointed_thing.type ~= "node" then -- make sure that pointed_thing is not null and is pointing at a node.
+
+		if not pointed_thing then
+			return itemstack
+		end
+
+		if pointed_thing.type ~= "node" then
 			return itemstack
 		end
 		local node = minetest.get_node(pointed_thing.under)
@@ -201,7 +206,7 @@ local bamboo_def = {
 		local node_above_name = minetest.get_node(pointed_thing.above).name
 		mcl_bamboo.mcl_log("\n\n\nnode_above name: " .. node_above_name)
 		if node_above_name ~= "mcl_core:water_source" and node_above_name ~= "mcl_core:lava_source"
-				and node_above_name ~= "mcl_nether:nether_lava_source" then
+			and node_above_name ~= "mcl_nether:nether_lava_source" then
 			local _, position = minetest.item_place(place_item, placer, pointed_thing, fdir)
 			if position then
 				if not minetest.is_creative_enabled(placer:get_player_name()) then
@@ -276,8 +281,11 @@ local bamboo_block_def = {
 	_mcl_hardness = 2,
 	_mcl_stripped_variant = "mcl_bamboo:bamboo_block_stripped", -- this allows us to use the built in Axe's strip block.
 	on_place = function(itemstack, placer, pointed_thing)
+		if not pointed_thing then
+			return itemstack
+		end
 
-		if not pointed_thing then -- make sure that pointed_thing is not null
+		if pointed_thing.type ~= "node" then -- make sure that pointed_thing is not null and is pointing at a node.
 			return itemstack
 		end
 
