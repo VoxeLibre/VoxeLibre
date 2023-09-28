@@ -3,7 +3,7 @@ mcl_bamboo
 
 This mod adds working, familiar bamboo nodes to your Mineclone 2 world.
 
-Code: MineClone2 dev team. Original (basic) bamboo code by: Small Joker.
+Code: Michieal. Original (basic, used as inspiration) bamboo code by: Small Joker. Updates to the code: Mineclone Dev Team, Michieal.
 
 License for code: GPLv3.
 License for images / textures: CC-BY-SA except where noted.
