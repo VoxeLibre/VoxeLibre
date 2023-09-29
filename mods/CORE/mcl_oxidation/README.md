@@ -11,4 +11,4 @@ For example, Copper Blocks have the definition arguement of `_mcl_waxed_variant 
 
 For waxed nodes, scraping is easy. Start by putting `waxed = 1` into the list of groups of the waxed node.
 Next put `_mcl_stripped_variant = item string of the unwaxed variant of the node` into the defintion table.
-Wxaed Copper Blocks can be scrapped into normal Copper Blocks because of the definition `_mcl_stripped_variant = "mcl_copper:block"`.
+Waxed Copper Blocks can be scrapped into normal Copper Blocks because of the definition `_mcl_stripped_variant = "mcl_copper:block"`.
