@@ -51,6 +51,9 @@ mcl_disabled_events (Disabled events) string
 # This setting is only read at startup.
 enable_bed_respawn (Respawn at bed) bool true
 
+#If enabled, players respawn at world spawn if bed is destroyed or respawn anchor has no charge.
+mcl_return_spawn (Return to spawn if no bed) bool true
+
 # How many players have to sleep to skip the night, in percent.
 # Setting to 0 will mean 1 player is always enough to skip the night. Setting above 100 will prevent skipping the night.
 # 100 by default.
