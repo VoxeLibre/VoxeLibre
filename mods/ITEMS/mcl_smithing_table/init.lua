@@ -48,7 +48,8 @@ local formspec = table.concat({
 	mcl_formspec.get_itemslot_bg_v4(4.75, 2.6, 1, 1),
 	"list[context;mineral;4.75,2.6;1,1;]",
 
-    mcl_formspec.get_itemslot_bg_v4(6,2.6,1,1),
+	mcl_formspec.get_itemslot_bg_v4(6, 2.6, 1, 1),
+    mcl_formspec.get_itemslot_bg_v4(6, 2.6, 1, 1, 0, "mcl_smithing_table_inventory_trim_bg.png"),
 	"list[context;template;6,2.6;1,1;]",
 
 	"image[7,2.6;2,1;mcl_anvils_inventory_arrow.png]",
