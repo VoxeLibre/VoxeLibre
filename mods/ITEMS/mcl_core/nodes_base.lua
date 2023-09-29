@@ -1038,7 +1038,7 @@ for i=1,8 do
 
 		-- Get position where snow would be placed
 		local target
-		if minetest.registered_nodes[unode.name].buildable_to then
+		if def and def.buildable_to then
 			target = under
 		else
 			target = above

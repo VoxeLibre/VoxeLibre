@@ -155,7 +155,8 @@ minetest.register_node("mcl_end:chorus_flower", {
 		1) On top of end stone or chorus plant
 		2) On top of air and horizontally adjacent to exactly 1 chorus plant ]]
 		local pos
-		if minetest.registered_nodes[node_under.name].buildable_to then
+		local def = minetest.registered_nodes[node_under.name]
+		if def and def.buildable_to then
 			pos = pointed_thing.under
 		else
 			pos = pointed_thing.above
@@ -283,7 +284,8 @@ minetest.register_node("mcl_end:chorus_plant", {
 		condition is met:
 		- placed on end stone or any chorus node ]]
 		local pos_place, node_check
-		if minetest.registered_nodes[node_under.name].buildable_to then
+		local def = minetest.registered_nodes[node_under.name]
+		if def and def.buildable_to then
 			pos_place = pointed_thing.under
 			node_check = node_above
 		else

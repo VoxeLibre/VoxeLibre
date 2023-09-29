@@ -18,13 +18,21 @@ local function on_place_fish(itemstack, placer, pointed_thing)
 		return new_stack
 	end
 
-	local pos = pointed_thing.above or pointed_thing.under
-	if not pos then return end
-	local n = minetest.get_node_or_nil(pos)
-	if n.name and minetest.registered_nodes[n.name].buildable_to or n.name == "mcl_portals:portal" then
-		local fish = itemstack:get_name():gsub(fishbucket_prefix,"")
-		if fish_names[fish] then
-			local o = minetest.add_entity(pos, "mobs_mc:" .. fish)
+	if pointed_thing.type ~= "node" then return end
+
+	local pos = pointed_thing.above
+	local n = minetest.get_node(pointed_thing.above)
+	local def = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
+
+	if ( def and def.buildable_to ) or n.name == "mcl_portals:portal" then
+		pos = pointed_thing.under
+		n = minetest.get_node(pointed_thing.under)
+	end
+
+	local fish = itemstack:get_definition()._mcl_buckets_fish
+	if fish_names[fish] then
+		local o = minetest.add_entity(pos, "mobs_mc:" .. fish)
+		if o and o:get_pos() then
 			local props = itemstack:get_meta():get_string("properties")
 			if props ~= "" then
 				o:set_properties(minetest.deserialize(props))
@@ -60,6 +68,7 @@ for techname, fishname in pairs(fish_names) do
 		stack_max = 1,
 		groups = {bucket = 1, fish_bucket = 1},
 		liquids_pointable = false,
+		_mcl_buckets_fish = techname,
 		on_place = on_place_fish,
 		on_secondary_use = on_place_fish,
 		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)

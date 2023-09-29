@@ -301,7 +301,8 @@ minetest.register_node("mcl_mobspawners:spawner", {
 		local new_itemstack, success = minetest.item_place(itemstack, placer, pointed_thing)
 		if success then
 			local placepos
-			if minetest.registered_nodes[node_under.name].buildable_to then
+			local def = minetest.registered_nodes[node_under.name]
+			if def and def.buildable_to then
 				placepos = pointed_thing.under
 			else
 				placepos = pointed_thing.above
