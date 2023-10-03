@@ -46,3 +46,6 @@ Reduces most types of damage by 4% for each level.=
 Thorns=
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=
 Aqua Affinity=
+
+#Translations for armor trims
+Smithing Template '@1'=

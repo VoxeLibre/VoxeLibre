@@ -69,6 +69,7 @@ mcl_structures.register_structure("desert_temple",{
 				{ itemstring = "mcl_mobitems:diamond_horse_armor", weight = 5, },
 				{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 3 },
 				{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2, },
+				{ itemstring = "mcl_armor:dune", weight = 20, amount_min = 2, amount_max = 2},
 			}
 		},
 		{

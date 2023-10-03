@@ -1,5 +1,7 @@
 -- Code based from mcl_anvils
 
+mcl_grindstone = {}
+
 local S = minetest.get_translator(minetest.get_current_modname())
 local F = minetest.formspec_escape
 local C = minetest.colorize
@@ -55,7 +57,7 @@ local function create_new_item(name_item, meta, wear)
 end
 
 -- If an item has an enchanment then remove "_enchanted" from the name
-local function remove_enchant_name(stack)
+function mcl_grindstone.remove_enchant_name(stack)
 	if mcl_enchanting.is_enchanted(stack:get_name()) then
 		local name = stack:get_name()
 		return name.sub(name, 1, -11)
@@ -116,8 +118,8 @@ local function update_grindstone_slots(meta)
 		local def1 = input1:get_definition()
 		local def2 = input2:get_definition()
 		-- Remove enchant name if they have one
-		local name1 = remove_enchant_name(input1)
-		local name2 = remove_enchant_name(input2)
+		local name1 = mcl_grindstone.remove_enchant_name(input1)
+		local name2 = mcl_grindstone.remove_enchant_name(input2)
 
 		-- Calculate repair
 		local function calculate_repair(dur1, dur2)
@@ -143,7 +145,7 @@ local function update_grindstone_slots(meta)
 			local def1 = input1:get_definition()
 			local meta = input1:get_meta()
 			if def1.type == "tool" and mcl_enchanting.is_enchanted(input1:get_name()) then
-				local name = remove_enchant_name(input1)
+				local name = mcl_grindstone.remove_enchant_name(input1)
 				local wear = input1:get_wear()
 				local new_item = create_new_item(name, meta, wear)
 				new_output = transfer_curse(input1, new_item)
@@ -157,7 +159,7 @@ local function update_grindstone_slots(meta)
 			local def2 = input2:get_definition()
 			local meta = input2:get_meta()
 			if def2.type == "tool" and mcl_enchanting.is_enchanted(input2:get_name()) then
-				local name = remove_enchant_name(input2)
+				local name = mcl_grindstone.remove_enchant_name(input2)
 				local wear = input2:get_wear()
 				local new_item = create_new_item(name, meta, wear)
 				new_output = transfer_curse(input2, new_item)

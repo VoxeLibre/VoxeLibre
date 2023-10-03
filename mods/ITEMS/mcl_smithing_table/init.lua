@@ -6,9 +6,9 @@ local C = minetest.colorize
 
 mcl_smithing_table = {}
 
----Function to upgrade diamond tool/armor to netherite tool/armor
+-- Function to upgrade diamond tool/armor to netherite tool/armor
 ---@param itemstack ItemStack
-function mcl_smithing_table.upgrade_item(itemstack)
+function mcl_smithing_table.upgrade_item_netherite(itemstack)
 	local def = itemstack:get_definition()
 
 	if not def or not def._mcl_upgradable then
@@ -22,6 +22,7 @@ function mcl_smithing_table.upgrade_item(itemstack)
 	end
 
 	itemstack:set_name(upgrade_item)
+	mcl_armor.reload_trim_inv_image(itemstack)
 
 	-- Reload the ToolTips of the tool
 
@@ -40,14 +41,18 @@ local formspec = table.concat({
 	"image[0.875,0.375;1.75,1.75;mcl_smithing_table_inventory_hammer.png]",
 
 	mcl_formspec.get_itemslot_bg_v4(1.625, 2.6, 1, 1),
-	"list[context;diamond_item;1.625,2.6;1,1;]",
+	"list[context;upgrade_item;1.625,2.6;1,1;]",
 
-	"image[3.5,2.6;1,1;mcl_anvils_inventory_cross.png]",
+	"image[3.125,2.6;1,1;mcl_anvils_inventory_cross.png]",
 
-	mcl_formspec.get_itemslot_bg_v4(5.375, 2.6, 1, 1),
-	"list[context;netherite;5.375,2.6;1,1;]",
+	mcl_formspec.get_itemslot_bg_v4(4.75, 2.6, 1, 1),
+	"list[context;mineral;4.75,2.6;1,1;]",
 
-	"image[6.75,2.6;2,1;mcl_anvils_inventory_arrow.png]",
+	mcl_formspec.get_itemslot_bg_v4(6, 2.6, 1, 1),
+    mcl_formspec.get_itemslot_bg_v4(6, 2.6, 1, 1, 0, "mcl_smithing_table_inventory_trim_bg.png"),
+	"list[context;template;6,2.6;1,1;]",
+
+	"image[7,2.6;2,1;mcl_anvils_inventory_arrow.png]",
 
 	mcl_formspec.get_itemslot_bg_v4(9.125, 2.6, 1, 1),
 	"list[context;upgraded_item;9.125,2.6;1,1;]",
@@ -62,23 +67,60 @@ local formspec = table.concat({
 
 	-- Listrings
 
-	"listring[context;diamond_item]",
+	"listring[context;upgrade_item]",
 	"listring[current_player;main]",
-	"listring[context;netherite]",
+	"listring[context;mineral]",
 	"listring[current_player;main]",
 	"listring[context;upgraded_item]",
 	"listring[current_player;main]",
 	"listring[current_player;main]",
-	"listring[context;diamond_item]",
+	"listring[context;upgrade_item]",
 })
+
+local smithing_materials = {
+	["mcl_nether:netherite_ingot"]	= "netherite",
+	["mcl_core:diamond"]			= "diamond",
+	["mcl_core:lapis"]				= "lapis",
+	["mcl_amethyst:amethyst_shard"]	= "amethyst",
+	["mesecons:wire_00000000_off"]	= "redstone",
+	["mcl_core:iron_ingot"]			= "iron",
+	["mcl_core:gold_ingot"]			= "gold",
+	["mcl_copper:copper_ingot"]		= "copper",
+	["mcl_core:emerald"]			= "emerald",
+	["mcl_nether:quartz"]			= "quartz"
+}	
+
+function mcl_smithing_table.upgrade_trimmed(itemstack, color_mineral, template)
+	--get information required
+	local material_name = color_mineral:get_name()
+	material_name = smithing_materials[material_name]
+
+	local overlay = template:get_name():gsub("mcl_armor:","")
+
+	--trimming process
+	mcl_armor.trim(itemstack, overlay, material_name)
+	tt.reload_itemstack_description(itemstack)
+
+	return itemstack
+end
+
+function mcl_smithing_table.is_smithing_mineral(itemname) 
+	return smithing_materials[itemname] ~= nil
+end
 
 ---@param pos Vector
 local function reset_upgraded_item(pos)
 	local inv = minetest.get_meta(pos):get_inventory()
 	local upgraded_item
+	local original_itemname = inv:get_stack("upgrade_item", 1):get_name()
+	local template_present = inv:get_stack("template",1):get_name() ~= ""
+	local is_armor = original_itemname:find("mcl_armor:") ~= nil
+	local is_trimmed = original_itemname:find("_trimmed") ~= nil
 
-	if inv:get_stack("netherite", 1):get_name() == "mcl_nether:netherite_ingot" then
-		upgraded_item = mcl_smithing_table.upgrade_item(inv:get_stack("diamond_item", 1))
+	if inv:get_stack("mineral", 1):get_name() == "mcl_nether:netherite_ingot" and not template_present then
+		upgraded_item = mcl_smithing_table.upgrade_item_netherite(inv:get_stack("upgrade_item", 1))
+	elseif template_present and is_armor and not is_trimmed and mcl_smithing_table.is_smithing_mineral(inv:get_stack("mineral", 1):get_name()) then
+		upgraded_item = mcl_smithing_table.upgrade_trimmed(inv:get_stack("upgrade_item", 1),inv:get_stack("mineral", 1),inv:get_stack("template", 1))
 	end
 
 	inv:set_stack("upgraded_item", 1, upgraded_item)
@@ -107,14 +149,24 @@ minetest.register_node("mcl_smithing_table:table", {
 
 		local inv = meta:get_inventory()
 
-		inv:set_size("diamond_item", 1)
-		inv:set_size("netherite", 1)
+		inv:set_size("upgrade_item", 1)
+		inv:set_size("mineral", 1)
+		inv:set_size("template",1)
 		inv:set_size("upgraded_item", 1)
 	end,
 
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-		if listname == "diamond_item" and mcl_smithing_table.upgrade_item(stack) or
-			listname == "netherite" and stack:get_name() == "mcl_nether:netherite_ingot" then
+		if 			
+					listname == "upgrade_item"  
+			and	 	string.find(stack:get_name(),"mcl_armor:") -- allow any armor piece to go in (in case the player wants to trim them)
+			and not mcl_armor.trims.blacklisted[stack:get_name()]
+
+			or		listname == "mineral" 
+			and		mcl_smithing_table.is_smithing_mineral(stack:get_name())
+
+			or 		listname == "template"
+			and		string.find(stack:get_name(),"mcl_armor") 
+		then
 			return stack:get_count()
 		end
 
@@ -137,8 +189,9 @@ minetest.register_node("mcl_smithing_table:table", {
 		end
 
 		if listname == "upgraded_item" then
-			take_item("diamond_item")
-			take_item("netherite")
+			take_item("upgrade_item")
+			take_item("mineral")
+			take_item("template")
 
 			-- ToDo: make epic sound
 			minetest.sound_play("mcl_smithing_table_upgrade", { pos = pos, max_hear_distance = 16 })
@@ -165,3 +218,8 @@ minetest.register_craft({
 		{ "group:wood", "group:wood", "" }
 	},
 })
+
+-- this is the exact same as mcl_smithing_table.upgrade_item_netherite , in case something relies on the old function
+function mcl_smithing_table.upgrade_item(itemstack)
+	return mcl_smithing_table.upgrade_item_netherite(itemstack)
+end
