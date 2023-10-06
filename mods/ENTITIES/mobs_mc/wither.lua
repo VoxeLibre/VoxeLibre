@@ -5,10 +5,10 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
-local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
-local follow_spawner = minetest.settings:get_bool("wither_follow_spawner") == true
-local w_strafes = minetest.settings:get_bool("wither_strafes") ~= false
-local anti_troll = minetest.settings:get_bool("wither_anti_troll_measures") ~= false
+local mobs_griefing = minetest.settings:get_bool("mobs_griefing", true)
+local follow_spawner = minetest.settings:get_bool("wither_follow_spawner", false)
+local w_strafes = minetest.settings:get_bool("wither_strafes", true)
+local anti_troll = minetest.settings:get_bool("wither_anti_troll_measures", false)
 
 local WITHER_INIT_BOOM = 7
 
@@ -170,37 +170,39 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 			self._custom_timer = self._custom_timer - 1
 		end
 
-		if anti_troll and self._spawner then
-			local spawner = minetest.get_player_by_name(self._spawner)
-			if follow_spawner and spawner then
-				self._death_timer = 0
-				local pos = self.object:get_pos()
-				local spw = spawner:get_pos()
-				local dist = vector.distance(pos, spw)
-				if dist > 60 then -- teleport to the player who spawned the wither
-					local R = 10
-					pos.x = spw.x + math.random(-R, R)
-					pos.y = spw.y + math.random(-R, R)
-					pos.z = spw.z + math.random(-R, R)
-					self.object:set_pos(pos)
+		-- anti-troll measures
+		if anti_troll then
+			if self._spawner then
+				local spawner = minetest.get_player_by_name(self._spawner)
+				if follow_spawner and spawner then
+					self._death_timer = 0
+					local pos = self.object:get_pos()
+					local spw = spawner:get_pos()
+					local dist = vector.distance(pos, spw)
+					if dist > 60 then -- teleport to the player who spawned the wither
+						local R = 10
+						pos.x = spw.x + math.random(-R, R)
+						pos.y = spw.y + math.random(-R, R)
+						pos.z = spw.z + math.random(-R, R)
+						self.object:set_pos(pos)
+					end
+				else -- despawn automatically after set time
+					-- HP changes impact timer: taking damage sets it back
+					self._death_timer = self._death_timer + self.health - self._health_old
+					if self.health == self._health_old then self._death_timer = self._death_timer + dtime end
+					if self._death_timer > 100 then
+						self.object:remove()
+						return false
+					end
+					self._health_old = self.health
 				end
-			else -- despawn automatically after set time
-				-- HP changes impact timer: taking damage sets it back
-				self._death_timer = self._death_timer + self.health - self._health_old
-				if self.health == self._health_old then self._death_timer = self._death_timer + dtime end
-				if self._death_timer > 100 then
-					self.object:remove()
-					return false
-				end
-				self._health_old = self.health
 			end
+			-- count withers per dimension
+			local dim = mcl_worlds.pos_to_dimension(self.object:get_pos())
+			if dim == "overworld" then mobs_mc.wither_count_overworld = mobs_mc.wither_count_overworld + 1
+			elseif dim == "nether" then mobs_mc.wither_count_nether = mobs_mc.wither_count_nether + 1
+			elseif dim == "end" then mobs_mc.wither_count_end = mobs_mc.wither_count_end + 1 end
 		end
-
-		-- count withers per dimension
-		local dim = mcl_worlds.pos_to_dimension(self.object:get_pos())
-		if dim == "overworld" then mobs_mc.wither_count_overworld = mobs_mc.wither_count_overworld + 1
-		elseif dim == "nether" then mobs_mc.wither_count_nether = mobs_mc.wither_count_nether + 1
-		elseif dim == "end" then mobs_mc.wither_count_end = mobs_mc.wither_count_end + 1 end
 
 		-- update things dependent on HP
 		local rand_factor

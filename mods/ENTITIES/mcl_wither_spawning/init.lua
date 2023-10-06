@@ -2,6 +2,8 @@ local dim = {"x", "z"}
 
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 
+local anti_troll = minetest.settings:get_bool("wither_anti_troll_measures", false)
+
 local function load_schem(filename)
 	local file = io.open(modpath .. "/schems/" .. filename, "r")
 	local data = minetest.deserialize(file:read())
@@ -56,7 +58,7 @@ local function wither_spawn(pos, player)
 		for i = 0, 2 do
 			local p = vector.add(pos, {x = 0, y = -2, z = 0, [d] = -i})
 			local schem = wither_spawn_schems[d]
-			if check_schem(p, schem) and check_limit(pos) then
+			if check_schem(p, schem) and (not anti_troll or check_limit(pos)) then
 				remove_schem(p, schem)
 				local wither = minetest.add_entity(vector.add(p, {x = 0, y = 1, z = 0, [d] = 1}), "mobs_mc:wither")
 				local wither_ent = wither:get_luaentity()
@@ -88,12 +90,14 @@ function wither_head.on_place(itemstack, placer, pointed)
 	return old_on_place(itemstack, placer, pointed)
 end
 
--- pull wither counts per dimension
-minetest.register_globalstep(function(dtime)
-	wboss_overworld = mobs_mc.wither_count_overworld
-	wboss_nether = mobs_mc.wither_count_nether
-	wboss_end = mobs_mc.wither_count_end
-	mobs_mc.wither_count_overworld = 0
-	mobs_mc.wither_count_nether = 0
-	mobs_mc.wither_count_end = 0
-end)
+if anti_troll then
+	-- pull wither counts per dimension
+	minetest.register_globalstep(function(dtime)
+		wboss_overworld = mobs_mc.wither_count_overworld
+		wboss_nether = mobs_mc.wither_count_nether
+		wboss_end = mobs_mc.wither_count_end
+		mobs_mc.wither_count_overworld = 0
+		mobs_mc.wither_count_nether = 0
+		mobs_mc.wither_count_end = 0
+	end)
+end

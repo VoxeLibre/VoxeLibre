@@ -182,7 +182,7 @@ wither_follow_spawner (Wither following his spawner) bool false
 wither_strafes (Wither strafes) bool true
 
 #Wither anti-troll measures (escaping when stuck in a block, despawning when spawner goes offline, teleporting after the spawner). When this is OFF, wither_follow_spawner has no effect.
-wither_anti_troll_measures (Wither anti-troll measures) bool true
+wither_anti_troll_measures (Wither anti-troll measures) bool false
 
 #Display mob icons in inventory instead of mc-like spawn eggs
 mcl_old_spawn_icons (Old spawn icons instead of eggs) bool false
