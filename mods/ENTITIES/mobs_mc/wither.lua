@@ -1,5 +1,6 @@
 --MCmobs v0.4
 --maikerumine
+--updated by Herowl
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
@@ -25,7 +26,7 @@ end
 
 local function wither_unstuck(self)
 	local pos = self.object:get_pos()
-	if mobs_griefing then
+	if mobs_griefing then -- destroy blocks very nearby (basically, colliding with)
 		local col = self.collisionbox
 		local pos1 = vector.offset(pos, col[1], col[2], col[3])
 		local pos2 = vector.offset(pos, col[4], col[5], col[6])
@@ -47,7 +48,7 @@ local function wither_unstuck(self)
 				end
 			end
 		end end end
-	else
+	else -- when mobs_griefing disabled, make a small nondestructive explosion
 		mcl_mobs.mob_class.safe_boom(self, pos, 2)
 	end
 end
@@ -124,6 +125,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 
 	do_custom = function(self, dtime)
 		if self._spawning then
+			-- "loading" bar while spawning
 			if not self._spw_max then self._spw_max = self._spawning end
 			self._spawning = self._spawning - dtime
 			local bardef = {
@@ -139,12 +141,14 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 					mcl_bossbars.add_bar(player, bardef, true, d)
 				end
 			end
-			self.object:set_yaw(self._spawning*10)
 
+			-- turn around and flash while spawning
+			self.object:set_yaw(self._spawning*10)
 			local factor = math.floor((math.sin(self._spawning*10)+1.5) * 85)
 			local str = minetest.colorspec_to_colorstring({r=factor, g=factor, b=factor})
 			self.object:set_texture_mod("^[brighten^[multiply:"..str)
 
+			-- when fully spawned, explode
 			if self._spawning <= 0 then
 				if mobs_griefing and not minetest.is_protected(pos, "") then
 					mcl_explosions.explode(pos, WITHER_INIT_BOOM, { drop_chance = 1.0 }, self.object)
@@ -159,6 +163,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 			end
 		end
 
+		-- passive regeneration
 		self._custom_timer = self._custom_timer + dtime
 		if self._custom_timer > 1 then
 			self.health = math.min(self.health + 1, self.hp_max)
@@ -179,7 +184,8 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 					pos.z = spw.z + math.random(-R, R)
 					self.object:set_pos(pos)
 				end
-			else
+			else -- despawn automatically after set time
+				-- HP changes impact timer: taking damage sets it back
 				self._death_timer = self._death_timer + self.health - self._health_old
 				if self.health == self._health_old then self._death_timer = self._death_timer + dtime end
 				if self._death_timer > 100 then
@@ -190,11 +196,13 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 			end
 		end
 
+		-- count withers per dimension
 		local dim = mcl_worlds.pos_to_dimension(self.object:get_pos())
 		if dim == "overworld" then mobs_mc.wither_count_overworld = mobs_mc.wither_count_overworld + 1
 		elseif dim == "nether" then mobs_mc.wither_count_nether = mobs_mc.wither_count_nether + 1
 		elseif dim == "end" then mobs_mc.wither_count_end = mobs_mc.wither_count_end + 1 end
 
+		-- update things dependent on HP
 		local rand_factor
 		if self.health < (self.hp_max / 2) then
 			self.base_texture = "mobs_mc_wither_half_health.png"
