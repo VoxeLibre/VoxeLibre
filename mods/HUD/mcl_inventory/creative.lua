@@ -542,7 +542,6 @@ function mcl_inventory.set_creative_formspec(player)
 			"style[" .. this_tab .. ";border=false;bgimg=;bgimg_pressed=;noclip=true]",
 			"image[" .. offset[this_tab] .. ";1.5,1.44;" .. bg_img .. "]",
 			"item_image_button[" .. boffset[this_tab] .. ";1,1;" .. tab_icon[this_tab] .. ";" .. this_tab .. ";]",
-			"tooltip[blocks;" .. F(filtername[this_tab]) .. "]"
 		})
 	end
 
@@ -571,20 +570,33 @@ function mcl_inventory.set_creative_formspec(player)
 
 		listrings,
 
-		tab(name, "blocks"),
-		tab(name, "deco"),
-		tab(name, "redstone"),
-		tab(name, "rail"),
-		tab(name, "misc"),
-		tab(name, "nix"),
+		tab(name, "blocks") ..
+		"tooltip[blocks;"..F(filtername["blocks"]).."]"..
+		tab(name, "deco") ..
+		"tooltip[deco;"..F(filtername["deco"]).."]"..
+		tab(name, "redstone") ..
+		"tooltip[redstone;"..F(filtername["redstone"]).."]"..
+		tab(name, "rail") ..
+		"tooltip[rail;"..F(filtername["rail"]).."]"..
+		tab(name, "misc") ..
+		"tooltip[misc;"..F(filtername["misc"]).."]"..
+		tab(name, "nix") ..
+		"tooltip[nix;"..F(filtername["nix"]).."]"..
 
-		tab(name, "food"),
-		tab(name, "tools"),
-		tab(name, "combat"),
-		tab(name, "mobs"),
-		tab(name, "brew"),
-		tab(name, "matr"),
-		tab(name, "inv"),
+		tab(name, "food") ..
+		"tooltip[food;"..F(filtername["food"]).."]"..
+		tab(name, "tools") ..
+		"tooltip[tools;"..F(filtername["tools"]).."]"..
+		tab(name, "combat") ..
+		"tooltip[combat;"..F(filtername["combat"]).."]"..
+		tab(name, "mobs") ..
+		"tooltip[mobs;"..F(filtername["mobs"]).."]"..
+		tab(name, "brew") ..
+		"tooltip[brew;"..F(filtername["brew"]).."]"..
+		tab(name, "matr") ..
+		"tooltip[matr;"..F(filtername["matr"]).."]"..
+		tab(name, "inv") ..
+		"tooltip[inv;"..F(filtername["inv"]).."]"
 	})
 
 	if name == "nix" then
