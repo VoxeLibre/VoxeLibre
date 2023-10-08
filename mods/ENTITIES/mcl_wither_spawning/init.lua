@@ -3,6 +3,7 @@ local dim = {"x", "z"}
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 
 local anti_troll = minetest.settings:get_bool("wither_anti_troll_measures", false)
+local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
 local function load_schem(filename)
 	local file = io.open(modpath .. "/schems/" .. filename, "r")
@@ -54,6 +55,7 @@ local function check_limit(pos)
 end
 
 local function wither_spawn(pos, player)
+	if peaceful then return end
 	for _, d in pairs(dim) do
 		for i = 0, 2 do
 			local p = vector.add(pos, {x = 0, y = -2, z = 0, [d] = -i})
@@ -61,6 +63,7 @@ local function wither_spawn(pos, player)
 			if check_schem(p, schem) and (not anti_troll or check_limit(pos)) then
 				remove_schem(p, schem)
 				local wither = minetest.add_entity(vector.add(p, {x = 0, y = 1, z = 0, [d] = 1}), "mobs_mc:wither")
+				if not wither then return end
 				local wither_ent = wither:get_luaentity()
 				wither_ent._spawner = player:get_player_name()
 				local dim = mcl_worlds.pos_to_dimension(pos)
