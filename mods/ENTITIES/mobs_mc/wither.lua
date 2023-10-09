@@ -53,6 +53,16 @@ local function wither_unstuck(self)
 	mcl_mobs.mob_class.safe_boom(self, pos, 2)
 end
 
+local function get_dim_relative_y(pos)
+		if (pos.y >= mcl_vars.mg_realm_barrier_overworld_end_max) then
+			return pos.y
+		elseif (pos.y <= mcl_vars.mg_nether_max + 200) then
+			return (pos.y - mcl_vars.mg_nether_min - 20)
+		else
+			return (pos.y - mcl_vars.mg_end_min - 50)
+		end
+end
+
 mobs_mc.wither_count_overworld = 0
 mobs_mc.wither_count_nether = 0
 mobs_mc.wither_count_end = 0
@@ -153,7 +163,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 				if mobs_griefing and not minetest.is_protected(pos, "") then
 					mcl_explosions.explode(pos, WITHER_INIT_BOOM, { drop_chance = 1.0 }, self.object)
 				else
-					mcl_mobs.mob_class.safe_boom(self, pos, 10)
+					mcl_mobs.mob_class.safe_boom(self, pos, WITHER_INIT_BOOM)
 				end
 				self.object:set_texture_mod("")
 				self._spawning = nil
@@ -216,6 +226,16 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 			self.fly = true
 			self._arrow_resistant = false
 			rand_factor = 10
+		end
+		if not self.attack then
+			local y = get_dim_relative_y(self.object:get_pos())
+			if y > 0 then
+				self.fly = false
+			else
+				self.fly = true
+				local vel = self.object:get_velocity()
+				self.object:set_velocity(vector.new(vel.x, self.walk_velocity, vel.z))
+			end
 		end
 		self.object:set_properties({textures={self.base_texture}})
 		mcl_bossbars.update_boss(self.object, "Wither", "dark_purple")
@@ -289,7 +309,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 				self.acc = vector.add(dir2, stay_away_from_player)
 			end
 		else
-			self:set_velocity( 0)
+			self:set_velocity(0)
 		end
 
 		if dist > 30 then self.acc = vector.add(self.acc, vector.direction(s, p)*0.01) end
@@ -325,7 +345,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 					damage_groups = {fleshy = 4},
 				}, pos)
 				local ent = objs[n]:get_luaentity()
-				if objs[n]:is_player() or ent then
+				if objs[n]:is_player() or (ent and ent ~= self and (not ent._shooter or ent._shooter ~= self)) then
 					mcl_util.deal_damage(objs[n], 8, {type = "magic"})
 					hit_some = true
 				end
